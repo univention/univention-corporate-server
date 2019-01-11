@@ -1,3 +1,9 @@
+univention-lib (8.0.0-2) unstable; urgency=medium
+
+  * Bug #48014: Removed unnecessary echo line in backup.sh
+
+ -- Julia Bremer <bremer@knut.univention.de>  Fri, 11 Jan 2019 11:23:24 +0100
+
 univention-lib (8.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump
