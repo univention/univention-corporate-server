@@ -167,6 +167,7 @@ int cache_entry_module_present(CacheEntry *entry, char *module) {
 
 int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAPMessage *ldap_entry) {
 	BerElement *ber;
+	CacheEntryAttribute *c_attr;
 	char *attr;
 	int rv = 1;
 
@@ -191,18 +192,19 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: realloc of attributes array failed");
 			goto result;
 		}
-		if ((cache_entry->attributes[cache_entry->attribute_count] = malloc(sizeof(CacheEntryAttribute))) == NULL) {
+		if ((c_attr = malloc(sizeof(CacheEntryAttribute))) == NULL) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: malloc for CacheEntryAttribute failed");
 			goto result;
 		}
-		cache_entry->attributes[cache_entry->attribute_count]->name = strdup(attr);
-		cache_entry->attributes[cache_entry->attribute_count]->values = NULL;
-		cache_entry->attributes[cache_entry->attribute_count]->length = NULL;
-		cache_entry->attributes[cache_entry->attribute_count]->value_count = 0;
-		cache_entry->attributes[cache_entry->attribute_count + 1] = NULL;
+		c_attr->name = strdup(attr);
+		c_attr->values = NULL;
+		c_attr->length = NULL;
+		c_attr->value_count = 0;
+		cache_entry->attributes[cache_entry->attribute_count] = c_attr;
+		cache_entry->attributes[++cache_entry->attribute_count] = NULL;
 
 		memberUidMode = false;
-		if (!strcmp(cache_entry->attributes[cache_entry->attribute_count]->name, "memberUid")) {
+		if (!strcmp(c_attr->name, "memberUid")) {
 			char *ucrval;
 			ucrval = univention_config_get_string("listener/memberuid/skip");
 
@@ -212,7 +214,7 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 			}
 		}
 		uniqueMemberMode = false;
-		if (!strcmp(cache_entry->attributes[cache_entry->attribute_count]->name, "uniqueMember")) {
+		if (!strcmp(c_attr->name, "uniqueMember")) {
 			char *ucrval;
 			ucrval = univention_config_get_string("listener/uniquemember/skip");
 
@@ -229,68 +231,62 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 			if ((*v)->bv_val == NULL) {
 				// check here, strlen behavior might be undefined in this case
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: ignoring bv_val of NULL with bv_len=%ld, ignoring, check attribute: %s of DN: %s", (*v)->bv_len,
-				                 cache_entry->attributes[cache_entry->attribute_count]->name, *dn);
+				                 c_attr->name, *dn);
 				goto result;
 			}
 
 			if (memberUidMode) {
 				/* avoid duplicate memberUid entries https://forge.univention.org/bugzilla/show_bug.cgi?id=17998 */
-				for (i = 0; i < cache_entry->attributes[cache_entry->attribute_count]->value_count; i++) {
-					if (!memcmp(cache_entry->attributes[cache_entry->attribute_count]->values[i], (*v)->bv_val, (*v)->bv_len + 1)) {
+				for (i = 0; i < c_attr->value_count; i++) {
+					if (!memcmp(c_attr->values[i], (*v)->bv_val, (*v)->bv_len + 1)) {
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Found a duplicate memberUid entry:");
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "DN: %s", *dn);
-						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "memberUid: %s", cache_entry->attributes[cache_entry->attribute_count]->values[i]);
+						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "memberUid: %s", c_attr->values[i]);
 						break;
 					}
 				}
-				if (i < cache_entry->attributes[cache_entry->attribute_count]->value_count)
+				if (i < c_attr->value_count)
 					continue;
 			}
 			if (uniqueMemberMode) {
 				/* avoid duplicate uniqueMember entries https://forge.univention.org/bugzilla/show_bug.cgi?id=18692 */
-				for (i = 0; i < cache_entry->attributes[cache_entry->attribute_count]->value_count; i++) {
-					if (!memcmp(cache_entry->attributes[cache_entry->attribute_count]->values[i], (*v)->bv_val, (*v)->bv_len + 1)) {
+				for (i = 0; i < c_attr->value_count; i++) {
+					if (!memcmp(c_attr->values[i], (*v)->bv_val, (*v)->bv_len + 1)) {
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Found a duplicate uniqueMember entry:");
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "DN: %s", *dn);
-						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "uniqueMember: %s", cache_entry->attributes[cache_entry->attribute_count]->values[i]);
+						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "uniqueMember: %s", c_attr->values[i]);
 						break;
 					}
 				}
-				if (i < cache_entry->attributes[cache_entry->attribute_count]->value_count)
+				if (i < c_attr->value_count)
 					continue;
 			}
-			if ((cache_entry->attributes[cache_entry->attribute_count]->values =
-			         realloc(cache_entry->attributes[cache_entry->attribute_count]->values, (cache_entry->attributes[cache_entry->attribute_count]->value_count + 2) * sizeof(char *))) == NULL) {
+			if ((c_attr->values = realloc(c_attr->values, (c_attr->value_count + 2) * sizeof(char *))) == NULL) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: realloc of values array failed");
 				goto result;
 			}
-			if ((cache_entry->attributes[cache_entry->attribute_count]->length =
-			         realloc(cache_entry->attributes[cache_entry->attribute_count]->length, (cache_entry->attributes[cache_entry->attribute_count]->value_count + 2) * sizeof(int))) == NULL) {
+			if ((c_attr->length = realloc(c_attr->length, (c_attr->value_count + 2) * sizeof(int))) == NULL) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: realloc of length array failed");
 				goto result;
 			}
 			if ((*v)->bv_len == strlen((*v)->bv_val)) {
-				if ((cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count] = strdup((*v)->bv_val)) == NULL) {
+				if ((c_attr->values[c_attr->value_count] = strdup((*v)->bv_val)) == NULL) {
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: strdup of value failed");
 					goto result;
 				}
-				cache_entry->attributes[cache_entry->attribute_count]->length[cache_entry->attributes[cache_entry->attribute_count]->value_count] =
-				    strlen(cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count]) + 1;
+				c_attr->length[c_attr->value_count] = strlen(c_attr->values[c_attr->value_count]) + 1;
 			} else {  // in this case something is strange about the string in bv_val, maybe contains a '\0'
 				// the legacy approach is to copy bv_len bytes, let's stick with this and just terminate to be safe
-				if ((cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count] = malloc(((*v)->bv_len + 1) * sizeof(char))) ==
-				    NULL) {
+				if ((c_attr->values[c_attr->value_count] = malloc(((*v)->bv_len + 1) * sizeof(char))) == NULL) {
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: malloc for value failed");
 					goto result;
 				}
-				memcpy(cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count], (*v)->bv_val, (*v)->bv_len);
-				cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count][(*v)->bv_len] = '\0';  // terminate the string to be safe
-				cache_entry->attributes[cache_entry->attribute_count]->length[cache_entry->attributes[cache_entry->attribute_count]->value_count] = (*v)->bv_len + 1;
+				memcpy(c_attr->values[c_attr->value_count], (*v)->bv_val, (*v)->bv_len);
+				c_attr->values[c_attr->value_count][(*v)->bv_len] = '\0';  // terminate the string to be safe
+				c_attr->length[c_attr->value_count] = (*v)->bv_len + 1;
 			}
-			cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count + 1] = NULL;
-			cache_entry->attributes[cache_entry->attribute_count]->value_count++;
+			c_attr->values[++c_attr->value_count] = NULL;
 		}
-		cache_entry->attribute_count++;
 
 		ldap_value_free_len(val);
 		ldap_memfree(attr);
