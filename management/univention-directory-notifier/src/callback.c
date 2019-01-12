@@ -76,7 +76,6 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 
 	if (nread == 0) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "%d failed, got 0. close connection to listener", fd);
-		network_client_dump();
 		goto close;
 	}
 	if (nread >= NETWORK_MAX) {
@@ -199,13 +198,12 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "END Package");
 
-	network_client_dump();
-
 	return 0;
 
 failed:
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "Failed parsing [%s]", head);
 close:
+	network_client_dump1(client, UV_DEBUG_PROCESS);
 	close(fd);
 	FD_CLR(fd, &readfds);
 	remove(fd);

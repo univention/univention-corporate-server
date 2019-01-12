@@ -38,7 +38,7 @@
 #include <sys/select.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <univention/debug.h>
+#include <arpa/inet.h>
 
 #include "cache.h"
 #include "callback.h"
@@ -215,17 +215,53 @@ int network_client_main_loop(callback_check check_callbacks) {
 }
 
 /*
+ * Dump statof of one client connection to debug.
+ * :param client: The per-client object.
+ * :param level: Debug level.
+ */
+void network_client_dump1(NetworkClient_t *client, enum uv_debug_level level) {
+	union {
+		struct sockaddr generic;
+		struct sockaddr_in ipv4;
+		struct sockaddr_in6 ipv6;
+	} peer;
+	socklen_t len = sizeof(peer);
+	char ipstr[INET6_ADDRSTRLEN] = "<unknown>";
+	const char *addr = ipstr;
+	int port = 0;
+
+	if (client->fd == server_socketfd_listener) {
+		addr = "<accept>";
+	} else if (!getpeername(client->fd, &peer.generic, &len)) {
+		switch (peer.generic.sa_family) {
+		case AF_INET:
+			port = peer.ipv4.sin_port;
+			inet_ntop(AF_INET, &peer.ipv4.sin_addr, ipstr, sizeof(ipstr));
+			break;
+		case AF_INET6:
+			port = peer.ipv6.sin6_port;
+			inet_ntop(AF_INET6, &peer.ipv6.sin6_addr, ipstr, sizeof(ipstr));
+			break;
+		}
+	}
+
+	univention_debug(UV_DEBUG_TRANSFILE, level, "fd:%d addr=%s port=%d version=%d notify=%d next=%ld msg=%ld", client->fd, addr, port, client->version, client->notify, client->next_id, client->msg_id);
+}
+
+/*
  * Dump status of client connections to debug.
  * :return: 0
  */
 int network_client_dump() {
 	NetworkClient_t *client;
 
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "------------------------------");
+	if (univention_debug_get_level(UV_DEBUG_TRANSFILE) < UV_DEBUG_ALL)
+		return 0;
+
 	for (client = network_client_first; client != NULL; client = client->next) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Listener fd = %d", client->fd);
+		network_client_dump1(client, UV_DEBUG_ALL);
 	}
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "------------------------------");
+
 	return 0;
 }
 
@@ -290,8 +326,8 @@ int network_client_all_write(unsigned long id, char *buf, size_t l_buf) {
 	}
 
 	for (client = network_client_first; client != NULL; client = client->next) {
+		network_client_dump1(client, UV_DEBUG_ALL);
 		if (client->notify) {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d", client->fd);
 			if (client->next_id == id) {
 				snprintf(string, sizeof(string), "MSGID: %ld\n%.*s\n", client->msg_id, (int)l_buf, buf);
 				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d[%s]", client->fd, string);
@@ -300,8 +336,6 @@ int network_client_all_write(unsigned long id, char *buf, size_t l_buf) {
 				client->notify = 0;
 				client->msg_id = 0;
 			}
-		} else {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Ignore Listener fd = %d", client->fd);
 		}
 	}
 

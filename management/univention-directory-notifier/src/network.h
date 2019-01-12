@@ -32,6 +32,7 @@
 #define __NETWORK_H__
 
 #include <stddef.h>
+#include <univention/debug.h>
 
 #define NETWORK_MAX 8192
 
@@ -57,6 +58,7 @@ typedef void (*callback_check)(void);
 int network_client_main_loop(callback_check check_callbacks);
 int network_client_init(int port);
 
+void network_client_dump1(NetworkClient_t *client, enum uv_debug_level level);
 int network_client_dump();
 
 int network_client_all_write(unsigned long id, char *buf, size_t l_buf);
