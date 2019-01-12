@@ -52,6 +52,13 @@ struct cache_entry_header {
 };
 
 
+/*
+ * Print buffer as hex-decimal dump.
+ * :param level: Debug level.
+ * :param data: buffer to dump.
+ * :param start: start index.
+ * :param size: Count of bytes to dump.
+ */
 void hex_dump(int level, void *data, u_int32_t start, u_int32_t size) {
 	int i;
 	int pos;
@@ -89,6 +96,19 @@ static int append_buffer(void **data, u_int32_t *pos, void *blob_data, u_int32_t
 	return 0;
 }
 
+/*
+ * Convert in-memory representation of cache attribute to on-disk representation.
+ * :param data: Return variable to receive pointer to buffer with allocated on-disk representation.
+ * :param size: Return variable to receive buffer size of `data`.
+ * :param type: Typ of entry to add.
+ * :param key_data: Key name.
+ * :param key_size: Size of `key_data` in bytes.
+ * :param data_data: Value data.
+ * :param data_size: Size of `data_data` in bytes.
+ * :return: 0 on success, 1 otherwise.
+ *
+ * See :c:func:`unparse_entry` for the reverse.
+ */
 static int write_header(void **data, u_int32_t *size, u_int32_t *pos, u_int16_t type, void *key_data, u_int32_t key_size, void *data_data, u_int32_t data_size) {
 	struct cache_entry_header h;
 	u_int32_t need_memory;
@@ -116,6 +136,15 @@ static int write_header(void **data, u_int32_t *size, u_int32_t *pos, u_int16_t 
 	return 0;
 }
 
+/*
+ * Convert in-memory representation of cache entry to on-disk representation.
+ * :param data: Return variable to receive pointer to buffer with allocated on-disk representation.
+ * :param size: Return variable to receive buffer size of `data`.
+ * :param entry: The cache entry to serialize.
+ * :return: 0 on success, 1 otherwise.
+ *
+ * See :c:func:`parse_entry` for the reverse.
+ */
 int unparse_entry(void **data, u_int32_t *size, CacheEntry *entry) {
 	CacheEntryAttribute **attribute;
 	char **value;
@@ -139,6 +168,17 @@ int unparse_entry(void **data, u_int32_t *size, CacheEntry *entry) {
 	return 0;
 }
 
+/*
+ * De-serialize entry from buffer.
+ * :param data: Pointer to the buffer containing the on-disk representation.
+ * :param size: Buffer size of `data`.
+ * :param pos: Pointer to offset into buffer, which is updated for each parsed entry.
+ * :param key_data: Return variable to receive parsed key.
+ * :param key_size: Return variable to receive size of allocated `key_data`.
+ * :param data_data: Return variable to receive parsed value.
+ * :param data_size: Return variable to receive size of allocated `data_data`.
+ * :returns: 0 or the entry type on success, -1 on errors.
+ */
 static int read_header(void *data, u_int32_t size, u_int32_t *pos, void **key_data, u_int32_t *key_size, void **data_data, u_int32_t *data_size) {
 	struct cache_entry_header *h;
 
@@ -184,6 +224,15 @@ static int read_header(void *data, u_int32_t size, u_int32_t *pos, void **key_da
 	return h->type;
 }
 
+/*
+ * Convert on-disk representation of cache entry to in-memory representation.
+ * :param data: Pointer to the buffer containing the on-disk representation.
+ * :param size: Buffer size of `data`.
+ * :param entry: Return variable to receive parsed cache entry.
+ * :returns: 0 on success, 1 otherwise.
+ *
+ * :See :c:func:`unparse_entry` for the reverse.
+ */
 int parse_entry(void *data, u_int32_t size, CacheEntry *entry) {
 	u_int16_t type;
 	void *key_data, *data_data;
@@ -283,6 +332,11 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry) {
 	return 0;
 }
 
+/*
+ * Abort on I/O error.
+ * :param func: The name of the function, which failed.
+ * :param filename: The name of the file.
+ */
 void abort_io(const char *func, const char *filename) {
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Fatal %s(%s): %s", func, filename, strerror(errno));
 	abort();
