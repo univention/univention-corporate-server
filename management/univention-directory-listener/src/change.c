@@ -78,16 +78,16 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 	int i;
 	bool abort_init = false;
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "initializing module %s", handler->name);
+	LOG(WARN, "initializing module %s", handler->name);
 
 	memset(&old_cache_entry, 0, sizeof(CacheEntry));
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "call handler_clean for module %s", handler->name);
+	LOG(INFO, "call handler_clean for module %s", handler->name);
 	handler_clean(handler);
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "call handler_initialize for module %s", handler->name);
+	LOG(INFO, "call handler_initialize for module %s", handler->name);
 	handler_initialize(handler);
 
 	/* remove old entries for module */
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "remove old entries for module %s", handler->name);
+	LOG(INFO, "remove old entries for module %s", handler->name);
 	for (rv = cache_first_entry(&id2entry_cursor_p, &id2dn_cursor_p, &dn, &cache_entry); rv != MDB_NOTFOUND; rv = cache_next_entry(&id2entry_cursor_p, &id2dn_cursor_p, &dn, &cache_entry)) {
 		if (rv == -1)
 			continue;
@@ -99,14 +99,14 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 		cache_free_entry(&dn, &cache_entry);
 	}
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "call cache_free_cursor for module %s", handler->name);
+	LOG(INFO, "call cache_free_cursor for module %s", handler->name);
 	cache_free_cursor(id2entry_cursor_p, id2dn_cursor_p);
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "initialize schema for module %s", handler->name);
+	LOG(INFO, "initialize schema for module %s", handler->name);
 	/* initialize schema; if it's not in cache yet (it really should be), it'll
 	   be initialized on the regular schema check after ldapsearches */
 	if ((rv = cache_get_entry_lower_upper("cn=Subschema", &cache_entry)) != 0 && rv != MDB_NOTFOUND) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while reading from database");
+		LOG(WARN, "error while reading from database");
 		return LDAP_OTHER;
 	} else if (rv == 0) {
 		signals_block();
@@ -116,7 +116,7 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 		cache_free_entry(NULL, &cache_entry);
 	}
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "module %s for relating objects", handler->name);
+	LOG(INFO, "module %s for relating objects", handler->name);
 	rv = LDAP_SUCCESS;
 	for (f = handler->filters; !abort_init && f != NULL && *f != NULL; f++) {
 		/* When initializing a module, only search for the DNs. If the
@@ -136,7 +136,7 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 		int sizelimit0 = 0;
 		rv = LDAP_RETRY(lp, ldap_search_ext_s(lp->ld, (*f)->base, (*f)->scope, (*f)->filter, _attrs, attrsonly1, serverctrls, clientctrls, &timeout, sizelimit0, &res));
 		if (rv != LDAP_SUCCESS) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not get DNs when initializing %s: %s", handler->name, ldap_err2string(rv));
+			LOG(ERROR, "could not get DNs when initializing %s: %s", handler->name, ldap_err2string(rv));
 			return rv;
 		}
 
@@ -150,7 +150,7 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 		}
 
 		if (!(dns = malloc(dn_count * sizeof(struct dn_list)))) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "malloc failed");
+			LOG(ERROR, "malloc() failed");
 			abort();  // FIXME
 		}
 
@@ -172,7 +172,7 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 		}
 
 		for (i = 0; i < dn_count; i++) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "DN: %s", dns[i].dn);
+			LOG(ALL, "DN: %s", dns[i].dn);
 
 			if ((rv = cache_get_entry_lower_upper(dns[i].dn, &cache_entry)) == MDB_NOTFOUND) { /* XXX */
 				LDAPMessage *res2, *first;
@@ -183,7 +183,7 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 					cache_new_entry_from_ldap(NULL, &cache_entry, lp->ld, first);
 					ldap_msgfree(res2);
 				} else if (rv != LDAP_NO_SUCH_OBJECT) {
-					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not get DN %s for handler %s: %s", dns[i].dn, handler->name, ldap_err2string(rv));
+					LOG(ERROR, "could not get DN %s for handler %s: %s", dns[i].dn, handler->name, ldap_err2string(rv));
 					cache_free_entry(NULL, &cache_entry);
 					abort_init = true;
 					goto cleanup;
@@ -192,7 +192,7 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 				   deleted after we do the ldapsearch. We
 				   shouldn't need to care here. */
 			} else if (rv != 0) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while reading from database");
+				LOG(WARN, "error while reading from database");
 				rv = LDAP_OTHER;
 				abort_init = true;
 				goto cleanup;
@@ -211,7 +211,7 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 		free(dns);
 	}
 	cache_free_entry(NULL, &old_cache_entry);
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "finished initializing module %s with rv=%d", handler->name, rv);
+	LOG(WARN, "finished initializing module %s with rv=%d", handler->name, rv);
 	return rv;
 }
 
@@ -250,17 +250,17 @@ int change_update_entry(univention_ldap_parameters_t *lp, NotifierID id, LDAPMes
 	memset(&old_cache_entry, 0, sizeof(CacheEntry));
 
 	if ((rv = cache_new_entry_from_ldap(&dn, &cache_entry, lp->ld, ldap_entry)) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while converting LDAP entry to cache entry");
+		LOG(WARN, "error while converting LDAP entry to cache entry");
 		goto result;
 	}
 	if ((rv = cache_get_entry_lower_upper(dn, &old_cache_entry)) != 0 && rv != MDB_NOTFOUND) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while reading from database");
+		LOG(WARN, "error while reading from database");
 		rv = LDAP_OTHER;
 	} else {
 		signals_block();
 		handlers_update(dn, &cache_entry, &old_cache_entry, command);
 		if ((rv = cache_update_entry_lower(id, dn, &cache_entry)) != 0) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while writing to database");
+			LOG(WARN, "error while writing to database");
 		}
 		rv = 0;
 		signals_unblock();
@@ -281,15 +281,15 @@ static void change_delete(struct transaction *trans) {
 
 	rv = handlers_delete(trans->cur.notify.dn, &trans->cur.cache, 'd');
 	if (rv == 0)
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "deleted from cache: %s", trans->cur.notify.dn);
+		LOG(INFO, "deleted from cache: %s", trans->cur.notify.dn);
 	if (cache_entry_valid(&trans->cur.cache)) {
 		if (rv != 0)
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "at least one delete handler failed");
+			LOG(WARN, "at least one delete handler failed");
 		cache_delete_entry_lower_upper(trans->cur.notify.id, trans->cur.notify.dn);
 		cache_free_entry(NULL, &trans->cur.cache);
 	} else {
 		if (rv != 0)
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "not in cache: %s", trans->cur.notify.dn);
+			LOG(INFO, "not in cache: %s", trans->cur.notify.dn);
 	}
 
 	signals_unblock();
@@ -319,7 +319,7 @@ int change_update_schema(univention_ldap_parameters_t *lp) {
 	free(server_role);
 
 	if ((notifier_get_schema_id_s(NULL, &new_id)) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to get schema DN");
+		LOG(ERROR, "failed to get schema DN");
 		return LDAP_OTHER;
 	}
 
@@ -327,19 +327,19 @@ int change_update_schema(univention_ldap_parameters_t *lp) {
 		rv = LDAP_RETRY(lp, ldap_search_ext_s(lp->ld, "cn=Subschema", LDAP_SCOPE_BASE, "(objectClass=*)", attrs, attrsonly0, serverctrls, clientctrls, &timeout, sizelimit0, &res));
 		if (rv == LDAP_SUCCESS) {
 			if ((cur = ldap_first_entry(lp->ld, res)) == NULL) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "got no entry for schema");
+				LOG(ERROR, "got no entry for schema");
 				return LDAP_OTHER;
 			} else {
 				rv = change_update_entry(lp, new_id, cur, 'n');
 			}
 			ldap_memfree(res);
 		} else {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not receive schema (%s)", ldap_err2string(rv));
+			LOG(ERROR, "could not receive schema (%s)", ldap_err2string(rv));
 		}
 		cache_master_entry.schema_id = new_id;
 		rv = cache_update_master_entry(&cache_master_entry);
 		if (cache_set_schema_id(new_id))
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "failed to write schema ID");
+			LOG(WARN, "failed to write schema ID");
 	}
 
 	return rv;
@@ -383,7 +383,7 @@ static int fake_container(struct transaction *trans, char *dn) {
 		} else if (!strcasecmp(name, "dc")) {
 			cache_entry_add1(&cache_entry, "objectClass", "domain");
 		} else {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "unknown container: %s", name);
+			LOG(ERROR, "unknown container: %s", name);
 			goto out;
 		}
 		free(name);
@@ -399,7 +399,7 @@ static int fake_container(struct transaction *trans, char *dn) {
 
 	// 5. Store cache entry at intermediate location
 	if ((rv = cache_update_entry_lower(trans->cur.notify.id, dn, &cache_entry)) != 0)
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while writing to database");
+		LOG(WARN, "error while writing to database");
 
 out:
 	free(name);
@@ -417,7 +417,7 @@ static int check_parent_dn(struct transaction *trans, char *dn) {
 		return LDAP_SUCCESS;
 
 	if (same_dn(dn, trans->lp_local->base)) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "Ignore parent_dn check because dn is ldap base.");
+		LOG(INFO, "Ignore parent_dn check because dn is ldap base.");
 		return LDAP_SUCCESS;
 	}
 
@@ -432,7 +432,7 @@ static int check_parent_dn(struct transaction *trans, char *dn) {
 		return rv;
 
 	if (same_dn(parent_dn, trans->lp_local->base)) {
-		// univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "parent of DN: %s is base", dn);
+		// LOG(INFO, "parent of DN: %s is base", dn);
 		goto out;
 	}
 
@@ -448,13 +448,13 @@ static int check_parent_dn(struct transaction *trans, char *dn) {
 	};
 	int sizelimit0 = 0;
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "checking parent_dn of %s in local LDAP", dn);
+	LOG(INFO, "checking parent_dn of %s in local LDAP", dn);
 
 	/* try to open a connection to the local LDAP for the parent DN check */
 	if (trans->lp_local->ld == NULL) {
 		rv = univention_ldap_open(trans->lp_local);
 		if (rv != LDAP_SUCCESS) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "check_parent_dn: bind to local LDAP failed");
+			LOG(ERROR, "bind to local LDAP failed");
 			goto out;
 		}
 	}
@@ -468,7 +468,7 @@ static int check_parent_dn(struct transaction *trans, char *dn) {
 			/* lookup parent_dn object in remote LDAP */
 			rv = LDAP_RETRY(trans->lp, ldap_search_ext_s(trans->lp->ld, parent_dn, LDAP_SCOPE_BASE, filter, attrs, attrsonly0, serverctrls, clientctrls, &timeout, sizelimit0, &res));
 			if (rv == LDAP_NO_SUCH_OBJECT) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not find parent container of dn: %s from %s (%s)", dn, trans->lp->host, ldap_err2string(rv));
+				LOG(ERROR, "could not find parent container of dn: %s from %s (%s)", dn, trans->lp->host, ldap_err2string(rv));
 				if (is_move(trans))
 					rv = fake_container(trans, parent_dn);
 			} else { /* parent_dn found in remote LDAP */
@@ -477,13 +477,13 @@ static int check_parent_dn(struct transaction *trans, char *dn) {
 					/* entry exists (since we didn't get NO_SUCH_OBJECT),
 					 * but was probably excluded through ACLs which makes it
 					 * non-existent for us */
-					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not get parent object of dn: %s from %s (%s)", dn, trans->lp->host, ldap_err2string(rv));
+					LOG(ERROR, "could not get parent object of dn: %s from %s (%s)", dn, trans->lp->host, ldap_err2string(rv));
 					if (is_move(trans))
 						rv = fake_container(trans, parent_dn);
 					else
 						rv = LDAP_INSUFFICIENT_ACCESS;
 				} else { /* found data for parent_dn in remote LDAP */
-					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_PROCESS, "change_update_entry for parent_dn: %s", parent_dn);
+					LOG(PROCESS, "change_update_entry for parent_dn: %s", parent_dn);
 					rv = change_update_entry(trans->lp, trans->cur.notify.id, cur, 'n'); /* add parent_dn object */
 				}
 			}
@@ -559,19 +559,19 @@ static int process_move(struct transaction *trans) {
 	rv = check_parent_dn(trans, current_dn);
 	signals_block();
 	if (same_dn(trans->prev.notify.dn, current_dn))
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_PROCESS, "move_same_dn(%s)", current_dn);
+		LOG(PROCESS, "move_same_dn(%s)", current_dn);
 	rv = handlers_delete(trans->prev.notify.dn, &trans->prev.cache, 'r');
 	rv = handlers_update(current_dn, &trans->cur.cache, &dummy, 'a');
 	signals_unblock();
 
 	// 5. Store cache entry at new location
 	if ((rv = cache_update_entry_lower(trans->cur.notify.id, current_dn, &trans->cur.cache)) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while writing to database");
+		LOG(WARN, "error while writing to database");
 	}
 
 	// 6. Check for final destination
 	if (final) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "Object finally moved to '%s'", current_dn);
+		LOG(ALL, "Object finally moved to '%s'", current_dn);
 		rv = change_update_entry(trans->lp, trans->cur.notify.id, trans->ldap, 'm');
 	}
 
@@ -591,14 +591,14 @@ static int change_update_cache(struct transaction *trans) {
 
 	trans->cur.ldap_dn = ldap_get_dn(trans->lp->ld, trans->ldap);
 	if (!trans->cur.ldap_dn) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to get current DN %s", trans->cur.notify.dn);
+		LOG(ERROR, "failed to get current DN %s", trans->cur.notify.dn);
 		goto out;
 	}
 
 	switch (trans->cur.notify.command) {
 	case 'm':  // modify
 		if (!same_dn(trans->cur.notify.dn, trans->cur.ldap_dn)) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_PROCESS, "Delaying update for '%s' until moved to '%s'", trans->cur.notify.dn, trans->cur.ldap_dn);
+			LOG(PROCESS, "Delaying update for '%s' until moved to '%s'", trans->cur.notify.dn, trans->cur.ldap_dn);
 		} else {
 			rv = check_parent_dn(trans, trans->cur.ldap_dn);
 			rv = change_update_entry(trans->lp, trans->cur.notify.id, trans->ldap, trans->cur.notify.command);
@@ -609,14 +609,14 @@ static int change_update_cache(struct transaction *trans) {
 			rv = process_move(trans);
 		} else {  // add
 			if (!same_dn(trans->cur.notify.dn, trans->cur.ldap_dn))
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Schizophrenia: a NEW object '%s' is added, which ALREADY is in our cache for '%s'?", trans->cur.ldap_dn, trans->cur.notify.dn);
+				LOG(WARN, "Schizophrenia: a NEW object '%s' is added, which ALREADY is in our cache for '%s'?", trans->cur.ldap_dn, trans->cur.notify.dn);
 			rv = check_parent_dn(trans, trans->cur.ldap_dn);
 			rv = change_update_entry(trans->lp, trans->cur.notify.id, trans->ldap, trans->cur.notify.command);
 		}
 		break;
 	case 'd':  // delete
 		if (!same_dn(trans->cur.notify.dn, trans->cur.ldap_dn))
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Resurrection: DELETED object '%s' will re-appear at '%s'?", trans->cur.notify.dn, trans->cur.ldap_dn);
+			LOG(WARN, "Resurrection: DELETED object '%s' will re-appear at '%s'?", trans->cur.notify.dn, trans->cur.ldap_dn);
 		change_delete(trans);
 		rv = 0;
 		break;
@@ -627,7 +627,7 @@ static int change_update_cache(struct transaction *trans) {
 		rv = 0;
 		break;
 	default:
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Unknown command: %c", trans->cur.notify.command);
+		LOG(ERROR, "Unknown command: %c", trans->cur.notify.command);
 	}
 
 out:
@@ -654,11 +654,11 @@ int change_update_dn(struct transaction *trans) {
 	int rv;
 	const char *uuid = NULL;
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_PROCESS, "updating '%s' command %c", trans->cur.notify.dn, trans->cur.notify.command);
+	LOG(PROCESS, "updating '%s' command %c", trans->cur.notify.dn, trans->cur.notify.command);
 
 	rv = cache_get_entry_lower_upper(trans->cur.notify.dn, &trans->cur.cache);
 	if (rv != 0 && rv != MDB_NOTFOUND) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error reading database for %s", trans->cur.notify.dn);
+		LOG(WARN, "error reading database for %s", trans->cur.notify.dn);
 		return LDAP_OTHER;
 	}
 	switch (trans->prev.notify.command) {
@@ -668,11 +668,11 @@ int change_update_dn(struct transaction *trans) {
 		break;
 	case 'r':  // move_from ... move_to
 		if (!cache_entry_valid(&trans->prev.cache)) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "move_to without history '%s'", trans->prev.notify.dn);
+			LOG(ERROR, "move_to without history '%s'", trans->prev.notify.dn);
 			break;
 		}
 		if (rv == 0) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "move_to collision at '%s'", trans->cur.notify.dn);
+			LOG(INFO, "move_to collision at '%s'", trans->cur.notify.dn);
 			cache_free_entry(NULL, &trans->cur.cache);
 		}
 		if (is_move(trans)) {
@@ -683,21 +683,20 @@ int change_update_dn(struct transaction *trans) {
 			break;
 		}
 	default:
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "non consecutive move: %ld:%c:%s << %ld:%c:%s", trans->prev.notify.id, trans->prev.notify.command, trans->prev.notify.dn, trans->cur.notify.id,
-		                 trans->cur.notify.command, trans->cur.notify.dn);
+		LOG(ERROR, "non consecutive move: %ld:%c:%s << %ld:%c:%s", trans->prev.notify.id, trans->prev.notify.command, trans->prev.notify.dn, trans->cur.notify.id, trans->cur.notify.command, trans->cur.notify.dn);
 		rv = 1;
 		goto out;
 	}
 
 	if (uuid) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "updating by UUID %s", uuid);
+		LOG(ALL, "updating by UUID %s", uuid);
 		base = trans->lp->base;
 		scope = LDAP_SCOPE_SUBTREE;
 		snprintf(filter, sizeof(filter), "(entryUUID=%s)", uuid);
 		trans->cur.uuid = strdup(uuid);
 	} else {
 	retry_dn:
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "updating by DN %s", trans->cur.notify.dn);
+		LOG(ALL, "updating by DN %s", trans->cur.notify.dn);
 		base = trans->cur.notify.dn;
 		scope = LDAP_SCOPE_BASE;
 		snprintf(filter, sizeof(filter), "(objectClass=*)");
@@ -718,7 +717,7 @@ int change_update_dn(struct transaction *trans) {
 		}
 		trans->ldap = NULL;
 	} else {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error searching DN %s: %d", trans->cur.notify.dn, rv);
+		LOG(WARN, "error searching DN %s: %d", trans->cur.notify.dn, rv);
 		_free_transaction_op(&trans->cur);
 	}
 	ldap_msgfree(res);

@@ -81,7 +81,7 @@ static PyObject *module_import(char *filename) {
 
 	if ((fp = fopen(filename, "r")) == NULL)
 		return NULL;
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "Load file %s", filename);
+	LOG(ALL, "Load file %s", filename);
 
 	namep = strrchr(filename, '.');
 	if ((namep != NULL) && (strcmp(namep, ".pyo") == 0)) {
@@ -95,12 +95,12 @@ static PyObject *module_import(char *filename) {
 	} else {
 		node *n;
 
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "Parse file %s", filename);
+		LOG(ALL, "Parse file %s", filename);
 		if ((n = PyParser_SimpleParseFile(fp, filename, Py_file_input)) == NULL) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "Parse failed %s", filename);
+			LOG(ALL, "Parse failed %s", filename);
 			return NULL;
 		}
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "pyNode compile %s", filename);
+		LOG(ALL, "pyNode compile %s", filename);
 		co = PyNode_Compile(n, filename);
 		PyNode_Free(n);
 	}
@@ -112,10 +112,10 @@ static PyObject *module_import(char *filename) {
 		return NULL;
 	}
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "execCodeModuleEx %s", filename);
+	LOG(ALL, "execCodeModuleEx %s", filename);
 	m = PyImport_ExecCodeModuleEx(name, (PyObject *)co, filename);
 	free(name);
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "Module done %s", filename);
+	LOG(ALL, "Module done %s", filename);
 
 	return m;
 }
@@ -184,14 +184,14 @@ static int handler_import(char *filename) {
 	Handler *handler;
 	int rv;
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "importing handler %s", filename);
+	LOG(INFO, "importing handler %s", filename);
 
 	if ((handler = malloc(sizeof(Handler))) == NULL)
 		return 1;
 	memset(handler, 0, sizeof(Handler));
 
 	if ((handler->module = module_import(filename)) == NULL) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "import of filename=%s failed", filename);
+		LOG(ERROR, "import of filename=%s failed", filename);
 		error_msg = "module_import()";
 		goto error;
 	}
@@ -268,7 +268,7 @@ static int handler_import(char *filename) {
 	} else {
 		rv = fscanf(state_fp, "%u", &handler->state);
 		if (rv != 1)
-			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed reading %s: %s", state_filename, strerror(errno));
+			LOG(WARN, "Failed reading %s: %s", state_filename, strerror(errno));
 		fclose(state_fp);
 	}
 
@@ -313,7 +313,7 @@ error:
 	free(handler->modrdn);
 	free(handler->name);
 	free(handler);
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "import of filename=%s failed in %s", filename, error_msg ? error_msg : "???");
+	LOG(ERROR, "import of filename=%s failed in %s", filename, error_msg ? error_msg : "???");
 	return 1;
 }
 
@@ -338,7 +338,7 @@ static int handler_prerun(Handler *handler) {
 
 /* run postrun handler */
 static int handler_postrun(Handler *handler) {
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "postrun handler: %s (prepared=%d)", handler->name, handler->prepared);
+	LOG(INFO, "postrun handler: %s (prepared=%d)", handler->name, handler->prepared);
 	if (!handler->prepared)
 		return 0;
 	if (handler->postrun) {
@@ -375,9 +375,9 @@ static int handler_exec(Handler *handler, const char *dn, CacheEntry *new, Cache
 
 	if ((handler->state & HANDLER_READY) != HANDLER_READY) {
 		if (INIT_ONLY) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "handler: %s (not ready) (ignore)", handler->name);
+			LOG(WARN, "%s (not ready) (ignore)", handler->name);
 		} else {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "handler: %s (not ready)", handler->name);
+			LOG(WARN, "%s (not ready)", handler->name);
 			return 1;
 		}
 	}
@@ -542,7 +542,7 @@ void handler_write_state(Handler *handler) {
 		abort();
 	state_fp = fopen(state_filename, "w");
 	if (state_fp == NULL) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not open %s", state_filename);
+		LOG(ERROR, "could not open %s", state_filename);
 	} else {
 		fprintf(state_fp, "%d", handler->state);
 		rv = fclose(state_fp);
@@ -702,7 +702,7 @@ static int attribute_has_changed(char **changes, char *attribute) {
 	char **cur;
 
 	for (cur = changes; cur != NULL && *cur != NULL; cur++) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "%s ? %s", *cur, attribute);
+		LOG(ALL, "%s ? %s", *cur, attribute);
 		if (strcmp(*cur, attribute) == 0)
 			return 1;
 	}
@@ -716,7 +716,7 @@ static int handler__update(Handler *handler, const char *dn, CacheEntry *new, Ca
 	int matched;
 	int rv = 0;
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "handler: %s considered", handler->name);
+	LOG(ALL, "%s considered", handler->name);
 
 	/* check if attributes for handler have changed
 
@@ -742,7 +742,7 @@ static int handler__update(Handler *handler, const char *dn, CacheEntry *new, Ca
 
 	up_to_date:
 		if (uptodate) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (up-to-date)", handler->name);
+			LOG(INFO, "%s (up-to-date)", handler->name);
 			cache_entry_module_add(new, handler->name);
 			return 0;
 		}
@@ -751,16 +751,16 @@ static int handler__update(Handler *handler, const char *dn, CacheEntry *new, Ca
 	/* check if the handler's search filter matches */
 	matched = cache_entry_ldap_filter_match(handler->filters, dn, new);
 	if (!matched) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "handler: %s (filter doesn't match)", handler->name);
+		LOG(ALL, "%s (filter doesn't match)", handler->name);
 		return 0;
 	}
 
 	/* run handler */
 	if (handler_exec(handler, dn, new, old, command) == 0) {
 		cache_entry_module_add(new, handler->name);
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (successful)", handler->name);
+		LOG(INFO, "%s (successful)", handler->name);
 	} else {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "handler: %s (failed)", handler->name);
+		LOG(WARN, "%s (failed)", handler->name);
 		rv = 1;
 	}
 
@@ -774,7 +774,7 @@ int handlers_update(const char *dn, CacheEntry *new, CacheEntry *old, char comma
 	char **changes;
 	int rv = 0;
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "running handlers for %s", dn);
+	LOG(INFO, "running handlers for %s", dn);
 
 	changes = cache_entry_changed_attributes(new, old);
 
@@ -799,7 +799,7 @@ int handler_update(const char *dn, CacheEntry *new, CacheEntry *old, Handler *ha
 	char **changes;
 	int rv = 0;
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "running handlers [%s] for %s", handler->name, dn);
+	LOG(INFO, "running handlers [%s] for %s", handler->name, dn);
 
 	changes = cache_entry_changed_attributes(new, old);
 
@@ -816,19 +816,19 @@ int handlers_delete(const char *dn, CacheEntry *old, char command) {
 	Handler *handler;
 	int rv = 0;
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "delete handlers for %s", dn);
+	LOG(INFO, "delete handlers for %s", dn);
 
 	for (handler = handlers; handler != NULL; handler = handler->next) {
 		/* run the replication handler in any case, see Bug #29475 */
 		if (!cache_entry_module_present(old, handler->name) && strcmp(handler->name, "replication") && !handler->handle_every_delete) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (skipped)", handler->name);
+			LOG(INFO, "%s (skipped)", handler->name);
 			continue;
 		}
 		if (handler_exec(handler, dn, NULL, old, command) == 0) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (successful)", handler->name);
+			LOG(INFO, "%s (successful)", handler->name);
 			cache_entry_module_remove(old, handler->name);
 		} else {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (failed)", handler->name);
+			LOG(INFO, "%s (failed)", handler->name);
 			rv = 1;
 		}
 	}
@@ -877,7 +877,7 @@ int handlers_set_data_all(char *key, char *value) {
 	PyObject *argtuple;
 	__attribute__((unused)) int rv = 1;
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "setting data for all handlers: key=%s  value=%s", key, strcmp("bindpw", key) ? value : "<HIDDEN>");
+	LOG(INFO, "setting data for all handlers: key=%s  value=%s", key, strcmp("bindpw", key) ? value : "<HIDDEN>");
 
 	/* make argument list */
 	if ((argtuple = PyTuple_New(2)) == NULL)
@@ -886,12 +886,12 @@ int handlers_set_data_all(char *key, char *value) {
 	PyTuple_SetItem(argtuple, 0, PyString_FromString(key));
 	PyTuple_SetItem(argtuple, 1, PyString_FromString(value));
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "DEBUG: handlers=%p", handlers);
+	LOG(ALL, "handlers=%p", handlers);
 	if (handlers == NULL)
 		return 0;
 
 	for (handler = handlers; handler != NULL; handler = handler->next) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "DEBUG: handler=%p", handler);
+		LOG(ALL, "handler=%p", handler);
 		if (handler_set_data(handler, argtuple) < 0)
 			rv = -1;
 	}

@@ -210,16 +210,16 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 		struct berval **val, **v;
 
 		if ((cache_entry->attributes = realloc(cache_entry->attributes, (cache_entry->attribute_count + 2) * sizeof(CacheEntryAttribute *))) == NULL) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: realloc of attributes array failed");
+			LOG(ERROR, "realloc() of attributes array failed");
 			goto result;
 		}
 		if ((c_attr = malloc(sizeof(CacheEntryAttribute))) == NULL) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: malloc for CacheEntryAttribute failed");
+			LOG(ERROR, "malloc() for CacheEntryAttribute failed");
 			goto result;
 		}
 		c_attr->name = strdup(attr);
 		if (!c_attr->name) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: malloc for CacheEntryAttribute.name failed");
+			LOG(ERROR, "malloc() for CacheEntryAttribute.name failed");
 			goto result;
 		}
 		c_attr->values = NULL;
@@ -235,14 +235,13 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 		else
 			check = DUPLICATES;
 		if ((val = ldap_get_values_len(ld, ldap_entry, attr)) == NULL) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "ldap_get_values failed");
+			LOG(ERROR, "ldap_get_values() failed");
 			goto result;
 		}
 		for (v = val; *v != NULL; v++) {
 			if ((*v)->bv_val == NULL) {
 				// check here, strlen behavior might be undefined in this case
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: ignoring bv_val of NULL with bv_len=%ld, ignoring, check attribute: %s of DN: %s", (*v)->bv_len,
-				                 c_attr->name, *dn);
+				LOG(ERROR, "ignoring bv_val of NULL with bv_len=%ld, ignoring, check attribute: %s of DN: %s", (*v)->bv_len, c_attr->name, *dn);
 				goto result;
 			}
 
@@ -250,9 +249,9 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 				/* avoid duplicate memberUid entries https://forge.univention.org/bugzilla/show_bug.cgi?id=17998 */
 				for (i = 0; i < c_attr->value_count; i++) {
 					if (!memcmp(c_attr->values[i], (*v)->bv_val, (*v)->bv_len + 1)) {
-						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Found a duplicate memberUid entry:");
-						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "DN: %s", *dn);
-						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "memberUid: %s", c_attr->values[i]);
+						LOG(ERROR, "Found a duplicate memberUid entry:");
+						LOG(ERROR, "DN: %s", *dn);
+						LOG(ERROR, "memberUid: %s", c_attr->values[i]);
 						break;
 					}
 				}
@@ -263,9 +262,9 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 				/* avoid duplicate uniqueMember entries https://forge.univention.org/bugzilla/show_bug.cgi?id=18692 */
 				for (i = 0; i < c_attr->value_count; i++) {
 					if (!memcmp(c_attr->values[i], (*v)->bv_val, (*v)->bv_len + 1)) {
-						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Found a duplicate uniqueMember entry:");
-						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "DN: %s", *dn);
-						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "uniqueMember: %s", c_attr->values[i]);
+						LOG(ERROR, "Found a duplicate uniqueMember entry:");
+						LOG(ERROR, "DN: %s", *dn);
+						LOG(ERROR, "uniqueMember: %s", c_attr->values[i]);
 						break;
 					}
 				}
@@ -273,16 +272,16 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 					continue;
 			}
 			if (!(c_attr->length = realloc(c_attr->length, (c_attr->value_count + 2) * sizeof(int)))) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: realloc of length array failed");
+				LOG(ERROR, "realloc() of length array failed");
 				goto result;
 			}
 			if (!(c_attr->values = realloc(c_attr->values, (c_attr->value_count + 2) * sizeof(char *)))) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: realloc of values array failed");
+				LOG(ERROR, "realloc() of values array failed");
 				goto result;
 			}
 			len = (*v)->bv_len;
 			if (!(c_attr->values[c_attr->value_count] = malloc(len + 1))) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: malloc for value failed");
+				LOG(ERROR, "malloc() for value failed");
 				goto result;
 			}
 			c_attr->length[c_attr->value_count] = len + 1;
@@ -353,7 +352,7 @@ int copy_cache_entry(CacheEntry *src, CacheEntry *dst) {
 
 	int a, a_count = src->attribute_count;
 	if (!(dst->attributes = calloc(a_count + 1, sizeof(CacheEntryAttribute *)))) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: malloc of attributes array failed");
+		LOG(ERROR, "calloc() of attributes array failed");
 		goto result;
 	}
 	for (a = 0; a < a_count; a++) {
@@ -361,24 +360,24 @@ int copy_cache_entry(CacheEntry *src, CacheEntry *dst) {
 		int v, v_count = a_src->value_count;
 
 		if ((a_dst = malloc(sizeof(CacheEntryAttribute))) == NULL) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: malloc for CacheEntryAttribute failed");
+			LOG(ERROR, "malloc() for CacheEntryAttribute failed");
 			goto result;
 		}
 		memset(a_dst, 0, sizeof(CacheEntryAttribute));
 		dst->attributes[a] = a_dst;
 
 		if (!(a_dst->name = strdup(a_src->name))) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: strdup for CacheEntryAttribute.name failed");
+			LOG(ERROR, "strdup() for CacheEntryAttribute.name failed");
 			goto result;
 		}
 
 		a_dst->value_count = v_count;
 		if (!(a_dst->values = calloc(a_dst->value_count + 1, sizeof(char *)))) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: realloc of values array failed");
+			LOG(ERROR, "realloc() of values array failed");
 			goto result;
 		}
 		if (!(a_dst->length = calloc(a_dst->value_count + 1, sizeof(int)))) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: realloc of length array failed");
+			LOG(ERROR, "realloc() of length array failed");
 			goto result;
 		}
 		for (v = 0; v < v_count; v++) {
@@ -386,7 +385,7 @@ int copy_cache_entry(CacheEntry *src, CacheEntry *dst) {
 			int len = a_src->length[v];
 
 			if (!(v_dst = malloc(len))) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: malloc of value failed");
+				LOG(ERROR, "malloc() of value failed");
 				goto result;
 			}
 			memcpy(v_dst, v_src, len);
@@ -399,12 +398,12 @@ int copy_cache_entry(CacheEntry *src, CacheEntry *dst) {
 
 	int m, m_count = src->module_count;
 	if (!(dst->modules = calloc(m_count + 1, sizeof(char *)))) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: malloc of module array failed");
+		LOG(ERROR, "malloc() of module array failed");
 		goto result;
 	}
 	for (m = 0; m < m_count; m++) {
 		if (!(dst->modules[m] = strdup(src->modules[m]))) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: strdup of module failed");
+			LOG(ERROR, "strdup() of module failed");
 			goto result;
 		}
 	}
@@ -463,21 +462,21 @@ static CacheEntryAttribute *_cache_entry_force_value(CacheEntryAttribute *attr, 
 
 	tmp = realloc(attr->values, (attr->value_count + 2) * sizeof(char *));
 	if (!tmp) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d realloc() failed", __FILE__, __LINE__);
+		LOG(ERROR, "realloc() failed");
 		return NULL;
 	}
 	attr->values = tmp;
 
 	tmp = realloc(attr->length, (attr->value_count + 2) * sizeof(int));
 	if (!tmp) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d realloc() failed", __FILE__, __LINE__);
+		LOG(ERROR, "realloc() failed");
 		return NULL;
 	}
 	attr->length = tmp;
 
 	attr->length[attr->value_count] = BER2STR(&ava->la_value, &attr->values[attr->value_count]) + 1;
 	if (!attr->values[attr->value_count]) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d BER2STR() failed", __FILE__, __LINE__);
+		LOG(ERROR, "BER2STR() failed");
 		return NULL;
 	}
 	attr->value_count++;
@@ -488,21 +487,21 @@ static CacheEntryAttribute *_cache_entry_force_value(CacheEntryAttribute *attr, 
 static CacheEntryAttribute *_cache_entry_add_new_attribute(CacheEntry *entry, LDAPAVA *ava) {
 	CacheEntryAttribute *attr = malloc(sizeof(CacheEntryAttribute));
 	if (!attr) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d malloc() failed", __FILE__, __LINE__);
+		LOG(ERROR, "malloc() failed");
 		return NULL;
 	}
 	memset(attr, 0, sizeof(CacheEntryAttribute));
 
 	void *tmp = realloc(entry->attributes, (entry->attribute_count + 2) * sizeof(CacheEntryAttribute *));
 	if (!tmp) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d realloc() failed", __FILE__, __LINE__);
+		LOG(ERROR, "failed");
 		goto error;
 	}
 	entry->attributes = tmp;
 
 	BER2STR(&ava->la_attr, &attr->name);
 	if (!&attr->name) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s:%d BER2STR() failed", __FILE__, __LINE__);
+		LOG(ERROR, "BER2STR() failed");
 		goto error;
 	}
 	if (!_cache_entry_force_value(attr, ava))

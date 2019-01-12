@@ -52,7 +52,7 @@ sigset_t block_mask;
 void signals_block(void) {
 	static int init_done = 0;
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "blocking signals (was %d)", sig_block_count);
+	LOG(ALL, "blocking signals (was %d)", sig_block_count);
 	if ((++sig_block_count) != 1)
 		return;
 
@@ -72,7 +72,7 @@ void signals_block(void) {
 }
 
 void signals_unblock(void) {
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "unblocking signals (was %d)", sig_block_count);
+	LOG(ALL, "unblocking signals (was %d)", sig_block_count);
 	if ((--sig_block_count) != 0)
 		return;
 	sigprocmask(SIG_UNBLOCK, &block_mask, NULL);
@@ -80,21 +80,21 @@ void signals_unblock(void) {
 
 
 void sig_usr1_handler(int sig) {
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "received signal %d", sig);
+	LOG(WARN, "received signal %d", sig);
 	int loglevel = univention_debug_get_level(UV_DEBUG_LISTENER);
 	if (loglevel < UV_DEBUG_ALL) {
 		loglevel += 1;
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "increasing univention_debug_level to %d", loglevel);
+		LOG(WARN, "increasing univention_debug_level to %d", loglevel);
 		univention_debug_set_level(UV_DEBUG_LISTENER, loglevel);
 	}
 }
 
 void sig_usr2_handler(int sig) {
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "received signal %d", sig);
+	LOG(WARN, "received signal %d", sig);
 	int loglevel = univention_debug_get_level(UV_DEBUG_LISTENER);
 	if (loglevel > UV_DEBUG_ERROR) {
 		loglevel -= 1;
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "decreasing univention_debug_level to %d", loglevel);
+		LOG(WARN, "decreasing univention_debug_level to %d", loglevel);
 		univention_debug_set_level(UV_DEBUG_LISTENER, loglevel);
 	}
 }
@@ -104,13 +104,13 @@ void exit_handler(int sig) {
 	static bool exit_handler_running = false;
 
 	if (exit_handler_running) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "received another signal %d, ignoring", sig);
+		LOG(WARN, "received another signal %d, ignoring", sig);
 		return;
 	}
 	exit_handler_running = true;
 
 	if (sig)
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "received signal %d", sig);
+		LOG(WARN, "received signal %d", sig);
 
 	cache_close();
 	unlink(pidfile);
@@ -131,7 +131,7 @@ void exit_handler(int sig) {
 }
 
 void reload_handler(int sig) {
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "received signal %d", sig);
+	LOG(WARN, "received signal %d", sig);
 	handlers_reload_all_paths();
 }
 

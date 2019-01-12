@@ -120,7 +120,7 @@ int main(int argc, char *argv[]) {
 		fp = stdout;
 	}
 	if (fp == NULL) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Couldn't open dump file");
+		LOG(ERROR, "Couldn't open dump file");
 		exit(1);
 	}
 	rv = snprintf(cache_mdb_dir, PATH_MAX, "%s/cache", cache_dir);
