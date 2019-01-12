@@ -71,8 +71,8 @@ void notifier_entry_free(NotifierEntry *entry) {
 }
 
 
-/* parses "<ID> <DN> [amd]" line into NotifierEntry */
-static int parse_entry(const char *line, NotifierEntry *entry) {
+/* parses "<ID> <DN> [amdrn]" line into NotifierEntry */
+static int parse_get_dn(const char *line, NotifierEntry *entry) {
 	char *tmp;
 	char *p, *q;
 	size_t len;
@@ -83,7 +83,7 @@ static int parse_entry(const char *line, NotifierEntry *entry) {
 	tmp = strndup(line, len);
 
 	if (tmp == NULL)
-		return 0;
+		return 1;
 
 	if ((p = strchr(tmp, ' ')) == NULL) {
 		free(tmp);
@@ -103,7 +103,7 @@ static int parse_entry(const char *line, NotifierEntry *entry) {
 	entry->dn = strdup(p);
 
 	free(tmp);
-	return 2;
+	return 0;
 }
 
 
@@ -562,6 +562,7 @@ int notifier_resend_get_dn(NotifierClient *client, int msgid, NotifierID id) {
 /* Wait for and return DN of transaction from notifier. */
 int notifier_get_dn_result(NotifierClient *client, int msgid, NotifierEntry *entry) {
 	NotifierMessage *msg;
+	int rc = 0;
 
 	if (client == NULL)
 		client = &global_client;
@@ -569,9 +570,9 @@ int notifier_get_dn_result(NotifierClient *client, int msgid, NotifierEntry *ent
 	if ((msg = notifier_wait_msg(client, msgid, NOTIFIER_TIMEOUT)) == NULL)
 		return 1;
 
-	parse_entry(msg->result, entry);
+	rc = parse_get_dn(msg->result, entry);
 	notifier_msg_free(msg);
-	return 0;
+	return rc;
 }
 
 
