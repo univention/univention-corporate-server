@@ -107,6 +107,23 @@ static int parse_get_dn(const char *line, NotifierEntry *entry) {
 }
 
 
+/* parses "<ID>" line into NotifierEntry */
+static int parse_wait_id(const char *line, NotifierEntry *entry) {
+	char *endptr;
+
+	entry->id = strtoul(line, &endptr, 10);
+	entry->dn = NULL;
+	entry->command = '\0';
+	switch (*endptr) {
+	case '\0':
+	case '\n':
+		return 0;
+	default:
+		return 1;
+	}
+}
+
+
 /* Send buffer in blocking mode. */
 static int send_block(NotifierClient *client, const char *buf, size_t len) {
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, ">>>%s", buf);
@@ -443,7 +460,7 @@ int notifier_client_new(NotifierClient *client, const char *server, int starttls
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "established connection to %s port %d", addrstr, NOTIFIER_PORT_PROTOCOL2);
 
-	const char *header = "Version: 2\nCapabilities: \n\n";
+	const char *header = "Version: 3\nCapabilities: \n\n";
 	const size_t len = strlen(header);
 	char *result, *tok;
 
@@ -478,7 +495,7 @@ int notifier_client_new(NotifierClient *client, const char *server, int starttls
 
 	free(result);
 
-	if (client->protocol != 2) {
+	if (client->protocol < 2) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Protocol version %d is not supported", client->protocol);
 		free(client->server);
 		client->server = NULL;
@@ -537,7 +554,16 @@ int notifier_get_dn(NotifierClient *client, NotifierID id) {
 	if (client == NULL)
 		client = &global_client;
 
-	snprintf(request, BUFSIZ, "GET_DN %ld\n", id);
+	switch (client->protocol) {
+	case 2:
+		snprintf(request, BUFSIZ, "GET_DN %ld\n", id);
+		break;
+	case 3:
+		snprintf(request, BUFSIZ, "WAIT_ID %ld\n", id);
+		break;
+	default:
+		abort();
+	}
 	return notifier_send_command(client, request);
 }
 
@@ -551,7 +577,16 @@ int notifier_resend_get_dn(NotifierClient *client, int msgid, NotifierID id) {
 		client = &global_client;
 
 	assert(client->fd > -1);
-	len = snprintf(buf, BUFSIZ, "MSGID: %d\nGET_DN %ld\n\n", msgid, id);
+	switch (client->protocol) {
+	case 2:
+		len = snprintf(buf, BUFSIZ, "MSGID: %d\nGET_DN %ld\n\n", msgid, id);
+		break;
+	case 3:
+		len = snprintf(buf, BUFSIZ, "MSGID: %d\nWAIT_ID %ld\n\n", msgid, id);
+		break;
+	default:
+		abort();
+	}
 	assert(len < BUFSIZ - 1);
 	send_block(client, buf, len);
 
@@ -570,7 +605,16 @@ int notifier_get_dn_result(NotifierClient *client, int msgid, NotifierEntry *ent
 	if ((msg = notifier_wait_msg(client, msgid, NOTIFIER_TIMEOUT)) == NULL)
 		return 1;
 
-	rc = parse_get_dn(msg->result, entry);
+	switch (client->protocol) {
+	case 2:
+		rc = parse_get_dn(msg->result, entry);
+		break;
+	case 3:
+		rc = parse_wait_id(msg->result, entry);
+		break;
+	default:
+		abort();
+	}
 	notifier_msg_free(msg);
 	return rc;
 }

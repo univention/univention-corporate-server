@@ -90,6 +90,50 @@ static void check_free_space() {
 	}
 }
 
+/* Fetch transaction details from LDAP. */
+int notifier_wait_id_result(struct transaction *trans) {
+	LDAPMessage *res;
+	char base[64];  // strlen("univentionTranslogIndex=%ld,cn=translog") + strlen(ULONG_MAX)
+	int scope = LDAP_SCOPE_BASE;
+	char *filter = NULL;
+	char *attrs[] = {"univentionTranslogDn", "univentionTranslogCommand", NULL};
+	int attrsonly0 = 0;
+	LDAPControl **serverctrls = NULL;
+	LDAPControl **clientctrls = NULL;
+	struct timeval timeout = {
+		.tv_sec = 5 * 60, .tv_usec = 0,
+	};
+	int sizelimit0 = 1;
+	int rv;
+
+	snprintf(base, sizeof(base), "univentionTranslogIndex=%ld,cn=translog", trans->cur.notify.id);
+	if ((rv = LDAP_RETRY(trans->lp, ldap_search_ext_s(trans->lp->ld, base, scope, filter, attrs, attrsonly0, serverctrls, clientctrls, &timeout, sizelimit0, &res))) == LDAP_SUCCESS) {
+		LDAPMessage *entry = ldap_first_entry(trans->lp->ld, res);
+		struct berval **vals;
+
+		vals = ldap_get_values_len(trans->lp->ld, entry, "univentionTranslogDn");
+		if (vals && vals[0]->bv_len > 0)
+			trans->cur.notify.dn = strndup(vals[0]->bv_val, vals[0]->bv_len + 1);
+		else
+			rv = LDAP_NO_SUCH_ATTRIBUTE;
+		ldap_value_free_len(vals);
+
+		vals = ldap_get_values_len(trans->lp->ld, entry, "univentionTranslogCommand");
+		if (vals && vals[0]->bv_len == 1)
+			trans->cur.notify.command = vals[0]->bv_val[0];
+		else
+			rv = LDAP_NO_SUCH_ATTRIBUTE;
+		ldap_value_free_len(vals);
+		LOG(INFO, "LDAP returned: id:%ld\tdn:%s\tcmd:%c", trans->cur.notify.id, trans->cur.notify.dn, trans->cur.notify.command);
+	} else {
+		LOG(ERROR, "LDAP failed %s (%d): id:%ld", ldap_err2string(rv), rv, trans->cur.notify.id);
+	}
+	ldap_msgfree(res);
+
+	return rv;
+}
+
+
 /* listen for ldap updates */
 int notifier_listen(univention_ldap_parameters_t *lp, bool write_transaction_file, univention_ldap_parameters_t *lp_local) {
 	int rv = 0;
@@ -147,20 +191,29 @@ int notifier_listen(univention_ldap_parameters_t *lp, bool write_transaction_fil
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to get dn result");
 			return 1;
 		}
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "notifier returned = id: %ld\tdn: %s\tcmd: %c", trans.cur.notify.id, trans.cur.notify.dn, trans.cur.notify.command);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "notifier returned = id:%ld\tdn:%s\tcmd:%c", trans.cur.notify.id, trans.cur.notify.dn ? trans.cur.notify.dn : "<LDAP>", trans.cur.notify.command ? trans.cur.notify.command : '*');
 
-		if (trans.cur.notify.id != id + 1) {
+		if ((trans.cur.notify.id != id + 1 && trans.cur.notify.command != '\0') || trans.cur.notify.id <= id) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "notifier returned transaction id %ld (%ld expected)", trans.cur.notify.id, id + 1);
 			rv = 1;
 			goto out;
 		}
-		id = trans.cur.notify.id;
 
 		/* ensure that LDAP connection is open */
 		if (trans.lp->ld == NULL) {
 			if ((rv = LDAP_RETRY(trans.lp, univention_ldap_open(trans.lp))) != LDAP_SUCCESS)
 				goto out;
 		}
+
+		/* Fetch data from LDAP since protocol version 3 */
+		if (trans.cur.notify.command == '\0') {
+			// FIXME: V3 returns the latest known ID, but for now we're only interested in the next one
+			trans.cur.notify.id = id + 1;
+			rv = notifier_wait_id_result(&trans);
+			if (rv != LDAP_SUCCESS)
+				goto out;
+		}
+		id = trans.cur.notify.id;
 
 		if ((rv = change_update_dn(&trans)) != LDAP_SUCCESS) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "change_update_dn failed: %d", rv);
