@@ -207,31 +207,34 @@ void drop_privileges(void) {
 }
 
 
+/*
+ * Print usage information.
+ */
 static void usage(void) {
 	fprintf(stderr, "Usage: univention-directory-listener [options]\n");
 	fprintf(stderr, "Options:\n");
-	fprintf(stderr, "   -d   debugging\n");
-	fprintf(stderr, "   -F   run in foreground (intended for process supervision)\n");
-	fprintf(stderr, "   -H   LDAP server URI\n");
-	fprintf(stderr, "   -h   LDAP server address\n");
-	fprintf(stderr, "   -p   LDAP server port\n");
-	fprintf(stderr, "   -b   LDAP base dn\n");
-	fprintf(stderr, "   -D   LDAP bind dn\n");
-	fprintf(stderr, "   -w   LDAP bind password\n");
-	fprintf(stderr, "   -y   read LDAP bind password from file\n");
-	fprintf(stderr, "   -x   LDAP simple bind\n");
-	fprintf(stderr, "   -Z   LDAP start TLS request (-ZZ to require successful response)\n");
-	fprintf(stderr, "   -Y   SASL mechanism\n");
-	fprintf(stderr, "   -U   SASL username\n");
-	fprintf(stderr, "   -R   SASL realm\n");
-	fprintf(stderr, "   -m   Listener module path (may be specified multiple times)\n");
-	fprintf(stderr, "   -B   Only use dc backup notifier\n");
-	fprintf(stderr, "   -c   Listener cache path\n");
-	fprintf(stderr, "   -l   LDAP schema and transaction path\n");
-	fprintf(stderr, "   -g   start from scratch (remove cache)\n");
-	fprintf(stderr, "   -i   initialize handlers only\n");
-	fprintf(stderr, "   -o   write transaction file\n");
-	fprintf(stderr, "   -P   initialize handlers only, but not from scratch\n");
+	fprintf(stderr, "   -d <level>  debugging\n");
+	fprintf(stderr, "   -F          run in foreground (intended for process supervision)\n");
+	fprintf(stderr, "   -H <uri>    LDAP server URI\n");
+	fprintf(stderr, "   -h <addr>   LDAP server address\n");
+	fprintf(stderr, "   -p <port>   LDAP server port\n");
+	fprintf(stderr, "   -b <base>   LDAP base dn\n");
+	fprintf(stderr, "   -D <dn>     LDAP bind dn\n");
+	fprintf(stderr, "   -w <pwd>    LDAP bind password\n");
+	fprintf(stderr, "   -y <file>   read LDAP bind password from file\n");
+	fprintf(stderr, "   -x          LDAP simple bind\n");
+	fprintf(stderr, "   -Z          LDAP start TLS request (-ZZ to require successful response)\n");
+	fprintf(stderr, "   -Y <mech>   SASL mechanism\n");
+	fprintf(stderr, "   -U <name>   SASL username\n");
+	fprintf(stderr, "   -R <realm>  SASL realm\n");
+	fprintf(stderr, "   -m <path>   Listener module path (may be specified multiple times)\n");
+	fprintf(stderr, "   -B          Only use dc backup notifier\n");
+	fprintf(stderr, "   -c <path>   Listener cache path\n");
+	fprintf(stderr, "   -l <path>   LDAP schema and transaction path\n");
+	fprintf(stderr, "   -g          start from scratch (remove cache)\n");
+	fprintf(stderr, "   -i          initialize handlers only\n");
+	fprintf(stderr, "   -o          write transaction file\n");
+	fprintf(stderr, "   -P          initialize handlers only, but not from scratch\n");
 }
 
 
