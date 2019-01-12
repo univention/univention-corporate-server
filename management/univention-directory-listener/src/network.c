@@ -126,7 +126,7 @@ static int parse_wait_id(const char *line, NotifierEntry *entry) {
 
 /* Send buffer in blocking mode. */
 static int send_block(NotifierClient *client, const char *buf, size_t len) {
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, ">>>%s", buf);
+	LOG(ALL, ">>>%s", buf);
 	return write(client->fd, buf, len);
 }
 
@@ -154,19 +154,19 @@ static int recv_block(NotifierClient *client, char **back, time_t timeout) {
 	while (result == NULL || (pos = strstr(result, "\n\n")) == NULL) {
 		ssize_t r;
 
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "RESULT: [%s]", result);
+		LOG(ALL, "RESULT: [%s]", result);
 		if ((rv = notifier_wait(client, timeout)) == 0) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "timeout when receiving data");
+			LOG(ERROR, "timeout when receiving data");
 			return 0;
 		} else if (rv < 0)
 			return 0;
 
 		r = read(client->fd, buf, BUFSIZ);
 		if (r == 0) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "connection to notifier was closed");
+			LOG(ERROR, "connection to notifier was closed");
 			return 0;
 		} else if (r < 0) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "error %d: %s while receiving from notifier", errno, strerror(errno));
+			LOG(ERROR, "error %d: %s while receiving from notifier", errno, strerror(errno));
 			return 0;
 		}
 
@@ -187,7 +187,7 @@ static int recv_block(NotifierClient *client, char **back, time_t timeout) {
 		client->buf = NULL;
 	}
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "<<<%s", *back);
+	LOG(ALL, "<<<%s", *back);
 	return strlen(*back);
 }
 
@@ -218,7 +218,7 @@ int notifier_recv_result(NotifierClient *client, time_t timeout) {
 	assert(client->fd > -1);
 
 	if ((rv = notifier_wait(client, timeout)) == 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "no data is available (i.e. timeout elapsed)");
+		LOG(WARN, "no data is available (i.e. timeout elapsed)");
 		return 0;
 	} else if (rv < 0)
 		return 0;
@@ -336,7 +336,7 @@ int notifier_client_new(NotifierClient *client, const char *server, int starttls
 		client = &global_client;
 
 	if (starttls >= 2) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "This version does not support TLS");
+		LOG(ERROR, "This version does not support TLS");
 		return 1;
 	}
 
@@ -369,11 +369,11 @@ int notifier_client_new(NotifierClient *client, const char *server, int starttls
 	address6.sin6_family = AF_INET6;
 	address6.sin6_port = htons(NOTIFIER_PORT_PROTOCOL2);
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "connecting to notifier %s:%d", client->server, NOTIFIER_PORT_PROTOCOL2);
+	LOG(INFO, "connecting to notifier %s:%d", client->server, NOTIFIER_PORT_PROTOCOL2);
 
 	err = getaddrinfo(client->server, NULL, &hints, &result_addrinfo);
 	if (err != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "address resolution of %s failed with errorcode %d: %s", client->server, err, gai_strerror(err));
+		LOG(WARN, "address resolution of %s failed with errorcode %d: %s", client->server, err, gai_strerror(err));
 		free(client->server);
 		client->server = NULL;
 		return 1;
@@ -384,7 +384,7 @@ int notifier_client_new(NotifierClient *client, const char *server, int starttls
 		switch (res->ai_family) {
 		case AF_INET:
 			if ((client->fd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "creating IPv4 socket descriptor failed with errorcode %d: %s", errno, strerror(errno));
+				LOG(WARN, "creating IPv4 socket descriptor failed with errorcode %d: %s", errno, strerror(errno));
 				continue;
 			}
 			memcpy(&address4.sin_addr, &((struct sockaddr_in *)res->ai_addr)->sin_addr, sizeof(address4.sin_addr));
@@ -396,7 +396,7 @@ int notifier_client_new(NotifierClient *client, const char *server, int starttls
 
 		case AF_INET6:
 			if ((client->fd = socket(AF_INET6, SOCK_STREAM, 0)) == -1) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "creating IPv6 socket descriptor failed with errorcode %d: %s", errno, strerror(errno));
+				LOG(WARN, "creating IPv6 socket descriptor failed with errorcode %d: %s", errno, strerror(errno));
 				continue;
 			}
 			memcpy(&address6.sin6_addr, &((struct sockaddr_in6 *)res->ai_addr)->sin6_addr, sizeof(address6.sin6_addr));
@@ -418,31 +418,31 @@ int notifier_client_new(NotifierClient *client, const char *server, int starttls
 			int ret;
 			ret = setsockopt(client->fd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
 			if (ret < 0)
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to set SO_RCVTIMEO");
+				LOG(WARN, "Failed to set SO_RCVTIMEO");
 			ret = setsockopt(client->fd, SOL_SOCKET, SO_SNDTIMEO, &timeout, sizeof(timeout));
 			if (ret < 0)
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to set SO_SNDTIMEO");
+				LOG(WARN, "Failed to set SO_SNDTIMEO");
 
 			const int enable = 1;
 			ret = setsockopt(client->fd, SOL_SOCKET, SO_KEEPALIVE, &enable, sizeof(enable));
 			if (ret < 0)
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to enable TCP KEEPALIVE");
+				LOG(WARN, "Failed to enable TCP KEEPALIVE");
 			const int idle = 60;
 			ret = setsockopt(client->fd, SOL_TCP, TCP_KEEPIDLE, &idle, sizeof(idle));
 			if (ret < 0)
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to set TCP_KEEPIDLE");
+				LOG(WARN, "Failed to set TCP_KEEPIDLE");
 			const int probes = 12;
 			ret = setsockopt(client->fd, SOL_TCP, TCP_KEEPCNT, &probes, sizeof(probes));
 			if (ret < 0)
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to set TCP_KEEPCNT");
+				LOG(WARN, "Failed to set TCP_KEEPCNT");
 			const int interval = 5;
 			ret = setsockopt(client->fd, SOL_TCP, TCP_KEEPINTVL, &interval, sizeof(interval));
 			if (ret < 0)
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to set TCP_KEEPINTVL");
+				LOG(WARN, "Failed to set TCP_KEEPINTVL");
 		}
 
 		if (connect(client->fd, address, addrlen) == -1) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "connection to %s failed with errorcode %d: %s", addrstr, errno, strerror(errno));
+			LOG(INFO, "connection to %s failed with errorcode %d: %s", addrstr, errno, strerror(errno));
 			close(client->fd);
 			client->fd = -1;
 			continue;
@@ -452,26 +452,26 @@ int notifier_client_new(NotifierClient *client, const char *server, int starttls
 	freeaddrinfo(result_addrinfo);
 
 	if (client->fd == -1) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to connect to any notifier");
+		LOG(ERROR, "failed to connect to any notifier");
 		free(client->server);
 		client->server = NULL;
 		return 2;
 	}
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "established connection to %s port %d", addrstr, NOTIFIER_PORT_PROTOCOL2);
+	LOG(INFO, "established connection to %s port %d", addrstr, NOTIFIER_PORT_PROTOCOL2);
 
 	const char *header = "Version: 3\nCapabilities: \n\n";
 	const size_t len = strlen(header);
 	char *result, *tok;
 
 	if (send_block(client, header, len) != len) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "couldn't send header");
+		LOG(ERROR, "couldn't send header");
 		free(client->server);
 		client->server = NULL;
 		return 1;
 	}
 	if (recv_block(client, &result, NOTIFIER_TIMEOUT) < 1) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "couldn't receive header");
+		LOG(ERROR, "couldn't receive header");
 		free(client->server);
 		client->server = NULL;
 		return 1;
@@ -481,7 +481,7 @@ int notifier_client_new(NotifierClient *client, const char *server, int starttls
 	for (tok = strtok(result, "\n"); tok != NULL; tok = strtok(NULL, "\n")) {
 		char *val;
 		if ((val = strchr(tok, ':')) == NULL) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "ignoring bad header: [%s]", tok);
+			LOG(ERROR, "ignoring bad header: [%s]", tok);
 			continue;
 		}
 		*val++ = '\0';
@@ -496,7 +496,7 @@ int notifier_client_new(NotifierClient *client, const char *server, int starttls
 	free(result);
 
 	if (client->protocol < 2) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Protocol version %d is not supported", client->protocol);
+		LOG(ERROR, "Protocol version %d is not supported", client->protocol);
 		free(client->server);
 		client->server = NULL;
 		return 1;
@@ -540,7 +540,7 @@ int notifier_wait(NotifierClient *client, time_t timeout) {
 		}
 	} while (rv == -1 && errno == EINTR);
 	if (rv == -1) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "select: %s", strerror(errno));
+		LOG(ERROR, "select=%s", strerror(errno));
 	}
 
 	return rv;

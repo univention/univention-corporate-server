@@ -101,9 +101,9 @@ static void daemonize(int lock_fd) {
 	fd = open(pidfile, O_WRONLY | O_CREAT | O_EXCL, 0644);
 	if (fd < 0) {
 		if (errno == EEXIST)
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "pidfile %s exists, aborting...%d %s", pidfile, errno, strerror(errno));
+			LOG(ERROR, "pidfile %s exists, aborting...%d %s", pidfile, errno, strerror(errno));
 		else
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Can not create pidfile %s: %s, aborting...", pidfile, strerror(errno));
+			LOG(ERROR, "Can not create pidfile %s: %s, aborting...", pidfile, strerror(errno));
 		exit(EXIT_FAILURE);
 	}
 
@@ -146,11 +146,11 @@ static void daemonize(int lock_fd) {
 			abort();
 		rv = write(fd, buf, rv);
 		if (rv)
-			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to write %s: %s", pidfile, strerror(errno));
+			LOG(WARN, "Failed to write %s: %s", pidfile, strerror(errno));
 	}
 	rv = close(fd);
 	if (rv)
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to close %s: %s", pidfile, strerror(errno));
+		LOG(WARN, "Failed to close %s: %s", pidfile, strerror(errno));
 
 	// Set new file permissions
 	umask(0);
@@ -158,10 +158,10 @@ static void daemonize(int lock_fd) {
 	// Change the working directory to the root directory
 	rv = chdir("/");
 	if (rv)
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to change directory: %s", strerror(errno));
+		LOG(WARN, "Failed to change directory: %s", strerror(errno));
 
 	if ((null = open("/dev/null", O_RDWR)) == -1) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not open /dev/null: %s", strerror(errno));
+		LOG(ERROR, "could not open /dev/null: %s", strerror(errno));
 		exit(EXIT_FAILURE);
 	}
 	dup2(null, STDIN_FILENO);
@@ -170,13 +170,13 @@ static void daemonize(int lock_fd) {
 		dup2(log, STDERR_FILENO);
 		rv = close(log);
 		if (rv)
-			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to close /var/log/univention/listener.log: %s", strerror(errno));
+			LOG(WARN, "Failed to close /var/log/univention/listener.log: %s", strerror(errno));
 	} else {
 		dup2(null, STDERR_FILENO);
 	}
 	rv = close(null);
 	if (rv)
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to close /dev/null: %s", strerror(errno));
+		LOG(WARN, "Failed to close /dev/null: %s", strerror(errno));
 
 	// Close all open file descriptors
 	for (fd = sysconf(_SC_OPEN_MAX); fd > STDERR_FILENO; fd--)
@@ -192,16 +192,16 @@ void drop_privileges(void) {
 		return;
 
 	if ((listener_user = getpwnam("listener")) == NULL) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to get passwd entry for listener");
+		LOG(ERROR, "failed to get passwd entry for listener");
 		exit(1);
 	}
 
 	if (setegid(listener_user->pw_gid) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to change to listener gid");
+		LOG(ERROR, "failed to change to listener gid");
 		exit(1);
 	}
 	if (seteuid(listener_user->pw_uid) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to change to listener uid");
+		LOG(ERROR, "failed to change to listener uid");
 		exit(1);
 	}
 }
@@ -244,7 +244,7 @@ static void purge_cache(const char *cache_dir) {
 	char dirname[PATH_MAX];
 	int rv;
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "purging cache");
+	LOG(INFO, "purging cache");
 	if ((dir = opendir(cache_dir)) != NULL) {
 		while ((dirent = readdir(dir))) {
 			char path[PATH_MAX];
@@ -320,7 +320,7 @@ static int do_connection(univention_ldap_parameters_t *lp) {
 	int sizelimit0 = 0;
 
 	if (univention_ldap_open(lp) != LDAP_SUCCESS) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to LDAP server %s:%d", lp->uri ? lp->uri : lp->host ? lp->host : "NULL", lp->port);
+		LOG(WARN, "can not connect to LDAP server %s:%d", lp->uri ? lp->uri : lp->host ? lp->host : "NULL", lp->port);
 		goto fail;
 	}
 	if (notifier_client_new(NULL, lp->host, 1) != 0)
@@ -333,10 +333,10 @@ static int do_connection(univention_ldap_parameters_t *lp) {
 	case LDAP_SUCCESS:
 		return 0;
 	case LDAP_NO_SUCH_OBJECT:
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Failed to find \"(objectClass=univentionBase)\" on LDAP server %s:%d", lp->uri ? lp->uri : lp->host ? lp->host : "NULL", lp->port);
+		LOG(ERROR, "Failed to find \"(objectClass=univentionBase)\" on LDAP server %s:%d", lp->uri ? lp->uri : lp->host ? lp->host : "NULL", lp->port);
 		break;
 	default:
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Failed to search for \"(objectClass=univentionBase)\" on LDAP server %s:%d with message %s", lp->uri ? lp->uri : lp->host ? lp->host : "NULL", lp->port, ldap_err2string(rc));
+		LOG(ERROR, "Failed to search for \"(objectClass=univentionBase)\" on LDAP server %s:%d with message %s", lp->uri ? lp->uri : lp->host ? lp->host : "NULL", lp->port, ldap_err2string(rc));
 		break;
 	}
 fail:
@@ -497,7 +497,7 @@ int main(int argc, char *argv[]) {
 		if (rv < 0 || rv >= PATH_MAX)
 			abort();
 		if (stat(filename, &stbuf) == 0) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Corrupt cache");
+			LOG(ERROR, "Corrupt cache");
 			exit(3);
 		}
 	}
@@ -523,16 +523,16 @@ int main(int argc, char *argv[]) {
 
 	while (do_connection(lp) != 0) {
 			if (initialize_only) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "can not connect any server, exit");
+				LOG(ERROR, "can not connect any server, exit");
 				exit(1);
 			}
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect any server, retrying in 30 seconds");
+			LOG(WARN, "can not connect any server, retrying in 30 seconds");
 			sleep(30);
 
 		select_server(lp);
 	}
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "connection okay to host %s:%d", lp->host, lp->port);
+	LOG(INFO, "connection okay to host %s:%d", lp->host, lp->port);
 
 	/* connect to local LDAP server */
 	server_role = univention_config_get_string("server/role");
@@ -569,7 +569,7 @@ int main(int argc, char *argv[]) {
 		handlers_set_data_all("ldapserver", lp->host);
 
 	if (notifier_get_id_s(NULL, &id) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to receive current ID");
+		LOG(ERROR, "failed to receive current ID");
 		return 1;
 	}
 
@@ -584,7 +584,7 @@ int main(int argc, char *argv[]) {
 		if (cache_master_entry.id == -1) {
 			rv = notifier_get_id_s(NULL, &cache_master_entry.id);
 			if (rv != 0) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to receive current ID");
+				LOG(ERROR, "failed to receive current ID");
 				return 1;
 			}
 		}
@@ -597,7 +597,7 @@ int main(int argc, char *argv[]) {
 		return rv;
 	/* Legacy file for Nagios et al. */
 	if (cache_set_int("notifier_id", cache_master_entry.id))
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "failed to write notifier ID");
+		LOG(WARN, "failed to write notifier ID");
 
 	/* update schema */
 	if ((rv = change_update_schema(lp)) != LDAP_SUCCESS)
@@ -605,7 +605,7 @@ int main(int argc, char *argv[]) {
 
 	/* do initial import of entries */
 	if ((rv = change_new_modules(lp)) != LDAP_SUCCESS) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "change_new_modules: %s", ldap_err2string(rv));
+		LOG(ERROR, "change_new_modules=%s", ldap_err2string(rv));
 		return rv;
 	}
 	signals_unblock();
@@ -615,7 +615,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	if (rv != 0)
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "listener: %d", rv);
+		LOG(ERROR, "notifier_listen=%d", rv);
 
 	univention_ldap_close(lp);
 	univention_ldap_close(lp_local);

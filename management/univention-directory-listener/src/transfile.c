@@ -60,7 +60,7 @@ static FILE *fopen_lock(const char *name, const char *type, FILE **l_file) {
 	snprintf(buf, sizeof(buf), "%s.lock", name);
 
 	if ((*l_file = fopen(buf, "a")) == NULL) {
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Could not open lock file [%s]", buf);
+		LOG(WARN, "Could not open lock file [%s]", buf);
 		return NULL;
 	}
 
@@ -69,21 +69,21 @@ static FILE *fopen_lock(const char *name, const char *type, FILE **l_file) {
 		int rc = lockf(l_fd, F_TLOCK, 0);
 		if (!rc)
 			break;
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "Could not get lock for file [%s]; count=%d", buf, count);
+		LOG(INFO, "Could not get lock for file [%s]; count=%d", buf, count);
 		count++;
 		if (count > listener_lock_count) {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Could not get lock for file [%s]; exit", buf);
+			LOG(ERROR, "Could not get lock for file [%s]; exit", buf);
 			exit(0);
 		}
 		usleep(1000);
 	}
 
 	if ((file = fopen(name, type)) == NULL) {
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Could not open file [%s]", name);
+		LOG(WARN, "Could not open file [%s]", name);
 
 		int rc = lockf(l_fd, F_ULOCK, 0);
 		if (rc)
-			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to unlock %s: %s", buf, strerror(errno));
+			LOG(WARN, "Failed to unlock %s: %s", buf, strerror(errno));
 		fclose(*l_file);
 		*l_file = NULL;
 	}
@@ -105,7 +105,7 @@ static int fclose_lock(FILE **file, FILE **l_file) {
 		int l_fd = fileno(*l_file);
 		int rc = lockf(l_fd, F_ULOCK, 0);
 		if (rc)
-			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ALL, "unlockf(): %d", rc);
+			LOG(ALL, "unlockf(): %d", rc);
 		rv |= fclose(*l_file);
 		*l_file = NULL;
 	}
@@ -119,7 +119,7 @@ bool notifier_has_failed_ldif(void) {
 
 	if (stat(failed_ldif_file, &stat_buf) != 0)
 		return false;
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "'failed.ldif' exists. Check for %s", failed_ldif_file);
+	LOG(ERROR, "'failed.ldif' exists. Check for %s", failed_ldif_file);
 	return true;
 }
 
@@ -136,15 +136,15 @@ int notifier_write_transaction_file(NotifierEntry entry) {
 	assert(!notifier_has_failed_ldif());
 
 	if ((file = fopen_lock(transaction_file, "a+", &l_file)) == NULL) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Could not open %s", transaction_file);
+		LOG(ERROR, "Could not open %s", transaction_file);
 		return res;
 	}
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "write to transaction file dn=[%s], command=[%c]", entry.dn, entry.command);
+	LOG(INFO, "write to transaction file dn=[%s], command=[%c]", entry.dn, entry.command);
 	fprintf(file, "%ld %s %c\n", entry.id, entry.dn, entry.command);
 	res = fclose_lock(&file, &l_file);
 	if (res != 0)
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to write to transaction file %s: %d", transaction_file, res);
+		LOG(ERROR, "failed to write to transaction file %s: %d", transaction_file, res);
 
 	return res;
 }

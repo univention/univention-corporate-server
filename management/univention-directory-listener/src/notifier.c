@@ -85,7 +85,7 @@ static void check_free_space() {
 		if (free_mib >= min_mib)
 			continue;
 
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "File system '%s' full: %" PRId64 " < %" PRId64, *dirname, free_mib, min_mib);
+		LOG(ERROR, "File system '%s' full: %" PRId64 " < %" PRId64, *dirname, free_mib, min_mib);
 		abort();
 	}
 }
@@ -148,7 +148,7 @@ int notifier_listen(univention_ldap_parameters_t *lp, bool write_transaction_fil
 
 		check_free_space();
 
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "Last Notifier ID: %lu", id);
+		LOG(INFO, "Last Notifier ID: %lu", id);
 		if ((msgid = notifier_get_dn(NULL, id + 1)) < 1)
 			break;
 
@@ -160,7 +160,7 @@ int notifier_listen(univention_ldap_parameters_t *lp, bool write_transaction_fil
 			if ((rv = notifier_wait(NULL, timeout)) == 0) {
 				if (timeout == DELAY_ALIVE) {
 					if (notifier_alive_s(NULL) == 1) {
-						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to get alive answer");
+						LOG(ERROR, "failed to get alive answer");
 						return 1;
 					}
 					notifier_resend_get_dn(NULL, msgid, id + 1);
@@ -173,13 +173,13 @@ int notifier_listen(univention_ldap_parameters_t *lp, bool write_transaction_fil
 						ldap_unbind_ext(trans.lp_local->ld, NULL, NULL);
 						trans.lp_local->ld = NULL;
 					}
-					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "running postrun handlers");
+					LOG(INFO, "running postrun handlers");
 					handlers_postrun_all();
 					timeout = DELAY_ALIVE;
 				}
 				continue;
 			} else if (rv > 0 && notifier_recv_result(NULL, NOTIFIER_TIMEOUT) == 0) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to recv result");
+				LOG(ERROR, "failed to recv result");
 				return 1;
 			} else if (rv < 0) {
 				return 1;
@@ -188,13 +188,13 @@ int notifier_listen(univention_ldap_parameters_t *lp, bool write_transaction_fil
 
 		memset(&trans.cur, 0, sizeof(trans.cur));
 		if (notifier_get_dn_result(NULL, msgid, &trans.cur.notify) != 0) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to get dn result");
+			LOG(ERROR, "failed to get dn result");
 			return 1;
 		}
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "notifier returned = id:%ld\tdn:%s\tcmd:%c", trans.cur.notify.id, trans.cur.notify.dn ? trans.cur.notify.dn : "<LDAP>", trans.cur.notify.command ? trans.cur.notify.command : '*');
+		LOG(INFO, "notifier returned = id:%ld\tdn:%s\tcmd:%c", trans.cur.notify.id, trans.cur.notify.dn ? trans.cur.notify.dn : "<LDAP>", trans.cur.notify.command ? trans.cur.notify.command : '*');
 
 		if ((trans.cur.notify.id != id + 1 && trans.cur.notify.command != '\0') || trans.cur.notify.id <= id) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "notifier returned transaction id %ld (%ld expected)", trans.cur.notify.id, id + 1);
+			LOG(ERROR, "notifier returned transaction id %ld (%ld expected)", trans.cur.notify.id, id + 1);
 			rv = 1;
 			goto out;
 		}
@@ -216,7 +216,7 @@ int notifier_listen(univention_ldap_parameters_t *lp, bool write_transaction_fil
 		id = trans.cur.notify.id;
 
 		if ((rv = change_update_dn(&trans)) != LDAP_SUCCESS) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "change_update_dn failed: %d", rv);
+			LOG(ERROR, "change_update_dn() failed: %d", rv);
 			goto out;
 		}
 
@@ -241,7 +241,7 @@ int notifier_listen(univention_ldap_parameters_t *lp, bool write_transaction_fil
 		cache_master_entry.id = id;
 		cache_update_master_entry(&cache_master_entry);
 		if (cache_set_int("notifier_id", id))
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "failed to write notifier ID");
+			LOG(WARN, "failed to write notifier ID");
 		change_free_transaction_op(&trans.cur);
 	}
 

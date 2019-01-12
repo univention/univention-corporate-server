@@ -35,6 +35,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "select_server.h"
+#include "common.h"
 #include <univention/debug.h>
 #include <univention/ldap.h>
 #include <univention/config.h>
@@ -80,12 +81,12 @@ void select_server(univention_ldap_parameters_t *lp) {
 
 	server_role = univention_config_get_string("server/role");
 	if (!server_role) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "UCRV 'server/role' is not set");
+		LOG(ERROR, "UCRV 'server/role' is not set");
 		abort();
 	}
 	ldap_master = univention_config_get_string("ldap/master");
 	if (!ldap_master) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "UCRV 'ldap/master' is not set");
+		LOG(ERROR, "UCRV 'ldap/master' is not set");
 		abort();
 	}
 	ldap_master_port = univention_config_get_int("ldap/master/port");
@@ -119,10 +120,10 @@ void select_server(univention_ldap_parameters_t *lp) {
 				if (!name[0])
 					continue;
 				server_list[server_list_entries++].server_name = strdup(name);
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "Backup found: %s", name);
+				LOG(INFO, "Backup found: %s", name);
 			}
 			if (server_list_entries >= ARRAY_SIZE(server_list))
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Too many (more than %zd) backup-servers found", ARRAY_SIZE(server_list));
+				LOG(ERROR, "Too many (more than %zd) backup-servers found", ARRAY_SIZE(server_list));
 			/* Append notifier on DC Master unless explicitly disabled */
 			if (server_list_entries < ARRAY_SIZE(server_list) && !backup_notifier)
 				server_list[server_list_entries++].server_name = strdup(ldap_master);
@@ -139,10 +140,10 @@ void select_server(univention_ldap_parameters_t *lp) {
 			if (!seed) {
 				seed = getpid() * time(NULL);
 				srandom(seed);
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "rands with seed %ud ", seed);
+				LOG(INFO, "rands with seed %ud ", seed);
 			}
 			int randval = random() % server_list_entries;
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "randval = %d ", randval);
+			LOG(INFO, "randval = %d ", randval);
 
 			lp->host = strdup(server_list[randval].server_name);
 			if (!strcmp(lp->host, ldap_master)) {
@@ -154,7 +155,7 @@ void select_server(univention_ldap_parameters_t *lp) {
 					lp->port = backup_port;
 			}
 		} else {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "No Backup found, server is ldap/master");
+			LOG(INFO, "No Backup found, server is ldap/master");
 			lp->host = strdup(ldap_master);
 			if (ldap_master_port > 0)
 				lp->port = ldap_master_port;
@@ -165,5 +166,5 @@ result:
 	free(ldap_master);
 	free(server_role);
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Notifier/LDAP server is %s:%d", lp->uri ? lp->uri : lp->host ? lp->host : "NULL", lp->port);
+	LOG(WARN, "Notifier/LDAP server is %s:%d", lp->uri ? lp->uri : lp->host ? lp->host : "NULL", lp->port);
 }

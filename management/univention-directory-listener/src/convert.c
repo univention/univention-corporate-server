@@ -54,7 +54,7 @@ static void exit_if_cache_mdb_exists(void) {
 		abort();
 
 	if (access(cache_mdb_filename, F_OK) != -1) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s already exists", cache_mdb_filename);
+		LOG(ERROR, "%s already exists", cache_mdb_filename);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -132,8 +132,8 @@ int main(int argc, char *argv[]) {
 		printf("notifier_id not found in BDB cache, falling back to notifier_id file\n");
 		cache_get_int("notifier_id", &cache_master_entry.id, -1);
 		if (cache_master_entry.id == -1) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cannot determine current ID");
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Aborting conversion");
+			LOG(ERROR, "cannot determine current ID");
+			LOG(ERROR, "Aborting conversion");
 			return 1;
 		}
 
@@ -146,9 +146,9 @@ int main(int argc, char *argv[]) {
 
 	for (rv = bdb_cache_first_entry(&cur, &dn, &entry); rv != DB_NOTFOUND; rv = bdb_cache_next_entry(&cur, &dn, &entry)) {
 		if (rv != 0) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "error while reading database");
+			LOG(ERROR, "error while reading database");
 		} else if ((rv = cache_update_entry_lower(0, dn, &entry)) != MDB_SUCCESS) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "error while writing to database");
+			LOG(ERROR, "error while writing to database");
 		}
 		cache_free_entry(&dn, &entry);
 		if (rv < -1)
