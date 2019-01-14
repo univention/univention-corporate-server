@@ -330,26 +330,8 @@ define([
 		},
 
 		renderPage: function() {
-			this._renderIcon();
 			this._renderNavContainer();
 			this._renderMainContainer();
-		},
-
-		_renderIcon: function() {
-			if (this._icon) {
-				this.removeChild(this._icon);
-				this._icon.destroyRecursive();
-				this._icon = null;
-			}
-			var iconName = this.app.logoDetailPageName || this.app.logoName;
-			var icon_class = this._grid.getIconClass(iconName);
-			if (icon_class) {
-				this._icon = new ContainerWidget({
-					region: 'nav',
-					'class': icon_class + ' icon'
-				});
-				this.addChild(this._icon, 0);
-			}
 		},
 
 		_renderNavContainer: function() {
@@ -449,6 +431,7 @@ define([
 			});
 			this._detailsContainer.addChild(detailsContainerMain);
 			this._detailsContainer.own(detailsContainerMain);
+			this._renderIcon(detailsContainerMain);
 			if (isAppInstalled) {
 				this._renderAppUsage(detailsContainerMain);
 				this._renderInstallationManagement(detailsContainerMain);
@@ -463,6 +446,27 @@ define([
 			this._detailsContainer.addChild(sidebarContainer);
 			this._detailsContainer.own(sidebarContainer);
 			this._renderSidebar(sidebarContainer);
+		},
+
+		_renderIcon: function(parentContainer) {
+			if (this._icon) {
+				this.removeChild(this._icon);
+				this._icon.destroyRecursive();
+				this._icon = null;
+			}
+			var iconName = this.app.logoDetailPageName || this.app.logoName;
+			var icon_class = this._grid.getIconClass(iconName);
+			if (icon_class) {
+				this._icon = new ContainerWidget({
+					'class': icon_class + ' icon',
+					'style': {
+						'height': '7em',
+						'margin-bottom': '1em',
+						'background-size': 'contain'
+					}
+				});
+				parentContainer.addChild(this._icon);
+			}
 		},
 
 		_renderAppUsage: function(parentContainer) {
