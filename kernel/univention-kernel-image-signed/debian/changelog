@@ -1,3 +1,9 @@
+univention-kernel-image-signed (3.0.2-33) unstable; urgency=medium
+
+  * Bug #47905: Update to linux-4.9.110-3+deb9u5~deb8u1A~4.2.0.2019011410370-ucs110
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 14 Jan 2019 15:47:17 +0100
+
 univention-kernel-image-signed (3.0.2-32) unstable; urgency=medium
 
   * Bug #47063: Update to linux-4.9.122-ucs110
