@@ -576,6 +576,26 @@ check_kopano_repo () {
 }
 check_kopano_repo
 
+# Bug #48459
+check_openxchange_spamassassin_version ()
+{
+	spamassassin_dpkg_ver="$(dpkg-query -W -f '${Version}\n' "spamassassin")"
+	if LC_ALL=C dpkg -l 'univention-ox-meta-singleserver' 2>/dev/null | grep ^i >>"$UPDATER_LOG" 2>&1 &&
+		LC_ALL=C dpkg --compare-versions "$spamassassin_dpkg_ver" gt "3.4.0-6"; then
+		echo spamassassin "$spamassassin_dpkg_ver" >>"$UPDATER_LOG"
+		echo; echo "ERROR: This UCS server with OX Appsuite can currently not be updated"
+		echo "to UCS 4.3 due to a software incompatibility. Aborting the upgrade."
+		echo "For more information about this issue, please refer to"
+		echo "https://help.univention.com/t/10917"; echo
+		if is_ucr_true update43/ignore_ox_spamassassin_issue; then
+			echo "WARNING: update43/ignore_ox_spamassassin_issue is set to true. Skipped as requested."
+		else
+			exit 1
+		fi
+	fi
+}
+check_openxchange_spamassassin_version
+
 # Bug #47551
 check_openxchange_app ()
 {
