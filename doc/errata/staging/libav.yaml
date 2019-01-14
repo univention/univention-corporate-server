@@ -1,0 +1,65 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: libav
+fix: 6:11.12-1~deb8u4
+desc: |
+ This update addresses the following issues:
+ * CVE-2017-9993: Libav does not properly restrict HTTP Live Streaming
+   filename extensions and demuxer names, which allows attackers to read
+   arbitrary files via crafted playlist data.
+ * CVE-2017-9994: libavcodec/webp.c in Libav before does not ensure that
+   pix_fmt is set, which allows remote attackers to cause a denial of service
+   unspecified other impact via a crafted file, related to the
+   vp8_decode_mb_row_no_filter and pred8x8_128_dc_8_c functions.
+ * CVE-2017-14055: a DoS in mv_read_header() due to lack of an end-of-file
+   check might cause huge CPU and memory consumption.
+ * CVE-2017-14056: a DoS in rl2_read_header() due to lack of an end-of-file
+   check might cause huge CPU consumption.
+ * CVE-2017-14057: a DoS in asf_read_marker() due to lack of an end-of-file
+   check might cause huge CPU and memory consumption.
+ * CVE-2017-14170: a DoS in mxf_read_index_entry_array() due to lack of an
+   end-of-file check might cause huge CPU consumption.
+ * CVE-2017-14171: a DoS in nsv_parse_NSVf_header() due to lack of an
+   end-of-file check might cause huge CPU consumption.
+ * CVE-2017-14767: The sdp_parse_fmtp_config_h264 function in
+   libavformat/rtpdec_h264.c mishandles empty sprop-parameter-sets values,
+   which allows remote attackers to cause a denial of service (heap buffer
+   overflow) or possibly have unspecified other impact via a crafted sdp file.
+ * CVE-2017-15672: The read_header function in libavcodec/ffv1dec.c allows
+   remote attackers to have unspecified impact via a crafted MP4 file, which
+   triggers an out-of-bounds read.
+ * CVE-2017-17130: The ff_free_picture_tables function in
+   libavcodec/mpegpicture.c allows remote attackers to cause a denial of
+   service (heap-based buffer overflow and application crash) or possibly have
+   unspecified other impact via a crafted file, related to
+   vc1_decode_i_blocks_adv.
+ * CVE-2018-6621: The decode_frame function in libavcodec/utvideodec.c in
+   Libav allows remote attackers to cause a denial of service (out of array
+   read) via a crafted AVI file.
+ * CVE-2018-7557: The decode_init function in libavcodec/utvideodec.c in Libav
+   allows remote attackers to cause a denial of service (out of array read)
+   via an AVI file with crafted dimensions within chroma subsampling data.
+ * CVE-2018-14394: libavformat/movenc.c in Libav allows attackers to cause a
+   denial of service (application crash caused by a divide-by-zero error) with
+   a user crafted Waveform audio file.
+ * CVE-2018-1999010: Libav contains multiple out of array access
+   vulnerabilities in the mms protocol that can result in attackers accessing
+   out of bound data.
+bug: [48452]
+cve:
+- CVE-2017-14055
+- CVE-2017-14056
+- CVE-2017-14057
+- CVE-2017-14170
+- CVE-2017-14171
+- CVE-2017-14767
+- CVE-2017-15672
+- CVE-2017-17130
+- CVE-2017-9993
+- CVE-2017-9994
+- CVE-2018-14394
+- CVE-2018-1999010
+- CVE-2018-6621
+- CVE-2018-7557
