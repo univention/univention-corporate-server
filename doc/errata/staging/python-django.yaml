@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [2, 3]
+scope: ucs_4.3-0-errata4.3-3
+src: python-django
+fix: 1:1.10.7-2+deb9u4
+desc: |
+ This update addresses the following issue:
+ * CVE-2019-3498: Prevent a content-spoofing vulnerability in the default 404
+   page.
+bug: [48464]
+cve:
+- CVE-2019-3498
