@@ -36,17 +36,22 @@ import univention.config_registry as confreg
 from optparse import OptionParser
 
 
-def get_policy(host_dn, verbose=False):
-	"""Retriev policy for host_dn."""
+def get_policy(host_dn, verbose=False, server=None):
+	"""Retrieve policy for host_dn."""
 	set_list = {}
 
 	# get policy result
 	if verbose:
+		if server:
+			print >> sys.stderr, 'Connecting to LDAP host %s...' % server
 		print >> sys.stderr, 'Retrieving policy for %s...' % (host_dn,)
-	cmd = ('univention_policy_result',
-			'-D', host_dn,
-			'-y', '/etc/machine.secret',
-			host_dn)
+	cmd = ['univention_policy_result',
+	'-D', host_dn,
+	'-y', '/etc/machine.secret']
+	if server:
+		cmd += ['-h', server]
+	cmd += [host_dn]
+
 	proc = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE)
 	for line in proc.stdout:
 		line = line.rstrip('\n')
@@ -85,6 +90,7 @@ def parse_cmdline():
 	parser.add_option('-v', '--verbose',
 			dest='verbose', action='store_true',
 			help='print verbose information')
+	parser.add_option('-l', '--ldap-server', dest='server', help='connect to this ldap host')
 	options, args = parser.parse_args()
 
 	if 'UNIVENTION_BASECONF' in os.environ:
@@ -115,7 +121,7 @@ def main():
 	ucr_ldap = confreg.ConfigRegistry(filename=confregfn)
 	ucr_ldap.load()
 
-	set_list = get_policy(host_dn, options.verbose)
+	set_list = get_policy(host_dn, options.verbose, options.server)
 	if set_list:
 		new_set_list = []
 		for key, value in set_list.items():
