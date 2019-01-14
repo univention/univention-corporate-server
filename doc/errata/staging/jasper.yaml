@@ -1,0 +1,32 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: jasper
+fix: 1.900.1-debian1-2.4+deb8u5
+desc: |
+ This update addresses the following issues:
+ * heap-based buffer over-read of size 8 in jas_image_depalettize in
+   libjasper/base/jas_image.c (CVE-2018-19541)
+ * access violation in jas_image_readcmpt in libjasper/base/jas_image.c
+   (CVE-2018-19539)
+ * DoS when converting to jp2 (CVE-2018-20584)
+ * heap-based buffer overflow of size 1 in jas_icctxtdesc_input in
+   libjasper/base/jas_icc.c (CVE-2018-19540)
+ * invalid access in jp2_decode in libjasper/jp2/jp2_dec.c (CVE-2018-19542)
+ * memory leak in jas_malloc.c when called from jpc_unk_getparms in jpc_cs.c
+   (CVE-2018-19139)
+ * NULL pointer dereference in ras_putdatastd function (CVE-2018-18873)
+ * memory leak in base/jas_malloc.c in libjasper.a (CVE-2018-20622)
+ * heap-based buffer over-read in jp2_encode in jp2/jp2_enc.c (CVE-2018-20570)
+bug: [48451]
+cve:
+- CVE-2018-18873
+- CVE-2018-19139
+- CVE-2018-19539
+- CVE-2018-19540
+- CVE-2018-19541
+- CVE-2018-19542
+- CVE-2018-20570
+- CVE-2018-20584
+- CVE-2018-20622
