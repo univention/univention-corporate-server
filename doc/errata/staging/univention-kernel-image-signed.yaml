@@ -2,8 +2,8 @@ product: ucs
 release: "4.2"
 version: [5]
 scope: ucs_4.2-0-errata4.2-5
-src: linux-4.9
-fix: 4.9.110-3+deb9u5~deb8u1A~4.2.0.201901141037
+src: univention-kernel-image-signed
+fix: 3.0.2-33A~4.2.0.201901141603
 desc: |
  This update addresses the following issues:
  * Null pointer dereference in fs/f2fs/segment.c via mounting fs with
@@ -67,7 +67,7 @@ desc: |
  * Mishandled size checks during the reading of an extra descriptor
    (CVE-2018-20169)
  * fork: record start_time late (CVE-2019-6133)
-note: This is the first of two parts of this update.
+note: This is the second of two parts of this update.
 bug: [47905]
 cve:
 - CVE-2018-6554
