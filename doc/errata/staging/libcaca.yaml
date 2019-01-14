@@ -1,0 +1,22 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: libcaca
+fix: 0.99.beta19-2+deb8u1
+desc: |
+ This update addresses the following issues:
+ * float point exception at caca/dither.c:1013 function caca_dither_bitmap()
+   (CVE-2018-20544)
+ * illegal READ memory access at caca/dither.c:1347 function
+   get_rgba_default() (CVE-2018-20546)
+ * illegal READ memory access at caca/dither.c:1337
+   function:get_rgba_default() (CVE-2018-20547)
+ * illegal WRITE memory access at caca/file.c function caca_file_read()
+   (CVE-2018-20549)
+bug: [48453]
+cve:
+- CVE-2018-20544
+- CVE-2018-20546
+- CVE-2018-20547
+- CVE-2018-20549
