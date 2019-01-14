@@ -1,3 +1,9 @@
+univention-base-files (7.0.0-21) unstable; urgency=medium
+
+  * Bug #35208: added ldap server option to univention-policy-update-config-registry.py
+
+ -- Jannik Ahlers <ahlers@univention.de>  Wed, 20 Mar 2019 12:05:36 +0100
+
 univention-base-files (7.0.0-20) unstable; urgency=medium
 
   * Bug #30397: ipv4 and ipv6 primary interfaces
