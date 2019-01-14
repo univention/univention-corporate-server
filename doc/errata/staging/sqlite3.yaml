@@ -1,0 +1,28 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: sqlite3
+fix: 3.8.7.1-1+deb8u4
+desc: |
+ This update addresses the following issues:
+ * CVE-2017-2518: A use-after-free bug in the query optimizer may cause a
+   buffer overflow and application crash via a crafted SQL statement.
+ * CVE-2017-2519: Insufficient size of the reference count on Table objects
+   could lead to a denial-of-service or arbitrary code execution.
+ * CVE-2017-2520: The sqlite3_value_text() interface returned a buffer that
+   was not large enough to hold the complete string plus zero terminator when
+   the input was a zeroblob. This could lead to arbitrary code execution or a
+   denial-of-service.
+ * CVE-2017-10989: SQLite mishandles undersized RTree blobs in a crafted
+   database leading to a heap-based buffer over-read or possibly unspecified
+   other impact.
+ * CVE-2018-8740: Databases whose schema is corrupted using a CREATE TABLE AS
+   statement could cause a NULL pointer dereference.
+bug: [48455]
+cve:
+- CVE-2018-8740
+- CVE-2017-2520
+- CVE-2017-2519
+- CVE-2017-2518
+- CVE-2017-10989
