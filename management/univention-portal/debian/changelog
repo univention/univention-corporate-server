@@ -1,3 +1,9 @@
+univention-portal (3.0.1-2) unstable; urgency=medium
+
+  * Bug #48358: Portal server
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 14 Jan 2019 13:37:39 +0100
+
 univention-portal (3.0.1-1) unstable; urgency=medium
 
   * Bug #46969: bindpwdfile support
