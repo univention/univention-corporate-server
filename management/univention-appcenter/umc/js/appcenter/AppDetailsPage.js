@@ -48,12 +48,12 @@ define([
 	"dojo/store/Memory",
 	"dojo/store/Observable",
 	"dijit/Tooltip",
+	"dijit/layout/ContentPane",
 	"dojox/image/LightboxNano",
 	"dojox/html/entities",
 	"umc/app",
 	"umc/tools",
 	"umc/dialog",
-	"umc/widgets/TitlePane",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/ProgressBar",
 	"umc/widgets/Page",
@@ -65,7 +65,7 @@ define([
 	"umc/modules/appcenter/App",
 	"umc/modules/appcenter/ThumbnailGallery",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, dojoEvent, all, json, when, query, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, Lightbox, entities, UMCApplication, tools, dialog, TitlePane, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, AppCenterGallery, App, ThumbnailGallery, _) {
+], function(declare, lang, kernel, array, dojoEvent, all, json, when, query, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, ContentPane, Lightbox, entities, UMCApplication, tools, dialog, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, AppCenterGallery, App, ThumbnailGallery, _) {
 
 	var adaptedGrid = declare([Grid], {
 		_updateContextActions: function() {
@@ -543,9 +543,7 @@ define([
 			this._detailsContainer = new ContainerWidget({
 				'class': 'container'
 			});
-			var detailsPane = new TitlePane({
-				open: !isAppInstalled,
-				title: _('Details'),
+			var detailsPane = new ContentPane({
 				content: this._detailsContainer,
 				'class': 'appDetailsPane'
 			});
@@ -591,24 +589,6 @@ define([
 				});
 				styleContainer.addChild(this.thumbnailGallery);
 				parentContainer.addChild(styleContainer);
-			}
-
-			if (this.thumbnailGallery) {
-				//handle behaviour of the thumbnailGallery based on wether
-				//the titlepane is closed or not
-				if (!detailsPane.open) {
-					this.thumbnailGallery._stopFirstResize = true;
-				}
-				detailsPane.watch('open', lang.hitch(this, function(variable, oldVal, titlePaneIsOpen) {
-					if (titlePaneIsOpen) {
-						this.thumbnailGallery._handleResize();
-					} else {
-						if (this.thumbnailGallery.isBigThumbnails) {
-							this.thumbnailGallery.toggleThumbSize();
-						}
-						this.thumbnailGallery.pauseAllVideos();
-					}
-				}));
 			}
 		},
 
