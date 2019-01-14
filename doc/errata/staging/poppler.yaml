@@ -1,0 +1,14 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: poppler
+fix: 0.26.5-2+deb8u7
+desc: |
+ This update addresses the following issue:
+ * Fix regression from UCS erratum 562 for CVE-2018-16646: the
+   Parser::getObj() function in Parser.cc may cause infinite recursion via a
+   crafted file. A remote attacker can leverage this for a DoS attack.
+bug: [48454]
+cve:
+- CVE-2018-16646
