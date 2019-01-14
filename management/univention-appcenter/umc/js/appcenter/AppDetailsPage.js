@@ -471,6 +471,16 @@ define([
 			}
 		},
 
+		_getCSSClass4TextLength: function(text) {
+			var cssClass = '';
+			array.forEach([400, 500, 600, 800], function(ilength) {
+				if (text.length > ilength) {
+					cssClass = 'textLongerThan' + ilength + 'Chars';
+				}
+			});
+			return cssClass;
+		},
+
 		_renderInstallationManagement: function() {
 			var isSingleServerInstallation = this.app.isInstalled && this.app.installationData.length === 1;
 			var actions = this.getActionButtons(isSingleServerInstallation);
@@ -537,10 +547,9 @@ define([
 			var descriptionContainer = new ContainerWidget({
 				'class': 'descriptionContainer'
 			});
-			var longDescCSSClass = this._getCSSClass4TextLength(this.app.longDescription || '');
 			domClass.add(domConstruct.create('div', {
 				innerHTML: this.app.longDescription  // no HTML escape!
-			}, descriptionContainer.domNode), longDescCSSClass);
+			}, descriptionContainer.domNode));
 			this._detailsContainer.addChild(descriptionContainer);
 
 			if (this.app.thumbnails.length) {
@@ -585,16 +594,6 @@ define([
 				}));
 			}
 			this._mainRegionContainer.addChild(detailsPane, isAppInstalled ? null : 0);
-		},
-
-		_getCSSClass4TextLength: function(text) {
-			var cssClass = '';
-			array.forEach([400, 500, 600, 800], function(ilength) {
-				if (text.length > ilength) {
-					cssClass = 'textLongerThan' + ilength + 'Chars';
-				}
-			});
-			return cssClass;
 		},
 
 		_renderFooter: function() {
