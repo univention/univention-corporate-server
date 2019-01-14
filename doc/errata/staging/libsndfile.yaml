@@ -1,0 +1,37 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: libsndfile
+fix: 1.0.25-9.1+deb8u3
+desc: |
+ This update addresses the following issues:
+ * Buffer overflow in the flac_buffer_copy function (CVE-2017-8361)
+ * Out-of-bounds read in the flac_buffer_copy function (CVE-2017-8362)
+ * Heap buffer over-read in the flac_buffer_copy function (CVE-2017-8363)
+ * Buffer over-read in the l2les_array function (CVE-2017-8365)
+ * Out-of-bounds read in the function d2alaw_array() (CVE-2017-14245)
+ * Out-of-bounds read in the function d2ulaw_array() (CVE-2017-14246)
+ * Divide-by-zero in the double64_init() function (CVE-2017-14634)
+ * SEGV on unknown address in the function d2alaw_array() (CVE-2017-17456)
+ * SEGV on unknown address in the function d2ulaw_array() (CVE-2017-17457)
+ * stack-based buffer overflow in sndfile-deinterleave utility
+   (CVE-2018-13139)
+ * OOB read in sf_write_int in sndfile.c (CVE-2018-19432)
+ * buffer over-read in the function i2ulaw_array in ulaw.c (CVE-2018-19661)
+ * buffer over-read in the function i2alaw_array in alaw.c (CVE-2018-19662)
+bug: [48450]
+cve:
+- CVE-2017-8361
+- CVE-2017-8362
+- CVE-2017-8363
+- CVE-2017-8365
+- CVE-2017-14245
+- CVE-2017-14246
+- CVE-2017-14634
+- CVE-2017-17456
+- CVE-2017-17457
+- CVE-2018-13139
+- CVE-2018-19432
+- CVE-2018-19661
+- CVE-2018-19662
