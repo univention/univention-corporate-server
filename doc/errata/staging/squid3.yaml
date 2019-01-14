@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: squid3
+fix: 3.4.8-6+deb8u6A~4.2.5.201811260940
+desc: |
+ This update addresses the following issue:
+ * CVE-2018-19132: Fix denial of service via an SNMP packet.
+bug: [48458]
+cve:
+- CVE-2018-19132
