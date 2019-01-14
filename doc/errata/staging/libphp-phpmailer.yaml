@@ -1,0 +1,13 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: libphp-phpmailer
+fix: 5.2.9+dfsg-2+deb8u5
+desc: |
+ This update addresses the following issue:
+ * Possible regression update for erratum 554: Removing accidently added
+   DKIM_private_string (CVE-2018-19296)
+bug: [48456]
+cve:
+- CVE-2018-19296
