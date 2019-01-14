@@ -1,0 +1,14 @@
+[Unit]
+Description=Univention self service invitation daemon
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=on-failure
+RestartSec=10
+# ugly hack until StandardOutput or StandardError to file:YOUR_ABSPATH_FILENAME is supported
+ExecStart=/bin/bash -ce "exec /usr/lib/univention-self-service-master/univention-self-service-invitation >> /var/log/univention/management-console-module-passwordreset.log 2>&1"
+
+[Install]
+WantedBy=multi-user.target

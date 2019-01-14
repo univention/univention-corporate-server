@@ -1,0 +1,88 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import univention.lib.umc
+import univention.config_registry
+import argparse
+import glob
+import os
+import time
+import logging
+import sys
+
+TRIGGER_DIR = '/var/cache/univention-directory-listener/selfservice-invitation'
+
+
+def main():
+
+	usage = '%(prog)s'
+	description = '%(prog)s sends passwordreset tokens to all users found in %(dir)s.' % dict(dir=TRIGGER_DIR, prog='%(prog)s')
+	description += '%(prog)s is triggered by the selfservice-invitation listener and started via systemd'
+	parser = argparse.ArgumentParser(usage=usage, description=description)
+	parser.add_argument('-n', '--dry-run', action='store_true', help='Just check, do not send invitation')
+	args = parser.parse_args()
+
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+	if not ucr.is_true('umc/self-service/invitation/enabled', True):
+		logger.info('{} is disabled by UCRV umc/self-service/invitation/enabled'.format(prog))
+		sys.exit(0)
+
+	umc_path = 'passwordreset/send_token'
+	umc_user = ucr['hostname'] + '$'
+	with open('/etc/machine.secret') as f:
+		umc_pass = f.readline()
+
+	while True:
+		time.sleep(5)
+		client = univention.lib.umc.Client(username=umc_user, password=umc_pass)
+		for filename in glob.glob(os.path.join(TRIGGER_DIR, '*.send')):
+			user = os.path.basename(filename).rstrip('.send')
+			logger.info('Sending token to {}'.format(user))
+			if not args.dry_run:
+				resp = client.umc_command(umc_path, dict(username=user, method='email'))
+				if hasattr(resp, 'status') and resp.status != 200:
+					raise Exception('sending token failed with status != 200: {}'.format(resp.message))
+				os.remove(filename)
+
+if __name__ == '__main__':
+	prog = os.path.basename(__file__)
+	logger = logging.getLogger(prog)
+	handler = logging.StreamHandler()
+	formatter = logging.Formatter('%(asctime)s.%(msecs)03d  %(name)-11s ( %(levelname)-7s ) : %(message)s', '%d.%m.%y %H:%M:%S')
+	handler.setFormatter(formatter)
+	logger.addHandler(handler)
+	logger.setLevel(logging.INFO)
+
+	try:
+		main()
+	except Exception as e:
+		logger.exception('Got exception!')
+		sys.exit(1)
