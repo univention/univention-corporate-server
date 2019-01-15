@@ -318,7 +318,7 @@ int network_client_check_clients(NotifyId last_known_id) {
  */
 int network_client_all_write(NotifyId id, char *buf, size_t l_buf) {
 	NetworkClient_t *client;
-	int rc;
+	int rc = 0;
 	char string[NETWORK_MAX];
 
 	if (l_buf == 0) {

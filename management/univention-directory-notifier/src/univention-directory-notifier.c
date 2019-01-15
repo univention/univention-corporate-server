@@ -221,7 +221,10 @@ int main(int argc, char *argv[]) {
 	}
 
 	if (foreground == 0) {
-		daemon(1, 1);
+		if (daemon(1, 1)) {
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Failed to daemon(), exit");
+			exit(1);
+		}
 	}
 
 	univention_debug_init(logfile, UV_DEBUG_FLUSH, UV_DEBUG_FUNCTION);

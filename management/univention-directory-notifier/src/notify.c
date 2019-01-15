@@ -96,7 +96,6 @@ static FILE *fopen_lock(const char *name, const char *type, FILE **l_file) {
 	if ((file = fopen(name, type)) == NULL) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Could not open file [%s]", name);
 
-		lockf(l_fd, F_ULOCK, 0);
 		fclose(*l_file);
 		*l_file = NULL;
 	}
@@ -217,6 +216,7 @@ void notify_entry_init(NotifyEntry_t *entry) {
 int notify_transaction_get_last_notify_id(NotifyId_t *notify_id) {
 	int i = 2;
 	int c;
+	int rc = 0;
 
 	notify_id->id = 0;
 
@@ -233,11 +233,14 @@ int notify_transaction_get_last_notify_id(NotifyId_t *notify_id) {
 		}
 		c = fgetc(notify.tf);
 	} while (c != '\n');
-	fscanf(notify.tf, "%ld", &(notify_id->id));
+	if (fscanf(notify.tf, "%ld", &(notify_id->id)) != 1) {
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "failed to parse last transaction id");
+		rc = -1;
+	}
 
 	fclose_lock(FILE_NAME_TF, &notify.tf, &notify.l_tf);
 
-	return 0;
+	return rc;
 }
 
 /*
@@ -360,7 +363,8 @@ void notify_schema_change_callback(int sig, siginfo_t *si, void *data) {
 		return;
 	}
 
-	fscanf(file, "%ld", &SCHEMA_ID);
+	if (fscanf(file, "%ld", &SCHEMA_ID) != 1)
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "failed to parse LDAP schema id");
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "NEW Schema ID = %ld", SCHEMA_ID);
 
@@ -402,7 +406,8 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data) {
 		entry = split_transaction_buffer(buf, nread);
 		notify_dump_to_files(entry);
 		fseek(file, 0, SEEK_SET);
-		ftruncate(fileno(file), 0);
+		if (ftruncate(fileno(file), 0))
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "Failed to truncate translog");
 
 		{
 			NotifyEntry_t *trans;
