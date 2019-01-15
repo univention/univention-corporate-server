@@ -42,7 +42,7 @@ GROUP_CACHE = '/var/cache/univention-portal/groups.json'
 
 class PortalGroups(ListenerModuleHandler):
 	def initialize(self):
-		self.save({})
+		self._save({})
 
 	def create(self, dn, new):
 		groups = self._load()
