@@ -244,11 +244,25 @@ run_join_scripts () {
 							"${DCACCOUNT}@${DCNAME}:/var/lib/univention-ldap/notify/transaction" \
 							"$USERTMP/tlog" >/dev/null 2>&1
 						if [ ! -e "$USERTMP/tlog" ]; then
-							failed_message " FAILED: failed do copy /var/lib/univention-ldap/notify/transaction from the dc master. Please try again."
+							failed_message " FAILED: failed to copy /var/lib/univention-ldap/notify/transaction from the dc master. Please try again."
 						fi
 
 						id="$(</var/lib/univention-directory-listener/notifier_id)"
 						awk -F ' ' '{ if ( $1 <= '$id') print }' "$USERTMP/tlog" >/var/lib/univention-ldap/notify/transaction
+						rm -f /var/lib/univention-ldap/notify/transaction.index
+
+						/etc/init.d/slapd stop >>/var/log/univention/join.log 2>&1
+						TRANSLOG='/var/lib/univention-ldap/translog/'
+						case "$(dpkg --print-architecture)" in
+						i386) db="id2entry.bdb" ;;
+						amd64|*) db="data.mdb" ;;
+						esac
+						rm -f "$TRANSLOG"*
+						/usr/share/univention-ldap/setup-translog db
+						/etc/init.d/slapd start >>/var/log/univention/join.log 2>&1
+						/usr/share/univention-directory-notifier/univention-translog --lenient import --index &&
+							[ -e "$TRANSLOG$db" ] ||
+							failed_message " FAILED: failed to copy $TRANSLOG$db from the dc master. Please try again"
 					fi
 
 					# slave 
@@ -259,6 +273,7 @@ run_join_scripts () {
 								"$USERTMP/tlog" >/dev/null 2>&1
 							id="$(</var/lib/univention-directory-listener/notifier_id)"
 							awk -F ' ' '{ if ( $1 <= '$id') print }' "$USERTMP/tlog" >/var/lib/univention-ldap/notify/transaction
+							rm -f /var/lib/univention-ldap/notify/transaction.index
 						fi
 
 					fi
