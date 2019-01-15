@@ -309,6 +309,10 @@ define([
 			}));
 		},
 
+		canVote: function() {
+			return !!this.voteForApp;
+		},
+
 		canInstall: function() {
 			if (this.endOfLife) {
 				// never install when app is outdated

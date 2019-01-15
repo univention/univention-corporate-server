@@ -102,7 +102,7 @@ define([
 			} else if (statusIconClass.indexOf('Update') !== -1) {
 				tooltipMessage = _("Update available");
 			} else if (statusIconClass.indexOf('VoteForApp') !== -1) {
-				tooltipMessage = _('Vote for this App to get it into the App Center faster');
+				tooltipMessage = _('Vote for this app now and bring your favorite faster to the Univention App Center');
 			} else if (statusIconClass.indexOf('RecommendedApp') !== -1) {
 				var message = array.filter(item.rating, function(irating) {
 					return irating.name === 'RecommendedApp';
