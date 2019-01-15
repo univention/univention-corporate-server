@@ -31,6 +31,7 @@
 #define _GNU_SOURCE
 
 #include <errno.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -166,6 +167,7 @@ static int new_connection(NetworkClient_t *client, callback_remove_handler remov
 	struct sockaddr_in client_address;
 	int client_socketfd;
 	socklen_t client_l;
+	int flags;
 	int fd = client->fd;
 
 	client_l = sizeof(client_address);
@@ -173,6 +175,10 @@ static int new_connection(NetworkClient_t *client, callback_remove_handler remov
 	if ((client_socketfd = accept(fd, (struct sockaddr *)&client_address, &client_l)) == -1) {
 		return 1;
 	}
+
+	flags = fcntl(client_socketfd, F_GETFL);
+	flags |= O_NONBLOCK;
+	fcntl(client_socketfd, F_SETFL, flags);
 
 	FD_SET(client_socketfd, &readfds);
 
@@ -291,6 +297,7 @@ int network_client_dump() {
  */
 int network_client_check_clients(NotifyId last_known_id) {
 	NetworkClient_t *client, **p, *n;
+	int rc;
 	char string[NETWORK_MAX];
 
 	for_each(client, p, n) {
@@ -316,9 +323,13 @@ int network_client_check_clients(NotifyId last_known_id) {
 
 					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "--> %d: [%s]", client->fd, string);
 
-					write(client->fd, string, strlen(string));
-
+					rc = send(client->fd, string, strlen(string), 0);
 					free(dn_string);
+					if (rc < 0) {
+						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "Failed send(%d), closing.", client->fd);
+						network_client_free(p);
+						continue;
+					}
 				}
 				client->notify = 0;
 				client->msg_id = 0;
@@ -360,8 +371,12 @@ int network_client_all_write(NotifyId id, char *buf, size_t l_buf) {
 						continue;
 				}
 				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d[%s]", client->fd, string);
-				rc = write(client->fd, string, strlen(string));
-				// rc = write(client->fd, buf, l_buf );
+				rc = send(client->fd, string, strlen(string), 0);
+				if (rc < 0) {
+					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "Failed send(%d), closing.", client->fd);
+					network_client_free(p);
+					continue;
+				}
 				client->notify = 0;
 				client->msg_id = 0;
 			}

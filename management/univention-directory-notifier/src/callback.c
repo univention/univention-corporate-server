@@ -54,6 +54,7 @@
  */
 int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) {
 	int nread;
+	int rc;
 	char network_data[NETWORK_MAX + 1], *head, *tail;
 	char *end;
 	NotifyId id;
@@ -122,7 +123,9 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 			if (version > PROTOCOL_UNKNOWN) {
 				snprintf(string, sizeof(string), "Version: %d\nCapabilities: \n\n", version);
 				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "SEND: %s", string);
-				write(fd, string, strlen(string));
+				rc = send(fd, string, strlen(string), 0);
+				if (rc < 0)
+					goto failed;
 			} else {
 				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Capabilities recv, but no version line");
 			}
@@ -156,8 +159,10 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 				if (dn_string != NULL) {
 					snprintf(string, sizeof(string), "MSGID: %ld\n%s\n\n", msg_id, dn_string);
 					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "--> %d: [%s]", fd, string);
-					write(fd, string, strlen(string));
+					rc = send(fd, string, strlen(string), 0);
 					free(dn_string);
+					if (rc < 0)
+						goto failed;
 				}
 			} else {
 				/* set wanted id */
@@ -176,7 +181,9 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 
 			if (id <= notify_last_id.id) {
 				snprintf(string, sizeof(string), "MSGID: %ld\n%ld\n\n", msg_id, notify_last_id.id);
-				write(fd, string, strlen(string));
+				rc = send(fd, string, strlen(string), 0);
+				if (rc < 0)
+					goto failed;
 			} else {
 				/* set wanted id */
 				client->next_id = id;
@@ -189,7 +196,9 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "RECV: GET_ID");
 
 			snprintf(string, sizeof(string), "MSGID: %ld\n%ld\n\n", msg_id, notify_last_id.id);
-			write(fd, string, strlen(string));
+			rc = send(fd, string, strlen(string), 0);
+			if (rc < 0)
+				goto failed;
 
 			msg_id = UINT32_MAX;
 		} else if (!strcmp(head, "GET_SCHEMA_ID") && msg_id != UINT32_MAX && version > 0) {
@@ -197,14 +206,18 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 
 			snprintf(string, sizeof(string), "MSGID: %ld\n%ld\n\n", msg_id, SCHEMA_ID);
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "--> %d: [%s]", fd, string);
-			write(fd, string, strlen(string));
+			rc = send(fd, string, strlen(string), 0);
+			if (rc < 0)
+				goto failed;
 
 			msg_id = UINT32_MAX;
 		} else if (!strcmp(head, "ALIVE") && msg_id != UINT32_MAX && version > 0) {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "RECV: ALIVE");
 
 			snprintf(string, sizeof(string), "MSGID: %ld\nOKAY\n\n", msg_id);
-			write(fd, string, strlen(string));
+			rc = send(fd, string, strlen(string), 0);
+			if (rc < 0)
+				goto failed;
 
 			msg_id = UINT32_MAX;
 		} else {
