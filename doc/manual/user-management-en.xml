@@ -852,7 +852,7 @@
     <section id="users:faillog">
         <title>Automatic lockout of users after failed login attempts</title>
         <para>
-            As standard, a user can enter her password incorrectly any number of times. To
+            By default, a user can enter her password incorrectly any number of times. To
             hinder brute force attacks on passwords, an automatic lockout for user accounts
             can be activated after a configured number of failed log-in attempts.
         </para>
@@ -868,7 +868,7 @@
 			<title>Samba Active Directory Service</title>
 			<para>
 				In Samba Active Directory environments, various services are provided by Samba, such as Kerberos.
-				To lock users after failed logins, the tool <command>samba-tool</command> can be used.
+				To lockout users after too many failed log-in attempts, the tool <command>samba-tool</command> can be used.
 			</para>
 			<para>
 				<itemizedlist>
@@ -880,13 +880,6 @@
 					</listitem>
 					<listitem>
 						<simpara>
-							<command>samba-tool domain passwordsettings set --account-lockout-duration=3</command>
-							specifies the number of minutes an account will be locked after too many incorrect passwords
-							have been entered.
-						</simpara>
-					</listitem>
-					<listitem>
-						<simpara>
 							<command>samba-tool domain passwordsettings set --account-lockout-threshold=5</command>
 							specifies how often a user can attempt to log in with an incorrect password before the account
 							is locked.
@@ -894,10 +887,19 @@
 					</listitem>
 					<listitem>
 						<simpara>
+							<command>samba-tool domain passwordsettings set --account-lockout-duration=3</command>
+							specifies the number of minutes an account will be locked after too many incorrect passwords
+							have been entered.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
 							<command>samba-tool domain passwordsettings set --reset-account-lockout-after=5</command>
-							defines the number of minutes after which the counter is reset. If an account is automatically
-							unlocked, the counter is not reset, the account will be locked again with a single incorrect
-							password.
+							defines the number of minutes after which the counter is reset. If an account gets automatically
+							unlocked after the lockout duration, the counter is not reset immediately, to keep the account
+							under strict monitoring for some time. During the time window between the end of the lockout
+							duration and the point when the the counter gets reset, a single attempt to log in with an
+							incorrect password will lock the account immediately again.
 						</simpara>
 					</listitem>
 				</itemizedlist>
@@ -916,29 +918,29 @@
 				The counter is reset each time the password is entered correctly.
 			</para>
 			<para>
-				The lockout is activated locally per system as standard. In other words, if a
+				The lockout is activated locally per system by default. In other words, if a
 				user enters her password incorrectly too many times on one system, she can
 				still login on another system. Setting the &ucsUCRV; <envar>auth/faillog/lock_global</envar>
-				will make the lock effective globally and register it in the LDAP. The global
+				will make the lock effective globally and register it in the LDAP directory. The global
 				lock can only be set on &ucsMaster;/Backup systems as other
 				system roles do not have the necessary permissions in the LDAP
-				directory. On these system roles, the user is, however, locally locked or
-				unlocked again via the listener module.
+				directory. On all systems with any of these system roles, the lockout gets automatically activated locally or
+				deactivated again via the listener module, depending on the current lock state in the LDAP directory.
 			</para>
 			<para>
 				As standard, the lockout is not subject to time limitations and must be reset by
 				the administrator. However, it can also be reset automatically after a certain
-				interval has elapsed. This is done by specifying a time period in seconds
+				time interval has elapsed. This is done by specifying a time period in seconds
 				in the &ucsUCRV; <envar>auth/faillog/unlock_time</envar>. If the value is set to 0, the lock is
 				reset immediately.
 			</para>
 			<para>
-				As standard, the <systemitem class="username">root</systemitem> user is excluded from the password lock, but can also be
+				By default, the <systemitem class="username">root</systemitem> user is excluded from the password lock, but can also be
 				subjected to it by setting the &ucsUCRV; <envar>auth/faillog/root</envar> to <literal>yes</literal>.
 			</para>
 			<para>
 				If accounts are only locked locally, the administrator can unlock a user account by entering the command
-				<command>faillog -r -u USERNAME</command>. If the lock occurs globally in the LDAP, the user can be reset
+				<command>faillog -r -u USERNAME</command>. If the lock occurs globally in the LDAP directory, the user can be reset
 				in Univention Management Console on the tab <guimenu>Account</guimenu> in the user options
 				<guimenu>Unlock account</guimenu>.
 			</para>
