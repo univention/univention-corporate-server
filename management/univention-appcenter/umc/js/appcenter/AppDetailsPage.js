@@ -170,6 +170,12 @@ define([
 			return sum;
 		},
 
+		vote: function() {
+			tools.umcpCommand('appcenter/track', {app: loadedApp.id, action: 'vote'}).then(function() {
+				dialog.notify(_('Quick and easy – your ballot has been cast.'), _('Vote for App');
+			});
+		},
+
 		reloadPage: function() {
 			// reset same app, but only pass the id => loads new from server
 			this.set('app', {id: this.app.id}, false);

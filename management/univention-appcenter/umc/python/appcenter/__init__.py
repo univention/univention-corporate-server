@@ -35,7 +35,6 @@
 import os
 import locale
 import time
-import sys
 from contextlib import contextmanager
 import logging
 from base64 import encodestring
@@ -336,7 +335,7 @@ class Instance(umcm.Base, ProgressMixin):
 		service = get_action(mode)
 		service.call(app=app)
 
-	@sanitize(app=AppSanitizer(required=False), action=ChoicesSanitizer(['get', 'buy', 'search']), value=StringSanitizer())
+	@sanitize(app=AppSanitizer(required=False), action=ChoicesSanitizer(['get', 'buy', 'search', 'vote']), value=StringSanitizer())
 	@simple_response
 	def track(self, app, action, value):
 		send_information(action, app=app, value=value)
