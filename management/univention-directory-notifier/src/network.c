@@ -45,7 +45,11 @@
 #include "network.h"
 #include "notify.h"
 
-static NetworkClient_t *network_client_first = NULL;
+static NetworkClient_t client_head = { .next = &client_head };
+#define for_each(client, p, n) \
+	for (p = &client_head.next, client = client_head.next, n = client->next; \
+		client != &client_head; \
+		p = *p == client ? &(client->next) : p, client = n, n = client->next)
 static int server_socketfd_listener;
 static fd_set readfds;
 
@@ -110,9 +114,9 @@ int network_client_add(int fd, callback_handler handler, int notify) {
 	client->fd = fd;
 	client->handler = handler;
 	client->notify = notify;
-	client->next = network_client_first;
+	client->next = client_head.next;
 
-	network_client_first = client;
+	client_head.next = client;
 
 	return 0;
 }
@@ -140,13 +144,14 @@ static void network_client_free(NetworkClient_t **ptr) {
  * :returns: 0
  */
 static int network_client_del(int fd) {
-	NetworkClient_t **client;
+	NetworkClient_t *client, **p, *n;
 
-	for (client = &network_client_first; *client != NULL; client = &((*client)->next))
-		if ((*client)->fd == fd) {
-			network_client_free(client);
+	for_each(client, p, n) {
+		if (client->fd == fd) {
+			network_client_free(p);
 			break;
 		}
+	}
 
 	return 0;
 }
@@ -194,7 +199,7 @@ int network_client_init(int port) {
  * :return: never
  */
 int network_client_main_loop(callback_check check_callbacks) {
-	NetworkClient_t *client;
+	NetworkClient_t *client, **p, *n;
 	fd_set testfds;
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Starting main loop");
@@ -217,7 +222,7 @@ int network_client_main_loop(callback_check check_callbacks) {
 			exit(1);
 		}
 
-		for (client = network_client_first; client != NULL; client = client->next) {
+		for_each(client, p, n) {
 			if (FD_ISSET(client->fd, &testfds)) {
 				client->handler(client, network_client_del);
 				break;
@@ -268,14 +273,13 @@ void network_client_dump1(NetworkClient_t *client, enum uv_debug_level level) {
  * :return: 0
  */
 int network_client_dump() {
-	NetworkClient_t *client;
+	NetworkClient_t *client, **p, *n;
 
 	if (univention_debug_get_level(UV_DEBUG_TRANSFILE) < UV_DEBUG_ALL)
 		return 0;
 
-	for (client = network_client_first; client != NULL; client = client->next) {
+	for_each(client, p, n)
 		network_client_dump1(client, UV_DEBUG_ALL);
-	}
 
 	return 0;
 }
@@ -286,10 +290,10 @@ int network_client_dump() {
  * :return: 0
  */
 int network_client_check_clients(NotifyId last_known_id) {
-	NetworkClient_t *client;
+	NetworkClient_t *client, **p, *n;
 	char string[NETWORK_MAX];
 
-	for (client = network_client_first; client != NULL; client = client->next) {
+	for_each(client, p, n) {
 		if (client->notify) {
 			if (client->next_id <= last_known_id) {
 				char *dn_string = NULL;
@@ -332,7 +336,7 @@ int network_client_check_clients(NotifyId last_known_id) {
  * :returns: -1 on errors, 0 on success.
  */
 int network_client_all_write(NotifyId id, char *buf, size_t l_buf) {
-	NetworkClient_t *client;
+	NetworkClient_t *client, **p, *n;
 	int rc = 0;
 	char string[NETWORK_MAX];
 
@@ -340,7 +344,7 @@ int network_client_all_write(NotifyId id, char *buf, size_t l_buf) {
 		return 0;
 	}
 
-	for (client = network_client_first; client != NULL; client = client->next) {
+	for_each(client, p, n) {
 		network_client_dump1(client, UV_DEBUG_ALL);
 		if (client->notify) {
 			if (client->next_id == id) {
