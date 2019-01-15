@@ -4,6 +4,7 @@ univention-directory-notifier (12.0.1-3) unstable; urgency=low
   * Bug #48427: Implement Univention Directory Notifier protocol version 3
   * Bug #48466: Use non-blocking sockets to prevent denial-of-service attack
   * Bug #48467: Switch from select() to epoll() to prevent DoS attack
+  * Bug #48468: Reduce debug level to prevent DoS attack
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 10 Jan 2019 12:47:47 +0100
 

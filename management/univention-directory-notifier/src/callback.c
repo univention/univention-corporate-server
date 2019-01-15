@@ -72,7 +72,7 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 		goto close;
 	}
 	if (nread >= NETWORK_MAX) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "%d failed, more than %d. close connection to listener", fd, NETWORK_MAX);
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "%d failed, more than %d. close connection to listener", fd, NETWORK_MAX);
 		goto close;
 	}
 
@@ -107,10 +107,10 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "VERSION=%d", version);
 
 			if (version < network_procotol_version) {
-				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "Forbidden VERSION=%d < %d, close connection to listener", version, network_procotol_version);
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "Forbidden VERSION=%d < %d, close connection to listener", version, network_procotol_version);
 				goto close;
 			} else if (version >= PROTOCOL_LAST) {
-				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "Future VERSION=%d", version);
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "Future VERSION=%d", version);
 				version = PROTOCOL_LAST - 1;
 			}
 			client->version = version;
@@ -151,7 +151,7 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld failed", id);
 						/* TODO: maybe close connection? */
 
-						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "%d failed, close connection to listener", fd);
+						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "%d failed, close connection to listener", fd);
 						goto close;
 					}
 				}
@@ -221,7 +221,7 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 
 			msg_id = UINT32_MAX;
 		} else {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Drop package [%s]", head);
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "Drop package [%s]", head);
 		}
 	}
 
@@ -230,7 +230,7 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 	return 0;
 
 failed:
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "Failed parsing [%s]", head);
+	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "Failed [%s]", head);
 close:
 	network_client_dump1(client, UV_DEBUG_PROCESS);
 	remove(fd);
