@@ -36,7 +36,7 @@ DB_OBJS := cache.o cache_dn.o cache_entry.o cache_lowlevel.o base64.o filter.o
 
 LDAP_LDLIBS := -lldap -llber
 
-CFLAGS += -Wall -Werror -D_FILE_OFFSET_BITS=64
+CFLAGS += -Wall -Werror -g -D_FILE_OFFSET_BITS=64
 LDLIBS := -luniventiondebug -luniventionconfig -licuuc
 LISTENER_LDLIBS := -luniventionpolicy $(LDAP_LDLIBS) -lpython2.7 $(DB_LDLIBS)
 LISTENER_OBJS := main.o notifier.o transfile.o handlers.o change.o network.o signals.o select_server.o utils.o $(DB_OBJS)
