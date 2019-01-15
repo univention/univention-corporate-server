@@ -275,7 +275,7 @@
 			installiert wird, so muss auf allen Systemen, auf denen der Nagios-Client installiert
 			ist, die &ucsUCRV; <envar>nagios/client/allowedhosts</envar> mit dem FQDN des Nagios-Servers
 			gesetzt werden. Am einfachsten kann dies über eine &ucsUCR; Richtlinie umgesetzt werden, weitere
-			Informationen sind im Kaptiel <xref linkedd="ucr::templates::policy"/> zu finden.
+			Informationen sind im Kaptiel <xref linkend="ucr::templates::policy"/> zu finden.
 		</para>
 
 		<para>
