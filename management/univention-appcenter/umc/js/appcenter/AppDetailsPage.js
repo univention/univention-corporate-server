@@ -194,15 +194,6 @@ define([
 					callback: lang.hitch(this.app, 'install')
 				});
 			}
-
-			if (this.app.useShop) {
-				buttons.push({
-					name: 'shop',
-					label: _('Buy'),
-					'class': 'umcAppButton',
-					callback: lang.hitch(this, 'openShop')
-				});
-			}
 			return buttons;
 		},
 
@@ -588,11 +579,36 @@ define([
 		},
 
 		_renderSidebar: function(parentContainer) {
+			if (this.app.useShop) {
+				this._renderAppBuy(parentContainer);
+			}
 			this._renderAppDetails(parentContainer);
 			var hasRating = array.some(this.app.rating, function(rating) { return rating.value; });
 			if (hasRating) {
 				this._renderAppRating(parentContainer);
 			}
+		},
+
+		_renderAppBuy(parentContainer) {
+			var appBuyContainer = ContainerWidget({
+				class: 'appDetailsSidebarElement'
+			});
+			parentContainer.addChild(appBuyContainer);
+			parentContainer.own(appBuyContainer);
+
+			domConstruct.create('span', {
+				innerHTML: _('Buy in App Center'),
+				'class': 'mainHeader'
+			}, appBuyContainer.domNode);
+
+			var buy_button = new Button({
+				name: 'shop',
+				label: _('Buy now'),
+				'class': 'umcAppBuyButton',
+				callback: lang.hitch(this, 'openShop')
+			});
+			appBuyContainer.addChild(buy_button);
+			appBuyContainer.own(buy_button);
 		},
 
 		_renderAppDetails(parentContainer) {
