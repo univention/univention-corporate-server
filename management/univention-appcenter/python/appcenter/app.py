@@ -921,6 +921,8 @@ class App(object):
 
 	listener_udm_modules = AppListAttribute()
 
+	vote_for_app = AppBooleanAttribute()
+
 	def __init__(self, _attrs, _cache, **kwargs):
 		if kwargs:
 			_attrs.update(kwargs)

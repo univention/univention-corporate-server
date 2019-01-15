@@ -186,7 +186,7 @@ define([
 					'class': 'umcAppButton',
 					callback: lang.hitch(this.app, 'open')
 				});
-			} else if (this.app.canInstall && !this.app.isInstalled) {
+			} else if (this.app.canInstall() && !this.app.isInstalled) {
 				buttons.push({
 					name: 'install',
 					label: _('Install'),
