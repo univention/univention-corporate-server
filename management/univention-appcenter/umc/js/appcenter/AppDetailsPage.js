@@ -438,16 +438,49 @@ define([
 			this.own(this._mainRegionContainer);
 
 			var isAppInstalled = this.app.isInstalled || this.app.getHosts().length > 0;
-			if (isAppInstalled) {
-				this._renderUsage();
-				this._renderInstallationManagement();
-			}
 			this._renderDetailsPane(isAppInstalled);
 
 			domStyle.set(this._main.domNode, 'margin-bottom', '2em');
 		},
 
-		_renderUsage: function() {
+		_renderDetailsPane: function(isAppInstalled) {
+			this._detailsContainer = new ContainerWidget({
+				'class': 'container'
+			});
+			var detailsPane = new ContentPane({
+				content: this._detailsContainer,
+				'class': 'appDetailsPane'
+			});
+			this._mainRegionContainer.addChild(detailsPane, isAppInstalled ? null : 0);
+
+			var detailsContainerMain = new ContainerWidget({
+				'class': 'descriptionContainer col-xs-12 col-md-8'
+			});
+			this._detailsContainer.addChild(detailsContainerMain);
+			this._detailsContainer.own(detailsContainerMain);
+			if (isAppInstalled) {
+				this._renderAppUsage(detailsContainerMain);
+				this._renderInstallationManagement(detailsContainerMain);
+			} else {
+				this._renderDescription(detailsContainerMain);
+				this._renderThumbnails(detailsContainerMain, detailsPane);
+			}
+
+			var sidebarContainer = ContainerWidget({
+				'class': 'col-xs-12 col-md-4'
+			});
+			this._detailsContainer.addChild(sidebarContainer);
+			this._detailsContainer.own(sidebarContainer);
+			this._renderSidebar(sidebarContainer);
+		},
+
+		_renderAppUsage: function(parentContainer) {
+			var appUsageContainer = ContainerWidget({
+				'style': 'margin-bottom: 2em'
+			});
+			parentContainer.addChild(appUsageContainer);
+			parentContainer.own(appUsageContainer);
+
 			var usage = this.app.readme;
 			if (usage) {
 				usage = lang.replace(usage, lang.hitch(this, function(p, id) { return entities.encode(this.app[id]); }));
@@ -459,44 +492,32 @@ define([
 					content: _('First steps'),
 					'class': 'mainHeader'
 				});
-				this._mainRegionContainer.addChild(usageHeader);
+				appUsageContainer.addChild(usageHeader);
 
-				var usageClass = 'usage ' + this._getCSSClass4TextLength(usage);
 				var usagePane = new Text({
 					content: usage,
-					'class': usageClass
 				});
-				this._mainRegionContainer.addChild(usagePane);
+				appUsageContainer.addChild(usagePane);
 			}
 		},
 
-		_getCSSClass4TextLength: function(text) {
-			var cssClass = '';
-			array.forEach([400, 500, 600, 800], function(ilength) {
-				if (text.length > ilength) {
-					cssClass = 'textLongerThan' + ilength + 'Chars';
-				}
-			});
-			return cssClass;
-		},
-
-		_renderInstallationManagement: function() {
+		_renderInstallationManagement: function(parentContainer) {
 			var isSingleServerInstallation = this.app.isInstalled && this.app.installationData.length === 1;
 			var actions = this.getActionButtons(isSingleServerInstallation);
 			if (isSingleServerInstallation) {
-				this._renderSingleManagement(actions);
+				this._renderSingleManagement(parentContainer, actions);
 			} else {
-				this._renderDomainwideManagement(actions);
+				this._renderDomainwideManagement(parentContainer, actions);
 			}
 		},
 
-		_renderSingleManagement: function(actions) {
+		_renderSingleManagement: function(parentContainer, actions) {
 			var header = new Text({
 				content: _('Manage local installation'),
 				'class': 'mainHeader'
 			});
-			this._mainRegionContainer.addChild(header);
-			this._mainRegionContainer.own(header);
+			parentContainer.addChild(header);
+			parentContainer.own(header);
 
 			var actionButtonContainer = new ContainerWidget({
 				'class': 'appDetailsPageActions'
@@ -506,17 +527,17 @@ define([
 				actionButtonContainer.addChild(button);
 				actionButtonContainer.own(button);
 			});
-			this._mainRegionContainer.addChild(actionButtonContainer);
-			this._mainRegionContainer.own(actionButtonContainer);
+			parentContainer.addChild(actionButtonContainer);
+			parentContainer.own(actionButtonContainer);
 		},
 
-		_renderDomainwideManagement: function(actions) {
+		_renderDomainwideManagement: function(parentContainer, actions) {
 			var header = new Text({
 				content: _('Manage domain wide installations'),
 				'class': 'mainHeader'
 			});
-			this._mainRegionContainer.addChild(header);
-			this._mainRegionContainer.own(header);
+			parentContainer.addChild(header);
+			parentContainer.own(header);
 
 			var columns = [{
 				name: 'server',
@@ -535,34 +556,8 @@ define([
 				columns: columns,
 				moduleStore: myStore
 			});
-			this._mainRegionContainer.addChild(this._installedAppsGrid);
-			this._mainRegionContainer.own(this._installedAppsGrid);
-		},
-
-		_renderDetailsPane: function(isAppInstalled) {
-			this._detailsContainer = new ContainerWidget({
-				'class': 'container'
-			});
-			var detailsPane = new ContentPane({
-				content: this._detailsContainer,
-				'class': 'appDetailsPane'
-			});
-			this._mainRegionContainer.addChild(detailsPane, isAppInstalled ? null : 0);
-
-			var detailsContainerMain = new ContainerWidget({
-				'class': 'descriptionContainer col-xs-12 col-md-8'
-			});
-			this._detailsContainer.addChild(detailsContainerMain);
-			this._detailsContainer.own(detailsContainerMain);
-			this._renderDescription(detailsContainerMain);
-			this._renderThumbnails(detailsContainerMain, detailsPane);
-
-			var sidebarContainer = ContainerWidget({
-				'class': 'col-xs-12 col-md-4'
-			});
-			this._detailsContainer.addChild(sidebarContainer);
-			this._detailsContainer.own(sidebarContainer);
-			this._renderSidebar(sidebarContainer);
+			parentContainer.addChild(this._installedAppsGrid);
+			parentContainer.own(this._installedAppsGrid);
 		},
 
 		_renderDescription: function(parentContainer) {

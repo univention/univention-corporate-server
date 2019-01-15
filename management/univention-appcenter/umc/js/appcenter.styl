@@ -275,26 +275,6 @@ $app-detailspane-background-color = #fff
 	.descriptionContainer
 		margin-bottom: 3em
 
-
-	/* NOTE: _All_ CSS classes textLongerThanXXXChars from _getCSSClass4TextLength() need to be addressed here! */
-	.descriptionContainer div,
-	.usage
-		@media (min-width: 650px) and (max-width:767px)
-			&.textLongerThan400Chars
-				column-count: 2
-
-		@media (min-width: 650px) and (max-width: 991px)
-			&.textLongerThan500Chars
-				column-count: 2
-
-		@media (min-width: 650px) and (max-width: 1199px)
-			&.textLongerThan600Chars
-				column-count: 2
-
-		@media (min-width: 650px)
-			&.textLongerThan800Chars
-				column-count: 2
-
 	.appDetailsPane
 		background-color: $app-detailspane-background-color
 		margin: 0 -1000px
