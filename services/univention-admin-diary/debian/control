@@ -7,6 +7,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  univention-join,
  python-all,
  ucslint,
+ univention-management-console-dev,
  univention-config-dev
 Standards-Version: 3.7.2
 
@@ -20,6 +21,18 @@ Depends: ${misc:Depends},
  python-pyparsing,
  univention-postgresql | univention-mysql
 Description: Univention Admin Diary backend
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-management-console-module-admindiary
+Architecture: all
+Depends: univention-management-console-server,
+ univention-admin-diary-backend
+Description: UMC module for the Admin Diary
+ This package contains the UMC module for the Admin Diary
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
