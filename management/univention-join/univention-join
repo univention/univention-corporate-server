@@ -253,11 +253,19 @@ run_join_scripts () {
 							"${DCACCOUNT}@${DCNAME}:/var/lib/univention-ldap/notify/transaction" \
 							"$USERTMP/tlog" >/dev/null 2>&1
 						if [ ! -e "$USERTMP/tlog" ]; then
-							failed_message " FAILED: failed do copy /var/lib/univention-ldap/notify/transaction from the dc master. Please try again."
+							failed_message " FAILED: failed to copy /var/lib/univention-ldap/notify/transaction from the dc master. Please try again."
 						fi
 
 						id="$(</var/lib/univention-directory-listener/notifier_id)"
 						awk -F ' ' '{ if ( $1 <= '$id') print }' "$USERTMP/tlog" >/var/lib/univention-ldap/notify/transaction
+						rm -f /var/lib/univention-ldap/notify/transaction.index
+
+						/etc/init.d/slapd stop >>/var/log/univention/join.log 2>&1
+						/usr/share/univention-ldap/setup-translog init
+						/etc/init.d/slapd start >>/var/log/univention/join.log 2>&1
+						/usr/share/univention-directory-notifier/univention-translog --lenient import --index 2>>"$LOG" &&
+							/usr/share/univention-ldap/setup-translog check ||
+							failed_message " FAILED: failed to setup $(/usr/share/univention-ldap/setup-translog db). Please try again."
 					fi
 
 					# slave 
@@ -268,6 +276,7 @@ run_join_scripts () {
 								"$USERTMP/tlog" >/dev/null 2>&1
 							id="$(</var/lib/univention-directory-listener/notifier_id)"
 							awk -F ' ' '{ if ( $1 <= '$id') print }' "$USERTMP/tlog" >/var/lib/univention-ldap/notify/transaction
+							rm -f /var/lib/univention-ldap/notify/transaction.index
 						fi
 
 					fi
@@ -852,6 +861,11 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 		ssl/common="$ssl_common" \
 		ssl/email="$ssl_email" \
 		>>/var/log/univention/join.log 2>&1
+	echo -e "\033[60Gdone"
+
+	echo -n "Purging translog database: "
+	/etc/init.d/slapd stop >>/var/log/univention/join.log 2>&1
+	rm -rf /var/lib/univention-ldap/translog
 	echo -e "\033[60Gdone"
 
 	echo -n "Restart LDAP Server: "

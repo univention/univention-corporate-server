@@ -13,6 +13,11 @@ File: var/lib/univention-ldap/ldap/DB_CONFIG
 Variables: ldap/database/bdb/.*
 Variables: ldap/database/type
 
+Type: file
+File: var/lib/univention-ldap/translog/DB_CONFIG
+Variables: ldap/database/bdb/.*
+Variables: ldap/database/type
+
 Type: multifile
 Multifile: etc/ldap/slapd.conf
 Variables: ldap/server/type
