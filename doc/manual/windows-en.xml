@@ -892,7 +892,7 @@ ucr set connector/ad/mapping/user/password/kinit=false
   </para>
 
   <para>
-    In the default setting, containers, organizational units, users, groups and computers are synchronized. Users have an exceptional position since the password cannot be queried via the LDAP protocol in Active Directory.
+    In the default setting, containers, organizational units, users, groups and computers are synchronized.
   </para>
 
   <para>
