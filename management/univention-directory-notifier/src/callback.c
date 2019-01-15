@@ -36,7 +36,6 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
-#include <sys/select.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <sys/time.h>
@@ -46,8 +45,6 @@
 #include "cache.h"
 #include "network.h"
 #include "notify.h"
-
-extern fd_set readfds;
 
 /*
  * handle data from network.
@@ -223,8 +220,6 @@ failed:
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "Failed parsing [%s]", head);
 close:
 	network_client_dump1(client, UV_DEBUG_PROCESS);
-	close(fd);
-	FD_CLR(fd, &readfds);
 	remove(fd);
 	return 0;
 }

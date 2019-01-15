@@ -47,7 +47,7 @@
 
 static NetworkClient_t *network_client_first = NULL;
 static int server_socketfd_listener;
-fd_set readfds;
+static fd_set readfds;
 
 enum network_protocol network_procotol_version = PROTOCOL_2;
 
@@ -118,6 +118,23 @@ int network_client_add(int fd, callback_handler handler, int notify) {
 }
 
 /*
+ * Close network connection for client.
+ * :param ptr: Indirect reference to client connection object.
+ */
+static void network_client_free(NetworkClient_t **ptr) {
+	NetworkClient_t *client = *ptr;
+	int fd = client->fd;
+
+	FD_CLR(fd, &readfds);
+	shutdown(fd, 2);
+	close(fd);
+
+	*ptr = client->next;
+
+	free(client);
+}
+
+/*
  * Remove network connection for client.
  * :param fd: The per-client socket file descriptor.
  * :returns: 0
@@ -125,13 +142,9 @@ int network_client_add(int fd, callback_handler handler, int notify) {
 static int network_client_del(int fd) {
 	NetworkClient_t **client;
 
-	shutdown(fd, 2);
-
 	for (client = &network_client_first; *client != NULL; client = &((*client)->next))
 		if ((*client)->fd == fd) {
-			NetworkClient_t *found = *client;
-			*client = (*client)->next;
-			free(found);
+			network_client_free(client);
 			break;
 		}
 
