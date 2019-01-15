@@ -954,7 +954,7 @@
 			</para>
 			<para>
 				Automatic account locking must be enabled for each domain controller. To do this,
-				the &ucsUCRV;n <envar>ldap/ppolicy</envar> and <envar>ldap/ppolicy/enabled</envar> must be set to
+				the &ucsUCRV;s <envar>ldap/ppolicy</envar> and <envar>ldap/ppolicy/enabled</envar> must be set to
 				<envar>yes</envar> and the OpenLDAP server must be restarted:
 				<programlisting language="sh">
 ucr set ldap/ppolicy=yes ldap/ppolicy/enabled=yes
