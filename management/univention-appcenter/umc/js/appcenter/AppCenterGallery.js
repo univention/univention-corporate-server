@@ -66,6 +66,8 @@ define([
 			var iconClass;
 			if (item.end_of_life) {
 				iconClass = 'appEndOfLifeIcon';
+			} else if (item.vote_for_app) {
+				iconClass = 'appVoteForApp';
 			} else if (item.update_available) {
 				iconClass = 'appUpdateIcon';
 			}
@@ -99,6 +101,8 @@ define([
 				}
 			} else if (statusIconClass.indexOf('Update') !== -1) {
 				tooltipMessage = _("Update available");
+			} else if (statusIconClass.indexOf('VoteForApp') !== -1) {
+				tooltipMessage = _('Vote for this App to get it into the App Center faster');
 			} else if (statusIconClass.indexOf('RecommendedApp') !== -1) {
 				var message = array.filter(item.rating, function(irating) {
 					return irating.name === 'RecommendedApp';

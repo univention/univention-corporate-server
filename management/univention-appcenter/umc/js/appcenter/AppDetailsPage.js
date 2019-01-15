@@ -176,6 +176,37 @@ define([
 			return this.appLoadingDeferred;
 		},
 
+		getButtons: function() {
+			var buttons = [];
+			if (this.app.canOpenInDomain() && this.app.isInstalled) {
+				buttons.push({
+					name: 'open',
+					label: this.app.getOpenLabel(),
+					defaultButton: true,
+					'class': 'umcAppButton',
+					callback: lang.hitch(this.app, 'open')
+				});
+			} else if (this.app.canInstall() && !this.app.isInstalled) {
+				buttons.push({
+					name: 'install',
+					label: _('Install'),
+					'class': 'umcAppButton',
+					callback: lang.hitch(this.app, 'install')
+				});
+			}
+
+			if (this.app.useShop) {
+				buttons.push({
+					name: 'shop',
+					label: _('Buy'),
+					'class': 'umcAppButton',
+					callback: lang.hitch(this, 'openShop')
+				});
+			}
+			return buttons;
+		},
+
+>>>>>>> 7add9c956e... Bug #48472: Vote for App - Ini attribute, icon in UMC
 		getHeaderButtons: function() {
 			var buttons = [{
 				name: 'close',
