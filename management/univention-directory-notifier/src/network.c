@@ -31,6 +31,8 @@
 #define _GNU_SOURCE
 
 #include <sys/socket.h>
+#include <errno.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <netinet/in.h>
 #include <sys/time.h>
@@ -312,12 +314,17 @@ static int new_connection(int fd, callback_remove_handler remove)
 	struct sockaddr_in client_address;
 	int client_socketfd;
 	socklen_t client_l;
+	int flags;
 
 	client_l= sizeof(client_address);
 
 	if( (client_socketfd = accept(fd, (struct sockaddr*)&client_address, &client_l)) == -1 ) {
 		return 1;
 	}
+
+	flags = fcntl(client_socketfd, F_GETFL);
+	flags |= O_NONBLOCK;
+	fcntl(client_socketfd, F_SETFL, flags);
 
 	FD_SET(client_socketfd, &readfds);
 
@@ -411,6 +418,7 @@ int network_client_dump ( )
 int network_client_check_clients ( unsigned long last_known_id )
 {
 	NetworkClient_t *tmp = network_client_first;
+	int rc;
 	char string[8192];
 	while ( tmp != NULL ) {
 		if ( tmp->notify ) {
@@ -441,11 +449,15 @@ int network_client_check_clients ( unsigned long last_known_id )
 					snprintf(string, sizeof(string), "MSGID: %ld\n%s\n\n",tmp->msg_id,dn_string);
 
 					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "--> %d: [%s]",tmp->fd, string);
-
-					write(tmp->fd, string, strlen(string));
-
+					rc = send(tmp->fd, string, strlen(string), 0);
 					free(dn_string);
-
+					if (rc < 0) {
+						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "Failed send(%d), closing.", tmp->fd);
+						int fd = tmp->fd;
+						tmp = tmp->next;
+						network_client_del(fd);
+						continue;
+					}
 				}
 				tmp->notify=0;
 				tmp->msg_id=0;
@@ -493,8 +505,14 @@ int network_client_all_write ( unsigned long id, char *buf, long l_buf)
 						continue;
 				}
 				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d[%s]\n",tmp->fd, string);
-				rc = write(tmp->fd, string, strlen(string) );
-				//rc = write(tmp->fd, buf, l_buf );
+				rc = send(tmp->fd, string, strlen(string), 0);
+				if (rc < 0) {
+					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "Failed send(%d), closing.", tmp->fd);
+					int fd = tmp->fd;
+					tmp = tmp->next;
+					network_client_del(fd);
+					continue;
+				}
 				tmp->notify=0;
 				tmp->msg_id=0;
 			}
