@@ -284,10 +284,17 @@ msgstr "App-Installationshinweise"
 msgid "App management"
 msgstr "App-Verwaltung"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:634
 #: umc/js/appcenter/AppDetailsPage.js:636
 msgid "App provider"
 msgstr "App-Anbieter"
+=======
+#: umc/js/appcenter/AppDetailsPage.js:628
+#: umc/js/appcenter/AppDetailsPage.js:630
+msgid "Provider"
+msgstr "Anbieter"
+>>>>>>> d1f1ace7a6... Bug #48449: Reduce the amount of additional app information
 
 #: umc/js/appcenter/AppDetailsPage.js:294
 msgid "App settings"

@@ -617,20 +617,15 @@ define([
 				style: {borderSpacing: '1em 0.1em'}
 			});
 			if (this.app.hasMaintainer()) {
-				this.addToDetails(_('Vendor'), 'Vendor');
-				this.addToDetails(_('App provider'), 'Maintainer');
+				this.addToDetails(_('Provider'), 'Maintainer');
 			} else {
-				this.addToDetails(_('App provider'), 'Vendor');
+				this.addToDetails(_('Provider'), 'Vendor');
 			}
 			this.addToDetails(_('Contact'), 'Contact');
-			this.addToDetails(_('More information'), 'Website');
-			this.addToDetails(_('Support'), 'SupportURL');
+			this.addToDetails(_('License'), 'License');
 			this.addToDetails(_('Installed version'), 'Version');
 			this.addToDetails(_('Candidate version'), 'CandidateVersion');
-			this.addToDetails(_('License'), 'License');
-			this.addToDetails(_('Categories'), 'Categories');
-			this.addToDetails(_('End of life'), 'EndOfLife');
-			this.addToDetails(_('Notification'), 'NotifyVendor');
+			this.addToDetails(_('Support'), 'SupportURL');
 
 			domConstruct.create('span', {
 				innerHTML: _('More information'),
