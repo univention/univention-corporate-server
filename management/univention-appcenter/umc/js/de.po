@@ -281,8 +281,8 @@ msgstr "App-Verwaltung"
 
 #: umc/js/appcenter/AppDetailsPage.js:628
 #: umc/js/appcenter/AppDetailsPage.js:630
-msgid "App provider"
-msgstr "App-Anbieter"
+msgid "Provider"
+msgstr "Anbieter"
 
 #: umc/js/appcenter/AppDetailsPage.js:288
 msgid "App settings"
