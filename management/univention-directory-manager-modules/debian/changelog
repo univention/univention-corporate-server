@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.0-3) unstable; urgency=medium
+
+  * Bug #48358: API v2
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 15 Jan 2019 09:54:20 +0100
+
 univention-directory-manager-modules (14.0.0-2) unstable; urgency=medium
 
   * Bug #48343: Write Admin Diary entry when adding a user
