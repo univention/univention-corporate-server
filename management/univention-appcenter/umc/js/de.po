@@ -2,8 +2,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
+<<<<<<< HEAD
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-01-15 15:34+0100\n"
+=======
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2019-01-12 10:01+0100\n"
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -28,8 +33,12 @@ msgstr ""
 msgid "%(name)s only supports %(supported)s as architecture. %(msg)s"
 msgstr "%(name)s unterstützt nur die Architektur %(supported)s. %(msg)s"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/requirements.js:291 umc/js/appcenter/AppDetailsPage.js:1182
 #, python-format
+=======
+#: umc/js/appcenter/requirements.js:291 umc/js/appcenter/AppDetailsPage.js:1178
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid ""
 "%(name)s uses a container technology for enhanced security and compatibility."
 msgstr ""
@@ -127,8 +136,13 @@ msgstr ""
 msgid "%s: Configuring"
 msgstr "%s: Konfiguriere"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:965
 #, python-format
+=======
+#: umc/js/appcenter/AppDetailsPage.js:961
+#, javascript-format
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "%s: Performing software tests on involved systems"
 msgstr "%s: Führe Softwaretests auf den beteiligten Systemen durch"
 
@@ -195,8 +209,13 @@ msgstr ""
 msgid "A file is present."
 msgstr "Eine Datei ist vorhanden."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:1175
 #, python-format
+=======
+#: umc/js/appcenter/AppDetailsPage.js:1171
+#, javascript-format
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "A module for the administration of the app is available: %s."
 msgstr "Ein Modul zur Administration dieser App steht zur Verfügung: %s."
 
@@ -204,7 +223,11 @@ msgstr "Ein Modul zur Administration dieser App steht zur Verfügung: %s."
 msgid "A version without a container technology is or was installed."
 msgstr "Eine Version ohne Container-Technologie ist oder war installiert."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:734
+=======
+#: umc/js/appcenter/AppDetailsPage.js:730
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Accept license"
 msgstr "Lizenz akzeptieren"
 
@@ -219,7 +242,11 @@ msgstr ""
 "Aktivierung is nicht möglich. Bitte als Administrator auf dem DC Master "
 "einloggen."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:1068
+=======
+#: umc/js/appcenter/AppDetailsPage.js:1064
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Activation of UCS"
 msgstr "UCS-Aktivierung"
 
@@ -251,8 +278,12 @@ msgstr "Nach dem Speichern wird die Datei gelöscht werden."
 msgid "After saving, the new file will be uploaded."
 msgstr "Nach dem Speichern wird die neue Datei hochgeladen werden."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:1072
 #, python-format
+=======
+#: umc/js/appcenter/AppDetailsPage.js:1068
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "After that you can \"%(action)s\" \"%(app)s\" here on this system."
 msgstr "Danach können Sie \"%(app)s\" hier auf diesem System \"%(action)s\"."
 
@@ -265,6 +296,7 @@ msgstr "Alle"
 msgid "An unknown error with code %d occurred."
 msgstr "Es ist ein unbekannter Fehler mit Code %d aufgetreten."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/requirements.js:85 umc/js/appcenter/AppDetailsPage.js:1090
 msgid "Another package operation is in progress."
 msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt."
@@ -297,11 +329,33 @@ msgstr "Anbieter"
 >>>>>>> d1f1ace7a6... Bug #48449: Reduce the amount of additional app information
 
 #: umc/js/appcenter/AppDetailsPage.js:294
+=======
+#: umc/js/appcenter/requirements.js:85 umc/js/appcenter/AppDetailsPage.js:1086
+msgid "Another package operation is in progress."
+msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt."
+
+#: umc/js/appcenter/AppDetailsPage.js:649
+msgid "App Rating"
+msgstr "App-Rating"
+
+#: umc/js/appcenter/AppDetailsPage.js:856
+msgid "App installation notes"
+msgstr "App-Installationshinweise"
+
+#: umc/js/appcenter/AppCenterPage.js:64
+#: umc/js/appcenter/AppChooseHostDialog.js:47
+#: umc/js/appcenter/AppDetailsPage.js:86 umc/js/appcenter/AppConfigDialog.js:53
+#: umc/js/appcenter/AppDetailsDialog.js:62
+msgid "App management"
+msgstr "App-Verwaltung"
+
+#: umc/js/appcenter/AppDetailsPage.js:279
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "App settings"
 msgstr "App-Einstellungen"
 
-#: umc/js/appcenter/SettingsPage.js:93 umc/js/appcenter/AppConfigDialog.js:76
-#: umc/js/appcenter/DetailsPage.js:65
+#: umc/js/appcenter/DetailsPage.js:65 umc/js/appcenter/SettingsPage.js:93
+#: umc/js/appcenter/AppConfigDialog.js:76
 msgid "Apply changes"
 msgstr "Änderungen anwenden"
 
@@ -332,7 +386,11 @@ msgstr "Autostart"
 msgid "Available"
 msgstr "Verfügbar"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:1245
+=======
+#: umc/js/appcenter/AppDetailsPage.js:1241
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Available support options"
 msgstr "Verfügbare Supportoptionen"
 
@@ -352,14 +410,30 @@ msgstr ""
 "Führen Sie den folgenden Befehl als root auf den diesen Backup-Servern aus, "
 "<em>nachdem</em> Sie die Applikation auf diesem System installiert haben."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:207
 msgid "Buy"
 msgstr "Kaufen"
 
 #: umc/js/appcenter/SettingsPage.js:304 umc/js/appcenter/AppDetailsDialog.js:94
+=======
+#: umc/js/appcenter/AppDetailsPage.js:603
+msgid "Buy now"
+msgstr "Jetzt kaufen"
+
+#: umc/js/appcenter/AppDetailsPage.js:597
+msgid "Buy in App Center"
+msgstr "Im App Center kaufen"
+
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 #: umc/js/appcenter/AppChooseHostDialog.js:81
+#: umc/js/appcenter/AppDetailsPage.js:796 umc/js/appcenter/SettingsPage.js:304
 #: umc/js/appcenter/PackagesPage.js:418 umc/js/appcenter/PackagesPage.js:427
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:800
+=======
+#: umc/js/appcenter/AppDetailsDialog.js:94
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -367,11 +441,12 @@ msgstr "Abbrechen"
 msgid "Cancel configuration"
 msgstr "Konfiguration abbrechen"
 
-#: umc/js/appcenter/AppDetailsDialog.js:87
 #: umc/js/appcenter/AppChooseHostDialog.js:55
+#: umc/js/appcenter/AppDetailsDialog.js:87
 msgid "Cancel installation"
 msgstr "Installation abbrechen"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/PackagesPage.js:322 umc/js/appcenter/AppDetailsPage.js:642
 msgid "Candidate version"
 msgstr "Verfügbare Version"
@@ -382,6 +457,13 @@ msgstr "Kategorien"
 
 #: umc/js/appcenter/AppDetailsPage.js:1300
 #, python-format
+=======
+#: umc/js/appcenter/PackagesPage.js:322
+msgid "Candidate version"
+msgstr "Verfügbare Version"
+
+#: umc/js/appcenter/AppDetailsPage.js:1296
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid ""
 "Click on \"%(button)s\" if you want to continue running this application at "
 "your own risk."
@@ -389,11 +471,15 @@ msgstr ""
 "Klicken Sie auf \"%(button)s\", falls Sie die Applikation weiterhin auf "
 "eigenes Risiko verwenden möchten."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/PackagesPage.js:235 umc/js/appcenter/AppDetailsPage.js:842
+=======
+#: umc/js/appcenter/AppDetailsPage.js:838 umc/js/appcenter/PackagesPage.js:235
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Close"
 msgstr "Schließen"
 
-#: umc/js/appcenter/SettingsPage.js:203 umc/js/appcenter/DetailsPage.js:86
+#: umc/js/appcenter/DetailsPage.js:86 umc/js/appcenter/SettingsPage.js:203
 msgid "Component name"
 msgstr "Name der Komponente"
 
@@ -406,6 +492,7 @@ msgstr "Komponenten"
 msgid "Configure %s"
 msgstr "Konfiguriere %s"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:638
 msgid "Contact"
 msgstr "Kontakt"
@@ -417,6 +504,19 @@ msgstr "Fortfahren"
 
 #: umc/js/appcenter/AppDetailsPage.js:281
 #: umc/js/appcenter/AppDetailsPage.js:1300
+=======
+#: umc/js/appcenter/AppDetailsPage.js:627
+msgid "Contact"
+msgstr "Kontakt"
+
+#: umc/js/appcenter/AppCenterPage.js:133 umc/js/appcenter/AppDetailsPage.js:819
+#: umc/js/appcenter/AppDetailsPage.js:875
+msgid "Continue"
+msgstr "Fortfahren"
+
+#: umc/js/appcenter/AppDetailsPage.js:266
+#: umc/js/appcenter/AppDetailsPage.js:1296
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Continue using"
 msgstr "Weiterhin nutzen"
 
@@ -432,7 +532,11 @@ msgstr "Datei löschen"
 msgid "Delete the selected component definition"
 msgstr "Diese Komponente löschen"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:867
+=======
+#: umc/js/appcenter/AppDetailsPage.js:863
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid ""
 "Depending on your internet connection and on your server performance, the "
 "download and the App installation may take up to 15 minutes"
@@ -445,10 +549,13 @@ msgstr ""
 msgid "Description"
 msgstr "Beschreibung"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:571
 msgid "Details"
 msgstr "Details"
 
+=======
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 #: umc/js/appcenter/PackagesPage.js:200
 #, python-format
 msgid "Details for package '%(package)s'"
@@ -470,7 +577,11 @@ msgstr "Diese Komponente deaktivieren"
 msgid "Disabled"
 msgstr "Deaktiviert"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppCenterPage.js:127 umc/js/appcenter/AppDetailsPage.js:873
+=======
+#: umc/js/appcenter/AppCenterPage.js:127 umc/js/appcenter/AppDetailsPage.js:869
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Do not show this message again"
 msgstr "Diese Nachricht nicht wieder anzeigen"
 
@@ -479,7 +590,11 @@ msgstr "Diese Nachricht nicht wieder anzeigen"
 msgid "Do you really want to %(verb)s %(ids)s?"
 msgstr "Möchten Sie %(ids)s wirklich %(verb)s?"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:1167
+=======
+#: umc/js/appcenter/AppDetailsPage.js:1163
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Domain administration"
 msgstr "Domänenadministration"
 
@@ -500,16 +615,24 @@ msgstr "Detailinformation über diese Komponente bearbeiten"
 msgid "Enable"
 msgstr "Aktivieren"
 
-#: umc/js/appcenter/SettingsPage.js:141 umc/js/appcenter/DetailsPage.js:81
+#: umc/js/appcenter/DetailsPage.js:81 umc/js/appcenter/SettingsPage.js:141
 msgid "Enable this component"
 msgstr "Diese Komponente aktivieren"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:396
 #: umc/js/appcenter/AppDetailsPage.js:645
 msgid "End of life"
 msgstr "Ende der Produktpflege"
 
 #: umc/js/appcenter/AppDetailsPage.js:1001
+=======
+#: umc/js/appcenter/AppDetailsPage.js:380
+msgid "End of life"
+msgstr "Ende der Produktpflege"
+
+#: umc/js/appcenter/AppDetailsPage.js:997
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Error performing the action"
 msgstr "Ein Fehler trat während der Aktion auf"
 
@@ -518,7 +641,11 @@ msgstr "Ein Fehler trat während der Aktion auf"
 msgid "File will be uploaded to %s."
 msgstr "Datei wird nach %s hochgeladen."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:466
+=======
+#: umc/js/appcenter/AppDetailsPage.js:483
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "First steps"
 msgstr "Erste Schritte"
 
@@ -530,9 +657,15 @@ msgstr ""
 "Für die Installation dieser Applikation ist ein UCS-Lizenzschlüssel mit "
 "Schlüsselidentifikation (Key-ID) notwendig."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:1122
 #: umc/js/appcenter/AppDetailsPage.js:1126
 #, python-format
+=======
+#: umc/js/appcenter/AppDetailsPage.js:1118
+#: umc/js/appcenter/AppDetailsPage.js:1122
+#, javascript-format
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid ""
 "Further information can be found in the following log file on each of the "
 "involved systems: %s"
@@ -548,8 +681,13 @@ msgstr "Allgemeine Repository-Einstellungen"
 msgid "Host for installation of application"
 msgstr "Rechner für die Installation der Applikation"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:1120
 #, python-format
+=======
+#: umc/js/appcenter/AppDetailsPage.js:1116
+#, javascript-format
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid ""
 "If everything else went correct and this is just a temporary network "
 "problem, you should execute %s as root on that backup system."
@@ -566,6 +704,7 @@ msgstr ""
 "Um mit der installation von %s fortfahren zu können, muss der Rechner für "
 "die Installation der Applikation ausgewählt werden."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/SettingsPage.js:163 umc/js/appcenter/PackagesPage.js:86
 #: umc/js/appcenter/PackagesPage.js:241 umc/js/appcenter/AppDetailsPage.js:198
 #: umc/js/appcenter/AppDetailsPage.js:256
@@ -576,6 +715,18 @@ msgstr "Installieren"
 
 #: umc/js/appcenter/AppDetailsPage.js:735
 #: umc/js/appcenter/AppDetailsPage.js:777
+=======
+#: umc/js/appcenter/AppDetailsPage.js:192
+#: umc/js/appcenter/AppDetailsPage.js:241
+#: umc/js/appcenter/AppDetailsPage.js:731
+#: umc/js/appcenter/AppDetailsPage.js:904 umc/js/appcenter/SettingsPage.js:163
+#: umc/js/appcenter/PackagesPage.js:86 umc/js/appcenter/PackagesPage.js:241
+msgid "Install"
+msgstr "Installieren"
+
+#: umc/js/appcenter/AppDetailsPage.js:731
+#: umc/js/appcenter/AppDetailsPage.js:773
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Install Information"
 msgstr "Informationen zur Installation"
 
@@ -594,8 +745,13 @@ msgid "Install them first."
 msgstr "Installieren Sie diese zuerst."
 
 #: umc/js/appcenter/AppChooseHostDialog.js:64
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:909
 #, python-format
+=======
+#: umc/js/appcenter/AppDetailsPage.js:905
+#, javascript-format
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Installation of %s"
 msgstr "Installation von %s"
 
@@ -603,8 +759,13 @@ msgstr "Installation von %s"
 msgid "Installation status"
 msgstr "Paketstatus"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppCenterPage.js:174 umc/js/appcenter/SettingsPage.js:238
 #: umc/js/appcenter/AppDetailsPage.js:394
+=======
+#: umc/js/appcenter/AppCenterPage.js:174 umc/js/appcenter/AppDetailsPage.js:378
+#: umc/js/appcenter/SettingsPage.js:238
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Installed"
 msgstr "Installiert"
 
@@ -612,7 +773,11 @@ msgstr "Installiert"
 msgid "Installed in domain"
 msgstr "Installiert in der Domäne"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/PackagesPage.js:321 umc/js/appcenter/AppDetailsPage.js:641
+=======
+#: umc/js/appcenter/AppDetailsPage.js:629 umc/js/appcenter/PackagesPage.js:321
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Installed version"
 msgstr "Installierte Version"
 
@@ -620,6 +785,7 @@ msgstr "Installierte Version"
 msgid "Installing"
 msgstr "Installiere"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:914
 #, python-format
 msgid "Installing %(name)s on host %(host)s"
@@ -632,6 +798,19 @@ msgstr "Installiere %s auf diesem Rechner"
 
 #: umc/js/appcenter/AppDetailsPage.js:1118
 #, python-format
+=======
+#: umc/js/appcenter/AppDetailsPage.js:910
+msgid "Installing %(name)s on host %(host)s"
+msgstr "Installiere %(name)s auf Rechner %(host)s"
+
+#: umc/js/appcenter/AppDetailsPage.js:907
+#, javascript-format
+msgid "Installing %s on this host"
+msgstr "Installiere %s auf diesem Rechner"
+
+#: umc/js/appcenter/AppDetailsPage.js:1114
+#, javascript-format
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Installing the extension of the LDAP schema on %s seems to have failed."
 msgstr ""
 "Die Installation der Schemaerweiterung für LDAP auf %s scheint "
@@ -675,6 +854,7 @@ msgid "Let us know if you you miss any application in Univention App Center!"
 msgstr ""
 "Teilen Sie uns mit, welche Anwendung Sie im Univention App Center vermissen!"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:643
 msgid "License"
 msgstr "Lizenz"
@@ -689,6 +869,22 @@ msgid "Manage domain wide installations"
 msgstr "Installationen in der Domäne verwalten"
 
 #: umc/js/appcenter/AppDetailsPage.js:492
+=======
+#: umc/js/appcenter/AppDetailsPage.js:628
+msgid "License"
+msgstr "Lizenz"
+
+#: umc/js/appcenter/AppDetailsPage.js:730
+#: umc/js/appcenter/AppDetailsPage.js:838
+msgid "License agreement"
+msgstr "Lizenzbestimmungen"
+
+#: umc/js/appcenter/AppDetailsPage.js:527
+msgid "Manage domain wide installations"
+msgstr "Installationen in der Domäne verwalten"
+
+#: umc/js/appcenter/AppDetailsPage.js:507
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Manage local installation"
 msgstr "Installation lokal verwalten"
 
@@ -698,8 +894,12 @@ msgstr "Installation lokal verwalten"
 msgid "More"
 msgstr "Mehr"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:625
 #: umc/js/appcenter/AppDetailsPage.js:639
+=======
+#: umc/js/appcenter/AppDetailsPage.js:633
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "More information"
 msgstr "Weitere Informationen"
 
@@ -711,7 +911,11 @@ msgstr "Weitere Informationen..."
 msgid "Next"
 msgstr "Weiter"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:241
+=======
+#: umc/js/appcenter/AppDetailsPage.js:226
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Next app"
 msgstr "Nächste App"
 
@@ -732,7 +936,11 @@ msgstr "Es sind keine Software-Änderungen notwendig."
 msgid "No software changes on %s necessary."
 msgstr "Es sind keine Software-Änderungen auf %s notwendig."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:1243
+=======
+#: umc/js/appcenter/AppDetailsPage.js:1239
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "No support option provided"
 msgstr "Keine Supportoption verfügbar"
 
@@ -744,10 +952,13 @@ msgstr "Nicht alle Rechner sind in der Auswahl zugelassen"
 msgid "Not found"
 msgstr "Nicht gefunden"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:646
 msgid "Notification"
 msgstr "Benachrichtigung"
 
+=======
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 #: umc/js/appcenter/PackagesPage.js:55
 msgid ""
 "On this page, you see all software packages available on your system, and "
@@ -816,49 +1027,80 @@ msgstr "Passwort"
 msgid "Permission denied"
 msgstr "Zugriff verweigert"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:913
 #, python-format
+=======
+#: umc/js/appcenter/AppDetailsPage.js:909
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Please confirm to install the application %(name)s on host %(host)s."
 msgstr ""
 "Bitte bestätigen Sie die Installation der Applikation %(name)s auf Rechner "
 "%(host)s"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:910
 #, python-format
+=======
+#: umc/js/appcenter/AppDetailsPage.js:906
+#, javascript-format
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Please confirm to install the application %s on this host."
 msgstr ""
 "Bitte bestätigen Sie die Installation der Applikation %s auf diesem Rechner."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:923
 #, python-format
+=======
+#: umc/js/appcenter/AppDetailsPage.js:919
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid ""
 "Please confirm to uninstall the application %(name)s from host %(host)s."
 msgstr ""
 "Bitte bestätigen Sie die Deinstallation der Applikation %(name)s auf Rechner "
 "%(host)s."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:920
 #, python-format
+=======
+#: umc/js/appcenter/AppDetailsPage.js:916
+#, javascript-format
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Please confirm to uninstall the application %s on this host."
 msgstr ""
 "Bitte bestätigen Sie die Deinstallation der Applikation %s auf diesem "
 "Rechner."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:933
 #, python-format
+=======
+#: umc/js/appcenter/AppDetailsPage.js:929
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Please confirm to upgrade the application %(name)s on host %(host)s."
 msgstr ""
 "Bitte bestätigen Sie die Aktualisierung der Applikation %(name)s auf Rechner "
 "%(host)s."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:930
 #, python-format
+=======
+#: umc/js/appcenter/AppDetailsPage.js:926
+#, javascript-format
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Please confirm to upgrade the application %s on this host."
 msgstr ""
 "Bitte bestätigen Sie die Aktualisierung der Applikation %s auf diesem "
 "Rechner."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:1247
+=======
+#: umc/js/appcenter/AppDetailsPage.js:1243
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Please contact the provider of the application"
 msgstr "Bitte kontaktieren Sie den Anbieter der Applikation"
 
@@ -870,7 +1112,11 @@ msgstr "Bitte korrigieren Sie die betreffenden Eingabefelder."
 msgid "Please enter the details for the new component."
 msgstr "Bitte geben Sie die Details für die neue Komponente ein."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:234
+=======
+#: umc/js/appcenter/AppDetailsPage.js:219
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Previous app"
 msgstr "Vorherige App"
 
@@ -878,12 +1124,22 @@ msgstr "Vorherige App"
 msgid "Priority"
 msgstr "Priorität"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:175
 msgid "Quick and easy – your ballot has been cast."
 msgstr "So fix geht's – schon zählt Ihre Stimme."
 
 #: umc/js/appcenter/AppDetailsPage.js:1215
 #: umc/js/appcenter/AppDetailsPage.js:1221
+=======
+#: umc/js/appcenter/AppDetailsPage.js:623
+#: umc/js/appcenter/AppDetailsPage.js:625
+msgid "Provider"
+msgstr "Anbieter"
+
+#: umc/js/appcenter/AppDetailsPage.js:1211
+#: umc/js/appcenter/AppDetailsPage.js:1217
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Read license agreement"
 msgstr "Lizenzbestimmungen lesen"
 
@@ -909,8 +1165,13 @@ msgstr ""
 "wird beim nächsten Öffnen des Moduls wiederholt werden. Es kann zu Problemen "
 "bei der Installation von Applikationen kommen."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:919
 #, python-format
+=======
+#: umc/js/appcenter/AppDetailsPage.js:915
+#, javascript-format
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Removal of %s"
 msgstr "Deinstallation von %s"
 
@@ -918,11 +1179,11 @@ msgstr "Deinstallation von %s"
 msgid "Repository Settings"
 msgstr "Repository-Einstellungen"
 
-#: umc/js/appcenter/SettingsPage.js:68 umc/js/appcenter/DetailsPage.js:101
+#: umc/js/appcenter/DetailsPage.js:101 umc/js/appcenter/SettingsPage.js:68
 msgid "Repository prefix"
 msgstr "Repository-Präfix"
 
-#: umc/js/appcenter/SettingsPage.js:64 umc/js/appcenter/DetailsPage.js:96
+#: umc/js/appcenter/DetailsPage.js:96 umc/js/appcenter/SettingsPage.js:64
 msgid "Repository server"
 msgstr "Repository-Server"
 
@@ -950,7 +1211,11 @@ msgstr "Suche..."
 msgid "Section"
 msgstr "Kategorie"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:520
+=======
+#: umc/js/appcenter/AppDetailsPage.js:535
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Server"
 msgstr "Server"
 
@@ -982,7 +1247,11 @@ msgstr "Manuell gestartet"
 msgid "Starting is prevented"
 msgstr "Start wird verhindert"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/SettingsPage.js:225 umc/js/appcenter/AppDetailsPage.js:523
+=======
+#: umc/js/appcenter/AppDetailsPage.js:538 umc/js/appcenter/SettingsPage.js:225
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Status"
 msgstr "Status"
 
@@ -998,7 +1267,11 @@ msgstr "Neue App vorschlagen"
 msgid "Summary"
 msgstr "Zusammenfassung"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:640
+=======
+#: umc/js/appcenter/AppDetailsPage.js:630
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Support"
 msgstr "Support"
 
@@ -1006,7 +1279,11 @@ msgstr "Support"
 msgid "Support Docker Apps"
 msgstr "Docker Apps unterstützen"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:1225
+=======
+#: umc/js/appcenter/AppDetailsPage.js:1221
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid ""
 "The App does not provide any information about the license. Please contact "
 "the App provider for further details."
@@ -1014,8 +1291,13 @@ msgstr ""
 "Die App stellt keine Informationen zur Lizenz bereit. Bitte kontaktieren Sie "
 "den App-Anbieter für weitere Einzelheiten."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:1179
 #, python-format
+=======
+#: umc/js/appcenter/AppDetailsPage.js:1175
+#, javascript-format
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "The app provides a web interface: %s."
 msgstr "Die App bietet ein Webinterface: %s."
 
@@ -1087,13 +1369,13 @@ msgstr ""
 "Folgende Hosts konnten nicht erreicht werden oder haben ihrerseits keinen "
 "Zugriff auf den App Center-Server:"
 
-#: umc/js/appcenter/AppDetailsDialog.js:278
 #: umc/js/appcenter/PackagesPage.js:399
+#: umc/js/appcenter/AppDetailsDialog.js:278
 msgid "The following packages will be installed or upgraded:"
 msgstr "Folgende Pakete werden installiert bzw. aktualisiert:"
 
-#: umc/js/appcenter/AppDetailsDialog.js:279
 #: umc/js/appcenter/PackagesPage.js:403
+#: umc/js/appcenter/AppDetailsDialog.js:279
 msgid "The following packages will be removed:"
 msgstr "Folgende Pakete werden deinstalliert:"
 
@@ -1102,7 +1384,11 @@ msgstr "Folgende Pakete werden deinstalliert:"
 msgid "The following software changes on %s will be applied: "
 msgstr "Die folgenden Software-Änderungen werden auf %s angewendet: "
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:1002
+=======
+#: umc/js/appcenter/AppDetailsPage.js:998
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid ""
 "The requested action cannot be carried out. Please consider the information "
 "listed below in order to resolve the problem and try again."
@@ -1157,7 +1443,11 @@ msgstr ""
 "entsprechenden Komponenten im Tab \"%s\" des App Centers zeitweise "
 "deaktiviert werden."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:866
+=======
+#: umc/js/appcenter/AppDetailsPage.js:862
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid ""
 "This App uses a container technology. Containers have to be downloaded once. "
 "After that they can be used multiple times."
@@ -1170,7 +1460,11 @@ msgstr ""
 msgid "This application requires an extension of the LDAP schema."
 msgstr "Diese Applikation erfordert eine Erweiterung des LDAP Schemas."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:1290
+=======
+#: umc/js/appcenter/AppDetailsPage.js:1286
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid ""
 "This application will inform the App provider about an (un)installation. The "
 "app provider may contact you."
@@ -1182,9 +1476,14 @@ msgstr ""
 msgid "This application will not get any further updates."
 msgstr "Diese Applikation wird keine weiteren Aktualisierungen erhalten."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppCenterGallery.js:98
 #: umc/js/appcenter/AppDetailsPage.js:1298
 #, python-format
+=======
+#: umc/js/appcenter/AppDetailsPage.js:1294
+#: umc/js/appcenter/AppCenterGallery.js:96
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid ""
 "This application will not get any further updates. We suggest to uninstall "
 "%(app)s and search for an alternative application."
@@ -1192,7 +1491,11 @@ msgstr ""
 "Diese Applikation wird keine weiteren Aktualisierungen erhalten. Wir "
 "empfehlen, %(app)s zu deinstallieren und alternative Software zu suchen."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:1292
+=======
+#: umc/js/appcenter/AppDetailsPage.js:1288
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid ""
 "This application will not inform the App provider about an (un)installation "
 "directly."
@@ -1215,8 +1518,8 @@ msgstr ""
 "Diese Modul zeigt alle Repository-Einstellungen, die für dieses System "
 "definiert sind."
 
-#: umc/js/appcenter/AppDetailsDialog.js:280
 #: umc/js/appcenter/PackagesPage.js:407
+#: umc/js/appcenter/AppDetailsDialog.js:280
 msgid ""
 "This operation causes problems in the following packages that cannot be "
 "resolved:"
@@ -1224,8 +1527,13 @@ msgstr ""
 "Die Aktion führt bei folgenden Paketen zu nicht automatisch behebbaren "
 "Problemen:"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:1060
 #, python-format
+=======
+#: umc/js/appcenter/AppDetailsPage.js:1056
+#, javascript-format
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid ""
 "To do this please log in as %s and repeat the steps taken until this dialog. "
 "You will be guided through the installation."
@@ -1233,8 +1541,12 @@ msgstr ""
 "Melden Sie sich dazu bitte als %s an und wiederholen Sie alle Schritte bis "
 "zu diesem Dialog. Sie werden durch die Installation geführt werden."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:1071
 #, python-format
+=======
+#: umc/js/appcenter/AppDetailsPage.js:1067
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid ""
 "To do this please log in on %(host)s as an administrator. Open the menu in "
 "the top right corner of the screen and choose \"License\" > \"%(dialogName)s"
@@ -1245,6 +1557,7 @@ msgstr ""
 "\"Lizenz\" > \"%(dialogName)s\" aus. Dort können Sie eine neue Lizenz "
 "anfordern."
 
+<<<<<<< HEAD
 #: umc/js/appcenter/PackagesPage.js:99 umc/js/appcenter/PackagesPage.js:250
 #: umc/js/appcenter/AppDetailsPage.js:315
 #: umc/js/appcenter/AppDetailsPage.js:721
@@ -1254,6 +1567,17 @@ msgstr "Deinstallieren"
 
 #: umc/js/appcenter/AppDetailsPage.js:721
 #: umc/js/appcenter/AppDetailsPage.js:724
+=======
+#: umc/js/appcenter/AppDetailsPage.js:300
+#: umc/js/appcenter/AppDetailsPage.js:717
+#: umc/js/appcenter/AppDetailsPage.js:914 umc/js/appcenter/PackagesPage.js:99
+#: umc/js/appcenter/PackagesPage.js:250
+msgid "Uninstall"
+msgstr "Deinstallieren"
+
+#: umc/js/appcenter/AppDetailsPage.js:717
+#: umc/js/appcenter/AppDetailsPage.js:720
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Uninstall Information"
 msgstr "Informationen zur Deinstallation"
 
@@ -1266,6 +1590,7 @@ msgstr "Deinstallieren Sie diese zuerst."
 msgid "Uninstalling"
 msgstr "Deinstalliere"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:924
 #, python-format
 msgid "Uninstalling %(name)s from host %(host)s"
@@ -1273,6 +1598,14 @@ msgstr "Deinstalliere %(name)s von Rechner %(host)s"
 
 #: umc/js/appcenter/AppDetailsPage.js:921
 #, python-format
+=======
+#: umc/js/appcenter/AppDetailsPage.js:920
+msgid "Uninstalling %(name)s from host %(host)s"
+msgstr "Deinstalliere %(name)s von Rechner %(host)s"
+
+#: umc/js/appcenter/AppDetailsPage.js:917
+#, javascript-format
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Uninstalling %s from this host"
 msgstr "Deinstalliere %s von diesem Rechner"
 
@@ -1290,6 +1623,7 @@ msgstr "Univention App Center"
 msgid "Unknown"
 msgstr "Unbekannt"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppCenterGallery.js:103
 #: umc/js/appcenter/AppDetailsPage.js:414
 msgid "Update available"
@@ -1313,6 +1647,31 @@ msgstr "Informationen zur Aktualisierung"
 
 #: umc/js/appcenter/AppDetailsPage.js:929
 #, python-format
+=======
+#: umc/js/appcenter/AppDetailsPage.js:398
+#: umc/js/appcenter/AppCenterGallery.js:101
+msgid "Update available"
+msgstr "Aktualisierung verfügbar"
+
+#: umc/js/appcenter/AppDetailsPage.js:1152 umc/js/appcenter/PackagesPage.js:487
+msgid "Updating session and module data..."
+msgstr "Aktualisiere Sitzungs- und Moduldaten..."
+
+#: umc/js/appcenter/AppDetailsPage.js:320
+#: umc/js/appcenter/AppDetailsPage.js:782
+#: umc/js/appcenter/AppDetailsPage.js:924 umc/js/appcenter/PackagesPage.js:112
+#: umc/js/appcenter/PackagesPage.js:259
+msgid "Upgrade"
+msgstr "Aktualisieren"
+
+#: umc/js/appcenter/AppDetailsPage.js:782
+#: umc/js/appcenter/AppDetailsPage.js:785
+msgid "Upgrade Information"
+msgstr "Informationen zur Aktualisierung"
+
+#: umc/js/appcenter/AppDetailsPage.js:925
+#, javascript-format
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Upgrade of %s"
 msgstr "Aktualisierung von %s"
 
@@ -1325,6 +1684,7 @@ msgstr "Aktualisierung auf %s verfügbar"
 msgid "Upgrading"
 msgstr "Aktualisiere"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:934
 #, python-format
 msgid "Upgrading %(name)s on host %(host)s"
@@ -1332,6 +1692,14 @@ msgstr "Aktualisiere %(name)s auf Rechner %(host)s"
 
 #: umc/js/appcenter/AppDetailsPage.js:931
 #, python-format
+=======
+#: umc/js/appcenter/AppDetailsPage.js:930
+msgid "Upgrading %(name)s on host %(host)s"
+msgstr "Aktualisiere %(name)s auf Rechner %(host)s"
+
+#: umc/js/appcenter/AppDetailsPage.js:927
+#, javascript-format
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Upgrading %s on this host"
 msgstr "Aktualisiere %s auf diesem Rechner"
 
@@ -1339,7 +1707,7 @@ msgstr "Aktualisiere %s auf diesem Rechner"
 msgid "Upload file"
 msgstr "Datei hochladen"
 
-#: umc/js/appcenter/SettingsPage.js:72 umc/js/appcenter/DetailsPage.js:106
+#: umc/js/appcenter/DetailsPage.js:106 umc/js/appcenter/SettingsPage.js:72
 msgid "Use unmaintained repositories"
 msgstr "'Unmaintained' Repositories benutzen"
 
@@ -1347,8 +1715,13 @@ msgstr "'Unmaintained' Repositories benutzen"
 msgid "Username"
 msgstr "Benutzername"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:1171
 #, python-format
+=======
+#: umc/js/appcenter/AppDetailsPage.js:1167
+#, javascript-format
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Users need to be modified in the %s in order to use this service."
 msgstr "Benutzer müssen in der %s für diesen Dienst freigeschaltet werden."
 
@@ -1362,7 +1735,11 @@ msgstr ""
 "werden<br/>Da es auch ein temporäres Problem des betreffenden Servers sein "
 "kann, wurden Ihre Eingaben trotzdem gespeichert.<br/>Das Problem ist:"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:633
+=======
+#: umc/js/appcenter/AppDetailsPage.js:622
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid "Vendor"
 msgstr "Hersteller"
 
@@ -1409,8 +1786,13 @@ msgstr ""
 msgid "You cannot continue"
 msgstr "Fortfahren nicht möglich"
 
+<<<<<<< HEAD
 #: umc/js/appcenter/AppDetailsPage.js:1059
 #: umc/js/appcenter/AppDetailsPage.js:1070
+=======
+#: umc/js/appcenter/AppDetailsPage.js:1055
+#: umc/js/appcenter/AppDetailsPage.js:1066
+>>>>>>> e2d3b7da1c... Bug #48449: Move the buy-button to the sidebar
 msgid ""
 "You need to request and install a new license in order to use the Univention "
 "App Center."
@@ -1507,6 +1889,9 @@ msgstr "{0} Pakete werden deinstalliert"
 #~ msgid "After saving, the file length will be %d bytes"
 #~ msgstr "Nach dem Speichern wird die Dateigröße %d Bytes sein."
 
+#~ msgid "Categories"
+#~ msgstr "Kategorien"
+
 #~ msgid "Current file length is %d bytes."
 #~ msgstr "Aktuelle Dateigröße ist %d Bytes."
 
@@ -1524,6 +1909,9 @@ msgstr "{0} Pakete werden deinstalliert"
 #~ "Fall wird bei der Benachrichtigung die Key-ID an Univention mitgeschickt. "
 #~ "Der Applikationshersteller erhält daraufhin eine Nachricht von Univention "
 #~ "mit folgenden Informationen:"
+
+#~ msgid "Details"
+#~ msgstr "Details"
 
 #~ msgid "Extended software management"
 #~ msgstr "Erweiterte Software-Verwaltung"
@@ -1558,6 +1946,9 @@ msgstr "{0} Pakete werden deinstalliert"
 
 #~ msgid "Name of the installed application"
 #~ msgstr "Name der soeben installierten Applikation"
+
+#~ msgid "Notification"
+#~ msgstr "Benachrichtigung"
 
 #~ msgid "Pattern"
 #~ msgstr "Suchbegriff"
