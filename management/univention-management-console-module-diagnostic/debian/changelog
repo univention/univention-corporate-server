@@ -1,4 +1,4 @@
-univention-management-console-module-diagnostic (5.0.1-4) unstable; urgency=medium
+univention-management-console-module-diagnostic (5.0.1-5) unstable; urgency=medium
 
   * Bug #48477: fixed 44_well_known_sid_check.py
 
