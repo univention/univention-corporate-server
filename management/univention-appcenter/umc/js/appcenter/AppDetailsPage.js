@@ -608,7 +608,7 @@ define([
 
 			domConstruct.create('span', {
 				innerHTML: _('Buy in App Center'),
-				'class': 'mainHeader'
+				'class': 'mainHeader iconHeaderBuy'
 			}, appBuyContainer.domNode);
 
 			var buy_button = new Button({
@@ -644,7 +644,7 @@ define([
 
 			domConstruct.create('span', {
 				innerHTML: _('More information'),
-				'class': 'mainHeader'
+				'class': 'mainHeader iconHeaderInfo'
 			}, appDetailsContainer.domNode);
 			domConstruct.place(this._detailsTable, appDetailsContainer.domNode);
 		},
@@ -658,7 +658,7 @@ define([
 
 			domConstruct.create('span', {
 				innerHTML: _('App Center Badges'),
-				'class': 'mainHeader'
+				'class': 'mainHeader iconHeaderBadges',
 			}, appBadgeContainer.domNode);
 
 			array.forEach(this.app.rating, function(rating) {
