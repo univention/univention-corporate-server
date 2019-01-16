@@ -1,9 +1,3 @@
-univention-admin-diary (1.0.0-10) unstable; urgency=medium
-
-  * Bug #48342: Log rotate
-
- -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 16 Jan 2019 18:14:10 +0100
-
 univention-admin-diary (1.0.0-9) unstable; urgency=medium
 
   * Bug #48342: Various improvements
