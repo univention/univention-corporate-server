@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Fixed an uncaught type error in the nagios-server listener
 bug: [43426]
+erratum: 403
+announced: 2019-01-16
