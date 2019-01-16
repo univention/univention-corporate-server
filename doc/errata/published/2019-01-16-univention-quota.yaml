@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Quotas on xfs file systems are shown again on the UMC.
 bug: [48315]
+erratum: 404
+announced: 2019-01-16
