@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Do not send cron mails for a successful ldap-backup cron job.
 bug: [48014]
+erratum: 401
+announced: 2019-01-16
