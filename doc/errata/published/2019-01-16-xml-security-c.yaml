@@ -12,3 +12,5 @@ cve:
  - TEMP-0913136-041770
 ignore:
  - cve.TEMP-0913136-041770
+erratum: 584
+announced: 2019-01-16
