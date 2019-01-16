@@ -54,9 +54,6 @@
 
 extern NotifyId_t notify_last_id;
 extern Notify_t notify;
-extern int ONLY_NOTIFY;
-extern int WRITE_SAVE_REPLOG;
-extern int WRITE_REPLOG;
 extern long long notifier_lock_count;
 extern long long notifier_lock_time;
 
@@ -75,14 +72,10 @@ static FILE* fopen_lock(const char *name, const char *type, FILE **l_file)
 	int count = 0;
 	int l_fd;
 
-	if ( !(strcmp(name, FILE_NAME_ORF)) ) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK %s", FILE_NAME_ORF);
-	} else if ( !(strcmp(name, FILE_NAME_TF)) ) {
+	if ( !(strcmp(name, FILE_NAME_TF)) ) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK %s", FILE_NAME_TF);
 	} else if ( !(strcmp(name, FILE_NAME_TF_IDX)) ) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK %s", FILE_NAME_TF_IDX);
-	} else if ( !(strcmp(name, FILE_NAME_SAVE)) ) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK %s", FILE_NAME_SAVE);
 	}
 
 	snprintf( buf, sizeof(buf), "%s.lock", name );
@@ -136,14 +129,10 @@ static int fclose_lock(const char *name, FILE **file, FILE **l_file)
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "FCLOSE end");
 
-	if ( !(strcmp(name, FILE_NAME_ORF)) ) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "UNLOCK %s", FILE_NAME_ORF);
-	} else if ( !(strcmp(name, FILE_NAME_TF)) ) {
+	if ( !(strcmp(name, FILE_NAME_TF)) ) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "UNLOCK %s", FILE_NAME_TF);
 	} else if ( !(strcmp(name, FILE_NAME_TF_IDX)) ) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "UNLOCK %s", FILE_NAME_TF_IDX);
-	} else if ( !(strcmp(name, FILE_NAME_SAVE)) ) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "UNLOCK %s", FILE_NAME_SAVE);
 	}
 	return 0;
 }
@@ -179,10 +168,6 @@ static long split_transaction_buffer ( NotifyEntry_t *entry, char *buf, long l_b
 
 	for ( s=strtok(p,"\n"); s!= NULL; s=strtok(NULL,"\n") ) {
 		if ( start ) {
-			tmp2->buf = NULL;
-			tmp2->l_buf = 0;
-			tmp2->used=1;
-
 			sscanf(s, "%ld", &(tmp2->notify_id.id));
 			tmp2->command=s[strlen(s)-1];
 			p_tmp1=index(s, ' ');
@@ -204,10 +189,6 @@ static long split_transaction_buffer ( NotifyEntry_t *entry, char *buf, long l_b
 			tmp->dn=malloc((size)*sizeof(char));
 			memcpy( tmp->dn, p_tmp1+1, p_tmp2-p_tmp1);
 			tmp->dn[size-1]='\0';
-
-			tmp->buf = NULL;
-			tmp->l_buf = 0;
-			tmp->used=1;
 
 			tmp->next=NULL;
 			tmp2->next=tmp;
@@ -240,18 +221,6 @@ void notify_dump_to_files( Notify_t *notify, NotifyEntry_t *entry)
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "unable to open index\n");
 		goto error;
 	}
-	if (WRITE_REPLOG) {
-		if ((notify->orf = fopen_lock(FILE_NAME_ORF, "a", &(notify->l_orf))) == NULL) {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "ERROR on open orf\n");
-			goto error;
-		}
-	}
-	if (WRITE_SAVE_REPLOG) {
-		if ((notify->save = fopen_lock(FILE_NAME_SAVE, "a", &(notify->l_save))) == NULL) {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "ERROR on open orf\n");
-			goto error;
-		}
-	}
 
 	for (tmp = entry; tmp != NULL; tmp = tmp->next) {
 		if (tmp->dn != NULL && tmp->notify_id.id >= 0) {
@@ -273,14 +242,6 @@ void notify_dump_to_files( Notify_t *notify, NotifyEntry_t *entry)
 				abort();
 			}
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "wrote to transaction file; id=%ld; dn=%s, cmd=%c", tmp->notify_id.id, tmp->dn, tmp->command);
-			if (tmp->buf != NULL) {
-				if (WRITE_REPLOG)
-					fprintf(notify->orf, "%s", tmp->buf);
-				if (WRITE_SAVE_REPLOG)
-					fprintf(notify->save, "%s", tmp->buf);
-			}
-			if (WRITE_REPLOG)
-				fprintf(notify->orf, "\n");
 		} else {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "tmp->dn == NULL; id=%ld", tmp->notify_id.id);
 		}
@@ -291,8 +252,6 @@ error:
 	if (index)
 		fclose(index);
 	fclose_lock(FILE_NAME_TF, &notify->tf, &notify->l_tf);
-	fclose_lock(FILE_NAME_ORF, &notify->orf, &notify->l_orf);
-	fclose_lock(FILE_NAME_SAVE, &notify->save, &notify->l_save);
 }
 
 /*
@@ -453,28 +412,13 @@ reopen:
 
 void notify_init ( Notify_t *notify )
 {
-	notify->irf   = NULL;
-	notify->l_irf = NULL;
-
-	notify->orf   = NULL;
-	notify->l_orf = NULL;
-
 	notify->tf    = NULL;
 	notify->l_tf  = NULL;
-
-	notify->save    = NULL;
-	notify->l_save  = NULL;
 }
 
 void notify_entry_init(NotifyEntry_t *entry)
 {
 	memset(entry, 0, sizeof(NotifyEntry_t));
-}
-
-void notify_id_get_next(NotifyId_t *next_notify)
-{
-	notify_last_id.id += 1;
-	next_notify->id = notify_last_id.id;
 }
 
 int notify_transaction_get_last_notify_id ( Notify_t *notify, NotifyId_t *notify_id )
@@ -521,9 +465,6 @@ void notify_entry_free(NotifyEntry_t *entry )
 
 	while ( tmp != NULL ) {
 		if ( tmp->dn) free(tmp->dn);
-		if ( tmp->buf) free(tmp->buf);
-		if ( tmp->newrdn) free(tmp->newrdn);
-		if ( tmp->newsuperior) free(tmp->newsuperior);
 		tmp2=tmp;
 		tmp=tmp->next;
 		free(tmp2);
@@ -620,11 +561,9 @@ char* notify_entry_to_string(NotifyEntry_t entry )
 		return NULL;
 	}
 
-	if ( entry.used ) {
 		len += 4; /* space + space + newline */
 		len += strlen(entry.dn);
 		len += snprintf(buffer,32, "%ld",entry.notify_id.id);
-	}
 
 	len+=1;
 	if ( (str = malloc(len*sizeof(char) ) ) == NULL ) {
@@ -634,12 +573,8 @@ char* notify_entry_to_string(NotifyEntry_t entry )
 	memset(str, 0, len);
 	p=str;
 
-		if ( entry.used ) {
 			rc = sprintf(p, "%ld %s %c\n", entry.notify_id.id, entry.dn, entry.command);
 			p+=rc;
-		} else {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Entry unused");
-		}
 
 	return str;
 
@@ -660,161 +595,6 @@ void notify_schema_change_callback(int sig, siginfo_t *si, void *data)
 
 	fclose(file);
 
-}
-
-static char* modrdn(char *dn, char *newrdn, char *newsuperior )
-{
-	char *new_string;
-
-	if ( newsuperior != NULL ) {
-		new_string=malloc(strlen(newsuperior) + strlen(newrdn) +2 );
-		memset ( new_string, 0, strlen(newsuperior) + strlen(newrdn) );
-
-		strcpy(new_string, newrdn);
-
-		strcat(new_string, ",");
-		strcat(new_string, newsuperior);
-	} else {
-		new_string=malloc(strlen(dn) + strlen(newrdn) +1 );
-		memset ( new_string, 0, strlen(dn) + strlen(newrdn) );
-
-		strcpy(new_string, newrdn);
-
-		strcat(new_string, index(dn, ','));
-	}
-
-	return new_string;
-}
-
-void notify_replog_change_callback(int sig, siginfo_t *si, void *data)
-{
-	NotifyEntry_t *entry;
-
-	FILE *file, *l_file;
-
-	char line[MAX_LINE];
-
-	bool first = true;
-
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "notify_replog_change_callback");
-
-	/* wir muessen uns merken, ob wir etwas gefunden haben in der replog Datei,
-	 * falls wir keinen Eintrag haben, aber die Datei spaeter mit ftruncate
-	 * loeschen, dann wuerden diese Funktion wieder aufgerufen werden und wir
-	 * haetten eine Endlosschleife
-	 */
-	bool found = false;
-
-	entry = notify_entry_alloc();
-
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK from notify_replog_change_callback");
-	if ( ( file = fopen_lock ( FILE_NAME_IRF, "r+", &(l_file) ) ) == NULL ) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Could not open %s\n",FILE_NAME_IRF);
-	}
-
-	while ( (fgets(line, MAX_LINE, file)) != NULL ) {
-
-		if ( (strlen(line) == 1 && line[0] == '\n') || first ) {
-
-			if (!first) {
-				found = true;
-				if ( entry->dn != NULL ) {
-					notify_id_get_next(& (entry->notify_id) );
-
-					entry->used=1;
-
-					notifier_cache_add(entry->notify_id.id, entry->dn, entry->command);
-					notify_dump_to_files(&notify, entry);
-
-					if ( entry->command == 'r' ) {
-							char *tmp;
-
-							entry->command = 'a';
-
-							/* change dn to newrdn */
-							tmp=strdup(entry->dn);
-							free(entry->dn);
-							entry->dn=modrdn(tmp, entry->newrdn, entry->newsuperior);
-
-							notify_id_get_next(& (entry->notify_id) );
-							notifier_cache_add(entry->notify_id.id, entry->dn, entry->command);
-
-							notify_dump_to_files(&notify, entry);
-
-					}
-				} else {
-					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Failed to read block from replog");
-					if ( entry->buf != NULL ) {
-						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "%s", entry->buf);
-					}
-				}
-				notify_entry_free(entry);
-			}
-
-			first = false;
-
-			entry = notify_entry_alloc();
-		}
-		if ( !strncmp(line, "dn: ", strlen("dn: ")) ) {
-			entry->dn = malloc (strlen(line)-4);
-			memset(entry->dn, 0, strlen(line)-4);
-			strncpy(entry->dn,line+4,strlen(line)-5);
-		}
-		if ( !strncmp(line, "changetype: ", strlen("changetype: ")) ) {
-
-			if (!strncmp(&(line[strlen("changetype: ")]), "modify", strlen("modify"))) {
-				entry->command='m';
-			}
-			else if (!strncmp(&(line[strlen("changetype: ")]), "add", strlen("add"))) {
-				entry->command='a';
-			}
-			else if (!strncmp(&(line[strlen("changetype: ")]), "delete", strlen("delete"))) {
-				entry->command='d';
-			}
-			else if (!strncmp(&(line[strlen("changetype: ")]), "modrdn", strlen("modrdn"))) {
-				entry->command='r';
-			}
-			else {
-				entry->command='z';
-			}
-		}
-		if ( !strncmp(line, "newrdn: ", strlen("newrdn: ")) ) {
-			entry->newrdn = malloc ( strlen(line)-8);
-			memset(entry->newrdn, 0, strlen(line)-8);
-			strncpy(entry->newrdn, line+8, strlen(line)-9);
-		}
-		if ( !strncmp(line, "newsuperior: ", strlen("newsuperior: ")) ) {
-			entry->newsuperior = malloc ( strlen(line)-13);
-			memset(entry->newsuperior, 0, strlen(line)-13);
-			strncpy(entry->newsuperior, line+13, strlen(line)-14);
-		}
-		if ( !strncmp(line, "deleteoldrdn: 0", strlen("deleteoldrdn: 0")) ) {
-			entry->deletemodrdn = 0;
-		}
-		if ( !strncmp(line, "deleteoldrdn: 1", strlen("deleteoldrdn: 1")) ) {
-			entry->deletemodrdn = 1;
-		}
-
-		if ( line[0] != '\n') {
-			entry->buf=realloc(entry->buf, (strlen(line)+entry->l_buf+1)*sizeof(char));
-
-			strncpy(&(entry->buf[entry->l_buf]), line, strlen(line)+1);
-
-			entry->l_buf+=strlen(line);
-		}
-	}
-
-	notify_entry_free(entry);
-	if ( found ) {
-		fseek(file, 0, SEEK_SET);
-		ftruncate(fileno(file), 0);
-	}
-
-	fclose_lock(FILE_NAME_IRF, &file, &l_file);
-
-	network_client_check_clients ( notify_last_id.id ) ;
-
-	return;
 }
 
 void notify_listener_change_callback(int sig, siginfo_t *si, void *data)

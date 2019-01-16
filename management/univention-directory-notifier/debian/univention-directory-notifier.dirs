@@ -1,4 +1,4 @@
-var/lib/univention-ldap/replog-slurpd
 var/lib/univention-ldap/notify
-var/lib/univention-ldap/save
+var/lib/univention-ldap/schema
+var/lib/univention-ldap/schema/id
 etc/runit/univention-directory-notifier

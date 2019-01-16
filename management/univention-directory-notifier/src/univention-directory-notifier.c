@@ -54,9 +54,6 @@
 
 Notify_t notify;
 NotifyId_t notify_last_id;
-int ONLY_NOTIFY = 0;
-int WRITE_SAVE_REPLOG = 0;
-int WRITE_REPLOG = 0;
 
 long SCHEMA_ID;
 
@@ -69,22 +66,17 @@ void usage(void)
 	fprintf(stderr, "Usage: univention-directory-notifier [options]\n");
 	fprintf(stderr, "Options:\n");
 	fprintf(stderr, "   -F   run in foreground (intended for process supervision)\n");
-	fprintf(stderr, "   -o   only notify, ignore replog\n");
-	fprintf(stderr, "   -r   write replog file\n");
-	fprintf(stderr, "   -s   write replog-save file\n");
+	fprintf(stderr, "   -o          DEPRECATED\n");
+	fprintf(stderr, "   -r          DEPRECATED\n");
+	fprintf(stderr, "   -s          DEPRECATED\n");
 	fprintf(stderr, "   -d   added debug output\n");
 	fprintf(stderr, "   -S   DEPRECATED\n");
 	fprintf(stderr, "   -v <version> Minimum supported protocol\n");
 }
 
-static int REPLOG_CALLBACK = 0;
 static int SCHEMA_CALLBACK = 0;
 static int LISTENER_CALLBACK = 0;
 
-void set_replog_callback ( int sig, siginfo_t *si, void *data)
-{
-	    REPLOG_CALLBACK = 1;
-}
 void set_schema_callback ( int sig, siginfo_t *si, void *data)
 {
 	    SCHEMA_CALLBACK = 1;
@@ -94,10 +86,6 @@ void set_listener_callback ( int sig, siginfo_t *si, void *data)
 	    LISTENER_CALLBACK = 1;
 }
 
-int get_replog_callback ()
-{
-	return REPLOG_CALLBACK;
-}
 int get_schema_callback ()
 {
 	return SCHEMA_CALLBACK;
@@ -107,10 +95,6 @@ int get_listener_callback ()
 	return LISTENER_CALLBACK;
 }
 
-void unset_replog_callback ()
-{
-	    REPLOG_CALLBACK = 0;
-}
 void unset_schema_callback ()
 {
 	    SCHEMA_CALLBACK = 0;
@@ -118,21 +102,6 @@ void unset_schema_callback ()
 void unset_listener_callback ()
 {
 	    LISTENER_CALLBACK = 0;
-}
-
-void create_callback()
-{
-	int fd;
-	struct sigaction act;
-
-	act.sa_sigaction = set_replog_callback;
-	sigemptyset(&act.sa_mask);
-	act.sa_flags = SA_SIGINFO;
-	sigaction(SIGRTMIN, &act, NULL);
-
-	fd = open("/var/lib/univention-ldap/replog/", O_RDONLY);
-	fcntl(fd, F_SETSIG, SIGRTMIN);
-	fcntl(fd, F_NOTIFY, DN_MODIFY|DN_MULTISHOT);
 }
 
 void create_callback_schema()
@@ -201,18 +170,12 @@ int main(int argc, char* argv[])
 			case 'F':
 				foreground = 1;
 				break;
-			case 'o':
-				ONLY_NOTIFY = 1;
-				break;
-			case 's':
-				WRITE_SAVE_REPLOG = 1;
-				break;
-			case 'r':
-				WRITE_REPLOG = 1;
-				break;
 			case 'd':
 				debug = atoi(optarg);
 				break;
+			case 'o':
+			case 'r':
+			case 's':
 			case 'S':
 				fprintf(stderr, "Ignoring deprecated option -%c\n", c);
 				break;
@@ -264,20 +227,11 @@ int main(int argc, char* argv[])
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "   done");
 
 	network_client_init( 6669 );
-	
-	if ( ONLY_NOTIFY ) {
+
 		create_callback_listener ();
-	} else {
-		create_callback ();
-	}
 	create_callback_schema ();
 
-
-	if ( ONLY_NOTIFY ) {
 		notify_listener_change_callback ( 0, NULL, NULL);
-	} else {
-		notify_replog_change_callback ( 0, NULL, NULL);
-	}
 	notify_schema_change_callback ( 0, NULL, NULL);
 
 	network_client_main_loop( );

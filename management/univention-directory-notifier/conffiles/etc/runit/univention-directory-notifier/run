@@ -41,13 +41,7 @@ then
 	/usr/share/univention-directory-notifier/univention-translog --lenient import
 fi
 
-# Read from transactions log file in every case
-options="-o"
-
-if grep -q '^replica' "/etc/ldap/replica.conf" > /dev/null 2>&1 ; then
-	options="$options -r"
-fi
-
+options=""
 
 if [ "$notifier_debug_level" != 0 ]; then
 	options="$options -d $notifier_debug_level"
