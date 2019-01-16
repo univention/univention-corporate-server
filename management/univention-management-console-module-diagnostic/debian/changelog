@@ -1,5 +1,11 @@
 univention-management-console-module-diagnostic (5.0.1-4) unstable; urgency=medium
 
+  * Bug #48477: fixed 44_well_known_sid_check.py
+
+ -- Felix Botner <botner@univention.de>  Wed, 16 Jan 2019 10:04:40 +0100
+
+univention-management-console-module-diagnostic (5.0.1-4) unstable; urgency=medium
+
   * Bug #47650: Added CLI-Tool which executes the diagnostic-checks
 
  -- Julia Bremer <bremer@univention.de>  Thu, 10 Jan 2019 12:34:16 +0100
