@@ -36,14 +36,9 @@
 
 /* incoming transaction file, from lsitener */
 #define FILE_NAME_LISTENER "/var/lib/univention-ldap/listener/listener"
-/* incoming replog file, from slapd */
-#define FILE_NAME_IRF "/var/lib/univention-ldap/replog/replog"
-/* outgoing replog file, for slurpd */
-#define FILE_NAME_ORF "/var/lib/univention-ldap/replog-slurpd/replog"
 /* transaction file, for notifier action */
 #define FILE_NAME_TF "/var/lib/univention-ldap/notify/transaction"
 #define FILE_NAME_TF_IDX "/var/lib/univention-ldap/notify/transaction.index"
-#define FILE_NAME_SAVE "/var/lib/univention-ldap/save/replog"
 
 typedef struct { unsigned long id; } NotifyId_t;
 
@@ -51,27 +46,12 @@ typedef struct notify_entry {
 	NotifyId_t notify_id;      /* cookie for this entry */
 	char *dn;                  /* the dn */
 	char command;              /* (m)odify, (d)elete, (a)dd */
-	char *newrdn;              /* for modrdn */
-	char *newsuperior;         /* for modrdn */
-	int deletemodrdn;          /* for modrdn */
-	char *buf;                 /* the complete entry, for notify-proxy */
-	int l_buf;                 /* length */
-	char used;                 /* 0 = unused */
 	struct notify_entry *next; /* next entry */
 } NotifyEntry_t;
 
 typedef struct {
-	FILE *irf; /* incoming replog file, from slapd */
-	FILE *l_irf;
-
-	FILE *orf; /* outgoing replog file, for slurpd */
-	FILE *l_orf;
-
 	FILE *tf; /* transaction file, for notifier action */
 	FILE *l_tf;
-
-	FILE *save;
-	FILE *l_save;
 } Notify_t;
 
 void notify_init(Notify_t *notify);
@@ -83,8 +63,6 @@ void notify_entry_init(NotifyEntry_t *entry);
 void notify_entry_free(NotifyEntry_t *entry);
 
 char *notify_entry_to_string(NotifyEntry_t entry);
-
-void notify_replog_change_callback(int sig, siginfo_t *si, void *data);
 
 void notify_schema_change_callback(int sig, siginfo_t *si, void *data);
 void notify_listener_change_callback(int sig, siginfo_t *si, void *data);

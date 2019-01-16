@@ -36,12 +36,7 @@ univention-config-registry set notifier/autostart?yes
 
 #DEBHELPER#
 
-for i in replog-slurpd notify save; do
-	if [ ! -e /var/lib/univention-ldap/$i ]; then
-		mkdir -p /var/lib/univention-ldap/$i
-		chmod -R 700 /var/lib/univention-ldap/$i
-	fi
-done
+install -m0700 -o0 -g0 -d /var/lib/univention-ldap/notify
 
 if [ ! -d /var/lib/univention-ldap/schema ]; then
 	mkdir -p /var/lib/univention-ldap/schema
@@ -59,20 +54,6 @@ fi
 if [ ! -e /var/lib/univention-ldap/schema/md5 ]; then
 	touch /var/lib/univention-ldap/schema/md5
 fi
-
-for i in replog-slurpd/replog save/replog; do
-	if [ ! -e /var/lib/univention-ldap/$i ]; then
-		touch /var/lib/univention-ldap/$i
-	fi
-	if [ -e /var/lib/univention-ldap/$i ]; then
-		chmod 600 /var/lib/univention-ldap/$i
-	fi
-
-	if [ ! -e /var/lib/univention-ldap/$i.lock ]; then
-		touch /var/lib/univention-ldap/$i.lock
-		chmod 600 /var/lib/univention-ldap/$i.lock
-	fi
-done
 
 i=notify/transaction
 if [ ! -e /var/lib/univention-ldap/$i ]; then

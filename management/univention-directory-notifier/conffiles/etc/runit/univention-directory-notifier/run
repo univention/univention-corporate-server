@@ -30,13 +30,7 @@
 
 eval "$(univention-config-registry shell)"
 
-# Read from transactions log file in every case
-options="-o"
-
-if grep -q '^replica' "/etc/ldap/replica.conf" > /dev/null 2>&1 ; then
-	options="$options -r"
-fi
-
+options=""
 
 if [ "$notifier_debug_level" != 0 ]; then
 	options="$options -d $notifier_debug_level"
@@ -55,4 +49,3 @@ fi
 options="$options -F"
 
 exec /usr/sbin/univention-directory-notifier $options >>/var/log/univention/notifier.log 2>&1
-
