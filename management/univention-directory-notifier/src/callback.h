@@ -31,6 +31,8 @@
 #ifndef __CALLBACK_H__
 #define __CALLBACK_H__
 
+#include "network.h"
+
 int data_on_connection(int fd, callback_remove_handler remove);
 
 #endif

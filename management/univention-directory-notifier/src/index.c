@@ -28,8 +28,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-#include <stdio.h>
-#include <unistd.h>
+#include "index.h"
 
 #define MAGIC 0x3395e0d4
 

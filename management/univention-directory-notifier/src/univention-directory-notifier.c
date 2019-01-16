@@ -30,22 +30,16 @@
  */
 #define _GNU_SOURCE
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
-
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
-#include <sys/ipc.h>
-
 #include <univention/debug.h>
 
-#include "notify.h"
-#include "network.h"
 #include "cache.h"
+#include "network.h"
+#include "notify.h"
 
 Notify_t notify;
 NotifyId_t notify_last_id;

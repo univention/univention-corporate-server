@@ -30,26 +30,22 @@
  */
 #define __USE_GNU
 
-#include <sys/types.h>
-#include <sys/socket.h>
+#include <stdint.h>
 #include <stdio.h>
-#include <netinet/in.h>
-#include <sys/time.h>
-#include <sys/ioctl.h>
-#include <sys/un.h>
-#include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-#include <limits.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/socket.h>
 #include <sys/stat.h>
-#include <fcntl.h>
-#include <stdint.h>
-
+#include <sys/time.h>
+#include <netinet/in.h>
 #include <univention/debug.h>
 
-#include "notify.h"
-#include "network.h"
 #include "cache.h"
+#include "network.h"
+#include "notify.h"
 
 static int VERSION = 2;
 

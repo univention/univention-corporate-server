@@ -30,21 +30,19 @@
  */
 #define __USE_GNU
 
-#include <sys/file.h>
+#include <limits.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <stdbool.h>
-#include <sys/types.h>
 #include <sys/stat.h>
-#include <limits.h>
-
 #include <univention/debug.h>
-#include "notify.h"
-#include "network.h"
+
 #include "cache.h"
 #include "index.h"
+#include "network.h"
+#include "notify.h"
 
 #define MAX_LINE 4096
 

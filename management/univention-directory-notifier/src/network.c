@@ -30,27 +30,21 @@
  */
 #define _GNU_SOURCE
 
-#include <sys/socket.h>
+#include <errno.h>
+#include <signal.h>
 #include <stdio.h>
-#include <netinet/in.h>
-#include <sys/time.h>
-#include <sys/ioctl.h>
-#include <sys/un.h>
-#include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-#include <limits.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-
-#include <errno.h>
+#include <unistd.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 #include <univention/debug.h>
 
-#include "network.h"
 #include "cache.h"
-#include "notify.h"
 #include "callback.h"
+#include "network.h"
+#include "notify.h"
 
 static NetworkClient_t *network_client_first = NULL;
 static int server_socketfd_listener;

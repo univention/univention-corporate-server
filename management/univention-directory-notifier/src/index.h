@@ -32,7 +32,7 @@
 #define __NOTIFIER_INDEX_H__
 
 #include <stdio.h>
-#include <fcntl.h>
+#include <sys/types.h>
 
 FILE *index_open(const char *filename);
 ssize_t index_get(FILE *fp, unsigned long id);
