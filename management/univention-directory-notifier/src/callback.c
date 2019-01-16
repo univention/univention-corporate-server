@@ -60,7 +60,7 @@ extern unsigned long SCHEMA_ID;
  * :param network_line: Return buffer for line.
  * :returns: 0 on success, 1 on short lines.
  */
-int get_network_line(char *packet, char *network_line) {
+static int get_network_line(char *packet, char *network_line) {
 	int i = 0;
 
 	memset(network_line, 0, NETWORK_MAX);

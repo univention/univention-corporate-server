@@ -49,7 +49,6 @@
 
 extern NotifyId_t notify_last_id;
 extern Notify_t notify;
-extern int ONLY_NOTIFY;
 extern long long notifier_lock_count;
 extern long long notifier_lock_time;
 
@@ -160,7 +159,7 @@ static NotifyEntry_t *split_transaction_buffer(char *buf, long l_buf) {
 	return head;
 }
 
-void notify_dump_to_files(Notify_t *notify, NotifyEntry_t *entry) {
+static void notify_dump_to_files(Notify_t *notify, NotifyEntry_t *entry) {
 	NotifyEntry_t *trans;
 	FILE *index = NULL;
 
@@ -323,7 +322,7 @@ error:
 	}
 }
 
-char *notify_entry_to_string(NotifyEntry_t entry) {
+static char *notify_entry_to_string(NotifyEntry_t entry) {
 	char *str;
 
 	if (entry.dn == NULL)

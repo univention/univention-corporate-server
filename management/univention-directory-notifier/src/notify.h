@@ -62,8 +62,6 @@ char *notify_transcation_get_one_dn(unsigned long last_known_id);
 void notify_entry_init(NotifyEntry_t *entry);
 void notify_entry_free(NotifyEntry_t *entry);
 
-char *notify_entry_to_string(NotifyEntry_t entry);
-
 void notify_schema_change_callback(int sig, siginfo_t *si, void *data);
 void notify_listener_change_callback(int sig, siginfo_t *si, void *data);
 

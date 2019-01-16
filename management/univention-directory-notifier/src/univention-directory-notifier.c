@@ -49,7 +49,7 @@ long SCHEMA_ID;
 long long notifier_lock_count = 100;
 long long notifier_lock_time = 100;
 
-void usage(void) {
+static void usage(void) {
 	fprintf(stderr, "Usage: univention-directory-notifier [options]\n");
 	fprintf(stderr, "Options:\n");
 	fprintf(stderr, "   -F   run in foreground (intended for process supervision)\n");
@@ -70,7 +70,7 @@ static void set_listener_callback(int sig, siginfo_t *si, void *data) {
 	LISTENER_CALLBACK = 1;
 }
 
-void create_callback_schema() {
+static void create_callback_schema() {
 	int fd;
 	struct sigaction act;
 
@@ -84,7 +84,7 @@ void create_callback_schema() {
 	fcntl(fd, F_NOTIFY, DN_MODIFY | DN_MULTISHOT);
 }
 
-void create_callback_listener() {
+static void create_callback_listener() {
 	int fd;
 	struct sigaction act;
 
@@ -112,7 +112,7 @@ static void check_callbacks() {
 	}
 }
 
-int creating_pidfile(char *file) {
+static int creating_pidfile(char *file) {
 	FILE *fd;
 
 	if ((fd = fopen(file, "w")) == NULL) {
