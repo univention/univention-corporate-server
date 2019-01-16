@@ -36,7 +36,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <sys/select.h>
+#include <sys/epoll.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -52,7 +52,8 @@ static NetworkClient_t client_head = { .next = &client_head };
 		client != &client_head; \
 		p = *p == client ? &(client->next) : p, client = n, n = client->next)
 static int server_socketfd_listener;
-static fd_set readfds;
+#define MAX_EVENTS 10
+static int epollfd;
 
 enum network_protocol network_procotol_version = PROTOCOL_2;
 
@@ -110,6 +111,7 @@ int network_create_socket(int port) {
  */
 int network_client_add(int fd, callback_handler handler, int notify) {
 	NetworkClient_t *client;
+	struct epoll_event ev;
 
 	client = calloc(1, sizeof(NetworkClient_t));
 	client->fd = fd;
@@ -118,6 +120,12 @@ int network_client_add(int fd, callback_handler handler, int notify) {
 	client->next = client_head.next;
 
 	client_head.next = client;
+
+	ev.events = EPOLLIN | EPOLLRDHUP;
+	ev.data.ptr = client;
+	if (epoll_ctl(epollfd, EPOLL_CTL_ADD, fd, &ev) == -1) {
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "epoll_ctl() error: %s. exit", strerror(errno));
+	}
 
 	return 0;
 }
@@ -130,7 +138,6 @@ static void network_client_free(NetworkClient_t **ptr) {
 	NetworkClient_t *client = *ptr;
 	int fd = client->fd;
 
-	FD_CLR(fd, &readfds);
 	shutdown(fd, 2);
 	close(fd);
 
@@ -180,8 +187,6 @@ static int new_connection(NetworkClient_t *client, callback_remove_handler remov
 	flags |= O_NONBLOCK;
 	fcntl(client_socketfd, F_SETFL, flags);
 
-	FD_SET(client_socketfd, &readfds);
-
 	network_client_add(client_socketfd, data_on_connection, 0);
 
 	return 0;
@@ -193,6 +198,11 @@ static int new_connection(NetworkClient_t *client, callback_remove_handler remov
  * :return 0
  */
 int network_client_init(int port) {
+	if ((epollfd = epoll_create1(0)) == -1) {
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "epoll_create() error: %s. exit", strerror(errno));
+		exit(1);
+	}
+
 	server_socketfd_listener = network_create_socket(port);
 	network_client_add(server_socketfd_listener, new_connection, 0);
 
@@ -205,36 +215,30 @@ int network_client_init(int port) {
  * :return: never
  */
 int network_client_main_loop(callback_check check_callbacks) {
-	NetworkClient_t *client, **p, *n;
-	fd_set testfds;
+	struct epoll_event events[MAX_EVENTS];
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Starting main loop");
-	/* create listener socket */
-
-	FD_ZERO(&readfds);
-	FD_SET(server_socketfd_listener, &readfds);
 
 	/* main loop */
 	while (1) {
-		testfds = readfds;
-		if (select(FD_SETSIZE, &testfds, NULL, NULL, NULL) < 1) {
-			/*FIXME */
-			if (errno == EINTR || errno == 29) {
-				/* Ignore signal */
-				check_callbacks();
+		check_callbacks();
+		int n, nfds = epoll_wait(epollfd, events, MAX_EVENTS, -1);
+		if (nfds == -1) {
+			if (errno == EINTR)
 				continue;
-			}
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "select() error: %s. exit", strerror(errno));
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "epoll_wait() error: %s. exit", strerror(errno));
 			exit(1);
 		}
 
-		for_each(client, p, n) {
-			if (FD_ISSET(client->fd, &testfds)) {
+		for (n = 0; n < nfds; n++) {
+			NetworkClient_t *client = events[n].data.ptr;
+			if (events[n].events & EPOLLRDHUP)
+				network_client_del(client->fd);
+			else if (events[n].events & EPOLLIN)
 				client->handler(client, network_client_del);
-				break;
-			}
+			else
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Unknown event %x on fd:%d", events[n].events, client->fd);
 		}
-		check_callbacks();
 	}
 
 	return 0;
