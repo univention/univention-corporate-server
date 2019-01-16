@@ -9,3 +9,5 @@ desc: |
  * The design of the Univention Summit 2019 dialog has been slightly
    adjusted.
 bug: [48470]
+erratum: 402
+announced: 2019-01-16
