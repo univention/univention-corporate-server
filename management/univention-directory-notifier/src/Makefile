@@ -29,19 +29,24 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 #
-CFLAGS := -Wall -g -D_FILE_OFFSET_BITS=64
-LDADD := -luniventiondebug
-NOTIFIER_LDADD = $(LDADD) -lldap
-DUMP_LDADD = $(LDADD)
+CC ?= gcc
 
+CFLAGS += -Wall -Werror -g -D_FILE_OFFSET_BITS=64
+LDLIBS := -luniventiondebug
+NOTIFIER_LDLIBS := -lldap
+DUMP_LDLIBS :=
 
-all: univention-directory-notifier univention-directory-notifier-index-dump
+ALL ?= univention-directory-notifier univention-directory-notifier-index-dump
+.PHONY: all
+all: $(ALL)
 
 univention-directory-notifier: index.o cache.o callback.o network.o notify.o univention-directory-notifier.o
-	$(CC) $(CFLAGS) -o $@ $^ $(NOTIFIER_LDADD)
+	$(CC) $(LFLAGS) -o $@ $^ $(LDLIBS) $(NOTIFIER_LDLIBS)
 
 univention-directory-notifier-index-dump: index.o index-dump.o
-	$(CC) $(CFLAGS) -o $@ $^ $(DUMP_LDADD)
+	$(CC) $(LFLAGS) -o $@ $^ $(LDLIBS) $(DUMP_LDLIBS)
 
-clean:
-	$(RM) *.o core univention-directory-notifier univention-directory-notifier-index-dump
+.PHONY: clean
+clean::
+	$(RM) *.o
+	$(RM) $(ALL)
