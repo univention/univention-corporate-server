@@ -43,8 +43,6 @@
 #include "network.h"
 #include "notify.h"
 
-Notify_t notify;
-
 long long notifier_lock_count = 100;
 long long notifier_lock_time = 100;
 
@@ -233,9 +231,7 @@ int main(int argc, char *argv[]) {
 		exit(1);
 	}
 
-	notify_init(&notify);
-
-	if (!notify_transaction_get_last_notify_id(&notify, &notify_last_id))
+	if (!notify_transaction_get_last_notify_id(&notify_last_id))
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Last transaction id = %ld", notify_last_id.id);
 
 	notifier_cache_init(notify_last_id.id);

@@ -49,9 +49,13 @@
 
 NotifyId SCHEMA_ID;
 NotifyId_t notify_last_id;
-extern Notify_t notify;
 extern long long notifier_lock_count;
 extern long long notifier_lock_time;
+
+static struct {
+	FILE *tf; /* transaction file, for notifier action */
+	FILE *l_tf;
+} notify;
 
 /*
  * Open file (and its corresponding locking file).
@@ -165,14 +169,14 @@ static NotifyEntry_t *split_transaction_buffer(char *buf, long l_buf) {
  * :param notify: Notifier configuration.
  * :param entry: Linked list of entries to write.
  */
-static void notify_dump_to_files(Notify_t *notify, NotifyEntry_t *entry) {
+static void notify_dump_to_files(NotifyEntry_t *entry) {
 	NotifyEntry_t *trans;
 	FILE *index = NULL;
 
 	if (entry == NULL)
 		return;
 
-	if ((notify->tf = fopen_lock(FILE_NAME_TF, "a", &(notify->l_tf))) == NULL) {
+	if ((notify.tf = fopen_lock(FILE_NAME_TF, "a", &(notify.l_tf))) == NULL) {
 		goto error;
 	}
 	if ((index = index_open(FILE_NAME_TF_IDX)) == NULL) {
@@ -181,8 +185,8 @@ static void notify_dump_to_files(Notify_t *notify, NotifyEntry_t *entry) {
 
 	for (trans = entry; trans != NULL; trans = trans->next) {
 		if (trans->dn != NULL && trans->notify_id.id > 0) {
-			index_set(index, trans->notify_id.id, ftell(notify->tf));
-			fprintf(notify->tf, "%ld %s %c\n", trans->notify_id.id, trans->dn, trans->command);
+			index_set(index, trans->notify_id.id, ftell(notify.tf));
+			fprintf(notify.tf, "%ld %s %c\n", trans->notify_id.id, trans->dn, trans->command);
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "wrote to transaction file; id=%ld; dn=%s, cmd=%c", trans->notify_id.id, trans->dn, trans->command);
 		} else {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "trans->dn == NULL; id=%ld", trans->notify_id.id);
@@ -192,16 +196,7 @@ static void notify_dump_to_files(Notify_t *notify, NotifyEntry_t *entry) {
 error:
 	if (index)
 		fclose(index);
-	fclose_lock(FILE_NAME_TF, &notify->tf, &notify->l_tf);
-}
-
-/*
- * Initialize Notifier configuration.
- * :param notify: Notifier configuration.
- */
-void notify_init(Notify_t *notify) {
-	notify->tf = NULL;
-	notify->l_tf = NULL;
+	fclose_lock(FILE_NAME_TF, &notify.tf, &notify.l_tf);
 }
 
 /*
@@ -219,11 +214,11 @@ void notify_entry_init(NotifyEntry_t *entry) {
  * :returns: -1 on errors, 0 on success.
  * FIXME: this reads characters from the end of the file by seeking and reading N characters until a complete line is found.
  */
-int notify_transaction_get_last_notify_id(Notify_t *notify, NotifyId_t *notify_id) {
+int notify_transaction_get_last_notify_id(NotifyId_t *notify_id) {
 	int i = 2;
 	int c;
 
-	if ((notify->tf = fopen_lock(FILE_NAME_TF, "r", &(notify->l_tf))) == NULL) {
+	if ((notify.tf = fopen_lock(FILE_NAME_TF, "r", &(notify.l_tf))) == NULL) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "unable to lock notify_id");
 		notify_id->id = 0;
 		return -1;
@@ -231,22 +226,22 @@ int notify_transaction_get_last_notify_id(Notify_t *notify, NotifyId_t *notify_i
 
 	do {
 		i++;
-		fseek(notify->tf, -i, SEEK_END);
-		c = fgetc(notify->tf);
-	} while (c != '\n' && c != EOF && ftell(notify->tf) != 1);
+		fseek(notify.tf, -i, SEEK_END);
+		c = fgetc(notify.tf);
+	} while (c != '\n' && c != EOF && ftell(notify.tf) != 1);
 
 	if (c == EOF) {
 		/* empty file */
 		notify_id->id = 0;
-	} else if (ftell(notify->tf) == 1) {
+	} else if (ftell(notify.tf) == 1) {
 		/* only one entry */
-		fseek(notify->tf, 0, SEEK_SET);
-		fscanf(notify->tf, "%ld", &(notify_id->id));
+		fseek(notify.tf, 0, SEEK_SET);
+		fscanf(notify.tf, "%ld", &(notify_id->id));
 	} else {
-		fscanf(notify->tf, "%ld", &(notify_id->id));
+		fscanf(notify.tf, "%ld", &(notify_id->id));
 	}
 
-	fclose_lock(FILE_NAME_TF, &notify->tf, &notify->l_tf);
+	fclose_lock(FILE_NAME_TF, &notify.tf, &notify.l_tf);
 
 	return 0;
 }
@@ -411,7 +406,7 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data) {
 
 	if ((nread = fread(buf, sizeof(char), stat_buf.st_size, file)) != 0) {
 		entry = split_transaction_buffer(buf, nread);
-		notify_dump_to_files(&notify, entry);
+		notify_dump_to_files(entry);
 		fseek(file, 0, SEEK_SET);
 		ftruncate(fileno(file), 0);
 

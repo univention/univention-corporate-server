@@ -56,16 +56,10 @@ typedef struct notify_entry {
 	struct notify_entry *next; /* next entry */
 } NotifyEntry_t;
 
-typedef struct {
-	FILE *tf; /* transaction file, for notifier action */
-	FILE *l_tf;
-} Notify_t;
-
 extern NotifyId SCHEMA_ID;
 extern NotifyId_t notify_last_id;
 
-void notify_init(Notify_t *notify);
-int notify_transaction_get_last_notify_id(Notify_t *notify, NotifyId_t *notify_id);
+int notify_transaction_get_last_notify_id(NotifyId_t *notify_id);
 NotifyEntry_t *notify_transcation_get_dn(NotifyId last_known_id);
 char *notify_transcation_get_one_dn(NotifyId last_known_id);
 
