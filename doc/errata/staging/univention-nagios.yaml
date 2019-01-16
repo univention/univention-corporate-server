@@ -6,5 +6,5 @@ src: univention-nagios
 fix: 11.0.1-7A~4.3.0.201901090903
 desc: |
  This update addresses the following issue(s):
- * Fixed reason for uncaught Type Error in nagios-server handleHost
+ * Fixed an uncaught type error in the nagios-server listener
 bug: [43426]
