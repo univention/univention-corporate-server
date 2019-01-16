@@ -173,7 +173,7 @@ def run(_umc_instance):
 
 	check_errors = list(check_existence_and_consistency())
 	if check_errors:
-		MODULE.error(description='\n'.join(str(x) for x in check_errors))
+		MODULE.error('\n'.join(str(x) for x in check_errors))
 		raise Warning(description='\n'.join(str(x) for x in check_errors))
 
 
