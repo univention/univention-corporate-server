@@ -589,7 +589,7 @@ define([
 			this._renderAppDetails(parentContainer);
 			var hasRating = array.some(this.app.rating, function(rating) { return rating.value; });
 			if (hasRating) {
-				this._renderAppRating(parentContainer);
+				this._renderAppBadges(parentContainer);
 			}
 		},
 
@@ -643,37 +643,23 @@ define([
 			domConstruct.place(this._detailsTable, appDetailsContainer.domNode);
 		},
 
-		_renderAppRating(parentContainer) {
-			var appRatingContainer = new ContainerWidget({
+		_renderAppBadges(parentContainer) {
+			var appBadgeContainer = new ContainerWidget({
 				class: 'appDetailsSidebarElement'
 			});
-			parentContainer.addChild(appRatingContainer);
-			parentContainer.own(appRatingContainer);
+			parentContainer.addChild(appBadgeContainer);
+			parentContainer.own(appBadgeContainer);
 
 			domConstruct.create('span', {
-				innerHTML: _('App Rating'),
+				innerHTML: _('App Center Badges'),
 				'class': 'mainHeader'
-			}, appRatingContainer.domNode);
+			}, appBadgeContainer.domNode);
 
 			array.forEach(this.app.rating, function(rating) {
-				var ratingText = new Text({
-					'class': 'umcAppRating'
-				});
-				for (var i = 0; i < rating.value; i++) {
-					domConstruct.create('div', {
-							'class': 'umcAppRatingIcon'
-						}, ratingText.domNode
-					);
-				}
 				domConstruct.create('div', {
-						'class': 'umcAppRatingText',
-						textContent: rating.label
-					}, ratingText.domNode
-				);
-				domConstruct.create('div', {
-						'class': 'umcAppRatingHelp umcHelpIconSmall',
-						onclick: function(evt) {
-							// stolen from system-setup
+						'class': 'umcAppRatingHelp umcAppRatingIcon umcAppRating' + rating.name,
+						'style': 'background-size: contain;',  // FIXME: Not sure why this won't work in appcenter.styl
+						onmouseenter: function(evt) {
 							var node = evt.target;
 							Tooltip.show(rating.description, node);  // TODO: html encode?
 							if (evt) {
@@ -684,9 +670,8 @@ define([
 								dojoEvent.stop(evt);
 							});
 						}
-					}, ratingText.domNode
+					}, appBadgeContainer.domNode
 				);
-				appRatingContainer.addChild(ratingText);
 			});
 		},
 
