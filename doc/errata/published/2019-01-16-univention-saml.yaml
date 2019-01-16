@@ -9,3 +9,5 @@ desc: |
  * The univention-saml Apache2 VirtualHost configuration can now be extended
    by placing .conf files in the directory /etc/apache2/sso-vhost.conf.d/
 bug: [48348]
+erratum: 406
+announced: 2019-01-16
