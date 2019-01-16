@@ -1283,6 +1283,13 @@ class App(object):
 		return True
 
 	@hard_requirement('install', 'upgrade')
+	def must_not_be_vote_for_app(self):
+		'''The application is not yet installable. Vote for this app
+		now and bring your favorite faster to the Univention App
+		Center'''
+		return not self.vote_for_app
+
+	@hard_requirement('install', 'upgrade')
 	def must_not_be_docker_if_docker_is_disabled(self):
 		'''The application uses a container technology while the App Center
 		is configured to not not support it'''

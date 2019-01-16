@@ -171,9 +171,12 @@ define([
 		},
 
 		vote: function() {
-			tools.umcpCommand('appcenter/track', {app: loadedApp.id, action: 'vote'}).then(function() {
-				dialog.notify(_('Quick and easy – your ballot has been cast.'), _('Vote for App');
-			});
+			tools.umcpCommand('appcenter/track', {app: this.app.id, action: 'vote'}).then(lang.hitch(this, function() {
+				dialog.notify(_('Quick and easy – your ballot has been cast.'), _('Vote for App'));
+				if (this._voteButton) {
+					this._voteButton.hide();
+				}
+			}));
 		},
 
 		reloadPage: function() {
@@ -534,7 +537,9 @@ define([
 
 		_renderSidebar: function(parentContainer) {
 			this._renderInstallOrOpenButton(parentContainer);
-			if (this.app.useShop) {
+			if (this.app.canVote()) {
+				this._renderAppVote(parentContainer);
+			} else if (this.app.useShop) {
 				this._renderAppBuy(parentContainer);
 			}
 			this._renderAppDetails(parentContainer);
@@ -584,6 +589,33 @@ define([
 				appInstallOrOpenContainer.addChild(button);
 				appInstallOrOpenContainer.own(button);
 			}
+		},
+
+		_renderAppVote(parentContainer) {
+			var container = ContainerWidget({
+				class: 'appDetailsSidebarElement'
+			});
+			parentContainer.addChild(container);
+			parentContainer.own(container);
+
+			domConstruct.create('span', {
+				innerHTML: _('Vote for App'),
+				'class': 'mainHeader iconHeaderVote'
+			}, container.domNode);
+
+			domConstruct.create('p', {
+				innerHTML: _('We are currently reviewing the admission of this app in the Univention App Center. Vote now and show us how relevant the availability of this app is for you.'),
+			}, container.domNode);
+
+			var button = new Button({
+				name: 'vote',
+				label: _('Vote now'),
+				'class': 'umcAppSidebarButton',
+				callback: lang.hitch(this, 'vote')
+			});
+			container.addChild(button);
+			container.own(button);
+			this._voteButton = button;
 		},
 
 		_renderAppBuy(parentContainer) {
@@ -651,7 +683,7 @@ define([
 			array.forEach(this.app.rating, function(rating) {
 				domConstruct.create('div', {
 						'class': 'umcAppRatingHelp umcAppRatingIcon umcAppRating' + rating.name,
-						'style': 'background-size: contain;',  // FIXME: Not sure why this won't work in appcenter.styl
+						'style': 'background-size: contain;',  // FIXME: Not sure why this wont work in appcenter.styl
 						onmouseenter: function(evt) {
 							var node = evt.target;
 							Tooltip.show(rating.description, node);  // TODO: html encode?
