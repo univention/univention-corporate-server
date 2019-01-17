@@ -1,3 +1,9 @@
+ucs-test (9.0.0-10) unstable; urgency=medium
+
+  * Bug #48387: add selenium tests for the portal
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 17 Jan 2019 12:34:14 +0100
+
 ucs-test (9.0.0-9) unstable; urgency=medium
 
   * Bug #48315: Test xfs quota and use umc calls
