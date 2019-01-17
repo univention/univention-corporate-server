@@ -1018,9 +1018,17 @@ restart_services_bug_47762 ()
 	test -x /etc/init.d/heimdal-kdc && /etc/init.d/heimdal-kdc restart
 }
 
+# https://forge.univention.org/bugzilla/show_bug.cgi?id=48157
+restart_umc_bug_48157 ()
+{
+	sleep 30
+	service univention-management-console-server restart || true
+}
+
 run_workarounds_before_starting_the_tests ()
 {
 	restart_services_bug_47762
+	restart_umc_bug_48157
 }
 
 sa_bug47030 () {
