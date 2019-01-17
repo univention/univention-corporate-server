@@ -1,3 +1,9 @@
+univention-join (11.0.1-2) unstable; urgency=medium
+
+  * Bug #47940: Run univention-join-hooks
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 17 Jan 2019 10:25:21 +0100
+
 univention-join (11.0.1-1) unstable; urgency=medium
 
   * Bug #46969: bindpwdfile support

@@ -1,3 +1,17 @@
+univention-samba4 (8.0.0-7) unstable; urgency=medium
+
+  * Bug #47954: Depend on libunivention-ldb-modules and register
+    all ldb modules specified via UCR samba4/ldb/sam/module/prepend.
+    This UCR variable is set by ucs-school-*slave joinscripts
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Jan 2019 10:26:12 +0100
+
+univention-samba4 (8.0.0-6) unstable; urgency=medium
+
+  * Bug #47942: use udm in create_spn_account.sh
+
+ -- Felix Botner <botner@univention.de>  Thu, 17 Jan 2019 10:23:03 +0100
+
 univention-samba4 (8.0.0-5) unstable; urgency=medium
 
   * Bug #48497: fixed create_spn_account.sh
