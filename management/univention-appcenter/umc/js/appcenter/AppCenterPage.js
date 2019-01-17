@@ -103,52 +103,55 @@ define([
 
 			this.createMetaCategories();
 
-			this.standbyDuring(when(this.getAppCenterSeen()).then(lang.hitch(this, function(appcenterSeen) {
-				if (appcenterSeen >= 2) {
-					// load apps
-					return this.updateApplications();
-				} else {
-					var msg = this.appCenterInformation;
-					if (appcenterSeen === 1) {
-						// show an additional hint that the user should read this information again
-						msg = this.appCenterInformationReadAgain + this.appCenterInformation;
-					}
-					return dialog.confirmForm({
-						title: _('Univention App Center'),
-						widgets: [
-							{
-								type: Text,
-								name: 'help_text',
-								content: '<div style="width: 535px">' + msg + '</div>'
-							},
-							{
-								type: CheckBox,
-								name: 'do_not_show_again',
-								label: _("Do not show this message again")
-							}
-						],
-						buttons: [{
-							name: 'submit',
-							'default': true,
-							label: _('Continue')
-						}]
-					}).then(
-						lang.hitch(this, function(data) {
-							tools.setUserPreference({appcenterSeen: data.do_not_show_again ? 2 : 'false'});
-							return this.updateApplications();
-						}),
-						lang.hitch(this, function() {
-							return this.updateApplications();
-						})
-					);
-				}
-			}), lang.hitch(this, function() {
-				return this.updateApplications();
-			}))).then(lang.hitch(this ,function() {
+			this.standbyDuring(when(this.getAppCenterSeen()).then(
+				lang.hitch(this, 'displayAppCenterInformationIfNecessaryAndUpdateApps'),
+				lang.hitch(this, function() {return this.updateApplications();})
+			)).then(lang.hitch(this ,function() {
 				if (this.openApp) {
 					this.onShowApp({id: this.openApp});
 				}
 			}));
+		},
+
+		displayAppCenterInformationIfNecessaryAndUpdateApps: function(appcenterSeen) {
+			if (appcenterSeen >= 2) {
+				// load apps
+				return this.updateApplications();
+			} else {
+				var msg = this.appCenterInformation;
+				if (appcenterSeen === 1) {
+					// show an additional hint that the user should read this information again
+					msg = this.appCenterInformationReadAgain + this.appCenterInformation;
+				}
+				return dialog.confirmForm({
+					title: _('Univention App Center'),
+					widgets: [
+						{
+							type: Text,
+							name: 'help_text',
+							content: '<div style="width: 535px">' + msg + '</div>'
+						},
+						{
+							type: CheckBox,
+							name: 'do_not_show_again',
+							label: _("Do not show this message again")
+						}
+					],
+					buttons: [{
+						name: 'submit',
+						'default': true,
+						label: _('Continue')
+					}]
+				}).then(
+					lang.hitch(this, function(data) {
+						tools.setUserPreference({appcenterSeen: data.do_not_show_again ? 2 : 'false'});
+						return this.updateApplications();
+					}),
+					lang.hitch(this, function() {
+						return this.updateApplications();
+					})
+				);
+			}
 		},
 
 		createMetaCategories: function() {
