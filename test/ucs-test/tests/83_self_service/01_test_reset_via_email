@@ -20,14 +20,11 @@ def main():
 	with ucr_test.UCSTestConfigRegistry() as ucr:
 		handler_set(["umc/self-service/passwordreset/limit/per_user/minute=120"])
 		try:
-			mail = 'selfservice@%s' % (ucr['domainname'],)
+			mail = '%s@%s' % (uts.random_username(), uts.random_username())
 			with self_service_user(mailPrimaryAddress=mail) as user:
-				assert user.get_contact() == {}, 'A newly created user has default values. Might be wrong?!'
-
 				print 'test with login per username'
 				test_contact(user)
 				test_reset_method_email(user)
-
 				time.sleep(2)
 				print 'test with login per mail address'
 				user.username = mail
