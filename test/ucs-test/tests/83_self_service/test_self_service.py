@@ -11,6 +11,7 @@ import subprocess
 import contextlib
 import asyncore
 import fcntl
+import time
 
 
 class SelfServiceUser(object):
@@ -45,6 +46,8 @@ class SelfServiceUser(object):
 @contextlib.contextmanager
 def self_service_user(email=None, **kwargs):
 	with udm_test.UCSTestUDM() as udm:
+		if 'mailPrimaryAddress' in kwargs:
+			udm.create_object('mail/domain', ignore_exists=True, wait_for_replication=True, check_for_drs_replication=False, name=kwargs['mailPrimaryAddress'].split('@', 1)[1])
 		password = uts.random_string()
 		if email:
 			kwargs['PasswordRecoveryEmail'] = email
@@ -82,6 +85,7 @@ def capture_mails(timeout=5):
 			self.thread.join()
 
 	subprocess.call(['invoke-rc.d', 'postfix', 'stop'], close_fds=True)
+	time.sleep(3)
 	try:
 		server = MailServer()
 		try:
