@@ -176,27 +176,6 @@ define([
 			return this.appLoadingDeferred;
 		},
 
-		getButtons: function() {
-			var buttons = [];
-			if (this.app.canOpenInDomain() && this.app.isInstalled) {
-				buttons.push({
-					name: 'open',
-					label: this.app.getOpenLabel(),
-					defaultButton: true,
-					'class': 'umcAppButton',
-					callback: lang.hitch(this.app, 'open')
-				});
-			} else if (this.app.canInstall && !this.app.isInstalled) {
-				buttons.push({
-					name: 'install',
-					label: _('Install'),
-					'class': 'umcAppButton',
-					callback: lang.hitch(this.app, 'install')
-				});
-			}
-			return buttons;
-		},
-
 		getHeaderButtons: function() {
 			var buttons = [{
 				name: 'close',
@@ -330,74 +309,8 @@ define([
 		},
 
 		renderPage: function() {
-			this._renderNavContainer();
-			this._renderMainContainer();
-		},
-
-		_renderNavContainer: function() {
-			if (this._navContainer) {
-				this.removeChild(this._navContainer);
-				this._navContainer = null;
-			}
-			this._navContainer = new ContainerWidget({
-				region: 'nav',
-				'class': 'navContainer'
-			});
-
-			// build Text Widget for HeaderDetails
-			var _navHeaderDetails = new Text({
-				'class': 'umcAppStatusText'
-			});
-
-			// vendor
-			var vendor = this._detailFieldCustomVendor();
-			if (vendor) {
-				_navHeaderDetails.set('content', vendor);
-			}
-
-			//Status of the App
-			if (this.app.isInstalled || this.app.getHosts().length) {
-				var text = _('Installed');
-				if (this.app.endOfLife) {
-					text = _('End of life');
-					var tooltipText = this._detailFieldCustomEndOfLife();
-					domConstruct.create('div', {
-							'class': 'umcEndOfLifeHelp umcHelpIconSmall',
-							onclick: function(evt) {
-								var node = evt.target;
-								Tooltip.show(tooltipText, node);
-								if (evt) {
-									dojoEvent.stop(evt);
-								}
-								on.once(kernel.body(), 'click', function(evt) {
-									Tooltip.hide(node);
-									dojoEvent.stop(evt);
-								});
-							}
-						}, _navHeaderDetails.domNode
-					);
-				} else if (this.app.canUpgradeInDomain()) {
-					text = _('Update available');
-				}
-				domConstruct.create('div', {
-					textContent: text,
-					'class': 'umcAppStatusText'
-				}, _navHeaderDetails.domNode);
-			} else {
-			//Categories of the App
-				var categoryButtons = this._detailFieldCustomCategories();
-				if (categoryButtons) {
-					_navHeaderDetails.domNode.appendChild(categoryButtons);
-				}
-			}
-
-			this._navContainer.addChild(_navHeaderDetails);
-			this.set('navButtons', this.getButtons());
 			this.set('headerButtons', this.getHeaderButtons());
-			this._navContainer.addChild(this._navButtons);
-
-			this.addChild(this._navContainer);
-			this.own(this._navContainer);
+			this._renderMainContainer();
 		},
 
 		_renderMainContainer: function() {
@@ -583,6 +496,7 @@ define([
 		},
 
 		_renderSidebar: function(parentContainer) {
+			this._renderInstallOrOpenButton(parentContainer);
 			if (this.app.useShop) {
 				this._renderAppBuy(parentContainer);
 			}
@@ -590,6 +504,48 @@ define([
 			var hasRating = array.some(this.app.rating, function(rating) { return rating.value; });
 			if (hasRating) {
 				this._renderAppBadges(parentContainer);
+			}
+		},
+
+		_renderInstallOrOpenButton(parentContainer) {
+			var button = null;
+			var containerLabel;
+			var headerClasses = 'mainHeader';
+			if (this.app.canOpenInDomain() && this.app.isInstalled) {
+				containerLabel = _('Use this App');
+				headerClasses += ' iconHeaderOpen';
+				button = new Button({
+					name: 'open',
+					label: this.app.getOpenLabel(),
+					defaultButton: true,
+					'class': 'umcAppSidebarButton',
+					callback: lang.hitch(this.app, 'open')
+				});
+			} else if (this.app.canInstall && !this.app.isInstalled) {
+				containerLabel = _('Install this App');
+				headerClasses += ' iconHeaderDownload';
+				button = new Button({
+					name: 'install',
+					label: _('Install'),
+					'class': 'umcAppSidebarButton',
+					callback: lang.hitch(this.app, 'install')
+				});
+			}
+
+			if(button != null) {
+				var appInstallOrOpenContainer = ContainerWidget({
+					class: 'appDetailsSidebarElement'
+				});
+				parentContainer.addChild(appInstallOrOpenContainer);
+				parentContainer.own(appInstallOrOpenContainer);
+
+				domConstruct.create('span', {
+					innerHTML: containerLabel,
+					'class': headerClasses
+				}, appInstallOrOpenContainer.domNode);
+
+				appInstallOrOpenContainer.addChild(button);
+				appInstallOrOpenContainer.own(button);
 			}
 		},
 
@@ -608,7 +564,7 @@ define([
 			var buy_button = new Button({
 				name: 'shop',
 				label: _('Buy now'),
-				'class': 'umcAppBuyButton',
+				'class': 'umcAppSidebarButton',
 				callback: lang.hitch(this, 'openShop')
 			});
 			appBuyContainer.addChild(buy_button);
