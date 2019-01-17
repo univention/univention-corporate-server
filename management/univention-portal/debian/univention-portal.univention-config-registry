@@ -14,3 +14,7 @@ Variables: appcenter/apps/.*/version
 Type: module
 Module: univention_blog.py
 Variables: license/base
+
+Type: file
+File: etc/logrotate.d/univention-portal
+Variables: logrotate/.*

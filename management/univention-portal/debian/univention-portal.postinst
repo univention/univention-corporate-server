@@ -35,6 +35,10 @@
 ucr set portal/port?8095
 a2ensite univention-portal.conf
 
+. /usr/share/univention-lib/all.sh
+create_logfile /var/log/univention/portal.log "root:adm" 640
+
+
 if [ "$1" = "configure" ]; then
 	systemctl daemon-reload
 	systemctl reload apache2
