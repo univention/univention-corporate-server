@@ -5,6 +5,7 @@ scope: ucs_4.3-0-errata4.3-3
 src: univention-ldap
 fix: 14.0.2-34A~4.3.0.201812191534
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * Enabled cn=config backend, accessible via LDAPI only.
-bug: [43515]
+ * Add cn=translog database for transaction log.
+bug: [43515, 48427]

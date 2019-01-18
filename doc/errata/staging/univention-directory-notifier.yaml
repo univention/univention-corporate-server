@@ -1,0 +1,19 @@
+product: ucs
+release: "4.3"
+version: [2, 3]
+scope: ucs_4.3-0-errata4.3-3
+src: univention-directory-notifier
+fix: 12.0.1-3
+desc: |
+ This update addresses the following issues:
+ * The code has been audited for security and code issues.
+ * Implement new Univention Directory Notifier Protocol Version 3, which does
+   not transmit Distinguished Names over an unencrypted and unauthenticated
+   channel.
+ * Switched to non-blocking network sockets to prevent a remote exploitable
+   denial-of-service vulnerability.
+ * Switched from select() to poll() to prevent a remote exploitable
+   denial-of-service vulnerability.
+ * The log level of several debug messages has been decreased to prevent a
+   remote exploitable denial-of-service vulnerability.
+bug: [48427, 48427, 48466, 48467, 48468]

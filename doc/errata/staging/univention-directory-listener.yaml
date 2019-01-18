@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [2, 3]
+scope: ucs_4.3-0-errata4.3-3
+src: univention-directory-listener
+fix: 12.0.0-34
+desc: |
+ This update addresses the following issues:
+ * Implement new Univention Directory Notifier Protocol Version 3, which does
+   not transmit Distinguished Names over an unencrypted and unauthenticated
+   channel.
+ * The code has been audited for security and code issues.
+bug: [48427, 30227]
