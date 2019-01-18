@@ -54,9 +54,6 @@ define([
 
 		selectFormDeferred: null,
 
-		// category: Object|String
-		//		Reference to the currently selected category
-		category: null,
 
 		searchLabel: null,
 
@@ -120,31 +117,6 @@ define([
 			return this._searchTextBox.set('value', value);
 		},
 
-		_getCategoryAttr: function() {
-			var category = this.category;
-			if (!this._categoriesAsIdLabelPairs) {
-				return category.id;
-			}
-			return category;
-		},
-
-		_setCategoryAttr: function(_category) {
-			var category = this._getUniformCategory(_category);
-			this._set('category', category);
-			var selectedChild = array.filter(this._selectForm._getChildren(), function(child) {
-				return category.label === child.label;
-			});
-			this._selectForm.focusChild(selectedChild[0]);
-			this._searchTextBox.set('value', '');
-			this.onSearch();
-			this.onCategorySelected();
-			if (!has('touch')) {
-				setTimeout(lang.hitch(this, function() {
-					this._searchTextBox.focus();
-				}), 0);
-			}
-		},
-
 		_setCategoriesAttr: function(categories) {
 			if (this._selectForm) {
 				this._selectForm.removeOption(this._selectForm.getOptions());
@@ -188,10 +160,6 @@ define([
 			this.selectForm.addChild(this._selectForm);
 			this.own(this.selectForm);
 			this.addChild(this.selectForm);
-
-
-			// preselect the first category
-			this.set('category', categories[0]);
 		},
 
 		getSearchQuery: function(searchPattern) {
