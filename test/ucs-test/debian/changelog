@@ -1,5 +1,11 @@
 ucs-test (9.0.0-11) unstable; urgency=medium
 
+  * Bug #38481: added workaround in univention/testing/mail.py
+
+ -- Felix Botner <botner@univention.de>  Fri, 18 Jan 2019 17:05:43 +0100
+
+ucs-test (9.0.0-11) unstable; urgency=medium
+
   * Bug #48387: better prevent summit notification in tests
 
  -- Johannes Keiser <keiser@univention.de>  Thu, 17 Jan 2019 15:06:53 +0100
