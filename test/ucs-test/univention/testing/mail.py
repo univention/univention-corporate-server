@@ -30,6 +30,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import os
+import time
 import threading
 import asyncore
 from smtpd import DEBUGSTREAM, DebuggingServer, SMTPChannel, __version__
@@ -71,7 +72,25 @@ class MailSink(object):
                     msg = '220 %s %s' % (new_fqdn, __version__)
             except KeyError:
                 pass
-            SMTPChannel.push(self, msg)
+            try:
+                SMTPChannel.push(self, msg)
+            except IndexError:
+                # push sometimes fails with
+                #
+                # <type 'exceptions.IndexError'>:deque index out of range [/usr/lib/python2.7/asyncore.py|read|83]
+                # [/usr/lib/python2.7/asyncore.py|handle_read_event|449]
+                # [/usr/lib/python2.7/asynchat.py|handle_read|165]
+                # [/usr/lib/python2.7/smtpd.py|found_terminator|163]
+                # [/usr/lib/python2.7/smtpd.py|smtp_RCPT|251]
+                # [/usr/lib/pymodules/python2.7/univention/testing/mail.py|push|74]
+                # [/usr/lib/python2.7/smtpd.py|push|136]
+                # [/usr/lib/python2.7/asynchat.py|push|193]
+                # [/usr/lib/python2.7/asynchat.py|initiate_send|251]
+                #
+                # https://github.com/myano/jenni/issues/159 says "This is an inherent issue with multi-threading",
+                # so just for testing, wait a moment and try angain
+                time.sleep(3)
+                SMTPChannel.push(self, msg)
 
         def smtp_EHLO(self, arg):
             # same code as smtp_HELO(), except /HELO/EHLO/ and changed FQDN
