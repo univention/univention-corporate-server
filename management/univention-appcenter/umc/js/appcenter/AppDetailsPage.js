@@ -215,7 +215,6 @@ define([
 			return buttons;
 		},
 
->>>>>>> 7add9c956e... Bug #48472: Vote for App - Ini attribute, icon in UMC
 		getHeaderButtons: function() {
 			var buttons = [{
 				name: 'close',
@@ -563,7 +562,7 @@ define([
 					'class': 'umcAppSidebarButton',
 					callback: lang.hitch(this.app, 'open')
 				});
-			} else if (this.app.canInstall && !this.app.isInstalled) {
+			} else if (this.app.canInstall() && !this.app.isInstalled) {
 				containerLabel = _('Install this App');
 				headerClasses += ' iconHeaderDownload';
 				button = new Button({
@@ -657,8 +656,12 @@ define([
 			}
 			this.addToDetails(_('Contact'), 'Contact');
 			this.addToDetails(_('License'), 'License');
-			this.addToDetails(_('Installed version'), 'Version');
-			this.addToDetails(_('Candidate version'), 'CandidateVersion');
+			if (this.app.isInstalled) {
+				this.addToDetails(_('Version'), 'Version');
+				this.addToDetails(_('Available'), 'CandidateVersion');
+			} else {
+				this.addToDetails(_('Version'), 'CandidateVersion');
+			}
 			this.addToDetails(_('Support'), 'SupportURL');
 
 			domConstruct.create('span', {
