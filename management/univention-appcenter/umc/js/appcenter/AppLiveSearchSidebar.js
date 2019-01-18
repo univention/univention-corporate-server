@@ -34,16 +34,17 @@ define([
 	"dojo/_base/array",
 	"dojo/has",
 	"dojo/Deferred",
+	"dojo/dom-construct",
 	"dojo/regexp",
-	"dijit/form/Select",
+	"umc/widgets/CheckBox",
 	"umc/widgets/ContainerWidget",
+	"umc/widgets/Form",
 	"umc/widgets/SearchBox",
 	"umc/i18n!"
-], function(declare, lang, array, has, Deferred, regexp, Select, ContainerWidget, SearchBox, _) {
+], function(declare, lang, array, has, Deferred, domConstruct, regexp, CheckBox, ContainerWidget, Form, SearchBox, _) {
 	return declare("umc.modules.appcenter.AppLiveSearchSidebar", [ContainerWidget], {
 		// summary:
 		//		Offers a side bar for live searching, a set of categories can be defined.
-		//		This class is used in the UMC overview and the App Center.
 
 		// categories: Object[]|String[]
 		//		Array of categories exposing at least the fields 'id' and 'label'
@@ -54,6 +55,9 @@ define([
 
 		selectFormDeferred: null,
 
+		// category: Object[]|String[]
+		//		Array of the currently selected categories
+		selectedCategories: [],
 
 		searchLabel: null,
 
@@ -88,6 +92,9 @@ define([
 
 		postCreate: function() {
 			this.inherited(arguments);
+
+			this.selectedCategories = [];  // Reset this filter, when opening the App Center
+
 			this._searchTextBox.on('keyup', lang.hitch(this, function() {
 				if (this.get('value') || this._lastValue) {
 					// ignore empty search strings
@@ -123,6 +130,10 @@ define([
 			}
 			this._set('categories', categories);
 
+			this._addCategorySelector(categories);
+		},
+
+		_addCategorySelector: function(categories) {
 			var selectFormOptions = array.map(categories, lang.hitch(this, function(_category, idx) {
 				var category = this._getUniformCategory(_category);
 				return {
@@ -138,26 +149,37 @@ define([
 				this.selectForm = null;
 				this.selectFormDeferred = this.selectFormDeferred.isResolved() ? new Deferred() : this.selectFormDeferred;
 			}
-			this.selectForm = new ContainerWidget({'class': 'umcSize-TwoThirds dropDownMenu'});
-			this._selectForm = new Select({
-				options: selectFormOptions
+			this.selectForm = new ContainerWidget({'class': 'appLiveSearchSidebarElement'});
+			domConstruct.create('span', {
+				innerHTML: _('Categories'),
+				'class': 'mainHeader'
+			}, this.selectForm.domNode);
+
+			var widgets = [];
+			array.forEach(selectFormOptions, lang.hitch(this, function(category) {
+				widgets.push({
+					type: CheckBox,
+					name: category.value,
+					label: category.label,
+					onChange: lang.hitch(this, function(arg) {
+						if (arg == true) {
+							this.selectedCategories.push(category.value);
+						} else {
+							this.selectedCategories = this.selectedCategories.filter(
+								function(x) {return x != category.value;}
+							);
+						}
+						this.onSearch();  // Trigger the refresh of the displayed Apps
+					})
+				});
+			}));
+			var form = new Form({
+				widgets: widgets,
 			});
+			this.selectForm.addChild(form);
+
 			this.selectFormDeferred.resolve();
 
-			this._selectForm.watch('value', lang.hitch(this, function(attr, oldval, newval) {
-				if (newval) {
-					var selectedOption = this._selectForm.getOptions(newval);
-					var selectedCategory = {id: selectedOption._categoryID, label: selectedOption.label};
-					//this.set('value', '');
-					this.set('category', selectedCategory);
-				}
-			}));
-			this._selectForm.loadDropDown(function() {
-				//empty callback for loading the SelectForm dropdown
-			});
-			this._selectForm.dropDown.set('class', 'AppLiveSearchSidebarDropDown');
-
-			this.selectForm.addChild(this._selectForm);
 			this.own(this.selectForm);
 			this.addChild(this.selectForm);
 		},

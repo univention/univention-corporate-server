@@ -280,7 +280,6 @@ define([
 					metaObj.set('visible', true);
 					metaLabels.push(metaObj.label);
 				});
-				metaLabels.push(''); // seperates meta and normal categories
 
 				if (quick && this.liveSearch) {
 					var categories = [];
@@ -292,8 +291,8 @@ define([
 						});
 					});
 					categories.sort();
-					categories = metaLabels.concat(categories);
-					categories.unshift(_('All'));
+					//categories = metaLabels.concat(categories);
+					//categories.unshift(_('All'));
 					this._searchSidebar.set('categories', categories);
 				}
 			}));
@@ -323,9 +322,18 @@ define([
 				searchPattern = this._searchSidebar.getSearchQuery(searchPattern);
 			}
 
+			var selectedCategories = this._searchSidebar.get('selectedCategories');
 			var query = function(app) {
 				var matchesSearchPattern = searchPattern ? searchPattern.test(app.name, app) : true;
-				return matchesSearchPattern;
+
+				var categoryMatches = false;
+				array.forEach(app.categories, function(appsCategory) {
+					if(array.indexOf(selectedCategories, appsCategory) >= 0) {
+						categoryMatches = true;
+					}
+				});
+
+				return matchesSearchPattern && (categoryMatches || selectedCategories.length == 0);
 			};
 
 			// set query options and refresh grid
