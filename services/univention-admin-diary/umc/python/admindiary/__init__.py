@@ -32,13 +32,16 @@
 # <http://www.gnu.org/licenses/>.
 
 from univention.management.console import Translation
+import univention.lib.i18n
 from univention.management.console.base import Base
 from univention.management.console.modules.decorators import simple_response, sanitize
 from univention.management.console.modules.sanitizers import PatternSanitizer
 
+from univention.admindiary.events import Event
 from univention.admindiary.backend import query
 
 _ = Translation('univention-management-console-module-admindiary').translate
+event_translate = univention.lib.i18n.Translation('univention-admindiary').translate
 
 
 class Instance(Base):
@@ -51,17 +54,19 @@ class Instance(Base):
 			if entry['context_id'] in result:
 				result[entry['context_id']]['amendments'] = True
 			else:
+				message = entry['message']
+				event = Event.get(entry['event_name'])
+				if event:
+					message = event_translate(event.message)
 				try:
-					message = entry['message'] % tuple(entry['args'])
+					message = message % tuple(entry['args'])
 				except TypeError:
 					if entry['args']:
-						message = '%s (%s)' % (entry['message'], ', '.join(entry['args']))
-					else:
-						message = entry['message']
+						message = '%s (%s)' % (message, ', '.join(entry['args']))
 				res_entry = {
-						'date': entry['timestamp'],
-						'message': message,
-						'amendments': False,
+					'date': entry['timestamp'],
+					'message': message,
+					'amendments': False,
 				}
 				result[entry['context_id']] = res_entry
 		return sorted(result.values(), key=lambda x: x['date'])
