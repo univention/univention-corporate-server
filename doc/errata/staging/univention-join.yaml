@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: univention-join
+fix: 10.0.0-26
+desc: |
+ This update addresses the following issue:
+ * Copy cn=translog database for transaction log to Backup while joining.
+bug: [48427]

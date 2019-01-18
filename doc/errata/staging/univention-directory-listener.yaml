@@ -2,13 +2,11 @@ product: ucs
 release: "4.3"
 version: [3]
 scope: ucs_4.3-0-errata4.3-3
-src: univention-directory-notifier
-fix: 12.0.1-4
+src: univention-directory-listener
+fix: 12.0.0-34
 desc: |
  This update addresses the following issues:
- * The new script univention-replicate-many can be used to re-replicate
-   multiple objects at once.
  * Implement new Univention Directory Notifier Protocol Version 3, which does
    not transmit Distinguished Names over an unencrypted and unauthenticated
    channel.
-bug: [41262, 48427]
+bug: [48427]
