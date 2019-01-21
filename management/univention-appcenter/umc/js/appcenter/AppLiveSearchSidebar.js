@@ -55,6 +55,8 @@ define([
 		//		Array of labels of available meta categories.
 		metaCategories: null,
 
+		badges: null,
+
 		_categoriesAsIdLabelPairs: true,
 
 		selectCategoryFormDeferred: null,
@@ -62,16 +64,15 @@ define([
 		// category: Object[]|String[]
 		//		Array of the currently selected categories
 		selectedCategories: [],
-
 		selectedMetaCategories: [],
+		selectedBadges: [],
 
 		searchLabel: null,
 
 		selectCategoryForm: null,
-
 		_selectCategoryForm: null,
-
 		selectStatusForm: null,
+		selectBadgesForm: null,
 
 		baseClass: 'umcLiveSearchSidebar',
 
@@ -104,6 +105,7 @@ define([
 			// Reset filters, when opening the App Center:
 			this.selectedCategories = [];
 			this.selectedMetaCategories = [];
+			this.selectedBadges = [];
 
 			this._searchTextBox.on('keyup', lang.hitch(this, function() {
 				if (this.get('value') || this._lastValue) {
@@ -192,6 +194,51 @@ define([
 
 			this.own(this.selectCategoryForm);
 			this.addChild(this.selectCategoryForm);
+		},
+
+		_setBadgesAttr: function(badges) {
+			this._set('badges', badges);
+			this._addBadgesSelector(badges);
+		},
+
+		_addBadgesSelector: function(badges) {
+			if (this.selectBadgesForm) {
+				this.removeChild(this.selectBadgesForm);
+				this.selectBadgesForm.destroyRecursive();
+				this.selectBadgesForm = null;
+				this.selectBadgesFormDeferred = this.selectBadgesFormDeferred.isResolved() ? new Deferred() : this.selectBadgesFormDeferred;
+			}
+			this.selectBadgesForm = new ContainerWidget({'class': 'appLiveSearchSidebarElement'});
+			domConstruct.create('span', {
+				innerHTML: _('App Badges'),
+				'class': 'mainHeader'
+			}, this.selectBadgesForm.domNode);
+			this.own(this.selectBadgesForm);
+			this.addChild(this.selectBadgesForm);
+
+			var widgets = [];
+			array.forEach(badges, lang.hitch(this, function(badge) {
+				widgets.push({
+					type: CheckBox,
+					name: badge.id,
+					label: badge.description,
+					onChange: lang.hitch(this, function(arg) {
+						if (arg == true) {
+							this.selectedBadges.push(badge.id);
+						} else {
+							this.selectedBadges = this.selectedBadges.filter(
+								function(x) {return x != badge.id;}
+							);
+						}
+						this.onSearch();  // Trigger the refresh of the displayed Apps
+					})
+				});
+			}));
+			var form = new Form({
+				widgets: widgets,
+			});
+			this.selectBadgesForm.addChild(form);
+			this.selectBadgesForm.own(form);
 		},
 
 		_setMetaCategoriesAttr: function(metaCategories) {

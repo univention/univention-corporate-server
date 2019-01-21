@@ -282,6 +282,7 @@ define([
 				});
 
 				if (quick && this.liveSearch) {
+					var badges = [];
 					var categories = [];
 					array.forEach(applications, function(application) {
 						array.forEach(application.categories, function(category) {
@@ -289,8 +290,17 @@ define([
 								categories.push(category);
 							}
 						});
+						array.forEach(application.rating, function(rating) {
+							if (array.indexOf(badges, rating.name) < 0) {
+								badges.push({
+									id: rating.name,
+									description: rating.label
+								});
+							}
+						});
 					});
 					categories.sort();
+					this._searchSidebar.set('badges', badges);
 					this._searchSidebar.set('metaCategories', metaLabels);
 					this._searchSidebar.set('categories', categories);
 				}
@@ -322,6 +332,7 @@ define([
 			}
 
 			var selectedCategories = this._searchSidebar.get('selectedCategories');
+			var selectedBadges = this._searchSidebar.get('selectedBadges');
 			var query = function(app) {
 				var matchesSearchPattern = searchPattern ? searchPattern.test(app.name, app) : true;
 
@@ -332,7 +343,16 @@ define([
 					}
 				});
 
-				return matchesSearchPattern && (categoryMatches || selectedCategories.length == 0);
+				var badgesMatch = false;
+				array.forEach(app.rating, function(rating) {
+					if(array.indexOf(selectedBadges, rating.name) >= 0) {
+						badgesMatch = true;
+					}
+				});
+
+				return matchesSearchPattern &&
+					( selectedCategories.length == 0 || categoryMatches) &&
+					(selectedBadges.length == 0 || badgesMatch);
 			};
 
 			var selectedMetaCategories = this._searchSidebar.get('selectedMetaCategories');
