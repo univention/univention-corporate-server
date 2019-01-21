@@ -181,7 +181,6 @@ create_spn_account () {
 			--password="$password"
 	fi
 
-	chown proxy "$keytab_path"
 	samba-tool user setexpiry --noexpiry "$samAccountName"
 }
 

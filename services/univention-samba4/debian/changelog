@@ -1,3 +1,9 @@
+univention-samba4 (8.0.0-5) unstable; urgency=medium
+
+  * Bug #48497: fixed create_spn_account.sh
+
+ -- Felix Botner <botner@univention.de>  Mon, 21 Jan 2019 13:30:03 +0100
+
 univention-samba4 (8.0.0-4) unstable; urgency=medium
 
   * Bug #48085: Updated UCR variable description for samba4/kccsrv/samba_kcc
