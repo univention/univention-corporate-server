@@ -54,8 +54,8 @@ define([
 		// metaCategories: Object[]|String
 		//		Array of labels of available meta categories.
 		metaCategories: null,
-
 		badges: null,
+		licenses: null,
 
 		_categoriesAsIdLabelPairs: true,
 
@@ -66,6 +66,7 @@ define([
 		selectedCategories: [],
 		selectedMetaCategories: [],
 		selectedBadges: [],
+		selectedLicenses : [],
 
 		searchLabel: null,
 
@@ -73,6 +74,7 @@ define([
 		_selectCategoryForm: null,
 		selectStatusForm: null,
 		selectBadgesForm: null,
+		selectLicenseForm: null,
 
 		baseClass: 'umcLiveSearchSidebar',
 
@@ -106,6 +108,7 @@ define([
 			this.selectedCategories = [];
 			this.selectedMetaCategories = [];
 			this.selectedBadges = [];
+			this.selectedLicenses = [];
 
 			this._searchTextBox.on('keyup', lang.hitch(this, function() {
 				if (this.get('value') || this._lastValue) {
@@ -284,6 +287,51 @@ define([
 			});
 			this.selectStatusForm.addChild(form);
 			this.selectStatusForm.own(form);
+		},
+
+		_setLicensesAttr: function(licenses) {
+			this._set('licenses', licenses);
+			this._addLicenseSelector(licenses);
+		},
+
+		_addLicenseSelector: function(licenses) {
+			if (this.selectLicenseForm) {
+				this.removeChild(this.selectLicenseForm);
+				this.selectLicenseForm.destroyRecursive();
+				this.selectLicenseForm = null;
+				this.selectLicenseFormDeferred = this.selectLicenseFormDeferred.isResolved() ? new Deferred() : this.selectLicenseFormDeferred;
+			}
+			this.selectLicenseForm = new ContainerWidget({'class': 'appLiveSearchSidebarElement'});
+			domConstruct.create('span', {
+				innerHTML: _('App License'),
+				'class': 'mainHeader'
+			}, this.selectLicenseForm.domNode);
+			this.own(this.selectLicenseForm);
+			this.addChild(this.selectLicenseForm);
+
+			var widgets = [];
+			array.forEach(licenses, lang.hitch(this, function(license) {
+				widgets.push({
+					type: CheckBox,
+					name: license.id,
+					label: license.description,
+					onChange: lang.hitch(this, function(arg) {
+						if (arg == true) {
+							this.selectedLicenses.push(license.id);
+						} else {
+							this.selectedLicenses = this.selectedLicenses.filter(
+								function(x) {return x != license.id;}
+							);
+						}
+						this.onSearch();  // Trigger the refresh of the displayed Apps
+					})
+				});
+			}));
+			var form = new Form({
+				widgets: widgets,
+			});
+			this.selectLicenseForm.addChild(form);
+			this.selectLicenseForm.own(form);
 		},
 
 		getSearchQuery: function(searchPattern) {
