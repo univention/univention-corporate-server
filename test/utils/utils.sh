@@ -1025,16 +1025,10 @@ restart_umc_bug_48157 ()
 	service univention-management-console-server restart || true
 }
 
-dns_keytab_permission_bug_48497 ()
-{
-	test -e /var/lib/samba/private/dns.keytab && chown root /var/lib/samba/private/dns.keytab
-}
-
 run_workarounds_before_starting_the_tests ()
 {
 	restart_services_bug_47762
 	restart_umc_bug_48157
-	dns_keytab_permission_bug_48497
 }
 
 sa_bug47030 () {
