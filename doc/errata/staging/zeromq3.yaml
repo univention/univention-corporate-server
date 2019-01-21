@@ -1,0 +1,25 @@
+product: ucs
+release: "4.3"
+version: [2, 3]
+scope: ucs_4.3-0-errata4.3-3
+src: zeromq3
+fix: 4.2.1-4+deb9u1
+desc: |
+ This update addresses the following issue:
+
+ * 4.2.1-4+deb9u1 (Sun, 13 Jan 2019 18:02:22 +0100) * CVE-2019-6250
+
+ * 4.2.1-4+deb9u1 (Sun, 13 Jan 2019 18:02:22 +0100) * CVE-2019-6250
+
+ * 4.2.1-4+deb9u1 (Sun, 13 Jan 2019 18:02:22 +0100) * CVE-2019-6250
+
+ * 4.2.1-4+deb9u1 (Sun, 13 Jan 2019 18:02:22 +0100) * CVE-2019-6250
+
+ * 4.2.1-4+deb9u1 (Sun, 13 Jan 2019 18:02:22 +0100) * CVE-2019-6250
+
+ * 4.2.1-4+deb9u1 (Sun, 13 Jan 2019 18:02:22 +0100) * CVE-2019-6250
+
+ * 4.2.1-4+deb9u1 (Sun, 13 Jan 2019 18:02:22 +0100) * CVE-2019-6250
+bug: [48500]
+cve:
+- CVE-2019-6250
