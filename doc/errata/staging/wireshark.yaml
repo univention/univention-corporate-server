@@ -12,7 +12,7 @@ desc: |
  * IMAP dissector crash (CVE-2017-7703)
  * the SLSK dissector could go into an infinite loop, triggered by packet
    injection or a malformed capture file. This was addressed in
-   epan/dissectors/packet-slsk.c by adding checks for the remaining length.'}
+   epan/dissectors/packet-slsk.c by adding checks for the remaining length.
    (CVE-2017-7746)
  * PacketBB dissector crash (CVE-2017-7747)
  * PROFINET IO data with a high recursion depth can cause stack exhaustion
