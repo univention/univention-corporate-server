@@ -291,8 +291,7 @@ define([
 						});
 					});
 					categories.sort();
-					//categories = metaLabels.concat(categories);
-					//categories.unshift(_('All'));
+					this._searchSidebar.set('metaCategories', metaLabels);
 					this._searchSidebar.set('categories', categories);
 				}
 			}));
@@ -335,6 +334,15 @@ define([
 
 				return matchesSearchPattern && (categoryMatches || selectedCategories.length == 0);
 			};
+
+			var selectedMetaCategories = this._searchSidebar.get('selectedMetaCategories');
+			array.forEach(this.metaCategories, function(metaObj) {
+				if(selectedMetaCategories.length == 0 || array.indexOf(selectedMetaCategories, metaObj.label) >= 0) {
+					domStyle.set(metaObj.domNode, 'display', 'block');
+				} else {
+					domStyle.set(metaObj.domNode, 'display', 'none');
+				}
+			});
 
 			// set query options and refresh grid
 			this.set('appQuery', query);
