@@ -5,50 +5,9 @@ scope: ucs_4.3-0-errata4.3-3
 src: systemd
 fix: 232-25+deb9u8A~4.3.3.201901211455
 desc: |
- This update addresses the following issues:
-
- * 232-25+deb9u8 (Tue, 15 Jan 2019 10:59:43 +0100) * Non-maintainer upload by
-   the Security Team. * Address memory leak in dispatch_message_real() In
-   dispatch_message_real() memory allocated by set_iovec_field_free() is not
-   free()d. Follow upstream and introduce specific variables cmdline1 and
-   cmdline2 and free() those automatically when dispatch_message_real()
-   returns. * Correctly allocate core_timestamp on the heap and avoid invalid
-   free() * Remove unused core* variables in process_kernel()
-
- * 232-25+deb9u8 (Tue, 15 Jan 2019 10:59:43 +0100) * Non-maintainer upload by
-   the Security Team. * Address memory leak in dispatch_message_real() In
-   dispatch_message_real() memory allocated by set_iovec_field_free() is not
-   free()d. Follow upstream and introduce specific variables cmdline1 and
-   cmdline2 and free() those automatically when dispatch_message_real()
-   returns. * Correctly allocate core_timestamp on the heap and avoid invalid
-   free() * Remove unused core* variables in process_kernel()
-
- * 232-25+deb9u8 (Tue, 15 Jan 2019 10:59:43 +0100) * Non-maintainer upload by
-   the Security Team. * Address memory leak in dispatch_message_real() In
-   dispatch_message_real() memory allocated by set_iovec_field_free() is not
-   free()d. Follow upstream and introduce specific variables cmdline1 and
-   cmdline2 and free() those automatically when dispatch_message_real()
-   returns. * Correctly allocate core_timestamp on the heap and avoid invalid
-   free() * Remove unused core* variables in process_kernel()
-
- * 232-25+deb9u8 (Tue, 15 Jan 2019 10:59:43 +0100) * Non-maintainer upload by
-   the Security Team. * Address memory leak in dispatch_message_real() In
-   dispatch_message_real() memory allocated by set_iovec_field_free() is not
-   free()d. Follow upstream and introduce specific variables cmdline1 and
-   cmdline2 and free() those automatically when dispatch_message_real()
-   returns. * Correctly allocate core_timestamp on the heap and avoid invalid
-   free() * Remove unused core* variables in process_kernel()
-
- * 232-25+deb9u8 (Tue, 15 Jan 2019 10:59:43 +0100) * Non-maintainer upload by
-   the Security Team. * Address memory leak in dispatch_message_real() In
-   dispatch_message_real() memory allocated by set_iovec_field_free() is not
-   free()d. Follow upstream and introduce specific variables cmdline1 and
-   cmdline2 and free() those automatically when dispatch_message_real()
-   returns. * Correctly allocate core_timestamp on the heap and avoid invalid
-   free() * Remove unused core* variables in process_kernel()
+ This update addresses the following issue:
  * memory leak in journald-server.c introduced by fix for CVE-2018-16864
    (CVE-2019-3815)
 bug: [48499]
 cve:
 - CVE-2019-3815
-- CVE-2018-16864
