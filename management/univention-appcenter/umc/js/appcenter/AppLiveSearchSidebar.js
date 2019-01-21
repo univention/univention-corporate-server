@@ -40,7 +40,7 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Form",
 	"umc/widgets/SearchBox",
-	"umc/i18n!"
+	"umc/i18n!umc/modules/appcenter"
 ], function(declare, lang, array, has, Deferred, domConstruct, regexp, CheckBox, ContainerWidget, Form, SearchBox, _) {
 	return declare("umc.modules.appcenter.AppLiveSearchSidebar", [ContainerWidget], {
 		// summary:
