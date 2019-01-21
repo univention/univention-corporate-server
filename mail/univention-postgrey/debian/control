@@ -1,5 +1,6 @@
 Source: univention-postgrey
 Section: univention
+Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>> 7),
   univention-config-dev,
