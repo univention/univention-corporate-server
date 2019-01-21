@@ -1,0 +1,109 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: wireshark
+fix: 1.12.1+g01b65bf-4+deb8u16
+desc: |
+ This update addresses the following issues, which are basically all problems
+ with length checks, invalid memory access in different dissectors. This could
+ result in infinite loops or crashes by malicious packets:
+ * NetScaler file parser infinite loop (CVE-2017-7700)
+ * IMAP dissector crash (CVE-2017-7703)
+ * the SLSK dissector could go into an infinite loop, triggered by packet
+   injection or a malformed capture file. This was addressed in
+   epan/dissectors/packet-slsk.c by adding checks for the remaining length.'}
+   (CVE-2017-7746)
+ * PacketBB dissector crash (CVE-2017-7747)
+ * PROFINET IO data with a high recursion depth can cause stack exhaustion
+   (CVE-2017-9766)
+ * DOCSIS infinite loop (CVE-2017-11406)
+ * MQ dissector crash (CVE-2017-11407)
+ * GPRS LLC dissector large loop. (CVE-2017-11409)
+ * IrCOMM dissector buffer overrun (CVE-2017-13765)
+ * DMP dissector crash (CVE-2017-15191)
+ * denial of service in the File_read_line function in epan/wslua/wslua_file.c
+   (CVE-2017-17935)
+ * Misuse of NULL pointer in MRDISC dissector (CVE-2017-17997)
+ * epan/dissectors/packet-dcm.c had an infinite loop that was addressed by
+   checking for integer wraparound. (CVE-2018-7322)
+ * epan/dissectors/packet-wccp.c had a large loop that was addressed by
+   ensuring that a calculated length was monotonically increasing.
+   (CVE-2018-7323)
+ * epan/dissectors/packet-sccp.c had an infinite loop that was addressed by
+   using a correct integer data type. (CVE-2018-7324)
+ * epan/dissectors/packet-rpki-rtr.c had an infinite loop that was addressed
+   by validating a length field. (CVE-2018-7325)
+ * epan/dissectors/packet-ber.c had an infinite loop that was addressed by
+   validating a length. (CVE-2018-7331)
+ * FCP dissector crash in packet-fcp.c (CVE-2018-7336)
+ * IPMI dissector crash in packet-ipmi-picmg.c (CVE-2018-7417)
+ * SIGCOMP dissector crash in packet-sigcomp.c (CVE-2018-7418)
+ * Pcapng file parser crash in pcapng.c (CVE-2018-7420)
+ * stack overflow via crafted LWAPP Layer 3 Packet (CVE-2018-9256)
+ * MP4 dissector crash in epan/dissectors/file-mp4.c (CVE-2018-9259)
+ * IEEE 802.15.4 dissector crash in epan/dissectors/packet-ieee802154.c
+   (CVE-2018-9260)
+ * VLAN dissector crash in epan/dissectors/packet-vlan.c (CVE-2018-9262)
+ * Kerberos dissector crash in epan/dissectors/packet-kerberos.c
+   (CVE-2018-9263)
+ * memory leak in epan/dissectors/packet-tn3270.c (CVE-2018-9265)
+ * memory leak in epan/dissectors/packet-lapd.c (CVE-2018-9267)
+ * memory leak in epan/dissectors/packet-smb2.c (CVE-2018-9268)
+ * memory leak in epan/dissectors/packet-giop.c (CVE-2018-9269)
+ * memory leak in epan/oids.c (CVE-2018-9270)
+ * DNS dissector crash in packet-dns.c (CVE-2018-11356)
+ * Uncontrolled Resource Consumption in epan/tvbuff.c (CVE-2018-11357)
+ * Out-of-bounds Read in proto.c (CVE-2018-11359)
+ * Radiotap dissector crash (CVE-2018-16057)
+ * Bluetooth AVDTP dissector crash (CVE-2018-16058)
+ * Infinite loop in the MMSE dissector (CVE-2018-19622)
+ * Heap buffer overflow in packet-lbmpdm.c:dissect_segment_ofstable() allows
+   denial of service or possibly arbitrary code execution (CVE-2018-19623)
+ * NULL pointer dereference resulting in a PVFS dissector crash
+   (CVE-2018-19624)
+ * Heap-based buffer over-read in the dissection engine (CVE-2018-19625)
+ * DCOM dissector crash resulting in information leak (CVE-2018-19626)
+bug: [48498]
+cve:
+- CVE-2017-7700
+- CVE-2017-7703
+- CVE-2017-7746
+- CVE-2017-7747
+- CVE-2017-9766
+- CVE-2017-11406
+- CVE-2017-11407
+- CVE-2017-11409
+- CVE-2017-13765
+- CVE-2017-15191
+- CVE-2017-17935
+- CVE-2017-17997
+- CVE-2018-7322
+- CVE-2018-7323
+- CVE-2018-7324
+- CVE-2018-7325
+- CVE-2018-7331
+- CVE-2018-7336
+- CVE-2018-7417
+- CVE-2018-7418
+- CVE-2018-7420
+- CVE-2018-9256
+- CVE-2018-9259
+- CVE-2018-9260
+- CVE-2018-9262
+- CVE-2018-9263
+- CVE-2018-9265
+- CVE-2018-9267
+- CVE-2018-9268
+- CVE-2018-9269
+- CVE-2018-9270
+- CVE-2018-11356
+- CVE-2018-11357
+- CVE-2018-11359
+- CVE-2018-16057
+- CVE-2018-16058
+- CVE-2018-19622
+- CVE-2018-19623
+- CVE-2018-19624
+- CVE-2018-19625
+- CVE-2018-19626
