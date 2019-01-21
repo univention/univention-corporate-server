@@ -86,7 +86,7 @@ define([
 			this.inherited(arguments);
 
 			this.watch('selectedChildWidget', lang.hitch(this, '_updateModuleState'));
-			when(this._appCenterPage._searchSidebar.selectFormDeferred, lang.hitch(this, function() {
+			when(this._appCenterPage._searchSidebar.selectCategoryFormDeferred, lang.hitch(this, function() {
 				this._appCenterPage._searchSidebar.onSearch();  // Trigger the initial loading of apps
 			}));
 		},

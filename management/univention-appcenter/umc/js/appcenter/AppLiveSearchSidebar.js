@@ -53,7 +53,7 @@ define([
 
 		_categoriesAsIdLabelPairs: true,
 
-		selectFormDeferred: null,
+		selectCategoryFormDeferred: null,
 
 		// category: Object[]|String[]
 		//		Array of the currently selected categories
@@ -61,9 +61,9 @@ define([
 
 		searchLabel: null,
 
-		selectForm: null,
+		selectCategoryForm: null,
 
-		_selectForm: null,
+		_selectCategoryForm: null,
 
 		baseClass: 'umcLiveSearchSidebar',
 
@@ -75,7 +75,7 @@ define([
 		_lastValue: '',
 
 		buildRendering: function() {
-			this.selectFormDeferred = new Deferred();
+			this.selectCategoryFormDeferred = new Deferred();
 			this.inherited(arguments);
 			if (this.searchableAttributes === null) {
 				this.searchableAttributes = ['name', 'description', 'categories', 'keywords'];
@@ -125,8 +125,8 @@ define([
 		},
 
 		_setCategoriesAttr: function(categories) {
-			if (this._selectForm) {
-				this._selectForm.removeOption(this._selectForm.getOptions());
+			if (this._selectCategoryForm) {
+				this._selectCategoryForm.removeOption(this._selectCategoryForm.getOptions());
 			}
 			this._set('categories', categories);
 
@@ -134,7 +134,7 @@ define([
 		},
 
 		_addCategorySelector: function(categories) {
-			var selectFormOptions = array.map(categories, lang.hitch(this, function(_category, idx) {
+			var selectCategoryFormOptions = array.map(categories, lang.hitch(this, function(_category, idx) {
 				var category = this._getUniformCategory(_category);
 				return {
 					label: category.label,
@@ -143,20 +143,20 @@ define([
 				};
 			}));
 			
-			if (this.selectForm) {
-				this.removeChild(this.selectForm);
-				this.selectForm.destroyRecursive();
-				this.selectForm = null;
-				this.selectFormDeferred = this.selectFormDeferred.isResolved() ? new Deferred() : this.selectFormDeferred;
+			if (this.selectCategoryForm) {
+				this.removeChild(this.selectCategoryForm);
+				this.selectCategoryForm.destroyRecursive();
+				this.selectCategoryForm = null;
+				this.selectCategoryFormDeferred = this.selectCategoryFormDeferred.isResolved() ? new Deferred() : this.selectCategoryFormDeferred;
 			}
-			this.selectForm = new ContainerWidget({'class': 'appLiveSearchSidebarElement'});
+			this.selectCategoryForm = new ContainerWidget({'class': 'appLiveSearchSidebarElement'});
 			domConstruct.create('span', {
 				innerHTML: _('Categories'),
 				'class': 'mainHeader'
-			}, this.selectForm.domNode);
+			}, this.selectCategoryForm.domNode);
 
 			var widgets = [];
-			array.forEach(selectFormOptions, lang.hitch(this, function(category) {
+			array.forEach(selectCategoryFormOptions, lang.hitch(this, function(category) {
 				widgets.push({
 					type: CheckBox,
 					name: category.value,
@@ -176,12 +176,12 @@ define([
 			var form = new Form({
 				widgets: widgets,
 			});
-			this.selectForm.addChild(form);
+			this.selectCategoryForm.addChild(form);
 
-			this.selectFormDeferred.resolve();
+			this.selectCategoryFormDeferred.resolve();
 
-			this.own(this.selectForm);
-			this.addChild(this.selectForm);
+			this.own(this.selectCategoryForm);
+			this.addChild(this.selectCategoryForm);
 		},
 
 		getSearchQuery: function(searchPattern) {
