@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.1-3) unstable; urgency=medium
+
+  * Bug #48471: fix wrong function call
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 22 Jan 2019 17:54:57 +0100
+
 univention-management-console-module-udm (9.0.1-2) unstable; urgency=medium
 
   * Bug #48471: UMC design adjustments
