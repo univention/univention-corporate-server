@@ -52,7 +52,7 @@ search_users_with_client () {
 
 	. product-tests/samba/utils.sh
 	START=$(date +%s)
-	time python shared-utils/ucs-winrm.py search-ad --filter "name=benutzer*" ipconfig --credssp
+	time python shared-utils/ucs-winrm.py search-ad --filter "name=benutzer*" --credssp
 	END=$(date +%s)
 	DIFF=$(echo "$END - $START" | bc)
 	echo "Search all users in LDAP time in seconds" >> timestamps.log
