@@ -68,18 +68,9 @@ define([
 				iconClass = 'appEndOfLifeIcon';
 			} else if (item.vote_for_app) {
 				iconClass = 'appVoteForApp';
-			} else if (item.update_available) {
+			} else if (item.update_available || this._update_available_in_domain(item)) {
 				iconClass = 'appUpdateIcon';
-			}
-			if (item.installations) {
-				tools.forIn(item.installations, function(server, info) {
-					if (info.update_available) {
-						iconClass = 'appUpdateIcon';
-						return false;
-					}
-				});
-			}
-			if (!iconClass) {
+			} else {
 				var isRecommendedApp = array.some(item.rating, function(iRating) {
 					return iRating.name === 'RecommendedApp';
 				});
@@ -88,6 +79,18 @@ define([
 				}
 			}
 			return iconClass || this.inherited(arguments);
+		},
+
+		_update_available_in_domain: function(item) {
+			var updates_available_in_domain = false;
+			if (item.installations) {
+				tools.forIn(item.installations, function(server, info) {
+					if (info.update_available) {
+						updates_available_in_domain = true;
+					}
+				});
+			}
+			return updates_available_in_domain;
 		},
 
 		getItemStatusTooltipMessage: function(item) {
