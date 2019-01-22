@@ -46,31 +46,7 @@ define([
 		// summary:
 		//		Offers a side bar for live searching, a set of categories can be defined.
 
-		// categories: Object[]|String[]
-		//		Array of categories exposing at least the fields 'id' and 'label'
-		//		or array of strings.
-		categories: null,
-
-		badges: null,
-		licenses: null,
-
-		_categoriesAsIdLabelPairs: true,
-
-		selectCategoryFormDeferred: null,
-
-		// category: Object[]|String[]
-		//		Array of the currently selected categories
-		selectedCategories: [],
-		selectedBadges: [],
-		selectedLicenses : [],
-
 		searchLabel: null,
-
-		selectCategoryForm: null,
-		_selectCategoryForm: null,
-		selectStatusForm: null,
-		selectBadgesForm: null,
-		selectLicenseForm: null,
 
 		baseClass: 'umcLiveSearchSidebar',
 
@@ -82,7 +58,6 @@ define([
 		_lastValue: '',
 
 		buildRendering: function() {
-			this.selectCategoryFormDeferred = new Deferred();
 			this.inherited(arguments);
 			if (this.searchableAttributes === null) {
 				this.searchableAttributes = ['name', 'description', 'categories', 'keywords'];
@@ -101,9 +76,8 @@ define([
 			this.inherited(arguments);
 
 			// Reset filters, when opening the App Center:
-			this.selectedCategories = [];
-			this.selectedBadges = [];
-			this.selectedLicenses = [];
+			this._selected = {};
+			this._filterForms = {};
 
 			this._searchTextBox.on('keyup', lang.hitch(this, function() {
 				if (this.get('value') || this._lastValue) {
@@ -112,14 +86,6 @@ define([
 					this.onSearch();
 				}
 			}));
-		},
-
-		_getUniformCategory: function(category) {
-			if (typeof category == 'string') {
-				this._categoriesAsIdLabelPairs = false;
-				return { id: category, label: category };
-			}
-			return category;
 		},
 
 		_isInSearchMode: function() {
@@ -135,142 +101,68 @@ define([
 		},
 
 		_setCategoriesAttr: function(categories) {
-			if (this._selectCategoryForm) {
-				this._selectCategoryForm.removeOption(this._selectCategoryForm.getOptions());
-			}
-			this._set('categories', categories);
-
-			this._addCategorySelector(categories);
-		},
-
-		_addCategorySelector: function(categories) {
-			var selectCategoryFormOptions = array.map(categories, lang.hitch(this, function(_category, idx) {
-				var category = this._getUniformCategory(_category);
-				return {
-					label: category.label,
-					value: category.label,
-					_categoryID: category.id
-				};
-			}));
-			
-			if (this.selectCategoryForm) {
-				this.removeChild(this.selectCategoryForm);
-				this.selectCategoryForm.destroyRecursive();
-				this.selectCategoryForm = null;
-				this.selectCategoryFormDeferred = this.selectCategoryFormDeferred.isResolved() ? new Deferred() : this.selectCategoryFormDeferred;
-			}
-			this.selectCategoryForm = new ContainerWidget({'class': 'appLiveSearchSidebarElement'});
-			domConstruct.create('span', {
-				innerHTML: _('Categories'),
-				'class': 'mainHeader'
-			}, this.selectCategoryForm.domNode);
-
-			var widgets = [];
-			array.forEach(selectCategoryFormOptions, lang.hitch(this, function(category) {
-				widgets.push({
-					type: CheckBox,
-					name: category.value,
-					label: category.label,
-					onChange: lang.hitch(this, function(arg) {
-						if (arg == true) {
-							this.selectedCategories.push(category.value);
-						} else {
-							this.selectedCategories = this.selectedCategories.filter(
-								function(x) {return x != category.value;}
-							);
-						}
-						this.onSearch();  // Trigger the refresh of the displayed Apps
-					})
-				});
-			}));
-			var form = new Form({
-				widgets: widgets,
-			});
-			this.selectCategoryForm.addChild(form);
-
-			this.selectCategoryFormDeferred.resolve();
-
-			this.own(this.selectCategoryForm);
-			this.addChild(this.selectCategoryForm);
+			this._addFilter('categories', _('Categories'), categories);
 		},
 
 		_setBadgesAttr: function(badges) {
-			this._set('badges', badges);
-			this._addBadgesSelector(badges);
-		},
-
-		_addBadgesSelector: function(badges) {
-			if (this.selectBadgesForm) {
-				this.removeChild(this.selectBadgesForm);
-				this.selectBadgesForm.destroyRecursive();
-				this.selectBadgesForm = null;
-				this.selectBadgesFormDeferred = this.selectBadgesFormDeferred.isResolved() ? new Deferred() : this.selectBadgesFormDeferred;
-			}
-			this.selectBadgesForm = new ContainerWidget({'class': 'appLiveSearchSidebarElement'});
-			domConstruct.create('span', {
-				innerHTML: _('App Badges'),
-				'class': 'mainHeader'
-			}, this.selectBadgesForm.domNode);
-			this.own(this.selectBadgesForm);
-			this.addChild(this.selectBadgesForm);
-
-			var widgets = [];
-			array.forEach(badges, lang.hitch(this, function(badge) {
-				widgets.push({
-					type: CheckBox,
-					name: badge.id,
-					label: badge.description,
-					onChange: lang.hitch(this, function(arg) {
-						if (arg == true) {
-							this.selectedBadges.push(badge.id);
-						} else {
-							this.selectedBadges = this.selectedBadges.filter(
-								function(x) {return x != badge.id;}
-							);
-						}
-						this.onSearch();  // Trigger the refresh of the displayed Apps
-					})
-				});
-			}));
-			var form = new Form({
-				widgets: widgets,
-			});
-			this.selectBadgesForm.addChild(form);
-			this.selectBadgesForm.own(form);
+			this._addFilter('badges', _('App Badges'), badges);
 		},
 
 		_setLicensesAttr: function(licenses) {
-			this._set('licenses', licenses);
-			this._addLicenseSelector(licenses);
+			this._addFilter('licenses', _('App License'), licenses);
 		},
 
-		_addLicenseSelector: function(licenses) {
-			if (this.selectLicenseForm) {
-				this.removeChild(this.selectLicenseForm);
-				this.selectLicenseForm.destroyRecursive();
-				this.selectLicenseForm = null;
-				this.selectLicenseFormDeferred = this.selectLicenseFormDeferred.isResolved() ? new Deferred() : this.selectLicenseFormDeferred;
+		_setVoteForAppsAttr: function(voteForApps) {
+			var choices = [];
+			if (voteForApps) {
+				choices.push({
+					id: 'yes',
+					description: _('Vote Apps')
+				});
 			}
-			this.selectLicenseForm = new ContainerWidget({'class': 'appLiveSearchSidebarElement'});
-			domConstruct.create('span', {
-				innerHTML: _('App License'),
-				'class': 'mainHeader'
-			}, this.selectLicenseForm.domNode);
-			this.own(this.selectLicenseForm);
-			this.addChild(this.selectLicenseForm);
+			this._addFilter('voteForApps', '', choices);
+		},
+
+		getSelected: function(id) {
+			return this._selected[id] || [];
+		},
+
+		_addFilter: function(id, title, choices) {
+			var formContainer = this._filterForms[id];
+			if (formContainer) {
+				this.removeChild(formContainer);
+				formContainer.destroyRecursive();
+			}
+			this._selected[id] = [];
+			if (! choices.length) {
+				return;
+			}
+			formContainer = this._filterForms[id] = new ContainerWidget({'class': 'appLiveSearchSidebarElement'});
+			if (title) {
+				domConstruct.create('span', {
+					innerHTML: title,
+					'class': 'mainHeader'
+				}, formContainer.domNode);
+			}
+			this.own(formContainer);
+			this.addChild(formContainer);
 
 			var widgets = [];
-			array.forEach(licenses, lang.hitch(this, function(license) {
+			array.forEach(choices, lang.hitch(this, function(choice) {
+				var label = choice.description;
+				if (!title && choices.length === 1) {
+					label = '<span class="searchFilterSingle">' + choice.description + '</span>';
+				}
 				widgets.push({
 					type: CheckBox,
-					name: license.id,
-					label: license.description,
+					name: choice.id,
+					label: label,
 					onChange: lang.hitch(this, function(arg) {
 						if (arg == true) {
-							this.selectedLicenses.push(license.id);
+							this._selected[id].push(choice.id);
 						} else {
-							this.selectedLicenses = this.selectedLicenses.filter(
-								function(x) {return x != license.id;}
+							this._selected[id] = this._selected[id].filter(
+								function(x) {return x != choice.id;}
 							);
 						}
 						this.onSearch();  // Trigger the refresh of the displayed Apps
@@ -280,8 +172,8 @@ define([
 			var form = new Form({
 				widgets: widgets,
 			});
-			this.selectLicenseForm.addChild(form);
-			this.selectLicenseForm.own(form);
+			formContainer.addChild(form);
+			formContainer.own(form);
 		},
 
 		getSearchQuery: function(searchPattern) {
@@ -316,10 +208,6 @@ define([
 		onSearch: function() {
 			// event stub
 		},
-
-		onCategorySelected: function() {
-			//event stub
-		}
 	});
 });
 

@@ -285,10 +285,14 @@ define([
 					var badges = [];
 					var categories = [];
 					var licenses = [];
+					var voteForApps = false;
 					array.forEach(applications, function(application) {
 						array.forEach(application.categories, function(category) {
 							if (array.indexOf(categories, category) < 0) {
-								categories.push(category);
+								categories.push({
+									id: category,
+									description: category
+								});
 							}
 						});
 						array.forEach(application.rating, function(rating) {
@@ -305,11 +309,16 @@ define([
 								description: application.license_description
 							});
 						}
+						if (application.vote_for_app) {
+							voteForApps = true;
+						}
 					});
 					categories.sort();
 					this._searchSidebar.set('badges', badges);
+					this._searchSidebar.set('voteForApps', voteForApps);
 					this._searchSidebar.set('categories', categories);
 					this._searchSidebar.set('licenses', licenses);
+					this._searchSidebar.onSearch();
 				}
 			}));
 			return updating;
@@ -337,43 +346,47 @@ define([
 			if (searchPattern) {
 				searchPattern = this._searchSidebar.getSearchQuery(searchPattern);
 			}
-			var selectedCategories = this._searchSidebar.get('selectedCategories');
-			var selectedBadges = this._searchSidebar.get('selectedBadges');
-			var selectedLicenses = this._searchSidebar.get('selectedLicenses');
-			var query = lang.hitch(this, 'queryApps', searchPattern, selectedCategories, selectedBadges, selectedLicenses);
+			var selectedCategories = this._searchSidebar.getSelected('categories');
+			var selectedBadges = this._searchSidebar.getSelected('badges');
+			var selectedLicenses = this._searchSidebar.getSelected('licenses');
+			var voteForApps = this._searchSidebar.getSelected('voteForApps').length > 0;
+			var query = lang.hitch(this, 'queryApps', searchPattern, selectedCategories, selectedBadges, selectedLicenses, voteForApps);
 
 			// set query options and refresh grid
 			this.set('appQuery', query);
 		},
 
-		queryApps: function(searchPattern, selectedCategories, selectedBadges, selectedLicenses, app) {
+		queryApps: function(searchPattern, selectedCategories, selectedBadges, selectedLicenses, voteForApps, app) {
 			//app.license
 
 			var matchesSearchPattern = searchPattern ? searchPattern.test(app.name, app) : true;
 
 			var categoryMatches = false;
 			array.forEach(app.categories, function(appsCategory) {
-				if(array.indexOf(selectedCategories, appsCategory) >= 0) {
+				if (array.indexOf(selectedCategories, appsCategory) >= 0) {
 					categoryMatches = true;
 				}
 			});
 
 			var badgesMatch = false;
 			array.forEach(app.rating, function(rating) {
-				if(array.indexOf(selectedBadges, rating.name) >= 0) {
+				if (array.indexOf(selectedBadges, rating.name) >= 0) {
 					badgesMatch = true;
 				}
 			});
 
 			var licenseMatches = false;
-			if(array.indexOf(selectedLicenses, app.license) >= 0) {
+			if (array.indexOf(selectedLicenses, app.license) >= 0) {
 				licenseMatches = true;
 			}
+
+			var voteForAppsMatches = app.vote_for_app || !voteForApps;
 
 			return matchesSearchPattern &&
 				(selectedCategories.length == 0 || categoryMatches) &&
 				(selectedBadges.length == 0 || badgesMatch) &&
-				(selectedLicenses.length == 0 || licenseMatches);
+				(selectedLicenses.length == 0 || licenseMatches) &&
+				voteForAppsMatches;
 		},
 
 		onShowApp: function(/*app*/) {
