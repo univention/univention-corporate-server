@@ -84,6 +84,7 @@ cleanup () { # Undo all changes
 	[ -f "${BASEDIR}/reenable_mirror" ] && a2ensite univention-repository >&3 2>&3
 	find -P /etc/apache2 -lname "${BASEDIR}/*" -exec rm -f {} +
 	apache2ctl restart >&3 2>&3
+	sleep 3
 
 	declare -a reset remove
 	local name sname
