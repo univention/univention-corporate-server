@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global umc,define,require,console,window,setTimeout*/
+/*global umc,define,require,console,window,setTimeout,dojo*/
 
 define([
 	"dojo/_base/declare",
@@ -663,7 +663,7 @@ define([
 
 		_setupModuleTabs: function() {
 			this._moreTabsDropDownButton = new DropDownButton({
-				'class': 'umcMoreTabsDropDownButton invisible',
+				'class': 'umcMoreTabsDropDownButton umcFlatButton umcMoreTabsDropDownButton--invisible',
 				iconClass: '', // prevent 'dijitNoIcon' to be set
 				dropDown: new Menu({
 					'class': 'umcMoreTabsDropDownMenuContent'
@@ -741,7 +741,7 @@ define([
 				tabsWidth = domGeometry.getMarginBox(this._tabController.domNode).w;
 			}
 			if (tabIndexOffset > 0) {
-				domClass.remove(this._moreTabsDropDownButton.domNode, 'invisible');
+				domClass.remove(this._moreTabsDropDownButton.domNode, 'umcMoreTabsDropDownButton--invisible');
 			}
 		},
 
@@ -755,7 +755,7 @@ define([
 			array.forEach(extraTabs, function(tab) {
 				domClass.add(tab.domNode, 'dijitDisplayNone');
 			});
-			domClass.add(this._moreTabsDropDownButton.domNode, 'invisible');
+			domClass.add(this._moreTabsDropDownButton.domNode, 'umcMoreTabsDropDownButton--invisible');
 		},
 
 		_setupRightHeader: function() {
@@ -768,7 +768,8 @@ define([
 				this.setupSearchField();
 			}
 			this._headerRight.addChild(new NotificationDropDownButton({
-				iconClass: 'umcNotificationIcon'
+				iconClass: 'umcNotificationIcon',
+				'class': 'umcFlatButton'
 			}));
 			this._setupMenu();
 			this._headerRight.addChild(new ContainerWidget({
@@ -795,18 +796,13 @@ define([
 
 		setupBackToOverview: function() {
 			this._backToOverviewButton = new Button({
-				'class': 'umcBackToOverview',
+				'class': 'umcBackToOverview umcFlatButton',
+				iconClass: 'umcBackToOverview__icon',
 				onClick: function() {
 					require('umc/app').switchToOverview();
 				}
 			});
 			this.addChild(this._backToOverviewButton);
-		},
-
-		toggleBackToOverviewVisibility: function(visible) {
-			if (this._backToOverviewButton) {
-				this._backToOverviewButton.set('visible', visible);
-			}
 		},
 
 		setupHelpMenu: function() {
@@ -953,6 +949,9 @@ define([
 
 		_tabContainer: null,
 		_topContainer: null,
+		_topContainerGeneralCSSClasses: [],
+		_topContainerModuleSpecificCSSClasses: [],
+		_topContainerModuleSpecificCSSClassesWatchHandler: null,
 		_overviewPage: null,
 		_categoriesContainer: null,
 		_setupStaticGui: false,
@@ -972,6 +971,7 @@ define([
 			if (has('touch')) {
 				this.setupTouchDevices();
 			}
+			domClass.add(baseWin.body(), 'umc--umc');
 
 			// set up fundamental layout parts...
 
@@ -996,7 +996,7 @@ define([
 			// the header
 			this._header = new UmcHeader({
 				id: 'umcHeader',
-				'class': 'umcHeader',
+				'class': 'umcHeader umcHeader--umc',
 				_tabController: this._tabController,
 				_tabContainer: this._tabContainer
 			});
@@ -1008,7 +1008,6 @@ define([
 			this._topContainer.addChild(this._tabContainer);
 			this._topContainer.addChild(new NotificationSnackbar({}));
 			this._topContainer.startup();
-			//this._updateScrolling();
 
 			// subscribe to requests for opening modules and closing/focusing tabs
 			topic.subscribe('/umc/modules/open', lang.hitch(this, 'openModule'));
@@ -1037,8 +1036,7 @@ define([
 			// register events for closing and focusing
 			this._tabContainer.watch('selectedChildWidget', lang.hitch(this, function(name, oldModule, newModule) {
 				this._lastSelectedChild = oldModule;
-				this._updateHeaderColor(oldModule, newModule);
-				this._updateScrolllessUMC(newModule);
+				this._updateTopContainerCSSClasses(oldModule, newModule);
 
 				if (!newModule.moduleID) {
 					// this is the overview page, not a module
@@ -1049,7 +1047,6 @@ define([
 					this._updateStateHash();
 				}
 				var overviewShown = (newModule === this._overviewPage);
-				this._header.toggleBackToOverviewVisibility(tools.status('numOfTabs') > 0);
 				domClass.toggle(baseWin.body(), 'umcOverviewShown', overviewShown);
 				domClass.toggle(baseWin.body(), 'umcOverviewNotShown', !overviewShown);
 				if (!tools.status('mobileView')) {
@@ -1062,7 +1059,6 @@ define([
 			aspect.before(this._tabContainer, 'removeChild', lang.hitch(this, function(module) {
 				this._updateNumOfTabs(-1);
 				topic.publish('/umc/actions', module.moduleID, module.moduleFlavor, 'close');
-				this._header.toggleBackToOverviewVisibility(tools.status('numOfTabs') > 0);
 
 				if (module === this._tabContainer.get('selectedChildWidget')) {
 					if (array.indexOf(this._tabContainer.getChildren(), this._lastSelectedChild) !== -1) {
@@ -1074,41 +1070,83 @@ define([
 			}));
 		},
 
-		_updateHeaderColor: function(oldModule, newModule) {
-			var headerColorCss;
-			// remove color of oldModule if it was not the overview
-			if (oldModule && oldModule.moduleID) {
-				headerColorCss = lang.replace('headerColor-{categoryColor}', oldModule);
-				domClass.remove(this._header.domNode, headerColorCss);
+		_updateTopContainerCSSClasses: function(oldModule, newModule) {
+			// remove previously added css classes; cleanup
+			domClass.remove(this._topContainer.domNode, this._topContainerGeneralCSSClasses);
+			this._topContainerGeneralCSSClasses = [];
+
+			if (this._topContainerModuleSpecificCSSClassesWatchHandler) {
+				this._topContainerModuleSpecificCSSClassesWatchHandler.remove();
+				this._topContainerModuleSpecificCSSClassesWatchHandler = null;
 			}
-			// add color of newModule if it is not the overview
-			if (newModule.moduleID) {
-				headerColorCss = lang.replace('headerColor-{categoryColor}', newModule);
-				domClass.add(this._header.domNode, headerColorCss);
+
+			var cssClass;
+
+			// add css class for category color of open module
+			if (lang.exists('categoryColor', newModule)) {
+				cssClass = lang.replace('umcTopContainer--categoryColor-{categoryColor}', newModule);
+				this._topContainerGeneralCSSClasses.push(cssClass);
+			}
+
+			// add css class for open module id and flavor
+			cssClass = newModule.isOverview ? 'overview' : newModule.moduleID;
+			cssClass = lang.replace('umcTopContainer--layout-{0}', [cssClass]);
+			this._topContainerGeneralCSSClasses.push(cssClass);
+
+			if (lang.exists('moduleFlavor', newModule)) {
+				cssClass = lang.replace('{cssClass}-{moduleFlavor}', {
+					cssClass: cssClass,
+					moduleFlavor: newModule.moduleFlavor.replace(/[^a-zA-Z0-9\-]/g, '-')
+				});
+				this._topContainerGeneralCSSClasses.push(cssClass);
+			}
+
+			domClass.add(this._topContainer.domNode, this._topContainerGeneralCSSClasses);
+
+			// add css classes for module specific pages
+			this._removeModuleSpecificCSSClasses();
+			if (newModule.selectablePagesToLayoutMapping) {
+				this._addModuleSpecificCSSClasses(newModule);
+				this._topContainerModuleSpecificCSSClassesWatchHandler = newModule.watch('selectedChildWidget', lang.hitch(this, function() {
+					this._removeModuleSpecificCSSClasses();
+					this._addModuleSpecificCSSClasses(newModule);
+				}));
 			}
 		},
 
-		_updateScrolllessUMC: function(newModule) {
-			if (has('trident')) {
-				return; // do not apply special css on IE
-			}
+		_removeModuleSpecificCSSClasses: function() {
+			domClass.remove(this._topContainer.domNode, this._topContainerModuleSpecificCSSClasses);
+			this._topContainerModuleSpecificCSSClasses = [];
+		},
 
-			if (this._scrolllessUMCModuleWatchHandler) {
-				this._scrolllessUMCModuleWatchHandler.remove();
-				this._scrolllessUMCModuleWatchHandler = null;
-			}
+		_addModuleSpecificCSSClasses: function(module) {
+			Object.keys(module.selectablePagesToLayoutMapping).forEach(lang.hitch(this, function(page) {
+				if (module.selectedChildWidget === module[page]) {
+					var pageName = page.toLowerCase().replace(/[^a-z]/g, '');
+					var cssClass = lang.replace('umcTopContainer--layout-{moduleID}-{pageName}', {
+						moduleID: module.moduleID,
+						pageName: pageName
+					});
+					this._topContainerModuleSpecificCSSClasses.push(cssClass);
 
-			var scrolllessModules = ['udm/navigation', 'uvmm/uvmm'];
-			var newModuleName = lang.replace('{0}/{1}', [newModule.moduleID, newModule.moduleFlavor]);
-			var isScrolllessModule = scrolllessModules.indexOf(newModuleName) >= 0;
-			var addClass = isScrolllessModule && newModule.selectedChildWidget === newModule._searchPage;
-			domClass.toggle(this._topContainer.domNode, 'umcScrollless', addClass);
-			if (isScrolllessModule) {
-				this._scrolllessUMCModuleWatchHandler = newModule.watch('selectedChildWidget', lang.hitch(this, function(name, oldChild, newChild) {
-					var addClass = newChild === newModule._searchPage;
-					domClass.toggle(this._topContainer.domNode, 'umcScrollless', addClass);
-				}));
-			}
+					if (lang.exists('moduleFlavor', module)) {
+						cssClass = lang.replace('umcTopContainer--layout-{moduleID}-{moduleFlavor}-{pageName}', {
+							moduleID: module.moduleID,
+							moduleFlavor: module.moduleFlavor.replace(/[^a-zA-Z0-9\-]/g, '-'),
+							pageName: pageName
+						});
+						this._topContainerModuleSpecificCSSClasses.push(cssClass);
+					}
+
+					if (module.selectablePagesToLayoutMapping[page]) {
+						cssClass = lang.replace('umcTopContainer--generic-layout-{layout}', {
+							layout: module.selectablePagesToLayoutMapping[page]
+						});
+						this._topContainerModuleSpecificCSSClasses.push(cssClass);
+					}
+				}
+			}));
+			domClass.add(this._topContainer.domNode, this._topContainerModuleSpecificCSSClasses);
 		},
 
 		switchToOverview: function() {
@@ -1646,10 +1684,12 @@ define([
 				domClass.add(menuTab.domNode, lang.replace('color-{0}', [module_flavor_css]));
 			}
 
-			if (array.some(this._insertedTabStyles, function(id) { return id === module_flavor_css; })) {
-				// do not insert the same styles more than once
-				return;
-			}
+			var styleAlreadyInserted = array.some(this._insertedTabStyles, function(id) {
+				return id === module_flavor_css;
+			});
+			if (styleAlreadyInserted) {
+ 				return;
+ 			}
 
 			this._insertedTabStyles.push(module_flavor_css);
 
@@ -1657,19 +1697,19 @@ define([
 			var defaultClasses = '.umc .dijitTabContainerTop-tabs .dijitTab';
 			var cssProperties = lang.replace('background-color: {0}; background-image: none; filter: none;', [color]);
 
-			// color the umcHeader
-			styles.insertCssRule(lang.replace('.umc .umcHeader.headerColor-{0}', [module.category_for_color]), cssProperties);
-			// color border and set color of NotificationDropDownButton notificationCountNode
-			styles.insertCssRule(lang.replace('.umc .umcHeader.headerColor-{0} .umcNotificationDropDownButton .notificationCountNode', [tab.categoryColor]), lang.replace('border-color: {0}; color: {0};', [color]));
 			// color the tabs in the tabs dropDownMenu of the umcHeaer
 			styles.insertCssRule(lang.replace('.umc .umcMoreTabsDropDownMenuContent .dijitMenuItemHover.color-{0},.umc .umcMoreTabsDropDownMenuContent .dijitMenuItemSelected.color-{0}', [module_flavor_css]), lang.replace('background-color: {0}', [color]));
+
 			// color module tabs
-			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitHover', [defaultClasses, module_flavor_css]), cssProperties);
-			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitTabChecked', [defaultClasses, module_flavor_css]), cssProperties);
-			// color action buttons in an dgrid
-			styles.insertCssRule(lang.replace('.umcModule.color-{0} .umcGridHeader .dijitButtonText', [tab.categoryColor]), lang.replace('color: {0}', [color]));
-			// color scroll to top floating button
-			styles.insertCssRule(lang.replace('.umcModule.color-{0} .scrollToTopFloatingButton', [tab.categoryColor]), lang.replace('background-color: {0}', [color]));
+			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitTabChecked', [defaultClasses, module_flavor_css]), lang.replace('background-color: {0};', [color]));
+			var dijitTabHoverColor = dojo.blendColors(dojo.colorFromHex(color), dojo.colorFromHex('#000000'), 0.05);
+			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitTabHover',   [defaultClasses, module_flavor_css]), lang.replace('background-color: {0};', [dijitTabHoverColor]));
+			var dijitTabActiveColor = dojo.blendColors(dojo.colorFromHex(color), dojo.colorFromHex('#000000'), 0.1);
+			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitTabActive',  [defaultClasses, module_flavor_css]), lang.replace('background-color: {0};', [dijitTabActiveColor]));
+
+			// color the grid header when items are selected
+			var gridHeaderColor = dojo.blendColors(dojo.colorFromHex(color), dojo.colorFromHex('#ffffff'), 0.7);
+			styles.insertCssRule(lang.replace('.umcModule.color-{0} .umcGrid .umcGridHeader--items-selected', [tab.categoryColor]), lang.replace('background-color: {0}', [gridHeaderColor.toHex()]));
 		},
 
 		__getModuleColor: function(module) {

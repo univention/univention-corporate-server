@@ -448,7 +448,7 @@ define([
 				disabled: this.disabled,
 				visible: !this.disabled,
 				onClick: lang.hitch(this, '_appendRows', 1),
-				'class': 'umcFlatButton umcMultiInputAddButton'
+				'class': 'umcMultiInputAddButton umcOutlinedButton'
 			});
 			this.addChild(this._newEntryButton);
 
@@ -604,7 +604,7 @@ define([
 				onClick: lang.hitch(this, function() {
 					this._removeElement(rowContainer.irow);
 				}),
-				'class': 'umcIconButton umcMultiInputRemoveButton',
+				'class': 'umcMultiInputRemoveButton umcOutlinedButton',
 				description: _('Remove entry')
 			});
 			rowContainer.addChild(button);

@@ -44,10 +44,7 @@ material-shadow(level)
 		box-shadow: none
 
 .umc .umcHeader .umcLiveSearch .umcSearchBox
-	&:before,
-	&:after,
-	&
-		border-color: #282828
+	border-color: #282828
 
 .umc.portal
 	// general styling
@@ -141,15 +138,12 @@ material-shadow(level)
 		.dijitButton
 			margin: 0
 			height: 100%
-			box-shadow: none
 
 			.dijitButtonNode
+				box-shadow: none
 				background-color: rgb(250, 200, 0)
-				padding: 6px
 				height: 100%
-				display: flex
-				align-items: center
-				justify-content: center
+				padding: 16px
 
 				.dijitButtonText
 					text-align: left
@@ -171,8 +165,7 @@ material-shadow(level)
 					flex-flow: column
 
 					.dijitIcon
-						margin-bottom: 5px
-						margin-right: 16px
+						margin: 0 16px 4px 0
 
 	@media (min-width: 350px) and (max-width: 550px)
 		.portalEditBar
@@ -205,7 +198,6 @@ material-shadow(level)
 		.portalEditBarVisibilityButton,
 		.portalEditBarAppearanceButton
 			.dijitIcon
-				margin: 0 0 0 16px
 				height: 24px
 				background-size: contain
 				background-repeat: no-repeat
@@ -444,12 +436,6 @@ material-shadow(level)
 
 		.newCategory
 			margin: 15px 0 0 0
-
-			.dijitButtonContents
-				line-height: inherit
-
-			.dijitArrowButtonInner
-				margin-right: 16px
 
 		.addEntryTile
 			.cornerPiece

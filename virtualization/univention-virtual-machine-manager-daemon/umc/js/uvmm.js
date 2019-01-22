@@ -134,6 +134,11 @@ define([
 		// internal reference to the detail page for editing an UDM object
 		_domainPage: null,
 
+		selectablePagesToLayoutMapping: {
+			'_searchPage': 'searchpage-grid-and-tree',
+			'_domainPage': 'uvmm-detailpage'
+		},
+
 		// reference to a `umc.widgets.Tree` instance which is used to display the container
 		// hierarchy for the UDM navigation module
 		_tree: null,

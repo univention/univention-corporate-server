@@ -220,6 +220,12 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
+
+			this.selectablePagesToLayoutMapping = {
+				'_searchPage': ['navigation', 'dhcp/dhcp', 'dns/dns'].indexOf(this.moduleFlavor) >= 0 ? 'searchpage-grid-and-tree' : 'searchpage-grid',
+				'_detailPage': 'udm-detailpage'
+			};
+
 			// this deferred is resolved when everything has been loaded
 			this._finishedDeferred = new Deferred();
 			this._pageRenderedDeferred = new Deferred();
@@ -667,12 +673,27 @@ define([
 			// define actions
 			var actions = [{
 				name: 'workaround',
-				label: ' ',
-				visible: false,
+				showAction: false, // this action is just used as a defaultAction in a special case
 				isContextAction: false,
 				callback: lang.hitch(this, function(keys, items) {
 					this._tree.set('path', this._ldapDN2TreePath(keys[0]));
 					this.filter();
+				})
+			}, {
+				name: 'parentcontainer',
+				label: _('Parent container'),
+				callback: lang.hitch(this, function() {
+					var path = this._tree.get('path');
+					var ldapDN = path[ path.length - 2 ].id;
+					this._tree.set('path', this._ldapDN2TreePath(ldapDN));
+				}),
+				isContextAction: false,
+				isStandardAction: true,
+				showAction: lang.hitch(this, function() {
+					if (this._tree) {
+						return this.moduleFlavor === 'navigation' && this._tree.get('path').length > 1;
+					}
+					return false;
 				})
 			}, {
 				name: 'add',
@@ -1059,7 +1080,7 @@ define([
 						showLabel: false,
 						label: _('Toggle visual presentation'),
 						iconClass: 'umcGridViewIcon-default',
-						'class': 'umcSearchFormChangeViewButton',
+						'class': 'umcSearchFormChangeViewButton umcFlatButton',
 						callback: lang.hitch(this, '_toggleGridView')
 					});
 					layout.push(['changeView']);
@@ -1161,15 +1182,7 @@ define([
 					// tree has been reloaded to its last position
 					this._reloadingPath = '';
 				}
-				if ('navigation' == this.moduleFlavor) {
-					if (this._tree.get('path').length > 1) {
-						this._grid._toolbar.addChild(this._navUpButton, 0);
-					} else {
-						this._grid._toolbar.removeChild(this._navUpButton);
-					}
-					this._navUpButton.set('visible', this._tree.get('path').length > 1);
-				}
-
+				this._grid._updateGlobalActionsVisibility();
 			})));
 
 			// add a context menu to edit/delete items
@@ -1429,13 +1442,13 @@ define([
 			var tree = new Tree({
 				model: model,
 				persist: false,
-				useAutoHeight: false,
-				style: 'width: 300px; height: 350px; margin-bottom: 20px;',
+				style: 'width: 300px; height: 350px; margin-bottom: 20px;', // TODO does not work good on mobile
 				// customize the method getIconClass()
 				getIconClass: function(/*dojo.data.Item*/ item, /*Boolean*/ opened) {
 					return tools.getIconClass((item.icon || 'udm-container-cn') + '.png');
 				}
 			});
+			domStyle.set(tree._gridTree.domNode, 'height', '100%');
 			container.addChild(tree);
 
 			// add footer message
@@ -1942,9 +1955,7 @@ define([
 
 		_setDetailPage: function(operation, objectType, ldapName, newObjOptions, /*Boolean*/ isClosable, /*String*/ note) {
 			this._destroyDetailPage();
-			var cssClass = this.moduleFlavor == 'users/user' ? 'umcUDMUsersModule' : '';
 			this._detailPage = new DetailPage({
-				'class': cssClass,
 				umcpCommand: lang.hitch(this, 'umcpCommand'),
 				addWarning: lang.hitch(this, 'addWarning'),
 				addNotification: lang.hitch(this, 'addNotification'),

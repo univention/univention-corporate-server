@@ -88,9 +88,7 @@ define([
 		noFooter: true,
 		getAppCommand: 'appcenter/get',
 
-		navBootstrapClasses: 'col-xs-12 col-sm-12 col-md-12 col-lg-12',
-		mainBootstrapClasses: 'col-xs-12 col-sm-12 col-md-12 col-lg-12',
-		_initialBootstrapClasses: 'col-xs-12 col-sm-12 col-md-12 col-lg-12',
+		fullWidth: true,
 
 		backLabel: _('Back to overview'),
 		detailsDialog: null,

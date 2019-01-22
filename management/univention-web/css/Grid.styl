@@ -23,7 +23,7 @@
 
 			.dijitCheckBox
 				icon-image(0, -48, "", "-small", 12px, 12px)
-				
+
 				&.dijitCheckBoxChecked
 					background-position: -48px -48px
 
@@ -60,42 +60,36 @@ $umcGrid-edge-padding = 24px
 	material-shadow(1)
 
 	.umcGridHeader
-		display: inline-block
-		padding: 0
-		padding-left: 8px
-		float: left
-		margin: 10px 0
-
-		& > *:after
-			content: " "
-			display: block
-			clear: both
-			height: 0px
-			visibility: hidden
-
-		.dijitDropDownButton
-			.dijitButtonContents
-				line-height: inherit
-
-				.dijitArrowButtonInner
-					display: none
+		flex: 0 0 auto
+		display: flex
+		padding: material-grid(1)
 
 		.dijitButton,
 		.dijitDropDownButton
-			material-flat-button(dijitButton dijitDropDownButton)
+			material-flat-button()
+
+		.dijitButton
 			.dijitIcon
 				display: none
+		.umcIconButton
+			.dijitIcon
+				display: inline-block
 
 	.umcGridStatus
-		margin: 10px 0
+		flex: 0 1 auto
+		white-space: nowrap
+		overflow: hidden
+		text-overflow: ellipsis
 		height: 52px
 		line-height: @height
-		text-align: center
-		float: right
+		text-align: right
 		font-size: 12px
 		color: rgba(0, 0, 0, 0.54)
-		padding-right: $umcGrid-edge-padding
+		padding-right: 16px
 
+	.umcGrid__toolbar,
+	.umcGrid__contextActionsToolbar
+		flex: 1 0 auto
 
 	.dgrid
 		clear: both
@@ -123,16 +117,16 @@ $umcGrid-edge-padding = 24px
 				&:after
 					content: ''
 					display: block
-					icon-image(-260, -60)
+					icon-image(-200, -100)
 
 					^[-3] .dgrid-row.dgrid-selected ^[-3..-1]
-						icon-image(-280, -60)
+						icon-image(-220, -100)
 
 					^[-1].dgrid-allSelected^[-1..-1]
-						icon-image(-280, -60)
+						icon-image(-220, -100)
 
 					^[-1].dgrid-indeterminate^[-1..-1]
-						icon-image(-300, -60)
+						icon-image(-240, -100)
 
 				input
 					display: none
@@ -154,6 +148,7 @@ $umcGrid-edge-padding = 24px
 			line-height: @height
 			font-size: 12px
 			background-color: inherit
+			border-bottom: 1px solid #e0e0e0
 
 			.dgrid-cell
 				color: rgba(0, 0, 0, 0.54)
@@ -176,13 +171,15 @@ $umcGrid-edge-padding = 24px
 					icon-image(-260, -80)
 
 		.dgrid-row-table
-			height: 48px
+			height: material-grid(6)
 
 		.dgrid-row
 			color: rgba(0, 0, 0, 0.87)
-			border-top: 1px solid #e0e0e0
 			box-sizing: content-box
 			transition: background-color 0.2s
+			border-top: 1px solid #e0e0e0
+			&:nth-child(2) /* can't use first-child since the .dgrid-preload element is at first place */
+				border-top: none
 
 			&:hover
 				background-color: #eeeeee
@@ -195,6 +192,10 @@ $umcGrid-edge-padding = 24px
 				material-flat-button()
 				margin-top: 0
 				margin-bottom: 0
+
+.umc .umcGrid--filtering
+	.dgrid
+		max-height: 0px !important
 
 
 .umc .dojoxGridHeader

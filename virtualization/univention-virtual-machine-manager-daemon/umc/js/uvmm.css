@@ -30,10 +30,6 @@
 	margin: 0 16px;
 }
 
-.umc .umcGridTree .dgrid .dgrid-cell.dgrid-column-label.field-label {
-	line-height: normal;
-}
-
 .tree-description {
 	text-overflow: ellipsis;
 	display: inline-block;

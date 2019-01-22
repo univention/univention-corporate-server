@@ -1,3 +1,9 @@
+univention-web (3.0.0-3) unstable; urgency=medium
+
+  * Bug #48471: UMC design adjustments
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 17 Jan 2019 16:20:44 +0100
+
 univention-web (3.0.0-2) unstable; urgency=medium
 
   * Bug #48372: show summit 2019 notification in UCS Core editions

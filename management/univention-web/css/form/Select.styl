@@ -23,19 +23,18 @@
 	width: 100%
 	background-color: white
 
-	td
-		height: 32px
-
 	.dijitButtonText
-		font-size: $font-size-subheading
-		color: $text-color
-		padding: 0
+		font-size: inherit
+		color: inherit
 		text-transform: none
 		font-weight: normal
+		letter-spacing: normal
 
 	.dijitButtonContents
 		border: none
-		padding-left: 10px
+
+	.dijitSelectLabel
+		padding: 11px 0 10px ($material-textfield-text-padding + 1px) !important // add 1px to $material-textfield-text-padding since the border is overlayed with position absolute
 
 .umc .dijitSelectMenu.dijitMenu .dijitMenuItem td
 	font-weight: normal
@@ -43,50 +42,21 @@
 
 /* normal status */
 .umc .dijitSelect .dijitArrowButtonContainer
-	//border: 1px solid $arrowbutton-inner-border-color
 	border: none
 	width: $width-icon
-
-
-.umc .dijitSelect .dijitArrowButton
-	padding: 0 10px 0 0
-	//background-color: $arrowbutton-background-color
-	//standard-gradient("../")
-
+	padding: 0 $material-textfield-text-padding 0 0
 
 .umc .dijitSelect .dijitArrowButton .dijitArrowButtonInner
-	//height:16px
 	opacity: 1
-	margin-top: 0
 
 
 /* hover status */
-.umc .dijitSelectHover
-	//background-color: $textbox-hovered-background-color
-	//textbox-background-image()
-	//background-repeat: repeat-x
-
-
-.umc .dijitSelectHover .dijitArrowButton
-	//background-color:$arrowbutton-hovered-background-color
-
-
 .umc .dijitSelectHover .dijitArrowButton .dijitArrowButtonInner
 	background-position: -20px 0
 	opacity: 0.66
 
 
 /* focused status */
-.umc .dijitSelectFocused .dijitArrowButton
-	//background-color:#7dbefa		// TODO.  Mailed Jason about inconsistent ComboBox/Spinner behavior.
-	//active-gradient("../")
-
-
-.umc .dijitSelectFocused .dijitArrowButton
-	border: none
-	//padding: 1px
-
-
 .umc .dijitSelectFocused .dijitArrowButton .dijitArrowButtonInner
 	background-position: -20px 0
 	opacity: 1

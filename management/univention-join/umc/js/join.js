@@ -185,6 +185,12 @@ define([
 
 		_serverRole: null,
 
+		selectablePagesToLayoutMapping: {
+			'_statuspage': 'searchpage-grid',
+			'_joinpage': '',
+			'_logpage': ''
+		},
+
 		_switchView: function(code) {
 			var lastSelectedChild = this.selectedChildWidget;
 

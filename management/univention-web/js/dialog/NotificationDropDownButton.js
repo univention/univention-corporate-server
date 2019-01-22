@@ -337,8 +337,6 @@ define([
 		// 		Use 'addNotification' for a normally styled notification.
 		// 		Use 'addWarning' for a warning that is always on top of normal notifications.
 
-		baseClass: 'umcNotificationDropDownButton',
-
 		// maxHeight 0 for no native scrollbars
 		// see dijit/_HasDropDown.js and the 'open' function from dijit/popup.js for more information
 		maxHeight: 0,
@@ -371,6 +369,7 @@ define([
 
 		postMixInProperties: function() {
 			this.dropDown = new _NotificationDropDown({});
+			this.class += ' umcNotificationDropDownButton';
 			this.inherited(arguments);
 		},
 

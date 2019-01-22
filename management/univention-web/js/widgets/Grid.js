@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define, require, setTimeout, clearTimeout*/
+/*global define, require, setTimeout, clearTimeout, JSON*/
 
 define([
 	"dojo/_base/declare",
@@ -107,8 +107,6 @@ define([
 			evt.stopPropagation();
 		}
 	});
-
-	var _StatusText = declare([Text]);
 
 	return declare("umc.widgets.Grid", [ContainerWidget, StandbyMixin, _RegisterOnShowMixin], {
 		// summary:
@@ -223,8 +221,6 @@ define([
 
 		_selectionChangeTimeout: null,
 
-		_resizeDeferred: null,
-
 		// internal adapter to the module store
 		_store: null,
 		collection: null,
@@ -331,42 +327,6 @@ define([
 			}
 		},
 
-		_onScroll: function() {
-			var isActiveTab = !!document.getElementById(this.id).offsetParent;
-			if (!isActiveTab) {
-				return;
-			}
-			var viewPortHeight = dojoWindow.getBox().h;
-			var gridPosition = geometry.position(this.domNode);
-			var atBottom = (gridPosition.y + gridPosition.h) <= viewPortHeight;
-			if (atBottom) {
-				this._heightenGrid(2 * viewPortHeight);
-			}
-		},
-
-		_heightenGrid: function(extension) {
-			var gridHeight = style.get(this._grid.domNode, "height");
-			var newMaxGridHeight = gridHeight + extension;
-			style.set(this._grid.domNode, "max-height", newMaxGridHeight + 'px');
-			this._grid.resize();
-			var gridIsFullyRendered = this._grid.domNode.scrollHeight < newMaxGridHeight;
-			if (gridIsFullyRendered) {
-				this._updateFooterContent();
-				this._scrollSignal.remove();
-			}
-		},
-
-		_setInitialGridHeight: function() {
-			if (this._scrollSignal) {
-				this._scrollSignal.remove();
-			}
-			this._scrollSignal = on(win.doc, 'scroll', lang.hitch(this, '_onScroll'));
-			this.own(this._scrollSignal);
-			var viewPortHeight = dojoWindow.getBox().h;
-			var gridHeight = Math.round(viewPortHeight + viewPortHeight / 3);
-			this._heightenGrid(gridHeight);
-		},
-
 		_selectAll: function() {
 			this._grid.collection.fetch().forEach(lang.hitch(this, function(item){
 				var row = this._grid.row(item);
@@ -413,20 +373,10 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			this._header = new ContainerWidget({
-				baseClass: 'umcGridHeader'
-			});
-			this.addChild(this._header);
-			this._statusMessage = new _StatusText({
-				'class': 'umcGridStatus',
-				content: this.initialStatusMessage
-			});
-			this.own(this._statusMessage);
-			this.addChild(this._statusMessage);
+			this._buildHeader();
 
 			this._grid = new _Grid(lang.mixin({
 				collection: this.collection,
-				className: 'dgrid-autoheight',
 				bufferRows: 0,
 				_refresh: lang.hitch(this, '_refresh'),
 				selectionMode: 'extended',
@@ -435,8 +385,12 @@ define([
 				_selectAll: lang.hitch(this, '_selectAll'),
 				update: lang.hitch(this, 'update'),
 				selectAll: function() {
-					this.inherited(arguments);
-					this._selectAll(); // Bug: dgrid only selects visible entries, we want to select everything. See also dgrid #1198
+					if (this.getSelectedIDs().length === 0) {
+						this.inherited(arguments);
+						this._selectAll(); // Bug: dgrid only selects visible entries, we want to select everything. See also dgrid #1198
+					} else {
+						this.clearSelection();
+					}
 				}
 			}, this.gridOptions || {}));
 
@@ -483,6 +437,45 @@ define([
 			})));
 		},
 
+		_buildHeader: function() {
+			this._header = new ContainerWidget({
+				baseClass: 'umcGridHeader'
+			});
+			this._toolbar = new ContainerWidget({
+				baseClass: 'umcGrid__toolbar',
+				'class': 'dijitDisplayNone'
+			});
+			this._clearSelectionButton = new Button({
+				description: _('Clear selection'),
+				iconClass: 'umcCrossIcon',
+				'class': 'umcIconButton dijitDisplayNone',
+				callback: lang.hitch(this, function() {
+					this._grid.clearSelection();
+				})
+			});
+			this._contextActionsToolbar = new ContainerWidget({
+				baseClass: 'umcGrid__contextActionsToolbar',
+				'class': 'dijitDisplayNone'
+			});
+			this._statusMessage = new Text({
+				'class': 'umcGridStatus',
+				content: this.initialStatusMessage
+			});
+			var tooltip = new Tooltip({
+				label: this._statusMessage.content,
+				connectId: [this._statusMessage.domNode]
+			});
+			this._statusMessage.watch('content', function(name, old, new_) {
+				tooltip.set('label', new_);
+			});
+
+			this._header.addChild(this._toolbar);
+			this._header.addChild(this._clearSelectionButton);
+			this._header.addChild(this._contextActionsToolbar);
+			this._header.addChild(this._statusMessage);
+			this.addChild(this._header);
+		},
+
 		_addViewsToGrid: function() {
 			array.forEach(Object.keys(this.additionalViews), lang.hitch(this, function(viewName) {
 				var view = this.additionalViews[viewName];
@@ -503,7 +496,12 @@ define([
 				console.warn("unknown grid view selected");
 				return;
 			}
-			var selectedIDs = this.getSelectedIDs();
+			domClass.toggle(this._statusMessage.domNode, 'dijitDisplayNone', newView === 'tile');
+			if (newView === 'tile') {
+				this._grid.set('selectionMode', 'single');
+			} else {
+				this._grid.set('selectionMode', 'extended');
+			}
 			this._grid.renderRow = this._views[newView].renderRow;
 			var allBaseClasses = array.map(Object.keys(this._views), function(view) {
 				return this._views[view].baseClass;
@@ -511,7 +509,6 @@ define([
 			domClass.replace(this.domNode, this._views[newView].baseClass, allBaseClasses);
 			this._grid.refresh();
 			this._grid.resize();
-			this._grid.selectIDs(selectedIDs);
 			this.activeViewMode = newView;
 		},
 
@@ -520,6 +517,7 @@ define([
 			array.forEach(this._getGlobalActions(), lang.hitch(this, function(action) {
 				if (action.canExecute) {
 					var enabled = action.canExecute(items);
+					this._globalActionsMenuMap[action.name].set('disabled', !enabled);
 					array.forEach(this._toolbar.getChildren(), function(button) {
 						if (button.name === action.name) {
 							button.set('disabled', !enabled);
@@ -545,7 +543,14 @@ define([
 		startup: function() {
 			this.inherited(arguments);
 
-			this._registerAtParentOnShowEvents(lang.hitch(this._grid, 'resize'));
+			this._registerAtParentOnShowEvents(lang.hitch(this, function() {
+				this._grid.resize();
+				this._updateActionsVisibility();
+			}));
+			on(window, 'resize', lang.hitch(this, function() {
+				this._updateActionsVisibility();
+			}));
+			this._updateActionsVisibility();
 		},
 
 		setColumnsAndActions: function(columns, actions) {
@@ -698,7 +703,7 @@ define([
 			this.actions = actions;
 
 			// clear old actions
-			array.forEach([this._header, this._contextMenu], function(iobj) {
+			array.forEach([this._toolbar, this._contextActionsToolbar, this._contextMenu], function(iobj) {
 				array.forEach(iobj.getChildren(), function(ichild) {
 					iobj.removeChild(ichild);
 					ichild.destroyRecursive();
@@ -710,15 +715,16 @@ define([
 			this._setContextActions();
 
 			domClass.toggle(this._header.domNode, 'dijitDisplayNone', !this.actions.length);
-			if (this._toolbar.getChildren().length) {
-				this._header.addChild(this._toolbar);
-			}
-			this._header.addChild(this._contextActionsToolbar);
-			style.set(this._contextActionsToolbar.domNode, 'visibility', 'hidden');
+			domClass.toggle(this._toolbar.domNode, 'dijitDisplayNone', this._toolbar.getChildren().length === 0);
+			domClass.add(this._contextActionsToolbar.domNode, 'dijitDisplayNone');
 
 			// redraw the columns
 			if (doSetColumns !== false) {
 				this._setColumnsAttr(this.columns);
+			}
+
+			if (this._started) {
+				this._updateActionsVisibility();
 			}
 		},
 
@@ -727,12 +733,25 @@ define([
 		},
 
 		_setContextActions: function() {
-			this._contextActionsToolbar = new ContainerWidget({ style: 'float: left' });
 			this._contextActionsMenu = new Menu({});
-			this.own(this._contextActionsToolbar);
 			this.own(this._contextActionsMenu);
+			this._alwaysShowContextActionsMenu = false;
+			this._contextActionsMenuMap = {};
 
-			array.forEach(this._getContextActions(), function(iaction) {
+			var contextActions = this._getContextActions();
+			var contextStandard = array.filter(contextActions, function(action) {
+				return action.isStandardAction;
+			});
+			var contextNonStandard = array.filter(contextActions, function(action) {
+				return !action.isStandardAction;
+			});
+			if (contextNonStandard.length) {
+				this._alwaysShowContextActionsMenu = true;
+			}
+
+			var contextActionsSorted = contextStandard.concat(contextNonStandard);
+			array.forEach(contextActionsSorted, function(iaction) {
+				tools.assert(iaction.name, 'An action needs a name: ' + JSON.stringify(iaction));
 				var getCallback = lang.hitch(this, function(prefix) {
 					if (!iaction.callback) {
 						return {};
@@ -758,7 +777,7 @@ define([
 				var iiconClass = typeof iaction.iconClass === "function" ? iaction.iconClass() : iaction.iconClass;
 				var ilabel = typeof iaction.label === "function" ? iaction.label() : iaction.label;
 
-				var props = { iconClass: iiconClass, label: ilabel, _action: iaction };
+				var props = { iconClass: iiconClass, label: ilabel, _action: iaction, name: iaction.name };
 
 				if (iaction.isStandardAction) {
 					// add action to the context toolbar
@@ -781,24 +800,20 @@ define([
 						} catch (error) {}
 					}
 					this._contextActionsToolbar.addChild(btn);
-				} else {
-					// add action to the more menu
-					this._contextActionsMenu.addChild(new MenuItem(lang.mixin(props, getCallback('multi-'))));
 				}
 
-				// add action to the context menu
+				var menuItem = new MenuItem(lang.mixin(props, getCallback('multi-')));
+				this._contextActionsMenuMap[iaction.name] = menuItem;
+				this._contextActionsMenu.addChild(menuItem);
+
 				this._contextMenu.addChild(new MenuItem(lang.mixin(props, getCallback('menu-'))));
 			}, this);
 
-			// add more menu to toolbar
-			if (this._contextActionsMenu.getChildren().length) {
-				this._contextActionsToolbar.addChild(new _DropDownButton({
-					baseClass: _DropDownButton.prototype.baseClass + ' umcGridMoreMenu',
-					iconClass: 'umcIconNoIcon',
-					label: _('more'),
-					dropDown: this._contextActionsMenu
-				}));
-			}
+			this._contextActionsMenuButton = new _DropDownButton({
+				label: _('more'),
+				dropDown: this._contextActionsMenu
+			});
+			this._contextActionsToolbar.addChild(this._contextActionsMenuButton);
 		},
 
 		_getGlobalActions: function() {
@@ -806,19 +821,12 @@ define([
 		},
 
 		_setGlobalActions: function() {
-			//
-			// toolbar for global actions
-			//
-
-			// add a toolbar which contains all non-context actions
-			this._toolbar = new ContainerWidget({
-				style: 'float: left',
-				baseClass: 'umcGridToolBar'
-			});
-			this.own(this._toolbar);
-
 			var buttonsCfg = array.map(this._getGlobalActions(), function(iaction) {
+				tools.assert(iaction.name, 'An action needs a name: ' + JSON.stringify(iaction));
 				var jaction = iaction;
+				if (Object.prototype.hasOwnProperty.call(iaction, 'showAction')) {
+					jaction.visible = typeof iaction.showAction === 'function' ? iaction.showAction() : iaction.showAction;
+				}
 				if (iaction.callback) {
 					jaction = lang.mixin({}, iaction); // shallow copy
 
@@ -831,16 +839,183 @@ define([
 				return jaction;
 			}, this);
 
-			// render buttons
-			var buttons = render.buttons(buttonsCfg);
+			this._globalActionsMenu = new Menu({});
+			this.own(this._globalActionsMenu);
+			this._globalActionsMenuMap = {};
 
-			// add buttons to toolbar
+			var buttons = render.buttons(buttonsCfg);
 			array.forEach(buttons.$order$, function(ibutton) {
 				this._toolbar.addChild(ibutton);
-				ibutton.on('click', lang.hitch(this, function() {
-					this._publishAction(ibutton.name);
-				}));
+				var menuItem = new MenuItem({
+					iconClass: ibutton.iconClass,
+					label: ibutton.label,
+					onClick: ibutton.callback
+				});
+				this._globalActionsMenuMap[ibutton.name] = menuItem;
+				this._globalActionsMenu.addChild(menuItem);
 			}, this);
+			this._globalActionsMenuButton = new _DropDownButton({
+				'class': 'dijitDisplayNone',
+				label: _('more'),
+				dropDown: this._globalActionsMenu
+			});
+			this._toolbar.addChild(this._globalActionsMenuButton);
+		},
+
+		_updateActionsVisibilityDeferred: null,
+		_updateActionsVisibility: function() {
+			if (this._updateActionsVisibilityDeferred && !this._updateActionsVisibilityDeferred.isFulfilled()) {
+				this._updateActionsVisibilityDeferred.cancel();
+			}
+
+			this._updateActionsVisibilityDeferred = tools.defer(lang.hitch(this, function() {
+				if (geometry.getMarginBox(this.domNode).w === 0) {
+					return;
+				}
+				// could be done in one function to further prevent layout thrashing
+				this._updateGlobalActionsVisibility();
+				this._updateContextActionsVisibility();
+			}), 200);
+			this._updateActionsVisibilityDeferred.otherwise(function() { /* prevent logging of exception */ });
+		},
+
+		_updateGlobalActionsVisibility: function() {
+			var wasHiddenBefore = domClass.contains(this._toolbar.domNode, 'dijitDisplayNone');
+			domClass.add(this._toolbar.domNode, 'dijitOffScreen');
+			domClass.remove(this._toolbar.domNode, 'dijitDisplayNone');
+
+			var buttonsToCheckForWidth = [];
+			array.forEach(this._toolbar.getChildren(), lang.hitch(this, function(button) {
+				if (button === this._globalActionsMenuButton) {
+					domClass.remove(this._globalActionsMenuButton.domNode, 'dijitDisplayNone');
+					return;
+				}
+
+				if (Object.prototype.hasOwnProperty.call(button, 'showAction')) {
+					var showButton = typeof button.showAction === 'function' ? button.showAction() : button.showAction;
+					if (!showButton) {
+						button.set('visible', false);
+						domClass.add(this._globalActionsMenuMap[button.name].domNode, 'dijitDisplayNone');
+						return;
+					}
+				}
+
+				button.set('visible', true);
+				buttonsToCheckForWidth.push(button);
+			}));
+
+			window.requestAnimationFrame(lang.hitch(this, function() {
+				var headerWidth = geometry.getContentBox(this._header.domNode).w;
+				var statusWidth = geometry.getMarginBox(this._statusMessage.domNode).w;
+				var widthForButtons = headerWidth - statusWidth;
+				var widthRemaining = widthForButtons;
+
+				// check whether we need to show the dot menu
+				var widthOfAllButtons = 0;
+				array.forEach(buttonsToCheckForWidth, function(button) {
+					widthOfAllButtons += geometry.getMarginBox(button.domNode).w;
+				});
+				var showDotMenu = widthOfAllButtons > widthForButtons;
+				if (showDotMenu) {
+					widthRemaining -= geometry.getMarginBox(this._globalActionsMenuButton.domNode).w;
+				}
+				domClass.toggle(this._globalActionsMenuButton.domNode, 'dijitDisplayNone', !showDotMenu);
+
+				var changeVisibility = [/* [widgetToHide, shouldBeHidden, isButton] */];
+				var numOfStandardButtons = 0;
+				array.forEach(buttonsToCheckForWidth, lang.hitch(this, function(button) {
+					var buttonWidth = geometry.getMarginBox(button.domNode).w;
+					if (buttonWidth <= widthRemaining) {
+						changeVisibility.push([this._globalActionsMenuMap[button.name], true, false]);
+						widthRemaining -= buttonWidth;
+						numOfStandardButtons++;
+					} else {
+						changeVisibility.push([button, true, true]);
+						changeVisibility.push([this._globalActionsMenuMap[button.name], false, false]);
+					}
+				}));
+
+				this._globalActionsMenuButton.set('label', numOfStandardButtons === 0 ? _('Actions') : _('more'));
+
+				array.forEach(changeVisibility, function(i /* [widget, shouldBeHidden, isButton] */) {
+					if (i[2]) {
+						i[0].set('visible', !i[1]);
+					} else {
+						domClass.toggle(i[0].domNode, 'dijitDisplayNone', i[1]);
+					}
+				});
+				domClass.toggle(this._toolbar.domNode, 'dijitDisplayNone', wasHiddenBefore);
+				domClass.remove(this._toolbar.domNode, 'dijitOffScreen');
+			}));
+		},
+
+		_updateContextActionsVisibility: function() {
+			var wasHiddenBefore = domClass.contains(this._contextActionsToolbar.domNode, 'dijitDisplayNone');
+			domClass.add(this._contextActionsToolbar.domNode, 'dijitOffScreen');
+			domClass.remove(this._contextActionsToolbar.domNode, 'dijitDisplayNone');
+			domClass.add(this._clearSelectionButton.domNode, 'dijitOffScreen');
+			domClass.remove(this._clearSelectionButton.domNode, 'dijitDisplayNone');
+
+			var buttonsToCheckForWidth = [];
+			array.forEach(this._contextActionsToolbar.getChildren(), lang.hitch(this, function(button) {
+				if (button === this._contextActionsMenuButton) {
+					domClass.remove(this._contextActionsMenuButton.domNode, 'dijitDisplayNone');
+					return;
+				}
+
+				button.set('visible', true);
+				buttonsToCheckForWidth.push(button);
+			}));
+
+			window.requestAnimationFrame(lang.hitch(this, function() {
+				var headerWidth = geometry.getContentBox(this._header.domNode).w;
+				var statusWidth = geometry.getMarginBox(this._statusMessage.domNode).w;
+				var clearSelectionWidth = geometry.getMarginBox(this._clearSelectionButton.domNode).w;
+				var widthForButtons = headerWidth - statusWidth - clearSelectionWidth;
+				var widthRemaining = widthForButtons;
+
+				// check whether we need to show the dot menu
+				var showDotMenu = this._alwaysShowContextActionsMenu;
+				if (!showDotMenu) {
+					var widthOfAllButtons = 0;
+					array.forEach(buttonsToCheckForWidth, lang.hitch(this, function(button) {
+						widthOfAllButtons += geometry.getMarginBox(button.domNode).w;
+					}));
+					showDotMenu = widthOfAllButtons > widthForButtons;
+				}
+				if (showDotMenu) {
+					widthRemaining -= geometry.getMarginBox(this._contextActionsMenuButton.domNode).w;
+				}
+
+				var changeVisibility = [/* widgetToHide, shouldBeHidden, isButton */];
+				var numOfStandardButtons = 0;
+				array.forEach(buttonsToCheckForWidth, lang.hitch(this, function(button) {
+					var buttonWidth = geometry.getMarginBox(button.domNode).w;
+					if (buttonWidth <= widthRemaining) {
+						changeVisibility.push([this._contextActionsMenuMap[button.name], true, false]);
+						widthRemaining -= buttonWidth;
+						numOfStandardButtons++;
+					} else {
+						changeVisibility.push([button, true, true]);
+						changeVisibility.push([this._contextActionsMenuMap[button.name], false, false]);
+					}
+				}));
+
+				this._contextActionsMenuButton.set('label', numOfStandardButtons === 0 ? _('Actions') : _('more'));
+
+				array.forEach(changeVisibility, function(i /* [widget, shouldBeHidden, isButton] */) {
+					if (i[2]) {
+						i[0].set('visible', !i[1]);
+					} else {
+						domClass.toggle(i[0].domNode, 'dijitDisplayNone', i[1]);
+					}
+				});
+				domClass.toggle(this._contextActionsMenuButton.domNode, 'dijitDisplayNone', !showDotMenu);
+				domClass.toggle(this._contextActionsToolbar.domNode, 'dijitDisplayNone', wasHiddenBefore);
+				domClass.remove(this._contextActionsToolbar.domNode, 'dijitOffScreen');
+				domClass.toggle(this._clearSelectionButton.domNode, 'dijitDisplayNone', wasHiddenBefore);
+				domClass.remove(this._clearSelectionButton.domNode, 'dijitOffScreen');
+			}));
 		},
 
 		_selectionChanged: function() {
@@ -880,9 +1055,17 @@ define([
 				}
 			}, this);
 
-			// don't show context actions if they are not available
-			var visibility = nItems === 0 ? 'hidden' : 'visible';
-			style.set(this._contextActionsToolbar.domNode, 'visibility', visibility);
+			var itemsSelected = nItems > 0;
+			domClass.toggle(this._header.domNode, 'umcGridHeader--items-selected', itemsSelected);
+			if (this.activeViewMode === 'tile') {
+				domClass.toggle(this._toolbar.domNode, 'dijitDisplayNone', false);
+				domClass.toggle(this._contextActionsToolbar.domNode, 'dijitDisplayNone', true);
+				domClass.toggle(this._clearSelectionButton.domNode, 'dijitDisplayNone', true);
+			} else {
+				domClass.toggle(this._toolbar.domNode, 'dijitDisplayNone', itemsSelected);
+				domClass.toggle(this._contextActionsToolbar.domNode, 'dijitDisplayNone', !itemsSelected);
+				domClass.toggle(this._clearSelectionButton.domNode, 'dijitDisplayNone', !itemsSelected);
+			}
 		},
 
 		_updateContextItem: function(evt) {
@@ -1032,11 +1215,22 @@ define([
 		},
 
 		filter: function(query, options) {
-			style.set(this._grid.domNode, 'max-height', '1px');
+			style.set(this._grid.headerNode, 'right', ''); // unset 'right' so that the grid resizes correctly
+			domClass.add(this.domNode, this.baseClass + '--filtering');
 			this.standby(true);
 			this._filter(query, options).then(lang.hitch(this, function() {
 				this.standby(false);
-				this._setInitialGridHeight();
+				domClass.remove(this.domNode, this.baseClass + '--filtering');
+
+				// Normally dgrid either has always a scrollbar or no scrollbar at all.
+				// If a scrollbar is shown, dgrid adjust the right alignment of the header
+				// so that the text in the cells and in the header align.
+				// But we want to be able to show the scrollbar only when it is needed.
+				// We adjusted the styling so that the scrollbar is only shown when needed.
+				// Set the right alignment of the header to 0 manually when a scrollbar is shown.
+				if (this._grid.bodyNode.scrollHeight <= this._grid.bodyNode.clientHeight) {
+					style.set(this._grid.headerNode, 'right', '0');
+				}
 			}));
 		},
 

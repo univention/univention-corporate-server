@@ -419,7 +419,7 @@ define([
 			var _load = function() {
 				if (waitedTime >= 3000) {
 					loadDeferred.resolve();
-					return
+					return;
 				}
 
 				setTimeout(function() {
@@ -446,6 +446,7 @@ define([
 		_refresh: function(renderModeAfterRefresh) {
 			var deferred = new Deferred();
 			this._reloadPortalContent().then(lang.hitch(this, function() {
+				domClass.toggle(dom.byId('umcHeader'), 'umcWhiteIcons', lang.getObject('portal.fontColor', false, portalJson) === 'white');
 				this._reloadCss(); // FIXME only reload css if it is necessary (cssBackground / background / fontColor changed)
 				this._render(renderModeAfterRefresh);
 				deferred.resolve();
@@ -492,7 +493,7 @@ define([
 			var _this = this;
 
 			this._moduleCache.getProperties(type, dn).then(lang.hitch(this, function(props) {
-				var props = array.filter(lang.clone(props), function(iprop) {
+				props = array.filter(lang.clone(props), function(iprop) {
 					return array.indexOf(propNames, iprop.id) >= 0;
 				});
 				var initialFormValues = {}; // set after form.load()
@@ -756,7 +757,7 @@ define([
 										content.splice(categoryIndex, 1);
 										_this._saveEntryOrder(content);
 									})
-								})
+								});
 							}
 
 							// create dialog to show form
@@ -987,7 +988,7 @@ define([
 								iconUri = lang.replace('data:image/{0};base64,{1}', [this._getImageType(), newVal]);
 							}
 							tile.set('icon', iconUri);
-						})
+						});
 
 						// add onChange listener for displayName and description
 						// to update the preview tile if displayName or description
@@ -1085,7 +1086,7 @@ define([
 							}).then(lang.hitch(this, function(result) {
 								if (result.success) {
 									var content = lang.clone(portalJson.portal.content);
-									content[portalCategory.categoryIndex][1].push(result['$dn$'])
+									content[portalCategory.categoryIndex][1].push(result['$dn$']);
 									wizardDialog.hide().then(lang.hitch(this, function() {
 										wizardDialog.destroyRecursive();
 										dialog.contextNotify(_('Portal entry was successfully created'));
@@ -1506,7 +1507,7 @@ define([
 			array.forEach(portalJson.portal.content, lang.hitch(this, function(category) {
 				var categoryDN = category[0];
 				var entryDNs = category[1];
-				var category = portalJson.categories[categoryDN];
+				category = portalJson.categories[categoryDN];
 				// TODO add dummy category
 				if (!category) {
 					categories.push({

@@ -101,7 +101,6 @@ $umcNotification-width = 300px
 	
 	.removeAllNotificationsButton
 		margin: 0
-		text-align: center
 		min-width: $umcNotification-width
 		width: 100%
 		position: absolute
@@ -111,12 +110,6 @@ $umcNotification-width = 300px
 		display: none
 		^[-1].hasNotifications ^[-1..-1]
 			display: block
-
-		.dijitButtonNode
-			width: 100%
-
-		&.dijitButtonHover
-			background-color: #dfdfdf
 
 /* styling of the notifications inside the notification dropdown menu */
 .umc .umcDropDownNotification
