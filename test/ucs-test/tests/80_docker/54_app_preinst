@@ -12,10 +12,10 @@ def create_app(fail_in_preinst):
 		app_name = get_app_name()
 		app_version = get_app_version()
 
-		app = App(name=app_name, version=app_version, container_version='4.1')
-
+		#app = App(name=app_name, version=app_version, container_version='4.1')
+		tiny_app(app_name, app_version)
 		try:
-			app.set_ini_parameter(DockerImage=get_docker_appbox_image())
+			#app.set_ini_parameter(DockerImage=get_docker_appbox_image())
 			app.add_script(preinst='''#!/bin/bash
 set -x -e
 echo "Test preinst script"
@@ -31,7 +31,8 @@ exit %(exit_code)d
 
 			try:
 				app.install()
-				app.verify()
+				#app.verify()
+				app.verify(joined=False)
 			except (UCSTest_DockerApp_VerifyFailed, UCSTest_DockerApp_InstallationFailed):
 				if not fail_in_preinst:
 					raise
