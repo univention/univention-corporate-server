@@ -308,7 +308,6 @@ define([
 					});
 					categories.sort();
 					this._searchSidebar.set('badges', badges);
-					this._searchSidebar.set('metaCategories', metaLabels);
 					this._searchSidebar.set('categories', categories);
 					this._searchSidebar.set('licenses', licenses);
 				}
@@ -342,15 +341,6 @@ define([
 			var selectedBadges = this._searchSidebar.get('selectedBadges');
 			var selectedLicenses = this._searchSidebar.get('selectedLicenses');
 			var query = lang.hitch(this, 'queryApps', searchPattern, selectedCategories, selectedBadges, selectedLicenses);
-
-			var selectedMetaCategories = this._searchSidebar.get('selectedMetaCategories');
-			array.forEach(this.metaCategories, function(metaObj) {
-				if(selectedMetaCategories.length == 0 || array.indexOf(selectedMetaCategories, metaObj.label) >= 0) {
-					domStyle.set(metaObj.domNode, 'display', 'block');
-				} else {
-					domStyle.set(metaObj.domNode, 'display', 'none');
-				}
-			});
 
 			// set query options and refresh grid
 			this.set('appQuery', query);

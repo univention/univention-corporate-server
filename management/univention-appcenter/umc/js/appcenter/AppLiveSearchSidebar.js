@@ -51,9 +51,6 @@ define([
 		//		or array of strings.
 		categories: null,
 
-		// metaCategories: Object[]|String
-		//		Array of labels of available meta categories.
-		metaCategories: null,
 		badges: null,
 		licenses: null,
 
@@ -64,7 +61,6 @@ define([
 		// category: Object[]|String[]
 		//		Array of the currently selected categories
 		selectedCategories: [],
-		selectedMetaCategories: [],
 		selectedBadges: [],
 		selectedLicenses : [],
 
@@ -106,7 +102,6 @@ define([
 
 			// Reset filters, when opening the App Center:
 			this.selectedCategories = [];
-			this.selectedMetaCategories = [];
 			this.selectedBadges = [];
 			this.selectedLicenses = [];
 
@@ -242,51 +237,6 @@ define([
 			});
 			this.selectBadgesForm.addChild(form);
 			this.selectBadgesForm.own(form);
-		},
-
-		_setMetaCategoriesAttr: function(metaCategories) {
-			this._set('metaCategories', metaCategories);
-			this._addStatusSelector(metaCategories);
-		},
-
-		_addStatusSelector: function(metaCategories) {
-			if (this.selectStatusForm) {
-				this.removeChild(this.selectStatusForm);
-				this.selectStatusForm.destroyRecursive();
-				this.selectStatusForm = null;
-				this.selectStatusFormDeferred = this.selectStatusFormDeferred.isResolved() ? new Deferred() : this.selectStatusFormDeferred;
-			}
-			this.selectStatusForm = new ContainerWidget({'class': 'appLiveSearchSidebarElement'});
-			domConstruct.create('span', {
-				innerHTML: _('App status'),
-				'class': 'mainHeader'
-			}, this.selectStatusForm.domNode);
-			this.own(this.selectStatusForm);
-			this.addChild(this.selectStatusForm);
-
-			var widgets = [];
-			array.forEach(metaCategories, lang.hitch(this, function(metaCategory) {
-				widgets.push({
-					type: CheckBox,
-					name: metaCategory,
-					label: metaCategory,
-					onChange: lang.hitch(this, function(arg) {
-						if (arg == true) {
-							this.selectedMetaCategories.push(metaCategory);
-						} else {
-							this.selectedMetaCategories = this.selectedMetaCategories.filter(
-								function(x) {return x != metaCategory;}
-							);
-						}
-						this.onSearch();  // Trigger the refresh of the displayed Apps
-					})
-				});
-			}));
-			var form = new Form({
-				widgets: widgets,
-			});
-			this.selectStatusForm.addChild(form);
-			this.selectStatusForm.own(form);
 		},
 
 		_setLicensesAttr: function(licenses) {
