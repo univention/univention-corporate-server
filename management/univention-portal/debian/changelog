@@ -1,3 +1,9 @@
+univention-portal (3.0.1-5) unstable; urgency=medium
+
+  * Bug #48506: Add custom.css to portal
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Tue, 22 Jan 2019 12:00:11 +0100
+
 univention-portal (3.0.1-4) unstable; urgency=medium
 
   * Bug #48471: UMC design adjustments
