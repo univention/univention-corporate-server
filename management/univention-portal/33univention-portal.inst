@@ -34,7 +34,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=5
+VERSION=6
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -187,6 +187,11 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 			ucr set "$key"="$value"
 		fi
 	done
+fi
+
+# One time action: Copy example custom css file
+if [ $JS_LAST_EXECUTED_VERSION -lt 6 ]; then
+	cp /usr/share/univention-portal/custom.css.example /usr/share/univention-portal/custom.css
 fi
 
 joinscript_save_current_version
