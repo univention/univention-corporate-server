@@ -872,19 +872,20 @@ define([
 				if (geometry.getMarginBox(this.domNode).w === 0) {
 					return;
 				}
-				// could be done in one function to further prevent layout thrashing
-				this._updateGlobalActionsVisibility();
-				this._updateContextActionsVisibility();
+				this.__updateActionsVisibility();
 			}), 200);
 			this._updateActionsVisibilityDeferred.otherwise(function() { /* prevent logging of exception */ });
 		},
 
-		_updateGlobalActionsVisibility: function() {
-			var wasHiddenBefore = domClass.contains(this._toolbar.domNode, 'dijitDisplayNone');
+		__updateActionsVisibility: function() {
 			domClass.add(this._toolbar.domNode, 'dijitOffScreen');
 			domClass.remove(this._toolbar.domNode, 'dijitDisplayNone');
+			domClass.add(this._contextActionsToolbar.domNode, 'dijitOffScreen');
+			domClass.remove(this._contextActionsToolbar.domNode, 'dijitDisplayNone');
+			domClass.add(this._clearSelectionButton.domNode, 'dijitOffScreen');
+			domClass.remove(this._clearSelectionButton.domNode, 'dijitDisplayNone');
 
-			var buttonsToCheckForWidth = [];
+			var globalActionsToCheckForWidth = [];
 			array.forEach(this._toolbar.getChildren(), lang.hitch(this, function(button) {
 				if (button === this._globalActionsMenuButton) {
 					domClass.remove(this._globalActionsMenuButton.domNode, 'dijitDisplayNone');
@@ -901,62 +902,10 @@ define([
 				}
 
 				button.set('visible', true);
-				buttonsToCheckForWidth.push(button);
+				globalActionsToCheckForWidth.push(button);
 			}));
 
-			window.requestAnimationFrame(lang.hitch(this, function() {
-				var headerWidth = geometry.getContentBox(this._header.domNode).w;
-				var statusWidth = geometry.getMarginBox(this._statusMessage.domNode).w;
-				var widthForButtons = headerWidth - statusWidth;
-				var widthRemaining = widthForButtons;
-
-				// check whether we need to show the dot menu
-				var widthOfAllButtons = 0;
-				array.forEach(buttonsToCheckForWidth, function(button) {
-					widthOfAllButtons += geometry.getMarginBox(button.domNode).w;
-				});
-				var showDotMenu = widthOfAllButtons > widthForButtons;
-				if (showDotMenu) {
-					widthRemaining -= geometry.getMarginBox(this._globalActionsMenuButton.domNode).w;
-				}
-				domClass.toggle(this._globalActionsMenuButton.domNode, 'dijitDisplayNone', !showDotMenu);
-
-				var changeVisibility = [/* [widgetToHide, shouldBeHidden, isButton] */];
-				var numOfStandardButtons = 0;
-				array.forEach(buttonsToCheckForWidth, lang.hitch(this, function(button) {
-					var buttonWidth = geometry.getMarginBox(button.domNode).w;
-					if (buttonWidth <= widthRemaining) {
-						changeVisibility.push([this._globalActionsMenuMap[button.name], true, false]);
-						widthRemaining -= buttonWidth;
-						numOfStandardButtons++;
-					} else {
-						changeVisibility.push([button, true, true]);
-						changeVisibility.push([this._globalActionsMenuMap[button.name], false, false]);
-					}
-				}));
-
-				this._globalActionsMenuButton.set('label', numOfStandardButtons === 0 ? _('Actions') : _('more'));
-
-				array.forEach(changeVisibility, function(i /* [widget, shouldBeHidden, isButton] */) {
-					if (i[2]) {
-						i[0].set('visible', !i[1]);
-					} else {
-						domClass.toggle(i[0].domNode, 'dijitDisplayNone', i[1]);
-					}
-				});
-				domClass.toggle(this._toolbar.domNode, 'dijitDisplayNone', wasHiddenBefore);
-				domClass.remove(this._toolbar.domNode, 'dijitOffScreen');
-			}));
-		},
-
-		_updateContextActionsVisibility: function() {
-			var wasHiddenBefore = domClass.contains(this._contextActionsToolbar.domNode, 'dijitDisplayNone');
-			domClass.add(this._contextActionsToolbar.domNode, 'dijitOffScreen');
-			domClass.remove(this._contextActionsToolbar.domNode, 'dijitDisplayNone');
-			domClass.add(this._clearSelectionButton.domNode, 'dijitOffScreen');
-			domClass.remove(this._clearSelectionButton.domNode, 'dijitDisplayNone');
-
-			var buttonsToCheckForWidth = [];
+			var contextActionsToCheckForWidth = [];
 			array.forEach(this._contextActionsToolbar.getChildren(), lang.hitch(this, function(button) {
 				if (button === this._contextActionsMenuButton) {
 					domClass.remove(this._contextActionsMenuButton.domNode, 'dijitDisplayNone');
@@ -964,44 +913,75 @@ define([
 				}
 
 				button.set('visible', true);
-				buttonsToCheckForWidth.push(button);
+				contextActionsToCheckForWidth.push(button);
 			}));
 
 			window.requestAnimationFrame(lang.hitch(this, function() {
 				var headerWidth = geometry.getContentBox(this._header.domNode).w;
 				var statusWidth = geometry.getMarginBox(this._statusMessage.domNode).w;
 				var clearSelectionWidth = geometry.getMarginBox(this._clearSelectionButton.domNode).w;
-				var widthForButtons = headerWidth - statusWidth - clearSelectionWidth;
-				var widthRemaining = widthForButtons;
+				var changeVisibility = [/* [widgetToHide, shouldBeHidden, isButton] */];
 
-				// check whether we need to show the dot menu
-				var showDotMenu = this._alwaysShowContextActionsMenu;
-				if (!showDotMenu) {
-					var widthOfAllButtons = 0;
-					array.forEach(buttonsToCheckForWidth, lang.hitch(this, function(button) {
-						widthOfAllButtons += geometry.getMarginBox(button.domNode).w;
-					}));
-					showDotMenu = widthOfAllButtons > widthForButtons;
-				}
-				if (showDotMenu) {
-					widthRemaining -= geometry.getMarginBox(this._contextActionsMenuButton.domNode).w;
+				// global actions
+				var widthForGlobalButtons = headerWidth - statusWidth;
+				var widthRemainingForGlobalButtons = widthForGlobalButtons;
+
+				// show or hide 'more' button for global actions
+				var widthOfAllGlobalButtons = 0;
+				array.forEach(globalActionsToCheckForWidth, function(button) {
+					widthOfAllGlobalButtons += geometry.getMarginBox(button.domNode).w;
+				});
+				var showGlobalMoreMenu = widthOfAllGlobalButtons > widthForGlobalButtons;
+				if (showGlobalMoreMenu) {
+					widthRemainingForGlobalButtons -= geometry.getMarginBox(this._globalActionsMenuButton.domNode).w;
 				}
 
-				var changeVisibility = [/* widgetToHide, shouldBeHidden, isButton */];
-				var numOfStandardButtons = 0;
-				array.forEach(buttonsToCheckForWidth, lang.hitch(this, function(button) {
+				// move buttons which do not fit in the 'more' menu
+				var numsOfGlobalStandardButtons = 0;
+				array.forEach(globalActionsToCheckForWidth, lang.hitch(this, function(button) {
 					var buttonWidth = geometry.getMarginBox(button.domNode).w;
-					if (buttonWidth <= widthRemaining) {
+					if (buttonWidth <= widthRemainingForGlobalButtons) {
+						changeVisibility.push([this._globalActionsMenuMap[button.name], true, false]);
+						widthRemainingForGlobalButtons -= buttonWidth;
+						numsOfGlobalStandardButtons++;
+					} else {
+						changeVisibility.push([button, true, true]);
+						changeVisibility.push([this._globalActionsMenuMap[button.name], false, false]);
+					}
+				}));
+
+
+				// context actions
+				var widthForContextButtons = headerWidth - statusWidth - clearSelectionWidth;
+				var widthRemainingForContextButtons = widthForContextButtons;
+
+				// show or hide 'more' button for global actions
+				var showContextMoreMenu = this._alwaysShowContextActionsMenu;
+				if (!showContextMoreMenu) {
+					var widthOfAllContextButtons = 0;
+					array.forEach(contextActionsToCheckForWidth, lang.hitch(this, function(button) {
+						widthOfAllContextButtons += geometry.getMarginBox(button.domNode).w;
+					}));
+					showContextMoreMenu = widthOfAllContextButtons > widthForContextButtons;
+				}
+				if (showContextMoreMenu) {
+					widthRemainingForContextButtons -= geometry.getMarginBox(this._contextActionsMenuButton.domNode).w;
+				}
+
+				// move buttons which do not fit in the 'more' menu
+				var numsOfContextStandardButtons = 0;
+				array.forEach(contextActionsToCheckForWidth, lang.hitch(this, function(button) {
+					var buttonWidth = geometry.getMarginBox(button.domNode).w;
+					if (buttonWidth <= widthRemainingForContextButtons) {
 						changeVisibility.push([this._contextActionsMenuMap[button.name], true, false]);
-						widthRemaining -= buttonWidth;
-						numOfStandardButtons++;
+						widthRemainingForContextButtons -= buttonWidth;
+						numsOfContextStandardButtons++;
 					} else {
 						changeVisibility.push([button, true, true]);
 						changeVisibility.push([this._contextActionsMenuMap[button.name], false, false]);
 					}
 				}));
 
-				this._contextActionsMenuButton.set('label', numOfStandardButtons === 0 ? _('Actions') : _('more'));
 
 				array.forEach(changeVisibility, function(i /* [widget, shouldBeHidden, isButton] */) {
 					if (i[2]) {
@@ -1010,11 +990,16 @@ define([
 						domClass.toggle(i[0].domNode, 'dijitDisplayNone', i[1]);
 					}
 				});
-				domClass.toggle(this._contextActionsMenuButton.domNode, 'dijitDisplayNone', !showDotMenu);
-				domClass.toggle(this._contextActionsToolbar.domNode, 'dijitDisplayNone', wasHiddenBefore);
+				domClass.toggle(this._globalActionsMenuButton.domNode, 'dijitDisplayNone', !showGlobalMoreMenu);
+				domClass.toggle(this._contextActionsMenuButton.domNode, 'dijitDisplayNone', !showContextMoreMenu);
+
+				this._globalActionsMenuButton.set('label', numsOfGlobalStandardButtons === 0 ? _('Actions') : _('more'));
+				this._contextActionsMenuButton.set('label', numsOfContextStandardButtons === 0 ? _('Actions') : _('more'));
+
+				domClass.remove(this._toolbar.domNode, 'dijitOffScreen');
 				domClass.remove(this._contextActionsToolbar.domNode, 'dijitOffScreen');
-				domClass.toggle(this._clearSelectionButton.domNode, 'dijitDisplayNone', wasHiddenBefore);
 				domClass.remove(this._clearSelectionButton.domNode, 'dijitOffScreen');
+				this._updateToolbarVisibility();
 			}));
 		},
 
@@ -1055,7 +1040,11 @@ define([
 				}
 			}, this);
 
-			var itemsSelected = nItems > 0;
+			this._updateToolbarVisibility();
+		},
+
+		_updateToolbarVisibility: function() {
+			var itemsSelected = this.getSelectedIDs().length > 0;
 			domClass.toggle(this._header.domNode, 'umcGridHeader--items-selected', itemsSelected);
 			if (this.activeViewMode === 'tile') {
 				domClass.toggle(this._toolbar.domNode, 'dijitDisplayNone', false);
