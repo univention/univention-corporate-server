@@ -1,3 +1,9 @@
+univention-ldb-modules (7.0.0-3) unstable; urgency=medium
+
+  * Bug #47957: Remove dependency to univention-samba4
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Tue, 22 Jan 2019 12:08:06 +0100
+
 univention-ldb-modules (7.0.0-2) unstable; urgency=medium
 
   * Bug #47954: Move 97libunivention-ldb-modules.inst code to
