@@ -545,12 +545,12 @@ define([
 
 			this._registerAtParentOnShowEvents(lang.hitch(this, function() {
 				this._grid.resize();
-				this._updateActionsVisibility();
+				this.updateActionsVisibility();
 			}));
 			on(window, 'resize', lang.hitch(this, function() {
-				this._updateActionsVisibility();
+				this.updateActionsVisibility();
 			}));
-			this._updateActionsVisibility();
+			this.updateActionsVisibility();
 		},
 
 		setColumnsAndActions: function(columns, actions) {
@@ -724,7 +724,7 @@ define([
 			}
 
 			if (this._started) {
-				this._updateActionsVisibility();
+				this.updateActionsVisibility();
 			}
 		},
 
@@ -863,7 +863,7 @@ define([
 		},
 
 		_updateActionsVisibilityDeferred: null,
-		_updateActionsVisibility: function() {
+		updateActionsVisibility: function() {
 			if (this._updateActionsVisibilityDeferred && !this._updateActionsVisibilityDeferred.isFulfilled()) {
 				this._updateActionsVisibilityDeferred.cancel();
 			}

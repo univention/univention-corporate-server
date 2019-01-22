@@ -1182,7 +1182,7 @@ define([
 					// tree has been reloaded to its last position
 					this._reloadingPath = '';
 				}
-				this._grid._updateGlobalActionsVisibility();
+				this._grid.updateActionsVisibility();
 			})));
 
 			// add a context menu to edit/delete items
