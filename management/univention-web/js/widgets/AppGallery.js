@@ -97,7 +97,10 @@ define([
 			if (item.itemStatusTooltipMessage) {
 				var statusIcon = query('.appStatusHoverIcon', domNode)[0];
 				on(statusIcon, 'click', function(evt) {
-					if (item.itemStatusIcon === 'appRecommendedAppIcon') {
+					if (item.itemStatusIcon === 'appRecommendedAppIcon' ||
+						item.itemStatusIcon === 'appPopularAppIcon' ||
+						item.itemStatusIcon === 'appRecommendedAndPopularAppIcon')
+					{
 						Tooltip.show(entities.decode(item.itemStatusTooltipMessage), statusIcon);
 					} else {
 						Tooltip.show(entities.encode(item.itemStatusTooltipMessage), statusIcon);
