@@ -1,3 +1,9 @@
+univention-appcenter (8.0.0-5) unstable; urgency=medium
+
+  * Bug #48523: added 4.4 archive
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 Jan 2019 13:38:35 +0100
+
 univention-appcenter (8.0.0-4) unstable; urgency=medium
 
   * Bug #48471: UMC design adjustments
