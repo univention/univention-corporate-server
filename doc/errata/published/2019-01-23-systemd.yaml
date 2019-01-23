@@ -13,3 +13,5 @@ bug: [48514]
 cve:
 - CVE-2018-16864
 - CVE-2018-16865
+erratum: 587
+announced: 2019-01-23
