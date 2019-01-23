@@ -65,6 +65,7 @@ strings = {
 	'radius': 'RADIUS',
 	'pkgdb': 'Software installation monitor',
 	'uvmm': 'Manager',
+	'takeover': 'Active Directory Takeover',
 
 	'appliance_modus': 'appliance mode',
 }

@@ -324,7 +324,7 @@ class UCSInstallation(object):
 	def select_components(self):
 		# this is needed to make the down button work
 		if 'all' in self.args.components:
-			self.client.mouseMove(320, 215)
+			self.client.mouseMove(320, 140)
 			self.client.mousePress(1)
 		else:
 			self.client.mouseMove(420, 270)
