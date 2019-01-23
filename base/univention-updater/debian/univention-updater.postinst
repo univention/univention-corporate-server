@@ -60,7 +60,8 @@ Walle	UCS 4.0	https://de.wikipedia.org/wiki/Walle_%28Bremen%29
 Vahr	UCS 4.1	https://de.wikipedia.org/wiki/Vahr
 Lesum	UCS 4.2	https://de.wikipedia.org/wiki/Burglesum#Lesum
 Neustadt	UCS 4.3	https://de.wikipedia.org/wiki/Neustadt_%28Bremen%29
-FIXME	UCS 4.4	FIXME
+Blumenthal	UCS 4.4	https://de.wikipedia.org/wiki/Blumenthal_%28Bremen%29
+FIXME	UCS 5.0	FIXME
 __CODENAMES__
 
 if [ "$1" = "configure" ]; then
