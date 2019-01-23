@@ -1,0 +1,15 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: systemd
+fix: 215-17+deb8u9A~4.2.5.201901230934
+desc: |
+ This update addresses the following issues:
+ * stack overflow when calling syslog from a command with long cmdline
+   (CVE-2018-16864)
+ * stack overflow when receiving many journald entries (CVE-2018-16865)
+bug: [48514]
+cve:
+- CVE-2018-16864
+- CVE-2018-16865
