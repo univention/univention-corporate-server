@@ -57,5 +57,5 @@ search_users_with_client () {
 	DIFF=$(echo "$END - $START" | bc)
 	echo "Search all users in LDAP time in seconds" >> timestamps.log
 	echo $DIFF >> timestamps.log
-
+	more timestamps.log
 }
