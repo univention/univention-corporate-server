@@ -22,5 +22,6 @@ case "${version_version}/${code_name}" in
 4.1/"Vahr") ;;
 4.2/"Lesum") ;;
 4.3/"Neustadt") ;;
+4.4/"Blumenthal") ;;
 *) fail_fast 110 "Codename of ${version_version} is set to $code_name" ;;
 esac
