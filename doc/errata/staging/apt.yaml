@@ -6,7 +6,7 @@ src: apt
 fix: 1.4.9A~4.3.3.201901230932
 desc: |
  This update addresses the following issue:
- * apt (CVE-2019-3462)
+ * Content injection in APT http method when using redirects (CVE-2019-3462)
 bug: [48513]
 cve:
 - CVE-2019-3462
