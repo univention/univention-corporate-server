@@ -1,3 +1,9 @@
+univention-updater (14.0.0-9) unstable; urgency=medium
+
+  * Bug #48414: added releasename
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 Jan 2019 14:13:51 +0100
+
 univention-updater (14.0.0-8) unstable; urgency=medium
 
   * Bug #48414: added releasename
