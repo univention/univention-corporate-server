@@ -10,7 +10,7 @@ desc: |
  result in infinite loops or crashes by malicious packets:
  * NetScaler file parser infinite loop (CVE-2017-7700)
  * IMAP dissector crash (CVE-2017-7703)
- * the SLSK dissector could go into an infinite loop, triggered by packet
+ * The SLSK dissector could go into an infinite loop, triggered by packet
    injection or a malformed capture file. This was addressed in
    epan/dissectors/packet-slsk.c by adding checks for the remaining length.
    (CVE-2017-7746)
@@ -22,7 +22,7 @@ desc: |
  * GPRS LLC dissector large loop. (CVE-2017-11409)
  * IrCOMM dissector buffer overrun (CVE-2017-13765)
  * DMP dissector crash (CVE-2017-15191)
- * denial of service in the File_read_line function in epan/wslua/wslua_file.c
+ * Denial of service in the File_read_line function in epan/wslua/wslua_file.c
    (CVE-2017-17935)
  * Misuse of NULL pointer in MRDISC dissector (CVE-2017-17997)
  * epan/dissectors/packet-dcm.c had an infinite loop that was addressed by
@@ -40,18 +40,18 @@ desc: |
  * IPMI dissector crash in packet-ipmi-picmg.c (CVE-2018-7417)
  * SIGCOMP dissector crash in packet-sigcomp.c (CVE-2018-7418)
  * Pcapng file parser crash in pcapng.c (CVE-2018-7420)
- * stack overflow via crafted LWAPP Layer 3 Packet (CVE-2018-9256)
+ * Stack overflow via crafted LWAPP Layer 3 Packet (CVE-2018-9256)
  * MP4 dissector crash in epan/dissectors/file-mp4.c (CVE-2018-9259)
  * IEEE 802.15.4 dissector crash in epan/dissectors/packet-ieee802154.c
    (CVE-2018-9260)
  * VLAN dissector crash in epan/dissectors/packet-vlan.c (CVE-2018-9262)
  * Kerberos dissector crash in epan/dissectors/packet-kerberos.c
    (CVE-2018-9263)
- * memory leak in epan/dissectors/packet-tn3270.c (CVE-2018-9265)
- * memory leak in epan/dissectors/packet-lapd.c (CVE-2018-9267)
- * memory leak in epan/dissectors/packet-smb2.c (CVE-2018-9268)
- * memory leak in epan/dissectors/packet-giop.c (CVE-2018-9269)
- * memory leak in epan/oids.c (CVE-2018-9270)
+ * Memory leak in epan/dissectors/packet-tn3270.c (CVE-2018-9265)
+ * Memory leak in epan/dissectors/packet-lapd.c (CVE-2018-9267)
+ * Memory leak in epan/dissectors/packet-smb2.c (CVE-2018-9268)
+ * Memory leak in epan/dissectors/packet-giop.c (CVE-2018-9269)
+ * Memory leak in epan/oids.c (CVE-2018-9270)
  * DNS dissector crash in packet-dns.c (CVE-2018-11356)
  * Uncontrolled Resource Consumption in epan/tvbuff.c (CVE-2018-11357)
  * Out-of-bounds Read in proto.c (CVE-2018-11359)
