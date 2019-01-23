@@ -53,6 +53,10 @@
 			<listitem><para>
 			</para></listitem>
 			<listitem><para>
+				Das Portal von UCS importiert nun die Datei <filename>custom.css</filename>, welche sich in <filename class="directory">/usr/share/univention-portal/</filename> befindet.
+				Diese Datei wird in zukünftigen Updates nicht von Univention modifiziert und kann daher dazu genutzt werden das Design des Portals an die eigenen Anforderungen anzupassen.
+			</para></listitem>
+			<listitem><para>
 				Diverse Security Updates wurden in UCS 4.4-0 integriert, bspw. für den Linux Kernel, <wordasword>Samba</wordasword> und <wordasword>Apache2</wordasword>.
 				Eine vollständige Liste ist in <xref linkend="relnotes:changelog"/> zu finden.
 			</para></listitem>
