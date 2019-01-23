@@ -1,6 +1,6 @@
 product: ucs
 release: "4.3"
-version: [2, 3]
+version: [3]
 scope: ucs_4.3-0-errata4.3-3
 src: systemd
 fix: 232-25+deb9u8A~4.3.3.201901211455
