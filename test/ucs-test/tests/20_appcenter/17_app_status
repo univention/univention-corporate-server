@@ -29,7 +29,7 @@ def check_status(app):
 		output = subprocess.check_output(['docker', 'inspect', '-f', '{{.State.Running}}', container]).rstrip('\n')
 		if output != 'true':
 			utils.fail('ERROR: Container not running!')
-		if app.docker_image.startswith('docker.software-univention.de/ucs-appbox-amd64:'):
+		if app.docker_image and app.docker_image.startswith('docker.software-univention.de/ucs-appbox-amd64:'):
 			print '    Within container, checking packages', ', '.join(app.default_packages)
 			output = subprocess.check_output(['univention-app', 'shell', app.id, 'dpkg', '-s'] + app.default_packages, stderr=subprocess.STDOUT)
 			for line in output.splitlines():
