@@ -1,3 +1,10 @@
+univention-samba4 (8.0.0-6) unstable; urgency=medium
+
+  * Bug #48497: create spn user after dns/backend is
+    set to samba (and drs replication works)
+
+ -- Felix Botner <botner@univention.de>  Thu, 24 Jan 2019 17:33:00 +0100
+
 univention-samba4 (8.0.0-5) unstable; urgency=medium
 
   * Bug #48497: fixed create_spn_account.sh

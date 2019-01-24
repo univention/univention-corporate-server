@@ -58,23 +58,6 @@ if ! ldbsearch -H "$LDB_URI" -b $domaindn -s base dn 2>/dev/null| grep -qi ^"dn:
 	exit 1
 fi
 
-if [ "$samba4_role" != "RODC" ]; then
-	univention_samba4_wait_for_rid_set	## Replication of local RID Pool required for SAM account creation
-	/usr/share/univention-samba4/scripts/create_spn_account.sh \
-		--samaccountname "dns-$hostname" \
-		--serviceprincipalname "DNS/$hostname.$domainname" \
-		--privatekeytab dns.keytab
-fi
-
-update_nss_group_cache
-
-# Reset NTACLs after the connector has synced the accounts
-if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
-	## set the default sysvol and GPO NTACLs
-	net cache flush
-	samba-tool ntacl sysvolreset
-fi
-
 # Change the dns/backend to samba4 only whether a S4 Connector is installed in our domain
 s4connectorservicedcs="$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p')"
 
@@ -115,6 +98,32 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ] && [ "$dns_backend" != "samba4" ] && [ -n "
 	fi
 	
 fi
+
+if [ "$samba4_role" != "RODC" ]; then
+	univention_samba4_wait_for_rid_set	## Replication of local RID Pool required for SAM account creation
+	/usr/share/univention-samba4/scripts/create_spn_account.sh \
+		--samaccountname "dns-$hostname" \
+		--serviceprincipalname "DNS/$hostname.$domainname" \
+		--privatekeytab dns.keytab
+	if [ $? != 0 ]; then
+		echo "**************************************************************"
+		echo "* ERROR: Failed to create DNS spn account.                   *"
+		echo "*        Please check the samba and the s4-connector logfile.*"
+		echo "**************************************************************"
+		exit 1
+	fi
+fi
+
+update_nss_group_cache
+
+# Reset NTACLs after the connector has synced the accounts
+if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
+	## set the default sysvol and GPO NTACLs
+	net cache flush
+	samba-tool ntacl sysvolreset
+fi
+
+
 
 #Activate sysvol sync
 univention-config-registry set samba4/sysvol/sync/cron?"*/5 * * * *"
