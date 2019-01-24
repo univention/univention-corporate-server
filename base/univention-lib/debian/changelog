@@ -1,3 +1,10 @@
+univention-lib (7.0.0-21) unstable; urgency=low
+
+  * Bug #48530: ldap_extension: do not ignore LDAP ACL objects on initial
+    join / resync of listener module ldap_extension
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 24 Jan 2019 17:52:08 +0100
+
 univention-lib (7.0.0-20) unstable; urgency=medium
 
   * Bug #48014: Removed left over echo-line in backup.sh
