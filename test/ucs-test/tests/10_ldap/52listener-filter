@@ -137,9 +137,9 @@ class Listener(object):
 	def get_master_transaction(self):
 		hostname = self.ucr['ldap/master']
 		try:
-			sock = create_connection((hostname, 6669))
+			sock = create_connection((hostname, 6669), 60.0)
 
-			sock.send('Version: 2\nCapabilities: \n\n')
+			sock.send('Version: 3\nCapabilities: \n\n')
 			sock.recv(100)
 
 			sock.send('MSGID: 1\nGET_ID\n\n')

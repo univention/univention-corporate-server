@@ -47,9 +47,9 @@ def main():
         sys.exit(1)
 
     try:
-        sock = socket.create_connection((master, 6669))
+        sock = socket.create_connection((master, 6669), 60.0)
 
-        sock.send('Version: 2\nCapabilities: \n\n')
+        sock.send('Version: 3\nCapabilities: \n\n')
         sock.recv(100)
 
         sock.send('MSGID: 1\nGET_ID\n\n')
