@@ -282,9 +282,16 @@ if joinscript_check_specific_version_executed 1 ; then
 		--set translationLongDescription='"de_DE" "Soll der Zugriff per RADIUS (z.B. über IEEE 802.1x) für Mitglieder dieser Gruppe erlaubt werden."' || exit "$?"
 fi
 
+# Bug #25935: only on domaincontroller slave:
 # resync existing object that may be missing of the RADIUS shared secret due to missing
 # read permissions ==> univentionService=RADIUS has been added in this join script.
-/usr/share/univention-directory-listener/resync_objects.py --update --filter 'objectClass=univentionRadiusClient'
+if [ "$(ucr get server/role)" = "domaincontroller_slave" ] ; then
+	/usr/share/univention-directory-listener/resync_objects.py --update --filter 'objectClass=univentionRadiusClient'
+fi
+
+# create initial version/update current version of clients.univention.conf
+/usr/sbin/univention-radius-update-clients-conf
+ucr commit /etc/freeradius/3.0/radiusd.conf
 
 # In case radius was installed during systemsetup the machine secret is missing in the radius ldap module
 univention-config-registry commit /etc/freeradius/3.0/mods-available/ldap

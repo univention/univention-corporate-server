@@ -1,0 +1,91 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+#
+# Univention RADIUS
+#  update clients.univention.conf
+#
+# Copyright 2014-2019 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+from __future__ import print_function
+import shutil
+import os
+import tempfile
+from optparse import OptionParser
+from univention.uldap import getMachineConnection
+
+BASE_DIR = '/etc/freeradius/3.0'
+BASE_NAME = 'clients.univention.conf'
+
+def main():  # type: () -> None
+	parser = OptionParser()
+	(options, args) = parser.parse_args()
+
+	with tempfile.NamedTemporaryFile(prefix='{}.tmp.'.format(BASE_NAME), dir=BASE_DIR, delete=False) as fd:
+		print('Updating clients.univention.conf')
+		fd.write('''# -*- text -*-
+#
+# clients.univention.conf -- client configuration directives
+#
+# Warning: This file is auto-generated and might be overwritten
+#          triggered by modifications in LDAP directory.
+# Warnung: Diese Datei wurde automatisch generiert und kann,
+#          angestoßen durch Änderungen im LDAP-Verzeichnis,
+#          überschrieben werden.
+#
+
+''')
+
+		lo = getMachineConnection()
+		for dn, attrs in lo.search(filter='(objectClass=univentionRadiusClient)'):
+			hostname = attrs.get('cn', [None])[0]
+			shared_secret = attrs.get('univentionRadiusClientSharedSecret', [None])[0]
+			ipaddr = attrs.get('aRecord', [None])[0] or attrs.get('aAAARecord', [None])[0]
+			nas_type = attrs.get('univentionRadiusClientType', ['other'])[0]
+			virtual_server = attrs.get('univentionRadiusClientVirtualServer', [None])[0]
+			if hostname and ipaddr and shared_secret:
+				print('Adding client {} ({})'.format(hostname, ipaddr))
+				fd.write('''client {} {{
+\tipaddr\t\t= {}
+\tsecret\t\t= {}
+\tnas_type\t= {}
+{}\tvirtual_server\t= {}
+}}
+
+'''.format(
+	hostname,
+	ipaddr,
+	shared_secret,
+	nas_type,
+	'' if virtual_server else '# ',
+	virtual_server if virtual_server else '...not specified...'))
+
+	shutil.move(fd.name, os.path.join(BASE_DIR, BASE_NAME))
+
+
+if __name__ == '__main__':
+	main()
