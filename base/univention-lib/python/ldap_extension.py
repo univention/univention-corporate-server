@@ -580,8 +580,8 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 			return
 
 		if not listener.configRegistry.get('server/role') in ('domaincontroller_master'):
-			# new, ignore first appearance, has to be activated on master first
-			if new and not old:
+			# new, ignore first *inactive* appearance, has to be activated on master first
+			if new and not old and new.get('univentionLDAPACLActive', ['FALSE'])[0] != 'TRUE':
 				ud.debug(ud.LISTENER, ud.PROCESS, '%s: ignore first appearance of %s, not yet activated' % (name, dn))
 				return
 			# ignore change unless (re) activated
