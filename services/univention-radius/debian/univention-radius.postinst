@@ -59,6 +59,7 @@ case "$1" in
 			freeradius/conf/ca/file?/etc/univention/ssl/ucsCA/CAcert.pem
 
 		[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+		invoke-rc.d univention-directory-listener crestart
 		;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
