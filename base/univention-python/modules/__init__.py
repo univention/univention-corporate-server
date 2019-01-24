@@ -28,3 +28,9 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+
+# find univention.config_registry below /usr/lib/python2.7/dist-packages (as
+# that's in sys.path)
+from pkgutil import extend_path
+__path__ = extend_path(__path__, __name__)
+
