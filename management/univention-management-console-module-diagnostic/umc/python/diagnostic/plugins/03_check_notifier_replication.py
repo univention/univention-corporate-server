@@ -49,9 +49,9 @@ links = [{
 
 
 def get_id(master, cmd='GET_ID'):
-	sock = socket.create_connection((master, 6669))
+	sock = socket.create_connection((master, 6669), 60.0)
 
-	sock.send('Version: 2\nCapabilities: \n\n')
+	sock.send('Version: 3\nCapabilities: \n\n')
 	sock.recv(100)
 
 	sock.send('MSGID: 1\n{cmd}\n\n'.format(cmd=cmd))
