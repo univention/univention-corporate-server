@@ -1,4 +1,4 @@
-Source: univention-python
+Source: univention-python-legacy
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
@@ -8,23 +8,16 @@ Build-Depends: debhelper (>= 7.0.50~),
  ucslint-univention,
  python-all
 
-Package: python-univention
+Package: python-univention-legacy
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
- python-ldap,
- python-dns,
- python-univention-debug,
- python-cracklib,
- python-six,
+ python-univention (>= 11.0.0-4),
 Provides: ${python:Provides}
-Replaces: python-univention-config-registry
-Breaks: python-univention-config-registry (<< 7)
-Description: UCS - common Python 2 modules
- This package contains Python modules used by various
- components of UCS.
+Description: UCS - import fix for Python 2 modules
+ This package contains Python modules to find other
+ Python modules in legacy locations.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
-

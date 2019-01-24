@@ -3,6 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7.0.50~),
+ dh-python,
  ucslint-univention,
  python-support,
  autoconf,
@@ -20,7 +21,8 @@ Architecture: all
 Pre-Depends: dpkg (>= 1.15.7.2)
 Depends: ${misc:Depends},
  univention-base-files,
- univention-base-packages
+ univention-base-packages,
+ python-univention (>= 11.0.0-4),
 Description: UCS transitional package - base configuration
  This package can be savely removed, since all previously contained base
  configuration files for UCS have been moved to the univention-base-files

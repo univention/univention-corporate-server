@@ -34,6 +34,7 @@ import re
 import ldap
 import ldap.schema
 import ldap.sasl
+from six import string_types
 import univention.debug
 from univention.config_registry import ConfigRegistry
 from ldapurl import LDAPUrl
@@ -605,7 +606,7 @@ class access:
 			key, val = i[0], i[-1]
 			if not val:
 				continue
-			if isinstance(val, basestring):
+			if isinstance(val, string_types):
 				val = [val]
 			nal.setdefault(key, set())
 			nal[key] |= set(val)
@@ -644,7 +645,7 @@ class access:
 		ml = []
 		for key, oldvalue, newvalue in changes:
 			if oldvalue and newvalue:
-				if oldvalue == newvalue or (not isinstance(oldvalue, basestring) and not isinstance(newvalue, basestring) and set(oldvalue) == set(newvalue)):
+				if oldvalue == newvalue or (not isinstance(oldvalue, string_types) and not isinstance(newvalue, string_types) and set(oldvalue) == set(newvalue)):
 					continue  # equal values
 				op = ldap.MOD_REPLACE
 				val = newvalue
@@ -690,7 +691,7 @@ class access:
 		"""
 		rdn = ldap.dn.str2dn(dn)[0]
 		dn_vals = dict((x[0].lower(), x[1]) for x in rdn)
-		new_vals = dict((key.lower(), val if isinstance(val, basestring) else val[0]) for op, key, val in ml if val and op not in (ldap.MOD_DELETE,))
+		new_vals = dict((key.lower(), val if isinstance(val, string_types) else val[0]) for op, key, val in ml if val and op not in (ldap.MOD_DELETE,))
 		new_rdn = ldap.dn.dn2str([[(x, new_vals.get(x.lower(), dn_vals[x.lower()]), ldap.AVA_STRING) for x in [y[0] for y in rdn]]])
 		rdn = ldap.dn.dn2str([rdn])
 		if rdn != new_rdn:

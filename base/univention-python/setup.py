@@ -1,9 +1,6 @@
-#!/usr/bin/make -f
+#!/usr/bin/python2.7
 #
-# Univention Python
-#  rules file for the debian package
-#
-# Copyright 2002-2019 Univention GmbH
+# Copyright 2019 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,12 +27,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# export DH_VERBOSE = 1
-export PYBUILD_NAME=univention-python
 
-override_dh_auto_test:
-	ucslint
+from distutils.core import setup
 
-%:
-	dh $@ --with python2 --buildsystem=pybuild
-
+setup(name='univention-python',
+	packages=['univention'],
+	package_dir={'univention': 'modules'},
+)

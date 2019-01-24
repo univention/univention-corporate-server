@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import codecs
+from six import string_types
 
 (utf8_encode, utf8_decode, utf8_reader, utf8_writer) = codecs.lookup('utf-8')
 (iso_encode, iso_decode, iso_reader, iso_writer) = codecs.lookup('iso-8859-1')
@@ -54,7 +55,7 @@ def decode(ob, ignore=[]):
 	"""
 	if ob is None:
 		return ob
-	elif isinstance(ob, basestring):
+	elif isinstance(ob, string_types):
 		return utf8_decode(ob)[0]
 	elif isinstance(ob, list):
 		return map(decode, ob)
@@ -92,7 +93,7 @@ def encode(ob):
 	"""
 	if ob is None:
 		return ob
-	elif isinstance(ob, basestring):
+	elif isinstance(ob, string_types):
 		try:
 			return utf8_encode(ob)[0]
 		except Exception:
@@ -112,7 +113,11 @@ def encode(ob):
 if __name__ == '__main__':
 	# http://stackoverflow.com/questions/1733414/how-do-i-include-unicode-strings-in-python-doctests
 	import sys
-	reload(sys)
-	sys.setdefaultencoding("UTF-8")
+	try:
+		reload(sys)
+		sys.setdefaultencoding("UTF-8")
+	except NameError:
+		# Python 3
+		pass
 	import doctest
 	doctest.testmod()
