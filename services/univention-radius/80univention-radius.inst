@@ -50,7 +50,9 @@ chmod 440 /etc/freeradius/ssl/private.key
 chmod 444 /etc/freeradius/ssl/cert.pem /etc/freeradius/ssl/dh
 
 ucs_registerLDAPExtension "$@" \
-	--schema /usr/share/univention-radius/networkaccess.schema || exit "$?"
+	--schema /usr/share/univention-radius/networkaccess.schema \
+	--acl /usr/share/univention-radius/59univention-radius.acl \
+	--acl /usr/share/univention-radius/66univention-radius.acl || exit "$?"
 
 ldap_base="$(ucr get ldap/base)"
 

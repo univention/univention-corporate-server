@@ -1,0 +1,11 @@
+# 59univention-radius.acl start
+@!@
+if configRegistry.get('server/role') in ('domaincontroller_slave',):
+	print('''access to attrs=univentionRadiusClientSharedSecret
+       by set="user & [cn=Domain Admins,cn=groups,{ldap_base}]/uniqueMember*" read
+       by group/univentionGroup/uniqueMember.expand="cn=DC Backup Hosts,cn=groups,{ldap_base}" read
+       by set="user/univentionService & [RADIUS]" read
+       by * none
+'''.format(ldap_base=configRegistry.get('ldap/base')))
+@!@
+# 59univention-radius.acl end
