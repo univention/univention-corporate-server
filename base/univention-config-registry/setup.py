@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/python2.7
 #
-# Univention Configuration Registry
-#  modules init
-#
-# Copyright 2002-2018 Univention GmbH
+# Copyright 2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,3 +26,11 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+
+
+from distutils.core import setup
+
+setup(name='univention-config-registry',
+	packages=['univention', 'univention.config_registry'],
+	package_dir={'': 'python'},
+)
