@@ -11,7 +11,8 @@ Build-Depends: debhelper (>= 7.0.50~),
  libtool,
  libunivention-debug-dev (>= 5.0.6-1),
  python-ipaddr,
- python-all
+ python-all,
+ python3-all,
 Standards-Version: 3.5.2
 
 Package: univention-config-registry
@@ -93,8 +94,20 @@ Package: python-univention-config-registry
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  python-ipaddr,
- ifupdown,
 Provides: ${python:Provides}
+Description: UCS - Python interface to configuration registry
+ This package includes the Python interface to the
+ UCS configuration manager.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: python3-univention-config-registry
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends},
+Provides: ${python3:Provides}
 Description: UCS - Python interface to configuration registry
  This package includes the Python interface to the
  UCS configuration manager.

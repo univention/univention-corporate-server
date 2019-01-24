@@ -29,22 +29,35 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+#
+export DH_VERBOSE = 1
+export PYBUILD_NAME=univention-config-registry
 
 %:
-	dh $@ --with 'python2' --buildsystem=pybuild
+	dh $@ --with python2,python3
 
 override_dh_auto_clean:
 	[ ! -f Makefile ] || $(MAKE) maintainer-clean
 	$(RM) Makefile.in lib/Makefile.in include/Makefile.in include/univention/Makefile.in tests/Makefile.in
 	$(RM) configure
 	$(RM) aclocal.m4 config.* install-sh ltmain.sh missing mkinstalldirs depcomp
+	dh_auto_clean --buildsystem=pybuild
 
 override_dh_auto_configure:
 	libtoolize
 	aclocal
 	autoconf
 	automake --add-missing
+	dh_auto_configure --buildsystem=pybuild
 	dh_auto_configure
+
+override_dh_auto_build:
+	dh_auto_build --buildsystem=pybuild
+	dh_auto_build
+
+override_dh_install:
+	dh_auto_install --buildsystem=pybuild
+	dh_auto_install
 
 override_dh_auto_test:
 	ucslint
@@ -56,10 +69,6 @@ override_dh_auto_test:
 	UNIVENTION_BASECONF=tests/base.conf python python/univention/config_registry/interfaces.py
 	make -C tests check
 	tests/unwrap/test.sh
-
-version := $(shell dpkg-parsechangelog | sed -ne 's/Version: //p')
-override_dh_install-indep:
-	dh_install -i
-	sed -i -e 's/@%@package_version@%@/$(version)/' debian/python-univention-config-registry/usr/share/pyshared/univention/config_registry/frontend.py
+	dh_auto_test --buildsystem=pybuild
 
 override_dh_installinit: ; # BUG: install -p -m755 debian/univention-config-registry.univention-config-registry debian/univention-config-registry/etc/init.d/univention-config-registry
