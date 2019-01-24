@@ -101,7 +101,7 @@ define([
 		},
 
 		_setCategoriesAttr: function(categories) {
-			this._addFilter('categories', _('Categories'), categories);
+			this._addFilter('categories', _('App Categories'), categories);
 		},
 
 		_setBadgesAttr: function(badges) {

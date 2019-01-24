@@ -287,7 +287,7 @@ define([
 					var licenses = [];
 					var voteForApps = false;
 					array.forEach(applications, function(application) {
-						array.forEach(application.categories, function(category) {
+						array.forEach(application.app_categories, function(category) {
 							if (array.indexOf(categories, category) < 0) {
 								categories.push({
 									id: category,
@@ -362,8 +362,8 @@ define([
 			var matchesSearchPattern = searchPattern ? searchPattern.test(app.name, app) : true;
 
 			var categoryMatches = false;
-			array.forEach(app.categories, function(appsCategory) {
-				if (array.indexOf(selectedCategories, appsCategory) >= 0) {
+			array.forEach(app.app_categories, function(appsCategory) {
+				if(array.indexOf(selectedCategories, appsCategory) >= 0) {
 					categoryMatches = true;
 				}
 			});

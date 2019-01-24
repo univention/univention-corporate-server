@@ -495,6 +495,8 @@ class App(object):
 			should contain product highlights, use cases, etc.
 		thumbnails: A list of screenshots and / or YouTube video URLs.
 		categories: Categories this App shall be filed under.
+		app_categories: Categories this App is filed under in
+		        the App catalog of univention.de.
 		website: Website for more information about the product (e.g.
 			landing page).
 		support_url: Website for getting support (or information about
@@ -810,6 +812,7 @@ class App(object):
 	long_description = AppAttribute(localisable=True)
 	thumbnails = AppListAttribute(localisable=True)
 	categories = AppLocalisedCategoriesAttribute()
+	app_categories = AppLocalisedCategoriesAttribute()
 
 	website = AppAttribute(localisable=True)
 	support_url = AppAttribute(localisable=True)
