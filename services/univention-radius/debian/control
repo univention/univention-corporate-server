@@ -10,6 +10,7 @@ Architecture: any
 Depends: univention-config,
  univention-join (>= 5.0.20-1),
  shell-univention-lib (>= 2.0.17-1),
+ univention-directory-listener (>= 13.0.0-2),
  ${misc:Depends},
  freeradius,
  freeradius-ldap,
