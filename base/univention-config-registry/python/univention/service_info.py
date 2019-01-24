@@ -34,6 +34,7 @@
 import os
 import shlex
 from logging import getLogger
+from six import string_types
 
 import univention.info_tools as uit
 
@@ -80,7 +81,7 @@ def pidof(name, docker='/var/run/docker.pid'):
 	log = getLogger(__name__)
 
 	children = {}
-	if isinstance(docker, basestring):
+	if isinstance(docker, string_types):
 		try:
 			with open(docker, 'r') as fd:
 				docker = int(fd.read(), 10)

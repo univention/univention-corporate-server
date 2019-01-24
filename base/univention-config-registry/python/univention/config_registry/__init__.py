@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 from univention.config_registry.backend import \
 	StrictModeException, SCOPE, ConfigRegistry
 from univention.config_registry.handler import \
@@ -50,9 +51,8 @@ if __name__ == '__main__':
 	try:
 		main(sys.argv[1:])
 	except StrictModeException as ex2:
-		print >> sys.stderr, ('E: UCR is running in strict mode ' +
-			'and thus cannot accept the given input:')
-		print >> sys.stderr, ex2
+		print('E: UCR is running in strict mode and thus cannot accept the given input:', file=sys.stderr)
+		print(ex2, file=sys.stderr)
 		sys.exit(1)
 
 # vim:set sw=4 ts=4 noet:

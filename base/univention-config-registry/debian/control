@@ -94,9 +94,10 @@ Package: python-univention-config-registry
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  python-ipaddr,
+ python-six,
 Provides: ${python:Provides}
 Description: UCS - Python interface to configuration registry
- This package includes the Python interface to the
+ This package includes the Python 2 interface to the
  UCS configuration manager.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -107,9 +108,10 @@ Description: UCS - Python interface to configuration registry
 Package: python3-univention-config-registry
 Architecture: all
 Depends: ${misc:Depends}, ${python3:Depends},
+ python3-six,
 Provides: ${python3:Provides}
 Description: UCS - Python interface to configuration registry
- This package includes the Python interface to the
+ This package includes the Python 3 interface to the
  UCS configuration manager.
  .
  It is part of Univention Corporate Server (UCS), an

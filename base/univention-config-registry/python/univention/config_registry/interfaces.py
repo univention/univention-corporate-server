@@ -34,7 +34,11 @@
 # pylint: disable-msg=W0142,C0103,R0201,R0904
 
 from backend import ConfigRegistry
-from ipaddr import IPv4Address, IPv4Network, IPv6Address, IPv6Network
+try:
+	from ipaddr import IPv4Address, IPv4Network, IPv6Address, IPv6Network
+except ImportError:
+	# Python 3
+	from ipaddress import IPv4Address, IPv4Network, IPv6Address, IPv6Network
 from sys import maxsize
 import re
 

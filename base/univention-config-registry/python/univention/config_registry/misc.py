@@ -30,17 +30,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__all__ = [
-	'replace_dict', 'replace_umlaut', 'directory_files',
-	'escape_value',
-	'key_shell_escape', 'validate_key', 'INVALID_KEY_CHARS',
-]
-
+from __future__ import print_function
 import sys
 import os
 import re
 import string  # pylint: disable-msg=W0402
 
+
+__all__ = [
+	'replace_dict', 'replace_umlaut', 'directory_files',
+	'escape_value',
+	'key_shell_escape', 'validate_key', 'INVALID_KEY_CHARS',
+]
 
 def replace_dict(line, dictionary):
 	'''Map any character from line to its value from dictionary.
@@ -113,22 +114,18 @@ def validate_key(key, out=sys.stderr):
 	key = replace_umlaut(key)
 
 	if old != key:
-		print >> out, \
-			'Please fix invalid umlaut in config variable key "%s" to %s.' % \
-			(old, key)
+		print('Please fix invalid umlaut in config variable key "%s" to %s.' % (old, key))
 		return False
 
 	if len(key) > 0:
 		if ': ' in key:
-			print >> out, 'Please fix invalid ": " in config variable key "%s".' % (key,)
+			print('Please fix invalid ": " in config variable key "%s".' % (key,))
 			return False
 		match = INVALID_KEY_CHARS.search(key)
 
 		if not match:
 			return True
-		print >> out, \
-			'Please fix invalid character "%s" in config variable key "%s".' % \
-			(match.group(), key)
+		print('Please fix invalid character "%s" in config variable key "%s".' % (match.group(), key))
 	return False
 
 

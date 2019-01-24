@@ -30,7 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import ConfigParser
+try:
+	from ConfigParser import ConfigParser, DEFAULTSECT
+except ImportError:
+	# Python 3
+	from configparser import ConfigParser, DEFAULTSECT
 import re
 
 # default locale
@@ -155,15 +159,15 @@ class LocalizedDictionary(dict):
 # my config parser
 
 
-class UnicodeConfig(ConfigParser.ConfigParser):
+class UnicodeConfig(ConfigParser):
 
 	def __init__(self):
-		ConfigParser.ConfigParser.__init__(self)
+		ConfigParser.__init__(self)
 
 	def write(self, fp):
 		"""Write an .ini-format representation of the configuration state."""
 		if self._defaults:
-			fp.write("[%s]\n" % ConfigParser.DEFAULTSECT)
+			fp.write("[%s]\n" % DEFAULTSECT)
 			for (key, value) in self._defaults.items():
 				fp.write("%s = %s\n" % (key, str(value).replace('\n', '\n\t')))
 			fp.write("\n")

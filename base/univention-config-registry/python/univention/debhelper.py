@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import os
 import subprocess
 
@@ -42,7 +43,7 @@ def doIt(*argv):
 	0
 	"""
 	if os.environ.get('DH_VERBOSE', False):
-		print '\t%s' % ' '.join(argv)
+		print('\t%s' % ' '.join(argv))
 	return subprocess.call(argv)
 
 

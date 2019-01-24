@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import sys
 import os
 import fcntl
@@ -37,6 +38,7 @@ import re
 import errno
 import time
 from collections import MutableMapping
+from six import iteritems
 
 __all__ = ['StrictModeException', 'exception_occured',
 		'SCOPE', 'ConfigRegistry']
@@ -51,9 +53,8 @@ class StrictModeException(Exception):
 
 def exception_occured(out=sys.stderr):
 	"""Print exception message and exit."""
-	print >> out, 'E: your request could not be fulfilled'
-	print >> out, \
-		'try `univention-config-registry --help` for more information'
+	print('E: your request could not be fulfilled', file=out)
+	print('try `univention-config-registry --help` for more information', file=out)
 	sys.exit(1)
 
 
@@ -253,7 +254,7 @@ class ConfigRegistry(MutableMapping):
 		"""
 		registry = self._registry[self.scope]
 		changed = {}
-		for key, value in changes.iteritems():
+		for key, value in iteritems(changes):
 			old_value = registry.get(key, None)
 			if value is None:
 				try:
@@ -339,8 +340,7 @@ class _ConfigRegistry(dict):
 			os.close(reg_file)
 		except EnvironmentError as ex:
 			if ex.errno != errno.EEXIST:
-				msg = "E: file '%s' does not exist and could not be created"
-				print >> sys.stderr, msg % (self.file,)
+				print("E: file '%s' does not exist and could not be created" % (self.file,), file=sys.stderr)
 				exception_occured()
 
 	def __save_file(self, filename):
