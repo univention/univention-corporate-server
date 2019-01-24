@@ -43,9 +43,10 @@ import optparse
 def main():
 	usage = "usage: %prog [options]"
 	parser = optparse.OptionParser(usage=usage, description=__doc__)
-	parser.add_option("-f", "--filter", help="resync objects from master found by this filter")
+	parser.add_option("-f", "--filter", help="resync objects from master found by this filter. Default: (uid=<hostname>$)")
 	parser.add_option("-r", "--remove", action="store_true", help="remove objects in local database before resync")
 	parser.add_option("-s", "--simulate", action="store_true", help="dry run, do not remove or add")
+	parser.add_option("-u", "--update", action="store_true", help="update/modify existing objects")
 	opts, args = parser.parse_args()
 
 	ucr = univention.config_registry.ConfigRegistry()
@@ -83,8 +84,24 @@ def main():
 	res = master.search(base=base, filter=opts.filter)
 	for dn, data in res:
 		print("resync from master: %s" % (dn,))
-		if not opts.simulate:
-			local.add(dn, ldap.modlist.addModlist(data))
+		local_res = local.search(base=dn)
+		if not local_res or not opts.update:
+			print('  ==> adding object')
+			if not opts.simulate:
+				local.add(dn, ldap.modlist.addModlist(data))
+		else:
+			modlist = []
+			local_data = local_res[0][1]
+			for key in set(data.keys()) | set(local_data.keys()):
+				if local_data.get(key, []) != data.get(key, []):
+					modlist.append([key, local_data.get(key, []), data.get(key, [])])
+			if not modlist:
+				print('  ==> no change')
+			else:
+				print('  ==> modifying object')
+				if not opts.simulate:
+					local.modify(dn, modlist)
+
 
 
 if __name__ == "__main__":
