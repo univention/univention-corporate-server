@@ -91,7 +91,7 @@ print '''dlz "samba4.zone" {
 			 * dynamically by Samba, based on the membership of the domain controllers
 			 * group. The provision just creates this file as an empty file.
 			 */
-			include /var/lib/samba/private/named.conf.update;
+			include /var/lib/samba/bind-dns/named.conf.update;
 
 			/* we need to use check-names ignore so _msdcs A records can be created */
 			check-names ignore;

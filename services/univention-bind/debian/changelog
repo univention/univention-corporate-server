@@ -1,3 +1,9 @@
+univention-bind (13.0.1-2) unstable; urgency=medium
+
+  * Bug #48084: fixed include path in named.conf.samba4
+
+ -- Felix Botner <botner@univention.de>  Thu, 24 Jan 2019 17:48:00 +0100
+
 univention-bind (13.0.1-1) unstable; urgency=medium
 
   * Bug #46969: bindpwdfile support
