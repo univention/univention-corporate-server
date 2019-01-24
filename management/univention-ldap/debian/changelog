@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-35) unstable; urgency=low
+
+  * Bug #48530: resync listener module ldap_extension to fix missing LDAP ACLs
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 24 Jan 2019 18:06:49 +0100
+
 univention-ldap (14.0.2-34) unstable; urgency=medium
 
   * Bug #43515: Allow access to cn=config only via LDAPI for now
