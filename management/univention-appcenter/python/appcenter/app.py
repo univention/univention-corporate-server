@@ -331,11 +331,11 @@ class AppLocalisedListAttribute(AppListAttribute):
 		return value
 
 
-class AppLocalisedCategoriesAttribute(AppListAttribute):
+class AppLocalisedAppCategoriesAttribute(AppListAttribute):
 	def post_creation(self, app):
 		value = getattr(app, self.name)
 		cache = app.get_app_cache_obj().get_appcenter_cache_obj()
-		value = [cache.get_categories().get(val.lower(), val) for val in value]
+		value = [cache.get_app_categories().get(val.lower(), val) for val in value]
 		setattr(app, self.name, value)
 
 
@@ -811,8 +811,8 @@ class App(object):
 	description = AppAttribute(localisable=True)
 	long_description = AppAttribute(localisable=True)
 	thumbnails = AppListAttribute(localisable=True)
-	categories = AppLocalisedCategoriesAttribute()
-	app_categories = AppLocalisedCategoriesAttribute()
+	categories = AppListAttribute()
+	app_categories = AppLocalisedAppCategoriesAttribute()
 
 	website = AppAttribute(localisable=True)
 	support_url = AppAttribute(localisable=True)

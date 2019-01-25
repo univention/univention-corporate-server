@@ -376,7 +376,7 @@ class AppCenterCache(_AppCache):
 		self._cache_dir = cache_dir
 		self._license_type_cache = None
 		self._ratings_cache = None
-		self._categories_cache = None
+		self._app_categories_cache = None
 
 	@classmethod
 	def build(cls, cache_class=None, server=None, ucs_versions=None, locale=None, cache_dir=None):
@@ -472,9 +472,9 @@ class AppCenterCache(_AppCache):
 			self._ratings_cache = Rating.all_from_file(cache_file)
 		return self._ratings_cache
 
-	def get_categories(self):
-		if self._categories_cache is None:
-			cache_file = self.get_cache_file('.categories.ini')
+	def get_app_categories(self):
+		if self._app_categories_cache is None:
+			cache_file = self.get_cache_file('.app-categories.ini')
 			parser = read_ini_file(cache_file)
 			locale = self.get_locale()
 			if not parser.has_section(locale):
@@ -483,8 +483,8 @@ class AppCenterCache(_AppCache):
 				categories = dict(parser.items(locale))
 			except NoSectionError:
 				categories = {}
-			self._categories_cache = categories
-		return self._categories_cache
+			self._app_categories_cache = categories
+		return self._app_categories_cache
 
 	def get_every_single_app(self):
 		ret = []
@@ -496,7 +496,7 @@ class AppCenterCache(_AppCache):
 		ucr_load()
 		self._license_type_cache = None
 		self._ratings_cache = None
-		self._categories_cache = None
+		self._app_categories_cache = None
 		for app_cache in self.get_app_caches():
 			app_cache.clear_cache()
 
