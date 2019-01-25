@@ -3,7 +3,7 @@ release: "4.3"
 version: [3]
 scope: ucs_4.3-0-errata4.3-3
 src: samba
-fix: 2:4.7.8-1A~4.3.0.201901251042
+fix: 2:4.7.8-1A~4.3.0.201901251116
 desc: |
  This update addresses the following issue:
  * samba-tool ntacl sysvolcheck didn't map owner LA to DA properly
