@@ -184,7 +184,7 @@ class LDAPCache(object):
 		ret['showServers'] = portal.props.showServers
 		ret['fontColor'] = portal.props.fontColor
 		if portal.props.logo:
-			ret['logo'] = self._write_image(portal, portal.props.logo.raw, 'logos')
+			ret['logo'] = self._write_image(portal.props.name, portal.props.logo.raw, 'logos')
 		else:
 			ret['logo'] = None
 		ret['name'] = portal.props.displayName
@@ -230,7 +230,7 @@ class LDAPCache(object):
 		bg_img = None
 		if image:
 			get_logger('css').info('Writing background image')
-			bg_img = self._write_image(portal, image.raw, 'backgrounds')
+			bg_img = self._write_image(portal.props.name, image.raw, 'backgrounds')
 		if bg_img:
 			background.append('url("%s") no-repeat top center / cover' % (bg_img, ))
 		css = portal.props.cssBackground
@@ -276,23 +276,22 @@ class LDAPCache(object):
 		except (EnvironmentError, IOError) as err:
 			get_logger('css').warn('Failed to write CSS file %s: %s' % (fname, err))
 
-	def _write_image(self, portal, img, dirname):
-		cn = portal.props.name
+	def _write_image(self, name, img, dirname):
 		try:
 			string_buffer = StringIO(img)
 			suffix = what(string_buffer) or 'svg'
-			fname = '/usr/share/univention-portal/icons/%s/%s.%s' % (dirname, portal.props.name, suffix)
+			fname = '/usr/share/univention-portal/icons/%s/%s.%s' % (dirname, name, suffix)
 			with open(fname, 'wb') as fd:
 				fd.write(img)
 		except (EnvironmentError, TypeError, IOError) as err:
 			get_logger('css').error(err)
 		else:
-			return '/univention/portal/icons/%s/%s.%s' % (dirname, cn, suffix)
+			return '/univention/portal/icons/%s/%s.%s' % (dirname, name, suffix)
 
 	def _save_image(self, portal, entry):
 		img = entry.props.icon
 		if img:
-			return self._write_image(portal, img.raw, 'entries')
+			return self._write_image(entry.props.name, img.raw, 'entries')
 
 
 class JsonHandler(tornado.web.RequestHandler):

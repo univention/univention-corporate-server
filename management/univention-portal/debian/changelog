@@ -1,3 +1,9 @@
+univention-portal (3.0.1-6) unstable; urgency=medium
+
+  * Bug #48358: Fix entry tiles' logos
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 25 Jan 2019 10:54:20 +0100
+
 univention-portal (3.0.1-5) unstable; urgency=medium
 
   * Bug #48506: Add custom.css to portal
