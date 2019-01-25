@@ -1,7 +1,6 @@
-#!/bin/sh
-# preinst script for python-univention
-#
-# Copyright 2011-2018 Univention GmbH
+#!/bin/bash
+
+# Copyright 2019 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,8 +27,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-if [ "$1" = upgrade ] && dpkg --compare-versions "$2" lt 6.0.0; then
-	pycentral pkgremove python-univention
+NEW_PY2_LOCATION=/usr/lib/python2.7/dist-packages
+OLD_PY2_LOCATION=/usr/share/pyshared
+
+# make absolutely sure the univention packages in the pysupport directory are
+# still found, even if univention-python-legacy has not been installed (yet)
+
+if ! [[ -e "$OLD_PY2_LOCATION/univention/__init__.py" ]] && [[ -e "$NEW_PY2_LOCATION/univention/__init__.py" ]]; then
+	echo "Creating $OLD_PY2_LOCATION/univention/__init__.py, because univention-python-legacy is not installed."
+	cp -v "$NEW_PY2_LOCATION/univention/__init__.py" "$OLD_PY2_LOCATION/univention/__init__.py"
 fi
 
 #DEBHELPER#
