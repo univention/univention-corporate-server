@@ -5,8 +5,7 @@
 ## packages:
 ##   - docker.io
 
-from dockertest import *
-from univention.config_registry import ConfigRegistry
+er run -d --name apache -p 80:80 -p 443:443 nimmis/alpine-apache
 from univention.testing.utils import get_ldap_connection
 
 if __name__ == '__main__':
@@ -24,7 +23,7 @@ if __name__ == '__main__':
 			app_docker2.set_ini_parameter(Code='D2')
 			app_docker2.add_to_local_appcenter()
 
-			app_nondocker = tiny_app(get_app_name(), get_app_version())
+			app_nondocker = App(name=get_app_name(), version=get_app_version(), container_version='4.3', build_package=False)
 			app_nondocker.set_ini_parameter(Code='ND')
 			app_nondocker.add_to_local_appcenter()
 
