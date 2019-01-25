@@ -39,7 +39,6 @@ exit %(exit_code)d
 				else:
 					output = subprocess.check_output('univention-app shell %s env' % app_name, shell=True)
 					if 'FOO=bar' not in output or 'repository_app_center_server=my.server' not in output:
-						print output
 						raise ValueError('Setting docker/params does not work')
 
 		finally:

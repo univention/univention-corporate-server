@@ -1,3 +1,9 @@
+ucs-test (8.0.28-260) unstable; urgency=medium
+
+  * Bug #48344: fixes 80_docker/30_installed
+
+ -- Felix Botner <botner@univention.de>  Fri, 25 Jan 2019 15:57:41 +0100
+
 ucs-test (8.0.28-259) unstable; urgency=medium
 
   * Bug #43612: Fix 20_appcenter.17_app_status.test for Multi Container Apps
