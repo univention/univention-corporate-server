@@ -104,7 +104,7 @@ if [ "$samba4_role" != "RODC" ]; then
 	/usr/share/univention-samba4/scripts/create_spn_account.sh \
 		--samaccountname "dns-$hostname" \
 		--serviceprincipalname "DNS/$hostname.$domainname" \
-		--privatekeytab dns.keytab
+		--privatekeytab dns.keytab "$@"
 	if [ $? != 0 ]; then
 		echo "**************************************************************"
 		echo "* ERROR: Failed to create DNS spn account.                   *"
