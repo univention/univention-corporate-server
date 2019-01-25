@@ -37,9 +37,12 @@ import os
 import subprocess
 import pwd
 import time
-import univention.config_registry
-import univention.uldap
-import univention.lib.policy_result
+try:
+	import univention.config_registry
+	import univention.lib.policy_result
+except ImportError:
+	print("Error importing univention.config_registry or univention.lib.policy_result, aborting.")
+	sys.exit(0)
 
 
 def get_mountpoint_from_share_path(sharepath):

@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import os
 import sys
 import hashlib
@@ -40,7 +41,11 @@ import subprocess
 import fcntl
 import time
 
-import univention.config_registry
+try:
+	import univention.config_registry
+except ImportError:
+	print("Error importing univention.config_registry, aborting.")
+	sys.exit(0)
 
 home = os.getenv('HOME', '')
 if not os.path.isdir(home):

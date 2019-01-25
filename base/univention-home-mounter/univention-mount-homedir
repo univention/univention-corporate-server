@@ -40,7 +40,12 @@ import sys
 import syslog
 import time
 
-import univention.uldap
+try:
+	import univention.uldap
+except ImportError:
+	syslog.openlog('univention-mount-homedir')
+	syslog.syslog("Error importing univention.uldap, aborting.")
+	sys.exit(0)
 
 MOUNTS_FILE = '/var/lib/univention-home-mounter/mounts'
 
