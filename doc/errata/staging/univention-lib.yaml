@@ -3,7 +3,7 @@ release: "4.3"
 version: [3]
 scope: ucs_4.3-0-errata4.3-3
 src: univention-lib
-fix: 
+fix: 7.0.0-21A~4.3.0.201901251325
 desc: |
  This update addresses the following issue:
  * Due to a logic error it could happen that not all LDAP-ACL registered in
