@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [2, 3]
+scope: ucs_4.3-0-errata4.3-3
+src: ghostscript
+fix: 9.26a~dfsg-0+deb9u1
+desc: |
+ This update addresses the following issue:
+ * subroutines within pseudo-operators must themselves be pseudo-operators
+   (700317) (CVE-2019-6116)
+bug: [48537]
+cve:
+- CVE-2019-6116
