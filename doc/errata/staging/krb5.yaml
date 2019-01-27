@@ -1,0 +1,17 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: krb5
+fix: 1.12.1+dfsg-19+deb8u5
+desc: |
+ This update addresses the following issues:
+ * null dereference in kadmind or DN container check bypass by supplying
+   special crafted data (CVE-2018-5729)
+ * DN container check bypass by supplying special crafted data (CVE-2018-5730)
+ * Reachable assertion in the KDC using S4U2Self requests (CVE-2018-20217)
+bug: [48538]
+cve:
+- CVE-2018-5729
+- CVE-2018-5730
+- CVE-2018-20217
