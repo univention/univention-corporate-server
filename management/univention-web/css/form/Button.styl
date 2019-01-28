@@ -30,7 +30,8 @@
 
 .umc
 	.dijitButton,
-	.dijitDropDownButton
+	.dijitDropDownButton,
+	.dijitToggleButton
 		margin: material-grid(1)
 		max-width: 100%
 
@@ -71,21 +72,24 @@
 /* hovered state */
 .umc
 	.dijitButtonHover,
-	.dijitDropDownButtonHover
+	.dijitDropDownButtonHover,
+	.dijitToggleButtonHover
 		.dijitButtonNode
 			background-color: $button-hovered-background-color
 
 /* focused state */
 .umc
 	.dijitButtonFocused,
-	.dijitDropDownButtonFocused
+	.dijitDropDownButtonFocused,
+	.dijitToggleButtonFocused
 		.dijitButtonNode
 			background-color: $button-hovered-background-color
 
 /* active, checked state */
 .umc
 	.dijitButtonActive,
-	.dijitDropDownButtonActive
+	.dijitDropDownButtonActive,
+	.dijitToggleButtonActive
 		.dijitButtonNode
 			background-color: $button-pressed-background-color
 			material-shadow(2)
@@ -93,7 +97,8 @@
 /* disabled state */
 .umc
 	.dijitButtonDisabled,
-	.dijitDropDownButtonDisabled
+	.dijitDropDownButtonDisabled,
+	.dijitToggleButtonDisabled
 		.dijitButtonNode
 			box-shadow: none
 			background-color: $disabled-background-color
@@ -104,6 +109,12 @@
 
 		.dijitButtonText
 			color: $material-text-dark-disabled
+
+/* toggle button checked state */
+.umc
+	.dijitToggleButtonChecked
+		.dijitButtonNode
+			background-color: $button-checked-background-color
 
 .umc
 	.dijitArrowButtonInner
@@ -129,20 +140,25 @@
 // material-flat-button() and material-outlined-button() work properly
 .umc .umcFlatButton
 	&.dijitButton,
-	&.dijitDropDownButton
+	&.dijitDropDownButton,
+	&.dijitToggleButton
 		material-flat-button()
 
 .umc .umcOutlinedButton
 	&.dijitButton,
-	&.dijitDropDownButton
+	&.dijitDropDownButton,
+	&.dijitToggleButton
 		material-outlined-button()
 
 .umc .umcIconButton
 	&.dijitButton,
-	&.dijitDropDownButton
+	&.dijitDropDownButton,
+	&.dijitToggleButton
 		umc-icon-button()
 
 .umc .umcIconButton--aligned-to-textfield
 	&.dijitButton,
-	&.dijitDropDownButton
+	&.dijitDropDownButton,
+	&.dijitToggleButton
 		umc-icon-button($material-textfield-height)
+
