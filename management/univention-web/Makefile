@@ -86,6 +86,7 @@ build-dev: tmp-build $(TMP_UMC_ICON_FILES)
 		ln -s $(TMP_DIR) $(WWW_JS_DIR) ;\
 		ln -s /usr/share/univention-web/js/umc/hooks.json $(TMP_DIR)/umc ;\
 		ln -s /usr/share/univention-web/js/umc/hooks/*.js $(TMP_DIR)/umc/hooks ;\
+		ln -s /usr/share/univention-web/js/dompurify $(WWW_JS_DIR)/dompurify ;\
 		ucr set umc/web/hooks/univention-web-js?default_menu_entries ;\
 	fi
 
