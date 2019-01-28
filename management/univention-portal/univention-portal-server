@@ -313,7 +313,7 @@ class JsonHandler(tornado.web.RequestHandler):
 		portal = cache.get('portal')
 		entries = cache.get('entries')
 		groups = cache.get('groups')
-		actual_content = portal.pop('content')
+		actual_content = portal.pop('content') or []
 		filtered_content = []
 		for category_dn, entry_dns in actual_content:
 			filter_entry_dns = []
