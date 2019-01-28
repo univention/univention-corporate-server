@@ -1,0 +1,81 @@
+#!/usr/share/ucs-test/runner python
+## desc: check if radius mac whitelisting is working
+## tags: [radius]
+## packages:
+##   - univention-radius
+## join: true
+## exposure: dangerous
+
+import subprocess
+import tempfile
+import univention.testing.utils as utils
+import univention.testing.strings as strings
+import univention.testing.udm as udm_test
+import univention.testing.ucr as ucr_test
+import univention.config_registry
+
+
+def eapol_test(username, client_mac):
+	testdata = '''network={{
+        key_mgmt=WPA-EAP
+        eap=PEAP
+        identity="{}"
+        anonymous_identity="anonymous"
+        password="univention"
+        phase2="autheap=MSCHAPV2"
+}}
+'''.format(username) # noqa E101 (flake8 ignore mixed indentation)
+	with tempfile.NamedTemporaryFile() as fd: # noqa E101
+		fd.write(testdata)
+		fd.flush()
+		subprocess.check_call(['/usr/sbin/eapol_test', '-c', fd.name, '-M', client_mac, '-s', 'testing123'])
+
+
+def main():
+	with ucr_test.UCSTestConfigRegistry():
+		with udm_test.UCSTestUDM() as udm:
+			client_mac = strings.random_mac()
+			userdn, username = udm.create_user(networkAccess=1)
+			clientdn = udm.create_object(
+				'computers/ipmanagedclient',
+				set={
+					'name': strings.random_name(),
+					'mac': client_mac,
+					'networkAccess': 0
+				}
+			)
+			univention.config_registry.handler_set(['radius/mac/whitelisting=true'])
+
+			# try authentication with disabled client
+			try:
+				eapol_test(username, client_mac)
+			except subprocess.CalledProcessError:
+				pass
+			else:
+				utils.fail('User could authenticate on client with disabled network!')
+
+			# try authentication with enabled client
+			udm.modify_object(
+				'computers/ipmanagedclient',
+				dn=clientdn,
+				set={
+					'networkAccess': 1
+				}
+			)
+
+			try:
+				eapol_test(username, client_mac)
+			except subprocess.CalledProcessError:
+				utils.fail('User could not authenticate on client with enabled network!')
+
+			# try authentication with unknown client
+			try:
+				eapol_test(username, strings.random_mac())
+			except subprocess.CalledProcessError:
+				pass
+			else:
+				utils.fail('User could authenticate on client with unknown mac address!')
+
+
+if __name__ == '__main__':
+	main()

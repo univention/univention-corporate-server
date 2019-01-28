@@ -1,3 +1,10 @@
+ucs-test (9.0.0-16) unstable; urgency=medium
+
+  * Bug #46018: additional tests for radius: groups, groups in groups, mac
+  	whitelisting
+
+ -- Jannik Ahlers <ahlers@univention.de>  Mon, 28 Jan 2019 11:15:57 +0100
+
 ucs-test (9.0.0-15) unstable; urgency=medium
 
   * Bug #43612: Fix 20_appcenter.17_app_status.test for Multi Container Apps
