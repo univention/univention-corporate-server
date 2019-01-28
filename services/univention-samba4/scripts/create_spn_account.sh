@@ -62,6 +62,7 @@ create_spn_account () {
 		%EOR
 	}
 
+	credentials=()
 	while [ $# -gt 0 ]
 	do
 		case "$1" in
@@ -83,10 +84,12 @@ create_spn_account () {
 				;;
 			"--bindpwdfile")
 				bindpwdfile="${2:?missing argument for samaccountname}"
+				credentials+=("--bindpwdfile" "$bindpwdfile")
 				shift 2 || exit 2
 				;;
 			"--binddn")
 				binddn="${2:?missing argument for samaccountname}"
+				credentials+=("--binddn" "$binddn")
 				shift 2 || exit 2
 				;;
 			*)
@@ -105,17 +108,17 @@ create_spn_account () {
 	keytab_path="$samba_private_dir/$privateKeytab"
 
 	## check if user exists
-	SPN_DN="$(udm users/user list "$@" --filter username="$samAccountName" | sed -n 's/^DN: //p')"
+	SPN_DN="$(udm users/user list "${credentials[@]}" --filter username="$samAccountName" | sed -n 's/^DN: //p')"
 	if [ -n "$SPN_DN" ]; then
 		## modify service account
-		univention-directory-manager users/user modify "$@" \
+		univention-directory-manager users/user modify "${credentials[@]}" \
 			--set password="$password" \
 			--set overridePWHistory=1 \
 			--set overridePWLength=1 \
 			--dn "$SPN_DN" || error "could not modify user account $samAccountName"
 	else
 		## create service_accountname via udm, but servicePrincipalName is missing
-		univention-directory-manager users/user create "$@"  \
+		univention-directory-manager users/user create "${credentials[@]}"  \
 			--position "cn=users,$ldap_base" \
 			--ignore_exists \
 			--set username="$samAccountName" \

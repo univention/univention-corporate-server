@@ -1,3 +1,9 @@
+univention-samba4 (8.0.0-9) unstable; urgency=medium
+
+  * Bug #47955: credentials for create_spn_account.sh
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 Jan 2019 12:33:41 +0100
+
 univention-samba4 (8.0.0-8) unstable; urgency=medium
 
   * Bug #47955: credentials for create_spn_account.sh
