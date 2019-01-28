@@ -52,6 +52,7 @@ class SettingsPortalObjectProperties(GenericObjectProperties):
 		'showMenu': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
 		'showSearch': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
 		'showServers': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
+		'ensureLogin': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
 	}
 
 

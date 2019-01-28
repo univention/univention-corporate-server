@@ -188,6 +188,18 @@ property_descriptions = {
 		may_change=True,
 		identifies=False
 	),
+	'ensureLogin': univention.admin.property(
+		short_description=_('Ensure login before portal access'),
+		long_description=_('Anonymous visitors will be automatically redirected to the login site'),
+		syntax=univention.admin.syntax.TrueFalseUp,
+		default='FALSE',
+		multivalue=False,
+		dontsearch=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	# 'portalEntriesOrder' - deprecated by 'content' of settings/portal
 	'portalEntriesOrder': univention.admin.property(
 		short_description=_('Portal entries order'),
@@ -222,30 +234,35 @@ property_descriptions = {
 layout = [
 	Tab(_('General'), _('Portal options'), layout=[
 		Group(_('Name'), layout=[
-			["name"],
-			["displayName"],
+			['name'],
+			['displayName'],
 		]),
 		Group(_('Visibility'), layout=[
-			["portalComputers"],
+			['portalComputers'],
 		]),
 		Group(_('Appearance'), layout=[
-			["logo"],
-			["background"],
-			["cssBackground"],
-			["fontColor"],
+			['logo'],
+			['background'],
+			['cssBackground'],
+			['fontColor'],
 		]),
 		Group(_('General Content'), layout=[
 			# ["showMenu"],
 			# ["showSearch"],
 			# ["showLogin"],
-			["showApps"],
+			['showApps'],
 			# ["showServers"],
-			["links"],
+			['links'],
 		]),
 	]),
 	Tab(_('Portal categories and entries'), _('The categories and entries that are shown on this portal'), layout=[
-		["content"],
+		['content'],
 	]),
+	Tab(_('Portal access'), _('Managing anonymous visitors'), layout=[
+		Group(_('Redirect anonymous visitors'), layout=[
+			['ensureLogin'],
+		]),
+ 	]),
 ]
 
 
@@ -282,6 +299,7 @@ mapping.register('showSearch', 'univentionPortalShowSearch', None, univention.ad
 mapping.register('showLogin', 'univentionPortalShowLogin', None, univention.admin.mapping.ListToString)
 mapping.register('showApps', 'univentionPortalShowApps', None, univention.admin.mapping.ListToString)
 mapping.register('showServers', 'univentionPortalShowServers', None, univention.admin.mapping.ListToString)
+mapping.register('ensureLogin', 'univentionPortalEnsureLogin', None, univention.admin.mapping.ListToString)
 mapping.register('background', 'univentionPortalBackground', None, univention.admin.mapping.ListToString)
 mapping.register('cssBackground', 'univentionPortalCSSBackground', None, univention.admin.mapping.ListToString)
 mapping.register('fontColor', 'univentionPortalFontColor', None, univention.admin.mapping.ListToString)
