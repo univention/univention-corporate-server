@@ -1,0 +1,61 @@
+login-emphasis-interval = 150
+login-emphasis-duration = 1.5
+i = login-emphasis-duration / login-emphasis-interval
+@keyframes login-emphasis
+	from, {100% * i}, to
+		transform: translate(0px, 0)
+		background-color: transparent
+		border-radius: 10px
+
+	{10% * i}, {90% * i}
+		transform: translate(-1px, 0)
+
+	{20% * i}, {40% * i}, {60% * i}, {80% * i}
+		transform: translate(2px, 0)
+
+	{30% * i}, {50% * i}, {70% * i}
+		transform: translate(-2px, 0)
+
+	{10% * i}
+		background-color: rgba(0, 0, 0, 0.15)
+		box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.1)
+
+	{50% * i}
+		box-shadow: 0 0 0 15px rgba(0, 0, 0, 0.1)
+
+	{90% * i}
+		background-color: rgba(0, 0, 0, 0.15)
+		box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.1)
+
+@keyframes login-emphasis-white
+	from, {100% * i}, to
+		transform: translate(0px, 0)
+		background-color: transparent
+		border-radius: 10px
+
+	{10% * i}, {90% * i}
+		transform: translate(-1px, 0)
+
+	{20% * i}, {40% * i}, {60% * i}, {80% * i}
+		transform: translate(2px, 0)
+
+	{30% * i}, {50% * i}, {70% * i}
+		transform: translate(-2px, 0)
+
+	{10% * i}
+		background-color: rgba(255, 255, 255, 0.15)
+		box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.1)
+
+	{50% * i}
+		box-shadow: 0 0 0 15px rgba(255, 255, 255, 0.1)
+
+	{90% * i}
+		background-color: rgba(255, 255, 255, 0.15)
+		box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.1)
+
+.umcLoginButton--emphasised
+	animation: login-emphasis 150s infinite
+
+.umcWhiteIcons .umcLoginButton--emphasised
+	animation: login-emphasis-white 150s infinite
+

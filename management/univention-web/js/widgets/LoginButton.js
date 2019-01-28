@@ -40,6 +40,7 @@ define([
 ], function(declare, lang, domClass, Button, Tooltip, login, tools, _) {
 	return declare("umc.widgets.Button", [ Button ], {
 		type: 'button',
+		label: _('Login'),
 
 		'class': 'umcLoginButton umcFlatButton',
 
@@ -48,22 +49,16 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 			this.set('iconClass', 'umcLoggedOutIcon');
-			this._tooltip = new Tooltip({
-				label: _('Click to login'),
-				connectId: [ this.domNode ]
-			});
-			this.own(this._tooltip);
 		},
 
-		_setLoggedInAttr: function(value) {
-			if (value) {
-				this._tooltip.set('label', _('Logged in as <i>%(username)s</i>', tools.status()));
-				this.set('iconClass', 'umcLoggedInIcon');
-			} else {
-				this._tooltip.set('label', _('Click to login'));
-				this.set('iconClass', 'umcLoggedOutIcon');
-			}
-			this._set('loggedIn', value);
+		_setLoggedInAttr: function(loggedIn) {
+			this.set('iconClass', loggedIn ? 'umcLoggedInIcon' : 'umcLoggedOutIcon');
+			this.set('label', loggedIn ? _('Logout') : _('Login'));
+			this._set('loggedIn', loggedIn);
+		},
+
+		emphasise: function(bool) {
+			domClass.toggle(this.domNode, 'umcLoginButton--emphasised', bool);
 		},
 
 		postCreate: function() {

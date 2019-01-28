@@ -1485,6 +1485,10 @@ define([
 		_renderCategories: function(renderMode) {
 			var categories = this._getCategories(renderMode);
 
+			if (!tools.status('loggedIn')) {
+				registry.byId('umcLoginButton').emphasise();
+			}
+
 			switch (renderMode) {
 				case portalTools.RenderMode.NORMAL:
 				case portalTools.RenderMode.EDIT:

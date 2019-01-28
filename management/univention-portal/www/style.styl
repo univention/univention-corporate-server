@@ -87,6 +87,24 @@ material-shadow(level)
 
 		.umcHeaderRight
 			float: right
+			flex: 0 0 auto
+			align-self: flex-end
+			position: relative
+			margin: 0
+
+			.univentionLogo
+				background-image: url(../js/dijit/themes/umc/images/univention_u.svg)
+				margin-left: 0
+				width: 48px
+
+			@media (max-width: 549px)
+				#umcLiveSearch
+					display: none
+
+		&.umcWhiteIcons
+			.umcHeaderRight
+				.univentionLogo
+					background-image: url(../js/dijit/themes/umc/images/univention_u-white.svg)
 			
 	.content
 		padding-top: 15px
