@@ -199,7 +199,7 @@ class UCSInstallation(object):
 		time.sleep(5)
 		self.client.enterText(self.args.password)
 		self.client.keyPress('enter')
-		self.client.enterText('ucr set interfaces/ens6/type="manual"')
+		self.client.enterText('ucr set interfaces-ens6-tzpe`manual')
 		self.client.keyPress('enter')
 		time.sleep(30)
 		self.client.enterText('ifconfig ens6 up')
