@@ -53,6 +53,7 @@ class SettingsPortalObjectProperties(GenericObjectProperties):
 		'showSearch': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
 		'showServers': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
 		'ensureLogin': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
+		'anonymousEmpty': ListOfListOflTextToDictPropertyEncoder,
 	}
 
 

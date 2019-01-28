@@ -108,6 +108,11 @@ attributetype ( univentionPortalAttributeType:14 NAME 'univentionPortalEnsureLog
 	EQUALITY booleanMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
 
+attributetype ( univentionPortalAttributeType:15 NAME 'univentionPortalAnonymousEmpty'
+	DESC 'Portal anonymous empty'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 objectclass ( univentionPortalObjectClass:1 NAME 'univentionPortal'
 	DESC 'Portal data'
@@ -128,6 +133,7 @@ objectclass ( univentionPortalObjectClass:1 NAME 'univentionPortal'
 			$ univentionPortalLinks
 			$ univentionPortalContent
 			$ univentionPortalEnsureLogin
+			$ univentionPortalAnonymousEmpty
 		)
 	)
 

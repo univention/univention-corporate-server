@@ -200,6 +200,17 @@ property_descriptions = {
 		may_change=True,
 		identifies=False
 	),
+	'anonymousEmpty': univention.admin.property(
+		short_description=_('Text that is shown to anonymous visitors when there are no portal entries'),
+		long_description=_(''),
+		syntax=univention.admin.syntax.LocalizedAnonymousEmpty,
+		multivalue=True,
+		dontsearch=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	# 'portalEntriesOrder' - deprecated by 'content' of settings/portal
 	'portalEntriesOrder': univention.admin.property(
 		short_description=_('Portal entries order'),
@@ -262,6 +273,9 @@ layout = [
 		Group(_('Redirect anonymous visitors'), layout=[
 			['ensureLogin'],
 		]),
+		Group(_('Notice for anonymous visitors on empty portals'), layout=[
+			['anonymousEmpty'],
+		]),
  	]),
 ]
 
@@ -300,6 +314,7 @@ mapping.register('showLogin', 'univentionPortalShowLogin', None, univention.admi
 mapping.register('showApps', 'univentionPortalShowApps', None, univention.admin.mapping.ListToString)
 mapping.register('showServers', 'univentionPortalShowServers', None, univention.admin.mapping.ListToString)
 mapping.register('ensureLogin', 'univentionPortalEnsureLogin', None, univention.admin.mapping.ListToString)
+mapping.register('anonymousEmpty', 'univentionPortalAnonymousEmpty', mapTranslationValue, unmapTranslationValue)
 mapping.register('background', 'univentionPortalBackground', None, univention.admin.mapping.ListToString)
 mapping.register('cssBackground', 'univentionPortalCSSBackground', None, univention.admin.mapping.ListToString)
 mapping.register('fontColor', 'univentionPortalFontColor', None, univention.admin.mapping.ListToString)

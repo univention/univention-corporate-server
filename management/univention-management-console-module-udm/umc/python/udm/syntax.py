@@ -157,6 +157,7 @@ __widgets.extend([
 	Widget('umc/modules/udm/CertificateUploader', udm_syntax.Base64Upload, ''),
 	Widget('ImageUploader', udm_syntax.jpegPhoto, ''),
 	Widget('TextArea', udm_syntax.TextArea, ''),
+	Widget('Editor', udm_syntax.Editor, ''),
 	Widget('TextBox', udm_syntax.simple, '*'),
 	Widget(lambda syn, prop: 'MultiInput' if prop['multivalue'] else 'ComplexInput', udm_syntax.complex, None),
 ])

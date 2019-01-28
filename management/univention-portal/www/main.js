@@ -42,6 +42,7 @@ define([
 	"dojo/dom-attr",
 	"dojo/dom-geometry",
 	"dojo/dom-style",
+	"dojo/dom-construct",
 	"dojo/mouse",
 	"dojo/dnd/Source",
 	"dojo/promise/all",
@@ -75,7 +76,7 @@ define([
 	"umc/json!/univention/portal/portal.json", // -> contains entries of this portal as specified in the LDAP directory
 	"umc/json!/univention/portal/apps.json", // -> contains all locally installed apps
 	"umc/i18n!portal"
-], function(declare, lang, array, Deferred, aspect, when, on, dojoQuery, dom, domClass, domAttr, domGeometry, domStyle, mouse, Source, all, sprintf, Standby, dijitFocus, a11y, registry, Dialog, Tooltip, DropDownMenu, MenuItem, DropDownButton, tools, store, json, dialog, Button, Form, ContainerWidget, ConfirmDialog, StandbyMixin, MultiInput, put, login, PortalCategory, PortalEntryWizard, PortalEntryWizardPreviewTile, portalTools, i18nTools, portalJson, installedApps, _) {
+], function(declare, lang, array, Deferred, aspect, when, on, dojoQuery, dom, domClass, domAttr, domGeometry, domStyle, domConstruct, mouse, Source, all, sprintf, Standby, dijitFocus, a11y, registry, Dialog, Tooltip, DropDownMenu, MenuItem, DropDownButton, tools, store, json, dialog, Button, Form, ContainerWidget, ConfirmDialog, StandbyMixin, MultiInput, put, login, PortalCategory, PortalEntryWizard, PortalEntryWizardPreviewTile, portalTools, i18nTools, portalJson, installedApps, _) {
 
 	// convert IPv6 addresses to their canonical form:
 	//   ::1:2 -> 0000:0000:0000:0000:0000:0000:0001:0002
@@ -1491,6 +1492,12 @@ define([
 		_renderCategories: function(renderMode) {
 			var categories = this._getCategories(renderMode);
 
+			domClass.toggle(this._search.domNode, 'dijitDisplayNone', !categories.length);
+			if (!categories.length && !tools.status('loggedIn')) {
+				this._renderAnonymousEmptyMessage();
+				return;
+			}
+
 			if (!tools.status('loggedIn')) {
 				registry.byId('umcLoginButton').emphasise();
 			}
@@ -1511,6 +1518,20 @@ define([
 			this._portalCategories.forEach(function(portalCategory) {
 				portalCategory.startup();
 			});
+		},
+
+		_renderAnonymousEmptyMessage: function() {
+			var loginButton = new Button({
+				'class': 'anonymousEmpty__Login umcFlatButton',
+				label: _('Login'),
+				callback: function() {
+					login.start();
+				}
+			});
+			var text = put('div.anonymousEmpty__Text');
+			var defaultText = _('Welcome to the portal of %s.<br><br>To be able to use all functions of this portal, please log in.', window.location.hostname);
+			text.innerHTML = portalJson.portal.anonymousEmpty[locale] || portalJson.portal.anonymousEmpty.en_US || defaultText;
+			put(this._contentNode, 'div.anonymousEmpty', text, '< div.anonymousEmpty__ButtonRow', loginButton.domNode);
 		},
 
 		_getCategories: function(renderMode) {
