@@ -162,3 +162,52 @@
 		&:active
 			.boxShadow
 				material-shadow(2)
+
+	@media (max-width: $xxs-max)
+		wrapperHeight=material-grid(10)
+		wrapperWidth=100%
+		.umcGalleryWrapperItem
+			width: wrapperWidth
+			height: wrapperHeight
+			margin: material-grid(1) 0
+			
+			.cornerPiece
+				width: wrapperWidth
+				height: wrapperHeight
+
+				.hoverBackground
+					display: none
+
+				&.bl
+					box-shadow: none
+
+
+			.appIcon
+				margin: material-grid(1)
+				width: material-grid(8)
+				height: material-grid(8)
+
+			.appInnerWrapper
+				.contentWrapper
+					padding: 0 0 0 material-grid(10)
+					height: wrapperHeight * 2
+					bottom: - wrapperHeight
+
+					.appContent
+						width: wrapperWidth
+						height: wrapperHeight
+						padding: material-grid(1)
+						text-align: left
+						display: flex
+						flex-direction: column
+						justify-content: space-around
+
+					.appHover
+						height: wrapperHeight
+						color: #282828
+			&.hover
+				.contentWrapper
+					bottom: - wrapperHeight
+				.appIcon
+					opacity: 1
+

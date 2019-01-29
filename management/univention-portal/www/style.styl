@@ -56,34 +56,28 @@ material-shadow(level)
 	/* W3C */
 	background: url(/univention/js/dijit/themes/umc/images/background-tile.png) repeat, unquote("linear-gradient(to right top, rgba(179,179,179,1) 0%, rgba(224,224,224,1) 31%, rgba(240,240,240,1) 51%, rgba(235,235,235,1) 61%, rgba(224,224,224,1) 74%, rgba(189,189,189,1) 100%)")
 
-	padding-left: 50px
-	padding-right: 30px
-
 	.umcHeader
-		box-sizing: content-box
+		padding: 0 40px
+		display: flex
+		flex-wrap: wrap-reverse
+		justify-content: flex-end
 		overflow: visible
-		margin-right: -(@padding-right)
 
 		.umcHeaderLeft
+			flex: 1 1 auto
+			display: flex
 			position: relative
-			left: 0
-			top: 0
-			width: 100%
-
-			@media (max-width: 550px)
-				padding-top: 40px
 
 			#portalLogo
 				width: auto
 				height: auto
 				max-width: 100px
 				max-height: 50px
-				margin: 15px 15px 0 0
+				margin: 15px 16px 0 0
 				float: left
 
 			h1
-				margin-top: 15px
-				display: inline-block
+				margin: 15px 0 0 0
 
 		.umcHeaderRight
 			float: right
@@ -107,16 +101,14 @@ material-shadow(level)
 					background-image: url(../js/dijit/themes/umc/images/univention_u-white.svg)
 			
 	.content
-		padding-top: 15px
+		padding: 0 40px
 
 	.portalCategory
-		padding: 15px 0
+		padding: 16px 0
 		border: none
 		cursor: default
 
 		h2
-			margin: 0
-			padding: 20px 0
 			display: inline-block
 
 			&.noDisplayNameProvided
@@ -129,6 +121,7 @@ material-shadow(level)
 	.portalCategory
 		.umcPortalGallery
 			margin-left: -20px
+			margin-right: -20px
 		.umcGalleryWrapperItem
 			margin: 12px 20px
 
@@ -177,7 +170,11 @@ material-shadow(level)
 				box-shadow: none
 				background-color: rgb(250, 200, 0)
 				height: 100%
+				width: 100%
 				padding: 16px
+
+				.dijitIcon
+					margin-left: 0
 
 				.dijitButtonText
 					text-align: left
@@ -465,7 +462,7 @@ material-shadow(level)
 				box-shadow: 0 2px 4px rgba(1,0,0,0.157), 0 2px 7px rgba(0,1,0,0.227)
 				height: 30px
 				width: 30px
-				top: 5px
+				top: -10px
 				right: -40px
 
 		.newCategory
@@ -513,6 +510,7 @@ material-shadow(level)
 				right: 0
 				z-index: 2
 				margin-left: -20px
+				margin-right: -20px
 
 			.dojoDndHandle
 				cursor: move
@@ -643,3 +641,35 @@ material-shadow(level)
 				height: 100%
 				background: url(questionMark.svg) no-repeat center
 				background-size: 60px
+
+	@media (max-width: 549px)
+		.umcHeader
+			padding: 0 24px
+
+		.content
+			padding: 0 24px
+
+		.portalCategory
+			display: block
+			margin: 0
+			.umcPortalGallery
+				margin-left: 0px
+				margin-right: 0px
+			.umcGalleryWrapperItem
+				margin: 8px 0
+
+		&.dnd
+			.dojoDndSource_PortalEntries
+				.dojoDndItem
+					width: 100%
+
+			.dojoDndSource_PortalEntries.dojoDndSourceMoved
+				.dndPlaceholder
+					width: 100%
+					height: auto
+					float: left
+
+			table.dojoDndAvatar .dojoDndItem .umcGalleryWrapperItem
+				width: 300px
+			.dijitOffScreen .umcGalleryWrapperItem
+				width: 300px !important
