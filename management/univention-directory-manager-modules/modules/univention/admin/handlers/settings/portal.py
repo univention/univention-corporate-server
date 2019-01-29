@@ -211,6 +211,17 @@ property_descriptions = {
 		may_change=True,
 		identifies=False
 	),
+	'autoLayoutCategories': univention.admin.property(
+		short_description=_('The categories are displayed side by side if there is enough space'),
+		long_description=_(''),
+		syntax=univention.admin.syntax.TrueFalseUp,
+		default='FALSE',
+		dontsearch=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	# 'portalEntriesOrder' - deprecated by 'content' of settings/portal
 	'portalEntriesOrder': univention.admin.property(
 		short_description=_('Portal entries order'),
@@ -256,6 +267,7 @@ layout = [
 			['background'],
 			['cssBackground'],
 			['fontColor'],
+			['autoLayoutCategories'],
 		]),
 		Group(_('General Content'), layout=[
 			# ["showMenu"],
@@ -315,6 +327,7 @@ mapping.register('showApps', 'univentionPortalShowApps', None, univention.admin.
 mapping.register('showServers', 'univentionPortalShowServers', None, univention.admin.mapping.ListToString)
 mapping.register('ensureLogin', 'univentionPortalEnsureLogin', None, univention.admin.mapping.ListToString)
 mapping.register('anonymousEmpty', 'univentionPortalAnonymousEmpty', mapTranslationValue, unmapTranslationValue)
+mapping.register('autoLayoutCategories', 'univentionPortalAutoLayoutCategories', None, univention.admin.mapping.ListToString)
 mapping.register('background', 'univentionPortalBackground', None, univention.admin.mapping.ListToString)
 mapping.register('cssBackground', 'univentionPortalCSSBackground', None, univention.admin.mapping.ListToString)
 mapping.register('fontColor', 'univentionPortalFontColor', None, univention.admin.mapping.ListToString)

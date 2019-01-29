@@ -191,6 +191,7 @@ class LDAPCache(object):
 		ret['content'] = portal.props.content
 		ret['ensureLogin'] = portal.props.ensureLogin
 		ret['anonymousEmpty'] = portal.props.anonymousEmpty
+		ret['autoLayoutCategories'] = portal.props.autoLayoutCategories
 		return ret
 
 	def _extract_links(self, portal):

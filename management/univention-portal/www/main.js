@@ -1778,6 +1778,9 @@ define([
 		},
 
 		_rearrangeCategories: function() {
+			if (!portalJson.portal.autoLayoutCategories) {
+				return;
+			}
 			if (!this._portalCategories.length) {
 				return;
 			}
