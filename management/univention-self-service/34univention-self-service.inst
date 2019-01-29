@@ -90,7 +90,7 @@ udm policies/registry create --ignore_exists "$@" \
 	--set name="self-service-userattributes" \
 	--append registry="attr1 jpegPhoto" \
 	--append registry="attr2 roomNumber" \
-	--append registry="attr3 departmentNumber"
+	--append registry="attr3 departmentNumber" \
 	--append registry="attr4 phone" || die
 
 joinscript_save_current_version
