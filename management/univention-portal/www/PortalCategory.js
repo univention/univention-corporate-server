@@ -46,6 +46,7 @@ define([
 		entries: null,
 
 		heading: null,
+		headingNode: null,
 
 		domainName: null,
 
@@ -64,7 +65,8 @@ define([
 			this.inherited(arguments);
 
 			// header
-			var header = put(this.containerNode, 'h2', this.heading);
+			var header = this.headingNode = put('h2', this.heading);
+			put(this.containerNode, this.headingNode);
 			if (!this.heading) {
 				header.innerHTML = _('No display name provided');
 				put(header, '.noDisplayNameProvided');
@@ -123,7 +125,11 @@ define([
 				var renderedApps = this.grid.store.query(this.grid.query, this.grid.queryOptions);
 				hideCategory = renderedApps.length === 0;
 			}
-			domClass.toggle(this.domNode, 'dijitDisplayNone', hideCategory);
+			this.set('visible', !hideCategory);
+		},
+
+		getRenderedTiles: function() {
+			return this.grid.store.query(this.grid.query, this.grid.queryOptions);
 		},
 
 		onEditCategory: function() {

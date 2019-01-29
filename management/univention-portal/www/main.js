@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/window",
 	"dojo/Deferred",
 	"dojo/aspect",
 	"dojo/when",
@@ -77,7 +78,7 @@ define([
 	"umc/json!/univention/portal/portal.json", // -> contains entries of this portal as specified in the LDAP directory
 	"umc/json!/univention/portal/apps.json", // -> contains all locally installed apps
 	"umc/i18n!portal"
-], function(declare, lang, array, Deferred, aspect, when, on, dojoQuery, dom, domClass, domAttr, domGeometry, domStyle, domConstruct, mouse, Source, all, sprintf, Standby, dijitFocus, a11y, registry, Dialog, Tooltip, DropDownMenu, MenuItem, DropDownButton, tools, store, json, dialog, Button, Form, ContainerWidget, ConfirmDialog, StandbyMixin, MultiInput, put, purify, login, PortalCategory, PortalEntryWizard, PortalEntryWizardPreviewTile, portalTools, i18nTools, portalJson, installedApps, _) {
+], function(declare, lang, array, win, Deferred, aspect, when, on, dojoQuery, dom, domClass, domAttr, domGeometry, domStyle, domConstruct, mouse, Source, all, sprintf, Standby, dijitFocus, a11y, registry, Dialog, Tooltip, DropDownMenu, MenuItem, DropDownButton, tools, store, json, dialog, Button, Form, ContainerWidget, ConfirmDialog, StandbyMixin, MultiInput, put, purify, login, PortalCategory, PortalEntryWizard, PortalEntryWizardPreviewTile, portalTools, i18nTools, portalJson, installedApps, _) {
 
 	// convert IPv6 addresses to their canonical form:
 	//   ::1:2 -> 0000:0000:0000:0000:0000:0000:0001:0002
@@ -1256,6 +1257,10 @@ define([
 			// TODO
 			window.portal = this;
 			window._Button = _Button;
+
+			on(window, 'resize', lang.hitch(this, function() {
+				this._handleWindowResize();
+			}));
 		},
 
 		_initProperties: function() {
@@ -1365,7 +1370,7 @@ define([
 			});
 			var closeButton = new _Button({
 				iconClass: 'umcCrossIconWhite',
-				'class': 'portalEditBarCloseButton',
+				'class': 'portalEditBarCloseButton umcIconButton',
 				description: _('Stop editing this portal'),
 				callback: lang.hitch(this, function() {
 					this._refresh(portalTools.RenderMode.NORMAL);
@@ -1412,6 +1417,8 @@ define([
 			this._renderHeader(renderMode);
 			this._renderContent(renderMode);
 			this._updateSearch(renderMode);
+
+			this._rearrangeCategories();
 		},
 
 		_cleanupPreviousRender: function() {
@@ -1765,7 +1772,160 @@ define([
 				category.set('query', query);
 			});
 
+			this._rearrangeCategories();
+
 			this._lastSearch = searchPattern;
+		},
+
+		_rearrangeCategories: function() {
+			if (!this._portalCategories.length) {
+				return;
+			}
+
+			// reset previous _rearrangeCategories
+			this._portalCategories.forEach(function(category) {
+				domStyle.set(category.domNode, 'display', 'block');
+				domStyle.set(category.domNode, 'width', '');
+				domStyle.set(category.domNode, 'margin-right', '');
+			});
+
+			if (this._renderMode === portalTools.RenderMode.DND) {
+				return;
+			}
+
+			window.requestAnimationFrame(lang.hitch(this, function() {
+				var winBox = win.getBox();
+				if (winBox.w <= 549) {
+					// we are in the mobile view. returning
+					return;
+				}
+
+				var bodyBox = domGeometry.getContentBox(dojo.body());
+				if (bodyBox.h === winBox.h) {
+					// there is no scrollbar, so no rearrange necassary
+					return;
+				}
+
+				var contentBox = domGeometry.getContentBox(this._contentNode);
+				var availableHeight = winBox.h - contentBox.t;
+				var itemWidth = 155;
+				var itemMarginWidth = 40;
+				var itemWidthPlusMargin = itemWidth + itemMarginWidth;
+				var minMarginBetweenCategories = 40;
+				var maxColumns = 2;
+
+				var tilesWidth = function(n) {
+					return (n * itemWidthPlusMargin) - itemMarginWidth;
+				};
+				var categoryWidth = function(c) {
+					var width = tilesWidth(c.getRenderedTiles().length);
+					var headerWidth = Math.ceil(domGeometry.getMarginSize(c.headingNode).w);
+					if (headerWidth > width) {
+						var nextFittingWidthToGrid = (Math.ceil((headerWidth + itemMarginWidth) / itemWidthPlusMargin) * itemWidthPlusMargin) - itemMarginWidth;
+						width = nextFittingWidthToGrid;
+					}
+					return width;
+				};
+
+				var getRows = lang.hitch(this, function() {
+					var rows = [];
+					var rowsi = 0;
+					var row;
+
+					this._portalCategories.forEach(function(c) {
+						if (!c.get('visible')) {
+							return;
+						}
+
+						row = rows[rowsi] = rows[rowsi] || [];
+						var widthAvailable = contentBox.w;
+						row.forEach(function(cir) {
+							widthAvailable -= cir.w + minMarginBetweenCategories;
+						});
+
+						var w = categoryWidth(c);
+						var fits = w <= widthAvailable;
+						var r = widthAvailable - w;
+
+						if (!fits && row.length > 0) {
+							rowsi++;
+						}
+						row = rows[rowsi] = rows[rowsi] || [];
+						row.push({
+							c: c,
+							r: r,
+							w: w,
+							h: domGeometry.getMarginBox(c.domNode).h
+						});
+						if (row.length === maxColumns) {
+							rowsi++;
+						}
+					});
+
+					return rows;
+				});
+
+				var isDone = function() {
+					var heightTaken = 0;
+					rows.forEach(function(row) {
+						heightTaken += row[0].h;
+					});
+
+					if (heightTaken > availableHeight) {
+						var layout = '';
+						rows.forEach(function(row) {
+							layout += row.length.toString();
+						});
+						if (layout !== lastLayout) {
+							maxColumns++;
+							lastLayout = layout;
+						} else {
+							return true;
+						}
+					} else {
+						return true;
+					}
+					return false;
+				};
+
+
+				var lastLayout = '';
+				var done = false;
+				var rows;
+				while (!done) {
+					rows = getRows();
+					done = isDone(rows);
+				}
+
+				rows.forEach(function(row) {
+					if (row.length === 1) {
+						return;
+					}
+
+					row.forEach(function(c, index) {
+						domStyle.set(c.c.domNode, 'display', 'inline-block');
+						domStyle.set(c.c.domNode, 'width', c.w + 'px');
+						if (index === row.length - 1) {
+							domStyle.set(c.c.domNode, 'margin-right', c.r + 'px');
+						} else {
+							domStyle.set(c.c.domNode, 'margin-right', minMarginBetweenCategories + 'px');
+						}
+					});
+				});
+			}));
+		},
+
+		_resizeDeferred: null,
+		_handleWindowResize: function() {
+			if (this._resizeDeferred && !this._resizeDeferred.isFulfilled()) {
+				this._resizeDeferred.cancel();
+			}
+
+			this._resizeDeferred = tools.defer(lang.hitch(this, function() {
+				this._rearrangeCategories();
+			}), 200);
+
+			this._resizeDeferred.otherwise(function() { /* prevent logging of exception */ });
 		},
 
 		// these functions are used in management/univention-portal/test/test.js
