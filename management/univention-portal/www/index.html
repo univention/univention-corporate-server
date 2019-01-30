@@ -33,22 +33,24 @@
 		<script type"text/javascript" async src="/univention/js/dojo/dojo.js"></script>
 	</head>
 	<body class="umc portal" id="portal">
-		<div id="umcHeader" class="umcHeader">
-			<div class="umcHeaderLeft" id="umcHeaderLeft">
-				<div id="portalLogoWrapper">
-					<img id="portalLogo" />
-					<div id="portalLogoEdit"></div>
+		<div id="contentWrapper">
+			<div id="umcHeader" class="umcHeader">
+				<div class="umcHeaderLeft" id="umcHeaderLeft">
+					<div id="portalLogoWrapper">
+						<img id="portalLogo" />
+						<div id="portalLogoEdit"></div>
+					</div>
+					<h1 id="portalTitle"></h1>
 				</div>
-				<h1 id="portalTitle"></h1>
+				<div class="umcHeaderRight dijitDisplayNone" id="umcHeaderRight">
+					<div id="umcLiveSearch" data-dojo-type="umc/widgets/LiveSearch"></div>
+					<div id="umcLoginButton" data-dojo-type="umc/widgets/LoginButton"></div>
+					<div data-dojo-type="umc/menu/Button"></div>
+					<div class="univentionLogo"></div>
+				</div>
 			</div>
-			<div class="umcHeaderRight dijitDisplayNone" id="umcHeaderRight">
-				<div id="umcLiveSearch" data-dojo-type="umc/widgets/LiveSearch"></div>
-				<div id="umcLoginButton" data-dojo-type="umc/widgets/LoginButton"></div>
-				<div data-dojo-type="umc/menu/Button"></div>
-				<div class="univentionLogo"></div>
-			</div>
+			<div id="content" class="content"></div>
 		</div>
-		<div id="content" class="content"></div>
 		<div data-dojo-type="umc/dialog/NotificationSnackbar"></div>
 		<footer id="portal-footer"></footer>
 	</body>
