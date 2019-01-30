@@ -30,6 +30,8 @@
 
 import univention.lib.umc
 import univention.config_registry
+import univention.uldap
+import ldap.filter
 import argparse
 import glob
 import os
@@ -39,50 +41,83 @@ import sys
 
 TRIGGER_DIR = '/var/cache/univention-directory-listener/selfservice-invitation'
 
+class Invitation(object):
 
-def main():
+	def __init__(self):
 
-	usage = '%(prog)s'
-	description = '%(prog)s sends passwordreset tokens to all users found in %(dir)s.' % dict(dir=TRIGGER_DIR, prog='%(prog)s')
-	description += '%(prog)s is triggered by the selfservice-invitation listener and started via systemd'
-	parser = argparse.ArgumentParser(usage=usage, description=description)
-	parser.add_argument('-n', '--dry-run', action='store_true', help='Just check, do not send invitation')
-	args = parser.parse_args()
+		# options
+		usage = '%(prog)s'
+		description = '%(prog)s sends passwordreset tokens to all users found in %(dir)s.' % dict(dir=TRIGGER_DIR, prog='%(prog)s')
+		description += '%(prog)s is triggered by the selfservice-invitation listener and started via systemd'
+		parser = argparse.ArgumentParser(usage=usage, description=description)
+		parser.add_argument('-n', '--dry-run', action='store_true', help='Just check, do not send invitation')
+		parser.add_argument("-v", action="count", dest='verbose', help="Verbosity", default=2)
+		self.args = parser.parse_args()
+		self.prog = os.path.basename(__file__)
+		self.ucr = univention.config_registry.ConfigRegistry()
+		self.ucr.load()
 
-	ucr = univention.config_registry.ConfigRegistry()
-	ucr.load()
-	if not ucr.is_true('umc/self-service/invitation/enabled', True):
-		logger.info('{} is disabled by UCRV umc/self-service/invitation/enabled'.format(prog))
-		sys.exit(0)
+		# logger
+		self.logger = logging.getLogger(self.prog)
+		handler = logging.StreamHandler()
+		formatter = logging.Formatter('%(asctime)s.%(msecs)03d  %(name)-11s ( %(levelname)-7s ) : %(message)s', '%d.%m.%y %H:%M:%S')
+		handler.setFormatter(formatter)
+		self.logger.addHandler(handler)
+		LEVELS = [logging.ERROR, logging.WARNING, logging.INFO, logging.DEBUG]
+		try:
+			level = LEVELS[self.args.verbose]
+		except IndexError:
+			level = LEVELS[-1]
+		self.logger.setLevel(level)
 
-	umc_path = 'passwordreset/send_token'
-	umc_user = ucr['hostname'] + '$'
-	with open('/etc/machine.secret') as f:
-		umc_pass = f.readline()
+		# activated?
+		if not self.ucr.is_true('umc/self-service/invitation/enabled', True):
+			self.logger.info('{} is disabled by UCRV umc/self-service/invitation/enabled'.format(prog))
+			sys.exit(0)
 
-	while True:
-		time.sleep(5)
-		client = univention.lib.umc.Client(username=umc_user, password=umc_pass)
-		for filename in glob.glob(os.path.join(TRIGGER_DIR, '*.send')):
-			user = os.path.basename(filename).rstrip('.send')
-			logger.info('Sending token to {}'.format(user))
-			if not args.dry_run:
-				resp = client.umc_command(umc_path, dict(username=user, method='email'))
-				if hasattr(resp, 'status') and resp.status != 200:
-					raise Exception('sending token failed with status != 200: {}'.format(resp.message))
-				os.remove(filename)
+		# ldap/umc connection
+		umc_user = self.ucr['hostname'] + '$'
+		with open('/etc/machine.secret') as f:
+			umc_pass = f.readline()
+		self.umc_client = univention.lib.umc.Client(username=umc_user, password=umc_pass, automatic_reauthentication=True)
+		self.umc_path = 'passwordreset/send_token'
+		self.lo = univention.uldap.getMachineConnection()
+
+	def is_valid_user(self, username):
+		# check if users exists and has univentionPasswordSelfServiceEmail
+		l_filter = 'uid={}'.format(ldap.filter.escape_filter_chars(username))
+		self.logger.debug('checking ldap with filter {}'.format(l_filter))
+		res = self.lo.search(l_filter)
+		if len(res) == 1:
+			if 'univentionPasswordSelfServiceEmail' in res[0][1]:
+				self.logger.debug('user {} is valid'.format(username))
+				return True
+		self.logger.debug('user {} is NOT valid'.format(username))
+		return  False
+
+	def check_trigger(self):
+		# check trigger dir for users and send token
+		while True:
+			time.sleep(5)
+			self.logger.debug('checkig trigger dir {}'.format(os.path.join(TRIGGER_DIR, '*.send')))
+			for filename in glob.glob(os.path.join(TRIGGER_DIR, '*.send')):
+				user = os.path.basename(filename).rstrip('.send')
+				self.logger.info('Found trigger for user {}'.format(user))
+				if self.is_valid_user(user):
+					self.logger.info('Sending token to {}'.format(user))
+					if not self.args.dry_run:
+						resp = self.umc_client.umc_command(self.umc_path, dict(username=user, method='email'))
+						if hasattr(resp, 'status') and resp.status != 200:
+							raise Exception('sending token failed with status != 200: {}'.format(resp.message))
+						os.remove(filename)
+				else:
+					self.logger.debug('ignore request and delete trigger file')
+					os.remove(filename)
 
 if __name__ == '__main__':
-	prog = os.path.basename(__file__)
-	logger = logging.getLogger(prog)
-	handler = logging.StreamHandler()
-	formatter = logging.Formatter('%(asctime)s.%(msecs)03d  %(name)-11s ( %(levelname)-7s ) : %(message)s', '%d.%m.%y %H:%M:%S')
-	handler.setFormatter(formatter)
-	logger.addHandler(handler)
-	logger.setLevel(logging.INFO)
-
+	inv = Invitation()
 	try:
-		main()
+		inv.check_trigger()
 	except Exception as e:
-		logger.exception('Got exception!')
+		inv.logger.exception('Got exception!')
 		sys.exit(1)
