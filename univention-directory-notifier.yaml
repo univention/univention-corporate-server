@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: univention-directory-notifier
+fix: 12.0.1-3A~4.3.0.201901301225
+desc: |
+ This update addresses the following issue(s):
+ * The new script univention-replicate-many can be used to re-replicate
+ multiple objects at once.
+bug: [41262]
