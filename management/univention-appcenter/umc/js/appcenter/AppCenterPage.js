@@ -288,7 +288,7 @@ define([
 					var voteForApps = false;
 					array.forEach(applications, function(application) {
 						array.forEach(application.app_categories, function(category) {
-							if (array.indexOf(categories, category) < 0) {
+							if (array.indexOf(categories.map(function(x){return x.id}), category) < 0) {
 								categories.push({
 									id: category,
 									description: category
@@ -313,7 +313,7 @@ define([
 							voteForApps = true;
 						}
 					});
-					categories.sort();
+					categories.sort(function(a, b){return a.description > b.description ? 1 : -1});
 					this._searchSidebar.set('badges', badges);
 					this._searchSidebar.set('voteForApps', voteForApps);
 					this._searchSidebar.set('categories', categories);
