@@ -538,10 +538,12 @@ define([
 			this._renderInstallOrOpenButton(parentContainer);
 			if (this.app.canVote()) {
 				this._renderAppVote(parentContainer);
-			} else if (this.app.useShop) {
-				this._renderAppBuy(parentContainer);
+			} else {
+				if (this.app.useShop) {
+					this._renderAppBuy(parentContainer);
+				}
+				this._renderAppDetails(parentContainer);
 			}
-			this._renderAppDetails(parentContainer);
 			var hasRating = array.some(this.app.rating, function(rating) { return rating.value; });
 			if (hasRating) {
 				this._renderAppBadges(parentContainer);
