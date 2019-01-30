@@ -303,7 +303,7 @@ define([
 								});
 							}
 						});
-						if (array.indexOf(licenses, application.license) < 0) {
+						if (array.indexOf(licenses.map(function(x){return x.id}), application.license) < 0) {
 							licenses.push({
 								id: application.license,
 								description: application.license_description
@@ -314,6 +314,7 @@ define([
 						}
 					});
 					categories.sort(function(a, b){return a.description > b.description ? 1 : -1});
+					this._sortLicenses(licenses);
 					this._searchSidebar.set('badges', badges);
 					this._searchSidebar.set('voteForApps', voteForApps);
 					this._searchSidebar.set('categories', categories);
@@ -322,6 +323,17 @@ define([
 				}
 			}));
 			return updating;
+		},
+
+		_sortLicenses(licenses) {
+			var licenseIdsInOrder = ['free', 'freemium', 'trial', 'proprietary'];
+			licenses.sort(function(a, b) {
+				var ia = array.indexOf(licenseIdsInOrder, a.id);
+				var ib = array.indexOf(licenseIdsInOrder, b.id);
+				if(ia < 0) {ia = 100;}
+				if(ib < 0) {ib = 100;}
+				return ia - ib;
+			});
 		},
 
 		trackSearchString: function() {
