@@ -631,14 +631,34 @@ define([
 				'class': 'mainHeader iconHeaderBuy'
 			}, appBuyContainer.domNode);
 
+			if(!this.app.candidateInstallIsPermitted) {
+				this._addBuyableAppInfo(appBuyContainer);
+			}
+			this._addBuyButton(appBuyContainer);
+		},
+
+		_addBuyableAppInfo(parentContainer) {
+			domConstruct.create('span', {
+				'class': 'appDetailsSidebarText',
+				innerHTML: _('Buy %(appName)s to install version %(candidateVersion)s.',
+					{appName: this.app.name, candidateVersion: this.app.candidateVersion})
+			}, parentContainer.domNode);
+
+			domConstruct.create('span', {
+				'class': 'appDetailsSidebarText',
+				innerHTML: this.app.buyReasons,
+			}, parentContainer.domNode);
+		},
+
+		_addBuyButton(parentContainer) {
 			var buy_button = new Button({
 				name: 'shop',
 				label: _('Buy now'),
 				'class': 'umcAppSidebarButton',
 				callback: lang.hitch(this, 'openShop')
 			});
-			appBuyContainer.addChild(buy_button);
-			appBuyContainer.own(buy_button);
+			parentContainer.addChild(buy_button);
+			parentContainer.own(buy_button);
 		},
 
 		_renderAppDetails(parentContainer) {
@@ -659,8 +679,8 @@ define([
 			this.addToDetails(_('Contact'), 'Contact');
 			this.addToDetails(_('License'), 'License');
 			if (this.app.isInstalled) {
-				this.addToDetails(_('Version'), 'Version');
-				this.addToDetails(_('Available'), 'CandidateVersion');
+				this.addToDetails(_('Installed version'), 'Version');
+				this.addToDetails(_('Available version'), 'CandidateVersion');
 			} else {
 				this.addToDetails(_('Version'), 'CandidateVersion');
 			}
@@ -1355,7 +1375,8 @@ define([
 				return;
 			}
 			var tr = domConstruct.create('tr', {}, this._detailsTable);
-			domConstruct.create('td', {innerHTML: entities.encode(label), style: {verticalAlign: 'top'}}, tr);
+			var rough_label_width = label.length + 'ch';
+			domConstruct.create('td', {innerHTML: entities.encode(label), style: {verticalAlign: 'top', width: rough_label_width}}, tr);
 			if (typeof value == 'string') {
 				domConstruct.create('td', {innerHTML: value}, tr);
 			} else {
