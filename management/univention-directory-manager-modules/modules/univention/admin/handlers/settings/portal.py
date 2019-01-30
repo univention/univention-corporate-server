@@ -189,8 +189,7 @@ property_descriptions = {
 		identifies=False
 	),
 	'ensureLogin': univention.admin.property(
-		short_description=_('Ensure login before portal access'),
-		long_description=_('Anonymous visitors will be automatically redirected to the login site'),
+		short_description=_('Redirect anonymous visitors to the login'),
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='FALSE',
 		multivalue=False,
@@ -201,8 +200,6 @@ property_descriptions = {
 		identifies=False
 	),
 	'anonymousEmpty': univention.admin.property(
-		short_description=_('Text that is shown to anonymous visitors when there are no portal entries'),
-		long_description=_(''),
 		syntax=univention.admin.syntax.LocalizedAnonymousEmpty,
 		multivalue=True,
 		dontsearch=True,
@@ -213,7 +210,6 @@ property_descriptions = {
 	),
 	'autoLayoutCategories': univention.admin.property(
 		short_description=_('The categories are displayed side by side if there is enough space'),
-		long_description=_(''),
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='FALSE',
 		dontsearch=True,
@@ -281,11 +277,11 @@ layout = [
 	Tab(_('Portal categories and entries'), _('The categories and entries that are shown on this portal'), layout=[
 		['content'],
 	]),
-	Tab(_('Portal access'), _('Managing anonymous visitors'), layout=[
-		Group(_('Redirect anonymous visitors'), layout=[
+	Tab(_('Manage anonymous visitors'), _('Manage anonymous visitors'), layout=[
+		Group(_('Login'), layout=[
 			['ensureLogin'],
 		]),
-		Group(_('Notice for anonymous visitors on empty portals'), layout=[
+		Group(_('Message when the portal is empty'), layout=[
 			['anonymousEmpty'],
 		]),
  	]),

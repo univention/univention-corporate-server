@@ -3657,7 +3657,7 @@ class LocalizedDescription(translationTuple):
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Description'), string)]
 
 class LocalizedAnonymousEmpty(translationTuple):
-	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Text'), TwoEditor)]
+	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Message that is shown to anonymous visitors when the portal is empty'), TwoEditor)]
 
 
 class mailHomeServer(LDAP_Search):  # DEPRECATED! Use MailHomeServer

@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2018-07-26 13:50+0200\n"
+"POT-Creation-Date: 2019-01-30 12:48+0100\n"
 "PO-Revision-Date: 2015-07-19 22:32+0200\n"
 "Last-Translator: Daniel Tröder <troeder@univention.de>\n"
 "Language-Team: Deutsch <German <packages@univention.de>>\n"
@@ -80,19 +80,19 @@ msgid "Account settings"
 msgstr "Kontoeinstellungen"
 
 #: modules/univention/admin/handlers/settings/ldapacl.py:170
-#: modules/univention/admin/handlers/settings/udm_hook.py:182
 #: modules/univention/admin/handlers/settings/ldapschema.py:146
-#: modules/univention/admin/handlers/settings/udm_syntax.py:182
-#: modules/univention/admin/handlers/settings/udm_module.py:204
 #: modules/univention/admin/handlers/settings/portal_entry.py:153
+#: modules/univention/admin/handlers/settings/udm_hook.py:182
+#: modules/univention/admin/handlers/settings/udm_module.py:204
+#: modules/univention/admin/handlers/settings/udm_syntax.py:182
 msgid "Activated"
 msgstr "Aktiviert"
 
 #: modules/univention/admin/handlers/settings/ldapacl.py:92
-#: modules/univention/admin/handlers/settings/udm_hook.py:92
 #: modules/univention/admin/handlers/settings/ldapschema.py:92
-#: modules/univention/admin/handlers/settings/udm_syntax.py:92
+#: modules/univention/admin/handlers/settings/udm_hook.py:92
 #: modules/univention/admin/handlers/settings/udm_module.py:92
+#: modules/univention/admin/handlers/settings/udm_syntax.py:92
 msgid "Active"
 msgstr "Aktiv"
 
@@ -114,16 +114,20 @@ msgstr ""
 "Ein LDAP-Attribut wird benötigt dessen Information gespeichert werden soll."
 
 #: modules/univention/admin/handlers/settings/ldapacl.py:103
-#: modules/univention/admin/handlers/settings/udm_hook.py:103
 #: modules/univention/admin/handlers/settings/ldapschema.py:103
-#: modules/univention/admin/handlers/settings/udm_syntax.py:103
+#: modules/univention/admin/handlers/settings/udm_hook.py:103
 #: modules/univention/admin/handlers/settings/udm_module.py:103
+#: modules/univention/admin/handlers/settings/udm_syntax.py:103
 msgid "App identifier"
 msgstr "App-Kennung"
 
-#: modules/univention/admin/handlers/settings/portal.py:221
+#: modules/univention/admin/handlers/settings/portal.py:261
 msgid "Appearance"
 msgstr "Erscheinung"
+
+#: modules/univention/admin/handlers/settings/data.py:48
+msgid "Arbitrary data files"
+msgstr ""
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:415
 msgid "Attribute layout"
@@ -161,20 +165,20 @@ msgstr "Für diesen Basis-DN ist die Lizenz gültig."
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: modules/univention/admin/handlers/settings/extended_options.py:156
-#: modules/univention/admin/handlers/settings/usertemplate.py:351
-#: modules/univention/admin/handlers/settings/ldapacl.py:155
-#: modules/univention/admin/handlers/settings/udm_hook.py:166
 #: modules/univention/admin/handlers/settings/cn.py:69
-#: modules/univention/admin/handlers/settings/directory.py:187
-#: modules/univention/admin/handlers/settings/sambaconfig.py:191
-#: modules/univention/admin/handlers/settings/ldapschema.py:135
-#: modules/univention/admin/handlers/settings/syntax.py:165
-#: modules/univention/admin/handlers/settings/udm_syntax.py:166
-#: modules/univention/admin/handlers/settings/udm_module.py:186
 #: modules/univention/admin/handlers/settings/default.py:150
-#: modules/univention/admin/handlers/settings/service.py:70
+#: modules/univention/admin/handlers/settings/directory.py:187
+#: modules/univention/admin/handlers/settings/extended_options.py:156
+#: modules/univention/admin/handlers/settings/ldapacl.py:155
+#: modules/univention/admin/handlers/settings/ldapschema.py:135
+#: modules/univention/admin/handlers/settings/sambaconfig.py:191
 #: modules/univention/admin/handlers/settings/sambadomain.py:268
+#: modules/univention/admin/handlers/settings/service.py:70
+#: modules/univention/admin/handlers/settings/syntax.py:165
+#: modules/univention/admin/handlers/settings/udm_hook.py:166
+#: modules/univention/admin/handlers/settings/udm_module.py:186
+#: modules/univention/admin/handlers/settings/udm_syntax.py:166
+#: modules/univention/admin/handlers/settings/usertemplate.py:351
 msgid "Basic values"
 msgstr "Grundeinstellungen"
 
@@ -190,6 +194,7 @@ msgstr "CSS Hintergrund"
 msgid "Category"
 msgstr "Kategorie"
 
+#: modules/univention/admin/handlers/settings/data.py:161
 #: modules/univention/admin/handlers/settings/portal_category.py:80
 msgid "Category options"
 msgstr "Optionen für Kategorie"
@@ -274,6 +279,14 @@ msgstr "DVS-Clients"
 #: modules/univention/admin/handlers/settings/license.py:251
 msgid "DVS users"
 msgstr "DVS-Benutzerkonten"
+
+#: modules/univention/admin/handlers/settings/data.py:47
+msgid "Data"
+msgstr ""
+
+#: modules/univention/admin/handlers/settings/data.py:99
+msgid "Data Type"
+msgstr "Datentyp"
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:430
 msgid "Data type"
@@ -375,13 +388,14 @@ msgid "Department number"
 msgstr "Abteilungsnummer"
 
 #: modules/univention/admin/handlers/settings/portal_entry.py:133
-msgid "Deprecated by userGroup"
+msgid "Deprecated by allowedGroups"
 msgstr ""
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:74
-#: modules/univention/admin/handlers/settings/umc_operationset.py:72
+#: modules/univention/admin/handlers/settings/data.py:68
 #: modules/univention/admin/handlers/settings/portal_entry.py:78
 #: modules/univention/admin/handlers/settings/portal_entry.py:185
+#: modules/univention/admin/handlers/settings/umc_operationset.py:72
+#: modules/univention/admin/handlers/settings/usertemplate.py:74
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -405,10 +419,10 @@ msgstr "Verbindung trennen nach"
 msgid "Display"
 msgstr "Anzeige"
 
-#: modules/univention/admin/handlers/settings/portal.py:71
 #: modules/univention/admin/handlers/settings/portal_all.py:61
 #: modules/univention/admin/handlers/settings/portal_category.py:68
 #: modules/univention/admin/handlers/settings/portal_entry.py:68
+#: modules/univention/admin/handlers/settings/portal.py:71
 msgid "Display Name"
 msgstr "Anzeigename"
 
@@ -416,9 +430,9 @@ msgstr "Anzeigename"
 msgid "Display Size (mm)"
 msgstr "Bildschirm Größe (mm)"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:84
 #: modules/univention/admin/handlers/settings/portal_category.py:84
 #: modules/univention/admin/handlers/settings/portal_entry.py:182
+#: modules/univention/admin/handlers/settings/usertemplate.py:84
 msgid "Display name"
 msgstr "Anzeigename"
 
@@ -494,6 +508,10 @@ msgstr ""
 msgid "Favorite"
 msgstr "Favorit"
 
+#: modules/univention/admin/handlers/settings/data.py:78
+msgid "File name of file to store data in."
+msgstr ""
+
 #: modules/univention/admin/handlers/settings/umc_operationset.py:95
 msgid "Flavor"
 msgstr "Variante"
@@ -503,42 +521,43 @@ msgid "Font color"
 msgstr "Schriftfarbe"
 
 #: modules/univention/admin/handlers/settings/udm_hook.py:153
-#: modules/univention/admin/handlers/settings/udm_syntax.py:153
 #: modules/univention/admin/handlers/settings/udm_module.py:153
+#: modules/univention/admin/handlers/settings/udm_syntax.py:153
 msgid "GNU message catalog for translations"
 msgstr "GNU Message Catalog für Übersetzungen"
 
-#: modules/univention/admin/handlers/settings/extended_options.py:156
-#: modules/univention/admin/handlers/settings/usertemplate.py:351
-#: modules/univention/admin/handlers/settings/portal.py:213
-#: modules/univention/admin/handlers/settings/ldapacl.py:155
-#: modules/univention/admin/handlers/settings/extended_attribute.py:388
-#: modules/univention/admin/handlers/settings/udm_hook.py:166
 #: modules/univention/admin/handlers/settings/cn.py:69
-#: modules/univention/admin/handlers/settings/directory.py:187
-#: modules/univention/admin/handlers/settings/portal_all.py:71
-#: modules/univention/admin/handlers/settings/sambaconfig.py:191
-#: modules/univention/admin/handlers/settings/ldapschema.py:135
-#: modules/univention/admin/handlers/settings/printermodel.py:86
-#: modules/univention/admin/handlers/settings/syntax.py:165
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:177
-#: modules/univention/admin/handlers/settings/udm_syntax.py:166
-#: modules/univention/admin/handlers/settings/umc_operationset.py:120
-#: modules/univention/admin/handlers/settings/printeruri.py:84
-#: modules/univention/admin/handlers/settings/udm_module.py:186
-#: modules/univention/admin/handlers/settings/prohibited_username.py:83
-#: modules/univention/admin/handlers/settings/lock.py:82
+#: modules/univention/admin/handlers/settings/data.py:161
 #: modules/univention/admin/handlers/settings/default.py:150
+#: modules/univention/admin/handlers/settings/directory.py:187
+#: modules/univention/admin/handlers/settings/extended_attribute.py:388
+#: modules/univention/admin/handlers/settings/extended_options.py:156
+#: modules/univention/admin/handlers/settings/ldapacl.py:155
+#: modules/univention/admin/handlers/settings/ldapschema.py:135
+#: modules/univention/admin/handlers/settings/lock.py:82
+#: modules/univention/admin/handlers/settings/packages.py:83
+#: modules/univention/admin/handlers/settings/portal_all.py:71
 #: modules/univention/admin/handlers/settings/portal_category.py:80
 #: modules/univention/admin/handlers/settings/portal_entry.py:177
 #: modules/univention/admin/handlers/settings/portal_entry.py:178
-#: modules/univention/admin/handlers/settings/packages.py:83
-#: modules/univention/admin/handlers/settings/service.py:70
+#: modules/univention/admin/handlers/settings/portal.py:253
+#: modules/univention/admin/handlers/settings/printermodel.py:86
+#: modules/univention/admin/handlers/settings/printeruri.py:84
+#: modules/univention/admin/handlers/settings/prohibited_username.py:83
+#: modules/univention/admin/handlers/settings/sambaconfig.py:191
 #: modules/univention/admin/handlers/settings/sambadomain.py:268
+#: modules/univention/admin/handlers/settings/service.py:70
+#: modules/univention/admin/handlers/settings/syntax.py:165
+#: modules/univention/admin/handlers/settings/udm_hook.py:166
+#: modules/univention/admin/handlers/settings/udm_module.py:186
+#: modules/univention/admin/handlers/settings/udm_syntax.py:166
+#: modules/univention/admin/handlers/settings/umc_operationset.py:120
+#: modules/univention/admin/handlers/settings/usertemplate.py:351
+#: modules/univention/admin/handlers/settings/xconfig_choices.py:177
 msgid "General"
 msgstr "Allgemein"
 
-#: modules/univention/admin/handlers/settings/portal.py:227
+#: modules/univention/admin/handlers/settings/portal.py:268
 msgid "General Content"
 msgstr "Allgemeiner Inhalt"
 
@@ -614,6 +633,7 @@ msgstr "Grundeinstellungen - Verbotene Benutzernamen"
 msgid "General service settings"
 msgstr "Grundeinstellungen - Dienst"
 
+#: modules/univention/admin/handlers/settings/data.py:162
 #: modules/univention/admin/handlers/settings/extended_attribute.py:388
 msgid "General settings"
 msgstr "Allgemeine Einstellungen"
@@ -700,6 +720,13 @@ msgstr ""
 "Wenn bereits eine Karteikarte mit diesem Namen existiert, wird sie durch "
 "eine Karteikarte ersetzt die nur erweiterte Attribute enthält"
 
+#: modules/univention/admin/handlers/settings/portal_entry.py:144
+msgid ""
+"If one or more groups are selected then the portal entry will only be "
+"visible to logged in users that are in any of the selected groups. If no "
+"groups are selected then the portal entry is always visible."
+msgstr ""
+
 #: modules/univention/admin/handlers/settings/extended_attribute.py:314
 msgid ""
 "If possible, the LDAP object class is removed when this extended attribute "
@@ -727,10 +754,10 @@ msgstr ""
 "univention.admin.property-Objekten vor dem Doppelpunkt steht, z.B. "
 "roomNumber für die Raumnummer eines Benutzers"
 
-#: modules/univention/admin/handlers/settings/portal.py:60
 #: modules/univention/admin/handlers/settings/portal_all.py:50
 #: modules/univention/admin/handlers/settings/portal_category.py:57
 #: modules/univention/admin/handlers/settings/portal_entry.py:57
+#: modules/univention/admin/handlers/settings/portal.py:60
 msgid "Internal name"
 msgstr "Interner Name"
 
@@ -784,8 +811,8 @@ msgstr "LDAP-Attribut"
 msgid "LDAP mapping"
 msgstr "LDAP-Abbildung"
 
-#: modules/univention/admin/handlers/settings/extended_options.py:144
 #: modules/univention/admin/handlers/settings/extended_attribute.py:303
+#: modules/univention/admin/handlers/settings/extended_options.py:144
 msgid "LDAP object class"
 msgstr "LDAP-Objektklasse"
 
@@ -838,6 +865,12 @@ msgstr "Druckertreiberliste"
 msgid "List of modules this option applies to."
 msgstr "Liste der Module, auf die diese Option angewandt wird."
 
+#: modules/univention/admin/handlers/settings/portal.py:234
+msgid ""
+"List of static links shown on this portal. Only those links for the selected "
+"locale are shown (e.g.,: en_US, de_DE)."
+msgstr ""
+
 #: modules/univention/admin/handlers/settings/lock.py:82
 msgid "Lock Information"
 msgstr "Informationen über die Sperrung"
@@ -865,6 +898,10 @@ msgstr "Dauer der Aussperrung"
 #: modules/univention/admin/handlers/settings/sambadomain.py:196
 msgid "Lockout duration minutes"
 msgstr "Dauer der Aussperrung"
+
+#: modules/univention/admin/handlers/settings/portal.py:281
+msgid "Login"
+msgstr "Login"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:162
 msgid "Login shell"
@@ -895,6 +932,10 @@ msgstr "Mailverweis"
 msgid "Mail Links"
 msgstr "Mailverweise"
 
+#: modules/univention/admin/handlers/settings/portal.py:280
+msgid "Manage anonymous visitors"
+msgstr "Anonyme Besucher verwalten"
+
 #: modules/univention/admin/handlers/settings/license.py:231
 msgid "Managed Clients"
 msgstr "Managed Clients"
@@ -919,10 +960,11 @@ msgstr "Max. Groupware-Konten"
 msgid "Max. user accounts"
 msgstr "Max. Benutzerkonten"
 
+#: modules/univention/admin/handlers/settings/data.py:119
 #: modules/univention/admin/handlers/settings/ldapacl.py:143
 #: modules/univention/admin/handlers/settings/udm_hook.py:143
-#: modules/univention/admin/handlers/settings/udm_syntax.py:143
 #: modules/univention/admin/handlers/settings/udm_module.py:143
+#: modules/univention/admin/handlers/settings/udm_syntax.py:143
 msgid "Maximal UCS version"
 msgstr "Maximale UCS-Version"
 
@@ -989,18 +1031,28 @@ msgstr ""
 msgid "Maximum password age"
 msgstr "Maximales Passwortalter"
 
+#: modules/univention/admin/handlers/settings/portal.py:284
+msgid "Message when the portal is empty"
+msgstr "Nachricht, wenn das portal leer ist"
+
+#: modules/univention/admin/handlers/settings/data.py:129
+msgid "Meta information"
+msgstr ""
+
+#: modules/univention/admin/handlers/settings/data.py:169
 #: modules/univention/admin/handlers/settings/ldapacl.py:161
-#: modules/univention/admin/handlers/settings/udm_hook.py:173
 #: modules/univention/admin/handlers/settings/ldapschema.py:141
-#: modules/univention/admin/handlers/settings/udm_syntax.py:173
+#: modules/univention/admin/handlers/settings/udm_hook.py:173
 #: modules/univention/admin/handlers/settings/udm_module.py:195
+#: modules/univention/admin/handlers/settings/udm_syntax.py:173
 msgid "Metadata"
 msgstr "Metadaten"
 
+#: modules/univention/admin/handlers/settings/data.py:109
 #: modules/univention/admin/handlers/settings/ldapacl.py:133
 #: modules/univention/admin/handlers/settings/udm_hook.py:133
-#: modules/univention/admin/handlers/settings/udm_syntax.py:133
 #: modules/univention/admin/handlers/settings/udm_module.py:133
+#: modules/univention/admin/handlers/settings/udm_syntax.py:133
 msgid "Minimal UCS version"
 msgstr "Minimale UCS-Version"
 
@@ -1045,27 +1097,27 @@ msgstr "Mausprotokoll"
 msgid "Multi value"
 msgstr "Mehrfachwert"
 
+#: modules/univention/admin/handlers/settings/cn.py:56
+#: modules/univention/admin/handlers/settings/default.py:60
+#: modules/univention/admin/handlers/settings/directory.py:63
 #: modules/univention/admin/handlers/settings/extended_options.py:59
 #: modules/univention/admin/handlers/settings/extended_options.py:60
-#: modules/univention/admin/handlers/settings/portal.py:214
-#: modules/univention/admin/handlers/settings/cn.py:56
-#: modules/univention/admin/handlers/settings/directory.py:63
+#: modules/univention/admin/handlers/settings/license.py:69
+#: modules/univention/admin/handlers/settings/license.py:70
+#: modules/univention/admin/handlers/settings/lock.py:59
+#: modules/univention/admin/handlers/settings/lock.py:60
+#: modules/univention/admin/handlers/settings/packages.py:59
+#: modules/univention/admin/handlers/settings/packages.py:60
+#: modules/univention/admin/handlers/settings/portal_category.py:81
+#: modules/univention/admin/handlers/settings/portal.py:254
 #: modules/univention/admin/handlers/settings/printermodel.py:61
 #: modules/univention/admin/handlers/settings/printermodel.py:62
-#: modules/univention/admin/handlers/settings/xconfig_choices.py:64
-#: modules/univention/admin/handlers/settings/umc_operationset.py:61
 #: modules/univention/admin/handlers/settings/printeruri.py:59
 #: modules/univention/admin/handlers/settings/printeruri.py:60
 #: modules/univention/admin/handlers/settings/prohibited_username.py:59
 #: modules/univention/admin/handlers/settings/prohibited_username.py:60
-#: modules/univention/admin/handlers/settings/lock.py:59
-#: modules/univention/admin/handlers/settings/lock.py:60
-#: modules/univention/admin/handlers/settings/default.py:60
-#: modules/univention/admin/handlers/settings/portal_category.py:81
-#: modules/univention/admin/handlers/settings/packages.py:59
-#: modules/univention/admin/handlers/settings/packages.py:60
-#: modules/univention/admin/handlers/settings/license.py:69
-#: modules/univention/admin/handlers/settings/license.py:70
+#: modules/univention/admin/handlers/settings/umc_operationset.py:61
+#: modules/univention/admin/handlers/settings/xconfig_choices.py:64
 msgid "Name"
 msgstr "Name"
 
@@ -1140,18 +1192,12 @@ msgstr ""
 "Ein Eintrag in https://fqdn/univention/portal. Gehört zu einem (oder "
 "mehreren) settings/portal"
 
-#: modules/univention/admin/handlers/settings/portal_entry.py:144
-msgid ""
-"Only visible for the specified user group. If not given, anonymous users may "
-"see the entry, too."
-msgstr ""
-
 #: modules/univention/admin/handlers/settings/extended_options.py:125
 msgid "Option may be repeatedly turned on and off."
 msgstr "Die Option kann wiederholt gesetzt und entfernt werden."
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:339
 #: modules/univention/admin/handlers/settings/syntax.py:175
+#: modules/univention/admin/handlers/settings/usertemplate.py:339
 msgid "Options"
 msgstr "Optionen"
 
@@ -1234,23 +1280,27 @@ msgstr "Richtlinienverweis"
 msgid "Policy Links"
 msgstr "Richtlinienverweise"
 
-#: modules/univention/admin/handlers/settings/portal.py:235
+#: modules/univention/admin/handlers/settings/portal.py:277
 msgid "Portal categories and entries"
 msgstr "Portal-Kategorien und -Einträge"
 
-#: modules/univention/admin/handlers/settings/portal.py:203
+#: modules/univention/admin/handlers/settings/portal.py:243
 msgid "Portal content"
 msgstr "Portal-Kontent"
 
-#: modules/univention/admin/handlers/settings/portal.py:193
+#: modules/univention/admin/handlers/settings/portal.py:223
 msgid "Portal entries order"
 msgstr "Reihenfolge Portaleinträge"
+
+#: modules/univention/admin/handlers/settings/portal.py:233
+msgid "Portal links"
+msgstr ""
 
 #: modules/univention/admin/handlers/settings/portal.py:147
 msgid "Portal logo"
 msgstr "Portal-Logo"
 
-#: modules/univention/admin/handlers/settings/portal.py:213
+#: modules/univention/admin/handlers/settings/portal.py:253
 msgid "Portal options"
 msgstr "Optionen für Portal"
 
@@ -1360,6 +1410,10 @@ msgstr ""
 "untergebracht. Es wird keine eigenständige Karteikarte für das erweiterte "
 "Attribut angelegt"
 
+#: modules/univention/admin/handlers/settings/portal.py:192
+msgid "Redirect anonymous visitors to the login"
+msgstr "Anonyme Besucher zum Login umleiten"
+
 #: modules/univention/admin/handlers/settings/sambaconfig.py:179
 msgid "Refuse Machine Password Change"
 msgstr "Änderung des Rechnerpasswortes ablehnen"
@@ -1401,6 +1455,10 @@ msgstr "Auflösung"
 #: modules/univention/admin/handlers/settings/umc_operationset.py:107
 msgid "Restrict to host"
 msgstr "Auf Rechner beschränken"
+
+#: modules/univention/admin/handlers/settings/portal_entry.py:143
+msgid "Restrict visibility to groups"
+msgstr "Sichtbarkeit auf Gruppen beschränken"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:262
 msgid "Room number"
@@ -1596,19 +1654,21 @@ msgstr "Links zu lokale installierten Apps anzeigen"
 msgid "Signature"
 msgstr "Signatur"
 
+#: modules/univention/admin/handlers/settings/data.py:139
 #: modules/univention/admin/handlers/settings/ldapacl.py:113
-#: modules/univention/admin/handlers/settings/udm_hook.py:113
 #: modules/univention/admin/handlers/settings/ldapschema.py:113
-#: modules/univention/admin/handlers/settings/udm_syntax.py:113
+#: modules/univention/admin/handlers/settings/udm_hook.py:113
 #: modules/univention/admin/handlers/settings/udm_module.py:113
+#: modules/univention/admin/handlers/settings/udm_syntax.py:113
 msgid "Software package"
 msgstr "Softwarepaket"
 
+#: modules/univention/admin/handlers/settings/data.py:149
 #: modules/univention/admin/handlers/settings/ldapacl.py:123
-#: modules/univention/admin/handlers/settings/udm_hook.py:123
 #: modules/univention/admin/handlers/settings/ldapschema.py:123
-#: modules/univention/admin/handlers/settings/udm_syntax.py:123
+#: modules/univention/admin/handlers/settings/udm_hook.py:123
 #: modules/univention/admin/handlers/settings/udm_module.py:123
+#: modules/univention/admin/handlers/settings/udm_syntax.py:123
 msgid "Software package version"
 msgstr "Version des Softwarepakets"
 
@@ -1690,9 +1750,25 @@ msgstr "Name der Vorlage"
 msgid "The ABI number used by this extended attribute"
 msgstr "Die von diesem erweiterten Attribut verwendete ABI-Nummer"
 
-#: modules/univention/admin/handlers/settings/portal.py:235
+#: modules/univention/admin/handlers/settings/data.py:90
+msgid "The actual data, bzipped and base64 encoded"
+msgstr ""
+
+#: modules/univention/admin/handlers/settings/portal.py:277
 msgid "The categories and entries that are shown on this portal"
 msgstr "Die Kategorien und Einträge, die auf diesem Portal angezeigt werden"
+
+#: modules/univention/admin/handlers/settings/portal.py:212
+msgid "The categories are displayed side by side if there is enough space"
+msgstr "Die Kategorien werden nebeneinander angezeigt, wenn genügend Platz vorhanden ist"
+
+#: modules/univention/admin/handlers/settings/data.py:89
+msgid "The data"
+msgstr ""
+
+#: modules/univention/admin/handlers/settings/data.py:69
+msgid "The description"
+msgstr "Kurzbeschreibung"
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:173
 msgid ""
@@ -1714,8 +1790,16 @@ msgstr ""
 msgid "The name for the extended attribute as used by UDM CLI"
 msgstr "Der vom UDM-CLI zu verwendende Name für dieses erweiterte Attribut"
 
-#: modules/univention/admin/handlers/settings/portal.py:194
+#: modules/univention/admin/handlers/settings/data.py:58
+msgid "The name of the data object"
+msgstr ""
+
+#: modules/univention/admin/handlers/settings/portal.py:224
 msgid "The order in which the portal entries are shown on this portal"
+msgstr ""
+
+#: modules/univention/admin/handlers/settings/data.py:100
+msgid "The type of the data"
 msgstr ""
 
 #: modules/univention/admin/handlers/settings/license.py:112
@@ -1784,13 +1868,13 @@ msgstr "Anrede"
 msgid "Translations of group name"
 msgstr "Übersetzung des Gruppennames"
 
-#: modules/univention/admin/handlers/settings/extended_options.py:103
 #: modules/univention/admin/handlers/settings/extended_attribute.py:100
+#: modules/univention/admin/handlers/settings/extended_options.py:103
 msgid "Translations of long description"
 msgstr "Übersetzungen der ausführlichen Beschreibung"
 
-#: modules/univention/admin/handlers/settings/extended_options.py:92
 #: modules/univention/admin/handlers/settings/extended_attribute.py:89
+#: modules/univention/admin/handlers/settings/extended_options.py:92
 msgid "Translations of short description"
 msgstr "Übersetzungen der Kurzbeschreibung"
 
@@ -1832,8 +1916,8 @@ msgstr ""
 
 #: modules/univention/admin/handlers/settings/ldapacl.py:166
 #: modules/univention/admin/handlers/settings/udm_hook.py:178
-#: modules/univention/admin/handlers/settings/udm_syntax.py:178
 #: modules/univention/admin/handlers/settings/udm_module.py:200
+#: modules/univention/admin/handlers/settings/udm_syntax.py:178
 msgid "UCS Version Dependencies"
 msgstr "UCS-Versionsabhängigkeiten"
 
@@ -1945,10 +2029,6 @@ msgstr "Benutzerverweise"
 msgid "User account"
 msgstr "Benutzerkonto"
 
-#: modules/univention/admin/handlers/settings/portal_entry.py:143
-msgid "User group"
-msgstr "Benutzergruppe"
-
 #: modules/univention/admin/handlers/settings/sambaconfig.py:129
 msgid "User must Logon to Change Password"
 msgstr "Änderung des Passwortes erfordert Anmeldung"
@@ -2023,7 +2103,7 @@ msgstr "Version des erweiterten Attributs"
 msgid "Vertical Refresh"
 msgstr "Vertikale Wiederholungsrate"
 
-#: modules/univention/admin/handlers/settings/portal.py:218
+#: modules/univention/admin/handlers/settings/portal.py:258
 msgid "Visibility"
 msgstr ""
 
@@ -2076,11 +2156,15 @@ msgstr "X-Konfiguration Auswahl"
 msgid "X Module"
 msgstr "X-Modul"
 
+#: modules/univention/admin/handlers/settings/data.py:57
+msgid "name"
+msgstr ""
+
 #: modules/univention/admin/handlers/settings/ldapacl.py:198
-#: modules/univention/admin/handlers/settings/udm_hook.py:211
 #: modules/univention/admin/handlers/settings/ldapschema.py:172
-#: modules/univention/admin/handlers/settings/udm_syntax.py:211
+#: modules/univention/admin/handlers/settings/udm_hook.py:211
 #: modules/univention/admin/handlers/settings/udm_module.py:235
+#: modules/univention/admin/handlers/settings/udm_syntax.py:211
 msgid "packageversion: Version must not be lower than the current one."
 msgstr "Paketversion: Der Wert darf nicht geringer sein als der aktuelle."
 
@@ -2089,3 +2173,6 @@ msgstr "Paketversion: Der Wert darf nicht geringer sein als der aktuelle."
 #~ msgstr ""
 #~ "Überschrift des Portals. Mindestens ein Wert; insbesondere en_US ist "
 #~ "empfohlen"
+
+#~ msgid "User group"
+#~ msgstr "Benutzergruppe"
