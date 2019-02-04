@@ -2,21 +2,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define COMMAND "/usr/lib/nagios/plugins/check_univention_ldap"
+static const char COMMAND[] = "/usr/lib/nagios/plugins/check_univention_ldap";
 
-main(int argc, char ** argv, char ** envp)
+int main(int argc, char **argv, char **envp)
 {
-	uid_t uid = getuid();
-	char* args[2];
 	if (setgid(getegid())) {
 		perror("setgid");
+		return EXIT_FAILURE;
 	}
 	if (setuid(geteuid())) {
 		perror("setuid");
+		return EXIT_FAILURE;
 	}
-	args[0] = COMMAND;
-	args[1] = NULL;
-	execv(COMMAND, args);
-	setuid(uid);
-	exit(1);
+	execle(COMMAND, COMMAND, NULL, NULL);
+	perror("execle");
+	return EXIT_FAILURE;
 }
