@@ -1,0 +1,26 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: libvncserver
+fix: 0.9.9+dfsg2-6.1+deb8u5
+desc: |
+ This update addresses the following issues:
+ * Use-after-free in file transfer extension allows for potential code
+   execution (CVE-2018-15126)
+ * Multiple heap out-of-bound writes in VNC client code (Incomplete fix for
+   CVE-2018-20019) (CVE-2018-20748)
+ * Heap out-of-bounds write in rfbserver.c in
+   rfbProcessFileTransferReadBuffer() allows for potential code execution
+   (Incomplete fix for CVE-2018-15127) (CVE-2018-20749)
+ * Heap out-of-bounds write in rfbserver.c in
+   rfbProcessFileTransferReadBuffer() allows for potential code execution
+   (Incomplete fix for CVE-2018-15127) (CVE-2018-20750)
+bug: [48597]
+cve:
+- CVE-2018-15126
+- CVE-2018-20748
+- CVE-2018-20749
+- CVE-2018-20750
+- CVE-2018-20019
+- CVE-2018-15127
