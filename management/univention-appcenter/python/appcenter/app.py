@@ -478,6 +478,8 @@ class App(object):
 		version: Version of the App. Needs to be unique together with
 			with the *id*. Versions are compared against each other
 			using Python's LooseVersion (distutils).
+		install_permissions: Whether a license needs to be bought in order
+			to install the App.
 		logo: The file name of the logo of the App. It is used in the
 			App Center overview when all Apps are shown in a
 			gallery. As the gallery items are squared, the logo
@@ -808,6 +810,7 @@ class App(object):
 
 	name = AppAttribute(required=True, localisable=True)
 	version = AppAttribute(required=True)
+	install_permissions = AppBooleanAttribute(default=False)
 	description = AppAttribute(localisable=True)
 	long_description = AppAttribute(localisable=True)
 	thumbnails = AppListAttribute(localisable=True)
@@ -1235,6 +1238,18 @@ class App(object):
 			value = '[%s] %s' % (section, value)
 			ret.append(value)
 		return ret
+
+	@hard_requirement('install', 'upgrade')
+	def must_have_install_permissions(self):
+		'''To install this version of the App, a license needs to be bought.'''
+		if self.install_permissions:
+			if not self.app_has_been_bought():
+				return {'shopURL': self.shop_url, 'version': self.version}
+		return True
+
+	def app_has_been_bought(self):
+		# TODO: Check the license here.
+		return False
 
 	@hard_requirement('upgrade')
 	def must_have_fitting_app_version(self):

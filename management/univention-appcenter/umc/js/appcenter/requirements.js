@@ -94,6 +94,21 @@ define([
 				opts.appDetailsPage.standbyDuring(opts.appDetailsPage.switchToProgressBar(), opts.appDetailsPage._progressBar);
 			}
 		}),
+		must_have_install_permissions: new Requirement({
+			reasonDescription: function(details) {
+				return _('The installation of version %(version)s is not permitted without a valid license.', details);
+			},
+			solutionDescription: function() {
+				return _('Buy the App before the installation.');
+			},
+			solutionLabel: function() {
+				return _('Buy');
+			},
+			solution: function(opts, details) {
+				var shopURL = details.shopURL || _('https://appcenter.univention.com/');
+				window.open(shopURL);
+			}
+		}),
 		must_have_fitting_ucs_version: new Requirement({
 			reasonDescription: function(details) {
 				return _('The application requires UCS version %(required_version)s or later.', details);
