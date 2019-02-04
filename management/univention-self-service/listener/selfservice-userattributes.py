@@ -29,7 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
 import listener
 import subprocess
 import os.path
@@ -106,7 +106,7 @@ def handler(dn, new, old):
 				version_by_date = datetime.now().strftime('%Y%m%d%H%M%S.%f')
 
 				cmd = ["/usr/sbin/univention-self-service-register-acl", "%s" % ACL_FILE_PATH, "%s" % version_by_date]
-				subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+				subprocess.check_output(cmd, shell=False)
 
 			except subprocess.CalledProcessError as e:
 				ud.debug(ud.LISTENER, ud.ERROR, 'Error registering updated LDAP ACL!\n %s' % e.output)
