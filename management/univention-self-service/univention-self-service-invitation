@@ -41,6 +41,7 @@ import sys
 
 TRIGGER_DIR = '/var/cache/univention-directory-listener/selfservice-invitation'
 
+
 class Invitation(object):
 
 	def __init__(self):
@@ -72,7 +73,7 @@ class Invitation(object):
 
 		# activated?
 		if not self.ucr.is_true('umc/self-service/invitation/enabled', True):
-			self.logger.info('{} is disabled by UCRV umc/self-service/invitation/enabled'.format(prog))
+			self.logger.info('{} is disabled by UCRV umc/self-service/invitation/enabled'.format(self.prog))
 			sys.exit(0)
 
 		# ldap/umc connection
@@ -93,7 +94,7 @@ class Invitation(object):
 				self.logger.debug('user {} is valid'.format(username))
 				return True
 		self.logger.debug('user {} is NOT valid'.format(username))
-		return  False
+		return False
 
 	def check_trigger(self):
 		# check trigger dir for users and send token
@@ -113,6 +114,7 @@ class Invitation(object):
 				else:
 					self.logger.debug('ignore request and delete trigger file')
 					os.remove(filename)
+
 
 if __name__ == '__main__':
 	inv = Invitation()
