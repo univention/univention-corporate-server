@@ -564,8 +564,10 @@ check_kopano_repo () {
 			echo "ERROR: An external repository for the Kopano Apps is currently configured."
 			echo "       There are known issues when updating to UCS 4.3 and using software"
 			echo "       from the Kopano software repository."
-			echo "       The update is blocked while Kopano and Univention are working"
-			echo "       on a solution."
+			echo "       The update in the current package state is blocked."
+			echo "       To update UCS, update the system according to instructions"
+			echo "       from the Kopano4UCS integration website and restart the update."
+		   	echo "       https://wiki.z-hub.io/x/GgB3AQ"
 			if is_ucr_true update43/ignore_kopano_repo; then
 				echo "WARNING: update43/ignore_kopano_repo is set to true. Skipped as requested."
 			else
