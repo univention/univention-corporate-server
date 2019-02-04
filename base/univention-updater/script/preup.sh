@@ -656,7 +656,7 @@ check_and_downgrade_spamassassin_version ()
 			if is_ucr_true update43/override_spamassassin_downgrade; then
 				echo "WARNING: update43/override_spamassassin_downgrade is set to true. Skipped as requested."
 			else
-				apt-get install spamassassin=3.4.0-6 >>"$UPDATER_LOG" 2>&1
+				apt-get install --yes --force-yes spamassassin=3.4.0-6 >>"$UPDATER_LOG" 2>&1
 				ucr set repository/online/component/4.2-5-errata=false >>"$UPDATER_LOG" 2>&1
 			fi
 		fi
