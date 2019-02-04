@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: libreoffice
+fix: 1:5.2.7-1+deb9u5
+desc: |
+ This update addresses the following issue:
+ * Arbitrary python functions in arbitrary modules on the filesystem can be
+   executed without warning (CVE-2018-16858)
+bug: [48592]
+cve:
+- CVE-2018-16858
