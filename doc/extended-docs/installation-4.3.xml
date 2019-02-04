@@ -1333,10 +1333,12 @@ ln -s /usr/lib/PXELINUX/lpxelinux.0 \
 					</para>
 					<stepalternatives>
 						<step>
-							<para>
-								For <systemitem class="service">HTTP</systemitem> configure the absolute URL as the <property>boot filename</property>:
-							</para>
-							<programlisting language="sh">
+							<substeps>
+								<step>
+									<para>
+										For <systemitem class="service">HTTP</systemitem> configure the absolute URL as the <property>boot filename</property>:
+									</para>
+									<programlisting language="sh">
 HOST="$(hostname -f)"
 LDAP="$(ucr get ldap/base)"
 HTTP="http://$HOST/univention-client-boot/lpxelinux.0"
@@ -1344,7 +1346,26 @@ udm policies/dhcp_boot modify \
 	--dn "cn=default-settings,cn=boot,cn=dhcp,cn=policies,$LDAP" \
 	--set boot_filename="$HTTP" \
 	--set boot_server=
-							</programlisting>
+									</programlisting>
+								</step>
+								<step>
+									<para>
+										The installer performs its own second DHCP request.
+										This again retrievs the DHCP option <property>boot filename</property>, which now contains the <emphasis>URL</emphasis> to the PXE loader.
+										The installer wrongly interprets this as the URL for the profile <filename>preseed</filename>, which breaks the installation.
+										Therefor the option needs to be overwritten when the installer performs this second query:
+									</para>
+									<programlisting language="sh">
+STMT='if substring (option vendor-class-identifier, 0, 3) = "d-i" { filename ""; }'
+udm dhcp/subnet list |
+	sed -ne 's/^DN: //p' |
+	xargs -d '\n' -n1 udm dhcp/subnet modify \
+		--option options \
+		--append statements="$STMT" \
+		--dn
+									</programlisting>
+								</step>
+							</substeps>
 						</step>
 						<step>
 							<para>
