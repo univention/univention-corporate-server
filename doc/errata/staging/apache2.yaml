@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: apache2
+fix: 2.4.10-10+deb8u13A~4.2.5.201902040820
+desc: |
+ This update addresses the following issue:
+ * mod_session_cookie does not respect expiry time (CVE-2018-17199)
+bug: [48588]
+cve:
+- CVE-2018-17199
