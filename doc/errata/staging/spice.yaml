@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: spice
+fix: 0.12.5-1+deb8u7
+desc: |
+ This update addresses the following issue:
+ * Off-by-one error in array access in spice/server/memslot.c (CVE-2019-3813)
+bug: [48600]
+cve:
+- CVE-2019-3813
