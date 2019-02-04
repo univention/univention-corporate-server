@@ -1,0 +1,15 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: policykit-1
+fix: 0.105-15~deb8u4
+desc: |
+ This update addresses the following issues:
+ * Improper handling of user with uid > INT_MAX leading to authentication
+   bypass (CVE-2018-19788)
+ * Temporary auth hijacking via PID reuse and non-atomic fork (CVE-2019-6133)
+bug: [48599]
+cve:
+- CVE-2018-19788
+- CVE-2019-6133
