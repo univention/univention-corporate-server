@@ -1,3 +1,9 @@
+univention-nagios (12.0.1-4) unstable; urgency=low
+
+  * Bug #48603: Fix local root exploit
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 04 Feb 2019 15:32:45 +0100
+
 univention-nagios (12.0.1-3) unstable; urgency=low
 
   * Bug #48603: Fix local root exploit

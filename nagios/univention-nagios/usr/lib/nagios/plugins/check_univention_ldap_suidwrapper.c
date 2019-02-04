@@ -4,6 +4,10 @@
 
 static const char COMMAND[] = "/usr/lib/nagios/plugins/check_univention_ldap";
 
+static char *suid_envp[] = {
+	NULL
+};
+
 int main(int argc, char **argv, char **envp)
 {
 	if (setgid(getegid())) {
@@ -14,7 +18,7 @@ int main(int argc, char **argv, char **envp)
 		perror("setuid");
 		return EXIT_FAILURE;
 	}
-	execle(COMMAND, COMMAND, NULL, NULL);
+	execle(COMMAND, COMMAND, NULL, suid_envp);
 	perror("execle");
 	return EXIT_FAILURE;
 }
