@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.1-21) unstable; urgency=low
+
+  * Bug #48427: Use UDN protocol version 3
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 24 Jan 2019 15:58:10 +0100
+
 univention-management-console-module-diagnostic (4.0.1-20) unstable; urgency=medium
 
   * Bug #48477: fixed 44_well_known_sid_check.py

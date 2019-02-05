@@ -1,3 +1,9 @@
+univention-directory-listener (12.0.0-34) unstable; urgency=low
+
+  * Bug #48427: Implement Univention Directory Notifier protocol version 3
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 12 Jan 2019 06:50:12 +0100
+
 univention-directory-listener (12.0.0-33) unstable; urgency=low
 
   * Bug #48030: Never chose LDAP server different from UDN.

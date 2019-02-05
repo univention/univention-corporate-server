@@ -4,7 +4,7 @@
 # Univention Directory Listener
 """Read the notifier id from the DC master"""
 #
-# Copyright 2004-2018 Univention GmbH
+# Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -75,9 +75,9 @@ def main():
 	"""Retrive current Univention Directory Notifier transaction ID."""
 	options = parse_args()
 	try:
-		sock = socket.create_connection((options.master, 6669))
+		sock = socket.create_connection((options.master, 6669), 60.0)
 
-		sock.send('Version: 2\nCapabilities: \n\n')
+		sock.send('Version: 3\nCapabilities: \n\n')
 		sock.recv(100)
 
 		sock.send('MSGID: 1\n%s\n\n' % (options.cmd,))

@@ -1,3 +1,9 @@
+ucs-test (8.0.28-261) unstable; urgency=low
+
+  * Bug #48427: Use UDN protocol version 3
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 05 Feb 2019 11:30:33 +0100
+
 ucs-test (8.0.28-260) unstable; urgency=medium
 
   * Bug #48344: fixes 80_docker/30_installed

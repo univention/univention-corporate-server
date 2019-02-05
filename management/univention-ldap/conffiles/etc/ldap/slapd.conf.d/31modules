@@ -1,0 +1,20 @@
+modulepath	/usr/lib/ldap
+@!@
+import sys
+IS_64BITS = sys.maxsize > 2**32
+for typ in set((configRegistry.get('ldap/database/type'), "mdb" if IS_64BITS else "bdb")):
+	print "moduleload\tback_%s.so" % (typ,)
+
+if configRegistry.get('ldap/translogfile'):
+	print "moduleload\ttranslog.so"
+if configRegistry.is_true('ldap/k5pwd', True):
+	print "moduleload\tk5pwd.so"
+if configRegistry.is_true('ldap/pwd_scheme_kinit', True):
+	print "moduleload\tpwd_scheme_kinit.so"
+if configRegistry.get('ldap/database/type') == "mdb" and configRegistry.is_true('ldap/ppolicy', False):
+	print "moduleload\tppolicy.so"
+if configRegistry.is_true('ldap/shadowbind', True):
+	print 'moduleload\tshadowbind.so'
+@!@
+moduleload	constraint.so
+moduleload	accesslog.so

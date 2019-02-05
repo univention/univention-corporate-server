@@ -3,7 +3,7 @@
 # Univention LDAP Server
 #  join script
 #
-# Copyright 2001-2018 Univention GmbH
+# Copyright 2001-2019 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -111,6 +111,7 @@ then
 	test -x /usr/sbin/nscd && /usr/sbin/nscd -i passwd
 	test -x /usr/sbin/nscd && /usr/sbin/nscd -i group
 fi
+/usr/share/univention-ldap/setup-translog db "$@"
 
 service slapd start
 

@@ -4,7 +4,7 @@
 # Univention Directory Listener
 """Resync objects from master to local LDAP database"""
 #
-# Copyright 2004-2018 Univention GmbH
+# Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/
 #

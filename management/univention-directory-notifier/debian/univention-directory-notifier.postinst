@@ -3,7 +3,7 @@
 # Univention Directory Notifier
 #  postinst
 #
-# Copyright 2004-2018 Univention GmbH
+# Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -102,18 +102,35 @@ ucr set security/packetfilter/package/univention-directory-notifier/tcp/6669/all
 call_joinscript 02univention-directory-notifier.inst
 
 if [ -h /etc/runit/univention/univention-ldap-notifier ]; then
-	ln -sf /etc/runit/univention-directory-notifier /etc/runit/univention/univention-directory-notifier
+	ln -snf /etc/runit/univention-directory-notifier /etc/runit/univention/univention-directory-notifier
     rm /etc/runit/univention/univention-ldap-notifier
 fi
 
-if [ "$1" = "configure" -a -n "$2" ]; then
-	if dpkg --compare-versions "$2" lt 6.0.8-1; then
-		/etc/init.d/univention-directory-notifier restart || true
-	else
-		/etc/init.d/univention-directory-notifier crestart || true
+if [ "$1" = "configure" ]
+then
+	if [ -z "${2:-}" ]
+	then  # new installation
+		ucr set notifier/protocol/version?2
+		/etc/init.d/univention-directory-notifier restart || :
+	else  # upgrade
+		ucr set notifier/protocol/version?2
+
+		if [ -f /var/univention-join/joined ] &&
+			[ -s /var/lib/univention-ldap/notify/transaction ] &&
+			dpkg --compare-versions "$2" lt-nl 12.0.1-3
+		then
+			if /etc/init.d/univention-directory-notifier status >/dev/null
+			then
+				/etc/init.d/univention-directory-notifier stop
+				/usr/share/univention-directory-notifier/univention-translog --lenient import
+				/etc/init.d/univention-directory-notifier start
+			else
+				/usr/share/univention-directory-notifier/univention-translog --lenient import
+			fi
+		else
+			/etc/init.d/univention-directory-notifier crestart || :
+		fi
 	fi
-elif [ "$1" = "configure" ]; then
-	/etc/init.d/univention-directory-notifier restart || true
 fi
 
 exit 0

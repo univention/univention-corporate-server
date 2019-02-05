@@ -1,7 +1,7 @@
 /*
  * Univention Directory Notifier
  *
- * Copyright 2004-2018 Univention GmbH
+ * Copyright 2004-2019 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -66,6 +66,10 @@ extern int get_listener_callback ();
 extern void unset_replog_callback ();
 extern void unset_schema_callback ();
 extern void unset_listener_callback ();
+
+extern NotifyId_t notify_last_id;
+
+enum network_protocol network_procotol_version = PROTOCOL_2;
 
 int network_create_socket( int port )
 {
@@ -149,6 +153,7 @@ int network_client_add ( int fd, callback_handler handler, int notify, int old_p
 		tmp->next = NULL;
 
 	}
+	tmp->version = PROTOCOL_UNKNOWN;
 
 	return 0;
 }
@@ -474,9 +479,19 @@ int network_client_all_write ( unsigned long id, char *buf, long l_buf)
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d\n",tmp->fd);
 			if ( tmp->next_id == id ) {
 				memset(string, 0, 8192 );
+				switch (tmp->version) {
+					case PROTOCOL_2:
 				sprintf(string,"MSGID: %ld\n",tmp->msg_id);
 				strncat(string,buf, l_buf);
 				strcat(string,"\n");
+						break;
+					case PROTOCOL_3:
+						snprintf(string, sizeof(string), "MSGID: %ld\n%ld\n\n", tmp->msg_id, notify_last_id.id);
+						break;
+					default:
+						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "v%d not implemented fd=%d", tmp->version, tmp->fd);
+						continue;
+				}
 				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d[%s]\n",tmp->fd, string);
 				rc = write(tmp->fd, string, strlen(string) );
 				//rc = write(tmp->fd, buf, l_buf );

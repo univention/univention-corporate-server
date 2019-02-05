@@ -1,3 +1,9 @@
+univention-join (10.0.0-26) unstable; urgency=low
+
+  * Bug #48427: Copy cn=translog database to Backup while joining.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 22 Jan 2019 15:05:28 +0100
+
 univention-join (10.0.0-25) unstable; urgency=medium
 
   * Bug #30005: Stop trying to download host certificate during join

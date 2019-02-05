@@ -3,7 +3,7 @@
 # Restart the Directory Listener after an interface was stopped.
 #  See https://forge.univention.org/bugzilla/show_bug.cgi?id=30408
 #
-# Copyright 2013-2018 Univention GmbH
+# Copyright 2013-2019 Univention GmbH
 #
 # http://www.univention.de/
 #

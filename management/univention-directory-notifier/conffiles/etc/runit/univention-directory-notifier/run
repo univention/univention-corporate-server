@@ -1,7 +1,7 @@
 #!/bin/sh -e
 @%@UCRWARNING=# @%@
 #
-# Copyright 2004-2018 Univention GmbH
+# Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -56,7 +56,11 @@ fi
 if [ -n "$notifier_lock_time" ]; then
 	options="$options -T $notifier_lock_time"
 fi
+if [ -n "$notifier_protocol_version" ]; then
+	options="$options -v $notifier_protocol_version"
+fi
 
+# run in foreground
 options="$options -F"
 
 exec /usr/sbin/univention-directory-notifier $options >>/var/log/univention/notifier.log 2>&1
