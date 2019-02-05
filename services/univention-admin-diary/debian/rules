@@ -30,15 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-ADMINDIARY_PKG_NAME := python-univention-admin-diary
-ADMINDIARY_MO_FILE := python/admindiary/de.mo
-ADMINDIARY_DST_DIR := debian/$(ADMINDIARY_PKG_NAME)
-GERMAN_LC_MSG_DIR := /usr/share/locale/de/LC_MESSAGES
-ADMINDIARY_LC_MSG_DIR := $(ADMINDIARY_DST_DIR)$(GERMAN_LC_MSG_DIR)
-
-%.mo:	%.po
-	msgfmt --check -o $@ $<
-
 override_dh_auto_test:
 	ucslint
 	dh_auto_test
@@ -48,11 +39,8 @@ override_dh_auto_install:
 	univention-install-joinscript
 	dh-umc-module-install
 	dh_auto_install
-	install -d $(ADMINDIARY_LC_MSG_DIR)
-	install -m 644 $(ADMINDIARY_MO_FILE) \
-		$(ADMINDIARY_LC_MSG_DIR)/univention-admindiary.mo
 
-override_dh_auto_build: $(ADMINDIARY_MO_FILE)
+override_dh_auto_build:
 	dh-umc-module-build
 	dh_auto_build
 

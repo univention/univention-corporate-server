@@ -67,15 +67,37 @@ def cursor(module):
 if ucr.get('admin/diary/dbms') == 'postgresql':
 	import psycopg2
 
+	def _postgresql_add_with_cursor(entry, cur):
+		if entry.event_name == 'COMMENT':
+			entry_message = entry.message.get('en')
+			event_id = None
+		else:
+			get_logger().debug('Searching for Event %s' % entry.event_name)
+			entry_message = None
+			cur.execute("INSERT INTO events (name) VALUES (%s) ON CONFLICT DO NOTHING", (entry.event_name,))
+			cur.execute("SELECT id FROM events WHERE name = %s", (entry.event_name,))
+			event_id = cur.fetchone()[0]
+			get_logger().debug('Found Event ID %s' % event_id)
+			if entry.message:
+				for locale, message in entry.message.iteritems():
+					get_logger().debug('Trying to insert message for %s' % locale)
+					cur.execute("SELECT * FROM event_message_translations WHERE event_id = %s AND locale = %s", (event_id, locale))
+					if not cur.fetchone():
+						get_logger().debug('Found no existing one. Inserting %r' % message)
+						cur.execute("INSERT INTO event_message_translations (event_id, locale, locked, message) VALUES (%s, %s, FALSE, %s)", (event_id, locale, message))
+			else:
+				get_logger().debug('No further message given, though')
+		cur.execute("INSERT INTO entries (username, hostname, message, args, timestamp, tags, context_id, event_id, main_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, (SELECT MIN(id) FROM entries WHERE context_id = %s))", (entry.username, entry.hostname, entry_message, entry.args, entry.timestamp, entry.tags, entry.context_id, event_id, entry.context_id))
+		get_logger().info('Successfully added %s to postgresql. (%s)' % (entry.context_id, entry.event_name))
+
 	def _postgresql_add(entry):
 		with cursor(psycopg2) as cur:
-			cur.execute("INSERT INTO entries (username, hostname, message, args, timestamp, tags, context_id, event_name) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (entry.username, entry.hostname, entry.message, entry.args, entry.timestamp, entry.tags, entry.context_id, entry.event_name))
-		get_logger().info('Successfully added %s to postgresql. (%s)' % (entry.context_id, entry.event_name))
+			_postgresql_add_with_cursor(entry, cur)
 
 	def _postgresql_query():
 		with cursor(psycopg2) as cur:
-			args = ['id', 'username', 'hostname', 'message', 'args', 'timestamp', 'tags', 'context_id', 'event_name']
-			cur.execute("SELECT %s FROM entries" % ', '.join(args))
+			args = ['id', 'username', 'hostname', 'message', 'args', 'timestamp', 'tags', 'context_id', 'event_name', 'amendments']
+			cur.execute("SELECT %s, ev.name, (SELECT COUNT(e2.*) FROM entries e2 WHERE e2.main_id = e.id) as amendments FROM entries e INNER JOIN events ev ON ev.id = e.event_id WHERE e.main_id IS NULL" % ', '.join(['e.%s' % a for a in args[:-2]]))
 			rows = cur.fetchall()
 			res = [dict(zip(args, row)) for row in rows]
 			for row in res:
@@ -84,8 +106,34 @@ if ucr.get('admin/diary/dbms') == 'postgresql':
 						row[k] = v.isoformat()
 			return res
 
+	def _postgresql_get(context_id):
+		with cursor(psycopg2) as cur:
+			args = ['id', 'username', 'hostname', 'message', 'args', 'timestamp', 'tags', 'context_id', 'event_name']
+			cur.execute("SELECT %s, ev.name FROM entries e INNER JOIN events ev ON ev.id = e.event_id WHERE e.context_id = %%s" % ', '.join(['e.%s' % a for a in args[:-1]]), (context_id,))
+			rows = cur.fetchall()
+			res = [dict(zip(args, row)) for row in rows]
+			for row in res:
+				for k, v in row.items():
+					if isinstance(v, datetime.datetime):
+						row[k] = v.isoformat()
+			return res
+
+	def _postgresql_translate(event_name, locale):
+		key = (event_name, locale)
+		if key not in _postgresql_translate._cache:
+			with cursor(psycopg2) as cur:
+				cur.execute("SELECT et.message FROM event_message_translations et INNER JOIN events ev ON ev.id = et.event_id WHERE ev.name = %s AND et.locale = %s", (event_name, locale))
+				translation = cur.fetchone()[0]
+				_postgresql_translate._cache[key] = translation
+		else:
+			translation = _postgresql_translate._cache[key]
+		return translation
+	_postgresql_translate._cache = {}
+
 	add = _postgresql_add
 	query = _postgresql_query
+	get = _postgresql_get
+	translate = _postgresql_translate
 elif ucr.get('admin/diary/dbms') == 'mysql':
 	import MySQLdb
 
@@ -122,6 +170,12 @@ else:
 		raise NotImplementedError()
 	def _no_query():
 		raise NotImplementedError()
+	def _no_get():
+		raise NotImplementedError()
+	def _no_translate():
+		raise NotImplementedError()
 
 	add = _no_add
 	query = _no_query
+	get = _no_get
+	translate = _no_translate

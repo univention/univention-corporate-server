@@ -1,3 +1,4 @@
 python/admindiary/backend.py usr/share/pyshared/univention/admindiary/
 setup-dbms /usr/share/univention-admin-diary/
+sql/*.sql /usr/share/univention-admin-diary/sql/
 admindiary_backend_wrapper.py usr/share/univention-admin-diary/

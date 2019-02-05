@@ -8,5 +8,6 @@
 			<category name="system"/>
 		</categories>
 		<command name="admindiary/query" function="query" />
+		<command name="admindiary/get" function="get" />
 	</module>
 </umc>

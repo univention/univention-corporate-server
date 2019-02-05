@@ -34,19 +34,7 @@ if [ "$db_backend" = "postgresql" ]; then
 	su postgres -c "createuser -DRS --login admindiary"
 	su postgres -c "createdb -O admindiary -T template0 -E UTF8 admindiary"
 	su postgres -c "psql postgres -c \"ALTER ROLE \\\"admindiary\\\" WITH ENCRYPTED PASSWORD '$PASSWORD'\""
-	su postgres -c "psql admindiary -c 'CREATE TABLE IF NOT EXISTS entries (
-		id SERIAL PRIMARY KEY,
-		username VARCHAR NOT NULL,
-		hostname VARCHAR NOT NULL,
-		message TEXT NOT NULL,
-		args VARCHAR[],
-		timestamp TIMESTAMPTZ NOT NULL,
-		tags VARCHAR[],
-		context_id VARCHAR NOT NULL,
-		event_name VARCHAR NOT NULL,
-		created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-	);
-	ALTER TABLE entries OWNER TO admindiary;'"
+	su postgres -c "psql admindiary -f /usr/share/univention-admin-diary/sql/postgresql.sql"
 elif [ "$db_backend" = "mysql" ]; then
 	echo "CREATE DATABASE IF NOT EXISTS admindiary" | mysql -p$(cat /etc/mysql.secret)
 	echo "GRANT ALL ON admindiary.* TO 'admindiary'@'localhost' IDENTIFIED BY '$PASSWORD'" | mysql -p$(cat /etc/mysql.secret)
