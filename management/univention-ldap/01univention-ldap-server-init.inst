@@ -111,7 +111,7 @@ then
 	test -x /usr/sbin/nscd && /usr/sbin/nscd -i passwd
 	test -x /usr/sbin/nscd && /usr/sbin/nscd -i group
 fi
-/usr/share/univention-ldap/setup-translog db "$@"
+/usr/share/univention-ldap/setup-translog init "$@"
 
 service slapd start
 

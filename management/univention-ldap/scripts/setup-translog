@@ -28,17 +28,28 @@
 # <http://www.gnu.org/licenses/>.
 set -e -u
 
+TRANSLOG='/var/lib/univention-ldap/translog'
+
 main () {
-    local action="${1?-Missing action}"
+    local db action="${1?-Missing action}"
     shift
+
+    case "$(dpkg --print-architecture)" in
+    i386) db="$TRANSLOG/id2entry.bdb" ;;
+    amd64|*) db="$TRANSLOG/data.mdb" ;;
+    esac
+
     case "$action" in
+    init)
+        wrap setup_db ${1:+"$@"}
+        ;;
+    check)
+        [ -f "$db" ]
+        ;;
     db)
-        setup_db
+        echo "$db"
         ;;
-    all)
-        setup_db
-        ;;
-    help)
+    help|--help|-h)
         usage 0
         ;;
     *)
@@ -53,40 +64,57 @@ die () {
 }
 
 usage () {
-    echo "Usage: ${0##*/} { db | all | help } [options]"
+    echo "Usage: ${0##*/} { init [--force] | check | db | help }"
+    trap EXIT
     exit "${1:-0}"
 }
 
 setup_db () {
-    local db
-
-    case "$(dpkg --print-architecture)" in
-    i386) db="id2entry.bdb" ;;
-    amd64|*) db="data.mdb" ;;
-    esac
-    [ -f "/var/lib/univention-ldap/translog/$db" ] ||
-        slapadd -f /etc/ldap/slapd.conf -b cn=translog -l /usr/share/univention-ldap/translog.ldif
+    while [ $# -ge 1 ]
+    do
+        case "$1" in
+        --force)
+            rm -rf "$TRANSLOG"
+            ;;
+        esac
+        shift
+    done
+    [ -s "$db" ] &&
+        return 0
+    install -o openldap -g openldap -d "$TRANSLOG"
+    slapadd -f /etc/ldap/slapd.conf -b cn=translog -l /usr/share/univention-ldap/translog.ldif
+    chown -R -h openldap: "$TRANSLOG"
 }
 
+check_db () {
+    [ -s "$db" ]
+}
+
+wrap () {
+    tmp="$(mktemp)"
+    trap cleanup EXIT
+    echo "[$(date --rfc-3339=s)] $$ $0 $*" >"$tmp"
+    "$@" >"$tmp" 2>&1
+}
 
 cleanup () {
     local rc=$?
-    if [ "$rc" -ne 0 ] && [ -t 2 ]
+    if [ "$rc" -ne 0 ]
     then
         set +e +u
-        echo "[$(date --rfc-3339=s)] $$ $0 $*"
         ps axf
-        grep -i -n -e 'translog' -e '^[^#]' /etc/ldap/slapd.conf /var/lib/univention-ldap/schema.conf
+        grep -i -n -e 'translog' -e '^[^#]' /etc/ldap/slapd.conf
         ls -l /var/lib/univention-ldap/translog/ /var/univention-join/
         cat /var/univention-join/status
-    fi
+    fi >>"$tmp"
+    cat "$tmp" >>/var/log/univention/join.log
+    [ -t 2 ] && cat "$tmp"
+    rm -f "$tmp"
     return "$rc"
 }
-trap cleanup EXIT
 
 main ${1:+"$@"}
 :
 
 # Constraints
 # * DB must be created before slapd can start
-# * SCHEMA must be registered before UDN should start
