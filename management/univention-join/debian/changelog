@@ -1,3 +1,9 @@
+univention-join (10.0.0-27) unstable; urgency=low
+
+  * Bug #48427: Force remove translog on re-join
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 05 Feb 2019 13:56:34 +0100
+
 univention-join (10.0.0-26) unstable; urgency=low
 
   * Bug #48427: Copy cn=translog database to Backup while joining.

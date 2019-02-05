@@ -252,17 +252,11 @@ run_join_scripts () {
 						rm -f /var/lib/univention-ldap/notify/transaction.index
 
 						/etc/init.d/slapd stop >>/var/log/univention/join.log 2>&1
-						TRANSLOG='/var/lib/univention-ldap/translog/'
-						case "$(dpkg --print-architecture)" in
-						i386) db="id2entry.bdb" ;;
-						amd64|*) db="data.mdb" ;;
-						esac
-						rm -f "$TRANSLOG"*
-						/usr/share/univention-ldap/setup-translog db
+						/usr/share/univention-ldap/setup-translog init --force
 						/etc/init.d/slapd start >>/var/log/univention/join.log 2>&1
 						/usr/share/univention-directory-notifier/univention-translog --lenient import --index &&
-							[ -e "$TRANSLOG$db" ] ||
-							failed_message " FAILED: failed to copy $TRANSLOG$db from the dc master. Please try again"
+							/usr/share/univention-ldap/setup-translog check ||
+							failed_message " FAILED: failed to setup $(/usr/share/univention-ldap/setup-translog db). Please try again."
 					fi
 
 					# slave 
