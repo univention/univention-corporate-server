@@ -219,7 +219,7 @@ define([
 		// disable these items again
 		_disabledIDs: null,
 
-		_selectionChangeTimeout: null,
+		_selectionChangedTimeout: null,
 
 		// internal adapter to the module store
 		_store: null,
@@ -413,8 +413,12 @@ define([
 			// register event handler
 			//
 
-			this._grid.on('dgrid-select', lang.hitch(this, '_selectionChanged', true));
-			this._grid.on('dgrid-deselect', lang.hitch(this, '_selectionChanged', false));
+			this._grid.on('dgrid-select', lang.hitch(this, '_selectionChanged'));
+			this._grid.on('dgrid-deselect', lang.hitch(this, '_selectionChanged'));
+
+			// if the row that is deselected is no longer in the dom (which happens when scrolling due to
+			// 'farOffRemoval' from OnDemandList) the 'dgrid-deselect' event is not fired
+			aspect.after(this._grid, 'clearSelection', lang.hitch(this, '_selectionChanged'));
 
 			this._grid.on(".dgrid-row:contextmenu", lang.hitch(this, '_updateContextItem'));
 
@@ -1004,14 +1008,15 @@ define([
 		},
 
 		_selectionChanged: function() {
-			if (this._selectionChangeTimeout) {
-				clearTimeout(this._selectionChangeTimeout);
+			if (this._selectionChangedTimeout) {
+				clearTimeout(this._selectionChangedTimeout);
 			}
 
-			this._selectionChangeTimeout = setTimeout(lang.hitch(this, function() {
+			this._selectionChangedTimeout = setTimeout(lang.hitch(this, function() {
 				this._updateContextActions();
-
 				this._updateFooterContent();
+
+				this._selectionChangedTimeout = null;
 			}), 50);
 		},
 
