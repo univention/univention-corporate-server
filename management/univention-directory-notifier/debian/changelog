@@ -1,3 +1,9 @@
+univention-directory-notifier (12.0.1-7) unstable; urgency=medium
+
+  * Bug #41262: improve univention-replicate-many
+
+ -- Jannik Ahlers <ahlers@univention.de>  Tue, 05 Feb 2019 17:22:12 +0100
+
 univention-directory-notifier (12.0.1-6) unstable; urgency=low
 
   * Bug #48427: Skip invalid transactions
