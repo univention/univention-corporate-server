@@ -34,7 +34,7 @@ from sys import stderr
 from argparse import ArgumentParser, ArgumentTypeError
 from collections import namedtuple
 from logging import basicConfig, getLogger, CRITICAL, DEBUG
-from time import strftime
+from time import strftime, time
 from ctypes import c_bool, c_ulong, sizeof, Structure
 from errno import ENOENT
 from contextlib import contextmanager
@@ -448,6 +448,8 @@ def import_all(opt):
             rec = translog.read(offset)
             lead = [rec]
 
+        t_begin = t_last = time()
+        count = end - start
         for rec in chain(lead, translog):
             if rec.tid < start:
                 continue
@@ -456,6 +458,20 @@ def import_all(opt):
 
             add_transaction(opt, ld, rec)
 
+            if stderr.isatty():
+                t_now = time()
+                if t_now - t_last >= 5.0:
+                    p_done = float(rec.tid - start) / count
+                    t_used = t_now - t_begin
+                    stderr.write('\rprocessed {:d} of {:d} [{:.1f}%] in {:.1f}s, {:d} remaining in {:.1f}s  \r'.format(
+                        rec.tid - start,
+                        count,
+                        p_done * 100.0,
+                        t_used,
+                        end - rec.tid,
+                        t_used / p_done - t_used,
+                    ))
+                    t_last = t_now
 
 def load_single(opt):
     # type: (Namespace) -> None
@@ -528,13 +544,13 @@ def add_transaction(opt, ld, rec):
         log.debug("ldap_add(%s)", dn)
         if not opt.dry_run:
             ld.add_ext_s(dn, modlist)
-    except ldap.ALREADY_EXISTS as ex:
+    except (ldap.ALREADY_EXISTS, ldap.INVALID_SYNTAX) as ex:
         if not opt.lenient:
-            log.critical("ldap_add(%s): %s", dn, ex.args[0]["desc"])
+            log.critical("ldap_add(%s): %s %s", rec, ex.args[0]["desc"])
             raise Abort()
-        log.error("ldap_add(%s): %s", dn, ex.args[0]["desc"])
+        log.error("ldap_add(%s): %s %s", rec, ex.args[0]["desc"])
     except ldap.LDAPError as ex:
-        log.critical("ldap_add(%s): %s", dn, ex)
+        log.critical("ldap_add(%s): %s %s", rec, ex)
         raise Abort()
 
 
@@ -561,7 +577,7 @@ def parse_args(args=None):
     import_amount = parser_import.add_argument_group("minimum", description="Amount of transactions to import")
     import_amount.add_argument("--count", "-c", action="store", type=parse_count, help="Minimum number of transaction [%(default)s]", default=100000)
     import_amount.add_argument("--percent", "-p", action="store", type=parse_percent, help="Minimum percentage of transaction file [%(default)s%%]", default="10")
-    import_amount.add_argument("--size", "-s", action="store", type=parse_size, help="Minimum number of bytes from transaction file [%(default)s]", default="100M")
+    import_amount.add_argument("--size", "-s", action="store", type=parse_size, help="Minimum number of bytes from transaction file [%(default)s]", default="10M")
     import_limit = parser_import.add_argument_group("limit", description="Limit transactions to process")
     import_limit.add_argument("--min", "-m", action="store", type=parse_count, help="First transaction ID to process [%(default)s]", default=1)
     import_limit.add_argument("--max", "-M", action="store", type=parse_count, help="Last transaction ID to process")

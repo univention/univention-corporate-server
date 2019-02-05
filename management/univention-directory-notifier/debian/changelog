@@ -1,3 +1,9 @@
+univention-directory-notifier (12.0.1-5) unstable; urgency=low
+
+  * Bug #48427: Skip invalid transactions
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 05 Feb 2019 15:35:33 +0100
+
 univention-directory-notifier (12.0.1-4) unstable; urgency=low
 
   * Bug #48427: Implement Univention Directory Notifier protocol version 3
