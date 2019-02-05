@@ -441,7 +441,7 @@ define([
 				// in case we have policies that apply to the current object, we need an extra
 				// sub tab that groups all policies together
 				this._policiesTab = new _StandbyPage({
-					title: _('[Policies]'),
+					title: _('Policies'),
 					noFooter: true,
 					headerText: _('Properties inherited from policies'),
 					helpText: _('List of all object properties that are inherited by policies. The values cannot be edited directly. By clicking on "Create new policy", a new tab with a new policy will be opened. If an attribute is already set, the corresponding policy can be edited in a new tab by clicking on the "edit" link.')
@@ -738,7 +738,7 @@ define([
 			// parse the layout configuration... we would like to group all groups of advanced
 			// settings on a special sub tab
 			var advancedGroup = {
-				label: _('[Advanced settings]'),
+				label: _('Advanced settings'),
 				description: _('Advanced settings'),
 				layout: []
 			};
@@ -912,7 +912,7 @@ define([
 			var option_values = {};
 			if ( option_prop && option_prop.widgets.length > 0 && !this._multiEdit) {
 				var optiontab = {
-					label: _('[Options]'),
+					label: _('Options'),
 					description: _('Options describing the basic features of the LDAP object'),
 					layout: [ '$options$' ]
 				};

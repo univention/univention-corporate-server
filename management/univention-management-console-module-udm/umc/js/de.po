@@ -1957,17 +1957,9 @@ msgstr ""
 "Sie verwenden eine GPL Lizenz, die zu keinem Anspruch auf Support oder "
 "Maintenance-Unterstützung berechtigt."
 
-#: umc/js/udm/DetailPage.js:740
-msgid "[Advanced settings]"
-msgstr "[Erweiterte Einstellungen]"
-
 #: umc/js/udm/DetailPage.js:914
-msgid "[Options]"
-msgstr "[Optionen]"
-
-#: umc/js/udm/DetailPage.js:442
-msgid "[Policies]"
-msgstr "[Richtlinien]"
+msgid "Options"
+msgstr "Optionen"
 
 #: umc/js/udm/wizards/FirstPageWizard.js:473
 msgid "computer"
