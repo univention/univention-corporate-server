@@ -1,3 +1,9 @@
+univention-directory-notifier (13.0.1-3) unstable; urgency=medium
+
+  * Bug #41262: make sure univention-replicate-many gets installed into /sbin
+
+ -- Jannik Ahlers <ahlers@univention.de>  Tue, 05 Feb 2019 12:34:09 +0100
+
 univention-directory-notifier (13.0.1-2) unstable; urgency=medium
 
   * Bug #41262: Include new script univention-replicate-many
