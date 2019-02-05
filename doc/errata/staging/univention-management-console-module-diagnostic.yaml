@@ -10,4 +10,4 @@ desc: |
    execute the diagnostic checks.
  * Fixed error in "Check well known SIDs" system diagnostic test.
  * Use new Univention Directory Notifier Protocol Version 3 for check.
-bug: [47650, 48477, 48427]
+bug: [47650, 48477, 48615]
