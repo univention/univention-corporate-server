@@ -94,10 +94,16 @@ class DiaryEntry(object):
 			raise TypeError('Username has to be "string"')
 		if not isinstance(self.hostname, basestring):
 			raise TypeError('Hostname has to be "string"')
-		if not isinstance(self.message, basestring):
-			raise TypeError('Message has to be "string"')
 		if not isinstance(self.args, list) or not all(isinstance(arg, basestring) for arg in self.args):
 			raise TypeError('Args have to be "list of string"')
+		if self.message is not None:
+			if not isinstance(self.message, dict) or not all(isinstance(key, basestring) and isinstance(value, basestring) for key, value in self.message.iteritems()):
+				raise TypeError('Message has to be "dict of string/string"')
+			for locale, message in self.message.iteritems():
+				try:
+					message.format(*self.args)
+				except:
+					raise TypeError('Message (%s, %r) has wrong format for given args (%r).', locale, message, self.args)
 		if not isinstance(self.timestamp, datetime):
 			raise TypeError('timestamp has to be "datetime"')
 		if not isinstance(self.tags, list) or not all(isinstance(tag, basestring) for tag in self.tags):

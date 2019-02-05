@@ -72,10 +72,6 @@ def add_comment(message, context_id, username=None):
 @exceptionlogging
 def write_event(event, args=None, username=None, context_id=None):
 	args = args or []
-	if not isinstance(args, (list, tuple)):
-		raise TypeError('"args" must be a list')
-	if len(args) != len(event.args):
-		raise ValueError('Writing "%s" needs %d argument(s) (%s). %d given' % (event.message, len(event.args), ', '.join(event.args), len(args)))
 	return write(event.message, args, username, event.tags, context_id, event.name)
 
 
@@ -97,6 +93,7 @@ def write(message, args=None, username=None, tags=None, context_id=None, event_n
 
 @exceptionlogging
 def write_entry(entry):
+	entry.assert_types()
 	body = entry.to_json()
 	emitter.emit(body)
 	get_logger().info('Successfully wrote %s. (%s)' % (entry.context_id, entry.event_name))

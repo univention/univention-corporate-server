@@ -31,42 +31,52 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.management.console import Translation
-import univention.lib.i18n
 from univention.management.console.base import Base
 from univention.management.console.modules.decorators import simple_response, sanitize
 from univention.management.console.modules.sanitizers import PatternSanitizer
 
-from univention.admindiary.events import Event
-from univention.admindiary.backend import query
-
-_ = Translation('univention-management-console-module-admindiary').translate
-event_translate = univention.lib.i18n.Translation('univention-admindiary').translate
+from univention.admindiary.backend import query, get, translate
 
 
 class Instance(Base):
+	def _format_entry(self, entry):
+		message = entry['message']
+		if entry['event_name'] != 'COMMENT':
+			message = translate(entry['event_name'], self.locale.locale)
+		try:
+			message = message.format(*entry['args'])
+		except (AttributeError, IndexError, KeyError):
+			if entry['args']:
+				message = '%s (%s)' % (message, ', '.join(entry['args']))
+		res_entry = {
+			'id': entry['id'],
+			'date': entry['timestamp'],
+			'event': entry['event_name'],
+			'source': entry['hostname'],
+			'author': entry['username'],
+			'context_id': entry['context_id'],
+			'message': message,
+			'tags': entry['tags'],
+		}
+		if 'amendments' in entry:
+			res_entry['amendments'] = entry['amendments']
+		return res_entry
+
+	@simple_response
+	def get(self, context_id):
+		result = []
+		entries = get(context_id)
+		for entry in entries:
+			res_entry = self._format_entry(entry)
+			result.append(res_entry)
+		return sorted(result, key=lambda x: x['id'])
+
 	@sanitize(pattern=PatternSanitizer(default='.*'))
 	@simple_response
 	def query(self, pattern):
-		result = {}
+		result = []
 		entries = query()
 		for entry in entries:
-			if entry['context_id'] in result:
-				result[entry['context_id']]['amendments'] = True
-			else:
-				message = entry['message']
-				event = Event.get(entry['event_name'])
-				if event:
-					message = event_translate(event.message)
-				try:
-					message = message % tuple(entry['args'])
-				except TypeError:
-					if entry['args']:
-						message = '%s (%s)' % (message, ', '.join(entry['args']))
-				res_entry = {
-					'date': entry['timestamp'],
-					'message': message,
-					'amendments': False,
-				}
-				result[entry['context_id']] = res_entry
-		return sorted(result.values(), key=lambda x: x['date'])
+			res_entry = self._format_entry(entry)
+			result.append(res_entry)
+		return sorted(result, key=lambda x: x['date'])

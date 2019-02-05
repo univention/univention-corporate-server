@@ -101,4 +101,8 @@ def stdin_to_storage():
 
 
 if __name__ == "__main__":
-	stdin_to_storage()
+	try:
+		stdin_to_storage()
+	except Exception as exc:
+		get_logger().error('Processing entry failed! %s' % (exc,))
+		raise

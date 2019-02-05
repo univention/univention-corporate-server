@@ -34,34 +34,39 @@ define([
 	"dojo/_base/array",
 	"umc/dialog",
 	"umc/tools",
-	"umc/widgets/Module",
-	"umc/modules/admindiary/OverviewPage",
-	"umc/modules/admindiary/DetailsPage",
+	"umc/widgets/Page",
+	"umc/widgets/ContainerWidget",
+	"umc/widgets/TitlePane",
 	"umc/i18n!umc/modules/admindiary"
-], function(declare, lang, array, dialog, tools, Module, OverviewPage, DetailsPage, _) {
-	return declare("umc.modules.admindiary", [ Module ], {
-		moduleStore: null,
-		idProperty: 'context_id',
+], function(declare, lang, array, dialog, tools, Page, ContainerWidget, TitlePane, _) {
+	return declare("umc.modules.admindiary.DetailsPage", [ Page ], {
+
+		helpText: _('This module lists all entries of the Admin Diary. You may comment on the events.'),
+		fullWidth: true,
 
 		buildRendering: function() {
 			this.inherited(arguments);
-
-			this._overviewPage = new OverviewPage({
-				moduleStore: this.moduleStore,
-			});
-			this.addChild(this._overviewPage);
-			this._detailsPage = new DetailsPage({
-			});
-			this.addChild(this._detailsPage);
-			this.selectChild(this._overviewPage);
-			this._overviewPage.on('ShowDetails', lang.hitch(this, '_showDetails'));
+			this._container = new ContainerWidget({});
+			this.addChild(this._container);
+			this.startup();
 		},
 
-		_showDetails: function(context_id) {
-			this.standbyDuring(tools.umcpCommand('admindiary/get', {'context_id': context_id}).then(lang.hitch(this, function(data) {
-				this._detailsPage.reset(data.result);
-				this.selectChild(this._detailsPage);
-			})));
-		}
+		reset: function(items) {
+			this._container.destroyRecursive();
+			this._container = new ContainerWidget({});
+			this.addChild(this._container);
+			array.forEach(items, lang.hitch(this, function(item) {
+				var name = lang.replace(_('{event} on {date} (by {user})'), {
+					'event': item.event,
+					date: item.date,
+					user: item.author,
+				});
+				var titlePane = new TitlePane({
+					title: name
+				});
+				//titlePane.addChild(form);
+				this._container.addChild(titlePane);
+			}));
+		},
 	});
 });
