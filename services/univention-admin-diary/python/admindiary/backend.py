@@ -123,17 +123,35 @@ if ucr.get('admin/diary/dbms') == 'postgresql':
 		if key not in _postgresql_translate._cache:
 			with cursor(psycopg2) as cur:
 				cur.execute("SELECT et.message FROM event_message_translations et INNER JOIN events ev ON ev.id = et.event_id WHERE ev.name = %s AND et.locale = %s", (event_name, locale))
-				translation = cur.fetchone()[0]
+				row = cur.fetchone()
+				if row:
+					translation = row[0]
+				else:
+					translation = None
 				_postgresql_translate._cache[key] = translation
 		else:
 			translation = _postgresql_translate._cache[key]
 		return translation
 	_postgresql_translate._cache = {}
 
+	def _postgresql_options():
+		ret = {}
+		with cursor(psycopg2) as cur:
+			cur.execute("SELECT DISTINCT UNNEST(tags) FROM entries")
+			ret['tags'] = [row[0] for row in cur.fetchall()]
+			cur.execute("SELECT DISTINCT username FROM entries")
+			ret['usernames'] = [row[0] for row in cur.fetchall()]
+			cur.execute("SELECT DISTINCT hostname FROM entries")
+			ret['hostnames'] = [row[0] for row in cur.fetchall()]
+			cur.execute("SELECT name FROM events")
+			ret['events'] = [row[0] for row in cur.fetchall()]
+		return ret
+
 	add = _postgresql_add
 	query = _postgresql_query
 	get = _postgresql_get
 	translate = _postgresql_translate
+	options = _postgresql_options
 elif ucr.get('admin/diary/dbms') == 'mysql':
 	import MySQLdb
 

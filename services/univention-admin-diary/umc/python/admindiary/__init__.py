@@ -35,14 +35,14 @@ from univention.management.console.base import Base
 from univention.management.console.modules.decorators import simple_response, sanitize
 from univention.management.console.modules.sanitizers import PatternSanitizer
 
-from univention.admindiary.backend import query, get, translate
+from univention.admindiary.backend import query, get, translate, options
 
 
 class Instance(Base):
 	def _format_entry(self, entry):
 		message = entry['message']
 		if entry['event_name'] != 'COMMENT':
-			message = translate(entry['event_name'], self.locale.locale)
+			message = translate(entry['event_name'], self.locale.language)
 		try:
 			message = message.format(*entry['args'])
 		except (AttributeError, IndexError, KeyError):
@@ -61,6 +61,10 @@ class Instance(Base):
 		if 'amendments' in entry:
 			res_entry['amendments'] = entry['amendments']
 		return res_entry
+
+	@simple_response
+	def options(self):
+		return options()
 
 	@simple_response
 	def get(self, context_id):

@@ -46,15 +46,26 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			this._overviewPage = new OverviewPage({
-				moduleStore: this.moduleStore,
-			});
-			this.addChild(this._overviewPage);
-			this._detailsPage = new DetailsPage({
-			});
-			this.addChild(this._detailsPage);
+			this.standbyDuring(tools.umcpCommand('admindiary/options').then(lang.hitch(this, function(data) {
+				this._overviewPage = new OverviewPage({
+					moduleStore: this.moduleStore,
+					tags: data.result.tags,
+					authors: data.result.usernames,
+					sources: data.result.hostnames,
+					events: data.result.events,
+				});
+				this.addChild(this._overviewPage);
+				this._detailsPage = new DetailsPage({
+				});
+				this.addChild(this._detailsPage);
+				this._overviewPage.on('ShowDetails', lang.hitch(this, '_showDetails'));
+				this._detailsPage.on('Close', lang.hitch(this, '_closeDetails'));
+				this.selectChild(this._overviewPage);
+			})));
+		},
+
+		_closeDetails: function() {
 			this.selectChild(this._overviewPage);
-			this._overviewPage.on('ShowDetails', lang.hitch(this, '_showDetails'));
 		},
 
 		_showDetails: function(context_id) {

@@ -44,6 +44,17 @@ define([
 		helpText: _('This module lists all entries of the Admin Diary. You may comment on the events.'),
 		fullWidth: true,
 
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			this.headerButtons = [{
+				name: 'close',
+				label: _("Back to Diary"),
+				callback: lang.hitch(this, function() {
+					this.onClose();
+				})
+			}];
+		},
+
 		buildRendering: function() {
 			this.inherited(arguments);
 			this._container = new ContainerWidget({});
@@ -55,6 +66,7 @@ define([
 			this._container.destroyRecursive();
 			this._container = new ContainerWidget({});
 			this.addChild(this._container);
+			this.set('title', lang.replace(_('Admin Diary: {context_id}'), {context_id: items[0].context_id}));
 			array.forEach(items, lang.hitch(this, function(item) {
 				var name = lang.replace(_('{event} on {date} (by {user})'), {
 					'event': item.event,
@@ -68,5 +80,8 @@ define([
 				this._container.addChild(titlePane);
 			}));
 		},
+
+		onClose: function() {
+		}
 	});
 });

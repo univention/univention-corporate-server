@@ -49,6 +49,12 @@ define([
 		_grid: null,
 		_searchWidget: null,
 
+		// values for comboboxes
+		tags: null,
+		authors: null,
+		sources: null,
+		events: null,
+
 		helpText: _('This module lists all entries of the Admin Diary. You may comment on the events.'),
 		fullWidth: true,
 
@@ -114,6 +120,12 @@ define([
 				}
 			});
 
+			var makeValues = function(values) {
+				var arr = [{label: '', id: ''}];
+				return arr.concat(array.map(values, function(value) {
+					return {label: value, id: value};
+				}));
+			};
 			var widgets = [{
 				type: DateBox,
 				label: _("From"),
@@ -128,21 +140,25 @@ define([
 				type: ComboBox,
 				label: _("Tags"),
 				sizeClass: 'TwoThirds',
+				staticValues: makeValues(this.tags),
 				name: 'tag'
 			}, {
 				type: ComboBox,
 				label: _("Event"),
 				sizeClass: 'TwoThirds',
+				staticValues: makeValues(this.events),
 				name: 'event'
 			}, {
 				type: ComboBox,
 				label: _("Author"),
 				sizeClass: 'TwoThirds',
+				staticValues: makeValues(this.authors),
 				name: 'author'
 			}, {
 				type: ComboBox,
 				label: _("Source"),
 				sizeClass: 'TwoThirds',
+				staticValues: makeValues(this.sources),
 				name: 'source'
 			}, {
 				type: SearchBox,

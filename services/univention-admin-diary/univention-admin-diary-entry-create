@@ -56,7 +56,7 @@ def main():
 	usage = '%(prog)s [options] <message>'
 	description = '%(prog)s is a program to add an entry to the Admin Diary'
 	epilog = '''Examples:
-	context_id=$(%(prog)s --event USER_ADDED --arg "john.doe")
+	context_id=$(%(prog)s --event USER_CREATED --arg "john.doe")
 	%(prog)s --event COMMENT -m "I added this user because..." --context-id="$context_id"
 	%(prog)s --event MY_NEW_EVENT -m "[en]This is the English message for: {0} {1}" "[de]Any other locale needs the same amount of place holders ({1}, {0})" --arg "Arg1" --arg "Arg2" --tag my-tag
 	'''
