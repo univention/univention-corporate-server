@@ -1300,8 +1300,8 @@ univention-system-setup-boot uss/server/role string memberserver
 			</para>
 			<para>
 				Verify the &ucsUCRV; <envar>repository/mirror/recreate_packages</envar> is set to <literal>no</literal>.
-				Otherwise the <filename>Packages</filename> files will be re-build, which invalidates the cryptographic signatures.
-				Locally re-build index files will also have different package priorities as the <emphasis>overwrite</emphasis> information is not publicly available.
+				Otherwise the <filename>Packages</filename> files will be re-built, which invalidates the cryptographic signatures.
+				Locally re-built index files will also have different package priorities as the <emphasis>overwrite</emphasis> information is not publicly available.
 			</para>
 		</important>
 		</section>
@@ -1312,7 +1312,7 @@ univention-system-setup-boot uss/server/role string memberserver
 				Even when the public repository server <ulink url="https://updates.software-univention.de/"/> is used, some services and files must be available inside the local network.
 				At minimum this includes the <systemitem class="service">DHCP</systemitem> service, which assigns the client its IP address and tells it to continue fetching files from the next server.
 				Historically this had to be a <systemitem class="service">TFTP</systemitem> server, but nowadays this also can be any <systemitem class="service">HTTP</systemitem> server.
-				This has the benefit, that <systemitem class="service">HTTP</systemitem> is faster and more reliable and also works over the Internet.
+				This has the benefit that <systemitem class="service">HTTP</systemitem> is faster, more reliable and also works over the Internet.
 			</para>
 			<procedure id="profile:netinstaller:public:proc">
 				<title>Setup network installation using public repository</title>
@@ -1351,9 +1351,9 @@ udm policies/dhcp_boot modify \
 								<step>
 									<para>
 										The installer performs its own second DHCP request.
-										This again retrievs the DHCP option <property>boot filename</property>, which now contains the <emphasis>URL</emphasis> to the PXE loader.
+										This again retrieves the DHCP option <property>boot filename</property>, which now contains the <emphasis>URL</emphasis> to the PXE loader.
 										The installer wrongly interprets this as the URL for the profile <filename>preseed</filename>, which breaks the installation.
-										Therefor the option needs to be overwritten when the installer performs this second query:
+										Therefore the option needs to be overwritten when the installer performs this second query:
 									</para>
 									<programlisting language="sh">
 STMT='if substring (option vendor-class-identifier, 0, 3) = "d-i" { filename ""; }'
