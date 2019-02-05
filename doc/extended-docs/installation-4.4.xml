@@ -673,7 +673,10 @@ https://license.univention.de/shop/example/orders/465.ldif
 	<section id="profile:example">
 		<title>Example installation profile</title>
 		<para>
-			A template file is provided as <filename>/usr/share/doc/univention-net-installer/examples/TEMPLATE</filename>.
+			A template file is provided as <filename>/usr/share/doc/univention-net-installer/examples/TEMPLATE</filename><footnote id="gzip"><simpara>
+					The file may be stored compressed with the <filename class="extension">.gz</filename> extension.
+					Use <command>gunzip</command> to uncompress a copy of that file.
+			</simpara></footnote>.
 			It contains the minimum required settings to perform a fully automatic installation of a &ucsMember; with no additional software.
 			It will use the German keyboard layout and language settings.
 			It will re-partition the hard-disk without asking any questions and will use LVM to manage the disk space.
@@ -851,12 +854,14 @@ univention-system-setup-boot uss/server/role string memberserver
 					The location of the local repository is filled in through the PXE configuration.
 					By default the value of the &ucsUCRV; <envar>repository/online/server</envar> is used.
 					It can be over-written by specifying the value here in the profile file.
+					For use with the public repository specify <uri>updates.software-univention.de</uri> here.
 				</para>
 			</callout>
 			<callout arearefs="preseed:release-co" id="preseed:release">
 				<para>
 					These directory and release names must be kept in sync to select the right UCS release.
 					This example consistently uses the <wordasword>UCS-4.4-0</wordasword>
+					For use with the public repository remove the prefix <uri>univention-repository/</uri> here.
 				</para>
 			</callout>
 			<callout arearefs="preseed:password-co" id="preseed:password">
@@ -1395,6 +1400,15 @@ ucr set \
 	pxe/installer/ipappend=3
 					</programlisting>
 				</step>
+				<step>
+					<para>
+						In the profile file the settings for <property>mirror/http/hostname</property> and <property>mirror/http/directory</property> must be changed to use the public server and its layout:
+					</para>
+					<programlisting>
+d-i mirror/http/hostname string updates.software-univention.de <co id="preseed:mirror-public-co" linkends="preseed:mirror"/>
+d-i mirror/http/directory string /4.4/maintained/4.4-0 <co id="preseed:release-public-co" linkends="preseed:release"/>
+						</programlisting>
+				</step>
 			</procedure>
 		</section>
 
@@ -1442,15 +1456,9 @@ ucr set \
 			</para>
 			<para>
 				By default the <guimenu>(Re-)install on next boot</guimenu> option needs to be reset manually after the installation has finished.
+				Otherwise the computer will be reinstalled every time the host is booted!
 				If the package <package>univention-net-installer-daemon</package> is installed on the server, the flag can be reset automatically.
 			</para>
-
-			<caution>
-				<para>
-					If the <package>univention-net-installer-daemon</package> is not used, the option <guimenu>(Re-)install on next boot</guimenu> must be unset manually after the installation.
-					Otherwise the computer will be reinstalled every time the host is booted!
-				</para>
-			</caution>
 		</section>
 
 	</section>
