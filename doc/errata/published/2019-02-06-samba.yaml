@@ -9,3 +9,5 @@ desc: |
  * The samba-tool ntacl sysvolcheck didn't map owner LA to DA properly
    while checking, leading to irritating, unnecessary error messages.
 bug: [44282]
+erratum: 418
+announced: 2019-02-06
