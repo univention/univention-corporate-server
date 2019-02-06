@@ -1,3 +1,9 @@
+univention-directory-notifier (12.0.1-8) unstable; urgency=low
+
+  * Bug #48427: Fix Python format strings.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 06 Feb 2019 12:58:02 +0100
+
 univention-directory-notifier (12.0.1-7) unstable; urgency=medium
 
   * Bug #41262: improve univention-replicate-many

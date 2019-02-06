@@ -546,11 +546,11 @@ def add_transaction(opt, ld, rec):
             ld.add_ext_s(dn, modlist)
     except (ldap.ALREADY_EXISTS, ldap.INVALID_SYNTAX) as ex:
         if not opt.lenient:
-            log.critical("ldap_add(%s): %s %s", rec, ex.args[0]["desc"])
+            log.critical("ldap_add(%s): %s", rec, ex.args[0]["desc"])
             raise Abort()
-        log.error("ldap_add(%s): %s %s", rec, ex.args[0]["desc"])
+        log.error("ldap_add(%s): %s", rec, ex.args[0]["desc"])
     except ldap.LDAPError as ex:
-        log.critical("ldap_add(%s): %s %s", rec, ex)
+        log.critical("ldap_add(%s): %s", rec, ex)
         raise Abort()
 
 
