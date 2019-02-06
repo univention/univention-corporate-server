@@ -251,7 +251,7 @@ run_join_scripts () {
 						awk -F ' ' '{ if ( $1 <= '$id') print }' "$USERTMP/tlog" >/var/lib/univention-ldap/notify/transaction
 						rm -f /var/lib/univention-ldap/notify/transaction.index
 
-						/usr/share/univention-directory-notifier/univention-translog --lenient import --index &&
+						/usr/share/univention-directory-notifier/univention-translog --lenient import --index 2>>"$LOG" &&
 							/usr/share/univention-ldap/setup-translog check ||
 							failed_message " FAILED: failed to setup $(/usr/share/univention-ldap/setup-translog db). Please try again."
 					fi
