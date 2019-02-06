@@ -89,6 +89,8 @@ def usage():
 	out.append('  --%-30s %s' % ('set', 'Set variable to value, e.g. foo=bar'))
 	out.append('  --%-30s %s' % ('superordinate', 'Use superordinate module'))
 	out.append('  --%-30s %s' % ('option', 'Use only given module options'))
+	out.append('  --%-30s %s' % ('append-option', 'Append the module option'))
+	out.append('  --%-30s %s' % ('remove-option', 'Remove the module option'))
 	out.append('  --%-30s %s' % ('policy-reference', 'Reference to policy given by DN'))
 	out.append('  --%-30s   ' % ('ignore_exists'))
 	out.append('')
@@ -98,7 +100,8 @@ def usage():
 	out.append('  --%-30s %s' % ('append', 'Append value to variable, e.g. foo=bar'))
 	out.append('  --%-30s %s' % ('remove', 'Remove value from variable, e.g. foo=bar'))
 	out.append('  --%-30s %s' % ('option', 'Use only given module options'))
-	out.append('  --%-30s %s' % ('append-option', 'Append the module options'))
+	out.append('  --%-30s %s' % ('append-option', 'Append the module option'))
+	out.append('  --%-30s %s' % ('remove-option', 'Remove the module option'))
 	out.append('  --%-30s %s' % ('policy-reference', 'Reference to policy given by DN'))
 	out.append('  --%-30s %s' % ('policy-dereference', 'Remove reference to policy given by DN'))
 	out.append('')
@@ -440,7 +443,7 @@ def _doit(arglist):
 	remove_referring = 0
 	recursive = 1
 	# parse options
-	longopts = ['position=', 'dn=', 'set=', 'append=', 'remove=', 'superordinate=', 'option=', 'append-option=', 'filter=', 'tls=', 'ignore_exists', 'ignore_not_exists', 'logfile=', 'policies=', 'binddn=', 'bindpwd=', 'bindpwdfile=', 'policy-reference=', 'policy-dereference=', 'remove_referring', 'recursive']
+	longopts = ['position=', 'dn=', 'set=', 'append=', 'remove=', 'superordinate=', 'option=', 'append-option=', 'remove-option=', 'filter=', 'tls=', 'ignore_exists', 'ignore_not_exists', 'logfile=', 'policies=', 'binddn=', 'bindpwd=', 'bindpwdfile=', 'policy-reference=', 'policy-dereference=', 'remove_referring', 'recursive']
 	try:
 		opts, args = getopt.getopt(arglist[3:], '', longopts)
 	except getopt.error, msg:
@@ -466,6 +469,7 @@ def _doit(arglist):
 	ignore_not_exists = False
 	superordinate_dn = ''
 	parsed_append_options = []
+	parsed_remove_options = []
 	parsed_options = []
 	filter = ''
 	input = {}
@@ -509,6 +513,8 @@ def _doit(arglist):
 			parsed_options.append(val)
 		elif opt == '--append-option':
 			parsed_append_options.append(val)
+		elif opt == '--remove-option':
+			parsed_remove_options.append(val)
 		elif opt == '--filter':
 			ldapFilter.parse(val)
 			filter = val
@@ -718,6 +724,13 @@ def _doit(arglist):
 
 			if parsed_options:
 				object.options = parsed_options
+			for option in parsed_append_options:
+				object.options.append(option)
+			for option in parsed_remove_options:
+				try:
+					object.option.remove(option)
+				except ValueError:
+					pass
 
 			object.open()
 			exists = 0
@@ -872,18 +885,23 @@ def _doit(arglist):
 
 		else:  # modify
 
-			if (len(input) + len(append) + len(remove) + len(parsed_append_options) + len(parsed_options)) > 0:
+			if (len(input) + len(append) + len(remove) + len(parsed_append_options) + len(parsed_remove_options) + len(parsed_options)) > 0:
 				if parsed_options:
 					object.options = parsed_options
-				if parsed_append_options:
-					for option in parsed_append_options:
-						object.options.append(option)
+				for option in parsed_append_options:
+					object.options.append(option)
+				for option in parsed_remove_options[:]:
+					try:
+						object.options.remove(option)
+					except ValueError:
+						parsed_remove_options.remove(option)
+						out.append('Warning: option %r is not set. Ignoring.' % (option,))
 				try:
 					out.extend(object_input(module, object, input, append, remove))
 				except univention.admin.uexceptions.valueMayNotChange, e:
 					out.append(unicode(e[0]))
 					return out + ["OPERATION FAILED"]
-				if object.hasChanged(input.keys()) or object.hasChanged(append.keys()) or object.hasChanged(remove.keys()) or parsed_append_options or parsed_options:
+				if object.hasChanged(input.keys()) or object.hasChanged(append.keys()) or object.hasChanged(remove.keys()) or parsed_append_options or parsed_remove_options or parsed_options:
 					try:
 						dn = object.modify()
 						object_modified += 1
