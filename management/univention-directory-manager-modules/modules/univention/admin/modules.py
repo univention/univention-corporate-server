@@ -217,6 +217,7 @@ def update_extended_options(lo, module, position):
 		default = attrs.get('univentionUDMOptionDefault', ['0'])[0] == '1'
 		editable = attrs.get('univentionUDMOptionEditable', ['0'])[0] == '1'
 		classes = attrs.get('univentionUDMOptionObjectClass', [])
+		is_app_option = attrs.get('univentionUDMOptionIsApp', ['0'])[0] == '1'
 
 		if not hasattr(module, 'options'):
 			module.options = {}
@@ -225,7 +226,8 @@ def update_extended_options(lo, module, position):
 			long_description=longdesc,
 			default=default,
 			editable=editable,
-			objectClasses=classes)
+			objectClasses=classes,
+			is_app_option=is_app_option)
 
 
 class EA_Layout(dict):
