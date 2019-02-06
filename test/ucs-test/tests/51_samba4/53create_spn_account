@@ -31,6 +31,8 @@ for((i=0;i<$MAX_COUNT;i++)); do
         /usr/share/univention-samba4/scripts/create_spn_account.sh \
                 --samaccountname "$prefix-$hostname-$i" \
                 --serviceprincipalname "$prefix-$i/$hostname.$domainname" \
+                --bindpwdfile "$tests_domainadmin_pwdfile" \
+                --binddn "$tests_domainadmin_account" \
                 --privatekeytab dns.keytab || fail_test 110
 done
 
