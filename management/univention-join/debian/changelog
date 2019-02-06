@@ -1,3 +1,9 @@
+univention-join (10.0.0-28) unstable; urgency=medium
+
+  * Bug #48427: Move code to force-reset translog DB.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 06 Feb 2019 10:32:15 +0100
+
 univention-join (10.0.0-27) unstable; urgency=low
 
   * Bug #48427: Force remove translog on re-join
