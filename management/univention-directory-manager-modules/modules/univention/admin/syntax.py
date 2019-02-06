@@ -627,6 +627,10 @@ class boolean(simple):
 	'0'
 	>>> boolean().parse('1')
 	'1'
+	>>> boolean().parse(True)
+	'1'
+	>>> boolean().parse(False)
+	'0'
 	>>> boolean().parse('2') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...

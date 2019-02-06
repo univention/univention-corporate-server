@@ -68,6 +68,7 @@ define([
 		// title: String
 		//		Title of the page. This option is necessary for tab pages.
 		title: '',
+		titleAllowHTML: false,
 
 		// noFooter: Boolean
 		//		Disable the page footer.
@@ -106,7 +107,7 @@ define([
 		_setTitleAttr: function(title) {
 			// dont set html attribute title
 			// (looks weird)
-			this._set('title', title);
+			this._set('title', this.titleAllowHTML ? title : entities.encode(title));
 		},
 
 		_setHelpTextAttr: function(newVal) {

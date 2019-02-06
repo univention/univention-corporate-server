@@ -1060,6 +1060,7 @@ layout = [
 			'homePostalAddress'
 		]),
 	]),
+	Tab('Options'),  # not translated!
 	Tab(_('UMC preferences'), _('UMC preferences'), advanced=True, layout=[
 		Group(_('UMC preferences'), layout=[
 			'umcProperty',

@@ -798,8 +798,11 @@ class UDM_Module(object):
 				value = name in obj_options
 			options.append({
 				'id': name,
+				'is_app_option': opt.is_app_option,
 				'type': 'CheckBox',
+				'icon': name if opt.is_app_option else '',
 				'label': opt.short_description,
+				'description': opt.long_description,
 				'value': value,
 				'editable': bool(opt.editable)
 			})

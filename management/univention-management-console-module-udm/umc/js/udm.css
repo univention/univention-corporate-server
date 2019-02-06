@@ -263,3 +263,16 @@
 .umc .dojoDndAvatar {
 	pointer-events: none;
 }
+
+.umc .umcLabelPane .udmAppLable {
+	display: flex;
+	align-items: center;
+	padding-bottom: 0;
+	margin-bottom: 1.2em;
+	height: 3.5em;
+	background-size: 3.5em;
+	background-position: 2.3em;
+}
+.umc .umcLabelPane .udmAppLable .umcLabelPaneLabeNodeRight {
+	padding-left: 5em;
+}
