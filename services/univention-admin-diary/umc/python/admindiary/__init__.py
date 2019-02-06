@@ -31,10 +31,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.management.console.base import Base
-from univention.management.console.modules.decorators import simple_response, sanitize
-from univention.management.console.modules.sanitizers import PatternSanitizer
+import time
 
+from univention.management.console.base import Base
+from univention.management.console.modules.decorators import simple_response
+
+from univention.admindiary.client import add_comment
 from univention.admindiary.backend import query, get, translate, options
 
 
@@ -50,10 +52,10 @@ class Instance(Base):
 				message = '%s (%s)' % (message, ', '.join(entry['args']))
 		res_entry = {
 			'id': entry['id'],
-			'date': entry['timestamp'],
+			'date': entry['timestamp'].strftime('%Y-%m-%d %H:%M:%S'),
 			'event': entry['event_name'],
-			'source': entry['hostname'],
-			'author': entry['username'],
+			'hostname': entry['hostname'],
+			'username': entry['username'],
 			'context_id': entry['context_id'],
 			'message': message,
 			'tags': entry['tags'],
@@ -75,12 +77,16 @@ class Instance(Base):
 			result.append(res_entry)
 		return sorted(result, key=lambda x: x['id'])
 
-	@sanitize(pattern=PatternSanitizer(default='.*'))
 	@simple_response
-	def query(self, pattern):
+	def query(self, time_from=None, time_until=None, tag=None, event=None, username=None, hostname=None, message=None):
 		result = []
-		entries = query()
+		entries = query(time_from=time_from, time_until=time_until, tag=tag, event=event, username=username, hostname=hostname, message=message, locale=self.locale.language)
 		for entry in entries:
 			res_entry = self._format_entry(entry)
 			result.append(res_entry)
 		return sorted(result, key=lambda x: x['date'])
+
+	@simple_response
+	def add_comment(self, context_id, message):
+		add_comment(message, context_id, self.username)
+		time.sleep(1)  # give backend time to insert comment...

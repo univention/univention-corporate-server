@@ -10,5 +10,6 @@
 		<command name="admindiary/query" function="query" />
 		<command name="admindiary/get" function="get" />
 		<command name="admindiary/options" function="options" />
+		<command name="admindiary/add_comment" function="add_comment" />
 	</module>
 </umc>

@@ -35,18 +35,28 @@ define([
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/Page",
+	"umc/widgets/StandbyMixin",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/TitlePane",
+	"umc/widgets/Form",
+	"umc/widgets/MultiSelect",
+	"umc/widgets/TextArea",
+	"umc/widgets/TextBox",
 	"umc/i18n!umc/modules/admindiary"
-], function(declare, lang, array, dialog, tools, Page, ContainerWidget, TitlePane, _) {
-	return declare("umc.modules.admindiary.DetailsPage", [ Page ], {
+], function(declare, lang, array, dialog, tools, Page, StandbyMixin, ContainerWidget, TitlePane, Form, MultiSelect, TextArea, TextBox, _) {
+	return declare("umc.modules.admindiary.DetailsPage", [ Page, StandbyMixin ], {
 
-		helpText: _('This module lists all entries of the Admin Diary. You may comment on the events.'),
 		fullWidth: true,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this.headerButtons = [{
+				name: 'goto_comment',
+				label: _("New Comment"),
+				callback: lang.hitch(this, function() {
+					this.focusComment();
+				})
+			}, {
 				name: 'close',
 				label: _("Back to Diary"),
 				callback: lang.hitch(this, function() {
@@ -62,23 +72,83 @@ define([
 			this.startup();
 		},
 
-		reset: function(items) {
+		reset: function(contextId, items) {
+			this._contextId = contextId;
 			this._container.destroyRecursive();
 			this._container = new ContainerWidget({});
 			this.addChild(this._container);
-			this.set('title', lang.replace(_('Admin Diary: {context_id}'), {context_id: items[0].context_id}));
 			array.forEach(items, lang.hitch(this, function(item) {
-				var name = lang.replace(_('{event} on {date} (by {user})'), {
+				var name = lang.replace(_('{date}: {event} (by {user})'), {
 					'event': item.event,
 					date: item.date,
-					user: item.author,
+					user: item.username,
 				});
 				var titlePane = new TitlePane({
-					title: name
+					title: name,
+					open: false
 				});
-				//titlePane.addChild(form);
+				var form = new Form({
+					widgets: [{
+						name: 'id',
+						label: _('ID'),
+						type: TextBox,
+						value: item.id,
+						disabled: true
+					}, {
+						name: 'hostname',
+						label: _('Source'),
+						type: TextBox,
+						value: item.hostname,
+						disabled: true
+					}, {
+						name: 'message',
+						label: _('Message'),
+						type: TextArea,
+						value: item.message,
+						disabled: true
+					//}, {
+					//	name: 'tags',
+					//	label: _('Message'),
+					//	type: MultiSelect,
+					//	value: item.tags,
+					//	disabled: true
+					}],
+					buttons: []
+				});
+				titlePane.addChild(form);
 				this._container.addChild(titlePane);
 			}));
+			this._commentForm = new Form({
+				widgets: [{
+					type: TextArea,
+					name: 'message',
+					label: _('Comment')
+				}],
+				layout: ['message'],
+				buttons: [{
+					name: 'submit',
+					label: _('Add comment'),
+					callback: lang.hitch(this, '_addComment')
+				}]
+			});
+			this._container.addChild(this._commentForm);
+		},
+
+		focusComment: function() {
+			this._commentForm.getWidget('message').focus();
+		},
+
+		_addComment: function() {
+			var values = {
+				context_id: this._contextId,
+				message: this._commentForm.get('value').message
+			};
+			this.standbyDuring(tools.umcpCommand('admindiary/add_comment', values).then(lang.hitch(this, function(data) {
+				this.onReload(this._contextId);
+			})));
+		},
+
+		onReload: function(contextId) {
 		},
 
 		onClose: function() {

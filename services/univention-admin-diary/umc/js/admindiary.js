@@ -60,17 +60,20 @@ define([
 				this.addChild(this._detailsPage);
 				this._overviewPage.on('ShowDetails', lang.hitch(this, '_showDetails'));
 				this._detailsPage.on('Close', lang.hitch(this, '_closeDetails'));
+				this._detailsPage.on('Reload', lang.hitch(this, '_showDetails'));
 				this.selectChild(this._overviewPage);
 			})));
 		},
 
 		_closeDetails: function() {
+			this.set('title', _('Admin Diary'));
 			this.selectChild(this._overviewPage);
 		},
 
 		_showDetails: function(context_id) {
+			this.set('title', lang.replace(_('Admin Diary: {context_id}'), {context_id: context_id}));
 			this.standbyDuring(tools.umcpCommand('admindiary/get', {'context_id': context_id}).then(lang.hitch(this, function(data) {
-				this._detailsPage.reset(data.result);
+				this._detailsPage.reset(context_id, data.result);
 				this.selectChild(this._detailsPage);
 			})));
 		}

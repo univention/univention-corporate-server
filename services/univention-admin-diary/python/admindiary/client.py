@@ -65,7 +65,7 @@ emitter = RsyslogEmitter()
 
 @exceptionlogging
 def add_comment(message, context_id, username=None):
-	event = Event('COMMENT', message)
+	event = Event('COMMENT', {'en': message})
 	return write_event(event, username=username, context_id=context_id)
 
 

@@ -94,28 +94,62 @@ if ucr.get('admin/diary/dbms') == 'postgresql':
 		with cursor(psycopg2) as cur:
 			_postgresql_add_with_cursor(entry, cur)
 
-	def _postgresql_query():
+	def _one_query(cur, ids, query, *params):
+		cur.execute(query, params)
+		rows = cur.fetchall()
+		if ids is None:
+			ids = set()
+			for row in rows:
+				ids.add(row[1] or row[0])
+		else:
+			new_ids = set()
+			for row in rows:
+				new_ids.add(row[1] or row[0])
+			ids.intersection_update(new_ids)
+		return ids
+
+	def _postgresql_query(time_from=None, time_until=None, tag=None, event=None, username=None, hostname=None, message=None, locale='en'):
 		with cursor(psycopg2) as cur:
 			args = ['id', 'username', 'hostname', 'message', 'args', 'timestamp', 'tags', 'context_id', 'event_name', 'amendments']
-			cur.execute("SELECT %s, ev.name, (SELECT COUNT(e2.*) FROM entries e2 WHERE e2.main_id = e.id) as amendments FROM entries e INNER JOIN events ev ON ev.id = e.event_id WHERE e.main_id IS NULL" % ', '.join(['e.%s' % a for a in args[:-2]]))
+			ids = None
+			if time_from:
+				ids = _one_query(cur, ids, "SELECT id, main_id FROM entries WHERE timestamp > %s", time_from)
+			if time_until:
+				ids = _one_query(cur, ids, "SELECT id, main_id FROM entries WHERE timestamp < %s", time_until)
+			if tag:
+				ids = _one_query(cur, ids, "SELECT id, main_id FROM entries WHERE tags @> %s::varchar[]", [tag])
+			if event:
+				ids = _one_query(cur, ids, "SELECT e.id, e.main_id FROM entries e INNER JOIN events ev on ev.id = e.event_id WHERE ev.name = %s", event)
+			if username:
+				ids = _one_query(cur, ids, "SELECT id, main_id FROM entries WHERE username = %s ", username)
+			if hostname:
+				ids = _one_query(cur, ids, "SELECT id, main_id FROM entries WHERE hostname = %s ", hostname)
+			if message:
+				pattern_ids = set()
+				for pat in message.split():
+					pattern_ids.update(_one_query(cur, None, "SELECT id, main_id FROM entries WHERE message ILIKE %s ", '%%%s%%' % pat))
+					pattern_ids.update(_one_query(cur, None, "SELECT e.id, e.main_id FROM entries e INNER JOIN event_message_translations ev on ev.event_id = e.event_id WHERE ev.locale = %s AND ev.message ILIKE %s ", locale, '%%%s%%' % pat))
+					pattern_ids.update(_one_query(cur, ids, "SELECT id, main_id FROM entries WHERE args @> %s::varchar[]", [pat]))
+				if ids is None:
+					ids = pattern_ids
+				else:
+					ids.intersection_update(pattern_ids)
+			if ids is None:
+				cur.execute("SELECT %s, ev.name, (SELECT COUNT(e2.*) FROM entries e2 WHERE e2.main_id = e.id) as amendments FROM entries e INNER JOIN events ev ON ev.id = e.event_id WHERE e.main_id IS NULL" % ', '.join(['e.%s' % a for a in args[:-2]]))
+			else:
+				if not ids:
+					return []
+				cur.execute("SELECT %s, ev.name, (SELECT COUNT(e2.*) FROM entries e2 WHERE e2.main_id = e.id) as amendments FROM entries e INNER JOIN events ev ON ev.id = e.event_id WHERE e.id IN %%s" % ', '.join(['e.%s' % a for a in args[:-2]]), (tuple(ids),))
 			rows = cur.fetchall()
 			res = [dict(zip(args, row)) for row in rows]
-			for row in res:
-				for k, v in row.items():
-					if isinstance(v, datetime.datetime):
-						row[k] = v.isoformat()
 			return res
 
 	def _postgresql_get(context_id):
 		with cursor(psycopg2) as cur:
 			args = ['id', 'username', 'hostname', 'message', 'args', 'timestamp', 'tags', 'context_id', 'event_name']
-			cur.execute("SELECT %s, ev.name FROM entries e INNER JOIN events ev ON ev.id = e.event_id WHERE e.context_id = %%s" % ', '.join(['e.%s' % a for a in args[:-1]]), (context_id,))
+			cur.execute("SELECT %s, COALESCE(ev.name, 'COMMENT') FROM entries e FULL JOIN events ev ON ev.id = e.event_id WHERE e.context_id = %%s" % ', '.join(['e.%s' % a for a in args[:-1]]), (context_id,))
 			rows = cur.fetchall()
 			res = [dict(zip(args, row)) for row in rows]
-			for row in res:
-				for k, v in row.items():
-					if isinstance(v, datetime.datetime):
-						row[k] = v.isoformat()
 			return res
 
 	def _postgresql_translate(event_name, locale):

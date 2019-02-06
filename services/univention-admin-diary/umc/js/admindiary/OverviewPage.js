@@ -68,10 +68,10 @@ define([
 			//	name: 'event',
 			//	label: _('Event'),
 			//}, {
-				name: 'source',
+				name: 'hostname',
 				label: _('Source'),
 			}, {
-			//	name: 'author',
+			//	name: 'username',
 			//	label: _('Author'),
 			//}, {
 				name: 'message',
@@ -112,12 +112,10 @@ define([
 
 			this._grid = new Grid({
 				region: 'main',
+				defaultAction: 'show',
 				columns: columns,
 				actions: actions,
-				moduleStore: this.moduleStore,
-				query: {
-					pattern: ''
-				}
+				moduleStore: this.moduleStore
 			});
 
 			var makeValues = function(values) {
@@ -129,13 +127,15 @@ define([
 			var widgets = [{
 				type: DateBox,
 				label: _("From"),
+				value: new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000),
 				sizeClass: 'TwoThirds',
-				name: 'from'
+				name: 'time_from'
 			}, {
 				type: DateBox,
 				label: _("Until"),
+				value: new Date(),
 				sizeClass: 'TwoThirds',
-				name: 'until'
+				name: 'time_until'
 			}, {
 				type: ComboBox,
 				label: _("Tags"),
@@ -153,16 +153,16 @@ define([
 				label: _("Author"),
 				sizeClass: 'TwoThirds',
 				staticValues: makeValues(this.authors),
-				name: 'author'
+				name: 'username'
 			}, {
 				type: ComboBox,
 				label: _("Source"),
 				sizeClass: 'TwoThirds',
 				staticValues: makeValues(this.sources),
-				name: 'source'
+				name: 'hostname'
 			}, {
 				type: SearchBox,
-				name: 'pattern',
+				name: 'message',
 				value: '',
 				inlineLabel: _('Search...'),
 				onSearch: lang.hitch(this, function() {
@@ -174,9 +174,9 @@ define([
 				region: 'nav',
 				hideSubmitButton: true,
 				widgets: widgets,
-				layout: [['from', 'tag', 'author'],
-					['until', 'event', 'source'],
-					['pattern']],
+				layout: [['time_from', 'tag', 'username'],
+					['time_until', 'event', 'hostname'],
+					['message']],
 				onSearch: lang.hitch(this._grid, 'filter')
 			});
 
@@ -184,10 +184,10 @@ define([
 			this.addChild(this._grid);
 
 			this.startup();
+			this._searchWidget.onSubmit();
 		},
 
 		onShowDetails: function() {
-			console.log(arguments);
 		},
 	});
 });
