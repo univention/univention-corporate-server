@@ -6,9 +6,9 @@ src: libgd2
 fix: 2.2.4-2+deb9u4
 desc: |
  This update addresses the following issues:
- * heap based buffer overflow in gd_color_match.c:gdImageColorMatch() in libgd
+ * Heap based buffer overflow in gd_color_match.c:gdImageColorMatch() in libgd
    as used in imagecolormatch() (CVE-2019-6977)
- * double free in the gdImage*Ptr in gd_gif_out.c, gd_jpeg.c, and gd_wbmp.c
+ * Double free in the gdImage*Ptr in gd_gif_out.c, gd_jpeg.c, and gd_wbmp.c
    (CVE-2019-6978)
 bug: [48614]
 cve:
