@@ -390,7 +390,12 @@ def ldapi(opt):
     log.debug("ldap_set_option(PROTOCOL_VERSION)")
     ldap.set_option(ldap.OPT_PROTOCOL_VERSION, ldap.VERSION3)
     log.debug("ldap_initialize(%s)", opt.ldap)
-    ld = ReconnectLDAPObject(opt.ldap, trace_level=max(0, opt.verbose - 4))
+    ld = ReconnectLDAPObject(
+        opt.ldap,
+        trace_level=max(0, opt.verbose - 4),
+        retry_max=3,
+        retry_delay=10.0,
+    )
     log.debug("ldap_bind()")
     ld.sasl_external_bind_s()
 
