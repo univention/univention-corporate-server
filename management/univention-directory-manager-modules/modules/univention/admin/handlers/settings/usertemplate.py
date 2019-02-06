@@ -377,11 +377,11 @@ layout = [
 		Group(_('Locking and deactivation'), layout=[
 			["disabled", "pwdChangeNextLogin"]
 		]),
-		Group(_('Windows'), _('Windows Account Settings'), layout=[
+		Group(_('Windows'), layout=[
 			['homedrive', 'sambahome'],
 			["scriptpath", "profilepath"]
 		]),
-		Group(_('POSIX (Linux/UNIX)'), _('POSIX (Linux/UNIX) account settings'), layout=[
+		Group(_('POSIX (Linux/UNIX)'), layout=[
 			["unixhome", "shell"],
 			["homeShare", "homeSharePath"]
 		]),

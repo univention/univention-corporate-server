@@ -1022,7 +1022,7 @@ layout = [
 			['unlock'],
 			['unlockTime'],
 		]),
-		Group(_('Windows'), _('Windows account settings'), layout=[
+		Group(_('Windows'), layout=[
 			['homedrive', 'sambahome'],
 			['scriptpath', 'profilepath'],
 			'sambaRID',
@@ -1030,7 +1030,7 @@ layout = [
 			'sambaLogonHours',
 			'sambaUserWorkstations'
 		]),
-		Group(_('POSIX (Linux/UNIX)'), _('POSIX (Linux/UNIX) account settings'), layout=[
+		Group(_('POSIX (Linux/UNIX)'), layout=[
 			['unixhome', 'shell'],
 			['uidNumber', 'gidNumber'],
 			['homeShare', 'homeSharePath'],
@@ -2034,7 +2034,7 @@ class object(univention.admin.handlers.simpleLdap):
 			ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5_principal()]))
 		return ml
 
-	## If you change anything here, please also check users/ldap.py
+	# If you change anything here, please also check users/ldap.py
 	def _check_password_history(self, ml, pwhistoryPolicy):
 		if self.exists() and not self.hasChanged('password'):
 			return ml
@@ -2052,7 +2052,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		return ml
 
-	## If you change anything here, please also check users/ldap.py
+	# If you change anything here, please also check users/ldap.py
 	def _check_password_complexity(self, pwhistoryPolicy):
 		if self.exists() and not self.hasChanged('password'):
 			return
@@ -2186,7 +2186,7 @@ class object(univention.admin.handlers.simpleLdap):
 			ml.append(('krb5KDCFlags', str(old_kdcflags), str(krb_kdcflags)))
 		return ml
 
-	## If you change anything here, please also check users/ldap.py
+	# If you change anything here, please also check users/ldap.py
 	def _modlist_posix_password(self, ml):
 		if not self.exists() or self.hasChanged(['disabled', 'password']):
 			old_password = self.oldattr.get('userPassword', [''])[0]
