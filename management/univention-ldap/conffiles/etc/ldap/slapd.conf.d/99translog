@@ -8,14 +8,14 @@ suffix	"cn=translog"
 directory	"/var/lib/univention-ldap/translog"
 cachesize	%(ldap/cachesize)s
 idlcachesize	%(ldap/idlcachesize)s
-envflags	nosync
-checkpoint	0 1
 """
 B64 = """\
 database	mdb
 suffix	"cn=translog"
 directory	"/var/lib/univention-ldap/translog"
 maxsize	%(ldap/database/mdb/maxsize)s
+envflags	nosync
+checkpoint	0 1
 """
 print((B64 if IS_64BITS else B32) % configRegistry)
 @!@

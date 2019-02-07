@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-40) unstable; urgency=low
+
+  * Bug #48427: Fix translog slapd.conf template
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Feb 2019 16:26:10 +0100
+
 univention-ldap (14.0.2-39) unstable; urgency=low
 
   * Bug #48427: Improve translog performance
