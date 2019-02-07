@@ -1,3 +1,9 @@
+univention-admin-diary (1.0.0-13) unstable; urgency=medium
+
+  * Bug #48476: Using sqlalchemy to support MySQL
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 07 Feb 2019 02:09:48 +0100
+
 univention-admin-diary (1.0.0-12) unstable; urgency=medium
 
   * Bug #48476: UMC Module: second iteration
