@@ -1,3 +1,9 @@
+univention-management-console-module-udm (8.0.5-30) unstable; urgency=medium
+
+  * Bug #48494: fix UCRWidgets
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 07 Feb 2019 11:34:11 +0100
+
 univention-management-console-module-udm (8.0.5-29) unstable; urgency=medium
 
   * Bug #47880: Tweaked requiredCommand further

@@ -82,13 +82,6 @@ class Widget(object):
 	def default_value(self):
 		return self._default_value
 
-	def __repr__(self):
-		if isinstance(self._syntax_classes, (list, tuple)):
-			syntax = ','.join(getattr(x, 'name', str(x)) for x in self._syntax_classes)
-		else:
-			syntax = self._syntax_classes.name
-		return '<Widget(%s, syntax=%s, default=%r)>' % (self._name, syntax, self._default_value)
-
 
 class _UCRWidget(Widget):
 
@@ -137,7 +130,7 @@ class _UCRWidget(Widget):
 				syntax_classes.append(syntax)
 
 			widgets.append(cls(props, widget, syntax_classes, default, subclasses))
-			MODULE.info('Added widget definition: %r' % (widgets[-1],))
+			MODULE.info('Added ucr widget definition for syntax classes: %r' % (syntax_classes, ))
 
 		return widgets
 
