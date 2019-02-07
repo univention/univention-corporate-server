@@ -46,9 +46,9 @@ try:
     from typing import Iterator, List, Optional, Tuple, Type, NamedTuple  # noqa F401
     from types import TracebackType  # noqa F401
     from argparse import Namespace  # noqa F401
-    Transaction = NamedTuple("Transction", [("tid", int), ("dn", str), ("command", str)])
+    Transaction = NamedTuple("Transaction", [("tid", int), ("dn", str), ("command", str)])
 except ImportError:
-    Transaction = namedtuple("Transction", ["tid", "dn", "command"])  # type: ignore
+    Transaction = namedtuple("Transaction", ["tid", "dn", "command"])  # type: ignore
 
 LOG_FORMAT = "%(asctime)-15s:%(levelname)s:%(message)s"
 BSIZE = 4096
@@ -478,6 +478,7 @@ def import_all(opt):
                     ))
                     t_last = t_now
 
+
 def load_single(opt):
     # type: (Namespace) -> None
     """
@@ -506,11 +507,25 @@ def show_stat(opt):
         print("Index.file: %s" % index.filename)
         print("Index.size: %d" % index.size)
         print("Index.count: %d" % index.count)
+        print("Index.okay: %s" % ('yes' if index.count == translog.count else 'no',))
         print("Translog.file: %s" % translog.filename)
         print("Translog.size: %d" % translog.size)
         print("Translog.first: %d" % translog.first)
         print("Translog.last: %d" % translog.last)
         print("Translog.count: %d" % translog.count)
+        first, last = translog.first, translog.last
+
+    tid = last
+    with ldapi(opt) as ld:
+        while tid >= first:
+            dn = "reqSession={},{}".format(tid, opt.base)
+            try:
+                ld.search_ext_s(dn, ldap.SCOPE_BASE)
+                break
+            except ldap.NO_SUCH_OBJECT:
+                tid -= 1
+    print("Ldap.last: %d" % tid)
+    print("Ldap.okay: %s" % ('yes' if last == tid else 'no',))
 
 
 def lookup(opt):
@@ -523,6 +538,28 @@ def lookup(opt):
     with Index(opt.translog) as index, Translog(opt.translog, index) as translog:
         for tid in opt.trans:
             print(translog[tid])
+
+
+def lookup_ldap(opt):
+    # type: (Namespace) -> None
+    """
+    Check transactions.
+
+    :param opt: Command line options.
+    """
+    log = getLogger(__name__).getChild("LDAP")
+
+    with ldapi(opt) as ld:
+        for tid in opt.trans:
+            dn = "reqSession={},{}".format(tid, opt.base)
+            try:
+                result = ld.search_ext_s(dn, ldap.SCOPE_BASE)
+            except ldap.NO_SUCH_OBJECT as ex:
+                if not opt.lenient:
+                    log.critical("ldap_search(%s): %s", dn, ex.args[0]["desc"])
+                    raise Abort()
+            ((dn, attrs),) = result
+            print('tid={0[reqSession][0]} dn={0[reqDN][0]} command={0[reqType][0]}'.format(attrs))
 
 
 def add_transaction(opt, ld, rec):
@@ -593,9 +630,13 @@ def parse_args(args=None):
     parser_load.add_argument("--index", "-i", action="store_false", help="Do not use index to find transactions")
     parser_load.set_defaults(func=load_single)
 
-    parser_lookup = subparsers.add_parser("lookup", help="Lookup transaction")
+    parser_lookup = subparsers.add_parser("lookup", help="Lookup transaction in file")
     parser_lookup.add_argument("trans", metavar="tid", type=int, nargs='+', help="Transaction number to lookup")
     parser_lookup.set_defaults(func=lookup)
+
+    parser_ldap = subparsers.add_parser("ldap", help="Lookup transaction in LDAP")
+    parser_ldap.add_argument("trans", metavar="tid", type=int, nargs='+', help="Transaction number to lookup")
+    parser_ldap.set_defaults(func=lookup_ldap)
 
     parser_stat = subparsers.add_parser("stat", help="Show statistics")
     parser_stat.set_defaults(func=show_stat)

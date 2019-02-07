@@ -80,6 +80,7 @@ setup_db () {
         shift
     done
     [ -s "$db" ] &&
+        [ -n "$(slapcat -f /etc/ldap/slapd.conf -b cn=translog -H 'ldap:///cn=translog??base')" ] &&
         return 0
     install -o openldap -g openldap -d "$TRANSLOG"
     slapadd -f /etc/ldap/slapd.conf -b cn=translog -l /usr/share/univention-ldap/translog.ldif

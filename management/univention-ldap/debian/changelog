@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-39) unstable; urgency=low
+
+  * Bug #48427: Improve translog performance
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Feb 2019 16:04:26 +0100
+
 univention-ldap (14.0.2-38) unstable; urgency=medium
 
   * Bug #43515: Subfile belongs to univention-ldap-server

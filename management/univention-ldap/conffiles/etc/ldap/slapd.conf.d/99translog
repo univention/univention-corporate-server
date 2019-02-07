@@ -8,6 +8,8 @@ suffix	"cn=translog"
 directory	"/var/lib/univention-ldap/translog"
 cachesize	%(ldap/cachesize)s
 idlcachesize	%(ldap/idlcachesize)s
+envflags	nosync
+checkpoint	0 1
 """
 B64 = """\
 database	mdb
