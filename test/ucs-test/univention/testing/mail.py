@@ -31,6 +31,7 @@
 
 import time
 import os
+import pwd
 import subprocess
 
 
@@ -79,10 +80,10 @@ class MailSink(object):
 		if self.fqdn:
 			cmd.extend(['-h', self.fqdn])
 		if os.geteuid() == 0:
-			cmd.extend(['-u', os.getlogin()])
+			cmd.extend(['-u', pwd.getpwuid(os.getuid()).pw_name])
 		cmd.append('{}:{}'.format(self.address, self.port))
 		cmd.append('10')
-		print repr(cmd)
+		print '*** {!r}'.format(cmd)
 		self.process = subprocess.Popen(cmd)
 
 	def stop(self):
