@@ -251,6 +251,9 @@ run_join_scripts () {
 						awk -F ' ' '{ if ( $1 <= '$id') print }' "$USERTMP/tlog" >/var/lib/univention-ldap/notify/transaction
 						rm -f /var/lib/univention-ldap/notify/transaction.index
 
+						/etc/init.d/slapd stop >>/var/log/univention/join.log 2>&1
+						/usr/share/univention-ldap/setup-translog init
+						/etc/init.d/slapd start >>/var/log/univention/join.log 2>&1
 						/usr/share/univention-directory-notifier/univention-translog --lenient import --index 2>>"$LOG" &&
 							/usr/share/univention-ldap/setup-translog check ||
 							failed_message " FAILED: failed to setup $(/usr/share/univention-ldap/setup-translog db). Please try again."
@@ -848,7 +851,7 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 
 	echo -n "Purging translog database: "
 	/etc/init.d/slapd stop >>/var/log/univention/join.log 2>&1
-	/usr/share/univention-ldap/setup-translog init --force
+	/usr/share/univention-ldap/setup-translog init --force >>"$LOG" 2>&1 || :
 	echo -e "\033[60Gdone"
 
 	echo -n "Restart LDAP Server: "
