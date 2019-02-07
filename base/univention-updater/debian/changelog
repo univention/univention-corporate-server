@@ -1,3 +1,9 @@
+univention-updater (14.0.0-11) unstable; urgency=medium
+
+  * Bug #29505: fix univention-repository-update
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Feb 2019 17:09:25 +0100
+
 univention-updater (14.0.0-10) unstable; urgency=low
 
   * Bug #46600: Fix local repository dists Packages setup

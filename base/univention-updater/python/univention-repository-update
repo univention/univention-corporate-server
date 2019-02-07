@@ -33,7 +33,6 @@ Update a local repository.
 from optparse import OptionParser
 import os
 import errno
-import re
 import shutil
 import subprocess
 import sys
@@ -45,12 +44,11 @@ import univention.updater.repository as urepo
 from univention.updater.mirror import UniventionMirror, makedirs
 from univention.updater.errors import UpdaterException, VerificationError
 from univention.updater.locking import UpdaterLock
+from univention.updater.ucs_version import UCS_Version
 
 configRegistry = ConfigRegistry()
 configRegistry.load()
 
-# regular expression matching a UCS version X.Y-Z
-_exp_version = re.compile('(?P<major>[0-9]*)\.(?P<minor>[0-9]*)-(?P<patch>[0-9]*)')
 # base directory for local repository
 _mirror_base = configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
 # directory of current version's repository
@@ -63,12 +61,11 @@ def copy_repository(options, source, version):
     print >>options.teefile, 'Please be patient, copying packages ...',
     sys.stdout.flush()
 
-    version = _exp_version.match(version).groupdict()
-    dest_repo = os.path.join(_mirror_base, 'mirror', '%(major)s.%(minor)s/maintained/%(major)s.%(minor)s-%(patch)s' % version)
+    dest_repo = os.path.join(_mirror_base, 'mirror', '%(major)s.%(minor)s/maintained/%(major)s.%(minor)s-%(patchlevel)s' % version)
 
     # check if repository already exists
     if os.path.isdir(os.path.join(dest_repo)):
-        print >> options.teefile, '\nWarning: repository for UCS version %(major)s.%(minor)s-%(patch)s already exists' % version
+        print >> options.teefile, '\nWarning: repository for UCS version %(major)s.%(minor)s-%(patchlevel)s already exists' % version
     else:
         # create directory structure
         for arch in urepo.ARCHITECTURES:
@@ -115,10 +112,15 @@ def update_cdrom(options):
         # find UCS version
         for entry in os.listdir(os.path.join(options.mount_point, 'ucs-updates')):
             directory = os.path.join(options.mount_point, 'ucs-updates', entry)
-            if os.path.isdir(directory) and _exp_version.match(entry):
+            if os.path.isdir(directory):
                 # copy repository
                 try:
-                    copy_repository(options, directory, entry)
+                    version = UCS_Version(entry)
+                except (NameError, ValueError):
+                    print >> options.teefile, "Error: Failed to parse %s" % (entry,)
+                    sys.exit(1)
+                try:
+                    copy_repository(options, directory, version)
                 except (IOError, os.error) as why:
                     print >> options.teefile, '\nError: while copying %s: %s' % (entry, why)
                     sys.exit(1)
