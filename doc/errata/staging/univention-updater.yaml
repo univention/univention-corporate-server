@@ -3,7 +3,7 @@ release: "4.3"
 version: [3]
 scope: ucs_4.3-0-errata4.3-3
 src: univention-updater
-fix: 13.0.1-70
+fix: 13.0.1-70A~4.3.0.201902070856
 desc: |
  This update addresses the following issues:
  * The packages index files under dists/ are now also mirrored. This is
