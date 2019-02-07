@@ -1,3 +1,9 @@
+ucs-test (8.0.28-265) unstable; urgency=medium
+
+  * Bug #48494: Add tests for umc widget override
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Feb 2019 11:04:13 +0100
+
 ucs-test (8.0.28-264) unstable; urgency=medium
 
   * Bug #48344: fixed docker test lib
