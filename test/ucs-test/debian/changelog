@@ -1,3 +1,9 @@
+ucs-test (9.0.0-23) unstable; urgency=medium
+
+  * Bug #48494: Add tests for umc widget override
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Feb 2019 11:09:03 +0100
+
 ucs-test (9.0.0-22) unstable; urgency=medium
 
   * Bug #48447: bump version
