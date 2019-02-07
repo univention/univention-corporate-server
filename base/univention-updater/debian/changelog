@@ -1,3 +1,10 @@
+univention-updater (14.0.0-10) unstable; urgency=low
+
+  * Bug #46600: Fix local repository dists Packages setup
+  * Bug #29505: Remove deprecated repository tools
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Feb 2019 09:14:11 +0100
+
 univention-updater (14.0.0-9) unstable; urgency=medium
 
   * Bug #48414: added releasename
