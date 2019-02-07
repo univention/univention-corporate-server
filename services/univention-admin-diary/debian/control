@@ -16,6 +16,7 @@ Architecture: all
 Depends: ${misc:Depends},
  python-univention-admin-diary (= ${binary:Version}),
  rsyslog-relp,
+ python-sqlalchemy,
  python-psycopg2,
  python-mysqldb,
  python-pyparsing,

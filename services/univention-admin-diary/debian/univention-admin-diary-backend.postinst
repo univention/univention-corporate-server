@@ -62,8 +62,8 @@ case "$1" in
 				security/packetfilter/package/univention-admin-diary/tcp/10514/all/en="rsyslog relp+TLS"
 			invoke-rc.d univention-firewall restart
 
-			invoke-rc.d rsyslog try-restart
 		fi
+		invoke-rc.d rsyslog try-restart
 		;;
 esac
 

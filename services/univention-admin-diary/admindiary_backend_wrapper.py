@@ -40,7 +40,7 @@ from functools import partial
 from pyparsing import Word, alphas, Suppress, Combine, nums, string, Regex, ParseException
 
 from univention.admindiary import DiaryEntry, get_logger
-from univention.admindiary.backend import add
+from univention.admindiary.backend import add, get_session
 
 get_logger = partial(get_logger, 'backend')
 
@@ -90,19 +90,20 @@ class RsyslogTransport(object):
 
 def stdin_to_storage():
 	rsyslog_transport = RsyslogTransport("ADMINDIARY:")
-
 	while True:
 		line = sys.stdin.readline()
 		if not line:
 			break
 		entry = rsyslog_transport.deserialize(line)
 		if entry:
-			add(entry)
+			with get_session() as session:
+				add(entry, session)
 
 
 if __name__ == "__main__":
 	try:
 		stdin_to_storage()
 	except Exception as exc:
-		get_logger().error('Processing entry failed! %s' % (exc,))
+		get_logger().error('Processing entry failed!')
+		get_logger().exception(exc)
 		raise

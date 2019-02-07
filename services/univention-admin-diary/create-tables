@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
 #
 # Copyright 2019 Univention GmbH
 #
@@ -27,6 +28,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-#cat <&0
+from univention.admindiary.backend import Base, engine, get_session, add_event, add_event_message
 
-/usr/share/univention-admin-diary/create-database
+Base.metadata.create_all(engine)
+
+with get_session() as session:
+	for event_name, messages in [
+			('USER_CREATED', {'en': 'User {0} created', 'de': 'Benutzer {0} angelegt'}),
+			('APP_ACTION_START', {'en': 'App {0}: Start of {1}', 'de': 'App {0}: Start von {1}'}),
+			('APP_ACTION_SUCCESS', {'en': 'App {0} ({1}): Success', 'de': 'App {0} ({1}): Erfolg'}),
+			('APP_ACTION_FAILURE', {'en': 'App {0} ({1}): Failure. Error {2}', 'de': 'App {0} ({1}): Fehlschlag. Fehler {2}'}),
+			('SERVER_PASSWORD_CHANGED', {'en': 'Machine account password changed successfully', 'de': 'Maschinenpasswort erfolgreich geändert'}),
+			('SERVER_PASSWORD_CHANGED_FAILED', {'en': 'Machine account password change failed', 'de': 'Änderung des Maschinenpassworts fehlgeschlagen'}),
+			]:
+		event = add_event(event_name, session)
+		for locale, message in messages.iteritems():
+			add_event_message(event.id, locale, message, True, session)

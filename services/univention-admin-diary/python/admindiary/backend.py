@@ -28,9 +28,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import datetime
 from contextlib import contextmanager
 from functools import partial
+
+import sqlalchemy
+from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Sequence, Text, DateTime, func, Table
 
 from univention.config_registry import ConfigRegistry
 
@@ -46,188 +50,262 @@ dbhost = ucr.get('admin/diary/dbhost', 'localhost')
 
 get_logger = partial(get_logger, 'backend')
 
-@contextmanager
-def connection(module):
-	if dbms == 'mysql':
-		conn = module.connect(db='admindiary', user='admindiary', host=dbhost, passwd=password)
-	elif dbms == 'postgresql':
-		conn = module.connect(dbname='admindiary', user='admindiary', host=dbhost, password=password)
-	yield conn
-	conn.commit()
-	conn.close()
-
+db_url = '%s://admindiary:%s@%s/admindiary' % (dbms, password, dbhost)
+engine = sqlalchemy.create_engine(db_url, echo=True)
+Session = sessionmaker(bind=engine)
 
 @contextmanager
-def cursor(module):
-	with connection(module) as conn:
-		cur = conn.cursor()
-		yield cur
+def get_session():
+	session = Session()
+	yield session
+	session.commit()
+	session.close()
 
 
-if ucr.get('admin/diary/dbms') == 'postgresql':
-	import psycopg2
 
-	def _postgresql_add_with_cursor(entry, cur):
-		if entry.event_name == 'COMMENT':
-			entry_message = entry.message.get('en')
-			event_id = None
+
+Base = declarative_base()
+
+entry_args = Table('entry_args', Base.metadata,
+    Column('entry_id', ForeignKey('entries.id'), primary_key=True),
+    Column('arg_id', ForeignKey('args.id'), primary_key=True)
+)
+entry_tags = Table('entry_tags', Base.metadata,
+    Column('entry_id', ForeignKey('entries.id'), primary_key=True),
+    Column('tag_id', ForeignKey('tags.id'), primary_key=True)
+)
+
+class Event(Base):
+	__tablename__ = 'events'
+
+	id = Column(Integer, Sequence('event_id_seq'), primary_key=True)
+	name = Column(String(255), nullable=False, unique=True, index=True)
+
+class EventMessage(Base):
+	__tablename__ = 'event_messages'
+
+	event_id = Column(None, ForeignKey('events.id', ondelete='CASCADE'), primary_key=True)
+	locale = Column(String(255), nullable=False, primary_key=True)
+	message = Column(Text, nullable=False)
+	locked = Column(Boolean)
+
+class Entry(Base):
+	__tablename__ = 'entries'
+
+	id = Column(Integer, Sequence('entry_id_seq'), primary_key=True)
+	username = Column(String(255), nullable=False, index=True)
+	hostname = Column(String(255), nullable=False, index=True)
+	message = Column(Text)
+	timestamp = Column(DateTime(timezone=True), index=True)
+	context_id = Column(String(255), index=True)
+	event_id = Column(None, ForeignKey('events.id', ondelete='RESTRICT'), nullable=True)
+	main_id = Column(None, ForeignKey('entries.id', ondelete='CASCADE'), nullable=True)
+
+	event = relationship('Event')
+	tags = relationship('Tag',
+                        secondary=entry_tags,
+                        back_populates='entries'
+                        )
+	args = relationship('Arg',
+                        secondary=entry_args,
+                        back_populates='entries'
+                        )
+
+class Tag(Base):
+	__tablename__ = 'tags'
+
+	id = Column(Integer, Sequence('tag_id_seq'), primary_key=True)
+	name = Column(String(255), nullable=False, unique=True, index=True)
+
+	entries = relationship('Entry',
+                        secondary=entry_tags,
+                        back_populates='tags'
+                        )
+
+class Arg(Base):
+	__tablename__ = 'args'
+
+	id = Column(Integer, Sequence('arg_id_seq'), primary_key=True)
+	value = Column(String(255), nullable=False, unique=True, index=True)
+
+	entries = relationship('Entry',
+                        secondary=entry_args,
+                        back_populates='args'
+                        )
+
+def translate(event_name, locale, session):
+	key = (event_name, locale)
+	if key not in translate._cache:
+		event_message = session.query(EventMessage).filter(EventMessage.event_id == Event.id, EventMessage.locale == locale, Event.name == event_name).one_or_none()
+		if event_message:
+			translation = event_message.message
 		else:
-			get_logger().debug('Searching for Event %s' % entry.event_name)
-			entry_message = None
-			cur.execute("INSERT INTO events (name) VALUES (%s) ON CONFLICT DO NOTHING", (entry.event_name,))
-			cur.execute("SELECT id FROM events WHERE name = %s", (entry.event_name,))
-			event_id = cur.fetchone()[0]
-			get_logger().debug('Found Event ID %s' % event_id)
-			if entry.message:
-				for locale, message in entry.message.iteritems():
-					get_logger().debug('Trying to insert message for %s' % locale)
-					cur.execute("SELECT * FROM event_message_translations WHERE event_id = %s AND locale = %s", (event_id, locale))
-					if not cur.fetchone():
-						get_logger().debug('Found no existing one. Inserting %r' % message)
-						cur.execute("INSERT INTO event_message_translations (event_id, locale, locked, message) VALUES (%s, %s, FALSE, %s)", (event_id, locale, message))
-			else:
-				get_logger().debug('No further message given, though')
-		cur.execute("INSERT INTO entries (username, hostname, message, args, timestamp, tags, context_id, event_id, main_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, (SELECT MIN(id) FROM entries WHERE context_id = %s))", (entry.username, entry.hostname, entry_message, entry.args, entry.timestamp, entry.tags, entry.context_id, event_id, entry.context_id))
-		get_logger().info('Successfully added %s to postgresql. (%s)' % (entry.context_id, entry.event_name))
+			translation = None
+		translate._cache[key] = translation
+	else:
+		translation = translate._cache[key]
+	return translation
+translate._cache = {}
 
-	def _postgresql_add(entry):
-		with cursor(psycopg2) as cur:
-			_postgresql_add_with_cursor(entry, cur)
+def options(session):
+	ret = {}
+	ret['tags'] = [tag.name for tag in session.query(Tag).all()]
+	ret['usernames'] = [username[0] for username in session.query(Entry.username).distinct()]
+	ret['hostnames'] = [hostname[0] for hostname in session.query(Entry.hostname).distinct()]
+	ret['events'] = [event.name for event in session.query(Event).all()]
+	return ret
 
-	def _one_query(cur, ids, query, *params):
-		cur.execute(query, params)
-		rows = cur.fetchall()
+def add_arg(value, session):
+	obj = session.query(Arg).filter(Arg.value == value).one_or_none()
+	if obj is None:
+		obj = Arg(value=value)
+		session.add(obj)
+		session.flush()
+	return obj
+
+def add_tag(name, session):
+	obj = session.query(Tag).filter(Tag.name == name).one_or_none()
+	if obj is None:
+		obj = Tag(name=name)
+		session.add(obj)
+		session.flush()
+	return obj
+
+def add_event(name, session):
+	obj = session.query(Event).filter(Event.name == name).one_or_none()
+	if obj is None:
+		obj = Event(name=name)
+		session.add(obj)
+		session.flush()
+	return obj
+
+def add_event_message(event_id, locale, message, force, session):
+	event_message_query = session.query(EventMessage).filter(EventMessage.locale == locale, EventMessage.event_id == event_id)
+	event_message = event_message_query.one_or_none()
+	if event_message is None:
+		event_message = EventMessage(event_id=event_id, locale=locale, message=message, locked=force)
+		session.add(event_message)
+		session.flush()
+		return True
+	else:
+		if force:
+			event_message_query.update({'locked': True, 'message': message})
+			session.flush()
+			return True
+	return False
+
+def add(diary_entry, session):
+	if diary_entry.event_name == 'COMMENT':
+		entry_message = diary_entry.message.get('en')
+		event_id = None
+	else:
+		get_logger().debug('Searching for Event %s' % diary_entry.event_name)
+		entry_message = None
+		event = add_event(diary_entry.event_name, session)
+		event_id = event.id
+		get_logger().debug('Found Event ID %s' % event.id)
+		if diary_entry.message:
+			for locale, message in diary_entry.message.iteritems():
+				get_logger().debug('Trying to insert message for %s' % locale)
+				if add_event_message(event.id, locale, message, False, session):
+					get_logger().debug('Found no existing one. Inserted %r' % message)
+		else:
+			get_logger().debug('No further message given, though')
+	entry = Entry(username=diary_entry.username, hostname=diary_entry.hostname, timestamp=diary_entry.timestamp, context_id=diary_entry.context_id, event_id=event_id, message=entry_message)
+	session.add(entry)
+	main_id = session.query(func.min(Entry.id)).filter(Entry.context_id == entry.context_id).scalar()
+	if main_id:
+		entry.main_id = main_id
+	session.flush()
+	for tag in diary_entry.tags:
+		tag = add_tag(tag, session)
+		entry.tags.append(tag)
+	for arg in diary_entry.args:
+		arg = add_arg(arg, session)
+		entry.args.append(arg)
+	get_logger().info('Successfully added %s to %s. (%s)' % (diary_entry.context_id, engine.url.drivername, diary_entry.event_name))
+
+def _one_query(ids, result):
+	if ids is not None and not ids:
+		return set()
+	new_ids = set()
+	for entry in result:
+		new_ids.add(entry.main_id)
+	if ids is None:
+		return new_ids
+	else:
+		return ids.intersection(new_ids)
+
+def query(session, time_from=None, time_until=None, tag=None, event=None, username=None, hostname=None, message=None, locale='en'):
+	ids = None
+	if time_from:
+		ids = _one_query(ids, session.query(Entry).filter(Entry.timestamp >= time_from))
+	if time_until:
+		ids = _one_query(ids, session.query(Entry).filter(Entry.timestamp < time_until))
+	if tag:
+		ids = _one_query(ids, session.query(Entry).filter(Entry.tags.any(Tag.name == tag)))
+	if event:
+		ids = _one_query(ids, session.query(Entry).filter(Entry.event.has(name=event)))
+	if username:
+		ids = _one_query(ids, session.query(Entry).filter(Entry.username == username))
+	if hostname:
+		ids = _one_query(ids, session.query(Entry).filter(Entry.hostname == hostname))
+	if message:
+		pattern_ids = set()
+		for pat in message.split():
+			pattern_ids.update(_one_query(None, session.query(Entry).filter(Entry.message.ilike('%{}%'.format(pat)))))
+			pattern_ids.update(_one_query(None, session.query(Entry).join(EventMessage, Entry.event_id == EventMessage.event_id).filter(Entry.event_id == EventMessage.event_id, EventMessage.locale == locale, EventMessage.message.ilike('%{}%'.format(pat)))))
+			pattern_ids.update(_one_query(None, session.query(Entry).filter(Entry.args.any(Arg.value == pat))))
 		if ids is None:
-			ids = set()
-			for row in rows:
-				ids.add(row[1] or row[0])
+			ids = pattern_ids
 		else:
-			new_ids = set()
-			for row in rows:
-				new_ids.add(row[1] or row[0])
-			ids.intersection_update(new_ids)
-		return ids
-
-	def _postgresql_query(time_from=None, time_until=None, tag=None, event=None, username=None, hostname=None, message=None, locale='en'):
-		with cursor(psycopg2) as cur:
-			args = ['id', 'username', 'hostname', 'message', 'args', 'timestamp', 'tags', 'context_id', 'event_name', 'amendments']
-			ids = None
-			if time_from:
-				ids = _one_query(cur, ids, "SELECT id, main_id FROM entries WHERE timestamp > %s", time_from)
-			if time_until:
-				ids = _one_query(cur, ids, "SELECT id, main_id FROM entries WHERE timestamp < %s", time_until)
-			if tag:
-				ids = _one_query(cur, ids, "SELECT id, main_id FROM entries WHERE tags @> %s::varchar[]", [tag])
-			if event:
-				ids = _one_query(cur, ids, "SELECT e.id, e.main_id FROM entries e INNER JOIN events ev on ev.id = e.event_id WHERE ev.name = %s", event)
-			if username:
-				ids = _one_query(cur, ids, "SELECT id, main_id FROM entries WHERE username = %s ", username)
-			if hostname:
-				ids = _one_query(cur, ids, "SELECT id, main_id FROM entries WHERE hostname = %s ", hostname)
-			if message:
-				pattern_ids = set()
-				for pat in message.split():
-					pattern_ids.update(_one_query(cur, None, "SELECT id, main_id FROM entries WHERE message ILIKE %s ", '%%%s%%' % pat))
-					pattern_ids.update(_one_query(cur, None, "SELECT e.id, e.main_id FROM entries e INNER JOIN event_message_translations ev on ev.event_id = e.event_id WHERE ev.locale = %s AND ev.message ILIKE %s ", locale, '%%%s%%' % pat))
-					pattern_ids.update(_one_query(cur, ids, "SELECT id, main_id FROM entries WHERE args @> %s::varchar[]", [pat]))
-				if ids is None:
-					ids = pattern_ids
-				else:
-					ids.intersection_update(pattern_ids)
-			if ids is None:
-				cur.execute("SELECT %s, ev.name, (SELECT COUNT(e2.*) FROM entries e2 WHERE e2.main_id = e.id) as amendments FROM entries e INNER JOIN events ev ON ev.id = e.event_id WHERE e.main_id IS NULL" % ', '.join(['e.%s' % a for a in args[:-2]]))
-			else:
-				if not ids:
-					return []
-				cur.execute("SELECT %s, ev.name, (SELECT COUNT(e2.*) FROM entries e2 WHERE e2.main_id = e.id) as amendments FROM entries e INNER JOIN events ev ON ev.id = e.event_id WHERE e.id IN %%s" % ', '.join(['e.%s' % a for a in args[:-2]]), (tuple(ids),))
-			rows = cur.fetchall()
-			res = [dict(zip(args, row)) for row in rows]
-			return res
-
-	def _postgresql_get(context_id):
-		with cursor(psycopg2) as cur:
-			args = ['id', 'username', 'hostname', 'message', 'args', 'timestamp', 'tags', 'context_id', 'event_name']
-			cur.execute("SELECT %s, COALESCE(ev.name, 'COMMENT') FROM entries e FULL JOIN events ev ON ev.id = e.event_id WHERE e.context_id = %%s" % ', '.join(['e.%s' % a for a in args[:-1]]), (context_id,))
-			rows = cur.fetchall()
-			res = [dict(zip(args, row)) for row in rows]
-			return res
-
-	def _postgresql_translate(event_name, locale):
-		key = (event_name, locale)
-		if key not in _postgresql_translate._cache:
-			with cursor(psycopg2) as cur:
-				cur.execute("SELECT et.message FROM event_message_translations et INNER JOIN events ev ON ev.id = et.event_id WHERE ev.name = %s AND et.locale = %s", (event_name, locale))
-				row = cur.fetchone()
-				if row:
-					translation = row[0]
-				else:
-					translation = None
-				_postgresql_translate._cache[key] = translation
+			ids.intersection_update(pattern_ids)
+	if ids is None:
+		entries = session.query(Entry).filter(Entry.main_id == Entry.id)
+	else:
+		entries = session.query(Entry).filter(Entry.id.in_(ids))
+	res = []
+	for entry in entries:
+		event = entry.event
+		if event:
+			event_name = event.name
 		else:
-			translation = _postgresql_translate._cache[key]
-		return translation
-	_postgresql_translate._cache = {}
+			event_name = 'COMMENT'
+		args = [arg.value for arg in entry.args]
+		group = session.query(Entry).filter(Entry.context_id == entry.context_id).count()
+		res.append({
+			'id': entry.id,
+			'date': entry.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+			'event_name': event_name,
+			'hostname': entry.hostname,
+			'username': entry.username,
+			'context_id': entry.context_id,
+			'message': entry.message,
+			'args': args,
+			'amendments': group > 1,
+		})
+	return res
 
-	def _postgresql_options():
-		ret = {}
-		with cursor(psycopg2) as cur:
-			cur.execute("SELECT DISTINCT UNNEST(tags) FROM entries")
-			ret['tags'] = [row[0] for row in cur.fetchall()]
-			cur.execute("SELECT DISTINCT username FROM entries")
-			ret['usernames'] = [row[0] for row in cur.fetchall()]
-			cur.execute("SELECT DISTINCT hostname FROM entries")
-			ret['hostnames'] = [row[0] for row in cur.fetchall()]
-			cur.execute("SELECT name FROM events")
-			ret['events'] = [row[0] for row in cur.fetchall()]
-		return ret
-
-	add = _postgresql_add
-	query = _postgresql_query
-	get = _postgresql_get
-	translate = _postgresql_translate
-	options = _postgresql_options
-elif ucr.get('admin/diary/dbms') == 'mysql':
-	import MySQLdb
-
-	def _mysql_add(entry):
-		with cursor(MySQLdb) as cur:
-			cur.execute("INSERT INTO entries (username, hostname, message, timestamp, context_id, event_name) VALUES (%s, %s, %s, %s, %s, %s)", (entry.username, entry.hostname, entry.message, entry.timestamp, entry.context_id, entry.event_name))
-			entry_id = cur.lastrowid
-			for arg in entry.args:
-				cur.execute("INSERT INTO arguments (log_entry_id, arg) VALUES (%s, %s)", (entry_id, arg))
-			for tag in entry.tags:
-				cur.execute("INSERT INTO tags (log_entry_id, tag) VALUES (%s, %s)", (entry_id, tag))
-		get_logger().info('Successfully added %s to mysql. (%s)' % (entry.context_id, entry.event_name))
-
-	def _mysql_query():
-		with cursor(MySQLdb) as cur:
-			args = ['id', 'username', 'hostname', 'message', 'timestamp', 'context_id', 'event_name']
-			cur.execute("SELECT %s FROM entries" % ', '.join(args))
-			rows = cur.fetchall()
-			res = [dict(zip(args, row)) for row in rows]
-			for row in res:
-				entry_id = row.pop('id')
-				rows = cur.execute("SELECT arg FROM arguments WHERE log_entry_id = %s", (entry_id,))
-				row['args'] = [row['arg'] for row in rows]
-				rows = cur.execute("SELECT tag FROM tags WHERE log_entry_id = %s", (entry_id,))
-				row['tags'] = [row['tag'] for row in rows]
-				for k, v in row.items():
-					if isinstance(v, datetime.datetime):
-						row[k] = v.isoformat()
-			return res
-	add = _mysql_add
-	query = _mysql_query
-else:
-	def _no_add(entry):
-		raise NotImplementedError()
-	def _no_query():
-		raise NotImplementedError()
-	def _no_get():
-		raise NotImplementedError()
-	def _no_translate():
-		raise NotImplementedError()
-
-	add = _no_add
-	query = _no_query
-	get = _no_get
-	translate = _no_translate
+def get(context_id, session):
+	res = []
+	for entry in session.query(Entry).filter(Entry.context_id == context_id):
+		args = [arg.value for arg in entry.args]
+		tags = [tag.name for tag in entry.tags]
+		event = entry.event
+		if event:
+			event_name = event.name
+		else:
+			event_name = 'COMMENT'
+		obj = {
+			'id': entry.id,
+			'username': entry.username,
+			'hostname': entry.hostname,
+			'message': entry.message,
+			'args': args,
+			'date': entry.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+			'tags': tags,
+			'context_id': entry.context_id,
+			'event_name': event_name,
+		}
+		res.append(obj)
+	return res
