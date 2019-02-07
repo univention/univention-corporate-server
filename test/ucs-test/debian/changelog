@@ -1,3 +1,9 @@
+ucs-test (9.0.0-19) unstable; urgency=low
+
+  * Bug #47718: use correct username for postfix' smtp-sink
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 07 Feb 2019 17:58:02 +0100
+
 ucs-test (9.0.0-18) unstable; urgency=medium
 
   * Bug #47955: credentials for 51_samba4/53create_spn_account
