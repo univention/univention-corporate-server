@@ -41,6 +41,7 @@ import urllib2
 import threading
 import requests
 import json
+import ssl
 
 
 class UCSTest_Docker_Exception(Exception):
@@ -116,6 +117,25 @@ def tiny_app(name=None, version=None):
 		DockerScriptUpdateAppVersion='',
 	)
 	return app
+    
+def tiny_app_apache(name=None, version=None):
+	name = name or get_app_name()
+	version = version or '1'
+	app = App(name=name, version=version, build_package=False)
+	app.set_ini_parameter(
+		DockerImage='nimmis/alpine-apache',
+		DockerScriptInit='/boot.sh',
+		DockerScriptSetup='',
+		DockerScriptStoreData='',
+		DockerScriptRestoreDataBeforeSetup='',
+		DockerScriptRestoreDataAfterSetup='',
+		DockerScriptUpdateAvailable='',
+		DockerScriptUpdatePackages='',
+		DockerScriptUpdateRelease='',
+		DockerScriptUpdateAppVersion='',
+	)
+return app
+
 
 
 def get_docker_appbox_image():
@@ -507,6 +527,54 @@ mkdir /var/www/%(app_name)s
 echo "TEST-%(app_name)s" >>/var/www/%(app_name)s/index.txt
 /usr/share/univention-docker-container-mode/setup "$@"
 ''' % {'app_name': self.app_name})
+                
+        def configure_tinyapp_modproxy(self):
+		fqdn = '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
+		self.execute_command_in_container('apk add apache2-ssl')
+		self.execute_command_in_container("sed -i 's#/var/www/localhost/htdocs#/web/html#g' /etc/apache2/conf.d/ssl.conf")
+		self.execute_command_in_container("sed -i 's#/var/www/localhost/cgi-bin#/web/cgi-bin#g' /etc/apache2/conf.d/ssl.conf")
+		self.execute_command_in_container("sed -i 's#www.example.com#%s#g' /etc/apache2/conf.d/ssl.conf" % fqdn)
+		self.execute_command_in_container('cp /etc/apache2/conf.d/ssl.conf /web/config/conf.d')
+		self.execute_command_in_container('sv restart apache2')
+		self.execute_command_in_container('cat  /etc/ssl/apache2/server.pem > /root/server.pem')
+		self.execute_command_in_container('mkdir /web/html/%s' % self.app_name)
+		self.execute_command_in_container('/bin/sh -c "echo TEST-%s > /web/html/%s/index.txt"' % (self.app_name, self.app_name))
+
+	def verify_basic_modproxy_settings_tinyapp(self, http=True, https=True):
+		fqdn = '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
+		test_string = 'TEST-%s\n' % self.app_name
+		if http is not None:
+			try:
+                            response = urllib2.urlopen('http://%s/%s/index.txt' % (fqdn, self.app_name))
+			except urllib2.HTTPError:
+				if http:
+					raise
+			else:
+				html = response.read()
+				if http:
+                                        correct = html == test_string
+				else:
+					correct = html != test_string
+				if not correct:
+					raise UCSTest_DockerApp_ModProxyFailed('Got: %r\nTested against: %r\nTested equality: %r' % (html, test_string, http))
+
+		if https is not None:
+			try:
+                            ctx = ssl.create_default_context()
+                            ctx.check_hostname = False
+                            ctx.verify_mode = ssl.CERT_NONE
+                            response = urllib2.urlopen('https://%s/%s/index.txt' % (fqdn, self.app_name), context=ctx)
+			except urllib2.HTTPError:
+				if https:
+					raise
+			else:
+				html = response.read()
+                		if https:
+					correct = html == test_string
+				else:
+					correct = html != test_string
+				if not correct:
+					raise UCSTest_DockerApp_ModProxyFailed('Got: %r\nTested against: %r\nTested equality: %r' % (html, test_string, https))
 
 	def verify_basic_modproxy_settings(self, http=True, https=True):
 		fqdn = '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
