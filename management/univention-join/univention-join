@@ -851,7 +851,7 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 
 	echo -n "Purging translog database: "
 	/etc/init.d/slapd stop >>/var/log/univention/join.log 2>&1
-	/usr/share/univention-ldap/setup-translog init --force >>"$LOG" 2>&1 || :
+	rm -rf /var/lib/univention-ldap/translog
 	echo -e "\033[60Gdone"
 
 	echo -n "Restart LDAP Server: "
