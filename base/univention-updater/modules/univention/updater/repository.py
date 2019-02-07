@@ -30,15 +30,17 @@ Univention Updater helper functions for managing a local repository.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import gzip
+from __future__ import absolute_import
 import os
 import shutil
 import subprocess
 import sys
+import gzip
 
-import univention.config_registry as ucr
+from univention.config_registry import ConfigRegistry
+from .ucs_version import UCS_Version  # noqa F401
 
-configRegistry = ucr.ConfigRegistry()
+configRegistry = ConfigRegistry()
 configRegistry.load()
 
 # constants
@@ -58,19 +60,16 @@ class TeeFile(object):
         :param fds: A list of opened files.
         :type fds: list(File)
         """
-        if not fds:
-            self.fds = [sys.stdout]
-        else:
-            self._fds = fds
+        self._fds = fds or [sys.stdout]
 
-    def write(self, str):
+    def write(self, data):
         """
         Write string to all registered files.
 
-        :param str str: The string to write.
+        :param str data: The string to write.
         """
         for fd in self._fds:
-            fd.write(str)
+            fd.write(data)
             fd.flush()
 
 
@@ -79,12 +78,10 @@ def gzip_file(filename):
     Compress file.
 
     :param str filename: The file name of the file to compress.
+    :returns: the process exit code.
+    :rtype: int
     """
-    f_in = open(filename, 'rb')
-    f_out = gzip.open('%s.gz' % filename, 'wb')
-    f_out.writelines(f_in)
-    f_out.close()
-    f_in.close()
+    return subprocess.call(('gzip', '--keep', '--force', '--no-name', '-9', filename))
 
 
 def copy_package_files(source_dir, dest_dir):
@@ -95,39 +92,38 @@ def copy_package_files(source_dir, dest_dir):
     :param str dest_dir: Destination directory.
     """
     for filename in os.listdir(source_dir):
-        if os.path.isfile(os.path.join(source_dir, filename)) and (filename.endswith('.deb') or filename.endswith('.udeb')):
+        src = os.path.join(source_dir, filename)
+        if not os.path.isfile(src):
+            continue
+        if filename.endswith('.deb') or filename.endswith('.udeb'):
             try:
                 arch = filename.rsplit('_', 1)[-1].split('.', 1)[0]  # partman-btrfs_10.3.201403242318_all.udeb
             except (TypeError, ValueError):
                 print >> sys.stderr, "Warning: Could not determine architecture of package '%s'" % filename
                 continue
-            src = os.path.join(source_dir, filename)
             src_size = os.stat(src)[6]
             dest = os.path.join(dest_dir, arch, filename)
             # package already exists with correct size
             if os.path.isfile(dest) and os.stat(dest)[6] == src_size:
                 continue
-            try:
-                shutil.copy2(src, dest)
-            except shutil.Error:
-                print >> sys.stderr, "Copying package '%s' failed." % filename
-        if filename in ('preup.sh', 'preup.sh.gpg', 'postup.sh', 'postup.sh.gpg'):
-            src = os.path.join(source_dir, filename)
+        elif filename in ('preup.sh', 'preup.sh.gpg', 'postup.sh', 'postup.sh.gpg'):
             dest = os.path.join(dest_dir, 'all', filename)
+        else:
+            continue
+        try:
             shutil.copy2(src, dest)
+        except shutil.Error as ex:
+            print >> sys.stderr, "Copying '%s' failed: %s" % (src, ex)
 
 
-def update_indexes(base_dir, update_only=False, dists=False, stdout=None, stderr=None):
+def update_indexes(base_dir, update_only=False, stdout=None, stderr=None):
     """
-    Re-generate Debian :file:`Packages` files including :file:`dists/` for all architectures.
+    Re-generate Debian :file:`Packages` files for all architectures.
 
     :param str base_dir: Base directory, which contains the per architecture sub directories.
     :param bool update_only: Only update already existing files - skip missing files.
-    :param bool dists: Also generate :file:`Packages` files in :file:`dists/` subdirectory.
     :param file stdout: Override standard output. Defaults to :py:obj:`sys.stdout`.
     :param file stderr: Override standard error output. Defaults to :py:obj:`sys.stderr`.
-
-    See :py:func:`create_packages` for a variant supporting a single directory only.
     """
     # redirekt output
     if not stdout:
@@ -140,80 +136,65 @@ def update_indexes(base_dir, update_only=False, dists=False, stdout=None, stderr
     for arch in ARCHITECTURES:
         if not os.path.isdir(os.path.join(base_dir, arch)):
             continue
-        if update_only and not os.path.isfile(os.path.join(base_dir, arch, 'Packages')):
+        pkgname = os.path.join(base_dir, arch, 'Packages')
+        if update_only and not os.path.isfile(pkgname):
             continue
         print >> stdout, arch,
         stdout.flush()
         # create Packages file
-        packages_fd = open(os.path.join(base_dir, arch, 'Packages'), 'w')
+        packages_fd = open(pkgname, 'w')
         pwd, child = os.path.split(base_dir)
         ret = subprocess.call(['apt-ftparchive', 'packages', os.path.join(child, arch)], stdout=packages_fd, stderr=stderr, cwd=pwd)
         packages_fd.close()
 
         if ret:
-            print >> stderr, "Error: Failed to create Packages file for '%s'" % os.path.join(base_dir, arch)
+            print >> stderr, "Error: Failed to create '%s'" % pkgname
             sys.exit(1)
 
         # create Packages.gz file
-        gzip_file(os.path.join(base_dir, arch, 'Packages'))
-
-        if ret:
+        if gzip_file(pkgname):
             print >> stdout, 'failed.'
-            print >> stderr, "Error: Failed to create Packages.gz file for '%s'" % os.path.join(base_dir, arch)
+            print >> stderr, "Error: Failed to compress '%s'" % pkgname
             sys.exit(1)
-
-    # create Packages file in dists directory if it exists
-    if dists and os.path.isdir(os.path.join(base_dir, 'dists')):
-        for arch in ('i386', 'amd64'):
-            if not os.path.isdir(os.path.join(base_dir, 'dists/univention/main', 'binary-%s' % arch)):
-                continue
-            packages_file = os.path.join(base_dir, 'dists/univention/main', 'binary-%s' % arch, 'Packages')
-            packages_fd = open(packages_file, 'w')
-            ret = subprocess.call(['apt-ftparchive', 'packages', 'all'], stdout=packages_fd, stderr=stderr, cwd=base_dir)
-            packages_fd.close()
-            packages_fd = open(packages_file, 'a')
-            ret = subprocess.call(['apt-ftparchive', 'packages', '%s' % arch], stdout=packages_fd, stderr=stderr, cwd=base_dir)
-            packages_fd.close()
-            gzip_file(packages_file)
 
     print >> stdout, 'done.'
 
 
-def create_packages(base_dir, source_dir):
+def gen_indexes(base, version):  # type: (str, UCS_Version) -> None
     """
-    Re-generate Debian `Packages` file for a single architecture directory.
+    Re-generate Debian :file:`Packages` files from file:`dists/` file.
 
-    :param str base_dir: Base directory. From here `apt-ftparchive` is called.
-    :param str source_dir: A sub directory. For this `apt-ftparchive` is called.
-
-    See :py:func:`update_indexes` for a variant supporting multiple architectures.
-
-    .. deprecated:: 4.3
-
-    This is only used by :program:`univention-repository-addpackage` and :program:`univention-repository-delpackage`.
+    :param str base: Base directory, which contains the per architecture sub directories.
     """
-    # recreate Packages file
-    if not os.path.isdir(os.path.join(base_dir, source_dir)) or not os.path.isfile(os.path.join(base_dir, source_dir, 'Packages')):
-        return
-
-    pkg_file = os.path.join(base_dir, source_dir, 'Packages')
-    # create a backup
-    if os.path.exists(pkg_file):
-        shutil.copyfile(pkg_file, '%s.SAVE' % pkg_file)
-
-    packages_fd = open(pkg_file, 'w')
-    ret = subprocess.call(['apt-ftparchive', 'packages', source_dir], stdout=packages_fd, cwd=base_dir)
-    packages_fd.close()
-
-    if ret:
-        print >> sys.stderr, "Error: Failed to create Packages file for '%s'" % os.path.join(base_dir, source_dir)
-        # restore backup
-        if os.path.exists('%s.SAVE' % pkg_file):
-            shutil.copyfile('%s.SAVE' % pkg_file, pkg_file)
-        sys.exit(1)
-
-    # create Packages.gz file
-    gzip_file(os.path.join(base_dir, source_dir, 'Packages'))
+    A = 'Architecture: '
+    F = 'Filename: '
+    print '  generating index ...',
+    for arch in ARCHITECTURES:
+        if arch == 'all':
+            continue
+        src = os.path.join(
+            base,
+            'dists',
+            'ucs%d%d%d' % version.mmp,
+            'main',
+            'binary-%s' % (arch,),
+            'Packages.gz',
+        )
+        if not os.path.exists(src):
+            continue
+        lines = []
+        with gzip.open(src, 'rb') as f_src, open(os.path.join(base, 'all', 'Packages'), 'w') as f_all, open(os.path.join(base, arch, 'Packages'), 'w') as f_arch:
+            for line in f_src:
+                if line.startswith(A):
+                    arch = line[len(A):].strip()
+                elif line.startswith(F):
+                    line = F + line[len(F):].lstrip('/')
+                lines.append(line)
+                if line == '\n':
+                    f = f_all if arch == 'all' else f_arch
+                    f.write(''.join(lines))
+                    del lines[:]
+    print 'done'
 
 
 def get_repo_basedir(packages_dir):
@@ -224,34 +205,16 @@ def get_repo_basedir(packages_dir):
     :returns: The canonicalized path without the architecture sub directory.
     :rtype: str
     """
-    # cut off trailing '/'
-    if packages_dir[-1] == '/':
-        packages_dir = packages_dir[: -1]
+    path = os.path.normpath(packages_dir)
+    if os.path.isfile(os.path.join(path, 'Packages')):
+        head, tail = os.path.split(path)
+        if tail in ARCHITECTURES:
+            return head
+    elif set(os.listdir(path)) & set(ARCHITECTURES):
+        return path
 
-    # find repository base directory
-    has_arch_dirs = False
-    has_packages = False
-    for entry in os.listdir(packages_dir):
-        if os.path.isdir(os.path.join(packages_dir, entry)) and entry in ('i386', 'all', 'amd64'):
-            has_arch_dirs = True
-        elif os.path.isfile(os.path.join(packages_dir, entry)) and entry == 'Packages':
-            has_packages = True
-
-    if not has_arch_dirs:
-        # might not be a repository
-        if not has_packages:
-            print >> sys.stderr, 'Error: %s does not seem to be a repository.' % packages_dir
-            sys.exit(1)
-        head, tail = os.path.split(packages_dir)
-        if tail in ('i386', 'all', 'amd64'):
-            packages_path = head
-        else:
-            print >> sys.stderr, 'Error: %s does not seem to be a repository.' % packages_dir
-            sys.exit(1)
-    else:
-        packages_path = packages_dir
-
-    return packages_path
+    print >> sys.stderr, 'Error: %s does not seem to be a repository.' % packages_dir
+    sys.exit(1)
 
 
 def is_debmirror_installed():

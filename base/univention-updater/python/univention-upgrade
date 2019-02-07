@@ -1,7 +1,5 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# Univention Updater
 """
 Install UCS release and errata updates.
 """
@@ -40,7 +38,7 @@ import subprocess
 import traceback
 import logging
 
-import univention.config_registry
+from univention.config_registry import ConfigRegistry, handler_set
 
 from univention.updater.errors import ConfigurationError
 from univention.updater.ucs_version import UCS_Version
@@ -315,9 +313,8 @@ def do_app_updates(options, checkForUpdates, silent):
 
 
 def parse_args():
-    description = sys.modules[__name__].__doc__
     usage = "%prog [options] "
-    parser = OptionParser(usage=usage, description=description)
+    parser = OptionParser(usage=usage, description=__doc__)
     parser.set_defaults(app_updates=True)
     parser.add_option(
         "--updateto", dest="updateto", default=None,
@@ -398,7 +395,7 @@ def main():
         print 'Cannot open %s for writing' % LOGFN
         sys.exit(1)
 
-    configRegistry = univention.config_registry.ConfigRegistry()
+    configRegistry = ConfigRegistry()
     configRegistry.load()
 
     if options.noninteractive:
@@ -447,7 +444,7 @@ def do_update(options):
         sys.exit(2)
     update_status(status='DONE')
     if options.setucr and configRegistry.is_true(UCR_UPDATE_AVAILABLE) != update_available:
-        univention.config_registry.handler_set([
+        handler_set([
             '%s=%s' % (UCR_UPDATE_AVAILABLE, 'yes' if update_available else 'no'),
         ])
 

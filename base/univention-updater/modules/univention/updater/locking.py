@@ -30,11 +30,12 @@ Univention Updater locking
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
 import os
 from sys import (exit, stderr)
 from time import (time, sleep)
 from errno import (EEXIST, ESRCH, ENOENT)
-from errors import LockingError
+from .errors import LockingError
 
 
 class UpdaterLock(object):
