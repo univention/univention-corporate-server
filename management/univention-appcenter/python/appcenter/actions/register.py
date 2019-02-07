@@ -46,7 +46,7 @@ from univention.appcenter.app_cache import Apps
 from univention.appcenter.packages import reload_package_manager
 from univention.appcenter.udm import create_object_if_not_exists, get_app_ldap_object, remove_object_if_exists, create_recursive_container
 from univention.appcenter.database import DatabaseConnector, DatabaseError
-from univention.appcenter.extended_attributes import get_schema, get_extended_attributes, create_extended_attribute, remove_extended_attribute
+from univention.appcenter.extended_attributes import get_schema, get_extended_attributes, create_extended_attribute, remove_extended_attribute, create_extended_option, remove_extended_option
 from univention.appcenter.actions import StoreAppAction
 from univention.appcenter.exceptions import DatabaseConnectorError, RegisterSchemaFailed, RegisterSchemaFileFailed
 from univention.appcenter.actions.credentials import CredentialsAction
@@ -230,15 +230,18 @@ class Register(CredentialsAction):
 
 				# and this is what should be there after one line of lib.register_schema(schema_file)
 				app = app.get_app_cache_obj().copy(locale='en').find_by_component_id(app.component_id)
-				attributes, __ = get_extended_attributes(app)
+				attributes, __, options = get_extended_attributes(app)
+				for option in options:
+					self.log('Registering option %s' % option.name)
+					create_extended_option(option, app, lo, pos)
 				if attributes:
 					for i, attribute in enumerate(attributes):
 						self.log('Registering attribute %s' % attribute.name)
 						create_extended_attribute(attribute, app, i + 1, lo, pos)
 
 	def _unregister_attributes(self, app, args):
-		attributes, __ = get_extended_attributes(app)
-		if attributes:
+		attributes, __, options = get_extended_attributes(app)
+		if attributes or options:
 			lo, pos = self._get_ldap_connection(args)
 			ldap_object = get_app_ldap_object(app, lo, pos)
 			if ldap_object.get_siblings():
@@ -246,6 +249,8 @@ class Register(CredentialsAction):
 				return
 			for attribute in attributes:
 				remove_extended_attribute(attribute, lo, pos)
+			for option in options:
+				remove_extended_option(option, lo, pos)
 
 	def _register_listener_for_apps(self, apps, args):
 		if not self._shall_register(args, 'listener'):

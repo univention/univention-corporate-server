@@ -880,6 +880,8 @@ class App(object):
 
 	user_activation_required = AppBooleanAttribute()
 	generic_user_activation = AppAttributeOrTrueOrNone()
+	generic_user_activation_attribute = AppAttributeOrTrueOrNone()
+	generic_user_activation_option = AppAttributeOrTrueOrNone()
 	docker_env_ldap_user = AppAttribute()
 
 	ports_exclusive = AppListAttribute(regex='^\d+$')
