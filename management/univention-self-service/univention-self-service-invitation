@@ -102,7 +102,7 @@ class Invitation(object):
 			time.sleep(5)
 			self.logger.debug('checkig trigger dir {}'.format(os.path.join(TRIGGER_DIR, '*.send')))
 			for filename in glob.glob(os.path.join(TRIGGER_DIR, '*.send')):
-				user = os.path.basename(filename).rstrip('.send')
+				user = os.path.basename(filename).split('.send')[0]
 				self.logger.info('Found trigger for user {}'.format(user))
 				if self.is_valid_user(user):
 					self.logger.info('Sending token to {}'.format(user))
@@ -112,7 +112,7 @@ class Invitation(object):
 							raise Exception('sending token failed with status != 200: {}'.format(resp.message))
 						os.remove(filename)
 				else:
-					self.logger.debug('ignore request and delete trigger file')
+					self.logger.info('ignore request and delete trigger file for user {} (not a valid invitation account)'.format(user))
 					os.remove(filename)
 
 
