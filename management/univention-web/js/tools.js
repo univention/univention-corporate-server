@@ -49,7 +49,8 @@ define([
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Text",
 	"umc/i18n/tools",
-	"umc/i18n!"
+	"umc/i18n!",
+	"dojo/colors" // mixin for dojo.Color
 ], function(lang, array, _window, xhr, basexhr, Deferred, all, json, string, topic, cookie, Dialog, TitlePane, timing, styles, entities, ContainerWidget, ConfirmDialog, Text, i18nTools, _) {
 	// in order to break circular dependencies (umc.tools needs a Widget and
 	// the Widget needs umc/tools), we define umc/dialog as an empty object and
@@ -90,6 +91,15 @@ define([
 
 	// define umc/tools
 	lang.mixin(tools, {
+		_restArgsToArray: function(args) {
+			if (Array.isArray(args[args.callee.length])) {
+				args = args[args.callee.length];
+			} else {
+				args = Array.prototype.slice.call(args, args.callee.length);
+			}
+			return args;
+		},
+
 		_status: {
 			username: null,
 			hostname: '',
@@ -1878,6 +1888,60 @@ define([
 			};
 
 			return lang.replace('<a href="javascript:void(0)" onclick=\'require("umc/app").openModule({module}, {flavor}, {props})\'>{link}</a>', args);
+		},
+
+		contrast: function(c1, c2) {
+			var bcs = this._restArgsToArray(arguments);
+			var getSolidBackground = lang.hitch(this, function(bc) {
+				this.assert(bc, 'No background with alpha === 1 found');
+
+				var bc_ = this.colorFromArbitrary(bc);
+				if (bc_.a < 1) {
+					bc_ = dojo.blendColors(getSolidBackground(bcs.shift()), bc_, bc_.a);
+					bc_.a = 1;
+				}
+				return bc_;
+			});
+
+			var c1_ = getSolidBackground(c1);
+			var c2_ = this.colorFromArbitrary(c2);
+
+			if (c2_.a < 1) {
+				c2_ = dojo.blendColors(c1_, c2_, c2_.a);
+				c2_.a = 1;
+			}
+
+			// https://www.w3.org/TR/WCAG/#dfn-contrast-ratio
+			var l1 = this.luminance(c1_.r, c1_.g, c1_.b);
+			var l2 = this.luminance(c2_.r, c2_.g, c2_.b);
+			var lighterColor = Math.max(l1, l2);
+			var darkerColor  = Math.min(l1, l2);
+			return (lighterColor + 0.05) / (darkerColor + 0.05);
+		},
+
+		// https://www.w3.org/TR/WCAG/#dfn-relative-luminance
+		luminance: function(r, g, b) {
+			var rgb = [r, g, b].map(function(v) {
+				v = v > 1 ? v / 255 : v;
+				if (v < 0.03928) {
+					v = v / 12.92;
+				} else {
+					v = Math.pow((v + 0.055) / 1.055, 2.4);
+				}
+
+				return v;
+			});
+
+			return rgb[0] * 0.2126 + rgb[1] * 0.7152 + rgb[2] * 0.0722;
+		},
+
+		colorFromArbitrary: function(color) {
+			if (color instanceof dojo.Color) {
+				return color;
+			}
+			var color_ = Array.isArray(color) ? dojo.colorFromArray(color) : dojo.colorFromString(color);
+			this.assert(color_, 'Could not derive color from: ' + color);
+			return color_;
 		}
 	});
 
