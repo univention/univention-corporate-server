@@ -3,7 +3,7 @@ release: "4.3"
 version: [3]
 scope: ucs_4.3-0-errata4.3-3
 src: univention-directory-notifier
-fix: 12.0.1-8A~4.3.0.201902061304
+fix: 12.0.1-9A~4.3.0.201902071606
 desc: |
  This update addresses the following issues:
  * The new script univention-replicate-many can be used to re-replicate
