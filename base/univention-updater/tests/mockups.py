@@ -13,7 +13,7 @@ import univention.updater.mirror as M
 import univention.config_registry as C
 
 __all__ = [
-    'U', 'M', 'MAJOR', 'MINOR', 'PATCH', 'SEC', 'ERRAT', 'PART', 'ARCH',
+    'U', 'M', 'MAJOR', 'MINOR', 'PATCH', 'ERRAT', 'PART', 'ARCH',
     'MockConfigRegistry', 'MockUCSHttpServer', 'MockPopen', 'MockFile',
     'verbose',
 ]
@@ -181,6 +181,6 @@ def verbose(verbose_mode=True):
     U.ud.set_level(U.ud.NETWORK, level)
 
 
-sys.modules['univention.config_registry'].ConfigRegistry = MockConfigRegistry
+sys.modules['univention.updater.tools'].ConfigRegistry = MockConfigRegistry
 sys.modules['univention.updater.tools'].UCSHttpServer = U.UCSHttpServer = MockUCSHttpServer
 sys.modules['subprocess'].Popen = MockPopen

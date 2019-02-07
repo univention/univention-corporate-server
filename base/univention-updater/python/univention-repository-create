@@ -1,8 +1,8 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# Univention Updater
-#  creates a repository
+"""
+Creates a local repository.
+"""
 #
 # Copyright 2004-2019 Univention GmbH
 #
@@ -40,13 +40,13 @@ import subprocess
 import sys
 from textwrap import dedent
 
-import univention.config_registry as ucr
+from univention.config_registry import ConfigRegistry, handler_set
 import univention.updater.repository as urepo
 from univention.updater.ucs_version import UCS_Version
 from univention.updater.locking import UpdaterLock
-from univention.updater.mirror import makedirs, UniventionMirror
+from univention.updater.mirror import makedirs
 
-configRegistry = ucr.ConfigRegistry()
+configRegistry = ConfigRegistry()
 configRegistry.load()
 
 _mirror_base = configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
@@ -81,19 +81,22 @@ def check_preconditions(options):
 
 def prepare(options):
     """ Set local/repository and create directory structure """
-    # set local/repository
     if configRegistry.is_false('local/repository', True):
-        ucr.handler_set(['local/repository=yes'])
+        handler_set(['local/repository=yes'])
         configRegistry.load()
 
     if configRegistry.is_false('repository/mirror', True):
-        ucr.handler_set(['repository/mirror=yes'])
+        handler_set(['repository/mirror=yes'])
         configRegistry.load()
 
-    # create directory structure
     makedirs(_repo_base)
     for arch in urepo.ARCHITECTURES:
         makedirs(os.path.join(_repo_base, arch))
+
+    for p in ['var', 'skel']:
+        d = os.path.join(_mirror_base, p)
+        if not os.path.exists(d):
+            os.mkdir(d)
 
 
 def copy_repository(options):
@@ -108,42 +111,15 @@ def copy_repository(options):
     else:
         print 'done.'
 
-    # copy kernel and grub config
-    if options.version.major < 4:
-        print '  copying kernel and boot configuration ...',
-        boot_dest = os.path.join(_mirror_base, 'boot')
-        if os.path.isdir(boot_dest):
-            shutil.rmtree(boot_dest)
-        try:
-            shutil.copytree(os.path.join(options.mount_point, 'boot'), boot_dest)
-        except shutil.Error as ex:
-            print "failed (%s)." % (ex,)
-        else:
-            print 'done.'
-
-        # copy profiles
-        if os.path.exists(os.path.join(options.mount_point, 'profiles')):
-            print '  copying profiles ...',
-            profiles_dest = os.path.join(_mirror_base, 'profiles')
-            if os.path.isdir(profiles_dest):
-                shutil.rmtree(profiles_dest)
-            try:
-                shutil.copytree(os.path.join(options.mount_point, 'profiles'), profiles_dest)
-            except shutil.Error as ex:
-                print "failed (%s)." % (ex,)
-            else:
-                # everyone should be able to read the profiles
-                os.chmod(profiles_dest, 0o555)
-                print 'done.'
-
-        copy_dists(options)
+    copy_dists(options)
     copy_packages(options)
+    urepo.gen_indexes(_repo_base, options.version)
 
 
 def copy_packages(options):
     print '  copying packages ...',
     sys.stdout.flush()
-    for subdir in ('packages', 'all', 'amd64', 'i386'):
+    for subdir in urepo.ARCHITECTURES:
         if os.path.exists(os.path.join(options.mount_point, subdir)):
             urepo.copy_package_files(os.path.join(options.mount_point, subdir), _repo_base)
             sys.stdout.flush()
@@ -156,8 +132,7 @@ def copy_dists(options):
     if os.path.isdir(dists_dest):
         shutil.rmtree(dists_dest)
     try:
-        # handle the different dists directories (UCS installer or d-i)
-        for dists_src in (os.path.join(options.mount_point, 'packages', 'dists'), os.path.join(options.mount_point, 'dists')):
+            dists_src = os.path.join(options.mount_point, 'dists')
             if os.path.isdir(dists_src):
                 shutil.copytree(dists_src, dists_dest, symlinks=True)
     except shutil.Error as ex:
@@ -191,32 +166,18 @@ def mount(options):
             return False
 
     print "Checking medium in %s ..." % options.mount_point,
-    found_error = True
-    if os.path.isdir(os.path.join(options.mount_point, 'packages')) and os.path.isdir(os.path.join(options.mount_point, 'profiles')):
-        found_error = False
-    elif os.path.exists(os.path.join(options.mount_point, '.univention_install')) and \
+    if os.path.exists(os.path.join(options.mount_point, '.univention_install')) and \
         os.path.isdir(os.path.join(options.mount_point, 'all')) and \
         (os.path.isdir(os.path.join(options.mount_point, 'amd64')) or
          os.path.isdir(os.path.join(options.mount_point, 'i386'))):
-        found_error = False
-    if found_error:
+        pass
+    else:
         print 'failed.'
         print >> sys.stderr, 'Error: This is not an UCS installation medium.'
         return False
 
     print 'ok.'
     return True
-
-
-def setup_repository(options):
-    """ Update indexes """
-    urepo.update_indexes(_repo_base, dists=True)
-
-    basepath = configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
-    for p in ['var', 'skel']:
-        d = os.path.join(basepath, p)
-        if not os.path.exists(d):
-            os.mkdir(d)
 
 
 def setup_pxe(options):
@@ -240,10 +201,6 @@ def setup_pxe(options):
                 if os.path.islink(symlinkfn):
                     os.remove(symlinkfn)
                 os.symlink(os.path.relpath(dstfn, pxedir), symlinkfn)
-
-        print '  generating Package files for installer ...',
-        mirror = UniventionMirror(False)
-        mirror.update_dists_files()
     else:
         print 'WARNING: The usage of this DVD for PXE reinstallation is not possible.'
         print '         Please use an UCS installation DVD with UCS 4.0-0 or later.'
@@ -253,7 +210,7 @@ def main():
     for mount_point_default in ('/cdrom', '/media/cdrom', '/media/cdrom0'):
         if os.path.isdir(mount_point_default):
             break
-    parser = OptionParser(usage="usage: %prog [options]")
+    parser = OptionParser(usage="usage: %prog [options]", description=__doc__)
     parser.add_option('-n', '--non-interactive', action='store_false',
                       dest='interactive', default=True,
                       help='if given no questions are asked.')
@@ -311,7 +268,6 @@ def main():
 
         try:
             copy_repository(options)
-            setup_repository(options)
             setup_pxe(options)
         finally:
             if options.mount:
@@ -327,7 +283,7 @@ def main():
         if not end or UCS_Version(end) < options.version:
             ucr_set.append('repository/mirror/version/end=%s' % options.version)
 
-        ucr.handler_set(ucr_set)
+        handler_set(ucr_set)
 
         # create symbolic link univention-repository
         try:

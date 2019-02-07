@@ -1,9 +1,16 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# Univention Updater
-#  actualise script
-#
+"""\
+{prog}: Perform a (dist-)upgrade and (un-)install packages as set
+                      through policies
+
+usage: {prog} [-? || --help] [--dist-upgrade] [--silent] [--check]
+
+-?, --help       Show this message
+--dist-upgrade   Perform a dist-upgrade instead of a regular update
+--silent         Don't show normal output, but error messages only
+--check          Don't do anything, just check if updates are available
+"""
 # Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -40,7 +47,7 @@ import commands
 import shlex
 import subprocess
 
-import univention.config_registry as ucr
+from univention.config_registry import ConfigRegistry, handler_set, handler_unset
 from univention.updater.commands import (
     cmd_config,
     cmd_dist_upgrade,
@@ -56,7 +63,7 @@ from univention.updater.locking import UpdaterLock
 
 LOGNAME = '/var/log/univention/actualise.log'
 
-configRegistry = ucr.ConfigRegistry()
+configRegistry = ConfigRegistry()
 configRegistry.load()
 
 ldap_hostdn = configRegistry.get('ldap/hostdn')
@@ -99,16 +106,13 @@ class Tee(object):
         return ret
 
 
-def usage():
-    print "univention-actualise: Perform a (dist-)upgrade and (un-)install packages as set"
-    print "                      through policies"
-    print ""
-    print "usage: univention-actualise [-? || --help] [--dist-upgrade] [--silent] [--check]"
-    print ""
-    print "-?, --help       Show this message"
-    print "--dist-upgrade   Perform a dist-upgrade instead of a regular update"
-    print "--silent         Don't show normal output, but error messages only"
-    print "--check          Don't do anything, just check if updates are available"
+def usage(fd=sys.stdout):
+    """
+    Print usage message.
+
+    :param file fd: Override standard error output. Defaults to :py:obj:`sys.stdout`.
+    """
+    fd.write(__doc__.format(prog=os.path.basename(__file__)))
 
 
 def waitForLock():
@@ -308,7 +312,7 @@ def main():
                 pkgdb_scope, pkgdb = pkgdb_scan
                 if pkgdb:
                     # disable pkgdb in UCR scope FORCED
-                    ucr.handler_set(['pkgdb/scan=no'], {'force': True})
+                    handler_set(['pkgdb/scan=no'], {'force': True})
 
             rem_packages = getPackageList(configRegistry, 'remove')
             for package in rem_packages:
@@ -389,12 +393,12 @@ def main():
 
     finally:
         if pkgdb:
-            if pkgdb_scope == ucr.ConfigRegistry.FORCED:
+            if pkgdb_scope == ConfigRegistry.FORCED:
                 # old value was set in FORCED scope
-                ucr.handler_set(['pkgdb/scan=%s' % pkgdb], {'force': True})
+                handler_set(['pkgdb/scan=%s' % pkgdb], {'force': True})
             else:
                 # old value was set in any other scope ==> remove value in FORCED scope
-                ucr.handler_unset(['pkgdb/scan'], {'force': True})
+                handler_unset(['pkgdb/scan'], {'force': True})
 
             if str(pkgdb).lower() in ("yes", "enable", "enabled", "true", "1"):
                 if not silent:

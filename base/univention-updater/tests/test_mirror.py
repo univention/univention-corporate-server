@@ -131,10 +131,6 @@ class TestUniventionMirror(unittest.TestCase):
                 fd_script.close()
             self.assertEqual(script, value)
 
-    def test_update_dists_files(self):
-        """Test dists/univention/main/binary-$ARCH/Packages.gz generation."""
-        pass  # TODO
-
     def test_run(self):
         """Test full mirror run."""
         pass  # TODO
