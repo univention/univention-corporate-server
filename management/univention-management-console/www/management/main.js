@@ -1490,6 +1490,27 @@ define([
 					styles.insertCssRule(lang.replace('.umcGalleryWrapperItem .umcGalleryCategory-{id}.touched, .umcGalleryWrapperItem.umcGalleryItemActive .umcGalleryCategory-{id}', category), lang.replace('background-color: {0}; ', [color]));
 				} else {
 					styles.insertCssRule(lang.replace('.umcGalleryWrapperItem .umcGalleryCategory-{id}:hover, .umcGalleryWrapperItem.umcGalleryItemActive .umcGalleryCategory-{id}', category), lang.replace('background-color: {0}; ', [color]));
+
+					var contrastLight = umc.tools.contrast(color, '#fff');
+					var contrastDark  = umc.tools.contrast(color, 'rgba(0, 0, 0, 0.87)');
+					if (contrastDark > contrastLight) {
+						styles.insertCssRule(
+							lang.replace(
+								'.umcGalleryWrapperItem .umcGalleryCategory-{id}:hover .umcGalleryName, ' +
+								'.umcGalleryWrapperItem.umcGalleryItemActive .umcGalleryCategory-{id} .umcGalleryName', 
+								category
+							),
+							lang.replace('color: {0} !important;', ['rgba(0, 0, 0, 0.87)'])
+						);
+						styles.insertCssRule(
+							lang.replace(
+								'.umcGalleryWrapperItem .umcGalleryCategory-{id}:hover .umcGalleryDescription, ' +
+								'.umcGalleryWrapperItem.umcGalleryItemActive .umcGalleryCategory-{id} .umcGalleryDescription', 
+								category
+							),
+							lang.replace('color: {0} !important;', ['rgba(0, 0, 0, 0.87)'])
+						);
+					}
 				}
 				var button = new Button({
 					label: category.label,
@@ -1701,10 +1722,24 @@ define([
 			styles.insertCssRule(lang.replace('.umc .umcMoreTabsDropDownMenuContent .dijitMenuItemHover.color-{0},.umc .umcMoreTabsDropDownMenuContent .dijitMenuItemSelected.color-{0}', [module_flavor_css]), lang.replace('background-color: {0}', [color]));
 
 			// color module tabs
-			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitTabChecked', [defaultClasses, module_flavor_css]), lang.replace('background-color: {0};', [color]));
-			var dijitTabHoverColor = dojo.blendColors(dojo.colorFromHex(color), dojo.colorFromHex('#000000'), 0.05);
+			var dijitTabColor = dojo.colorFromHex(color);
+			dijitTabColor.a = 0.95;
+			var contrastLight = umc.tools.contrast(dijitTabColor, '#fff', '#6e6e6e');
+			var contrastDark  = umc.tools.contrast(dijitTabColor, 'rgba(0, 0, 0, 0.87)', '#6e6e6e');
+			if (contrastDark > contrastLight) {
+				styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitTabChecked', [defaultClasses, module_flavor_css]), lang.replace('color: {0};', ['rgba(0, 0, 0, 0.87)']));
+				styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitTabHover', [defaultClasses, module_flavor_css]), lang.replace('color: {0};', ['rgba(0, 0, 0, 0.87)']));
+				styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitTabActive', [defaultClasses, module_flavor_css]), lang.replace('color: {0};', ['rgba(0, 0, 0, 0.87)']));
+
+				// styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitTabChecked .tabLabel', [defaultClasses, module_flavor_css]), lang.replace('border-color: {0};', ['rgba(0, 0, 0, 0.87)']));
+			}
+			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitTabChecked', [defaultClasses, module_flavor_css]), lang.replace('background-color: {0};', [dijitTabColor]));
+			var dijitTabHoverColor = dijitTabColor;
+			// var dijitTabHoverColor = dojo.colorFromHex(color);
+			// dijitTabHoverColor.a = 0.95;
 			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitTabHover',   [defaultClasses, module_flavor_css]), lang.replace('background-color: {0};', [dijitTabHoverColor]));
-			var dijitTabActiveColor = dojo.blendColors(dojo.colorFromHex(color), dojo.colorFromHex('#000000'), 0.1);
+			var dijitTabActiveColor = dijitTabColor;
+			// var dijitTabActiveColor = dojo.colorFromHex(color);
 			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitTabActive',  [defaultClasses, module_flavor_css]), lang.replace('background-color: {0};', [dijitTabActiveColor]));
 
 			// color the grid header when items are selected

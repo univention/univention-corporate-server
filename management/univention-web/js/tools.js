@@ -1890,33 +1890,33 @@ define([
 			return lang.replace('<a href="javascript:void(0)" onclick=\'require("umc/app").openModule({module}, {flavor}, {props})\'>{link}</a>', args);
 		},
 
-		contrast: function(c1, c2) {
+		contrast: function(c1_, c2_) {
 			var bcs = this._restArgsToArray(arguments);
-			var getSolidBackground = lang.hitch(this, function(bc) {
+			var getSolidBackground = lang.hitch(this, function(bc_) {
 				this.assert(bc, 'No background with alpha === 1 found');
 
-				var bc_ = this.colorFromArbitrary(bc);
-				if (bc_.a < 1) {
-					bc_ = dojo.blendColors(getSolidBackground(bcs.shift()), bc_, bc_.a);
-					bc_.a = 1;
+				var bc = this.colorFromArbitrary(bc_);
+				if (bc.a < 1) {
+					bc = dojo.blendColors(getSolidBackground(bcs.shift()), bc, bc.a);
+					bc.a = 1;
 				}
 				return bc_;
 			});
 
-			var c1_ = getSolidBackground(c1);
-			var c2_ = this.colorFromArbitrary(c2);
+			var c1 = getSolidBackground(c1_);
+			var c2 = this.colorFromArbitrary(c2_);
 
-			if (c2_.a < 1) {
-				c2_ = dojo.blendColors(c1_, c2_, c2_.a);
-				c2_.a = 1;
+			if (c2.a < 1) {
+				c2 = dojo.blendColors(c1, c2, c2.a);
+				c2.a = 1;
 			}
 
 			// https://www.w3.org/TR/WCAG/#dfn-contrast-ratio
-			var l1 = this.luminance(c1_.r, c1_.g, c1_.b);
-			var l2 = this.luminance(c2_.r, c2_.g, c2_.b);
-			var lighterColor = Math.max(l1, l2);
-			var darkerColor  = Math.min(l1, l2);
-			return (lighterColor + 0.05) / (darkerColor + 0.05);
+			var l1 = this.luminance(c1.r, c1.g, c1.b);
+			var l2 = this.luminance(c2.r, c2.g, c2.b);
+			var lighterLuminance = Math.max(l1, l2);
+			var darkerLuminance  = Math.min(l1, l2);
+			return (lighterLuminance + 0.05) / (darkerLuminance + 0.05);
 		},
 
 		// https://www.w3.org/TR/WCAG/#dfn-relative-luminance
