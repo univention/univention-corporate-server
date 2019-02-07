@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.1-4) unstable; urgency=medium
+
+  * Bug #48494: fix UCRWidgets
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Feb 2019 11:11:10 +0100
+
 univention-management-console-module-udm (9.0.1-3) unstable; urgency=medium
 
   * Bug #48471: fix wrong function call
