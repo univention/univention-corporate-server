@@ -1890,21 +1890,66 @@ define([
 			return lang.replace('<a href="javascript:void(0)" onclick=\'require("umc/app").openModule({module}, {flavor}, {props})\'>{link}</a>', args);
 		},
 
-		contrast: function(c1_, c2_) {
+		/**
+		 * Returns the contrast ratio between two colors.
+		 *
+		 * The contrast ratio ranges from 1 to 21 (commonly written 1:1 to 21:1).
+		 * The higher the contrast ratio the better the colors are distinguishable from another.
+		 *
+		 * The WCAG 2.0 (Web Content Accessibility Guidelines) suggest a contrast of at leat 4.5:1
+		 * for the presentation of text on the background.
+		 * (https://www.w3.org/TR/WCAG/#contrast-minimum)
+		 *
+		 * @param {module:umc/tools~ColorLike} color1
+		 * Assumed background color  
+		 * If color1 has an opacity then the contrast ratio cannot be correctly calculated since the background of color1 is not known.
+		 * You can define the background of color1 as additional arguments (see examples).
+		 *
+		 * @param {module:umc/tools~ColorLike} color2 - Assumed foreground color
+		 *
+		 * @return {Number} Contrast ratio
+		 *
+		 * @example
+		 * calculate contrast between '#fff' (white) and [0, 0, 0] (black).
+		 * //
+		 * contrast('#fff', [0, 0, 0])
+		 * // -> 21
+		 *
+		 * The foreground color can have an opacity.  
+		 * If so, it is blended blended with the background color before calculating the contrast ratio.
+		 * //
+		 * contrast('#fff', [0, 0, 0, 0.87])
+		 * // -> 16.10
+		 *
+		 * If the background color has an opacity then the contrast ratio cannot be correctly calculated.
+		 * In that case you have to pass an additional background that lies beneath color1.  
+		 * color1 will be blended with the additional background.
+		 * //
+		 * contrast('rgba(255, 255, 255, 0.5)', [0, 0, 0], 'rgb(228, 228, 30)')
+		 * // -> 17.87
+		 *
+		 * If the additional background also has an opacity then you have to
+		 * pass further backgrounds. The last additional background has to have an alpha of 1.  
+		 * //
+		 * contrast('rgba(255, 255, 255, 0.5)', [0, 0, 0], 'rgba(228, 228, 30, 0.8)', 'rgba(110, 110, 110, 0.3)', '#000')
+		 * // -> 14.95
+		 *
+		 */
+		contrast: function(color1 /*ColorLike*/, color2 /*ColorLike*/) {
 			var bcs = this._restArgsToArray(arguments);
-			var getSolidBackground = lang.hitch(this, function(bc_) {
-				this.assert(bc, 'No background with alpha === 1 found');
+			var getSolidBackground = lang.hitch(this, function(backgroundColor) {
+				this.assert(backgroundColor, 'No background with alpha === 1 found');
 
-				var bc = this.colorFromArbitrary(bc_);
+				var bc = this.colorFromArbitrary(backgroundColor);
 				if (bc.a < 1) {
 					bc = dojo.blendColors(getSolidBackground(bcs.shift()), bc, bc.a);
 					bc.a = 1;
 				}
-				return bc_;
+				return bc;
 			});
 
-			var c1 = getSolidBackground(c1_);
-			var c2 = this.colorFromArbitrary(c2_);
+			var c1 = getSolidBackground(color1);
+			var c2 = this.colorFromArbitrary(color2);
 
 			if (c2.a < 1) {
 				c2 = dojo.blendColors(c1, c2, c2.a);
@@ -1920,6 +1965,13 @@ define([
 		},
 
 		// https://www.w3.org/TR/WCAG/#dfn-relative-luminance
+		/**
+		 * Returns the relative luminance of the given R, G, B values.
+		 * @param {Number} r - Red value between 0 and 255
+		 * @param {Number} g - Green value between 0 and 255
+		 * @param {Number} b - Blue value between 0 and 255
+		 * @returns {Number} Relative luminance
+		 */
 		luminance: function(r, g, b) {
 			var rgb = [r, g, b].map(function(v) {
 				v = v > 1 ? v / 255 : v;
@@ -1935,13 +1987,35 @@ define([
 			return rgb[0] * 0.2126 + rgb[1] * 0.7152 + rgb[2] * 0.0722;
 		},
 
-		colorFromArbitrary: function(color) {
+		/**
+		 * String or Array representing a color
+		 * @typedef {(String|Array)} ColorLike
+		 *
+		 * @description A String or an Array representing a color.  
+		 * The string must be a valid rgb, rgba, hsl, hsla or hex code (defining the alpha channel in the hex code is not supported).  
+		 * The Array must have the format [R, G, B] or [R, G, B, A] where R,G,B goes from 0 to 255 and A goes from 0 to 1.
+		 *
+		 * @example
+		 * - 'rgb(250, 200, 0)'
+		 * - 'hsla(120, 100%, 50%, 1)'
+		 * - '#000'
+		 * - '#6e6e6e'
+		 * - [255, 255, 255]
+		 * - [0, 0, 0, 0.5]
+		 */
+
+		/**
+		 * @param {module:umc/tools~ColorLike} color
+		 * @description Return a dojo.Color Object from a [ColorLike]{@link module:umc/tools~ColorLike}
+		 * @returns {dojo.Color} 
+		 */
+		colorFromArbitrary: function(color /*ColorLike*/) {
 			if (color instanceof dojo.Color) {
 				return color;
 			}
-			var color_ = Array.isArray(color) ? dojo.colorFromArray(color) : dojo.colorFromString(color);
-			this.assert(color_, 'Could not derive color from: ' + color);
-			return color_;
+			var _color = Array.isArray(color) ? dojo.colorFromArray(color) : dojo.colorFromString(color);
+			this.assert(_color, 'Could not derive color from: ' + color);
+			return _color;
 		}
 	});
 
