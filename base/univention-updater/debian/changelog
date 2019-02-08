@@ -1,3 +1,9 @@
+univention-updater (13.0.1-71) unstable; urgency=low
+
+  * Bug #46600: Fix merge error
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 08 Feb 2019 08:51:33 +0100
+
 univention-updater (13.0.1-70) unstable; urgency=low
 
   * Bug #29505: Mark repository tools as deprecated
