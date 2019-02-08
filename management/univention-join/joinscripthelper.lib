@@ -339,11 +339,19 @@ run_join_hook() {
 		master="$ldap_master"
 	fi
 
+	local j_binddn="$binddn"
+	local j_bindpwdfile="$DCPWD"
+	if [ "domaincontroller_master" = "$(ucr get server/role)" ]; then
+		j_binddn="cn=admin,$(ucr get ldap/base)"
+		j_bindpwdfile="/etc/ldap.secret"
+	fi
+
 	/usr/share/univention-join/univention-join-hooks \
 		--server-role "$server_role" \
 		--hooktype "$hooktype" \
 		--master "$master" \
-		--binddn "$binddn" --bindpwdfile "$DCPWD" >>/var/log/univention/join.log 2>&1
+		--binddn "$j_binddn" \
+		--bindpwdfile "$j_bindpwdfile" >>/var/log/univention/join.log 2>&1
 	rc=$?
 
 	if [ "$rc" != 0 ]; then
