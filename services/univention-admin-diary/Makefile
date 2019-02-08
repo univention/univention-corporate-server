@@ -1,5 +1,4 @@
-#!/usr/bin/python2.7
-# -*- coding: utf-8 -*-
+#!/usr/bin/make -f
 #
 # Copyright 2019 Univention GmbH
 #
@@ -28,13 +27,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.admindiary.client import DiaryEvent
-from univention.admindiary.backend import Base, engine, get_session, add_event, add_event_message
+build: umc/js/admindiary.css
 
-Base.metadata.create_all(engine)
+%.css: %.styl
+	stylus "$<"
 
-with get_session() as session:
-	for event_name in DiaryEvent.names():
-		event = add_event(event_name, session)
-		for locale, message in DiaryEvent.get(event_name).message.iteritems():
-			add_event_message(event.id, locale, message, True, session)
+clean:
+	rm -f umc/js/admindiary.css
+

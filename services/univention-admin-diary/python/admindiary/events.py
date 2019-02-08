@@ -28,7 +28,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-class Event(object):
+class DiaryEvent(object):
 	_all_events = {}
 
 	@classmethod
@@ -46,13 +46,11 @@ class Event(object):
 		self.tags = tags or []
 		self._all_events[self.name] = self
 
-COMMENT = Event('COMMENT', '', [])  # special event
+USER_CREATED = DiaryEvent('USER_CREATED', {'en': 'User {0} created', 'de': 'Benutzer {0} angelegt'}, args=['username'])
 
-USER_CREATED = Event('USER_CREATED', 'User %s created', ['username'])
+APP_ACTION_START = DiaryEvent('APP_ACTION_START', {'en': 'App {0}: Start of {1}', 'de': 'App {0}: Start von {1}'}, args=['app', 'action'])
+APP_ACTION_SUCCESS = DiaryEvent('APP_ACTION_SUCCESS', {'en': 'App {0} ({1}): Success', 'de': 'App {0} ({1}): Erfolg'}, args=['app', 'action'])
+APP_ACTION_FAILURE = DiaryEvent('APP_ACTION_FAILURE', {'en': 'App {0} ({1}): Failure. Error {2}', 'de': 'App {0} ({1}): Fehlschlag. Fehler {2}'}, args=['app', 'action', 'error_code'], tags=['error'])
 
-APP_ACTION_START = Event('APP_ACTION_START', 'App %s: Start of %s', ['app', 'action'])
-APP_ACTION_SUCCESS = Event('APP_ACTION_SUCCESS', 'App %s (%s): Success', ['app', 'action'])
-APP_ACTION_FAILURE = Event('APP_ACTION_FAILURE', 'App %s (%s): Failure. Error %s', ['app', 'action', 'error_code'], tags=['error'])
-
-SERVER_PASSWORD_CHANGED = Event('SERVER_PASSWORD_CHANGED', 'Machine account password changed successfully')
-SERVER_PASSWORD_CHANGED_FAILED = Event('SERVER_PASSWORD_CHANGED_FAILED', 'Machine account password change failed', tags=['error'])
+SERVER_PASSWORD_CHANGED = DiaryEvent('SERVER_PASSWORD_CHANGED', {'en': 'Machine account password changed successfully', 'de': 'Maschinenpasswort erfolgreich geändert'})
+SERVER_PASSWORD_CHANGED_FAILED = DiaryEvent('SERVER_PASSWORD_CHANGED_FAILED', {'en': 'Machine account password change failed', 'de': 'Änderung des Maschinenpassworts fehlgeschlagen'}, tags=['error'])

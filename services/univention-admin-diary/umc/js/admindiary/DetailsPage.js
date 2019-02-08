@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"put-selector/put",
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/Page",
@@ -43,7 +44,7 @@ define([
 	"umc/widgets/TextArea",
 	"umc/widgets/TextBox",
 	"umc/i18n!umc/modules/admindiary"
-], function(declare, lang, array, dialog, tools, Page, StandbyMixin, ContainerWidget, TitlePane, Form, MultiSelect, TextArea, TextBox, _) {
+], function(declare, lang, array, put, dialog, tools, Page, StandbyMixin, ContainerWidget, TitlePane, Form, MultiSelect, TextArea, TextBox, _) {
 	return declare("umc.modules.admindiary.DetailsPage", [ Page, StandbyMixin ], {
 
 		fullWidth: true,
@@ -73,50 +74,17 @@ define([
 		},
 
 		reset: function(contextId, items) {
+			this.set('helpText', lang.replace(_('All entries with context {context_id}'), {context_id: '<strong>' + contextId + '</strong>'}));
 			this._contextId = contextId;
 			this._container.destroyRecursive();
 			this._container = new ContainerWidget({});
 			this.addChild(this._container);
 			array.forEach(items, lang.hitch(this, function(item) {
-				var name = lang.replace(_('{date}: {event} (by {user})'), {
-					'event': item.event,
-					date: item.date,
-					user: item.username,
-				});
-				var titlePane = new TitlePane({
-					title: name,
-					open: false
-				});
-				var form = new Form({
-					widgets: [{
-						name: 'id',
-						label: _('ID'),
-						type: TextBox,
-						value: item.id,
-						disabled: true
-					}, {
-						name: 'hostname',
-						label: _('Source'),
-						type: TextBox,
-						value: item.hostname,
-						disabled: true
-					}, {
-						name: 'message',
-						label: _('Message'),
-						type: TextArea,
-						value: item.message,
-						disabled: true
-					//}, {
-					//	name: 'tags',
-					//	label: _('Message'),
-					//	type: MultiSelect,
-					//	value: item.tags,
-					//	disabled: true
-					}],
-					buttons: []
-				});
-				titlePane.addChild(form);
-				this._container.addChild(titlePane);
+				var node = put(this._container.domNode, 'article.admindiary');
+				put(node, 'blockquote', item.message);
+				put(node, 'address', _('%(username)s on %(hostname)s', item));
+				put(node, 'time', item.date);
+				put(node, 'small', item.event + ' / ID: ' + item.id);
 			}));
 			this._commentForm = new Form({
 				widgets: [{
@@ -143,9 +111,10 @@ define([
 				context_id: this._contextId,
 				message: this._commentForm.get('value').message
 			};
-			this.standbyDuring(tools.umcpCommand('admindiary/add_comment', values).then(lang.hitch(this, function(data) {
-				this.onReload(this._contextId);
-			})));
+			this.onNewComment(values);
+		},
+
+		onNewComment: function(values) {
 		},
 
 		onReload: function(contextId) {

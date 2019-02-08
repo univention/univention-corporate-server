@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-services\n"
-"Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2018-01-11 23:24+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-02-09 00:09+0100\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,115 +12,91 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/services.js:171
-msgid "Automatically"
-msgstr "Automatisch"
+#: umc/js/admindiary/DetailsPage.js:85
+#, python-format
+msgid "%(username)s on %(hostname)s"
+msgstr "%(username)s auf %(hostname)s"
 
-#: umc/js/services.js:243
-msgid "Cancel"
-msgstr "Abbrechen"
+#: umc/js/admindiary/DetailsPage.js:98
+msgid "Add comment"
+msgstr "Kommentar hinzufügen"
 
-#: umc/js/services.js:176
-msgid "Description"
-msgstr "Beschreibung"
+#: umc/js/admindiary.js:71
+msgid "Admin Diary"
+msgstr "Admin Diary"
 
-#: umc/js/services.js:169
-msgid "Manually"
-msgstr "Manuell"
+#: umc/js/admindiary.js:83
+#, python-brace-format
+msgid "Admin Diary: {event_name}"
+msgstr "Admin Diary: {event_name}"
 
-#: umc/js/services.js:147
-msgid "Name"
-msgstr "Name"
+#: umc/js/admindiary/DetailsPage.js:77
+#, python-brace-format
+msgid "All entries with context {context_id}"
+msgstr "Alle Einträge im Kontext {context_id}"
 
-#: umc/js/services.js:167
-msgid "Never"
-msgstr "Nie"
+#: umc/js/admindiary/OverviewPage.js:92
+msgid "Amendments"
+msgstr "Ergänzungen"
 
-#: umc/js/services.js:245
-msgid "OK"
-msgstr "OK"
+#: umc/js/admindiary/OverviewPage.js:75 umc/js/admindiary/OverviewPage.js:153
+msgid "Author"
+msgstr "Autor"
 
-#: umc/js/services.js:112
-msgid "Please confirm to automatically start the following services: "
-msgstr "Bitte bestätigen Sie, die folgenden Dienste automatisch zu starten: "
+#: umc/js/admindiary/DetailsPage.js:62
+msgid "Back to Diary"
+msgstr "Zurück zum Diary"
 
-#: umc/js/services.js:124
-msgid "Please confirm to manually start the following services: "
-msgstr "Bitte bestätigen Sie, die folgenden Dienste manuell zu starten: "
+#: umc/js/admindiary/DetailsPage.js:93
+msgid "Comment"
+msgstr "Kommentar"
 
-#: umc/js/services.js:136
-msgid "Please confirm to never start the following services: "
-msgstr "Bitte bestätigen Sie, die folgenden Dienste niemals zu starten: "
+#: umc/js/admindiary/OverviewPage.js:66
+msgid "Date"
+msgstr "Datum"
 
-#: umc/js/services.js:99
-msgid "Please confirm to restart the following services: "
-msgstr "Bitte bestätigen Sie die folgenden Dienste neuzustarten: "
+#: umc/js/admindiary/OverviewPage.js:69 umc/js/admindiary/OverviewPage.js:147
+msgid "Event"
+msgstr "Event"
 
-#: umc/js/services.js:69
-msgid "Please confirm to start the following services: "
-msgstr "Bitte bestätigen Sie, die folgenden Dienste zu starten: "
+#: umc/js/admindiary/OverviewPage.js:129
+msgid "From"
+msgstr "Ab"
 
-#: umc/js/services.js:84
-msgid "Please confirm to stop the following services: "
-msgstr "Bitte bestätigen Sie, die folgenden Dienste zu stoppen: "
+#: umc/js/admindiary/OverviewPage.js:78
+msgid "Message"
+msgstr "Nachricht"
 
-#: umc/js/services.js:94
-msgid "Restart"
-msgstr "Neustarten"
+#: umc/js/admindiary/DetailsPage.js:56
+msgid "New Comment"
+msgstr "Neuer Kommentar"
 
-#: umc/js/services.js:200
+#: umc/js/admindiary/OverviewPage.js:167
 msgid "Search..."
 msgstr "Suche..."
 
-#: umc/js/services.js:64
-msgid "Start"
-msgstr "Starten"
+#: umc/js/admindiary/OverviewPage.js:104
+msgid "Show"
+msgstr "Anzeigen"
 
-#: umc/js/services.js:109
-msgid "Start automatically"
-msgstr "Automatisch starten"
+#: umc/js/admindiary/OverviewPage.js:72 umc/js/admindiary/OverviewPage.js:159
+msgid "Source"
+msgstr "Quelle"
 
-#: umc/js/services.js:121
-msgid "Start manually"
-msgstr "Manuell starten"
+#: umc/js/admindiary/OverviewPage.js:82 umc/js/admindiary/OverviewPage.js:141
+msgid "Tags"
+msgstr "Tags"
 
-#: umc/js/services.js:133
-msgid "Start never"
-msgstr "Niemals starten"
-
-#: umc/js/services.js:162
-msgid "Start type"
-msgstr "Startart"
-
-#: umc/js/services.js:150
-msgid "Status"
-msgstr "Status"
-
-#: umc/js/services.js:79
-msgid "Stop"
-msgstr "Stoppen"
-
-#: umc/js/services.js:57
+#: umc/js/admindiary/OverviewPage.js:58
 msgid ""
-"This module shows the system services and their current status. Specified "
-"services can be configured, started and stopped."
-msgstr ""
-"Dieses Modul zeigt die Systemdienste und ihren aktuellen Status. Einzelne "
-"Dienste können konfiguriert, gestartet und gestoppt werden."
+"This module lists all entries of the Admin Diary. You may comment on the "
+"events."
+msgstr "Dieses Modul zeigt all Einträge des Admin Diary. Sie können die Events kommentieren."
 
-#: umc/js/services.js:238
-msgid ""
-"Warning: Stopping apache or UMC services will interrupt all current "
-"connections to the Univention Management Console. It might be necessary for "
-"all users to login again."
-msgstr ""
-"Warnung: Das Stoppen von Apache oder der UMC Dienste unterbricht alle bestehenden "
-"Verbindungen zur Univention Management Console. Es ist gegebenfalls notwendig, dass Benutzer sich neu anmelden müssen."
+#: umc/js/admindiary/OverviewPage.js:135
+msgid "Until"
+msgstr "Bis"
 
-#: umc/js/services.js:155
-msgid "running"
-msgstr "läuft"
-
-#: umc/js/services.js:157
-msgid "stopped"
-msgstr "gestoppt"
+#: umc/js/admindiary/OverviewPage.js:96
+msgid "☰"
+msgstr "☰"

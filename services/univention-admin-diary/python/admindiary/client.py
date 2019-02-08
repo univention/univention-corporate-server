@@ -28,10 +28,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import os
 import logging
 from logging.handlers import SysLogHandler
 from univention.admindiary import DiaryEntry, get_logger
-from univention.admindiary.events import Event
+from univention.admindiary.events import DiaryEvent
 import uuid
 from getpass import getuser
 from functools import partial, wraps
@@ -65,7 +66,7 @@ emitter = RsyslogEmitter()
 
 @exceptionlogging
 def add_comment(message, context_id, username=None):
-	event = Event('COMMENT', {'en': message})
+	event = DiaryEvent('COMMENT', {'en': message})
 	return write_event(event, username=username, context_id=context_id)
 
 
@@ -84,7 +85,7 @@ def write(message, args=None, username=None, tags=None, context_id=None, event_n
 	if tags is None:
 		tags = []
 	if context_id is None:
-		context_id = str(uuid.uuid4())
+		context_id = os.environ.get('ADMINDIARY_CONTEXT') or str(uuid.uuid4())
 	if event_name is None:
 		event_name = 'CUSTOM'
 	entry = DiaryEntry(username, message, args, tags, context_id, event_name)

@@ -183,8 +183,8 @@ define([
 			this.addChild(this._searchWidget);
 			this.addChild(this._grid);
 
-			this.startup();
 			this._searchWidget.onSubmit();
+			this._grid.resize();
 		},
 
 		onShowDetails: function() {

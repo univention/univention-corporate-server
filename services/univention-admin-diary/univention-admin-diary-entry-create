@@ -37,7 +37,7 @@ import re
 from argparse import ArgumentParser, Action, RawTextHelpFormatter
 
 from univention.admindiary.client import write_event
-from univention.admindiary.events import Event
+from univention.admindiary.events import DiaryEvent
 
 class StoreMessageAction(Action):
 	def __call__(self, parser, namespace, value, option_string=None):
@@ -68,7 +68,7 @@ def main():
 	parser.add_argument('--context-id', help='May be given to ammend an existing diary entry, effectively grouping those together. The CONTEXT_ID is also returned by this program')
 	parser.add_argument('--message', '-m', action=StoreMessageAction, nargs='*', help='The message. Give one for every required locale. Use format strings if you wish to use ARGs.')
 	args = parser.parse_args()
-	event = Event(args.event, args.message, [], args.tag)
+	event = DiaryEvent(args.event, args.message, [], args.tag)
 	context_id = write_event(event, args.arg, args.username, args.context_id)
 	if context_id is not None:
 		print context_id

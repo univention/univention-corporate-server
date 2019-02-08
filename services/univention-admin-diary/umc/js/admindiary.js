@@ -37,7 +37,8 @@ define([
 	"umc/widgets/Module",
 	"umc/modules/admindiary/OverviewPage",
 	"umc/modules/admindiary/DetailsPage",
-	"umc/i18n!umc/modules/admindiary"
+	"umc/i18n!umc/modules/admindiary",
+	"xstyle/css!umc/modules/admindiary.css"
 ], function(declare, lang, array, dialog, tools, Module, OverviewPage, DetailsPage, _) {
 	return declare("umc.modules.admindiary", [ Module ], {
 		moduleStore: null,
@@ -61,6 +62,7 @@ define([
 				this._overviewPage.on('ShowDetails', lang.hitch(this, '_showDetails'));
 				this._detailsPage.on('Close', lang.hitch(this, '_closeDetails'));
 				this._detailsPage.on('Reload', lang.hitch(this, '_showDetails'));
+				this._detailsPage.on('NewComment', lang.hitch(this, '_newComment'));
 				this.selectChild(this._overviewPage);
 			})));
 		},
@@ -70,9 +72,15 @@ define([
 			this.selectChild(this._overviewPage);
 		},
 
+		_newComment: function(values) {
+			this.standbyDuring(tools.umcpCommand('admindiary/add_comment', values).then(lang.hitch(this, function(data) {
+				this._showDetails(values.context_id);
+			})));
+		},
+
 		_showDetails: function(context_id) {
-			this.set('title', lang.replace(_('Admin Diary: {context_id}'), {context_id: context_id}));
 			this.standbyDuring(tools.umcpCommand('admindiary/get', {'context_id': context_id}).then(lang.hitch(this, function(data) {
+				this.set('title', lang.replace(_('Admin Diary: {event_name}'), {event_name: data.result[0].event}));
 				this._detailsPage.reset(context_id, data.result);
 				this.selectChild(this._detailsPage);
 			})));

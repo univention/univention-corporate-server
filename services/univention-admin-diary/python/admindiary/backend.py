@@ -288,7 +288,7 @@ def query(session, time_from=None, time_until=None, tag=None, event=None, userna
 
 def get(context_id, session):
 	res = []
-	for entry in session.query(Entry).filter(Entry.context_id == context_id):
+	for entry in session.query(Entry).filter(Entry.context_id == context_id).order_by('id'):
 		args = [arg.value for arg in entry.args]
 		tags = [tag.name for tag in entry.tags]
 		event = entry.event

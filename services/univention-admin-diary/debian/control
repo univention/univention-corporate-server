@@ -8,7 +8,8 @@ Build-Depends: debhelper (>= 7.0.50~),
  python-all,
  ucslint,
  univention-management-console-dev,
- univention-config-dev
+ univention-config-dev,
+ stylus
 Standards-Version: 3.7.2
 
 Package: univention-admin-diary-backend
