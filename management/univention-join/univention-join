@@ -656,7 +656,7 @@ else
 			args+=(-netmask "$NETMASK")
 		fi
 	fi
-	mac_addr="$(LC_ALL=C ip link show | grep -A 1 "eth[0-9]" | sed -rne 's|.*link/ether ([0-9a-fA-F:]+) brd .*|\1|p')"
+	mac_addr="$(find /sys/class/net/* -not -lname ../../devices/virtual/\* -exec cat {}/address \;)"
 	if [ -n "$mac_addr" ]; then
 		while read line; do
 			if [ -n "$line" ]; then
