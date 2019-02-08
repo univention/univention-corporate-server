@@ -618,7 +618,7 @@ def parse_args(args=None):
     parser_import.add_argument("--index", "-i", action="store_false", help="Do not use index to find transactions")
     import_amount = parser_import.add_argument_group("minimum", description="Amount of transactions to import")
     import_amount.add_argument("--count", "-c", action="store", type=parse_count, help="Minimum number of transaction [%(default)s]", default=100000)
-    import_amount.add_argument("--percent", "-p", action="store", type=parse_percent, help="Minimum percentage of transaction file [%(default)s%%]", default="10")
+    import_amount.add_argument("--percent", "-p", action="store", type=parse_percent, help="Minimum percentage of transaction file [%(default)s%%]", default="0")
     import_amount.add_argument("--size", "-s", action="store", type=parse_size, help="Minimum number of bytes from transaction file [%(default)s]", default="10M")
     import_limit = parser_import.add_argument_group("limit", description="Limit transactions to process")
     import_limit.add_argument("--min", "-m", action="store", type=parse_count, help="First transaction ID to process [%(default)s]", default=1)
