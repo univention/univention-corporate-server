@@ -23,8 +23,7 @@ Depends: ${misc:Depends},
 	libunivention-config0,
 	libunivention-policy0,
 	python-samba,
-	ldb-tools,
-	python-ucs-school
+	ldb-tools
 Description: Univention LDB modules
  This package provides UCS specific LDB modules
  .

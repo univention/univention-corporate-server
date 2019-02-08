@@ -1,3 +1,9 @@
+univention-ldb-modules (7.0.0-4) unstable; urgency=medium
+
+  * Bug #47957: Removed dependency to python-ucs-school
+
+ -- Felix Botner <botner@univention.de>  Fri, 08 Feb 2019 12:51:10 +0100
+
 univention-ldb-modules (7.0.0-3) unstable; urgency=medium
 
   * Bug #47957: Remove dependency to univention-samba4
