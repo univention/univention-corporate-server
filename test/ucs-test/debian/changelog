@@ -1,3 +1,10 @@
+ucs-test (9.0.0-21) unstable; urgency=medium
+
+  * Bug #48446: invitation backend
+  * Bug #48447: contact data backend
+
+ -- Felix Botner <botner@univention.de>  Fri, 08 Feb 2019 12:12:27 +0100
+
 ucs-test (9.0.0-20) unstable; urgency=medium
 
   * Bug #47944: ucs-test: quote arguments / use different meta data is second test
