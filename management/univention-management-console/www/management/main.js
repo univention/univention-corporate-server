@@ -779,7 +779,7 @@ define([
 
 		setupSearchField: function() {
 			this._search = new LiveSearch({
-				searchLabel: _('Module search')
+				searchLabel: _('Search')
 			});
 
 			this._headerRight.addChild(this._search);

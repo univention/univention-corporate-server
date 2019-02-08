@@ -109,6 +109,7 @@ headerHeight = 48px
 			margin-right: material-grid(1)
 
 			.umcSearchBox
+				border-radius: 4px
 				margin-top: 4px
 
 			.dijitInputField
@@ -637,7 +638,11 @@ headerHeight = 48px
 
 		.umcSearchBox
 			color: #fff
-			border-color: #fff
+			border-color: transparent
+			background-color: rgba(255, 255, 255, 0.1)
+
+			&.dijitTextBoxFocused
+				background-color: rgba(0, 0, 0, 0.2)
 
 			.umcInlineLabel
 				color: #fff
