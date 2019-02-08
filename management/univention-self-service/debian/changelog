@@ -1,3 +1,10 @@
+univention-self-service (4.0.1-3) unstable; urgency=medium
+
+  * Bug #48446: invitation backend
+  * Bug #48447: contact data backend
+
+ -- Felix Botner <botner@univention.de>  Fri, 08 Feb 2019 12:08:05 +0100
+
 univention-self-service (4.0.1-2) unstable; urgency=medium
 
   * Bug #48471: UMC design adjustments
