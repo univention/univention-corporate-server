@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-41) unstable; urgency=medium
+
+  * Bug #48427: Add DB_CONFIG for translog
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 08 Feb 2019 16:21:17 +0100
+
 univention-ldap (14.0.2-40) unstable; urgency=low
 
   * Bug #48427: Fix translog slapd.conf template

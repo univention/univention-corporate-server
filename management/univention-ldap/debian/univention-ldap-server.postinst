@@ -152,7 +152,10 @@ fi
 stop_slapd
 /usr/share/univention-ldap/ldap_setup_index --add-defaults
 
-test -f /var/lib/univention-ldap/ldap/DB_CONFIG || univention-config-registry commit /var/lib/univention-ldap/ldap/DB_CONFIG
+for cfg in /var/lib/univention-ldap/ldap/DB_CONFIG /var/lib/univention-ldap/translog/DB_CONFIG
+do
+	[ -f "$cfg" ] || univention-config-registry commit "$cfg"
+done
 
 upgrade_license () {
 	case "$server_role" in
