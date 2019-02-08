@@ -117,7 +117,8 @@ def tiny_app(name=None, version=None):
 		DockerScriptUpdateAppVersion='',
 	)
 	return app
-    
+
+
 def tiny_app_apache(name=None, version=None):
 	name = name or get_app_name()
 	version = version or '1'
@@ -134,8 +135,7 @@ def tiny_app_apache(name=None, version=None):
 		DockerScriptUpdateRelease='',
 		DockerScriptUpdateAppVersion='',
 	)
-return app
-
+	return app
 
 
 def get_docker_appbox_image():
@@ -206,7 +206,7 @@ def get_app_version():
 
 def copy_package_to_appcenter(ucs_version, app_directory, package_name):
 	target = os.path.join('/var/www/univention-repository/%s/maintained/component' % ucs_version, '%s/all' % app_directory)
-	print 'cp %s %s' % (package_name, target)
+	print('cp %s %s' % (package_name, target))
 	shutil.copy(package_name, target)
 	print '''
 		cd /var/www/univention-repository/%(version)s/maintained/component;
@@ -527,8 +527,8 @@ mkdir /var/www/%(app_name)s
 echo "TEST-%(app_name)s" >>/var/www/%(app_name)s/index.txt
 /usr/share/univention-docker-container-mode/setup "$@"
 ''' % {'app_name': self.app_name})
-                
-        def configure_tinyapp_modproxy(self):
+
+	def configure_tinyapp_modproxy(self):
 		fqdn = '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
 		self.execute_command_in_container('apk add apache2-ssl')
 		self.execute_command_in_container("sed -i 's#/var/www/localhost/htdocs#/web/html#g' /etc/apache2/conf.d/ssl.conf")
@@ -545,14 +545,14 @@ echo "TEST-%(app_name)s" >>/var/www/%(app_name)s/index.txt
 		test_string = 'TEST-%s\n' % self.app_name
 		if http is not None:
 			try:
-                            response = urllib2.urlopen('http://%s/%s/index.txt' % (fqdn, self.app_name))
+				response = urllib2.urlopen('http://%s/%s/index.txt' % (fqdn, self.app_name))
 			except urllib2.HTTPError:
 				if http:
 					raise
 			else:
 				html = response.read()
 				if http:
-                                        correct = html == test_string
+					correct = html == test_string
 				else:
 					correct = html != test_string
 				if not correct:
@@ -560,16 +560,16 @@ echo "TEST-%(app_name)s" >>/var/www/%(app_name)s/index.txt
 
 		if https is not None:
 			try:
-                            ctx = ssl.create_default_context()
-                            ctx.check_hostname = False
-                            ctx.verify_mode = ssl.CERT_NONE
-                            response = urllib2.urlopen('https://%s/%s/index.txt' % (fqdn, self.app_name), context=ctx)
+				ctx = ssl.create_default_context()
+				ctx.check_hostname = False
+				ctx.verify_mode = ssl.CERT_NONE
+				response = urllib2.urlopen('https://%s/%s/index.txt' % (fqdn, self.app_name), context=ctx)
 			except urllib2.HTTPError:
 				if https:
 					raise
 			else:
 				html = response.read()
-                		if https:
+				if https:
 					correct = html == test_string
 				else:
 					correct = html != test_string
