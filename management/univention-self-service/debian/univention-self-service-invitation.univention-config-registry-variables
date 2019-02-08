@@ -1,0 +1,5 @@
+[umc/self-service/invitation/enabled]
+Description[de]=Den Daemon für die Einladung neuer Benutzer einschalten (Standard: "yes").
+Description[en]=Enable the daemon for the self service invitation (default "yes").
+Type=bool
+Categories=self-service

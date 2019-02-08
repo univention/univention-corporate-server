@@ -1,0 +1,2 @@
+listener/selfservice-invitation.py usr/lib/univention-directory-listener/system/
+univention-self-service-invitation usr/lib/univention-self-service-master
