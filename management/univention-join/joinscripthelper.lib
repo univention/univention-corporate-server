@@ -325,4 +325,30 @@ joinscript_check_api_nocredentials () {
 	return 1
 }
 
+run_join_hook() {
+	local hooktype
+	hooktype="$1"
+
+	local master
+	local output
+	local rc
+
+	if [ -n "$DCNAME" ]; then
+		master="$DCNAME"
+	else
+		master="$ldap_master"
+	fi
+
+	/usr/share/univention-join/univention-join-hooks \
+		--server-role "$server_role" \
+		--hooktype "$hooktype" \
+		--master "$master" \
+		--binddn "$binddn" --bindpwdfile "$DCPWD" >>/var/log/univention/join.log 2>&1
+	rc=$?
+
+	if [ "$rc" != 0 ]; then
+		failed_message "$hooktype failed, see /var/log/univention/join.log"
+	fi
+}
+
 # vim:set ft=sh:

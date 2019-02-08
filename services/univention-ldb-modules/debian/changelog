@@ -1,3 +1,17 @@
+univention-ldb-modules (7.0.0-3) unstable; urgency=medium
+
+  * Bug #47957: Remove dependency to univention-samba4
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Tue, 22 Jan 2019 12:08:06 +0100
+
+univention-ldb-modules (7.0.0-2) unstable; urgency=medium
+
+  * Bug #47954: Move 97libunivention-ldb-modules.inst code to
+    96univention-samba4.inst
+    Bug #47957: Prepare move of samba4slapvepdc join scripts to UCS@school
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Jan 2019 10:21:54 +0100
+
 univention-ldb-modules (7.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump
@@ -149,7 +163,7 @@ univention-ldb-modules (5.0.0-1) unstable; urgency=medium
 
 univention-ldb-modules (4.0.7-1) unstable; urgency=low
 
-  * Bug #40988: Dependency updated for rebuild against Samba 4.3.7 
+  * Bug #40988: Dependency updated for rebuild against Samba 4.3.7
 
  -- Felix Botner <botner@univention.de>  Fri, 08 Apr 2016 12:33:26 +0200
 

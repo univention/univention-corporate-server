@@ -225,6 +225,7 @@ echo
 joinscript_check_status_file >&3
 if [ -e "/usr/lib/univention-install/" ]
 then
+	run_join_hook pre-joinscripts
 	for i in "${SCRIPTS[@]}"
 	do
 		[ "$(basename "$i")" = "*.uinst" -o "$(basename "$iscript")" = "*.inst" ] && continue
@@ -264,6 +265,7 @@ then
 			delete_unjoinscript "$(basename "$i")"
 		fi
 	done
+	run_join_hook post-joinscripts
 fi
 
 joinscript_remove_credentialfiles
