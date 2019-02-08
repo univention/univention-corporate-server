@@ -111,10 +111,12 @@ def convert(app, dumped, filename, lo, pos):
 	dn = dumped['dn']
 	if command == 'delete':
 		attrs = None
+		options = None
 	else:
 		objs = search_objects(udm_type, lo, pos, entryUUID=entry_uuid)
 		if objs:
 			attrs = objs[0].info
+			options = objs[0].options
 		else:
 			logger.info('EntryUUID %s not found' % entry_uuid)
 			return False
@@ -127,6 +129,7 @@ def convert(app, dumped, filename, lo, pos):
 		attrs = {
 			'id': entry_uuid,
 			'object': attrs,
+			'options': options,
 			'dn': dn,
 			'udm_object_type': udm_type,
 		}
