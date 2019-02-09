@@ -51,7 +51,7 @@ dbhost = ucr.get('admin/diary/dbhost', 'localhost')
 get_logger = partial(get_logger, 'backend')
 
 db_url = '%s://admindiary:%s@%s/admindiary' % (dbms, password, dbhost)
-engine = sqlalchemy.create_engine(db_url, echo=True)
+engine = sqlalchemy.create_engine(db_url)
 Session = sessionmaker(bind=engine)
 
 @contextmanager
@@ -66,10 +66,6 @@ def get_session():
 
 Base = declarative_base()
 
-entry_args = Table('entry_args', Base.metadata,
-    Column('entry_id', ForeignKey('entries.id'), primary_key=True),
-    Column('arg_id', ForeignKey('args.id'), primary_key=True)
-)
 entry_tags = Table('entry_tags', Base.metadata,
     Column('entry_id', ForeignKey('entries.id'), primary_key=True),
     Column('tag_id', ForeignKey('tags.id'), primary_key=True)
@@ -102,12 +98,9 @@ class Entry(Base):
 	main_id = Column(None, ForeignKey('entries.id', ondelete='CASCADE'), nullable=True)
 
 	event = relationship('Event')
+	args = relationship('Arg', back_populates='entry', order_by='Arg.position')
 	tags = relationship('Tag',
                         secondary=entry_tags,
-                        back_populates='entries'
-                        )
-	args = relationship('Arg',
-                        secondary=entry_args,
                         back_populates='entries'
                         )
 
@@ -126,12 +119,11 @@ class Arg(Base):
 	__tablename__ = 'args'
 
 	id = Column(Integer, Sequence('arg_id_seq'), primary_key=True)
-	value = Column(String(255), nullable=False, unique=True, index=True)
+	entry_id = Column(None, ForeignKey('entries.id', ondelete='CASCADE'), index=True)
+	position = Column(Integer, nullable=False)
+	value = Column(String(255), nullable=False, index=True)
 
-	entries = relationship('Entry',
-                        secondary=entry_args,
-                        back_populates='args'
-                        )
+	entry = relationship('Entry')
 
 def translate(event_name, locale, session):
 	key = (event_name, locale)
@@ -154,14 +146,6 @@ def options(session):
 	ret['hostnames'] = [hostname[0] for hostname in session.query(Entry.hostname).distinct()]
 	ret['events'] = [event.name for event in session.query(Event).all()]
 	return ret
-
-def add_arg(value, session):
-	obj = session.query(Arg).filter(Arg.value == value).one_or_none()
-	if obj is None:
-		obj = Arg(value=value)
-		session.add(obj)
-		session.flush()
-	return obj
 
 def add_tag(name, session):
 	obj = session.query(Tag).filter(Tag.name == name).one_or_none()
@@ -220,9 +204,8 @@ def add(diary_entry, session):
 	for tag in diary_entry.tags:
 		tag = add_tag(tag, session)
 		entry.tags.append(tag)
-	for arg in diary_entry.args:
-		arg = add_arg(arg, session)
-		entry.args.append(arg)
+	for i, arg in enumerate(diary_entry.args):
+		entry.args.append(Arg(position=i, value=arg))
 	get_logger().info('Successfully added %s to %s. (%s)' % (diary_entry.context_id, engine.url.drivername, diary_entry.event_name))
 
 def _one_query(ids, result):

@@ -1,3 +1,9 @@
+univention-admin-diary (1.0.0-14) unstable; urgency=medium
+
+  * Bug #48476: Improve Arg definition
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 09 Feb 2019 01:44:55 +0100
+
 univention-admin-diary (1.0.0-13) unstable; urgency=medium
 
   * Bug #48476: Using sqlalchemy to support MySQL
