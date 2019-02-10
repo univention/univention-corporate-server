@@ -107,6 +107,8 @@ class _AppCache(object):
 		for _app in apps:
 			if prevent_docker and _app.docker and not (_app.docker_migration_works or _app.docker_migration_link):
 				continue
+			if not _app.install_permissions_exist():
+				continue
 			if _app <= app:
 				continue
 			if _app.required_app_version_upgrade:

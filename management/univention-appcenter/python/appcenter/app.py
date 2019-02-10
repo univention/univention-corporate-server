@@ -811,6 +811,7 @@ class App(object):
 	name = AppAttribute(required=True, localisable=True)
 	version = AppAttribute(required=True)
 	install_permissions = AppBooleanAttribute(default=False)
+	install_permissions_message = AppAttribute(localisable=True)
 	description = AppAttribute(localisable=True)
 	long_description = AppAttribute(localisable=True)
 	thumbnails = AppListAttribute(localisable=True)
@@ -934,6 +935,7 @@ class App(object):
 			_attrs.update(kwargs)
 		self._weak_ref_app_cache = None
 		self._supports_ucs_version = None
+		self._install_permissions_exist = None
 		self.set_app_cache_obj(_cache)
 		for attr in self._attrs:
 			setattr(self, attr.name, _attrs.get(attr.name))
@@ -953,6 +955,21 @@ class App(object):
 		for attr in self._attrs:
 			ret[attr.name] = getattr(self, attr.name)
 		return ret
+
+	def install_permissions_exist(self):
+		if not self.docker:
+			return True
+		if not self.install_permissions:
+			return True
+		try:
+			from univention.appcenter.docker import access
+		except ImportError:
+			return True
+		if self._install_permissions_exist is None:
+			# this should be optimized
+			image = self.get_docker_image_name()
+			self._install_permissions_exist = access(image)
+		return self._install_permissions_exist
 
 	def get_docker_image_name(self):
 		if self.uses_docker_compose():
