@@ -42,10 +42,14 @@ import shutil
 from json import loads
 from tempfile import NamedTemporaryFile
 from contextlib import contextmanager
+import urllib2
+import httplib
+import ssl
+from base64 import encodestring
 
 import ruamel.yaml as yaml
 
-from univention.appcenter.utils import app_ports_with_protocol, app_ports, call_process, call_process2, shell_safe, get_sha256, mkdir, unique, _
+from univention.appcenter.utils import app_ports_with_protocol, app_ports, call_process, call_process2, shell_safe, get_sha256, mkdir, unique, urlopen, _
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.exceptions import DockerVerificationFailed, DockerImagePullFailed
 from univention.appcenter.ucr import ucr_save, ucr_is_false, ucr_get, ucr_run_filter, ucr_is_true
@@ -112,6 +116,29 @@ def verify(app, image):
 	# compare with docker registry
 	if appcenter_sha256sum != docker_image_manifest_hash:
 		raise DockerImageVerificationFailedChecksum(app.id, docker_image_manifest_url)
+
+
+def login(hub, with_license):
+	if with_license:
+		username = password = ucr_get('uuid/license')
+	else:
+		username, password = DOCKER_READ_USER_CRED['username'], DOCKER_READ_USER_CRED['password']
+	return call(['docker', 'login', '-u', username, '-p', password, hub])
+
+
+def access(image):
+	hub, image_name = image.split('/', 1)
+	image_name, image_tag = image_name.split(':', 1)
+	url = 'https://%s/v2/%s/manifests/%s' % (hub, image_name, image_tag)
+	username = password = ucr_get('uuid/license')
+	auth = encodestring('%s:%s' % (username, password)).replace('\n', '')
+	request = urllib2.Request(url, headers={'Authorization': 'Basic %s' % auth})
+	try:
+		urlopen(request)
+	except (urllib2.HTTPError, urllib2.URLError, ssl.CertificateError, httplib.BadStatusLine):
+		return False
+	else:
+		return True
 
 
 def ps(only_running=True):
@@ -255,15 +282,16 @@ class Docker(object):
 		except ValueError:
 			pass
 		else:
-			cfg = {}
-			dockercfg_file = os.path.expanduser('~/.dockercfg')
-			if os.path.exists(dockercfg_file):
-				with open(dockercfg_file) as dockercfg:
-					cfg = loads(dockercfg.read())
-			if hub not in cfg:
-				retcode = call(['docker', 'login', '-e', 'invalid', '-u', DOCKER_READ_USER_CRED['username'], '-p', DOCKER_READ_USER_CRED['password'], hub])
-				if retcode != 0:
-					_logger.warn('Could not login to %s. You may not be able to pull the image from the repository!' % hub)
+			if '.' in hub:
+				cfg = {}
+				dockercfg_file = os.path.expanduser('~/.dockercfg')
+				if os.path.exists(dockercfg_file):
+					with open(dockercfg_file) as dockercfg:
+						cfg = loads(dockercfg.read())
+				if hub not in cfg:
+					retcode = login(hub, with_license=self.app.install_permissions)
+					if retcode != 0:
+						_logger.warn('Could not login to %s. You may not be able to pull the image from the repository!' % hub)
 		ret, out = call_process2(['docker', 'pull', self.image], logger=_logger)
 		if ret != 0:
 			raise DockerImagePullFailed(self.image, out)

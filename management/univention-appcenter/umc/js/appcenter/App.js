@@ -58,6 +58,8 @@ define([
 			this.logoDetailPageName = props.logo_detail_page_name;
 			this.version = props.version;
 			this.candidateVersion = props.candidate_version;
+			this.candidateInstallIsPermitted = props.candidate_needs_install_permissions;
+			this.candidateInstallPermissionMessage = props.candidate_install_permissions_message;
 			this.licenseDescription = props.license_description;
 			this.categories = props.categories;
 			this.website = props.website;

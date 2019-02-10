@@ -98,8 +98,14 @@ class List(UniventionAppAction):
 				continue
 			if ucr_get('server/role') not in app.server_role:
 				continue
-			if app._docker_prudence_is_true():
-				_apps = [_app for _app in Apps().get_all_apps_with_id(app.id) if _app.docker_migration_works or not _app.docker]
+			docker_prudence = app._docker_prudence_is_true()
+			install_permissions = app.install_permissions_exist()
+			if docker_prudence or not install_permissions:
+				_apps = Apps().get_all_apps_with_id(app.id)
+				if docker_prudence:
+					_apps = [_app for _app in _apps if _app.docker_migration_works or not _app.docker]
+				if not install_permissions:
+					_apps = [_app for _app in _apps if not _app.install_permissions]
 				try:
 					app = sorted(_apps)[-1]
 				except IndexError:

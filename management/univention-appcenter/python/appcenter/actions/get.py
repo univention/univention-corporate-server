@@ -127,8 +127,11 @@ class Get(UniventionAppAction):
 			ret['candidate_component_id'] = candidate.component_id
 			ret['candidate_readme_update'] = candidate.readme_update
 			ret['candidate_readme_post_update'] = candidate.readme_post_update
+			ret['candidate_needs_install_permissions'] = not candidate.install_permissions_exist()
+			ret['candidate_install_permissions_message'] = candidate.install_permissions_message
 		else:
 			ret['update_available'] = False  # TODO: ucr.is_true(app.ucr_upgrade_key); Bug#39916
+			ret['candidate_needs_install_permissions'] = False
 		return ret
 
 	@classmethod

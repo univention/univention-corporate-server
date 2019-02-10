@@ -34,7 +34,7 @@
 
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions import get_action
-from univention.appcenter.exceptions import Abort, InstallMasterPackagesPasswordError, InstallMasterPackagesNoninteractiveError, InstallFailed, InstallNonDockerVersionError
+from univention.appcenter.exceptions import Abort, InstallMasterPackagesPasswordError, InstallMasterPackagesNoninteractiveError, InstallFailed, InstallNonDockerVersionError, InstallWithoutPermissionError
 from univention.appcenter.actions.install_base import InstallRemoveUpgrade
 from univention.appcenter.ucr import ucr_get, ucr_save
 from univention.appcenter.utils import find_hosts_for_master_packages
@@ -62,13 +62,21 @@ class Install(InstallRemoveUpgrade):
 
 	def main(self, args):
 		app = args.app
+		apps = Apps().get_all_apps_with_id(app.id)
 		if app._docker_prudence_is_true():
-			apps = [_app for _app in Apps().get_all_apps_with_id(app.id) if not _app.docker]
+			apps = [_app for _app in apps if not _app.docker]
 			if apps:
 				app = sorted(apps)[-1]
 				self.warn('Using %s instead of %s because docker is to be ignored' % (app, args.app))
 			else:
 				raise InstallNonDockerVersionError(args.app)
+		if not app.install_permissions_exist():
+			apps = [_app for _app in apps if not _app.install_permissions]
+			if apps:
+				app = sorted(apps)[-1]
+				self.warn('Using %s instead of %s because of lacking install permissions' % (app, args.app))
+			else:
+				raise InstallWithoutPermissionError(args.app)
 		args.app = app
 		return self.do_it(args)
 

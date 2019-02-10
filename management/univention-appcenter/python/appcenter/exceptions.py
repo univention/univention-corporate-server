@@ -293,6 +293,11 @@ class ParallelOperationInProgress(Abort):
 	default_error_msg = 'Another package operation is in progress'
 
 
+class InstallWithoutPermissionError(Abort):
+	code = 438
+	default_error_msg = 'The App requires install permissions which are missing. Please contact the App Provider.'
+
+
 class AppCenterError(Exception):
 	'''A "real" exception that developers cannot handle very well.
 	The difference between AppCenterError and Abort is that Abort is a
