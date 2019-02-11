@@ -37,7 +37,7 @@ define([
 	return declare("umc.widgets.Text", [MappedTextBox], {
 		// summary:
 		//		A dojo mapped text box checks that a formatted value can be parsed back.
-		//		That is not often no possible from the formatted memory value, because the
+		//		That is often not possible from the formatted memory value, because the
 		//		formatting is not lossless. In that case the box would reject the value.
 		//		Workaround: a lossless cache
 

@@ -58,7 +58,6 @@ define([
 		umcpCommand: lang.hitch(tools, 'umcpCommand'),
 
 		// softMaxLength: {?Number}
-		//		The maximum length of characters that should be 
 		//		The maximum number of characters that should be adhered to.
 		//		This maximum is not forced as it is with the 'maxLength' property
 		//		(inherited from dijit/form/_TextBoxMixin.js).
@@ -72,7 +71,7 @@ define([
 		softMaxLengthMessage: '',
 
 		// inlineLabel: String
-		//		If specified, the given string ias positioned as label above the input field.
+		//		If specified, the given string is positioned as label above the input field.
 		inlineLabel: null,
 		_inlineLabelNode: null,
 
