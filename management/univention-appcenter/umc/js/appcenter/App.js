@@ -53,6 +53,7 @@ define([
 			}
 			this.id = props.id;
 			this.name = props.name;
+			this.voteForApp = props.vote_for_app;
 			this.logoName = props.logo_name;
 			this.logoDetailPageName = props.logo_detail_page_name;
 			this.version = props.version;
@@ -308,9 +309,17 @@ define([
 			}));
 		},
 
+		canVote: function() {
+			return !!this.voteForApp;
+		},
+
 		canInstall: function() {
 			if (this.endOfLife) {
 				// never install when app is outdated
+				return false;
+			}
+			if (this.voteForApp) {
+				// never install a 'Vote for App' app
 				return false;
 			}
 			if (this.installations) {

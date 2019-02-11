@@ -331,11 +331,11 @@ class AppLocalisedListAttribute(AppListAttribute):
 		return value
 
 
-class AppLocalisedCategoriesAttribute(AppListAttribute):
+class AppLocalisedAppCategoriesAttribute(AppListAttribute):
 	def post_creation(self, app):
 		value = getattr(app, self.name)
 		cache = app.get_app_cache_obj().get_appcenter_cache_obj()
-		value = [cache.get_categories().get(val.lower(), val) for val in value]
+		value = [cache.get_app_categories().get(val.lower(), val) for val in value]
 		setattr(app, self.name, value)
 
 
@@ -495,6 +495,8 @@ class App(object):
 			should contain product highlights, use cases, etc.
 		thumbnails: A list of screenshots and / or YouTube video URLs.
 		categories: Categories this App shall be filed under.
+		app_categories: Categories this App is filed under in
+		        the App catalog of univention.de.
 		website: Website for more information about the product (e.g.
 			landing page).
 		support_url: Website for getting support (or information about
@@ -809,7 +811,8 @@ class App(object):
 	description = AppAttribute(localisable=True)
 	long_description = AppAttribute(localisable=True)
 	thumbnails = AppListAttribute(localisable=True)
-	categories = AppLocalisedCategoriesAttribute()
+	categories = AppListAttribute()
+	app_categories = AppLocalisedAppCategoriesAttribute()
 
 	website = AppAttribute(localisable=True)
 	support_url = AppAttribute(localisable=True)
@@ -920,6 +923,8 @@ class App(object):
 	host_certificate_access = AppBooleanAttribute()
 
 	listener_udm_modules = AppListAttribute()
+
+	vote_for_app = AppBooleanAttribute()
 
 	def __init__(self, _attrs, _cache, **kwargs):
 		if kwargs:
@@ -1279,6 +1284,13 @@ class App(object):
 			if kernel < LooseVersion('4.9'):
 				return False
 		return True
+
+	@hard_requirement('install', 'upgrade')
+	def must_not_be_vote_for_app(self):
+		'''The application is not yet installable. Vote for this app
+		now and bring your favorite faster to the Univention App
+		Center'''
+		return not self.vote_for_app
 
 	@hard_requirement('install', 'upgrade')
 	def must_not_be_docker_if_docker_is_disabled(self):

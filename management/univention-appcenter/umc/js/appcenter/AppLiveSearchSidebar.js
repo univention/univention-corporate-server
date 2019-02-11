@@ -34,35 +34,19 @@ define([
 	"dojo/_base/array",
 	"dojo/has",
 	"dojo/Deferred",
+	"dojo/dom-construct",
 	"dojo/regexp",
-	"dijit/form/Select",
+	"umc/widgets/CheckBox",
 	"umc/widgets/ContainerWidget",
+	"umc/widgets/Form",
 	"umc/widgets/SearchBox",
-	"umc/i18n!"
-], function(declare, lang, array, has, Deferred, regexp, Select, ContainerWidget, SearchBox, _) {
+	"umc/i18n!umc/modules/appcenter"
+], function(declare, lang, array, has, Deferred, domConstruct, regexp, CheckBox, ContainerWidget, Form, SearchBox, _) {
 	return declare("umc.modules.appcenter.AppLiveSearchSidebar", [ContainerWidget], {
 		// summary:
 		//		Offers a side bar for live searching, a set of categories can be defined.
-		//		This class is used in the UMC overview and the App Center.
-
-		// categories: Object[]|String[]
-		//		Array of categories exposing at least the fields 'id' and 'label'
-		//		or array of strings.
-		categories: null,
-
-		_categoriesAsIdLabelPairs: true,
-
-		selectFormDeferred: null,
-
-		// category: Object|String
-		//		Reference to the currently selected category
-		category: null,
 
 		searchLabel: null,
-
-		selectForm: null,
-
-		_selectForm: null,
 
 		baseClass: 'umcLiveSearchSidebar',
 
@@ -74,7 +58,6 @@ define([
 		_lastValue: '',
 
 		buildRendering: function() {
-			this.selectFormDeferred = new Deferred();
 			this.inherited(arguments);
 			if (this.searchableAttributes === null) {
 				this.searchableAttributes = ['name', 'description', 'categories', 'keywords'];
@@ -91,6 +74,11 @@ define([
 
 		postCreate: function() {
 			this.inherited(arguments);
+
+			// Reset filters, when opening the App Center:
+			this._selected = {};
+			this._filterForms = {};
+
 			this._searchTextBox.on('keyup', lang.hitch(this, function() {
 				if (this.get('value') || this._lastValue) {
 					// ignore empty search strings
@@ -98,14 +86,6 @@ define([
 					this.onSearch();
 				}
 			}));
-		},
-
-		_getUniformCategory: function(category) {
-			if (typeof category == 'string') {
-				this._categoriesAsIdLabelPairs = false;
-				return { id: category, label: category };
-			}
-			return category;
 		},
 
 		_isInSearchMode: function() {
@@ -120,78 +100,80 @@ define([
 			return this._searchTextBox.set('value', value);
 		},
 
-		_getCategoryAttr: function() {
-			var category = this.category;
-			if (!this._categoriesAsIdLabelPairs) {
-				return category.id;
-			}
-			return category;
-		},
-
-		_setCategoryAttr: function(_category) {
-			var category = this._getUniformCategory(_category);
-			this._set('category', category);
-			var selectedChild = array.filter(this._selectForm._getChildren(), function(child) {
-				return category.label === child.label;
-			});
-			this._selectForm.focusChild(selectedChild[0]);
-			this._searchTextBox.set('value', '');
-			this.onSearch();
-			this.onCategorySelected();
-			if (!has('touch')) {
-				setTimeout(lang.hitch(this, function() {
-					this._searchTextBox.focus();
-				}), 0);
-			}
-		},
-
 		_setCategoriesAttr: function(categories) {
-			if (this._selectForm) {
-				this._selectForm.removeOption(this._selectForm.getOptions());
-			}
-			this._set('categories', categories);
+			this._addFilter('categories', _('App Categories'), categories);
+		},
 
-			var selectFormOptions = array.map(categories, lang.hitch(this, function(_category, idx) {
-				var category = this._getUniformCategory(_category);
-				return {
-					label: category.label,
-					value: category.label,
-					_categoryID: category.id
-				};
-			}));
-			
-			if (this.selectForm) {
-				this.removeChild(this.selectForm);
-				this.selectForm.destroyRecursive();
-				this.selectForm = null;
-				this.selectFormDeferred = this.selectFormDeferred.isResolved() ? new Deferred() : this.selectFormDeferred;
-			}
-			this.selectForm = new ContainerWidget({'class': 'umcSize-TwoThirds dropDownMenu'});
-			this._selectForm = new Select({
-				options: selectFormOptions
-			});
-			this.selectFormDeferred.resolve();
+		_setBadgesAttr: function(badges) {
+			this._addFilter('badges', _('App Badges'), badges);
+		},
 
-			this._selectForm.watch('value', lang.hitch(this, function(attr, oldval, newval) {
-				if (newval) {
-					var selectedOption = this._selectForm.getOptions(newval);
-					var selectedCategory = {id: selectedOption._categoryID, label: selectedOption.label};
-					//this.set('value', '');
-					this.set('category', selectedCategory);
+		_setLicensesAttr: function(licenses) {
+			this._addFilter('licenses', _('App License'), licenses);
+		},
+
+		_setVoteForAppsAttr: function(voteForApps) {
+			var choices = [];
+			if (voteForApps) {
+				choices.push({
+					id: 'yes',
+					description: _('Vote Apps')
+				});
+			}
+			this._addFilter('voteForApps', '', choices);
+		},
+
+		getSelected: function(id) {
+			return this._selected[id] || [];
+		},
+
+		_addFilter: function(id, title, choices) {
+			var formContainer = this._filterForms[id];
+			if (formContainer) {
+				this.removeChild(formContainer);
+				formContainer.destroyRecursive();
+			}
+			this._selected[id] = [];
+			if (! choices.length) {
+				return;
+			}
+			formContainer = this._filterForms[id] = new ContainerWidget({'class': 'appLiveSearchSidebarElement'});
+			if (title) {
+				domConstruct.create('span', {
+					innerHTML: title,
+					'class': 'mainHeader'
+				}, formContainer.domNode);
+			}
+			this.own(formContainer);
+			this.addChild(formContainer);
+
+			var widgets = [];
+			array.forEach(choices, lang.hitch(this, function(choice) {
+				var label = choice.description;
+				if (!title && choices.length === 1) {
+					label = '<span class="searchFilterSingle">' + choice.description + '</span>';
 				}
+				widgets.push({
+					type: CheckBox,
+					name: choice.id,
+					label: label,
+					onChange: lang.hitch(this, function(arg) {
+						if (arg == true) {
+							this._selected[id].push(choice.id);
+						} else {
+							this._selected[id] = this._selected[id].filter(
+								function(x) {return x != choice.id;}
+							);
+						}
+						this.onSearch();  // Trigger the refresh of the displayed Apps
+					})
+				});
 			}));
-			this._selectForm.loadDropDown(function() {
-				//empty callback for loading the SelectForm dropdown
+			var form = new Form({
+				widgets: widgets,
 			});
-			this._selectForm.dropDown.set('class', 'AppLiveSearchSidebarDropDown');
-
-			this.selectForm.addChild(this._selectForm);
-			this.own(this.selectForm);
-			this.addChild(this.selectForm);
-
-
-			// preselect the first category
-			this.set('category', categories[0]);
+			formContainer.addChild(form);
+			formContainer.own(form);
 		},
 
 		getSearchQuery: function(searchPattern) {
@@ -226,10 +208,6 @@ define([
 		onSearch: function() {
 			// event stub
 		},
-
-		onCategorySelected: function() {
-			//event stub
-		}
 	});
 });
 

@@ -86,9 +86,6 @@ define([
 			this.inherited(arguments);
 
 			this.watch('selectedChildWidget', lang.hitch(this, '_updateModuleState'));
-			if (this._appCenterPage) {
-				this._appCenterPage._searchSidebar.watch('category', lang.hitch(this, '_updateModuleState'));
-			}
 		},
 
 		_updateModuleState: function() {
@@ -125,9 +122,6 @@ define([
 					if (this._appCenterPage && state[0] === 'category') {
 						this.set('title', 'App Center');
 						this.selectChild(this._appCenterPage);
-						when(this._appCenterPage._searchSidebar.selectFormDeferred, lang.hitch(this, function() {
-							this._appCenterPage._searchSidebar.set('category', state[1]);
-						}));
 					}
 				}
 			}

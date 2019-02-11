@@ -35,7 +35,6 @@
 import os
 import locale
 import time
-import sys
 from contextlib import contextmanager
 import logging
 from base64 import encodestring
@@ -219,7 +218,7 @@ class Instance(umcm.Base, ProgressMixin):
 					ret.append(None)
 				else:
 					short_info = {}
-					for attr in ['id', 'name', 'vendor', 'maintainer', 'description', 'long_description', 'categories', 'end_of_life', 'update_available', 'logo_name', 'is_installed_anywhere', 'is_installed', 'installations', 'rating']:
+					for attr in ['id', 'name', 'vendor', 'maintainer', 'description', 'long_description', 'app_categories', 'end_of_life', 'update_available', 'logo_name', 'is_installed_anywhere', 'is_installed', 'installations', 'rating', 'vote_for_app', 'license', 'license_description']:
 						short_info[attr] = app[attr]
 					ret.append(short_info)
 			return ret
@@ -336,7 +335,7 @@ class Instance(umcm.Base, ProgressMixin):
 		service = get_action(mode)
 		service.call(app=app)
 
-	@sanitize(app=AppSanitizer(required=False), action=ChoicesSanitizer(['get', 'buy', 'search']), value=StringSanitizer())
+	@sanitize(app=AppSanitizer(required=False), action=ChoicesSanitizer(['get', 'buy', 'search', 'vote']), value=StringSanitizer())
 	@simple_response
 	def track(self, app, action, value):
 		send_information(action, app=app, value=value)

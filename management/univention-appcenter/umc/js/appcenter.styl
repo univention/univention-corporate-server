@@ -49,6 +49,18 @@ $app-detailspane-background-color = #fff
 				background-position: -160px 0
 				right: 0px
 
+			&.appPopularAppIcon
+				background-position: -240px 0
+				right: 0px
+
+			&.appRecommendedAndPopularAppIcon
+				background-position: -280px 0
+				right: 0px
+
+			&.appVoteForApp
+				background-position: -200px 0
+				right: 0px
+
 		.appStatusHoverIcon
 			&.appUpdateIcon
 				background-position: -40px 0
@@ -58,6 +70,15 @@ $app-detailspane-background-color = #fff
 
 			&.appRecommendedAppIcon
 				background-position: -160px 0
+
+			&.appPopularAppIcon
+				background-position: -240px 0
+
+			&.appRecommendedAndPopularAppIcon
+				background-position: -280px 0
+
+			&.appVoteForApp
+				background-position: -200px 0
 
 		.umcGalleryItemActive .umcUpdateIcon,
 		.umcGalleryItem:hover .umcUpdateIcon
@@ -76,6 +97,19 @@ $app-detailspane-background-color = #fff
 
 	.umcAppButton.umcActionButton
 		float: none
+
+	.umcAppSidebarButton
+		width: 100%
+		margin: auto
+
+	.umcAppSidebarButton .dijitButtonNode
+		width: 100%
+		background-color: #74b627
+		&:hover
+			background-color: #5f9434
+
+	.umcAppSidebarButton .dijitButtonNode .dijitButtonText
+		color: white
 
 .categoryButton, .categorySpan
 	background-color: transparent
@@ -230,27 +264,24 @@ $app-detailspane-background-color = #fff
 				left: 10px
 				top: 1px
 
-	.umcAppRating
-		margin-bottom: 0.5em
-
 	.umcAppRatingIcon
 		display: inline-block
-		background: transparent url("appcenter/star.svg") repeat scroll
-		background-size: 1.5em
-		height: 1.5em
-		width: 1.5em
+		margin: 0.15em
+		height: 3em
+		width: 3em
 
-	.umcAppRatingText
-		display: inline-block
-		position: relative
-		bottom: 5px
-		left: 5px
+	.umcAppRatingVendorSupported
+		background: transparent url("appcenter/badges/vendor_support.svg") repeat scroll
+
+	.umcAppRatingPopularityAward
+		background: transparent url("appcenter/badges/popular.svg") repeat scroll
+
+	.umcAppRatingRecommendedApp
+		background: transparent url("appcenter/badges/recommendation.svg") repeat scroll
 
 	.umcAppRatingHelp
 		display: inline-block
 		position: relative
-		left: 15px
-		bottom: 4px
 
 	h1
 		margin-bottom: 0.3em
@@ -261,13 +292,50 @@ $app-detailspane-background-color = #fff
 		font-weight: 500
 		margin-bottom: 24px
 
+	.iconHeaderOpen
+		background: transparent url("appcenter/icons/open.svg") repeat scroll
+		background-size: contain
+		background-repeat: no-repeat
+		line-height: 1.4em
+		padding-left: 1.7em
+
+	.iconHeaderDownload
+		background: transparent url("appcenter/icons/download.svg") repeat scroll
+		background-size: contain
+		background-repeat: no-repeat
+		line-height: 1.4em
+		padding-left: 1.7em
+
+	.iconHeaderVote
+		background: transparent url("appcenter/icons/vote.svg") repeat scroll
+		background-size: contain
+		background-repeat: no-repeat
+		line-height: 1.4em
+		padding-left: 1.7em
+
+	.iconHeaderBuy
+		background: transparent url("appcenter/icons/shopping_cart.svg") repeat scroll
+		background-size: contain
+		background-repeat: no-repeat
+		line-height: 1.4em
+		padding-left: 1.7em
+
+	.iconHeaderInfo
+		background: transparent url("appcenter/icons/info.svg") repeat scroll
+		background-size: contain
+		background-repeat: no-repeat
+		line-height: 1.4em
+		padding-left: 1.7em
+
+	.iconHeaderBadges
+		background: transparent url("appcenter/icons/shopping_bag.svg") repeat scroll
+		background-size: contain
+		background-repeat: no-repeat
+		line-height: 1.4em
+		padding-left: 1.7em
+
 	.usage
 		margin-bottom: 3em
-
-	.detailsContainer
-		background-color: $app-detailspane-background-color
-		margin: 0 -1000px
-		padding: 0 1000px
 
 	.carouselWrapper
 		border-top: 1px solid #c8c8c8
@@ -276,38 +344,16 @@ $app-detailspane-background-color = #fff
 	.descriptionContainer
 		margin-bottom: 3em
 
-
-	/* NOTE: _All_ CSS classes textLongerThanXXXChars from _getCSSClass4TextLength() need to be addressed here! */
-	.descriptionContainer div,
-	.usage
-		@media (min-width: 650px) and (max-width:767px)
-			&.textLongerThan400Chars
-				column-count: 2
-
-		@media (min-width: 650px) and (max-width: 991px)
-			&.textLongerThan500Chars
-				column-count: 2
-
-		@media (min-width: 650px) and (max-width: 1199px)
-			&.textLongerThan600Chars
-				column-count: 2
-
-		@media (min-width: 650px)
-			&.textLongerThan800Chars
-				column-count: 2
-
 	.appDetailsPane
 		background-color: $app-detailspane-background-color
 		margin: 0 -1000px
 		padding: 1.5em 1000px
 
-	.appDetailsFooter
-		margin-bottom: 2em
-		padding: 0
 
-	@media (min-width: 768px)
-		.appDetailsFooter:last-child
-			padding-left: 15px
+	.appDetailsSidebarElement
+		background-color: #f2f2f2
+		margin-bottom: 20px
+		padding: 10px
 
 .AppLiveSearchSidebarDropDown
 	.dijitMenuSeparatorIconCell, .dijitMenuSeparatorLabelCell
@@ -337,11 +383,25 @@ $app-detailspane-background-color = #fff
 			height: auto
 
 	.umcAppCenter .umcLiveSearchSidebar
-		display: flex
+		.appLiveSearchSidebarElement
+			background-color: white
+			margin-bottom: 20px
+			margin-top: 20px
+			padding: 10px
 
-		.searchField,
-		.dropDownMenu
-			padding: 0 0.5em 1em
+		.mainHeader
+			display: block
+			font-size: 20px
+			font-weight: 500
+			margin-bottom: 16px
+
+		.searchFilterSingle
+			font-size: 17px
+			font-weight: 500
+
+		.umcLabelPane
+			display: flex
+			padding-bottom: 0
 
 	.umcPage.umcAppCenter .umcSize-TwoThirds
 		@media screen and (max-width: 549px)

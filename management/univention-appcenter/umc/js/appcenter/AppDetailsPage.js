@@ -48,12 +48,12 @@ define([
 	"dojo/store/Memory",
 	"dojo/store/Observable",
 	"dijit/Tooltip",
+	"dijit/layout/ContentPane",
 	"dojox/image/LightboxNano",
 	"dojox/html/entities",
 	"umc/app",
 	"umc/tools",
 	"umc/dialog",
-	"umc/widgets/TitlePane",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/ProgressBar",
 	"umc/widgets/Page",
@@ -65,7 +65,7 @@ define([
 	"umc/modules/appcenter/App",
 	"umc/modules/appcenter/ThumbnailGallery",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, dojoEvent, all, json, when, query, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, Lightbox, entities, UMCApplication, tools, dialog, TitlePane, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, AppCenterGallery, App, ThumbnailGallery, _) {
+], function(declare, lang, kernel, array, dojoEvent, all, json, when, query, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, ContentPane, Lightbox, entities, UMCApplication, tools, dialog, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, AppCenterGallery, App, ThumbnailGallery, _) {
 
 	var adaptedGrid = declare([Grid], {
 		_updateContextActions: function() {
@@ -168,6 +168,15 @@ define([
 			return sum;
 		},
 
+		vote: function() {
+			tools.umcpCommand('appcenter/track', {app: this.app.id, action: 'vote'}).then(lang.hitch(this, function() {
+				dialog.notify(_('Quick and easy – your ballot has been cast.'), _('Vote for App'));
+				if (this._voteButton) {
+					this._voteButton.hide();
+				}
+			}));
+		},
+
 		reloadPage: function() {
 			// reset same app, but only pass the id => loads new from server
 			this.set('app', {id: this.app.id}, false);
@@ -184,7 +193,7 @@ define([
 					'class': 'umcAppButton',
 					callback: lang.hitch(this.app, 'open')
 				});
-			} else if (this.app.canInstall && !this.app.isInstalled) {
+			} else if (this.app.canInstall() && !this.app.isInstalled) {
 				buttons.push({
 					name: 'install',
 					label: _('Install'),
@@ -337,93 +346,8 @@ define([
 		},
 
 		renderPage: function() {
-			this._renderIcon();
-			this._renderNavContainer();
-			this._renderMainContainer();
-			this._renderFooter();
-		},
-
-		_renderIcon: function() {
-			if (this._icon) {
-				this.removeChild(this._icon);
-				this._icon.destroyRecursive();
-				this._icon = null;
-			}
-			var iconName = this.app.logoDetailPageName || this.app.logoName;
-			var icon_class = this._grid.getIconClass(iconName);
-			if (icon_class) {
-				this._icon = new ContainerWidget({
-					region: 'nav',
-					'class': icon_class + ' icon'
-				});
-				this.addChild(this._icon, 0);
-			}
-		},
-
-		_renderNavContainer: function() {
-			if (this._navContainer) {
-				this.removeChild(this._navContainer);
-				this._navContainer = null;
-			}
-			this._navContainer = new ContainerWidget({
-				region: 'nav',
-				'class': 'navContainer'
-			});
-
-			// build Text Widget for HeaderDetails
-			var _navHeaderDetails = new Text({
-				'class': 'umcAppStatusText'
-			});
-
-			// vendor
-			var vendor = this._detailFieldCustomVendor();
-			if (vendor) {
-				_navHeaderDetails.set('content', vendor);
-			}
-
-			//Status of the App
-			if (this.app.isInstalled || this.app.getHosts().length) {
-				var text = _('Installed');
-				if (this.app.endOfLife) {
-					text = _('End of life');
-					var tooltipText = this._detailFieldCustomEndOfLife();
-					domConstruct.create('div', {
-							'class': 'umcEndOfLifeHelp umcHelpIconSmall',
-							onclick: function(evt) {
-								var node = evt.target;
-								Tooltip.show(tooltipText, node);
-								if (evt) {
-									dojoEvent.stop(evt);
-								}
-								on.once(kernel.body(), 'click', function(evt) {
-									Tooltip.hide(node);
-									dojoEvent.stop(evt);
-								});
-							}
-						}, _navHeaderDetails.domNode
-					);
-				} else if (this.app.canUpgradeInDomain()) {
-					text = _('Update available');
-				}
-				domConstruct.create('div', {
-					textContent: text,
-					'class': 'umcAppStatusText'
-				}, _navHeaderDetails.domNode);
-			} else {
-			//Categories of the App
-				var categoryButtons = this._detailFieldCustomCategories();
-				if (categoryButtons) {
-					_navHeaderDetails.domNode.appendChild(categoryButtons);
-				}
-			}
-
-			this._navContainer.addChild(_navHeaderDetails);
-			this.set('navButtons', this.getButtons());
 			this.set('headerButtons', this.getHeaderButtons());
-			this._navContainer.addChild(this._navButtons);
-
-			this.addChild(this._navContainer);
-			this.own(this._navContainer);
+			this._renderMainContainer();
 		},
 
 		_renderMainContainer: function() {
@@ -437,16 +361,71 @@ define([
 			this.own(this._mainRegionContainer);
 
 			var isAppInstalled = this.app.isInstalled || this.app.getHosts().length > 0;
-			if (isAppInstalled) {
-				this._renderUsage();
-				this._renderInstallationManagement();
-			}
 			this._renderDetailsPane(isAppInstalled);
 
 			domStyle.set(this._main.domNode, 'margin-bottom', '2em');
 		},
 
-		_renderUsage: function() {
+		_renderDetailsPane: function(isAppInstalled) {
+			this._detailsContainer = new ContainerWidget({
+				'class': 'container'
+			});
+			var detailsPane = new ContentPane({
+				content: this._detailsContainer,
+				'class': 'appDetailsPane'
+			});
+			this._mainRegionContainer.addChild(detailsPane, isAppInstalled ? null : 0);
+
+			var detailsContainerMain = new ContainerWidget({
+				'class': 'descriptionContainer col-xs-12 col-md-8'
+			});
+			this._detailsContainer.addChild(detailsContainerMain);
+			this._detailsContainer.own(detailsContainerMain);
+			this._renderIcon(detailsContainerMain);
+			if (isAppInstalled) {
+				this._renderAppUsage(detailsContainerMain);
+				this._renderInstallationManagement(detailsContainerMain);
+			} else {
+				this._renderDescription(detailsContainerMain);
+				this._renderThumbnails(detailsContainerMain, detailsPane);
+			}
+
+			var sidebarContainer = ContainerWidget({
+				'class': 'col-xs-12 col-md-4'
+			});
+			this._detailsContainer.addChild(sidebarContainer);
+			this._detailsContainer.own(sidebarContainer);
+			this._renderSidebar(sidebarContainer);
+		},
+
+		_renderIcon: function(parentContainer) {
+			if (this._icon) {
+				this.removeChild(this._icon);
+				this._icon.destroyRecursive();
+				this._icon = null;
+			}
+			var iconName = this.app.logoDetailPageName || this.app.logoName;
+			var icon_class = this._grid.getIconClass(iconName);
+			if (icon_class) {
+				this._icon = new ContainerWidget({
+					'class': icon_class + ' icon',
+					'style': {
+						'height': '7em',
+						'margin-bottom': '1em',
+						'background-size': 'contain'
+					}
+				});
+				parentContainer.addChild(this._icon);
+			}
+		},
+
+		_renderAppUsage: function(parentContainer) {
+			var appUsageContainer = ContainerWidget({
+				'style': 'margin-bottom: 2em'
+			});
+			parentContainer.addChild(appUsageContainer);
+			parentContainer.own(appUsageContainer);
+
 			var usage = this.app.readme;
 			if (usage) {
 				usage = lang.replace(usage, lang.hitch(this, function(p, id) { return entities.encode(this.app[id]); }));
@@ -458,34 +437,32 @@ define([
 					content: _('First steps'),
 					'class': 'mainHeader'
 				});
-				this._mainRegionContainer.addChild(usageHeader);
+				appUsageContainer.addChild(usageHeader);
 
-				var usageClass = 'usage ' + this._getCSSClass4TextLength(usage);
 				var usagePane = new Text({
 					content: usage,
-					'class': usageClass
 				});
-				this._mainRegionContainer.addChild(usagePane);
+				appUsageContainer.addChild(usagePane);
 			}
 		},
 
-		_renderInstallationManagement: function() {
+		_renderInstallationManagement: function(parentContainer) {
 			var isSingleServerInstallation = this.app.isInstalled && this.app.installationData.length === 1;
 			var actions = this.getActionButtons(isSingleServerInstallation);
 			if (isSingleServerInstallation) {
-				this._renderSingleManagement(actions);
+				this._renderSingleManagement(parentContainer, actions);
 			} else {
-				this._renderDomainwideManagement(actions);
+				this._renderDomainwideManagement(parentContainer, actions);
 			}
 		},
 
-		_renderSingleManagement: function(actions) {
+		_renderSingleManagement: function(parentContainer, actions) {
 			var header = new Text({
 				content: _('Manage local installation'),
 				'class': 'mainHeader'
 			});
-			this._mainRegionContainer.addChild(header);
-			this._mainRegionContainer.own(header);
+			parentContainer.addChild(header);
+			parentContainer.own(header);
 
 			var actionButtonContainer = new ContainerWidget({
 				'class': 'appDetailsPageActions'
@@ -495,17 +472,17 @@ define([
 				actionButtonContainer.addChild(button);
 				actionButtonContainer.own(button);
 			});
-			this._mainRegionContainer.addChild(actionButtonContainer);
-			this._mainRegionContainer.own(actionButtonContainer);
+			parentContainer.addChild(actionButtonContainer);
+			parentContainer.own(actionButtonContainer);
 		},
 
-		_renderDomainwideManagement: function(actions) {
+		_renderDomainwideManagement: function(parentContainer, actions) {
 			var header = new Text({
 				content: _('Manage domain wide installations'),
 				'class': 'mainHeader'
 			});
-			this._mainRegionContainer.addChild(header);
-			this._mainRegionContainer.own(header);
+			parentContainer.addChild(header);
+			parentContainer.own(header);
 
 			var columns = [{
 				name: 'server',
@@ -524,23 +501,20 @@ define([
 				columns: columns,
 				moduleStore: myStore
 			});
-			this._mainRegionContainer.addChild(this._installedAppsGrid);
-			this._mainRegionContainer.own(this._installedAppsGrid);
+			parentContainer.addChild(this._installedAppsGrid);
+			parentContainer.own(this._installedAppsGrid);
 		},
 
-		_renderDetailsPane: function(isAppInstalled) {
-			this._detailsContainer = new ContainerWidget({
-				'class': 'detailsContainer'
-			});
-			var descriptionContainer = new ContainerWidget({
-				'class': 'descriptionContainer'
-			});
-			var longDescCSSClass = this._getCSSClass4TextLength(this.app.longDescription || '');
+		_renderDescription: function(parentContainer) {
+			var descriptionContainer = new ContainerWidget({});
 			domClass.add(domConstruct.create('div', {
 				innerHTML: this.app.longDescription  // no HTML escape!
-			}, descriptionContainer.domNode), longDescCSSClass);
-			this._detailsContainer.addChild(descriptionContainer);
+			}, descriptionContainer.domNode));
+			parentContainer.addChild(descriptionContainer);
 
+		},
+
+		_renderThumbnails: function(parentContainer, detailsPane) {
 			if (this.app.thumbnails.length) {
 				var styleContainer = new ContainerWidget({
 					'class': 'carouselWrapper'
@@ -554,132 +528,179 @@ define([
 					items: urls
 				});
 				styleContainer.addChild(this.thumbnailGallery);
-				this._detailsContainer.addChild(styleContainer);
+				parentContainer.addChild(styleContainer);
 			}
-
-			var detailsPane = new TitlePane({
-				open: !isAppInstalled,
-				//class: 'installedAppDetailsPane',
-				title: _('Details'),
-				content: this._detailsContainer,
-				'class': 'appDetailsPane'
-			});
-
-			if (this.thumbnailGallery) {
-				//handle behaviour of the thumbnailGallery based on wether
-				//the titlepane is closed or not
-				if (!detailsPane.open) {
-					this.thumbnailGallery._stopFirstResize = true;
-				}
-				detailsPane.watch('open', lang.hitch(this, function(variable, oldVal, titlePaneIsOpen) {
-					if (titlePaneIsOpen) {
-						this.thumbnailGallery._handleResize();
-					} else {
-						if (this.thumbnailGallery.isBigThumbnails) {
-							this.thumbnailGallery.toggleThumbSize();
-						}
-						this.thumbnailGallery.pauseAllVideos();
-					}
-				}));
-			}
-			this._mainRegionContainer.addChild(detailsPane, isAppInstalled ? null : 0);
 		},
 
-		_getCSSClass4TextLength: function(text) {
-			var cssClass = '';
-			array.forEach([400, 500, 600, 800], function(ilength) {
-				if (text.length > ilength) {
-					cssClass = 'textLongerThan' + ilength + 'Chars';
+		_renderSidebar: function(parentContainer) {
+			this._renderInstallOrOpenButton(parentContainer);
+			if (this.app.canVote()) {
+				this._renderAppVote(parentContainer);
+			} else {
+				if (this.app.useShop) {
+					this._renderAppBuy(parentContainer);
 				}
-			});
-			return cssClass;
+				this._renderAppDetails(parentContainer);
+			}
+			var hasRating = array.some(this.app.rating, function(rating) { return rating.value; });
+			if (hasRating) {
+				this._renderAppBadges(parentContainer);
+			}
 		},
 
-		_renderFooter: function() {
-			//TODO just for testing
-			domConstruct.empty(this._footer.domNode);
+		_renderInstallOrOpenButton(parentContainer) {
+			var button = null;
+			var containerLabel;
+			var headerClasses = 'mainHeader';
+			if (this.app.canOpenInDomain() && this.app.isInstalled) {
+				containerLabel = _('Use this App');
+				headerClasses += ' iconHeaderOpen';
+				button = new Button({
+					name: 'open',
+					label: this.app.getOpenLabel(),
+					defaultButton: true,
+					'class': 'umcAppSidebarButton',
+					callback: lang.hitch(this.app, 'open')
+				});
+			} else if (this.app.canInstall() && !this.app.isInstalled) {
+				containerLabel = _('Install this App');
+				headerClasses += ' iconHeaderDownload';
+				button = new Button({
+					name: 'install',
+					label: _('Install'),
+					'class': 'umcAppSidebarButton',
+					callback: lang.hitch(this.app, 'install')
+				});
+			}
 
-			var footerClass = "appDetailsFooter col-xs-12 col-sm-6";
+			if(button != null) {
+				var appInstallOrOpenContainer = ContainerWidget({
+					class: 'appDetailsSidebarElement'
+				});
+				parentContainer.addChild(appInstallOrOpenContainer);
+				parentContainer.own(appInstallOrOpenContainer);
 
-			var footerLeft = new ContainerWidget({
-				'class': footerClass
+				domConstruct.create('span', {
+					innerHTML: containerLabel,
+					'class': headerClasses
+				}, appInstallOrOpenContainer.domNode);
+
+				appInstallOrOpenContainer.addChild(button);
+				appInstallOrOpenContainer.own(button);
+			}
+		},
+
+		_renderAppVote(parentContainer) {
+			var container = ContainerWidget({
+				class: 'appDetailsSidebarElement'
 			});
-			this._footer.own(footerLeft);
-			this._footer.addChild(footerLeft);
-			var footerRight = new ContainerWidget({
-				'class': footerClass
-			});
-			this._footer.own(footerRight);
-			this._footer.addChild(footerRight);
-
+			parentContainer.addChild(container);
+			parentContainer.own(container);
 
 			domConstruct.create('span', {
-				innerHTML: _('More information'),
-				'class': 'mainHeader'
-			}, footerLeft.domNode);
+				innerHTML: _('Vote for App'),
+				'class': 'mainHeader iconHeaderVote'
+			}, container.domNode);
+
+			domConstruct.create('p', {
+				innerHTML: _('We are currently reviewing the admission of this app in the Univention App Center. Vote now and show us how relevant the availability of this app is for you.'),
+			}, container.domNode);
+
+			var button = new Button({
+				name: 'vote',
+				label: _('Vote now'),
+				'class': 'umcAppSidebarButton',
+				callback: lang.hitch(this, 'vote')
+			});
+			container.addChild(button);
+			container.own(button);
+			this._voteButton = button;
+		},
+
+		_renderAppBuy(parentContainer) {
+			var appBuyContainer = ContainerWidget({
+				class: 'appDetailsSidebarElement'
+			});
+			parentContainer.addChild(appBuyContainer);
+			parentContainer.own(appBuyContainer);
+
+			domConstruct.create('span', {
+				innerHTML: _('Buy in App Center'),
+				'class': 'mainHeader iconHeaderBuy'
+			}, appBuyContainer.domNode);
+
+			var buy_button = new Button({
+				name: 'shop',
+				label: _('Buy now'),
+				'class': 'umcAppSidebarButton',
+				callback: lang.hitch(this, 'openShop')
+			});
+			appBuyContainer.addChild(buy_button);
+			appBuyContainer.own(buy_button);
+		},
+
+		_renderAppDetails(parentContainer) {
+			var appDetailsContainer = ContainerWidget({
+				class: 'appDetailsSidebarElement'
+			});
+			parentContainer.addChild(appDetailsContainer);
+			parentContainer.own(appDetailsContainer);
 
 			this._detailsTable = domConstruct.create('table', {
 				style: {borderSpacing: '1em 0.1em'}
 			});
 			if (this.app.hasMaintainer()) {
-				this.addToDetails(_('Vendor'), 'Vendor');
-				this.addToDetails(_('App provider'), 'Maintainer');
+				this.addToDetails(_('Provider'), 'Maintainer');
 			} else {
-				this.addToDetails(_('App provider'), 'Vendor');
+				this.addToDetails(_('Provider'), 'Vendor');
 			}
 			this.addToDetails(_('Contact'), 'Contact');
-			this.addToDetails(_('More information'), 'Website');
-			this.addToDetails(_('Support'), 'SupportURL');
-			this.addToDetails(_('Installed version'), 'Version');
-			this.addToDetails(_('Candidate version'), 'CandidateVersion');
 			this.addToDetails(_('License'), 'License');
-			this.addToDetails(_('Categories'), 'Categories');
-			this.addToDetails(_('End of life'), 'EndOfLife');
-			this.addToDetails(_('Notification'), 'NotifyVendor');
-
-			domConstruct.place(this._detailsTable, footerLeft.domNode);
-
-			var hasRating = array.some(this.app.rating, function(rating) { return rating.value; });
-			if (hasRating) {
-				domConstruct.create('span', {
-					innerHTML: _('App Rating'),
-					'class': 'mainHeader'
-				}, footerRight.domNode);
-
-				array.forEach(this.app.rating, function(rating) {
-					var ratingText = new Text({
-						'class': 'umcAppRating'
-					});
-					for (var i = 0; i < rating.value; i++) {
-						domConstruct.create('div', {
-								'class': 'umcAppRatingIcon'
-							}, ratingText.domNode
-						);
-					}
-					domConstruct.create('div', {
-							'class': 'umcAppRatingText',
-							textContent: rating.label
-						}, ratingText.domNode
-					);
-					domConstruct.create('div', {
-							'class': 'umcAppRatingHelp umcHelpIconSmall',
-							onclick: function(evt) {
-								// stolen from system-setup
-								var node = evt.target;
-								Tooltip.show(rating.description, node);  // TODO: html encode?
-								if (evt) {
-									dojoEvent.stop(evt);
-								}
-								on.once(kernel.body(), 'click', function(evt) {
-									Tooltip.hide(node);
-									dojoEvent.stop(evt);
-								});
-							}
-						}, ratingText.domNode
-					);
-					footerRight.addChild(ratingText);
-				});
+			if (this.app.isInstalled) {
+				this.addToDetails(_('Version'), 'Version');
+				this.addToDetails(_('Available'), 'CandidateVersion');
+			} else {
+				this.addToDetails(_('Version'), 'CandidateVersion');
 			}
+			this.addToDetails(_('Support'), 'SupportURL');
+
+			domConstruct.create('span', {
+				innerHTML: _('More information'),
+				'class': 'mainHeader iconHeaderInfo'
+			}, appDetailsContainer.domNode);
+			domConstruct.place(this._detailsTable, appDetailsContainer.domNode);
+		},
+
+		_renderAppBadges(parentContainer) {
+			var appBadgeContainer = new ContainerWidget({
+				class: 'appDetailsSidebarElement'
+			});
+			parentContainer.addChild(appBadgeContainer);
+			parentContainer.own(appBadgeContainer);
+
+			domConstruct.create('span', {
+				innerHTML: _('App Center Badges'),
+				'class': 'mainHeader iconHeaderBadges',
+			}, appBadgeContainer.domNode);
+
+			array.forEach(this.app.rating, function(rating) {
+				domConstruct.create('div', {
+						'class': 'umcAppRatingHelp umcAppRatingIcon umcAppRating' + rating.name,
+						'style': 'background-size: contain;',  // FIXME: Not sure why this wont work in appcenter.styl
+						onmouseenter: function(evt) {
+							var node = evt.target;
+							Tooltip.show(rating.description, node);  // TODO: html encode?
+							if (evt) {
+								dojoEvent.stop(evt);
+							}
+							on.once(kernel.body(), 'click', function(evt) {
+								Tooltip.hide(node);
+								dojoEvent.stop(evt);
+							});
+						}
+					}, appBadgeContainer.domNode
+				);
+			});
 		},
 
 		openShop: function() {
