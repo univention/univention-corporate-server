@@ -1,9 +1,8 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# UCS Virtual Machine Manager Daemon
-#  UVMM commandline tool
-#
+"""
+UCS Virtual Machine Manager Daemon command line interface
+"""
 # Copyright 2010-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -30,7 +29,6 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-"""UVMM command line interface."""
 
 import sys
 import locale
@@ -127,7 +125,9 @@ def from_ldap(options):
 class ParserGenerator(object):
 
 	def __init__(self):
-		parser = ArgumentParser()
+		parser = ArgumentParser(
+			description=__doc__,
+		)
 		parser.add_argument(
 			'-u', '--unix',
 			action='store',
@@ -155,9 +155,7 @@ class ParserGenerator(object):
 	def _add_subparsers(self, parser):
 		subparsers = parser.add_subparsers(
 			title='subcommands',
-			description='valid subcommands',
 			dest='mode',
-			help='sub-command help'
 		)
 
 		for name in sorted(dir(self)):
