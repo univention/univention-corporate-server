@@ -421,8 +421,12 @@ if group_map:
 
 			# When a DC joins to the samba 4 domain
 			# the DC will be deleted.
-			disable_delete_in_ucs = True,
-
+@!@
+if configRegistry.is_true('connector/s4/mapping/dc/disable_delete_in_ucs', True):
+	print "\t\t\tdisable_delete_in_ucs = True,"
+else:
+	print "\t\t\tdisable_delete_in_ucs = False,"
+@!@
 			# When a DC is removed in UCS, the DC should be removed
 			# in S4. By default a DC has a subobject wihtout any mapping
 			# and this subobject would avoid a deletion of this DC in S4
