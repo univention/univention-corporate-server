@@ -1,3 +1,9 @@
+univention-lib (7.0.0-22) unstable; urgency=medium
+
+  * Bug #47424: Defines die() in ldap.sh
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 11 Feb 2019 16:08:14 +0100
+
 univention-lib (7.0.0-21) unstable; urgency=low
 
   * Bug #48530: ldap_extension: do not ignore LDAP ACL objects on initial
