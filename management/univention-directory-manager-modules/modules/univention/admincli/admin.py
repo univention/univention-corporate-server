@@ -249,6 +249,10 @@ def object_input(module, object, input, append=None, remove=None):
 	out = []
 	if append:
 		for key, value in append.items():
+			if key in object and not object.has_property(key):
+				opts = module.property_descriptions[key].options
+				object.options.extend(opts)
+				out.append('WARNING: %s was set without --append-option. Automatically appending %s.' % (key, ', '.join(opts)))
 			if module.property_descriptions[key].syntax.name == 'file':
 				if os.path.exists(value):
 					fh = open(value, 'r')
@@ -337,6 +341,10 @@ def object_input(module, object, input, append=None, remove=None):
 				object[key] = current_values
 	if input:
 		for key, value in input.items():
+			if key in object and not object.has_property(key):
+				opts = module.property_descriptions[key].options
+				object.options.extend(opts)
+				out.append('WARNING: %s was set without --append-option. Automatically appending %s.' % (key, ', '.join(opts)))
 			if module.property_descriptions[key].syntax.name == 'binaryfile':
 				if value == '':
 					object[key] = value
@@ -743,9 +751,6 @@ def _doit(arglist):
 			except univention.admin.uexceptions.valueInvalidSyntax as err:
 				out.append('E: Invalid Syntax: %s' % err)
 				return out + ["OPERATION FAILED"]
-			except Exception as err:
-				out.append('E: Option %s is not valid' % err)
-				return out + ['OPERATION FAILED']
 
 			exists = 0
 			exists_msg = None
