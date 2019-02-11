@@ -76,7 +76,7 @@ class Install(InstallRemoveUpgrade):
 				app = sorted(apps)[-1]
 				self.warn('Using %s instead of %s because of lacking install permissions' % (app, args.app))
 			else:
-				raise InstallWithoutPermissionError(args.app)
+				raise InstallWithoutPermissionError()
 		args.app = app
 		return self.do_it(args)
 

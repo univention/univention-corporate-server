@@ -629,7 +629,7 @@ define([
 				'class': 'mainHeader iconHeaderBuy'
 			}, appBuyContainer.domNode);
 
-			if(! this.app.candidateInstallIsPermitted) {
+			if (this.app.candidateHasNoInstallPermissions) {
 				this._addBuyableAppInfo(appBuyContainer);
 			}
 			this._addBuyButton(appBuyContainer);
@@ -640,12 +640,7 @@ define([
 				'class': 'appDetailsSidebarText',
 				innerHTML: this.app.candidateInstallPermissionMessage ||
 					_('Buy %(appName)s to install version %(candidateVersion)s.',
-						{appName: this.app.name, candidateVersion: this.app.candidateVersion})
-			}, parentContainer.domNode);
-
-			domConstruct.create('span', {
-				'class': 'appDetailsSidebarText',
-				innerHTML: this.app.buyReasons,
+						{appName: this.app.name, candidateVersion: this.app.candidateVersion || this.app.version})
 			}, parentContainer.domNode);
 		},
 

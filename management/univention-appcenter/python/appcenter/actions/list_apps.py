@@ -105,7 +105,7 @@ class List(UniventionAppAction):
 				if docker_prudence:
 					_apps = [_app for _app in _apps if _app.docker_migration_works or not _app.docker]
 				if not install_permissions:
-					_apps = [_app for _app in _apps if not _app.install_permissions]
+					_apps = [_app for _app in _apps if not _app.install_permissions] or _apps
 				try:
 					app = sorted(_apps)[-1]
 				except IndexError:
