@@ -1,2 +1,1 @@
 univention-self-service-register-acl usr/sbin
-listener/selfservice-userattributes.py usr/lib/univention-directory-listener/system

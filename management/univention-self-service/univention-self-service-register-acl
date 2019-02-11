@@ -30,20 +30,29 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-ACL_FILENAME="$1"
-ACL_VERSION="$2"
+ACTION="$1"
+ACL_FILENAME="$2"
+ACL_VERSION="$3"
 
-if [ "$#" -ne 2 ]; then
-	echo "usage: univention-self-service-register-acl ACL_FILENAME ACL_VERSION"
+if [ "$#" -ne 3 ]; then
+	echo "usage: univention-self-service-register-acl register|unregister ACL_FILENAME ACL_VERSION"
 	exit 1
 fi
 
-cmd="
-. /usr/share/univention-lib/ldap.sh;
-ucs_registerLDAPExtension \
---packagename univention-self-service \
---packageversion "$ACL_VERSION" \
---acl "$ACL_FILENAME" >>/var/log/univention/listener.log 2>&1
-"
+if ! [ "$ACTION" = "register" -o "$ACTION" = "unregister" ]; then
+	echo "first parameter must be 'register' or 'unregister'"
+	exit 1
+fi
 
-echo "$cmd" | at now
+. /usr/share/univention-lib/ldap.sh
+
+if [ "$ACTION" = "register" ]; then
+	ucs_registerLDAPExtension \
+	--packagename univention-self-service \
+	--packageversion "$ACL_VERSION" \
+	--acl "$ACL_FILENAME" 2>&1
+else
+	ACL_BASENAME="$(basename $ACL_FILENAME)"
+	ACL_NAME=${ACL_BASENAME%".acl"}
+	ucs_unregisterLDAPExtension --acl "$ACL_NAME" 2>&1
+fi

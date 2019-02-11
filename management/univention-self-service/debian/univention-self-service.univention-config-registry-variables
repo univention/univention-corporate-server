@@ -3,3 +3,15 @@ Description[de]=Master oder Backup Domain Controller auf dem das UMC backend lä
 Description[en]=Master or backup domain controller on which the UMC backend is running (package 'univention-management-console-module-passwordreset' must be installed there). Defaults to the domains master DC.
 Type=str
 Categories=self-service
+
+[self-service/ldap_attributes]
+Description[de]=Eine durch Komma getrennte Liste von LDAP Attributen, die ein Benutzer bei der Nutzung des Self-Service Moduls verändern dürfen muss. Diese Variable muss nur auf einem DC Master konfiguriert werden. Auf einem DC Master wird durch ein UCR Modul eine ACL Datei generiert und aktiviert.
+Description[en]=A comma separated list of LDAP attributes that a user must be able to modify when using the self-service. This variable only has to be configured on the DC Master. On a DC master, a UCR module will generate and activate an ACL definition file.
+Type=str
+Categories=self-service
+
+[self-service/udm_attributes]
+Description[de]=Eine durch Komma getrennte Liste von UDM Attributen, die ein Benutzer bei der Nutzung des Self-Service Moduls zur Bearbeitung im Frontend angezeigt bekommt.
+Description[en]=A comma separated list of UDM attributes that a user is shown and able to modify in the frontend.
+Type=str
+Categories=self-service

@@ -85,14 +85,6 @@ udm settings/portal_entry create --ignore_exists "$@" \
 	--append description="\"en_US\" \"Self Service modules (change and recover passwords)\"" \
 	--append description="\"fr_FR\" \"Module de libre-service (changer et réinitialiser des mots de passe)\"" || die
 
-udm policies/registry create --ignore_exists "$@" \
-    --position "cn=univention,$ldap_base" \
-	--set name="self-service-userattributes" \
-	--append registry="attr1 jpegPhoto" \
-	--append registry="attr2 roomNumber" \
-	--append registry="attr3 departmentNumber" \
-	--append registry="attr4 phone" || die
-
 joinscript_save_current_version
 
 exit 0
