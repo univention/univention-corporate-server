@@ -60,6 +60,16 @@
 				Various security updates have been integrated into UCS 4.4-0, e.g. <wordasword>Apache2</wordasword>, the Linux kernel and <wordasword>Samba4</wordasword>.
 				A complete list is available in <xref linkend="relnotes:changelog"/>.
 			</para></listitem>
+			<listitem><para>
+				The App Center now offers more precise filters, when searching for Apps.
+			</para></listitem>
+			<listitem><para>
+				From time to time you will get the chance to vote for selected Apps, which are not yet available for UCS. You will see these Apps directly in the App
+				Center.
+			</para></listitem>
+			<listitem><para>
+				The design of the App's pages has been updated.
+			</para></listitem>
 		</itemizedlist>
 	</chapter>
 
