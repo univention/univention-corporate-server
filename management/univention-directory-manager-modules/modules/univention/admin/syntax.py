@@ -3229,9 +3229,16 @@ class timeSpec(select):
 
 
 class optionsUsersUser(select):
-	choices = [
-		('pki', _('Public key infrastructure account')),
-	]
+	choices = [('pki', _('Public key infrastructure account'))]
+
+	@classmethod
+	def update_choices(cls):
+		users = univention.admin.modules.get('users/user')
+		if users:
+			cls.choices = [(key, x.short_description) for key, x in users.options.items() if key != 'default']
+
+
+__register_choice_update_function(optionsUsersUser.update_choices)
 
 
 class nagiosHostsEnabledDn(UDM_Objects):

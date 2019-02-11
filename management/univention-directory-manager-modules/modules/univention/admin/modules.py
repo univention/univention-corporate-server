@@ -188,6 +188,9 @@ def init(lo, position, module, template_object=None, force_reload=False):
 	# re-build layout if there any overwrites defined
 	univention.admin.ucr_overwrite_module_layout(module)
 
+	# some choices depend on extended_options/attributes
+	univention.admin.syntax.update_choices()
+
 	module.initialized = 1
 
 
@@ -202,8 +205,12 @@ def update_extended_options(lo, module, position):
 	else:
 		lang = 'xxxxx'
 
+	module_filter = filter_format('(univentionUDMOptionModule=%s)', [name(module)])
+	if name(module) == 'settings/usertemplate':
+		module_filter = '(|(univentionUDMOptionModule=users/user)%s)' % (module_filter,)
+
 	# append UDM extended options
-	for dn, attrs in lo.search(base=position.getDomainConfigBase(), filter=filter_format('(&(objectClass=univentionUDMOption)(univentionUDMOptionModule=%s))', [name(module)])):
+	for dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMOption)%s)' % (module_filter,)):
 		oname = attrs['cn'][0]
 		shortdesc = attrs.get('univentionUDMOptionTranslationShortDescription;entry-%s' % lang, attrs['univentionUDMOptionShortDescription'])[0]
 		longdesc = attrs.get('univentionUDMOptionTranslationLongDescription;entry-%s' % lang, attrs.get('univentionUDMOptionLongDescription', ['']))[0]
@@ -268,7 +275,12 @@ def update_extended_attributes(lo, module, position):
 	properties4tabs = {}
 	overwriteTabList = []
 	module.extended_udm_attributes = []
-	for dn, attrs in lo.search(base=position.getDomainConfigBase(), filter=filter_format('(&(objectClass=univentionUDMProperty)(univentionUDMPropertyModule=%s)(univentionUDMPropertyVersion=2))', [name(module)])):
+
+	module_filter = filter_format('(univentionUDMPropertyModule=%s)', [name(module)])
+	if name(module) == 'settings/usertemplate':
+		module_filter = '(|(univentionUDMPropertyModule=users/user)%s)' % (module_filter,)
+
+	for dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMProperty)%s(univentionUDMPropertyVersion=2))' % (module_filter,)):
 		# get CLI name
 		pname = attrs['univentionUDMPropertyCLIName'][0]
 
