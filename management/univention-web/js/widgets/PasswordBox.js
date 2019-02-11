@@ -30,12 +30,15 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/dom-attr",
 	"umc/widgets/TextBox",
 	"umc/widgets/_FormWidgetMixin"
-], function(declare, TextBox, _FormWidgetMixin) {
+], function(declare, domAttr, TextBox, _FormWidgetMixin) {
 	return declare("umc.widgets.PasswordBox", [ TextBox, _FormWidgetMixin ], {
-		type: 'password'
+		type: 'password',
+		buildRendering: function() {
+			this.inherited(arguments);
+			domAttr.set(this, 'autocomplete', 'new-password');
+		}
 	});
 });
-
-

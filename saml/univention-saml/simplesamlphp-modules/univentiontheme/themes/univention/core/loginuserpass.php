@@ -21,10 +21,10 @@ if (isset($this->data['SPMetadata']['privacypolicy'])) {
 					<div id="umcLoginNotices" class="umcLoginNotices" style="display: none;"></div>
 					<form id="umcLoginForm" name="umcLoginForm" action="?" method="post" class="umcLoginForm" autocomplete="on">
 						<label for="umcLoginUsername">
-							<input placeholder="<?php echo htmlspecialchars($this->t('{login:username}')); ?>" id="umcLoginUsername" name="username" type="text" autocomplete="on"  tabindex="1" value="<?php echo htmlspecialchars($this->data['username']); ?>" <?php echo $this->data['forceUsername'] ? 'readonly' : ''; ?>/>
+							<input placeholder="<?php echo htmlspecialchars($this->t('{login:username}')); ?>" id="umcLoginUsername" name="username" type="text" autocomplete="username"  tabindex="1" value="<?php echo htmlspecialchars($this->data['username']); ?>" <?php echo $this->data['forceUsername'] ? 'readonly' : ''; ?>/>
 						</label>
 						<label for="umcLoginPassword">
-							<input placeholder="<?php echo htmlspecialchars($this->t('{login:password}')); ?>" id="umcLoginPassword" name="password" type="password" tabindex="2" autocomplete="on"/>
+							<input placeholder="<?php echo htmlspecialchars($this->t('{login:password}')); ?>" id="umcLoginPassword" name="password" type="password" tabindex="2" autocomplete="current-password"/>
 						</label>
 						<div id="umcLoginWarnings" class="umcLoginWarnings">
 <?php

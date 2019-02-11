@@ -34,7 +34,6 @@ define([
 	"dojo/_base/array",
 	"dojo/topic",
 	"dojo/on",
-	"dojo/dom-attr",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
 	"umc/tools",
@@ -61,7 +60,7 @@ define([
 	"umc/modules/uvmm/MemoryTextBox",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, topic, on, domAttr, Memory, Observable, tools, dialog, store, Page, Form, ContainerWidget, TabController, StackContainer, TitlePane, StandbyMixin,
+], function(declare, lang, array, topic, on, Memory, Observable, tools, dialog, store, Page, Form, ContainerWidget, TabController, StackContainer, TitlePane, StandbyMixin,
 	TextBox, TextArea, HiddenInput, ComboBox, MultiInput, CheckBox, PasswordBox, SnapshotGrid, TargetHostGrid, InterfaceGrid, DriveGrid, MemoryTextBox, types, _) {
 
 	return declare("umc.modules.uvmm.DomainPage", [ Page, StandbyMixin ], {
@@ -267,9 +266,6 @@ define([
 			});
 			this._advancedForm.on('Submit', lang.hitch(this, 'save'));
 			this._advancedPage.addChild(this._advancedForm);
-
-			// prevent chrome from autofilling vnc_password with umc credentials
-			domAttr.set(this._advancedForm.getWidget('vnc_password').textbox, 'autocomplete', 'new-password');
 
 			//
 			// devices page
