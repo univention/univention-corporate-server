@@ -104,17 +104,24 @@ class _AppCache(object):
 			prevent_docker = False
 		app_version = LooseVersion(app.version)
 		apps = list(reversed(self.get_all_apps_with_id(app.id)))
+		not_permitted_app = None
 		for _app in apps:
 			if prevent_docker and _app.docker and not (_app.docker_migration_works or _app.docker_migration_link):
-				continue
-			if not _app.install_permissions_exist():
 				continue
 			if _app <= app:
 				continue
 			if _app.required_app_version_upgrade:
 				if LooseVersion(_app.required_app_version_upgrade) > app_version:
 					continue
+			if not _app.install_permissions_exist():
+				# do not consider app without permission...
+				# ... until it is the only one (and then fail eventually...)
+				if not_permitted_app is None:
+					not_permitted_app = _app
+				continue
 			return _app
+		if not_permitted_app:
+			return not_permitted_app
 
 	def get_all_apps(self):
 		apps = {}

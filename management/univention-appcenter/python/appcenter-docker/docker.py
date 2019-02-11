@@ -127,6 +127,8 @@ def login(hub, with_license):
 
 
 def access(image):
+	if '/' not in image:
+		return True
 	hub, image_name = image.split('/', 1)
 	image_name, image_tag = image_name.split(':', 1)
 	url = 'https://%s/v2/%s/manifests/%s' % (hub, image_name, image_tag)
@@ -135,8 +137,13 @@ def access(image):
 	request = urllib2.Request(url, headers={'Authorization': 'Basic %s' % auth})
 	try:
 		urlopen(request)
-	except (urllib2.HTTPError, urllib2.URLError, ssl.CertificateError, httplib.BadStatusLine):
-		return False
+	except urllib2.HTTPError as exc:
+		if exc.getcode() == 403:
+			return False
+		else:
+			return False  # TODO
+	except (urllib2.URLError, ssl.CertificateError, httplib.BadStatusLine):
+		return False  # TODO
 	else:
 		return True
 

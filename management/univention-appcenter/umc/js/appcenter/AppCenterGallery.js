@@ -69,10 +69,10 @@ define([
 			} else if (item.vote_for_app) {
 				iconClass = 'appVoteForApp';
 			} else if (item.update_available || this._update_available_in_domain(item)) {
-				if (item.candidateInstallIsPermitted) {
-					iconClass = 'appUpdateIcon';
-				} else {
+				if (item.candidate_needs_install_permissions) {
 					iconClass = 'appPaidUpdateIcon';
+				} else {
+					iconClass = 'appUpdateIcon';
 				}
 			} else {
 				var isRecommendedApp = array.some(item.rating, function(iRating) {

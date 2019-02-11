@@ -58,7 +58,7 @@ define([
 			this.logoDetailPageName = props.logo_detail_page_name;
 			this.version = props.version;
 			this.candidateVersion = props.candidate_version;
-			this.candidateInstallIsPermitted = props.candidate_needs_install_permissions;
+			this.candidateHasNoInstallPermissions = props.candidate_needs_install_permissions;
 			this.candidateInstallPermissionMessage = props.candidate_install_permissions_message;
 			this.licenseDescription = props.license_description;
 			this.categories = props.categories;
@@ -302,6 +302,10 @@ define([
 
 
 		canUpgrade: function() {
+			if (this.candidateHasNoInstallPermissions) {
+				// never upgrade app without permission
+				return false;
+			}
 			return this.updateAvailable;
 		},
 
@@ -318,6 +322,10 @@ define([
 		canInstall: function() {
 			if (this.endOfLife) {
 				// never install when app is outdated
+				return false;
+			}
+			if (this.candidateHasNoInstallPermissions) {
+				// never install app without permission
 				return false;
 			}
 			if (this.voteForApp) {
