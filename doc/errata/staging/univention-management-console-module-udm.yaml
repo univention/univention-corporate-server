@@ -3,7 +3,7 @@ release: "4.3"
 version: [3]
 scope: ucs_4.3-0-errata4.3-3
 src: univention-management-console-module-udm
-fix: 
+fix: 8.0.5-30A~4.3.0.201902111113
 desc: |
  This update addresses the following issue(s):
  * Fix UMC widget override through ucr.
