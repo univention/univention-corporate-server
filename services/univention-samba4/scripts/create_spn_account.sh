@@ -123,6 +123,7 @@ create_spn_account () {
 			--ignore_exists \
 			--set username="$samAccountName" \
 			--set lastname="Service" \
+			--set objectFlag="hidden" \
 			--set password="$password" || error "could not create user account $samAccountName"
 	fi
 
