@@ -58,6 +58,21 @@ define([
 		helpText: _('This module lists all entries of the Admin Diary. You may comment on the events.'),
 		fullWidth: true,
 
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			this.footerButtons = [{
+				name: 'previous',
+				align: 'left',
+				label: _("Previous week"),
+				callback: lang.hitch(this, 'previousWeek')
+			}, {
+				name: 'next',
+				align: 'right',
+				label: _("Next week"),
+				callback: lang.hitch(this, 'nextWeek')
+			}];
+		},
+
 		buildRendering: function() {
 			this.inherited(arguments);
 
@@ -127,7 +142,7 @@ define([
 			var widgets = [{
 				type: DateBox,
 				label: _("From"),
-				value: new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000),
+				value: new Date(new Date().getTime() - 6 * 24 * 60 * 60 * 1000),
 				sizeClass: 'TwoThirds',
 				name: 'time_from'
 			}, {
@@ -185,6 +200,30 @@ define([
 
 			this._searchWidget.onSubmit();
 			this._grid.resize();
+		},
+
+		nextWeek: function() {
+			var values = this._searchWidget.get('value');
+			if (! values.time_from) {
+				return;
+			}
+			var time_from = new Date(new Date(values.time_from).getTime() + 7 * 24 * 60 * 60 * 1000);
+			var time_until = new Date(time_from.getTime() + 6 * 24 * 60 * 60 * 1000);
+			this._searchWidget.getWidget('time_from').set('value', time_from);
+			this._searchWidget.getWidget('time_until').set('value', time_until);
+			this._searchWidget.onSubmit();
+		},
+
+		previousWeek: function() {
+			var values = this._searchWidget.get('value');
+			if (! values.time_until) {
+				return;
+			}
+			var time_until = new Date(new Date(values.time_until).getTime() - 7 * 24 * 60 * 60 * 1000);
+			var time_from = new Date(time_until.getTime() - 6 * 24 * 60 * 60 * 1000);
+			this._searchWidget.getWidget('time_from').set('value', time_from);
+			this._searchWidget.getWidget('time_until').set('value', time_until);
+			this._searchWidget.onSubmit();
 		},
 
 		onShowDetails: function() {

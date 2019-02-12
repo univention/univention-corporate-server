@@ -31,11 +31,12 @@
 import os
 import logging
 from logging.handlers import SysLogHandler
-from univention.admindiary import DiaryEntry, get_logger
-from univention.admindiary.events import DiaryEvent
 import uuid
 from getpass import getuser
 from functools import partial, wraps
+
+from univention.admindiary import DiaryEntry, get_logger, get_events_to_reject
+from univention.admindiary.events import DiaryEvent
 
 get_logger = partial(get_logger, 'client')
 
@@ -95,6 +96,10 @@ def write(message, args=None, username=None, tags=None, context_id=None, event_n
 @exceptionlogging
 def write_entry(entry):
 	entry.assert_types()
+	blocked_events = get_events_to_reject()
+	if entry.event_name in blocked_events:
+		get_logger().info('Rejecting %s' % entry.event_name)
+		return
 	body = entry.to_json()
 	emitter.emit(body)
 	get_logger().info('Successfully wrote %s. (%s)' % (entry.context_id, entry.event_name))

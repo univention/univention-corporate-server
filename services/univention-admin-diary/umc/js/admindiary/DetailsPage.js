@@ -36,7 +36,6 @@ define([
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/Page",
-	"umc/widgets/StandbyMixin",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/TitlePane",
 	"umc/widgets/Form",
@@ -44,8 +43,8 @@ define([
 	"umc/widgets/TextArea",
 	"umc/widgets/TextBox",
 	"umc/i18n!umc/modules/admindiary"
-], function(declare, lang, array, put, dialog, tools, Page, StandbyMixin, ContainerWidget, TitlePane, Form, MultiSelect, TextArea, TextBox, _) {
-	return declare("umc.modules.admindiary.DetailsPage", [ Page, StandbyMixin ], {
+], function(declare, lang, array, put, dialog, tools, Page, ContainerWidget, TitlePane, Form, MultiSelect, TextArea, TextBox, _) {
+	return declare("umc.modules.admindiary.DetailsPage", [ Page ], {
 
 		fullWidth: true,
 
@@ -70,7 +69,6 @@ define([
 			this.inherited(arguments);
 			this._container = new ContainerWidget({});
 			this.addChild(this._container);
-			this.startup();
 		},
 
 		reset: function(contextId, items) {

@@ -39,7 +39,7 @@ from functools import partial
 
 from pyparsing import Word, alphas, Suppress, Combine, nums, string, Regex, ParseException
 
-from univention.admindiary import DiaryEntry, get_logger
+from univention.admindiary import DiaryEntry, get_logger, get_events_to_reject
 from univention.admindiary.backend import add, get_session
 
 get_logger = partial(get_logger, 'backend')
@@ -90,12 +90,16 @@ class RsyslogTransport(object):
 
 def stdin_to_storage():
 	rsyslog_transport = RsyslogTransport("ADMINDIARY:")
+	blocked_events = get_events_to_reject()
 	while True:
 		line = sys.stdin.readline()
 		if not line:
 			break
 		entry = rsyslog_transport.deserialize(line)
 		if entry:
+			if entry.event_name in blocked_events:
+				get_logger().info('Rejecting %s' % entry.event_name)
+				continue
 			with get_session() as session:
 				add(entry, session)
 
