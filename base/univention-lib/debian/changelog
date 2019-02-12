@@ -1,3 +1,9 @@
+univention-lib (7.0.0-23) unstable; urgency=medium
+
+  * Bug #47424: ldap.sh die echo $1 to $@
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 12 Feb 2019 08:46:33 +0100
+
 univention-lib (7.0.0-22) unstable; urgency=medium
 
   * Bug #47424: Defines die() in ldap.sh
