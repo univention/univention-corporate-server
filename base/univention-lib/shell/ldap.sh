@@ -50,7 +50,7 @@ ucs_getAttrOfDN () { # <attr> <dn> [<ldapsearch-credentials>]
 
 die() {
 	rc=$?
-	echo "$1"
+	echo "$@"
 	exit $rc
 }
 
