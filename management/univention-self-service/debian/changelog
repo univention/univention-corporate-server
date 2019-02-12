@@ -1,3 +1,9 @@
+univention-self-service (4.0.1-4) unstable; urgency=medium
+
+  * Bug #48447: Merge contact data backend
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 12 Feb 2019 14:22:40 +0100
+
 univention-self-service (4.0.1-3) unstable; urgency=medium
 
   * Bug #48446: invitation backend
