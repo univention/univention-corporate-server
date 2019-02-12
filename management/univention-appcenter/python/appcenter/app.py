@@ -480,6 +480,9 @@ class App(object):
 			using Python's LooseVersion (distutils).
 		install_permissions: Whether a license needs to be bought in order
 			to install the App.
+		install_permissions_message: A message displayed to the user
+			when the App needs *install_permissions*, but the user
+			has not yet bought the App.
 		logo: The file name of the logo of the App. It is used in the
 			App Center overview when all Apps are shown in a
 			gallery. As the gallery items are squared, the logo
@@ -1258,15 +1261,10 @@ class App(object):
 
 	@hard_requirement('install', 'upgrade')
 	def must_have_install_permissions(self):
-		'''To install this version of the App, a license needs to be bought.'''
-		if self.install_permissions:
-			if not self.app_has_been_bought():
-				return {'shopURL': self.shop_url, 'version': self.version}
+		'''You need to buy the App to install this version.'''
+		if not self.install_permissions_exist():
+			return {'shop_url': self.shop_url, 'version': self.version}
 		return True
-
-	def app_has_been_bought(self):
-		# TODO: Check the license here.
-		return False
 
 	@hard_requirement('upgrade')
 	def must_have_fitting_app_version(self):
