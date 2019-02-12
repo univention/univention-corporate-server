@@ -1,3 +1,9 @@
+ucs-test (9.0.0-25) unstable; urgency=medium
+
+  * Bug #47940: added tests/11_join/15join_hooks
+
+ -- Felix Botner <botner@univention.de>  Tue, 12 Feb 2019 17:32:18 +0100
+
 ucs-test (9.0.0-24) unstable; urgency=medium
 
   * Bug #48447: fixed dockertest.py
