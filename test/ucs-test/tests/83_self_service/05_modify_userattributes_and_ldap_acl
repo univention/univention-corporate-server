@@ -12,44 +12,24 @@
 . "$TESTLIBPATH/group.sh" || exit 137
 . "$TESTLIBPATH/ldap.sh" || exit 137
 
-wait_for_acl_activation () {
-    local dn=${1?:missing parameter: dn}
-    local i
-    debug "Waiting for ACL replication..."
-	# Wait a moment for the listener to mark the object as 'FALSE',
-	# i.e. current state not activated yet, so we can actually wait for the activation
-	sleep 5
-    for ((i=0;i<300;i++)); do
-        if [ "$(ldap_get_attribute $dn univentionLDAPACLActive)" = "TRUE" ]; then
-            info "ACL activated."
-            return 0
-        fi
-        sleep 1
-    done
-    error "ACL was not activated."
-    return 1
-}
-
 GROUPNAME=$(group_randomname)
-POLICY_NAME="cn=self-service-userattributes"
-POLICY_POSITION=",cn=univention,$ldap_base"
-POLICY_DN="${POLICY_NAME}${POLICY_POSITION}"
 
 ATTR_NEEDS_REMOVAL=false
 tmpfile=$(mktemp)
 username="$(random_chars)"
+UCRV_PREV="$(ucr get self-service/ldap_attributes)"
 
-if ! udm-test policies/registry list --filter "$POLICY_NAME" | grep -q " city$"; then
+
+# grep on word boundaries \b
+if ! ucr get self-service/ldap_attributes | grep -q "\bl\b"; then
 	ATTR_NEEDS_REMOVAL=true
 	echo -e "\nAdding city as new attribute for modification (ldapattribute: l)"
-	udm-test policies/registry modify --dn="$POLICY_DN" --append registry="attr999 city" || fail_test
-	# ACL name defined by self service userattributes listener
-	wait_for_acl_activation "cn=67selfservice_userattributes,cn=ldapacl,cn=univention,$ldap_base"
+	ucr set self-service/ldap_attributes="$(ucr get self-service/ldap_attributes),l"
 else
 	echo -e "\ncity is already in the list of attributes a user may modify"
 fi
 
-trap "{ rm -f $tmpfile; [ '$ATTR_NEEDS_REMOVAL' = true ] && udm-test policies/registry modify --dn='$POLICY_DN' --remove registry='attr999 city' && wait_for_acl_activation cn=67selfservice_userattributes,cn=ldapacl,cn=univention,$ldap_base; }" EXIT
+trap "{ rm -f $tmpfile; [ '$ATTR_NEEDS_REMOVAL' = true ] &&  ucr set self-service/ldap_attributes='$UCRV_PREV'; }" EXIT
 
 udm users/user create \
 	--position="cn=users,$ldap_base" \
@@ -65,16 +45,30 @@ dn: uid=$username,cn=users,$ldap_base
 changetype: modify
 replace: l
 l: Bremen
+
+dn: uid=$username,cn=users,$ldap_base
+changetype: modify
+replace: sn
+sn: mustfail
 __HERE__
 
-echo -e "\n***User modifies city (l) attribute in LDAP"
-ldapmodify -x -D "uid=$username,cn=users,$ldap_base" -w univention -h "$ldap_master:$ldap_master_port" -f "$tmpfile" || fail_test
+echo -e "\nUser modifies city (l) attribute in LDAP"
+ldapmodify -x -D "uid=$username,cn=users,$ldap_base" -w univention -h "$ldap_master:$ldap_master_port" -f "$tmpfile"
 
+# test if modification for city was successful
 if [ ! "$(ldap_get_attribute uid=$username,cn=users,$ldap_base l)" = "Bremen" ]; then
 	error "LDAP attribute city not at expected value after modification"
 	fail_test
 else
 	echo -e "\nLDAP attriute city was modified successfully by the user"
+fi
+
+# test if modification of unallowed attribute was not successful
+if [ "$(ldap_get_attribute uid=$username,cn=users,$ldap_base sn)" = "mustfail" ]; then
+	error "LDAP attribute sn was modified although LDAP ACLs should forbid that"
+	fail_test
+else
+	echo -e "\nLDAP attribute 'sn' could not be modified by the user"
 fi
 
 ldap_delete "uid=$username,cn=users,$ldap_base" || fail_test

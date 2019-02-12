@@ -1,0 +1,5 @@
+Type: module
+Module: self-service-acl.py
+Variables: self-service/ldap_attributes
+Variables: ldap/base
+Variables: server/role
