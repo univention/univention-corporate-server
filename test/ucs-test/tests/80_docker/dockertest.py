@@ -249,7 +249,8 @@ class App(object):
 			self.ucs_version = self.ucr.get('version/version')
 		else:
 			self.ucs_version = container_version
-			self.ini['SupportedUCSVersions'] = '%s-0,%s-0' % (container_version, self.ucr.get('version/version'))
+			# make sure version of default appbox image is part of SupportedUCSVersions
+			self.ini['SupportedUCSVersions'] = '%s-0,4.3-0,%s-0' % (container_version, self.ucr.get('version/version'))
 
 		self.installed = False
 
@@ -564,7 +565,7 @@ class Appcenter(object):
 			self.add_ucs_version_to_appcenter('4.3')
 			self.add_ucs_version_to_appcenter('4.4')
 			self.versions = ['4.1', '4.2', '4.3', '4.4']
-			self._write_ucs_ini('[4.4]\nSupportedUCSVersions=4.4, 4.3, 4.2, 4.1\n')
+			self._write_ucs_ini('[4.4]\nSupportedUCSVersions=4.4, 4.3, 4.2, 4.1\n[4.3]\nSupportedUCSVersions=4.3, 4.2, 4.1\n')
 		else:
 			self.add_ucs_version_to_appcenter(version)
 			self.versions = [version]
@@ -607,6 +608,28 @@ Virtualization=Virtualisierung''')
 			f = open('/var/www/meta-inf/license_types.ini', 'w')
 			f.write('# license stuff')
 			f.close()
+
+		if not os.path.exists('/var/www/meta-inf/app-categories.ini'):
+			f = open('/var/www/meta-inf/app-categories.ini', 'w')
+			f.write('''[de]
+Backup & Archiving=Backup & Archivierung
+Education=Bildung
+CMS=CMS
+Collaboration & Groupware=Collaboration & Groupware
+CRM & ERP=CRM & ERP
+Desktop=Desktop
+Device Management=Device Management
+File Sync & Share=File Sync & Share
+Identity Management=Identity Management
+Infrastructure=Infrastruktur
+Mail & Messaging=Mail & Messaging
+Office=Office
+Printing=Drucken
+Project Management=Projekt Management
+Security=Sicherheit
+Storage=Speicher
+Telephony=Telefonie
+Virtualization=Virtualisierung''')
 
 		handler_set([
 			'update/secure_apt=no',
