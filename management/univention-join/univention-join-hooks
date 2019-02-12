@@ -93,6 +93,8 @@ def main():
 	ucr = ConfigRegistry()
 	ucr.load()
 
+	print('univention-join-hooks: looking for hook type "{}" on {}'.format(args.hooktype, args.master))
+
 	bindpw = ""
 	with open(args.bindpwdfile, 'r') as f:
 		bindpw = f.read()
@@ -115,7 +117,10 @@ def main():
 		exit(0)
 	udm_modules.init(lo, ldap_position, udm_module)
 	tempdir = tempfile.mkdtemp()
-	for udm_object in udm_module.lookup(None, lo, "data_type=%s" % args.hooktype):
+	hook_udm_objects = udm_module.lookup(None, lo, "data_type=%s" % args.hooktype)
+	print('Found hooks:\n  {}'.format('\n  '.join([x.dn for x in hook_udm_objects])))
+
+	for udm_object in hook_udm_objects:
 		udm_object.open()
 
 		base64_compressed_data = udm_object['data']
@@ -151,6 +156,8 @@ def main():
 			os.chmod(filepath, 0755)
 			cmd = [filepath]
 			cmd.extend(hook_options)
+			sys.stdout.flush()
+			sys.stderr.flush()
 			p1 = subprocess.Popen(cmd, close_fds=True)
 			p1.wait()
 			if p1.returncode != 0:

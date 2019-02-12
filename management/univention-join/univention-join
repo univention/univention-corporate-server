@@ -671,7 +671,7 @@ fi
 test -x /usr/sbin/nscd && nscd -i hosts
 
 copy_ca_cert
-run_join_hook pre-join
+run_join_hook join/pre-join
 
 echo -n "Join Computer Account: "
 args+=(-role "$server_role" -hostname "$hostname" -domainname "$domainname")
@@ -888,9 +888,9 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	chown listener /var/lib/univention-ldap/schema/id/id
 
 	check_and_configure_ad_member_mode
-	run_join_hook pre-joinscripts
+	run_join_hook join/pre-joinscripts
 	run_join_scripts
-	run_join_hook post-joinscripts
+	run_join_hook join/post-joinscripts
 
 elif [ "$server_role" = "domaincontroller_slave" ]; then
 
@@ -947,9 +947,9 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 	ln -sf /var/univention-join/joined /usr/share/univention-join/.joined
 
 	check_and_configure_ad_member_mode
-	run_join_hook pre-joinscripts
+	run_join_hook join/pre-joinscripts
 	run_join_scripts
-	run_join_hook post-joinscripts
+	run_join_hook join/post-joinscripts
 
 elif [ "$server_role" = "memberserver" ]; then
 	setup_ssl force
@@ -980,9 +980,9 @@ elif [ "$server_role" = "memberserver" ]; then
 	ln -sf /var/univention-join/joined /usr/share/univention-join/.joined
 
 	check_and_configure_ad_member_mode
-	run_join_hook pre-joinscripts
+	run_join_hook join/pre-joinscripts
 	run_join_scripts
-	run_join_hook post-joinscripts
+	run_join_hook join/post-joinscripts
 
 else
 # Client and Mobile Client
@@ -1008,9 +1008,9 @@ else
 
 	eval "$(univention-config-registry shell)"
 
-	run_join_hook pre-joinscripts
+	run_join_hook join/pre-joinscripts
 	run_join_scripts
-	run_join_hook post-joinscripts
+	run_join_hook join/post-joinscripts
 fi
 
 if [ -d /etc/runit/univention-directory-notifier ]; then
