@@ -3,7 +3,7 @@ release: "4.3"
 version: [3]
 scope: ucs_4.3-0-errata4.3-3
 src: univention-lib
-fix: 7.0.0-21A~4.3.0.201901251325
+fix: 7.0.0-23A~4.3.0.201902120851
 desc: |
  This update addresses the following issue:
  * Due to a logic error it could happen that not all LDAP-ACL registered in
@@ -11,4 +11,5 @@ desc: |
    This could lead to information disclosure or replication errors. The
    error is now fixed and when updating the univention-ldap-server package,
    missing LDAP ACLs are automatically activated (Bug #48530).
-bug: [48530]
+ * Defines die() in ldap.sh
+bug: [48530, 47424]
