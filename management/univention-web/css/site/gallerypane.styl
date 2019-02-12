@@ -95,14 +95,16 @@
 			left: auto
 			right: 5px
 
-		.umcFavoriteIconDefault,
-		.umcFavoriteIconInverted
+		.umcFavoriteIconDefault
 			position: absolute
 			top: 0
 			right: 13px
 			width: 10px
 			height: 10px
 			line-height: 0
+
+			polyline
+				transition: fill 0.25s
 
 		.umcGalleryContextIcon
 			icon-image(0, -40, "../")
@@ -112,17 +114,16 @@
 			right: 8px
 
 	.umcGalleryItem.touched,
-	.umcGalleryItemActive
+	.umcGalleryItemActive,
+	.umcGalleryItem:hover
 		cursor: pointer
-		.umcGalleryCategoryFavorite
-			background-color: #ffffff!important
 
 		.umcGalleryName,
 		.umcGalleryDescription
 			color: white
 
-		.umcFavoriteIconDefault
-			display: none
+		.umcFavoriteIconDefault polyline
+			fill: white
 
 		.umcGalleryContextIcon
 			icon-image(0, -40, "../", "-white")
@@ -134,27 +135,16 @@
 			background-position: -20px -40px
 			opacity: 0.67
 
-body:not(.umcTouchDevices) .umcGalleryPane .umcGalleryItem:hover
-	cursor: pointer
-	.umcGalleryCategoryFavorite
-		background-color: #ffffff!important
+		&.umcGalleryCategory--contrastDark
+			.umcGalleryName,
+			.umcGalleryDescription
+				color: $material-text-dark-high
 
-	.umcGalleryName,
-	.umcGalleryDescription
-		color: white
+			.umcFavoriteIconDefault polyline
+				fill: rgba(0, 0, 0, 0.87)
 
-	.umcFavoriteIconDefault
-		display: none
-
-	.umcGalleryContextIcon
-		icon-image(0, -40, "../", "-white")
-
-	.umcGalleryContextIcon:hover
-		background-position: -20px -40px
-
-	.umcGalleryContextIcon:active
-		background-position: -20px -40px
-		opacity: 0.67
+			.umcGalleryContextIcon
+				icon-image(0, -40, "../")
 
 .umcGalleryPane .umcGalleryItem:active
 	material-shadow(2)

@@ -41,12 +41,16 @@ headerHeight = 48px
 			margin: 0
 
 	.umcMainTabController
-		background: none
+		background: transparent
 		float: left
 
 		.dijitTab
 			transition: background-color 0.2s, color 0.2s
 			color: #fff
+			&.dijitTabChecked.contrastDark
+			&.dijitTabActive.contrastDark
+			&.dijitTabHover.contrastDark
+				color: $material-text-dark-high
 
 			// override unwanted styles
 			margin: 0
