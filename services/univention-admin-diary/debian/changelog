@@ -1,3 +1,9 @@
+univention-admin-diary (1.0.0-15) unstable; urgency=medium
+
+  * Bug #48476: Next / previous week in UMC
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 12 Feb 2019 13:29:50 +0100
+
 univention-admin-diary (1.0.0-14) unstable; urgency=medium
 
   * Bug #48476: Improve Arg definition
