@@ -119,7 +119,10 @@ class Get(UniventionAppAction):
 	@classmethod
 	def _candidate_dict(cls, app):
 		ret = {}
-		candidate = Apps().find_candidate(app)
+		if app.is_installed():
+			candidate = Apps().find_candidate(app)
+		else:
+			candidate = None
 		if candidate:
 			ret['update_available'] = True
 			ret['candidate_docker'] = candidate.docker

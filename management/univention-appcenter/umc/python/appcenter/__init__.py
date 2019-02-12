@@ -287,8 +287,14 @@ class Instance(umcm.Base, ProgressMixin):
 	@sanitize(application=StringSanitizer(minimum=1, required=True))
 	@simple_response
 	def get(self, application):
+		list_apps = get_action('list')
 		domain = get_action('domain')
-		app = Apps().find(application)
+		apps = list_apps.get_apps()
+		for app in apps:
+			if app.id == application:
+				break
+		else:
+			app = None
 		if app is None:
 			raise umcm.UMC_Error(_('Could not find an application for %s') % (application,))
 		return domain.to_dict([app])[0]

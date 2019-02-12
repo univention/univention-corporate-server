@@ -96,7 +96,7 @@ define([
 		}),
 		must_have_install_permissions: new Requirement({
 			reasonDescription: function(details) {
-				return _('The installation of version %(version)s is not permitted without a valid license.', details);
+				return _('The installation of version %(version)s is not permitted.', details);
 			},
 			solutionDescription: function() {
 				return _('Buy the App before the installation.');
@@ -105,7 +105,7 @@ define([
 				return _('Buy');
 			},
 			solution: function(opts, details) {
-				var shopURL = details.shopURL || _('https://appcenter.univention.com/');
+				var shopURL = details.shop_url || _('https://appcenter.univention.com/');
 				window.open(shopURL);
 			}
 		}),
