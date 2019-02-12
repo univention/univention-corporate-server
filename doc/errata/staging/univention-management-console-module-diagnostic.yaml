@@ -5,7 +5,7 @@ scope: ucs_4.3-0-errata4.3-3
 src: univention-management-console-module-diagnostic
 fix: 4.0.1-22A~4.3.0.201902121144
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * Added CLI-Tool "univention-run-diagnostic-checks" which can be used to
    execute the diagnostic checks.
  * Fixed error in "Check well known SIDs" system diagnostic test.
