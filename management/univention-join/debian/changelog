@@ -1,3 +1,9 @@
+univention-join (11.0.1-7) unstable; urgency=medium
+
+  * Bug #47940: renamed join hooks
+
+ -- Felix Botner <botner@univention.de>  Tue, 12 Feb 2019 17:03:39 +0100
+
 univention-join (11.0.1-6) unstable; urgency=medium
 
   * Bug #47940: renamed join hooks

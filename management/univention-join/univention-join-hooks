@@ -129,7 +129,7 @@ def main():
 
 		hookname = udm_object['name']
 		filename = "-".join([args.hooktype, hookname])
-		filepath = os.path.join(tempdir, filename)
+		(filepath_fd, filepath) = tempfile.mkstemp(dir=tempdir)
 		metadata = udm_object['meta']
 		if "disabled" in metadata:
 			print("Skipping disabled %s hook %s" % (args.hooktype, hookname))
@@ -145,24 +145,25 @@ def main():
 			print('Skipping %s hook %s, because it specifies compatibility only up to and including UCS version %s.' % (args.hooktype, hookname, ucsversionend))
 			continue
 
-		print("Running: %s (%s)" % (filepath, udm_object.dn))
+		print("Running: %s (%s) in %s" % (hookname, udm_object.dn, filepath))
 		if args.verbose:
 			print("###")
 			print(new_object_data)
 			print("###")
-		with open(filepath, "w") as f:
+
+		with os.fdopen(filepath_fd, "w") as f:
 			f.write(new_object_data)
-			f.close()
-			os.chmod(filepath, 0755)
-			cmd = [filepath]
-			cmd.extend(hook_options)
-			sys.stdout.flush()
-			sys.stderr.flush()
-			p1 = subprocess.Popen(cmd, close_fds=True)
-			p1.wait()
-			if p1.returncode != 0:
-				print("ERROR: %s hook %s failed." % (args.hooktype, filepath))
-				sys.exit(1)
+		os.chmod(filepath, 0755)
+		cmd = [filepath]
+		cmd.extend(hook_options)
+		sys.stdout.flush()
+		sys.stderr.flush()
+		p1 = subprocess.Popen(cmd, close_fds=True)
+		p1.wait()
+		if p1.returncode != 0:
+			print("ERROR: %s hook %s failed." % (args.hooktype, filepath))
+			sys.exit(1)
+		os.unlink(filepath)
 	shutil.rmtree(tempdir)
 
 if __name__ == "__main__":
