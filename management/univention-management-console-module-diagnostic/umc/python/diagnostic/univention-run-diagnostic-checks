@@ -15,7 +15,10 @@ class Client(_Client):
 
 	@classmethod
 	def get_test_connection(cls, username, password, hostname=None, *args, **kwargs):
-		return cls(hostname, username, password, *args, **kwargs)
+		try:
+			return cls(hostname, username, password, *args, **kwargs)
+		except Exception:
+			sys.exit(1)
 
 	def umc_command(self, *args, **kwargs):
 		self.print_request_data = kwargs.pop('print_request_data', True)
@@ -65,7 +68,7 @@ def choose_tests(tests, plugins):
 			unused_tests.append(x)
 	if unused_tests:
 		tests_not_found = ', '.join(unused_tests)
-		raise Exception('Could not find tests with the name %s\nPlease check for spelling mistakes' % tests_not_found)
+		print('Could not find tests with the name %s\nPlease check for spelling mistakes' % tests_not_found)
 	return chosen_tests
 
 
@@ -100,6 +103,7 @@ def main():
 		valid_input = True
 		if argst is None:
 			print('You have to choose tests to run by using "{-t <testname>}" or write "-t all" to execute all tests')
+			sys.exit(2)
 		else:
 			for x in argst:
 				if x.find(".") != -1:
@@ -116,11 +120,11 @@ def main():
 				chosen_tests = choose_tests(argst, plugins)
 				failures = test_run_diagnostic_checks(client, chosen_tests, failures)
 	except Exception as exc:
-		raise exc
-	finally:
-		print '\nYou can find the logging messages of the diagnostic modules at /var/log/univention/management-console-module-diagnostic.log\n'
-		if failures:
-			raise Exception('\n%s' % ('\n'.join(failures)))
+		print exc
+
+	print '\nYou can find the logging messages of the diagnostic modules at /var/log/univention/management-console-module-diagnostic.log\n'
+	if failures:
+		print('\n%s' % ('\n'.join(failures)))
 
 
 if __name__ == '__main__':
