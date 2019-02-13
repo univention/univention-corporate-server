@@ -208,6 +208,7 @@
 			<title>Users module</title>
 			<itemizedlist>
 				<listitem><simpara>
+						A new tab <guimenu>Apps</guimenu> has been added to users, which allows to enabled and disable apps (<u:bug>48621</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
