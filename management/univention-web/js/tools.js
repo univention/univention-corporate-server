@@ -959,6 +959,44 @@ define([
 			});
 		},
 
+		// TODO docs
+		flatten: function(arr) {
+			var this_ = this;
+			return arr.reduce(function(newArr, e) {
+				if (Array.isArray(e)) {
+					e = this_.flatten(e);
+				}
+				return newArr.concat(e);
+			}, []);
+		},
+
+		// TODO docs
+		values: function(obj) {
+			return Object.keys(obj).map(function(key) {
+				return obj[key];
+			});
+		},
+
+		// TODO docs
+		objFilter: function(/*Object*/ obj, /*Function*/ callback, /*Object?*/ scope) {
+			scope = scope || _window.global;
+			return Object.keys(obj).reduce(function(newObject, key) {
+				if (callback.call(scope, key, obj[key])) {
+					newObject[key] = obj[key];
+				}
+				return newObject;
+			}, {});
+		},
+
+		// TODO docs
+		objMap: function(/*Object*/ obj, /*Function*/ callback, /*Object?*/ scope) {
+			scope = scope || _window.global;
+			return Object.keys(obj).reduce(function(newObject, key) {
+				newObject[key] = callback.call(scope, key, obj[key]);
+				return newObject;
+			}, {});
+		},
+
 		forIn: function(/*Object*/ obj, /*Function*/ callback, /*Object?*/ scope, /*Boolean?*/ inheritedProperties) {
 			// summary:
 			//		Iterate over all elements of an object.

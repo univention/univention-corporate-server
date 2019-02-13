@@ -703,6 +703,28 @@ define([
 			this._setAllValues(vals);
 		},
 
+		focus: function(/* TODO make specific widget in specific row focusable via parameter ? */) {
+			this._widgets.some(function(widgetRow) {
+				return widgetRow.some(function(widget) {
+					if (!widget.get('disabled')) {
+						widget.focus();
+						return true;
+					}
+				});
+			});
+		},
+
+		focusInvalid: function() {
+			this._widgets.some(function(widgetRow) {
+				return widgetRow.some(function(widget) {
+					if (!widget.get('disabled') && !widget.isValid()) {
+						widget.focusInvalid();
+						return true;
+					}
+				});
+			});
+		},
+
 		isValid: function() {
 			var areValid = true;
 			var i, j;

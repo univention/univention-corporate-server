@@ -511,6 +511,35 @@ define([
 			return deferred;
 		},
 
+		setValid: function(obj) {
+			if (!obj) {
+				tools.forIn(this._widgets, function(name, widget) {
+					if (widget.setValid) {
+						widget.setValid(null);
+					}
+				});
+			} else {
+				tools.forIn(obj, lang.hitch(this, function(name, value) {
+					var widget = this.getWidget(name);
+					if (widget.setValid) {
+						widget.setValid(value.isValid, value.message);
+					}
+				}));
+			}
+		},
+
+		// TODO this shouls be called in validate. Make sure there are no side-effects if doing so
+		focusFirstInvalidWidget: function() {
+			var widgetNamesInOrder = tools.flatten(this.layout);
+			widgetNamesInOrder.some(lang.hitch(this, function(widgetName) {
+				var widget = this.getWidget(widgetName);
+				if (widget && widget.get('visible') && !widget.get('disabled') && !widget.isValid()) {
+					widget.focusInvalid();
+					return true;
+				}
+			}));
+		},
+
 		validate: function() {
 			return this.getInvalidWidgets().length === 0;
 		},

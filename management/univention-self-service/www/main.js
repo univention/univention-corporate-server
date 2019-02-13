@@ -29,21 +29,24 @@
 /*global define*/
 
 define([
+	"dojo/_base/lang",
+	"dojo/_base/array",
+	"dojo/_base/window",
 	"dojo/hash",
 	"dojo/io-query",
 	"dojo/topic",
-	"dojo/_base/lang",
-	"dojo/_base/array",
-	"put-selector/put",
 	"dojo/dom",
+	"dojox/widget/Standby",
 	"dijit/layout/StackContainer",
 	"dijit/layout/ContentPane",
 	"umc/dialog/NotificationDropDownButton",
+	"put-selector/put",
 	"./PasswordForgotten",
 	"./ProtectAccountAccess",
 	"./NewPassword",
-	"./PasswordChange"
-], function(hash, ioQuery, topic, lang, array, put, dom, StackContainer, ContentPane, NotificationDropDownButton, PasswordForgotten, ProtectAccountAccess, NewPassword, PasswordChange){
+	"./PasswordChange",
+	"./UserAttributes"
+], function(lang, array, baseWin, hash, ioQuery, topic, dom, Standby, StackContainer, ContentPane, NotificationDropDownButton, put, PasswordForgotten, ProtectAccountAccess, NewPassword, PasswordChange, UserAttributes) {
 	return {
 		content_container: null,
 		backend_info: null,
@@ -51,9 +54,12 @@ define([
 			"password_forgotten": PasswordForgotten,
 			"protect_account_access": ProtectAccountAccess,
 			"new_password": NewPassword,
-			"password_change": PasswordChange
+			"password_change": PasswordChange,
+			"user_attributes": UserAttributes
 		},
 		site_hashes: {},
+
+		_standby: null,
 
 		/**
 		 * Builds the active subpages of the
@@ -63,6 +69,7 @@ define([
 			this._initContainer();
 			this._subscribeOnHashEvents();
 			this._addSubPages(Object.keys(this.subpages));
+
 			new NotificationDropDownButton({
 				iconClass: 'umcNotificationIcon',
 				'class': 'umcFlatButton'
@@ -82,6 +89,13 @@ define([
 				doLayout: false
 			});
 			this.content_container.startup();
+
+			this._standby = new Standby({
+				target: this.content_container.domNode,
+				image: require.toUrl("dijit/themes/umc/images/standbyAnimation.svg").toString(),
+				duration: 200
+			});
+			put(baseWin.body(), this._standby.domNode);
 		},
 
 		/**
@@ -90,6 +104,7 @@ define([
 		_addSubPages: function(page_list) {
 			array.forEach(page_list, lang.hitch(this, function(page_name){
 				var module = this.subpages[page_name];
+				module.standby = this._standby;
 				if (module) {
 					var content = module.getContent();
 

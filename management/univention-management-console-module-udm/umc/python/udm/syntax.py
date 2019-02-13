@@ -270,6 +270,22 @@ def widget(syntax, udm_property):
 			if subtypes:
 				MODULE.info("Syntax %s has the following sub-types: %s" % (syntax.name, subtypes))
 				descr['subtypes'] = subtypes
+			if descr['type'] == 'LinkList':
+				descr['multivalue'] = False
+			elif 'MultiObjectSelect' in descr['type']:
+				descr['multivalue'] = False
+			elif udm_property['multivalue'] and descr['type'] != 'MultiInput':
+				descr['subtypes'] = [{
+					'type': descr['type'],
+					'dynamicValues': descr.get('dynamicValues'),
+					'dynamicValuesInfo': descr.get('dynamicValuesInfo'),
+					'dynamicOptions': descr.get('dynamicOptions'),
+					'staticValues': descr.get('staticValues'),
+					'size': descr.get('size'),
+					'depends': descr.get('depends'),
+				}]
+				descr['type'] = 'MultiInput'
+
 			return descr
 
 	if hasattr(syntax, '__name__'):
