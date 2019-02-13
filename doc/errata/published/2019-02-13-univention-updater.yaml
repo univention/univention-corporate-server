@@ -12,3 +12,5 @@ desc: |
    `univention-repository-delpackage` and `univention-repository-merge` are
    deprecated and will be removed with UCS-4.4.
 bug: [46600, 29505]
+erratum: 422
+announced: 2019-02-13
