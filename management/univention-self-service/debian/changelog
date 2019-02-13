@@ -1,3 +1,9 @@
+univention-self-service (4.0.1-5) unstable; urgency=medium
+
+  * Bug #48447: use +0 instead of none in ACL definition
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 13 Feb 2019 14:53:12 +0100
+
 univention-self-service (4.0.1-4) unstable; urgency=medium
 
   * Bug #48447: Merge contact data backend

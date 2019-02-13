@@ -37,7 +37,7 @@ import subprocess
 ACL_TEMPLATE = '''
 access to filter="univentionObjectType=users/user" attrs=%(ldap_attributes)s
 	by self write
-	by * none break
+	by * +0 break
 
 '''
 

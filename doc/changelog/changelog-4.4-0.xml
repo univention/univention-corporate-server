@@ -413,6 +413,7 @@
 			<title>Univention self service</title>
 			<itemizedlist>
 				<listitem><simpara>
+						It is now possible to define attributes a self service user can modify with the &ucsUCRV; variable <envar>self-service/ldap_attributes</envar> (<u:bug>48447</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
