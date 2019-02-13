@@ -199,7 +199,7 @@ int data_on_connection(int fd, callback_remove_handler remove)
 			p+=strlen(network_line);
 
 
-		} else if ( !strncmp(network_line, "GET_DN ", strlen("GET_DN ")) && msg_id != UINT32_MAX && network_client_get_version(fd) > 0) {
+		} else if ( !strncmp(network_line, "GET_DN ", strlen("GET_DN ")) && msg_id != UINT32_MAX && version > PROTOCOL_UNKNOWN && version < PROTOCOL_3) {
 
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "RECV: GET_DN");
 
