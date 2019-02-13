@@ -30,9 +30,11 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/_base/array",
 	"umc/modules/udm/wizards/CreateWizard",
 	"umc/i18n!umc/modules/udm"
-], function(declare, CreateWizard, _) {
+], function(declare, lang, array, CreateWizard, _) {
 
 	return declare("umc.modules.udm.wizards.users.user", [ CreateWizard ], {
 		widgetPages: [
@@ -53,6 +55,14 @@ define([
 			}
 		],
 
+		postMixInProperties: function() {
+			if (array.some(this.properties, function(prop) { return prop.id === 'PasswordRecoveryEmail'; })) {
+				this.widgetPages[1].widgets.splice(1, 0, '_invite');
+				this.widgetPages[1].widgets.splice(2, 0, 'PasswordRecoveryEmail');
+			}
+			this.inherited(arguments);
+		},
+
 		buildWidget: function(widgetName, originalWidgetDefinition) {
 			if (widgetName == 'disabled') {
 				return {
@@ -62,13 +72,44 @@ define([
 					required: false,
 					type: 'CheckBox'
 				};
+			} else  if (widgetName == '_invite') {
+				return {
+					name: widgetName,
+					sizeClass: 'One',
+					label: _('Invite user via e-mail. Password will be set by the user'),
+					required: false,
+					onChange: lang.hitch(this, function(value) {
+						var pwdChange = this.getWidget('page1', 'pwdChangeNextLogin');
+						pwdChange.set('value', value);
+						pwdChange.set('disabled', value);
+						var pwdCheck = this.getWidget('page1', 'overridePWLength');
+						pwdCheck.set('value', value);
+						pwdCheck.set('disabled', value);
+						this.getWidget('page1', 'password').set('visible', !value);
+						this.getWidget('page1', 'password').set('required', !value);
+						this.getWidget('page1', 'PasswordRecoveryEmail').set('visible', value);
+						this.getWidget('page1', 'PasswordRecoveryEmail').set('required', value);
+					}),
+					type: 'CheckBox'
+				};
 			} else {
+				if (widgetName == 'PasswordRecoveryEmail') {
+					originalWidgetDefinition.visible = false;
+					originalWidgetDefinition.label = _('Mail address to which the invitation link is sent to');
+				}
 				return this.inherited(arguments);
 			}
 		},
 
 		getValues: function() {
 			var values = this.inherited(arguments);
+			var invite = values._invite;
+			delete values._invite;
+			if (invite) {
+				values.disabled = true;
+				values.password = array.map([0, 1, 2, 3], function() { return Math.random().toString(36).slice(-8); }).join(''),
+				values.overridePWLength = true;
+			}
 			var disabled = values.disabled;
 			delete values.disabled;
 			if (disabled) {

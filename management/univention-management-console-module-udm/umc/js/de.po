@@ -17,6 +17,14 @@ msgstr ""
 msgid " UCS can only change certain attributes."
 msgstr "UCS kann nur bestimmte Attribute verändern."
 
+#: umc/js/udm/wizards/users/user.js:98
+msgid "Mail address to which the invitation link is sent to"
+msgstr "Mail-Adresse, an die der Einladungs-Link gesendet wird"
+
+#: umc/js/udm/wizards/users/user.js:79
+msgid "Invite user via e-mail. Password will be set by the user"
+msgstr "Benutzer per E-Mail einladen. Das Passwort wird vom Benutzer gesetzt"
+
 #: umc/js/udm.js:423
 msgid " You can install the application using the %(link)s"
 msgstr " Die Anwendung kann im %(link)s installiert werden"

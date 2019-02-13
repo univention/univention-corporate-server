@@ -109,7 +109,7 @@ define([
 				var pageWidgets = this._getPageWidgets(layout);
 				array.forEach(pageWidgets, lang.hitch(this, function(widgetName) {
 					var originalWidgetDefinition = array.filter(this.properties, function(prop) { return prop.id == widgetName; })[0];
-					if (originalWidgetDefinition.identifies) {
+					if (originalWidgetDefinition && originalWidgetDefinition.identifies) {
 						this._identifyingAttribute = widgetName;
 					}
 					widgets.push(this.buildWidget(widgetName, originalWidgetDefinition));
