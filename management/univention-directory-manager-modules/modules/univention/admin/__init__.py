@@ -375,7 +375,7 @@ class property:
 						self.syntax.parse(d)
 			elif defaults:
 				self.syntax.parse(defaults)
-		except univention.admin.uexceptions.valueError, exc:
+		except univention.admin.uexceptions.valueError:
 			raise univention.admin.uexceptions.templateSyntaxError([t['name'] for t in self.templates])
 
 	def matches(self, options):
@@ -384,14 +384,15 @@ class property:
 		return bool(set(self.options).intersection(set(options)))
 
 
-class option:
+class option(object):
 
-	def __init__(self, short_description='', long_description='', default=0, editable=False, disabled=False, objectClasses=None):
+	def __init__(self, short_description='', long_description='', default=0, editable=False, disabled=False, objectClasses=None, is_app_option=False):
 		self.short_description = short_description
 		self.long_description = long_description
 		self.default = default
 		self.editable = editable
 		self.disabled = disabled
+		self.is_app_option = is_app_option
 		self.objectClasses = set()
 		if objectClasses:
 			self.objectClasses = set(objectClasses)

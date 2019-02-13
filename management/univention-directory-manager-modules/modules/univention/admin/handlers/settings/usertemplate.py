@@ -351,7 +351,6 @@ layout = [
 	Tab(_('General'), _('Basic values'), layout=[
 		Group(_('General user template settings'), layout=[
 			"name",
-			["_options"],
 		]),
 		Group(_('User account'), layout=[
 			"title",
@@ -378,11 +377,11 @@ layout = [
 		Group(_('Locking and deactivation'), layout=[
 			["disabled", "pwdChangeNextLogin"]
 		]),
-		Group(_('Windows'), _('Windows Account Settings'), layout=[
+		Group(_('Windows'), layout=[
 			['homedrive', 'sambahome'],
 			["scriptpath", "profilepath"]
 		]),
-		Group(_('POSIX (Linux/UNIX)'), _('POSIX (Linux/UNIX) account settings'), layout=[
+		Group(_('POSIX (Linux/UNIX)'), layout=[
 			["unixhome", "shell"],
 			["homeShare", "homeSharePath"]
 		]),
@@ -430,8 +429,6 @@ mapping.register('primaryGroup', 'userPrimaryGroupPreset', None, univention.admi
 mapping.register('groups', 'userGroupsPreset')
 mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToLowerString)
 mapping.register('mailAlternativeAddress', 'mailAlternativeAddress')
-
-
 mapping.register('_options', 'userOptionsPreset')
 
 
@@ -439,16 +436,24 @@ class object(univention.admin.handlers.simpleLdap):
 	module = module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
-
-	def open(self):
-		univention.admin.handlers.simpleLdap.open(self)
+		super(object, self).__init__(co, lo, position, dn, superordinate, attributes=attributes)
+		self.options.extend(self['_options'])
 
 	@classmethod
 	def unmapped_lookup_filter(cls):
 		return univention.admin.filter.conjunction('&', [
 			univention.admin.filter.expression('objectClass', 'univentionUserTemplate')
 		])
+
+	def _ldap_pre_modify(self):
+		super(object, self)._ldap_pre_modify()
+		self['_options'].extend(self.options)
+		self['_options'] = list(set(self['_options']))
+
+	def _ldap_pre_create(self):
+		super(object, self)._ldap_pre_create()
+		self['_options'].extend(self.options)
+		self['_options'] = list(set(self['_options']))
 
 
 lookup = object.lookup

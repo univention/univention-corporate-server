@@ -441,7 +441,7 @@ define([
 				// in case we have policies that apply to the current object, we need an extra
 				// sub tab that groups all policies together
 				this._policiesTab = new _StandbyPage({
-					title: _('[Policies]'),
+					title: _('Policies'),
 					noFooter: true,
 					headerText: _('Properties inherited from policies'),
 					helpText: _('List of all object properties that are inherited by policies. The values cannot be edited directly. By clicking on "Create new policy", a new tab with a new policy will be opened. If an attribute is already set, the corresponding policy can be edited in a new tab by clicking on the "edit" link.')
@@ -738,7 +738,7 @@ define([
 			// parse the layout configuration... we would like to group all groups of advanced
 			// settings on a special sub tab
 			var advancedGroup = {
-				label: _('[Advanced settings]'),
+				label: _('Advanced settings'),
 				description: _('Advanced settings'),
 				layout: []
 			};
@@ -903,41 +903,79 @@ define([
 
 			var _getOptionProperty = function(properties) {
 				var result = array.filter(properties, function(item) {
-					return item.id == '$options$';
+					return item.id === '$options$';
 				});
 				return result.length ? result[0] : null;
 			};
 
 			var option_prop = _getOptionProperty(properties);
+			if (/*this._multiEdit || */!option_prop || !option_prop.widgets.length) {
+				properties = array.filter(properties, function(item) {
+					return item.id !== '$options$';
+				});
+				return properties;
+			}
+
 			var option_values = {};
-			if ( option_prop && option_prop.widgets.length > 0 && !this._multiEdit) {
-				var optiontab = {
-					label: _('[Options]'),
-					description: _('Options describing the basic features of the LDAP object'),
+			var option_widgets = [];
+			var option_layout = [];
+			var app_layout = [];
+			array.forEach(option_prop.widgets, function(option) {
+				option = lang.clone(option);
+				// special case: bring options from template into the widget
+				if (template && template._options) {
+					option.value = template._options.indexOf(option.id) > -1;
+				}
+				if (option.is_app_option) {
+					option.labelConf = {
+						'class': 'udmAppLable ' + tools.getIconClass(option.icon, 'scalable'),
+					};
+				}
+				option_widgets.push(lang.mixin({
+					disabled: isNewObject ? false : ! option.editable,
+				}, option));
+				option_values[option.id] = option.value;
+
+				if (option.is_app_option) {
+					app_layout.push(option.id);
+				} else {
+					option_layout.push(option.id);
+				}
+			});
+
+			var optiontab = {
+				label: _('Options'),
+				description: _('Options describing the basic features of the LDAP object'),
+				layout: [ '$options$' ]
+			};
+
+			option_prop.widgets = option_widgets;
+			option_prop.layout = [];
+			if (app_layout.length) {
+				option_prop.layout.push({
+					label: _('Activated Apps'),
+					layout: app_layout,
+					description: _('Here you can activate the user for one of the installed apps. The user can then log on to the app and use it.'),
+				});
+				optiontab = {
+					label: _('Apps'),
+					description: _('Activate apps and options'),
 					layout: [ '$options$' ]
 				};
-				layout.push( optiontab);
+			}
+			if (option_layout.length) {
+				option_prop.layout.push({
+					label: _('Options'),
+					layout: option_layout
+				});
+			}
 
-				var option_widgets = [];
-				var option_layout = [];
-				array.forEach( option_prop.widgets, function ( option) {
-					option = lang.clone(option);
-					// special case: bring options from template into the widget
-					if (template && template._options) {
-						option.value = template._options.indexOf(option.id) > -1;
-					}
-					option_widgets.push( lang.mixin( {
-						disabled: isNewObject ? false : ! option.editable
-					}, option));
-					option_values[ option.id ] = option.value;
-					option_layout.push( option.id);
-				});
-				option_prop.widgets = option_widgets;
-				option_prop.layout = option_layout;
+			// replace the existing tab (which exists so that it's displayed earlier)
+			var tab = array.filter(layout, function(item) { return item.label === 'Options'; });
+			if (!tab.length) {
+				layout.push(optiontab);
 			} else {
-				properties = array.filter( properties, function( item) {
-					return item.id != '$options$';
-				});
+				lang.mixin(tab[0], optiontab);
 			}
 
 			formBuiltDeferred.then(lang.hitch(this, function() {
@@ -991,7 +1029,8 @@ define([
 			return tools.forEachAsync(layout, function(ilayout, idx) {
 				// create a new page, i.e., subtab
 				var subTab = new Page({
-					title: ilayout.label || ilayout.name, //TODO: 'name' should not be necessary
+					title: entities.encode(ilayout.label || ilayout.name).replace(/ /g, '&nbsp;'), //TODO: 'name' should not be necessary
+					titleAllowHTML: true,
 					noFooter: true,
 					headerText: ilayout.description || ilayout.label || ilayout.name,
 					helpText: idx === 0 && metaInfo.help_text ? metaInfo.help_text : ''
@@ -1035,6 +1074,28 @@ define([
 			}, this, 1, 20).then(lang.hitch(this, function() {
 				this._layoutMap = layout;
 			}));
+		},
+
+		_indentAppTabs: function(properties) {
+			var _getOptionProperty = function(properties) {
+				var result = array.filter(properties, function(item) {
+					return item.id === '$options$';
+				});
+				return result.length ? result[0] : {widgets: []};
+			};
+			var appOptions = array.map(array.filter(_getOptionProperty(properties).widgets, function(option) { return option.is_app_option; }), function(option) { return option.id; });
+			array.forEach(properties, function(prop) {
+				array.forEach(prop.options, lang.hitch(this, function(option) {
+					if (~array.indexOf(appOptions, option)) {
+						// indent the title... TODO: it would be nicer if we can use css for this
+						//domClass.add(this._propertySubTabMap[prop.id].domNode, 'appTabIndented');
+						var orgTitle = this._propertySubTabMap[prop.id].get('title');
+						if (orgTitle.indexOf('&nbsp;&nbsp;&nbsp;&nbsp;') !== 0) {
+							this._propertySubTabMap[prop.id].set('title', '&nbsp;&nbsp;&nbsp;&nbsp;' + orgTitle);
+						}
+					}
+				}));
+			}, this);
 		},
 
 		_addReferencesToWidgets: function() {
@@ -1172,6 +1233,7 @@ define([
 			}
 			this._autoUpdateTabTitle(widgets);
 			this._renderSubTabs(widgets, layout, metaInfo).then(lang.hitch(this, function() {
+				this._indentAppTabs(properties);
 				this._renderPolicyTab(policies);
 				this._renderForm(widgets);
 				this._renderMultiEditCheckBoxes(widgets);
@@ -1926,7 +1988,7 @@ define([
 			if (page && !page.$titleOrig$) {
 				// store the original title
 				page.$titleOrig$ = page.title;
-				page.set('title', '<span style="color:red">' + page.title + ' (!)</span>');
+				page.set('title', '<span style="color:red">' + entities.encode(page.title) + ' (!)</span>');
 			}
 		},
 

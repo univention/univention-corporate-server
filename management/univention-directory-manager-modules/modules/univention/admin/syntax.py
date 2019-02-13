@@ -627,6 +627,10 @@ class boolean(simple):
 	'0'
 	>>> boolean().parse('1')
 	'1'
+	>>> boolean().parse(True)
+	'1'
+	>>> boolean().parse(False)
+	'0'
 	>>> boolean().parse('2') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
@@ -1396,8 +1400,8 @@ class date2(date):  # fixes the century
 		if text and self._re_de.match(text):
 			day, month, year = map(lambda(x): int(x), text.split('.'))
 			if 0 <= year <= 99 and 1 <= month <= 12 and 1 <= day <= 31:
-				## Workaround: Don't wrap 2.1.1970 to 2.1.2070:
-				if year >= 70: # Epoch 0
+				# Workaround: Don't wrap 2.1.1970 to 2.1.2070:
+				if year >= 70:  # Epoch 0
 					return '19%02d-%02d-%02d' % (year, month, day)
 				return '20%02d-%02d-%02d' % (year, month, day)
 		raise univention.admin.uexceptions.valueError(_("Not a valid Date"))
@@ -3229,9 +3233,16 @@ class timeSpec(select):
 
 
 class optionsUsersUser(select):
-	choices = [
-		('pki', _('Public key infrastructure account')),
-	]
+	choices = [('pki', _('Public key infrastructure account'))]
+
+	@classmethod
+	def update_choices(cls):
+		users = univention.admin.modules.get('users/user')
+		if users:
+			cls.choices = [(key, x.short_description) for key, x in users.options.items() if key != 'default']
+
+
+__register_choice_update_function(optionsUsersUser.update_choices)
 
 
 class nagiosHostsEnabledDn(UDM_Objects):

@@ -150,6 +150,14 @@ property_descriptions = {
 		may_change=True,
 		identifies=False
 	),
+	'isApp': univention.admin.property(
+		short_description=_('Application'),
+		long_description=_('Specifies that the option belongs to a UCS Application'),
+		syntax=univention.admin.syntax.boolean,
+		multivalue=False,
+		required=False,
+		may_change=True,
+	),
 }
 
 layout = [
@@ -158,7 +166,7 @@ layout = [
 			'name',
 			["shortDescription", "longDescription"],
 			["translationShortDescription", "translationLongDescription"],
-			["default", "editable"],
+			["default", "editable", "isApp"],
 			['module', "objectClass"],
 		]),
 	]),
@@ -172,6 +180,7 @@ mapping.register('default', 'univentionUDMOptionDefault', None, univention.admin
 mapping.register('editable', 'univentionUDMOptionEditable', None, univention.admin.mapping.ListToString)
 mapping.register('module', 'univentionUDMOptionModule')
 mapping.register('objectClass', 'univentionUDMOptionObjectClass')
+mapping.register('isApp', 'univentionUDMOptionIsApp', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):

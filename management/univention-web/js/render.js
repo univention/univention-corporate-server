@@ -26,11 +26,12 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console require */
+/*global define,require*/
 
 define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojox/html/entities",
 	"umc/tools",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/LabelPane",
@@ -40,8 +41,9 @@ define([
 	"umc/widgets/CheckBox",
 	"umc/widgets/Button",
 	"umc/widgets/SubmitButton",
-	"umc/widgets/ResetButton"
-], function(lang, array, tools, ContainerWidget, LabelPane, TitlePane, Tooltip, HiddenInput, CheckBox, Button, SubmitButton, ResetButton) {
+	"umc/widgets/ResetButton",
+	"umc/widgets/Text"
+], function(lang, array, entities, tools, ContainerWidget, LabelPane, TitlePane, Tooltip, HiddenInput, CheckBox, Button, SubmitButton, ResetButton, Text) {
 	var render = {};
 	lang.mixin(render, {
 		widgets: function(/*Object[]*/ widgetsConf, owner) {
@@ -309,6 +311,9 @@ define([
 						open: undefined === el.open ? true : el.open,
 						content: this.layout(el.layout, widgets, buttons, iLevel + 1)
 					});
+					if (el.description) {
+						el.$refTitlePane$.addChild(new Text({content: entities.decode(el.description), style: 'margin-bottom: 1em;'}), 0);
+					}
 					globalContainer.addChild( el.$refTitlePane$ );
 				}
 			}
