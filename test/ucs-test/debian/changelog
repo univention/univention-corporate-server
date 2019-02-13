@@ -1,3 +1,9 @@
+ucs-test (9.0.0-26) unstable; urgency=medium
+
+  * Bug 48663: Don't test the deprecated get_categories() method
+
+ -- Richard Ulmer <ulmer@univention.de>  Wed, 13 Feb 2019 12:41:59 +0100
+
 ucs-test (9.0.0-25) unstable; urgency=medium
 
   * Bug #47940: added tests/11_join/15join_hooks
