@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.2-1) unstable; urgency=medium
+
+  * Bug #48621: ignore case when sorting options
+
+ -- Florian Best <best@univention.de>  Wed, 13 Feb 2019 16:09:13 +0100
+
 univention-management-console-module-udm (9.0.1-6) unstable; urgency=medium
 
   * Bug #48621: implement app tabs
