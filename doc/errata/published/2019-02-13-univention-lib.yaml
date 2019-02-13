@@ -13,3 +13,5 @@ desc: |
    missing LDAP ACLs are automatically activated
  * Add univention-lib implementation of die() function to ldap.sh
 bug: [48530, 47424]
+erratum: 424
+announced: 2019-02-13
