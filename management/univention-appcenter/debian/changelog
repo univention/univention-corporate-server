@@ -1,3 +1,9 @@
+univention-appcenter (8.0.0-8) unstable; urgency=medium
+
+  * Bug #48621: add more extended attribute possibilities
+
+ -- Florian Best <best@univention.de>  Wed, 13 Feb 2019 15:59:19 +0100
+
 univention-appcenter (8.0.0-7) unstable; urgency=medium
 
   * Bug #48621: implement app tabs

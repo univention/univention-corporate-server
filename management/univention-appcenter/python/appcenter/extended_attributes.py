@@ -51,6 +51,10 @@ class Attribute(UniventionMetaInfo):
 	save_as_list = '_attrs'
 	auto_set_name = True
 
+	def __init__(self, default_value=None):
+		self.default_value = default_value
+		super(Attribute, self).__init__()
+
 	def ldap_name(self):
 		return self.name.upper().replace('_', '-')
 
@@ -68,6 +72,7 @@ class Attribute(UniventionMetaInfo):
 
 
 class HiddenAttribute(Attribute):
+
 	def to_schema(self, obj):
 		return None
 
@@ -119,7 +124,7 @@ class SchemaObject(object):
 
 	def __init__(self, app, **kwargs):
 		for attr in self._attrs:
-			setattr(self, attr.name, kwargs.get(attr.name))
+			setattr(self, attr.name, kwargs.get(attr.name, attr.default_value))
 
 	def to_schema(self):
 		info = []
@@ -152,21 +157,20 @@ class ExtendedAttribute(SchemaObject):
 	long_description = HiddenAttribute()
 	long_description_de = HiddenAttribute()
 
-	syntax = SyntaxAttribute()
-	single_value = BooleanAttribute()
+	syntax = SyntaxAttribute('String')
+	single_value = BooleanAttribute(True)
 	default = HiddenAttribute()
-
-	module = HiddenAttribute()
-
+	module = HiddenAttribute('users/user')
 	belongs_to = HiddenAttribute()
 	ldap_mapping = HiddenAttribute()
 	position = HiddenAttribute()
-	full_width = HiddenAttribute()
+	full_width = HiddenAttribute(False)
 	disable_web = HiddenAttribute()
 	copyable = HiddenAttribute()
 	required = HiddenAttribute()
 	options = HiddenAttribute()
 	tab_name = HiddenAttribute()
+	tab_name_de = HiddenAttribute()
 	advanced = HiddenAttribute()
 	hook = HiddenAttribute()
 	group_position = HiddenAttribute()
@@ -174,18 +178,20 @@ class ExtendedAttribute(SchemaObject):
 	overwrite_position = HiddenAttribute()
 	not_editable = HiddenAttribute()
 	dont_search = HiddenAttribute()
+	tab_position = HiddenAttribute()
+	group_name = HiddenAttribute()
+	delete_object_class = HiddenAttribute(True)
+	may_change = HiddenAttribute(True)
+	cli_name = HiddenAttribute()
+	udm_syntax = HiddenAttribute()
 
 	@property
 	def dn(self):
 		return 'cn=%s,%s,%s' % (self.name, self.position, ucr_get('ldap/base'))
 
 	def __init__(self, app, **kwargs):
-		kwargs.setdefault('syntax', 'String')
 		kwargs.setdefault('belongs_to', '%sUser' % (app.id,))
 		kwargs.setdefault('position', 'cn=%s,cn=custom attributes,cn=univention' % app.id)
-		kwargs.setdefault('module', 'users/user')
-		kwargs.setdefault('single_value', True)
-		kwargs.setdefault('full_width', False)
 		kwargs.setdefault('tab_name', app.name)
 		kwargs.setdefault('ldap_mapping', kwargs['name'])
 		kwargs['module'] = re.split('\s*,\s*', kwargs['module'])
@@ -193,17 +199,18 @@ class ExtendedAttribute(SchemaObject):
 			kwargs['options'] = re.split('\s*,\s*', kwargs.get('options', []))
 		kwargs.setdefault('options', [])
 		super(ExtendedAttribute, self).__init__(app, **kwargs)
-		self._udm_syntax = None
 		if self.syntax == 'Boolean':
 			self._syntax = '1.3.6.1.4.1.1466.115.121.1.7'
 			self._equality = 'booleanMatch'
 			self._substr = None
-			self._udm_syntax = 'TrueFalseUp'
+			if not self.udm_syntax:
+				self.udm_syntax = 'TrueFalseUp'
 		elif self.syntax == 'BooleanString':
 			self._syntax = '1.3.6.1.4.1.1466.115.121.1.15'
 			self._equality = 'caseIgnoreMatch'
 			self._substr = 'caseIgnoreSubstringsMatch'
-			self._udm_syntax = 'TrueFalseUp'
+			if not self.udm_syntax:
+				self.udm_syntax = 'TrueFalseUp'
 		elif self.syntax == 'String':
 			self._syntax = '1.3.6.1.4.1.1466.115.121.1.15'
 			self._equality = 'caseIgnoreMatch'
@@ -211,9 +218,10 @@ class ExtendedAttribute(SchemaObject):
 			#self._syntax = '1.3.6.1.4.1.1466.115.121.1.26'
 			#self._equality = 'caseIgnoreIA5Match'
 			#self._substr = None
-			self._udm_syntax = 'string'
+			if not self.udm_syntax:
+				self.udm_syntax = 'string'
 		else:
-			raise NotImplementedError('Syntax %r not supported' % self.syntax)
+			attribute_logger.warn('Ignoring unknown syntax %r' % (self.syntax,))
 
 
 class ExtendedOption(SchemaObject):
@@ -225,14 +233,12 @@ class ExtendedOption(SchemaObject):
 	description_de = HiddenAttribute()
 	long_description_de = HiddenAttribute()
 	default = HiddenAttribute()
-	editable = HiddenAttribute()
-	module = HiddenAttribute()
+	editable = HiddenAttribute(True)
+	module = HiddenAttribute('users/user')
 	object_class = HiddenAttribute()
 
 	def __init__(self, app, **kwargs):
 		kwargs.setdefault('position', 'cn=%s,cn=custom attributes,cn=univention' % (app.id,))
-		kwargs.setdefault('module', 'users/user')
-		kwargs.setdefault('editable', True)
 		kwargs.setdefault('description', app.name)
 		kwargs['module'] = re.split('\s*,\s*', kwargs['module'])
 		super(ExtendedOption, self).__init__(app, **kwargs)
@@ -250,17 +256,10 @@ class ObjectClass(SchemaObject):
 	ldap_type = 'objectclass'
 	ldap_type_oid_suffix = 2
 
-	auxiliary = BooleanAttribute()
-	sup = Attribute()
-	may = AttributeListAttribute()
-	must = AttributeListAttribute()
-
-	def __init__(self, app, **kwargs):
-		kwargs.setdefault('auxiliary', True)
-		kwargs.setdefault('sub', 'top')
-		kwargs.setdefault('may', '')
-		kwargs.setdefault('must', '')
-		super(ObjectClass, self).__init__(app, **kwargs)
+	auxiliary = BooleanAttribute(True)
+	sup = Attribute('top')
+	may = AttributeListAttribute('')
+	must = AttributeListAttribute('')
 
 
 def get_extended_attributes(app):
@@ -376,14 +375,16 @@ def create_extended_attribute(attribute, app, layout_position, lo, pos):
 	attrs['multivalue'] = not attribute.single_value
 	if attribute.default:
 		attrs['default'] = attribute.default
-	attrs['tabPosition'] = str(layout_position)  # TODO/FIXME?: the position is determined by the position, not possible to specify or leave out a number
+	attrs['tabPosition'] = attribute.tab_position or str(layout_position)
 	attrs['tabName'] = attribute.tab_name
-	attrs['groupName'] = app.name
+	if attribute.tab_name_de:
+		attrs['translationTabName'] = [('de_DE', attribute.tab_name_de)]
+	attrs['groupName'] = attribute.group_name or app.name
 	attrs['ldapMapping'] = attribute.ldap_mapping
 	attrs['objectClass'] = attribute.belongs_to
 	attrs['module'] = attribute.module
-	attrs['deleteObjectClass'] = True
-	attrs['mayChange'] = True
+	attrs['deleteObjectClass'] = attribute.delete_object_class
+	attrs['mayChange'] = attribute.may_change
 	attrs['fullWidth'] = attribute.full_width
 	attrs['hook'] = attribute.hook
 	attrs['disableUDMWeb'] = attribute.disable_web
@@ -396,6 +397,7 @@ def create_extended_attribute(attribute, app, layout_position, lo, pos):
 	attrs['doNotSearch'] = attribute.dont_search
 	attrs['copyable'] = attribute.copyable
 	attrs['options'] = attribute.options
+	attrs['CLIName'] = attribute.cli_name
 	attribute_logger.debug('Creating DN: %s' % attribute.dn)
 	if not create_object_if_not_exists('settings/extended_attribute', lo, pos, **attrs):
 		attribute_logger.debug('... already exists. Overwriting!')
