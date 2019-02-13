@@ -1,3 +1,9 @@
+univention-appcenter (8.0.0-7) unstable; urgency=medium
+
+  * Bug #48621: implement app tabs
+
+ -- Florian Best <best@univention.de>  Wed, 13 Feb 2019 13:56:54 +0100
+
 univention-appcenter (8.0.0-6) unstable; urgency=medium
 
   * Bug #48449: Adapt design to match the App catalog

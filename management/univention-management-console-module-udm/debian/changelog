@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.1-6) unstable; urgency=medium
+
+  * Bug #48621: implement app tabs
+
+ -- Florian Best <best@univention.de>  Wed, 13 Feb 2019 13:56:37 +0100
+
 univention-management-console-module-udm (9.0.1-5) unstable; urgency=medium
 
   * Bug #48660: The wizard for creating new users now has the option to not
