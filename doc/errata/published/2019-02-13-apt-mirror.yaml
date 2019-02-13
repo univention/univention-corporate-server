@@ -11,3 +11,5 @@ desc: |
  * The error message complaining about the missing `postmirror.sh` file is no
    longer displayed.
 bug: [48424,27761]
+erratum: 420
+announced: 2019-02-13
