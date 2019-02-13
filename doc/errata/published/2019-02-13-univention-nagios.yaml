@@ -9,3 +9,5 @@ desc: |
  * Fixed a local root exploit in the SUID wrapper for the NAGIOS check
    "univention_ldap".
 bug: [48616]
+erratum: 421
+announced: 2019-02-13
