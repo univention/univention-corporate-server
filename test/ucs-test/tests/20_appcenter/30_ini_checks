@@ -29,12 +29,6 @@ for app in Apps(locale='en').get_every_single_app():
 				returncode = 1
 		else:
 			codes[code] = app.id
-	# categories
-	cache = app.get_app_cache_obj().get_appcenter_cache_obj()
-	unsupported = set(app.categories) - set(cache.get_categories().values())
-	for category in unsupported:
-		print ' FAIL: Unsupported category: %s!' % category
-		returncode = 1
 	# logo files
 	if app.is_installed():
 		ini_parser = read_ini_file(app.get_ini_file())
