@@ -12,3 +12,5 @@ desc: |
    systems to correct possible inconsistencies in LDAP ACLs (Bug #48530).
  * Add cn=translog database for transaction log.
 bug: [43515, 48530, 48427]
+erratum: 426
+announced: 2019-02-13
