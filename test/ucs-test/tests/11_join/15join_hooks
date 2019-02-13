@@ -35,7 +35,8 @@ udm-test settings/data create --set name=postjoinscripts --set data_type=join/po
 	--bindpwdfile "$tests_domainadmin_pwdfile"
 test -e /tmp/prejoin || fail_test 110
 
-univention-run-join-scripts -dcaccount "$tests_domainadmin_account" -dcpwd "$tests_domainadmin_pwdfile"
+test_username="$(echo $tests_domainadmin_account | awk -F , '{print $1}' | sed 's/uid=//')"
+univention-run-join-scripts -dcaccount "$test_username" -dcpwd "$tests_domainadmin_pwdfile"
 test -e /tmp/prejoinscripts || fail_test 110
 test -e /tmp/postjoinscripts || fail_test 110
 
