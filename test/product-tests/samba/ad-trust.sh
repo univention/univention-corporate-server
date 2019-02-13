@@ -58,10 +58,10 @@ forwarders { $WINRM_CLIENT; };
 	python shared-utils/ucs-winrm.py run-ps --client $WINCLIENT_AD --cmd "Add-LocalGroupMember -Group \"Remotedesktopbenutzer\" -Member \"$windows_domain\\Domain Users\""
 
 	# ucs user in windows
-	python shared-utils/ucs-winrm.py domain-user-validate-password --domain $windows_domain --domainpassword univention --domainuser ucs1
-	! python shared-utils/ucs-winrm.py domain-user-validate-password --domain $windows_domain --domainpassword wrong_password --domainuser ucs1
+	python shared-utils/ucs-winrm.py domain-user-validate-password --domain "$WINRM_DOMAIN" --domainpassword univention --domainuser ucs1
+	! python shared-utils/ucs-winrm.py domain-user-validate-password --domain "$WINRM_DOMAIN" --domainpassword wrong_password --domainuser ucs1
 	! python shared-utils/ucs-winrm.py domain-user-validate-password --domain INVALID_DOMAIN --domainpassword univention --domainuser ucs1
-	python shared-utils/ucs-winrm.py domain-user-validate-password --domain " " --domainpassword univention --domainuser ucs1@$domainname
+	python shared-utils/ucs-winrm.py domain-user-validate-password --domain "$WINRM_DOMAIN" --domainpassword univention --domainuser ucs1@$domainname
 
 	# new GPO's in AD
 	create_gpo UserGPO2 "dc=adtest,dc=local" User 'HKCU\Environment'
@@ -81,7 +81,7 @@ forwarders { $WINRM_CLIENT; };
 	python shared-utils/ucs-winrm.py check-applied-gpos --client $WINCLIENT_AD --username 'ucs1' --userpwd "univention" \
 		--usergpo 'UserGPO1' --usergpo 'UserGPO2' --computergpo 'MachineGPO1' --computergpo 'MachineGPO2' --domain $domainname
 
-	# UCS - check old and ne GPO's for UCS user
+	# UCS - check old and new GPO's for UCS user
 	python shared-utils/ucs-winrm.py check-applied-gpos --client $WINCLIENT_UCS --username 'ucs1' --userpwd "univention" --domain $domainname \
 		--usergpo UCSUserGPO1 --usergpo UCSUserGPO2 --computergpo UCSMachineGPO1 --computergpo UCSMachineGPO2
 	python shared-utils/ucs-winrm.py check-applied-gpos --client $WINCLIENT_UCS --username 'ucs2' --userpwd "univention" --domain $domainname \
