@@ -60,12 +60,12 @@ display_help() {
 
 display_header() {
 	echo "univention-run-join-scripts: runs all join scripts existing on local computer."
-	echo "copyright (c) 2001-@%@copyright_lastyear@%@ Univention GmbH, Germany"
+	echo "copyright (c) 2001-2019 Univention GmbH, Germany"
 	echo ""
 }
 
 display_version() {
-	echo "univention-run-join-scripts @%@package_version@%@"
+	echo "univention-run-join-scripts 11.0.1-3A~4.4.0.201902081114"
 }
 
 failed_message () {
@@ -149,7 +149,7 @@ if [ ! "$server_role" = "domaincontroller_master" ] || [ -n "$ASK_PASS" ] ; then
 		echo ""
 	fi
 
-	echo -n "Search LDAP binddn "
+	echo -n "Search LDAP binddn: "
 
 	# First use udm to search the user DN
 	OLDIFS="$IFS" IFS="
@@ -225,7 +225,9 @@ echo
 joinscript_check_status_file >&3
 if [ -e "/usr/lib/univention-install/" ]
 then
-	run_join_hook join/pre-joinscripts
+	echo -n "Running pre-joinscripts hook(s): " >&3
+	run_join_hook pre-joinscripts
+	echo -e "\033[60Gdone" >&3
 	for i in "${SCRIPTS[@]}"
 	do
 		[ "$(basename "$i")" = "*.uinst" -o "$(basename "$iscript")" = "*.inst" ] && continue
@@ -265,7 +267,9 @@ then
 			delete_unjoinscript "$(basename "$i")"
 		fi
 	done
-	run_join_hook join/post-joinscripts
+	echo -n "Running post-joinscripts hook(s): " >&3
+	run_join_hook post-joinscripts
+	echo -e "\033[60Gdone" >&3
 fi
 
 joinscript_remove_credentialfiles

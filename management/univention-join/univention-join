@@ -671,7 +671,9 @@ fi
 test -x /usr/sbin/nscd && nscd -i hosts
 
 copy_ca_cert
-run_join_hook join/pre-join
+echo -n "Running pre-join hook(s): "
+run_join_hook pre-join
+echo -e "\033[60Gdone"
 
 echo -n "Join Computer Account: "
 args+=(-role "$server_role" -hostname "$hostname" -domainname "$domainname")
@@ -888,9 +890,13 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	chown listener /var/lib/univention-ldap/schema/id/id
 
 	check_and_configure_ad_member_mode
-	run_join_hook join/pre-joinscripts
+	echo -n "Running pre-joinscripts hook(s): "
+	run_join_hook pre-joinscripts
+	echo -e "\033[60Gdone"
 	run_join_scripts
-	run_join_hook join/post-joinscripts
+	echo -n "Running post-joinscripts hook(s): "
+	run_join_hook post-joinscripts
+	echo -e "\033[60Gdone"
 
 elif [ "$server_role" = "domaincontroller_slave" ]; then
 
@@ -947,9 +953,13 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 	ln -sf /var/univention-join/joined /usr/share/univention-join/.joined
 
 	check_and_configure_ad_member_mode
-	run_join_hook join/pre-joinscripts
+	echo -n "Running pre-joinscripts hook(s): "
+	run_join_hook pre-joinscripts
+	echo -e "\033[60Gdone"
 	run_join_scripts
-	run_join_hook join/post-joinscripts
+	echo -n "Running post-joinscripts hook(s): "
+	run_join_hook post-joinscripts
+	echo -e "\033[60Gdone"
 
 elif [ "$server_role" = "memberserver" ]; then
 	setup_ssl force
@@ -980,9 +990,13 @@ elif [ "$server_role" = "memberserver" ]; then
 	ln -sf /var/univention-join/joined /usr/share/univention-join/.joined
 
 	check_and_configure_ad_member_mode
-	run_join_hook join/pre-joinscripts
+	echo -n "Running pre-joinscripts hook(s): "
+	run_join_hook pre-joinscripts
+	echo -e "\033[60Gdone"
 	run_join_scripts
-	run_join_hook join/post-joinscripts
+	echo -n "Running post-joinscripts hook(s): "
+	run_join_hook post-joinscripts
+	echo -e "\033[60Gdone"
 
 else
 # Client and Mobile Client
@@ -1008,9 +1022,13 @@ else
 
 	eval "$(univention-config-registry shell)"
 
-	run_join_hook join/pre-joinscripts
+	echo -n "Running pre-joinscripts hook(s): "
+	run_join_hook pre-joinscripts
+	echo -e "\033[60Gdone"
 	run_join_scripts
-	run_join_hook join/post-joinscripts
+	echo -n "Running post-joinscripts hook(s): "
+	run_join_hook post-joinscripts
+	echo -e "\033[60Gdone"
 fi
 
 if [ -d /etc/runit/univention-directory-notifier ]; then
