@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0
+src: fail2ban
+fix: 0.9.6-2
+desc: |
+ This update addresses the following issue:
+ * Move package to maintained.
+bug: [47566]
+ignore:
+ - version.scope
