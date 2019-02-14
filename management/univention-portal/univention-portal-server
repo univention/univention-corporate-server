@@ -54,7 +54,7 @@ ucr.load()
 LOG_FILE = '/var/log/univention/portal.log'
 _umc_interface = ucr.get('umc/http/interface', '127.0.0.1')
 _umc_port = int(ucr.get('umc/http/port', 8090))
-UMC_SESSION_URL = 'http://%s:%s/check_session' % (_umc_interface, _umc_port)
+UMC_SESSION_URL = 'http://%s:%s/get/session-info' % (_umc_interface, _umc_port)
 
 class ShortNameFormatter(logging.Formatter):
 	shorten = 'univention.portal'
@@ -363,7 +363,7 @@ class JsonHandler(tornado.web.RequestHandler):
 		try:
 			response = requests.get(UMC_SESSION_URL, cookies={'UMCSessionId': session})
 			data = response.json()
-			username = data['username']
+			username = data['result']['username']
 		except requests.ConnectionError as exc:
 			get_logger('user').error('connection failed: %s' % exc)
 		except ValueError:
