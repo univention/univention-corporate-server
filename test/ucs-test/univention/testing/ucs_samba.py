@@ -12,12 +12,12 @@ import sqlite3
 from univention.testing.utils import package_installed
 import univention.config_registry as config_registry
 
-CONNECTOR_WAIT_INTERVAL = 12
-CONNECTOR_WAIT_SLEEP = 5
-CONNECTOR_WAIT_TIME = CONNECTOR_WAIT_SLEEP * CONNECTOR_WAIT_INTERVAL
-
 
 class DRSReplicationFailed(Exception):
+    pass
+
+
+class WaitForS4ConnectorTimeout(Exception):
     pass
 
 
@@ -151,7 +151,7 @@ def _ldap_replication_complete():
     return subprocess.call('/usr/lib/nagios/plugins/check_univention_replication') == 0
 
 
-def wait_for_s4connector():
+def wait_for_s4connector(timeout=360, delta_t=1, s4cooldown_t=10):
     ucr = config_registry.ConfigRegistry()
     ucr.load()
 
@@ -168,8 +168,9 @@ def wait_for_s4connector():
 
     highestCommittedUSN = -1
     lastUSN = -1
-    while static_count < CONNECTOR_WAIT_INTERVAL:
-        time.sleep(CONNECTOR_WAIT_SLEEP)
+    t = t0 = time.time()
+    while t < t0 + timeout:
+        time.sleep(delta_t)
 
         if not _ldap_replication_complete():
             continue
@@ -177,27 +178,27 @@ def wait_for_s4connector():
         previous_highestCommittedUSN = highestCommittedUSN
 
         highestCommittedUSN = -1
-        ldbsearch = subprocess.Popen("ldbsearch -H /var/lib/samba/private/sam.ldb -s base -b '' highestCommittedUSN", shell=True, stdout=subprocess.PIPE)
-        ldbresult = ldbsearch.communicate()
-        for line in ldbresult[0].split('\n'):
+        ldbresult = subprocess.check_output([
+            'ldbsearch',
+            '--url', '/var/lib/samba/private/sam.ldb',
+            '--scope', 'base',
+            '--basedn', '',
+            'highestCommittedUSN',
+        ])
+        for line in ldbresult.split('\n'):
             line = line.strip()
             if line.startswith('highestCommittedUSN: '):
                 highestCommittedUSN = line.replace('highestCommittedUSN: ', '')
                 break
-
-        print highestCommittedUSN
+        else:
+            raise KeyError('No highestCommittedUSN in ldbsearch')
 
         previous_lastUSN = lastUSN
-        try:
-            c.execute('select value from S4 where key=="lastUSN"')
-        except sqlite3.OperationalError as e:
-            static_count = 0
-            print 'Reset counter: sqlite3.OperationalError: %s' % e
-            print 'Counter: %d' % static_count
-            continue
+        c.execute('select value from S4 where key=="lastUSN"')
 
-        conn.commit()
         lastUSN = c.fetchone()[0]
+        print('highestCommittedUSN: {}'.format(highestCommittedUSN))
+        print('lastUSN: {}'.format(lastUSN))
 
         if not (lastUSN == highestCommittedUSN and lastUSN == previous_lastUSN and highestCommittedUSN == previous_highestCommittedUSN):
             static_count = 0
@@ -205,6 +206,9 @@ def wait_for_s4connector():
         else:
             static_count = static_count + 1
         print 'Counter: %d' % static_count
+        if static_count * delta_t >= s4cooldown_t:
+            return 0
+        t = time.time()
 
     conn.close()
-    return 0
+    raise WaitForS4ConnectorTimeout()
