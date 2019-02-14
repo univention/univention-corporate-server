@@ -672,7 +672,7 @@ test -x /usr/sbin/nscd && nscd -i hosts
 
 copy_ca_cert
 echo -n "Running pre-join hook(s): "
-run_join_hook pre-join
+run_join_hook join/pre-join
 echo -e "\033[60Gdone"
 
 echo -n "Join Computer Account: "
@@ -891,11 +891,11 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 
 	check_and_configure_ad_member_mode
 	echo -n "Running pre-joinscripts hook(s): "
-	run_join_hook pre-joinscripts
+	run_join_hook join/pre-joinscripts
 	echo -e "\033[60Gdone"
 	run_join_scripts
 	echo -n "Running post-joinscripts hook(s): "
-	run_join_hook post-joinscripts
+	run_join_hook join/post-joinscripts
 	echo -e "\033[60Gdone"
 
 elif [ "$server_role" = "domaincontroller_slave" ]; then
@@ -954,11 +954,11 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 
 	check_and_configure_ad_member_mode
 	echo -n "Running pre-joinscripts hook(s): "
-	run_join_hook pre-joinscripts
+	run_join_hook join/pre-joinscripts
 	echo -e "\033[60Gdone"
 	run_join_scripts
 	echo -n "Running post-joinscripts hook(s): "
-	run_join_hook post-joinscripts
+	run_join_hook join/post-joinscripts
 	echo -e "\033[60Gdone"
 
 elif [ "$server_role" = "memberserver" ]; then
@@ -991,11 +991,11 @@ elif [ "$server_role" = "memberserver" ]; then
 
 	check_and_configure_ad_member_mode
 	echo -n "Running pre-joinscripts hook(s): "
-	run_join_hook pre-joinscripts
+	run_join_hook join/pre-joinscripts
 	echo -e "\033[60Gdone"
 	run_join_scripts
 	echo -n "Running post-joinscripts hook(s): "
-	run_join_hook post-joinscripts
+	run_join_hook join/post-joinscripts
 	echo -e "\033[60Gdone"
 
 else
@@ -1023,11 +1023,11 @@ else
 	eval "$(univention-config-registry shell)"
 
 	echo -n "Running pre-joinscripts hook(s): "
-	run_join_hook pre-joinscripts
+	run_join_hook join/pre-joinscripts
 	echo -e "\033[60Gdone"
 	run_join_scripts
 	echo -n "Running post-joinscripts hook(s): "
-	run_join_hook post-joinscripts
+	run_join_hook join/post-joinscripts
 	echo -e "\033[60Gdone"
 fi
 

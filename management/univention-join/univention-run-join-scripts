@@ -226,7 +226,7 @@ joinscript_check_status_file >&3
 if [ -e "/usr/lib/univention-install/" ]
 then
 	echo -n "Running pre-joinscripts hook(s): " >&3
-	run_join_hook pre-joinscripts
+	run_join_hook join/pre-joinscripts
 	echo -e "\033[60Gdone" >&3
 	for i in "${SCRIPTS[@]}"
 	do
@@ -268,7 +268,7 @@ then
 		fi
 	done
 	echo -n "Running post-joinscripts hook(s): " >&3
-	run_join_hook post-joinscripts
+	run_join_hook join/post-joinscripts
 	echo -e "\033[60Gdone" >&3
 fi
 

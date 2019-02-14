@@ -1,3 +1,9 @@
+univention-join (11.0.1-9) unstable; urgency=medium
+
+  * Bug #47940: status info about running join hooks
+
+ -- Felix Botner <botner@univention.de>  Thu, 14 Feb 2019 17:22:59 +0100
+
 univention-join (11.0.1-8) unstable; urgency=medium
 
   * Bug #47940: status info about running join hooks
