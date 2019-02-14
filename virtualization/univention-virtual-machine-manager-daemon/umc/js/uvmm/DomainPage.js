@@ -153,7 +153,7 @@ define([
 					callback: lang.hitch(this, function() {
 						var val = this._generalForm.gatherFormValues();
 						if (val.contact) {
-							location.href = 'mailto:' + val.contact + '?subject=' + _('Virtual machine: %s', val.name);
+							location.href = 'mailto:' + encodeURIComponent(val.contact) + '?subject=' + encodeURIComponent(_('Virtual machine: %s', val.name));
 						}
 					})
 				}],
