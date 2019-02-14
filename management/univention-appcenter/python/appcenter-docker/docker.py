@@ -138,7 +138,7 @@ def access(image):
 	try:
 		urlopen(request)
 	except urllib2.HTTPError as exc:
-		if exc.getcode() == 403:
+		if exc.getcode() == 401:
 			return False
 		else:
 			return False  # TODO
@@ -290,15 +290,9 @@ class Docker(object):
 			pass
 		else:
 			if '.' in hub:
-				cfg = {}
-				dockercfg_file = os.path.expanduser('~/.dockercfg')
-				if os.path.exists(dockercfg_file):
-					with open(dockercfg_file) as dockercfg:
-						cfg = loads(dockercfg.read())
-				if hub not in cfg:
-					retcode = login(hub, with_license=self.app.install_permissions)
-					if retcode != 0:
-						_logger.warn('Could not login to %s. You may not be able to pull the image from the repository!' % hub)
+				retcode = login(hub, with_license=self.app.install_permissions)
+				if retcode != 0:
+					_logger.warn('Could not login to %s. You may not be able to pull the image from the repository!' % hub)
 		ret, out = call_process2(['docker', 'pull', self.image], logger=_logger)
 		if ret != 0:
 			raise DockerImagePullFailed(self.image, out)
