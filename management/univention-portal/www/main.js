@@ -408,9 +408,16 @@ define([
 		// Maybe it would be better to save changes made after the
 		// initial load into a cache and if cached data is available
 		// use that instead of the initial portal.json data
-		_reloadPortalContent: function() {
+		_reloadPortalContent: function(admin_mode) {
 			var loadDeferred = new Deferred();
 
+			var headers = null;
+			if (admin_mode) {
+				headers = {
+					'Content-Type': 'application/x-www-form-urlencoded',
+					'X-Univention-Portal-Admin-Mode': 'yes'
+				}
+			}
 			var waitedTime = 0;
 			var waitTime = 200;
 
@@ -434,7 +441,7 @@ define([
 						} else {
 							_load();
 						}
-					});
+					}, headers);
 				}, waitTime);
 				waitedTime += waitTime;
 			};
@@ -445,7 +452,7 @@ define([
 
 		_refresh: function(renderModeAfterRefresh) {
 			var deferred = new Deferred();
-			this._reloadPortalContent().then(lang.hitch(this, function() {
+			this._reloadPortalContent(renderModeAfterRefresh != portalTools.RenderMode.NORMAL).then(lang.hitch(this, function() {
 				domClass.toggle(dom.byId('umcHeader'), 'umcWhiteIcons', lang.getObject('portal.fontColor', false, portalJson) === 'white');
 				this._reloadCss(); // FIXME only reload css if it is necessary (cssBackground / background / fontColor changed)
 				this._render(renderModeAfterRefresh);
@@ -1234,6 +1241,9 @@ define([
 			this._setupEditModeIfAuthorized();
 			this._render(portalTools.RenderMode.NORMAL);
 			this._addLinks();
+			if (tools.status('username')) {
+				dojoQuery('body').addClass('logged-in')
+			}
 
 			// TODO
 			window.portal = this;
@@ -1310,7 +1320,11 @@ define([
 				connectId: [portalEditFloatingButton],
 				position: ['above']
 			});
-			on(portalEditFloatingButton, 'click', lang.hitch(this, '_render', portalTools.RenderMode.EDIT));
+			on(portalEditFloatingButton, 'click', lang.hitch(this, function() {
+				this._reloadPortalContent(true).then(lang.hitch(this, function() {
+					this._render(portalTools.RenderMode.EDIT);
+				}))
+			}));
 		},
 
 		_createToolbar: function() {
@@ -1346,7 +1360,7 @@ define([
 				'class': 'portalEditBarCloseButton',
 				description: _('Stop editing this portal'),
 				callback: lang.hitch(this, function() {
-					this._render(portalTools.RenderMode.NORMAL);
+					this._refresh(portalTools.RenderMode.NORMAL);
 					if (closeButton.focusNode.blur) {
 						closeButton.focusNode.blur();
 					}

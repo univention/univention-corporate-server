@@ -395,14 +395,20 @@ class JsonHandler(tornado.web.RequestHandler):
 		username = self._get_username(session)
 		admin_mode = False
 		if self.request.headers.get('X-Univention-Portal-Admin-Mode', 'no') == 'yes':
+			get_logger('admin').info('Admin mode requested')
 			admin_group_name = ucr.get('groups/default/domainadmins', 'Domain Admins')
-			admins = grp.getgrnam(admin_group_name)[3]
+			admins = [admin.lower() for admin in grp.getgrnam(admin_group_name)[3]]
 			admin_mode = username in admins
+			if admin_mode:
+				get_logger('admin').info('Admin mode granted')
+			else:
+				get_logger('admin').info('Admin mode rejected')
 		answer = {}
 		portal_content = answer['portal'] = self._get_portal(username, admin_mode)
 		answer['links'] = self._get_links()
 		answer['categories'] = self._get_categories(portal_content['content'])
 		answer['entries'] = self._get_entries(portal_content['content'])
+		answer['filtered'] = not admin_mode
 		self.write(answer)
 
 cache = LDAPCache()

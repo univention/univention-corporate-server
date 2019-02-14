@@ -35,7 +35,7 @@ define([
 	"dojo/json"
 ], function(lang, xhr, ioQuery, json) {
 	return {
-		load: function(id, require, load) {
+		load: function(id, require, load, headers) {
 			// id: String
 			//		Path to the resource
 			// require: Function
@@ -59,9 +59,11 @@ define([
 				return {};
 			};
 
+			var request_headers = headers || {'Content-Type': 'application/x-www-form-urlencoded'};
 			var params = lang.mixin({
 				handleAs: 'json',
-				timeout: 10000
+				timeout: 10000,
+				headers: request_headers
 			}, _getCustomParams());
 
 			xhr.get(url, params).then(function(data) {

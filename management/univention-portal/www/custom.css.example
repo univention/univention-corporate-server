@@ -6,6 +6,10 @@ This file contains the most important id's and classes of the Univention portal 
 #portal {
 }
 
+/* The whole container will contain .logged-in if a user is, well, logged in */
+#portal.logged-in {
+}
+
 /* (div) Container for the entire header*/
 #umcHeader {
 }
