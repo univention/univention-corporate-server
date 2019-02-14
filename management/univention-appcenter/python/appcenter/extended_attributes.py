@@ -308,7 +308,7 @@ def get_extended_attributes(app):
 			attribute_name = '%sActivated' % (app.id,)
 		if attribute_name and attribute_name not in [attr.name for attr in attributes]:
 			attribute_logger.debug('Adding %s to list of attributes' % attribute_name)
-			attribute = ExtendedAttribute(app, name=attribute_name, description='Activate user for %s' % app.name, description_de='Nutzer für %s aktivieren' % app.name, syntax='Boolean')
+			attribute = ExtendedAttribute(app, module='users/user', name=attribute_name, description='Activate user for %s' % app.name, description_de='Nutzer für %s aktivieren' % app.name, syntax='Boolean')
 			attribute.set_standard_oid(app, attribute_suffix)
 			attribute.full_width = False
 			attribute.disable_web = True  # important!
@@ -316,11 +316,11 @@ def get_extended_attributes(app):
 			attributes.insert(0, attribute)
 
 		option_name = app.generic_user_activation_option
-		if option_name is True:
+		if option_name is True or not option_name:
 			option_name = '%sUser' % (app.id,)
 		if option_name not in [opt.name for opt in extended_options]:
 			attribute_logger.debug('Adding %s to list of options' % option_name)
-			option = ExtendedOption(app, name=option_name, object_class=option_name, long_description='Activate user for %s' % app.name, long_description_de='Nutzer für %s aktivieren' % app.name)
+			option = ExtendedOption(app, name=option_name, module='users/user', object_class=option_name, long_description='Activate user for %s' % app.name, long_description_de='Nutzer für %s aktivieren' % app.name)
 			extended_options.insert(0, option)
 
 	for attribute in attributes:
@@ -371,10 +371,10 @@ def create_extended_attribute(attribute, app, layout_position, lo, pos):
 		attrs['translationShortDescription'] = [('de_DE', attribute.description_de)]
 	if attribute.long_description_de:
 		attrs['translationLongDescription'] = [('de_DE', attribute.long_description_de)]
-	attrs['syntax'] = attribute._udm_syntax or attribute.syntax
+	attrs['syntax'] = attribute.udm_syntax
 	attrs['multivalue'] = not attribute.single_value
 	if attribute.default:
-		attrs['default'] = attribute.default
+		attrs['default'] = str(int(bool(attribute.default)))
 	attrs['tabPosition'] = attribute.tab_position or str(layout_position)
 	attrs['tabName'] = attribute.tab_name
 	if attribute.tab_name_de:
@@ -398,6 +398,7 @@ def create_extended_attribute(attribute, app, layout_position, lo, pos):
 	attrs['copyable'] = attribute.copyable
 	attrs['options'] = attribute.options
 	attrs['CLIName'] = attribute.cli_name
+	attrs = dict((key, value) for key, value in attrs.items() if value is not None)
 	attribute_logger.debug('Creating DN: %s' % attribute.dn)
 	if not create_object_if_not_exists('settings/extended_attribute', lo, pos, **attrs):
 		attribute_logger.debug('... already exists. Overwriting!')
