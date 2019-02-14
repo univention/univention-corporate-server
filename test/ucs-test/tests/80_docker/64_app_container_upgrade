@@ -24,7 +24,7 @@ if __name__ == '__main__':
 			WebInterface='/%s' % app_name,
 			WebInterfacePortHTTP='80',
 			WebInterfacePortHTTPS='443',
-			SupportedUCSVersions='4.1-0, 4.2-0, 4.3-0',
+			SupportedUCSVersions='4.1-0, 4.2-0, 4.3-0, 4.4-0',
 			AutoModProxy='True',
 			DockerScriptSetup='/usr/sbin/%s-setup' % app_name,
 			DockerScriptStoreData='/usr/share/univention-appcenter/app/%s/store_data' % app_name,
@@ -63,7 +63,7 @@ if __name__ == '__main__':
 				WebInterfacePortHTTP='80',
 				WebInterfacePortHTTPS='443',
 				AutoModProxy='True',
-				SupportedUCSVersions='4.1-0, 4.2-0, 4.3-0',
+				SupportedUCSVersions='4.1-0, 4.2-0, 4.3-0, 4.4-0',
 				DockerScriptSetup='/usr/sbin/%s-setup' % app_name,
 				# For debugging and testing of store_data and restore_data
 				# DockerScriptStoreData='/usr/share/univention-appcenter/app/%s/store_data' % app_name,
