@@ -3,7 +3,7 @@ release: "4.3"
 version: [3]
 scope: ucs_4.3-0-errata4.3-3
 src: univention-management-console
-fix: 
+fix: 10.0.6-19A~4.3.0.201902141741
 desc: |
  This update addresses the following issue(s):
  * The errors from pam_cracklib are evaluated again when changing the
