@@ -657,6 +657,9 @@
 			<listitem><simpara>
 				For security reasons all join scripts now use a password file (<u:bug>46969</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				Hooks have been added to the join process (<u:bug>47940</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
