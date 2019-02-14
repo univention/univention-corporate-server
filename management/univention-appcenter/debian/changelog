@@ -1,3 +1,9 @@
+univention-appcenter (8.0.1-2) unstable; urgency=medium
+
+  * Bug #48523: check app-categories.ini in "local appcenter" too
+
+ -- Felix Botner <botner@univention.de>  Thu, 14 Feb 2019 14:53:44 +0100
+
 univention-appcenter (8.0.1-1) unstable; urgency=medium
 
   * Bug #48621: some fixes
