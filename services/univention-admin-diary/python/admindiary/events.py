@@ -42,15 +42,15 @@ class DiaryEvent(object):
 	def __init__(self, name, message, args=None, tags=None):
 		self.name = name
 		self.message = message
-		self.args = args or []
+		self.args = args or {}
 		self.tags = tags or []
 		self._all_events[self.name] = self
 
-USER_CREATED = DiaryEvent('USER_CREATED', {'en': 'User {0} created', 'de': 'Benutzer {0} angelegt'}, args=['username'])
+USER_CREATED = DiaryEvent('USER_CREATED', {'en': 'User {username} created', 'de': 'Benutzer {username} angelegt'}, args=['username'])
 
-APP_ACTION_START = DiaryEvent('APP_ACTION_START', {'en': 'App {0}: Start of {1}', 'de': 'App {0}: Start von {1}'}, args=['app', 'action'])
-APP_ACTION_SUCCESS = DiaryEvent('APP_ACTION_SUCCESS', {'en': 'App {0} ({1}): Success', 'de': 'App {0} ({1}): Erfolg'}, args=['app', 'action'])
-APP_ACTION_FAILURE = DiaryEvent('APP_ACTION_FAILURE', {'en': 'App {0} ({1}): Failure. Error {2}', 'de': 'App {0} ({1}): Fehlschlag. Fehler {2}'}, args=['app', 'action', 'error_code'], tags=['error'])
+APP_ACTION_START = DiaryEvent('APP_ACTION_START', {'en': 'App {app}: Start of {action}', 'de': 'App {app}: Start von {action}'}, args=['app', 'action'])
+APP_ACTION_SUCCESS = DiaryEvent('APP_ACTION_SUCCESS', {'en': 'App {app} ({action}): Success', 'de': 'App {app} ({action}): Erfolg'}, args=['app', 'action'])
+APP_ACTION_FAILURE = DiaryEvent('APP_ACTION_FAILURE', {'en': 'App {app} ({action}): Failure. Error {error_code}', 'de': 'App {app} ({action}): Fehlschlag. Fehler {error_code}'}, args=['app', 'action', 'error_code'], tags=['error'])
 
 SERVER_PASSWORD_CHANGED = DiaryEvent('SERVER_PASSWORD_CHANGED', {'en': 'Machine account password changed successfully', 'de': 'Maschinenpasswort erfolgreich geändert'})
 SERVER_PASSWORD_CHANGED_FAILED = DiaryEvent('SERVER_PASSWORD_CHANGED_FAILED', {'en': 'Machine account password change failed', 'de': 'Änderung des Maschinenpassworts fehlgeschlagen'}, tags=['error'])

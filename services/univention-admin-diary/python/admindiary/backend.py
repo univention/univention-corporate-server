@@ -98,7 +98,7 @@ class Entry(Base):
 	main_id = Column(None, ForeignKey('entries.id', ondelete='CASCADE'), nullable=True)
 
 	event = relationship('Event')
-	args = relationship('Arg', back_populates='entry', order_by='Arg.position')
+	args = relationship('Arg', back_populates='entry')
 	tags = relationship('Tag',
                         secondary=entry_tags,
                         back_populates='entries'
@@ -120,7 +120,7 @@ class Arg(Base):
 
 	id = Column(Integer, Sequence('arg_id_seq'), primary_key=True)
 	entry_id = Column(None, ForeignKey('entries.id', ondelete='CASCADE'), index=True)
-	position = Column(Integer, nullable=False)
+	key = Column(String(255), nullable=False, index=True)
 	value = Column(String(255), nullable=False, index=True)
 
 	entry = relationship('Entry')
@@ -200,12 +200,11 @@ def add(diary_entry, session):
 	main_id = session.query(func.min(Entry.id)).filter(Entry.context_id == entry.context_id).scalar()
 	if main_id:
 		entry.main_id = main_id
-	session.flush()
 	for tag in diary_entry.tags:
 		tag = add_tag(tag, session)
 		entry.tags.append(tag)
-	for i, arg in enumerate(diary_entry.args):
-		entry.args.append(Arg(position=i, value=arg))
+	for key, value in diary_entry.args.iteritems():
+		entry.args.append(Arg(key=key, value=value))
 	get_logger().info('Successfully added %s to %s. (%s)' % (diary_entry.context_id, engine.url.drivername, diary_entry.event_name))
 
 def _one_query(ids, result):
@@ -254,7 +253,7 @@ def query(session, time_from=None, time_until=None, tag=None, event=None, userna
 			event_name = event.name
 		else:
 			event_name = 'COMMENT'
-		args = [arg.value for arg in entry.args]
+		args = dict((arg.key, arg.value) for arg in entry.args)
 		group = session.query(Entry).filter(Entry.context_id == entry.context_id).count()
 		res.append({
 			'id': entry.id,
@@ -272,7 +271,7 @@ def query(session, time_from=None, time_until=None, tag=None, event=None, userna
 def get(context_id, session):
 	res = []
 	for entry in session.query(Entry).filter(Entry.context_id == context_id).order_by('id'):
-		args = [arg.value for arg in entry.args]
+		args = dict((arg.key, arg.value) for arg in entry.args)
 		tags = [tag.name for tag in entry.tags]
 		event = entry.event
 		if event:

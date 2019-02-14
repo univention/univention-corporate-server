@@ -73,7 +73,7 @@ def add_comment(message, context_id, username=None):
 
 @exceptionlogging
 def write_event(event, args=None, username=None, context_id=None):
-	args = args or []
+	args = args or {}
 	return write(event.message, args, username, event.tags, context_id, event.name)
 
 
@@ -82,7 +82,7 @@ def write(message, args=None, username=None, tags=None, context_id=None, event_n
 	if username is None:
 		username = getuser()
 	if args is None:
-		args = []
+		args = {}
 	if tags is None:
 		tags = []
 	if context_id is None:

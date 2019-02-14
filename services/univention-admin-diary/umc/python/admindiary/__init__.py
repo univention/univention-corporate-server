@@ -47,7 +47,7 @@ class Instance(Base):
 		if entry['event_name'] != 'COMMENT':
 			message = translate(entry['event_name'], self.locale.language, session)
 		try:
-			message = message.format(*entry['args'])
+			message = message.format(**entry['args'])
 		except (AttributeError, IndexError, KeyError):
 			if entry['args']:
 				message = '%s (%s)' % (message, ', '.join(entry['args']))

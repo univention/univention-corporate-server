@@ -56,9 +56,9 @@ def main():
 	usage = '%(prog)s [options] <message>'
 	description = '%(prog)s is a program to add an entry to the Admin Diary'
 	epilog = '''Examples:
-	context_id=$(%(prog)s --event USER_CREATED --arg "john.doe")
+	context_id=$(%(prog)s --event USER_CREATED --arg "username=john.doe")
 	%(prog)s --event COMMENT -m "I added this user because..." --context-id="$context_id"
-	%(prog)s --event MY_NEW_EVENT -m "[en]This is the English message for: {0} {1}" "[de]Any other locale needs the same amount of place holders ({1}, {0})" --arg "Arg1" --arg "Arg2" --tag my-tag
+	%(prog)s --event MY_NEW_EVENT -m "[en]This is the English message for: {a1} {a2}" "[de]Any other locale needs the same amount of place holders ({a1}, {a2})" --arg "a1=Arg1" --arg "a2=Arg2" --tag my-tag
 	'''
 	parser = ArgumentParser(usage=usage, description=description, epilog=epilog, formatter_class=RawTextHelpFormatter)
 	parser.add_argument('-u', '--username', help='Username that issues the diary entry')
@@ -69,7 +69,17 @@ def main():
 	parser.add_argument('--message', '-m', action=StoreMessageAction, nargs='*', help='The message. Give one for every required locale. Use format strings if you wish to use ARGs.')
 	args = parser.parse_args()
 	event = DiaryEvent(args.event, args.message, [], args.tag)
-	context_id = write_event(event, args.arg, args.username, args.context_id)
+	event_args = {}
+	if args.arg:
+		for arg in args.arg:
+			try:
+				key, value = arg.split('=', 1)
+			except ValueError:
+				print >> sys.stderr, 'Could not parse %s. Use key=value' % arg
+				sys.exit(2)
+			else:
+				event_args[key] = value
+	context_id = write_event(event, event_args, args.username, args.context_id)
 	if context_id is not None:
 		print context_id
 	else:

@@ -1495,7 +1495,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def create(self, serverctrls=None, response=None):
 		ret = super(object, self).create(serverctrls, response)
-		write_event(USER_CREATED, [self['username']])
+		write_event(USER_CREATED, {'username': self['username']})
 		return ret
 
 	@property

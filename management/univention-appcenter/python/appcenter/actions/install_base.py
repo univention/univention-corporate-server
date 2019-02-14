@@ -88,7 +88,7 @@ class InstallRemoveUpgrade(Register):
 		app = args.app
 		status = 200
 		status_details = None
-		context_id = write_event(APP_ACTION_START, [app, self.get_action_name()])
+		context_id = write_event(APP_ACTION_START, {'app': str(app), 'action': self.get_action_name()})
 		try:
 			action = self.get_action_name()
 			self.log('Going to %s %s (%s)' % (action, app.name, app.version))
@@ -149,9 +149,9 @@ class InstallRemoveUpgrade(Register):
 				pass
 			else:
 				if status == 200:
-					write_event(APP_ACTION_SUCCESS, [app, self.get_action_name()], context_id=context_id)
+					write_event(APP_ACTION_SUCCESS, {'app': str(app), 'action': self.get_action_name()}, context_id=context_id)
 				else:
-					write_event(APP_ACTION_FAILURE, [app, self.get_action_name(), status], context_id=context_id)
+					write_event(APP_ACTION_FAILURE, {'app': str(app), 'action': self.get_action_name(), 'error_code': status}, context_id=context_id)
 				if status != 200:
 					self._revert(app, args)
 				if args.send_info:
