@@ -3844,6 +3844,23 @@ class Country(select):
 		cls.choices.sort(cmp=locale.strcoll, key=itemgetter(1))
 
 
+class RadiusClientType(select):
+	choices = [
+		('other', _('other')),
+		('cisco', _('cisco')),
+		('computone', _('computone')),
+		('livingston', _('livingston')),
+		('juniper', _('juniper')),
+		('max40xx', _('max40xx')),
+		('multitech', _('multitech')),
+		('netserver', _('netserver')),
+		('pathras', _('pathras')),
+		('patton', _('patton')),
+		('portslave', _('portslave')),
+		('tc', _('tc')),
+		('usrhiper', _('usrhiper')),
+	]
+
 __register_choice_update_function(Country.update_choices)
 Country.update_choices()
 

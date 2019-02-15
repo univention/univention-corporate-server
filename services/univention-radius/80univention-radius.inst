@@ -32,7 +32,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=1
+VERSION=2
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -40,10 +40,9 @@ joinscript_init
 
 ucs_addServiceToLocalhost 'RADIUS' "$@"
 
-hostname="$(univention-config-registry get hostname)"
 mkdir -p /etc/freeradius/ssl
-cp /etc/univention/ssl/$(hostname)/private.key /etc/freeradius/ssl/private.key
-cp /etc/univention/ssl/$(hostname)/cert.pem /etc/freeradius/ssl/cert.pem
+cp "/etc/univention/ssl/$(hostname)/private.key" /etc/freeradius/ssl/private.key
+cp "/etc/univention/ssl/$(hostname)/cert.pem" /etc/freeradius/ssl/cert.pem
 openssl dhparam -out /etc/freeradius/ssl/dh 1024
 chgrp freerad /etc/freeradius/ssl/private.key
 chgrp freerad /etc/freeradius/ssl/cert.pem
@@ -51,9 +50,137 @@ chmod 440 /etc/freeradius/ssl/private.key
 chmod 444 /etc/freeradius/ssl/cert.pem /etc/freeradius/ssl/dh
 
 ucs_registerLDAPExtension "$@" \
-	--schema /usr/share/univention-radius/networkaccess.schema || exit "$?"
+	--schema /usr/share/univention-radius/networkaccess.schema \
+	--acl /usr/share/univention-radius/59univention-radius.acl \
+	--acl /usr/share/univention-radius/66univention-radius.acl || exit "$?"
 
 ldap_base="$(ucr get ldap/base)"
+
+udm settings/extended_options create "$@" --ignore_exists \
+	--position "cn=custom attributes,cn=univention,$ldap_base" \
+	--set name="radiusAuthenticator" \
+	--set module=computers/domaincontroller_backup \
+	--set module=computers/domaincontroller_master \
+	--set module=computers/domaincontroller_slave \
+	--set module=computers/ipmanagedclient \
+	--set module=computers/linux \
+	--set module=computers/macos \
+	--set module=computers/memberserver \
+	--set module=computers/ubuntu \
+	--set module=computers/windows \
+	--set module=computers/windows_domaincontroller \
+	--set objectClass=univentionRadiusClient \
+	--set default=0 \
+	--set editable=1 \
+	--set shortDescription="RADIUS Authenticator" \
+	--set longDescription="Enables the RADIUS authenticator configuration options for e.g. access points or network access servers (NAS)." \
+	--set translationShortDescription='"de_DE" "RADIUS-Authenticator"' \
+	--set translationLongDescription='"de_DE" "Aktiviert die RADIUS-Authenticator-Optionen für z.B. Accesspoints oder Network Access Server (NAS)"' || die
+
+udm settings/extended_attribute create "$@" --ignore_exists \
+	--position "cn=custom attributes,cn=univention,$ldap_base" \
+	--set name='univentionRadiusClientSharedSecret' \
+	--set CLIName='univentionRadiusClientSharedSecret' \
+	--set shortDescription='Shared secret' \
+	--set translationShortDescription='"de_DE" "Gemeinsamer, geheimer Schlüssel (Shared secret)"' \
+	--set longDescription='Shared secret that is used for communication between RADIUS client and RADIUS server' \
+	--set translationLongDescription='"de_DE" "Gemeinsamer, geheimer Schlüssel, der für die Kommunikation zwischen RADIUS-Client und RADIUS-Server verwendet wird."' \
+	--set tabAdvanced=0 \
+	--set tabName='RADIUS' \
+	--set tabPosition=1 \
+	--set groupName="RADIUS authenticator" \
+	--set translationGroupName='"de_DE" "RADIUS-Authenticator"' \
+	--set groupPosition=2 \
+	--set options="radiusAuthenticator" \
+	--set module=computers/domaincontroller_backup \
+	--set module=computers/domaincontroller_master \
+	--set module=computers/domaincontroller_slave \
+	--set module=computers/ipmanagedclient \
+	--set module=computers/linux \
+	--set module=computers/macos \
+	--set module=computers/memberserver \
+	--set module=computers/ubuntu \
+	--set module=computers/windows \
+	--set module=computers/windows_domaincontroller \
+	--set syntax=passwd \
+	--set multivalue=0 \
+	--set valueRequired=0 \
+	--set mayChange=1 \
+	--set doNotSearch=1 \
+	--set notEditable=0 \
+	--set objectClass=univentionRadiusClient \
+	--set ldapMapping=univentionRadiusClientSharedSecret \
+	--set deleteObjectClass=1 || exit "$?"
+
+udm settings/extended_attribute create "$@" --ignore_exists \
+	--position "cn=custom attributes,cn=univention,$ldap_base" \
+	--set name='univentionRadiusClientType' \
+	--set CLIName='univentionRadiusClientType' \
+	--set shortDescription='NAS type' \
+	--set translationShortDescription='"de_DE" "NAS-Typ"' \
+	--set longDescription='This option tells RADIUS which NAS-specific method to use to query the NAS for simultaneous use. Default is "other".' \
+	--set translationLongDescription='"de_DE" "Diese Option gibt RADIUS vor, welche NAS-spezifische Methode bei gleichzeitigen Anfragen an das NAS verwendet werden soll. Der Default ist other."' \
+	--set tabAdvanced=0 \
+	--set tabName='RADIUS' \
+	--set tabPosition=3 \
+	--set groupName="RADIUS authenticator" \
+	--set translationGroupName='"de_DE" "RADIUS-Authenticator"' \
+	--set groupPosition=2 \
+	--set options="radiusAuthenticator" \
+	--set module=computers/domaincontroller_backup \
+	--set module=computers/domaincontroller_master \
+	--set module=computers/domaincontroller_slave \
+	--set module=computers/ipmanagedclient \
+	--set module=computers/linux \
+	--set module=computers/macos \
+	--set module=computers/memberserver \
+	--set module=computers/ubuntu \
+	--set module=computers/windows \
+	--set module=computers/windows_domaincontroller \
+	--set syntax=RadiusClientType \
+	--set multivalue=0 \
+	--set valueRequired=0 \
+	--set mayChange=1 \
+	--set doNotSearch=0 \
+	--set notEditable=0 \
+	--set objectClass=univentionRadiusClient \
+	--set ldapMapping=univentionRadiusClientType \
+	--set deleteObjectClass=1 || exit "$?"
+
+udm settings/extended_attribute create "$@" --ignore_exists \
+	--position "cn=custom attributes,cn=univention,$ldap_base" \
+	--set name='univentionRadiusClientVirtualServer' \
+	--set CLIName='univentionRadiusClientVirtualServer' \
+	--set shortDescription='Virtual server' \
+	--set translationShortDescription='"de_DE" "Virtueller Server"' \
+	--set longDescription='RADIUS clients can also be tied to a virtual server. Just insert the name of the virtual server.' \
+	--set translationLongDescription='"de_DE" "RADIUS-Clients können fest mit einem virtuellen Server verknüpft werden, der hier angegeben werden kann."' \
+	--set tabAdvanced=0 \
+	--set tabName='RADIUS' \
+	--set tabPosition=5 \
+	--set groupName="RADIUS authenticator" \
+	--set translationGroupName='"de_DE" "RADIUS-Authenticator"' \
+	--set groupPosition=2 \
+	--set options="radiusAuthenticator" \
+	--set module=computers/domaincontroller_backup \
+	--set module=computers/domaincontroller_master \
+	--set module=computers/domaincontroller_slave \
+	--set module=computers/ipmanagedclient \
+	--set module=computers/linux \
+	--set module=computers/macos \
+	--set module=computers/memberserver \
+	--set module=computers/ubuntu \
+	--set module=computers/windows \
+	--set module=computers/windows_domaincontroller \
+	--set syntax=string \
+	--set multivalue=0 \
+	--set valueRequired=0 \
+	--set mayChange=1 \
+	--set doNotSearch=0 \
+	--set notEditable=0 \
+	--set objectClass=univentionRadiusClient \
+	--set ldapMapping=univentionRadiusClientVirtualServer \
+	--set deleteObjectClass=1 || exit "$?"
 
 udm settings/extended_attribute create "$@" --ignore_exists \
 	--position "cn=custom attributes,cn=univention,$ldap_base" \
@@ -61,11 +188,14 @@ udm settings/extended_attribute create "$@" --ignore_exists \
 	--set CLIName='networkAccess' \
 	--set shortDescription='Allow network access' \
 	--set translationShortDescription='"de_DE" "Netzwerkzugriff erlaubt"' \
-	--set longDescription='Allow access via RADIUS (802.1x) for this computer.' \
-	--set translationLongDescription='"de_DE" "Soll der Zugriff per RADIUS (802.1x) für diesen Computer erlaubt werden."' \
+	--set longDescription='Allow access via RADIUS (e.g. via IEEE 802.1x) for this computer.' \
+	--set translationLongDescription='"de_DE" "Soll der Zugriff per RADIUS (z.B. über IEEE 802.1x) für diesen Computer erlaubt werden."' \
 	--set tabAdvanced=0 \
 	--set tabName='RADIUS' \
 	--set tabPosition=1 \
+	--set groupName="RADIUS supplicant" \
+	--set translationGroupName='"de_DE" "RADIUS-Supplicant"' \
+	--set groupPosition=1 \
 	--set module=computers/domaincontroller_backup \
 	--set module=computers/domaincontroller_master \
 	--set module=computers/domaincontroller_slave \
@@ -92,11 +222,14 @@ udm settings/extended_attribute create "$@" --ignore_exists \
 	--set CLIName='networkAccess' \
 	--set shortDescription='Allow network access' \
 	--set translationShortDescription='"de_DE" "Netzwerkzugriff erlaubt"' \
-	--set longDescription='Allow access via RADIUS (802.1x) for members of this group.' \
-	--set translationLongDescription='"de_DE" "Soll der Zugriff per RADIUS (802.1x) für Mitglieder dieser Gruppe erlaubt werden."' \
+	--set longDescription='Allow access via RADIUS (e.g. via IEEE 802.1x) for members of this group.' \
+	--set translationLongDescription='"de_DE" "Soll der Zugriff per RADIUS (z.B. über IEEE 802.1x) für Mitglieder dieser Gruppe erlaubt werden."' \
 	--set tabAdvanced=0 \
 	--set tabName='RADIUS' \
 	--set tabPosition=1 \
+	--set groupName="RADIUS supplicant" \
+	--set translationGroupName='"de_DE" "RADIUS-Supplicant"' \
+	--set groupPosition=1 \
 	--set module=groups/group \
 	--set syntax=boolean \
 	--set multivalue=0 \
@@ -129,6 +262,36 @@ udm settings/extended_attribute create "$@" --ignore_exists \
 	--set objectClass=univentionNetworkAccess \
 	--set ldapMapping=univentionNetworkAccess \
 	--set deleteObjectClass=1 || exit "$?"
+
+# update existing extended attributes created in version 1
+if joinscript_check_specific_version_executed 1 ; then
+	echo "Updating RADIUS extended attributes..."
+	udm settings/extended_attribute modify "$@" \
+		--dn "cn=networkAccessComputers,cn=custom attributes,cn=univention,$ldap_base" \
+		--set groupName="RADIUS supplicant" \
+		--set translationGroupName='"de_DE" "RADIUS-Supplicant"' \
+		--set groupPosition=1 \
+		--set longDescription='Allow access via RADIUS (e.g. via IEEE 802.1x) for this computer.' \
+		--set translationLongDescription='"de_DE" "Soll der Zugriff per RADIUS (z.B. über IEEE 802.1x) für diesen Computer erlaubt werden."' || exit "$?"
+	udm settings/extended_attribute modify "$@" \
+		--dn "cn=networkAccessComputers,cn=custom attributes,cn=univention,$ldap_base" \
+		--set groupName="RADIUS supplicant" \
+		--set translationGroupName='"de_DE" "RADIUS-Supplicant"' \
+		--set groupPosition=1 \
+		--set longDescription='Allow access via RADIUS (e.g. via IEEE 802.1x) for members of this group.' \
+		--set translationLongDescription='"de_DE" "Soll der Zugriff per RADIUS (z.B. über IEEE 802.1x) für Mitglieder dieser Gruppe erlaubt werden."' || exit "$?"
+fi
+
+# Bug #25935: only on domaincontroller slave:
+# resync existing object that may be missing of the RADIUS shared secret due to missing
+# read permissions ==> univentionService=RADIUS has been added in this join script.
+if [ "$(ucr get server/role)" = "domaincontroller_slave" ] ; then
+	/usr/share/univention-directory-listener/resync_objects.py --update --filter 'objectClass=univentionRadiusClient'
+fi
+
+# create initial version/update current version of clients.univention.conf
+/usr/sbin/univention-radius-update-clients-conf
+ucr commit /etc/freeradius/3.0/radiusd.conf
 
 # In case radius was installed during systemsetup the machine secret is missing in the radius ldap module
 univention-config-registry commit /etc/freeradius/3.0/mods-available/ldap

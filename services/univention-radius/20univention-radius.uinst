@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention RADIUS
 #  join script (network access schema and extended attribute)
@@ -41,9 +41,16 @@ ucs_removeServiceFromLocalhost 'RADIUS' "$@"
 if ucs_isServiceUnused 'RADIUS' "$@"
 then
 	ldap_base="$(ucr get ldap/base)"
-	udm settings/extended_attribute delete "$@" --dn "cn=networkAccessComputers,cn=custom attributes,cn=univention,$ldap_base"
-	udm settings/extended_attribute delete "$@" --dn "cn=networkAccessUsers,cn=custom attributes,cn=univention,$ldap_base"
-	udm settings/extended_attribute delete "$@" --dn "cn=networkAccessGroups,cn=custom attributes,cn=univention,$ldap_base"
+	for dn in \
+		"cn=networkAccessComputers,cn=custom attributes,cn=univention,$ldap_base" \
+		"cn=networkAccessUsers,cn=custom attributes,cn=univention,$ldap_base" \
+		"cn=networkAccessGroups,cn=custom attributes,cn=univention,$ldap_base" \
+		"cn=univentionRadiusClientSharedSecret,cn=custom attributes,cn=univention,$ldap_base" \
+		"cn=univentionRadiusClientType,cn=custom attributes,cn=univention,$ldap_base" \
+		"cn=univentionRadiusClientVirtualServer,cn=custom attributes,cn=univention,$ldap_base" \
+		; do
+			udm settings/extended_attribute remove "$@" --dn "$dn"
+	done
 fi
 
 joinscript_remove_script_from_status_file univention-radius

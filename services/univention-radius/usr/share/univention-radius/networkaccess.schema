@@ -1,6 +1,7 @@
 objectIdentifier univentionNetworkAccess 1.3.6.1.4.1.10176.4205
 objectIdentifier univentionNetworkAccessAttributeType univentionNetworkAccess:1
 objectIdentifier univentionNetworkAccessObjectClass   univentionNetworkAccess:2
+objectIdentifier univentionRadiusClientPrefix 1.3.6.1.4.1.10176.4206
 
 attributetype ( univentionNetworkAccessAttributeType  NAME 'univentionNetworkAccess'
 	DESC 'Allow 802.1X network access'
@@ -11,4 +12,32 @@ objectclass ( univentionNetworkAccessObjectClass NAME 'univentionNetworkAccess'
 	DESC 'Network access rules'
 	SUP top AUXILIARY
 	MAY ( univentionNetworkAccess )
+	)
+
+attributetype ( univentionRadiusClientPrefix:1.1  NAME 'univentionRadiusClientVirtualServer'
+	DESC 'Virtual Server option for RADIUS client'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionRadiusClientPrefix:1.2  NAME 'univentionRadiusClientSharedSecret'
+	DESC 'Shared secret for RADIUS client'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionRadiusClientPrefix:1.3  NAME 'univentionRadiusClientType'
+	DESC 'RADIUS Client Type'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass ( univentionRadiusClientPrefix:2.1 NAME 'univentionRadiusClient'
+	DESC 'RADIUS client options'
+	SUP top AUXILIARY
+	MAY (
+		univentionRadiusClientVirtualServer $
+		univentionRadiusClientSharedSecret $
+		univentionRadiusClientType
+		)
 	)
