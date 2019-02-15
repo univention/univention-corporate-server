@@ -1,3 +1,9 @@
+ucs-test (9.0.0-27) unstable; urgency=medium
+
+  * Bug #48676: Remove deprecated categories.ini from a docker test
+
+ -- Richard Ulmer <ulmer@univention.de>  Fri, 15 Feb 2019 09:46:41 +0100
+
 ucs-test (9.0.0-26) unstable; urgency=medium
 
   * Bug 48663: Don't test the deprecated get_categories() method
