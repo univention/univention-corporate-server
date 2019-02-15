@@ -1,3 +1,9 @@
+ucs-test (9.0.0-31) unstable; urgency=medium
+
+  * Bug #48676: Remove deprecated categories.ini from a docker test
+
+ -- Richard Ulmer <ulmer@univention.de>  Fri, 15 Feb 2019 09:46:41 +0100
+
 ucs-test (9.0.0-30) unstable; urgency=low
 
   * Bug #48651: fix 10_create_usertemplate
