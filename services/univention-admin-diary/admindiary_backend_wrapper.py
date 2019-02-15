@@ -91,6 +91,8 @@ class RsyslogTransport(object):
 def stdin_to_storage():
 	rsyslog_transport = RsyslogTransport("ADMINDIARY:")
 	blocked_events = get_events_to_reject()
+	# Tell rsyslog we are ready process messages
+	print("OK", flush=True)
 	while True:
 		line = sys.stdin.readline()
 		if not line:
@@ -99,9 +101,11 @@ def stdin_to_storage():
 		if entry:
 			if entry.event_name in blocked_events:
 				get_logger().info('Rejecting %s' % entry.event_name)
+				print("OK", flush=True)
 				continue
 			with get_session() as session:
 				add(entry, session)
+				print("OK", flush=True)
 
 
 if __name__ == "__main__":

@@ -1,3 +1,9 @@
+univention-admin-diary (1.0.0-17) unstable; urgency=medium
+
+  * Bug #48342: Turn on "confirmMessages" for the backend omprog script
+
+ -- Arvid Requate <requate@univention.de>  Fri, 15 Feb 2019 16:03:28 +0100
+
 univention-admin-diary (1.0.0-16) unstable; urgency=medium
 
   * Bug #48476: Change from positional args to keyword args
