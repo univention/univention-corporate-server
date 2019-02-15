@@ -23,6 +23,10 @@
 /* umcSearchFormChangeViewButton END */
 
 
+.umc .wizardInvitationBox {
+	max-height: 80px;
+}
+
 .umc .umcUDMUsersModule .umcImage {
 	background: none;
 	padding: 0;

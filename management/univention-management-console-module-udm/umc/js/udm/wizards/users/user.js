@@ -55,10 +55,21 @@ define([
 			}
 		],
 
+		startup: function() {
+			this.inherited(arguments);
+			var widget = this.getWidget('page1', 'PasswordRecoveryEmail');
+			var node = widget.domNode.parentNode.parentNode.parentNode;
+			node.classList.add('wizardInvitationBox');
+
+			widget = this.getWidget('page1', 'password');
+			node = widget.domNode.parentNode.parentNode.parentNode;
+			node.classList.add('wizardInvitationBox');
+		},
+
 		postMixInProperties: function() {
 			if (array.some(this.properties, function(prop) { return prop.id === 'PasswordRecoveryEmail'; })) {
-				this.widgetPages[1].widgets.splice(1, 0, '_invite');
-				this.widgetPages[1].widgets.splice(2, 0, 'PasswordRecoveryEmail');
+				this.widgetPages[1].widgets.splice(1, 0, 'PasswordRecoveryEmail');
+				this.widgetPages[1].widgets.splice(2, 0, '_invite');
 			}
 			this.inherited(arguments);
 		},
