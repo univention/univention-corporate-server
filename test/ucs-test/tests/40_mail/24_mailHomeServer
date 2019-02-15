@@ -89,17 +89,17 @@ def main():
 			port = 60025
 			sink_files = []
 			mail_sinks = []
-			for mailHomeServer, ip in hosts:
-				f = tempfile.NamedTemporaryFile(suffix='.eml', dir='/tmp')
-				nethelper.add_redirection(ip, 25, port)
-				ms = MailSink('127.0.0.1', port, filename=f.name, fqdn=mailHomeServer)
-				ms.start()
-				port += 1
-				mail_sinks.append(ms)
-				sink_files.append(f)
-
-			wait_for_dns(hosts)
 			try:
+				for mailHomeServer, ip in hosts:
+					f = tempfile.NamedTemporaryFile(suffix='.eml', dir='/tmp')
+					nethelper.add_redirection(ip, 25, port)
+					ms = MailSink('127.0.0.1', port, filename=f.name, fqdn=mailHomeServer)
+					ms.start()
+					port += 1
+					mail_sinks.append(ms)
+					sink_files.append(f)
+
+				wait_for_dns(hosts)
 				for i, mail in enumerate(mails_list):
 					token = str(time.time())
 					send_mail(
