@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.1-1) unstable; urgency=medium
+
+  * Bug #48621: prevent multiple (conflicting) options automatically to be set
+
+ -- Florian Best <best@univention.de>  Fri, 15 Feb 2019 12:17:27 +0100
+
 univention-directory-manager-modules (14.0.0-6) unstable; urgency=low
 
   * Bug #25935: add new syntax for RADIUS Client Type
