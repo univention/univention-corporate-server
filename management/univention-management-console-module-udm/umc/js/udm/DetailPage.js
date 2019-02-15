@@ -1664,7 +1664,15 @@ define([
 						visible = true;
 						return false;
 					} else {
-						domClass.toggle( element.$refTitlePane$.domNode, 'dijitDisplayNone', true);
+						domClass.toggle(element.$refTitlePane$.domNode, 'dijitDisplayNone', true);
+					}
+				} else if (typeof element === "string" ) {
+					var property = element;
+					if (property in this._form._widgets) {
+						if (this._form._widgets[ property ].get('visible') === true) {
+							visible = true;
+							return false;
+						}
 					}
 				}
 			}));
@@ -1676,10 +1684,11 @@ define([
 			array.forEach(layout, lang.hitch(this, function(tab) {
 				if (typeof tab ===  "object") {
 					var visible = false;
-					array.forEach( tab.layout, lang.hitch( this, function( element) {
-						if ( element instanceof Array) {
-							// ignore for now
-							visible = true;
+					array.forEach(tab.layout, lang.hitch(this, function(element) {
+						if (element instanceof Array) {
+							if (this._anyVisibleWidget({ layout: element })) {
+								visible = true;
+							}
 							return;
 						}
 						if (this._anyVisibleWidget(element)) {
