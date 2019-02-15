@@ -1,3 +1,9 @@
+ucs-test (9.0.0-32) unstable; urgency=low
+
+  * Bug #25935: add new tests for univentionRadiusClient option and ACLs
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 15 Feb 2019 13:33:47 +0100
+
 ucs-test (9.0.0-31) unstable; urgency=medium
 
   * Bug #48676: Remove deprecated categories.ini from a docker test
