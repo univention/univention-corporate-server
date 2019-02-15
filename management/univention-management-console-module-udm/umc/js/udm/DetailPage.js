@@ -519,9 +519,9 @@ define([
 					// filter out the property 'name'
 					var usedProperties = {};
 					array.forEach(newLayout, function(jlayout) {
-					   if ( jlayout instanceof Array || typeof jlayout == "object") {
+					   if (jlayout instanceof Array || typeof jlayout == "object") {
 						   var nestedLayout = (undefined === jlayout.layout) ? jlayout : jlayout.layout;
-							array.forEach( nestedLayout, function(klayout) {
+							array.forEach(nestedLayout, function(klayout) {
 								array.forEach(tools.stringOrArray(klayout), function(llayout) {
 									if (typeof llayout == "string") {
 										if ('name' != llayout) {
@@ -656,7 +656,7 @@ define([
 			var optionMap = {};
 			array.forEach(_properties, function(iprop) {
 				// ignore internal properties
-				if ( iprop.id.slice( 0, 1) == '$' && iprop.id.slice( -1) == '$') {
+				if (iprop.id.slice(0, 1) == '$' && iprop.id.slice(-1) == '$') {
 					properties.push(iprop);
 					return;
 				}
@@ -674,7 +674,7 @@ define([
 
 				if ('LinkList' == iprop.type) {
 					iprop.multivalue = false;
-				} else if ( iprop.type.indexOf('MultiObjectSelect') >= 0) {
+				} else if (iprop.type.indexOf('MultiObjectSelect') >= 0) {
 					iprop.multivalue = false;
 				} else if (iprop.multivalue && 'MultiInput' != iprop.type) {
 					// handle multivalue inputs
@@ -727,7 +727,7 @@ define([
 			}
 
 			// make sure that the widget use the flavored umcpCommand
-			array.forEach( properties, function( iprop) {
+			array.forEach(properties, function(iprop) {
 				iprop.umcpCommand = this.umcpCommand;
 			}, this);
 
@@ -1008,11 +1008,11 @@ define([
 				this.moduleWidget.set('title', this.moduleWidget.defaultTitle + ' ' + _('(multi-edit)'));
 			} else {
 				// find property identifying the object
-				tools.forIn( widgets, function( name, widget) {
-					if ( widget.identifies) {
+				tools.forIn(widgets, function(name, widget) {
+					if (widget.identifies) {
 						// watch value and modify title (escaped)
-						this.own(widget.watch('value', lang.hitch( this, function( attr, oldValue, _value) {
-							var value = _value instanceof Array ? _value.join( " ") : _value;
+						this.own(widget.watch('value', lang.hitch(this, function(attr, oldValue, _value) {
+							var value = _value instanceof Array ? _value.join(" ") : _value;
 							this.moduleWidget.set('titleDetail', value);
 						})));
 						return false; // break out of forIn
@@ -1526,7 +1526,7 @@ define([
 						}));
 					} else {
 						// fallback
-						var value = array.map( iinfo, function( item) {
+						var value = array.map(iinfo, function(item) {
 							return item.value;
 						});
 						iwidget.set('value', value);
@@ -1609,58 +1609,58 @@ define([
 			// event stub
 		},
 
-		onOptionsChanged: function( newValue) {
+		onOptionsChanged: function(newValue) {
 			var activeOptions = [];
 
 			// retrieve active options
 			var optionsWidget = this._form.widgets.$options$;
-			tools.forIn( optionsWidget.get('value'), function( item, value) {
-				if ( value === true) {
-					activeOptions.push( item);
+			tools.forIn(optionsWidget.get('value'), function(item, value) {
+				if (value === true) {
+					activeOptions.push(item);
 				}
 			});
 
 			// hide/show widgets
-			tools.forIn( this._propertyOptionMap, lang.hitch( this, function( prop, options) {
+			tools.forIn(this._propertyOptionMap, lang.hitch(this, function(prop, options) {
 				var visible = false;
-				if ( ! (options instanceof Array) || ! options.length ) {
+				if (! (options instanceof Array) || ! options.length ) {
 					visible = true;
 				} else {
-					array.forEach( options, function( option) {
-						if ( array.indexOf(activeOptions, option) != -1) {
+					array.forEach(options, function(option) {
+						if (array.indexOf(activeOptions, option) != -1) {
 							visible = true;
 						}
 					});
 				}
-				var iwidget = this._form.getWidget( prop);
+				var iwidget = this._form.getWidget(prop);
 				if (iwidget) {
 					iwidget.set('visible' , visible);
 				}
 			}));
 
 			// hide/show title panes
-			this._visibilityTitlePanes( this._layoutMap);
+			this._visibilityTitlePanes(this._layoutMap);
 		},
 
-		_anyVisibleWidget: function( titlePane) {
+		_anyVisibleWidget: function(titlePane) {
 			var visible = false;
-			array.forEach( titlePane.layout, lang.hitch( this, function( element) {
-				if ( element instanceof Array) {
-					array.forEach( element, lang.hitch( this, function( property) {
-						if ( property in this._form._widgets) {
-							if ( this._form._widgets[ property ].get('visible') === true) {
+			array.forEach(titlePane.layout, lang.hitch(this, function(element) {
+				if (element instanceof Array) {
+					array.forEach(element, lang.hitch(this, function(property) {
+						if (property in this._form._widgets) {
+							if (this._form._widgets[ property ].get('visible') === true) {
 								visible = true;
 								return false;
 							}
 						}
 					}));
 					// if there is a visible widget there is no need to check the other widgets
-					if ( visible) {
+					if (visible) {
 						return false;
 					}
-				} else if ( typeof element == "object") {
-					if ( this._anyVisibleWidget( element)) {
-						domClass.toggle( element.$refTitlePane$.domNode, 'dijitDisplayNone', false);
+				} else if (typeof element === "object") {
+					if (this._anyVisibleWidget(element)) {
+						domClass.toggle(element.$refTitlePane$.domNode, 'dijitDisplayNone', false);
 						visible = true;
 						return false;
 					} else {
@@ -1672,9 +1672,9 @@ define([
 			return visible;
 		},
 
-		_visibilityTitlePanes: function( layout) {
-			array.forEach( layout, lang.hitch( this, function( tab) {
-				if ( typeof tab == "object") {
+		_visibilityTitlePanes: function(layout) {
+			array.forEach(layout, lang.hitch(this, function(tab) {
+				if (typeof tab ===  "object") {
 					var visible = false;
 					array.forEach( tab.layout, lang.hitch( this, function( element) {
 						if ( element instanceof Array) {
@@ -1682,11 +1682,11 @@ define([
 							visible = true;
 							return;
 						}
-						if ( this._anyVisibleWidget( element)) {
-							domClass.toggle( element.$refTitlePane$.domNode, 'dijitDisplayNone', false);
+						if (this._anyVisibleWidget(element)) {
+							domClass.toggle(element.$refTitlePane$.domNode, 'dijitDisplayNone', false);
 							visible = true;
 						} else {
-							domClass.toggle( element.$refTitlePane$.domNode, 'dijitDisplayNone', true);
+							domClass.toggle(element.$refTitlePane$.domNode, 'dijitDisplayNone', true);
 						}
 					}));
 					this._setTabVisibility(tab.$refSubTab$, visible);
