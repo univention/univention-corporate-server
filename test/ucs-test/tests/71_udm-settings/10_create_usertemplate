@@ -9,7 +9,6 @@
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-import sys
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
@@ -17,15 +16,11 @@ if __name__ == '__main__':
 		try:
 			template = udm.create_object('settings/usertemplate', name=template_name)
 			utils.verify_ldap_object(template, {'cn': [template_name]})
-		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
-			print >> sys.stderr, 'settings/usertemplate could not be created'
-		except utils.LDAPObjectNotFound:
-			print >> sys.stderr, 'settings/usertemplate object was not found'
+		except udm_test.UCSTestUDM_CreateUDMObjectFailed as exc:
+			utils.fail('settings/usertemplate could not be created: {}'.format(exc))
+		except utils.LDAPObjectNotFound as exc:
+			utils.fail('settings/usertemplate object was not found: {}'.format(exc))
 
 		udm.remove_object('settings/usertemplate', dn=template)
-		try:
-			utils.verify_ldap_object(template, {'cn': [template_name]})
-		except utils.LDAPObjectNotFound:
-			pass
-		else:
-			utils.fail('settings/usertemplate object was found although it had been removed')
+
+		utils.verify_ldap_object(template, should_exist=False)
