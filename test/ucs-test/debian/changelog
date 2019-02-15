@@ -1,3 +1,9 @@
+ucs-test (8.0.28-266) unstable; urgency=medium
+
+  * Bug #48691: stop mail sink correctly in 47_mailForwardAddress
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 15 Feb 2019 17:06:12 +0100
+
 ucs-test (8.0.28-265) unstable; urgency=medium
 
   * Bug #48494: Add tests for umc widget override

@@ -14,7 +14,7 @@ import time
 import dns.resolver
 import tempfile
 from essential.mail import send_mail, check_delivery
-from univention.testing.mail import MailSink
+from univention.testing.mail import MailSink, MailSinkGuard
 from univention.testing.network import NetworkRedirector
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
@@ -69,86 +69,88 @@ def check_delivery_mailsink(token, mailsink_files, should_be_delivered):
 if __name__ == '__main__':
 	with ucr_test.UCSTestConfigRegistry() as ucr:
 		with udm_test.UCSTestUDM() as udm:
-			with NetworkRedirector() as nethelper:
-				domain = ucr.get('domainname').lower()
+			with MailSinkGuard() as mail_sink_guard:
+				with NetworkRedirector() as nethelper:
+					domain = ucr.get('domainname').lower()
 
-				# get IP addresses of the MX of "univention.de"
-				# FIXME: perform a dynamic lookup
-				mx_addresses = [
-					dns.resolver.query('mx00.kundenserver.de', 'A')[0].address,
-					dns.resolver.query('mx01.kundenserver.de', 'A')[0].address,
-				]
+					# get IP addresses of the MX of "univention.de"
+					# FIXME: perform a dynamic lookup
+					mx_addresses = [
+						dns.resolver.query('mx00.kundenserver.de', 'A')[0].address,
+						dns.resolver.query('mx01.kundenserver.de', 'A')[0].address,
+					]
 
-				# setup mailsink and network redirector
-				port = 60025
-				sink_files = []
-				mail_sinks = []
-				for mx_addr in mx_addresses:
-					tmpfd = tempfile.NamedTemporaryFile(suffix='.eml', dir='/tmp')
-					nethelper.add_redirection(mx_addr, 25, port)
-					sink = MailSink('127.0.0.1', port, filename=tmpfd.name)
-					sink.start()
-					port += 1
-					mail_sinks.append(sink)
-					sink_files.append(tmpfd)
+					# setup mailsink and network redirector
+					port = 60025
+					sink_files = []
+					mail_sinks = []
+					for mx_addr in mx_addresses:
+						tmpfd = tempfile.NamedTemporaryFile(suffix='.eml', dir='/tmp')
+						nethelper.add_redirection(mx_addr, 25, port)
+						sink = MailSink('127.0.0.1', port, filename=tmpfd.name)
+						mail_sink_guard.add(sink)
+						sink.start()
+						port += 1
+						mail_sinks.append(sink)
+						sink_files.append(tmpfd)
 
-				# create user with mPA, mFA and Copy2Self=1
-				user = Bunch()
-				user.mailPrimaryAddress = '%s@%s' % (uts.random_string(), domain)
-				user.mailAlternativeAddress = ['%s@%s' % (uts.random_string(), domain)]
-				user.mailHomeServer = '%s.%s' % (ucr.get('hostname'), domain)
-				user.mailForwardAddress = ['noreply@univention.de']
-				user.dn, user.username = udm.create_user(set={
-					'mailHomeServer': user.mailHomeServer,
-					'mailPrimaryAddress': user.mailPrimaryAddress,
-					'mailAlternativeAddress': user.mailAlternativeAddress,
-					'mailForwardAddress': user.mailForwardAddress,
-					'mailForwardCopyToSelf': '1',
-				})
-				utils.verify_ldap_object(
-					user.dn,
-					{
-						'univentionMailHomeServer': [user.mailHomeServer],
-						'mailPrimaryAddress': [user.mailPrimaryAddress],
+					# create user with mPA, mFA and Copy2Self=1
+					user = Bunch()
+					user.mailPrimaryAddress = '%s@%s' % (uts.random_string(), domain)
+					user.mailAlternativeAddress = ['%s@%s' % (uts.random_string(), domain)]
+					user.mailHomeServer = '%s.%s' % (ucr.get('hostname'), domain)
+					user.mailForwardAddress = ['noreply@univention.de']
+					user.dn, user.username = udm.create_user(set={
+						'mailHomeServer': user.mailHomeServer,
+						'mailPrimaryAddress': user.mailPrimaryAddress,
 						'mailAlternativeAddress': user.mailAlternativeAddress,
-						'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
-					},
-					strict=True)
-
-				# send mails
-				for addr, msg in (
-					(user.mailPrimaryAddress, 'sending mail to mailPrimaryAddress'),
-					(user.mailAlternativeAddress, 'sending mail to mailAlternativeAddress')
-				):
-					print '*** %s' % (msg,)
-					token = str(time.time())
-					send_mail(
-						recipients=addr,
-						msg=token,
-					)
-					# check if mail has been delivered to mailsink AND locally
-					check_delivery_mailsink(token, [x.name for x in sink_files], True)
-					check_delivery(token, user.mailPrimaryAddress, True)
-
-				# disable copy to self
-				udm.modify_object(
-					'users/user',
-					dn=user.dn,
-					set={
-						'mailForwardCopyToSelf': '0'
+						'mailForwardAddress': user.mailForwardAddress,
+						'mailForwardCopyToSelf': '1',
 					})
+					utils.verify_ldap_object(
+						user.dn,
+						{
+							'univentionMailHomeServer': [user.mailHomeServer],
+							'mailPrimaryAddress': [user.mailPrimaryAddress],
+							'mailAlternativeAddress': user.mailAlternativeAddress,
+							'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
+						},
+						strict=True)
 
-				# send mails
-				for addr, msg in (
-					(user.mailPrimaryAddress, 'sending mail to mailPrimaryAddress'),
-					(user.mailAlternativeAddress, 'sending mail to mailAlternativeAddress')
-				):
-					print '*** %s' % (msg,)
-					token = str(time.time())
-					send_mail(
-						recipients=addr,
-						msg=token,
-					)
-					# check if mail has been delivered to mailsink AND locally
-					check_delivery_mailsink(token, [x.name for x in sink_files], True)
-					check_delivery(token, user.mailPrimaryAddress, False)
+					# send mails
+					for addr, msg in (
+						(user.mailPrimaryAddress, 'sending mail to mailPrimaryAddress'),
+						(user.mailAlternativeAddress, 'sending mail to mailAlternativeAddress')
+					):
+						print '*** %s' % (msg,)
+						token = str(time.time())
+						send_mail(
+							recipients=addr,
+							msg=token,
+						)
+						# check if mail has been delivered to mailsink AND locally
+						check_delivery_mailsink(token, [x.name for x in sink_files], True)
+						check_delivery(token, user.mailPrimaryAddress, True)
+
+					# disable copy to self
+					udm.modify_object(
+						'users/user',
+						dn=user.dn,
+						set={
+							'mailForwardCopyToSelf': '0'
+						})
+
+					# send mails
+					for addr, msg in (
+						(user.mailPrimaryAddress, 'sending mail to mailPrimaryAddress'),
+						(user.mailAlternativeAddress, 'sending mail to mailAlternativeAddress')
+					):
+						print '*** %s' % (msg,)
+						token = str(time.time())
+						send_mail(
+							recipients=addr,
+							msg=token,
+						)
+						# check if mail has been delivered to mailsink AND locally
+						check_delivery_mailsink(token, [x.name for x in sink_files], True)
+						check_delivery(token, user.mailPrimaryAddress, False)
