@@ -34,6 +34,29 @@ import os
 import pwd
 import subprocess
 
+class MailSinkGuard(object):
+	"""
+	This class is a simple context manager that stops all attached mail sinks
+	if the context is left.
+
+	with MaiLSinkGuard() as msg:
+        sink = MailSink(......)
+        msg.add(sink)
+        ....use sink....
+	"""
+	def __init__(self):
+		self.mail_sinks = set()  # type: Set[MailSink]
+
+	def add(self, sink):   # type: (MailSink) -> None
+		self.mail_sinks.add(sink)
+
+	def __enter__(self):
+		return self
+
+	def __exit__(self, exc_type, exc_value, etraceback):
+		for mail_sink in self.mail_sinks:
+			mail_sink.stop()
+
 
 class MailSink(object):
 	"""
@@ -64,6 +87,7 @@ class MailSink(object):
 
 	def __enter__(self):
 		self.start()
+		return self
 
 	def __exit__(self, exc_type, exc_value, etraceback):
 		self.stop()
@@ -87,10 +111,12 @@ class MailSink(object):
 		self.process = subprocess.Popen(cmd)
 
 	def stop(self):
-		self.process.terminate()
-		time.sleep(1)
-		self.process.kill()
-		print '*** SMTPSink at %s:%s stopped' % (self.address, self.port)
+		if self.process is not None:
+			self.process.terminate()
+			time.sleep(1)
+			self.process.kill()
+			print '*** SMTPSink at %s:%s stopped' % (self.address, self.port)
+			self.process = None
 
 
 if __name__ == '__main__':
