@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-1) unstable; urgency=medium
+
+  * Bug #47941: reverted last commit
+
+ -- Felix Botner <botner@univention.de>  Mon, 18 Feb 2019 15:03:07 +0100
+
 univention-s4-connector (13.0.2-0) unstable; urgency=medium
 
   * Bug #47941: added UCRV connector/s4/mapping/dc/disable_delete_in_ucs
