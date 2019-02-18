@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 # Dieses Skript legt die im Wiki beschriebene Testumgebung an:
-# - 2 Benutzer, die beide der gleichen Gruppe angehören
+# - 2 Benutzer, die beide der gleichen Gruppe angehÃ¶ren
 # - 8 normale Drucker
 # - 16 Drucker, die in 8 Druckergruppen verwendet werden
 
@@ -87,7 +87,7 @@ else
 
 	for num in `seq 1 8`; do
 		if [ "$num" = "1" ]; then
-			# Drucker 2 gehört auch Druckergruppe 1 an
+			# Drucker 2 gehÃ¶rt auch Druckergruppe 1 an
 			univention-directory-manager shares/printergroup create --set name="dtestprintergroup$num" \
 			--set spoolHost=`hostname -f` --set setQuota=1 --append groupMember="dgruppentestprinter$num" \
 			--append groupMember="dgruppentestprinter$(($num+8))" --append groupMember="dgruppentestprinter2"\
@@ -99,7 +99,7 @@ else
 		fi
 	done
 
-	# Quotas für Drucker 1-8 und Druckergruppe 1-8 festlegen
+	# Quotas fÃ¼r Drucker 1-8 und Druckergruppe 1-8 festlegen
 
 	for num in `seq 1 7`; do
 		univention-directory-manager policies/print_quota create --position "cn=printquota,cn=shares,cn=policies,$ldap_base" --set name="printerpolicy$num"

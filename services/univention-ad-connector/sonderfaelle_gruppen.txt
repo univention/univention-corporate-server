@@ -1,10 +1,10 @@
 Allgemein:
 
-Die beschriebenen F‰lle sind Besonderheiten bei der Synchronisation von Gruppenmitgliedschaften. Sie kˆnnen anstelle eines "Users" auch bei verschachtelten Gruppen oder Computer-Accounts auftreten.
+Die beschriebenen F√§lle sind Besonderheiten bei der Synchronisation von Gruppenmitgliedschaften. Sie k√∂nnen anstelle eines "Users" auch bei verschachtelten Gruppen oder Computer-Accounts auftreten.
 
-Die Behandlung der F‰lle muss sowohl beim initialen als auch beim laufenden Sync kokrrekt sein. Da aber in beiden F‰llen die definierten ƒnderungen im Zuge eines Sync ("poll") synchronisiert werden kˆnnten, ist die Problemstellung identisch.
+Die Behandlung der F√§lle muss sowohl beim initialen als auch beim laufenden Sync kokrrekt sein. Da aber in beiden F√§llen die definierten √Ñnderungen im Zuge eines Sync ("poll") synchronisiert werden k√∂nnten, ist die Problemstellung identisch.
 
-======= F‰lle =======
+======= F√§lle =======
 
 1)
 - Gruppe A anlegen
@@ -23,14 +23,14 @@ Die Behandlung der F‰lle muss sowohl beim initialen als auch beim laufenden Sync
 - Gruppe B anlegen
 - User anlegen mit prim. Gr. A
 - User in Gruppe B aufnehmen 
-- Beschreibung an User ‰ndern 
+- Beschreibung an User √§ndern 
 
 4)
 - Gruppe A anlegen
 - Gruppe B anlegen
 - User anlegen mit prim. Gr. A - User wird aus anderem Grund rejected
 - User in Gruppe B aufnehmen 
-- Beschreibung an User ‰ndern 
+- Beschreibung an User √§ndern 
 
 Dieser Fall kann vergleichbar auftreten wenn der User selektiv von AD nach UCS synchronisiert wird.
 
@@ -38,9 +38,9 @@ Dieser Fall kann vergleichbar auftreten wenn der User selektiv von AD nach UCS s
 ======= Suche nach usnChanged und usnCreated (aktuelles Vorgehen) =======
 
 Der Filter ist: '(&(|(uSNChanged>=%s)(uSNCreated>=%s))(uSNChanged<=%s))' %(lastUSN+1,lastUSN+1,tmpUSN)
-Gesucht wird also nach uSNChanged zwischen lastUSN und tmpUSN sowie nach Objekten mit uSNCreated grˆﬂer lastUSN und uSNChaged kleiner tmpUSN. Letzteres d¸rfte kaum auftreten, eigentlich wird fast nur nach usnChanged gesucht.
+Gesucht wird also nach uSNChanged zwischen lastUSN und tmpUSN sowie nach Objekten mit uSNCreated gr√∂√üer lastUSN und uSNChaged kleiner tmpUSN. Letzteres d√ºrfte kaum auftreten, eigentlich wird fast nur nach usnChanged gesucht.
 
-1) Der User w¸rde initial vor seiner prim‰ren Gruppe synchronisiert und daher beim Anlegen rejected.
+1) Der User w√ºrde initial vor seiner prim√§ren Gruppe synchronisiert und daher beim Anlegen rejected.
 
 2) Beim initialen Sync wird Gruppe B ohne den User synchronisiert, da dieser noch nicht im UCS angelegt ist.
 
@@ -67,4 +67,4 @@ Gesucht wird also nach uSNChanged zwischen lastUSN und tmpUSN sowie nach Objekte
 3) korrekter Sync
 
 4) ein Resync des Users legt ihn nicht in Gruppe B
- -> Sync von Benutzern erfordert immer auch ein Pr¸fen aller Gruppen in denen er ist.
+ -> Sync von Benutzern erfordert immer auch ein Pr√ºfen aller Gruppen in denen er ist.
