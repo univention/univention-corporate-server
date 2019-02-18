@@ -19,6 +19,7 @@ Depends: ${misc:Depends},
  tofrodos,
  ldap-utils,
  python-univention-lib (>= 1.0.25-1)
+Breaks: univention-ldap-server (<< 14.0.2-35),
 Description: UCS - join domains
  This packages allows for the joining of UCS computers to a
  UCS domain.

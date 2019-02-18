@@ -1,0 +1,24 @@
+@%@UCRWARNING=# @%@
+
+@!@
+import sys
+IS_64BITS = sys.maxsize > 2**32
+if not IS_64BITS:
+	PREFIX = 'ldap/database/bdb/'
+	DEFAULT, FALLBACK = {
+		'ldap/database/bdb/set_cachesize': '0 90000000 1',
+		'ldap/database/bdb/set_lg_bsize': 262144,
+		'ldap/database/bdb/set_lg_max': 1048576,
+	}, {
+		'ldap/database/bdb/set_lk_max_objects': 9000,
+		'ldap/database/bdb/set_lk_max_locks': 9000,
+		'ldap/database/bdb/set_lk_max_lockers': 9000,
+	}
+	ucr = dict(DEFAULT.items() + FALLBACK.items() + configRegistry.items())
+	options = set(DEFAULT) | set(FALLBACK) | set(PREFIX + option for option in ucr.get('ldap/database/bdb/db_config_options', '').split(',') if option)
+
+	for option in sorted(options):
+		value = ucr.get(option, '') or FALLBACK.get(option, '')
+		if value:
+			print '%s\t%s' % (option[len(PREFIX):], value)
+@!@

@@ -152,7 +152,10 @@ fi
 stop_slapd
 /usr/share/univention-ldap/ldap_setup_index --add-defaults
 
-test -f /var/lib/univention-ldap/ldap/DB_CONFIG || univention-config-registry commit /var/lib/univention-ldap/ldap/DB_CONFIG
+for cfg in /var/lib/univention-ldap/ldap/DB_CONFIG /var/lib/univention-ldap/translog/DB_CONFIG
+do
+	[ -f "$cfg" ] || univention-config-registry commit "$cfg"
+done
 
 upgrade_license () {
 	case "$server_role" in
@@ -188,6 +191,7 @@ upgrade_license () {
 }
 
 if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+	JOIN_FORCE="$([ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 14.0.2-37 && echo 1)" \
 	/usr/lib/univention-install/01univention-ldap-server-init.inst || true
 	/usr/lib/univention-install/10univention-ldap-server.inst || true
 	[ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 11.0.12-5 && upgrade_license || :

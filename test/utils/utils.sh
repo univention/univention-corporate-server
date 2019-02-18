@@ -171,39 +171,40 @@ _upgrade_to_latest () {
 
 # temp. patch to retry source.list commit and apt-get update after error
 patch_setup_join () {
-	local script='if [ $? -ne 0 ]; then set -x; nscd -i hosts; cat /etc/resolv.conf; cat /etc/apt/sources.list.d/15_ucs-online-version.list; ifconfig; ping -c 4 "$(ucr get repository/online/server)"; nslookup "$(ucr get repository/online/server)"; sleep 60; ucr commit /etc/apt/sources.list.d/*; apt-get update; cat /etc/apt/sources.list.d/15_ucs-online-version.list; fi; cat /etc/apt/sources.list.d/15_ucs-online-version.list'
-	sed -i "s|apt-get update|apt-get update\n$script|" /usr/lib/univention-system-setup/scripts/setup-join.sh
+	local script='{ set -x; nscd -i hosts; grep -H . /etc/resolv.conf /etc/apt/sources.list.d/15_ucs-online-version.list; ifconfig; ping -c 4 "$(ucr get repository/online/server)"; nslookup "$(ucr get repository/online/server)"; sleep 60; ucr commit /etc/apt/sources.list.d/*.list; apt-get update; } ; grep -H . /etc/apt/sources.list.d/15_ucs-online-version.list'
+	sed -i "s~^apt-get update\$~& || $script~" /usr/lib/univention-system-setup/scripts/setup-join.sh
+}
+_fix_ssh47233 () { # Bug #47233: ssh connection stuck on reboot
+	local g t
+	g='/etc/pam.d/common-session' t='/etc/univention/templates/files/etc/pam.d/common-session.d/10univention-pam_common'
+	grep -Fqs 'pam_systemd.so' "$g" && return 0
+	grep -Fqs 'pam_systemd.so' "$t" ||
+		echo "session optional        pam_systemd.so" >>"$t"
+	ucr commit "$g"
 }
 
 run_setup_join () {
 	local srv rv=0
 	patch_setup_join # temp. remove me
-	/usr/lib/univention-system-setup/scripts/setup-join.sh || rv=$?
+	/usr/lib/univention-system-setup/scripts/setup-join.sh ${1:+"$@"} || rv=$?
 	ucr set apache2/startsite='univention/' # Bug #31682
 	for srv in univention-management-console-server univention-management-console-web-server apache2
 	do
 		invoke-rc.d "$srv" restart
 	done
 	ucr unset --forced update/available
+	_fix_ssh47233  # temp. remove me
 	return $rv
 }
 
 run_setup_join_on_non_master () {
-	local admin_password="${1:-univention}"
-	local srv rv=0
-	local nameserver1="$(sed -ne 's|^nameserver=||p' /var/cache/univention-system-setup/profile)"
+	local admin_password="${1:-univention}" rv=0 nameserver1
+	nameserver1="$(sed -ne 's|^nameserver=||p' /var/cache/univention-system-setup/profile)"
 	if [ -n  "$nameserver1" ]; then
 		ucr set nameserver1="$nameserver1"
 	fi
-	echo -n "$admin_password" >/tmp/univention
-	patch_setup_join # temp. remove me
-	/usr/lib/univention-system-setup/scripts/setup-join.sh --dcaccount Administrator --password_file /tmp/univention || rv=$?
-	ucr set apache2/startsite='univention/' # Bug #31682
-	for srv in univention-management-console-server univention-management-console-web-server apache2
-	do
-		invoke-rc.d "$srv" restart
-	done
-	ucr unset --forced update/available
+	printf '%s' "$admin_password" >/tmp/univention
+	run_setup_join --dcaccount Administrator --password_file /tmp/univention || rv=$?
 	return $rv
 }
 
