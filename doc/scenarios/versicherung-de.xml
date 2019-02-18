@@ -26,7 +26,7 @@
 
 	<para>
 	  Die Mitarbeiter arbeiten an insgesamt 36 Standorten weltweit, der
-	  grösste davon der Stammsitz in Bremen mit ca. 250 Personen. Viele der
+	  größte davon der Stammsitz in Bremen mit ca. 250 Personen. Viele der
 	  Benutzer arbeiten als Vertreter oder Gutachter mobil mit Notebooks.
 	</para>
 
@@ -56,7 +56,7 @@
 	<para>
 	  Alle Serversysteme in der Zentrale sollen virtualisiert
 	  werden. Aufgrund der daraus erwachsenden erheblichen Bedeutung der
-	  Virtualisierung muss dafür eine Open Source-Lösung zum Einsatz kommen.
+	  Virtualisierung muss dafür eine Open-Source-Lösung zum Einsatz kommen.
 	</para>
 
 	<para>
@@ -126,8 +126,7 @@
 	<title>Virtualisierung</title>
 	<para>
 	  Alle Serversysteme in der Umgebung der HMV sind mit &ucsUVMM; (UVMM)
-	  virtualisiert. Zum Einsatz kommt dabei ausschliesslich Open
-	  Source-Software.
+	  virtualisiert. Zum Einsatz kommt dabei ausschließlich Open-Source-Software.
 	</para>
 
 	<para>
@@ -142,7 +141,7 @@
 	  Virtualisierungsserver auf UCS-Memberservern (Serversysteme
 	  ohne lokalen Verzeichnisdienst). Auf diesen laufen jeweils ein bis mehrere
 	  virtuelle Maschinen mit der Virtualisierungslösung KVM. UCS- und
-	  Windows-Systeme werden paravirtualisiert betrieben, d.h. durch einen
+	  Windows-Systeme werden paravirtualisiert betrieben, d. h. durch einen
 	  Zugriff der virtualisierten Systeme auf die Ressourcen der Wirtsysteme
 	  kann ein höherer Durchsatz erzielt werden.
 	</para>
@@ -182,7 +181,7 @@
 
 	<para>
 	  Alle Systeme tragen die installierten Pakete automatisch in eine
-	  zentrale SQL-Datenbank ein, so dass ein Überblick über den
+	  zentrale SQL-Datenbank ein, sodass ein Überblick über den
 	  Softwarebestand stets gewährleistet ist. Sicherheitsupdates für UCS
 	  werden zeitnah zum Download bereitgestellt und können ebenfalls
 	  automatisiert eingespielt werden.
@@ -196,7 +195,7 @@
 	  eingesetzt. Samba 4 bietet Domänen-, Verzeichnis- und
 	  Authentifizierungsdienste, die kompatibel zu Microsoft Active
 	  Directory sind. Diese ermöglichen auch die Verwendung der von
-	  Microsoft bereit gestellten Werkzeuge für die Verwaltung von
+	  Microsoft bereitgestellten Werkzeuge für die Verwaltung von
 	  Gruppenrichtlinien (GPOs).
 	</para>
 
@@ -259,7 +258,7 @@
 	</para>
 
 	<para>
-	  Durch die Anbindung des UCS-Verzeichnisdienstes and das Active
+	  Durch die Anbindung des UCS-Verzeichnisdienstes an das Active
 	  Directory der Konzernmutter erfolgt die Authentifizierung mit der
 	  gleichen Benutzernamen/Passwort-Kombination.
 	</para>
@@ -322,7 +321,7 @@
 	</para>
 
 	<para>
-	  Nagios-Prüfungen können zeitlich eingeschränkt werden, so dass
+	  Nagios-Prüfungen können zeitlich eingeschränkt werden, sodass
 	  unkritische Werte beispielsweise nachts keine Meldungen auslösen.
 	</para>
   </section>
@@ -330,7 +329,7 @@
   <section id="insurance:aix">
 	<title>Integration des AIX-Systems</title>
 	<para>
-	  Die Versichungspolicen werden mit einer Applikation verwaltet, die nur
+	  Die Versicherungspolicen werden mit einer Applikation verwaltet, die nur
 	  auf hochverfügbaren POWER7-Systemen mit IBM AIX betrieben werden kann.
 	</para>
 
