@@ -56,7 +56,8 @@ case "$1" in
 			freeradius/conf/starttls?yes \
 			freeradius/conf/private/key/file?/etc/freeradius/ssl/private.key \
 			freeradius/conf/certificate/file?/etc/freeradius/ssl/cert.pem \
-			freeradius/conf/ca/file?/etc/univention/ssl/ucsCA/CAcert.pem
+			freeradius/conf/ca/file?/etc/univention/ssl/ucsCA/CAcert.pem \
+			univention-radius-ntlm-auth/debug?2
 
 		# Bug #25935: create empty clients.univention.conf if still missing
 		fn="/etc/freeradius/3.0/clients.univention.conf"

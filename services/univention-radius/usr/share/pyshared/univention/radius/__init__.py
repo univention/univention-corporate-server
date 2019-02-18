@@ -1,8 +1,7 @@
-#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
 # Univention RADIUS 802.1X
-#  authentication test program
+#  NTLM-Authentication program
 #
 # Copyright (C) 2012-2019 Univention GmbH
 #
@@ -32,35 +31,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import optparse
-import sys
 
-from univention.radius import get_NetworkAccess
-from univention.radius.networkaccess import NetworkAccessError
-
-
-def main():
-	usage = 'Usage: %prog [options]\n\nCheck network access for a user and/or MAC address'
-	parser = optparse.OptionParser(usage=usage)
-	parser.add_option('--username', dest='username')
-	parser.add_option('--station-id', dest='stationId')
-	(options, args, ) = parser.parse_args()
-	if options.username is None:
-		print("no username given")
-		return 1
-	NetworkAccess = get_NetworkAccess()
-	networkAccess = NetworkAccess(options.username, options.stationId, loglevel=5)
-	exitCode = 0
+def get_NetworkAccess():
 	try:
-		networkAccess.getNTPasswordHash()
-	except NetworkAccessError as exc:
-		networkAccess.logger.debug(exc.msg)
-		exitCode = 1
-		networkAccess.logger.debug('--- Thus access is DENIED.')
-	else:
-		networkAccess.logger.debug('--- Thus access is ALLOWED.')
-	return exitCode
-
-
-if __name__ == "__main__":
-	sys.exit(main())
+		# Use the extended ucs@school network access check if installed
+		from univention.radius.school_networkaccess import SchoolNetworkAccess
+		return SchoolNetworkAccess
+	except ImportError:
+		from univention.radius.networkaccess import NetworkAccess
+		return NetworkAccess
