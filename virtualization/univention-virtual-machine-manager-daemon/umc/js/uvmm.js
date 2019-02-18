@@ -86,11 +86,11 @@ define([
 
 	var isRunning = function(item) {
 		// isRunning contains state==PAUSED to enable VNC Connections to pause instances
-		return (item.state == 'RUNNING' || item.state == 'IDLE' || item.state == 'PAUSED') && item.node_available && !isPausedForMigration(item);
+		return (item.state === 'RUNNING' || item.state === 'IDLE' || item.state === 'PAUSED') && item.node_available && !isPausedForMigration(item);
 	};
 
 	var isPaused = function(item) {
-		return (item.state == 'PAUSED') && item.node_available;
+		return (item.state === 'PAUSED') && item.node_available;
 	};
 
 	var isPausedForMigration = function(item) {
@@ -104,7 +104,7 @@ define([
 	};
 
 	var canStart = function(item) {
-		return item.node_available && (item.state != 'RUNNING' && item.state != 'IDLE' && !isTerminated(item) && item.state != 'PENDING') && !isPausedForMigration(item) && !isPausedForSnapshot(item);
+		return item.node_available && (item.state !== 'RUNNING' && item.state !== 'IDLE' && !isTerminated(item) && item.state !== 'PENDING') && !isPausedForMigration(item) && !isPausedForSnapshot(item);
 	};
 
 	var canVNC = function(item) {
@@ -112,15 +112,15 @@ define([
 	};
 
 	var isTerminated = function(item) {
-		return item.state == 'TERMINATED';
+		return item.state === 'TERMINATED';
 	};
 
 	var isEC2 = function(item) {
-		return item.u_connection_type == 'EC2';
+		return item.u_connection_type === 'EC2';
 	};
 
 	var isOpenStack = function(item) {
-		return item.u_connection_type == 'OpenStack';
+		return item.u_connection_type === 'OpenStack';
 	};
 
 	return declare("umc.modules.uvmm", [ Module ], {
@@ -192,7 +192,9 @@ define([
 			if (this.openDomain) {
 				this._domainPage = new DomainPage({
 					isClosable: true,
-					moduleWidget: this
+					moduleWidget: this,
+					addNotification: lang.hitch(this, 'addNotification'),
+					addWarning: lang.hitch(this, 'addWarning')
 				});
 				this._domainPage.on('closeTab', lang.hitch(this, 'closeDomainPage'));
 				this.addChild(this._domainPage);
@@ -383,7 +385,7 @@ define([
 
 			if (this._tree) {
 				on.once(this._tree, 'load', lang.hitch(this, function() {
-					if (this._tree._getFirst() && this._tree._getFirst().item.id == 'cloudconnections') {
+					if (this._tree._getFirst() && this._tree._getFirst().item.id === 'cloudconnections') {
 						this._searchForm.getWidget('type').set('value', 'instance');
 					}
 					this.own(this._tree.watch('path', lang.hitch(this, function(attr, oldVal, newVal) {
@@ -391,7 +393,7 @@ define([
 							return;
 						}
 						var searchType = this._searchForm.getWidget('type').get('value');
-						if (searchType == 'domain' || searchType == 'instance') {
+						if (searchType === 'domain' || searchType === 'instance') {
 							this.filter();
 						}
 					})));
@@ -405,7 +407,7 @@ define([
 							this.filter();
 						}
 					}));
-					if (this._tree._getLast().item.type == 'root') {
+					if (this._tree._getLast().item.type === 'root') {
 						dialog.alert(_('A connection to a virtualization infrastructure could not be established. You can either connect to a public or private cloud. Alternatively you can install a hypervisor on this or on any other UCS server in this domain. Further details about the virtualization can be found in <a target="_blank" href="http://docs.univention.de/manual-4.2.html#uvmm:chapter">the manual</a>.'));
 					}
 				}));

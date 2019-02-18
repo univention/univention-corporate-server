@@ -152,7 +152,7 @@ define([
 					name: 'email',
 					label: _('Send email'),
 					callback: lang.hitch(this, function() {
-						var val = this._generalForm.gatherFormValues();
+						var val = this._generalForm.get('value');
 						if (val.contact) {
 							location.href = 'mailto:' + encodeURIComponent(val.contact) + '?subject=' + encodeURIComponent(_('Virtual machine: %s', val.name));
 						}
@@ -514,7 +514,7 @@ define([
 			// event stub
 		},
 
-		onUpdateProgress: function(i, n) {
+		onUpdateProgress: function(/*i, n*/) {
 			// event stub
 		}
 	});
