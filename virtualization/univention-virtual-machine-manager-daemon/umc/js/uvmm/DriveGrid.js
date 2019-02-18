@@ -217,7 +217,7 @@ define([
 			};
 
 			var _saveDrive = lang.hitch(this, function() {
-				var values = form.gatherFormValues();
+				var values = form.get('value');
 				// reset target if setting paravirtual has changed
 				if ( disk.paravirtual != values.paravirtual ) {
 					disk.target_bus = null;

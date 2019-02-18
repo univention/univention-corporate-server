@@ -208,7 +208,7 @@ define([
 		getFooterButtons: function() {
 			var buttons = this.inherited(arguments);
 			return array.filter(buttons, function(button) {
-				if (button.name == 'cancel') {
+				if (button.name === 'cancel') {
 					return false;
 				}
 				return true;
@@ -248,7 +248,7 @@ define([
 					this._pages.general.set('headerText', _('Create a virtual machine (profile: %s)', this._profile.name));
 				}));
 			}
-			else*/ if (pageName == 'general') {
+			else*/ if (pageName === 'general') {
 				// update the domain info for the drive grid
 				array.forEach( [ 'name', 'maxMem' ], lang.hitch( this, function( widgetName ) {
 					if ( ! this.getWidget( widgetName ).isValid() ) {
@@ -268,7 +268,7 @@ define([
 		},
 
 		getValues: function() {
-			var values = this._pages.general._form.gatherFormValues();
+			var values = this._pages.general._form.get('value');
 			values.nodeURI = this.getWidget('nodeURI').get('value');
 			values.hyperv = true;
 			values.vnc_remote = true;
