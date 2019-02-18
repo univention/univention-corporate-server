@@ -67,9 +67,8 @@ define([
 			} catch (err) { }
 
 			// query the profile settings
-			this.standby(true);
 			var profileDN = this.getWidget('profileDN').get('value');
-			tools.umcpCommand('uvmm/profile/get', {
+			this.standbyDuring(tools.umcpCommand('uvmm/profile/get', {
 				profileDN: profileDN
 			}).then(lang.hitch(this, function(data) {
 				// we got the profile...
@@ -88,12 +87,7 @@ define([
 
 				// update page header
 				this._pages.general.set('headerText', _('Create a virtual machine (profile: %s)', this._profile.name));
-
-				this.standby(false);
-			}), lang.hitch(this, function() {
-				// fallback... switch off the standby animation
-				this.standby(false);
-			}));
+			})));
 		},
 
 		postMixInProperties: function() {
@@ -232,9 +226,8 @@ define([
 				} catch (err) { }
 
 				// query the profile settings
-				this.standby(true);
 				var profileDN = this.getWidget('profileDN').get('value');
-				tools.umcpCommand('uvmm/profile/get', {
+				this.standbyDuring(tools.umcpCommand('uvmm/profile/get', {
 					profileDN: profileDN
 				}).then(lang.hitch(this, function(data) {
 					// we got the profile...
@@ -253,11 +246,6 @@ define([
 
 					// update page header
 					this._pages.general.set('headerText', _('Create a virtual machine (profile: %s)', this._profile.name));
-
-					this.standby(false);
-				}), lang.hitch(this, function() {
-					// fallback... switch off the standby animation
-					this.standby(false);
 				}));
 			}
 			else*/ if (pageName == 'general') {

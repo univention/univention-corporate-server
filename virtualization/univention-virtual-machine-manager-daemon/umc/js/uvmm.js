@@ -876,17 +876,13 @@ define([
 			});
 
 			var _finished = lang.hitch(this, function(values) {
-				this.standby(true);
-				tools.umcpCommand('uvmm/domain/add', {
+				this.standbyDuring(tools.umcpCommand('uvmm/domain/add', {
 					nodeURI: values.nodeURI,
 					domain: values
 				}).then(lang.hitch(this, function() {
 					_cleanup();
 					this.moduleStore.onChange();
-					this.standby(false);
-				}), lang.hitch(this, function() {
-					this.standby(false);
-				}));
+				})));
 			});
 
 			wizard = new DomainWizard({
