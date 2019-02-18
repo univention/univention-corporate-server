@@ -416,12 +416,11 @@ define([
 		},
 
 		load: function(id) {
-			this.standby(true);
 			// clear form data
 			this._generalForm.clearFormValues();
 			this._stack.selectChild( this._generalPage, true);
 
-			tools.umcpCommand('uvmm/domain/get', {
+			this.standbyDuring(tools.umcpCommand('uvmm/domain/get', {
 				domainURI: id
 			}).then(lang.hitch(this, function(data) {
 				// get data blob
@@ -508,10 +507,7 @@ define([
 					this._snapshotGrid.filter();
 					this._targethostGrid.filter();
 				}
-				this.standby(false);
-			}), lang.hitch(this, function() {
-				this.standby(false);
-			}));
+			})));
 		},
 
 		onCloseTab: function() {
