@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-2) unstable; urgency=medium
+
+  * Bug #47941: reverted last commit
+
+ -- Felix Botner <botner@univention.de>  Mon, 18 Feb 2019 15:08:30 +0100
+
 univention-s4-connector (13.0.2-1) unstable; urgency=medium
 
   * Bug #47941: reverted last commit
