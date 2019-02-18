@@ -423,7 +423,6 @@ if group_map:
 			# the DC will be deleted.
 			disable_delete_in_ucs = True,
 
-@!@
 			# When a DC is removed in UCS, the DC should be removed
 			# in S4. By default a DC has a subobject wihtout any mapping
 			# and this subobject would avoid a deletion of this DC in S4
