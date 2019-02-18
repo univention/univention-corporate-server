@@ -1,3 +1,9 @@
+univention-directory-notifier (13.0.1-6) unstable; urgency=medium
+
+  * Bug #48642: Merge UDN protocol 3
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 18 Feb 2019 15:17:44 +0100
+
 univention-directory-notifier (13.0.1-5) unstable; urgency=medium
 
   * Bug #41262: improve univention-replicate-many

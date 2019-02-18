@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (5.0.1-7) unstable; urgency=medium
+
+  * Bug #48642: Merge UDN protocol 3
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 18 Feb 2019 15:17:44 +0100
+
 univention-management-console-module-diagnostic (5.0.1-6) unstable; urgency=medium
 
   * Bug #47650: Fix uncaught Exceptions in univention-run-diagnostic-checks

@@ -1,3 +1,9 @@
+ucs-test (9.0.0-34) unstable; urgency=medium
+
+  * Bug #48642: Merge UDN protocol 3
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 18 Feb 2019 15:17:44 +0100
+
 ucs-test (9.0.0-33) unstable; urgency=low
 
   * Bug #48691: stop mail sink correctly in 47_mailForwardAddress
