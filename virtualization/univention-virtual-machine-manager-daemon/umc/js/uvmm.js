@@ -565,9 +565,9 @@ define([
 			_dialog.show();
 		},
 
-		_migrateDomain: function( ids, items ) {
+		_migrateDomain: function(ids, domains) {
 			var _dialog = null, form = null;
-			var unavailable = array.some( items, function( domain ) {
+			var unavailable = array.some(domains, function( domain ) {
 				return domain.node_available === false;
 			} );
 
