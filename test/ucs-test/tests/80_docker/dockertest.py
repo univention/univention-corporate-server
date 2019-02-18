@@ -591,27 +591,39 @@ class Appcenter(object):
 		os.makedirs('/var/www/univention-repository/%s/maintained/component' % version)
 		os.makedirs('/var/www/meta-inf/%s' % version)
 
+		if not os.path.exists('/var/www/meta-inf/categories.ini'):
+			f = open('/var/www/meta-inf/categories.ini', 'w')
+			f.write('''[de]
+Administration=Administration
+Business=Business
+Collaboration=Collaboration
+Education=Schule
+System services=Systemdienste
+UCS components=UCS-Komponenten
+Virtualization=Virtualisierung''')
+
 		if not os.path.exists('/var/www/meta-inf/app-categories.ini'):
 			with open('/var/www/meta-inf/app-categories.ini', 'w') as f:
-				f.write('[de]\n'
-				        'Backup & Archiving=Backup & Archivierung\n'
-				        'Education=Bildung\n'
-				        'CMS=CMS\n'
-				        'Collaboration & Groupware=Collaboration & Groupware\n'
-				        'CRM & ERP=CRM & ERP\n'
-				        'Desktop=Desktop\n'
-				        'Device Management=Device Management\n'
-				        'File Sync & Share=File Sync & Share\n'
-				        'Identity Management=Identity Management\n'
-				        'Infrastructure=Infrastruktur\n'
-				        'Mail & Messaging=Mail & Messaging\n'
-				        'Office=Office\n'
-				        'Printing=Drucken\n'
-				        'Project Management=Projekt Management\n'
-				        'Security=Sicherheit\n'
-				        'Storage=Speicher\n'
-				        'Telephony=Telefonie\n'
-				        'Virtualization=Virtualisierung\n')
+				f.write(
+					'[de]\n'
+					'Backup & Archiving=Backup & Archivierung\n'
+					'Education=Bildung\n'
+					'CMS=CMS\n'
+					'Collaboration & Groupware=Collaboration & Groupware\n'
+					'CRM & ERP=CRM & ERP\n'
+					'Desktop=Desktop\n'
+					'Device Management=Device Management\n'
+					'File Sync & Share=File Sync & Share\n'
+					'Identity Management=Identity Management\n'
+					'Infrastructure=Infrastruktur\n'
+					'Mail & Messaging=Mail & Messaging\n'
+					'Office=Office\n'
+					'Printing=Drucken\n'
+					'Project Management=Projekt Management\n'
+					'Security=Sicherheit\n'
+					'Storage=Speicher\n'
+					'Telephony=Telefonie\n'
+					'Virtualization=Virtualisierung\n')
 			with open('/var/www/meta-inf/rating.ini', 'w') as f:
 				f.write('# rating stuff\n')
 			with open('/var/www/meta-inf/license_types.ini', 'w') as f:

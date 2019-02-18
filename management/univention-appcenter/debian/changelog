@@ -1,3 +1,9 @@
+univention-appcenter (8.0.1-5) unstable; urgency=medium
+
+  * Bug #48676: revert, we still need the categories file
+
+ -- Felix Botner <botner@univention.de>  Mon, 18 Feb 2019 17:24:16 +0100
+
 univention-appcenter (8.0.1-4) unstable; urgency=medium
 
   * Bug #48676: Correct deprecated categories.ini in local App Center
