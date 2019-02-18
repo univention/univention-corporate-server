@@ -70,7 +70,7 @@ class Text(TestFormatInterface):
         print >> self.stream, "UCS %s-%s-e%s ucs-test %s" % (ucr.get('version/version'), ucr.get('version/patchlevel'), ucr.get('version/erratalevel'), ucs_test_version)
 
     def begin_section(self, section):
-        """Called before each secion."""
+        """Called before each section."""
         super(Text, self).begin_section(section)
         if section:
             header = " Section '%s' " % (section,)
@@ -105,7 +105,7 @@ class Text(TestFormatInterface):
         super(Text, self).end_test(result)
 
     def end_section(self):
-        """Called after each secion."""
+        """Called after each section."""
         if self.section:
             print >> self.stream
         super(Text, self).end_section()

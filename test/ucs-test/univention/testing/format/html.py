@@ -31,7 +31,7 @@ class HTML(TestFormatInterface):
         print >> self.stream, '<body>'
 
     def begin_section(self, section):
-        """Called before each secion."""
+        """Called before each section."""
         super(HTML, self).begin_section(section)
         print >> self.stream, '<h2>Section %s</h2>' % (escape_xml(section),)
         print >> self.stream, '<table>'
@@ -59,7 +59,7 @@ class HTML(TestFormatInterface):
         super(HTML, self).end_test(result)
 
     def end_section(self):
-        """Called after each secion."""
+        """Called after each section."""
         print >> self.stream, '</table>'
         super(HTML, self).end_section()
 

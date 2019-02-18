@@ -920,7 +920,7 @@ class TestFormatInterface(object):  # pylint: disable-msg=R0921
         self.count = count
 
     def begin_section(self, section):
-        """Called before each secion."""
+        """Called before each section."""
         self.section = section
 
     def begin_test(self, case, prefix=''):
@@ -934,7 +934,7 @@ class TestFormatInterface(object):  # pylint: disable-msg=R0921
         self.prefix = None
 
     def end_section(self):
-        """Called after each secion."""
+        """Called after each section."""
         self.section = None
 
     def end_run(self):
