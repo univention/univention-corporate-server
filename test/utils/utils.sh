@@ -1015,7 +1015,6 @@ restart_services_bug_47762 ()
 	# The services needs to be restart otherwise they wouldn't bind
 	# to the new IP address
 	test -x /etc/init.d/samba && /etc/init.d/samba restart
-	test -x /etc/init.d/heimdal-kdc && service heimdal-kdc restart
 }
 
 # https://forge.univention.org/bugzilla/show_bug.cgi?id=48157
