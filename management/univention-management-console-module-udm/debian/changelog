@@ -1,3 +1,10 @@
+univention-management-console-module-udm (9.0.2-4) unstable; urgency=medium
+
+  * Bug #48660: Fix wizard widget in absence of selfservice App, stronger
+    password, not disabled users
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 18 Feb 2019 23:21:30 +0100
+
 univention-management-console-module-udm (9.0.2-3) unstable; urgency=medium
 
   * Bug #48621: fix visibility of tabs without content

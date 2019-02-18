@@ -58,8 +58,10 @@ define([
 		startup: function() {
 			this.inherited(arguments);
 			var widget = this.getWidget('page1', 'PasswordRecoveryEmail');
-			var node = widget.domNode.parentNode.parentNode.parentNode;
-			node.classList.add('wizardInvitationBox');
+			if (widget) {
+				var node = widget.domNode.parentNode.parentNode.parentNode;
+				node.classList.add('wizardInvitationBox');
+			}
 
 			widget = this.getWidget('page1', 'password');
 			node = widget.domNode.parentNode.parentNode.parentNode;
@@ -117,8 +119,18 @@ define([
 			var invite = values._invite;
 			delete values._invite;
 			if (invite) {
-				values.disabled = true;
-				values.password = array.map([0, 1, 2, 3], function() { return Math.random().toString(36).slice(-8); }).join(''),
+				var randomNumbers = new Uint8Array((new Date()).getMilliseconds() % 20 + 20);
+				if (window.crypto) {
+					crypto.getRandomValues(randomNumbers);
+				} else {
+					randomNumbers = randomNumbers.map(function() { return Math.random() * 256; });
+				}
+				var password = "";
+				randomNumbers.forEach(function(number) {
+					password = password + String.fromCharCode(number % 74 + 48);
+				});
+				values.password = password;
+				values.pwdChangeNextLogin = true;
 				values.overridePWLength = true;
 			}
 			var disabled = values.disabled;
