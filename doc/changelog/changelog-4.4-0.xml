@@ -639,6 +639,10 @@
 				<listitem><simpara>
 					Adjust password has synchronization to Samba 4.9 (<u:bug>48142</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The &ucsUCRV; <envar>connector/s4/mapping/dc/disable_delete_in_ucs</envar> has been added to configure whether the
+					connector should delete DC objects in samba (<u:bug>47941</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
