@@ -30,7 +30,7 @@ class IgnorePolicy(paramiko.MissingHostKeyPolicy):
 
 def run(_umc_instance):
 	# Now a workaround for paramico logging to connector-s4.log
-	# because one of the diagnostic plugins instanciates s4connector.s4.s4()
+	# because one of the diagnostic plugins instantiates s4connector.s4.s4()
 	# which initializes univention.debug2, which initializes logging.basicConfig
 	logger = paramiko.util.logging.getLogger()
 	logger.setLevel(logging.CRITICAL)
