@@ -1455,7 +1455,7 @@ class ucs:
 	def sync_to_ucs(self, property_type, object, pre_mapped_s4_dn, original_object):
 		# NOTE: pre_mapped_s4_dn means: original s4_dn (i.e. before _object_mapping)
 		_d = ud.function('ldap.sync_to_ucs')
-		# this function gets an object from the s4 class, which should be converted into a ucs modul
+		# this function gets an object from the s4 class, which should be converted into a ucs module
 
 		# if sync is write (sync to S4) or none, there is nothing to do
 		if self.property[property_type].sync_mode in ['write', 'none']:

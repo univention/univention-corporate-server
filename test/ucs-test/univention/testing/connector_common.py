@@ -188,7 +188,7 @@ def map_udm_user_to_con(user):
 	"""
 	Map a UDM user given as a dictionary of `property`:`values` mappings to a
 	dictionary of `attributes`:`values` mappings as required by the CON-LDAP.
-	Note: This expects the properties from the UDM users/user modul and not
+	Note: This expects the properties from the UDM users/user module and not
 	OpenLDAP-attributes!.
 	"""
 	mapping = {
@@ -213,7 +213,7 @@ def map_udm_group_to_con(group):
 	"""
 	Map a UDM group given as a dictionary of `property`:`values` mappings to a
 	dictionary of `attributes`:`values` mappings as required by the CON-LDAP.
-	Note: This expects the properties from the UDM groups/group modul and not
+	Note: This expects the properties from the UDM groups/group module and not
 	OpenLDAP-attributes!.
 	"""
 	mapping = {"name": "sAMAccountName", "description": "description"}

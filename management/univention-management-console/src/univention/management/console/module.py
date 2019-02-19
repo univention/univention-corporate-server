@@ -81,7 +81,7 @@ section :ref:`chapter-packaging`.
 
 This example defines a so called flavor. A flavor defines a new name,
 description and icon for the same UMC module. This can be used to show
-several"virtual" modules in the overview of the web frontend. Additionally the flavor is passed to the UMC server with each request i.e. the UMC modul has the possibility to act differently for a specific flavor.
+several"virtual" modules in the overview of the web frontend. Additionally the flavor is passed to the UMC server with each request i.e. the UMC module has the possibility to act differently for a specific flavor.
 
 As the next element *categories* is defined in the example. The child
 elements *category* set the categories wthin the overview where the
