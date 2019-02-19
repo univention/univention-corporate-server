@@ -322,7 +322,7 @@ univention-mail-postfix (10.0.0-12) unstable; urgency=low
 univention-mail-postfix (10.0.0-11) unstable; urgency=low
 
   * reorder checks to allow empty sender for all recipients except restricted
-    mailing lists and to prevent unneccessary LDAP queries (Bug #40353)
+    mailing lists and to prevent unnecessary LDAP queries (Bug #40353)
 
  -- Daniel Troeder <troeder@univention.de>  Wed, 06 Jan 2016 15:01:29 +0100
 

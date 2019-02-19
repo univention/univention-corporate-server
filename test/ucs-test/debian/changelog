@@ -18000,7 +18000,7 @@ ucs-test (1.1.2-22) unstable; urgency=low
 
 ucs-test (1.1.2-21) unstable; urgency=low
 
-  * removed unecessary code (Closes bug #11389)
+  * removed unnecessary code (Closes bug #11389)
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 23 Jun 2008 14:20:49 +0200
 
