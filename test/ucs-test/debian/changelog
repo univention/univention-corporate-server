@@ -13562,7 +13562,7 @@ ucs-test (1.3.235-2) unstable; urgency=low
   * 50_samba/10samba-share-options.sh: increase sleeptime otherwise the
     test will fail on a memberserver
   * 50_samba/15-nfs-share-options.sh: remove the share_name from the
-    options, otherwise we got the following mesages: "WARNING: No
+    options, otherwise we got the following messages: "WARNING: No
     attribute with name 'D3fxgQS5' in this module, value not set." and
     "nfs config file <-> udm settings mismatch udm option: D3fxgQS5 nfs
     options: D3fxgQS5 udm value: D3fxgQS5"
