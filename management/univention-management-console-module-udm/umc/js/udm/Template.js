@@ -279,7 +279,7 @@ define([
 					var match = this._regVar.exec(imatch);
 
 					// we have a value with variable reference...
-					// parse the variable reference and get the correct indeces
+					// parse the variable reference and get the correct indices
 					var refKey = match[1];
 					var modifier = match[3];
 					var startIdx = 0;

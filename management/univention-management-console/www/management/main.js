@@ -99,7 +99,7 @@ define([
 	var _favoritesDisabled = false;
 	var _initialHash = decodeURIComponent(hash());
 
-	// helper function for sorting, sort indeces with priority < 0 to be at the end
+	// helper function for sorting, sort indices with priority < 0 to be at the end
 	var _cmpPriority = function(x, y) {
 		if (y.priority === x.priority) {
 			return x._orgIndex - y._orgIndex;
