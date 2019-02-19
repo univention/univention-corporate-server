@@ -246,7 +246,7 @@ univention-mail-dovecot (0.0.0-55) unstable; urgency=low
 
 univention-mail-dovecot (0.0.0-54) unstable; urgency=low
 
-  * Bug #38457: disallow authentification with username, using the email
+  * Bug #38457: disallow authentication with username, using the email
   address to login is a requirement.
 
  -- Daniel Troeder <troeder@univention.de>  Wed, 08 Jul 2015 12:03:44 +0200
