@@ -36,7 +36,7 @@ def main():
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			return
 
-		utils.fail('UDM did not report an error while trying to create an object eventhough a required multivalue extended attribute was not given')
+		utils.fail('UDM did not report an error while trying to create an object even though a required multivalue extended attribute was not given')
 
 
 if __name__ == '__main__':
