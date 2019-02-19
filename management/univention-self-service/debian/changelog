@@ -931,7 +931,7 @@ univention-self-service (1.0.1-14) unstable; urgency=low
 
 univention-self-service (1.0.1-13) unstable; urgency=low
 
-  * Bug #39597: Finsihed setcontactinformation
+  * Bug #39597: Finished setcontactinformation
     * Adapted translation
     * Imrpoved css styling
     * Added regex to avoid redirect to absolute paths
