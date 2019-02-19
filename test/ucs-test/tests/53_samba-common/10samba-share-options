@@ -135,9 +135,9 @@ while read option_line; do
 	## save search string and the rest in $samba_search, we can not perform the search here, because
 	## udm needs some time to create the samba conf file
 	if [ -z "$samba_search" ]; then
-		samba_search="${udm_option}:DELIMETER:${search}:DELIMETER:${value}"
+		samba_search="${udm_option}:DELIMITER:${search}:DELIMITER:${value}"
 	else
-		samba_search="$samba_search ${udm_option}:DELIMETER:${search}:DELIMETER:${value}"
+		samba_search="$samba_search ${udm_option}:DELIMITER:${search}:DELIMITER:${value}"
 	fi
 
 	## clear this options, later we want to check wether we have all options tested or not
@@ -150,9 +150,9 @@ wait_for_replication_and_postrun
 echo "----check the samba configuration file"
 ## check the samba conf file
 while read search_line; do
-	udm="$(echo "$search_line" | awk -F :DELIMETER: {'print $1'})"
-	search="$(echo "$search_line" | awk -F :DELIMETER: {'print $2'})"
-	value="$(echo "$search_line" | awk -F :DELIMETER: {'print $3'})"
+	udm="$(echo "$search_line" | awk -F :DELIMITER: {'print $1'})"
+	search="$(echo "$search_line" | awk -F :DELIMITER: {'print $2'})"
+	value="$(echo "$search_line" | awk -F :DELIMITER: {'print $3'})"
 
 	cat "$samba_etc/$sharename" | grep -q -E --regex "$search"
 	if [ "$?" != 0 ]; then

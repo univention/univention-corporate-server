@@ -86,10 +86,10 @@ while read option_line; do
 	# save search string and the rest in $nfs_search, we can not perform the search here, because
 	# udm needs some time to create the nfs conf file
 	if [ -z "$search" ]; then
-		search="${udm_option}:DELIMETER:${nfs_value}:DELIMETER:${udm_value}"
+		search="${udm_option}:DELIMITER:${nfs_value}:DELIMITER:${udm_value}"
 	else
 		search="$search 
-${udm_option}:DELIMETER:${nfs_value}:DELIMETER:${udm_value}"
+${udm_option}:DELIMITER:${nfs_value}:DELIMITER:${udm_value}"
 	fi
 
 	# clear this options, later we want to check wether we have all options tested or not
@@ -103,9 +103,9 @@ wait_for_replication_and_postrun
 echo "----test the nfs configuration file"
 conf_line="$(cat "$etc")"
 while read search_line; do
-	udm="$(echo "$search_line" | awk -F :DELIMETER: {'print $1'})"
-	nfs="$(echo "$search_line" | awk -F :DELIMETER: {'print $2'})"
-	value="$(echo "$search_line" | awk -F :DELIMETER: {'print $3'})"
+	udm="$(echo "$search_line" | awk -F :DELIMITER: {'print $1'})"
+	nfs="$(echo "$search_line" | awk -F :DELIMITER: {'print $2'})"
+	value="$(echo "$search_line" | awk -F :DELIMITER: {'print $3'})"
 
 	echo "$conf_line" | grep --regex '^"/opt/'"$sharename" | grep -q --regex '[ (,"-]/*'"$nfs"'[ ),"]'
 	if [ $? != 0 ]; then
