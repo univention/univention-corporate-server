@@ -505,7 +505,7 @@ univention-mail-postfix (9.0.0-25) unstable; urgency=low
 
 univention-mail-postfix (9.0.0-24) unstable; urgency=low
 
-  * Bug #38044: add <..> arround hyperlinks in UCR variable description
+  * Bug #38044: add <..> around hyperlinks in UCR variable description
 
  -- Daniel Troeder <troeder@univention.de>  Thu, 07 May 2015 11:26:29 +0200
 
