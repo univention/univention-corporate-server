@@ -27,7 +27,7 @@
 # .Include</etc/dansguardian/testphrase>
 #
 #
-# All phrases need to be within < and > to work, othewise they will be
+# All phrases need to be within < and > to work, otherwise they will be
 # ignored.
 
 # MORE EXAMPLE LISTS CAN BE DOWNLOADED FROM DANSGUARDIAN.ORG
