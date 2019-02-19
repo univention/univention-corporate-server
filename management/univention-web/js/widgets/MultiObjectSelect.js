@@ -126,7 +126,7 @@ define([
 						// hide the dialog
 						this.hide();
 
-						// unselect all elements
+						// deselect all elements
 						this._multiSelect.selection.clear();
 
 					})
@@ -144,7 +144,7 @@ define([
 						// hide the dialog
 						this.hide();
 
-						// unselect all elements
+						// deselect all elements
 						this._multiSelect.selection.clear();
 					})
 				}));
