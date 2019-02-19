@@ -17363,7 +17363,7 @@ ucs-test (1.1.2-120) unstable; urgency=low
 
 ucs-test (1.1.2-119) unstable; urgency=low
 
-  * Bug: #13107 checks wheter telnet is off or on
+  * Bug: #13107 checks whether telnet is off or on
 
  -- Jasper Schulz <schulz@univention.de>  Fri, 13 Feb 2009 13:36:14 +0100
 
@@ -17564,7 +17564,7 @@ ucs-test (1.1.2-89) unstable; urgency=low
 
 ucs-test (1.1.2-88) unstable; urgency=low
 
-  * new script for the check, wether machine.secret is edited, if failed.ldif exists
+  * new script for the check, whether machine.secret is edited, if failed.ldif exists
 
  -- Christoph Niemann <niemann@univention.de>  Tue, 23 Sep 2008 16:42:33 +0200
 
