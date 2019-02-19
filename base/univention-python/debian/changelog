@@ -236,7 +236,7 @@ univention-python (8.0.0-3) unstable; urgency=low
 
 univention-python (8.0.0-2) unstable; urgency=low
 
-  * Swtich to debian compat level 9 (Bug #35138)
+  * Switch to debian compat level 9 (Bug #35138)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 18 Jun 2014 11:51:39 +0200
 
