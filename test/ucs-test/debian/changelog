@@ -11504,7 +11504,7 @@ ucs-test (4.0.39-1) unstable; urgency=low
   * added function "random_int()" to strings.py. Despite it's name, it will
     return a numeric string (by default containing a value between 0 and 9)
   * also remove referring objects in UCSTestUDM.cleanup()
-  * log erros occuring during UCSTestUDM.cleanup()
+  * log erros occurring during UCSTestUDM.cleanup()
   * per default, also remove referring objects when removing objects with
     UCSTestUDM().remove() (pass "remove_referring=False" to change this
     behavior) (Bug #30560)
