@@ -1655,7 +1655,7 @@ univention-ad-connector (8.0.1-1) unstable; urgency=low
 univention-ad-connector (8.0.0-3) unstable; urgency=low
 
   * Added additional hints in the ad-connector setup wizard (Bug #24903) 
-  * Corrected generation of error messsage to avoid a traceback (a wrong
+  * Corrected generation of error message to avoid a traceback (a wrong
     variable name was used) 
 
  -- Erik Damrose <damrose@univention.de>  Tue, 27 Aug 2013 16:13:34 +0200
