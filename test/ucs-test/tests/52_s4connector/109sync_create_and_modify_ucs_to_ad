@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner bash 
-## desc: "Simulate an UCS import including pasword change from UCS to AD in sync-mode"
+## desc: "Simulate an UCS import including password change from UCS to AD in sync-mode"
 ## exposure: dangerous
 ## tags:
 ##  - basic
