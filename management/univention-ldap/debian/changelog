@@ -2839,7 +2839,7 @@ univention-ldap (8.0.7-2) unstable; urgency=low
 
 univention-ldap (8.0.7-1) unstable; urgency=low
 
-  * add eth0/address to list of default peernames alowed to do
+  * add eth0/address to list of default peernames allowed to do
     anonymous read (Bug #17519)
   * fix peername.ip syntax. The other option would be to use
     peername.regex="IP=127.0.0.1:*", because the exact port is unknown
