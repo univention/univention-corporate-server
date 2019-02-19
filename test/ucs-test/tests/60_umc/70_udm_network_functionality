@@ -329,7 +329,7 @@ class TestUMCNetworkFunctionality(UDMModule):
         """
         Checks the network query structure and that syntax validation works
         """
-        print "Quering the networks and checking the response structure"
+        print "Querying the networks and checking the response structure"
         self.check_networks_query_structure()
 
         print "\nChecking the syntax validation of network parameters"
