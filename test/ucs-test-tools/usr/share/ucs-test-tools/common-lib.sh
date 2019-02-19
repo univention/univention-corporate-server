@@ -52,7 +52,7 @@ sync_groupmemberships ()
 
 change_performance_settings ()
 {
-	echo "Disbale autosearch, to reset use: ucr set directory/manager/web/modules/autosearch=1"
+	echo "Disable autosearch, to reset use: ucr set directory/manager/web/modules/autosearch=1"
 	ucr set directory/manager/web/modules/autosearch=0
 
 	echo "Change group_to_file settings, to reset use: ucr set nss/group/cachefile/check_member=yes nss/group/cachefile/invalidate_interval='*/15 * * * *'"
