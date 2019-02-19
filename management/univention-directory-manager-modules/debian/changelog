@@ -10742,7 +10742,7 @@ univention-admin-modules (0.46-31) unstable; urgency=low
 
 univention-admin-modules (0.46-27) unstable; urgency=low
 
-  * license-check bugfix on comparsions with unlimited licenses
+  * license-check bugfix on comparisons with unlimited licenses
   * redefine some translations
 
  -- Ingo Steuwer <steuwer@univention.de>  Tue, 25 Apr 2006 09:25:07 +0200
