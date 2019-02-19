@@ -72,7 +72,7 @@ udm "computers/$server_role" remove \
 
 wait_for_replication
 
-# check, wether Bug #8620 is still there
+# check, whether Bug #8620 is still there
 if [ -f /etc/nagios/conf.univention.d/services/$NAGIOSSERVICE,$HOSTNAME.$domainname.cfg ]
 then
 	RETVAL=111

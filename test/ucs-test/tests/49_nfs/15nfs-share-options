@@ -92,7 +92,7 @@ while read option_line; do
 ${udm_option}:DELIMITER:${nfs_value}:DELIMITER:${udm_value}"
 	fi
 
-	# clear this options, later we want to check wether we have all options tested or not
+	# clear this options, later we want to check whether we have all options tested or not
 	available_options="$(echo "$available_options" | sed "s/$udm_option//")"
 
 done <<<"$options"
