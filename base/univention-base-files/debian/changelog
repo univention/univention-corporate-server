@@ -383,7 +383,7 @@ univention-base-files (4.0.4-2) unstable; urgency=low
 
 univention-base-files (4.0.4-1) unstable; urgency=low
 
-  * removed scalix path from defaut profile (Bug #32628)
+  * removed scalix path from default profile (Bug #32628)
 
  -- Felix Botner <botner@univention.de>  Mon, 29 Sep 2014 10:04:23 +0200
 
