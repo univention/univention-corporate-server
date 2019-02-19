@@ -121,7 +121,7 @@
 	<item type="rect" id="caps-lock-warning">
 		<pos anchor="c" x="50%" y="50%" width="400" height="400"/>
 		<fixed>
-			<item type="label" id="mesage">
+			<item type="label" id="message">
 				<normal font="Sans Bold 10"/>
 				<pos anchor="c" x="50%" y="-5%"/>
 				<stock type="caps-lock-warning"/>
