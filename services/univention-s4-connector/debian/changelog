@@ -3129,7 +3129,7 @@ univention-s4-connector (6.0.129-1) unstable; urgency=low
 
 univention-s4-connector (6.0.128-1) unstable; urgency=low
 
-  * Synchonize MS GPO links and objects (Bug #26926)
+  * Synchronize MS GPO links and objects (Bug #26926)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Apr 2012 12:00:32 +0200
 
@@ -3444,7 +3444,7 @@ univention-s4-connector (6.0.88-1) unstable; urgency=low
 
 univention-s4-connector (6.0.87-1) unstable; urgency=low
 
-  * Synchonize homeDrive and homeDirectory (Bug #25211)
+  * Synchronize homeDrive and homeDirectory (Bug #25211)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 Dec 2011 08:38:21 +0100
 
@@ -3539,7 +3539,7 @@ univention-s4-connector (6.0.74-1) unstable; urgency=low
 
 univention-s4-connector (6.0.73-1) unstable; urgency=low
 
-  * Synchonize the DC and Client password between OpenLDAP and Samba 4
+  * Synchronize the DC and Client password between OpenLDAP and Samba 4
     (Bug #21213)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 15 Nov 2011 21:25:06 +0100
@@ -3714,7 +3714,7 @@ univention-s4-connector (6.0.52-1) unstable; urgency=low
   * Synchronize sambaWorkstations (Bug #24119)
   * Added telephoneNumber synchronization
   * Added phone numbers to mapping
-  * Synchonize displayName (Bug #20601)
+  * Synchronize displayName (Bug #20601)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 08:35:51 +0200
 
@@ -3790,7 +3790,7 @@ univention-s4-connector (6.0.42-1) unstable; urgency=low
       uSNCreated objects and not for uSNCreated and uSNChanged objects                                                                                                                              
       (Bug #23734)                                                                                                                                                                                  
     * Don't try to decode the userCertificate value (Bug #23612)                                                                                                                                    
-    * Build an internal membership cache while synchonize the members from                                                                                                                          
+    * Build an internal membership cache while synchronize the members from                                                                                                                          
       S4 to UCS. So every S4 member will get once instead of twice. Also                                                                                                                            
       don't open the UDM group module twice (Bug #21010)                                                                                                                                            
     * Make the ldap sever configurable (Bug #18136)                                                                                                                                                 
@@ -3865,7 +3865,7 @@ univention-s4-connector (6.0.32-1) unstable; urgency=low
 
 univention-s4-connector (6.0.31-1) unstable; urgency=low
 
-  * Synchonize sAMAccountName for computer accounts (Bug #23162)
+  * Synchronize sAMAccountName for computer accounts (Bug #23162)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 Sep 2011 11:53:48 +0200
 
