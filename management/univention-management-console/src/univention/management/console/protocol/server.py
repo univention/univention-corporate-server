@@ -319,7 +319,7 @@ class Server(signals.Provider):
 			self.crypto_context = None
 			if self.__unix:
 				try:
-					# ensure that the UNIX socket is only accessable by root
+					# ensure that the UNIX socket is only accessible by root
 					old_umask = os.umask(0o077)
 					self.__realsocket.bind(self.__unix)
 					# restore old umask

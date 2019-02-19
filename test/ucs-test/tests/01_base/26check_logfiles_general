@@ -108,9 +108,9 @@ exit $RETVAL
 # "/var/log/faillog"             : Records only the number of failed authentication attempts of each user, no further sensitive information
 # "/var/log/hylafax"             : Only the directory itself is world-readable, the files within have stricter permissions
 # "/var/log/apache2"             : Only the directory itself is world-readable, the files within have stricter permissions
-# "/var/log/wtmp"                : Records logins, the information is accesible through the last command anyway
-# "/var/log/lastlog"             : Records logins, the information is accesible through the lastlog command anyway
-# "/var/log/btmp"                : Records logins, the information is accesible through the lastb command anyway
+# "/var/log/wtmp"                : Records logins, the information is accessible through the last command anyway
+# "/var/log/lastlog"             : Records logins, the information is accessible through the lastlog command anyway
+# "/var/log/btmp"                : Records logins, the information is accessible through the lastb command anyway
 # "/var/log/news/*"              : Logfiles for Usenet news servers, doesn't contain sensitive information, not present in UCS anyway
 # "/var/log/clamav"              : Only the directory itself is world-readable, the files within have stricter permissions
 # "/var/log/uucp.log"            : UUCP transfer logging, not present in UCS
