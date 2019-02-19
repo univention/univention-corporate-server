@@ -1215,7 +1215,7 @@ class Application(object):
 		if function == 'update':
 			# is already installed, just a minor version update
 			#   RAM "used" by this installed app should count
-			#   as free. best approach: substract it
+			#   as free. best approach: subtract it
 			installed_app = self.find(self.id)
 			old_required_ram = installed_app.get('minphysicalram')
 			required_ram = required_ram - old_required_ram
