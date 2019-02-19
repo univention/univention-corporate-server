@@ -2454,7 +2454,7 @@ univention-s4-connector (7.0.17-39) unstable; urgency=low
 
   * univention-ad-takeover (Bug #28390):
     - remove krb5Keytab attribute from dns-SPN account secrets.ldb record,
-      krb5Keytab takes precendence over privateKeytab
+      krb5Keytab takes precedence over privateKeytab
 
  -- Arvid Requate <requate@univention.de>  Wed, 07 Nov 2012 10:15:02 +0100
 
