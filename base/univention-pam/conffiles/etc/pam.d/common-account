@@ -5,11 +5,11 @@ if configRegistry.is_true('auth/faillog', False):
 	print 'account	required	pam_tally.so'
 @!@
 
-# local unix authentification; don't cache passwords, deny access if account is expired
+# local unix authentication; don't cache passwords, deny access if account is expired
 account [success=done new_authtok_reqd=done acct_expired=bad default=ignore]    pam_unix.so
 
-# remote authentification; if a service
-# - fails, we'll fall back to cache authentification
+# remote authentication; if a service
+# - fails, we'll fall back to cache authentication
 # - is successful, cache the password
 # - isn't aware of the user, proceed with the next service
 @!@
