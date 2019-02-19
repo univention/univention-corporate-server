@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# get all labels for (not adavanced) tabs
+# get all labels for (not advanced) tabs
 labels=$(
 sed -n '/^\s*Tab.*/p' ../univention-directory-manager-modules/modules/univention/admin/handlers/*/*.py | \
 	grep -v 'advanced\s*=\s*True' | \
