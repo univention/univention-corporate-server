@@ -131,7 +131,7 @@
 
 	<!-- pam message -->
 	<item type="rect" id="pam-error-paceholder">
-		<pos anchor="c" x="50%" y="50%" widht="400" height="400"/>
+		<pos anchor="c" x="50%" y="50%" width="400" height="400"/>
 		<fixed>
 			<item type="label" id="pam-error">
 				<pos x="50%" y="105%" anchor="c"/>
@@ -142,7 +142,7 @@
 	</item>
 
 	<item type="rect" id="username-hint-placeholder">
-		<pos anchor="c" x="50%" y="50%" widht="400" height="400"/>
+		<pos anchor="c" x="50%" y="50%" width="400" height="400"/>
 		<fixed>
 			<item type="label" id="username-hint">
 				<pos anchor="c" x="50%" y="117%"/>
