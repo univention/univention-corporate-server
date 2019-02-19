@@ -57,7 +57,7 @@ def _start_delyed(delay):
 
 
 def _wait_for_slapd_to_be_started():
-	# This could be done a litte bit better
+	# This could be done a little bit better
 	sleep(5)
 
 
