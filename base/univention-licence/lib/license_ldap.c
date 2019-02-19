@@ -329,7 +329,7 @@ lObj* univention_license_ldap_get(const char* search_base, int scope, const char
 					}
 					else
 					{
-						element = NULL; //someone has skiped all elements
+						element = NULL; //someone has skipped all elements
 					}
 				}
 				
