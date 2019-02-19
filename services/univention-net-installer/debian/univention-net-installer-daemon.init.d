@@ -55,7 +55,7 @@ test -x "$DAEMON" || exit 0
 
 . /lib/lsb/init-functions
 
-# Default options, these can be overriden by the information
+# Default options, these can be overridden by the information
 # at /etc/default/$NAME
 DAEMON_OPTS="-p 49173 -D -d 1"        # Additional options given to the server
 
