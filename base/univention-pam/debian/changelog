@@ -954,7 +954,7 @@ univention-pam (3.0.3-3) unstable; urgency=low
 
   * in preinst after diverting pam stack file due to UCR debhelper:
     copy back original files so a valid pam stack is present until
-    UCR templates get comitted (Bug: #15971)
+    UCR templates get committed (Bug: #15971)
 
  -- Sönke Schwardt <schwardt@univention.de>  Mon, 19 Oct 2009 09:10:08 +0200
 

@@ -603,7 +603,7 @@ univention-s4-connector (11.0.6-9) unstable; urgency=medium
 univention-s4-connector (11.0.6-8) unstable; urgency=medium
 
   * Bug #41764: s4connector: port range retrieval patches.
-    This commit ports the AD-connector range retrieval patches, commited by Arvid
+    This commit ports the AD-connector range retrieval patches, committed by Arvid
     in r71661, r71662 and r71677, to the s4-connector.
   * Bug #41764: s4connector: slight cleanup in range retrieval
 

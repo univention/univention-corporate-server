@@ -10481,7 +10481,7 @@ univention-admin-modules (0.46-80) unstable; urgency=low
 
   * Fix two logic bugs that only triggered the internal hasChanged() information
     to be true if all three kinds of accounts were present. This led to the problem
-    that changes commited against users with less accounts were not modified.
+    that changes committed against users with less accounts were not modified.
   * Fix a typo that prevented deactivation of Kerberos accounts.
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 28 Jul 2006 13:26:00 +0200
