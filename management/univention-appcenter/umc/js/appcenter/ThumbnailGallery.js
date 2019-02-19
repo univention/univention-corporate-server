@@ -83,7 +83,7 @@ define([
 		defaultThumbHeight: null,
 
 		//heighestImg: {w: number, h: number}
-		//     the natural width and height of the heighest img in the contentSlider
+		//     the natural width and height of the highest img in the contentSlider
 		heighestImg: null,
 
 		//heighestImgRatio = heighestImg.w / heighestImg.h
