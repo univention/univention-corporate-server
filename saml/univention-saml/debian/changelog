@@ -1012,7 +1012,7 @@ univention-saml (2.0.3-1) unstable; urgency=low
   Bug #35890:
   * removed duplicate title from logout.php
   * added "warning" class to authorize_403.php
-    to adjust stlye
+    to adjust style
   * adjusted sytling of loginerror to match
     umcloginerror 
 
