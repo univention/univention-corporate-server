@@ -190,7 +190,7 @@ class Message(object):
 	http_method = property(lambda self: self._get_key('method'), lambda self, value: self._set_key('method', value))
 
 	def parse(self, msg):
-		"""Parses data and creates in case of a vaild UMCP message the
+		"""Parses data and creates in case of a valid UMCP message the
 		corresponding object. If the data contains more than the message
 		the rest of the data is returned.
 
