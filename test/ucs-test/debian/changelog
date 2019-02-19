@@ -15099,7 +15099,7 @@ ucs-test (1.3.17-1) unstable; urgency=low
 ucs-test (1.3.16-1) unstable; urgency=low
 
   * kolab tests for 2.3 Bug #16092:
-    + added the samba 3.5 relase announce as normal mailtext to prevent
+    + added the samba 3.5 release announce as normal mailtext to prevent
       wrong spam detection. Bug #16092
     + source base.lib in all kolab scripts. In base.lib is an udm function
       which calls udm with the correct binddn parameters on a DC Slave

@@ -136,7 +136,7 @@ univention-updater (13.0.1-57) unstable; urgency=medium
 univention-updater (13.0.1-56) unstable; urgency=medium
 
   * Bug #47592: Show a warning and allow examiniation of the updater.log file
-    in UMC if the last relase update failed.
+    in UMC if the last release update failed.
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 15 Aug 2018 13:48:03 +0200
 
