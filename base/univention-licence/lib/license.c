@@ -9,7 +9,7 @@ static int is_init = 0;/*!< the init-state of the lib*/
 /*****************************************************************************/
 /*!
 	@brief	init the licenselib, is called automatic.
-	@retval 1 if all parts are initiated successfull
+	@retval 1 if all parts are initiated successful
 	@retval 0 if an error has occurred
 */
 int univention_license_init(void)

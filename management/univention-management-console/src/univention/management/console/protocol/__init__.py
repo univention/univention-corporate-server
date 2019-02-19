@@ -140,7 +140,7 @@ options
 
 status
 	defines the status code in response messages. The codes are
-	similar to the HTTP status codes , e.g. 200 defines a successfull
+	similar to the HTTP status codes , e.g. 200 defines a successful
 	execution of the command. The appendix contains a detailed list
 	[[#Status-Codes]].
 

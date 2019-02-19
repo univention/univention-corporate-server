@@ -720,7 +720,7 @@ def detect_interfaces():
 
 def dhclient(interface, timeout=None):
 	"""
-	perform DHCP request for specified interface. If succesful, returns a dict
+	perform DHCP request for specified interface. If successful, returns a dict
 	similar to the following:
 	{
 		'address': '10.200.26.51',
