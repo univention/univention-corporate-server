@@ -1711,7 +1711,7 @@ univention-samba (4.0.11-1) unstable; urgency=low
 
   * ignore share "homes" while setting "invalid users" for all other
     shares (Bug #17114)
-  * fixed wrong indention
+  * fixed wrong indentation
 
  -- Sönke Schwardt <schwardt@univention.de>  Wed, 06 Jan 2010 16:00:28 +0100
 

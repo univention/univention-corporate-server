@@ -3895,7 +3895,7 @@ univention-directory-manager-modules (9.0.43-1) unstable; urgency=low
 
 univention-directory-manager-modules (9.0.42-1) unstable; urgency=low
 
-  * fixed identation in user.py (Bug #30981)
+  * fixed indentation in user.py (Bug #30981)
 
  -- Lukas Walter <walter@univention.de>  Tue, 01 Oct 2013 13:39:41 +0200
 

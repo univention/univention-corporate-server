@@ -11356,7 +11356,7 @@ ucs-test (4.0.53-1) unstable; urgency=low
 
   * added more udm-computers test cases and slightly renamed some others
     (Bug #31659)
-  * fixed changelog identation
+  * fixed changelog indentation
 
  -- Lukas Walter <walter@univention.de>  Thu, 04 Jul 2013 13:34:17 +0200
 
@@ -11599,7 +11599,7 @@ ucs-test (4.0.30-1) unstable; urgency=low
 
 ucs-test (4.0.29-2) unstable; urgency=low
 
-  * fixed identation in
+  * fixed indentation in
     68_udm-extendedattribute/62_check_multivalue_extended_attribute_required
     (Bug #31302)
   * renamed "wait_for_ldap_replication()" and
@@ -12101,7 +12101,7 @@ ucs-test (3.0.53-1) unstable; urgency=low
     (Bug #24351) (Bug #30932)
   * added dependencies on ucs-test-udm-dhcp, ucs-test-udm-containers,
     and ucs-test-udm-extendedattribute to ucs-test-modules-all (Bug #27664)
-  * fixed identation in 65_udm-dhcp/10_create_check_and_remove_subnet (Bug
+  * fixed indentation in 65_udm-dhcp/10_create_check_and_remove_subnet (Bug
     #27664)
   * ported more DHCP tests from ucs-3.0 branch (Bug #27664)
 

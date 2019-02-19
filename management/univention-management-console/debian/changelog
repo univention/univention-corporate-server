@@ -3478,7 +3478,7 @@ univention-management-console (4.0.209-1) unstable; urgency=low
 
 univention-management-console (4.0.208-1) unstable; urgency=low
 
-  * fixed code indention in umc-create-module templates (Bug #26406)
+  * fixed code indentation in umc-create-module templates (Bug #26406)
 
  -- Florian Best <best@univention.de>  Mon, 02 Apr 2012 12:47:58 +0200
 
