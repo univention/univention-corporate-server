@@ -42,7 +42,7 @@ if [ -f /etc/default/nagios-nrpe ]; then
 fi
 if [ "$NICENESS" ]; then NICENESS="-n $NICENESS"; fi
 
-#since /var/run can be wiped completly we create our run directory here
+#since /var/run can be wiped completely we create our run directory here
 if [ ! -d "$PIDDIR" ]; then
 	mkdir "$PIDDIR"
 	chown nagios "$PIDDIR"
