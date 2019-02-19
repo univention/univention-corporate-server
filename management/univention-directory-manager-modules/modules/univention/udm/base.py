@@ -89,7 +89,7 @@ class BaseObject(object):
 	      obj.delete()
 
 	After saving a :py:class:`BaseObject`, it is :py:meth:`.reload`\ ed
-	automtically because UDM hooks and listener modules often add, modify or
+	automatically because UDM hooks and listener modules often add, modify or
 	remove properties when saving to LDAP. As this involves LDAP, it can be
 	disabled if the object is not used afterwards and performance is an issue::
 
