@@ -18,7 +18,7 @@
 		<!-- equally used to add or to edit an entry -->
 		<command name="printers/quota/set" function="set_quota" />
 		<!-- how about deleting an entry? -->
-		<!-- seperate call: reset 'used' counter -->
+		<!-- separate call: reset 'used' counter -->
 		<command name="printers/quota/reset" function="reset_quota" />
 	</module>
 </umc>

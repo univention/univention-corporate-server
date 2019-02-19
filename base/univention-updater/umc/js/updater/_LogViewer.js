@@ -229,7 +229,7 @@ define([
 									// as _check_interval is not zero
 		},
 
-		// A seperate function that is called by the 'ProgressPage' when the key of the
+		// A separate function that is called by the 'ProgressPage' when the key of the
 		// current job has become known.
 		setJobKey: function(job) {
 			this._current_job = job;
