@@ -145,7 +145,7 @@ get_remote_lock() {
 
 	read REPLY < "$pipe_dir/pipe1"
 	if [ "$REPLY" != "LOCKED" ]; then
-		stderr_log_error "[$log_prefix] Could not aquire remote read lock after $timeout seconds."
+		stderr_log_error "[$log_prefix] Could not acquire remote read lock after $timeout seconds."
 		close_remote_locking_pipe "$pipe_dir"
 		trap - EXIT
 		return 1
