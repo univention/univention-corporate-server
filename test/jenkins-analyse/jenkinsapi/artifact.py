@@ -33,7 +33,7 @@ class Artifact(object):
     def save(self, fspath, strict_validation=False):
         """
         Save the artifact to an explicit path. The containing directory must
-        exist. Returns a reference to the file which has just been writen to.
+        exist. Returns a reference to the file which has just been written to.
 
         :param fspath: full pathname including the filename, str
         :return: filepath
