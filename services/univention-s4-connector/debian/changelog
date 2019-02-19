@@ -4071,7 +4071,7 @@ univention-s4-connector (6.0.12-1) unstable; urgency=low
     is kept as default in krb5.conf.
     Currently this triggers another strange error message from samba4:
     "Constraint violation - KerberosNewerKeys num_keys != 2"
-    but thats more useful than "Subcontext Error".
+    but that's more useful than "Subcontext Error".
 
  -- Arvid Requate <requate@univention.de>  Wed, 03 Aug 2011 14:40:38 +0200
 
