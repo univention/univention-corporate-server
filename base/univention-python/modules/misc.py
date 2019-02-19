@@ -101,7 +101,7 @@ def close_fd_spawn(file, args):
 		else:
 			raise OSError('Child %d terminated by unknown cause: %04x' % (pid, status))
 	else:
-		raise OSError('Faild to fork child process.')
+		raise OSError('Failed to fork child process.')
 
 
 if __name__ == '__main__':

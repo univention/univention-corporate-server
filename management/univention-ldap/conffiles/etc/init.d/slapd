@@ -79,7 +79,7 @@ bdbrecover ()
 				log_action_msg "Skipping ${DBRECOVER} to avoid damage"
 
 				logger_tag="slapd db${back_bdb_version}_stat"
-				logger -t "$logger_tag" "BDB file version detection faild:"
+				logger -t "$logger_tag" "BDB file version detection failed:"
 				echo "$dbstat_output" | while read line; do logger -t "$logger_tag" "$line"; done
 			fi
 		else
