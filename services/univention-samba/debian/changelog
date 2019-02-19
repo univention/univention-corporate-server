@@ -1316,7 +1316,7 @@ univention-samba (6.0.6-1) unstable; urgency=low
     * added samba-privileges.py listener plugin Bug #2619
    [ Arvid Requate ]
     * increment join script version (Bug #22246)
-    * revert colateral damage of 5.0.15-1 (Bug #22246)
+    * revert collateral damage of 5.0.15-1 (Bug #22246)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 14:52:18 +0200
 
