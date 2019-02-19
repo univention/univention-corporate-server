@@ -18,7 +18,7 @@ char* univention_license_build_data(lObj* license)
 	int i;
 	char* data = NULL;
 	
-	//sort entrys
+	//sort entries
 	license = univention_license_sort(license);
 	
 	for (i=0; i < license->size; i++)

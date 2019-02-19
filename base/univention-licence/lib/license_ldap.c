@@ -222,7 +222,7 @@ lStrings* univention_license_ldap_get_strings(const char* objectDN, const char* 
 			int count = 0;
 			for (i=0; i < license->size; i++)
 			{
-				//count entrys
+				//count entries
 				if (strcmp(license->key[i],attribute) == 0)
 					count++;
 			}
@@ -312,7 +312,7 @@ lObj* univention_license_ldap_get(const char* search_base, int scope, const char
 				
 				if (count > 1)
 				{
-					univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Found %d entrys expected only 1 use the 1st.",count);
+					univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Found %d entries expected only 1 use the 1st.",count);
 				}
 				element = ldap_first_entry(lp->ld, result);
 				

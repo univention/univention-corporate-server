@@ -3221,7 +3221,7 @@ class simpleComputer(simpleLdap):
 		ud.debug(ud.ADMIN, ud.INFO, '_ldap_post_remove: clean up service records, host records, and IP address saved at the forward zone')
 		ips = set(self['ip'] or [])
 		fqdn = self['fqdn']
-		fqdnDot = '%s.' % fqdn  # we might have entires w/ or w/out trailing '.'
+		fqdnDot = '%s.' % fqdn  # we might have entries w/ or w/out trailing '.'
 
 		# iterate over all reverse zones
 		for zone in self['dnsEntryZoneReverse'] or []:
