@@ -3526,7 +3526,7 @@ univention-baseconfig (1.1) unstable; urgency=low
 
 univention-baseconfig (1.0) unstable; urgency=low
 
-  * Splitted tool and configuration data. The tool is now included in
+  * Split tool and configuration data. The tool is now included in
     the univention-config package.
 
  -- Roland Bauerschmidt <bauerschmidt@univention.de>  Mon, 19 May 2003 17:38:55 +0200
