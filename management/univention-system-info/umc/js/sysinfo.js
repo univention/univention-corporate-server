@@ -112,7 +112,7 @@ define([
 				widgets: [{
 					type: Text,
 					name: 'firstText',
-					content: _('<p>The following information has been collected and will be transfered to Univention with your acceptance.</p>')
+					content: _('<p>The following information has been collected and will be transferred to Univention with your acceptance.</p>')
 				}, {
 					type: TextBox,
 					name: 'cpu',
@@ -166,7 +166,7 @@ define([
 				widgets: [{
 					type: Text,
 					name: 'firstText',
-					content: _('<p>The collected information can be transfered to Univention by uploading the data or by sending it via mail. Please select the corresponding option.</p>')
+					content: _('<p>The collected information can be transferred to Univention by uploading the data or by sending it via mail. Please select the corresponding option.</p>')
 				}, {
 					type: ComboBox,
 					name: 'method',
@@ -181,12 +181,12 @@ define([
 					 	 ['method']]
 			}, {
 				name: 'uploaded',
-				headerText: _('Transfered successfully'),
+				headerText: _('Transferred successfully'),
 				helpText: '',
 				widgets: [{
 					type: Text,
 					name: 'firstText',
-					content: _('<p>The information were transfered to Univention successfully.</p><p>Thank you very much for your support!</p>')
+					content: _('<p>The information were transferred to Univention successfully.</p><p>Thank you very much for your support!</p>')
 				}],
 				layout: [['firstText']]
 			}, {
@@ -261,7 +261,7 @@ define([
 						return nextPage;
 					}, lang.hitch(this, function() {
 						this.getPage('uploaded').set('headerText', _('Uploading failed'));
-						this.getWidget('uploaded', 'firstText').set('content', _('<p>The information could not be transfered to Univention.</p><p>You can send them as email!</p>'));
+						this.getWidget('uploaded', 'firstText').set('content', _('<p>The information could not be transferred to Univention.</p><p>You can send them as email!</p>'));
 						return nextPage;
 					}));
 				}
