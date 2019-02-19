@@ -742,7 +742,7 @@ univention-ldap (12.1.6-11) unstable; urgency=low
 
 univention-ldap (12.1.6-10) unstable; urgency=low
 
-  * Version bumb to rebuild code of 12.1.6-9 (Bug #39866)
+  * Version bump to rebuild code of 12.1.6-9 (Bug #39866)
 
  -- Daniel Troeder <troeder@univention.de>  Mon, 11 Jan 2016 15:11:40 +0100
 
