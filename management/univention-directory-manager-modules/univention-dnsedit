@@ -252,7 +252,7 @@ def add_txt_record(name, text):
 		record.create()
 
 
-def add_a_record(name, *adresses):
+def add_a_record(name, *addresses):
 	"""Add DNS IPv4 address records."""
 	filt = univention.admin.filter.expression('name', name)
 	records = host_record.lookup(co, lo, filt, scope='domain',
@@ -265,7 +265,7 @@ def add_a_record(name, *adresses):
 		record['zonettl'] = ['80600']
 
 	tmp = record['a']
-	for addr in adresses:
+	for addr in addresses:
 		if addr not in tmp:
 			tmp.append(addr)
 	record['a'] = tmp
