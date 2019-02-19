@@ -52,7 +52,7 @@ define([
 			this.inherited(arguments);
 
 			this._yearInput = new NumberSpinner({
-				// overwrite formatter; we do not want thousands seperator (2000 instead of 2.000)
+				// overwrite formatter; we do not want thousands separator (2000 instead of 2.000)
 				_formatter: function(value) {
 					return value;
 				},

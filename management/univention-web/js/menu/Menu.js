@@ -334,7 +334,7 @@ define([
 			var parentMenuItem = this._menuMap[parentMenuId];
 			var menuEntry = _createMenuEntry();
 
-			// add listeners if entry is not a seperator
+			// add listeners if entry is not a separator
 			if (typeof menuEntry.onClick === 'function') {
 				menuEntry.on(tap, function() {
 					menuEntry.onClick();
