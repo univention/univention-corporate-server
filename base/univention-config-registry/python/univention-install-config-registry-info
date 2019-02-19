@@ -95,7 +95,7 @@ def main():
 	usage = "%prog"
 	epilog = '''univention-install-config-registry-info is a debhelper like
 program to install Univention Config Registry (UCR) related description files
-into the package build direcories.
+into the package build directories.
 
 The variable descriptions debian/*.univention-config-registry-info go to
 /etc/univention/registry.info/variables/*.cfg.
