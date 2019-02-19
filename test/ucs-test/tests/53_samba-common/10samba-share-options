@@ -140,7 +140,7 @@ while read option_line; do
 		samba_search="$samba_search ${udm_option}:DELIMETER:${search}:DELIMETER:${value}"
 	fi
 
-	## clear this options, later we want to check wether we have alle options tested or not
+	## clear this options, later we want to check wether we have all options tested or not
 	available_options="$(echo "$available_options" | sed "s/$udm_option//")"
 
 done <<<"$options"
