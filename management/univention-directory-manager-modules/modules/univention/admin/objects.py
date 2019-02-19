@@ -195,7 +195,7 @@ def shadow(lo, module, object, position):
 	if not object:
 		return (None, None)
 	dn = object.dn
-	# this is equivilent to if ...; while 1:
+	# this is equivalent to if ...; while 1:
 	while univention.admin.modules.isContainer(module):
 		dn = lo.parentDn(dn)
 		if not dn:
