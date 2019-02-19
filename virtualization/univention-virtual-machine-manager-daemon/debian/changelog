@@ -2821,7 +2821,7 @@ univention-virtual-machine-manager-daemon (0.9.313-1) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (0.9.312-2) unstable; urgency=low
 
-  * Support more VNC keyboad layouts (Bug #22964)
+  * Support more VNC keyboard layouts (Bug #22964)
   * Fix VNC port parsing in UVMM-CLI (Bug #22362)
   * Kill uvmm-cli-process by PID, not by name.
 
