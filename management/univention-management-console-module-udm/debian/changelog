@@ -685,7 +685,7 @@ univention-management-console-module-udm (7.0.3-3) unstable; urgency=medium
 
 univention-management-console-module-udm (7.0.3-2) unstable; urgency=medium
 
-  * Bug #43094: allow syntax overriden via UCR to have choices
+  * Bug #43094: allow syntax overridden via UCR to have choices
 
  -- Florian Best <best@univention.de>  Tue, 10 Jan 2017 11:05:33 +0100
 
