@@ -38,7 +38,7 @@ def createMachinePassword():
 	# type: () -> str
 	"""
 	Returns a $(pwgen) generated password according to the
-	requirements in |UCR| varibales
+	requirements in |UCR| variables
 	`machine/password/length` and `machine/password/complexity`.
 
 	:returns: A password.
