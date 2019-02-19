@@ -115,7 +115,7 @@ define([
 		// actions: Object[]
 		//		Array of config objects that specify the actions that are going to
 		//		be used in the grid.
-		//		'canExecute': function that specifies whether an action can be excuted for
+		//		'canExecute': function that specifies whether an action can be executed for
 		//		              a particular item; the function receives a dict of all item
 		//		              properties as parameter
 		//		'tooltipClass': specifies a different tooltip class than umc/widgets/Tooltip
