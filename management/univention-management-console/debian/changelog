@@ -4502,7 +4502,7 @@ univention-management-console (3.0.101-2) unstable; urgency=low
 
 univention-management-console (3.0.100-1) unstable; urgency=low
 
-  * if there is no dialog returned and the status code of the last reponse
+  * if there is no dialog returned and the status code of the last response
     is 201 or 301 and there is a referrer set it is shown instead of an
     info message; Bug #22264
   * bump version for UCS 2.4-3
@@ -5417,7 +5417,7 @@ univention-management-console (2.0.2-1) unstable; urgency=low
 
 univention-management-console (2.0.1-1) unstable; urgency=low
 
-  * a command method may now return an UMCP reponse object directly; in
+  * a command method may now return an UMCP response object directly; in
     that case no revamp method is required. Bug #14336
 
  -- Andreas Büsching <buesching@univention.de>  Thu, 28 May 2009 17:15:25 +0200

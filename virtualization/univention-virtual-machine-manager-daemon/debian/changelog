@@ -2331,7 +2331,7 @@ univention-virtual-machine-manager-daemon (1.0.38-1) unstable; urgency=low
 univention-virtual-machine-manager-daemon (1.0.37-1) unstable; urgency=low
 
   * _thread_finished: return error message in 'message' field of UMCP
-    repsonse; Bug #22893
+    response; Bug #22893
   * _thread_finished_success: always return status code 200 (SUCCESS),
     details will be returned within the result
 
