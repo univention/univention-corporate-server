@@ -97,7 +97,7 @@ int univention_license_check_signature()
 
 /******************************************************************************/
 /*!
-	@brief	A ADMIN funtion! Try to generate the signature for the LDAP object at licenseDN
+	@brief	A ADMIN function! Try to generate the signature for the LDAP object at licenseDN
 	@param	licenseDN	the path of the ldapLicenseObject that should be signed
 	@retval	NULL if an error has occured
 	@retval char the base64 encoded signature

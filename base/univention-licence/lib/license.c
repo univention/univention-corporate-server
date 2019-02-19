@@ -262,7 +262,7 @@ int univention_license_check(const char* objectDN)
 /*!
 	@brief	check the licence baseDN against the local baseDN
 
-	this funtion use the global_license Object
+	this function use the global_license Object
 	@retval 0 if an error has occured
 	@retval 1 if everything is fine
 */
@@ -317,7 +317,7 @@ int univention_license_check_basedn()
 /*!
 	@brief	check the licence end date against the current date
 	
-	this funtion use the global_license Object
+	this function use the global_license Object
 	@retval 0 if an error has occured
 	@retval 1 if everything is fine
 */
@@ -489,7 +489,7 @@ int univention_license_check_searchpath(const char* objectDN)
 
 /*****************************************************************************/
 /*!
-	@brief	the sort funtion for qsort
+	@brief	the sort function for qsort
 
 	the license is sorted primary with the key and if this makes not
 	clean answer value is compared too.
@@ -688,7 +688,7 @@ void univention_licenseObject_free(lObj* license)
 /*!
 	@brief	extract the value of this attribute from the license
 	
-	this funtion use the global_license Object	
+	this function use the global_license Object	
 	@param	attribute	attributeName of the value that should be returned
 		the attributeName is the same like the ldapAttributeName
 	@retval	NULL	if attribute is not found

@@ -44,7 +44,7 @@ int 	univention_license_selectDN(const char* licenseDN);
 lStrings*	univention_license_get_value(const char* attributeName);
 void	univention_license_free(void);
 
-/* main admin funtion */
+/* main admin function */
 int 	univention_license_check(const char* objectDN);
 
 /* main create license function */
