@@ -842,7 +842,7 @@ univention-updater (12.0.4-5) unstable; urgency=low
 
 univention-updater (12.0.4-4) unstable; urgency=medium
 
-  * Bug #43625: Aquire an UpdaterLock also for --check
+  * Bug #43625: Acquire an UpdaterLock also for --check
 
  -- Arvid Requate <requate@univention.de>  Tue, 14 Mar 2017 20:05:32 +0100
 
