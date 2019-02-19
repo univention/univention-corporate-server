@@ -3341,7 +3341,7 @@ define([
 				}
 			}
 			if (this._isUsingPreconfiguredSetup()) {
-				// explicitely register specified nameserver as forwarder in pre-configured setup
+				// explicitly register specified nameserver as forwarder in pre-configured setup
 				// (usually this is done by the join scripts when setting up a DC master)
 				vals.nameserver1 = _vals._ip0;
 				delete vals.nameserver2;

@@ -1391,7 +1391,7 @@ define([
 			var vals = this._form.get('value');
 
 			// get also policy values... can not be handled as standard form entry
-			// explicitely exclude users/self. FIXME: find a way
+			// explicitly exclude users/self. FIXME: find a way
 			// to receive some udm-module-configuration for that
 			var policiesLoaded = this._policyDeferred.isFulfilled();
 			var isUsersSelf = this.objectType == 'users/self';

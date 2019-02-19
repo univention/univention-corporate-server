@@ -2572,7 +2572,7 @@ def run_phaseI(ucr, lp, opts, args, parser, creds, always_answer_with=None):
 	# Restart Univention Directory Listener for S4 Connector
 	# Reset S4 Connector and handler state
 	# rotate S4 connector log and start the S4 Connector
-	# Ok, just in case, start the Connector explicitely
+	# Ok, just in case, start the Connector explicitly
 	# Reset normal relication intervals
 	# rebuild idmap
 	# Start NSCD again
