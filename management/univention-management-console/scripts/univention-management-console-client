@@ -222,7 +222,7 @@ if __name__ == '__main__':
 	group.add_option('-r', '--pretty-print', action='store_true', dest='prettyprint', default=False,
 		help='if given the output will be printed out using pretty print')
 	group.add_option('-t', '--timing', action='store_true', dest='timing',
-		help='if given the amount of time required for the UMCP request is measured. -q will not supress the output')
+		help='if given the amount of time required for the UMCP request is measured. -q will not suppress the output')
 	parser.add_option_group(group)
 
 	group = OptionGroup(parser, 'Connection')
