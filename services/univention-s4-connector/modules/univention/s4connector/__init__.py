@@ -1630,7 +1630,7 @@ class ucs:
 	# attributes ist ein dictionary von LDAP-Attributen und den zugeordneten Werten
 	def _filter_match(self, filter, attributes):
 		'''
-		versucht eine liste von attributen auf einen LDAP-Filter zu matchen
+		versucht eine Liste von Attributen auf einen LDAP-Filter zu matchen
 		Besonderheiten des Filters:
 		- immer case-sensitive
 		- nur * als Wildcard
