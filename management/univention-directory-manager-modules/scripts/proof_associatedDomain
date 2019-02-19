@@ -42,7 +42,7 @@ usage = '''
 Script will only add missing associatedDomain with [-a]
 without that missing Attributes will only be shown
 
-Use -v to also get a list of computer objects, which have mutliple
+Use -v to also get a list of computer objects, which have multiple
 DNSZones and so cannot be associated to one asscoiatedDomain entry
 '''
 parser = OptionParser(usage)
