@@ -295,7 +295,7 @@ def do_app_updates(options, checkForUpdates, silent):
                 'name': app.name,
             })
         else:
-            # dont know how this is possible... but anyways
+            # don't know how this is possible... but anyways
             dprint(silent, '%(name)s' % {
                 'name': app.name,
             })

@@ -99,7 +99,7 @@ define([
 
 	var _DropDownButton = declare([DropDownButton], {
 		_onClick: function(evt) {
-			// dont propagate any event here - otherwise dropDown gets closed.
+			// don't propagate any event here - otherwise dropDown gets closed.
 			// this has something to do with the dropdown losing focus in favor
 			// of the underlying td-node. it triggers _HasDropDown's _onBlur
 			this.inherited(arguments);

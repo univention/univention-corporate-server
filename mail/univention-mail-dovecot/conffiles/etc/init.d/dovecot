@@ -82,7 +82,7 @@ if [ ! -r ${CONF} ]; then
   exit 1;
 fi
 
-# dont check for inetd.conf if its not installed
+# don't check for inetd.conf if its not installed
 if [ -f /etc/inetd.conf ]; then
   # The init script should do nothing if dovecot or another imap/pop3 server
   # is being run from inetd, and dovecot is configured to run as an imap or

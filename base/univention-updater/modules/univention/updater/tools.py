@@ -1738,7 +1738,7 @@ class UniventionUpdater:
                 version = copy.copy(version)
             else:
                 raise TypeError('Not a UCS Version', version)
-            version.patchlevel = 0  # component dont use the patchlevel
+            version.patchlevel = 0  # component don't use the patchlevel
             versions_mmp.add(version)
 
         for version in versions_mmp:

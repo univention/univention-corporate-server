@@ -50,7 +50,7 @@ class SoftwareScript(AptScript):
 			# do not install anything on basesystem
 			return True
 		if not (self.packages_remove or self.packages_install):
-			# nothing to do. dont autoremove either
+			# nothing to do. don't autoremove either
 			return True
 		# +1 for update + 1 for autoremove
 		ntasks = len(self.packages_remove) + len(self.packages_install) + 2
