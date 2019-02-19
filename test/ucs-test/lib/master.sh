@@ -61,7 +61,7 @@ master_restart_service () { # restarts a service
 	on_master_escaped invoke-rc.d "$service" restart >/dev/null 2>&1
 }
 
-master_udm_version () { # gets the verion of the UDM on the master system
+master_udm_version () { # gets the version of the UDM on the master system
 	# usage: version="$(master_udm_version)"
 	# return text:
 	#	Version string of the UDM package
