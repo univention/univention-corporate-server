@@ -7286,7 +7286,7 @@ univention-directory-manager-modules (7.0.7-1) unstable; urgency=low
 
 univention-directory-manager-modules (7.0.6-1) unstable; urgency=low
 
-  * Re-added baseConfig objekt to univention.admin (Bug #22431)
+  * Re-added baseConfig object to univention.admin (Bug #22431)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 May 2011 13:33:46 +0200
 
