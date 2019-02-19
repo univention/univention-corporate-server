@@ -4969,7 +4969,7 @@ univention-system-setup (5.0.166-1) unstable; urgency=low
 
 univention-system-setup (5.0.165-2) unstable; urgency=low
 
-  * add recommands entry for xinit which is required for the graophical
+  * add recommends entry for xinit which is required for the graophical
     mode; Bug #27616
 
  -- Andreas Büsching <buesching@univention.de>  Tue, 19 Jun 2012 11:14:26 +0200
