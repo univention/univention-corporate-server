@@ -4872,7 +4872,7 @@ univention-management-console (3.0.34-1) unstable; urgency=low
 univention-management-console (3.0.33-1) unstable; urgency=low
 
   * IWizard: make cancel button optional, reset Wizard on cancel, text for
-    finish button cann be modified, title can be replaced; Bug #1840
+    finish button can be modified, title can be replaced; Bug #1840
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 02 Jul 2010 10:11:49 +0200
 
