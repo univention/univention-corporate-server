@@ -175,7 +175,7 @@ esac
 		<section id="ucr:usage:python"><title>Using UCR from Python</title>
 			<para>
 				<acronym>UCR</acronym> also provides a Python binding, which can be used from any Python program.
-				An instance of <classname>univention.config_registry.ConfigRegistry</classname> needs to be crated first.
+				An instance of <classname>univention.config_registry.ConfigRegistry</classname> needs to be created first.
 				After loading the current database state with <methodname>load()</methodname> the values can be accessed by using the instance like a Python dictionary:
 			</para>
 			<example id="ucr:python:read">

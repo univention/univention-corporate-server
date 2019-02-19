@@ -134,7 +134,7 @@ sudo dpkg -i ../univention-ssh_*_*.deb
 			It creates a file <filename>testdeb-<replaceable>DATE</replaceable>-<replaceable>time</replaceable></filename> in the <filename class="directory">/tmp/</filename> directory.
 		</para>
 		<para>
-			A directory needs to be crated for each source package, which hosts all other files and sub-directories.
+			A directory needs to be created for each source package, which hosts all other files and sub-directories.
 		</para>
 		<programlisting>
 mkdir testdeb-0.1
@@ -241,7 +241,7 @@ rm debian/README* debian/doc
 				<term><filename>debian/testdeb.postinst</filename></term>
 				<listitem>
 					<para>
-						Since for this example the program should be invoked automatically during package installation, this file needs to be crated.
+						Since for this example the program should be invoked automatically during package installation, this file needs to be created.
 						In addition to just invoking the program shipped with the package itself, it also shows how &ucsUCRV;s can be set (see <xref linkend="ucr:usage:shell"/>):
 					</para>
 					<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="testdeb/debian/testdeb.postinst" parse="text"/></programlisting>
