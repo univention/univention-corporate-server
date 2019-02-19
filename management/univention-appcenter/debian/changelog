@@ -3915,7 +3915,7 @@ univention-management-console-module-appcenter (5.0.4-14) unstable; urgency=low
 
 univention-management-console-module-appcenter (5.0.4-13) unstable; urgency=low
 
-  * Bug #38894: [WIP] adapated MetaCategory and cleaned up AppCenterPage
+  * Bug #38894: [WIP] adapted MetaCategory and cleaned up AppCenterPage
 
  -- Johannes Keiser <keiser@univention.de>  Wed, 16 Sep 2015 12:44:02 +0200
 
