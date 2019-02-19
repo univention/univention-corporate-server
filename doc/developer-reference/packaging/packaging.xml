@@ -219,7 +219,7 @@ rm debian/README* debian/doc
 					</para>
 					<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="testdeb/debian/rules" parse="text"/></programlisting>
 					<para>
-						Note that tabulators must be used for indention in this file.
+						Note that tabulators must be used for indentation in this file.
 					</para>
 				</listitem>
 			</varlistentry>

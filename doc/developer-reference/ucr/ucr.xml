@@ -1009,7 +1009,7 @@ Depends: ..., ${misc:Depends}, ...
 						</para>
 						<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="papersize/debian/rules" parse="text"/></programlisting>
 						<para>
-							Note that tabulators must be used for indention in this <application>Makefile</application>-type file.
+							Note that tabulators must be used for indentation in this <application>Makefile</application>-type file.
 						</para>
 					</listitem>
 				</varlistentry>
