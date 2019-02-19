@@ -86,9 +86,9 @@ define([
 		layout: null,
 
 		// content: dijit/_WidgetBase?
-		//		Widget that contains all form elements already layed out.
+		//		Widget that contains all form elements already laid out.
 		//		If given, `widgets` is expected to be a list of already initiated
-		//		dijit/form/_FormWidget instances that occur in the manually layed out
+		//		dijit/form/_FormWidget instances that occur in the manually laid out
 		//		content.
 		content: null,
 
