@@ -648,7 +648,7 @@ univention-management-console-module-diagnostic (1.0.7-2) unstable; urgency=medi
 univention-management-console-module-diagnostic (1.0.7-1) unstable; urgency=low
 
   * Bug #35864: Add Plugin docstring, inherit from dgrid instead of
-  	GalleryPane, add some misssing translations, outsource CSS into external
+  	GalleryPane, add some missing translations, outsource CSS into external
   	file
 
  -- Florian Best <best@univention.de>  Tue, 07 Oct 2014 11:42:15 +0200
