@@ -285,7 +285,7 @@ univention-fetchmail-ext (0.1-12) unstable; urgency=low
 
 univention-fetchmail-ext (0.1-11) unstable; urgency=low
 
-  * fixed string error, lines in fetchmailrc are now removeable, fixed typo 
+  * fixed string error, lines in fetchmailrc are now removable, fixed typo 
 
  -- Tobias Scherer <scherer@univention.de>  Wed, 20 Jun 2007 12:02:23 +0200
 
