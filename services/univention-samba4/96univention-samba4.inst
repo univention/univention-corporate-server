@@ -736,7 +736,7 @@ if [ -n "$samba4_join_site" ]; then
 	if [ "$samba4_role" = 'DC' ] ||  [ "$samba4_role" = 'RODC' ]; then
 		create_site "$samba4_join_site"
 		SITE_OPTION="--site=$samba4_join_site"
-		## use "${SITE_OPTION[@]}" below instead of "$SITE_OPTION" for propper quoting and to avoid passing an empty string
+		## use "${SITE_OPTION[@]}" below instead of "$SITE_OPTION" for proper quoting and to avoid passing an empty string
 	fi
 fi
 
