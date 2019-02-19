@@ -4990,7 +4990,7 @@ univention-updater (6.0.59-1) unstable; urgency=low
 
 univention-updater (6.0.58-1) unstable; urgency=low
 
-  * remove superflous debug output (Bug #15631)
+  * remove superfluous debug output (Bug #15631)
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 23 Feb 2011 19:18:54 +0100
 

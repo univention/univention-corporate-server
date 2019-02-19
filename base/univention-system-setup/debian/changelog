@@ -7087,7 +7087,7 @@ univention-setup (0.3.60) unstable; urgency=low
 
 univention-setup (0.3.59) unstable; urgency=low
 
-  * Fix superflous univention-setup-boot error message when halting system
+  * Fix superfluous univention-setup-boot error message when halting system
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  6 Oct 2006 15:06:43 +0200
 
