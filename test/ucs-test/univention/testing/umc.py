@@ -75,6 +75,6 @@ class Client(_Client):
 		if self.print_response:
 			print('*** UMC response: \n%s\n***' % (pprint.pformat(response.data),))
 		else:
-			print('*** UMC reponse received')
+			print('*** UMC response received')
 		print('')
 		return response
