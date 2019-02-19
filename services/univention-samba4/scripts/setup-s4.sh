@@ -146,7 +146,7 @@ set_machine_secret() {
 # Search for Samba 3 DCs
 S3_DCS="$(univention-ldapsearch "(&(objectclass=univentionDomainController)(univentionService=Samba 3))" cn | ldapsearch-wrapper | sed -n 's/cn: \(.*\)/\1/p')"
 if [ -n "$S3_DCS" ]; then
-	## safty belt
+	## safety belt
 	if is_ucr_true samba4/ignore/mixsetup; then
 		echo "WARNING: The following Samba 3 domaincontroller have been found:"
 		echo "         $S3_DCS"

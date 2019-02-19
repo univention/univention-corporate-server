@@ -132,7 +132,7 @@ class ipphonetool(object):
 				sys.exit(1)
 
 	def remove(self, name):
-		"""remove the object, no safty belt in this example"""
+		"""remove the object, no safety belt in this example"""
 
 		filter = univention.admin.filter.expression('name', name)
 
