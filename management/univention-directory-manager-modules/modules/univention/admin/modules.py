@@ -129,7 +129,7 @@ def init(lo, position, module, template_object=None, force_reload=False):
 		if prop.syntax.name == 'LDAP_Search':
 			prop.syntax._load(lo)
 			if prop.syntax.viewonly:
-				module.mapping.unregister(pname)
+				module.mapping.unregister(pname, False)
 		elif univention.admin.syntax.is_syntax(prop.syntax, univention.admin.syntax.complex) and hasattr(prop.syntax, 'subsyntaxes'):
 			for text, subsyn in prop.syntax.subsyntaxes:
 				if subsyn.name == 'LDAP_Search':
@@ -285,6 +285,9 @@ def update_extended_attributes(lo, module, position):
 	for dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMProperty)%s(univentionUDMPropertyVersion=2))' % (module_filter,)):
 		# get CLI name
 		pname = attrs['univentionUDMPropertyCLIName'][0]
+		object_class = attrs.get('univentionUDMPropertyObjectClass', [])[0]
+		if name(module) == 'settings/usertemplate' and object_class == 'univentionMail' and 'settings/usertemplate' not in attrs.get('univentionUDMPropertyModule', []):
+			continue  # since "mail" is a default option, creating a usertemplate with any mail attribute would raise Object class violation: object class 'univentionMail' requires attribute 'uid'
 
 		# get syntax
 		propertySyntaxString = attrs.get('univentionUDMPropertySyntax', [''])[0]
@@ -451,7 +454,7 @@ def update_extended_attributes(lo, module, position):
 
 			module.extended_udm_attributes.append(univention.admin.extended_attribute(
 				name=pname,
-				objClass=attrs.get('univentionUDMPropertyObjectClass', [])[0],
+				objClass=object_class,
 				ldapMapping=attrs['univentionUDMPropertyLdapMapping'][0],
 				deleteObjClass=deleteObjectClass,
 				syntax=propertySyntaxString,
@@ -539,7 +542,7 @@ def update_extended_attributes(lo, module, position):
 		if prop.syntax.name == 'LDAP_Search':
 			prop.syntax._load(lo)
 			if prop.syntax.viewonly:
-				module.mapping.unregister(pname)
+				module.mapping.unregister(pname, False)
 		elif univention.admin.syntax.is_syntax(prop.syntax, univention.admin.syntax.complex) and hasattr(prop.syntax, 'subsyntaxes'):
 			for text, subsyn in prop.syntax.subsyntaxes:
 				if subsyn.name == 'LDAP_Search':

@@ -228,11 +228,12 @@ class mapping(object):
 		self._map[map_name] = (unmap_name, map_value)
 		self._unmap[unmap_name] = (map_name, unmap_value)
 
-	def unregister(self, map_name):
-		self._map.pop(map_name, None)
-		# unregister() is used by LDAP_Search syntax classes with viewonly=True.
+	def unregister(self, map_name, pop_unmap=True):
+		# unregister(pop_unmap=False) is used by LDAP_Search syntax classes with viewonly=True.
 		# See SimpleLdap._init_ldap_search().
-		# So, don't remove the value from self._unmap.
+		unmap_name, map_value = self._map.pop(map_name, [None, None])
+		if pop_unmap:
+			self._unmap.pop(unmap_name, None)
 
 	def registerUnmapping(self, unmap_name, unmap_value):
 		self._unmap_func[unmap_name] = unmap_value

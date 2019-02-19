@@ -1479,7 +1479,7 @@ class simpleLdap(object):
 			if prop.syntax.name == 'LDAP_Search':
 				prop.syntax._load(self.lo)
 				if prop.syntax.viewonly:
-					policy.mapping.unregister(pname)
+					policy.mapping.unregister(pname, False)
 
 	def _update_policies(self):  # type: () -> None
 		_d = univention.debug.function('admin.handlers.simpleLdap._update_policies')
