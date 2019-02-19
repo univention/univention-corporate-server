@@ -88,7 +88,7 @@ if __name__ == '__main__':
 		line = line.strip(' \\')
 		matches = UCR_ASSIGNMENT.match(line)
 		if not matches:
-			sys.exit('Error: Recieved unexpected input from grep:\n{}\n'.format(line))
+			sys.exit('Error: Received unexpected input from grep:\n{}\n'.format(line))
 		ucrv_assingments.append(matches.groups())
 
 	write_po_file(ucrv_assingments, 'ucr-l10n.po')
