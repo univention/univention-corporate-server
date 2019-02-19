@@ -1267,7 +1267,7 @@ univention-system-setup (9.0.4-18) unstable; urgency=medium
 
 univention-system-setup (9.0.4-17) unstable; urgency=medium
 
-  * Bug #40673: removed repitition of "Univention Corporate Server"
+  * Bug #40673: removed repetition of "Univention Corporate Server"
     in the header of the initial setup site for Amazon EC2 instances
 
  -- Johannes Keiser <keiser@univention.de>  Thu, 12 May 2016 16:50:17 +0200
@@ -1334,7 +1334,7 @@ univention-system-setup (9.0.4-9) unstable; urgency=medium
 
 univention-system-setup (9.0.4-8) unstable; urgency=medium
 
-  * Bug #40673: removed repitition od "Univention Corporate Server"
+  * Bug #40673: removed repetition od "Univention Corporate Server"
     in the header of the initial setup site for Amazon EC2 instances
 
  -- Johannes Keiser <keiser@univention.de>  Thu, 12 May 2016 14:54:48 +0200
