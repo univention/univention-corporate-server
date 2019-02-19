@@ -1623,7 +1623,7 @@ univention-virtual-machine-manager-daemon (2.0.13-1) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (2.0.12-3) unstable; urgency=low
 
-  * Wait for runnig domain after migration (Bug #25857)
+  * Wait for running domain after migration (Bug #25857)
   * Fix lots of (exception) errors.
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 26 Oct 2012 23:29:41 +0200
