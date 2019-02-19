@@ -1399,7 +1399,7 @@ class ucs:
 				return True
 
 		if property_type == 'windowscomputer':
-			# Sepcial handling for windows computer:
+			# Special handling for windows computer:
 			#  In AD the computer is a windows computer in UCS the computer is a DC.
 			#  If Samba 4 will be installed on the Slave, Samba 4 deletes the object
 			#  and this deletion must not be synced to OpenLDAP.
