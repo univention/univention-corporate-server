@@ -821,7 +821,7 @@ int cache_free_cursor(MDB_cursor *id2entry_read_cursor_pp, MDB_cursor *id2dn_rea
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "cache_free_cursor: Transaction commit");
 	rv = mdb_txn_commit(read_txn);
 	if (rv != MDB_SUCCESS) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_free_cursor: Transation commit failed");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_free_cursor: Transaction commit failed");
 		ERROR_MDB_ABORT(rv, "mdb_txn_commit");
 	}
 	return rv;
