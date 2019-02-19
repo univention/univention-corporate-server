@@ -75,7 +75,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 ldap_hostdn="$(ucr get ldap/hostdn)"
 role="$(ucr get server/role)"
 
-# the following UDM objects need to be created only intially
+# the following UDM objects need to be created only initially
 if [ "$role" = "domaincontroller_master" ]; then
 	# create admin category
 	# create applications category
