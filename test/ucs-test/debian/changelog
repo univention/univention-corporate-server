@@ -13744,7 +13744,7 @@ ucs-test (1.3.214-2) unstable; urgency=low
 ucs-test (1.3.214-1) unstable; urgency=low
 
   * Fix PIPESTATUS in 00base/40univention-ssh_echo (Bug #14212, Bug #19002)
-  * Temporarly more debugging for 00base/40univention-ssh_unknown.
+  * Temporarily more debugging for 00base/40univention-ssh_unknown.
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 14 Jul 2010 08:58:44 +0200
 
