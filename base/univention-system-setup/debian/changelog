@@ -1747,7 +1747,7 @@ univention-system-setup (8.1.66-43) unstable; urgency=medium
 
 univention-system-setup (8.1.66-42) unstable; urgency=medium
 
-  * Bug #38455: disalbe checks for session validity during the join process
+  * Bug #38455: disable checks for session validity during the join process
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 06 May 2015 18:00:59 +0200
 
@@ -4145,7 +4145,7 @@ univention-system-setup (7.0.6-1) unstable; urgency=low
 
 univention-system-setup (7.0.5-1) unstable; urgency=low
 
-  * disbale windows/domain in basic settings for 
+  * disable windows/domain in basic settings for 
     non DC master systems (Bug #24442) 
 
  -- Felix Botner <botner@univention.de>  Thu, 27 Jun 2013 15:20:13 +0200

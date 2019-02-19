@@ -694,7 +694,7 @@ univention-lib (4.0.1-2) unstable; urgency=low
     * added debug output (Bug #35467) 
     * enable password change (Bug #35467)
     * unset kerberos/adminserver in member mode (Bug #35470)
-    * disbale password change in member mode (Bug #35467)
+    * disable password change in member mode (Bug #35467)
     * create _domaincontroller_master on ad during master init (Bug #35461)
     * take over nameserver settings from master in non-masters system (Bug #35458)
     * fixed univentionSambaWrongVersion error message (Bug #35446)
