@@ -121,7 +121,7 @@ int univention_license_select(const char* licensetyp)
 						{
 							int valid = 1;
 							license_found = 1;
-							licenseNum++; //count the found licenses so they will be skiped the in the next request for this searchpath
+							licenseNum++; //count the found licenses so they will be skipped the in the next request for this searchpath
 							
 							ret = 0;
 							if (!univention_license_check_signature()) {
