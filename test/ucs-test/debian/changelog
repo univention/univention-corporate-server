@@ -9952,7 +9952,7 @@ ucs-test (4.0.164-9) unstable; urgency=low
 ucs-test (4.0.164-8) unstable; urgency=low
 
   * 10_ldap/74schema_update: remove some sleeps from the test case. I
-    think it should be work without theses sleeps (Bug #34338)
+    think it should be work without these sleeps (Bug #34338)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Mar 2014 13:56:05 +0100
 
