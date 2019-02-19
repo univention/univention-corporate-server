@@ -10,7 +10,7 @@ static int is_init = 0;/*!< the init-state of the lib*/
 /*!
 	@brief	init the licenselib, is called automatic.
 	@retval 1 if all parts are initiated successfull
-	@retval 0 if an error has occured
+	@retval 0 if an error has occurred
 */
 int univention_license_init(void)
 {
@@ -180,7 +180,7 @@ int univention_license_select(const char* licensetyp)
 	if no license is found the global_license won't be touched
 
 	@param	licenseDN the location of the wished licnese
-	@retval	1 if nothing is found or an error has occured
+	@retval	1 if nothing is found or an error has occurred
 	@retval 0 if a valid license of this type has been found
 */
 int univention_license_selectDN(const char* licenseDN)
@@ -263,7 +263,7 @@ int univention_license_check(const char* objectDN)
 	@brief	check the licence baseDN against the local baseDN
 
 	this function use the global_license Object
-	@retval 0 if an error has occured
+	@retval 0 if an error has occurred
 	@retval 1 if everything is fine
 */
 int univention_license_check_basedn()
@@ -318,7 +318,7 @@ int univention_license_check_basedn()
 	@brief	check the licence end date against the current date
 	
 	this function use the global_license Object
-	@retval 0 if an error has occured
+	@retval 0 if an error has occurred
 	@retval 1 if everything is fine
 */
 int univention_license_check_enddate()

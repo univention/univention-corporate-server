@@ -252,7 +252,7 @@ def createOrRename(old, new, cr):
 	if is_blacklisted(newPath, cr):
 		return "WARNING: the path %r for the share %r matches a blacklisted path. The whitelist can be extended via the URC variables listener/shares/whitelist/." % (newPath, share_name)
 
-	# set permissions, only modify them if a change has occured
+	# set permissions, only modify them if a change has occurred
 	try:
 		if (not old or (new.get("univentionShareDirectoryMode") and old.get("univentionShareDirectoryMode") and new["univentionShareDirectoryMode"][0] != old["univentionShareDirectoryMode"][0])):
 			os.chmod(newPath, int(mode, 0))
