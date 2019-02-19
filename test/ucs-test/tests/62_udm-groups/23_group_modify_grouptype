@@ -156,7 +156,7 @@ def _test_global_group_change():
 		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
 			pass
 		else:
-			print 'E: Gloabl group is member of another global group. Change to universal group was possible which should not be.'
+			print 'E: Global group is member of another global group. Change to universal group was possible which should not be.'
 			raise GroupChangePossible()
 
 		udm.modify_object('groups/group', dn=group9, adGroupType=GROUP_TYPE_UNIVERSAL)
