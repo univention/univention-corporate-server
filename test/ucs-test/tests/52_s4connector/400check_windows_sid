@@ -67,7 +67,7 @@ fi
 
 # fail if Windows Host SID in OpenLDAP starts with temporary prefix 'S-1-4-':
 if [[ $windows_samba_sid == S-1-4-* ]]; then
-    fail_fast 110 "The sambaSID of the Windows '$windows_hostname' has a UCS temorary prefix."
+    fail_fast 110 "The sambaSID of the Windows '$windows_hostname' has a UCS temporary prefix."
 fi
 
 
