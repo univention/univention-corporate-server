@@ -8216,7 +8216,7 @@ univention-directory-manager-modules (5.0.42-1) unstable; urgency=low
 
 univention-directory-manager-modules (5.0.41-3) unstable; urgency=low
 
-  * reorganize the deskop setting tab. Bug #9628
+  * reorganize the desktop setting tab. Bug #9628
   * adjust the user and group translation. Bug #2359
   * clear some descriptions in the user module. Bug #4964
   * removing the objects by default recursive and remove the --recursive
