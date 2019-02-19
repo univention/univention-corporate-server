@@ -4065,7 +4065,7 @@ univention-system-setup (7.0.19-1) unstable; urgency=low
 
 univention-system-setup (7.0.18-1) unstable; urgency=low
 
-  * Bug #29658: fix update event for values to properly laod ComboBox values
+  * Bug #29658: fix update event for values to properly load ComboBox values
 
  -- Florian Best <best@univention.de>  Mon, 08 Jul 2013 16:38:43 +0200
 
