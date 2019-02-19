@@ -58,6 +58,6 @@ if ucr.get("server/role", "dummy") in ["domaincontroller_master", "domaincontrol
 				print('modify {0}'.format(dn))
 				lo.modify_s(dn, ml)
 			except Exception as e:
-				sys.stderr.write("E: modifing %s failed error with %s\n" % (dn, e))
+				sys.stderr.write("E: modifying %s failed error with %s\n" % (dn, e))
 				sys.stderr.write("   please check the membership of this group\n")
 				sys.exit(1)
