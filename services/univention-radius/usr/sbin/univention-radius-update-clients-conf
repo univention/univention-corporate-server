@@ -60,7 +60,7 @@ def main():  # type: () -> None
 
 ''')
 
-		lo = getMachineConnection()
+		lo = getMachineConnection(ldap_master=False)
 		for dn, attrs in lo.search(filter='(objectClass=univentionRadiusClient)'):
 			hostname = attrs.get('cn', [None])[0]
 			shared_secret = attrs.get('univentionRadiusClientSharedSecret', [None])[0]

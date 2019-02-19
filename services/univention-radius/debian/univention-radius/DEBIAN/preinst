@@ -1,0 +1,28 @@
+#!/bin/sh
+set -e
+# Automatically added by univention-install-config-registry
+if [ "$1" = "install" ] ; then
+  [ -e /etc/univention/templates/removed/univention-radius.info ] && [ ! -e /etc/univention/templates/info/univention-radius.info ] && mv /etc/univention/templates/removed/univention-radius.info /etc/univention/templates/info/univention-radius.info || true
+fi
+# End automatically added section
+# Automatically added by dh_installdeb
+dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/etc/freeradius/eap.conf 5.0.0~ -- "$@"
+# End automatically added section
+# Automatically added by dh_installdeb
+dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/etc/freeradius/ldap.attrmap 5.0.0~ -- "$@"
+# End automatically added section
+# Automatically added by dh_installdeb
+dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/etc/freeradius/modules/ldap 5.0.0~ -- "$@"
+# End automatically added section
+# Automatically added by dh_installdeb
+dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/etc/freeradius/modules/mschap 5.0.0~ -- "$@"
+# End automatically added section
+# Automatically added by dh_installdeb
+dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/etc/freeradius/radiusd.conf 5.0.0~ -- "$@"
+# End automatically added section
+# Automatically added by dh_installdeb
+dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/etc/freeradius/sites-available/default 5.0.0~ -- "$@"
+# End automatically added section
+# Automatically added by dh_installdeb
+dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/etc/freeradius/sites-available/inner-tunnel 5.0.0~ -- "$@"
+# End automatically added section
