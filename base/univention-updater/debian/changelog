@@ -4657,7 +4657,7 @@ univention-updater (7.0.13-1) unstable; urgency=low
 
 univention-updater (7.0.12-1) unstable; urgency=low
 
-  * Reset the modified component tcs varaibles and add more explanation
+  * Reset the modified component tcs variables and add more explanation
     (Bug #22878)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Aug 2011 14:23:26 +0200

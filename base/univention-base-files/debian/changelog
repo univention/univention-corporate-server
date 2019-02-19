@@ -44,13 +44,13 @@ univention-base-files (7.0.0-15) unstable; urgency=medium
 
 univention-base-files (7.0.0-14) unstable; urgency=medium
 
-  * Bug #39704: Add more UCR varaibles for sshd_config
+  * Bug #39704: Add more UCR variables for sshd_config
 
  -- Richard Ulmer <ulmer@univention.de>  Tue, 05 Jun 2018 15:20:55 +0200
 
 univention-base-files (7.0.0-13) unstable; urgency=medium
 
-  * Bug #39704: Add more UCR varaibles for sshd_config
+  * Bug #39704: Add more UCR variables for sshd_config
 
  -- Richard Ulmer <ulmer@univention.de>  Thu, 17 May 2018 11:00:35 +0200
 
