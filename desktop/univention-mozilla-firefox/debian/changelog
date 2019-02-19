@@ -336,7 +336,7 @@ univention-mozilla-firefox (1.2-2) unstable; urgency=low
   * Made firefox.js a baseconfig template
   * Added the baseconfig variable firefox/prefs/conffile to set a global
     configuration file
-  * Fixed copyright, paket maintainer and build-deps
+  * Fixed copyright, packet maintainer and build-deps
 
  -- Janis Meybohm <meybohm@univention.de>  Mon,  6 Nov 2006 14:37:52 +0100
 

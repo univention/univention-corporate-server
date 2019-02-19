@@ -702,7 +702,7 @@ univention-printserver (6.0.8-2) unstable; urgency=low
 univention-printserver (6.0.8-1) unstable; urgency=low
 
   * Fix CUPS netmask handling (Bug #26058)
-  * Split univention-foomatic-ppds into own source paket (Bug #28494)
+  * Split univention-foomatic-ppds into own source packet (Bug #28494)
   * Remove chmod override in postrm (Bug #17547)
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 13 Sep 2012 14:47:35 +0200
