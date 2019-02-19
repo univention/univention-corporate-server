@@ -1605,7 +1605,7 @@ univention-join (2.0.19-1) unstable; urgency=low
 
 univention-join (2.0.18-1) unstable; urgency=low
 
-  * remove accidentaly leftover exit 0 (Bug: #9650)
+  * remove accidentally leftover exit 0 (Bug: #9650)
 
  -- Daniel Hofmann <hofmann@univention.de>  Tue,  3 Nov 2009 16:45:38 +0100
 

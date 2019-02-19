@@ -15748,7 +15748,7 @@ ucs-test (1.2.130-2) unstable; urgency=low
 
 ucs-test (1.2.130-1) unstable; urgency=low
 
-  * revert accidentaly included changes from previous commit (Bug: #14202)
+  * revert accidentally included changes from previous commit (Bug: #14202)
 
  -- Daniel Hofmann <hofmann@univention.de>  Fri,  2 Oct 2009 17:15:34 +0200
 

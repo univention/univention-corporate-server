@@ -216,7 +216,7 @@ univention-licence (2.0.8-1) unstable; urgency=low
 
 univention-licence (2.0.7-1) unstable; urgency=low
 
-  * fix accidentaly hardcoded test-value :-$ (Bug #16482)
+  * fix accidentally hardcoded test-value :-$ (Bug #16482)
 
  -- Daniel Hofmann <hofmann@univention.de>  Mon, 23 Nov 2009 14:25:56 +0100
 
