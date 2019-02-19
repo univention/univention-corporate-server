@@ -350,7 +350,7 @@ univention-management-console-module-diagnostic (3.0.1-23) unstable; urgency=med
   * Bug #35858: diagnostic: introduce plugin ordering
   * Bug #35858: diagnostic: secondary sort by name in grid-sort
   * Bug #35858: diagnostic: raise check_server_password to `Critical`
-  * Bug #38238: diagnostic: check for sid mismatch in well_known_sid_check aswell
+  * Bug #38238: diagnostic: check for sid mismatch in well_known_sid_check as well
 
  -- Lukas Oyen <oyen@univention.de>  Mon, 04 Sep 2017 15:40:45 +0200
 
