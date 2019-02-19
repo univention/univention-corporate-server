@@ -92,7 +92,7 @@ msgid "Set password"
 msgstr "Définir le mot de passe"
 
 #: www/login/main.js:351
-msgid "So far the authentification failed. Continuing nevertheless."
+msgid "So far the authentication failed. Continuing nevertheless."
 msgstr ""
 "Pour le moment, l'authentification a échoué. Néanmoins, le processus "
 "continue."

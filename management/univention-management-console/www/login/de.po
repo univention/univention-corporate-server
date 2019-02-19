@@ -117,7 +117,7 @@ msgid "The current session timed out. Please login again."
 msgstr "Die aktuelle Sitzung ist abgelaufen. Bitte melden Sie sich wieder an."
 
 #: www/login/main.js:235
-msgid "So far the authentification failed. Continuing nevertheless."
+msgid "So far the authentication failed. Continuing nevertheless."
 msgstr ""
 "Bis jetzt schlug die Authentifizierung fehl. Nichtdestotrotz wird weiterhin "
 "probiert."
