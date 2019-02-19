@@ -480,7 +480,7 @@ univention-lib (4.0.5-18) unstable; urgency=medium
 
 univention-lib (4.0.5-17) unstable; urgency=medium
 
-  * Bug #33627: set finish state (=remove pacakge manger lock) when exceptions
+  * Bug #33627: set finish state (=remove pacakge manager lock) when exceptions
   	occur during operations
 
  -- Florian Best <best@univention.de>  Fri, 22 May 2015 16:07:32 +0200
@@ -698,7 +698,7 @@ univention-lib (4.0.1-2) unstable; urgency=low
     * create _domaincontroller_master on ad during master init (Bug #35461)
     * take over nameserver settings from master in non-masters system (Bug #35458)
     * fixed univentionSambaWrongVersion error message (Bug #35446)
-    * log package mananger actions (Bug #35446)
+    * log package manager actions (Bug #35446)
     * renamed install_univention_samba to
       remove_install_univention_samba and added
       version check (Bug #35446)
