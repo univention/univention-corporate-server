@@ -309,7 +309,7 @@ int univention_license_verify (const char* data, const char* signature)
 /*!
 	@brief	sign data with the current installed privateKey 
 	@param	data the data that should be signed
-	@retval	char the base64 encoded signatur
+	@retval	char the base64 encoded signature
 	@retval	NULL on error
 */
 char* univention_license_sign(const char* data)
