@@ -1098,9 +1098,9 @@ class Swagger(Ressource):
 				'description': '%s objects' % (module.title,),
 				'name': tag,
 			})
-			objects_pathes = {}
+			objects_paths = {}
 			if 'search' in module.operations:
-				objects_pathes['get'] = {
+				objects_paths['get'] = {
 					"operationId": "list",
 					"parameters": parameters['search'],
 					#[
@@ -1128,7 +1128,7 @@ class Swagger(Ressource):
 					"tags": [tag],
 				}
 			if 'add' in module.operations:
-				objects_pathes['post'] = {
+				objects_paths['post'] = {
 					"operationId": "create",
 					"parameters": [{
 						"in": "body",
@@ -1149,7 +1149,7 @@ class Swagger(Ressource):
 					"summary": "Create a new %s object" % (module.object_name,),
 					"tags": [tag],
 				}
-			object_pathes = {
+			object_paths = {
 				"parameters": [
 					{
 						"description": "The objects DN (urlencoded)",
@@ -1178,7 +1178,7 @@ class Swagger(Ressource):
 				},
 			}
 			if 'remove' in module.operations:
-				object_pathes["delete"] = {
+				object_paths["delete"] = {
 					"operationId": "delete",
 					"parameters": [
 						{
@@ -1206,7 +1206,7 @@ class Swagger(Ressource):
 					"tags": [tag],
 				}
 			if set(module.operations) & {'edit', 'move', 'move_subtree'}:
-				object_pathes["put"] = {
+				object_paths["put"] = {
 					"operationId": "modify",
 					"parameters": [
 						{
@@ -1232,10 +1232,10 @@ class Swagger(Ressource):
 					"summary": "Modify or move an %s object" % (module.object_name,),
 					"tags": [tag],
 				}
-				object_pathes['patch'] = object_pathes['put'].copy()
-				object_pathes['patch']['operationId'] = 'patch'
-			paths['/%s/' % (name,)] = objects_pathes
-			paths['/%s/{dn}' % (name,)] = object_pathes
+				object_paths['patch'] = object_paths['put'].copy()
+				object_paths['patch']['operationId'] = 'patch'
+			paths['/%s/' % (name,)] = objects_paths
+			paths['/%s/{dn}' % (name,)] = object_paths
 			definitions[tag] = {
 				"allOf": [
 					{

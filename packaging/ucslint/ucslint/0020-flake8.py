@@ -307,7 +307,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 		errors = []
 		for python in self.python_versions:
-			for ignore, pathes in self._iter_pathes(path):
+			for ignore, paths in self._iter_paths(path):
 				cmd = [python, '/usr/bin/flake8', '--config=/dev/null']
 				if ignore:
 					cmd.extend(['--ignore', ignore])
@@ -320,7 +320,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 				if self.debuglevel > 0:
 					cmd.append('--show-source')
 				cmd.append('--')
-				cmd.extend(pathes)
+				cmd.extend(paths)
 
 				process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
 				errors.extend(process.communicate()[0].splitlines())
@@ -328,7 +328,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		self.format_errors(errors)
 
 	def fix(self, path, *args):
-		for ignore, pathes in self._iter_pathes(path):
+		for ignore, paths in self._iter_paths(path):
 			cmd = ['autopep8', '-i', '-aaa']
 			if ignore:
 				cmd.extend(['--ignore', ignore])
@@ -337,10 +337,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			cmd.extend(['--max-line-length', str(self.MAX_LINE_LENGTH)])
 			cmd.extend(args)
 			cmd.append('--')
-			cmd.extend(pathes)
+			cmd.extend(paths)
 			subprocess.call(cmd)
 
-	def _iter_pathes(self, path):
+	def _iter_paths(self, path):
 		files = list(self.find_python_files(path))
 		if self.DEFAULT_SELECT or self.show_statistics:
 			return {
@@ -375,8 +375,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		return False
 
 	def find_python_files(self, base):
-		pathes = set(list(uub.FilteredDirWalkGenerator(base, suffixes=['.py'])) + list(uub.FilteredDirWalkGenerator(base, ignore_suffixes=['.py'], reHashBang=self.PYTHON_HASH_BANG)))
-		for path in pathes:
+		paths = set(list(uub.FilteredDirWalkGenerator(base, suffixes=['.py'])) + list(uub.FilteredDirWalkGenerator(base, ignore_suffixes=['.py'], reHashBang=self.PYTHON_HASH_BANG)))
+		for path in paths:
 			if not self.ignore_path(path):
 				yield path
 
