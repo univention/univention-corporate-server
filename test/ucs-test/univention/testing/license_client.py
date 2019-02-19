@@ -89,7 +89,7 @@ class TestLicenseClient(HTMLParser):
 
 	def setup_logging(self):
 		"""
-		Creates and configues the logger with an INFO level
+		Creates and configrues the logger with an INFO level
 		"""
 		self.log = logging.getLogger("Test_License_Client_Log")
 		self.log.setLevel(logging.INFO)
