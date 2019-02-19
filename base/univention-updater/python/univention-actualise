@@ -72,7 +72,7 @@ ldap_hostdn = configRegistry.get('ldap/hostdn')
 class Tee(object):
 
     '''
-    Writes the given string to serveral files at once. Could by used
+    Writes the given string to several files at once. Could by used
     with the print statement
     '''
 

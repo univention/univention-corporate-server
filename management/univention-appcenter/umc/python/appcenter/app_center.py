@@ -1278,7 +1278,7 @@ class Application(object):
 			# app.is_installed(package_manager, strict=True) uses
 			# apt_pkg.CURSTATE. Not desired when called during
 			# installation of umc-module-appcenter together with
-			# serveral other (app relevant) packages; for example
+			# several other (app relevant) packages; for example
 			# in postinst or joinscript (on master).
 			# see Bug #33535 and Bug #31261
 			for package_name in default_packages:
