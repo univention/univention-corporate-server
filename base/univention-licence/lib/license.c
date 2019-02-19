@@ -492,7 +492,7 @@ int univention_license_check_searchpath(const char* objectDN)
 	@brief	the sort funtion for qsort
 
 	the license is sorted primary with the key and if this makes not
-	clean awnser value is compared too.
+	clean answer value is compared too.
 
 	@param	a	the 1st sortElement
 	@param	b	the 2nd sortElement
