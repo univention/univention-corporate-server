@@ -6648,7 +6648,7 @@ univention-directory-manager-modules (7.0.88-1) unstable; urgency=low
 
 univention-directory-manager-modules (7.0.87-1) unstable; urgency=low
 
-  * dns/forward_zone: remove double refrence to property nameserver in
+  * dns/forward_zone: remove double reference to property nameserver in
     layout; Bug #23688
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 21 Sep 2011 20:32:33 +0200
