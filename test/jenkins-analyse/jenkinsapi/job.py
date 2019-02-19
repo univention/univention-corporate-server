@@ -507,7 +507,7 @@ class Job(JenkinsBase, MutableJenkinsThing):
             If job has multiple repositories configured and "old_source_url"
             not provided - method will always modify first url.
         :param old_source_url (optional): for some SCM's jenkins allows
-            settting multiple repositories per job
+            setting multiple repositories per job
             this parameter intended to indicate which repository need
             to be modified
         """
