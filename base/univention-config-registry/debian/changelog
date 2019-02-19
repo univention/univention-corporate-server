@@ -672,7 +672,7 @@ univention-config-registry (7.0.25-1) unstable; urgency=low
 
 univention-config-registry (7.0.24-1) unstable; urgency=low
 
-  * Set LC_ALL to C in /usr/sbin/ucr if locale-gen has not genereated
+  * Set LC_ALL to C in /usr/sbin/ucr if locale-gen has not generated
     the locale (Bug #23753)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 21 Oct 2011 11:57:16 +0200
