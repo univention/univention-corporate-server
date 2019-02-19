@@ -221,7 +221,7 @@ int run_program(pam_handle_t * pamh, int ctrl, char *prog, const char * user, un
 	switch (pid) {
 
 		case -1:
-			_log_err(LOG_ERR, "cant fork program" );
+			_log_err(LOG_ERR, "can't fork program" );
 			return PAM_SYSTEM_ERR;
 
 		case 0:
