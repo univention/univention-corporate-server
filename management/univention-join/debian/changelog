@@ -135,7 +135,7 @@ univention-join (10.0.0-15) unstable; urgency=medium
 
 univention-join (10.0.0-14) unstable; urgency=medium
 
-  * Bug #42124: univention-server-join now checkd for conflicts in name/role,
+  * Bug #42124: univention-server-join now checked for conflicts in name/role,
     MAC and IP.
 
  -- Arvid Requate <requate@univention.de>  Thu, 21 Jun 2018 21:28:49 +0200
