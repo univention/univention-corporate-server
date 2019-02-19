@@ -229,7 +229,7 @@ def read_url(url):
         connection = urlopen(url)
         result = fromstring(connection.read())
     except IOError as exc:
-        utils.fail("An %r Error occurred while trying to retrive '%s' url"
+        utils.fail("An %r Error occurred while trying to retrieve '%s' url"
                    % (exc, url))
     connection.close()
     return result
