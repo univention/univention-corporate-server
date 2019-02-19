@@ -157,7 +157,7 @@ define([
 
 				} else if (this.licenseInfo.licenseVersion === '2') {
 
-					// substract system accounts
+					// subtract system accounts
 					if (this.licenseInfo.real.users >= this.licenseInfo.sysAccountsFound) {
 						this.licenseInfo.real.users -= this.licenseInfo.sysAccountsFound;
 					}
