@@ -102,7 +102,7 @@ class Config(ConfigParser.ConfigParser):
 		if directory:
 			guessedPaths.append(os.path.join(directory, self._lang, fileName))
 		# in case there is no language directory, our second guess
-		# (works also for emtpy directory)
+		# (works also for empty directory)
 		guessedPaths.append(os.path.join(directory, fileName))
 		# if given, our last guess is the alternative path
 		if alternativePath:

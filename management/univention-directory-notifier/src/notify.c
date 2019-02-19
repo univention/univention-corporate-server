@@ -435,7 +435,7 @@ int notify_transaction_get_last_notify_id ( Notify_t *notify, NotifyId_t *notify
 	} while ( c != '\n' && c != -1 && c != 255 && ftell(notify->tf) != 1);
 
 	if ( c == -1 || c == 255 ) {
-		/* emty file */
+		/* empty file */
 		notify_id->id = 0;
 
 	} else if ( ftell(notify->tf) == 1) {
