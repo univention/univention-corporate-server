@@ -933,7 +933,7 @@ univention-lib (3.0.23-1) unstable; urgency=low
 univention-lib (3.0.22-1) unstable; urgency=low
 
   * Added update_nss_group_cache () for updating the group cache
-    depending on the nss methode (Bug #32461)
+    depending on the nss method (Bug #32461)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Oct 2013 11:59:57 +0200
 
