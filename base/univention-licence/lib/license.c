@@ -149,7 +149,7 @@ int univention_license_select(const char* licensetyp)
 					i++;
 				}
 				
-				//do we finaly found a license?
+				//do we finally found a license?
 				if (NULL == global_license)
 				{
 					univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "No license of type '%s' found at:",licensetyp);
