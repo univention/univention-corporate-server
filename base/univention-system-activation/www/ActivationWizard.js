@@ -89,7 +89,7 @@ define([
 					headerText: _('Activation of %(appliance_name)s Appliance', this.entries),
 					widgets: [{
 						type: Text,
-						content: _('A license file has been sent to <strong class="email-address">%s</strong>. This file is necessary to activate the system. For this, please carry out the following steps: <ol><li>Open the email.</li><li>Save the attachement (ucs.license) on your computer.</li><li>Click the button \'Upload license file\'.</li><li>Select the file (ucs.license) you just saved.</li><li>Confirm the selection.</li></ol>Once the activation has been finished your email address will be sent to the app provider. The app provider may contact you.', [this.entries.email || _('your email address')]),
+						content: _('A license file has been sent to <strong class="email-address">%s</strong>. This file is necessary to activate the system. For this, please carry out the following steps: <ol><li>Open the email.</li><li>Save the attachment (ucs.license) on your computer.</li><li>Click the button \'Upload license file\'.</li><li>Select the file (ucs.license) you just saved.</li><li>Confirm the selection.</li></ol>Once the activation has been finished your email address will be sent to the app provider. The app provider may contact you.', [this.entries.email || _('your email address')]),
 						name: 'helpText'
 					}, {
 						type: Text,
