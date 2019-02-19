@@ -2671,7 +2671,7 @@ class simpleComputer(simpleLdap):
 		for entry in self.__changes['dnsEntryZoneAlias']['remove']:
 			dnsForwardZone, dnsAliasZoneContainer, alias = entry
 			if not alias:
-				# nonfunctional code since self[ 'alias' ] should be self[ 'dnsAlias' ], but ths case does not seem to occur
+				# nonfunctional code since self[ 'alias' ] should be self[ 'dnsAlias' ], but this case does not seem to occur
 				self.__remove_dns_alias_object(self['name'], dnsForwardZone, dnsAliasZoneContainer, self['alias'][0])
 			else:
 				self.__remove_dns_alias_object(self['name'], dnsForwardZone, dnsAliasZoneContainer, alias)
