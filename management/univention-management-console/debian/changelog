@@ -4080,7 +4080,7 @@ univention-management-console (4.0.38-1) unstable; urgency=low
 
   * remove relicts of sessionid
   * make module process a daemon
-  * rename and add new exception to annouce errors during command
+  * rename and add new exception to announce errors during command
     execution; Bug #22460
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 29 Jun 2011 12:18:23 +0200
