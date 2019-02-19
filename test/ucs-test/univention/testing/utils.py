@@ -363,7 +363,7 @@ class FollowLogfile(object):
 
 	def __init__(self, logfiles=None, always=False):
 		"""
-		:param logfiles: list of absolut filenames to read from
+		:param logfiles: list of absolute filenames to read from
 		:param always: bool, if True: print logfile change also if no error occurred (default=False)
 		"""
 		assert isinstance(logfiles, list)
