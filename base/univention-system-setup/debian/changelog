@@ -5508,7 +5508,7 @@ univention-system-setup (5.0.94-1) unstable; urgency=low
 
   * adjust fraction values for progress information
   * code cleanup
-  * add inital label to progress widget; Bug #24819
+  * add initial label to progress widget; Bug #24819
 
  -- Andreas Büsching <buesching@univention.de>  Thu, 22 Dec 2011 12:16:35 +0100
 

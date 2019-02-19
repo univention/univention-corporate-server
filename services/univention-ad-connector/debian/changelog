@@ -1330,7 +1330,7 @@ univention-ad-connector (8.0.17-22) unstable; urgency=medium
 
 univention-ad-connector (8.0.17-21) unstable; urgency=medium
 
-  * Bug #35090 [WIP]: integrated checks for inital connection and SSL
+  * Bug #35090 [WIP]: integrated checks for initial connection and SSL
 
  -- Alexander Kläser <klaeser@univention.de>  Thu, 24 Jul 2014 18:14:15 +0200
 
