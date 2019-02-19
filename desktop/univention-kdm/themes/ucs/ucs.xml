@@ -152,7 +152,7 @@
 			<item type="label" id="username-hint">
 				<pos anchor="c" x="50%" y="122%"/>
 				<text xml:lang="de">Initial teilt er das Passwort des "root" Benutzers. </text>
-				<text xml:lang="en_US">Intially he shares the password of the "root" user. </text>
+				<text xml:lang="en_US">Initially he shares the password of the "root" user. </text>
 			</item>
 		</fixed>
 	</item>
