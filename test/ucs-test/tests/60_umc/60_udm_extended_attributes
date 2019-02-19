@@ -248,7 +248,7 @@ class TestUMCExtendedAttributes(UDMModule):
         test_attribute_module = ["users/user"]
 
         try:
-            print("Quering extended attributes and checking the "
+            print("Querying extended attributes and checking the "
                   "response structure")
             self.check_attributes_query_structure()
 
