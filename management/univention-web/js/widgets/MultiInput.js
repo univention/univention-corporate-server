@@ -654,7 +654,7 @@ define([
 			for (var irow = this._nRenderedElements; irow < nFinal && irow < this.max; ++irow, ++this._nRenderedElements) {
 				newRows.push(irow);
 
-				// allocate indeces in 2D array _widget this allows _updateReadyDeferred()
+				// allocate indices in 2D array _widget this allows _updateReadyDeferred()
 				// to know how many entries there will be at the end
 				this._rowContainers[irow] = null;
 				this._widgets[irow] = [];

@@ -51,7 +51,7 @@ indextypes=['pres','eq','sub','approx']
 
 for indextype in indextypes:
 	if 'ldap/index/%s'%indextype in configRegistry:
-		# ignore dummy entries for indeces
+		# ignore dummy entries for indices
 		if not configRegistry['ldap/index/%s'%indextype].strip()=="none":
 			index_attrs['%s'%indextype]=configRegistry['ldap/index/%s'%indextype].split(',')
 		else:
