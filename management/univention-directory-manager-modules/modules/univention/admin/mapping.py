@@ -541,7 +541,7 @@ class mapping(object):
 
 def mapCmp(mapping, key, old, new):
 	"""
-	Compare old and new for equality (maping back to LDAP value if possible).
+	Compare old and new for equality (mapping back to LDAP value if possible).
 
 	>>> map = mapping()
 	>>> mapCmp(map, 'unknown', 'old', 'new')

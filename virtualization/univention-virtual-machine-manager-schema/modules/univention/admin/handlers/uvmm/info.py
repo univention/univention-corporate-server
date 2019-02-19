@@ -104,7 +104,7 @@ layout = [
 ]
 
 
-# Maping between UDM properties and LDAP attributes
+# Mapping between UDM properties and LDAP attributes
 mapping = udm_mapping.mapping()
 mapping.register('uuid', 'univentionVirtualMachineUUID', None, udm_mapping.ListToString)
 mapping.register('description', 'univentionVirtualMachineDescription', None, udm_mapping.ListToString)
