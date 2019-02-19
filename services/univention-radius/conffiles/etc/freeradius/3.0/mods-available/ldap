@@ -449,7 +449,7 @@ print '\t\tfilter = "(uid=%%{%s:-%%{User-Name}})"' % filter
 	#
 	#  LDAP connection-specific options.
 	#
-	#  These options set timeouts, keep-alives, etc. for the connections.
+	#  These options set timeouts, keep-alive, etc. for the connections.
 	#
 	options {
 		#  Control under which situations aliases are followed.
