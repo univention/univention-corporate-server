@@ -2235,7 +2235,7 @@ univention-ldap (8.0.81-1) unstable; urgency=low
   * Run db4.8_stat without acquiring shared region mutexes
   * Issue a warning if db4.8_stat finds stale locks (Bug #23962)
   * Fix error message in case bdb_open fails in db4.8_stat (Bug #23962)
-  * Improve log_action message formating
+  * Improve log_action message formatting
 
  -- Arvid Requate <requate@univention.de>  Tue, 22 May 2012 17:18:21 +0200
 
@@ -2877,7 +2877,7 @@ univention-ldap (8.0.3-1) unstable; urgency=low
 univention-ldap (8.0.2-5) unstable; urgency=low
 
   * add missing credentials to join script to make ucslint happy (Bug #21705)
-  * adjust formating of join script to improve readability
+  * adjust formatting of join script to improve readability
 
  -- Arvid Requate <requate@univention.de>  Tue, 17 May 2011 09:57:39 +0200
 
