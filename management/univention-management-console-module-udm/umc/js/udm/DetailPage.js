@@ -2044,7 +2044,7 @@ define([
 			} else {
 				// existing object .. get only the values that changed
 				if (this._receivedObjFormData === null) {
-					// error happend while loading the object
+					// error happened while loading the object
 					setTimeout(lang.hitch(this, 'onCloseTab'), 50); // prevent dom-removal exception with setTimeout
 					console.error(_consoleErrorText());
 					return {};
