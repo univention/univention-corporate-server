@@ -4290,7 +4290,7 @@ univention-system-setup (6.0.63-1) unstable; urgency=low
 
 univention-system-setup (6.0.62-1) unstable; urgency=low
 
-  * Explicitely remove samba4 when changing role to member (Bug #29759)
+  * Explicitly remove samba4 when changing role to member (Bug #29759)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 11 Jan 2013 18:18:12 +0100
 

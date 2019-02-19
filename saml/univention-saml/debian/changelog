@@ -1052,7 +1052,7 @@ univention-saml (2.0.0-1) unstable; urgency=low
 
 univention-saml (1.0.11-1) unstable; urgency=low
 
-  * Explicitely set file permissions and owner/group for ucr templates (Bug #34233) 
+  * Explicitly set file permissions and owner/group for ucr templates (Bug #34233) 
 
  -- Erik Damrose <damrose@univention.de>  Tue, 04 Mar 2014 11:27:19 +0100
 

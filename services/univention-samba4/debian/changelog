@@ -4328,7 +4328,7 @@ univention-samba4 (1.0.29-2) experimental; urgency=low
 
 univention-samba4 (1.0.29-1) experimental; urgency=low
 
-  * call setup-dns-in-ucsldap.sh explicitely from joinscript
+  * call setup-dns-in-ucsldap.sh explicitly from joinscript
     might be legacy once dlz-dlopen for samba4 is setup in bind9
 
   * need setup-dns-in-ucsldap also after join of secondary DCs

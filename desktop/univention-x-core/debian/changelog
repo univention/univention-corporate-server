@@ -187,7 +187,7 @@ univention-x-core (3.1.0-1) unstable; urgency=low
 
 univention-x-core (3.0.8-2) unstable; urgency=low
 
-  * Keyboard InputDevice layout currently must be selected explicitely
+  * Keyboard InputDevice layout currently must be selected explicitly
     when doing xorg/autodetect (Bug #16066)
 
  -- Arvid Requate <requate@univention.de>  Mon, 26 Oct 2009 13:02:24 +0100
