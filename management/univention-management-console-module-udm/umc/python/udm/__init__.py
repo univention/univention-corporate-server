@@ -568,7 +568,7 @@ class Instance(Base, ProgressMixin):
 
 		requests.options = {}
 			'objectType' -- the object type to search for (default: if not given the flavor is used)
-			'objectProperty' -- the object property that should be scaned
+			'objectProperty' -- the object property that should be scanned
 			'objectPropertyValue' -- the filter that should be found in the property
 			'fields' -- the properties which should be returned
 			'container' -- the base container where the search should be started (default: LDAP base)
@@ -689,7 +689,7 @@ class Instance(Base, ProgressMixin):
 		"""Returns the default search pattern/value for the given object property
 
 		requests.options = {}
-			'objectProperty' -- the object property that should be scaned
+			'objectProperty' -- the object property that should be scanned
 
 		return: <value>
 		"""
@@ -1074,7 +1074,7 @@ class Instance(Base, ProgressMixin):
 		requests.options = {}
 			'container' -- the base container where the search should be started (default: LDAP base)
 			'objectType' -- the object type that should be displayed (optional)
-			'objectProperty' -- the object property that should be scaned (optional)
+			'objectProperty' -- the object property that should be scanned (optional)
 			'objectPropertyValue' -- the filter that should b found in the property (optional)
 
 		return: [ { '$dn$' : <LDAP DN>, 'objectType' : <UDM module name>, 'path' : <location of object> }, ... ]
