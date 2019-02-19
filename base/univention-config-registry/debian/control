@@ -24,7 +24,7 @@ Depends: ${misc:Depends},
  univention-base-files,
  univention-base-packages
 Description: UCS transitional package - base configuration
- This package can be savely removed, since all previously contained base
+ This package can be safely removed, since all previously contained base
  configuration files for UCS have been moved to the univention-base-files
  package.
  .
