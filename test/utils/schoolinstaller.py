@@ -131,7 +131,7 @@ failcount = 0
 last_message = None
 while not status['finished']:
 	if failcount >= 1200:
-		print 'ERROR: %d failed attempts - comitting suicide' % (failcount, )
+		print 'ERROR: %d failed attempts - committing suicide' % (failcount, )
 		sys.exit(1)
 	try:
 		status = client.umc_command('schoolinstaller/progress').result
