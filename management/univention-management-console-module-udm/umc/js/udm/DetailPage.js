@@ -1594,7 +1594,7 @@ define([
 					note: _('You are currently editing a policy. Changing its properties affects all referenced objects and may affect your system globally.')
 				};
 			} else {
-				// if no DN is given, we are creating a new oject
+				// if no DN is given, we are creating a new object
 				props.newObject = {
 					objectType: policyType
 				};
