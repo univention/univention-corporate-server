@@ -485,7 +485,7 @@ define([
 						// object multiple times
 						(lang.hitch(this, function(widgetName) {
 							// encapsulate in closure, otherwise we cannot access jwidget.name within
-							// the Deffered callback anymore (it changes with the for loop)
+							// the deferred callback anymore (it changes with the for loop)
 							this._pendingDeferreds[widgetName] = true;
 							jreadyDeferred.then(lang.hitch(this, function() {
 								this._pendingDeferreds[widgetName] = false;
