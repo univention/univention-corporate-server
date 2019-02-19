@@ -61,7 +61,7 @@ if __name__ == '__main__':
 			utils.verify_ldap_object(computer, {'univentionNetworkLink': [network]})
 
 			if aRecord not in ['10.20.30.%s' % str(oktett) for oktett in range(2, 255)]:
-				utils.fail('IP adress of computer not in range of it\'s network')
+				utils.fail('IP address of computer not in range of it\'s network')
 			utils.verify_ldap_object('relativeDomainName=%s,%s' % (computerProperties['name'], forwardZone), {'aRecord': [aRecord]})
 			utils.verify_ldap_object('relativeDomainName=%s,%s' % (aRecord.split(".")[-1], reverseZone), {'pTRRecord': ['%s.%s.' % (computerProperties['name'], forwardZoneName)]})
 			utils.verify_ldap_object('cn=%s,%s' % (computerProperties['name'], dhcpService), {'univentionDhcpFixedAddress': [aRecord]})
