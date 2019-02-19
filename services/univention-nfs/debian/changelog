@@ -534,7 +534,7 @@ univention-nfs (0.9-1) unstable; urgency=low
 
 univention-nfs (0.9-0) unstable; urgency=low
 
-  * bugfix which prevents from sharing directories containg spaces
+  * bugfix which prevents from sharing directories containing spaces
 
  -- Ingo Steuwer <steuwer@univention.de>  Wed, 19 Oct 2005 09:47:48 +0200
 
