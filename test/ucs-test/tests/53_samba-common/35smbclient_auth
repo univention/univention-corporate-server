@@ -74,7 +74,7 @@ class Test(object):
 	def check_processes(self):
 		expectedResult = self.amountPerRound * self.totalRounds
 		result = Test.checkResult(expectedResult)
-		print "%s of %s have been successfull." % (result, expectedResult)
+		print "%s of %s have been successful." % (result, expectedResult)
 		if result == expectedResult:
 			sys.exit(0)
 		else:
