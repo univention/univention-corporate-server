@@ -2647,7 +2647,7 @@ class s4(univention.s4connector.ucs):
 								if attribute_type[attribute].ldap_attribute != attr:
 									continue
 
-								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Found a corresponding mapping defintion: %s" % attribute)
+								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Found a corresponding mapping definition: %s" % attribute)
 								s4_attribute = attribute_type[attribute].con_attribute
 								s4_other_attribute = attribute_type[attribute].con_other_attribute
 
