@@ -767,7 +767,7 @@ univention-self-service (1.0.2-26) unstable; urgency=low
 
 univention-self-service (1.0.2-25) unstable; urgency=low
 
-  * Bug #39981: Another regex improvment for redirect url
+  * Bug #39981: Another regex improvement for redirect url
 
  -- Alexander Kramer <kramer@univention.de>  Thu, 19 Nov 2015 13:48:48 +0100
 
