@@ -1472,7 +1472,7 @@ univention-samba (5.0.13-1) unstable; urgency=low
 
 univention-samba (5.0.12-1) unstable; urgency=low
 
-  * create more diretories in the print driver directory. Bug #14622
+  * create more directories in the print driver directory. Bug #14622
   * remove printer admin parameter from smb.conf and give Printer-
     Admins/Administrator the SePrintOperatorPrivilege permission during
     join script. Bug #3562
