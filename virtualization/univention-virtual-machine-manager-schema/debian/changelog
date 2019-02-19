@@ -305,7 +305,7 @@ univention-virtual-machine-manager-schema (1.0.28-1) unstable; urgency=low
 
 univention-virtual-machine-manager-schema (1.0.27-1) unstable; urgency=low
 
-  * Use ldap attribue univentionVirtualMachineDescription instead of
+  * Use ldap attribute univentionVirtualMachineDescription instead of
     description (Bug #20018)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 09 Mar 2011 07:58:35 +0100

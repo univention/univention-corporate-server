@@ -251,14 +251,14 @@ univention-directory-replication (6.0.2-1) unstable; urgency=low
 univention-directory-replication (6.0.1-1) unstable; urgency=low
 
   * adjust schema replication filter to additional internally defined
-    attibute in OpenLDAP 2.4.31 (Bug #27992)
+    attribute in OpenLDAP 2.4.31 (Bug #27992)
 
  -- Arvid Requate <requate@univention.de>  Thu, 19 Jul 2012 17:49:14 +0200
 
 univention-directory-replication (5.0.6-1) unstable; urgency=low
 
   * adjust schema replication filter to additional internally defined
-    attibute in OpenLDAP 2.4.25 (Bug #24196)
+    attribute in OpenLDAP 2.4.25 (Bug #24196)
 
  -- Arvid Requate <requate@univention.de>  Wed, 26 Oct 2011 10:44:59 +0200
 

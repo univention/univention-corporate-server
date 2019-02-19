@@ -1881,7 +1881,7 @@ univention-ldap (9.0.19-1) unstable; urgency=low
 
 univention-ldap (9.0.18-1) unstable; urgency=low
 
-  * New attibute univentionPrinterUseClientDriver (Bug #27340)
+  * New attribute univentionPrinterUseClientDriver (Bug #27340)
 
  -- Arvid Requate <requate@univention.de>  Tue, 06 Nov 2012 14:01:47 +0100
 
