@@ -23,7 +23,7 @@ msgstr "Nur Konfigurationsdateien"
 #: umc/python/pkgdb/__init__.py:248
 #, python-format
 msgid ""
-"Connection to the dabase lost.\n"
+"Connection to the database lost.\n"
 "\n"
 "%s"
 msgstr ""
