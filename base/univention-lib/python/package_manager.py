@@ -892,7 +892,7 @@ class PackageManager(object):
 		# type: (Optional[Sequence[str]], Optional[Sequence[str]], bool, bool, str) -> bool
 		"""
 		Really commit changes (mark_install or mark_delete)
-		or pass Package-objects that shall be commited.
+		or pass Package-objects that shall be committed.
 		Never forgets to pass progress objects, may print error
 		messages, always reopens cache.
 
