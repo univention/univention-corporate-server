@@ -91,7 +91,7 @@ univention-passwd-cache (1.0.4-2) unstable; urgency=low
 univention-passwd-cache (1.0.4-1) unstable; urgency=low
 
   * The users will be removed from the local cache if the users are
-    removed or diabled. Before the user was automatically removed if the
+    removed or disabled. Before the user was automatically removed if the
     logon as user failed. Bug #13705
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 03 Mar 2010 08:56:01 +0100
