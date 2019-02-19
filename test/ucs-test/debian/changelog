@@ -17399,7 +17399,7 @@ ucs-test (1.1.2-114) unstable; urgency=low
 
 ucs-test (1.1.2-113) unstable; urgency=low
 
-  * Addes Skript for mail delegate delivery test. Bug #12378
+  * Adds Skript for mail delegate delivery test. Bug #12378
 
  -- Andre Fenske <fenske@univention.de>  Tue, 10 Feb 2009 14:12:12 +0100
 
