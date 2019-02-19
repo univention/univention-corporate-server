@@ -6173,7 +6173,7 @@ univention-updater (5.0.3-1) unstable; urgency=low
 univention-updater (5.0.2-1) unstable; urgency=low
 
   * fixed a python traceback in the policy maintenance script which
-    occurs when no cron time was definied. Bug #9652
+    occurs when no cron time was defined. Bug #9652
   * added a ucr variable for recreate_packages in the mirror.list
     (repository/mirror/recreate_packages). Bug #13947
   * redirect the repository update messages to the logfile
