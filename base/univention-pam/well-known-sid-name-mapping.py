@@ -181,7 +181,7 @@ def handler(dn, new, old, command):
 		)
 		return
 
-	if command == 'r':  # modrdn pase I: store old object
+	if command == 'r':  # modrdn phase I: store old object
 		univention.debug.debug(
 			univention.debug.LISTENER,
 			univention.debug.INFO,
@@ -200,7 +200,7 @@ def handler(dn, new, old, command):
 			listener.unsetuid()
 		return
 
-	# check for modrdn pase II in case of an add
+	# check for modrdn phase II in case of an add
 	if new and os.path.exists(FN_CACHE) and not old:
 		univention.debug.debug(
 			univention.debug.LISTENER,
