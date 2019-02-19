@@ -412,7 +412,7 @@ univention-grub (5.0.0-17) unstable; urgency=low
 
 univention-grub (5.0.0-16) unstable; urgency=low
 
-  * Initialiase grub/gfxmode to 1024x768@16, not 1024x768  (Bug #22115)
+  * initialize grub/gfxmode to 1024x768@16, not 1024x768  (Bug #22115)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 08 Sep 2011 15:56:35 +0200
 

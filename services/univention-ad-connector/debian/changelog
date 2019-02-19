@@ -1889,7 +1889,7 @@ univention-ad-connector (6.0.57-1) unstable; urgency=low
 
   * The connector listener handler writes group objects into a global
     list. This is a performance improvement which was added with Bug
-    #18619. This global group list is only needed in the the initalize
+    #18619. This global group list is only needed in the the initialize
     phase. It is now considered and saves a lot of memory (Bug #24273)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Jun 2012 06:31:16 +0200
@@ -2361,7 +2361,7 @@ univention-ad-connector (6.0.5-1) unstable; urgency=low
 
 univention-ad-connector (6.0.4-1) unstable; urgency=low
 
-  * Initialze self.lo even if bindpw does not contain a newline
+  * Initialize self.lo even if bindpw does not contain a newline
     (Bug #14186)
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 01 Aug 2011 16:55:39 +0200

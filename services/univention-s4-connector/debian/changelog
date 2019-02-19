@@ -2935,7 +2935,7 @@ univention-s4-connector (6.0.157-1) unstable; urgency=low
 
   * The connector listener handler writes group objects into a global
     list. This is a performance improvement which was added with Bug
-    #18619. This global group list is only needed in the the initalize
+    #18619. This global group list is only needed in the the initialize
     phase. It is now considered and saves a lot of memory (Bug #24273)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Jun 2012 06:31:07 +0200
