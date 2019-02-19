@@ -68,7 +68,7 @@ ucr_set = {
 for k in ['netmask', 'address', 'broadcast', 'network']:
 	ucr_set['interfaces/%s/%s' % (iface, k)] = inf.get(k, None)
 
-# if old IP adress was set as nameserver, replace it with the new address
+# if old IP address was set as nameserver, replace it with the new address
 oldip = configRegistry.get('interfaces/%s/address' % iface)
 if oldip:
 	for k in ['nameserver1', 'nameserver2', 'nameserver3']:
