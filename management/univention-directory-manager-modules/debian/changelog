@@ -5233,7 +5233,7 @@ univention-directory-manager-modules (8.0.10-1) unstable; urgency=low
 
 univention-directory-manager-modules (8.0.9-1) unstable; urgency=low
 
-  * fixed typo which prevents deletion of refering dhcp objects for all kinds
+  * fixed typo which prevents deletion of referring dhcp objects for all kinds
   	of computers; Bug #28270
 
  -- Florian Best <best@univention.de>  Wed, 29 Aug 2012 11:32:44 +0200
