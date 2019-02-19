@@ -748,7 +748,7 @@ msgstr ""
 "Lizenz gezählt."
 
 #: modules/univention/admin/handlers/users/user.py:286
-msgid "Timestamp when account lockout happend."
+msgid "Timestamp when account lockout happened."
 msgstr "Zeitstempel, zu dem das Konto ausgesperrt wurde."
 
 #: modules/univention/admin/handlers/users/contact.py:101

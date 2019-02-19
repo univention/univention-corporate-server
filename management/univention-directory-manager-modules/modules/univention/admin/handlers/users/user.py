@@ -222,7 +222,7 @@ property_descriptions = {
 	),
 	'lockedTime': univention.admin.property(
 		short_description=_('Lockout time'),
-		long_description=_('Timestamp when account lockout happend.'),
+		long_description=_('Timestamp when account lockout happened.'),
 		syntax=univention.admin.syntax.string,
 		default=0,
 		may_change=False,  # caution! this gets overwritten by some scripts
