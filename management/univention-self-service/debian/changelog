@@ -1160,7 +1160,7 @@ univention-self-service (0.0.0-7) unstable; urgency=low
 
 univention-self-service (0.0.0-6) unstable; urgency=low
 
-  * use extended attributes for pasword recovery contacts (Bug #37890)
+  * use extended attributes for password recovery contacts (Bug #37890)
   * add translations
 
  -- Daniel Troeder <troeder@univention.de>  Tue, 13 Oct 2015 08:49:50 +0200
