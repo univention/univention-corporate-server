@@ -7207,7 +7207,7 @@ univention-directory-manager-modules (7.0.19-1) unstable; urgency=low
 univention-directory-manager-modules (7.0.18-1) unstable; urgency=low
 
   * modules.identify: the list of probed modules can be reduced by
-    specifing a prefix for the module name; Bug #22439
+    specifying a prefix for the module name; Bug #22439
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 24 Jun 2011 14:47:05 +0200
 
