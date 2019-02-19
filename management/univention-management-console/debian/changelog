@@ -4577,7 +4577,7 @@ univention-management-console (3.0.77-1) unstable; urgency=low
 
 univention-management-console (3.0.76-1) unstable; urgency=low
 
-  * fixed typo "maintance", Bug #20881
+  * fixed typo "maintenance", Bug #20881
 
  -- Tim Petersen <petersen@univention.de>  Mon, 07 Feb 2011 09:45:00 +0100
 
