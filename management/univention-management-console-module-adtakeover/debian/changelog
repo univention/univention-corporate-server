@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (6.0.1-2) unstable; urgency=medium
+
+  * Bug #48700: Add reworked logo
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Tue, 19 Feb 2019 09:14:25 +0100
+
 univention-management-console-module-adtakeover (6.0.1-1) unstable; urgency=medium
 
   * Bug #46969: bindpwdfile support
