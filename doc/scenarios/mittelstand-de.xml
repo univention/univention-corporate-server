@@ -15,7 +15,7 @@
 	<para>
 	  Ganupa Technologies ist einer der wichtigsten Hersteller für Walzstahlfräsen. Am Firmensitz in
 	  Deutschland arbeiten 260 Mitarbeiter in Produktion, Verwaltung, Konstruktion und
-	  Vertrieb. Außerdem gibt es in den USA, Argentinien und Indien lokale Standorte mit je 5-10
+	  Vertrieb. Außerdem gibt es in den USA, Argentinien und Indien lokale Standorte mit je 5–10
 	  Mitarbeitern.
 	</para>
 
@@ -27,7 +27,7 @@
 
 	<para>
 	  Für die Mitarbeiter aus der Verwaltung und dem Vertrieb soll nur eine Office-Suite, ein
-	  E-Mail-Client und ein Browser angeboten werden
+	  E-Mail-Client und ein Browser angeboten werden.
 	</para>
 
 	<para>
@@ -85,8 +85,8 @@
 	<para>
 	  Das Unternehmen implementiert eine Infrastruktur bestehend aus einem UCS Domänencontroller
 	  Master (DC Master), einem UCS Domänencontroller Backup (DC Backup), mehreren UCS
-      Domänencontroller Slave (DC Slave) und Arbeitsplatzsysteme für
-      Mitarbeiter bestehend aus Desktop Computern und Notebooks. Zum Einsatz
+      Domänencontroller Slave (DC Slave) und Arbeitsplatzsystemen für
+      Mitarbeiter bestehend aus Desktop-Computern und Notebooks. Zum Einsatz
       kommen Microsoft Windows und Ubuntu Linux.
 	</para>
 
@@ -118,14 +118,14 @@
 	<title>Virtualisierung</title>
 	<para>
 	  Alle Serversysteme in der Umgebung von Ganupa Technologies sind mit &ucsUVMM; (UVMM)
-	  virtualisiert. Zum Einsatz kommt dabei ausschliesslich Open Source-Software.
+	  virtualisiert. Zum Einsatz kommt dabei ausschliesslich Open-Source-Software.
 	</para>
 
 	<para>
 	  Als Grundlage der Virtualisierung dienen Virtualisierungsserver auf Memberservern
 	  (UCS-Serversysteme ohne lokalen LDAP-Server). Auf diesen laufen jeweils ein bis mehrere
 	  virtuelle Maschinen mit der Virtualisierungslösung KVM. UCS- und Windows-Systeme werden
-	  paravirtualisiert betrieben, d.h. durch einen Zugriff der virtualisierten Systeme auf die
+	  paravirtualisiert betrieben, d. h. durch einen Zugriff der virtualisierten Systeme auf die
 	  Ressourcen der Wirtsysteme kann ein höherer Durchsatz erzielt werden.
 	  Paravirtualisierungstreiber für KVM werden von Univention als signierte
 	  MSI-Installationspakete bereitgestellt und können so einfach installiert werden.
@@ -160,8 +160,8 @@
 
 	<para>
 	  In einigen Großraumbüros sind mehrere Drucker zu einer Druckergruppe zusammengefasst; die
-	  Benutzer drucken einfach auf diese Gruppe, wobei die Druckaufträge gleichmässig verteilt
-	  werden und der nächste freie Drucker verwendet wird. Die Benutzer müssen so nicht prüfen ob
+	  Benutzer drucken einfach auf diese Gruppe, wobei die Druckaufträge gleichmäßig verteilt
+	  werden und der nächste freie Drucker verwendet wird. Die Benutzer müssen so nicht prüfen, ob
 	  ein Drucker gerade in Verwendung ist.
 	</para>
 
@@ -175,12 +175,12 @@
   </section>
 
   <section id="engineering:db">
-	<title>Einbindung von Oracle Solaris-Systemen</title>
+	<title>Einbindung von Oracle-Solaris-Systemen</title>
 	<para>
 	  Eine Fachanwendung für CAD-Konstruktionen ist nur für Oracle Solaris verfügbar. Die
 	  Namensdienste auf dem Solaris-System wurden auf eine Authentifizierung gegen das UCS-LDAP
-	  angepasst, d.h. Benutzer können sich auf dem Solaris-System mit ihrer Domänen-Benutzerkennung
-	  und -Passwort anmelden. Die zusätzliche Pflege lokaler Benutzerkonten auf dem Solaris-System
+	  angepasst, d. h. Benutzer können sich auf dem Solaris-System mit ihrer Domänen-Benutzerkennung
+	  und ihrem Domänen-Passwort anmelden. Die zusätzliche Pflege lokaler Benutzerkonten auf dem Solaris-System
 	  entfällt so.
 	</para>
 
@@ -214,13 +214,13 @@
 	</para>
 
 	<para>
-	  Die Verwaltung der Groupware-relavanten Attribute integriert sich nahtlos in die &ucsUMC;. Die
+	  Die Verwaltung der Groupware-relevanten Attribute integriert sich nahtlos in die &ucsUMC;. Die
 	  Mitarbeiter greifen auf die Groupware über den Open-Xchange App Suite Web-Client und Mozilla Thunderbird
 	  zu.
 	</para>
 
 	<para>
-	  Mobile Endgeräte (Smartphones und Tablets) werden über das Microsoft ActiveSync-Protokoll
+	  Mobile Endgeräte (Smartphones und Tablets) werden über das Microsoft-ActiveSync-Protokoll
 	  integriert.
 	</para>
 
