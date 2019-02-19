@@ -3126,7 +3126,7 @@ univention-management-console (5.0.22-1) unstable; urgency=low
 univention-management-console (5.0.21-1) unstable; urgency=low
 
   * unify translations, fix typo bug in ChoicesSanitizer,
-    be more conservative when adding asteriks in patterns (Bug #27720)
+    be more conservative when adding asterisk in patterns (Bug #27720)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 29 Aug 2012 16:32:01 +0200
 
