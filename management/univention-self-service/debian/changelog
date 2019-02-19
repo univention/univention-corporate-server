@@ -250,7 +250,7 @@ univention-self-service (2.0.13-2) unstable; urgency=medium
 
 univention-self-service (2.0.13-1) unstable; urgency=medium
 
-  * Show password change and password reset entires in portal again
+  * Show password change and password reset entries in portal again
     (Bug #44102)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Mar 2017 14:12:19 +0200
