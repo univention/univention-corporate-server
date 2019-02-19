@@ -63,7 +63,7 @@ def parse_options():
 
 
 def main():
-	"""Calculate IP adress parameters-"""
+	"""Calculate IP address parameters-"""
 	options = parse_options()
 	try:
 		_addr = ipaddr.IPAddress(options.address)
