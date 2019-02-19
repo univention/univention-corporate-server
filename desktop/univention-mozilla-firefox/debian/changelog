@@ -309,7 +309,7 @@ univention-mozilla-firefox (1.2-7) unstable; urgency=low
 
 univention-mozilla-firefox (1.2-6) unstable; urgency=low
 
-  * Readded missing files
+  * Re-added missing files
 
  -- Janis Meybohm <meybohm@univention.de>  Tue, 12 Jun 2007 16:13:10 +0200
 

@@ -2406,7 +2406,7 @@ univention-ldap (8.0.58-1) unstable; urgency=low
 
 univention-ldap (8.0.57-1) unstable; urgency=low
 
-  * readded univentionDefaultKolabHomeServer to univention-ldap and 
+  * re-added univentionDefaultKolabHomeServer to univention-ldap and 
     removed transition schema file form kolab legacy package (Bug #23483)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 26 Oct 2011 17:31:53 +0200
@@ -2756,7 +2756,7 @@ univention-ldap (8.0.17-1) unstable; urgency=low
 
 univention-ldap (8.0.16-1) unstable; urgency=low
 
-  * Readded univention-newsid to dependencies (Bug #23017)
+  * Re-added univention-newsid to dependencies (Bug #23017)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Jul 2011 07:19:42 +0200
 
@@ -4466,7 +4466,7 @@ univention-ldap (1.13) unstable; urgency=low
 univention-ldap (1.12) unstable; urgency=low
 
   * merged with HEAD
-  * readded uid=root,cn=users,... to ACLs
+  * re-added uid=root,cn=users,... to ACLs
   * added default groups for dc master & dc backup, memberserver and client
   * set ldap/hostdn on dc master
   * allow umlaute krb5PrincipalName

@@ -279,7 +279,7 @@ univention-ssl (9.0.0-5) unstable; urgency=low
 
 univention-ssl (9.0.0-4) unstable; urgency=low
 
-  * readded dependency to univention-directory-listener (Bug #35144) 
+  * re-added dependency to univention-directory-listener (Bug #35144) 
 
  -- Felix Botner <botner@univention.de>  Tue, 19 Aug 2014 11:26:20 +0200
 

@@ -1841,7 +1841,7 @@ univention-join (1.0.5-1) unstable; urgency=low
 
 univention-join (1.0.4-2) unstable; urgency=low
 
-  * readded the dependency to sysutils
+  * re-added the dependency to sysutils
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 20 Jul 2007 13:04:09 +0200
 

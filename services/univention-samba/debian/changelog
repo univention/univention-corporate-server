@@ -1019,7 +1019,7 @@ univention-samba (6.0.40-2) unstable; urgency=low
 
 univention-samba (6.0.40-1) unstable; urgency=low
 
-  * readded python/share_restrictions.py (Bug #26899)
+  * re-added python/share_restrictions.py (Bug #26899)
 
  -- Florian Best <best@univention.de>  Tue, 03 Jul 2012 08:46:57 +0200
 

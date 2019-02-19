@@ -719,7 +719,7 @@ univention-heimdal (3.0.3-1) unstable; urgency=low
 
 univention-heimdal (3.0.2-1) unstable; urgency=low
 
-  * readded the baseconfig variable kerberos/v4tickets. The variable was
+  * re-added the baseconfig variable kerberos/v4tickets. The variable was
     removed with Bug #8878. (Bug: #13423)
 
  -- Stefan Gohmann <gohmann@univention.de>  Sun, 18 Jan 2009 09:18:53 +0100
@@ -795,7 +795,7 @@ univention-heimdal (2.1.1-2) unstable; urgency=low
 
 univention-heimdal (2.1.1-1) unstable; urgency=low
 
-  * readded des3-hmac-sha1 to the encryption type list
+  * re-added des3-hmac-sha1 to the encryption type list
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri,  7 Sep 2007 10:05:11 +0200
 
@@ -966,7 +966,7 @@ univention-heimdal (1.7) unstable; urgency=low
 
 univention-heimdal (1.6) unstable; urgency=low
 
-  * readded listener module keytab
+  * re-added listener module keytab
   * remove policy check function (now in kpasswdd)
   * resync listener module keytab
 
@@ -994,7 +994,7 @@ univention-heimdal (1.4) unstable; urgency=low
 univention-heimdal (1.6) unstable; urgency=low
 
   * Use python2.3 in kerberos_now.
-  * readded listener module keytab
+  * re-added listener module keytab
   * remove policy check function (now in kpasswdd)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue,  2 Mar 2004 10:21:28 +0100

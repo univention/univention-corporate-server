@@ -79,7 +79,7 @@ univention-initrd (4.0.1-2) unstable; urgency=low
 
 univention-initrd (4.0.1-1) unstable; urgency=low
 
-  * readded dependency to univention-bootsplash (Bug #22431)
+  * re-added dependency to univention-bootsplash (Bug #22431)
 
  -- Felix Botner <botner@univention.de>  Thu, 21 Jul 2011 13:02:54 +0200
 

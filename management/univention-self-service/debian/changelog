@@ -244,7 +244,7 @@ univention-self-service (2.0.13-3) unstable; urgency=medium
 
 univention-self-service (2.0.13-2) unstable; urgency=medium
 
-  * Bug #44111: Readded change password page and page navigation
+  * Bug #44111: Re-added change password page and page navigation
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 28 Mar 2017 17:42:19 +0200
 
@@ -325,7 +325,7 @@ univention-self-service (2.0.10-1) unstable; urgency=medium
 
 univention-self-service (2.0.9-8) unstable; urgency=medium
 
-  * Bug #43565: readd removed hook registration
+  * Bug #43565: re-add removed hook registration
 
  -- Florian Best <best@univention.de>  Wed, 15 Mar 2017 11:32:19 +0100
 

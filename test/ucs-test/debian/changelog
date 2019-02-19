@@ -11707,7 +11707,7 @@ ucs-test (4.0.19-2) unstable; urgency=low
 
 ucs-test (4.0.19-1) unstable; urgency=low
 
-  * 51_samba4/35smbclient_auth: readded waitForUserCreation function
+  * 51_samba4/35smbclient_auth: re-added waitForUserCreation function
     because we have to wait for the DRS replication (Bug #29052)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 21 Jun 2013 06:23:55 +0200
@@ -12255,7 +12255,7 @@ ucs-test (3.0.38-1) unstable; urgency=low
 
 ucs-test (3.0.37-1) unstable; urgency=low
 
-  * readded fixed version of 07kpasswd_output to base section (Bug #30750)
+  * re-added fixed version of 07kpasswd_output to base section (Bug #30750)
 
  -- Lukas Walter <walter@univention.de>  Fri, 19 Apr 2013 14:25:13 +0200
 
@@ -16685,7 +16685,7 @@ ucs-test (1.2.5-13) unstable; urgency=low
 
 ucs-test (1.2.5-12) unstable; urgency=low
 
-  * Readded pkgdb Test. Bug #13112
+  * Re-added pkgdb Test. Bug #13112
 
  -- Andre Fenske <fenske@univention.de>  Mon, 17 Aug 2009 14:52:20 +0200
 

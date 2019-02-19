@@ -927,7 +927,7 @@ univention-pkgdb (1.0.14-1) unstable; urgency=low
 
 univention-pkgdb (1.0.13-2) unstable; urgency=low
 
-  * readded and rename the search function
+  * re-added and rename the search function
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 Nov 2007 19:51:44 +0100
 

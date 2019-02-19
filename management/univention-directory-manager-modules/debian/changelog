@@ -1853,7 +1853,7 @@ univention-directory-manager-modules (12.0.12-5) unstable; urgency=medium
 
 univention-directory-manager-modules (12.0.12-4) unstable; urgency=medium
 
-  * Bug #43423: defer validations to the bottom of __init__, readd settings/cn
+  * Bug #43423: defer validations to the bottom of __init__, re-add settings/cn
   	workaround
 
  -- Florian Best <best@univention.de>  Thu, 26 Jan 2017 13:39:09 +0100
@@ -8251,7 +8251,7 @@ univention-directory-manager-modules (5.0.37-2) unstable; urgency=low
 
 univention-directory-manager-modules (5.0.36-1) unstable; urgency=low
 
-  * readded the old syntax for the UCR policy module:
+  * re-added the old syntax for the UCR policy module:
      udm modify --dn <dn> --set registry="pkgdb/scan=no". Bug #14423
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 15 Oct 2009 08:15:56 +0200
@@ -10270,7 +10270,7 @@ univention-admin-modules (0.47-43) unstable; urgency=low
 
 univention-admin-modules (0.47-40) unstable; urgency=low
 
-  * readded the old dns/dhcp syntax for the network module
+  * re-added the old dns/dhcp syntax for the network module
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 24 Oct 2006 09:31:36 +0200
 

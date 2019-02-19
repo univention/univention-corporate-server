@@ -1309,7 +1309,7 @@ univention-pam (0.5) unstable; urgency=low
 
 univention-pam (0.4) unstable; urgency=low
 
-  * readded nsswitch/ldap baseconfig variable
+  * re-added nsswitch/ldap baseconfig variable
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 12 May 2004 09:13:13 +0200
 

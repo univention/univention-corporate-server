@@ -2100,7 +2100,7 @@ univention-updater (10.0.0-5) unstable; urgency=low
 
 univention-updater (10.0.0-4) unstable; urgency=low
 
-  * Readd univention-directory-policy dependency (Bug #35431)
+  * Re-add univention-directory-policy dependency (Bug #35431)
 
  -- Florian Best <best@univention.de>  Tue, 29 Jul 2014 13:44:43 +0200
 

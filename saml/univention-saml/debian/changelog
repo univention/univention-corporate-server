@@ -783,7 +783,7 @@ univention-saml (3.0.19-1) unstable; urgency=medium
 
 univention-saml (3.0.18-4) unstable; urgency=medium
 
-  * Bug #39472: readd listener module
+  * Bug #39472: re-add listener module
 
  -- Florian Best <best@univention.de>  Tue, 06 Oct 2015 17:35:16 +0200
 

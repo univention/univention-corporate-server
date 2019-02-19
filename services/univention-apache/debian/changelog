@@ -1523,7 +1523,7 @@ univention-apache (2.0.2-1) unstable; urgency=low
 univention-apache (2.0.1-1) unstable; urgency=low
 
   * fix the virtual host ssl configuration
-  * readded index.html
+  * re-added index.html
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 May 2007 08:04:58 +0200
 
