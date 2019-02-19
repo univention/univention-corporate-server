@@ -52,7 +52,7 @@ if __name__ == '__main__':
 			udm.stop_cli_server()
 			license_client_count_current = get_current_v2license_client_count()
 			if license_client_count_current != license_client_count_admember:
-				utils.fail('After flagging the test client as synced in ad/member mode, the client ist still counted in the license (admember: %s, current: %s)' % (license_client_count_admember, license_client_count_current))
+				utils.fail('After flagging the test client as synced in ad/member mode, the client is still counted in the license (admember: %s, current: %s)' % (license_client_count_admember, license_client_count_current))
 
 			univention.config_registry.handler_unset(['ad/member'])
 			udm.stop_cli_server()
