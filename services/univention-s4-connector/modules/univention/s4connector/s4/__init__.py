@@ -1903,7 +1903,7 @@ class s4(univention.s4connector.ucs):
 				self.lo.lo.modify_s(ucs_group_object['dn'], compatible_modlist(ml))
 			except ldap.ALREADY_EXISTS:
 				# The user is already member in this group or it is his primary group
-				# This might happen, if we synchronize a rejected file with old informations
+				# This might happen, if we synchronize a rejected file with old information
 				# See Bug #25709 Comment #17: https://forge.univention.org/bugzilla/show_bug.cgi?id=25709#c17
 				ud.debug(ud.LDAP, ud.INFO, "one_group_member_sync_to_ucs: User is already member of the group: %s modlist: %s" % (ucs_group_object['dn'], ml))
 
@@ -1921,7 +1921,7 @@ class s4(univention.s4connector.ucs):
 				self.lo_s4.lo.modify_s(s4_group_object['dn'], compatible_modlist(ml))
 			except ldap.ALREADY_EXISTS:
 				# The user is already member in this group or it is his primary group
-				# This might happen, if we synchronize a rejected file with old informations
+				# This might happen, if we synchronize a rejected file with old information
 				# See Bug #25709 Comment #17: https://forge.univention.org/bugzilla/show_bug.cgi?id=25709#c17
 				ud.debug(ud.LDAP, ud.INFO, "one_group_member_sync_from_ucs: User is already member of the group: %s modlist: %s" % (s4_group_object['dn'], ml))
 

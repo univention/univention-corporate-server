@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Univention System Info
-#  collects informations about the hardware
+#  collects information about the hardware
 #
 # Copyright 2009-2019 Univention GmbH
 #
@@ -85,7 +85,7 @@ display_help() {
 	    print version information and exit program
 
 	Description:
-	  $0 collects some hardware-related informations
+	  $0 collects some hardware-related information
 	  about your system, e.g. CPU, memory and filesystems.
 
 	EOL
