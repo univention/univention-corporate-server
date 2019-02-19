@@ -7133,7 +7133,7 @@ univention-directory-manager-modules (7.0.28-1) unstable; urgency=low
 
 univention-directory-manager-modules (7.0.27-1) unstable; urgency=low
 
-  * syntax: dhcpEntry is now based and complex and therefor the computer
+  * syntax: dhcpEntry is now based and complex and therefore the computer
     module does not need to split the values; Bug #22439
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 01 Jul 2011 15:12:44 +0200
