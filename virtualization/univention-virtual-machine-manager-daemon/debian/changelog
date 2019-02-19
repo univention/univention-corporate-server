@@ -3542,7 +3542,7 @@ univention-virtual-machine-manager-daemon (0.9.131-1) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (0.9.130-1) unstable; urgency=low
 
-  * ensure that Xen-PV isntances are detected correctly (os type may be
+  * ensure that Xen-PV instances are detected correctly (os type may be
     linux or xen); Bug #21003
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 04 Feb 2011 11:17:38 +0100
@@ -3576,7 +3576,7 @@ univention-virtual-machine-manager-daemon (0.9.125-1) unstable; urgency=low
 
   * read operating system information from profile; Bug #19133
   * if specified in profile hard drives and/or network interface of full
-    virtual isntances can be set up as para-virtual devices; Bug
+    virtual instances can be set up as para-virtual devices; Bug
     #19136
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 26 Jan 2011 17:13:20 +0100
