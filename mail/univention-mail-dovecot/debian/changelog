@@ -261,7 +261,7 @@ univention-mail-dovecot (0.0.0-53) unstable; urgency=low
 
 univention-mail-dovecot (0.0.0-52) unstable; urgency=low
 
-  * Bug #38840: fix listener not reacting corretly to simultaneous change of
+  * Bug #38840: fix listener not reacting correctly to simultaneous change of
   mailPrimaryAddress and home server if home server was/became ""
 
  -- Daniel Troeder <troeder@univention.de>  Tue, 07 Jul 2015 17:15:59 +0200
