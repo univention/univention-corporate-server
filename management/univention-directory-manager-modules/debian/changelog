@@ -10700,7 +10700,7 @@ univention-admin-modules (0.46-41) unstable; urgency=low
 
 univention-admin-modules (0.46-39) unstable; urgency=low
 
-  * don't try to change password flags if it is not necassery
+  * don't try to change password flags if it is not necessary
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri,  5 May 2006 21:08:37 +0200
 

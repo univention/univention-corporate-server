@@ -4197,7 +4197,7 @@ univention-ldap (1.42-10) unstable; urgency=low
 univention-ldap (1.42-9) unstable; urgency=low
 
   * create `default-users' and `default-admins' admin-settings policies is
-    neccessary.
+    necessary.
 
  -- Martin Kuehl <kuehl@univention.de>  Tue,  4 Apr 2006 17:19:31 +0200
 
