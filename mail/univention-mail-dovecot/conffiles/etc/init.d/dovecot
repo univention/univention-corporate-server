@@ -101,7 +101,7 @@ if [ -f /etc/inetd.conf ]; then
 fi
 
 # determine the location of the PID file
-# overide by setting base_dir in conf file or PIDBASE in /etc/defaults/$NAME
+# override by setting base_dir in conf file or PIDBASE in /etc/defaults/$NAME
 PIDBASE=${PIDBASE:-`doveconf -n -c ${CONF} -h base_dir`}
 PIDFILE=${PIDBASE:-/var/run/dovecot}/master.pid
 
