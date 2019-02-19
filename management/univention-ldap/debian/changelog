@@ -2699,7 +2699,7 @@ univention-ldap (8.0.26-1) unstable; urgency=low
 
 univention-ldap (8.0.25-1) unstable; urgency=low
 
-  * transfered kolab related files to univention-kolab-schema (Bug #22436)
+  * transferred kolab related files to univention-kolab-schema (Bug #22436)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 31 Aug 2011 14:56:10 +0200
 

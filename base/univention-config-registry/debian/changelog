@@ -3220,7 +3220,7 @@ univention-baseconfig (1.53-7) unstable; urgency=low
 univention-baseconfig (1.53-6) unstable; urgency=low
 
   * use baseconfig http/proxy for apt.conf (uses old variables proxy/address and proxy/port)
-  * transfered /etc/profile to a baseconfig-file, uses proxy/http to set global http-proxy
+  * transferred /etc/profile to a baseconfig-file, uses proxy/http to set global http-proxy
 
  -- Ingo Steuwer <steuwer@univention.de>  Fri, 28 Oct 2005 15:43:13 +0200
 
