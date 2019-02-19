@@ -1,7 +1,7 @@
 """
 A jenkins build represents a single execution of a Jenkins Job.
 
-Builds can be thought of as the second level of the jenkins heirarchy
+Builds can be thought of as the second level of the jenkins hierarchy
 beneath Jobs. Builds can have state, such as whether they are running or
 not. They can also have outcomes, such as wether they passed or failed.
 
