@@ -207,7 +207,7 @@ define([
 		_setValueAttr: function(newVal) {
 			this.inherited(arguments);
 
-			// store the value as initial value after the widget has been intialized
+			// store the value as initial value after the widget has been initialized
 			//if (this._isInitialized) {
 			//	this._saveInitialValue();
 			//}
