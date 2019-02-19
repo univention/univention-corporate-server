@@ -2530,7 +2530,7 @@ univention-s4-connector (7.0.17-30) unstable; urgency=low
 
 univention-s4-connector (7.0.17-29) unstable; urgency=low
 
-  * Ignore PrimaryKerberosBlob pacakges in old S4 supplementalCredentials
+  * Ignore PrimaryKerberosBlob packages in old S4 supplementalCredentials
     if the ndr_unpack fails. (Bug #28932)
 
  -- Arvid Requate <requate@univention.de>  Thu, 25 Oct 2012 20:09:39 +0200
