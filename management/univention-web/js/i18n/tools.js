@@ -90,7 +90,7 @@ define([
 		//		require(['i18nTools/i18nTools'], function(i18n) {
 		//			i18n.setLanguage('de-DE'); // might do a redirect
 		//			...
-		//			i18n.setLanguage('de-DE'); // wont do it again
+		//			i18n.setLanguage('de-DE'); // won't do it again
 		//		});
 
 		if (locale !== dojo.locale) {
