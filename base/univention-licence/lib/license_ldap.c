@@ -62,7 +62,7 @@ err:
 
 /******************************************************************************/
 /*!
-	@brief initialitze the ldap part of the lib, automatic called if need
+	@brief initialize the ldap part of the lib, automatic called if need
 	@todo remove the debug functions, in the moment the ldap server is always testing.
 	
 	@retval 1 if succeed
