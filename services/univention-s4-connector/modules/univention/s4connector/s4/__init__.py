@@ -1513,7 +1513,7 @@ class s4(univention.s4connector.ucs):
 			ud.debug(ud.LDAP, ud.PROCESS, 'primary_group_sync_from_ucs: The S4 object (%s) was not found. The object was removed.' % object['dn'])
 			return
 
-		ucs_group_id = ldap_object_ucs['gidNumber'][0]  # FIXME: fails if group does not exsist
+		ucs_group_id = ldap_object_ucs['gidNumber'][0]  # FIXME: fails if group does not exists
 		ucs_group_filter = format_escaped('(&(objectClass=univentionGroup)(gidNumber={0!e}))', ucs_group_id)
 		ucs_group_ldap = self.search_ucs(filter=ucs_group_filter)  # is empty !?
 
