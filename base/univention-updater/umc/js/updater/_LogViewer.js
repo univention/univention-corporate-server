@@ -187,7 +187,7 @@ define([
 			this._oldScrollPosition = geometry.docScroll().y;
 		},
 
-		// if the old scrollbar postion isn't the new one, the user has changed it
+		// if the old scrollbar position isn't the new one, the user has changed it
 		hasUserMovedScrollbar: function(oldPos, newPos){
 			if (oldPos !== newPos){
 				this._goToBottom = false;
