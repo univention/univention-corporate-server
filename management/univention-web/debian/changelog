@@ -897,7 +897,7 @@ univention-web (1.0.39-20) unstable; urgency=medium
 
 univention-web (1.0.39-19) unstable; urgency=medium
 
-  * Bug #44008: use dom-geometry to get scroll postion in grid
+  * Bug #44008: use dom-geometry to get scroll position in grid
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 21 Mar 2017 17:58:09 +0100
 
