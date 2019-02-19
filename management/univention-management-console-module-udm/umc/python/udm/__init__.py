@@ -1190,8 +1190,8 @@ class Instance(Base, ProgressMixin):
 				#   [new]  virtually edit non-existing UDM object (when a new object is being created)
 				#   -> the parent container UDM object is loaded
 				# (2)
-				#   [w/pol]   UDM object has assigend policies in LDAP directory
-				#   [w/o_pol] UDM object has no policies assigend in LDAP directory
+				#   [w/pol]   UDM object has assigned policies in LDAP directory
+				#   [w/o_pol] UDM object has no policies assigned in LDAP directory
 				# (3)
 				#   [inherit] user request to (virtually) change the policy to 'inherited'
 				#   [set_pol] user request to (virtually) assign a particular policy
