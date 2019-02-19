@@ -316,7 +316,7 @@ def do_app_updates(options, checkForUpdates, silent):
 
     if not success:
         dprint(silent, 'ERROR: app upgrade failed. Please check %s\n' % appcenter_log.LOG_FILE)
-        return False  # pretend no updates available; otherwise do_exec may result in inifinite loop
+        return False  # pretend no updates available; otherwise do_exec may result in infinite loop
     dprint(silent, 'univention-app upgrade finished at %s...' % time.ctime(), debug=True)
     dprint(silent, 'done')
     return not success  # pending updates
