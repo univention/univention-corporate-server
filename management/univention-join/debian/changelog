@@ -475,7 +475,7 @@ univention-join (7.1.2-4) unstable; urgency=low
 
 univention-join (7.1.2-3) unstable; urgency=low
 
-  * Bug #34238: added error handling for failed dns querys during
+  * Bug #34238: added error handling for failed dns queries during
   	guessing of fqdn
 
  -- Drees Dormann <dormann@univention.de>  Wed, 21 Jan 2015 14:17:14 +0100
