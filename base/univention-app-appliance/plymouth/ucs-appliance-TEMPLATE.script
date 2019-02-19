@@ -590,7 +590,7 @@ fun display_password_callback (prompt, bullets) {
 	local.list = StringToList(prompt);
 	local.msg;
 
-	# disbale logo
+	# disable logo
 	global.logo.sprite.SetOpacity(0.0);
 
 	# set up dialog
@@ -697,7 +697,7 @@ fun question_callback (prompt, string) {
 
 	global.status = "question";
 
-	# disbale logo
+	# disable logo
 	global.logo.sprite.SetOpacity(0.0);
 
 	# setup dialog

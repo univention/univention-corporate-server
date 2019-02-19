@@ -133,7 +133,7 @@ ucr set \
 	ldap/maxopenfiles?8192 # Bug #17705
 
 if [ "$1" = "configure" -a -z "$2" ]; then
-	# disbale anonymous bind by default
+	# disable anonymous bind by default
 	univention-config-registry set ldap/acl/read/anonymous?no
 else
 	univention-config-registry set ldap/acl/read/anonymous?yes
