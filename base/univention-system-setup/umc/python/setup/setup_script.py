@@ -329,7 +329,7 @@ class SetupScript(object):
 		Override this method in your SetupScriptClass.
 		You may return True or False which will be propagated
 		to run() itself. If you don't return False, True will be
-		used implicitely.
+		used implicitly.
 		'''
 		raise NotImplementedError('Define your own inner_run() method, please.')
 
