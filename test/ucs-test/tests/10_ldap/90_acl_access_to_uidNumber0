@@ -90,7 +90,7 @@ class Hacking(object):
 		print ''
 
 		if failures:
-			raise Hacked('hijacking by %s succeded for the following %d DNs: %s' % (lo.binddn, len(failures), '\n'.join(failures),))
+			raise Hacked('hijacking by %s succeeded for the following %d DNs: %s' % (lo.binddn, len(failures), '\n'.join(failures),))
 
 	def testcases(self, cases):
 		for hack in cases:
