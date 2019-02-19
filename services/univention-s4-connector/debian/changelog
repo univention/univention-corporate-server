@@ -4728,7 +4728,7 @@ univention-ad-connector (4.0.11-1) unstable; urgency=low
 
 univention-ad-connector (4.0.10-1) unstable; urgency=low
 
-  * suppport for Windows 2008. Bug #11701
+  * support for Windows 2008. Bug #11701
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu,  2 Jul 2009 10:27:06 +0200
 
