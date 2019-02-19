@@ -124,7 +124,7 @@
 			<step><simpara>Execute <command><filename>release-preup.sh</filename> <replaceable>$version</replaceable></command></simpara></step>
 			<step><simpara>Execute <command><filename>component-preup.sh</filename> <literal>post</literal> <replaceable>$version</replaceable></command></simpara></step>
 			<step><simpara>Download the new <filename>Packages</filename> and <filename>Release</filename> files. Their <acronym>PGP</acronym> signatures validated by <application>APT</application> internally.</simpara></step>
-			<step><simpara>Preform the update</simpara></step>
+			<step><simpara>Perform the update</simpara></step>
 			<step><simpara>Execute <command><filename>component-postup.sh</filename> <literal>pre</literal> <replaceable>$version</replaceable></command></simpara></step>
 			<step><simpara>Execute <command><filename>release-postup.sh</filename> <replaceable>$version</replaceable></command></simpara></step>
 			<step><simpara>Execute <command><filename>component-postup.sh</filename> <literal>post</literal> <replaceable>$version</replaceable></command></simpara></step>
