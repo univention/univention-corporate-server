@@ -731,7 +731,7 @@ univention-apache (7.0.0-1) unstable; urgency=low
 
 univention-apache (6.0.16-7) unstable; urgency=low
 
-  * place ucs overview entries without priorty at the end
+  * place ucs overview entries without priority at the end
   (Bug #33750)
 
  -- Lukas Walter <walter@univention.de>  Wed, 18 Jun 2014 15:52:12 +0100
