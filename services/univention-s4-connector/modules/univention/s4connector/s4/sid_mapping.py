@@ -78,7 +78,7 @@ def sid_to_s4_mapping(s4connector, key, object):
 
 	sambaSID = object['attributes'][sidAttribute]
 
-	# Two diffrent cases are possible, the user sid contains the
+	# Two different cases are possible, the user sid contains the
 	# domain sid or not.
 	if sambaSID[0].startswith('S-'):
 		new_objectSid_ndr = ndr_pack(security.dom_sid('%s' % (sambaSID[0])))
