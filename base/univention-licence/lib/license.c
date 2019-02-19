@@ -3,7 +3,7 @@
 	@brief general lib license functions
 */
 
-static lObj* global_license = NULL; /*!< the container for the current selecte license*/
+static lObj* global_license = NULL; /*!< the container for the current selected license*/
 static int is_init = 0;/*!< the init-state of the lib*/
 
 /*****************************************************************************/
