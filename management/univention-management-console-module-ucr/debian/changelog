@@ -369,7 +369,7 @@ univention-management-console-module-ucr (1.0.18-1) unstable; urgency=low
 
 univention-management-console-module-ucr (1.0.17-1) unstable; urgency=low
 
-  * add join script to create UMC acls ans operations; Bug #22439
+  * add join script to create UMC acls and operations; Bug #22439
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 01 Aug 2011 15:32:18 +0200
 
