@@ -58,7 +58,7 @@ def getLogrotateConfig(name, configRegistry):
 
 	:param str name: The name of the log file or service.
 	:param ConfigRegistry configRegistry: An |UCR| instance.
-	:returns: A dictionary containging the merged configuration.
+	:returns: A dictionary containing the merged configuration.
 	:rtype: dict
 
 	>>> ucr = ConfigRegistry()
