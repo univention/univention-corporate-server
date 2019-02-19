@@ -43,12 +43,12 @@ do
 	i=`expr $i + 1`
 done
 
-echo -e "\n\n***Try to call ldapdelete via the ldapi interface. This shouln't work."
+echo -e "\n\n***Try to call ldapdelete via the ldapi interface. This shouldn't work."
 if ! su - "$USERNAME" -c "ldapdelete -x -H ldapi:/// 'uid=$USERNAME,cn=users,$ldap_base' && echo 'Error: Removed the object as user $USERNAME via ldapi socket.' && exit 1 || exit 0"
 then
 	fail_test 1
 fi
-echo -e "\n\n***Try to call ldapdelete via the ldapi interfaceas user nobody. This shouln't work."
+echo -e "\n\n***Try to call ldapdelete via the ldapi interfaceas user nobody. This shouldn't work."
 if ! su -s /bin/bash - "nobody" -c "ldapdelete -x -H ldapi:/// 'uid=$USERNAME,cn=users,$ldap_base' && echo 'Error: Removed the object as user nobody via ldapi socket.' && exit 1 || exit 0"
 then
 	fail_test 1
