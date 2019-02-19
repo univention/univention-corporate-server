@@ -834,7 +834,7 @@ class LDAPEscapeFormatter(string.Formatter):
 
 def format_escaped(format_string, *args, **kwargs):
 	"""
-	Convenience-wrapper arround `LDAPEscapeFormatter`.
+	Convenience-wrapper around `LDAPEscapeFormatter`.
 
 	Use `!e` do denote format-field that should be escaped using
 	`ldap.filter.escape_filter_chars()`'

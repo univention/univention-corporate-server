@@ -63,7 +63,7 @@ def ignore_filter_from_tmpl(template, ucr_key, default=''):
 
 def ignore_filter_from_attr(attribute, ucr_key, default=''):
 	"""
-	Convenience-wrapper arround `ignore_filter_from_tmpl()`.
+	Convenience-wrapper around `ignore_filter_from_tmpl()`.
 
 	This expects a single `attribute` instead of a `template` argument.
 
