@@ -9287,7 +9287,7 @@ univention-directory-manager-modules (3.0.2-1) stable; urgency=low
 
 univention-directory-manager-modules (3.0.1-1) stable; urgency=low
 
-  * move the samba config atrributes to the samba domain object
+  * move the samba config attributes to the samba domain object
   * disable the add button in the samba config object
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 26 Jun 2008 11:41:40 +0200

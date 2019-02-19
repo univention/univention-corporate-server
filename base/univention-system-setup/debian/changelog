@@ -5126,7 +5126,7 @@ univention-system-setup (5.0.145-1) unstable; urgency=low
 
 univention-system-setup (5.0.144-1) unstable; urgency=low
 
-  * Overwrite nameserver values only if the gateway atrributes have been
+  * Overwrite nameserver values only if the gateway attributes have been
     set (Bug #26408)
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Mar 2012 16:16:04 +0200

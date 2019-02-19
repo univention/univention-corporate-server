@@ -3998,7 +3998,7 @@ univention-s4-connector (6.0.22-1) unstable; urgency=low
 
 univention-s4-connector (6.0.21-1) unstable; urgency=low
 
-  * Bug #22862: Allow the user creation on UCS without the samba attribues
+  * Bug #22862: Allow the user creation on UCS without the samba attributes
     * Change match filter to match all non samba users
     * Added sid mapping functions, the s4 obectSid will be synced to the
       sambaSID object in UCS
