@@ -233,7 +233,7 @@ univention-mozilla-firefox (3.0.3-2) unstable; urgency=low
 
 univention-mozilla-firefox (3.0.3-1) unstable; urgency=low
 
-  * added a new UCR variable for the spellchecker langauge
+  * added a new UCR variable for the spellchecker language
     (firefox/prefs/spellchecker/dictionary). Bug #11603
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 10 Mar 2009 08:21:12 +0100
