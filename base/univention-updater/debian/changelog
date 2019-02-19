@@ -5516,7 +5516,7 @@ univention-updater (5.0.78-1) unstable; urgency=low
 
 univention-updater (5.0.77-1) unstable; urgency=low
 
-  * Abort upgrade on firt UCS release without component (Bug #17293)
+  * Abort upgrade on first UCS release without component (Bug #17293)
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 11 May 2010 09:28:34 +0200
 
