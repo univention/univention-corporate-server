@@ -130,7 +130,7 @@ univention-initrd (3.0.0-1) unstable; urgency=low
 
 univention-initrd (2.0.0-1) unstable; urgency=low
 
-  * modutils is superceded by module-init-tools in lenny (Bug #14735)
+  * modutils is superseded by module-init-tools in lenny (Bug #14735)
 
  -- Arvid Requate <arequate@omar.knut.univention.de>  Wed, 10 Jun 2009 15:02:57 +0200
 
