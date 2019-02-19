@@ -4966,7 +4966,7 @@ univention-ad-connector (1.2.3-1) unstable; urgency=low
 
 univention-ad-connector (1.2.3) unstable; urgency=low
 
-  * seperated search for uSNCreated and uSNChanged during poll
+  * separated search for uSNCreated and uSNChanged during poll
   * sync group memberships ("memberOf") after syncing users and groups
 
  -- Ingo Steuwer <steuwer@univention.de>  Mon, 21 Apr 2008 16:54:54 +0200
