@@ -1960,7 +1960,7 @@ univention-ad-connector (6.0.48-1) unstable; urgency=low
 univention-ad-connector (6.0.47-1) unstable; urgency=low
 
   * Support for a different binddn and bindpw for the UCS access,
-    for example if the machine acount should be used (Bug #25985)
+    for example if the machine account should be used (Bug #25985)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 31 Jan 2012 15:59:00 +0100
 

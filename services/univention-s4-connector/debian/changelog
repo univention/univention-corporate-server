@@ -3378,7 +3378,7 @@ univention-s4-connector (6.0.95-1) unstable; urgency=low
 univention-s4-connector (6.0.94-2) unstable; urgency=low
 
   * Support for a different binddn and bindpw for the UCS access,
-    for example if the machine acount should be used (Bug #25985)
+    for example if the machine account should be used (Bug #25985)
   * Cleanup the UCR variables description
   * Added UCR variable connector/s4/allow/secondary which allows a
     second s4 connector in the domain (Bug #25990)
