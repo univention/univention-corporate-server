@@ -180,7 +180,7 @@ univention-virtual-machine-manager-schema (3.0.4-1) unstable; urgency=low
 
 univention-virtual-machine-manager-schema (3.0.3-1) unstable; urgency=low
 
-  * use functon to determine if udm legacy package is installed
+  * use function to determine if udm legacy package is installed
     (Bug #27617)
 
  -- Lukas Walter <walter@univention.de>  Fri, 19 Oct 2012 14:07:42 +0200

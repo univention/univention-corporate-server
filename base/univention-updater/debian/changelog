@@ -963,7 +963,7 @@ univention-updater (12.0.3-3) unstable; urgency=medium
     installed
   * Bug #42935: App updates via univention-upgrade: Do not abort
     univention-upgrade if one App update fails
-  * Fix calling a funtion with too few arguments
+  * Fix calling a function with too few arguments
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 17 Feb 2017 14:40:45 +0100
 
