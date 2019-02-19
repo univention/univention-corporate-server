@@ -35,7 +35,7 @@ def main():
 				imap.get_connection(mailHomeServer, mailPrimaryAddress, password)
 
 				# no subject tag test
-				print '*** check default behaviour, no subject tag'
+				print '*** check default behavior, no subject tag'
 				subject = 'my subject %s' % time.time()
 				essential.mail.send_mail(recipients=mailPrimaryAddress, gtube=True, subject=subject)
 				for i in xrange(60):
