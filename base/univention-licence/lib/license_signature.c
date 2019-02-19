@@ -197,7 +197,7 @@ char* univention_license_raw_to_base64(const unsigned char* data, unsigned int d
 	BIO_write(b64, (void*)data, datalen);
 	BIO_flush(b64);
 	
-	//calculate base64 data lenght, and allocate
+	//calculate base64 data length, and allocate
 	retlen = BIO_get_mem_data(mem, &ret);
 	ret = malloc(sizeof(char)*(retlen+1));
 	
