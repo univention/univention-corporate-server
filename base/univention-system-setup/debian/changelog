@@ -4884,7 +4884,7 @@ univention-system-setup (5.0.179-1) unstable; urgency=low
 
 univention-system-setup (5.0.178-1) unstable; urgency=low
 
-  * grant acces for "lib/server/*" with UMC operation set setup-all; Bug #26235
+  * grant access for "lib/server/*" with UMC operation set setup-all; Bug #26235
 
  -- Alexander Kläser <klaeser@univention.de>  Fri, 29 Jun 2012 11:52:03 +0200
 
