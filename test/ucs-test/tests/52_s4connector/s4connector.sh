@@ -120,7 +120,7 @@ function ad_wait_for_synchronization () {
 ###			warning "$(cat $tracebackfile)"
 ###			warning "-----End Contents of the Traceback-file----"
 ###			if [ "$AD_DELETE_TRACEBACK_FILE" == "True" ]; then
-###				info "Deleting Tracebackfile beacuse AD_DELETE_TRACEBACK_FILE is set to True"
+###				info "Deleting Tracebackfile because AD_DELETE_TRACEBACK_FILE is set to True"
 ###				rm -f "$tracebackfile"
 ###			else
 ###				warning "The following testcases will also fail because of the tracebackfile still \
