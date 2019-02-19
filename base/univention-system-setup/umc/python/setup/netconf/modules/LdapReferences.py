@@ -11,7 +11,7 @@ class PhaseLdapReferences(AddressMap, LdapChange):
 	"""
 	priority = 42
 	_replace_type = {1: "complete_match"}
-	referers = (
+	referrers = (
 		("policies/thinclient", "fileServer", 1),
 		("policies/thinclient", "authServer", 1),
 		("policies/thinclient", "linuxTerminalServer", 1),
@@ -45,7 +45,7 @@ class PhaseLdapReferences(AddressMap, LdapChange):
 			self.logger.warn("Failed LDAP: %s", ex, exc_info=True)
 
 	def _iterate_objects(self):
-		for module_name, udm_property, replace_type in self.referers:
+		for module_name, udm_property, replace_type in self.referrers:
 			module = modules.get(module_name)
 			if not module:
 				self.logger.debug("Unknown module '%s", module_name)
