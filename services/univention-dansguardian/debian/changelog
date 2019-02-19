@@ -225,7 +225,7 @@ univention-dansguardian (5.0.0-1) unstable; urgency=low
   * Rename package to univention-dansguardian, since Dansguardian not only provides
     malware scanning, but also policy-based web filtering	 
   * Remove old transition code from postinst
-  * Minimise rules file with dh	
+  * Minimize rules file with dh	
   * Review UCR templates and UCR registrations, fixup many template registrations
     and genereal cleanups	
   * Add overrides file for ucslint to silence the error that squid/%s isn't registered

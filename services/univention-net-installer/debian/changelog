@@ -276,7 +276,7 @@ univention-net-installer (5.0.0-1) unstable; urgency=low
   * Remove link creation for older kernels in postinst
   * Remove historic Conflicts	
   * Port join script to join script library
-  * Minimise rules file with dh(1)
+  * Minimize rules file with dh(1)
   * ucslint cleanups	
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 23 Aug 2011 16:47:58 +0200
