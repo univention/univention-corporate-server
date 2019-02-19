@@ -52,7 +52,7 @@ pattern *nagios/\**.
 
 Patterns for commands and options may just use the asterik and know no
 other wildcards. For options there is one additional format allowed to
-specify that the option may not exist. Therefor the following format is
+specify that the option may not exist. Therefore the following format is
 used ::
 
 	udm/* !objectType

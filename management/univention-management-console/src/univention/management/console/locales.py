@@ -178,7 +178,7 @@ class I18N_Manager(dict):
 
 	def _(self, message, domain=None):
 		"""
-		Translates the given text. Therefor all known translation
+		Translates the given text. Therefore all known translation
 		domains or if not None the given domain is searched for a
 		translation.
 
