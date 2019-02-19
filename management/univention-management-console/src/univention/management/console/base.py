@@ -85,7 +85,7 @@ an object has the following properties:
 The *query* method in the example above shows how to retrieve the
 command parameters and what to do to send the result back to the
 client. Important is that returning a value in a command function does
-not send anything back to the client. Therefor the function *finished*
+not send anything back to the client. Therefore the function *finished*
 must be invoked. The first parameter is the identifier of the request
 that will be answered and the second parameter the data structure
 containing the result. As the result is converted to JSON it must just
