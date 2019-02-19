@@ -126,7 +126,7 @@ define([
 		// newObjectOptions:
 		// 		Dict containing options for creating a new LDAP object (chosen by the user
 		// 		in the 'add object' dialog). This includes properties such as superordinate,
-		//		the container in wich the object is to be created, the object type etc.
+		//		the container in which the object is to be created, the object type etc.
 		newObjectOptions: null,
 
 		// isCloseable: Boolean?
