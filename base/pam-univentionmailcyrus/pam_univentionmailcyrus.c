@@ -170,7 +170,7 @@ static int mapuser(const char *fromuser, char *touser)
        goto cleanup;
    }
    if (ldap_count_entries(lp->ld, res) != 1) {
-       _log_err(LOG_NOTICE, "No or ambigous result, found %d entries.", ldap_count_entries(lp->ld, res));
+       _log_err(LOG_NOTICE, "No or ambiguous result, found %d entries.", ldap_count_entries(lp->ld, res));
        goto cleanup_msg;
    }
    if ((entry = ldap_first_entry(lp->ld, res)) == NULL) {
@@ -182,7 +182,7 @@ static int mapuser(const char *fromuser, char *touser)
        goto cleanup_msg;
    }
    if (ldap_count_values_len(values) != 1) {
-       _log_err(LOG_NOTICE, "No or ambigous result, found %d values.", ldap_count_values_len(values));
+       _log_err(LOG_NOTICE, "No or ambiguous result, found %d values.", ldap_count_values_len(values));
        goto cleanup_values;
    }
    strncpy(touser, values[0]->bv_val, BUFSIZ);
