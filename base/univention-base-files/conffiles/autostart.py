@@ -49,7 +49,7 @@ def ctl(cmd, service):
 def handler(configRegistry, changes):
 	log = getLogger(__name__)
 
-	log.debug('Loading service informations...')
+	log.debug('Loading service information...')
 	si = ServiceInfo()
 	for name in si.get_services():
 		service = si.get_service(name)
