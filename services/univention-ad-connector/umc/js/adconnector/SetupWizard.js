@@ -277,7 +277,7 @@ define([
 					type: Text,
 					name: 'help',
 					content: _paragraph(
-						_('The synchronisation of Univention Corporate Server and Active Directory has been succesfully initiated.'),
+						_('The synchronisation of Univention Corporate Server and Active Directory has been successfully initiated.'),
 						_('The UCS server is now ready for usage, and domain account data is now available.')
 					)
 				}]
