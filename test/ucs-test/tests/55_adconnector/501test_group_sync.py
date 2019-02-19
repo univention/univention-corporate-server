@@ -53,7 +53,7 @@ def test_group_sync_from_udm_to_ad_with_rename(group_class, sync_mode):
 		(udm_group_dn, ad_group_dn) = create_udm_group(udm, AD, udm_group, adconnector.wait_for_sync)
 
 		print("\nRename UDM group\n")
-		old_udm_dn = udm_group_dn  # part of the workarround for bug #41694
+		old_udm_dn = udm_group_dn  # part of the workaround for bug #41694
 		udm_group_dn = udm.modify_object('groups/group', dn=udm_group_dn, **udm_group.rename)
 		# XXX after a modify, the old DN is _wrongly_ returned: see bug #41694
 		if old_udm_dn == udm_group_dn:
@@ -62,7 +62,7 @@ def test_group_sync_from_udm_to_ad_with_rename(group_class, sync_mode):
 			if old_udm_dn in udm._cleanup.get('groups/group', []):
 				udm._cleanup.setdefault('groups/group', []).append(udm_group_dn)
 				udm._cleanup['groups/group'].remove(old_udm_dn)
-		# XXX end of workarround for bug #41694
+		# XXX end of workaround for bug #41694
 		adconnector.wait_for_sync()
 
 		AD.verify_object(ad_group_dn, None)
