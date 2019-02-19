@@ -32,7 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 #
 #
-# postgrey      start/stop the postgrey greylisting deamon for postfix
+# postgrey      start/stop the postgrey greylisting daemon for postfix
 #               (priority should be smaller than that of postfix)
 #
 # Author:       (c)2004-2006 Adrian von Bidder <avbidder@fortytwo.ch>
