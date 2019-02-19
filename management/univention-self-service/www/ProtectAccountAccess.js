@@ -331,7 +331,7 @@ define([
 		},
 
 		/**
-		 * Delets renew options node.
+		 * Deletes renew options node.
 		 * */
 		_deleteRenewOptions: function() {
 			put(this._renewOptions, '!');
