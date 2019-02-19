@@ -4044,7 +4044,7 @@ univention-s4-connector (6.0.16-1) unstable; urgency=low
 univention-s4-connector (6.0.15-1) unstable; urgency=low
 
   * samba2ad_time was renamed to samba2s4_time. In univention-
-    password_sync_ucs_to_s4 use te new name (Bug #22580)
+    password_sync_ucs_to_s4 use the new name (Bug #22580)
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 04 Aug 2011 06:08:43 +0200
 
