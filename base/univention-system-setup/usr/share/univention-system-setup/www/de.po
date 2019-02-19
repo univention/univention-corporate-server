@@ -1225,7 +1225,7 @@ msgstr "System nach der Einrichtung aktualisieren"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1158
 msgid ""
-"Update system to the UCS release version of the master domain conroller and "
+"Update system to the UCS release version of the master domain controller and "
 "install all available errata and app updates after the setup."
 msgstr ""
 "System nach der Einrichtung auf die Release Version des Domänencontroller "
