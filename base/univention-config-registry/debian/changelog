@@ -698,7 +698,7 @@ univention-config-registry (7.0.21-1) unstable; urgency=low
 
 univention-config-registry (7.0.20-1) unstable; urgency=low
 
-  * Move obsolte files to /etc/univention/templates/removed/ (Bug #22524,#21263)
+  * Move obsolete files to /etc/univention/templates/removed/ (Bug #22524,#21263)
   * debian/rules: Remove tests/Makefile.in on clean
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 28 Sep 2011 06:20:17 +0200

@@ -641,7 +641,7 @@ univention-pkgdb (5.0.2-1) unstable; urgency=low
 
 univention-pkgdb (5.0.1-2) unstable; urgency=low
 
-  * remove obsolte check (Bug #22525)
+  * remove obsolete check (Bug #22525)
   * set UCRV in postinst instead of preinst
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 07 Jun 2011 09:42:57 +0200

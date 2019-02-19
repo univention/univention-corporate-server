@@ -74,7 +74,7 @@ univention-antivir-mail (6.0.0-5) unstable; urgency=low
 
 univention-antivir-mail (6.0.0-4) unstable; urgency=low
 
-  * remove obsolte cron job (Bug #36928) 
+  * remove obsolete cron job (Bug #36928) 
 
  -- Felix Botner <botner@univention.de>  Thu, 04 Dec 2014 15:27:03 +0100
 
