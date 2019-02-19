@@ -1327,7 +1327,7 @@ class s4(univention.s4connector.ucs):
 		except (ldap.SERVER_DOWN, SystemExit):
 			raise
 		except ldap.SIZELIMIT_EXCEEDED:
-			# The LDAP control page results was not sucessful. Without this control
+			# The LDAP control page results was not successful. Without this control
 			# S4 does not return more than 1000 results. We are going to split the
 			# search.
 			highestCommittedUSN = self.__get_highestCommittedUSN()

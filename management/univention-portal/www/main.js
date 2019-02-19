@@ -1134,7 +1134,7 @@ define([
 								'$dn$': wizard.dn
 							});
 							wizard.moduleStore.put(putParams).then(lang.hitch(this, function(result) {
-								// see whether creating the portal entry was succesful
+								// see whether creating the portal entry was successful
 								if (result.success) {
 									// if the icon for the entry was changed we want a new iconClass
 									// to display the new icon

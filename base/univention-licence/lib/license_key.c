@@ -29,7 +29,7 @@ static RSA* rsa_private = NULL;
 	with `\n\` at every line end. every!\n\
 	");
 
-	@retval 1 if successfull
+	@retval 1 if successful
 	@retval 0 on error
 */
 int univention_license_key_init(void)
@@ -270,7 +270,7 @@ int univention_license_key_private_key_load_file(const char* filename, const cha
 
 	@param	data		the data to verify
 	@param	signature	the base64 encoded signature for this data
-	@retval	1 if successfull verified the data
+	@retval	1 if successful verified the data
 	@retval	0 on error
 */
 int univention_license_verify (const char* data, const char* signature)
