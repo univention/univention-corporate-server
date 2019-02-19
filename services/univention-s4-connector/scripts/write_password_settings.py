@@ -109,7 +109,7 @@ def search_ucs_sambadomain_object(configRegistry, lo, SID):
 	else:
 		print 'ERROR: Did not find a sambaDomain object with sambaSID %s' % SID
 
-# Time inverval in S4 / AD is often 100-nanosecond intervals:
+# Time interval in S4 / AD is often 100-nanosecond intervals:
 # http://msdn.microsoft.com/en-us/library/windows/desktop/ms676863%28v=vs.85%29.aspx
 
 
