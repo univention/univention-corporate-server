@@ -4528,7 +4528,7 @@ univention-ad-connector (5.0.3-1) unstable; urgency=low
 
 univention-ad-connector (5.0.2-1) unstable; urgency=low
 
-  * added support for windows 64bit plattform. Bug #15651
+  * added support for windows 64bit platform. Bug #15651
   * switch to makemsi:
     https://billy.knut.univention.de/uniwiki/index.php/AD_Connector_Entwicklungsumgebung#MSI-Pakete
 
