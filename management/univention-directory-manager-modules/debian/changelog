@@ -498,7 +498,7 @@ univention-directory-manager-modules (13.0.21-9) unstable; urgency=medium
 
 univention-directory-manager-modules (13.0.21-8) unstable; urgency=medium
 
-  * Bug #46117: Fix birthday not being savable for users/contact
+  * Bug #46117: Fix birthday not being saveable for users/contact
 
  -- Johannes Keiser <keiser@univention.de>  Mon, 05 Mar 2018 12:12:14 +0100
 
