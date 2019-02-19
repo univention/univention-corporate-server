@@ -1089,7 +1089,7 @@ univention-management-console (9.0.42-1) unstable; urgency=medium
 
 univention-management-console (9.0.41-1) unstable; urgency=medium
 
-  * Bug #42174: adjust visiblity of error message; prevent that exceptions in topic
+  * Bug #42174: adjust visibility of error message; prevent that exceptions in topic
   	subscribers can prevent login
 
  -- Florian Best <best@univention.de>  Thu, 23 Feb 2017 16:43:24 +0100
