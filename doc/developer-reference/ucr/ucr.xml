@@ -263,7 +263,7 @@ handler_unset(['foo', 'bar'])
 					<simpara>
 						This template file is used to create the target file.
 						There exist two variants:
-						A <emphasis>singe file template</emphasis> consists of only a single file, from which the target file is created, while a <emphasis>multi file template</emphasis> can consist of multiple file fragments, which are concatenated to form the target file.
+						A <emphasis>single file template</emphasis> consists of only a single file, from which the target file is created, while a <emphasis>multi file template</emphasis> can consist of multiple file fragments, which are concatenated to form the target file.
 						See <xref linkend="ucr:conffiles"/> below for more information.
 					</simpara>
 				</listitem>
