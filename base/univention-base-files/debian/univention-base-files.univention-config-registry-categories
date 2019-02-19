@@ -40,7 +40,7 @@ icon=service-ssh.gif
 
 [service-ln]
 name[de]=Listener/Notifier-Replikation
-name[en]=Listner/notifier replication
+name[en]=Listener/notifier replication
 icon=service-ln.gif
 
 [service-ldap]

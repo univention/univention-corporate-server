@@ -9,7 +9,7 @@ Package: printusers
 Architecture: all
 Depends: ${misc:Depends},
  univention-directory-listener,
-Description: An example listner module for the developer guide
+Description: An example listener module for the developer guide
  This purpose of this package is to describe the structure of a Univention
  Directory Listener module package.
  .
