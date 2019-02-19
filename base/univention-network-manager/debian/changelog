@@ -173,7 +173,7 @@ univention-network-manager (4.0.0-1) unstable; urgency=low
   * Move common data to univention-network-common (Bug #24282)
   * Add UCR variable description (Bug #28134)
   * Transition from /etc/dhcp3/ to /etc/dhcp/ (Bug #27829)
-  * Update /etc/dhcp/dhclient.conf template from lates Debian file.
+  * Update /etc/dhcp/dhclient.conf template from latest Debian file.
   * Move debug files to /var/run/ to prevent symlink attack.
   * Remove support for Network Manager (Bug #26609)
 
