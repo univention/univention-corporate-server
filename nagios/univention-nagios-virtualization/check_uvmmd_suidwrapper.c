@@ -75,7 +75,7 @@ static void my_alarm_handler(int signo) {
 static void usage(int status) {
 	FILE *stream = status ? stderr : stdout;
 	fprintf(stream, "usage: %s [OPTIONS]\n", command);
-	fprintf(stream, "\t-t SECONDS - uvmmd timout\n");
+	fprintf(stream, "\t-t SECONDS - uvmmd timeout\n");
 	fprintf(stream, "\t-h|--help  - help message\n");
 	exit(status);
 }
