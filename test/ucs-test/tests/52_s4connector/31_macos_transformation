@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner bash 
-## desc: "Chekc for Windows client to Mac OS X transformation"
+## desc: "Check for Windows client to Mac OS X transformation"
 ## exposure: dangerous
 ## packages:
 ## - univention-s4-connector
