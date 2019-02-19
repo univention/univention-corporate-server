@@ -244,7 +244,7 @@ fi;
 # change to the master key directory
 cd "$MASTERKEYDIR" || help_and_exit "Can't change to directory $MASTERKEYDIR"
 
-# create the ldap objekt
+# create the ldap object
 (
 	echo dn: cn="$CUSTOMER","$LDAPTMP";
 	echo objectClass: top;

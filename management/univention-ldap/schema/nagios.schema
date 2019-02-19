@@ -31,9 +31,9 @@
 # Univention Nagios OID Prefix: 1.3.6.1.4.1.10176.1040.
 #
 #  1.3.6.1.4.1.10176.1040		nagios objekte
-#  1.3.6.1.4.1.10176.1040.1		timeperiod objekt
-#  1.3.6.1.4.1.10176.1040.2		service objekt
-#  1.3.6.1.4.1.10176.1040.3		host objekt
+#  1.3.6.1.4.1.10176.1040.1		timeperiod object
+#  1.3.6.1.4.1.10176.1040.2		service object
+#  1.3.6.1.4.1.10176.1040.3		host object
 #  1.3.6.1.4.1.10176.1040.1XXX	common nagios attributes
 
 
