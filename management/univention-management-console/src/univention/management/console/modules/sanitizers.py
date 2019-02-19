@@ -656,7 +656,7 @@ class MappingSanitizer(ChoicesSanitizer):
 
 	def __init__(self, mapping, **kwargs):
 		try:
-			# sort allowed values to have reproducable error messages
+			# sort allowed values to have reproducible error messages
 			# sorted works with every base data type, even inter-data type!
 			choices = sorted(mapping.keys())
 		except:
