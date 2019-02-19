@@ -404,7 +404,7 @@ univention-virtual-machine-manager-daemon (4.0.24-5) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (4.0.24-4) unstable; urgency=low
 
-  * Bug #36678: Fixed VNC access beeing half hidden in firefox.
+  * Bug #36678: Fixed VNC access being half hidden in firefox.
   * Bug #38010: Fixed the Grid in the UVMM module from endlessly refreshing if
     no connection is available.
 

@@ -1606,7 +1606,7 @@ univention-samba (4.0.21-5) unstable; urgency=low
   * use idmap_nss for UCS windows/domain, as idmap_ldap does not lookup
     sambaGroupMapping objects, only sambaIdmapEntry objects
   * exclude windows/domain from samba/idmap/domains (Bug #17448)
-  * keep 'winbind trusted domains only' for the time beeing
+  * keep 'winbind trusted domains only' for the time being
 
  -- Arvid Requate <requate@univention.de>  Tue, 27 Apr 2010 19:58:12 +0200
 

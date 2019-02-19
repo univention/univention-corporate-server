@@ -4367,7 +4367,7 @@ univention-samba4 (1.0.26-1) experimental; urgency=low
 univention-samba4 (1.0.25-1) experimental; urgency=low
 
   * run provision on first DC that's going to provide the Samba 4 service,
-    regardless of beeing a master or not (Bug #23360)
+    regardless of being a master or not (Bug #23360)
 
  -- Arvid Requate <requate@univention.de>  Tue, 30 Aug 2011 11:14:30 +0200
 

@@ -1054,7 +1054,7 @@ univention-directory-listener (6.0.13-1) unstable; urgency=low
     register handlers with the copied object and write it to the cache.
     This approach fixes a collateral damage of the workaround implemented
     for Bug #21914 and #23802, which caused updated handler registrations
-    not beeing committed the database. (Bug #23548)
+    not being committed the database. (Bug #23548)
   * add compare_cache_entries code possibly useful for future debugging
 
  -- Arvid Requate <requate@univention.de>  Mon, 24 Oct 2011 20:18:49 +0200
