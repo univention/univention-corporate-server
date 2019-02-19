@@ -390,7 +390,7 @@ msgid "Show server error message"
 msgstr "Fehlernachricht des Servers anzeigen"
 
 #: js/auth.js:142
-msgid "So far the authentification failed. Continuing nevertheless."
+msgid "So far the authentication failed. Continuing nevertheless."
 msgstr ""
 "Bis jetzt schlug die Authentifizierung fehl. Nichtdestotrotz wird weiterhin "
 "probiert."

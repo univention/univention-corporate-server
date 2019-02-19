@@ -1357,10 +1357,10 @@ PAM_EXTERN int pam_sm_authenticate( pam_handle_t *pamh, int flags, int argc, con
   _ulckpwdf();
 
   #ifdef DEBUG
-  fprintf( stderr, "Debug: authetication for %s %s\n", username_dup, retval==PAM_SUCCESS ? "succeeded":"failed" );
+  fprintf( stderr, "Debug: authentication for %s %s\n", username_dup, retval==PAM_SUCCESS ? "succeeded":"failed" );
   #endif
   if( options.ctrl & PAM_DEBUG_ARG )
-    _pam_log( LOG_DEBUG, "authetication for %s %s", username_dup, retval==PAM_SUCCESS ? "succeeded":"failed" );
+    _pam_log( LOG_DEBUG, "authentication for %s %s", username_dup, retval==PAM_SUCCESS ? "succeeded":"failed" );
 
   if( username_dup != NULL )
   {

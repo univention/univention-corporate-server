@@ -358,7 +358,7 @@ define([
 					username: username,
 					password: password
 				}, this.errorHandler(), undefined, {
-					message: _('So far the authentification failed. Continuing nevertheless.'),
+					message: _('So far the authentication failed. Continuing nevertheless.'),
 					noLogin: true
 				}).then(lang.hitch(this, function(response) {
 					//console.debug('autologin got response', response);
