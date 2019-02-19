@@ -591,7 +591,7 @@ univention-ssl (4.0.3-1) unstable; urgency=low
 
   * fixed link creation in move_cert (make-certificates.sh)
   * removed renew for new case in univention-certificate to avoid
-    multiple certifcate generation
+    multiple certificate generation
     Bug #13396
 
  -- Felix Botner <botner@univention.de>  Tue, 13 Apr 2010 12:30:18 +0200
@@ -677,7 +677,7 @@ univention-ssl (2.0.2-2) unstable; urgency=low
 univention-ssl (2.0.2-1) unstable; urgency=low
 
   * no longer change the owner and group of all ssl certificates under
-    /etc/univention/ssl after revoke or renew a certifcate with
+    /etc/univention/ssl after revoke or renew a certificate with
     univention-certificate
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 13 Nov 2007 21:27:52 +0100
