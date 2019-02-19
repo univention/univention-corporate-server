@@ -1551,7 +1551,7 @@ define([
 			//		is an dictionary, will set all key-value pairs as specified by
 			//		the dictionary. If two parameters are given and
 			//		the first is a String, the function will set preference for the
-			//		key (paramater 1) to the value as specified by parameter 2.
+			//		key (parameter 1) to the value as specified by parameter 2.
 
 			// make sure the user preferences are cached internally
 			var cookieStr = '';
