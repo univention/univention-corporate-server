@@ -101,7 +101,7 @@ Possible exitcodes:
 		print('License not found')
 		sys.exit(12)
 	except LicenseCheckError:
-		print('License verfication error')
+		print('License verification error')
 		sys.exit(12)
 
 	print('CSP=%s' % (result,))
