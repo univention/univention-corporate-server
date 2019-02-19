@@ -1,3 +1,9 @@
+univention-radius (6.0.2-5) unstable; urgency=medium
+
+  * Bug #46018: fix loglevel in univention-radius-check-access
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 19 Feb 2019 17:37:40 +0100
+
 univention-radius (6.0.2-4) unstable; urgency=medium
 
   * Bug #25935: remove build artefact

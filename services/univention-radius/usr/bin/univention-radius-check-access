@@ -49,7 +49,7 @@ def main():
 		print("no username given")
 		return 1
 	NetworkAccess = get_NetworkAccess()
-	networkAccess = NetworkAccess(options.username, options.stationId, loglevel=5)
+	networkAccess = NetworkAccess(options.username, options.stationId, loglevel=4)
 	exitCode = 0
 	try:
 		networkAccess.getNTPasswordHash()
