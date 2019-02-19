@@ -3133,7 +3133,7 @@ univention-ldap (5.0.19-2) unstable; urgency=low
 
 univention-ldap (5.0.19-1) unstable; urgency=low
 
-  * merge recomended values into UCR:ldap/index/* instead of
+  * merge recommended values into UCR:ldap/index/* instead of
     replacing the current values (Bug #6700)
 
  -- Arvid Requate <requate@univention.de>  Mon, 19 Apr 2010 12:09:42 +0200
