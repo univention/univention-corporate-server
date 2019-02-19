@@ -67,7 +67,7 @@ class Register(CredentialsAction):
 		parser.add_argument('--files', dest='register_task', action='append_const', const='files', help='Creating shared directories; copying files from App Center server')
 		parser.add_argument('--host', dest='register_task', action='append_const', const='host', help='Creating a computer object for the app (docker apps only)')
 		parser.add_argument('--app', dest='register_task', action='append_const', const='app', help='Registering the app itself (internal UCR variables, ucs-overview variables, adding a special LDAP object for the app)')
-		parser.add_argument('--database', dest='register_task', action='append_const', const='database', help='Installing, starting a database management system and creating a databse for the app (if necessary)')
+		parser.add_argument('--database', dest='register_task', action='append_const', const='database', help='Installing, starting a database management system and creating a database for the app (if necessary)')
 		parser.add_argument('--attributes', dest='register_task', action='append_const', const='attributes', help='Adding schema extions to LDAP; adding extended attributes')
 		parser.add_argument('--listener', dest='register_task', action='append_const', const='listener', help='Adding listener for App')
 		parser.add_argument('--do-it', dest='do_it', action='store_true', default=None, help='Always do it, disregarding installation status')
