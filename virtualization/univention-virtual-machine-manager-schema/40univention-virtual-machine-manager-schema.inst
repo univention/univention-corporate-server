@@ -48,7 +48,7 @@ ucs_registerLDAPExtension "$@" \
 
 eval "$(univention-config-registry shell)"
 
-# create required containers if neccessary
+# create required containers if necessary
 univention-directory-manager container/cn create "$@" \
 	--ignore_exists \
 	--position="cn=custom attributes,cn=univention,$ldap_base" \
