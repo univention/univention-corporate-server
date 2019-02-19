@@ -3009,7 +3009,7 @@ univention-virtual-machine-manager-daemon (0.9.203-1) unstable; urgency=low
   * Fix handling of Block Device Storage Pools (Bug #19574)
   * Add Cancel to remote & detach block device confirmation dialog (Bug #21264)
   * Update translations.
-  * Onyl suggest file based disks for deletion (Bug #19561)
+  * Only suggest file based disks for deletion (Bug #19561)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 25 Mar 2011 11:04:22 +0100
 
