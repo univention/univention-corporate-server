@@ -676,7 +676,7 @@ define([
 					var newOffsetCentered = newOffsetIgnoringNavButtons - ((this._widthForThumbs - targetThumbWidth) / 2);
 
 					//if the centered offset would show blank parts of the contentSlider revert to 0 or maxOffset
-					//if the centerd thumb would only be 50px away from 0 or maxOffset set them to 0 or maxOffset
+					//if the centered thumb would only be 50px away from 0 or maxOffset set them to 0 or maxOffset
 					if (newOffsetCentered <= (this._galleryThumbMarginExtents + 30) ) {
 						newOffsetIgnoringNavButtons = 0;
 						newOffsetWithNavButtons = newOffsetIgnoringNavButtons;
