@@ -48,7 +48,7 @@ result() {
 	echo -e '\n###\n'
 }
 
-echo -en 'If no assertation tracebacks occur everything should be fine!\n\n'
+echo -en 'If no assertion tracebacks occur everything should be fine!\n\n'
 
 echo boolean
 for i in 'True' 'False' '1' '-2' '"string"' '0'; do
