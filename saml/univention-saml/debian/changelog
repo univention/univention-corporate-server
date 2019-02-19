@@ -427,7 +427,7 @@ univention-saml (4.0.4-1) unstable; urgency=medium
 univention-saml (4.0.3-3) unstable; urgency=medium
 
   * Bug #43384: Use floor instead of round in uldap.php to imitate the
-    behaviour of shadowbind
+    behavior of shadowbind
 
  -- Jürn Brodersen <brodersen@univention.de>  Mon, 06 Feb 2017 11:03:24 +0100
 

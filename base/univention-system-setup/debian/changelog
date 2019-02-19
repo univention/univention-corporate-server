@@ -6418,7 +6418,7 @@ univention-system-setup (3.0.20-1) unstable; urgency=low
 
 univention-system-setup (3.0.19-1) unstable; urgency=low
 
-  * add --brief option to ucr-command because of change in ucr-behaviour (Bug: #15026)
+  * add --brief option to ucr-command because of change in ucr-behavior (Bug: #15026)
 
  -- Daniel Hofmann <hofmann@univention.de>  Wed, 14 Oct 2009 16:59:12 +0200
 
@@ -6437,7 +6437,7 @@ univention-system-setup (3.0.17-1) unstable; urgency=low
 
 univention-system-setup (3.0.16-1) unstable; urgency=low
 
-  * add --brief option to ucr-command because of change in ucr-behaviour (Bug: #15026)
+  * add --brief option to ucr-command because of change in ucr-behavior (Bug: #15026)
 
  -- Daniel Hofmann <hofmann@univention.de>  Thu,  1 Oct 2009 09:53:52 +0200
 

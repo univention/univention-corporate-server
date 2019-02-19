@@ -826,7 +826,7 @@ univention-apache (6.0.12-7) unstable; urgency=low
 univention-apache (6.0.12-6) unstable; urgency=low
 
   * localised LDAP master link in ucs-overview (Bug #32647)
-  * corrected legacy UCRV unset behaviour of postinst (Bug #32678)
+  * corrected legacy UCRV unset behavior of postinst (Bug #32678)
 
  -- Lukas Walter <walter@univention.de>  Wed, 23 Oct 2013 15:20:59 +0200
 

@@ -123,7 +123,7 @@ univention-network-manager (4.0.7-1) unstable; urgency=low
 
 univention-network-manager (4.0.6-1) unstable; urgency=low
 
-  * Change the behaviour of last commit, the UCR nameservers are the
+  * Change the behavior of last commit, the UCR nameservers are the
     default nameservers (Bug #27939)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 04 Sep 2012 07:08:22 +0200

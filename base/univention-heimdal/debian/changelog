@@ -556,7 +556,7 @@ univention-heimdal (5.0.3-2) unstable; urgency=low
 
 univention-heimdal (5.0.3-1) unstable; urgency=low
 
-  * set allow_weak_crypto in krb5.conf to restore heimdal-1.4 behaviour,
+  * set allow_weak_crypto in krb5.conf to restore heimdal-1.4 behavior,
     disabled in new installations by setting kerberos/allow/weak/crypto?no
     in univention-heimdal-kdc.postinst (Bug #22559)
 

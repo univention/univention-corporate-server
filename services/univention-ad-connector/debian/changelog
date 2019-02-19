@@ -2307,7 +2307,7 @@ univention-ad-connector (6.0.7-1) unstable; urgency=low
       connector/ad/password/timestamp/.* (Bug #22751)
     * Also added two UCR variables to handle the password reset in the
       timestamp check mode (Bug #22751)
-    * Sync the passwords only if the timestamp is newer. The bahavior can
+    * Sync the passwords only if the timestamp is newer. The behavior can
       configured with the UCR variable connector/ad/password/timestamp/check.
       Default is false (Bug #22751)
     * Consider empty sambaLMPassword attributes to prevent sync loops
@@ -3120,7 +3120,7 @@ univention-ad-connector (1.0.0-1) unstable; urgency=low
 univention-ad-connector (0.3-26) unstable; urgency=low
 
   * the old copypwd process breaks the lsass.exe process under windows 2003
-  sp1. The new package fixes this behaviour
+  sp1. The new package fixes this behavior
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu,  8 Mar 2007 13:41:43 +0100
 

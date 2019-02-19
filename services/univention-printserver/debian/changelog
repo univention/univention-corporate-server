@@ -1773,7 +1773,7 @@ univention-printserver (0.12) unstable; urgency=low
 univention-printserver (0.11) unstable; urgency=low
 
   * Support for spaces in ldap base
-  * changed univention-lpadmin to match behaviour of new lpadmin
+  * changed univention-lpadmin to match behavior of new lpadmin
 
  -- Ingo Steuwer <steuwer@univention.de>  Wed,  2 Feb 2005 10:27:49 +0100
 

@@ -1643,7 +1643,7 @@ univention-config-registry (5.0.45-1) unstable; urgency=low
 
 univention-config-registry (5.0.44-1) unstable; urgency=low
 
-  * fix wrong behaviour introduced in r11973 (Bug: #15026)
+  * fix wrong behavior introduced in r11973 (Bug: #15026)
 
  -- Daniel Hofmann <hofmann@univention.de>  Fri, 25 Sep 2009 13:45:39 +0200
 
@@ -1707,7 +1707,7 @@ univention-config-registry (5.0.35-1) unstable; urgency=low
 
 univention-config-registry (5.0.34-1) unstable; urgency=low
 
-  * fix behaviour of dump and shell (Bug: #15026)
+  * fix behavior of dump and shell (Bug: #15026)
 
  -- Daniel Hofmann <dhofmann@univention.de>  Wed,  2 Sep 2009 16:01:31 +0200
 
@@ -1794,7 +1794,7 @@ univention-config-registry (5.0.21-1) unstable; urgency=low
 
 univention-config-registry (5.0.20-1) unstable; urgency=low
 
-  * make behaviour of ConfigRegistry.__iter__ more useful (Bug: #14199)
+  * make behavior of ConfigRegistry.__iter__ more useful (Bug: #14199)
 
  -- Daniel Hofmann <dhofmann@univention.de>  Fri, 28 Aug 2009 14:24:28 +0200
 

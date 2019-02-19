@@ -7804,7 +7804,7 @@ univention-directory-manager-modules (6.0.25-1) unstable; urgency=low
     post-create phase (creating DNS or DHCP objects) the cleanup of the
     already created host object has failed too. Because of that the object
     could not be created after fixing the DNS and/or DHCP settings. This
-    behaviour is fixed now; Bug #19343
+    behavior is fixed now; Bug #19343
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 13 Aug 2010 19:38:52 +0200
 
@@ -9219,7 +9219,7 @@ univention-directory-manager-modules (3.0.13-2) unstable; urgency=low
 
 univention-directory-manager-modules (3.0.12-1) unstable; urgency=low
 
-  * fixed behaviour of udm alias
+  * fixed behavior of udm alias
 
  -- Sönke Schwardt <schwardt@univention.de>  Mon, 14 Jul 2008 13:49:51 +0200
 
@@ -9665,7 +9665,7 @@ univention-directory-manager-modules (2.0.6-1) unstable; urgency=low
 
 univention-directory-manager-modules (2.0.5-2) unstable; urgency=low
 
-  * different behaviour for attribute gecos: just set when creating new users;
+  * different behavior for attribute gecos: just set when creating new users;
     modified if firstname or lastname is changed and the old value is still
     the default
   * univention-sync-memberuid: write output to log file instead of stdout

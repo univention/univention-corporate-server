@@ -3951,7 +3951,7 @@ univention-management-console (4.0.54-1) unstable; urgency=low
 
 univention-management-console (4.0.53-1) unstable; urgency=low
 
-  * modified behaviour of action restart and crestart, restart does
+  * modified behavior of action restart and crestart, restart does
     whatever necessary to have a newly started instance of the UMC server
     and crestart only restarts the UMC server if currently another
     instance is running; Bug #23485
@@ -6463,7 +6463,7 @@ univention-management-console (0.6.18-1) unstable; urgency=low
   * start UMC server with locale as argument
   * fixed bug while passing locale as argument to UMC frontend
   * use umc/web/language instead of console/web/language
-  * new locale behaviour of all processes (frontend, server, proxy, module)
+  * new locale behavior of all processes (frontend, server, proxy, module)
     - try to use locale given by cmdline
     - if that fails use umc/web/language
 

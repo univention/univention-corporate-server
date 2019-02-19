@@ -153,7 +153,7 @@ univention-directory-logger (0.3-12) unstable; urgency=low
 
 univention-directory-logger (0.3-11) unstable; urgency=low
 
-  * reverted rename behaviour to 'delete'+'add' to stay consistent with 'ldap/logging/exclude' feature
+  * reverted rename behavior to 'delete'+'add' to stay consistent with 'ldap/logging/exclude' feature
 
  -- Arvid Requate <arequate@omar.knut.univention.de>  Fri, 21 Dec 2007 17:12:31 +0100
 

@@ -1182,7 +1182,7 @@ univention-nagios (1.0.2-1) unstable; urgency=low
 
 univention-nagios (1.0.1-1) unstable; urgency=low
 
-  * changed behaviour of nagios-server listener:
+  * changed behavior of nagios-server listener:
     - if nagios2 is running then perform a reload after changing config
     - if nagios2 is not running then perform a restart only if 
       config registry variable nagios/server/autostart=yes

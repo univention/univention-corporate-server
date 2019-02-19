@@ -1461,7 +1461,7 @@ univention-s4-connector (8.0.33-63) unstable; urgency=medium
 
 univention-s4-connector (8.0.33-62) unstable; urgency=medium
 
-  * Revert GuidNotInCache part of last patch, this would change the behaviour
+  * Revert GuidNotInCache part of last patch, this would change the behavior
     and break resync of an S4-object which is not found in the cache. Maybe
     there are use cases for this (Bug #33621).
   * Give an estimate of the resync delay.
@@ -5093,7 +5093,7 @@ univention-ad-connector (1.0.0-1) unstable; urgency=low
 univention-ad-connector (0.3-26) unstable; urgency=low
 
   * the old copypwd process breaks the lsass.exe process under windows 2003
-  sp1. The new package fixes this behaviour
+  sp1. The new package fixes this behavior
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu,  8 Mar 2007 13:41:43 +0100
 

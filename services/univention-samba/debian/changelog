@@ -994,7 +994,7 @@ univention-samba (6.0.43-1) unstable; urgency=low
 
 univention-samba (6.0.42-1) unstable; urgency=low
 
-  * restore set -e behaviour in slave-sync (Bug #23136)
+  * restore set -e behavior in slave-sync (Bug #23136)
 
  -- Arvid Requate <requate@univention.de>  Wed, 11 Jul 2012 15:20:26 +0200
 
@@ -1926,7 +1926,7 @@ univention-samba (2.0.9-1) unstable; urgency=low
 
   * added samba/domain/logons (Bug 12406)
     - valid values: auto, yes, no
-  	- default: auto (old behaviour)
+  	- default: auto (old behavior)
 
  -- Sönke Schwardt <schwardt@univention.de>  Fri, 23 Jan 2009 16:55:48 +0100
 

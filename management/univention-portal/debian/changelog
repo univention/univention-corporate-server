@@ -493,7 +493,7 @@ univention-portal (1.0.8-5) unstable; urgency=medium
 
 univention-portal (1.0.8-4) unstable; urgency=medium
 
-  * Bug #42175: Reasonable caching behaviour for portal.json
+  * Bug #42175: Reasonable caching behavior for portal.json
   * Bug #42175: Do not care about show* Attributes
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 13 Mar 2017 16:52:19 +0100

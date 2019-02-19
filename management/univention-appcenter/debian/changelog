@@ -242,7 +242,7 @@ univention-appcenter (7.0.2-29) unstable; urgency=medium
 
 univention-appcenter (7.0.2-28) unstable; urgency=medium
 
-  * Bug #47619: Do not change revert behaviour for Non-Docker Apps
+  * Bug #47619: Do not change revert behavior for Non-Docker Apps
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 11 Sep 2018 15:21:08 +0200
 
@@ -771,7 +771,7 @@ univention-appcenter (7.0.1-5) unstable; urgency=medium
 univention-appcenter (7.0.1-4) unstable; urgency=medium
 
   * Bug #45499: Fix license information not being translated
-  * Bug #44783: Improved caching behaviour after a package update but before
+  * Bug #44783: Improved caching behavior after a package update but before
     any ini update
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 17 Jan 2018 14:46:10 +0100
@@ -845,7 +845,7 @@ univention-appcenter (6.0.11-2) unstable; urgency=medium
 
 univention-appcenter (6.0.11-1) unstable; urgency=medium
 
-  * Bug #44441: Better revert behaviour
+  * Bug #44441: Better revert behavior
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 23 Nov 2017 16:23:46 +0100
 
@@ -2416,7 +2416,7 @@ univention-appcenter (5.0.20-24) unstable; urgency=medium
 
 univention-appcenter (5.0.20-23) unstable; urgency=medium
 
-  * Bug #40874: Fix inconsistent behaviour when there is a syntax error in
+  * Bug #40874: Fix inconsistent behavior when there is a syntax error in
     license_types.ini (and similar)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 14 Mar 2016 10:40:46 +0100
