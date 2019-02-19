@@ -112,7 +112,7 @@ def check_primary(conn, basedn):
 				modlist.append((ldap.MOD_ADD, 'uniqueMember', user_dn))
 			if user_uid.lower() not in group_member_uids:
 				modlist.append((ldap.MOD_ADD, 'memberUid', user_uid))
-			# no entry found, gonna add one
+			# no entry found, going to add one
 			if modlist:
 				info("Adding uniqueMember and memberUid entry for '%s' in '%s'", user_dn, group_dn)
 				try:
