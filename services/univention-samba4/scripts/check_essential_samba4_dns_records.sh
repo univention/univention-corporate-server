@@ -48,7 +48,7 @@ kpasswd udp
 %EOF
 
 
-## retrive DC specific GUID
+## retrieve DC specific GUID
 NTDS_objectGUIDs=()
 sites=()
 samba4servicedcs=$(ldapsearch -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=Samba 4)(objectClass=univentionDomainController))" cn | ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p')      ## currently there is no u-d-m module computers/dc
