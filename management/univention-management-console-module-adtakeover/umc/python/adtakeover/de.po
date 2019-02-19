@@ -107,7 +107,7 @@ msgstr ""
 "%(text)s"
 
 #: umc/python/adtakeover/takeover.py:1986
-msgid "Faild to detect the Active Directory site of the server."
+msgid "Failed to detect the Active Directory site of the server."
 msgstr ""
 "Die Erkennung des Active Directory-Standorts (site) des Servers schlug fehl."
 
