@@ -561,7 +561,7 @@ univention-network-manager (0.3.0-1) unstable; urgency=low
 univention-network-manager (0.2.1-1) unstable; urgency=low
 
   * add UCR variable networkmanager/dhcp/options/fallback: if options like
-    hostname, nameserver, domain name and domain search pathes are not
+    hostname, nameserver, domain name and domain search paths are not
     send via DHCP, values from UCR variables will be used instead of
     available (Bug #8994)
 
