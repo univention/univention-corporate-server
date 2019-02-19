@@ -157,7 +157,7 @@ def imagecategory_of_buffer(data):
 	Return |MIME| types and size information for image.
 
 	:strparam bytes data: Some (compressed) image data.
-	:returns: a 3-tuple (image_mime_type, compression_mime_type, dimension) where `dimenstion` is `{width}x{height}` or `scalable`. `None` if the format is not recognized.
+	:returns: a 3-tuple (image_mime_type, compression_mime_type, dimension) where `dimension` is `{width}x{height}` or `scalable`. `None` if the format is not recognized.
 	:rtype: tuple[str, str, str]
 	"""
 	(compression_mime_type, uncompressed_data) = uncompress_buffer(data)
