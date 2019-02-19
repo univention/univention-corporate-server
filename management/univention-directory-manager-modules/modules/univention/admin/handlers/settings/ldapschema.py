@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Directory Manager Modules
-#  direcory manager module for LDAP schema extensions
+#  directory manager module for LDAP schema extensions
 #
 # Copyright 2013-2019 Univention GmbH
 #

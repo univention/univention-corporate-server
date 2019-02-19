@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Directory Manager Modules
-#  direcory manager module for UDM modules
+#  directory manager module for UDM modules
 #
 # Copyright 2013-2019 Univention GmbH
 #
