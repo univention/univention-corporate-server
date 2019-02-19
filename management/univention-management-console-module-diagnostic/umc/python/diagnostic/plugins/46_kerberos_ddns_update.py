@@ -43,7 +43,7 @@ from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check kerberos authenticated DNS updates')
-description = _('No errors occured.')
+description = _('No errors occurred.')
 run_descr = ['Checks if kerberos authenticated DNS updates']
 
 
@@ -162,7 +162,7 @@ def run(_umc_instance):
 
 	problems = list(check_nsupdate(config_registry, server))
 	if problems:
-		ed = [_('Errors occured while running `kinit` or `nsupdate`.')]
+		ed = [_('Errors occurred while running `kinit` or `nsupdate`.')]
 		ed.extend(str(error) for error in problems)
 		MODULE.error('\n'.join(ed))
 		raise Critical(description='\n'.join(ed))

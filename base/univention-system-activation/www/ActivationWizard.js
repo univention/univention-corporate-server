@@ -255,7 +255,7 @@ define([
 				error_details.innerHTML = err.response.data;
 				error_details = error_details.getElementsByTagName('span')[0].innerText;
 			} else {
-				error_details = _('An unknown error occured. It is possible that a browser addon blocks sending the request to "license.univention.de". More information how to avoid this error can be found <a href="https://help.univention.com/t/7698" target="_blank" rel="noreferrer noopener">in our support database</a>.');
+				error_details = _('An unknown error occurred. It is possible that a browser addon blocks sending the request to "license.univention.de". More information how to avoid this error can be found <a href="https://help.univention.com/t/7698" target="_blank" rel="noreferrer noopener">in our support database</a>.');
 			}
 			var error_msg = _('Error ') + status_code + ': ' + error_details;
 			this._showError(error_msg);

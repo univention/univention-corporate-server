@@ -214,7 +214,7 @@ msgstr ""
 "partition LVM ou un partage (par exemple utilisant iSCSI, NFS ou CIFS)."
 
 #: umc/js/uvmm/SnapshotGrid.js:141 umc/js/uvmm/SnapshotGrid.js:256
-msgid "An error ocurred during processing your request."
+msgid "An error occurred during processing your request."
 msgstr "Une erreur est apparue lors du traitement de votre requête."
 
 #: umc/js/uvmm/types.js:138
