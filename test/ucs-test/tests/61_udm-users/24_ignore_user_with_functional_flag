@@ -25,7 +25,7 @@ if __name__ == '__main__':
 		utils.stop_s4connector()
 
 	with udm_test.UCSTestUDM() as udm:
-		# create user and check its existance
+		# create user and check its existence
 		user_dn = udm.create_user(check_for_drs_replication=False, wait_for=False)[0]
 		utils.verify_ldap_object(user_dn)
 		stdout = subprocess.Popen([udm_test.UCSTestUDM.PATH_UDM_CLI_CLIENT, 'users/user', 'list'], stdout=subprocess.PIPE).communicate()[0]

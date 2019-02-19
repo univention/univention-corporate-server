@@ -105,13 +105,13 @@ function ad_wait_for_synchronization () {
 	#TODO: Implement (conservative) ping-pong detection (if possible at all)
 
 ### 	local tracebackfile="/var/log/univention/${configbase}-tracebacks.log"
-### 	info "Checking for existance of $tracebackfile ..."
+### 	info "Checking for existence of $tracebackfile ..."
 ### 	if [ -f "$tracebackfile" ]; then
 ### 		info "Found Tracebackfile!!"
 ### 		if [ "$AD_CHECK_LOG_FOR_TRACEBACKS" == "True" ]; then
 ### 			warning "Probably the testcases actions provoked a \
 ### traceback in the AD-Connector. If you believe, that the current testcase is unrelated to \
-### the existance of the traceback-file, or you simply want to ignore that file you might want \
+### the existence of the traceback-file, or you simply want to ignore that file you might want \
 ### to remove it, or set AD_CHECK_LOG_FOR_TRACEBACKS in adconnector.lib to False."
 ### 			warning "-----Contents of the Traceback-file:-------"
 ### 			warning "$(cat $tracebackfile)"
