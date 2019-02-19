@@ -1,5 +1,5 @@
 #!/bin/bash
-echo 'eth0 alread part of bridge br1'
+echo 'eth0 already part of bridge br1'
 set -e -u
 
 tmp=$(mktemp -d)
