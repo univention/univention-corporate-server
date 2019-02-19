@@ -399,7 +399,7 @@ _module_cache = UDM_ModuleCache()
 
 class UDM_Module(object):
 
-	"""Wraps UDM modules to provie a simple access to the properties and functions"""
+	"""Wraps UDM modules to provide a simple access to the properties and functions"""
 
 	def __init__(self, module, force_reload=False, ldap_connection=None, ldap_position=None):
 		"""Initializes the object"""
