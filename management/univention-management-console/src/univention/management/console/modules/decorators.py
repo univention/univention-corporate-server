@@ -36,7 +36,7 @@ Convenience decorators for developers of UMC modules
 ====================================================
 
 Functions exposed by UMC modules often share some logic. They check the
-existance and formatting of variables or check permissions. If anything
+existence and formatting of variables or check permissions. If anything
 fails, they react in a similar way. If everything is correct, the real
 logic is often as simple as returning one single value.
 
