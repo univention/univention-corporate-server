@@ -1311,7 +1311,7 @@ class s4(univention.s4connector.ucs):
 			res = self.__search_s4_partitions(filter=usnFilter, show_deleted=show_deleted)
 			return sorted(res, key=lambda element: element[1][attribute][0])
 
-		# search fpr objects with uSNCreated and uSNChanged in the known range
+		# search for objects with uSNCreated and uSNChanged in the known range
 		returnObjects = []
 		try:
 			if lastUSN > 0:
