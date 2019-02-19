@@ -53,7 +53,7 @@ int main(int argc, char** argv)
 				break;
 			
 			default:
-				printf("Unknow option '%c'.\n", c);
+				printf("Unknown option '%c'.\n", c);
 		}
 	}
 	

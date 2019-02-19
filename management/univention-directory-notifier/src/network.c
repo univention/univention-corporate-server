@@ -319,7 +319,7 @@ int network_client_main_loop ( )
 				check_callbacks();
 				continue;
 			}
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "unkonwn select error, exit");
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "unknown select error, exit");
 			exit(1);
 		}
 
