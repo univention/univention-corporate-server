@@ -547,7 +547,7 @@ univention-base-files (3.0.3-2) unstable; urgency=low
 
 univention-base-files (3.0.3-1) unstable; urgency=low
 
-  * Kernel inotify parameters are now configureable by UCR variables (Bug #32327)
+  * Kernel inotify parameters are now configurable by UCR variables (Bug #32327)
 
  -- Erik Damrose <damrose@univention.de>  Tue, 27 Aug 2013 11:19:59 +0200
 

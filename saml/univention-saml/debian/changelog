@@ -164,7 +164,7 @@ univention-saml (5.0.4-5) unstable; urgency=medium
   * Modify univention-saml apache config to work with negotiate module
   * Adjust simplesaml negotiate config to use the same ldap parameters as
     the fallback ldap connection (saml/idp/ldap/get_attributes)
-  * Make IdP auth source configureable via saml/idp/authsource, default
+  * Make IdP auth source configurable via saml/idp/authsource, default
     is univention-negotiate
   * Add dependencies to php-krb5 and univention-heimdal-common
   * Enable simplesamlphp negotiate module by default
