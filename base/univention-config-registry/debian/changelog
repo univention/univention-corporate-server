@@ -2701,7 +2701,7 @@ univention-config-registry (2.2.0-13) unstable; urgency=low
 
 univention-config-registry (2.2.0-12) unstable; urgency=low
 
-  * realy fix encoding
+  * really fix encoding
 
  -- Janis Meybohm <meybohm@univention.de>  Wed, 18 Jul 2007 17:10:28 +0200
 
