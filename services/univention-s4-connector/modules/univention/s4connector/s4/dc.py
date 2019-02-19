@@ -66,7 +66,7 @@ def _unixTimeInverval2seconds(unixTime):
 		ud.debug(ud.LDAP, ud.WARN, 'dc _unixTimeInverval2seconds: Not a valid time unit: %s' % unixTime)
 		return 0
 
-# Time inverval in S4 / AD is often 100-nanosecond intervals:
+# Time interval in S4 / AD is often 100-nanosecond intervals:
 # http://msdn.microsoft.com/en-us/library/windows/desktop/ms676863%28v=vs.85%29.aspx
 
 
