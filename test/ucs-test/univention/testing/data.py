@@ -77,13 +77,13 @@ class TestEnvironment(object):
 		self.log = open(logfile or os.path.devnull, 'a')
 
 	def _load_host(self):
-		"""Load host system informations."""
+		"""Load host system information."""
 		(_sysname, nodename, _release, _version, machine) = os.uname()
 		self.hostname = nodename
 		self.architecture = machine
 
 	def _load_ucr(self):
-		"""Load Univention Config Registry informations."""
+		"""Load Univention Config Registry information."""
 		self.ucr = ConfigRegistry()
 		self.ucr.load()
 		self.role = self.ucr.get('server/role', '')
@@ -116,11 +116,11 @@ class TestEnvironment(object):
 		TestEnvironment.logger.debug('Join=%r' % self.joined)
 
 	def _load_apt(self):
-		"""Load package informations."""
+		"""Load package information."""
 		self.apt = apt.Cache()
 
 	def dump(self, stream=sys.stdout):
-		"""Dump environment informations."""
+		"""Dump environment information."""
 		print('hostname: %s' % (self.hostname,), file=stream)
 		print('architecture: %s' % (self.architecture,), file=stream)
 		print('version: %s' % (self.ucs_version,), file=stream)
