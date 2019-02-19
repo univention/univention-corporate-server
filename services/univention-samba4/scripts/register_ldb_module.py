@@ -74,7 +74,7 @@ if __name__ == "__main__":
 		modules_list_0 = modules_0.split(',')
 
 		if opts.remove:
-			# LDB Modules are organised as a stack, remove the last occurence
+			# LDB Modules are organised as a stack, remove the last occurrence
 			modules_list_0.reverse()
 			for module in opts.remove:
 				try:
