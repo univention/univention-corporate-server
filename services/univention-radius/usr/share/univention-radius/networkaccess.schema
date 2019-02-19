@@ -1,7 +1,7 @@
 objectIdentifier univentionNetworkAccess 1.3.6.1.4.1.10176.4205
 objectIdentifier univentionNetworkAccessAttributeType univentionNetworkAccess:1
 objectIdentifier univentionNetworkAccessObjectClass   univentionNetworkAccess:2
-objectIdentifier univentionRadiusClientPrefix 1.3.6.1.4.1.10176.4206
+objectIdentifier univentionRadiusClientPrefix 1.3.6.1.4.1.10176.4205.100
 
 attributetype ( univentionNetworkAccessAttributeType  NAME 'univentionNetworkAccess'
 	DESC 'Allow 802.1X network access'
