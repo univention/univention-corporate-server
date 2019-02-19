@@ -71,7 +71,7 @@ class UMCTester(object):
 		self.reset()
 
 	#
-	# Code for chaning start type
+	# Code for changing start type
 	#
 	def test_chaning_start_type(self):
 		ignore_these = [
