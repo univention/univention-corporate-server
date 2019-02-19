@@ -361,7 +361,7 @@ define([
 		_notificationCountNode: null,
 
 		// _lastWindowWidth: Integer
-		// 		When openening the dropDown and the
+		// 		When opening the dropDown and the
 		// 		window width changed, the message truncation for
 		// 		all notifications is updated.
 		_lastWindowWidth: null,
