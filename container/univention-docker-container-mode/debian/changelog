@@ -547,7 +547,7 @@ univention-docker-container-mode (0.1.0-9) unstable; urgency=medium
 
 univention-docker-container-mode (0.1.0-8) unstable; urgency=medium
 
-  * docker-run needs normaly a hostname and not a fqdn. The init script
+  * docker-run needs normally a hostname and not a fqdn. The init script
     support both but the environment variable domainname is preferred
     (Bug #38260)
 
