@@ -51,7 +51,7 @@ def consecutive_user_creation():
 	testcase_user_dn = UDM.create_user()[0]
 
 	if int(LO.getAttr(testcase_user_dn, 'uidNumber')[0]) == id_to_collide_with:
-		return Failure("Aquired user uidNumber which collides with a groups gidNumber by consecutivley adding users.")
+		return Failure("Acquired user uidNumber which collides with a groups gidNumber by consecutivley adding users.")
 
 
 def consecutive_group_creation():
@@ -62,7 +62,7 @@ def consecutive_group_creation():
 	testcase_group_dn = UDM.create_group()[0]
 
 	if int(LO.getAttr(testcase_group_dn, 'gidNumber')[0]) == id_to_collide_with:
-		return Failure("Aquired a group gidNumber which collides with a users uidNumber by consecutively adding users.")
+		return Failure("Acquired a group gidNumber which collides with a users uidNumber by consecutively adding users.")
 
 
 def explicit_user_creation():
