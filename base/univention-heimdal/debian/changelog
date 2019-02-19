@@ -464,7 +464,7 @@ univention-heimdal (5.0.9-1) unstable; urgency=low
     kerberos/kpasswdserver
   * Removed root from kadmind.acl and added a UCR variable
     kerberos/adminusers to configure the admin users (Bug #19021)
-  * Fixed the database defintion to the 'label' syntax which was changed
+  * Fixed the database definition to the 'label' syntax which was changed
     in heimdal 1.3 (Bug #22108)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 07 Oct 2011 09:55:08 +0200

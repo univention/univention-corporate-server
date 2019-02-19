@@ -1601,7 +1601,7 @@ univention-printserver (1.0.5-4) unstable; urgency=low
 univention-printserver (1.0.5-3) unstable; urgency=low
 
   * Pass credentials to the univention-directory-manager calls, which remove the
-    old printer defitions
+    old printer definitions
   * Only make a backup copy during upgrades
   * Test the existence of the old PPDs by probing the join status instead of
     perfoming an LDAP search
