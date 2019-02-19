@@ -118,7 +118,7 @@ class ACLs(object):
 
 	"""Provides methods to determine the access rights of users to
 	specific UMC commands. It defines a cache for ACLs, a parser for
-	command definitions of ACLs and functions for comparsion.
+	command definitions of ACLs and functions for comparison.
 	"""
 
 	# constants

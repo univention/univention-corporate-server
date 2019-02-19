@@ -248,7 +248,7 @@ class simpleLdap(object):
 		self._validate_superordinate()
 
 	def save(self):  # type: () -> None
-		"""Saves the current internal object state as old state for later comparision when e.g. modifying this object.
+		"""Saves the current internal object state as old state for later comparison when e.g. modifying this object.
 
 		.. seealso:: This method should be called by :func:`univention.admin.handlers.simpleLdap.open` and after further modifications in modify() / create().
 
