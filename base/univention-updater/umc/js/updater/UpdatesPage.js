@@ -455,7 +455,7 @@ define([
 					// send event that value have been loaded
 					this.onStatusLoaded(values);
 
-					// before we do anything else: switch visibility of panes dependant of the 'easy mode'
+					// before we do anything else: switch visibility of panes dependent of the 'easy mode'
 					this._switch_easy_mode((values.easy_mode === true) || (values.easy_mode === 'true'));
 
 					// set text that shows release updates.
