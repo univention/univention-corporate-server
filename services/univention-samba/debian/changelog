@@ -2432,7 +2432,7 @@ univention-samba (0.23) unstable; urgency=low
 
 univention-samba (0.22) unstable; urgency=low
 
-  * added listener modul samba-config
+  * added listener module samba-config
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Mar 2005 18:40:12 +0100
 
@@ -2548,7 +2548,7 @@ univention-samba (0.5) unstable; urgency=low
 
 univention-samba (0.4) unstable; urgency=low
 
-  * handle home dirs in listener modul
+  * handle home dirs in listener module
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri,  6 Feb 2004 15:41:21 +0100
 

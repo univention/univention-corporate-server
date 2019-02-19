@@ -966,9 +966,9 @@ univention-heimdal (1.7) unstable; urgency=low
 
 univention-heimdal (1.6) unstable; urgency=low
 
-  * readded listener modul keytab
+  * readded listener module keytab
   * remove policy check function (now in kpasswdd)
-  * resync listener modul keytab
+  * resync listener module keytab
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu,  4 Mar 2004 07:25:13 +0100
 
@@ -994,7 +994,7 @@ univention-heimdal (1.4) unstable; urgency=low
 univention-heimdal (1.6) unstable; urgency=low
 
   * Use python2.3 in kerberos_now.
-  * readded listener modul keytab
+  * readded listener module keytab
   * remove policy check function (now in kpasswdd)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue,  2 Mar 2004 10:21:28 +0100

@@ -3471,7 +3471,7 @@ univention-virtual-machine-manager-daemon (0.9.141-1) unstable; urgency=low
 univention-virtual-machine-manager-daemon (0.9.140-1) unstable; urgency=low
 
   * shorten operating system in UCS profiles
-  * UMC modul: do not wrap operating system field; Bug #19133
+  * UMC module: do not wrap operating system field; Bug #19133
 
  -- Andreas Büsching <buesching@univention.de>  Sun, 20 Feb 2011 12:27:40 +0100
 

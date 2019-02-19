@@ -5186,7 +5186,7 @@ univention-management-console (2.0.28-1) unstable; urgency=low
 
 univention-management-console (2.0.27-1) unstable; urgency=low
 
-  * adapt UMC modul to API change in univention.info_tools (Bug #15556)
+  * adapt UMC module to API change in univention.info_tools (Bug #15556)
 
  -- Andreas Büsching <buesching@univention.de>  Tue, 17 Nov 2009 17:41:08 +0100
 
@@ -5791,7 +5791,7 @@ univention-management-console (0.9.33-9) unstable; urgency=low
 
 univention-management-console (0.9.33-8) unstable; urgency=low
 
-  * move the quota umc modul from univention-management-console to the
+  * move the quota umc module from univention-management-console to the
     univention-quota package. Bug #12145
 
  -- Stefan Gohmann <gohmann@univention.de>  Sat, 18 Oct 2008 14:07:37 +0200
@@ -5804,14 +5804,14 @@ univention-management-console (0.9.33-7) unstable; urgency=low
 
 univention-management-console (0.9.33-6) unstable; urgency=low
 
-  * move the quota umc modul from univention-management-console to the
+  * move the quota umc module from univention-management-console to the
     univention-quota package. Bug #12145
 
  -- Stefan Gohmann <gohmann@univention.de>  Sat, 18 Oct 2008 13:15:37 +0200
 
 univention-management-console (0.9.33-5) unstable; urgency=low
 
-  * move the cups umc modul from univention-management-console to the
+  * move the cups umc module from univention-management-console to the
     univention-printerserver package. Bug #12145
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 17 Oct 2008 22:03:50 +0200

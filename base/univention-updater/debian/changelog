@@ -6284,7 +6284,7 @@ univention-updater (4.0.63-1) unstable; urgency=low
 univention-updater (4.0.62-1) unstable; urgency=low
 
   * preup/postup: ensure that UMC is not restarted during an update; the
-    fix in the the UMC modul will just work vor the next update (Bug
+    fix in the the UMC module will just work vor the next update (Bug
     #13996)
 
  -- Andreas Büsching <buesching@univention.de>  Wed,  6 May 2009 08:31:02 +0200

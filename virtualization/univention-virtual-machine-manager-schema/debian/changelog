@@ -465,7 +465,7 @@ univention-virtual-machine-manager-schema (1.0.5-1) unstable; urgency=low
 
 univention-virtual-machine-manager-schema (1.0.4-1) unstable; urgency=low
 
-  * add UDM modul vor UVMM profiles; Bug #18516
+  * add UDM module vor UVMM profiles; Bug #18516
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 28 May 2010 17:30:32 +0200
 

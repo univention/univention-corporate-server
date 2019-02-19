@@ -1524,7 +1524,7 @@ univention-printserver (1.0.9-4) unstable; urgency=low
 
 univention-printserver (1.0.9-3) unstable; urgency=low
 
-  * move the cups umc modul from univention-management-console to the
+  * move the cups umc module from univention-management-console to the
     univention-printerserver package. Bug #12145
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 17 Oct 2008 22:04:03 +0200

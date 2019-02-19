@@ -547,7 +547,7 @@ univention-quota (6.0.3-1) unstable; urgency=low
 
 univention-quota (6.0.2-1) unstable; urgency=low
 
-  * Update UMC modul
+  * Update UMC module
   (Bug #22903)
 
  -- Jascha Geerds <geerds@univention.de>  Wed, 17 Aug 2011 11:09:26 +0200
@@ -705,7 +705,7 @@ univention-quota (2.0.1-3) unstable; urgency=low
 
 univention-quota (2.0.1-2) unstable; urgency=low
 
-  * move the quota umc modul from univention-management-console to the
+  * move the quota umc module from univention-management-console to the
     univention-quota package. Bug #12145
 
  -- Stefan Gohmann <gohmann@univention.de>  Sat, 18 Oct 2008 13:15:23 +0200
