@@ -897,7 +897,7 @@ class PackageManager(object):
 		messages, always reopens cache.
 
 		:param install: List of package names to install.
-		:param remove: List ot package names to remove.
+		:param remove: List of package names to remove.
 		:param upgrade: Perform upgrade were no new packages are installed.
 		:param dist_upgrade: Perform upgrade were new packages may be installed and old packages may be removed.
 		:param msg_if_failed: Test message to output if things go wrong.
