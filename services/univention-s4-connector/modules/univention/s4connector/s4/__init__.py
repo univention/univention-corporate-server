@@ -1533,7 +1533,7 @@ class s4(univention.s4connector.ucs):
 
 		# to set a valid primary group we need to:
 		# - check if either the primaryGroupID is already set to rid or
-		# - proove that the user is member of this group, so: at first we need the s4_object for this element
+		# - prove that the user is member of this group, so: at first we need the s4_object for this element
 		# this means we need to map the user to get it's S4-DN which would call this function recursively
 
 		if "primaryGroupID" in ldap_object_s4 and ldap_object_s4["primaryGroupID"][0] == rid:
