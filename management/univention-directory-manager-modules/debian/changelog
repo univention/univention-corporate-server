@@ -9376,7 +9376,7 @@ univention-directory-manager-modules (2.2.15-1) unstable; urgency=low
 
 univention-directory-manager-modules (2.2.14-6) unstable; urgency=low
 
-  * fix syncronization of memberUid with uniqueMember attributes on memberOf-groups ("supergroups")
+  * fix synchronization of memberUid with uniqueMember attributes on memberOf-groups ("supergroups")
 
  -- Arvid Requate <requate@univention.de>  Thu, 15 May 2008 14:34:29 +0200
 

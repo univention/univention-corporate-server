@@ -3712,7 +3712,7 @@ univention-s4-connector (6.0.53-1) unstable; urgency=low
 univention-s4-connector (6.0.52-1) unstable; urgency=low
 
   * Synchronize sambaWorkstations (Bug #24119)
-  * Added telephoneNumber synchonization
+  * Added telephoneNumber synchronization
   * Added phone numbers to mapping
   * Synchonize displayName (Bug #20601)
 

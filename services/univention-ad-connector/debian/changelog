@@ -737,7 +737,7 @@ univention-ad-connector (10.0.1-14) unstable; urgency=medium
 
 univention-ad-connector (10.0.1-13) unstable; urgency=medium
 
-  * Replace the password synchronisation by using
+  * Replace the password synchronization by using
     drsuapi.DsGetNCChangesRequest8 and samr.SetUserInfo. Felix and Arvid
     did a lot of research and provide patches it. This will replace our
     own password service (Bug #40745)
@@ -1450,7 +1450,7 @@ univention-ad-connector (8.0.17-5) unstable; urgency=low
 
     [ Arvid Requate ]
      * admember.lookup_adds_dc() requires python-ldb (Bug #34091)
-     * Improve error handling for the time syncronization (Bug #34091)
+     * Improve error handling for the time synchronization (Bug #34091)
      * Separate --lookup option for univention-ad-member
      * admember.lookup_adds_dc() requires samba-common-bin (Bug #34091)
      * admember.lookup_adds_dc() requires python-samba (Bug #34091)
@@ -2196,7 +2196,7 @@ univention-ad-connector (6.0.15-1) unstable; urgency=low
 
   * Merged from S4 connector:
     * Synchronize sambaWorkstations (Bug #24119)
-    * Added telephoneNumber synchonization
+    * Added telephoneNumber synchronization
     * Added phone numbers to mapping
     * Synchonize displayName (Bug #20601)
 
@@ -2321,7 +2321,7 @@ univention-ad-connector (6.0.7-1) unstable; urgency=low
     * Set lastUSN to internal.cfg not before the search result was
       completely synced, otherwise the USN handling can become confused
       (Bug #22622)
-    * Retry the synchonisation if the local idletimeout occurs
+    * Retry the synchronisation if the local idletimeout occurs
       (Bug #22622)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 15:43:17 +0200
