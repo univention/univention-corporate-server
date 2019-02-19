@@ -279,6 +279,6 @@ class SamlTest(object):
 	def logout_at_IdP(self):
 		"""Logout from session"""
 		url = "https://%s/univention/logout" % self.target_sp_hostname
-		print("Loging out at url: %s" % url)
+		print("Logging out at url: %s" % url)
 		self.position = "trying to logout"
 		self._request('GET', url, 200)
