@@ -7671,7 +7671,7 @@ univention-updater (1.36-12) unstable; urgency=low
 univention-updater (1.36-11) unstable; urgency=low
 
   * added the script univention-addon-download for adding apt.univention.de
-  * addons into the lokal repository
+  * addons into the local repository
 
  -- Janis Meybohm <meybohm@univention.de>  Tue,  9 May 2006 14:24:00 +0200
 
