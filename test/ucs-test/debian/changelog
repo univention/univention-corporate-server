@@ -1300,7 +1300,7 @@ ucs-test (8.0.28-82) unstable; urgency=low
 
 ucs-test (8.0.28-81) unstable; urgency=medium
 
-  * Bug #46478: remove debuging from radius tests
+  * Bug #46478: remove debugging from radius tests
 
  -- Jürn Brodersen <brodersen@univention.de>  Thu, 08 Mar 2018 10:48:45 +0100
 
@@ -1332,7 +1332,7 @@ ucs-test (8.0.28-77) unstable; urgency=medium
 
 ucs-test (8.0.28-76) unstable; urgency=medium
 
-  * Bug #46478: more debuging for radius tests
+  * Bug #46478: more debugging for radius tests
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 07 Mar 2018 11:18:37 +0100
 
@@ -1379,7 +1379,7 @@ ucs-test (8.0.28-70) unstable; urgency=medium
 
 ucs-test (8.0.28-69) unstable; urgency=medium
 
-  * Bug #46478: add debuging for radius tests
+  * Bug #46478: add debugging for radius tests
 
  -- Jürn Brodersen <brodersen@univention.de>  Mon, 05 Mar 2018 18:47:23 +0100
 
