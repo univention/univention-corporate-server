@@ -4588,7 +4588,7 @@ univention-virtual-machine-manager-daemon (0.9.21-1) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (0.9.20-1) unstable; urgency=low
 
-  * creating virtual instances without specifying a MAC addres is possible now; Bug #17733
+  * creating virtual instances without specifying a MAC address is possible now; Bug #17733
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 04 Jun 2010 15:43:39 +0200
 

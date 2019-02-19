@@ -6082,7 +6082,7 @@ univention-directory-manager-modules (7.0.173-1) unstable; urgency=low
 
 univention-directory-manager-modules (7.0.172-1) unstable; urgency=low
 
-  * adjust size of IP adress lists to make IPv6 address fit; Bug #16464
+  * adjust size of IP address lists to make IPv6 address fit; Bug #16464
 
  -- Andreas Büsching <buesching@univention.de>  Sun, 06 Nov 2011 10:48:17 +0100
 
@@ -6596,7 +6596,7 @@ univention-directory-manager-modules (7.0.95-1) unstable; urgency=low
 univention-directory-manager-modules (7.0.94-1) unstable; urgency=low
 
   * simpleComputer: re-add __split_dhcp_entry to filter the case that no
-    IP adress is given; Bug #23329
+    IP address is given; Bug #23329
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 26 Sep 2011 12:07:33 +0200
 
