@@ -41,7 +41,7 @@ def check_pfs_cipher():
 	"""
 	Makes a localhost connection with openssl client and looks for cipher used.
 	"""
-	print "\nExpecting one of the follwing ciphers to be used:", PFS_CIPHERS
+	print "\nExpecting one of the following ciphers to be used:", PFS_CIPHERS
 	openssl_out = run_openssl()
 
 	for possible_cipher in PFS_CIPHERS:
