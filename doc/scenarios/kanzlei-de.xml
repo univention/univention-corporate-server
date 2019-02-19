@@ -32,8 +32,8 @@
   <section id="lawyer:services">
 	<title>Systeme und Dienste</title>
 	<para>
-	  Univention Corporate Server (UCS) stellt die benötigten Dienste und Anwendungen ``out of the
-	  box'' als Komplettlösung zur Verfügung. Es kommt ein einzelnes UCS-System zum Einsatz, das für
+	  Univention Corporate Server (UCS) stellt die benötigten Dienste und Anwendungen <foreignphrase>out of the
+	  box</foreignphrase> als Komplettlösung zur Verfügung. Es kommt ein einzelnes UCS-System zum Einsatz, das für
 	  die Windows-Clients Anmelde- und Dateidienste bereitstellt, die Drucker verwaltet und das
 	  Backup der Daten automatisiert.
 	</para>
@@ -51,8 +51,8 @@
 	<para>
 	  Für die zehn Mitarbeiter werden im Web-Interface der &ucsUMC;
 	  Benutzerkonten angelegt. Jeder Mitarbeiter kann sich über die Benutzer
-      <emphasis>Self-Service</emphasis> App aus dem App Center sein Passwort selbst setzen, das -
-	  wie alle Benutzerdaten - in einem LDAP-Verzeichnisdienst gespeichert und
+      <emphasis>Self-Service</emphasis> App aus dem App Center sein Passwort selbst setzen, das —
+	  wie alle Benutzerdaten — in einem LDAP-Verzeichnisdienst gespeichert und
 	  bei der Anmeldung am Windows-Client abgefragt wird.
     </para>
 
@@ -69,13 +69,13 @@
 	<para>
 	  Auf dem UCS-System wird Samba 4 für die Anbindung der Windows-Clients eingesetzt. Samba 4
 	  bietet Domänen-, Verzeichnis- und Authentifizierungsdienste, die kompatibel zu Microsoft
-	  Active Directory sind. Diese ermöglichen auch die Verwendung der von Microsoft bereit
-	  gestellten Werkzeuge für die Verwaltung von Gruppenrichtlinien (GPOs).
+	  Active Directory sind. Diese ermöglichen auch die Verwendung der von Microsoft
+	  bereitgestellten Werkzeuge für die Verwaltung von Gruppenrichtlinien (GPOs).
 	</para>
 
 	<para>
-	  Windows-Clients können direkt der durch UCS bereitgestellten Active Directory-kompatiblen
-	  Domäne beitreten und können über Gruppenrichtlinien zentral konfiguriert werden. Der
+	  Windows-Clients können direkt der durch UCS bereitgestellten Active-Directory-kompatiblen
+	  Domäne beitreten und über Gruppenrichtlinien zentral konfiguriert werden. Der
 	  Domänen-Join ist aus Client-Sicht identisch mit dem Beitritt zu einer Windows-basierten
 	  Domäne.
 	</para>
@@ -104,7 +104,7 @@
 	<title>Single-Sign-On mit einer juristischen Fachanwendung</title>
 	<para>
 	  Die Kanzlei greift auf einen webbasierten juristischen Fachdienst zu. Dieser benutzt eine
-	  eigenständige Benutzerverwaltung. Um zu vermeiden das Benutzerkennungen und Passwörter doppelt
+	  eigenständige Benutzerverwaltung. Um zu vermeiden, dass Benutzerkennungen und Passwörter doppelt
 	  gepflegt werden müssen wird der UCS SAML Identity Provider eingebunden.
 	  SAML (Security Assertion Markup Language) ist ein XML-basierter Standard zum Austausch von
 	  Authentifizierungsinformationen, der u.a. Single-Sign-On über Domänengrenzen hinweg erlaubt.
@@ -124,10 +124,10 @@
 	  administriert werden. Die drei Drucker können bequem über die &ucsUMC; konfiguriert werden
 	  und stehen den Benutzern auf ihren Windows-Clients direkt zur Verfügung. Die beiden
 	  baugleichen Laserdrucker werden dabei zu einer Druckergruppe zusammengefasst: Das bedeutet,
-	  das die Benutzer neben der gezielten Auswahl eines Druckers auch die Möglichkeit erhalten,
-	  auf einen Pseudodrucker zu drucken. Die Druckaufträge werden dabei reihum um die beiden
+	  dass die Benutzer neben der gezielten Auswahl eines Druckers auch die Möglichkeit erhalten,
+	  auf einem Pseudodrucker zu drucken. Die Druckaufträge werden dabei reihum um die beiden
 	  Drucker der Druckergruppe verteilt. Bei belegten Druckern wird auf einen freien Drucker
-	  ausgewichen, so dass Wartezeiten vermieden werden.
+	  ausgewichen, sodass Wartezeiten vermieden werden.
 	</para>
   </section>
 
@@ -138,8 +138,8 @@
       Groupware mit Integration in UCS. Kopano greift dabei auf die
       Benutzerkontoinformationen des UCS-Verzeichnisdienstes zu. Die Verwaltung
       integriert sich nahtlos in die &ucsUMC;. Die Mitarbeiter verwenden die
-      webbasierte <emphasis>Kopano WebApp</emphasis>für ihren Kalender, auch als App im App Center
-      verfügbar.
+      webbasierte <emphasis>Kopano WebApp</emphasis> für ihren Kalender, die
+      auch als App im App Center verfügbar ist.
 	</para>
 
 	<para>
@@ -179,7 +179,7 @@
 	<para>
 	  Für den geplanten Zusammenschluss mit einem weiteren Büro in München kann einfach ein weiteres
 	  UCS-System in dieser Filliale installiert werden. Alle LDAP-Daten werden dann automatisch
-	  und verschlüsselt an den Standortserver übertragen, so dass Mitarbeiter sich bei
+	  und verschlüsselt an den Standortserver übertragen, sodass Mitarbeiter sich bei
 	  Vorort-Terminen am Münchner Standort mit ihren gewohnten Benutzerkennungen anmelden.
 	</para>
 
