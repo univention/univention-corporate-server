@@ -46,7 +46,7 @@ class Abort(Exception):
 	a clue what went wrong.
 	You should only use one class in different
 	places in the code if you are confident that sending this error from
-	two places does not lead to irritation. (This explicitely holds for
+	two places does not lead to irritation. (This explicitly holds for
 	Abort itself, you better subclass it)
 	If you give a "default_error_msg" variable, you may also use %(var)s
 	for formatting in this string. In this case, the __init__ method will

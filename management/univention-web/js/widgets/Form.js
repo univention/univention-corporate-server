@@ -45,7 +45,7 @@ define([
 
 	// in order to break circular dependencies (umc.dialog needs a Form and
 	// Form needs umc/dialog), we define umc/dialog as an empty object and
-	// require it explicitely
+	// require it explicitly
 	var dialog = {
 		notify: function() {}
 	};

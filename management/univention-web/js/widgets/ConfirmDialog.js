@@ -42,7 +42,7 @@ define([
 ], function(declare, lang, array, query, domClass, Dialog, TitlePane, ContainerWidget, Button, Text) {
 	// in order to break circular dependencies
 	// we define dijit/registry as empty object and
-	// require it explicitely
+	// require it explicitly
 	var registry = {
 		byNode: function() {}
 	};
@@ -207,7 +207,7 @@ define([
 			this._container.addChild(buttons);
 			this._container.startup();
 
-			// explicitely set 'closable' here, otherwise it does not have any effect
+			// explicitly set 'closable' here, otherwise it does not have any effect
 			this.set('closable', this.closable);
 
 			// attach layout to dialog
