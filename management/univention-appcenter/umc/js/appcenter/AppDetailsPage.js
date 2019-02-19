@@ -716,7 +716,7 @@ define([
 			array.forEach(this.app.rating, function(rating) {
 				domConstruct.create('div', {
 						'class': 'umcAppRatingHelp umcAppRatingIcon umcAppRating' + rating.name,
-						'style': 'background-size: contain;',  // FIXME: Not sure why this wont work in appcenter.styl
+						'style': 'background-size: contain;',  // FIXME: Not sure why this won't work in appcenter.styl
 						onmouseenter: function(evt) {
 							var node = evt.target;
 							Tooltip.show(rating.description, node);  // TODO: html encode?

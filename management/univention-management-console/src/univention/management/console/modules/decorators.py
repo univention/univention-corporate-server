@@ -297,7 +297,7 @@ def simple_response(function=None, with_flavor=None, with_progress=False):
 	_multi_response = _eval_simple_decorated_function(_fake_func, with_flavor)
 
 	def _response(self, request, *args, **kwargs):
-		# other arguments than request wont be propagated
+		# other arguments than request won't be propagated
 		# needed for @LDAP_Connection
 
 		# fake a multi_request
