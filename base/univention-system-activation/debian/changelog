@@ -357,7 +357,7 @@ univention-system-activation (0.0.1-20) unstable; urgency=medium
 
 univention-system-activation (0.0.1-19) unstable; urgency=medium
 
-  * Forbit root login for several services instead disallow sshd only
+  * Forbid root login for several services instead disallow sshd only
     (Bug #38547)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 26 Jun 2015 16:41:34 +0200
