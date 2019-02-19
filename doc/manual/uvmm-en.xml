@@ -1274,7 +1274,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 		<title>Profiles</title>
 		<para>
 			Profiles are used to store initial settings when creating new virtual machines.
-			Amongst others this includes the following settings:
+			Among others this includes the following settings:
 		</para>
 		<itemizedlist>
 			<listitem><simpara>name prefix for new virtual machines</simpara></listitem>
