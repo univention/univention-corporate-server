@@ -160,7 +160,7 @@ fi
 # The nouveau driver from Linux 3.10 is incompatible with the UCS xorg userland (Bug #31701)
 univention-config-registry set kernel/blacklist?"nouveau"
 
-# protect these logfiles against arbitary access
+# protect these logfiles against arbitrary access
 dpkg-statoverride --update --add root root 0640 /var/log/dpkg.log || true
 dpkg-statoverride --update --add root root 0640 /var/log/bootstrap.log || true
 dpkg-statoverride --update --add root root 0640 /var/log/lastlog || true
