@@ -106,7 +106,7 @@ class ConfigRegistryInfo(object):
 		Initialize variable and category descriptions.
 
 		:param install_mode: `True` deactivates the use of an UCR instance.
-		:param registered_only: `False` creates syntetic entries for all undescribed but set variables.
+		:param registered_only: `False` creates synthetic entries for all undescribed but set variables.
 		:param load_customized: `False` deactivates loading customized descriptions.
 		"""
 		self.categories = {}  # type: Dict[str, Category]
