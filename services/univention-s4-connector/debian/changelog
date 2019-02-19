@@ -1018,7 +1018,7 @@ univention-s4-connector (9.0.16-39) unstable; urgency=medium
 
 univention-s4-connector (9.0.16-38) unstable; urgency=medium
 
-  * Fix dns_type comparison to ignore unknown DNS objects instread of
+  * Fix dns_type comparison to ignore unknown DNS objects instead of
     creating a dns/host_record for them (Bug #39077)
 
  -- Arvid Requate <requate@univention.de>  Tue, 04 Aug 2015 15:50:30 +0200

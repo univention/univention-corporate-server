@@ -11626,7 +11626,7 @@ ucs-test (4.0.27-1) unstable; urgency=low
 
 ucs-test (4.0.26-1) unstable; urgency=low
 
-  * 5*_samba*/35smbclient_auth: Use univention.testing.utils instaed of
+  * 5*_samba*/35smbclient_auth: Use univention.testing.utils instead of
     univention.testing.ldap (Bug #31766)
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 24 Jun 2013 12:24:19 +0200
