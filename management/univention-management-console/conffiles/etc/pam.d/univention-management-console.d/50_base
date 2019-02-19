@@ -18,9 +18,9 @@ if configRegistry.is_true( 'auth/passwdcache', False ):
 	user = configRegistry.get( 'auth/passwdcache/max_user', '3' ).strip( '"' )
 
 	print '''
-# cache password (on successful authentification)
+# cache password (on successful authentication)
 auth     [success=done new_authtok_reqd=ok          ignore=ignore default=bad]         pam_passwdcache.so try_first_pass insert max_user=%(user)s
-# remove password from cache (on failed authentification)
+# remove password from cache (on failed authentication)
 # auth     required                           pam_passwdcache.so try_first_pass delete max_user=%(user)s
 # authenticate against cache (if a service fails)
 auth     sufficient                         pam_passwdcache.so try_first_pass

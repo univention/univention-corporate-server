@@ -15,11 +15,11 @@ if configRegistry.is_true('auth/faillog', False):
 		print 'auth	required	pam_tally.so %s' % tally_option
 @!@
 
-# local unix authentification; don't cache passwords
+# local unix authentication; don't cache passwords
 auth     sufficient                         pam_unix.so
 
-# remote authentification; if a service
-# - fails, we'll fall back to cache authentification
+# remote authentication; if a service
+# - fails, we'll fall back to cache authentication
 # - is successful, cache the password
 # - isn't aware of the user, proceed with the next service
 @!@
