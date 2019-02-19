@@ -81,7 +81,7 @@ new_local_UUID = get_entryUUID(lo_local, new_dn)
 new_remote_UUID = get_entryUUID(lo_remote, new_dn)
 
 if new_local_UUID != new_remote_UUID:
-	print 'ERROR: local and rmeote UUID do not match'
+	print 'ERROR: local and remote UUID do not match'
 	print '  local_UUID: %s' % new_local_UUID
 	print ' remote_UUID: %s' % new_remote_UUID
 	success = False
