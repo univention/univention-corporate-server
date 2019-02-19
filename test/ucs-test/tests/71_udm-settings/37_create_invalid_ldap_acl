@@ -33,7 +33,7 @@ if __name__ == '__main__':
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			pass
 		else:
-			utils.fail('settings/ldapacl object whith invalid data was created')
+			utils.fail('settings/ldapacl object with invalid data was created')
 
 		acl_name = uts.random_name()
 		filename = '90%s' % uts.random_name()
