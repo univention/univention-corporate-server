@@ -1601,7 +1601,7 @@ class AD_Takeover_Finalize():
 		## Let samba_dnsupdate check DNS records
 		#run_and_output_to_log(["/usr/sbin/samba_dnsupdate", ], log.info)
 
-		# remove local enty for AD DC from /etc/hosts
+		# remove local entry for AD DC from /etc/hosts
 		run_and_output_to_log(["univention-config-registry", "unset", "hosts/static/%s" % self.ad_server_ip], log.debug)
 
 		# Replace DNS host record for AD Server name by DNS Alias
@@ -2589,7 +2589,7 @@ def run_phaseIII(ucr, lp, ad_server_ip, ad_server_fqdn, ad_server_name):
 	# Re-Set NTACLs from nTSecurityDescriptor on sysvol policy directories
 	# Re-set default fACLs so sysvol-sync can read files and directories (See Bug#29065)
 	# Add DNS records to UDM:
-	# remove local enty for AD DC from /etc/hosts
+	# remove local entry for AD DC from /etc/hosts
 	# Replace DNS host record for AD Server name by DNS Alias
 	# Cleanup necessary to use NETBIOS Alias
 	# Now delete the AD DC account and sub-objects
