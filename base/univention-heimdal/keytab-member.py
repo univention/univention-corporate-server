@@ -40,7 +40,7 @@ server_role = listener.configRegistry['server/role']
 
 
 name = 'keytab-member'
-description = 'Kerberos 5 keytab maintainance for memberserver'
+description = 'Kerberos 5 keytab maintenance for memberserver'
 filter = (
 	'(&'
 	'(objectClass=krb5Principal)'
