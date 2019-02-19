@@ -400,7 +400,7 @@ class dontMap(object):
 
 class mapping(object):
 	"""
-	Map |LDAP| atribute names and values to |UDM| property names and values and back.
+	Map |LDAP| attribute names and values to |UDM| property names and values and back.
 	"""
 
 	def __init__(self):
