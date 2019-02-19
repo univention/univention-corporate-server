@@ -201,7 +201,7 @@ univention-heimdal (7.0.0-1) unstable; urgency=low
 
   * Bump version for UCS 3.2, update copyright years for 2013
   * Update/review UCR variable descriptions (Bug #30943)
-    Mark kerberos/realm als read-only
+    Mark kerberos/realm as read-only
     Remove UCR variable descriptions for kerberos/v4tickets, kerberos/enable/kerberos4,
     kerberos/enable/524 and kerberos/enable/kaserver; krb4 no longer support in 
     current Heimdal
