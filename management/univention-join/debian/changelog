@@ -1931,7 +1931,7 @@ univention-join (0.21-9) unstable; urgency=low
 
 univention-join (0.21-8) unstable; urgency=low
 
-  * change domain if the host account alredy exists
+  * change domain if the host account already exists
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Jun 2006 07:03:55 +0200
 
