@@ -30,7 +30,7 @@ Categories=management-udm
 
 [directory/manager/web/modules/autosearch]
 Description[de]=In der Grundeinstellung wird in den Domänenmanagement-Modulen der Univention Management Console eine automatische Suche nach allen Objekten durchgeführt. Dieses Verhalten kann durch diese Option abgeschaltet werden. Alternativ kann die automatische Suche auch pro Modul deaktiviert werden (siehe 'directory/manager/web/modules/.*/.*/search/autosearch').
-Description[en]=By default an automatic search for all objects is performed by the domain management modules of the Univention Management Console. This behaviour can be completely disabled through this option. Alternatively, the autosearch can be configured on a per module basis (see 'directory/manager/web/modules/.*/.*/search/autosearch').
+Description[en]=By default an automatic search for all objects is performed by the domain management modules of the Univention Management Console. This behavior can be completely disabled through this option. Alternatively, the autosearch can be configured on a per module basis (see 'directory/manager/web/modules/.*/.*/search/autosearch').
 Type=bool
 Categories=management-umc
 
@@ -54,7 +54,7 @@ Categories=management-umc
 
 [directory/manager/web/modules/wizard/disabled]
 Description[de]=Einige Module bringen in den Domänenmanagement-Modulen der Univention Management Console ein vereinfachtes Formular zum Anlegen von Objekten mit. Es wird dann statt des gesamten Formulars gezeigt. Dieses Verhalten kann durch diese Option abgeschaltet werden. Die Wizards können auch pro Modul aktiviert werden (siehe 'directory/manager/web/modules/.*/.*/wizard/disabled').
-Description[en]=Some modules provide a simplified form for creating objects in the domain management modules of the Univention Management Console. It is shown instead of the full form. This behaviour can be disabled through this option. The wizards can also be disabled per module (see 'directory/manager/web/modules/.*/.*/wizard/disabled').
+Description[en]=Some modules provide a simplified form for creating objects in the domain management modules of the Univention Management Console. It is shown instead of the full form. This behavior can be disabled through this option. The wizards can also be disabled per module (see 'directory/manager/web/modules/.*/.*/wizard/disabled').
 Type=bool
 Categories=management-umc
 
