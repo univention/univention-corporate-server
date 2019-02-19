@@ -885,7 +885,7 @@ class AD_Takeover():
 	def join_AD(self, progress):
 		log.info("Starting phase I of the takeover process.")
 
-		# OK, we are quite shure that we have the basics right, note the AD server IP and FQDN in UCR for phase II
+		# OK, we are quite sure that we have the basics right, note the AD server IP and FQDN in UCR for phase II
 		run_and_output_to_log(["univention-config-registry", "set", "hosts/static/%s=%s %s" % (self.ad_server_ip, self.ad_server_fqdn, self.ad_server_name)], log.debug)
 
 		run_and_output_to_log(["/etc/init.d/univention-s4-connector", "stop"], log.debug)
@@ -1841,7 +1841,7 @@ class AD_Takeover_Finalize():
 		# Let things settle
 		time.sleep(3)
 
-		# Restart Samba and make shure the rapid restart did not leave the main process blocking
+		# Restart Samba and make sure the rapid restart did not leave the main process blocking
 		run_and_output_to_log(["/etc/init.d/samba-ad-dc", "restart"], log.debug)
 		check_samba4_started()
 
@@ -2582,7 +2582,7 @@ def run_phaseI(ucr, lp, opts, args, parser, creds, always_answer_with=None):
 def run_phaseIII(ucr, lp, ad_server_ip, ad_server_fqdn, ad_server_name):
 
 	# Phase III: Promote to FSMO master and DNS server
-	# Restart Samba and make shure the rapid restart did not leave the main process blocking
+	# Restart Samba and make sure the rapid restart did not leave the main process blocking
 	# 1. Determine Site of local server, important for locale-dependend names like "Standardname-des-ersten-Standorts"
 	# properly register partitions
 	# Backup current NTACLs on sysvol
@@ -2602,7 +2602,7 @@ def run_phaseIII(ucr, lp, ad_server_ip, ad_server_fqdn, ad_server_name):
 	# Claim FSMO roles
 	# Let things settle
 	time.sleep(3)
-	# Restart Samba and make shure the rapid restart did not leave the main process blocking
+	# Restart Samba and make sure the rapid restart did not leave the main process blocking
 	# Create new DNS SPN account in Samba4
 	# Restart bind9 to use the OpenLDAP backend, just to be sure
 	# re-create /etc/krb5.keytab
