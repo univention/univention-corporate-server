@@ -170,7 +170,7 @@ SECONDARY () {
 	ucr set ldap/autostart=yes
 	install -o openldap -g openldap -m 0750 -d /var/lib/univention-ldap/ldap
 	slaptest -f /etc/ldap/slapd.conf -u
-	rm -rf /etc/ldap/slapd.d  # prevent init.d/slapd prefering it
+	rm -rf /etc/ldap/slapd.d  # prevent init.d/slapd preferring it
 	service slapd restart
 }
 SECONDARY
