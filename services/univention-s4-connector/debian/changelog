@@ -3883,7 +3883,7 @@ univention-s4-connector (6.0.29-1) unstable; urgency=low
 
 univention-s4-connector (6.0.28-1) unstable; urgency=low
 
-  * Consider diffrent dns '.' handling in S4 and UCS (Bug #23357)
+  * Consider different dns '.' handling in S4 and UCS (Bug #23357)
 
  -- Stefan Gohmann <gohmann@univention.de>  Sun, 18 Sep 2011 09:40:02 +0200
 

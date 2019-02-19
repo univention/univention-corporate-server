@@ -1405,7 +1405,7 @@ univention-directory-listener (4.0.2-1) unstable; urgency=low
 univention-directory-listener (4.0.1-1) unstable; urgency=low
 
   * If a user was changed in AD from uppercase to lowercase and then moved to
-    a diffrent container the listener didn't recognized the change because the
+    a different container the listener didn't recognized the change because the
     local cache entry was saved with an uppercase key. As from now the
     listener saves the key in the local cache lowercase. Bug #15003.
 
@@ -1760,7 +1760,7 @@ univention-ldap-listener (1.22) unstable; urgency=low
 
 univention-ldap-listener (1.21) unstable; urgency=low
 
-  * allow diffrent dc master domainname
+  * allow different dc master domainname
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue,  6 Jun 2006 08:58:17 +0200
 

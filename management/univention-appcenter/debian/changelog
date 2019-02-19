@@ -6216,7 +6216,7 @@ univention-management-console-module-packages (2.0.25-1) unstable; urgency=low
 
 univention-management-console-module-packages (2.0.24-1) unstable; urgency=low
 
-  * refactored code into differen classes for clarity; Bug #28599
+  * refactored code into different classes for clarity; Bug #28599
 
  -- Alexander Kläser <klaeser@univention.de>  Fri, 28 Sep 2012 19:12:15 +0200
 

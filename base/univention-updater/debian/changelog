@@ -5641,7 +5641,7 @@ univention-updater (5.0.64-5) unstable; urgency=low
 
 univention-updater (5.0.64-4) unstable; urgency=low
 
-  * Fix spelling: s/diffrent/different/. (Bug #17379)
+  * Fix spelling: s/different/different/. (Bug #17379)
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 18 Jan 2010 18:31:09 +0100
 
