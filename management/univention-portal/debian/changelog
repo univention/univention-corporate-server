@@ -1,3 +1,9 @@
+univention-portal (3.0.1-9) unstable; urgency=medium
+
+  * Bug #48546: Enhance user guidance in portal
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 19 Feb 2019 19:32:05 +0100
+
 univention-portal (3.0.1-8) unstable; urgency=medium
 
   * Bug #48700: Add reworked logo

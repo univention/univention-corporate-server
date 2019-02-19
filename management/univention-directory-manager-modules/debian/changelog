@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.3-2) unstable; urgency=medium
+
+  * Bug #48546: Enhance user guidance in portal
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 19 Feb 2019 19:33:13 +0100
+
 univention-directory-manager-modules (14.0.3-1) unstable; urgency=medium
 
   * Bug #48621: sort app tabs by name and display them after the Apps-tab
