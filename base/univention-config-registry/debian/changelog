@@ -1609,7 +1609,7 @@ univention-config-registry (5.0.48-2) unstable; urgency=low
 
 univention-config-registry (5.0.47-1) unstable; urgency=low
 
-  * only show the UCS version in the issue file if the version ist set.
+  * only show the UCS version in the issue file if the version is set.
     Bug #15781
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri,  2 Oct 2009 16:19:50 +0200

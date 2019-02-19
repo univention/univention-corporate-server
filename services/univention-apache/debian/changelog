@@ -1339,7 +1339,7 @@ univention-apache (2.0.13-1) unstable; urgency=low
 
 univention-apache (2.0.12-1) unstable; urgency=low
 
-  * be sure the ssl module ist full operational
+  * be sure the ssl module is full operational
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon,  3 Dec 2007 20:00:29 +0100
 

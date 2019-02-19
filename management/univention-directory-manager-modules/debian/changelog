@@ -6690,7 +6690,7 @@ univention-directory-manager-modules (7.0.85-1) unstable; urgency=low
      * added the complete LDAP error message ('desc' and 'info') when raising an
        exception
        (Bug #21642)
-     * fixed displaying DHCP entries when MAC address ist not given (Bug #21958)
+     * fixed displaying DHCP entries when MAC address is not given (Bug #21958)
      * added empty method cancel() to univention.admin.handlers.simpleLdap since
        it is called there and the subclass does not necessarily provide an
        implementation (Bug #21070)

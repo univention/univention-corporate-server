@@ -4397,7 +4397,7 @@ univention-virtual-machine-manager-daemon (0.9.39-1) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (0.9.38-1) unstable; urgency=low
 
-  * if associatedDomain ist not set the UCR variable domainname is used as
+  * if associatedDomain is not set the UCR variable domainname is used as
     a fallback the create the FQDN of a virtualization host; Bug #18287
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 21 Jun 2010 11:53:55 +0200

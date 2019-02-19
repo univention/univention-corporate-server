@@ -4228,7 +4228,7 @@ univention-ad-connector (5.1.20-1) unstable; urgency=low
 
 univention-ad-connector (5.1.19-2) unstable; urgency=low
 
-  * python (2.5) replaces python-ctypes but python2.4-ctypes ist currently
+  * python (2.5) replaces python-ctypes but python2.4-ctypes is currently
     required (Bug #20132)
 
  -- Arvid Requate <requate@univention.de>  Fri, 14 Jan 2011 09:24:10 +0100
