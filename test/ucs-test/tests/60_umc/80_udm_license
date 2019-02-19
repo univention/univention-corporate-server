@@ -477,7 +477,7 @@ class TestUMCLicenseManagement(UDMModule):
                                 "YjcvYPRpxRfopKsEUtxRa+1nIFKKtQ==\n")
                     junk_license.write(line)
         except (IOError, ValueError) as exc:
-            utils.fail("An exception while opening and modifing the file "
+            utils.fail("An exception while opening and modifying the file "
                        "with a junk license 'JunkTest.license':"
                        " %r" % exc)
 
