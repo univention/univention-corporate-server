@@ -29,7 +29,7 @@ if __name__ == '__main__':
 	output = udm.communicate()[0]
 
 	if udm.returncode != 0:
-		utils.fail('UDM-CLI returned "%d" while trying to execute "%s" as Adminstrator. Returncode "0" was expected.' % (udm.returncode, cmd[3:]))
+		utils.fail('UDM-CLI returned "%d" while trying to execute "%s" as Administrator. Returncode "0" was expected.' % (udm.returncode, cmd[3:]))
 
 	if ('DN: uid=' + admin_username) not in output:
 		utils.fail('Could not find DN of "%s" user in the UDM-CLI output:\n%s' % (admin_username, output))
