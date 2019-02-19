@@ -249,7 +249,7 @@ univention-printserver (8.0.6-6) unstable; urgency=medium
 
 univention-printserver (8.0.6-5) unstable; urgency=medium
 
-  * Bug #37123: Make value of "force printername" dependend on previous
+  * Bug #37123: Make value of "force printername" dependent on previous
     value during modifications.
 
  -- Arvid Requate <requate@univention.de>  Wed, 07 Jan 2015 16:24:00 +0100
