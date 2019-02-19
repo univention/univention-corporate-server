@@ -147,7 +147,7 @@ int cache_lock(void) {
 
 	if (lockf(fd, F_TLOCK, 0) != 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Could not get lock for database [%s]; "
-		                                                    "Is another listener processs running?\n",
+		                                                    "Is another listener process running?\n",
 		                 lock_file);
 		exit(EXIT_FAILURE);
 	}
