@@ -2802,13 +2802,13 @@ univention-management-console (6.0.2-1) unstable; urgency=low
 
 univention-management-console (6.0.1-1) unstable; urgency=low
 
-  * Bug #31130: log tracebacks if module or server crashs
+  * Bug #31130: log tracebacks if module or server crashes
 
  -- Florian Best <best@univention.de>  Wed, 12 Jun 2013 16:07:27 +0200
 
 univention-management-console (6.0.0-1) unstable; urgency=low
 
-  * Bug #31130: log tracebacks if module or server crashs
+  * Bug #31130: log tracebacks if module or server crashes
 
  -- Florian Best <best@univention.de>  Tue, 04 Jun 2013 10:13:00 +0200
 
