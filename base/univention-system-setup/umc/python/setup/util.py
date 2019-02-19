@@ -848,7 +848,7 @@ is_hostname.RE = re.compile("^[a-z0-9]([a-z0-9-]*[a-z0-9])?$", re.IGNORECASE)
 
 def is_domainname(domainname):
 	"""
-	Check if domainname is a valid DNS domainname accoring to RFC952/1123.
+	Check if domainname is a valid DNS domainname according to RFC952/1123.
 	>>> is_domainname('foo')
 	True
 	>>> is_domainname('f00.bar')

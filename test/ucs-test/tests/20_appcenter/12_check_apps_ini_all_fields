@@ -321,7 +321,7 @@ if __name__ == '__main__':
     """
     Parses the given arguments or uses defaults.
     Checks either a specified single file or a folder with .ini files.
-    By default checks only the installed (accoding to APPCENTER_FILE) apps.
+    By default checks only the installed (according to APPCENTER_FILE) apps.
 
     WARNING: make sure the App center cache dir has only the most recent
     .ini files, otherwise test might fail when old versions are incorrect.
