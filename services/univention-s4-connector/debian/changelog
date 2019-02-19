@@ -2046,7 +2046,7 @@ univention-s4-connector (8.0.20-1) unstable; urgency=low
 
 univention-s4-connector (8.0.19-1) unstable; urgency=low
 
-  * If an object was moved to a non visable area (selective replication)
+  * If an object was moved to a non visible area (selective replication)
     the listener module of the connector now dumps the object, so the
     connector can handle this (Bug #32542)
 
