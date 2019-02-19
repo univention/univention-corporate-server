@@ -1430,7 +1430,7 @@ ucs-test (8.0.28-62) unstable; urgency=medium
 
 ucs-test (8.0.28-61) unstable; urgency=low
 
-  * Bug #46191: add additonal debug output in essential/mail.py
+  * Bug #46191: add additional debug output in essential/mail.py
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 02 Mar 2018 18:00:48 +0100
 
@@ -15644,7 +15644,7 @@ ucs-test (1.2.141-1) unstable; urgency=low
 
 ucs-test (1.2.140-1) unstable; urgency=low
 
-  * add additonal checks to syntax-related testcases of custom- and
+  * add additional checks to syntax-related testcases of custom- and
     extended attributes (Bug: #11994)
 
  -- Daniel Hofmann <hofmann@univention.de>  Wed,  7 Oct 2009 09:53:45 +0200
