@@ -334,7 +334,7 @@ univention-system-activation (0.0.1-23) unstable; urgency=medium
 
 univention-system-activation (0.0.1-22) unstable; urgency=medium
 
-  * Bug #38547: udpate UCR variable dependencies for entries.json
+  * Bug #38547: update UCR variable dependencies for entries.json
 
  -- Alexander Kläser <klaeser@univention.de>  Fri, 26 Jun 2015 23:51:40 +0200
 
