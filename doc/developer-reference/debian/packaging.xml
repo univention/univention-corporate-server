@@ -200,7 +200,7 @@ or add --createorig to create one.
 				<listitem>
 					<para>
 						Contains control information about the source and all its binary packages.
-						This mostly includes package name and dependency informations.
+						This mostly includes package name and dependency information.
 						See <xref linkend="deb:control"/> below for more information.
 					</para>
 				</listitem>
