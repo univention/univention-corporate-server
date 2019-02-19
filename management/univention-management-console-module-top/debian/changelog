@@ -314,7 +314,7 @@ univention-management-console-module-top (1.0.3-1) unstable; urgency=low
   * Fix terminate/kill function
   * Remove obsolete code
   * Add translation
-  * Remove programm column
+  * Remove program column
   * Adjust vsize & rssize
   * Fix "command" column
   (Bug #22850)
