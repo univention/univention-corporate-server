@@ -118,7 +118,7 @@ def application(environ, start_response):
 			'message': 'No license information specified in request'
 		})
 
-	# the program logic bellow is oriented at the import function of the
+	# the program logic below is oriented at the import function of the
 	# UMC's UDM module
 	with open(LICENSE_UPLOAD_PATH, 'wb') as license_file:
 		# Replace non-breaking space with a normal space
