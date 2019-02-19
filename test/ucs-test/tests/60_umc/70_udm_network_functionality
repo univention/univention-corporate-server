@@ -74,7 +74,7 @@ class TestUMCNetworkFunctionality(UDMModule):
 
     def get_network_choices(self, syntax):
         """
-        Returns result of 'udm/syntax/choices' for a given 'syntax' reqest.
+        Returns result of 'udm/syntax/choices' for a given 'syntax' request.
         """
         options = {"syntax": syntax}
         return self.request("udm/syntax/choices", options, "computers/computer")
