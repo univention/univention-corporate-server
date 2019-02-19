@@ -719,7 +719,7 @@ univention-directory-manager-modules (13.0.19-9) unstable; urgency=medium
 
 univention-directory-manager-modules (13.0.19-8) unstable; urgency=medium
 
-  * Bug #39817: Use calender.timegm() to convert UTC time to epoch properly
+  * Bug #39817: Use calendar.timegm() to convert UTC time to epoch properly
   * Fix display of unlock time to show lockoutDuration == 0 as "unlimited"
 
  -- Arvid Requate <requate@univention.de>  Thu, 08 Feb 2018 09:33:51 +0100
