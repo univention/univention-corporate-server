@@ -355,7 +355,7 @@ def get_sha256_from_file(filename):
 
 def get_current_ram_available():
 	''' Returns RAM currently available in MB, excluding Swap '''
-	# return (psutil.avail_phymem() + psutil.phymem_buffers() + psutil.cached_phymem()) / (1024*1024) # psutil is outdated. reenable when methods are supported
+	# return (psutil.avail_phymem() + psutil.phymem_buffers() + psutil.cached_phymem()) / (1024*1024) # psutil is outdated. re-enable when methods are supported
 	# implement here. see http://code.google.com/p/psutil/source/diff?spec=svn550&r=550&format=side&path=/trunk/psutil/_pslinux.py
 	with open('/proc/meminfo', 'r') as f:
 		splitlines = map(lambda line: line.split(), f.readlines())
