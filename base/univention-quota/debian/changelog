@@ -718,7 +718,7 @@ univention-quota (2.0.1-1) unstable; urgency=low
 
 univention-quota (1.0.1-1) unstable; urgency=low
 
-  * use the parameter -w (no wrap) fpr quota -v
+  * use the parameter -w (no wrap) for quota -v
 
  -- Stefan Gohmann <gohmann@univention.de>  Sat,  8 Dec 2007 14:54:24 +0100
 

@@ -3921,7 +3921,7 @@ univention-ldap (2.2.3-2) unstable; urgency=low
 
 univention-ldap (2.2.3-1) unstable; urgency=low
 
-  * create default policy container fpr printservers
+  * create default policy container for printservers
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri,  1 Jun 2007 13:57:49 +0200
 

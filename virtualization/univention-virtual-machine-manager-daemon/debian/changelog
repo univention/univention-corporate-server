@@ -2979,7 +2979,7 @@ univention-virtual-machine-manager-daemon (0.9.207-1) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (0.9.206-1) unstable; urgency=low
 
-  * Xen PV profiles: activate flags fpr para-virtual disks and interfaces;
+  * Xen PV profiles: activate flags for para-virtual disks and interfaces;
   * explicitly set bus ide if profile for Xen PV requests fully
     virtualizied devices; Bug #19136
 
