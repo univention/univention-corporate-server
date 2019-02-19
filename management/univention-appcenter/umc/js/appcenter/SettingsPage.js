@@ -341,7 +341,7 @@ define([
 			// result['status'] is kind of error code:
 			//	1 ... invalid field input
 			//	2 ... error setting registry variable
-			//	3 ... error commiting UCR
+			//	3 ... error committing UCR
 			//	4 ... any kind of 'repo not found' conditions
 			//	5 ... repo not found, but encountered without commit
 			var txt = _("An unknown error with code %d occurred.", result.status);
