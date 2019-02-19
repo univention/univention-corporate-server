@@ -2156,7 +2156,7 @@ univention-config-registry (2.6.11-6) unstable; urgency=low
 univention-config-registry (2.6.11-3) unstable; urgency=low
 
   * Create system groups scanner, nvram, rdma, kvm and fuse and a system
-    user tss to prevent lookup failues by udev
+    user tss to prevent lookup failures by udev
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 17 Jun 2008 09:59:21 +0200
 
