@@ -8152,7 +8152,7 @@ ucs-test (5.0.93-1) unstable; urgency=low
 ucs-test (5.0.92-1) unstable; urgency=low
 
   * Bug #37299: 10_ldap/28reconnect_univention-ldapsearch: don't perform
-    univention-ldapsearch before slapd being stopped. Timings adjustement.
+    univention-ldapsearch before slapd being stopped. Timings adjustment.
 
  -- Dmitry Galkin <galkin@univention.de>  Fri, 16 Jan 2015 12:39:11 +0100
 
