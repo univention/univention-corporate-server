@@ -592,7 +592,7 @@ def mapDict(mapping, old):
 
 def mapList(mapping, old):  # UNUSED
 	"""
-	Convert list of LDAP attribute names to list of UDM propert names.
+	Convert list of LDAP attribute names to list of UDM property names.
 
 	>>> map = mapping()
 	>>> mapList(map, None)
