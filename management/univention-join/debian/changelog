@@ -2034,7 +2034,7 @@ univention-join (0.8) unstable; urgency=low
 
 univention-join (0.7) unstable; urgency=low
 
-  * reset permissons for /etc/univention/ssl
+  * reset permissions for /etc/univention/ssl
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon,  5 Apr 2004 14:59:13 +0200
 
