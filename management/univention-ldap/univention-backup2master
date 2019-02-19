@@ -319,7 +319,7 @@ read -t $opt_wait somevar
 # From now on this script should not be terminated before proper completion.
 trap "consider_termination" TERM EXIT QUIT INT HUP
 
-#remove replication listener modul
+#remove replication listener module
 dpkg-divert --divert /usr/lib/univention-directory-listener/replication.py.divert --rename --add /usr/lib/univention-directory-listener/system/replication.py
 
 # stop openldap, samba, kerberos, listener and notifier

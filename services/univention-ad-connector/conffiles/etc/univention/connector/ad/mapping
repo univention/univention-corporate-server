@@ -91,7 +91,7 @@ if ignore_filter:
 
 			dn_mapping_function=[ univention.connector.ad.user_dn_mapping ],
 
-			# from UCS Modul
+			# from UCS Module
 			attributes= {
 					'samAccountName': univention.connector.attribute (
 							ucs_attribute='username',
