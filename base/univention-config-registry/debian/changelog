@@ -2775,7 +2775,7 @@ univention-baseconfig (2.1.10-4) unstable; urgency=low
 
 univention-baseconfig (2.1.10-3) unstable; urgency=low
 
-  * added patch to proove baseconfig keys for baseconfig commit
+  * added patch to prove baseconfig keys for baseconfig commit
 
  -- Bastian Neumann <neumann@univention.de>  Thu,  5 Jul 2007 14:06:00 +0200
 
