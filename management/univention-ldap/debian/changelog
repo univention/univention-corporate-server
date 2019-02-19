@@ -3753,7 +3753,7 @@ univention-ldap (2.4.3-2) unstable; urgency=low
 
 univention-ldap (2.4.3-1) unstable; urgency=low
 
-  * redirect outout from slapadd to the join.log
+  * redirect output from slapadd to the join.log
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Aug 2007 09:09:20 +0200
 

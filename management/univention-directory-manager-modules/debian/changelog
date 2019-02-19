@@ -80,7 +80,7 @@ univention-directory-manager-modules (14.0.0-1) unstable; urgency=medium
 
 univention-directory-manager-modules (13.0.25-27) unstable; urgency=medium
 
-  * Bug #43129: Added debug ouput
+  * Bug #43129: Added debug output
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 03 Dec 2018 20:22:22 +0100
 
