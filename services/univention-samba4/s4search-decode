@@ -157,7 +157,7 @@ class decode_lastDate():
 	def __call__(self, value):
 		print "# decoded (Note: timezone not converted to local time):"
 		if long(value) == 0:
-			print "# %s: unkown" % self.attrname
+			print "# %s: unknown" % self.attrname
 		else:
 			try:
 				print "# %s: %s" % (self.attrname, decode_100nanosectimestamp(value))
