@@ -26,7 +26,7 @@ container_create () {
 
 container_exists () {
 	local NAME=${1?:missing parameter: container name}
-	info "checks wheter a $container with the dn $NAME exists"
+	info "checks whether a $container with the dn $NAME exists"
 	if udm-test "container/$container" list | grep -q "^DN: $NAME"
 	then
 		info "$container exists"

@@ -53,7 +53,7 @@ udm-test shares/printer create \
 wait_for_replication_and_postrun
 
 ## look for printer and user
-echo "----Testing wether printer share '$printername' and user '$username' have been created"
+echo "----Testing whether printer share '$printername' and user '$username' have been created"
 i=0
 while ! output="$(smbclient //localhost/$printername -U "$username%$password" -c "exit" 2>&1)"
 do

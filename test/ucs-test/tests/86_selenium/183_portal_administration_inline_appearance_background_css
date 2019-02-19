@@ -75,7 +75,7 @@ class UMCTester(object):
 		logger.info('Waiting for css to be reloaded')
 		time.sleep(10)  # wait for the css to be reloaded
 
-		logger.info('Checking wheter changing the background css worked')
+		logger.info('Checking whether changing the background css worked')
 		body_background = self.selenium.driver.find_element_by_tag_name('body').value_of_css_property('background')
 		if 'rgb(100, 100, 100)' not in body_background:
 			# the appearance changes should be hot reloaded so this is a fail

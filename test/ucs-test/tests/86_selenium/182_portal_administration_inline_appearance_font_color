@@ -75,7 +75,7 @@ class UMCTester(object):
 		logger.info('Waiting for css to be reloaded')
 		time.sleep(10)  # wait for the css to be reloaded
 
-		logger.info('Checking wheter changing the font color worked')
+		logger.info('Checking whether changing the font color worked')
 		title_node_font_color = self.selenium.driver.find_element_by_id('portalTitle').value_of_css_property('color')
 		if 'rgba(255, 255, 255, 1)' not in title_node_font_color:
 			# the appearance changes should be hot reloaded so this is a fail
