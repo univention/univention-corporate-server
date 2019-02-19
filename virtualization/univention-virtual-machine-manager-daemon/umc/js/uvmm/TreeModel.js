@@ -134,7 +134,7 @@ define([
 				{label: label}
 			);
 			if (groupname === 'default') {
-				label += '<span class="node-ressources">CPU | Mem<span>';
+				label += '<span class="node-resources">CPU | Mem<span>';
 			}
 			return label;
 		},
@@ -146,8 +146,8 @@ define([
 				var results = data.result instanceof Array ? data.result : [];
 				results.sort(tools.cmpObjects('label'));
 				onComplete(array.map(results, lang.hitch(this, function(node) {
-					if (this._nodeHasRessources(node)) {
-						node.label = this._getRessourceNodeLabel(node);
+					if (this._nodeHasResources(node)) {
+						node.label = this._getResourceNodeLabel(node);
 					} else {
 						node.label = lang.replace(
 							'<span class="tree-description" title="{label}">{label}</span>',
@@ -159,19 +159,19 @@ define([
 			}));
 		},
 
-		_nodeHasRessources: function(node) {
-			var hasRessources = array.every(['cpuUsage', 'memUsed', 'memPhysical'], function(resource) {
+		_nodeHasResources: function(node) {
+			var hasResources = array.every(['cpuUsage', 'memUsed', 'memPhysical'], function(resource) {
 				return node.hasOwnProperty(resource);
 			});
-			return hasRessources && node.memPhysical !== 0 && node.available;
+			return hasResources && node.memPhysical !== 0 && node.available;
 		},
 
-		_getRessourceNodeLabel: function(node) {
+		_getResourceNodeLabel: function(node) {
 			var shortName = this._cutDomain(node.label);
 			var label = lang.replace(
 				'<span title="{shortName}" class="tree-description">{shortName}</span>' +
 				'<span title="CPU usage: {cpu}%; Memory usage: {memUsed}/{memPhysical}" ' +
-				'class="node-ressources">{cpu}% | {mem}%</span>',
+				'class="node-resources">{cpu}% | {mem}%</span>',
 				{
 					cpu: this._formatPercent(node.cpuUsage * 100),
 					mem: this._formatPercent(node.memUsed / node.memPhysical * 100),

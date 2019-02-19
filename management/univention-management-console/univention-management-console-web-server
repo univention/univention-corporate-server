@@ -578,7 +578,7 @@ class SamlError(UMC_HTTPError):
 		return self._('Could not pick an identity provider. You can specify one via the query string parameter %(param)r from %(idps)r') % {'param': idp_query_param, 'idps': idps}
 
 
-class Ressource(object):
+class Resource(object):
 
 	# NOTE: only use CORE.process, _not_ CORE.error; since CORE.error writes as
 	#	   well to /var/log/syslog, this seems to cause problems with cherrypy.
@@ -697,7 +697,7 @@ class Ressource(object):
 		notifier.timer_add(1000, lambda: self._session_timeout_timer(user))
 
 
-class CPgeneric(Ressource):
+class CPgeneric(Resource):
 
 	def get_request(self, path, args):
 		return Request(['generic'], opts={})
@@ -1086,7 +1086,7 @@ class CPAuth(CPgeneric):
 		self._auth_request(req, sessionid)
 
 
-class Root(Ressource):
+class Root(Resource):
 
 	def __init__(self):
 		self.command = self.upload = CPCommand()
@@ -1117,7 +1117,7 @@ def get_ip_address():
 	return cherrypy.request.headers.get('X-FORWARDED-FOR', cherrypy.request.remote.ip).rsplit(', ', 1).pop()
 
 
-class SAML(Ressource):
+class SAML(Resource):
 
 	def __init__(self):
 		self.configfile = '/usr/share/univention-management-console/saml/sp.py'

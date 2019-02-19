@@ -255,15 +255,15 @@ class Server(signals.Provider):
 	:param str unix: if given it must be the filename of the UNIX socket to use
 	:param bool magic: if an external session handler should be used
 	:param class magicClass: a reference to the class for the external session handler
-	:param bool load_ressources: if the modules and categories definitions should be loaded
+	:param bool load_resources: if the modules and categories definitions should be loaded
 	"""
 
-	def __init__(self, port=6670, ssl=True, unix=None, magic=True, magicClass=MagicBucket, load_ressources=True):
+	def __init__(self, port=6670, ssl=True, unix=None, magic=True, magicClass=MagicBucket, load_resources=True):
 		'''Initializes the socket to listen for requests'''
 		signals.Provider.__init__(self)
 
 		# loading resources
-		if load_ressources:
+		if load_resources:
 			CORE.info('Loading resources ...')
 			self.reload()
 
