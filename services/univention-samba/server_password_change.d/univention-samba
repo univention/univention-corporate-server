@@ -113,7 +113,7 @@ def run_postchange():
 		if samba_user == ldap_hostdn:
 			samba_user_secret = open('/etc/machine.secret', 'r').read().strip()
 
-			# store new machine secret als ldap bind password for passdb LDAP
+			# store new machine secret as ldap bind password for passdb LDAP
 			process = subprocess.Popen(['/usr/bin/smbpasswd', '-w', samba_user_secret])
 			process.wait()
 

@@ -828,7 +828,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		# test long dependencies: A -> B -> C -> A
 		if self.info.get('memberOf'):   # TODO: FIXME:  perform extended check only if self.hasChanged('memberOf') is True
-			# if user added some groups to memberOf, the group objects specified in memberOf do not contain self als
+			# if user added some groups to memberOf, the group objects specified in memberOf do not contain self as
 			# uniqueMember (aka nestedGroup) when this test is performed. So this test has to perform the recursion check
 			# with each member of memberOf as parent
 			for upgrp in self.info.get('memberOf', []):
