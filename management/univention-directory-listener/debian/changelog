@@ -1405,7 +1405,7 @@ univention-directory-listener (4.0.2-1) unstable; urgency=low
 univention-directory-listener (4.0.1-1) unstable; urgency=low
 
   * If a user was changed in AD from uppercase to lowercase and then moved to
-    a diffrent container the listener didn't recognized the change becuase the
+    a diffrent container the listener didn't recognized the change because the
     local cache entry was saved with an uppercase key. As from now the
     listener saves the key in the local cache lowercase. Bug #15003.
 

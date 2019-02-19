@@ -38,7 +38,7 @@ univention-ssl (3.0.3-1) unstable; urgency=low
 
 univention-ssl (3.0.2-1) unstable; urgency=low
 
-  * use time.fu-berlin.de instead of pool.ntp.org beacause we are using
+  * use time.fu-berlin.de instead of pool.ntp.org because we are using
     rdate. Bug #13549
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Feb 2009 11:10:54 +0100

@@ -3625,7 +3625,7 @@ univention-updater (7.0.130-1) unstable; urgency=low
 
 univention-updater (7.0.129-1) unstable; urgency=low
 
-  * Don't use univention-install in postup.sh, beacause it could
+  * Don't use univention-install in postup.sh, because it could
     generate questions (Bug #25581)
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 22 Dec 2011 10:02:23 +0100
