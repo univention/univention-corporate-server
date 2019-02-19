@@ -987,7 +987,7 @@ class ucs:
 
 					if len(self.dn_list.get(dn, [])) < 2 or not old or not new:
 						# If the list contains more then one file, the DN will be synced later
-						# But if the object was added or remoed, the synchonization is required
+						# But if the object was added or remoed, the synchronization is required
 						for i in [0, 1]:  # do it twice if the LDAP connection was closed
 							try:
 								sync_successfull = self.__sync_file_from_ucs(filename, traceback_level=traceback_level)
