@@ -68,7 +68,7 @@ class TestUMCDomainJoinModule(JoinModule):
 
     def execute_pending_scripts(self):
         """
-        Executes all scripts that are pending by first quering
+        Executes all scripts that are pending by first querying
         for scripts that are pending and than making a single UMC
         request to execute them.
         """
