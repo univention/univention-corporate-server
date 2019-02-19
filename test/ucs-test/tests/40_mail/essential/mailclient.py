@@ -56,7 +56,7 @@ class BaseMailClient(object):
 			self.login(usermail, password)
 			self.owner = usermail
 		except Exception as ex:
-			print "Login Failed with exeption:%r" % ex
+			print "Login Failed with exception:%r" % ex
 			raise
 
 	def login_ok(self, usermail, password, expected_to_succeed=True):
@@ -72,7 +72,7 @@ class BaseMailClient(object):
 			self.logout()
 		except Exception as ex:
 			if expected_to_succeed:
-				print "Login Failed with exeption:%r" % ex
+				print "Login Failed with exception:%r" % ex
 				return 1
 		return 0
 
