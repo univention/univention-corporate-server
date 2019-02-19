@@ -1,3 +1,10 @@
+univention-radius (6.0.2-3) unstable; urgency=low
+
+  * Bug #25935: use machine connection agains ldap/server/name
+  * Bug #25935: fix OID collision
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 19 Feb 2019 15:57:04 +0100
+
 univention-radius (6.0.2-2) unstable; urgency=medium
 
   * Bug #46018: Improve logging and import ucs@school access check if available.
