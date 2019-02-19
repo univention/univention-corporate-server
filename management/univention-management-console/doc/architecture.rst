@@ -43,7 +43,7 @@ three basic concepts:
   framework provides an API to manage timer (one shot or periodically).
 
 * *Signals* To inform components within a process of a specific
-  event the framework provides the possiblity to define
+  event the framework provides the possibility to define
   signals. Components being interested in events may place a
   registration.
 
