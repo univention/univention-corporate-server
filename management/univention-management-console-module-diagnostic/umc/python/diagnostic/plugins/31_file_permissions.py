@@ -114,7 +114,7 @@ def check_file(path, owner, group, mode, must_exist=False):
 
 	actual_mode = stat.S_IMODE(file_stat.st_mode)
 	if actual_mode != mode:
-		MODULE.error("Permission missmatch: %s should have the permission mode %s but has the mode %s" % (path, mode, actual_mode))
+		MODULE.error("Permission mismatch: %s should have the permission mode %s but has the mode %s" % (path, mode, actual_mode))
 		return PermissionMismatch(path, actual_mode, mode)
 
 	return True
