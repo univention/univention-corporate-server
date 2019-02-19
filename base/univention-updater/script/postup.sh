@@ -174,7 +174,7 @@ date >>"$UPDATER_LOG"
 # make sure that UMC server is restarted (Bug #43520, Bug #33426)
 at now >>"$UPDATER_LOG" 2>&1 <<EOF
 sleep 30
-# Bug #47436: Only reenable apache2 and umc if system-setup 
+# Bug #47436: Only re-enable apache2 and umc if system-setup 
 # is not running. System-setup will re-enable apache2 and umc.
 if ! pgrep -l -f /usr/lib/univention-system-setup/scripts/setup-join.sh; then
   /usr/share/univention-updater/enable-apache2-umc --no-restart >>"$UPDATER_LOG" 2>&1
