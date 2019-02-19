@@ -976,7 +976,7 @@ univention-bind (4.0.5-4) unstable; urgency=low
 
 univention-bind (4.0.5-3) unstable; urgency=low
 
-  * typo fixed in english desription of dns/allow/query and dns/allow/query/cache (Bug #17270)
+  * typo fixed in english description of dns/allow/query and dns/allow/query/cache (Bug #17270)
 
  -- Arvid Requate <requate@univention.de>  Mon, 25 Jan 2010 11:21:19 +0100
 
