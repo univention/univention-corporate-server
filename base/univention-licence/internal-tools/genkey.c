@@ -18,7 +18,7 @@
 
 /******************************************************************************/
 /*!
-	@todo initialitze the rand pool
+	@todo initialize the rand pool
 */
 int main(int argc, char** argv)
 {
