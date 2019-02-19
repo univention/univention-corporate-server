@@ -11,7 +11,7 @@ check_member = ''
 if configRegistry.is_true('nss/group/cachefile/check_member', True):
 	check_member = '--check_member'
 if interval == 'disabled':
-	print '# /usr/lib/univention-pam/ldap-group-to-file.py is disbaled via UCR variable nss/group/cachefile/invalidate_interval'
+	print '# /usr/lib/univention-pam/ldap-group-to-file.py is disabled via UCR variable nss/group/cachefile/invalidate_interval'
 else:
 	print '%s%s   root   [ -x /usr/lib/univention-pam/ldap-group-to-file.py ] && /usr/lib/univention-pam/ldap-group-to-file.py %s' % (disabled, interval, check_member)
 @!@

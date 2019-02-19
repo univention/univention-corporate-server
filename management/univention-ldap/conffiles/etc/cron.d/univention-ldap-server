@@ -13,5 +13,5 @@ user = 'root'
 if configRegistry.is_true('slapd/backup', True):
 	print '%s %s %s' % (interval, user, command)
 else:
-	print '# %s disbaled by UCR slapd/backup' % command
+	print '# %s disabled by UCR slapd/backup' % command
 @!@
