@@ -1084,7 +1084,7 @@ univention-lib (3.0.12-3) unstable; urgency=low
   * Convert shell code ucs_registerLDAP* to python library
     univention.lib.ldap_extension
   * Move main handler code of ldapschema and ldapacl listeners
-    to the python library to simplify merging the listner modules
+    to the python library to simplify merging the listener modules
     (Bug #26785, Bug #32392, Bug #32401, Bug #32404, Bug #32407)
 
  -- Arvid Requate <requate@univention.de>  Mon, 16 Sep 2013 14:53:22 +0200
