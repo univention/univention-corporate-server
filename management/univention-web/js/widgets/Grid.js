@@ -69,7 +69,7 @@ define([
 
 	var _Grid = declare([OnDemandGrid, Selection, Selector, DijitRegistry, Destroyable], {
 		getItem: function(item) {
-			// For legacy dojox grid compability
+			// For legacy dojox grid compatibility
 			// e.g. formaters that expect to be working with a dojox grid
 			return item;
 		},
