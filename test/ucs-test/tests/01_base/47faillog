@@ -81,7 +81,7 @@ pam_tally --user="$NAME" --reset
 info "Normal ssh login"
 ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
 if [ "$ssh_hostname" != "$hostname" ]; then
-	fail_fast 110 "E: The login wasn't successful, but the user faillog is resetted: $ssh_hostname $hostname"
+	fail_fast 110 "E: The login wasn't successful, but the user faillog is reset: $ssh_hostname $hostname"
 fi
 
 info "Login with wrong password"
