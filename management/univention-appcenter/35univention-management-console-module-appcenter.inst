@@ -51,7 +51,7 @@ if [ $JS_LAST_EXECUTED_VERSION -eq 1 ]; then
 fi
 
 if [ $JS_LAST_EXECUTED_VERSION -eq 6 ]; then
-	# remove accidently registered overview variables from UCS 3.1 app
+	# remove accidentally registered overview variables from UCS 3.1 app
 	WRONGLY_SET_KEYS=$(ucr --keys-only search "ucs/web/overview/entries/service/(zarafa|oxseforucs)/.*")
 	[ -n "$WRONGLY_SET_KEYS" ] && ucr unset $WRONGLY_SET_KEYS
 fi
