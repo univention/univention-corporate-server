@@ -259,7 +259,7 @@ def windows_check_gpo_report(gpo_name, identity_name, server=""):
 def sysvol_sync():
 	"""
 	We need to sync the sysvol from the master (fsmo: PDC emulator)
-	becasue the special Domain DFS module dfs_server/dfs_server_ad.c
+	because the special Domain DFS module dfs_server/dfs_server_ad.c
 	randomizes the DFS referral for the Windows client
 	"""
 	stdout, stderr = run_cmd(("/usr/share/univention-samba4/scripts/sysvol-sync.sh"))
