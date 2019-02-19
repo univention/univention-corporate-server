@@ -441,7 +441,7 @@ class GenericModuleMetadata(BaseModuleMetadata):
 
 		        myfilter_s = obj.meta.lookup_filter()
 
-		*   get the filter to find a subset of the corresponding LDAP objects (`filter_s` will be combined with `&` to the filter for alle objects)::
+		*   get the filter to find a subset of the corresponding LDAP objects (`filter_s` will be combined with `&` to the filter for all objects)::
 
 		        myfilter = obj.meta.lookup_filter('(|(givenName=A*)(givenName=B*))')
 
