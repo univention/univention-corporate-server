@@ -2,7 +2,7 @@
 #
 # Univention IP Calculator
 """helper script: base on IP address and network mask the script
-calculates brodcast address, network address and DNS entries"""
+calculates broadcast address, network address and DNS entries"""
 #
 # Copyright 2004-2019 Univention GmbH
 #
@@ -178,7 +178,7 @@ def calc_full(addr, netmask):
 
 
 def main():
-	"""Calculates brodcast address, network address and DNS entries."""
+	"""Calculates broadcast address, network address and DNS entries."""
 	addr, netmask, options = parse_options()
 	if options.calcdns:
 		network, broadcast, pointer = calc_dns(addr, netmask)
