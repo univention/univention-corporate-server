@@ -1915,7 +1915,7 @@ univention-s4-connector (8.0.32-1) unstable; urgency=low
 
 univention-s4-connector (8.0.31-3) unstable; urgency=low
 
-  * Add well knwon groups from SBS 2008 (Bug #29486)
+  * Add well known groups from SBS 2008 (Bug #29486)
 
  -- Arvid Requate <requate@univention.de>  Tue, 29 Oct 2013 14:26:05 +0100
 
