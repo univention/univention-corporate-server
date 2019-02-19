@@ -102,7 +102,7 @@ def processor(options, data_queue):
 		else:
 			for (dn, _, ) in result:
 				lo.modify(dn, [('univentionServerReinstall', '1', '0')])
-				ud.debug(ud.LDAP, ud.PROCESS, 'The computer object %r (%r) was sucessfully modified. ' % (data, dn, ))
+				ud.debug(ud.LDAP, ud.PROCESS, 'The computer object %r (%r) was successfully modified. ' % (data, dn, ))
 	while True:
 		data = data_queue.get()
 		process(data)
