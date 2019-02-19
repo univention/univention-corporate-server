@@ -133,7 +133,7 @@ class TestUMCQuotasManagement(UMCBase):
         try:
             request_result = self.client.umc_command('quota/users/' + command, options).result
             if not request_result:
-                utils.fail("Request 'quota/users/%s' wtih options '%s' "
+                utils.fail("Request 'quota/users/%s' with options '%s' "
                            "failed, no response result, hostname %s"
                            % (command, options, self.hostname))
             if not request_result.get('success'):
