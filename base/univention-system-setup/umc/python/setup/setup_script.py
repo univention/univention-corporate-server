@@ -135,7 +135,7 @@ class TransactionalUcr(object):
 	def get(self, key, search_in_changes=True):
 		'''
 		Retrieve the value of key from ucr.
-		If search_in_changes, it first looks in (not yet commited) values.
+		If search_in_changes, it first looks in (not yet committed) values.
 		'''
 		if search_in_changes:
 			try:
