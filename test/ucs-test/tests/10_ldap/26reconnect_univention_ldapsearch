@@ -82,7 +82,7 @@ def perform_univention_ldapsearch(fail_on_success=False):
                  "Please check the complete output.")
 
     except (Empty, Full) as exc:
-        fail("An '%r' Error occured while performing 'univention-ldapsearch'. "
+        fail("An '%r' Error occurred while performing 'univention-ldapsearch'. "
              "Probably 'univention-ldapsearch' did not work in 60 seconds "
              "timeout." % exc)
 

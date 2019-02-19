@@ -53,7 +53,7 @@ def check_app_version_ldap_registraton(new_version):
             utils.fail("The App LDAP object was neither created, "
                        "nor already exist.")
     except Exception as exc:
-        utils.fail("An error occured while trying to create an LDAP object: "
+        utils.fail("An error occurred while trying to create an LDAP object: "
                    "%r" % exc)
 
     sleep(5)  # wait a bit before the check
@@ -69,7 +69,7 @@ def check_app_version_ldap_registraton(new_version):
         ldap_object.remove_from_directory()
     except (utils.LDAPObjectNotFound, utils.LDAPUnexpectedObjectFound,
             utils.LDAPObjectValueMissing, utils.LDAPObjectUnexpectedValue) as exc:
-        utils.fail("An error occured while verifying App's LDAP object: %r" % exc)
+        utils.fail("An error occurred while verifying App's LDAP object: %r" % exc)
 
 
 if __name__ == '__main__':

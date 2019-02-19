@@ -85,7 +85,7 @@ def findall_urls(app):
                         all_urls.append(re.sub(r'<[^>]+>', '', u))
 
     except (IOError, OSError) as exc:
-        utils.fail("An %r error occured while working with %s"
+        utils.fail("An %r error occurred while working with %s"
                    % (exc, filename))
 
     return set(all_urls)
