@@ -79,7 +79,7 @@ run_test () {
 
 # There is a maximum length for userinfo. Apache simply returns error 400 if the string is too long
 chars='< >"%{}|\^~[]`;?&$-_.+!*(),@:/'\'\#
-# Because of http://bugs.debian.org/500560, some charactes don't work, not even urlencoded
+# Because of http://bugs.debian.org/500560, some characters don't work, not even urlencoded
 chars_skip_username='\[:/'
 chars_skip_password='\[@/'
 #	[ indicates an IPv6 address (RFC 3986 3.2.2.)
