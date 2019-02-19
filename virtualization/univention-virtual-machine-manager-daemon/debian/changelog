@@ -4616,7 +4616,7 @@ univention-virtual-machine-manager-daemon (0.9.17-1) unstable; urgency=low
 univention-virtual-machine-manager-daemon (0.9.16-1) unstable; urgency=low
 
   * fix add button in UMC module; Bug #18359
-  * do not crash if a host is not availale; Bug #18459
+  * do not crash if a host is not available; Bug #18459
 
  -- Andreas Büsching <buesching@univention.de>  Tue, 01 Jun 2010 14:39:36 +0200
 
