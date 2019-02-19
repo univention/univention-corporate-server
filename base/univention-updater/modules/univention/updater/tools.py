@@ -1866,7 +1866,7 @@ class UniventionUpdater:
               if (phase, order) == ('update', 'main'):
                 pass
 
-        :param scripts: A generator returing the script to call, e.g. :py:meth:`get_sh_files`
+        :param scripts: A generator returning the script to call, e.g. :py:meth:`get_sh_files`
         :param str logname: The file name of the log file.
         :param args: Additional arguments to pass through to the scripts.
         :returns: A generator returning 2-tuples (phase, part)
