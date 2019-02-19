@@ -74,7 +74,7 @@ date >>"$UPDATER_LOG" 2>&1
 
 eval "$(univention-config-registry shell)" >>"$UPDATER_LOG" 2>&1
 
-# shell-univention-lib is proberly not installed, so use a local function
+# shell-univention-lib is properly not installed, so use a local function
 is_ucr_true () {
     local value
     value="$(/usr/sbin/univention-config-registry get "$1")"
