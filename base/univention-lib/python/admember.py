@@ -139,7 +139,7 @@ class notDomainAdminInAD(Exception):
 
 class univentionSambaWrongVersion(Exception):
 
-	'''univention-samba candiate has wrong version'''
+	'''univention-samba candidate has wrong version'''
 
 
 class timeSyncronizationFailed(Exception):
