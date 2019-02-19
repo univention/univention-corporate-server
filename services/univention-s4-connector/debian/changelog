@@ -3246,7 +3246,7 @@ univention-s4-connector (6.0.112-1) unstable; urgency=low
 univention-s4-connector (6.0.111-1) unstable; urgency=low
 
   * Don't try to add a user to his primary group in S4. This might
-    happen, if we synchronize a rejected file with old informations
+    happen, if we synchronize a rejected file with old information
     (Bug #25709)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Feb 2012 07:32:56 +0100
