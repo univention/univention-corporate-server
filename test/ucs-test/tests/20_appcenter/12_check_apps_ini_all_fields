@@ -266,7 +266,7 @@ class Section(object):
                          self.section, option, exc)
 
             except Optional:
-                # not a real error, just stops futher checks
+                # not a real error, just stops further checks
                 return
 
     def get(self, option):
