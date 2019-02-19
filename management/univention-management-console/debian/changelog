@@ -3051,7 +3051,7 @@ univention-management-console (5.0.34-1) unstable; urgency=low
 
 univention-management-console (5.0.33-1) unstable; urgency=low
 
-  * added possibility to deactive flavors and modules through ucr variables;
+  * added possibility to deactivate flavors and modules through ucr variables;
   	Bug #26721
 
  -- Florian Best <best@univention.de>  Tue, 25 Sep 2012 17:45:39 +0200
