@@ -7508,7 +7508,7 @@ univention-updater (1.36-39) unstable; urgency=low
 
 univention-updater (1.36-38) unstable; urgency=low
 
-  * implementet --check in univention-actualise
+  * implemented --check in univention-actualise
   * univention-maintenance shows his warning only if there are jobs to do
   * removed umlauts from changelog
 
