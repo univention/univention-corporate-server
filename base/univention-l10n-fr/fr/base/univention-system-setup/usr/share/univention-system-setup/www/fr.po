@@ -1010,12 +1010,12 @@ msgstr "Ce système fera partie d'un domaine Active Directory existant."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1723
 #, python-format
-msgid "This sytem will join an existing AD domain with the role <i>%s</i>."
+msgid "This system will join an existing AD domain with the role <i>%s</i>."
 msgstr "Ce système rejoindra un domaine AD existant avec le rôle <i>%s</i>."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1725
 #, python-format
-msgid "This sytem will join an existing UCS domain with the role <i>%s</i>."
+msgid "This system will join an existing UCS domain with the role <i>%s</i>."
 msgstr "Ce système rejoindra un domaine UCS existant avec le rôle <i>%s</i>."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:382
