@@ -3639,7 +3639,7 @@ univention-s4-connector (6.0.61-2) unstable; urgency=low
 univention-s4-connector (6.0.60-1) unstable; urgency=low
 
   * Use cPickle.Pickler an clear_memo(), otherwise the internal python
-    refcount will not be decreased and the memeory is lost (Bug #24273)
+    refcount will not be decreased and the memory is lost (Bug #24273)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Nov 2011 15:51:09 +0100
 
