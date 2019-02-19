@@ -118,13 +118,13 @@ def get_sid_for_user_group(name):
     stdout, stderr = create_and_run_process(cmd)
 
     if stderr:
-        print "\nThe following message occured in stderr:", stderr
+        print "\nThe following message occurred in stderr:", stderr
 
     sed_cmd = ("sed", "-n", "s/^sambaSID: //p")
     sed_stdout, sed_stderr = create_and_run_process(sed_cmd, PIPE, stdout)
 
     if sed_stderr:
-        print "\nThe following message occured in stderr:", stderr
+        print "\nThe following message occurred in stderr:", stderr
 
     return sed_stdout.strip('\n')
 
@@ -137,7 +137,7 @@ def get_members_in_group(group_name):
     stdout, stderr = create_and_run_process(cmd)
 
     if stderr:
-        print "\nThe following message occured in stderr while using 'getent':"
+        print "\nThe following message occurred in stderr while using 'getent':"
         print stderr
 
     stdout = stdout.strip()

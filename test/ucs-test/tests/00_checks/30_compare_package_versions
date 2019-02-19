@@ -72,7 +72,7 @@ def perform_cleanup():
             rmtree(folder, False)
 
         except (shutil_Error, OSError) as exc:
-            print("\nAn %r Error occured while trying to remove a '%s'. "
+            print("\nAn %r Error occurred while trying to remove a '%s'. "
                   "Probably folder/files were not removed."
                   % (exc, folder))
 
@@ -91,18 +91,18 @@ def download_packages_file(url, version, arch, temp_directory):
     try:
         makedirs(file_name + arch)
     except OSError as exc:
-        utils.fail("An Error occured while creating the directory structure "
+        utils.fail("An Error occurred while creating the directory structure "
                    "at '%s' for the Packages.gz file: %r" % (file_path, exc))
 
     try:
         urlretrieve(url, file_path)
     except ContentTooShortError as exc:
-        print("An %r Error occured, probably the connection was lost. "
+        print("An %r Error occurred, probably the connection was lost. "
               "Performing a new attempt in 10 seconds." % exc)
         sleep(10)
         urlretrieve(url, file_path)
     except IOError as exc:
-        print("An %r Error occured, probably the connection cannot be "
+        print("An %r Error occurred, probably the connection cannot be "
               "established or the url is incorrect. "
               "Skipping the url '%s'." % (exc, url))
         return
@@ -127,7 +127,7 @@ def load_packages_file(filename, target_dict, ucs_version):
         # otherwise open it as a usual file
         packages_file = open(filename, 'r')
     except IOError as exc:
-        utils.fail("An %r Error occured, while trying to open a Packages file "
+        utils.fail("An %r Error occurred, while trying to open a Packages file "
                    "'%s'" % (exc, filename))
 
     try:
@@ -138,7 +138,7 @@ def load_packages_file(filename, target_dict, ucs_version):
 
         packages_file.close()
     except (ValueError, IOError) as exc:
-        utils.fail("An %r Error occured while trying to read and close the "
+        utils.fail("An %r Error occurred while trying to read and close the "
                    "file '%s'" % (exc, filename))
 
     for entry in content.split('\n\n'):
@@ -229,7 +229,7 @@ def read_url(url):
         connection = urlopen(url)
         result = fromstring(connection.read())
     except IOError as exc:
-        utils.fail("An %r Error occured while trying to retrive '%s' url"
+        utils.fail("An %r Error occurred while trying to retrive '%s' url"
                    % (exc, url))
     connection.close()
     return result
@@ -321,7 +321,7 @@ def parse_arguments():
                            "than the older '%s' version"
                            % (new_version, old_version))
         except ValueError as exc:
-            utils.fail("An %r Error occured when trying to process parsed "
+            utils.fail("An %r Error occurred when trying to process parsed "
                        "version numbers" % exc)
         return args
 

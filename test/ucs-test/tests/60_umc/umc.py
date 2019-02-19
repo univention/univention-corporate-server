@@ -213,7 +213,7 @@ class JoinModule(UMCBase):
 			else:
 				print("Failed to find the file at the provided path '%s'" % path)
 		except OSError as exc:
-			utils.fail("An exception occured while deleting a file located at '%s': '%s'" % (path, exc))
+			utils.fail("An exception occurred while deleting a file located at '%s': '%s'" % (path, exc))
 
 
 class UDMModule(UMCBase):

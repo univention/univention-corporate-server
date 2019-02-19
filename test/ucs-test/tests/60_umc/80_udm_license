@@ -206,12 +206,12 @@ class TestUMCLicenseManagement(UDMModule):
                              stderr=PIPE)
                 stdout, stderr = proc.communicate()
                 if stderr:
-                    utils.fail("An error occured during the license file "
+                    utils.fail("An error occurred during the license file "
                                "dumping while the 'univention-ldapsearch' "
                                "was running, '%s'" % stderr)
             self.license_dump_successful = True
         except (IOError, ValueError, OSError) as exc:
-            utils.fail("An error occured during the license dump process, "
+            utils.fail("An error occurred during the license dump process, "
                        "license file '%s', exception: %r"
                        % (license_file, exc))
 

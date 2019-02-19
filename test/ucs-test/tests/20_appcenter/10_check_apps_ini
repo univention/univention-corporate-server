@@ -36,7 +36,7 @@ def check_file(filename, local):
     else:
         global failures_counter
         failures_counter += 1
-        print("\nAn error occured with an .ini file '%s' while trying to "
+        print("\nAn error occurred with an .ini file '%s' while trying to "
               "create App center 'App' instance with it'\n"
               % (filename))
 
