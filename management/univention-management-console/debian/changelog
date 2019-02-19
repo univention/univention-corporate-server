@@ -699,7 +699,7 @@ univention-management-console (9.0.77-1) unstable; urgency=medium
 
 univention-management-console (9.0.76-1) unstable; urgency=medium
 
-  * Bug #40612: Bug #38370: fix error handling in initilization phase
+  * Bug #40612: Bug #38370: fix error handling in initialization phase
     and ignore if the locale is not available during init()
 
  -- Florian Best <best@univention.de>  Mon, 27 Mar 2017 15:11:40 +0200
