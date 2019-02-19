@@ -24,6 +24,6 @@ Categories=service-ldap
 
 [ldap/overlay/memberof/dangling]
 Description[de]=Ist das memberOf-Overlay aktiviert (siehe 'ldap/overlay/memberof'), konfiguriert diese Variable das Verhalten bei inkonsistenten Gruppendaten (z.B. wenn eine Gruppen Mitglieder enthält, für die keine Benutzerobjekte mehr bestehen): 'ignore' schreibt die Daten trotzdem, 'drop' verwirft Daten, die zu einem inkonsistentem Status führen würden und 'error' bricht Modifikationen, die zu inkonsistentem Zustand führen würden ab. Ist die Variable nicht gesetzt, gilt 'ignore'.
-Description[en]=If the memberOf overlay is activated (see 'ldap/overlay/memberof'), this variable configures the behaviour for inconsistent group data (e.g. if a group contains members, for which the user objects are no longer present): 'ignore' writes the data anyway, 'drop' discards data which would lead to an inconsistent state and 'error' aborts modifications which would lead to an inconsistent state. If the variable is unset, 'ignore' applies.
+Description[en]=If the memberOf overlay is activated (see 'ldap/overlay/memberof'), this variable configures the behavior for inconsistent group data (e.g. if a group contains members, for which the user objects are no longer present): 'ignore' writes the data anyway, 'drop' discards data which would lead to an inconsistent state and 'error' aborts modifications which would lead to an inconsistent state. If the variable is unset, 'ignore' applies.
 Type=str
 Categories=service-ldap
