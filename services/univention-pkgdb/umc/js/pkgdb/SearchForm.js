@@ -39,7 +39,7 @@ define([
 	"umc/i18n!umc/modules/pkgdb"
 ], function(declare, lang, array, tools, Form, TextBox, ComboBox, _) {
 
-	// Search form as a seperate class, so the gory details are hidden from the main page.
+	// Search form as a separate class, so the gory details are hidden from the main page.
 	//
 	return declare("umc.modules.pkgdb.SearchForm", [Form], {
 

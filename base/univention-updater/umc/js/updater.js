@@ -229,7 +229,7 @@ define([
 			this.selectChild(this._updates);
 		},
 
-		// Seperate function that can be called the same way as _call_installer:
+		// Separate function that can be called the same way as _call_installer:
 		// instead of presenting the usual confirm dialog it presents the list
 		// of packages for a distupgrade.
 		_confirm_distupgrade: function() {

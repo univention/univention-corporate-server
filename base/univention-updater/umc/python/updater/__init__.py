@@ -384,8 +384,8 @@ class Instance(Base):
 		"""
 		Asks if there are package updates available. (don't get confused
 		by the name of the UniventionUpdater function that is called here.)
-		This is a seperate call since it can take an amount of time, thus
-		being invoked by a seperate button (and not in the background)
+		This is a separate call since it can take an amount of time, thus
+		being invoked by a separate button (and not in the background)
 		"""
 		ucr.load()
 		try:

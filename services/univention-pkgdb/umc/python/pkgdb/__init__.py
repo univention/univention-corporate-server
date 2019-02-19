@@ -151,7 +151,7 @@ CODED_VALUES = {
 # We introduce a 'reverse index' of the CODED_VALUES here.
 DECODED_VALUES = dict((f, dict((CODED_VALUES[f][key], key) for key in CODED_VALUES[f])) for f in CODED_VALUES)
 
-# This helps translating labels. We don't make seperate functions
+# This helps translating labels. We don't make separate functions
 # or such things as we don't have any name clashes.
 LABELS = {
 	# ------------- search fields (keys) ---------
