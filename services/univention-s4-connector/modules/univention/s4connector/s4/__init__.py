@@ -2384,7 +2384,7 @@ class s4(univention.s4connector.ucs):
 						self._debug_traceback(ud.WARN, "Exception during poll/sync_to_ucs")
 
 					if not sync_successfull:
-						ud.debug(ud.LDAP, ud.WARN, "sync to ucs was not successfull, save rejected")
+						ud.debug(ud.LDAP, ud.WARN, "sync to ucs was not successful, save rejected")
 						ud.debug(ud.LDAP, ud.WARN, "object was: %s" % object['dn'])
 
 					if sync_successfull:

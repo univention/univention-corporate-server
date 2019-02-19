@@ -61,7 +61,7 @@ for i in range(0, len(res)):
 	if 'cn' in res[i][1] and res[i][0][:13] == "cn=directory,":
 		print "  rename %s" % res[i][0]
 		lo.rename_s(res[i][0], "cn=default containers", res[i][0][13:])
-		print '  rename successfull, exit.\n'
+		print '  rename successful, exit.\n'
 		sys.exit(0)
 
 	elif 'cn' in res[i][1] and res[i][0][:22] == "cn=default containers,":

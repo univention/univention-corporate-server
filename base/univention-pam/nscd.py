@@ -56,5 +56,5 @@ def postrun():
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "calling 'nscd -i group'")
 			listener.run('/usr/sbin/nscd', ['nscd', '-i', 'group'], uid=0)
 		except:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "nscd -i group was not successfull")
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "nscd -i group was not successful")
 		listener.unsetuid()

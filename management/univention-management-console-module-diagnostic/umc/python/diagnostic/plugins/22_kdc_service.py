@@ -55,7 +55,7 @@ from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('KDC service check')
-description = ['The check for the KDC reachability was succesful.']
+description = ['The check for the KDC reachability was successful.']
 run_descr = ["Performs a KDC reachability check"]
 
 # This checks for the reachability of KDCs by sending a AS-REQ per TCP and UDP.
