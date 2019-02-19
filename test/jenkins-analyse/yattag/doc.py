@@ -320,9 +320,9 @@ class Doc(SimpleDoc):
         creates a Doc instance
 
         defaults::
-            optional dictionnary of values used to fill html forms
+            optional dictionary of values used to fill html forms
         errors::
-            optional dictionnary of errors used to fill html forms
+            optional dictionary of errors used to fill html forms
 
         Example 1::
             doc = Doc()
