@@ -97,7 +97,7 @@ Depends: cdebconf-udeb,
  ${misc:Depends},
 XB-Installer-Menu-Item: 7650
 Description: Start Univention System Setup
- This package is used to lauch Univention System Setup in boot mode from
+ This package is used to launch Univention System Setup in boot mode from
  the Debian based UCS installer.
  .
  It is part of Univention Corporate Server (UCS), an
