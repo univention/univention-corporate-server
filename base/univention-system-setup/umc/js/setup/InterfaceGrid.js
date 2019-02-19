@@ -103,7 +103,7 @@ define([
 						var removeableInterfaceIDs = [];
 						array.forEach(items, lang.hitch(this, function(item) {
 							if (!item.isVLAN()) {
-								// interface is not removeable if used as parent device in a VLAN
+								// interface is not removable if used as parent device in a VLAN
 								var deletable = array.every(this.get('value'), function(iface) {
 									if (!iface.isVLAN()) {
 										// we do not have to check here because items != VLAN are disabled if used
