@@ -90,7 +90,7 @@ mTp+dauS/6Iy0plubIIljUiN8qsPdRSywmvzQvPNAhXYaRDVTVb6Lp9Gw0whMpN6\n\
 
 /******************************************************************************/
 /*!
-	@brief	cleanup all public and posible private keys
+	@brief	cleanup all public and possible private keys
 */
 void univention_license_key_free(void)
 {
