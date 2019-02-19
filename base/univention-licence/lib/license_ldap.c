@@ -253,7 +253,7 @@ lStrings* univention_license_ldap_get_strings(const char* objectDN, const char* 
 
 /******************************************************************************/
 /*!
-	@brief make a ldap search with the given parametes and convert a possible
+	@brief make a ldap search with the given parameters and convert a possible
 	found ldap-licenseObject to a lObj.
 
 	The ldap attributes must begin with 'univentionLicense' to get converted to c.

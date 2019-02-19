@@ -144,7 +144,7 @@ fi
 
 # fresh installation
 if [ "$1" = "configure" -a -z "$2" ] ; then
-	# Raise dh_parameters_length to 2048. Generation of the paramters file
+	# Raise dh_parameters_length to 2048. Generation of the parameters file
 	# will run in the background.
 	univention-config-registry unset mail/dovecot/ssl/dh_parameters_length
 	doveadm reload
