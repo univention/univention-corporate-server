@@ -330,7 +330,7 @@ msgid "Configure Subnet"
 msgstr "Configurer le sous-réseau"
 
 #: umc/js/uvmm/DriveGrid.js:294
-msgid "Configure cache behaviour of host."
+msgid "Configure cache behavior of host."
 msgstr "Configurer le comportement du cache de l'hôte."
 
 #: umc/js/uvmm.js:1672
