@@ -12033,7 +12033,7 @@ ucs-test (3.0.60-2) unstable; urgency=low
 
 ucs-test (3.0.60-1) unstable; urgency=low
 
-  * Re-order connector tests, first all snyc tests are executed, after
+  * Re-order connector tests, first all sync tests are executed, after
     that all read test and at last the write tests. This prevents the
     connector restart (Bug #31677)
 
