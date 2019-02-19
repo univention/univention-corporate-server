@@ -61,7 +61,7 @@ def check_user_in_groups():
 
     for group in test_groups:
         if test_username not in get_members_in_group(group):
-            print ("\nFAIL: the '%s' user is not a memeber of the '%s' group.\n"
+            print ("\nFAIL: the '%s' user is not a member of the '%s' group.\n"
                    % (test_username, group))
             increase_errors_counter()
 
