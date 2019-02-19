@@ -6218,7 +6218,7 @@ univention-management-console (0.7.18-1) unstable; urgency=low
 
 univention-management-console (0.7.17-1) unstable; urgency=low
 
-  * convert strings to unicode objects before cutting of characters to prevend
+  * convert strings to unicode objects before cutting of characters to prevent
     broken UTF-8 strings
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 27 Jul 2007 10:51:02 +0200
