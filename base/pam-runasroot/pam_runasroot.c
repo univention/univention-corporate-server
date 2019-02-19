@@ -78,7 +78,7 @@ static int _pam_parse(int flags, int argc, const char **argv)
 {
 	int ctrl = 0;
 
-	/* does the appliction require quiet? */
+	/* does the application require quiet? */
 	if ((flags & PAM_SILENT) == PAM_SILENT)
 		ctrl |= RUNASROOT_QUIET;
 
