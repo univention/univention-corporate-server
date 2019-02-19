@@ -34,7 +34,7 @@ Depends: libunivention-policy0 (= ${binary:Version}),
  ${misc:Depends}
 Replaces: libunivention-policy0 (<< 5)
 Description: UCS - group policy library (development files)
- This package conatins the header files and static library to read group
+ This package contains the header files and static library to read group
  policies from LDAP.
  .
  It is part of Univention Corporate Server (UCS), an
