@@ -264,7 +264,7 @@ class UDMModule(UMCBase):
 		"""
 		Returns the translation taken from UCR for given 'obj_name' and
 		'obj_type'. If not translation found -> returns default English
-		name. If no English name available -> prints a messge, returns None.
+		name. If no English name available -> prints a message, returns None.
 		"""
 		translated = self.ucr.get(obj_type + '/default/' + obj_name, self._default_names.get(obj_name))
 		if not translated:
