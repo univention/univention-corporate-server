@@ -455,7 +455,7 @@ class _UCSServer(object):
 
         :param _UCSRepo repo: the URI to access as an instance of :py:class:`_UCSRepo`.
         :param str filename: An optional relative path.
-        :param bool get: Fetch data if True - otheriwse check only.
+        :param bool get: Fetch data if True - otherwise check only.
         :return: a 3-tuple (code, size, content) or None on errors.
         :rtype: tuple(int, int, str)
         :raises DownloadError: if the server is unreachable.
@@ -607,7 +607,7 @@ class UCSHttpServer(_UCSServer):
 
         :param _UCSRepo repo: the URI to access as an instance of :py:class:`_UCSRepo`.
         :param str filename: An optional relative path.
-        :param bool get: Fetch data if True - otheriwse check only.
+        :param bool get: Fetch data if True - otherwise check only.
         :return: a 3-tuple (code, size, content)
         :rtype: tuple(int, int, str)
         :raises DownloadError: if the server is unreachable.
