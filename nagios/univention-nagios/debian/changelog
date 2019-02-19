@@ -318,7 +318,7 @@ univention-nagios (7.0.5-1) unstable; urgency=low
 
   * append NAGIOS service to local host in join script
   * remove NAGIOS service from local host in unjoin script
-  * only delte Nagios admins group when NAGIOS service is completely remove
+  * only delete Nagios admins group when NAGIOS service is completely remove
     from domain (Bug #32453)
 
  -- Lukas Walter <walter@univention.de>  Thu, 24 Oct 2013 11:56:30 +0200
