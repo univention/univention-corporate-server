@@ -351,7 +351,7 @@ univention-licence (0.15) unstable; urgency=low
 
 univention-licence (0.14) unstable; urgency=low
 
-  * fix architecture field in contrl file
+  * fix architecture field in control file
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 10 Feb 2006 10:44:22 +0100
 
