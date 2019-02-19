@@ -118,7 +118,7 @@ print "	'search.password'	=> '%s'," % password
 
 		// If the directory uses privilege separation,
 		// the authenticated user may not be able to retrieve
-		// all required attribures, a privileged entity is required
+		// all required attributes, a privileged entity is required
 		// to get them. This is enabled with this option.
 		'priv.read' => FALSE,
 

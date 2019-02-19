@@ -187,7 +187,7 @@ def handler(dn, new_copy, old_copy):
 				record += newtag
 				record += ldapEntry2string(new_copy)
 			else:  # modify branch
-				# filter out unchanged attibutes
+				# filter out unchanged attributes
 				filterOutUnchangedAttributes(old_copy, new_copy)
 				record = headerfmt % (previoushash, dn, id, modifier, timestamp, 'modify')
 				record += oldtag
