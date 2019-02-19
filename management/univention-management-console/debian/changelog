@@ -4057,7 +4057,7 @@ univention-management-console (4.0.42-1) unstable; urgency=low
 univention-management-console (4.0.41-1) unstable; urgency=low
 
   * umc-client: support passing the request option as a python statement
-  * just shutdown processor if already instanciated; Bug #22460
+  * just shutdown processor if already instantiated; Bug #22460
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 01 Jul 2011 17:19:29 +0200
 
