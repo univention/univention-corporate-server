@@ -2488,7 +2488,7 @@ univention-ldap (8.0.50-2) unstable; urgency=low
 
 univention-ldap (8.0.50-1) unstable; urgency=low
 
-  * add LDAP attributes for extenstions of the extended; Bug #23988
+  * add LDAP attributes for extensions of the extended; Bug #23988
   * Make univentionInventoryNumber searchable; Bug #24103
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 19 Oct 2011 08:55:45 +0200
