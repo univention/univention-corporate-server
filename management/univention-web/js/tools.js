@@ -368,7 +368,7 @@ define([
 				// to have failed
 				failureInterval: lang.getObject('failureInterval', false, opts) || 10,
 
-				// number of seconds after which an information ist displayed to the user
+				// number of seconds after which an information is displayed to the user
 				// in case the connection could not be established; if negative, no message
 				// will be shown.
 				messageInterval: lang.getObject('messageInterval', false, opts) || 120,

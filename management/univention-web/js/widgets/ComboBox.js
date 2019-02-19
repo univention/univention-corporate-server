@@ -54,7 +54,7 @@ define([
 			this.inherited(arguments);
 
 			if (this.autoHide) {
-				// autoHide ist set, by default the widget will be hidden
+				// autoHide is set, by default the widget will be hidden
 				this.visible = false;
 			}
 		},

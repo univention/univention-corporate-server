@@ -63,7 +63,7 @@ from univention.lib.admember import lookup_adds_dc, check_connection, check_ad_a
 # FIXME: this triggers imports from univention-lib during build time test execution.
 # This in effect imports univention-ldap which is not an explicit dependency for
 # univention-lib as of writing. (Bug #43388)
-# The try except can be removed as soon as the dependency problem ist resolved.
+# The try except can be removed as soon as the dependency problem is resolved.
 try:
 	from univention.appcenter.actions import get_action
 	from univention.appcenter.app_cache import AppCache, Apps
