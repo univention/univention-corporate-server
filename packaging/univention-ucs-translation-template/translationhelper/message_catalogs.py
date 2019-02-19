@@ -76,7 +76,7 @@ def create_empty_po(binary_pkg_name, new_po_path):
 		'--package-name={}'.format(binary_pkg_name),
 		'--msgid-bugs-address=packages@univention.de',
 		'--copyright-holder=Univention GmbH',
-		# Supress warning about /dev/null being an unknown source type
+		# Suppress warning about /dev/null being an unknown source type
 		'--language', 'C',
 		'-o', new_po_path,
 		'/dev/null')
