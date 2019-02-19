@@ -1549,7 +1549,7 @@ class ucs:
 					self.s4cache.add_entry(guid, original_object.get('attributes'))
 				if object['modtype'] == 'delete':
 					if not old_object:
-						ud.debug(ud.LDAP, ud.WARN, "Object to delete doesn't exsist, ignore (%s)" % object['dn'])
+						ud.debug(ud.LDAP, ud.WARN, "Object to delete doesn't exists, ignore (%s)" % object['dn'])
 						result = True
 					else:
 						result = self.delete_in_ucs(property_type, object, module, position)
