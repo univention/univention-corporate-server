@@ -58,7 +58,7 @@ class Server(tornado.web.RequestHandler):
 	"""A server which acts as proxy to multiple processes in different languages
 
 	TODO: Implement authentication via PAM
-	TODO: Implement ACL handling (restriction on certain pathes for certain users/groups)
+	TODO: Implement ACL handling (restriction on certain paths for certain users/groups)
 	TODO: Implement a SAML service provider
 	TODO: Implement management of modules
 	"""
