@@ -741,7 +741,7 @@ if __name__ == '__main__':
 
 	class TestSort(unittest.TestCase):
 
-		"""Rest alpha-numeric sorting."""
+		"""Rest alphanumeric sorting."""
 
 		def test_all_num(self):
 			"""Test all plain numeric."""
