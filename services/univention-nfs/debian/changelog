@@ -338,7 +338,7 @@ univention-nfs (2.0.6-1) unstable; urgency=low
 
 univention-nfs (2.0.5-1) unstable; urgency=low
 
-  * edit Logmessage for forbidden share priviledge changes, Bug #17929
+  * edit Logmessage for forbidden share privilege changes, Bug #17929
 
  -- Tim Petersen <petersen@univention.de>  Tue, 22 Mar 2010 11:29:59 +0200
 

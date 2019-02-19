@@ -1659,7 +1659,7 @@ univention-samba (4.0.18-1) unstable; urgency=low
 
 univention-samba (4.0.17-1) unstable; urgency=low
 
-  * edit Logmessage for forbidden share priviledge changes, Bug #17929
+  * edit Logmessage for forbidden share privilege changes, Bug #17929
 
  -- Tim Petersen <petersen@univention.de>  Mon, 22 Mar 2010 11:29:04 +0100
 
