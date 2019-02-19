@@ -73,7 +73,7 @@ then
 		fail_test 1 "Failed to search!"
 	fi
 else
-	echo "Everthing was fine. The slapd did not crash."
+	echo "Everything was fine. The slapd did not crash."
 fi
 
 exit "$RETVAL"
