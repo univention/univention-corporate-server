@@ -68,7 +68,7 @@ def ucr_overwrite_properties(module, lo):
 			continue
 		try:
 			prop_name, attr = var[len(ucr_prefix):].split('/', 1)
-			# ingore internal attributes
+			# ignore internal attributes
 			ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_properties: found variable: %s' % var)
 			if attr.startswith('__'):
 				continue
