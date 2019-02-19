@@ -486,10 +486,13 @@
 			<title>RADIUS</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Network access servers for example wireless access points can now be configured with udm. Any existing clients.conf is not converted and can still be used to configure clients manually. (<u:bug>25935</u:bug>)
-					Switch to python passlib for des encryption. (<u:bug>48460</u:bug>)
-					Move clients.conf.example into the right folder. (<u:bug>46561</u:bug>)
-					Improved logging for univention-radius-ntlm-auth which is used by freeradius to authenticate users. The log level can be adjusted with the &ucsUCRV; variable <envar>univention-radius-ntlm-auth/debug</envar>. Internal changes to enable the ucs@School radius implementation to build upon the univention-radius package. (<u:bug>46018</u:bug>)
+					Network access servers for example wireless access points can now be configured with &ucsUDM;.
+					Any existing <filename>clients.conf</filename> is not converted and can still be used to configure clients manually. (<u:bug>25935</u:bug>)
+					Switch to Python <classname>passlib</classname> for DES encryption. (<u:bug>48460</u:bug>)
+					Move <filename>clients.conf.example</filename> into the right folder. (<u:bug>46561</u:bug>)
+					Improved logging for <package>univention-radius-ntlm-auth</package> which is used by FreeRADIUS to authenticate users.
+					The log level can be adjusted with the &ucsUCRV; variable <envar>univention-radius-ntlm-auth/debug</envar>.
+					Internal changes to enable the &ucsUAS; radius implementation to build upon the <package>univention-radius</package> package. (<u:bug>46018</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>

@@ -64,11 +64,18 @@
 				Es stehen im App Center nun erweiterte Filter für die Suche nach Apps zur Verfügung.
 			</para></listitem>
 			<listitem><para>
-				In Zukunft wird es hin und wieder möglich sein die eigene Stimme für ausgewählte Apps, die noch nicht für UCS verfügbar sind, abzugeben. Diese Apps
-				werden direkt im App Center erscheinen.
+				In Zukunft wird es hin und wieder möglich sein die eigene Stimme für ausgewählte Apps, die noch nicht für UCS verfügbar sind, abzugeben.
+				Diese Apps werden direkt im App Center erscheinen.
 			</para></listitem>
 			<listitem><para>
-				Das Design der App-Seiten wurde überarbeitet.
+				Die Darstellung der Apps im App Center wurde überarbeitet.
+			</para></listitem>
+			<listitem><para>
+				Durch einen Entwurfsfehler im &ucsUDN; Netzwerkprotokoll Version 2 kann jeder Benutzer an Informationen über Änderungen am LDAP-Verzeichnisdienst kommen.
+				Ein neues Protokoll Version 3 wurde mit <ulink url="http://errata.software-univention.de/ucs/4.3/427.html">UCS-4.3-3 Erratum 427</ulink> implementiert.
+				Für die Kompatibilität mit alten UCS Systemen bot &ucsUDN; standardmäßig weiterhin Version 2 an.
+				Beginnen mit UCS-4.4 bieten neue Installationen standardmäßig nur noch Version 3 an.
+				Protokoll 2 kann reaktiviert werden, indem die &ucsUCRV; <envar>notifier/protocol/version</envar> auf <literal>2</literal> geändert und &ucsUDN; neu gestartet wird.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
