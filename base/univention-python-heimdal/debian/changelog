@@ -67,7 +67,7 @@ univention-python-heimdal (4.0.3-2.1) unstable; urgency=low
 
 univention-python-heimdal (4.0.3-2) unstable; urgency=low
 
-  * return keybloks propperly in keytab.list() (Bug #24277)
+  * return keybloks properly in keytab.list() (Bug #24277)
 
  -- Arvid Requate <requate@univention.de>  Tue, 24 Jan 2012 22:13:19 +0100
 
