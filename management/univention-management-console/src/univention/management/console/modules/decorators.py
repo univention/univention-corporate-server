@@ -146,7 +146,7 @@ def sanitize(*args, **kwargs):
 		def add(self, var1, var2):
 			return var1 + var2
 
-	Note that you lose the capability of specifiying defaults in
+	Note that you lose the capability of specifying defaults in
 	*@simple_response*. You need to do it in *@sanitize* now.
 	"""
 	if args:
