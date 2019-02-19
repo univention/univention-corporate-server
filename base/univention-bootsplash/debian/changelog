@@ -1,3 +1,9 @@
+univention-bootsplash (10.0.0-2) unstable; urgency=medium
+
+  * Bug #48700: Add reworked logos
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Tue, 19 Feb 2019 09:00:45 +0100
+
 univention-bootsplash (10.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump
