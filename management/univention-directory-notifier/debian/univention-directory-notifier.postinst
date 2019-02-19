@@ -110,7 +110,7 @@ if [ "$1" = "configure" ]
 then
 	if [ -z "${2:-}" ]
 	then  # new installation
-		ucr set notifier/protocol/version?2
+		ucr set notifier/protocol/version?3
 		/etc/init.d/univention-directory-notifier restart || :
 	else  # upgrade
 		ucr set notifier/protocol/version?2
