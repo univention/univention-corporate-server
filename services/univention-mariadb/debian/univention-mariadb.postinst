@@ -85,7 +85,7 @@ case "$1" in
 		mysql/config/mysqld/character-set-server?latin1
 
 	# In most UCS installations the database root password is not set, because most
-	# UCS installation are noninteractive. This results in a databse which
+	# UCS installation are noninteractive. This results in a database which
 	# can be read by every user. So we generate a password and write this to
 	# /etc/mysql.secret. This file is only readable by root.
 	if test_mysql_access; then
