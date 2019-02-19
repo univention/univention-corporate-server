@@ -2044,7 +2044,7 @@ univention-virtual-machine-manager-daemon (1.0.74-1) unstable; urgency=low
 univention-virtual-machine-manager-daemon (1.0.73-1) unstable; urgency=low
 
   * fixed traceback when creating xen instances; Bug #24729
-  * hide snapshots when thre is no hard drive or the format is not qcow2; Bug #24733
+  * hide snapshots when there is no hard drive or the format is not qcow2; Bug #24733
   * corrently save boot medium for xen-pv instances; Bug #24736
   * deactivate sorting for drive grid
   * use profile data when creating hard drives
