@@ -45,7 +45,7 @@ define([
 	return declare("umc.modules.udm.ComboBox", [ ComboBox ], {
 		// summary:
 		//		This class extends the normal ComboBox in order to encapsulate
-		//		some UDM specific behaviour.
+		//		some UDM specific behavior.
 
 		advancedSearchItem: null,
 

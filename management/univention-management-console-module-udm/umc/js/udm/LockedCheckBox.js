@@ -43,7 +43,7 @@ define([
 	return declare("umc.modules.udm.LockedCheckBox", [ CheckBox ], {
 		// summary:
 		//		This class extends the normal CheckBox in order to encapsulate
-		//		some UDM specific behaviour.
+		//		some UDM specific behavior.
 
 		setInitialValue: function(value) {
 			this.set('value', value);

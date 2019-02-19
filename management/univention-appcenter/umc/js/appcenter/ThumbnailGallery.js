@@ -93,7 +93,7 @@ define([
 		heighestImgRatio: null,
 
 		//used to check if the contentSliderWrapper is to small for showNextThumbs and showPrevThumbs to work correctly
-		//and change behaviour accordingly
+		//and change behavior accordingly
 		widestDefaultThumbWidth: null,
 
 		//_youtubeIframeRatio: defaults to 16/9

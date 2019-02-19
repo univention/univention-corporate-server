@@ -45,7 +45,7 @@ tasks from the actual business logic. This means:
 
 * less time to code
 * fewer bugs
-* consistent behaviour throughout the UMC in standard cases
+* consistent behavior throughout the UMC in standard cases
 
 Note that the functions defined herein do not cover every corner case during
 UMC module development. You are not bound to use them if you need more

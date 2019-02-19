@@ -78,7 +78,7 @@ define([
 				}
 
 				if (evt.key === 'Tab') {
-					// prevent native tab behaviour for _yearInput
+					// prevent native tab behavior for _yearInput
 					evt.preventDefault();
 				}
 			}));

@@ -41,7 +41,7 @@ define([
 	return declare("umc.modules.udm.MultiObjectSelect", [ MultiObjectSelect ], {
 		// summary:
 		//		This class extends the normal MultiObjectSelect in order to encapsulate
-		//		some UDM specific behaviour.
+		//		some UDM specific behavior.
 
 		objectType: '',
 

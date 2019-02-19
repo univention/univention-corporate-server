@@ -141,7 +141,7 @@ define([
 		//		This class is meant to be used (a) either to interface a particular UDM type
 		//		(users, groups, computers, ...) or (b) to display a navigation interface which
 		//		shows the container hierarchy on the left side and existing LDAP objects of
-		//		any type on the search list. The behaviour of the class is controlled by the
+		//		any type on the search list. The behavior of the class is controlled by the
 		//		moduleFlavor property (which is set automatically when available modules are
 		//		queried during the initialization).
 

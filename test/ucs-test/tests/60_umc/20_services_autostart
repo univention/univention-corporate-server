@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Test the UMC service module autostart behaviour
+## desc: Test the UMC service module autostart behavior
 ## bugs: [34506]
 ## exposure: dangerous
 
@@ -111,7 +111,7 @@ class TestUMCServiceAutostart(ServiceModule):
     def main(self, service_name):
         """
         Method to test the UMC 'service_name' service
-        autostart behaviour
+        autostart behavior
         """
         self.create_connection_authenticate()
 

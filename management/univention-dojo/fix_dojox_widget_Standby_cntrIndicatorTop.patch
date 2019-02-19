@@ -9,7 +9,7 @@
 +				var cntrIndicatorTop;
 +				var windowBox = window.getBox();
 +				if (box.y > windowBox.t && (box.y + box.h) < (windowBox.t + windowBox.h)) { 
-+					// if the widget fits into the viewport use the default behaviour of
++					// if the widget fits into the viewport use the default behavior of
 +					// centering the standby animation in the widget size
 +					cntrIndicatorTop = (box.h/2);
 +				} else if (box.y < windowBox.t && (box.y + box.h) > (windowBox.t + windowBox.h)) {
