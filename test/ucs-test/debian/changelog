@@ -15742,7 +15742,7 @@ ucs-test (1.2.130-3) unstable; urgency=low
 
 ucs-test (1.2.130-2) unstable; urgency=low
 
-  * fixed some small issues in sytem-setup-tests (Bug: #11690 and Bug: #11692)
+  * fixed some small issues in system-setup-tests (Bug: #11690 and Bug: #11692)
 
  -- Christoph Niemann <niemann@univention.de>  Mon,  5 Oct 2009 09:29:50 +0200
 

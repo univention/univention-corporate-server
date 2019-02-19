@@ -4503,7 +4503,7 @@ univention-system-setup (6.0.32-1) unstable; urgency=low
 
 univention-system-setup (6.0.31-1) unstable; urgency=low
 
-  * fixed return codes of script conffiles/update_sytem_setup_help.sh
+  * fixed return codes of script conffiles/update_system_setup_help.sh
     (Bug #27900)
 
  -- Lukas Walter <walter@univention.de>  Mon, 17 Sep 2012 13:17:50 +0200
