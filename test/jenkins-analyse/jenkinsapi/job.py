@@ -481,7 +481,7 @@ class Job(JenkinsBase, MutableJenkinsThing):
         Modify SCM ("Source Code Management") branch name for configured job.
         :param new_branch : new repository branch name to set.
             If job has multiple branches configured and "old_branch"
-            not provided - method will allways modify first url.
+            not provided - method will always modify first url.
         :param old_branch (optional): exact value of branch name
             to be replaced.
             For some SCM's jenkins allow set multiple branches per job
@@ -505,7 +505,7 @@ class Job(JenkinsBase, MutableJenkinsThing):
         Modify SCM ("Source Code Management") url for configured job.
         :param new_source_url : new repository url to set.
             If job has multiple repositories configured and "old_source_url"
-            not provided - method will allways modify first url.
+            not provided - method will always modify first url.
         :param old_source_url (optional): for some SCM's jenkins allows
             settting multiple repositories per job
             this parameter intended to indicate which repository need
