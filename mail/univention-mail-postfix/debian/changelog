@@ -42,7 +42,7 @@ univention-mail-postfix (12.0.0-17) unstable; urgency=low
 
 univention-mail-postfix (12.0.0-16) unstable; urgency=low
 
-  * Bug #45963: reenable chroot'ing of scache service
+  * Bug #45963: re-enable chroot'ing of scache service
 
  -- Daniel Troeder <troeder@univention.de>  Mon, 26 Feb 2018 10:38:43 +0100
 
@@ -394,7 +394,7 @@ univention-mail-postfix (9.0.4-1) unstable; urgency=low
   * Bug #39021: disable authentication (and thus submitting) by default on
     all ports.
     By default authentication is now only possible on SMTPS (465) and
-    Submission (587) ports. To reenabled authentication on SMTP (port 25)
+    Submission (587) ports. To re-enabled authentication on SMTP (port 25)
     using TLS set UCR variable
     mail/postfix/mastercf/options/smtp/smtpd_sasl_auth_enable=yes.
 

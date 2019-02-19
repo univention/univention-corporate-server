@@ -1294,7 +1294,7 @@ ucs-test (8.0.28-83) unstable; urgency=medium
 
 ucs-test (8.0.28-82) unstable; urgency=low
 
-  * Bug #46408: reenable test 33_smart_host_configuration
+  * Bug #46408: re-enable test 33_smart_host_configuration
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 08 Mar 2018 16:12:19 +0100
 
@@ -1745,7 +1745,7 @@ ucs-test (8.0.28-12) unstable; urgency=medium
 
 ucs-test (8.0.28-11) unstable; urgency=low
 
-  * Bug #40199: reenable mail test
+  * Bug #40199: re-enable mail test
 
  -- Daniel Troeder <troeder@univention.de>  Wed, 14 Feb 2018 16:30:15 +0100
 
@@ -2602,7 +2602,7 @@ ucs-test (7.0.23-50) unstable; urgency=medium
 
 ucs-test (7.0.23-49) unstable; urgency=medium
 
-  * Bug #44902: reenable skip 46_kerberos_ddns_update in 00_checks/81_diagnostic_checks.py
+  * Bug #44902: re-enable skip 46_kerberos_ddns_update in 00_checks/81_diagnostic_checks.py
 
  -- Lukas Oyen <oyen@univention.de>  Mon, 11 Sep 2017 18:02:26 +0200
 
@@ -3779,7 +3779,7 @@ ucs-test (7.0.10-18) unstable; urgency=medium
 
 ucs-test (7.0.10-17) unstable; urgency=medium
 
-  * Bug #43338: Reenable docker tests
+  * Bug #43338: Re-enable docker tests
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 31 Jan 2017 11:57:32 +0100
 
@@ -3810,7 +3810,7 @@ ucs-test (7.0.10-13) unstable; urgency=medium
 ucs-test (7.0.10-12) unstable; urgency=medium
 
   * Bug #43444: Saml tests for login with wrong account or password 
-  * Bug #43384: reenable saml tests
+  * Bug #43384: re-enable saml tests
 
  -- Jürn Brodersen <brodersen@univention.de>  Fri, 20 Jan 2017 13:34:26 +0100
 
@@ -3859,7 +3859,7 @@ ucs-test (7.0.10-6) unstable; urgency=medium
 
 ucs-test (7.0.10-4) unstable; urgency=medium
 
-  * Bug #39122: Reenable 35smbclient_auth.test
+  * Bug #39122: Re-enable 35smbclient_auth.test
 
  -- Lukas Oyen <oyen@univention.de>  Mon, 23 Jan 2017 10:36:18 +0100
 
@@ -4224,7 +4224,7 @@ ucs-test (7.0.6-13) unstable; urgency=medium
 
 ucs-test (7.0.6-12) unstable; urgency=medium
 
-  * Bug #31832: reenable skipped test
+  * Bug #31832: re-enable skipped test
   * Bug #37337: Bug #8052: Fix escaping of DN's and LDAP filters; revert svn
   	r56733
 
@@ -4834,7 +4834,7 @@ ucs-test (6.0.33-48) unstable; urgency=medium
 
 ucs-test (6.0.33-47) unstable; urgency=medium
 
-  * Bug #40187: Reenable ssl3 checks
+  * Bug #40187: Re-enable ssl3 checks
 
  -- Arvid Requate <requate@univention.de>  Mon, 21 Mar 2016 19:01:49 +0100
 
@@ -5093,7 +5093,7 @@ ucs-test (6.0.33-9) unstable; urgency=medium
 
 ucs-test (6.0.33-8) unstable; urgency=medium
 
-  * Bug #40315: Reenable 80_docker/62_app_update_available
+  * Bug #40315: Re-enable 80_docker/62_app_update_available
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 17 Feb 2016 12:01:18 +0100
 
@@ -5636,7 +5636,7 @@ ucs-test (6.0.15-1) unstable; urgency=medium
 
 ucs-test (6.0.14-1) unstable; urgency=low
 
-  * Bug #39687: reenable 40_mail/42_dovecot_rename_mail_primary_address
+  * Bug #39687: re-enable 40_mail/42_dovecot_rename_mail_primary_address
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 05 Nov 2015 21:25:51 +0100
 
@@ -8444,7 +8444,7 @@ ucs-test (5.0.69-4) unstable; urgency=medium
 
 ucs-test (5.0.69-3) unstable; urgency=low
 
-  * Bug #37078: Reenable 20_appcenter.20_can_apps_be_installed
+  * Bug #37078: Re-enable 20_appcenter.20_can_apps_be_installed
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 10 Dec 2014 00:07:57 +0100
 

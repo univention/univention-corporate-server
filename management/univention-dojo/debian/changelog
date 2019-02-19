@@ -6,7 +6,7 @@ univention-dojo (12.0.0-1) unstable; urgency=medium
 
 univention-dojo (11.0.1-3) unstable; urgency=medium
 
-  * Bug #47997: Reenable certificate check for wget in Makefile
+  * Bug #47997: Re-enable certificate check for wget in Makefile
 
  -- Ole Schwiegert <schwiegert@univention.de>  Wed, 07 Nov 2018 11:09:11 +0100
 

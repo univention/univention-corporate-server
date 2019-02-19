@@ -142,8 +142,8 @@ univention-updater (13.0.1-56) unstable; urgency=medium
 
 univention-updater (13.0.1-55) unstable; urgency=medium
 
-  * Bug #47436: In postup.sh, do not reenable apache2 and UMC restarts,
-    when system-setup is running. System-setup will reenable it at the end of
+  * Bug #47436: In postup.sh, do not re-enable apache2 and UMC restarts,
+    when system-setup is running. System-setup will re-enable it at the end of
     the setup.
 
  -- Erik Damrose <damrose@univention.de>  Thu, 02 Aug 2018 10:36:34 +0200

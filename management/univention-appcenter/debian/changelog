@@ -2134,7 +2134,7 @@ univention-appcenter (5.0.21-18) unstable; urgency=low
 
 univention-appcenter (5.0.21-17) unstable; urgency=medium
 
-  * Bug #41724: Reenable ACL's
+  * Bug #41724: Re-enable ACL's
 
  -- Florian Best <best@univention.de>  Tue, 12 Jul 2016 10:53:28 +0200
 

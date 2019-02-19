@@ -2276,7 +2276,7 @@ univention-directory-manager-modules (11.0.3-2) unstable; urgency=medium
 
 univention-directory-manager-modules (11.0.3-1) unstable; urgency=medium
 
-  * Bug #41207: reenable object class removal for extended attributes
+  * Bug #41207: re-enable object class removal for extended attributes
 
  -- Florian Best <best@univention.de>  Fri, 27 May 2016 13:01:54 +0200
 

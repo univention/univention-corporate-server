@@ -706,7 +706,7 @@ univention-nagios (4.1.7-2) unstable; urgency=low
 univention-nagios (4.1.7-1) unstable; urgency=low
 
   * moved nuvola theme within package (Bug #14594)
-  * reenabled UCS computer logos
+  * re-enabled UCS computer logos
 
  -- Sönke Schwardt <schwardt@univention.de>  Tue, 29 Jun 2010 17:16:11 +0200
 
