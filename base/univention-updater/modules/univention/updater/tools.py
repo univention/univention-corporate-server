@@ -97,7 +97,7 @@ def verify_script(script, signature):
 
         verify_script(open("script.sh", "r").read(), open("script.sh.gpg", "r").read())
 
-    :param str script: The scipt text to verify.
+    :param str script: The script text to verify.
     :param str signature: The detached signature.
     :return: None or the error output.
     :rtype: None or str
