@@ -2060,7 +2060,7 @@ def lookup_adds_dc(hostname_or_ip=None, realm=None, ucr=None):
 	}
 
 	if not domain_info["ad_server_site"]:
-		raise TakeoverError(_("Faild to detect the Active Directory site of the server."))
+		raise TakeoverError(_("Failed to detect the Active Directory site of the server."))
 
 	return domain_info
 
