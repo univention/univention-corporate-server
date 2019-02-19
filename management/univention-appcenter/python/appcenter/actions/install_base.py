@@ -211,11 +211,11 @@ class InstallRemoveUpgrade(Register):
 				if args.noninteractive:
 					return True
 				try:
-					aggreed = raw_input('Do you want to %s anyway [y/N]? ' % self.get_action_name())
+					agreed = raw_input('Do you want to %s anyway [y/N]? ' % self.get_action_name())
 				except (KeyboardInterrupt, EOFError):
 					return False
 				else:
-					return aggreed.lower()[:1] in ['y', 'j']
+					return agreed.lower()[:1] in ['y', 'j']
 		return True
 
 	def _call_prescript(self, app, args, **kwargs):
@@ -276,8 +276,8 @@ class InstallRemoveUpgrade(Register):
 		if not args.noninteractive:
 			try:
 				if agree:
-					aggreed = raw_input('Do you agree [y/N]? ')
-					return aggreed.lower()[:1] in ['y', 'j']
+					agreed = raw_input('Do you agree [y/N]? ')
+					return agreed.lower()[:1] in ['y', 'j']
 				elif confirm:
 					raw_input('Press [ENTER] to continue')
 					return True
