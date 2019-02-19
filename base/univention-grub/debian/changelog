@@ -326,7 +326,7 @@ univention-grub (5.0.9-4) unstable; urgency=low
 univention-grub (5.0.9-3) unstable; urgency=low
 
   * Add a new UCR variable grub/generate-menu-lst (set by default), which
-    generates a /boot/grub/menu.lst in the Grub 1 format. This is neede to
+    generates a /boot/grub/menu.lst in the Grub 1 format. This is needed to
     boot virtualised Xen UCS instances on Xen installation with an old
     PyGrub. Existing /boot/grub/menu.lst files, which do not contain the
     string "auto-generated through univention-grub-generate-menu-lst" are
