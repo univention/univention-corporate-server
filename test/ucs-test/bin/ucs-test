@@ -39,7 +39,7 @@ def parse_options(sections):
 	selection_group.add_option(
 		"-p", "--prohibit",
 		dest="tags_prohibited", action="append", default=[],
-		help="Skipt tests with this tag", metavar="TAG")
+		help="Skip tests with this tag", metavar="TAG")
 	selection_group.add_option(
 		"-r", "--require",
 		dest="tags_required", action="append", default=[],
