@@ -2314,7 +2314,7 @@ univention-ad-connector (6.0.7-1) unstable; urgency=low
       (Bug #22749)
     * No longer use sambaPwdMustChange to calculate the password end time
       (Bug #18187)
-    * explode_unicode_dn: Also retrun last dn component. Thanks to Joerg
+    * explode_unicode_dn: Also return last dn component. Thanks to Joerg
       Steffens for the patch (Bug #21000)
     * Resync rejected objects not before the sync is initialized
       (Bug #22622)
