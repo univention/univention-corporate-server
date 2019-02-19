@@ -32,7 +32,7 @@ class AppCheck(object):
 
     def log(self, msg, *args):
         """
-        Prints the given 'msg' with 'args' preceeded by path to file unless
+        Prints the given 'msg' with 'args' preceded by path to file unless
         '--quiet' argument was given.
         """
         if not parsed.quiet:
