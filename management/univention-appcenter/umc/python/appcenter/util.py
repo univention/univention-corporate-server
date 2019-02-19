@@ -207,7 +207,7 @@ def get_current_ram_available():
 
 	# see also http://code.google.com/p/psutil/issues/detail?id=313
 	phymem_buffers = meminfo.get('Buffers:', 0)  # OpenVZ does not have Buffers, calculation still correct, see Bug #30659
-	cached_phymem = meminfo.get('Cached:', 0)  # OpenVZ might not even have Cached? Dont know if calculation is still correct but it is better than raising KeyError
+	cached_phymem = meminfo.get('Cached:', 0)  # OpenVZ might not even have Cached? Don't know if calculation is still correct but it is better than raising KeyError
 	return (avail_phymem + phymem_buffers + cached_phymem) / (1024 * 1024)
 
 
@@ -399,7 +399,7 @@ class ComponentManager(object):
 			named_component_base = '%s/%s' % (COMPONENT_BASE, name)
 			for key, val in data.iteritems():
 				if val is None:
-					# was not given, so dont update
+					# was not given, so don't update
 					continue
 				if key in COMP_PARAMS:
 					super_ucr.set_registry_var('%s/%s' % (named_component_base, key), val)

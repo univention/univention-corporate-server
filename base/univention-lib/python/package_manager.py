@@ -240,7 +240,7 @@ class FetchProgress(apt.progress.text.AcquireProgress):
 		super(FetchProgress, self).__init__()
 		self._file = MessageWriter(outfile)
 
-	# dont use _winch
+	# don't use _winch
 	def start(self):
 		# type: () -> None
 		"""
@@ -914,7 +914,7 @@ class PackageManager(object):
 			self.cache.upgrade(dist_upgrade=False)
 
 		# only if commit does something. if it is just called
-		# to really commit changes made manually, dont dry_run
+		# to really commit changes made manually, don't dry_run
 		# as it reopens the cache
 		broken = []  # type: List[str]
 		if install or remove:
@@ -1094,7 +1094,7 @@ class PackageManager(object):
 		for pkg in self.cache:
 			if pkg.is_auto_removable:
 				self.progress_state.info(_('Deleting unneeded %s') % pkg.name)
-				# dont auto_fix. maybe some errors magically
+				# don't auto_fix. maybe some errors magically
 				# disappear if we just remove
 				# enough packages...
 				pkg.mark_delete(auto_fix=False)

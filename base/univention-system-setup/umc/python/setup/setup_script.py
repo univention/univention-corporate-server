@@ -194,7 +194,7 @@ class SetupScript(object):
 		and **kwargs as __init__() (which itself will leave them
 		untouched)
 
-		So dont override this method, instead write your own up().
+		So don't override this method, instead write your own up().
 		The default up()-method does nothing.
 
 		self.up() is called in a try-except-block. If an exception
@@ -289,7 +289,7 @@ class SetupScript(object):
 
 	def run(self):
 		'''Run the SetupScript.
-		Dont override this method, instead define your own
+		Don't override this method, instead define your own
 		inner_run()-method.
 
 		Call self.header()
@@ -328,7 +328,7 @@ class SetupScript(object):
 		'''Main function, called by run().
 		Override this method in your SetupScriptClass.
 		You may return True or False which will be propagated
-		to run() itself. If you dont return False, True will be
+		to run() itself. If you don't return False, True will be
 		used implicitely.
 		'''
 		raise NotImplementedError('Define your own inner_run() method, please.')
@@ -401,7 +401,7 @@ class AptScript(SetupScript):
 		the progress parser. Reopen the cache (maybe unneeded
 		but does not slow us down too much).
 		'''
-		# dont log msgs for now
+		# don't log msgs for now
 		self.package_manager.add_hundred_percent()
 		self.reopen_cache()
 

@@ -215,7 +215,7 @@ define([
 		_keyPress: function(evt) {
 			if (evt.keyCode == keys.ENTER) {
 				this._searchDisplayedValueOnServerAndOpen();
-				// dont submit form
+				// don't submit form
 				evt.preventDefault();
 			}
 		},

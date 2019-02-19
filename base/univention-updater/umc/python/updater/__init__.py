@@ -448,7 +448,7 @@ class Instance(Base):
 			if result['easy_mode']:
 				# updates/available should reflect the need for an update
 				easy_update_available = ucr.is_true('update/available', False)
-				# but dont rely on ucr! update/available is set during univention-upgrade --check
+				# but don't rely on ucr! update/available is set during univention-upgrade --check
 				# but when was the last time this was run?
 
 				# release update
