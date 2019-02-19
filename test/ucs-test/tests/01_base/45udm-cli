@@ -59,7 +59,7 @@ def test_ldap_connection(ucr, user_dn, password):
 
 def test_samba_connection(ucr, username, password):
 	# In case of a memberserver in a S4 environment, we have to
-	# wait until the user has been synchonized to Samba 4. Otherwise
+	# wait until the user has been synchronized to Samba 4. Otherwise
 	# we can't get a kerberos ticket
 	if ucr.get("server/role") == "memberserver":
 		time.sleep(16)
