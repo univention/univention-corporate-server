@@ -17277,7 +17277,7 @@ ucs-test (1.2.3-4) unstable; urgency=low
 
 ucs-test (1.2.3-3) unstable; urgency=low
 
-  * Bug: #13485 #13486 tests now only start automaticly when software is
+  * Bug: #13485 #13486 tests now only start automatically when software is
     installed
 
  -- Jasper Schulz <schulz@univention.de>  Fri,  6 Mar 2009 16:55:14 +0100

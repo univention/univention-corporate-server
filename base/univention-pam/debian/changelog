@@ -313,7 +313,7 @@ univention-pam (7.0.4-5) unstable; urgency=low
 
 univention-pam (7.0.4-4) unstable; urgency=low
 
-  * added group-name-mapping.py for autmatically
+  * added group-name-mapping.py for automatically
     setting group localization vars (Bug #33710) 
 
  -- Felix Botner <botner@univention.de>  Wed, 11 Dec 2013 15:37:47 +0100

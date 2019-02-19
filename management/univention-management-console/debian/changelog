@@ -5818,7 +5818,7 @@ univention-management-console (0.9.33-5) unstable; urgency=low
 
 univention-management-console (0.9.33-4) unstable; urgency=low
 
-  * now we have three start type on umc services: start yes (automtically), no (never) or manually
+  * now we have three start type on umc services: start yes (automatically), no (never) or manually
 
  -- Felix Botner <fbotner@omar.knut.univention.de>  Mon, 27 Oct 2008 15:51:16 +0100
 
