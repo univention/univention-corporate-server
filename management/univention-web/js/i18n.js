@@ -139,7 +139,7 @@ define([
 			//var _translations = [];
 
 			// use 'umc.app' and 'umc.branding' as backup path to allow other class to override a
-			// UMC base class without loosing its translations (see Bug #24864)
+			// UMC base class without losing its translations (see Bug #24864)
 			var scopes = params.split(/\s*,\s*/);
 			scopes.push('umc/branding');
 			scopes.push('umc/app');
