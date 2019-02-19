@@ -4126,7 +4126,7 @@ univention-directory-manager-modules (9.0.22-17) unstable; urgency=low
 
 univention-directory-manager-modules (9.0.22-16) unstable; urgency=low
 
-  * Use the propper standard base64 functions which do not produce
+  * Use the proper standard base64 functions which do not produce
     line-wrapped output, improving parsability of UDM output (Bug #32414)
 
  -- Arvid Requate <requate@univention.de>  Tue, 10 Sep 2013 16:22:50 +0200

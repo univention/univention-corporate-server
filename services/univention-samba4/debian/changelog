@@ -2922,7 +2922,7 @@ univention-samba4 (1.0.164-1) unstable; urgency=low
 
 univention-samba4 (1.0.163-1) unstable; urgency=low
 
-  * create the propper DomainGUID LDAP SRV record (Bug #26325)
+  * create the proper DomainGUID LDAP SRV record (Bug #26325)
 
  -- Arvid Requate <requate@univention.de>  Mon, 09 Jul 2012 13:56:56 +0200
 
