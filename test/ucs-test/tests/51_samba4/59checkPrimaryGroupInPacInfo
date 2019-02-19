@@ -73,7 +73,7 @@ while read line; do
 			;;
 		"Group RID")
 			if $pac_info && ! $group_membership_array; then
-				# this ist the pacinfo Group RID, the primary group
+				# this is the pacinfo Group RID, the primary group
 				primary_gid="$value"
 				continue
 			fi

@@ -32,7 +32,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.5-1; t
 	# on update explicitly set hashfunction to md5 for backwards compatibility
 	univention-config-registry set ssl/default/hashfunction?md5
 fi
-# on new installations, where hashfunction ist unset, default to sha1
+# on new installations, where hashfunction is unset, default to sha1
 univention-config-registry set ssl/default/hashfunction?sha1
 
 eval `univention-baseconfig shell`
