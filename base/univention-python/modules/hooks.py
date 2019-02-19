@@ -61,7 +61,7 @@ class HookManager:
 	specified hookname, an empty list will be returned.
 
 	If raise_exceptions has been set to False, exceptions while loading python modules will be
-	discarded silently. If a hook raises an exception, it will be catched and returned in
+	discarded silently. If a hook raises an exception, it will be caught and returned in
 	result list of call_hooks() instead of corresponding return value. E.g.,
 	[['Mein', 'Result', 123], <exceptions.ValueError instance at 0x7f80496f6638>]
 
@@ -87,7 +87,7 @@ class HookManager:
 		"""
 		module_dir:				path to directory that contains python modules with hook functions
 		raise_exceptions:		if False, all exceptions while loading python modules will be dropped.
-			if False, all exceptions while calling hooks will be catched and returned in result list
+			if False, all exceptions while calling hooks will be caught and returned in result list
 		"""
 		self.__loaded_modules = {}
 		self.__registered_hooks = {}
@@ -145,7 +145,7 @@ class HookManager:
 	def call_hook(self, name, *args, **kwargs):
 		"""
 		All additional arguments are passed to hook methods.
-		If self.__raise_exceptions is False, all exceptions while calling hooks will be catched and returned in result list
+		If self.__raise_exceptions is False, all exceptions while calling hooks will be caught and returned in result list
 		If return value is an empty list, no hook has been called.
 
 		"""
