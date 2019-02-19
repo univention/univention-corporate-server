@@ -40,7 +40,7 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
 case "$1" in
 	start|restart|force-reload)
-		# make sure listener is runnig before updating as some join scripts
+		# make sure listener is running before updating as some join scripts
 		# will depend on the listener running ... shut down UMC server during the update
 		/etc/init.d/univention-management-console-server stop
 		ucr set --force \
