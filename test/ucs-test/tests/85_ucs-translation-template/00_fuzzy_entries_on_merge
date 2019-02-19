@@ -88,7 +88,7 @@ if __name__ == '__main__':
 	tmp_dir = mkdtemp(prefix='translation-template-test-00-')
 	os.chdir(tmp_dir)
 	logging.basicConfig(level='DEBUG')
-	# TODO: Static seed not enough to make it reproducable. File and directory
+	# TODO: Static seed not enough to make it reproducible. File and directory
 	# lists have to be sorted
 	static_seed = int(time())
 	logging.debug('Seed for this test: %s', str(static_seed))
