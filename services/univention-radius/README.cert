@@ -17,7 +17,7 @@ univention-config-registry variables:
 
 (b) Custom Certificates
 
-To create a certificate infrastructure complete seperated from the ucs
+To create a certificate infrastructure complete separated from the ucs
 certificates, you can use the script
 "/usr/lib/univention-freeradius/setupCA.sh". It creates a root CA in
 /etc/freeradius/ssl/ucsCA and a certificate in
