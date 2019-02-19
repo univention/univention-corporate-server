@@ -1974,7 +1974,7 @@ univention-updater (10.0.18-1) unstable; urgency=low
 
 univention-updater (10.0.17-1) unstable; urgency=medium
 
-  * Abort update in case attributes from the scalix schema are stil present
+  * Abort update in case attributes from the scalix schema are still present
     (Bug #28693)
 
  -- Arvid Requate <requate@univention.de>  Mon, 20 Oct 2014 15:22:39 +0200
