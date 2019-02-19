@@ -655,5 +655,5 @@ Depends: ucs-test-libs (= ${source:Version}),
 Recommends: ucs-test-framework
 Provides: ucs-test-module
 Description: Test the univention-ucs-translation-template
- This package includes test to verify the functionality of utilites
+ This package includes test to verify the functionality of utilities
  from the univention-ucs-translation-template package.
