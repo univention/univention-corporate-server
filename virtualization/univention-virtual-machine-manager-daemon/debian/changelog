@@ -2095,7 +2095,7 @@ univention-virtual-machine-manager-daemon (1.0.69-2) unstable; urgency=low
 
   * use host capabilities to determine architecture for new virtual instances
   * add information when choosing a NAT interface
-  * interrupt migration of serveral instances when they are not located on
+  * interrupt migration of several instances when they are not located on
     the same server
   * dialog layout fixes
   * tree view: cut off domain names

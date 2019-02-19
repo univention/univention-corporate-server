@@ -5042,7 +5042,7 @@ univention-management-console (3.0.8-1) unstable; urgency=low
 
 univention-management-console (3.0.7-1) unstable; urgency=low
 
-  * replace os.system with subprocess.call in serveral modules; Bug #17045
+  * replace os.system with subprocess.call in several modules; Bug #17045
 
  -- Andreas Büsching <buesching@univention.de>  Tue, 30 Mar 2010 13:42:04 +0200
 
@@ -6372,7 +6372,7 @@ univention-management-console (0.7.4-1) unstable; urgency=low
 
 univention-management-console (0.7.3-1) unstable; urgency=low
 
-  * fixed imports of univention.(baseconfig|service)_info in serveral modules
+  * fixed imports of univention.(baseconfig|service)_info in several modules
   * closes categories with the cancel button works again
 
  -- Andreas BÃŒsching <buesching@univention.de>  Tue, 12 Jun 2007 10:22:26 +0200
