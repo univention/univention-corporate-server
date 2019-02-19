@@ -54,7 +54,7 @@ SAMBA_POLICY_TDB = "/var/lib/samba/account_policy.tdb"
 name = 'samba-privileges'
 description = 'Manages samba privileges'
 filter = '(&(objectClass=univentionSambaPrivileges)(sambaSID=*))'
-atributes = ['univentionSambaPrivilegeList', 'sambaSID']
+attributes = ['univentionSambaPrivilegeList', 'sambaSID']
 
 
 def handler(dn, new, old):
