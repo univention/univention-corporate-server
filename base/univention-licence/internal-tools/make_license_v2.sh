@@ -81,7 +81,7 @@ help_and_exit () {
 	exit $RC
 }
 
-# paths to the key store, relativ to the directory of the master key
+# paths to the key store, relative to the directory of the master key
 INTERNALKEYS="../eigene";
 EVALUATIONKEYS="../evaluation";
 CUSTOMERKEYS="../kunden";
