@@ -174,8 +174,8 @@ case $skippings in
 esac
 case $errors in
 	0) true;;
-	1) echo "1 error occured.";;
-	*) echo "$errors errors occured.";;
+	1) echo "1 error occurred.";;
+	*) echo "$errors errors occurred.";;
 esac
 echo
 exit $errors
