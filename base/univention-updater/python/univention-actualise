@@ -197,7 +197,7 @@ def check(configRegistry, dist_upgrade=False):
     newlyinstalled = int(sres[2])
     remove = int(sres[5])
 
-    # If there are any pakages to upgrade, install or remove
+    # If there are any packages to upgrade, install or remove
     if upgraded != 0 or newlyinstalled != 0 or remove != 0:
         actualise = True
 
