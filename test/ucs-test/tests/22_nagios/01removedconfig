@@ -16,9 +16,9 @@
 ##################
 ##  Information  #
 ##################
-## This script tests, if it is possible to create a system, wich role corresponds with the role of the hostsystem,
+## This script tests, if it is possible to create a system, which role corresponds with the role of the hostsystem,
 ## that is observed by UNIVENTION_PING and delete it again without remaining the
-## Nagios-Config-File for the Host, wich isn't present anymore.
+## Nagios-Config-File for the Host, which isn't present anymore.
 ##################
 ## Configuration #
 ##################

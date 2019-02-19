@@ -1,6 +1,6 @@
 #!/bin/bash
 STRINGLENGTH=8 #length of the username to test
-SIGNOFFSET=4 #wich letter the . or - should be in the username (from behind)
+SIGNOFFSET=4 #which letter the . or - should be in the username (from behind)
 
 _lowerletters="abcdefghijklmnopqrstuvwxyz"
 _upperletters="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
