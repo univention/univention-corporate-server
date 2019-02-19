@@ -1702,7 +1702,7 @@ univention-s4-connector (8.0.33-30) unstable; urgency=medium
 
 univention-s4-connector (8.0.33-29) unstable; urgency=medium
 
-  * Raise timout limits for initial listener replication and restart
+  * Raise timeout limits for initial listener replication and restart
     (Bug #33644)
 
  -- Arvid Requate <requate@univention.de>  Tue, 28 Jan 2014 17:31:13 +0100

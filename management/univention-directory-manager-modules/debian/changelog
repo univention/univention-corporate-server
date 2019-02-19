@@ -10608,7 +10608,7 @@ univention-admin-modules (0.46-58) unstable; urgency=low
 
 univention-admin-modules (0.46-57) unstable; urgency=low
 
-  * set maximum timout to 2147483647
+  * set maximum timeout to 2147483647
 
  -- Janis Meybohm <meybohm@univention.de>  Mon, 19 Jun 2006 16:35:59 +0200
 
