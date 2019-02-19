@@ -396,7 +396,7 @@ print "	'session.duration'            =>	%s," % configRegistry.get('saml/idp/ses
 
 	/*
 	 * IdP Discovery service look configuration. 
-	 * Wether to display a list of idp or to display a dropdown box. For many IdP' a dropdown box  
+	 * whether to display a list of idp or to display a dropdown box. For many IdP' a dropdown box  
 	 * gives the best use experience.
 	 * 
 	 * When using dropdown box a cookie is used to highlight the previously chosen IdP in the dropdown.  

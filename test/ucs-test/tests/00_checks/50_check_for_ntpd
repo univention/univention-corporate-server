@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner bash
-## desc: check wether the ntpd daemon is running
+## desc: check whether the ntpd daemon is running
 ## roles-not: [basesystem]
 ## exposure: safe
 ## bugs: [39297]

@@ -61,7 +61,7 @@ define([
 		// display the labe above the widget
 		labelPosition: 'top',
 
-		// bool wether a header to select all entries should be shown
+		// bool whether a header to select all entries should be shown
 		showHeader: false,
 		// label of select all entries header
 		headerLabel: _('Select all'),
