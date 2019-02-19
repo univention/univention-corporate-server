@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-42) unstable; urgency=low
+
+  * Bug #41213: cn=monitor backend for statistical information
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 19 Feb 2019 17:48:23 +0100
+
 univention-ldap (14.0.2-41) unstable; urgency=medium
 
   * Bug #48427: Add DB_CONFIG for translog
