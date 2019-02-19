@@ -409,7 +409,7 @@ define([
 				});
 			}
 
-			// only load dynamic values in case all dependencies are fullfilled
+			// only load dynamic values in case all dependencies are fulfilled
 			if (dependList.length != nDepValues) {
 				//console.log('### _SelectMixin ['+this.name+']: return');
 				return;
