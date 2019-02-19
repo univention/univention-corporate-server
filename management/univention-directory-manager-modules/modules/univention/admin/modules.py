@@ -263,6 +263,10 @@ class EA_Layout(dict):
 	def advanced(self):
 		return self.get('advanced', False)
 
+	@property
+	def is_app_tab(self):
+		return self.get('is_app_tab', False)
+
 	def __cmp__(self, other):
 		return cmp(self.groupName, other.groupName) or cmp(self.position, other.position)
 
@@ -447,6 +451,7 @@ def update_extended_attributes(lo, module, position):
 					fullWidth=fullWidth,
 					groupName=groupname,
 					groupPosition=groupPosition,
+					is_app_tab=any(option in [key for (key, value) in getattr(module, 'options', {}).items() if value.is_app_option] for option in attrs.get('univentionUDMPropertyOptions', [])),
 				))
 			else:
 				for tab in getattr(module, 'layout', []):
@@ -489,6 +494,8 @@ def update_extended_attributes(lo, module, position):
 				# remember tabs that have been added by UDM extended attributes
 				if tabname not in module.extended_attribute_tabnames:
 					module.extended_attribute_tabnames.append(tabname)
+
+			currentTab.is_app_tab = any(x.is_app_tab for x in priofields)
 
 			# check if tab is empty ==> overwritePosition is impossible
 			freshTab = len(currentTab.layout) == 0

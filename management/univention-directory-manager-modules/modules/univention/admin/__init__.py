@@ -492,6 +492,14 @@ def ucr_overwrite_module_layout(module):
 	del module.layout
 	module.layout = new_layout
 
+	# sort tabs: All apps occur alphabetical after the "Apps" / "Options" tab
+	app_tabs = [x for x in module.layout if x.is_app_tab]
+	app_tabs.sort(key=lambda x: x.label.lower())
+	layout = [x for x in module.layout if not x.is_app_tab]
+	pos = ([i for i, x in enumerate(layout, 1) if x.label == 'Options'] or [len(layout)])[0]
+	layout[pos:pos] = app_tabs
+	module.layout = layout
+
 
 class extended_attribute(object):
 
@@ -511,6 +519,8 @@ class extended_attribute(object):
 
 
 class tab:
+
+	is_app_tab = False
 
 	def __init__(self, short_description='', long_description='', fields=[], advanced=False):
 		self.short_description = short_description
@@ -570,7 +580,7 @@ class policiesGroup:
 
 
 univention.admin = sys.modules[__name__]
-from univention.admin import modules, objects, syntax, hook, mapping
+from univention.admin import modules, objects, syntax, hook, mapping  # noqa
 syntax.import_syntax_files()
 hook.import_hook_files()
 

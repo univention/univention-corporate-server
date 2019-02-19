@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.3-1) unstable; urgency=medium
+
+  * Bug #48621: sort app tabs by name and display them after the Apps-tab
+
+ -- Florian Best <best@univention.de>  Tue, 19 Feb 2019 18:53:19 +0100
+
 univention-directory-manager-modules (14.0.2-1) unstable; urgency=medium
 
   * Bug #48621: fix user templates when univentionMail attributes are set via
