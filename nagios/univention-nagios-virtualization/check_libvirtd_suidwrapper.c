@@ -79,7 +79,7 @@ static void my_alarm_handler(int signo) {
 static void usage(int status) {
 	FILE *stream = status ? stderr : stdout;
 	fprintf(stream, "usage: %s -k|-x [OPTIONS]\n", command);
-	fprintf(stream, "\t-t SECONDS - libvirtd timout\n");
+	fprintf(stream, "\t-t SECONDS - libvirtd timeout\n");
 	fprintf(stream, "\t-h|--help  - help message\n");
 	fprintf(stream, "\t-x         - check xen\n");
 	fprintf(stream, "\t-k         - check kvm\n");
