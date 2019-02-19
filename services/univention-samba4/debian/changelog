@@ -1677,7 +1677,7 @@ univention-samba4 (3.0.21-3) unstable; urgency=low
 
 univention-samba4 (3.0.21-2) unstable; urgency=low
 
-  * Create pseudo groups at the beginnig of the join script (Bug #32461)
+  * Create pseudo groups at the beginning of the join script (Bug #32461)
 
  -- Stefan Gohmann <gohmann@univention.de>  Sun, 13 Oct 2013 23:51:50 +0200
 
