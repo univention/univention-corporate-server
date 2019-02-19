@@ -616,7 +616,7 @@ for printer in configRegistry.get('cups/restrictedprinters', '').split():
 #Allow From .mydomain.com
 #</Location>
 
-#  lpc requierd password, see Bug #1617
+#  lpc required password, see Bug #1617
 #  <Location /jobs>
 #
 #  AuthType Basic
