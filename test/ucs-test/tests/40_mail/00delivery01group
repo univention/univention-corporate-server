@@ -9,7 +9,7 @@
 #  Infomartion  #
 #################
 # This script creates three users and gives each user the same alternative eMail address.
-# It then sends an eMail to the address and checks if all three user recieved it.
+# It then sends an eMail to the address and checks if all three user received it.
 #################
 
 from essential.mail import file_search_mail, send_mail

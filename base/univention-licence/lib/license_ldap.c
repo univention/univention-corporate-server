@@ -103,7 +103,7 @@ char* univention_license_ldap_get_basedn(void)
 
 /******************************************************************************/
 /*!
-	@brief	open a connection to the ldap server, with the connection data recived from UCR
+	@brief	open a connection to the ldap server, with the connection data received from UCR
 	@retval	1	if the connection was already open or was opened successfull
 	@retval	0	if an error has occurred
 */
