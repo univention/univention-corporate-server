@@ -364,7 +364,7 @@ univention-system-activation (0.0.1-19) unstable; urgency=medium
 
 univention-system-activation (0.0.1-18) unstable; urgency=low
 
-  * Bug #38547: Removed iptables, call notify_vendor, add feeback mail address
+  * Bug #38547: Removed iptables, call notify_vendor, add feedback mail address
 
  -- Alexander Kramer <kramer@univention.de>  Fri, 26 Jun 2015 14:46:24 +0200
 

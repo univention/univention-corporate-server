@@ -2485,7 +2485,7 @@ univention-samba (0.14) unstable; urgency=low
 
   * Correct Parameters for smbclient while pdc-takeover (copy of netlogon
     share)
-  * Improved usage and feeback of univention-pdc-takeover
+  * Improved usage and feedback of univention-pdc-takeover
 
  -- Ingo Steuwer <steuwer@univention.de>  Wed, 25 Aug 2004 08:43:58 +0200
 
