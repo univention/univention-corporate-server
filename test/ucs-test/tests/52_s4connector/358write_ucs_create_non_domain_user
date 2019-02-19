@@ -40,7 +40,7 @@ section "Set group as primary group of user"
 udm_modify "users/user" "" "" "" "" \
 	--set primaryGroup="$UDM_GROUP_DN" || fail_test 110
 
-section "Reenable connector"
+section "Re-enable connector"
 
 ad_set_sync_mode "write"
 ad_wait_for_synchronization; fail_bool 0 110
