@@ -366,7 +366,7 @@ define([
 		},
 		_breaks_anything: function(values) { return values.breaks !== undefined && values.breaks.length; },
 
-		// prepares all data for the acutal execution of the installer.
+		// prepares all data for the actual execution of the installer.
 		_call_installer: function(func, ids, aptGetUpdate) {
 			aptGetUpdate = aptGetUpdate || false;
 			var verb = '';
