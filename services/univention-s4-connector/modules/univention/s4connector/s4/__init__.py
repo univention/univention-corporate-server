@@ -238,7 +238,7 @@ def s42samba_time(l):
 	d = 116444736000000000  # difference between 1601 and 1970
 	return int(((l - d)) / 10000000)
 
-# mapping funtions
+# mapping functions
 
 
 def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucsobject, propertyname, propertyattrib, ocucs, ucsattrib, ocs4, dn_attr=None):
