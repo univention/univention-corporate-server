@@ -1939,7 +1939,7 @@ univention-appcenter (6.0.0-15) unstable; urgency=medium
 
 univention-appcenter (6.0.0-14) unstable; urgency=medium
 
-  * Bug #42619: Also improve UCR funtions for Non-UCS containers
+  * Bug #42619: Also improve UCR functions for Non-UCS containers
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 26 Oct 2016 17:01:51 +0200
 
