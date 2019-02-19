@@ -179,7 +179,7 @@ def do_package(package):
 def main():
 	"""Install config registry script."""
 	usage = "%prog"
-	epilog = '''univention-install-config-registry is a debhelper like programm
+	epilog = '''univention-install-config-registry is a debhelper like program
 to install Univention Config Registry (UCR) related templates, scripts, and
 modules into the package build directories.
 
