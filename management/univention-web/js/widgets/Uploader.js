@@ -95,7 +95,7 @@ define([
 		//		A size limit for the uploaded file.
 		maxSize: 524288,
 
-		//toggle mutliple files selectable
+		//toggle multiple files selectable
 		multiFile: false,
 
 		labelPosition: 'top',
