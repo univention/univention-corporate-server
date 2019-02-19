@@ -1484,7 +1484,7 @@ msgstr "des UCS-Systems"
 #~ msgid "Configuration finished"
 #~ msgstr "Konfiguration abgeschlossen"
 
-#~ msgid "Configuration of IPv4 and IPv6 adresses"
+#~ msgid "Configuration of IPv4 and IPv6 addresses"
 #~ msgstr "Konfiguration der IPv4 und IPv6 Adressen"
 
 #~ msgid "Connection failed. Please recheck the address"
