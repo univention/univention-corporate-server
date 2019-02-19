@@ -42,7 +42,7 @@ Data flow
 ---------
 
 The protocol is based on a server/client model. The client sends
-requests to the server that will be answered with a reponse message by
+requests to the server that will be answered with a response message by
 the server.
 
 With a status code in the response message the client can determine the
