@@ -141,7 +141,7 @@ def importRow(row):
 
 print 'eval $(ucr shell)'
 print 'udm container/ou create --ignore_exists --set name=People --set description="Employees of this company" --set groupPath="1"'
-print 'udm container/ou create --ignore_exists --set name=Departments --set description="Ressources of this company organized by department"'
+print 'udm container/ou create --ignore_exists --set name=Departments --set description="Resources of this company organized by department"'
 print 'udm mail/domain create --ignore_exists --position="cn=domain,cn=mail,%s" --set name="%s"' % (LDAPBASE, DOMAIN)
 print 'udm computers/domaincontroller_backup create --ignore_exist --position "cn=dc,cn=computers,%s" --set name="dcbackup" --set network="cn=default,cn=networks,%s" %s %s' % (LDAPBASE, LDAPBASE, DC_OPTIONS, NAGIOS_OPTIONS)
 
