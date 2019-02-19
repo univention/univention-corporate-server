@@ -534,7 +534,7 @@ class UCSTestUDM(object):
 
 	def _set_module_default_attr(self, attributes, defaults):
 		"""
-		Returns the given attributes, extented by every property given in defaults if not yet set.
+		Returns the given attributes, extended by every property given in defaults if not yet set.
 
 		:param tuple defaults: should be a tupel containing tupels like "('username', <default_value>)".
 		"""
