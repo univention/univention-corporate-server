@@ -427,7 +427,7 @@ class Build(JenkinsBase):
         '''
         Returns build timestamp in UTC
         '''
-        # Java timestamps are given in miliseconds since the epoch start!
+        # Java timestamps are given in milliseconds since the epoch start!
         naive_timestamp = datetime.datetime(
             *time.gmtime(self._data['timestamp'] / 1000.0)[:6])
         return pytz.utc.localize(naive_timestamp)
