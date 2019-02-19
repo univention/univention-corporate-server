@@ -42,7 +42,7 @@ define([
 		constructor: function() {
 			this.inherited(arguments);
 
-			this.warningMessageTemplate = _('<b>Warning:</b> The user name is longer than {length} characters which makes a login on Windows clients imposible. Please consider shortening the user name.');
+			this.warningMessageTemplate = _('<b>Warning:</b> The user name is longer than {length} characters which makes a login on Windows clients impossible. Please consider shortening the user name.');
 
 			this.warningMessage = lang.replace(this.warningMessageTemplate, {
 				'length': this.maxLength
