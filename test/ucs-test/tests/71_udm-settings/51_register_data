@@ -120,7 +120,7 @@ with udm_test.UCSTestUDM() as udm:
 		dn,
 		{
 			'cn': [file_name],
-			'description': [],  # ucs_registerLDAPExtension doesnt support description
+			'description': [],  # ucs_registerLDAPExtension does not support description
 			'univentionDataFilename': [file_name],
 			'univentionDataType': [kwargs['data_type']],
 			'univentionData': [bz2.compress(data)],
