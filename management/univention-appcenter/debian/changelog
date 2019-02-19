@@ -5272,7 +5272,7 @@ univention-management-console-module-appcenter (3.0.11-1) unstable; urgency=low
 
 univention-management-console-module-appcenter (3.0.10-1) unstable; urgency=low
 
-  * Add simple dependecy relations for apps (Bug #30077)
+  * Add simple dependency relations for apps (Bug #30077)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 29 Jul 2013 12:25:09 +0200
 
@@ -5696,7 +5696,7 @@ univention-management-console-module-appcenter (2.0.103-1) unstable; urgency=low
 
 univention-management-console-module-appcenter (2.0.102-2) unstable; urgency=low
 
-  * Fixed build dependecy (Bug #30249)
+  * Fixed build dependency (Bug #30249)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 07 Feb 2013 19:52:54 +0100
 

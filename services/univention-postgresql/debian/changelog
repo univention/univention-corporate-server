@@ -73,7 +73,7 @@ univention-postgresql (8.0.0-10) unstable; urgency=medium
   * Update for UCS 4.1 (Bug #39595)
   * Split into multiple binary packages for different PostgreSQL versions (Bug #39595)
   * Remove support for old PostgreSQL versions (Bug #39595)
-  * do not use Pre-Depends for postgresql depedency (Bug #39595)
+  * do not use Pre-Depends for postgresql dependency (Bug #39595)
   * do not create empty pg_hba.conf on remove (Bug #39595)
   * remove empty pg_hba.conf on installation or upgrade (Bug #39595)
   * remove stashed template file on installation (Bug #39595)

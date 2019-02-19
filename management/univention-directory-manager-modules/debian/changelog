@@ -3357,7 +3357,7 @@ univention-directory-manager-modules (9.0.75-23) unstable; urgency=low
 
 univention-directory-manager-modules (9.0.75-22) unstable; urgency=low
 
-  * Bug #34201: Removed dependeny on univention-ldap-server
+  * Bug #34201: Removed dependency on univention-ldap-server
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 07 Apr 2014 14:14:40 +0200
 

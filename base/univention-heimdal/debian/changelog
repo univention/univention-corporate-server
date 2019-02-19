@@ -295,7 +295,7 @@ univention-heimdal (5.0.27-1) unstable; urgency=low
 
 univention-heimdal (5.0.26-2) unstable; urgency=low
 
-  * fix package depenency (Bug #24277)
+  * fix package dependency (Bug #24277)
 
  -- Arvid Requate <requate@univention.de>  Tue, 31 Jan 2012 11:50:50 +0100
 

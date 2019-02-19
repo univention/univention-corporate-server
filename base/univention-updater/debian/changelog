@@ -5348,7 +5348,7 @@ univention-updater (6.0.11-1) unstable; urgency=low
 
 univention-updater (6.0.10-1) unstable; urgency=low
 
-  * added screen as dependecy, it is very useful to start the update
+  * added screen as dependency, it is very useful to start the update
     within a screen session to take no notice of network problems. Bug
     #18849
 

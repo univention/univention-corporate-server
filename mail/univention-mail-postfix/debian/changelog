@@ -1107,7 +1107,7 @@ univention-mail-postfix (6.0.12-1) unstable; urgency=low
 
 univention-mail-postfix (6.0.11-1) unstable; urgency=low
 
-  * added dependecy to univention-mail-cyrus for
+  * added dependency to univention-mail-cyrus for
     univention-mail-server (Bug #22151)
 
  -- Felix Botner <botner@univention.de>  Wed, 21 Sep 2011 16:52:59 +0200

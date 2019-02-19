@@ -737,7 +737,7 @@ univention-kde (3.0-4-1) unstable; urgency=low
 
 univention-kde (3.0-3-2) unstable; urgency=low
 
-  * add depency on univention-kde-profile-ucs-kde-menu21 to install the KDE profile
+  * add dependency on univention-kde-profile-ucs-kde-menu21 to install the KDE profile
 
  -- Arvid Requate <requate@univention.de>  Thu, 10 Jul 2008 16:16:15 +0200
 

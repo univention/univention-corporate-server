@@ -455,7 +455,7 @@ univention-x-core (0.7-1) unstable; urgency=low
 
 univention-x-core (0.7-0) unstable; urgency=low
 
-  * remove dependencie on ssh
+  * remove dependency on ssh
 
  -- Ingo Steuwer <steuwer@univention.de>  Mon, 21 Nov 2005 13:09:13 +0100
 

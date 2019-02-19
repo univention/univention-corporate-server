@@ -187,7 +187,7 @@ univention-python-heimdal (1.0.1-1) unstable; urgency=low
 
 univention-python-heimdal (1.0.1-0) unstable; urgency=low
 
-  * added a missing depenency on hdb to setup.py otherwise it doesn't work
+  * added a missing dependency on hdb to setup.py otherwise it doesn't work
     with heimdal 1.0, thanks to Love
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu,  2 Aug 2007 07:18:20 +0200

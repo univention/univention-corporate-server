@@ -13768,7 +13768,7 @@ ucs-test (1.3.211-1) unstable; urgency=low
 
 ucs-test (1.3.210-1) unstable; urgency=low
 
-  * add dependeny of ucs-test to ucs-test-ad-connector (Bug #15429)
+  * add dependency of ucs-test to ucs-test-ad-connector (Bug #15429)
 
  -- Daniel Hofmann <hofmann@univention.de>  Thu, 08 Jul 2010 14:48:00 +0200
 
