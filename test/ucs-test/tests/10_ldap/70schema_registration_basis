@@ -74,7 +74,7 @@ try:
             print 'The schema entry was found: %s' % attribute_entry
             break
     else:
-        fail('The attribue was not found: univentionFreeAttribute%(attribute_id)s' % {'attribute_id': attribute_id})
+        fail('The attribute was not found: univentionFreeAttribute%(attribute_id)s' % {'attribute_id': attribute_id})
 
     if ucr.get('server/role') in ['domaincontroller_master', 'domaincontroller_backup']:
         schema_file = os.path.join('/var/lib/univention-ldap/local-schema/', schema_name)
