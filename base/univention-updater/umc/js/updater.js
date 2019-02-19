@@ -235,7 +235,7 @@ define([
 		_confirm_distupgrade: function() {
 			try {
 				this.standbyDuring(this.umcpCommand('updater/updates/check')).then(lang.hitch(this, function(data) {
-					// FIXME Lots of manual styling to achieve resonable look
+					// FIXME Lots of manual styling to achieve reasonable look
 					var txt = "<table>\n";
 					var upd = data.result.update;
 					var ins = data.result.install;
