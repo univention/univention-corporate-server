@@ -2610,7 +2610,7 @@ univention-s4-connector (7.0.17-18) unstable; urgency=low
 
   * univention-ad-takeover (Bug #28390):
     - improved counting of AD accounts:
-      abstract from locale sepcific names for well known user objects
+      abstract from locale specific names for well known user objects
     - whitespace cleanup
 
  -- Arvid Requate <requate@univention.de>  Thu, 25 Oct 2012 08:57:00 +0200
