@@ -7677,7 +7677,7 @@ univention-updater (1.36-11) unstable; urgency=low
 
 univention-updater (1.36-10) unstable; urgency=low
 
-  * try to preverse sources.list entries in univention-policy-set-repository-server
+  * try to perverse sources.list entries in univention-policy-set-repository-server
 
  -- Martin Kuehl <kuehl@univention.de>  Wed, 12 Apr 2006 16:33:53 +0200
 
