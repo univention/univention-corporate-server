@@ -142,7 +142,7 @@ class UMC_Daemon(DaemonRunner):
 					return
 				raise
 		else:
-			CORE.process('Reload failed: server ist not running')
+			CORE.process('Reload failed: server is not running')
 
 	DaemonRunner.action_funcs['reload'] = _reload
 
