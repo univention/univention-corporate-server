@@ -70,7 +70,7 @@ request handling.
 
 class Client(signals.Provider, Translation):
 
-	"""Implememts an UMCP client
+	"""Implements an UMCP client
 
 	:param str servername: hostname of the UMC server to connect to
 	:param int port: port number of the UMC server
