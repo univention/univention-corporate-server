@@ -565,7 +565,7 @@ univention-ldap-replication (1.0.2-1) unstable; urgency=low
 
 univention-ldap-replication (1.0.1-1) unstable; urgency=low
 
-  * move the faile.ldif after importing into
+  * move the failed.ldif after importing into
     /var/lib/univention-ldap-replication instead of /tmp/
   * support for -h and --help
   * added exit code
