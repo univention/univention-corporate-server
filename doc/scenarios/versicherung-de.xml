@@ -360,7 +360,7 @@
       verschiedenen Backup-Agenten, die sowohl komplette Systeme als auch Daten
       sichern können. Für die Sicherung von Datenbanken stehen etwa gesonderte
       Agenten zur Verfügung. Alle Daten werden von den Standort-Servern in die
-      Zentrale kopiert und dort auf
+      Zentrale kopiert und dort auf einem Streamer gesichert.
 	</para>
   </section>
 
