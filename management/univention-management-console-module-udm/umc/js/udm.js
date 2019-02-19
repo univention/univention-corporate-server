@@ -1101,7 +1101,7 @@ define([
 			});
 			domClass.toggle(this._searchForm.domNode, 'umcUDMSearchFormSimpleTextBox', (!this._isAdvancedSearch && this._searchForm._widgets.objectPropertyValue._widget instanceof TextBox));
 			// only allow _updateVisibility calls on ComboBoxes if search is advanced.
-			// prevents ComboBoxes from beeing shown when the values are loaded and then
+			// prevents ComboBoxes from being shown when the values are loaded and then
 			// immediately hidden again because the search form is in simple mode.
 			var comboBoxWidgets = ['container', 'objectProperty'];
 			if ('navigation' != this.moduleFlavor) {
