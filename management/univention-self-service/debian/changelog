@@ -283,7 +283,7 @@ univention-self-service (2.0.11-2) unstable; urgency=medium
 
 univention-self-service (2.0.11-1) unstable; urgency=medium
 
-  * Bug #42231: Bug #43899: fix shell comparision
+  * Bug #42231: Bug #43899: fix shell comparison
 
  -- Florian Best <best@univention.de>  Thu, 23 Mar 2017 13:34:11 +0100
 

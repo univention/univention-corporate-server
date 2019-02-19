@@ -2197,7 +2197,7 @@ univention-s4-connector (8.0.4-1) unstable; urgency=low
 
 univention-s4-connector (8.0.3-1) unstable; urgency=low
 
-  * Use again two searches for the change list but a faster comparsion.
+  * Use again two searches for the change list but a faster comparison.
     The order is important first the created objects are needed
     otherwise the child object is added before the parent object. An
     alternative would be to sort the one search result by the dn length
@@ -2214,7 +2214,7 @@ univention-s4-connector (8.0.2-2) unstable; urgency=low
 univention-s4-connector (8.0.2-1) unstable; urgency=low
 
   * Search for uSNCreated and uSNChanged in one search to prevent a slow
-    list comparsion (Bug #32213)
+    list comparison (Bug #32213)
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Aug 2013 07:41:23 +0200
 
