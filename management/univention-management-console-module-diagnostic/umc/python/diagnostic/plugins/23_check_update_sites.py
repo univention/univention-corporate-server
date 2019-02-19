@@ -40,7 +40,7 @@ from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check resolving repository servers')
-description = _('No problems were found while resolving update respositories.')
+description = _('No problems were found while resolving update repositories.')
 links = [{
 	'name': 'sdb',
 	'href': _('http://sdb.univention.de/1298'),

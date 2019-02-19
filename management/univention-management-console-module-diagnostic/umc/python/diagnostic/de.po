@@ -466,7 +466,7 @@ msgid "Check resolving repository servers"
 msgstr "Überprüfe DNS Auflösung der Repository Server"
 
 #: 23_check_update_sites.py:43
-msgid "No problems were found while resolving update respositories."
+msgid "No problems were found while resolving update repositories."
 msgstr "Es wurden keine Probleme beim Auflösen der Repository-Server gefunden."
 
 #: 23_check_update_sites.py:46
