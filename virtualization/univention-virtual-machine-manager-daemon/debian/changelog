@@ -2093,7 +2093,7 @@ univention-virtual-machine-manager-daemon (1.0.69-3) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (1.0.69-2) unstable; urgency=low
 
-  * use host capabilities to determine archiecture for new virtual instances
+  * use host capabilities to determine architecture for new virtual instances
   * add information when choosing a NAT interface
   * interrupt migration of serveral instances when they are not located on
     the same server
