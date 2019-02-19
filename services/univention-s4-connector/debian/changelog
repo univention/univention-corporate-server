@@ -716,7 +716,7 @@ univention-s4-connector (11.0.3-1) unstable; urgency=medium
 univention-s4-connector (11.0.2-7) unstable; urgency=medium
 
   * Bug #32086: Fix LDAP DN escaping. All DN (de-)constructions are now done via
-    `ldap.dn.{dn2str,str2dn}`, enabeling proper escaping.
+    `ldap.dn.{dn2str,str2dn}`, enabling proper escaping.
   * Bug #32086: Fix LDAP filter escaping. All LDAP filter strings are now
     constructed via a new method `format_escaped()`, if there were not already
     constructed using the old `filter_format()`.
