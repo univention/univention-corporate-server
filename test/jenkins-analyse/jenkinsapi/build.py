@@ -451,7 +451,7 @@ class Build(JenkinsBase):
     def stop(self):
         """
         Stops the build execution if it's running
-        :return boolean True if succeded False otherwise or the build
+        :return boolean True if succeeded False otherwise or the build
             is not running
         """
         if self.is_running():
