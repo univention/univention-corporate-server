@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
-#  this file defines the mapping beetween S4 and UCS
+#  this file defines the mapping between S4 and UCS
 #
 # Copyright 2004-2019 Univention GmbH
 #
