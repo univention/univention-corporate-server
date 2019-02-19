@@ -20,7 +20,7 @@ on_master_escaped () { # Execute command on ldap/master
 
 master_reachable_via_ssh () { # Checks if the Master could be reachable via port 22 (ssh)
 	# usage: master_reachable_via_ssh
-	# return valuse:
+	# return values:
 	#	1 = yes
 	#	0 = no
 	local key="${HOSTNAME}_${0}_${$}_${RANDOM}"
