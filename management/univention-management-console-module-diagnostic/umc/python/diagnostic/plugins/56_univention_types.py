@@ -13,7 +13,7 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 title = _('LDAP objects')
 description = '\n'.join([
 	_('Several services rely on the attribute "univentionObjectType" to search and identify objects in LDAP.'),
-	_('Objects that implicitely satisfy the standards of a Univention Object but lack this attribute should be migrated.'),
+	_('Objects that implicitly satisfy the standards of a Univention Object but lack this attribute should be migrated.'),
 ])
 
 _UPDATED = False
