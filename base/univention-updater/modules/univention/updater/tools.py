@@ -1395,7 +1395,7 @@ class UniventionUpdater:
         :param archs: List of architectures.
         :type archs: list[str]
         :param UCSHttpServer server: The UCS repository server to use.
-        :returns: A iterator throug all UCS releases between `start` and `end` returning `ver`.
+        :returns: A iterator through all UCS releases between `start` and `end` returning `ver`.
         :raises ProxyError: if the repository server is blocked by the proxy.
         """
         self.log.info('Searching %s:%r [%s..%s) in %s and %s', server, ver, start, end, parts, archs)
