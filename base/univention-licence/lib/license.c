@@ -550,7 +550,7 @@ int univention_license_compare_string(const char* a, const char* b)
 	@brief	sort the key, value pairs of a license
 
 	this is used to get the license in always the same order,
-	so the data for a signature task will be alway the same
+	so the data for a signature task will be always the same
 	there is no data move/copy inside, only pointer transfer,
 	so if you clean the unsorted license, the sorted will get invalid too.
 

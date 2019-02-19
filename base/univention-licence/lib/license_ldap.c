@@ -63,7 +63,7 @@ err:
 /******************************************************************************/
 /*!
 	@brief initialitze the ldap part of the lib, automatic called if need
-	@todo remove the debug functions, in the moment the ldap server is alway testing.
+	@todo remove the debug functions, in the moment the ldap server is always testing.
 	
 	@retval 1 if succeed
 	@retval 0 on error
@@ -258,7 +258,7 @@ lStrings* univention_license_ldap_get_strings(const char* objectDN, const char* 
 
 	The ldap attributes must begin with 'univentionLicense' to get converted to c.
 	The keys of the lObj will be sorted alphanumeric before return, so the
-	data of a lObj will be alway is the same order, this is nesseary for the 
+	data of a lObj will be always is the same order, this is nesseary for the 
 	signature stuff.
 	To be able to get a 2nd or 3rd Object the number of Objects to skip can be set.
 	If you want to get the first Object set num to 0.
