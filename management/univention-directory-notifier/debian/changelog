@@ -259,7 +259,7 @@ univention-directory-notifier (7.0.0-1) unstable; urgency=low
 
   * UCS-3.1 version bump.
   * Add UCR variable descriptions (Bug #28134)
-  * Remove setting unsued UCR variable:
+  * Remove setting unused UCR variable:
     - listener/supply/notifier?yes
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 12:54:46 +0200

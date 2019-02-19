@@ -3343,7 +3343,7 @@ univention-management-console-module-udm (2.0.3-1) unstable; urgency=low
 univention-management-console-module-udm (2.0.2-1) unstable; urgency=low
 
   * Add UCR variable descriptions (Bug #28134)
-  * Remove setting unsed UCR variable:
+  * Remove setting unused UCR variable:
     - directory/manager/web/update/available/groups
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 13:12:20 +0200
