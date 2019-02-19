@@ -88,14 +88,14 @@ echo "----ntml auth with a wrong password (should fail)"
 ntlm_auth --domain="$windows_domain" --username="$NAME" --password="${password}2"
 if [ "$?" = 0 ];then
 	dump_debug
-	fail_fast 1 "ntlm_auth was sucessful with an wrong password"
+	fail_fast 1 "ntlm_auth was successful with an wrong password"
 fi
 
 echo "----ntml auth with a wrong username (should fail)"
 ntlm_auth --domain="$windows_domain" --username="${NAME}2" --password="${password}"
 if [ "$?" = 0 ];then
 	dump_debug
-	fail_fast 1 "ntlm_auth was sucessful with an wrong username"
+	fail_fast 1 "ntlm_auth was successful with an wrong username"
 fi
 
 echo "----ntml auth with correct credentials"
