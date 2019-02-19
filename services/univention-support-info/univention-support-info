@@ -657,7 +657,7 @@ def rotatedLogs():
 
 def atJobs():
 	'''
-	Generate a list of at-Jobs (usefull for UCS@school)
+	Generate a list of at-Jobs (useful for UCS@school)
 	'''
 	try:
 		from univention.lib import atjobs as at
