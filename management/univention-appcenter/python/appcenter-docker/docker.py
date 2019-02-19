@@ -130,7 +130,10 @@ def access(image):
 	if '/' not in image:
 		return True
 	hub, image_name = image.split('/', 1)
-	image_name, image_tag = image_name.split(':', 1)
+	if ':' in image_name:
+		image_name, image_tag = image_name.split(':', 1)
+	else:
+		image_tag = 'latest'
 	url = 'https://%s/v2/%s/manifests/%s' % (hub, image_name, image_tag)
 	username = password = ucr_get('uuid/license')
 	auth = encodestring('%s:%s' % (username, password)).replace('\n', '')
