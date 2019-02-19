@@ -74,7 +74,7 @@ if __name__ == '__main__':
 		}
 		daemon.open()
 
-	# MUST be called after initializing the deamon
+	# MUST be called after initializing the daemon
 	if options.notifier.lower() == 'generic':
 		notifier.init(notifier.GENERIC)
 	elif options.notifier.lower() == 'qt':
