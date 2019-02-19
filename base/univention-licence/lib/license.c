@@ -456,7 +456,7 @@ int univention_license_check_searchpath(const char* objectDN)
 				{
 					if (strlen(searchPath->line[i]) < strlen(objectDN))
 					{
-						//compare the objectDN with the searchpath,  begining at the end of the strings
+						//compare the objectDN with the searchpath,  beginning at the end of the strings
 						int x = 0;
 						int sLen = strlen(searchPath->line[i]);
 						int oLen = strlen(objectDN);
