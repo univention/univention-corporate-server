@@ -907,7 +907,7 @@ univention-kde (2.0.1-10) unstable; urgency=low
 
 univention-kde (2.0.1-9) unstable; urgency=low
 
-  * dont install .svn dirs in new desktop profiles
+  * don't install .svn dirs in new desktop profiles
   * fix install script
 
  -- Janis Meybohm <meybohm@univention.de>  Wed, 27 Jun 2007 11:39:37 +0200

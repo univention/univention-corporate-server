@@ -1344,7 +1344,7 @@ univention-lib (2.0.22-1) unstable; urgency=low
 
 univention-lib (2.0.21-1) unstable; urgency=low
 
-  * Dont log yourself, instead give control to the calling module (Bug #29239)
+  * Don't log yourself, instead give control to the calling module (Bug #29239)
   * Add option to exclude apache when preventing restart (Bug #29810)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 03 Jan 2013 17:13:25 +0100
@@ -1357,7 +1357,7 @@ univention-lib (2.0.20-1) unstable; urgency=low
 
 univention-lib (2.0.19-1) unstable; urgency=low
 
-  * Dont allow unauthenticated packages by default (Bug #29797)
+  * Don't allow unauthenticated packages by default (Bug #29797)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 14 Dec 2012 15:40:08 +0100
 
@@ -1369,7 +1369,7 @@ univention-lib (2.0.18-2) unstable; urgency=low
 
 univention-lib (2.0.18-1) unstable; urgency=low
 
-  * Dont allow unauthenticated packages by default (Bug #29797)
+  * Don't allow unauthenticated packages by default (Bug #29797)
   * Add function to mark auto-installed package as user-installed (Bug #29805)
   * Fix setting apt- and dpkg-options (Bug #29805)
   * Fix installing unwanted packages while uninstalling others (Bug #29636)

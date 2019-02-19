@@ -3064,7 +3064,7 @@ univention-updater (8.0.19-1) unstable; urgency=low
 
 univention-updater (8.0.18-1) unstable; urgency=low
 
-  * Dont use sanitizers yet (Bug #27720)
+  * Don't use sanitizers yet (Bug #27720)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Oct 2012 11:52:49 +0200
 
@@ -7462,7 +7462,7 @@ univention-updater (1.36-46) unstable; urgency=low
 
 univention-updater (1.36-45) unstable; urgency=low
 
-  * dont print big warning messages per default, fixes Bug #6243
+  * don't print big warning messages per default, fixes Bug #6243
 
  -- Janis Meybohm <meybohm@univention.de>  Mon, 27 Nov 2006 17:17:47 +0100
 

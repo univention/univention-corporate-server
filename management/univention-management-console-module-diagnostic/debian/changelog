@@ -416,7 +416,7 @@ univention-management-console-module-diagnostic (3.0.1-13) unstable; urgency=med
 
 univention-management-console-module-diagnostic (3.0.1-12) unstable; urgency=medium
 
-  * Bug #35859: diagnostic disk_usage: dont report on /var/lib/docker/overlay
+  * Bug #35859: diagnostic disk_usage: don't report on /var/lib/docker/overlay
   * Bug #35859: diagnostic disk_usage: remove exchange hard drive tip
   * Bug #40227: diagnostic: include sysvol-sync-dir in file_permissions
 

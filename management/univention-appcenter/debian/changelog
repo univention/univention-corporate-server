@@ -5757,7 +5757,7 @@ univention-management-console-module-appcenter (2.0.94-1) unstable; urgency=low
 
   * Talk to appcenter over HTTPS (Bug #29446)
   * Fix searching in locally installed packages (Bug #29899)
-  * Dont disable apache restart when installing applications (Bug #29809)
+  * Don't disable apache restart when installing applications (Bug #29809)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 04 Jan 2013 14:56:50 +0100
 
@@ -5863,7 +5863,7 @@ univention-management-console-module-appcenter (2.0.78-2) unstable; urgency=low
 univention-management-console-module-appcenter (2.0.77-1) unstable; urgency=low
 
   * Reorder app details (Bug #29246)
-  * Dont show meaningless alert dialog in Packages hiding a proper error
+  * Don't show meaningless alert dialog in Packages hiding a proper error
     message
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 21 Nov 2012 11:29:58 +0100
@@ -5909,7 +5909,7 @@ univention-management-console-module-appcenter (2.0.71-1) unstable; urgency=low
 
 univention-management-console-module-appcenter (2.0.70-1) unstable; urgency=low
 
-  * Dont standby while showing app center intro (Bug #29081)
+  * Don't standby while showing app center intro (Bug #29081)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 13 Nov 2012 11:13:14 +0100
 

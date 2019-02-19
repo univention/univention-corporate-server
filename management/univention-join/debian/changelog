@@ -550,7 +550,7 @@ univention-join (7.0.0-1) unstable; urgency=low
 
 univention-join (6.0.18-11) unstable; urgency=low
 
-  * dont ask for join account in member mode (Bug #35446) 
+  * don't ask for join account in member mode (Bug #35446) 
 
  -- Felix Botner <botner@univention.de>  Mon, 04 Aug 2014 11:52:49 +0200
 
@@ -957,7 +957,7 @@ univention-join (5.0.16-1) unstable; urgency=low
 
 univention-join (5.0.15-1) unstable; urgency=low
 
-  * Dont use sanitizers yet (Bug #27720)
+  * Don't use sanitizers yet (Bug #27720)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Oct 2012 12:10:00 +0200
 

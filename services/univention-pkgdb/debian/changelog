@@ -405,7 +405,7 @@ univention-pkgdb (6.0.13-1) unstable; urgency=low
 
 univention-pkgdb (6.0.12-1) unstable; urgency=low
 
-  * Dont use sanitizers yet (Bug #27720)
+  * Don't use sanitizers yet (Bug #27720)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Oct 2012 11:49:12 +0200
 

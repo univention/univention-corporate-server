@@ -4549,7 +4549,7 @@ univention-system-setup (6.0.26-1) unstable; urgency=low
 univention-system-setup (6.0.25-1) unstable; urgency=low
 
   * Dojo 1.8 (Bug #26857)
-  * Joinscripts: Dont autoremove when no component changed (Bug #28010)
+  * Joinscripts: Don't autoremove when no component changed (Bug #28010)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 12 Sep 2012 19:56:42 +0200
 
@@ -4755,7 +4755,7 @@ univention-system-setup (5.0.197-1) unstable; urgency=low
 
 univention-system-setup (5.0.196-1) unstable; urgency=low
 
-  * Dont handle errors when just keeping session alive (Bug #27919)
+  * Don't handle errors when just keeping session alive (Bug #27919)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 16 Jul 2012 15:38:45 +0200
 

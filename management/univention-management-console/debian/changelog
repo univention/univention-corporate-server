@@ -3132,7 +3132,7 @@ univention-management-console (5.0.21-1) unstable; urgency=low
 
 univention-management-console (5.0.20-1) unstable; urgency=low
 
-  * sanitizers: validate the whole input, dont stop at first error
+  * sanitizers: validate the whole input, don't stop at first error
   (Bug #27720)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 24 Aug 2012 13:49:20 +0200

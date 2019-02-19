@@ -2990,7 +2990,7 @@ ucs-test (7.0.22-21) unstable; urgency=medium
 ucs-test (7.0.22-20) unstable; urgency=medium
 
   * Bug #40813: copy 022_concurrent_deletion_in_ucs from s4c-test to adc-test
-  * Bug #40813: u-test: dont skip admember in 20_computer_password
+  * Bug #40813: u-test: don't skip admember in 20_computer_password
 
  -- Lukas Oyen <oyen@univention.de>  Thu, 06 Jul 2017 11:24:00 +0200
 
@@ -5909,7 +5909,7 @@ ucs-test (6.0.10-15) unstable; urgency=medium
 
 ucs-test (6.0.10-14.1) unstable; urgency=low
 
-  * dont wait for DRS replication for mail/folders (Bug #38600)
+  * don't wait for DRS replication for mail/folders (Bug #38600)
 
  -- Daniel Troeder <troeder@univention.de>  Fri, 23 Oct 2015 17:17:50 +0200
 
