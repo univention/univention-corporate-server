@@ -1211,7 +1211,7 @@ univention-samba (6.0.19-1) unstable; urgency=low
 univention-samba (6.0.18-1) unstable; urgency=low
 
   * Cancel join script if the net (rpc|ads) join fails (Bug #23999)
-  * Set wins server to ldap/master if the join was sucessful against him
+  * Set wins server to ldap/master if the join was successful against him
   * Restart samba and winbind directly after the join
 
  -- Stefan Gohmann <gohmann@univention.de>  Sat, 19 Nov 2011 22:47:03 +0100

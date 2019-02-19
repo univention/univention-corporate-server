@@ -1224,7 +1224,7 @@ univention-directory-listener (5.0.6-1) unstable; urgency=low
 
 univention-directory-listener (5.0.5-1) unstable; urgency=low
 
-  * start the listener after the join script was sucessful. The samba
+  * start the listener after the join script was successful. The samba
     join script needs a running replication. Bug #19128
 
  -- Stefan Gohmann <gohmann@univention.de>  Sat, 31 Jul 2010 15:05:16 +0200

@@ -1099,7 +1099,7 @@ univention-pam (1.1.1-1) unstable; urgency=low
 
 univention-pam (1.1.0-15) unstable; urgency=low
 
-  * fixed syntax for pam passwd cache for sucessful authentifications
+  * fixed syntax for pam passwd cache for successful authentifications
 
  -- Bastian Neumann <neumann@univention.de>  Tue, 21 Aug 2007 10:57:36 +0200
 

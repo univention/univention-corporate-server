@@ -5601,7 +5601,7 @@ univention-management-console (1.0.3-3) unstable; urgency=low
 
 univention-management-console (1.0.3-2) unstable; urgency=low
 
-  * fixed traceback after successfull package installation (Bug #12924)
+  * fixed traceback after successful package installation (Bug #12924)
 
  -- Sönke Schwardt <schwardt@univention.de>  Sun, 25 Jan 2009 16:47:31 +0100
 

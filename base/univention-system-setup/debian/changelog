@@ -3524,7 +3524,7 @@ univention-system-setup (7.0.69-10) unstable; urgency=low
 
 univention-system-setup (7.0.69-9) unstable; urgency=low
 
-  * do not announce successfull request processing before the request was
+  * do not announce successful request processing before the request was
     actually processed (Bug #34105)
 
  -- Lukas Walter <walter@univention.de>  Mon, 16 Jun 2014 16:02:28 +0200
