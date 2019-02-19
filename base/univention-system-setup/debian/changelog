@@ -5448,7 +5448,7 @@ univention-system-setup (5.0.102-1) unstable; urgency=low
 
   * startxwithfirefox: remove check that tries to ensure that the session
     lasts at least 15 seconds. This fails when the time is adjusted during
-    system setup. As a replacment the existance of the system setup
+    system setup. As a replacment the existence of the system setup
     profile is tested. Bug #24929
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 04 Jan 2012 14:37:19 +0100
