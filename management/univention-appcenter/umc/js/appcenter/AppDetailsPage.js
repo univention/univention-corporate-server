@@ -1011,9 +1011,9 @@ define([
 
 				this._progressBar.reset(_('%s: Performing software tests on involved systems', this.app.name));
 				this._progressBar._progressBar.set('value', Infinity); // TODO: Remove when this is done automatically by .reset()
-				var invokation;
+				var invocation;
 				if (this.app.installsAsDocker()) {
-					invokation = tools.umcpProgressCommand(this._progressBar, command, commandArguments).then(
+					invocation = tools.umcpProgressCommand(this._progressBar, command, commandArguments).then(
 							undefined,
 							undefined,
 							lang.hitch(this, function(result) {
@@ -1026,9 +1026,9 @@ define([
 							})
 					);
 				} else {
-					invokation = tools.umcpCommand(command, commandArguments);
+					invocation = tools.umcpCommand(command, commandArguments);
 				}
-				invokation = invokation.then(lang.hitch(this, function(data) {
+				invocation = invocation.then(lang.hitch(this, function(data) {
 					if (!('result' in data)) {
 						data = {'result': data};
 					}
@@ -1086,7 +1086,7 @@ define([
 						);
 					}
 				}));
-				this.standbyDuring(all([warningDeferred, invokation, deferred, nonInteractive]), this._progressBar);
+				this.standbyDuring(all([warningDeferred, invocation, deferred, nonInteractive]), this._progressBar);
 				return deferred;
 			}));
 		},
