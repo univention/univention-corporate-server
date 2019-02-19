@@ -108,7 +108,7 @@ pam-univentionmailcyrus (0.3) unstable; urgency=low
 
 pam-univentionmailcyrus (0.2) unstable; urgency=low
 
-  * close the connection to the LDAP server when an error has occured
+  * close the connection to the LDAP server when an error has occurred
     after a connection has been established successfully
 
  -- Andreas BÃŒsching <buesching@univention.de>  Wed, 26 Oct 2005 13:21:10 +0200

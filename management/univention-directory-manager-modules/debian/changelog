@@ -4097,7 +4097,7 @@ univention-directory-manager-modules (9.0.24-1) unstable; urgency=low
 
 univention-directory-manager-modules (9.0.23-1) unstable; urgency=low
 
-  * fixed traceback which occured when renaming computer objects with set
+  * fixed traceback which occurred when renaming computer objects with set
     reverse zones (Bug #31435)
   * fixed enforcement required=1 for multivalue attributes (Bug #31302)
 
@@ -8539,7 +8539,7 @@ univention-directory-manager-modules (5.0.6-1) unstable; urgency=low
 
 univention-directory-manager-modules (5.0.5-1) unstable; urgency=low
 
-  * if an error has occured in _ldap_post_create, the created object is
+  * if an error has occurred in _ldap_post_create, the created object is
     removed to avoid further errors, when the create process is invoked
     again (Bug #14236)
 

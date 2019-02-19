@@ -14663,7 +14663,7 @@ ucs-test (1.3.83-1) unstable; urgency=low
 ucs-test (1.3.82-1) unstable; urgency=low
 
   * add returnvalue to ad_wait_for_synchronisation indicating whether
-    synchronisation has occured at all (Bug #15429)
+    synchronisation has occurred at all (Bug #15429)
 
  -- Daniel Hofmann <hofmann@univention.de>  Thu, 15 Apr 2010 15:58:38 +0200
 
