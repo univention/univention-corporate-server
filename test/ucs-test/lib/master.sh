@@ -54,7 +54,7 @@ master_ldap_secret () { # returns the LDAP Password for cn=admin,$ldap_base from
 
 master_restart_service () { # restarts a service
 	# usage: master_restart_service "slapd"
-	# retun value:
+	# return value:
 	#	0 = ok
 	#	>0 = error
 	local service="${1?:missing service name}"

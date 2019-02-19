@@ -210,7 +210,7 @@ class domain:
 
 	def getKerberosRealm(self):  # type: () -> str
 		"""
-		Retrun the name of the Kerberos realms.
+		Return the name of the Kerberos realms.
 
 		:returns: The name of the Kerberos realm.
 		:rtype: str

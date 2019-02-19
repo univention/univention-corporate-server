@@ -31,7 +31,7 @@ bug43914 () {
 	sysctl kernel.perf_event_paranoid=-1 || :
 	mountpoint -q /sys/kernel/debug || mount -o remount,mode=755 /sys/kernel/debug || :
 
-	[ -n "${UT_PERF:-}" ] && retun 0
+	[ -n "${UT_PERF:-}" ] && return 0
 	exec env UT_PERF=$$ perf record -o "$DST/ucs-test-$name.perf" -g -F 10 -q -- "$SHELL" "$0" "$@" || :
 }
 #bug43914 "${0##*/}"
