@@ -2470,7 +2470,7 @@ univention-samba (0.16) unstable; urgency=low
 
   * improved output and debugging of pdc-takeover
   * added baseconfig-variables samba/ldap/replication/sleep
-  * added support for removing exsisting samba-related attributes in LDAP
+  * added support for removing existing samba-related attributes in LDAP
   * added new baseconfig-variables for logon- and homeserver/-path
 
  -- Ingo Steuwer <steuwer@univention.de>  Tue, 16 Nov 2004 10:33:51 +0100
