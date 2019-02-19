@@ -323,11 +323,11 @@ def verifyNtlmV2(ntResp, challenge, user, domain, ntHashV1):
 
 	# const
 	version = u'\x01' + u'\x01' + u'\x00' * 2
-	reservered = u'\x00' * 4
+	reserved = u'\x00' * 4
 	unknown = u'\x00' * 4
 
 	# create blob
-	blob = version.encode("hex") + reservered.encode("hex") + timestamp.encode("hex")
+	blob = version.encode("hex") + reserved.encode("hex") + timestamp.encode("hex")
 	blob = blob + clientChallenge.encode("hex") + unknown.encode("hex") + targetInformation.encode("hex")
 	challengeBlob = challenge.encode("hex") + blob
 
