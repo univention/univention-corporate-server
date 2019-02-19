@@ -909,7 +909,7 @@ define([
 
 				// create a page containing additional methods validate(),
 				// _getValueAttr(), on() and onSubmit() in order to fake Form
-				// behaviour for umc/dialog::confirmForm()
+				// behavior for umc/dialog::confirmForm()
 				var page = new Page(pageConf);
 				page = lang.delegate(page, {
 					validate: lang.hitch(form, 'validate'),

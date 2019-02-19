@@ -323,7 +323,7 @@ print '\t\tfilter = "(uid=%%{%s:-%%{User-Name}})"' % filter
 
 		#  The default profile.  This may be a DN or an attribute
 		#  reference.
-		#  To get old v2.2.x style behaviour, or to use the
+		#  To get old v2.2.x style behavior, or to use the
 		#  &User-Profile attribute to specify the default profile,
 		#  set this to &control:User-Profile.
 #		default = 'cn=radprofile,dc=example,dc=org'

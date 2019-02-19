@@ -75,7 +75,7 @@ def test_run(ucr, test_ucr_value):
 		p1.wait()
 
 	ucr.load()
-	expected_value = ucr.is_true(ucr_var, True)  # This is the behaviour of cups-printers.py
+	expected_value = ucr.is_true(ucr_var, True)  # This is the behavior of cups-printers.py
 
 	with udm_test.UCSTestUDM() as udm:
 		printer_name = uts.random_name()
@@ -102,7 +102,7 @@ def test_run(ucr, test_ucr_value):
 		else:
 			print "Ok, samba option \"force printername\" set to %s" % (expected_value,)
 
-		# Check behaviour during UDM modification
+		# Check behavior during UDM modification
 		rename_share_and_check(udm, printer, expected_value)
 
 		# And check again after inverting the UCR setting:

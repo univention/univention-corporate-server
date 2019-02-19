@@ -214,7 +214,7 @@ define([
 		getComponentDefaults: function() {
 
 				return ({
-					// Behaviour: enable the component in first place
+					// Behavior: enable the component in first place
 					enabled: true,
 					// Empty fields
 					name: '',

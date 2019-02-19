@@ -308,7 +308,7 @@ class InstallWithoutPermissionError(Abort):
 class AppCenterError(Exception):
 	'''A "real" exception that developers cannot handle very well.
 	The difference between AppCenterError and Abort is that Abort is a
-	somewhat defined behaviour, i.e. App installation has to fail if the
+	somewhat defined behavior, i.e. App installation has to fail if the
 	setup script fails. AppCenterError happens where it was not supposed
 	to.
 	The difference between AppCenterError and Exception is that

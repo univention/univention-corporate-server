@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Dovecot, test behaviour if mail address is specified in mixed case
+## desc: Dovecot, test behavior if mail address is specified in mixed case
 ## tags: [apptest]
 ## exposure: dangerous
 ## roles: [domaincontroller_master,domaincontroller_backup]

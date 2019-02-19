@@ -43,7 +43,7 @@ define([
 	return declare("umc.modules.udm.NotificationText", [Container], {
 		// summary:
 		//		This class extends the normal Container widget in order to encapsulate
-		//		some UDM specific notification behaviour.
+		//		some UDM specific notification behavior.
 
 		_text: null,
 

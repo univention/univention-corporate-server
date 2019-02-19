@@ -781,7 +781,7 @@ define([
 									options: options
 								});
 
-								// go against the behaviour of ConfirmDialog to focus the confirm button
+								// go against the behavior of ConfirmDialog to focus the confirm button
 								// and focus the first focusable widget in the dialog instead
 								// @FIXME cleanup (flag in ConfirmDialog or use normal Dialog instead of ConfirmDialog)
 								on(formDialog, 'focus', function() {

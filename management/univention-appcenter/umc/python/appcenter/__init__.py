@@ -482,7 +482,7 @@ class Instance(umcm.Base, ProgressMixin):
 	def invoke(self, request):
 		# ATTENTION!!!!!!!
 		# this function has to stay compatible with the very first App Center installations (Dec 2012)
-		# if you add new arguments that change the behaviour
+		# if you add new arguments that change the behavior
 		# you should add a new method (see invoke_dry_run) or add a function name (e.g. install-schema)
 		# this is necessary because newer app center may talk remotely with older one
 		#   that does not understand new arguments and behaves the old way (in case of

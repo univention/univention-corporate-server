@@ -151,7 +151,7 @@ class Command(JSON_Object):
 class Flavor(JSON_Object):
 
 	'''Defines a flavor of a module. This provides another name and icon
-	in the overview and may influence the behaviour of the module.'''
+	in the overview and may influence the behavior of the module.'''
 
 	def __init__(self, id='', icon='', name='', description='', overwrites=None, deactivated=False, priority=-1, translationId=None, keywords=None, categories=None, required_commands=None, version=None, hidden=False):
 		self.id = id
