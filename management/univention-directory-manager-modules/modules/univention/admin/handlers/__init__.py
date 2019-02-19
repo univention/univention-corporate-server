@@ -2548,7 +2548,7 @@ class simpleComputer(simpleLdap):
 				zone.open()
 				zone.modify()
 			else:
-				# thow exception, cNAMERecord is single value
+				# throw exception, cNAMERecord is single value
 				raise univention.admin.uexceptions.dnsAliasAlreadyUsed, _('DNS alias is already in use.')
 
 	def __remove_dns_alias_object(self, name, dnsForwardZone, dnsAliasZoneContainer, alias=None):
@@ -2575,7 +2575,7 @@ class simpleComputer(simpleLdap):
 							zone.open()
 							zone.modify()
 					else:
-						# could thow some exception
+						# could throw some exception
 						pass
 			else:
 				if dnsForwardZone:
