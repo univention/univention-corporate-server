@@ -2439,7 +2439,7 @@ ucs-test (7.0.23-76) unstable; urgency=low
 
 ucs-test (7.0.23-75) unstable; urgency=low
 
-  * Bug #44786: impove test coverage
+  * Bug #44786: improve test coverage
 
  -- Daniel Troeder <troeder@univention.de>  Fri, 27 Oct 2017 10:22:24 +0200
 
