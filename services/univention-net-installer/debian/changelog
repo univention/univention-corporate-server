@@ -251,7 +251,7 @@ univention-net-installer (5.0.1-4) unstable; urgency=low
 univention-net-installer (5.0.1-3) unstable; urgency=low
 
   * Create var/lib/univention-client-boot/pxelinux.cfg to make univention-net-installer
-    independant from univention-client-boot-pxe (Bug #23833)
+    independent from univention-client-boot-pxe (Bug #23833)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 06 Oct 2011 14:42:11 +0200
 
