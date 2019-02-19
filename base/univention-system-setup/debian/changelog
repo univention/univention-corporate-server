@@ -6468,7 +6468,7 @@ univention-system-setup (3.0.15-2) unstable; urgency=low
 univention-system-setup (3.0.15-1) unstable; urgency=low
 
   * if the keyboard module should be invoked bot
-    univention-system-setup-boot it will be started separatly before all
+    univention-system-setup-boot it will be started separately before all
     other modules (Bug #15666)
 
  -- Andreas Büsching <buesching@univention.de>  Thu, 17 Sep 2009 10:41:33 +0200
