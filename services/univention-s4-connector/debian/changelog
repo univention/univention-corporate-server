@@ -4353,7 +4353,7 @@ univention-ad-connector (5.1.4-1) unstable; urgency=low
 univention-ad-connector (5.1.3-1) unstable; urgency=low
 
   * convert krb.ctr.salt.string for python-univention-heimdal (Bug #20132)
-  * sync NT hash even if dBCSPwd cannot be retrived
+  * sync NT hash even if dBCSPwd cannot be retrieved
   * extract Kerberos-Newer-Keys from supplementalCredentials (untested)
 
  -- Arvid Requate <requate@univention.de>  Fri, 07 Jan 2011 16:46:32 +0100
