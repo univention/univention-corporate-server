@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: check if client with PEAP is working
-## tags: [radius]
+## tags: [apptest, radius]
 ## packages:
 ##   - univention-radius
 ## join: true

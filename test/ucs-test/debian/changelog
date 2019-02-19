@@ -1,3 +1,9 @@
+ucs-test (9.0.0-37) unstable; urgency=medium
+
+  * Bug #46018: Add apptest tag to radius section for ucs@school
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 19 Feb 2019 16:09:51 +0100
+
 ucs-test (9.0.0-36) unstable; urgency=medium
 
   * Bug #25935: test eap with an authenticator created through udm

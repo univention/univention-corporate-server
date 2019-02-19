@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: check if RADIUS authenticator shared secret is only readable by domain admins and machine accounts
-## tags: [radius]
+## tags: [apptest, radius]
 ## packages:
 ##   - univention-radius
 ## join: true

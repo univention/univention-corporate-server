@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: check if enabling radius per group works
-## tags: [radius]
+## tags: [apptest, radius]
 ## packages:
 ##   - univention-radius
 ## join: true
