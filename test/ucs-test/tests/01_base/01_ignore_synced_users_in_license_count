@@ -48,7 +48,7 @@ if __name__ == '__main__':
 			udm.stop_cli_server()
 			license_user_count_current = get_current_v2license_user_count()
 			if license_user_count_current != license_user_count_admember:
-				utils.fail('After flagging the test user as synced in ad/member mode, the user ist still counted in the license (admember: %s, current: %s)' % (license_user_count_admember, license_user_count_current))
+				utils.fail('After flagging the test user as synced in ad/member mode, the user is still counted in the license (admember: %s, current: %s)' % (license_user_count_admember, license_user_count_current))
 
 			univention.config_registry.handler_unset(['ad/member'])
 			udm.stop_cli_server()
