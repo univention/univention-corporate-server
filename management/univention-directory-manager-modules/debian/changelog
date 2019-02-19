@@ -4436,7 +4436,7 @@ univention-directory-manager-modules (8.0.150-1) unstable; urgency=low
 
 univention-directory-manager-modules (8.0.149-1) unstable; urgency=low
 
-  * do not use the term "UDM Web" in the extented attribute module
+  * do not use the term "UDM Web" in the extended attribute module
     (Bug #27948)
   * exclude certain attributes from the advanced search (Bug #28803)
 
