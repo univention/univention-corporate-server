@@ -966,7 +966,7 @@ define([
 
 			// set 'overview' to true for backwards compatibility
 			tools.status('overview', true);
-			// username will be overriden by final authenticated username
+			// username will be overridden by final authenticated username
 			tools.status('username', props.username || tools.status('username'));
 			// password has been given in the query string... in this case we may cache it, as well
 			tools.status('password', props.password);

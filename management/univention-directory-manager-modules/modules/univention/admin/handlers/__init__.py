@@ -1197,7 +1197,7 @@ class simpleLdap(object):
 
 			.. seealso:: :mod:`univention.uldap` for further information about the format of the modlist.
 
-			This method can be overriden in a subclass to add special behavior, e.g. for properties which have no mapping defined.
+			This method can be overridden in a subclass to add special behavior, e.g. for properties which have no mapping defined.
 
 			.. caution:: The final modlist used for creation of objects is mixed with the :func:`univention.admin.handlers.simpleLdap._ldap_addlist`.
 					Make sure this method don't add attributes which are already set.
