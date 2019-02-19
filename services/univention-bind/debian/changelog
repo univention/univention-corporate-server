@@ -1242,7 +1242,7 @@ univention-bind (1.16) unstable; urgency=low
 
 univention-bind (1.15) unstable; urgency=low
 
-  * allow setting of special dns-subzone useing baseconfig variable dns/ldap/base
+  * allow setting of special dns-subzone using baseconfig variable dns/ldap/base
 
  -- Ingo Steuwer <steuwer@univention.de>  Wed, 26 Oct 2005 16:19:05 +0200
 

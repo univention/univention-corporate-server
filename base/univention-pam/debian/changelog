@@ -43,7 +43,7 @@ univention-pam (11.0.0-1) unstable; urgency=medium
 
 univention-pam (10.0.0-4) unstable; urgency=low
 
-  * Bug #43287: Switch to useing user_envfile=
+  * Bug #43287: Switch to using user_envfile=
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 04 Jan 2017 15:46:29 +0100
 
