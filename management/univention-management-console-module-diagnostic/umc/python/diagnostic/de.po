@@ -1014,7 +1014,7 @@ msgstr ""
 
 #: 56_univention_types.py:16
 msgid ""
-"Objects that implicitely satisfy the standards of a Univention Object but "
+"Objects that implicitly satisfy the standards of a Univention Object but "
 "lack this attribute should be migrated."
 msgstr ""
 "Objekte, die die Anforderungen eines Univention-Objekts implizit erfüllen, "
