@@ -364,7 +364,7 @@ define([
 			// add buttons if specified and if they have not been added in the layout already
 			if (buttons && 0 === iLevel) {
 				// add all buttons that have not been rendered so far to a separate container
-				// and respect their correct order (i.e., using the interal array field $order$)
+				// and respect their correct order (i.e., using the internal array field $order$)
 				var buttonContainer = new ContainerWidget({
 					'class': 'umcLayoutRow umcButtonRow'
 				});
