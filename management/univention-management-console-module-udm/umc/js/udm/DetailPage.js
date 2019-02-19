@@ -190,7 +190,7 @@ define([
 
 		isSyncedObject: null, // object which is modified (or one of multiedited) has univentionObjectFlag == synced
 
-		standbyOpacity: 0,  // the standby animation should be transparent to improove visiblity when loading the object
+		standbyOpacity: 0,  // the standby animation should be transparent to improove visibility when loading the object
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
