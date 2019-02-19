@@ -7690,7 +7690,7 @@ univention-updater (1.36-2) unstable; urgency=low
 univention-updater (1.36-1) unstable; urgency=low
 
   * reboot after update at startup if requested
-  * skip reboot if nothing was udpated
+  * skip reboot if nothing was updated
 
  -- Martin Kuehl <kuehl@univention.de>  Mon,  6 Mar 2006 16:16:50 +0100
 
