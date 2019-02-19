@@ -480,7 +480,7 @@ univention-lib (4.0.5-18) unstable; urgency=medium
 
 univention-lib (4.0.5-17) unstable; urgency=medium
 
-  * Bug #33627: set finish state (=remove pacakge manager lock) when exceptions
+  * Bug #33627: set finish state (=remove package manager lock) when exceptions
   	occur during operations
 
  -- Florian Best <best@univention.de>  Fri, 22 May 2015 16:07:32 +0200
