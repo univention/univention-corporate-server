@@ -6532,7 +6532,7 @@ univention-system-setup (3.0.7-1) unstable; urgency=low
 
   * add package univention-system-setup-appliance: provides the
     possibility to run scripts at first boot
-  * addd scripts to uss-appliance to regenerate several secrets and the
+  * add scripts to uss-appliance to regenerate several secrets and the
     samba SID (Bug #15445)
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 31 Aug 2009 13:35:00 +0200
