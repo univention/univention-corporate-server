@@ -4595,7 +4595,7 @@ univention-directory-manager-modules (8.0.102-1) unstable; urgency=low
 
 univention-directory-manager-modules (8.0.101-1) unstable; urgency=low
 
-  * Fix assiging dhcp objects to computers when the mac address has an invalid
+  * Fix assigning dhcp objects to computers when the mac address has an invalid
   	format; Bug #30140
 
  -- Florian Best <best@univention.de>  Tue, 12 Feb 2013 09:57:32 +0100
