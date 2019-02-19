@@ -152,7 +152,7 @@ univention-maintenance (3.0.2-3) unstable; urgency=low
 
 univention-maintenance (3.0.2-2) unstable; urgency=low
 
-  * seperate sections for memory and swap (Bug: #15191)
+  * separate sections for memory and swap (Bug: #15191)
 
  -- Felix Botner <botner@univention.de>  Tue, 29 Sep 2009 14:29:45 +0200
 

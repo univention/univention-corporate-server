@@ -91,7 +91,7 @@ univention-virtual-machine-manager-schema (5.0.1-8) unstable; urgency=low
 
 univention-virtual-machine-manager-schema (5.0.1-7) unstable; urgency=low
 
-  * Bug #36253: Move EC2 connection support to seperate package
+  * Bug #36253: Move EC2 connection support to separate package
     univention-virtual-machine-manager-cloud-ec2 
 
  -- Erik Damrose <damrose@univention.de>  Fri, 24 Oct 2014 16:31:46 +0200

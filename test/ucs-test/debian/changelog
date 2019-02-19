@@ -11908,7 +11908,7 @@ ucs-test (4.0.0-1) unstable; urgency=low
     postrun (Bug #31687)
   * Added udm-test which detects if --binddn and --bindpwd should be
     used (Bug #31678)
-  * Use check_join_status script instead of a seperate implementation
+  * Use check_join_status script instead of a separate implementation
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Jun 2013 15:08:52 +0200
 
@@ -16678,7 +16678,7 @@ ucs-test (1.2.5-14) unstable; urgency=low
 
 ucs-test (1.2.5-13) unstable; urgency=low
 
-  * Split login scripts into seperate scripts for SSH, UDM and UMC test.
+  * Split login scripts into separate scripts for SSH, UDM and UMC test.
     Bug #12944
 
  -- Andre Fenske <fenske@univention.de>  Mon, 17 Aug 2009 16:04:16 +0200
