@@ -105,7 +105,7 @@ char* univention_license_ldap_get_basedn(void)
 /*!
 	@brief	open a connection to the ldap server, with the connection data recived from UCR
 	@retval	1	if the connection was already open or was opened successfull
-	@retval	0	if an error has occured
+	@retval	0	if an error has occurred
 */
 int univention_license_ldap_open_connection(void)
 {
@@ -134,7 +134,7 @@ void univention_license_ldap_close_connection(void)
 	@param licensetyp	the requested license type (the ldap attribute univentionLicenseModule have this value)
 	@param num	the number of found objects to skip at first, so you can get the 2nd or 3rd one.
 	
-	@return Pointer to a lObj if found, or NULL if an error has occured.
+	@return Pointer to a lObj if found, or NULL if an error has occurred.
 */
 lObj* univention_license_ldap_search_licenseObject(const char* searchBaseDN, const char* licensetyp, int num)
 {
@@ -161,7 +161,7 @@ lObj* univention_license_ldap_search_licenseObject(const char* searchBaseDN, con
 	@brief try to get the licenseObject from the ldap object referenced by licenseDN
 	@param licenseDN the ldap Object you want to get
 	
-	@return Pointer to a lObj if found, or NULL if an error has occured.
+	@return Pointer to a lObj if found, or NULL if an error has occurred.
 */
 lObj* univention_license_ldap_get_licenseObject(const char* licenseDN)
 {
@@ -270,7 +270,7 @@ lStrings* univention_license_ldap_get_strings(const char* objectDN, const char* 
 	@param attrFilter	filter all attributes that not begin with this
 	@param num			the number of result objects to skip
 
-	@return Pointer to a lObj if found, or NULL if an error has occured.
+	@return Pointer to a lObj if found, or NULL if an error has occurred.
 */
 lObj* univention_license_ldap_get(const char* search_base, int scope, const char* filter, char** attr, const char* attrFilter, int num)
 {
