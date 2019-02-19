@@ -2266,7 +2266,7 @@ univention-samba (0.59) unstable; urgency=low
 
 univention-samba (0.58) unstable; urgency=low
 
-  * move some interal tools from /usr/sbin to /usr/share
+  * move some internal tools from /usr/sbin to /usr/share
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Jul 2006 09:26:36 +0200
 
