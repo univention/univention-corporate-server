@@ -181,7 +181,7 @@ msgid "Configuration finished"
 msgstr "Konfiguration abgeschlossen"
 
 #: umc/js/setup/InterfaceWizard.js:253
-msgid "Configuration of IPv4 and IPv6 adresses"
+msgid "Configuration of IPv4 and IPv6 addresses"
 msgstr "Konfiguration der IPv4 und IPv6 Adressen"
 
 #: umc/js/setup/CertificatePage.js:79
