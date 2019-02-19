@@ -785,8 +785,8 @@ univention-self-service (1.0.2-23) unstable; urgency=low
 
 univention-self-service (1.0.2-22) unstable; urgency=low
 
-  * Add unjoin scipt copy to prerm scripts (Bug #39980)
-  * fix unjoin scipt, fix unjoin scipt numbering
+  * Add unjoin script copy to prerm scripts (Bug #39980)
+  * fix unjoin script, fix unjoin script numbering
 
  -- Daniel Troeder <troeder@univention.de>  Tue, 17 Nov 2015 15:16:18 +0100
 
@@ -874,7 +874,7 @@ univention-self-service (1.0.2-9) unstable; urgency=low
 
 univention-self-service (1.0.2-8) unstable; urgency=low
 
-  * add scipt to en/disable modules (Bug #37890)
+  * add script to en/disable modules (Bug #37890)
 
  -- Daniel Troeder <troeder@univention.de>  Fri, 13 Nov 2015 13:21:07 +0100
 

@@ -503,7 +503,7 @@ univention-mail-dovecot (0.0.0-19) unstable; urgency=low
 
 univention-mail-dovecot (0.0.0-18) unstable; urgency=low
 
-  * Add UCRV mail/dovecot/sieve/spam to switch Sieve scipt generation for new
+  * Add UCRV mail/dovecot/sieve/spam to switch Sieve script generation for new
   users on/off.
 
  -- Daniel Troeder <troeder@univention.de>  Fri, 12 Jun 2015 15:09:40 +0200
