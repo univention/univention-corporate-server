@@ -735,7 +735,7 @@ ucs-test (8.0.28-175) unstable; urgency=low
 
 ucs-test (8.0.28-174) unstable; urgency=medium
 
-  * Bug #47000: verson bump
+  * Bug #47000: version bump
 
  -- Felix Botner <botner@univention.de>  Mon, 03 Sep 2018 10:56:11 +0200
 
@@ -9125,7 +9125,7 @@ ucs-test (5.0.0-4) unstable; urgency=low
 
 ucs-test (5.0.0-3) unstable; urgency=low
 
-  * fixed wrong python verion in /tests/10_ldap/ldap_extensions_utils.py
+  * fixed wrong python version in /tests/10_ldap/ldap_extensions_utils.py
   (Bug #35664)
 
  -- Drees Dormann <dormann@univention.de>  Fri, 22 Aug 2014 12:43:52 +0200

@@ -171,7 +171,7 @@ univention-dojo (7.0.1-1) unstable; urgency=low
 
 univention-dojo (7.0.0-1) unstable; urgency=low
 
-  * Bug #31639: updated dojo to verison 1.9 and dgrid, xstyle, put-selector to
+  * Bug #31639: updated dojo to version 1.9 and dgrid, xstyle, put-selector to
     their most recent release version (note: xstyle has been pulled as latest
     release from github due to build problems)
 
