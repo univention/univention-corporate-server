@@ -3288,7 +3288,7 @@ univention-appcenter (5.0.6-70) unstable; urgency=low
 
   * Bug #39585: Fix univention-appcenter packaging
     - debian/control: Fix shot descriptions
-    - debian/control: Add missing ${*:Depnds}
+    - debian/control: Add missing ${*:Depends}
     - debian/control: Add missing Build-Depends: ucslint
     - debian/rules: Add missing call to ucslint
     - debian/ucslint.overrides: Added
