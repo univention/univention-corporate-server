@@ -28,7 +28,7 @@ class JenkinsInvoke(object):
                           help="Base URL for the Jenkins server, default is %s" % DEFAULT_BASEURL,
                           type="str", default=DEFAULT_BASEURL)
         parser.add_option('--username', '-u', dest='username',
-                          help="Username for jenkins authentification", type='str', default=None)
+                          help="Username for jenkins authentication", type='str', default=None)
         parser.add_option('--password', '-p', dest='password',
                           help="password for jenkins user auth", type='str', default=None)
         parser.add_option("-b", "--block", dest="block", action="store_true", default=False,
