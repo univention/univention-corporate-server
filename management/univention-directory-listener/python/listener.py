@@ -86,7 +86,7 @@ def run(file, argv, uid=-1, wait=1):
 	:param argv: arguments to pass to executable
 	:type argv: list(str)
 	:param int uid: effective user id the process should be started with
-	:param bool wait: if true will block until the process has finished and return either its exit code or the signal that lead to its stop (a negativ number), see :py:const:`os.P_WAIT`. If false will return as soon as the new process has been created, with the process id as the return value (see :py:const:`os.P_NOWAIT`).
+	:param bool wait: if true will block until the process has finished and return either its exit code or the signal that lead to its stop (a negative number), see :py:const:`os.P_WAIT`. If false will return as soon as the new process has been created, with the process id as the return value (see :py:const:`os.P_NOWAIT`).
 	:return: exit code or signal number or process id
 	:rtype: int
 	"""
