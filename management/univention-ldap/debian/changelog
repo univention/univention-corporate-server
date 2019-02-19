@@ -2175,7 +2175,7 @@ univention-ldap (8.0.82-2) unstable; urgency=low
   * univention-backup2master (Bug #5774):
     Added some error checking; added options -h -f -w to the script.
     Changes suggested by Philip after review.
-    New options -c -d -v allow check and dry-run without actally converting
+    New options -c -d -v allow check and dry-run without actually converting
     to master. This helps when searching for LDAP references to old master.
     New option -r allows to change share references interactively.
     Added safety check for number of parameters of function resolve_reference;
