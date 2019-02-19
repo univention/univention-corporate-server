@@ -334,7 +334,7 @@ univention-management-console-module-adtakeover (1.0.10-41) unstable; urgency=me
     when coming from AD Member mode. Abort if it is not ok and take care
     to keep the "AD Member" service signal in that case so the takeover
     may be tried again later (Bug #35346).
-  * Intially run 96univention-samba.inst and 97univention-s4-connector.inst
+  * Initially run 96univention-samba.inst and 97univention-s4-connector.inst
     individually when coming from AD Member mode instead of calling a general
     run-join-scripts. That should only be done in the end.
 
