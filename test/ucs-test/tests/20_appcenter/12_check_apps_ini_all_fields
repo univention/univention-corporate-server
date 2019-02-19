@@ -68,7 +68,7 @@ class Error(Exception):
 
 
 class Optional(Exception):
-    # simply an exception to be raised/catched
+    # simply an exception to be raised/caught
     # when optional values are checked:
     pass
 
