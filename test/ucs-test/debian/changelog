@@ -17948,7 +17948,7 @@ ucs-test (1.1.2-30) unstable; urgency=low
 
 ucs-test (1.1.2-29) unstable; urgency=low
 
-  * added script to test vacation notice for alternative adresses
+  * added script to test vacation notice for alternative addresses
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 30 Jun 2008 11:38:42 +0200
 
@@ -18102,7 +18102,7 @@ ucs-test (1.1.2-6) unstable; urgency=low
 
 ucs-test (1.1.2-5) unstable; urgency=low
 
-  * added test for alternative email adresses
+  * added test for alternative email addresses
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 18 Jun 2008 11:16:52 +0200
 

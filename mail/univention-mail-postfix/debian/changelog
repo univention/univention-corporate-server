@@ -188,7 +188,7 @@ univention-mail-postfix (11.0.1-13) unstable; urgency=low
 
 univention-mail-postfix (11.0.1-12) unstable; urgency=low
 
-  * Bug #44811: support IPv6 adresses, change UCRV format
+  * Bug #44811: support IPv6 addresses, change UCRV format
 
  -- Daniel Troeder <troeder@univention.de>  Mon, 19 Jun 2017 11:45:57 +0200
 
