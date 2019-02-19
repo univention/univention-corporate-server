@@ -182,7 +182,7 @@ msgid "Configuration finished"
 msgstr "Configuration terminée"
 
 #: umc/js/setup/InterfaceWizard.js:250
-msgid "Configuration of IPv4 and IPv6 adresses"
+msgid "Configuration of IPv4 and IPv6 addresses"
 msgstr "Configuration des adresses IPv4 et IPv6"
 
 #: umc/js/setup/CertificatePage.js:79

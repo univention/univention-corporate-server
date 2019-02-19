@@ -320,7 +320,7 @@ msgstr ""
 #: modules/univention/admin/handlers/users/user.py:641
 msgid ""
 "Incoming e-mails for this user are copied/redirected to the specified "
-"forward e-mail adresses. Depending on the forwarding setting, a local copy "
+"forward e-mail addresses. Depending on the forwarding setting, a local copy "
 "of each e-mail is kept. If no forwarding e-mail addresses are specified, the "
 "e-mails are always kept in the user's mailbox."
 msgstr ""
