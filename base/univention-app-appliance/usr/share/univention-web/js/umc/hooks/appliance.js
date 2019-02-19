@@ -87,7 +87,7 @@ define([
 		},
 
 		updatePosition: function() {
-			// query refrence node
+			// query reference node
 			var result = query(this.referenceNodeSelector);
 			if (!result.length) {
 				// not found... hide info box
