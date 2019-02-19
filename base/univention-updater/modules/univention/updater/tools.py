@@ -1628,7 +1628,7 @@ class UniventionUpdater:
         :param bool for_mirror_list: component entries for `mirror.list` will be returned, otherwise component entries for local `sources.list`.
         :returns: The repository server for the component.
         :rtype: UCSHttpServer
-        :raises ConfigurationError: if the configured server is not useable.
+        :raises ConfigurationError: if the configured server is not usable.
         """
         c_url = copy.copy(self._get_component_baseurl(component, for_mirror_list))
         c_url.path = ''

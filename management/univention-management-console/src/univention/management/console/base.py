@@ -331,7 +331,7 @@ class Base(signals.Provider, Translation):
 		Handle UMC exception.
 
 		As requests are processes by python-notifier in a separate thread, any exception only contains the traceback relative to the notifier thread.
-		To make them more useable we want to combine them with the calling part to get a complete stack trace.
+		To make them more usable we want to combine them with the calling part to get a complete stack trace.
 		This is complicated by the fact that python-notifier no longer stores the original traceback, as this creates a memory leak.
 		Instead only the rendered traceback is stored.
 

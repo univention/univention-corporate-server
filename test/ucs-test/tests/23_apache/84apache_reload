@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner bash
-## desc: Check if apache is useable after a reload
+## desc: Check if apache is usable after a reload
 ## tags: [apptest]
 ## bugs: [37792]
 ## exposure: dangerous

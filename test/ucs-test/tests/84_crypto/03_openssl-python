@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: |
-##  Check that OpenSSL is useable in python
+##  Check that OpenSSL is usable in python
 ## bugs: [44741]
 ## tags: [basic]
 ## packages:
