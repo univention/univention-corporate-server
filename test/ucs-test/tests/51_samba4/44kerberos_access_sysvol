@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner bash
-## desc: "Test accessing sysvol with smbclient using kerberos authentification"
+## desc: "Test accessing sysvol with smbclient using kerberos authentication"
 ## exposure: safe
 ## packages:
 ##  - univention-samba4
@@ -33,8 +33,8 @@ wait_for_replication
 # force_drs_replication
 wait_for_drs_replication "(sAMAccountName=$username)"
 
-## Authentification with kinit
-echo "----Authentification with kinit"
+## Authentication with kinit
+echo "----Authentication with kinit"
 i=0
 while ! output="$(echo "$password" | kinit --password-file=STDIN "$username" 2>&1)"
 do
