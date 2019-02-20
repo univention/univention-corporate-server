@@ -1087,11 +1087,9 @@ define([
 			array.forEach(properties, function(prop) {
 				array.forEach(prop.options, lang.hitch(this, function(option) {
 					if (~array.indexOf(appOptions, option)) {
-						// indent the title... TODO: it would be nicer if we can use css for this
-						//domClass.add(this._propertySubTabMap[prop.id].domNode, 'appTabIndented');
 						var orgTitle = this._propertySubTabMap[prop.id].get('title');
-						if (orgTitle.indexOf('&nbsp;&nbsp;&nbsp;&nbsp;') !== 0) {
-							this._propertySubTabMap[prop.id].set('title', '&nbsp;&nbsp;&nbsp;&nbsp;' + orgTitle);
+						if (orgTitle.indexOf('<') !== 0) {
+							this._propertySubTabMap[prop.id].set('title', '<span class="appTabIndented">' + orgTitle + '</span>');
 						}
 					}
 				}));
@@ -1997,7 +1995,7 @@ define([
 			if (page && !page.$titleOrig$) {
 				// store the original title
 				page.$titleOrig$ = page.title;
-				page.set('title', '<span style="color:red">' + entities.encode(page.title) + ' (!)</span>');
+				page.set('title', '<span style="color:red">' + page.title + ' (!)</span>');
 			}
 		},
 

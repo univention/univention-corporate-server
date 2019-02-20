@@ -281,6 +281,10 @@
 	padding-left: 5em;
 }
 
+.umc .appTabIndented {
+	padding-left: 1.2em;
+}
+
 /* Portal: anonymousEmpty */
 .umc .umcMultiInput.syntaxLocalizedAnonymousEmpty .umcMultiInputContainer {
 	display: grid;
@@ -307,4 +311,3 @@
 .umc .umcMultiInput.syntaxLocalizedAnonymousEmpty .umcMultiInputContainer .umcMultiInputRemoveButton .dijitButtonNode {
 	height: 100%;
 }
-

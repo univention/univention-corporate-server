@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.3-1) unstable; urgency=medium
+
+  * Bug #48621: indent with CSS
+
+ -- Florian Best <best@univention.de>  Wed, 20 Feb 2019 15:37:49 +0100
+
 univention-management-console-module-udm (9.0.2-5) unstable; urgency=medium
 
   * Bug #48546: Add Editor syntax
