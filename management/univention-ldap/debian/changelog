@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-43) unstable; urgency=low
+
+  * Bug #41213: Changed access to cn=monitor
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 20 Feb 2019 12:09:35 +0100
+
 univention-ldap (14.0.2-42) unstable; urgency=low
 
   * Bug #41213: cn=monitor backend for statistical information
