@@ -483,9 +483,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 		univention.admin.handlers.simpleLdap.open(self)
 
-		if self.dn and self.info.get('overwritePosition') == '0':
-			self.info['overwritePosition'] = ''
-
 		for transKey in ['ShortDescription', 'LongDescription', 'TabName', 'GroupName']:
 			translations = []
 			for key in self.oldattr.keys():

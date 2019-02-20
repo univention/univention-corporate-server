@@ -1,3 +1,10 @@
+univention-directory-manager-modules (14.0.5-1) unstable; urgency=medium
+
+  * Bug #48621: fix unmapping of 'overwritePosition' in
+  	settings/extended_attributes
+
+ -- Florian Best <best@univention.de>  Wed, 20 Feb 2019 15:32:16 +0100
+
 univention-directory-manager-modules (14.0.4-1) unstable; urgency=medium
 
   * Bug #48621: update bash completion
