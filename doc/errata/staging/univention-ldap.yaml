@@ -7,4 +7,6 @@ fix: 14.0.2-43A~4.3.0.201902201212
 desc: |
  This update addresses the following issue(s):
  * Added cn=monitor backend for statistical information
+   To access monitoring information 
+   ucr set ldap/monitor=true and service slapd restart
 bug: [41213]
