@@ -32,10 +32,11 @@ def main():
 				networkAccess=1,
 				hosts=[ucr.get('ldap/hostdn')]
 			)
-			lo = uldap.getAdminConnection()
+			lo = uldap.getMachineConnection()
 			krb5PrincipalName = lo.search(filter='(&(objectClass=univentionHost)(cn={}))'.format(ucr.get('hostname')))[0][1]['krb5PrincipalName'][0]
 			print('\n\nkrb5PrincipalName = {}\n\n'.format(krb5PrincipalName))
 			radtest(krb5PrincipalName, open('/etc/machine.secret', 'r').read().strip())
+
 
 if __name__ == '__main__':
 	main()

@@ -1,3 +1,9 @@
+ucs-test (9.0.0-38) unstable; urgency=medium
+
+  * Bug #46018: Fix tests for running on a slave
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 20 Feb 2019 11:46:10 +0100
+
 ucs-test (9.0.0-37) unstable; urgency=medium
 
   * Bug #46018: Add apptest tag to radius section for ucs@school

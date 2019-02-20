@@ -56,6 +56,9 @@ def main():
 		print('*** create computer objects')
 		computers = []
 		for i, role in enumerate(udm_test.UCSTestUDM.COMPUTER_MODULES):
+			if role == 'computers/domaincontroller_master':
+				#  Adding a new computers/domaincontroller_master breaks stuffs (e.g. ldap master connections)
+				continue
 			name = uts.random_string()
 			addr = uts.random_ip()
 			secret = uts.random_string()
