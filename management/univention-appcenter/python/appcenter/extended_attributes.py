@@ -160,7 +160,7 @@ class ExtendedAttribute(SchemaObject):
 	syntax = SyntaxAttribute('String')
 	single_value = BooleanAttribute(True)
 	default = HiddenAttribute()
-	module = HiddenAttribute('users/user')
+	module = HiddenAttribute()
 	belongs_to = HiddenAttribute()
 	ldap_mapping = HiddenAttribute()
 	position = HiddenAttribute()
@@ -194,7 +194,7 @@ class ExtendedAttribute(SchemaObject):
 		kwargs.setdefault('position', 'cn=%s,cn=custom attributes,cn=univention' % app.id)
 		kwargs.setdefault('tab_name', app.name)
 		kwargs.setdefault('ldap_mapping', kwargs['name'])
-		kwargs['module'] = re.split('\s*,\s*', kwargs['module'])
+		kwargs['module'] = re.split('\s*,\s*', kwargs.get('module', 'users/user'))
 		if 'options' in kwargs:
 			kwargs['options'] = re.split('\s*,\s*', kwargs.get('options', []))
 		kwargs.setdefault('options', [])
@@ -234,13 +234,13 @@ class ExtendedOption(SchemaObject):
 	long_description_de = HiddenAttribute()
 	default = HiddenAttribute()
 	editable = HiddenAttribute(True)
-	module = HiddenAttribute('users/user')
+	module = HiddenAttribute()
 	object_class = HiddenAttribute()
 
 	def __init__(self, app, **kwargs):
 		kwargs.setdefault('position', 'cn=%s,cn=custom attributes,cn=univention' % (app.id,))
 		kwargs.setdefault('description', app.name)
-		kwargs['module'] = re.split('\s*,\s*', kwargs['module'])
+		kwargs['module'] = re.split('\s*,\s*', kwargs.get('module', 'users/user'))
 		super(ExtendedOption, self).__init__(app, **kwargs)
 
 	@property
@@ -312,7 +312,7 @@ def get_extended_attributes(app):
 			attribute.set_standard_oid(app, attribute_suffix)
 			attribute.full_width = False
 			attribute.disable_web = True  # important!
-			attribute.default = True  # important! the boolean flag is the extended option, so this must be enabled
+			attribute.default = 'TRUE'  # important! the boolean flag is the extended option, so this must be enabled
 			attributes.insert(0, attribute)
 
 		option_name = app.generic_user_activation_option
@@ -434,7 +434,7 @@ def create_extended_option(option, app, lo, pos):
 		modify_object('settings/extended_options', lo, pos, option.dn, **attrs)
 
 	icon = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/%s' % (option.icon,)
-	if os.path.exists(icon):
+	if os.path.exists(icon) or os.path.islink(icon):
 		os.unlink(icon)
 	os.symlink(app.logo_name, icon)
 
