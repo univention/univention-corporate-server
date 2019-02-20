@@ -81,6 +81,11 @@ Variables: ldap/shadowbind
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/39monitor
+Variables: ldap/monitor
+
+Type: subfile
+Multifile: etc/ldap/slapd.conf
 Subfile: etc/ldap/slapd.conf.d/40univention-ldap-server_database
 Variables: ldap/limits
 Variables: ldap/server/type
