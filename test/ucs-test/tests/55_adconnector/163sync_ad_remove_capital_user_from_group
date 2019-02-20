@@ -11,6 +11,7 @@
 ## tags:
 ##  - groupsync
 ##  - skip_admember
+##  - SKIP
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/udm.sh" || exit 137
