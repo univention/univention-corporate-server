@@ -1,3 +1,9 @@
+univention-ad-connector (13.0.0-3) unstable; urgency=medium
+
+  * Bug #48714: added dependency to smbclient
+
+ -- Felix Botner <botner@univention.de>  Wed, 20 Feb 2019 12:57:54 +0100
+
 univention-ad-connector (13.0.0-2) unstable; urgency=medium
 
   * Bug #48700: Add reworked logo

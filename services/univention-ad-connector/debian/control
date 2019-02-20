@@ -60,7 +60,8 @@ Depends: ${misc:Depends},
  univention-management-console-module-adconnector (= ${binary:Version}),
  python-samba,
  python-ldb,
- samba-common-bin
+ samba-common-bin,
+ smbclient
 Recommends: univention-nagios-ad-connector,
  sqlite3
 Description: UCS - Modules for sync UCS and Active Directory
