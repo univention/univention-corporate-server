@@ -67,15 +67,15 @@ create_spn_account () {
 	do
 		case "$1" in
 			"--samaccountname"|"--sAMAccountName")
-				samAccountName="${2:?missing argument for samaccountname}"
+				samAccountName="${2:?missing argument for "$1"}"
 				shift 2 || exit 2
 				;;
 			"--serviceprincipalname"|"--servicePrincipalName")
-				servicePrincipalName="${2:?missing argument for servicePrincipalName}"
+				servicePrincipalName="${2:?missing argument for "$1"}"
 				shift 2 || exit 2
 				;;
 			"--privatekeytab"|"--privateKeytab")
-				privateKeytab="${2:?missing argument for privateKeytab}"
+				privateKeytab="${2:?missing argument for "$1"}"
 				shift 2 || exit 2
 				;;
 			"--help"|"-h"|"-?")
@@ -83,12 +83,12 @@ create_spn_account () {
 				exit 0
 				;;
 			"--bindpwdfile")
-				bindpwdfile="${2:?missing argument for samaccountname}"
+				bindpwdfile="${2:?missing argument for "$1"}"
 				credentials+=("--bindpwdfile" "$bindpwdfile")
 				shift 2 || exit 2
 				;;
 			"--binddn")
-				binddn="${2:?missing argument for samaccountname}"
+				binddn="${2:?missing argument for "$1"}"
 				credentials+=("--binddn" "$binddn")
 				shift 2 || exit 2
 				;;

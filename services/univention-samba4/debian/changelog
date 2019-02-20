@@ -1,3 +1,9 @@
+univention-samba4 (8.0.0-13) unstable; urgency=medium
+
+  * Bug #47942: fix after QA
+
+ -- Felix Botner <botner@univention.de>  Wed, 20 Feb 2019 10:02:26 +0100
+
 univention-samba4 (8.0.0-12) unstable; urgency=medium
 
   * Bug #47942: object flag hidden for dns SPN user
