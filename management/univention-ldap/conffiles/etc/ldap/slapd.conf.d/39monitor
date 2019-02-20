@@ -8,5 +8,5 @@ if configRegistry.is_true('ldap/monitor',False):
         print 'access to dn.subtree="cn=monitor"'
         print '   by dn.base="cn=admin,%(ldap/base)s" read' % configRegistry
         print '   by set="user & [cn=Domain Admins,cn=groups,%(ldap/base)s]/uniqueMember*" read' % configRegistry
-        print '   by * none stop'
+        print '   by * +0 break'
 @!@
