@@ -51,6 +51,16 @@ class Instance(Base):
 		except (AttributeError, IndexError, KeyError):
 			if entry['args']:
 				message = '%s (%s)' % (message, ', '.join(entry['args']))
+		icons = {
+				'APP_INSTALL_START': 'software',
+				'APP_INSTALL_SUCCESS': 'software',
+				'APP_INSTALL_FAILURE': 'software',
+				'SERVER_PASSWORD_CHANGED': 'devices',
+				'SERVER_PASSWORD_CHANGED_FAILED': 'devices',
+				'USER_CREATED': 'users',
+				'COMMENT': 'comment',
+		}
+		icon = icons.get(entry['event_name'], 'default')
 		res_entry = {
 			'id': entry['id'],
 			'date': entry['date'],
@@ -59,11 +69,12 @@ class Instance(Base):
 			'username': entry['username'],
 			'context_id': entry['context_id'],
 			'message': message,
+			'icon': icon,
 		}
 		if 'tags' in entry:
 			res_entry['tags'] = entry['tags']
-		if 'amendments' in entry:
-			res_entry['amendments'] = entry['amendments']
+		if 'comments' in entry:
+			res_entry['comments'] = entry['comments']
 		return res_entry
 
 	@simple_response

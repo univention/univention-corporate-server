@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/date/locale",
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/Page",
@@ -42,12 +43,13 @@ define([
 	"umc/widgets/TextBox",
 	"umc/widgets/SearchBox",
 	"umc/i18n!umc/modules/admindiary"
-], function(declare, lang, array, dialog, tools, Page, Grid, SearchForm, DateBox, ComboBox, TextBox, SearchBox, _) {
+], function(declare, lang, array, locale, dialog, tools, Page, Grid, SearchForm, DateBox, ComboBox, TextBox, SearchBox, _) {
 	return declare("umc.modules.admindiary.OverviewPage", [ Page ], {
 
+		baseClass: 'umcPage admindiaryOverview',
 		moduleStore: null,
 		_grid: null,
-		_searchWidget: null,
+		_searchForm: null,
 
 		// values for comboboxes
 		tags: null,
@@ -73,46 +75,39 @@ define([
 			}];
 		},
 
+		iconFormatter: function(value, item) {
+			return lang.replace('<img src="modules/admindiary/icons/{icon}.svg" height="{height}" width="{width}" style="float:left; margin-right: 5px" /> {value}', {
+				icon: item.icon,
+				height: '32px',
+				width: '32px',
+				value: value
+			});
+		},
+
+		dateFormatter: function(value) {
+			return locale.format(new Date(value));
+		},
+
 		buildRendering: function() {
 			this.inherited(arguments);
+			this._autoSearch = false;
+			this._advancedSearch = false;
 
 			var columns = [{
-				name: 'date',
-				label: _('Date'),
-			}, {
-			//	name: 'event',
-			//	label: _('Event'),
-			//}, {
-				name: 'hostname',
-				label: _('Source'),
-			}, {
-			//	name: 'username',
-			//	label: _('Author'),
-			//}, {
 				name: 'message',
 				label: _('Message'),
-				width: '50%',
+				width: '75%',
+				formatter: lang.hitch(this, 'iconFormatter')
 			}, {
-			//	name: 'tags',
-			//	label: _('Tags'),
-			//	formatter: lang.hitch(this, function(value) {
-			//		if (value) {
-			//			return '<ul><li>' + value.join('</li><li>') + '</li></ul>';
-			//		} else {
-			//			return '';
-			//		}
-			//	})
-			//}, {
-				name: 'amendments',
-				label: _('Amendments'),
+				name: 'date',
+				label: _('Date'),
+				width: '15%',
+				formatter: lang.hitch(this, 'dateFormatter')
+			}, {
+				name: 'comments',
+				label: _('Comments'),
 				width: '10%',
-				formatter: lang.hitch(this, function(value) {
-					if (value) {
-						return _('☰');
-					} else {
-						return '';
-					}
-				})
+				formatter: function(value) { return value ? '📝' : ''; }
 			}];
 			var actions = [{
 					name: 'show',
@@ -127,14 +122,17 @@ define([
 
 			this._grid = new Grid({
 				region: 'main',
-				defaultAction: 'show',
+				//defaultAction: 'show',
 				columns: columns,
-				actions: actions,
+				//actions: actions,
+				gridOptions: {
+					selectionMode: 'none'
+				},
 				moduleStore: this.moduleStore
 			});
 
 			var makeValues = function(values) {
-				var arr = [{label: '', id: ''}];
+				var arr = [{label: _('All'), id: ''}];
 				return arr.concat(array.map(values, function(value) {
 					return {label: value, id: value};
 				}));
@@ -143,87 +141,145 @@ define([
 				type: DateBox,
 				label: _("From"),
 				value: new Date(new Date().getTime() - 6 * 24 * 60 * 60 * 1000),
-				sizeClass: 'TwoThirds',
+				sizeClass: 'OneThird',
+				onChange: lang.hitch(this, 'autoSearch'),
 				name: 'time_from'
 			}, {
 				type: DateBox,
 				label: _("Until"),
 				value: new Date(),
-				sizeClass: 'TwoThirds',
+				sizeClass: 'OneThird',
+				onChange: lang.hitch(this, 'autoSearch'),
 				name: 'time_until'
 			}, {
 				type: ComboBox,
 				label: _("Tags"),
 				sizeClass: 'TwoThirds',
 				staticValues: makeValues(this.tags),
+				value: '',
+				onChange: lang.hitch(this, 'autoSearch'),
+				visible: false,
 				name: 'tag'
 			}, {
 				type: ComboBox,
 				label: _("Event"),
 				sizeClass: 'TwoThirds',
 				staticValues: makeValues(this.events),
+				value: '',
+				onChange: lang.hitch(this, 'autoSearch'),
+				visible: false,
 				name: 'event'
 			}, {
 				type: ComboBox,
 				label: _("Author"),
 				sizeClass: 'TwoThirds',
 				staticValues: makeValues(this.authors),
+				value: '',
+				onChange: lang.hitch(this, 'autoSearch'),
+				visible: false,
 				name: 'username'
 			}, {
 				type: ComboBox,
 				label: _("Source"),
 				sizeClass: 'TwoThirds',
 				staticValues: makeValues(this.sources),
+				value: '',
+				onChange: lang.hitch(this, 'autoSearch'),
+				visible: false,
 				name: 'hostname'
 			}, {
 				type: SearchBox,
 				name: 'message',
 				value: '',
+				sizeClass: 'TwoThirds',
 				inlineLabel: _('Search...'),
 				onSearch: lang.hitch(this, function() {
-					this._searchWidget.submit();
+					this._searchForm.submit();
 				})
 			}];
 
-			this._searchWidget = new SearchForm({
+			var buttons = [{
+				name: 'toggleSearch',
+				showLabel: false,
+				labelConf: {
+					'class': 'umcSearchFormSubmitButton'
+				},
+				iconClass: 'umcDoubleRightIcon',
+				label: _('Advanced Search'),
+				callback: lang.hitch(this, 'toggleSearch')
+			}];
+			this._searchForm = new SearchForm({
 				region: 'nav',
 				hideSubmitButton: true,
 				widgets: widgets,
-				layout: [['time_from', 'tag', 'username'],
-					['time_until', 'event', 'hostname'],
-					['message']],
+				buttons: buttons,
+				layout: [['time_from', 'time_until', 'message', 'toggleSearch'],
+					['tag', 'event', 'hostname', 'username']],
 				onSearch: lang.hitch(this._grid, 'filter')
 			});
 
-			this.addChild(this._searchWidget);
+			this.addChild(this._searchForm);
 			this.addChild(this._grid);
 
-			this._searchWidget.onSubmit();
+			this._searchForm.onSubmit();
 			this._grid.resize();
+
+			this._grid._grid.set('selectionMode', 'single');
+			this._grid._grid.on('dgrid-select', lang.hitch(this, 'clickRow'));
+			this._autoSearch = true;
 		},
 
 		nextWeek: function() {
-			var values = this._searchWidget.get('value');
+			var values = this._searchForm.get('value');
 			if (! values.time_from) {
 				return;
 			}
 			var time_from = new Date(new Date(values.time_from).getTime() + 7 * 24 * 60 * 60 * 1000);
 			var time_until = new Date(time_from.getTime() + 6 * 24 * 60 * 60 * 1000);
-			this._searchWidget.getWidget('time_from').set('value', time_from);
-			this._searchWidget.getWidget('time_until').set('value', time_until);
-			this._searchWidget.onSubmit();
+			this._autoSearch = false;
+			this._searchForm.getWidget('time_from').set('value', time_from);
+			this._autoSearch = true;
+			this._searchForm.getWidget('time_until').set('value', time_until);
 		},
 
 		previousWeek: function() {
-			var values = this._searchWidget.get('value');
+			var values = this._searchForm.get('value');
 			if (! values.time_until) {
 				return;
 			}
 			var time_until = new Date(new Date(values.time_until).getTime() - 7 * 24 * 60 * 60 * 1000);
 			var time_from = new Date(time_until.getTime() - 6 * 24 * 60 * 60 * 1000);
-			this._searchWidget.getWidget('time_from').set('value', time_from);
-			this._searchWidget.getWidget('time_until').set('value', time_until);
-			this._searchWidget.onSubmit();
+			this._autoSearch = false;
+			this._searchForm.getWidget('time_from').set('value', time_from);
+			this._autoSearch = true;
+			this._searchForm.getWidget('time_until').set('value', time_until);
+		},
+
+		toggleSearch: function() {
+			this._advancedSearch = !this._advancedSearch;
+			array.forEach(['username', 'tag', 'event', 'hostname'], lang.hitch(this, function(widgetName) {
+				this._searchForm.getWidget(widgetName).set('visible', this._advancedSearch);
+			}));
+			var button = this._searchForm.getButton('toggleSearch');
+			if (this._advancedSearch) {
+				button.set('label', _('Simple Search'));
+				button.set('iconClass', 'umcDoubleLeftIcon');
+			} else {
+				button.set('label', _('Advanced Search'));
+				button.set('iconClass', 'umcDoubleRightIcon');
+			}
+		},
+
+		autoSearch: function() {
+			if (this._autoSearch) {
+				this._searchForm.onSubmit();
+			}
+		},
+
+		clickRow: function(evt) {
+			var item = evt.rows[0];
+			this._grid._grid.deselect(item);
+			this.onShowDetails(item.id);
 		},
 
 		onShowDetails: function() {

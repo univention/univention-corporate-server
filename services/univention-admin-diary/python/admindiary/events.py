@@ -48,9 +48,9 @@ class DiaryEvent(object):
 
 USER_CREATED = DiaryEvent('USER_CREATED', {'en': 'User {username} created', 'de': 'Benutzer {username} angelegt'}, args=['username'])
 
-APP_ACTION_START = DiaryEvent('APP_ACTION_START', {'en': 'App {app}: Start of {action}', 'de': 'App {app}: Start von {action}'}, args=['app', 'action'])
-APP_ACTION_SUCCESS = DiaryEvent('APP_ACTION_SUCCESS', {'en': 'App {app} ({action}): Success', 'de': 'App {app} ({action}): Erfolg'}, args=['app', 'action'])
-APP_ACTION_FAILURE = DiaryEvent('APP_ACTION_FAILURE', {'en': 'App {app} ({action}): Failure. Error {error_code}', 'de': 'App {app} ({action}): Fehlschlag. Fehler {error_code}'}, args=['app', 'action', 'error_code'], tags=['error'])
+APP_INSTALL_START = DiaryEvent('APP_INSTALL_START', {'en': 'Installation of {name} {version} started', 'de': 'Installation von {name} {version} wurde gestartet'}, args=['name', 'version'])
+APP_INSTALL_SUCCESS = DiaryEvent('APP_INSTALL_SUCCESS', {'en': 'Installation of {name} {version} was successful', 'de': 'Die Installation von {name} {version} war erfolgreich'}, args=['name', 'version'])
+APP_INSTALL_FAILURE = DiaryEvent('APP_INSTALL_FAILURE', {'en': 'Installation of {name} {version} failed. Error {error_code}', 'de': 'Installation von {name} {version} schlug fehl. Fehler {error_code}'}, args=['name', 'version', 'error_code'], tags=['error'])
 
 SERVER_PASSWORD_CHANGED = DiaryEvent('SERVER_PASSWORD_CHANGED', {'en': 'Machine account password changed successfully', 'de': 'Maschinenpasswort erfolgreich geändert'})
 SERVER_PASSWORD_CHANGED_FAILED = DiaryEvent('SERVER_PASSWORD_CHANGED_FAILED', {'en': 'Machine account password change failed', 'de': 'Änderung des Maschinenpassworts fehlgeschlagen'}, tags=['error'])

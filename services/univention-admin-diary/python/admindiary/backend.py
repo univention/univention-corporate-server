@@ -212,7 +212,7 @@ def _one_query(ids, result):
 		return set()
 	new_ids = set()
 	for entry in result:
-		new_ids.add(entry.main_id)
+		new_ids.add(entry.id)
 	if ids is None:
 		return new_ids
 	else:
@@ -243,9 +243,9 @@ def query(session, time_from=None, time_until=None, tag=None, event=None, userna
 		else:
 			ids.intersection_update(pattern_ids)
 	if ids is None:
-		entries = session.query(Entry).filter(Entry.main_id == Entry.id)
+		entries = session.query(Entry).filter(Entry.event_id != None)
 	else:
-		entries = session.query(Entry).filter(Entry.id.in_(ids))
+		entries = session.query(Entry).filter(Entry.id.in_(ids), Entry.event_id != None)
 	res = []
 	for entry in entries:
 		event = entry.event
@@ -254,7 +254,7 @@ def query(session, time_from=None, time_until=None, tag=None, event=None, userna
 		else:
 			event_name = 'COMMENT'
 		args = dict((arg.key, arg.value) for arg in entry.args)
-		group = session.query(Entry).filter(Entry.context_id == entry.context_id).count()
+		comments = session.query(Entry).filter(Entry.context_id == entry.context_id, Entry.message != None).count()
 		res.append({
 			'id': entry.id,
 			'date': entry.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
@@ -264,7 +264,7 @@ def query(session, time_from=None, time_until=None, tag=None, event=None, userna
 			'context_id': entry.context_id,
 			'message': entry.message,
 			'args': args,
-			'amendments': group > 1,
+			'comments': comments > 0,
 		})
 	return res
 

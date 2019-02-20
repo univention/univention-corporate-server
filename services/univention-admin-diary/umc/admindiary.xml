@@ -5,7 +5,7 @@
 		<description>Keep an overview of the important events in the domain</description>
 		<keywords>log,diary,event</keywords>
 		<categories>
-			<category name="system"/>
+			<category name="domain"/>
 		</categories>
 		<command name="admindiary/query" function="query" />
 		<command name="admindiary/get" function="get" />

@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/date/locale",
 	"put-selector/put",
 	"umc/dialog",
 	"umc/tools",
@@ -43,7 +44,7 @@ define([
 	"umc/widgets/TextArea",
 	"umc/widgets/TextBox",
 	"umc/i18n!umc/modules/admindiary"
-], function(declare, lang, array, put, dialog, tools, Page, ContainerWidget, TitlePane, Form, MultiSelect, TextArea, TextBox, _) {
+], function(declare, lang, array, locale, put, dialog, tools, Page, ContainerWidget, TitlePane, Form, MultiSelect, TextArea, TextBox, _) {
 	return declare("umc.modules.admindiary.DetailsPage", [ Page ], {
 
 		fullWidth: true,
@@ -79,10 +80,9 @@ define([
 			this.addChild(this._container);
 			array.forEach(items, lang.hitch(this, function(item) {
 				var node = put(this._container.domNode, 'article.admindiary');
-				put(node, 'blockquote', item.message);
+				put(node, 'blockquote.' + item.icon, item.message);
 				put(node, 'address', _('%(username)s on %(hostname)s', item));
-				put(node, 'time', item.date);
-				put(node, 'small', item.event + ' / ID: ' + item.id);
+				put(node, 'time', locale.format(new Date(item.date)));
 			}));
 			this._commentForm = new Form({
 				widgets: [{

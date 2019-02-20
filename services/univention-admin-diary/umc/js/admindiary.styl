@@ -27,20 +27,30 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+.admindiaryOverview
+	.dgrid-row
+		cursor: pointer
+
 article.admindiary
 	margin-bottom: 8ex
 
 	blockquote
-		font-size: x-large
+		font-size: large
 		margin-bottom: 0
+		padding-left: 3em
+		background-position: left
+		background-repeat: no-repeat
+	blockquote.software
+		background-image: url("admindiary/icons/software.svg")
+	blockquote.devices
+		background-image: url("admindiary/icons/devices.svg")
+	blockquote.users
+		background-image: url("admindiary/icons/users.svg")
+	blockquote.comment
+		background-image: url("admindiary/icons/comment.svg")
+		text-align: right
 	address
 		text-align: right
 		font-size: italic
 		margin-bottom: 0
-	small
-		font-size: x-small
 		float: right
-
-article.admindiary:first-child
-	blockquote
-		font-size: xx-large
