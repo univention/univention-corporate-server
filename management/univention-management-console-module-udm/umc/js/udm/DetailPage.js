@@ -66,6 +66,10 @@ define([
 	"umc/_all"
 ], function(declare, lang, array, on, Deferred, all, when, construct, domClass, topic, json, entities, TitlePane, render, tools, dialog, ContainerWidget, MultiInput, ComboBox, Form, Page, StandbyMixin, TabController, StackContainer, Text, Button, LabelPane, Template, OverwriteLabel, UMCPBundle, UsernameMaxLengthChecker, cache, _) {
 
+	var Anchor = Text;
+	require(['umc/widgets/Anchor'], function(A) {  // Anchor is new in UCS 4.4, so due to caching problems load it async
+		Anchor = A;
+	});
 	var _StandbyPage = declare([Page, StandbyMixin], {});
 
 	var FixedMultiInput = declare([MultiInput], {
@@ -1094,6 +1098,17 @@ define([
 					}
 				}));
 			}, this);
+
+			this._appOptionTabsMap = {};
+			array.forEach(appOptions, lang.hitch(this, function(option) {
+				tools.forIn(this._propertyOptionMap, lang.hitch(this, function(prop, options) {
+					if (array.indexOf(options, option) !== -1 && prop in this._propertySubTabMap) {
+						//this._tabs.selectChild(x._propertySubTabMap[a]); console.log(a);
+						this._appOptionTabsMap[option] = this._propertySubTabMap[prop];
+						return false;
+					}
+				}));
+			}));
 		},
 
 		_addReferencesToWidgets: function() {
@@ -1237,6 +1252,7 @@ define([
 				this._renderMultiEditCheckBoxes(widgets);
 				this._registerOptionWatchHandler();
 				this._formBuiltDeferred.resolve();
+				this._addFurtherSeetingsToApps();
 
 				// initiate the template mechanism (only for new objects)
 				// searches for given default values in the properties... these will be replaced
@@ -1250,6 +1266,19 @@ define([
 			//this._tabs.selectChild(this._tabs.getChildren[0]);
 
 			return all([loadedDeferred, this._formBuiltDeferred]);
+		},
+
+		_addFurtherSeetingsToApps: function() {
+			tools.forIn(this._appOptionTabsMap, lang.hitch(this, function(option, tab) {
+				this._form._widgets.$options$._widgets[option].$refLabel$.labelNodeRight.parentElement.appendChild(new Anchor({
+					content: _('Further settings'),
+					callback: lang.hitch(this, function(evt) {
+						evt.preventDefault();
+						this._tabs.selectChild(tab);
+					}),
+					style: 'display: inline; padding-left: 2em;'
+				}).domNode);
+			}));
 		},
 
 		buildTemplate: function(_template, properties, widgets) {
