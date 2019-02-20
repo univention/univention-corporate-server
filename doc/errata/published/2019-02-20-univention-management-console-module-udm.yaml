@@ -9,3 +9,5 @@ desc: |
  * A crash in the UMC module is prevented if widget definitions are
    configured via UCR variables.
 bug: [48494]
+erratum: 430
+announced: 2019-02-20
