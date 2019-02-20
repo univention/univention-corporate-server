@@ -1,3 +1,9 @@
+univention-web (3.0.1-1) unstable; urgency=medium
+
+  * Bug #48621: add Anchor widget
+
+ -- Florian Best <best@univention.de>  Wed, 20 Feb 2019 21:13:18 +0100
+
 univention-web (3.0.0-10) unstable; urgency=medium
 
   * Bug #48546: adjust styling for Editor
