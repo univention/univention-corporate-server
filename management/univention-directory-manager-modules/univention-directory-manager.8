@@ -1,0 +1,205 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.TH UNIVENTION-DIRECTORY-MANAGER "8" 2014-03-24 UCS "System Administration Utilities"
+.SH NAME
+univention\-directory\-manager \- manage UCS LDAP directory
+.SH SYNOPSIS
+.B univention\-directory\-manager
+.\"RI [ global\ options ]
+.I module
+.I action
+.RI [ options ]
+.br
+.B univention\-directory\-manager
+.RB [ \-\-help ]
+.RB [ \-\-version ]
+
+.SH DESCRIPTION
+.B univention\-directory\-manager
+is a tool to handle the configuration for UCS on command line level.
+
+.SS MODULES
+Use
+.B univention\-directory\-manager modules
+to show the list of available modules.
+
+.SS ACTIONS
+.TP
+.BR create
+Create a new object.
+.TP
+.BR modify
+Modify an existing object.
+.TP
+.BR remove
+Remove an existing object.
+.TP
+.BR list
+List objects.
+.TP
+.B move
+Move object in directory tree.
+.TP
+nothing
+Show the list of variables of the module including their description.
+.P
+.\" univention-directory-manager-modules/modules/univention/admincli/admin.py
+Without any further options, the list of available variables of the selected \fImodule\fP is shown.
+Indicators in parenthesises indicate special properties of each variable:
+.RS 4
+.TP
+.B *
+The variable must be supplied for the selection \fIaction\fP.
+.TP
+.B c
+The variable must be supplied for the \fBcreate\fP action.
+.TP
+.B m
+The variable must be supplied for the \fBmodify\fP action.
+.TP
+.B r
+The variable must be supplied for the \fBremove\fP action.
+.TP
+.B e
+Variable is not editable and can not be edited after creation.
+.TP
+.B []
+Variable is multi-valued and can be specified multiple times.
+Use \fB\-\-append\fP and \fB\-\-remove\fP in addtion to \fB\-\-set\fP.
+.TP
+.I option
+Other values indicate the module \fIoption\fP the variable belongs to.
+See
+.B \-\-options
+.IR option .
+.RE
+
+.SS OPTIONS
+.TP
+.BR \-h " | " \-\-help " | " \-?
+Print this usage message.
+.TP
+.B \-\-version
+Print version information.
+
+.SS COMMON OPTIONS
+.TP
+.BI \-\-logfile\  path/name
+\fIPath\fP and \fIname\fP of the logfile to be used.
+Use \fBstderr\fP to print to standard error output.
+.TP
+.BI \-\-binddn\  binddn
+Use the Distinguished Name \fIbinddn\fP to bind to the LDAP directory.
+.TP
+.BI \-\-bindpwd\  passwd
+Use \fIpasswd\fP as the password for simple authentication.
+.TP
+.BI \-\-bindpwdfile\  file
+Use the content of \fIfile\fP as the password for simple authentication.
+.TP
+.BR \-\-tls\ 0 | 1 | 2
+Use StartTLS (Transport Layer Security): \fB0\fP=no; \fB1\fP=try; \fB2\fP=must
+
+.SS CREATE options
+.TP
+.BI \-\-position\  basedn
+Specify \fIbase\fPposition in LDAP tree.
+.TP
+.BI \-\-set\  key = value
+Set variable \fIkey\fP to \fIvalue\fP, e.g. \fIkey\fP\fB=\fP\fIvalue\fP
+.TP
+.BI \-\-superordinate\  dn
+Specify superordinate \fIdn\fP.
+.TP
+.BI \-\-option\  option
+Use only given module \fIoptions\fP.
+.TP
+.B \-\-append\-option
+Append the module options to the standard options.
+.TP
+.B \-\-remove\-option
+Remove the module options from the standard options.
+.TP
+.BI \-\-policy\-reference\  policydn
+Reference to policy given by \fIpolicydn\fP
+.TP
+.B \-\-ignore_exists
+Don't report already existing entries as an error.
+
+.SS MODIFY options
+.TP
+.BI \-\-dn\  dn
+Edit object with \fIdn\fP.
+.TP
+.BI \-\-set\  key = value
+Set variable \fIkey\fP to \fIvalue\fP, e.g. \fIkey\fP\fB=\fP\fIvalue\fP
+.TP
+.BI \-\-append\  key = value
+Append value to variable, e.g. \fIkey\fP\fB=\fP\fIvalue\fP
+.TP
+.BI \-\-remove\  key = value
+Remove value from variable, e.g. \fIkey\fP\fB=\fP\fIvalue\fP
+.TP
+.BI \-\-option\  option
+Use only given module \fIoptions\fP.
+.TP
+.B \-\-append\-option
+Append the module options.
+.TP
+.B \-\-remove\-option
+Remove the module options.
+.TP
+.BI \-\-policy\-reference\  policydn
+Reference to policy given by \fIpolicydn\fP
+.TP
+.BI \-\-policy\-dereference\  policydn
+Remove reference to policy given by \fIpolicydn\fP
+
+.SS REMOVE options
+.TP
+.BI \-\-dn\  dn
+Remove object with \fIdn\fP.
+.TP
+.BI \-\-superordinate\  dn
+Specify superordinate \fIdn\fP.
+.TP
+.BI \-\-filter\  key = value
+Remove all objects matching the filter, e.g. \fIkey\fP\fB=\fP\fIvalue\fP.
+.TP
+.B \-\-remove_referring
+Remove all referring objects as well.
+
+.SS LIST options
+.TP
+.BI \-\-filter\  key = value
+Lookup all objects matching the filter, e.g. \fIkey\fP\fB=\fP\fIvalue\fP.
+.TP
+.BR \-\-policies\ 0 | 1
+List policy-based settings: \fB0\fP:short, \fB1\fP:long (with policy-DN)
+.TP
+.B \-\-ignore_not_exists
+Don't report not existing entries as an error.
+
+.SS MOVE options
+.TP
+.BI \-\-dn\  dn
+Move object with \fIdn\fP.
+.TP
+.BI \-\-position\  parentdn
+Move to \fIparentdn\fP in LDAP tree.
+
+.SH SEE ALSO
+This program is documented fully in the
+.IR "Univention Corporate Server Manual" .
+
+.SH "HISTORY"
+The old name of
+.B univention\-directory\-manager 
+was
+.BR univention\-admin.
+For short
+.B udm
+is also an alias for
+.BR univention\-directory\-manager .
+
+.SH AUTHOR
+Copyright (c) 2001-2016 Univention GmbH, Germany
