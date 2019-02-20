@@ -280,3 +280,31 @@
 .umc .umcLabelPane .udmAppLable .umcLabelPaneLabeNodeRight {
 	padding-left: 5em;
 }
+
+/* Portal: anonymousEmpty */
+.umc .umcMultiInput.syntaxLocalizedAnonymousEmpty .umcMultiInputContainer {
+	display: grid;
+	grid-template-columns: 1fr 40px;
+	grid-template-rows: auto auto;
+	grid-template-areas: "language delete" "editor delete";
+}
+
+.umc .umcMultiInput.syntaxLocalizedAnonymousEmpty .umcMultiInputContainer .umcSize-One {
+	grid-area: language;
+}
+
+.umc .umcMultiInput.syntaxLocalizedAnonymousEmpty .umcMultiInputContainer .umcSize-Two {
+	grid-area: editor;
+	padding-right: 1em;
+}
+
+.umc .umcMultiInput.syntaxLocalizedAnonymousEmpty .umcMultiInputContainer .umcMultiInputRemoveButton {
+	grid-area: delete;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.umc .umcMultiInput.syntaxLocalizedAnonymousEmpty .umcMultiInputContainer .umcMultiInputRemoveButton .dijitButtonNode {
+	height: 100%;
+}
+

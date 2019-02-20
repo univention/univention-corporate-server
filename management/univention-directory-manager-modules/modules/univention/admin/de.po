@@ -1629,6 +1629,10 @@ msgstr "Authentisierung fehlgeschlagen"
 msgid "Moving children is not supported."
 msgstr "Das Verschieben von Kindsknoten wird nicht unterstützt."
 
+#: syntax.py:3649
+msgid "Message that is shown to anonymous visitors when the portal is empty"
+msgstr "Nachricht, die anonymen Besuchern angezeigt wird, wenn das Portal leer ist"
+
 #~ msgid ""
 #~ "A mailing list name must start and end with a letter, number or "
 #~ "underscore. In between additionally spaces, dashes and dots are allowed."

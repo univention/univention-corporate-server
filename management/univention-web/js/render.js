@@ -31,6 +31,7 @@
 define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/dom-class",
 	"dojox/html/entities",
 	"umc/tools",
 	"umc/widgets/ContainerWidget",
@@ -43,7 +44,7 @@ define([
 	"umc/widgets/SubmitButton",
 	"umc/widgets/ResetButton",
 	"umc/widgets/Text"
-], function(lang, array, entities, tools, ContainerWidget, LabelPane, TitlePane, Tooltip, HiddenInput, CheckBox, Button, SubmitButton, ResetButton, Text) {
+], function(lang, array, domClass, entities, tools, ContainerWidget, LabelPane, TitlePane, Tooltip, HiddenInput, CheckBox, Button, SubmitButton, ResetButton, Text) {
 	var render = {};
 	lang.mixin(render, {
 		widgets: function(/*Object[]*/ widgetsConf, owner) {
@@ -128,6 +129,11 @@ define([
 				return undefined;
 			}
 			var widget = new WidgetClass(conf); // Widget
+			if (widget) {
+				if ('syntax' in conf && typeof conf.syntax === 'string') {
+					domClass.add(widget.domNode, 'syntax' + conf.syntax);
+				}
+			}
 
 			// register event handler
 			if (onChangeCallback) {

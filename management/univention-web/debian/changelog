@@ -1,3 +1,10 @@
+univention-web (3.0.0-10) unstable; urgency=medium
+
+  * Bug #48546: adjust styling for Editor
+    + add dompurify
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 19 Feb 2019 19:31:11 +0100
+
 univention-web (3.0.0-9) unstable; urgency=medium
 
   * Bug #48700: Add reworked logo

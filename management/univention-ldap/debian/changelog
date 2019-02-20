@@ -1,3 +1,9 @@
+univention-ldap (15.0.0-10) unstable; urgency=medium
+
+  * Bug #48546: Enhance user guidance in portal
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 20 Feb 2019 13:13:11 +0100
+
 univention-ldap (15.0.0-9) unstable; urgency=low
 
   * Bug #41213: cn=monitor backend for statistical information

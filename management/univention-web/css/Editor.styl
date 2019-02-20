@@ -19,31 +19,21 @@
 
 .umc .dijitEditorIFrameContainer
 	padding:3px 3px 1px 10px
-
-.umc .dijitEditorIFrame
-	background-color: $textbox-background-color
+	background-color: #fff
 
 .umc .dijitEditor
 	border: 1px solid $border-color
 
-.umc .dijitEditor .dijitEditorIFrameContainer
-	background-color: $textbox-background-color
-	background-repeat:repeat-x
-
-.umc .dijitEditorHover .dijitEditorIFrameContainer,
-.umc .dijitEditorHover .dijitEditorIFrameContainer .dijitEditorIFrame
-	background-color: $textbox-hovered-background-color
-
-.umc .dijitEditorFocused .dijitEditorIFrameContainer,
-.umc .dijitEditorFocused .dijitEditorIFrameContainer .dijitEditorIFrame
-	background-color: $textbox-focused-background-color
+	.dijitTextBox
+		display: inline-flex
+		height: material-grid(4)
+		max-width: 100px
 
 
 /* Disabled */
 .umc .dijitEditorDisabled
 	border: 1px solid $disabled-border-color
 	color: $disabled-text-color
-
 
 .umc .dijitDisabled .dijitEditorIFrame,
 .umc .dijitDisabled .dijitEditorIFrameContainer,

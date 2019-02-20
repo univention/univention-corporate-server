@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 Univention GmbH
+ * Copyright 2011-2019 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -26,56 +26,23 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define*/
 
 define([
 	"dojo/_base/declare",
-	"dojo/_base/lang",
-	"dojo/dom-class",
-	"dijit/form/Button",
-	"dijit/Tooltip",
-	"login/main",
-	"umc/tools",
-	"umc/i18n!"
-], function(declare, lang, domClass, Button, Tooltip, login, tools, _) {
-	return declare("umc.widgets.Button", [ Button ], {
-		type: 'button',
-		label: _('Login'),
+	"dijit/Editor",
+	"umc/widgets/_FormWidgetMixin",
+	"dijit/_editor/plugins/ViewSource",
+	"dijit/_editor/plugins/FullScreen",
+	"dojox/editor/plugins/PrettyPrint"
+], function(declare, Editor, _FormWidgetMixin) {
+	return declare("umc.widgets.Editor", [ Editor, _FormWidgetMixin ], {
+		labelPosition: 'top',
+		extraPlugins: ['viewSource', 'fullscreen', 'prettyprint'],
 
-		'class': 'umcLoginButton umcFlatButton',
-
-		loggedIn: false,
-
-		buildRendering: function() {
-			this.inherited(arguments);
-			this.set('iconClass', 'umcLoggedOutIcon');
-		},
-
-		_setLoggedInAttr: function(loggedIn) {
-			this.set('iconClass', loggedIn ? 'umcLoggedInIcon' : 'umcLoggedOutIcon');
-			this.set('label', loggedIn ? _('Logout') : _('Login'));
-			this._set('loggedIn', loggedIn);
-		},
-
-		emphasise: function(bool) {
-			domClass.toggle(this.domNode, 'umcLoginButton--emphasised', bool);
-		},
-
-		postCreate: function() {
-			this.inherited(arguments);
-
-			login.onLogin(lang.hitch(this, 'set', 'loggedIn', true));
-			login.onLogout(lang.hitch(this, 'set', 'loggedIn', false));
-
-			this.on('click', lang.hitch(this, function() {
-				if (this.loggedIn) {
-					login.logout();
-				} else {
-					login.start();
-				}
-			}));
+		ready: function() {
+			return this.onLoadDeferred;
 		}
 	});
 });
-
 

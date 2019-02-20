@@ -188,6 +188,36 @@ property_descriptions = {
 		may_change=True,
 		identifies=False
 	),
+	'ensureLogin': univention.admin.property(
+		short_description=_('Redirect anonymous visitors to the login'),
+		syntax=univention.admin.syntax.TrueFalseUp,
+		default='FALSE',
+		multivalue=False,
+		dontsearch=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
+	'anonymousEmpty': univention.admin.property(
+		syntax=univention.admin.syntax.LocalizedAnonymousEmpty,
+		multivalue=True,
+		dontsearch=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
+	'autoLayoutCategories': univention.admin.property(
+		short_description=_('The categories are displayed side by side if there is enough space'),
+		syntax=univention.admin.syntax.TrueFalseUp,
+		default='FALSE',
+		dontsearch=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	# 'portalEntriesOrder' - deprecated by 'content' of settings/portal
 	'portalEntriesOrder': univention.admin.property(
 		short_description=_('Portal entries order'),
@@ -222,30 +252,39 @@ property_descriptions = {
 layout = [
 	Tab(_('General'), _('Portal options'), layout=[
 		Group(_('Name'), layout=[
-			["name"],
-			["displayName"],
+			['name'],
+			['displayName'],
 		]),
 		Group(_('Visibility'), layout=[
-			["portalComputers"],
+			['portalComputers'],
 		]),
 		Group(_('Appearance'), layout=[
-			["logo"],
-			["background"],
-			["cssBackground"],
-			["fontColor"],
+			['logo'],
+			['background'],
+			['cssBackground'],
+			['fontColor'],
+			['autoLayoutCategories'],
 		]),
 		Group(_('General Content'), layout=[
 			# ["showMenu"],
 			# ["showSearch"],
 			# ["showLogin"],
-			["showApps"],
+			['showApps'],
 			# ["showServers"],
-			["links"],
+			['links'],
 		]),
 	]),
 	Tab(_('Portal categories and entries'), _('The categories and entries that are shown on this portal'), layout=[
-		["content"],
+		['content'],
 	]),
+	Tab(_('Manage anonymous visitors'), _('Manage anonymous visitors'), layout=[
+		Group(_('Login'), layout=[
+			['ensureLogin'],
+		]),
+		Group(_('Message when the portal is empty'), layout=[
+			['anonymousEmpty'],
+		]),
+ 	]),
 ]
 
 
@@ -282,6 +321,9 @@ mapping.register('showSearch', 'univentionPortalShowSearch', None, univention.ad
 mapping.register('showLogin', 'univentionPortalShowLogin', None, univention.admin.mapping.ListToString)
 mapping.register('showApps', 'univentionPortalShowApps', None, univention.admin.mapping.ListToString)
 mapping.register('showServers', 'univentionPortalShowServers', None, univention.admin.mapping.ListToString)
+mapping.register('ensureLogin', 'univentionPortalEnsureLogin', None, univention.admin.mapping.ListToString)
+mapping.register('anonymousEmpty', 'univentionPortalAnonymousEmpty', mapTranslationValue, unmapTranslationValue)
+mapping.register('autoLayoutCategories', 'univentionPortalAutoLayoutCategories', None, univention.admin.mapping.ListToString)
 mapping.register('background', 'univentionPortalBackground', None, univention.admin.mapping.ListToString)
 mapping.register('cssBackground', 'univentionPortalCSSBackground', None, univention.admin.mapping.ListToString)
 mapping.register('fontColor', 'univentionPortalFontColor', None, univention.admin.mapping.ListToString)

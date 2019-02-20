@@ -189,6 +189,9 @@ class LDAPCache(object):
 			ret['logo'] = None
 		ret['name'] = portal.props.displayName
 		ret['content'] = portal.props.content
+		ret['ensureLogin'] = portal.props.ensureLogin
+		ret['anonymousEmpty'] = portal.props.anonymousEmpty
+		ret['autoLayoutCategories'] = portal.props.autoLayoutCategories
 		return ret
 
 	def _extract_links(self, portal):
@@ -313,7 +316,7 @@ class JsonHandler(tornado.web.RequestHandler):
 		portal = cache.get('portal')
 		entries = cache.get('entries')
 		groups = cache.get('groups')
-		actual_content = portal.pop('content')
+		actual_content = portal.pop('content') or []
 		filtered_content = []
 		for category_dn, entry_dns in actual_content:
 			filter_entry_dns = []

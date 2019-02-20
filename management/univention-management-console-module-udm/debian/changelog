@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.2-5) unstable; urgency=medium
+
+  * Bug #48546: Add Editor syntax
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 19 Feb 2019 19:32:33 +0100
+
 univention-management-console-module-udm (9.0.2-4) unstable; urgency=medium
 
   * Bug #48660: Fix wizard widget in absence of selfservice App, stronger

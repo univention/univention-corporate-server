@@ -22,152 +22,30 @@
 
 .umc .dijitToolbar
 	border-bottom: 1px solid $border-color
-	background-color: $bar-background-color
-	standard-gradient()
-	padding: 2px 0 2px 4px
-	zoom: 1
-
+	background-color: #fff
 
 .umc .dijitToolbar label
-	padding: 0 3px 0 6px
+	padding: 0 material-grid(1)
 
+.umc .dijitToolbar
+	& .dijitButton
+	& .dijitDropDownButton
+		material-flat-button()
+		umc-icon-button(26px)
+		margin: material-grid(1, true)
 
-/** override claro/form/Button.css, and also ComboBox down arrow **/
-.umc .dijitToolbar .dijitButton .dijitButtonNode,
-.umc .dijitToolbar .dijitDropDownButton .dijitButtonNode,
-.umc .dijitToolbar .dijitComboButton .dijitButtonNode,
-.umc .dijitToolbar .dijitToggleButton .dijitButtonNode,
-.umc .dijitToolbar .dijitComboBox .dijitButtonNode
-	border-width: 0	/* on hover/active, border-->1px, padding-->1px */
-	padding: 2px
-	border-radius: $toolbar-button-border-radius
-	box-shadow: none
-	transition-property: background-color
-	transition-duration: .3s
-
-	background-color:rgba(171,214,255,0)
-	background-image: none	/* cancel gradient for normal buttons, we don't want any gradient besides toolbar's on non-hovered buttons */
-
-.dj_ie .umc .dijitToolbar .dijitButton .dijitButtonNode,
-.dj_ie .umc .dijitToolbar .dijitDropDownButton .dijitButtonNode,
-.dj_ie .umc .dijitToolbar .dijitComboButton .dijitButtonNode,
-.dj_ie .umc .dijitToolbar .dijitToggleButton .dijitButtonNode,
-.dj_ie .umc .dijitToolbar .dijitComboBox .dijitButtonNode
-	background-color: transparent   /* for IE, which doesn't understand rgba(...) */
-
-
-/* hover status */
-.dj_ie .umc .dijitToolbar .dijitButtonHover .dijitButtonNode,
-.dj_ie .umc .dijitToolbar .dijitDropDownButtonHover .dijitButtonNode,
-.dj_ie .umc .dijitToolbar .dijitComboButton .dijitButtonNodeHover,
-.dj_ie .umc .dijitToolbar .dijitComboButton .dijitDownArrowButtonHover,
-.dj_ie .umc .dijitToolbar .dijitToggleButtonHover .dijitButtonNode
-    /* button should still turn blue on hover, so need to override .dj_ie rules above */
-	background-color: $button-hovered-background-color
-
-
-/* active status */
-.dj_ie .umc .dijitToolbar .dijitButtonActive .dijitButtonNode,
-.dj_ie .umc .dijitToolbar .dijitDropDownButtonActive .dijitButtonNode,
-.dj_ie .umc .dijitToolbar .dijitComboButtonActive .dijitButtonNode,
-.dj_ie .umc .dijitToolbar .dijitToggleButtonActive .dijitButtonNode
-    /* button should still turn blue on press, so need to override .dj_ie rules above */
-	background-color: $button-pressed-background-color
-
-
-.umc .dijitToolbar .dijitComboButton .dijitStretch
-	/* no rounded border on side adjacent to arrow */
-	border-radius: $toolbar-button-border-radius 0 0 $toolbar-button-border-radius
-
-.umc .dijitToolbar .dijitComboButton .dijitArrowButton
-	/* no rounded border on side adjacent to button */
-	border-radius: 0 $toolbar-button-border-radius $toolbar-button-border-radius 0
-
-
-.umc .dijitToolbar .dijitComboBox .dijitButtonNode
-	padding: 0
-
-
-/* hover status */
-.umc .dijitToolbar .dijitButtonHover .dijitButtonNode,
-.umc .dijitToolbar .dijitDropDownButtonHover .dijitButtonNode,
-.umc .dijitToolbar .dijitToggleButtonHover .dijitButtonNode,
-.umc .dijitToolbar .dijitComboButtonHover .dijitButtonNode
-	border-width:1px
-	background-color: $hovered-background-color
-	standard-gradient()
-	padding: 1px
-
-.umc .dijitToolbar .dijitComboButtonHover .dijitButtonNode,
-.umc .dijitToolbar .dijitComboButtonHover .dijitDownArrowButton
-	background-color: $toolbar-combobutton-hovered-unhoveredsection-background-color
-
-.umc .dijitToolbar .dijitComboButtonHover .dijitButtonNodeHover,
-.umc .dijitToolbar .dijitComboButtonHover .dijitDownArrowButtonHover
-	background-color: $hovered-background-color
-
-
-/* active status */
-.umc .dijitToolbar .dijitButtonActive .dijitButtonNode,
-.umc .dijitToolbar .dijitDropDownButtonActive .dijitButtonNode,
-.umc .dijitToolbar .dijitToggleButtonActive .dijitButtonNode
-	border-width: 1px
-	background-color:$pressed-background-color
-	active-gradient()
-	padding: 1px
-
-.umc .dijitToolbar .dijitComboButtonActive
-	transition-duration: .2s
-	border-width: 1px
-	padding: 0
-
-.umc .dijitToolbar .dijitComboButtonActive .dijitButtonNode,
-.umc .dijitToolbar .dijitComboButtonActive .dijitDownArrowButton
-	background-color: $toolbar-combobutton-hovered-unhoveredsection-background-color
-	padding: 2px
-
-.umc .dijitToolbar .dijitComboButtonActive .dijitButtonNodeActive
-	background-color: $pressed-background-color
-	active-gradient()
-
-.umc .dijitToolbar .dijitComboButtonActive .dijitDownArrowButtonActive
-	background-color: $pressed-background-color
-	active-gradient()
-
-
-/* Avoid double border between button and arrow */
-.umc .dijitToolbar .dijitComboButtonHover .dijitDownArrowButton,
-.umc .dijitToolbar .dijitComboButtonActive .dijitDownArrowButton
-	border-left-width: 0
-
-.umc .dijitToolbar .dijitComboButtonHover .dijitDownArrowButton
-	padding-left: 2px		/* since there's no left border, don't reduce from 2px --> 1px */
-
+	& .dijitToggleButton
+		material-outlined-button()
+		umc-icon-button(26px)
+		margin: material-grid(1, true)
 
 /* toggle button checked status */
-.umc .dijitToolbar .dijitToggleButtonChecked .dijitButtonNode
-	margin: 0	/* remove margin and add a border */
-	border-width: 1px
-	border-style: solid
-	background-image: none
-	border-color: $selected-border-color
-	background-color: $toolbar-button-checked-background-color
-	padding: 1px
-
-
 .umc .dijitToolbarSeparator
-	/* separator icon in the editor sprite */
 	background: url($image-editor-icons-enabled)
-
 
 /* Toolbar inside of disabled Editor */
 .umc .dijitDisabled .dijitToolbar
 	background:none
 	background-color:$disabled-background-color
 	border-bottom: 1px solid $disabled-border-color
-
-
-.umc .dijitToolbar .dijitComboBoxDisabled .dijitArrowButtonInner
-	background-position:0 50%
-
 
