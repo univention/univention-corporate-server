@@ -39,6 +39,7 @@ from univention.management.console.modules.decorators import simple_response
 
 from univention.admindiary.client import add_comment
 from univention.admindiary.backend import get_client
+from univention.admindiary.events import DiaryEvent
 
 
 class Instance(Base):
@@ -51,19 +52,10 @@ class Instance(Base):
 		except (AttributeError, IndexError, KeyError):
 			if entry['args']:
 				message = '%s (%s)' % (message, ', '.join(entry['args']))
-		icons = {
-				'APP_INSTALL_START': 'software',
-				'APP_INSTALL_SUCCESS': 'software',
-				'APP_INSTALL_FAILURE': 'software',
-				'UPDATE_STARTED': 'software',
-				'UPDATE_FINISHED_SUCCESS': 'software',
-				'UPDATE_FINISHED_FAILURE': 'software',
-				'SERVER_PASSWORD_CHANGED': 'devices',
-				'SERVER_PASSWORD_CHANGED_FAILED': 'devices',
-				'USER_CREATED': 'users',
-				'COMMENT': 'comment',
-		}
-		icon = icons.get(entry['event_name'], 'default')
+		icon = 'default'
+		event = DiaryEvent.get(entry['event_name'])
+		if event:
+			icon = event.icon or icon
 		res_entry = {
 			'id': entry['id'],
 			'date': entry['date'],
