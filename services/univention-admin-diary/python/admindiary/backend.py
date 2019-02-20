@@ -40,31 +40,44 @@ from univention.config_registry import ConfigRegistry
 
 from univention.admindiary import get_logger
 
-ucr = ConfigRegistry()
-ucr.load()
-
-password = open('/etc/admin-diary.secret').read().strip()
-
-dbms = ucr.get('admin/diary/dbms')
-dbhost = ucr.get('admin/diary/dbhost', 'localhost')
-
 get_logger = partial(get_logger, 'backend')
 
-db_url = '%s://admindiary:%s@%s/admindiary' % (dbms, password, dbhost)
-engine = sqlalchemy.create_engine(db_url)
-Session = sessionmaker(bind=engine)
+
+def get_engine():
+	ucr = ConfigRegistry()
+	ucr.load()
+
+	password = open('/etc/admin-diary.secret').read().strip()
+
+	dbms = ucr.get('admin/diary/dbms')
+	dbhost = ucr.get('admin/diary/dbhost', 'localhost')
+
+	db_url = '%s://admindiary:%s@%s/admindiary' % (dbms, password, dbhost)
+	return sqlalchemy.create_engine(db_url)
+
+def make_session_class():
+	if make_session_class._session is None:
+		engine = get_engine()
+		make_session_class._session = sessionmaker(bind=engine)
+	return make_session_class._session
+make_session_class._session = None
 
 @contextmanager
 def get_session():
-	session = Session()
+	session = make_session_class()()
 	yield session
 	session.commit()
 	session.close()
 
 
-
-
 Base = declarative_base()
+
+class Meta(Base):
+	__tablename__ = 'meta'
+
+	id = Column(Integer, Sequence('meta_id_seq'), primary_key=True)
+	schema = Column(Integer, nullable=False)
+
 
 entry_tags = Table('entry_tags', Base.metadata,
     Column('entry_id', ForeignKey('entries.id'), primary_key=True),
@@ -125,169 +138,187 @@ class Arg(Base):
 
 	entry = relationship('Entry')
 
-def translate(event_name, locale, session):
-	key = (event_name, locale)
-	if key not in translate._cache:
-		event_message = session.query(EventMessage).filter(EventMessage.event_id == Event.id, EventMessage.locale == locale, Event.name == event_name).one_or_none()
-		if event_message:
-			translation = event_message.message
+
+class Client(object):
+	def __init__(self, version, session):
+		self.version = version
+		self._session = session
+		self._translation_cache = {}
+
+	def translate(self, event_name, locale):
+		key = (event_name, locale)
+		if key not in self._translation_cache:
+			event_message = self._session.query(EventMessage).filter(EventMessage.event_id == Event.id, EventMessage.locale == locale, Event.name == event_name).one_or_none()
+			if event_message:
+				translation = event_message.message
+			else:
+				translation = None
+			self._translation_cache[key] = translation
 		else:
-			translation = None
-		translate._cache[key] = translation
-	else:
-		translation = translate._cache[key]
-	return translation
-translate._cache = {}
+			translation = self._translation_cache[key]
+		return translation
 
-def options(session):
-	ret = {}
-	ret['tags'] = [tag.name for tag in session.query(Tag).all()]
-	ret['usernames'] = [username[0] for username in session.query(Entry.username).distinct()]
-	ret['hostnames'] = [hostname[0] for hostname in session.query(Entry.hostname).distinct()]
-	ret['events'] = [event.name for event in session.query(Event).all()]
-	return ret
+	def options(self):
+		ret = {}
+		ret['tags'] = [tag.name for tag in self._session.query(Tag).all()]
+		ret['usernames'] = [username[0] for username in self._session.query(Entry.username).distinct()]
+		ret['hostnames'] = [hostname[0] for hostname in self._session.query(Entry.hostname).distinct()]
+		ret['events'] = [event.name for event in self._session.query(Event).all()]
+		return ret
 
-def add_tag(name, session):
-	obj = session.query(Tag).filter(Tag.name == name).one_or_none()
-	if obj is None:
-		obj = Tag(name=name)
-		session.add(obj)
-		session.flush()
-	return obj
+	def add_tag(self, name):
+		obj = self._session.query(Tag).filter(Tag.name == name).one_or_none()
+		if obj is None:
+			obj = Tag(name=name)
+			self._session.add(obj)
+			self._session.flush()
+		return obj
 
-def add_event(name, session):
-	obj = session.query(Event).filter(Event.name == name).one_or_none()
-	if obj is None:
-		obj = Event(name=name)
-		session.add(obj)
-		session.flush()
-	return obj
+	def add_event(self, name):
+		obj = self._session.query(Event).filter(Event.name == name).one_or_none()
+		if obj is None:
+			obj = Event(name=name)
+			self._session.add(obj)
+			self._session.flush()
+		return obj
 
-def add_event_message(event_id, locale, message, force, session):
-	event_message_query = session.query(EventMessage).filter(EventMessage.locale == locale, EventMessage.event_id == event_id)
-	event_message = event_message_query.one_or_none()
-	if event_message is None:
-		event_message = EventMessage(event_id=event_id, locale=locale, message=message, locked=force)
-		session.add(event_message)
-		session.flush()
-		return True
-	else:
-		if force:
-			event_message_query.update({'locked': True, 'message': message})
-			session.flush()
+	def add_event_message(self, event_id, locale, message, force):
+		event_message_query = self._session.query(EventMessage).filter(EventMessage.locale == locale, EventMessage.event_id == event_id)
+		event_message = event_message_query.one_or_none()
+		if event_message is None:
+			event_message = EventMessage(event_id=event_id, locale=locale, message=message, locked=force)
+			self._session.add(event_message)
+			self._session.flush()
 			return True
-	return False
-
-def add(diary_entry, session):
-	if diary_entry.event_name == 'COMMENT':
-		entry_message = diary_entry.message.get('en')
-		event_id = None
-	else:
-		get_logger().debug('Searching for Event %s' % diary_entry.event_name)
-		entry_message = None
-		event = add_event(diary_entry.event_name, session)
-		event_id = event.id
-		get_logger().debug('Found Event ID %s' % event.id)
-		if diary_entry.message:
-			for locale, message in diary_entry.message.iteritems():
-				get_logger().debug('Trying to insert message for %s' % locale)
-				if add_event_message(event.id, locale, message, False, session):
-					get_logger().debug('Found no existing one. Inserted %r' % message)
 		else:
-			get_logger().debug('No further message given, though')
-	entry = Entry(username=diary_entry.username, hostname=diary_entry.hostname, timestamp=diary_entry.timestamp, context_id=diary_entry.context_id, event_id=event_id, message=entry_message)
-	session.add(entry)
-	main_id = session.query(func.min(Entry.id)).filter(Entry.context_id == entry.context_id).scalar()
-	if main_id:
-		entry.main_id = main_id
-	for tag in diary_entry.tags:
-		tag = add_tag(tag, session)
-		entry.tags.append(tag)
-	for key, value in diary_entry.args.iteritems():
-		entry.args.append(Arg(key=key, value=value))
-	get_logger().info('Successfully added %s to %s. (%s)' % (diary_entry.context_id, engine.url.drivername, diary_entry.event_name))
+			if force:
+				event_message_query.update({'locked': True, 'message': message})
+				self._session.flush()
+				return True
+		return False
 
-def _one_query(ids, result):
-	if ids is not None and not ids:
-		return set()
-	new_ids = set()
-	for entry in result:
-		new_ids.add(entry.id)
-	if ids is None:
-		return new_ids
-	else:
-		return ids.intersection(new_ids)
+	def add(self, diary_entry):
+		if diary_entry.event_name == 'COMMENT':
+			entry_message = diary_entry.message.get('en')
+			event_id = None
+		else:
+			get_logger().debug('Searching for Event %s' % diary_entry.event_name)
+			entry_message = None
+			event = self.add_event(diary_entry.event_name)
+			event_id = event.id
+			get_logger().debug('Found Event ID %s' % event.id)
+			if diary_entry.message:
+				for locale, message in diary_entry.message.iteritems():
+					get_logger().debug('Trying to insert message for %s' % locale)
+					if self.add_event_message(event.id, locale, message, False):
+						get_logger().debug('Found no existing one. Inserted %r' % message)
+			else:
+				get_logger().debug('No further message given, though')
+		entry = Entry(username=diary_entry.username, hostname=diary_entry.hostname, timestamp=diary_entry.timestamp, context_id=diary_entry.context_id, event_id=event_id, message=entry_message)
+		self._session.add(entry)
+		main_id = self._session.query(func.min(Entry.id)).filter(Entry.context_id == entry.context_id).scalar()
+		if main_id:
+			entry.main_id = main_id
+		for tag in diary_entry.tags:
+			tag = self.add_tag(tag)
+			entry.tags.append(tag)
+		for key, value in diary_entry.args.iteritems():
+			entry.args.append(Arg(key=key, value=value))
+		get_logger().info('Successfully added %s (%s)' % (diary_entry.context_id, diary_entry.event_name))
 
-def query(session, time_from=None, time_until=None, tag=None, event=None, username=None, hostname=None, message=None, locale='en'):
-	ids = None
-	if time_from:
-		ids = _one_query(ids, session.query(Entry).filter(Entry.timestamp >= time_from))
-	if time_until:
-		ids = _one_query(ids, session.query(Entry).filter(Entry.timestamp < time_until))
-	if tag:
-		ids = _one_query(ids, session.query(Entry).filter(Entry.tags.any(Tag.name == tag)))
-	if event:
-		ids = _one_query(ids, session.query(Entry).filter(Entry.event.has(name=event)))
-	if username:
-		ids = _one_query(ids, session.query(Entry).filter(Entry.username == username))
-	if hostname:
-		ids = _one_query(ids, session.query(Entry).filter(Entry.hostname == hostname))
-	if message:
-		pattern_ids = set()
-		for pat in message.split():
-			pattern_ids.update(_one_query(None, session.query(Entry).filter(Entry.message.ilike('%{}%'.format(pat)))))
-			pattern_ids.update(_one_query(None, session.query(Entry).join(EventMessage, Entry.event_id == EventMessage.event_id).filter(Entry.event_id == EventMessage.event_id, EventMessage.locale == locale, EventMessage.message.ilike('%{}%'.format(pat)))))
-			pattern_ids.update(_one_query(None, session.query(Entry).filter(Entry.args.any(Arg.value == pat))))
+	def _one_query(self, ids, result):
+		if ids is not None and not ids:
+			return set()
+		new_ids = set()
+		for entry in result:
+			new_ids.add(entry.id)
 		if ids is None:
-			ids = pattern_ids
+			return new_ids
 		else:
-			ids.intersection_update(pattern_ids)
-	if ids is None:
-		entries = session.query(Entry).filter(Entry.event_id != None)
-	else:
-		entries = session.query(Entry).filter(Entry.id.in_(ids), Entry.event_id != None)
-	res = []
-	for entry in entries:
-		event = entry.event
-		if event:
-			event_name = event.name
-		else:
-			event_name = 'COMMENT'
-		args = dict((arg.key, arg.value) for arg in entry.args)
-		comments = session.query(Entry).filter(Entry.context_id == entry.context_id, Entry.message != None).count()
-		res.append({
-			'id': entry.id,
-			'date': entry.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
-			'event_name': event_name,
-			'hostname': entry.hostname,
-			'username': entry.username,
-			'context_id': entry.context_id,
-			'message': entry.message,
-			'args': args,
-			'comments': comments > 0,
-		})
-	return res
+			return ids.intersection(new_ids)
 
-def get(context_id, session):
-	res = []
-	for entry in session.query(Entry).filter(Entry.context_id == context_id).order_by('id'):
-		args = dict((arg.key, arg.value) for arg in entry.args)
-		tags = [tag.name for tag in entry.tags]
-		event = entry.event
+	def query(self, time_from=None, time_until=None, tag=None, event=None, username=None, hostname=None, message=None, locale='en'):
+		ids = None
+		if time_from:
+			ids = self._one_query(ids, self._session.query(Entry).filter(Entry.timestamp >= time_from))
+		if time_until:
+			ids = self._one_query(ids, self._session.query(Entry).filter(Entry.timestamp < time_until))
+		if tag:
+			ids = self._one_query(ids, self._session.query(Entry).filter(Entry.tags.any(Tag.name == tag)))
 		if event:
-			event_name = event.name
+			ids = self._one_query(ids, self._session.query(Entry).filter(Entry.event.has(name=event)))
+		if username:
+			ids = self._one_query(ids, self._session.query(Entry).filter(Entry.username == username))
+		if hostname:
+			ids = self._one_query(ids, self._session.query(Entry).filter(Entry.hostname == hostname))
+		if message:
+			pattern_ids = set()
+			for pat in message.split():
+				pattern_ids.update(self._one_query(None, self._session.query(Entry).filter(Entry.message.ilike('%{}%'.format(pat)))))
+				pattern_ids.update(self._one_query(None, self._session.query(Entry).join(EventMessage, Entry.event_id == EventMessage.event_id).filter(Entry.event_id == EventMessage.event_id, EventMessage.locale == locale, EventMessage.message.ilike('%{}%'.format(pat)))))
+				pattern_ids.update(self._one_query(None, self._session.query(Entry).filter(Entry.args.any(Arg.value == pat))))
+			if ids is None:
+				ids = pattern_ids
+			else:
+				ids.intersection_update(pattern_ids)
+		if ids is None:
+			entries = self._session.query(Entry).filter(Entry.event_id != None)
 		else:
-			event_name = 'COMMENT'
-		obj = {
-			'id': entry.id,
-			'username': entry.username,
-			'hostname': entry.hostname,
-			'message': entry.message,
-			'args': args,
-			'date': entry.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
-			'tags': tags,
-			'context_id': entry.context_id,
-			'event_name': event_name,
-		}
-		res.append(obj)
-	return res
+			entries = self._session.query(Entry).filter(Entry.id.in_(ids), Entry.event_id != None)
+		res = []
+		for entry in entries:
+			event = entry.event
+			if event:
+				event_name = event.name
+			else:
+				event_name = 'COMMENT'
+			args = dict((arg.key, arg.value) for arg in entry.args)
+			comments = self._session.query(Entry).filter(Entry.context_id == entry.context_id, Entry.message != None).count()
+			res.append({
+				'id': entry.id,
+				'date': entry.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+				'event_name': event_name,
+				'hostname': entry.hostname,
+				'username': entry.username,
+				'context_id': entry.context_id,
+				'message': entry.message,
+				'args': args,
+				'comments': comments > 0,
+			})
+		return res
+
+	def get(self, context_id):
+		res = []
+		for entry in self._session.query(Entry).filter(Entry.context_id == context_id).order_by('id'):
+			args = dict((arg.key, arg.value) for arg in entry.args)
+			tags = [tag.name for tag in entry.tags]
+			event = entry.event
+			if event:
+				event_name = event.name
+			else:
+				event_name = 'COMMENT'
+			obj = {
+				'id': entry.id,
+				'username': entry.username,
+				'hostname': entry.hostname,
+				'message': entry.message,
+				'args': args,
+				'date': entry.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+				'tags': tags,
+				'context_id': entry.context_id,
+				'event_name': event_name,
+			}
+			res.append(obj)
+		return res
+
+@contextmanager
+def get_client(version):
+	if version != 1:
+		raise UnsupportedVersion(version)
+	with get_session() as session:
+		client = Client(version=version, session=session)
+		yield client
+
+class UnsupportedVersion(Exception):
+	def __str__(self):
+		return 'Version %s of the Admin Diary Backend is not supported' % (self.args[0])

@@ -36,11 +36,12 @@
 import sys
 from datetime import datetime
 from functools import partial
+import json
 
 from pyparsing import Word, alphas, Suppress, Combine, nums, string, Regex, ParseException
 
 from univention.admindiary import DiaryEntry, get_logger, get_events_to_reject
-from univention.admindiary.backend import add, get_session
+from univention.admindiary.backend import get_client
 
 get_logger = partial(get_logger, 'backend')
 
@@ -81,35 +82,44 @@ class RsyslogTransport(object):
 			rsyslog_event_dict = parsed_dict["serialized_event_dict"]
 			# and convert to Admin Diary object model
 			try:
-				entry = DiaryEntry.from_json(rsyslog_event_dict)
-			except (TypeError, KeyError) as exc:
+				return json.loads(rsyslog_event_dict)
+			except TypeError as exc:
 				get_logger().error('Parsing failed! %r (%s)' % (rsyslog_event_dict, exc))
-			else:
-				return entry
+
+def process(values):
+	json_string = json.dumps(values)
+	if values.get('type') == 'Entry v1':
+		entry = DiaryEntry.from_json(json_string)
+		add_entry_v1(entry)
+	else:
+		get_logger().error('Unsupported values: %r' % values)
+
+def add_entry_v1(entry):
+	blocked_events = get_events_to_reject()
+	if entry.event_name in blocked_events:
+		get_logger().info('Rejecting %s' % entry.event_name)
+		return
+	with get_client(version=1) as client:
+		client.add(entry)
 
 
 def ok():
+	# tell rsyslog that everything is ok
 	print "OK"
 	sys.stdout.flush()
 
+
 def stdin_to_storage():
 	rsyslog_transport = RsyslogTransport("ADMINDIARY:")
-	blocked_events = get_events_to_reject()
-	# Tell rsyslog we are ready process messages
 	ok()
 	while True:
 		line = sys.stdin.readline()
 		if not line:
 			break
-		entry = rsyslog_transport.deserialize(line)
-		if entry:
-			if entry.event_name in blocked_events:
-				get_logger().info('Rejecting %s' % entry.event_name)
-				ok()
-				continue
-			with get_session() as session:
-				add(entry, session)
-				ok()
+		values = rsyslog_transport.deserialize(line)
+		if values:
+			process(values)
+		ok()
 
 
 if __name__ == "__main__":

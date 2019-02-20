@@ -38,14 +38,14 @@ from univention.management.console.base import Base
 from univention.management.console.modules.decorators import simple_response
 
 from univention.admindiary.client import add_comment
-from univention.admindiary.backend import query, get, translate, options, get_session
+from univention.admindiary.backend import get_client
 
 
 class Instance(Base):
-	def _format_entry(self, entry, session):
+	def _format_entry(self, entry, client):
 		message = entry['message']
 		if entry['event_name'] != 'COMMENT':
-			message = translate(entry['event_name'], self.locale.language, session)
+			message = client.translate(entry['event_name'], self.locale.language)
 		try:
 			message = message.format(**entry['args'])
 		except (AttributeError, IndexError, KeyError):
@@ -79,29 +79,29 @@ class Instance(Base):
 
 	@simple_response
 	def options(self):
-		with get_session() as session:
-			return options(session)
+		with get_client(version=1) as client:
+			return client.options()
 
 	@simple_response
 	def get(self, context_id):
-		with get_session() as session:
-			entries = get(context_id, session)
+		with get_client(version=1) as client:
+			entries = client.get(context_id)
 			result = []
 			for entry in entries:
-				res_entry = self._format_entry(entry, session)
+				res_entry = self._format_entry(entry, client)
 				result.append(res_entry)
 			return sorted(result, key=lambda x: x['id'])
 
 	@simple_response
 	def query(self, time_from=None, time_until=None, tag=None, event=None, username=None, hostname=None, message=None):
-		with get_session() as session:
+		with get_client(version=1) as client:
 			if time_until:
 				time_until = datetime.strptime(time_until, '%Y-%m-%d')
 				time_until = (time_until + timedelta(days=1)).strftime('%Y-%m-%d')
-			entries = query(session, time_from=time_from, time_until=time_until, tag=tag, event=event, username=username, hostname=hostname, message=message, locale=self.locale.language)
+			entries = client.query(time_from=time_from, time_until=time_until, tag=tag, event=event, username=username, hostname=hostname, message=message, locale=self.locale.language)
 			result = []
 			for entry in entries:
-				res_entry = self._format_entry(entry, session)
+				res_entry = self._format_entry(entry, client)
 				result.append(res_entry)
 			return sorted(result, key=lambda x: x['date'])
 

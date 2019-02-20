@@ -28,7 +28,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from socket import getfqdn
+from socket import gethostname
 from datetime import datetime
 import logging
 import json
@@ -88,7 +88,7 @@ def get_logger(name):
 class DiaryEntry(object):
 	def __init__(self, username, message, args, tags, context_id, event_name):
 		self.username = username
-		self.hostname = getfqdn()
+		self.hostname = gethostname()
 		self.message = message
 		self.args = args
 		self.timestamp = datetime.now()
@@ -130,6 +130,7 @@ class DiaryEntry(object):
 			'tags': self.tags,
 			'context_id': self.context_id,
 			'event': self.event_name,
+			'type': 'Entry v1',
 			}
 		return json.dumps(attrs)
 

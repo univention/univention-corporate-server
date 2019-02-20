@@ -33,8 +33,8 @@ Description: Univention Admin Diary backend
 
 Package: univention-management-console-module-admindiary
 Architecture: all
-Depends: univention-management-console-server
-Recommends: univention-admin-diary-backend
+Depends: univention-management-console-server,
+ univention-admin-diary-backend
 Description: UMC module for the Admin Diary
  This package contains the UMC module for the Admin Diary
  .
