@@ -1,3 +1,9 @@
+univention-updater (14.0.0-12) unstable; urgency=medium
+
+  * Bug #48717: Admin Diary Events when starting / ending an upgrade
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 20 Feb 2019 16:58:18 +0100
+
 univention-updater (14.0.0-11) unstable; urgency=medium
 
   * Bug #29505: fix univention-repository-update

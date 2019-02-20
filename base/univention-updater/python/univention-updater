@@ -67,11 +67,15 @@ except ImportError:
 
 from univention.config_registry import ConfigRegistry
 
+from univention.admindiary.client import write_event
+from univention.admindiary.events import UPDATE_STARTED, UPDATE_FINISHED_SUCCESS, UPDATE_FINISHED_FAILURE
+
 from univention.updater.errors import PreconditionError, ConfigurationError, RequiredComponentError, VerificationError, DownloadError
 from univention.updater.ucs_version import UCS_Version
 from univention.updater.tools import UniventionUpdater, LocalUpdater
 from univention.updater.locking import UpdaterLock
 from univention.updater.commands import cmd_update, cmd_dist_upgrade
+
 
 # TODO:
 #   * check the local repository path /var/lib/univention-reposiotry
@@ -565,6 +569,8 @@ def main():
                     count -= 1
 
                 detailed_status = FN_STATUS + '.details'
+                context_id = write_event(UPDATE_STARTED, {'hostname': ucr.get('hostname')})
+                os.environ['ADMINDIARY_CONTEXT'] = context_id
                 with open(detailed_status, 'w+b') as detailed_status_fd:
                     resultCode = os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive %s -o APT::Status-FD=%s >>%s 2>&1' % (cmd_dist_upgrade, detailed_status_fd.fileno(), LOGNAME))
                     if os.path.exists(detailed_status):
@@ -595,6 +601,7 @@ def main():
         os.unlink(failure)
     subprocess.call(['touch', reboot_required])
     update_status(status='DONE')
+    write_event(UPDATE_FINISHED_SUCCESS, {'hostname': ucr.get('hostname'), 'version': 'UCS %(version/version)s-%(version/patchlevel)s errata%(version/erratalevel)s' % ucr})
     os.execv(sys.argv[0], sys.argv)
 
 
@@ -649,6 +656,9 @@ if __name__ == '__main__':
                 msg = 'Update aborted by %s script of %s' % (phase, order)
                 raise UpdateError(msg, errorsource=errorsource)
         except UpdateError as msg:
+            ucr = ConfigRegistry()
+            ucr.load()
+            write_event(UPDATE_FINISHED_FAILURE, {'hostname': ucr.get('hostname')})
             if msg.errorsource:
                 update_status(status='FAILED', errorsource=msg.errorsource)
             else:

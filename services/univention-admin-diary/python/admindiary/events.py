@@ -54,3 +54,7 @@ APP_INSTALL_FAILURE = DiaryEvent('APP_INSTALL_FAILURE', {'en': 'Installation of 
 
 SERVER_PASSWORD_CHANGED = DiaryEvent('SERVER_PASSWORD_CHANGED', {'en': 'Machine account password changed successfully', 'de': 'Maschinenpasswort erfolgreich geändert'})
 SERVER_PASSWORD_CHANGED_FAILED = DiaryEvent('SERVER_PASSWORD_CHANGED_FAILED', {'en': 'Machine account password change failed', 'de': 'Änderung des Maschinenpassworts fehlgeschlagen'}, tags=['error'])
+
+UPDATE_STARTED = DiaryEvent('UPDATE_STARTED', {'en': 'Started to update {hostname}', 'de': 'Aktualisierung von {hostname} begonnen'}, args=['hostname'])
+UPDATE_FINISHED_SUCCESS = DiaryEvent('UPDATE_FINISHED_SUCCESS', {'en': 'Successfully updated {hostname} to {version}', 'de': 'Aktualisierung von {hostname} auf {version} erfolgreich abgeschlossen'}, args=['hostname', 'version'])
+UPDATE_FINISHED_FAILURE = DiaryEvent('UPDATE_FINISHED_FAILURE', {'en': 'Failed to update {hostname}', 'de': 'Aktualisierung von {hostname} fehlgeschlagen'}, args=['hostname'])
