@@ -1,3 +1,9 @@
+ucs-test (9.0.1-1) unstable; urgency=medium
+
+  * Bug #48621: fix 80_docker/68_extended_attributes
+
+ -- Florian Best <best@univention.de>  Wed, 20 Feb 2019 21:37:34 +0100
+
 ucs-test (9.0.0-39) unstable; urgency=medium
 
   * Bug #48719: 55_adconnector/163sync_ad_remove_capital_user_from_group disabled
