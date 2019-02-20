@@ -1,3 +1,9 @@
+univention-self-service (4.0.1-6) unstable; urgency=medium
+
+  * Bug #48446: catch exceptions during one run of invitation daemon
+
+ -- Felix Botner <botner@univention.de>  Wed, 20 Feb 2019 14:07:59 +0100
+
 univention-self-service (4.0.1-5) unstable; urgency=medium
 
   * Bug #48447: use +0 instead of none in ACL definition
