@@ -63,11 +63,17 @@ define([
 				this._detailsPage.on('Close', lang.hitch(this, '_closeDetails'));
 				this._detailsPage.on('Reload', lang.hitch(this, '_showDetails'));
 				this._detailsPage.on('NewComment', lang.hitch(this, '_newComment'));
-				this.selectChild(this._overviewPage);
+				var requestedContextId = this.get('moduleState');
+				if (requestedContextId) {
+					this._showDetails(requestedContextId);
+				} else {
+					this._closeDetails();
+				}
 			})));
 		},
 
 		_closeDetails: function() {
+			this._set('moduleState', '');
 			this.set('title', _('Admin Diary'));
 			this.selectChild(this._overviewPage);
 		},
@@ -78,7 +84,17 @@ define([
 			})));
 		},
 
+		_setModuleStateAttr: function(_state) {
+			var currentState = this.get('moduleState');
+			if (currentState === _state) {
+				return;
+			}
+			this._set('moduleState', _state);
+			this._showDetails(_state);
+		},
+
 		_showDetails: function(context_id) {
+			this._set('moduleState', context_id);
 			this.standbyDuring(tools.umcpCommand('admindiary/get', {'context_id': context_id}).then(lang.hitch(this, function(data) {
 				this.set('title', lang.replace(_('Admin Diary: {event_name}'), {event_name: data.result[0].event}));
 				this._detailsPage.reset(context_id, data.result);
