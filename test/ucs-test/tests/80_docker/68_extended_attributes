@@ -6,7 +6,6 @@
 ##   - docker.io
 
 import os
-import pdb
 import subprocess
 from contextlib import contextmanager
 
@@ -43,13 +42,7 @@ def test_app(appcenter, app, udm, activation_name, attribute_dn=None, attribute_
 	schema_file = '/usr/share/univention-appcenter/apps/%s/%s.schema' % (app.app_name, app.app_name)
 	assert os.path.exists(schema_file)
 	subprocess.call(['univention-ldapsearch', '-b', attribute_dn])
-	try:
-		verify_ldap_object(attribute_dn, {'univentionUDMPropertyShortDescription': [attribute_description], 'univentionUDMPropertySyntax': ['TrueFalseUp']})
-	except:
-		try:
-			pdb.post_mortem()
-		except:
-			pdb.set_trace()
+	verify_ldap_object(attribute_dn, {'univentionUDMPropertyShortDescription': [attribute_description], 'univentionUDMPropertySyntax': ['TrueFalseUp']})
 	attrs = (attrs or {}).copy()
 	attrs['username'] = get_app_name()
 	attrs['lastname'] = get_app_name()
@@ -122,22 +115,16 @@ LongDescriptionDe=Das ist mein Attribut. Und es ist dufte!
 """ % (additional_name)
 				app.add_script(attributes=attributes_content)
 				user = test_app(appcenter, app, udm, activation_name, attrs={additional_name: 'Hello'})
-				try:
-					verify_ldap_object('cn=%s,cn=%s,cn=custom attributes,cn=univention,%s' % (option_name, app_name, ucr.get('ldap/base')), {
-						'univentionUDMOptionIsApp': ['1'],
-						'univentionUDMOptionModule': ['users/user'],
-					})
-					verify_ldap_object('cn=%s,cn=%s,cn=custom attributes,cn=univention,%s' % (additional_name, app_name, ucr.get('ldap/base')), {
-						'univentionUDMPropertyShortDescription': ['This is my attribute'],
-						'univentionUDMPropertyLongDescription': ['This is my attribute. And it rocks!'],
-						'univentionUDMPropertySyntax': ['string']
-					})
-					verify_ldap_object(user, {activation_name: ['TRUE'], additional_name: ['Hello']})
-				except:
-					try:
-						pdb.post_mortem()
-					except:
-						pdb.set_trace()
+				verify_ldap_object('cn=%s,cn=%s,cn=custom attributes,cn=univention,%s' % (option_name, app_name, ucr.get('ldap/base')), {
+					'univentionUDMOptionIsApp': ['1'],
+					'univentionUDMOptionModule': ['users/user'],
+				})
+				verify_ldap_object('cn=%s,cn=%s,cn=custom attributes,cn=univention,%s' % (additional_name, app_name, ucr.get('ldap/base')), {
+					'univentionUDMPropertyShortDescription': ['This is my attribute'],
+					'univentionUDMPropertyLongDescription': ['This is my attribute. And it rocks!'],
+					'univentionUDMPropertySyntax': ['string']
+				})
+				verify_ldap_object(user, {activation_name: ['TRUE'], additional_name: ['Hello']})
 			verify_ldap_object('cn=%s,cn=%s,cn=custom attributes,cn=univention,%s' % (additional_name, app_name, ucr.get('ldap/base')), should_exist=False)
 
 
@@ -177,9 +164,9 @@ DescriptionDe=Das ist mein Attribut. Und es ist dufte!
 
 if __name__ == '__main__':
 	print 'GENERATE SCHEMA'
-	#generate_schema()
+	generate_schema()
 	print 'OWN SCHEMA'
-	#own_schema()
+	own_schema()
 	print 'ATTRS W/O'
 	attributes_file_without_attribute()
 	print 'ATTRS W/'
