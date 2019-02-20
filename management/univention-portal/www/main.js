@@ -418,9 +418,8 @@ define([
 			var headers = null;
 			if (admin_mode) {
 				headers = {
-					'Content-Type': 'application/x-www-form-urlencoded',
 					'X-Univention-Portal-Admin-Mode': 'yes'
-				}
+				};
 			}
 			var waitedTime = 0;
 			var waitTime = 200;
@@ -1251,7 +1250,7 @@ define([
 			this._render(portalTools.RenderMode.NORMAL);
 			this._addLinks();
 			if (tools.status('username')) {
-				dojoQuery('body').addClass('logged-in')
+				dojoQuery('body').addClass('logged-in');
 			}
 
 			// TODO
@@ -1333,11 +1332,7 @@ define([
 				connectId: [portalEditFloatingButton],
 				position: ['above']
 			});
-			on(portalEditFloatingButton, 'click', lang.hitch(this, function() {
-				this._reloadPortalContent(true).then(lang.hitch(this, function() {
-					this._render(portalTools.RenderMode.EDIT);
-				}))
-			}));
+			on(portalEditFloatingButton, 'click', lang.hitch(this, '_refresh', portalTools.RenderMode.EDIT));
 		},
 
 		_createToolbar: function() {
