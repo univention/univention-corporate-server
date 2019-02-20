@@ -1,3 +1,9 @@
+univention-self-service (4.0.1-7) unstable; urgency=medium
+
+  * Bug #48446: fix invitation daemon
+
+ -- Felix Botner <botner@univention.de>  Wed, 20 Feb 2019 14:25:35 +0100
+
 univention-self-service (4.0.1-6) unstable; urgency=medium
 
   * Bug #48446: catch exceptions during one run of invitation daemon

@@ -102,7 +102,7 @@ class Invitation(object):
 			exc_info = None
 			for filename in glob.glob(os.path.join(TRIGGER_DIR, '*.send')):
 				try:
-					user = os.path.basename(filename).split('.send')[0]
+					user = os.path.basename(filename).rsplit('.send', 1)[0]
 					self.logger.info('Found trigger for user {}'.format(user))
 					if self.is_valid_user(user):
 						self.logger.info('Sending token to {}'.format(user))
