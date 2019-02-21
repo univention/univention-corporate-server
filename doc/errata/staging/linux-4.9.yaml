@@ -5,17 +5,23 @@ scope: ucs_4.2-0-errata4.2-5
 src: linux-4.9
 fix: 4.9.110-3+deb9u5~deb8u1A~4.2.0.201902201318
 desc: |
- This update addresses the following issues:
+ This update of the Linux kernel to version 4.9.159 addresses the following
+ issues:
  * Null pointer dereference in fs/f2fs/segment.c via mounting fs with
    noflush_merge option allows local denial of service (CVE-2017-18241)
  * Race condition in fs/f2fs/node.c:add_free_nid() function allows local users
    to cause denial of service (CVE-2017-18249)
  * cephx protocol is vulnerable to replay attack (CVE-2018-1128)
  * cephx uses weak signatures (CVE-2018-1129)
+ * cpu: speculative store bypass (CVE-2018-3639)
+ * IP fragments with random offsets allow a remote denial of service
+   (FragmentSmack) (CVE-2018-5391)
  * buffer overflow in drivers/net/wireless/ath/wil6210/wmi.c:wmi_set_ie() may
    lead to memory corruption (CVE-2018-5848)
  * irda: Memory leak caused by repeated binds of irda socket (CVE-2018-6554)
  * irda: use-after-free vulnerability in the hashbin list (CVE-2018-6555)
+ * Denial of service in resv_map_release function in mm/hugetlb.c
+   (CVE-2018-7740)
  * Information exposure in fd_locked_ioctl function in drivers/block/floppy.c
    (CVE-2018-7755)
  * Buffer overflow in hidp_process_report (CVE-2018-9363)
@@ -33,8 +39,26 @@ desc: |
    (CVE-2018-10938)
  * Stack-based buffer overflow in drivers/scsi/sr_ioctl.c allows denial of
    service or other unspecified impact (CVE-2018-11506)
+ * Integer overflow in kernel/time/posix-timers.c (CVE-2018-12896)
+ * Integer overflow in the alarm_timer_nsleep function (CVE-2018-13053)
+ * out-of-bounds memory access in fs/f2fs/super.c (CVE-2018-13096)
+ * divide-by-zero in fs/f2fs/super.c (CVE-2018-13097)
+ * out-of-bounds memory access in fs/f2fs/inline.c (CVE-2018-13099)
+ * divide-by-zero in fs/f2fs/super.c (CVE-2018-13100)
  * Invalid pointer dereference in fs/btrfs/relocation.c:__del_reloc_root()
    when mounting crafted btrfs image (CVE-2018-14609)
+ * Out-of-bounds access in write_extent_buffer() when mounting and operating a
+   crafted btrfs image (CVE-2018-14610)
+ * Use-after-free in try_merge_free_space() when mounting crafted btrfs image
+   (CVE-2018-14611)
+ * Invalid pointer dereference in btrfs_root_node() when mounting a crafted
+   btrfs image (CVE-2018-14612)
+ * Invalid pointer dereference in io_ctl_map_page() when mounting and
+   operating a crafted btrfs image (CVE-2018-14613)
+ * Out-of-bounds access in fs/f2fs/segment.c:__remove_dirty_segment() when
+   mounting a crafted f2fs image (CVE-2018-14614)
+ * NULL pointer dereference in fs/crypto/crypto.c:fscrypt_do_page_crypto()
+   when operating on a corrupted f2fs image (CVE-2018-14616)
  * NULL pointer dereference in fs/hfsplus/dir.c:hfsplus_lookup() when
    operating on a file in a crafted hfs+ image (CVE-2018-14617)
  * use-after-free Read in vhost_transport_send_pkt (CVE-2018-14625)
@@ -65,8 +89,14 @@ desc: |
    attribute change (CVE-2018-18690)
  * Information leak in cdrom_ioctl_select_disc in drivers/cdrom/cdrom.c
    (CVE-2018-18710)
+ * kvm: NULL pointer dereference in vcpu_scan_ioapic in arch/x86/kvm/x86.c
+   (CVE-2018-19407)
+ * Use-after-free in sound/usb/card.c:usb_audio_probe() (CVE-2018-19824)
+ * oob memory read in hso_probe in drivers/net/usb/hso.c (CVE-2018-19985)
  * Mishandled size checks during the reading of an extra descriptor
    (CVE-2018-20169)
+ * Memory address exposure in drivers/net/appletalk/ipddp.c:ipddp_ioctl() by
+   users with CAP_NET_ADMIN (CVE-2018-20511)
  * Improper validation in bnx2x network card driver can allow for denial of
    service attacks via crafted packet (CVE-2018-1000026)
  * Missing check in net/can/gw.c:can_can_gw_rcv() allows for crash by users
@@ -125,3 +155,22 @@ cve:
 - CVE-2019-3701
 - CVE-2018-16884
 - CVE-2018-1000026
+- CVE-2018-3639
+- CVE-2018-5391
+- CVE-2018-7740
+- CVE-2018-12896
+- CVE-2018-13053
+- CVE-2018-13096
+- CVE-2018-13097
+- CVE-2018-13099
+- CVE-2018-13100
+- CVE-2018-14610
+- CVE-2018-14611
+- CVE-2018-14612
+- CVE-2018-14613
+- CVE-2018-14614
+- CVE-2018-14616
+- CVE-2018-19407
+- CVE-2018-19824
+- CVE-2018-19985
+- CVE-2018-20511
