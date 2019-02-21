@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-44) unstable; urgency=low
+
+  * Bug #41213: Variable description for ldap/monitor
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 21 Feb 2019 12:10:26 +0100
+
 univention-ldap (14.0.2-43) unstable; urgency=low
 
   * Bug #41213: Changed access to cn=monitor
