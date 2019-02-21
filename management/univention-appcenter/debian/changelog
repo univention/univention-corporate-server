@@ -1,3 +1,9 @@
+univention-appcenter (8.0.2-3) unstable; urgency=medium
+
+  * Bug #48449: Remove VendorSupported from filter
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 21 Feb 2019 13:34:13 +0100
+
 univention-appcenter (8.0.2-2) unstable; urgency=medium
 
   * Bug #48449: New Icons

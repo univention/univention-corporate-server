@@ -296,6 +296,9 @@ define([
 							}
 						});
 						array.forEach(application.rating, function(rating) {
+							if (rating.name == 'VendorSupported') {
+								return;
+							}
 							if (array.indexOf(badges, rating.name) < 0) {
 								badges.push({
 									id: rating.name,
@@ -313,6 +316,7 @@ define([
 							voteForApps = true;
 						}
 					});
+					badges.sort(function(a, b){return a.description > b.description ? 1 : -1});
 					categories.sort(function(a, b){return a.description > b.description ? 1 : -1});
 					this._sortLicenses(licenses);
 					this._searchSidebar.set('badges', badges);
