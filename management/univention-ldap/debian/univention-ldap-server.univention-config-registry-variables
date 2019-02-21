@@ -49,8 +49,8 @@ Type=int
 Categories=service-ldap
 
 [ldap/monitor]
-Description[de]=Ist diese Option aktiviert, lassen sich statistische Informationen durch Domänen-Admins über das Ldap backend cn=monitor nach Neustart des Ldap-Servers erfassen.
-Description[en]=If this variable is activated, access to the ldap backend cn=monitor is granted for Domain-Admins after a restart of the ldap-server.
+Description[de]=Ist diese Option aktiviert und der LDAP-Server neu gestartet, dann können Domänen-Admins über das cn=monitor LDAP-Backend auf statistische Daten des LDAP-Servers zugreifen.
+Description[en]=If this variable is activated and the LDAP server restarted, Domain Admins may access statistical data about the LDAP server via the cn=monitor LDAP backend.
 Type=bool
 Categories=service-ldap
 

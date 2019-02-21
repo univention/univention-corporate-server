@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-45) unstable; urgency=medium
+
+  * Bug #41213: Adjust variable description wording for ldap/monitor
+
+ -- Arvid Requate <requate@univention.de>  Thu, 21 Feb 2019 14:36:59 +0100
+
 univention-ldap (14.0.2-44) unstable; urgency=low
 
   * Bug #41213: Variable description for ldap/monitor
