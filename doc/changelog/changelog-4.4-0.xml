@@ -168,6 +168,10 @@
 			<title>Univention App Center</title>
 			<itemizedlist>
 				<listitem><simpara>
+						The UMC module obtained a graphical overhaul and new filters (<u:bug>48449</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						It is now possible to show a preview of certain Apps that are not (yet) installable. These Apps can be upvoted to get more insights whether users would want this App in the App Center (<u:bug>48472</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
