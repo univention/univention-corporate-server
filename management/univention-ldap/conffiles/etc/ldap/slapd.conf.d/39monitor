@@ -1,12 +1,15 @@
 @!@
+from univention.lib.misc import custom_groupname
+groups_default_domainadmins = custom_groupname('Domain Admins')
+ldap_base = configRegistry['ldap/base']
+print
 if configRegistry.is_true('ldap/monitor', False):
         print 'moduleload\tback_monitor.so'
-print '\n'
 print '### cn=Monitor backend for statistical information'
 if configRegistry.is_true('ldap/monitor',False):
         print 'database monitor'
         print 'access to dn.subtree="cn=monitor"'
-        print '   by dn.base="cn=admin,%(ldap/base)s" read' % configRegistry
-        print '   by set="user & [cn=Domain Admins,cn=groups,%(ldap/base)s]/uniqueMember*" read' % configRegistry
+        print '   by dn.base="cn=admin,%s" read' % ldap_base
+        print '   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" read' % (groups_default_domainadmins, ldap_base)
         print '   by * +0 break'
 @!@

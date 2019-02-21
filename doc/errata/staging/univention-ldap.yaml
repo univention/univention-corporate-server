@@ -3,7 +3,7 @@ release: "4.3"
 version: [3]
 scope: ucs_4.3-0-errata4.3-3
 src: univention-ldap
-fix: 14.0.2-43A~4.3.0.201902201212
+fix: 14.0.2-44A~4.3.0.201902211216
 desc: |
  This update addresses the following issue(s):
  * Support activation of the cn=monitor backend for statistical information.
