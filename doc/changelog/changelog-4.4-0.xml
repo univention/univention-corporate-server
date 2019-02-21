@@ -211,7 +211,7 @@
 						A new tab <guimenu>Apps</guimenu> has been added to users, which allows to enabled and disable apps (<u:bug>48621</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						The wizard for creating new Users now allows to use an e-mail invitation for that user instead of setting an initial password (Requires the App <package>Self Service</package>) (<u:bug>48660</u:bug>).
+						The wizard for creating new users now allows to use an e-mail invitation for that user instead of setting an initial password (Requires the App <package>Self Service</package>) (<u:bug>48660</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
