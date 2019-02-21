@@ -79,10 +79,11 @@ def main():
 					computer.dn,
 					'domaincontroller_master' if use_master else 'localhost')
 
-			for use_master, target_server in [
-					(False, ucr.get('hostname')),
-					(True, ucr.get('ldap/master'))
-			]:
+			targets = [(True, ucr.get('ldap/master'))]
+			if ucr.get('server/role') != 'memberserver':
+				targets.append((False, ucr.get('hostname')))
+
+			for use_master, target_server in targets:
 				print('*** testing {} account against {}'.format(ucr.get('ldap/hostdn'), target_server))
 				lo = univention.uldap.getMachineConnection(ldap_master=use_master)
 				attrs = lo.get(computer.dn)
