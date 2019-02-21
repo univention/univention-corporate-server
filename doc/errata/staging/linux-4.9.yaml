@@ -3,7 +3,7 @@ release: "4.2"
 version: [5]
 scope: ucs_4.2-0-errata4.2-5
 src: linux-4.9
-fix: 4.9.110-3+deb9u5~deb8u1A~4.2.0.201902151158
+fix: 4.9.110-3+deb9u5~deb8u1A~4.2.0.201902201318
 desc: |
  This update addresses the following issues:
  * Null pointer dereference in fs/f2fs/segment.c via mounting fs with
@@ -67,6 +67,8 @@ desc: |
    (CVE-2018-18710)
  * Mishandled size checks during the reading of an extra descriptor
    (CVE-2018-20169)
+ * Improper validation in bnx2x network card driver can allow for denial of
+   service attacks via crafted packet (CVE-2018-1000026)
  * Missing check in net/can/gw.c:can_can_gw_rcv() allows for crash by users
    with CAP_NET_ADMIN (CVE-2019-3701)
  * infinite loop in drivers/hid/hid-debug.c:hid_debug_events_read()
@@ -122,3 +124,4 @@ cve:
 - CVE-2019-6974
 - CVE-2019-3701
 - CVE-2018-16884
+- CVE-2018-1000026
