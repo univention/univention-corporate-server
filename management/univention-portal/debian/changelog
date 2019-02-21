@@ -1,3 +1,9 @@
+univention-portal (3.0.1-13) unstable; urgency=medium
+
+  * Bug #48546: fix empty portal message not showing
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 21 Feb 2019 15:47:37 +0100
+
 univention-portal (3.0.1-12) unstable; urgency=medium
 
   * Bug #48710: fix missing mapping of dependency
