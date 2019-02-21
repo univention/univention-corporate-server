@@ -1514,12 +1514,15 @@ define([
 			});
 
 			if (renderMode === portalTools.RenderMode.NORMAL && portalJson.portal.showApps) {
-				categories.push({
-					heading: _('Local Apps'),
-					entries: this._getEntries(installedApps, userGroups, renderMode),
-					dn: 'localApps',
-					renderMode: renderMode
-				});
+				var entries = this._getEntries(installedApps, userGroups, renderMode);
+				if (entries.length) {
+					categories.push({
+						heading: _('Local Apps'),
+						entries: entries,
+						dn: 'localApps',
+						renderMode: renderMode
+					});
+				}
 			}
 
 			array.forEach(portalJson.portal.content, lang.hitch(this, function(category) {
