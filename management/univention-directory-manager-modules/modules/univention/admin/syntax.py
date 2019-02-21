@@ -3870,6 +3870,14 @@ class RadiusClientType(select):
 		('usrhiper', _('usrhiper')),
 	]
 
+
+class mailinglist_name(gid):
+	error_message = _(
+		"A mailing list name must start and end with a letter, number or underscore. In between additionally spaces, "
+		"dashes and dots are allowed."
+	)
+
+
 __register_choice_update_function(Country.update_choices)
 Country.update_choices()
 

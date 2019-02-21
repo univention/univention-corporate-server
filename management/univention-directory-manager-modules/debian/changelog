@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.5-2) unstable; urgency=low
+
+  * Bug #48383: integrate class mailinglist_name into syntax.py
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 21 Feb 2019 11:25:49 +0100
+
 univention-directory-manager-modules (14.0.5-1) unstable; urgency=medium
 
   * Bug #48621: fix unmapping of 'overwritePosition' in
