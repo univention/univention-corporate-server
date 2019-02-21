@@ -79,7 +79,7 @@ univention-initrd (4.0.1-2) unstable; urgency=low
 
 univention-initrd (4.0.1-1) unstable; urgency=low
 
-  * readded dependency to univention-bootsplash (Bug #22431)
+  * re-added dependency to univention-bootsplash (Bug #22431)
 
  -- Felix Botner <botner@univention.de>  Thu, 21 Jul 2011 13:02:54 +0200
 
@@ -130,7 +130,7 @@ univention-initrd (3.0.0-1) unstable; urgency=low
 
 univention-initrd (2.0.0-1) unstable; urgency=low
 
-  * modutils is superceded by module-init-tools in lenny (Bug #14735)
+  * modutils is superseded by module-init-tools in lenny (Bug #14735)
 
  -- Arvid Requate <arequate@omar.knut.univention.de>  Wed, 10 Jun 2009 15:02:57 +0200
 

@@ -44,13 +44,13 @@ univention-base-files (7.0.0-15) unstable; urgency=medium
 
 univention-base-files (7.0.0-14) unstable; urgency=medium
 
-  * Bug #39704: Add more UCR varaibles for sshd_config
+  * Bug #39704: Add more UCR variables for sshd_config
 
  -- Richard Ulmer <ulmer@univention.de>  Tue, 05 Jun 2018 15:20:55 +0200
 
 univention-base-files (7.0.0-13) unstable; urgency=medium
 
-  * Bug #39704: Add more UCR varaibles for sshd_config
+  * Bug #39704: Add more UCR variables for sshd_config
 
  -- Richard Ulmer <ulmer@univention.de>  Thu, 17 May 2018 11:00:35 +0200
 
@@ -383,7 +383,7 @@ univention-base-files (4.0.4-2) unstable; urgency=low
 
 univention-base-files (4.0.4-1) unstable; urgency=low
 
-  * removed scalix path from defaut profile (Bug #32628)
+  * removed scalix path from default profile (Bug #32628)
 
  -- Felix Botner <botner@univention.de>  Mon, 29 Sep 2014 10:04:23 +0200
 
@@ -547,7 +547,7 @@ univention-base-files (3.0.3-2) unstable; urgency=low
 
 univention-base-files (3.0.3-1) unstable; urgency=low
 
-  * Kernel inotify parameters are now configureable by UCR variables (Bug #32327)
+  * Kernel inotify parameters are now configurable by UCR variables (Bug #32327)
 
  -- Erik Damrose <damrose@univention.de>  Tue, 27 Aug 2013 11:19:59 +0200
 

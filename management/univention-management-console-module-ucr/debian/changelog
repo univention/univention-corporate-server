@@ -294,7 +294,7 @@ univention-management-console-module-ucr (1.0.28-1) unstable; urgency=low
 
 univention-management-console-module-ucr (1.0.27-1) unstable; urgency=low
 
-  * import patch from UCS 2.4-3: supprt readonly UCR variables; Bug #23738
+  * import patch from UCS 2.4-3: support readonly UCR variables; Bug #23738
 
  -- Andreas Büsching <buesching@univention.de>  Sat, 29 Oct 2011 15:19:43 +0200
 
@@ -369,7 +369,7 @@ univention-management-console-module-ucr (1.0.18-1) unstable; urgency=low
 
 univention-management-console-module-ucr (1.0.17-1) unstable; urgency=low
 
-  * add join script to create UMC acls ans operations; Bug #22439
+  * add join script to create UMC acls and operations; Bug #22439
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 01 Aug 2011 15:32:18 +0200
 

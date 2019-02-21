@@ -201,7 +201,7 @@ univention-heimdal (7.0.0-1) unstable; urgency=low
 
   * Bump version for UCS 3.2, update copyright years for 2013
   * Update/review UCR variable descriptions (Bug #30943)
-    Mark kerberos/realm als read-only
+    Mark kerberos/realm as read-only
     Remove UCR variable descriptions for kerberos/v4tickets, kerberos/enable/kerberos4,
     kerberos/enable/524 and kerberos/enable/kaserver; krb4 no longer support in 
     current Heimdal
@@ -295,7 +295,7 @@ univention-heimdal (5.0.27-1) unstable; urgency=low
 
 univention-heimdal (5.0.26-2) unstable; urgency=low
 
-  * fix package depenency (Bug #24277)
+  * fix package dependency (Bug #24277)
 
  -- Arvid Requate <requate@univention.de>  Tue, 31 Jan 2012 11:50:50 +0100
 
@@ -464,7 +464,7 @@ univention-heimdal (5.0.9-1) unstable; urgency=low
     kerberos/kpasswdserver
   * Removed root from kadmind.acl and added a UCR variable
     kerberos/adminusers to configure the admin users (Bug #19021)
-  * Fixed the database defintion to the 'label' syntax which was changed
+  * Fixed the database definition to the 'label' syntax which was changed
     in heimdal 1.3 (Bug #22108)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 07 Oct 2011 09:55:08 +0200
@@ -556,7 +556,7 @@ univention-heimdal (5.0.3-2) unstable; urgency=low
 
 univention-heimdal (5.0.3-1) unstable; urgency=low
 
-  * set allow_weak_crypto in krb5.conf to restore heimdal-1.4 behaviour,
+  * set allow_weak_crypto in krb5.conf to restore heimdal-1.4 behavior,
     disabled in new installations by setting kerberos/allow/weak/crypto?no
     in univention-heimdal-kdc.postinst (Bug #22559)
 
@@ -719,7 +719,7 @@ univention-heimdal (3.0.3-1) unstable; urgency=low
 
 univention-heimdal (3.0.2-1) unstable; urgency=low
 
-  * readded the baseconfig variable kerberos/v4tickets. The variable was
+  * re-added the baseconfig variable kerberos/v4tickets. The variable was
     removed with Bug #8878. (Bug: #13423)
 
  -- Stefan Gohmann <gohmann@univention.de>  Sun, 18 Jan 2009 09:18:53 +0100
@@ -795,7 +795,7 @@ univention-heimdal (2.1.1-2) unstable; urgency=low
 
 univention-heimdal (2.1.1-1) unstable; urgency=low
 
-  * readded des3-hmac-sha1 to the encryption type list
+  * re-added des3-hmac-sha1 to the encryption type list
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri,  7 Sep 2007 10:05:11 +0200
 
@@ -966,9 +966,9 @@ univention-heimdal (1.7) unstable; urgency=low
 
 univention-heimdal (1.6) unstable; urgency=low
 
-  * readded listener modul keytab
+  * re-added listener module keytab
   * remove policy check function (now in kpasswdd)
-  * resync listener modul keytab
+  * resync listener module keytab
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu,  4 Mar 2004 07:25:13 +0100
 
@@ -994,7 +994,7 @@ univention-heimdal (1.4) unstable; urgency=low
 univention-heimdal (1.6) unstable; urgency=low
 
   * Use python2.3 in kerberos_now.
-  * readded listener modul keytab
+  * re-added listener module keytab
   * remove policy check function (now in kpasswdd)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue,  2 Mar 2004 10:21:28 +0100

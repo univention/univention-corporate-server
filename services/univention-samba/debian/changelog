@@ -627,13 +627,13 @@ univention-samba (8.0.5-3) unstable; urgency=low
 
 univention-samba (8.0.5-2) unstable; urgency=low
 
-  * Depencies updated for Samba 4.1 (Bug #31698)
+  * Dependencies updated for Samba 4.1 (Bug #31698)
 
  -- Arvid Requate <requate@univention.de>  Mon, 12 Aug 2013 14:41:06 +0200
 
 univention-samba (8.0.5-1) unstable; urgency=low
 
-  * Depencies updated for Samba 4.1 (Bug #31698)
+  * Dependencies updated for Samba 4.1 (Bug #31698)
 
  -- Arvid Requate <requate@univention.de>  Mon, 12 Aug 2013 14:38:11 +0200
 
@@ -994,7 +994,7 @@ univention-samba (6.0.43-1) unstable; urgency=low
 
 univention-samba (6.0.42-1) unstable; urgency=low
 
-  * restore set -e behaviour in slave-sync (Bug #23136)
+  * restore set -e behavior in slave-sync (Bug #23136)
 
  -- Arvid Requate <requate@univention.de>  Wed, 11 Jul 2012 15:20:26 +0200
 
@@ -1019,7 +1019,7 @@ univention-samba (6.0.40-2) unstable; urgency=low
 
 univention-samba (6.0.40-1) unstable; urgency=low
 
-  * readded python/share_restrictions.py (Bug #26899)
+  * re-added python/share_restrictions.py (Bug #26899)
 
  -- Florian Best <best@univention.de>  Tue, 03 Jul 2012 08:46:57 +0200
 
@@ -1211,7 +1211,7 @@ univention-samba (6.0.19-1) unstable; urgency=low
 univention-samba (6.0.18-1) unstable; urgency=low
 
   * Cancel join script if the net (rpc|ads) join fails (Bug #23999)
-  * Set wins server to ldap/master if the join was sucessful against him
+  * Set wins server to ldap/master if the join was successful against him
   * Restart samba and winbind directly after the join
 
  -- Stefan Gohmann <gohmann@univention.de>  Sat, 19 Nov 2011 22:47:03 +0100
@@ -1316,7 +1316,7 @@ univention-samba (6.0.6-1) unstable; urgency=low
     * added samba-privileges.py listener plugin Bug #2619
    [ Arvid Requate ]
     * increment join script version (Bug #22246)
-    * revert colateral damage of 5.0.15-1 (Bug #22246)
+    * revert collateral damage of 5.0.15-1 (Bug #22246)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 14:52:18 +0200
 
@@ -1472,7 +1472,7 @@ univention-samba (5.0.13-1) unstable; urgency=low
 
 univention-samba (5.0.12-1) unstable; urgency=low
 
-  * create more diretories in the print driver directory. Bug #14622
+  * create more directories in the print driver directory. Bug #14622
   * remove printer admin parameter from smb.conf and give Printer-
     Admins/Administrator the SePrintOperatorPrivilege permission during
     join script. Bug #3562
@@ -1606,7 +1606,7 @@ univention-samba (4.0.21-5) unstable; urgency=low
   * use idmap_nss for UCS windows/domain, as idmap_ldap does not lookup
     sambaGroupMapping objects, only sambaIdmapEntry objects
   * exclude windows/domain from samba/idmap/domains (Bug #17448)
-  * keep 'winbind trusted domains only' for the time beeing
+  * keep 'winbind trusted domains only' for the time being
 
  -- Arvid Requate <requate@univention.de>  Tue, 27 Apr 2010 19:58:12 +0200
 
@@ -1659,31 +1659,31 @@ univention-samba (4.0.18-1) unstable; urgency=low
 
 univention-samba (4.0.17-1) unstable; urgency=low
 
-  * edit Logmessage for forbidden share priviledge changes, Bug #17929
+  * edit Logmessage for forbidden share privilege changes, Bug #17929
 
  -- Tim Petersen <petersen@univention.de>  Mon, 22 Mar 2010 11:29:04 +0100
 
 univention-samba (4.0.16-1) unstable; urgency=low
 
-  * only touch priviledges, if share is a directory Bug #17929
+  * only touch privileges, if share is a directory Bug #17929
 
  -- Tim Petersen <petersen@univention.de>  Mon, 22 Mar 2010 11:02:04 +0100
 
 univention-samba (4.0.15-1) unstable; urgency=low
 
-  * do not touch file priviledges, when sharing single file Bug #17929
+  * do not touch file privileges, when sharing single file Bug #17929
 
  -- Tim Petersen <petersen@univention.de>  Mon, 22 Mar 2010 09:28:04 +0100
 
 univention-samba (4.0.14-1) unstable; urgency=low
 
-  * also added /sys to list of shares, whose priviledges will not be affected Bug #5392
+  * also added /sys to list of shares, whose privileges will not be affected Bug #5392
 
  -- Tim Petersen <petersen@univention.de>  Mon, 16 Mar 2010 10:03:04 +0100
 
 univention-samba (4.0.13-1) unstable; urgency=low
 
-  * added /proc, /root and /dev to list of shares, whose priviledges will not be affected Bug #5392
+  * added /proc, /root and /dev to list of shares, whose privileges will not be affected Bug #5392
 
  -- Tim Petersen <petersen@univention.de>  Mon, 16 Mar 2010 09:39:04 +0100
 
@@ -1711,7 +1711,7 @@ univention-samba (4.0.11-1) unstable; urgency=low
 
   * ignore share "homes" while setting "invalid users" for all other
     shares (Bug #17114)
-  * fixed wrong indention
+  * fixed wrong indentation
 
  -- Sönke Schwardt <schwardt@univention.de>  Wed, 06 Jan 2010 16:00:28 +0100
 
@@ -1926,7 +1926,7 @@ univention-samba (2.0.9-1) unstable; urgency=low
 
   * added samba/domain/logons (Bug 12406)
     - valid values: auto, yes, no
-  	- default: auto (old behaviour)
+  	- default: auto (old behavior)
 
  -- Sönke Schwardt <schwardt@univention.de>  Fri, 23 Jan 2009 16:55:48 +0100
 
@@ -2266,7 +2266,7 @@ univention-samba (0.59) unstable; urgency=low
 
 univention-samba (0.58) unstable; urgency=low
 
-  * move some interal tools from /usr/sbin to /usr/share
+  * move some internal tools from /usr/sbin to /usr/share
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Jul 2006 09:26:36 +0200
 
@@ -2432,7 +2432,7 @@ univention-samba (0.23) unstable; urgency=low
 
 univention-samba (0.22) unstable; urgency=low
 
-  * added listener modul samba-config
+  * added listener module samba-config
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Mar 2005 18:40:12 +0100
 
@@ -2470,7 +2470,7 @@ univention-samba (0.16) unstable; urgency=low
 
   * improved output and debugging of pdc-takeover
   * added baseconfig-variables samba/ldap/replication/sleep
-  * added support for removing exsisting samba-related attributes in LDAP
+  * added support for removing existing samba-related attributes in LDAP
   * added new baseconfig-variables for logon- and homeserver/-path
 
  -- Ingo Steuwer <steuwer@univention.de>  Tue, 16 Nov 2004 10:33:51 +0100
@@ -2485,7 +2485,7 @@ univention-samba (0.14) unstable; urgency=low
 
   * Correct Parameters for smbclient while pdc-takeover (copy of netlogon
     share)
-  * Improved usage and feeback of univention-pdc-takeover
+  * Improved usage and feedback of univention-pdc-takeover
 
  -- Ingo Steuwer <steuwer@univention.de>  Wed, 25 Aug 2004 08:43:58 +0200
 
@@ -2548,7 +2548,7 @@ univention-samba (0.5) unstable; urgency=low
 
 univention-samba (0.4) unstable; urgency=low
 
-  * handle home dirs in listener modul
+  * handle home dirs in listener module
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri,  6 Feb 2004 15:41:21 +0100
 

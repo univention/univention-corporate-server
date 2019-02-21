@@ -131,7 +131,7 @@ univention-bacula (2.0.0-1) unstable; urgency=low
 
 univention-bacula (1.0.0-3) unstable; urgency=low
 
-  * fixed depedencies. Bug #15702
+  * fixed dependencies. Bug #15702
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Oct 2009 07:19:33 +0200
 

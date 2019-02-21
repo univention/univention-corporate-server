@@ -43,7 +43,7 @@ univention-pam (11.0.0-1) unstable; urgency=medium
 
 univention-pam (10.0.0-4) unstable; urgency=low
 
-  * Bug #43287: Switch to useing user_envfile=
+  * Bug #43287: Switch to using user_envfile=
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 04 Jan 2017 15:46:29 +0100
 
@@ -313,7 +313,7 @@ univention-pam (7.0.4-5) unstable; urgency=low
 
 univention-pam (7.0.4-4) unstable; urgency=low
 
-  * added group-name-mapping.py for autmatically
+  * added group-name-mapping.py for automatically
     setting group localization vars (Bug #33710) 
 
  -- Felix Botner <botner@univention.de>  Wed, 11 Dec 2013 15:37:47 +0100
@@ -954,7 +954,7 @@ univention-pam (3.0.3-3) unstable; urgency=low
 
   * in preinst after diverting pam stack file due to UCR debhelper:
     copy back original files so a valid pam stack is present until
-    UCR templates get comitted (Bug: #15971)
+    UCR templates get committed (Bug: #15971)
 
  -- Sönke Schwardt <schwardt@univention.de>  Mon, 19 Oct 2009 09:10:08 +0200
 
@@ -1099,7 +1099,7 @@ univention-pam (1.1.1-1) unstable; urgency=low
 
 univention-pam (1.1.0-15) unstable; urgency=low
 
-  * fixed syntax for pam passwd cache for sucessful authentifications
+  * fixed syntax for pam passwd cache for successful authentifications
 
  -- Bastian Neumann <neumann@univention.de>  Tue, 21 Aug 2007 10:57:36 +0200
 
@@ -1132,7 +1132,7 @@ univention-pam (1.1.0-11) unstable; urgency=low
 
 univention-pam (1.1.0-10) unstable; urgency=low
 
-  * fixed oder of pam rules
+  * fixed order of pam rules
   * made if clause more readable
 
  -- Janis Meybohm <meybohm@univention.de>  Thu, 14 Jun 2007 15:49:03 +0200
@@ -1309,7 +1309,7 @@ univention-pam (0.5) unstable; urgency=low
 
 univention-pam (0.4) unstable; urgency=low
 
-  * readded nsswitch/ldap baseconfig variable
+  * re-added nsswitch/ldap baseconfig variable
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 12 May 2004 09:13:13 +0200
 

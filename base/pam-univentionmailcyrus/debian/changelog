@@ -62,7 +62,7 @@ pam-univentionmailcyrus (4.0.2-1) unstable; urgency=low
 
 pam-univentionmailcyrus (4.0.1-1) unstable; urgency=low
 
-  * ldap bind authentification with univention_ldap_open (Bug #23487) 
+  * ldap bind authentication with univention_ldap_open (Bug #23487) 
 
  -- Felix Botner <botner@univention.de>  Thu, 01 Sep 2011 13:26:39 +0200
 
@@ -108,7 +108,7 @@ pam-univentionmailcyrus (0.3) unstable; urgency=low
 
 pam-univentionmailcyrus (0.2) unstable; urgency=low
 
-  * close the connection to the LDAP server when an error has occured
+  * close the connection to the LDAP server when an error has occurred
     after a connection has been established successfully
 
  -- Andreas BÃŒsching <buesching@univention.de>  Wed, 26 Oct 2005 13:21:10 +0200

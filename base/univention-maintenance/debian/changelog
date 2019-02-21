@@ -54,7 +54,7 @@ univention-maintenance (7.0.1-1) unstable; urgency=medium
 
 univention-maintenance (7.0.0-2) unstable; urgency=low
 
-  * Preferr univention-mail-posfix as default-mta (Bug #35525)
+  * Prefer univention-mail-posfix as default-mta (Bug #35525)
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 20 Aug 2014 17:10:47 +0200
 
@@ -152,7 +152,7 @@ univention-maintenance (3.0.2-3) unstable; urgency=low
 
 univention-maintenance (3.0.2-2) unstable; urgency=low
 
-  * seperate sections for memory and swap (Bug: #15191)
+  * separate sections for memory and swap (Bug: #15191)
 
  -- Felix Botner <botner@univention.de>  Tue, 29 Sep 2009 14:29:45 +0200
 

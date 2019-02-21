@@ -233,7 +233,7 @@ univention-mozilla-firefox (3.0.3-2) unstable; urgency=low
 
 univention-mozilla-firefox (3.0.3-1) unstable; urgency=low
 
-  * added a new UCR variable for the spellchecker langauge
+  * added a new UCR variable for the spellchecker language
     (firefox/prefs/spellchecker/dictionary). Bug #11603
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 10 Mar 2009 08:21:12 +0100
@@ -309,7 +309,7 @@ univention-mozilla-firefox (1.2-7) unstable; urgency=low
 
 univention-mozilla-firefox (1.2-6) unstable; urgency=low
 
-  * Readded missing files
+  * Re-added missing files
 
  -- Janis Meybohm <meybohm@univention.de>  Tue, 12 Jun 2007 16:13:10 +0200
 
@@ -336,7 +336,7 @@ univention-mozilla-firefox (1.2-2) unstable; urgency=low
   * Made firefox.js a baseconfig template
   * Added the baseconfig variable firefox/prefs/conffile to set a global
     configuration file
-  * Fixed copyright, paket maintainer and build-deps
+  * Fixed copyright, packet maintainer and build-deps
 
  -- Janis Meybohm <meybohm@univention.de>  Mon,  6 Nov 2006 14:37:52 +0100
 

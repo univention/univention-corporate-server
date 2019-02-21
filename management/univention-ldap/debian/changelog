@@ -263,7 +263,7 @@ univention-ldap (14.0.0-4) unstable; urgency=medium
 
 univention-ldap (14.0.0-3) unstable; urgency=medium
 
-  * Make GNUTLS default TLSCipherSuite simmilar to OpenSSL (Bug #45870)
+  * Make GNUTLS default TLSCipherSuite similar to OpenSSL (Bug #45870)
   * New UCR variable ldap/tls/priority for GNUTLS
   * Warn if ldap/tls/ciphersuite has been set manually
   * slapd ignores TLSDHParamFile for GNUTLS, so comment it out for now
@@ -320,7 +320,7 @@ univention-ldap (13.0.7-15) unstable; urgency=medium
 
 univention-ldap (13.0.7-14) unstable; urgency=medium
 
-  * Bug #11800: enforce uniqueness on uid's specified in ldap/unqiue/uid
+  * Bug #11800: enforce uniqueness on uid's specified in ldap/unique/uid
 
  -- Florian Best <best@univention.de>  Thu, 03 Aug 2017 12:02:16 +0200
 
@@ -742,7 +742,7 @@ univention-ldap (12.1.6-11) unstable; urgency=low
 
 univention-ldap (12.1.6-10) unstable; urgency=low
 
-  * Version bumb to rebuild code of 12.1.6-9 (Bug #39866)
+  * Version bump to rebuild code of 12.1.6-9 (Bug #39866)
 
  -- Daniel Troeder <troeder@univention.de>  Mon, 11 Jan 2016 15:11:40 +0100
 
@@ -1222,7 +1222,7 @@ univention-ldap (10.0.17-26) unstable; urgency=medium
   * Adjust slapd init file (Bug #34440)
   * Don't pass --pidfile for --start --test action, fails if file is invalid
   * Don't pass --pidfile for --start action, is ignored anyway
-  * Don't pass --pidfile & --exec for stop action as --exec gets ingored then
+  * Don't pass --pidfile & --exec for stop action as --exec gets ignored then
   * Run stop --pidfile first and retry with stop --exec if slapd still runs
   * Don't sleep and hope, rather send a final KILL signal if slapd still runs
   * Output the retry/refused messages of start-stop-daemon --stop -v
@@ -1268,7 +1268,7 @@ univention-ldap (10.0.17-20) unstable; urgency=medium
 
 univention-ldap (10.0.17-19) unstable; urgency=medium
 
-  * Restore accidently removed msgpo.schema (Bug #33936)
+  * Restore accidentally removed msgpo.schema (Bug #33936)
 
  -- Arvid Requate <requate@univention.de>  Tue, 21 Jan 2014 13:23:41 +0100
 
@@ -1678,7 +1678,7 @@ univention-ldap (10.0.10-1) unstable; urgency=low
 
 univention-ldap (10.0.9-7) unstable; urgency=low
 
-  * univention-ldap-backup now creates a seperate logfile during the backup
+  * univention-ldap-backup now creates a separate logfile during the backup
     process in /var/univention-backup (Bug #31997) 
 
  -- Erik Damrose <damrose@univention.de>  Wed, 28 Aug 2013 10:49:12 +0200
@@ -1881,7 +1881,7 @@ univention-ldap (9.0.19-1) unstable; urgency=low
 
 univention-ldap (9.0.18-1) unstable; urgency=low
 
-  * New attibute univentionPrinterUseClientDriver (Bug #27340)
+  * New attribute univentionPrinterUseClientDriver (Bug #27340)
 
  -- Arvid Requate <requate@univention.de>  Tue, 06 Nov 2012 14:01:47 +0100
 
@@ -2003,7 +2003,7 @@ univention-ldap (9.0.3-1) unstable; urgency=low
 univention-ldap (9.0.2-1) unstable; urgency=low
 
   * Add UCR variable descriptions (Bug #28134)
-  * Remove setting ununsed ldap/database/bdb/set_flags.
+  * Remove setting unused ldap/database/bdb/set_flags.
   * Remove interfaces/* from UCR variable triggers (Bug #26058)
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 12:10:34 +0200
@@ -2111,7 +2111,7 @@ univention-ldap (8.0.85-1) unstable; urgency=low
   * univention-ldap-server.postrm: Upon "purge" remove
     subdirectories under /var/lib/univention-ldap/
     only if they belong to package univention-ldap-server.
-    Leave subdirectories belonging to noone or to other
+    Leave subdirectories belonging to no one or to other
     packages untouched (Bug #26269).
 
  -- Juergen Kahrs <Kahrs@univention.de>  Wed, 27 Jun 2012 09:45:38 +0200
@@ -2175,7 +2175,7 @@ univention-ldap (8.0.82-2) unstable; urgency=low
   * univention-backup2master (Bug #5774):
     Added some error checking; added options -h -f -w to the script.
     Changes suggested by Philip after review.
-    New options -c -d -v allow check and dry-run without actally converting
+    New options -c -d -v allow check and dry-run without actually converting
     to master. This helps when searching for LDAP references to old master.
     New option -r allows to change share references interactively.
     Added safety check for number of parameters of function resolve_reference;
@@ -2235,7 +2235,7 @@ univention-ldap (8.0.81-1) unstable; urgency=low
   * Run db4.8_stat without acquiring shared region mutexes
   * Issue a warning if db4.8_stat finds stale locks (Bug #23962)
   * Fix error message in case bdb_open fails in db4.8_stat (Bug #23962)
-  * Improve log_action message formating
+  * Improve log_action message formatting
 
  -- Arvid Requate <requate@univention.de>  Tue, 22 May 2012 17:18:21 +0200
 
@@ -2406,7 +2406,7 @@ univention-ldap (8.0.58-1) unstable; urgency=low
 
 univention-ldap (8.0.57-1) unstable; urgency=low
 
-  * readded univentionDefaultKolabHomeServer to univention-ldap and 
+  * re-added univentionDefaultKolabHomeServer to univention-ldap and 
     removed transition schema file form kolab legacy package (Bug #23483)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 26 Oct 2011 17:31:53 +0200
@@ -2488,7 +2488,7 @@ univention-ldap (8.0.50-2) unstable; urgency=low
 
 univention-ldap (8.0.50-1) unstable; urgency=low
 
-  * add LDAP attributes for extenstions of the extended; Bug #23988
+  * add LDAP attributes for extensions of the extended; Bug #23988
   * Make univentionInventoryNumber searchable; Bug #24103
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 19 Oct 2011 08:55:45 +0200
@@ -2699,7 +2699,7 @@ univention-ldap (8.0.26-1) unstable; urgency=low
 
 univention-ldap (8.0.25-1) unstable; urgency=low
 
-  * transfered kolab related files to univention-kolab-schema (Bug #22436)
+  * transferred kolab related files to univention-kolab-schema (Bug #22436)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 31 Aug 2011 14:56:10 +0200
 
@@ -2756,7 +2756,7 @@ univention-ldap (8.0.17-1) unstable; urgency=low
 
 univention-ldap (8.0.16-1) unstable; urgency=low
 
-  * Readded univention-newsid to dependencies (Bug #23017)
+  * Re-added univention-newsid to dependencies (Bug #23017)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Jul 2011 07:19:42 +0200
 
@@ -2839,7 +2839,7 @@ univention-ldap (8.0.7-2) unstable; urgency=low
 
 univention-ldap (8.0.7-1) unstable; urgency=low
 
-  * add eth0/address to list of default peernames alowed to do
+  * add eth0/address to list of default peernames allowed to do
     anonymous read (Bug #17519)
   * fix peername.ip syntax. The other option would be to use
     peername.regex="IP=127.0.0.1:*", because the exact port is unknown
@@ -2877,7 +2877,7 @@ univention-ldap (8.0.3-1) unstable; urgency=low
 univention-ldap (8.0.2-5) unstable; urgency=low
 
   * add missing credentials to join script to make ucslint happy (Bug #21705)
-  * adjust formating of join script to improve readability
+  * adjust formatting of join script to improve readability
 
  -- Arvid Requate <requate@univention.de>  Tue, 17 May 2011 09:57:39 +0200
 
@@ -3133,7 +3133,7 @@ univention-ldap (5.0.19-2) unstable; urgency=low
 
 univention-ldap (5.0.19-1) unstable; urgency=low
 
-  * merge recomended values into UCR:ldap/index/* instead of
+  * merge recommended values into UCR:ldap/index/* instead of
     replacing the current values (Bug #6700)
 
  -- Arvid Requate <requate@univention.de>  Mon, 19 Apr 2010 12:09:42 +0200
@@ -3753,7 +3753,7 @@ univention-ldap (2.4.3-2) unstable; urgency=low
 
 univention-ldap (2.4.3-1) unstable; urgency=low
 
-  * redirect outout from slapadd to the join.log
+  * redirect output from slapadd to the join.log
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Aug 2007 09:09:20 +0200
 
@@ -3921,7 +3921,7 @@ univention-ldap (2.2.3-2) unstable; urgency=low
 
 univention-ldap (2.2.3-1) unstable; urgency=low
 
-  * create default policy container fpr printservers
+  * create default policy container for printservers
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri,  1 Jun 2007 13:57:49 +0200
 
@@ -4197,7 +4197,7 @@ univention-ldap (1.42-10) unstable; urgency=low
 univention-ldap (1.42-9) unstable; urgency=low
 
   * create `default-users' and `default-admins' admin-settings policies is
-    neccessary.
+    necessary.
 
  -- Martin Kuehl <kuehl@univention.de>  Tue,  4 Apr 2006 17:19:31 +0200
 
@@ -4466,7 +4466,7 @@ univention-ldap (1.13) unstable; urgency=low
 univention-ldap (1.12) unstable; urgency=low
 
   * merged with HEAD
-  * readded uid=root,cn=users,... to ACLs
+  * re-added uid=root,cn=users,... to ACLs
   * added default groups for dc master & dc backup, memberserver and client
   * set ldap/hostdn on dc master
   * allow umlaute krb5PrincipalName

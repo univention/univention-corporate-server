@@ -39,7 +39,7 @@ univention-ldb-modules (6.0.0-6) unstable; urgency=low
 
 univention-ldb-modules (6.0.0-5) unstable; urgency=medium
 
-  * Bug #47234: readd joinscripts and add check instead
+  * Bug #47234: re-add joinscripts and add check instead
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 26 Jun 2018 13:00:48 +0200
 
@@ -323,7 +323,7 @@ univention-ldb-modules (1.0.5-5) unstable; urgency=low
 
 univention-ldb-modules (1.0.5-4) unstable; urgency=low
 
-  * only crestart univention-s4-connector and only if init scipt exists
+  * only crestart univention-s4-connector and only if init script exists
   * Make 98univention-samba4slavepdc-dns.inst wait for
     98univention-samba4-dns.inst (Bug #31443)
 

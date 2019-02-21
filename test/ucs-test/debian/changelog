@@ -735,7 +735,7 @@ ucs-test (8.0.28-175) unstable; urgency=low
 
 ucs-test (8.0.28-174) unstable; urgency=medium
 
-  * Bug #47000: verson bump
+  * Bug #47000: version bump
 
  -- Felix Botner <botner@univention.de>  Mon, 03 Sep 2018 10:56:11 +0200
 
@@ -960,7 +960,7 @@ ucs-test (8.0.28-137) unstable; urgency=medium
 
 ucs-test (8.0.28-136) unstable; urgency=medium
 
-  * Bug #43689: Retry resolveDnsEntry in case the zone was not yet transfered
+  * Bug #43689: Retry resolveDnsEntry in case the zone was not yet transferred
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 19 Jun 2018 12:10:28 +0200
 
@@ -1294,13 +1294,13 @@ ucs-test (8.0.28-83) unstable; urgency=medium
 
 ucs-test (8.0.28-82) unstable; urgency=low
 
-  * Bug #46408: reenable test 33_smart_host_configuration
+  * Bug #46408: re-enable test 33_smart_host_configuration
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 08 Mar 2018 16:12:19 +0100
 
 ucs-test (8.0.28-81) unstable; urgency=medium
 
-  * Bug #46478: remove debuging from radius tests
+  * Bug #46478: remove debugging from radius tests
 
  -- Jürn Brodersen <brodersen@univention.de>  Thu, 08 Mar 2018 10:48:45 +0100
 
@@ -1332,7 +1332,7 @@ ucs-test (8.0.28-77) unstable; urgency=medium
 
 ucs-test (8.0.28-76) unstable; urgency=medium
 
-  * Bug #46478: more debuging for radius tests
+  * Bug #46478: more debugging for radius tests
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 07 Mar 2018 11:18:37 +0100
 
@@ -1379,7 +1379,7 @@ ucs-test (8.0.28-70) unstable; urgency=medium
 
 ucs-test (8.0.28-69) unstable; urgency=medium
 
-  * Bug #46478: add debuging for radius tests
+  * Bug #46478: add debugging for radius tests
 
  -- Jürn Brodersen <brodersen@univention.de>  Mon, 05 Mar 2018 18:47:23 +0100
 
@@ -1430,7 +1430,7 @@ ucs-test (8.0.28-62) unstable; urgency=medium
 
 ucs-test (8.0.28-61) unstable; urgency=low
 
-  * Bug #46191: add additonal debug output in essential/mail.py
+  * Bug #46191: add additional debug output in essential/mail.py
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 02 Mar 2018 18:00:48 +0100
 
@@ -1745,7 +1745,7 @@ ucs-test (8.0.28-12) unstable; urgency=medium
 
 ucs-test (8.0.28-11) unstable; urgency=low
 
-  * Bug #40199: reenable mail test
+  * Bug #40199: re-enable mail test
 
  -- Daniel Troeder <troeder@univention.de>  Wed, 14 Feb 2018 16:30:15 +0100
 
@@ -2439,7 +2439,7 @@ ucs-test (7.0.23-76) unstable; urgency=low
 
 ucs-test (7.0.23-75) unstable; urgency=low
 
-  * Bug #44786: impove test coverage
+  * Bug #44786: improve test coverage
 
  -- Daniel Troeder <troeder@univention.de>  Fri, 27 Oct 2017 10:22:24 +0200
 
@@ -2602,7 +2602,7 @@ ucs-test (7.0.23-50) unstable; urgency=medium
 
 ucs-test (7.0.23-49) unstable; urgency=medium
 
-  * Bug #44902: reenable skip 46_kerberos_ddns_update in 00_checks/81_diagnostic_checks.py
+  * Bug #44902: re-enable skip 46_kerberos_ddns_update in 00_checks/81_diagnostic_checks.py
 
  -- Lukas Oyen <oyen@univention.de>  Mon, 11 Sep 2017 18:02:26 +0200
 
@@ -2745,11 +2745,11 @@ ucs-test (7.0.23-29) unstable; urgency=medium
   * Bug #11658: adc-test: introduce univention.testing.connector_common
   * Bug #43598: s4c-test: rework 500test_user_sync.py (rename/move)
   * Bug #43598: s4c-test: rework 501test_group_sync.py (rename/move)
-  * Bug #43598: s4c-test: UDM workarround 501test_group_sync.py
+  * Bug #43598: s4c-test: UDM workaround 501test_group_sync.py
   * Bug #11658: adc-test: add utility functions in adconnector.py
   * Bug #11658: adc-test: rework 500test_user_sync.py (rename/move)
   * Bug #11658: adc-test: rework 501test_group_sync.py (rename/move)
-  * Bug #11658: adc-test: UDM workarround 501test_group_sync.py
+  * Bug #11658: adc-test: UDM workaround 501test_group_sync.py
 
  -- Lukas Oyen <oyen@univention.de>  Wed, 16 Aug 2017 17:21:21 +0200
 
@@ -2990,7 +2990,7 @@ ucs-test (7.0.22-21) unstable; urgency=medium
 ucs-test (7.0.22-20) unstable; urgency=medium
 
   * Bug #40813: copy 022_concurrent_deletion_in_ucs from s4c-test to adc-test
-  * Bug #40813: u-test: dont skip admember in 20_computer_password
+  * Bug #40813: u-test: don't skip admember in 20_computer_password
 
  -- Lukas Oyen <oyen@univention.de>  Thu, 06 Jul 2017 11:24:00 +0200
 
@@ -3779,7 +3779,7 @@ ucs-test (7.0.10-18) unstable; urgency=medium
 
 ucs-test (7.0.10-17) unstable; urgency=medium
 
-  * Bug #43338: Reenable docker tests
+  * Bug #43338: Re-enable docker tests
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 31 Jan 2017 11:57:32 +0100
 
@@ -3803,14 +3803,14 @@ ucs-test (7.0.10-14) unstable; urgency=medium
 
 ucs-test (7.0.10-13) unstable; urgency=medium
 
-  * Bug #43216: Test new proxyAddresses sync behaviour
+  * Bug #43216: Test new proxyAddresses sync behavior
 
  -- Arvid Requate <requate@univention.de>  Mon, 30 Jan 2017 16:59:40 +0100
 
 ucs-test (7.0.10-12) unstable; urgency=medium
 
   * Bug #43444: Saml tests for login with wrong account or password 
-  * Bug #43384: reenable saml tests
+  * Bug #43384: re-enable saml tests
 
  -- Jürn Brodersen <brodersen@univention.de>  Fri, 20 Jan 2017 13:34:26 +0100
 
@@ -3859,7 +3859,7 @@ ucs-test (7.0.10-6) unstable; urgency=medium
 
 ucs-test (7.0.10-4) unstable; urgency=medium
 
-  * Bug #39122: Reenable 35smbclient_auth.test
+  * Bug #39122: Re-enable 35smbclient_auth.test
 
  -- Lukas Oyen <oyen@univention.de>  Mon, 23 Jan 2017 10:36:18 +0100
 
@@ -4224,7 +4224,7 @@ ucs-test (7.0.6-13) unstable; urgency=medium
 
 ucs-test (7.0.6-12) unstable; urgency=medium
 
-  * Bug #31832: reenable skipped test
+  * Bug #31832: re-enable skipped test
   * Bug #37337: Bug #8052: Fix escaping of DN's and LDAP filters; revert svn
   	r56733
 
@@ -4691,7 +4691,7 @@ ucs-test (6.0.33-71) unstable; urgency=low
 
 ucs-test (6.0.33-70) unstable; urgency=medium
 
-  * Bug #41416: Test existance of Appliance Logo
+  * Bug #41416: Test existence of Appliance Logo
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 15 Jun 2016 11:43:08 +0200
 
@@ -4834,7 +4834,7 @@ ucs-test (6.0.33-48) unstable; urgency=medium
 
 ucs-test (6.0.33-47) unstable; urgency=medium
 
-  * Bug #40187: Reenable ssl3 checks
+  * Bug #40187: Re-enable ssl3 checks
 
  -- Arvid Requate <requate@univention.de>  Mon, 21 Mar 2016 19:01:49 +0100
 
@@ -5093,7 +5093,7 @@ ucs-test (6.0.33-9) unstable; urgency=medium
 
 ucs-test (6.0.33-8) unstable; urgency=medium
 
-  * Bug #40315: Reenable 80_docker/62_app_update_available
+  * Bug #40315: Re-enable 80_docker/62_app_update_available
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 17 Feb 2016 12:01:18 +0100
 
@@ -5514,7 +5514,7 @@ ucs-test (6.0.27-4) unstable; urgency=low
 
 ucs-test (6.0.27-3) unstable; urgency=low
 
-  * Modify mail/domains test to take lowercased domain names into account
+  * Modify mail/domains test to take lowercase domain names into account
     (Bug #39721)
 
  -- Daniel Troeder <troeder@univention.de>  Wed, 18 Nov 2015 18:23:27 +0100
@@ -5551,7 +5551,7 @@ ucs-test (6.0.24-1) unstable; urgency=medium
 
 ucs-test (6.0.23-2) unstable; urgency=low
 
-  * fix comparation to fix 40_mail/25_imap_acls_correctly_respected
+  * fix comparison to fix 40_mail/25_imap_acls_correctly_respected
     (Bug #39900)
 
  -- Daniel Troeder <troeder@univention.de>  Fri, 13 Nov 2015 09:32:04 +0100
@@ -5636,7 +5636,7 @@ ucs-test (6.0.15-1) unstable; urgency=medium
 
 ucs-test (6.0.14-1) unstable; urgency=low
 
-  * Bug #39687: reenable 40_mail/42_dovecot_rename_mail_primary_address
+  * Bug #39687: re-enable 40_mail/42_dovecot_rename_mail_primary_address
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 05 Nov 2015 21:25:51 +0100
 
@@ -5909,7 +5909,7 @@ ucs-test (6.0.10-15) unstable; urgency=medium
 
 ucs-test (6.0.10-14.1) unstable; urgency=low
 
-  * dont wait for DRS replication for mail/folders (Bug #38600)
+  * don't wait for DRS replication for mail/folders (Bug #38600)
 
  -- Daniel Troeder <troeder@univention.de>  Fri, 23 Oct 2015 17:17:50 +0200
 
@@ -6452,7 +6452,7 @@ ucs-test (6.0.4-14) unstable; urgency=low
 
 ucs-test (6.0.4-13) unstable; urgency=low
 
-  * Bug #38804: cope with inconsistent auth behaviour (caused by Bug #39317)
+  * Bug #38804: cope with inconsistent auth behavior (caused by Bug #39317)
 
  -- Daniel Troeder <troeder@univention.de>  Tue, 08 Sep 2015 11:21:41 +0200
 
@@ -6784,7 +6784,7 @@ ucs-test (6.0.0-9) unstable; urgency=medium
 ucs-test (6.0.0-8) unstable; urgency=medium
 
   * 01_base/45udm-cli: In case of a memberserver in a S4 environment, we
-    have to wait until the user has been synchonized to Samba 4.
+    have to wait until the user has been synchronized to Samba 4.
     Otherwise we can't get a kerberos ticket (Bug #39100)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 07 Aug 2015 05:13:05 +0200
@@ -7033,7 +7033,7 @@ ucs-test (5.0.148-39) unstable; urgency=low
 
   * Bug #38791: modified test script
     43_dovecot_shared_folder_change_primary_mailaddress according to new
-    listener behaviour
+    listener behavior
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 06 Jul 2015 13:58:10 +0200
 
@@ -8152,7 +8152,7 @@ ucs-test (5.0.93-1) unstable; urgency=low
 ucs-test (5.0.92-1) unstable; urgency=low
 
   * Bug #37299: 10_ldap/28reconnect_univention-ldapsearch: don't perform
-    univention-ldapsearch before slapd being stopped. Timings adjustement.
+    univention-ldapsearch before slapd being stopped. Timings adjustment.
 
  -- Dmitry Galkin <galkin@univention.de>  Fri, 16 Jan 2015 12:39:11 +0100
 
@@ -8266,7 +8266,7 @@ ucs-test (5.0.86-1) unstable; urgency=low
 
 ucs-test (5.0.85-1) unstable; urgency=low
 
-  * Bug #37401: time.sleep is added untill bug #37516 is fixed.
+  * Bug #37401: time.sleep is added until bug #37516 is fixed.
 
  -- Ammar Najjar <najjar@univention.de>  Mon, 12 Jan 2015 11:40:48 +0100
 
@@ -8303,7 +8303,7 @@ ucs-test (5.0.82-3) unstable; urgency=medium
 
 ucs-test (5.0.82-2) unstable; urgency=medium
 
-  * Bug #37123: Check behaviour of "force printername" during UDM modify
+  * Bug #37123: Check behavior of "force printername" during UDM modify
 
  -- Arvid Requate <requate@univention.de>  Wed, 07 Jan 2015 17:52:06 +0100
 
@@ -8444,7 +8444,7 @@ ucs-test (5.0.69-4) unstable; urgency=medium
 
 ucs-test (5.0.69-3) unstable; urgency=low
 
-  * Bug #37078: Reenable 20_appcenter.20_can_apps_be_installed
+  * Bug #37078: Re-enable 20_appcenter.20_can_apps_be_installed
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 10 Dec 2014 00:07:57 +0100
 
@@ -8977,7 +8977,7 @@ ucs-test (5.0.14-1) unstable; urgency=low
 ucs-test (5.0.13-1) unstable; urgency=low
 
   * Bug #35877: adding new modules path to the test script.
-  * Bug #35887: correcting the currect version for ucs4.0.
+  * Bug #35887: correcting the current version for ucs4.0.
 
  -- Ammar Najjar <najjar@univention.de>  Wed, 01 Oct 2014 09:18:26 +0200
 
@@ -9125,7 +9125,7 @@ ucs-test (5.0.0-4) unstable; urgency=low
 
 ucs-test (5.0.0-3) unstable; urgency=low
 
-  * fixed wrong python verion in /tests/10_ldap/ldap_extensions_utils.py
+  * fixed wrong python version in /tests/10_ldap/ldap_extensions_utils.py
   (Bug #35664)
 
  -- Drees Dormann <dormann@univention.de>  Fri, 22 Aug 2014 12:43:52 +0200
@@ -9725,7 +9725,7 @@ ucs-test (4.0.164-39) unstable; urgency=low
 ucs-test (4.0.164-38) unstable; urgency=low
 
   * 60_umc-system/20_umc-service-autostart: test for umc-service
-    autostart behaviour (Bug #34506)
+    autostart behavior (Bug #34506)
   * 60_umc-system/TestUMCSystemModule.py: a helper class for testing
     umc-system
 
@@ -9898,7 +9898,7 @@ ucs-test (4.0.164-17) unstable; urgency=low
 
 ucs-test (4.0.164-16) unstable; urgency=low
 
-  * Bug #34343: explicitely check for conflicting system packages
+  * Bug #34343: explicitly check for conflicting system packages
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 24 Mar 2014 11:18:44 +0100
 
@@ -9952,7 +9952,7 @@ ucs-test (4.0.164-9) unstable; urgency=low
 ucs-test (4.0.164-8) unstable; urgency=low
 
   * 10_ldap/74schema_update: remove some sleeps from the test case. I
-    think it should be work without theses sleeps (Bug #34338)
+    think it should be work without these sleeps (Bug #34338)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Mar 2014 13:56:05 +0100
 
@@ -10344,7 +10344,7 @@ ucs-test (4.0.156-4) unstable; urgency=low
 
 ucs-test (4.0.156-3) unstable; urgency=low
 
-  * 00_base/30overview_https: fixed syntax error in version defintion
+  * 00_base/30overview_https: fixed syntax error in version definition
     which aborts ucs-test (Bug #32976)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 Oct 2013 06:41:14 +0200
@@ -10529,14 +10529,14 @@ ucs-test (4.0.137-1) unstable; urgency=low
   * 00_base/07kpasswd_output: The test user is created as member of
     Administrators. The group Administrators is either in cn=groups or
     cn=builtin. Nevertheless the test user need not to be a member of
-    Adminstrators so I removed the membership (Bug #32767)
+    Administrators so I removed the membership (Bug #32767)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Oct 2013 21:04:26 +0200
 
 ucs-test (4.0.136-1) unstable; urgency=low
 
   * Bug #32271: convert UMC policy result test case to python
-  * Bug #32271: add possiblity to (de)reference policies within the python UDM
+  * Bug #32271: add possibility to (de)reference policies within the python UDM
   	test framework
 
  -- Florian Best <best@univention.de>  Thu, 10 Oct 2013 11:29:47 +0200
@@ -11086,7 +11086,7 @@ ucs-test (4.0.80-1) unstable; urgency=low
   * added more udm-extendedattribute tests
   (Bug #31661)
 
-  * fixed whitespace in logging behaviour of utils.py#fail()
+  * fixed whitespace in logging behavior of utils.py#fail()
 
  -- Lukas Walter <walter@univention.de>  Tue, 23 Jul 2013 16:47:43 +0200
 
@@ -11118,7 +11118,7 @@ ucs-test (4.0.76-1) unstable; urgency=low
   * if a keyword argument "set" is passed to
     udm.py#UCSTestUDM.[modify_object(), create_object()], it will get
     evaluated as dictionary and it's key-value pairs appended to the CLI cmd
-    line like "--set $key=$value" (neccessary if some module properties have
+    line like "--set $key=$value" (necessary if some module properties have
     names which are already used as special keyword arguments, e.g "options"
     in univention.admin.handlers.settings.extended_attribute) (Bug #30560)
 
@@ -11356,7 +11356,7 @@ ucs-test (4.0.53-1) unstable; urgency=low
 
   * added more udm-computers test cases and slightly renamed some others
     (Bug #31659)
-  * fixed changelog identation
+  * fixed changelog indentation
 
  -- Lukas Walter <walter@univention.de>  Thu, 04 Jul 2013 13:34:17 +0200
 
@@ -11504,10 +11504,10 @@ ucs-test (4.0.39-1) unstable; urgency=low
   * added function "random_int()" to strings.py. Despite it's name, it will
     return a numeric string (by default containing a value between 0 and 9)
   * also remove referring objects in UCSTestUDM.cleanup()
-  * log erros occuring during UCSTestUDM.cleanup()
+  * log erros occurring during UCSTestUDM.cleanup()
   * per default, also remove referring objects when removing objects with
     UCSTestUDM().remove() (pass "remove_referring=False" to change this
-    behaviour) (Bug #30560)
+    behavior) (Bug #30560)
 
   * ported certain udm-computers tests (Bug #31659)
 
@@ -11599,7 +11599,7 @@ ucs-test (4.0.30-1) unstable; urgency=low
 
 ucs-test (4.0.29-2) unstable; urgency=low
 
-  * fixed identation in
+  * fixed indentation in
     68_udm-extendedattribute/62_check_multivalue_extended_attribute_required
     (Bug #31302)
   * renamed "wait_for_ldap_replication()" and
@@ -11626,7 +11626,7 @@ ucs-test (4.0.27-1) unstable; urgency=low
 
 ucs-test (4.0.26-1) unstable; urgency=low
 
-  * 5*_samba*/35smbclient_auth: Use univention.testing.utils instaed of
+  * 5*_samba*/35smbclient_auth: Use univention.testing.utils instead of
     univention.testing.ldap (Bug #31766)
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 24 Jun 2013 12:24:19 +0200
@@ -11707,8 +11707,8 @@ ucs-test (4.0.19-2) unstable; urgency=low
 
 ucs-test (4.0.19-1) unstable; urgency=low
 
-  * 51_samba4/35smbclient_auth: readded waitForUserCreation function
-    bacause we have to wait for the DRS replication (Bug #29052)
+  * 51_samba4/35smbclient_auth: re-added waitForUserCreation function
+    because we have to wait for the DRS replication (Bug #29052)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 21 Jun 2013 06:23:55 +0200
 
@@ -11908,7 +11908,7 @@ ucs-test (4.0.0-1) unstable; urgency=low
     postrun (Bug #31687)
   * Added udm-test which detects if --binddn and --bindpwd should be
     used (Bug #31678)
-  * Use check_join_status script instead of a seperate implementation
+  * Use check_join_status script instead of a separate implementation
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Jun 2013 15:08:52 +0200
 
@@ -12033,7 +12033,7 @@ ucs-test (3.0.60-2) unstable; urgency=low
 
 ucs-test (3.0.60-1) unstable; urgency=low
 
-  * Re-order connector tests, first all snyc tests are executed, after
+  * Re-order connector tests, first all sync tests are executed, after
     that all read test and at last the write tests. This prevents the
     connector restart (Bug #31677)
 
@@ -12099,9 +12099,9 @@ ucs-test (3.0.53-1) unstable; urgency=low
 
   * skip certain udm user tests which fail because of unfixed bugs for now
     (Bug #24351) (Bug #30932)
-  * added dependencys on ucs-test-udm-dhcp, ucs-test-udm-containers,
+  * added dependencies on ucs-test-udm-dhcp, ucs-test-udm-containers,
     and ucs-test-udm-extendedattribute to ucs-test-modules-all (Bug #27664)
-  * fixed identation in 65_udm-dhcp/10_create_check_and_remove_subnet (Bug
+  * fixed indentation in 65_udm-dhcp/10_create_check_and_remove_subnet (Bug
     #27664)
   * ported more DHCP tests from ucs-3.0 branch (Bug #27664)
 
@@ -12255,7 +12255,7 @@ ucs-test (3.0.38-1) unstable; urgency=low
 
 ucs-test (3.0.37-1) unstable; urgency=low
 
-  * readded fixed version of 07kpasswd_output to base section (Bug #30750)
+  * re-added fixed version of 07kpasswd_output to base section (Bug #30750)
 
  -- Lukas Walter <walter@univention.de>  Fri, 19 Apr 2013 14:25:13 +0200
 
@@ -12785,7 +12785,7 @@ ucs-test (3.0.3-1) unstable; urgency=low
 ucs-test (3.0.2-1) unstable; urgency=low
 
   * 52_s4connector/00create_remove_object: make it to a real default
-    test, creat user in S4 check if the user will be synced and remove
+    test, create user in S4 check if the user will be synced and remove
     the user after that (Bug #25751)
   * Skip some more ignore_subtree tests, see Bug #28700 (Bug #25818)
 
@@ -13562,7 +13562,7 @@ ucs-test (1.3.235-2) unstable; urgency=low
   * 50_samba/10samba-share-options.sh: increase sleeptime otherwise the
     test will fail on a memberserver
   * 50_samba/15-nfs-share-options.sh: remove the share_name from the
-    options, otherwise we got the following mesages: "WARNING: No
+    options, otherwise we got the following messages: "WARNING: No
     attribute with name 'D3fxgQS5' in this module, value not set." and
     "nfs config file <-> udm settings mismatch udm option: D3fxgQS5 nfs
     options: D3fxgQS5 udm value: D3fxgQS5"
@@ -13620,7 +13620,7 @@ ucs-test (1.3.230-1) unstable; urgency=low
 ucs-test (1.3.229-1) unstable; urgency=low
 
   * 15_iptables/20netfilterAddon:
-    consider case where noone is listening on tested port (Bug #18995)
+    consider case where no one is listening on tested port (Bug #18995)
 
  -- Daniel Hofmann <hofmann@univention.de>  Wed, 28 Jul 2010 15:38:08 +0200
 
@@ -13744,7 +13744,7 @@ ucs-test (1.3.214-2) unstable; urgency=low
 ucs-test (1.3.214-1) unstable; urgency=low
 
   * Fix PIPESTATUS in 00base/40univention-ssh_echo (Bug #14212, Bug #19002)
-  * Temporarly more debugging for 00base/40univention-ssh_unknown.
+  * Temporarily more debugging for 00base/40univention-ssh_unknown.
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 14 Jul 2010 08:58:44 +0200
 
@@ -13768,7 +13768,7 @@ ucs-test (1.3.211-1) unstable; urgency=low
 
 ucs-test (1.3.210-1) unstable; urgency=low
 
-  * add dependeny of ucs-test to ucs-test-ad-connector (Bug #15429)
+  * add dependency of ucs-test to ucs-test-ad-connector (Bug #15429)
 
  -- Daniel Hofmann <hofmann@univention.de>  Thu, 08 Jul 2010 14:48:00 +0200
 
@@ -14180,7 +14180,7 @@ ucs-test (1.3.150-1) unstable; urgency=low
 
   * add helper-function to check return codes to base.lib
   * remove unnecessary functions from adconnector.py and adconnector.lib
-  * improve error behaviour of helpers in adconnector.lib (Bug #15429)
+  * improve error behavior of helpers in adconnector.lib (Bug #15429)
 
  -- Daniel Hofmann <hofmann@univention.de>  Wed, 19 May 2010 11:14:44 +0200
 
@@ -14663,7 +14663,7 @@ ucs-test (1.3.83-1) unstable; urgency=low
 ucs-test (1.3.82-1) unstable; urgency=low
 
   * add returnvalue to ad_wait_for_synchronisation indicating whether
-    synchronisation has occured at all (Bug #15429)
+    synchronisation has occurred at all (Bug #15429)
 
  -- Daniel Hofmann <hofmann@univention.de>  Thu, 15 Apr 2010 15:58:38 +0200
 
@@ -15099,7 +15099,7 @@ ucs-test (1.3.17-1) unstable; urgency=low
 ucs-test (1.3.16-1) unstable; urgency=low
 
   * kolab tests for 2.3 Bug #16092:
-    + added the samba 3.5 relase announce as normal mailtext to prevent
+    + added the samba 3.5 release announce as normal mailtext to prevent
       wrong spam detection. Bug #16092
     + source base.lib in all kolab scripts. In base.lib is an udm function
       which calls udm with the correct binddn parameters on a DC Slave
@@ -15644,7 +15644,7 @@ ucs-test (1.2.141-1) unstable; urgency=low
 
 ucs-test (1.2.140-1) unstable; urgency=low
 
-  * add additonal checks to syntax-related testcases of custom- and
+  * add additional checks to syntax-related testcases of custom- and
     extended attributes (Bug: #11994)
 
  -- Daniel Hofmann <hofmann@univention.de>  Wed,  7 Oct 2009 09:53:45 +0200
@@ -15742,13 +15742,13 @@ ucs-test (1.2.130-3) unstable; urgency=low
 
 ucs-test (1.2.130-2) unstable; urgency=low
 
-  * fixed some small issues in sytem-setup-tests (Bug: #11690 and Bug: #11692)
+  * fixed some small issues in system-setup-tests (Bug: #11690 and Bug: #11692)
 
  -- Christoph Niemann <niemann@univention.de>  Mon,  5 Oct 2009 09:29:50 +0200
 
 ucs-test (1.2.130-1) unstable; urgency=low
 
-  * revert accidentaly included changes from previous commit (Bug: #14202)
+  * revert accidentally included changes from previous commit (Bug: #14202)
 
  -- Daniel Hofmann <hofmann@univention.de>  Fri,  2 Oct 2009 17:15:34 +0200
 
@@ -15761,7 +15761,7 @@ ucs-test (1.2.129-1) unstable; urgency=low
 
 ucs-test (1.2.128-1) unstable; urgency=low
 
-  * add --brief option to ucr-commands because of change in ucr-behaviour (Bug: #15026)
+  * add --brief option to ucr-commands because of change in ucr-behavior (Bug: #15026)
 
  -- Daniel Hofmann <hofmann@univention.de>  Thu,  1 Oct 2009 10:05:29 +0200
 
@@ -16011,7 +16011,7 @@ ucs-test (1.2.91-1) unstable; urgency=low
 
 ucs-test (1.2.90-1) unstable; urgency=low
 
-  * fix wrong behaviour in previously added test (Bug: #14202)
+  * fix wrong behavior in previously added test (Bug: #14202)
 
  -- Daniel Hofmann <hofmann@univention.de>  Thu, 24 Sep 2009 13:12:53 +0200
 
@@ -16678,14 +16678,14 @@ ucs-test (1.2.5-14) unstable; urgency=low
 
 ucs-test (1.2.5-13) unstable; urgency=low
 
-  * Split login scripts into seperate scripts for SSH, UDM and UMC test.
+  * Split login scripts into separate scripts for SSH, UDM and UMC test.
     Bug #12944
 
  -- Andre Fenske <fenske@univention.de>  Mon, 17 Aug 2009 16:04:16 +0200
 
 ucs-test (1.2.5-12) unstable; urgency=low
 
-  * Readded pkgdb Test. Bug #13112
+  * Re-added pkgdb Test. Bug #13112
 
  -- Andre Fenske <fenske@univention.de>  Mon, 17 Aug 2009 14:52:20 +0200
 
@@ -17277,7 +17277,7 @@ ucs-test (1.2.3-4) unstable; urgency=low
 
 ucs-test (1.2.3-3) unstable; urgency=low
 
-  * Bug: #13485 #13486 tests now only start automaticly when software is
+  * Bug: #13485 #13486 tests now only start automatically when software is
     installed
 
  -- Jasper Schulz <schulz@univention.de>  Fri,  6 Mar 2009 16:55:14 +0100
@@ -17363,7 +17363,7 @@ ucs-test (1.1.2-120) unstable; urgency=low
 
 ucs-test (1.1.2-119) unstable; urgency=low
 
-  * Bug: #13107 checks wheter telnet is off or on
+  * Bug: #13107 checks whether telnet is off or on
 
  -- Jasper Schulz <schulz@univention.de>  Fri, 13 Feb 2009 13:36:14 +0100
 
@@ -17399,7 +17399,7 @@ ucs-test (1.1.2-114) unstable; urgency=low
 
 ucs-test (1.1.2-113) unstable; urgency=low
 
-  * Addes Skript for mail delegate delivery test. Bug #12378
+  * Adds Skript for mail delegate delivery test. Bug #12378
 
  -- Andre Fenske <fenske@univention.de>  Tue, 10 Feb 2009 14:12:12 +0100
 
@@ -17564,7 +17564,7 @@ ucs-test (1.1.2-89) unstable; urgency=low
 
 ucs-test (1.1.2-88) unstable; urgency=low
 
-  * new script for the check, wether machine.secret ist edited, if failed.ldif exists
+  * new script for the check, whether machine.secret is edited, if failed.ldif exists
 
  -- Christoph Niemann <niemann@univention.de>  Tue, 23 Sep 2008 16:42:33 +0200
 
@@ -17948,7 +17948,7 @@ ucs-test (1.1.2-30) unstable; urgency=low
 
 ucs-test (1.1.2-29) unstable; urgency=low
 
-  * added script to test vacation notice for alternative adresses
+  * added script to test vacation notice for alternative addresses
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 30 Jun 2008 11:38:42 +0200
 
@@ -18000,7 +18000,7 @@ ucs-test (1.1.2-22) unstable; urgency=low
 
 ucs-test (1.1.2-21) unstable; urgency=low
 
-  * removed unecessary code (Closes bug #11389)
+  * removed unnecessary code (Closes bug #11389)
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 23 Jun 2008 14:20:49 +0200
 
@@ -18102,7 +18102,7 @@ ucs-test (1.1.2-6) unstable; urgency=low
 
 ucs-test (1.1.2-5) unstable; urgency=low
 
-  * added test for alternative email adresses
+  * added test for alternative email addresses
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 18 Jun 2008 11:16:52 +0200
 

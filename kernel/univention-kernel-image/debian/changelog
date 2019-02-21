@@ -201,7 +201,7 @@ univention-kernel-image (8.0.6-3) unstable; urgency=low
 
 univention-kernel-image (8.0.6-2) unstable; urgency=medium
 
-  * Change depedency to -signed (Bug #35916)
+  * Change dependency to -signed (Bug #35916)
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 03 Nov 2014 18:55:20 +0100
 

@@ -853,7 +853,7 @@ univention-samba4 (5.0.1-25) unstable; urgency=medium
 univention-samba4 (5.0.1-24) unstable; urgency=medium
 
   * Bug #40434: Adjust create-keytab.sh to work around changed Samba 4.3.x
-    behaviour (maybe internal heimdal), that causes duplicate hashes when
+    behavior (maybe internal heimdal), that causes duplicate hashes when
     password is changed in secrets.ldb but same KVNO is used.
 
  -- Arvid Requate <requate@univention.de>  Tue, 26 Jan 2016 21:59:49 +0100
@@ -1677,7 +1677,7 @@ univention-samba4 (3.0.21-3) unstable; urgency=low
 
 univention-samba4 (3.0.21-2) unstable; urgency=low
 
-  * Create pseudo groups at the beginnig of the join script (Bug #32461)
+  * Create pseudo groups at the beginning of the join script (Bug #32461)
 
  -- Stefan Gohmann <gohmann@univention.de>  Sun, 13 Oct 2013 23:51:50 +0200
 
@@ -2872,7 +2872,7 @@ univention-samba4 (1.0.171-1) unstable; urgency=low
 univention-samba4 (1.0.170-1) unstable; urgency=low
 
   * Merge changes from UCS@school to UCS 3.0-2, removed duplicated UCR
-    defintion (Bug #26510)
+    definition (Bug #26510)
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Jul 2012 06:37:45 +0200
 
@@ -2922,7 +2922,7 @@ univention-samba4 (1.0.164-1) unstable; urgency=low
 
 univention-samba4 (1.0.163-1) unstable; urgency=low
 
-  * create the propper DomainGUID LDAP SRV record (Bug #26325)
+  * create the proper DomainGUID LDAP SRV record (Bug #26325)
 
  -- Arvid Requate <requate@univention.de>  Mon, 09 Jul 2012 13:56:56 +0200
 
@@ -3114,7 +3114,7 @@ univention-samba4 (1.0.139-3) unstable; urgency=low
 
 univention-samba4 (1.0.139-2) unstable; urgency=low
 
-  * Split sysvol sync into a seperate package (Bug #27249)
+  * Split sysvol sync into a separate package (Bug #27249)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 May 2012 16:14:21 +0200
 
@@ -3167,7 +3167,7 @@ univention-samba4 (1.0.134-1) unstable; urgency=low
 
 univention-samba4 (1.0.133-2) unstable; urgency=low
 
-  * Check if Samba4 ist provisioned (Bug #26659)
+  * Check if Samba4 is provisioned (Bug #26659)
 
  -- Arvid Requate <requate@univention.de>  Thu, 29 Mar 2012 10:44:18 +0200
 
@@ -3568,7 +3568,7 @@ univention-samba4 (1.0.95-1) unstable; urgency=low
 univention-samba4 (1.0.94-4) unstable; urgency=low
 
   * initialize the sysvol with default ACL for 'DC Slave Hosts'
-    on alls DCs and RODCs in joinscript (Bug #24163)
+    on all DCs and RODCs in joinscript (Bug #24163)
 
  -- Arvid Requate <requate@univention.de>  Tue, 08 Nov 2011 17:40:18 +0100
 
@@ -3628,7 +3628,7 @@ univention-samba4 (1.0.90-1) unstable; urgency=low
 
 univention-samba4 (1.0.89-2) unstable; urgency=low
 
-  * adjust setup-s4 case for update szenario 2 (Bug #22866)
+  * adjust setup-s4 case for update scenario 2 (Bug #22866)
 
  -- Arvid Requate <requate@univention.de>  Mon, 07 Nov 2011 19:17:59 +0100
 
@@ -3709,7 +3709,7 @@ univention-samba4 (1.0.80-1) unstable; urgency=low
 
 univention-samba4 (1.0.79-1) unstable; urgency=low
 
-  * retrive S3_DOMAIN_SID only for windows/domain
+  * retrieve S3_DOMAIN_SID only for windows/domain
   * support the case where S3_DOMAIN_SID cannot be determined (Bug #22866)
 
  -- Arvid Requate <requate@univention.de>  Tue, 25 Oct 2011 16:55:45 +0200
@@ -3974,7 +3974,7 @@ univention-samba4 (1.0.60-6) unstable; urgency=low
 
 univention-samba4 (1.0.60-5) unstable; urgency=low
 
-  * remove reference to uncommited etc/named/samba4.conf (Bug #22865)
+  * remove reference to uncommitted etc/named/samba4.conf (Bug #22865)
 
  -- Arvid Requate <requate@univention.de>  Wed, 12 Oct 2011 18:34:04 +0200
 
@@ -4328,7 +4328,7 @@ univention-samba4 (1.0.29-2) experimental; urgency=low
 
 univention-samba4 (1.0.29-1) experimental; urgency=low
 
-  * call setup-dns-in-ucsldap.sh explicitely from joinscript
+  * call setup-dns-in-ucsldap.sh explicitly from joinscript
     might be legacy once dlz-dlopen for samba4 is setup in bind9
 
   * need setup-dns-in-ucsldap also after join of secondary DCs
@@ -4367,7 +4367,7 @@ univention-samba4 (1.0.26-1) experimental; urgency=low
 univention-samba4 (1.0.25-1) experimental; urgency=low
 
   * run provision on first DC that's going to provide the Samba 4 service,
-    regardless of beeing a master or not (Bug #23360)
+    regardless of being a master or not (Bug #23360)
 
  -- Arvid Requate <requate@univention.de>  Tue, 30 Aug 2011 11:14:30 +0200
 
@@ -4478,7 +4478,7 @@ univention-samba4 (1.0.19-5) experimental; urgency=low
 univention-samba4 (1.0.19-4) experimental; urgency=low
 
   * let samba4 manage /etc/krb5.keytab on DCs (Bug #22963)
-  * add service principals also in backup ans slave (Bug #23360)
+  * add service principals also in backup and slave (Bug #23360)
   * increase JS VERSION for MS2
   * encapsule MS2 changes with JS_LAST_EXECUTED_VERSION
 

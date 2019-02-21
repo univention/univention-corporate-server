@@ -6,7 +6,7 @@ univention-dojo (12.0.0-1) unstable; urgency=medium
 
 univention-dojo (11.0.1-3) unstable; urgency=medium
 
-  * Bug #47997: Reenable certificate check for wget in Makefile
+  * Bug #47997: Re-enable certificate check for wget in Makefile
 
  -- Ole Schwiegert <schwiegert@univention.de>  Wed, 07 Nov 2018 11:09:11 +0100
 
@@ -171,7 +171,7 @@ univention-dojo (7.0.1-1) unstable; urgency=low
 
 univention-dojo (7.0.0-1) unstable; urgency=low
 
-  * Bug #31639: updated dojo to verison 1.9 and dgrid, xstyle, put-selector to
+  * Bug #31639: updated dojo to version 1.9 and dgrid, xstyle, put-selector to
     their most recent release version (note: xstyle has been pulled as latest
     release from github due to build problems)
 

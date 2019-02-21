@@ -249,7 +249,7 @@ univention-printserver (8.0.6-6) unstable; urgency=medium
 
 univention-printserver (8.0.6-5) unstable; urgency=medium
 
-  * Bug #37123: Make value of "force printername" dependend on previous
+  * Bug #37123: Make value of "force printername" dependent on previous
     value during modifications.
 
  -- Arvid Requate <requate@univention.de>  Wed, 07 Jan 2015 16:24:00 +0100
@@ -485,7 +485,7 @@ univention-printserver (7.0.3-2) unstable; urgency=low
 univention-printserver (7.0.3-1) unstable; urgency=low
 
   * Added support for denying client access based on ip addresses,
-    configurable via UCRV cups/printmode/hosts/none. This funtionality
+    configurable via UCRV cups/printmode/hosts/none. This functionality
     is needed for UCS@School. (Bug #31902)
 
  -- Erik Damrose <damrose@univention.de>  Thu, 18 Jul 2013 14:07:26 +0200
@@ -663,7 +663,7 @@ univention-printserver (6.0.13-1) unstable; urgency=low
 
 univention-printserver (6.0.12-1) unstable; urgency=low
 
-  * Dont use sanitizers yet (Bug #27720)
+  * Don't use sanitizers yet (Bug #27720)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Oct 2012 11:47:27 +0200
 
@@ -702,7 +702,7 @@ univention-printserver (6.0.8-2) unstable; urgency=low
 univention-printserver (6.0.8-1) unstable; urgency=low
 
   * Fix CUPS netmask handling (Bug #26058)
-  * Split univention-foomatic-ppds into own source paket (Bug #28494)
+  * Split univention-foomatic-ppds into own source packet (Bug #28494)
   * Remove chmod override in postrm (Bug #17547)
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 13 Sep 2012 14:47:35 +0200
@@ -1524,7 +1524,7 @@ univention-printserver (1.0.9-4) unstable; urgency=low
 
 univention-printserver (1.0.9-3) unstable; urgency=low
 
-  * move the cups umc modul from univention-management-console to the
+  * move the cups umc module from univention-management-console to the
     univention-printerserver package. Bug #12145
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 17 Oct 2008 22:04:03 +0200
@@ -1601,10 +1601,10 @@ univention-printserver (1.0.5-4) unstable; urgency=low
 univention-printserver (1.0.5-3) unstable; urgency=low
 
   * Pass credentials to the univention-directory-manager calls, which remove the
-    old printer defitions
+    old printer definitions
   * Only make a backup copy during upgrades
   * Test the existence of the old PPDs by probing the join status instead of
-    perfoming an LDAP search
+    performing an LDAP search
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  7 Nov 2007 11:34:41 +0100
 
@@ -1773,7 +1773,7 @@ univention-printserver (0.12) unstable; urgency=low
 univention-printserver (0.11) unstable; urgency=low
 
   * Support for spaces in ldap base
-  * changed univention-lpadmin to match behaviour of new lpadmin
+  * changed univention-lpadmin to match behavior of new lpadmin
 
  -- Ingo Steuwer <steuwer@univention.de>  Wed,  2 Feb 2005 10:27:49 +0100
 

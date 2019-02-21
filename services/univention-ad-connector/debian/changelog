@@ -688,7 +688,7 @@ univention-ad-connector (10.0.1-22) unstable; urgency=medium
 
 univention-ad-connector (10.0.1-21) unstable; urgency=medium
 
-  * Check if the chached group members really exist (Bug #41028)
+  * Check if the cached group members really exist (Bug #41028)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Apr 2016 15:22:19 +0200
 
@@ -737,7 +737,7 @@ univention-ad-connector (10.0.1-14) unstable; urgency=medium
 
 univention-ad-connector (10.0.1-13) unstable; urgency=medium
 
-  * Replace the password synchronisation by using
+  * Replace the password synchronization by using
     drsuapi.DsGetNCChangesRequest8 and samr.SetUserInfo. Felix and Arvid
     did a lot of research and provide patches it. This will replace our
     own password service (Bug #40745)
@@ -1017,14 +1017,14 @@ univention-ad-connector (8.0.17-67) unstable; urgency=medium
 
 univention-ad-connector (8.0.17-66) unstable; urgency=medium
 
-  * DSACL needs to be adjusted in a separate step after initalization
+  * DSACL needs to be adjusted in a separate step after initialization
     (Bug #35566)
 
  -- Arvid Requate <requate@univention.de>  Tue, 05 Aug 2014 18:28:36 +0200
 
 univention-ad-connector (8.0.17-65) unstable; urgency=medium
 
-  * Add dependency on currrent version of python-univention-lib (Bug #35566)
+  * Add dependency on current version of python-univention-lib (Bug #35566)
 
  -- Arvid Requate <requate@univention.de>  Tue, 05 Aug 2014 17:43:08 +0200
 
@@ -1330,7 +1330,7 @@ univention-ad-connector (8.0.17-22) unstable; urgency=medium
 
 univention-ad-connector (8.0.17-21) unstable; urgency=medium
 
-  * Bug #35090 [WIP]: integrated checks for inital connection and SSL
+  * Bug #35090 [WIP]: integrated checks for initial connection and SSL
 
  -- Alexander Kläser <klaeser@univention.de>  Thu, 24 Jul 2014 18:14:15 +0200
 
@@ -1450,7 +1450,7 @@ univention-ad-connector (8.0.17-5) unstable; urgency=low
 
     [ Arvid Requate ]
      * admember.lookup_adds_dc() requires python-ldb (Bug #34091)
-     * Improve error handling for the time syncronization (Bug #34091)
+     * Improve error handling for the time synchronization (Bug #34091)
      * Separate --lookup option for univention-ad-member
      * admember.lookup_adds_dc() requires samba-common-bin (Bug #34091)
      * admember.lookup_adds_dc() requires python-samba (Bug #34091)
@@ -1655,7 +1655,7 @@ univention-ad-connector (8.0.1-1) unstable; urgency=low
 univention-ad-connector (8.0.0-3) unstable; urgency=low
 
   * Added additional hints in the ad-connector setup wizard (Bug #24903) 
-  * Corrected generation of error messsage to avoid a traceback (a wrong
+  * Corrected generation of error message to avoid a traceback (a wrong
     variable name was used) 
 
  -- Erik Damrose <damrose@univention.de>  Tue, 27 Aug 2013 16:13:34 +0200
@@ -1711,7 +1711,7 @@ univention-ad-connector (7.0.16-1) unstable; urgency=low
 
 univention-ad-connector (7.0.15-1) unstable; urgency=low
 
-  * fixed listener module traceback which occured when
+  * fixed listener module traceback which occurred when
     /var/lib/univention-connector/ad/ contained subdirectories (Bug #18125)
 
  -- Lukas Walter <walter@univention.de>  Wed, 06 Mar 2013 14:33:23 +0100
@@ -1889,7 +1889,7 @@ univention-ad-connector (6.0.57-1) unstable; urgency=low
 
   * The connector listener handler writes group objects into a global
     list. This is a performance improvement which was added with Bug
-    #18619. This global group list is only needed in the the initalize
+    #18619. This global group list is only needed in the the initialize
     phase. It is now considered and saves a lot of memory (Bug #24273)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Jun 2012 06:31:16 +0200
@@ -1911,7 +1911,7 @@ univention-ad-connector (6.0.55-1) unstable; urgency=low
 univention-ad-connector (6.0.54-1) unstable; urgency=low
 
   * Don't try to add a user to his primary group in AD. This might
-    happen, if we synchronize a rejected file with old informations
+    happen, if we synchronize a rejected file with old information
     (Bug #25709)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Feb 2012 07:36:48 +0100
@@ -1960,7 +1960,7 @@ univention-ad-connector (6.0.48-1) unstable; urgency=low
 univention-ad-connector (6.0.47-1) unstable; urgency=low
 
   * Support for a different binddn and bindpw for the UCS access,
-    for example if the machine acount should be used (Bug #25985)
+    for example if the machine account should be used (Bug #25985)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 31 Jan 2012 15:59:00 +0100
 
@@ -2064,7 +2064,7 @@ univention-ad-connector (6.0.35-1) unstable; urgency=low
 
 univention-ad-connector (6.0.34-1) unstable; urgency=low
 
-  * Replace custom attribiutes by extended attributes in ad-connector-
+  * Replace custom attributes by extended attributes in ad-connector-
     exchange package (Bug #24881)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 Nov 2011 07:14:23 +0100
@@ -2135,7 +2135,7 @@ univention-ad-connector (6.0.24-1) unstable; urgency=low
 univention-ad-connector (6.0.23-1) unstable; urgency=low
 
   * Use cPickle.Pickler an clear_memo, otherwise the internal python
-    refcount will not be decreased  and the memeory is lost (Bug #24273)
+    refcount will not be decreased  and the memory is lost (Bug #24273)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Nov 2011 15:53:15 +0100
 
@@ -2196,9 +2196,9 @@ univention-ad-connector (6.0.15-1) unstable; urgency=low
 
   * Merged from S4 connector:
     * Synchronize sambaWorkstations (Bug #24119)
-    * Added telephoneNumber synchonization
+    * Added telephoneNumber synchronization
     * Added phone numbers to mapping
-    * Synchonize displayName (Bug #20601)
+    * Synchronize displayName (Bug #20601)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 08:36:36 +0200
 
@@ -2252,7 +2252,7 @@ univention-ad-connector (6.0.9-2.1) unstable; urgency=low
 
   * Support page control for the AD search. This increase the initialize
     performance (Bug #23734)
-  * Don't synchonize all objects during the init twice, only search for
+  * Don't synchronize all objects during the init twice, only search for
     uSNCreated objects and not for uSNCreated and uSNChanged objects
     (Bug #23734)
   * Adapt prepare-new-instance to UCS 3.0 (Bug #23814)
@@ -2260,7 +2260,7 @@ univention-ad-connector (6.0.9-2.1) unstable; urgency=low
   * The tools univention-connector-list-rejected and univention-adsearch
     can now be used when connector/ad/ldap/certificate is not set and
     connector/ad/ssl is false (Bug #23580)
-  * Build an internal membership cache while synchonize the members from
+  * Build an internal membership cache while synchronize the members from
     AD to UCS. So every AD member will get once instead of twice. Also
     don't open the UDM group module twice (Bug #21010)
   * Check if properties defined in the mapping file. Thanks to Joerg
@@ -2307,21 +2307,21 @@ univention-ad-connector (6.0.7-1) unstable; urgency=low
       connector/ad/password/timestamp/.* (Bug #22751)
     * Also added two UCR variables to handle the password reset in the
       timestamp check mode (Bug #22751)
-    * Sync the passwords only if the timestamp is newer. The bahavior can
+    * Sync the passwords only if the timestamp is newer. The behavior can
       configured with the UCR variable connector/ad/password/timestamp/check.
       Default is false (Bug #22751)
     * Consider empty sambaLMPassword attributes to prevent sync loops
       (Bug #22749)
     * No longer use sambaPwdMustChange to calculate the password end time
       (Bug #18187)
-    * explode_unicode_dn: Also retrun last dn component. Thanks to Joerg
+    * explode_unicode_dn: Also return last dn component. Thanks to Joerg
       Steffens for the patch (Bug #21000)
     * Resync rejected objects not before the sync is initialized
       (Bug #22622)
     * Set lastUSN to internal.cfg not before the search result was
       completely synced, otherwise the USN handling can become confused
       (Bug #22622)
-    * Retry the synchonisation if the local idletimeout occurs
+    * Retry the synchronisation if the local idletimeout occurs
       (Bug #22622)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Sep 2011 15:43:17 +0200
@@ -2361,7 +2361,7 @@ univention-ad-connector (6.0.5-1) unstable; urgency=low
 
 univention-ad-connector (6.0.4-1) unstable; urgency=low
 
-  * Initialze self.lo even if bindpw does not contain a newline
+  * Initialize self.lo even if bindpw does not contain a newline
     (Bug #14186)
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 01 Aug 2011 16:55:39 +0200
@@ -2555,7 +2555,7 @@ univention-ad-connector (5.0.3-1) unstable; urgency=low
 
 univention-ad-connector (5.0.2-1) unstable; urgency=low
 
-  * added support for windows 64bit plattform. Bug #15651
+  * added support for windows 64bit platform. Bug #15651
   * switch to makemsi:
     https://billy.knut.univention.de/uniwiki/index.php/AD_Connector_Entwicklungsumgebung#MSI-Pakete
 
@@ -2755,7 +2755,7 @@ univention-ad-connector (4.0.11-1) unstable; urgency=low
 
 univention-ad-connector (4.0.10-1) unstable; urgency=low
 
-  * suppport for Windows 2008. Bug #11701
+  * support for Windows 2008. Bug #11701
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu,  2 Jul 2009 10:27:06 +0200
 
@@ -2993,7 +2993,7 @@ univention-ad-connector (1.2.3-1) unstable; urgency=low
 
 univention-ad-connector (1.2.3) unstable; urgency=low
 
-  * seperated search for uSNCreated and uSNChanged during poll
+  * separated search for uSNCreated and uSNChanged during poll
   * sync group memberships ("memberOf") after syncing users and groups
 
  -- Ingo Steuwer <steuwer@univention.de>  Mon, 21 Apr 2008 16:54:54 +0200
@@ -3120,7 +3120,7 @@ univention-ad-connector (1.0.0-1) unstable; urgency=low
 univention-ad-connector (0.3-26) unstable; urgency=low
 
   * the old copypwd process breaks the lsass.exe process under windows 2003
-  sp1. The new package fixes this behaviour
+  sp1. The new package fixes this behavior
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu,  8 Mar 2007 13:41:43 +0100
 

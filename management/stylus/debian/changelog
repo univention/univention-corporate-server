@@ -44,7 +44,7 @@ stylus (0.0.0-9) unstable; urgency=low
 
 stylus (0.0.0-8) unstable; urgency=low
 
-  * Bug #35823: just another attemp to avoid the 
+  * Bug #35823: just another attempt to avoid the 
     "SELF_SIGNED_CERT_IN_CHAIN” error
 
  -- Alexander Kramer <kramer@univention.de>  Wed, 10 Sep 2014 12:47:49 +0200

@@ -307,7 +307,7 @@ univention-s4-connector (12.0.0-4) unstable; urgency=medium
 univention-s4-connector (12.0.0-3) unstable; urgency=medium
 
   * Bug #44369: Rejects for DNs containing non-ASCII characters could
-    not be saved, becasue python-sqlite3 doesn't accept UTF-8, causing
+    not be saved, because python-sqlite3 doesn't accept UTF-8, causing
     rejects not to be visible but keeping the S4-Connector retrying
     endlessly, flooding the logs with rejects.
 
@@ -603,7 +603,7 @@ univention-s4-connector (11.0.6-9) unstable; urgency=medium
 univention-s4-connector (11.0.6-8) unstable; urgency=medium
 
   * Bug #41764: s4connector: port range retrieval patches.
-    This commit ports the AD-connector range retrieval patches, commited by Arvid
+    This commit ports the AD-connector range retrieval patches, committed by Arvid
     in r71661, r71662 and r71677, to the s4-connector.
   * Bug #41764: s4connector: slight cleanup in range retrieval
 
@@ -716,7 +716,7 @@ univention-s4-connector (11.0.3-1) unstable; urgency=medium
 univention-s4-connector (11.0.2-7) unstable; urgency=medium
 
   * Bug #32086: Fix LDAP DN escaping. All DN (de-)constructions are now done via
-    `ldap.dn.{dn2str,str2dn}`, enabeling proper escaping.
+    `ldap.dn.{dn2str,str2dn}`, enabling proper escaping.
   * Bug #32086: Fix LDAP filter escaping. All LDAP filter strings are now
     constructed via a new method `format_escaped()`, if there were not already
     constructed using the old `filter_format()`.
@@ -1018,7 +1018,7 @@ univention-s4-connector (9.0.16-39) unstable; urgency=medium
 
 univention-s4-connector (9.0.16-38) unstable; urgency=medium
 
-  * Fix dns_type comparison to ignore unknown DNS objects instread of
+  * Fix dns_type comparison to ignore unknown DNS objects instead of
     creating a dns/host_record for them (Bug #39077)
 
  -- Arvid Requate <requate@univention.de>  Tue, 04 Aug 2015 15:50:30 +0200
@@ -1461,7 +1461,7 @@ univention-s4-connector (8.0.33-63) unstable; urgency=medium
 
 univention-s4-connector (8.0.33-62) unstable; urgency=medium
 
-  * Revert GuidNotInCache part of last patch, this would change the behaviour
+  * Revert GuidNotInCache part of last patch, this would change the behavior
     and break resync of an S4-object which is not found in the cache. Maybe
     there are use cases for this (Bug #33621).
   * Give an estimate of the resync delay.
@@ -1678,7 +1678,7 @@ univention-s4-connector (8.0.33-33) unstable; urgency=low
 
 univention-s4-connector (8.0.33-32) unstable; urgency=low
 
-  * Remove the internal dn_list which has been used to detect mutli
+  * Remove the internal dn_list which has been used to detect multi
     object changes. This is required for the switch from object based
     sync to diff based sync (Bug #33621)
   * Add diff mode for modifications from UCS to S4 (Bug #33621)
@@ -1702,7 +1702,7 @@ univention-s4-connector (8.0.33-30) unstable; urgency=medium
 
 univention-s4-connector (8.0.33-29) unstable; urgency=medium
 
-  * Raise timout limits for initial listener replication and restart
+  * Raise timeout limits for initial listener replication and restart
     (Bug #33644)
 
  -- Arvid Requate <requate@univention.de>  Tue, 28 Jan 2014 17:31:13 +0100
@@ -1915,7 +1915,7 @@ univention-s4-connector (8.0.32-1) unstable; urgency=low
 
 univention-s4-connector (8.0.31-3) unstable; urgency=low
 
-  * Add well knwon groups from SBS 2008 (Bug #29486)
+  * Add well known groups from SBS 2008 (Bug #29486)
 
  -- Arvid Requate <requate@univention.de>  Tue, 29 Oct 2013 14:26:05 +0100
 
@@ -2046,7 +2046,7 @@ univention-s4-connector (8.0.20-1) unstable; urgency=low
 
 univention-s4-connector (8.0.19-1) unstable; urgency=low
 
-  * If an object was moved to a non visable area (selective replication)
+  * If an object was moved to a non visible area (selective replication)
     the listener module of the connector now dumps the object, so the
     connector can handle this (Bug #32542)
 
@@ -2160,7 +2160,7 @@ univention-s4-connector (8.0.10-1) unstable; urgency=low
 
 univention-s4-connector (8.0.8-1) unstable; urgency=low
 
-  * Use compare function from mapping defintion (Bug #32322)
+  * Use compare function from mapping definition (Bug #32322)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Aug 2013 07:07:57 +0200
 
@@ -2197,7 +2197,7 @@ univention-s4-connector (8.0.4-1) unstable; urgency=low
 
 univention-s4-connector (8.0.3-1) unstable; urgency=low
 
-  * Use again two searches for the change list but a faster comparsion.
+  * Use again two searches for the change list but a faster comparison.
     The order is important first the created objects are needed
     otherwise the child object is added before the parent object. An
     alternative would be to sort the one search result by the dn length
@@ -2214,7 +2214,7 @@ univention-s4-connector (8.0.2-2) unstable; urgency=low
 univention-s4-connector (8.0.2-1) unstable; urgency=low
 
   * Search for uSNCreated and uSNChanged in one search to prevent a slow
-    list comparsion (Bug #32213)
+    list comparison (Bug #32213)
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Aug 2013 07:41:23 +0200
 
@@ -2454,7 +2454,7 @@ univention-s4-connector (7.0.17-39) unstable; urgency=low
 
   * univention-ad-takeover (Bug #28390):
     - remove krb5Keytab attribute from dns-SPN account secrets.ldb record,
-      krb5Keytab takes precendence over privateKeytab
+      krb5Keytab takes precedence over privateKeytab
 
  -- Arvid Requate <requate@univention.de>  Wed, 07 Nov 2012 10:15:02 +0100
 
@@ -2530,7 +2530,7 @@ univention-s4-connector (7.0.17-30) unstable; urgency=low
 
 univention-s4-connector (7.0.17-29) unstable; urgency=low
 
-  * Ignore PrimaryKerberosBlob pacakges in old S4 supplementalCredentials
+  * Ignore PrimaryKerberosBlob packages in old S4 supplementalCredentials
     if the ndr_unpack fails. (Bug #28932)
 
  -- Arvid Requate <requate@univention.de>  Thu, 25 Oct 2012 20:09:39 +0200
@@ -2610,7 +2610,7 @@ univention-s4-connector (7.0.17-18) unstable; urgency=low
 
   * univention-ad-takeover (Bug #28390):
     - improved counting of AD accounts:
-      abstract from locale sepcific names for well known user objects
+      abstract from locale specific names for well known user objects
     - whitespace cleanup
 
  -- Arvid Requate <requate@univention.de>  Thu, 25 Oct 2012 08:57:00 +0200
@@ -2935,7 +2935,7 @@ univention-s4-connector (6.0.157-1) unstable; urgency=low
 
   * The connector listener handler writes group objects into a global
     list. This is a performance improvement which was added with Bug
-    #18619. This global group list is only needed in the the initalize
+    #18619. This global group list is only needed in the the initialize
     phase. It is now considered and saves a lot of memory (Bug #24273)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Jun 2012 06:31:07 +0200
@@ -3129,7 +3129,7 @@ univention-s4-connector (6.0.129-1) unstable; urgency=low
 
 univention-s4-connector (6.0.128-1) unstable; urgency=low
 
-  * Synchonize MS GPO links and objects (Bug #26926)
+  * Synchronize MS GPO links and objects (Bug #26926)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Apr 2012 12:00:32 +0200
 
@@ -3246,7 +3246,7 @@ univention-s4-connector (6.0.112-1) unstable; urgency=low
 univention-s4-connector (6.0.111-1) unstable; urgency=low
 
   * Don't try to add a user to his primary group in S4. This might
-    happen, if we synchronize a rejected file with old informations
+    happen, if we synchronize a rejected file with old information
     (Bug #25709)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Feb 2012 07:32:56 +0100
@@ -3378,7 +3378,7 @@ univention-s4-connector (6.0.95-1) unstable; urgency=low
 univention-s4-connector (6.0.94-2) unstable; urgency=low
 
   * Support for a different binddn and bindpw for the UCS access,
-    for example if the machine acount should be used (Bug #25985)
+    for example if the machine account should be used (Bug #25985)
   * Cleanup the UCR variables description
   * Added UCR variable connector/s4/allow/secondary which allows a
     second s4 connector in the domain (Bug #25990)
@@ -3444,7 +3444,7 @@ univention-s4-connector (6.0.88-1) unstable; urgency=low
 
 univention-s4-connector (6.0.87-1) unstable; urgency=low
 
-  * Synchonize homeDrive and homeDirectory (Bug #25211)
+  * Synchronize homeDrive and homeDirectory (Bug #25211)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 Dec 2011 08:38:21 +0100
 
@@ -3539,7 +3539,7 @@ univention-s4-connector (6.0.74-1) unstable; urgency=low
 
 univention-s4-connector (6.0.73-1) unstable; urgency=low
 
-  * Synchonize the DC and Client password between OpenLDAP and Samba 4
+  * Synchronize the DC and Client password between OpenLDAP and Samba 4
     (Bug #21213)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 15 Nov 2011 21:25:06 +0100
@@ -3639,7 +3639,7 @@ univention-s4-connector (6.0.61-2) unstable; urgency=low
 univention-s4-connector (6.0.60-1) unstable; urgency=low
 
   * Use cPickle.Pickler an clear_memo(), otherwise the internal python
-    refcount will not be decreased and the memeory is lost (Bug #24273)
+    refcount will not be decreased and the memory is lost (Bug #24273)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Nov 2011 15:51:09 +0100
 
@@ -3712,9 +3712,9 @@ univention-s4-connector (6.0.53-1) unstable; urgency=low
 univention-s4-connector (6.0.52-1) unstable; urgency=low
 
   * Synchronize sambaWorkstations (Bug #24119)
-  * Added telephoneNumber synchonization
+  * Added telephoneNumber synchronization
   * Added phone numbers to mapping
-  * Synchonize displayName (Bug #20601)
+  * Synchronize displayName (Bug #20601)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Oct 2011 08:35:51 +0200
 
@@ -3790,7 +3790,7 @@ univention-s4-connector (6.0.42-1) unstable; urgency=low
       uSNCreated objects and not for uSNCreated and uSNChanged objects                                                                                                                              
       (Bug #23734)                                                                                                                                                                                  
     * Don't try to decode the userCertificate value (Bug #23612)                                                                                                                                    
-    * Build an internal membership cache while synchonize the members from                                                                                                                          
+    * Build an internal membership cache while synchronize the members from                                                                                                                          
       S4 to UCS. So every S4 member will get once instead of twice. Also                                                                                                                            
       don't open the UDM group module twice (Bug #21010)                                                                                                                                            
     * Make the ldap sever configurable (Bug #18136)                                                                                                                                                 
@@ -3865,7 +3865,7 @@ univention-s4-connector (6.0.32-1) unstable; urgency=low
 
 univention-s4-connector (6.0.31-1) unstable; urgency=low
 
-  * Synchonize sAMAccountName for computer accounts (Bug #23162)
+  * Synchronize sAMAccountName for computer accounts (Bug #23162)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 Sep 2011 11:53:48 +0200
 
@@ -3883,7 +3883,7 @@ univention-s4-connector (6.0.29-1) unstable; urgency=low
 
 univention-s4-connector (6.0.28-1) unstable; urgency=low
 
-  * Consider diffrent dns '.' handling in S4 and UCS (Bug #23357)
+  * Consider different dns '.' handling in S4 and UCS (Bug #23357)
 
  -- Stefan Gohmann <gohmann@univention.de>  Sun, 18 Sep 2011 09:40:02 +0200
 
@@ -3998,7 +3998,7 @@ univention-s4-connector (6.0.22-1) unstable; urgency=low
 
 univention-s4-connector (6.0.21-1) unstable; urgency=low
 
-  * Bug #22862: Allow the user creation on UCS without the samba attribues
+  * Bug #22862: Allow the user creation on UCS without the samba attributes
     * Change match filter to match all non samba users
     * Added sid mapping functions, the s4 obectSid will be synced to the
       sambaSID object in UCS
@@ -4044,7 +4044,7 @@ univention-s4-connector (6.0.16-1) unstable; urgency=low
 univention-s4-connector (6.0.15-1) unstable; urgency=low
 
   * samba2ad_time was renamed to samba2s4_time. In univention-
-    password_sync_ucs_to_s4 use te new name (Bug #22580)
+    password_sync_ucs_to_s4 use the new name (Bug #22580)
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 04 Aug 2011 06:08:43 +0200
 
@@ -4071,7 +4071,7 @@ univention-s4-connector (6.0.12-1) unstable; urgency=low
     is kept as default in krb5.conf.
     Currently this triggers another strange error message from samba4:
     "Constraint violation - KerberosNewerKeys num_keys != 2"
-    but thats more useful than "Subcontext Error".
+    but that's more useful than "Subcontext Error".
 
  -- Arvid Requate <requate@univention.de>  Wed, 03 Aug 2011 14:40:38 +0200
 
@@ -4228,7 +4228,7 @@ univention-ad-connector (5.1.20-1) unstable; urgency=low
 
 univention-ad-connector (5.1.19-2) unstable; urgency=low
 
-  * python (2.5) replaces python-ctypes but python2.4-ctypes ist currently
+  * python (2.5) replaces python-ctypes but python2.4-ctypes is currently
     required (Bug #20132)
 
  -- Arvid Requate <requate@univention.de>  Fri, 14 Jan 2011 09:24:10 +0100
@@ -4272,7 +4272,7 @@ univention-ad-connector (5.1.15-1) unstable; urgency=low
 
 univention-ad-connector (5.1.14-1) unstable; urgency=low
 
-  * readd lost userPassword_ucs definition (Bug #20132)
+  * re-add lost userPassword_ucs definition (Bug #20132)
 
  -- Arvid Requate <requate@univention.de>  Thu, 13 Jan 2011 09:57:54 +0100
 
@@ -4353,7 +4353,7 @@ univention-ad-connector (5.1.4-1) unstable; urgency=low
 univention-ad-connector (5.1.3-1) unstable; urgency=low
 
   * convert krb.ctr.salt.string for python-univention-heimdal (Bug #20132)
-  * sync NT hash even if dBCSPwd cannot be retrived
+  * sync NT hash even if dBCSPwd cannot be retrieved
   * extract Kerberos-Newer-Keys from supplementalCredentials (untested)
 
  -- Arvid Requate <requate@univention.de>  Fri, 07 Jan 2011 16:46:32 +0100
@@ -4528,7 +4528,7 @@ univention-ad-connector (5.0.3-1) unstable; urgency=low
 
 univention-ad-connector (5.0.2-1) unstable; urgency=low
 
-  * added support for windows 64bit plattform. Bug #15651
+  * added support for windows 64bit platform. Bug #15651
   * switch to makemsi:
     https://billy.knut.univention.de/uniwiki/index.php/AD_Connector_Entwicklungsumgebung#MSI-Pakete
 
@@ -4728,7 +4728,7 @@ univention-ad-connector (4.0.11-1) unstable; urgency=low
 
 univention-ad-connector (4.0.10-1) unstable; urgency=low
 
-  * suppport for Windows 2008. Bug #11701
+  * support for Windows 2008. Bug #11701
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu,  2 Jul 2009 10:27:06 +0200
 
@@ -4966,7 +4966,7 @@ univention-ad-connector (1.2.3-1) unstable; urgency=low
 
 univention-ad-connector (1.2.3) unstable; urgency=low
 
-  * seperated search for uSNCreated and uSNChanged during poll
+  * separated search for uSNCreated and uSNChanged during poll
   * sync group memberships ("memberOf") after syncing users and groups
 
  -- Ingo Steuwer <steuwer@univention.de>  Mon, 21 Apr 2008 16:54:54 +0200
@@ -5093,7 +5093,7 @@ univention-ad-connector (1.0.0-1) unstable; urgency=low
 univention-ad-connector (0.3-26) unstable; urgency=low
 
   * the old copypwd process breaks the lsass.exe process under windows 2003
-  sp1. The new package fixes this behaviour
+  sp1. The new package fixes this behavior
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu,  8 Mar 2007 13:41:43 +0100
 

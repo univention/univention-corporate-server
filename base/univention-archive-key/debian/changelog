@@ -55,7 +55,7 @@ univention-archive-key (4.0.0-4) unstable; urgency=low
 
 univention-archive-key (4.0.0-3) unstable; urgency=low
 
-  * Readd .install file (Bug #23926)
+  * Re-add .install file (Bug #23926)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 06 Oct 2011 15:02:32 +0200
 

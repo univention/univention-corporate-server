@@ -244,13 +244,13 @@ univention-self-service (2.0.13-3) unstable; urgency=medium
 
 univention-self-service (2.0.13-2) unstable; urgency=medium
 
-  * Bug #44111: Readded change password page and page navigation
+  * Bug #44111: Re-added change password page and page navigation
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 28 Mar 2017 17:42:19 +0200
 
 univention-self-service (2.0.13-1) unstable; urgency=medium
 
-  * Show password change and password reset entires in portal again
+  * Show password change and password reset entries in portal again
     (Bug #44102)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Mar 2017 14:12:19 +0200
@@ -283,7 +283,7 @@ univention-self-service (2.0.11-2) unstable; urgency=medium
 
 univention-self-service (2.0.11-1) unstable; urgency=medium
 
-  * Bug #42231: Bug #43899: fix shell comparision
+  * Bug #42231: Bug #43899: fix shell comparison
 
  -- Florian Best <best@univention.de>  Thu, 23 Mar 2017 13:34:11 +0100
 
@@ -325,7 +325,7 @@ univention-self-service (2.0.10-1) unstable; urgency=medium
 
 univention-self-service (2.0.9-8) unstable; urgency=medium
 
-  * Bug #43565: readd removed hook registration
+  * Bug #43565: re-add removed hook registration
 
  -- Florian Best <best@univention.de>  Wed, 15 Mar 2017 11:32:19 +0100
 
@@ -767,7 +767,7 @@ univention-self-service (1.0.2-26) unstable; urgency=low
 
 univention-self-service (1.0.2-25) unstable; urgency=low
 
-  * Bug #39981: Another regex improvment for redirect url
+  * Bug #39981: Another regex improvement for redirect url
 
  -- Alexander Kramer <kramer@univention.de>  Thu, 19 Nov 2015 13:48:48 +0100
 
@@ -785,8 +785,8 @@ univention-self-service (1.0.2-23) unstable; urgency=low
 
 univention-self-service (1.0.2-22) unstable; urgency=low
 
-  * Add unjoin scipt copy to prerm scripts (Bug #39980)
-  * fix unjoin scipt, fix unjoin scipt numbering
+  * Add unjoin script copy to prerm scripts (Bug #39980)
+  * fix unjoin script, fix unjoin script numbering
 
  -- Daniel Troeder <troeder@univention.de>  Tue, 17 Nov 2015 15:16:18 +0100
 
@@ -874,7 +874,7 @@ univention-self-service (1.0.2-9) unstable; urgency=low
 
 univention-self-service (1.0.2-8) unstable; urgency=low
 
-  * add scipt to en/disable modules (Bug #37890)
+  * add script to en/disable modules (Bug #37890)
 
  -- Daniel Troeder <troeder@univention.de>  Fri, 13 Nov 2015 13:21:07 +0100
 
@@ -931,7 +931,7 @@ univention-self-service (1.0.1-14) unstable; urgency=low
 
 univention-self-service (1.0.1-13) unstable; urgency=low
 
-  * Bug #39597: Finsihed setcontactinformation
+  * Bug #39597: Finished setcontactinformation
     * Adapted translation
     * Imrpoved css styling
     * Added regex to avoid redirect to absolute paths
@@ -1104,7 +1104,7 @@ univention-self-service (0.0.0-13) unstable; urgency=low
   * remove work around #39599 (Bug #37890)
   * work with all kinds of resonses from UMC replies: messages are passed
     completely from backend to frontend
-  * make API similiar to UMC API (/result/message/)
+  * make API similar to UMC API (/result/message/)
   * add username to set_password() arguments
   * cherrypy log settings
 
@@ -1160,7 +1160,7 @@ univention-self-service (0.0.0-7) unstable; urgency=low
 
 univention-self-service (0.0.0-6) unstable; urgency=low
 
-  * use extended attributes for pasword recovery contacts (Bug #37890)
+  * use extended attributes for password recovery contacts (Bug #37890)
   * add translations
 
  -- Daniel Troeder <troeder@univention.de>  Tue, 13 Oct 2015 08:49:50 +0200

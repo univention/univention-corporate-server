@@ -246,7 +246,7 @@ univention-mail-dovecot (0.0.0-55) unstable; urgency=low
 
 univention-mail-dovecot (0.0.0-54) unstable; urgency=low
 
-  * Bug #38457: disallow authentification with username, using the email
+  * Bug #38457: disallow authentication with username, using the email
   address to login is a requirement.
 
  -- Daniel Troeder <troeder@univention.de>  Wed, 08 Jul 2015 12:03:44 +0200
@@ -261,7 +261,7 @@ univention-mail-dovecot (0.0.0-53) unstable; urgency=low
 
 univention-mail-dovecot (0.0.0-52) unstable; urgency=low
 
-  * Bug #38840: fix listener not reacting corretly to simultaneous change of
+  * Bug #38840: fix listener not reacting correctly to simultaneous change of
   mailPrimaryAddress and home server if home server was/became ""
 
  -- Daniel Troeder <troeder@univention.de>  Tue, 07 Jul 2015 17:15:59 +0200
@@ -503,7 +503,7 @@ univention-mail-dovecot (0.0.0-19) unstable; urgency=low
 
 univention-mail-dovecot (0.0.0-18) unstable; urgency=low
 
-  * Add UCRV mail/dovecot/sieve/spam to switch Sieve scipt generation for new
+  * Add UCRV mail/dovecot/sieve/spam to switch Sieve script generation for new
   users on/off.
 
  -- Daniel Troeder <troeder@univention.de>  Fri, 12 Jun 2015 15:09:40 +0200

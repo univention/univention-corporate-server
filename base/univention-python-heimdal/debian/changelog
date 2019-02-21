@@ -67,7 +67,7 @@ univention-python-heimdal (4.0.3-2.1) unstable; urgency=low
 
 univention-python-heimdal (4.0.3-2) unstable; urgency=low
 
-  * return keybloks propperly in keytab.list() (Bug #24277)
+  * return keybloks properly in keytab.list() (Bug #24277)
 
  -- Arvid Requate <requate@univention.de>  Tue, 24 Jan 2012 22:13:19 +0100
 
@@ -187,7 +187,7 @@ univention-python-heimdal (1.0.1-1) unstable; urgency=low
 
 univention-python-heimdal (1.0.1-0) unstable; urgency=low
 
-  * added a missing depenency on hdb to setup.py otherwise it doesn't work
+  * added a missing dependency on hdb to setup.py otherwise it doesn't work
     with heimdal 1.0, thanks to Love
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu,  2 Aug 2007 07:18:20 +0200

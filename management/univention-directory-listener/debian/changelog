@@ -1054,7 +1054,7 @@ univention-directory-listener (6.0.13-1) unstable; urgency=low
     register handlers with the copied object and write it to the cache.
     This approach fixes a collateral damage of the workaround implemented
     for Bug #21914 and #23802, which caused updated handler registrations
-    not beeing committed the database. (Bug #23548)
+    not being committed the database. (Bug #23548)
   * add compare_cache_entries code possibly useful for future debugging
 
  -- Arvid Requate <requate@univention.de>  Mon, 24 Oct 2011 20:18:49 +0200
@@ -1224,7 +1224,7 @@ univention-directory-listener (5.0.6-1) unstable; urgency=low
 
 univention-directory-listener (5.0.5-1) unstable; urgency=low
 
-  * start the listener after the join script was sucessful. The samba
+  * start the listener after the join script was successful. The samba
     join script needs a running replication. Bug #19128
 
  -- Stefan Gohmann <gohmann@univention.de>  Sat, 31 Jul 2010 15:05:16 +0200
@@ -1405,7 +1405,7 @@ univention-directory-listener (4.0.2-1) unstable; urgency=low
 univention-directory-listener (4.0.1-1) unstable; urgency=low
 
   * If a user was changed in AD from uppercase to lowercase and then moved to
-    a diffrent container the listener didn't recognized the change becuase the
+    a different container the listener didn't recognized the change because the
     local cache entry was saved with an uppercase key. As from now the
     listener saves the key in the local cache lowercase. Bug #15003.
 
@@ -1760,7 +1760,7 @@ univention-ldap-listener (1.22) unstable; urgency=low
 
 univention-ldap-listener (1.21) unstable; urgency=low
 
-  * allow diffrent dc master domainname
+  * allow different dc master domainname
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue,  6 Jun 2006 08:58:17 +0200
 

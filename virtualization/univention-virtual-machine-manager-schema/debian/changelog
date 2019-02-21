@@ -91,7 +91,7 @@ univention-virtual-machine-manager-schema (5.0.1-8) unstable; urgency=low
 
 univention-virtual-machine-manager-schema (5.0.1-7) unstable; urgency=low
 
-  * Bug #36253: Move EC2 connection support to seperate package
+  * Bug #36253: Move EC2 connection support to separate package
     univention-virtual-machine-manager-cloud-ec2 
 
  -- Erik Damrose <damrose@univention.de>  Fri, 24 Oct 2014 16:31:46 +0200
@@ -180,7 +180,7 @@ univention-virtual-machine-manager-schema (3.0.4-1) unstable; urgency=low
 
 univention-virtual-machine-manager-schema (3.0.3-1) unstable; urgency=low
 
-  * use functon to determine if udm legacy package is installed
+  * use function to determine if udm legacy package is installed
     (Bug #27617)
 
  -- Lukas Walter <walter@univention.de>  Fri, 19 Oct 2012 14:07:42 +0200
@@ -305,7 +305,7 @@ univention-virtual-machine-manager-schema (1.0.28-1) unstable; urgency=low
 
 univention-virtual-machine-manager-schema (1.0.27-1) unstable; urgency=low
 
-  * Use ldap attribue univentionVirtualMachineDescription instead of
+  * Use ldap attribute univentionVirtualMachineDescription instead of
     description (Bug #20018)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 09 Mar 2011 07:58:35 +0100
@@ -465,7 +465,7 @@ univention-virtual-machine-manager-schema (1.0.5-1) unstable; urgency=low
 
 univention-virtual-machine-manager-schema (1.0.4-1) unstable; urgency=low
 
-  * add UDM modul vor UVMM profiles; Bug #18516
+  * add UDM module vor UVMM profiles; Bug #18516
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 28 May 2010 17:30:32 +0200
 

@@ -318,7 +318,7 @@ univention-nagios (7.0.5-1) unstable; urgency=low
 
   * append NAGIOS service to local host in join script
   * remove NAGIOS service from local host in unjoin script
-  * only delte Nagios admins group when NAGIOS service is completly remove
+  * only delete Nagios admins group when NAGIOS service is completely remove
     from domain (Bug #32453)
 
  -- Lukas Walter <walter@univention.de>  Thu, 24 Oct 2013 11:56:30 +0200
@@ -706,7 +706,7 @@ univention-nagios (4.1.7-2) unstable; urgency=low
 univention-nagios (4.1.7-1) unstable; urgency=low
 
   * moved nuvola theme within package (Bug #14594)
-  * reenabled UCS computer logos
+  * re-enabled UCS computer logos
 
  -- Sönke Schwardt <schwardt@univention.de>  Tue, 29 Jun 2010 17:16:11 +0200
 
@@ -1182,7 +1182,7 @@ univention-nagios (1.0.2-1) unstable; urgency=low
 
 univention-nagios (1.0.1-1) unstable; urgency=low
 
-  * changed behaviour of nagios-server listener:
+  * changed behavior of nagios-server listener:
     - if nagios2 is running then perform a reload after changing config
     - if nagios2 is not running then perform a restart only if 
       config registry variable nagios/server/autostart=yes

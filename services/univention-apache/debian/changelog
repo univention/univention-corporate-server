@@ -550,7 +550,7 @@ univention-apache (7.0.10-3) unstable; urgency=low
 univention-apache (7.0.10-2) unstable; urgency=low
 
   Bug #36095:
-    * no-services waring is now hidden via dijitHidden
+    * no-services warning is now hidden via dijitHidden
   Bug #36316
     * added removal of ucr icon entries to postinst script
 
@@ -731,7 +731,7 @@ univention-apache (7.0.0-1) unstable; urgency=low
 
 univention-apache (6.0.16-7) unstable; urgency=low
 
-  * place ucs overview entries without priorty at the end
+  * place ucs overview entries without priority at the end
   (Bug #33750)
 
  -- Lukas Walter <walter@univention.de>  Wed, 18 Jun 2014 15:52:12 +0100
@@ -826,7 +826,7 @@ univention-apache (6.0.12-7) unstable; urgency=low
 univention-apache (6.0.12-6) unstable; urgency=low
 
   * localised LDAP master link in ucs-overview (Bug #32647)
-  * corrected legacy UCRV unset behaviour of postinst (Bug #32678)
+  * corrected legacy UCRV unset behavior of postinst (Bug #32678)
 
  -- Lukas Walter <walter@univention.de>  Wed, 23 Oct 2013 15:20:59 +0200
 
@@ -1071,7 +1071,7 @@ univention-apache (5.0.8-1) unstable; urgency=low
 
 univention-apache (5.0.7-3) unstable; urgency=low
 
-  * change dependeny from apache2 to mpm-prefork version of apache; Bug #25255
+  * change dependency from apache2 to mpm-prefork version of apache; Bug #25255
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 07 Dec 2011 11:05:21 +0100
 
@@ -1273,7 +1273,7 @@ univention-apache (2.0.15-9) unstable; urgency=low
 
 univention-apache (2.0.15-8) unstable; urgency=low
 
-  * sleep for three seconds beetween the start and stop of the apache
+  * sleep for three seconds between the start and stop of the apache
     daemon. Otherwise the apache won't start.
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon,  2 Jun 2008 06:48:08 +0200
@@ -1339,7 +1339,7 @@ univention-apache (2.0.13-1) unstable; urgency=low
 
 univention-apache (2.0.12-1) unstable; urgency=low
 
-  * be sure the ssl module ist full operational
+  * be sure the ssl module is full operational
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon,  3 Dec 2007 20:00:29 +0100
 
@@ -1445,7 +1445,7 @@ univention-apache (2.0.6-4) unstable; urgency=low
 
 univention-apache (2.0.6-3) unstable; urgency=low
 
-  * removed ucs-overview, added dependencie on univention-webui-style-base
+  * removed ucs-overview, added dependency on univention-webui-style-base
 
  -- Tobias Scherer <scherer@univention.de>  Tue, 26 Jun 2007 10:34:05 +0200
 
@@ -1523,7 +1523,7 @@ univention-apache (2.0.2-1) unstable; urgency=low
 univention-apache (2.0.1-1) unstable; urgency=low
 
   * fix the virtual host ssl configuration
-  * readded index.html
+  * re-added index.html
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 May 2007 08:04:58 +0200
 

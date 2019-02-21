@@ -242,7 +242,7 @@ univention-appcenter (7.0.2-29) unstable; urgency=medium
 
 univention-appcenter (7.0.2-28) unstable; urgency=medium
 
-  * Bug #47619: Do not change revert behaviour for Non-Docker Apps
+  * Bug #47619: Do not change revert behavior for Non-Docker Apps
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 11 Sep 2018 15:21:08 +0200
 
@@ -771,7 +771,7 @@ univention-appcenter (7.0.1-5) unstable; urgency=medium
 univention-appcenter (7.0.1-4) unstable; urgency=medium
 
   * Bug #45499: Fix license information not being translated
-  * Bug #44783: Improved caching behaviour after a package update but before
+  * Bug #44783: Improved caching behavior after a package update but before
     any ini update
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 17 Jan 2018 14:46:10 +0100
@@ -845,7 +845,7 @@ univention-appcenter (6.0.11-2) unstable; urgency=medium
 
 univention-appcenter (6.0.11-1) unstable; urgency=medium
 
-  * Bug #44441: Better revert behaviour
+  * Bug #44441: Better revert behavior
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 23 Nov 2017 16:23:46 +0100
 
@@ -860,7 +860,7 @@ univention-appcenter (6.0.10-22) unstable; urgency=medium
 
   * Bug #44441: Better error message when MySQL connection cannot be
     established
-  * Bug #45556: Check file existance when updating cache
+  * Bug #45556: Check file existence when updating cache
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 19 Nov 2017 19:55:43 +0100
 
@@ -964,7 +964,7 @@ univention-appcenter (6.0.10-6) unstable; urgency=medium
 
 univention-appcenter (6.0.10-5) unstable; urgency=medium
 
-  * Bug #44002: Minor sytling adjustments when displaying README files before
+  * Bug #44002: Minor styling adjustments when displaying README files before
     install
 
  -- Eduard Mai <mai@univention.de>  Tue, 19 Sep 2017 13:52:12 +0200
@@ -1939,7 +1939,7 @@ univention-appcenter (6.0.0-15) unstable; urgency=medium
 
 univention-appcenter (6.0.0-14) unstable; urgency=medium
 
-  * Bug #42619: Also improve UCR funtions for Non-UCS containers
+  * Bug #42619: Also improve UCR functions for Non-UCS containers
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 26 Oct 2016 17:01:51 +0200
 
@@ -2134,7 +2134,7 @@ univention-appcenter (5.0.21-18) unstable; urgency=low
 
 univention-appcenter (5.0.21-17) unstable; urgency=medium
 
-  * Bug #41724: Reenable ACL's
+  * Bug #41724: Re-enable ACL's
 
  -- Florian Best <best@univention.de>  Tue, 12 Jul 2016 10:53:28 +0200
 
@@ -2235,7 +2235,7 @@ univention-appcenter (5.0.21-1) unstable; urgency=medium
 
   * Bug #41178: The newest installed version is the officially installed
     version
-  * Bug #40757: Align German and English text regarding maintanance channels
+  * Bug #40757: Align German and English text regarding maintenance channels
   * Bug #40842: Do not set defined port for overview if auto_mod_proxy is used
   * Version bump
 
@@ -2416,7 +2416,7 @@ univention-appcenter (5.0.20-24) unstable; urgency=medium
 
 univention-appcenter (5.0.20-23) unstable; urgency=medium
 
-  * Bug #40874: Fix inconsistent behaviour when there is a syntax error in
+  * Bug #40874: Fix inconsistent behavior when there is a syntax error in
     license_types.ini (and similar)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 14 Mar 2016 10:40:46 +0100
@@ -3288,7 +3288,7 @@ univention-appcenter (5.0.6-70) unstable; urgency=low
 
   * Bug #39585: Fix univention-appcenter packaging
     - debian/control: Fix shot descriptions
-    - debian/control: Add missing ${*:Depnds}
+    - debian/control: Add missing ${*:Depends}
     - debian/control: Add missing Build-Depends: ucslint
     - debian/rules: Add missing call to ucslint
     - debian/ucslint.overrides: Added
@@ -3915,7 +3915,7 @@ univention-management-console-module-appcenter (5.0.4-14) unstable; urgency=low
 
 univention-management-console-module-appcenter (5.0.4-13) unstable; urgency=low
 
-  * Bug #38894: [WIP] adapated MetaCategory and cleaned up AppCenterPage
+  * Bug #38894: [WIP] adapted MetaCategory and cleaned up AppCenterPage
 
  -- Johannes Keiser <keiser@univention.de>  Wed, 16 Sep 2015 12:44:02 +0200
 
@@ -4362,7 +4362,7 @@ univention-management-console-module-appcenter (4.1.19-7) unstable; urgency=low
 
 univention-management-console-module-appcenter (4.1.19-6) unstable; urgency=medium
 
-  * Bug #36868: refresh view after installing of compontents, don't display
+  * Bug #36868: refresh view after installing of components, don't display
   	the repository page while installing components
 
  -- Florian Best <best@univention.de>  Thu, 11 Dec 2014 11:45:01 +0100
@@ -4547,7 +4547,7 @@ univention-management-console-module-appcenter (4.1.8-1) unstable; urgency=low
 
 univention-management-console-module-appcenter (4.1.7-1) unstable; urgency=low
 
-  * Bug #35654: don't display icons of UCS compontents
+  * Bug #35654: don't display icons of UCS components
   * remove right margin of gallerypane as there are no context menus
 
  -- Florian Best <best@univention.de>  Wed, 15 Oct 2014 11:58:08 +0200
@@ -5014,7 +5014,7 @@ univention-management-console-module-appcenter (3.0.41-1) unstable; urgency=low
 
 univention-management-console-module-appcenter (3.0.40-1) unstable; urgency=low
 
-  * remove obsolete app errata respositories from UCR (Bug #30904)
+  * remove obsolete app errata repositories from UCR (Bug #30904)
 
  -- Lukas Walter <walter@univention.de>  Thu, 17 Oct 2013 13:35:26 +0200
 
@@ -5272,7 +5272,7 @@ univention-management-console-module-appcenter (3.0.11-1) unstable; urgency=low
 
 univention-management-console-module-appcenter (3.0.10-1) unstable; urgency=low
 
-  * Add simple dependecy relations for apps (Bug #30077)
+  * Add simple dependency relations for apps (Bug #30077)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 29 Jul 2013 12:25:09 +0200
 
@@ -5696,7 +5696,7 @@ univention-management-console-module-appcenter (2.0.103-1) unstable; urgency=low
 
 univention-management-console-module-appcenter (2.0.102-2) unstable; urgency=low
 
-  * Fixed build dependecy (Bug #30249)
+  * Fixed build dependency (Bug #30249)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 07 Feb 2013 19:52:54 +0100
 
@@ -5757,7 +5757,7 @@ univention-management-console-module-appcenter (2.0.94-1) unstable; urgency=low
 
   * Talk to appcenter over HTTPS (Bug #29446)
   * Fix searching in locally installed packages (Bug #29899)
-  * Dont disable apache restart when installing applications (Bug #29809)
+  * Don't disable apache restart when installing applications (Bug #29809)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 04 Jan 2013 14:56:50 +0100
 
@@ -5863,7 +5863,7 @@ univention-management-console-module-appcenter (2.0.78-2) unstable; urgency=low
 univention-management-console-module-appcenter (2.0.77-1) unstable; urgency=low
 
   * Reorder app details (Bug #29246)
-  * Dont show meaningless alert dialog in Packages hiding a proper error
+  * Don't show meaningless alert dialog in Packages hiding a proper error
     message
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 21 Nov 2012 11:29:58 +0100
@@ -5909,7 +5909,7 @@ univention-management-console-module-appcenter (2.0.71-1) unstable; urgency=low
 
 univention-management-console-module-appcenter (2.0.70-1) unstable; urgency=low
 
-  * Dont standby while showing app center intro (Bug #29081)
+  * Don't standby while showing app center intro (Bug #29081)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 13 Nov 2012 11:13:14 +0100
 
@@ -6216,7 +6216,7 @@ univention-management-console-module-packages (2.0.25-1) unstable; urgency=low
 
 univention-management-console-module-packages (2.0.24-1) unstable; urgency=low
 
-  * refactored code into differen classes for clarity; Bug #28599
+  * refactored code into different classes for clarity; Bug #28599
 
  -- Alexander Kläser <klaeser@univention.de>  Fri, 28 Sep 2012 19:12:15 +0200
 

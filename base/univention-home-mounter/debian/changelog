@@ -34,7 +34,7 @@ univention-home-mounter (6.0.0-2) unstable; urgency=medium
 
   * Disable the LDAP reconnection for the mount homedir script. It will
     be executed in the PAM session which results in Samba login timeouts
-    if some of the LDAP servers are not rechable (Bug #36805)
+    if some of the LDAP servers are not reachable (Bug #36805)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 18 Mar 2015 16:42:54 +0100
 

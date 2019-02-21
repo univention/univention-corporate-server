@@ -136,14 +136,14 @@ univention-updater (13.0.1-57) unstable; urgency=medium
 univention-updater (13.0.1-56) unstable; urgency=medium
 
   * Bug #47592: Show a warning and allow examiniation of the updater.log file
-    in UMC if the last relase update failed.
+    in UMC if the last release update failed.
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 15 Aug 2018 13:48:03 +0200
 
 univention-updater (13.0.1-55) unstable; urgency=medium
 
-  * Bug #47436: In postup.sh, do not reenable apache2 and UMC restarts,
-    when system-setup is running. System-setup will reenable it at the end of
+  * Bug #47436: In postup.sh, do not re-enable apache2 and UMC restarts,
+    when system-setup is running. System-setup will re-enable it at the end of
     the setup.
 
  -- Erik Damrose <damrose@univention.de>  Thu, 02 Aug 2018 10:36:34 +0200
@@ -665,7 +665,7 @@ univention-updater (12.0.10-2) unstable; urgency=low
 
 univention-updater (12.0.10-1) unstable; urgency=medium
 
-  * Switch back to the offical repository server (Bug #42053)
+  * Switch back to the official repository server (Bug #42053)
 
  -- Stefan Gohmann <gohmann@univention.de>  Sun, 02 Apr 2017 21:30:37 +0200
 
@@ -842,7 +842,7 @@ univention-updater (12.0.4-5) unstable; urgency=low
 
 univention-updater (12.0.4-4) unstable; urgency=medium
 
-  * Bug #43625: Aquire an UpdaterLock also for --check
+  * Bug #43625: Acquire an UpdaterLock also for --check
 
  -- Arvid Requate <requate@univention.de>  Tue, 14 Mar 2017 20:05:32 +0100
 
@@ -963,7 +963,7 @@ univention-updater (12.0.3-3) unstable; urgency=medium
     installed
   * Bug #42935: App updates via univention-upgrade: Do not abort
     univention-upgrade if one App update fails
-  * Fix calling a funtion with too few arguments
+  * Fix calling a function with too few arguments
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 17 Feb 2017 14:40:45 +0100
 
@@ -1000,7 +1000,7 @@ univention-updater (12.0.1-7) unstable; urgency=medium
 
 univention-updater (12.0.1-5) unstable; urgency=medium
 
-  * Bug #43257: Explicity add required dependencies
+  * Bug #43257: Explicitly add required dependencies
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 05 Jan 2017 14:36:20 +0100
 
@@ -1043,7 +1043,7 @@ univention-updater (12.0.0-10) unstable; urgency=medium
 
 univention-updater (12.0.0-9) unstable; urgency=medium
 
-  * Bug #41869: Fix inifinite loop with updateto
+  * Bug #41869: Fix infinite loop with updateto
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 20 Sep 2016 14:18:22 +0200
 
@@ -1974,7 +1974,7 @@ univention-updater (10.0.18-1) unstable; urgency=low
 
 univention-updater (10.0.17-1) unstable; urgency=medium
 
-  * Abort update in case attributes from the scalix schema are stil present
+  * Abort update in case attributes from the scalix schema are still present
     (Bug #28693)
 
  -- Arvid Requate <requate@univention.de>  Mon, 20 Oct 2014 15:22:39 +0200
@@ -2100,7 +2100,7 @@ univention-updater (10.0.0-5) unstable; urgency=low
 
 univention-updater (10.0.0-4) unstable; urgency=low
 
-  * Readd univention-directory-policy dependency (Bug #35431)
+  * Re-add univention-directory-policy dependency (Bug #35431)
 
  -- Florian Best <best@univention.de>  Tue, 29 Jul 2014 13:44:43 +0200
 
@@ -2238,7 +2238,7 @@ univention-updater (9.0.38-2) unstable; urgency=low
 
 univention-updater (9.0.38-1) unstable; urgency=low
 
-  * Bug #33426: added a hint to preform a page reload in UMC
+  * Bug #33426: added a hint to perform a page reload in UMC
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 18 Nov 2013 09:37:41 +0100
 
@@ -3064,7 +3064,7 @@ univention-updater (8.0.19-1) unstable; urgency=low
 
 univention-updater (8.0.18-1) unstable; urgency=low
 
-  * Dont use sanitizers yet (Bug #27720)
+  * Don't use sanitizers yet (Bug #27720)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Oct 2012 11:52:49 +0200
 
@@ -3625,7 +3625,7 @@ univention-updater (7.0.130-1) unstable; urgency=low
 
 univention-updater (7.0.129-1) unstable; urgency=low
 
-  * Don't use univention-install in postup.sh, beacause it could
+  * Don't use univention-install in postup.sh, because it could
     generate questions (Bug #25581)
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 22 Dec 2011 10:02:23 +0100
@@ -4657,7 +4657,7 @@ univention-updater (7.0.13-1) unstable; urgency=low
 
 univention-updater (7.0.12-1) unstable; urgency=low
 
-  * Reset the modified component tcs varaibles and add more explanation
+  * Reset the modified component tcs variables and add more explanation
     (Bug #22878)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Aug 2011 14:23:26 +0200
@@ -4990,7 +4990,7 @@ univention-updater (6.0.59-1) unstable; urgency=low
 
 univention-updater (6.0.58-1) unstable; urgency=low
 
-  * remove superflous debug output (Bug #15631)
+  * remove superfluous debug output (Bug #15631)
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 23 Feb 2011 19:18:54 +0100
 
@@ -5348,7 +5348,7 @@ univention-updater (6.0.11-1) unstable; urgency=low
 
 univention-updater (6.0.10-1) unstable; urgency=low
 
-  * added screen as dependecy, it is very useful to start the update
+  * added screen as dependency, it is very useful to start the update
     within a screen session to take no notice of network problems. Bug
     #18849
 
@@ -5362,7 +5362,7 @@ univention-updater (6.0.9-2) unstable; urgency=low
 
 univention-updater (6.0.9-1) unstable; urgency=low
 
-  * added --silent paramter for univention-updater to suppress any output
+  * added --silent parameter for univention-updater to suppress any output
     on stdout (Bug #18465)
 
  -- Felix Botner <botner@univention.de>  Tue, 20 Jul 2010 13:48:42 +0200
@@ -5516,7 +5516,7 @@ univention-updater (5.0.78-1) unstable; urgency=low
 
 univention-updater (5.0.77-1) unstable; urgency=low
 
-  * Abort upgrade on firt UCS release without component (Bug #17293)
+  * Abort upgrade on first UCS release without component (Bug #17293)
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 11 May 2010 09:28:34 +0200
 
@@ -5641,7 +5641,7 @@ univention-updater (5.0.64-5) unstable; urgency=low
 
 univention-updater (5.0.64-4) unstable; urgency=low
 
-  * Fix spelling: s/diffrent/different/. (Bug #17379)
+  * Fix spelling: s/different/different/. (Bug #17379)
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 18 Jan 2010 18:31:09 +0100
 
@@ -6173,7 +6173,7 @@ univention-updater (5.0.3-1) unstable; urgency=low
 univention-updater (5.0.2-1) unstable; urgency=low
 
   * fixed a python traceback in the policy maintenance script which
-    occurs when no cron time was definied. Bug #9652
+    occurs when no cron time was defined. Bug #9652
   * added a ucr variable for recreate_packages in the mirror.list
     (repository/mirror/recreate_packages). Bug #13947
   * redirect the repository update messages to the logfile
@@ -6284,7 +6284,7 @@ univention-updater (4.0.63-1) unstable; urgency=low
 univention-updater (4.0.62-1) unstable; urgency=low
 
   * preup/postup: ensure that UMC is not restarted during an update; the
-    fix in the the UMC modul will just work vor the next update (Bug
+    fix in the the UMC module will just work vor the next update (Bug
     #13996)
 
  -- Andreas Büsching <buesching@univention.de>  Wed,  6 May 2009 08:31:02 +0200
@@ -6657,7 +6657,7 @@ univention-updater (4.0.18-2) unstable; urgency=low
 univention-updater (4.0.18-1) unstable; urgency=low
 
   * minor fixes in german translation of UMC module (#13395)
-  * Just set UCR variables update/commmands/* if not already set
+  * Just set UCR variables update/commands/* if not already set
   * remove old UCR variables update/server, update/security/server,
     update/security/prefix, update/directory
 
@@ -7462,7 +7462,7 @@ univention-updater (1.36-46) unstable; urgency=low
 
 univention-updater (1.36-45) unstable; urgency=low
 
-  * dont print big warning messages per default, fixes Bug #6243
+  * don't print big warning messages per default, fixes Bug #6243
 
  -- Janis Meybohm <meybohm@univention.de>  Mon, 27 Nov 2006 17:17:47 +0100
 
@@ -7508,7 +7508,7 @@ univention-updater (1.36-39) unstable; urgency=low
 
 univention-updater (1.36-38) unstable; urgency=low
 
-  * implementet --check in univention-actualise
+  * implemented --check in univention-actualise
   * univention-maintenance shows his warning only if there are jobs to do
   * removed umlauts from changelog
 
@@ -7671,13 +7671,13 @@ univention-updater (1.36-12) unstable; urgency=low
 univention-updater (1.36-11) unstable; urgency=low
 
   * added the script univention-addon-download for adding apt.univention.de
-  * addons into the lokal repository
+  * addons into the local repository
 
  -- Janis Meybohm <meybohm@univention.de>  Tue,  9 May 2006 14:24:00 +0200
 
 univention-updater (1.36-10) unstable; urgency=low
 
-  * try to preverse sources.list entries in univention-policy-set-repository-server
+  * try to perverse sources.list entries in univention-policy-set-repository-server
 
  -- Martin Kuehl <kuehl@univention.de>  Wed, 12 Apr 2006 16:33:53 +0200
 
@@ -7690,7 +7690,7 @@ univention-updater (1.36-2) unstable; urgency=low
 univention-updater (1.36-1) unstable; urgency=low
 
   * reboot after update at startup if requested
-  * skip reboot if nothing was udpated
+  * skip reboot if nothing was updated
 
  -- Martin Kuehl <kuehl@univention.de>  Mon,  6 Mar 2006 16:16:50 +0100
 

@@ -442,7 +442,7 @@ univention-web (1.0.42-35) unstable; urgency=medium
 
   * Bug #43658: use full window width for notificationsdropdown on
     small screens and adjusted NotificationDropDownButton notifications
-    coutner
+    counter
 
  -- Johannes Keiser <keiser@univention.de>  Wed, 09 Aug 2017 17:28:19 +0200
 
@@ -698,7 +698,7 @@ univention-web (1.0.41-1) unstable; urgency=medium
 
 univention-web (1.0.40-22) unstable; urgency=medium
 
-  * Bug #44059: Fix most dialogs not beeing standby-able
+  * Bug #44059: Fix most dialogs not being standby-able
 
  -- Johannes Keiser <keiser@univention.de>  Mon, 27 Mar 2017 13:21:42 +0200
 
@@ -710,7 +710,7 @@ univention-web (1.0.40-21) unstable; urgency=medium
 
 univention-web (1.0.40-20) unstable; urgency=medium
 
-  * Bug #44059: Fix menu entries not beeing clickable on IE 11
+  * Bug #44059: Fix menu entries not being clickable on IE 11
 
  -- Johannes Keiser <keiser@univention.de>  Fri, 24 Mar 2017 17:54:55 +0100
 
@@ -843,7 +843,7 @@ univention-web (1.0.39-28) unstable; urgency=medium
 
 univention-web (1.0.39-27) unstable; urgency=medium
 
-  * Bug #43528: Fix small gallery names beeing slightly cut off at the bottom
+  * Bug #43528: Fix small gallery names being slightly cut off at the bottom
 
  -- Johannes Keiser <keiser@univention.de>  Wed, 22 Mar 2017 14:14:15 +0100
 
@@ -897,7 +897,7 @@ univention-web (1.0.39-20) unstable; urgency=medium
 
 univention-web (1.0.39-19) unstable; urgency=medium
 
-  * Bug #44008: use dom-geometry to get scroll postion in grid
+  * Bug #44008: use dom-geometry to get scroll position in grid
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 21 Mar 2017 17:58:09 +0100
 
@@ -945,7 +945,7 @@ univention-web (1.0.39-12) unstable; urgency=medium
 
 univention-web (1.0.39-11) unstable; urgency=medium
 
-  * Bug #43849: Fix AppGallery links beeing clickable only after animation
+  * Bug #43849: Fix AppGallery links being clickable only after animation
     has finished
 
  -- Johannes Keiser <keiser@univention.de>  Mon, 20 Mar 2017 14:03:42 +0100
@@ -1353,7 +1353,7 @@ univention-web (1.0.29-24) unstable; urgency=medium
 
 univention-web (1.0.29-23) unstable; urgency=medium
 
-  * Bug #43528: Adjust focussing behaviour in wizard
+  * Bug #43528: Adjust focussing behavior in wizard
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 06 Mar 2017 15:03:11 +0100
 

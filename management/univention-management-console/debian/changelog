@@ -699,7 +699,7 @@ univention-management-console (9.0.77-1) unstable; urgency=medium
 
 univention-management-console (9.0.76-1) unstable; urgency=medium
 
-  * Bug #40612: Bug #38370: fix error handling in initilization phase
+  * Bug #40612: Bug #38370: fix error handling in initialization phase
     and ignore if the locale is not available during init()
 
  -- Florian Best <best@univention.de>  Mon, 27 Mar 2017 15:11:40 +0200
@@ -1089,7 +1089,7 @@ univention-management-console (9.0.42-1) unstable; urgency=medium
 
 univention-management-console (9.0.41-1) unstable; urgency=medium
 
-  * Bug #42174: adjust visiblity of error message; prevent that exceptions in topic
+  * Bug #42174: adjust visibility of error message; prevent that exceptions in topic
   	subscribers can prevent login
 
  -- Florian Best <best@univention.de>  Thu, 23 Feb 2017 16:43:24 +0100
@@ -2058,7 +2058,7 @@ univention-management-console (8.0.2-1) unstable; urgency=medium
 univention-management-console (8.0.1-1) unstable; urgency=medium
 
   * Bug #31943: make UMCP authentication API more generic
-  * Bug #39031: display user friendly message when SystemExit occurrs.
+  * Bug #39031: display user friendly message when SystemExit occurs.
 
  -- Florian Best <best@univention.de>  Tue, 28 Jul 2015 14:03:21 +0200
 
@@ -2802,13 +2802,13 @@ univention-management-console (6.0.2-1) unstable; urgency=low
 
 univention-management-console (6.0.1-1) unstable; urgency=low
 
-  * Bug #31130: log tracebacks if module or server crashs
+  * Bug #31130: log tracebacks if module or server crashes
 
  -- Florian Best <best@univention.de>  Wed, 12 Jun 2013 16:07:27 +0200
 
 univention-management-console (6.0.0-1) unstable; urgency=low
 
-  * Bug #31130: log tracebacks if module or server crashs
+  * Bug #31130: log tracebacks if module or server crashes
 
  -- Florian Best <best@univention.de>  Tue, 04 Jun 2013 10:13:00 +0200
 
@@ -2936,7 +2936,7 @@ univention-management-console (5.0.50-1) unstable; urgency=low
 
 univention-management-console (5.0.49-3) unstable; urgency=low
 
-  * readded reload command to umc server init script (Bug #27427)
+  * re-added reload command to umc server init script (Bug #27427)
 
  -- Lukas Walter <walter@univention.de>  Fri, 26 Oct 2012 09:09:44 +0200
 
@@ -2962,7 +2962,7 @@ univention-management-console (5.0.48-1) unstable; urgency=low
 
 univention-management-console (5.0.47-1) unstable; urgency=low
 
-  * Remove ununsed syntax verification (Bug #27720)
+  * Remove unused syntax verification (Bug #27720)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 18 Oct 2012 17:32:47 +0200
 
@@ -2980,7 +2980,7 @@ univention-management-console (5.0.45-1) unstable; urgency=low
 
 univention-management-console (5.0.44-1) unstable; urgency=low
 
-  * Remove ununsed syntax verification (Bug #27720)
+  * Remove unused syntax verification (Bug #27720)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Oct 2012 13:22:29 +0200
 
@@ -3051,7 +3051,7 @@ univention-management-console (5.0.34-1) unstable; urgency=low
 
 univention-management-console (5.0.33-1) unstable; urgency=low
 
-  * added possibility to deactive flavors and modules through ucr variables;
+  * added possibility to deactivate flavors and modules through ucr variables;
   	Bug #26721
 
  -- Florian Best <best@univention.de>  Tue, 25 Sep 2012 17:45:39 +0200
@@ -3126,13 +3126,13 @@ univention-management-console (5.0.22-1) unstable; urgency=low
 univention-management-console (5.0.21-1) unstable; urgency=low
 
   * unify translations, fix typo bug in ChoicesSanitizer,
-    be more conservative when adding asteriks in patterns (Bug #27720)
+    be more conservative when adding asterisk in patterns (Bug #27720)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 29 Aug 2012 16:32:01 +0200
 
 univention-management-console (5.0.20-1) unstable; urgency=low
 
-  * sanitizers: validate the whole input, dont stop at first error
+  * sanitizers: validate the whole input, don't stop at first error
   (Bug #27720)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 24 Aug 2012 13:49:20 +0200
@@ -3478,7 +3478,7 @@ univention-management-console (4.0.209-1) unstable; urgency=low
 
 univention-management-console (4.0.208-1) unstable; urgency=low
 
-  * fixed code indention in umc-create-module templates (Bug #26406)
+  * fixed code indentation in umc-create-module templates (Bug #26406)
 
  -- Florian Best <best@univention.de>  Mon, 02 Apr 2012 12:47:58 +0200
 
@@ -3951,7 +3951,7 @@ univention-management-console (4.0.54-1) unstable; urgency=low
 
 univention-management-console (4.0.53-1) unstable; urgency=low
 
-  * modified behaviour of action restart and crestart, restart does
+  * modified behavior of action restart and crestart, restart does
     whatever necessary to have a newly started instance of the UMC server
     and crestart only restarts the UMC server if currently another
     instance is running; Bug #23485
@@ -4057,7 +4057,7 @@ univention-management-console (4.0.42-1) unstable; urgency=low
 univention-management-console (4.0.41-1) unstable; urgency=low
 
   * umc-client: support passing the request option as a python statement
-  * just shutdown processor if already instanciated; Bug #22460
+  * just shutdown processor if already instantiated; Bug #22460
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 01 Jul 2011 17:19:29 +0200
 
@@ -4080,7 +4080,7 @@ univention-management-console (4.0.38-1) unstable; urgency=low
 
   * remove relicts of sessionid
   * make module process a daemon
-  * rename and add new exception to annouce errors during command
+  * rename and add new exception to announce errors during command
     execution; Bug #22460
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 29 Jun 2011 12:18:23 +0200
@@ -4502,7 +4502,7 @@ univention-management-console (3.0.101-2) unstable; urgency=low
 
 univention-management-console (3.0.100-1) unstable; urgency=low
 
-  * if there is no dialog returned and the status code of the last reponse
+  * if there is no dialog returned and the status code of the last response
     is 201 or 301 and there is a referrer set it is shown instead of an
     info message; Bug #22264
   * bump version for UCS 2.4-3
@@ -4577,7 +4577,7 @@ univention-management-console (3.0.77-1) unstable; urgency=low
 
 univention-management-console (3.0.76-1) unstable; urgency=low
 
-  * fixed typo "maintance", Bug #20881
+  * fixed typo "maintenance", Bug #20881
 
  -- Tim Petersen <petersen@univention.de>  Mon, 07 Feb 2011 09:45:00 +0100
 
@@ -4872,7 +4872,7 @@ univention-management-console (3.0.34-1) unstable; urgency=low
 univention-management-console (3.0.33-1) unstable; urgency=low
 
   * IWizard: make cancel button optional, reset Wizard on cancel, text for
-    finish button cann be modified, title can be replaced; Bug #1840
+    finish button can be modified, title can be replaced; Bug #1840
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 02 Jul 2010 10:11:49 +0200
 
@@ -5042,7 +5042,7 @@ univention-management-console (3.0.8-1) unstable; urgency=low
 
 univention-management-console (3.0.7-1) unstable; urgency=low
 
-  * replace os.system with subprocess.call in serveral modules; Bug #17045
+  * replace os.system with subprocess.call in several modules; Bug #17045
 
  -- Andreas Büsching <buesching@univention.de>  Tue, 30 Mar 2010 13:42:04 +0200
 
@@ -5186,7 +5186,7 @@ univention-management-console (2.0.28-1) unstable; urgency=low
 
 univention-management-console (2.0.27-1) unstable; urgency=low
 
-  * adapt UMC modul to API change in univention.info_tools (Bug #15556)
+  * adapt UMC module to API change in univention.info_tools (Bug #15556)
 
  -- Andreas Büsching <buesching@univention.de>  Tue, 17 Nov 2009 17:41:08 +0100
 
@@ -5417,7 +5417,7 @@ univention-management-console (2.0.2-1) unstable; urgency=low
 
 univention-management-console (2.0.1-1) unstable; urgency=low
 
-  * a command method may now return an UMCP reponse object directly; in
+  * a command method may now return an UMCP response object directly; in
     that case no revamp method is required. Bug #14336
 
  -- Andreas Büsching <buesching@univention.de>  Thu, 28 May 2009 17:15:25 +0200
@@ -5601,7 +5601,7 @@ univention-management-console (1.0.3-3) unstable; urgency=low
 
 univention-management-console (1.0.3-2) unstable; urgency=low
 
-  * fixed traceback after successfull package installation (Bug #12924)
+  * fixed traceback after successful package installation (Bug #12924)
 
  -- Sönke Schwardt <schwardt@univention.de>  Sun, 25 Jan 2009 16:47:31 +0100
 
@@ -5791,7 +5791,7 @@ univention-management-console (0.9.33-9) unstable; urgency=low
 
 univention-management-console (0.9.33-8) unstable; urgency=low
 
-  * move the quota umc modul from univention-management-console to the
+  * move the quota umc module from univention-management-console to the
     univention-quota package. Bug #12145
 
  -- Stefan Gohmann <gohmann@univention.de>  Sat, 18 Oct 2008 14:07:37 +0200
@@ -5804,21 +5804,21 @@ univention-management-console (0.9.33-7) unstable; urgency=low
 
 univention-management-console (0.9.33-6) unstable; urgency=low
 
-  * move the quota umc modul from univention-management-console to the
+  * move the quota umc module from univention-management-console to the
     univention-quota package. Bug #12145
 
  -- Stefan Gohmann <gohmann@univention.de>  Sat, 18 Oct 2008 13:15:37 +0200
 
 univention-management-console (0.9.33-5) unstable; urgency=low
 
-  * move the cups umc modul from univention-management-console to the
+  * move the cups umc module from univention-management-console to the
     univention-printerserver package. Bug #12145
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 17 Oct 2008 22:03:50 +0200
 
 univention-management-console (0.9.33-4) unstable; urgency=low
 
-  * now we have three start type on umc services: start yes (automtically), no (never) or manually
+  * now we have three start type on umc services: start yes (automatically), no (never) or manually
 
  -- Felix Botner <fbotner@omar.knut.univention.de>  Mon, 27 Oct 2008 15:51:16 +0100
 
@@ -6218,7 +6218,7 @@ univention-management-console (0.7.18-1) unstable; urgency=low
 
 univention-management-console (0.7.17-1) unstable; urgency=low
 
-  * convert strings to unicode objects before cutting of characters to prevend
+  * convert strings to unicode objects before cutting of characters to prevent
     broken UTF-8 strings
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 27 Jul 2007 10:51:02 +0200
@@ -6372,7 +6372,7 @@ univention-management-console (0.7.4-1) unstable; urgency=low
 
 univention-management-console (0.7.3-1) unstable; urgency=low
 
-  * fixed imports of univention.(baseconfig|service)_info in serveral modules
+  * fixed imports of univention.(baseconfig|service)_info in several modules
   * closes categories with the cancel button works again
 
  -- Andreas BÃŒsching <buesching@univention.de>  Tue, 12 Jun 2007 10:22:26 +0200
@@ -6463,7 +6463,7 @@ univention-management-console (0.6.18-1) unstable; urgency=low
   * start UMC server with locale as argument
   * fixed bug while passing locale as argument to UMC frontend
   * use umc/web/language instead of console/web/language
-  * new locale behaviour of all processes (frontend, server, proxy, module)
+  * new locale behavior of all processes (frontend, server, proxy, module)
     - try to use locale given by cmdline
     - if that fails use umc/web/language
 

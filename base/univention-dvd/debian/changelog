@@ -316,7 +316,7 @@ univention-dvd (0.2.29-13) unstable; urgency=medium
 
 univention-dvd (0.2.29-12) unstable; urgency=medium
 
-  * Readded cyrus packages to DVD otherwise it will be moved to
+  * Re-added cyrus packages to DVD otherwise it will be moved to
     unmaintained (Bug #38904)
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 06 Aug 2015 08:49:16 +0200

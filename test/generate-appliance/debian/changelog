@@ -70,7 +70,7 @@ generate-appliance (1.2.8-1) unstable; urgency=low
 generate-appliance (1.2.7-1) unstable; urgency=medium
 
   * Bug #37619: change vmware to not show MAC popup
-  * add depedency to zip
+  * add dependency to zip
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 05 Jun 2015 17:10:37 +0200
 
