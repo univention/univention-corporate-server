@@ -1,3 +1,9 @@
+ucs-test (9.0.1-2) unstable; urgency=medium
+
+  * Bug #46018: Remove apptest tag from 45_radius/08_clients_univention_conf
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 21 Feb 2019 13:12:19 +0100
+
 ucs-test (9.0.1-1) unstable; urgency=medium
 
   * Bug #48621: fix 80_docker/68_extended_attributes

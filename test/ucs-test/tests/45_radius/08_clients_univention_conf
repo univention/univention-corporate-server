@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: check if RADIUS authenticator settings are written to clients.univention.conf
-## tags: [apptest, radius]
+## tags: [radius]
 ## packages:
 ##   - univention-radius
 ## join: true
