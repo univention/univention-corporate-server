@@ -48,6 +48,12 @@ Description[en]=The maximum of files the LDAP server can open. If the value is a
 Type=int
 Categories=service-ldap
 
+[ldap/monitor]
+Description[de]=Ist diese Option aktiviert, lassen sich statistische Informationen durch Domänen-Admins über das Ldap backend cn=monitor nach Neustart des Ldap-Servers erfassen.
+Description[en]=If this variable is activated, access to the ldap backend cn=monitor is granted for Domain-Admins after a restart of the ldap-server.
+Type=bool
+Categories=service-ldap
+
 [ldap/database/type]
 Description[de]=Diese Variable konfiguriert das Datenbank-Backend des LDAP-Servers ('bdb' oder 'hdb'). Diese Variable sollte nur in Ausnahmefällen angepasst werden.
 Description[en]=This variable configures the database backend of the LDAP server ('bdb' or 'hdb'). This variable should only be modified in exceptional cases.
