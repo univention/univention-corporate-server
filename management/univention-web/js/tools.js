@@ -303,12 +303,20 @@ define([
 		},
 
 		checkReloadRequired: function() {
+			return;
+
+			// In versions prior to UCS 4.2 the path to frontend specific files contained
+			// a hash that would change when e.g. installing UMC modules.
+			// Since the index.html still contained the old hash this function was
+			// used to tell the user that he has to reload.
+			// This is not necessary anymore.
+			//
 			// check if UMC needs a browser reload and prompt the user to reload
-			return this.urlExists('umc/').then(undefined, lang.hitch(this, function(e) {
-				if (e.response.status === 404) {
-					this.askToReload();
-				}
-			}));
+			// return this.urlExists('umc/').then(undefined, lang.hitch(this, function(e) {
+				// if (e.response.status === 404) {
+					// this.askToReload();
+				// }
+			// }));
 		},
 
 		_resetCallbacks: [],
