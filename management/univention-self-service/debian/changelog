@@ -1,3 +1,10 @@
+univention-self-service (4.0.1-8) unstable; urgency=medium
+
+  * Bug #48710: users can adjust their attributes defined in
+    self-service/udm_attributes
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 21 Feb 2019 11:18:31 +0100
+
 univention-self-service (4.0.1-7) unstable; urgency=medium
 
   * Bug #48446: fix invitation daemon

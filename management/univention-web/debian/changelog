@@ -1,3 +1,10 @@
+univention-web (3.0.1-2) unstable; urgency=medium
+
+  * Bug #48710: move duplicated code in render.js.requiredWidgets()
+    + add function to Form.js to focus first invalid widget
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 21 Feb 2019 11:13:40 +0100
+
 univention-web (3.0.1-1) unstable; urgency=medium
 
   * Bug #48621: add Anchor widget
