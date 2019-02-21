@@ -1,3 +1,10 @@
+univention-management-console-module-udm (9.0.4-2) unstable; urgency=medium
+
+  * Bug #48710: move duplicated code for widget definitions and requiring
+    widgets to the backend and render.js respectively
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 21 Feb 2019 11:16:18 +0100
+
 univention-management-console-module-udm (9.0.4-1) unstable; urgency=medium
 
   * Bug #48621: Add a "Further Settings" link to apps

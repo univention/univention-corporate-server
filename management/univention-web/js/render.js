@@ -32,6 +32,8 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/dom-class",
+	"dojo/Deferred",
+	"dojo/promise/all",
 	"dojox/html/entities",
 	"umc/tools",
 	"umc/widgets/ContainerWidget",
@@ -44,9 +46,44 @@ define([
 	"umc/widgets/SubmitButton",
 	"umc/widgets/ResetButton",
 	"umc/widgets/Text"
-], function(lang, array, domClass, entities, tools, ContainerWidget, LabelPane, TitlePane, Tooltip, HiddenInput, CheckBox, Button, SubmitButton, ResetButton, Text) {
+], function(lang, array, domClass, Deferred, all, entities, tools, ContainerWidget, LabelPane, TitlePane, Tooltip, HiddenInput, CheckBox, Button, SubmitButton, ResetButton, Text) {
 	var render = {};
 	lang.mixin(render, {
+		requireWidgets: function(/*Object[]*/ widgetConfs) {
+			// summary:
+			//		loads the widget modules necessary to render the widgets described in widgetConfs
+			// returns:
+			//		dojo/promise/Promise
+			var widgetTypes = [];
+			widgetConfs.forEach(function(widgetConf) {
+				widgetTypes.push(widgetConf.type);
+				if (widgetConf.type === 'MultiInput') {
+					widgetTypes = widgetTypes.concat(widgetConf.subtypes.map(function(subtype) {
+						return subtype.type;
+					}));
+				}
+			});
+
+			var deferreds = [];
+			widgetTypes.forEach(function(type) {
+				if (typeof type !== 'string') { // this shouldn't be necessary
+					return;
+				}
+
+				var path = type.indexOf('/') >= 0 ? type : 'umc/widgets/' + type;
+				var errHandler;
+				var deferred = new Deferred();
+				var loaded = function() {
+					deferred.resolve();
+					errHandler.remove();
+				};
+				errHandler = require.on('error', loaded);
+				require([path], loaded);
+				deferreds.push(deferred);
+			});
+			return all(deferreds);
+		},
+
 		widgets: function(/*Object[]*/ widgetsConf, owner) {
 			// summary:
 			//		Renders an array of widget config objects.

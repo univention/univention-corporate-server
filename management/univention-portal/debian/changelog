@@ -1,3 +1,9 @@
+univention-portal (3.0.1-11) unstable; urgency=medium
+
+  * Bug #48710: remove duplicated code
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 21 Feb 2019 11:18:09 +0100
+
 univention-portal (3.0.1-10) unstable; urgency=medium
 
   * Bug #48358: Better header handling

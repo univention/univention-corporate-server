@@ -66,6 +66,13 @@ MEMCACHED_MAX_KEY = 250
 SELFSERVICE_MASTER = ucr.get("self-service/backend-server", ucr.get("ldap/master"))
 IS_SELFSERVICE_MASTER = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname')) == SELFSERVICE_MASTER
 
+if IS_SELFSERVICE_MASTER:
+	try:
+		from univention.management.console.modules.udm.syntax import widget
+	except ImportError as exc:
+		MODULE.error('Could not load udm module: %s' % (exc,))
+		widget = None
+
 
 def forward_to_master(func):
 	@wraps(func)
@@ -208,7 +215,7 @@ class Instance(Base):
 		if not IS_SELFSERVICE_MASTER:
 			return
 
-		self.usersmod = None
+		self._usersmod = None
 		self.groupmod = None
 
 		self.db = TokenDB(MODULE)
@@ -241,6 +248,16 @@ class Instance(Base):
 			("t:c_day", 86400, limit_total_day)
 		]
 
+	@property
+	def usersmod(self):
+		if not self._usersmod:
+			univention.admin.modules.update()
+			self._usersmod = univention.admin.modules.get('users/user')
+			if not self._usersmod.initialized:
+				lo, po = get_machine_connection()
+				univention.admin.modules.init(lo, po, self._usersmod)
+		return self._usersmod
+
 	@forward_to_master
 	@prevent_denial_of_service
 	@sanitize(
@@ -266,6 +283,128 @@ class Instance(Base):
 			"label": p.send_method_label(),
 			"value": user[p.udm_property]
 		} for p in self.send_plugins.values() if p.udm_property in user]
+
+	@forward_to_master
+	@sanitize(
+		username=StringSanitizer(required=True, minimum=1),
+		password=StringSanitizer(required=True, minimum=1))
+	@simple_response
+	def get_user_attributes(self, username, password):
+		dn, username = self.auth(username, password)
+		if self.is_blacklisted(username):
+			raise ServiceForbidden()
+
+		user_attributes = [attr.strip() for attr in ucr.get('self-service/udm_attributes', '').split(',')]
+
+		widget_descriptions = []
+		label_overwrites = {
+			'jpegPhoto': _('Your picture')
+		}
+		for propname in user_attributes:
+			prop = self.usersmod.property_descriptions.get(propname)
+			if not prop:
+				continue
+
+			widget_description = {
+				'id': propname,
+				'label': label_overwrites.get(propname, prop.short_description),
+				'description': prop.long_description,
+				'syntax': prop.syntax.name,
+				'size': prop.size or prop.syntax.size,
+				'required': bool(prop.required),
+				'readonly': not bool(prop.editable),
+				'multivalue': bool(prop.multivalue),
+			}
+			widget_description.update(widget(prop.syntax, widget_description))
+			if 'udm' in widget_description['type']:
+				continue
+			if 'dynamicValues' in widget_description:
+				continue
+
+			widget_descriptions.append(widget_description)
+
+		# TODO make layout configurable via ucr ?
+		layout = [propname for propname in user_attributes if propname in [wd['id'] for wd in widget_descriptions]]
+
+		values = {}
+		user = self.get_udm_user(username=username)
+		for propname in user_attributes:
+			if propname in user:
+				values[propname] = user[propname]
+
+		return {
+			'widget_descriptions': widget_descriptions,
+			'layout': layout,
+			'values': values
+		}
+
+	@forward_to_master
+	@sanitize(
+		username=StringSanitizer(required=True, minimum=1),
+		password=StringSanitizer(required=True, minimum=1))
+	@simple_response
+	def validate_user_attributes(self, username, password, attributes):
+		dn, username = self.auth(username, password)
+		if self.is_blacklisted(username):
+			raise ServiceForbidden()
+
+		res = {}
+		for propname, value in attributes.items():
+			prop = self.usersmod.property_descriptions.get(propname)
+			if not prop:
+				continue
+
+			isValid = True
+			message = ''
+			if prop.multivalue and isinstance(value, (tuple, list)):
+				isValid = []
+				message = []
+				for ival in value:
+					_isValid = True
+					_message = ''
+					try:
+						prop.syntax.parse(ival)
+					except (udm_errors.valueError, udm_errors.valueInvalidSyntax) as e:
+						_isValid = False
+						_message = str(e)
+					finally:
+						isValid.append(_isValid)
+						message.append(_message)
+			else:
+				try:
+					prop.syntax.parse(value)
+				except (udm_errors.valueError, udm_errors.valueInvalidSyntax) as e:
+					isValid = False
+					message = str(e)
+
+			_isValid = all(isValid) if type(isValid) == list else isValid
+			if _isValid and prop.required and not value:
+				isValid = False
+				message = _('This value is required')
+			res[propname] = {
+				'isValid': isValid,
+				'message': message,
+			}
+		return res
+
+	@forward_to_master
+	@sanitize(
+		username=StringSanitizer(required=True, minimum=1),
+		password=StringSanitizer(required=True, minimum=1))
+	@simple_response
+	def set_user_attributes(self, username, password, attributes):
+		dn, username = self.auth(username, password)
+		if self.is_blacklisted(username):
+			raise ServiceForbidden()
+
+		user_attributes = [attr.strip() for attr in ucr.get('self-service/udm_attributes', '').split(',')]
+		user = self.get_udm_user_by_dn(userdn=dn, admin=True)
+		for propname, value in attributes.items():
+			if propname in user_attributes:
+				user[propname] = value
+		user.modify()
+		return _("Successfully changed your contact data.")
+
 
 	@forward_to_master
 	@prevent_denial_of_service
@@ -443,7 +582,7 @@ class Instance(Base):
 
 	def set_contact_data(self, dn, email, mobile):
 		try:
-			user = self.get_udm_user_dn(userdn=dn, admin=True)
+			user = self.get_udm_user_by_dn(userdn=dn, admin=True)
 			if email is not None and email.lower() != user["PasswordRecoveryEmail"].lower():
 				try:
 					user["PasswordRecoveryEmail"] = email
@@ -546,7 +685,7 @@ class Instance(Base):
 		return bool(wh_users or wh_groups)
 
 	def get_groups(self, userdn):
-		user = self.get_udm_user_dn(userdn=userdn)
+		user = self.get_udm_user_by_dn(userdn=userdn)
 		groups = user["groups"]
 		prim_group = user["primaryGroup"]
 		if prim_group not in groups:
@@ -567,15 +706,11 @@ class Instance(Base):
 			names.append(group["name"])
 		return names
 
-	def get_udm_user_dn(self, userdn, admin=False):
+	def get_udm_user_by_dn(self, userdn, admin=False):
 		if admin:
 			lo, po = get_admin_connection()
 		else:
 			lo, po = get_machine_connection()
-		univention.admin.modules.update()
-		if self.usersmod is None:
-			self.usersmod = univention.admin.modules.get("users/user")
-			univention.admin.modules.init(lo, po, self.usersmod)
 		user = self.usersmod.object(None, lo, po, userdn)
 		user.open()
 		return user
@@ -586,7 +721,7 @@ class Instance(Base):
 
 		lo, po = get_machine_connection()
 		dn = lo.searchDn(filter=filter_s, base=base)[0]
-		return self.get_udm_user_dn(dn)
+		return self.get_udm_user_by_dn(dn, admin=admin)
 
 	@machine_connection
 	def get_udm_group(self, groupdn, ldap_connection=None, ldap_position=None):

@@ -307,6 +307,7 @@ define([
 			if (this.autoValidate) {
 				var page = this._pages[currentPage];
 				if (page && page._form && !page._form.validate()) {
+					page._form.focusFirstInvalidWidget();
 					return;
 				}
 			}
