@@ -45,8 +45,8 @@ module = 'policies/policy'
 
 childs = 0
 short_description = _('Policy')
-object_name = _('Policy policy')
-object_name_plural = _('Policy policies')
+object_name = _('Policy')
+object_name_plural = _('Policies')
 long_description = ''
 help_link = _('http://docs.univention.de/manual.html#central:policies')
 help_text = _('<p>Policies are objects that can be connected with other objects in the directory tree. Connected policies allow to define object properties in a unified manner. Policies that are connected with containers or organizational units are inherited by all objects located below.</p><p>More information can be found in the <a href="http://docs.univention.de/manual.html#central:policies" target="_blank">online documentation for UCS</a>.</p>')
