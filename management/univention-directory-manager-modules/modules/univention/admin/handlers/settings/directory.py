@@ -51,6 +51,8 @@ superordinate = 'settings/cn'
 childs = 0
 operations = ['search', 'edit']
 short_description = _('Preferences: Default Container')
+object_name = _('Default container')
+object_name_plural = _('Default containers')
 long_description = ''
 options = {
 	'default': univention.admin.option(

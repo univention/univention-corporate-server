@@ -63,6 +63,8 @@ policy_position_dn_prefix = "cn=container,cn=admin"
 
 childs = 0
 short_description = _('Policy: Univention Directory Manager container settings')
+object_name = _('Univention Directory Manager container settings policy')
+object_name_plural = _('Univention Directory Manager container settings policies')
 policy_short_description = _('Univention Directory Manager container settings')
 long_description = ''
 options = {

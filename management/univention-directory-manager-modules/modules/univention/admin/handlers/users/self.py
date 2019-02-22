@@ -52,6 +52,8 @@ layout = [Tab(_('General'), layout=[])]
 uid_umlauts = 0
 childs = 0
 short_description = _('User: Self')
+object_name = _('Self')
+object_name_plural = _('Self')
 long_description = ''
 
 

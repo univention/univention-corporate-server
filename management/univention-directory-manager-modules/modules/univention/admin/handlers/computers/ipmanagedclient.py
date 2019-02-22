@@ -50,6 +50,8 @@ operations = ['add', 'edit', 'remove', 'search', 'move']
 docleanup = 1
 childs = 0
 short_description = _('Computer: IP managed client')
+object_name = _('IP managed client')
+object_name_plural = _('IP managed clients')
 long_description = ''
 options = {
 }

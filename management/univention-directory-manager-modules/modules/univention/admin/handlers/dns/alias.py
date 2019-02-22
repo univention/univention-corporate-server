@@ -50,6 +50,8 @@ columns = ['cname']
 superordinate = 'dns/forward_zone'
 childs = 0
 short_description = _('DNS: Alias record')
+object_name = _('Alias record')
+object_name_plural = _('Alias records')
 long_description = _('Assign additional names to a host.')
 options = {
 	'default': univention.admin.option(

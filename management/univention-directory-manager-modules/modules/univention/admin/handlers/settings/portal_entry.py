@@ -45,6 +45,8 @@ default_containers = ['cn=portal,cn=univention']
 childs = False
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Portal: Entry')
+object_name = _('Portal entry')
+object_name_plural = _('Portal entries')
 long_description = _('One link in https://fqdn/univention/portal. Belongs to one (or more) settings/portal')
 options = {
 	'default': univention.admin.option(

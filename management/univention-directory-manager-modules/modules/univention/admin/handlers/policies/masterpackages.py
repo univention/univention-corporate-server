@@ -66,6 +66,8 @@ policy_position_dn_prefix = "cn=packages,cn=update"
 
 childs = 0
 short_description = _('Policy: Master packages')
+object_name = _('Master packages policy')
+object_name_plural = _('Master packages policies')
 policy_short_description = _('Master packages')
 long_description = ''
 options = {

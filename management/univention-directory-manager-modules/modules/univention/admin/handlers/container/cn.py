@@ -45,6 +45,8 @@ module = 'container/cn'
 operations = ['add', 'edit', 'remove', 'search', 'move', 'subtree_move']
 childs = 1
 short_description = _('Container: Container')
+object_name = _('Container')
+object_name_plural = _('Containers')
 long_description = ''
 options = {
 	'default': univention.admin.option(

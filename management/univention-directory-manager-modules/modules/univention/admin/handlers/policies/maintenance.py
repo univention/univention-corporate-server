@@ -66,6 +66,8 @@ policy_position_dn_prefix = "cn=installation,cn=update"
 
 childs = 0
 short_description = _('Policy: Maintenance')
+object_name = _('Maintenance policy')
+object_name_plural = _('Maintenance policies')
 policy_short_description = _('Maintenance')
 long_description = ''
 options = {

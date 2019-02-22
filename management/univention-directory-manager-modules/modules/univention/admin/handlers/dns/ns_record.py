@@ -45,6 +45,8 @@ columns = ['nameserver']
 superordinate = 'dns/forward_zone'
 childs = 0
 short_description = 'DNS: NS Record'
+object_name = 'Nameserver record'
+object_name_plural = 'Nameserver records'
 long_description = _('Delegate a subzone to other nameservers.')
 options = {
 	'default': univention.admin.option(

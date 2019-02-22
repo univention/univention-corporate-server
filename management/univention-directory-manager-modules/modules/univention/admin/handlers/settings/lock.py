@@ -47,6 +47,8 @@ superordinate = 'settings/cn'
 
 childs = 0
 short_description = _('Settings: Lock')
+object_name = _('Lock')
+object_name_plural = _('Locks')
 long_description = _('Lock objects')
 options = {
 	'default': univention.admin.option(

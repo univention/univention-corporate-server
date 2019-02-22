@@ -66,6 +66,8 @@ policy_position_dn_prefix = "cn=packages,cn=update"
 
 childs = 0
 short_description = _('Policy: Member Server packages')
+object_name = _('Member Server packages policy')
+object_name_plural = _('Member Server packages policies')
 policy_short_description = _('Member Server packages')
 long_description = ''
 options = {

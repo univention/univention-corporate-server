@@ -65,6 +65,8 @@ policy_position_dn_prefix = "cn=ldap"
 
 childs = 0
 short_description = _('Policy: LDAP server')
+object_name = _('LDAP server policy')
+object_name_plural = _('LDAP server policies')
 policy_short_description = _('LDAP server')
 long_description = ''
 options = {

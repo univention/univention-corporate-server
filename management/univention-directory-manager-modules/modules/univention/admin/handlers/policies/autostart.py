@@ -63,6 +63,8 @@ policy_position_dn_prefix = "cn=thinclient"
 
 childs = 0
 short_description = _('Policy: Autostart')
+object_name = _('Autostart policy')
+object_name_plural = _('Autostart policies')
 policy_short_description = _('Autostart')
 long_description = ''
 options = {

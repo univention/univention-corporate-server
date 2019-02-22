@@ -63,6 +63,8 @@ policy_position_dn_prefix = "cn=routing,cn=dhcp"
 policies_group = "dhcp"
 childs = 0
 short_description = _('Policy: DHCP routing')
+object_name = _('DHCP routing policy')
+object_name_plural = _('DHCP routing policies')
 policy_short_description = _('Routing')
 long_description = ''
 options = {

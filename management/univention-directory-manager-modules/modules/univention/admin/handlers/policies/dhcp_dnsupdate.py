@@ -70,6 +70,8 @@ policy_position_dn_prefix = "cn=dnsupdate,cn=dhcp"
 policies_group = "dhcp"
 childs = 0
 short_description = _('Policy: DHCP Dynamic DNS')
+object_name = _('DHCP Dynamic DNS policy')
+object_name_plural = _('DHCP Dynamic DNS policies')
 policy_short_description = _('Dynamic DNS')
 long_description = ''
 options = {

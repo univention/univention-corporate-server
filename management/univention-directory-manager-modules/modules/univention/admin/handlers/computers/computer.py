@@ -46,6 +46,8 @@ for computer in univention.admin.handlers.computers.computers:
 
 childs = 0
 short_description = _('Computer')
+object_name = _('Computer')
+object_name_plural = _('Computers')
 long_description = ''
 operations = ['search']
 virtual = 1

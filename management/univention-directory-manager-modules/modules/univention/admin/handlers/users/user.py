@@ -73,6 +73,8 @@ template = 'settings/usertemplate'
 
 childs = 0
 short_description = _('User')
+object_name = _('User')
+object_name_plural = _('Users')
 long_description = _('POSIX, Samba, Kerberos and mail account')
 
 

@@ -45,6 +45,8 @@ superordinate = 'settings/cn'
 childs = 0
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Settings: Syntax Definition')
+object_name = _('Syntax Definition')
+object_name_plural = _('Syntax Definitions')
 long_description = ''
 options = {
 	'default': univention.admin.option(

@@ -59,6 +59,7 @@ l10n: $(PO_FILES)
 		cp "$<" "$@"; \
 	fi
 	rm -f "$@".tmp
+	find -name 'de.po~' -delete
 
 modules/univention/admin/de.po: $(wildcard modules/univention/admin/*.py)
 modules/univention/admin/handlers/policies/de.po: $(wildcard modules/univention/admin/handlers/policies/*.py)

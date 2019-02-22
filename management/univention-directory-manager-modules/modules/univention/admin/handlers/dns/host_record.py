@@ -47,7 +47,9 @@ operations = ['add', 'edit', 'remove', 'search']
 columns = ['a']
 superordinate = 'dns/forward_zone'
 childs = 0
-short_description = 'DNS: Host Record'
+short_description = _('DNS: Host Record')
+object_name = _('Host record')
+object_name_plural = _('Host records')
 long_description = _('Resolve the symbolic name to IP addresses.')
 options = {
 	'default': univention.admin.option(

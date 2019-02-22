@@ -47,6 +47,8 @@ columns = ['location']
 superordinate = 'dns/forward_zone'
 childs = 0
 short_description = _('DNS: Service record')
+object_name = _('Service record')
+object_name_plural = _('Service records')
 long_description = _('Resolve well-known services to servers providing those services.')
 options = {
 	'default': univention.admin.option(

@@ -66,6 +66,8 @@ policy_apply_to = ["users/user", "users/ldap"]
 policy_position_dn_prefix = "cn=pwhistory,cn=users"
 childs = 0
 short_description = _('Policy: Passwords')
+object_name = _('Passwords policy')
+object_name_plural = _('Passwords policies')
 policy_short_description = _('Passwords')
 long_description = ''
 options = {

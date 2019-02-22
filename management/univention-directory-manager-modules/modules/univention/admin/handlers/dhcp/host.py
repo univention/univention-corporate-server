@@ -46,6 +46,8 @@ operations = ['add', 'edit', 'remove', 'search']
 superordinate = 'dhcp/service'
 childs = 0
 short_description = _('DHCP: Host')
+object_name = _('DHCP host')
+object_name_plural = _('DHCP hosts')
 long_description = _('Configure a host identified by its hardware MAC address.')
 options = {
 	'default': univention.admin.option(

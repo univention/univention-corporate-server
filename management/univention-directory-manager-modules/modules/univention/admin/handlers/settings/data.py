@@ -45,6 +45,8 @@ default_containers = ['cn=data,cn=univention']
 childs = False
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Data')
+object_name = _('Data')
+object_name_plural = _('Data')
 long_description = _('Arbitrary data files')
 options = {
 	'default': univention.admin.option(

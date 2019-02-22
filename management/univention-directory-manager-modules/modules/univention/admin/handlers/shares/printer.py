@@ -65,6 +65,8 @@ operations = ['add', 'edit', 'remove', 'search', 'move']
 
 childs = 0
 short_description = _('Printer share: Printer')
+object_name = _('Printer')
+object_name_plural = _('Printers')
 long_description = ''
 options = {
 	'default': univention.admin.option(

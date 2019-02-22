@@ -65,6 +65,8 @@ policy_position_dn_prefix = "cn=netbios,cn=dhcp"
 policies_group = "dhcp"
 childs = 0
 short_description = _('Policy: DHCP NetBIOS')
+object_name = _('DHCP NetBIOS policy')
+object_name_plural = _('DHCP NetBIOS policies')
 policy_short_description = _('NetBIOS')
 long_description = ''
 options = {

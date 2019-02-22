@@ -70,6 +70,8 @@ policy_position_dn_prefix = "cn=printquota,cn=shares"
 
 childs = 0
 short_description = _('Policy: Print quota')
+object_name = _('Print quota policy')
+object_name_plural = _('Print quota policies')
 policy_short_description = _('Print Quota')
 long_description = _('Print Quota for users/groups per printer')
 

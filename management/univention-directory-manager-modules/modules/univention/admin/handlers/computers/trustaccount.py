@@ -48,6 +48,8 @@ operations = ['add', 'edit', 'remove', 'search', 'move']
 docleanup = 1
 childs = 0
 short_description = _('Computer: Domain trust account')
+object_name = _('Domain trust account')
+object_name_plural = _('Domain trust accounts')
 long_description = ''
 options = {
 }
