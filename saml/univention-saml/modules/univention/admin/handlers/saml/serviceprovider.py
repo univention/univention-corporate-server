@@ -38,6 +38,8 @@ _ = translation.translate
 module = 'saml/serviceprovider'
 childs = 0
 short_description = _(u'SAML service provider')
+object_name = _(u'SAML service provider')
+object_name_plural = _(u'SAML service providers')
 long_description = _(u'Management of service provider configurations for the SAML identity provider.')
 operations = ['add', 'edit', 'remove', 'search']
 default_containers = ["cn=saml-serviceprovider,cn=univention"]

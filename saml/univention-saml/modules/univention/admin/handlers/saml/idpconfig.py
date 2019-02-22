@@ -38,6 +38,8 @@ _ = translation.translate
 module = 'saml/idpconfig'
 childs = 0
 short_description = _(u'SAML IdP configuration')
+object_name = _(u'SAML IdP configuration')
+object_name_plural = _(u'SAML IdP configurations')
 long_description = _(u'univention simplesamlphp identity provider settings')
 operations = ['add', 'edit', 'remove', 'search']
 default_containers = ["cn=univention"]
