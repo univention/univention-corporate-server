@@ -1,3 +1,9 @@
+univention-samba4 (7.0.3-1) unstable; urgency=medium
+
+  * Bug #49479: Samba 4.10
+  * Bug #49482: Call samba_dnsupdate with --use-samba-tool instead
+    of --local if samba4/join/dnsupdate is active (UCS@school)
+
 univention-samba4 (7.0.2-27) unstable; urgency=medium
 
   * Bug #47850: set 'map acl inherit' for shares with NtAcl and
