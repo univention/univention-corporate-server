@@ -6,7 +6,7 @@ StartLimitIntervalSec=0
 [Service]
 Type=simple
 Restart=on-failure
-RestartSec=10
+RestartSec=60
 # ugly hack until StandardOutput or StandardError to file:YOUR_ABSPATH_FILENAME is supported
 ExecStart=/bin/bash -ce "exec /usr/lib/univention-self-service-master/univention-self-service-invitation >> /var/log/univention/management-console-module-passwordreset.log 2>&1"
 

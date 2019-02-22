@@ -1,3 +1,9 @@
+univention-self-service (4.0.1-9) unstable; urgency=medium
+
+  * Bug #48446: Set restart timeout to 60 seconds
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 22 Feb 2019 13:21:59 +0100
+
 univention-self-service (4.0.1-8) unstable; urgency=medium
 
   * Bug #48710: users can adjust their attributes defined in
