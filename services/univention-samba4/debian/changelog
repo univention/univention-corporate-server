@@ -1,3 +1,10 @@
+univention-samba4 (8.0.0-14) unstable; urgency=medium
+
+  * Bug #48733: Call samba_dnsupdate with --use-samba-tool instead
+    of --local if samba4/join/dnsupdate is active (UCS@school)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 22 Feb 2019 13:54:46 +0100
+
 univention-samba4 (8.0.0-13) unstable; urgency=medium
 
   * Bug #47942: fix after QA
