@@ -1,8 +1,222 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2000/10/XMLSchema" elementFormDefault="qualified">
-  <xsd:element name="umc">
-	<xsd:element name="module">
-	  <xsd:attribute 
-	</xsd:element>
-  </xsd:element>
-</xsd:schema>
+<?xml version='1.0' encoding='utf-8'?>
+<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>
+
+	<xs:annotation>
+		<xs:documentation xml:lang='en'>
+			Univention Corporate Server Management Console definition.
+			Copyright 2019 Univention GmbH.
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:complexType name='translated'>
+		<xs:annotation>
+			<xs:documentation xml:lang='en'>
+				Translation to multiple languages.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base='xs:string'>
+				<xs:attribute name='lang' type='xs:language' use='optional'/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:simpleType name='version'>
+		<xs:annotation>
+			<xs:documentation xml:lang='en'>
+				Version string with major and minor number.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base='xs:string'>
+			<xs:pattern value='[0-9]+\.[0-9]+'/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name='color'>
+		<xs:annotation>
+			<xs:documentation xml:lang='en'>
+				HTML color.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base='xs:string'>
+			<xs:pattern value='#[0-9A-Fa-f]{6}'/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name='category'>
+		<xs:annotation>
+			<xs:documentation xml:lang='en'>
+				Category string.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base='xs:string'/>
+	</xs:simpleType>
+
+	<xs:complexType name='categories'>
+		<xs:annotation>
+			<xs:documentation xml:lang='en'>
+				Element to define UMC categories.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name='category' minOccurs='0' maxOccurs='unbounded'>
+				<xs:complexType>
+					<xs:attribute name='name' type='category' use='required'/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name='deactivated'>
+		<xs:annotation>
+			<xs:documentation xml:lang='en'>
+				Category string.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base='xs:string'>
+			<xs:enumeration value='yes'/>
+			<xs:enumeration value='no'/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:element name='umc'>
+		<xs:annotation>
+			<xs:documentation xml:lang='en'>
+				Top level element to define either UMC modules or categories.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:sequence minOccurs='0'>
+					<xs:choice>
+						<xs:element ref='module'/>
+						<xs:element ref='link'/>
+					</xs:choice>
+				</xs:sequence>
+				<xs:element ref='categories'/>
+			</xs:choice>
+			<xs:attribute name='version' type='version' use='required' fixed='2.0'/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name='module'>
+		<xs:annotation>
+			<xs:documentation xml:lang='en'>
+				UMC module definition
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:sequence minOccurs='0'>
+					<xs:element name='name' type='translated'/>
+					<xs:element name='description' type='translated'/>
+					<xs:element name='keywords' type='xs:string' minOccurs='0'/>
+				</xs:sequence>
+				<xs:element ref='flavor' minOccurs='0' maxOccurs='unbounded'/>
+				<xs:element name='categories' type='categories' minOccurs='0'/>
+				<xs:element ref='requiredCommands' minOccurs='0'/>
+				<xs:element ref='command' minOccurs='0' maxOccurs='unbounded'/>
+			</xs:sequence>
+			<xs:attribute name='id' type='xs:string' use='optional'/>
+			<xs:attribute name='icon' type='xs:string' use='optional'/>
+			<xs:attribute name='priority' type='xs:integer' use='optional'/>
+			<xs:attribute name='version' type='version' use='required' fixed='1.0'/>
+			<xs:attribute name='notifier' type='xs:string' use='optional'/>
+			<xs:attribute name='deactivated' type='deactivated' use='optional' default='no'/>
+			<xs:attribute name='translationId' type='xs:ID' use='optional'/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name='link'>
+		<xs:annotation>
+			<xs:documentation xml:lang='en'>
+				UMC module link
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element name='name' type='translated'/>
+				<xs:element name='url' type='xs:anyURI'/>
+				<xs:element name='description' type='translated'/>
+				<xs:element name='keywords' type='xs:string' minOccurs='0'/>
+				<xs:element name='categories' type='categories' minOccurs='0'/>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name='flavor'>
+		<xs:annotation>
+			<xs:documentation xml:lang='en'>
+				Definition of UDM modules.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all minOccurs='0'>
+				<xs:element name='name' type='translated'/>
+				<xs:element name='description' type='translated'/>
+				<xs:element name='keywords' type='xs:string' minOccurs='0'/>
+				<xs:element name='categories' type='categories' minOccurs='0'/>
+				<xs:element ref='requiredCommands' minOccurs='0'/>
+			</xs:all>
+			<xs:attribute name='icon' type='xs:string' use='optional'/>
+			<xs:attribute name='priority' type='xs:integer' use='optional'/>
+			<xs:attribute name='id' type='xs:string' use='required'/>
+			<xs:attribute name='overwrites' type='xs:string' use='optional'/>
+			<xs:attribute name='deactivated' type='deactivated' use='optional' default='no'/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name='command'>
+		<xs:annotation>
+			<xs:documentation xml:lang='en'>
+				Definition of UMC command mapping to Python functions.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name='name' type='xs:string' use='required'/>
+			<xs:attribute name='function' type='xs:string' use='required'/>
+			<xs:attribute name='allow_anonymous' type='xs:boolean'/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name='requiredCommands'>
+		<xs:annotation>
+			<xs:documentation xml:lang='en'>
+				Definition of required UMC commands.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name='requiredCommand' maxOccurs='unbounded'>
+					<xs:complexType>
+						<xs:attribute name="name" type='xs:string'/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name='categories'>
+		<xs:annotation>
+			<xs:documentation xml:lang='en'>
+				Definition of UMC categories.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name='category' maxOccurs='unbounded'>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name='name' type='translated' maxOccurs='unbounded'/>
+						</xs:sequence>
+						<xs:attribute name='priority' type='xs:integer' use='required'/>
+						<xs:attribute name='id' type='category' use='required'/>
+						<xs:attribute name='icon' type='xs:string' use='required'/>
+						<xs:attribute name='color' type='color' use='required'/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>

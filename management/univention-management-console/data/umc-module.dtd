@@ -5,19 +5,25 @@
 >
 
 <!ELEMENT module ((name,description,keywords?)?,flavor*,categories?,requiredCommands?,command*)>
-<!-- priority: order of module
+<!-- definition of a module
 	id:       unique module ID
 	icon:     base directory
+	priority: order of module
 	version:  only "1.0"
-	notifier: use specific notifier loop 'qt' -->
+	notifier: use specific notifier loop 'qt'
+	deactivated:  "yes" or "no"
+	translationId: unique module ID for translation
+	-->
 <!ATTLIST module
 	id CDATA #REQUIRED
 	icon CDATA #IMPLIED
 	priority CDATA #IMPLIED
 	version (1.0) #FIXED "1.0"
 	notifier (qt) #IMPLIED
-	deactivated  CDATA #IMPLIED
+	deactivated (yes|no) #IMPLIED
+	translationId CDATA #IMPLIED
 >
+
 <!ELEMENT link (name,url,description,keywords?,categories?)>
 <!-- priority: order of link
 	id:       unique link ID
@@ -27,29 +33,37 @@
 	icon CDATA #IMPLIED
 	priority CDATA #IMPLIED
 >
+
 <!ELEMENT name (#PCDATA)>
 <!ELEMENT url (#PCDATA)>
 <!ELEMENT description (#PCDATA)>
 <!ELEMENT keywords (#PCDATA)>
-<!ELEMENT flavor (name,description,keywords?,categories?,requiredCommands?)>
-<!-- priority:   order of flavours
+<!ELEMENT flavor ((name,description,keywords?,categories?,requiredCommands?)?)>
+<!-- LDAP modules
 	icon:       file name without suffix relative to umc/module/@icon
+	priority:   order of flavours
 	id:         unique module ID
-	overwrites: over-write other flavor -->
+	overwrites: over-write other flavor
+	deactivated:  "yes" or "no"
+	-->
 <!ATTLIST flavor
 	icon CDATA #IMPLIED
 	priority CDATA #IMPLIED
 	id CDATA #REQUIRED
 	overwrites CDATA #IMPLIED
-	deactivated  CDATA #IMPLIED
+	deactivated (yes|no) #IMPLIED
 >
-<!ELEMENT categories (category+)>
+
+<!ELEMENT categories (category*)>
 <!-- domain: ??? -->
 <!ATTLIST categories
 	domain CDATA #IMPLIED
 >
 <!ELEMENT category (name?)>
-<!-- priority: order of categories
+<!-- a category
+	icon:     file name without suffix relative to umc/module/@icon
+	color:    #rrggbb color
+	priority: order of categories
 	name:     usage from umc/module; one of 'favorites'(100) 'system'(3) or a custom one
 	id:       used for definition in umc/categories -->
 <!ATTLIST category
@@ -60,16 +74,17 @@
 	id CDATA #IMPLIED
 >
 <!ELEMENT command EMPTY>
-<!-- name: name of UMC function
+<!-- mapping from UMC command to Python function
+	name: name of UMC function
 	function: name of python function
 	allow_anonymous: if command can be executed without being authenticated -->
 <!ATTLIST command
 	name CDATA #REQUIRED
 	function CDATA #REQUIRED
-	allow_anonymous CDATA #IMPLIED
+	allow_anonymous (true|false) #IMPLIED
 >
 <!ELEMENT requiredCommand EMPTY>
 <!ATTLIST requiredCommand
 	name CDATA #REQUIRED
 >
-<!ELEMENT requiredCommands (requiredCommand?)>
+<!ELEMENT requiredCommands (requiredCommand*)>
