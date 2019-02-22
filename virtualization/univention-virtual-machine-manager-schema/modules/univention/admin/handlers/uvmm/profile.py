@@ -46,6 +46,8 @@ default_containers = ['cn=Profiles,cn=Virtual Machine Manager']
 
 childs = 0
 short_description = _('UVMM: Profile')
+object_name = _('Profile')
+object_name_plural = _('Profiles')
 long_description = ''
 operations = ['search', 'edit', 'add', 'remove']
 

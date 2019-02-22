@@ -46,6 +46,8 @@ default_containers = ['cn=CloudType,cn=Virtual Machine Manager']
 
 childs = 0
 short_description = _('UVMM: Cloud Type')
+object_name = _('Cloud Type')
+object_name_plural = _('Cloud Types')
 long_description = ''
 operations = ['search', 'edit', 'add', 'remove']
 

@@ -46,6 +46,8 @@ default_containers = ['cn=Information,cn=Virtual Machine Manager']
 
 childs = 0
 short_description = _('UVMM: Machine information')
+object_name = _('Machine information')
+object_name_plural = _('Machine information')
 long_description = ''
 operations = ['search', 'edit', 'add', 'remove']
 

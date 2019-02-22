@@ -46,6 +46,8 @@ default_containers = ['cn=CloudConnection,cn=Virtual Machine Manager']
 
 childs = 0
 short_description = _('UVMM: Cloud Connection')
+object_name = _('Cloud Connection')
+object_name_plural = _('Cloud Connections')
 long_description = ''
 operations = ['search', 'edit', 'add', 'remove']
 
