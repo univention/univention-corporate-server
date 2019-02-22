@@ -163,6 +163,9 @@ mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.ad
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
+	def _get_admin_diary_args(self, event):
+		return {'nameWithMailDomain': self.description()}
+
 	def _post_unmap(self, oldinfo, oldattr):
 		cn = oldattr.get('cn', [])
 		if cn:

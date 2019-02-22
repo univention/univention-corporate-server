@@ -270,11 +270,14 @@ class object(univention.admin.handlers.simpleLdap):
 		settings_module = univention.admin.modules.get('settings/directory')
 		settings_object = univention.admin.objects.get(settings_module, None, self.lo, position='', dn=self.default_dn)
 		settings_object.open()
+		needs_modify = False
 		for attr in ['dns', 'license', 'computers', 'shares', 'groups', 'printers', 'policies', 'dhcp', 'networks', 'users', 'mail']:
 			if olddn in settings_object[attr]:
 				settings_object[attr].remove(olddn)
 				settings_object[attr].append(self.dn)
-		settings_object.modify()
+				needs_modify = True
+		if needs_modify:
+			settings_object.modify()
 
 	def _ldap_post_modify(self):
 		changes = []

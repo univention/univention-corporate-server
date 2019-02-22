@@ -160,10 +160,10 @@ class Client(object):
 
 	def options(self):
 		ret = {}
-		ret['tags'] = [tag.name for tag in self._session.query(Tag).all()]
-		ret['usernames'] = [username[0] for username in self._session.query(Entry.username).distinct()]
-		ret['hostnames'] = [hostname[0] for hostname in self._session.query(Entry.hostname).distinct()]
-		ret['events'] = [event.name for event in self._session.query(Event).all()]
+		ret['tags'] = sorted([tag.name for tag in self._session.query(Tag).all()])
+		ret['usernames'] = sorted([username[0] for username in self._session.query(Entry.username).distinct()])
+		ret['hostnames'] = sorted([hostname[0] for hostname in self._session.query(Entry.hostname).distinct()])
+		ret['events'] = sorted([event.name for event in self._session.query(Event).all()])
 		return ret
 
 	def add_tag(self, name):

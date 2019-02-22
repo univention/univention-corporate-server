@@ -46,9 +46,6 @@ import ldap
 import base64
 from ldap.filter import filter_format
 
-from univention.admindiary.client import write_event
-from univention.admindiary.events import USER_CREATED
-
 import univention.admin
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
@@ -1492,11 +1489,6 @@ mapping.register('password', 'userPassword', univention.admin.mapping.dontMap(),
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
-
-	def create(self, serverctrls=None, response=None):
-		ret = super(object, self).create(serverctrls, response)
-		write_event(USER_CREATED, {'username': self['username']})
-		return ret
 
 	@property
 	def __forward_copy_to_self(self):

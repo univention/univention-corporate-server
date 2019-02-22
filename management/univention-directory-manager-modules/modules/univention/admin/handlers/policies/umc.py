@@ -36,7 +36,7 @@ import univention.admin.filter as udm_filter
 import univention.admin.mapping as udm_mapping
 
 from univention.admin.handlers import simplePolicy
-from univention.admin.localization import translation
+import univention.admin.localization
 
 import univention.debug
 
@@ -47,7 +47,8 @@ from univention.admin.policy import (
 )
 
 
-_ = translation('univention.admin.handlers.policies').translate
+translation = univention.admin.localization.translation('univention.admin.handlers.users')
+_ = translation.translate
 
 
 class umcFixedAttributes(udm_syntax.select):

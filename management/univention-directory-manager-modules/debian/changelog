@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.5-4) unstable; urgency=medium
+
+  * Bug #48717: Admin Diary Events
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 22 Feb 2019 14:24:17 +0100
+
 univention-directory-manager-modules (14.0.5-3) unstable; urgency=low
 
   * Bug #48383: update translations

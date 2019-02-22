@@ -57,6 +57,9 @@ from ldap.controls.readentry import PostReadControl
 
 import univention.debug
 
+from univention.admindiary.client import write_event
+from univention.admindiary.events import DiaryEvent
+
 import univention.admin.filter
 import univention.admin.uldap
 import univention.admin.mapping
@@ -544,7 +547,48 @@ class simpleLdap(object):
 		for c in response.get('ctrls', []):
 			if c.controlType == PostReadControl.controlType:
 				self.oldattr.update(c.entry)
+		self._write_admin_diary_create()
 		return dn
+
+	def _get_admin_diary_event(self, event):
+		name = self.module.replace('/', '_').upper()
+		return DiaryEvent.get('UDM_%s_%s' % (name, event))
+
+	def _get_admin_diary_args_names(self, event):
+		ret = []
+		for name, prop in self.descriptions.iteritems():
+			if name in event.args:
+				ret.append(name)
+		return ret
+
+	def _get_admin_diary_args(self, event):
+		args = {}
+		for name in self._get_admin_diary_args_names(event):
+			args[name] = str(self[name])
+		return args
+
+	def _get_admin_diary_username(self):
+		username = ldap.dn.explode_rdn(self.lo.binddn)[0]
+		if username != 'cn=admin':
+			username = username.rsplit('=', 1)[1]
+		return username
+
+	def _write_admin_diary_event(self, event, additional_args=None):
+		try:
+			event = self._get_admin_diary_event(event)
+			if not event:
+				return
+			args = self._get_admin_diary_args(event)
+			if args:
+				if additional_args:
+					args.update(additional_args)
+				username = self._get_admin_diary_username()
+				write_event(event, args, username=username)
+		except Exception as exc:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, "Failed to write Admin Diary entry: %s" % exc)
+
+	def _write_admin_diary_create(self):
+		self._write_admin_diary_event('CREATED')
 
 	def modify(self, modify_childs=1, ignore_license=0, serverctrls=None, response=None):
 		"""Modifies the LDAP object by building the difference between the current state and the old state of this object and write this modlist to LDAP.
@@ -588,7 +632,11 @@ class simpleLdap(object):
 		for c in response.get('ctrls', []):
 			if c.controlType == PostReadControl.controlType:
 				self.oldattr.update(c.entry)
+		self._write_admin_diary_modify()
 		return dn
+
+	def _write_admin_diary_modify(self):
+		self._write_admin_diary_event('MODIFIED')
 
 	def _create_temporary_ou(self):
 		name = 'temporary_move_container_%s' % time.time()
@@ -1364,7 +1412,11 @@ class simpleLdap(object):
 			self.lo.rename(self.dn, olddn)
 			self.dn = olddn
 			raise
+		self._write_admin_diary_move(newdn)
 		return self.dn
+
+	def _write_admin_diary_move(self, position):
+		self._write_admin_diary_event('MOVED', {'position': position})
 
 	def _remove(self, remove_childs=0):  # type: (int) -> None
 		"""Removes this object. Should only be called by :func:`univention.admin.handlers.simpleLdap.remove`."""
@@ -1400,7 +1452,11 @@ class simpleLdap(object):
 
 		self.call_udm_property_hook('hook_ldap_post_remove', self)
 		self.oldattr = {}
+		self._write_admin_diary_remove()
 		self.save()
+
+	def _write_admin_diary_remove(self):
+		self._write_admin_diary_event('REMOVED')
 
 	def loadPolicyObject(self, policy_type, reset=0):  # type: (str, int) -> "simplePolicy"
 		pathlist = []
