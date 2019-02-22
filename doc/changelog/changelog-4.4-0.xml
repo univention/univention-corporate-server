@@ -352,7 +352,7 @@
 	<section id="changelog:lib">
 		<title>Univention base libraries</title>
 		<itemizedlist>
-			<listitem><simpara>
+			<listitem><simpara>The syntax class <classname>mailinglist_name</classname> was integrated into <filename>syntax.py</filename>  (<u:bug>48383</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
