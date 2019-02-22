@@ -1,3 +1,9 @@
+univention-join (10.0.0-32) unstable; urgency=medium
+
+  * Bug #48475: Fix join failing on some network setups
+
+ -- Jannik Ahlers <ahlers@univention.de>  Fri, 22 Feb 2019 10:40:34 +0100
+
 univention-join (10.0.0-31) unstable; urgency=low
 
   * Bug #48427: Just purge the translog DB
