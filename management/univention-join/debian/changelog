@@ -1,3 +1,9 @@
+univention-join (11.0.1-11) unstable; urgency=medium
+
+  * Bug #48475: Fix join failing on some network setups
+
+ -- Jannik Ahlers <ahlers@univention.de>  Fri, 22 Feb 2019 10:42:52 +0100
+
 univention-join (11.0.1-10) unstable; urgency=medium
 
   * Bug #48642: Merge UDN protocol 3
