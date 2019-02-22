@@ -47,7 +47,7 @@ from univention.admin.policy import (
 )
 
 
-translation = univention.admin.localization.translation('univention.admin.handlers.users')
+translation = univention.admin.localization.translation('univention.admin.handlers.policies')
 _ = translation.translate
 
 

@@ -68,12 +68,18 @@ def print_events(m):
 	translation.domain = m._.im_self._domain
 	translation.set_language('en_US.UTF-8')
 	try:
-		english_name = translation.translate(m.short_description)
+		object_name = m.object_name
 	except AttributeError:
-		sys.stderr.write('no description in %s\n' % m)
-		return
+		try:
+			object_name = m.short_description
+		except AttributeError:
+			sys.stderr.write('no short_description and no object_name in %s\n' % m)
+			return
+		else:
+			sys.stderr.write('using short_description in %s\n' % m)
+	english_name = translation.translate(object_name)
 	translation.set_language('de_DE.UTF-8')
-	german_name = translation.translate(m.short_description)
+	german_name = translation.translate(object_name)
 	any_printed = False
 	args = []
 	if name == 'users/user':
