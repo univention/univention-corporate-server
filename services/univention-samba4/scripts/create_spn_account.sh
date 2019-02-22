@@ -136,6 +136,9 @@ create_spn_account() {
 		changetype: modify
 		replace: servicePrincipalName
 		servicePrincipalName: $servicePrincipalName
+		-
+		replace: msDS-SupportedEncryptionTypes
+		msDS-SupportedEncryptionTypes: 31
 		%EOF
 	else
 		echo -n "Setting new password for $spn_account_name account: "
