@@ -5,11 +5,6 @@
 		<description>Manages virtual machines</description>
 		<keywords></keywords>
 		<!-- UVMM daemon -->
-		<flavor id="uvmm">
-			<name>Virtual machines (UVMM)</name>
-			<description>Manages virtual machines</description>
-			<keywords></keywords>
-		</flavor>
 		<categories>
 			<category name="system"/>
 		</categories>
