@@ -45,8 +45,8 @@ operations = ['add', 'edit', 'remove', 'search']
 childs = 1
 childmodules = ('dhcp/host', 'dhcp/server', 'dhcp/shared', 'dhcp/subnet')
 short_description = _('DHCP: Service')
-object_name = _('Service')
-object_name_plural = _('Service')
+object_name = _('DHCP service')
+object_name_plural = _('DHCP services')
 long_description = _('The top-level container for a DHCP configuration.')
 options = {
 	'default': univention.admin.option(

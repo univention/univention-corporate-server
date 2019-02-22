@@ -49,7 +49,7 @@ childs = False
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Portal: Portal')
 object_name = _('Portal')
-object_name_plural = _('Portal')
+object_name_plural = _('Portals')
 long_description = _('Object that feeds everything in https://fqdn/univention/portal')
 options = {
 	'default': univention.admin.option(

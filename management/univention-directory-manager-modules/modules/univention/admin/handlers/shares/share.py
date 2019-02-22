@@ -55,8 +55,8 @@ operations = ['add', 'edit', 'remove', 'search', 'move']
 
 childs = 0
 short_description = _('Share: Directory')
-object_name = _('Directory')
-object_name_plural = _('Directory')
+object_name = _('Share directory')
+object_name_plural = _('Share directories')
 long_description = ''
 options = {
 	'default': univention.admin.option(

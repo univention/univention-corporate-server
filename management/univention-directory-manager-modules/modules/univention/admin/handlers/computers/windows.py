@@ -55,7 +55,7 @@ docleanup = 1
 childs = 0
 short_description = _('Computer: Windows Workstation/Server')
 object_name = _('Windows Workstation/Server')
-object_name_plural = _('Windows Workstation/Server')
+object_name_plural = _('Windows Workstations/Servers')
 long_description = ''
 options = {
 	'posix': univention.admin.option(

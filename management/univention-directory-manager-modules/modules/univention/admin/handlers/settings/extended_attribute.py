@@ -45,7 +45,7 @@ superordinate = 'settings/cn'
 childs = 0
 short_description = _('Settings: Extended attribute')
 object_name = _('Extended attribute')
-object_name_plural = _('Extended attribute')
+object_name_plural = _('Extended attributes')
 long_description = ''
 options = {
 	'default': univention.admin.option(

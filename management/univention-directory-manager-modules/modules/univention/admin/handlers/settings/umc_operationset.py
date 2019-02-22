@@ -49,7 +49,7 @@ superordinate = 'settings/cn'
 childs = 0
 short_description = _('Settings: UMC operation set')
 object_name = _('UMC operation set')
-object_name_plural = _('UMC operation set')
+object_name_plural = _('UMC operation sets')
 long_description = _('List of Operations for UMC')
 options = {
 	'default': univention.admin.option(

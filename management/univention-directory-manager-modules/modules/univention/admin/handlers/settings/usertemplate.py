@@ -44,7 +44,7 @@ superordinate = 'settings/cn'
 childs = 0
 short_description = _('Settings: User Template')
 object_name = _('User Template')
-object_name_plural = _('User Template')
+object_name_plural = _('User Templates')
 long_description = ''
 options = {
 	'default': univention.admin.option(

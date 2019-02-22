@@ -46,7 +46,7 @@ childs = 0
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Settings: Service')
 object_name = _('Service')
-object_name_plural = _('Service')
+object_name_plural = _('Services')
 long_description = ''
 options = {
 	'default': univention.admin.option(

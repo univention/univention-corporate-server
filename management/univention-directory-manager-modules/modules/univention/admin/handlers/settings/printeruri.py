@@ -48,7 +48,7 @@ superordinate = 'settings/cn'
 childs = 0
 short_description = _('Settings: Printer URI List')
 object_name = _('Printer URI List')
-object_name_plural = _('Printer URI List')
+object_name_plural = _('Printer URI Lists')
 long_description = _('List of URIs for printers')
 options = {
 	'default': univention.admin.option(

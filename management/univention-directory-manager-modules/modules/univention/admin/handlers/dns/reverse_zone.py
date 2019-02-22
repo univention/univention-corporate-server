@@ -48,7 +48,7 @@ childs = 1
 childmodules = ['dns/ptr_record']
 short_description = _('DNS: Reverse lookup zone')
 object_name = _('Reverse lookup zone')
-object_name_plural = _('Reverse lookup zone')
+object_name_plural = _('Reverse lookup zones')
 long_description = _('Map IP addresses back to hostnames.')
 options = {
 	'default': univention.admin.option(

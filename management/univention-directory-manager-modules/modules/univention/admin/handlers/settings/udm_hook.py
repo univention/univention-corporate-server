@@ -49,7 +49,7 @@ childs = 0
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Settings: UDM Hook')
 object_name = _('UDM Hook')
-object_name_plural = _('UDM Hook')
+object_name_plural = _('UDM Hooks')
 long_description = ''
 options = {
 	'default': univention.admin.option(

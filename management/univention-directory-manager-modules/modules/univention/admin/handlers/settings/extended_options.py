@@ -44,8 +44,8 @@ operations = ['add', 'edit', 'remove', 'search', 'move']
 superordinate = 'settings/cn'
 
 childs = 0
-short_description = _('Settings: Extended options')
-object_name = _('Extended options')
+short_description = _('Settings: Extended option')
+object_name = _('Extended option')
 object_name_plural = _('Extended options')
 long_description = _('Options for extended attributes')
 

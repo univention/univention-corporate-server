@@ -55,7 +55,7 @@ docleanup = 1
 childs = 0
 short_description = _('Computer: Windows Domaincontroller')
 object_name = _('Windows Domaincontroller')
-object_name_plural = _('Windows Domaincontroller')
+object_name_plural = _('Windows Domaincontrollers')
 long_description = ''
 options = {
 	'posix': univention.admin.option(

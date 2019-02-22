@@ -47,8 +47,8 @@ module = 'mail/folder'
 operations = ['add', 'edit', 'remove', 'search']  # removed 'move' as a workaround for bug #11664
 childs = 0
 short_description = _('Mail folder (IMAP)')
-object_name = _('Mail folder (IMAP)')
-object_name_plural = _('Mail folder (IMAP)')
+object_name = _('IMAP mail folder')
+object_name_plural = _('IMAP mail folders')
 long_description = ''
 
 module_search_filter = univention.admin.filter.conjunction('&', [

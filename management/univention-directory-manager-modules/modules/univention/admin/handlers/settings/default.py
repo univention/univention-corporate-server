@@ -48,8 +48,8 @@ superordinate = 'settings/cn'
 childs = 0
 operations = ['search', 'edit']
 short_description = _('Preferences: Default')
-object_name = _('Default')
-object_name_plural = _('Default')
+object_name = _('Default preference')
+object_name_plural = _('Default preferences')
 long_description = ''
 options = {
 	'default': univention.admin.option(

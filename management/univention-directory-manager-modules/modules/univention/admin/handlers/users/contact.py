@@ -32,8 +32,6 @@
 
 from __future__ import absolute_import
 
-import ldap
-
 import univention.admin
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
@@ -53,7 +51,7 @@ operations = ['add', 'edit', 'remove', 'search', 'move']
 childs = 0
 short_description = _('Contact')
 object_name = _('Contact')
-object_name_plural = _('Contact')
+object_name_plural = _('Contact information')
 long_description = _('Contact information')
 
 options = {
@@ -385,6 +383,7 @@ mapping.register('mobileTelephoneNumber', 'mobile')
 mapping.register('pagerTelephoneNumber', 'pager')
 mapping.register('homePostalAddress', 'homePostalAddress', mapHomePostalAddress, unmapHomePostalAddress)
 
+
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
@@ -492,7 +491,9 @@ class object(univention.admin.handlers.simpleLdap):
 			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'pkiUser')]),
 		])
 
+
 lookup = object.lookup
+
 
 def identify(dn, attr, canonical=0):
 	# FIXME is this if block needed? copy pasted from users/user

@@ -55,7 +55,7 @@ docleanup = 1
 childs = 0
 short_description = _('Computer: Member Server')
 object_name = _('Member Server')
-object_name_plural = _('Member Server')
+object_name_plural = _('Member Servers')
 long_description = ''
 options = {
 	'posix': univention.admin.option(

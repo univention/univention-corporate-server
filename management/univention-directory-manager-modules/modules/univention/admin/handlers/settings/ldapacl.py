@@ -49,7 +49,7 @@ childs = 0
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Settings: LDAP ACL Extension')
 object_name = _('LDAP ACL Extension')
-object_name_plural = _('LDAP ACL Extension')
+object_name_plural = _('LDAP ACL Extensions')
 long_description = ''
 options = {
 	'default': univention.admin.option(

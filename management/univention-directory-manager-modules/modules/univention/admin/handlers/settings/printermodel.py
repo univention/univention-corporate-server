@@ -50,7 +50,7 @@ superordinate = 'settings/cn'
 childs = 0
 short_description = _('Settings: Printer Driver List')
 object_name = _('Printer Driver List')
-object_name_plural = _('Printer Driver List')
+object_name_plural = _('Printer Driver Lists')
 long_description = _('List of drivers for printers')
 options = {
 	'default': univention.admin.option(

@@ -44,7 +44,7 @@ operations = ['add', 'edit', 'remove', 'search', 'move']
 childs = 0
 short_description = _('Mailing list')
 object_name = _('Mailing list')
-object_name_plural = _('Mailing list')
+object_name_plural = _('Mailing lists')
 long_description = ''
 
 module_search_filter = univention.admin.filter.expression('objectClass', 'univentionMailList'),

@@ -49,8 +49,8 @@ operations = ['add', 'edit', 'remove', 'search']
 superordinate = ['dhcp/subnet', 'dhcp/sharedsubnet']
 childs = 0
 short_description = _('DHCP: Pool')
-object_name = _('Pool')
-object_name_plural = _('Pool')
+object_name = _('DHCP pool')
+object_name_plural = _('DHCP pools')
 long_description = _('A pool of dynamic addresses assignable to hosts.')
 options = {
 	'default': univention.admin.option(

@@ -49,7 +49,7 @@ childs = 0
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Settings: UDM Syntax')
 object_name = _('UDM Syntax')
-object_name_plural = _('UDM Syntax')
+object_name_plural = _('UDM Syntaxes')
 long_description = ''
 options = {
 	'default': univention.admin.option(

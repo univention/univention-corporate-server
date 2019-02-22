@@ -48,7 +48,7 @@ superordinate = 'settings/cn'
 childs = 0
 short_description = _('Settings: Package List')
 object_name = _('Package List')
-object_name_plural = _('Package List')
+object_name_plural = _('Package Lists')
 long_description = _('List of Packages for UCS Systems')
 options = {
 	'default': univention.admin.option(

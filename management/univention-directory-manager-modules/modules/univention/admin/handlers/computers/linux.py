@@ -54,8 +54,8 @@ operations = ['add', 'edit', 'remove', 'search', 'move']
 docleanup = 1
 childs = 0
 short_description = _('Computer: Linux')
-object_name = _('Linux')
-object_name_plural = _('Linux')
+object_name = _('Linux Computer')
+object_name_plural = _('Linux Computers')
 long_description = ''
 options = {
 	'posix': univention.admin.option(

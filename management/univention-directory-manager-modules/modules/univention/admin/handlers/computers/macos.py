@@ -55,7 +55,7 @@ docleanup = 1
 childs = 0
 short_description = _('Computer: Mac OS X Client')
 object_name = _('Mac OS X Client')
-object_name_plural = _('Mac OS X Client')
+object_name_plural = _('Mac OS X Clients')
 long_description = ''
 options = {
 	'posix': univention.admin.option(

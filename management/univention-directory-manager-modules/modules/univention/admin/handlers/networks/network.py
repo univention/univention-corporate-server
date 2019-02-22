@@ -52,7 +52,7 @@ operations = ['add', 'edit', 'remove', 'search']
 childs = 0
 short_description = _('Networks: Network')
 object_name = _('Network')
-object_name_plural = _('Network')
+object_name_plural = _('Networks')
 long_description = ''
 options = {
 	'default': univention.admin.option(

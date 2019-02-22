@@ -45,8 +45,8 @@ _ = translation.translate
 module = 'shares/printergroup'
 childs = 0
 short_description = _('Printer share: Printer group')
-object_name = _('Printer group')
-object_name_plural = _('Printer group')
+object_name = _('Printer share group')
+object_name_plural = _('Printer share groups')
 long_description = ''
 options = {
 	'default': univention.admin.option(

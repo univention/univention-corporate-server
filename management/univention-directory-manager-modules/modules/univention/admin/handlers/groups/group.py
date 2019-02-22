@@ -54,7 +54,7 @@ operations = ['add', 'edit', 'remove', 'search', 'move', 'copy']
 childs = 0
 short_description = _('Group')
 object_name = _('Group')
-object_name_plural = _('Group')
+object_name_plural = _('Groups')
 long_description = ''
 options = {
 	'default': univention.admin.option(

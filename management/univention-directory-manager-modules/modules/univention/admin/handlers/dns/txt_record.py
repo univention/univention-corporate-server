@@ -44,9 +44,9 @@ operations = ['add', 'edit', 'remove', 'search']
 columns = ['txt']
 superordinate = 'dns/forward_zone'
 childs = 0
-short_description = 'DNS: TXT Record'
-object_name = 'DNS: TXT Record'
-object_name_plural = 'DNS: TXT Record'
+short_description = _('DNS: TXT Record')
+object_name = _('TXT record')
+object_name_plural = _('TXT record')
 long_description = _('Resolve the symbolic name to some textual data.')
 options = {
 	'default': univention.admin.option(

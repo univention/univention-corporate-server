@@ -51,8 +51,8 @@ module = 'container/dc'
 childs = 1
 operations = ['search', 'edit']
 short_description = _('Container: Domain')
-object_name = _('Domain')
-object_name_plural = _('Domain')
+object_name = _('Domain Container')
+object_name_plural = _('Domain Containers')
 long_description = ''
 options = {
 	'default': univention.admin.option(

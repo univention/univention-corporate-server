@@ -67,7 +67,7 @@ childs = 0
 operations = ['edit', 'remove', 'search', 'move']
 short_description = _('Settings: Samba Configuration')
 object_name = _('Samba Configuration')
-object_name_plural = _('Samba Configuration')
+object_name_plural = _('Samba Configuration settings')
 long_description = ''
 options = {
 	'default': univention.admin.option(
