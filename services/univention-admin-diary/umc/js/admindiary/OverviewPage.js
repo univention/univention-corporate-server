@@ -124,6 +124,7 @@ define([
 				region: 'main',
 				//defaultAction: 'show',
 				columns: columns,
+				sortIndex: 2,
 				//actions: actions,
 				gridOptions: {
 					selectionMode: 'none'
@@ -214,9 +215,13 @@ define([
 				widgets: widgets,
 				buttons: buttons,
 				layout: [['time_from', 'time_until', 'message', 'toggleSearch'],
-					['tag', 'event', 'hostname', 'username']],
-				onSearch: lang.hitch(this._grid, 'filter')
+					['tag', 'event', 'hostname', 'username']]
 			});
+			this._searchForm.on('Search', lang.hitch(this, function(options) {
+				this._grid.filter(options).then(lang.hitch(this, function() {
+					this._autoSearch = true;
+				}));
+			}));
 
 			this.addChild(this._searchForm);
 			this.addChild(this._grid);
@@ -226,7 +231,6 @@ define([
 
 			this._grid._grid.set('selectionMode', 'single');
 			this._grid._grid.on('dgrid-select', lang.hitch(this, 'clickRow'));
-			this._autoSearch = true;
 		},
 
 		nextWeek: function() {
@@ -238,8 +242,8 @@ define([
 			var time_until = new Date(time_from.getTime() + 6 * 24 * 60 * 60 * 1000);
 			this._autoSearch = false;
 			this._searchForm.getWidget('time_from').set('value', time_from);
-			this._autoSearch = true;
 			this._searchForm.getWidget('time_until').set('value', time_until);
+			this._searchForm.onSubmit();
 		},
 
 		previousWeek: function() {
@@ -251,8 +255,8 @@ define([
 			var time_from = new Date(time_until.getTime() - 6 * 24 * 60 * 60 * 1000);
 			this._autoSearch = false;
 			this._searchForm.getWidget('time_from').set('value', time_from);
-			this._autoSearch = true;
 			this._searchForm.getWidget('time_until').set('value', time_until);
+			this._searchForm.onSubmit();
 		},
 
 		toggleSearch: function() {

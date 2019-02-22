@@ -1207,7 +1207,7 @@ define([
 			style.set(this._grid.headerNode, 'right', ''); // unset 'right' so that the grid resizes correctly
 			domClass.add(this.domNode, this.baseClass + '--filtering');
 			this.standby(true);
-			this._filter(query, options).then(lang.hitch(this, function() {
+			return this._filter(query, options).then(lang.hitch(this, function() {
 				this.standby(false);
 				domClass.remove(this.domNode, this.baseClass + '--filtering');
 

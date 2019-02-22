@@ -51,11 +51,13 @@ class Instance(Base):
 			message = message.format(**entry['args'])
 		except (AttributeError, IndexError, KeyError):
 			if entry['args']:
-				message = '%s (%s)' % (message, ', '.join(entry['args']))
+				message = '%s (%s)' % (message, ', '.join(['%s=%s' % (key, arg) for (key, arg) in entry['args'].iteritems()]))
 		icon = 'default'
 		event = DiaryEvent.get(entry['event_name'])
 		if event:
 			icon = event.icon or icon
+		elif entry['event_name'] == 'COMMENT':
+			icon = 'comment'
 		res_entry = {
 			'id': entry['id'],
 			'date': entry['date'],
