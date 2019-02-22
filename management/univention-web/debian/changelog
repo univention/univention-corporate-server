@@ -1,3 +1,9 @@
+univention-web (3.0.1-3) unstable; urgency=medium
+
+  * Bug #48476: Return deferred when filtering the Grid
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 22 Feb 2019 14:21:35 +0100
+
 univention-web (3.0.1-2) unstable; urgency=medium
 
   * Bug #48710: move duplicated code in render.js.requiredWidgets()
