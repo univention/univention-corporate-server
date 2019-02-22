@@ -48,6 +48,8 @@ default_containers = ['cn=apps,cn=univention']
 childs = 0
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Appcenter: App Metadata')
+object_name = _('App Metadata')
+object_name_plural = _('App Metadata')
 long_description = ''
 options = {}
 property_descriptions = {
