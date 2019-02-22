@@ -64,8 +64,8 @@ policy_position_dn_prefix = "cn=printservers"
 
 childs = 0
 short_description = _('Policy: Print server')
-object_name = _('Print server')
-object_name_plural = _('Print server')
+object_name = _('Print server policy')
+object_name_plural = _('Print server policies')
 policy_short_description = _('Print server')
 long_description = ''
 options = {

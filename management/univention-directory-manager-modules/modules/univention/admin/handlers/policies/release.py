@@ -65,8 +65,8 @@ policy_position_dn_prefix = "cn=update"
 
 childs = 0
 short_description = _('Policy: Automatic updates')
-object_name = _('Automatic updates')
-object_name_plural = _('Automatic updates')
+object_name = _('Automatic updates policy')
+object_name_plural = _('Automatic updates policies')
 policy_short_description = _('Automatic updates')
 long_description = ''
 options = {

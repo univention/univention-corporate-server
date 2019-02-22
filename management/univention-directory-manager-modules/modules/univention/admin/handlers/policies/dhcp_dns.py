@@ -64,8 +64,8 @@ policy_position_dn_prefix = "cn=dns,cn=dhcp"
 policies_group = "dhcp"
 childs = 0
 short_description = _('Policy: DHCP DNS')
-object_name = _('DHCP DNS')
-object_name_plural = _('DHCP DNS')
+object_name = _('DHCP DNS policy')
+object_name_plural = _('DHCP DNS policies')
 policy_short_description = _('DNS')
 long_description = ''
 options = {

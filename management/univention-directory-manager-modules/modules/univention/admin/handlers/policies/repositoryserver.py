@@ -65,8 +65,8 @@ policy_position_dn_prefix = "cn=repository,cn=update"
 
 childs = 0
 short_description = _('Policy: Repository server')
-object_name = _('Repository server')
-object_name_plural = _('Repository server')
+object_name = _('Repository server policy')
+object_name_plural = _('Repository server policies')
 policy_short_description = _('Repository server')
 long_description = ''
 options = {

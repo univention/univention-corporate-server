@@ -65,8 +65,8 @@ policy_apply_to = ["users/user"]
 policy_position_dn_prefix = "cn=desktop"
 childs = 0
 short_description = _('Policy: Desktop')
-object_name = _('Desktop')
-object_name_plural = _('Desktop')
+object_name = _('Desktop policy')
+object_name_plural = _('Desktop policies')
 policy_short_description = _('Desktop settings')
 long_description = ''
 options = {

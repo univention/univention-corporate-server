@@ -65,8 +65,8 @@ policy_position_dn_prefix = "cn=nfsmounts"
 
 childs = 0
 short_description = _('Policy: NFS mounts')
-object_name = _('NFS mounts')
-object_name_plural = _('NFS mounts')
+object_name = _('NFS mounts policy')
+object_name_plural = _('NFS mounts policies')
 policy_short_description = _('NFS mounts')
 long_description = ''
 options = {
