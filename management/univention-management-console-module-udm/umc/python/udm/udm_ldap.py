@@ -579,6 +579,14 @@ class UDM_Module(object):
 		return getattr(self.module, 'long_description', '')
 
 	@property
+	def object_name(self):
+		return getattr(self.module, 'object_name', self.title)
+
+	@property
+	def object_name_plural(self):
+		return getattr(self.module, 'object_name_plural', self.object_name)
+
+	@property
 	def identifies(self):
 		"""Property of the UDM module that identifies objects of this type"""
 		for key, prop in getattr(self.module, 'property_descriptions', {}).items():
@@ -595,19 +603,29 @@ class UDM_Module(object):
 	def child_modules(self):
 		"""List of child modules"""
 		if self.module is None:
-			return None
-		MODULE.info('Collecting child modules ...')
-		children = getattr(self.module, 'childmodules', None)
-		if children is None:
-			MODULE.info('No child modules were found')
 			return []
+		MODULE.info('Collecting child modules ...')
+		children = getattr(self.module, 'childmodules', None) or []
 		modules = []
 		for child in children:
-			mod = udm_modules.get(child)
-			if not mod:
+			mod = UDM_Module(child)
+			if not mod.module:
 				continue
 			MODULE.info('Found module %s' % str(mod))
-			modules.append({'id': child, 'label': getattr(mod, 'short_description', child)})
+			modules.append({
+				'id': child,
+				'label': mod.title,
+				'object_name': mod.object_name,
+				'object_name_plural': mod.object_name_plural,
+			})
+		if not modules:
+			MODULE.info('No child modules were found')
+			return [{
+				'id': self.name,
+				'label': self.title,
+				'object_name': self.object_name,
+				'object_name_plural': self.object_name_plural,
+			}]
 		return modules
 
 	@property
