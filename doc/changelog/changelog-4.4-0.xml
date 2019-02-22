@@ -180,6 +180,7 @@
 			<title>&ucsUDM; UMC modules and command line interface</title>
 			<itemizedlist>
 				<listitem><simpara>
+					A singular and plural object name have been added for every module (<u:bug>48738</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
