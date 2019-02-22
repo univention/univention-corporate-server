@@ -420,6 +420,9 @@
 			<title>Univention self service</title>
 			<itemizedlist>
 				<listitem><simpara>
+						If the self service is installed, a daemon on the DC master now sends an invitation email to users that were created with respective settings in the UMC. (<u:bug>48446</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
 						It is now possible to define attributes a self service user can modify with the &ucsUCRV; variable <envar>self-service/ldap_attributes</envar>
 						and the &ucsUCRV; variable <envar>self-service/udm_attributes</envar> (<u:bug>48447</u:bug>, <u:bug>48710</u:bug>)
 				</simpara></listitem>
