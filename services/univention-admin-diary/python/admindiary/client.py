@@ -29,9 +29,8 @@
 # <http://www.gnu.org/licenses/>.
 
 import os
-import logging
-from logging.handlers import SysLogHandler
 import uuid
+from syslog import syslog
 from getpass import getuser
 from functools import partial, wraps
 
@@ -54,13 +53,10 @@ def exceptionlogging(f):
 
 class RsyslogEmitter(object):
 	def __init__(self):
-		self.logger = logging.getLogger('diary-rsyslogger')
-		self.logger.setLevel(logging.DEBUG)
-		handler = SysLogHandler(address='/dev/log', facility='user')
-		self.logger.addHandler(handler)
+		pass
 
 	def emit(self, entry):
-		self.logger.info('ADMINDIARY: ' + str(entry))
+		syslog('ADMINDIARY: ' + str(entry))
 
 emitter = RsyslogEmitter()
 

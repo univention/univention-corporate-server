@@ -1,3 +1,9 @@
+univention-admin-diary (1.0.0-22) unstable; urgency=medium
+
+  * Bug #48341: Non-intrusive syslog implementation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 22 Feb 2019 14:45:27 +0100
+
 univention-admin-diary (1.0.0-21) unstable; urgency=medium
 
   * Bug #48717: UDM events
