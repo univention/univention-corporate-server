@@ -105,7 +105,7 @@
 	<para>
 	  Die Kanzlei greift auf einen webbasierten juristischen Fachdienst zu. Dieser benutzt eine
 	  eigenständige Benutzerverwaltung. Um zu vermeiden, dass Benutzerkennungen und Passwörter doppelt
-	  gepflegt werden müssen wird der UCS SAML Identity Provider eingebunden.
+	  gepflegt werden müssen, wird der UCS SAML Identity Provider eingebunden.
 	  SAML (Security Assertion Markup Language) ist ein XML-basierter Standard zum Austausch von
 	  Authentifizierungsinformationen, der u.a. Single-Sign-On über Domänengrenzen hinweg erlaubt.
 	  Der juristische Fachdienst wird über ein kryptografisches Zertifikat fest registriert und
