@@ -46,6 +46,8 @@ module = 'mail/domain'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 childs = 0
 short_description = _('Mail domain')
+object_name = _('Mail domain')
+object_name_plural = _('Mail domain')
 long_description = ''
 
 module_search_filter = univention.admin.filter.conjunction('&', [

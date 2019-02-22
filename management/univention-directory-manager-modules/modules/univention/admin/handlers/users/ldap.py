@@ -52,6 +52,8 @@ operations = ['add', 'edit', 'remove', 'search', 'move', 'copy']
 
 childs = False
 short_description = _('Simple authentication account')
+object_name = _('Simple authentication account')
+object_name_plural = _('Simple authentication account')
 long_description = _('This user object can only simply do an LDAP bind. It is intended for functional purposes and is not counted as user object in the license.')
 
 # {'person': (('sn', 'cn'), ('userPassword', 'telephoneNumber', 'seeAlso', 'description')), 'uidObject': (('uid',), ()), 'univentionPWHistory': ((), ('pwhistory',)), 'simpleSecurityObject': (('userPassword',), ())}

@@ -48,6 +48,8 @@ superordinate = 'settings/cn'
 childs = 0
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Settings: LDAP Schema Extension')
+object_name = _('LDAP Schema Extension')
+object_name_plural = _('LDAP Schema Extension')
 long_description = ''
 options = {
 	'default': univention.admin.option(

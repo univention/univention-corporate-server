@@ -64,6 +64,8 @@ policy_position_dn_prefix = "cn=boot,cn=dhcp"
 policies_group = "dhcp"
 childs = 0
 short_description = _('Policy: DHCP Boot')
+object_name = _('DHCP Boot')
+object_name_plural = _('DHCP Boot')
 policy_short_description = _('Boot parameters')
 long_description = ''
 options = {

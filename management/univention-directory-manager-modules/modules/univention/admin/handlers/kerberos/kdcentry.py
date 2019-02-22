@@ -49,6 +49,8 @@ module = 'kerberos/kdcentry'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 childs = 0
 short_description = _('Kerberos: KDC Entry')
+object_name = _('KDC Entry')
+object_name_plural = _('KDC Entry')
 long_description = ''
 options = {
 	'default': univention.admin.option(

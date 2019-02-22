@@ -47,6 +47,8 @@ superordinate = 'dhcp/service'
 childs = 1
 childmodules = ('dhcp/sharedsubnet',)
 short_description = _('DHCP: Shared network')
+object_name = _('Shared network')
+object_name_plural = _('Shared network')
 long_description = _('A shared physical network, where multiple IP address ranges are used.')
 options = {
 	'default': univention.admin.option(

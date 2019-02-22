@@ -68,6 +68,8 @@ policy_position_dn_prefix = "cn=statements,cn=dhcp"
 policies_group = "dhcp"
 childs = 0
 short_description = _('Policy: DHCP statements')
+object_name = _('DHCP statements')
+object_name_plural = _('DHCP statements')
 policy_short_description = _('DHCP statement')
 long_description = ''
 options = {

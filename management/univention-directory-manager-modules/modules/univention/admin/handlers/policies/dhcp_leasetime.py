@@ -65,6 +65,8 @@ policy_position_dn_prefix = "cn=leasetime,cn=dhcp"
 policies_group = "dhcp"
 childs = 0
 short_description = _('Policy: DHCP lease time')
+object_name = _('DHCP lease time')
+object_name_plural = _('DHCP lease time')
 policy_short_description = _('Lease time')
 long_description = ''
 options = {

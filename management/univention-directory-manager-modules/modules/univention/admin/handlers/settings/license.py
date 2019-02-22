@@ -47,6 +47,8 @@ operations = ['remove', 'search']
 
 childs = 0
 short_description = _('Settings: License')
+object_name = _('License')
+object_name_plural = _('License')
 long_description = _('Univention License')
 options = {
 	'default': univention.admin.option(

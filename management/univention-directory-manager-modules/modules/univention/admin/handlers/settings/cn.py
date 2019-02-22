@@ -44,6 +44,8 @@ module = 'settings/cn'
 operations = ['search']
 childs = 1
 short_description = _('Univention Settings')
+object_name = _('Univention Settings')
+object_name_plural = _('Univention Settings')
 long_description = ''
 options = {
 	'default': univention.admin.option(

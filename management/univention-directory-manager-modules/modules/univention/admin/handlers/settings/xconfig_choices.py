@@ -52,6 +52,8 @@ childs = 0
 width = "100"
 operations = ['search', 'edit']
 short_description = _('Preferences: X Configuration Choices')
+object_name = _('X Configuration Choices')
+object_name_plural = _('X Configuration Choices')
 long_description = ''
 options = {
 	'default': univention.admin.option(

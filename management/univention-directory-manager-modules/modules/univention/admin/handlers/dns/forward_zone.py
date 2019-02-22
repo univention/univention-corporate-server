@@ -49,6 +49,8 @@ columns = ['nameserver', 'a', 'mx', 'txt']
 childs = 1
 childmodules = ['dns/alias', 'dns/host_record', 'dns/srv_record', 'dns/txt_record', 'dns/ns_record']
 short_description = _('DNS: Forward lookup zone')
+object_name = _('Forward lookup zone')
+object_name_plural = _('Forward lookup zone')
 long_description = _('Map names to IP addresses (and other data).')
 options = {
 	'default': univention.admin.option(

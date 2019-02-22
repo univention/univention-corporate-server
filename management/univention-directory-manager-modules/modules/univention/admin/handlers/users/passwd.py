@@ -50,6 +50,8 @@ uid_umlauts = 0
 
 childs = 0
 short_description = _('User: Password')
+object_name = _('Password')
+object_name_plural = _('Password')
 long_description = ''
 options = {}
 property_descriptions = {

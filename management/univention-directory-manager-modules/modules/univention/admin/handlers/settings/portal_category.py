@@ -45,6 +45,8 @@ default_containers = ['cn=categories,cn=portal,cn=univention']
 childs = False
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Portal: Category')
+object_name = _('Category')
+object_name_plural = _('Category')
 long_description = _('Object under which settings/portal_entry objects can be displayed')
 options = {
 	'default': univention.admin.option(

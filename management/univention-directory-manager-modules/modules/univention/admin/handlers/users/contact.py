@@ -52,6 +52,8 @@ operations = ['add', 'edit', 'remove', 'search', 'move']
 
 childs = 0
 short_description = _('Contact')
+object_name = _('Contact')
+object_name_plural = _('Contact')
 long_description = _('Contact information')
 
 options = {

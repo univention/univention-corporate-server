@@ -65,6 +65,8 @@ policy_position_dn_prefix = 'cn=UMC'
 
 childs = 0
 short_description = _('Policy: UMC')
+object_name = _('UMC')
+object_name_plural = _('UMC')
 policy_short_description = _('Defines a set of allowed UMC operations')
 long_description = ''
 

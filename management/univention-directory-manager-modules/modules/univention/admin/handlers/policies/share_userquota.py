@@ -69,6 +69,8 @@ policy_position_dn_prefix = "cn=userquota,cn=shares"
 
 childs = 0
 short_description = _('Policy: User quota')
+object_name = _('User quota')
+object_name_plural = _('User quota')
 policy_short_description = _('User quota')
 long_description = _('Default quota for each user on a share')
 options = {

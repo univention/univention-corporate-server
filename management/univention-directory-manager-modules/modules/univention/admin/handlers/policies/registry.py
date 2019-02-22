@@ -63,6 +63,8 @@ policy_apply_to = ["computers/domaincontroller_master", "computers/domaincontrol
 policy_position_dn_prefix = "cn=config-registry"
 childs = 0
 short_description = _('Policy: Univention Configuration Registry')
+object_name = _('Univention Configuration Registry')
+object_name_plural = _('Univention Configuration Registry')
 policy_short_description = _('Univention Configuration Registry')
 long_description = ''
 options = {

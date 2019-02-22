@@ -66,6 +66,8 @@ policy_position_dn_prefix = "cn=packages,cn=update"
 
 childs = 0
 short_description = _('Policy: Slave packages')
+object_name = _('Slave packages')
+object_name_plural = _('Slave packages')
 policy_short_description = _('Slave packages')
 long_description = ''
 options = {

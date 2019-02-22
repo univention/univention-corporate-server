@@ -47,6 +47,8 @@ operations = ['add', 'edit', 'remove', 'search']
 superordinate = 'dhcp/service'
 childs = 0
 short_description = _('DHCP: Server')
+object_name = _('Server')
+object_name_plural = _('Server')
 long_description = _('Associate a service with a server.')
 options = {
 	'default': univention.admin.option(

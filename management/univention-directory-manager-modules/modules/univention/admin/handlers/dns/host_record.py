@@ -48,6 +48,8 @@ columns = ['a']
 superordinate = 'dns/forward_zone'
 childs = 0
 short_description = 'DNS: Host Record'
+object_name = 'DNS: Host Record'
+object_name_plural = 'DNS: Host Record'
 long_description = _('Resolve the symbolic name to IP addresses.')
 options = {
 	'default': univention.admin.option(

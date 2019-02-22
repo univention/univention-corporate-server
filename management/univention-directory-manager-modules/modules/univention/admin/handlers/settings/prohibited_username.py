@@ -47,6 +47,8 @@ superordinate = 'settings/cn'
 
 childs = 0
 short_description = _('Settings: Prohibited user names')
+object_name = _('Prohibited user names')
+object_name_plural = _('Prohibited user names')
 long_description = _('Univention Prohibited user names')
 options = {
 	'default': univention.admin.option(

@@ -48,6 +48,8 @@ module = 'mail/mail'
 
 childs = 0
 short_description = _('Mail')
+object_name = _('Mail')
+object_name_plural = _('Mail')
 long_description = ''
 operations = ['search']
 childmodules = ["mail/folder", "mail/domain", "mail/lists"]

@@ -67,6 +67,8 @@ policy_position_dn_prefix = "cn=scope,cn=dhcp"
 policies_group = "dhcp"
 childs = 0
 short_description = _('Policy: DHCP Allow/Deny')
+object_name = _('DHCP Allow/Deny')
+object_name_plural = _('DHCP Allow/Deny')
 policy_short_description = _('Allow/Deny')
 long_description = ''
 options = {

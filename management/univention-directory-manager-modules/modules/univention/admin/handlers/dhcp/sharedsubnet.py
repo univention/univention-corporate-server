@@ -47,6 +47,8 @@ superordinate = 'dhcp/shared'
 childs = True
 childmodules = ['dhcp/pool']
 short_description = _('DHCP: Shared subnet')
+object_name = _('Shared subnet')
+object_name_plural = _('Shared subnet')
 long_description = _('An IP address range used in a shared network.')
 options = {
 	'default': univention.admin.option(

@@ -47,6 +47,8 @@ module = 'container/ou'
 operations = ['add', 'edit', 'remove', 'search', 'move', 'subtree_move']
 childs = 1
 short_description = _('Container: Organisational Unit')
+object_name = _('Organisational Unit')
+object_name_plural = _('Organisational Unit')
 long_description = ''
 options = {
 	'default': univention.admin.option(

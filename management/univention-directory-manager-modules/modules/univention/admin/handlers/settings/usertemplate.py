@@ -43,6 +43,8 @@ operations = ['add', 'edit', 'remove', 'search', 'move']
 superordinate = 'settings/cn'
 childs = 0
 short_description = _('Settings: User Template')
+object_name = _('User Template')
+object_name_plural = _('User Template')
 long_description = ''
 options = {
 	'default': univention.admin.option(

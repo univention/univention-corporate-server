@@ -54,6 +54,8 @@ operations = ['add', 'edit', 'remove', 'search', 'move']
 docleanup = 1
 childs = 0
 short_description = _('Computer: Domain Controller Master')
+object_name = _('Domain Controller Master')
+object_name_plural = _('Domain Controller Master')
 long_description = ''
 options = {
 	'posix': univention.admin.option(

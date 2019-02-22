@@ -66,6 +66,8 @@ policy_position_dn_prefix = "cn=repository,cn=update"
 
 childs = 0
 short_description = _('Policy: Repository synchronisation')
+object_name = _('Repository synchronisation')
+object_name_plural = _('Repository synchronisation')
 policy_short_description = _('Repository synchronisation')
 long_description = ''
 options = {

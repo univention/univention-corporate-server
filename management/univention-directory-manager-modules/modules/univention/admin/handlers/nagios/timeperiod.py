@@ -48,6 +48,8 @@ module = 'nagios/timeperiod'
 
 childs = 0
 short_description = _('Nagios time period')
+object_name = _('Nagios time period')
+object_name_plural = _('Nagios time period')
 long_description = ''
 operations = ['search', 'edit', 'add', 'remove']
 

@@ -48,6 +48,8 @@ columns = ['ptr_record']
 superordinate = 'dns/reverse_zone'
 childs = 0
 short_description = _('DNS: Pointer record')
+object_name = _('Pointer record')
+object_name_plural = _('Pointer record')
 long_description = _('Map IP addresses back to hostnames.')
 options = {
 	'default': univention.admin.option(

@@ -50,6 +50,8 @@ module = 'nagios/service'
 
 childs = 0
 short_description = _('Nagios service')
+object_name = _('Nagios service')
+object_name_plural = _('Nagios service')
 long_description = ''
 operations = ['search', 'edit', 'add', 'remove']
 

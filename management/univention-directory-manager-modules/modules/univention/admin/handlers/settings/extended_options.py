@@ -45,6 +45,8 @@ superordinate = 'settings/cn'
 
 childs = 0
 short_description = _('Settings: Extended options')
+object_name = _('Extended options')
+object_name_plural = _('Extended options')
 long_description = _('Options for extended attributes')
 
 options = {
