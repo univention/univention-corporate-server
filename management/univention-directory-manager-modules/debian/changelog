@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.6-2) unstable; urgency=medium
+
+  * Bug #48717: Typo
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 22 Feb 2019 21:25:22 +0100
+
 univention-directory-manager-modules (14.0.6-1) unstable; urgency=medium
 
   * Bug #48621: enhance some checkboxes
