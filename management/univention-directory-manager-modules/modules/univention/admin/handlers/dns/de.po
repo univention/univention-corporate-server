@@ -1,48 +1,48 @@
 # Copyright 2010-2019 Univention GmbH
-# 
+#
 # http://www.univention.de/
-# 
+#
 # All rights reserved.
-# 
+#
 # The source code of this program is made available
 # under the terms of the GNU Affero General Public License version 3
 # (GNU AGPL V3) as published by the Free Software Foundation.
-# 
+#
 # Binary versions of this program provided by Univention to you as
 # well as other copyrighted, protected or trademarked materials like
 # Logos, graphics, fonts, specific documentations and configurations,
 # cryptographic keys etc. are subject to a license agreement between
 # you and Univention and not subject to the GNU AGPL V3.
-# 
+#
 # In the case you use this program under the terms of the GNU AGPL V3,
 # the program is provided in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2018-01-30 20:28+0100\n"
+"POT-Creation-Date: 2019-02-22 13:49+0100\n"
 "PO-Revision-Date: 2016-11-02 16:32+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
-"Language: de\n"
 
 #: modules/univention/admin/handlers/dns/alias.py:62
 msgid "Alias"
 msgstr "Alias"
 
-#: modules/univention/admin/handlers/dns/dns.py:54
+#: modules/univention/admin/handlers/dns/dns.py:55
 msgid "All DNS zones"
 msgstr "Alle DNS-Zonen"
 
@@ -51,9 +51,8 @@ msgid "Assign additional names to a host."
 msgstr "Weist einem Rechner weitere Namen zu."
 
 #: modules/univention/admin/handlers/dns/alias.py:96
-#: modules/univention/admin/handlers/dns/dns.py:73
+#: modules/univention/admin/handlers/dns/dns.py:74
 #: modules/univention/admin/handlers/dns/forward_zone.py:188
-#: modules/univention/admin/handlers/dns/ns_record.py:90
 #: modules/univention/admin/handlers/dns/ptr_record.py:93
 #: modules/univention/admin/handlers/dns/reverse_zone.py:159
 #: modules/univention/admin/handlers/dns/srv_record.py:91
@@ -61,6 +60,7 @@ msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
 #: modules/univention/admin/handlers/dns/host_record.py:111
+#: modules/univention/admin/handlers/dns/ns_record.py:90
 #: modules/univention/admin/handlers/dns/txt_record.py:91
 msgid "Basic values"
 msgstr "Grundeinstellungen"
@@ -94,6 +94,10 @@ msgstr "DNS: Reverse Lookup Zone"
 msgid "DNS: Service record"
 msgstr "DNS: Service Record"
 
+#: modules/univention/admin/handlers/dns/ns_record.py:48
+msgid "Delegate a subzone to other nameservers."
+msgstr "Delegiert eine Subzone an andere Nameserver."
+
 #: modules/univention/admin/handlers/dns/forward_zone.py:127
 #: modules/univention/admin/handlers/dns/reverse_zone.py:125
 msgid "Expiry interval"
@@ -104,7 +108,7 @@ msgid "FQDNs must end with a dot."
 msgstr "FQDNs müssen mit einem Punkt enden."
 
 #: modules/univention/admin/handlers/dns/alias.py:96
-#: modules/univention/admin/handlers/dns/dns.py:73
+#: modules/univention/admin/handlers/dns/dns.py:74
 #: modules/univention/admin/handlers/dns/forward_zone.py:188
 #: modules/univention/admin/handlers/dns/host_record.py:111
 #: modules/univention/admin/handlers/dns/ns_record.py:90
@@ -192,7 +196,7 @@ msgstr "Mailserver-Einträge"
 msgid "Mail exchangers for this host"
 msgstr "Mail Exchanger für diesen Rechner"
 
-#: modules/univention/admin/handlers/dns/dns.py:55
+#: modules/univention/admin/handlers/dns/dns.py:56
 msgid "Manage the Domain Name System."
 msgstr "Verwaltung des Domänen Namen Systems."
 
@@ -205,7 +209,7 @@ msgstr "Übersetzt IP-Adressen zurück zu Rechnernamen."
 msgid "Map names to IP addresses (and other data)."
 msgstr "Übersetzt Namen zu IP-Adressen (und anderen Daten)."
 
-#: modules/univention/admin/handlers/dns/dns.py:62
+#: modules/univention/admin/handlers/dns/dns.py:63
 #: modules/univention/admin/handlers/dns/srv_record.py:59
 #: modules/univention/admin/handlers/dns/txt_record.py:57
 msgid "Name"
@@ -225,7 +229,7 @@ msgstr "Nameserver"
 msgid "Negative time to live"
 msgstr "Negative Time-to-Live"
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:253
+#: modules/univention/admin/handlers/dns/forward_zone.py:243
 #: modules/univention/admin/handlers/dns/reverse_zone.py:232
 msgid "Neither DN nor position given."
 msgstr "Weder ein DN noch eine Position wurde angegeben."
@@ -237,6 +241,7 @@ msgstr "Ein oder mehrere IP-Adressen, zu denen der Name aufgelöst wird."
 
 #: modules/univention/admin/handlers/dns/forward_zone.py:169
 #: modules/univention/admin/handlers/dns/host_record.py:101
+#: modules/univention/admin/handlers/dns/txt_record.py:80
 msgid "One or more arbitrary text strings."
 msgstr "Ein oder mehrere willkürliche Zeichenketten."
 
@@ -261,10 +266,6 @@ msgstr "Aktualisierungsintervall"
 #: modules/univention/admin/handlers/dns/host_record.py:51
 msgid "Resolve the symbolic name to IP addresses."
 msgstr "Löst den symbolischen Namen zu IP-Adressen auf."
-
-#: modules/univention/admin/handlers/dns/ns_record.py:48
-msgid "Delegate a subzone to other nameservers."
-msgstr "Delegiert eine Subzone an andere Nameserver."
 
 #: modules/univention/admin/handlers/dns/txt_record.py:48
 msgid "Resolve the symbolic name to some textual data."
@@ -330,14 +331,14 @@ msgstr ""
 "Die FQDNs der Rechner, die für den E-Mail-Empfang für diesen DNS-Namen "
 "zuständig sind."
 
+#: modules/univention/admin/handlers/dns/ns_record.py:80
+msgid "The FQDNs of the hosts serving the named zone."
+msgstr "Die FQDNs der Rechner, die genannte Zone bereitstellen."
+
 #: modules/univention/admin/handlers/dns/forward_zone.py:150
 #: modules/univention/admin/handlers/dns/reverse_zone.py:148
 msgid "The FQDNs of the servers serving this zone."
 msgstr "Die FQDNs der Rechner, die diese Zone bereitstellen."
-
-#: modules/univention/admin/handlers/dns/ns_record.py:80
-msgid "The FQDNs of the hosts serving the named zone."
-msgstr "Die FQDNs der Rechner, die genannte Zone bereitstellen."
 
 #: modules/univention/admin/handlers/dns/forward_zone.py:84
 #: modules/univention/admin/handlers/dns/reverse_zone.py:82
@@ -346,8 +347,8 @@ msgstr "Die E-Mail-Adresse der Person, die für diese Zone verantwortlich ist."
 
 #: modules/univention/admin/handlers/dns/ptr_record.py:61
 msgid ""
-"The host part of the IP address in reverse notation (e.g. \"172.16.1.2/16\" "
-"-> \"2.1\" or \"2001:0db8:0100::0007:0008/96\" -> \"8.0.0.0.7.0.0.0\")."
+"The host part of the IP address in reverse notation (e.g. \"172.16.1.2/16\" -"
+"> \"2.1\" or \"2001:0db8:0100::0007:0008/96\" -> \"8.0.0.0.7.0.0.0\")."
 msgstr ""
 "Der Host-Anteil der IP-Adresse in umgekehrter Notation (z.B. "
 "\"172.16.1.2/16\" -> \"2.1\" or \"2001:0db8:0100::0007:0008/96\" -> "
@@ -381,8 +382,7 @@ msgstr "Der Name der Subzone relativ zur Übergeordneten."
 #: modules/univention/admin/handlers/dns/alias.py:85
 msgid "The name this alias points to. A FQDN must end with a dot."
 msgstr ""
-"Der Name, auf den dieser Alias verweist. Der FQDN muss mit einem Punkt "
-"enden."
+"Der Name, auf den dieser Alias verweist. Der FQDN muss mit einem Punkt enden."
 
 #: modules/univention/admin/handlers/dns/reverse_zone.py:60
 msgid "The networks address in forward notation."
@@ -396,13 +396,13 @@ msgstr "Die Sequenznummer dieser Zone. Wird automatisch aktualisiert."
 #: modules/univention/admin/handlers/dns/forward_zone.py:139
 #: modules/univention/admin/handlers/dns/reverse_zone.py:137
 msgid "The time interval \"not found\" answers are cached."
-msgstr "Die Dauer, die \"nicht gefunden\"-Antworten zwischengespeichert werden."
+msgstr ""
+"Die Dauer, die \"nicht gefunden\"-Antworten zwischengespeichert werden."
 
 #: modules/univention/admin/handlers/dns/forward_zone.py:128
 #: modules/univention/admin/handlers/dns/reverse_zone.py:126
 msgid ""
-"The time interval after which secondary DNS servers will expire failed "
-"zones."
+"The time interval after which secondary DNS servers will expire failed zones."
 msgstr ""
 "Die Dauer, nach der sekundäre DNS Server fehlgeschlagene Zonen verwerfen."
 

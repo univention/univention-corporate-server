@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-01-30 12:48+0100\n"
+"POT-Creation-Date: 2019-02-22 13:49+0100\n"
 "PO-Revision-Date: 2015-07-19 22:32+0200\n"
 "Last-Translator: Daniel Tröder <troeder@univention.de>\n"
 "Language-Team: Deutsch <German <packages@univention.de>>\n"
@@ -67,7 +67,7 @@ msgstr "Dateiname der ACL"
 msgid "ACL name"
 msgstr "Name der ACL"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:377
+#: modules/univention/admin/handlers/settings/usertemplate.py:376
 msgid "Account"
 msgstr "Konto"
 
@@ -75,7 +75,7 @@ msgstr "Konto"
 msgid "Account deactivation"
 msgstr "Kontodeaktivierung"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:377
+#: modules/univention/admin/handlers/settings/usertemplate.py:376
 msgid "Account settings"
 msgstr "Kontoeinstellungen"
 
@@ -125,6 +125,10 @@ msgstr "App-Kennung"
 msgid "Appearance"
 msgstr "Erscheinung"
 
+#: modules/univention/admin/handlers/settings/extended_options.py:154
+msgid "Application"
+msgstr ""
+
 #: modules/univention/admin/handlers/settings/data.py:48
 msgid "Arbitrary data files"
 msgstr ""
@@ -168,7 +172,7 @@ msgstr "Grundeinstellungen"
 #: modules/univention/admin/handlers/settings/cn.py:69
 #: modules/univention/admin/handlers/settings/default.py:150
 #: modules/univention/admin/handlers/settings/directory.py:187
-#: modules/univention/admin/handlers/settings/extended_options.py:156
+#: modules/univention/admin/handlers/settings/extended_options.py:164
 #: modules/univention/admin/handlers/settings/ldapacl.py:155
 #: modules/univention/admin/handlers/settings/ldapschema.py:135
 #: modules/univention/admin/handlers/settings/sambaconfig.py:191
@@ -182,7 +186,7 @@ msgstr "Grundeinstellungen"
 msgid "Basic values"
 msgstr "Grundeinstellungen"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:391
+#: modules/univention/admin/handlers/settings/usertemplate.py:390
 msgid "Business"
 msgstr "Geschäftlich"
 
@@ -236,11 +240,11 @@ msgstr "Konfiguration der zu erweiternden Module"
 msgid "Connection"
 msgstr "Verbindung"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:390
+#: modules/univention/admin/handlers/settings/usertemplate.py:389
 msgid "Contact"
 msgstr "Kontakt"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:390
+#: modules/univention/admin/handlers/settings/usertemplate.py:389
 msgid "Contact Information"
 msgstr "Kontaktinformationen"
 
@@ -419,10 +423,10 @@ msgstr "Verbindung trennen nach"
 msgid "Display"
 msgstr "Anzeige"
 
+#: modules/univention/admin/handlers/settings/portal.py:71
 #: modules/univention/admin/handlers/settings/portal_all.py:61
 #: modules/univention/admin/handlers/settings/portal_category.py:68
 #: modules/univention/admin/handlers/settings/portal_entry.py:68
-#: modules/univention/admin/handlers/settings/portal.py:71
 msgid "Display Name"
 msgstr "Anzeigename"
 
@@ -531,16 +535,16 @@ msgstr "GNU Message Catalog für Übersetzungen"
 #: modules/univention/admin/handlers/settings/default.py:150
 #: modules/univention/admin/handlers/settings/directory.py:187
 #: modules/univention/admin/handlers/settings/extended_attribute.py:388
-#: modules/univention/admin/handlers/settings/extended_options.py:156
+#: modules/univention/admin/handlers/settings/extended_options.py:164
 #: modules/univention/admin/handlers/settings/ldapacl.py:155
 #: modules/univention/admin/handlers/settings/ldapschema.py:135
 #: modules/univention/admin/handlers/settings/lock.py:82
 #: modules/univention/admin/handlers/settings/packages.py:83
+#: modules/univention/admin/handlers/settings/portal.py:253
 #: modules/univention/admin/handlers/settings/portal_all.py:71
 #: modules/univention/admin/handlers/settings/portal_category.py:80
 #: modules/univention/admin/handlers/settings/portal_entry.py:177
 #: modules/univention/admin/handlers/settings/portal_entry.py:178
-#: modules/univention/admin/handlers/settings/portal.py:253
 #: modules/univention/admin/handlers/settings/printermodel.py:86
 #: modules/univention/admin/handlers/settings/printeruri.py:84
 #: modules/univention/admin/handlers/settings/prohibited_username.py:83
@@ -601,7 +605,7 @@ msgstr "Grundeinstellungen - X-Konfigurationsauswahl"
 msgid "General extended attribute settings"
 msgstr "Grundeinstellungen - Erweiterte Optionen"
 
-#: modules/univention/admin/handlers/settings/extended_options.py:157
+#: modules/univention/admin/handlers/settings/extended_options.py:165
 msgid "General extended options settings"
 msgstr "Grundeinstellungen - Erweiterte Optionen"
 
@@ -654,7 +658,7 @@ msgstr "Gruppenverweis"
 msgid "Group Links"
 msgstr "Gruppenverweise"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:371
+#: modules/univention/admin/handlers/settings/usertemplate.py:370
 msgid "Group Memberships"
 msgstr "Gruppenmitgliedschaften"
 
@@ -671,8 +675,8 @@ msgid "Group ordering number"
 msgstr "Gruppen-Ordnungsnummer"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:298
+#: modules/univention/admin/handlers/settings/usertemplate.py:370
 #: modules/univention/admin/handlers/settings/usertemplate.py:371
-#: modules/univention/admin/handlers/settings/usertemplate.py:372
 msgid "Groups"
 msgstr "Gruppen"
 
@@ -754,10 +758,10 @@ msgstr ""
 "univention.admin.property-Objekten vor dem Doppelpunkt steht, z.B. "
 "roomNumber für die Raumnummer eines Benutzers"
 
+#: modules/univention/admin/handlers/settings/portal.py:60
 #: modules/univention/admin/handlers/settings/portal_all.py:50
 #: modules/univention/admin/handlers/settings/portal_category.py:57
 #: modules/univention/admin/handlers/settings/portal_entry.py:57
-#: modules/univention/admin/handlers/settings/portal.py:60
 msgid "Internal name"
 msgstr "Interner Name"
 
@@ -887,7 +891,7 @@ msgstr "Sperrobjekte"
 msgid "Locked until"
 msgstr "Gesperrt bis"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:378
+#: modules/univention/admin/handlers/settings/usertemplate.py:377
 msgid "Locking and deactivation"
 msgstr "Konto-Deaktivierung"
 
@@ -1108,8 +1112,8 @@ msgstr "Mehrfachwert"
 #: modules/univention/admin/handlers/settings/lock.py:60
 #: modules/univention/admin/handlers/settings/packages.py:59
 #: modules/univention/admin/handlers/settings/packages.py:60
-#: modules/univention/admin/handlers/settings/portal_category.py:81
 #: modules/univention/admin/handlers/settings/portal.py:254
+#: modules/univention/admin/handlers/settings/portal_category.py:81
 #: modules/univention/admin/handlers/settings/printermodel.py:61
 #: modules/univention/admin/handlers/settings/printermodel.py:62
 #: modules/univention/admin/handlers/settings/printeruri.py:59
@@ -1210,7 +1214,7 @@ msgid "Ordering number"
 msgstr "Ordnungsnummer"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:94
-#: modules/univention/admin/handlers/settings/usertemplate.py:365
+#: modules/univention/admin/handlers/settings/usertemplate.py:364
 msgid "Organisation"
 msgstr "Organisation"
 
@@ -1222,13 +1226,9 @@ msgstr "Existierende Karteikarte überschreiben"
 msgid "Overwrite existing widget"
 msgstr "Existierendes Eingabefeld überschreiben"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:385
+#: modules/univention/admin/handlers/settings/usertemplate.py:384
 msgid "POSIX (Linux/UNIX)"
 msgstr "POSIX (Linux/UNIX)"
-
-#: modules/univention/admin/handlers/settings/usertemplate.py:385
-msgid "POSIX (Linux/UNIX) account settings"
-msgstr "POSIX (Linux/UNIX) Kontoeinstellungen"
 
 #: modules/univention/admin/handlers/settings/packages.py:70
 #: modules/univention/admin/handlers/settings/packages.py:71
@@ -1268,7 +1268,7 @@ msgstr "Kennwort muss Komplexitätsvoraussetzungen entsprechen"
 msgid "Path to the home directory on the home share"
 msgstr "Relativer Pfad der Benutzerverzeichnis-Freigabe"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:362
+#: modules/univention/admin/handlers/settings/usertemplate.py:361
 msgid "Personal information"
 msgstr "Persönliche Informationen"
 
@@ -1676,6 +1676,10 @@ msgstr "Version des Softwarepakets"
 msgid "Span both columns"
 msgstr "Beide Spalten umfassen"
 
+#: modules/univention/admin/handlers/settings/extended_options.py:155
+msgid "Specifies that the option belongs to a UCS Application"
+msgstr ""
+
 #: modules/univention/admin/handlers/settings/syntax.py:172
 msgid "Storage"
 msgstr "Speicherung"
@@ -1760,7 +1764,9 @@ msgstr "Die Kategorien und Einträge, die auf diesem Portal angezeigt werden"
 
 #: modules/univention/admin/handlers/settings/portal.py:212
 msgid "The categories are displayed side by side if there is enough space"
-msgstr "Die Kategorien werden nebeneinander angezeigt, wenn genügend Platz vorhanden ist"
+msgstr ""
+"Die Kategorien werden nebeneinander angezeigt, wenn genügend Platz vorhanden "
+"ist"
 
 #: modules/univention/admin/handlers/settings/data.py:89
 msgid "The data"
@@ -2025,7 +2031,7 @@ msgstr "Benutzerverweis"
 msgid "User Links"
 msgstr "Benutzerverweise"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:356
+#: modules/univention/admin/handlers/settings/usertemplate.py:355
 msgid "User account"
 msgstr "Benutzerkonto"
 
@@ -2124,13 +2130,9 @@ msgstr ""
 "FALSE. Die Syntax boolean dagegen speichert keinen Wert bzw. die "
 "Zeichenkette 1"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:381
+#: modules/univention/admin/handlers/settings/usertemplate.py:380
 msgid "Windows"
 msgstr "Windows"
-
-#: modules/univention/admin/handlers/settings/usertemplate.py:381
-msgid "Windows Account Settings"
-msgstr "Windows-Kontoeinstellungen"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:199
 msgid "Windows home drive"
@@ -2174,5 +2176,11 @@ msgstr "Paketversion: Der Wert darf nicht geringer sein als der aktuelle."
 #~ "Überschrift des Portals. Mindestens ein Wert; insbesondere en_US ist "
 #~ "empfohlen"
 
+#~ msgid "POSIX (Linux/UNIX) account settings"
+#~ msgstr "POSIX (Linux/UNIX) Kontoeinstellungen"
+
 #~ msgid "User group"
 #~ msgstr "Benutzergruppe"
+
+#~ msgid "Windows Account Settings"
+#~ msgstr "Windows-Kontoeinstellungen"
