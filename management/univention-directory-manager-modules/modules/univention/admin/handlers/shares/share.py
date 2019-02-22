@@ -163,7 +163,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default='1'
+		default='1',
+		size='Half',
 	),
 	'sync': univention.admin.property(
 		short_description=_('NFS synchronisation'),
@@ -174,7 +175,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default='sync'
+		default='sync',
+		size='Half',
 	),
 	'subtree_checking': univention.admin.property(
 		short_description=_('Subtree checking'),
@@ -185,7 +187,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default='1'
+		default='1',
+		size='Two',
 	),
 	'root_squash': univention.admin.property(
 		short_description=_('Modify user ID for root user (root squashing)'),
@@ -196,7 +199,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default='1'
+		default='1',
+		size='Two',
 	),
 	'nfs_hosts': univention.admin.property(
 		short_description=_('Only allow access for this host, IP address or network'),
@@ -217,7 +221,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default='1'
+		default='1',
+		size='One',
 	),
 	'sambaName': univention.admin.property(
 		short_description=_('Windows name'),
@@ -239,7 +244,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default='1'
+		default='1',
+		size='One',
 	),
 	'sambaPublic': univention.admin.property(
 		short_description=_('Allow anonymous read-only access with a guest user'),
@@ -250,7 +256,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default='0'
+		default='0',
+		size='One',
 	),
 	'sambaDosFilemode': univention.admin.property(
 		short_description=_('Users with write access may modify permissions'),
@@ -261,7 +268,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default='0'
+		default='0',
+		size='One',
 	),
 	'sambaHideUnreadable': univention.admin.property(
 		short_description=_('Hide unreadable files/directories'),
@@ -272,7 +280,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default='0'
+		default='0',
+		size='One',
 	),
 	'sambaCreateMode': univention.admin.property(
 		short_description=_('File mode'),
@@ -379,7 +388,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default='1'
+		default='1',
+		size='Half',
 	),
 	'sambaBlockingLocks': univention.admin.property(
 		short_description=_('Blocking locks'),
@@ -390,7 +400,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default='1'
+		default='1',
+		size='Half',
 	),
 	'sambaStrictLocking': univention.admin.property(
 		short_description=_('Strict locking'),
@@ -412,7 +423,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default='1'
+		default='1',
+		size='Half',
 	),
 	'sambaLevel2Oplocks': univention.admin.property(
 		short_description=_('Level 2 oplocks'),
@@ -423,7 +435,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default='1'
+		default='1',
+		size='Half',
 	),
 	'sambaFakeOplocks': univention.admin.property(
 		short_description=_('Fake oplocks'),
@@ -434,7 +447,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default='0'
+		default='0',
+		size='Half',
 	),
 	'sambaBlockSize': univention.admin.property(
 		short_description=_('Block size'),
@@ -536,7 +550,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default='1'
+		default='1',
+		size='Half',
 	),
 	'sambaInheritAcls': univention.admin.property(
 		short_description=_('Inherit ACLs'),
@@ -547,7 +562,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default='1'
+		default='1',
+		size='Half',
 	),
 	'sambaPostexec': univention.admin.property(
 		short_description=_('Postexec script'),
@@ -598,7 +614,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default='0'
+		default='0',
+		size='One',
 	),
 	'sambaInheritOwner': univention.admin.property(
 		short_description=_('Create files/directories with the owner of the parent directory'),
@@ -609,7 +626,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default='0'
+		default='0',
+		size='Two',
 	),
 	'sambaInheritPermissions': univention.admin.property(
 		short_description=_('Create files/directories with permissions of the parent directory'),
@@ -620,7 +638,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default='0'
+		default='0',
+		size='Two',
 	),
 	'sambaCustomSettings': univention.admin.property(
 		short_description=_('Option name in smb.conf and its value'),

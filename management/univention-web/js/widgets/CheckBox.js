@@ -50,8 +50,7 @@ define([
 
 		postMixInProperties: function() {
 			this._initialValue = this.checked = this.value;
-			this.inherited( arguments );
-			this.sizeClass = null;
+			this.inherited(arguments);
 		},
 
 		postCreate: function() {

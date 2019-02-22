@@ -269,7 +269,7 @@
 }
 
 .umc .umcLabelPane .udmAppLable {
-	display: flex;
+	display: inline-flex;
 	align-items: center;
 	padding-bottom: 0;
 	margin-bottom: 1.2em;

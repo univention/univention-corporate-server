@@ -900,11 +900,16 @@ define([
 				}
 				option_widgets.push(lang.mixin({
 					disabled: isNewObject ? false : ! option.editable,
+					size: option.is_app_option ? 'One' : 'Two'
 				}, option));
 				option_values[option.id] = option.value;
 
 				if (option.is_app_option) {
-					app_layout.push(option.id);
+					if (app_layout.length && app_layout[app_layout.length - 1].length === 1) {
+						app_layout[app_layout.length - 1].push(option.id);
+					} else {
+						app_layout.push([option.id]);
+					}
 				} else {
 					option_layout.push(option.id);
 				}
@@ -1066,8 +1071,8 @@ define([
 			array.forEach(appOptions, lang.hitch(this, function(option) {
 				tools.forIn(this._propertyOptionMap, lang.hitch(this, function(prop, options) {
 					if (array.indexOf(options, option) !== -1 && prop in this._propertySubTabMap) {
-						//this._tabs.selectChild(x._propertySubTabMap[a]); console.log(a);
 						this._appOptionTabsMap[option] = this._propertySubTabMap[prop];
+						this._appOptionTabsMap[option].is_app_tab = true;
 						return false;
 					}
 				}));
@@ -1104,6 +1109,10 @@ define([
 		},
 
 		_setTabVisibility: function(page, visible) {
+			//if (page.is_app_tab) {
+			//	page.set('disabled', !visible);
+			//	return;
+			//}
 			array.forEach(this._tabControllers, lang.hitch(this, function(itabController) {
 				itabController.setVisibilityOfChild(page, visible);
 			}));
@@ -1215,7 +1224,7 @@ define([
 				this._renderMultiEditCheckBoxes(widgets);
 				this._registerOptionWatchHandler();
 				this._formBuiltDeferred.resolve();
-				this._addFurtherSeetingsToApps();
+				// this._addFurtherSettingsToApps();
 
 				// initiate the template mechanism (only for new objects)
 				// searches for given default values in the properties... these will be replaced
@@ -1231,12 +1240,13 @@ define([
 			return all([loadedDeferred, this._formBuiltDeferred]);
 		},
 
-		_addFurtherSeetingsToApps: function() {
+		_addFurtherSettingsToApps: function() {
 			tools.forIn(this._appOptionTabsMap, lang.hitch(this, function(option, tab) {
 				this._form._widgets.$options$._widgets[option].$refLabel$.labelNodeRight.parentElement.appendChild(new Anchor({
 					content: _('Further settings'),
 					callback: lang.hitch(this, function(evt) {
 						evt.preventDefault();
+						this._form._widgets.$options$._widgets[option].set('value', true);
 						this._tabs.selectChild(tab);
 					}),
 					style: 'display: inline; padding-left: 2em;'

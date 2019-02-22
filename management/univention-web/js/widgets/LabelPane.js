@@ -64,7 +64,7 @@ define([
 
 		templateString: '<div class="umcLabelPane">' +
 			'<span class="umcLabelPaneLabelNode umcLabelPaneLabeNodeTop"><label dojoAttachPoint="labelNodeTop" for=""></label></span>' +
-			'<span dojoAttachPoint="containerNode,contentNode"></span>' +
+			'<span class="umcLabelPaneContainerNode" dojoAttachPoint="containerNode,contentNode"></span>' +
 			'<span class="umcLabelPaneLabelNode umcLabelPaneLabeNodeRight"><label dojoAttachPoint="labelNodeRight" for=""></label></span>' +
 			'<div class="umcLabelPaneLabelNode umcLabelPaneLabeNodeBottom"><label dojoAttachPoint="labelNodeBottom" for=""></label></div>' +
 			'</div>',
@@ -269,7 +269,7 @@ define([
 			if (description && !this.content.handlesTooltips) {
 				//default to the 'new' tooltip style
 				if (!this.usesHoverTooltip) {
-					if (this._isLabelDisplayed() && this.label && !(this.label === '&nbsp;')) {
+					if (this._isLabelDisplayed() && this.label && this.label !== '&nbsp;') {
 						labelNode = this._getLabelNode();
 						this.tooltipNode = domConstruct.create("div",{
 							'class': "umcDescription umcDescriptionIcon"
