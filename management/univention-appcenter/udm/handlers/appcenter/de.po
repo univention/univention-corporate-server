@@ -45,7 +45,7 @@ msgstr "Über"
 
 #: udm/handlers/appcenter/app.py:293
 msgid "App Definition"
-msgstr "App Definition"
+msgstr "App-Definition"
 
 #: udm/handlers/appcenter/app.py:57
 msgid "App ID"
@@ -53,11 +53,11 @@ msgstr "App ID"
 
 #: udm/handlers/appcenter/app.py:51 udm/handlers/appcenter/app.py:52
 msgid "App Metadata"
-msgstr "App Metadaten"
+msgstr "App-Metadaten"
 
 #: udm/handlers/appcenter/app.py:50
 msgid "Appcenter: App Metadata"
-msgstr "Appcenter: App Metadaten"
+msgstr "Appcenter: App-Metadaten"
 
 #: udm/handlers/appcenter/app.py:180
 msgid "Category"
@@ -69,7 +69,7 @@ msgstr "Konfligierende Apps"
 
 #: udm/handlers/appcenter/app.py:220
 msgid "Conflicting System Packages"
-msgstr "Konfligierende System Pakete"
+msgstr "Kollidierende Systempakete"
 
 #: udm/handlers/appcenter/app.py:119
 msgid "Contact"
@@ -77,11 +77,11 @@ msgstr "Kontakt"
 
 #: udm/handlers/appcenter/app.py:240
 msgid "Default Master Packages"
-msgstr "Standard Master Pakete"
+msgstr "Standard Master-Pakete"
 
 #: udm/handlers/appcenter/app.py:230
 msgid "Default Packages"
-msgstr "Standard Pakete"
+msgstr "Standard-Pakete"
 
 #: udm/handlers/appcenter/app.py:293 udm/handlers/appcenter/app.py:294
 msgid "General"
