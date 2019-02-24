@@ -1,0 +1,11 @@
+[admin/diary/dbhost]
+Description[de]=Server, der die Admin Diary-Datenbank beheimatet. Standardmäßig localhost.
+Description[en]=Server that runs the Admin Diary database. Defaults to localhost.
+Type=str
+Categories=admin-diary
+
+[admin/diary/dbms]
+Description[de]=Datenbank-Backend für das Admin Diary Backend. Unterstützt wird "mysql" und "postgresql".
+Description[en]=Database backend fpr the Admin Diary Backend. Supported: "mysql" and "postgresql".
+Type=str
+Categories=admin-diary

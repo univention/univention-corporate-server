@@ -1,7 +1,8 @@
 [admin/diary/backend]
-Description[de]=Die Liste der zu kontaktierenden Admin Diary backend server, getrennt durch Lehrzeichen.
+Description[de]=Die Liste der zu kontaktierenden Admin Diary Backend-Server, getrennt durch Leerzeichen.
 Description[en]=The list of Admin Diary backend servers to write to, space separated.
 Type=str
+Categories=admin-diary
 
 Categories=admin-diary
 [admin/diary/backend/port]

@@ -1,7 +1,6 @@
 #!/bin/bash
 #
-# Univention Admin Diary Client
-#  join script
+# postinst script
 #
 # Copyright 2019 Univention GmbH
 #
@@ -30,32 +29,28 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-## joinscript api: bindpwdfile
+#DEBHELPER#
 
-VERSION=1
+eval "$(ucr shell admin/diary/db.*)"
+if [ -z "$admin_diary_dbhost" ] \
+	|| [ "$admin_diary_dbhost" = "localhost" ]; then
 
-. /usr/share/univention-join/joinscripthelper.lib
-joinscript_init
+	SECRET_FILE="/etc/admin-diary.secret"
+	if [ ! -e "$SECRET_FILE" ]; then
+		install -m 0700 "$SECRET_FILE"
+		touch "$SECRET_FILE"
+		chmod 0700 "$SECRET_FILE"
+		PASSWORD="$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c20)"
+		echo -n "$PASSWORD" > "$SECRET_FILE"
+	fi
 
-eval "$(ucr shell)"
+	if command -v psql >/dev/null; then
+		ucr set admin/diary/dbms?postgresql
+	else
+		ucr set admin/diary/dbms?mysql
+	fi
+elif [ -z "$admin_diary_dbms" ]; then
+	echo "ERROR: admin/diary/dbhost is set in UCR but admin/diary/dbms is not" 2>&1
+	exit 1
+fi
 
-set_admin_diary_backend() {
-	local ldif
-	local cn_list
-	local fqdn_list
-
-	ldif=$(univention-ldapsearch -LLL -o ldif-wrap=no univentionService="Admin Diary Backend" cn)
-	cn_list=( "$(sed -n 's/^cn: //p' <<<"$ldif")" )
-	[ -n "$cn_list" ] || return
-	fqdn_list=( "${cn_list[@]/%/".$domainname"}" )
-
-	univention-config-registry set \
-		admin/diary/backend="${fqdn_list[*]}"
-}
-
-set_admin_diary_backend
-invoke-rc.d rsyslog try-restart
-
-joinscript_save_current_version
-
-exit 0

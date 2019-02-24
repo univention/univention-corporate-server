@@ -1,4 +1,3 @@
-python/admindiary/backend.py usr/share/pyshared/univention/admindiary/
 create-database /usr/share/univention-admin-diary/
 create-tables /usr/share/univention-admin-diary/
 admindiary_backend_wrapper.py usr/share/univention-admin-diary/
