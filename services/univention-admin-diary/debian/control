@@ -15,7 +15,7 @@ Standards-Version: 3.7.2
 Package: univention-admin-diary-backend
 Architecture: all
 Depends: ${misc:Depends},
- python-univention-admin-backend (= ${binary:Version}),
+ python-univention-admin-diary-backend (= ${binary:Version}),
  rsyslog-relp,
  python-pyparsing
 Recommends:

@@ -51,6 +51,6 @@ if [ -z "$admin_diary_dbhost" ] \
 	fi
 elif [ -z "$admin_diary_dbms" ]; then
 	echo "ERROR: admin/diary/dbhost is set in UCR but admin/diary/dbms is not" 2>&1
-	exit 1
 fi
 
+exit 0
