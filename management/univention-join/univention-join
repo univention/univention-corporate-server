@@ -317,6 +317,14 @@ check_and_configure_ad_member_mode () {
 	fi
 }
 
+reset_status_file () {
+	mkdir -p /var/univention-join/
+	[ -e "/var/univention-join/status" ] && rm -rf /var/univention-join/status
+	[ -e "/usr/lib/univention-install/.index.txt" ] && rm /usr/lib/univention-install/.index.txt
+	touch /var/univention-join/status
+	ln -sf /var/univention-join/status /usr/lib/univention-install/.index.txt
+}
+
 # log univention-join call
 echo "$(LC_ALL=C date): starting $0 $*" >>/var/log/univention/join.log 2>&1
 
@@ -737,19 +745,8 @@ if [ -n "$KerberosPasswd" ]; then
 hostname "$hostname" >>/var/log/univention/join.log 2>&1
 univention-config-registry set hostname="$hostname" ldap/hostdn="$ldap_dn" >>/var/log/univention/join.log 2>&1
 
-if [ -e "/usr/lib/univention-install/.index.txt" ]; then
-	mkdir -p /var/univention-join/
-	rm -rf /var/univention-join/status
-	rm /usr/lib/univention-install/.index.txt
-	touch /var/univention-join/status
-fi
-
-if [ ! -e "/usr/lib/univention-install/.index.txt" ]; then
-	mkdir -p /var/univention-join/
-	touch /var/univention-join/status
-	ln -sf /var/univention-join/status /usr/lib/univention-install/.index.txt
-fi
-
+# reset status file for the first time, so all join hooks are able to detect the empty file
+reset_status_file
 
 if [ -e "/etc/univention/ssl" ]; then
 	mv /etc/univention/ssl "/etc/univention/ssl_$(date +"%y%m%d%H%M")"
@@ -910,6 +907,8 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	echo -n "Running pre-joinscripts hook(s): "
 	run_join_hook join/pre-joinscripts
 	echo -e "\033[60Gdone"
+	# reset status file for the second time to be sure, that the join hooks have not messed around with it
+	reset_status_file
 	run_join_scripts
 	echo -n "Running post-joinscripts hook(s): "
 	run_join_hook join/post-joinscripts
@@ -973,6 +972,8 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 	echo -n "Running pre-joinscripts hook(s): "
 	run_join_hook join/pre-joinscripts
 	echo -e "\033[60Gdone"
+	# reset status file for the second time to be sure, that the join hooks have not messed around with it
+	reset_status_file
 	run_join_scripts
 	echo -n "Running post-joinscripts hook(s): "
 	run_join_hook join/post-joinscripts
@@ -1010,6 +1011,8 @@ elif [ "$server_role" = "memberserver" ]; then
 	echo -n "Running pre-joinscripts hook(s): "
 	run_join_hook join/pre-joinscripts
 	echo -e "\033[60Gdone"
+	# reset status file for the second time to be sure, that the join hooks have not messed around with it
+	reset_status_file
 	run_join_scripts
 	echo -n "Running post-joinscripts hook(s): "
 	run_join_hook join/post-joinscripts
@@ -1042,6 +1045,8 @@ else
 	echo -n "Running pre-joinscripts hook(s): "
 	run_join_hook join/pre-joinscripts
 	echo -e "\033[60Gdone"
+	# reset status file for the second time to be sure, that the join hooks have not messed around with it
+	reset_status_file
 	run_join_scripts
 	echo -n "Running post-joinscripts hook(s): "
 	run_join_hook join/post-joinscripts

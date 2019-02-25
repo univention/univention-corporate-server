@@ -1,3 +1,10 @@
+univention-join (11.0.1-12) unstable; urgency=low
+
+  * Bug #48751: reset the status file a second time to prevent issues with
+    join hooks
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 25 Feb 2019 13:38:44 +0100
+
 univention-join (11.0.1-11) unstable; urgency=medium
 
   * Bug #48475: Fix join failing on some network setups
