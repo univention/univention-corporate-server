@@ -1,3 +1,10 @@
+univention-directory-manager-modules (14.0.8-1) unstable; urgency=medium
+
+  * Bug #48621: default values weren't evaluated when modifying an object.
+  	Therefore when activating an option no default value was used.
+
+ -- Florian Best <best@univention.de>  Mon, 25 Feb 2019 15:05:14 +0100
+
 univention-directory-manager-modules (14.0.7-1) unstable; urgency=medium
 
   * Bug #48621: add possibility to filter for options

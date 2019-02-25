@@ -1280,8 +1280,17 @@ class simpleLdap(object):
 		# Make sure all default values are set...
 		for name, p in self.descriptions.items():
 			# ... if property has no option or any required option is currently enabled
-			if self.has_property(name) and p.default(self):  # noqa: W601
-				self[name]  # __getitem__ sets default value
+			if not self.has_property(name):
+				continue
+			set_defaults = self.set_defaults
+			if not self.set_defaults and p.options and not set(self.old_options) & set(p.options):
+				# set default values of properties which depend on an option but weren't activated prior modifying
+				self.set_defaults = True
+			try:
+				if p.default(self):
+					self[name]  # __getitem__ sets default value
+			finally:
+				self.set_defaults = set_defaults
 
 	def _ldap_object_classes(self, ml):  # type: (list) -> list
 		"""Detects the attributes changed in the given modlist, calculates the changes of the object class and appends it to the modlist."""
