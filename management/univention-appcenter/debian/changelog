@@ -1,3 +1,9 @@
+univention-appcenter (8.0.4-1) unstable; urgency=medium
+
+  * Bug #48621: fix detection of options belonging to an attribute
+
+ -- Florian Best <best@univention.de>  Mon, 25 Feb 2019 15:02:05 +0100
+
 univention-appcenter (8.0.3-3) unstable; urgency=medium
 
   * Bug #48605: App Install Permissions

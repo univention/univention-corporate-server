@@ -260,6 +260,11 @@ class ObjectClass(SchemaObject):
 	sup = Attribute('top')
 	may = AttributeListAttribute('')
 	must = AttributeListAttribute('')
+	option_name = HiddenAttribute()
+
+	def __init__(self, app, **kwargs):
+		kwargs.setdefault('option_name', kwargs['name'])
+		super(ObjectClass, self).__init__(app, **kwargs)
 
 
 def get_extended_attributes(app):
@@ -333,8 +338,8 @@ def get_extended_attributes(app):
 		object_class = [obj for obj in object_classes if obj.name == attribute.belongs_to][0]
 		if attribute.name not in re.split('\s*,\s*', object_class.must):
 			object_class.may = '%s, %s' % (object_class.may, attribute.name)
-		if option in extended_options:
-			if option.name == attribute.belongs_to:
+		for option in extended_options:
+			if option.name in (object_class.option_name, attribute.belongs_to):
 				attribute.options.append(option.name)
 
 	for option in extended_options:
