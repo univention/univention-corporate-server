@@ -651,7 +651,6 @@ define([
 		},
 
 		_addBuyButton(parentContainer) {
->>>>>>> ada529eb6c... Bug #48605: Install permissions backend
 			var buy_button = new Button({
 				name: 'shop',
 				label: _('Buy now'),
