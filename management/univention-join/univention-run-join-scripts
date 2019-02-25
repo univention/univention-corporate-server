@@ -60,12 +60,12 @@ display_help() {
 
 display_header() {
 	echo "univention-run-join-scripts: runs all join scripts existing on local computer."
-	echo "copyright (c) 2001-2019 Univention GmbH, Germany"
+	echo "copyright (c) 2001-@%@copyright_lastyear@%@ Univention GmbH, Germany"
 	echo ""
 }
 
 display_version() {
-	echo "univention-run-join-scripts 11.0.1-3A~4.4.0.201902081114"
+	echo "univention-run-join-scripts @%@package_version@%@"
 }
 
 failed_message () {

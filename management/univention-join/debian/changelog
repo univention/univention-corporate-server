@@ -1,3 +1,9 @@
+univention-join (11.0.1-13) unstable; urgency=medium
+
+  * Bug #47940: fix minor collateral commit damage
+
+ -- Arvid Requate <requate@univention.de>  Mon, 25 Feb 2019 20:32:40 +0100
+
 univention-join (11.0.1-12) unstable; urgency=low
 
   * Bug #48751: reset the status file a second time to prevent issues with
