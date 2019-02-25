@@ -39,14 +39,14 @@ define([
 	"dojox/widget/Standby",
 	"dijit/layout/StackContainer",
 	"dijit/layout/ContentPane",
-	"umc/dialog/NotificationDropDownButton",
+	"umc/tools",
 	"put-selector/put",
 	"./PasswordForgotten",
 	"./ProtectAccountAccess",
 	"./NewPassword",
 	"./PasswordChange",
 	"./UserAttributes"
-], function(lang, array, baseWin, hash, ioQuery, topic, dom, Standby, StackContainer, ContentPane, NotificationDropDownButton, put, PasswordForgotten, ProtectAccountAccess, NewPassword, PasswordChange, UserAttributes) {
+], function(lang, array, baseWin, hash, ioQuery, topic, dom, Standby, StackContainer, ContentPane, tools, put, PasswordForgotten, ProtectAccountAccess, NewPassword, PasswordChange, UserAttributes) {
 	return {
 		content_container: null,
 		backend_info: null,
@@ -69,11 +69,6 @@ define([
 			this._initContainer();
 			this._subscribeOnHashEvents();
 			this._addSubPages(Object.keys(this.subpages));
-
-			new NotificationDropDownButton({
-				iconClass: 'umcNotificationIcon',
-				'class': 'umcFlatButton'
-			}).placeAt('umcHeaderRight', 'first');
 		},
 
 		_subscribeOnHashEvents: function() {
@@ -95,7 +90,8 @@ define([
 				image: require.toUrl("dijit/themes/umc/images/standbyAnimation.svg").toString(),
 				duration: 200
 			});
-			put(baseWin.body(), this._standby.domNode);
+			this._standby.placeAt(baseWin.body());
+			this.content_container.placeAt('content');
 		},
 
 		/**
@@ -155,9 +151,6 @@ define([
 			var page_name = this.site_hashes[page].page_name;
 			var module = this.subpages[page_name];
 			this.content_container.selectChild(subpage);
-			if (!dom.byId('content').hasChildNodes()) {
-				this.content_container.placeAt('content');
-			}
 			module.startup();
 		}
     };
