@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.7-1) unstable; urgency=medium
+
+  * Bug #48621: add possibility to filter for options
+
+ -- Florian Best <best@univention.de>  Mon, 25 Feb 2019 11:14:30 +0100
+
 univention-directory-manager-modules (14.0.6-2) unstable; urgency=medium
 
   * Bug #48717: Typo

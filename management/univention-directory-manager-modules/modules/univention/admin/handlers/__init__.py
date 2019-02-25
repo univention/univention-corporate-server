@@ -454,7 +454,7 @@ class simpleLdap(object):
 
 		.. warning:: this method changes the set value to the default if it is unset. For a side effect free retrieval of the value use :func:`univention.admin.handlers.simpleLdap.get`.
 		"""
-		_d = univention.debug.function('admin.handlers.base.__getitem__ key = %s' % key)
+		_d = univention.debug.function('admin.handlers.base.__getitem__ key = %s' % key)  # noqa
 		if not key:
 			return None
 
@@ -1538,7 +1538,7 @@ class simpleLdap(object):
 					policy.mapping.unregister(pname, False)
 
 	def _update_policies(self):  # type: () -> None
-		_d = univention.debug.function('admin.handlers.simpleLdap._update_policies')
+		_d = univention.debug.function('admin.handlers.simpleLdap._update_policies')  # noqa
 		for policy_type, policy_object in self.policyObjects.items():
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "simpleLdap._update_policies: processing policy of type: %s" % policy_type)
 			if policy_object.changes:
@@ -1676,7 +1676,9 @@ class simpleLdap(object):
 
 	@classmethod
 	def rewrite_filter(cls, filter, mapping):
-		property_ = univention.admin.modules.get(cls.module).property_descriptions.get(filter.variable)
+		key = filter.variable
+		mod = univention.admin.modules.get(cls.module)
+		property_ = mod.property_descriptions.get(key)
 		if property_ and not isinstance(filter.value, (list, tuple)):
 			if property_.multivalue:
 				# special case: mutlivalue properties need to be a list when map()-ing
@@ -1684,19 +1686,34 @@ class simpleLdap(object):
 			if issubclass(property_.syntax if inspect.isclass(property_.syntax) else type(property_.syntax), univention.admin.syntax.complex):
 				# special case: complex syntax properties need to be a list (of lists, if multivalue)
 				filter.value = [filter.value]
-		# special case: properties that are represented as Checkboxes in the
-		# frontend should include '(!(propertyName=*))' in the ldap filter
-		# if the Checkboxe is set to False to also find objects where the property
-		# is not set. In that case we don't want to map the '*' to a different value.
-		dont_map_value = (
-				property_ 
-				and issubclass(
-					property_.syntax if inspect.isclass(property_.syntax) else type(property_.syntax),
-					(univention.admin.syntax.IStates, univention.admin.syntax.boolean)
-				)
-				and filter.value == '*'
-		)
-		univention.admin.mapping.mapRewrite(filter, mapping, dont_map_value=dont_map_value)
+		elif not property_ and key == 'options' and filter.value in getattr(mod, 'options', {}):
+			ocs = mod.options[filter.value]
+			filter.variable = 'objectClass'
+			if len(ocs.objectClasses) > 1:
+				con = univention.admin.filter.conjunction('&', [univention.admin.filter.expression('objectClass', oc, escape=True) for oc in ocs.objectClasses])
+				filter.__dict__.clear()
+				filter.__dict__.update(con.__dict__.copy())
+				filter.__class__ = univention.admin.filter.conjunction
+			elif ocs.objectClasses:
+				filter.value = list(ocs.objectClasses)[0]
+			return
+
+		try:
+			if not mapping.shouldMap(filter.variable):
+				return
+		except KeyError:
+			return
+
+		filter.variable = mapping.mapName(key)
+		if filter.value == '*' and property_ and issubclass(property_.syntax if inspect.isclass(property_.syntax) else type(property_.syntax), (univention.admin.syntax.IStates, univention.admin.syntax.boolean)):
+			# special case: properties that are represented as Checkboxes in the
+			# frontend should include '(!(propertyName=*))' in the ldap filter
+			# if the Checkboxe is set to False to also find objects where the property
+			# is not set. In that case we don't want to map the '*' to a different value.
+			pass
+		else:
+			filter.value = mapping.mapValue(key, filter.value)
+
 		if isinstance(filter.value, (list, tuple)) and filter.value:
 			# complex syntax
 			filter.value = filter.value[0]
@@ -3292,7 +3309,7 @@ class simplePolicy(simpleLdap):
 				return key
 
 	def __makeUnique(self):
-		_d = univention.debug.function('admin.handlers.simplePolicy.__makeUnique')
+		_d = univention.debug.function('admin.handlers.simplePolicy.__makeUnique')  # noqa
 		identifier = self.getIdentifier()
 		components = self.info[identifier].split("_uv")
 		if len(components) > 1:

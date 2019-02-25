@@ -2538,16 +2538,9 @@ class object(univention.admin.handlers.simpleLdap):
 		return ['*', 'pwdAccountLockedTime']
 
 	@classmethod
-	def rewrite(cls, filter, mapping):
-		if filter.variable == 'username':
-			filter.variable = 'uid'
-		elif filter.variable == 'firstname':
-			filter.variable = 'givenName'
-		elif filter.variable == 'lastname':
-			filter.variable = 'sn'
-		elif filter.variable == 'primaryGroup':
+	def rewrite_filter(cls, filter, mapping):
+		if filter.variable == 'primaryGroup':
 			filter.variable = 'gidNumber'
-
 		elif filter.variable == 'disabled':
 			# substring match for userPassword is not possible
 			if filter.value == '1':
@@ -2582,7 +2575,6 @@ class object(univention.admin.handlers.simpleLdap):
 				filter.value = '254)'
 			elif filter.value == '*':
 				filter.variable = 'uid'
-
 		elif filter.variable == 'locked':
 			if filter.value == '1':
 				filter.variable = '|(krb5KDCFlags:1.2.840.113556.1.4.803:=131072)(sambaAcctFlags=[UL       ])(sambaAcctFlags'
@@ -2610,7 +2602,7 @@ class object(univention.admin.handlers.simpleLdap):
 			elif filter.value == '*':
 				filter.variable = 'uid'
 		else:
-			univention.admin.mapping.mapRewrite(filter, mapping)
+			super(object, cls).rewrite_filter(filter, mapping)
 
 
 lookup = object.lookup
