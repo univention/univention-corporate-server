@@ -1,3 +1,9 @@
+univention-appcenter (8.0.3-3) unstable; urgency=medium
+
+  * Bug #48605: App Install Permissions
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 25 Feb 2019 14:37:16 +0100
+
 univention-appcenter (8.0.3-2) unstable; urgency=medium
 
   * Bug #48738: Updated translations
