@@ -1767,7 +1767,7 @@ msgid ""
 "The following empty properties were set to default values in the form. These "
 "values will be applied when saving."
 msgstr ""
-"Die folgenden leeren Eigenschaften wurdem im Formular auf Vorgabewerte "
+"Die folgenden leeren Eigenschaften wurden im Formular auf Vorgabewerte "
 "gesetzt. Die Werte werden beim Speichern angewendet."
 
 #: umc/js/udm.js:1797
