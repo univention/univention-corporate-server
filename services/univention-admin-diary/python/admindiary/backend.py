@@ -50,8 +50,10 @@ def get_engine():
 	password = open('/etc/admin-diary.secret').read().strip()
 
 	dbms = ucr.get('admin/diary/dbms')
-	dbhost = ucr.get('admin/diary/dbhost', 'localhost')
-
+	dbhost = ucr.get('admin/diary/dbhost')
+	if not dbhost:
+		admin_diary_backend = ucr.get('admin/diary/backend', 'localhost')
+		dbhost = admin_diary_backend.split()[0]
 	db_url = '%s://admindiary:%s@%s/admindiary' % (dbms, password, dbhost)
 	return sqlalchemy.create_engine(db_url)
 

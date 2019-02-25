@@ -34,13 +34,22 @@
 import time
 from datetime import datetime, timedelta
 
+from sqlalchemy.exc import OperationalError
+
+from univention.config_registry import ConfigRegistry
+
 from univention.management.console.base import Base
 from univention.management.console.modules.decorators import simple_response
+import univention.management.console.modules as umcm
+import univention.management.console as umc
+from univention.management.console.log import MODULE
 
 from univention.admindiary.client import add_comment
-from univention.admindiary.backend import get_client
+from univention.admindiary.backend import get_client, get_engine
 from univention.admindiary.events import DiaryEvent
 
+
+_ = umc.Translation('univention-management-console-module-admindiary').translate
 
 class Instance(Base):
 	def _format_entry(self, entry, client):
@@ -73,6 +82,23 @@ class Instance(Base):
 		if 'comments' in entry:
 			res_entry['comments'] = entry['comments']
 		return res_entry
+
+	def error_handling(self, etype, exc, etraceback):
+		ucr = ConfigRegistry()
+		ucr.load()
+		if isinstance(exc, (OperationalError,)):
+			MODULE.error(str(exc))
+			db_url = get_engine().url
+			hints = []
+			hints.append(_('Error connecting to the Admin Diary Backend.'))
+			hints.append(_('The database management system is "%s". Is the service running and does it respond to TCP/IP connections?') % (db_url.drivername))
+			if db_url.host != 'localhost':
+				hints.append(_('Make sure your firewall allows connections to %s.') % (db_url.host))
+				hints.append(_('Check the password in /etc/admin-diary.secret. Is it the same on %s and on %s?') % (ucr.get('hostname'), db_url.host))
+				hints.append(_('Is %s allowed to connect to the database service on %s?') % (ucr.get('hostname'), db_url.host))
+			#hints.append(_('Did the system set up the database? If not, run /usr/share/univention-admin-diary/create-database'))
+			raise umcm.UMC_Error('\n'.join(hints), status=500)
+		return super(Instance, self).error_handling(exc, etype, etraceback)
 
 	@simple_response
 	def options(self):
