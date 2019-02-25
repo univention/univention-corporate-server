@@ -70,7 +70,13 @@ def error_handling(etype, exc, etraceback):
 class AppSanitizer(Sanitizer):
 
 	def _sanitize(self, value, name, further_args):
-		return Apps().find(value)
+		app = Apps().find(value)
+		if not app.is_installed() and not app.install_permissions_exist():
+			apps = Apps().get_all_apps_with_id(app.id)
+			apps = [_app for _app in apps if not _app.install_permissions]
+			if apps:
+				app = sorted(apps)[-1]
+		return app
 
 
 # TODO: remove this, unused!

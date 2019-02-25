@@ -1,3 +1,9 @@
+univention-appcenter (8.0.4-3) unstable; urgency=medium
+
+  * Bug #48605: Fix UMC finding wrong App version
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 25 Feb 2019 15:54:36 +0100
+
 univention-appcenter (8.0.4-2) unstable; urgency=medium
 
   * Bug #48605: Typo
