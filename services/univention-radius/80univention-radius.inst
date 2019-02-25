@@ -286,7 +286,7 @@ fi
 # resync existing object that may be missing of the RADIUS shared secret due to missing
 # read permissions ==> univentionService=RADIUS has been added in this join script.
 if [ "$(ucr get server/role)" = "domaincontroller_slave" ] ; then
-	/usr/share/univention-directory-listener/resync_objects.py --update --filter 'objectClass=univentionRadiusClient'
+	/usr/share/univention-directory-listener/resync-objects.py --update --filter 'objectClass=univentionRadiusClient'
 fi
 
 # create initial version/update current version of clients.univention.conf

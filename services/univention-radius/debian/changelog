@@ -1,3 +1,9 @@
+univention-radius (6.0.2-6) unstable; urgency=medium
+
+  * Bug #25935: fix typo
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 25 Feb 2019 10:56:02 +0100
+
 univention-radius (6.0.2-5) unstable; urgency=medium
 
   * Bug #46018: fix loglevel in univention-radius-check-access
