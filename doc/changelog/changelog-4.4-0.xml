@@ -641,6 +641,9 @@
 				<listitem><simpara>
 					Accounts for service principals are now created with UDM (<u:bug>47955</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Activation of UCS@school specific LDB modules has been moved from <filename>97libunivention-ldb-modules.inst</filename> to <filename>96univention-samba4.inst</filename> to simplify package structure (<u:bug>47955</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
