@@ -183,7 +183,7 @@
 			<title>Univention Admin Diary</title>
 			<itemizedlist>
 				<listitem><simpara>
-					There are two new Apps, the Admin Diary Frontend and the Admin Diary Backend (<u:bug>48675</u:bug>).
+					There are two new UCS apps, the <package>Admin Diary Frontend</package> and the <package>Admin Diary Backend</package> (<u:bug>48675</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
