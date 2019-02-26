@@ -83,6 +83,18 @@ define([
 			this._pages.general.set('headerText', _('Create a virtual machine (profile: %s)', this._profile.name));
 		},
 
+		_loadNodeValues: function() {
+			this.standbyDuring(tools.umcpCommand('uvmm/node/query', {
+				nodePattern: this.nodeURI
+			}).then(lang.hitch(this, function(data) {
+				if (data.result.length) {
+					var node = data.result[0];
+
+					types.setCPUs(node.cpus, this.getWidget('general', 'vcpus'));
+				}
+			})));
+		},
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
@@ -139,9 +151,7 @@ define([
 					}, {
 						name: 'vcpus',
 						type: ComboBox,
-						label: _('Number of CPUs'),
-						dynamicOptions: {nodeURI: nodeURI},
-						dynamicValues: types.getCPUs
+						label: _('Number of CPUs')
 					}, {
 						name: 'vnc',
 						type: CheckBox,
@@ -159,6 +169,8 @@ define([
 					callback: lang.hitch(this, 'onCancel')
 				}]
 			});
+
+			this._loadNodeValues();
 		},
 
 		buildRendering: function() {
