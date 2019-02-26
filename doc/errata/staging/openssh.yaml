@@ -1,0 +1,27 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: openssh
+fix: 1:7.4p1-10+deb9u5
+desc: |
+ This update addresses the following issues:
+
+ * 1:7.4p1-10+deb9u5 (Fri, 08 Feb 2019 15:25:55 +0100) * Non-maintainer upload
+   by the Security Team. * CVE-2018-20685: disallow empty filenames or ones
+   that refer to the current directory * CVE-2019-6109: sanitize scp filenames
+   via snmprintf * CVE-2019-6111: check in scp client that filenames sent
+   during remote->local directory copies satisfy the wildcards specified by
+   the user
+
+ * 1:7.4p1-10+deb9u5 (Fri, 08 Feb 2019 15:25:55 +0100) * Non-maintainer upload
+   by the Security Team. * CVE-2018-20685: disallow empty filenames or ones
+   that refer to the current directory * CVE-2019-6109: sanitize scp filenames
+   via snmprintf * CVE-2019-6111: check in scp client that filenames sent
+   during remote->local directory copies satisfy the wildcards specified by
+   the user
+bug: [48780]
+cve:
+- CVE-2018-20685
+- CVE-2019-6109
+- CVE-2019-6111
