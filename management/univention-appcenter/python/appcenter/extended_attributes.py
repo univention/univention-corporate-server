@@ -448,10 +448,14 @@ def create_extended_option(option, app, lo, pos):
 		attribute_logger.debug('... already exists. Overwriting!')
 		modify_object('settings/extended_options', lo, pos, option.dn, **attrs)
 
-	icon = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/%s' % (option.icon,)
-	if os.path.exists(icon) or os.path.islink(icon):
-		os.unlink(icon)
-	os.symlink(app.logo_name, icon)
+
+def create_option_icon(app):
+	__, __, options = get_extended_attributes(app)
+	for option in options:
+		icon = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/%s' % (option.icon,)
+		if os.path.exists(icon) or os.path.islink(icon):
+			os.unlink(icon)
+		os.symlink(app.logo_name, icon)
 
 
 def remove_extended_option(option, lo, pos):

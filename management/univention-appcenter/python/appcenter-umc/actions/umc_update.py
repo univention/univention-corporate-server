@@ -46,6 +46,7 @@ except ImportError:
 	# otherwise take the normal one
 	from univention.appcenter.actions.update import Update
 from univention.appcenter.app_cache import Apps
+from univention.appcenter.extended_attributes import create_option_icon
 
 FRONTEND_ICONS_DIR = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable'
 
@@ -62,6 +63,7 @@ class Update(Update):
 			os.unlink(isvg)
 
 		for app in Apps().get_all_apps():
+			create_option_icon(app)
 			for _app in Apps().get_all_apps_with_id(app.id):
 				self._update_svg_file(_app.logo_name, _app.get_cache_file('logo'))
 				self._update_svg_file(_app.logo_detail_page_name, _app.get_cache_file('logodetailpage'))
