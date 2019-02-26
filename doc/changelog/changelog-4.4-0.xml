@@ -645,7 +645,7 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The package <package>samba</package> has be updated to version 4.10.0~rc2 (<u:bug>48084</u:bug>).
+					The package <package>samba</package> has be updated to version <literal>4.10.0~rc2</literal> (<u:bug>48084</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Enable the new Samba DRS <phrase>Knowledge Consistency Checker</phrase> (<abbrev>KCC</abbrev>) by default (<u:bug>48085</u:bug>).
@@ -671,7 +671,7 @@
 			<title>Univention S4 Connector</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Adjust password has synchronization to Samba 4.9 (<u:bug>48142</u:bug>).
+					Password synchronization has been adjusted to Samba 4.10 (<u:bug>48142</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
