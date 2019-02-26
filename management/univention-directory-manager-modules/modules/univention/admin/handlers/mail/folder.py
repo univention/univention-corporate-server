@@ -166,7 +166,7 @@ class object(univention.admin.handlers.simpleLdap):
 	module = module
 
 	def _get_admin_diary_args(self, event):
-		return {'nameWithMailDomain': self.description()}
+		return {'module': self.module, 'nameWithMailDomain': self.description()}
 
 	def _post_unmap(self, oldinfo, oldattr):
 		cn = oldattr.get('cn', [])

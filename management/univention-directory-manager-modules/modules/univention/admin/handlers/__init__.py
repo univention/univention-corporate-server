@@ -550,9 +550,9 @@ class simpleLdap(object):
 		self._write_admin_diary_create()
 		return dn
 
-	def _get_admin_diary_event(self, event):
+	def _get_admin_diary_event(self, event_name):
 		name = self.module.replace('/', '_').upper()
-		return DiaryEvent.get('UDM_%s_%s' % (name, event))
+		return DiaryEvent.get('UDM_%s_%s' % (name, event_name)) or DiaryEvent.get('UDM_GENERIC_%s' % event_name)
 
 	def _get_admin_diary_args_names(self, event):
 		ret = []
@@ -562,9 +562,17 @@ class simpleLdap(object):
 		return ret
 
 	def _get_admin_diary_args(self, event):
-		args = {}
-		for name in self._get_admin_diary_args_names(event):
-			args[name] = str(self[name])
+		args = {'module': self.module}
+		if event.name.startswith('UDM_GENERIC_'):
+			value = self.dn
+			for k, v in self.descriptions.iteritems():
+				if v.identifies:
+					value = self[k]
+					break
+			args['id'] = value
+		else:
+			for name in self._get_admin_diary_args_names(event):
+				args[name] = str(self[name])
 		return args
 
 	def _get_admin_diary_username(self):

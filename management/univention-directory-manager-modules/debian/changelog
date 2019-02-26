@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.8-3) unstable; urgency=medium
+
+  * Bug #48717: Generic UDM Events
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 26 Feb 2019 14:12:23 +0100
+
 univention-directory-manager-modules (14.0.8-2) unstable; urgency=medium
 
   * Bug #48710: fix hasChanged('disabled') wrongfully returning True

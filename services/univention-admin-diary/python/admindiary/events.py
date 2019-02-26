@@ -71,6 +71,11 @@ JOIN_FINISHED_SUCCESS = DiaryEvent('JOIN_FINISHED_SUCCESS', {'en': 'Successfully
 JOIN_FINISHED_FAILURE = DiaryEvent('JOIN_FINISHED_FAILURE', {'en': 'Failed to join {hostname}', 'de': 'Domänenbeitritt von {hostname} fehlgeschlagen'}, args=['hostname'], tags=['error'], icon='domain')
 JOIN_SCRIPT_FAILED = DiaryEvent('JOIN_SCRIPT_FAILED', {'en': 'Running Joinscript {joinscript} failed', 'de': 'Ausführung des Joinscripts {joinscript} fehlgeschlagen'}, tags=['error'], icon='domain')
 
+UDM_GENERIC_CREATED = DiaryEvent('UDM_GENERIC_CREATED', {'en': '{module} object {id} created', 'de': '{module}-Objekt {id} angelegt'}, args=['module', 'id'], icon='domain')
+UDM_GENERIC_MODIFIED = DiaryEvent('UDM_GENERIC_MODIFIED', {'en': '{module} object {id} modified', 'de': '{module}-Objekt {id} bearbeitet'}, args=['module', 'id'], icon='domain')
+UDM_GENERIC_MOVED = DiaryEvent('UDM_GENERIC_MOVED', {'en': '{module} object {id} moved to {position}', 'de': '{module}-Objekt {id} verschoben nach {position}'}, args=['module', 'id', 'position'], icon='domain')
+UDM_GENERIC_REMOVED = DiaryEvent('UDM_GENERIC_REMOVED', {'en': '{module} object {id} removed', 'de': '{module}-Objekt {id} gelöscht'}, args=['module', 'id'], icon='domain')
+
 UDM_APPCENTER_APP_CREATED = DiaryEvent('UDM_APPCENTER_APP_CREATED', {'en': 'Appcenter: App Metadata {id} created', 'de': 'Appcenter: App Metadaten {id} angelegt'}, args=['id'], icon='domain')
 UDM_APPCENTER_APP_MODIFIED = DiaryEvent('UDM_APPCENTER_APP_MODIFIED', {'en': 'Appcenter: App Metadata {id} modified', 'de': 'Appcenter: App Metadaten {id} bearbeitet'}, args=['id'], icon='domain')
 UDM_APPCENTER_APP_MOVED = DiaryEvent('UDM_APPCENTER_APP_MOVED', {'en': 'Appcenter: App Metadata {id} moved to {position}', 'de': 'Appcenter: App Metadaten {id} verschoben nach {position}'}, args=['id'], icon='domain')
