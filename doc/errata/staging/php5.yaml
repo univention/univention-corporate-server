@@ -6,11 +6,8 @@ src: php5
 fix: 5.6.40+dfsg-0+deb8u1
 desc: |
  This update addresses the following issue:
-
- * 5.6.39+dfsg-0+deb8u2 (Mon, 11 Feb 2019 17:38:14 +0530) * Non-maintainer
-   upload by the Debian LTS Team. * Fix CVE-2018-1000888: CWE-915
-   vulnerability in the Archive_Tar class of php-pear - Update d/rules to
-   accomodate new patch
+ * CWE-915 vulnerability in the Archive_Tar class of php-pear
+   (CVE-2018-1000888)
 bug: [48764]
 cve:
 - CVE-2018-1000888
