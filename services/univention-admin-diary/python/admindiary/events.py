@@ -76,10 +76,10 @@ UDM_GENERIC_MODIFIED = DiaryEvent('UDM_GENERIC_MODIFIED', {'en': '{module} objec
 UDM_GENERIC_MOVED = DiaryEvent('UDM_GENERIC_MOVED', {'en': '{module} object {id} moved to {position}', 'de': '{module}-Objekt {id} verschoben nach {position}'}, args=['module', 'id', 'position'], icon='domain')
 UDM_GENERIC_REMOVED = DiaryEvent('UDM_GENERIC_REMOVED', {'en': '{module} object {id} removed', 'de': '{module}-Objekt {id} gelöscht'}, args=['module', 'id'], icon='domain')
 
-UDM_APPCENTER_APP_CREATED = DiaryEvent('UDM_APPCENTER_APP_CREATED', {'en': 'Appcenter: App Metadata {id} created', 'de': 'Appcenter: App Metadaten {id} angelegt'}, args=['id'], icon='domain')
-UDM_APPCENTER_APP_MODIFIED = DiaryEvent('UDM_APPCENTER_APP_MODIFIED', {'en': 'Appcenter: App Metadata {id} modified', 'de': 'Appcenter: App Metadaten {id} bearbeitet'}, args=['id'], icon='domain')
-UDM_APPCENTER_APP_MOVED = DiaryEvent('UDM_APPCENTER_APP_MOVED', {'en': 'Appcenter: App Metadata {id} moved to {position}', 'de': 'Appcenter: App Metadaten {id} verschoben nach {position}'}, args=['id'], icon='domain')
-UDM_APPCENTER_APP_REMOVED = DiaryEvent('UDM_APPCENTER_APP_REMOVED', {'en': 'Appcenter: App Metadata {id} removed', 'de': 'Appcenter: App Metadaten {id} gelöscht'}, args=['id'], icon='domain')
+UDM_APPCENTER_APP_CREATED = DiaryEvent('UDM_APPCENTER_APP_CREATED', {'en': 'App Metadata {id} created', 'de': 'App-Metadaten {id} angelegt'}, args=['id'], icon='domain')
+UDM_APPCENTER_APP_MODIFIED = DiaryEvent('UDM_APPCENTER_APP_MODIFIED', {'en': 'App Metadata {id} modified', 'de': 'App-Metadaten {id} bearbeitet'}, args=['id'], icon='domain')
+UDM_APPCENTER_APP_MOVED = DiaryEvent('UDM_APPCENTER_APP_MOVED', {'en': 'App Metadata {id} moved to {position}', 'de': 'App-Metadaten {id} verschoben nach {position}'}, args=['id'], icon='domain')
+UDM_APPCENTER_APP_REMOVED = DiaryEvent('UDM_APPCENTER_APP_REMOVED', {'en': 'App Metadata {id} removed', 'de': 'App-Metadaten {id} gelöscht'}, args=['id'], icon='domain')
 
 UDM_COMPUTERS_DOMAINCONTROLLER_BACKUP_CREATED = DiaryEvent('UDM_COMPUTERS_DOMAINCONTROLLER_BACKUP_CREATED', {'en': 'DC Backup {name} created', 'de': 'DC Backup {name} angelegt'}, args=['name'], icon='devices')
 UDM_COMPUTERS_DOMAINCONTROLLER_BACKUP_MODIFIED = DiaryEvent('UDM_COMPUTERS_DOMAINCONTROLLER_BACKUP_MODIFIED', {'en': 'DC Backup {name} modified', 'de': 'DC Backup {name} bearbeitet'}, args=['name'], icon='devices')
@@ -348,9 +348,9 @@ UDM_POLICIES_UMC_CREATED = DiaryEvent('UDM_POLICIES_UMC_CREATED', {'en': 'UMC po
 UDM_POLICIES_UMC_MODIFIED = DiaryEvent('UDM_POLICIES_UMC_MODIFIED', {'en': 'UMC policy {name} modified', 'de': 'UMC-Richtlinie {name} bearbeitet'}, args=['name'], icon='domain')
 UDM_POLICIES_UMC_REMOVED = DiaryEvent('UDM_POLICIES_UMC_REMOVED', {'en': 'UMC policy {name} removed', 'de': 'UMC-Richtlinie {name} gelöscht'}, args=['name'], icon='domain')
 
-UDM_SAML_IDPCONFIG_CREATED = DiaryEvent('UDM_SAML_IDPCONFIG_CREATED', {'en': 'SAML IdP configuration {id} created', 'de': 'SAML IdP configuration {id} angelegt'}, args=['id'], icon='domain')
-UDM_SAML_IDPCONFIG_MODIFIED = DiaryEvent('UDM_SAML_IDPCONFIG_MODIFIED', {'en': 'SAML IdP configuration {id} modified', 'de': 'SAML IdP configuration {id} bearbeitet'}, args=['id'], icon='domain')
-UDM_SAML_IDPCONFIG_REMOVED = DiaryEvent('UDM_SAML_IDPCONFIG_REMOVED', {'en': 'SAML IdP configuration {id} removed', 'de': 'SAML IdP configuration {id} gelöscht'}, args=['id'], icon='domain')
+UDM_SAML_IDPCONFIG_CREATED = DiaryEvent('UDM_SAML_IDPCONFIG_CREATED', {'en': 'SAML IdP configuration {id} created', 'de': 'SAML IdP-Konfiguration {id} angelegt'}, args=['id'], icon='domain')
+UDM_SAML_IDPCONFIG_MODIFIED = DiaryEvent('UDM_SAML_IDPCONFIG_MODIFIED', {'en': 'SAML IdP configuration {id} modified', 'de': 'SAML IdP-Konfiguration {id} bearbeitet'}, args=['id'], icon='domain')
+UDM_SAML_IDPCONFIG_REMOVED = DiaryEvent('UDM_SAML_IDPCONFIG_REMOVED', {'en': 'SAML IdP configuration {id} removed', 'de': 'SAML IdP-Konfiguration {id} gelöscht'}, args=['id'], icon='domain')
 
 UDM_SAML_SERVICEPROVIDER_CREATED = DiaryEvent('UDM_SAML_SERVICEPROVIDER_CREATED', {'en': 'SAML service provider {Identifier} created', 'de': 'SAML service provider {Identifier} angelegt'}, args=['Identifier'], icon='domain')
 UDM_SAML_SERVICEPROVIDER_MODIFIED = DiaryEvent('UDM_SAML_SERVICEPROVIDER_MODIFIED', {'en': 'SAML service provider {Identifier} modified', 'de': 'SAML service provider {Identifier} bearbeitet'}, args=['Identifier'], icon='domain')
@@ -503,19 +503,19 @@ UDM_USERS_USER_MODIFIED = DiaryEvent('UDM_USERS_USER_MODIFIED', {'en': 'User {us
 UDM_USERS_USER_MOVED = DiaryEvent('UDM_USERS_USER_MOVED', {'en': 'User {username} moved to {position}', 'de': 'Benutzer {username} verschoben nach {position}'}, args=['username'], icon='users')
 UDM_USERS_USER_REMOVED = DiaryEvent('UDM_USERS_USER_REMOVED', {'en': 'User {username} removed', 'de': 'Benutzer {username} gelöscht'}, args=['username'], icon='users')
 
-UDM_UVMM_CLOUDCONNECTION_CREATED = DiaryEvent('UDM_UVMM_CLOUDCONNECTION_CREATED', {'en': 'UVMM: Cloud Connection {name} created', 'de': 'UVMM: Cloud Connection {name} angelegt'}, args=['name'], icon='domain')
-UDM_UVMM_CLOUDCONNECTION_MODIFIED = DiaryEvent('UDM_UVMM_CLOUDCONNECTION_MODIFIED', {'en': 'UVMM: Cloud Connection {name} modified', 'de': 'UVMM: Cloud Connection {name} bearbeitet'}, args=['name'], icon='domain')
-UDM_UVMM_CLOUDCONNECTION_REMOVED = DiaryEvent('UDM_UVMM_CLOUDCONNECTION_REMOVED', {'en': 'UVMM: Cloud Connection {name} removed', 'de': 'UVMM: Cloud Connection {name} gelöscht'}, args=['name'], icon='domain')
+UDM_UVMM_CLOUDCONNECTION_CREATED = DiaryEvent('UDM_UVMM_CLOUDCONNECTION_CREATED', {'en': 'Cloud Connection {name} created', 'de': 'Cloud Connection {name} angelegt'}, args=['name'], icon='domain')
+UDM_UVMM_CLOUDCONNECTION_MODIFIED = DiaryEvent('UDM_UVMM_CLOUDCONNECTION_MODIFIED', {'en': 'Cloud Connection {name} modified', 'de': 'Cloud Connection {name} bearbeitet'}, args=['name'], icon='domain')
+UDM_UVMM_CLOUDCONNECTION_REMOVED = DiaryEvent('UDM_UVMM_CLOUDCONNECTION_REMOVED', {'en': 'Cloud Connection {name} removed', 'de': 'Cloud Connection {name} gelöscht'}, args=['name'], icon='domain')
 
-UDM_UVMM_CLOUDTYPE_CREATED = DiaryEvent('UDM_UVMM_CLOUDTYPE_CREATED', {'en': 'UVMM: Cloud Type {name} created', 'de': 'UVMM: Cloud Type {name} angelegt'}, args=['name'], icon='domain')
-UDM_UVMM_CLOUDTYPE_MODIFIED = DiaryEvent('UDM_UVMM_CLOUDTYPE_MODIFIED', {'en': 'UVMM: Cloud Type {name} modified', 'de': 'UVMM: Cloud Type {name} bearbeitet'}, args=['name'], icon='domain')
-UDM_UVMM_CLOUDTYPE_REMOVED = DiaryEvent('UDM_UVMM_CLOUDTYPE_REMOVED', {'en': 'UVMM: Cloud Type {name} removed', 'de': 'UVMM: Cloud Type {name} gelöscht'}, args=['name'], icon='domain')
+UDM_UVMM_CLOUDTYPE_CREATED = DiaryEvent('UDM_UVMM_CLOUDTYPE_CREATED', {'en': 'Cloud Type {name} created', 'de': 'Cloud Type {name} angelegt'}, args=['name'], icon='domain')
+UDM_UVMM_CLOUDTYPE_MODIFIED = DiaryEvent('UDM_UVMM_CLOUDTYPE_MODIFIED', {'en': 'Cloud Type {name} modified', 'de': 'Cloud Type {name} bearbeitet'}, args=['name'], icon='domain')
+UDM_UVMM_CLOUDTYPE_REMOVED = DiaryEvent('UDM_UVMM_CLOUDTYPE_REMOVED', {'en': 'Cloud Type {name} removed', 'de': 'Cloud Type {name} gelöscht'}, args=['name'], icon='domain')
 
-UDM_UVMM_INFO_CREATED = DiaryEvent('UDM_UVMM_INFO_CREATED', {'en': 'UVMM: Machine information {uuid} created', 'de': 'UVMM: Machine information {uuid} angelegt'}, args=['uuid'], icon='domain')
-UDM_UVMM_INFO_MODIFIED = DiaryEvent('UDM_UVMM_INFO_MODIFIED', {'en': 'UVMM: Machine information {uuid} modified', 'de': 'UVMM: Machine information {uuid} bearbeitet'}, args=['uuid'], icon='domain')
-UDM_UVMM_INFO_REMOVED = DiaryEvent('UDM_UVMM_INFO_REMOVED', {'en': 'UVMM: Machine information {uuid} removed', 'de': 'UVMM: Machine information {uuid} gelöscht'}, args=['uuid'], icon='domain')
+UDM_UVMM_INFO_CREATED = DiaryEvent('UDM_UVMM_INFO_CREATED', {'en': 'Machine information {uuid} created', 'de': 'Machine information {uuid} angelegt'}, args=['uuid'], icon='domain')
+UDM_UVMM_INFO_MODIFIED = DiaryEvent('UDM_UVMM_INFO_MODIFIED', {'en': 'Machine information {uuid} modified', 'de': 'Machine information {uuid} bearbeitet'}, args=['uuid'], icon='domain')
+UDM_UVMM_INFO_REMOVED = DiaryEvent('UDM_UVMM_INFO_REMOVED', {'en': 'Machine information {uuid} removed', 'de': 'Machine information {uuid} gelöscht'}, args=['uuid'], icon='domain')
 
-UDM_UVMM_PROFILE_CREATED = DiaryEvent('UDM_UVMM_PROFILE_CREATED', {'en': 'UVMM: Profile {name} created', 'de': 'UVMM: Profile {name} angelegt'}, args=['name'], icon='domain')
-UDM_UVMM_PROFILE_MODIFIED = DiaryEvent('UDM_UVMM_PROFILE_MODIFIED', {'en': 'UVMM: Profile {name} modified', 'de': 'UVMM: Profile {name} bearbeitet'}, args=['name'], icon='domain')
-UDM_UVMM_PROFILE_REMOVED = DiaryEvent('UDM_UVMM_PROFILE_REMOVED', {'en': 'UVMM: Profile {name} removed', 'de': 'UVMM: Profile {name} gelöscht'}, args=['name'], icon='domain')
+UDM_UVMM_PROFILE_CREATED = DiaryEvent('UDM_UVMM_PROFILE_CREATED', {'en': 'Profile {name} created', 'de': 'Profile {name} angelegt'}, args=['name'], icon='domain')
+UDM_UVMM_PROFILE_MODIFIED = DiaryEvent('UDM_UVMM_PROFILE_MODIFIED', {'en': 'Profile {name} modified', 'de': 'Profile {name} bearbeitet'}, args=['name'], icon='domain')
+UDM_UVMM_PROFILE_REMOVED = DiaryEvent('UDM_UVMM_PROFILE_REMOVED', {'en': 'Profile {name} removed', 'de': 'Profile {name} gelöscht'}, args=['name'], icon='domain')
 
