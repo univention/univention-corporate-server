@@ -78,6 +78,8 @@ define([
 				onCancel: lang.hitch(this, 'close', false)
 			});
 
+			this._wizard.getWidget('feedback', 'enableHardwareStatistics').set('visible', true);
+
 			// create a progress bar widget
 			this._progressBar = new ProgressBar({});
 			this.own(this._progressBar);

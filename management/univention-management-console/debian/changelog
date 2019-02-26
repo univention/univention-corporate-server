@@ -1,3 +1,9 @@
+univention-management-console (11.0.3-2) unstable; urgency=medium
+
+  * Bug #48621: fix styling of checkboxes
+
+ -- Florian Best <best@univention.de>  Tue, 26 Feb 2019 16:52:10 +0100
+
 univention-management-console (11.0.3-1) unstable; urgency=medium
 
   * Bug #47829: Update supported browser versions.

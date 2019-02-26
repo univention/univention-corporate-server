@@ -49,11 +49,9 @@ define([
 			})
 		}, {
 			type: CheckBox,
+			visible: false,
 			name: 'enableHardwareStatistics',
 			label: _('Enable one-time statistic on hardware configuration.'),
-			labelConf: {
-				'class': 'umcFeedbackHardwareStatistics'
-			},
 			value: true
 		}]
 	};

@@ -52,14 +52,6 @@
 	background-image: url(widgets/about.svg);
 }
 
-.umc .umcAppDialogPage-feedback .umcFeedbackHardwareStatistics {
-	display: none;
-}
-
-.umc .umcStartupDialog .umcAppDialogPage-feedback .umcFeedbackHardwareStatistics {
-	display: block;
-}
-
 .umc .umcActivationDialog .umcActivationLeaveFieldFreeMessage {
 	display: none;
 }
