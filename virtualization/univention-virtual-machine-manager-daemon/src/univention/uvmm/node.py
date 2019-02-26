@@ -495,7 +495,7 @@ class Domain(PersistentCached):
 	def migration_status(self, stats):
 		# type: (Dict[str, Any]) -> Tuple[str, Dict[str, Any]]
 		"""
-		Convert libvirt job stats to string and dictionary for string formating.
+		Convert libvirt job stats to string and dictionary for string formatting.
 		"""
 		# final_stats = {
 		#  'data_processed': 1L, 'data_remaining': 0L, 'data_total': 1L,
@@ -791,7 +791,7 @@ class Node(PersistentCached):
 						logger.debug("Loaded from cache '%s#%s'", self.pd.uri, domStat.pd.uuid)
 					except (EOFError, EnvironmentError, AssertionError, ET.XMLSyntaxError, TypeError) as ex:
 						logger.warning("Failed to load cached domain %s: %s", cache_file_name, ex)
-				del dirs[:]  # just that direcory; no recursion
+				del dirs[:]  # just that directory; no recursion
 		except (EOFError, EnvironmentError, AssertionError, pickle.PickleError) as ex:
 			logger.warning("Failed to load cached state of %s: %s", uri, ex)
 			self.pd = Data_Node()  # public data
@@ -1371,7 +1371,7 @@ def _domain_backup(dom, save=True):
 	Save domain definition to backup file.
 
 	:param libvirt.virDomain dom: libvirt domain instance.
-	:param bool save: `True` to create a backup of the previous desciption (e.g. before deleing), `False` to save the current desciption.
+	:param bool save: `True` to create a backup of the previous description (e.g. before deleing), `False` to save the current description.
 	"""
 	suffix = '.xml.save' if save else '.xml'
 

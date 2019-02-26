@@ -285,7 +285,7 @@ define([
 					size: 'Two',
 					value: disk.driver_cache || 'default',
 					label: _('Caching'),
-					description: _('Configure cache behaviour of host.'),
+					description: _('Configure cache behavior of host.'),
 					staticValues: types.dict2list(types.driverCache)
 				} ],
 				buttons: [{
@@ -352,7 +352,7 @@ define([
 					} else if (disk.device == 'floppy') {
 						msg += ' ' + _( 'The selected drive is a floppy and should be detached from the virtual machine. If the volume is delete no other machine can use it anymore.' );
 					} else if ( ! response.result[ 0 ].deletable ) {
-						msg += ' ' + _( 'The selected drive seems to be attached to other virtual machines and therefor should not be deleted.' );
+						msg += ' ' + _( 'The selected drive seems to be attached to other virtual machines and therefore should not be deleted.' );
 					}
 					return dialog.confirm( msg, buttons );
 				} ) );

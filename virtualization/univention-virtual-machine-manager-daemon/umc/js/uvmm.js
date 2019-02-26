@@ -483,7 +483,7 @@ define([
 
 		_migrate: function(ids, items) {
 			if (items.length > 1) {
-				console.error("Migrating multiple machines is not suported at the moment");
+				console.error("Migrating multiple machines is not supported at the moment");
 				return;
 			}
 			if (this._isMigrating(items[0])) {

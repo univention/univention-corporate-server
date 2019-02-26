@@ -178,7 +178,7 @@ class timeout(object):
 
 
 """
-Extension ot urlparse for node URIs
+Extension of urlparse for node URIs
 
 example:
 import urlparse

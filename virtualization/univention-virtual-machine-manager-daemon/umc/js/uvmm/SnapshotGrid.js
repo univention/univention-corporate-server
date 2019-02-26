@@ -178,7 +178,7 @@ define([
 					this.onUpdateProgress(ids.length, ids.length);
 					this.moduleStore.onChange();
 				}), lang.hitch(this, function() {
-					dialog.alert(_('An error ocurred during processing your request.'));
+					dialog.alert(_('An error occurred during processing your request.'));
 					this.onUpdateProgress(ids.length, ids.length);
 					this.moduleStore.onChange();
 				}));

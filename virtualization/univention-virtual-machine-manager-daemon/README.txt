@@ -1,4 +1,4 @@
-=== Prerequisits ===
+=== Prerequisites ===
 On a management station:
  apt-get install univention-virtual-machine-manager-daemon
 
