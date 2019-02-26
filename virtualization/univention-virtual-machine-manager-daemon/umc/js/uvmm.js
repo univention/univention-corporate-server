@@ -619,11 +619,25 @@ define([
 						visible: unavailable,
 						content: _( '<p>For fail over the virtual machine can be migrated to another physical server re-using the last known configuration and all disk images. This can result in <strong>data corruption</strong> if the images are <strong>concurrently used</strong> by multiple running machines! Therefore the failed server <strong>must be blocked from accessing the image files</strong>, for example by blocking access to the shared storage or by disconnecting the network.</p><p>When the server is restored, all its previous virtual machines will be shown again. Any duplicates have to be cleaned up manually by migrating the machines back to the server or by deleting them. Make sure that shared images are not delete.</p>' )
 					}, {
+						type: Text,
+						name: 'warning_ram',
+						visible: false,
+						depends: ['name'],
+						content: '<p>' + _('<b>Warning:</b> Memory size exceeds currently available RAM on node. Migrating the VM may degrade the performance of the host and all other VMs.') + '</p>'
+					}, {
 						name: 'name',
 						type: ComboBox,
 						label: _('Please select the destination server:'),
 						staticValues: validHosts,
-						sortStaticValues: true
+						sortStaticValues: true,
+						onChange: function(value, widgets) {
+							array.forEach(widgets.name.staticValues, function(host) {
+								if (host.id === value) {
+									widgets.warning_ram.set('visible', (host.memPhysical - host.memUsed <= domains[0].mem) || true);
+									return false;
+								}
+							});
+						}
 					}],
 					buttons: [{
 						name: 'cancel',
@@ -642,7 +656,7 @@ define([
 							}
 						})
 					}],
-					layout: [ 'warning', 'name' ]
+					layout: [ 'warning', 'warning_ram', 'name' ]
 				});
 
 				_dialog = new Dialog({
@@ -1241,6 +1255,12 @@ define([
 						{ id : 'clone', label : _( 'Inherit MAC addresses' ) },
 						{ id : 'auto', label : _( 'Generate new MAC addresses' ) }
 					]
+				}, {
+					type: Text,
+					name: 'warning_ram',
+					visible: false,  // FIXME
+					depends: ['name'],
+					content: '<p>' + _('<b>Warning:</b> Memory size exceeds currently available RAM on node. Cloning the VM may degrade the performance of the host and all other VMs.') + '</p>'
 				} ],
 				buttons: [{
 					name: 'cancel',

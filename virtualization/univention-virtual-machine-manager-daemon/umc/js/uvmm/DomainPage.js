@@ -197,6 +197,8 @@ define([
 					name: 'maxMem',
 					type: MemoryTextBox,
 					required: true,
+					softMax: 4*1024*1024*1024*1024,
+					softMaxMessage: _('<b>Warning:</b> Memory size exceeds currently available RAM on node. Starting the VM may degrade the performance of the host and all other VMs.'),
 					label: _('Memory (default unit MB)')
 				}, {
 					name: 'boot_hvm',
@@ -421,6 +423,10 @@ define([
 			}).then(lang.hitch(this, function(data) {
 				if (data.result.length) {
 					var node = data.result[0];
+
+					var wm = this._advancedForm.getWidget('maxMem');
+					wm.set('constraints', lang.mixin({}, wm.get('constraints'), {max: node.memPhysical}));
+					wm.set('softMax', node.memPhysical - node.memUsed);
 
 					types.setCPUs(node.cpus, this._advancedForm.getWidget('vcpus'));
 				}

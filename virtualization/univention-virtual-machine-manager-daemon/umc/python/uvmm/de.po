@@ -32,10 +32,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: univention-management-console-module-uvmm 2.0.40-1\n"
+"Project-Id-Version: univention-management-console-module-uvmm 8.0.1-5\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2015-02-02 13:33+0100\n"
-"PO-Revision-Date: 2013-05-23 09:17+0100\n"
+"PO-Revision-Date: 2019-03-07 15:53+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "Language: de\n"

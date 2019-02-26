@@ -61,13 +61,6 @@ define([
 		autoValidate: false,  // TODO: in the future we can activate this, when umc.widgets.Wizard/Form focuses the first invalid widget
 
 		_loadValuesOfProfile: function() {
-			// put limit on memory
-			try {
-				var nodeURI = this.getWidget('nodeURI');
-				var maxMem = nodeURI.store.getValue(nodeURI.item, 'memPhysical');
-				this.getWidget('maxMem').get('constraints').max = maxMem;
-			} catch (err) { }
-
 			// query the profile settings
 			var wd = this.getWidget('profile');
 			this._profile = wd.store.getValue(wd.item, "data");
@@ -89,6 +82,10 @@ define([
 			}).then(lang.hitch(this, function(data) {
 				if (data.result.length) {
 					var node = data.result[0];
+
+					var wm = this.getWidget('general', 'maxMem');
+					wm.set('constraints', lang.mixin({}, wm.get('constraints'), {max: node.memPhysical}));
+					wm.set('softMax', node.memPhysical - node.memUsed);
 
 					types.setCPUs(node.cpus, this.getWidget('general', 'vcpus'));
 				}
@@ -147,6 +144,8 @@ define([
 						name: 'maxMem',
 						type: MemoryTextBox,
 						required: true,
+						softMax: 4*1024*1024*1024*1024,
+						softMaxMessage: _('<b>Warning:</b> Memory size exceeds currently available RAM on node. Starting the VM may degrade the performance of the host and all other VMs.'),
 						label: _('Memory (default unit MB)')
 					}, {
 						name: 'vcpus',
