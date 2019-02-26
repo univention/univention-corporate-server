@@ -1329,7 +1329,7 @@ def inconsistentDisabledState(oldattr):
 		unmapPosixDisabled(oldattr),
 		isPosixLocked(oldattr),
 	]
-	return len(set(disabled)) > 1
+	return len(set(map(bool, disabled))) > 1
 
 
 def unmapSambaDisabled(oldattr):

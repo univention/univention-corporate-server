@@ -294,6 +294,28 @@ class Instance(Base):
 		if self.is_blacklisted(username):
 			raise ServiceForbidden()
 
+		user = self.get_udm_user_by_dn(dn)
+		user.set_defaults = True
+		user.set_default_values()
+		properties = user.info.copy()
+		widget_descriptions = [
+			dict(wd, value=properties.get(wd['id'])) for wd in self._get_user_attributes_descriptions()
+			if user.has_property(wd['id'])
+		]
+		# TODO make layout configurable via ucr ?
+		layout = [wd['id'] for wd in widget_descriptions]
+
+		return {
+			'widget_descriptions': widget_descriptions,
+			'layout': layout,
+		}
+
+	@forward_to_master
+	@simple_response
+	def get_user_attributes_descriptions(self):
+		return self._get_user_attributes_descriptions()
+
+	def _get_user_attributes_descriptions(self):
 		user_attributes = [attr.strip() for attr in ucr.get('self-service/udm_attributes', '').split(',')]
 
 		widget_descriptions = []
@@ -301,10 +323,11 @@ class Instance(Base):
 			'jpegPhoto': _('Your picture')
 		}
 		for propname in user_attributes:
+			if propname == 'password':
+				continue
 			prop = self.usersmod.property_descriptions.get(propname)
 			if not prop:
 				continue
-
 			widget_description = {
 				'id': propname,
 				'label': label_overwrites.get(propname, prop.short_description),
@@ -312,6 +335,7 @@ class Instance(Base):
 				'syntax': prop.syntax.name,
 				'size': prop.size or prop.syntax.size,
 				'required': bool(prop.required),
+				'editable': bool(prop.may_change),
 				'readonly': not bool(prop.editable),
 				'multivalue': bool(prop.multivalue),
 			}
@@ -320,23 +344,8 @@ class Instance(Base):
 				continue
 			if 'dynamicValues' in widget_description:
 				continue
-
 			widget_descriptions.append(widget_description)
-
-		# TODO make layout configurable via ucr ?
-		layout = [propname for propname in user_attributes if propname in [wd['id'] for wd in widget_descriptions]]
-
-		values = {}
-		user = self.get_udm_user(username=username)
-		for propname in user_attributes:
-			if propname in user:
-				values[propname] = user[propname]
-
-		return {
-			'widget_descriptions': widget_descriptions,
-			'layout': layout,
-			'values': values
-		}
+		return widget_descriptions
 
 	@forward_to_master
 	@sanitize(
@@ -398,12 +407,14 @@ class Instance(Base):
 			raise ServiceForbidden()
 
 		user_attributes = [attr.strip() for attr in ucr.get('self-service/udm_attributes', '').split(',')]
-		user = self.get_udm_user_by_dn(userdn=dn, admin=True)
+		lo, po = get_user_connection(binddn=dn, bindpw=password)
+		user = self.usersmod.object(None, lo, po, dn)
+		user.open()
 		for propname, value in attributes.items():
-			if propname in user_attributes:
+			if propname in user_attributes and user.has_property(propname):
 				user[propname] = value
 		user.modify()
-		return _("Successfully changed your contact data.")
+		return _("Successfully changed your profile data.")
 
 
 	@forward_to_master

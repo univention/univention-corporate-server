@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-self-service\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-02-18 18:37+0100\n"
+"POT-Creation-Date: 2019-02-25 14:58+0100\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -21,7 +21,7 @@ msgstr " (Wiederholung)"
 msgid "Activate renew options."
 msgstr "Wiederherstellungsoptionen aktivieren."
 
-#: www/ProtectAccountAccess.js:264 www/UserAttributes.js:207
+#: www/ProtectAccountAccess.js:264 www/UserAttributes.js:209
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -33,9 +33,9 @@ msgstr "Passwort ändern"
 msgid "Change your (expired) password."
 msgstr "Ändern Sie Ihr (abgelaufenes) Passwort."
 
-#: www/UserAttributes.js:53 www/UserAttributes.js:190
-msgid "Customize your contact data"
-msgstr "Passen Sie Ihre Kontaktdaten an"
+#: www/UserAttributes.js:53 www/UserAttributes.js:192
+msgid "Customize your profile"
+msgstr "Passen Sie Ihre Profildaten an"
 
 #: www/ProtectAccountAccess.js:49
 msgid ""
@@ -78,7 +78,7 @@ msgid "New Password (retype)"
 msgstr "Neues Passwort (Wiederholung)"
 
 #: www/PasswordForgotten.js:127 www/PasswordForgotten.js:173
-#: www/ProtectAccountAccess.js:160 www/UserAttributes.js:151
+#: www/ProtectAccountAccess.js:160 www/UserAttributes.js:150
 msgid "Next"
 msgstr "Weiter"
 
@@ -90,7 +90,7 @@ msgstr ""
 msgid "Old Password"
 msgstr "Altes Passwort"
 
-#: www/ProtectAccountAccess.js:138 www/UserAttributes.js:141
+#: www/ProtectAccountAccess.js:138 www/UserAttributes.js:140
 msgid "Password"
 msgstr "Passwort"
 
@@ -110,7 +110,7 @@ msgstr "Bitte wählen Sie eine Wiederherstellungsoption aus."
 msgid "Protect account"
 msgstr "Kontozugang schützen"
 
-#: www/ProtectAccountAccess.js:259 www/UserAttributes.js:202
+#: www/ProtectAccountAccess.js:259 www/UserAttributes.js:204
 msgid "Save"
 msgstr "Speichern"
 
@@ -138,13 +138,17 @@ msgstr "Das Passwort wurde erfolgreich geändert."
 msgid "The passwords do not match, please retype again."
 msgstr "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
 
+#: www/UserAttributes.js:190
+msgid "There is no profile data data defined that you can edit"
+msgstr "Es sind keine Profildaten definiert, die Sie bearbeiten können"
+
 #: www/NewPassword.js:173
 msgid "Token"
 msgstr "Token"
 
 #: www/NewPassword.js:148 www/PasswordChange.js:114
 #: www/PasswordForgotten.js:109 www/ProtectAccountAccess.js:110
-#: www/UserAttributes.js:118
+#: www/UserAttributes.js:117
 msgid "Username"
 msgstr "Benutzername"
 
@@ -163,12 +167,12 @@ msgid "You have mail!"
 msgstr "Sie haben eine neue E-Mail!"
 
 #: www/UserAttributes.js:52
-msgid "Your contact data"
-msgstr "Ihre Kontaktdaten"
+msgid "Your profile"
+msgstr ""
 
-#: www/UserAttributes.js:263
-msgid "Your contact data is up to date"
-msgstr "Ihre Kontaktdaten sind auf dem neuesten Stand"
+#: www/UserAttributes.js:255
+msgid "Your profile data is up to date"
+msgstr "Ihre Profildaten sind auf dem neuesten Stand"
 
 #~ msgid "</br><a href='/{0}'>Back to the overview.</a>"
 #~ msgstr "</br><a href='/{0}'>Zurück zur Übersicht.</a>"
@@ -221,6 +225,9 @@ msgstr "Ihre Kontaktdaten sind auf dem neuesten Stand"
 
 #~ msgid "Translate me!"
 #~ msgstr "Übersetz mich!"
+
+#~ msgid "Your contact data"
+#~ msgstr "Ihre Kontaktdaten"
 
 #~ msgid "to '{0}'"
 #~ msgstr "zu '{0}'"

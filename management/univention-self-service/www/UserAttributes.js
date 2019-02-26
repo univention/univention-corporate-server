@@ -49,9 +49,9 @@ define([
 ], function(lang, array, keys, Deferred, all, on, entities, login, render, tools, dialog, Form, Button, TextBox, PasswordBox, put, _) {
 
 	return {
-		title: _('Your contact data'),
-		desc: _('Customize your contact data'),
-		hash: 'contactdata',
+		title: _('Your profile'),
+		desc: _('Customize your profile'),
+		hash: 'profiledata',
 		contentContainer: null,
 		steps: null,
 		standby: null,
@@ -186,7 +186,10 @@ define([
 		},
 
 		_createUserAttributesStep: function(data) {
-			this._userAttributesStep = put(this.steps, 'li.step div.stepLabel', _('Customize your contact data'), '<');
+			if (!data.widget_descriptions.length) {
+				dialog.alert(_('There is no profile data data defined that you can edit'));
+			}
+			this._userAttributesStep = put(this.steps, 'li.step div.stepLabel', _('Customize your profile'), '<');
 
 			var widgetDescriptions = this._prepareWidgets(data.widget_descriptions);
 			render.requireWidgets(widgetDescriptions)
@@ -229,9 +232,7 @@ define([
 		// or render.js ?
 		_prepareWidgets: function(props) {
 			array.forEach(props, function(iprop) {
-				if (iprop.readonly) {
-					iprop.disabled = true;
-				}
+				iprop.disabled = iprop.readonly || !iprop.editable;
 			});
 
 			return props;
@@ -251,7 +252,7 @@ define([
 			}));
 
 			if (!Object.keys(alteredValues).length) {
-				dialog.contextNotify(_('Your contact data is up to date'));
+				dialog.contextNotify(_('Your profile data is up to date'));
 				return;
 			}
 
