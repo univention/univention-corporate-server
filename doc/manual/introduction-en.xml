@@ -131,7 +131,7 @@ during the installation. Possible system roles are domain controller, &ucsMember
 </para>
 <para>
 <figure id="introduction:domain"><title>UCS domain concept</title>
- <graphic scalefit="1" width="100%" fileref="illustrations44/domainconcept.jpg"/>
+ <graphic scalefit="1" width="100%" fileref="illustrations44/domainconcept_en.png"/>
  </figure>
 </para>
 <para>

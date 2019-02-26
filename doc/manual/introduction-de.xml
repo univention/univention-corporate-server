@@ -132,7 +132,7 @@ Systemrollen sind Domänencontroller, &ucsMember; und Client.
 </para>
 
 <figure id="introduction:domain"><title>UCS-Domänenkonzept</title>
- <graphic scalefit="1" width="90%" align="center" fileref="illustrations44/domainconcept.jpg"/>
+ <graphic scalefit="1" width="90%" align="center" fileref="illustrations44/domainconcept.png"/>
 </figure>
 
 <para>
