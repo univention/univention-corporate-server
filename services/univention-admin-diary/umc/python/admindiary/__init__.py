@@ -65,7 +65,7 @@ class Instance(Base):
 		event = DiaryEvent.get(entry['event_name'])
 		if event:
 			icon = event.icon or icon
-		elif entry['event_name'] == 'COMMENT':
+		if entry['event_name'] == 'COMMENT':
 			icon = 'comment'
 		res_entry = {
 			'id': entry['id'],

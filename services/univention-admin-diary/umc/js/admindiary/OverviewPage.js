@@ -60,6 +60,8 @@ define([
 		helpText: _('This module lists all entries of the Admin Diary. You may comment on the events.'),
 		fullWidth: true,
 
+		ALL_ID: '__all__',
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this.footerButtons = [{
@@ -132,8 +134,8 @@ define([
 				moduleStore: this.moduleStore
 			});
 
-			var makeValues = function(values) {
-				var arr = [{label: _('All'), id: ''}];
+			var makeValues = function(values, all_id) {
+				var arr = [{label: _('All'), id: all_id}];
 				return arr.concat(array.map(values, function(value) {
 					return {label: value, id: value};
 				}));
@@ -156,8 +158,8 @@ define([
 				type: ComboBox,
 				label: _("Tags"),
 				sizeClass: 'TwoThirds',
-				staticValues: makeValues(this.tags),
-				value: '',
+				staticValues: makeValues(this.tags, this.ALL_ID),
+				value: this.ALL_ID,
 				onChange: lang.hitch(this, 'autoSearch'),
 				visible: false,
 				name: 'tag'
@@ -165,8 +167,8 @@ define([
 				type: ComboBox,
 				label: _("Event"),
 				sizeClass: 'TwoThirds',
-				staticValues: makeValues(this.events),
-				value: '',
+				staticValues: makeValues(this.events, this.ALL_ID),
+				value: this.ALL_ID,
 				onChange: lang.hitch(this, 'autoSearch'),
 				visible: false,
 				name: 'event'
@@ -174,8 +176,8 @@ define([
 				type: ComboBox,
 				label: _("Author"),
 				sizeClass: 'TwoThirds',
-				staticValues: makeValues(this.authors),
-				value: '',
+				staticValues: makeValues(this.authors, this.ALL_ID),
+				value: this.ALL_ID,
 				onChange: lang.hitch(this, 'autoSearch'),
 				visible: false,
 				name: 'username'
@@ -183,8 +185,8 @@ define([
 				type: ComboBox,
 				label: _("Source"),
 				sizeClass: 'TwoThirds',
-				staticValues: makeValues(this.sources),
-				value: '',
+				staticValues: makeValues(this.sources, this.ALL_ID),
+				value: this.ALL_ID,
 				onChange: lang.hitch(this, 'autoSearch'),
 				visible: false,
 				name: 'hostname'
@@ -218,6 +220,11 @@ define([
 					['tag', 'event', 'hostname', 'username']]
 			});
 			this._searchForm.on('Search', lang.hitch(this, function(options) {
+				array.forEach(['tag', 'event', 'hostname', 'username'], lang.hitch(this, function(widgetName) {
+					if (options[widgetName] == this.ALL_ID) {
+						delete options[widgetName];
+					}
+				}));
 				this._grid.filter(options).then(lang.hitch(this, function() {
 					this._autoSearch = true;
 				}));

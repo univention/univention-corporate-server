@@ -69,7 +69,7 @@ msgstr "Event"
 
 #: umc/js/admindiary/OverviewPage.js:143
 msgid "From"
-msgstr "Ab"
+msgstr "Von"
 
 #: umc/js/admindiary/OverviewPage.js:98
 msgid "Message"
