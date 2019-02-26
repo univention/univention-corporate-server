@@ -34,7 +34,7 @@
 
 eval "$(ucr shell hostname domainname ldap/base)"
 UMCC () {
-	umc-command -U Administrator -P univention "$@"
+	umc-command -U Administrator -P univention -r "$@"
 }
 : ${MASTER:="qemu://master.$domainname/system"}
 : ${SLAVE:="qemu://slave.$domainname/system"}
@@ -100,3 +100,7 @@ UMCC uvmm/snapshot/remove -o domainURI="$MASTER#$MUUID" -o snapshotName=test1
 
 # revert snapshot
 UMCC uvmm/snapshot/revert -o domainURI="$MASTER#$MUUID" -o snapshotName=test2
+
+# List profiles
+UMCC uvmm/profile/query -o nodeURI="qemu://$hostname.$domainname/system"
+UMCC uvmm/profile/get -o profileDN="cn=Other (64 Bit),cn=kvm,cn=Profiles,cn=Virtual Machine Manager,$ldap_base"

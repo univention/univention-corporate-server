@@ -37,32 +37,15 @@ from univention.lib.i18n import Translation
 
 from univention.management.console.log import MODULE
 from univention.management.console.ldap import machine_connection
+from univention.management.console.error import UMC_Error
+from univention.management.console.modules.decorators import simple_response
 
 from urlparse import urlsplit
-
-from .tools import object2dict
 
 _ = Translation('univention-management-console-modules-uvmm').translate
 
 
-class Profile(object):
-
-	"""
-	Single UVMM profile.
-	"""
-
-	def __init__(self, profile):
-		for key, value in profile.items():
-			if key not in ('cpus',):
-				if value in ('0', 'FALSE'):
-					value = False
-				elif value in ('1', 'TRUE'):
-					value = True
-			setattr(self, key, value)
-
-
 class Profiles(object):
-
 	"""
 	UVMM profiles.
 	"""
@@ -71,6 +54,19 @@ class Profiles(object):
 	VIRTTECH_MAPPING = {
 		'kvm-hvm': _('Full virtualization (KVM)'),
 	}
+
+	@staticmethod
+	def _udm2json(data):
+		"""
+		Convert to UDM dictionary to Python dictionary
+		"""
+		for key, value in data.iteritems():
+			if key in ('vnc', 'pvcdrom', 'pvinterface', 'pvdisk', 'advkernelconf'):
+				yield (key, value in ('1', 'TRUE'))
+			elif key in ('cpus',):
+				yield (key, int(value))
+			else:
+				yield (key, value)
 
 	@machine_connection(write=False)
 	def read_profiles(self, ldap_connection=None, ldap_position=None):
@@ -92,61 +88,33 @@ class Profiles(object):
 				)
 			except udm_error as exc:
 				MODULE.error("Failed to read profiles: %s" % (exc,))
-		self.profiles = [(obj.dn, Profile(obj.info)) for obj in res]
+		self.profiles = dict(
+			(obj.dn, dict(self._udm2json(obj.info)))
+			for obj in res
+		)
+		MODULE.info("read %d profiles from LDAP" % (len(self.profiles),))
 
-	def _filter_profiles(self, node_pd):
+	@simple_response
+	def profile_query(self, nodeURI):
 		"""
-		Return profiles valid for node.
+		Returns a list of profiles matching the given host.
 		"""
-		uri = urlsplit(node_pd.uri)
-		# set default virtualization technology
+		uri = urlsplit(nodeURI)
 		tech = 'kvm' if uri.scheme == 'qemu' else uri.scheme
-		# read architectures from capabilities
-		archs = set([t.arch for t in node_pd.capabilities]) | set(('automatic',))
+		MODULE.info("profile/query.tech=%s" % (tech,))
 
 		return [
-			(dn, item)
-			for dn, item in self.profiles
-			if item.arch in archs and item.virttech.startswith(tech)
+			{'id': dn, 'label': profile['name'], 'data': profile}
+			for (dn, profile) in self.profiles.iteritems()
+			if profile['virttech'].startswith(tech)
 		]
 
-	def profile_query(self, request):
+	@simple_response
+	def profile_get(self, profileDN):
 		"""
-		Returns a list of profiles for the given virtualization technology.
+		Returns one profile.
 		"""
-		self.required_options(request, 'nodeURI')
-
-		def _finished(data):
-			"""
-			Process asynchronous UVMM NODE_LIST answer.
-			"""
-			return [
-				{'id': dn, 'label': item.name}
-				for pd in data
-				for (dn, item) in self._filter_profiles(pd)
-			]
-
-		self.uvmm.send(
-			'NODE_LIST',
-			self.process_uvmm_response(request, _finished),
-			group='default',
-			pattern=request.options['nodeURI']
-		)
-
-	def profile_get(self, request):
-		"""
-		Returns a list of profiles for the given virtualization technology.
-		"""
-		self.required_options(request, 'profileDN')
-
-		for dn, profile in self.profiles:
-			if dn == request.options['profileDN']:
-				self.finished(request.id, object2dict(profile))
-				return
-
-		self.finished(
-			request.id,
-			None,
-			_('Unknown profile'),
-			success=False
-		)
+		try:
+			return self.profiles[profileDN]
+		except LookupError:
+			raise UMC_Error(_('Unknown profile %s') % (profileDN,))
