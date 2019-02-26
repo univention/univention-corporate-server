@@ -1073,7 +1073,7 @@ class simpleLdap(object):
 		if 'objectClass' in self.oldattr:
 			ocs = set(self.oldattr['objectClass'])
 			for opt, option in options.iteritems():
-				if not option.disabled and option.matches(ocs):
+				if not option.disabled and option.matches(ocs) and self.__app_option_enabled(opt, option):
 					self.options.append(opt)
 		else:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'reset options to default by _define_options')
@@ -1102,6 +1102,11 @@ class simpleLdap(object):
 			This does not work for not yet existing objects.
 		"""
 		return option in set(self.options) ^ set(self.old_options)
+
+	def __app_option_enabled(self, name, option):
+		if option.is_app_option:
+			return all(self[pname] in ('TRUE', '1') for pname, prop in self.descriptions.iteritems() if name in prop.options and prop.syntax.name in ('AppActivatedBoolean', 'AppActivatedTrue'))
+		return True
 
 	def description(self):  # type: () -> str
 		"""
@@ -1265,6 +1270,7 @@ class simpleLdap(object):
 		self.call_udm_property_hook('hook_ldap_pre_modify', self)
 
 		self.set_default_values()
+		self._fix_app_options()
 
 		# iterate over all properties and call checkLdap() of corresponding syntax
 		self._call_checkLdap_on_all_property_syntaxes()
@@ -1299,6 +1305,15 @@ class simpleLdap(object):
 					self[name]  # __getitem__ sets default value
 			finally:
 				self.set_defaults = set_defaults
+
+	def _fix_app_options(self):
+		# for objects with objectClass=appObject and appObjectActivated=0 we must set appObjectActivated=1
+		for option, opt in getattr(univention.admin.modules.get(self.module), 'options', {}).items():
+			if not opt.is_app_option or not self.option_toggled(option) or option not in self.options:
+				continue
+			for pname, prop in self.descriptions.items():
+				if option in prop.options and prop.syntax.name in ('AppActivatedBoolean', 'AppActivatedTrue'):
+					self[pname] = True
 
 	def _ldap_object_classes(self, ml):  # type: (list) -> list
 		"""Detects the attributes changed in the given modlist, calculates the changes of the object class and appends it to the modlist."""

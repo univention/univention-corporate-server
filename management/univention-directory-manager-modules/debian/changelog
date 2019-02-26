@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.8-4) unstable; urgency=medium
+
+  * Bug #48621: enforce setting disabled app activation set
+
+ -- Florian Best <best@univention.de>  Tue, 26 Feb 2019 16:19:34 +0100
+
 univention-directory-manager-modules (14.0.8-3) unstable; urgency=medium
 
   * Bug #48717: Generic UDM Events

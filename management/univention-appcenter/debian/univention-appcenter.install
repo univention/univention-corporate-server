@@ -1,4 +1,5 @@
 udm/handlers/appcenter/*.py usr/share/univention-appcenter
+udm/syntax/*.py usr/share/univention-appcenter
 ldap/*.schema usr/share/univention-appcenter
 ldap/*.acl usr/share/univention-appcenter
 scripts/univention-app usr/bin

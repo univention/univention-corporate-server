@@ -38,7 +38,7 @@ import re
 from univention.appcenter.app import CaseSensitiveConfigParser
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
-from univention.appcenter.ucr import ucr_get
+from univention.appcenter.ucr import ucr_get, ucr_run_filter
 from univention.appcenter.udm import create_object_if_not_exists, create_recursive_container, remove_object_if_exists, modify_object
 from univention.appcenter.utils import underscore, get_md5, read_ini_file
 
@@ -180,6 +180,7 @@ class ExtendedAttribute(SchemaObject):
 	dont_search = HiddenAttribute()
 	tab_position = HiddenAttribute()
 	group_name = HiddenAttribute()
+	group_name_de = HiddenAttribute()
 	delete_object_class = HiddenAttribute(True)
 	may_change = HiddenAttribute(True)
 	cli_name = HiddenAttribute()
@@ -275,7 +276,7 @@ def get_extended_attributes(app):
 	object_class_suffix = 1
 	attribute_suffix = 1
 	for section in parser.sections():
-		kwargs = dict([underscore(key), value] for key, value in parser.items(section))
+		kwargs = dict([underscore(key), ucr_run_filter(value)] for key, value in parser.items(section))
 		kwargs['name'] = section
 		if kwargs.get('type') == 'ObjectClass':
 			object_class = ObjectClass(app, **kwargs)
@@ -313,12 +314,19 @@ def get_extended_attributes(app):
 			attribute_name = '%sActivated' % (app.id,)
 		if attribute_name and attribute_name not in [attr.name for attr in attributes]:
 			attribute_logger.debug('Adding %s to list of attributes' % attribute_name)
-			attribute = ExtendedAttribute(app, module='users/user', name=attribute_name, description='Activate user for %s' % app.name, description_de='Nutzer für %s aktivieren' % app.name, syntax='Boolean')
+			attribute = ExtendedAttribute(app, module='users/user', name=attribute_name, description='Activate user for %s' % app.name, description_de='Nutzer für %s aktivieren' % app.name, syntax='Boolean', udm_syntax='AppActivatedTrue')
 			attribute.set_standard_oid(app, attribute_suffix)
 			attribute.full_width = False
 			attribute.disable_web = True  # important!
 			attribute.default = 'TRUE'  # important! the boolean flag is the extended option, so this must be enabled
 			attributes.insert(0, attribute)
+
+		if attribute_name:
+			attr = [attr for attr in attributes if attr.name == attribute_name][0]
+			if attr.udm_syntax == 'boolean':
+				attr.udm_syntax = 'AppActivatedBoolean'
+			elif attr.udm_syntax == 'TrueFalseUp':
+				attr.udm_syntax = 'AppActivatedTrue'
 
 		option_name = app.generic_user_activation_option
 		if option_name is True or not option_name:
@@ -385,6 +393,8 @@ def create_extended_attribute(attribute, app, layout_position, lo, pos):
 	if attribute.tab_name_de:
 		attrs['translationTabName'] = [('de_DE', attribute.tab_name_de)]
 	attrs['groupName'] = attribute.group_name or app.name
+	if attribute.group_name_de:
+		attrs['translationGroupName'] = [('de_DE', attribute.group_name_de)]
 	attrs['ldapMapping'] = attribute.ldap_mapping
 	attrs['objectClass'] = attribute.belongs_to
 	attrs['module'] = attribute.module

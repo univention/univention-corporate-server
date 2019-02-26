@@ -33,7 +33,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=2
+VERSION=3
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/ldap.sh
@@ -49,7 +49,8 @@ univention-directory-manager container/cn create "$@" --ignore_exists \
 ucs_registerLDAPExtension "$@" \
 	--schema /usr/share/univention-appcenter/univention-app.schema \
 	--acl /usr/share/univention-appcenter/66univention-appcenter_app.acl \
-	--udm_module /usr/share/univention-appcenter/app.py || die
+	--udm_module /usr/share/univention-appcenter/app.py \
+	--udm_syntax /usr/share/univention-appcenter/app_syntax.py || die
 
 if [ -x /etc/init.d/slapd ] &&
 	[ -x /usr/share/univention-ldap/ldap_setup_index ] &&

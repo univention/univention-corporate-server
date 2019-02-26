@@ -377,8 +377,10 @@ class TwoString(string):
 class TextArea(string):
 	pass
 
+
 class Editor(string):
 	pass
+
 
 class TwoEditor(Editor):
 	size = 'Two'
@@ -675,6 +677,10 @@ class boolean(simple):
 	@classmethod
 	def sanitize_property_search_value(cls, search_value):
 		return '1' if search_value is True else '0'
+
+
+class AppActivatedBoolean(boolean):
+	pass
 
 
 class filesize(simple):
@@ -2506,6 +2512,10 @@ class TrueFalseUp(IStates):
 	)
 
 
+class AppActivatedTrue(TrueFalseUp):
+	pass
+
+
 class OkOrNot(IStates):
 	values = (
 		(True, ('OK', _('OK'))),
@@ -3655,6 +3665,7 @@ class LocalizedDisplayName(translationTuple):
 
 class LocalizedDescription(translationTuple):
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Description'), string)]
+
 
 class LocalizedAnonymousEmpty(translationTuple):
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Message that is shown to anonymous visitors when the portal is empty'), TwoEditor)]
