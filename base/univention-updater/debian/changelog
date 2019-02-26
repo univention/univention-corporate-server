@@ -1,3 +1,9 @@
+univention-updater (14.0.0-13) unstable; urgency=medium
+
+  * Bug #48718: Explicit dependency to univention-admin-diary-client
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 26 Feb 2019 20:33:08 +0100
+
 univention-updater (14.0.0-12) unstable; urgency=medium
 
   * Bug #48717: Admin Diary Events when starting / ending an upgrade
