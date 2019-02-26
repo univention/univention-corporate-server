@@ -69,16 +69,14 @@ define([
 			} catch (err) { }
 
 			// query the profile settings
-			var profileDN = this.getWidget('profileDN').get('value');
+			var profileDN = this.getWidget('profile').get('value');
 			this.standbyDuring(tools.umcpCommand('uvmm/profile/get', {
 				profileDN: profileDN
 			}).then(lang.hitch(this, function(data) {
 				// we got the profile...
 				this._profile = data.result;
-				this._profile.profileDN = profileDN;
 
 				// pre-set the form fields
-				this.getWidget('profile').set('value', profileDN);
 				this.getWidget('name').set('value', this._profile.name_prefix || '');
 				this.getWidget('name').set('pattern', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[^./][^/]*$' : '.*');
 				this.getWidget('maxMem').set('value', types.parseCapacity(this._profile.ram || '4 MiB'));
@@ -121,9 +119,6 @@ define([
 					helpText: _('The following settings were read from the selected profile and can be modified now.'),
 					widgets: [{
 						name: 'profile',
-						type: HiddenInput
-					}, {
-						name: 'profileDN',
 						type: ComboBox,
 						label: _('Profile'),
 						dynamicOptions: {nodeURI: this.nodeURI},
