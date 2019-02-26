@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Univention RADIUS 802.1X
-#  NTLM-Authentication program
+# Univention RADIUS
 #
 # Copyright (C) 2012-2019 Univention GmbH
 #
@@ -34,7 +33,7 @@
 
 def get_NetworkAccess():
 	try:
-		# Use the extended ucs@school network access check if installed
+		# Use the extended UCS@school network access check if installed
 		from univention.radius.school_networkaccess import SchoolNetworkAccess
 		return SchoolNetworkAccess
 	except ImportError:
