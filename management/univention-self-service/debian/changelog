@@ -1,3 +1,9 @@
+univention-self-service (4.0.1-10) unstable; urgency=medium
+
+  * Bug #48710: use user account to change itself instead of cn=admin
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 26 Feb 2019 09:42:09 +0100
+
 univention-self-service (4.0.1-9) unstable; urgency=medium
 
   * Bug #48446: Set restart timeout to 60 seconds

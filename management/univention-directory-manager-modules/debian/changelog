@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.8-2) unstable; urgency=medium
+
+  * Bug #48710: fix hasChanged('disabled') wrongfully returning True
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 26 Feb 2019 09:43:09 +0100
+
 univention-directory-manager-modules (14.0.8-1) unstable; urgency=medium
 
   * Bug #48621: default values weren't evaluated when modifying an object.
