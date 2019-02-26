@@ -6,21 +6,8 @@ src: libreoffice
 fix: 1:4.3.3-2+deb8u12
 desc: |
  This update addresses the following issue:
-
- * 1:4.3.3-2+deb8u12 (Thu, 07 Feb 2019 14:24:28 -0500) [ Antoine Beaupré ] *
-   non-maintainer upload for the LTS security team [ Rene Engelhard ] *
-   debian/patches/keep-pyuno-script-processing-below-base-uri.diff: as name
-   says (CVE-2018-16858)
-
- * 1:4.3.3-2+deb8u12 (Thu, 07 Feb 2019 14:24:28 -0500) [ Antoine Beaupré ] *
-   non-maintainer upload for the LTS security team [ Rene Engelhard ] *
-   debian/patches/keep-pyuno-script-processing-below-base-uri.diff: as name
-   says (CVE-2018-16858)
-
- * 1:4.3.3-2+deb8u12 (Thu, 07 Feb 2019 14:24:28 -0500) [ Antoine Beaupré ] *
-   non-maintainer upload for the LTS security team [ Rene Engelhard ] *
-   debian/patches/keep-pyuno-script-processing-below-base-uri.diff: as name
-   says (CVE-2018-16858)
+ * Arbitrary python functions in arbitrary modules on the filesystem can be
+   executed without warning (CVE-2018-16858)
 bug: [48762]
 cve:
 - CVE-2018-16858
