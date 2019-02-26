@@ -49,7 +49,15 @@ class DiaryEvent(object):
 
 APP_INSTALL_START = DiaryEvent('APP_INSTALL_START', {'en': 'Installation of {name} {version} started', 'de': 'Installation von {name} {version} wurde gestartet'}, args=['name', 'version'], icon='software')
 APP_INSTALL_SUCCESS = DiaryEvent('APP_INSTALL_SUCCESS', {'en': 'Installation of {name} {version} was successful', 'de': 'Die Installation von {name} {version} war erfolgreich'}, args=['name', 'version'], icon='software')
-APP_INSTALL_FAILURE = DiaryEvent('APP_INSTALL_FAILURE', {'en': 'Installation of {name} {version} failed. Error {error_code}', 'de': 'Installation von {name} {version} schlug fehl. Fehler {error_code}'}, args=['name', 'version', 'error_code'], tags=['error'], icon='software')
+APP_INSTALL_FAILURE = DiaryEvent('APP_INSTALL_FAILURE', {'en': 'Installation of {name} {version} failed. Error {error_code}', 'de': 'Die Installation von {name} {version} schlug fehl. Fehler {error_code}'}, args=['name', 'version', 'error_code'], tags=['error'], icon='software')
+
+APP_UPGRADE_START = DiaryEvent('APP_UPGRADE_START', {'en': 'Upgrade of {name} {version} started', 'de': 'Aktualisierung von {name} {version} wurde gestartet'}, args=['name', 'version'], icon='software')
+APP_UPGRADE_SUCCESS = DiaryEvent('APP_UPGRADE_SUCCESS', {'en': 'Upgrade to {name} {version} was successful', 'de': 'Die Aktualisierung auf {name} {version} war erfolgreich'}, args=['name', 'version'], icon='software')
+APP_UPGRADE_FAILURE = DiaryEvent('APP_UPGRADE_FAILURE', {'en': 'Upgrade of {name} {version} failed. Error {error_code}', 'de': 'Die Aktualisierung von {name} {version} schlug fehl. Fehler {error_code}'}, args=['name', 'version', 'error_code'], tags=['error'], icon='software')
+
+APP_REMOVE_START = DiaryEvent('APP_REMOVE_START', {'en': 'Removal of {name} {version} started', 'de': 'Deinstallation von {name} {version} wurde gestartet'}, args=['name', 'version'], icon='software')
+APP_REMOVE_SUCCESS = DiaryEvent('APP_REMOVE_SUCCESS', {'en': 'Removal of {name} {version} was successful', 'de': 'Die Deinstallation von {name} {version} war erfolgreich'}, args=['name', 'version'], icon='software')
+APP_REMOVE_FAILURE = DiaryEvent('APP_REMOVE_FAILURE', {'en': 'Removal of {name} {version} failed. Error {error_code}', 'de': 'Die Deinstallation von {name} {version} schlug fehl. Fehler {error_code}'}, args=['name', 'version', 'error_code'], tags=['error'], icon='software')
 
 SERVER_PASSWORD_CHANGED = DiaryEvent('SERVER_PASSWORD_CHANGED', {'en': 'Machine account password changed successfully', 'de': 'Maschinenpasswort erfolgreich geändert'}, icon='devices')
 SERVER_PASSWORD_CHANGED_FAILED = DiaryEvent('SERVER_PASSWORD_CHANGED_FAILED', {'en': 'Machine account password change failed', 'de': 'Änderung des Maschinenpassworts fehlgeschlagen'}, tags=['error'], icon='devices')

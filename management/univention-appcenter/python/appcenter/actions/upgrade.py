@@ -32,6 +32,9 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+from univention.admindiary.client import write_event
+from univention.admindiary.events import APP_UPGRADE_START, APP_UPGRADE_SUCCESS, APP_UPGRADE_FAILURE
+
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions.install import Install
 from univention.appcenter.ucr import ucr_is_true
@@ -76,6 +79,15 @@ class Upgrade(Install):
 				return
 		args.app = app
 		return self.do_it(args)
+
+	def _write_start_event(self, app, args):
+		return write_event(APP_UPGRADE_START, {'name': app.name, 'version': self.old_app.version}, username=self._get_username(args))
+
+	def _write_success_event(self, app, context_id, args):
+		return write_event(APP_UPGRADE_SUCCESS, {'name': app.name, 'version': app.version}, username=self._get_username(args), context_id=context_id)
+
+	def _write_fail_event(self, app, context_id, status, args):
+		return write_event(APP_UPGRADE_FAILURE, {'name': app.name, 'version': self.old_app.version, 'error_code': str(status)}, username=self._get_username(args), context_id=context_id)
 
 	def needs_credentials(self, app):
 		needs_credentials = super(Upgrade, self).needs_credentials(app)

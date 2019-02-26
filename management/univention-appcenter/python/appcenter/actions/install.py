@@ -32,6 +32,9 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+from univention.admindiary.client import write_event
+from univention.admindiary.events import APP_INSTALL_START, APP_INSTALL_SUCCESS, APP_INSTALL_FAILURE
+
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions import get_action
 from univention.appcenter.exceptions import Abort, InstallMasterPackagesPasswordError, InstallMasterPackagesNoninteractiveError, InstallFailed, InstallNonDockerVersionError, InstallWithoutPermissionError
@@ -79,6 +82,15 @@ class Install(InstallRemoveUpgrade):
 				raise InstallWithoutPermissionError()
 		args.app = app
 		return self.do_it(args)
+
+	def _write_start_event(self, app, args):
+		return write_event(APP_INSTALL_START, {'name': app.name, 'version': app.version}, username=self._get_username(args))
+
+	def _write_success_event(self, app, context_id, args):
+		return write_event(APP_INSTALL_SUCCESS, {'name': app.name, 'version': app.version}, username=self._get_username(args), context_id=context_id)
+
+	def _write_fail_event(self, app, context_id, status, args):
+		return write_event(APP_INSTALL_FAILURE, {'name': app.name, 'version': app.version, 'error_code': str(status)}, username=self._get_username(args), context_id=context_id)
 
 	def _install_only_master_packages(self, args):
 		return args.only_master_packages

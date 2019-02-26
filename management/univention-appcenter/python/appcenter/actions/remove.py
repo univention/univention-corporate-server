@@ -34,6 +34,9 @@
 
 import os.path
 
+from univention.admindiary.client import write_event
+from univention.admindiary.events import APP_REMOVE_START, APP_REMOVE_SUCCESS, APP_REMOVE_FAILURE
+
 from univention.appcenter.actions.install_base import InstallRemoveUpgrade
 from univention.appcenter.ucr import ucr_save
 from univention.appcenter.packages import remove_packages, remove_packages_dry_run, update_packages
@@ -73,6 +76,15 @@ class Remove(InstallRemoveUpgrade):
 		self._call_unjoin_script(app, args)
 		if not app.docker:
 			ucr_save({'appcenter/prudence/docker/%s' % app.id: 'yes'})
+
+	def _write_start_event(self, app, args):
+		return write_event(APP_REMOVE_START, {'name': app.name, 'version': app.version}, username=self._get_username(args))
+
+	def _write_success_event(self, app, context_id, args):
+		return write_event(APP_REMOVE_SUCCESS, {'name': app.name, 'version': app.version}, username=self._get_username(args), context_id=context_id)
+
+	def _write_fail_event(self, app, context_id, status, args):
+		return write_event(APP_REMOVE_FAILURE, {'name': app.name, 'version': app.version, 'error_code': str(status)}, username=self._get_username(args), context_id=context_id)
 
 	def needs_credentials(self, app):
 		if os.path.exists(app.get_cache_file(self.prescript_ext)):

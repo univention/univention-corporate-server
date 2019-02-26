@@ -40,9 +40,6 @@ import subprocess
 from argparse import SUPPRESS, Action
 from tempfile import NamedTemporaryFile
 
-from univention.admindiary.client import write_event
-from univention.admindiary.events import APP_INSTALL_START, APP_INSTALL_SUCCESS, APP_INSTALL_FAILURE
-
 from univention.appcenter.app import App
 from univention.appcenter.actions import StoreAppAction, get_action
 from univention.appcenter.exceptions import Abort, NetworkError, AppCenterError, ParallelOperationInProgress
@@ -84,12 +81,20 @@ class InstallRemoveUpgrade(Register):
 
 	main = None  # no action by itself
 
+	def _write_start_event(self, app, args):
+		pass
+
+	def _write_success_event(self, app, context_id, args):
+		pass
+
+	def _write_fail_event(self, app, context_id, status, args):
+		pass
+
 	def do_it(self, args):
 		app = args.app
 		status = 200
 		status_details = None
-		if self.get_action_name() == 'install':
-			context_id = write_event(APP_INSTALL_START, {'name': app.name, 'version': app.version}, username=self._get_username(args))
+		context_id = self._write_start_event(app, args)
 		try:
 			action = self.get_action_name()
 			self.log('Going to %s %s (%s)' % (action, app.name, app.version))
@@ -150,11 +155,9 @@ class InstallRemoveUpgrade(Register):
 				pass
 			else:
 				if status == 200:
-					if self.get_action_name() == 'install':
-						write_event(APP_INSTALL_SUCCESS, {'name': app.name, 'version': app.version}, username=self._get_username(args), context_id=context_id)
+					self._write_success_event(app, context_id, args)
 				else:
-					if self.get_action_name() == 'install':
-						write_event(APP_INSTALL_FAILURE, {'name': app.name, 'version': app.version, 'error_code': str(status)}, username=self._get_username(args), context_id=context_id)
+					self._write_fail_event(app, context_id, status, args)
 				if status != 200:
 					self._revert(app, args)
 				if args.send_info:
