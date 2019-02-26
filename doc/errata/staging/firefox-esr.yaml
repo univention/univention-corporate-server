@@ -1,0 +1,14 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: firefox-esr
+fix: 60.5.1esr-1~deb8u1
+desc: |
+ This update addresses the following issues:
+ * Use after free in Skia (CVE-2018-18356)
+ * Integer overflow in Skia (CVE-2019-5785)
+bug: [48766]
+cve:
+- CVE-2018-18356
+- CVE-2019-5785
