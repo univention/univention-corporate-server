@@ -1,0 +1,31 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: glibc
+fix: 2.24-11+deb9u4
+desc: |
+ This update addresses the following issues:
+ * Buffer overflow in glob with GLOB_TILDE (CVE-2017-15670)
+ * Memory leak in glob with GLOB_TILDE (CVE-2017-15671)
+ * Buffer overflow during unescaping of user names with the ~ operator
+   (CVE-2017-15804)
+ * Incorrect handling of RPATH in elf/dl-load.c can be used to execute code
+   loaded from arbitrary libraries (CVE-2017-16997)
+ * memory corruption in memcpy-sse2-unaligned.S (CVE-2017-18269)
+ * Memory leak reachable via LD_HWCAP_MASK (CVE-2017-1000408)
+ * Buffer overflow triggerable via LD_LIBRARY_PATH (CVE-2017-1000409)
+ * Integer overflow in stdlib/canonicalize.c on 32-bit architectures leading
+   to stack-based buffer overflow (CVE-2018-11236)
+ * Buffer overflow in __mempcpy_avx512_no_vzeroupper (CVE-2018-11237)
+bug: [48778]
+cve:
+- CVE-2017-15670
+- CVE-2017-15671
+- CVE-2017-15804
+- CVE-2017-16997
+- CVE-2017-18269
+- CVE-2017-1000408
+- CVE-2017-1000409
+- CVE-2018-11236
+- CVE-2018-11237
