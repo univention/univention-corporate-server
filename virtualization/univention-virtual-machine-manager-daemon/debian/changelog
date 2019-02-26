@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (7.0.0-20) unstable; urgency=low
+
+  * Bug #48098: Add RAM overcommit protection
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 06 Mar 2019 14:37:41 +0100
+
 univention-virtual-machine-manager-daemon (7.0.0-19) unstable; urgency=low
 
   * Bug #48340: Replace dictionaries instead of updating them

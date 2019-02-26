@@ -45,3 +45,9 @@ Description[de]=Die Anzahl der Iterationen für die Live-Migration, nach denen U
 Description[en]=The count of iterations for live migration, after which UVMM switches to post-copy mode. Default: 0 which disables this functionality.
 Type=int
 Categories=uvmm
+
+[uvmm/overcommit/reserved]
+Description[de]=Menge des reservierten RAM des Wirt-Systems in Bytes. Dies Verhindert zusätzlich, dass zu viele VMs definiert, gestartet oder migriert werden. Standard: 0 (keine Begrenzung)
+Description[en]=Reserved amount of RAM for the host system in bytes. This also prevents that too many VMs are defined, started or migrated. Default: 0 (no limit)
+Type=int
+Categories=uvmm

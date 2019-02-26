@@ -39,7 +39,7 @@ import libvirt
 import time
 import logging
 import math
-from .helpers import TranslatableException, ms, tuple2version, N_ as _, uri_encode, FQDN
+from .helpers import TranslatableException, ms, tuple2version, N_ as _, uri_encode, FQDN, prettyCapacity
 from .uvmm_ldap import ldap_annotation, LdapError, LdapConnectionError, ldap_modify
 import univention.admin.uexceptions
 import threading
@@ -84,7 +84,7 @@ class Description(object):
     def __str__(self):  # type: () -> str
         return self.desc
 
-    def __getitem__(self, item):  # type: (int) -> str
+    def __getitem__(self, item):  # type: (int) -> Union[str, Description]
         try:
             data = self.args[item]
         except IndexError:
@@ -303,7 +303,7 @@ class Domain(PersistentCached):
 
 	def __init__(self, domain, node):
 		# type: (Union[libvirt.virDomain, str], Node) -> None
-		self.node = node
+		self.node = node  # type: Node
 		self._time_stamp = 0.0
 		self._time_used = 0L
 		self._cpu_usage = 0.0
@@ -734,8 +734,14 @@ class _DomainDict(dict):
 
 
 class Node(PersistentCached):
+	"""
+	Container for node statistics.
+	"""
 
-	"""Container for node statistics."""
+	try:
+		reservedMem = max(0, int(configRegistry['uvmm/overcommit/reserved']))
+	except (LookupError, TypeError, ValueError):
+		reservedMem = 0
 
 	def __init__(self, uri, cache_dir):
 		# type: (str, str) -> None
@@ -765,7 +771,7 @@ class Node(PersistentCached):
 				try:
 					data = pickle.Unpickler(cache_file)
 					assert data is not None
-					self.pd = data.load()
+					self.pd = data.load()  # type: Data_Node
 				except:
 					os.unlink(cache_file_name)
 					raise
@@ -875,7 +881,7 @@ class Node(PersistentCached):
 		assert self.conn is not None
 		self.pd.name = self.conn.getHostname()
 		info = self.conn.getInfo()
-		self.pd.phyMem = long(info[1]) << 20  # MiB
+		self.pd.phyMem = (long(info[1]) << 20) - self.reservedMem  # MiB
 		self.pd.cpus = info[2]
 		self.pd.cores = tuple(info[4:8])
 		xml = self.conn.getCapabilities()
@@ -1232,6 +1238,25 @@ class Node(PersistentCached):
 		# type: (str) -> str
 		"""Return the path of the domain cache directory of the node."""
 		return self.cache_file_name(uri, suffix='.d')
+
+	def _check_ram_overcommit(self, domain):
+		# type: (Domain) -> None
+		"""
+		Check if starting/migrating the VM is withing the RAM limit of the node.
+
+		:param domain: The domain to start/migrate.
+		:raises NodeError: if the currently available RAM on the node is not enough.
+		"""
+		if not self.reservedMem:
+			return
+
+		ram_vm = domain.pd.maxMem
+		ram_host = self.pd.phyMem - self.pd.curMem
+		if ram_vm > ram_host:
+			raise NodeError(_('RAM overcommitment: VM RAM %(vm)s exceeds available host RAM %(host)s') % {
+				'vm': prettyCapacity(ram_vm),
+				'host': prettyCapacity(ram_host),
+			})
 
 
 class Nodes(dict):
@@ -1918,6 +1943,7 @@ def domain_state(uri, domain, state):
 
 		if transition:
 			if state == 'RUN':
+				node._check_ram_overcommit(dom_stat)
 				# if interfaces of type NETWORK exist, verify that the network is active
 				for nic in dom_stat.pd.interfaces:
 					if nic.type == Interface.TYPE_NETWORK:
@@ -2103,6 +2129,7 @@ def domain_migrate(source_uri, domain, target_uri, mode=0):
 		target_conn = target_node.conn
 		assert target_conn is not None
 
+		target_node._check_ram_overcommit(domStat)
 		_domain_backup(source_dom)
 
 		def _migrate(errors):

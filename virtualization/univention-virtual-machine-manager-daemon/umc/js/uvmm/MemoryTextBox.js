@@ -30,10 +30,12 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/_base/lang",
 	"dijit/form/MappedTextBox",
+	"umc/widgets/TextBoxMaxLengthChecker",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, MappedTextBox, types, _) {
+], function(declare, lang, MappedTextBox, TextBoxMaxLengthChecker, types, _) {
 	return declare("umc.widgets.Text", [MappedTextBox], {
 		// summary:
 		//		A dojo mapped text box checks that a formatted value can be parsed back.
@@ -42,6 +44,8 @@ define([
 		//		Workaround: a lossless cache
 
 		cache: null,
+		softMaxMessage: null,
+		softMax: null,
 
 		resetCache: function() {
 			this.cache = {pretty2bytes: {}, bytes2pretty: {}};
@@ -50,6 +54,21 @@ define([
 		postMixInProperties: function() {
 			this.resetCache();
 			this.inherited(arguments);
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+			if (this.softMax) {
+				this.lengthChecker = new TextBoxMaxLengthChecker({
+					usernameTooLong: lang.hitch(this, function() {
+						return this.softMax <= types.parseCapacity(this.get('value'), this.defaultUnit);
+					}),
+					maxLength: this.softMax,
+					warningMessage: this.softMaxMessage,
+					textBoxWidget: this
+				});
+				//this.own(this.lengthChecker);
+			}
 		},
 
 		constraints: {min: 4*1024*1024, max: 4*1024*1024*1024*1024},  // 4 MiB .. 4 TiB
