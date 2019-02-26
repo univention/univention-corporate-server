@@ -44,6 +44,15 @@ define([
 		moduleStore: null,
 		idProperty: 'context_id',
 
+
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			this.selectablePagesToLayoutMapping = {
+				'_overviewPage': 'searchpage-grid',
+				'_detailsPage': ''
+			};
+		},
+
 		buildRendering: function() {
 			this.inherited(arguments);
 

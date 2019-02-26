@@ -46,7 +46,7 @@ define([
 ], function(declare, lang, array, locale, dialog, tools, Page, Grid, SearchForm, DateBox, ComboBox, TextBox, SearchBox, _) {
 	return declare("umc.modules.admindiary.OverviewPage", [ Page ], {
 
-		baseClass: 'umcPage admindiaryOverview',
+		'class': 'admindiaryOverview',
 		moduleStore: null,
 		_grid: null,
 		_searchForm: null,
