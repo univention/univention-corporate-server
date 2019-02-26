@@ -1,0 +1,65 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: linux
+fix: 4.9.144-3
+desc: |
+ This update addresses the following issues:
+ * Race condition in fs/f2fs/node.c:add_free_nid() function allows local users
+   to cause denial of service (CVE-2017-18249)
+ * cephx protocol is vulnerable to replay attack (CVE-2018-1128)
+ * cephx uses weak signatures (CVE-2018-1129)
+ * buffer overflow in drivers/net/wireless/ath/wil6210/wmi.c:wmi_set_ie() may
+   lead to memory corruption (CVE-2018-5848)
+ * Integer overflow in kernel/time/posix-timers.c (CVE-2018-12896)
+ * Integer overflow in the alarm_timer_nsleep function (CVE-2018-13053)
+ * out-of-bounds memory access in fs/f2fs/super.c (CVE-2018-13096)
+ * divide-by-zero in fs/f2fs/super.c (CVE-2018-13097)
+ * divide-by-zero in fs/f2fs/super.c (CVE-2018-13100)
+ * Out-of-bounds access in write_extent_buffer() when mounting and operating a
+   crafted btrfs image (CVE-2018-14610)
+ * Use-after-free in try_merge_free_space() when mounting crafted btrfs image
+   (CVE-2018-14611)
+ * Invalid pointer dereference in btrfs_root_node() when mounting a crafted
+   btrfs image (CVE-2018-14612)
+ * Invalid pointer dereference in io_ctl_map_page() when mounting and
+   operating a crafted btrfs image (CVE-2018-14613)
+ * Out-of-bounds access in fs/f2fs/segment.c:__remove_dirty_segment() when
+   mounting a crafted f2fs image (CVE-2018-14614)
+ * NULL pointer dereference in fs/crypto/crypto.c:fscrypt_do_page_crypto()
+   when operating on a corrupted f2fs image (CVE-2018-14616)
+ * cleancache: Infoleak of deleted files after reuse of old inodes
+   (CVE-2018-16862)
+ * Unprivileged users able to inspect kernel stacks of arbitrary tasks
+   (CVE-2018-17972)
+ * TLB flush happens too late on mremap (CVE-2018-18281)
+ * filesystem corruption due to an unchecked error condition during an xfs
+   attribute change (CVE-2018-18690)
+ * Information leak in cdrom_ioctl_select_disc in drivers/cdrom/cdrom.c
+   (CVE-2018-18710)
+ * kvm: NULL pointer dereference in vcpu_scan_ioapic in arch/x86/kvm/x86.c
+   (CVE-2018-19407)
+bug: [48782]
+cve:
+- CVE-2017-18249
+- CVE-2018-1128
+- CVE-2018-1129
+- CVE-2018-5848
+- CVE-2018-12896
+- CVE-2018-13053
+- CVE-2018-13096
+- CVE-2018-13097
+- CVE-2018-13100
+- CVE-2018-14610
+- CVE-2018-14611
+- CVE-2018-14612
+- CVE-2018-14613
+- CVE-2018-14614
+- CVE-2018-14616
+- CVE-2018-16862
+- CVE-2018-17972
+- CVE-2018-18281
+- CVE-2018-18690
+- CVE-2018-18710
+- CVE-2018-19407
