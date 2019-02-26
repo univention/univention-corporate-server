@@ -1,3 +1,10 @@
+univention-admin-diary (1.0.0-33) unstable; urgency=medium
+
+  * Bug #28499: Update debian/copyright
+  * Bug #48342: Set admin/diary/backend/port?10514 for firewall config
+
+ -- Arvid Requate <requate@univention.de>  Tue, 26 Feb 2019 21:01:58 +0100
+
 univention-admin-diary (1.0.0-32) unstable; urgency=medium
 
   * Bug #48342: disable "confirmMessages" currently because it's only

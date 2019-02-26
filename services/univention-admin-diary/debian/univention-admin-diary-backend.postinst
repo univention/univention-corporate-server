@@ -31,14 +31,16 @@
 
 #DEBHELPER#
 
+ucr set admin/diary/backend/port?10514
+
 eval "$(ucr shell admin/diary/backend/port)"
 
 case "$1" in
 	configure)
 		if [ -z "$2" ]; then  # Installation
 			univention-config-registry set \
-				security/packetfilter/package/univention-admin-diary/tcp/$admin_diary_backend_port/all=ACCEPT \
-				security/packetfilter/package/univention-admin-diary/tcp/$admin_diary_backend_port/all/en="rsyslog relp+TLS"
+				security/packetfilter/package/univention-admin-diary/tcp/"$admin_diary_backend_port"/all="ACCEPT" \
+				security/packetfilter/package/univention-admin-diary/tcp/"$admin_diary_backend_port"/all/en="rsyslog relp+TLS"
 			invoke-rc.d univention-firewall restart
 
 		fi
