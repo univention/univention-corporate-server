@@ -91,7 +91,7 @@ meta information concerning the backups are also saved in a database via
 the <emphasis>catalog</emphasis>.
 		</para>
 		<figure id="backup:bacula"><title>Bacula Schema</title>
-			<graphic scalefit="1" width="60%" fileref="illustrations44/bacula.png"/>
+			<graphic scalefit="1" width="60%" fileref="illustrations44/bacula_en.png"/>
 		</figure>
 	</section>
 
