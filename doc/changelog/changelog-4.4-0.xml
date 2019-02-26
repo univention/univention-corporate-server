@@ -176,6 +176,15 @@
 			</itemizedlist>
 		</section>
 
+		<section id="changelog:umc:admindiary">
+			<title>Univention Admin Diary</title>
+			<itemizedlist>
+				<listitem><simpara>
+					There are two new Apps, the Admin Diary Frontend and the Admin Diary Backend (<u:bug>48675</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
 		<section id="changelog:umc:udmcli">
 			<title>&ucsUDM; UMC modules and command line interface</title>
 			<itemizedlist>
