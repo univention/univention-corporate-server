@@ -103,6 +103,11 @@ msgstr ""
 "das Betriebssystem nicht kooperiert kann \"Beenden\" benutzt werden, um die "
 "virtuelle Maschine zwangsweise auszuschalten.</p>"
 
+#: umc/js/uvmm.js:518
+#, javascript-format
+msgid "<p>This machine is currently being migrated.</p><p>%s</p>"
+msgstr "<p>Diese Maschine wird derzeit migriert.</p><p>%s</p>"
+
 #: umc/js/uvmm.js:409
 msgid ""
 "A connection to a virtualization infrastructure could not be established. "
@@ -226,7 +231,7 @@ msgstr ""
 
 #: umc/js/uvmm/SnapshotGrid.js:181 umc/js/uvmm/TargetHostGrid.js:124
 #: umc/js/uvmm/TargetHostGrid.js:226
-msgid "An error ocurred during processing your request."
+msgid "An error occurred during processing your request."
 msgstr "Ein Fehler trat während der Bearbeitung Ihrer Anfrage auf."
 
 #: umc/js/uvmm/types.js:136
@@ -393,7 +398,7 @@ msgid "Configure Subnet"
 msgstr "Subnetz konfigurieren"
 
 #: umc/js/uvmm/DriveGrid.js:288
-msgid "Configure cache behaviour of host."
+msgid "Configure cache behavior of host."
 msgstr "Cache-Verhalten des Hosts konfigurieren."
 
 #: umc/js/uvmm.js:1791
@@ -613,6 +618,10 @@ msgstr "Bearbeiten einer Netzwerkschnittstelle"
 #: umc/js/uvmm.js:1403 umc/js/uvmm.js:1490
 msgid "Edit the configuration of the virtual machine"
 msgstr "Konfiguration der virtuellen Maschinen bearbeiten"
+
+#: umc/js/uvmm/DomainPage.js:225
+msgid "Enable Hyper-V Enlightment"
+msgstr "Aktiviere Hyper-V Enlightment"
 
 #: umc/js/uvmm/types.js:141
 msgid "English-America"
@@ -1443,7 +1452,7 @@ msgstr ""
 #: umc/js/uvmm/DriveGrid.js:355
 msgid ""
 "The selected drive seems to be attached to other virtual machines and "
-"therefor should not be deleted."
+"therefore should not be deleted."
 msgstr ""
 "Das ausgewählte Laufwerk ist scheinbar mit einer anderen virtuellen Maschine "
 "verknüpft und sollte daher nicht gelöscht werden."
@@ -1458,7 +1467,7 @@ msgstr ""
 
 #: umc/js/uvmm/InterfaceWizard.js:84
 msgid ""
-"The source is the name of the network interface on the phyiscal server that "
+"The source is the name of the network interface on the physical server that "
 "is configured for bridging. By default it is br0."
 msgstr ""
 "Die Quelle ist der Name der Netzwerkschnittstelle des physikalischen Server "

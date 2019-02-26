@@ -191,7 +191,7 @@ class UVMM_RequestBroker(list):
 			if not thread.busy:
 				self.remove(thread)
 
-		# asynchron call
+		# asynchronous call
 		free_thread = UVMM_ConnectionThread()
 		self.append(free_thread)
 

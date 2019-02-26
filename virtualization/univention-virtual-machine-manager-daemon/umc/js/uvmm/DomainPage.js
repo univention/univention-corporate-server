@@ -221,7 +221,7 @@ define([
 				}, {
 					name: 'hyperv',
 					type: CheckBox,
-					label: _('Enable Hyper-V Enlightment)')
+					label: _('Enable Hyper-V Enlightment')
 				}, {
 					name: 'vnc_remote',
 					type: CheckBox,

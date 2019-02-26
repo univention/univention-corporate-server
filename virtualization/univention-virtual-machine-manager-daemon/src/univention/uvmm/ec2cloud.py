@@ -137,7 +137,7 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 			if param in EC2_CONNECTION_ATTRIBUTES and cloud[param]:
 				params[EC2_CONNECTION_ATTRIBUTES[param]] = cloud[param]
 
-		# if not explicitely set, use secure connection
+		# if not explicitly set, use secure connection
 		if 'secure' not in params:
 			params['secure'] = True
 

@@ -160,8 +160,8 @@ define([
 		},
 
 		_nodeHasRessources: function(node) {
-			var hasRessources = array.every(['cpuUsage', 'memUsed', 'memAvailable'], function(ressource) {
-				return node.hasOwnProperty(ressource);
+			var hasRessources = array.every(['cpuUsage', 'memUsed', 'memAvailable'], function(resource) {
+				return node.hasOwnProperty(resource);
 			});
 			return hasRessources && node.memAvailable !== 0 && node.available;
 		},

@@ -81,7 +81,7 @@ define([
 						sizeClass: 'Half',
 						type: TextBox,
 						label: _('Source'),
-						description: _('The source is the name of the network interface on the phyiscal server that is configured for bridging. By default it is br0.'),
+						description: _('The source is the name of the network interface on the physical server that is configured for bridging. By default it is br0.'),
 						value: values.source || 'br0',
 						required: true
 					}, {

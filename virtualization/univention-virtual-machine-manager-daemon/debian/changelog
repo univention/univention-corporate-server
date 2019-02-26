@@ -386,7 +386,7 @@ univention-virtual-machine-manager-daemon (4.0.24-5) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (4.0.24-4) unstable; urgency=low
 
-  * Bug #36678: Fixed VNC acces beeing half hidden in firefox.
+  * Bug #36678: Fixed VNC access being half hidden in firefox.
   * Bug #38010: Fixed the Grid in the UVMM module from endlessly refreshing if
     no connection is available.
 
@@ -1605,7 +1605,7 @@ univention-virtual-machine-manager-daemon (2.0.13-1) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (2.0.12-3) unstable; urgency=low
 
-  * Wait for runnig domain after migration (Bug #25857)
+  * Wait for running domain after migration (Bug #25857)
   * Fix lots of (exception) errors.
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 26 Oct 2012 23:29:41 +0200
@@ -2026,7 +2026,7 @@ univention-virtual-machine-manager-daemon (1.0.74-1) unstable; urgency=low
 univention-virtual-machine-manager-daemon (1.0.73-1) unstable; urgency=low
 
   * fixed traceback when creating xen instances; Bug #24729
-  * hide snapshots when thre is no hard drive or the format is not qcow2; Bug #24733
+  * hide snapshots when there is no hard drive or the format is not qcow2; Bug #24733
   * corrently save boot medium for xen-pv instances; Bug #24736
   * deactivate sorting for drive grid
   * use profile data when creating hard drives
@@ -2075,9 +2075,9 @@ univention-virtual-machine-manager-daemon (1.0.69-3) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (1.0.69-2) unstable; urgency=low
 
-  * use host capabilities to determine archiecture for new virtual instances
+  * use host capabilities to determine architecture for new virtual instances
   * add information when choosing a NAT interface
-  * interrupt migration of serveral instances when they are not located on
+  * interrupt migration of several instances when they are not located on
     the same server
   * dialog layout fixes
   * tree view: cut off domain names
@@ -2313,7 +2313,7 @@ univention-virtual-machine-manager-daemon (1.0.38-1) unstable; urgency=low
 univention-virtual-machine-manager-daemon (1.0.37-1) unstable; urgency=low
 
   * _thread_finished: return error message in 'message' field of UMCP
-    repsonse; Bug #22893
+    response; Bug #22893
   * _thread_finished_success: always return status code 200 (SUCCESS),
     details will be returned within the result
 
@@ -2803,7 +2803,7 @@ univention-virtual-machine-manager-daemon (0.9.313-1) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (0.9.312-2) unstable; urgency=low
 
-  * Support more VNC keyboad layouts (Bug #22964)
+  * Support more VNC keyboard layouts (Bug #22964)
   * Fix VNC port parsing in UVMM-CLI (Bug #22362)
   * Kill uvmm-cli-process by PID, not by name.
 
@@ -2961,7 +2961,7 @@ univention-virtual-machine-manager-daemon (0.9.207-1) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (0.9.206-1) unstable; urgency=low
 
-  * Xen PV profiles: activate flags fpr para-virtual disks and interfaces;
+  * Xen PV profiles: activate flags for para-virtual disks and interfaces;
   * explicitly set bus ide if profile for Xen PV requests fully
     virtualizied devices; Bug #19136
 
@@ -2991,7 +2991,7 @@ univention-virtual-machine-manager-daemon (0.9.203-1) unstable; urgency=low
   * Fix handling of Block Device Storage Pools (Bug #19574)
   * Add Cancel to remote & detach block device confirmation dialog (Bug #21264)
   * Update translations.
-  * Onyl suggest file based disks for deletion (Bug #19561)
+  * Only suggest file based disks for deletion (Bug #19561)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 25 Mar 2011 11:04:22 +0100
 
@@ -3317,7 +3317,7 @@ univention-virtual-machine-manager-daemon (0.9.161-1) unstable; urgency=low
 univention-virtual-machine-manager-daemon (0.9.160-1) unstable; urgency=low
 
   * uvmm_ldap.py: cleanup ldap code and use the new getMachineConnection
-    funktion (Bug #21559)
+    function (Bug #21559)
   * removed --ldap-base option from univention-virtual-machine-manager
     and univention-virtual-machine-manager-daemon (Bug #21559)
 
@@ -3453,7 +3453,7 @@ univention-virtual-machine-manager-daemon (0.9.141-1) unstable; urgency=low
 univention-virtual-machine-manager-daemon (0.9.140-1) unstable; urgency=low
 
   * shorten operating system in UCS profiles
-  * UMC modul: do not wrap operating system field; Bug #19133
+  * UMC module: do not wrap operating system field; Bug #19133
 
  -- Andreas Büsching <buesching@univention.de>  Sun, 20 Feb 2011 12:27:40 +0100
 
@@ -3524,7 +3524,7 @@ univention-virtual-machine-manager-daemon (0.9.131-1) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (0.9.130-1) unstable; urgency=low
 
-  * ensure that Xen-PV isntances are detected correctly (os type may be
+  * ensure that Xen-PV instances are detected correctly (os type may be
     linux or xen); Bug #21003
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 04 Feb 2011 11:17:38 +0100
@@ -3558,7 +3558,7 @@ univention-virtual-machine-manager-daemon (0.9.125-1) unstable; urgency=low
 
   * read operating system information from profile; Bug #19133
   * if specified in profile hard drives and/or network interface of full
-    virtual isntances can be set up as para-virtual devices; Bug
+    virtual instances can be set up as para-virtual devices; Bug
     #19136
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 26 Jan 2011 17:13:20 +0100
@@ -4379,7 +4379,7 @@ univention-virtual-machine-manager-daemon (0.9.39-1) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (0.9.38-1) unstable; urgency=low
 
-  * if associatedDomain ist not set the UCR variable domainname is used as
+  * if associatedDomain is not set the UCR variable domainname is used as
     a fallback the create the FQDN of a virtualization host; Bug #18287
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 21 Jun 2010 11:53:55 +0200
@@ -4570,7 +4570,7 @@ univention-virtual-machine-manager-daemon (0.9.21-1) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (0.9.20-1) unstable; urgency=low
 
-  * creating virtual instances without specifying a MAC addres is possible now; Bug #17733
+  * creating virtual instances without specifying a MAC address is possible now; Bug #17733
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 04 Jun 2010 15:43:39 +0200
 
@@ -4598,7 +4598,7 @@ univention-virtual-machine-manager-daemon (0.9.17-1) unstable; urgency=low
 univention-virtual-machine-manager-daemon (0.9.16-1) unstable; urgency=low
 
   * fix add button in UMC module; Bug #18359
-  * do not crash if a host is not availale; Bug #18459
+  * do not crash if a host is not available; Bug #18459
 
  -- Andreas Büsching <buesching@univention.de>  Tue, 01 Jun 2010 14:39:36 +0200
 
