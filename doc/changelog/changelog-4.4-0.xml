@@ -645,7 +645,7 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Update package <package>samba</package> to version 4.9.3 (<u:bug>48084</u:bug>).
+					The package <package>samba</package> has be updated to version 4.10.0~rc2 (<u:bug>48084</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Enable the new Samba DRS <phrase>Knowledge Consistency Checker</phrase> (<abbrev>KCC</abbrev>) by default (<u:bug>48085</u:bug>).
