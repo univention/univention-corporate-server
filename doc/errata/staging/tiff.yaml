@@ -1,0 +1,19 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: tiff
+fix: 4.0.3-12.3+deb8u8
+desc: |
+ This update addresses the following issues:
+ * NULL pointer dereference in function _TIFFmemcmp at tif_unix.c
+   (CVE-2018-17000)
+ * NULL pointer dereference in TIFFWriteDirectorySec function in
+   tif_dirwrite.c (CVE-2018-19210)
+ * integer overflow in libtiff/tif_dirwrite.c resulting in an invalid pointer
+   dereference (CVE-2019-7663)
+bug: [48760]
+cve:
+- CVE-2018-17000
+- CVE-2018-19210
+- CVE-2019-7663
