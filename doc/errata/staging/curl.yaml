@@ -1,0 +1,16 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: curl
+fix: 7.38.0-4+deb8u14
+desc: |
+ This update addresses the following issues:
+ * NTLM type-2 heap out-of-bounds buffer read (CVE-2018-16890)
+ * NTLMv2 type-3 header stack buffer overflow (CVE-2019-3822)
+ * SMTP end-of-response out-of-bounds read (CVE-2019-3823)
+bug: [48761]
+cve:
+- CVE-2018-16890
+- CVE-2019-3822
+- CVE-2019-3823
