@@ -69,23 +69,18 @@ define([
 			} catch (err) { }
 
 			// query the profile settings
-			var profileDN = this.getWidget('profile').get('value');
-			this.standbyDuring(tools.umcpCommand('uvmm/profile/get', {
-				profileDN: profileDN
-			}).then(lang.hitch(this, function(data) {
-				// we got the profile...
-				this._profile = data.result;
+			var wd = this.getWidget('profile');
+			this._profile = wd.store.getValue(wd.item, "data");
 
-				// pre-set the form fields
-				this.getWidget('name').set('value', this._profile.name_prefix || '');
-				this.getWidget('name').set('pattern', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[^./][^/]*$' : '.*');
-				this.getWidget('maxMem').set('value', types.parseCapacity(this._profile.ram || '4 MiB'));
-				this.getWidget('vcpus').set('value', this._profile.cpus);
-				this.getWidget('vnc').set('value', this._profile.vnc);
+			// pre-set the form fields
+			this.getWidget('name').set('value', this._profile.name_prefix || '');
+			this.getWidget('name').set('pattern', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[^./][^/]*$' : '.*');
+			this.getWidget('maxMem').set('value', types.parseCapacity(this._profile.ram || '4 MiB'));
+			this.getWidget('vcpus').set('value', this._profile.cpus);
+			this.getWidget('vnc').set('value', this._profile.vnc);
 
-				// update page header
-				this._pages.general.set('headerText', _('Create a virtual machine (profile: %s)', this._profile.name));
-			})));
+			// update page header
+			this._pages.general.set('headerText', _('Create a virtual machine (profile: %s)', this._profile.name));
 		},
 
 		postMixInProperties: function() {
