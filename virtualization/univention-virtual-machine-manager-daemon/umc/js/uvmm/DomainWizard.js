@@ -119,23 +119,6 @@ define([
 			// mixin the page structure
 			lang.mixin(this, {
 				pages: [{
-/*					name: 'profile',
-					headerText: _('Create a virtual machine'),
-					helpText: _('By selecting a profile for the virtual machine most of the settings will be set to default values. In the following steps some of these values might be modified. After the creation of the virtual machine all parameters, extended settings and attached drives can be adjusted. It should be ensured that the profile is for the correct architecture as this option can not be changed afterwards.'),
-					widgets: [{
-						name: 'nodeURI',
-						type: ComboBox,
-						label: _('Physical server'),
-						dynamicValues: types.getNodes,
-						value: nodeURI
-					}, {
-						name: 'profileDN',
-						type: ComboBox,
-						label: _('Profile'),
-						depends: 'nodeURI',
-						dynamicValues: types.getProfiles
-					}]
-				}, {*/
 					name: 'general',
 					headerText: _('Create a virtual machine'),
 					helpText: _('The following settings were read from the selected profile and can be modified now.'),
@@ -219,38 +202,7 @@ define([
 
 		next: function(pageName) {
 			var nextName = this.inherited(arguments);
-			/*if (pageName == 'profile') {
-				// put limit on memory
-				try {
-					var nodeURI = this.getWidget('nodeURI');
-					var maxMem = nodeURI.store.getValue(nodeURI.item, 'memAvailable');
-					this.getWidget('maxMem').get('constraints').max = maxMem;
-				} catch (err) { }
-
-				// query the profile settings
-				var profileDN = this.getWidget('profileDN').get('value');
-				this.standbyDuring(tools.umcpCommand('uvmm/profile/get', {
-					profileDN: profileDN
-				}).then(lang.hitch(this, function(data) {
-					// we got the profile...
-					this._profile = data.result;
-					this._profile.profileDN = profileDN;
-
-					// pre-set the form fields
-					var nodeURI = this.getWidget('nodeURI').get('value');
-					this.getWidget('general', 'nodeURI').set('value', nodeURI);
-					this.getWidget('profile').set('value', profileDN);
-					this.getWidget('name').set('value', this._profile.name_prefix || '');
-					this.getWidget('name').set('pattern', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[^./][^/]*$' : '.*');
-					this.getWidget('maxMem').set('value', types.parseCapacity(this._profile.ram || '4 MiB'));
-					this.getWidget('vcpus').set('value', this._profile.cpus);
-					this.getWidget('vnc').set('value', this._profile.vnc);
-
-					// update page header
-					this._pages.general.set('headerText', _('Create a virtual machine (profile: %s)', this._profile.name));
-				}));
-			}
-			else*/ if (pageName === 'general') {
+			if (pageName === 'general') {
 				// update the domain info for the drive grid
 				array.forEach(this.getPage(pageName)._form.getInvalidWidgets(), lang.hitch(this, function(widgetName) {  // TODO: remove when this.autoValidate
 					this.getWidget(pageName, widgetName).focus();
