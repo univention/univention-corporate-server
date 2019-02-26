@@ -190,22 +190,21 @@
 
 			<itemizedlist>
 				<listitem>
-					<para>Chrome as of version 37</para>
+					<para>Chrome as of version 71</para>
 				</listitem>
 
 				<listitem>
-					<para>Firefox as of version 38</para>
+					<para>Firefox as of version 60</para>
 				</listitem>
 
 				<listitem>
-					<para>Internet Explorer as of version 11</para>
-				</listitem>
-
-				<listitem>
-					<para>Safari and Safari Mobile as of version 9</para>
+					<para>Safari and Safari Mobile as of version 12</para>
 				</listitem>
 			</itemizedlist>
 
+			<para>
+				As of this release Internet Explorer is not supported by &ucsUMC; anymore.
+			</para>
 			<para>
 				Users running older browsers may experience display or performance issues.
 			</para>

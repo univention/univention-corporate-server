@@ -190,22 +190,21 @@
 
 			<itemizedlist>
 				<listitem>
-					<para>Chrome ab Version 37</para>
+					<para>Chrome ab Version 71</para>
 				</listitem>
 
 				<listitem>
-					<para>Firefox ab Version 38</para>
+					<para>Firefox ab Version 60</para>
 				</listitem>
 
 				<listitem>
-					<para>Internet Explorer ab Version 11</para>
-				</listitem>
-
-				<listitem>
-					<para>Safari und Safari Mobile ab Version 9</para>
+					<para>Safari und Safari Mobile ab Version 12</para>
 				</listitem>
 			</itemizedlist>
 
+			<para>
+				Der Internet Explorer wird ab diesem Release nicht mehr von &ucsUMC; unterstützt.
+			</para>
 			<para>
 				Mit älteren Browsern können Darstellungs- oder Performanceprobleme auftreten.
 			</para>
