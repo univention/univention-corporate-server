@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: wayland
+fix: 1.12.0-1+deb9u1
+desc: |
+ This update addresses the following issue:
+ * file.c: heap-based buffer overflow when reading/creating images
+   (CVE-2017-16612)
+bug: [48773]
+cve:
+- CVE-2017-16612
