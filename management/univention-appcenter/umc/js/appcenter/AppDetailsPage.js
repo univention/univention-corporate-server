@@ -548,7 +548,7 @@ define([
 			}
 		},
 
-		_renderInstallOrOpenButton(parentContainer) {
+		_renderInstallOrOpenButton: function(parentContainer) {
 			var button = null;
 			var containerLabel;
 			var headerClasses = 'mainHeader';
@@ -590,7 +590,7 @@ define([
 			}
 		},
 
-		_renderAppVote(parentContainer) {
+		_renderAppVote: function(parentContainer) {
 			var container = ContainerWidget({
 				class: 'appDetailsSidebarElement'
 			});
@@ -617,7 +617,7 @@ define([
 			this._voteButton = button;
 		},
 
-		_renderAppBuy(parentContainer) {
+		_renderAppBuy: function(parentContainer) {
 			var appBuyContainer = ContainerWidget({
 				class: 'appDetailsSidebarElement'
 			});
@@ -635,7 +635,7 @@ define([
 			this._addBuyButton(appBuyContainer);
 		},
 
-		_addBuyableAppInfo(parentContainer) {
+		_addBuyableAppInfo: function(parentContainer) {
 			domConstruct.create('span', {
 				'class': 'appDetailsSidebarText',
 				innerHTML: _('Buy %(appName)s to install version %(candidateVersion)s.',
@@ -650,18 +650,18 @@ define([
 			}
 		},
 
-		_addBuyButton(parentContainer) {
+		_addBuyButton: function(parentContainer) {
 			var buy_button = new Button({
 				name: 'shop',
 				label: _('Buy now'),
 				'class': 'umcAppSidebarButton',
 				callback: lang.hitch(this, 'openShop')
 			});
-			appBuyContainer.addChild(buy_button);
-			appBuyContainer.own(buy_button);
+			parentContainer.addChild(buy_button);
+			parentContainer.own(buy_button);
 		},
 
-		_renderAppDetails(parentContainer) {
+		_renderAppDetails: function(parentContainer) {
 			var appDetailsContainer = ContainerWidget({
 				class: 'appDetailsSidebarElement'
 			});
@@ -693,7 +693,7 @@ define([
 			domConstruct.place(this._detailsTable, appDetailsContainer.domNode);
 		},
 
-		_renderAppBadges(parentContainer) {
+		_renderAppBadges: function(parentContainer) {
 			var appBadgeContainer = new ContainerWidget({
 				class: 'appDetailsSidebarElement'
 			});
