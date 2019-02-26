@@ -6,38 +6,13 @@ src: python3.4
 fix: 3.4.2-1+deb8u2
 desc: |
  This update addresses the following issues:
-
- * 3.4.2-1+deb8u2 (Wed, 06 Feb 2019 16:55:11 +1100) * Non-maintainer upload by
-   the LTS Team. * CVE-2016-0772: Check for StartTLS failure. * CVE-2016-5636:
-   Fix integer overflow in the get_data. * CVE-2016-5699: Fix CRLF injection
-   vulnerability in the HTTPConnection.putheader function in urllib2 and
-   urllib. * CVE-2018-20406: Fix Modules/_pickle.c integer overflow. *
-   CVE-2019-5010: Fix NULL pointer dereference using a specially crafted X509
-   certificate.
-
- * 3.4.2-1+deb8u2 (Wed, 06 Feb 2019 16:55:11 +1100) * Non-maintainer upload by
-   the LTS Team. * CVE-2016-0772: Check for StartTLS failure. * CVE-2016-5636:
-   Fix integer overflow in the get_data. * CVE-2016-5699: Fix CRLF injection
-   vulnerability in the HTTPConnection.putheader function in urllib2 and
-   urllib. * CVE-2018-20406: Fix Modules/_pickle.c integer overflow. *
-   CVE-2019-5010: Fix NULL pointer dereference using a specially crafted X509
-   certificate.
-
- * 3.4.2-1+deb8u2 (Wed, 06 Feb 2019 16:55:11 +1100) * Non-maintainer upload by
-   the LTS Team. * CVE-2016-0772: Check for StartTLS failure. * CVE-2016-5636:
-   Fix integer overflow in the get_data. * CVE-2016-5699: Fix CRLF injection
-   vulnerability in the HTTPConnection.putheader function in urllib2 and
-   urllib. * CVE-2018-20406: Fix Modules/_pickle.c integer overflow. *
-   CVE-2019-5010: Fix NULL pointer dereference using a specially crafted X509
-   certificate.
-
- * 3.4.2-1+deb8u2 (Wed, 06 Feb 2019 16:55:11 +1100) * Non-maintainer upload by
-   the LTS Team. * CVE-2016-0772: Check for StartTLS failure. * CVE-2016-5636:
-   Fix integer overflow in the get_data. * CVE-2016-5699: Fix CRLF injection
-   vulnerability in the HTTPConnection.putheader function in urllib2 and
-   urllib. * CVE-2018-20406: Fix Modules/_pickle.c integer overflow. *
-   CVE-2019-5010: Fix NULL pointer dereference using a specially crafted X509
-   certificate.
+ * Check for StartTLS failure (CVE-2016-0772)
+ * Fix integer overflow in the get_data (CVE-2016-5636)
+ * Fix CRLF injection vulnerability in the HTTPConnection.putheader function
+   in urllib2 and urllib (CVE-2016-5699)
+ * Fix Modules/_pickle.c integer overflow (CVE-2018-20406)
+ * Fix NULL pointer dereference using a specially crafted X509 certificate
+   (CVE-2019-5010)
 bug: [48767]
 cve:
 - CVE-2016-0772
