@@ -1,0 +1,36 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: libarchive
+fix: 3.1.2-11+deb8u7
+desc: |
+ This update addresses the following issues:
+
+ * 3.1.2-11+deb8u7 (Thu, 07 Feb 2019 13:04:01 -0500) * Non-maintainer upload
+   by the LTS Security Team. * Fix CVE-2019-1000019: Out-of-bounds Read
+   vulnerability in 7zip decompression, that can result in a crash (denial of
+   service, CWE-125) * Fix CVE-2019-1000020: vulnerability in ISO9660 parser
+   that can result in DoS by infinite loop (CWE-835)
+
+ * 3.1.2-11+deb8u7 (Thu, 07 Feb 2019 13:04:01 -0500) * Non-maintainer upload
+   by the LTS Security Team. * Fix CVE-2019-1000019: Out-of-bounds Read
+   vulnerability in 7zip decompression, that can result in a crash (denial of
+   service, CWE-125) * Fix CVE-2019-1000020: vulnerability in ISO9660 parser
+   that can result in DoS by infinite loop (CWE-835)
+
+ * 3.1.2-11+deb8u7 (Thu, 07 Feb 2019 13:04:01 -0500) * Non-maintainer upload
+   by the LTS Security Team. * Fix CVE-2019-1000019: Out-of-bounds Read
+   vulnerability in 7zip decompression, that can result in a crash (denial of
+   service, CWE-125) * Fix CVE-2019-1000020: vulnerability in ISO9660 parser
+   that can result in DoS by infinite loop (CWE-835)
+
+ * 3.1.2-11+deb8u7 (Thu, 07 Feb 2019 13:04:01 -0500) * Non-maintainer upload
+   by the LTS Security Team. * Fix CVE-2019-1000019: Out-of-bounds Read
+   vulnerability in 7zip decompression, that can result in a crash (denial of
+   service, CWE-125) * Fix CVE-2019-1000020: vulnerability in ISO9660 parser
+   that can result in DoS by infinite loop (CWE-835)
+bug: [48771]
+cve:
+- CVE-2019-1000019
+- CVE-2019-1000020
