@@ -173,6 +173,9 @@
 				<listitem><simpara>
 						It is now possible to show a preview of certain Apps that are not (yet) installable. These Apps can be upvoted to get more insights whether users would want this App in the App Center (<u:bug>48472</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+						The App Center is now able to handle Apps with install permissions. This describes App versions that can only be installed when the App has been bought from the Univention App Center store. (<u:bug>48624</u:bug>, <u:bug>48544</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
