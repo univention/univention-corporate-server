@@ -78,8 +78,6 @@ define([
 				this._profile.profileDN = profileDN;
 
 				// pre-set the form fields
-				var nodeURI = this.getWidget('nodeURI').get('value');
-				this.getWidget('general', 'nodeURI').set('value', nodeURI);
 				this.getWidget('profile').set('value', profileDN);
 				this.getWidget('name').set('value', this._profile.name_prefix || '');
 				this.getWidget('name').set('pattern', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[^./][^/]*$' : '.*');
@@ -95,7 +93,6 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
-			var nodeURI = this.nodeURI;
 			// grid for the drives
 			this._driveStore = new Observable(new Memory({
 				idProperty: '$id$'
@@ -123,17 +120,13 @@ define([
 					headerText: _('Create a virtual machine'),
 					helpText: _('The following settings were read from the selected profile and can be modified now.'),
 					widgets: [{
-						name: 'nodeURI',
-						type: HiddenInput,
-						value: nodeURI
-					}, {
 						name: 'profile',
 						type: HiddenInput
 					}, {
 						name: 'profileDN',
 						type: ComboBox,
 						label: _('Profile'),
-						dynamicOptions: {nodeURI: nodeURI},
+						dynamicOptions: {nodeURI: this.nodeURI},
 						dynamicValues: types.getProfiles,
 						onChange: lang.hitch(this, '_loadValuesOfProfile')
 					}, {
@@ -221,7 +214,7 @@ define([
 
 		getValues: function() {
 			var values = this._pages.general._form.get('value');
-			values.nodeURI = this.getWidget('nodeURI').get('value');
+			values.nodeURI = this.nodeURI;
 			values.hyperv = true;
 			values.vnc_remote = true;
 			values.disks = this._driveStore.data;
