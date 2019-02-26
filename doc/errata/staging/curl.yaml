@@ -1,0 +1,53 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: curl
+fix: 7.52.1-5+deb9u9
+desc: |
+ This update addresses the following issues:
+
+ * 7.52.1-5+deb9u9 (Mon, 04 Feb 2019 20:55:32 +0000) * Fix NTLM type-2
+   out-of-bounds buffer read as per CVE-2018-16890
+   https://curl.haxx.se/docs/CVE-2018-16890.html * Fix NTLMv2 type-3 header
+   stack buffer overflow as per CVE-2019-3822
+   https://curl.haxx.se/docs/CVE-2019-3822.html * Fix SMTP end-of-response
+   out-of-bounds read as per CVE-2019-3823
+   https://curl.haxx.se/docs/CVE-2019-3823.html
+
+ * 7.52.1-5+deb9u9 (Mon, 04 Feb 2019 20:55:32 +0000) * Fix NTLM type-2
+   out-of-bounds buffer read as per CVE-2018-16890
+   https://curl.haxx.se/docs/CVE-2018-16890.html * Fix NTLMv2 type-3 header
+   stack buffer overflow as per CVE-2019-3822
+   https://curl.haxx.se/docs/CVE-2019-3822.html * Fix SMTP end-of-response
+   out-of-bounds read as per CVE-2019-3823
+   https://curl.haxx.se/docs/CVE-2019-3823.html
+
+ * 7.52.1-5+deb9u9 (Mon, 04 Feb 2019 20:55:32 +0000) * Fix NTLM type-2
+   out-of-bounds buffer read as per CVE-2018-16890
+   https://curl.haxx.se/docs/CVE-2018-16890.html * Fix NTLMv2 type-3 header
+   stack buffer overflow as per CVE-2019-3822
+   https://curl.haxx.se/docs/CVE-2019-3822.html * Fix SMTP end-of-response
+   out-of-bounds read as per CVE-2019-3823
+   https://curl.haxx.se/docs/CVE-2019-3823.html
+
+ * 7.52.1-5+deb9u9 (Mon, 04 Feb 2019 20:55:32 +0000) * Fix NTLM type-2
+   out-of-bounds buffer read as per CVE-2018-16890
+   https://curl.haxx.se/docs/CVE-2018-16890.html * Fix NTLMv2 type-3 header
+   stack buffer overflow as per CVE-2019-3822
+   https://curl.haxx.se/docs/CVE-2019-3822.html * Fix SMTP end-of-response
+   out-of-bounds read as per CVE-2019-3823
+   https://curl.haxx.se/docs/CVE-2019-3823.html
+
+ * 7.52.1-5+deb9u9 (Mon, 04 Feb 2019 20:55:32 +0000) * Fix NTLM type-2
+   out-of-bounds buffer read as per CVE-2018-16890
+   https://curl.haxx.se/docs/CVE-2018-16890.html * Fix NTLMv2 type-3 header
+   stack buffer overflow as per CVE-2019-3822
+   https://curl.haxx.se/docs/CVE-2019-3822.html * Fix SMTP end-of-response
+   out-of-bounds read as per CVE-2019-3823
+   https://curl.haxx.se/docs/CVE-2019-3823.html
+bug: [48786]
+cve:
+- CVE-2018-16890
+- CVE-2019-3822
+- CVE-2019-3823
