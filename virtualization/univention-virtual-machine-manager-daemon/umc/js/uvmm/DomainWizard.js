@@ -58,6 +58,8 @@ define([
 		_driveGrid: null,
 		_driveContainer: null,
 
+		autoValidate: false,  // TODO: in the future we can activate this, when umc.widgets.Wizard/Form focuses the first invalid widget
+
 		_loadValuesOfProfile: function() {
 			// put limit on memory
 			try {
@@ -250,13 +252,11 @@ define([
 			}
 			else*/ if (pageName === 'general') {
 				// update the domain info for the drive grid
-				array.forEach( [ 'name', 'maxMem' ], lang.hitch( this, function( widgetName ) {
-					if ( ! this.getWidget( widgetName ).isValid() ) {
-						this.getWidget( widgetName ).focus();
-						nextName = null;
-						return false;
-					}
-				} ) );
+				array.forEach(this.getPage(pageName)._form.getInvalidWidgets(), lang.hitch(this, function(widgetName) {  // TODO: remove when this.autoValidate
+					this.getWidget(pageName, widgetName).focus();
+					nextName = pageName;
+					return false;
+				}));
 
 				if ( null !== nextName ) {
 					this._driveGrid.domain = this.getValues();
