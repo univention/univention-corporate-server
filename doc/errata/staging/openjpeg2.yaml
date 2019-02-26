@@ -1,0 +1,22 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: openjpeg2
+fix: 2.1.0-2+deb8u6
+desc: |
+ This update addresses the following issues:
+ * New maintained dependency of Asterisk shostscript.
+ * write stack buffer overflow due to missing buffer length formatter in
+   fscanf call (CVE-2017-17480)
+ * Excessive Iteration in opj_t1_encode_cblks (CVE-2018-6616)
+ * Division-by-zero vulnerabilities in the functions pi_next_pcrl,
+   pi_next_cprl, and pi_next_rpcl (CVE-2018-14423)
+ * null pointer dereference caused by null image components in imagetopnm
+   (CVE-2018-18088)
+bug: [48769]
+cve:
+- CVE-2017-17480
+- CVE-2018-18088
+- CVE-2018-14423
+- CVE-2018-6616
