@@ -6,26 +6,10 @@ src: dovecot
 fix: 1:2.2.13-12~deb8u5
 desc: |
  This update addresses the following issue:
-
- * 1:2.2.13-12~deb8u5 (Thu, 07 Feb 2019 17:57:04 +0100) * CVE-2019-3814: Fix a
-   vulnerability in the TLS username handling where an attacker could login as
-   anyone else in the system if
+ * Fix a vulnerability in the TLS username handling where an attacker could
+   login as anyone else in the system if
    auth_ssl_{require_client_cert,username_from_cert} was enabled.
-
- * 1:2.2.13-12~deb8u5 (Thu, 07 Feb 2019 17:57:04 +0100) * CVE-2019-3814: Fix a
-   vulnerability in the TLS username handling where an attacker could login as
-   anyone else in the system if
-   auth_ssl_{require_client_cert,username_from_cert} was enabled.
-
- * 1:2.2.13-12~deb8u5 (Thu, 07 Feb 2019 17:57:04 +0100) * CVE-2019-3814: Fix a
-   vulnerability in the TLS username handling where an attacker could login as
-   anyone else in the system if
-   auth_ssl_{require_client_cert,username_from_cert} was enabled.
-
- * 1:2.2.13-12~deb8u5 (Thu, 07 Feb 2019 17:57:04 +0100) * CVE-2019-3814: Fix a
-   vulnerability in the TLS username handling where an attacker could login as
-   anyone else in the system if
-   auth_ssl_{require_client_cert,username_from_cert} was enabled.
+   (CVE-2019-3814)
 bug: [48765]
 cve:
 - CVE-2019-3814
