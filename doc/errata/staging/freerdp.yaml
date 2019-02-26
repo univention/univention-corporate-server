@@ -1,0 +1,46 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: freerdp
+fix: 1.1.0~git20140921.1.440916e+dfsg1-13+deb9u3
+desc: |
+ This update addresses the following issues:
+
+ * 1.1.0~git20140921.1.440916e+dfsg1-13+deb9u3 (Thu, 10 Jan 2019 16:07:19
+   +0100) * debian/patches: Add security patches. - CVE-2018-8786.patch: The
+   count variable in update_read_bitmap() needs to be UINT32 (not UINT16). -
+   CVE-2018-8787.patch: In gdi_Bitmap_Decompress, check for invalid bpp, width
+   and height before decompressing. CVE-2018-8788.patch: In NSC encode/decode
+   functions, catch data flawed in various ways and bail out with failure.
+   CVE-2018-8789.patch: In ntlm_read_message_fields_buffer, check buffer
+   offset vs. Stream_Length and bail out if not appropriate. - Thanks to Alex
+   Murray for backporting them to FreeRDP 1.1. * debian/patches: + Add
+   0010_add-support-for-credssp-v3-and-rdpproto-v6.patch. Add CredSSP v3 and
+   RDP proto v6 support. This allows users to connect to recently (since March
+   2018) updated Microsoft RDP servers again. Thanks to Bernhard Miklautz and
+   Martin Fleisz for helping out with backporting this patch. Much
+   appreciated! * debian/control: + Update Vcs-*: URLs. *
+   debian/lib{freerdp-core1.1,winpr-sspi0.1}.symbols: Update symbols.
+
+ * 1.1.0~git20140921.1.440916e+dfsg1-13+deb9u3 (Thu, 10 Jan 2019 16:07:19
+   +0100) * debian/patches: Add security patches. - CVE-2018-8786.patch: The
+   count variable in update_read_bitmap() needs to be UINT32 (not UINT16). -
+   CVE-2018-8787.patch: In gdi_Bitmap_Decompress, check for invalid bpp, width
+   and height before decompressing. CVE-2018-8788.patch: In NSC encode/decode
+   functions, catch data flawed in various ways and bail out with failure.
+   CVE-2018-8789.patch: In ntlm_read_message_fields_buffer, check buffer
+   offset vs. Stream_Length and bail out if not appropriate. - Thanks to Alex
+   Murray for backporting them to FreeRDP 1.1. * debian/patches: + Add
+   0010_add-support-for-credssp-v3-and-rdpproto-v6.patch. Add CredSSP v3 and
+   RDP proto v6 support. This allows users to connect to recently (since March
+   2018) updated Microsoft RDP servers again. Thanks to Bernhard Miklautz and
+   Martin Fleisz for helping out with backporting this patch. Much
+   appreciated! * debian/control: + Update Vcs-*: URLs. *
+   debian/lib{freerdp-core1.1,winpr-sspi0.1}.symbols: Update symbols.
+bug: [48775]
+cve:
+- CVE-2018-8786
+- CVE-2018-8787
+- CVE-2018-8788
+- CVE-2018-8789
