@@ -386,7 +386,7 @@ def create_extended_attribute(attribute, app, layout_position, lo, pos):
 	if attribute.long_description_de:
 		attrs['translationLongDescription'] = [('de_DE', attribute.long_description_de)]
 	attrs['syntax'] = attribute.udm_syntax
-	attrs['multivalue'] = not attribute.single_value
+	attrs['multivalue'] = str(int(not attribute.single_value))
 	if attribute.default:
 		attrs['default'] = str(int(bool(attribute.default)))
 	attrs['tabPosition'] = attribute.tab_position or str(layout_position)

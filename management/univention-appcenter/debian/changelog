@@ -1,3 +1,9 @@
+univention-appcenter (8.0.4-8) unstable; urgency=medium
+
+  * Bug #48621: write multivalue to ldap
+
+ -- Florian Best <best@univention.de>  Wed, 27 Feb 2019 15:33:03 +0100
+
 univention-appcenter (8.0.4-7) unstable; urgency=medium
 
   * Bug #48621: Bug #48796: be backwards compatible
