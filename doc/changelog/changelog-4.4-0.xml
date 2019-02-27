@@ -693,7 +693,7 @@
 		<title>Other changes</title>
 		<itemizedlist>
 			<listitem><simpara>
-				The package <package>univention-errata-level</package> hast been updated to reset the &ucsUCRV; <envar>version/erratalevel</envar> to <literal>0</literal>. (<u:bug>48654</u:bug>).
+				The package <package>univention-errata-level</package> has been updated to reset the &ucsUCRV; <envar>version/erratalevel</envar> to <literal>0</literal>. (<u:bug>48654</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				For security reasons all join scripts now use a password file (<u:bug>46969</u:bug>).
