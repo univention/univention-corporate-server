@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import os
 import logging
 
 import univention.admin.filter
@@ -86,7 +87,6 @@ def get_ldapConnection():
 
 
 class NetworkAccessError(Exception):
-
 	def __init__(self, msg):
 		self.msg = msg
 
@@ -135,13 +135,13 @@ class NetworkAccess(object):
 		self.logger.setLevel(debuglevel)
 		if logfile is not None:
 			log_handler = logging.FileHandler(logfile)
-			log_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)10s: [user={}; mac={}] %(message)s'.format(self.username, self.mac_address))
+			log_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)10s: [pid={}; user={}; mac={}] %(message)s'.format(os.getpid(), self.username, self.mac_address))
 		else:
 			log_handler = logging.StreamHandler()
 			log_formatter = logging.Formatter('%(levelname)10s: [user={}; mac={}] %(message)s'.format(self.username, self.mac_address))
 		log_handler.setFormatter(log_formatter)
 		self.logger.addHandler(log_handler)
-		self.logger.info("Loglevel set to: {}".format(ucs_debuglevel))
+		# self.logger.info("Loglevel set to: {}".format(ucs_debuglevel))
 
 	def build_access_dict(self, ldap_result):
 		access_dict = dict()
@@ -191,40 +191,40 @@ class NetworkAccess(object):
 		if not result:
 			self.logger.info('Login attempt with unknown username')
 			return False
-		self.logger.debug('Checking ldap network access for user')
+		self.logger.debug('Checking LDAP settings for user')
 		policy = self.evaluate_ldap_network_access(result)
 		if policy:
-			self.logger.info('LDAP settings allow attempt to login')
+			self.logger.info('Login attempt permitted by LDAP settings')
 		else:
-			self.logger.info('LDAP settings deny attempt to login')
+			self.logger.info('Login attempt denied by LDAP settings')
 		return policy
 
 	def check_station_whitelist(self):
 		if not self.whitelisting:
 			self.logger.debug('MAC filtering is disabled by radius/mac/whitelisting.')
 			return True
-		self.logger.debug('Checking LDAP network access for stationId')
+		self.logger.debug('Checking LDAP settings for stationId')
 		if not self.mac_address:
-			self.logger.info('Login attempt without mac address, but mac filtering is enabled.')
+			self.logger.info('Login attempt without MAC address, but MAC filtering is enabled.')
 			return False
 		result = self.get_station_network_access(self.mac_address)
 		if not result:
-			self.logger.info('Login attempt with unknown mac address')
+			self.logger.info('Login attempt with unknown MAC address')
 			return False
 		policy = self.evaluate_ldap_network_access(result)
 		if policy:
-			self.logger.info('LDAP settings allow login from stationId')
+			self.logger.info('Login attempt permitted by LDAP settings')
 		else:
-			self.logger.info('LDAP settings deny login from stationId')
+			self.logger.info('Login attempt denied by LDAP settings')
 		return policy
 
 	def getNTPasswordHash(self):
 		'stationId may be None if it was not supplied to the program'
 		if not (self.check_proxy_filter_policy() or self.check_network_access()):
-			raise UserNotAllowedError('User is not allowed to use RADIUS')
+			raise UserNotAllowedError('User is not allowed to authenticate via RADIUS')
 		if not self.check_station_whitelist():
-			raise MacNotAllowedError('stationId is denied, because it is not whotelisted')
-		# user is authorized to use the W-LAN, retrieve NT-password-hash from LDAP and return it
+			raise MacNotAllowedError('stationId is denied, because it is not whitelisted')
+		# user is authorized to authenticate via RADIUS, retrieve NT-password-hash from LDAP and return it
 		self.logger.info('User is allowed to use RADIUS')
 		result = self.ldapConnection.search(filter=str(univention.admin.filter.expression('uid', self.username)), attr=['sambaNTPassword', 'sambaAcctFlags'])
 		if not result:
