@@ -10,3 +10,5 @@ desc: |
    To activate this, set ldap/monitor=true in UCR and restart the LDAP server
    service (slapd).
 bug: [41213]
+erratum: 444
+announced: 2019-02-27
