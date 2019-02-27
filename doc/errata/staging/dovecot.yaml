@@ -6,7 +6,10 @@ src: dovecot
 fix: 1:2.2.27-3+deb9u3
 desc: |
  This update addresses the following issue:
- * dovecot (CVE-2019-3814)
+ * Fix a vulnerability in the TLS username handling where an attacker could
+   login as anyone else in the system if
+   auth_ssl_{require_client_cert,username_from_cert} was enabled.
+   (CVE-2019-3814)
 bug: [48774]
 cve:
 - CVE-2019-3814
