@@ -693,7 +693,7 @@
 	</para>
 
 	<para>
-	  Erweiterte Attribute werden im Modul <guimenu>LDAP-Verzeichnis</guimenu>.
+	  Erweiterte Attribute werden über das Modul <guimenu>LDAP-Verzeichnis</guimenu> verwaltet.
 	  Sie befinden sich im Container <uri>univention</uri> und dessen
 	  Untercontainer <uri>custom attributes</uri>. Hier können bestehende Attribute
 	  bearbeitet werden oder mit <guimenu>Hinzufügen</guimenu> ein Objekt vom Typ
