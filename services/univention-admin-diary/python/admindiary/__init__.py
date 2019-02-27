@@ -66,7 +66,7 @@ def _setup_logger():
 		handler = logging.FileHandler(LOG_FILE)
 		handler.setFormatter(formatter)
 		base_logger.addHandler(handler)
-		base_logger.setLevel(logging.WARNING)
+		base_logger.setLevel(logging.INFO)
 		_setup_logger._setup = True
 	return base_logger
 _setup_logger._setup = False
