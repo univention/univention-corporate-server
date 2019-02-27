@@ -1,3 +1,9 @@
+univention-self-service (4.0.1-11) unstable; urgency=medium
+
+  * Bug #48710: catch errors when modifying user attributes
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 27 Feb 2019 14:06:18 +0100
+
 univention-self-service (4.0.1-10) unstable; urgency=medium
 
   * Bug #48710: use user account to change itself instead of cn=admin
