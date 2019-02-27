@@ -17,14 +17,219 @@
 				</para>
 				<itemizedlist id="_security">
 					<listitem><simpara>
+						<package>apt</package> (<u:cve>2019-3462</u:cve>) (<u:bug>48513</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>cups</package> (<u:cve>2017-18248</u:cve> <u:cve>2018-4700</u:cve>) (<u:bug>48772</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>curl</package> (<u:cve>2018-16890</u:cve> <u:cve>2019-3822</u:cve> <u:cve>2019-3823</u:cve>) (<u:bug>48786</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>dovecot</package> (<u:cve>2019-3814</u:cve>) (<u:bug>48774</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>firefox-esr</package> (<u:cve>2018-12405</u:cve> <u:cve>2018-17466</u:cve> <u:cve>2018-18356</u:cve> <u:cve>2018-18492</u:cve> <u:cve>2018-18493</u:cve> <u:cve>2018-18494</u:cve> <u:cve>2018-18498</u:cve> <u:cve>2018-18500</u:cve> <u:cve>2018-18501</u:cve> <u:cve>2018-18505</u:cve> <u:cve>2019-5785</u:cve>) (<u:bug>48319</u:bug> <u:bug>48589</u:bug> <u:bug>48779</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>freerdp</package> (<u:cve>2018-8786</u:cve> <u:cve>2018-8787</u:cve> <u:cve>2018-8788</u:cve> <u:cve>2018-8789</u:cve>) (<u:bug>48775</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>ghostscript</package> (<u:bug>48415</u:bug> <u:bug>48537</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>glibc</package> (<u:cve>2017-15670</u:cve> <u:cve>2017-15671</u:cve> <u:cve>2017-15804</u:cve> <u:cve>2017-16997</u:cve> <u:cve>2017-18269</u:cve> <u:cve>2017-1000408</u:cve> <u:cve>2017-1000409</u:cve> <u:cve>2018-11236</u:cve> <u:cve>2018-11237</u:cve>) (<u:bug>48778</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>intel-microcode</package> (<u:cve>2018-3639</u:cve> <u:cve>2018-3640</u:cve>) (<u:bug>48781</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libapache2-mod-perl2</package> (<u:cve>2011-2767</u:cve>) (<u:bug>48785</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libarchive</package> (<u:cve>2016-10209</u:cve> <u:cve>2016-10349</u:cve> <u:cve>2016-10350</u:cve> <u:cve>2017-14166</u:cve> <u:cve>2017-14501</u:cve> <u:cve>2017-14502</u:cve> <u:cve>2017-14503</u:cve> <u:cve>2018-1000877</u:cve> <u:cve>2018-1000878</u:cve> <u:cve>2018-1000880</u:cve>) (<u:bug>48408</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libemail-address-perl</package> (<u:cve>2015-7686</u:cve> <u:cve>2018-12558</u:cve>) (<u:bug>48777</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libgd2</package> (<u:cve>2019-6977</u:cve> <u:cve>2019-6978</u:cve>) (<u:bug>48614</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libphp-phpmailer</package> (<u:cve>2018-19296</u:cve>) (<u:bug>48306</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libreoffice</package> (<u:cve>2018-16858</u:cve>) (<u:bug>48592</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libvirt</package> (<u:bug>47617</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libvirt-python</package> (<u:bug>47617</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libvncserver</package> (<u:cve>2018-6307</u:cve> <u:cve>2018-15126</u:cve> <u:cve>2018-15127</u:cve> <u:cve>2018-20019</u:cve> <u:cve>2018-20020</u:cve> <u:cve>2018-20021</u:cve> <u:cve>2018-20022</u:cve> <u:cve>2018-20023</u:cve> <u:cve>2018-20024</u:cve>) (<u:bug>48591</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>linux</package> (<u:cve>2017-18249</u:cve> <u:cve>2018-1128</u:cve> <u:cve>2018-1129</u:cve> <u:cve>2018-5848</u:cve> <u:cve>2018-12896</u:cve> <u:cve>2018-13053</u:cve> <u:cve>2018-13096</u:cve> <u:cve>2018-13097</u:cve> <u:cve>2018-13100</u:cve> <u:cve>2018-14610</u:cve> <u:cve>2018-14611</u:cve> <u:cve>2018-14612</u:cve> <u:cve>2018-14613</u:cve> <u:cve>2018-14614</u:cve> <u:cve>2018-14616</u:cve> <u:cve>2018-16862</u:cve> <u:cve>2018-17972</u:cve> <u:cve>2018-18281</u:cve> <u:cve>2018-18690</u:cve> <u:cve>2018-18710</u:cve> <u:cve>2018-19407</u:cve>) (<u:bug>48782</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>openssh</package> (<u:cve>2018-20685</u:cve> <u:cve>2019-6109</u:cve> <u:cve>2019-6111</u:cve>) (<u:bug>48780</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>openssl1.0</package> (<u:cve>2018-0732</u:cve> <u:cve>2018-0734</u:cve> <u:cve>2018-0737</u:cve> <u:cve>2018-5407</u:cve>) (<u:bug>48388</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>php-pear</package> (<u:cve>2018-1000888</u:cve>) (<u:bug>48590</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>php7.0</package> (<u:cve>2018-14851</u:cve> <u:cve>2018-14883</u:cve> <u:cve>2018-17082</u:cve> <u:cve>2018-19518</u:cve> <u:cve>2018-19935</u:cve>) (<u:bug>48309</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>policykit-1</package> (<u:cve>2018-19788</u:cve>) (<u:bug>48307</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>python-django</package> (<u:cve>2019-3498</u:cve>) (<u:bug>48464</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>qemu</package> (<u:bug>47617</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>qtbase-opensource-src</package> (<u:cve>2018-15518</u:cve> <u:cve>2018-19870</u:cve> <u:cve>2018-19873</u:cve>) (<u:bug>48593</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>rdesktop</package> (<u:cve>2018-8791</u:cve> <u:cve>2018-8792</u:cve> <u:cve>2018-8793</u:cve> <u:cve>2018-8794</u:cve> <u:cve>2018-8795</u:cve> <u:cve>2018-8796</u:cve> <u:cve>2018-8797</u:cve> <u:cve>2018-8798</u:cve> <u:cve>2018-8799</u:cve> <u:cve>2018-8800</u:cve> <u:cve>2018-20174</u:cve> <u:cve>2018-20175</u:cve> <u:cve>2018-20176</u:cve> <u:cve>2018-20177</u:cve> <u:cve>2018-20178</u:cve> <u:cve>2018-20179</u:cve> <u:cve>2018-20180</u:cve> <u:cve>2018-20181</u:cve> <u:cve>2018-20182</u:cve>) (<u:bug>48776</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>sox</package> (<u:cve>2014-8145</u:cve>) (<u:bug>48783</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>spice</package> (<u:cve>2019-3813</u:cve>) (<u:bug>48594</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>systemd</package> (<u:cve>2018-16864</u:cve> <u:cve>2018-16865</u:cve> <u:cve>2018-16866</u:cve> <u:cve>2019-3815</u:cve> <u:cve>2019-6454</u:cve>) (<u:bug>48463</u:bug> <u:bug>48499</u:bug> <u:bug>48759</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>univention-kernel-image-signed</package> (<u:cve>2017-18249</u:cve> <u:cve>2018-1128</u:cve> <u:cve>2018-1129</u:cve> <u:cve>2018-5848</u:cve> <u:cve>2018-12896</u:cve> <u:cve>2018-13053</u:cve> <u:cve>2018-13096</u:cve> <u:cve>2018-13097</u:cve> <u:cve>2018-13100</u:cve> <u:cve>2018-14610</u:cve> <u:cve>2018-14611</u:cve> <u:cve>2018-14612</u:cve> <u:cve>2018-14613</u:cve> <u:cve>2018-14614</u:cve> <u:cve>2018-14616</u:cve> <u:cve>2018-16862</u:cve> <u:cve>2018-17972</u:cve> <u:cve>2018-18281</u:cve> <u:cve>2018-18690</u:cve> <u:cve>2018-18710</u:cve> <u:cve>2018-19407</u:cve>) (<u:bug>48782</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>uriparser</package> (<u:cve>2018-19198</u:cve> <u:cve>2018-19199</u:cve> <u:cve>2018-19200</u:cve>) (<u:bug>48784</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>vlc</package> (<u:bug>48462</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>wayland</package> (<u:cve>2017-16612</u:cve>) (<u:bug>48773</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>wireshark</package> (<u:cve>2018-12086</u:cve> <u:cve>2018-18225</u:cve> <u:cve>2018-18226</u:cve> <u:cve>2018-18227</u:cve> <u:cve>2018-19622</u:cve> <u:cve>2018-19623</u:cve> <u:cve>2018-19624</u:cve> <u:cve>2018-19625</u:cve> <u:cve>2018-19626</u:cve> <u:cve>2018-19627</u:cve> <u:cve>2018-19628</u:cve>) (<u:bug>48409</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>zeromq3</package> (<u:cve>2019-6250</u:cve>) (<u:bug>48500</u:bug>)
 					</simpara></listitem>
 				</itemizedlist>
 			</listitem>
 			<listitem>
 				<para>
-					The following updated packages from Debian <remark>FIXME</remark> 0.00 are included (<u:bug>00000</u:bug>):
+					The following updated packages from Debian 9.8 are included (<u:bug>48332</u:bug>):
 					<simplelist type="inline" id="_debian">
-						<member><package>FIXME</package></member>
+						<member><package>base-files</package></member>
+						<member><package>ca-certificates-java</package></member>
+						<member><package>dnspython</package></member>
+						<member><package>erlang</package></member>
+						<member><package>espeakup</package></member>
+						<member><package>gnupg2</package></member>
+						<member><package>ibus</package></member>
+						<member><package>libdatetime-timezone-perl</package></member>
+						<member><package>libgpod</package></member>
+						<member><package>libssh</package></member>
+						<member><package>openvpn</package></member>
+						<member><package>postfix</package></member>
+						<member><package>postgresql-9.6</package></member>
+						<member><package>postgrey</package></member>
+						<member><package>tzdata</package></member>
+						<member><package>xapian-core</package></member>
+						<member><package>ansible</package></member>
+						<member><package>arc</package></member>
+						<member><package>astroml-addons</package></member>
+						<member><package>c3p0</package></member>
+						<member><package>chkrootkit</package></member>
+						<member><package>chromium</package></member>
+						<member><package>compactheader</package></member>
+						<member><package>coturn</package></member>
+						<member><package>courier</package></member>
+						<member><package>debian-edu-config</package></member>
+						<member><package>debian-installer</package></member>
+						<member><package>debian-installer-netboot-images</package></member>
+						<member><package>debian-security-support</package></member>
+						<member><package>drupal7</package></member>
+						<member><package>egg</package></member>
+						<member><package>flatpak</package></member>
+						<member><package>ganeti-os-noop</package></member>
+						<member><package>glx-alternatives</package></member>
+						<member><package>gnulib</package></member>
+						<member><package>golang-1.7</package></member>
+						<member><package>golang-1.8</package></member>
+						<member><package>graphite-api</package></member>
+						<member><package>grokmirror</package></member>
+						<member><package>icinga2</package></member>
+						<member><package>isort</package></member>
+						<member><package>jdupes</package></member>
+						<member><package>kmodpy</package></member>
+						<member><package>libapache-mod-jk</package></member>
+						<member><package>libb2</package></member>
+						<member><package>libemail-address-list-perl</package></member>
+						<member><package>libextractor</package></member>
+						<member><package>libu2f-host</package></member>
+						<member><package>linux-igd</package></member>
+						<member><package>lttng-modules</package></member>
+						<member><package>mistral</package></member>
+						<member><package>monkeysign</package></member>
+						<member><package>mosquitto</package></member>
+						<member><package>mpqc</package></member>
+						<member><package>netatalk</package></member>
+						<member><package>nvidia-graphics-drivers</package></member>
+						<member><package>nvidia-modprobe</package></member>
+						<member><package>nvidia-persistenced</package></member>
+						<member><package>nvidia-settings</package></member>
+						<member><package>nvidia-xconfig</package></member>
+						<member><package>openni2</package></member>
+						<member><package>parsedatetime</package></member>
+						<member><package>pdns</package></member>
+						<member><package>pdns-recursor</package></member>
+						<member><package>photocollage</package></member>
+						<member><package>pylint-django</package></member>
+						<member><package>python-acme</package></member>
+						<member><package>python-arpy</package></member>
+						<member><package>python-certbot</package></member>
+						<member><package>python-certbot-apache</package></member>
+						<member><package>python-certbot-nginx</package></member>
+						<member><package>python-hypothesis</package></member>
+						<member><package>python-josepy</package></member>
+						<member><package>pyzo</package></member>
+						<member><package>r-cran-readxl</package></member>
+						<member><package>rssh</package></member>
+						<member><package>rtkit</package></member>
+						<member><package>ruby-loofah</package></member>
+						<member><package>ruby-rack</package></member>
+						<member><package>ruby-sanitize</package></member>
+						<member><package>sl-modem</package></member>
+						<member><package>sogo-connector</package></member>
+						<member><package>ssh-agent-filter</package></member>
+						<member><package>supercollider</package></member>
+						<member><package>sympa</package></member>
+						<member><package>thunderbird</package></member>
+						<member><package>tmpreaper</package></member>
+						<member><package>twitter-bootstrap3</package></member>
+						<member><package>uglifyjs</package></member>
+						<member><package>vm</package></member>
+						<member><package>vulture</package></member>
+						<member><package>wicd</package></member>
+						<member><package>wvstreams</package></member>
+						<member><package>xen</package></member>
+						<member><package>xkeycaps</package></member>
+						<member><package>yosys</package></member>
+						<member><package>z3</package></member>
 					</simplelist>
 				</para>
 			</listitem>
@@ -32,7 +237,8 @@
 				<para>
 					The following packages have been moved to the maintained repository of UCS:
 					<simplelist type="inline" id="_maintained">
-						<member><package>FIXME</package></member>
+						<member><package>fail2ban</package> (<u:bug>47566</u:bug>)</member>
+						<member><package>libmaxminddb</package> (<u:bug>48409</u:bug>)</member>
 					</simplelist>
 				</para>
 			</listitem>
