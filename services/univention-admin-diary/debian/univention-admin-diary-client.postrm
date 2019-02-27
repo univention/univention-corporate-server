@@ -35,7 +35,9 @@ if [ -x /etc/init.d/univention-directory-listener ]; then
 	invoke-rc.d univention-directory-listener crestart
 fi
 
-univention-config-registry unset admin/diary/backend
-invoke-rc.d rsyslog restart
+if [ "$1" = "remove" ]; then
+	univention-config-registry unset admin/diary/backend
+	invoke-rc.d rsyslog restart
+fi
 
 exit 0
