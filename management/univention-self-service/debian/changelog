@@ -1,3 +1,9 @@
+univention-self-service (4.0.1-13) unstable; urgency=medium
+
+  * Bug #48710: log error message
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 27 Feb 2019 14:57:23 +0100
+
 univention-self-service (4.0.1-12) unstable; urgency=medium
 
   * Bug #48710: fix trailing comma
