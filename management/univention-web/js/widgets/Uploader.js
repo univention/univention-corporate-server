@@ -131,9 +131,9 @@ define([
 			this.inherited(arguments);
 
 			if (this.multiFile) {
-				this.value = [];
+				this.value = this.value || [];
 			} else {
-				this.value = '';
+				this.value = this.value || '';
 			}
 
 			// save the original label

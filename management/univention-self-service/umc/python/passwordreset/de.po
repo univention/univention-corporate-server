@@ -137,7 +137,7 @@ msgstr "Unbekannte Wiederherstellungsfunktion '{}'."
 
 #: umc/python/passwordreset/__init__.py:324
 msgid "Your picture"
-msgstr "Ihr Bild"
+msgstr "Ihr Foto"
 
 #: umc/python/passwordreset/__init__.py:105
 msgid "one hour"
