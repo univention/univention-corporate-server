@@ -1,3 +1,9 @@
+univention-self-service (4.0.1-12) unstable; urgency=medium
+
+  * Bug #48710: fix trailing comma
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 27 Feb 2019 14:14:24 +0100
+
 univention-self-service (4.0.1-11) unstable; urgency=medium
 
   * Bug #48710: catch errors when modifying user attributes

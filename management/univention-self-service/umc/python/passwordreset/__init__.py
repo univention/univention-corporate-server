@@ -417,7 +417,7 @@ class Instance(Base):
 			user.modify()
 		except univention.admin.uexceptions.base:
 			raise UMC_Error(_('The attributes could not be saved. Ask your system administrator to make sure the fields you are trying to edit are allowed via the "self-service/ldap_attributes" UCR variable.'))
-		return _("Successfully changed your profile data."),
+		return _("Successfully changed your profile data.")
 
 
 	@forward_to_master
