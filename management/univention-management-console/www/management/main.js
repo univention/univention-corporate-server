@@ -1125,6 +1125,10 @@ define([
 		},
 
 		_addModuleSpecificCSSClasses: function(module) {
+			if (!module.selectedChildWidget) {
+				// module is still loading
+				return;
+			}
 			Object.keys(module.selectablePagesToLayoutMapping).forEach(lang.hitch(this, function(page) {
 				if (module.selectedChildWidget === module[page]) {
 					var pageName = page.toLowerCase().replace(/[^a-z]/g, '');
