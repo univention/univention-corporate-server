@@ -2,8 +2,8 @@ product: ucs
 release: "4.3"
 version: [3]
 scope: ucs_4.3-0-errata4.3-3
-src: linux
-fix: 4.9.144-3
+src: univention-kernel-image-signed
+fix: 4.0.0-10A~4.3.0.201902270914
 desc: |
  This update the Linux kernel to version 4.9.144 addresses the following
  issues:
@@ -41,7 +41,7 @@ desc: |
    (CVE-2018-18710)
  * kvm: NULL pointer dereference in vcpu_scan_ioapic in arch/x86/kvm/x86.c
    (CVE-2018-19407)
-note: This is the first of two parts of this update.
+note: This is the second of two parts of this update.
 bug: [48782]
 cve:
 - CVE-2017-18249
