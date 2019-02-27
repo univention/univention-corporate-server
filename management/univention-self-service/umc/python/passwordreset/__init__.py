@@ -413,8 +413,11 @@ class Instance(Base):
 		for propname, value in attributes.items():
 			if propname in user_attributes and user.has_property(propname):
 				user[propname] = value
-		user.modify()
-		return _("Successfully changed your profile data.")
+		try:
+			user.modify()
+		except univention.admin.uexceptions.base:
+			raise UMC_Error(_('The attributes could not be saved. Ask your system administrator to make sure the fields you are trying to edit are allowed via the "self-service/ldap_attributes" UCR variable.'))
+		return _("Successfully changed your profile data."),
 
 
 	@forward_to_master
