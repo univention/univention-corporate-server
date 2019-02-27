@@ -67,7 +67,7 @@ msgstr ""
 
 #: www/PasswordChange.js:274
 msgid "Invalid credentials. Password change failed."
-msgstr ""
+msgstr "Ungültige Zugangsdaten. Passwortwechsel fehlgeschlagen."
 
 #: www/NewPassword.js:198 www/PasswordChange.js:157
 msgid "New Password"
@@ -84,7 +84,7 @@ msgstr "Weiter"
 
 #: www/NewPassword.js:263 www/PasswordChange.js:296
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: www/PasswordChange.js:137
 msgid "Old Password"
@@ -168,7 +168,7 @@ msgstr "Sie haben eine neue E-Mail!"
 
 #: www/UserAttributes.js:52
 msgid "Your profile"
-msgstr ""
+msgstr "Ihr Profil"
 
 #: www/UserAttributes.js:255
 msgid "Your profile data is up to date"
