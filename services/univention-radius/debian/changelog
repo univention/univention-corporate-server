@@ -1,3 +1,10 @@
+univention-radius (6.0.2-8) unstable; urgency=low
+
+  * Bug #46018: rename UCR variable univention-radius-ntlm-auth/debug to
+    freeradius/auth/helper/ntlm/debug
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 27 Feb 2019 01:34:22 +0100
+
 univention-radius (6.0.2-7) unstable; urgency=medium
 
   * Bug #46018: fix typos; better loglevel conversion

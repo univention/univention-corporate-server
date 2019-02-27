@@ -127,7 +127,7 @@ class NetworkAccess(object):
 			ucs_debuglevel = loglevel
 		else:
 			try:
-				ucs_debuglevel = int(self.configRegistry.get('univention-radius-ntlm-auth/debug', '2'))
+				ucs_debuglevel = int(self.configRegistry.get('freeradius/auth/helper/ntlm/debug', '2'))
 			except ValueError:
 				ucs_debuglevel = 2
 		debuglevel = convert_ucs_debuglevel(ucs_debuglevel)

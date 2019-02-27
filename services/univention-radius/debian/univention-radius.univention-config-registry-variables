@@ -40,8 +40,8 @@ Description[en]=Activates the authentication over MD5-in-EAP-in-TTLS-in-EAP-in-R
 Type=str
 Categories=service-radius
 
-[univention-radius-ntlm-auth/debug]
-Description[de]=Debuglevel für die Radius-NTLM-Authentifizierung. Mögliche Werte: 0-4 (0: nur Fehlermeldungen bis 4: alle Debugausgaben). Standard: 2 (INFO).
-Description[en]=Debuglevel for the radius ntlm authentication. Possible values: 0-4 (0: only error messages to 4: all debug statements). Default: 2 (INFO).
+[freeradius/auth/helper/ntlm/debug]
+Description[de]=Debuglevel für die RADIUS-NTLM-Authentifizierung. Mögliche Werte: 0-4 (0: nur Fehlermeldungen bis 4: alle Debugausgaben). Standard: 2 (INFO).
+Description[en]=Debuglevel for the RADIUS NTLM authentication. Possible values: 0-4 (0: only error messages to 4: all debug statements). Default: 2 (INFO).
 Type=int
 Categories=service-radius
