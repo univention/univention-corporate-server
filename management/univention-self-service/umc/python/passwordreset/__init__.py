@@ -69,6 +69,7 @@ IS_SELFSERVICE_MASTER = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname')) =
 if IS_SELFSERVICE_MASTER:
 	try:
 		from univention.management.console.modules.udm.syntax import widget
+		from univention.management.console.modules.udm.udm_ldap import UDM_Error
 	except ImportError as exc:
 		MODULE.error('Could not load udm module: %s' % (exc,))
 		widget = None
@@ -415,8 +416,9 @@ class Instance(Base):
 				user[propname] = value
 		try:
 			user.modify()
-		except univention.admin.uexceptions.base:
-			raise UMC_Error(_('The attributes could not be saved. Ask your system administrator to make sure the fields you are trying to edit are allowed via the "self-service/ldap_attributes" UCR variable.'))
+		except univention.admin.uexceptions.base as exc:
+			MODULE.error('set_user_attributes(): modifying the user failed: %s' % (traceback.format_exc(),))
+			raise UMC_Error(_('The attributes could not be saved: %s') % (UDM_Error(exc)))
 		return _("Successfully changed your profile data.")
 
 
