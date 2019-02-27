@@ -32,6 +32,7 @@
 
 import locale
 import socket
+import signal
 import stat
 import time
 import ast
@@ -183,6 +184,7 @@ def main():
 		# try once again
 		sock = _re_create_socket()
 
+	signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 	cmdfile = os.path.basename(sys.argv[0])
 	if cmdfile == 'univention-passwd':
 		password = get_password()
