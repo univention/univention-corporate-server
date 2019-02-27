@@ -6,7 +6,7 @@ src: libemail-address-perl
 fix: 1.908-1+deb9u1
 desc: |
  This update addresses the following issues:
- * denial of service when parsing crafted email address list (CVE-2015-7686)
+ * Denial of service when parsing crafted email address list (CVE-2015-7686)
  * Specially crafted input could cause Denial of Service due to complex
    parse() method (CVE-2018-12558)
 bug: [48777]
