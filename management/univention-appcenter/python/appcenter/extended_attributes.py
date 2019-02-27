@@ -278,7 +278,8 @@ def get_extended_attributes(app):
 	for section in parser.sections():
 		kwargs = dict([underscore(key), ucr_run_filter(value)] for key, value in parser.items(section))
 		kwargs['name'] = section
-		if kwargs.get('type') == 'ObjectClass':
+		kwargs.setdefault('type', 'ExtendedAttribute')
+		if kwargs['type'] == 'ObjectClass':
 			object_class = ObjectClass(app, **kwargs)
 			if object_class.oid is None:
 				object_class.set_standard_oid(app, object_class_suffix)
@@ -294,11 +295,11 @@ def get_extended_attributes(app):
 				option = ExtendedOption(app, **okwargs)
 				attribute_logger.debug('Adding %s to list of options' % (okwargs['name'],))
 				extended_options.append(option)
-		elif kwargs.get('type') == 'ExtendedOption':  # Can't be used if System < UCS 4.4, use add_extended_option instead!
+		elif kwargs['type'] == 'ExtendedOption':  # Can't be used if System < UCS 4.4, use add_extended_option instead!
 			option = ExtendedOption(app, **kwargs)
 			attribute_logger.debug('Adding %s to list of options' % section)
 			extended_options.append(option)
-		elif kwargs.get('type') == 'ExtendedAttribute':
+		elif kwargs['type'] == 'ExtendedAttribute':
 			attribute = ExtendedAttribute(app, **kwargs)
 			attribute_logger.debug('Adding %s to list of attributes' % section)
 			if attribute.oid is None:
@@ -306,7 +307,7 @@ def get_extended_attributes(app):
 				attribute_suffix += 1
 			attributes.append(attribute)
 		else:  # ignore, so that it is extensible for the future :-)
-			attribute_logger.warn('Unknown attribute type for section %s: %r' % (section, kwargs.get('type')))
+			attribute_logger.warn('Unknown attribute type for section %s: %r' % (section, kwargs['type']))
 
 	if app.generic_user_activation:
 		attribute_name = app.generic_user_activation_attribute
