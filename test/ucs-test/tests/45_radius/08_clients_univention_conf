@@ -12,6 +12,7 @@ import random
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
 
 class Bunch(object):
 	"""
@@ -52,103 +53,104 @@ nas_types = [
 
 
 def main():
-	with udm_test.UCSTestUDM() as udm:
-		print('*** create computer objects')
-		computers = []
-		for i, role in enumerate(udm_test.UCSTestUDM.COMPUTER_MODULES):
-			if role == 'computers/domaincontroller_master':
-				#  Adding a new computers/domaincontroller_master breaks stuffs (e.g. ldap master connections)
-				continue
-			name = uts.random_string()
-			addr = uts.random_ip()
-			secret = uts.random_string()
-			virtual_server = uts.random_string() if random.randint(0, 1) else ''
-			nas_type = nas_types[i]
-			dn = udm.create_object(role, name=name, ip=[addr], wait_for_replication=False)
-			computers.append(Bunch(role=role, dn=dn, name=name, addr=addr, secret=secret, nas_type=nas_type, virtual_server=virtual_server, removed=False))
-		utils.wait_for_replication()
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		with udm_test.UCSTestUDM() as udm:
+			print('*** create computer objects')
+			computers = []
+			for i, role in enumerate(udm_test.UCSTestUDM.COMPUTER_MODULES):
+				if role == 'computers/domaincontroller_master':
+					#  Adding a new computers/domaincontroller_master breaks stuffs (e.g. ldap master connections)
+					continue
+				name = uts.random_string()
+				addr = uts.random_ip()
+				secret = uts.random_string()
+				virtual_server = uts.random_string() if random.randint(0, 1) else ''
+				nas_type = nas_types[i]
+				dn = udm.create_object(role, position='cn=computers,{}'.format(ucr.get('ldap/base')), name=name, ip=[addr], wait_for_replication=False)
+				computers.append(Bunch(role=role, dn=dn, name=name, addr=addr, secret=secret, nas_type=nas_type, virtual_server=virtual_server, removed=False))
+			utils.wait_for_replication()
 
-		print('*** add RADIUS options')
-		for computer in computers:
-			udm.modify_object(
-				computer.role,
-				dn=computer.dn,
-				options=['kerberos', 'samba', 'posix', 'radiusAuthenticator'],
-				univentionRadiusClientSharedSecret=computer.secret,
-				univentionRadiusClientType=computer.nas_type,
-				univentionRadiusClientVirtualServer=computer.virtual_server,
-			)
-			utils.verify_ldap_object(
-				computer.dn,
-				expected_attr={
-					'univentionRadiusClientSharedSecret': [computer.secret],
-					'univentionRadiusClientType': [computer.nas_type],
-					'univentionRadiusClientVirtualServer': [computer.virtual_server] if computer.virtual_server else [],
-				})
-		utils.wait_for_replication_and_postrun()
-
-		def check_file_content(computers):
-			print('*** checking /etc/freeradius/3.0/clients.univention.conf')
-			with open('/etc/freeradius/3.0/clients.univention.conf', 'r') as fd:
-				content = fd.read()
-				content = re.sub(r'\s+', ' ', content)
-
-			def in_content(content, name, txt):
-				assert txt in content, 'cannot find "{}" for computer {}'.format(txt, name)
-
-			def not_in_content(content, name, txt):
-				assert txt not in content, 'unexpectedly found "{}" for computer {}'.format(txt, name)
-
+			print('*** add RADIUS options')
 			for computer in computers:
-				func = not_in_content if computer.removed else in_content
-				func(content, computer.name, 'client {} {{'.format(computer.name))
-				func(content, computer.name, 'ipaddr = {}'.format(computer.addr))
-				func(content, computer.name, 'secret = {}'.format(computer.secret))
-				func(content, computer.name, 'nas_type = {}'.format(computer.nas_type))
-				if not computer.removed:
-					if computer.virtual_server:
-						func(content, computer.name, 'virtual_server = {}'.format(computer.virtual_server))
-					else:
-						func(content, computer.name, '# virtual_server = ...not specified...')
+				udm.modify_object(
+					computer.role,
+					dn=computer.dn,
+					options=['kerberos', 'samba', 'posix', 'radiusAuthenticator'],
+					univentionRadiusClientSharedSecret=computer.secret,
+					univentionRadiusClientType=computer.nas_type,
+					univentionRadiusClientVirtualServer=computer.virtual_server,
+				)
+				utils.verify_ldap_object(
+					computer.dn,
+					expected_attr={
+						'univentionRadiusClientSharedSecret': [computer.secret],
+						'univentionRadiusClientType': [computer.nas_type],
+						'univentionRadiusClientVirtualServer': [computer.virtual_server] if computer.virtual_server else [],
+					})
+			utils.wait_for_replication_and_postrun()
 
-		check_file_content(computers)
+			def check_file_content(computers):
+				print('*** checking /etc/freeradius/3.0/clients.univention.conf')
+				with open('/etc/freeradius/3.0/clients.univention.conf', 'r') as fd:
+					content = fd.read()
+					content = re.sub(r'\s+', ' ', content)
 
-		print('*** change RADIUS values')
-		for computer in computers:
-			computer.secret = uts.random_string()
-			# nas_type is not changed on purpose (too less possible values available for current test mechanism)
-			computer.virtual_server = uts.random_string()
+				def in_content(content, name, txt):
+					assert txt in content, 'cannot find "{}" for computer {}'.format(txt, name)
+
+				def not_in_content(content, name, txt):
+					assert txt not in content, 'unexpectedly found "{}" for computer {}'.format(txt, name)
+
+				for computer in computers:
+					func = not_in_content if computer.removed else in_content
+					func(content, computer.name, 'client {} {{'.format(computer.name))
+					func(content, computer.name, 'ipaddr = {}'.format(computer.addr))
+					func(content, computer.name, 'secret = {}'.format(computer.secret))
+					func(content, computer.name, 'nas_type = {}'.format(computer.nas_type))
+					if not computer.removed:
+						if computer.virtual_server:
+							func(content, computer.name, 'virtual_server = {}'.format(computer.virtual_server))
+						else:
+							func(content, computer.name, '# virtual_server = ...not specified...')
+
+			check_file_content(computers)
+
+			print('*** change RADIUS values')
+			for computer in computers:
+				computer.secret = uts.random_string()
+				# nas_type is not changed on purpose (too less possible values available for current test mechanism)
+				computer.virtual_server = uts.random_string()
+				udm.modify_object(
+					computer.role,
+					dn=computer.dn,
+					options=['kerberos', 'samba', 'posix', 'radiusAuthenticator'],
+					univentionRadiusClientSharedSecret=computer.secret,
+					univentionRadiusClientType=computer.nas_type,
+					univentionRadiusClientVirtualServer=computer.virtual_server,
+				)
+			utils.wait_for_replication_and_postrun()
+			check_file_content(computers)
+
+			print('*** remove a computer')
+			computer = computers[-1]
+			udm.remove_object(computer.role, dn=computer.dn)
+			computer.removed = True
+			utils.wait_for_replication_and_postrun()
+			check_file_content(computers)
+
+			print('*** remove RADIUS settings')
+			computer = computers[-2]
 			udm.modify_object(
 				computer.role,
 				dn=computer.dn,
-				options=['kerberos', 'samba', 'posix', 'radiusAuthenticator'],
-				univentionRadiusClientSharedSecret=computer.secret,
-				univentionRadiusClientType=computer.nas_type,
-				univentionRadiusClientVirtualServer=computer.virtual_server,
+				options=['kerberos', 'samba', 'posix'],
+				univentionRadiusClientSharedSecret='',
+				univentionRadiusClientType='',
+				univentionRadiusClientVirtualServer='',
 			)
-		utils.wait_for_replication_and_postrun()
-		check_file_content(computers)
-
-		print('*** remove a computer')
-		computer = computers[-1]
-		udm.remove_object(computer.role, dn=computer.dn)
-		computer.removed = True
-		utils.wait_for_replication_and_postrun()
-		check_file_content(computers)
-
-		print('*** remove RADIUS settings')
-		computer = computers[-2]
-		udm.modify_object(
-			computer.role,
-			dn=computer.dn,
-			options=['kerberos', 'samba', 'posix'],
-			univentionRadiusClientSharedSecret='',
-			univentionRadiusClientType='',
-			univentionRadiusClientVirtualServer='',
-		)
-		computer.removed = True
-		utils.wait_for_replication_and_postrun()
-		check_file_content(computers)
+			computer.removed = True
+			utils.wait_for_replication_and_postrun()
+			check_file_content(computers)
 
 if __name__ == '__main__':
 	main()

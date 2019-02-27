@@ -1,3 +1,10 @@
+ucs-test (9.0.1-3) unstable; urgency=low
+
+  * Bug #46018: Readd apptest tag to 45_radius/08_clients_univention_conf
+    and fix computer object creation for UCS@school environments
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 27 Feb 2019 11:55:21 +0100
+
 ucs-test (9.0.1-2) unstable; urgency=medium
 
   * Bug #46018: Remove apptest tag from 45_radius/08_clients_univention_conf
