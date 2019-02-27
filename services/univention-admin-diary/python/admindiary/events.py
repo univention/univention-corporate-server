@@ -59,17 +59,17 @@ APP_REMOVE_START = DiaryEvent('APP_REMOVE_START', {'en': 'Removal of {name} {ver
 APP_REMOVE_SUCCESS = DiaryEvent('APP_REMOVE_SUCCESS', {'en': 'Removal of {name} {version} was successful', 'de': 'Die Deinstallation von {name} {version} war erfolgreich'}, args=['name', 'version'], icon='software')
 APP_REMOVE_FAILURE = DiaryEvent('APP_REMOVE_FAILURE', {'en': 'Removal of {name} {version} failed. Error {error_code}', 'de': 'Die Deinstallation von {name} {version} schlug fehl. Fehler {error_code}'}, args=['name', 'version', 'error_code'], tags=['error'], icon='software')
 
-SERVER_PASSWORD_CHANGED = DiaryEvent('SERVER_PASSWORD_CHANGED', {'en': 'Machine account password changed successfully', 'de': 'Maschinenpasswort erfolgreich geändert'}, icon='devices')
-SERVER_PASSWORD_CHANGED_FAILED = DiaryEvent('SERVER_PASSWORD_CHANGED_FAILED', {'en': 'Machine account password change failed', 'de': 'Änderung des Maschinenpassworts fehlgeschlagen'}, tags=['error'], icon='devices')
+SERVER_PASSWORD_CHANGED = DiaryEvent('SERVER_PASSWORD_CHANGED', {'en': 'Machine account password of {hostname} changed successfully', 'de': 'Maschinenpasswort von {hostname} erfolgreich geändert'}, args=['hostname'], icon='devices')
+SERVER_PASSWORD_CHANGED_FAILED = DiaryEvent('SERVER_PASSWORD_CHANGED_FAILED', {'en': 'Machine account password change of {hostname} failed', 'de': 'Änderung des Maschinenpassworts von {hostname} fehlgeschlagen'}, args=['hostname'], tags=['error'], icon='devices')
 
 UPDATE_STARTED = DiaryEvent('UPDATE_STARTED', {'en': 'Started to update {hostname}', 'de': 'Aktualisierung von {hostname} begonnen'}, args=['hostname'], icon='software')
 UPDATE_FINISHED_SUCCESS = DiaryEvent('UPDATE_FINISHED_SUCCESS', {'en': 'Successfully updated {hostname} to {version}', 'de': 'Aktualisierung von {hostname} auf {version} erfolgreich abgeschlossen'}, args=['hostname', 'version'], icon='software')
 UPDATE_FINISHED_FAILURE = DiaryEvent('UPDATE_FINISHED_FAILURE', {'en': 'Failed to update {hostname}', 'de': 'Aktualisierung von {hostname} fehlgeschlagen'}, args=['hostname'], tags=['error'], icon='software')
 
 JOIN_STARTED = DiaryEvent('JOIN_STARTED', {'en': 'Started to join {hostname} into the domain', 'de': 'Domänenbeitritt von {hostname} begonnen'}, args=['hostname'], icon='domain')
-JOIN_FINISHED_SUCCESS = DiaryEvent('JOIN_FINISHED_SUCCESS', {'en': 'Successfully joined {hostname}', 'de': '{hostname} erfolgreich der Domöne beigetreten'}, args=['hostname'], icon='domain')
+JOIN_FINISHED_SUCCESS = DiaryEvent('JOIN_FINISHED_SUCCESS', {'en': 'Successfully joined {hostname}', 'de': '{hostname} erfolgreich der Domäne beigetreten'}, args=['hostname'], icon='domain')
 JOIN_FINISHED_FAILURE = DiaryEvent('JOIN_FINISHED_FAILURE', {'en': 'Failed to join {hostname}', 'de': 'Domänenbeitritt von {hostname} fehlgeschlagen'}, args=['hostname'], tags=['error'], icon='domain')
-JOIN_SCRIPT_FAILED = DiaryEvent('JOIN_SCRIPT_FAILED', {'en': 'Running Joinscript {joinscript} failed', 'de': 'Ausführung des Joinscripts {joinscript} fehlgeschlagen'}, tags=['error'], icon='domain')
+JOIN_SCRIPT_FAILED = DiaryEvent('JOIN_SCRIPT_FAILED', {'en': 'Running Joinscript {joinscript} failed', 'de': 'Ausführung des Joinscripts {joinscript} fehlgeschlagen'}, args=['joinscript'], tags=['error'], icon='domain')
 
 UDM_GENERIC_CREATED = DiaryEvent('UDM_GENERIC_CREATED', {'en': '{module} object {id} created', 'de': '{module}-Objekt {id} angelegt'}, args=['module', 'id'], icon='domain')
 UDM_GENERIC_MODIFIED = DiaryEvent('UDM_GENERIC_MODIFIED', {'en': '{module} object {id} modified', 'de': '{module}-Objekt {id} bearbeitet'}, args=['module', 'id'], icon='domain')
