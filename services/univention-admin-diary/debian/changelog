@@ -1,3 +1,9 @@
+univention-admin-diary (1.0.0-36) unstable; urgency=medium
+
+  * Bug #48342: Don't log admin diary messages in local syslog
+
+ -- Arvid Requate <requate@univention.de>  Wed, 27 Feb 2019 14:59:20 +0100
+
 univention-admin-diary (1.0.0-35) unstable; urgency=medium
 
   * Bug #48341: Put DB initialization into joinscript
