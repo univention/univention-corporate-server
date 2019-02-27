@@ -37,6 +37,9 @@ if [ "$db_backend" = "postgresql" ]; then
 elif [ "$db_backend" = "mysql" ]; then
 	echo "CREATE DATABASE IF NOT EXISTS admindiary" | mysql -p$(cat /etc/mysql.secret)
 	echo "GRANT ALL ON admindiary.* TO 'admindiary'@'localhost' IDENTIFIED BY '$PASSWORD'" | mysql -p$(cat /etc/mysql.secret)
+else
+	echo "Error: Please set admin/diary/dbms to postgresql or mysql in UCR" 2>&1
+	exit 1
 fi
 
 /usr/share/univention-admin-diary/create-tables
