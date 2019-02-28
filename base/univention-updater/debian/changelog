@@ -1,3 +1,9 @@
+univention-updater (14.0.0-14) unstable; urgency=medium
+
+  * Bug #48808: Update appcenter cache and reregister apps in postup
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 28 Feb 2019 17:09:24 +0100
+
 univention-updater (14.0.0-13) unstable; urgency=medium
 
   * Bug #48718: Explicit dependency to univention-admin-diary-client

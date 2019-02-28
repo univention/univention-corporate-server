@@ -154,6 +154,11 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	univention-run-join-scripts >>"$UPDATER_LOG" 2>&1
 fi
 
+# Bug #48808
+univention-app update >>"$UPDATER_LOG" 2>&1 || true
+univention-app register --app >>"$UPDATER_LOG" 2>&1 || true
+
+
 # Bug #44188: recreate and reload packetfilter rules to make sure the system is accessible
 service univention-firewall restart >>"$UPDATER_LOG" 2>&1
 
