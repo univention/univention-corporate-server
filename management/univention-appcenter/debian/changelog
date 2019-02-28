@@ -1,3 +1,9 @@
+univention-appcenter (8.0.5-1) unstable; urgency=medium
+
+  * Bug #48621: accept old ini format without GenericUserActivationAttribute = True
+
+ -- Florian Best <best@univention.de>  Thu, 28 Feb 2019 18:23:30 +0100
+
 univention-appcenter (8.0.4-8) unstable; urgency=medium
 
   * Bug #48621: write multivalue to ldap

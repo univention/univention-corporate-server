@@ -311,30 +311,49 @@ def get_extended_attributes(app):
 
 	if app.generic_user_activation:
 		attribute_name = app.generic_user_activation_attribute
-		if attribute_name is True:
-			attribute_name = '%sActivated' % (app.id,)
-		if attribute_name and attribute_name not in [attr.name for attr in attributes]:
-			attribute_logger.debug('Adding %s to list of attributes' % attribute_name)
-			attribute = ExtendedAttribute(app, module='users/user', name=attribute_name, description='Activate user for %s' % app.name, description_de='Nutzer für %s aktivieren' % app.name, syntax='Boolean', udm_syntax='AppActivatedTrue')
-			attribute.set_standard_oid(app, attribute_suffix)
-			attribute.full_width = False
-			attribute.disable_web = True  # important!
-			attribute.default = 'TRUE'  # important! the boolean flag is the extended option, so this must be enabled
-			attributes.insert(0, attribute)
+		if attribute_name is not False:
+			if attribute_name is True or not attribute_name:
+				attribute_name = '%sActivated' % (app.id,)
+			try:
+				attribute = [attr for attr in attributes if attr.name == attribute_name][0]
+			except IndexError:
+				attribute_logger.debug('Adding %s to list of attributes' % attribute_name)
+				attribute = ExtendedAttribute(
+					app,
+					module='users/user',
+					name=attribute_name,
+					description='User is activated for %s' % app.name,
+					description_de='Nutzer ist für %s aktiviert' % app.name,
+					syntax='Boolean',
+					udm_syntax='AppActivatedTrue',
+					full_width=False,
+					disable_web=True,  # important!
+					default='TRUE',  # important! the boolean flag is the extended option, so this must be enabled
+				)
+				attribute.set_standard_oid(app, attribute_suffix)
+				attributes.insert(0, attribute)
 
-		if attribute_name:
-			attr = [attr for attr in attributes if attr.name == attribute_name][0]
-			if attr.udm_syntax == 'boolean':
-				attr.udm_syntax = 'AppActivatedBoolean'
-			elif attr.udm_syntax == 'TrueFalseUp':
-				attr.udm_syntax = 'AppActivatedTrue'
+			if attribute.udm_syntax == 'boolean':
+				attribute.udm_syntax = 'AppActivatedBoolean'
+				attribute.default = '1'
+			elif attribute.udm_syntax == 'TrueFalseUp':
+				attribute.udm_syntax = 'AppActivatedTrue'
+				attribute.default = 'TRUE'
+			attribute.disable_web = True
 
 		option_name = app.generic_user_activation_option
 		if option_name is True or not option_name:
 			option_name = '%sUser' % (app.id,)
 		if option_name not in [opt.name for opt in extended_options]:
 			attribute_logger.debug('Adding %s to list of options' % option_name)
-			option = ExtendedOption(app, name=option_name, module='users/user', object_class=option_name, long_description='Activate user for %s' % app.name, long_description_de='Nutzer für %s aktivieren' % app.name)
+			option = ExtendedOption(
+				app,
+				name=option_name,
+				module='users/user',
+				object_class=option_name,
+				long_description='Activate user for %s' % app.name,
+				long_description_de='Nutzer für %s aktivieren' % app.name
+			)
 			extended_options.insert(0, option)
 
 	for attribute in attributes:
