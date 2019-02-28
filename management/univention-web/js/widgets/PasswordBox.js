@@ -30,15 +30,31 @@
 
 define([
 	"dojo/_base/declare",
-	"dojo/dom-attr",
+	"dojo/_base/lang",
+	"dojo/on",
 	"umc/widgets/TextBox",
-	"umc/widgets/_FormWidgetMixin"
-], function(declare, domAttr, TextBox, _FormWidgetMixin) {
+	"umc/widgets/_FormWidgetMixin",
+	"put-selector/put"
+], function(declare, lang, on, TextBox, _FormWidgetMixin, put) {
 	return declare("umc.widgets.PasswordBox", [ TextBox, _FormWidgetMixin ], {
 		type: 'password',
+
 		buildRendering: function() {
 			this.inherited(arguments);
-			domAttr.set(this, 'autocomplete', 'new-password');
+
+			// HACK / WORKAROUND to prevent autocompletion
+			//
+			// autocomplete="off" is ignored by some
+			// browsers due to https://www.w3.org/TR/html-design-principles/#priority-of-constituencies.
+			// and autofill being and desired feature for users.
+			// The workaround used in TextBox.js to set a random autocomplete value does not work
+			// for type="password" (type="password" always prompts autocomplete)
+			//
+			// Catch the focus and then pass through to the actual input.
+			// Likely that this workaround will be fixed in later chrome versions
+			this.focusCatchNode = put('input.dijitInputInner[type="password"][tabIndex="-1"][style="position: absolute; opacity: 0;"]');
+			on(this.focusCatchNode, 'focus', lang.hitch(this, 'focus'));
+			put(this.focusNode, '-', this.focusCatchNode);
 		}
 	});
 });

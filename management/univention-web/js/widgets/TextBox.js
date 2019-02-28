@@ -70,6 +70,16 @@ define([
 		//		(softMaxLengthMessage can be an HTML string)
 		softMaxLengthMessage: '',
 
+		// we really do not want autofill as default.
+		// autocomplete="off" is ignored by some browsers due to
+		// https://www.w3.org/TR/html-design-principles/#priority-of-constituencies
+		// and autofill being and desired feature for users.
+		// As workaround we set autocomplete to a random string that does not resemble any
+		// attribute like 'username' or 'street' that could prompt an autofill.
+		// https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill
+		autocomplete: '__JLM1J04IWVJD__',
+		_setAutocompleteAttr: { node: 'focusNode', type: 'attribute' },
+
 		// inlineLabel: String
 		//		If specified, the given string is positioned as label above the input field.
 		inlineLabel: null,
