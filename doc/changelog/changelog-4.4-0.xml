@@ -352,6 +352,7 @@
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The recommended browser versions have been updated (<u:bug>47829</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
