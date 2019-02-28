@@ -1,3 +1,9 @@
+univention-self-service (4.0.2-3) unstable; urgency=medium
+
+  * Bug #48446: Fix error handling
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 28 Feb 2019 15:07:54 +0100
+
 univention-self-service (4.0.2-2) unstable; urgency=medium
 
   * Bug #48710: fix Uploader.js overwriting value on creation

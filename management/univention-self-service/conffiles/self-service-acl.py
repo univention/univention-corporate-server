@@ -63,8 +63,8 @@ def handler(configRegistry, changes):
 			try:
 				acl_file.write(ACL_TEMPLATE % params)
 				acl_file.flush()
-			except IOError as e:
-				print('Error writing updated LDAP ACL!\n %s' % e.output)
+			except IOError as exc:
+				print('Error writing updated LDAP ACL!\n %s' % exc)
 				return
 		try:
 			cmd = ["/usr/sbin/univention-self-service-register-acl", "register", "%s" % ACL_FILE_PATH, "%s" % version_by_date]
