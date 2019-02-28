@@ -284,7 +284,7 @@ layout = [
 		'adGroupType',
 		'sambaPrivileges'
 	]),
-	Tab('Options'),  # not translated!
+	Tab('Apps'),  # not translated!
 ]
 
 mapping = univention.admin.mapping.mapping()

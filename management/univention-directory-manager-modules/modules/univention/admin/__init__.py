@@ -496,7 +496,7 @@ def ucr_overwrite_module_layout(module):
 	app_tabs = [x for x in module.layout if x.is_app_tab]
 	app_tabs.sort(key=lambda x: x.label.lower())
 	layout = [x for x in module.layout if not x.is_app_tab]
-	pos = ([i for i, x in enumerate(layout, 1) if x.label == 'Options'] or [len(layout)])[0]
+	pos = ([i for i, x in enumerate(layout, 1) if x.label == 'Apps'] or [len(layout)])[0]
 	layout[pos:pos] = app_tabs
 	module.layout = layout
 
