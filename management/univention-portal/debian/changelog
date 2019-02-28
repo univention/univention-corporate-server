@@ -1,3 +1,9 @@
+univention-portal (3.0.1-14) unstable; urgency=medium
+
+  * Bug #48595: Do not filter categories in admin_mode
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 28 Feb 2019 10:47:27 +0100
+
 univention-portal (3.0.1-13) unstable; urgency=medium
 
   * Bug #48546: fix empty portal message not showing
