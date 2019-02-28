@@ -14,9 +14,16 @@
 	color: $document-text-color
 
 
+html,
+body.umc
+	background-color: var(--document-bgc)
+
 html
 	height: 100%
-	background-color: $document-background-color
+
+body.umc
+	overflow-x: hidden
+	min-height: 100%
 
 body.umc,
 .umc p
@@ -35,18 +42,6 @@ body.umc,
 
 .umc a:hover
 	color: $text-color
-
-
-body.umc .umcBackground,
-body.umc
-	overflow-x: hidden
-	background-color: $document-background-color
-
-.dj_ie9 body.umc.umcOverviewShown:before,
-.dj_ie8 body.umc.umcOverviewShown:before,
-body.umc.umcOverviewShown
-	min-height: 100%
-
 
 /* Headings */
 .umc h1
@@ -115,5 +110,3 @@ for i in (1..5)
 		.dijitButton
 			material-flat-button()
 
-.umcStandby
-	background: no-repeat center url('images/standbyAnimation.svg')
