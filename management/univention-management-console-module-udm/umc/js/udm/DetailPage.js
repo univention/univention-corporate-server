@@ -943,10 +943,11 @@ define([
 			}
 
 			// replace the existing tab (which exists so that it's displayed earlier)
-			var tab = array.filter(layout, function(item) { return item.label === 'Options'; });
+			var tab = array.filter(layout, function(item) { return item.label === 'Apps'; });
 			if (!tab.length) {
 				layout.push(optiontab);
 			} else {
+				optiontab.layout = optiontab.layout.concat(tab[0].layout);
 				lang.mixin(tab[0], optiontab);
 			}
 

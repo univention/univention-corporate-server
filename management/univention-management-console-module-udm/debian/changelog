@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.6-1) unstable; urgency=medium
+
+  * Bug #48621: Rename Options tab to Apps and merge in extended attributes
+
+ -- Florian Best <best@univention.de>  Thu, 28 Feb 2019 13:08:37 +0100
+
 univention-management-console-module-udm (9.0.5-1) unstable; urgency=medium
 
   * Bug #48621: Show app checkboxes in two-row grid layout
