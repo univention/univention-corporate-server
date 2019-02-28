@@ -100,7 +100,7 @@ define([
 		},
 
 		warningBrowserOutdated: function() {
-			if (has('ie') || has('ff') < 60 || has('chrome') < 71 || has('safari') < 12) {
+			if (has('ie') || has('trident') || has('edge') < 18.17763 || has('ff') < 60 || has('chrome') < 71 || has('safari') < 12) {
 				// by umc (4.1.0) supported browsers are Chrome >= 33, FF >= 24, IE >=9 and Safari >= 7
 				// they should work with UMC. albeit, they are
 				// VERY slow and escpecially IE 8 may take minutes (!)
