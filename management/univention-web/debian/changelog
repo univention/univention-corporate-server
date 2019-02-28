@@ -1,3 +1,9 @@
+univention-web (3.0.2-5) unstable; urgency=medium
+
+  * Bug #46198: prevent autofill as default for TextBox and PasswordBox
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 28 Feb 2019 18:43:47 +0100
+
 univention-web (3.0.2-4) unstable; urgency=medium
 
   * Bug #46198 UMC: Fix password auto-fill
