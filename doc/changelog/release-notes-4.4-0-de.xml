@@ -200,13 +200,19 @@
 				<listitem>
 					<para>Safari und Safari Mobile ab Version 12</para>
 				</listitem>
+
+				<listitem>
+					<para>Microsoft Edge ab Version 18</para>
+				</listitem>
 			</itemizedlist>
 
 			<para>
 				Der Internet Explorer wird ab diesem Release nicht mehr von &ucsUMC; unterstützt.
 			</para>
 			<para>
-				Mit älteren Browsern können Darstellungs- oder Performanceprobleme auftreten.
+				Mit älteren Browsern können Darstellungs- oder Performanceprobleme auftreten. Aufgrund der kurzen Entwicklungszeiten
+				und Lebenszyklen moderner Browser, können sich die unterstützten Versionen während der Lebenszeit
+				von UCS ändern.
 			</para>
 		</section>
 
