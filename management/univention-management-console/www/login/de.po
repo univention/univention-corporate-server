@@ -81,7 +81,7 @@ msgid ""
 "problems when using Univention Services."
 msgstr ""
 "Ihr Browser ist veraltet! Dadurch kann es zu Geschwindigkeits- "
-"und anderen Problemen kommen bei der Verwendung von Univention Diensten."
+"und anderen Problemen bei der Verwendung von Univention Diensten kommen."
 
 #: www/login/dialog.js:111
 msgid "Please login with a valid username and password."
