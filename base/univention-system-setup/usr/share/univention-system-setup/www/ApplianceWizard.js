@@ -296,6 +296,11 @@ define([
 
 		_newFQDN: null, // temp variable for the guessed or actual FQDN; TODO: remove this
 
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			this.standbyColor = this.local_mode ? 'var(--document-bgc)' : this.standbyColor;
+		},
+
 		constructor: function(props) {
 			lang.mixin(this, props);
 
@@ -1492,6 +1497,7 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
+			domClass.toggle(this.domNode, 'umcInlineDialog', !this.local_mode);
 
 			this._initStatusCheck();
 
