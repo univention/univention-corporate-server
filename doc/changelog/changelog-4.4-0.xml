@@ -354,6 +354,9 @@
 				<listitem><simpara>
 					The recommended browser versions have been updated (<u:bug>47829</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The Univention logo has been updated (<u:bug>48700</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
