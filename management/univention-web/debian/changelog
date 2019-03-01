@@ -1,3 +1,9 @@
+univention-web (3.0.3-1) unstable; urgency=medium
+
+  * Bug #48621: TitlePanes can be untoggleable now
+
+ -- Florian Best <best@univention.de>  Fri, 01 Mar 2019 13:42:17 +0100
+
 univention-web (3.0.2-5) unstable; urgency=medium
 
   * Bug #46198: prevent autofill as default for TextBox and PasswordBox
