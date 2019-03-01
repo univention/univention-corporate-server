@@ -2487,7 +2487,7 @@ service my-app-daemon restart
             In a UCS environment, LDAP is the single directory for identity and
             infrastructure management. The LDAP directory is extensible by
             additional schema definitions and can thus extend existing objects.
-            UCS provides a mechanism to the extend the UCS management system
+            UCS provides a mechanism to extend the UCS management system
             user interface based on those additional schema definitions.
         </para>
         <para>
@@ -2529,6 +2529,7 @@ Description=User is an Admin
 DescriptionDE=Benutzer ist Administrator
 Syntax=Boolean
 BelongsTo=myappUserClass
+Type=ExtendedAttribute
 
 [myappSalutation]
 Description=Salutation for User
@@ -2536,9 +2537,11 @@ DescriptionDE=Begrüßung für den Benutzer
 Syntax=String
 Default=Hi,
 BelongsTo=myappUserClass
+Type=ExtendedAttribute
 
 [myappUserClass]
 Type=ObjectClass
+AddExtendedOption=1
 </programlisting>
                 The example generates two attributes and one class:
                 myappIsAdmin, myappSalutation, myappUserClass. The define a
@@ -2549,16 +2552,16 @@ Type=ObjectClass
         <section id="app-attributes:how-it-works">
             <title>How it works</title>
             <para>
-                Technically, the App Center compiles the .attributes file into
-                a schema file. This file is saved in the LDAP directory. On the
-                UCS DC Master, this triggers a mechanism which retrieves this
-                file and saves it to the filesystem. The DC Master then
-                includes this file in its slapd.conf configuration file and
-                restarts the service.
+                Technically, the App Center compiles the
+                <filename>.attributes</filename> file into a schema file.
+                This file is saved in the LDAP directory. On the UCS DC Master
+                it triggers a mechanism which retrieves this file and saves
+                it to the filesystem. The DC Master then includes this file in
+                its slapd.conf configuration file and restarts the service.
             </para>
             <para>
-                After that Extended Attributes are generated form the
-                .attributes file. (Extended Attribute is the name of the
+                After that Extended Attributes are generated from the
+                <filename>.attributes</filename> file. (Extended Attribute is the name of the
                 feature that Univention implemented to extend UCS' UI with
                 custom attributes). These are saved in the LDAP directory and
                 used by UDM, the Univention Directory Manager at runtime. The
@@ -2575,8 +2578,7 @@ udm settings/extended_attribute list
                 should be named <filename>$appid.schema</filename> and uploaded
                 in the same way as the attributes file. If this file is
                 present, it is taken instead of the file that the App Center
-                could have generated automatically. This is an advanced feature
-                and should not be used unless it is necessary. 
+                could have generated automatically.
             </para>
         </section>
 
@@ -2623,7 +2625,7 @@ udm settings/extended_attribute list
                 </listitem>
                 <listitem>
                     <simpara>
-                        <emphasis>Syntax</emphasis> - Defines the type / syntax
+                        <emphasis>Syntax</emphasis> - Defines the LDAP syntax
                         of the attribute. Supported values are
                         <userinput>Boolean</userinput>,
                         <userinput>String</userinput>,
@@ -2645,7 +2647,7 @@ udm settings/extended_attribute list
                 </listitem>
                 <listitem>
                     <simpara>
-                        <emphasis>Auxillary</emphasis> - True or False, whether the class is AUXILLARY in LDAP.
+                        <emphasis>Auxiliary</emphasis> - True or False, whether the class is AUXILIARY in LDAP.
                     </simpara>
                 </listitem>
                 <listitem>
