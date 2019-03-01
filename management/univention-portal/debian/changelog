@@ -1,3 +1,9 @@
+univention-portal (3.0.1-17) unstable; urgency=medium
+
+  * Bug #46556: use die because otherwise the error could not be parsed
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 01 Mar 2019 11:24:12 +0100
+
 univention-portal (3.0.1-16) unstable; urgency=medium
 
   * Bug #46556: use exit instead of die

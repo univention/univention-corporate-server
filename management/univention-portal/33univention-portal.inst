@@ -43,8 +43,7 @@ ldap_master="$(ucr get ldap/master)"
 ldap_master_port="$(ucr get ldap/master/port)"
 
 if ! nc -z "$ldap_master" "${ldap_master_port:-7389}"; then
-	echo "LDAP master is not available. Please try again later."
-	exit 1
+	false || die "LDAP master is not available. Please try again later."
 fi
 
 ldap_base="$(ucr get ldap/base)"
