@@ -926,6 +926,7 @@ define([
 			if (app_layout.length) {
 				option_prop.layout.push({
 					label: _('Activated Apps'),
+					toggleable: false,
 					layout: app_layout,
 					description: _('Here you can activate the user for one of the installed apps. The user can then log on to the app and use it.'),
 				});
@@ -938,6 +939,7 @@ define([
 			if (option_layout.length) {
 				option_prop.layout.push({
 					label: _('Options'),
+					toggleable: false,
 					layout: option_layout
 				});
 			}
