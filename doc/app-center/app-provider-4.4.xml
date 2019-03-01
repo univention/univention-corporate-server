@@ -1541,9 +1541,6 @@ docker exec "$CONTAINER" ...
 
         <section id="provisioning:pull">
             <title>Automatically via LDAP connection (Pull)</title>
-            <!--
-            TODO: Rework this section and consider new app tabs
-            -->
             <para>
 				The parameters for the LDAP server can be read from the environment variables:
 				<itemizedlist>
@@ -1802,7 +1799,8 @@ docker exec "$CONTAINER" ...
     "udm_object_type": "users/user"
 }
 </programlisting>
-				</para>
+                </para>
+            </section>
         </section>
     </section>
 
@@ -2719,7 +2717,7 @@ udm settings/extended_attribute list
                     url="https://docs.software-univention.de/manual.html#central:extendedattrs">listed
                     in the UCS manual</ulink>.
             </para>
-
+        </section>
 	</section>
 </chapter>
 
