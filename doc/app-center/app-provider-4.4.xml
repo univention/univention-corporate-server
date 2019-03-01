@@ -1489,7 +1489,7 @@ docker exec "$CONTAINER" ...
     <title>Connection with Identity Management</title>
 
     <para>
-        One of the <wordasword>UCS's</wordasword> key features is the
+        One of <wordasword>UCS's</wordasword> key features is the
         integrated identity management (IDM). With this central identity
         management, users benefit, among other things, from a single login
         independent of which services or systems they use. It is highly
@@ -1497,15 +1497,20 @@ docker exec "$CONTAINER" ...
     </para>
 
     <para>
-        If the app should benefit from the identity management, the flag
-        <guimenu>Add activation checkbox for App in UCS user
+        The flag <guimenu>Add activation checkbox for App in UCS user
             management</guimenu> should be activated in the App Provider Portal
-        on the <guimenu>Advanced</guimenu>. This extends the IDM by a checkbox
-        and an administrator of the UCS system can activate or deactivate each
-        user individually for the app. The setting can then be found in the
-        Users UMC module and is called <guimenu>Apps</guimenu>. It is also
-        possible to make significantly more complex settings. See <xref
-            linkend="app-attributes" /> for more details.
+        on the <guimenu>Advanced</guimenu> tab. Furthermore, in the section
+        <guimenu>Custom entries</guimenu> the setting
+        <userinput>GenericUserActivationAttribute</userinput> has to be added
+        and set to <userinput>False</userinput>.
+    </para>
+    <para>
+        This extends the IDM by a checkbox with the app logo and an
+        administrator of the UCS system can activate or deactivate each user
+        individually for the app. The setting can then be found on the UCS
+        system in the Users UMC module and is called <guimenu>Apps</guimenu>.
+        It is also possible to make significantly more complex settings. See
+        <xref linkend="app-attributes" /> for more details.
     </para>
 
     <section id="provisioning">
@@ -1517,26 +1522,28 @@ docker exec "$CONTAINER" ...
             push-based procedure.
         </para>
 
+        <para>
+            The default information can be accessed via the LDAP protocol. Objects
+            are identified by an LDAP filter. The following filter can be used to
+            search for users
+            "<wordasword>(univentionObjectType=users/user)</wordasword>" and for
+            groups the filter
+            "<wordasword>(univentionObjectType=groups/group)</wordasword>" can be
+            used.
+        </para>
+        <para>
+            If the user activation above is used, the following LDAP filter can be
+            used:
+            <wordasword>(&amp;(univentionObjectType=users/user)(objectClass=myappUser))</wordasword>.
+            The string <wordasword>myapp</wordasword> has to be replaced with the
+            <wordasword>appid</wordasword>.
+        </para>
+
         <section id="provisioning:pull">
             <title>Automatically via LDAP connection (Pull)</title>
-            <para>
-				UCS stores the user and group information in an OpenLDAP based
-				directory. Thus, the default information can be accessed via
-				the LDAP protocol. Objects are identified by an LDAP filter.
-				The following filter can be used to search for users
-				"<wordasword>(univentionObjectType=users/user)</wordasword>" and
-				for groups the filter
-				"<wordasword>(univentionObjectType=groups/group)</wordasword>"
-				can be used.
-            </para>
-            <para>
-				If the user activation is used (<guimenu>Add activation
-				checkbox for App in UCS user management</guimenu>), the
-				following LDAP filter can be used:
-				<wordasword>(&amp;(univentionObjectType=users/user)(myappActivated=TRUE))</wordasword>.
-				The string <wordasword>myapp</wordasword> has to be replaced
-				with the <wordasword>appid</wordasword>.
-            </para>
+            <!--
+            TODO: Rework this section and consider new app tabs
+            -->
             <para>
 				The parameters for the LDAP server can be read from the environment variables:
 				<itemizedlist>
@@ -1809,24 +1816,6 @@ docker exec "$CONTAINER" ...
 
         <section id="authentication:ldap">
             <title>LDAP</title>
-            <para>
-				UCS stores the user and group information in an OpenLDAP based
-				directory. Thus, the default information can be accessed via
-				the LDAP protocol. Objects are identified by an LDAP filter.
-				The following filter can be used to search for users
-				"<wordasword>(univentionObjectType=users/user)</wordasword>" and
-				for groups the filter
-				"<wordasword>(univentionObjectType=groups/group)</wordasword>"
-				can be used.
-            </para>
-            <para>
-				If the user activation is used (<guimenu>Add activation
-				checkbox for App in UCS user management</guimenu>),
-				the following LDAP filter can be used:
-				"<wordasword>(&amp;(univentionObjectType=users/user)(myappActivated=TRUE))</wordasword>".
-				The string <wordasword>myapp</wordasword> has to be replaced
-				with the <wordasword>appid</wordasword>.
-            </para>
             <para>
 				The parameters for the LDAP server can be read from the
 				environment variables:
@@ -2470,8 +2459,8 @@ service my-app-daemon restart
             UCS management system.
         </para>
         <para>
-            The most common use case which adds a checkbox to the user object
-            definition is already covered, see introduction to chapter <xref
+            The most common use case adds a checkbox to the user object
+            definition and is already covered, see introduction to chapter <xref
                 linkend="connection-idm" />.
         </para>
 
