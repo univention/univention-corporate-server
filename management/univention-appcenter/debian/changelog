@@ -1,3 +1,10 @@
+univention-appcenter (8.0.5-2) unstable; urgency=medium
+
+  * Bug #48621: do not register attributes if app exists on a server with
+  	higher UCS version
+
+ -- Florian Best <best@univention.de>  Fri, 01 Mar 2019 17:48:12 +0100
+
 univention-appcenter (8.0.5-1) unstable; urgency=medium
 
   * Bug #48621: accept old ini format without GenericUserActivationAttribute = True
