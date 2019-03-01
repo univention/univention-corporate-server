@@ -1505,7 +1505,7 @@ docker exec "$CONTAINER" ...
         user individually for the app. The setting can then be found in the
         Users UMC module and is called <guimenu>Apps</guimenu>. It is also
         possible to make significantly more complex settings. See <xref
-            linkend="user-rights-management" /> for more details.
+            linkend="app-attributes" /> for more details.
     </para>
 
     <section id="provisioning">
@@ -1923,33 +1923,6 @@ docker exec "$CONTAINER" ...
             </para>
         </section>
     </section>
-
-    <section id="user-rights-management">
-        <title>User rights management</title>
-        <para>
-            The flag <guimenu>Add activation checkbox for App in UCS user
-                management</guimenu> can be activated in the App Provider
-            Portal on the <guimenu>Advanced</guimenu>. This adds a checkbox to
-            the user administration and a schema
-			extension for the IDM is created, so that the status of the
-			checkbox is stored in an attribute in the IDM. This allows each
-			user to be activated or deactivated separately.
-        </para>
-        <para>
-			If the app requires more settings in the IDM, an own LDAP schema
-			can be uploaded into the App Provider Portal <guimenu>Docker /
-			Configuration files / Schema extension for LDAP</guimenu>.
-        </para>
-        <para>
-			In this case, it is also possible to create individual extended
-            attributes during the setup process. This should be done in the
-            join script.  Further information on extended attributes can be
-            found in the <ulink
-                url="https://docs.software-univention.de/developer-reference.html">Univention
-                Developer Reference</ulink>.
-        </para>
-    </section>
-  </section>
 
 </chapter>
 
@@ -2484,11 +2457,12 @@ service my-app-daemon restart
 	<section id="app-attributes">
 	    <title>App attributes</title>
         <para>
-            In a UCS environment, LDAP is the single directory for identity and
+            One benefit UCS adds to apps is the user rights management. In a
+            UCS environment, LDAP is the single directory for identity and
             infrastructure management. The LDAP directory is extensible by
             additional schema definitions and can thus extend existing objects.
-            UCS provides a mechanism to extend the UCS management system
-            user interface based on those additional schema definitions.
+            UCS provides a mechanism to extend the UCS management system user
+            interface based on those additional schema definitions.
         </para>
         <para>
             The App Center brings both together and offers an easy way to add
