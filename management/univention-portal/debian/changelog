@@ -1,3 +1,9 @@
+univention-portal (3.0.1-16) unstable; urgency=medium
+
+  * Bug #46556: use exit instead of die
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 01 Mar 2019 10:47:03 +0100
+
 univention-portal (3.0.1-15) unstable; urgency=medium
 
   * Bug #46556: Add dependency on netcat-openbsd
