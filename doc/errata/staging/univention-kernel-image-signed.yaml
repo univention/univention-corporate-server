@@ -3,9 +3,9 @@ release: "4.2"
 version: [5]
 scope: ucs_4.2-0-errata4.2-5
 src: univention-kernel-image-signed
-fix: 3.0.2-36A~4.2.0.201902251428
+fix: 3.0.2-37A~4.2.0.201903011021
 desc: |
- This update of the Linux kernel to version 4.9.160 addresses the following
+ This update of the Linux kernel to version 4.9.161 addresses the following
  issues:
  * Null pointer dereference in fs/f2fs/segment.c via mounting fs with
    noflush_merge option allows local denial of service (CVE-2017-18241)
