@@ -2463,6 +2463,12 @@ service my-app-daemon restart
             definition and is already covered, see introduction to chapter <xref
                 linkend="connection-idm" />.
         </para>
+        <para>
+            To use the comfort of these attributes, the target UCS system has
+            to be at least UCS 4.3-3 errata xxx or UCS 4.4-0. See section <xref
+                linkend="create-app-with-docker:supported-ucs-version" /> on
+            how to specify this requirement for your app.
+        </para>
 
         <section id="app-attributes:add">
             <title>Add attributes</title>
@@ -2470,16 +2476,16 @@ service my-app-daemon restart
                 App attributes combine UCS Extended Attributes with LDAP schema
                 extensions. Extended attributes add form elements to Univention
                 Directory Manager (UDM). LDAP schema extensions allow to add
-                custom attributes to already existing LDAP object definitions.
+                additional properties to already existing LDAP object definitions.
                 With the combination of both, an app can for example store the
-                user role directly with the LDAP object.
+                user role or specific parameters directly with the LDAP object.
             </para>
             <para>
                 App attributes are defined in the ini file format and saved to
                 a file in the naming schema
                 <filename>$appid.attributes</filename>. The attributes file has
                 to be uploaded to the provider portal via the upload interface
-                (see <xref linkend="upload-interface" />:
+                (see <xref linkend="upload-interface" />):
 <programlisting>
 ./univention-appcenter-control upload 4.4/myapp=1.0 myapp.attributes
 </programlisting>
@@ -2488,26 +2494,26 @@ service my-app-daemon restart
                 Examples for app attributes:
 <programlisting>
 [myappIsAdmin]
+Type=ExtendedAttribute
 Description=User is an Admin
 DescriptionDE=Benutzer ist Administrator
 Syntax=Boolean
 BelongsTo=myappUserClass
-Type=ExtendedAttribute
 
 [myappSalutation]
+Type=ExtendedAttribute
 Description=Salutation for User
 DescriptionDE=Begrüßung für den Benutzer
 Syntax=String
 Default=Hi,
 BelongsTo=myappUserClass
-Type=ExtendedAttribute
 
 [myappUserClass]
 Type=ObjectClass
 AddExtendedOption=1
 </programlisting>
                 The example generates two attributes and one class:
-                myappIsAdmin, myappSalutation, myappUserClass. The define a
+                myappIsAdmin, myappSalutation, myappUserClass. They define a
                 description in English and German, a syntax type, an optional
                 default and to which class the attribute belongs.
             </para>
@@ -2516,11 +2522,10 @@ AddExtendedOption=1
             <title>How it works</title>
             <para>
                 Technically, the App Center compiles the
-                <filename>.attributes</filename> file into a schema file.
-                This file is saved in the LDAP directory. On the UCS DC Master
-                it triggers a mechanism which retrieves this file and saves
-                it to the filesystem. The DC Master then includes this file in
-                its slapd.conf configuration file and restarts the service.
+                <filename>.attributes</filename> file into a schema file, which
+                defines new LDAP ObjectClass(es) with the respective attributes
+                specific to the app. On the UCS DC Master the schema file is
+                used by the LDAP directory server and restarts the service.
             </para>
             <para>
                 After that Extended Attributes are generated from the
@@ -2528,7 +2533,7 @@ AddExtendedOption=1
                 feature that Univention implemented to extend UCS' UI with
                 custom attributes). These are saved in the LDAP directory and
                 used by UDM, the Univention Directory Manager at runtime. The
-                attributes are available right after the creation of the
+                new gui elements are available right after the creation of the
                 Extended Attributes.
             </para>
             <para>Extended attributes can be listed on the UCS DC Master with: 
@@ -2541,141 +2546,179 @@ udm settings/extended_attribute list
                 should be named <filename>$appid.schema</filename> and uploaded
                 in the same way as the attributes file. If this file is
                 present, it is taken instead of the file that the App Center
-                could have generated automatically.
+                could have generated automatically. It is recommended to create
+                a new ObjectClass that includes the desired attributes. An
+                object class simplifies adding and removing additional values
+                to LDAP objects and even allows to remove the schema extension,
+                when no object uses the object class any longer.
             </para>
         </section>
 
         <section id="app-attributes:reference">
             <title>Attributes reference</title>
             <para>
-            <itemizedlist>
-                <listitem>
-                    <simpara>
-                        <emphasis>Name</emphasis> is the section title in the
-                        ini file. The section title is used as internal name
-                        and reference of the attribute. For example it is used
-                        on the command line: <userinput>udm users/user create …
-                            --set myappIsAdmin=True</userinput>
-                    </simpara>
-                </listitem>
-                <listitem>
-                    <simpara>
-                        <emphasis>Description</emphasis> - Defines the English text
-                        which is shown next to the widget in the user
-                        interface.
-                    </simpara>
-                </listitem>
-                <listitem>
-                    <simpara>
-                        <emphasis>DescriptionDE</emphasis> - Defines the German text
-                        which is shown next to the widget in the user
-                        interface.
-                    </simpara>
-                </listitem>
-                <listitem>
-                    <simpara>
-                        <emphasis>LongDescription</emphasis> - Defines the English text
-                        which is shown in a tooltip in the user
-                        interface.
-                    </simpara>
-                </listitem>
-                <listitem>
-                    <simpara>
-                        <emphasis>LongDescriptionDE</emphasis> - Defines the German text
-                        which is shown in a tooltip in the user
-                        interface.
-                    </simpara>
-                </listitem>
-                <listitem>
-                    <simpara>
-                        <emphasis>Syntax</emphasis> - Defines the LDAP syntax
-                        of the attribute. Supported values are
-                        <userinput>Boolean</userinput>,
-                        <userinput>String</userinput>,
-                        <userinput>BooleanString</userinput> (a string literal
-                        that shall represent a boolean). Advanced: Any known
-                        syntax from the set of available syntaxes in UCS work,
-                        as well.
-                    </simpara>
-                </listitem>
-                <listitem>
-                    <simpara>
-                        <emphasis>Default</emphasis> defines the default value for new LDAP objects.
-                    </simpara>
-                </listitem>
-                <listitem>
-                    <simpara>
-                        <emphasis>Type</emphasis> should be <userinput>ObjectClass</userinput>.
-                    </simpara>
-                </listitem>
-                <listitem>
-                    <simpara>
-                        <emphasis>Auxiliary</emphasis> - True or False, whether the class is AUXILIARY in LDAP.
-                    </simpara>
-                </listitem>
-                <listitem>
-                    <simpara>
-                        <emphasis>Sup</emphasis> - Base class for this ObjectClass, default to <userinput>top</userinput>.
-                    </simpara>
-                </listitem>
-                <listitem>
-                    <simpara>
-                        <emphasis>May</emphasis> - List of attributes this class <emphasis>may</emphasis> have.
-                    </simpara>
-                </listitem>
-                <listitem>
-                    <simpara>
-                        <emphasis>Must</emphasis> - List of attributes this class <emphasis>must</emphasis> have.
-                    </simpara>
-                </listitem>
-                <listitem>
-                    <simpara>
-                        <emphasis>OID</emphasis> (advanced) - A unique (world
-                        wide!!) identifier for the attribute. As Univention has
-                        its own namespace of OIDs, the App Center generates
-                        unique OIDs automatically. With OIDs and classes,
-                        existing app attributes could be migrated to App
-                        Attributes (e.g., if your App existed in the App Center
-                        before this feature was introduced in UCS 4.1). An OID
-                        can be obtained from the Internet Assigned Numbers
-                        Authority (IANA).
-                    </simpara>
-                </listitem>
-                <listitem>
-                    <simpara>
-                        <emphasis>Position</emphasis> (advanced) - The
-                        container, in the the attribute should be placed in the
-                        directory tree. The App Center uses a reasonable
-                        default so that this parameter is not necessary to be
-                        defined.
-                    </simpara>
-                </listitem>
-                <listitem>
-                    <simpara>
-                        <emphasis>SingleValue</emphasis> (advanced) - Define the attribute as SINGLE-VALUE in the LDAP schema.
-                    </simpara>
-                </listitem>
-                <listitem>
-                    <simpara>
-                        <emphasis>BelongsTo</emphasis> (advanced) - Useful if
-                        certain attributes need to be added to certain LDAP
-                        classes. By default, an object class
-                        <userinput>${app}User</userinput> is created.
-                    </simpara>
-                </listitem>
-                <listitem>
-                    <simpara>
-                        <emphasis>Module</emphasis> (advanced) - A list (comma
-                        separated) of UDM modules. By default, users/user is
-                        used, which makes the attribute available to all user
-                        objects. The objectClass can also be further defined.
-                        This should not be needed unless a finer grained
-                        control over the created schema file is needed.
-                    </simpara>
-                </listitem>
-            </itemizedlist>
+                Two different types of attributes can be defined in the
+                <filename>.attributes</filename> file. They are distinguished
+                by the <userinput>Type</userinput> setting:
+
+                <itemizedlist>
+                    <listitem>
+                        <simpara>
+                            <literal>ExtendedOption</literal> defines the outer
+                            scope and is analog to an LDAP object class.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            <literal>ExtendedAttribute</literal> defines an
+                            attribute in the scope of the
+                            <literal>ExtendedOption</literal> and is analog to
+                            an attribute definition for an LDAP object class.
+                        </simpara>
+                    </listitem>
+                </itemizedlist>
             </para>
-        </section>
+
+            <para>
+                The following listing is an overview of the available items in
+                the <filename>.attributes</filename> file.
+
+                <itemizedlist>
+                    <listitem>
+                        <simpara>
+                            <emphasis>Name</emphasis> is the section title in the
+                            ini file. The section title is used as internal name
+                            and reference. For example it is used
+                            on the command line: <userinput>udm users/user create …
+                                --set myappIsAdmin=True</userinput>
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            <emphasis>Type</emphasis> should be
+                            <userinput>ObjectClass</userinput> for
+                            <literal>ExtendedOption</literal> and
+                            <userinput>ExtendedAttribute</userinput> for the
+                            other type respectively.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            <emphasis>Description</emphasis> - Defines the English text
+                            which is shown next to the widget in the user
+                            interface.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            <emphasis>DescriptionDE</emphasis> - Defines the German text
+                            which is shown next to the widget in the user
+                            interface.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            <emphasis>LongDescription</emphasis> - Defines the English text
+                            which is shown in a tooltip in the user
+                            interface.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            <emphasis>LongDescriptionDE</emphasis> - Defines the German text
+                            which is shown in a tooltip in the user
+                            interface.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            <emphasis>Syntax</emphasis> - Defines the LDAP
+                            syntax of the <literal>ExtendedAttribute</literal>.
+                            Supported values are
+                            <userinput>Boolean</userinput>,
+                            <userinput>String</userinput>,
+                            <userinput>BooleanString</userinput> (a string
+                            literal that shall represent a boolean). Advanced:
+                            Any known syntax from the set of available syntaxes
+                            in UCS work, as well.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            <emphasis>UdmSyntax</emphasis> - Defines the UDM
+                            syntax of the <literal>ExtendedAttribute</literal>.
+                            See the <ulink
+                                url="https://docs.software-univention.de/developer-reference-4.3.html#udm:syntax">developer
+                                reference for more detail on the UDM
+                                syntax</ulink>.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            <emphasis>Default</emphasis> defines the default
+                            value. For <literal>ExtendedAttribute</literal> it
+                            controls the default value for the attribute
+                            regarding the specified syntax. For
+                            <literal>ExtendedOption</literal> it controls if
+                            the respective LDAP object class should added by
+                            default.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            <emphasis>BelongsTo</emphasis> for
+                            <literal>ExtendedAttributes</literal> it defines to
+                            which <literal>ExtendedOption</literal> it belongs.
+                            The value is the name like for example
+                            <userinput>myappUserClass</userinput> above.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            <emphasis>Module</emphasis> (advanced) - A list (comma
+                            separated) of UDM modules. By default, users/user is
+                            used, which makes the attribute available to all user
+                            objects. The objectClass can also be further defined.
+                            This should not be needed unless a finer grained
+                            control over the created schema file is needed.
+                        </simpara>
+                    </listitem>
+
+                    <listitem>
+                        <simpara>
+                            <emphasis>OID</emphasis> (advanced) - A unique (world
+                            wide!!) identifier for the attribute. As Univention has
+                            its own namespace of OIDs, the App Center generates
+                            unique OIDs automatically. With OIDs and classes,
+                            existing app attributes could be migrated to App
+                            Attributes (e.g., if your App existed in the App Center
+                            before this feature was introduced in UCS 4.1). An OID
+                            can be obtained from the Internet Assigned Numbers
+                            Authority (IANA).
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            <emphasis>Position</emphasis> (advanced) - The
+                            container, in the the attribute should be placed in the
+                            directory tree. The App Center uses a reasonable
+                            default so that this parameter is not necessary to be
+                            defined.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            <emphasis>SingleValue</emphasis> (advanced) -
+                            Define the attribute as SINGLE-VALUE in the LDAP
+                            schema.
+                        </simpara>
+                    </listitem>
+                </itemizedlist>
+
+                More properties for an attribute are available and <ulink
+                    url="https://docs.software-univention.de/manual.html#central:extendedattrs">listed
+                    in the UCS manual</ulink>.
+            </para>
 
 	</section>
 </chapter>
