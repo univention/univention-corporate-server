@@ -1,3 +1,10 @@
+univention-web (3.0.3-2) unstable; urgency=medium
+
+  * Bug #46198: use autocomplete='new-password' for browsers
+    that support it
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 01 Mar 2019 16:30:13 +0100
+
 univention-web (3.0.3-1) unstable; urgency=medium
 
   * Bug #48621: TitlePanes can be untoggleable now
