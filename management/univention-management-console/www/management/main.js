@@ -976,7 +976,6 @@ define([
 			if (has('touch')) {
 				this.setupTouchDevices();
 			}
-			domClass.add(baseWin.body(), 'umc--umc');
 
 			// set up fundamental layout parts...
 
