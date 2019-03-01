@@ -39,6 +39,8 @@ define([
 	return declare("umc.widgets.PasswordBox", [ TextBox, _FormWidgetMixin ], {
 		type: 'password',
 
+		autocomplete: 'new-password',
+
 		buildRendering: function() {
 			this.inherited(arguments);
 
