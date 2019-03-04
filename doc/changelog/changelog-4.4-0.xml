@@ -360,6 +360,9 @@
 				<listitem><simpara>
 					The feature of modern browsers to automatically fill out HTML form fields has been improved (<u:bug>46198</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The design of the web interface has been improved (<u:bug>48471</u:bug>, <u:bug>48723</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
