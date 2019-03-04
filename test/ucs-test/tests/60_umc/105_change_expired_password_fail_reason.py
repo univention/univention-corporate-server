@@ -6,7 +6,8 @@
 ## tags: [skip_admember]
 
 import pytest
-from univention.config_registry import ConfigRegistry
+import contextlib
+from univention.config_registry import ConfigRegistry, handler_set
 from univention.admin.uldap import getAdminConnection
 from univention.testing import utils
 
@@ -15,26 +16,52 @@ ucr = ConfigRegistry()
 ucr.load()
 lo, pos = getAdminConnection()
 
-@pytest.yield_fixture()
-def enabled_password_quality_checks():
+REASON_TOO_SHORT = "Changing password failed. The password is too short."
+REASON_TOO_SHORT_AT_LEAST_CHARACTERS = "Changing password failed. The password is too short. The password must consist of at least 8 characters."
+REASON_TOO_SIMPLE = "Changing password failed. The password is too simple."
+REASON_PALINDROME = "Changing password failed. The password is a palindrome."
+REASON_DICTIONARY = "Changing password failed. The password is based on a dictionary word."
+REASON_DIFFERENT_WORDS = 'Changing password failed. The password does not contain enough different characters.'
+REASON_ALREADY_USED = 'Changing password failed. The password was already used.'
+REASON_MINIMUM_AGE = 'Changing password failed. The minimum password age is not reached yet.'
+REASON_TOO_SIMILAR = 'Changing password failed. The password is too similar to the old one.'
+
+# TODO: add a lot more unimplemented tests!
+reasons = {
+	REASON_TOO_SHORT: ['Test', 'ana'],
+	REASON_TOO_SHORT_AT_LEAST_CHARACTERS: [],
+	REASON_TOO_SIMPLE: ['123456789'],
+	REASON_PALINDROME: [],
+	REASON_DICTIONARY: ['chocolate'],
+	REASON_DIFFERENT_WORDS: ['ooooooooo'],
+}
+
+
+@contextlib.contextmanager
+def enabled_password_quality_checks(ucr):
 	# TODO: from 07_expired_password: only if univention-samba4 is not installed
-	if not samba4_installed:
-		ldap_base = ucr.get('ldap/base')
-		dn = 'cn=default-settings,cn=pwhistory,cn=users,cn=policies,%s' % (ucr['ldap/base'])
-		old = lo.getAttr(dn, 'univentionPWQualityCheck')
-		new = ['TRUE']
-		lo.modify(dn, [('univentionPWQualityCheck', old, new)])
+	if samba4_installed:
 		yield
-		lo.modify(dn, [('univentionPWQualityCheck', new, old)])
-        else:
-            yield
-            pass
+		return
+	ldap_base = ucr.get('ldap/base')
+	dn = 'cn=default-settings,cn=pwhistory,cn=users,cn=policies,%s' % (ldap_base,)
+	old = lo.getAttr(dn, 'univentionPWQualityCheck')
+	new = ['TRUE']
+	lo.modify(dn, [('univentionPWQualityCheck', old, new)])
+	yield
+	lo.modify(dn, [('univentionPWQualityCheck', new, old)])
 
 
-def test_password_changing_failure_reason(options, new_password, reason, udm, Client, random_string, Unauthorized, enabled_password_quality_checks):
-	print 'test_password_changing_failure_reason(%r, %r, %r)' % (options, new_password, reason)
+@pytest.mark.parametrize('new_password,reason', [[y, reason] for reason, x in reasons.iteritems() for y in x])
+def test_password_changing_failure_reason(new_password, reason, udm, Client, random_string, Unauthorized, ucr):
+	print 'test_password_changing_failure_reason(%r, %r)' % (new_password, reason)
+	with enabled_password_quality_checks(ucr):
+		_test_password_changing_failure_reason(new_password, reason, udm, Client, random_string, Unauthorized)
+
+
+def _test_password_changing_failure_reason(new_password, reason, udm, Client, random_string, Unauthorized):
 	password = random_string()
-	userdn, username = udm.create_user(options=options, password=password, pwdChangeNextLogin=1)
+	userdn, username = udm.create_user(password=password, pwdChangeNextLogin=1)
 	client = Client()
 	if samba4_installed:
 		utils.wait_for_connector_replication()
@@ -42,45 +69,3 @@ def test_password_changing_failure_reason(options, new_password, reason, udm, Cl
 	with pytest.raises(Unauthorized) as msg:
 		client.umc_auth(username, password, new_password=new_password)
 	assert reason == msg.value.message, 'Expected error %r but got %r' % (reason, msg.value.message)
-
-
-def pytest_generate_tests(metafunc):
-	if metafunc.function.__name__ != 'test_password_changing_failure_reason':
-		return
-
-	REASON_TOO_SHORT = "Changing password failed. The password is too short."
-	REASON_TOO_SHORT_AT_LEAST_CHARACTERS = "Changing password failed. The password is too short. The password must consist of at least 8 characters."
-	REASON_TOO_SIMPLE = "Changing password failed. The password is too simple."
-	REASON_PALINDROME = "Changing password failed. The password is a palindrome."
-	REASON_DICTIONARY = "Changing password failed. The password is based on a dictionary word."
-
-	reasons = {
-		REASON_TOO_SHORT: [],
-		REASON_TOO_SHORT_AT_LEAST_CHARACTERS: [],
-		REASON_TOO_SIMPLE: [],
-		REASON_PALINDROME: [],
-		REASON_DICTIONARY: [],
-	}
-	# pam_unix
-	for option in [
-		[],
-	]:
-		reasons[REASON_TOO_SHORT_AT_LEAST_CHARACTERS if samba4_installed else REASON_TOO_SHORT].append([option, 'Test'])
-		reasons[REASON_TOO_SHORT_AT_LEAST_CHARACTERS if samba4_installed else REASON_TOO_SHORT].append([option, 'ana'])
-
-	for option in [
-		[],
-	]:
-		reasons[REASON_TOO_SIMPLE if samba4_installed else REASON_DICTIONARY].append([option, 'chocolate'])
-
-	data = [y + [reason] for reason, x in reasons.iteritems() for y in x]
-	data = [xfail(x) for x in data]
-	metafunc.parametrize('options,new_password,reason', data)
-
-
-def xfail(set_):
-	fails = [x for x in set_ if isinstance(x, type(pytest.mark.xfail()))]
-	if fails:
-		data = [x.args[0] if isinstance(x, type(pytest.mark.xfail())) else x for x in set_]
-		set_ = pytest.mark.xfail(**fails[0].kwargs)(data)
-	return set_
