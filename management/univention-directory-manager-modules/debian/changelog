@@ -2505,7 +2505,7 @@ univention-directory-manager-modules (10.0.30-0) unstable; urgency=medium
 
   * Bug #38473: move mail quota policy into univention-mail-cyrus package
 
- -- Daniel Troeder <troeder@univention.de>	Thu, 04 Jun 2015 16:34:08 +0200
+ -- Daniel Troeder <troeder@univention.de>  Thu, 04 Jun 2015 16:34:08 +0200
 
 univention-directory-manager-modules (10.0.29-57) unstable; urgency=medium
 
@@ -9679,7 +9679,7 @@ univention-directory-manager-modules (2.0.0-5) unstable; urgency=low
 
  -- Bastian Neumann <neumann@univention.de>  Fri, 13 Jul 2007 11:30:15 +0200
 
- univention-directory-manager-modules (2.0.0-4) unstable; urgency=low
+univention-directory-manager-modules (2.0.0-4) unstable; urgency=low
 
   * postinst: fixed a bug in replacing old baseconfig variables
   * add a symbolic link /usr/share/univention-admin-tools ->

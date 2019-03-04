@@ -176,7 +176,7 @@ univention-firewall (7.0.0-3) unstable; urgency=low
 
 univention-firewall (7.0.0-2) unstable; urgency=low
 
-  * fixed XS-Python-Version (Bug #35138) 
+  * fixed XS-Python-Version (Bug #35138)
 
  -- Felix Botner <botner@univention.de>  Tue, 02 Sep 2014 11:06:18 +0200
 
@@ -188,7 +188,7 @@ univention-firewall (7.0.0-1) unstable; urgency=low
 
 univention-firewall (6.0.1-2) unstable; urgency=low
 
-  * Update/review UCR variable descriptions (Bug #30943)	
+  * Update/review UCR variable descriptions (Bug #30943)
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 19 Sep 2013 10:12:13 +0200
 
@@ -201,9 +201,9 @@ univention-firewall (6.0.1-1) unstable; urgency=low
 univention-firewall (6.0.0-1) unstable; urgency=low
 
   * Bump version for UCS 3.2, update copyright years for 2013
-  * Update/review UCR variable descriptions (Bug #30943)	
+  * Update/review UCR variable descriptions (Bug #30943)
   * Remove old transition code in postinst
-  * Mark security/packetfilter/package/.* are ReadOnly	
+  * Mark security/packetfilter/package/.* are ReadOnly
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 03 Sep 2013 14:35:57 +0200
 
@@ -396,13 +396,13 @@ univention-firewall (3.0.2-1) unstable; urgency=low
 
 univention-firewall (3.0.1-1) unstable; urgency=low
 
-  * added ucr info Bug #18407 
+  * added ucr info Bug #18407
 
  -- Felix Botner <botner@univention.de>  Thu, 10 Jun 2010 12:30:04 +0200
 
 univention-firewall (3.0.0-2) unstable; urgency=low
 
-  * fixed 20localhost permissions Bug #18407 
+  * fixed 20localhost permissions Bug #18407
 
  -- Felix Botner <botner@univention.de>  Wed, 09 Jun 2010 14:03:12 +0200
 
@@ -421,7 +421,7 @@ univention-firewall (2.0.5-1) unstable; urgency=low
 
 univention-firewall (2.0.4-1) unstable; urgency=low
 
-  * updated copyright Bug #17222 
+  * updated copyright Bug #17222
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 14:30:43 +0100
 
@@ -429,14 +429,13 @@ univention-firewall (2.0.3-1) unstable; urgency=low
 
   * changed wrong link to non-existing template (Bug #10105)
 
- -- Tim Petersen <petersen@univention.de>  Thu, 17 Dez 2009 09:12:32 +0100
-
+ -- Tim Petersen <petersen@univention.de>  Thu, 17 Dec 2009 09:12:32 +0100
 
 univention-firewall (2.0.2-1) unstable; urgency=low
- 
+
   * changed usage logmsg for univention-iptables init script (Bug #16653)
 
- -- Tim Petersen <petersen@univention.de>  Thu, 17 Dez 2009 08:47:32 +0100
+ -- Tim Petersen <petersen@univention.de>  Thu, 17 Dec 2009 08:47:32 +0100
 
 univention-firewall (2.0.1-3) unstable; urgency=low
 
@@ -475,7 +474,7 @@ univention-firewall (1.1.1-6) unstable; urgency=low
 
   * Remove general rule to filter the time service, since it's needed
     for thin clients. Instead, introduce a separate service definition,
-    which can be used in the "strict" profile. 
+    which can be used in the "strict" profile.
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  7 Nov 2007 13:14:49 +0100
 
@@ -513,7 +512,7 @@ univention-firewall (1.1.0-8) unstable; urgency=low
 
   * Added umc service definition
   * Extend NFS service definition by kernel server port
-	
+
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 16 Aug 2007 09:39:59 +0200
 
 univention-firewall (1.1.0-7) unstable; urgency=low

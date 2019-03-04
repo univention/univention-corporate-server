@@ -134,7 +134,7 @@ univention-nagios (10.0.1-7) unstable; urgency=medium
 univention-nagios (10.0.1-6) unstable; urgency=medium
 
   * Bug #45186: revert UNIVENTION_NSCD, added new
-    UNIVENTION_NSCD2 
+    UNIVENTION_NSCD2
 
  -- Felix Botner <botner@univention.de>  Fri, 11 Aug 2017 11:27:00 +0200
 
@@ -196,7 +196,7 @@ univention-nagios (9.0.1-1) unstable; urgency=medium
 
 univention-nagios (8.0.0-5) unstable; urgency=low
 
-  * use FQDN in check_univention_ldap (Bug #27043) 
+  * use FQDN in check_univention_ldap (Bug #27043)
 
  -- Felix Botner <botner@univention.de>  Thu, 25 Jun 2015 15:41:37 +0200
 
@@ -243,13 +243,13 @@ univention-nagios (7.0.6-3) unstable; urgency=low
 
 univention-nagios (7.0.6-2) unstable; urgency=low
 
-  * fixed init script for nrpe server (Bug #34063) 
+  * fixed init script for nrpe server (Bug #34063)
 
  -- Felix Botner <botner@univention.de>  Mon, 17 Mar 2014 14:18:52 +0100
 
 univention-nagios (7.0.6-1) unstable; urgency=low
 
-  * use /var/run/nagios/nrpe.pid as PID file for nrpe server (Bug #34063) 
+  * use /var/run/nagios/nrpe.pid as PID file for nrpe server (Bug #34063)
 
  -- Felix Botner <botner@univention.de>  Mon, 17 Mar 2014 11:12:08 +0100
 
@@ -280,13 +280,13 @@ univention-nagios (7.0.5-5) unstable; urgency=medium
 univention-nagios (7.0.5-4) unstable; urgency=low
 
   * fixed quoting in 30univention-nagios-client.inst and
-    28univention-nagios-server.inst (Bug #33593) 
+    28univention-nagios-server.inst (Bug #33593)
 
  -- Felix Botner <botner@univention.de>  Wed, 08 Jan 2014 11:12:39 +0100
 
 univention-nagios (7.0.5-3) unstable; urgency=low
 
-  * added group name localization (Bug #33646) 
+  * added group name localization (Bug #33646)
 
  -- Felix Botner <botner@univention.de>  Tue, 10 Dec 2013 10:55:57 +0100
 
@@ -343,7 +343,7 @@ univention-nagios (7.0.1-6) unstable; urgency=low
 
 univention-nagios (7.0.1-5) unstable; urgency=low
 
-  * ucs overview page (Bug #32611) 
+  * ucs overview page (Bug #32611)
 
  -- Felix Botner <botner@univention.de>  Tue, 01 Oct 2013 14:15:52 +0200
 
@@ -355,13 +355,13 @@ univention-nagios (7.0.1-4) unstable; urgency=low
 
 univention-nagios (7.0.1-3) unstable; urgency=low
 
-  * ucs overview page (Bug #32611) 
+  * ucs overview page (Bug #32611)
 
  -- Felix Botner <botner@univention.de>  Mon, 30 Sep 2013 14:44:54 +0200
 
 univention-nagios (7.0.1-2) unstable; urgency=low
 
-  * remove old overview templates (Bug #32611) 
+  * remove old overview templates (Bug #32611)
 
  -- Felix Botner <botner@univention.de>  Mon, 30 Sep 2013 13:30:57 +0200
 
@@ -392,7 +392,7 @@ univention-nagios (7.0.0-1) unstable; urgency=low
 
 univention-nagios (6.0.5-1) unstable; urgency=low
 
-  * apply UNIVENTION_NTP to memberserver too (Bug #30041) 
+  * apply UNIVENTION_NTP to memberserver too (Bug #30041)
 
  -- Felix Botner <botner@univention.de>  Fri, 08 Mar 2013 17:13:50 +0100
 
@@ -404,19 +404,19 @@ univention-nagios (6.0.4-1) unstable; urgency=low
 
 univention-nagios (6.0.3-3) unstable; urgency=low
 
-  * fixed join script (Bug #18828) 
+  * fixed join script (Bug #18828)
 
  -- Felix Botner <botner@univention.de>  Mon, 05 Nov 2012 09:52:00 +0100
 
 univention-nagios (6.0.3-2) unstable; urgency=low
 
-  * fixed join script (Bug #18828) 
+  * fixed join script (Bug #18828)
 
  -- Felix Botner <botner@univention.de>  Thu, 01 Nov 2012 10:15:30 +0100
 
 univention-nagios (6.0.3-1) unstable; urgency=low
 
-  * fixed check intervals in UNIVENTION_JOINSTATUS (Bug #18828) 
+  * fixed check intervals in UNIVENTION_JOINSTATUS (Bug #18828)
 
  -- Felix Botner <botner@univention.de>  Wed, 31 Oct 2012 16:04:59 +0100
 
@@ -428,7 +428,7 @@ univention-nagios (6.0.2-1) unstable; urgency=low
 
 univention-nagios (6.0.1-1) unstable; urgency=low
 
-  * added ssl/validity/root|host support in  
+  * added ssl/validity/root|host support in
     check_univention_ssl_certificate (Bug #27002)
 
  -- Felix Botner <botner@univention.de>  Thu, 06 Sep 2012 17:30:26 +0200
@@ -442,13 +442,13 @@ univention-nagios (6.0.0-1) unstable; urgency=low
 
 univention-nagios (5.0.21-1) unstable; urgency=low
 
-  * apply UNIVENTION_NTP to dc's only (Bug #25128) 
+  * apply UNIVENTION_NTP to dc's only (Bug #25128)
 
  -- Felix Botner <botner@univention.de>  Tue, 03 Jan 2012 14:26:07 +0100
 
 univention-nagios (5.0.20-1) unstable; urgency=low
 
-  * added system role icons (Bug #24568) 
+  * added system role icons (Bug #24568)
 
  -- Felix Botner <botner@univention.de>  Wed, 16 Nov 2011 11:04:28 +0100
 
@@ -467,7 +467,7 @@ univention-nagios (5.0.18-1) unstable; urgency=low
 
 univention-nagios (5.0.17-1) unstable; urgency=low
 
-  * fixed nrpe init script (force start-stop-daemon to stop nrpe) (Bug #24378) 
+  * fixed nrpe init script (force start-stop-daemon to stop nrpe) (Bug #24378)
 
  -- Felix Botner <botner@univention.de>  Fri, 04 Nov 2011 10:17:53 +0100
 
@@ -554,7 +554,7 @@ univention-nagios (5.0.9-5) unstable; urgency=low
 
 univention-nagios (5.0.8-2) unstable; urgency=low
 
-  * renamed nagios/common/servicechecks/autocreate to 
+  * renamed nagios/common/servicechecks/autocreate to
     nagios/common/defaultservices/autocreate (Bug #23424)
   * added UCR description
   * added univention-nagios-common.postinst
@@ -786,7 +786,7 @@ univention-nagios (3.0.17-2) unstable; urgency=low
 
 univention-nagios (3.0.17-1) unstable; urgency=low
 
-  * updated copyright Bug #17222 
+  * updated copyright Bug #17222
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 14:59:38 +0100
 
@@ -794,8 +794,7 @@ univention-nagios (3.0.16-1) unstable; urgency=low
 
   * fixed some typos at ucs-overview. Bug #9724
 
- -- Tim Petersen <petersen@univention.de>  Thu,  17 Dez 2009 10:03:00 +0200
-
+ -- Tim Petersen <petersen@univention.de>  Thu,  17 Dec 2009 10:03:00 +0200
 
 univention-nagios (3.0.15-1) unstable; urgency=low
 
@@ -818,7 +817,7 @@ univention-nagios (3.0.13-1) unstable; urgency=low
 
 univention-nagios (3.0.12-1) unstable; urgency=low
 
-  * remove non-numerical characters from version string when 
+  * remove non-numerical characters from version string when
   	parsing join script (Bug: #15310)
 
  -- Sönke Schwardt <schwardt@univention.de>  Thu, 24 Sep 2009 16:41:30 +0200
@@ -868,11 +867,11 @@ univention-nagios (3.0.5-1) unstable; urgency=low
 
 univention-nagios (3.0.4-1) unstable urgency=low
 
-  * added default service for nscd checks for nagios clients systems 
-    (Bug: #14179) 
-  * added default service for kpasswdd checks for master and backup 
+  * added default service for nscd checks for nagios clients systems
+    (Bug: #14179)
+  * added default service for kpasswdd checks for master and backup
     systems (Bug: #14491)
-  * added service for winbind checks - not enabled by default 
+  * added service for winbind checks - not enabled by default
     (Bug: #14437)
 
  -- Sönke Schwardt <schwardt@univention.de>  Thu, 25 Jun 2009 17:56:57 +0200
@@ -978,7 +977,7 @@ univention-nagios (1.0.13-3) unstable; urgency=low
 
 univention-nagios (1.0.13-2) unstable; urgency=low
 
-  * new autostart test in init script 
+  * new autostart test in init script
 
  -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue, 28 Oct 2008 14:38:51 +0100
 
@@ -1126,7 +1125,7 @@ univention-nagios (1.0.2-7) unstable; urgency=low
 
 univention-nagios (1.0.2-6) unstable; urgency=low
 
-  * changed templatenames for ucs-overview 
+  * changed templatenames for ucs-overview
 
  -- Tobias Scherer <scherer@univention.de>  Mon, 30 Jul 2007 10:35:23 +0200
 
@@ -1166,7 +1165,7 @@ univention-nagios (1.0.1-1) unstable; urgency=low
 
   * changed behaviour of nagios-server listener:
     - if nagios2 is running then perform a reload after changing config
-    - if nagios2 is not running then perform a restart only if 
+    - if nagios2 is not running then perform a restart only if
       config registry variable nagios/server/autostart=yes
 
  -- Sönke Schwardt <schwardt@univention.de>  Tue, 24 Jul 2007 13:29:37 +0200
@@ -1215,16 +1214,16 @@ univention-nagios (0.30) unstable; urgency=low
   * call nagios-client join script if installed on master or backup
   * call nagios-client join script in nagios-server postinst again if needed
   * fixed resync mechanism of nagios-client and nagios-server listener
-    (now /etc/nagios/nrpe.univention.d and /etc/nagios2/conf.univention.d 
+    (now /etc/nagios/nrpe.univention.d and /etc/nagios2/conf.univention.d
      will be deleted and recreated on resync)
   * added missing softlinks of nuvola theme to nagios base theme logo directories
-  * don't append host to default univention service checks in 
+  * don't append host to default univention service checks in
     nagios-server postinst (nagios-client join script will do this later)
   * added custom host icons depending on host role
   * fixed traceback in nagios-server ldap listener while removing hosts
   * nagios-server ldap listener is now able to handle the changes of attribute
     'associatedDomain'
-  
+
  -- Sönke Schwardt <schwardt@univention.de>  Thu, 22 Mar 2007 15:31:55 +0100
 
 univention-nagios (0.29) unstable; urgency=low
@@ -1242,8 +1241,8 @@ univention-nagios (0.28) unstable; urgency=low
 
 univention-nagios (0.27) unstable; urgency=low
 
-  * added delay between stopping and restarting nagios server 
-    (server postinst) 
+  * added delay between stopping and restarting nagios server
+    (server postinst)
   * server listener does reload instead of restart nagios
 
  -- Sönke Schwardt <schwardt@univention.de>  Fri,  2 Feb 2007 13:37:27 +0100
@@ -1369,7 +1368,7 @@ univention-nagios (0.11) unstable; urgency=low
   * disable authentication in apache2.conf if nagios/server/authenticate is
     not 'yes'
   * added nrpe directory for local config files
-  * enabled host-alive-check 
+  * enabled host-alive-check
 
  -- Sönke Schwardt <schwardt@univention.de>  Mon, 22 Jan 2007 17:47:59 +0100
 
