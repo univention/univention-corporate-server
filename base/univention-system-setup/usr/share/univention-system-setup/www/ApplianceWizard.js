@@ -861,6 +861,7 @@ define([
 				}, {
 					type: CheckBox,
 					name: 'update/system/after/setup',
+					size: 'Two',
 					value: true,
 					label: _('Update system after setup') +
 						' (<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').' +
