@@ -1,3 +1,10 @@
+ucs-test (8.0.29-2) unstable; urgency=medium
+
+  * Bug #48684: enhance
+    tests/60_umc/105_change_expired_password_fail_reason.py
+
+ -- Florian Best <best@univention.de>  Mon, 04 Mar 2019 16:43:47 +0100
+
 ucs-test (8.0.29-1) unstable; urgency=medium
 
   * Bug #48684: fix tests/60_umc/07_expired_password
