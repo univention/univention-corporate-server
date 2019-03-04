@@ -243,7 +243,7 @@ univention-base-files (5.0.0-9) unstable; urgency=low
 
 univention-base-files (5.0.0-8) unstable; urgency=low
 
-  * recommend rdate and ntpdate (Bug #39410) 
+  * recommend rdate and ntpdate (Bug #39410)
 
  -- Felix Botner <botner@univention.de>  Thu, 08 Oct 2015 17:04:37 +0200
 
@@ -365,19 +365,19 @@ univention-base-files (4.0.5-1) unstable; urgency=low
 
 univention-base-files (4.0.4-4) unstable; urgency=low
 
-  * removed last commit (Bug #36224) 
+  * removed last commit (Bug #36224)
 
  -- Felix Botner <botner@univention.de>  Fri, 17 Oct 2014 15:01:07 +0200
 
 univention-base-files (4.0.4-3) unstable; urgency=low
 
-  * add conflict to console-tools (Bug #36224) 
+  * add conflict to console-tools (Bug #36224)
 
  -- Felix Botner <botner@univention.de>  Fri, 17 Oct 2014 13:23:56 +0200
 
 univention-base-files (4.0.4-2) unstable; urgency=low
 
-  * added kbd to base packages (Bug #36224) 
+  * added kbd to base packages (Bug #36224)
 
  -- Felix Botner <botner@univention.de>  Fri, 17 Oct 2014 12:10:53 +0200
 
@@ -520,11 +520,11 @@ univention-base-files (3.0.3-3) unstable; urgency=low
       Remove UCR variable description for domain/domainname for now, see #32506
       Remove UCR variable description for interfaces/.*/hosts, unused
       Remove UCR variable description for kernel/clobber_modules, kernel/do_bootfloppy,
-        kernel/do_initrd, kernel/ramdisk and kernel/silent_loader; no longer used, 
+        kernel/do_initrd, kernel/ramdisk and kernel/silent_loader; no longer used,
         see Bug 32509
       Revamp category settings
       Remove UCR variable descriptions for lilo/*, removed in UCS 3.0
-      Remove UCR variable description for ldap/binaryattributes, causes more 
+      Remove UCR variable description for ldap/binaryattributes, causes more
         confusion than being useful.
       Remove UCR variable descriptions for proxy/password and proxy/username,
         see Bug #18397
@@ -532,9 +532,9 @@ univention-base-files (3.0.3-3) unstable; urgency=low
       Remove UCR variable description for version/security-patchlevel, no longer
         used since UCS 3.0
       Mark version/version, version/patchlevel, version/releasename and version/erratalevel
-	as ReadOnly, they are set automatically during the updates
+      as ReadOnly, they are set automatically during the updates
       Remove UCR variable descriptions for installer/device/.*/fs, installer/device/.*/mp,
-	and installer/device/.*/name; only used during installation, see #32527
+      and installer/device/.*/name; only used during installation, see #32527
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 06 Sep 2013 11:02:54 +0200
 
@@ -590,14 +590,14 @@ univention-base-files (3.0.1-3) unstable; urgency=low
 
 univention-base-files (3.0.1-2) unstable; urgency=low
 
-  * fixed description for machine/password/complexity (Bug #31281) 
+  * fixed description for machine/password/complexity (Bug #31281)
 
  -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 13:41:59 +0200
 
 univention-base-files (3.0.1-1) unstable; urgency=low
 
   * added description for machine/password/length and
-    machine/password/complexity (Bug #31281) 
+    machine/password/complexity (Bug #31281)
 
  -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 09:54:31 +0200
 
@@ -609,7 +609,7 @@ univention-base-files (3.0.0-1) unstable; urgency=low
   * Use univention.config_registry.interfaces to determine the IP address of
     the primary interface
   * Reload SSHD after setting the variables to ensure that the settings
-    are put into effect rightaway (Bug #31096)	
+    are put into effect rightaway (Bug #31096)
   * Make the sshd banner configurable through the UCR variable sshd/banner
     and set in postinst, That way the content of /etc/issue is shown during
     login. (Bug #31096)
@@ -661,7 +661,7 @@ univention-base-files (2.0.11-1) precise; urgency=low
 
 univention-base-files (2.0.10-5) unstable; urgency=low
 
-  * univention-base-files.postinst: 
+  * univention-base-files.postinst:
     change logfile permissions from 750 to 640 (Bug #11431)
 
  -- Lukas Walter <walter@univention.de>  Wed, 17 Oct 2012 11:20:49 +0200
@@ -682,14 +682,14 @@ univention-base-files (2.0.10-3) unstable; urgency=low
 
 univention-base-files (2.0.10-2) unstable; urgency=low
 
-  * immediately adopt statoverrides on /var/log and 
+  * immediately adopt statoverrides on /var/log and
     /var/log/univention (Bug #11431)
 
  -- Lukas Walter <walter@univention.de>  Tue, 09 Oct 2012 14:14:33 +0200
 
 univention-base-files (2.0.10-1) unstable; urgency=low
 
-  * try/except ldapsearch in nfsmounts (Bug #28194) 
+  * try/except ldapsearch in nfsmounts (Bug #28194)
 
  -- Felix Botner <botner@univention.de>  Thu, 04 Oct 2012 14:13:30 +0200
 

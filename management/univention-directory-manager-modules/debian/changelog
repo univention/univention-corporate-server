@@ -1158,7 +1158,7 @@ univention-directory-manager-modules (12.0.17-93) unstable; urgency=medium
 univention-directory-manager-modules (12.0.17-92) unstable; urgency=medium
 
   * Bug #24374: Applied patch: remove sambaDomain from _ldap_addlist
-    in container/cn 
+    in container/cn
 
  -- Johannes Keiser <keiser@univention.de>  Fri, 14 Jul 2017 12:59:17 +0200
 
@@ -2457,7 +2457,7 @@ univention-directory-manager-modules (11.0.2-19) unstable; urgency=medium
 
 univention-directory-manager-modules (11.0.2-18) unstable; urgency=low
 
-  * Bug #40651: replace lo.search(base=...) with lo.get 
+  * Bug #40651: replace lo.search(base=...) with lo.get
 
  -- Felix Botner <botner@univention.de>  Thu, 25 Feb 2016 13:16:53 +0100
 
@@ -2670,7 +2670,7 @@ univention-directory-manager-modules (10.0.30-0) unstable; urgency=medium
 
   * Bug #38473: move mail quota policy into univention-mail-cyrus package
 
- -- Daniel Troeder <troeder@univention.de>	Thu, 04 Jun 2015 16:34:08 +0200
+ -- Daniel Troeder <troeder@univention.de>  Thu, 04 Jun 2015 16:34:08 +0200
 
 univention-directory-manager-modules (10.0.29-57) unstable; urgency=medium
 
@@ -2768,26 +2768,26 @@ univention-directory-manager-modules (10.0.29-41) unstable; urgency=low
 
 univention-directory-manager-modules (10.0.29-40) unstable; urgency=low
 
-  * Bug #28331: added translation 
+  * Bug #28331: added translation
 
  -- Felix Botner <botner@univention.de>  Fri, 27 Mar 2015 14:38:19 +0100
 
 univention-directory-manager-modules (10.0.29-39) unstable; urgency=low
 
-  * Bug #28331: added translation 
+  * Bug #28331: added translation
 
  -- Felix Botner <botner@univention.de>  Fri, 27 Mar 2015 13:24:16 +0100
 
 univention-directory-manager-modules (10.0.29-38) unstable; urgency=low
 
-  * Bug #28331: added translation 
+  * Bug #28331: added translation
 
  -- Felix Botner <botner@univention.de>  Fri, 27 Mar 2015 12:45:24 +0100
 
 univention-directory-manager-modules (10.0.29-37) unstable; urgency=low
 
   * Bug #28331: added domainPwdProperties, domainPasswordStoreCleartext
-    and domainPasswordComplex to settings/sambadomain 
+    and domainPasswordComplex to settings/sambadomain
 
  -- Felix Botner <botner@univention.de>  Thu, 26 Mar 2015 18:42:13 +0100
 
@@ -2912,7 +2912,7 @@ univention-directory-manager-modules (10.0.29-19) unstable; urgency=medium
 
 univention-directory-manager-modules (10.0.29-18) unstable; urgency=low
 
-  * added conversion from string to int method with failsafe mapping.py 
+  * added conversion from string to int method with failsafe mapping.py
     (defaults to 0 if conversion fails)
   * Bug #33256: added function catch errors in string to int conversion
   * Bug #8429: changed mapping pwLength,expiryInterval and length to new
@@ -2946,7 +2946,7 @@ univention-directory-manager-modules (10.0.29-13) unstable; urgency=medium
 
 univention-directory-manager-modules (10.0.29-12) unstable; urgency=medium
 
-  * Bug #30088: revert using __str__() for pretty error message due to too 
+  * Bug #30088: revert using __str__() for pretty error message due to too
   	many side effects. Pass the original exception to masked ldapError.
 
  -- Florian Best <best@univention.de>  Wed, 14 Jan 2015 14:57:57 +0100
@@ -3042,7 +3042,7 @@ univention-directory-manager-modules (10.0.27-1) unstable; urgency=medium
 
 univention-directory-manager-modules (10.0.26-1) unstable; urgency=low
 
-  * Changed UMC description for sambaName from Samba name to 
+  * Changed UMC description for sambaName from Samba name to
     Windows name in share handlers (Bug #36311)
 
  -- Felix Botner <botner@univention.de>  Wed, 29 Oct 2014 15:12:13 +0100
@@ -3111,7 +3111,7 @@ univention-directory-manager-modules (10.0.18-1) unstable; urgency=low
 
 univention-directory-manager-modules (10.0.17-1) unstable; urgency=low
 
-  * removed lmhash ucr var description and default (Bug #32584) 
+  * removed lmhash ucr var description and default (Bug #32584)
 
  -- Felix Botner <botner@univention.de>  Fri, 17 Oct 2014 09:21:42 +0200
 
@@ -3164,7 +3164,7 @@ univention-directory-manager-modules (10.0.15-1) unstable; urgency=medium
 
 univention-directory-manager-modules (10.0.14-1) unstable; urgency=low
 
-  * fixed krb5PrincipalName in macos.py (Bug #35526) 
+  * fixed krb5PrincipalName in macos.py (Bug #35526)
 
  -- Felix Botner <botner@univention.de>  Mon, 08 Sep 2014 13:43:56 +0200
 
@@ -3637,7 +3637,7 @@ univention-directory-manager-modules (9.0.72-1) unstable; urgency=low
 
 univention-directory-manager-modules (9.0.71-1) unstable; urgency=low
 
-  * More improvements to share module texts and layout (Bug #32882) 
+  * More improvements to share module texts and layout (Bug #32882)
 
  -- Erik Damrose <damrose@univention.de>  Thu, 24 Oct 2013 10:57:49 +0200
 
@@ -3677,7 +3677,7 @@ univention-directory-manager-modules (9.0.67-2) unstable; urgency=low
 
   * Added syntax UNIX_AccessRight_extended. The widget should provide
     the additional flags setuid, setgid and sticky bit (Bug #15087)
-  * The share layout now uses the syntax UNIX_AccessRight_extended 
+  * The share layout now uses the syntax UNIX_AccessRight_extended
 
  -- Erik Damrose <damrose@univention.de>  Fri, 18 Oct 2013 14:50:52 +0200
 
@@ -3696,14 +3696,14 @@ univention-directory-manager-modules (9.0.66-1) unstable; urgency=low
 univention-directory-manager-modules (9.0.65-1) unstable; urgency=low
 
   * admincli/admin.py: do not save properties of superordinate object
-    in module_information() because otherwise the property types gets 
+    in module_information() because otherwise the property types gets
     mixed up (Bug #32671)
 
  -- Felix Botner <botner@univention.de>  Thu, 17 Oct 2013 17:04:13 +0200
 
 univention-directory-manager-modules (9.0.64-1) unstable; urgency=low
 
-  * fixed 18python-univention-directory-manager.inst (Bug #31408) 
+  * fixed 18python-univention-directory-manager.inst (Bug #31408)
 
  -- Felix Botner <botner@univention.de>  Thu, 17 Oct 2013 12:48:17 +0200
 
@@ -3717,7 +3717,7 @@ univention-directory-manager-modules (9.0.63-1) unstable; urgency=low
 univention-directory-manager-modules (9.0.62-2) unstable; urgency=low
 
   * Improved layout and texts (Bug #32882)
-  * Added new syntax ipnetwork and 
+  * Added new syntax ipnetwork and
     list_of_hostnames_and_ipadresses_and_networks (Bug #32882)
   * NFS shares can now be restricted to networks (Bug #32882)
   * Custom settings can now be added to NFS shares (Bug #18708)
@@ -3726,7 +3726,7 @@ univention-directory-manager-modules (9.0.62-2) unstable; urgency=low
 
 univention-directory-manager-modules (9.0.62-1) unstable; urgency=low
 
-  * added objectFlag (Bug #31408) 
+  * added objectFlag (Bug #31408)
 
  -- Felix Botner <botner@univention.de>  Tue, 15 Oct 2013 17:39:19 +0200
 
@@ -3738,7 +3738,7 @@ univention-directory-manager-modules (9.0.61-1) unstable; urgency=low
 
 univention-directory-manager-modules (9.0.60-6) unstable; urgency=low
 
-  * added objectFlag (Bug #31408) 
+  * added objectFlag (Bug #31408)
 
  -- Felix Botner <botner@univention.de>  Tue, 15 Oct 2013 12:57:45 +0200
 
@@ -3751,7 +3751,7 @@ univention-directory-manager-modules (9.0.60-5) unstable; urgency=low
 
 univention-directory-manager-modules (9.0.60-4) unstable; urgency=low
 
-  * added objectFlag (Bug #31408) 
+  * added objectFlag (Bug #31408)
 
  -- Felix Botner <botner@univention.de>  Tue, 15 Oct 2013 12:46:55 +0200
 
@@ -3837,7 +3837,7 @@ univention-directory-manager-modules (9.0.53-2) unstable; urgency=low
 
 univention-directory-manager-modules (9.0.53-1) unstable; urgency=low
 
-  * Add support for icons, umc module definition and translation files         
+  * Add support for icons, umc module definition and translation files
     to ucs_registerLDAPExtension --udm_module (Bug #32409)
 
  -- Arvid Requate <requate@univention.de>  Thu, 10 Oct 2013 21:40:49 +0200
@@ -3863,7 +3863,7 @@ univention-directory-manager-modules (9.0.50-2) unstable; urgency=low
 
 univention-directory-manager-modules (9.0.50-1) unstable; urgency=low
 
-  * Fix detection of Active flag in ldap_extension listener                    
+  * Fix detection of Active flag in ldap_extension listener
     (Bug #32403, Bug #32406, Bug #32409)
   * Use UCS_Version from python-univention-lib
 
@@ -4093,15 +4093,15 @@ univention-directory-manager-modules (9.0.30-3) unstable; urgency=low
 
   * Update copyright years for 2013
   * Update/review UCR variable descriptions (Bug #30946)
-      Remove UCR variable description for 
+      Remove UCR variable description for
         directory/manager/web/modules/users/user/properties/homePostalAddress/syntax
         Only relevant for very few, old installations
       Remove UCR variable description for directory/manager/usercn/attributes,
         currently broken in UCS, see #32582
-      Remove UCR variable description for 
+      Remove UCR variable description for
         directory/manager/web/modules/.*/.*/properties/.*/.*, currently
         broken, see #23765
-      Remove UCR variable descriptions for 
+      Remove UCR variable descriptions for
       directory/manager/web/modules/.*/.*/layout/.*, they are removed in #26673
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 13 Sep 2013 10:55:04 +0200
@@ -9844,7 +9844,7 @@ univention-directory-manager-modules (2.0.0-5) unstable; urgency=low
 
  -- Bastian Neumann <neumann@univention.de>  Fri, 13 Jul 2007 11:30:15 +0200
 
- univention-directory-manager-modules (2.0.0-4) unstable; urgency=low
+univention-directory-manager-modules (2.0.0-4) unstable; urgency=low
 
   * postinst: fixed a bug in replacing old baseconfig variables
   * add a symbolic link /usr/share/univention-admin-tools ->
