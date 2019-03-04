@@ -1,3 +1,9 @@
+univention-appcenter (8.0.6-1) unstable; urgency=medium
+
+  * Bug #48621: do not create extended option by default
+
+ -- Florian Best <best@univention.de>  Mon, 04 Mar 2019 12:37:42 +0100
+
 univention-appcenter (8.0.5-3) unstable; urgency=medium
 
   * Bug #48839: Explicitely name extended attributes that should act like

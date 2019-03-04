@@ -287,6 +287,7 @@ class AppAttributes(object):
 			})
 		return layout
 
+
 class UserWithoutDN(UMCError):
 
 	def __init__(self, username):

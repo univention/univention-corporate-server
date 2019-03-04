@@ -342,9 +342,9 @@ def get_extended_attributes(app):
 			attribute.disable_web = True
 
 		option_name = app.generic_user_activation_option
-		if option_name is True or not option_name:
+		if option_name is True:
 			option_name = '%sUser' % (app.id,)
-		if option_name not in [opt.name for opt in extended_options]:
+		if option_name and option_name not in [opt.name for opt in extended_options]:
 			attribute_logger.debug('Adding %s to list of options' % option_name)
 			option = ExtendedOption(
 				app,
