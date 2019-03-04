@@ -640,7 +640,6 @@ class simpleLdap(object):
 		for c in response.get('ctrls', []):
 			if c.controlType == PostReadControl.controlType:
 				self.oldattr.update(c.entry)
-		self._write_admin_diary_modify()
 		return dn
 
 	def _write_admin_diary_modify(self):
@@ -1282,6 +1281,8 @@ class simpleLdap(object):
 		# FIXME: timeout without exception if objectClass of Object is not exsistant !!
 		univention.debug.debug(univention.debug.ADMIN, 99, 'Modify dn=%r;\nmodlist=%r;\noldattr=%r;' % (self.dn, ml, self.oldattr))
 		self.lo.modify(self.dn, ml, ignore_license=ignore_license, serverctrls=serverctrls, response=response)
+		if ml:
+			self._write_admin_diary_modify()
 
 		self._ldap_post_modify()
 		self.call_udm_property_hook('hook_ldap_post_modify', self)

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.9-2) unstable; urgency=medium
+
+  * Bug #48717: Admin Diary: Do not log non-modifying modifies
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 04 Mar 2019 23:32:41 +0100
+
 univention-directory-manager-modules (14.0.9-1) unstable; urgency=medium
 
   * Bug #48621: Rename Options tab to Apps
