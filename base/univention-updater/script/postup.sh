@@ -154,11 +154,6 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	univention-run-join-scripts >>"$UPDATER_LOG" 2>&1
 fi
 
-# Bug #48808
-univention-app update >>"$UPDATER_LOG" 2>&1 || true
-univention-app register --app >>"$UPDATER_LOG" 2>&1 || true
-
-
 # Bug #44188: recreate and reload packetfilter rules to make sure the system is accessible
 service univention-firewall restart >>"$UPDATER_LOG" 2>&1
 
@@ -189,6 +184,9 @@ service univention-management-console-web-server restart >>"$UPDATER_LOG" 2>&1
 # the file path moved. during update via UMC the apache is not restarted. The new init script therefore checks the wrong pidfile which fails restarting.
 cp /var/run/apache2.pid /var/run/apache2/apache2.pid
 service apache2 restart >>"$UPDATER_LOG" 2>&1
+# Bug #48808
+univention-app update >>"$UPDATER_LOG" 2>&1 || true
+univention-app register --app >>"$UPDATER_LOG" 2>&1 || true
 EOF
 
 exit 0
