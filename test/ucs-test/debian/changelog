@@ -1,4 +1,4 @@
-ucs-test (9.0.1-5) unstable; urgency=medium
+ucs-test (9.0.1-6) unstable; urgency=medium
 
   * Bug #48446: fixed 83_self_service/04_user_invitation
 
