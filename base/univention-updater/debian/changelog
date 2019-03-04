@@ -1,3 +1,9 @@
+univention-updater (14.0.0-15) unstable; urgency=medium
+
+  * Bug #48808: Register apps in at job after postup
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 04 Mar 2019 12:24:47 +0100
+
 univention-updater (14.0.0-14) unstable; urgency=medium
 
   * Bug #48808: Update appcenter cache and reregister apps in postup
