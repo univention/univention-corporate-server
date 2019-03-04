@@ -7,6 +7,13 @@
 	// remove outline in chromium
 	outline: 0
 
+// StackContainers used visibility: hidden; position: absolute; instead of display: none
+// to prevent losing scroll position in IE11 but this can cause orhter (more severe) problems
+// https://bugs.dojotoolkit.org/ticket/18612
+// https://github.com/dojo/dijit/commit/534157f1ce7473697bd3587d7b39248f50d0ac9e
+.dijitHidden
+	display: none !important
+
 
 .umc
 	font-family: 'Roboto', sans-serif
@@ -14,9 +21,16 @@
 	color: $document-text-color
 
 
+html,
+body.umc
+	background-color: var(--document-bgc)
+
 html
 	height: 100%
-	background-color: $document-background-color
+
+body.umc
+	overflow-x: hidden
+	min-height: 100%
 
 body.umc,
 .umc p
@@ -35,18 +49,6 @@ body.umc,
 
 .umc a:hover
 	color: $text-color
-
-
-body.umc .umcBackground,
-body.umc
-	overflow-x: hidden
-	background-color: $document-background-color
-
-.dj_ie9 body.umc.umcOverviewShown:before,
-.dj_ie8 body.umc.umcOverviewShown:before,
-body.umc.umcOverviewShown
-	min-height: 100%
-
 
 /* Headings */
 .umc h1
@@ -115,5 +117,3 @@ for i in (1..5)
 		.dijitButton
 			material-flat-button()
 
-.umcStandby
-	background: no-repeat center url('images/standbyAnimation.svg')

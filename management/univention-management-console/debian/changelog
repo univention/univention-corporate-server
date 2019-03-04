@@ -1,3 +1,9 @@
+univention-management-console (11.0.3-6) unstable; urgency=medium
+
+  * Bug #48723: adjust text-color on colored backgrounds
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 04 Mar 2019 09:48:09 +0100
+
 univention-management-console (11.0.3-5) unstable; urgency=medium
 
   * Bug #46198 UMC: Fix password auto-fill

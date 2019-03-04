@@ -1,3 +1,10 @@
+univention-system-setup (12.0.1-3) unstable; urgency=medium
+
+  * Bug #48723: use document background-color for standby
+    in local_mode
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 04 Mar 2019 09:47:01 +0100
+
 univention-system-setup (12.0.1-2) unstable; urgency=medium
 
   * Bug #48700: Add reworked logo

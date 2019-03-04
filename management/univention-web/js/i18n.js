@@ -196,9 +196,13 @@ define([
 					if (_msg instanceof Array && _msg.length > 0) {
 						// we found the array with translations for all the
 						// plural forms. Pick the right one and break the loop.
-						plural = eval(_data["$plural$"]);
+						try {
+							plural = Function('n', '"use strict";return ' + _data.$plural$ + ';')(n);
+						} catch (exc) {
+							plural = 1;
+						}
 						// Catch the special case, where the expression in
-						// eval() is "n>1" (or similar) and returns a bool.
+						// _data.$plural$ is "n>1" (or similar) and returns a bool.
 						if (typeof plural === "boolean") {
 							plural = plural ? 1 : 0;
 						}

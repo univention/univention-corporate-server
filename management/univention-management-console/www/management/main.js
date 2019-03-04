@@ -112,7 +112,7 @@ define([
 	};
 
 	var _OverviewPane = declare([GalleryPane], {
-//		categories: null,
+		categories: null,
 
 		constructor: function(props) {
 			lang.mixin(this, props);
@@ -134,6 +134,13 @@ define([
 					descending: false
 				}]
 			};
+
+			this.contrastMap = {};
+			this.categories.forEach(lang.hitch(this, function(category) {
+				var contrastLight = umc.tools.contrast(category.color, '#fff');
+				var contrastDark  = umc.tools.contrast(category.color, 'rgba(0, 0, 0, 0.87)');
+				this.contrastMap[category.id] = contrastDark > contrastLight ? 'contrastDark' : 'contrastLight';
+			}));
 		},
 
 		getIconClass: function(item) {
@@ -151,21 +158,18 @@ define([
 			return '';
 		},
 
-		_createFavoriteIcon: function(categoryColor, parentNode) {
-			var _createIcon = function(nodeClass, color) {
-				var node = domConstruct.create('div', { 'class': nodeClass }, parentNode);
-				var surface = gfx.createSurface(node, 10, 10);
-				surface.createPolyline([
-					{x: 0, y: 0},
-					{x: 0, y: 10},
-					{x: 5, y: 5.6},
-					{x: 10, y: 10},
-					{x: 10, y: 0}
-				]).setFill(color);
-			};
-
-			_createIcon('umcFavoriteIconInverted', 'white');
-			_createIcon('umcFavoriteIconDefault', categoryColor);
+		_createFavoriteIcon: function(category, parentNode) {
+			var node = domConstruct.create('div', {
+				'class': lang.replace('umcFavoriteIconDefault umcFavoriteIconDefault--{0}', [this.contrastMap[category.id]])
+			}, parentNode);
+			var surface = gfx.createSurface(node, 10, 10);
+			surface.createPolyline([
+				{x: 0, y: 0},
+				{x: 0, y: 10},
+				{x: 5, y: 5.6},
+				{x: 10, y: 10},
+				{x: 10, y: 0}
+			]).setFill(category.color);
 		},
 
 		renderRow: function(item, options) {
@@ -173,10 +177,11 @@ define([
 			var category_for_color = item.category_for_color;
 			var className = lang.replace('umcGalleryCategory-{0}', [category_for_color]);
 			domClass.add(div.firstElementChild, className);
+			domClass.add(div.firstElementChild, lang.replace('umcGalleryCategory--{0}', [this.contrastMap[item.category_for_color]]));
 			if (isFavorite(item)) {
 				var cat = require('umc/app').getCategory(category_for_color);
 				if (cat) {
-					this._createFavoriteIcon(cat.color, div.firstElementChild);
+					this._createFavoriteIcon(cat, div.firstElementChild);
 				}
 			}
 			return div;
@@ -779,7 +784,7 @@ define([
 
 		setupSearchField: function() {
 			this._search = new LiveSearch({
-				searchLabel: _('Module search')
+				searchLabel: _('Search')
 			});
 
 			this._headerRight.addChild(this._search);
@@ -971,7 +976,6 @@ define([
 			if (has('touch')) {
 				this.setupTouchDevices();
 			}
-			domClass.add(baseWin.body(), 'umc--umc');
 
 			// set up fundamental layout parts...
 
@@ -1120,6 +1124,10 @@ define([
 		},
 
 		_addModuleSpecificCSSClasses: function(module) {
+			if (!module.selectedChildWidget) {
+				// module is still loading
+				return;
+			}
 			Object.keys(module.selectablePagesToLayoutMapping).forEach(lang.hitch(this, function(page) {
 				if (module.selectedChildWidget === module[page]) {
 					var pageName = page.toLowerCase().replace(/[^a-z]/g, '');
@@ -1424,7 +1432,7 @@ define([
 		_setupOverviewPage: function() {
 			this._grid = new _OverviewPane({
 				'class': 'umcOverviewPane',
-//				categories: this.getCategories(),
+				categories: this.getCategories(),
 				store: this._moduleStore,
 				actions: [{
 					name: 'open',
@@ -1488,9 +1496,9 @@ define([
 				var color = category.color || 'white';
 				if (has('touch')) {
 					styles.insertCssRule(lang.replace('.umcGalleryWrapperItem .umcGalleryCategory-{id}.touched, .umcGalleryWrapperItem.umcGalleryItemActive .umcGalleryCategory-{id}', category), lang.replace('background-color: {0}; ', [color]));
-				} else {
-					styles.insertCssRule(lang.replace('.umcGalleryWrapperItem .umcGalleryCategory-{id}:hover, .umcGalleryWrapperItem.umcGalleryItemActive .umcGalleryCategory-{id}', category), lang.replace('background-color: {0}; ', [color]));
 				}
+				styles.insertCssRule(lang.replace('.umcGalleryWrapperItem .umcGalleryCategory-{id}:hover, .umcGalleryWrapperItem.umcGalleryItemActive .umcGalleryCategory-{id}', category), lang.replace('background-color: {0}; ', [color]));
+
 				var button = new Button({
 					label: category.label,
 					'class': lang.replace('umcCategory-{id}', category),
@@ -1674,6 +1682,7 @@ define([
 				module_flavor_css = lang.replace('{id}-{flavor}', module);
 			}
 			module_flavor_css = module_flavor_css.replace(/[^_a-zA-Z0-9\-]/g, '-');
+
 			domClass.add(tab.domNode, lang.replace('color-{0}', [tab.categoryColor]));
 			domClass.add(tab.controlButton.domNode, lang.replace('umcModuleTab-{0}', [module_flavor_css]));
 			var moreTabsDropDown = lang.getObject('_header._moreTabsDropDownButton.dropDown', false, this);
@@ -1694,18 +1703,30 @@ define([
 			this._insertedTabStyles.push(module_flavor_css);
 
 			var color = this.__getModuleColor(module);
-			var defaultClasses = '.umc .dijitTabContainerTop-tabs .dijitTab';
-			var cssProperties = lang.replace('background-color: {0}; background-image: none; filter: none;', [color]);
+
+			var dijitTabColor = dojo.colorFromHex(color);
+			dijitTabColor.a = 0.95;
+			var contrastLight = umc.tools.contrast(dijitTabColor, '#fff', '#6e6e6e');
+			var contrastDark  = umc.tools.contrast(dijitTabColor, 'rgba(0, 0, 0, 0.87)', '#6e6e6e');
 
 			// color the tabs in the tabs dropDownMenu of the umcHeaer
-			styles.insertCssRule(lang.replace('.umc .umcMoreTabsDropDownMenuContent .dijitMenuItemHover.color-{0},.umc .umcMoreTabsDropDownMenuContent .dijitMenuItemSelected.color-{0}', [module_flavor_css]), lang.replace('background-color: {0}', [color]));
+			styles.insertCssRule(
+				lang.replace('.umc .dijitMenuItemHover.color-{0}, .umc .dijitMenuItemSelected.color-{0}', [module_flavor_css]),
+				lang.replace('background-color: {0}', [color])
+			);
+			if (contrastDark > contrastLight) {
+				styles.insertCssRule(
+					lang.replace('.umc .dijitMenuItemHover.color-{0}, .umc .dijitMenuItemSelected.color-{0}, .umc .dijitMenuItemHover.color-{0} td, .umc .dijitMenuItemSelected.color-{0} td', [module_flavor_css]),
+					'color: rgba(0, 0, 0, 0.87)'
+				);
+			}
 
 			// color module tabs
-			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitTabChecked', [defaultClasses, module_flavor_css]), lang.replace('background-color: {0};', [color]));
-			var dijitTabHoverColor = dojo.blendColors(dojo.colorFromHex(color), dojo.colorFromHex('#000000'), 0.05);
-			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitTabHover',   [defaultClasses, module_flavor_css]), lang.replace('background-color: {0};', [dijitTabHoverColor]));
-			var dijitTabActiveColor = dojo.blendColors(dojo.colorFromHex(color), dojo.colorFromHex('#000000'), 0.1);
-			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitTabActive',  [defaultClasses, module_flavor_css]), lang.replace('background-color: {0};', [dijitTabActiveColor]));
+			domClass.add(tab.controlButton.domNode, contrastDark > contrastLight ? 'contrastDark' : 'contrastLight');
+			styles.insertCssRule(
+				lang.replace('.umc .umcModuleTab-{0}.dijitTabChecked, .umc .umcModuleTab-{0}.dijitTabHover, .umc .umcModuleTab-{0}.dijitTabActive', [module_flavor_css]),
+				lang.replace('background-color: {0} !important;', [dijitTabColor])
+			);
 
 			// color the grid header when items are selected
 			var gridHeaderColor = dojo.blendColors(dojo.colorFromHex(color), dojo.colorFromHex('#ffffff'), 0.7);
