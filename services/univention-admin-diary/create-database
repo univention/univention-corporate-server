@@ -35,7 +35,7 @@ if [ "$db_backend" = "postgresql" ]; then
 	su postgres -c "createdb -O admindiary -T template0 -E UTF8 admindiary"
 	su postgres -c "psql postgres -c \"ALTER ROLE \\\"admindiary\\\" WITH ENCRYPTED PASSWORD '$PASSWORD'\""
 elif [ "$db_backend" = "mysql" ]; then
-	echo "CREATE DATABASE IF NOT EXISTS admindiary" | mysql -p$(cat /etc/mysql.secret)
+	echo "CREATE DATABASE IF NOT EXISTS admindiary CHARACTER SET utf8mb4 COLLATE utf8mb4_bin" | mysql -p$(cat /etc/mysql.secret)
 	echo "GRANT ALL ON admindiary.* TO 'admindiary'@'localhost' IDENTIFIED BY '$PASSWORD'" | mysql -p$(cat /etc/mysql.secret)
 else
 	echo "Error: Please set admin/diary/dbms to postgresql or mysql in UCR" 2>&1

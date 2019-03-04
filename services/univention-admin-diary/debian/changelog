@@ -1,3 +1,9 @@
+univention-admin-diary (1.0.0-41) unstable; urgency=medium
+
+  * Bug #48341: UTF-8 support for mysql/mariadb
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 04 Mar 2019 23:29:35 +0100
+
 univention-admin-diary (1.0.0-40) unstable; urgency=medium
 
   * Bug #48341: Better support for preinstalled mysql/mariadb

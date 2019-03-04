@@ -57,6 +57,8 @@ def get_engine():
 	if dbhost == ucr.get('hostname') or dbhost == '%s.%s' % (ucr.get('hostname'), ucr.get('domainname')):
 		dbhost = 'localhost'
 	db_url = '%s://admindiary:%s@%s/admindiary' % (dbms, password, dbhost)
+	if dbms == 'mysql':
+		db_url = db_url + '?charset=utf8mb4'
 	return sqlalchemy.create_engine(db_url)
 
 def make_session_class():
@@ -92,13 +94,13 @@ class Event(Base):
 	__tablename__ = 'events'
 
 	id = Column(Integer, Sequence('event_id_seq'), primary_key=True)
-	name = Column(String(255), nullable=False, unique=True, index=True)
+	name = Column(String(190), nullable=False, unique=True, index=True)
 
 class EventMessage(Base):
 	__tablename__ = 'event_messages'
 
 	event_id = Column(None, ForeignKey('events.id', ondelete='CASCADE'), primary_key=True)
-	locale = Column(String(255), nullable=False, primary_key=True)
+	locale = Column(String(190), nullable=False, primary_key=True)
 	message = Column(Text, nullable=False)
 	locked = Column(Boolean)
 
@@ -106,11 +108,11 @@ class Entry(Base):
 	__tablename__ = 'entries'
 
 	id = Column(Integer, Sequence('entry_id_seq'), primary_key=True)
-	username = Column(String(255), nullable=False, index=True)
-	hostname = Column(String(255), nullable=False, index=True)
+	username = Column(String(190), nullable=False, index=True)
+	hostname = Column(String(190), nullable=False, index=True)
 	message = Column(Text)
 	timestamp = Column(DateTime(timezone=True), index=True)
-	context_id = Column(String(255), index=True)
+	context_id = Column(String(190), index=True)
 	event_id = Column(None, ForeignKey('events.id', ondelete='RESTRICT'), nullable=True)
 	main_id = Column(None, ForeignKey('entries.id', ondelete='CASCADE'), nullable=True)
 
@@ -125,7 +127,7 @@ class Tag(Base):
 	__tablename__ = 'tags'
 
 	id = Column(Integer, Sequence('tag_id_seq'), primary_key=True)
-	name = Column(String(255), nullable=False, unique=True, index=True)
+	name = Column(String(190), nullable=False, unique=True, index=True)
 
 	entries = relationship('Entry',
                         secondary=entry_tags,
@@ -137,8 +139,8 @@ class Arg(Base):
 
 	id = Column(Integer, Sequence('arg_id_seq'), primary_key=True)
 	entry_id = Column(None, ForeignKey('entries.id', ondelete='CASCADE'), index=True)
-	key = Column(String(255), nullable=False, index=True)
-	value = Column(String(255), nullable=False, index=True)
+	key = Column(String(190), nullable=False, index=True)
+	value = Column(String(190), nullable=False, index=True)
 
 	entry = relationship('Entry')
 
