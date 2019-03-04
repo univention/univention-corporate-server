@@ -1,3 +1,9 @@
+univention-appcenter (8.0.6-2) unstable; urgency=medium
+
+  * Bug #48621: make it possible to not automatically create schema
+
+ -- Florian Best <best@univention.de>  Mon, 04 Mar 2019 12:50:17 +0100
+
 univention-appcenter (8.0.6-1) unstable; urgency=medium
 
   * Bug #48621: do not create extended option by default

@@ -215,28 +215,29 @@ class Register(CredentialsAction):
 			lo, pos = self._get_ldap_connection(args)
 			with self._get_password_file(args) as password_file:
 				create_recursive_container('cn=ldapschema,cn=univention,%s' % ucr_get('ldap/base'), lo, pos)
-				schema_obj = UniventionLDAPSchema(ucr_instance())
-				userdn = self._get_userdn(args)
-				udm_passthrough_options = ['--binddn', userdn, '--bindpwdfile', password_file]
-				opts = Values()
-				opts.packagename = 'appcenter-app-%s' % app.id
-				opts.packageversion = app.version
-				opts.ucsversionstart = None
-				opts.ucsversionend = None
-				os.environ['UNIVENTION_APP_IDENTIFIER'] = app.id
-				try:
-					schema_obj.register(schema_file, opts, udm_passthrough_options)
-				except SystemExit as exc:
-					if exc.code == 4:
-						self.warn('A newer version of %s has already been registered. Skipping...' % schema_file)
+				if app.automatic_schema_creation:
+					schema_obj = UniventionLDAPSchema(ucr_instance())
+					userdn = self._get_userdn(args)
+					udm_passthrough_options = ['--binddn', userdn, '--bindpwdfile', password_file]
+					opts = Values()
+					opts.packagename = 'appcenter-app-%s' % app.id
+					opts.packageversion = app.version
+					opts.ucsversionstart = None
+					opts.ucsversionend = None
+					os.environ['UNIVENTION_APP_IDENTIFIER'] = app.id
+					try:
+						schema_obj.register(schema_file, opts, udm_passthrough_options)
+					except SystemExit as exc:
+						if exc.code == 4:
+							self.warn('A newer version of %s has already been registered. Skipping...' % schema_file)
+						else:
+							raise RegisterSchemaFailed(exc.code)
 					else:
-						raise RegisterSchemaFailed(exc.code)
-				else:
-					if not schema_obj.wait_for_activation():
-						raise RegisterSchemaFileFailed(schema_file)
-				finally:
-					if 'UNIVENTION_APP_IDENTIFIER' in os.environ:
-						del os.environ['UNIVENTION_APP_IDENTIFIER']
+						if not schema_obj.wait_for_activation():
+							raise RegisterSchemaFileFailed(schema_file)
+					finally:
+						if 'UNIVENTION_APP_IDENTIFIER' in os.environ:
+							del os.environ['UNIVENTION_APP_IDENTIFIER']
 
 				# and this is what should be there after one line of lib.register_schema(schema_file)
 				app = app.get_app_cache_obj().copy(locale='en').find_by_component_id(app.component_id)
