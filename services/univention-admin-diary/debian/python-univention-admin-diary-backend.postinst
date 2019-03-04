@@ -44,10 +44,12 @@ if [ -z "$admin_diary_dbhost" ] \
 		echo -n "$PASSWORD" > "$SECRET_FILE"
 	fi
 
-	if command -v psql >/dev/null; then
+	if [ -x /etc/init.d/mysql ]; then
+		ucr set admin/diary/dbms?mysql
+	elif [ -x /etc/init.d/postgresql ]; then
 		ucr set admin/diary/dbms?postgresql
 	else
-		ucr set admin/diary/dbms?mysql
+		echo "ERROR: Cannot determine local database type" 2>&1
 	fi
 elif [ -z "$admin_diary_dbms" ]; then
 	echo "ERROR: admin/diary/dbhost is set in UCR but admin/diary/dbms is not" 2>&1

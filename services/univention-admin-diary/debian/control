@@ -19,7 +19,7 @@ Depends: ${misc:Depends},
  rsyslog-relp,
  python-pyparsing
 Recommends:
- univention-postgresql | univention-mysql
+ univention-postgresql | univention-mariadb
 Suggests: univention-management-console-module-admindiary
 Description: Univention Admin Diary backend
  .
