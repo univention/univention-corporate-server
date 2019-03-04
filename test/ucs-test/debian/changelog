@@ -1,3 +1,9 @@
+ucs-test (9.0.1-5) unstable; urgency=medium
+
+  * Bug #48446: fixed 83_self_service/04_user_invitation
+
+ -- Felix Botner <botner@univention.de>  Mon, 04 Mar 2019 12:00:31 +0100
+
 ucs-test (9.0.1-4) unstable; urgency=medium
 
   * Bug #48840: Add IPv6 support to 82_saml/20_ucs_sso
