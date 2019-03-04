@@ -1,3 +1,9 @@
+univention-admin-diary (1.0.0-39) unstable; urgency=medium
+
+  * Bug #48341: Do not open sockets during import
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 04 Mar 2019 04:56:47 +0100
+
 univention-admin-diary (1.0.0-38) unstable; urgency=medium
 
   * Bug #48342: Do not unset backend UCRV during upgrades

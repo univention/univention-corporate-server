@@ -60,13 +60,16 @@ class _ShortNameFormatter(logging.Formatter):
 def _setup_logger():
 	base_logger = logging.getLogger('univention.admindiary')
 	if not _setup_logger._setup:
+		base_logger.setLevel(logging.INFO)
 		log_format = '%(process)6d %(short_name)-12s %(asctime)s [%(levelname)8s]: %(message)s'
 		log_format_time = '%y-%m-%d %H:%M:%S'
 		formatter = _ShortNameFormatter(log_format, log_format_time)
-		handler = logging.FileHandler(LOG_FILE)
-		handler.setFormatter(formatter)
-		base_logger.addHandler(handler)
-		base_logger.setLevel(logging.INFO)
+		try:
+			handler = logging.FileHandler(LOG_FILE)
+			handler.setFormatter(formatter)
+			base_logger.addHandler(handler)
+		except EnvironmentError:
+			pass
 		_setup_logger._setup = True
 	return base_logger
 _setup_logger._setup = False

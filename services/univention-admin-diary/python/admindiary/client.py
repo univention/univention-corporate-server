@@ -54,9 +54,11 @@ def exceptionlogging(f):
 
 class RsyslogEmitter(object):
 	def __init__(self):
-		self.handler = SysLogHandler(address='/dev/log', facility='user')
+		self.handler = None
 
 	def emit(self, entry):
+		if self.handler is None:
+			self.handler = SysLogHandler(address='/dev/log', facility='user')
 		record = logging.LogRecord('diary-rsyslogger', logging.INFO, None, None, 'ADMINDIARY: ' + str(entry), (), None, None)
 		self.handler.emit(record)
 
