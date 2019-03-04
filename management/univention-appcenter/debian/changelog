@@ -1,3 +1,10 @@
+univention-appcenter (8.0.5-3) unstable; urgency=medium
+
+  * Bug #48839: Explicitely name extended attributes that should act like
+    options in UDM UMC
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 04 Mar 2019 04:20:18 +0100
+
 univention-appcenter (8.0.5-2) unstable; urgency=medium
 
   * Bug #48621: do not register attributes if app exists on a server with

@@ -39,6 +39,7 @@ import traceback
 import gc
 import functools
 import inspect
+import locale
 
 from univention.management.console import Translation
 from univention.management.console.protocol.definitions import BAD_REQUEST_UNAUTH
@@ -48,6 +49,7 @@ from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
 
 import univention.admin as udm
+import univention.admin.uldap as udm_ldap
 import univention.admin.layout as udm_layout
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
@@ -59,7 +61,7 @@ from univention.management.console.modules.udm.syntax import widget, default_val
 
 from ldap import LDAPError, NO_SUCH_OBJECT
 from ldap.filter import filter_format
-from ldap.dn import explode_dn
+from ldap.dn import explode_dn, dn2str, str2dn
 from functools import reduce
 
 
@@ -100,6 +102,190 @@ class UMCError(UMC_Error):
 		# return a generator or a list of strings which are concatenated by a newline
 		yield ''
 
+
+class AppAttributes(object):
+	_cache = None
+	_lo = None
+	_pos = None
+
+	@classmethod
+	def _conn(cls):
+		if cls._lo is None:
+			cls._lo, cls._pos = udm_ldap.getMachineConnection()
+		return cls._lo, cls._pos
+
+	@classmethod
+	def _get_cache(cls):
+		if cls._cache is None:
+			MODULE.process('Loading AppAttributes...')
+			cls._cache = {}
+			from univention.appcenter.app_cache import AllApps
+			from univention.appcenter.udm import search_objects
+			lo, pos = cls._conn()
+			app_objs = search_objects('appcenter/app', lo, pos)
+			apps = {}
+			current_locale = locale.getlocale()[0] or 'en_US'
+			for app_obj in app_objs:
+				app_version = app_obj['version']
+				app_id = app_obj['id'][:-len(app_version) - 1]
+				app = AllApps().find(app_id, app_version=app_version)
+				if app:
+					if app.id in apps:
+						if apps[app.id] > app:
+							continue
+					apps[app.id] = app
+			for app in apps.itervalues():
+				for attribute in app.umc_options_attributes:
+					objs = search_objects('settings/extended_attribute', lo, pos, CLIName=attribute)
+					for obj in objs:
+						for module in obj['module']:
+							if module not in cls._cache:
+								cls._cache[module] = {}
+							option_def = cls._cache[module]
+							group_name = obj['groupName']
+							for loc, desc in obj['translationGroupName']:
+								if loc == current_locale:
+									group_name = desc
+									break
+							tab_name = obj['tabName']
+							for loc, desc in obj['translationTabName']:
+								if loc == current_locale:
+									tab_name = desc
+									break
+							short_description = obj['shortDescription']
+							for loc, desc in obj['translationShortDescription']:
+								if loc == current_locale:
+									short_description = desc
+									break
+							boolean_values = ['1', '0']
+							if obj['syntax'] in ['TrueFalseUp', 'TrueFalseUpper']:
+								boolean_values = ['TRUE', 'FALSE']
+							default = int(obj['default'] == boolean_values[0])
+							attributes = []
+							option_def[obj['CLIName']] = {
+								'label': group_name or tab_name,
+								'description': short_description,
+								'default': default,
+								'boolean_values': boolean_values,
+								'attributes': attributes,
+							}
+							base = dn2str(str2dn(obj.dn)[1:])
+							for _obj in search_objects('settings/extended_attribute', lo, pos, base):
+								if obj.dn == _obj.dn:
+									continue
+								if module in _obj['module']:
+									attributes.append(_obj['CLIName'])
+			MODULE.process('Found:')
+			for module in cls._cache:
+				MODULE.process('  %s' % module)
+				for attr in cls._cache[module]:
+					MODULE.process('    %s and with it: %r' % (attr, cls._cache[module][attr]['attributes']))
+		return cls._cache
+
+	@classmethod
+	def data_for_module(cls, module):
+		return cls._get_cache().get(module, {})
+
+	@classmethod
+	def options_for_module(cls, module):
+		ret = {}
+		for option_name, option_def in cls.data_for_module(module).iteritems():
+			ret[option_name] = udm.option(
+				short_description=option_def['label'],
+				long_description=option_def['description'],
+				default=option_def['default'],
+				editable=True,
+				disabled=False,
+				objectClasses=[],  # this is not really true, but not important either
+				is_app_option=True,
+			)
+		return ret
+
+	@classmethod
+	def options_for_obj(cls, obj):
+		ret = []
+		if obj:
+			for option_name, option_def in cls.data_for_module(obj.module).iteritems():
+				if obj[option_name] == option_def['boolean_values'][0]:
+					ret.append(option_name)
+		return ret
+
+	@classmethod
+	def attributes_for_module(cls, module):
+		ret = []
+		for option_name, option_def in cls.data_for_module(module).iteritems():
+			ret.extend(option_def['attributes'])
+		return ret
+
+	@classmethod
+	def alter_item_for_prop(cls, module, key, prop, item):
+		for option_name, option_def in cls.data_for_module(module).iteritems():
+			if key in option_def['attributes']:
+				item['options'].append(option_name)
+
+	@classmethod
+	def _flatten(cls, attrs):
+		ret = []
+		for sublist in attrs:
+			if isinstance(sublist, (list, tuple)):
+				ret.extend(cls._flatten(sublist))
+			else:
+				ret.append(sublist)
+		return ret
+
+	@classmethod
+	def _is_option_layout(cls, layout, option):
+		return option in cls._flatten(layout['layout'])
+
+	@classmethod
+	def _filter_attrs(cls, layout, attrs_to_remove):
+		if isinstance(layout, dict):
+			_layout = layout.get('layout')
+			if _layout:
+				cls._filter_attrs(_layout, attrs_to_remove)
+		elif isinstance(layout, list):
+			for _layout in layout:
+				if isinstance(_layout, dict) or isinstance(_layout, list):
+					cls._filter_attrs(_layout, attrs_to_remove)
+			for attr in attrs_to_remove:
+				try:
+					layout.remove(attr)
+				except ValueError:
+					pass
+
+	@classmethod
+	def new_layout(cls, module, layout):
+		layout = copy.deepcopy(layout)
+		options = cls.options_for_module(module)
+		if not options:
+			return layout
+		layout_index = 0
+		for _layout in layout:
+			if _layout['label'] == 'Apps':
+				_layout['is_app_tab'] = False
+				break
+			layout_index += 1
+		attrs_to_remove = []
+		for option_name, option_def in AppAttributes.data_for_module(module).iteritems():
+			option_def = copy.deepcopy(option_def)
+			attrs_to_remove.append(option_name)
+			attrs_to_remove.extend(option_def['attributes'])
+		for _layout in layout:
+			cls._filter_attrs(_layout, attrs_to_remove)
+		data = AppAttributes.data_for_module(module)
+		for option_name in sorted(data):
+			option_def = data[option_name]
+			if not option_def['attributes']:
+				continue
+			layout_index += 1
+			layout.insert(layout_index, {
+				'is_app_tab': True,
+				'description': option_def['label'],
+				'label': option_def['label'],
+				'advanced': False,
+				'layout': option_def['attributes'],
+			})
+		return layout
 
 class UserWithoutDN(UMCError):
 
@@ -253,6 +439,8 @@ class UDM_Module(object):
 		self.module = None
 		self.load(force_reload=force_reload)
 		self.settings = UDM_Settings()
+		if force_reload:
+			AppAttributes._cache = None
 
 	def load(self, module=None, template_object=None, force_reload=False):
 		"""Tries to load an UDM module with the given name. Optional a
@@ -384,7 +572,12 @@ class UDM_Module(object):
 			obj.open()
 			MODULE.info('Creating LDAP object')
 			if '$options$' in ldap_object:
-				obj.options = filter(lambda option: ldap_object['$options$'][option] is True, ldap_object['$options$'].keys())
+				options = filter(lambda option: ldap_object['$options$'][option] is True, ldap_object['$options$'].keys())
+				for option_name, option_def in AppAttributes.data_for_module(self.name).iteritems():
+					if option_name in options:
+						options.remove(option_name)
+						ldap_object[option_name] = option_def['boolean_values'][0]
+				obj.options = options
 				del ldap_object['$options$']
 			if '$policies$' in ldap_object:
 				obj.policies = reduce(lambda x, y: x + y, ldap_object['$policies$'].values(), [])
@@ -442,7 +635,14 @@ class UDM_Module(object):
 		try:
 			obj.open()
 			if '$options$' in ldap_object:
-				obj.options = filter(lambda option: ldap_object['$options$'][option] is True, ldap_object['$options$'].keys())
+				options = filter(lambda option: ldap_object['$options$'][option] is True, ldap_object['$options$'].keys())
+				for option_name, option_def in AppAttributes.data_for_module(self.name).iteritems():
+					if option_name in options:
+						options.remove(option_name)
+						ldap_object[option_name] = option_def['boolean_values'][0]
+					else:
+						ldap_object[option_name] = option_def['boolean_values'][1]
+				obj.options = options
 				MODULE.info('Setting new options to %s' % str(obj.options))
 				del ldap_object['$options$']
 			MODULE.info('Modifying LDAP object %s' % obj.dn)
@@ -673,6 +873,8 @@ class UDM_Module(object):
 				tab = udm_layout.Tab(_('Referencing objects'), _('Objects referencing this policy object'), layout=['$references$'])
 				layout.append(tab)
 
+		layout = AppAttributes.new_layout(self.name, layout)
+
 		if layout and isinstance(layout[0], udm.tab):
 			return self._parse_old_layout(layout)
 
@@ -735,6 +937,10 @@ class UDM_Module(object):
 		for key, prop in getattr(self.module, 'property_descriptions', {}).items():
 			if key == 'filler':
 				continue  # FIXME: should be removed from all UDM modules
+			if key in AppAttributes.options_for_module(self.name):
+				# this is a proper (extended) attribute. but it acts as an option
+				# in UMC for better usability
+				continue
 			item = {
 				'id': key,
 				'label': prop.short_description,
@@ -752,6 +958,8 @@ class UDM_Module(object):
 				'nonempty_is_default': bool(prop.nonempty_is_default),
 				'readonly_when_synced': bool(prop.readonly_when_synced),
 			}
+			if key in AppAttributes.attributes_for_module(self.name):
+				AppAttributes.alter_item_for_prop(self.name, key, prop, item)
 
 			# default value
 			if prop.base_default is not None:
@@ -807,6 +1015,7 @@ class UDM_Module(object):
 			else:
 				obj = udm_object
 			obj_options = getattr(obj, 'options', {})
+			obj_options.extend(AppAttributes.options_for_obj(obj))
 
 		options = []
 		for name, opt in self.options.items():
@@ -832,6 +1041,7 @@ class UDM_Module(object):
 		"""List of defined options"""
 		options = dict(getattr(self.module, 'options', {}))
 		options.pop('default', None)  # don't display the "default" pseudo option in UMC
+		options.update(AppAttributes.options_for_module(self.name))
 		return options
 
 	@property

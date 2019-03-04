@@ -889,6 +889,7 @@ class App(object):
 	generic_user_activation = AppAttributeOrTrueOrNone()
 	generic_user_activation_attribute = AppAttributeOrTrueOrNone()
 	generic_user_activation_option = AppAttributeOrTrueOrNone()
+	umc_options_attributes = AppListAttribute()
 	docker_env_ldap_user = AppAttribute()
 
 	ports_exclusive = AppListAttribute(regex='^\d+$')
