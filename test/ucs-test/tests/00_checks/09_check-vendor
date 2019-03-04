@@ -5,4 +5,8 @@
 ##  - apptest
 ## bugs: [44645]
 ## exposure: safe
+
+## Debug output:
+dpkg-vendor --query Vendor
+
 exec dpkg-vendor --is univention
