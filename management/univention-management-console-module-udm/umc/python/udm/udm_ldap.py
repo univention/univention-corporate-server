@@ -157,9 +157,16 @@ class AppAttributes(object):
 								if loc == current_locale:
 									short_description = desc
 									break
-							boolean_values = ['1', '0']
-							if obj['syntax'] in ['TrueFalseUp', 'TrueFalseUpper']:
+							if obj['sytax'] == 'boolean':
+								boolean_values = ['1', '0']
+							elif obj['syntax'] in ['TrueFalseUp', 'TrueFalseUpper']:
 								boolean_values = ['TRUE', 'FALSE']
+							elif obj['syntax'] == 'TrueFalse':
+								boolean_values = ['true', 'false']
+							elif obj['syntax'] == 'OkOrNot':
+								boolean_values = ['Ok', 'Not']
+							else:
+								continue
 							default = int(obj['default'] == boolean_values[0])
 							attributes = []
 							option_def[obj['CLIName']] = {
