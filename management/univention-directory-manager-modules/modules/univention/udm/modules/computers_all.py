@@ -27,7 +27,7 @@
 # <http://www.gnu.org/licenses/>.
 
 """
-Module and object for all "computers/*" UDM modules.
+Module and object for all `computers/\*` UDM modules.
 """
 
 from __future__ import absolute_import, unicode_literals
@@ -40,7 +40,7 @@ from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
 class ComputersAllObjectProperties(GenericObjectProperties):
-	"""computers/* UDM properties."""
+	"""`computers/\*` UDM properties."""
 
 	_encoders = {
 		'dnsAlias': CnameListPropertyEncoder,  # What is this? Isn't this data in dnsEntryZoneAlias already?
@@ -59,7 +59,7 @@ class ComputersAllObjectProperties(GenericObjectProperties):
 
 
 class ComputersAllObject(GenericObject):
-	"""Better representation of computers/* properties."""
+	"""Better representation of `computers/\*` properties."""
 	udm_prop_class = ComputersAllObjectProperties
 
 

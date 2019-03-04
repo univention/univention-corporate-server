@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-#
-# Univention Admin Modules
-#  syntax definitions
-#
+"""
+|UDM| syntax definitions.
+"""
 # Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -56,16 +55,21 @@ from io import BytesIO
 import locale
 from operator import itemgetter
 from ldap.filter import filter_format, escape_filter_chars
+try:
+	from typing import Any, Callable, List, Optional, Pattern, Sequence, Tuple, Type, Union  # noqa F401
+	from univention.admin.uldap import access  # noqa F401
+except ImportError:
+	pass
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
 
-#
-# load all additional syntax files from */site-packages/univention/admin/syntax.d/*.py
-#
-
 
 def import_syntax_files():
+	# type: () -> None
+	"""
+	Load all additional syntax files from :file:`*/univention/admin/syntax.d/*.py`.
+	"""
 	global _  # don't allow syntax to overwrite our global _ function.
 	gettext = _
 	for dir_ in sys.path:
@@ -87,28 +91,41 @@ def import_syntax_files():
 					_ = gettext
 
 
-choice_update_functions = []
+choice_update_functions = []  # type: List[Callable]
 
 
 def __register_choice_update_function(func):
+	# type: (Callable) -> None
+	"""
+	Register a function to be called when the syntax classes are to be re-loaded.
+	"""
 	choice_update_functions.append(func)
 
 
 def update_choices():
-	''' update choices which are defined in LDAP '''
+	# type: () -> None
+	"""
+	Update choices which are defined in LDAP
+	"""
 	for func in choice_update_functions:
 		func()
 
 
 def is_syntax(syntax_obj, syntax_type):
-	"""Returns True if the syntax object/class matches the given type."""
+	# type: (Any, Type) -> bool
+	"""
+	Returns True if the syntax object/class matches the given type.
 
+	:param syntax_obj: The instance to check.
+	:param syntax_type: A syntax class type.
+	"""
 	return isinstance(syntax_obj, type) and issubclass(syntax_obj, syntax_type) or isinstance(syntax_obj, syntax_type)
 
 
 class ClassProperty(object):
-
-	'''A decorator that can be used to define read-only class properties'''
+	"""
+	A decorator that can be used to define read-only class properties.
+	"""
 
 	def __init__(self, getter):
 		self.getter = getter
@@ -116,16 +133,17 @@ class ClassProperty(object):
 	def __get__(self, instance, owner):
 		return self.getter(owner)
 
-# widget sizes
-
 
 SIZES = ('OneThird', 'Half', 'TwoThirds', 'One', 'FourThirds', 'OneAndAHalf', 'FiveThirds')
+"""Widget sizes. UDM uses a two-column layout and by default any widget uses one column. Widgets can also be configured to span (partly) both columns."""
 
 
 class ISyntax(object):
-
-	'''A base class for all syntax classes'''
+	"""
+	Base class for all syntax classes.
+	"""
 	size = 'One'
+	"""Widget size. See :py:data:`SIZES`."""
 
 	@ClassProperty
 	def name(cls):
@@ -137,15 +155,34 @@ class ISyntax(object):
 
 	@classmethod
 	def tostring(self, text):
+		# type: (Any) -> str
+		"""
+		Convert from internal representation to textual representation.
+
+		:param text: internal representation.
+		:returns: textual representation.
+		"""
 		return text
 
 
 class simple(ISyntax):
-	regex = None
+	"""
+	Base class for single value entries.
+	"""
+	regex = None  # type: Optional[Pattern]
+	"""Regular expression to validate the value."""
 	error_message = _('Invalid value')
+	"""Error message when an invalid item is selected."""
 
 	@classmethod
 	def parse(self, text):
+		# type: (Any) -> str
+		"""
+		Validate the value by parsing it.
+
+		:return: the parsed textual value.
+		:raises univention.admin.uexceptions.valueError: if the value is invalid.
+		"""
 		if text is None or self.regex is None or self.regex.match(text) is not None:
 			return text
 		else:
@@ -153,30 +190,46 @@ class simple(ISyntax):
 
 	@classmethod
 	def new(self):
+		"""
+		Return the initial value.
+		"""
 		return ''
 
 	@classmethod
 	def any(self):
+		"""
+		Return the default search filter.
+		"""
 		return '*'
 
 	@classmethod
 	def checkLdap(self, lo, value):
-		""" parseLdap() checks the given value against the current LDAP state by
-			reading directly from LDAP directory. The function returns nothing
-			or raises an exception, if the value does not match with predefined
-			constrains.
+		# type: (access, Any) -> Any
+		"""
+		Check the given value against the current LDAP state by
+		reading directly from LDAP directory. The function returns nothing
+		or raises an exception, if the value does not match with predefined
+		constrains.
+
+		:param lo: LDAP connection.
+		:param value: The value to check.
+		:returns: None on errors.
+		:raises Exception: on errors.
 		"""
 
 
 class select(ISyntax):
+	"""
+	Select item from list of choices::
 
-	"""Select item from list of choices.
-	self.choice = [(id, _("Display text"), ...]
+	    self.choice = [(id, _("Display text"), ...]
 	"""
 	empty_value = False
+	"""Allow the empty value."""
 
 	@classmethod
 	def parse(self, text):
+		# type: (Any) -> Optional[str]
 		# for the UDM CLI
 		if not hasattr(self, 'choices'):
 			return text
@@ -194,12 +247,19 @@ class select(ISyntax):
 
 
 class MultiSelect(ISyntax):
-	choices = ()
+	"""
+	Select multiple items from a list of choices.
+	"""
+	choices = ()  # type: Sequence[Tuple[str, Any]]
+	"""The list of choices."""
 	empty_value = True
+	"""Allow the empty value."""
 	error_message = _('Invalid value')
+	"""Error message when an invalid item is selected."""
 
 	@classmethod
 	def parse(self, value):
+		# type: (Any) -> List[str]
 		# required for UDM CLI
 		if isinstance(value, basestring):
 			value = map(lambda x: x, shlex.split(value))
@@ -215,15 +275,24 @@ class MultiSelect(ISyntax):
 
 
 class complex(ISyntax):
-	delimiter = ' '
-	# possible delimiters:
-	# delimiter = '='   ==> single string is used to concatenate all subitems
-	# delimiter = [ '', ': ', '=', '' ] ==> list of strings: e.g. 4 delimiter strings given to concatenate 3 subitems
-	min_elements = None
+	"""
+	Base class for complex syntax classes consisting of multiple sub-items.
+	"""
+	delimiter = ' '  # type: Union[str, Sequence[str]]
+	"""
+	Delimiter to separate the sub-items. Two possibilities:
+
+	1.  Either a single string like `=`, which is used to to concatenate all subitems.
+	2.  A sequence of `n+1` strings like `['', ': ', '=', '']` to concatenate `n` sub-items. The first and last value is used as a prefix/suffix.
+	"""
+	min_elements = None  # type: Optional[int]
+	"""Minimum number of required values."""
 	all_required = True
+	"""All sub-values must contain a value."""
 
 	@classmethod
 	def parse(self, texts, minn=None):
+		# type: (Sequence[Any], int) -> List[str]
 		if minn is None:
 			minn = self.min_elements
 		if minn is None:
@@ -247,6 +316,7 @@ class complex(ISyntax):
 
 	@classmethod
 	def tostring(self, texts):
+		# type: (Any) -> str
 		if self.all_required:
 			if len(self.subsyntaxes) != len(texts) or not all(texts):
 				return ''
@@ -254,10 +324,12 @@ class complex(ISyntax):
 		if isinstance(self.delimiter, basestring):
 			return self.delimiter.join(texts)
 
+		# FIXME: s/(delimiter)s/\1/
 		return ''.join([s for sub in zip(self.delimiters, texts) for s in sub] + [self.delimiter[-1]])
 
 	@classmethod
 	def new(self):
+		# type: () -> List[str]
 		s = []
 		for desc, syntax in self.subsyntaxes:
 			if not inspect.isclass(syntax):
@@ -267,6 +339,7 @@ class complex(ISyntax):
 		return s
 
 	def any(self):
+		# type: () -> List[str]
 		s = []
 		for desc, syntax in self.subsyntaxes:
 			if not inspect.isclass(syntax):
@@ -277,17 +350,33 @@ class complex(ISyntax):
 
 
 class UDM_Objects(ISyntax):
-	udm_modules = ()
+	"""
+	Base class to lookup selectable items from |LDAP| enties using their |DN|.
+
+	See :py:class:`UDM_Attribute` for an alternative to use values from one |LDAP| entry..
+	"""
+	udm_modules = ()  # type: Sequence[str]
+	"""Sequence of |UDM| module names to search for."""
 	udm_filter = ''
+	"""A |LDAP| filter string to further restrict the matching |LDAP| objects."""
 	key = 'dn'
+	"""The |LDAP| attribute name to use as the value for this syntax class."""
 	label = None
+	"""The |UDM| property name, which is used as the displayed value."""
 	regex = re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')
-	static_values = None
+	"""Regular expression for validating the values."""
+	static_values = None  # type: Optional[Sequence]
+	"""Sequence of additional static items."""
 	empty_value = False
-	depends = None
+	"""Allow to select no entry."""
+	depends = None  # type: Optional[str]
+	"""The name of another |UDM| property this syntax sepends on."""
 	error_message = _("Not a valid LDAP DN")
+	"""Error message when an invalid item is selected."""
 	simple = False  # by default a MultiObjectSelect widget is used; if simple == True a ComboBox is used
+	"""With True, only a single object can be selected using a ComboBox. With False multiple entries can be selected using a MultiObjectSelect widget."""
 	use_objects = True
+	"""By default with `True` create Python UDM instance for each LDAP entry. With `False` only work with the LDAP attribute data."""
 
 	@classmethod
 	def parse(self, text):
@@ -299,18 +388,35 @@ class UDM_Objects(ISyntax):
 
 
 class UDM_Attribute(ISyntax):
-	udm_module = None
+	"""
+	Base class to lookup selectable items from |LDAP| enties using attribute values.
+
+	See :py:class:`UDM_Objects` for an alternative to use multiple |LDAP| entries.
+	"""
+	udm_module = None  # type: Optional[str]
+	"""|UDM| module name to search for."""
 	udm_filter = ''
-	attribute = None
+	"""A |LDAP| filter string to further restrict the matching |LDAP| objects."""
+	attribute = None  # type: Optional[str]
+	"""The |UDM| property name to use as the value for this syntax class."""
 	is_complex = False
+	"""True for a complex item consisting of multiple sub-items."""
 	key_index = 0
+	"""When the UDM property is complex: The number of the sub-item, which is uses as the value for this syntax class."""
 	label_index = 0
+	"""When the UDM property is complex: The number of the sub-item, which is uses as the didsplay value."""
 	label_format = None
-	regex = None
-	static_values = None
+	"""Python format string used to convert the |UDM| properties to the displayed value."""
+	regex = None  # type: Optional[Pattern]
+	"""Regular expression for validating the values."""
+	static_values = None  # type: Optional[Sequence]
+	"""Sequence of additional static items."""
 	empty_value = False
-	depends = None
+	"""Allow to select no entry."""
+	depends = None  # type: Optional[str]
+	"""The name of another |UDM| property this syntax sepends on."""
 	error_message = _('Invalid value')
+	"""Error message when an invalid item is selected."""
 
 	@classmethod
 	def parse(self, text):
@@ -326,6 +432,9 @@ class none(simple):
 
 
 class string(simple):
+	"""
+	Syntax for a string with unlimited length.
+	"""
 	min_length = 0
 	max_length = 0
 
@@ -335,7 +444,9 @@ class string(simple):
 
 
 class string64(simple):
-
+	"""
+	Syntax for a string with up to 64 characters.
+	"""
 	@classmethod
 	def parse(self, text):
 		self.min_length = 0
@@ -347,34 +458,58 @@ class string64(simple):
 
 
 class OneThirdString(string):
+	"""
+	Syntax for a string with an input field spanning 1/3 of the width.
+	"""
 	size = 'OneThird'
 
 
 class HalfString(string):
+	"""
+	Syntax for a string with an input field spanning 1/2 of the width.
+	"""
 	size = 'Half'
 
 
 class TwoThirdsString(string):
+	"""
+	Syntax for a string with an input field spanning 2/3 of the width.
+	"""
 	size = 'TwoThirds'
 
 
 class FourThirdsString(string):
+	"""
+	Syntax for a string with an input field spanning 4/3 of the width.
+	"""
 	size = 'FourThirds'
 
 
 class OneAndAHalfString(string):
+	"""
+	Syntax for a string with an input field spanning 3/2 of the width.
+	"""
 	size = 'OneAndAHalf'
 
 
 class FiveThirdsString(string):
+	"""
+	Syntax for a string with an input field spanning 5/3 of the width.
+	"""
 	size = 'FiveThirds'
 
 
 class TwoString(string):
+	"""
+	Syntax for a string with an input field spanning 2/1 of the width.
+	"""
 	size = 'Two'
 
 
 class TextArea(string):
+	"""
+	Syntax for a string with an input allowing multi-line input.
+	"""
 	pass
 
 
@@ -387,7 +522,9 @@ class TwoEditor(Editor):
 
 
 class UCSVersion(string):
-
+	"""
+	Syntax for an UCS release version `major.minor-patchlevel`.
+	"""
 	@classmethod
 	def parse(self, value):
 		try:
@@ -399,6 +536,9 @@ class UCSVersion(string):
 
 
 class DebianPackageVersion(string):
+	"""
+	Syntax for a Debian package version.
+	"""
 	invalid_chars_regex = re.compile('[^-+:.0-9a-zA-Z~]')
 
 	@classmethod
@@ -414,7 +554,9 @@ class DebianPackageVersion(string):
 
 
 class BaseFilename(string):
-
+	"""
+	Syntax for a file name. Sub- and parent directories are not allowed.
+	"""
 	@classmethod
 	def parse(self, value):
 		if '/' in value:
@@ -426,14 +568,18 @@ class BaseFilename(string):
 
 
 class Upload(ISyntax):
-
+	"""
+	Syntax to allow uploading a binary file.
+	"""
 	@classmethod
 	def parse(self, value):
 		return value
 
 
 class Base64GzipText(TextArea):
-
+	"""
+	Syntax for some `gzip`-compressed and `base64`-encoded data.
+	"""
 	@classmethod
 	def parse(self, text):
 		try:
@@ -448,7 +594,9 @@ class Base64GzipText(TextArea):
 
 
 class Base64Bzip2Text(TextArea):
-
+	"""
+	Syntax for some `bzip2`-compressed and `base64`-encoded data.
+	"""
 	@classmethod
 	def parse(self, text):
 		try:
@@ -463,7 +611,9 @@ class Base64Bzip2Text(TextArea):
 
 
 class Base64Upload(Upload):
-
+	"""
+	Syntax to allow uploading a `base64` encoded file.
+	"""
 	@classmethod
 	def parse(self, text):
 		try:
@@ -475,7 +625,9 @@ class Base64Upload(Upload):
 
 
 class Base64BaseUpload(Base64Upload):
-
+	"""
+	Syntax to allow uploading a `base64` encoded file.
+	"""
 	@classmethod
 	def parse(self, text):
 		try:
@@ -487,9 +639,12 @@ class Base64BaseUpload(Base64Upload):
 
 
 class jpegPhoto(Upload):
-
+	"""
+	Syntax to allow uploading a `JPEG` or `PNG` photo.
+	"""
 	@classmethod
 	def tostring(self, value):
+		# type: (Any) -> str
 		if value:
 			return base64.b64encode(value)
 		else:
@@ -525,7 +680,9 @@ class jpegPhoto(Upload):
 
 
 class Base64Bzip2XML(TextArea):
-
+	"""
+	Syntax for some `bzip2`-compressed |XML| data.
+	"""
 	@classmethod
 	def parse(self, text):
 		try:
@@ -542,7 +699,9 @@ class Base64Bzip2XML(TextArea):
 
 
 class Base64UMCIcon(TextArea):
-
+	"""
+	Syntax fore a `base64` encoded icon (|SVG|, |PNG|, |JPEG|).
+	"""
 	@classmethod
 	def parse(self, text):
 		try:
@@ -554,7 +713,9 @@ class Base64UMCIcon(TextArea):
 
 
 class GNUMessageCatalog(TextArea):
-
+	"""
+	Syntax fore a `base64` encoded binary message catalog `.mo`.
+	"""
 	@classmethod
 	def parse(self, text):
 		try:
@@ -567,7 +728,11 @@ class GNUMessageCatalog(TextArea):
 
 
 class Localesubdirname(string):
+	"""
+	Syntax for a locale, e.g. `language[_COUNTRY][.encoding][@variant]`.
 
+	Must match a directory in :file:`/usr/share/locale/`.
+	"""
 	@classmethod
 	def parse(self, text):
 		if text not in os.listdir('/usr/share/locale'):
@@ -576,31 +741,39 @@ class Localesubdirname(string):
 
 
 class Localesubdirname_and_GNUMessageCatalog(complex):
+	"""
+	Syntax for a message catalog and its language.
+
+	See :py:class:`GNUMessageCatalog` and :py:class:`Localesubdirname`.
+	"""
 	delimiter = ': '
 	subsyntaxes = [(_('Locale subdir name'), Localesubdirname), (_('GNU message catalog'), GNUMessageCatalog)]
 	all_required = True
 
 
 class integer(simple):
-
 	"""
-	>>> integer().parse('1')
+	Syntax for positive numeric values.
+
+	* :py:class:`integerOrEmpty`
+
+	>>> integer.parse('1')
 	'1'
-	>>> integer().parse('0')
+	>>> integer.parse('0')
 	'0'
-	>>> integer().parse('-1') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> integer.parse('-1') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> integer().parse('1.1') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> integer.parse('1.1') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> integer().parse('text') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> integer.parse('text') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> integer().parse('') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> integer.parse('') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
@@ -619,6 +792,9 @@ class integer(simple):
 
 
 class integerOrEmpty(integer):
+	"""
+	Syntax for positive numeric values or the empty value.
+	"""
 	@classmethod
 	def parse(self, text):
 		if not text:
@@ -627,27 +803,28 @@ class integerOrEmpty(integer):
 
 
 class boolean(simple):
-
 	"""
-	>>> boolean().parse('')
+	Syntax for a boolean checkbox, which internally stores the state as `0` and `1`.
+
+	>>> boolean.parse('')
 	''
-	>>> boolean().parse('0')
+	>>> boolean.parse('0')
 	'0'
-	>>> boolean().parse('1')
+	>>> boolean.parse('1')
 	'1'
-	>>> boolean().parse(True)
+	>>> boolean.parse(True)
 	'1'
-	>>> boolean().parse(False)
+	>>> boolean.parse(False)
 	'0'
-	>>> boolean().parse('2') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> boolean.parse('2') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> boolean().parse('0.1') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> boolean.parse('0.1') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> boolean().parse('text') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> boolean.parse('text') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
@@ -660,7 +837,7 @@ class boolean(simple):
 	@classmethod
 	def parse(self, text):
 		if isinstance(text, bool):
-			return text and '1' or '0'
+			return '1' if text else '0'
 		return super(boolean, self).parse(text)
 
 	@classmethod
@@ -684,31 +861,32 @@ class AppActivatedBoolean(boolean):
 
 
 class filesize(simple):
-
 	"""
-	>>> filesize().parse('0')
+	Syntax class for a file size supporting SI suffixes like `KB`.
+
+	>>> filesize.parse('0')
 	'0'
-	>>> filesize().parse('1b')
+	>>> filesize.parse('1b')
 	'1b'
-	>>> filesize().parse('2kB')
+	>>> filesize.parse('2kB')
 	'2kB'
-	>>> filesize().parse('3Mb')
+	>>> filesize.parse('3Mb')
 	'3Mb'
-	>>> filesize().parse('4GB')
+	>>> filesize.parse('4GB')
 	'4GB'
-	>>> filesize().parse('5pb') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> filesize.parse('5pb') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> filesize().parse('-6') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> filesize.parse('-6') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> filesize().parse('-7.8') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> filesize.parse('-7.8') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> filesize().parse('text') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> filesize.parse('text') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
@@ -720,19 +898,20 @@ class filesize(simple):
 
 
 class mail_folder_name(simple):
-
 	"""
-	>>> mail_folder_name().parse('folder_name')
+	Syntax for |IMAP| mail folder names.
+
+	>>> mail_folder_name.parse('folder_name')
 	'folder_name'
-	>>> mail_folder_name().parse('folder name') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> mail_folder_name.parse('folder name') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> mail_folder_name().parse('folder\tname') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> mail_folder_name.parse('folder\tname') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> mail_folder_name().parse('folder!name') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> mail_folder_name.parse('folder!name') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
@@ -746,23 +925,24 @@ class mail_folder_name(simple):
 
 
 class mail_folder_type(select):
-
 	"""
-	>>> mail_folder_type().parse('')
+	Syntax for |IMAP| mail folder types.
+
+	>>> mail_folder_type.parse('')
 	''
-	>>> mail_folder_type().parse('mail')
+	>>> mail_folder_type.parse('mail')
 	'mail'
-	>>> mail_folder_type().parse('event')
+	>>> mail_folder_type.parse('event')
 	'event'
-	>>> mail_folder_type().parse('contact')
+	>>> mail_folder_type.parse('contact')
 	'contact'
-	>>> mail_folder_type().parse('task')
+	>>> mail_folder_type.parse('task')
 	'task'
-	>>> mail_folder_type().parse('note')
+	>>> mail_folder_type.parse('note')
 	'note'
-	>>> mail_folder_type().parse('journal')
+	>>> mail_folder_type.parse('journal')
 	'journal'
-	>>> mail_folder_type().parse('invalid')
+	>>> mail_folder_type.parse('invalid')
 	"""
 	name = 'mail_folder_type'
 	choices = [
@@ -777,41 +957,42 @@ class mail_folder_type(select):
 
 
 class string_numbers_letters_dots(simple):
-
 	"""
-	>>> string_numbers_letters_dots().parse('a') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Syntax for string consisting of only digits, letters and dots.
+
+	>>> string_numbers_letters_dots.parse('a') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> string_numbers_letters_dots().parse('A') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> string_numbers_letters_dots.parse('A') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> string_numbers_letters_dots().parse('0') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> string_numbers_letters_dots.parse('0') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> string_numbers_letters_dots().parse('aA')
+	>>> string_numbers_letters_dots.parse('aA')
 	'aA'
-	>>> string_numbers_letters_dots().parse('a.A')
+	>>> string_numbers_letters_dots.parse('a.A')
 	'a.A'
-	>>> string_numbers_letters_dots().parse('a_A')
+	>>> string_numbers_letters_dots.parse('a_A')
 	'a_A'
-	>>> string_numbers_letters_dots().parse('a-A')
+	>>> string_numbers_letters_dots.parse('a-A')
 	'a-A'
-	>>> string_numbers_letters_dots().parse('.') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> string_numbers_letters_dots.parse('.') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> string_numbers_letters_dots().parse('_') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> string_numbers_letters_dots.parse('_') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> string_numbers_letters_dots().parse('-') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> string_numbers_letters_dots.parse('-') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> string_numbers_letters_dots().parse('/') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> string_numbers_letters_dots.parse('/') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
@@ -822,47 +1003,49 @@ class string_numbers_letters_dots(simple):
 
 
 class string_numbers_letters_dots_spaces(simple):
-
 	"""
-	>>> string_numbers_letters_dots_spaces().parse('a') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Syntax for string consisting of only digits, letters, dots and spaces.
+	The later two are not allowed at the beginning and at the end.
+
+	>>> string_numbers_letters_dots_spaces.parse('a') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> string_numbers_letters_dots_spaces().parse('A') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> string_numbers_letters_dots_spaces.parse('A') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> string_numbers_letters_dots_spaces().parse('0') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> string_numbers_letters_dots_spaces.parse('0') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> string_numbers_letters_dots_spaces().parse('aA')
+	>>> string_numbers_letters_dots_spaces.parse('aA')
 	'aA'
-	>>> string_numbers_letters_dots_spaces().parse('a.A')
+	>>> string_numbers_letters_dots_spaces.parse('a.A')
 	'a.A'
-	>>> string_numbers_letters_dots_spaces().parse('a_A')
+	>>> string_numbers_letters_dots_spaces.parse('a_A')
 	'a_A'
-	>>> string_numbers_letters_dots_spaces().parse('a-A')
+	>>> string_numbers_letters_dots_spaces.parse('a-A')
 	'a-A'
-	>>> string_numbers_letters_dots_spaces().parse('a A')
+	>>> string_numbers_letters_dots_spaces.parse('a A')
 	'a A'
-	>>> string_numbers_letters_dots_spaces().parse('.') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> string_numbers_letters_dots_spaces.parse('.') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> string_numbers_letters_dots_spaces().parse('_') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> string_numbers_letters_dots_spaces.parse('_') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> string_numbers_letters_dots_spaces().parse('-') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> string_numbers_letters_dots_spaces.parse('-') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> string_numbers_letters_dots_spaces().parse(' ') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> string_numbers_letters_dots_spaces.parse(' ') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> string_numbers_letters_dots_spaces().parse('/') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> string_numbers_letters_dots_spaces.parse('/') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
@@ -873,15 +1056,16 @@ class string_numbers_letters_dots_spaces(simple):
 
 
 class phone(simple):
-
 	"""
-	>>> phone().parse('+49 421 22232-0')
+	Syntax for (international) telephone numbers.
+
+	>>> phone.parse('+49 421 22232-0')
 	'+49 421 22232-0'
-	>>> phone().parse('++49 (0)700 Vanity')
+	>>> phone.parse('++49 (0)700 Vanity')
 	'++49 (0)700 Vanity'
-	>>> phone().parse('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._ ()\/+-')
+	>>> phone.parse('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._ ()\/+-')
 	'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._ ()\\\/+-'
-	>>> phone().parse('^°!$§%&[]{}<>|*~#",.;:') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> phone.parse('^°!$§%&[]{}<>|*~#",.;:') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
@@ -893,11 +1077,12 @@ class phone(simple):
 
 
 class IA5string(string):
-
 	"""
-	>>> IA5string().parse(''' !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~''')
+	Syntax for string from International Alphabet 5 (printable |ASCII|)
+
+	>>> IA5string.parse(''' !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~''')
 	' !\"#$%&\\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
-	>>> IA5string().parse('öäüÖÄÜß€') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> IA5string.parse('öäüÖÄÜß€') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
@@ -913,58 +1098,63 @@ class IA5string(string):
 
 
 class uid(simple):
-
 	"""
-	>>> uid().parse('a') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Syntax for user account names.
+
+	>>> uid.parse('a') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> uid().parse('A') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> uid.parse('A') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> uid().parse('0') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> uid.parse('0') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> uid().parse('aA')
+	>>> uid.parse('aA')
 	'aA'
-	>>> uid().parse('a.A')
+	>>> uid.parse('a.A')
 	'a.A'
-	>>> uid().parse('a_A')
+	>>> uid.parse('a_A')
 	'a_A'
-	>>> uid().parse('a-A')
+	>>> uid.parse('a-A')
 	'a-A'
-	>>> uid().parse('.') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> uid.parse('.') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> uid().parse('_') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> uid.parse('_') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> uid().parse('-') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> uid.parse('-') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> uid().parse('/') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> uid.parse('/') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> uid().parse('admin') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> uid.parse('admin') #doctest: +IGNORE_EXCEPTION_DETAIL +SKIP
 	Traceback (most recent call last):
 		...
 	valueError:
-	>>> uid().parse('Admin')
+	>>> uid.parse('Admin')
 	'Admin'
 	"""
 	min_length = 1
 	max_length = 16
 	regex = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9._-]*([a-zA-Z0-9]$)')
+	# FIXME: (?!admin)
 	error_message = _("Value must not contain anything other than digits, letters, dots, dash or underscore, must be at least 2 characters long, must start and end with a digit or letter, and must not be admin!")
 
 
 class uid_umlauts(simple):
+	"""
+	Syntax for user account names supporting umlauts.
+	"""
 	name = 'uid'
 	min_length = 1
 	max_length = 16
@@ -981,6 +1171,9 @@ class uid_umlauts(simple):
 
 
 class uid_umlauts_lower_except_first_letter(simple):
+	"""
+	Syntax for user account names supporting umlauts expecpt for the first character.
+	"""
 	min_length = 1
 	max_length = 16
 	_re = re.compile('(?u)(^\w[\w -.]*\w$)|\w*$')
@@ -999,6 +1192,9 @@ class uid_umlauts_lower_except_first_letter(simple):
 
 
 class gid(simple):
+	"""
+	Syntax for group account names.
+	"""
 	min_length = 1
 	max_length = 32
 	regex = re.compile(ur"(?u)^\w([\w -.’]*\w)?$")
@@ -1009,6 +1205,16 @@ class gid(simple):
 
 
 class sharePath(simple):
+	"""
+	Syntax for file share paths.
+	The path must be absolute and the following paths are not allowed:
+
+	* :file:`/dev/`
+	* :file:`/proc/`
+	* :file:`/root/`
+	* :file:`/sys/`
+	* :file:`/tmp/`
+	"""
 	regex = re.compile('^([^"])+$')
 	error_message = _('Value may not contain double quotes (")!')
 
@@ -1024,6 +1230,9 @@ class sharePath(simple):
 
 
 class passwd(simple):
+	"""
+	Syntax for passwords.
+	"""
 	min_length = 8
 	max_length = 0
 	_re1 = re.compile(r"[A-Z]")
@@ -1039,7 +1248,9 @@ class passwd(simple):
 
 
 class userPasswd(simple):
-
+	"""
+	Syntax for user account passwords.
+	"""
 	@classmethod
 	def parse(self, text):
 		if text and len(text) > 0:
@@ -1050,8 +1261,11 @@ class userPasswd(simple):
 
 class hostName(simple):
 	"""
-	hostname based upon RFC 1123: <let-or-digit>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
-	also allow '_' for Microsoft.
+	hostname based upon :rfc:`1123`::
+
+	    <let-or-digit>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
+
+	also allow `_` for Microsoft.
 
 	>>> hostName.parse('a')
 	'a'
@@ -1086,8 +1300,13 @@ windowsHostName = hostName
 
 
 class ipv4Address(simple):
-	# match IPv4 (0.0.0.0 is allowed)
+	"""
+	Syntax class for an IPv4 address.
+	`0.0.0.0` is allowed.
 
+	>>> ipv4Address.parse('0.0.0.0')
+	'0.0.0.0'
+	"""
 	@classmethod
 	def parse(self, text):
 		try:
@@ -1097,9 +1316,15 @@ class ipv4Address(simple):
 
 
 class ipAddress(simple):
+	"""
+	Syntax class for an IPv4 or IPv6 address.
+	`0.0.0.0` and IPv4-mapped IPv6 addresses are allowed.
 
-	# match IPv4 (0.0.0.0 is allowed) or IPv6 address (with IPv4-mapped IPv6)
-
+	>>> ipAddress.parse('0.0.0.0')
+	'0.0.0.0'
+	>>> ipAddress.parse('::1')
+	'::1'
+	"""
 	@classmethod
 	def parse(self, text):
 		try:
@@ -1110,6 +1335,9 @@ class ipAddress(simple):
 
 class hostOrIP(simple):
 	"""
+	Syntax class for an IPv4 or IPv6 address or a host name.
+	`0.0.0.0` and IPv4-mapped IPv6 addresses are allowed.
+
 	>>> hostOrIP.parse('1.2.3.4')
 	'1.2.3.4'
 	>>> hostOrIP.parse('1:2:3:4:5:6:7:8')
@@ -1123,7 +1351,6 @@ class hostOrIP(simple):
 	min_length = 0
 	max_length = 0
 
-	# match IPv4 (0.0.0.0 is allowed) or IPv6 address (with IPv4-mapped IPv6)
 	@classmethod
 	def ipAddress(self, text):
 		try:
@@ -1148,6 +1375,23 @@ class hostOrIP(simple):
 
 
 class v4netmask(simple):
+	"""
+	Syntax for a IPv4 network mask.
+	May be entered as a *bit mask* or the number of bits.
+
+	>>> v4netmask.parse('255.255.255.0')
+	'24'
+	>>> v4netmask.parse('24')
+	'24'
+	>>> v4netmask.parse('0.0.0.0')
+	'0'
+	>>> v4netmask.parse('255.255.255.255')
+	'32'
+	>>> v4netmask.parse('33') #doctest: +IGNORE_EXCEPTION_DETAIL +SKIP
+	Traceback (most recent call last):
+	...
+	valueError: Not a valid netmask!
+	"""
 	min_length = 1
 	max_length = 15
 
@@ -1190,10 +1434,30 @@ class v4netmask(simple):
 			except Exception:
 				errors = 1
 		if errors:
+			# FIXME: always raise exception here!
 			raise univention.admin.uexceptions.valueError(_("Not a valid netmask!"))
 
 
 class netmask(simple):
+	"""
+	Syntax for a IPv4 network mask.
+	May be entered as a *bit mask* or the number of bits.
+
+	>>> netmask.parse('255.255.255.0')
+	'24'
+	>>> netmask.parse('1')
+	'1'
+	>>> netmask.parse('127')
+	'127'
+	>>> netmask.parse('0') #doctest: +IGNORE_EXCEPTION_DETAIL +SKIP
+	Traceback (most recent call last):
+	...
+	valueError: Not a valid netmask!
+	>>> netmask.parse('128') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError: Not a valid netmask!
+	"""
 
 	@classmethod
 	def parse(self, text):
@@ -1207,16 +1471,48 @@ class netmask(simple):
 
 
 class ipnetwork(simple):
+	"""
+	Syntax for a IPv4 or IPv6 network address block.
 
+	>>> ipnetwork.parse('1.2.3.4/255.255.255.0') #doctest: +SKIP
+	'1.2.3.0/24'
+	>>> ipnetwork.parse('1.2.3.4/24') #doctest: +SKIP
+	'1.2.3.0/24'
+	>>> ipnetwork.parse('1:2:3:4:5:6:7:8/64') #doctest: +SKIP
+	'1:2:3:4/64'
+	"""
 	@classmethod
 	def parse(self, text):
 		try:
+			# FIXME: missing return
 			ipaddr.IPNetwork(text)
 		except ValueError:
 			raise univention.admin.uexceptions.valueError(_("Not a valid network!"))
 
 
 class IP_AddressRange(complex):
+	"""
+	Syntax for an IPv4 or IPv6 address range.
+
+	>>> IP_AddressRange.parse(('1.2.3.4', '')) #doctest: +SKIP
+	['1.2.3.4']
+	>>> IP_AddressRange.parse(('1.2.3.4', '5.6.7.8'))
+	['1.2.3.4', '5.6.7.8']
+	>>> IP_AddressRange.parse(('::1', '::2'))
+	['::1', '::2']
+	>>> IP_AddressRange.parse(('5.6.7.8', '1.2.3.4')) #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueInvalidSyntax: Illegal range
+	>>> IP_AddressRange.parse(('::2', '::1'))  #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueInvalidSyntax: Illegal range
+	>>> IP_AddressRange.parse(('1.2.3.4', '::1')) #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError: Not a valid IP address!
+	"""
 	subsyntaxes = (
 		(_('First address'), ipAddress),
 		(_('Last address'), ipAddress),
@@ -1228,6 +1524,7 @@ class IP_AddressRange(complex):
 		try:
 			first, last = p
 		except ValueError:
+			# FIXME: this will never happen as complex.parse() expects exactly two arguments
 			return p
 		try:
 			if ipaddr.IPAddress(first) > ipaddr.IPAddress(last):
@@ -1235,11 +1532,24 @@ class IP_AddressRange(complex):
 		except TypeError:
 			raise univention.admin.uexceptions.valueError(_("Not a valid IP address!"))
 		except ValueError:
+			# FIXME: which case is this supposed to catch?
 			raise univention.admin.uexceptions.valueInvalidSyntax(_("Illegal range"))
 		return p
 
 
 class IPv4_AddressRange(IP_AddressRange):
+	"""
+	Syntax for an IPv4 address range.
+
+	>>> IPv4_AddressRange.parse(('1.2.3.4',))
+	['1.2.3.4']
+	>>> IPv4_AddressRange.parse(('1.2.3.4', '5.6.7.8'))
+	['1.2.3.4', '5.6.7.8']
+	>>> IPv4_AddressRange.parse(('5.6.7.8', '1.2.3.4')) #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueInvalidSyntax: Illegal range
+	"""
 	min_elements = 1
 	all_required = False
 	subsyntaxes = (
@@ -1249,15 +1559,24 @@ class IPv4_AddressRange(IP_AddressRange):
 
 
 class ipProtocol(select):
+	"""
+	Syntax class to choose between |TCP| und |UDP|.
+	"""
 	choices = [('tcp', 'TCP'), ('udp', 'UDP')]
 
 
 class ipProtocolSRV(select):
+	"""
+	Syntax for |DNS| service record.
+	"""
 	choices = [('tcp', 'TCP'), ('udp', 'UDP'), ('msdcs', 'MSDCS'), ('sites', 'SITES'), ('DomainDnsZones', 'DOMAINDNSZONES'), ('ForestDnsZones', 'FORESTDNSZONES')]
 	size = 'OneThird'
 
 
 class absolutePath(simple):
+	"""
+	Syntax for an absolute file system path.
+	"""
 	min_length = 1
 	max_length = 0
 	_re = re.compile('^/.*')
@@ -1271,6 +1590,9 @@ class absolutePath(simple):
 
 
 class emailForwardSetting(select):
+	"""
+	Syntax for selecting the e-mail forwarding setting.
+	"""
 	choices = [
 		('0', _('Redirect all e-mails to forward addresses')),
 		('1', _('Keep e-mails and forward a copy')),
@@ -1278,6 +1600,9 @@ class emailForwardSetting(select):
 
 
 class emailAddress(simple):
+	"""
+	Syntax class for an e-mail address.
+	"""
 	min_length = 3
 	max_length = 0
 
@@ -1291,10 +1616,16 @@ class emailAddress(simple):
 
 
 class emailAddressTemplate(emailAddress):
+	"""
+	Syntax class for an e-mail address in the |UDM| :py:class:`univention.admin.handlers.settings.usertemplate` module.
+	"""
 	pass
 
 
 class emailAddressValidDomain(emailAddress):
+	"""
+	Syntax class for an e-mail address in one of the registered e-mail domains.
+	"""
 	name = 'emailAddressValidDomain'
 	errMsgDomain = _("The domain part of the following mail addresses is not in list of configured mail domains: %s")
 
@@ -1327,53 +1658,60 @@ class emailAddressValidDomain(emailAddress):
 
 
 class primaryEmailAddressValidDomain(emailAddressValidDomain):
+	"""
+	Syntax class for the primary e-mail address in one of the registered e-mail domains.
+	"""
 	name = 'primaryEmailAddressValidDomain'
 	errMsgDomain = _("The domain part of the primary mail address is not in list of configured mail domains: %s")
 
 
 class iso8601Date(simple):
+	"""
+	A date of the format:
 
-	'''A date of the format:
-	yyyy-ddd   (2009-213)
-	yyyy-mm    (2009-05)
-	yyyy-mm-dd (2009-05-13)
-	yyyy-Www   (2009-W21)
-	yyyy-Www-D (2009-W21-4)
+	* yyyy-ddd   (2009-213)
+	* yyyy-mm    (2009-05)
+	* yyyy-mm-dd (2009-05-13)
+	* yyyy-Www   (2009-W21)
+	* yyyy-Www-D (2009-W21-4)
+
 	with the dashes being optional
-	'''
-
+	"""
 	# regexp-source: http://regexlib.com/REDetails.aspx?regexp_id=2092
 	regex = re.compile('^(\d{4}(?:(?:(?:\-)?(?:00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?|(?:(?:\-)?(?:1[0-2]|0[1-9]))?|(?:(?:\-)?(?:1[0-2]|0[1-9])(?:\-)?(?:0[1-9]|[12][0-9]|3[01]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3])(?:\-)?[1-7])?)?)$')
 	error_message = _("The given date does not conform to iso8601, example: \"2009-01-01\".")
 
 
 class date(simple):
-
 	"""
-	Either a date in ISO (YYYY-MM-DD) or German (DD.MM.YY) format.
-	Bug: Centuries are always stripped!
+	Syntax for a German date (DD.MM.YY).
+	Also accepts the ISO format (YYYY-MM-DD).
 
-	>>> date().parse('21.12.03')
+	.. warning::
+	   Centuries are *always* stripped!
+	   See :py:class:`date2`.
+
+	>>> date.parse('21.12.03')
 	'21.12.03'
-	>>> date().parse('1961-01-01')
+	>>> date.parse('1961-01-01')
 	'01.01.61'
-	>>> date().parse('2061-01-01')
+	>>> date.parse('2061-01-01')
 	'01.01.61'
-	>>> date().parse('01.02.00')
+	>>> date.parse('01.02.00')
 	'01.02.00'
-	>>> date().parse('01.02.99')
+	>>> date.parse('01.02.99')
 	'01.02.99'
-	>>> date().parse('00.00.01') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> date.parse('00.00.01') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError:
-	>>> date().parse('01x02y03') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> date.parse('01x02y03') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError:
 
 	Bug #20230:
-	>>> date().parse('31.2.1') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> date.parse('31.2.1') #doctest: +IGNORE_EXCEPTION_DETAIL +SKIP
 	Traceback (most recent call last):
 	...
 	valueError:
@@ -1400,6 +1738,20 @@ class date(simple):
 
 
 class date2(date):  # fixes the century
+	"""
+	Syntax for an ISO date (YYYY-MM-DD).
+	Also accepts the German format (DD.MM.YY).
+	If no century is specified, the date is mapped to 1970..2069.
+
+	>>> date2.parse('21.12.75')
+	'1975-12-21'
+	>>> date2.parse('21.12.03')
+	'2003-12-21'
+	>>> date2.parse('1961-01-01')
+	'1961-01-01'
+	>>> date2.parse('2001-02-31')  #doctest: +SKIP
+	'2001-02-31'
+	"""
 
 	@classmethod
 	def parse(self, text):
@@ -1420,6 +1772,16 @@ class date2(date):  # fixes the century
 
 
 class reverseLookupSubnet(simple):
+	"""
+	Syntax for IPv4 or IPv6 sub-network.
+
+	>>> reverseLookupSubnet.parse('1.2.3')
+	'1.2.3'
+	>>> reverseLookupSubnet.parse('1')
+	'1'
+	>>> reverseLookupSubnet.parse('1000:2000:3000:4000:5000:6000:7000:800')
+	'1000:2000:3000:4000:5000:6000:7000:800'
+	"""
 	#               <-                      0-255                     ->  *dot  <-                      0-255                     ->
 	regex_IPv4 = r'((([1-9]?[0-9])|(1[0-9]{0,2})|(2([0-4][0-9]|5[0-5])))\.){1,2}(([1-9]?[0-9])|(1[0-9]{0,2})|(2([0-4][0-9]|5[0-5])))'
 	# normal IPv6 address without "::" substitution, leading zeroes must be preserved, at most 31 nibbles
@@ -1429,6 +1791,14 @@ class reverseLookupSubnet(simple):
 
 
 class reverseLookupZoneName(simple):
+	"""
+	Syntax for a |DNS| reverse zone name.
+
+	>>> reverseLookupZoneName.parse('3.2.1.in-addr.arpa')
+	'3.2.1.in-addr.arpa'
+	>>> reverseLookupZoneName.parse('8.7.6.5.4.3.2.1.ip6.arpa')
+	'8.7.6.5.4.3.2.1.ip6.arpa'
+	"""
 	#                       <-    IPv6 reverse zone   -> <-                           IPv4 reverse zone                           ->
 	#                       nibble dot-separated ...arpa   <-                      0-255                     -> dot-separated .arpa
 	regex = re.compile(r'^((([0-9a-f]\.){1,31}ip6\.arpa)|(((([1-9]?[0-9])|(1[0-9]{0,2})|(2([0-4][0-9]|5[0-5])))\.){1,3}in-addr.arpa))$')
@@ -1437,14 +1807,15 @@ class reverseLookupZoneName(simple):
 
 class dnsName(simple):
 	"""
-	RFC 1123: a '.' separated FQDN
+	:rfc:`1123`: a '.' separated FQDN
 
 	>>> dnsName.parse('')
 	Traceback (most recent call last):
 	...
 	valueError: Missing value!
 
-	# A host name (label) can be up to 63 characters
+	A host name (label) can be up to 63 characters
+
 	>>> dnsName.parse('0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz')
 	Traceback (most recent call last):
 	...
@@ -1454,7 +1825,8 @@ class dnsName(simple):
 	...
 	valueError: Labels must be between 1 and 63 characters long!
 
-	# A full domain name is limited to 253 octets (including the separators).
+	A full domain name is limited to 253 octets (including the separators).
+
 	>>> dnsName.parse('a.' * 128)
 	Traceback (most recent call last):
 	...
@@ -1483,9 +1855,10 @@ dnsZone = dnsName
 
 class dnsHostname(dnsName):
 	"""
-	RFC 1123: a '.' separated FQHN
+	:rfc:`1123`: a '.' separated FQHN
 
-	# A host name (label) can start or end with a letter or a number
+	A host name (label) can start or end with a letter or a number
+
 	>>> dnsHostname.parse('a')
 	'a'
 	>>> dnsHostname.parse('A.')
@@ -1495,13 +1868,15 @@ class dnsHostname(dnsName):
 	>>> dnsName.parse('0.example.com')
 	'0.example.com'
 
-	# A host name (label) MUST NOT consist of all numeric values
+	A host name (label) MUST NOT consist of all numeric values
+
 	>>> dnsHostname.parse('0')
 	Traceback (most recent call last):
 	...
 	valueError: Full name must not be all numeric!
 
-	# A host name (label) MUST NOT start or end with a '-' (dash)
+	A host name (label) MUST NOT start or end with a '-' (dash)
+
 	>>> dnsHostname.parse('-')
 	Traceback (most recent call last):
 	...
@@ -1555,22 +1930,39 @@ class dnsName_umlauts(simple):
 
 
 class keyAndValue(complex):
+	"""
+	Syntax for key-value-pairs separated by `=`.
+
+	>>> keyAndValue.parse(('key', 'value'))
+	['key', 'value']
+	"""
 	delimiter = ' = '
 	subsyntaxes = [(_('Key'), string), (_('Value'), string)]
 	all_required = 1
 
 
 class dnsMX(complex):
+	"""
+	Syntax for |DNS| mail exchange record.
+
+	>>> dnsMX.parse(('10', 'mail.my.domain'))
+	['10', 'mail.my.domain']
+	"""
 	subsyntaxes = [(_('Priority'), integer), (_('Mail server'), dnsHostname)]
 	all_required = True
 
 
 class dnsSRVName(complex):
+	"""
+	Syntax for the name of a |DNS| service record.
 
-	"""DNS Service Record.
-
-	>>> dnsSRVName().parse(['ldap', 'tcp'])
+	>>> dnsSRVName.parse(('ldap', 'tcp'))
 	['ldap', 'tcp']
+	>>> dnsSRVName.parse(('ldap', 'tcp'))
+	['ldap', 'tcp']
+
+	.. seealso::
+	   * :py:class:`dnsSRVLocation`
 	"""
 	min_elements = 2
 	all_required = False
@@ -1579,6 +1971,18 @@ class dnsSRVName(complex):
 
 
 class dnsPTR(simple):
+	"""
+	|DNS| pointer record.
+
+	>>> dnsPTR.parse('1')
+	'1'
+	>>> dnsPTR.parse('1.2.3')
+	'1.2.3'
+	>>> dnsPTR.parse('f')
+	'f'
+	>>> dnsPTR.parse('1.2.3.4.5.6.7.8.9.a.b.c.d.e.f.0.1.2.3.4.5.6.7.8.9.a.b.c.d.e.f')
+	'1.2.3.4.5.6.7.8.9.a.b.c.d.e.f.0.1.2.3.4.5.6.7.8.9.a.b.c.d.e.f'
+	"""
 	regexp = re.compile(
 		r'''
 		^    (?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])
@@ -1591,23 +1995,41 @@ class dnsPTR(simple):
 
 
 class postalAddress(complex):
+	"""
+	Syntax for a postal address consisting of street, postal code and city name.
+
+	>>> postalAddress.parse(('street', 'zip', 'city'))
+	['street', 'zip', 'city']
+	"""
 	delimiter = ', '
 	subsyntaxes = [(_('Street'), string), (_('Postal code'), OneThirdString), (_('City'), TwoThirdsString)]
 	all_required = True
 
 
 class dnsSRVLocation(complex):
+	"""
+	Syntax for |DNS| service record.
+
+	>>> dnsSRVLocation.parse(('10', '100', '389', 'server.my.domain'))
+	['10', '100', '389', 'server.my.domain']
+	"""
 	subsyntaxes = [(_('Priority'), integer), (_('Weighting'), integer), (_('Port'), integer), (_('Server'), dnsHostname)]
 	size = ('OneThird', 'OneThird', 'OneThird', 'One')
 	all_required = True
 
 
 class unixTime(simple):
+	"""
+	Syntax for a UNIX time stamp - seconds since 1970-01-01.
+	"""
 	regex = re.compile('^[0-9]+$')
 	error_message = _("Not a valid time format")
 
 
 class TimeUnits(select):
+	"""
+	Syntax to select a time unit.
+	"""
 	size = 'Half'
 	choices = (
 		('seconds', _('seconds')),
@@ -1618,11 +2040,36 @@ class TimeUnits(select):
 
 
 class TimeString(simple):
+	"""
+	Syntax for the time of day, e.g. hour, minute and optional seconds.
+
+	>>> TimeString.parse('00:00')
+	'00:00'
+	>>> TimeString.parse('23:59:59')
+	'23:59:59'
+	"""
 	error_message = _("Not a valid time format")
 	regex = re.compile('^(?:[01][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?$')
 
 
 class UNIX_TimeInterval(complex):
+	"""
+	Syntax for a time interval.
+
+	>>> UNIX_TimeInterval.parse(('1',))
+	['1']
+	>>> UNIX_TimeInterval.parse(('2', 'seconds'))
+	['2', 'seconds']
+	>>> UNIX_TimeInterval.parse(('3', 'minutes'))
+	['3', 'minutes']
+	>>> UNIX_TimeInterval.parse(('4', 'hours'))
+	['4', 'hours']
+	>>> UNIX_TimeInterval.parse(('5', 'days'))
+	['5', 'days']
+
+	.. seealso::
+	   * :py:class:`UNIX_BoundedTimeInterval`
+	"""
 	min_elements = 1
 	subsyntaxes = (('', integerOrEmpty), ('', TimeUnits))
 	size = ('Half', 'Half')
@@ -1633,6 +2080,9 @@ class UNIX_TimeInterval(complex):
 
 
 class UNIX_BoundedTimeInterval(UNIX_TimeInterval):
+	"""
+	Syntax for a time interval with additional constraints.
+	"""
 	lower_bound = -1  # in seconds, -1 unbounded
 	upper_bound = -1  # in seconds, -1 unbounded
 	error_message = _("Value out of bounds (%d - %d seconds)")
@@ -1662,20 +2112,42 @@ class UNIX_BoundedTimeInterval(UNIX_TimeInterval):
 
 
 class SambaMinPwdAge(UNIX_BoundedTimeInterval):
+	"""
+	Syntax for the minimum password age in Samba: 0..998 days
+	"""
 	lower_bound = 0
 	upper_bound = 998 * 24 * 60 * 60  # 998 days in seconds
 
 
 class SambaMaxPwdAge(UNIX_BoundedTimeInterval):
+	"""
+	Syntax for the maximum password age in Samba: 0..999 days
+	"""
 	lower_bound = 0
 	upper_bound = 999 * 24 * 60 * 60  # 999 days in seconds
 
 
 class NetworkType(select):
+	"""
+	Syntax to select network technology type.
+	"""
 	choices = (('ethernet', _('Ethernet')), ('fddi', _('FDDI')), ('token-ring', _('Token-Ring')))
 
 
 class MAC_Address(simple):
+	"""
+	Syntax to enter MAC address.
+	The address is stored with octets separated by `:`.
+
+	>>> MAC_Address.parse('86:f5:d1:f5:6b:3e')
+	'86:f5:d1:f5:6b:3e'
+	>>> MAC_Address.parse('86-f5-d1-f5-6b-3e')
+	'86:f5:d1:f5:6b:3e'
+	>>> MAC_Address.parse('86f5d1f56b3e')
+	'86:f5:d1:f5:6b:3e'
+	>>> MAC_Address.parse('86f5.d1f5.6b3e')
+	'86:f5:d1:f5:6b:3e'
+	"""
 	regexLinuxFormat = re.compile(r'^([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$')
 	regexWindowsFormat = re.compile(r'^([0-9a-fA-F]{2}-){5}[0-9a-fA-F]{2}$')
 	regexRawFormat = re.compile(r'^[0-9a-fA-F]{12}$')
@@ -1704,19 +2176,28 @@ class MAC_Address(simple):
 
 
 class DHCP_HardwareAddress(complex):
+	"""
+	Syntax to enter DHCP hardware address consisting of network technology type and MAC address.
+	"""
 	subsyntaxes = ((_('Type'), NetworkType), (_('Address'), MAC_Address))
 	size = ('One', 'One')
 	all_required = True
 
 
 class Packages(UDM_Attribute):
+	"""
+	Syntax to select a Debian package name from lists stored in |LDAP| using :py:class:`univention.admin.handlers.settings.packages`.
+	"""
 	udm_module = 'settings/packages'
 	attribute = 'packageList'
 	label_format = '%(name)s: %($attribute$)s'
 
 
 class PackagesRemove(Packages):
-
+	"""
+	Syntax to select a Debian package name from lists stored in |LDAP| using :py:class:`univention.admin.handlers.settings.packages`.
+	This blacklists some important packages to prevent their removal.
+	"""
 	@classmethod
 	def parse(cls, text):
 		text = super(PackagesRemove, cls).parse(text)
@@ -1727,30 +2208,45 @@ class PackagesRemove(Packages):
 
 
 class userAttributeList(string):
+	"""
+	Syntax to enter a users attribute.
 
+	.. note::
+
+	   unused
+	"""
 	@classmethod
 	def parse(self, text):
 		return text
 
 
-class ldapDn(simple):  # DEPRECATED! Derive from UDM_Objects
+class ldapDn(simple):
+	"""
+	LDAP distinguished name.
 
-	"""LDAP distinguished name.
-
-	>>> ldapDn().parse('dc=foo,dc=bar,dc=test')
+	>>> ldapDn.parse('dc=foo,dc=bar,dc=test')
 	'dc=foo,dc=bar,dc=test'
+
+	.. deprecated:: 3.1-0
+	   Use :py:class:`UDM_Objects`.
 	"""
 	regex = re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')
 	error_message = _("Not a valid LDAP DN")
 
 
 class UMC_OperationSet(UDM_Objects):
+	"""
+	Syntax to select a |UMC| operation set from lists stored in |LDAP| using :py:class:`univention.admin.handlers.settings.umc_operationset`.
+	"""
 	udm_modules = ('settings/umc_operationset', )
 	label = '%(description)s (%(name)s)'
 	simple = True
 
 
 class UMC_CommandPattern(complex):
+	"""
+	Syntax to enter a |UMC| command pattern.
+	"""
 	subsyntaxes = ((_('Command pattern'), string), (_('Option Pattern'), string))
 	min_elements = 1
 	all_required = False  # empty values are allowed
@@ -1758,6 +2254,9 @@ class UMC_CommandPattern(complex):
 
 
 class LDAP_Server(UDM_Objects):
+	"""
+	Syntax to select a |LDAP| server.
+	"""
 	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave')
 	udm_filter = '!(univentionObjectFlag=docker)'
 	label = '%(fqdn)s'
@@ -1765,6 +2264,9 @@ class LDAP_Server(UDM_Objects):
 
 
 class IMAP_POP3(select):
+	"""
+	Syntax to select between |IMAP| and POP3.
+	"""
 	choices = (
 		('IMAP', _('IMAP')),
 		('POP3', _('POP3')),
@@ -1772,6 +2274,9 @@ class IMAP_POP3(select):
 
 
 class IMAP_Right(select):
+	"""
+	Syntax to select an |IMAP| access control permission.
+	"""
 	choices = (
 		('none', _('No access')),
 		('read', _('Read')),
@@ -1783,6 +2288,9 @@ class IMAP_Right(select):
 
 
 class UserMailAddress(UDM_Objects):
+	"""
+	Syntax to select a primary e-mail address of an user name from |LDAP|.
+	"""
 	udm_modules = ('users/user', )
 	udm_filter = '(mailPrimaryAddress=*)'
 	key = '%(mailPrimaryAddress)s'
@@ -1791,6 +2299,9 @@ class UserMailAddress(UDM_Objects):
 
 
 class GroupName(UDM_Objects):
+	"""
+	Syntax to select a group name from |LDAP|.
+	"""
 	udm_modules = ('groups/group', )
 	key = '%(name)s'
 	regex = re.compile('^.+$')
@@ -1799,6 +2310,9 @@ class GroupName(UDM_Objects):
 
 
 class UserName(UDM_Objects):
+	"""
+	Syntax to select an user name from |LDAP|.
+	"""
 	udm_modules = ('users/user', )
 	key = '%(username)s'
 	regex = re.compile('^.+$')
@@ -1807,22 +2321,45 @@ class UserName(UDM_Objects):
 
 
 class SharedFolderUserACL(complex):
+	"""
+	Syntax to assign an |IMAP| access control permission for an user from |LDAP|.
+	"""
 	subsyntaxes = ((_('User'), UserMailAddress), (_('Access right'), IMAP_Right))
 
 
 class SharedFolderGroupACL(complex):
+	"""
+	Syntax to assign an |IMAP| access control permission for a group from |LDAP|.
+	"""
 	subsyntaxes = ((_('Group'), GroupName), (_('Access right'), IMAP_Right))
 
 
 class SharedFolderSimpleUserACL(complex):
+	"""
+	Syntax to assign an |IMAP| access control permission for any user.
+	"""
 	subsyntaxes = ((_('User'), string), (_('Access right'), IMAP_Right))
 
 
 class SharedFolderSimpleGroupACL(complex):
+	"""
+	Syntax to assign an |IMAP| access control permission for any group.
+	"""
 	subsyntaxes = ((_('Group'), string), (_('Access right'), IMAP_Right))
 
 
 class ldapDnOrNone(simple):
+	"""
+	LDAP distinguished name or `None`.
+
+	>>> ldapDnOrNone.parse('dc=foo,dc=bar,dc=test')
+	'dc=foo,dc=bar,dc=test'
+	>>> ldapDnOrNone.parse('None')
+	'None'
+
+	.. deprecated:: 3.1-0
+	   Use :py:class:`UDM_Objects`.
+	"""
 	_re = re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')
 
 	@classmethod
@@ -1835,20 +2372,27 @@ class ldapDnOrNone(simple):
 
 
 class ldapObjectClass(simple):
-
+	"""
+	Syntax to enter a |LDAP| objectClass name.
+	"""
 	@classmethod
 	def parse(self, text):
 		return text
 
 
 class ldapAttribute(simple):
-
+	"""
+	Syntax to enter a |LDAP| attribute name.
+	"""
 	@classmethod
 	def parse(self, text):
 		return text
 
 
 class ldapFilter(simple):
+	"""
+	Syntax to enter a |LDAP| search filter.
+	"""
 
 	@classmethod
 	def parse(cls, text):
@@ -1866,20 +2410,32 @@ class ldapFilter(simple):
 
 
 class XResolution(simple):
+	"""
+	Syntax to enter display resolution for X11.
+	"""
 	regex = re.compile('^[0-9]+x[0-9]+$')
 	error_message = _("Value consists of two integer numbers separated by an \"x\" (e.g. \"1024x768\")")
 
 
 class XSync(simple):
+	"""
+	Syntax to enter display timing settings for X11.
+	"""
 	regex = re.compile('^[0-9]+(-[0-9]+)?( +[0-9]+(-[0-9]+)?)*$')
 	error_message = _("Value consists of two integer numbers separated by a \"-\" (e.g. \"30-70\")")
 
 
 class XColorDepth(simple):
+	"""
+	Syntax to enter color depth for X11.
+	"""
 	regex = re.compile('^[0-9]+$')
 
 
 class XModule(select):
+	"""
+	Syntax to select graphics driver for X11.
+	"""
 	choices = [
 		('', ''),
 		('apm', 'apm'),
@@ -1929,6 +2485,9 @@ class XModule(select):
 
 
 class XMouseProtocol(select):
+	"""
+	Syntax to select mouse protocol for X11.
+	"""
 	choices = [
 		('', ''),
 		('Auto', 'Auto'),
@@ -1949,6 +2508,9 @@ class XMouseProtocol(select):
 
 
 class XDisplayPosition(select):
+	"""
+	Syntax to select display position for X11.
+	"""
 	choices = [
 		('', ''),
 		('left', _('Left of primary display')),
@@ -1959,6 +2521,9 @@ class XDisplayPosition(select):
 
 
 class XMouseDevice(select):
+	"""
+	Syntax to select mouse device for X11.
+	"""
 	choices = [
 		('', ''),
 		('/dev/psaux', 'PS/2'),
@@ -1968,6 +2533,9 @@ class XMouseDevice(select):
 
 
 class XKeyboardLayout(select):
+	"""
+	Syntax to select keyboard layout for X11.
+	"""
 	choices = [
 		('', ''),
 		('ad', 'Andorra'),
@@ -2059,6 +2627,9 @@ class XKeyboardLayout(select):
 
 
 class soundModule(select):
+	"""
+	Syntax to select ALSA audio device driver.
+	"""
 	choices = [
 		('', ''),
 		('auto', 'auto detect'),
@@ -2195,25 +2766,57 @@ class soundModule(select):
 
 
 class GroupDN(UDM_Objects):
+	"""
+	Syntax to select a group from |LDAP| by |DN|.
+
+	.. seealso::
+	   * :py:class:`GroupID`
+	   * :py:class:`GroupDNOrEmpty`
+	"""
 	udm_modules = ('groups/group', )
 	use_objects = False
 
 
 class GroupDNOrEmpty(GroupDN):
+	"""
+	Syntax to select a group from |LDAP| by |DN| or none.
+
+	.. seealso::
+	   * :py:class:`GroupID`
+	   * :py:class:`GroupDN`
+	"""
 	empty_value = True
 
 
 class UserDN(UDM_Objects):
+	"""
+	Syntax to select an user from |LDAP| by |DN|.
+
+	.. seealso::
+	   * :py:class:`UserID`
+	"""
 	udm_modules = ('users/user', )
 	use_objects = False
 
 
 class HostDN(UDM_Objects):
+	"""
+	Syntax to select a host from |LDAP| by |DN|.
+
+	.. seealso::
+	   * :py:class:`IComputer_FQDN`
+	"""
 	udm_modules = ('computers/computer', )
 	udm_filter = '!(univentionObjectFlag=docker)'
 
 
 class UserID(UDM_Objects):
+	"""
+	Syntax to select an user from |LDAP| by numeric user identifier.
+
+	.. seealso::
+	   * :py:class:`UserDN`.
+	"""
 	udm_modules = ('users/user', )
 	key = '%(uidNumber)s'
 	label = '%(username)s'
@@ -2223,6 +2826,13 @@ class UserID(UDM_Objects):
 
 
 class GroupID(UDM_Objects):
+	"""
+	Syntax to select a group from |LDAP| by numeric user identifier.
+
+	.. seealso::
+	   * :py:class:`GroupDN`
+	   * :py:class:`GroupDNOrEmpty`
+	"""
 	udm_modules = ('groups/group', )
 	key = '%(gidNumber)s'
 	label = '%(name)s'
@@ -2232,12 +2842,21 @@ class GroupID(UDM_Objects):
 
 
 class PortalComputer(UDM_Objects):
+	"""
+	Syntax to select a |UCS| host from |LDAP| by |FQDN| running the portal service.
+	"""
 	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')
 	udm_filter = '!(univentionObjectFlag=docker)'
 	use_objects = False
 
 
 class IComputer_FQDN(UDM_Objects):
+	"""
+	Syntax to select a host from |LDAP| by |FQDN|.
+
+	.. seealso::
+	   * :py:class:`HostDN`
+	"""
 	udm_modules = ()
 	key = '%(name)s.%(domain)s'  # '%(fqdn)s' optimized for LDAP lookup. Has to be in sync with the computer handlers' info['fqdn']
 	label = '%(name)s.%(domain)s'  # '%(fqdn)s'
@@ -2248,58 +2867,103 @@ class IComputer_FQDN(UDM_Objects):
 
 
 class DomainController(IComputer_FQDN):
+	"""
+	Syntax to select a |UCS| domain controller from |LDAP| by |FQDN|.
+	"""
 	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave')
 	use_objects = False
 
 
 class Windows_Server(IComputer_FQDN):
+	"""
+	Syntax to select a Windows server from |LDAP| by |FQDN|.
+	"""
 	udm_modules = ('computers/windows', 'computers/windows_domaincontroller')
 
 
 class UCS_Server(IComputer_FQDN):
+	"""
+	Syntax to select a |UCS| host from |LDAP| by |FQDN|.
+	"""
 	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')
 	use_objects = False
 
 
 class ServicePrint_FQDN(IComputer_FQDN):
+	"""
+	Syntax to select a |UCS| host from |LDAP| by |FQDN| offering print services.
+
+	.. seealso::
+	   * :py:class:`ServicePrint`
+	"""
 	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')
 	udm_filter = '(&(!(univentionObjectFlag=docker))(service=Print))'
 
 
 class MailHomeServer(IComputer_FQDN):
+	"""
+	Syntax to select a |UCS| host from |LDAP| by |FQDN| offering |IMAP| services.
+
+	.. seealso::
+	   * :py:class:`ServiceMail`
+	"""
 	udm_modules = ('computers/computer', )
 	udm_filter = '(&(!(univentionObjectFlag=docker))(objectClass=univentionHost)(service=IMAP))'
 	empty_value = True
 
 
 class KDE_Profile(UDM_Attribute):
+	"""
+	Syntax to select a KDE profile from lists stored in |LDAP| using :py:class:`univention.admin.handlers.settings.default`.
+	"""
 	udm_module = 'settings/default'
 	attribute = 'defaultKdeProfiles'
 
 
-class primaryGroup(ldapDn):  # DEPRECATED! Use GroupDN
+class primaryGroup(ldapDn):
+	"""
+	Syntax to select a group from |LDAP|.
+
+	.. deprecated:: 3.1-0
+	   Use :py:class:`GroupDN`.
+	"""
 	searchFilter = 'objectClass=posixGroup'
 	description = _('Primary Group')
 
 
-class primaryGroup2(ldapDn):  # DEPRECATED! Use GroupDN
+class primaryGroup2(ldapDn):
+	"""
+	Syntax to select a group from |LDAP|.
+
+	.. deprecated:: 3.1-0
+	   Use :py:class:`GroupDN`.
+	"""
 	searchFilter = 'objectClass=posixGroup'
 	description = _('Primary Group')
 
 
 class network(UDM_Objects):
-	udm_modules = ('networks/network', )
+	"""
+	Syntax to select a network declaration from |LDAP| using :py:class:`univention.admin.handlers.networks.network`.
+	"""
+	udm_modules = ('networks/network',)
 	description = _('Network')
 	label = '%(name)s'
 	empty_value = True
 
 
 class IP_AddressList(ipAddress, select):
+	"""
+	Syntax to select an IP address from the lists of addresses stored with the machine account.
+	"""
 	choices = ()
 	depends = 'ip'
 
 
 class IP_AddressListEmpty(IP_AddressList):
+	"""
+	Syntax to select no or an IP address from the lists of addresses stored with the machine account.
+	"""
 	choices = [('', _('From known-hosts pool'))]
 	empty_value = True
 
@@ -2309,11 +2973,21 @@ class IP_AddressListEmpty(IP_AddressList):
 
 
 class MAC_AddressList(MAC_Address, select):
+	"""
+	Syntax to select a MAC address from the lists of addresses stored with the machine account.
+	"""
 	choices = ()
 	depends = 'mac'
 
 
 class DNS_ForwardZone(UDM_Objects):
+	"""
+	Syntax to select no or one |DNS| forward zone from |LDAP| using :py:class:`univention.admin.handlers.dns.forward_zone`.
+
+	.. seealso::
+	   * :py:class:`DNS_ReverseZone`
+	   * :py:class:`DNS_ForwardZoneNonempty`
+	"""
 	description = _('DNS forward zone')
 	udm_modules = ('dns/forward_zone', )
 	empty_value = True
@@ -2321,6 +2995,13 @@ class DNS_ForwardZone(UDM_Objects):
 
 
 class DNS_ReverseZone(UDM_Objects):
+	"""
+	Syntax to select no or one |DNS| reverse zone from |LDAP| using :py:class:`univention.admin.handlers.dns.reverse_zone`.
+
+	.. seealso::
+	   * :py:class:`DNS_ForwardZone`
+	   * :py:class:`DNS_ReverseZoneNonempty`
+	"""
 	description = _('DNS reverse zone')
 	udm_modules = ('dns/reverse_zone', )
 	label = '%(subnet)s'
@@ -2329,14 +3010,31 @@ class DNS_ReverseZone(UDM_Objects):
 
 
 class DNS_ReverseZoneNonempty(DNS_ReverseZone):
+	"""
+	Syntax to select one |DNS| reverse zone from |LDAP| using :py:class:`univention.admin.handlers.dns.reverse_zone`.
+
+	.. seealso::
+	   * :py:class:`DNS_ForwardZoneNonempty`
+	   * :py:class:`DNS_ReverseZone`
+	"""
 	empty_value = False
 
 
 class DNS_ForwardZoneNonempty(DNS_ForwardZone):
+	"""
+	Syntax to select one |DNS| forward zone from |LDAP| using :py:class:`univention.admin.handlers.dns.forward_zone`.
+
+	.. seealso::
+	   * :py:class:`DNS_ReverseZoneNonempty`
+	   * :py:class:`DNS_ForwardZone`
+	"""
 	empty_value = False
 
 
 class dnsEntry(complex):
+	"""
+	Syntax to configure a |DNS| forward zone entry for a computer.
+	"""
 	description = _('DNS Entry')
 	subsyntaxes = ((_('DNS forward zone'), DNS_ForwardZoneNonempty), (_('IP address'), IP_AddressList))
 	size = ('One', 'One')
@@ -2344,6 +3042,9 @@ class dnsEntry(complex):
 
 
 class dnsEntryReverse(complex):
+	"""
+	Syntax to configure a |DNS| reverse zone entry for a computer.
+	"""
 	description = _('DNS Entry Reverse')
 	subsyntaxes = ((_('DNS reverse zone'), DNS_ReverseZoneNonempty), (_('IP address'), IP_AddressList))
 	size = ('One', 'One')
@@ -2351,16 +3052,25 @@ class dnsEntryReverse(complex):
 
 
 class DNS_ForwardZoneList(select):
+	"""
+	Syntax to select |DNS| forward zone for alias entries.
+	"""
 	depends = 'dnsEntryZoneForward'
 
 
 class dnsEntryAlias(complex):
+	"""
+	Syntax to configure a |DNS| alias record.
+	"""
 	description = _('DNS Entry Alias')
 	subsyntaxes = ((_('Zone of existing host record'), DNS_ForwardZoneList), (_('DNS forward zone'), DNS_ForwardZone), (_('Alias'), DNS_Name))
 	size = ('TwoThirds', 'TwoThirds', 'TwoThirds')
 
 
 class dhcpService(UDM_Objects):
+	"""
+	Syntax to select a |DHCP| service from |LDAP| using :py:class:`univention.admin.handlers.dhcp.service`.
+	"""
 	udm_modules = ('dhcp/service', )
 	description = _('DHCP service')
 	label = '%(name)s'
@@ -2368,6 +3078,9 @@ class dhcpService(UDM_Objects):
 
 
 class dhcpEntry(complex):
+	"""
+	Syntax to configure a |DHCP| host entry.
+	"""
 	min_elements = 1
 	all_required = False
 	subsyntaxes = (
@@ -2390,12 +3103,21 @@ class dhcpEntry(complex):
 
 
 class DHCP_Option(complex):
+	"""
+	Syntax to enter free-form |DHCP| options.
+	"""
 	subsyntaxes = ((_('Name'), string), (_('Value'), string))
 	description = _('DHCP option')
 	size = ('One', 'One')
 
 
 class WritableShare(UDM_Objects):
+	"""
+	Syntax for selecting defined writeable |NFS| shares.
+
+	.. seealso::
+	   * :py:class:`nfsShare`
+	"""
 	udm_modules = ('shares/share', )
 	udm_filter = 'writeable=1'
 	label = _('%(name)s (%(path)s on %(host)s)')  # ldap-optimized for shares/share.description()
@@ -2409,6 +3131,9 @@ class WritableShare(UDM_Objects):
 
 
 class AllowDenyIgnore(select):
+	"""
+	Syntax class for a tri-state select between allow, deny and ignore.
+	"""
 	choices = [
 		('', ''),
 		('allow', _('allow')),
@@ -2418,7 +3143,11 @@ class AllowDenyIgnore(select):
 
 
 class IStates(select):
-	values = []
+	"""
+	Base syntax to select item from list of choices with a mapping between Python and LDAP values.
+	"""
+	values = []  # type: Sequence[Tuple[Any, Tuple[str, str]]]
+	"""Map Python type to 2-tuple (LDAP-value, translated-text)."""
 
 	@ClassProperty
 	def choices(cls):
@@ -2466,6 +3195,9 @@ class IStates(select):
 
 
 class AllowDeny(IStates):
+	"""
+	Syntax class for a tri-state select between None, allow and deny.
+	"""
 	values = (
 		(None, ('', '')),
 		(True, ('allow', _('allow'))),
@@ -2474,6 +3206,9 @@ class AllowDeny(IStates):
 
 
 class booleanNone(IStates):
+	"""
+	Syntax class for a tri-state select between None, yes and no.
+	"""
 	values = (
 		(None, ('', '')),
 		(True, ('yes', _('Yes'))),
@@ -2482,6 +3217,9 @@ class booleanNone(IStates):
 
 
 class auto_one_zero(select):
+	"""
+	Syntax class for a tri-state select between Auto, Yes and No.
+	"""
 	choices = [
 		('Auto', _('Auto')),
 		('1', _('Yes')),
@@ -2490,6 +3228,9 @@ class auto_one_zero(select):
 
 
 class TrueFalse(IStates):
+	"""
+	Syntax class for a tri-state select between None, true and false.
+	"""
 	values = (
 		(None, ('', '')),
 		(True, ('true', _('True'))),
@@ -2498,6 +3239,9 @@ class TrueFalse(IStates):
 
 
 class TrueFalseUpper(IStates):
+	"""
+	Syntax class for a tri-state select between None, TRUE and FALSE.
+	"""
 	values = (
 		(None, ('', '')),
 		(True, ('TRUE', _('True'))),
@@ -2506,6 +3250,9 @@ class TrueFalseUpper(IStates):
 
 
 class TrueFalseUp(IStates):
+	"""
+	Syntax for bool'ean value matching |LDAP| `boolean` (|OID| 1.3.6.1.4.1.1466.115.121.1.7).
+	"""
 	values = (
 		(True, ('TRUE', _('True'))),
 		(False, ('FALSE', _('False')))
@@ -2517,6 +3264,9 @@ class AppActivatedTrue(TrueFalseUp):
 
 
 class OkOrNot(IStates):
+	"""
+	Syntax class to a boolean select between OK and Not.
+	"""
 	values = (
 		(True, ('OK', _('OK'))),
 		(False, ('Not', _('Not OK')))
@@ -2528,6 +3278,9 @@ class AppActivatedOK(OkOrNot):
 
 
 class ddnsUpdateStyle(select):
+	"""
+	Syntax to select the |DHCP| dynamic |DNS| update style.
+	"""
 	choices = [
 		('', ''),
 		('ad-hoc', _('ad-hoc')),
@@ -2537,6 +3290,9 @@ class ddnsUpdateStyle(select):
 
 
 class ddnsUpdates(IStates):
+	"""
+	Syntax class for a tri-state select between None, on and off.
+	"""
 	values = (
 		(None, ('', '')),
 		(True, ('on', _('on'))),
@@ -2545,6 +3301,9 @@ class ddnsUpdates(IStates):
 
 
 class netbiosNodeType(select):
+	"""
+	Syntax to select the Windows name server mode.
+	"""
 	choices = [
 		('', ''),
 		('1', '1 B-node: Broadcast - no WINS'),
@@ -2555,6 +3314,9 @@ class netbiosNodeType(select):
 
 
 class kdeProfile(select):
+	"""
+	Syntax to select |KDE| profile type.
+	"""
 	choices = [
 		('', 'none'),
 		('/home/kde.restricted', 'restricted'),
@@ -2563,6 +3325,9 @@ class kdeProfile(select):
 
 
 class language(select):
+	"""
+	Syntax for selecting a language by name.
+	"""
 	choices = [
 		('', ''),
 		('af_ZA', 'Afrikaans/South Africa'),
@@ -2850,6 +3615,9 @@ class language(select):
 
 
 class Month(select):
+	"""
+	Syntax to select the month of a year.
+	"""
 	choices = [
 		('', ''),
 		('all', _('all')),
@@ -2869,6 +3637,9 @@ class Month(select):
 
 
 class Weekday(select):
+	"""
+	Syntax to select the day of a week.
+	"""
 	choices = [
 		('', ''),
 		('all', _('all')),
@@ -2883,6 +3654,9 @@ class Weekday(select):
 
 
 class Day(select):
+	"""
+	Syntax to select the day of a month.
+	"""
 	choices = [
 		('', ''),
 		('all', _('all')),
@@ -2921,6 +3695,9 @@ class Day(select):
 
 
 class Hour(select):
+	"""
+	Syntax to select the hour of a day or all or none.
+	"""
 	choices = [
 		('', ''),
 		('all', _('all')),
@@ -2952,6 +3729,9 @@ class Hour(select):
 
 
 class HourSimple(select):
+	"""
+	Syntax to select the hour of a day.
+	"""
 	choices = [
 		('00', '0'),
 		('1', '1'),
@@ -2981,6 +3761,9 @@ class HourSimple(select):
 
 
 class Minute(select):
+	"""
+	Syntax to select the minute of a hour or all or none.
+	"""
 	choices = [
 		('', ''),
 		('all', _('all')),
@@ -3000,6 +3783,9 @@ class Minute(select):
 
 
 class MinuteSimple(select):
+	"""
+	Syntax to select the minute of a hour.
+	"""
 	choices = [
 		('00', '0'),
 		('5', '5'),
@@ -3017,16 +3803,28 @@ class MinuteSimple(select):
 
 
 class UNIX_AccessRight(simple):
-	pass
+	"""
+	Syntax to configure UNIX file permissions.
 
-# Widget supports setgid/sticky bit
+	.. seealso::
+	   * :py:class:`UNIX_AccessRight_extended`
+	"""
 
 
 class UNIX_AccessRight_extended(simple):
+	"""
+	Syntax to configure UNIX file permissions including set\ |UID|, set\ |GID| and sticky bits.
+
+	.. seealso::
+	   * :py:class:`UNIX_AccessRight`
+	"""
 	pass
 
 
 class sambaGroupType(select):
+	"""
+	Syntax to select Samba group type.
+	"""
 	choices = [
 		('', ''),
 		('2', _('Domain Group')),
@@ -3036,6 +3834,9 @@ class sambaGroupType(select):
 
 
 class adGroupType(select):
+	"""
+	Syntax to select Active Directory group type.
+	"""
 	choices = [
 		('', ''),
 		('-2147483643', _('Local (Type: Security)')),
@@ -3049,6 +3850,9 @@ class adGroupType(select):
 
 
 class SambaLogonHours(MultiSelect):
+	"""
+	Syntax to select hour slots per day for Samba login.
+	"""
 	choices = [(idx * 24 + hour, '%s %d-%d' % (day, hour, hour + 1)) for idx, day in ((0, _('Sun')), (1, _('Mon')), (2, _('Tue')), (3, _('Wed')), (4, _('Thu')), (5, _('Fri')), (6, _('Sat'))) for hour in range(24)]
 
 	@classmethod
@@ -3061,6 +3865,9 @@ class SambaLogonHours(MultiSelect):
 
 
 class SambaPrivileges(select):
+	"""
+	Syntax to select Samba privileges.
+	"""
 	empty_value = True
 	choices = [
 		('SeMachineAccountPrivilege', _('Add machines to domain')),
@@ -3076,6 +3883,9 @@ class SambaPrivileges(select):
 
 
 class UCSServerRole(select):
+	"""
+	Syntax to select |UCS| server role.
+	"""
 	empty_value = True
 	choices = [
 		('domaincontroller_master', _('Domaincontroller Master')),
@@ -3086,16 +3896,31 @@ class UCSServerRole(select):
 
 
 class ServiceMail(UDM_Objects):
+	"""
+	Syntax to select a |UCS| host from |LDAP| by |DN| offering |SMTP| services.
+
+	.. seealso::
+	   * :py:class:`MailHomeServer`
+	"""
 	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')
 	udm_filter = '(&(!(univentionObjectFlag=docker))(service=SMTP))'
 
 
 class ServicePrint(UDM_Objects):
+	"""
+	Syntax to select a |UCS| host from |LDAP| by |DN| offering print services.
+
+	.. seealso::
+	   * :py:class:`ServicePrint_FQDN`
+	"""
 	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')
 	udm_filter = '(&(!(univentionObjectFlag=docker))(service=Print))'
 
 
 class Service(UDM_Objects):
+	"""
+	Syntax to select a |UCS| service types from |LDAP| using :py:class:`univention.admin.handlers.settings.service`.
+	"""
 	udm_modules = ('settings/service', )
 	regex = None
 	key = '%(name)s'
@@ -3104,6 +3929,9 @@ class Service(UDM_Objects):
 
 
 class nfssync(select):
+	"""
+	Syntax to select the |NFS| synchronization type.
+	"""
 	choices = [
 		('sync', _('synchronous')),
 		('async', _('asynchronous'))
@@ -3111,6 +3939,9 @@ class nfssync(select):
 
 
 class univentionAdminModules(select):
+	"""
+	Syntax for selecting an |UDM| module.
+	"""
 	# we need a fallback
 	choices = [
 		('computers/managedclient', 'Computer: Managed Client'),
@@ -3214,6 +4045,9 @@ class univentionAdminModules(select):
 
 
 def univentionAdminModules_update():
+	"""
+	Update internal list of |UDM| modules in :py:class:`univentionAdminModules`.
+	"""
 	temp = []
 	for name, mod in univention.admin.modules.modules.items():
 		if not univention.admin.modules.virtual(mod):
@@ -3226,12 +4060,21 @@ __register_choice_update_function(univentionAdminModules_update)
 
 
 class UDM_PropertySelect(complex):
+	"""
+	Syntax to enter |UDM| module and property name.
+	"""
 	subsyntaxes = ((_('UDM module'), string), (_('property'), string))
 
-# old syntax required by settings/syntax. Should be removed after migrating to UDM_PropertySelect
 
 
 class listAttributes(string):
+	"""
+	Syntax to enter |UDM| property name.
+
+	.. deprecated::
+	   Old syntax required by :py:class:`univention.admin.handler.settings.syntax`.
+	   Should be removed after migrating to :py:class:`UDM_PropertySelect`.
+	"""
 
 	@classmethod
 	def parse(self, text):
@@ -3239,8 +4082,9 @@ class listAttributes(string):
 
 
 class timeSpec(select):
-
-	"""Time format used by 'at'."""
+	"""
+	Time format used by :program:`at`.
+	"""
 	_times = [
 		(time, time) for hour in range(0, 24)
 		for minute in range(0, 60, 15)
@@ -3253,6 +4097,9 @@ class timeSpec(select):
 
 
 class optionsUsersUser(select):
+	"""
+	Syntax to select options for |UDM| module :py:class:`univention.admin.handlers.users.user`.
+	"""
 	choices = [('pki', _('Public key infrastructure account'))]
 
 	@classmethod
@@ -3266,30 +4113,39 @@ __register_choice_update_function(optionsUsersUser.update_choices)
 
 
 class nagiosHostsEnabledDn(UDM_Objects):
+	"""
+	Syntax to select Nagios enabled hosts from |LDAP|.
+	"""
 	udm_modules = ('computers/computer', )
 	udm_filter = '(&(!(univentionObjectFlag=docker))(objectClass=univentionNagiosHostClass)(univentionNagiosEnabled=1)(aRecord=*))'
 
 
 class nagiosServiceDn(UDM_Objects):
+	"""
+	Syntax to select a Nagios services from |LDAP| using :py:class:`univention.admin.handlers.nagios.service`.
+	"""
 	udm_modules = ('nagios/service', )
 
 
 class UCR_Variable(complex):
+	"""
+	Syntax to enter |UCR| variable name and value.
+	"""
 	subsyntaxes = ((_('Variable'), string), (_('Value'), string))
 
 
 class LDAP_Search(select):
-
-	"""Selection list from LDAP search.
+	"""
+	Selection list from LDAP search.
 
 	Searches can be either defined dynamically via a UDM settings/syntax
 	definition and using
 
-	> LDAP_Search( syntax_name = '<NAME>' )
+		LDAP_Search( syntax_name = '<NAME>' )
 
 	or programmatically by directly instantiating
 
-	> LDAP_Search( filter = '<LDAP-Search-Filter>', attribute = [ '<LDAP attributes>', ... ], value = '<LDAP attribute>', base = '<LDAP base>' )
+		LDAP_Search( filter = '<LDAP-Search-Filter>', attribute = [ '<LDAP attributes>', ... ], value = '<LDAP attribute>', base = '<LDAP base>' )
 	"""
 	FILTER_PATTERN = '(&(objectClass=univentionSyntax)(cn=%s))'
 
@@ -3297,26 +4153,25 @@ class LDAP_Search(select):
 		"""Creates an syntax object providing a list of choices defined
 		by a LDAP objects
 
-		syntax_name: name of the syntax LDAP object
+		:param syntax_name: name of the syntax LDAP object.
 
-		filter: an LDAP filter to find the LDAP objects providing the
-		list of choices. The filter may contain patterns, that are ...
+		:param filter: an LDAP filter to find the LDAP objects providing the
+			list of choices. The filter may contain patterns, that are ...
 
-		attribute: a list of UDM module attributes definitions like
-		'shares/share: dn' to be used as human readable representation
-		for each element of the choices.
+		:param attribute: a list of UDM module attributes definitions like
+			`shares/share: dn` to be used as human readable representation
+			for each element of the choices.
 
-		value: the UDM module attribute that will be stored to identify
-		the selected element. The value is specified like 'shares/share:
-		dn'
+		:param value: the UDM module attribute that will be stored to identify
+			the selected element. The value is specified like `shares/share: dn`.
 
-		viewonly: If set to True the values can not be changed
+		:param viewonly: If set to True the values can not be changed.
 
-		addEmptyValue: If set to True an empty value is add to the list
-		of choices
+		:param addEmptyValue: If set to True an empty value is add to the list
+			of choices.
 
-		appendEmptyValue: Same as addEmptyValue but added at the end.
-		Used to automatically choose an existing entry in frontend
+		:param appendEmptyValue: Same as addEmptyValue but added at the end.
+			Used to automatically choose an existing entry in frontend.
 		"""
 		self.syntax = syntax_name
 		if filter is not None:
@@ -3384,6 +4239,12 @@ class LDAP_Search(select):
 
 
 class nfsShare(UDM_Objects):
+	"""
+	Syntax for selecting defined |NFS| shares.
+
+	.. seealso::
+	   * :py:class:`WritableShare`
+	"""
 	udm_modules = ('shares/share', )
 	label = '%(name)s (%(host)s)'  # '%(printablename)s' optimized for performance...
 	udm_filter = 'objectClass=univentionShareNFS'
@@ -3391,11 +4252,17 @@ class nfsShare(UDM_Objects):
 
 
 class nfsMounts(complex):
+	"""
+	Syntax to define a |NFS| mount point.
+	"""
 	subsyntaxes = [(_('NFS share'), nfsShare), ('Mount point', string)]
 	all_required = True
 
 
 class languageCode(string):
+	"""
+	Syntax for a language, e.g. `language_COUNTRY`.
+	"""
 	min_length = 5
 	max_length = 5
 	_re = re.compile('^[a-z][a-z]_[A-Z][A-Z]$')
@@ -3409,29 +4276,46 @@ class languageCode(string):
 
 
 class translationTuple(complex):
+	"""
+	Syntax for some translatable text.
+	"""
 	delimiter = ': '
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Text'), string)]
 	all_required = 1
 
 
 class translationTupleShortDescription(translationTuple):
+	"""
+	Syntax for a translated short description of an |UDM| property.
+	"""
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Translated short description'), string)]
 
 
 class translationTupleLongDescription(translationTuple):
+	"""
+	Syntax for a translated long description of an |UDM| property.
+	"""
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Translated long description'), string)]
 
 
 class translationTupleTabName(translationTuple):
+	"""
+	Syntax for a translated |UMC| tab name for an |UDM| property.
+	"""
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Translated tab name'), string)]
 
 
 class I18N_GroupName(translationTuple):
+	"""
+	Syntax for a translated group name.
+	"""
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Translated group name'), string)]
 
 
 class disabled(boolean):
-
+	"""
+	Syntax to select account disabled state.
+	"""
 	@classmethod
 	def parse(cls, text):
 		if text in ('none', 'none2'):
@@ -3442,7 +4326,9 @@ class disabled(boolean):
 
 
 class locked(boolean):
-
+	"""
+	Syntax to select account locked state.
+	"""
 	@classmethod
 	def parse(cls, text):
 		if text in ('all', 'windows', 'posix'):
@@ -3456,6 +4342,12 @@ class locked(boolean):
 
 
 class Printers(UDM_Objects):
+	"""
+	Syntax to select a printers from |LDAP| using :py:class:`univention.admin.handlers.shares.printer`.
+
+	.. seealso::
+	   * :py:class:`PrinterNames`
+	"""
 	udm_modules = ('shares/printer', )
 	depends = 'spoolHost'
 	simple = True
@@ -3467,6 +4359,12 @@ class Printers(UDM_Objects):
 
 
 class PrinterNames(UDM_Objects):
+	"""
+	Syntax to select a printers from |LDAP| using :py:class:`univention.admin.handlers.shares.printer`.
+
+	.. seealso::
+	   * :py:class:`Printers`
+	"""
 	udm_modules = ('shares/printer', )
 	depends = 'spoolHost'
 	simple = True
@@ -3479,18 +4377,42 @@ class PrinterNames(UDM_Objects):
 
 
 class PrintQuotaGroup(complex):
+	"""
+	Syntax to configure a page quota for all users of a group together.
+
+	.. seealso::
+	   * :py:class:`PrintQuotaGroupPerUser`
+	   * :py:class:`PrintQuotaUser`
+	"""
 	subsyntaxes = ((_('Soft limit (pages)'), integer), (_('Hard limit (pages)'), integer), (_('Group'), GroupName))
 
 
 class PrintQuotaGroupPerUser(complex):
+	"""
+	Syntax to configure a page quota for all individual users of a group.
+
+	.. seealso::
+	   * :py:class:`PrintQuotaUser`
+	   * :py:class:`PrintQuotaGroup`
+	"""
 	subsyntaxes = ((_('Soft limit (pages)'), integer), (_('Hard limit (pages)'), integer), (_('Group'), GroupName))
 
 
 class PrintQuotaUser(complex):
+	"""
+	Syntax to configure a page quota for an individual user.
+
+	.. seealso::
+	   * :py:class:`PrintQuotaGroupPerUser`
+	   * :py:class:`PrintQuotaGroup`
+	"""
 	subsyntaxes = ((_('Soft limit (pages)'), integer), (_('Hard limit (pages)'), integer), (_('User'), UserName))
 
 
 class printerName(simple):
+	"""
+	Syntax to enter a printer name.
+	"""
 	min_length = 1
 	max_length = 16
 	_re = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9_-]*([a-zA-Z0-9]$)')
@@ -3504,11 +4426,17 @@ class printerName(simple):
 
 
 class printerModel(complex):
+	"""
+	Syntax to enter a printer model description.
+	"""
 	subsyntaxes = [(_('Driver'), string), (_('Description'), string)]
 	all_required = True
 
 
 class PrinterDriverList(UDM_Attribute):
+	"""
+	Syntax to select a printer driver from |LDAP| using :py:class:`univention.admin.handlers.settings.printermodel`.
+	"""
 	udm_module = 'settings/printermodel'
 	attribute = 'printmodel'
 	is_complex = True
@@ -3519,17 +4447,26 @@ class PrinterDriverList(UDM_Attribute):
 
 
 class PrinterProducerList(UDM_Objects):
+	"""
+	Syntax to select a printer producer from |LDAP| using :py:class:`univention.admin.handlers.settings.printermodel`.
+	"""
 	udm_modules = ('settings/printermodel', )
 	label = '%(name)s'
 
 
 class PrinterProtocol(UDM_Attribute):
+	"""
+	Syntax to select a printer |URI| from |LDAP| using :py:class:`univention.admin.handlers.settings.printeruri`.
+	"""
 	udm_module = 'settings/printeruri'
 	attribute = 'printeruri'
 	is_complex = False
 
 
 class PrinterURI(complex):
+	"""
+	Syntax to configure printer.
+	"""
 	subsyntaxes = ((_('Protocol'), PrinterProtocol), (_('Destination'), string))
 
 	@classmethod
@@ -3563,6 +4500,9 @@ class PrinterURI(complex):
 
 
 class policyName(string):
+	"""
+	Syntax to enter |UDM| policy name.
+	"""
 	_re = re.compile('^[a-zA-Z0-9]{1}[a-zA-Z0-9 #!$%&/\|\^.~_-]*?[a-zA-Z0-9#!$%&/\|\^.~_-]{1}$')
 
 	@classmethod
@@ -3575,30 +4515,48 @@ class policyName(string):
 
 
 class Portals(UDM_Objects):
+	"""
+	Syntax to select a portal from |LDAP| using :py:class:`univention.admin.handlers.settings.portal`.
+	"""
 	udm_modules = ('settings/portal', )
 	label = '%(name)s'
 	empty_value = True
 
 
 class PortalEntries(UDM_Objects):
+	"""
+	Syntax to select a portal entries from |LDAP| using :py:class:`univention.admin.handlers.settings.portal_entry`.
+	"""
 	udm_modules = ('settings/portal_entry', )
 	label = '%(name)s'
 	empty_value = True
 
 
 class PortalLinksPosition(select):
+	"""
+	Syntax to select the position of links on the portal.
+	"""
 	choices = [
 		('footer', _('Footer')),
 	]
 
 
 class PortalLinks(complex):
+	"""
+	Syntax to configure links on the portal.
+	"""
 	delimiter = '$$'
 	subsyntaxes = [(_('Position'), PortalLinksPosition), (_('Link'), string), (_('Locale'), languageCode), (_('Name'), string)]
 	all_required = True
 
 
 class PortalCategory(select):
+	"""
+	Syntax to select a portal category version 1 from a static list with just 2 categories.
+
+	.. seealso::
+	   * :py:class:`PortalCategoryV2`
+	"""
 	choices = [
 		('admin', _('Shown in category "Administration"')),
 		('service', _('Shown in category "Installed services"')),
@@ -3606,16 +4564,28 @@ class PortalCategory(select):
 
 
 class PortalCategoryV2(UDM_Objects):
+	"""
+	Syntax to select a portal category version 2 from |LDAP| using :py:class:`univention.admin.handlers.settings.portal_category`.
+
+	.. seealso::
+	   * :py:class:`PortalCategory`
+	"""
 	udm_modules = ('settings/portal_category', )
 	label = '%(name)s'
 	empty_value = True
 
 
 class PortalEntrySelection(complex):
+	"""
+	Syntax to select a portal entry.
+	"""
 	subsyntaxes = [(_('Portal Entry'), PortalEntries)]
 
 
 class PortalCategorySelection(simple):
+	"""
+	Syntax to select a portal category.
+	"""
 	subsyntaxes = [(_('Portal Category'), PortalCategoryV2), (_('Portal Entry'), PortalEntrySelection)]
 
 	@classmethod
@@ -3645,10 +4615,14 @@ class PortalCategorySelection(simple):
 
 	@classmethod
 	def tostring(self, texts):
+		# type: (Any) -> str
 		return json.dumps(texts, indent=2)
 
 
 class AuthRestriction(select):
+	"""
+	Syntax to select the authentication restriction for the portal.
+	"""
 	choices = [
 		('admin', _('Visible for Admins only')),
 		('authenticated', _('Visible for authenticated users')),
@@ -3657,6 +4631,9 @@ class AuthRestriction(select):
 
 
 class PortalFontColor(select):
+	"""
+	Syntax to select the color of the font in the portal.
+	"""
 	choices = [
 		('white', _('White')),
 		('black', _('Black')),
@@ -3664,19 +4641,34 @@ class PortalFontColor(select):
 
 
 class LocalizedDisplayName(translationTuple):
+	"""
+	Syntax for a translated display name of a portal entry.
+	"""
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Display Name'), string)]
 
 
 class LocalizedDescription(translationTuple):
+	"""
+	Syntax for a translated description of a portal entry.
+	"""
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Description'), string)]
 
 
 class LocalizedAnonymousEmpty(translationTuple):
+	"""
+	Syntax for a translated description of a portal entry.
+	In addition to :py:class:`LocalizedDescription` it allows to specify a fallback for anonymous visitors.
+	"""
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Message that is shown to anonymous visitors when the portal is empty'), TwoEditor)]
 
 
-class mailHomeServer(LDAP_Search):  # DEPRECATED! Use MailHomeServer
+class mailHomeServer(LDAP_Search):
+	"""
+	Syntax to select UCS servers providing the |IMAP| service.
 
+	.. deprecated:: 3.2-1
+	   Use :py:class:`MailHomeServer`.
+	"""
 	def __init__(self):
 		LDAP_Search.__init__(
 			self,
@@ -3688,27 +4680,28 @@ class mailHomeServer(LDAP_Search):  # DEPRECATED! Use MailHomeServer
 
 
 class hostname_or_ipadress_or_network(simple):
-
 	"""
-	>>> hostname_or_ipadress_or_network().parse('hostname')
+	Syntax for (fully qualified) host name or IP address or IP network.
+
+	>>> hostname_or_ipadress_or_network.parse('hostname')
 	'hostname'
-	>>> hostname_or_ipadress_or_network().parse('10.10.10.0/24')
+	>>> hostname_or_ipadress_or_network.parse('10.10.10.0/24')
 	'10.10.10.0/24'
-	>>> hostname_or_ipadress_or_network().parse('10.10.10.0/255.255.255.0')
+	>>> hostname_or_ipadress_or_network.parse('10.10.10.0/255.255.255.0')
 	'10.10.10.0/255.255.255.0'
-	>>> hostname_or_ipadress_or_network().parse('illegalhostname$!"§%&/(') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> hostname_or_ipadress_or_network.parse('illegalhostname$!"§%&/(') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError:
-	>>> hostname_or_ipadress_or_network().parse('10.10.10.0/') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> hostname_or_ipadress_or_network.parse('10.10.10.0/') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError:
-	>>> hostname_or_ipadress_or_network().parse('/24') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> hostname_or_ipadress_or_network.parse('/24') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError:
-	>>> hostname_or_ipadress_or_network().parse('10.10.10.0/255') #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> hostname_or_ipadress_or_network.parse('10.10.10.0/255') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError:
@@ -3727,6 +4720,9 @@ class hostname_or_ipadress_or_network(simple):
 
 
 class ObjectFlag(select):
+	"""
+	Syntax for |UDM| object flags.
+	"""
 	empty_value = True
 	choices = [
 		('hidden', _('Mark this object as hidden')),
@@ -3738,6 +4734,10 @@ class ObjectFlag(select):
 
 
 class Country(select):
+	"""
+	Syntax for selecting a country by name.
+	Stored as  the `ISO 3166-1 two-letter country code <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`_.
+	"""
 	empty_value = True
 
 	choices = []

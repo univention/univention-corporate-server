@@ -97,17 +97,17 @@ class simpleLdap(object):
 	"""The base class for all UDM handler modules.
 
 		:param co:
-			*deprecated* parameter for a config. Please pass None.
+			*deprecated* parameter for a config. Please pass `None`.
 		:type co: None
 
 		:param lo:
 			A required LDAP connection object which is used for all LDAP operations (search, create, modify).
-			It should be bind to a user which has the LDAP permissions to do the required operations.
+			It should be bound to a user which has the LDAP permissions to do the required operations.
 		:type lo: :class:`univention.admin.uldap.access`
 
 		:param position:
-			The position where an object should be created or None for existing objects.
-		:type position: :class:`univention.admin.uldap.position` or None
+			The LDAP container where a new object should be created in, or `None` for existing objects.
+		:type position: :class:`univention.admin.uldap.position` or `None`
 
 		:param dn:
 			The DN of an existing LDAP object. If a object should be created the DN must not be passed here!
@@ -115,7 +115,7 @@ class simpleLdap(object):
 
 		:param superordinate:
 			The superordinate object of this object. Can be ommited. It is automatically searched by the given DN or position.
-		:type superordinate: :class:`univention.admin.handlers.simpleLdap` or None
+		:type superordinate: :class:`univention.admin.handlers.simpleLdap` or `None`.
 
 		:param attributes:
 			The LDAP attributes of the LDAP object as dict. This should by default be ommited. To save performance when an LDAP search is done this can be used, e.g. by the lookup() method.
@@ -123,25 +123,25 @@ class simpleLdap(object):
 
 		The following attributes hold information about the state of this object:
 
-		:ivar dn:
+		:ivar str dn:
 			A LDAP distringuished name (DN) of this object (if exists, otherwise None)
-		:ivar module: the UDM handlers name (e.g. users/user)
-		:ivar oldattr:
+		:ivar str module: the UDM handlers name (e.g. users/user)
+		:ivar dict oldattr:
 			The LDAP attributes of this object as dict. If the object does not exists the dict is empty.
-		:ivar info:
+		:ivar dict info:
 			A internal dictionary which holds the values for every property.
-		:ivar options:
+		:ivar list options:
 			A list of UDM options which are enabled on this object. Enabling options causes specific object classes and attributes to be added to the object.
-		:ivar policies:
+		:ivar list policies:
 			A list of DNs containing references to assigned policies.
-		:ivar properties: a dict which maps all UDM properties to :class:`univention.admin.property` instances.
-		:ivar mapping:
+		:ivar dict properties: a dict which maps all UDM properties to :class:`univention.admin.property` instances.
+		:ivar univention.admin.mapping.mapping mapping:
 			A :class:`univention.admin.mapping.mapping` instance containing a mapping of UDM property names to LDAP attribute names.
-		:ivar oldinfo:
+		:ivar dict oldinfo:
 			A private copy of :attr:`info` containing the original properties which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
-		:ivar old_options:
+		:ivar list old_options:
 			A private copy of :attr:`options` containing the original options which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
-		:ivar old_policies:
+		:ivar list old_policies:
 			A private copy of :attr:`policies` containing the original policies which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
 
 		.. caution::

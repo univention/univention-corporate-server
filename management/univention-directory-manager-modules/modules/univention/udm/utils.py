@@ -35,7 +35,7 @@ is_interactive = bool(getattr(sys, 'ps1', sys.flags.interactive))
 
 
 class UDebug(object):
-	"""univention.debug convenience wrapper"""
+	""":py:mod:`univention.debug` convenience wrapper"""
 	target = univention.debug.ADMIN
 	level2str = {
 		univention.debug.ALL: 'DEBUG',

@@ -27,7 +27,7 @@
 # <http://www.gnu.org/licenses/>.
 
 """
-Module and object specific for all "mail/*" UDM modules.
+Module and object specific for all "mail/\*" UDM modules.
 
 This module handles the problem that on a OX system, UDM modules are registered
 for oxmail/ox$NAME, that opens LDAP objects with both
@@ -38,7 +38,7 @@ for oxmail/ox$NAME, that opens LDAP objects with both
 :py:exc:`WrongObjectType` exception when loading it.
 
 The overwritten method :py:meth:`_verify_univention_object_type()` allows both
-mail/* and oxmail/* in univentionObjectType.
+`mail/\*` and `oxmail/\*` in `univentionObjectType`.
 """
 
 from __future__ import absolute_import, unicode_literals
@@ -70,7 +70,7 @@ class MailAllModule(GenericModule):
 
 	def _verify_univention_object_type(self, orig_udm_obj):
 		"""
-		Allow both mail/* and oxmail/* in univentionObjectType.
+		Allow both `mail/\*` and `oxmail/\*` in `univentionObjectType`.
 		"""
 		uni_obj_type = copy.copy(getattr(orig_udm_obj, 'oldattr', {}).get('univentionObjectType'))
 		if uni_obj_type and uni_obj_type[0].startswith('mail/'):

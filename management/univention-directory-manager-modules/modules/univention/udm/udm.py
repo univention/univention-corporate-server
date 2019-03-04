@@ -34,30 +34,34 @@ It consists of UDM modules and UDM object.
 UDM modules are factories for UDM objects.
 UDM objects manipulate LDAP objects.
 
-Usage:
+Usage::
 
-from univention.udm import UDM
+	from univention.udm import UDM
 
-user_mod = UDM.admin().get('users/user')
-or
-user_mod = UDM.machine().get('users/user')
-or
-user_mod = UDM.credentials('myuser', 's3cr3t').get('users/user')
+	user_mod = UDM.admin().get('users/user')
 
-obj = user_mod.get(dn)
-obj.props.firstname = 'foo'  # modify property
-obj.position = 'cn=users,cn=example,dc=com'  # move LDAP object
-obj.save()  # apply changes
+or::
 
-obj = user_mod.get(dn)
-obj.delete()
+	user_mod = UDM.machine().get('users/user')
 
-obj = user_mod.new()
-obj.props.username = 'bar'
-obj.save().refresh()  # reload obj.props from LDAP after save()
+or::
 
-for obj in UDM.machine().get('users/user').search('uid=a*'):  # search() returns a generator
-	print(obj.props.firstname, obj.props.lastname)
+	user_mod = UDM.credentials('myuser', 's3cr3t').get('users/user')
+
+	obj = user_mod.get(dn)
+	obj.props.firstname = 'foo'  # modify property
+	obj.position = 'cn=users,cn=example,dc=com'  # move LDAP object
+	obj.save()  # apply changes
+
+	obj = user_mod.get(dn)
+	obj.delete()
+
+	obj = user_mod.new()
+	obj.props.username = 'bar'
+	obj.save().refresh()  # reload obj.props from LDAP after save()
+
+	for obj in UDM.machine().get('users/user').search('uid=a*'):  # search() returns a generator
+		print(obj.props.firstname, obj.props.lastname)
 
 A shortcut exists to get a UDM object directly::
 
@@ -83,11 +87,11 @@ _MODULES_PATH = 'univention.udm.modules'
 
 class UDM(object):
 	"""
-	Dynamic factory for creating :py:class:`BaseModule` objects.
+	Dynamic factory for creating :py:class:`BaseModule` objects::
 
-	group_mod = UDM.admin().get('groups/group')
-	folder_mod = UDM.machine().get('mail/folder')
-	user_mod = UDM.credentials('myuser', 's3cr3t').get('users/user')
+		group_mod = UDM.admin().get('groups/group')
+		folder_mod = UDM.machine().get('mail/folder')
+		user_mod = UDM.credentials('myuser', 's3cr3t').get('users/user')
 
 	A shortcut exists to get UDM objects directly::
 
@@ -115,9 +119,9 @@ class UDM(object):
 		"""
 		Use a cn=admin connection.
 
-		:return: a :py:class:`UDM` instance
-		:rtype: UDM
-		:raises ConnectionError: Non-master systems, server down, etc.
+		:return: a :py:class:`univention.udm.udm.UDM` instance
+		:rtype: univention.udm.udm.UDM
+		:raises univention.udm.exceptions.ConnectionError: Non-master systems, server down, etc.
 		"""
 		from .connections import LDAP_connection
 		connection = LDAP_connection.get_admin_connection()
@@ -128,9 +132,9 @@ class UDM(object):
 		"""
 		Use a machine connection.
 
-		:return: a :py:class:`UDM` instance
-		:rtype: UDM
-		:raises ConnectionError: File permissions, server down, etc.
+		:return: a :py:class:`univention.udm.udm.UDM` instance
+		:rtype: univention.udm.udm.UDM
+		:raises univention.udm.exceptions.ConnectionError: File permissions, server down, etc.
 		"""
 		from .connections import LDAP_connection
 		connection = LDAP_connection.get_machine_connection()
@@ -156,9 +160,9 @@ class UDM(object):
 		:param str base: optional search base
 		:param str server: optional LDAP server address as FQDN
 		:param int port: optional LDAP server port
-		:return: a :py:class:`UDM` instance
-		:rtype: UDM
-		:raises ConnectionError: Invalid credentials, server down, etc.
+		:return: a :py:class:`univention.udm.udm.UDM` instance
+		:rtype: univention.udm.udm.UDM
+		:raises univention.udm.exceptions.ConnectionError: Invalid credentials, server down, etc.
 		"""
 		from .connections import LDAP_connection
 		connection = LDAP_connection.get_credentials_connection(identity, password, base, server, port)
@@ -170,13 +174,13 @@ class UDM(object):
 
 		Use in a chain of methods to get a UDM module::
 
-			UDM.get_admin().version(1).get('groups/group')
+		    UDM.get_admin().version(1).get('groups/group')
 
 		:param int api_version: load only UDM modules that support the
 			specified version
-		:return: self (the :py:class:`UDM` instance)
-		:rtype UDM
-		:raises ApiVersionMustNotChange: if called twice
+		:return: self (the :py:class:`univention.udm.udm.UDM` instance)
+		:rtype: univention.udm.udm.UDM
+		:raises univention.udm.exceptions.ApiVersionMustNotChange: if called twice
 		"""
 		if not isinstance(api_version, int):
 			raise ApiVersionNotSupported("Argument 'api_version' must be an int.", requested_version=api_version)
@@ -194,8 +198,8 @@ class UDM(object):
 		:param str name: UDM module name (e.g. `users/user`)
 		:return: object of a subclass of :py:class:`BaseModule`
 		:rtype: BaseModule
-		:raises ApiVersionNotSupported: if the Python module for `name` could not be loaded
-		:raises NoApiVersionSet: if the API version has not been set
+		:raises univention.udm.exceptions.ApiVersionNotSupported: if the Python module for `name` could not be loaded
+		:raises univention.udm.exceptions.NoApiVersionSet: if the API version has not been set
 		"""
 		key = (name, self._api_version, self.connection.binddn)
 		if key not in self._module_object_cache:
@@ -225,11 +229,11 @@ class UDM(object):
 		:param str dn: DN of the object to load
 		:return: object of a subclass of :py:class:`BaseObject`
 		:rtype: BaseObject
-		:raises NoApiVersionSet: if the API version has not been set
-		:raises NoObject: if no object is found at `dn`
-		:raises ImportError: if the Python module for ``univentionObjectType``
+		:raises univention.udm.exceptions.NoApiVersionSet: if the API version has not been set
+		:raises univention.udm.exceptions.NoObject: if no object is found at `dn`
+		:raises univention.udm.exceptions.ImportError: if the Python module for ``univentionObjectType``
 			at ``dn`` could not be loaded
-		:raises UnknownModuleType: if the LDAP object at ``dn`` had no or
+		:raises univention.udm.exceptions.UnknownModuleType: if the LDAP object at ``dn`` had no or
 			empty attribute ``univentionObjectType``
 		"""
 		if self.connection.__module__ != 'univention.admin.uldap':

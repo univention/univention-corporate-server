@@ -36,26 +36,26 @@ UDM objects manipulate LDAP objects.
 
 The :py:class:`UDM` class is a LDAP connection and UDM module factory.
 
-Usage:
+Usage::
 
-from univention.udm import UDM
+	from univention.udm import UDM
 
-user_mod = UDM.admin().get('users/user')
+	user_mod = UDM.admin().get('users/user')
 
-obj = user_mod.get(dn)
-obj.props.firstname = 'foo'  # modify property
-obj.position = 'cn=users,cn=example,dc=com'  # move LDAP object
-obj.save()  # apply changes
+	obj = user_mod.get(dn)
+	obj.props.firstname = 'foo'  # modify property
+	obj.position = 'cn=users,cn=example,dc=com'  # move LDAP object
+	obj.save()  # apply changes
 
-obj = user_mod.get(dn)
-obj.delete()
+	obj = user_mod.get(dn)
+	obj.delete()
 
-obj = user_mod.new()
-obj.props.username = 'bar'
-obj.save()
+	obj = user_mod.new()
+	obj.props.username = 'bar'
+	obj.save()
 
-for obj in user_mod.search('uid=a*'):  # search() returns a generator
-	print(obj.props.firstname, obj.props.lastname)
+	for obj in user_mod.search('uid=a*'):  # search() returns a generator
+		print(obj.props.firstname, obj.props.lastname)
 
 A shortcut exists to get UDM objects directly, without knowing their
 univention object type::

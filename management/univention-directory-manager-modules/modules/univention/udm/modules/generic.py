@@ -91,24 +91,31 @@ class GenericObject(BaseObject):
 	Generic object class that can be used with all UDM module types.
 
 	Usage:
-	* Creation of instances :py:class:`GenericObject` is always done through a
-	:py:class:`GenericModul` instances py:meth:`new()`, py:meth:`get()` or
-	py:meth:`search()` methods.
-	* Modify an object:
-		user.props.firstname = 'Peter'
-		user.props.lastname = 'Pan'
-		user.save()
-	* Move an object:
-		user.position = 'cn=users,ou=Company,dc=example,dc=com'
-		user.save()
-	* Delete an object:
-		obj.delete()
 
-	After saving a :py:class:`GenericObject`, it is :py:meth:`reload()`ed
+	*   Creation of instances :py:class:`GenericObject` is always done through
+	    :py:meth:`GenericModul.new`, :py:meth:`GenericModul.get` or :py:meth:`GenericModul.search`.
+
+	*   Modify an object::
+
+	        user.props.firstname = 'Peter'
+	        user.props.lastname = 'Pan'
+	        user.save()
+
+	*   Move an object::
+
+	       user.position = 'cn=users,ou=Company,dc=example,dc=com'
+	       user.save()
+
+	*   Delete an object::
+
+	       obj.delete()
+
+	After saving a :py:class:`GenericObject`, it is :py:meth:`reload`\ ed
 	automtically because UDM hooks and listener modules often add, modify or
 	remove properties when saving to LDAP. As this involves LDAP, it can be
-	disabled if the object is not used afterwards and performance is an issue:
-		user_mod.meta.auto_reload = False
+	disabled if the object is not used afterwards and performance is an issue::
+
+	    user_mod.meta.auto_reload = False
 	"""
 	udm_prop_class = GenericObjectProperties
 	_policies_encoder = None
@@ -133,7 +140,7 @@ class GenericObject(BaseObject):
 
 		:return: self
 		:rtype: GenericObject
-		:raises NotYetSavedError: if object does not yet exist (has no dn)
+		:raises univention.udm.exceptions.NotYetSavedError: if object does not yet exist (has no dn)
 		"""
 		if self._deleted:
 			raise DeletedError('{} has been deleted.'.format(self), dn=self.dn, module_name=self._udm_module.name)
@@ -150,7 +157,7 @@ class GenericObject(BaseObject):
 
 		:return: self
 		:rtype: GenericObject
-		:raises MoveError: when a move operation fails
+		:raises univention.udm.exceptions.MoveError: when a move operation fails
 		"""
 		if self._deleted:
 			raise DeletedError('{} has been deleted.'.format(self), dn=self.dn, module_name=self._udm_module.name)
@@ -218,8 +225,8 @@ class GenericObject(BaseObject):
 		Remove the object from the LDAP database.
 
 		:return: None
-		:raises NotYetSavedError: if object does not yet exist (has no dn)
-		:raises DeletedError: if the operation fails
+		:raises univention.udm.exceptions.NotYetSavedError: if object does not yet exist (has no dn)
+		:raises univention.udm.exceptions.DeletedError: if the operation fails
 		"""
 		if self._deleted:
 			ud.warn('{} has already been deleted'.format(self))
@@ -430,10 +437,13 @@ class GenericModuleMetadata(BaseModuleMetadata):
 
 		This can be used in two ways:
 
-		* get the filter to find all objects:
-			`myfilter_s = obj.meta.lookup_filter()`
-		* get the filter to find a subset of the corresponding LDAP objects (`filter_s` will be combined with `&` to the filter for alle objects):
-			`myfilter = obj.meta.lookup_filter('(|(givenName=A*)(givenName=B*))')`
+		*   get the filter to find all objects::
+
+		        myfilter_s = obj.meta.lookup_filter()
+
+		*   get the filter to find a subset of the corresponding LDAP objects (`filter_s` will be combined with `&` to the filter for alle objects)::
+
+		        myfilter = obj.meta.lookup_filter('(|(givenName=A*)(givenName=B*))')
 
 		:param str filter_s: optional LDAP filter expression
 		:return: an LDAP filter string
@@ -464,16 +474,24 @@ class GenericModule(BaseModule):
 	Simple API to use UDM modules. Basically a GenericObject factory.
 
 	Usage:
-	0. Get module using
-		user_mod = UDM.admin/machine/credentials().get('users/user')
-	1 Create fresh, not yet saved GenericObject:
-		new_user = user_mod.new()
-	2 Load an existing object:
-		group = group_mod.get('cn=test,cn=groups,dc=example,dc=com')
-		group = group_mod.get_by_id('Domain Users')
-	3 Search and load existing objects:
-		dc_slaves = dc_slave_mod.search(filter_s='cn=s10*')
-		campus_groups = group_mod.search(base='ou=campus,dc=example,dc=com')
+
+	0.  Get module using::
+
+	        user_mod = UDM.admin/machine/credentials().get('users/user')
+
+	1.  Create fresh, not yet saved GenericObject::
+
+	        new_user = user_mod.new()
+
+	2.  Load an existing object::
+
+	        group = group_mod.get('cn=test,cn=groups,dc=example,dc=com')
+	        group = group_mod.get_by_id('Domain Users')
+
+	3.  Search and load existing objects::
+
+	        dc_slaves = dc_slave_mod.search(filter_s='cn=s10*')
+	        campus_groups = group_mod.search(base='ou=campus,dc=example,dc=com')
 	"""
 	__metaclass__ = GenericModuleMeta
 	_udm_object_class = GenericObject
@@ -508,8 +526,8 @@ class GenericModule(BaseModule):
 		:param str dn: DN of the object to load
 		:return: an existing GenericObject object
 		:rtype: GenericObject
-		:raises NoObject: if no object is found at `dn`
-		:raises WrongObjectType: if the object found at `dn` is not of type :py:attr:`self.name`
+		:raises univention.udm.exceptions.NoObject: if no object is found at `dn`
+		:raises univention.udm.exceptions.WrongObjectType: if the object found at `dn` is not of type :py:attr:`self.name`
 		"""
 		return self._load_obj(dn)
 
@@ -627,8 +645,8 @@ class GenericModule(BaseModule):
 			UDM object instance, if unset one will be created from `dn`
 		:return: UDM object
 		:rtype: univention.admin.handlers.simpleLdap
-		:raises NoObject: if no object is found at `dn`
-		:raises WrongObjectType: if the object found at `dn` is not of type :py:attr:`self.name`
+		:raises univention.udm.exceptions.NoObject: if no object is found at `dn`
+		:raises univention.udm.exceptions.WrongObjectType: if the object found at `dn` is not of type :py:attr:`self.name`
 		"""
 		udm_module = self._get_orig_udm_module()
 		if superordinate:
@@ -673,10 +691,10 @@ class GenericModule(BaseModule):
 			UDM object instance, if unset one will be created from `dn`
 		:return: a GenericObject
 		:rtype: GenericObject
-		:raises NoObject: if no object is found at `dn`
-		:raises ValueError: if `orig_udm_object` is not a
+		:raises univention.udm.exceptions.NoObject: if no object is found at `dn`
+		:raises univention.udm.exceptions.ValueError: if `orig_udm_object` is not a
 			:py:class:`univention.admin.handlers.simpleLdap` instance
-		:raises WrongObjectType: if the object found at `dn` is not of type
+		:raises univention.udm.exceptions.WrongObjectType: if the object found at `dn` is not of type
 			:py:attr:`self.name`
 		"""
 		obj = self._udm_object_class()
@@ -700,7 +718,7 @@ class GenericModule(BaseModule):
 		:param orig_udm_obj: original UDM object
 		:type orig_udm_obj: univention.admin.handlers.simpleLdap
 		:return: None
-		:raises WrongObjectType: if ``univentionObjectType`` of the LDAP object
+		:raises univention.udm.exceptions.WrongObjectType: if ``univentionObjectType`` of the LDAP object
 			does not match the UDM module name
 		"""
 		uni_obj_type = getattr(orig_udm_obj, 'oldattr', {}).get('univentionObjectType')
