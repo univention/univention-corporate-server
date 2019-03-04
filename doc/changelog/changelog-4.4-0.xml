@@ -402,7 +402,7 @@
 			<title>Univention Admin Diary</title>
 			<itemizedlist>
 				<listitem><simpara>
-					There are two new UCS apps, the <package>Admin Diary Frontend</package> and the <package>Admin Diary Backend</package> (<u:bug>48675</u:bug>, <u:bug>48341</u:bug>).
+					There are two new UCS apps, the <package>Admin Diary Frontend</package> and the <package>Admin Diary Backend</package> (<u:bug>48675</u:bug>, <u:bug>48341</u:bug>, <u:bug>48717</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
