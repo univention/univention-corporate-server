@@ -852,6 +852,7 @@
 			<title>UCS Virtual Machine Manager (UVMM)</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Small layout adjustments for the updated UMC design (<u:bug>48859</u:bug>, <u:bug>46198</u:bug>, <u:bug>48471</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
