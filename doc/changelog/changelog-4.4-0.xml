@@ -379,6 +379,9 @@
 					The user guidance in the portal has been improved. It is now possible to define whether users have to be logged in to visit the portal. Furthermore a custom message can be configured to show
 					to users that are not logged in and would be presented with an empty portal otherwise (<u:bug>48546</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The Protal now depends on netcat-openbsd to ensure that it's join script is IPv6 compatable (<u:bug>46556</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
