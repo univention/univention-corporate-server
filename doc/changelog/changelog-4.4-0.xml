@@ -883,9 +883,6 @@
 					The package <package>samba</package> has be updated to version <literal>4.10.0~rc2</literal> (<u:bug>48084</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Enable the new Samba DRS <phrase>Knowledge Consistency Checker</phrase> (<abbrev>KCC</abbrev>) by default (<u:bug>48085</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
 					Accounts for service principals are now created with UDM (<u:bug>47955</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
