@@ -452,7 +452,7 @@
 			<title>Users module</title>
 			<itemizedlist>
 				<listitem><simpara>
-						A new tab <guimenu>Apps</guimenu> has been added to users, which allows to enable and disable apps (<u:bug>48621</u:bug>).
+						A new tab <guimenu>Apps</guimenu> has been added to users, which allows to enable and disable apps (<u:bug>48621</u:bug>, <u:bug>48839</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 						The wizard for creating new users now allows to use an e-mail invitation for that user instead of setting an initial password (Requires the App <package>Self Service</package>) (<u:bug>48660</u:bug>).
