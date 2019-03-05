@@ -200,8 +200,14 @@
 		Advanced settings, such as adding new portals or setting which group members can see which portal entries can be made using the UMC portal settings module.
 	</para>
 	<para>
-		By default, all portal entries are displayed to everyone. Limiting entries for specific groups requires the LDAP attribute <property>memberOf</property>.
+		By default, all portal entries are displayed for everyone. In the UMC module <guimenu>Portal settings</guimenu> on the tab <guimenu>Manage anonymous visitors</guimenu>,
+		it can be configured whether anonymous visitors have to log in before they can see entries.
+		It is also possible to limit certain entries for certain groups. This requires the LDAP attribute <property>memberOf</property>.
 		Nested group memberships (i.e., groups in groups) are not evaluated.
+	</para>
+	<para>
+		Further design adjustments can be made in the file <filenname>/usr/share/univention-portal/custom.css</filenanme>.
+		This file will not be overwritten during an update.
 	</para>
 	<figure id="portal-schema">
 		<title>Schema of the portal concept in UCS: Portals can be independently defined and assigned to UCS systems as start site; a link entry can be displayed on multiple portals.</title>
