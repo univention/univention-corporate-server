@@ -133,53 +133,47 @@
 				<para>
 					The following updated packages from Debian 9.8 are included (<u:bug>48332</u:bug>):
 					<simplelist type="inline" id="_debian">
-						<member><package>base-files</package></member>
-						<member><package>ca-certificates-java</package></member>
-						<member><package>dnspython</package></member>
-						<member><package>erlang</package></member>
-						<member><package>espeakup</package></member>
-						<member><package>gnupg2</package></member>
-						<member><package>ibus</package></member>
-						<member><package>libdatetime-timezone-perl</package></member>
-						<member><package>libgpod</package></member>
-						<member><package>libssh</package></member>
-						<member><package>openvpn</package></member>
-						<member><package>postfix</package></member>
-						<member><package>postgresql-9.6</package></member>
-						<member><package>postgrey</package></member>
-						<member><package>tzdata</package></member>
-						<member><package>xapian-core</package></member>
 						<member><package>ansible</package></member>
 						<member><package>arc</package></member>
 						<member><package>astroml-addons</package></member>
+						<member><package>base-files</package></member>
 						<member><package>c3p0</package></member>
+						<member><package>ca-certificates-java</package></member>
 						<member><package>chkrootkit</package></member>
 						<member><package>chromium</package></member>
 						<member><package>compactheader</package></member>
 						<member><package>coturn</package></member>
 						<member><package>courier</package></member>
 						<member><package>debian-edu-config</package></member>
-						<member><package>debian-installer</package></member>
 						<member><package>debian-installer-netboot-images</package></member>
+						<member><package>debian-installer</package></member>
 						<member><package>debian-security-support</package></member>
+						<member><package>dnspython</package></member>
 						<member><package>drupal7</package></member>
 						<member><package>egg</package></member>
+						<member><package>erlang</package></member>
+						<member><package>espeakup</package></member>
 						<member><package>flatpak</package></member>
 						<member><package>ganeti-os-noop</package></member>
 						<member><package>glx-alternatives</package></member>
 						<member><package>gnulib</package></member>
+						<member><package>gnupg2</package></member>
 						<member><package>golang-1.7</package></member>
 						<member><package>golang-1.8</package></member>
 						<member><package>graphite-api</package></member>
 						<member><package>grokmirror</package></member>
+						<member><package>ibus</package></member>
 						<member><package>icinga2</package></member>
 						<member><package>isort</package></member>
 						<member><package>jdupes</package></member>
 						<member><package>kmodpy</package></member>
 						<member><package>libapache-mod-jk</package></member>
 						<member><package>libb2</package></member>
+						<member><package>libdatetime-timezone-perl</package></member>
 						<member><package>libemail-address-list-perl</package></member>
 						<member><package>libextractor</package></member>
+						<member><package>libgpod</package></member>
+						<member><package>libssh</package></member>
 						<member><package>libu2f-host</package></member>
 						<member><package>linux-igd</package></member>
 						<member><package>lttng-modules</package></member>
@@ -194,16 +188,20 @@
 						<member><package>nvidia-settings</package></member>
 						<member><package>nvidia-xconfig</package></member>
 						<member><package>openni2</package></member>
+						<member><package>openvpn</package></member>
 						<member><package>parsedatetime</package></member>
 						<member><package>pdns</package></member>
 						<member><package>pdns-recursor</package></member>
 						<member><package>photocollage</package></member>
+						<member><package>postfix</package></member>
+						<member><package>postgresql-9.6</package></member>
+						<member><package>postgrey</package></member>
 						<member><package>pylint-django</package></member>
 						<member><package>python-acme</package></member>
 						<member><package>python-arpy</package></member>
-						<member><package>python-certbot</package></member>
 						<member><package>python-certbot-apache</package></member>
 						<member><package>python-certbot-nginx</package></member>
+						<member><package>python-certbot</package></member>
 						<member><package>python-hypothesis</package></member>
 						<member><package>python-josepy</package></member>
 						<member><package>pyzo</package></member>
@@ -221,11 +219,13 @@
 						<member><package>thunderbird</package></member>
 						<member><package>tmpreaper</package></member>
 						<member><package>twitter-bootstrap3</package></member>
+						<member><package>tzdata</package></member>
 						<member><package>uglifyjs</package></member>
 						<member><package>vm</package></member>
 						<member><package>vulture</package></member>
 						<member><package>wicd</package></member>
 						<member><package>wvstreams</package></member>
+						<member><package>xapian-core</package></member>
 						<member><package>xen</package></member>
 						<member><package>xkeycaps</package></member>
 						<member><package>yosys</package></member>
