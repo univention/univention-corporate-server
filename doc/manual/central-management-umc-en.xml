@@ -79,10 +79,10 @@
 			The following browsers are supported:
 		</para>
 		<itemizedlist>
-			<listitem><simpara><application>Chrome</application> as of version 37</simpara></listitem>
-			<listitem><simpara><application>Firefox</application> as of version 38</simpara></listitem>
-			<listitem><simpara><application>Internet Explorer</application> as of version 11</simpara></listitem>
-			<listitem><simpara><application>Safari</application> and <application>Safari Mobile</application> as of version 9</simpara></listitem>
+			<listitem><simpara><application>Chrome</application> as of version 71</simpara></listitem>
+			<listitem><simpara><application>Firefox</application> as of version 60</simpara></listitem>
+			<listitem><simpara><application>Microsoft Edge</application> as of version 18</simpara></listitem>
+			<listitem><simpara><application>Safari</application> and <application>Safari Mobile</application> as of version 12</simpara></listitem>
 		</itemizedlist>
 		<para>
 			Users with older browsers may experience display problems.
