@@ -253,6 +253,7 @@ property_descriptions = {
 		dontsearch=True,
 		identifies=False,
 		readonly_when_synced=True,
+		size='Two',
 	),
 	'disabled': univention.admin.property(
 		short_description=_('Account is deactivated'),
@@ -265,6 +266,7 @@ property_descriptions = {
 		show_in_lists=True,
 		copyable=True,
 		default='0',
+		size='Two',
 	),
 	'locked': univention.admin.property(  # This property only serves two purposes: 1) filtering 2) artificial simulation of lockout
 		short_description=_('Locked state of account'),
