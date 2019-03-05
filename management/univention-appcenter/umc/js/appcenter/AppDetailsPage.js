@@ -685,6 +685,7 @@ define([
 				this.addToDetails(_('Version'), 'CandidateVersion');
 			}
 			this.addToDetails(_('Support'), 'SupportURL');
+			this.addToDetails(_('Notification'), 'NotifyVendor');
 
 			domConstruct.create('span', {
 				innerHTML: _('More information'),
