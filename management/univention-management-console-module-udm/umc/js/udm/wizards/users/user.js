@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define,crypto*/
 
 define([
 	"dojo/_base/declare",
@@ -58,8 +58,9 @@ define([
 		startup: function() {
 			this.inherited(arguments);
 			var widget = this.getWidget('page1', 'PasswordRecoveryEmail');
+			var node;
 			if (widget) {
-				var node = widget.domNode.parentNode.parentNode.parentNode;
+				node = widget.domNode.parentNode.parentNode.parentNode;
 				node.classList.add('wizardInvitationBox');
 			}
 
@@ -77,18 +78,18 @@ define([
 		},
 
 		buildWidget: function(widgetName, originalWidgetDefinition) {
-			if (widgetName == 'disabled') {
+			if (widgetName === 'disabled') {
 				return {
 					name: widgetName,
-					sizeClass: 'One',
+					size: 'Two',
 					label: _('Account disabled'),
 					required: false,
 					type: 'CheckBox'
 				};
-			} else  if (widgetName == '_invite') {
+			} else  if (widgetName === '_invite') {
 				return {
 					name: widgetName,
-					sizeClass: 'One',
+					size: 'Two',
 					label: _('Invite user via e-mail. Password will be set by the user'),
 					required: false,
 					onChange: lang.hitch(this, function(value) {
@@ -106,7 +107,7 @@ define([
 					type: 'CheckBox'
 				};
 			} else {
-				if (widgetName == 'PasswordRecoveryEmail') {
+				if (widgetName === 'PasswordRecoveryEmail') {
 					originalWidgetDefinition.visible = false;
 					originalWidgetDefinition.label = _('Mail address to which the invitation link is sent to');
 				}

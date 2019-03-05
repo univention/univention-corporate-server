@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.7-1) unstable; urgency=medium
+
+  * Bug #48621: fix size of checkboxes
+
+ -- Florian Best <best@univention.de>  Tue, 05 Mar 2019 12:21:54 +0100
+
 univention-management-console-module-udm (9.0.6-5) unstable; urgency=medium
 
   * Bug #48839: Typo
