@@ -39,7 +39,7 @@ sambaSID="$(get_sambaSID)"
 
 prepare_ldif_for_slapadd "$1" >$ldif
 
-backup_and_remove_ldap_objects
+backup_and_remove_ldap_objects "$ldif"
 
 stop_slapd
 

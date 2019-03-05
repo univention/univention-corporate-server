@@ -62,14 +62,9 @@ change_performance_settings ()
 
 backup_and_remove_ldap_objects ()
 {
-	for dn in "cn=Windows Hosts,cn=groups,$ldap_base" \
-		"cn=Domain Users,cn=groups,$ldap_base" \
-		"cn=DC Backup Hosts,cn=groups,$ldap_base" \
-		"cn=DC Slave Hosts,cn=groups,$ldap_base" \
-		"cn=Computers,cn=groups,$ldap_base" \
-		"cn=default containers,cn=univention,$ldap_base"
+	grep "^dn:" "$1" | sed 's/^dn: //g' | awk '{ print length($0) " " $0; }' | sort -r -n | cut -d ' ' -f 2- | while read dn;
 	do
-		univention-ldapsearch -b "$dn" >>/var/univention-backup/import-backup.ldif
+		univention-ldapsearch -LLLs base -b "$dn" 2>/dev/null >>/var/univention-backup/import-backup.ldif || continue
 		ldapdelete -x -D cn=admin,$ldap_base -y /etc/ldap.secret "$dn"
 	done
 }

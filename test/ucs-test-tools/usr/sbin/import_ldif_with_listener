@@ -39,7 +39,7 @@ sambaSID="$(get_sambaSID)"
 
 prepare_ldif_for_ldapadd "$1" >$ldif
 
-backup_and_remove_ldap_objects
+backup_and_remove_ldap_objects "$ldif"
 
 ldapadd -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret -f "$ldif"
 
