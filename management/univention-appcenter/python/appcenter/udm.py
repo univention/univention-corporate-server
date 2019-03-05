@@ -40,6 +40,7 @@ from ldap.dn import explode_dn, escape_dn_chars
 
 import univention.admin.objects as udm_objects
 import univention.admin.modules as udm_modules
+import univention.admin.filter as udm_filter
 import univention.admin.uexceptions as udm_errors
 from univention.uldap import access as base_access
 from univention.admin.uldap import getMachineConnection, getAdminConnection, access, position
@@ -115,13 +116,14 @@ def modify_object(_module, _lo, _pos, _dn, **kwargs):
 		return obj
 
 
-def search_objects(module, lo, pos, base='', **kwargs):
-	module = _get_module(module, lo, pos)
-	filter_str = ''
+def search_objects(_module, _lo, _pos, _base='', **kwargs):
+	module = _get_module(_module, _lo, _pos)
+	expressions = []
+	conj = udm_filter.conjunction('&', expressions)
 	for key, value in kwargs.iteritems():
-		filter_str = '%s=%s' % (key, escape_filter_chars(value))
+		expressions.append(udm_filter.expression(key, escape_filter_chars(value), '='))
 	try:
-		objs = module.lookup(None, lo, filter_str, base=base)
+		objs = module.lookup(None, _lo, str(conj), base=_base)
 	except udm_errors.noObject:
 		objs = []
 	for obj in objs:

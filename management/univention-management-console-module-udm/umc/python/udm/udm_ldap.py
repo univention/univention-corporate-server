@@ -139,6 +139,10 @@ class AppAttributes(object):
 					objs = search_objects('settings/extended_attribute', lo, pos, CLIName=attribute)
 					for obj in objs:
 						for module in obj['module']:
+							if search_objects('settings/extended_options', lo, pos, objectClass=obj['objectClass'], module=module):
+								# a newer version of the App is installed that uses the
+								# superior settings/extended_option
+								continue
 							if module not in cls._cache:
 								cls._cache[module] = {}
 							option_def = cls._cache[module]
@@ -219,6 +223,10 @@ class AppAttributes(object):
 										group_layout[group_position-1].append(_obj['CLIName'])
 									else:
 										group['unsorted'].append(_obj['CLIName'])
+							for group in layout:
+								unsorted = group.pop('unsorted')
+								if unsorted:
+									group['layout'].append(unsorted)
 			MODULE.process('Found:')
 			for module in cls._cache:
 				MODULE.process('  %s' % module)

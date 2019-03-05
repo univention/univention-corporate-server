@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.7-3) unstable; urgency=medium
+
+  * Bug #48839: Do not render faked options if real options are present
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 05 Mar 2019 16:36:03 +0100
+
 univention-management-console-module-udm (9.0.7-2) unstable; urgency=medium
 
   * Bug #48839: Better layout for UMCOptionsAttributes (at least a little bit)
