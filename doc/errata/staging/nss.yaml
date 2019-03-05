@@ -1,0 +1,15 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: nss
+fix: 2:3.26-1+debu8u4
+desc: |
+ This update addresses the following issues:
+ * Cache side-channel variant of the Bleichenbacher attack (CVE-2018-12404)
+ * NULL pointer dereference in several CMS functions resulting in a denial of
+   service (CVE-2018-18508)
+bug: [48851]
+cve:
+- CVE-2018-12404
+- CVE-2018-18508
