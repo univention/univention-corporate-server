@@ -370,6 +370,9 @@
 			<title>Univention Portal</title>
 			<itemizedlist>
 				<listitem><simpara>
+						The portal now has its own service. <package>univention-portal-server</package> filters entries that shall only be seen by users of certain groups in the backend, instead of serving all and the frontend hides them. Permissions on nested groups are now evaluated correctly (<u:bug>48358</u:bug>, <u:bug>48595</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					The portal can now be customized via a custom css file (<u:bug>48506</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
