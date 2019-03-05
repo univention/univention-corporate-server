@@ -110,6 +110,10 @@ def wait_for_s4connector():
 
 
 def test_umc_admin_auth():
+	result = subprocess.call('umc-command -U Administrator -P univention ucr/get -l -o "apache2/autostart"', shell=True)
+	return result
+
+def test_umc_admin_auth_udm_load():
 	result = subprocess.call('umc-command -U Administrator -P univention udm/get -f users/user -l -o "uid=Administrator,cn=users,$(ucr get ldap/base)"', shell=True)
 	return result
 

@@ -1,3 +1,11 @@
+ucs-test (9.0.2-1) unstable; urgency=medium
+
+  * Bug #48839: Since the App Center code is loaded into UDM, the udm
+    load takes a little longer. For this there is now an additional
+    variant for the pure UMC login which loads UCR.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 05 Mar 2019 10:43:27 +0100
+
 ucs-test (9.0.1-10) unstable; urgency=medium
 
   * Bug #48684: enhance
