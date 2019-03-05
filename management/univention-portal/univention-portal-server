@@ -165,6 +165,7 @@ class LDAPCache(object):
 		return deepcopy(self._cache[name])
 
 	def refresh(self):
+		ucr.load()
 		get_logger('cache').info('refreshing cache')
 		ldap_hostdn = ucr.get('ldap/hostdn')
 		try:
@@ -439,15 +440,3 @@ if __name__ == "__main__":
 	get_logger('server').info('firing up portal server at port %s' % port)
 	app.listen(port)
 	tornado.ioloop.IOLoop.current().start()
-
-#class GroupsGroupObject(GenericObject):
-#        """Better representation of groups/group properties."""
-#        udm_prop_class = GroupsGroupObjectProperties
-#
-#        def includes_recursive(self, user):
-#                return self.includes(user) or any(group.includes_recursive(user) for group in self.props.nestedGroup.objs)
-#
-#        def includes(self, user):
-#                return user.dn in self.props.users
-#
-
