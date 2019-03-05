@@ -24,12 +24,6 @@
 	padding: 0px;
 }
 
-.umc .umcGrid .dgrid .dgrid-cell.field-vnc .umcIconView,
-.umc .umcGrid .dgrid .dgrid-cell.field-start .umcHelpIcon,
-.umc .umcGrid .dgrid .dgrid-cell.field-start .umcIconPlay {
-	margin: 0 16px;
-}
-
 .tree-description {
 	text-overflow: ellipsis;
 	display: inline-block;
