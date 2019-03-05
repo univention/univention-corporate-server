@@ -164,6 +164,7 @@
 						<member><package>grokmirror</package></member>
 						<member><package>ibus</package></member>
 						<member><package>icinga2</package></member>
+						<member><package>ikiwiki</package></member>
 						<member><package>isort</package></member>
 						<member><package>jdupes</package></member>
 						<member><package>kmodpy</package></member>
@@ -224,6 +225,7 @@
 						<member><package>vm</package></member>
 						<member><package>vulture</package></member>
 						<member><package>wicd</package></member>
+						<member><package>wordpress</package></member>
 						<member><package>wvstreams</package></member>
 						<member><package>xapian-core</package></member>
 						<member><package>xen</package></member>
