@@ -169,12 +169,14 @@ class AppAttributes(object):
 								continue
 							default = int(obj['default'] == boolean_values[0])
 							attributes = []
+							layout = []
 							option_def[obj['CLIName']] = {
 								'label': group_name or tab_name,
 								'description': short_description,
 								'default': default,
 								'boolean_values': boolean_values,
 								'attributes': attributes,
+								'layout': layout,
 							}
 							base = dn2str(str2dn(obj.dn)[1:])
 							for _obj in search_objects('settings/extended_attribute', lo, pos, base):
@@ -182,6 +184,41 @@ class AppAttributes(object):
 									continue
 								if module in _obj['module']:
 									attributes.append(_obj['CLIName'])
+									if _obj['tabAdvanced']:
+										group_name = _obj['tabName']
+										for loc, desc in _obj['translationTabName']:
+											if loc == current_locale:
+												group_name = desc
+												break
+										group_position = _obj['tabPosition']
+									else:
+										group_name = _obj['groupName']
+										for loc, desc in _obj['translationGroupName']:
+											if loc == current_locale:
+												group_name = desc
+												break
+										group_position = _obj['groupPosition']
+									for group in layout:
+										if group['label'] == group_name:
+											break
+									else:
+										group = {
+											'label': group_name,
+											'description': '',
+											'advanced': False,
+											'is_app_tab': False,
+											'layout': [],
+											'unsorted': [],
+											}
+										layout.append(group)
+									group_layout = group['layout']
+									if group_position:
+										group_position = int(group_position)
+										while len(group_layout) < group_position:
+											group_layout.append([])
+										group_layout[group_position-1].append(_obj['CLIName'])
+									else:
+										group['unsorted'].append(_obj['CLIName'])
 			MODULE.process('Found:')
 			for module in cls._cache:
 				MODULE.process('  %s' % module)
@@ -290,7 +327,7 @@ class AppAttributes(object):
 				'description': option_def['label'],
 				'label': option_def['label'],
 				'advanced': False,
-				'layout': option_def['attributes'],
+				'layout': option_def['layout'],
 			})
 		return layout
 
