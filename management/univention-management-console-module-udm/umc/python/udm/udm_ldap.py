@@ -157,7 +157,7 @@ class AppAttributes(object):
 								if loc == current_locale:
 									short_description = desc
 									break
-							if obj['sytax'] == 'boolean':
+							if obj['syntax'] == 'boolean':
 								boolean_values = ['1', '0']
 							elif obj['syntax'] in ['TrueFalseUp', 'TrueFalseUpper']:
 								boolean_values = ['TRUE', 'FALSE']
