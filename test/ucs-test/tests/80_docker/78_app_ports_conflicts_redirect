@@ -5,7 +5,7 @@
 ## packages:
 ##   - docker.io
 
-from dockertest import Appcenter, get_app_version, App, UCSTest_DockerApp_InstallationFailed, get_docker_appbox_ucs, get_docker_appbox_image
+from dockertest import *
 from univention.testing.utils import is_port_open
 import pytest
 
@@ -14,32 +14,28 @@ if __name__ == '__main__':
 	with Appcenter() as appcenter:
 
 		version = get_app_version()
-		image = get_docker_appbox_image()
 
-		exclusive = App(name='exclusive', version=version, container_version=get_docker_appbox_ucs(), build_package=False)
-		redirect = App(name='redirect', version=version, container_version=get_docker_appbox_ucs(), build_package=False)
-		dummy = App(name='dummy', version=version, container_version=get_docker_appbox_ucs(), build_package=False)
+		exclusive = tiny_app(name='exclusive', version=version)
+		redirect = tiny_app(name='redirect', version=version)
+		dummy = tiny_app(name='dummy', version=version)
 
 		for port in [21, 23, 40021, 40023]:
 			assert not is_port_open(port)
 
 		try:
 			exclusive.set_ini_parameter(
-				DockerImage=image,
 				PortsExclusive='23,24,40023',
 				DockerScriptSetup='/usr/sbin/%s-setup')
-			exclusive.add_script(setup='#!/bin/bash')
+			exclusive.add_script(setup='#!/bin/sh')
 
 			redirect.set_ini_parameter(
-				DockerImage=image,
 				PortsRedirection='40021:21,40023:23',
 				DockerScriptSetup='/usr/sbin/%s-setup')
-			redirect.add_script(setup='#!/bin/bash')
+			redirect.add_script(setup='#!/bin/sh')
 
 			dummy.set_ini_parameter(
-				DockerImage=image,
 				DockerScriptSetup='/usr/sbin/%s-setup')
-			dummy.add_script(setup='#!/bin/bash')
+			dummy.add_script(setup='#!/bin/sh')
 
 			exclusive.add_to_local_appcenter()
 			redirect.add_to_local_appcenter()

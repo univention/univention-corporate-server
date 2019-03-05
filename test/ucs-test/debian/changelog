@@ -1,3 +1,10 @@
+ucs-test (9.0.2-3) unstable; urgency=medium
+
+  * Bug #48345: tiny_app in docker tests
+  * Bug #48344: merged changes into 4.4-0
+
+ -- Felix Botner <botner@univention.de>  Tue, 05 Mar 2019 14:28:49 +0100
+
 ucs-test (9.0.2-2) unstable; urgency=medium
 
   * Bug #48724: Only use new appbox version

@@ -5,7 +5,7 @@
 ## packages:
 ##   - docker.io
 
-from dockertest import Appcenter, get_app_name, get_app_version, App, get_docker_appbox_ucs, get_docker_appbox_image
+from dockertest import *
 from univention.config_registry import ConfigRegistry
 
 
@@ -13,15 +13,12 @@ if __name__ == '__main__':
 	with Appcenter() as appcenter:
 		webinterface_port_http = '8080'
 		webinterface_port_https = '8443'
-		image = get_docker_appbox_image()
 
 		for mod_proxy in [True, False]:
 			app_name = get_app_name()
-			app_version = get_app_version()
-			app = App(name=app_name, version=app_version, container_version=get_docker_appbox_ucs())
+			app = tiny_app(app_name, get_app_version())
 			try:
 				app.set_ini_parameter(
-					DockerImage=image,
 					WebInterfacePortHTTP=webinterface_port_http,
 					WebInterfacePortHTTPS=webinterface_port_https,
 					AutoModProxy=str(mod_proxy),

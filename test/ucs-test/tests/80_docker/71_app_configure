@@ -5,37 +5,27 @@
 ## packages:
 ##   - docker.io
 
-from dockertest import Appcenter, get_app_version, App, UCSTest_DockerApp_InstallationFailed, get_docker_appbox_image, get_app_name
-from univention.testing.utils import is_port_open
-import pytest
-
+from dockertest import *
 
 if __name__ == '__main__':
 	with Appcenter() as appcenter:
-
-		name = get_app_name()
-		version = get_app_version()
-		image = get_docker_appbox_image()
-
-		app = App(name=name, version=version, build_package=False)
-
+		app = tiny_app(get_app_name(), get_app_version())
 		try:
 			app.set_ini_parameter(
-				DockerImage=image,
-				DockerScriptConfigure='/root/configure',
-				DockerScriptSetup='/root/setup')
-			app.add_script(configure='''#!/bin/bash
+				DockerScriptConfigure='/tmp/configure',
+				DockerScriptSetup='/tmp/setup')
+			app.add_script(configure='''#!/bin/sh
 set -x
 echo "Configuring the App"
-echo -n "$(ucr get test/configure/param)" > /root/configure.output
+echo -n "$(more /etc/univention/base.conf | sed -ne 's|^test/configure/param: ||p')"  > /tmp/configure.output
 exit 0
 ''')
-			app.add_script(setup='#!/bin/bash')
+			app.add_script(setup='#!/bin/sh')
 			app.add_to_local_appcenter()
 			appcenter.update()
 			app.install()
 			app.verify(joined=False)
-			configured_file = app.file('/root/configure.output')
+			configured_file = app.file('/tmp/configure.output')
 			app.configure({'test/configure/param': 'test1'})
 			assert open(configured_file).read() == 'test1'
 			app.configure({'test/configure/param': 'test2'})
