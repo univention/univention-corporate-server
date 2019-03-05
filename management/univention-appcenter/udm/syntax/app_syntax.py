@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.admin.syntax import boolean, TrueFalseUp
+from univention.admin.syntax import boolean, TrueFalseUp, OkOrNot
 
 # For UCS systems < UCS 4.4 in the domain we define these syntax classes and distribute them
 
@@ -45,5 +45,12 @@ try:
 	from univention.admin.syntax import AppActivatedTrue as appcenterFoo
 	del appcenterFoo
 except ImportError:
-	class appActivatedTrue(TrueFalseUp):
+	class AppActivatedTrue(TrueFalseUp):
+		pass
+
+try:
+	from univention.admin.syntax import AppActivatedOK as appcenterFoo
+	del appcenterFoo
+except ImportError:
+	class AppActivatedOK(OkOrNot):
 		pass

@@ -2523,6 +2523,10 @@ class OkOrNot(IStates):
 	)
 
 
+class AppActivatedOK(OkOrNot):
+	pass
+
+
 class ddnsUpdateStyle(select):
 	choices = [
 		('', ''),

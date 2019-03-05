@@ -1,3 +1,9 @@
+univention-appcenter (8.0.7-1) unstable; urgency=medium
+
+  * Bug #48621: support OkOrNot syntax
+
+ -- Florian Best <best@univention.de>  Tue, 05 Mar 2019 14:03:28 +0100
+
 univention-appcenter (8.0.6-2) unstable; urgency=medium
 
   * Bug #48621: make it possible to not automatically create schema

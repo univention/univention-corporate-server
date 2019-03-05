@@ -1104,7 +1104,7 @@ class simpleLdap(object):
 
 	def __app_option_enabled(self, name, option):
 		if option.is_app_option:
-			return all(self[pname] in ('TRUE', '1') for pname, prop in self.descriptions.iteritems() if name in prop.options and prop.syntax.name in ('AppActivatedBoolean', 'AppActivatedTrue'))
+			return all(self[pname] in ('TRUE', '1', 'OK') for pname, prop in self.descriptions.iteritems() if name in prop.options and prop.syntax.name in ('AppActivatedBoolean', 'AppActivatedTrue', 'AppActivatedOK'))
 		return True
 
 	def description(self):  # type: () -> str
@@ -1313,7 +1313,7 @@ class simpleLdap(object):
 			if not opt.is_app_option or not self.option_toggled(option) or option not in self.options:
 				continue
 			for pname, prop in self.descriptions.items():
-				if option in prop.options and prop.syntax.name in ('AppActivatedBoolean', 'AppActivatedTrue'):
+				if option in prop.options and prop.syntax.name in ('AppActivatedBoolean', 'AppActivatedTrue', 'AppActivatedOK'):
 					self[pname] = True
 
 	def _ldap_object_classes(self, ml):  # type: (list) -> list
