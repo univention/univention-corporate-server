@@ -1,53 +1,88 @@
 {
-  "portal": {
-    "dn": "cn=domain,cn=portal",
-    "showMenu": true,
-    "showApps": false,
-    "name": {
-      "de_DE": "UCS Portal",
-      "en_US": "UCS Portal"
+    "categories": {
+        "cn=admin,cn=categories,cn=portal,cn=univention,%@%ldap/base%@%": {
+            "display_name": {
+                "de_DE": "Verwaltung",
+                "en_US": "Administration"
+            },
+            "dn": "cn=admin,cn=categories,cn=portal,cn=univention,%@%ldap/base%@%"
+        },
+        "cn=service,cn=categories,cn=portal,cn=univention,%@%ldap/base%@%": {
+            "display_name": {
+                "de_DE": "Applikationen",
+                "en_US": "Applications"
+            },
+            "dn": "cn=service,cn=categories,cn=portal,cn=univention,%@%ldap/base%@%"
+        }
     },
-    "showServers": true,
-    "content": [
-      [
-        "$admin_category$",
-        [
-          "$umc-local$"
-        ]
-      ]
-    ],
-    "showLogin": true,
-    "logo": null,
-    "showSearch": true
-  },
-  "categories": {
-    "$admin_category$": {
-      "display_name": {
-        "de_DE": "Administration",
-        "en_US": "Administration"
-      }
+    "entries": {
+        "cn=umc-domain,cn=portal,cn=univention,%@%ldap/base%@%": {
+            "activated": true,
+            "allowedGroups": [],
+            "description": {
+                "de_DE": "Univention Management Console zur Ver\u00adwal\u00adtung der UCS-Dom\u00e4ne und des lokalen Systems",
+                "en_US": "Univention Management Console for admin\u00adis\u00adtra\u00adting the UCS domain and the local system",
+                "fr_FR": "Console de gestion Univention pour admin\u00adis\u00adtrer le domaine UCS et le syst\u00e8me local"
+            },
+            "dn": "cn=umc-domain,cn=portal,cn=univention,%@%ldap/base%@%",
+            "favorite": false,
+            "links": [
+                "/univention/management/"
+            ],
+            "logo_name": "/univention/portal/icons/entries/umc-domain.svg",
+            "name": {
+                "de_DE": "System- und Dom\u00e4neneinstellungen",
+                "en_US": "System and domain settings",
+                "fr_FR": "R\u00e9glages du syst\u00e8me et du domaine"
+            }
+        },
+        "cn=univentionblog,cn=portal,cn=univention,%@%ldap/base%@%": {
+            "activated": true,
+            "allowedGroups": [],
+            "description": {
+                "de_DE": "News, Tipps und Best Practices",
+                "en_US": "News, tips and best practices",
+                "fr_FR": "Nouvelles, conseils et bonne pratique"
+            },
+            "dn": "cn=univentionblog,cn=portal,cn=univention,%@%ldap/base%@%",
+            "favorite": false,
+            "links": [
+                "https://www.univention.com/news/blog-en/"
+            ],
+            "logo_name": "/univention/portal/icons/entries/univentionblog.png",
+            "name": {
+                "de_DE": "Univention Blog",
+                "en_US": "Univention Blog",
+                "fr_FR": "Univention Blog"
+            }
+        }
+    },
+    "links": {},
+    "portal": {
+        "anonymousEmpty": [],
+        "autoLayoutCategories": false,
+        "content": [
+            [
+                "cn=admin,cn=categories,cn=portal,cn=univention,%@%ldap/base%@%",
+                [
+                    "cn=umc-domain,cn=portal,cn=univention,%@%ldap/base%@%",
+                    "cn=univentionblog,cn=portal,cn=univention,%@%ldap/base%@%"
+                ]
+            ]
+        ],
+        "dn": "cn=domain,cn=portal,cn=univention,%@%ldap/base%@%",
+        "ensureLogin": false,
+        "fontColor": "black",
+        "logo": null,
+        "name": {
+            "de_DE": "Univention Portal",
+            "en_US": "Univention Portal",
+            "fr_FR": "Portail Univention"
+        },
+        "showApps": false,
+        "showLogin": true,
+        "showMenu": true,
+        "showSearch": true,
+        "showServers": true
     }
-  },
-  "entries": {
-    "$umc-local$": {
-      "logo_name": "/univention/js/dijit/themes/umc/icons/scalable/univention-management-console.svg",
-      "name": {
-        "de_DE": "Systemeinstellungen",
-        "en_US": "System settings",
-        "fr_FR": "R\u00e9glages du syst\u00e8me"
-      },
-      "links": [
-        "/univention/management/"
-      ],
-      "favorite": false,
-      "activated": true,
-      "authRestriction": "anonymous",
-      "id": "",
-      "description": {
-        "de_DE": "Univention Management Console zur Ver\u00adwal\u00adtung des lokalen Systems",
-        "en_US": "Univention Management Console for admin\u00adis\u00adtra\u00adting the local system",
-        "fr_FR": "Console de gestion Univention pour admin\u00adis\u00adtrer le syst\u00e8me local"
-      }
-    }
-  }
 }

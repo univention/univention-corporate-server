@@ -1,3 +1,10 @@
+univention-portal (3.0.1-19) unstable; urgency=medium
+
+  * Bug #48595: Provide a fallback file when portal.json cannot be created
+    (for whatever reason)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 05 Mar 2019 01:23:02 +0100
+
 univention-portal (3.0.1-18) unstable; urgency=medium
 
   * Bug #48723: adjust styling of searchbox in header

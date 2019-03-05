@@ -47,6 +47,7 @@ import tornado.web
 
 from univention.udm import UDM
 from univention.config_registry import ConfigRegistry
+from univention.config_registry.handler import run_filter
 
 ucr = ConfigRegistry()
 ucr.load()
@@ -96,6 +97,7 @@ def flatten(list_of_lists):
 
 class LDAPCache(object):
 	PORTAL_CACHE = '/var/cache/univention-portal/portal.json'
+	FALLBACK_PORTAL_CACHE = '/usr/share/univention-portal/portal-unjoined.json'
 	GROUP_CACHE = '/var/cache/univention-portal/groups.json'
 	REFRESH_PORTAL_FILE = '/var/cache/univention-portal/refresh_portal'
 	REFRESH_GROUP_FILE = '/var/cache/univention-portal/refresh_groups'
@@ -124,10 +126,20 @@ class LDAPCache(object):
 				os.unlink(self.REFRESH_GROUP_FILE)
 		return self._groups
 
-	def load(self):
+	def load(self, fallback=False):
 		get_logger('cache').info('loading cache file')
-		with open(self.PORTAL_CACHE) as fd:
-			self._cache = json.load(fd)
+		try:
+			with open(self.PORTAL_CACHE) as fd:
+				self._cache = json.load(fd)
+		except EnvironmentError:
+			if fallback:
+				get_logger('cache').warn('falling back to %s!' % self.FALLBACK_PORTAL_CACHE)
+				with open(self.FALLBACK_PORTAL_CACHE) as fd:
+					content = fd.read()
+					content = run_filter(content, ucr)
+					self._cache = json.loads(content)
+			else:
+				raise
 
 	def get(self, name):
 		if name == 'groups':
@@ -148,7 +160,7 @@ class LDAPCache(object):
 				self.load()
 			except EnvironmentError:
 				self.refresh()
-				self.load()
+				self.load(fallback=True)
 		get_logger('cache').debug('getting %s from cache' % name)
 		return deepcopy(self._cache[name])
 
@@ -165,7 +177,6 @@ class LDAPCache(object):
 			content['categories'] = self._extract_categories()
 			content['entries'] = self._extract_entries(portal)
 			with tempfile.NamedTemporaryFile(delete=False) as fd:
-				get_logger('debug').warn(repr(content))
 				json.dump(content, fd, sort_keys=True, indent=4)
 		except Exception:
 			get_logger('cache').exception('Error during refresh')
