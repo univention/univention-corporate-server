@@ -375,14 +375,14 @@
 						The portal now has its own service. <package>univention-portal-server</package> filters entries that shall only be seen by users of certain groups in the backend, instead of serving all and the frontend hides them. Permissions on nested groups are now evaluated correctly (<u:bug>48358</u:bug>, <u:bug>48595</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The portal can now be customized via a custom css file (<u:bug>48506</u:bug>).
+					The portal can now be customized via a custom CSS file (<u:bug>48506</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The user guidance in the portal has been improved. It is now possible to define whether users have to be logged in to visit the portal. Furthermore a custom message can be configured to show
 					to users that are not logged in and would be presented with an empty portal otherwise (<u:bug>48546</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The Protal now depends on netcat-openbsd to ensure that it's join script is IPv6 compatable (<u:bug>46556</u:bug>).
+					The portal now depends on <package>netcat-openbsd</package> to ensure that it's join script is IPv6 compatible (<u:bug>46556</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
