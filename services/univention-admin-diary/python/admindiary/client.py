@@ -102,5 +102,5 @@ def write_entry(entry):
 		return
 	body = entry.to_json()
 	emitter.emit(body)
-	get_logger().info('Successfully wrote %s. (%s)' % (entry.context_id, entry.event_name))
+	get_logger().debug('Successfully wrote %s. (%s)' % (entry.context_id, entry.event_name))
 	return entry.context_id

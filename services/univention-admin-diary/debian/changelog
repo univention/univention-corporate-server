@@ -1,3 +1,9 @@
+univention-admin-diary (1.0.0-42) unstable; urgency=medium
+
+  * Bug #48865: Lower log level when the client successfully writes rsyslog
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 05 Mar 2019 17:48:22 +0100
+
 univention-admin-diary (1.0.0-41) unstable; urgency=medium
 
   * Bug #48341: UTF-8 support for mysql/mariadb
