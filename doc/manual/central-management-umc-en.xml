@@ -206,7 +206,7 @@
 		Nested group memberships (i.e., groups in groups) are not evaluated.
 	</para>
 	<para>
-		Further design adjustments can be made in the file <filenname>/usr/share/univention-portal/custom.css</filenanme>.
+		Further design adjustments can be made in the file <filename>/usr/share/univention-portal/custom.css</filename>.
 		This file will not be overwritten during an update.
 	</para>
 	<figure id="portal-schema">

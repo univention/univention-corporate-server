@@ -204,11 +204,11 @@
 	<para>
 		Standardmäßig werden alle Portaleinträge für jeden angezeigt. Im UMC-Modul <guimenu>Portaleinstellungen</guimenu> kann pro Portal auf dem Reiter
 		<guimenu>Anonyme Besucher verwalten</guimenu> konfiguriert werden, ob anonyme Besucher sich erst anmelden müssen bevor sie Einträge sehen können.
-		Es ist auch möglich bestimmte Einträge für bestimmte Gruppen zu limitieren. Dies erfrder das LDAP-Attribut <property>memberOf</property>.
+		Es ist auch möglich bestimmte Einträge für bestimmte Gruppen zu limitieren. Dies erfordert das LDAP-Attribut <property>memberOf</property>.
 		Eine Auswertung von verschachtelten Gruppenmitgliedsschaften (also Gruppen in Gruppen) findet nicht statt.
 	</para>
 	<para>
-		Weiterführende Design Anpassungen können in der Datei <filenname>/usr/share/univention-portal/custom.css</filenanme> vorgenommen werden.
+		Weiterführende Design Anpassungen können in der Datei <filename>/usr/share/univention-portal/custom.css</filename> vorgenommen werden.
 		Dieses Datei wird während eines Updates nicht überschrieben.
 	</para>
 	<figure id="portal-schema">
