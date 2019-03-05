@@ -118,8 +118,12 @@ def tiny_app(name=None, version=None):
 	return app
 
 
+def get_docker_appbox_ucs():
+	# should be in line with get_docker_appbox_image()
+	return '4.3'
+
 def get_docker_appbox_image():
-	image_name = 'docker-test.software-univention.de/ucs-appbox-amd64:4.3-0'
+	image_name = 'docker-test.software-univention.de/ucs-appbox-amd64:4.3-3'
 	print('Using %s' % image_name)
 	return image_name
 

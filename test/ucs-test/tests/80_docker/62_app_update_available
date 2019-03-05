@@ -20,7 +20,7 @@ if __name__ == '__main__':
 		app_name = get_app_name()
 		package_name = get_app_name()
 
-		app = App(name=app_name, version='1', container_version='4.1', package_name=package_name)
+		app = App(name=app_name, version='1', container_version=get_docker_appbox_ucs(), package_name=package_name)
 		app.set_ini_parameter(DockerImage=get_docker_appbox_image())
 
 		app.add_to_local_appcenter()
@@ -28,7 +28,7 @@ if __name__ == '__main__':
 		package_name = get_app_name()
 		test_package_v1 = DebianPackage(name=package_name, version='0.1')
 		test_package_v1.build()
-		copy_package_to_appcenter('4.1', app.app_directory, test_package_v1.get_binary_name())
+		copy_package_to_appcenter(get_docker_appbox_ucs(), app.app_directory, test_package_v1.get_binary_name())
 
 		admin_credentials = UCSTestDomainAdminCredentials()
 
@@ -53,7 +53,7 @@ if __name__ == '__main__':
 
 			test_package_v2 = DebianPackage(name=package_name, version='0.2')
 			test_package_v2.build()
-			copy_package_to_appcenter('4.1', app.app_directory, test_package_v2.get_binary_name())
+			copy_package_to_appcenter(get_docker_appbox_ucs(), app.app_directory, test_package_v2.get_binary_name())
 			app.execute_command_in_container('/usr/share/univention-updater/univention-updater-check')
 			app.execute_command_in_container('ucr unset update/container/check/type update/container/check/last')
 			res = app.execute_command_in_container('/usr/share/univention-docker-container-mode/update_available')

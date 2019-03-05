@@ -5,7 +5,7 @@
 ## packages:
 ##   - docker.io
 
-from dockertest import Appcenter, get_app_version, App, UCSTest_DockerApp_InstallationFailed, get_docker_appbox_image
+from dockertest import Appcenter, get_app_version, App, UCSTest_DockerApp_InstallationFailed, get_docker_appbox_ucs, get_docker_appbox_image
 from univention.testing.utils import is_port_open
 import pytest
 
@@ -16,9 +16,9 @@ if __name__ == '__main__':
 		version = get_app_version()
 		image = get_docker_appbox_image()
 
-		exclusive = App(name='exclusive', version=version, container_version='4.1', build_package=False)
-		redirect = App(name='redirect', version=version, container_version='4.1', build_package=False)
-		dummy = App(name='dummy', version=version, container_version='4.1', build_package=False)
+		exclusive = App(name='exclusive', version=version, container_version=get_docker_appbox_ucs(), build_package=False)
+		redirect = App(name='redirect', version=version, container_version=get_docker_appbox_ucs(), build_package=False)
+		dummy = App(name='dummy', version=version, container_version=get_docker_appbox_ucs(), build_package=False)
 
 		for port in [21, 23, 40021, 40023]:
 			assert not is_port_open(port)
