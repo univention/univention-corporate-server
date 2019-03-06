@@ -6,8 +6,8 @@ src: ceph
 fix: 0.80.7-2+deb8u3
 desc: |
  This update addresses the following issues:
- * Authenticated users with read only permissions can steal dm-crypt / LUKS key
-   (CVE-2018-14662)
+ * Authenticated users with read only permissions can steal
+   dm-crypt / LUKS key (CVE-2018-14662)
  * ListBucket max-keys has no defined limit in the RGW codebase
    (CVE-2018-16846)
 bug: [48852]
