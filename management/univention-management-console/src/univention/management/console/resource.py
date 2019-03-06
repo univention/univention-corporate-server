@@ -39,6 +39,7 @@ from html import escape, unescape
 from http.client import LENGTH_REQUIRED, UNAUTHORIZED
 from http.server import BaseHTTPRequestHandler
 
+import ldap
 import tornado
 from tornado.gen import convert_yielded
 from tornado.web import HTTPError, RequestHandler
@@ -269,7 +270,10 @@ class Resource(RequestHandler):
 
     @property
     def lo(self):
-        return get_machine_connection(write=False)[0]
+        try:
+            return get_machine_connection(write=False)[0]
+        except ldap.INVALID_CREDENTIALS as exc:
+            CORE.info('Could not get machine connection: %s' % (exc,))
 
     def load_json(self, body):
         try:

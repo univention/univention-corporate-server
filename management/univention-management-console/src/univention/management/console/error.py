@@ -153,7 +153,7 @@ class LDAP_ConnectionFailed(LDAP_ServerDown):
 
     def _error_msg(self):
         yield _('Cannot connect to the LDAP service.')
-        yield _('Error message: %s') % (self.exc.args[0].get('info', ''),)
+        yield _('Error message: %s') % (self.exc.args[0].get('info', self.exc.args[0].get('desc', '')),)
         yield ''
         yield _('The following steps can help to solve this problem:')
         if not self._is_master:
