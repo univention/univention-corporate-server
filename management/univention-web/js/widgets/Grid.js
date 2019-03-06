@@ -1231,7 +1231,7 @@ define([
 
 		_filter: function(query, options) {
 			var addedFieldsQuery = query;
-			if (this._necessaryUdmValues.length > 0) {
+			if (query && this._necessaryUdmValues.length > 0) {
 				array.forEach(this._necessaryUdmValues, function(value) {
 					if (array.indexOf(query.fields, value) === -1) {
 						addedFieldsQuery.fields.push(value);
