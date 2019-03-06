@@ -194,7 +194,7 @@ msgstr "Domäne erneut beitreten"
 
 #: umc/js/join/Grid.js:92
 msgid "Rejoins the system"
-msgstr "Tritt der Domöne neu bei"
+msgstr "Tritt der Domäne neu bei"
 
 #: umc/js/join.js:448
 msgid "Run"
