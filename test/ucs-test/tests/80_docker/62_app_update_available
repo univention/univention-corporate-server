@@ -1,9 +1,11 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test the update_available script
-## tags: [docker]
+## tags: [docker, SKIP]
 ## exposure: dangerous
 ## packages:
 ##   - docker.io
+
+# skipped until we have 4.3-4 or 4.4-1 appbox
 
 from dockertest import *
 from univention.testing.debian_package import DebianPackage
