@@ -494,7 +494,7 @@
                 them in the UCS firewall. If additional firewall rules for
                 ports are needed, they can be defined in the app join script.
                 Please refer to the <ulink
-                    url="https://docs.software-univention.de/developer-reference.html#misc:nacl">Network
+                    url="https://docs.software-univention.de/developer-reference-4.4.html#misc:nacl">Network
                     Packet Filter section in the UCS Development
                     Reference</ulink>.
             </para>
@@ -754,7 +754,7 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                 of the UCS virtual machine images and use VirtualBox or VMware
                 (see <xref linkend="testing:download" />). After the
                 installation, <ulink
-                    url="https://docs.software-univention.de/manual.html#central:license">activate
+                    url="https://docs.software-univention.de/manual-4.4.html#central:license">activate
                     the system</ulink> and copy your SSH key to the UCS system
                 to save typing the password on each remote console login.
                 Finally, activate the Test App Center (see <xref
@@ -814,7 +814,7 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
             <title>Initial UCS setup</title>
             <para>
                 Please refer to the <ulink
-                    url="https://docs.software-univention.de/quickstart-en.html">UCS
+                    url="https://docs.software-univention.de/quickstart-en-4.4.html">UCS
                     Quickstart Guide</ulink> for the first steps about
                 installation and initial setup.
             </para>
@@ -2115,7 +2115,7 @@ docker-compose -p $appid logs
             attributes during the setup process. This should be done in the
             join script.  Further information on extended attributes can be
             found in the <ulink
-                url="https://docs.software-univention.de/developer-reference.html">Univention
+                url="https://docs.software-univention.de/developer-reference-4.4.html">Univention
                 Developer Reference</ulink>.
         </para>
     </section>
@@ -2275,7 +2275,7 @@ docker-compose -p $appid logs
                 The joinscript <filename>inst</filename> is executed on the UCS
                 host system after the Docker container is configured. Please
                 refer to the <ulink
-                    url="https://docs.software-univention.de/developer-reference.html#chap:join">Developer
+                    url="https://docs.software-univention.de/developer-reference-4.4.html#chap:join">Developer
                     Reference</ulink> about how to write a join script. In
                 principle a join script is a script that runs after the
                 installation of an app and it has write access to the LDAP
@@ -2515,7 +2515,7 @@ exit 0
                 The unjoin script <filename>uinst</filename> is executed on the
                 UCS host system after the Docker container is removed. See the
                 <ulink
-                    url="https://docs.software-univention.de/developer-reference.html">Developer
+                    url="https://docs.software-univention.de/developer-reference-4.4.html">Developer
                     Reference</ulink> for how to write an unjoin script. It
                 should revert most (if not all) changes done in the join
                 script. With the notable exception of schema registration. An
@@ -2947,7 +2947,7 @@ Group[de] = Lizenz und Liste
         <para>
             UCS provides a certificate infrastructure for secure communication
             protocols. See <ulink
-                url="https://docs.software-univention.de/manual.html#domain:ssl">SSL
+                url="https://docs.software-univention.de/manual-4.4.html#domain:ssl">SSL
                 certificate management</ulink> in the UCS manual.
         </para>
         <para>

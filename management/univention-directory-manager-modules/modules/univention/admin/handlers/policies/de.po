@@ -59,7 +59,7 @@ msgstr ""
 "einheitliche Weise zu definieren. Wenn Sie an Containern oder "
 "organisatorische Einheiten gebunden sind, vererben Sie sich auf alle "
 "darunter liegenden Objekte.<p></p>Mehr Informationen zu Richtlinien finden "
-"Sie in der <a href=\"https://docs.software-univention.de/handbuch.html#central:policies"
+"Sie in der <a href=\"https://docs.software-univention.de/handbuch-4.4.html#central:policies"
 "\" target=\"_blank\">Online-Dokumentation zu UCS</a>.</p>"
 
 #: modules/univention/admin/handlers/policies/release.py:87
@@ -1357,5 +1357,5 @@ msgid "Without specifying the most recent version will be used"
 msgstr "Ohne Angabe wird die aktuellste Version verwendet"
 
 #: modules/univention/admin/handlers/policies/policy.py:51
-msgid "https://docs.software-univention.de/manual.html#central:policies"
-msgstr "https://docs.software-univention.de/handbuch.html#central:policies"
+msgid "https://docs.software-univention.de/manual-4.4.html#central:policies"
+msgstr "https://docs.software-univention.de/handbuch-4.4.html#central:policies"
