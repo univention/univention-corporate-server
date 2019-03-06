@@ -1149,6 +1149,7 @@ define([
 			// in multi-edit mode, hook a 'overwrite?' checkbox after each widget
 			tools.forIn(widgets, function(iname, iwidget) {
 				if (iwidget.$refLabel$ && !iwidget.disabled) {
+					iwidget.$refLabel$.set('style', 'flex-wrap: wrap;');
 					iwidget.$refOverwrite$ = this.own(new OverwriteLabel({}))[0];
 					construct.place(iwidget.$refOverwrite$.domNode, iwidget.$refLabel$.domNode);
 				}

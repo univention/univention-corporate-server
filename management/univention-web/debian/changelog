@@ -1,3 +1,9 @@
+univention-web (3.0.5-1) unstable; urgency=medium
+
+  * Bug #48621: fix styling of CheckBox
+
+ -- Florian Best <best@univention.de>  Wed, 06 Mar 2019 15:54:04 +0100
+
 univention-web (3.0.4-1) unstable; urgency=medium
 
   * Bug #48621: fix styling of CheckBox
