@@ -876,6 +876,7 @@ define([
 			};
 
 			var option_prop = _getOptionProperty(properties);
+			option_prop.labelConf = {'style': 'display: block;'};
 			if (/*this._multiEdit || */!option_prop || !option_prop.widgets.length) {
 				properties = array.filter(properties, function(item) {
 					return item.id !== '$options$';

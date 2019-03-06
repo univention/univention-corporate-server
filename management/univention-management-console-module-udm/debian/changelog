@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.9-1) unstable; urgency=medium
+
+  * Bug #48621: Options is always large
+
+ -- Florian Best <best@univention.de>  Wed, 06 Mar 2019 13:59:14 +0100
+
 univention-management-console-module-udm (9.0.8-1) unstable; urgency=medium
 
   * Bug #48621: fix styling of CheckBox
