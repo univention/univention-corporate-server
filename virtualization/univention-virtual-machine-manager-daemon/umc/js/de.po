@@ -62,7 +62,7 @@ msgid ""
 "the VM may degrade the performance of the host and all other VMs."
 msgstr ""
 "<b>Warnung:</b> Arbeitsspeichernutzung übersteigt momentan verfügbaren "
-"Haupspeicher des Servers. Das Klonen der VM kann die Leistung des Servers "
+"Hauptspeicher des Servers. Das Klonen der VM kann die Leistung des Servers "
 "und aller VMs reduzieren."
 
 #: umc/js/uvmm.js:621
@@ -71,7 +71,7 @@ msgid ""
 "Migrating the VM may degrade the performance of the host and all other VMs."
 msgstr ""
 "<b>Warnung:</b> Arbeitsspeichernutzung übersteigt momentan verfügbaren "
-"Haupspeicher des Servers. Migrating der VM kann die Leistung des Servers und "
+"Hauptspeicher des Servers. Migrating der VM kann die Leistung des Servers und "
 "aller VMs reduzieren."
 
 #: umc/js/uvmm/DomainWizard.js:149 umc/js/uvmm/DomainPage.js:202
@@ -80,7 +80,7 @@ msgid ""
 "Starting the VM may degrade the performance of the host and all other VMs."
 msgstr ""
 "<b>Warnung:</b> Arbeitsspeichernutzung übersteigt momentan verfügbaren "
-"Haupspeicher des Servers. Das Starten der VM kann die Leistung des Servers "
+"Hauptspeicher des Servers. Das Starten der VM kann die Leistung des Servers "
 "und aller VMs reduzieren."
 
 #: umc/js/uvmm/DomainPage.js:240
@@ -206,7 +206,7 @@ msgid ""
 "A valid snapshot name cannot contain \"/\", \"&\" or \"<\", and may not "
 "start with \".\" ."
 msgstr ""
-"Ein gültiger Snapshotname darf keine \"/\", \"&\" oder \"<\" enthalten und "
+"Ein gültiger Sicherungspunktname darf keine \"/\", \"&\" oder \"<\" enthalten und "
 "kann nicht mit \".\" beginnen."
 
 #: umc/js/uvmm/OpenStack.js:62 umc/js/uvmm/OpenStack.js:83

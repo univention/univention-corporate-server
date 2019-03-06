@@ -152,7 +152,7 @@ msgstr "Fehler beim Definieren der Domäne \"%(domain)s\": %(error)s"
 #, python-format
 msgid "Error deleting \"%(domain)s\" snapshot: %(error)s"
 msgstr ""
-"Fehler beim Löschen des Sciherungsstandes von \"%(domain)s\": %(error)s"
+"Fehler beim Löschen des Sicherungspunktes von \"%(domain)s\": %(error)s"
 
 #: src/univention/uvmm/storage.py:449 src/univention/uvmm/storage.py:470
 #, python-format
@@ -369,7 +369,7 @@ msgstr "Migration nach %(time)s in %(iteration)d Iterationen abgeschlossen"
 #: src/univention/uvmm/node.py:525
 #, python-format
 msgid "Migration in progress since %(time)s, iteration %(iteration)d"
-msgstr "Migration läuft seit %(time)s, Iteraion %(iteration)d"
+msgstr "Migration läuft seit %(time)s, Iteration %(iteration)d"
 
 #: src/univention/uvmm/node.py:2171
 msgid "Migration started"
@@ -438,7 +438,7 @@ msgstr "Ausführliche Informationen ausgeben"
 #, python-format
 msgid "RAM overcommitment: VM RAM %(vm)s exceeds available host RAM %(host)s"
 msgstr ""
-"RAM Überbuchungt: VM RAM %(vm)s überschreitet verfügbaren Host RAM %(host)s"
+"RAM Überbuchung: VM RAM %(vm)s überschreitet verfügbaren Host RAM %(host)s"
 
 #: src/univention-virtual-machine-manager-daemon:230
 msgid "Skip reading ini-file"
@@ -518,7 +518,7 @@ msgid ""
 "The target host has an incompatible CPU; select a different host or try an "
 "offline migration. (%(details)s)"
 msgstr ""
-"Der Zielrechnert hat eine inkompatible CPU; wählen Sie einen anderen Rechner "
+"Der Zielrechner hat eine inkompatible CPU; wählen Sie einen anderen Rechner "
 "oder versuchen Sie eine Migration im ausgeschalteten Zustand. (%(details)s)"
 
 #: src/univention/uvmm/client.py:109
