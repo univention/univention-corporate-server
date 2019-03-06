@@ -9,3 +9,5 @@ desc: |
  * Make the software components for UCS available during installation when it
    is run in French.
 bug: [44162]
+erratum: 451
+announced: 2019-03-06
