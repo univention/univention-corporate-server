@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.10-2) unstable; urgency=medium
+
+  * Bug #48839: Fix OkOrNot syntax
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 06 Mar 2019 17:50:21 +0100
+
 univention-management-console-module-udm (9.0.10-1) unstable; urgency=medium
 
   * Bug #48621: fix styling of CheckBox

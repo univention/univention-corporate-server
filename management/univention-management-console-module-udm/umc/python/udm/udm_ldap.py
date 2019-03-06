@@ -41,6 +41,8 @@ import functools
 import inspect
 import locale
 
+from ldap.filter import escape_filter_chars
+
 from univention.management.console import Translation
 from univention.management.console.protocol.definitions import BAD_REQUEST_UNAUTH
 from univention.management.console.modules import UMC_OptionTypeError, UMC_OptionMissing, UMC_Error
@@ -50,6 +52,7 @@ from univention.management.console.log import MODULE
 
 import univention.admin as udm
 import univention.admin.uldap as udm_ldap
+import univention.admin.filter as udm_filter
 import univention.admin.layout as udm_layout
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
@@ -120,7 +123,22 @@ class AppAttributes(object):
 			MODULE.process('Loading AppAttributes...')
 			cls._cache = {}
 			from univention.appcenter.app_cache import AllApps
-			from univention.appcenter.udm import search_objects
+			def search_objects(_module, _lo, _pos, _base='', **kwargs):
+				# reimplement because the App Center function re-initializes
+				# the modules which makes some problems with UCR defined widgets
+				# dont know why
+				module = udm_modules.get(_module)
+				expressions = []
+				conj = udm_filter.conjunction('&', expressions)
+				for key, value in kwargs.iteritems():
+					expressions.append(udm_filter.expression(key, escape_filter_chars(value), '='))
+				try:
+					objs = module.lookup(None, _lo, str(conj), base=_base)
+				except udm_errors.noObject:
+					objs = []
+				for obj in objs:
+					udm_objects.open(obj)
+				return objs
 			lo, pos = cls._conn()
 			app_objs = search_objects('appcenter/app', lo, pos)
 			apps = {}
@@ -168,7 +186,7 @@ class AppAttributes(object):
 							elif obj['syntax'] == 'TrueFalse':
 								boolean_values = ['true', 'false']
 							elif obj['syntax'] == 'OkOrNot':
-								boolean_values = ['Ok', 'Not']
+								boolean_values = ['OK', 'Not']
 							else:
 								continue
 							default = int(obj['default'] == boolean_values[0])
@@ -318,13 +336,13 @@ class AppAttributes(object):
 				break
 			layout_index += 1
 		attrs_to_remove = []
-		for option_name, option_def in AppAttributes.data_for_module(module).iteritems():
+		for option_name, option_def in cls.data_for_module(module).iteritems():
 			option_def = copy.deepcopy(option_def)
 			attrs_to_remove.append(option_name)
 			attrs_to_remove.extend(option_def['attributes'])
 		for _layout in layout:
 			cls._filter_attrs(_layout, attrs_to_remove)
-		data = AppAttributes.data_for_module(module)
+		data = cls.data_for_module(module)
 		for option_name in sorted(data):
 			option_def = data[option_name]
 			if not option_def['attributes']:
