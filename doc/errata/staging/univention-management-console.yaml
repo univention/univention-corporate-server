@@ -5,7 +5,7 @@ scope: ucs_4.3-0-errata4.3-3
 src: univention-management-console
 fix: 10.0.6-19A~4.3.0.201902141741
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The errors from pam_cracklib are evaluated again when changing the
-   password via Univention Management Console (Bug #48684).
+   password via Univention Management Console.
 bug: [48684]
