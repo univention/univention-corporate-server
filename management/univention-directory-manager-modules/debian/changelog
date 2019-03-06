@@ -1,3 +1,10 @@
+univention-directory-manager-modules (14.0.12-1) unstable; urgency=medium
+
+  * Bug #48621: remove "default" from user template options and ensure
+  	extended options are detected as valid values
+
+ -- Florian Best <best@univention.de>  Wed, 06 Mar 2019 12:09:50 +0100
+
 univention-directory-manager-modules (14.0.11-1) unstable; urgency=medium
 
   * Bug #48621: support OkOrNot syntax

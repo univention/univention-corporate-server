@@ -439,6 +439,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
 		super(object, self).__init__(co, lo, position, dn, superordinate, attributes=attributes)
+		univention.admin.syntax.optionsUsersUser.update_choices()  # woraround: somehow init() didn't do it
 		self.options.extend(self['_options'])
 
 	@classmethod
@@ -450,12 +451,12 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_pre_modify(self):
 		super(object, self)._ldap_pre_modify()
 		self['_options'].extend(self.options)
-		self['_options'] = list(set(self['_options']))
+		self['_options'] = list(set(self['_options']) - {'default', })
 
 	def _ldap_pre_create(self):
 		super(object, self)._ldap_pre_create()
 		self['_options'].extend(self.options)
-		self['_options'] = list(set(self['_options']))
+		self['_options'] = list(set(self['_options']) - {'default', })
 
 
 lookup = object.lookup

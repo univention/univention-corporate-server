@@ -618,6 +618,8 @@ def _doit(arglist):
 		return list_available_modules(out) + ["OPERATION FAILED"]
 
 	# initialise modules
+	if module_name == 'settings/usertemplate':
+		univention.admin.modules.init(lo, position, univention.admin.modules.get('users/user'))
 	univention.admin.modules.init(lo, position, module)
 
 	information = module_information(module)
