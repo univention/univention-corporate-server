@@ -5,7 +5,7 @@ scope: ucs_4.3-0-errata4.3-3
 src: univention-join
 fix: 10.0.0-32A~4.3.0.201902221045
 desc: |
- This update addresses the following issue(s):
- * Some specific network configurations caused the join to fail. This issue
-   has been resolved.
+ This update addresses the following issue:
+ * Having multiple (virtual) network interfaces with the same MAC address
+   caused the domain join to fail. This issue has been resolved.
 bug: [48475]
