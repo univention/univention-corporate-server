@@ -920,10 +920,10 @@ class Node(PersistentCached):
 					self.domains[uuid] = domStat
 
 				domStat.update(dom, redefined=event == libvirt.VIR_DOMAIN_EVENT_DEFINED)
+				if event != libvirt.VIR_DOMAIN_EVENT_SUSPENDED and detail != libvirt.VIR_DOMAIN_EVENT_SUSPENDED_IOERROR:
+					domStat.pd.error = {}
 			if event in (libvirt.VIR_DOMAIN_EVENT_STARTED, libvirt.VIR_DOMAIN_EVENT_RESUMED):
 				self.write_novnc_tokens()
-			if event != libvirt.VIR_DOMAIN_EVENT_SUSPENDED and detail != libvirt.VIR_DOMAIN_EVENT_SUSPENDED_IOERROR:
-				domStat.pd.error = {}
 		except KeyError:
 			# during migration events are not ordered causal
 			pass
