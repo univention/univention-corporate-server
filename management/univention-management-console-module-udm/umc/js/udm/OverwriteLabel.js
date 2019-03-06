@@ -38,7 +38,7 @@ define([
 		// summary:
 		//		Class that provides a widget in the form "[ ] overwrite" for multi-edit mode.
 
-		style: 'display:block; margin-top:-3px; font-style:italic;',
+		style: 'width: 100%; margin-top: -3px; font-style: italic;',
 
 		postMixInProperties: function() {
 			// force label and content

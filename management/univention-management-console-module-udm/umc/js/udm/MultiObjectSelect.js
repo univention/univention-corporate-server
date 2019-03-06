@@ -138,6 +138,7 @@ define([
 				type: CheckBox,
 				name: 'hidden',
 				visible: true,
+				size: 'Two',
 				label: _('Include hidden objects'),
 				value: false
 			}];

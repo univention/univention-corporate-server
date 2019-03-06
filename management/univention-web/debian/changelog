@@ -1,3 +1,9 @@
+univention-web (3.0.4-1) unstable; urgency=medium
+
+  * Bug #48621: fix styling of CheckBox
+
+ -- Florian Best <best@univention.de>  Wed, 06 Mar 2019 12:56:11 +0100
+
 univention-web (3.0.3-4) unstable; urgency=medium
 
   * Bug #48723: don't hide global actions on grid selection
