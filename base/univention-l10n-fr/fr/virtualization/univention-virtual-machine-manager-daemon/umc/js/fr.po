@@ -37,7 +37,7 @@ msgstr ""
 "Project-Id-Version: univention-virtual-machine-manager-daemon 5.0.1-6\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2019-08-12 10:37+0200\n"
+"PO-Revision-Date: 2019-08-12 10:58+0200\n"
 "Last-Translator: Nicolas Ternisien <nicolas@bureau-cornavin.com>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
 "Language: fr\n"
@@ -1420,7 +1420,7 @@ msgstr ""
 "automatiquement par le service UVMM au démarrage de la machine virtuelle. "
 "Des informations supplémentaires sur la configuration du réseau peuvent être "
 "trouvées dans <a target=\"_blank\" href=\"https://docs.software-univention.de/"
-"manual-4.2.html#uvmm:networkinterfaces\">le manuel</a>."
+"manual-4.4.html#uvmm:networkinterfaces\">le manuel</a>."
 
 #: umc/js/uvmm/InterfaceWizard.js:62 umc/js/uvmm/InterfaceGrid.js:59
 #: umc/js/uvmm/DriveGrid.js:68
