@@ -1,3 +1,9 @@
+univention-web (3.0.5-2) unstable; urgency=medium
+
+  * Bug #48723: fix grid filter error with empty query
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 06 Mar 2019 18:33:26 +0100
+
 univention-web (3.0.5-1) unstable; urgency=medium
 
   * Bug #48621: fix styling of CheckBox
