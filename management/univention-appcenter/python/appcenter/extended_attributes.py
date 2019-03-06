@@ -333,14 +333,6 @@ def get_extended_attributes(app):
 				attribute.set_standard_oid(app, attribute_suffix)
 				attributes.insert(0, attribute)
 
-			if attribute.udm_syntax == 'boolean':
-				attribute.udm_syntax = 'AppActivatedBoolean'
-				attribute.default = '1'
-			elif attribute.udm_syntax == 'TrueFalseUp':
-				attribute.udm_syntax = 'AppActivatedTrue'
-				attribute.default = 'TRUE'
-			attribute.disable_web = True
-
 		option_name = app.generic_user_activation_option
 		if option_name is True:
 			option_name = '%sUser' % (app.id,)
@@ -407,7 +399,7 @@ def create_extended_attribute(attribute, app, layout_position, lo, pos):
 	attrs['syntax'] = attribute.udm_syntax
 	attrs['multivalue'] = str(int(not attribute.single_value))
 	if attribute.default:
-		attrs['default'] = str(int(bool(attribute.default)))
+		attrs['default'] = attribute.default
 	attrs['tabPosition'] = attribute.tab_position or str(layout_position)
 	attrs['tabName'] = attribute.tab_name
 	if attribute.tab_name_de:

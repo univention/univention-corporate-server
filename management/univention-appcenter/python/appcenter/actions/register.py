@@ -198,7 +198,7 @@ class Register(CredentialsAction):
 			if self._do_register(app, args):
 				domain = get_action('domain')
 				i = domain.to_dict([app])[0]['installations']
-				if all(LooseVersion(app.ucs_version) >= LooseVersion(x['ucs_version']) for x in i.values() if x['ucs_version']):
+				if all(LooseVersion(ucr_get('version/version')) >= LooseVersion(x['ucs_version']) for x in i.values() if x['ucs_version']):
 					self._register_attributes(app, args)
 				else:
 					self.debug('Not registering attributes. App is not the latest version in domain.')
