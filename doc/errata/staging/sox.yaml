@@ -1,0 +1,54 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: sox
+fix: 14.4.1-5+deb8u3
+desc: |
+ This update addresses the following issues:
+
+ * 14.4.1-5+deb8u1 (Sun, 24 Feb 2019 18:04:09 +0200) * Non-maintainer upload.
+   * Add patches for CVE-2014-8145 to series file and really apply fixes.
+   Thanks to Mike Salvatore for spotting the issue.
+
+ * 14.4.1-5+deb8u1 (Sun, 24 Feb 2019 18:04:09 +0200) * Non-maintainer upload.
+   * Add patches for CVE-2014-8145 to series file and really apply fixes.
+   Thanks to Mike Salvatore for spotting the issue.
+
+ * 14.4.1-5+deb8u1 (Sun, 24 Feb 2019 18:04:09 +0200) * Non-maintainer upload.
+   * Add patches for CVE-2014-8145 to series file and really apply fixes.
+   Thanks to Mike Salvatore for spotting the issue.
+
+ * 14.4.1-5+deb8u2 (Thu, 28 Feb 2019 08:58:56 +0100) * Non-maintainer upload
+   by the LTS Team. * CVE-2017-15370: heap-based buffer overflow in the
+   ImaExpandS function of ima_rw.c. * CVE-2017-15372: stack-based buffer
+   overflow in the lsx_ms_adpcm_block_expand_i function of adpcm.c. *
+   CVE-2017-18189: null pointer dereference caused by corrupt header
+   specifying zero channels, sending read_channels() into an infinite loop
+ . * CVE-2017-15642: use-after-free in output_message, triggered by crafted aiff
+ file.
+
+ * 14.4.1-5+deb8u2 (Thu, 28 Feb 2019 08:58:56 +0100) * Non-maintainer upload
+   by the LTS Team. * CVE-2017-15370: heap-based buffer overflow in the
+   ImaExpandS function of ima_rw.c. * CVE-2017-15372: stack-based buffer
+   overflow in the lsx_ms_adpcm_block_expand_i function of adpcm.c. *
+   CVE-2017-18189: null pointer dereference caused by corrupt header
+   specifying zero channels, sending read_channels() into an infinite loop
+ . * CVE-2017-15642: use-after-free in output_message, triggered by crafted aiff
+ file.
+ * Divide by zero in startread function in wav.c (CVE-2017-11332)
+ * Invalid memory read in read_samples function in hcom.c (CVE-2017-11358)
+ * Devide by zero in wavwritehdr function in wav.c (CVE-2017-11359)
+ * Reachable assertion abort in the function sox_append_comment()
+   (CVE-2017-15371)
+bug: [48870]
+cve:
+- CVE-2014-8145
+- CVE-2017-15370
+- CVE-2017-15372
+- CVE-2017-18189
+- CVE-2017-15642
+- CVE-2017-11332
+- CVE-2017-11358
+- CVE-2017-11359
+- CVE-2017-15371
