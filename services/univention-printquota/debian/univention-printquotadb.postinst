@@ -30,31 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-dpkg-maintscript-helper mv_conffile \
-    etc/postgresql/7.4/main/pg_hba.conf.d/11-pg_hba.conf \
-    etc/postgresql/7.4/main/pg_hba.conf.d/11-univention-printquotadb.conf \
-    4.0.6~ -- "$@"
-dpkg-maintscript-helper mv_conffile \
-    etc/postgresql/8.3/main/pg_hba.conf.d/11-pg_hba.conf \
-    etc/postgresql/8.3/main/pg_hba.conf.d/11-univention-printquotadb.conf \
-    4.0.6~ -- "$@"
-dpkg-maintscript-helper mv_conffile \
-    etc/postgresql/8.4/main/pg_hba.conf.d/11-pg_hba.conf \
-    etc/postgresql/8.4/main/pg_hba.conf.d/11-univention-printquotadb.conf \
-    4.0.6~ -- "$@"
-
 #DEBHELPER#
 
 if [ -x /etc/init.d/postgresql ]; then
 	invoke-rc.d postgresql reload
-fi
-
-if [ -x /etc/init.d/postgresql-7.4 ]; then
-	invoke-rc.d postgresql-7.4 reload
-fi
-
-if [ -x /etc/init.d/postgresql-8.3 ]; then
-	invoke-rc.d postgresql-8.3 reload
 fi
 
 eval "$(univention-config-registry shell)"
