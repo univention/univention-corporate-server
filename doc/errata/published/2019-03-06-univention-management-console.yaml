@@ -9,3 +9,5 @@ desc: |
  * The errors from pam_cracklib are evaluated again when changing the
    password via Univention Management Console.
 bug: [48684]
+erratum: 450
+announced: 2019-03-06
