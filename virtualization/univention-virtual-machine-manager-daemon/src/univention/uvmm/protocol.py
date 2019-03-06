@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager Daemon
 #  listener module
 #
-# Copyright 2010-2018 Univention GmbH
+# Copyright 2010-2019 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -605,14 +605,14 @@ class Data_Node(object):
 	"""Container for node statistics."""
 
 	def __init__(self):
-		self.name = None
-		self.uri = None
-		self.phyMem = None
-		self.curMem = None
-		self.maxMem = None
+		self.name = ''
+		self.uri = ''
+		self.phyMem = 0  # physical memory of host
+		self.curMem = 0  # sum of currently used VM memory
+		self.maxMem = 0  # sum of maximum VM memory
 		self.cpu_usage = 0.0
-		self.cpus = None
-		self.cores = (None, None, None, None)
+		self.cpus = 1  # host CPU count
+		self.cores = (1, 1, 1, 1)  # (nodes, sockets, cores, threads)
 		self.domains = []  # Data_Domain
 		self.capabilities = []  # node.DomainTemplate
 		self.last_try = 0.0

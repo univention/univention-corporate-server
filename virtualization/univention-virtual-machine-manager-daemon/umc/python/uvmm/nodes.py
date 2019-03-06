@@ -3,7 +3,7 @@
 # Univention Management Console
 #  UVMM node commands
 #
-# Copyright 2010-2018 Univention GmbH
+# Copyright 2010-2019 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -60,7 +60,7 @@ class Nodes(object):
 			'type': 'node',
 			'virtech': <virtualization technology>,
 			'memUsed': <used amount of memory in B>,
-			'memAvailable': <amount of physical memory in B>,
+			'memPhysical': <amount of physical memory in B>,
 			'cpus': <number of CPUs>,
 			'cpuUsage': <cpu usage in %>,
 			'available': (True|False),
@@ -81,7 +81,7 @@ class Nodes(object):
 					'type': 'node',
 					'virtech': node_uri.scheme,
 					'memUsed': node_pd.curMem,
-					'memAvailable': node_pd.phyMem,
+					'memPhysical': node_pd.phyMem,
 					'cpuUsage': (node_pd.cpu_usage or 0),
 					'available': node_pd.last_try == node_pd.last_update,
 					'cpus': node_pd.cpus,

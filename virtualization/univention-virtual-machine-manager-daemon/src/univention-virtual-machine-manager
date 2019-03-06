@@ -1,10 +1,9 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# UCS Virtual Machine Manager Daemon
-#  UVMM commandline tool
-#
-# Copyright 2010-2018 Univention GmbH
+"""
+UCS Virtual Machine Manager Daemon command line interface
+"""
+# Copyright 2010-2019 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,7 +29,6 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-"""UVMM command line interface."""
 
 import sys
 import locale
@@ -127,7 +125,9 @@ def from_ldap(options):
 class ParserGenerator(object):
 
 	def __init__(self):
-		parser = ArgumentParser()
+		parser = ArgumentParser(
+			description=__doc__,
+		)
 		parser.add_argument(
 			'-u', '--unix',
 			action='store',
@@ -155,9 +155,7 @@ class ParserGenerator(object):
 	def _add_subparsers(self, parser):
 		subparsers = parser.add_subparsers(
 			title='subcommands',
-			description='valid subcommands',
 			dest='mode',
-			help='sub-command help'
 		)
 
 		for name in sorted(dir(self)):
@@ -170,7 +168,7 @@ class ParserGenerator(object):
 
 	@staticmethod
 	def _usage(doc):
-		"""Show usage informations for mode."""
+		"""Show usage information for mode."""
 		lines = doc.split('\n')
 		while lines and not lines[0].strip():
 			del lines[0]
@@ -219,7 +217,7 @@ class ParserGenerator(object):
 
 	def frequency(self, sub_parser):
 		"""
-		Set the interval how often UVMM queries all registerd or that specific
+		Set the interval how often UVMM queries all registered or that specific
 		virtualization server.
 		"""
 		sub_parser.add_argument(
@@ -695,7 +693,7 @@ class ParserGenerator(object):
 		<domain> with the new name <name>.
 
 		:param subst: provides a mappings from <old> to <new> values, which can be
-		used to overwrite the default behaviour for creating new settings:
+		used to overwrite the default behavior for creating new settings:
 			mac#<old_mac>=<new_mac>
 			copy#<dev>=<method>
 			name#<dev>=<name>

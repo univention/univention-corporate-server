@@ -29,7 +29,7 @@ Recommends: libvirt-clients,
 Suggests: python-meliae,
 Description: UCS Virtual Machine Manager Daemon
  This package contains the UCS Virtual Machine Manager Daemon
- used to collect informations from a farm of virtualization servers.
+ used to collect information from a farm of virtualization servers.
 
 Package: python-univention-virtual-machine-manager
 Architecture: all

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2018 Univention GmbH
+ * Copyright 2011-2019 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -152,9 +152,9 @@ define([
 					name: 'email',
 					label: _('Send email'),
 					callback: lang.hitch(this, function() {
-						var val = this._generalForm.gatherFormValues();
+						var val = this._generalForm.get('value');
 						if (val.contact) {
-							location.href = 'mailto:' + val.contact + '?subject=' + _('Virtual machine: %s', val.name);
+							location.href = 'mailto:' + encodeURIComponent(val.contact) + '?subject=' + encodeURIComponent(_('Virtual machine: %s', val.name));
 						}
 					})
 				}],
@@ -193,13 +193,13 @@ define([
 				}, {
 					name: 'vcpus',
 					type: ComboBox,
-					label: _('Number of CPUs'),
-					depends: 'domainURI',
-					dynamicValues: types.getCPUs
+					label: _('Number of CPUs')
 				}, {
 					name: 'maxMem',
 					type: MemoryTextBox,
 					required: true,
+					softMax: 4*1024*1024*1024*1024,
+					softMaxMessage: _('<b>Warning:</b> Memory size exceeds currently available RAM on node. Starting the VM may degrade the performance of the host and all other VMs.'),
 					label: _('Memory (default unit MB)')
 				}, {
 					name: 'boot_hvm',
@@ -221,7 +221,7 @@ define([
 				}, {
 					name: 'hyperv',
 					type: CheckBox,
-					label: _('Enable Hyper-V Enlightment)')
+					label: _('Enable Hyper-V Enlightment')
 				}, {
 					name: 'vnc_remote',
 					type: CheckBox,
@@ -416,109 +416,121 @@ define([
 		},
 
 		load: function(id) {
-			this.standby(true);
 			// clear form data
 			this._generalForm.clearFormValues();
 			this._stack.selectChild( this._generalPage, true);
 
-			tools.umcpCommand('uvmm/domain/get', {
-				domainURI: id
+			var nodeURI = id.slice(0, id.indexOf( '#'));
+
+			this.standbyDuring(tools.umcpCommand('uvmm/node/query', {
+					nodePattern: nodeURI
 			}).then(lang.hitch(this, function(data) {
-				// get data blob
-				this._domain = lang.getObject('result', false, data);
-				this._domain.domainURI = id;
-				this._domain.nodeURI = id.slice( 0, id.indexOf( '#' ) );
+				if (data.result.length) {
+					var node = data.result[0];
 
-				if (data) {
+					var wm = this._advancedForm.getWidget('maxMem');
+					wm.set('constraints', lang.mixin({}, wm.get('constraints'), {max: node.memPhysical}));
+					wm.set('softMax', node.memPhysical - node.memUsed);
+
+					types.setCPUs(node.cpus, this._advancedForm.getWidget('vcpus'));
+				}
+
+				return tools.umcpCommand('uvmm/domain/get', {
+					domainURI: id
+				}).then(lang.hitch(this, function(data) {
+					// get data blob
+					this._domain = lang.getObject('result', false, data);
 					this._domain.domainURI = id;
+					this._domain.nodeURI = nodeURI;
 
-					this.moduleWidget.set('titleDetail', this._domain.name);
+					if (data) {
+						this._domain.domainURI = id;
 
-					this._advancedForm.clearFormValues();
-					// set values to form
-					this._generalForm.setFormValues(this._domain);
+						this.moduleWidget.set('titleDetail', this._domain.name);
 
-					if ( ! this._domain.available ) {
-						this.addNotification( _( '<p>For fail over the virtual machine can be migrated to another physical server re-using the last known configuration and all disk images. This can result in <strong>data corruption</strong> if the images are <strong>concurrently used</strong> by multiple running machines! Therefore the failed server <strong>must be blocked from accessing the image files</strong>, for example by blocking access to the shared storage or by disconnecting the network.</p><p>When the server is restored, all its previous virtual machines will be shown again. Any duplicates have to be cleaned up manually by migrating the machines back to the server or by deleting them. Make sure that shared images are not delete.</p>' ) );
-						this.hideChild( this._devicesPage );
-						this.hideChild( this._snapshotPage );
-						this.hideChild( this._targethostPage );
-						this.hideChild( this._advancedPage );
-						this._headerButtons.save.set( 'disabled', true );
+						this._advancedForm.clearFormValues();
+						// set values to form
+						this._generalForm.setFormValues(this._domain);
+
+						if ( ! this._domain.available ) {
+							this.addNotification( _( '<p>For fail over the virtual machine can be migrated to another physical server re-using the last known configuration and all disk images. This can result in <strong>data corruption</strong> if the images are <strong>concurrently used</strong> by multiple running machines! Therefore the failed server <strong>must be blocked from accessing the image files</strong>, for example by blocking access to the shared storage or by disconnecting the network.</p><p>When the server is restored, all its previous virtual machines will be shown again. Any duplicates have to be cleaned up manually by migrating the machines back to the server or by deleting them. Make sure that shared images are not delete.</p>' ) );
+							this.hideChild( this._devicesPage );
+							this.hideChild( this._snapshotPage );
+							this.hideChild( this._targethostPage );
+							this.hideChild( this._advancedPage );
+							this._headerButtons.save.set( 'disabled', true );
+							// name should not be editable
+							this._generalForm._widgets.name.set( 'disabled', true );
+							this.standby( false );
+							return;
+						} else {
+							this.showChild( this._advancedPage );
+							this.showChild( this._devicesPage );
+							this._headerButtons.save.set( 'disabled', false );
+						}
+						this._advancedForm._widgets.maxMem.resetCache();
+						this._advancedForm.setFormValues(this._domain);
+
+						// special handling for boot devices
+						this._advancedForm._widgets.boot_hvm.set( 'value', this._domain.boot );
+
+						// we need to add pseudo ids for the network interfaces
+						array.forEach(this._domain.interfaces, function(idev, i) {
+							idev.$id$ = i + 1;
+						});
+
+						// we need to add pseudo ids for the drives
+						array.forEach(this._domain.disks, function(idrive, i) {
+							idrive.$id$ = i + 1;
+						});
+
+						// update the stores
+						this._targethostGrid.set('domain', this._domain);
+						this._snapshotGrid.set('domain', this._domain);
+						this._driveGrid.set('domain', this._domain);
+						this._interfaceGrid.set('domain', this._domain);
+						this._interfaceStore.setData(this._domain.interfaces);
+						this._driveStore.setData(this._domain.disks);
+
+						this.showChild( this._snapshotPage );
+						this.showChild( this._targethostPage );
+
+						// set visibility of the VNC-Port
+						this._advancedForm._widgets.vnc_port.set('visible', Boolean(this._advancedForm._widgets.vnc_port.get('value')));
+
+						// deactivate most input field when domain is running
+						var domainActive = types.isActive(this._domain);
+
 						// name should not be editable
 						this._generalForm._widgets.name.set( 'disabled', true );
-						this.standby( false );
-						return;
-					} else {
-						this.showChild( this._advancedPage );
-						this.showChild( this._devicesPage );
-						this._headerButtons.save.set( 'disabled', false );
+
+						this._targethostGrid.set( 'domainActive', domainActive );
+						this._advancedForm._widgets.arch.set( 'disabled', domainActive );
+						this._driveGrid.set( 'domainActive', domainActive );
+						this._interfaceGrid.set( 'disabled', domainActive );
+						tools.forIn( this._advancedForm._widgets, lang.hitch( this, function( iid, iwidget ) {
+							if ( iwidget.readonly ) {
+								iwidget.set( 'disabled', true );
+							} else {
+								iwidget.set( 'disabled', domainActive );
+							}
+						} ) );
+
+						// force a refresh of the grids
+						this._interfaceGrid.filter();
+						this._driveGrid.filter();
+						this._snapshotGrid.filter();
+						this._targethostGrid.filter();
 					}
-					this._advancedForm._widgets.maxMem.resetCache();
-					this._advancedForm.setFormValues(this._domain);
-
-					// special handling for boot devices
-					this._advancedForm._widgets.boot_hvm.set( 'value', this._domain.boot );
-
-					// we need to add pseudo ids for the network interfaces
-					array.forEach(this._domain.interfaces, function(idev, i) {
-						idev.$id$ = i + 1;
-					});
-
-					// we need to add pseudo ids for the drives
-					array.forEach(this._domain.disks, function(idrive, i) {
-						idrive.$id$ = i + 1;
-					});
-
-					// update the stores
-					this._targethostGrid.set('domain', this._domain);
-					this._snapshotGrid.set('domain', this._domain);
-					this._driveGrid.set('domain', this._domain);
-					this._interfaceGrid.set('domain', this._domain);
-					this._interfaceStore.setData(this._domain.interfaces);
-					this._driveStore.setData(this._domain.disks);
-
-					this.showChild( this._snapshotPage );
-					this.showChild( this._targethostPage );
-
-					// set visibility of the VNC-Port
-					this._advancedForm._widgets.vnc_port.set('visible', Boolean(this._advancedForm._widgets.vnc_port.get('value')));
-
-					// deactivate most input field when domain is running
-					var domainActive = types.isActive(this._domain);
-
-					// name should not be editable
-					this._generalForm._widgets.name.set( 'disabled', true );
-
-					this._targethostGrid.set( 'domainActive', domainActive );
-					this._advancedForm._widgets.arch.set( 'disabled', domainActive );
-					this._driveGrid.set( 'domainActive', domainActive );
-					this._interfaceGrid.set( 'disabled', domainActive );
-					tools.forIn( this._advancedForm._widgets, lang.hitch( this, function( iid, iwidget ) {
-						if ( iwidget.readonly ) {
-							iwidget.set( 'disabled', true );
-						} else {
-							iwidget.set( 'disabled', domainActive );
-						}
-					} ) );
-
-					// force a refresh of the grids
-					this._interfaceGrid.filter();
-					this._driveGrid.filter();
-					this._snapshotGrid.filter();
-					this._targethostGrid.filter();
-				}
-				this.standby(false);
-			}), lang.hitch(this, function() {
-				this.standby(false);
-			}));
+				}));
+			})));
 		},
 
 		onCloseTab: function() {
 			// event stub
 		},
 
-		onUpdateProgress: function(i, n) {
+		onUpdateProgress: function(/*i, n*/) {
 			// event stub
 		}
 	});

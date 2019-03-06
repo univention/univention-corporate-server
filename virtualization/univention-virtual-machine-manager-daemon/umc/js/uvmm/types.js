@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2018 Univention GmbH
+ * Copyright 2011-2019 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -167,26 +167,14 @@ define([
 			{ id: 'th', label: _('Thai') },
 			{ id: 'tr', label: _('Turkish') }
 		],
-		getCPUs: function(options) {
-			// query the node of the domain and get its number of CPUs
-			var nodeURI = options.nodeURI || options.domainURI.split('#')[0];
-			return tools.umcpCommand('uvmm/node/query', {
-				nodePattern: nodeURI
-			}).then(function(data) {
-				// query successful
-				var list = [ { id: 1, label: '1' } ];
-				if (data.result.length) {
-					// we got a result
-					var nCPU = data.result[0].cpus;
-					for (var i = 2; i <= nCPU; ++i) {
-						list.push({ id: i, label: '' + i });
-					}
-				}
-				return list;
-			}, function() {
-				// fallback
-				return [ { id: 1, label: '1' } ];
-			});
+		setCPUs: function(cpus, widget) {
+			var list = [{id: 1, label: '1'}];
+			for (var i = 2; i <= cpus; ++i) {
+				list.push({id: i, label: '' + i});
+			}
+			widget.set('staticValues', list);
+			widget._clearValues();
+			widget._setStaticValues();
 		},
 		interfaceModels: {
 			'rtl8139': _( 'Default (RealTek RTL-8139)' ),

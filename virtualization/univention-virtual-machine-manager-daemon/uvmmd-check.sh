@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager Daemon
 #  uvmm check script
 #
-# Copyright 2011-2018 Univention GmbH
+# Copyright 2011-2019 Univention GmbH
 #
 # http://www.univention.de/
 #

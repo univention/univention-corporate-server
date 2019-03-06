@@ -3,7 +3,7 @@
 # Univention Management Console
 #  module: UVMM client
 #
-# Copyright 2010-2018 Univention GmbH
+# Copyright 2010-2019 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -191,7 +191,7 @@ class UVMM_RequestBroker(list):
 			if not thread.busy:
 				self.remove(thread)
 
-		# asynchron call
+		# asynchronous call
 		free_thread = UVMM_ConnectionThread()
 		self.append(free_thread)
 

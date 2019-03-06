@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager Daemon
 #  python module
 #
-# Copyright 2014-2018 Univention GmbH
+# Copyright 2014-2019 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -166,7 +166,7 @@ class CloudConnection(object):
 		# type: () -> None
 		try:
 			logger.debug("Updating information for %s: %s", self.publicdata.name, self.publicdata.url)
-			# double update freqency in case an update error occurs
+			# double update frequency in case an update error occurs
 			# this is reset if no exception occurs at the end of this try: statement
 			self.current_frequency = min(self.current_frequency * 2, self.MAX_UPDATE_INTERVAL)
 

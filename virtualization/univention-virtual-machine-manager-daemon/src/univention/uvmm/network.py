@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager Daemon
 #  network management
 #
-# Copyright 2011-2018 Univention GmbH
+# Copyright 2011-2019 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -49,7 +49,7 @@ class NetworkError(TranslatableException):
 
 
 def network_is_active(conn, name):
-	"""Check if the network with the given name ist currently active."""
+	"""Check if the network with the given name is currently active."""
 	try:
 		return name in conn.listNetworks()
 	except libvirt.libvirtError as ex:

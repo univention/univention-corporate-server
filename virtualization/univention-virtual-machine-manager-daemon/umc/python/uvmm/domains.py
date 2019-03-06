@@ -3,7 +3,7 @@
 # Univention Management Console
 #  module: management of virtualization servers
 #
-# Copyright 2010-2018 Univention GmbH
+# Copyright 2010-2019 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -230,14 +230,9 @@ class Domains(object):
 
 			# profile (MUST be after mapping annotations)
 			profile_dn = json.get('profile')
-			profile = None
-			if profile_dn:
-				for dn, pro in self.profiles:
-					if dn == profile_dn:
-						profile = pro
-						break
-				if profile:
-					json['profileData'] = object2dict(profile)
+			profile = self.profiles.get(profile_dn, None)
+			if profile:
+					json['profileData'] = profile
 
 			MODULE.info('Got domain description: %s' % (json,))
 			return json
@@ -282,9 +277,9 @@ class Domains(object):
 
 			if profile:
 				if drive.device == Disk.DEVICE_DISK:
-					driver_pv = getattr(profile, 'pvdisk', False)
+					driver_pv = profile.get('pvdisk', False)
 				elif drive.device == Disk.DEVICE_CDROM:
-					driver_pv = getattr(profile, 'pvcdrom', False)
+					driver_pv = profile.get('pvcdrom', False)
 		else:
 			# old drive
 			drive.source = disk['source']
@@ -355,15 +350,13 @@ class Domains(object):
 		profile = None
 		if not domain_info.uuid:
 			profile_dn = domain.get('profile')
-			for dn, pro in self.profiles:
-				if dn == profile_dn:
-					profile = pro
-					break
-			else:
-				raise UMC_Error(_('Unknown profile given'))
+			try:
+				profile = self.profiles[profile_dn]
+			except LookupError:
+				raise UMC_Error(_('Unknown profile %s') % (profile_dn,))
 			domain_info.annotations['profile'] = profile_dn
-			MODULE.info('Creating new domain using profile %s' % (object2dict(profile),))
-			domain_info.annotations['os'] = getattr(profile, 'os')
+			MODULE.info('Creating new domain using profile %s' % (profile,))
+			domain_info.annotations['os'] = profile.get('os', '')
 		else:
 			domain_info.annotations['os'] = domain.get('os', '')
 		domain_info.annotations['contact'] = domain.get('contact', '')
@@ -373,7 +366,7 @@ class Domains(object):
 		if 'arch' in domain:
 			domain_info.arch = domain['arch']
 		elif profile:
-			domain_info.arch = profile.arch
+			domain_info.arch = profile['arch']
 		else:
 			raise UMC_Error(_('Could not determine architecture for domain'), status=500)
 
@@ -409,7 +402,7 @@ class Domains(object):
 		if 'boot' in domain:
 			domain_info.boot = domain['boot']
 		elif profile:
-			domain_info.boot = getattr(profile, 'bootdev', None)
+			domain_info.boot = profile['bootdev']
 		else:
 			raise UMC_Error(_('Could not determine the list of boot devices for domain'), status=500)
 
@@ -423,7 +416,7 @@ class Domains(object):
 			if 'kblayout' in domain:
 				gfx.keymap = domain['kblayout']
 			elif profile:
-				gfx.keymap = profile.kblayout
+				gfx.keymap = profile['kblayout']
 			else:
 				raise UMC_Error(_('Could not determine the keyboard layout for the VNC access'), status=500)
 			if domain.get('vnc_password', None):
@@ -434,8 +427,8 @@ class Domains(object):
 		# RTC offset
 		if 'rtc_offset' in domain:
 			domain_info.rtc_offset = domain['rtc_offset']
-		elif profile and getattr(profile, 'rtcoffset'):
-			domain_info.rtc_offset = profile.rtcoffset
+		elif profile:
+			domain_info.rtc_offset = profile['rtcoffset']
 		else:
 			domain_info.rtc_offset = 'utc'
 

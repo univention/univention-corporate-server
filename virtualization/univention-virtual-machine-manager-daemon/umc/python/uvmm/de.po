@@ -1,6 +1,6 @@
 # UCS Virtual Machine Manager Daemon
 #
-# Copyright 2011-2018 Univention GmbH
+# Copyright 2011-2019 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -126,12 +126,10 @@ msgid "Unknown physical server %(nodeURI)s"
 msgstr "Unbekannter physikalischer Server %(nodeURI)s"
 
 #: umc/python/uvmm/profiles.py:163
-msgid "Unknown profile"
-msgstr "Unbekanntes Profil"
-
 #: umc/python/uvmm/domains.py:388
-msgid "Unknown profile given"
-msgstr "Unbekanntes Profil wurde angegeben"
+#, python-format
+msgid "Unknown profile %s"
+msgstr "Unbekanntes Profil %s"
 
 #: umc/python/uvmm/__init__.py:149
 msgid "Unknown query type"

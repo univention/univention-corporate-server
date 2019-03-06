@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2018 Univention GmbH
+ * Copyright 2011-2019 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -178,7 +178,7 @@ define([
 					this.onUpdateProgress(ids.length, ids.length);
 					this.moduleStore.onChange();
 				}), lang.hitch(this, function() {
-					dialog.alert(_('An error ocurred during processing your request.'));
+					dialog.alert(_('An error occurred during processing your request.'));
 					this.onUpdateProgress(ids.length, ids.length);
 					this.moduleStore.onChange();
 				}));

@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager Daemon
 #  cloud connection to EC2 instances
 #
-# Copyright 2014-2018 Univention GmbH
+# Copyright 2014-2019 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -137,7 +137,7 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 			if param in EC2_CONNECTION_ATTRIBUTES and cloud[param]:
 				params[EC2_CONNECTION_ATTRIBUTES[param]] = cloud[param]
 
-		# if not explicitely set, use secure connection
+		# if not explicitly set, use secure connection
 		if 'secure' not in params:
 			params['secure'] = True
 
