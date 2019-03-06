@@ -1,3 +1,9 @@
+univention-appcenter (8.0.9-1) unstable; urgency=medium
+
+  * Bug #48621: fix defaults
+
+ -- Florian Best <best@univention.de>  Wed, 06 Mar 2019 14:03:48 +0100
+
 univention-appcenter (8.0.8-1) unstable; urgency=medium
 
   * Bug #48621: fix defaults

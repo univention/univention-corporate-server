@@ -322,13 +322,10 @@ def get_extended_attributes(app):
 					app,
 					module='users/user',
 					name=attribute_name,
-					description='User is activated for %s' % app.name,
-					description_de='Nutzer ist für %s aktiviert' % app.name,
+					description='Activate user for %s' % app.name,
+					description_de='Nutzer für %s aktivieren' % app.name,
 					syntax='Boolean',
-					udm_syntax='AppActivatedTrue',
 					full_width=False,
-					disable_web=True,  # important!
-					default='TRUE',  # important! the boolean flag is the extended option, so this must be enabled
 				)
 				attribute.set_standard_oid(app, attribute_suffix)
 				attributes.insert(0, attribute)
