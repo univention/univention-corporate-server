@@ -64,7 +64,7 @@ define([
 			// put limit on memory
 			try {
 				var nodeURI = this.getWidget('nodeURI');
-				var maxMem = nodeURI.store.getValue(nodeURI.item, 'memAvailable');
+				var maxMem = nodeURI.store.getValue(nodeURI.item, 'memPhysical');
 				this.getWidget('maxMem').get('constraints').max = maxMem;
 			} catch (err) { }
 

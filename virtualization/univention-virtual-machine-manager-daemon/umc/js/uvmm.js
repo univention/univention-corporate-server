@@ -1750,9 +1750,9 @@ define([
 				var progressBar = new ProgressBar({
 					label: lang.replace('{used} / {available}', {
 						used: types.prettyCapacity(item.memUsed),
-						available: types.prettyCapacity(item.memAvailable)
+						available: types.prettyCapacity(item.memPhysical)
 					}),
-					maximum: item.memAvailable,
+					maximum: item.memPhysical,
 					value: item.memUsed
 				});
 				this._grid.own(progressBar);
