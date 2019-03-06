@@ -160,23 +160,23 @@ define([
 		},
 
 		_nodeHasRessources: function(node) {
-			var hasRessources = array.every(['cpuUsage', 'memUsed', 'memAvailable'], function(resource) {
+			var hasRessources = array.every(['cpuUsage', 'memUsed', 'memPhysical'], function(resource) {
 				return node.hasOwnProperty(resource);
 			});
-			return hasRessources && node.memAvailable !== 0 && node.available;
+			return hasRessources && node.memPhysical !== 0 && node.available;
 		},
 
 		_getRessourceNodeLabel: function(node) {
 			var shortName = this._cutDomain(node.label);
 			var label = lang.replace(
 				'<span title="{shortName}" class="tree-description">{shortName}</span>' +
-				'<span title="CPU usage: {cpu}%; Memory usage: {memUsed}/{memAvailable}" ' +
+				'<span title="CPU usage: {cpu}%; Memory usage: {memUsed}/{memPhysical}" ' +
 				'class="node-ressources">{cpu}% | {mem}%</span>',
 				{
 					cpu: this._formatPercent(node.cpuUsage * 100),
-					mem: this._formatPercent(node.memUsed / node.memAvailable * 100),
+					mem: this._formatPercent(node.memUsed / node.memPhysical * 100),
 					shortName: shortName,
-					memAvailable: types.prettyCapacity(node.memAvailable),
+					memPhysical: types.prettyCapacity(node.memPhysical),
 					memUsed: types.prettyCapacity(node.memUsed)
 				}
 			);
