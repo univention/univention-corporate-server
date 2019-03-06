@@ -58,6 +58,7 @@ property_descriptions = {
 		may_change=True,
 		identifies=False,
 		default="FALSE",
+		size='Two',
 	),
 	'Identifier': univention.admin.property(
 		short_description=_(u'Service provider identifier'),
@@ -109,7 +110,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default="FALSE"
+		default="FALSE",
+		size='Two',
 	),
 	'LDAPattributes': univention.admin.property(
 		short_description=_(u'List of ldap attributes to transmit'),

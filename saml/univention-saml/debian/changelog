@@ -1,3 +1,9 @@
+univention-saml (6.0.2-1) unstable; urgency=medium
+
+  * Bug #48621: fix size of checkboxes
+
+ -- Florian Best <best@univention.de>  Wed, 06 Mar 2019 15:28:30 +0100
+
 univention-saml (6.0.1-2) unstable; urgency=medium
 
   * Bug #46198 UMC: Fix password auto-fill
