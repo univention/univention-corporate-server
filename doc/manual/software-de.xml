@@ -139,7 +139,7 @@
 	<para>
 	  Das Univention App Center kann über das UMC-Modul <emphasis>App Center</emphasis>
 	  aufgerufen werden. Es zeigt standardmäßig alle installierten sowie verfügbare
-		Softwarekomponenten an. Mit <guimenu>Suchbegriff</guimenu> kann die Liste der angezeigten
+		Softwarekomponenten an. Mit <guimenu>Suche Applikationen...</guimenu> kann die Liste der angezeigten
 		Applikationen auf Suchbegriffe eingeschränkt werden. Außerdem können die Applikationen anhand
 		der <guimenu>Kategorien</guimenu> gefiltert werden. Weitere Filterkriterien sind die
 		<guimenu>App Badges</guimenu> und die <guimenu>App Lizenz</guimenu>. So ist auch eine
@@ -151,7 +151,7 @@
 
 	<para>
 		Klickt man auf eine der angezeigten Applikationen, werden weitergehende Details zu der
-		Komponente angezeigt (u.a. Beschreibung, Hersteller, Ansprechpartner und ein Screenshot). Im
+		Komponente angezeigt (u.a. Beschreibung, Hersteller, Ansprechpartner und Screenshots oder Videos). Im
 		Feld <guimenu>Benachrichtigung</guimenu> wird angezeigt, ob der Hersteller der
 		Softwarekomponente bei der Installation/Deinstallation benachrichtigt wird. Ein grobe
 		Einordnung der Lizenzierung kann unter <guimenu>Lizenz</guimenu> entnommen werden. Detaillierte
