@@ -1185,4 +1185,40 @@ univention-directory-manager users/user
 		</para>
 
     </section>
+
+    <section id="users:app-activation">
+        <title>Benutzeraktivierung für Apps</title>
+        <para>
+            Viele Apps aus dem App Center sind mit dem zentralen Identity
+            Management in UCS verknüpft. Dadurch können Systemadministratoren
+            die Benutzer für Apps aktivieren. In manchen Fällen können noch
+            weitere App spezifische Einstellungen für den Benutzer vorgenommen
+            werden. Das ist abhängig von der App und wie diese das Identity
+            Management nutzt.
+        </para>
+        <figure id="user-app-activation">
+            <title>Benutzeraktivierung für installierte Apps</title>
+            <graphic scalefit="1" width="70%" align="center" fileref="illustrations44/user_activation_de.png" />
+        </figure>
+        <para>
+            Sobald eine App in der Umgebung installiert ist, die die
+            Benutzeraktivierung verwendet, erscheint sie mit Logo am
+            Benutzerobjekt im Reiter <guimenu>Apps</guimenu>. Mit einem Haken
+            in der Checkbox wird der Benutzer für die App aktiviert. Wenn noch
+            weitere Einstellungen für die App-Berechtigung gemacht werden
+            können, erscheint ein weiterer Reiter mit dem Namen der App, um
+            diese Parameter zu setzen. Die App Aktivierung und die Parameter
+            werden am Benutzerobjekt im LDAP Verzeichnisdienst gespeichert.
+        </para>
+        <para>
+            Um einem Benutzer die Berechtigung zur Nutzung einer App wieder zu
+            entziehen, genügt es, die Checkbox zu deaktivieren.
+        </para>
+        <para>
+            Wenn die App deinstalliert wird, wird die Benutzeraktivierung für
+            die App vom Reiter <guimenu>Apps</guimenu> am Benutzerobjekt wieder
+            entfernt. Gespeicherte Aktivierungen und Parameter bleiben auch
+            nach der Deinstallation der App im LDAP Verzeichnisdienst erhalten.
+        </para>
+    </section>
 </chapter>
