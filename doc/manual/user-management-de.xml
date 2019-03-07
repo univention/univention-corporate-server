@@ -1216,11 +1216,9 @@ univention-directory-manager users/user
             entziehen, genügt es, den Haken aus Checkbox zu entfernen.
         </para>
         <para>
-            Wenn die App deinstalliert wird, wird die Benutzeraktivierung für
-            die App vom Reiter <guimenu>Apps</guimenu> des Benutzers im
-            UMC Modul entfernt. Gespeicherte Aktivierungen und
-            Parameter bleiben auch nach der Deinstallation der App am
-            Benutzerobjekt im LDAP-Verzeichnisdienst erhalten.
+            Wenn die App deinstalliert wird, wird die Checkbox der
+            Benutzeraktivierung für die App vom Reiter <guimenu>Apps</guimenu>
+            des Benutzers im UMC Modul entfernt.
         </para>
     </section>
 </chapter>

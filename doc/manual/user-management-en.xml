@@ -1170,10 +1170,9 @@ univention-director-manager users/user
             untick the checkbox.
         </para>
         <para>
-            When the app is uninstalled, the user activation for the app is
-            removed from the <guimenu>Apps</guimenu> tab of the user in the UMC
-            module. Stored activations and parameters remain at the user object
-            in the LDAP directory service after uninstalling the app.
+            When the app is uninstalled, the checkbox of the user activation
+            for the app is removed from the <guimenu>Apps</guimenu> tab of the
+            user in the UMC module.
         </para>
     </section>
 </chapter>
