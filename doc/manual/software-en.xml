@@ -163,6 +163,18 @@
 	</figure>
 
 	<para>
+		With <emphasis>Vote Apps</emphasis> there is a special form of Apps in the App Center. Voting
+		helps Univention and the potential app provider to determine the interest in this app. Vote
+		apps are usually only displayed for a limited voting period. That Vote Apps are available, can
+		be recognized by the shown <guimenu>Vote Apps</guimenu> filter option in the App Center
+		overview.
+	</para>
+
+	<figure id="appcenter-details"><title>Example Vote Apps in App Center overview and detail view</title>
+	<graphic scalefit="1" width="100%" fileref="illustrations44/vote_apps_en.png"/>
+	</figure>
+
+	<para>
 	  Some applications may not be compatible with other software packages from UCS. For instance,
 	  most groupware packages require the UCS mailstack to be uninstalled. Every application checks
 	  whether incompatible versions are installed and then prompts which
