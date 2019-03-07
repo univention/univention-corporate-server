@@ -1202,7 +1202,7 @@ univention-directory-manager users/user
         </figure>
         <para>
             Sobald eine App in der UCS-Umgebung installiert ist, die die
-            Benutzeraktivierung verwendet, erscheint sie mit Logo am im Reiter
+            Benutzeraktivierung verwendet, erscheint sie mit Logo im Reiter
             <guimenu>Apps</guimenu> des Benutzers im UMC Modul
             <emphasis>Benutzer</emphasis>. Mit einem Haken in der Checkbox wird
             der Benutzer für die App aktiviert. Wenn noch weitere Einstellungen
