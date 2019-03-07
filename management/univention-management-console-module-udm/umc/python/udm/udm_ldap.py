@@ -41,8 +41,6 @@ import functools
 import inspect
 import locale
 
-from ldap.filter import escape_filter_chars
-
 from univention.management.console import Translation
 from univention.management.console.protocol.definitions import BAD_REQUEST_UNAUTH
 from univention.management.console.modules import UMC_OptionTypeError, UMC_OptionMissing, UMC_Error
@@ -121,7 +119,7 @@ class AppAttributes(object):
 	def _get_cache(cls):
 		if cls._cache is None:
 			MODULE.process('Loading AppAttributes...')
-			cls._cache = {}
+			cache = {}
 			from univention.appcenter.app_cache import AllApps
 			def search_objects(_module, _lo, _pos, _base='', **kwargs):
 				# reimplement because the App Center function re-initializes
@@ -131,7 +129,7 @@ class AppAttributes(object):
 				expressions = []
 				conj = udm_filter.conjunction('&', expressions)
 				for key, value in kwargs.iteritems():
-					expressions.append(udm_filter.expression(key, escape_filter_chars(value), '='))
+					expressions.append(udm_filter.expression(key, value, '=', escape=True))
 				try:
 					objs = module.lookup(None, _lo, str(conj), base=_base)
 				except udm_errors.noObject:
@@ -161,9 +159,9 @@ class AppAttributes(object):
 								# a newer version of the App is installed that uses the
 								# superior settings/extended_option
 								continue
-							if module not in cls._cache:
-								cls._cache[module] = {}
-							option_def = cls._cache[module]
+							if module not in cache:
+								cache[module] = {}
+							option_def = cache[module]
 							group_name = obj['groupName']
 							for loc, desc in obj['translationGroupName']:
 								if loc == current_locale:
@@ -201,55 +199,55 @@ class AppAttributes(object):
 								'layout': layout,
 							}
 							base = dn2str(str2dn(obj.dn)[1:])
-							for _obj in search_objects('settings/extended_attribute', lo, pos, base):
+							for _obj in search_objects('settings/extended_attribute', lo, pos, base, univentionUDMPropertyModule=module):
 								if obj.dn == _obj.dn:
 									continue
-								if module in _obj['module']:
-									attributes.append(_obj['CLIName'])
-									if _obj['tabAdvanced']:
-										group_name = _obj['tabName']
-										for loc, desc in _obj['translationTabName']:
-											if loc == current_locale:
-												group_name = desc
-												break
-										group_position = _obj['tabPosition']
-									else:
-										group_name = _obj['groupName']
-										for loc, desc in _obj['translationGroupName']:
-											if loc == current_locale:
-												group_name = desc
-												break
-										group_position = _obj['groupPosition']
-									for group in layout:
-										if group['label'] == group_name:
+								attributes.append(_obj['CLIName'])
+								if _obj['tabAdvanced']:
+									group_name = _obj['tabName']
+									for loc, desc in _obj['translationTabName']:
+										if loc == current_locale:
+											group_name = desc
 											break
-									else:
-										group = {
-											'label': group_name,
-											'description': '',
-											'advanced': False,
-											'is_app_tab': False,
-											'layout': [],
-											'unsorted': [],
-											}
-										layout.append(group)
-									group_layout = group['layout']
-									if group_position:
-										group_position = int(group_position)
-										while len(group_layout) < group_position:
-											group_layout.append([])
-										group_layout[group_position-1].append(_obj['CLIName'])
-									else:
-										group['unsorted'].append(_obj['CLIName'])
+									group_position = _obj['tabPosition']
+								else:
+									group_name = _obj['groupName']
+									for loc, desc in _obj['translationGroupName']:
+										if loc == current_locale:
+											group_name = desc
+											break
+									group_position = _obj['groupPosition']
+								for group in layout:
+									if group['label'] == group_name:
+										break
+								else:
+									group = {
+										'label': group_name,
+										'description': '',
+										'advanced': False,
+										'is_app_tab': False,
+										'layout': [],
+										'unsorted': [],
+									}
+									layout.append(group)
+								group_layout = group['layout']
+								if group_position:
+									group_position = int(group_position)
+									while len(group_layout) < group_position:
+										group_layout.append([])
+									group_layout[group_position - 1].append(_obj['CLIName'])
+								else:
+									group['unsorted'].append(_obj['CLIName'])
 							for group in layout:
 								unsorted = group.pop('unsorted')
 								if unsorted:
 									group['layout'].append(unsorted)
 			MODULE.process('Found:')
-			for module in cls._cache:
+			for module in cache:
 				MODULE.process('  %s' % module)
-				for attr in cls._cache[module]:
-					MODULE.process('    %s and with it: %r' % (attr, cls._cache[module][attr]['attributes']))
+				for attr in cache[module]:
+					MODULE.process('    %s and with it: %r' % (attr, cache[module][attr]['attributes']))
+			cls._cache = cache
 		return cls._cache
 
 	@classmethod

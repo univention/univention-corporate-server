@@ -1,3 +1,10 @@
+ucs-test (9.0.2-7) unstable; urgency=medium
+
+  * Bug #48839: Fixed issues with ImportErrors due to alphabetical ordering of
+    filenames...
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 07 Mar 2019 12:13:18 +0100
+
 ucs-test (9.0.2-6) unstable; urgency=medium
 
   * Bug #48724: Skip 80_docker/64_app_container_upgrade update tests

@@ -104,7 +104,7 @@ class TestUcrWidgets(object):
 		client = Client.get_test_connection()
 		widget = 'ucrSubclassWidget'
 		syntax = '{}Syntax'.format(widget)
-		sub_syntax = 'sub{}'.format(syntax)
+		sub_syntax = 'under{}'.format(syntax)
 		number = '2'
 		self._create_extended_attribute(syntax, number, sub_syntax=sub_syntax)
 		handler_set([

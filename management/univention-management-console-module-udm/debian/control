@@ -15,6 +15,7 @@ Architecture: all
 Depends: ${misc:Depends},
  univention-directory-manager-tools (>= 9.0.16-1),
  univention-management-console-server,
+ python-univention-appcenter,
  univention-directory-reports
 Provides: univention-directory-manager
 Replaces: univention-directory-manager (<< 9.0.0)
