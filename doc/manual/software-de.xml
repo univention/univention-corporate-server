@@ -166,6 +166,19 @@
 	</figure>
 
 	<para>
+		Mit <emphasis>Vote Apps</emphasis> gibt es eine spezielle Form von Apps im App Center. Hierbei
+		handelt es sich um Apps, für die im App Center abgestimmt werden kann. Die Abstimmungen helfen
+		Univention und dem potentiellen App Anbieter dabei, das Interesse für diese App festzustellen.
+		Vote Apps werden in der Regel nur für einen begrenzten Abstimmungszeitraum angezeigt. Dass Vote
+		Apps verfügbar sind, kann an der angezeigten Filteroption <guimenu>Vote Apps</guimenu>in der App
+		Center Übersicht erkannt werden.
+	</para>
+
+	<figure id="appcenter-details"><title>Beispiel Vote Apps in App Center Übersicht und Detailansicht</title>
+	<graphic scalefit="1" width="100%" fileref="illustrations44/vote_apps_de.png"/>
+	</figure>
+
+	<para>
 	  Einige Applikationen sind möglicherweise inkompatibel mit anderen Softwarepaketen aus
 	  UCS. So setzen beispielsweise die meisten Groupwarepakete voraus, dass der UCS-Mailstack
 	  deinstalliert ist. Jede Applikation prüft, ob inkompatible Versionen installiert sind und
