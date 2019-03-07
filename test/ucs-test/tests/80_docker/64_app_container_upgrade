@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test the container upgrade without a re-join
-## tags: [docker]
+## tags: [docker, SKIP]
 ## roles:
 ##  - domaincontroller_master
 ## exposure: dangerous
