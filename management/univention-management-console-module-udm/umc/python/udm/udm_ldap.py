@@ -202,6 +202,8 @@ class AppAttributes(object):
 							for _obj in search_objects('settings/extended_attribute', lo, pos, base, univentionUDMPropertyModule=module):
 								if obj.dn == _obj.dn:
 									continue
+								if _obj['disableUDMWeb']:
+									continue
 								attributes.append(_obj['CLIName'])
 								if _obj['tabAdvanced']:
 									group_name = _obj['tabName']
