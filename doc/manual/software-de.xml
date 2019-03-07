@@ -139,20 +139,26 @@
 	<para>
 	  Das Univention App Center kann über das UMC-Modul <emphasis>App Center</emphasis>
 	  aufgerufen werden. Es zeigt standardmäßig alle installierten sowie verfügbare
-	  Softwarekomponenten an. Mit <guimenu>Suchbegriff</guimenu> kann die Liste der
-	  angezeigten Applikationen eingeschränkt werden, außerdem können die Applikationen anhand
-	  der <guimenu>Kategorien</guimenu> geordnet werden.
+		Softwarekomponenten an. Mit <guimenu>Suchbegriff</guimenu> kann die Liste der angezeigten
+		Applikationen auf Suchbegriffe eingeschränkt werden. Außerdem können die Applikationen anhand
+		der <guimenu>Kategorien</guimenu> gefiltert werden. Weitere Filterkriterien sind die
+		<guimenu>App Badges</guimenu> und die <guimenu>App Lizenz</guimenu>. So ist auch eine
+		Kombination der Filter möglich. So kann die Ansicht beispielsweise auf Applikationen aus den
+		Kategorien <userinput>Bildung</userinput> oder <userinput>Office</userinput> eingeschränkt
+		werden. Um hieraus dann die <emphasis>Recommended Apps</emphasis> anzuzeigen, genügt die
+		Aktivierung des entsprechenden Filters.
 	</para>
 
 	<para>
-	  Klickt man auf eine der angezeigten Applikationen, werden weitergehende Details zu der
-	  Komponente angezeigt (u.a. Beschreibung, Hersteller, Ansprechpartner und ein
-	  Screenshot). Im Feld <guimenu>Benachrichtigung</guimenu> wird angezeigt, ob der
-	  Hersteller der Softwarekomponente bei der Installation/Deinstallation benachrichtigt wird.
-	  Informationen zur Lizenzierung können bei einigen Applikationen direkt über einen
-	  <guimenu>Kaufen</guimenu> Button in der unteren Bildleiste bezogen werden.
-	  Für alle anderen Applikationen muss der Hersteller der Applikation über die unter
-	  <guimenu>Kontakt</guimenu> angezeigte E-Mail-Adresse kontaktiert werden.
+		Klickt man auf eine der angezeigten Applikationen, werden weitergehende Details zu der
+		Komponente angezeigt (u.a. Beschreibung, Hersteller, Ansprechpartner und ein Screenshot). Im
+		Feld <guimenu>Benachrichtigung</guimenu> wird angezeigt, ob der Hersteller der
+		Softwarekomponente bei der Installation/Deinstallation benachrichtigt wird. Ein grobe
+		Einordnung der Lizenzierung kann unter <guimenu>Lizenz</guimenu> entnommen werden. Detaillierte
+		Informationen zur Lizenzierung können bei einigen Applikationen direkt über einen
+		<guimenu>Kaufen</guimenu> Button bezogen werden. Für alle anderen Applikationen wird die
+		Kontaktaufnahme mit dem Hersteller der Applikation über die unter <guimenu>Kontakt</guimenu>
+		angezeigte E-Mail-Adresse empfohlen.
 	</para>
 
 	<figure id="appcenter-details"><title>Details einer Applikation im App Center</title>
