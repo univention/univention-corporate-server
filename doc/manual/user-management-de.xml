@@ -65,18 +65,35 @@
 			Benutzer werden im UMC-Modul <emphasis>Benutzer</emphasis> verwaltet
 			(siehe auch <xref linkend="central:user-interface"/>).
         </para>
-        <para>
-          In der Grundeinstellung wird zum Anlegen eines Benutzers ein vereinfachter Assistent
-          angezeigt, der nur die wichtigsten Einstellungen abfragt. Durch einen Klick auf
-          <guimenu>Erweitert</guimenu> werden alle Attribute angezeigt. Der vereinfachte Assistent
-          kann deaktiviert werden, indem die &ucsUCRV;
-          <envar>directory/manager/web/modules/users/user/wizard/disabled</envar> auf
-          <literal>true</literal> gesetzt wird.
-        </para>
 		<figure id="user-create">
 			<title>Anlegen eines Benutzers in UMC</title>
 			<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/users_user_de.png"/>
 		</figure>
+		<para>
+			Über <guimenu>Weiter</guimenu> in <xref linkend="user-create"/> gelangt man auf die zweite Seite <xref linkend="user-password"/>, auf der dann das initiale Passwort gesetzt werden kann.
+		</para>
+		<figure id="user-password">
+			<title>Passwortvergabe für einen neuen Benutzer</title>
+			<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/users_password_de.png"/>
+		</figure>
+		<para>
+			Alternativ besteht bei installierter <foreignphrase>Self Service-App</foreignphrase> die Möglichkeit, das Setzen des Passworts dem Benutzer selbst zu überlassen.
+			Dafür ist dann eine externe E-Mail-Adresse anzugeben, die als Kontakt-E-Mail-Adresse registriert wird.
+			An diese erhält dann der Benutzer eine E-Mail mit einer Web-Adresse und einem <foreignphrase>Token</foreignphrase>, mit dem er sein Passwort setzen und seinen Zugang freischalten kann.
+			Siehe dazu auch <xref linkend="user-management:password-changes-by-users:self-service"/>.
+		</para>
+		<figure id="user-password-new">
+			<title>Initiales Benutzerpasswort</title>
+			<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/users_self-service_de.png"/>
+		</figure>
+        <para>
+          In der Grundeinstellung wird zum Anlegen eines Benutzers ein vereinfachter Assistent
+          angezeigt, der nur die wichtigsten Einstellungen abfragt. Durch einen Klick auf
+		  <guimenu>Erweitert</guimenu> in <xref linkend="user-create"/> werden alle Attribute angezeigt. Der vereinfachte Assistent
+          kann deaktiviert werden, indem die &ucsUCRV;
+          <envar>directory/manager/web/modules/users/user/wizard/disabled</envar> auf
+          <literal>true</literal> gesetzt wird.
+        </para>
 		<figure id="user-create-advanced">
 			<title>Erweiterte Benutzeransicht</title>
 			<graphic scalefit="1" width="90%" align="center" fileref="illustrations44/users_user_advanced_de.png"/>
@@ -843,7 +860,7 @@
 	</section>
 
     <section id="user-management:password-changes-by-users">
-        <title>Passwortwechsel durch Benutzer</title>
+        <title>Benutzer Selbstverwaltung</title>
 		<section id="user-management:Passwortwechsel_durch_Benutzer_ueber_die_UMC">
 			<title>Passwortwechsel über &ucsUMC;</title>
 			<para>
@@ -858,21 +875,56 @@
 			</para>
 		</section>
 		<section id="user-management:password-changes-by-users:self-service">
-			<title>Passwort-Verwaltung über <wordasword>Self Service-App</wordasword></title>
+			<title>Passwort-Verwaltung über <foreignphrase>Self Service-App</foreignphrase></title>
 			<para>
 				Durch die Installation der <wordasword>UCS-Komponente</wordasword> <guimenu>Self Service</guimenu>
 				über das <guimenu>App Center</guimenu> werden Benutzer dazu befähigt,
 				ihr Passwort ohne die Interaktion mit einem Administrator zu verwalten.
 			</para>
 			<para>
-				Die <wordasword>Self Service-App</wordasword> registriert einen Web-Dienst in dem <wordasword>Portal</wordasword>,
+				Die <foreignphrase>Self Service-App</foreignphrase> registriert einen Web-Dienst in dem <wordasword>Portal</wordasword>,
 				auf den über eine eigene Webseite zugegriffen werden kann:
 				<guimenu>Passwort ändern</guimenu>.
 				Sie erlaubt es Benutzern, unter Angabe ihres alten Passwortes ein neues Passwort
 				zu setzen, oder aber ihr vergessenes Passwort zurückzusetzen. Für das Zurücksetzen
-				des Passworts wird ein <wordasword>Token</wordasword> an eine vorher dafür registrierte
+				des Passworts wird ein <foreignphrase>Token</foreignphrase> an eine vorher dafür registrierte
 				Kontakt-E-Mail-Adresse gesendet, das dann auf der Webseite vom Benutzer einzugeben ist.
 			</para>
+		</section>
+		<section id="user-management:password-changes-by-users:contact-data">
+			<title>Benutzerprofilselbstverwaltung</title>
+			<para>
+				Am Benutzerkonto im LDAP Verzeichnisdienst können weitere personenbezogene Daten gespeichert werden.
+				Dies beinhaltet u.a. ein Bild, private Adressen und weitere Kontaktinformationen.
+				Standardmäßig können diese nur von Administratoren aktualisiert werden.
+				Alternativ können aber auch ausgewählte Felder für den Benutzer selber freigeschaltet werden.
+				Der kann diese Daten über die <foreignphrase>Self Service-App</foreignphrase> selber pflegen.
+			</para>
+			<figure id="user-self-service">
+				<title>Profilverwaltung</title>
+				<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/users_self-service_profile_de.png"/>
+			</figure>
+			<para>
+				Dafür müssen folgende zwei &ucsUCRV;n konfiguriert werden:<footnote><simpara>Beide Variablen müssen zueinander passen. Die Namen der Attribute und deren Zuordnung kann man über folgenden Aufruf erhalten: <command><![CDATA[python -c 'from univention.admin.handlers.users.user import mapping;print("\n".join(map("{0[0]:>30s} {0[1][0]:<30s}".format, sorted(mapping._map.items()))))']]></command></simpara></footnote>
+			</para>
+			<variablelist>
+				<varlistentry>
+					<term><envar>self-service/ldap_attributes</envar></term>
+					<listitem><simpara>
+						Über diese Variable werden die <emphasis>LDAP</emphasis> Attribute konfiguriert, die ein Benutzer selber an seinem Benutzerkonto modifizieren kann.
+						Die Namen der Attribute sind durch Komma zu trennen.
+						Diese Variable ist auf dem &ucsMaster; (und &ucsBackup;s) zu setzen.
+					</simpara></listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><envar>self-service/udm_attributes</envar></term>
+					<listitem><simpara>
+						Über diese Variable werden die <emphasis>UDM</emphasis> Attribute konfiguriert, die ein Benutzer modifizieren kann.
+						Die Namen der Attribute sind durch Komma zu trennen.
+						Diese Variable ist auf dem Rechnern zu setzen, auf denen die <foreignphrase>Self Service-App</foreignphrase> installiert ist.
+					</simpara></listitem>
+				</varlistentry>
+			</variablelist>
 		</section>
     </section>
 	<section id="users:faillog">
