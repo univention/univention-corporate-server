@@ -1,3 +1,9 @@
+univention-ldap (15.0.0-14) unstable; urgency=medium
+
+  * Bug #48801: Add univentionDataType to default LDAP index
+
+ -- Arvid Requate <requate@univention.de>  Thu, 07 Mar 2019 12:17:15 +0100
+
 univention-ldap (15.0.0-12) unstable; urgency=medium
 
   * Bug #41213: Adjust variable description wording for ldap/monitor

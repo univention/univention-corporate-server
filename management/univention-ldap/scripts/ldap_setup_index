@@ -290,6 +290,7 @@ RECOMMENDED_LDAP_INDEX = {
         'uniqueMember',
         # 'univentionAppID',  # Bug #39866
         'univentionCanonicalRecipientRewriteEnabled',
+        'univentionDataType',
         'univentionInventoryNumber',
         'univentionLicenseModule',
         'univentionLicenseObject',
