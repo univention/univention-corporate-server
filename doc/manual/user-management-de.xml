@@ -1201,24 +1201,26 @@ univention-directory-manager users/user
             <graphic scalefit="1" width="70%" align="center" fileref="illustrations44/user_activation_de.png" />
         </figure>
         <para>
-            Sobald eine App in der Umgebung installiert ist, die die
-            Benutzeraktivierung verwendet, erscheint sie mit Logo am
-            Benutzerobjekt im Reiter <guimenu>Apps</guimenu>. Mit einem Haken
-            in der Checkbox wird der Benutzer für die App aktiviert. Wenn noch
-            weitere Einstellungen für die App-Berechtigung gemacht werden
-            können, erscheint ein weiterer Reiter mit dem Namen der App, um
-            diese Parameter zu setzen. Die App Aktivierung und die Parameter
-            werden am Benutzerobjekt im LDAP Verzeichnisdienst gespeichert.
+            Sobald eine App in der UCS-Umgebung installiert ist, die die
+            Benutzeraktivierung verwendet, erscheint sie mit Logo am im Reiter
+            <guimenu>Apps</guimenu> des Benutzers im UMC Modul
+            <emphasis>Benutzer</emphasis>. Mit einem Haken in der Checkbox wird
+            der Benutzer für die App aktiviert. Wenn noch weitere Einstellungen
+            für die App-Berechtigung gemacht werden können, erscheint ein
+            zusätzlicher Reiter mit dem Namen der App, um diese Parameter zu
+            setzen. Die App Aktivierung und die Parameter werden am
+            Benutzerobjekt im LDAP-Verzeichnisdienst von UCS gespeichert.
         </para>
         <para>
             Um einem Benutzer die Berechtigung zur Nutzung einer App wieder zu
-            entziehen, genügt es, die Checkbox zu deaktivieren.
+            entziehen, genügt es, den Haken aus Checkbox zu entfernen.
         </para>
         <para>
             Wenn die App deinstalliert wird, wird die Benutzeraktivierung für
-            die App vom Reiter <guimenu>Apps</guimenu> am Benutzerobjekt wieder
-            entfernt. Gespeicherte Aktivierungen und Parameter bleiben auch
-            nach der Deinstallation der App im LDAP Verzeichnisdienst erhalten.
+            die App vom Reiter <guimenu>Apps</guimenu> des Benutzers im
+            UMC Modul entfernt. Gespeicherte Aktivierungen und
+            Parameter bleiben auch nach der Deinstallation der App am
+            Benutzerobjekt im LDAP-Verzeichnisdienst erhalten.
         </para>
     </section>
 </chapter>
