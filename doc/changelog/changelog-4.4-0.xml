@@ -406,7 +406,7 @@
 						These Apps can be voted for to get more insights whether users would want this App in the App Center (<u:bug>48472</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						The App Center is now able to handle Apps with install permissions. This describes App versions that can only be installed when the App has been bought from the Univention App Center store. (<u:bug>48624</u:bug>, <u:bug>48544</u:bug>, <u:bug>48127</u:bug>).
+						The App Center is now able to handle Apps with install permissions. This describes App versions that can only be installed when the App has been bought from the Univention App Center store (<u:bug>48624</u:bug>, <u:bug>48544</u:bug>, <u:bug>48127</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -597,7 +597,8 @@
 	<section id="changelog:lib">
 		<title>Univention base libraries</title>
 		<itemizedlist>
-			<listitem><simpara>The syntax class <classname>mailinglist_name</classname> was integrated into <filename>syntax.py</filename>  (<u:bug>48383</u:bug>).
+			<listitem><simpara>
+				The syntax class <classname>mailinglist_name</classname> was integrated into <filename>syntax.py</filename> (<u:bug>48383</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -667,11 +668,11 @@
 			<title>Univention self service</title>
 			<itemizedlist>
 				<listitem><simpara>
-						If the self service is installed, a daemon on the DC master now sends an invitation email to users that were created with respective settings in the UMC. (<u:bug>48446</u:bug>)
+						If the self service is installed, a daemon on the &ucsMaster; now sends an invitation email to users that were created with respective settings in the UMC (<u:bug>48446</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						It is now possible to define attributes a self service user can modify with the &ucsUCRV; variable <envar>self-service/ldap_attributes</envar>
-						and the &ucsUCRV; variable <envar>self-service/udm_attributes</envar> (<u:bug>48447</u:bug>, <u:bug>48710</u:bug>)
+						It is now possible to define attributes a self service user can modify with the &ucsUCRV;s <envar>self-service/ldap_attributes</envar>
+						and <envar>self-service/udm_attributes</envar> (<u:bug>48447</u:bug>, <u:bug>48710</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -745,13 +746,13 @@
 			<itemizedlist>
 				<listitem><simpara>
 					Network access servers for example wireless access points can now be configured with &ucsUDM;.
-					Any existing <filename>clients.conf</filename> is not converted and can still be used to configure clients manually. (<u:bug>25935</u:bug>)
-					Switch to Python <classname>passlib</classname> for DES encryption. (<u:bug>48460</u:bug>)
-					Move <filename>clients.conf.example</filename> into the right folder. (<u:bug>46561</u:bug>)
+					Any existing <filename>clients.conf</filename> is not converted and can still be used to configure clients manually (<u:bug>25935</u:bug>).
+					Switch to Python <classname>passlib</classname> for DES encryption (<u:bug>48460</u:bug>).
+					Move <filename>clients.conf.example</filename> into the right folder (<u:bug>46561</u:bug>).
 					Improved logging for <package>univention-radius-ntlm-auth</package> which is used by FreeRADIUS to authenticate users.
 					Log entries are written to <filename>radius_ntlm_auth.log</filename>.
-					The log level can be adjusted with the &ucsUCRV; variable <envar>freeradius/auth/helper/ntlm/debug</envar>.
-					Internal changes to enable the &ucsUAS; radius implementation to build upon the <package>univention-radius</package> package. (<u:bug>46018</u:bug>)
+					The log level can be adjusted with the &ucsUCRV; <envar>freeradius/auth/helper/ntlm/debug</envar>.
+					Internal changes to enable the &ucsUAS; RADIUS implementation to build upon the <package>univention-radius</package> package (<u:bug>46018</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -887,7 +888,7 @@
 					Accounts for service principals are now created with UDM (<u:bug>47955</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Activation of UCS@school specific LDB modules has been moved from <filename>97libunivention-ldb-modules.inst</filename> to <filename>96univention-samba4.inst</filename> to simplify package structure (<u:bug>47955</u:bug>).
+					Activation of &ucsUAS; specific LDB modules has been moved from <filename>97libunivention-ldb-modules.inst</filename> to <filename>96univention-samba4.inst</filename> to simplify package structure (<u:bug>47955</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -922,7 +923,7 @@
 		<title>Other changes</title>
 		<itemizedlist>
 			<listitem><simpara>
-				The package <package>univention-errata-level</package> has been updated to reset the &ucsUCRV; <envar>version/erratalevel</envar> to <literal>0</literal>. (<u:bug>48654</u:bug>).
+				The package <package>univention-errata-level</package> has been updated to reset the &ucsUCRV; <envar>version/erratalevel</envar> to <literal>0</literal> (<u:bug>48654</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				For security reasons all join scripts now use a password file (<u:bug>46969</u:bug>).
