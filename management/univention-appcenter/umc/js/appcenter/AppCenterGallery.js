@@ -70,7 +70,7 @@ define([
 				iconClass = 'appVoteForApp';
 			} else if (item.update_available || this._update_available_in_domain(item)) {
 				if (item.candidate_needs_install_permissions) {
-					iconClass = 'appPaidUpdateIcon';
+					iconClass = 'appUpdatePermissionsIcon';
 				} else {
 					iconClass = 'appUpdateIcon';
 				}
