@@ -86,11 +86,11 @@ define([
 
 	var isRunning = function(item) {
 		// isRunning contains state==PAUSED to enable VNC Connections to pause instances
-		return (item.state == 'RUNNING' || item.state == 'IDLE' || item.state == 'PAUSED') && item.node_available && !isPausedForMigration(item);
+		return (item.state === 'RUNNING' || item.state === 'IDLE' || item.state === 'PAUSED') && item.node_available && !isPausedForMigration(item);
 	};
 
 	var isPaused = function(item) {
-		return (item.state == 'PAUSED') && item.node_available;
+		return (item.state === 'PAUSED') && item.node_available;
 	};
 
 	var isPausedForMigration = function(item) {
@@ -104,7 +104,7 @@ define([
 	};
 
 	var canStart = function(item) {
-		return item.node_available && (item.state != 'RUNNING' && item.state != 'IDLE' && !isTerminated(item) && item.state != 'PENDING') && !isPausedForMigration(item) && !isPausedForSnapshot(item);
+		return item.node_available && (item.state !== 'RUNNING' && item.state !== 'IDLE' && !isTerminated(item) && item.state !== 'PENDING') && !isPausedForMigration(item) && !isPausedForSnapshot(item);
 	};
 
 	var canVNC = function(item) {
@@ -112,15 +112,15 @@ define([
 	};
 
 	var isTerminated = function(item) {
-		return item.state == 'TERMINATED';
+		return item.state === 'TERMINATED';
 	};
 
 	var isEC2 = function(item) {
-		return item.u_connection_type == 'EC2';
+		return item.u_connection_type === 'EC2';
 	};
 
 	var isOpenStack = function(item) {
-		return item.u_connection_type == 'OpenStack';
+		return item.u_connection_type === 'OpenStack';
 	};
 
 	return declare("umc.modules.uvmm", [ Module ], {
@@ -197,7 +197,9 @@ define([
 			if (this.openDomain) {
 				this._domainPage = new DomainPage({
 					isClosable: true,
-					moduleWidget: this
+					moduleWidget: this,
+					addNotification: lang.hitch(this, 'addNotification'),
+					addWarning: lang.hitch(this, 'addWarning')
 				});
 				this._domainPage.on('closeTab', lang.hitch(this, 'closeDomainPage'));
 				this.addChild(this._domainPage);
@@ -388,7 +390,7 @@ define([
 
 			if (this._tree) {
 				on.once(this._tree, 'load', lang.hitch(this, function() {
-					if (this._tree._getFirst() && this._tree._getFirst().item.id == 'cloudconnections') {
+					if (this._tree._getFirst() && this._tree._getFirst().item.id === 'cloudconnections') {
 						this._searchForm.getWidget('type').set('value', 'instance');
 					}
 					this.own(this._tree.watch('path', lang.hitch(this, function(attr, oldVal, newVal) {
@@ -396,7 +398,7 @@ define([
 							return;
 						}
 						var searchType = this._searchForm.getWidget('type').get('value');
-						if (searchType == 'domain' || searchType == 'instance') {
+						if (searchType === 'domain' || searchType === 'instance') {
 							this.filter();
 						}
 					})));
@@ -410,7 +412,7 @@ define([
 							this.filter();
 						}
 					}));
-					if (this._tree._getLast().item.type == 'root') {
+					if (this._tree._getLast().item.type === 'root') {
 						dialog.alert(_('A connection to a virtualization infrastructure could not be established. You can either connect to a public or private cloud. Alternatively you can install a hypervisor on this or on any other UCS server in this domain. Further details about the virtualization can be found in <a target="_blank" href="http://docs.univention.de/manual-4.2.html#uvmm:chapter">the manual</a>.'));
 					}
 				}));
@@ -450,7 +452,7 @@ define([
 		vncLink: function( ids, items ) {
 			array.forEach(items, function(item) {
 				var id = item.id;
-				var uuid = id.slice(id.indexOf('#') + 1);
+				var uuid = encodeURIComponent(id.slice(id.indexOf('#') + 1));
 				var port = window.location.port ? ':' + window.location.port : '';
 				var title = encodeURIComponent(item.label + '@' + item.nodeName);
 				var url = window.location.protocol + '//' + window.location.host + port + '/univention-novnc/vnc_auto.html?port=6080&path=?token=' + uuid + '&title=' + title;
@@ -483,7 +485,7 @@ define([
 
 		_migrate: function(ids, items) {
 			if (items.length > 1) {
-				console.error("Migrating multiple machines is not suported at the moment");
+				console.error("Migrating multiple machines is not supported at the moment");
 				return;
 			}
 			if (this._isMigrating(items[0])) {
@@ -565,9 +567,9 @@ define([
 			_dialog.show();
 		},
 
-		_migrateDomain: function( ids, items ) {
+		_migrateDomain: function(ids, domains) {
 			var _dialog = null, form = null;
-			var unavailable = array.some( items, function( domain ) {
+			var unavailable = array.some(domains, function( domain ) {
 				return domain.node_available === false;
 			} );
 
@@ -614,13 +616,28 @@ define([
 					widgets: [ {
 						type: Text,
 						name: 'warning',
-							content: _( '<p>For fail over the virtual machine can be migrated to another physical server re-using the last known configuration and all disk images. This can result in <strong>data corruption</strong> if the images are <strong>concurrently used</strong> by multiple running machines! Therefore the failed server <strong>must be blocked from accessing the image files</strong>, for example by blocking access to the shared storage or by disconnecting the network.</p><p>When the server is restored, all its previous virtual machines will be shown again. Any duplicates have to be cleaned up manually by migrating the machines back to the server or by deleting them. Make sure that shared images are not delete.</p>' )
+						visible: unavailable,
+						content: _( '<p>For fail over the virtual machine can be migrated to another physical server re-using the last known configuration and all disk images. This can result in <strong>data corruption</strong> if the images are <strong>concurrently used</strong> by multiple running machines! Therefore the failed server <strong>must be blocked from accessing the image files</strong>, for example by blocking access to the shared storage or by disconnecting the network.</p><p>When the server is restored, all its previous virtual machines will be shown again. Any duplicates have to be cleaned up manually by migrating the machines back to the server or by deleting them. Make sure that shared images are not delete.</p>' )
+					}, {
+						type: Text,
+						name: 'warning_ram',
+						visible: false,
+						depends: ['name'],
+						content: '<p>' + _('<b>Warning:</b> Memory size exceeds currently available RAM on node. Migrating the VM may degrade the performance of the host and all other VMs.') + '</p>'
 					}, {
 						name: 'name',
 						type: ComboBox,
 						label: _('Please select the destination server:'),
 						staticValues: validHosts,
-						sortStaticValues: true
+						sortStaticValues: true,
+						onChange: function(value, widgets) {
+							array.forEach(widgets.name.staticValues, function(host) {
+								if (host.id === value) {
+									widgets.warning_ram.set('visible', (host.memPhysical - host.memUsed <= domains[0].mem) || true);
+									return false;
+								}
+							});
+						}
 					}],
 					buttons: [{
 						name: 'cancel',
@@ -639,10 +656,9 @@ define([
 							}
 						})
 					}],
-					layout: [ 'warning', 'name' ]
+					layout: [ 'warning', 'warning_ram', 'name' ]
 				});
 
-				form._widgets.warning.set( 'visible', unavailable );
 				_dialog = new Dialog({
 					title: _('Migrate domain'),
 					content: form,
@@ -876,17 +892,13 @@ define([
 			});
 
 			var _finished = lang.hitch(this, function(values) {
-				this.standby(true);
-				tools.umcpCommand('uvmm/domain/add', {
+				this.standbyDuring(tools.umcpCommand('uvmm/domain/add', {
 					nodeURI: values.nodeURI,
 					domain: values
 				}).then(lang.hitch(this, function() {
 					_cleanup();
 					this.moduleStore.onChange();
-					this.standby(false);
-				}), lang.hitch(this, function() {
-					this.standby(false);
-				}));
+				})));
 			});
 
 			wizard = new DomainWizard({
@@ -1243,6 +1255,12 @@ define([
 						{ id : 'clone', label : _( 'Inherit MAC addresses' ) },
 						{ id : 'auto', label : _( 'Generate new MAC addresses' ) }
 					]
+				}, {
+					type: Text,
+					name: 'warning_ram',
+					visible: false,  // FIXME
+					depends: ['name'],
+					content: '<p>' + _('<b>Warning:</b> Memory size exceeds currently available RAM on node. Cloning the VM may degrade the performance of the host and all other VMs.') + '</p>'
 				} ],
 				buttons: [{
 					name: 'cancel',
@@ -1757,9 +1775,9 @@ define([
 				var progressBar = new ProgressBar({
 					label: lang.replace('{used} / {available}', {
 						used: types.prettyCapacity(item.memUsed),
-						available: types.prettyCapacity(item.memAvailable)
+						available: types.prettyCapacity(item.memPhysical)
 					}),
-					maximum: item.memAvailable,
+					maximum: item.memPhysical,
 					value: item.memUsed
 				});
 				this._grid.own(progressBar);

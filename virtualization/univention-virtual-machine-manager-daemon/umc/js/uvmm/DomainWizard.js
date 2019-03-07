@@ -58,48 +58,43 @@ define([
 		_driveGrid: null,
 		_driveContainer: null,
 
+		autoValidate: false,  // TODO: in the future we can activate this, when umc.widgets.Wizard/Form focuses the first invalid widget
+
 		_loadValuesOfProfile: function() {
-			// put limit on memory
-			try {
-				var nodeURI = this.getWidget('nodeURI');
-				var maxMem = nodeURI.store.getValue(nodeURI.item, 'memAvailable');
-				this.getWidget('maxMem').get('constraints').max = maxMem;
-			} catch (err) { }
-
 			// query the profile settings
-			this.standby(true);
-			var profileDN = this.getWidget('profileDN').get('value');
-			tools.umcpCommand('uvmm/profile/get', {
-				profileDN: profileDN
+			var wd = this.getWidget('profile');
+			this._profile = wd.store.getValue(wd.item, "data");
+
+			// pre-set the form fields
+			this.getWidget('name').set('value', this._profile.name_prefix || '');
+			this.getWidget('name').set('pattern', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[^./][^/]*$' : '.*');
+			this.getWidget('maxMem').set('value', types.parseCapacity(this._profile.ram || '4 MiB'));
+			this.getWidget('vcpus').set('value', this._profile.cpus);
+			this.getWidget('vnc').set('value', this._profile.vnc);
+
+			// update page header
+			this._pages.general.set('headerText', _('Create a virtual machine (profile: %s)', this._profile.name));
+		},
+
+		_loadNodeValues: function() {
+			this.standbyDuring(tools.umcpCommand('uvmm/node/query', {
+				nodePattern: this.nodeURI
 			}).then(lang.hitch(this, function(data) {
-				// we got the profile...
-				this._profile = data.result;
-				this._profile.profileDN = profileDN;
+				if (data.result.length) {
+					var node = data.result[0];
 
-				// pre-set the form fields
-				var nodeURI = this.getWidget('nodeURI').get('value');
-				this.getWidget('general', 'nodeURI').set('value', nodeURI);
-				this.getWidget('profile').set('value', profileDN);
-				this.getWidget('name').set('value', this._profile.name_prefix || '');
-				this.getWidget('name').set('pattern', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[^./][^/]*$' : '.*');
-				this.getWidget('maxMem').set('value', types.parseCapacity(this._profile.ram || '4 MiB'));
-				this.getWidget('vcpus').set('value', this._profile.cpus);
-				this.getWidget('vnc').set('value', this._profile.vnc);
+					var wm = this.getWidget('general', 'maxMem');
+					wm.set('constraints', lang.mixin({}, wm.get('constraints'), {max: node.memPhysical}));
+					wm.set('softMax', node.memPhysical - node.memUsed);
 
-				// update page header
-				this._pages.general.set('headerText', _('Create a virtual machine (profile: %s)', this._profile.name));
-
-				this.standby(false);
-			}), lang.hitch(this, function() {
-				// fallback... switch off the standby animation
-				this.standby(false);
-			}));
+					types.setCPUs(node.cpus, this.getWidget('general', 'vcpus'));
+				}
+			})));
 		},
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
-			var nodeURI = this.nodeURI;
 			// grid for the drives
 			this._driveStore = new Observable(new Memory({
 				idProperty: '$id$'
@@ -123,38 +118,14 @@ define([
 			// mixin the page structure
 			lang.mixin(this, {
 				pages: [{
-/*					name: 'profile',
-					headerText: _('Create a virtual machine'),
-					helpText: _('By selecting a profile for the virtual machine most of the settings will be set to default values. In the following steps some of these values might be modified. After the creation of the virtual machine all parameters, extended settings and attached drives can be adjusted. It should be ensured that the profile is for the correct architecture as this option can not be changed afterwards.'),
-					widgets: [{
-						name: 'nodeURI',
-						type: ComboBox,
-						label: _('Physical server'),
-						dynamicValues: types.getNodes,
-						value: nodeURI
-					}, {
-						name: 'profileDN',
-						type: ComboBox,
-						label: _('Profile'),
-						depends: 'nodeURI',
-						dynamicValues: types.getProfiles
-					}]
-				}, {*/
 					name: 'general',
 					headerText: _('Create a virtual machine'),
 					helpText: _('The following settings were read from the selected profile and can be modified now.'),
 					widgets: [{
-						name: 'nodeURI',
-						type: HiddenInput,
-						value: nodeURI
-					}, {
 						name: 'profile',
-						type: HiddenInput
-					}, {
-						name: 'profileDN',
 						type: ComboBox,
 						label: _('Profile'),
-						dynamicOptions: {nodeURI: nodeURI},
+						dynamicOptions: {nodeURI: this.nodeURI},
 						dynamicValues: types.getProfiles,
 						onChange: lang.hitch(this, '_loadValuesOfProfile')
 					}, {
@@ -173,13 +144,13 @@ define([
 						name: 'maxMem',
 						type: MemoryTextBox,
 						required: true,
+						softMax: 4*1024*1024*1024*1024,
+						softMaxMessage: _('<b>Warning:</b> Memory size exceeds currently available RAM on node. Starting the VM may degrade the performance of the host and all other VMs.'),
 						label: _('Memory (default unit MB)')
 					}, {
 						name: 'vcpus',
 						type: ComboBox,
-						label: _('Number of CPUs'),
-						dynamicOptions: {nodeURI: nodeURI},
-						dynamicValues: types.getCPUs
+						label: _('Number of CPUs')
 					}, {
 						name: 'vnc',
 						type: CheckBox,
@@ -197,6 +168,8 @@ define([
 					callback: lang.hitch(this, 'onCancel')
 				}]
 			});
+
+			this._loadNodeValues();
 		},
 
 		buildRendering: function() {
@@ -214,7 +187,7 @@ define([
 		getFooterButtons: function() {
 			var buttons = this.inherited(arguments);
 			return array.filter(buttons, function(button) {
-				if (button.name == 'cancel') {
+				if (button.name === 'cancel') {
 					return false;
 				}
 				return true;
@@ -223,52 +196,13 @@ define([
 
 		next: function(pageName) {
 			var nextName = this.inherited(arguments);
-			/*if (pageName == 'profile') {
-				// put limit on memory
-				try {
-					var nodeURI = this.getWidget('nodeURI');
-					var maxMem = nodeURI.store.getValue(nodeURI.item, 'memAvailable');
-					this.getWidget('maxMem').get('constraints').max = maxMem;
-				} catch (err) { }
-
-				// query the profile settings
-				this.standby(true);
-				var profileDN = this.getWidget('profileDN').get('value');
-				tools.umcpCommand('uvmm/profile/get', {
-					profileDN: profileDN
-				}).then(lang.hitch(this, function(data) {
-					// we got the profile...
-					this._profile = data.result;
-					this._profile.profileDN = profileDN;
-
-					// pre-set the form fields
-					var nodeURI = this.getWidget('nodeURI').get('value');
-					this.getWidget('general', 'nodeURI').set('value', nodeURI);
-					this.getWidget('profile').set('value', profileDN);
-					this.getWidget('name').set('value', this._profile.name_prefix || '');
-					this.getWidget('name').set('pattern', this._profile.name_prefix ? '^(?!' + this._profile.name_prefix + '$)[^./][^/]*$' : '.*');
-					this.getWidget('maxMem').set('value', types.parseCapacity(this._profile.ram || '4 MiB'));
-					this.getWidget('vcpus').set('value', this._profile.cpus);
-					this.getWidget('vnc').set('value', this._profile.vnc);
-
-					// update page header
-					this._pages.general.set('headerText', _('Create a virtual machine (profile: %s)', this._profile.name));
-
-					this.standby(false);
-				}), lang.hitch(this, function() {
-					// fallback... switch off the standby animation
-					this.standby(false);
-				}));
-			}
-			else*/ if (pageName == 'general') {
+			if (pageName === 'general') {
 				// update the domain info for the drive grid
-				array.forEach( [ 'name', 'maxMem' ], lang.hitch( this, function( widgetName ) {
-					if ( ! this.getWidget( widgetName ).isValid() ) {
-						this.getWidget( widgetName ).focus();
-						nextName = null;
-						return false;
-					}
-				} ) );
+				array.forEach(this.getPage(pageName)._form.getInvalidWidgets(), lang.hitch(this, function(widgetName) {  // TODO: remove when this.autoValidate
+					this.getWidget(pageName, widgetName).focus();
+					nextName = pageName;
+					return false;
+				}));
 
 				if ( null !== nextName ) {
 					this._driveGrid.domain = this.getValues();
@@ -280,8 +214,8 @@ define([
 		},
 
 		getValues: function() {
-			var values = this._pages.general._form.gatherFormValues();
-			values.nodeURI = this.getWidget('nodeURI').get('value');
+			var values = this._pages.general._form.get('value');
+			values.nodeURI = this.nodeURI;
 			values.hyperv = true;
 			values.vnc_remote = true;
 			values.disks = this._driveStore.data;

@@ -32,10 +32,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: univention-management-console-module-uvmm 2.0.40-1\n"
+"Project-Id-Version: univention-management-console-module-uvmm 8.0.1-5\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2015-02-02 13:33+0100\n"
-"PO-Revision-Date: 2013-05-23 09:17+0100\n"
+"PO-Revision-Date: 2019-03-07 15:53+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "Language: de\n"
@@ -126,12 +126,10 @@ msgid "Unknown physical server %(nodeURI)s"
 msgstr "Unbekannter physikalischer Server %(nodeURI)s"
 
 #: umc/python/uvmm/profiles.py:163
-msgid "Unknown profile"
-msgstr "Unbekanntes Profil"
-
 #: umc/python/uvmm/domains.py:388
-msgid "Unknown profile given"
-msgstr "Unbekanntes Profil wurde angegeben"
+#, python-format
+msgid "Unknown profile %s"
+msgstr "Unbekanntes Profil %s"
 
 #: umc/python/uvmm/__init__.py:149
 msgid "Unknown query type"

@@ -72,14 +72,14 @@ univention-directory-manager container/cn create "$@" \
 
 # create machine profiles
 
-# determin kernel image
+# determine kernel image
 kernel=$(readlink -e /vmlinuz)
 
 # Debian-installer does no longer set locale/keymap. Prepare locale_keymap out of locale_default (Bug 37551)
 locale_keymap=${locale_default,,}
 locale_keymap=${locale_keymap/_/-}
 
-# determin keyboard layout
+# determine keyboard layout
 while [ -n "$locale_keymap" ]
 do
 	for virttech in kvm qemu

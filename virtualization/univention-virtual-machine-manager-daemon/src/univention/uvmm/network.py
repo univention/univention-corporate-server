@@ -49,7 +49,7 @@ class NetworkError(TranslatableException):
 
 
 def network_is_active(conn, name):
-	"""Check if the network with the given name ist currently active."""
+	"""Check if the network with the given name is currently active."""
 	try:
 		return name in conn.listNetworks()
 	except libvirt.libvirtError as ex:
