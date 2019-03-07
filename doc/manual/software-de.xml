@@ -189,10 +189,8 @@
 	</para>
 
 	<para>
-		Technisch wird ein weiterer &ucsMember; als Docker Container gestartet, in dem die App dann installiert ist.
-		Dieser &ucsMember; ist insofern eigenständig, als dass dort auch Errata- und Release-Updates installiert werden müssen.
-		Für den &ucsMember; wird im LDAP ein zugehöriges Rechner-Objekt angelegt, das über die &ucsUMC; bearbeitet werden kann.
-		Darüber lässt sich dann z.B. die Richtlinien für Updates ändern.
+		Technisch wird die App als Docker Container gestartet und als &ucsMember; in die UCS Domäne
+		gejoint.  Für den &ucsMember; wird im LDAP ein zugehöriges Rechner-Objekt angelegt.
 	</para>
 
 	<para>
@@ -206,9 +204,7 @@
 		Dazu kann folgender Befehl ausgeführt werden (hier am Beispiel der fiktiven App <application>demo-docker-app</application>):
 	</para>
 	<programlisting language="sh">
-docker exec \
-	-it "$(ucr get appcenter/apps/<replaceable>demo-docker-app</replaceable>/container)" \
-	/bin/bash
+		univention-app shell demo-docker-app
 	</programlisting>
 	<para>
 		<wordasword>Docker Apps</wordasword> lassen sich über das UMC-Modul weiter konfigurieren.

@@ -185,11 +185,9 @@
 		In these cases, the application (and its direct environment) is encapsulated from the rest and both security as well as the compatibility with other applications increased.
 	</para>
 
-	<para>
-		From a technical perspective, another &ucsMember; is started as the Docker container in which the app is then installed.
-		This &ucsMember; is self-contained to the point that errata and release updates also need to be installed there.
-		A corresponding computer object is created for the &ucsMember; in the LDAP directory and can be edited via the &ucsUMC;.
-		This can then be used to change the update policies, for example.
+	<para> From a technical perspective, the app is started as Docker container and joined into the
+		UCS domain as &ucsMember;. A corresponding computer object is created for the &ucsMember; in the
+		LDAP directory.
 	</para>
 
 	<para>
@@ -203,9 +201,7 @@
 		This can be done by running the following command (using the fictitious app <application>demo-docker-app</application> as an example in this case):
 	</para>
 	<programlisting language="sh">
-docker exec \
-	-it "$(ucr get appcenter/apps/<replaceable>demo-docker-app</replaceable>/container)" \
-	/bin/bash
+univention-app shell demo-docker-app
 	</programlisting>
 
 	<para>
