@@ -163,11 +163,11 @@
 	</figure>
 
 	<para>
-		With <emphasis>Vote Apps</emphasis> there is a special form of Apps in the App Center. Voting
-		helps Univention and the potential app provider to determine the interest in this app. Vote
-		apps are usually only displayed for a limited voting period. That Vote Apps are available, can
-		be recognized by the shown <guimenu>Vote Apps</guimenu> filter option in the App Center
-		overview.
+		With <emphasis>Vote Apps</emphasis> there is a special form of Apps in the App Center that do
+		not install anything on the UCS system. Voting helps Univention and the potential app provider
+		to determine the interest in this app. Vote apps are usually only displayed for a limited voting
+		period. That Vote Apps are available, can be recognized by the shown <guimenu>Vote
+			Apps</guimenu> filter option in the App Center overview.
 	</para>
 
 	<figure id="appcenter-vote-apps"><title>Example Vote Apps in App Center overview and detail view</title>
