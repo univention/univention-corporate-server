@@ -855,6 +855,9 @@
 				<listitem><simpara>
 					Small layout adjustments for the updated UMC design (<u:bug>48859</u:bug>, <u:bug>46198</u:bug>, <u:bug>48471</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					Add RAM overcommitment protection through &ucsUCRV; UCR variable <envar>uvmm/overcommit/reserved</envar> (<u:bug>48901</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
