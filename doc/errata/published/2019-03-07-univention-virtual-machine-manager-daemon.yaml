@@ -9,3 +9,5 @@ desc: |
  * Add RAM overcommitment protection through UCR variable
    'uvmm/overcommit/reserved'.
 bug: [48098]
+erratum: 452
+announced: 2019-03-07
