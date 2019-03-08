@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.10-5) unstable; urgency=medium
+
+  * Bug #48839: Hide widgets that shall not be visible in UMC
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 08 Mar 2019 02:07:24 +0100
+
 univention-management-console-module-udm (9.0.10-4) unstable; urgency=medium
 
   * Bug #48839: Hide widgets that shall not be visible in UMC
