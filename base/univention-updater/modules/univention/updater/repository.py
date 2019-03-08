@@ -139,7 +139,8 @@ def gen_indexes(base, version):  # type: (str, UCS_Version) -> None
         if not os.path.exists(src):
             continue
         lines = []
-        with gzip.open(src, 'rb') as f_src, open(os.path.join(base, 'all', 'Packages'), 'w') as f_all, open(os.path.join(base, arch, 'Packages'), 'w') as f_arch:
+        names = [os.path.join(base, name, 'Packages') for name in ('all', arch)]
+        with gzip.open(src, 'rb') as f_src, open(names[0], 'w') as f_all, open(names[1], 'w') as f_arch:
             for line in f_src:
                 if line.startswith(A):
                     arch = line[len(A):].strip()
@@ -150,6 +151,10 @@ def gen_indexes(base, version):  # type: (str, UCS_Version) -> None
                     f = f_all if arch == 'all' else f_arch
                     f.write(''.join(lines))
                     del lines[:]
+
+        for name in names:
+            gzip_file(name)
+
     print 'done'
 
 

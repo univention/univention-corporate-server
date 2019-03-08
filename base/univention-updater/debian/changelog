@@ -1,3 +1,9 @@
+univention-updater (14.0.0-16) unstable; urgency=low
+
+  * Bug #48910: Create compressed Packages.gz files
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 08 Mar 2019 16:57:09 +0100
+
 univention-updater (14.0.0-15) unstable; urgency=medium
 
   * Bug #48808: Register apps in at job after postup
