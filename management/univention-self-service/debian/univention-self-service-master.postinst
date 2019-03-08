@@ -39,7 +39,7 @@ if dpkg --compare-versions "$2" lt-nl 4.0.0; then
 	ucr set self-service/ldap_attributes=""
 fi
 
-ucr set self-service/ldap_attributes?"jpegPhoto,mail,telephoneNumber,roomNumber,departmentNumber,street,postalCode,l,st,homePhone,mobile,homePostalAddress"
+ucr set self-service/ldap_attributes?"jpegPhoto,mail,telephoneNumber,roomNumber,departmentNumber,st,homePhone,mobile,homePostalAddress"
 
 invoke-rc.d univention-directory-listener crestart
 
