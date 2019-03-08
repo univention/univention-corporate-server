@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-1) unstable; urgency=medium
+
+  * Bug #48915: add UCR variable for self-service to meta.json
+
+ -- Florian Best <best@univention.de>  Fri, 08 Mar 2019 11:26:26 +0100
+
 univention-management-console (11.0.3-6) unstable; urgency=medium
 
   * Bug #48723: adjust text-color on colored backgrounds
