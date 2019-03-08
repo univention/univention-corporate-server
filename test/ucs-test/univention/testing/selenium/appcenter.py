@@ -65,7 +65,7 @@ class AppCenter(object):
 		self.selenium.click_button(_('Install'))
 
 		self.selenium.wait_for_text(_('Installing'))
-		self.selenium.wait_for_text(_('Installed'), timeout=900)
+		self.selenium.wait_for_text(_('installed'), timeout=900)
 		self.selenium.wait_until_all_standby_animations_disappeared()
 
 	def uninstall_app(self, app):
