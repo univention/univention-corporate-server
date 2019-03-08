@@ -1037,8 +1037,6 @@ run_workarounds_before_starting_the_tests ()
 }
 
 sa_bug47030 () {
-	sa-update -v || true
-	sleep 15
 	sa-update -v --install /root/1854818.tar.gz || true
 	sa-compile || true
 	service spamassassin restart || true
