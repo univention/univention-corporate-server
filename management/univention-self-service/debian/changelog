@@ -1,3 +1,9 @@
+univention-self-service (4.0.3-1) unstable; urgency=medium
+
+  * Bug #48915: hide page if not enabled. fix size of widgets
+
+ -- Florian Best <best@univention.de>  Fri, 08 Mar 2019 11:23:42 +0100
+
 univention-self-service (4.0.2-3) unstable; urgency=medium
 
   * Bug #48446: Fix error handling

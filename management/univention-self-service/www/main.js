@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define,require*/
 
 define([
 	"dojo/_base/lang",
@@ -100,13 +100,16 @@ define([
 		_addSubPages: function(page_list) {
 			array.forEach(page_list, lang.hitch(this, function(page_name){
 				var module = this.subpages[page_name];
-				module.standby = this._standby;
 				if (module) {
+					module.standby = this._standby;
 					var content = module.getContent();
 
 					// insert navigation bar before first child of the returned page content
 					var navHeader = put(content.firstChild, '- div.umcHeaderPage');
 					array.forEach(page_list, function(ipage){
+						if (ipage === 'user_attributes' && tools.isFalse(tools.status('umc/self-service/profiledata/enabled'))) {
+							return;
+						}
 						var imodule = this.subpages[ipage];
 						if (!imodule || ipage === 'new_password') {
 							return;

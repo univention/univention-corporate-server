@@ -73,6 +73,9 @@ define([
 		},
 
 		getContent: function() {
+			if (tools.isFalse(tools.status('umc/self-service/profiledata/enabled'))) {
+				return;
+			}
 			if (!this.contentContainer) {
 				this.contentContainer = put('div.contentWrapper');
 				put(this.contentContainer, 'h2', this.getTitle());
@@ -233,6 +236,7 @@ define([
 		_prepareWidgets: function(props) {
 			array.forEach(props, function(iprop) {
 				iprop.disabled = iprop.readonly || !iprop.editable;
+				iprop.size = 'Two';
 			});
 
 			return props;
