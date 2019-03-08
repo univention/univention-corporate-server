@@ -115,10 +115,7 @@ LongDescriptionDe=Das ist mein Attribut. Und es ist dufte!
 """ % (additional_name)
 				app.add_script(attributes=attributes_content)
 				user = test_app(appcenter, app, udm, activation_name, attrs={additional_name: 'Hello'})
-				verify_ldap_object('cn=%s,cn=%s,cn=custom attributes,cn=univention,%s' % (option_name, app_name, ucr.get('ldap/base')), {
-					'univentionUDMOptionIsApp': ['1'],
-					'univentionUDMOptionModule': ['users/user'],
-				})
+				verify_ldap_object('cn=%s,cn=%s,cn=custom attributes,cn=univention,%s' % (option_name, app_name, ucr.get('ldap/base')), should_exist=False)
 				verify_ldap_object('cn=%s,cn=%s,cn=custom attributes,cn=univention,%s' % (additional_name, app_name, ucr.get('ldap/base')), {
 					'univentionUDMPropertyShortDescription': ['This is my attribute'],
 					'univentionUDMPropertyLongDescription': ['This is my attribute. And it rocks!'],
@@ -156,10 +153,7 @@ DescriptionDe=Das ist mein Attribut. Und es ist dufte!
 				attribute_dn = 'cn=%s,cn=custom attributes,cn=univention,%s' % (activation_name, ucr.get('ldap/base'))
 				user = test_app(appcenter, app, udm, activation_name, attribute_dn, 'This is my custom activation', {additional_name: 'Hello'})
 				verify_ldap_object(user, {activation_name: ['TRUE'], additional_name: ['Hello']})
-				verify_ldap_object('cn=%s,cn=%s,cn=custom attributes,cn=univention,%s' % (option_name, app_name, ucr.get('ldap/base')), {
-					'univentionUDMOptionIsApp': ['1'],
-					'univentionUDMOptionModule': ['users/user'],
-				})
+				verify_ldap_object('cn=%s,cn=%s,cn=custom attributes,cn=univention,%s' % (option_name, app_name, ucr.get('ldap/base')), should_exist=False)
 
 
 if __name__ == '__main__':
