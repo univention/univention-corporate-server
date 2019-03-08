@@ -531,7 +531,7 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
         <title>Create a Multi Container App</title>
         <para>
             Starting with UCS 4.3-2 errata 345 Univention App Center supports
-            apps that consist of multiple docker images. It uses <ulink
+            apps that consist of multiple Docker images. It uses <ulink
                 url="https://docs.docker.com/compose/overview/">Docker
                 Compose</ulink>, a tool for defining and running
             multi-container Docker applications. The heart of such applications
@@ -940,7 +940,7 @@ univention-app dev-use-test-appcenter
             <para>
                 During app development or for problem analysis it is necessary
                 to debug an app. If an app installation fails, the App Center
-                removes the docker container and thus prevents the developer to
+                removes the Docker container and thus prevents the developer to
                 have a deeper look into what happened. With the following
                 command the App Center will not throw away a failed app
                 installation. The container is kept on the system.
@@ -2607,7 +2607,7 @@ fi
                 </listitem>
                 <listitem>
                     <simpara>
-                        Authentication is possible for domain users with a <userinput>primary mail address</userinput>.
+                        Authentication is possible for domain users with a primary mail address.
                     </simpara>
                 </listitem>
                 <listitem>
@@ -2678,7 +2678,7 @@ ucr set dovecot/autostart='no'
         <section id="mail-integration:local-mail-docker-host">
             <title>Use local mail on Docker host</title>
             <para>
-                With a stopped postfix on the docker host, mail can no longer
+                With a stopped postfix on the Docker host, mail can no longer
                 be delivered locally. If that is a problem, the following setup
                 can help.
             </para>
