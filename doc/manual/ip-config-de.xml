@@ -2284,31 +2284,25 @@ dansguardian -g
 	<section id="ip-config:radius">
 		<title>RADIUS</title>
 		<para>
-			Die RADIUS App erhöht die Sicherheit für mit UCS verwaltete IT-Infrastrukturen
+			Die <package>RADIUS</package> App erhöht die Sicherheit für mit UCS verwaltete IT-Infrastrukturen
 			durch Zugangskontrollen zu WiFi Netzwerken für Benutzer, Gruppen und Endgeräte
 			über das <ulink
-			url="https://de.wikipedia.org/wiki/Remote_Authentication_Dial-In_User_Service">RADIUS
-			Protokoll</ulink>. Die Konfiguration erfolgt über Blacklisten und Whitelisten
+			url="https://de.wikipedia.org/wiki/Remote_Authentication_Dial-In_User_Service">RADIUS-Protokoll</ulink>. Die Konfiguration erfolgt über Blacklisten und Whitelisten
 			direkt am Benutzer-, Gruppen- oder Endgeräte-Objekt im UCS Managementsystem.
 			Registrierte Benutzer werden mit ihrem üblichen Domänenpasswort
-			authentisiert, so dass unter anderem Bring Your Own Device Konzepte ermöglicht
+			authentisiert, so dass unter anderem <foreignphrase>Bring Your Own Device Konzepte</foreignphrase> ermöglicht
 			werden.
 		</para>
 		<section id="ip-config:radius:installation">
 			<title>Installation</title>
 			<para>
-				RADIUS steht über das App Center (siehe <xref linkend="software:appcenter"/>)
+				<package>RADIUS</package> steht über das App Center (siehe <xref linkend="software:appcenter"/>)
 				zur Verfügung und kann über das entsprechende &ucsUMC; Modul App Center
 				installiert werden. Die App kann auf mehreren Systemen installiert werden. Nach
 				der Installation startet die App einen <ulink
-				url="http://freeradius.org/">FreeRADIUS</ulink> Server. Clients (z.B. Access
-				Points) können den Server via RADIUS kontaktieren und Netzwerkzugangsanfragen
+					url="http://freeradius.org/">FreeRADIUS</ulink> Server. <foreignphrase>Authenticators</foreignphrase> (z.B. <foreignphrase>Access
+				Points</foreignphrase>) können den Server via RADIUS kontaktieren und Netzwerkzugangsanfragen
 				prüfen.
-			</para>
-			<para>
-				Die RADIUS App kann auch auf UCS@school Systemen installiert werden. In diesem
-				Fall kann der Netzwerkzugang unabhängig von Internetregeln oder
-				Computerraum-Einstellungen für Benutzer und Gruppen geregelt werden.
 			</para>
 		</section>
 		<section id="ip-config:radius:configuration">
@@ -2342,29 +2336,70 @@ dansguardian -g
 					(entweder direkt oder über eine der Gruppen).
 				</para>
 			</section>
-			<section id="ip-config:radius:configuration:access-points">
-				<title>Access Points</title>
+			<section id="ip-config:radius:configuration:access-point-registration">
+				<title><foreignphrase>Access Points</foreignphrase> verwalten</title>
 				<para>
-					Alle Access Points (Netzwerkzugangspunkte) müssen in der Konfigurationsdatei
-					<filename>/etc/freeradius/3.0/clients.conf</filename> eingetragen sein. Für jeden
-					Access Point sollte ein zufälliges Passwort erzeugt werden. (Zum Beispiel über
-					den Befehl <command>makepasswd</command>.) Der <literal>shortname</literal>
-					kann frei gewählt werden. Beispiel für einen Eintrag für einen Access Point:
+					Alle <foreignphrase>Access Points</foreignphrase> (Netzwerkzugangspunkte) müssen dem RADIUS Server bekannt sein.
+					Ein <foreignphrase>Access Point</foreignphrase> lässt sich entweder über die Datei
+					<filename>/etc/freeradius/3.0/clients.conf</filename> konfigurieren oder domänenweit
+					per &ucsUMC;. Für jeden <foreignphrase>Access Point</foreignphrase> sollte ein zufälliges, gemeinsames Geheimnis
+					erzeugt werden. (Zum Beispiel über den Befehl <command>makepasswd</command>.)
+					Der Name kann frei gewählt werden.
+				</para>
+				<para>
+					Beispiel für einen Eintrag in der <filename>clients.conf</filename> Datei:
 <programlisting>
-client 192.168.100.101 {
-	secret = a9RPAeVG
-	shortname = AP01
+client AP01 {
+    secret = a9RPAeVG
+    ipaddr = 192.168.100.101
 }
 </programlisting>
-					Die Access Points müssen so konfiguriert sein, dass sie 802.1x ("WPA
-					Enterprise") Authentisierung verwenden. Und die "RADIUS Server" Adresse sollte
-					auf die Adresse des Servers gesetzt sein, auf dem die RADIUS App installiert
-					ist. Das Passwort muss auf den Wert für <literal>secret</literal> aus dem
-					Eintrag in der <filename>clients.conf</filename> gesetzt sein.
+				</para>
+				<para>
+					Um <foreignphrase>Access Points</foreignphrase> per &ucsUMC; zu verwalten,
+					muss für den <foreignphrase>Access Point</foreignphrase> ein Rechnerobjekt existieren.
+					Dieses Rechnerobjekt benötigt die Option <emphasis>RADIUS-Authenticator</emphasis>
+					(<xref linkend="ip-config:radius:option"/>).
+					Für einen <foreignphrase>Access Point</foreignphrase> bietet sich ein
+					IP-Managedclient als Rechnerobjekt an. Im <guimenu>RADIUS</guimenu> Reiter des Objekts
+					lassen sich, nach hinzufügen der Option, die Eigenschaften des
+					<foreignphrase>Access Points</foreignphrase> festlegen
+					(<xref linkend="ip-config:radius:authenticator"/>).
+					Es müssen mindestens die IP-Adresse am Rechnerobjekt und ein gemeinsamer Schlüssel
+					gesetzt sein.
+					Die Eigenschaften NAS-Type und Virtueller-Server müssen in der Regel nicht
+					verändert werden. <foreignphrase>Access Points</foreignphrase>, welche per &ucsUMC; konfiguriert sind, gelten für alle RADIUS Server in der Domäne.
+				</para>
+				<note>
+					Bei der Konfiguration über die &ucsUMC; werden die <foreignphrase>Access Points</foreignphrase>
+					über den &ucsUDL; in die Datei <filename>/etc/freeradius/3.0/clients.univention.conf</filename>
+					geschrieben und der RADIUS-Server neu gestartet. Um Änderungen zusammenzufassen, geschieht
+					dies verzögert (etwa 15 Sekunden). Neue <foreignphrase>Access Points</foreignphrase>
+					haben erst nach diesem Neustart Zugriff auf den RADIUS-Server.
+				</note>
+				<para>
+					<figure id="ip-config:radius:option">
+						<title>Setzen der RADIUS-Option</title>
+						<graphic fileref="illustrations44/radius_option_DE.png" align="center" scalefit="1" width="75%"/>
+					</figure>
+				</para>
+				<para>
+					<figure id="ip-config:radius:authenticator">
+						<title>RADIUS an einem Computerobjekt einstellen</title>
+						<graphic fileref="illustrations44/radius_authenticator_DE.png" scalefit="1" width="100%"/>
+					</figure>
 				</para>
 			</section>
-			<section id="ip-config:radius:configuration:clients">
-				<title>Clients</title>
+			<section id="ip-config:radius:configuration:access-points_clients">
+				<title><foreignphrase>Access Points</foreignphrase> und Clients einstellen</title>
+				<para>
+					Die <foreignphrase>Access Points</foreignphrase> müssen so konfiguriert sein, dass sie 802.1x ("WPA
+					Enterprise") Authentisierung verwenden. Außerdem sollte die "RADIUS Server" Adresse
+					auf die Adresse des Servers gesetzt sein, auf dem die <package>RADIUS</package> App installiert
+					ist. Das Passwort muss auf den Wert des gemeinsamen Schlüssels aus der &ucsUMC;, bzw. des
+					<literal>secret</literal> aus dem Eintrag in der <filename>clients.conf</filename>,
+					gesetzt sein.
+				</para>
 				<para>
 					WiFi Clients müssen so konfiguriert sein, dass sie <emphasis>WPA</emphasis> mit
 					<emphasis>PEAP</emphasis> und <emphasis>MSCHAPv2</emphasis> für die
@@ -2374,6 +2409,11 @@ client 192.168.100.101 {
 		</section>
 		<section id="ip-config:radius:debugging">
 			<title>Fehlersuche</title>
+			<para>
+				Die <package>RADIUS</package> App verfügt über ein Log unter <filename>/var/log/univention/radius_ntlm_auth.log</filename>.
+				Die Ausführlichkeit des Logs lässt sich über die &ucsUCRV; <envar>freeradius/auth/helper/ntlm/debug</envar> steuern.
+				Der <package>FreeRADIUS-Server</package> loggt nach <filename>/var/log/freeradius/radius.log</filename>.
+			</para>
 			<para>
 				Das Werkzeug <package>univention-radius-check-access</package> kann zur
 				Untersuchung der aktuellen Zugangsregeln für einen bestimmten Benutzer und/oder

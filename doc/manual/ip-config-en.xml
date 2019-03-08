@@ -2606,7 +2606,7 @@ dansguardian -g
   <section id="ip-config:radius">
 	<title>RADIUS</title>
 	<para>
-		The RADIUS app increases the security for UCS managed IT infrastructures by
+		The <package>RADIUS</package> app increases the security for UCS managed IT infrastructures by
 		controlling the access to the wireless network for users, groups and endpoint
 		devices via <ulink url="https://en.wikipedia.org/wiki/RADIUS">RADIUS
 		protocol</ulink>. The configuration is done via black and white lists and
@@ -2617,10 +2617,10 @@ dansguardian -g
 	  <section id="ip-config:radius:installation">
 		  <title>Installation</title>
 		  <para>
-			RADIUS is available through the App Center (see <xref linkend="software:appcenter"/>)
+			  <package>RADIUS</package> is available through the App Center (see <xref linkend="software:appcenter"/>)
 			and can be installed using the corresponding &ucsUMC; module App Center. It can be
 			installed on multiple machines. After the installation it runs a <ulink
-			url="http://freeradius.org/">FreeRADIUS</ulink> server. Clients (e.g.  access
+			url="http://freeradius.org/">FreeRADIUS</ulink> server. Authenticators (e.g.  access
 			points) can contact via RADIUS to check network access requests.
 		  </para>
 		  <para>
@@ -2659,37 +2659,81 @@ dansguardian -g
 				too.
 			  </para>
 		  </section>
-		  <section id="ip-config:radius:configuration:access-points">
-			  <title>Access points</title>
+		  <section id="ip-config:radius:configuration:access-points-registration">
+			  <title>Access point administration</title>
 			  <para>
-				All access points must be registered in the configuration file
-				<filename>/etc/freeradius/3.0/clients.conf</filename>. For each access point a
-				random password should be created. (For example using the command
-				<command>makepasswd</command>). The <literal>shortname</literal> can be chosen
-				at will. Example entry for an access point:
+				  All access points must be known to the RADIUS server. An access point can either
+				  be configured in the file <filename>/etc/freeradius/3.0/clients.conf</filename>
+				  or through the &ucsUMC;. For each access point a random shared secret should be created.
+				  (For example using the command <command>makepasswd</command>).
+				  The <literal>shortname</literal> can be chosen at will.
+				</para>
+				<para>
+				  Example entry for an access point:
 <programlisting>
-client 192.168.100.101 {
-	secret = a9RPAeVG
-	shortname = AP01
+client AP01 {
+    secret = a9RPAeVG
+    ipaddr = 192.168.100.101
 }
 </programlisting>
+				</para>
+				<para>
+					To configure an access point using the &ucsUMC; a computer object must exists for it.
+					This object needs the <emphasis>RADIUS-Authenticator</emphasis>	option to be set
+					(<xref linkend="ip-config:radius:option"/>).
+					An IP-Managedclient is a good choice as a computer object for access points.
+					The RADIUS settings can be edited on the <guimenu>RADIUS</guimenu> tab of the object
+					(<xref linkend="ip-config:radius:authenticator"/>).
+					At least the IP address and the shared secret must be configured. The virtual server
+					and NAS type options usually do not need to be changed.
+					Access points which are configured through the &ucsUMC; are for all
+					RADIUS servers in the domain.
+				</para>
+				<note>
+					If access points are configured with the &ucsUMC; the &ucsUDL; will write them into
+					the file <filename>/etc/freeradius/3.0/clients.univention.conf</filename> and
+					restart the RADIUS server. To be able to collect multiple changes this happens with
+					a slight delay (around 15 seconds). New access points can only access the RADIUS server
+					after this restart.
+				</note>
+				<para>
+					<figure id="ip-config:radius:option">
+						<title>RADIUS option</title>
+						<graphic fileref="illustrations44/radius_option_EN.png" align="center" scalefit="1" width="75%"/>
+					</figure>
+				</para>
+				<para>
+					<figure id="ip-config:radius:authenticator">
+						<title>RADIUS authenticator options</title>
+						<graphic fileref="illustrations44/radius_authenticator_EN.png" scalefit="1" width="100%"/>
+					</figure>
+				</para>
+		</section>
+		  <section id="ip-config:radius:configuration:access-points_clients">
+			<title>Access point and client configuration</title>
+			<para>
 				The access points must then be configured to use 802.1x ("WPA Enterprise")
 				authentication. And the "RADIUS server" address should be set to the address of
 				the server, where the RADIUS app is installed. The password must be set to the
 				<literal>secret</literal> from the <filename>clients.conf</filename> entry for
 				that access point.
 			  </para>
-		  </section>
-		  <section id="ip-config:radius:configuration:clients">
-			  <title>Clients</title>
 			  <para>
 				WiFi clients have to be configured to use <emphasis>WPA</emphasis> with
 				<emphasis>PEAP</emphasis> and <emphasis>MSCHAPv2</emphasis> for authentication.
 			  </para>
-		  </section>
+			</section>
 	  </section>
 	  <section id="ip-config:radius:debugging">
 		  <title>Debugging</title>
+			<para>
+				The <package>RADIUS</package> app has a log file under
+				<filename>/var/log/univention/radius_ntlm_auth.log</filename>.
+				The log verbosity can the controlled via the &ucsUCRV;
+				<envar>freeradius/auth/helper/ntlm/debug</envar>.
+				The <package>FreeRADIUS-Server</package> uses the log file:
+				<filename>/var/log/freeradius/radius.log</filename>.
+			</para>
 		  <para>
 			The tool <package>univention-radius-check-access</package> can be used to evaluate the current
 			access policy for a given user and/or station ID (MAC address). It can be
