@@ -2543,6 +2543,166 @@ service my-app-daemon restart
 	    </para>
 	</section>
 -->
+
+    <section id="mail-integration">
+        <title>Mail integration</title>
+        <para>
+            Univention Corporate Server (UCS) provides a complete mailstack
+            with the <guimenu>Mailstack</guimenu> in the App Center. It
+            includes Postfix as MTA for SMTP and Dovecot for IMAP. If the app
+            relies on an existing mail infrastructure, it is best practice to
+            use the Mailstack app and require its installation in the UCS
+            domain. This can be configured in the App Provider portal for the
+            app under <guimenu>Software</guimenu> in the section
+            <guimenu>Required Apps</guimenu> by selecting the
+            <userinput>Mailserver</userinput> and setting <userinput>Installed
+                in domain</userinput>. With this configuration the App Center
+            on the system administrator's UCS system will check, if the
+            Mailserver app is installed somewhere in the domain and asks the
+            administrator to install it accordingly.
+        </para>
+        <para>
+            Next the app needs to be configured to use the UCS SMTP and IMAP
+            servers. This is done in the Join Script (see <xref linkend="installation:joinscript" />).
+            The following snippet gives an example what should be included in
+            the Join Script:
+            <programlisting>
+...
+eval "$(univention-config-registry shell)"
+...
+# use the first IMAP server as smtp and imap server
+mailserver="$(univention-ldapsearch -LLL univentionService=IMAP cn | grep "^cn: " | sed s/"^cn: "// | head -n1)"
+if [ -n "$mailserver" ]; then
+        mailserver="$mailserver.$domainname"
+
+        # for Docker Apps the helper script joinscript_run_in_container
+        # can be used to run commands in the container
+        . /usr/share/univention-appcenter/joinscripthelper.sh
+        joinscript_run_in_container my-app-setup --config imap="$mailserver"
+        joinscript_run_in_container my-app-setup --config smtp="$mailserver"
+        joinscript_run_in_container my-app-setup --config sieve="$mailserver"
+fi
+...
+            </programlisting>
+            The snipped searches the UCS LDAP directory for the host with the
+            service IMAP and sets the FQDN of this host as IMAP, SMTP and SIEVE
+            server for the app. This is a good default and may not be correct
+            for some setups.
+        </para>
+        <para>
+            The best practice mail settings when the UCS mailstack is used, are the following.
+        </para>
+        <para>
+            IMAP:
+            <itemizedlist>
+                <listitem>
+                    <simpara>
+                        TLS
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        Port 143
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        Authentication is possible for domain users with a <userinput>primary mail address</userinput>.
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        The user's uid or the primary mail address are both valid for authentication.
+                    </simpara>
+                </listitem>
+            </itemizedlist>
+        </para>
+
+        <para>
+            SMTP:
+            <itemizedlist>
+                <listitem>
+                    <simpara>
+                        TLS
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        Port 587 (submission) for authentication
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        Auth Login or Auth Plain
+                    </simpara>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <section id="mail-integration:with-docker-apps">
+            <title>Provide mail with Docker Apps</title>
+            <para>
+                For the intended app it may be necessary to provide SMTP and
+                IMAP with a custom setup for the app. To provide SMTP and/or
+                IMAP services in a Docker App, these services have to be
+                stopped on the Docker host. This can be done in the App's
+                preinst Docker script, see <xref linkend="installation:preinst"
+                    />. Example:
+                <programlisting><![CDATA[
+#!/bin/bash
+
+# stop imap/smtp on docker host
+test -e /etc/init.d/postfix && service postfix stop
+test -e /etc/init.d/dovecot && service dovecot stop
+ucr set postfix/autostart='no'
+ucr set dovecot/autostart='no'
+                ]]></programlisting>
+                To map SMTP and/or IMAP ports from the container to the host to
+                be able to use the Docker host as IMAP/SMTP server exclusive
+                ports for the container have to be set to the relevant ports
+                (e.g. 110, 143, 993, 995, 587, 25, 465, 4190 for pop3(s),
+                imap(s), smtp(s), submission and sieve). See section <xref
+                    linkend="create-app-with-docker:ports" /> on how to set an
+                exclusive port.
+            </para>
+            <para>
+                Firewall exceptions for these ports are create automatically.
+            </para>
+            <para>
+                Best practice is to at least map the imap data store to the
+                Docker host to provide a separation of data and container
+                (important for migration to Docker and Docker image updates).
+                See section <xref linkend="create-app-with-docker:volumes" />.
+            </para>
+        </section>
+
+        <section id="mail-integration:local-mail-docker-host">
+            <title>Use local mail on Docker host</title>
+            <para>
+                With a stopped postfix on the docker host, mail can no longer
+                be delivered locally. If that is a problem, the following setup
+                can help.
+            </para>
+
+            <para>
+                Install the "extremely simple MTA" ssmtp and configure this MTA
+                to use the localhost (our Docker container is listening on
+                localhost:25).
+                <programlisting>
+univention-install --yes ssmtp
+# add mailhub=localhost:25 in to /etc/ssmtp/ssmtp.conf
+                </programlisting>
+            </para>
+            <para>
+                Now configure postfix in the Docker container to deliver mails
+                from the Docker host locally by adding the FQDN of the Docker
+                host to mydestination:
+                <programlisting>
+ucr set mail/postfix/mydestination="\$myhostname, localhost.\$mydomain, localhost, $DOCKER_HOST_NAME"
+                </programlisting>
+            </para>
+        </section>
+    </section>
+
 </chapter>
 
 
