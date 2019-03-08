@@ -1039,11 +1039,10 @@ run_workarounds_before_starting_the_tests ()
 sa_bug47030 () {
 	sa-update -v || true
 	sleep 15
-	sa-update -v || true
 	sa-update -v --install /root/1854818.tar.gz || true
 	sa-compile || true
-	service spamassassin restart
-	service amavis restart
+	service spamassassin restart || true
+	service amavis restart || true
 }
 
 # vim:set filetype=sh ts=4:
