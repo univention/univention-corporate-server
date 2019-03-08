@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-1) unstable; urgency=medium
+
+  * Bug #48839: allow attribute:option syntax for app.umc_options_attributes
+
+ -- Florian Best <best@univention.de>  Fri, 08 Mar 2019 13:59:02 +0100
+
 univention-appcenter (8.0.10-1) unstable; urgency=medium
 
   * Bug #48919: display app details on installed apps again
