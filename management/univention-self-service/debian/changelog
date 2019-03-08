@@ -1,4 +1,4 @@
-univention-self-service (4.0.3-2) unstable; urgency=medium
+univention-self-service (4.0.3-3) unstable; urgency=medium
 
   * Bug #48915: Enable profiledata feature for new installations, disable for
     updates. Configure UCR self-service/ldap_attributes accordingly
