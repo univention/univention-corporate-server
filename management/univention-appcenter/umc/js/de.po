@@ -1524,6 +1524,9 @@ msgstr "{0} Pakete werden installiert / aktualisiert"
 msgid "{0} packages will be removed"
 msgstr "{0} Pakete werden deinstalliert"
 
+msgid "Details"
+msgstr "Details"
+
 #~ msgid ""
 #~ "<p>This App meets all <a target='_blank' href='https://wiki.univention.de/"
 #~ "index.php/Criteria_Recommended_Apps'>Univention's quality criteria</a> "

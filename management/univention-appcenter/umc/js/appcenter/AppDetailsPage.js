@@ -385,10 +385,9 @@ define([
 			if (isAppInstalled) {
 				this._renderAppUsage(detailsContainerMain);
 				this._renderInstallationManagement(detailsContainerMain);
-			} else {
-				this._renderDescription(detailsContainerMain);
-				this._renderThumbnails(detailsContainerMain, detailsPane);
 			}
+			this._renderDescription(detailsContainerMain, isAppInstalled);
+			this._renderThumbnails(detailsContainerMain, detailsPane);
 
 			var sidebarContainer = ContainerWidget({
 				'class': 'col-xs-12 col-md-4'
@@ -505,7 +504,15 @@ define([
 			parentContainer.own(this._installedAppsGrid);
 		},
 
-		_renderDescription: function(parentContainer) {
+		_renderDescription: function(parentContainer, isAppInstalled) {
+			if (isAppInstalled) {
+				var header = new Text({
+					content: _('Details'),
+					'class': 'mainHeader'
+				});
+				parentContainer.addChild(header);
+				parentContainer.own(header);
+			}
 			var descriptionContainer = new ContainerWidget({});
 			domClass.add(domConstruct.create('div', {
 				innerHTML: this.app.longDescription  // no HTML escape!
