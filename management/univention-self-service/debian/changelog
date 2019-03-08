@@ -1,3 +1,10 @@
+univention-self-service (4.0.3-2) unstable; urgency=medium
+
+  * Bug #48915: Enable profiledata feature for new installations, disable for
+    updates. Configure UCR self-service/ldap_attributes accordingly
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 08 Mar 2019 12:25:08 +0100
+
 univention-self-service (4.0.3-1) unstable; urgency=medium
 
   * Bug #48915: hide page if not enabled. fix size of widgets
