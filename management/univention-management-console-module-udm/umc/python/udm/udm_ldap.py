@@ -121,6 +121,7 @@ class AppAttributes(object):
 			MODULE.process('Loading AppAttributes...')
 			cache = {}
 			from univention.appcenter.app_cache import AllApps
+
 			def search_objects(_module, _lo, _pos, _base='', **kwargs):
 				# reimplement because the App Center function re-initializes
 				# the modules which makes some problems with UCR defined widgets
@@ -152,6 +153,7 @@ class AppAttributes(object):
 					apps[app.id] = app
 			for app in apps.itervalues():
 				for attribute in app.umc_options_attributes:
+					attribute, option_name = (attribute.split(':', 1) * 2)[:2]
 					objs = search_objects('settings/extended_attribute', lo, pos, CLIName=attribute)
 					for obj in objs:
 						for module in obj['module']:
@@ -190,13 +192,14 @@ class AppAttributes(object):
 							default = int(obj['default'] == boolean_values[0])
 							attributes = []
 							layout = []
-							option_def[obj['CLIName']] = {
+							option_def[option_name] = {
 								'label': group_name or tab_name,
 								'description': short_description,
 								'default': default,
 								'boolean_values': boolean_values,
 								'attributes': attributes,
 								'layout': layout,
+								'attribute_name': obj['CLIName'],
 							}
 							base = dn2str(str2dn(obj.dn)[1:])
 							for _obj in search_objects('settings/extended_attribute', lo, pos, base, univentionUDMPropertyModule=module):
@@ -276,7 +279,7 @@ class AppAttributes(object):
 		ret = []
 		if obj:
 			for option_name, option_def in cls.data_for_module(obj.module).iteritems():
-				if obj[option_name] == option_def['boolean_values'][0]:
+				if obj[option_def['attribute_name']] == option_def['boolean_values'][0]:
 					ret.append(option_name)
 		return ret
 
@@ -338,7 +341,7 @@ class AppAttributes(object):
 		attrs_to_remove = []
 		for option_name, option_def in cls.data_for_module(module).iteritems():
 			option_def = copy.deepcopy(option_def)
-			attrs_to_remove.append(option_name)
+			attrs_to_remove.append(option_def['attribute_name'])
 			attrs_to_remove.extend(option_def['attributes'])
 		for _layout in layout:
 			cls._filter_attrs(_layout, attrs_to_remove)
@@ -647,7 +650,7 @@ class UDM_Module(object):
 				for option_name, option_def in AppAttributes.data_for_module(self.name).iteritems():
 					if option_name in options:
 						options.remove(option_name)
-						ldap_object[option_name] = option_def['boolean_values'][0]
+						ldap_object[option_def['attribute_name']] = option_def['boolean_values'][0]
 				obj.options = options
 				del ldap_object['$options$']
 			if '$policies$' in ldap_object:
@@ -710,9 +713,9 @@ class UDM_Module(object):
 				for option_name, option_def in AppAttributes.data_for_module(self.name).iteritems():
 					if option_name in options:
 						options.remove(option_name)
-						ldap_object[option_name] = option_def['boolean_values'][0]
+						ldap_object[option_def['attribute_name']] = option_def['boolean_values'][0]
 					else:
-						ldap_object[option_name] = option_def['boolean_values'][1]
+						ldap_object[option_def['attribute_name']] = option_def['boolean_values'][1]
 				obj.options = options
 				MODULE.info('Setting new options to %s' % str(obj.options))
 				del ldap_object['$options$']

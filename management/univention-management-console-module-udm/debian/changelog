@@ -1,3 +1,10 @@
+univention-management-console-module-udm (9.0.11-1) unstable; urgency=medium
+
+  * Bug #48839: use attribute:option syntax for
+    app.umc_options_attributes
+
+ -- Florian Best <best@univention.de>  Fri, 08 Mar 2019 14:00:09 +0100
+
 univention-management-console-module-udm (9.0.10-5) unstable; urgency=medium
 
   * Bug #48839: Hide widgets that shall not be visible in UMC
