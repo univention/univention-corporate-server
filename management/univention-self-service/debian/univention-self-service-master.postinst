@@ -36,10 +36,10 @@ eval "$(univention-config-registry shell)"
 
 if dpkg --compare-versions "$2" lt-nl 4.0.0; then
 	# On update from UCS 4.3, disable profile data management for users
-	ucr set self-service/ldap_attributes=""
+	ucr set umc/self-service/profiledata/enabled=false
 fi
-
-ucr set self-service/ldap_attributes?"jpegPhoto,mail,telephoneNumber,roomNumber,departmentNumber,st,homePhone,mobile,homePostalAddress"
+ucr set umc/self-service/profiledata/enabled?true \
+        self-service/ldap_attributes?"jpegPhoto,mail,telephoneNumber,roomNumber,departmentNumber,st,homePhone,mobile,homePostalAddress"
 
 invoke-rc.d univention-directory-listener crestart
 
