@@ -48,6 +48,9 @@ def handler(dn, new, old, command):
 	if not listener.configRegistry.is_true('umc/self-service/invitation/enabled', True):
 		return
 
+	if not listener.configRegistry.get('server/role', 'undefined') == 'domaincontroller_master':
+		return
+
 	if new and not old and command == 'a':
 		filename = os.path.join(cache_dir, new.get('uid')[0] + '.send')
 		ud.debug(ud.LISTENER, ud.PROCESS, '%s: trigger selfservice invitation for %s' % (name, dn))
