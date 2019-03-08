@@ -460,7 +460,7 @@ def create_extended_option(option, app, lo, pos):
 
 def create_option_icon(app):
 	__, __, options = get_extended_attributes(app)
-	options = set([option.icon for option in options] + [attribute.split(':', 1)[-1] for attribute in app.umc_options_attributes])
+	options = set([option.icon for option in options] + ['%s.svg' % (attribute.split(':', 1)[-1],) for attribute in app.umc_options_attributes])
 	for option in options:
 		icon = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/%s' % (option,)
 		if os.path.exists(icon) or os.path.islink(icon):
