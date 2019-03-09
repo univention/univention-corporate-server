@@ -1632,4 +1632,62 @@ apt-get dselect-upgrade
 	</para>
 </section>
 
+<section id="domain:admindiary">
+	<title>Protocol of activities in the domain</title>
+	<para>
+		The <foreignphrase>Admin Diary</foreignphrase> app provides the facility to log important events happening in the domain.
+		This includes among others:
+	</para>
+	<itemizedlist>
+		<listitem><simpara>
+			Creation, modification and deletion of users
+		</simpara></listitem>
+		<listitem><simpara>
+			Creation, modification and deletion of objects using &ucsUDM;
+		</simpara></listitem>
+		<listitem><simpara>
+			Installation and deinstallation of apps
+		</simpara></listitem>
+		<listitem><simpara>
+			Server password changes
+		</simpara></listitem>
+	</itemizedlist>
+	<figure id="domain-ldap:adminndiary:list">
+		<title>View of events in<phrase> min</phrase> Diary</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations44/admindiary-list_en.png"/>
+	</figure>
+	<para>
+		<xref linkend="domain-ldap:adminndiary:list"/> shows, how events are shown in the &ucsUMC;.
+		The displayed entries are by default grouped by weak and can be filtered further through the search field.
+		<xref linkend="domain-ldap:adminndiary:detail"/> shows the dialog with details information, which open when an entry is selected from the list.
+		The dialog shows further details about then who and when of the event.
+		Moreover there is the possibility to comment each event.
+	</para>
+	<figure id="domain-ldap:adminndiary:detail">
+		<title>Detail view  in <phrase>Admin Diary</phrase></title>
+		<graphic scalefit="1" width="80%" fileref="illustrations44/admindiary-detail_en.png"/>
+	</figure>
+	<para>
+		The app consists of two components:
+	</para>
+	<variablelist>
+		<varlistentry>
+			<term><phrase>Admin Diary</phrase> backend</term>
+			<listitem><simpara>
+				The backend must be installed at least — most often exactly — once in the domain.
+				It includes a customization for <package>rsyslog</package> and also a database, which defaults to PostgreSQL.
+				As an alternative MariaDB or MySQL can be used.
+				Further details on that can be found in this <ulink url="https://help.univention.com/t/admin-diary-how-to-seperate-frontend-and-backend/11331">separate document</ulink>.
+			</simpara></listitem>
+		</varlistentry>
+		<varlistentry>
+			<term><phrase>Admin Diary</phrase> frontend</term>
+			<listitem><simpara>
+				Likewise the frontend must be installed at least once, but more installations are also possible.
+				The frontend includes the &ucsUMC; module, which is used to show and comment the entries.
+			</simpara></listitem>
+		</varlistentry>
+	</variablelist>
+</section>
+
 </chapter>

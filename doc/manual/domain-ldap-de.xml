@@ -1666,5 +1666,62 @@ apt-get dselect-upgrade
 	</para>
 </section>
 
-</chapter>
+<section id="domain:admindiary">
+	<title>Protokollierung von Aktivitäten in der Domäne</title>
+	<para>
+		Über die <foreignphrase>Admin Diary</foreignphrase>-App besteht die Möglichkeit, wichtige Ereignisse in der Domäne zu protokollieren.
+		Dazu gehören unter anderem:
+	</para>
+	<itemizedlist>
+		<listitem><simpara>
+			Das Anlegen, Verändern oder Löschen von Benutzern
+		</simpara></listitem>
+		<listitem><simpara>
+			Das Anlegen, Verändern oder Löschen von Objekten über &ucsUDM;
+		</simpara></listitem>
+		<listitem><simpara>
+			Das Installieren oder Deinstallieren von Apps
+		</simpara></listitem>
+		<listitem><simpara>
+			Server-Passwort-Änderungen
+		</simpara></listitem>
+	</itemizedlist>
+	<figure id="domain-ldap:adminndiary:list">
+		<title>Ansicht der Ereignisse im <foreignphrase>Admin Diary</foreignphrase></title>
+		<graphic scalefit="1" width="80%" fileref="illustrations44/admindiary-list_de.png"/>
+	</figure>
+	<para>
+		<xref linkend="domain-ldap:adminndiary:list"/> zeigt, wie die Ereignisse in der &ucsUMC; dargestellt werden.
+		Die angezeigten Einträge werden standardmäßig wochenweise gruppiert und können über das Suchfeld weiter eingegrenzt werden.
+		Durch das Auswählen eines Eintrags gelangt man zu einer Detailansicht, wie sie in <xref linkend="domain-ldap:adminndiary:detail"/> zu sehen ist.
+		Dieser kann man weitere Details zum Wo und Wann entnehmen.
+		Zudem besteht die Möglichkeit, das Ereignis zu kommentieren.
+	</para>
+	<figure id="domain-ldap:adminndiary:detail">
+		<title>Detailansicht im <foreignphrase>Admin Diary</foreignphrase></title>
+		<graphic scalefit="1" width="80%" fileref="illustrations44/admindiary-detail_de.png"/>
+	</figure>
+	<para>
+		Die App besteht auf zwei Komponenten:
+	</para>
+	<variablelist>
+		<varlistentry>
+			<term><foreignphrase>Admin Diary</foreignphrase> Backend</term>
+			<listitem><simpara>
+				Das Backend muss mindestens, — i.d.R. genau — einmal in der Domäne installiert sein.
+				Es beinhaltet eine Anpassung für <package>rsyslog</package> sowie eine Datenbank, die standardmäßig PostgreSQL nutzt.
+				Alternativ kann auch MariaDB oder MySQL verwendet werden.
+				Weitere Details dazu sind in einem <ulink url="https://help.univention.com/t/admin-diary-how-to-seperate-frontend-and-backend/11331">separaten Artikel</ulink> beschrieben.
+			</simpara></listitem>
+		</varlistentry>
+		<varlistentry>
+			<term><foreignphrase>Admin Diary</foreignphrase> Frontend</term>
+			<listitem><simpara>
+				Auch das Frontend muss mindestens einmal installiert sein, kann aber öfter installiert werden.
+				Das Frontend beinhaltet das &ucsUMC; Modul, um die Einträge anzuzeigen und zu kommentieren.
+			</simpara></listitem>
+		</varlistentry>
+	</variablelist>
+</section>
 
+</chapter>
