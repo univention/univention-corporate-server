@@ -875,7 +875,7 @@
 				<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/users_self-service_profile_en.png"/>
 			</figure>
 			<para>
-				For this the following two &ucsUCRV;s must be configured:<footnote><simpara>Both variables must match each other. The names of the attributes and their mapping can be fetch from the following command: <command><![CDATA[python -c 'from univention.admin.handlers.users.user import mapping;print("\n".join(map("{0[0]:>30s} {0[1][0]:<30s}".format, sorted(mapping._map.items()))))']]></command></simpara></footnote>
+				For this the following &ucsUCRV;s must be configured:<footnote><simpara>Both <phrase>attributes</phrase> variables must match each other. The names of the attributes and their mapping can be fetch from the following command: <command><![CDATA[python -c 'from univention.admin.handlers.users.user import mapping;print("\n".join(map("{0[0]:>30s} {0[1][0]:<30s}".format, sorted(mapping._map.items()))))']]></command></simpara></footnote>
 			</para>
 			<variablelist>
 				<varlistentry>
@@ -892,6 +892,12 @@
 						This variable configured the <emphasis>UDM</emphasis> attributes a user can modify.
 						The names of the attributes must be separated by comma.
 						This variable must be set on the hosts, where the Self Service app is installed.
+					</simpara></listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><envar>umc/self-service/profiledata/enabled</envar></term>
+					<listitem><simpara>
+						This variable must be set to <literal>true</literal> on all involved server systems to enable the mechanism.
 					</simpara></listitem>
 				</varlistentry>
 			</variablelist>
