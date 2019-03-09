@@ -145,7 +145,7 @@
 		<guimenu>App Badges</guimenu> und die <guimenu>App Lizenz</guimenu>. So ist auch eine
 		Kombination der Filter möglich. So kann die Ansicht beispielsweise auf Applikationen aus den
 		Kategorien <userinput>Bildung</userinput> oder <userinput>Office</userinput> eingeschränkt
-		werden. Um hieraus dann die <emphasis>Recommended Apps</emphasis> anzuzeigen, genügt die
+		werden. Um hieraus dann die <foreignphrase>Recommended Apps</foreignphrase> anzuzeigen, genügt die
 		Aktivierung des entsprechenden Filters.
 	</para>
 
@@ -166,15 +166,15 @@
 	</figure>
 
 	<para>
-		Mit <emphasis>Vote Apps</emphasis> gibt es eine spezielle Form von Apps im App Center, die
+		Mit <foreignphrase>Vote Apps</foreignphrase> gibt es eine spezielle Form von Apps im App Center, die
 		nichts auf dem UCS System installieren. Hierbei handelt es sich um Apps, für die im App Center
 		abgestimmt werden kann. Die Abstimmungen helfen Univention und dem potentiellen App Anbieter
-		dabei, das Interesse für diese App festzustellen. Vote Apps werden in der Regel nur für einen
-		begrenzten Abstimmungszeitraum angezeigt. Dass Vote Apps verfügbar sind, kann an der angezeigten
+		dabei, das Interesse für diese App festzustellen. <foreignphrase>Vote Apps</foreignphrase> werden in der Regel nur für einen
+		begrenzten Abstimmungszeitraum angezeigt. Dass <foreignphrase>Vote Apps</foreignphrase> verfügbar sind, kann an der angezeigten
 		Filteroption <guimenu>Vote Apps</guimenu> in der App Center Übersicht erkannt werden.
 	</para>
 
-	<figure id="appcenter-vote-apps"><title>Beispiel Vote Apps in App Center Übersicht und Detailansicht</title>
+	<figure id="appcenter-vote-apps"><title>Beispiel <foreignphrase>Vote Apps</foreignphrase> in App Center Übersicht und Detailansicht</title>
 	<graphic scalefit="1" width="100%" fileref="illustrations44/vote_apps_de.png"/>
 	</figure>
 

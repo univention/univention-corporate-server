@@ -1173,7 +1173,7 @@ univention-director-manager users/user
         </para>
         <para>
             To withdraw a user activation for an app, it is sufficient to
-            untick the checkbox.
+            deselect the checkbox.
         </para>
         <para>
             When the app is uninstalled, the checkbox of the user activation

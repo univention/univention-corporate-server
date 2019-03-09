@@ -1212,7 +1212,7 @@ univention-directory-manager users/user
             <guimenu>Apps</guimenu> des Benutzers im UMC Modul
             <emphasis>Benutzer</emphasis>. Mit einem Haken in der Checkbox wird
             der Benutzer für die App aktiviert. Wenn noch weitere Einstellungen
-            für die App-Berechtigung gemacht werden können, erscheint ein
+            für die Berechtigung gemacht werden können, erscheint ein
             zusätzlicher Reiter mit dem Namen der App, um diese Parameter zu
             setzen. Die App Aktivierung und die Parameter werden am
             Benutzerobjekt im LDAP-Verzeichnisdienst von UCS gespeichert.
