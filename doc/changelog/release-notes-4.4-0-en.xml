@@ -51,10 +51,9 @@
 
 		<itemizedlist>
 			<listitem><para>
-			</para></listitem>
-			<listitem><para>
-				The UCS portal now imports the <filename>custom.css</filename> which is located under <filename class="directory">/usr/share/univention-portal/</filename>.
-				This file is not authored by Univention and thus will not be modified by any future updates. It can be used to adapt the portals design to personal needs.
+				The UCS portal now imports the file <filename>/usr/share/univention-portal/custom.css</filename> which is located under <filename class="directory">/usr/share/univention-portal/</filename>.
+				This file is not authored by Univention and thus will not be modified by any future updates.
+				It can be used to adapt the portals design to personal needs.
 			</para></listitem>
 			<listitem><para>
 				Various security updates have been integrated into UCS 4.4-0, e.g. <wordasword>Apache2</wordasword>, the Linux kernel and <wordasword>Samba4</wordasword>.
@@ -64,8 +63,8 @@
 				The App Center now offers more precise filters, when searching for Apps.
 			</para></listitem>
 			<listitem><para>
-				From time to time you will get the chance to vote for selected Apps, which are not yet available for UCS. You will see these Apps directly in the App
-				Center.
+				From time to time you will get the chance to vote for selected Apps, which are not yet available for UCS.
+				You will see these Apps directly in the App Center.
 			</para></listitem>
 			<listitem><para>
 				The design of the App's pages has been updated.

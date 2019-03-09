@@ -51,9 +51,7 @@
 
 		<itemizedlist>
 			<listitem><para>
-			</para></listitem>
-			<listitem><para>
-				Das Portal von UCS importiert nun die Datei <filename>custom.css</filename>, welche sich in <filename class="directory">/usr/share/univention-portal/</filename> befindet.
+				Das Portal von UCS importiert nun die Datei <filename>/usr/share/univention-portal/custom.css</filename>.
 				Diese Datei wird in zukünftigen Updates nicht von Univention modifiziert und kann daher dazu genutzt werden das Design des Portals an die eigenen Anforderungen anzupassen.
 			</para></listitem>
 			<listitem><para>
@@ -64,7 +62,7 @@
 				Es stehen im App Center nun erweiterte Filter für die Suche nach Apps zur Verfügung.
 			</para></listitem>
 			<listitem><para>
-				In Zukunft wird es hin und wieder möglich sein die eigene Stimme für ausgewählte Apps, die noch nicht für UCS verfügbar sind, abzugeben.
+				In Zukunft wird es hin und wieder möglich sein, die eigene Stimme für ausgewählte Apps abzugeben, die noch nicht für UCS verfügbar sind.
 				Diese Apps werden direkt im App Center erscheinen.
 			</para></listitem>
 			<listitem><para>
