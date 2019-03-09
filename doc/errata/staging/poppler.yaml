@@ -1,0 +1,21 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: poppler
+fix: 0.26.5-2+deb8u8
+desc: |
+ This update addresses the following issues:
+ * reachable abort in Object.h (CVE-2018-19058)
+ * NULL pointer dereference in the XRef::getEntry in XRef.cc (CVE-2018-20481)
+ * SIGABRT PDFDoc::setup class in PDFDoc.cc (CVE-2018-20662)
+ * heap-based buffer over-read in XRef::getEntry in XRef.cc (CVE-2019-7310)
+ * heap-based buffer overflow in function ImageStream::getLine() in Stream.cc
+   (CVE-2019-9200)
+bug: [48935]
+cve:
+- CVE-2018-19058
+- CVE-2018-20481
+- CVE-2018-20662
+- CVE-2019-7310
+- CVE-2019-9200
