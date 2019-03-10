@@ -445,6 +445,23 @@ class TestUniventionUpdater(unittest.TestCase):
         self.assertTrue('DEBIAN_FRONTEND=noninteractive' in cmd)
         self.assertTrue(' dist-upgrade' in cmd)
 
+    def test__iterate_release(self):
+        """Test iterating releases."""
+        start = U.UCS_Version((3, 0, 0))
+        end = U.UCS_Version((4, 4, 1))
+        ver = U.UCSRepoPool()
+        it = self.u._iterate_release(ver, start, end)
+        self.assertEqual(next(it).mmp, (3, 0, 0))
+        self.assertEqual(it.send(True).mmp, (4, 0, 0))
+        self.assertEqual(it.send(True).mmp, (4, 1, 0))
+        self.assertEqual(it.send(True).mmp, (4, 2, 0))
+        self.assertEqual(it.send(True).mmp, (4, 3, 0))
+        self.assertEqual(it.send(False).mmp, (4, 3, 1))
+        self.assertEqual(it.send(True).mmp, (4, 4, 0))
+        self.assertEqual(it.send(False).mmp, (4, 4, 1))
+        with self.assertRaises(StopIteration):
+            self.assertEqual(it.next(), (4, 4, 1))
+
     def test_print_version_repositories_SKIP(self):
         """Test printing current repositories."""
         self._uri({

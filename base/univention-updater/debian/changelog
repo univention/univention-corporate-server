@@ -1,6 +1,7 @@
 univention-updater (14.0.0-16) unstable; urgency=low
 
   * Bug #48910: Create compressed Packages.gz files
+  * Bug #48910: Improve iterating over releases
   * Bug #48926: Switch from test mirror to public mirror
   * Bug #48151: Check if univention-debmirror is installed
 

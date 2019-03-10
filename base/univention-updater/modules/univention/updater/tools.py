@@ -71,7 +71,7 @@ import shutil
 import logging
 import atexit
 try:
-    from typing import Any, AnyStr, Dict, Iterable, Iterator, List, Optional, Sequence, Set, Tuple, Type, Union  # noqa F401
+    from typing import Any, AnyStr, Dict, Generator, Iterable, Iterator, List, Optional, Sequence, Set, Tuple, Type, Union  # noqa F401
 except ImportError:
     pass
 
@@ -1360,6 +1360,28 @@ class UniventionUpdater:
         stdout, stderr = p.communicate()
         return p.returncode, stdout, stderr
 
+    def _iterate_release(self, ver, start, end):
+        # type: (_UCSRepo, UCS_Version, UCS_Version) -> Generator[_UCSRepo, bool, None]
+        """
+        Iterate through all versions of repositories between start and end.
+
+        :param UCSRepo ver: An instance of :py:class:`UCS_Version` used for iteration.
+        :param UCS_Version start: The UCS release to start from.
+        :param UCS_Version end: The UCS release where to stop.
+        """
+        MAX_MINOR = 99
+        for ver.major in range(start.major, end.major + 1):
+            for ver.minor in range(start.minor if ver.major == start.major else 0, (end.minor if ver.major == end.major else MAX_MINOR) + 1):
+                if isinstance(ver.patch, basestring):  # patchlevel not used
+                    failed = (yield ver)
+                else:
+                    for ver.patchlevel in range(start.patchlevel if ver.mm == start.mm else ver.patchlevel_reset, (end.patchlevel if ver.mm == end.mm else ver.patchlevel_max) + 1):
+                        failed = (yield ver)
+                        if failed and ver.mm < end.mm:
+                            break
+                if failed and ver.major < end.major:
+                    break
+
     def _iterate_versions(self, ver, start, end, parts, archs, server):
         # type: (_UCSRepo, UCS_Version, UCS_Version, List[str], List[str], _UCSServer) -> Iterator
         """
@@ -1381,54 +1403,37 @@ class UniventionUpdater:
 
         # Workaround version of start << first available repository version,
         # e.g. repository starts at 2.3-0, but called with start=2.0-0
-        findFirst = True
-        while ver <= end and ver.major <= 99:  # major
-            try:
-                while ver.minor <= 99:
-                    self.log.info('Checking version %s', ver.path())
-                    assert server.access(ver)  # minor
-                    findFirst = False
-                    found_patchlevel = True
-                    while found_patchlevel and ver.patchlevel <= ver.patchlevel_max:
-                        found_patchlevel = False
-                        for ver.part in parts:  # part
+        it = self._iterate_release(ver, start, end)
+        try:
+            ver = next(it)
+            while True:
+                self.log.info('Checking version %s', ver)
+                success = False
+                for ver.part in parts:  # part
+                    try:
+                        self.log.info('Checking version %s', ver.path())
+                        assert server.access(ver)  # patchlevel
+                        for ver.arch in archs:  # architecture
                             try:
-                                self.log.info('Checking version %s', ver.path())
-                                assert server.access(ver)  # patchlevel
-                                found_patchlevel = True
-                                for ver.arch in archs:  # architecture
-                                    try:
-                                        code, size, content = server.access(ver)
-                                        self.log.info('Found content: code=%d size=%d', code, size)
-                                        if size >= MIN_GZIP:
-                                            yield ver
-                                        elif size == 0 and isinstance(server, UCSHttpServer) and server.proxy_handler.proxies:
-                                            uri = server.join(ver.path())
-                                            raise ProxyError(uri, "download blocked by proxy?")
-                                    except DownloadError as e:
-                                        ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-                                    del ver.arch
+                                code, size, content = server.access(ver)
+                                self.log.info('Found content: code=%d size=%d', code, size)
+                                if size >= MIN_GZIP:
+                                    success = True
+                                    yield ver
+                                elif size == 0 and isinstance(server, UCSHttpServer) and server.proxy_handler.proxies:
+                                    uri = server.join(ver.path())
+                                    raise ProxyError(uri, "download blocked by proxy?")
                             except DownloadError as e:
                                 ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-                            del ver.part
-
-                        if isinstance(ver.patch, basestring):  # patchlevel not used
-                            break
-                        ver.patchlevel += 1
-                        if ver > end:
-                            break
-                    ver.minor += 1
-                    ver.patchlevel = ver.patchlevel_reset
-                    if ver > end:
-                        break
-            except DownloadError as e:
-                ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-            if findFirst and ver.minor < 99:
-                ver.minor += 1
-                ver.patchlevel = ver.patchlevel_reset
-            else:
-                ver.major += 1
-                ver.minor = 0
+                            finally:
+                                del ver.arch
+                    except DownloadError as e:
+                        ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
+                    finally:
+                        del ver.part
+                ver = it.send(not success)
+        except StopIteration:
+            pass
 
     def _iterate_version_repositories(self, start, end, parts, archs, dists=False):
         # type: (UCS_Version, UCS_Version, List[str], List[str], bool) -> Iterator[Tuple[_UCSServer, _UCSRepo]]

@@ -69,6 +69,13 @@ class UCS_Version(object):
             raise TypeError("not a tuple, list or string")
 
     @property
+    def mm(self):
+        """
+        2-tuple (major, minor) version
+        """
+        return (self.major, self.minor)
+
+    @property
     def mmp(self):
         """
         3-tuple (major, minor, patch-level) version
@@ -137,5 +144,4 @@ class UCS_Version(object):
 
 if __name__ == '__main__':
     import doctest
-    from sys import exit
     exit(doctest.testmod()[0])
