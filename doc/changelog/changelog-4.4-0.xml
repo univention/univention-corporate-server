@@ -496,6 +496,12 @@
 				The updater scripts <filename>preup.sh</filename> and <filename>postup.sh</filename>
 				have been adapted to the needs of UCS 4.4 (<u:bug>48808</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The updater has been fixed to work with a local repository only initialized by <command>univention-repository-create</command> from DVD (<u:bug>48910</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				<command>univention-repository-create</command> now checks if <package>univention-debmirror</package> is installed before installing it (<u:bug>48151</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
