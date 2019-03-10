@@ -164,6 +164,7 @@ class Base(signals.Provider, Translation):
 
 	def update_language(self, locales):
 		for _locale in locales:
+			language = None
 			try:
 				CORE.info("Setting locale %r" % (_locale,))
 				_locale = Locale(_locale)
@@ -173,6 +174,12 @@ class Base(signals.Provider, Translation):
 				self.__current_language = language
 				return
 			except (locale.Error, I18N_Error) as exc:
+				if language in ('en', 'en-US'):  # the system is missing english locale
+					self.set_locale('C')
+					if not self.__current_language:  # only log once!
+						CORE.error('Missing "en_US.UTF-8:UTF-8" in UCR variable "locale"')
+					self.__current_language = language
+					return
 				CORE.warn("Locale %r is not available: %s" % (str(_locale), exc))
 		CORE.warn('Could not set language. Resetting locale.')
 		self.set_locale('C')

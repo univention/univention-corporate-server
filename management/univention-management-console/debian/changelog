@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-15) unstable; urgency=medium
+
+  * Bug #47602: be graceful about missing english locale
+
+ -- Florian Best <best@univention.de>  Thu, 09 May 2019 16:14:01 +0200
+
 univention-management-console (11.0.4-14) unstable; urgency=medium
 
   * Bug #49436: Fix error in custom css
