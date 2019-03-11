@@ -344,7 +344,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 						The App Center is now able to handle Apps with install permissions.
-						This describes App versions that can only be installed when the App has been bought from the Univention App Center store (<u:bug>48624</u:bug>, <u:bug>48544</u:bug>, <u:bug>48127</u:bug>).
+						This describes App versions that can only be installed when the App has been bought from the Univention App Center store (<u:bug>48624</u:bug>, <u:bug>48544</u:bug>, <u:bug>48127</u:bug>, <u:bug>48753</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -353,7 +353,7 @@
 			<title>Univention Admin Diary</title>
 			<itemizedlist>
 				<listitem><simpara>
-					There are two new UCS apps, the <package>Admin Diary Frontend</package> and the <package>Admin Diary Backend</package> (<u:bug>48675</u:bug>, <u:bug>48341</u:bug>, <u:bug>48717</u:bug>).
+						There are two new UCS apps, the <package>Admin Diary Frontend</package> and the <package>Admin Diary Backend</package> (<u:bug>48675</u:bug>, <u:bug>48341</u:bug>, <u:bug>48717</u:bug>, <u:bug>48342</u:bug>, <u:bug>48343</u:bug>, <u:bug>48476</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
