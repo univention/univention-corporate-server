@@ -1,3 +1,9 @@
+univention-portal (3.0.1-21) unstable; urgency=medium
+
+  * Bug #48943: remove obsolete code
+
+ -- Florian Best <best@univention.de>  Thu, 14 Mar 2019 08:03:22 +0100
+
 univention-portal (3.0.1-20) unstable; urgency=medium
 
   * Bug #48595: Reload ucr when loading cache. This prevents errors when the

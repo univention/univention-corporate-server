@@ -304,7 +304,6 @@ define([
 			}).then(lang.hitch(this, function(response) {
 				tools.status('authType', response.result.auth_type);
 				tools.status('loggedIn', true);
-				tools.status('userGroups', response.result.user_groups);
 				return this.authenticated(response.result.username);
 			}), function(error) {
 				if (tools.status('loggedIn')) {

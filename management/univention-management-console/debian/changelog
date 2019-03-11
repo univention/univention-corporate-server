@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-6) unstable; urgency=medium
+
+  * Bug #48943: remove obsolete code
+
+ -- Florian Best <best@univention.de>  Thu, 14 Mar 2019 08:03:16 +0100
+
 univention-management-console (11.0.4-5) unstable; urgency=medium
 
   * Bug #48224: fix typo

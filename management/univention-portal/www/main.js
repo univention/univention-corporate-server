@@ -1509,12 +1509,9 @@ define([
 
 		_getCategories: function(renderMode) {
 			var categories = [];
-			var userGroups = (tools.status('userGroups') || []).map(function(group) {
-				return group.toLowerCase();
-			});
 
 			if (renderMode === portalTools.RenderMode.NORMAL && portalJson.portal.showApps) {
-				var entries = this._getEntries(installedApps, userGroups, renderMode);
+				var entries = this._getEntries(installedApps, renderMode);
 				if (entries.length) {
 					categories.push({
 						heading: _('Local Apps'),
@@ -1533,17 +1530,17 @@ define([
 					categories.push({
 						$notInPortalJSON$: true,
 						heading: '',
-						entries: this._getEntries(entryDNs, userGroups, renderMode),
+						entries: this._getEntries(entryDNs, renderMode),
 						dn: categoryDN,
 						renderMode: renderMode
 					});
 				} else {
-					var entries = this._getEntries(entryDNs, userGroups, renderMode);
+					var entries = this._getEntries(entryDNs, renderMode);
 					var heading = category.display_name[locale] || category.display_name.en_US;
 					categories.push({
 						$notInPortalJSON$: false,
 						heading: category.display_name[locale] || category.display_name.en_US,
-						entries: this._getEntries(entryDNs, userGroups, renderMode),
+						entries: this._getEntries(entryDNs, renderMode),
 						dn: categoryDN,
 						renderMode: renderMode
 					});
@@ -1553,9 +1550,9 @@ define([
 			return categories;
 		},
 
-		_getEntries: function(entries, userGroups, renderMode) {
+		_getEntries: function(entries, renderMode) {
 			entries = this._sanitizeEntries(entries);
-			entries = this._filterEntries(entries, userGroups, renderMode);
+			entries = this._filterEntries(entries, renderMode);
 			entries = this._prepareEntriesForPortalGallery(entries, renderMode);
 			return entries;
 		},
@@ -1572,7 +1569,7 @@ define([
 			});
 		},
 
-		_filterEntries: function(entries, userGroups, renderMode) {
+		_filterEntries: function(entries, renderMode) {
 			return entries.filter(function(entry) {
 				if (renderMode === portalTools.RenderMode.NORMAL) {
 					if (entry.$notInPortalJSON$) {

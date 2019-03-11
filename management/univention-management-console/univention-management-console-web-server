@@ -58,7 +58,6 @@ from ipaddr import IPAddress
 from cherrypy import HTTPError, HTTPRedirect, NotFound
 from cherrypy.lib.httputil import valid_status
 from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunnerStartFailureError
-import ldap.filter
 
 import univention.debug as ud
 from univention.management.console.protocol import Request, Response, Client, NoSocketError, TEMPUPLOADDIR
@@ -73,17 +72,9 @@ from saml2.s_utils import UnknownPrincipal, UnsupportedBinding, rndstr
 from saml2.sigver import MissingKey, SignatureError
 
 from univention.lib.i18n import NullTranslation
-from univention.admin.uldap import getMachineConnection
 _ = NullTranslation('univention-management-console-frontend').translate
 
 _session_timeout = get_int('umc/http/session/timeout', 300)
-
-
-def _get_ldap_connection():
-	if _get_ldap_connection._lo is None:
-		_get_ldap_connection._lo = getMachineConnection(ldap_master=False)[0]
-	return _get_ldap_connection._lo
-_get_ldap_connection._lo = None
 
 
 def sessionidhash():
@@ -373,17 +364,6 @@ class User(object):
 		self._time_remaining = _session_timeout
 		self.reset_timeout()
 		self.data = data or {}
-
-	def get_user_groups(self):
-		try:
-			lo = _get_ldap_connection()
-			user_dn = lo.searchDn(ldap.filter.filter_format('(&(uid=%s)(objectClass=person))', (self.username,)))[0]
-			user_groups = lo.search(base=user_dn, scope='base', attr=['memberOf'])
-			return user_groups[0][1]['memberOf']
-		except KeyError:
-			CORE.info('Could not get groups for %r: Maybe memberof overlay module is inactive' % (self.username,))
-		except Exception:
-			CORE.error('Could not get groups for %r: %s' % (self.username, traceback.format_exc()))
 
 	def reset_timeout(self):
 		self._time_remaining = self.session_validity
@@ -869,7 +849,6 @@ class CPGet(CPgeneric):
 			raise UMC_HTTPError(UNAUTHORIZED)
 		info['username'] = user.username
 		info['auth_type'] = user.saml and 'SAML'
-		info['user_groups'] = user.get_user_groups()
 		info['remaining'] = user.time_remaining
 		info['validity'] = user.session_validity
 		return json.dumps({"status": 200, "result": info, "message": ""})
