@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Add js widgets through ucr for UDM syntax
-## tags: [udm]
+## tags: [udm,SKIP]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:
