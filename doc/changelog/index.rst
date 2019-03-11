@@ -419,6 +419,8 @@ Modules for system settings / setup wizard
   All changed SSL/TLS profile settings are now propagated into a new CA certificate.
   The policy enforced by OpenSSL on the certificate settings is now also checked and enforced in the UMC module :guilabel:`Certificate settings` (:uv:bug:`34106`).
 
+* The connection check to the package repository now explicitly uses the proxy settings (:uv:bug:`48126`).
+
 .. _changelog-umc-join:
 
 Domain join module

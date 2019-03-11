@@ -1,13 +1,11 @@
 import subprocess
 from os import environ
-from typing import Iterable, List, Tuple
+from pipes import quote
+from typing import Iterable, Iterator, List, Tuple, cast
 
-import univention.config_registry
+from univention.config_registry import ucr_live as UCR
 from univention.management.console.log import MODULE
 
-
-UCR = univention.config_registry.ConfigRegistry()
-UCR.load()
 
 PROXY_MAP = {
     "http_proxy": 'proxy/http',
@@ -17,43 +15,69 @@ PROXY_MAP = {
 
 
 def get_unreachable_repository_servers() -> List[str]:
-    UCR.load()
+    """
+    Start a process to check the reachability of important servers.
 
+    Servers:
+    * UCS repository server (`repository/online/server`)
+    * App server (`repository/app_center/server`)
+    * `docker.software-univention.de`
+
+    :returns: List of URLs.
+    """
     servers = [
         UCR.get('repository/online/server'),
         UCR.get('repository/app_center/server'),
         'docker.software-univention.de',
     ]
 
-    processes = start_curl_processes(servers)
+    processes = list(start_curl_processes(servers))
     wait_for_processes_to_finish(processes)
     log_warnings_about_unreachable_repository_servers(zip(servers, processes))
     return [server for server, process in zip(servers, processes) if process.returncode != 0]
 
 
-def start_curl_processes(servers: Iterable[str]) -> List[subprocess.Popen]:
+def start_curl_processes(servers: Iterable[str]) -> Iterator[subprocess.Popen]:
+    """
+    Start a :command:`curl` process to check the reachability of important servers.process
+
+    :param servers: List of URLs to check.
+    :returns: List of processes.
+    """
     ENV = {
         envvar: UCR[ucrvar]
         for (envvar, ucrvar) in PROXY_MAP.items()
         if ucrvar in UCR
     }
     env = dict(environ, **ENV)
-    return [
-        subprocess.Popen(['curl', '--max-time', '10', server], env=env)
-        for server in servers
-    ]
+    for server in servers:
+        cmd = ['curl', '--max-time', '10', '--silent', '--show-error', '--head', server]
+        yield subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=env)
 
 
 def wait_for_processes_to_finish(processes: Iterable[subprocess.Popen]) -> None:
+    """
+    Wait until all processes have finished.
+
+    :param processes: List of processes.
+    """
     for process in processes:
         process.wait()
 
 
 def log_warnings_about_unreachable_repository_servers(servers_with_curl_processes: Iterable[Tuple[str, subprocess.Popen]]) -> None:
+    """
+    Load a message for all failed processes.
+
+    :param processes: List of 2-tuples (URL, process)
+    """
     for server, process in servers_with_curl_processes:
         if process.returncode != 0:
+            stdout, strerr = process.communicate()
             MODULE.warn(
-                # FIXME: When changing to Python 3 use process.args here.
-                "'curl --max-time 10 %s' exited with returncode %s." %
-                (server, process.returncode),
+                "'%s' exited with returncode %s: %s" % (
+                    " ".join(quote(arg) for arg in cast(Iterable[str], process.args)),
+                    process.returncode,
+                    stdout.decode(errors="replace"),
+                ),
             )
