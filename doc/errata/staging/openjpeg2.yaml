@@ -1,0 +1,28 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: openjpeg2
+fix: 2.1.2-1.1+deb9u3
+desc: |
+ This update addresses the following issues:
+ * Stack-buffer overflow in the pgxtovolume function (CVE-2017-17480)
+ * integer overflow in opj_j2k_setup_encoder function in openjp2/j2k.c
+   (CVE-2018-5785)
+ * In OpenJPEG 2.3.0, there is excessive iteration in the opj_t1_encode_cblks
+   function of openjp2/t1.c. Remote attackers could leverage this
+   vulnerability to cause a denial of service via a crafted bmp file.
+   (CVE-2018-6616)
+ * Division-by-zero vulnerabilities in the functions pi_next_pcrl,
+   pi_next_cprl, and pi_next_rpcl in lib/openjp3d/pi.c in OpenJPEG through
+   2.3.0 allow remote attackers to cause a denial of service (application
+   crash). (CVE-2018-14423)
+ * OpenJPEG 2.3.0 has a NULL pointer dereference for "red" in the imagetopnm
+   function of jp2/convert.c (CVE-2018-18088)
+bug: [48951]
+cve:
+- CVE-2017-17480
+- CVE-2018-5785
+- CVE-2018-6616
+- CVE-2018-14423
+- CVE-2018-18088
