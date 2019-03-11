@@ -54,7 +54,12 @@
 	  </para>
 
 	<para>
-	  Trust relationships to other domains are currently not possible.
+	  Incoming trust relationships with other Active Directory domains are configurable.
+	  In this setup the external Active Directory domain trusts authentication decisions
+	  of the UCS domain (Windows trusts UCS) so that UCS users can log on
+	  to systems and Active Directory backed services in the Windows domain
+	  (see <xref linkend="windows_trust"/>).
+	  Outgoing trusts with Active Directory domain (UCS trusts Windows) are not supported currently.
 	</para>
 
 	<note><para>
@@ -1822,6 +1827,130 @@ samba-tool dbcheck --fix --yes
 
 </section>
 
+<section id="windows_trust">
+  <title>Trust relationships</title>
+  <para>
+	Trust relationships between domains make it possible for users from one domain to log on to
+	computers from another domain.
+  </para>
 
+  <para>
+	In general, Windows trust relations can be unidirectional or bidirectional.
+	Technically a bidirectional trust is simply realised as two unidirectional
+	trusts, one in each direction.
+  </para>
+
+  <para>
+	The terminology of unidirectional trusts depends on the perspective
+	of either the trusting or trusted domain: From the perspective of the
+	trusting domain, the trust is called <emphasis>outgoing</emphasis>.
+	From the perspective of the trusted domain, the trust is called
+	<emphasis>incoming</emphasis>.
+  </para>
+
+  <para>
+	In UCS, outgoing trust (UCS trusts Windows) is not supported currently.
+	As a consequence, bidirectional trust is not supported either.
+  </para>
+
+  <para>
+	If a Windows domain trusts a Samba domain, there is also the possibility to log on to the
+	Samba domain alongside the Windows domain when logging on to computers belonging to the Windows
+	domain.
+  </para>
+
+  <para>
+	When setting up and using the trust relationship the domain controllers of both domains must be
+	able to reach each other over the network and identify each other via DNS.
+	At least the fully qualified DNS names of the domain controllers of
+	the respective remote domain must be resolvable to allow communication
+	between both domains to work. This can be achieved by configuring
+	conditional DNS forwarding in both domains.
+  </para>
+
+  <para>
+	  The follwing example assumes, that the UCS DC Master
+	  <literal>master.ucsdom.example</literal> has the IP address
+	  <literal>10.200.8.10</literal> and that the
+	  Active Directory domain controller
+	  <literal>dc1.addom.example</literal> of the remote domain has the IP address
+	  <literal>10.200.8.20</literal>.
+  </para>
+
+  <para>
+	  On the UCS side the conditional forwarding of DNS queries can be
+	  set up as <literal>root</literal> with the following commands:
+  </para>
+
+  <programlisting language="sh"><![CDATA[
+cat >> /etc/bind/local.conf.samba4 <<%EOR
+
+zone "addom.example" {
+type forward;
+forwarders { 10.200.8.20; };
+};
+%EOR
+root@master:~# service bind9 restart
+]]>
+  </programlisting>
+
+  <para>
+	  The success can be checked by running <literal>host dc1.addom.example</literal>.
+  </para>
+
+
+  <para>
+	  In addition, it may be useful to create a static entry for the
+	  domain controller of the remote Active Directory domain in the
+	  file <filename>/etc/hosts</filename>:
+  </para>
+
+  <programlisting language="sh">
+ucr set hosts/static/10.200.8.20=dc1.addom.example
+  </programlisting>
+
+  <para>
+	  On a Windows AD DC, a so-called <emphasis>conditional forwarding</emphasis>
+	  can be set up for the UCS domain via the <literal>DNS server console</literal>.
+  </para>
+
+  <para>
+	  After this preliminary work, the trust itself can be established
+	  directly from the command line of the UCS Samba/AD DC.
+  </para>
+
+  <para>
+	  Trust relationships can only be configured on domain controllers
+	  but they affect the whole domain.
+  </para>
+
+  <para>
+	  In Samba/AD domain the trust relationship can be configured easily
+	  on the command line using the tool <literal>samba-tool</literal>:
+  </para>
+
+  <programlisting language="sh">
+samba-tool domain trust create addom.example \
+           -k no -UADDOM\\Administrator%ADAdminPassword \
+           --type=external --direction=incoming
+  </programlisting>
+
+  <para>
+	The trust can be checked using the following commands:
+  </para>
+
+  <programlisting language="sh">
+samba-tool domain trust list
+wbinfo --ping-dc –domain=addom.example
+wbinfo --check-secret –domain=addom.example
+  </programlisting>
+
+  <para>
+	After the setup, a UCS user should be able to log on to systems of
+	the remote Active Directory domain. Users must either use the format
+	<literal>UCSDOM\username</literal> as login name or their Kerberos
+	principal in the notation <literal>username@ucsdom.example</literal>.
+  </para>
+</section>
 
 </chapter>

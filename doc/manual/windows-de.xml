@@ -55,7 +55,13 @@
 	</para>
 
 	<para>
-	  Vertrauensstellungen mit anderen Domänen sind aktuell nicht möglich.
+	  Eingehende Vertrauensstellungen mit anderen Active Directory Domänen sind konfigurierbar.
+	  In dieser Konstellation vertraut die externe Active Directory Domäne den
+	  Authentifizierungsentscheidungen der UCS-Domäne (Windows vertraut UCS) so dass sich
+	  UCS-Benutzer auch an Systemen und Active Directory basierten Diensten
+	  in der Windows-Domäne anmelden können (siehe <xref linkend="windows_trust"/>).
+	  Ausgehende Vertrauensstellungen mit Active Directory Domänen (UCS vertraut Windows)
+	  sind aktuell nicht unterstützt.
 	</para>
 
 	<note><para>
@@ -748,6 +754,7 @@ END CATEGORY
 		  </para>
 		</note>
 	  </section>
+
 	</section>
 
   </section>
@@ -1894,6 +1901,137 @@ samba-tool dbcheck --fix --yes
 	</para>
   </section>
 
+</section>
+
+
+<section id="windows_trust">
+  <title>Vertrauensstellungen</title>
+  <para>
+	Vertrauensstellungen zwischen Domänen ermöglichen es den Benutzern
+	einer Domäne, sich an Rechnern einer anderen Domäne anzumelden.
+  </para>
+
+  <para>
+	Vertrauensstellungen können unidirektional oder bidirektional eingerichtet werden. Technisch
+	entspricht eine bidirektionale Vertrauensstellung zwei unidirektional konfigurierten
+	Vertrauensstellungen in beide Richtungen.
+  </para>
+
+  <para>
+	Die Terminologie von Vertrauensstellungen hängt von der Perspektive der vertrauenden oder
+	der vertrauten Domäne ab: Aus Sicht der vertrauenden Domäne ist die Vertrauensstellung
+	<emphasis>ausgehend</emphasis> und aus Sicht der vertrauten Domäne <emphasis>eingehend</emphasis>.
+  </para>
+
+  <para>
+	Ausgehende Vertrauensstellungen (UCS vertraut Windows) werden
+	in Samba/AD-Domänen nicht unterstützt. Entsprechend werden auch
+	keine bidirektionalen Vertrauensstellungen unterstützt.
+  </para>
+
+  <para>
+	Vertraut eine Windows-Domäne einer Samba-Domäne (Eingehende Vertauensstellung),
+	steht bei der Anmeldung an Rechnern der Windows-Domäne neben der Windows-Domäne
+	auch die Samba/AD-Domäne zur Auswahl.
+  </para>
+
+  <para>
+	Während der Einrichtung und Nutzung von Vertrauensstellungen müssen sich die
+	Domänencontroller der beiden Domänen über das Netzwerk erreichen und
+	gegenseitig per DNS identifizieren können.
+	Zumindest die voll qualifizierten DNS Namen der Domänencontroller der
+	jeweils anderen Domäne müssen auflösbar sein, damit die Kommunikation
+	zwischen den Domänen funktioniert. In beiden Domänen richtet man zu
+	diesem Zweck eine bedingtes DNS Weiterleitung ein.
+  </para>
+
+  <para>
+	  Für das folgende Beispiel sei angenommen, dass der UCS DC Master
+	  <literal>master.ucsdom.example</literal> die IP-Adresse
+	  <literal>10.200.8.10</literal> hat und dass der
+	  Active Directory Domänencontroller
+	  <literal>dc1.addom.example</literal> der entfernten Domäne
+	  die IP-Adresse <literal>10.200.8.20</literal> hat.
+  </para>
+
+  <para>
+	  Auf der UCS-Seite lässt sich die bedingte Weiterleitung
+	  von DNS-Anfragen mit folgenden Schritten als <literal>root</literal>
+	  einrichten:
+  </para>
+
+  <programlisting language="sh"><![CDATA[
+cat >> /etc/bind/local.conf.samba4 <<%EOR
+
+zone "addom.example" {
+type forward;
+forwarders { 10.200.8.20; };
+};
+%EOR
+root@master:~# service bind9 restart
+]]>
+  </programlisting>
+
+  <para>
+	  Der Erfolg kann mit überprüft werden mit <literal>host dc1.addom.example</literal>.
+  </para>
+
+
+  <para>
+	  Zusätzlich kann es sinnvoll sein, für den Domänencontroller der
+	  Microsoft Active Directory Domäne einen statischen Eintrag in der
+	  Datei <filename>/etc/hosts</filename> anzulegen:
+  </para>
+
+  <programlisting language="sh">
+ucr set hosts/static/10.200.8.20=dc1.addom.example
+  </programlisting>
+
+  <para>
+	  Auf dem Windows AD DC kann über die <literal>DNS-Server Konsole</literal>
+	  eine sogenannte <emphasis>Bedingte Weiterleitung</emphasis>
+	  (<emphasis>Conditional Forwarding</emphasis>) für die UCS-Domäne
+	  eingerichtet werden.
+  </para>
+
+  <para>
+	  Nach dieser Vorarbeit kann die Vertrauensstellung
+	  direkt von der Kommandozeile des UCS Samba/AD DCs eingerichtet werden.
+  </para>
+
+  <para>
+	  Vertrauensstellungen können nur auf Domänencontrollern eingerichtet werden,
+	  gelten dann aber für die gesamte Domäne.
+  </para>
+
+  <para>
+	  In Samba/AD Domänen ist diese Konstellation sehr einfach
+	  an der Kommandozeile über das Werkzeug <literal>samba-tool</literal> einrichtbar:
+  </para>
+
+  <programlisting language="sh">
+samba-tool domain trust create addom.example \
+           -k no -UADDOM\\Administrator%ADAdminPassword \
+           --type=external --direction=incoming
+  </programlisting>
+
+  <para>
+	Mit folgenden Kommandos kann die Vertrauensstellung überprüft werden:
+  </para>
+
+  <programlisting language="sh">
+samba-tool domain trust list
+wbinfo --ping-dc –domain=addom.example
+wbinfo --check-secret –domain=addom.example
+  </programlisting>
+
+  <para>
+	Nach der Einrichtung sollte sich ein UCS-Benutzer an Systemen
+	der Windows Active Directory Domäne anmelden können.
+	Als Login-Name muss dabei entweder das Format <literal>UCSDOM\username</literal>
+	oder der Kerberos-Prinzipal in der Notation
+	<literal>username@ucsdom.example</literal> angegeben werden.
+  </para>
 </section>
 
 </chapter>

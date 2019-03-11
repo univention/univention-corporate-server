@@ -388,16 +388,16 @@
 			der UMC. Eine globale Gruppe gilt für eine Domäne, es können aber keine Konten anderer
 			Domänen aufgenommen werden. Besteht eine Vertrauensstellung zu einer Domäne, werden die
 			Gruppen dort angezeigt und es können Berechtigungen zugewiesen werden. Die aktuelle
-			Version von Samba 4 unterstützt allerdings weder mehrfache Domänen/Forests, noch
-			Vertrauensstellungen.
+			Version von UCS unterstützt allerdings weder mehrfache Domänen/Forests, noch
+			von UCS ausgehende Vertrauensstellungen.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
 			<emphasis>Domänenlokale Gruppen</emphasis> können auch Mitglieder anderer Domänen
 			aufnehmen (sofern zu diesen eine Vertrauenstellung besteht oder sie Teil eines Forests
 			ist). Domänenlokale Gruppen werden aber nur in der eigenen Domäne angezeigt. Die
-			aktuelle Version von Samba 4 unterstützt allerdings weder mehrfache Domänen/Forests,
-			noch Vertrauensstellungen.
+			aktuelle Version von UCS unterstützt allerdings weder mehrfache Domänen/Forests,
+			noch von UCS ausgehende Vertrauensstellungen.
 		  </simpara></listitem>
 
 		  <listitem><simpara>

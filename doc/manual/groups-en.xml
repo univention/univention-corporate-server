@@ -368,15 +368,15 @@
 			<emphasis>Global</emphasis> groups are the standard type for newly created groups in the
 			UMC. A global group applies for one domain, but it can also accept members from other
 			domains. If there is a trust relationship with a domain, the groups there are displayed
-			and permissions can be assigned. However, the current version of Samba 4 does not support
-			multiple domains/forests or trust relationships.
+			and permissions can be assigned. However, the current version of UCS does not support
+			multiple domains/forests or outgoing trust relationships.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
 			<emphasis>Domain local</emphasis> groups can also adopt members of other domains
 			(insofar as there is a trust relationship in place or they form part of a forest). Local
 			domain groups are only shown in their own domain though. However, the current version of
-			Samba 4 does not support multiple domains/forests or trust relationships.
+			UCS does not support multiple domains/forests or outgoing trust relationships.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
