@@ -1693,21 +1693,21 @@ define([
 				domClass.add(menuTab.domNode, lang.replace('color-{0}', [module_flavor_css]));
 			}
 
+			var color = this.__getModuleColor(module);
+			var dijitTabColor = dojo.colorFromHex(color);
+			dijitTabColor.a = 0.95;
+			var contrastLight = umc.tools.contrast(dijitTabColor, '#fff', '#6e6e6e');
+			var contrastDark  = umc.tools.contrast(dijitTabColor, 'rgba(0, 0, 0, 0.87)', '#6e6e6e');
+			domClass.add(tab.controlButton.domNode, contrastDark > contrastLight ? 'contrastDark' : 'contrastLight');
+
 			var styleAlreadyInserted = array.some(this._insertedTabStyles, function(id) {
 				return id === module_flavor_css;
 			});
 			if (styleAlreadyInserted) {
  				return;
  			}
-
 			this._insertedTabStyles.push(module_flavor_css);
 
-			var color = this.__getModuleColor(module);
-
-			var dijitTabColor = dojo.colorFromHex(color);
-			dijitTabColor.a = 0.95;
-			var contrastLight = umc.tools.contrast(dijitTabColor, '#fff', '#6e6e6e');
-			var contrastDark  = umc.tools.contrast(dijitTabColor, 'rgba(0, 0, 0, 0.87)', '#6e6e6e');
 
 			// color the tabs in the tabs dropDownMenu of the umcHeaer
 			styles.insertCssRule(
@@ -1722,7 +1722,6 @@ define([
 			}
 
 			// color module tabs
-			domClass.add(tab.controlButton.domNode, contrastDark > contrastLight ? 'contrastDark' : 'contrastLight');
 			styles.insertCssRule(
 				lang.replace('.umc .umcModuleTab-{0}.dijitTabChecked, .umc .umcModuleTab-{0}.dijitTabHover, .umc .umcModuleTab-{0}.dijitTabActive', [module_flavor_css]),
 				lang.replace('background-color: {0} !important;', [dijitTabColor])
