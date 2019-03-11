@@ -2411,7 +2411,7 @@ client AP01 {
 			<title>Fehlersuche</title>
 			<para>
 				Die <package>RADIUS</package> App verfügt über eine Logdatei unter <filename>/var/log/univention/radius_ntlm_auth.log</filename>.
-				Die Ausführlichkeit des Logs lässt sich über die &ucsUCRV; <envar>freeradius/auth/helper/ntlm/debug</envar> steuern.
+				Die Ausführlichkeit der Logmeldungen lässt sich über die &ucsUCRV; <envar>freeradius/auth/helper/ntlm/debug</envar> steuern.
 				Der <package>FreeRADIUS-Server</package> loggt nach <filename>/var/log/freeradius/radius.log</filename>.
 			</para>
 			<para>
