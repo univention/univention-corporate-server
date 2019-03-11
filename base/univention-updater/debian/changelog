@@ -1,3 +1,9 @@
+univention-updater (14.0.0-17) unstable; urgency=low
+
+  * Bug #48910: Prefix local repository URLs with UCS release version
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 11 Mar 2019 08:47:28 +0100
+
 univention-updater (14.0.0-16) unstable; urgency=low
 
   * Bug #48910: Create compressed Packages.gz files

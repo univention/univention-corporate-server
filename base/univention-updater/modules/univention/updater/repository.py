@@ -145,7 +145,7 @@ def gen_indexes(base, version):  # type: (str, UCS_Version) -> None
                 if line.startswith(A):
                     arch = line[len(A):].strip()
                 elif line.startswith(F):
-                    line = F + line[len(F):].lstrip('/')
+                    line = '%s%s/%s' % (F, version, line[len(F):].lstrip('/'))
                 lines.append(line)
                 if line == '\n':
                     f = f_all if arch == 'all' else f_arch
