@@ -61,7 +61,7 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 		'/var/log/dovecot.log'
 		'/var/log/journalctl.log'
 		'/var/log/mail.log'
-		'/var/log/samba/*'
+		'/var/log/samba/log.*'
 		'/var/log/syslog'
 		'/var/log/univention/actualise.log'
 		'/var/log/univention/appcenter.log'
@@ -75,6 +75,7 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 		'/var/log/univention/system-stats.log'
 		'/var/log/univention/ucs-windows-tools.log'
 		'/var/log/univention/updater.log'
+		'/var/log/univention/server_password_change.log'
 	)
 	local FILE rc=0
 	for FILE in "${FILES[@]}"; do
