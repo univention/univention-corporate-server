@@ -57,7 +57,7 @@
 				<para>
 					Das <foreignphrase>Admin Diary</foreignphrase> wird als zwei Komponenten ausgeliefert:
 					Ein Backend für die Datenhaltung in einer SQL Datenbank und ein Frontend für die Integration in die UMC.
-					Das Erfassung der Ereignisse ist Teil von UCS <productnumber>4.4</productnumber> und wird mit Installation des Backends automatisch aktiviert.
+					DIe Erfassung der Ereignisse ist Teil von UCS <productnumber>4.4</productnumber> und wird mit Installation des Backends automatisch aktiviert.
 			</para></listitem>
 			<listitem><para>
 					Die Self-Service App wurde in zwei Bereichen erweitert:
@@ -80,7 +80,7 @@
 			<listitem><para>
 					Die RADIUS App wurde vereinheitlicht durch das Zusammenführen der Implementierungen von &ucsUAS; und der UCS App.
 					Im Rahmen der Implementierung wurde der Austausch von <foreignphrase>Shared Secrets</foreignphrase> z.B. mit WLAN Access Points vereinfacht:
-					Die Access Points Konfiguration kann nun über das UMC Modules für Rechnerobjekte vorgenommen werden.
+					Die Access Point Konfiguration kann nun über das UMC Modul für Rechnerobjekte vorgenommen werden.
 			</para></listitem>
 			<listitem><para>
 					Samba wurde auf Version <productnumber>4.10 RC2</productnumber> aktualisiert, wodurch zahlreiche Verbesserungen einfließen.
@@ -103,7 +103,7 @@
 			</para></listitem>
 			<listitem><para>
 					Für App Anbieter sind die <foreignphrase>Install Permissions</foreignphrase> eine neue Funktion im App Center:
-					Damit können pro Version angeben werden, ob die App für die Installation ein Vertragsverhältnis zwischen Nutzer und Anbieter erfordert.
+					Damit kann pro Version angeben werden, ob die App für die Installation ein Vertragsverhältnis zwischen Nutzer und Anbieter erfordert.
 					Damit unterstützt das App Center besser entsprechende Geschäftsmodelle der App Anbieter und Nutzer können besser erkennen, welche Versionen einer App verfügbar sind.
 			</para></listitem>
 			<listitem><para>

@@ -102,7 +102,7 @@
 			</para></listitem>
 			<listitem><para>
 					For App Providers <phrase>Install Permissions</phrase> are a new feature in the App Center:
-					They allows to specify for each version whether the App requires a contractual relationship between user and provider for installation.
+					They allow to specify for each version whether the App requires a contractual relationship between user and provider for installation.
 					The App Center thus better supports corresponding business models of the app providers and users can better recognize which versions of an app are available.
 			</para></listitem>
 			<listitem><para>
