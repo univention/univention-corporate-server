@@ -160,45 +160,57 @@ $header-height = 48px
 			@media (max-height: 799px)
 				height: 120px
 
-		.umcGrid.umcUCSSetupSoftwareGrid .dgrid
-			@media (max-height: 799px)
-				height: 25em
+		.umcGrid.umcUCSSetupSoftwareGrid
+			.dgrid
+				max-height: 35em
+			@media (max-height: 799px) and (min-width: 768px)
+				.dgrid
+					height: calc(100vh - 250px)
+					max-height: none
 
-			.dgrid-row
-				height: auto
-				line-height: 1.5em
+			.umcGridHeader
+				display: flex !important
 
-			.dgrid-cell
-				// make sure that lines can wrap inside the grid
-				white-space: normal
+			.umcGrid__toolbar,
+			.umcGrid__contextActionsToolbar
+				display: none !important
 
-				.umcAppEntry,
-				.umcAppName,
+			.dgrid
+				.dgrid-row
+					height: auto
+					line-height: 1.5em
+
+				.dgrid-cell
+					// make sure that lines can wrap inside the grid
+					white-space: normal
+
+					.umcAppEntry,
+					.umcAppName,
+					.umcAppDescription,
+					.umcInfoIcon
+						display: block
+
+				.umcAppEntry
+					position: relative
+					padding: 5px 0
+					padding: 5px 0
+
+				.umcAppDescription
+					color: #818181
+
 				.umcAppDescription,
+				.umcAppName
+					margin-right: 40px
+
 				.umcInfoIcon
-					display: block
-
-			.umcAppEntry
-				position: relative
-				padding: 5px 0
-				padding: 5px 0
-
-			.umcAppDescription
-				color: #818181
-
-			.umcAppDescription,
-			.umcAppName
-				margin-right: 40px
-
-			.umcInfoIcon
-				background: url(info-icon.png) no-repeat center
-				width: 40px
-				height: 40px
-				position: absolute
-				right: 0
-				top: 50%
-				margin-top: -20px
-				cursor: pointer
+					background: url(info-icon.png) no-repeat center
+					width: 40px
+					height: 40px
+					position: absolute
+					right: 0
+					top: 50%
+					margin-top: -20px
+					cursor: pointer
 
 
 	.umc-setup-page-role,
