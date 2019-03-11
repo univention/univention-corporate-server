@@ -1680,7 +1680,6 @@ apt-get dselect-upgrade
 				The backend must be installed on one system in the domain before the frontend can be installed.
 				It includes a customization for <package>rsyslog</package> and writes into a central database, which defaults to PostgreSQL.
 				If MariaDB or MySQL is already installed on the target system, it will be used instead of PostgreSQL.
-				Further details about this can be found in this <ulink url="https://help.univention.com/t/admin-diary-how-to-seperate-frontend-and-backend/11331">separate document</ulink>.
 			</simpara></listitem>
 		</varlistentry>
 		<varlistentry>
