@@ -51,32 +51,32 @@
 
 		<itemizedlist>
 			<listitem><para>
-				Mit dem Release steht die neue App "Admin Diary" bereit, mit der administrative Ereignisse von allen UCS Instanzen einer Domäne zentral eingesehen und ausgewertet werden können. Über ein Modul der Univention Management Console werden Änderungen an Benutzern, Gruppen oder anderen Objekten im Verzeichnisdienst genauso nachverfolgbar, wie Updates von Servern oder (De-)Installationen von Apps. Das Admin Diary wird in zwei Komponenten ausgeliefert, ein Backend für die Datenhaltung in einer SQL Datenbank und ein Frontend für die Integration in die UMC. Die notwendige Erfassung der Ereignisse auf den UCS Instanzen ist Teil von UCS 4.4 und wird mit Installation des Backends automatisch aktiviert.
+					Mit dem Release steht die neue App "<foreignphrase>Admin Diary</foreignphrase>" bereit, mit der administrative Ereignisse von allen UCS Instanzen einer Domäne zentral eingesehen und ausgewertet werden können. Über ein Modul der Univention Management Console werden Änderungen an Benutzern, Gruppen oder anderen Objekten im Verzeichnisdienst genauso nachverfolgbar, wie Updates von Servern oder (De-)Installationen von Apps. Das <foreignphrase>Admin Diary</foreignphrase> wird in zwei Komponenten ausgeliefert, ein Backend für die Datenhaltung in einer SQL Datenbank und ein Frontend für die Integration in die UMC. Die notwendige Erfassung der Ereignisse auf den UCS Instanzen ist Teil von UCS 4.4 und wird mit Installation des Backends automatisch aktiviert.
 			</para></listitem>
 			<listitem><para>
-				Die Self Service App wurde in zwei Bereichen erweitert. Endanwender können das Webinterface des Self Service nun nicht nur für Passwortänderungen nutzen, sondern auch für das Editieren der eigenen Kontaktinformationen. Administratoren wird jetzt die Möglichkeit geboten, den Self Service zum Einladen neuer Nutzer per Mail zu verwenden. In diesem Verfahren wird neuen Anwendern ein Token des Self Service übermittelt, mit dem sie das vorbereitete Konto in der UCS Domäne um Passwort und Kontaktinformationen erweitern können.
+					Die Self-Service App wurde in zwei Bereichen erweitert. Endanwender können das Webinterface des Self-Service nun nicht nur für Passwortänderungen nutzen, sondern auch für das Editieren der eigenen Kontaktinformationen. Administratoren wird jetzt die Möglichkeit geboten, den Self-Service zum Einladen neuer Nutzer per Mail zu verwenden. In diesem Verfahren wird neuen Anwendern ein Token des Self-Service übermittelt, mit dem sie das vorbereitete Konto in der UCS Domäne um Passwort und Kontaktinformationen erweitern können.
 			</para></listitem>
 			<listitem><para>
-				Das Portal wurde um die Möglichkeit erweitert, Anwender direkt auf die Anmeldeseite zu verweisen und bei einem leeren Portal Hinweistexte anzuzeigen. Die Darstellungen wurden optimiert und sind jetzt per CSS anpassbar. Weiter verfügt das Portal jetzt über ein verbessertes Berechtigungsmanagement, mit dem mehr Zugriffsschutz auf Serverseite möglich ist, was die Grundlage für zukünftige Funktionen bildet.
+					Das Portal wurde um die Möglichkeit erweitert, Anwender direkt auf die Anmeldeseite zu verweisen und bei einem leeren Portal Hinweistexte anzuzeigen. Die Darstellungen wurden optimiert und sind jetzt per CSS anpassbar. Weiter verfügt das Portal jetzt über ein verbessertes Berechtigungsmanagement, mit dem mehr Zugriffsschutz auf Serverseite möglich ist, was die Grundlage für zukünftige Funktionen bildet.
 			</para></listitem>
 			<listitem><para>
-				Die Radius App wurde vereinheitlicht, die Implementierungen in UCS@school und die App von UCS sind dabei verschmolzen. Im Rahmen der Implementierung wurde der Austausch von Shared Keys z.B. mit WLAN Access Points durch eine Integration an den Rechnerobjekten der Access Points in die UMC vereinfacht.
+					Die Radius App wurde vereinheitlicht, die Implementierungen in UCS@school und die App von UCS sind dabei verschmolzen. Im Rahmen der Implementierung wurde der Austausch von <foreignphrase>Shared Keys</foreignphrase> z.B. mit WLAN Access Points durch eine Integration an den Rechnerobjekten der Access Points in die UMC vereinfacht.
 			</para></listitem>
 			<listitem><para>
-				Samba wurde auf Version 4.10 RC2 aktualisiert, wodurch zahlreiche Verbesserungen einfließen. So werden mit dieser Version Vertrauensstellungen (Trusts) zwischen UCS und Microsoft Active Directory Domänen konfigurierbar. Damit ist es beispielsweise möglich, das in UCS administrierte Nutzer Zugriff auf in Microsoft Domänen betriebenen Services erhalten. Weiter unterstützt Samba jetzt "Fine Grained Password Policies", mit denen es möglich ist unterschiedliche und detaillierte Passwort-Richtlinien innerhalb der Microsoft Active Directory bzw. Kerberos Domäne zu definieren.
+					Samba wurde auf Version 4.10 <literal>RC2</literal> aktualisiert, wodurch zahlreiche Verbesserungen einfließen. So werden mit dieser Version Vertrauensstellungen (<foreignphrase>Trusts</foreignphrase>) zwischen UCS und Microsoft Active Directory Domänen konfigurierbar. Damit ist es beispielsweise möglich, das in UCS administrierte Nutzer Zugriff auf in Microsoft Domänen betriebenen Services erhalten. Weiter unterstützt Samba jetzt "<foreignphrase>Fine Grained Password Policies</foreignphrase>", mit denen es möglich ist unterschiedliche und detaillierte Passwort-Richtlinien innerhalb der Microsoft Active Directory bzw. Kerberos Domäne zu definieren.
 			</para></listitem>
 			<listitem><para>
-				Die Benutzerführung in der Univention Management Console wurden in vielen Punkten verbessert. Dazu gehören eine klarere Darstellung von Eingabeelementen, eine bessere Handhabung von langen Ergebnislisten oder eine effizientere Darstellung auf kleinen Displays.
+					Die Benutzerführung in der Univention Management Console wurden in vielen Punkten verbessert. Dazu gehören eine klarere Darstellung von Eingabeelementen, eine bessere Handhabung von langen Ergebnislisten oder eine effizientere Darstellung auf kleinen Displays.
 			</para></listitem>
 			<listitem><para>
-				Die von installierten Apps mitgebrachten Einstellungen an Benutzerobjekten können jetzt an einer übersichtlichen Stelle am Benutzer editiert werden. Damit wird sowohl die Administration von UCS als auch die Integration durch App Provider vereinfacht.
+					Die von installierten Apps mitgebrachten Einstellungen an Benutzerobjekten können jetzt an einer übersichtlichen Stelle am Benutzer editiert werden. Damit wird sowohl die Administration von UCS als auch die Integration durch App Provider vereinfacht.
 			</para></listitem>
 			<listitem><para>
-				Die Install Permissions für Apps sind eine neue Funktion im App Center für App Anbieter, die damit pro App Version angeben können, ob ihre App für die Installation ein Vertragsverhältnis zwischen Nutzer und Anbieter erfordert. Damit unterstützt das App Center besser entsprechende Geschäftsmodelle der App Anbieter und Nutzer können besser erkennen, welche Versionen einer App verfügbar sind.
+					Die <foreignphrase>Install Permissions</foreignphrase> für Apps sind eine neue Funktion im App Center für App Anbieter, die damit pro App Version angeben können, ob ihre App für die Installation ein Vertragsverhältnis zwischen Nutzer und Anbieter erfordert. Damit unterstützt das App Center besser entsprechende Geschäftsmodelle der App Anbieter und Nutzer können besser erkennen, welche Versionen einer App verfügbar sind.
 			</para></listitem>
 			<listitem><para>
-				UCS 4.4-0 basiert auf dem im Februar veröffentlichten Debian Release 9.8.
-				Eine vollständige Liste von Security- und Paketupdates ist in <xref linkend="relnotes:changelog"/> zu finden.
+					UCS 4.4-0 basiert auf dem im Februar veröffentlichten Debian Release 9.8.
+					Eine vollständige Liste von Security- und Paketupdates ist in <xref linkend="relnotes:changelog"/> zu finden.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
