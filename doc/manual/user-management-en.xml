@@ -623,7 +623,6 @@
         </table>
     </section>
 
-    </section>
     <section id="users:app-activation">
         <title>User activation for apps</title>
         <para>
@@ -1181,5 +1180,6 @@ univention-director-manager users/user
 
         <para>
 		  It is also possible to combine options, e.g: <literal>:umlauts,upper</literal>.
-		</para>
+      </para>
+  </section>
 </chapter>
