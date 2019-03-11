@@ -2664,8 +2664,8 @@ dansguardian -g
 			  <para>
 				  All access points must be known to the RADIUS server. An access point can either
 				  be configured in the file <filename>/etc/freeradius/3.0/clients.conf</filename>
-				  or through the &ucsUMC;. For each access point a random shared secret should be created.
-				  (For example using the command <command>makepasswd</command>).
+				  or through the &ucsUMC;. For each access point a random shared secret should be created
+				  (e.g. by using the command <command>makepasswd</command>).
 				  The <literal>shortname</literal> can be chosen at will.
 				</para>
 				<para>
@@ -2686,13 +2686,13 @@ client AP01 {
 					(<xref linkend="ip-config:radius:authenticator"/>).
 					At least the IP address and the shared secret must be configured. The virtual server
 					and NAS type options usually do not need to be changed.
-					Access points which are configured through the &ucsUMC; are for all
-					RADIUS servers in the domain.
 				</para>
 				<para>
-					If access points are configured with the &ucsUMC; the &ucsUDL; will write them into
+					Access points that are configured via the UMC are available to all
+					RADIUS server in the domain.
+					To achieve this, the &ucsUDL; will write them into
 					the file <filename>/etc/freeradius/3.0/clients.univention.conf</filename> and
-					restart the RADIUS server. To be able to collect multiple changes this happens with
+					restart the RADIUS server. In order to merge multiple changes in one restart, this happens with
 					a slight delay (around 15 seconds). New access points can only access the RADIUS server
 					after this restart.
 				</para>
@@ -2731,7 +2731,7 @@ client AP01 {
 				<filename>/var/log/univention/radius_ntlm_auth.log</filename>.
 				The log verbosity can the controlled via the &ucsUCRV;
 				<envar>freeradius/auth/helper/ntlm/debug</envar>.
-				The <package>FreeRADIUS-Server</package> uses the log file:
+				The <package>FreeRADIUS server</package> uses the log file:
 				<filename>/var/log/freeradius/radius.log</filename>.
 			</para>
 		  <para>
@@ -2761,8 +2761,8 @@ DENY 'uid=janek,cn=users,dc=ucs,dc=local'
 Thus access is ALLOWED.
 root@master211:~#
 </programlisting>
-			It prints a detailed explanation and sets the exit code depending on the access
-			(0 for granted access, 1 for denied access).
+			It prints a detailed explanation and sets the exit code depending on the result of the access check
+			(0 for <emphasis>access granted</emphasis>, 1 for <emphasis>access denied</emphasis>).
 		  </para>
 	  </section>
   </section>
