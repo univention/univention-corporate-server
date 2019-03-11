@@ -2370,13 +2370,13 @@ client AP01 {
 					Die Eigenschaften NAS-Type und Virtueller-Server müssen in der Regel nicht
 					verändert werden. <foreignphrase>Access Points</foreignphrase>, welche per &ucsUMC; konfiguriert sind, gelten für alle RADIUS Server in der Domäne.
 				</para>
-				<note>
+				<para>
 					Bei der Konfiguration über die &ucsUMC; werden die <foreignphrase>Access Points</foreignphrase>
 					über den &ucsUDL; in die Datei <filename>/etc/freeradius/3.0/clients.univention.conf</filename>
 					geschrieben und der RADIUS-Server neu gestartet. Um Änderungen zusammenzufassen, geschieht
 					dies verzögert (etwa 15 Sekunden). Neue <foreignphrase>Access Points</foreignphrase>
 					haben erst nach diesem Neustart Zugriff auf den RADIUS-Server.
-				</note>
+				</para>
 				<para>
 					<figure id="ip-config:radius:option">
 						<title>Setzen der RADIUS-Option</title>

@@ -2689,13 +2689,13 @@ client AP01 {
 					Access points which are configured through the &ucsUMC; are for all
 					RADIUS servers in the domain.
 				</para>
-				<note>
+				<para>
 					If access points are configured with the &ucsUMC; the &ucsUDL; will write them into
 					the file <filename>/etc/freeradius/3.0/clients.univention.conf</filename> and
 					restart the RADIUS server. To be able to collect multiple changes this happens with
 					a slight delay (around 15 seconds). New access points can only access the RADIUS server
 					after this restart.
-				</note>
+				</para>
 				<para>
 					<figure id="ip-config:radius:option">
 						<title>RADIUS option</title>
