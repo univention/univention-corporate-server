@@ -1,3 +1,10 @@
+ucs-test (9.0.2-11) unstable; urgency=medium
+
+  * Bug #48724: selenium/appcenter.py wait for installed during app
+    installation
+
+ -- Felix Botner <botner@univention.de>  Mon, 11 Mar 2019 11:19:50 +0100
+
 ucs-test (9.0.2-10) unstable; urgency=medium
 
   * Bug #48724: fixed 20_appcenter/17_app_status
