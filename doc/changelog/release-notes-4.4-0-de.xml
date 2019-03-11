@@ -57,7 +57,7 @@
 				<para>
 					Das <foreignphrase>Admin Diary</foreignphrase> wird als zwei Komponenten ausgeliefert:
 					Ein Backend für die Datenhaltung in einer SQL Datenbank und ein Frontend für die Integration in die UMC.
-					DIe Erfassung der Ereignisse ist Teil von UCS <productnumber>4.4</productnumber> und wird mit Installation des Backends automatisch aktiviert.
+					Die Erfassung der Ereignisse ist Teil von UCS <productnumber>4.4</productnumber> und wird mit Installation des Backends automatisch aktiviert.
 			</para></listitem>
 			<listitem><para>
 					Die Self-Service App wurde in zwei Bereichen erweitert:
