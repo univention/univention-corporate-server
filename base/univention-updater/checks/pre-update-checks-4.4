@@ -237,12 +237,17 @@ update_check_disk_space () {
 	)
 }
 
+# block if failed.ldif exists
+update_check_failed_ldif() {
+	if [ -e /var/lib/univention-directory-replication/failed.ldif ]; then
+		echo -e "\tA failed.ldif exists."
+		echo -e "\tPlease check https://help.univention.com/t/what-to-do-if-a-failed-ldif-is-found/6432 for further information."
+		echo -e "\tThe update can be started after the failed.ldif has been removed."
+		return 1
+	fi
+}
 
-###########################
-# release specific checks #
-###########################
-
-# begin bug 46133 - stop if md5 based "Signature Algorithm" is used in tls certificate
+# stop if md5 based "Signature Algorithm" is used in tls certificate
 update_check_md5_signature_is_used () {
 	local cert_path="/etc/univention/ssl/"$hostname"."$domainname"/cert.pem"
 	if [ -f "$cert_path" ]; then
@@ -263,101 +268,27 @@ update_check_md5_signature_is_used () {
 		fi
 	fi
 }
-# end bug 46133
 
-# begin bug 46118 - Remove support for NT DC
-update_check_block_update_of_NT_DC() {
-	local var="update$VERSION/ignore_samba_nt_dc"
+# block update if system date is too old
+update_check_system_date_too_old() {
+	local system_year=$(date +%Y)
+	local var="update$VERSION/ignore_system_date"
 	ignore_check "$var" && return 100
-	if [ "${samba_role}" = "domaincontroller" ]; then
-		if ! dpkg -l univention-samba | grep -q ^ii; then
-			return 0
-		fi
-		if [ "${server_role}" = "domaincontroller_slave" ]; then
-			if dpkg -l univention-samba-slave-pdc | grep -q ^ii; then
-				return 0
-			fi
-		fi
-		echo -e "\tSamba/NT (samba3) Domain Controller is not supported any more."
-		echo -e "\tPlease migrate this domain to Samba/AD before updating."
-		echo -e "\tSee https://wiki.univention.de/index.php/Migration_from_Samba_3_to_Samba_4"
-		echo -e "\tand https://wiki.univention.de/index.php/Best_Practice_Samba_4_Migration"
-		echo -e "\tThis check can be disabled by setting the UCR variable"
-		echo -e "\t$var to yes."
+	if [ "$system_year" -lt 2018 ] ; then
+        echo -e "\tThe system date ($(date +%Y-%m-%d)) does not seem to be correct."
+        echo -e "\tPlease set a current system time before the update, otherwise the"
+        echo -e "\tupdate will fail if Spamassassin is installed."
+        echo -e "\tThis check can be disabled by setting the UCR variable"
+        echo -e "\t$var to yes."
 		return 1
 	fi
 }
 
-# Check for postgresql-9.1 (Bug #44160)
-update_check_postgresql91 () {
-	local var="update$VERSION/ignore_postgresql91"
-	ignore_check "$var" && return 100
-	case "$(dpkg-query -W -f '${Status}' postgresql-9.1 2>/dev/null)" in
-	install*) ;;
-	*) return 0 ;;
-	esac
-	echo -e "\tPostgreSQL-9.1 is no longer supported by UCS-${VERSION_NAME} and must be migrated to"
-	echo -e "\ta newer version of PostgreSQL. See https://help.univention.com/t/8073 for"
-	echo -e "\tmore details."
-	return 1
-}
 
-# Bug #46102: Remove Cyrus integration
-update_check_cyrus_integration () {
-	local var="update$VERSION/ignore_cyrus_check"
-	ignore_check "$var" && return 100
-	if LC_ALL=C dpkg -l 'univention-mail-cyrus' 2>/dev/null | grep ^i 1>&2; then
-		echo -e "\tThe Cyrus integration package was found. Cyrus is not"
-		echo -e "\tsupported anymore by UCS ${VERSION_NAME}. Aborting the upgrade. For instructions how to"
-		echo -e "\tproceed, please refer to https://help.univention.com/t/7957"
-		return 1
-	fi
-}
+###########################
+# release specific checks #
+###########################
 
-# Bug #46605: Block if single-server SSO is configured
-# The default sso nameserver entry is ucs-sso.$domainname
-# If the configuration is different,
-# https://help.univention.com/t/6681 was probably used.
-# Default config in UCS 4.2 is done in univention-saml/91univention-saml.inst
-update_check_reconfigured_sso () {
-	local var="update$VERSION/ignore_sso_domain"
-	ignore_check "$var" && return 100
-	if [ -n "$ucs_server_sso_fqdn" ] && [ "$ucs_server_sso_fqdn" != "ucs-sso.$domainname" ]; then
-		echo -e "\tSingle-Sign on was reconfigured and is not using the default"
-		echo -e "\tDNS settings. When continued, there will be issues using UMC"
-		echo -e "\tafter the update."
-		echo
-		echo -e "\tThis check can be disabled by setting the UCR variable"
-		echo -e "\t$var to yes."
-		return 1
-	fi
-}
-
-# Bug #46850: Block if failed.ldif exists
-update_check_failed_ldif_exists() {
-	if [ -e /var/lib/univention-directory-replication/failed.ldif ]; then
-		echo "WARNING: A failed.ldif exists."
-		echo "Please check https://help.univention.com/t/what-to-do-if-a-failed-ldif-is-found/6432 for further information."
-		echo "The update can be started after the failed.ldif has been removed."
-		exit 1
-	fi
-}
-
-# Bug #46699
-update_check_kopano_repo () {
-	local var="update$VERSION/ignore_kopano_repo"
-	ignore_check "$var" && return 100
-	for repo in kopano/repo/kopano-core kopano/repo/kopano-webapp kopano/repo/kopano-webmeetings; do
-		if is_ucr_true "$repo"; then
-			echo -e "\tAn external repository for the Kopano Apps is currently configured."
-			echo -e "\tThere are known issues when updating to UCS ${VERSION_NAME} and using software"
-			echo -e "\tfrom the Kopano software repository."
-			echo -e "\tThe update is blocked while Kopano and Univention are working"
-			echo -e "\ton a solution."
-			return 1
-		fi
-	done
-}
 
 ########
 # main #
