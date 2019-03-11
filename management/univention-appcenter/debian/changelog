@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-3) unstable; urgency=medium
+
+  * Bug #48523: update 4.4 archive
+
+ -- Felix Botner <botner@univention.de>  Mon, 11 Mar 2019 10:11:21 +0100
+
 univention-appcenter (8.0.11-2) unstable; urgency=medium
 
   * Bug #48839: fix filetype extension
