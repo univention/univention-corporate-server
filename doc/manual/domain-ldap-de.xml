@@ -1674,16 +1674,19 @@ apt-get dselect-upgrade
 	</para>
 	<itemizedlist>
 		<listitem><simpara>
-			Das Anlegen, Verändern oder Löschen von Benutzern
+			Das Anlegen, Verschieben, Verändern oder Löschen von Benutzern und anderen Objekten über &ucsUDM;
 		</simpara></listitem>
 		<listitem><simpara>
-			Das Anlegen, Verändern oder Löschen von Objekten über &ucsUDM;
-		</simpara></listitem>
-		<listitem><simpara>
-			Das Installieren oder Deinstallieren von Apps
+			Installation, Update und Deinstallation von Apps
 		</simpara></listitem>
 		<listitem><simpara>
 			Server-Passwort-Änderungen
+		</simpara></listitem>
+		<listitem><simpara>
+			Start, Ende und eventuelle Fehlschläge von Domänen-Joins
+		</simpara></listitem>
+		<listitem><simpara>
+			Start und Ende von UCS Updates
 		</simpara></listitem>
 	</itemizedlist>
 	<figure id="domain-ldap:adminndiary:list">
@@ -1702,15 +1705,15 @@ apt-get dselect-upgrade
 		<graphic scalefit="1" width="80%" fileref="illustrations44/admindiary-detail_de.png"/>
 	</figure>
 	<para>
-		Die App besteht auf zwei Komponenten:
+		Die App besteht aus zwei Komponenten:
 	</para>
 	<variablelist>
 		<varlistentry>
 			<term><foreignphrase>Admin Diary</foreignphrase> Backend</term>
 			<listitem><simpara>
-				Das Backend muss mindestens, — i.d.R. genau — einmal in der Domäne installiert sein.
-				Es beinhaltet eine Anpassung für <package>rsyslog</package> sowie eine Datenbank, die standardmäßig PostgreSQL nutzt.
-				Alternativ kann auch MariaDB oder MySQL verwendet werden.
+				Das Backend muss auf einem System in der Domäne installiert sein, bevor das Frontend installiert werden kann.
+				Es beinhaltet eine Anpassung für <package>rsyslog</package> und schreibt in eine zentrale Datenbank, standardmäßig PostgreSQL.
+				Falls MariaDB oder MySQL vorher auf dem Zielsystem installiert ist, dann wird es statt PostgreSQL verwendet.
 				Weitere Details dazu sind in einem <ulink url="https://help.univention.com/t/admin-diary-how-to-seperate-frontend-and-backend/11331">separaten Artikel</ulink> beschrieben.
 			</simpara></listitem>
 		</varlistentry>
@@ -1719,6 +1722,9 @@ apt-get dselect-upgrade
 			<listitem><simpara>
 				Auch das Frontend muss mindestens einmal installiert sein, kann aber öfter installiert werden.
 				Das Frontend beinhaltet das &ucsUMC; Modul, um die Einträge anzuzeigen und zu kommentieren.
+				Wenn es nicht auf dem selben System installiert werden soll, auf dem das Backend läuft, dann muss der Zugriff auf die zentrale Datenbank
+				manuell eingerichtet werden.
+				Die dazu notwendigen Schritte sind in einem <ulink url="https://help.univention.com/t/admin-diary-how-to-seperate-frontend-and-backend/11331">separaten Artikel</ulink> beschrieben.
 			</simpara></listitem>
 		</varlistentry>
 	</variablelist>

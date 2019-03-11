@@ -1640,16 +1640,19 @@ apt-get dselect-upgrade
 	</para>
 	<itemizedlist>
 		<listitem><simpara>
-			Creation, modification and deletion of users
+			Creation, move, modification and deletion of users and other objects using &ucsUDM;
 		</simpara></listitem>
 		<listitem><simpara>
-			Creation, modification and deletion of objects using &ucsUDM;
-		</simpara></listitem>
-		<listitem><simpara>
-			Installation and deinstallation of apps
+			Installation, update and deinstallation of apps
 		</simpara></listitem>
 		<listitem><simpara>
 			Server password changes
+		</simpara></listitem>
+		<listitem><simpara>
+			Start, end and eventual failures of domain joins
+		</simpara></listitem>
+		<listitem><simpara>
+			Start und end of UCS updates
 		</simpara></listitem>
 	</itemizedlist>
 	<figure id="domain-ldap:adminndiary:list">
@@ -1658,13 +1661,13 @@ apt-get dselect-upgrade
 	</figure>
 	<para>
 		<xref linkend="domain-ldap:adminndiary:list"/> shows, how events are shown in the &ucsUMC;.
-		The displayed entries are by default grouped by weak and can be filtered further through the search field.
-		<xref linkend="domain-ldap:adminndiary:detail"/> shows the dialog with details information, which open when an entry is selected from the list.
-		The dialog shows further details about then who and when of the event.
+		By default the displayed entries are grouped by week and can additionally be filtered through the search field.
+		Selecting an entry from the list opens a dialog showing additional details about the who and when of the event,
+		as shown in <xref linkend="domain-ldap:adminndiary:detail"/>.
 		Moreover there is the possibility to comment each event.
 	</para>
 	<figure id="domain-ldap:adminndiary:detail">
-		<title>Detail view  in <phrase>Admin Diary</phrase></title>
+		<title>Detail view in <phrase>Admin Diary</phrase></title>
 		<graphic scalefit="1" width="80%" fileref="illustrations44/admindiary-detail_en.png"/>
 	</figure>
 	<para>
@@ -1674,10 +1677,10 @@ apt-get dselect-upgrade
 		<varlistentry>
 			<term><phrase>Admin Diary</phrase> backend</term>
 			<listitem><simpara>
-				The backend must be installed at least — most often exactly — once in the domain.
-				It includes a customization for <package>rsyslog</package> and also a database, which defaults to PostgreSQL.
-				As an alternative MariaDB or MySQL can be used.
-				Further details on that can be found in this <ulink url="https://help.univention.com/t/admin-diary-how-to-seperate-frontend-and-backend/11331">separate document</ulink>.
+				The backend must be installed on one system in the domain before the frontend can be installed.
+				It includes a customization for <package>rsyslog</package> and writes into a central database, which defaults to PostgreSQL.
+				If MariaDB or MySQL is already installed on the target system, it will be used instead of PostgreSQL.
+				Further details about this can be found in this <ulink url="https://help.univention.com/t/admin-diary-how-to-seperate-frontend-and-backend/11331">separate document</ulink>.
 			</simpara></listitem>
 		</varlistentry>
 		<varlistentry>
@@ -1685,6 +1688,8 @@ apt-get dselect-upgrade
 			<listitem><simpara>
 				Likewise the frontend must be installed at least once, but more installations are also possible.
 				The frontend includes the &ucsUMC; module, which is used to show and comment the entries.
+				When installing it on a different host than where the backend is installed, access to the central database needs to be configured manually.
+				The required steps for this are described in this <ulink url="https://help.univention.com/t/admin-diary-how-to-seperate-frontend-and-backend/11331">separate document</ulink>.
 			</simpara></listitem>
 		</varlistentry>
 	</variablelist>
