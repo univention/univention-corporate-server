@@ -1,3 +1,9 @@
+ucs-test (9.0.2-13) unstable; urgency=medium
+
+  * Bug #47643: skip 62server_password_change_drs_replication
+
+ -- Felix Botner <botner@univention.de>  Mon, 11 Mar 2019 17:18:34 +0100
+
 ucs-test (9.0.2-12) unstable; urgency=medium
 
   * Bug #48952: skip 69_udm-syntax.20_ucrwidget
