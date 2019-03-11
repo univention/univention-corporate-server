@@ -66,7 +66,7 @@
 					Samba wurde auf Version 4.10 <literal>RC2</literal> aktualisiert, wodurch zahlreiche Verbesserungen einfließen. So werden mit dieser Version Vertrauensstellungen (<foreignphrase>Trusts</foreignphrase>) zwischen UCS und Microsoft Active Directory Domänen konfigurierbar. Damit ist es beispielsweise möglich, das in UCS administrierte Nutzer Zugriff auf in Microsoft Domänen betriebenen Services erhalten. Weiter unterstützt Samba jetzt "<foreignphrase>Fine Grained Password Policies</foreignphrase>", mit denen es möglich ist unterschiedliche und detaillierte Passwort-Richtlinien innerhalb der Microsoft Active Directory bzw. Kerberos Domäne zu definieren.
 			</para></listitem>
 			<listitem><para>
-					Die Benutzerführung in der Univention Management Console wurden in vielen Punkten verbessert. Dazu gehören eine klarere Darstellung von Eingabeelementen, eine bessere Handhabung von langen Ergebnislisten oder eine effizientere Darstellung auf kleinen Displays.
+					Die Benutzerführung in der Univention Management Console wurden in vielen Punkten verbessert. Dazu gehören eine klarere Darstellung von Eingabeelementen, eine bessere Handhabung von langen Ergebnislisten und eine effizientere Darstellung auf kleinen Displays.
 			</para></listitem>
 			<listitem><para>
 					Die von installierten Apps mitgebrachten Einstellungen an Benutzerobjekten können jetzt an einer übersichtlichen Stelle am Benutzer editiert werden. Damit wird sowohl die Administration von UCS als auch die Integration durch App Provider vereinfacht.

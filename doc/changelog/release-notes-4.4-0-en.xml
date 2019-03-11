@@ -44,37 +44,39 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With Univention Corporate Server 4.4-0, the forth minor release of Univention Corporate Server (UCS) 4 is now
+			With Univention Corporate Server 4.4-0, the fourth minor release of Univention Corporate Server (UCS) 4 is now
 			available. It provides several feature improvements and extensions, new properties as well as
 			various improvements and bugfixes. Here is an overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				The UCS portal now imports the file <filename>/usr/share/univention-portal/custom.css</filename> which is located under <filename class="directory">/usr/share/univention-portal/</filename>.
-				This file is not authored by Univention and thus will not be modified by any future updates.
-				It can be used to adapt the portals design to personal needs.
+					With this release the new app "<foreignphrase>Admin Diary</foreignphrase>" is available, with which administrative events of all UCS instances of a domain can be viewed and evaluated centrally. Changes to users, groups or other objects in the directory service can be tracked just as easily as updates to servers or (de-)installations of apps in a module of the Univention Management Console. The <foreignphrase>Admin Diary</foreignphrase> is delivered in two components, a backend for data storage in an SQL database and a frontend for integration into the UMC. The necessary recording of events on the UCS instances is part of UCS 4.4 and is automatically activated when the backend is installed.
 			</para></listitem>
 			<listitem><para>
-				Various security updates have been integrated into UCS 4.4-0, e.g. <wordasword>Apache2</wordasword>, the Linux kernel and <wordasword>Samba4</wordasword>.
-				A complete list is available in <xref linkend="relnotes:changelog"/>.
+					The self-service app has been enhanced in two areas. End users can now use the self-service web interface not only for changing passwords, but also for editing their own contact information. Administrators can now use the self-service to invite new users by mail. In this process, new users are send a self-service token that they can use to add their password and contact information to the prepared account in the UCS domain.
 			</para></listitem>
 			<listitem><para>
-				The App Center now offers more precise filters, when searching for Apps.
+					The portal has been extended to forward users directly to the login page and to display information texts if the portal is empty. The rendering has been optimized and is now customizable via CSS. Furthermore, the portal now has an improved permission management, which allows more access protection on the server side, which forms the basis for future enhancements.
 			</para></listitem>
 			<listitem><para>
-				From time to time you will get the chance to vote for selected Apps, which are not yet available for UCS.
-				You will see these Apps directly in the App Center.
+					The Radius app has been unified, the implementations in UCS@school and the UCS app have been merged. As part of the implementation, the exchange of <foreignphrase>Shared Keys</foreignphrase>, e.g. with WiFi access points, has been simplified by integrating the the access point configuration into the UMC computer objects.
 			</para></listitem>
 			<listitem><para>
-				The design of the App's pages has been updated.
+					Samba has been updated to version 4.10 <literal>RC2</literal>, which includes numerous improvements. With this version, trust settings between UCS and Microsoft Active Directory domains can be configured. This makes it possible, for example, for users administered in UCS to gain access to services operated in Microsoft domains. Furthermore Samba now supports "<foreignphrase>Fine Grained Password Policies</foreignphrase>", with which it is possible to define different and detailed password policies within the Microsoft Active Directory or Kerberos domain.
 			</para></listitem>
 			<listitem><para>
-				Due to a design flaw in the &ucsUDN; network protocol version 2 any user can retrieve information about changes to the LDAP directory.
-				A new protocol version 3 was implemented with <ulink url="http://errata.software-univention.de/ucs/4.3/427.html">UCS-4.3-3 erratum 427</ulink>.
-				For backward compatibility with old UCS systems the &ucsUDN; still provided version 2 by default.
-				For new installations starting with UCS-4.4 only version 3 is enabled by default.
-				Protocol version 2 can be re-enabled by changing the &ucsUCRV; <envar>notifier/protocol/version</envar> to <literal>2</literal> and restarting the &ucsUDN;.
+					The user experience in the Univention Management Console has been improved in many ways. These include a clearer display of input elements, better handling of long result lists and a more efficient display on small displays.
+			</para></listitem>
+			<listitem><para>
+					The settings for a user's access to installed apps can now be managed on a central tab on the user object. This simplifies both the administration of UCS and the integration by App Providers.
+			</para></listitem>
+			<listitem><para>
+					<foreignphrase>Install Permissions</foreignphrase> for Apps are a new feature in the App Center for App Providers, which allows them to specify for each App Version whether their App requires a contractual relationship between user and provider for installation. The App Center thus better supports corresponding business models of the app providers and users can better recognize which versions of an app are available.
+			</para></listitem>
+			<listitem><para>
+					UCS 4.3-3 is based on the Debian release 9.8 released in February.
+					A complete list is available in <xref linkend="relnotes:changelog"/>.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -176,6 +178,17 @@ Checking ldap_schema ...                          OK
 
 	<chapter id="relnotes:packages">
 		<title>Notes on selected packages</title>
+
+		<section id="relnotes:notifier">
+			<title>&ucsUDN;</title>
+			<para>
+				Due to a design flaw in the &ucsUDN; network protocol version 2 any user can retrieve information about changes to the LDAP directory.
+				A new protocol version 3 was implemented with <ulink url="http://errata.software-univention.de/ucs/4.3/427.html">UCS-4.3-3 erratum 427</ulink>.
+				For backward compatibility with old UCS systems the &ucsUDN; still provided version 2 by default.
+				For new installations starting with UCS-4.4 only version 3 is enabled by default.
+				Protocol version 2 can be re-enabled by changing the &ucsUCRV; <envar>notifier/protocol/version</envar> to <literal>2</literal> and restarting the &ucsUDN;.
+			</para>
+		</section>
 
 		<section id="relnotes:usage">
 			<title>Collection of usage statistics</title>
