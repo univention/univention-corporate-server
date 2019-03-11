@@ -1854,12 +1854,6 @@ samba-tool dbcheck --fix --yes
   </para>
 
   <para>
-	If a Windows domain trusts a Samba domain, there is also the possibility to log on to the
-	Samba domain alongside the Windows domain when logging on to computers belonging to the Windows
-	domain.
-  </para>
-
-  <para>
 	When setting up and using the trust relationship the domain controllers of both domains must be
 	able to reach each other over the network and identify each other via DNS.
 	At least the fully qualified DNS names of the domain controllers of
@@ -1869,7 +1863,7 @@ samba-tool dbcheck --fix --yes
   </para>
 
   <para>
-	  The follwing example assumes, that the UCS DC Master
+	  The follwing example assumes, that the UCS Samba/AD DC Master
 	  <literal>master.ucsdom.example</literal> has the IP address
 	  <literal>10.200.8.10</literal> and that the
 	  Active Directory domain controller
@@ -1890,7 +1884,7 @@ type forward;
 forwarders { 10.200.8.20; };
 };
 %EOR
-root@master:~# service bind9 restart
+service bind9 restart
 ]]>
   </programlisting>
 

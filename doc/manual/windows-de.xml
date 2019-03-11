@@ -1930,12 +1930,6 @@ samba-tool dbcheck --fix --yes
   </para>
 
   <para>
-	Vertraut eine Windows-Domäne einer Samba-Domäne (Eingehende Vertauensstellung),
-	steht bei der Anmeldung an Rechnern der Windows-Domäne neben der Windows-Domäne
-	auch die Samba/AD-Domäne zur Auswahl.
-  </para>
-
-  <para>
 	Während der Einrichtung und Nutzung von Vertrauensstellungen müssen sich die
 	Domänencontroller der beiden Domänen über das Netzwerk erreichen und
 	gegenseitig per DNS identifizieren können.
@@ -1946,7 +1940,7 @@ samba-tool dbcheck --fix --yes
   </para>
 
   <para>
-	  Für das folgende Beispiel sei angenommen, dass der UCS DC Master
+	  Für das folgende Beispiel sei angenommen, dass der UCS Samba/AD DC Master
 	  <literal>master.ucsdom.example</literal> die IP-Adresse
 	  <literal>10.200.8.10</literal> hat und dass der
 	  Active Directory Domänencontroller
@@ -1968,7 +1962,7 @@ type forward;
 forwarders { 10.200.8.20; };
 };
 %EOR
-root@master:~# service bind9 restart
+service bind9 restart
 ]]>
   </programlisting>
 
@@ -1979,7 +1973,7 @@ root@master:~# service bind9 restart
 
   <para>
 	  Zusätzlich kann es sinnvoll sein, für den Domänencontroller der
-	  Microsoft Active Directory Domäne einen statischen Eintrag in der
+	  entfernten Active Directory Domäne einen statischen Eintrag in der
 	  Datei <filename>/etc/hosts</filename> anzulegen:
   </para>
 
