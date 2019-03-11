@@ -2358,16 +2358,16 @@ client AP01 {
 				<para>
 					Um <foreignphrase>Access Points</foreignphrase> per &ucsUMC; zu verwalten,
 					muss für den <foreignphrase>Access Point</foreignphrase> ein Rechnerobjekt existieren.
-					Dieses Rechnerobjekt benötigt die Option <emphasis>RADIUS-Authenticator</emphasis>
+					Dieses Rechnerobjekt benötigt die Option <foreignphrase>RADIUS-Authenticator</foreignphrase>
 					(<xref linkend="ip-config:radius:option"/>).
 					Für einen <foreignphrase>Access Point</foreignphrase> bietet sich ein
-					IP-Managedclient als Rechnerobjekt an. Im <guimenu>RADIUS</guimenu> Reiter des Objekts
+					<emphasis>IP-Managed-Client</emphasis> als Rechnerobjekt an. Im <guimenu>RADIUS</guimenu> Reiter des Objekts
 					lassen sich, nach hinzufügen der Option, die Eigenschaften des
 					<foreignphrase>Access Points</foreignphrase> festlegen
 					(<xref linkend="ip-config:radius:authenticator"/>).
 					Es müssen mindestens die IP-Adresse am Rechnerobjekt und ein gemeinsamer Schlüssel
 					gesetzt sein.
-					Die Eigenschaften NAS-Type und Virtueller-Server müssen in der Regel nicht
+					Die Eigenschaften <foreignphrase>NAS-Type</foreignphrase> und Virtueller-Server müssen in der Regel nicht
 					verändert werden. <foreignphrase>Access Points</foreignphrase>, welche per &ucsUMC; konfiguriert sind, gelten für alle RADIUS Server in der Domäne.
 				</para>
 				<para>
@@ -2410,7 +2410,7 @@ client AP01 {
 		<section id="ip-config:radius:debugging">
 			<title>Fehlersuche</title>
 			<para>
-				Die <package>RADIUS</package> App verfügt über ein Log unter <filename>/var/log/univention/radius_ntlm_auth.log</filename>.
+				Die <package>RADIUS</package> App verfügt über eine Logdatei unter <filename>/var/log/univention/radius_ntlm_auth.log</filename>.
 				Die Ausführlichkeit des Logs lässt sich über die &ucsUCRV; <envar>freeradius/auth/helper/ntlm/debug</envar> steuern.
 				Der <package>FreeRADIUS-Server</package> loggt nach <filename>/var/log/freeradius/radius.log</filename>.
 			</para>
