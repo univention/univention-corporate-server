@@ -79,7 +79,7 @@
 		</para>
 		<figure id="user-password-new">
 			<title>Initial user password</title>
-			<graphic scalefit="1" width="auto" align="center" fileref="illustrations44/users_self-service_en.png"/>
+			<graphic scalefit="1" width="90%" align="center" fileref="illustrations44/users_self-service_en.png"/>
 		</figure>
         <para>
 		  In the default setting, a simplified wizard for creating a user is shown, which only

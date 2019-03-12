@@ -84,7 +84,7 @@
 		</para>
 		<figure id="user-password-new">
 			<title>Initiales Benutzerpasswort</title>
-			<graphic scalefit="1" width="auto" align="center" fileref="illustrations44/users_self-service_de.png"/>
+			<graphic scalefit="1" width="90%" align="center" fileref="illustrations44/users_self-service_de.png"/>
 		</figure>
         <para>
           In der Grundeinstellung wird zum Anlegen eines Benutzers ein vereinfachter Assistent
