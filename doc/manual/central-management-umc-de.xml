@@ -506,7 +506,7 @@
 	</para>
 	<figure id="umc-container-edit">
 		<title>Bearbeiten von LDAP-Container-Einstellungen</title>
-		<graphic scalefit="1" width="30%" fileref="illustrations44/umc_navigation_edit_de.png"/>
+		<graphic scalefit="1" width="30%" align="center" fileref="illustrations44/umc_navigation_edit_de.png"/>
 	</figure>
 	<para>
 		Durch Rechtsklick auf ein Element der Baumstruktur können über
@@ -1878,7 +1878,7 @@ univention-directory-manager settings/extended_attribute create \
 
 	  <figure id="umc-report">
 		<title>Erstellen eines Reports</title>
-		<graphic width="45%" align="center" fileref="illustrations44/umc_report_de2.png"/>
+		<graphic width="100%" align="center" fileref="illustrations44/umc_report_de2.png"/>
 	  </figure>
 
 	  <para>

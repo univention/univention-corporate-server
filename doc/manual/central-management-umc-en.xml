@@ -489,7 +489,7 @@
 	</para>
 	<figure id="umc-container-edit">
 		<title>Editing LDAP container settings</title>
-		<graphic scalefit="1" width="30%" fileref="illustrations44/umc_navigation_edit_en.png"/>
+		<graphic scalefit="1" width="30%" align="center" fileref="illustrations44/umc_navigation_edit_en.png"/>
 	</figure>
 	<para>
 		Right-clicking on an element in the tree structure allows editing
@@ -1826,7 +1826,7 @@ univention-directory-manager settings/extended_attribute create \
 
 	  <figure id="umc-report">
 		<title>Creating a report</title>
-			<graphic width="45%" align="center" fileref="illustrations44/umc_report_en2.png"/>
+			<graphic width="100%" align="center" fileref="illustrations44/umc_report_en2.png"/>
 	  </figure>
 
 	  <para>

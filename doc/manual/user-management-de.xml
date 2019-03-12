@@ -84,7 +84,7 @@
 		</para>
 		<figure id="user-password-new">
 			<title>Initiales Benutzerpasswort</title>
-			<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/users_self-service_de.png"/>
+			<graphic scalefit="1" width="90%" align="center" fileref="illustrations44/users_self-service_de.png"/>
 		</figure>
         <para>
           In der Grundeinstellung wird zum Anlegen eines Benutzers ein vereinfachter Assistent
@@ -647,7 +647,7 @@
         </para>
         <figure id="user-app-activation">
             <title>Benutzeraktivierung für installierte Apps</title>
-            <graphic scalefit="1" width="70%" align="center" fileref="illustrations44/user_activation_de.png" />
+            <graphic scalefit="1" width="100%" align="center" fileref="illustrations44/user_activation_de.png" />
         </figure>
         <para>
             Sobald eine App in der UCS-Umgebung installiert ist, die die

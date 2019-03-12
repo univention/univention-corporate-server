@@ -91,7 +91,7 @@
 					<para>
 						<figure id="dashboard-domain">
 							<title>Domain dashboard</title>
-							<graphic scalefit="1" width="80%" fileref="illustrations44/dashboard-domain.png"/>
+							<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/dashboard-domain.png"/>
 						</figure>
 					</para>
 					<para>
@@ -115,7 +115,7 @@
 					<para>
 						<figure id="dashboard-server">
 							<title>Server dashboard</title>
-							<graphic scalefit="1" width="80%" fileref="illustrations44/dashboard-server.png"/>
+							<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/dashboard-server.png"/>
 						</figure>
 					</para>
 					<para>
@@ -1125,7 +1125,7 @@
 
 	  <figure id="nagios-tact-overview">
 		<title>Nagios status overview</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations44/overview_EN.png"/>
+		<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/overview_EN.png"/>
 	  </figure>
 
 	  <para>
