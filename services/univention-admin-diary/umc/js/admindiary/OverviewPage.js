@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/date/locale",
+	"dojox/html/entities",
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/Page",
@@ -43,7 +44,7 @@ define([
 	"umc/widgets/TextBox",
 	"umc/widgets/SearchBox",
 	"umc/i18n!umc/modules/admindiary"
-], function(declare, lang, array, locale, dialog, tools, Page, Grid, SearchForm, DateBox, ComboBox, TextBox, SearchBox, _) {
+], function(declare, lang, array, locale, entities, dialog, tools, Page, Grid, SearchForm, DateBox, ComboBox, TextBox, SearchBox, _) {
 	return declare("umc.modules.admindiary.OverviewPage", [ Page ], {
 
 		'class': 'admindiaryOverview',
@@ -82,7 +83,7 @@ define([
 				icon: item.icon,
 				height: '32px',
 				width: '32px',
-				value: value
+				value: entities.encode(value)
 			});
 		},
 
@@ -127,6 +128,7 @@ define([
 				//defaultAction: 'show',
 				columns: columns,
 				sortIndex: 2,
+				allowHTML: false,
 				//actions: actions,
 				gridOptions: {
 					selectionMode: 'none'

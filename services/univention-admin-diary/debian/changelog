@@ -1,3 +1,9 @@
+univention-admin-diary (1.0.0-43) unstable; urgency=medium
+
+  * Bug #48972: Encode HTML entities in grid
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 12 Mar 2019 17:07:40 +0100
+
 univention-admin-diary (1.0.0-42) unstable; urgency=medium
 
   * Bug #48865: Lower log level when the client successfully writes rsyslog
