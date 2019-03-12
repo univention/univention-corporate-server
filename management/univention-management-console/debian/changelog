@@ -1,3 +1,10 @@
+univention-management-console (11.0.4-3) unstable; urgency=medium
+
+  * Bug #48224: do not configure the SAML IDP in the UMC WebServer
+    if umc/web/sso/enabled=false.
+
+ -- Florian Best <best@univention.de>  Tue, 12 Mar 2019 16:10:33 +0100
+
 univention-management-console (11.0.4-2) unstable; urgency=medium
 
   * Bug #48942: fix bug with applying better contrast text color to tabs
