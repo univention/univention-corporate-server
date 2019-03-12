@@ -949,6 +949,17 @@ docker exec "$CONTAINER" ...
                 </programlisting>
             </para>
             <para>
+                To view the docker logfiles for the app, please use the following command:
+                <programlisting>
+univention-app logs $appid  # equivalent to docker logs $CONTAINER
+                </programlisting>
+                For multi container apps using Docker Compose, it may be useful to access those log information:
+                <programlisting>
+cd /var/lib/univention-appcenter/apps/$appid/compose
+docker-compose -p $appid logs
+                </programlisting>
+            </para>
+            <para>
                 Important logfiles on the UCS host for debugging are:
                 <itemizedlist>
                     <listitem><simpara><option>/var/log/univention/appcenter.log</option></simpara></listitem>
