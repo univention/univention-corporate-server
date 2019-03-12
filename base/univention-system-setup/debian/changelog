@@ -1,3 +1,10 @@
+univention-system-setup (11.0.5-35) unstable; urgency=medium
+
+  * Bug #48134: fix joining when specifying a domain to join instead of the
+  	domain given by the DNS server
+
+ -- Florian Best <best@univention.de>  Tue, 12 Mar 2019 23:14:47 +0100
+
 univention-system-setup (11.0.5-34) unstable; urgency=medium
 
   * Bug #44162: Fix apt-get requiring interaction
