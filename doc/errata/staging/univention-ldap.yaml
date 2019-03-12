@@ -3,8 +3,14 @@ release: "4.3"
 version: [3]
 scope: ucs_4.3-0-errata4.3-3
 src: univention-ldap
-fix: 14.0.2-46A~4.3.0.201903121509
+fix: 14.0.2-47A~4.3.0.201903121624
 desc: |
  This update addresses the following issue:
- * Fix regression in `cn=translog` setup, which reset the LDAP indices.
+ * Fix regression in `cn=translog` setup, which reset the LDAP indices. If an
+   UCS-4.3 system was updated to erratum 426 and only later to this erratum,
+   it might reset the LDAP attributes, which are indexed, to the default. This
+   may lead to slow LDAP searches. If other attributes were added manually to
+   the UCR variables 'ldap/index/eq', 'ldap/index/sub', 'ldap/index/pres',
+   they must be restored manually. The old values might be recovered from the
+   log file '/var/log/univention/config-registry.replog'.
 bug: [48970]
