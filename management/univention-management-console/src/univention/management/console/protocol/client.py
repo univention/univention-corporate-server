@@ -94,7 +94,7 @@ class Client(signals.Provider, Translation):
 		'''Initialize a socket-connection to the server.'''
 		signals.Provider.__init__(self)
 		self.__authenticated = False
-		self.__auth_id = None
+		self.__auth_ids = []
 		self.__ssl = ssl
 		self.__unix = unix
 		if self.__ssl and not self.__unix:
@@ -345,12 +345,10 @@ class Client(signals.Provider, Translation):
 
 	def _handle(self, response):
 		PROTOCOL.info('Received UMCP RESPONSE %s' % response.id)
-		if response.command == 'AUTH' and response.id == self.__auth_id:
-			self.__authenticated = False
-			if response.status == SUCCESS:
-				self.__authenticated = True
-				self.__unfinishedRequests.pop(response.id)
-			else:
+		if response.command == 'AUTH' and response.id in self.__auth_ids:
+			self.__authenticated = response.status == SUCCESS
+			self.__unfinishedRequests.pop(response.id)
+			if not self.__authenticated:
 				response.message = response.message or status_description(response.status)
 			self.signal_emit('authenticated', self.__authenticated, response)
 		elif response.id in self.__unfinishedRequests:
@@ -364,7 +362,7 @@ class Client(signals.Provider, Translation):
 		"""Authenticate against the UMC server"""
 		if msg.command != 'AUTH':
 			raise TypeError('Must be AUTH command!')
-		self.__auth_id = msg.id
+		self.__auth_ids.append(msg.id)
 		self.request(msg)
 
 	def __closed(self):
