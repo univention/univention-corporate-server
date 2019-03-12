@@ -1726,7 +1726,9 @@ docker-compose -p $appid logs
 								deleted.
 							</simpara>
 						</listitem>
-					</itemizedlist>
+                    </itemizedlist>
+                    Logging information about the listener can found in
+                    <filename>/var/log/univention/listener_modules/$appid.log</filename>
 				</para>
 			</section>
 			<section id="provision:push:script">
