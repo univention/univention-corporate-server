@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: univention-ldap
+fix: 14.0.2-46A~4.3.0.201903121509
+desc: |
+ This update addresses the following issue:
+ * Fix regression in `cn=translog` setup, which reset the LDAP indices.
+bug: [48970]
