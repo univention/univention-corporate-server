@@ -1836,7 +1836,7 @@ samba-tool dbcheck --fix --yes
 
   <para>
 	In general, Windows trust relations can be unidirectional or bidirectional.
-	Technically a bidirectional trust is simply realised as two unidirectional
+	Technically a bidirectional trust is simply realized as two unidirectional
 	trusts, one in each direction.
   </para>
 
@@ -1863,7 +1863,7 @@ samba-tool dbcheck --fix --yes
   </para>
 
   <para>
-	  The follwing example assumes, that the UCS Samba/AD DC Master
+	  The following example assumes, that the UCS Samba/AD DC Master
 	  <literal>master.ucsdom.example</literal> has the IP address
 	  <literal>10.200.8.10</literal> and that the
 	  Active Directory domain controller

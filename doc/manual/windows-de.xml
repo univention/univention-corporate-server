@@ -57,7 +57,7 @@
 	<para>
 	  Eingehende Vertrauensstellungen mit anderen Active Directory Domänen sind konfigurierbar.
 	  In dieser Konstellation vertraut die externe Active Directory Domäne den
-	  Authentifizierungsentscheidungen der UCS-Domäne (Windows vertraut UCS) so dass sich
+	  Authentifizierungsentscheidungen der UCS-Domäne (Windows vertraut UCS), so dass sich
 	  UCS-Benutzer auch an Systemen und Active Directory basierten Diensten
 	  in der Windows-Domäne anmelden können (siehe <xref linkend="windows_trust"/>).
 	  Ausgehende Vertrauensstellungen mit Active Directory Domänen (UCS vertraut Windows)
