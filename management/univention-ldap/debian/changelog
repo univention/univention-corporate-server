@@ -1,3 +1,9 @@
+univention-ldap (15.0.0-15) unstable; urgency=low
+
+  * Bug #48971: Fix regression in translog setup
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 12 Mar 2019 16:56:33 +0100
+
 univention-ldap (15.0.0-14) unstable; urgency=medium
 
   * Bug #48801: Add univentionDataType to default LDAP index
