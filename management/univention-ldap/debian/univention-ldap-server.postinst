@@ -190,9 +190,34 @@ upgrade_license () {
 	fi
 }
 
+fix_ldap_index () {  # Bug #48970
+	local pkg ver stop_and_start_slapd=false
+	for pkg in ucs-school-master ucs-school-singlemaster ucs-school-slave ucs-school-central-slave ucs-school-nonedu-slave
+	do
+		ver="$(dpkg-query -f '${version}' -W "$pkg" 2>/dev/null)" && break
+	done
+	[ -n "$ver" ] || return 0
+
+	declare -a args=(
+		--add-eq   ucsschoolRecordUID --add-eq   ucsschoolSchool --add-eq   ucsschoolSourceUID
+		--add-pres ucsschoolRecordUID --add-pres ucsschoolSchool --add-pres ucsschoolSourceUID
+		--add-sub  ucsschoolRecordUID
+	)
+	dpkg --compare-versions "$ver" gt-nl 12.0.0-3 &&
+		args+=(--add-eq ucsschoolRole --add-pres ucsschoolRole --add-sub ucsschoolRole)
+
+	pidof slapd >/dev/null 2>&1 && stop_and_start_slapd=true
+	[ "$stop_and_start_slapd" ] && service slapd stop
+	echo "Updating LDAP indices..."
+	/usr/share/univention-ldap/ldap_setup_index --verbose "${args[@]}"
+	[ "$stop_and_start_slapd" ] && service slapd start
+	echo "Finished updating LDAP indices."
+}
+
 if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 	/usr/lib/univention-install/01univention-ldap-server-init.inst || true
 	[ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 14.0.2-37 && /usr/share/univention-ldap/setup-translog init
+	[ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 14.0.2-47 && [ -e /var/univention-join/joined ] && fix_ldap_index
 	/usr/lib/univention-install/10univention-ldap-server.inst || true
 	[ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 11.0.12-5 && upgrade_license || :
 fi

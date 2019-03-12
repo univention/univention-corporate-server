@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-47) unstable; urgency=low
+
+  * Bug #48970: Recover U@s LDAP attributes to index
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 12 Mar 2019 16:17:33 +0100
+
 univention-ldap (14.0.2-46) unstable; urgency=low
 
   * Bug #48970: Fix regression in translog setup
