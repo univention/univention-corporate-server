@@ -11,4 +11,6 @@ desc: |
  * It is now prevented that the UMC-Webserver creates multiple new connections
    for a session after the connection to the UMC-Server was closed and
    multiple parallel requests from the old session are requested.
-bug: [44602, 48002, 49929]
+ * Multiple parallel authentication requests are now correctly handled by the
+   UMC-Webserver.
+bug: [44602, 48002, 49929, 47106]

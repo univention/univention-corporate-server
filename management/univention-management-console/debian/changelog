@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-33) unstable; urgency=medium
+
+  * Bug #47106: fix multiple parallel authentication requests in umcp.Client
+
+ -- Florian Best <best@univention.de>  Mon, 29 Jul 2019 19:19:13 +0200
+
 univention-management-console (11.0.4-32) unstable; urgency=medium
 
   * Bug #48002: enhance random progress id
