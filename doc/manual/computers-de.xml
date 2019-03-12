@@ -651,7 +651,7 @@
                 <para>
                     Netzwerkschnittstellen können für IPv4 und/oder IPv6 konfiguriert
                     werden. IPv4-Adressen haben 32 Bit Länge und werden in der Regel in vier
-					Blöcken in Dezimalschreibweise dargestellt (z.B. <systemitem class="ipaddress">192.168.0.10</systemitem>), während
+					Blöcken in Dezimalschreibweise dargestellt (z.B. <systemitem class="ipaddress">192.0.2.10</systemitem>), während
                     IPv6-Adressen vier Mal so lang sind und typischerweise hexadezimal dargestellt
 					werden (z.B. <systemitem class="ipaddress">2222:0DFE:FE29:DE27:0000:0000:0000:0000</systemitem>).
                 </para>
@@ -1039,13 +1039,13 @@ ucr unset umc/modules/setup/network/disabled/by
                     Über die &ucsUCRV; <envar>proxy/http</envar> kann das Setzen dieser
                     Umgebungsvariable <command>http_proxy</command> durch einen Eintrag in <filename>/etc/profile</filename> aktiviert
                     werden. Dabei muss die Proxy-URL angegeben werden, also
-                    z.B. <uri>http://192.168.1.100</uri>.
+                    z.B. <uri>http://192.0.2.100</uri>.
                 </para>
                 <para>
                     Der Proxy-URL kann optional auch die Angabe eines Ports folgen, welcher durch einen
-                    Doppelpunkt abzutrennen ist, z.B. <uri>http://192.168.1.100:3128</uri>. Erfordert der Proxy eine
+                    Doppelpunkt abzutrennen ist, z.B. <uri>http://192.0.2.100:3128</uri>. Erfordert der Proxy eine
                     Authentifizierung des zugreifenden Benutzers, so können die Benutzerinformationen in der Form
-                    <uri>http://username:password@192.168.1.100</uri> übergeben werden.
+                    <uri>http://username:password@192.0.2.100</uri> übergeben werden.
                 </para>
                 <para>
                     Die Umgebungsvariable wird nicht für aktuell geöffnete Sitzungen übernommen. Damit
@@ -1398,7 +1398,7 @@ univention-config-registry set VARIABLENNAME=WERT
                 </para>
                     <programlisting language="sh">
 univention-config-registry set \
-    dns/forwarder1=192.168.0.2 \
+    dns/forwarder1=192.0.2.2 \
     sshd/xforwarding="no" \
     sshd/port=2222
                     </programlisting>
@@ -1410,7 +1410,7 @@ univention-config-registry set \
                     Wertes erreicht werden:
                 </para>
                     <programlisting language="sh">
-univention-config-registry set dns/forwarder1?192.168.0.2
+univention-config-registry set dns/forwarder1?192.0.2.2
                     </programlisting>
             </section><!-- Setzen von UCR-Variablen -->
 

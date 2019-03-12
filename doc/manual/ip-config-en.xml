@@ -46,7 +46,7 @@
 	<para>
 	  For example, it is possible to define a network object <emphasis>Workstation network</emphasis>
 	  which encompasses the IP addresses from
-	  <systemitem class="ipaddress">192.168.2.0</systemitem> to <systemitem class="ipaddress">192.168.2.254</systemitem>. If a Windows computer object is now
+	  <systemitem class="ipaddress">192.0.2.0</systemitem> to <systemitem class="ipaddress">192.0.2.254</systemitem>. If a Windows computer object is now
 	  created and only the network object selected, an internal check is
 	  performed for which IP addresses are already assigned and the next
 	  free one selected. This saves the administrator having to compile the
@@ -91,7 +91,7 @@
 			  <entry>
 				<para>
 				  The network address is entered in dot-decimal form in this input
-				  field, e.g., <systemitem class="ipaddress">192.168.1.0</systemitem>.
+				  field, e.g., <systemitem class="ipaddress">192.0.2.0</systemitem>.
 				</para>
 			  </entry>
 			</row>
@@ -967,8 +967,8 @@
 					<para>
 					  The IP address of the network for which the reverse lookup zone shall
 					  apply. For example, if the network in question consisted of the IP
-					  addresses <systemitem class="ipaddress">192.168.1.0</systemitem> to <systemitem class="ipaddress">192.168.1.255</systemitem>,
-					  <userinput>192.168.1</userinput> should be entered.
+					  addresses <systemitem class="ipaddress">192.0.2.0</systemitem> to <systemitem class="ipaddress">192.0.2.255</systemitem>,
+					  <userinput>192.0.2</userinput> should be entered.
 					</para>
 				  </entry>
 				</row>
@@ -1137,7 +1137,7 @@
 					<para>
 					  In a network with a 24-bit network prefix (subnet mask <systemitem class="netmask">255.255.255.0</systemitem>)
 					  a pointer should be created for the <systemitem class="systemname">client001</systemitem>
-					  computer with the IP address <systemitem class="ipaddress">192.168.1.101</systemitem>.
+					  computer with the IP address <systemitem class="ipaddress">192.0.2.101</systemitem>.
 					  <userinput>101</userinput> must then be entered in the
 					  <guimenu>Address field</guimenu> and <userinput>client001.company.com.</userinput> in <guimenu>Pointer</guimenu>.
 					</para>
@@ -1418,7 +1418,7 @@ closest to the object always applies.
 				  <entry>
 					<para>
 					  The IP address of the subnet must be entered in dot-decimal form in
-					  this input field, e.g., <systemitem class="ipaddress">192.168.1.0</systemitem>.
+					  this input field, e.g., <systemitem class="ipaddress">192.0.2.0</systemitem>.
 					</para>
 				  </entry>
 				</row>
@@ -2273,9 +2273,9 @@ closest to the object always applies.
 	  <para>
 		As standard, the proxy server can only be accessed from local
 		networks. If, for example, a network interface with the address
-		<systemitem class="ipaddress">192.168.1.10</systemitem> and the network mask <systemitem class="netmask">255.255.255.0</systemitem> is available on the
+		<systemitem class="ipaddress">192.0.2.10</systemitem> and the network mask <systemitem class="netmask">255.255.255.0</systemitem> is available on the
 		computer on which Squid is installed, only computers from the network
-		<systemitem class="ipaddress">192.168.1.0/24</systemitem> can access the proxy server. Additional networks can be
+		<systemitem class="ipaddress">192.0.2.0/24</systemitem> can access the proxy server. Additional networks can be
 		specified via the &ucsUCRV; <envar>squid/allowfrom</envar>. When doing so, the CIDR
 		notation must be used; several networks should be separated by blank
 		spaces.
@@ -2284,11 +2284,11 @@ closest to the object always applies.
 		Example:
 	  </para>
 		<programlisting language="sh">
-univention-config-registry set squid/allowfrom=&quot;192.168.2.0/24 192.168.3.0/24&quot;
+univention-config-registry set squid/allowfrom=&quot;192.0.2.0/24 192.0.2.0/24&quot;
 		</programlisting>
 	  <para>
 		Once Squid has been restarted, access is now permitted from the networks
-		<systemitem class="ipaddress">192.168.2.0/24</systemitem> and <systemitem class="ipaddress">192.168.3.0/24</systemitem>. If configured to <literal>all</literal>, proxy access
+		<systemitem class="ipaddress">192.0.2.0/24</systemitem> and <systemitem class="ipaddress">192.0.2.0/24</systemitem>. If configured to <literal>all</literal>, proxy access
 		in granted from all networks.
 	  </para>
 	  <para>
@@ -2673,7 +2673,7 @@ dansguardian -g
 <programlisting>
 client AP01 {
     secret = a9RPAeVG
-    ipaddr = 192.168.100.101
+    ipaddr = 192.0.2.101
 }
 </programlisting>
 				</para>

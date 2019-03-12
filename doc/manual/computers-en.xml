@@ -669,7 +669,7 @@
 			<para>
 				Network interfaces can be configured for IPv4 and/or IPv6. IPv4
 				addresses have a 32-bit length and are generally written in four blocks in
-				decimal form (e.g., <systemitem class="ipaddress">192.168.0.10</systemitem>), whereas IPv6 addresses are four times as
+				decimal form (e.g., <systemitem class="ipaddress">192.0.2.10</systemitem>), whereas IPv6 addresses are four times as
 				long and typically written in hexadecimal form (e.g.,
 				<systemitem class="ipaddress">2222:0DFE:FE29:DE27:0000:0000:0000:0000</systemitem>).
 			</para>
@@ -1062,10 +1062,10 @@ ucr unset umc/modules/setup/network/disabled/by
 			</para>
 			<para>
 				The proxy URL must be specified for this, e.g.,
-				<uri>http://192.168.1.100</uri>. The proxy port can be specified in the proxy
-				URL using a colon, e.g., <uri>http://192.168.1.100:3128</uri>. If the proxy
+				<uri>http://192.0.2.100</uri>. The proxy port can be specified in the proxy
+				URL using a colon, e.g., <uri>http://192.0.2.100:3128</uri>. If the proxy
 				requires authentication for the accessing user, this can be provided in the
-				form <uri>http://username:password@192.168.1.100</uri>.
+				form <uri>http://username:password@192.0.2.100</uri>.
 			</para>
 			<para>
 				The environment variable is not adopted for sessions currently opened. A
@@ -1411,7 +1411,7 @@ univention-config-registry set VARIABLENAME=VALUE
 				</para>
 				<programlisting language="sh">
 univention-config-registry set \
-    dns/forwarder1=192.168.0.2 \
+    dns/forwarder1=192.0.2.2 \
     sshd/xforwarding="no" \
     sshd/port=2222
 				</programlisting>
@@ -1422,7 +1422,7 @@ univention-config-registry set \
 					values.
 				</para>
 				<programlisting language="sh">
-univention-config-registry set dns/forwarder1?192.168.0.2
+univention-config-registry set dns/forwarder1?192.0.2.2
 				</programlisting>
 			</section>
 

@@ -484,7 +484,7 @@ eingetragen/modifiziert oder entfernt.
 		  Namen von Rechnern, die auf diese Samba-Freigabe zugreifen dürfen. Allen
 		  anderen Rechnern wird der Zugriff verweigert.
 		  Neben Rechnernamen können auch IP- oder Netzwerkadressen angegeben werden, bspw.
-		  <userinput>192.168.0.0/255.255.255.0</userinput>.
+		  <userinput>192.0.2.0/255.255.255.0</userinput>.
 		</entry>
 	  </row>
 

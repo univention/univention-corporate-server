@@ -202,7 +202,7 @@
 						<itemizedlist>
 							<listitem>
 								<para><uri>http://<replaceable>server</replaceable>[:<replaceable>port</replaceable>]/<replaceable>path</replaceable></uri></para>
-								<para>Example: <uri>http://192.168.0.10:631/printers/remote</uri></para>
+								<para>Example: <uri>http://192.0.2.10:631/printers/remote</uri></para>
 							</listitem>
 							<listitem>
 								<para><uri>ipp://<replaceable>server</replaceable>/printers/<replaceable>queue</replaceable></uri></para>
@@ -210,7 +210,7 @@
 							</listitem>
 							<listitem>
 								<para><uri>lpd://<replaceable>server</replaceable>/<replaceable>queue</replaceable></uri></para>
-								<para>Example: <uri>lpd://10.200.18.30/bwdraft</uri></para>
+								<para>Example: <uri>lpd://192.0.2.30/bwdraft</uri></para>
 							</listitem>
 						</itemizedlist>
 						<para>

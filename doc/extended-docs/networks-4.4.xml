@@ -37,7 +37,7 @@
 			  directly and not forwarded to the parent proxy. If additional networks should be
 			  excluded from forwarding to the parent proxy, these can be specified via the
 			  &ucsUCRV; <envar>squid/parent/directnetworks</envar>. When doing so, the CIDR notation
-			  must be used (e.g. 192.168.2.0/24); several networks should be separated by blank spaces.
+			  must be used (e.g. 192.0.2.0/24); several networks should be separated by blank spaces.
 			</para>
         </section>
 

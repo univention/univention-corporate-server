@@ -1706,7 +1706,7 @@ univention-directory-manager computers/windows create \
     --position "cn=computers,dc=example,dc=com" \
     --set name=WinClient01 \
     --set mac=aa:bb:cc:aa:bb:cc \
-    --set ip=192.168.0.10
+    --set ip=192.0.2.10
 </programlisting>
 	  </section>
 
@@ -1741,7 +1741,7 @@ univention-directory-manager shares/printer create \
     --position "cn=printers,dc=example,dc=com" \
     --set name="LaserPrinter01"  \
     --set spoolHost="printserver.example.com" \
-    --set uri="ipp:// 192.168.0.100" \
+    --set uri="ipp:// 192.0.2.100" \
     --set model="foomatic-rip/HP-Color_LaserJet_9500-Postscript.ppd" \
     --set location="Head office" \
     --set producer="producer: "\
@@ -1781,7 +1781,7 @@ univention-directory-manager shares/printergroup create \
 univention-directory-manager dhcp/host create \
     --superordinate "cn=example.com,cn=dhcp,dc=example,dc=com" \
     --set host="Client222" \
-    --set fixedaddress="192.168.0.110" \
+    --set fixedaddress="192.0.2.110" \
     --set hwaddress="ethernet 00:11:22:33:44:55"
 </programlisting>
 
@@ -1793,7 +1793,7 @@ univention-directory-manager dhcp/host create \
 univention-directory-manager dns/host_record create \
     --superordinate "zoneName=example.com,cn=dns,dc=example,dc=com" \
     --set name="Client222" \
-    --set a="192.168.0.110"
+    --set a="192.0.2.110"
 
 univention-directory-manager dns/ptr_record create \
     --superordinate "zoneName=0.168.192.in-addr.arpa,cn=dns,"\

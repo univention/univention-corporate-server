@@ -995,7 +995,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 				<listitem>
 					<simpara>
 					Netzwerkkarten vom Typ <emphasis>Network Address Translation (NAT)</emphasis> werden in einem privaten Netz auf dem Virtualisierungsserver definiert.
-					Dabei muss der virtuellen Maschine eine IP-Adresse aus dem Netz <systemitem class="ipaddress">192.168.122.0/24</systemitem> gegeben werden.
+					Dabei muss der virtuellen Maschine eine IP-Adresse aus dem Netz <systemitem class="ipaddress">192.0.2.0/24</systemitem> gegeben werden.
 					Über NAT wird dieser virtuellen Maschine der Zugang zum externen Netz erteilt, so dass der Zugriff über die IP-Adresse des Virtualisierungsservers erfolgt.
 					Die virtuelle Maschine ist damit nicht von anderen Rechnern erreichbar, kann aber selber beliebige ausgehende Verbindungen aufbauen.
 					</simpara>
@@ -1011,7 +1011,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 				Für jede virtuelle Maschine kann das zu verwendende Netzwerk über die Option <guimenu>Quelle</guimenu> ausgewählt werden.
 			</para>
 			<para>
-				Netzwerkkarten vom Typ NAT sind nur durch die im Netz <systemitem class="ipaddress">192.168.122.0/24</systemitem> verfügbaren IP-Adressen begrenzt.
+				Netzwerkkarten vom Typ NAT sind nur durch die im Netz <systemitem class="ipaddress">192.0.2.0/24</systemitem> verfügbaren IP-Adressen begrenzt.
 			</para>
 			<para>
 				Über die Option <guimenu>Treiber</guimenu> kann ausgewählt werden, welche Art von Netzwerkkarte bereitgestellt wird.

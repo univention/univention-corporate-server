@@ -45,8 +45,8 @@
 	</figure>
 	<para>
 	  So kann beispielsweise ein Netzwerk-Objekt <emphasis>Produktivnetz</emphasis>
-	  definiert werden, das sich über die IP-Adressen von <systemitem class="ipaddress">192.168.2.0</systemitem> bis
-	  <systemitem class="ipaddress">192.168.2.254</systemitem> erstreckt. Wird nun ein Windows-Rechnerobjekt angelegt, muss nun nur
+	  definiert werden, das sich über die IP-Adressen von <systemitem class="ipaddress">192.0.2.0</systemitem> bis
+	  <systemitem class="ipaddress">192.0.2.254</systemitem> erstreckt. Wird nun ein Windows-Rechnerobjekt angelegt, muss nun nur
 	  das Netzwerk-Objekt ausgewählt werden. Es wird dann intern
 	  geprüft, welche der IP-Adressen des Netzes bereits vergeben sind und die nächste
 	  freie ausgewählt. Wird ein Rechnerobjekt entfernt, wird die Adresse
@@ -84,7 +84,7 @@
 			<entry>Netzwerk</entry>
 			<entry>
 			  In diesem Eingabefeld muss die Netzwerk-Adresse in Oktettschreibweise
-			  eingetragen werden, z.B. <systemitem class="ipaddress">192.168.1.0</systemitem>
+			  eingetragen werden, z.B. <systemitem class="ipaddress">192.0.2.0</systemitem>
 			</entry>
 		  </row>
 		  <row>
@@ -818,8 +818,8 @@
 				<entry>
 				  Die IP-Adresse des Netzwerkes, für das die Reverse Lookup Zone gültig
 				  sein soll. Wenn beispielsweise das betreffende Netz aus den
-				  IP-Adressen <systemitem class="ipaddress">192.168.1.0</systemitem> bis <systemitem class="ipaddress">192.168.1.255</systemitem> besteht, wäre
-				  <systemitem class="ipaddress">192.168.1</systemitem> einzutragen.
+				  IP-Adressen <systemitem class="ipaddress">192.0.2.0</systemitem> bis <systemitem class="ipaddress">192.0.2.255</systemitem> besteht, wäre
+				  <systemitem class="ipaddress">192.0.2</systemitem> einzutragen.
 				</entry>
 			  </row>
 			  <row>
@@ -935,7 +935,7 @@
 				  <para>
 					Ein Beispiel: In einem Netzwerk mit 24 Bit langem Netz-Präfix (Netzmaske
 					<systemitem class="netmask">255.255.255.0</systemitem>) soll für den Rechner <systemitem class="systemname">client001</systemitem> mit der
-					IP-Adresse <systemitem class="ipaddress">192.168.1.101</systemitem> ein Pointer angelegt werden. In das Feld
+					IP-Adresse <systemitem class="ipaddress">192.0.2.101</systemitem> ein Pointer angelegt werden. In das Feld
 					<guimenu>Adresse</guimenu> ist dann <userinput>101</userinput> und in
 					<guimenu>Pointer</guimenu> <userinput>client001.firma.com.</userinput> einzutragen.
 				  </para>
@@ -1198,7 +1198,7 @@
 				<entry>Subnetz-Adresse</entry>
 				<entry>
 				  In diesem Eingabefeld ist die IP-Adresse des Subnetzes in
-				  Oktettschreibweise einzutragen, z.B. <systemitem class="ipaddress">192.168.1.0</systemitem>.
+				  Oktettschreibweise einzutragen, z.B. <systemitem class="ipaddress">192.0.2.0</systemitem>.
 				</entry>
 			  </row>
 			  <row>
@@ -1945,16 +1945,16 @@
 	  <para>
 		Standardmäßig darf nur aus lokalen Netzwerken auf den Proxy-Server zugegriffen
 		werden. Ist z.B. an dem Rechner, auf dem Squid installiert wurde, ein
-		Netzwerkinterface mit der Adresse <systemitem class="ipaddress">192.168.1.10</systemitem> und der Netzmaske <systemitem class="netmask">255.255.255.0</systemitem>
-		vorhanden, dürfen nur Rechner aus dem Netzwerk <systemitem class="ipaddress">192.168.1.0/24</systemitem> auf den
+		Netzwerkinterface mit der Adresse <systemitem class="ipaddress">192.0.2.10</systemitem> und der Netzmaske <systemitem class="netmask">255.255.255.0</systemitem>
+		vorhanden, dürfen nur Rechner aus dem Netzwerk <systemitem class="ipaddress">192.0.2.0/24</systemitem> auf den
 		Proxy-Server zugreifen. Weitere Netzwerke können über die
 		&ucsUCRV; <envar>squid/allowfrom</envar> angegeben werden. Dabei muss die CIDR-Notation
 		verwendet werden, mehrere Netzwerke sind durch Leerzeichen zu trennen.
 		<programlisting language="sh">
-univention-config-registry set squid/allowfrom="192.168.2.0/24 192.168.3.0/24"
+univention-config-registry set squid/allowfrom="192.0.2.0/24 192.0.2.0/24"
 		</programlisting>
 		Nach einem Neustart von Squid ist jetzt der Zugriff aus den Netzwerken
-		<systemitem class="ipaddress">192.168.2.0/24</systemitem> und <systemitem class="ipaddress">192.168.3.0/24</systemitem> erlaubt. Durch Angabe von <literal>all</literal> kann der Zugriff auch aus allen Netzen erlaubt werden.
+		<systemitem class="ipaddress">192.0.2.0/24</systemitem> und <systemitem class="ipaddress">192.0.2.0/24</systemitem> erlaubt. Durch Angabe von <literal>all</literal> kann der Zugriff auch aus allen Netzen erlaubt werden.
 	  </para>
 	  <para>
 		Wenn Squid zusammen mit DansGuardian eingesetzt wird, d.h. die Viren- oder
@@ -2351,7 +2351,7 @@ dansguardian -g
 <programlisting>
 client AP01 {
     secret = a9RPAeVG
-    ipaddr = 192.168.100.101
+    ipaddr = 192.0.2.101
 }
 </programlisting>
 				</para>

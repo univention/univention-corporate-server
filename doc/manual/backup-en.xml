@@ -180,7 +180,7 @@ Director {
   Maximum Concurrent Jobs = 1
   Password = "master-dir-password"
   Messages = Daemon
-  DirAddress = 192.168.100.125
+  DirAddress = 192.0.2.125
 }
 			</programlisting>
 		</section>
@@ -201,7 +201,7 @@ Storage {
   WorkingDirectory = "/var/lib/bacula"
   Pid Directory = "/var/run/bacula"
   Maximum Concurrent Jobs = 20
-  SDAddress = 192.168.100.125
+  SDAddress = 192.0.2.125
 }
 			</programlisting>
 			<para>
@@ -243,7 +243,7 @@ FileDaemon {
   WorkingDirectory = /var/lib/bacula
   Pid Directory = /var/run/bacula
   Maximum Concurrent Jobs = 20
-  FDAddress = 192.168.100.125
+  FDAddress = 192.0.2.125
 }
 			</programlisting>
 			<para>
@@ -254,7 +254,7 @@ with the password specified above:
 			<programlisting>
 Client {
   Name = client-host
-  Address = 192.168.100.125
+  Address = 192.0.2.125
   FDPort = 9102
   Catalog = MyCatalog
   Password = "client-password"
@@ -278,7 +278,7 @@ linkend="bacula:directory"/>):
 			<programlisting>
   Name = localhost-dir
   DIRport = 9101
-  address = 192.168.100.125
+  address = 192.0.2.125
   Password = "master-dir-password"
 			</programlisting>
 		</section>

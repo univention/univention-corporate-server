@@ -1683,7 +1683,7 @@ apt-get dselect-upgrade
 			Server-Passwort-Änderungen
 		</simpara></listitem>
 		<listitem><simpara>
-			Start, Ende und eventuelle Fehlschläge von Domänen-Joins
+			Start, Ende und eventuelle Fehlschläge vom Domänenbeitritt
 		</simpara></listitem>
 		<listitem><simpara>
 			Start und Ende von UCS Updates

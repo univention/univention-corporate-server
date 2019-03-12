@@ -1067,7 +1067,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 				<listitem>
 					<simpara>
 					<emphasis>Network Address Translation (NAT)</emphasis> network cards are defined in a private network on the virtualization server.
-					To do so, the virtual machine(s) must be assigned an IP address from the <systemitem class="ipaddress">192.168.122.0/24</systemitem> network.
+					To do so, the virtual machine(s) must be assigned an IP address from the <systemitem class="ipaddress">192.0.2.0/24</systemitem> network.
 					This virtual instance is granted the access to the external network via NAT, so that the access is performed via the virtualization server's IP address.
 					The virtual machine can thus not be reached from other computers, but can create all outgoing connections itself.
 					</simpara>
@@ -1083,7 +1083,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 				For each virtual machine the desired network can be selected through the <guimenu>Source</guimenu> setting.
 			</para>
 			<para>
-				NAT network cards are only restricted by the IP addresses available in the <systemitem class="ipaddress">192.168.122.0/24</systemitem> network.
+				NAT network cards are only restricted by the IP addresses available in the <systemitem class="ipaddress">192.0.2.0/24</systemitem> network.
 			</para>
 			<para>
 				The <guimenu>Driver</guimenu> can be used to select what type of card will be provided.

@@ -44,8 +44,8 @@
 # Become root
 sudo bash <<"EOF"
 
-# Set the IP address of the UCS DC Master, 192.168.0.3 in this example
-export MASTER_IP=192.168.0.3
+# Set the IP address of the UCS DC Master, 192.0.2.3 in this example
+export MASTER_IP=192.0.2.3
 
 mkdir /etc/univention
 ssh -n root@${MASTER_IP} 'ucr shell | grep -v ^hostname=' >/etc/univention/ucr_master
@@ -394,8 +394,8 @@ EOF
 		  </para>
 <programlisting>
 domain  example.com
-nameserver  10.200.3.108
-nameserver  10.200.3.99
+nameserver  192.0.2.08
+nameserver  192.0.2.9
 </programlisting>
 		</section>
 

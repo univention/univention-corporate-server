@@ -417,13 +417,13 @@ instanceType: 4
 		  <para>
 			Following the installation, Group Policy Management must still be enabled in the Windows
 			Control Panel. This is done by enabling the <guimenu>Group Policy Management Tools</guimenu>
-			option under <guimenu>Start -> Control Panel -> Programs -> Turn Windows features on or off
-			->  Remote Server Administration Tools -> Feature Administration Tools</guimenu>.
+			option under <guimenu>Start &ar; Control Panel &ar; Programs &ar; Turn Windows features on or off
+			&ar;  Remote Server Administration Tools &ar; Feature Administration Tools</guimenu>.
 		  </para>
 
 		  <para>
-			Following the enabling, Group Policy Management can be run under <guimenu>Start ->
-			Administrative Tools -> Group Policy Management </guimenu>.
+			Following the enabling, Group Policy Management can be run under <guimenu>Start &ar;
+			Administrative Tools &ar; Group Policy Management </guimenu>.
 		  </para>
 
 		</section>
@@ -985,7 +985,7 @@ ucr set connector/ad/mapping/user/password/kinit=false
 	&ucsUCR;, e.g.
 
 <programlisting language="sh">
-ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
+ucr set hosts/static/192.0.2.100=w2k8-32.ad.example.com
 </programlisting>
 
   </para>
@@ -1864,16 +1864,16 @@ samba-tool dbcheck --fix --yes
 
   <para>
 	  The following example assumes, that the UCS Samba/AD DC Master
-	  <literal>master.ucsdom.example</literal> has the IP address
-	  <literal>10.200.8.10</literal> and that the
+	  <systemitem class="fqdomainname">master.ucsdom.example</systemitem> has the IP address
+	  <systemitem class="ipaddress">192.0.2.10</systemitem> and that the
 	  Active Directory domain controller
-	  <literal>dc1.addom.example</literal> of the remote domain has the IP address
-	  <literal>10.200.8.20</literal>.
+	  <systemitem class="fqdomainname">dc1.addom.example</systemitem> of the remote domain has the IP address
+	  <systemitem class="ipaddress">192.0.2.20</systemitem>.
   </para>
 
   <para>
 	  On the UCS side the conditional forwarding of DNS queries can be
-	  set up as <literal>root</literal> with the following commands:
+	  set up as <systemitem class="username">root</systemitem> with the following commands:
   </para>
 
   <programlisting language="sh"><![CDATA[
@@ -1881,7 +1881,7 @@ cat >> /etc/bind/local.conf.samba4 <<%EOR
 
 zone "addom.example" {
 type forward;
-forwarders { 10.200.8.20; };
+forwarders { 192.0.2.20; };
 };
 %EOR
 service bind9 restart
@@ -1889,7 +1889,7 @@ service bind9 restart
   </programlisting>
 
   <para>
-	  The success can be checked by running <literal>host dc1.addom.example</literal>.
+	  The success can be checked by running <command>host dc1.addom.example</command>.
   </para>
 
 
@@ -1900,12 +1900,12 @@ service bind9 restart
   </para>
 
   <programlisting language="sh">
-ucr set hosts/static/10.200.8.20=dc1.addom.example
+ucr set hosts/static/192.0.2.20=dc1.addom.example
   </programlisting>
 
   <para>
 	  On a Windows AD DC, a so-called <emphasis>conditional forwarding</emphasis>
-	  can be set up for the UCS domain via the <literal>DNS server console</literal>.
+	  can be set up for the UCS domain via the <guilabel>DNS server console</guilabel>.
   </para>
 
   <para>
@@ -1920,7 +1920,7 @@ ucr set hosts/static/10.200.8.20=dc1.addom.example
 
   <para>
 	  In Samba/AD domain the trust relationship can be configured easily
-	  on the command line using the tool <literal>samba-tool</literal>:
+	  on the command line using the tool <command>samba-tool</command>:
   </para>
 
   <programlisting language="sh">
@@ -1942,8 +1942,8 @@ wbinfo --check-secret –domain=addom.example
   <para>
 	After the setup, a UCS user should be able to log on to systems of
 	the remote Active Directory domain. Users must either use the format
-	<literal>UCSDOM\username</literal> as login name or their Kerberos
-	principal in the notation <literal>username@ucsdom.example</literal>.
+	<systemitem class="username">UCSDOM\username</systemitem> as login name or their Kerberos
+	principal in the notation <systemitem class="username">username@ucsdom.example</systemitem>.
   </para>
 </section>
 

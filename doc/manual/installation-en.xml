@@ -159,7 +159,7 @@ Following installation on hardware or in a virtualization solution, UCS can also
 	<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/installer-netcfg-static_en.png"/>
   </figure>
   <para>
-	In manual configuration it is possible to specify either a static IPv4 or an IPv6 address for the system. IPv4 addresses have a 32-bit length and are generally written in four blocks in decimal form (e.g., <systemitem class="ipaddress">192.168.0.10</systemitem>), whereas IPv6 addresses are four times as long and typically written in hexadecimal form (e.g., <systemitem class="ipaddress">2001:0DFE:FE29:DE27:0000:0000:0000:0000</systemitem>).
+	In manual configuration it is possible to specify either a static IPv4 or an IPv6 address for the system. IPv4 addresses have a 32-bit length and are generally written in four blocks in decimal form (e.g., <systemitem class="ipaddress">192.0.2.10</systemitem>), whereas IPv6 addresses are four times as long and typically written in hexadecimal form (e.g., <systemitem class="ipaddress">2001:0DB8:FE29:DE27:0000:0000:0000:0000</systemitem>).
 	In addition to entering a static IP address, values for network masks, gateways and DNS servers are also requested.
   </para>
   <figure id="installation-netcfg-ip">

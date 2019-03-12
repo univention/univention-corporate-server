@@ -365,12 +365,12 @@ packages_remove=""
 server/role="domaincontroller_master"
 
 interfaces/eth0/type=""
-interfaces/eth0/address="10.201.101.2"
+interfaces/eth0/address="192.0.2.2"
 interfaces/eth0/netmask="255.0.0.0"
 interfaces/eth0/network="10.0.0.0"
 interfaces/eth0/broadcast="10.255.255.255"
-dns/forwarder1="10.201.74.2"
-gateway="10.201.0.1"
+dns/forwarder1="192.0.2.2"
+gateway="192.0.2.1"
 		</programlisting>
 
 		If <envar>interfaces/eth0/type</envar> is set to <literal>dynamic</literal>, DHCP is
@@ -481,7 +481,7 @@ write_files:
       --append parameter="username demouser" \
       --append parameter="password password" \
       --append parameter="cloudtype OpenStack" \
-      --append parameter="auth_url http://192.168.0.1:5000" \
+      --append parameter="auth_url http://192.0.2.1:5000" \
       --append parameter="auth_version 2.0_password" \
       --append parameter="service_type compute" \
       --append parameter="service_name nova" \

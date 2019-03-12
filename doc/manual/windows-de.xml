@@ -58,7 +58,7 @@
 	  Eingehende Vertrauensstellungen mit anderen Active Directory Domänen sind konfigurierbar.
 	  In dieser Konstellation vertraut die externe Active Directory Domäne den
 	  Authentifizierungsentscheidungen der UCS-Domäne (Windows vertraut UCS), so dass sich
-	  UCS-Benutzer auch an Systemen und Active Directory basierten Diensten
+	  Benutzer auch an Systemen und Active Directory basierten Diensten
 	  in der Windows-Domäne anmelden können (siehe <xref linkend="windows_trust"/>).
 	  Ausgehende Vertrauensstellungen mit Active Directory Domänen (UCS vertraut Windows)
 	  sind aktuell nicht unterstützt.
@@ -426,15 +426,15 @@ instanceType: 4
 
 		  <para>
 			Nach der Installation muss die Gruppenrichtlinienverwaltung in der Windows-Systemsteuerung
-			noch aktiviert werden, in dem unter <guimenu>Start -> Systemsteuerung -> Programme ->
-			Windows-Funktionen aktivieren und deaktivieren -> Remoteserver-Verwaltungstools ->
+			noch aktiviert werden, in dem unter <guimenu>Start &ar; Systemsteuerung &ar; Programme &ar;
+			Windows-Funktionen aktivieren und deaktivieren &ar; Remoteserver-Verwaltungstools &ar;
 			Featureverwaltungs-Tools</guimenu> die Option <guimenu>Tools für die
 			Gruppenrichtlinienverwaltung</guimenu> aktiviert wird.
 		  </para>
 
 		  <para>
-			Nach der Aktivierung kann die Gruppenrichtlinienverwaltung unter <guimenu>Start ->
-			Verwaltung -> Gruppenrichtlinienverwaltung</guimenu> aufgerufen werden.
+			Nach der Aktivierung kann die Gruppenrichtlinienverwaltung unter <guimenu>Start &ar;
+			Verwaltung &ar; Gruppenrichtlinienverwaltung</guimenu> aufgerufen werden.
 		  </para>
 
 		</section>
@@ -1066,7 +1066,7 @@ ucr set connector/ad/mapping/user/password/kinit=false
 	</para>
 
 	<programlisting language="sh">
-ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
+ucr set hosts/static/192.0.2.100=w2k8-32.ad.example.com
 	</programlisting>
 
 	<para>
@@ -1941,16 +1941,16 @@ samba-tool dbcheck --fix --yes
 
   <para>
 	  Für das folgende Beispiel sei angenommen, dass der UCS Samba/AD DC Master
-	  <literal>master.ucsdom.example</literal> die IP-Adresse
-	  <literal>10.200.8.10</literal> hat und dass der
+	  <systemitem class="fqdomainname">master.ucsdom.example</systemitem> die IP-Adresse
+	  <systemitem class="ipaddress">192.0.2.10</systemitem> hat und dass der
 	  Active Directory Domänencontroller
-	  <literal>dc1.addom.example</literal> der entfernten Domäne
-	  die IP-Adresse <literal>10.200.8.20</literal> hat.
+	  <systemitem class="fqdomainname">dc1.addom.example</systemitem> der entfernten Domäne
+	  die IP-Adresse <systemitem class="ipaddress">192.0.2.20</systemitem> hat.
   </para>
 
   <para>
 	  Auf der UCS-Seite lässt sich die bedingte Weiterleitung
-	  von DNS-Anfragen mit folgenden Schritten als <literal>root</literal>
+	  von DNS-Anfragen mit folgenden Schritten als <systemitem class="username">root</systemitem>
 	  einrichten:
   </para>
 
@@ -1959,7 +1959,7 @@ cat >> /etc/bind/local.conf.samba4 <<%EOR
 
 zone "addom.example" {
 type forward;
-forwarders { 10.200.8.20; };
+forwarders { 192.0.2.20; };
 };
 %EOR
 service bind9 restart
@@ -1967,7 +1967,7 @@ service bind9 restart
   </programlisting>
 
   <para>
-	  Der Erfolg kann mit überprüft werden mit <literal>host dc1.addom.example</literal>.
+	  Der Erfolg kann mit überprüft werden mit <command>host dc1.addom.example</command>.
   </para>
 
 
@@ -1978,13 +1978,13 @@ service bind9 restart
   </para>
 
   <programlisting language="sh">
-ucr set hosts/static/10.200.8.20=dc1.addom.example
+ucr set hosts/static/192.0.2.20=dc1.addom.example
   </programlisting>
 
   <para>
-	  Auf dem Windows AD DC kann über die <literal>DNS-Server Konsole</literal>
-	  eine sogenannte <emphasis>Bedingte Weiterleitung</emphasis>
-	  (<emphasis>Conditional Forwarding</emphasis>) für die UCS-Domäne
+	  Auf dem Windows AD DC kann über die <guilabel>DNS-Server Konsole</guilabel>
+	  eine sogenannte <phrase>Bedingte Weiterleitung</phrase>
+	  (<foreignphrase>Conditional Forwarding</foreignphrase>) für die UCS-Domäne
 	  eingerichtet werden.
   </para>
 
@@ -2000,7 +2000,7 @@ ucr set hosts/static/10.200.8.20=dc1.addom.example
 
   <para>
 	  In Samba/AD Domänen ist diese Konstellation sehr einfach
-	  an der Kommandozeile über das Werkzeug <literal>samba-tool</literal> einrichtbar:
+	  an der Kommandozeile über das Werkzeug <command>samba-tool</command> einzurichten:
   </para>
 
   <programlisting language="sh">
@@ -2020,11 +2020,11 @@ wbinfo --check-secret –domain=addom.example
   </programlisting>
 
   <para>
-	Nach der Einrichtung sollte sich ein UCS-Benutzer an Systemen
+	Nach der Einrichtung sollte sich ein Benutzer an Systemen
 	der Windows Active Directory Domäne anmelden können.
-	Als Login-Name muss dabei entweder das Format <literal>UCSDOM\username</literal>
-	oder der Kerberos-Prinzipal in der Notation
-	<literal>username@ucsdom.example</literal> angegeben werden.
+	Als Login-Name muss dabei entweder das Format <systemitem class="username">UCSDOM\username</systemitem>
+	oder der Kerberos Prinzipal in der Notation
+	<systemitem class="username">username@ucsdom.example</systemitem> angegeben werden.
   </para>
 </section>
 

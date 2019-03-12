@@ -460,7 +460,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 		<entry>
 		  Names of computers which are authorized to access this Samba share. All other computers are denied
 		  access. In addition to computer names, it is also possible to specify IP or network addresses, e.g.,
-		  <userinput>192.168.0.0/255.255.255.0</userinput>.
+		  <userinput>192.0.2.0/255.255.255.0</userinput>.
 		</entry>
 	  </row>
 
