@@ -964,7 +964,7 @@ docker exec "$CONTAINER" ...
                 <programlisting>
 univention-app logs $appid  # equivalent to docker logs $CONTAINER
                 </programlisting>
-                For multi container apps using Docker Compose, it may be useful to access those log information:
+                For multi container apps using Docker Compose, those logging information can be viewed with:
                 <programlisting>
 cd /var/lib/univention-appcenter/apps/$appid/compose
 docker-compose -p $appid logs
@@ -1739,7 +1739,7 @@ docker-compose -p $appid logs
 						</listitem>
                     </itemizedlist>
                     Logging information about the listener can found in
-                    <filename>/var/log/univention/listener_modules/$appid.log</filename>
+                    <filename>/var/log/univention/listener_modules/$appid.log</filename>.
 				</para>
 			</section>
 			<section id="provision:push:script">
