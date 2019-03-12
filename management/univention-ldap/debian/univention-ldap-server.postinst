@@ -192,9 +192,9 @@ upgrade_license () {
 
 fix_ldap_index () {  # Bug #48970
 	local pkg ver stop_and_start_slapd=false
-	for pkg in ucs-school-master ucs-school-singlemaster ucs-school-slave ucs-school-central-slave ucs-school-nonedu-slave
+	for pkg in ucs-school-master ucs-school-singlemaster
 	do
-		ver="$(dpkg-query -f '${version}' -W "$pkg" 2>/dev/null)" && break
+		ver="$(dpkg-query -f '${version}' -W "$pkg" 2>/dev/null)" && [ -n "$ver" ] && break
 	done
 	[ -n "$ver" ] || return 0
 
