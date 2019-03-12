@@ -1652,7 +1652,7 @@ apt-get dselect-upgrade
 			Start, end and eventual failures of domain joins
 		</simpara></listitem>
 		<listitem><simpara>
-			Start und end of UCS updates
+			Start and end of UCS updates
 		</simpara></listitem>
 	</itemizedlist>
 	<figure id="domain-ldap:adminndiary:list">
