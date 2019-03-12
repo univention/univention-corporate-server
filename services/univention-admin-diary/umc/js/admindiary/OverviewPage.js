@@ -128,7 +128,6 @@ define([
 				//defaultAction: 'show',
 				columns: columns,
 				sortIndex: 2,
-				allowHTML: false,
 				//actions: actions,
 				gridOptions: {
 					selectionMode: 'none'

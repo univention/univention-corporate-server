@@ -1,3 +1,9 @@
+univention-admin-diary (1.0.0-44) unstable; urgency=medium
+
+  * Bug #48972: Encode HTML entities in page
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 12 Mar 2019 18:39:30 +0100
+
 univention-admin-diary (1.0.0-43) unstable; urgency=medium
 
   * Bug #48972: Encode HTML entities in grid

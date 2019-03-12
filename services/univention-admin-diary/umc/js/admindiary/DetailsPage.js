@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/date/locale",
+	"dojox/html/entities",
 	"put-selector/put",
 	"umc/dialog",
 	"umc/tools",
@@ -44,7 +45,7 @@ define([
 	"umc/widgets/TextArea",
 	"umc/widgets/TextBox",
 	"umc/i18n!umc/modules/admindiary"
-], function(declare, lang, array, locale, put, dialog, tools, Page, ContainerWidget, TitlePane, Form, MultiSelect, TextArea, TextBox, _) {
+], function(declare, lang, array, locale, entities, put, dialog, tools, Page, ContainerWidget, TitlePane, Form, MultiSelect, TextArea, TextBox, _) {
 	return declare("umc.modules.admindiary.DetailsPage", [ Page ], {
 
 		fullWidth: true,
@@ -73,14 +74,14 @@ define([
 		},
 
 		reset: function(contextId, items) {
-			this.set('helpText', lang.replace(_('All entries with context {context_id}'), {context_id: '<strong>' + contextId + '</strong>'}));
+			this.set('helpText', lang.replace(_('All entries with context {context_id}'), {context_id: '<strong>' + entities.encode(contextId) + '</strong>'}));
 			this._contextId = contextId;
 			this._container.destroyRecursive();
 			this._container = new ContainerWidget({});
 			this.addChild(this._container);
 			array.forEach(items, lang.hitch(this, function(item) {
 				var node = put(this._container.domNode, 'article.admindiary');
-				put(node, 'blockquote.' + item.icon, item.message);
+				put(node, 'blockquote.' + item.icon, item.message || 'null');
 				put(node, 'address', _('%(username)s on %(hostname)s', item));
 				put(node, 'time', locale.format(new Date(item.date)));
 			}));

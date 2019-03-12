@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojox/html/entities",
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/Module",
@@ -39,7 +40,7 @@ define([
 	"umc/modules/admindiary/DetailsPage",
 	"umc/i18n!umc/modules/admindiary",
 	"xstyle/css!umc/modules/admindiary.css"
-], function(declare, lang, array, dialog, tools, Module, OverviewPage, DetailsPage, _) {
+], function(declare, lang, array, entities, dialog, tools, Module, OverviewPage, DetailsPage, _) {
 	return declare("umc.modules.admindiary", [ Module ], {
 		moduleStore: null,
 		idProperty: 'context_id',
@@ -105,7 +106,7 @@ define([
 		_showDetails: function(context_id) {
 			this._set('moduleState', context_id);
 			this.standbyDuring(tools.umcpCommand('admindiary/get', {'context_id': context_id}).then(lang.hitch(this, function(data) {
-				this.set('title', lang.replace(_('Admin Diary: {event_name}'), {event_name: data.result[0].event}));
+				this.set('title', lang.replace(_('Admin Diary: {event_name}'), {event_name: entities.encode(data.result[0].event)}));
 				this._detailsPage.reset(context_id, data.result);
 				this.selectChild(this._detailsPage);
 			})));
