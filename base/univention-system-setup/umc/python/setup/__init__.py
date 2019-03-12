@@ -497,7 +497,7 @@ class Instance(Base, ProgressMixin):
 			# see whether the domain can be determined automatically
 			ucr.load()
 			for obj in [values, ucr]:
-				guessed_domain = guess_domain(obj)
+				guessed_domain = values.get('domainname') or guess_domain(obj)
 				if guessed_domain:
 					# communicate guessed domainname to frontend
 					messages.append({
