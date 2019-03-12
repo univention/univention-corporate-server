@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-directory-reports
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Creating reports of objects which reference not existing objects is
+   possible again. This was the case for secretary of user objects and
+   networks of computer objects.
+bug: [47922]

@@ -106,19 +106,20 @@ class Interpreter(object):
 	def resolve(self, token, base):
 		if 'module' in token.attrs:
 			attr = token.attrs.get('dn-attribute', None)
-			if attr and base.has_key(attr) and base[attr]:
+			if attr and base.has_property(attr) and base[attr]:
 				values = base[attr]
 				if not isinstance(values, (list, tuple)):
 					values = [values, ]
 				for value in values:
 					new_base = admin.get_object(token.attrs['module'], value)
-					token.objects.append(new_base)
+					if new_base:
+						token.objects.append(new_base)
 
 	def query(self, token, base):
 		if 'module' in token.attrs:
 			attr = token.attrs.get('start', None)
-			if attr and base.has_key(attr) and base[attr]:
-				new_base = admin.get_object(token.attrs['module'], base[attr][0])
+			if attr and base.has_property(attr) and base[attr]:
+				admin.get_object(token.attrs['module'], base[attr][0])
 				if not isinstance(base[attr], (list, tuple)):
 					base[attr] = [base[attr], ]
 				filter = token.attrs.get('pattern', None)
@@ -135,13 +136,15 @@ class Interpreter(object):
 		_objs = []
 		for dn in objects:
 			obj = admin.get_object(module, dn)
+			if not obj:
+				continue
 			if not filter and not regex:
 				_objs.append(obj)
-			elif filter and obj.has_key(filter[0]) and obj[filter[0]] and fnmatch.fnmatch(obj[filter[0]], filter[1]):
+			elif filter and obj.has_property(filter[0]) and obj[filter[0]] and fnmatch.fnmatch(obj[filter[0]], filter[1]):
 				_objs.append(obj)
-			elif regex and obj.has_key(regex[0]) and obj[regex[0]] and regex[1].match(obj[regex[0]]):
+			elif regex and obj.has_property(regex[0]) and obj[regex[0]] and regex[1].match(obj[regex[0]]):
 				_objs.append(obj)
-			if not obj.has_key(attr):
+			if not obj.has_property(attr):
 				continue
 
 			_objs.extend(self._query_recursive(obj[attr], attr, module, filter, regex))
