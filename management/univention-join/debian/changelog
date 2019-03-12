@@ -1,3 +1,9 @@
+univention-join (11.0.1-15) unstable; urgency=medium
+
+  * Bug #48972: Make path to admin-diary cli explicit
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 12 Mar 2019 18:41:42 +0100
+
 univention-join (11.0.1-14) unstable; urgency=medium
 
   * Bug #48718: Explicit dependency to univention-admin-diary-client

@@ -116,7 +116,7 @@ failed_message () {
 	echo "* Message:  Please visit https://help.univention.com/t/8842 for common problems during the join and how to fix them -- $@"
 	echo "**************************************************************************"
 	} | tee -a /var/log/univention/join.log
-	univention-admin-diary-entry-create --event JOIN_FINISHED_FAILURE --arg "hostname=$(ucr get hostname)" --context-id "$context_id" > /dev/null
+	/usr/sbin/univention-admin-diary-entry-create --event JOIN_FINISHED_FAILURE --arg "hostname=$(ucr get hostname)" --context-id "$context_id" > /dev/null
 	exit 1
 }
 
@@ -636,7 +636,7 @@ fi
 
 $CHECK_RUN && exit 0
 
-context_id=$(univention-admin-diary-entry-create --event JOIN_STARTED --arg "hostname=$(ucr get hostname)")
+context_id=$(/usr/sbin/univention-admin-diary-entry-create --event JOIN_STARTED --arg "hostname=$(ucr get hostname)")
 
 if [ -x /usr/bin/rdate ]; then
 	echo -n "Sync time: "
@@ -1066,7 +1066,7 @@ if [ "$interfaces_${interfaces_primary:-eth0}_type" != "dhcp" ]; then
 	univention-config-registry commit /etc/resolv.conf >>/var/log/univention/join.log 2>&1
 fi
 
-univention-admin-diary-entry-create --event JOIN_FINISHED_SUCCESS --arg "hostname=$(ucr get hostname)" --context-id "$context_id" > /dev/null
+/usr/sbin/univention-admin-diary-entry-create --event JOIN_FINISHED_SUCCESS --arg "hostname=$(ucr get hostname)" --context-id "$context_id" > /dev/null
 
 exit 0
 # vim:set sw=4 ts=4 noet:
