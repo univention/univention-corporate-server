@@ -2139,6 +2139,28 @@ joinscript_register_schema "$@"
                    </programlisting>
                </para>
            </section>
+
+           <section id="installation:joinscript:boilerplate">
+               <title>Join script boilerplate</title>
+               <para>
+                   The following boilerplate can be used as a starting point
+                   for the app's own join script.
+                   <programlisting>
+#!/bin/bash
+VERSION=1
+
+. /usr/share/univention-appcenter/joinscripthelper.sh
+joinscript_init
+eval "$(univention-config-registry shell)"
+ucs_addServiceToLocalhost "$SERVICE" "$@"
+
+... # Place for the app's join script code
+
+joinscript_save_current_version
+exit 0
+                   </programlisting>
+               </para>
+           </section>
 		</section>
 	</section>
 	<section id="uninstallation-scripts">
