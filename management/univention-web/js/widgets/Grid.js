@@ -172,6 +172,9 @@ define([
 		// turn off gutters by default
 		gutters: false,
 
+		// auto escape all values written into the cells
+		allowHTML: true,
+
 		// defaultAction: Function/String a default action that is executed
 		//		when clicking on the column defined in defaultActionColumn (if set) or in the first column.
 		defaultAction: 'edit',
@@ -587,10 +590,14 @@ define([
 				// default action
 				var defaultActionExists = this.defaultAction && (typeof this.defaultAction === "function" || array.indexOf(array.map(this.actions, function(iact) { return iact.name; }), this.defaultAction) !== -1);
 				var isDefaultActionColumn = (!this.defaultActionColumn && colNum === 0) || (this.defaultActionColumn && col.name === this.defaultActionColumn);
+				var allowHTML = icol.allowHTML === undefined ? this.allowHTML : icol.allowHTML;
 
 				if (defaultActionExists && isDefaultActionColumn) {
 					col.renderCell = lang.hitch(this, function(item, value/*, node, options*/) {
 						value = icol.formatter ? icol.formatter(value, item) : value;
+						if (! allowHTML && typeof value == "string") {
+							value = entities.encode(value);
+						}
 
 						var defaultAction = this._getDefaultActionForItem(item);
 
@@ -638,6 +645,9 @@ define([
 				if (icol.formatter && !col.renderCell) {
 					col.renderCell = function(item, value) {
 						var colContent = icol.formatter(value, item, col);
+						if (! allowHTML && typeof colContent == "string") {
+							colContent = entities.encode(colContent);
+						}
 						if (colContent && colContent.domNode) {
 							return colContent.domNode;
 						} else {

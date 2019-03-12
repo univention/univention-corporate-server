@@ -1,3 +1,9 @@
+univention-web (3.0.5-3) unstable; urgency=medium
+
+  * Bug #48972: Grids may now auto encode HTML entities
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 12 Mar 2019 17:01:54 +0100
+
 univention-web (3.0.5-2) unstable; urgency=medium
 
   * Bug #48723: fix grid filter error with empty query
