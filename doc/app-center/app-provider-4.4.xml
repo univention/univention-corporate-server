@@ -169,7 +169,18 @@
                    </simpara>
                </listitem>
            </orderedlist>
-        </section>
+       </section>
+       <section id="app-provider-needs:help">
+           <title>Where to get help?</title>
+           <para>
+               App providers that need technical help during their development
+               process are invited to open a topic in <ulink
+                   url="https://help.univention.com/c/apps/dev">Univention
+                   Forum</ulink>. The dedicated section <guimenu>App
+                   Development</guimenu> is for all questions around app
+               development, debugging and the like.
+           </para>
+       </section>
     </section>
 
     <section id="create-app-with-docker">
