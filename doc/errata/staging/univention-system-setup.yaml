@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-system-setup
+fix: 12.0.2-3A~4.4.0.201903122317
+desc: |
+ This update addresses the following issue(s):
+ * The join process during the initial system setup did not allowed
+   to specify a domain to join if the configured DNS nameserver is a
+   UCS system. The domain name is now respected.
+bug: [48134]
