@@ -671,7 +671,7 @@
 				addresses have a 32-bit length and are generally written in four blocks in
 				decimal form (e.g., <systemitem class="ipaddress">192.0.2.10</systemitem>), whereas IPv6 addresses are four times as
 				long and typically written in hexadecimal form (e.g.,
-				<systemitem class="ipaddress">2222:0DFE:FE29:DE27:0000:0000:0000:0000</systemitem>).
+				<systemitem class="ipaddress">2001:0DB8:FE29:DE27:0000:0000:0000:0000</systemitem>).
 			</para>
 
 			<section id="computers:ipv4">

@@ -653,7 +653,7 @@
                     werden. IPv4-Adressen haben 32 Bit Länge und werden in der Regel in vier
 					Blöcken in Dezimalschreibweise dargestellt (z.B. <systemitem class="ipaddress">192.0.2.10</systemitem>), während
                     IPv6-Adressen vier Mal so lang sind und typischerweise hexadezimal dargestellt
-					werden (z.B. <systemitem class="ipaddress">2222:0DFE:FE29:DE27:0000:0000:0000:0000</systemitem>).
+					werden (z.B. <systemitem class="ipaddress">2001:0DB8:FE29:DE27:0000:0000:0000:0000</systemitem>).
                 </para>
 
                 <section id="computers:ipv4"><title>Konfiguration von IPv4-Adressen</title>
