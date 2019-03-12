@@ -1,3 +1,10 @@
+univention-management-console (10.0.6-20) unstable; urgency=medium
+
+  * Bug #48224: do not configure the SAML IDP in the UMC WebServer
+    if umc/web/sso/enabled=false.
+
+ -- Florian Best <best@univention.de>  Tue, 12 Mar 2019 16:10:33 +0100
+
 univention-management-console (10.0.6-19) unstable; urgency=medium
 
   * Bug #48684: fix pam_cracklib as root
