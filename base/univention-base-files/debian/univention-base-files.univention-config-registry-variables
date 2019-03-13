@@ -1059,8 +1059,8 @@ Type=bool
 Categories=system-base
 
 [syslog/remote]
-Description[de]=Adresse eines Logservers, an die Logmeldung per Netzwerk weitergeleitet werden. Beispiele: '@master.domain:514' für UDP, '@@[2001::1]:10514' für TCP über IPv6, ':omrelp:1.2.3.4:2514' für RELP über IPv4
-Description[en]=Address of a logging server, to which log messages are forwarded over the network. Examples: '@master.domain:514' for UDP, '@@[2001::1]:10514' for TCP over IPv6, ':omrelp:1.2.3.4:2514' for RELP over IPv4
+Description[de]=Mit Leerzeichen getrennte Adresse(n) eines oder mehrerer Logserver, an die Logmeldungen per Netzwerk weitergeleitet werden. Beispiele: '@master.domain:514' für UDP, '@@[2001::1]:10514' für TCP über IPv6, ':omrelp:1.2.3.4:2514' für RELP über IPv4
+Description[en]=Space-separated address(es) of one or multiple logging servers, to which log messages are forwarded over the network. Examples: '@master.domain:514' for UDP, '@@[2001::1]:10514' for TCP over IPv6, ':omrelp:1.2.3.4:2514' for RELP over IPv4
 Type=str
 Categories=system-base
 
