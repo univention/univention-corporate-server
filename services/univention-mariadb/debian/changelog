@@ -1,3 +1,15 @@
+univention-mariadb (2.0.0-4) unstable; urgency=medium
+
+  * Bug #46901: Fix description
+
+ -- Julia Bremer <jbremer@brankis.knut.univention.de>  Wed, 13 Mar 2019 16:28:13 +0100
+
+univention-mariadb (2.0.0-2) unstable; urgency=medium
+
+  * Bug #46901: mariadb startup timeout is now configurable via ucr variable
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 13 Mar 2019 16:17:11 +0100
+
 univention-mariadb (2.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump

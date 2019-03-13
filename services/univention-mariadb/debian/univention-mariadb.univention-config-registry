@@ -1,3 +1,7 @@
 Type: file
 File: etc/mysql/mariadb.conf.d/60-ucr.cnf
 Variables: mysql/config/.*
+
+Type: file
+File: lib/systemd/system/mariadb.service.d/univention.conf
+Variables: mariadb/startup/timeout
