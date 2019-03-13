@@ -1523,7 +1523,6 @@ define([
 				);
 				this.standbyDuring(moveOperation, this._progressBar);
 
-				// cleanup
 				_cleanup();
 			}));
 		},
@@ -1971,17 +1970,13 @@ define([
 				note: note || null
 			});
 			this.addChild(this._detailPage);
-
-			if (this._searchPage) {
-				this.selectChild(this._searchPage);
-			}
 		},
 
 		createDetailPage: function(operation, objectType, ldapName, newObjOptions, /*Boolean?*/ isClosable, /*String?*/ note) {
 			// summary:
 			//		Creates and views the detail page for editing LDAP objects if it doesn't exists. Afterwards it opens the detailpage.
 			if (!this._ldapNameDeferred) {
-				this._preloadDetailPage(operation);
+				this._preloadDetailPage();
 			}
 			if (operation === 'copy') {
 				this._setDetailPage(operation, objectType, ldapName, newObjOptions, isClosable, note);
@@ -2015,9 +2010,12 @@ define([
 			} else {
 				this.selectChild(this._detailPage);
 			}
-			this._detailPage.ready().then(null, lang.hitch(this, function() {
-				this.closeDetailPage();
-			}));
+
+			// close detailPage if something failed
+			this._detailPage.ready().then(
+				null,
+				lang.hitch(this, 'closeDetailPage')
+			);
 
 		},
 
