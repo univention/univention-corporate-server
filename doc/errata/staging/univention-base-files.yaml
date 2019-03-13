@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-3
+src: univention-base-files
+fix: 
+desc: |
+ This update addresses the following issue:
+ * The script univention-policy-update-config-registry now has a new option to
+   specify the LDAP server from which to get the policies.
+bug: [35208]
