@@ -8,3 +8,5 @@ desc: |-
   This update addresses the following issue:
   * HTML entities in the Diary overview are now properly encoded
 bug: [48972]
+erratum: 3
+announced: 2019-03-13
