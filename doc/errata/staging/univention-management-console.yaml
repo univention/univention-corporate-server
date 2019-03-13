@@ -3,9 +3,11 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-management-console
-fix: 11.0.4-3A~4.4.0.201903121612
+fix: 11.0.4-4A~4.4.0.201903131620
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The SAML identitiy provider is not configured in the UMC-WebServer anymore
    if it is disabled via the UCR variable umc/web/sso/enabled.
-bug: [48224]
+ * The UCS identity provider configuration is always fetched when executing
+   the joinscript 92univention-management-console-web-server.inst
+bug: [48224,48198]
