@@ -1,3 +1,10 @@
+univention-config-registry (14.0.0-2) unstable; urgency=medium
+
+  * Bug #48683: univention-ldapsearch makes -LLLo ldif-wrap=no by
+    default now
+
+ -- Florian Best <best@univention.de>  Thu, 14 Mar 2019 11:40:20 +0100
+
 univention-config-registry (14.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump

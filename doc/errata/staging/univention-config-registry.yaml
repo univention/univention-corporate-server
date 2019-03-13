@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-config-registry
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * by default univention-ldapsearch appends the arguments -LLLo ldif-wrap=no
+   now.
+bug: [48683]

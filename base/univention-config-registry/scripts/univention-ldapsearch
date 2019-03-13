@@ -59,12 +59,12 @@ do_search ()
 		fi
 		if [ -z "$password_given" ]; then
 			bindpw_file="/etc/machine.secret"
-			ldapsearch -ZZ -D "$binddn" -y $bindpw_file "${args[@]}"
+			ldapsearch -LLLo ldif-wrap=no -ZZ -D "$binddn" -y $bindpw_file "${args[@]}"
 		else
-			ldapsearch -ZZ -D "$binddn" "${args[@]}"
+			ldapsearch -LLLo ldif-wrap=no -ZZ -D "$binddn" "${args[@]}"
 		fi
 	else
-		ldapsearch -ZZ "${args[@]}"
+		ldapsearch -LLLo ldif-wrap=no -ZZ "${args[@]}"
 	fi
 }
 
