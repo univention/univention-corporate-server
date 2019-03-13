@@ -5,6 +5,6 @@ scope: ucs_4.4-0-errata4.4-0
 src: univention-web
 fix: 3.0.5-3A~4.4.0.201903121712
 desc: |-
-  This update addresses the following issue(s):
+  This update addresses the following issue:
   * Grids can now automatically encode HTML entities
 bug: [48972]
