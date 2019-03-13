@@ -94,7 +94,8 @@ _cleanup_die () {
 	ucr unset umc/saml/idp-server; exit 3
 }
 if ! ucr_is_false 'umc/web/sso/enabled'; then
-	ucr set umc/saml/idp-server?"https://${ucs_server_sso_fqdn}/simplesamlphp/saml2/idp/metadata.php" || _cleanup_die
+	rm /usr/share/univention-management-console/saml/idp/*.xml
+	ucr set umc/saml/idp-server="https://${ucs_server_sso_fqdn}/simplesamlphp/saml2/idp/metadata.php" || _cleanup_die
 	[ "$(ls -A /usr/share/univention-management-console/saml/idp/*.xml)" ] || _cleanup_die
 fi
 

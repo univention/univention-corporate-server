@@ -1,3 +1,10 @@
+univention-management-console (11.0.4-4) unstable; urgency=medium
+
+  * Bug #48198: Always download IdP metadata when executing joinscript
+    92univention-management-console-web-server.inst
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 13 Mar 2019 16:14:42 +0100
+
 univention-management-console (11.0.4-3) unstable; urgency=medium
 
   * Bug #48224: do not configure the SAML IDP in the UMC WebServer
