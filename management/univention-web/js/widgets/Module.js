@@ -32,28 +32,21 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/_base/window",
-	"dojo/_base/fx",
 	"dojo/topic",
 	"dojo/aspect",
 	"dojo/dom-class",
-	"dojo/dom-style",
 	"dojo/dom-geometry",
 	"dojo/window",
 	"dojo/on",
-	"dojo/fx/easing",
 	"dijit/layout/StackContainer",
 	"dojox/html/entities",
-	"umc/tools",
 	"umc/render",
 	"umc/widgets/_ModuleMixin",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/ModuleHeader",
 	"umc/widgets/StandbyMixin",
-	"umc/widgets/Button",
-	"put-selector/put",
 	"umc/i18n!"
-], function(declare, lang, array, baseWindow, baseFx, topic, aspect, domClass, domStyle, domGeom, win, on, fxEasing, StackContainer, entities, tools, render, _ModuleMixin, ContainerWidget, ModuleHeader, StandbyMixin, Button, put, _) {
+], function(declare, lang, array, topic, aspect, domClass, domGeom, win, on, StackContainer, entities, render, _ModuleMixin, ContainerWidget, ModuleHeader, StandbyMixin, _) {
 	return declare("umc.widgets.Module", [ContainerWidget, _ModuleMixin, StandbyMixin], {
 		// summary:
 		//		Basis class for module classes.

@@ -41,6 +41,12 @@ define([
 	"umc/i18n!"
 ], function(declare, lang, array, has, domClass, LiveSearch, ContainerWidget, SearchBox, LabelPane, RadioButton, _) {
 	return declare("umc.widgets.LiveSearchSidebar", [LiveSearch], {
+		// !!!!!!!!!!!!!!!
+		// This widget is broken! (dependencies do not match function parameters)
+		//
+		// At the moment it isn't used anywhere
+		// !!!!!!!!!!!!!!!
+		//
 		// summary:
 		//		Offers a side bar for live searching, a set of categories can be defined.
 		//		This class is used in the UMC overview and the App Center.

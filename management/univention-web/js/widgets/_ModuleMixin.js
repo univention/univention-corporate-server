@@ -30,12 +30,10 @@
 
 define([
 	"dojo/_base/declare",
-	"dojo/_base/lang",
-	"dojo/_base/array",
 	"umc/tools",
 	"umc/dialog",
 	"umc/store"
-], function(declare, lang, array, tools, dialog, store) {
+], function(declare, tools, dialog, store) {
 
 	return declare("umc.widgets._ModuleMixin", null, {
 		// summary:

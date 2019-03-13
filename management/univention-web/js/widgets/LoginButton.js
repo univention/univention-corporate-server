@@ -33,11 +33,9 @@ define([
 	"dojo/_base/lang",
 	"dojo/dom-class",
 	"dijit/form/Button",
-	"dijit/Tooltip",
 	"login/main",
-	"umc/tools",
 	"umc/i18n!"
-], function(declare, lang, domClass, Button, Tooltip, login, tools, _) {
+], function(declare, lang, domClass, Button, login, _) {
 	return declare("umc.widgets.Button", [ Button ], {
 		type: 'button',
 		label: _('Login'),

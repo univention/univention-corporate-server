@@ -32,15 +32,12 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/aspect",
 	"dojo/dom-class",
-	"dojo/on",
 	"dojo/topic",
 	"dijit/layout/TabContainer",
-	"dojox/grid/_Grid",
 	"umc/tools",
 	"umc/i18n!"
-], function(declare, lang, array, aspect, domClass, on, topic, TabContainer, _Grid, tools, _) {
+], function(declare, lang, array, domClass, topic, TabContainer, tools, _) {
 	return declare("umc.widgets.TabContainer", TabContainer, {
 		// summary:
 		//		An extended version of the dijit TabContainer that can hide/show tabs.

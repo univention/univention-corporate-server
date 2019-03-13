@@ -31,15 +31,12 @@
 
 define([
 	"dojo/_base/declare",
-	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dijit/form/RadioButton",
 	"dijit/registry",
 	"umc/tools",
-	"umc/widgets/_FormWidgetMixin",
-	"umc/widgets/ContainerWidget",
-	"umc/widgets/LabelPane"
-], function(declare, lang, array, RadioButton, registry, tools, _FormWidgetMixin, ContainerWidget, LabelPane) {
+	"umc/widgets/_FormWidgetMixin"
+], function(declare, array, RadioButton, registry, tools, _FormWidgetMixin) {
 	return declare("umc.widgets.RadioButton", [ RadioButton, _FormWidgetMixin ], {
 		value: null,
 

@@ -34,7 +34,6 @@ define([
 	"dojo/_base/array",
 	"dojo/when",
 	"dojo/dom-class",
-	"dojo/dom-construct",
 	"dojo/dom-style",
 	"dojox/form/Uploader",
 	"dijit/Tooltip",
@@ -44,7 +43,7 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/_FormWidgetMixin",
 	"umc/i18n!"
-], function(declare, lang, array, when, domClass, domConstruct, style, Uploader, Tooltip, tools, dialog, ContainerWidget, Button, _FormWidgetMixin, _) {
+], function(declare, lang, array, when, domClass, style, Uploader, Tooltip, tools, dialog, ContainerWidget, Button, _FormWidgetMixin, _) {
 	return declare("umc.widgets.Uploader", [ ContainerWidget, _FormWidgetMixin ], {
 		baseClass: 'umcUploader',
 

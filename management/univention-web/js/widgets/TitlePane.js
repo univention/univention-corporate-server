@@ -33,9 +33,8 @@ define([
 	"dojo/_base/array",
 	"dijit/TitlePane",
 	"dijit/_Container",
-	"dojox/grid/_Grid",
-	"umc/tools"
-], function(declare, array, TitlePane, _Container, _Grid, tools) {
+	"dojox/grid/_Grid"
+], function(declare, array, TitlePane, _Container, _Grid) {
 	return declare("umc.widgets.TitlePane", [ TitlePane, _Container ], {
 		// summary:
 		//		Widget that extends dijit.TitlePane with methods of a container widget.

@@ -30,10 +30,9 @@
 
 define([
 	"dojo/_base/declare",
-	"dojo/_base/lang",
 	"dojo/aspect",
 	"dijit/registry"
-], function(declare, lang, aspect, registry) {
+], function(declare, aspect, registry) {
 	return declare("umc.widget._RegisterOnShowMixin", [], {
 		_registerAtParentOnShowEvents: function(callback) {
 			// iterate up the DOM and register the given callback

@@ -30,24 +30,10 @@
 
 define([
 	"dojo/_base/declare",
-	"dojo/_base/lang",
-	"dojo/_base/array",
-	"dojo/Deferred",
-	"dojo/on",
-	"dojo/dom-class",
-	"dojo/dom-geometry",
-	"dojo/dom-style",
-	"dojo/_base/window",
-	"umc/tools",
-	"umc/dialog",
-	"umc/store",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
-	"umc/widgets/Button",
-	"dojo/topic",
-	"put-selector/put",
 	"umc/i18n!"
-], function(declare, lang, array, Deferred, on, domClass, geometry, domStyle, baseWin, tools, dialog, store, ContainerWidget, Text, Button, topic, put,  _) {
+], function(declare, ContainerWidget, Text,  _) {
 
 	return declare('umc.widgets.ModuleHeader', [ContainerWidget], {
 

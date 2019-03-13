@@ -30,9 +30,8 @@
 
 define([
 	"dojo/_base/declare",
-	"dojo/_base/lang",
 	"dojo/dom-class"
-], function(declare, lang, domClass) {
+], function(declare, domClass) {
 	return declare("umc.widgets._FormWidgetMixin", null, {
 		// by default, set required to 'false'
 		required: false,

@@ -30,9 +30,8 @@
 
 define([
 	"dojo/_base/declare",
-	"dojo/_base/lang",
 	"umc/widgets/Button"
-], function(declare, lang, Button) {
+], function(declare, Button) {
 	return declare("umc.widgets.SubmitButton", Button, {
 		type: 'submit',
 

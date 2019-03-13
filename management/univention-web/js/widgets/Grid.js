@@ -42,7 +42,6 @@ define([
 	"dojo/topic",
 	"dojo/aspect",
 	"dojo/on",
-	"dojo/window",
 	"dijit/Destroyable",
 	"dijit/Menu",
 	"dijit/MenuItem",
@@ -64,7 +63,7 @@ define([
 	"../render",
 	"../i18n!"
 ], function(declare, lang, array, kernel, win, construct, attr, geometry, style, domClass,
-		topic, aspect, on, dojoWindow, Destroyable, Menu, MenuItem, DropDownButton, entities,
+		topic, aspect, on, Destroyable, Menu, MenuItem, DropDownButton, entities,
 		OnDemandGrid, Selection, DijitRegistry, Selector, StoreAdapter, Memory, Button, Text, ContainerWidget,
 		StandbyMixin, Tooltip, _RegisterOnShowMixin, tools, render, _) {
 

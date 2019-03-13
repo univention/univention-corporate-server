@@ -34,10 +34,8 @@ define([
 	"dijit/layout/StackContainer",
 	"umc/widgets/TabController",
 	"umc/widgets/Page",
-	"umc/widgets/_ModuleMixin",
-	"umc/widgets/StandbyMixin",
 	"umc/widgets/Module"
-], function(declare, TabContainer, StackContainer, TabController, Page, _ModuleMixin, StandbyMixin, Module) {
+], function(declare, TabContainer, StackContainer, TabController, Page, Module) {
 	return declare("umc.widgets.TabbedModule", [Module], {
 		// summary:
 		//		Basis class for module classes.

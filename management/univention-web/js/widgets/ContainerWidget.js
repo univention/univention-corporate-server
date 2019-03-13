@@ -30,20 +30,13 @@
 
 define([
 	"dojo/_base/declare",
-	"dojo/_base/lang",
-	"dojo/_base/array",
-	"dojo/aspect",
 	"dojo/dom-class",
-	"dojox/grid/_Grid",
 	"dijit/_WidgetBase",
 	"dijit/_Container"
-], function(declare, lang, array, aspect, domClass, _Grid, _WidgetBase, _Container) {
-	require(['umc/widgets/Grid']);
+], function(declare, domClass, _WidgetBase, _Container) {
 	return declare("umc.widgets.ContainerWidget", [_WidgetBase, _Container], {
 		// description:
 		//		Combination of Widget and Container class.
-		style: '',
-
 		baseClass: 'umcContainerWidget',
 
 		_setVisibleAttr: function(visible) {

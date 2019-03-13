@@ -33,12 +33,9 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/dom-class",
-	"dojo/on",
-	"dojo/topic",
 	"dijit/layout/TabController",
-	"umc/tools",
 	"umc/i18n!"
-], function(declare, lang, array, domClass, on, topic, TabController, tools, _) {
+], function(declare, lang, array, domClass, TabController, _) {
 	return declare("umc.widgets.TabController", [TabController], {
 		setVisibilityOfChild: function(child, visible) {
 			array.forEach(this.getChildren(), lang.hitch(this, function(ibutton) {

@@ -32,14 +32,10 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/on",
-	"dojo/aspect",
-	"dojo/has",
-	"dojo/dom",
-	"dijit/focus",
 	"dijit/form/FilteringSelect",
 	"umc/widgets/_SelectMixin",
 	"umc/widgets/_FormWidgetMixin"
-], function(declare, lang, on, aspect, has, dom, focusUtil, FilteringSelect, _SelectMixin, _FormWidgetMixin) {
+], function(declare, lang, on, FilteringSelect, _SelectMixin, _FormWidgetMixin) {
 	return declare("umc.widgets.ComboBox", [ FilteringSelect , _SelectMixin, _FormWidgetMixin ], {
 		// search for the substring when typing
 		queryExpr: '*${0}*',
