@@ -19,3 +19,5 @@ desc: |
    /usr/share/univention-ldap/ldap_setup_index
    and starting the slapd service again.
 bug: [48970]
+erratum: 456
+announced: 2019-03-13
