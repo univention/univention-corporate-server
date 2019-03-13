@@ -8,3 +8,5 @@ desc: |-
   This update addresses the following issue:
   * The path to /usr/sbin/univention-admin-diary-entry-create is now explicit
 bug: [48972]
+erratum: 4
+announced: 2019-03-13
