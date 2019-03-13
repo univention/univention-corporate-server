@@ -687,13 +687,6 @@ class object(univention.admin.handlers.simpleLdap):
 				'samba': options['samba'].short_description,
 				'nfs': options['nfs'].short_description})
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'univentionShare'),
-			univention.admin.filter.expression('cn', '*'),
-		])
-
 
 lookup = object.lookup
 lookup_filter = object.lookup_filter

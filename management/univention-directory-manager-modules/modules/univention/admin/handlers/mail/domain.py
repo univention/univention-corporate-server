@@ -96,13 +96,6 @@ class object(univention.admin.handlers.simpleLdap):
 		ml = [(a, b, c.lower()) if a == "cn" else (a, b, c) for (a, b, c) in ml]
 		return ml
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('cn', '*'),
-			univention.admin.filter.expression('objectClass', 'univentionMailDomainname')
-		])
-
 
 lookup = object.lookup
 
