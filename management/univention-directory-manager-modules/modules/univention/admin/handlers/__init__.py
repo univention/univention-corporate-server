@@ -149,6 +149,8 @@ class simpleLdap(object):
 			Properties should be assigned in the following way: obj['name'] = 'value'
 	"""
 
+	use_performant_ldap_search_filter = False
+
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
 		self._exists = False
 		self.exceptions = []
@@ -1748,7 +1750,16 @@ class simpleLdap(object):
 
 		See :py:meth:`lookup_filter`.
 		"""
-		return univention.admin.filter.conjunction('&', [])
+		filter_conditions = []
+		if cls.use_performant_ldap_search_filter:
+			filter_conditions.append(univention.admin.filter.expression('univentionObjectType', cls.module, escape=True))
+		else:
+			object_classes = univention.admin.modules.options(cls.module).get('default')
+			if object_classes:
+				object_classes = object_classes.objectClasses
+				filter_conditions.extend(univention.admin.filter.expression('objectClass', ocs) for ocs in object_classes if ocs not in ('top',))
+
+		return univention.admin.filter.conjunction('&', filter_conditions)
 
 	@classmethod
 	def rewrite_filter(cls, filter, mapping):
