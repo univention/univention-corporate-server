@@ -11,7 +11,7 @@ Type=str
 Categories=system
 
 [mariadb/startup/timeout]
-Description[de]=Diese Variable konfiguriert die Wartezeit für das Starten des MariaDB-Dienstes. Wenn der Dienst nicht innerhalb der konfigurierten Zeit startet, wird dieser als fehlgeschlagen gewertet und beendet. Man kann hier eine Zahl eintragen, die als Sekunden gewertet wird, oder eine Zeit Einheit wie "5min 20s". Wird die Variable auf 'infinity' gesetzt, wird der Timeout deaktiviert. Ist die Wert nicht gesetzt, gelten 90 Sekunden als default. Nachdem diese Variable geändert wurde, ist es nötig den Befehl 'systemctl daemon-reload' auszuführen.
+Description[de]=Diese Variable konfiguriert die Wartezeit für das Starten des MariaDB-Dienstes. Wenn der Dienst nicht innerhalb der konfigurierten Zeit startet, wird dieser als fehlgeschlagen gewertet und beendet. Man kann hier eine Zahl eintragen, die als Sekunden gewertet wird, oder eine Zeit Einheit wie "5min 20s". Wird die Variable auf 'infinity' gesetzt, wird der Timeout deaktiviert. Ist der Wert nicht gesetzt, gelten 90 Sekunden als default. Nachdem diese Variable geändert wurde, ist es nötig den Befehl 'systemctl daemon-reload' auszuführen.
 Description[en]=This variable configures the time to wait for the start-up of the mysqld. If the daemon service does not signal start-up completion within the configured time, the service will be considered failed and will be shut down. Takes a unit-less value in seconds, or a time span value such as "5min 20s". Pass "infinity" to disable the timeout logic. If the variable is unset, 90 seconds apply. After setting this variable, run 'systemctl daemon-reload'.
 Type=str
 Categories=service-base
