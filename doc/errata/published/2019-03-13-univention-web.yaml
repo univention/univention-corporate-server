@@ -8,3 +8,5 @@ desc: |-
   This update addresses the following issue:
   * Grids can now automatically encode HTML entities
 bug: [48972]
+erratum: 5
+announced: 2019-03-13
