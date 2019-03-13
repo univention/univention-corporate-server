@@ -281,11 +281,6 @@ class object(univention.admin.handlers.simpleLdap):
 				portal_obj['content'] = new_content
 				portal_obj.modify()
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', OC),
-		])
 
 
 lookup = object.lookup

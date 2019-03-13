@@ -112,12 +112,6 @@ class object(univention.admin.handlers.simpleLdap):
 		else:
 			super(object, cls).rewrite_filter(filter, mapping)
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'univentionPrinterModels')
-		])
-
 
 lookup = object.lookup
 

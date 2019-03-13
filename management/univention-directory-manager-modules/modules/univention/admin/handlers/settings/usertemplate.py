@@ -324,12 +324,6 @@ class object(univention.admin.handlers.simpleLdap):
 		univention.admin.syntax.optionsUsersUser.update_choices()  # woraround: somehow init() didn't do it
 		self.options.extend(self['_options'])
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'univentionUserTemplate')
-		])
-
 	def _ldap_pre_modify(self):
 		super(object, self)._ldap_pre_modify()
 		self['_options'].extend(self.options)

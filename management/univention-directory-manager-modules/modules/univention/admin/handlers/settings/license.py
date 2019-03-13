@@ -293,12 +293,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 		self.save()
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'univentionLicense')
-		])
-
 
 lookup = object.lookup
 

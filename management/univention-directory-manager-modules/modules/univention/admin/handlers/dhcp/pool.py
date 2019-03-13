@@ -178,12 +178,6 @@ class object(DHCPBase):
 			raise univention.admin.uexceptions.bootpXORFailover
 		return ml
 
-	@staticmethod
-	def unmapped_lookup_filter():
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'univentionDhcpPool')
-		])
-
 	@classmethod
 	def rewrite_filter(cls, filter, mapping):
 		values = {

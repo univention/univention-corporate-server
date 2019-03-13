@@ -158,12 +158,6 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_dn(self):
 		return 'cn=default containers,cn=univention,%s' % (self.position.getDomain())
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'univentionDefault')
-		])
-
 
 lookup = object.lookup
 

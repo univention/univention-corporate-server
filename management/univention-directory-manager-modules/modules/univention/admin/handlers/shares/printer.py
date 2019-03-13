@@ -298,12 +298,6 @@ class object(univention.admin.handlers.simpleLdap):
 			printergroup_object['groupMember'].remove(self.info['name'])
 			printergroup_object.modify()
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'univentionPrinter'),
-		])
-
 
 lookup = object.lookup
 

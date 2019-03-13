@@ -138,7 +138,9 @@ class object(univention.admin.handlers.simplePolicy):
 			univention.admin.filter.expression('objectClass', 'univentionPolicyDhcpNetbios'),
 		])
 
+
 lookup = object.lookup
+
 
 def identify(dn, attr, canonical=0):
 	return 'univentionPolicyDhcpNetbios' in attr.get('objectClass', [])

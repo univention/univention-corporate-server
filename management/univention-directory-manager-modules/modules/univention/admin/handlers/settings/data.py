@@ -149,12 +149,6 @@ mapping.register('packageversion', 'univentionOwnedByPackageVersion', None, univ
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', OC),
-		])
-
 
 lookup = object.lookup
 

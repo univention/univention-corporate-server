@@ -287,12 +287,6 @@ class object(univention.admin.handlers.simpleLdap):
 			if ipaddr.IPAddress(self['ipRange'][i][0]) < ipaddr.IPAddress(self['ipRange'][i - 1][0]):
 				self.sort_ipranges()
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'univentionNetworkClass'),
-		])
-
 
 lookup = object.lookup
 

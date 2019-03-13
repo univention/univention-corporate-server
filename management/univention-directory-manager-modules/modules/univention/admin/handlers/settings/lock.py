@@ -91,13 +91,9 @@ mapping.register('locktime', 'lockTime', None, univention.admin.mapping.ListToSt
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'lock')
-		])
 
 lookup = object.lookup
+
 
 def identify(dn, attr, canonical=0):
 	return 'lock' in attr.get('objectClass', [])

@@ -210,12 +210,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 		return ml
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'univentionNagiosTimeperiodClass'),
-		])
-
 
 lookup = object.lookup
 

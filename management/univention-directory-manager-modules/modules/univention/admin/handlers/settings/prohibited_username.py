@@ -91,12 +91,6 @@ mapping.register('usernames', 'prohibitedUsername', None, None)
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'univentionProhibitedUsernames')
-		])
-
 
 lookup = object.lookup
 
