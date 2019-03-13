@@ -1,3 +1,9 @@
+univention-management-console (10.0.6-21) unstable; urgency=medium
+
+  * Bug #48224: fix typo
+
+ -- Florian Best <best@univention.de>  Wed, 13 Mar 2019 18:34:10 +0100
+
 univention-management-console (10.0.6-20) unstable; urgency=medium
 
   * Bug #48224: do not configure the SAML IDP in the UMC WebServer
