@@ -176,12 +176,6 @@ class object(univention.admin.handlers.simplePolicy):
 				if len(user_dn) < 1 and entry[2] != 'root':
 					raise univention.admin.uexceptions.notValidUser(_('%s is not valid. ') % entry[2])
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'univentionPolicySharePrintQuota')
-		])
-
 
 lookup = object.lookup
 

@@ -32,7 +32,6 @@
 
 from univention.admin.layout import Tab, Group
 import univention.admin.syntax as udm_syntax
-import univention.admin.filter as udm_filter
 import univention.admin.mapping as udm_mapping
 
 from univention.admin.handlers import simplePolicy
@@ -120,12 +119,6 @@ register_policy_mapping(mapping)
 
 class object(simplePolicy):
 	module = module
-
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return udm_filter.conjunction('&', [
-			udm_filter.expression('objectClass', 'umcPolicy')
-		])
 
 
 lookup = object.lookup

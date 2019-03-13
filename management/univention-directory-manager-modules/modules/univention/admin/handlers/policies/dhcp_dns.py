@@ -125,12 +125,6 @@ register_policy_mapping(mapping)
 class object(univention.admin.handlers.simplePolicy):
 	module = module
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'univentionPolicyDhcpDns'),
-		])
-
 
 lookup = object.lookup
 

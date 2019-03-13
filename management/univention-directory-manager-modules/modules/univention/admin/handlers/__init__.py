@@ -1754,10 +1754,8 @@ class simpleLdap(object):
 		if cls.use_performant_ldap_search_filter:
 			filter_conditions.append(univention.admin.filter.expression('univentionObjectType', cls.module, escape=True))
 		else:
-			object_classes = univention.admin.modules.options(cls.module).get('default')
-			if object_classes:
-				object_classes = object_classes.objectClasses
-				filter_conditions.extend(univention.admin.filter.expression('objectClass', ocs) for ocs in object_classes if ocs not in ('top',))
+			object_classes = univention.admin.modules.options(cls.module).get('default', univention.admin.option()).objectClasses - {'top', 'univentionPolicy'}
+			filter_conditions.extend(univention.admin.filter.expression('objectClass', ocs) for ocs in object_classes)
 
 		return univention.admin.filter.conjunction('&', filter_conditions)
 
