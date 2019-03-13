@@ -9,3 +9,5 @@ desc: |
  * Fix regression from UCS-4.3-3 erratum 426 in `cn=translog` setup, which
    reset the LDAP indices.
 bug: [48971]
+erratum: 2
+announced: 2019-03-13
