@@ -13,5 +13,9 @@ desc: |
    If other attributes were added manually to the UCR variables
    'ldap/index/eq', 'ldap/index/sub', 'ldap/index/pres', they must be
    restored manually. The old values might be recovered from the log file
-   '/var/log/univention/config-registry.replog'.
+   '/var/log/univention/config-registry.replog'. After a manual change of
+   these UCR variables, the LDAP server indices need to be updated by stopping
+   the slapd service, then running the script
+   /usr/share/univention-ldap/ldap_setup_index
+   and starting the slapd service again.
 bug: [48970]
