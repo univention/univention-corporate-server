@@ -254,10 +254,11 @@ class Policies(UDMBase):
 
 		return policyname
 
-	def open_details(self, objectname):
-		self.search(self._get_search_value(objectname))
-		self.selenium.click_grid_entry(self._get_grid_value(objectname))
-		self.selenium.wait_for_text(_('Advanced settings'))
+	# fails in 4.4-0, Bug #48998
+	#def open_details(self, objectname):
+	#	self.search(self._get_search_value(objectname))
+	#	self.selenium.click_grid_entry(self._get_grid_value(objectname))
+	#	self.selenium.wait_for_text(_('Advanced settings'))
 
 
 class Users(UDMBase):
