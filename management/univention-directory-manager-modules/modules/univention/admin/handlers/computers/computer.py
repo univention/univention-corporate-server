@@ -34,10 +34,10 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 
+import univention.admin.handlers.computers
+
 translation = univention.admin.localization.translation('univention.admin.handlers.computers')
 _ = translation.translate
-
-import univention.admin.handlers.computers
 
 module = 'computers/computer'
 childmodules = []
@@ -152,7 +152,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-
 	res = []
 	if str(filter_s).find('(dnsAlias=') != -1:
 		filter_s = univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)

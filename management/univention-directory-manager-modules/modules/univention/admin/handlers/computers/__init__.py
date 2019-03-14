@@ -37,9 +37,9 @@ computers = []
 
 
 def __walk(root, dir, files):
-	for file in files:
-		if file.endswith('.py') and not file.startswith('__') and not file == 'computer.py':
-			computers.append(__import__(file[: -3], globals(), locals(), ['']))
+	for file_ in files:
+		if file_.endswith('.py') and not file_.startswith('__') and file_ not in ('computer.py', 'base.py'):
+			computers.append(__import__(file_[: -3], globals(), locals(), ['']))
 
 
 path = os.path.abspath(os.path.dirname(__file__))

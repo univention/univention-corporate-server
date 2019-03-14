@@ -2784,7 +2784,7 @@ class simpleComputer(simpleLdap):
 				# the current ip and mac address. (Bug #20315)
 				self.info['dhcpEntryZone'] = [
 					(dn, newAddresses[0] if newAddresses else '', self.info['mac'][0])
-					for (dn, ip, mac) in dhcp
+					for (dn, ip, _mac) in dhcp
 				]
 			else:
 				# in all other cases, we remove old dhcp entries that do not match ip or
@@ -2792,8 +2792,8 @@ class simpleComputer(simpleLdap):
 				removedIPs = set(self.oldinfo.get('ip', [])) - set(self['ip'])
 				removedMACs = set(self.oldinfo.get('mac', [])) - set(self['mac'])
 				self.info['dhcpEntryZone'] = [
-					(dn, ip, mac)
-					for (dn, ip, mac) in dhcp
+					(dn, ip, _mac)
+					for (dn, ip, _mac) in dhcp
 					if not (ip in removedIPs or mac in removedMACs)
 				]
 
