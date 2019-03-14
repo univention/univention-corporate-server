@@ -95,7 +95,7 @@ choice_update_functions = []  # type: List[Callable]
 
 
 def __register_choice_update_function(func):
-	# type: (Callable) -> None
+	# type: (Callable[[], None]) -> None
 	"""
 	Register a function to be called when the syntax classes are to be re-loaded.
 	"""
@@ -365,7 +365,7 @@ class UDM_Objects(ISyntax):
 	"""The |UDM| property name, which is used as the displayed value."""
 	regex = re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')
 	"""Regular expression for validating the values."""
-	static_values = None  # type: Optional[Sequence]
+	static_values = None  # type: Optional[Sequence[Tuple[str, str]]]
 	"""Sequence of additional static items."""
 	empty_value = False
 	"""Allow to select no entry."""
@@ -374,7 +374,7 @@ class UDM_Objects(ISyntax):
 	error_message = _("Not a valid LDAP DN")
 	"""Error message when an invalid item is selected."""
 	simple = False  # by default a MultiObjectSelect widget is used; if simple == True a ComboBox is used
-	"""With True, only a single object can be selected using a ComboBox. With False multiple entries can be selected using a MultiObjectSelect widget."""
+	"""With `True`, only a single object can be selected using a ComboBox. With `False` multiple entries can be selected using a MultiObjectSelect widget."""
 	use_objects = True
 	"""By default with `True` create Python UDM instance for each LDAP entry. With `False` only work with the LDAP attribute data."""
 
@@ -3196,7 +3196,7 @@ class IStates(select):
 
 class AllowDeny(IStates):
 	"""
-	Syntax class for a tri-state select between None, allow and deny.
+	Syntax class for a tri-state select between `None`, `"allow"` and `"deny"`.
 	"""
 	values = (
 		(None, ('', '')),
@@ -3207,7 +3207,7 @@ class AllowDeny(IStates):
 
 class booleanNone(IStates):
 	"""
-	Syntax class for a tri-state select between None, yes and no.
+	Syntax class for a tri-state select between `None`, `"yes"` and `"no"`.
 	"""
 	values = (
 		(None, ('', '')),
@@ -3218,7 +3218,7 @@ class booleanNone(IStates):
 
 class auto_one_zero(select):
 	"""
-	Syntax class for a tri-state select between Auto, Yes and No.
+	Syntax class for a tri-state select between `"Auto"`, `"Yes"` and `"No"`.
 	"""
 	choices = [
 		('Auto', _('Auto')),
@@ -3229,7 +3229,7 @@ class auto_one_zero(select):
 
 class TrueFalse(IStates):
 	"""
-	Syntax class for a tri-state select between None, true and false.
+	Syntax class for a tri-state select between `None`, `"true"` and `"false"`.
 	"""
 	values = (
 		(None, ('', '')),
@@ -3240,7 +3240,7 @@ class TrueFalse(IStates):
 
 class TrueFalseUpper(IStates):
 	"""
-	Syntax class for a tri-state select between None, TRUE and FALSE.
+	Syntax class for a tri-state select between `None`, `"TRUE"` and `"FALSE"`.
 	"""
 	values = (
 		(None, ('', '')),
@@ -3265,7 +3265,7 @@ class AppActivatedTrue(TrueFalseUp):
 
 class OkOrNot(IStates):
 	"""
-	Syntax class to a boolean select between OK and Not.
+	Syntax class to a boolean select between `"OK"` and `"Not"`.
 	"""
 	values = (
 		(True, ('OK', _('OK'))),
@@ -3291,7 +3291,7 @@ class ddnsUpdateStyle(select):
 
 class ddnsUpdates(IStates):
 	"""
-	Syntax class for a tri-state select between None, on and off.
+	Syntax class for a tri-state select between `None`, `"on"` and `"off"`.
 	"""
 	values = (
 		(None, ('', '')),
