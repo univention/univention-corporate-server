@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-ad-connector
-fix: 
+fix: 13.0.0-5A~4.4.0.201903141557
 desc: |
  This update addresses the following issue(s):
  * The use of obsolete univention.admin.config has been removed.

@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-virtual-machine-manager-daemon
-fix: 
+fix: 8.0.1-6A~4.4.0.201903141600
 desc: |
  This update addresses the following issue(s):
  * Preparations for better browser cache-control have been implemented.
