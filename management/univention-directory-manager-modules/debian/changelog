@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.12-3) unstable; urgency=medium
+
+  * Bug #42791: fix ldap filters
+
+ -- Florian Best <best@univention.de>  Thu, 14 Mar 2019 10:48:28 +0100
+
 univention-directory-manager-modules (14.0.12-2) unstable; urgency=medium
 
   * Bug #48441: prevent traceback when not setting --set username= on

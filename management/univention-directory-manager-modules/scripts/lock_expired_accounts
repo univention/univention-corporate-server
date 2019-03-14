@@ -33,6 +33,8 @@
 import sys
 import time
 import optparse
+from ldap.filter import filter_format
+
 import univention.uldap
 import univention.admin.uldap
 import univention.admin.modules as udm_modules
@@ -82,9 +84,9 @@ disabled."""
 	print_msg('Searching for expired user accounts...')
 
 	today = int(time.time() / 24 / 3600)  # time.time() returns the local time
-	ldap_filter = '(shadowExpire<=%s)' % (today,)
+	ldap_filter = filter_format('(shadowExpire<=%s)', (str(today),))
 	if options.last_week:
-		ldap_filter = '(&(shadowExpire>=%s)(shadowExpire<=%s))' % (today - 6, today,)
+		ldap_filter = filter_format('(&(shadowExpire>=%s)(shadowExpire<=%s))', (str(today - 6), str(today),))
 	results = udm_modules.lookup('users/user', None, lo, scope='sub', filter=ldap_filter)
 
 	for entry in results:

@@ -34,6 +34,7 @@ import optparse
 import ldap
 import sys
 import univention.uldap
+from ldap.filter import filter_format
 
 ACTIONS = ('test', 'remove')
 
@@ -75,7 +76,7 @@ def run():
 
 	policy_objects = lo.searchDn(filter='objectClass=univentionPolicyConsoleAccess')
 	for pol_dn in policy_objects:
-		ref_objects = lo.searchDn(filter='univentionPolicyReference=%s' % pol_dn)
+		ref_objects = lo.searchDn(filter=filter_format('univentionPolicyReference=%s', [pol_dn]))
 		for ref_dn in ref_objects:
 			remove_ref(ref_dn, pol_dn)
 		remove(pol_dn)

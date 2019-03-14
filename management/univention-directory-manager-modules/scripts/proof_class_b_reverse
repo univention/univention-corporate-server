@@ -33,6 +33,7 @@
 
 
 import ldap
+from ldap.filter import filter_format
 import string
 import sys
 
@@ -59,7 +60,7 @@ for i in range(0, len(computers)):
 	print 'DN: %s' % computers[i][0]
 	if 'aRecord' in computers[i][1]:
 		entry = computers[i][1]['aRecord'][0].split('.')[2:4]
-		reverse = lo.search_s('cn=dns,%s' % baseDN, ldap.SCOPE_SUBTREE, '(&(relativeDomainName=%s)(pTRRecord=%s*))' % (string.join(entry, '.'), ldap.explode_dn(computers[i][0], 1)[0]))
+		reverse = lo.search_s('cn=dns,%s' % baseDN, ldap.SCOPE_SUBTREE, filter_format('(&(relativeDomainName=%s)(pTRRecord=%s*))', ('.'.join(entry), ldap.explode_dn(computers[i][0], 1)[0])))
 		if len(reverse) != 0:
 			print 'Wrong DNS Reverse Entry for %s: %s' % (computers[i][0], reverse[0][0])
 			entry.reverse()

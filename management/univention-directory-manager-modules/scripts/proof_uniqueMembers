@@ -33,6 +33,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import ldap
+from ldap.filter import filter_format
 import sys
 from univention.config_registry import ConfigRegistry
 from optparse import OptionParser
@@ -92,7 +93,7 @@ def check_primary(conn, basedn):
 		# search corresponding group
 		group_result = conn.search_s(
 			basedn, ldap.SCOPE_SUBTREE,
-			'(&(objectClass=univentionGroup)(gidNumber=%s))' % (user_gid,),
+			filter_format('(&(objectClass=univentionGroup)(gidNumber=%s))', (user_gid,)),
 			['uniqueMember', 'memberUid']
 		)
 
@@ -179,7 +180,7 @@ def check_groups_by_uid(conn, basedn, group_dn, group):
 	remmembers = set()
 	for member_uid in group_member_uids:
 		try:
-			member_result = conn.search_s(basedn, ldap.SCOPE_SUBTREE, '(uid=%s)' % (member_uid,), ['objectClass'])
+			member_result = conn.search_s(basedn, ldap.SCOPE_SUBTREE, filter_format('(uid=%s)', (member_uid,)), ['objectClass'])
 		except ldap.LDAPError:
 			warn("Manual: Search for member UID '%s' of group '%s' failed", member_uid, group_dn)
 		else:

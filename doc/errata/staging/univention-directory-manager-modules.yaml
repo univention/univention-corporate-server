@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * udm users/user create without --set username does not cause a exception
    anymore.
-bug: [48441]
+ * Various LDAP filters are now escaped.
+bug: [48441,42791]

@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from ldap.filter import filter_format
 
 import univention.admin.uldap
 import univention.admin.objects
@@ -60,9 +61,9 @@ def change(username, password):
 	univention.admin.modules.init(lo, pos, module)
 
 	if username.find('@') > 0:  # krb5Principal
-		filter = 'krb5PrincipalName=%s' % username
+		filter = filter_format('krb5PrincipalName=%s', [username])
 	else:
-		filter = 'uid=%s' % username
+		filter = filter_format('uid=%s', [username])
 	objects = module.lookup(co, lo, filter, superordinate=None, unique=True, required=True, timeout=-1, sizelimit=0)
 
 	# search was unique and required
@@ -70,4 +71,4 @@ def change(username, password):
 
 	object.open()
 	object['password'] = unicode(password)
-	dn = object.modify()
+	object.modify()
