@@ -270,6 +270,7 @@ create_internal_template () {
 	KVM_SERVER_LOCAL_TMP_IMAGE="${SERVERROLE}-${UCS_VERSION}.qcow2"
 	KVM_TEMPLATE_NAME="${UCS_VERSION}+${UCS_VERSION_INFO}_${SERVERROLE}-joined_amd64.tar.gz"
 	KVM_TEMPLATE_TGZ_PATH="${TMP_DIR}/${KVM_TEMPLATE_NAME}"
+	NAME="${UCS_VERSION}+${UCS_VERSION_INFO}_${SERVERROLE}-joined"
 
 	_ssh -l "$KVM_USER" "$KVM_SERVER" "test -d $TMP_DIR && rm -rf $TMP_DIR || true"
 	_ssh -l "$KVM_USER" "$KVM_SERVER" "mkdir -p $TMP_DIR"
@@ -277,7 +278,7 @@ create_internal_template () {
 	#test _ssh -l "$KVM_USER" "$KVM_SERVER" "cp $QCOW_PATH $TMP_DIR/$KVM_SERVER_LOCAL_TMP_IMAGE"
 
 	_scp utils/kvm_template.xml ${KVM_USER}@${KVM_SERVER}:"$TMP_DIR"
-	ssh -l "$KVM_USER" "$KVM_SERVER" "QCOW_FILENAME=$KVM_SERVER_LOCAL_TMP_IMAGE envsubst <'$TMP_DIR/kvm_template.xml' >'$TMP_DIR/${SERVERROLE}-${UCS_VERSION}.xml'"
+	ssh -l "$KVM_USER" "$KVM_SERVER" "QCOW_FILENAME=$KVM_SERVER_LOCAL_TMP_IMAGE NAME=$NAME envsubst <'$TMP_DIR/kvm_template.xml' >'$TMP_DIR/${SERVERROLE}-${UCS_VERSION}.xml'"
 	ssh -l "$KVM_USER" "$KVM_SERVER" "rm $TMP_DIR/kvm_template.xml"
 
 	_ssh -l "$KVM_USER" "$KVM_SERVER" "cd ${TMP_DIR} && tar czvf ${KVM_TEMPLATE_TGZ_PATH} *"

@@ -1,5 +1,5 @@
 <?xml version="1.0" ?><domain type="kvm">
-  <name>4.3-2+ee229_branchtest</name>
+  <name>${NAME}</name>
   
   <memory unit="KiB">1048576</memory>
   <currentMemory unit="KiB">1048576</currentMemory>
@@ -27,7 +27,7 @@
     <emulator>/usr/bin/kvm</emulator>
     <disk device="disk" type="file">
       <driver cache="unsafe" name="qemu" type="qcow2"/>
-      <source file="$QCOW_FILENAME"/>
+      <source file="${QCOW_FILENAME}"/>
       <target bus="virtio" dev="vda"/>
       <address bus="0x00" domain="0x0000" function="0x0" slot="0x04" type="pci"/>
     </disk>
