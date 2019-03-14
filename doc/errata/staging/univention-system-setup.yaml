@@ -9,4 +9,5 @@ desc: |
  * The join process during the initial system setup did not allowed
    to specify a domain to join if the configured DNS nameserver is a
    UCS system. The domain name is now respected.
-bug: [48134]
+ * The unused dependency to python-simplejson has been removed.
+bug: [48134,35687]

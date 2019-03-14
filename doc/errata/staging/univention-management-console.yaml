@@ -10,4 +10,5 @@ desc: |
    if it is disabled via the UCR variable umc/web/sso/enabled.
  * The UCS identity provider configuration is always fetched when executing
    the joinscript 92univention-management-console-web-server.inst
-bug: [48224,48198]
+ * The UMC now uses json instead of simplejson.
+bug: [48224,48198,35687]
