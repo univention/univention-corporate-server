@@ -10,4 +10,6 @@ desc: |
    anymore.
  * Various LDAP filters are now escaped.
  * The use of obsolete univention.admin.config has been removed.
-bug: [48441,42791,27804]
+ * The computers/* UDM handlers now share a common base class. Code
+   redundancy has therefore been reduced.
+bug: [48441,42791,27804,41659]
