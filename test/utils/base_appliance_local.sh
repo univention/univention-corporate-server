@@ -266,7 +266,7 @@ create_internal_template () {
 	UCS_VERSION=$4
 	UCS_VERSION_INFO="$5"
 	QCOW_PATH="/var/lib/libvirt/images/${KVM_USER}_${SERVERROLE}.qcow2"
-	TMP_DIR="/tmp/build-template"
+	TMP_DIR="/var/univention/buildsystem2/temp/build-branch-test-template"
 	KVM_SERVER_LOCAL_TMP_IMAGE="${SERVERROLE}-${UCS_VERSION}.qcow2"
 	KVM_TEMPLATE_NAME="${UCS_VERSION}+${UCS_VERSION_INFO}_${SERVERROLE}-joined_amd64.tar.gz"
 	KVM_TEMPLATE_TGZ_PATH="${TMP_DIR}/${KVM_TEMPLATE_NAME}"
