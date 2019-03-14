@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-samba
+fix: 13.0.0-2A~4.4.0.201903141254
+desc: |
+ This update addresses the following issue(s):
+ * Internal improvement: fixed quoting of shell variables.
+bug: [48989]
