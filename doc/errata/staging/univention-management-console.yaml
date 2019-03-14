@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-management-console
-fix: 11.0.4-5A~4.4.0.201903131833
+fix: 11.0.4-9A~4.4.0.201903141619
 desc: |
  This update addresses the following issues:
  * The SAML identitiy provider is not configured in the UMC-WebServer anymore
@@ -11,4 +11,5 @@ desc: |
  * The UCS identity provider configuration is always fetched when executing
    the joinscript 92univention-management-console-web-server.inst
  * The UMC now uses json instead of simplejson.
-bug: [48224,48198,35687]
+ * The error message for a failed password change has been improved.
+bug: [48224,48198,35687,48897]
