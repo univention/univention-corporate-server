@@ -2,17 +2,17 @@
 <html>
 	<head>
 		<title>Univention Portal</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="shortcut icon" href="/favicon.ico"/>
-		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
-		<link rel="stylesheet" href="style.css">
-		<link rel="stylesheet" href="portal.css">
-		<link rel="stylesheet" href="custom.css">
+		<link rel="shortcut icon" href="/favicon.ico">
+		<link rel="stylesheet" type="text/css" href="/univention/js/dijit/themes/umc/umc.css?v=@%@umc/web/cache_bust_hash@%@">
+		<link rel="stylesheet" type="text/css" href="style.css?v=@%@umc/web/cache_bust_hash@%@">
+		<link rel="stylesheet" type="text/css" href="portal.css?v=@%@umc/web/cache_bust_hash@%@">
+		<link rel="stylesheet" type="text/css" href="custom.css?v=@%@umc/web/cache_bust_hash@%@">
 		<!-- TODO: should go into univention-web -->
-		<link rel="stylesheet" href="/univention/management/modules/appcenter.css" type="text/css"/>
-		<script type="text/javascript" src="/univention/js/config.js"></script>
+		<link rel="stylesheet" type="text/css" href="/univention/management/modules/appcenter.css?v=@%@umc/web/cache_bust_hash@%@">
+		<script type="text/javascript" src="/univention/js/config.js?v=@%@umc/web/cache_bust_hash@%@"></script>
 		<script type="text/javascript">
 			dojoConfig.packages.push({
 				name: 'management',
@@ -23,14 +23,13 @@
 					'umc/modules': 'management/modules'
 				}
 			};
-			dojoConfig.cacheBust = "v=2.0.2-4";
 			umcConfig.callback =function() {
-				require(["portal", "umc/widgets/LiveSearch"], function(portal) {
+				require(["portal"], function(portal) {
 					portal.start();
 				});
 			};
 		</script>
-		<script type"text/javascript" async src="/univention/js/dojo/dojo.js"></script>
+		<script type"text/javascript" async src="/univention/js/dojo/dojo.js?v=@%@umc/web/cache_bust_hash@%@"></script>
 	</head>
 	<body class="umc portal" id="portal">
 		<div id="contentWrapper">

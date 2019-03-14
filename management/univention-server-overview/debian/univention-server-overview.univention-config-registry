@@ -1,3 +1,7 @@
 Type: file
 File: etc/apache2/sites-available/univention-server-overview.conf
 Variables: umc/web/piwik
+
+Type: file
+File: var/www/univention/server-overview/index.html
+Variables: umc/web/cache_bust_hash

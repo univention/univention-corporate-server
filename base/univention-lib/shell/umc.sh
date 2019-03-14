@@ -66,7 +66,15 @@ umc_frontend_new_hash () {
 	# remove deprecated symlink
 	rm -f /var/www/univention/js_* || true
 
-	/usr/sbin/univention-config-registry set "umc/web/cache_bust=$(date +%s)"
+	local timestamp
+	timestamp="$(date +%s)"
+	/usr/sbin/univention-config-registry set "umc/web/cache_bust=$timestamp"
+
+	files=$(find -L /var/www/univention/ -path "/var/www/univention/js/*" -prune -o -name "*.css" -print)
+	files="$files /var/www/univention/js/dijit/themes/umc/umc.css"
+	for file in $files; do
+		sed -i "s/url(\(\"\|'\)\{0,1\}\([^?\"')]*\)\(?v=[^\"')]*\)\{0,1\}\1\{0,1\})/url(\1\2?v=$timestamp\1)/g" "$file"
+	done
 
 	return 0
 }

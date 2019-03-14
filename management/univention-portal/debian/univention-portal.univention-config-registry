@@ -18,3 +18,7 @@ Variables: license/base
 Type: file
 File: etc/logrotate.d/univention-portal
 Variables: logrotate/.*
+
+Type: file
+File: var/www/univention/portal/index.html
+Variables: umc/web/cache_bust_hash

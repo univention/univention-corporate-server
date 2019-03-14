@@ -2,16 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>Univention Management Console</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-		<link rel="stylesheet" href="/univention/management/style.css" type="text/css"/>
-		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" type="text/css" href="/univention/management/style.css?v=@%@umc/web/cache_bust_hash@%@">
+		<link rel="stylesheet" type="text/css" href="/univention/js/dijit/themes/umc/umc.css?v=@%@umc/web/cache_bust_hash@%@">
 
-		<script type="text/javascript" src="/univention/js/config.js"></script>
+		<script type="text/javascript" src="/univention/js/config.js?v=@%@umc/web/cache_bust_hash@%@"></script>
 		<script type="text/javascript">
-			//<!--
 			dojoConfig.map = {
 				'*': {
 					'umc/app': 'management',
@@ -20,7 +19,7 @@
 			};
 			umcConfig.forceLogin = true;
 			umcConfig.callback = function() {
-				require(["management", "umc/tools"], function(management, tools) {
+				require(['management'], function(management) {
 					management.start({
 						username: getQuery('username'),
 						password: getQuery('password'),
@@ -30,9 +29,8 @@
 					});
 				});
 			};
-			//-->
 		</script>
-		<script type="text/javascript" async src="/univention/js/dojo/dojo.js"></script>
+		<script type"text/javascript" async src="/univention/js/dojo/dojo.js?v=@%@umc/web/cache_bust_hash@%@"></script>
 	</head>
 	<body class="umc umcOverviewShown">
 		<div id="umcTopContainer" class="umcTopContainer"></div>

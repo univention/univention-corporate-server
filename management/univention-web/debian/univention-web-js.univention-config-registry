@@ -10,3 +10,7 @@ File: etc/apache2/conf-available/univention-web.conf
 Type: file
 File: usr/share/univention-web/js/umc/hooks.json
 Variables: umc/web/hooks/.*
+
+Type: file
+File: var/www/univention/js/config.js
+Variables: umc/web/cache_bust_hash

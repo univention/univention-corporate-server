@@ -1,0 +1,3 @@
+Type: file
+File: var/www/univention/management/index.html
+Variables: umc/web/cache_bust_hash

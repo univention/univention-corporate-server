@@ -33,6 +33,8 @@
 
 a2ensite univention-server-overview.conf
 
+. /usr/share/univention-lib/umc.sh && umc_frontend_new_hash
+
 if [ "$1" = "configure" ]; then
 	systemctl reload apache2
 	invoke-rc.d univention-directory-listener crestart

@@ -87,14 +87,8 @@ function mixin(a, b) {
 }
 
 // umcConfig can be extended in the index.html of each webapp
-// make sure to mixin default values into an already existing umcConfig
-if (typeof umcConfig === 'undefined') {
-	var _customUmcConfig = {};
-	var umcConfig = {};
-} else {
-	// save the user defined umcConfig
-	var _customUmcConfig = umcConfig;
-}
+// make sure to mixin an already existing umcConfig into the default values
+var umcConfig = umcConfig || {};
 umcConfig = mixin({
 	allowLanguageSwitch: true,
 	forceLogin: false,
@@ -102,7 +96,7 @@ umcConfig = mixin({
 	loadHooks: true,
 	deps: [],
 	callback: function() {}
-}, _customUmcConfig);
+}, umcConfig);
 
 // prepare all needed dependencies and evaluate umcConfig settings
 var _deps = ["dojo/parser", "login", "umc/tools", "umc/json!/univention/get/meta", "umc/menu/Button", "umc/widgets/LoginButton"];
@@ -112,14 +106,8 @@ var _ndeps = _deps.length; // save current number of dependencies
 // add the specified dependencies from umcConfig
 _deps = _deps.concat(umcConfig.deps);
 
-// define dojoConfig and make sure to mix user defined values into dojoConfig
-if (typeof dojoConfig === 'undefined') {
-	var _customDojoConfig = {};
-	var dojoConfig = {};
-} else {
-	// save the user defined dojoConfig
-	var _customDojoConfig = dojoConfig;
-}
+// define dojoConfig and make sure to mixin an already existing dojoConfig into the default values
+var dojoConfig = dojoConfig || {};
 dojoConfig = mixin({
 	has: {
 		'dojo-undef-api': true
@@ -136,6 +124,7 @@ dojoConfig = mixin({
 	}],
 	map: {},
 	deps: _deps,
+	cacheBust: 'v=@%@umc/web/cache_bust_hash@%@',
 	callback: function(parser, login, tools, meta) {
 		mixin(tools._status, meta.result);
 		if (umcConfig.loadHooks) {
@@ -148,4 +137,4 @@ dojoConfig = mixin({
 		}
 		umcConfig.callback.apply(umcConfig, customDeps);
 	}
-}, _customDojoConfig);
+}, dojoConfig);
