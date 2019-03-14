@@ -42,6 +42,7 @@ from univention.config_registry import configHandlers
 ucr_handlers = configHandlers()
 ucr_handlers.load()
 from univention.config_registry.interfaces import Interfaces
+from ldap.dn import explode_dn
 interfaces = Interfaces(listener.configRegistry)
 
 hostname = listener.baseConfig['hostname']
@@ -270,9 +271,9 @@ def handler(dn, new, old):
 				args.append('-u')
 				argument = "%s:" % new['univentionPrinterACLtype'][0]
 				for userDn in new.get('univentionPrinterACLUsers', ()):
-					argument += '%s,' % userDn[userDn.find('=') + 1:userDn.find(',')]
+					argument += '%s,' % (explode_dn(userDn, True)[0],)
 				for groupDn in new.get('univentionPrinterACLGroups', ()):
-					argument += '@%s,' % groupDn[groupDn.find('=') + 1:groupDn.find(',')]
+					argument += '@%s,' % (explode_dn(groupDn, True)[0],)
 				args.append(argument[:-1])
 		else:
 			args += ['-o', 'auth-info-required=none']
@@ -363,13 +364,13 @@ def handler(dn, new, old):
 
 			# users
 			for dn in new.get('univentionPrinterACLUsers', ()):
-				user = dn[dn.find('=') + 1:dn.find(',')]
+				user = explode_dn(dn, True)[0]
 				if " " in user:
 					user = "\"" + user + "\""
 				perm = perm + " " + user
 			# groups
 			for dn in new.get('univentionPrinterACLGroups', ()):
-				group = "@" + dn[dn.find('=') + 1:dn.find(',')]
+				group = "@" + explode_dn(dn, True)[0]
 				if " " in group:
 					group = "\"" + group + "\""
 				perm = perm + " " + group
