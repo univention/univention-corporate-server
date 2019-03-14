@@ -120,7 +120,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 				al.append(('krb5KDCFlags', '126'))
 				krb_key_version = str(int(self.oldattr.get('krb5KeyVersionNumber', ['0'])[0]) + 1)
 				al.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version))
-			else:
+			elif self.SERVER_ROLE not in ('master', 'windows_domaincontroller'):
 				# can't do kerberos
 				self._remove_option('kerberos')
 		if 'posix' in self.options:
@@ -329,7 +329,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 		lookup_filter_obj = univention.admin.filter.conjunction('&', [x for x in [
 			univention.admin.filter.expression('objectClass', 'univentionHost'),
 			univention.admin.filter.expression('objectClass', cls.SERVER_TYPE),
-			None if not cls.SERVER_ROLE else univention.admin.filter.expression('univentionServerRole', cls.SERVER_ROLE),
+			None if not cls.SERVER_ROLE or cls.SERVER_ROLE == 'member' else univention.admin.filter.expression('univentionServerRole', cls.SERVER_ROLE),
 		] if x is not None])
 
 		# ATTENTION: has its own rewrite function.
