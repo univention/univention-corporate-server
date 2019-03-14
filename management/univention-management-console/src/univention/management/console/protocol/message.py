@@ -41,11 +41,7 @@ import mimetypes
 import time
 import re
 import copy
-
-try:
-	import simplejson as json
-except:
-	import json
+import json
 
 from .definitions import UMCP_ERR_UNPARSABLE_BODY, UMCP_ERR_UNPARSABLE_HEADER
 from univention.management.console.log import PARSER, PROTOCOL
