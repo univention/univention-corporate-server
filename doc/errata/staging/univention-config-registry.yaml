@@ -6,6 +6,5 @@ src: univention-config-registry
 fix: 
 desc: |
  This update addresses the following issue(s):
- * by default univention-ldapsearch appends the arguments -LLLo ldif-wrap=no
-   now.
+ * by default univention-ldapsearch appends the argument -o ldif-wrap=no now.
 bug: [48683]
