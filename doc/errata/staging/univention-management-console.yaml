@@ -12,4 +12,5 @@ desc: |
    the joinscript 92univention-management-console-web-server.inst
  * The UMC now uses json instead of simplejson.
  * The error message for a failed password change has been improved.
-bug: [48224,48198,35687,48897]
+ * Obsolete code has been removed.
+bug: [48224,48198,35687,48897,48943]
