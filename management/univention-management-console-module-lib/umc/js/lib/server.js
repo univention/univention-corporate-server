@@ -196,6 +196,7 @@ define([
 			var deferred = new Deferred();
 
 			var start_pinging = function() {
+				// FIXME the directory umc/js_* does not exist anymore
 				basexhr("HEAD", {url: require.toUrl("umc/").replace(/js_\$.*?\$/, 'js'), timeout: 3000}).then(function() {
 					if (offline) {
 						// online again
@@ -259,6 +260,7 @@ define([
 			var milliseconds = 5000;
 
 			var start_pinging = function() {
+				// FIXME the directory umc/js_* does not exist anymore
 				basexhr("HEAD", {url: require.toUrl("umc/").replace(/js_\$.*?\$/, 'js'), timeout: 3000}).then(function() {
 					timer = window.setTimeout(start_pinging, milliseconds);
 				}, function() {
