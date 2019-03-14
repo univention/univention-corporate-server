@@ -28,6 +28,10 @@ write_slave1_preseed () {
 		d-i ucr/xorg/keyboard/options/XkbVariant string nodeadkeys
 		d-i ucr/xorg/keyboard/options/XkbOptions string
 
+		# configure second interface to ipv6
+		d-i ucr/interfaces/ens6/type string manual
+		d-i ucr/interfaces/ens6/start string true
+
 		#
 		# Configure local repository server
 		#
