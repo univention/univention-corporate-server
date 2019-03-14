@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.12-5) unstable; urgency=medium
+
+  * Bug #41659: all computer/* handlers have been unified into one base class
+
+ -- Florian Best <best@univention.de>  Thu, 14 Mar 2019 15:53:26 +0100
+
 univention-directory-manager-modules (14.0.12-4) unstable; urgency=medium
 
   * Bug #27804: remove the use of univention.admin.config
