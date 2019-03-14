@@ -1,4 +1,4 @@
-univention-directory-reports (11.0.0-2) unstable; urgency=medium
+univention-directory-reports (11.0.0-3) unstable; urgency=medium
 
   * Bug #47922: fix creating reports for objects having broken references
 
