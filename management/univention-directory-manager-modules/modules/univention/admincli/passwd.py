@@ -37,7 +37,6 @@ import univention.misc
 
 import univention.config_registry
 import univention.admin.uldap
-import univention.admin.config
 import univention.admin.modules
 import univention.admin.objects
 import univention.admin.handlers.users.user
@@ -66,7 +65,6 @@ def doit(arglist):
 	univention.debug.set_level(univention.debug.LDAP, univention.debug.ALL)
 	univention.debug.set_level(univention.debug.ADMIN, univention.debug.ALL)
 
-	co = univention.admin.config.config()
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
 
@@ -91,7 +89,7 @@ def doit(arglist):
 		module = univention.admin.modules.get('users/user')
 		univention.admin.modules.init(lo, position, module)
 
-		object = univention.admin.objects.get(module, co, lo, position=position, dn=dn[0])
+		object = univention.admin.objects.get(module, None, lo, position=position, dn=dn[0])
 		object.open()
 
 		# hack, to prevent that attributes belonging to the samba option are changed; Bug #41530
@@ -138,7 +136,7 @@ def doit(arglist):
 					module = univention.admin.modules.get('users/user')
 					univention.admin.modules.init(lo, position, module)
 
-					object = univention.admin.objects.get(module, co, lo, position=position, dn=dn[0])
+					object = univention.admin.objects.get(module, None, lo, position=position, dn=dn[0])
 					object.open()
 
 					if 'samba/charset/unix' not in configRegistry:

@@ -38,15 +38,15 @@ import samba
 from samba.samdb import SamDB
 from samba.auth import system_session
 from samba.param import LoadParm
-from samba.ndr import ndr_pack, ndr_unpack
-from samba.dcerpc import security, misc
+from samba.ndr import ndr_unpack
+from samba.dcerpc import misc
 import univention.admin.uldap
-import univention.admin.uexceptions as uexceptions
+import univention.admin.uexceptions
 import univention.admin.modules
-univention.admin.modules.update()
 import univention.admin.objects
 import univention.admin.config
 import traceback
+univention.admin.modules.update()
 
 SAMBA_DIR = '/var/lib/samba'
 SAMBA_PRIVATE_DIR = os.path.join(SAMBA_DIR, 'private')
@@ -54,7 +54,6 @@ SAMBA_PRIVATE_DIR = os.path.join(SAMBA_DIR, 'private')
 
 def purge_s4_dns_records(ucr, binddn, bindpw, computername, NTDS_objectGUID, Domain_GUID, site_list=None):
 
-	uldap_config = univention.admin.config.config()
 	try:
 		uldap_access = univention.admin.uldap.access(host=ucr["ldap/master"], base=ucr["ldap/base"], binddn=binddn, bindpw=bindpw, start_tls=2)
 	except Exception as e:
@@ -68,7 +67,7 @@ def purge_s4_dns_records(ucr, binddn, bindpw, computername, NTDS_objectGUID, Dom
 	univention.admin.modules.init(uldap_access, dns_position, module)
 	filter = univention.admin.filter.expression("zone", ucr["domainname"])
 
-	objs = module.lookup(uldap_config, uldap_access, filter, scope="domain", base=dns_position.getDn(), unique=True)
+	objs = module.lookup(None, uldap_access, filter, scope="domain", base=dns_position.getDn(), unique=True)
 	if not objs:
 		print >>sys.stderr, "Lookup of dns/forward_zone %s via UDM failed." % (ucr["domainname"],)
 		sys.exit(1)
@@ -82,7 +81,7 @@ def purge_s4_dns_records(ucr, binddn, bindpw, computername, NTDS_objectGUID, Dom
 		module = univention.admin.modules.get("dns/alias")
 		univention.admin.modules.init(uldap_access, zone_position, module)
 		filter = univention.admin.filter.expression("name", dns_record)
-		objs = module.lookup(uldap_config, uldap_access, filter, superordinate=zone_obj, scope="domain", base=zone_position.getDn(), unique=True)
+		objs = module.lookup(None, uldap_access, filter, superordinate=zone_obj, scope="domain", base=zone_position.getDn(), unique=True)
 		if objs:
 			print "Removing dns/alias '%s' from Univention Directory Manager" % (dns_record,)
 			obj = objs[0]
@@ -117,7 +116,7 @@ def purge_s4_dns_records(ucr, binddn, bindpw, computername, NTDS_objectGUID, Dom
 
 	for srv_record_name in srv_record_name_list:
 		filter = univention.admin.filter.expression("name", srv_record_name)
-		objs = module.lookup(uldap_config, uldap_access, filter, superordinate=zone_obj, scope="domain", base=zone_position.getDn(), unique=True)
+		objs = module.lookup(None, uldap_access, filter, superordinate=zone_obj, scope="domain", base=zone_position.getDn(), unique=True)
 		if objs:
 			obj = objs[0]
 			target_location = None
@@ -149,7 +148,7 @@ def purge_s4_dns_records(ucr, binddn, bindpw, computername, NTDS_objectGUID, Dom
 	# univention.admin.modules.init(uldap_access, zone_position, module)
 	# dns_record = "gc._msdcs"
 	# filter = univention.admin.filter.expression("name", dns_record)
-	# objs = module.lookup(uldap_config, uldap_access, filter, superordinate=zone_obj, scope="domain", base=zone_position.getDn(), unique=True)
+	# objs = module.lookup(None, uldap_access, filter, superordinate=zone_obj, scope="domain", base=zone_position.getDn(), unique=True)
 	# if objs:
 	# 	print "Removing dns/host_record '%s' from Univention Directory Manager" % (dns_record,)
 	# 	obj = objs[0]
@@ -174,9 +173,8 @@ def purge_udm_computer(ucr, binddn, bindpw, computername):
 		module = univention.admin.modules.get(univentionObjectType)
 		position = univention.admin.uldap.position(ucr["ldap/base"])
 		univention.admin.modules.init(uldap_access, position, module)
-		uldap_config = univention.admin.config.config()
 		filter = univention.admin.filter.expression('name', computername)
-		objs = module.lookup(uldap_config, uldap_access, filter, scope='domain', base=position.getDn(), unique=True)
+		objs = module.lookup(None, uldap_access, filter, scope='domain', base=position.getDn(), unique=True)
 		if objs:
 			print "Removing Samba 4 computer account '%s' from Univention Directory Manager" % computername
 			obj = objs[0]

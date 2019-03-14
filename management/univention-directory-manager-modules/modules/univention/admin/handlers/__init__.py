@@ -1643,7 +1643,7 @@ class simpleLdap(object):
 		"""
 		Perform a LDAP search and return a list of instances.
 
-		:param univention.admin.config.config co: UDM configuration object.
+		:param NoneType co: obsolete config
 		:param univention.admin.uldap.access lo: UDM LDAP access object.
 		:param str filter_s: LDAP filter string.
 		:param str base: LDAP search base distinguished name.

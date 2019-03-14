@@ -36,7 +36,6 @@ import sys
 import optparse
 import univention.admin
 import univention.admin.uldap
-import univention.admin.config
 import univention.config_registry
 
 configRegistry = univention.config_registry.ConfigRegistry()

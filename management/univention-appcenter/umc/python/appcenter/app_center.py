@@ -1462,7 +1462,7 @@ class Application(object):
 			ldap_id = self.ldap_id
 		if ldap_connection is None:
 			return
-		co = None  # univention.admin.config.config(ucr.get('ldap/server/name'))
+		co = None
 		try:
 			return ApplicationLDAPObject(ldap_id, ldap_connection, co)
 		except DoesNotExist:
@@ -1566,7 +1566,7 @@ class Application(object):
 				raise LDAPError()
 			installed_version = None
 			versions = self.find(self.id).versions
-			co = None  # univention.admin.config.config(ucr.get('ldap/server/name'))
+			co = None
 			localhost = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
 			for iapp in versions:
 				if iapp.is_registered(ucr) and iapp.is_installed(package_manager, strict=False) and iapp.allowed_on_local_server():

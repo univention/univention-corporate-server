@@ -541,11 +541,7 @@ def _doit(arglist):
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
 
-	if configRegistry.get('ldap/master'):
-		co = univention.admin.config.config(configRegistry['ldap/master'])
-	else:
-		co = univention.admin.config.config()
-
+	co = None
 	baseDN = configRegistry['ldap/base']
 
 	if configRegistry.get('directory/manager/cmd/debug/level'):

@@ -53,7 +53,6 @@ import sqlite3
 import univention.admin.modules as udm_modules
 import univention.admin.filter as udm_filter
 import univention.admin.objects
-import univention.admin.config
 from univention.admincli import license_check
 import ipaddr
 import logging

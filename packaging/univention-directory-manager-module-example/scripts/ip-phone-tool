@@ -36,7 +36,6 @@ univention.debug.init('/var/log/univention/ip-phone-tool.log', univention.debug.
 
 import univention.config_registry
 import univention.admin.uldap
-import univention.admin.config
 import univention.admin.modules
 import univention.admin.objects
 import univention.admin.filter
@@ -86,7 +85,6 @@ class ipphonetool(object):
 			sys.exit(1)
 
 		self.position = univention.admin.uldap.position(self.ldap_base)
-		self.co = univention.admin.config.config()
 		# Get univention.admin.handlers.test.ip_phone + custom/extended attributes + UCR modificaations
 		self.module = univention.admin.modules.get('test/ip_phone')
 		univention.admin.modules.init(self.lo, self.position, self.module)
@@ -97,11 +95,11 @@ class ipphonetool(object):
 
 		filter = univention.admin.filter.expression('name', name)
 
-		objs = self.module.lookup(self.co, self.lo, filter, scope='domain', base=self.position.getDomain(), unique=True)
+		objs = self.module.lookup(None, self.lo, filter, scope='domain', base=self.position.getDomain(), unique=True)
 		if objs:
 			obj = objs[0]
 		else:
-			obj = self.module.object(self.co, self.lo, self.position)
+			obj = self.module.object(None, self.lo, self.position)
 			obj['name'] = name
 
 		if not ip == obj['ip']:
@@ -138,7 +136,7 @@ class ipphonetool(object):
 
 		filter = univention.admin.filter.expression('name', name)
 
-		objs = self.module.lookup(self.co, self.lo, filter, scope='domain', base=self.position.getDomain(), unique=True)
+		objs = self.module.lookup(None, self.lo, filter, scope='domain', base=self.position.getDomain(), unique=True)
 		if objs:
 			obj = objs[0]
 			try:
@@ -161,7 +159,7 @@ class ipphonetool(object):
 				print "No object found matching filter %s" % filter
 				sys.exit(1)
 
-			object = univention.admin.objects.get(self.module, self.co, self.lo, position=self.position, dn=dn[0])
+			object = univention.admin.objects.get(self.module, None, self.lo, position=self.position, dn=dn[0])
 			object.open()  # open the object
 
 			if 'redirection' in object.options:

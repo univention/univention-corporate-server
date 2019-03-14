@@ -36,7 +36,6 @@ import univention.admin.uldap as ua_ldap
 import univention.admin.objects as ua_objects
 import univention.admin.modules as ua_modules
 import univention.admin.mapping as ua_mapping
-import univention.admin.config as ua_config
 import univention.admin.uexceptions as ua_exceptions
 from univention.config_registry import ConfigRegistry
 
@@ -104,7 +103,6 @@ class AdminConnection(object):
 		else:
 			self._access = ua_ldap.access(host=host, base=self._base, binddn=userdn, bindpw=password, start_tls=start_tls)
 		ua_modules.update()
-		self._config = ua_config.config(host=host)
 
 	def __repr__(self):
 		fmt = '%s(userdn=%r, password=%r, host=%r, base=%r, start_tls=%r, access=%r, format=%r)'
@@ -148,7 +146,7 @@ class AdminConnection(object):
 			if not module:
 				return None
 			ua_modules.init(self._access, self._position, module)
-		new = ua_objects.get(module, self._config, self._access, position=self._position, dn=dn)
+		new = ua_objects.get(module, None, self._access, position=self._position, dn=dn)
 		# if the object is not valid it should be displayed as an empty object
 		try:
 			new.open()

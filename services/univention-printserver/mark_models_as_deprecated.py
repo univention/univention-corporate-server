@@ -35,8 +35,8 @@ import ldap.filter
 
 import univention.config_registry
 import univention.admin.modules
-import univention.admin.config
 import univention.admin.uldap
+
 
 class UpdatePrinterModels(object):
 
@@ -98,7 +98,7 @@ class UpdatePrinterModels(object):
 					ppds[ppd] = [model]
 			for ppd in ppds:
 				if len(ppds[ppd]) > 1:
-					_tmp, new_description =self.get_description_from_ppd(ppd)
+					_tmp, new_description = self.get_description_from_ppd(ppd)
 					new_ldap_models.append('"%s" "%s"' % (ppd, new_description))
 				else:
 					new_ldap_models.append(ppds[ppd][0])
@@ -135,6 +135,7 @@ class UpdatePrinterModels(object):
 					obj.modify()
 				if options.verbose:
 					print 'info: %s modified' % obj.dn
+
 
 if __name__ == '__main__':
 	usage = '%prog [options] [MODEL, MODEL, ...]'

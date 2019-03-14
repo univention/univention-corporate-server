@@ -42,7 +42,6 @@ import univention.admin.objects
 from univention.config_registry import ConfigRegistry
 
 
-co = univention.admin.config.config()
 baseConfig = ConfigRegistry()
 baseConfig.load()
 

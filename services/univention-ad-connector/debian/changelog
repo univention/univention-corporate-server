@@ -1,3 +1,9 @@
+univention-ad-connector (13.0.0-4) unstable; urgency=medium
+
+  * Bug #27804: remove the use of univention.admin.config
+
+ -- Florian Best <best@univention.de>  Thu, 14 Mar 2019 14:07:17 +0100
+
 univention-ad-connector (13.0.0-3) unstable; urgency=medium
 
   * Bug #48714: added dependency to smbclient
