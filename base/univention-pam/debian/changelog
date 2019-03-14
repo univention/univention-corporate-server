@@ -1,3 +1,9 @@
+univention-pam (11.0.1-5) unstable; urgency=medium
+
+  * Bug #47233: close ssh connection properly when shutting down
+
+ -- Jannik Ahlers <ahlers@univention.de>  Wed, 20 Mar 2019 11:56:10 +0100
+
 univention-pam (11.0.1-4) unstable; urgency=medium
 
   * Bug #39817: re-add the locking too, otherwise the faillog listener
