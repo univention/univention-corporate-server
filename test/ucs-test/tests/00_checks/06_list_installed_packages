@@ -1,0 +1,23 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: print list of installed packages
+## exposure: safe
+## tags:
+## - apptest
+## - ucsschool
+
+echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+echo "Univention packages"
+echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+echo
+
+COLUMNS=240 dpkg -l | grep -e ucs-school -e ucsschool -e univention
+
+echo
+echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+echo "other packages"
+echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+echo
+
+COLUMNS=240 dpkg -l | grep -v -e ucs-school -e ucsschool -e univention
+
+exit 0
