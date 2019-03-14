@@ -159,7 +159,8 @@ class PamAuth(object):
 			'is the same as the old one',
 			'is rotated',
 			'password unchanged',
-			'Passwort nicht geändert',
+			u'Passwort nicht geändert'.encode('utf-8'),
+			u'Passwort nicht geändert'.encode('latin-1'),
 		],
 		'The password does not contain enough different characters.': [
 			': Es enthält nicht genug unterschiedliche Zeichen',
