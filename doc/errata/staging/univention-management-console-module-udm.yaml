@@ -8,4 +8,5 @@ desc: |-
   This update addresses the following issue(s):
   * Rely on the App Center listener to create the App Attributes mapping
     rather than doing it in the UMC module
-bug: [48895]
+ * Preparations for better browser cache-control have been implemented.
+bug: [48895, 48995]
