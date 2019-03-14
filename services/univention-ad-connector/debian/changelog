@@ -1,3 +1,9 @@
+univention-ad-connector (13.0.0-5) unstable; urgency=medium
+
+  * Bug #48995: adjust require.toUrl() call for dojoConfig.cacheBust
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 14 Mar 2019 15:30:34 +0100
+
 univention-ad-connector (13.0.0-4) unstable; urgency=medium
 
   * Bug #27804: remove the use of univention.admin.config

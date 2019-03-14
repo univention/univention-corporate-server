@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (6.0.1-3) unstable; urgency=medium
+
+  * Bug #48995: adjust require.toUrl() call for dojoConfig.cacheBust
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 14 Mar 2019 15:26:26 +0100
+
 univention-management-console-module-adtakeover (6.0.1-2) unstable; urgency=medium
 
   * Bug #48700: Add reworked logo

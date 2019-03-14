@@ -1,3 +1,9 @@
+univention-lib (8.0.0-5) unstable; urgency=medium
+
+  * Bug #48995: adjust old umc_frontend_new_hash
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 14 Mar 2019 15:25:27 +0100
+
 univention-lib (8.0.0-4) unstable; urgency=medium
 
   * Bug #47424: Defines die() in ldap.sh

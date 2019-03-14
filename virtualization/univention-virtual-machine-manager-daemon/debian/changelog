@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (8.0.1-6) unstable; urgency=medium
+
+  * Bug #48995: adjust require.toUrl() call for dojoConfig.cacheBust
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 14 Mar 2019 15:30:53 +0100
+
 univention-virtual-machine-manager-daemon (8.0.1-5) unstable; urgency=low
 
   * Bug #48901,Bug #48098: Add RAM overcommit protection
