@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-pam
-fix: 
+fix: 12.0.2-1A~4.4.0.201903141201
 desc: |
  This update addresses the following issue(s):
  * An open SSH connection will now properly get closed when shutting down a
