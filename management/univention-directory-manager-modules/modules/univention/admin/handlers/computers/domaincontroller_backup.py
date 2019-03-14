@@ -49,6 +49,11 @@ object_name = _('DC Backup')
 object_name_plural = _('DC Backups')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		short_description=_('Computer: Domain Controller Backup'),
+		default=True,
+		objectClasses=('top', 'person', 'univentionHost', 'univentionDomainController'),
+	),
 	'posix': univention.admin.option(
 		short_description=_('Posix account'),
 		default=1,
@@ -398,7 +403,6 @@ class object(ComputerObject):
 	module = module
 	mapping = mapping
 	CONFIG_NAME = 'univentionDefaultDomainControllerMasterGroup'
-	DEFAULT_OCS = ['top', 'person', 'univentionHost', 'univentionDomainController']
 	SAMBA_ACCOUNT_FLAG = 'S'
 	SERVER_TYPE = 'univentionDomainController'
 	SERVER_ROLE = 'backup'

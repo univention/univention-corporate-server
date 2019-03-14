@@ -49,6 +49,11 @@ object_name = _('Member Server')
 object_name_plural = _('Member Servers')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		short_description=_('Computer: Member Server'),
+		default=True,
+		objectClasses=('top', 'person', 'univentionHost', 'univentionMemberServer'),
+	),
 	'posix': univention.admin.option(
 		short_description=_('Posix account'),
 		default=1,
@@ -399,7 +404,6 @@ class object(ComputerObject):
 	module = module
 	mapping = mapping
 	CONFIG_NAME = 'univentionDefaultMemberserverGroup'
-	DEFAULT_OCS = ['top', 'person', 'univentionHost', 'univentionMemberServer']
 	SAMBA_ACCOUNT_FLAG = 'W'
 	SERVER_TYPE = 'univentionMemberServer'
 	SERVER_ROLE = 'member'

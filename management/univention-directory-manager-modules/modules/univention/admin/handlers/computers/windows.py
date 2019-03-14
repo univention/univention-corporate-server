@@ -49,18 +49,26 @@ object_name = _('Windows Workstation/Server')
 object_name_plural = _('Windows Workstations/Servers')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		short_description=_('Computer: Windows Workstation/Server'),
+		default=True,
+		objectClasses=('top', 'person', 'univentionHost', 'univentionWindows'),
+	),
 	'posix': univention.admin.option(
 		short_description=_('Posix account'),
-		default=1
+		default=True,
+		objectClasses=('posixAccount', 'shadowAccount'),
 	),
 	'kerberos': univention.admin.option(
 		short_description=_('Kerberos principal'),
-		default=1
+		default=True,
+		objectClasses=('krb5Principal', 'krb5KDCEntry'),
 	),
 	'samba': univention.admin.option(
 		short_description=_('Samba account'),
 		editable=True,
-		default=1
+		default=True,
+		objectClasses=('sambaSamAccount',),
 	)
 }
 property_descriptions = {
@@ -352,7 +360,6 @@ class object(ComputerObject):
 	module = module
 	mapping = mapping
 	CONFIG_NAME = 'computerGroup'
-	DEFAULT_OCS = ['top', 'person', 'univentionHost', 'univentionWindows']
 	SAMBA_ACCOUNT_FLAG = 'W'
 	SERVER_TYPE = 'univentionWindows'
 	SERVER_ROLE = 'windows_client'

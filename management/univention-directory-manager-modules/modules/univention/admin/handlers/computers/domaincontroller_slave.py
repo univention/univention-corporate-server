@@ -49,6 +49,11 @@ object_name = _('DC Slave')
 object_name_plural = _('DC Slaves')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		short_description=_('Computer: Domain Controller Slave'),
+		default=True,
+		objectClasses=('top', 'person', 'univentionHost', 'univentionDomainController'),
+	),
 	'posix': univention.admin.option(
 		short_description=_('Posix account'),
 		default=1,
@@ -398,7 +403,6 @@ class object(ComputerObject):
 	module = module
 	mapping = mapping
 	CONFIG_NAME = 'univentionDefaultDomainControllerGroup'
-	DEFAULT_OCS = ['top', 'person', 'univentionHost', 'univentionDomainController']
 	SAMBA_ACCOUNT_FLAG = 'S'
 	SERVER_TYPE = 'univentionDomainController'
 	SERVER_ROLE = 'slave'

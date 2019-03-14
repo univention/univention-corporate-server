@@ -50,11 +50,11 @@ _ = translation.translate
 
 
 class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
+
 	CONFIG_NAME = None
 	SERVER_ROLE = None
 	SERVER_TYPE = None
 	SAMBA_ACCOUNT_FLAG = None
-	DEFAULT_OCS = []
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
 		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate, attributes)
@@ -101,15 +101,14 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 					self['primaryGroup'] = res
 
 	def _ldap_pre_create(self):
-		super(object, self)._ldap_pre_create()
+		super(ComputerObject, self)._ldap_pre_create()
 		if not self['password']:
 			self['password'] = self.oldattr.get('password', [''])[0]
 			self.modifypassword = 0
 
 	def _ldap_addlist(self):
+		al = super(ComputerObject, self)._ldap_addlist()
 		self.check_required_options()
-		ocs = list(self.DEFAULT_OCS)
-		al = []
 		if 'kerberos' in self.options:
 			domain = univention.admin.uldap.domain(self.lo, self.position)
 			realm = domain.getKerberosRealm()
@@ -152,7 +151,6 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 			al.append(('sambaAcctFlags', [acctFlags.decode()]))
 			al.append(('displayName', self.info['name']))
 
-		al.insert(0, ('objectClass', ocs))
 		if self.SERVER_ROLE:
 			al.append(('univentionServerRole', '', self.SERVER_ROLE))
 		return al
@@ -311,11 +309,11 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 		return None
 
 	@classmethod
-	def rewrite(cls, filter, mapping):
+	def rewrite_filter(cls, filter, mapping):
 		if filter.variable == 'ip':
 			filter.variable = 'aRecord'
 		else:
-			univention.admin.mapping.mapRewrite(filter, cls.mapping)
+			super(ComputerObject, cls).rewrite_filter(filter, mapping)
 
 	@classmethod
 	def lookup_filter(cls, filter_s=None, lo=None):
@@ -333,18 +331,8 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 		] if x is not None])
 
 		# ATTENTION: has its own rewrite function.
-		lookup_filter_obj.append_unmapped_filter_string(filter_s, cls.rewrite, cls.mapping)
+		lookup_filter_obj.append_unmapped_filter_string(filter_s, cls.rewrite_filter, cls.mapping)
 		return lookup_filter_obj
-
-	@classmethod
-	def lookup(cls, co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
-		filter = cls.lookup_filter(filter_s, lo)
-		if filter is None:
-			return []
-		res = []
-		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-			res.append(cls(co, lo, None, dn, attributes=attrs))
-		return res
 
 	@classmethod
 	def identify(cls, dn, attr, canonical=0):

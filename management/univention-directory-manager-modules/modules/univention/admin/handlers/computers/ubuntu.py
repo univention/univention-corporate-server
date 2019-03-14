@@ -49,6 +49,11 @@ object_name = _('Ubuntu Computer')
 object_name_plural = _('Ubuntu Computers')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		short_description=_('Computer: Ubuntu'),
+		default=True,
+		objectClasses=('top', 'person', 'univentionHost', 'univentionUbuntuClient'),
+	),
 	'posix': univention.admin.option(
 		short_description=_('Posix account'),
 		default=1,
@@ -337,7 +342,6 @@ class object(ComputerObject):
 	module = module
 	mapping = mapping
 	CONFIG_NAME = 'univentionDefaultClientGroup'
-	DEFAULT_OCS = ['top', 'person', 'univentionHost', 'univentionUbuntuClient']
 	SAMBA_ACCOUNT_FLAG = 'W'
 	SERVER_TYPE = 'univentionUbuntuClient'
 

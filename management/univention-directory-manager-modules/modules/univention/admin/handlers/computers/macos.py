@@ -49,6 +49,11 @@ object_name = _('Mac OS X Client')
 object_name_plural = _('Mac OS X Clients')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		short_description=_('Computer: Mac OS X Client'),
+		default=True,
+		objectClasses=('top', 'person', 'univentionHost', 'univentionMacOSClient'),
+	),
 	'posix': univention.admin.option(
 		short_description=_('Posix account'),
 		default=1,
@@ -338,7 +343,6 @@ class object(ComputerObject):
 	module = module
 	mapping = mapping
 	CONFIG_NAME = 'univentionDefaultClientGroup'
-	DEFAULT_OCS = ['top', 'person', 'univentionHost', 'univentionMacOSClient']
 	SAMBA_ACCOUNT_FLAG = 'W'
 	SERVER_TYPE = 'univentionMacOSClient'
 
