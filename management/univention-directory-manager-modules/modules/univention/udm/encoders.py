@@ -270,7 +270,7 @@ class StringIntPropertyEncoder(BaseEncoder):
 	static = False
 
 	def decode(self, value=None):
-		if value in ('',  None):
+		if value in ('', None):
 			return None
 		else:
 			try:
