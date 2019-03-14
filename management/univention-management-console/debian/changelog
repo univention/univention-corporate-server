@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-8) unstable; urgency=medium
+
+  * Bug #48897: improve pw change error message
+
+ -- Felix Botner <botner@univention.de>  Thu, 14 Mar 2019 16:04:44 +0100
+
 univention-management-console (11.0.4-7) unstable; urgency=medium
 
   * Bug #35687: replace simplejson with json

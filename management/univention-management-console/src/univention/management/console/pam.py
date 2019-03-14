@@ -158,6 +158,8 @@ class PamAuth(object):
 			'Password has been already used. Choose another.',
 			'is the same as the old one',
 			'is rotated',
+			'password unchanged',
+			'Passwort nicht geändert',
 		],
 		'The password does not contain enough different characters.': [
 			': Es enthält nicht genug unterschiedliche Zeichen',
