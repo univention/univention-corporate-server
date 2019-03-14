@@ -36,11 +36,12 @@ define([
 	"dojo/on",
 	"dojo/keys",
 	"dojo/dom-construct",
+	"dojo/dom-style",
 	"dojo/Deferred",
 	"umc/tools",
 	"umc/widgets/ComboBox",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, when, on, keys, domConstruct, Deferred, tools, ComboBox, _) {
+], function(declare, lang, array, when, on, keys, domConstruct, domStyle, Deferred, tools, ComboBox, _) {
 	return declare("umc.modules.udm.ComboBox", [ ComboBox ], {
 		// summary:
 		//		This class extends the normal ComboBox in order to encapsulate
@@ -147,13 +148,16 @@ define([
 			// new nodes (replacing the original arrow)
 			// if needed
 			this._currentNode = this._buttonNode;
-			var url = require.toUrl('dijit/themes/umc/form/images/');
 			this._searchNode = lang.clone(this._buttonNode);
-			this._searchNode.childNodes[0].style.backgroundImage = 'url("' + url + 'find.png")';
-			this._searchNode.childNodes[0].style.backgroundPosition = 'center';
+			domStyle.set(this._searchNode.firstElementChild, {
+				'backgroundPosition': '-260px -40px'
+			});
 			this.own(on(this._searchNode, 'click', lang.hitch(this, '_searchDisplayedValueOnServerAndOpen')));
 			this._searchingNode = lang.clone(this._searchNode);
-			this._searchingNode.childNodes[0].style.backgroundImage = 'url("' + url + 'loading.gif")';
+			domStyle.set(this._searchingNode.firstElementChild, {
+				'background': lang.replace('url({0})', [require.toUrl('dijit/themes/umc/form/images/loading.gif')]),
+				'backgroundSize': 'contain'
+			});
 
 			if (!this.depends) {
 				this._checkThreshold().then(lang.hitch(this, function(result) {

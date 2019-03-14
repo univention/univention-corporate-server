@@ -47,16 +47,12 @@ define([
 	"umc/i18n!umc/modules/adtakeover"
 ], function(declare, lang, array, topic, Deferred, when, styles, tools, dialog, ProgressBar, Text, TextBox, PasswordBox, Module, Wizard, _) {
 	// prepare CSS rules for module
-	var modulePath = require.toUrl('umc/modules/adtakeover');
 	styles.insertCssRule('.umc-adtakeover-page .umcPageHeader', 'background-repeat: no-repeat; background-position: 10px 20px; padding-bottom: 160px; min-height: 160px;');
 	array.forEach(['restart', 'start', 'copy', 'sysvol', 'takeover', 'finished'], function(ipage) {
-		var conf = {
-			name: ipage,
-			path: modulePath
-		};
+		var imageUrl = require.toUrl(lang.replace('umc/modules/adtakeover/{0}.png', [ipage]));
 		styles.insertCssRule(
-			lang.replace('.umc-adtakeover-page-{name} .umcPageHeader', conf),
-			lang.replace('background-image: url({path}/{name}.png)', conf)
+			lang.replace('.umc-adtakeover-page-{0} .umcPageHeader', [ipage]),
+			lang.replace('background-image: url({0})', [imageUrl])
 		);
 	});
 

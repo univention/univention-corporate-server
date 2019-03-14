@@ -60,7 +60,7 @@ define([
 				//IE specific
 				//on IE some svgs are not shown. this fixes the problem
 				if (navigator.userAgent.indexOf('Trident/') !== -1) {
-					var iconUrl = this.getIconUrl(item.logo_name);
+					var iconUrl = this.getIconUrl(iconName);
 					domConstruct.create('img', {
 						src: iconUrl
 					});
@@ -71,10 +71,7 @@ define([
 		},
 
 		getIconUrl: function(iconName) {
-			return lang.replace('{url}/umc/icons/scalable/{icon}', {
-				url: require.toUrl('dijit/themes'),
-				icon: iconName || ''
-			});
+			return require.toUrl(lang.replace('dijit/themes/umc/icons/scalable/{0}', [iconName || '']));
 		},
 
 		renderRow: function(item) {

@@ -1584,12 +1584,12 @@ define([
 			// create an HTML image that contains the icon (if we have a valid iconName)
 			var result = value;
 			if (iconName) {
-				result = lang.replace('<img src="{themeUrl}/icons/16x16/udm-{icon}.png" height="{height}" width="{width}" style="float:left; margin-right: 5px" /> {value}', {
+				result = lang.replace('<img src="{src}" height="{height}" width="{width}" style="float:left; margin-right: 5px" /> {value}', {
 					icon: iconName,
 					height: '16px',
 					width: '16px',
 					value: value,
-					themeUrl: require.toUrl('dijit/themes/umc')
+					src: require.toUrl(lang.replace('dijit/themes/umc/icons/16x16/udm-{0}.png', [iconName]))
 				});
 			}
 			return result;

@@ -303,12 +303,11 @@ define([
 						size: 'Two',
 						name: 'hint',
 						content: lang.replace(
-							'<span><img src="{themeUrl}/icons/scalable/{icon}.svg" height="{height}" width="{width}" style="float:left; margin-right:5px;"/>{label}</span>', {
-								icon: 'uvmm-warn',
+							'<span><img src="{src}" height="{height}" width="{width}" style="float:left; margin-right:5px;"/>{label}</span>', {
 								height: '16px',
 								width: '16px',
 								label: _('The given volume capacity exceeds the available storage pool capacity'),
-								themeUrl: require.toUrl('dijit/themes/umc')
+								src: require.toUrl('dijit/themes/umc/icons/scalable/uvmm-warn.svg')
 							}),
 						visible: false
 					}]

@@ -1826,12 +1826,11 @@ define([
 			//		according to the object types.
 
 			// create an HTML image that contains the icon (if we have a valid iconName)
-			var html = string.substitute('<img src="${themeUrl}/icons/scalable/${icon}" height="${height}" width="${width}" style="float:left; margin-right: 5px" /><div style="${style}">${label}</div>', {
-				icon: this._iconClass(item),
+			var html = string.substitute('<img src="${src}" height="${height}" width="${width}" style="float:left; margin-right: 5px" /><div style="${style}">${label}</div>', {
 				height: '16px',
 				width: '16px',
 				label: label,
-				themeUrl: require.toUrl('dijit/themes/umc'),
+				src: require.toUrl(lang.replace('dijit/themes/umc/icons/scalable/{0}', [this._iconClass(item)])),
 				style: 'white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'
 			});
 			// set content after creating the object because of HTTP404: Bug #25635

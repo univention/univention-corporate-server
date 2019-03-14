@@ -63,16 +63,10 @@ umc_udm () {
 }
 
 umc_frontend_new_hash () {
-	# create new timestamps in order to avoid caching problems in browsers
-	local ifile idir f timestamp="$(date +'%Y%m%d%H%M%S')"
-	for ifile in index.html management/index.html management/error.html; do
-		f="/var/www/univention/$ifile"
-		[ -w "$f" ] && sed -i 's/\$\(.*\)\$/$'$timestamp'$/' "$f"
-	done
+	# remove deprecated symlink
+	rm -f /var/www/univention/js_* || true
 
-	# update the symlink to the js directory
-	rm -f "/var/www/univention/js_\$"*\$ || true
-	ln -s "js" "/var/www/univention/js_\$${timestamp}\$" || true
+	/usr/sbin/univention-config-registry set "umc/web/cache_bust=$(date +%s)"
 
 	return 0
 }
