@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-web
-fix: 3.0.5-4A~4.4.0.201903141602
+fix: 3.0.5-5A~4.4.0.201903141644
 desc: |
  This update addresses the following issue(s):
  * Preparations for better browser cache-control have been implemented.
