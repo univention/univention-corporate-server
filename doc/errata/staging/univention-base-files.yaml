@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-base-files
-fix: 8.0.0-2A~4.4.0.201903132032
+fix: 8.0.0-3A~4.4.0.201903141103
 desc: |
  This update addresses the following issue:
  * The script univention-policy-update-config-registry now has a new option to
