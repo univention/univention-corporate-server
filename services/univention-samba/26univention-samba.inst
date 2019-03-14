@@ -165,7 +165,7 @@ else
 	fi
 	if [ -e /etc/backup-join.secret ]; then
 		samba_account="join-backup"
-		samba_pwd="$(cat /etc/backup-join.secret)"
+		samba_pwd="$(< /etc/backup-join.secret)"
 	fi
 fi
 
@@ -239,20 +239,20 @@ fi
 if [ "$server_role" = "domaincontroller_slave" -o "$samba_role" = "memberserver" ]; then
 	univention-config-registry set	samba/user="$ldap_hostdn" \
 									samba/user/pwdfile?"/etc/machine.secret"
-	smbpasswd -w $(cat /etc/machine.secret)
+	smbpasswd -w "$(< /etc/machine.secret)"
 
 	echo "setting idmap secret for '*' from /etc/machine.secret"
-	net idmap set secret '*' $(cat /etc/machine.secret) 2>/dev/null
+	net idmap set secret '*' "$(< /etc/machine.secret)" 2>/dev/null
 
 else
 	univention-config-registry set	samba/user?"cn=admin,$ldap_base" \
 									samba/user/pwdfile?"/etc/ldap.secret"
 	/etc/init.d/samba restart >/dev/null 2>&1
 
-	smbpasswd -w $(cat /etc/ldap.secret)
+	smbpasswd -w "$(< /etc/ldap.secret)"
 
 	echo "setting idmap secret for '*' from /etc/ldap.secret"
-	net idmap set secret '*' $(cat /etc/ldap.secret) 2>/dev/null
+	net idmap set secret '*' "$(< /etc/ldap.secret)" 2>/dev/null
 fi
 
 eval "$(univention-config-registry shell samba/user/pwdfile samba/user)"
@@ -286,10 +286,10 @@ export SMB_CONF_PATH=/etc/samba/smb.conf
 if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 	if [ $JS_LAST_EXECUTED_VERSION -le 5 ]; then
 		# set the samba option
-		univention-directory-manager computers/$server_role modify "$@" --dn "$ldap_hostdn" --append-option samba --set password="$(cat /etc/machine.secret)" || die
+		univention-directory-manager computers/$server_role modify "$@" --dn "$ldap_hostdn" --append-option samba --set password="$(< /etc/machine.secret)" || die
 	fi
 
-	machine_secret="$(cat /etc/machine.secret)"
+	machine_secret="$(< /etc/machine.secret)"
 	if [ -n "$samba_dc" ]; then
 		if $JOIN_CMD -U"$samba_account"%"$samba_pwd" -S"$samba_dc" machinepass="$machine_secret"; then
 			univention-config-registry set windows/wins-support=no windows/wins-server?"$samba_dc"
@@ -367,12 +367,12 @@ for X in COLOR IA64 W32ALPHA W32MIPS W32PPC W32X86 WIN40 x64; do
 done
 
 # do create and modify in two steps, maybe the share already exists
-univention-directory-manager container/cn create "$@" --position "cn=shares,$ldap_base" --ignore_exists --set name=$hostname.$domainname || die
+univention-directory-manager container/cn create "$@" --position "cn=shares,$ldap_base" --ignore_exists --set name="$hostname.$domainname" || die
 univention-directory-manager container/cn modify "$@" --dn "cn=$hostname.$domainname,cn=shares,$ldap_base" --set sharePath=1 || die
 
 
 if [ -n "$create_home_share" -a "$create_home_share" = "true" ]; then
-	univention-directory-manager shares/share create "$@" --position "cn=$hostname.$domainname,cn=shares,$ldap_base" --ignore_exists --set name=homes --set path=/home --set sambaName=homes --set host=$hostname.$domainname --set writeable=1 --set sambaWriteable=1 || die
+	univention-directory-manager shares/share create "$@" --position "cn=$hostname.$domainname,cn=shares,$ldap_base" --ignore_exists --set name=homes --set path=/home --set sambaName=homes --set host="$hostname.$domainname" --set writeable=1 --set sambaWriteable=1 || die
 	univention-config-registry unset create/home/share
 fi
 
