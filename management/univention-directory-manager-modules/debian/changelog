@@ -1,3 +1,10 @@
+univention-directory-manager-modules (14.0.12-2) unstable; urgency=medium
+
+  * Bug #48441: prevent traceback when not setting --set username= on
+  	users/user create
+
+ -- Florian Best <best@univention.de>  Thu, 14 Mar 2019 08:09:12 +0100
+
 univention-directory-manager-modules (14.0.12-1) unstable; urgency=medium
 
   * Bug #48621: remove "default" from user template options and ensure

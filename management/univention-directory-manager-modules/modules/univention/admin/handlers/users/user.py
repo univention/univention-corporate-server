@@ -1887,7 +1887,8 @@ class object(univention.admin.handlers.simpleLdap):
 
 			# get lock for username
 			try:
-				self.alloc.append(('uid', univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])))
+				if self['username']:  # might not be set when using CLI without --set username=
+					self.alloc.append(('uid', univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])))
 			except univention.admin.uexceptions.noLock:
 				raise univention.admin.uexceptions.uidAlreadyUsed(self['username'])
 
