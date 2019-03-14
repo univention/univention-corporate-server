@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-appcenter
+fix: 8.0.11-4A~4.4.0.201903141345
+desc: |-
+  This update addresses the following issue(s):
+  * Added a new listener to save a mapping for App Attributes that the UDM UMC
+    module may read
+bug: [48895]
