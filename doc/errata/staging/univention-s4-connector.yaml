@@ -2,12 +2,9 @@ product: ucs
 release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
-src: univention-directory-manager-modules
+src: univention-s4-connector
 fix: 
 desc: |
  This update addresses the following issue(s):
- * udm users/user create without --set username does not cause a exception
-   anymore.
- * Various LDAP filters are now escaped.
  * The use of obsolete univention.admin.config has been removed.
-bug: [48441,42791,27804]
+bug: [27804]
