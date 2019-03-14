@@ -42,4 +42,8 @@ if [ -z "$2" ]; then
 	python -c "from univention.appcenter.actions import get_action; get_action('update')()._update_local_files()"
 fi
 
+if dpkg --compare-versions "$2" lt 8.0.11-4; then
+	systemctl restart univention-directory-listener
+fi
+
 exit 0

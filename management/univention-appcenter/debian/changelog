@@ -1,3 +1,10 @@
+univention-appcenter (8.0.11-4) unstable; urgency=medium
+
+  * Bug #48895: Added a new listener to save a mapping for App Attributes that
+    the UDM UMC module may read
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 14 Mar 2019 13:42:12 +0100
+
 univention-appcenter (8.0.11-3) unstable; urgency=medium
 
   * Bug #48523: update 4.4 archive

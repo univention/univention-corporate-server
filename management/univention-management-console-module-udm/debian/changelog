@@ -1,3 +1,10 @@
+univention-management-console-module-udm (9.0.11-2) unstable; urgency=medium
+
+  * Bug #48895: Rely on the App Center listener to create the App Attributes
+    mapping rather than doing it in the UMC module
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 14 Mar 2019 13:44:11 +0100
+
 univention-management-console-module-udm (9.0.11-1) unstable; urgency=medium
 
   * Bug #48839: use attribute:option syntax for

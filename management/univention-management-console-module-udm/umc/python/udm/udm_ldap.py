@@ -40,6 +40,7 @@ import gc
 import functools
 import inspect
 import locale
+from json import load
 
 from univention.management.console import Translation
 from univention.management.console.protocol.definitions import BAD_REQUEST_UNAUTH
@@ -49,8 +50,6 @@ from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
 
 import univention.admin as udm
-import univention.admin.uldap as udm_ldap
-import univention.admin.filter as udm_filter
 import univention.admin.layout as udm_layout
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
@@ -62,7 +61,7 @@ from univention.management.console.modules.udm.syntax import widget, default_val
 
 from ldap import LDAPError, NO_SUCH_OBJECT
 from ldap.filter import filter_format
-from ldap.dn import explode_dn, dn2str, str2dn
+from ldap.dn import explode_dn
 from functools import reduce
 
 
@@ -105,159 +104,43 @@ class UMCError(UMC_Error):
 
 
 class AppAttributes(object):
+	FNAME = '/var/lib/univention-appcenter/attributes/mapping.json'
 	_cache = None
-	_lo = None
-	_pos = None
 
 	@classmethod
-	def _conn(cls):
-		if cls._lo is None:
-			cls._lo, cls._pos = udm_ldap.getMachineConnection()
-		return cls._lo, cls._pos
-
-	@classmethod
-	def _get_cache(cls):
+	def reload_cache(cls, module):
+		MODULE.info('Loading AppAttributes for %s...' % module)
+		cache = cls._read_cache_file()
 		if cls._cache is None:
-			MODULE.process('Loading AppAttributes...')
-			cache = {}
-			from univention.appcenter.app_cache import AllApps
+			cls._cache = {}
+		module_cache = cache.get(module) or {}
+		cls._cache[module] = module_cache
+		if module_cache:
+			MODULE.info('Found for %s:' % module)
+			for attr in module_cache:
+				MODULE.info('    %s and with it: %r' % (attr, module_cache[attr]['attributes']))
 
-			def search_objects(_module, _lo, _pos, _base='', **kwargs):
-				# reimplement because the App Center function re-initializes
-				# the modules which makes some problems with UCR defined widgets
-				# dont know why
-				module = udm_modules.get(_module)
-				expressions = []
-				conj = udm_filter.conjunction('&', expressions)
-				for key, value in kwargs.iteritems():
-					expressions.append(udm_filter.expression(key, value, '=', escape=True))
-				try:
-					objs = module.lookup(None, _lo, str(conj), base=_base)
-				except udm_errors.noObject:
-					objs = []
-				for obj in objs:
-					udm_objects.open(obj)
-				return objs
-			lo, pos = cls._conn()
-			app_objs = search_objects('appcenter/app', lo, pos)
-			apps = {}
-			current_locale = locale.getlocale()[0] or 'en_US'
-			for app_obj in app_objs:
-				app_version = app_obj['version']
-				app_id = app_obj['id'][:-len(app_version) - 1]
-				app = AllApps().find(app_id, app_version=app_version)
-				if app:
-					if app.id in apps:
-						if apps[app.id] > app:
-							continue
-					apps[app.id] = app
-			for app in apps.itervalues():
-				for attribute in app.umc_options_attributes:
-					attribute, option_name = (attribute.split(':', 1) * 2)[:2]
-					objs = search_objects('settings/extended_attribute', lo, pos, CLIName=attribute)
-					for obj in objs:
-						for module in obj['module']:
-							if search_objects('settings/extended_options', lo, pos, objectClass=obj['objectClass'], module=module):
-								# a newer version of the App is installed that uses the
-								# superior settings/extended_option
-								continue
-							if module not in cache:
-								cache[module] = {}
-							option_def = cache[module]
-							group_name = obj['groupName']
-							for loc, desc in obj['translationGroupName']:
-								if loc == current_locale:
-									group_name = desc
-									break
-							tab_name = obj['tabName']
-							for loc, desc in obj['translationTabName']:
-								if loc == current_locale:
-									tab_name = desc
-									break
-							short_description = obj['shortDescription']
-							for loc, desc in obj['translationShortDescription']:
-								if loc == current_locale:
-									short_description = desc
-									break
-							if obj['syntax'] == 'boolean':
-								boolean_values = ['1', '0']
-							elif obj['syntax'] in ['TrueFalseUp', 'TrueFalseUpper']:
-								boolean_values = ['TRUE', 'FALSE']
-							elif obj['syntax'] == 'TrueFalse':
-								boolean_values = ['true', 'false']
-							elif obj['syntax'] == 'OkOrNot':
-								boolean_values = ['OK', 'Not']
-							else:
-								continue
-							default = int(obj['default'] == boolean_values[0])
-							attributes = []
-							layout = []
-							option_def[option_name] = {
-								'label': group_name or tab_name,
-								'description': short_description,
-								'default': default,
-								'boolean_values': boolean_values,
-								'attributes': attributes,
-								'layout': layout,
-								'attribute_name': obj['CLIName'],
-							}
-							base = dn2str(str2dn(obj.dn)[1:])
-							for _obj in search_objects('settings/extended_attribute', lo, pos, base, univentionUDMPropertyModule=module):
-								if obj.dn == _obj.dn:
-									continue
-								if _obj['disableUDMWeb'] == '1':
-									continue
-								attributes.append(_obj['CLIName'])
-								if _obj['tabAdvanced']:
-									group_name = _obj['tabName']
-									for loc, desc in _obj['translationTabName']:
-										if loc == current_locale:
-											group_name = desc
-											break
-									group_position = _obj['tabPosition']
-								else:
-									group_name = _obj['groupName']
-									for loc, desc in _obj['translationGroupName']:
-										if loc == current_locale:
-											group_name = desc
-											break
-									group_position = _obj['groupPosition']
-								for group in layout:
-									if group['label'] == group_name:
-										break
-								else:
-									group = {
-										'label': group_name,
-										'description': '',
-										'advanced': False,
-										'is_app_tab': False,
-										'layout': [],
-										'unsorted': [],
-									}
-									layout.append(group)
-								group_layout = group['layout']
-								if group_position:
-									group_position = int(group_position)
-									while len(group_layout) < group_position:
-										group_layout.append([])
-									group_layout[group_position - 1].append(_obj['CLIName'])
-								else:
-									group['unsorted'].append(_obj['CLIName'])
-							for group in layout:
-								unsorted = group.pop('unsorted')
-								if unsorted:
-									group['layout'].append(unsorted)
-			MODULE.process('Found:')
-			for module in cache:
-				MODULE.process('  %s' % module)
-				for attr in cache[module]:
-					MODULE.process('    %s and with it: %r' % (attr, cache[module][attr]['attributes']))
-			cls._cache = cache
-		return cls._cache
+	@classmethod
+	def _read_cache_file(cls):
+		current_locale = locale.getlocale()[0]
+		try:
+			with open(cls.FNAME) as fd:
+				cache = load(fd)
+		except EnvironmentError:
+			MODULE.warn('Error reading %s' % cls.FNAME)
+			cache = {}
+		except ValueError:
+			MODULE.warn('Error parsing %s' % cls.FNAME)
+			cache = {}
+		else:
+			cache = cache.get(current_locale) or cache.get('en_US') or {}
+		return cache
 
 	@classmethod
 	def data_for_module(cls, module):
-		return cls._get_cache().get(module, {})
+		if cls._cache is None:
+			cls.reload_cache(module)
+		return cls._cache.get(module, {})
 
 	@classmethod
 	def options_for_module(cls, module):
@@ -494,6 +377,7 @@ class UDM_ModuleCache(dict):
 			self[name] = module
 
 			udm_modules.init(ldap_connection, ldap_position, self[name], template_object, force_reload=force_reload)
+			AppAttributes.reload_cache(name)
 
 			return self[name]
 		finally:
