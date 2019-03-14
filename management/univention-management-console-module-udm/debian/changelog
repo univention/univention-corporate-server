@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.11-3) unstable; urgency=medium
+
+  * Bug #48895: Remove univention-appcenter dependency
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 14 Mar 2019 14:40:03 +0100
+
 univention-management-console-module-udm (9.0.11-2) unstable; urgency=medium
 
   * Bug #48895: Rely on the App Center listener to create the App Attributes
