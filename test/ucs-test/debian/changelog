@@ -1,3 +1,9 @@
+ucs-test (9.0.2-21) unstable; urgency=medium
+
+  * Bug #1234: some more flaky tests
+
+ -- Felix Botner <botner@univention.de>  Fri, 15 Mar 2019 16:54:11 +0100
+
 ucs-test (9.0.2-20) unstable; urgency=medium
 
   * Bug #1234: fixed 60_umc/07_expired_password
