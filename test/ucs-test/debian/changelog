@@ -1,3 +1,9 @@
+ucs-test (9.0.2-20) unstable; urgency=medium
+
+  * Bug #1234: fixed 60_umc/07_expired_password
+
+ -- Felix Botner <botner@univention.de>  Fri, 15 Mar 2019 16:11:40 +0100
+
 ucs-test (9.0.2-19) unstable; urgency=medium
 
   * Bug #49002: fix wrong YAML format
