@@ -113,6 +113,9 @@ class StreamReader(object):
 		if self.logger:
 			self.logger.log(self.level, msg.rstrip('\n'))
 
+	def flush(self):
+		pass
+
 
 class LogCatcher(object):
 

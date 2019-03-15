@@ -9,4 +9,6 @@ desc: |-
   * Added a new listener to save a mapping for App Attributes that the UDM UMC
     module may read
   * Extended Attributes are only searched for in the correct LDAP container
-bug: [48895, 48982]
+  * A crash when registering attributes is prevented during the activation
+    of new schema extensions.
+bug: [48895, 48982, 45513]
