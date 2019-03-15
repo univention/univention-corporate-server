@@ -3,9 +3,9 @@ release: "4.3"
 version: [3]
 scope: ucs_4.3-0-errata4.3-3
 src: univention-management-console
-fix: 10.0.6-20A~4.3.0.201903131602
+fix: 10.0.6-21A~4.3.0.201903131842
 desc: |
  This update addresses the following issue(s):
- * The SAML identitiy provider is not configured in the UMC-WebServer anymore
+ * The SAML identity provider is not configured in the UMC-WebServer anymore
    if it is disabled via the UCR variable umc/web/sso/enabled.
 bug: [48985]
