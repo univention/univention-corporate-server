@@ -3,9 +3,9 @@ release: "4.2"
 version: [5]
 scope: ucs_4.2-0-errata4.2-5
 src: univention-kernel-image-signed
-fix: 3.0.2-37A~4.2.0.201903011021
+fix: 3.0.2-38A~4.2.0.201903151901
 desc: |
- This update of the Linux kernel to version 4.9.161 addresses the following
+ This update of the Linux kernel to version 4.9.163 addresses the following
  issues:
  * Null pointer dereference in fs/f2fs/segment.c via mounting fs with
    noflush_merge option allows local denial of service (CVE-2017-18241)
@@ -108,6 +108,11 @@ desc: |
  * KVM: nVMX: use-after-free of the hrtimer for emulation of the preemption
    timer (CVE-2019-7221)
  * KVM: leak of uninitialized stack contents to guest (CVE-2019-7222)
+ * Memory leak in the kernel_read_file function in fs/exec.c allows to cause a
+   denial of service (CVE-2019-8980)
+ * Lack of check for mmap minimum address in expand_downwards in mm/mmap.c
+   leads to NULL pointer dereferences exploit on non-SMAP platforms
+   (CVE-2019-9213)
 note: This is the second of two parts of this update.
 bug: [47905]
 cve:
@@ -174,3 +179,5 @@ cve:
 - CVE-2018-19824
 - CVE-2018-19985
 - CVE-2018-20511
+- CVE-2019-8980
+- CVE-2019-9213
