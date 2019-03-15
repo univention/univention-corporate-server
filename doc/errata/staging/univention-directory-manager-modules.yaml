@@ -12,4 +12,5 @@ desc: |
  * The use of obsolete univention.admin.config has been removed.
  * The computers/* UDM handlers now share a common base class. Code
    redundancy has therefore been reduced.
-bug: [48441,42791,27804,41659]
+ * The UMC now uses json instead of simplejson.
+bug: [48441,42791,27804,41659,35687]

@@ -228,7 +228,6 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_post_create(self):
 		self._update_portals_after_portal_change()
 
-
 	def _ldap_post_modify(self):
 		if self.hasChanged('name'):
 			newdn = 'cn=%s,%s' % (self['name'], self.lo.parentDn(self.dn),)
@@ -236,15 +235,12 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.hasChanged('portal'):
 			self._update_portals_after_portal_change()
 
-
 	def _ldap_post_move(self, olddn):
 		self._update_portals_after_name_change(olddn, self.dn)
-
 
 	def _ldap_post_remove(self):
 		for portal_obj in univention.admin.modules.lookup('settings/portal', None, self.lo, scope='sub'):
 			self._remove_self_from_portal(portal_obj)
-
 
 	def _update_portals_after_portal_change(self):
 		old_portal = self.oldinfo.get('portal', [])
@@ -258,9 +254,8 @@ class object(univention.admin.handlers.simpleLdap):
 		for portal_dn in added_portals:
 			self._add_self_to_portal(portal_dn)
 
-
 	def _remove_self_from_portal(self, portal_obj):
-		if type(portal_obj) == str:
+		if isinstance(portal_obj, basestring):
 			try:
 				portal_mod = univention.admin.modules.get('settings/portal')
 				portal_obj = univention.admin.objects.get(portal_mod, None, self.lo, position='', dn=portal_obj)
@@ -283,9 +278,8 @@ class object(univention.admin.handlers.simpleLdap):
 			portal_obj['content'] = new_content
 			portal_obj.modify()
 
-
 	def _add_self_to_portal(self, portal_obj):
-		if type(portal_obj) == str:
+		if isinstance(portal_obj, basestring):
 			portal_mod = univention.admin.modules.get('settings/portal')
 			portal_obj = univention.admin.objects.get(portal_mod, None, self.lo, position='', dn=portal_obj)
 
@@ -323,7 +317,6 @@ class object(univention.admin.handlers.simpleLdap):
 			portal_obj['content'] = new_content
 			portal_obj.modify()
 
-
 	def _update_portals_after_name_change(self, olddn, newdn):
 		for portal_obj in univention.admin.modules.lookup('settings/portal', None, self.lo, scope='sub'):
 			portal_obj.open()
@@ -338,6 +331,7 @@ class object(univention.admin.handlers.simpleLdap):
 		return univention.admin.filter.conjunction('&', [
 			univention.admin.filter.expression('objectClass', OC),
 		])
+
 
 lookup = object.lookup
 

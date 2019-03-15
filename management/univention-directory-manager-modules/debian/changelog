@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.12-10) unstable; urgency=medium
+
+  * Bug #35687: correct isinstance check
+
+ -- Florian Best <best@univention.de>  Fri, 15 Mar 2019 12:57:51 +0100
+
 univention-directory-manager-modules (14.0.12-9) unstable; urgency=medium
 
   * Bug #41659: call univention.admin.modules.update() also in
