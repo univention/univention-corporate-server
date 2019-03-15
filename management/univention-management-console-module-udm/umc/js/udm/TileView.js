@@ -29,7 +29,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-/*global define, window*/
+/*global define*/
 
 define([
 	"dojo/_base/declare",
@@ -46,34 +46,13 @@ define([
 
 		necessaryUdmValues: ["displayName", "mailPrimaryAddress", "firstname", "lastname"],
 
-		_queryTimer: null,
-
-		_queryCache: null,
-
 		_userImageNodes: {},
 
 		grid: null,
 
 		setPicture: function(item) {
-			if (this._queryTimer) {
-				this.grid.moduleStore.get(item.$dn$);
-			} else {
-				this._queryCache = this.grid.moduleStore.transaction();
-				this._queryTimer = window.setTimeout(lang.hitch(this, "_setPictures"), 100);
-				this.grid.moduleStore.get(item.$dn$);
-			}
-		},
-
-		_setPictures: function() {
-			this._queryTimer = null;
-			this._queryCache.commit().then(lang.hitch(this, function(data) {
-				array.forEach(data, function(item){
-					if (item.jpegPhoto) {
-						//put(this._userImageNodes[item.$dn$], "+img.umcGridTileIcon[src=data:image/jpeg;base64," + item.jpegPhoto + "]");
-						put(this._userImageNodes[item.$dn$], "+div.umcGridTileIcon[style=background-image: url(data:image/jpeg;base64," + item.jpegPhoto + ")]");
-					}
-				}, this);
-			}));
+			var url = lang.replace('/univention/command/udm/properties/users/user/jpegPhoto.jpg?dn={0}', [encodeURIComponent(item.$dn$)]);
+			put(this._userImageNodes[item.$dn$], {style: lang.replace('background-image: url("{0}")', [url])});
 		},
 
 		_getInitials: function(item) {

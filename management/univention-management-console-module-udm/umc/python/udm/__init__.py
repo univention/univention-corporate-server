@@ -33,6 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import base64
 import copy
 import inspect
 import locale
@@ -548,6 +549,40 @@ class Instance(Base, ProgressMixin):
                 else:
                     MODULE.process('The LDAP object for the LDAP DN %s could not be found' % ldap_dn)
         return result
+
+    @allow_get_request
+    @sanitize(dn=DNSanitizer(required=True))
+    @threaded
+    def jpeg_photo(self, request):
+        def _finished(thread, result):
+            if isinstance(result, tuple):
+                data, headers = result
+                self.finished(request.id, data, mimetype='image/jpeg', headers=headers)
+                return
+            self.thread_finished_callback(thread, result, request)
+
+        thread = SimpleThread('GetJpeg', self._get_jpeg_photo, _finished)
+        thread.run(request)
+
+    def _get_jpeg_photo(self, request):
+        dn = request.options['dn']
+        # TODO: use ldap directly?
+        # TODO: evaluate if-none-match / If-Unmodified-Since
+        module = get_module('users/user', dn)
+        if module is None:
+            raise UMC_Error(_('Not found'), status=404)
+        obj = module.get(dn)
+        if obj is None:
+            raise UMC_Error(_('Not found'), status=404)
+        data = base64.b64decode(obj.info.get('jpegPhoto', ''))  # TODO: scale down to 50x50px
+        if not data:  # TODO: default?
+            raise UMC_Error(_('Not found'), status=404)
+        headers = {
+            'Last-Modified': obj.oldattr['modifyTimestamp'][0].decode('ASCII'),
+            'ETag': obj.oldattr['entryCSN'][0].decode('ASCII'),
+            'Cache-Control': 'max-age=2592000, private',  # must-revalidate?
+        }
+        return (data, headers)
 
     @sanitize(
         objectPropertyValue=PropertySearchSanitizer(
