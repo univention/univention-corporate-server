@@ -1,3 +1,9 @@
+ucs-test (9.0.2-18) unstable; urgency=medium
+
+  * Bug #47643: 51_samba4/62server_password_change_drs_replication check if password change has already been executed today
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 15 Mar 2019 10:42:12 +0100
+
 ucs-test (9.0.2-17) unstable; urgency=medium
 
   * Bug #48998: disabled policy open_details in selenium tests
