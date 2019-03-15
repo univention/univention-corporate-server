@@ -1,3 +1,9 @@
+ucs-test (9.0.2-17) unstable; urgency=medium
+
+  * Bug #48998: disabled policy open_details in selenium tests
+
+ -- Felix Botner <botner@univention.de>  Fri, 15 Mar 2019 10:17:50 +0100
+
 ucs-test (9.0.2-16) unstable; urgency=medium
 
   * Bug #48998: disabled policy open_details in selenium tests
