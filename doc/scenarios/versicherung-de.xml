@@ -88,12 +88,10 @@
 	  der zentrale, schreibbare LDAP-Verzeichnisdienst vorgehalten.
 	</para>
 
-	<para>
 	  <figure id="versicherung-gesamt">
 		<title>Gesamtüberblick (nicht im Bild: Storage, DNS, DHCP, Druckdienste, Virtualisierung, Backup)</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations44/versicherung.jpg"/>
+		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/versicherung.jpg"/>
 	  </figure>
-	</para>
 
 	<para>
 	  Der DC Backup stellt weitgehend eine Kopie des DC Master dar. Dadurch
@@ -114,12 +112,10 @@
 	  bereitstellen.
 	</para>
 
-	<para>
 	  <figure id="versicherung-standort">
 		<title>Aufbau eines Standort-Servers</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations44/versicherung-standort.jpg"/>
+		<graphic align="center" scalefit="1" width="80%" fileref="illustrations44/versicherung-standort.jpg"/>
 	  </figure>
-	</para>
   </section>
 
   <section id="insurance:virt">
@@ -129,12 +125,10 @@
 	  virtualisiert. Zum Einsatz kommt dabei ausschließlich Open-Source-Software.
 	</para>
 
-	<para>
 	  <figure id="uvmm2">
 		<title>Verwaltung virtueller Maschinen mit UVMM</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations44/uvmm_de.png"/>
+		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/uvmm_de.png"/>
 	  </figure>
-	</para>
 
 	<para>
 	  Als Grundlage der Virtualisierung dienen

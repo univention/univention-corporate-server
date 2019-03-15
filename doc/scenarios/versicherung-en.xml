@@ -82,6 +82,11 @@
 	  writable LDAP directory is provided on this system.
 	</para>
 
+	  <figure id="versicherung-gesamt">
+		<title>General overview (excluded: storage, DNS, DHCP, print services, virtualization, backup)</title>
+		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/versicherung_en.png"/>
+	  </figure>
+
 	<para>
 	  The DC backup also largely represents a copy of the DC master. In this
 	  way, the important services are available doubled on the network, the
@@ -95,24 +100,15 @@
 	</para>
 
 	<para>
-	  <figure id="versicherung-gesamt">
-		<title>General overview (excluded: storage, DNS, DHCP, print services, virtualization, backup)</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations44/versicherung_en.png"/>
-	  </figure>
-	</para>
-
-	<para>
 	  The DC master and DC backup are both installed at the company headquarters.
 	  The locations also contain additional &ucsSlave; systems, which
 	  provide Windows domain services, print services and software distribution.
 	</para>
 
-	<para>
 	  <figure id="versicherung-standort">
 		<title>Structure of a location</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations44/versicherung-standort_en.png"/>
+		<graphic align="center" scalefit="1" width="80%" fileref="illustrations44/versicherung-standort_en.png"/>
 	  </figure>
-	</para>
   </section>
 
   <section id="insurance:virt">
@@ -122,12 +118,10 @@
 	  &ucsUVMM; (UVMM). Only open source software is used.
 	</para>
 
-	<para>
 	  <figure id="uvmm2">
 		<title>Managing virtual machines with UVMM</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations44/uvmm_en.png"/>
+		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/uvmm_en.png"/>
 	  </figure>
-	</para>
 
 	<para>
 	  Virtualization servers based on UCS member servers (server installations

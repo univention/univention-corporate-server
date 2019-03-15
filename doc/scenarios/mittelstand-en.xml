@@ -65,19 +65,15 @@
   <section id="engineering:impl">
 	<title>Implementation</title>
 
-	<para>
 	  <figure id="mittelstand">
 		<title>System overview of Ganupa Technologies headquarters (virtualization is not considered)</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations44/mittelstand_en.png"/>
+		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/mittelstand_en.png"/>
 	  </figure>
-	</para>
 
-	<para>
 	  <figure id="mittelstand-ueberblick">
 		<title>Global organization scheme of Ganupa Technologies</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations44/mittelstand-ueberblick_en.png"/>
+		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/mittelstand-ueberblick_en.png"/>
 	  </figure>
-	</para>
   </section>
 
   <section id="engineering:dc">
@@ -133,12 +129,10 @@
 	  Univention as signed MSI installation packages and, as such, can be installed simply.
 	</para>
 
-	<para>
 	  <figure id="uvmm">
 		<title>Managing virtual machines with UVMM</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations44/uvmm_en.png"/>
+		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/uvmm_en.png"/>
 	  </figure>
-	</para>
 
 	<para>
 	  All virtual machines can be created and managed conveniently over the
@@ -256,8 +250,7 @@
 	  <itemizedlist>
 		<listitem><simpara><ulink url="https://docs.software-univention.de/manual.html"/> (UCS manual)</simpara></listitem>
         <listitem><simpara><ulink url="https://www.univention.com/appid/oxseforucs/"/> (<application>OX App Suite</application>)</simpara></listitem>
-		<listitem><simpara><ulink url="https://www.univention.com/appid/squid/"/> (<application>Proxy
-      server/ web cache (Squid)</application>)</simpara></listitem>
+		<listitem><simpara><ulink url="https://www.univention.com/appid/squid/"/> (<application>Proxy server/ web cache (Squid)</application>)</simpara></listitem>
 	  </itemizedlist>
   </section>
 </chapter>

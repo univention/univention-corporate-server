@@ -38,12 +38,10 @@
 	  Backup der Daten automatisiert.
 	</para>
 
-	<para>
 	  <figure id="kanzlei">
 		<title>Systemübersicht der Kanzlei Hemmerlein und Söhne</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations44/kanzlei.jpg"/>
+		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/kanzlei.jpg"/>
 	  </figure>
-	</para>
   </section>
 
   <section id="lawyer:users">
@@ -59,7 +57,7 @@
 	<para>
 	  <figure id="umc-anlegen">
 		<title>Anlegen eines Benutzers in der Univention Management Console</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations44/umc-benutzeranlegen.png"/>
+		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/umc-benutzeranlegen.png"/>
 	  </figure>
 	</para>
   </section>

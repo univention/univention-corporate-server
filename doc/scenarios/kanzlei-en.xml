@@ -38,12 +38,10 @@
 	  administrates the printers and automates the data backup.
 	</para>
 
-	<para>
 	  <figure id="kanzlei">
 		<title>System overview of the lawyer's office Hemmerlein and Sons</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations44/kanzlei_en.png"/>
+		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/kanzlei_en.png"/>
 	  </figure>
-	</para>
   </section>
 
   <section id="lawyer:users">
@@ -55,12 +53,10 @@
         directory server and requested when logging on to the Windows client.
     </para>
 
-	<para>
 	  <figure id="umc-anlegen">
 		<title>Creating a user in Univention Directory Manager</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations44/umc-benutzeranlegen_en.png"/>
+		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/umc-benutzeranlegen_en.png"/>
 	  </figure>
-	</para>
   </section>
 
   <section id="lawyer:windows">

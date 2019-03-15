@@ -65,19 +65,15 @@
   <section id="engineering:impl">
 	<title>Umsetzung</title>
 
-	<para>
 	  <figure id="mittelstand">
 		<title>Systemübersicht von Ganupa Technologies am zentralen Standort (die Virtualisierung wird in diesem Schaubild nicht berücksichtigt)</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations44/mittelstand.jpg"/>
+		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/mittelstand.jpg"/>
 	  </figure>
-	</para>
 
-	<para>
 	  <figure id="mittelstand-ueberblick">
 		<title>Globaler Systemaufbau von Ganupa Technologies</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations44/mittelstand-ueberblick.jpg"/>
+		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/mittelstand-ueberblick.jpg"/>
 	  </figure>
-	</para>
   </section>
 
   <section id="engineering:dc">
@@ -131,12 +127,10 @@
 	  MSI-Installationspakete bereitgestellt und können so einfach installiert werden.
 	</para>
 
-	<para>
 	  <figure id="uvmm">
 		<title>Verwaltung virtueller Maschinen mit UVMM</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations44/uvmm_de.png"/>
+		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/uvmm_de.png"/>
 	  </figure>
-	</para>
 
 	<para>
 	  Alle virtuellen Maschinen können über den webbasierten &ucsUVMM; komfortabel angelegt und
