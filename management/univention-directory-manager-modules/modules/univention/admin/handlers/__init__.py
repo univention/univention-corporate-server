@@ -2794,7 +2794,7 @@ class simpleComputer(simpleLdap):
 				self.info['dhcpEntryZone'] = [
 					(dn, ip, _mac)
 					for (dn, ip, _mac) in dhcp
-					if not (ip in removedIPs or mac in removedMACs)
+					if not (ip in removedIPs or _mac in removedMACs)
 				]
 
 		if self.hasChanged('dhcpEntryZone'):

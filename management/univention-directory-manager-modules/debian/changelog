@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.12-8) unstable; urgency=medium
+
+  * Bug #41659: fix typo
+
+ -- Florian Best <best@univention.de>  Fri, 15 Mar 2019 09:31:59 +0100
+
 univention-directory-manager-modules (14.0.12-7) unstable; urgency=medium
 
   * Bug #42791: remove script univention-remove-old-umc-objects
