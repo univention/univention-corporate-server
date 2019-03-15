@@ -1711,6 +1711,10 @@ class simpleLdap(object):
 	def rewrite_filter(cls, filter, mapping):
 		key = filter.variable
 		mod = univention.admin.modules.get(cls.module)
+		if not mod:
+			# management/univention-management-console/src/univention/management/console/acl.py does not call univention.admin.modules.update()
+			univention.admin.modules.update()
+			mod = univention.admin.modules.get(cls.module)
 		property_ = mod.property_descriptions.get(key)
 		if property_ and not isinstance(filter.value, (list, tuple)):
 			if property_.multivalue:

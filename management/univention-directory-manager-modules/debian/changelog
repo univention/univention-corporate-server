@@ -1,5 +1,12 @@
 univention-directory-manager-modules (14.0.12-8) unstable; urgency=medium
 
+  * Bug #41659: call univention.admin.modules.update() also in
+  	rewrite_filter() if module is not available.
+
+ -- Florian Best <best@univention.de>  Fri, 15 Mar 2019 11:36:18 +0100
+
+univention-directory-manager-modules (14.0.12-8) unstable; urgency=medium
+
   * Bug #41659: fix typo
 
  -- Florian Best <best@univention.de>  Fri, 15 Mar 2019 09:31:59 +0100
