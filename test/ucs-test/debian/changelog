@@ -1,3 +1,16 @@
+ucs-test (8.0.29-4) unstable; urgency=medium
+
+  * Bug #47643: 51_samba4/62server_password_change_drs_replication check
+    if password change has already been executed today
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 15 Mar 2019 10:42:12 +0100
+
+ucs-test (8.0.29-3) unstable; urgency=medium
+
+  * Bug #47643: skip 62server_password_change_drs_replication
+
+ -- Felix Botner <botner@univention.de>  Mon, 11 Mar 2019 17:18:34 +0100
+
 ucs-test (8.0.29-2) unstable; urgency=medium
 
   * Bug #48684: enhance
