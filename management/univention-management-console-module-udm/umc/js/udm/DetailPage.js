@@ -55,7 +55,6 @@ define([
 	"dijit/layout/StackContainer",
 	"umc/widgets/Text",
 	"umc/widgets/Button",
-	"umc/widgets/LabelPane",
 	"umc/modules/udm/Template",
 	"umc/modules/udm/OverwriteLabel",
 	"umc/modules/udm/UMCPBundle",
@@ -64,7 +63,7 @@ define([
 	"umc/i18n!umc/modules/udm",
 	"dijit/registry",
 	"umc/_all"
-], function(declare, lang, array, on, Deferred, all, when, construct, domClass, topic, json, entities, TitlePane, render, tools, dialog, ContainerWidget, MultiInput, ComboBox, Form, Page, StandbyMixin, TabController, StackContainer, Text, Button, LabelPane, Template, OverwriteLabel, UMCPBundle, UsernameMaxLengthChecker, cache, _) {
+], function(declare, lang, array, on, Deferred, all, when, construct, domClass, topic, json, entities, TitlePane, render, tools, dialog, ContainerWidget, MultiInput, ComboBox, Form, Page, StandbyMixin, TabController, StackContainer, Text, Button, Template, OverwriteLabel, UMCPBundle, UsernameMaxLengthChecker, cache, _) {
 
 	var Anchor = Text;
 	require(['umc/widgets/Anchor'], function(A) {  // Anchor is new in UCS 4.4, so due to caching problems load it async
@@ -207,12 +206,19 @@ define([
 			//		and initiate the rendering process.
 			this.inherited(arguments);
 
+			this.watch('selected', lang.hitch(this, function() {
+				var readyDeferred = this.ready();
+				this.standbyDuring(readyDeferred);
+				this._headerButtons.submit.set('disabled', true);
+				readyDeferred.then(lang.hitch(this, function() {
+					this._headerButtons.submit.set('disabled', false);
+				}));
+			}));
+
 			domClass.add(this.domNode, 'umcUDMDetailPage');
 			domClass.toggle(this.domNode, 'umcUDMUsersModule', this.moduleFlavor === 'users/user');
 
 			this.set('headerButtons', this.getButtonDefinitions());
-
-			this.standby(true);
 
 			// remember the objectType of the object we are going to edit
 			this._editedObjType = this.objectType;
@@ -248,7 +254,7 @@ define([
 			}
 
 			// when the commands have been finished, create the detail page
-			this.standbyDuring(new all(commands)).then(lang.hitch(this, function(results) {
+			all(commands).then(lang.hitch(this, function(results) {
 				var template = lang.getObject('template.result', false, results) || null;
 				var layout = lang.clone(results.layout);
 				var policies = lang.clone(results.policies);
@@ -371,22 +377,6 @@ define([
 					// no ready method -> get initial value immediately
 					this._receivedObjFormData[iname] = iwidget.get('value');
 				}
-			}));
-		},
-
-		_displayProgressOnSubmitButton: function(loadedDeferred) {
-			var submitButton = this._headerButtons.submit;
-			var origLabel = submitButton.get('label');
-			submitButton.set('disabled', true);
-
-			loadedDeferred.then(lang.hitch(this, function() {
-				// reset label of submit button
-				submitButton.set('label', origLabel);
-				submitButton.set('disabled', false);
-			}), null, lang.hitch(this, function(progress) {
-				// output loading progress as button label
-				//var label = _('Loading %s...', progress.message);
-				//submitButton.set('label', label);
 			}));
 		},
 
@@ -1197,8 +1187,6 @@ define([
 			}));
 			loadedDeferred.then(lang.hitch(this, 'addActiveDirectoryWarning'));
 			loadedDeferred.then(lang.hitch(this, 'set', 'helpLink', metaInfo.help_link));
-			this._displayProgressOnSubmitButton(loadedDeferred);
-			this.standbyDuring(loadedDeferred);
 			all([loadedDeferred, this._formBuiltDeferred]).then(lang.hitch(this, '_notifyAboutAutomaticChanges'));
 
 			if (template && template.length > 0) {
@@ -1892,8 +1880,9 @@ define([
 						}
 
 						if (success && this.moduleFlavor == 'users/self') {
-							var loadDeferred = this._loadObject(this._formBuiltDeferred, this._policyDeferred);
-							this.standbyDuring(loadDeferred);
+							this.standbyDuring(
+								this._loadObject(this._formBuiltDeferred, this._policyDeferred)
+							);
 							dialog.alert(_('The changes have been successfully applied.'));
 							saveDeferred.resolve();
 						} else if (success) {
