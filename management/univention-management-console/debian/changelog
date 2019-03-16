@@ -1,3 +1,10 @@
+univention-management-console (11.0.4-38) unstable; urgency=medium
+
+  * Bug #47706: slapd is not restarted anymore on every univentionService
+  	change
+
+ -- Florian Best <best@univention.de>  Thu, 10 Oct 2019 10:31:11 +0200
+
 univention-management-console (11.0.4-37) unstable; urgency=medium
 
   * Bug #49161: migrate package to dh_python

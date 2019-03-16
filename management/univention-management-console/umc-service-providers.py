@@ -55,10 +55,12 @@ def handler(dn, new, old):
 			fqdn = '%s.%s' % (new['cn'][0], new['associatedDomain'][0])
 		except (KeyError, IndexError):
 			return
-		if 'Univention Management Console' in new.get('univentionService', []):
+		umc_service_active = 'Univention Management Console' in old.get('univentionService', [])
+		umc_service_was_active = 'Univention Management Console' in old.get('univentionService', [])
+		if umc_service_active and not umc_service_was_active:
 			handler_set(['umc/saml/trusted/sp/%s=%s' % (fqdn, fqdn)])
 			__changed_trusted_sp = True
-		elif 'Univention Management Console' in old.get('univentionService', []):
+		elif umc_service_was_active:
 			handler_unset(['umc/saml/trusted/sp/%s' % (fqdn,)])
 			__changed_trusted_sp = True
 	finally:
@@ -75,7 +77,7 @@ def postrun():
 		if os.path.exists(initscript) and slapd_running:
 			listener.setuid(0)
 			try:
-				ud.debug(ud.LISTENER, ud.INFO, '%s: Reloading LDAP server.' % (name,))
+				ud.debug(ud.LISTENER, ud.PROCESS, '%s: Reloading LDAP server.' % (name,))
 				p = subprocess.Popen([initscript, 'graceful-restart'], close_fds=True)
 				p.wait()
 				if p.returncode != 0:
