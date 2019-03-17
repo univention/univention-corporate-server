@@ -47,6 +47,7 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 
+# Note: this is not a "objectClass: domain" container but only the ldap base!
 module = 'container/dc'
 childs = 1
 operations = ['search', 'edit']
@@ -57,17 +58,17 @@ long_description = ''
 options = {
 	'default': univention.admin.option(
 		default=True,
-		objectClasses=['top', 'domain', 'univentionDomain', 'univentionBase']
+		objectClasses=['top', 'univentionBase'],
 	),
 	'kerberos': univention.admin.option(
 		short_description=_('Kerberos realm'),
 		objectClasses=['krb5Realm', ],
-		default=1
+		default=True,
 	),
 	'samba': univention.admin.option(
 		short_description=_('Samba'),
 		objectClasses=['sambaDomain'],
-		default=1
+		default=True,
 	),
 }
 property_descriptions = {
@@ -188,12 +189,19 @@ mapping.register('kerberosRealm', 'krb5RealmName', None, univention.admin.mappin
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
+		super(object, self).__init__(co, lo, position, dn, superordinate, attributes)
+		if not self.info.get('name'):
+			self.info['name'] = self.oldattr.get('l', self.oldattr.get('o', self.oldattr.get('c', self.oldattr.get('ou', self.oldattr.get('dc', '')))))
+			self.save()
+
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 
 		if self.exists():
 			self['dnsForwardZone'] = self.lo.searchDn(base=self.dn, scope='domain', filter='(&(objectClass=dNSZone)(relativeDomainName=@)(!(zoneName=*.in-addr.arpa)))')
 			self['dnsReverseZone'] = self.lo.searchDn(base=self.dn, scope='domain', filter='(&(objectClass=dNSZone)(relativeDomainName=@)(zoneName=*.in-addr.arpa))')
+			self.save()
 
 	@classmethod
 	def unmapped_lookup_filter(cls):

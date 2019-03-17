@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.12-11) unstable; urgency=medium
+
+  * Bug #47377: fix modifying ldap base
+
+ -- Florian Best <best@univention.de>  Sun, 17 Mar 2019 21:31:19 +0100
+
 univention-directory-manager-modules (14.0.12-10) unstable; urgency=medium
 
   * Bug #35687: correct isinstance check
