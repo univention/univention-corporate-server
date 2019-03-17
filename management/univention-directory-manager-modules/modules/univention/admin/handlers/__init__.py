@@ -141,7 +141,7 @@ class simpleLdap(object):
 			A private copy of :attr:`info` containing the original properties which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
 		:ivar list old_options:
 			A private copy of :attr:`options` containing the original options which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
-		:ivar list old_policies:
+		:ivar list oldpolicies:
 			A private copy of :attr:`policies` containing the original policies which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
 
 		.. caution::
@@ -1102,6 +1102,26 @@ class simpleLdap(object):
 		"""
 		return option in set(self.options) ^ set(self.old_options)
 
+	def policy_reference(self, *policies):
+		for policy in policies:
+			if not ldap.dn.is_dn(policy):
+				raise univention.admin.uexceptions.valueInvalidSyntax(policy)
+			try:
+				if 'univentionPolicy' not in self.lo.getAttr(policy, 'objectClass', required=True):
+					raise univention.admin.uexceptions.valueError('Object is not a policy', policy)
+			except ldap.NO_SUCH_OBJECT:
+				raise univention.admin.uexceptions.noObject('Policy does not exists', policy)
+		self.policies.extend(policy for policy in policies if not any(self.lo.compare_dn(pol, policy) for pol in self.policies))
+
+	def policy_dereference(self, *policies):
+		for policy in policies:
+			if not ldap.dn.is_dn(policy):
+				raise univention.admin.uexceptions.valueInvalidSyntax(policy)
+		self.policies = [policy for policy in self.policies if not any(self.lo.compare_dn(pol, policy) for pol in policies)]
+
+	def policiesChanged(self):
+		return set(self.oldpolicies) != set(self.policies)
+
 	def __app_option_enabled(self, name, option):
 		if option.is_app_option:
 			return all(self[pname] in ('TRUE', '1', 'OK') for pname, prop in self.descriptions.iteritems() if name in prop.options and prop.syntax.name in ('AppActivatedBoolean', 'AppActivatedTrue', 'AppActivatedOK'))
@@ -1173,10 +1193,12 @@ class simpleLdap(object):
 		ml = univention.admin.mapping.mapDiff(self.mapping, diff_ml)
 		ml = self._post_map(ml, diff_ml)
 
-		# policies
-		if self.policies != self.oldpolicies:
-			if 'univentionPolicyReference' not in self.oldattr.get('objectClass', []):
+		if self.policiesChanged():
+			policy_ocs_set = 'univentionPolicyReference' in self.oldattr.get('objectClass', [])
+			if self.policies and not policy_ocs_set:
 				ml.append(('objectClass', '', ['univentionPolicyReference']))
+			elif not self.policies and policy_ocs_set:
+				ml.append(('objectClass', 'univentionPolicyReference', ''))
 			ml.append(('univentionPolicyReference', self.oldpolicies, self.policies))
 
 		return ml

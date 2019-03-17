@@ -1,3 +1,10 @@
+univention-directory-manager-modules (14.0.12-21) unstable; urgency=medium
+
+  * Bug #46466: remove object class univentionPolicyReference if no
+    policy is assigned
+
+ -- Florian Best <best@univention.de>  Thu, 11 Apr 2019 10:06:06 +0200
+
 univention-directory-manager-modules (14.0.12-20) unstable; urgency=medium
 
   * Bug #48551: fix extended attribute layout when group is not
