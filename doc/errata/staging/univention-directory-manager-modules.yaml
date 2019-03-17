@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-directory-manager-modules
-fix: 
+fix: 14.0.12-11A~4.4.0.201903172134
 desc: |
  This update addresses the following issue(s):
  * udm users/user create without --set username does not cause a exception
@@ -13,4 +13,6 @@ desc: |
  * The computers/* UDM handlers now share a common base class. Code
    redundancy has therefore been reduced.
  * The UMC now uses json instead of simplejson.
-bug: [48441,42791,27804,41659,35687]
+ * It is now possible again to modify the LDAP base, for example reference policies.
+   This was broken since UCS 4.3-0.
+bug: [48441,42791,27804,41659,35687,47377]
