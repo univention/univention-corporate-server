@@ -85,6 +85,7 @@ if [ "$1" = "configure" -a -n "$2" ]; then
 		dc_content="$(echo "$dc_content" | grep '^univentionComputersObject:' | grep -v -i -e "^univentionComputersObject: cn=computers,$ldap_base" -e "^univentionComputersObject: cn=memberserver,cn=computers,$ldap_base" | sed 's/^univentionComputersObject/univentionDomainControllerComputersObject/g')"
 
 		if [ -n "$dc_dn" -a -n "$dc_content" ]; then
+			invoke-rc.d slapd restart  # apply new schema
 			cat <<__LDIF__ | ldapmodify -QY EXTERNAL -H ldapi:///
 dn: $dc_dn
 changetype: modify
