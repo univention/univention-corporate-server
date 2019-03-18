@@ -31,18 +31,41 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/dom-class",
 	"dojo/on",
+	"dijit/form/ToggleButton",
 	"umc/widgets/TextBox",
 	"umc/widgets/_FormWidgetMixin",
 	"put-selector/put"
-], function(declare, lang, on, TextBox, _FormWidgetMixin, put) {
+], function(declare, lang, domClass, on, ToggleButton, TextBox, _FormWidgetMixin, put) {
 	return declare("umc.widgets.PasswordBox", [ TextBox, _FormWidgetMixin ], {
 		type: 'password',
+		_setTypeAttr: { node: 'focusNode', type: 'attribute' },
 
 		autocomplete: 'new-password',
 
+		/**
+		 * If true a button is shown that toggles whether the password is 
+		 * shown in cleartext or not.
+		 */
+		showRevealToggle: false,
+
 		buildRendering: function() {
 			this.inherited(arguments);
+			domClass.add(this.domNode, 'umcPasswordBox');
+
+			if (this.showRevealToggle) {
+				var revealToggle = new ToggleButton({
+					iconClass: 'umcEyeIcon',
+					'class': 'umcPasswordBox__revealToggle umcFlatButton umcIconButton--aligned-to-textfield',
+					tabindex: '-1'
+				});
+				revealToggle.placeAt(this, 'first');
+				on(revealToggle, 'change', lang.hitch(this, function(checked) {
+					revealToggle.set('iconClass', checked ? 'umcEyeCrossedOutIcon' : 'umcEyeIcon');
+					this.set('type', checked ? 'text' : 'password');
+				}));
+			}
 
 			// HACK / WORKAROUND to prevent autocompletion
 			//
