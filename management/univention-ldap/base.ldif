@@ -98,6 +98,7 @@ cn: default containers
 univentionComputersObject: cn=computers,@%@ldap/base@%@
 univentionComputersObject: cn=memberserver,cn=computers,@%@ldap/base@%@
 univentionComputersObject: cn=dc,cn=computers,@%@ldap/base@%@
+univentionDomainControllerComputersObject: cn=dc,cn=computers,@%@ldap/base@%@
 univentionDnsObject: cn=dns,@%@ldap/base@%@
 univentionDhcpObject: cn=dhcp,@%@ldap/base@%@
 univentionPolicyObject: cn=policies,@%@ldap/base@%@

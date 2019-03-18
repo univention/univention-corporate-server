@@ -133,6 +133,16 @@ property_descriptions = {
 		may_change=True,
 		identifies=False
 	),
+	'domaincontroller': univention.admin.property(
+		short_description=_('Domaincontroller Computer Link'),
+		long_description='',
+		syntax=univention.admin.syntax.ldapDn,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'networks': univention.admin.property(
 		short_description=_('Network Link'),
 		long_description='',
@@ -199,6 +209,9 @@ layout = [
 		Group(_('Computer Links'), layout=[
 			"computers",
 		]),
+		Group(_('Domaincontroller Computer Links'), layout=[
+			"domaincontroller",
+		]),
 		Group(_('Policy Links'), layout=[
 			"policies",
 		]),
@@ -234,6 +247,7 @@ mapping.register('dhcp', 'univentionDhcpObject')
 mapping.register('users', 'univentionUsersObject')
 mapping.register('groups', 'univentionGroupsObject')
 mapping.register('computers', 'univentionComputersObject')
+mapping.register('domaincontroller', 'univentionDomainControllerComputersObject')
 mapping.register('networks', 'univentionNetworksObject')
 mapping.register('shares', 'univentionSharesObject')
 mapping.register('printers', 'univentionPrintersObject')

@@ -69,7 +69,7 @@ from univention.config_registry import handler_set
 import univention.directory.reports as udr
 
 from .udm_ldap import (
-	UDM_Error, UDM_Module, UDM_Settings,
+	UDM_Error, UDM_Module,
 	ldap_dn2path, get_module, read_syntax_choices, list_objects, _get_syntax,
 	LDAP_Connection, set_bind_function, container_modules,
 	info_syntax_choices, search_syntax_choices_by_key,
@@ -177,8 +177,6 @@ class Instance(Base, ProgressMixin):
 		set_bind_function(self.bind_user_connection)
 
 		# read user settings and initial UDR
-		self.settings = UDM_Settings()
-		self.settings.user(self.user_dn)
 		self.reports_cfg = udr.Config()
 		self.modules_with_childs = container_modules()
 
@@ -723,8 +721,8 @@ class Instance(Base, ProgressMixin):
 			obj.modify()
 
 	@module_from_request
-	@simple_response(with_flavor=True)
-	def containers(self, module, flavor):
+	@simple_response()
+	def containers(self, module):
 		"""Returns the list of default containers for the given object
 		type. Therefor the python module and the default object in the
 		LDAP directory are searched.
@@ -734,11 +732,7 @@ class Instance(Base, ProgressMixin):
 
 		return: [ { 'id' : <LDAP DN of container>, 'label' : <name> }, ... ]
 		"""
-		containers = module.containers
-
-		if self.settings is not None:
-			containers += self.settings.containers(flavor)
-
+		containers = [{'id': x, 'label': ldap_dn2path(x)} for x in module.get_default_containers()]
 		containers.sort(cmp=lambda x, y: cmp(x['label'].lower(), y['label'].lower()))
 		return containers
 

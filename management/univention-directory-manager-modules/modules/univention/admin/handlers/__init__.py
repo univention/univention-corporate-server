@@ -1639,6 +1639,29 @@ class simpleLdap(object):
 		return 'synced' in flags and 'docker' not in flags
 
 	@classmethod
+	def get_default_containers(cls, lo):
+		"""
+		Returns list of default containers for this module.
+
+		:param univention.admin.uldap.access lo: UDM LDAP access object.
+		"""
+		containers = univention.admin.modules.defaultContainers(univention.admin.modules.get_module(cls.module))
+		settings_directory = univention.admin.modules.get_module('settings/directory')
+		try:
+			default_containers = settings_directory.lookup(None, lo, '', required=True)[0]
+		except univention.admin.uexceptions.noObject:
+			return containers
+
+		base = cls.module.split('/', 1)[0]
+		if base == 'shares/print':
+			base = 'printers'
+		elif cls.module in ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/windows_domaincontroller'):
+			base = 'domaincontroller'
+
+		containers.extend(default_containers.info.get(base, []))
+		return containers
+
+	@classmethod
 	def lookup(cls, co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):  # type: (univention.admin.uldap.config, univention.admin.uldap.access, str, str, Optional[str], str, bool, bool, int, int) -> list[simpleLdap]
 		"""
 		Perform a LDAP search and return a list of instances.
@@ -1684,10 +1707,7 @@ class simpleLdap(object):
 		filter_p = cls.unmapped_lookup_filter()
 		# there are instances where the lookup/lookup_filter method of an module handler is called before
 		# univention.admin.modules.update() was performed. (e.g. management/univention-directory-manager-modules/univention-dnsedit)
-		module = univention.admin.modules.get(cls.module)
-		if not module:
-			univention.admin.modules.update()
-			module = univention.admin.modules.get(cls.module)
+		module = univention.admin.modules.get_module(cls.module)
 		filter_p.append_unmapped_filter_string(filter_s, cls.rewrite_filter, module.mapping)
 		return filter_p
 
@@ -1710,11 +1730,8 @@ class simpleLdap(object):
 	@classmethod
 	def rewrite_filter(cls, filter, mapping):
 		key = filter.variable
-		mod = univention.admin.modules.get(cls.module)
-		if not mod:
-			# management/univention-management-console/src/univention/management/console/acl.py does not call univention.admin.modules.update()
-			univention.admin.modules.update()
-			mod = univention.admin.modules.get(cls.module)
+		# management/univention-management-console/src/univention/management/console/acl.py does not call univention.admin.modules.update()
+		mod = univention.admin.modules.get_module(cls.module)
 		property_ = mod.property_descriptions.get(key)
 		if property_ and not isinstance(filter.value, (list, tuple)):
 			if property_.multivalue:

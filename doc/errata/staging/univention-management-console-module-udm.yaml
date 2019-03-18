@@ -5,9 +5,10 @@ scope: ucs_4.4-0-errata4.4-0
 src: univention-management-console-module-udm
 fix: 9.0.11-5A~4.4.0.201903151328
 desc: |-
-  This update addresses the following issue(s):
-  * Rely on the App Center listener to create the App Attributes mapping
-    rather than doing it in the UMC module
-  * Preparations for better browser cache-control have been implemented.
-  * Prevent high CPU usage in the "Users" module.
-bug: [48895, 48995, 47985]
+ This update addresses the following issue(s):
+ * Rely on the App Center listener to create the App Attributes mapping
+   rather than doing it in the UMC module
+ * Preparations for better browser cache-control have been implemented.
+ * Prevent high CPU usage in the "Users" module.
+ * Default containers for domain controller computer objects can now be configured.
+bug: [48895, 48995, 47985, 46919]
