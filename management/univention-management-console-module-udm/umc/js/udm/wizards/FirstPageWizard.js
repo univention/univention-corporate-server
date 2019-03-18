@@ -370,8 +370,9 @@ define([
 					label: _('Container'),
 					description: _('The container in which the LDAP object shall be created.'),
 					autoHide: true,
+					// depends: ['objectType'], // causes dependency loop, moved to objectType.onChange()
 					dynamicValues: lang.hitch(this, function() {
-						return this.moduleCache.getContainers().then(function(result) {
+						return this.moduleCache.getContainers(this.getWidget('objectType').get('value') || undefined).then(function(result) {
 							result.sort(tools.cmpObjects('label'));
 							return array.filter(result, function(icontainer) {
 								return icontainer.id !== 'all';
@@ -412,6 +413,10 @@ define([
 							result.sort(tools.cmpObjects('label'));
 							return result;
 						});
+					}),
+					onChange: lang.hitch(this, function() {
+						this.getWidget('firstPage', 'container').reloadDynamicValues();
+						//this.standbyDuring(this.getWidget('firstPage', 'container').ready());
 					}),
 					size: 'Two'
 				});
