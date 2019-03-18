@@ -334,6 +334,9 @@ class UCSInstallation(object):
 		else:
 			print('move mouse')
 			self.client.mouseMove(325, 300)
+			self.client.mousePress(1)
+			time.sleep(1)
+			self.client.mousePress(1)
 			for name, steps in components.iteritems():
 				if name in self.args.components:
 					# go to the top
