@@ -586,7 +586,7 @@ univention-directory-listener-verify \
 				<graphic scalefit="1" width="80%" fileref="illustrations44/ListenerNotifier.png"/>
 			</figure>
 			<para>
-				On startup the listener connects to the notifier and opens a persistent <abbrev>TCP</abbrev> connection.
+				On startup the listener connects to the notifier and opens a persistent <abbrev>TCP</abbrev> connection to port 6669.
 				The host can be configured through several &ucsUCRV;s:
 			</para>
 			<itemizedlist>
@@ -620,42 +620,44 @@ univention-directory-listener-verify \
 				</step>
 				<step>
 					<para>
-						The UCS-specific overlay-module <filename>translog</filename> appends the <abbrev>DN</abbrev> to the file <filename>/var/lib/univention-ldap/listener/listener</filename><footnote><simpara>Referred to as <varname>FILE_NAME_LISTENER</varname>, <varname>TRANSACTION_FILE</varname> in the source code</simpara></footnote>.
+						The UCS-specific overlay-module <filename>translog</filename> assigns the next transaction number.
+						It uses the file <filename>/var/lib/univention-ldap/last_id</filename> to keep track of the last transaction number.
+						As a fallback the transaction number of the last entry from the file <filename>/var/lib/univention-ldap/notify/transaction</filename> is used.
+						The module appends the transaction <abbrev>ID</abbrev>, <abbrev>DN</abbrev> and change type to the file <filename>/var/lib/univention-ldap/listener/listener</filename><footnote><simpara>Referred to as <varname>FILE_NAME_LISTENER</varname>, <varname>TRANSACTION_FILE</varname> in the source code</simpara></footnote>.
 					</para>
 				</step>
 				<step>
 					<para>
 						The &ucsUDN; watches that file, picks up and removes each line it processed.
-						It assigns the next transaction number and writes it into the file <filename>/var/lib/univention-ldap/notify/transaction</filename><footnote><simpara>Referred to as <varname>FILE_NAME_TF</varname> in the source code</simpara></footnote>, including the <abbrev>DN</abbrev> and change type.
+						The transaction is appended to the file <filename>/var/lib/univention-ldap/notify/transaction</filename><footnote><simpara>Referred to as <varname>FILE_NAME_TF</varname> in the source code</simpara></footnote>, including the <abbrev>DN</abbrev>.
 						For efficient access by transaction ID the index <filename>transaction.index</filename> is updated.
 					</para>
 				</step>
 				<step>
 					<para>
 						All listeners get notified of the new transaction.
-					</para>
-				</step>
-				<step>
-					<para>
-						Each listener triggered in this way queries the Notifier for the latest transaction ID, <abbrev>DN</abbrev> and change type.
+						Before UCS <productnumber>4.3-3</productnumber> <ulink url="http://errata.software-univention.de/ucs/4.3/427.html">erratum update 427</ulink> the information already included the latest transaction <abbrev>ID</abbrev>, <abbrev>DN</abbrev> and the change type.
+						With protocol version 3 only the transaction <abbrev>ID</abbrev> is included.
 					</para>
 				</step>
 				<step>
 					<para>
 						Each listener opens a connection to the LDAP server running on the UCS system which was used to query the Notifier.
-						It retrieves the latest state of the object identified through the <abbrev>DN</abbrev>.
+						With protocol version 3 the listener first queries the LDAP server for the missing <abbrev>DN</abbrev> and change type information by retrieving the entry <uri>reqSession=<replaceable>ID</replaceable>,cn=translog</uri>.
+						With that it retrieves the latest state of the object identified through the <abbrev>DN</abbrev>.
 						If access is blocked, for example, by <firstterm>selective replication</firstterm>, the change is handled as a delete operation instead.
 					</para>
 				</step>
 				<step>
 					<para>
-						The old state of the object is fetched from the local listener cache.
+						The old state of the object is fetched from the local listener cache located in <filename class="directory">/var/lib/univention-directory-listener/cache/</filename>.
 					</para>
 				</step>
 				<step>
 					<para>
 						For each module it is checked, if either the old or new state of the object matches the <varname>filter</varname> and <varname>attributes</varname> specified in the corresponding Python variables.
 						If not, the module is skipped.
+						<filename>replication.py</filename> is always called first to guarantee that the data is available from the local LDAP server for all subsequent modules.
 					</para>
 				</step>
 				<step>
