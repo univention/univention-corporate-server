@@ -332,16 +332,17 @@ class UCSInstallation(object):
 			self.client.mouseMove(325, 200)
 			self.client.mousePress(1)
 		else:
-			self.client.mouseMove(325, 200)
-			self.client.mousePress(1)
-			self.client.mousePress(1)
+			print('move mouse')
+			self.client.mouseMove(325, 300)
 			for name, steps in components.iteritems():
 				if name in self.args.components:
 					# go to the top
+					print('go up')
 					for step in range(1, 20):
 						self.client.keyPress('up')
 						time.sleep(0.2)
 					for step in range(1, steps):
+						print('go down')
 						self.client.keyPress('down')
 						time.sleep(0.2)
 					self.click(self._[name])
