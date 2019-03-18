@@ -91,7 +91,7 @@ def getRootDnConnection(start_tls=2, decode_ignorelist=[], reconnect=True):  # t
 		bindpw = open('/etc/ldap.secret').read().rstrip('\n')
 		binddn = 'cn=admin,{0}'.format(ucr['ldap/base'])
 	else:
-		bindpw = open('/etc/ldap/rootpw.conf').read().rstrip('\n').lstrip('rootpw "').rstrip('"')
+		bindpw = open('/etc/ldap/rootpw.conf').read().rstrip('\n').replace('rootpw "', '', 1)[:-1]
 		binddn = 'cn=update,{0}'.format(ucr['ldap/base'])
 	return access(host=host, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 

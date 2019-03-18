@@ -1,3 +1,9 @@
+univention-python (12.0.0-2) unstable; urgency=medium
+
+  * Bug #49024: fixed getRootDnConnection
+
+ -- Felix Botner <botner@univention.de>  Mon, 18 Mar 2019 10:02:14 +0100
+
 univention-python (12.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump
