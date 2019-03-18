@@ -143,6 +143,8 @@ def doit(arglist):
 		except:
 			args[i] = codecs.latin_1_decode(args[i])[0]
 
+	univention.admin.modules.update()
+
 	if len(args) == 1:
 		if scope == 'machine':
 			machine = args[0]

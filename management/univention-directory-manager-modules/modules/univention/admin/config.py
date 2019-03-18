@@ -37,6 +37,9 @@ import univention.admin.uldap
 class config:
 	"""
 	UDM configuration object.
+
+	.. deprecated:: UCS 4.4
+		use None instead
 	"""
 
 	def __init__(self, host=''):
@@ -65,7 +68,9 @@ class config:
 
 def getDefaultContainer(lo, module):
 	"""
-	Return the default container for a UDM module.
+	Return any random default container for a UDM module.
+
+	.. deprecated:: UCS 4.4
 
 	:param univention.admin.uldap.access lo: A LDAP connection object.
 	:param module: The name of a UDM module.
@@ -73,29 +78,12 @@ def getDefaultContainer(lo, module):
 	:returns: A distinguished name.
 	:rtype: str
 	"""
-	if isinstance(module, type('str')):
-		if module == 'users/user':
-			att = 'univentionUsersObject'
-		elif module == 'groups/group':
-			att = 'univentionGroupsObject'
-		elif module == 'computers/windows':
-			att = 'univentionComputersObject'
-		elif module.startswith('dns/'):
-			att = 'univentionDnsObject'
-	else:
-		module = univention.admin.modules.name(module)
-
-		if module == 'users/user':
-			att = 'univentionUsersObject'
-		elif module == 'groups/group':
-			att = 'univentionGroupsObject'
-		elif module == 'computers/windows':
-			att = 'univentionComputersObject'
-		elif module.startswith('dns/'):
-			att = 'univentionDnsObject'
-
-	dn, attrs = lo.search(filter='objectClass=univentionDirectory', attr=[att], scope='domain', unique=True, required=True)[0]
-	return attrs.get(att, [None])[0]
+	if module == 'dns/':
+		module = 'dns/dns'
+	try:
+		univention.admin.modules.get(module).object.get_default_containers(lo)[0]
+	except IndexError:
+		return None
 
 
 def getDefaultValue(lo, name, position=None):

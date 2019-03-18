@@ -406,6 +406,7 @@ def main():
 	global position
 	lo, position = bind()
 
+	univention.admin.modules.update()
 	if typ != 'zone' or command == 'remove':
 		global zone
 		zone = lookup_zone(zone_name)

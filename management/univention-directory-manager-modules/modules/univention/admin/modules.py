@@ -48,6 +48,11 @@ import univention.admin.hook
 from univention.admin import localization
 from univention.admin.layout import Tab, Group, ILayoutElement
 
+import univention.config_registry
+
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
+
 translation = localization.translation('univention/admin')
 _ = translation.translate
 
@@ -108,6 +113,16 @@ def get(module):
 	if isinstance(module, types.StringTypes):
 		return modules.get(module)
 	return module
+
+
+def get_module(module):
+	'''interim function, must only be used by univention-directory-manager-modules!
+		.. deprecated :: UCS 4.4
+	'''
+	if not modules:
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'univention.admin.modules.update() was not called')
+		update()
+	return get(module)
 
 
 def init(lo, position, module, template_object=None, force_reload=False):
@@ -908,14 +923,8 @@ def defaultContainers(module):
 	'''checks for the attribute default_containers that should contain a
 	list of RDNs of default containers. This function returns a list of
 	DNs.'''
-	dns = []
-	if hasattr(module, 'default_containers'):
-		rdns = module.default_containers
-		base = univention.admin.uldap.getBaseDN()
-		for rdn in rdns:
-			dns.append('%s,%s' % (rdn, base))
-
-	return dns
+	base = configRegistry['ldap/base']
+	return ['%s,%s' % (rdn, base) for rdn in getattr(module, 'default_containers', [])]
 
 
 def childModules(module_name):

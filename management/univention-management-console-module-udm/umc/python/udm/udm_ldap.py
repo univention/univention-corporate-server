@@ -396,7 +396,6 @@ class UDM_Module(object):
 		self._initialized_with_module = module
 		self.module = None
 		self.load(force_reload=force_reload)
-		self.settings = UDM_Settings()
 		if force_reload:
 			AppAttributes._cache = None
 
@@ -1012,13 +1011,10 @@ class UDM_Module(object):
 		"""List of UDM module names of templates"""
 		return getattr(self.module, 'template', None)
 
-	@property
-	def containers(self):
+	@LDAP_Connection
+	def get_default_containers(self, ldap_connection=None, ldap_position=None):
 		"""List of LDAP DNs of default containers"""
-		containers = getattr(self.module, 'default_containers', [])
-		ldap_base = ucr.get('ldap/base')
-
-		return map(lambda x: {'id': '%s,%s' % (x, ldap_base), 'label': ldap_dn2path('%s,%s' % (x, ldap_base))}, containers)
+		return self.module.object.get_default_containers(ldap_connection)
 
 	@property
 	def superordinate_names(self):
@@ -1063,78 +1059,6 @@ class UDM_Module(object):
 			if self.name in children:
 				return mod.name
 		return self.name
-
-
-class UDM_Settings(object):
-
-	"""Provides access to different kinds of settings regarding UDM"""
-	Singleton = None
-
-	@staticmethod
-	def __new__(cls):
-		if UDM_Settings.Singleton is None:
-			UDM_Settings.Singleton = super(UDM_Settings, cls).__new__(cls)
-
-		return UDM_Settings.Singleton
-
-	def __init__(self):
-		"""Reads the policies for the current user"""
-		if hasattr(self, 'initialized'):
-			return
-		self.initialized = True
-		self.user_dn = None
-		self.policies = None
-		self.read()
-
-	def read(self):
-		self._read_directories()
-		self._read_groups()
-
-	@LDAP_Connection
-	def _read_directories(self, ldap_connection=None, ldap_position=None):
-		try:
-			directories = udm_modules.lookup('settings/directory', None, ldap_connection, scope='sub')
-		except udm_errors.noObject:
-			directories = None
-
-		if not directories:
-			self.directory = None
-		else:
-			self.directory = directories[0]
-
-	@LDAP_Connection
-	def _read_groups(self, ldap_connection=None, ldap_position=None):
-		try:
-			groups = udm_modules.lookup('settings/default', None, ldap_connection, scope='sub')
-		except udm_errors.noObject:
-			groups = None
-
-		if not groups:
-			self.groups = None
-		else:
-			self.groups = groups[0]
-
-	@LDAP_Connection
-	def user(self, user_dn, ldap_connection=None, ldap_position=None):
-		self.user_dn = user_dn
-		self.policies = ldap_connection.getPolicies(self.user_dn)
-
-	def containers(self, module_name):
-		"""Returns list of default containers for a given UDM module"""
-		base, name = split_module_name(module_name)
-
-		# the printer modules does not have the same name scheme
-		if module_name == 'shares/print':
-			base = 'printers'
-
-		self._read_directories()
-
-		if self.directory is None:
-			return []
-		return map(lambda x: {'id': x, 'label': ldap_dn2path(x)}, self.directory.info.get(base, []))
-
-	def resultColumns(self, module_name):
-		pass
 
 
 def container_modules():

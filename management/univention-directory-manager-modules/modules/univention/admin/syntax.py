@@ -4590,8 +4590,7 @@ class PortalCategorySelection(simple):
 
 	@classmethod
 	def parse(self, texts, minn=None):
-		# for udm-cli
-		if type(texts) == str:
+		if isinstance(texts, basestring):  # for UDM-CLI
 			try:
 				texts = json.loads(texts)
 			except ValueError:
