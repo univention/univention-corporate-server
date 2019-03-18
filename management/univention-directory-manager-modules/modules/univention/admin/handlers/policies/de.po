@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-02-22 13:37+0100\n"
+"POT-Creation-Date: 2019-03-18 14:43+0100\n"
 "PO-Revision-Date: 2011-10-29 22:19+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -82,7 +82,7 @@ msgstr "Erlauben/Verbieten"
 msgid "Allow/Deny/Ignore statements"
 msgstr "Erlauben/Verbieten/Ignorieren-Einstellungen"
 
-#: modules/univention/admin/handlers/policies/umc.py:55
+#: modules/univention/admin/handlers/policies/umc.py:56
 msgid "Allowed UMC operation sets"
 msgstr "Erlaubte UMC Operationen"
 
@@ -151,7 +151,7 @@ msgstr "Allgemeine DNS-Einstellungen"
 #: modules/univention/admin/handlers/policies/nfsmounts.py:111
 #: modules/univention/admin/handlers/policies/policy.py:72
 #: modules/univention/admin/handlers/policies/printserver.py:111
-#: modules/univention/admin/handlers/policies/umc.py:111
+#: modules/univention/admin/handlers/policies/umc.py:112
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
@@ -342,7 +342,7 @@ msgstr "Standard-Speicherplatzbegrenzung für jeden User auf der Freigabe"
 msgid "Define the name of the DHCP server"
 msgstr "Definiert den Namen des DHCP-Servers"
 
-#: modules/univention/admin/handlers/policies/umc.py:70
+#: modules/univention/admin/handlers/policies/umc.py:71
 msgid "Defines a set of allowed UMC operations"
 msgstr "Definiert eine Liste von erlaubten UMC Operationen"
 
@@ -473,7 +473,7 @@ msgstr ""
 #: modules/univention/admin/handlers/policies/repositorysync.py:152
 #: modules/univention/admin/handlers/policies/share_userquota.py:156
 #: modules/univention/admin/handlers/policies/slavepackages.py:122
-#: modules/univention/admin/handlers/policies/umc.py:111
+#: modules/univention/admin/handlers/policies/umc.py:112
 msgid "General"
 msgstr "Allgemein"
 
@@ -517,7 +517,7 @@ msgstr "Grundeinstellungen - LDAP-Server"
 msgid "General NFS mounts settings"
 msgstr "Grundeinstellungen - NFS-Freigaben"
 
-#: modules/univention/admin/handlers/policies/umc.py:112
+#: modules/univention/admin/handlers/policies/umc.py:113
 msgid "General UMC settings"
 msgstr "Grundeinstellungen - UMC"
 
@@ -686,7 +686,7 @@ msgstr "Liste der Directory Manager Module"
 msgid "List of WINS servers listed in order of preference"
 msgstr "Liste der WINS-Server nach Priorität"
 
-#: modules/univention/admin/handlers/policies/umc.py:92
+#: modules/univention/admin/handlers/policies/umc.py:93
 msgid "List of allowed UMC operation sets"
 msgstr "Liste der erlaubten UMC Operationen"
 
@@ -832,7 +832,7 @@ msgstr "NFS-Freigaben einbinden"
 #: modules/univention/admin/handlers/policies/repositorysync.py:81
 #: modules/univention/admin/handlers/policies/share_userquota.py:84
 #: modules/univention/admin/handlers/policies/slavepackages.py:81
-#: modules/univention/admin/handlers/policies/umc.py:81
+#: modules/univention/admin/handlers/policies/umc.py:82
 msgid "Name"
 msgstr "Name"
 
@@ -932,13 +932,14 @@ msgstr "Paketpflege durchführen vor Herunterfahren des Systems"
 msgid "Ping check"
 msgstr "Ping Check"
 
-#: modules/univention/admin/handlers/policies/policy.py:47
-msgid "Policy"
-msgstr "Richtlinie"
-
-#: modules/univention/admin/handlers/policies/policy.py:48
+#: modules/univention/admin/handlers/policies/policy.py:49
 msgid "Policies"
 msgstr "Richtlinien"
+
+#: modules/univention/admin/handlers/policies/policy.py:47
+#: modules/univention/admin/handlers/policies/policy.py:48
+msgid "Policy"
+msgstr "Richtlinie"
 
 #: modules/univention/admin/handlers/policies/release.py:67
 msgid "Policy: Automatic updates"
@@ -1028,7 +1029,7 @@ msgstr "Richtlinie: Repository-Synchronisation"
 msgid "Policy: Slave packages"
 msgstr "Richtlinie: Slave Pakete"
 
-#: modules/univention/admin/handlers/policies/umc.py:67
+#: modules/univention/admin/handlers/policies/umc.py:68
 msgid "Policy: UMC"
 msgstr "Richtlinie: UMC"
 
@@ -1281,11 +1282,11 @@ msgstr ""
 msgid "UCR Variables"
 msgstr "UCR-Variablen"
 
-#: modules/univention/admin/handlers/policies/umc.py:69
+#: modules/univention/admin/handlers/policies/umc.py:70
 msgid "UMC policies"
 msgstr "UMC-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/umc.py:68
+#: modules/univention/admin/handlers/policies/umc.py:69
 msgid "UMC policy"
 msgstr "UMC-Richtlinie"
 

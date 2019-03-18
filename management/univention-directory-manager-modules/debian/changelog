@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.12-13) unstable; urgency=medium
+
+  * Bug #46919: add missing german translations
+
+ -- Florian Best <best@univention.de>  Mon, 18 Mar 2019 14:49:14 +0100
+
 univention-directory-manager-modules (14.0.12-12) unstable; urgency=medium
 
   * Bug #46919: add default containers for DC computers
