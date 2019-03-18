@@ -5,10 +5,9 @@ scope: ucs_4.2-0-errata4.2-5
 src: systemd
 fix: 215-17+deb8u11A~4.2.5.201903180838
 desc: |
- This update addresses the following issues:
- * memory leak in journald-server.c introduced by fix for CVE-2018-16864
+ This update addresses the following issue:
+ * Memory leak in journald-server.c introduced by fix for CVE-2018-16864
    (CVE-2019-3815)
 bug: [49019]
 cve:
 - CVE-2019-3815
-- CVE-2018-16864
