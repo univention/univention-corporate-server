@@ -752,6 +752,10 @@ def _doit(arglist):
 				out.append('E: Invalid Syntax: %s' % err)
 				return out + ["OPERATION FAILED"]
 
+			default_containers = object.get_default_containers(lo)
+			if default_containers and position.isBase() and not any(lo.compare_dn(default_container, position.getDn()) for default_container in default_containers):
+				out.append('WARNING: The object is not going to be created underneath of its default containers.')
+
 			exists = 0
 			exists_msg = None
 			created = False
@@ -900,7 +904,7 @@ def _doit(arglist):
 						object.options.remove(option)
 					except ValueError:
 						parsed_remove_options.remove(option)
-						out.append('Warning: option %r is not set. Ignoring.' % (option,))
+						out.append('WARNING: option %r is not set. Ignoring.' % (option,))
 				try:
 					out.extend(object_input(module, object, input, append, remove))
 				except univention.admin.uexceptions.valueMayNotChange, e:
