@@ -35,7 +35,7 @@ if __name__ == '__main__':
 		udm.modify_object('dns/reverse_zone', dn=reverse_zone, ttl=reverse_zone_properties['ttl'])
 		wait_for_s4connector()
 		utils.verify_ldap_object(reverse_zone, {'sOARecord': ['%s %s. %s %s %s %s %s' % (
-			reverse_zone_properties['nameserver'] + '.',
+			reverse_zone_properties['nameserver'] + '.' if utils.package_installed('univention-s4-connector') else reverse_zone_properties['nameserver'],
 			reverse_zone_properties['contact'].replace('@', '.'),
 			'3' if utils.package_installed('univention-s4-connector') else '2',
 			reverse_zone_properties['refresh'],
@@ -56,23 +56,12 @@ if __name__ == '__main__':
 		reverse_zone_properties['ttl'] = '12'
 		udm.modify_object('dns/reverse_zone', dn=reverse_zone, ttl=reverse_zone_properties['ttl'])
 		wait_for_s4connector()
-		if utils.package_installed('univention-s4-connector'):
-			utils.verify_ldap_object(reverse_zone, {'sOARecord': ['%s %s. %s %s %s %s %s' % (
-				reverse_zone_properties['nameserver'] + '.',
-				reverse_zone_properties['contact'].replace('@', '.'),
-				'3',
-				reverse_zone_properties['refresh'],
-				reverse_zone_properties['retry'],
-				reverse_zone_properties['expire'],
-				reverse_zone_properties['ttl']
-			)]})
-		else:
-			utils.verify_ldap_object(reverse_zone, {'sOARecord': ['%s %s. %s %s %s %s %s' % (
-				reverse_zone_properties['nameserver'],
-				reverse_zone_properties['contact'].replace('@', '.'),
-				'2',
-				reverse_zone_properties['refresh'],
-				reverse_zone_properties['retry'],
-				reverse_zone_properties['expire'],
-				reverse_zone_properties['ttl']
-			)]})
+		utils.verify_ldap_object(reverse_zone, {'sOARecord': ['%s %s. %s %s %s %s %s' % (
+			reverse_zone_properties['nameserver'] + '.' if utils.package_installed('univention-s4-connector') else reverse_zone_properties['nameserver'],
+			reverse_zone_properties['contact'].replace('@', '.'),
+			'3' if utils.package_installed('univention-s4-connector') else '2',
+			reverse_zone_properties['refresh'],
+			reverse_zone_properties['retry'],
+			reverse_zone_properties['expire'],
+			reverse_zone_properties['ttl']
+		)]})
