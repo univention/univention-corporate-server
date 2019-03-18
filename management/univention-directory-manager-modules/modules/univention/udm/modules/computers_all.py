@@ -76,20 +76,9 @@ class ComputersAllModule(GenericModule):
 class ComputersDCModule(ComputersAllModule):
 	"""ComputersAllObject factory with an adjusted default position"""
 
-	def _get_default_object_positions(self):
-		ret = super(ComputersDCModule, self)._get_default_object_positions()
-		if len(ret) == 4 and \
-			'cn=computers,{}'.format(self.connection.base) in ret and \
-			'cn=memberserver,cn=computers,{}'.format(self.connection.base) in ret and \
-			'cn=dc,cn=computers,{}'.format(self.connection.base) in ret and \
-			self.connection.base in ret:
-				ret.remove('cn=dc,cn=computers,{}'.format(self.connection.base))
-				ret.insert(0, 'cn=dc,cn=computers,{}'.format(self.connection.base))
-		return ret
-
 	class Meta:
 		supported_api_versions = [1, 2]
-		default_positions_property = 'computers'
+		default_positions_property = 'domaincontroller'
 		suitable_for = ['computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave']
 
 

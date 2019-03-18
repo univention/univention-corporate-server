@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.12-14) unstable; urgency=medium
+
+  * Bug #46919: adjust also univention.udm
+
+ -- Florian Best <best@univention.de>  Mon, 18 Mar 2019 15:16:01 +0100
+
 univention-directory-manager-modules (14.0.12-13) unstable; urgency=medium
 
   * Bug #46919: add missing german translations
