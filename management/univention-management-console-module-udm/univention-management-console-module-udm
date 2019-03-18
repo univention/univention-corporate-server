@@ -61,7 +61,7 @@ import xml.etree.cElementTree as ET
 
 from univention.management.console.config import ucr
 from univention.management.console.ldap import get_user_connection, get_machine_connection
-from univention.management.console.modules.udm.udm_ldap import get_module, set_bind_function, UDM_Module, ldap_dn2path, read_syntax_choices, UDM_Settings, _get_syntax, container_modules, UDM_Error
+from univention.management.console.modules.udm.udm_ldap import get_module, set_bind_function, UDM_Module, ldap_dn2path, read_syntax_choices, _get_syntax, container_modules, UDM_Error
 from univention.management.console.modules.udm.udm_ldap import SuperordinateDoesNotExist, NoIpLeft
 from univention.management.console.modules.udm.tools import check_license, LicenseError
 import univention.directory.reports as udr
@@ -561,14 +561,9 @@ class Containers(Ressource):
 		LDAP directory are searched.
 		"""
 		module = self.get_module(object_type)
-		containers = module.containers
-
-		if self.settings is not None:
-			settings = UDM_Settings()
-			settings.user(self.request.user_dn)
-			containers += settings.containers(object_type)
-
+		containers = [{'id': x, 'label': ldap_dn2path(x)} for x in module.get_default_containers()]
 		containers.sort(cmp=lambda x, y: cmp(x['label'].lower(), y['label'].lower()))
+		return containers
 
 		self.content_negotiation(containers)
 
