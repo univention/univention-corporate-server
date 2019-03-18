@@ -15,4 +15,5 @@ desc: |
  * The UMC now uses json instead of simplejson.
  * It is now possible again to modify the LDAP base, for example reference policies.
    This was broken since UCS 4.3-0.
-bug: [48441,42791,27804,41659,35687,47377]
+ * Default containers for domain controller computer objects can now be configured.
+bug: [48441,42791,27804,41659,35687,47377,46919]
