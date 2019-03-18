@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-directory-reports
-fix: 
+fix: 0
 desc: |
  This update addresses the following issue(s):
  * The use of obsolete univention.admin.config has been removed.
