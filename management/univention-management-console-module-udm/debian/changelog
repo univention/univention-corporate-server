@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.11-6) unstable; urgency=medium
+
+  * Bug #46919: add default containers for DC computers
+
+ -- Florian Best <best@univention.de>  Mon, 18 Mar 2019 14:03:23 +0100
+
 univention-management-console-module-udm (9.0.11-5) unstable; urgency=medium
 
   * Bug #47895: prevent high cpu usage in users/user module
