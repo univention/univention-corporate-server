@@ -78,6 +78,22 @@ if [ "$1" = "configure" -a -n "$2" ]; then
 			rm "$diversion_target"
 		fi
 	fi
+	eval "$(ucr shell ldap/base server/role)"
+	if [ -e /var/univention-join/joined -a "$server_role" = "domaincontroller_master" ] && dpkg --compare-versions "$2" lt '15.0.0-16'; then
+		dc_content="$(ldapsearch -QLLLo ldif-wrap=no -Y EXTERNAL -H ldapi:/// -b "$(ucr get ldap/base)" -z 1 "objectClass=univentionDirectory" "univentionComputersObject")"
+		dc_dn="$(echo "$dc_content" | sed -ne 's/^dn: //p;T;q')"
+		dc_content="$(echo "$dc_content" | grep '^univentionComputersObject:' | grep -v -i -e "^univentionComputersObject: cn=computers,$ldap_base" -e "^univentionComputersObject: cn=memberserver,cn=computers,$ldap_base" | sed 's/^univentionComputersObject/univentionDomainControllerComputersObject/g')"
+
+		if [ -n "$dc_dn" -a -n "$dc_content" ]; then
+			cat <<__LDIF__ | ldapmodify -QY EXTERNAL -H ldapi:///
+dn: $dc_dn
+changetype: modify
+add: univentionDomainControllerComputersObject
+$dc_content
+
+__LDIF__
+		fi
+	fi
 fi
 
 exit 0
