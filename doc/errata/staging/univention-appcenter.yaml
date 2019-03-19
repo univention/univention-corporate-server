@@ -8,4 +8,5 @@ desc: |-
   This update addresses the following issue(s):
   * Added a new listener to save a mapping for App Attributes that the UDM UMC
     module may read
-bug: [48895]
+  * Extended Attributes are only searched for in the correct LDAP container
+bug: [48895, 48982]
