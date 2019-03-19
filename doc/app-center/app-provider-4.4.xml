@@ -1194,14 +1194,35 @@ docker-compose -p $appid logs
 
     <section id="app-workflow:installation">
         <title>Installation</title>
+
+        <para>
+			<figure id="app-workflow:app-flow:install">
+				<title>App workflow for installation</title>
+				<graphic scalefit="1" width="100%" fileref="illustrations44/app-flow-install.png"/>
+            </figure>
+        </para>
     </section>
 
     <section id="app-workflow:update">
         <title>Update</title>
+
+        <para>
+			<figure id="app-workflow:app-flow:update">
+				<title>App workflow for update</title>
+				<graphic scalefit="1" width="100%" fileref="illustrations44/app-flow-update.png"/>
+            </figure>
+        </para>
     </section>
 
     <section id="app-workflow:remove">
-        <title>Uninstallation</title>
+        <title>Removal</title>
+
+        <para>
+			<figure id="app-workflow:app-flow:remove">
+				<title>App workflow for Removal</title>
+				<graphic scalefit="1" width="100%" fileref="illustrations44/app-flow-remove.png"/>
+            </figure>
+        </para>
     </section>
 
 </chapter>
