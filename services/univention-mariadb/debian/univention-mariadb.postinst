@@ -94,6 +94,7 @@ case "$1" in
 	fi
 esac
 
+systemctl --system daemon-reload >/dev/null
 service mariadb restart
 
 exit 0

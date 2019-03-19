@@ -1,3 +1,9 @@
+univention-mariadb (2.0.0-5) unstable; urgency=medium
+
+  * Bug #46901: Make system daemon reload after mariadb install
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 19 Mar 2019 15:43:50 +0100
+
 univention-mariadb (2.0.0-4) unstable; urgency=medium
 
   * Bug #46901: Fix description
