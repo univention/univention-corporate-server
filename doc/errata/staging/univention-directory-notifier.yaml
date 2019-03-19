@@ -10,3 +10,5 @@ desc: |
 bug: [48466]
 cve:
  - CVE-TMP48466
+ignore:
+ - cve.CVE-TMP48466
