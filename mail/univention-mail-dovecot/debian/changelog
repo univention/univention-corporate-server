@@ -1,3 +1,9 @@
+univention-mail-dovecot (4.0.0-14) unstable; urgency=low
+
+  * Bug #48628: prevent initial login of user without email address
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 19 Mar 2019 13:40:27 +0100
+
 univention-mail-dovecot (4.0.0-13) unstable; urgency=low
 
   * Bug #41018: update UCR variable descriptions
