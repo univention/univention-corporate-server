@@ -143,7 +143,7 @@ additional_user_filter_objectclasses = configRegistry.get("mail/dovecot/auth/lda
 additional_user_filter_objectclasses = additional_user_filter_objectclasses.split(",")
 if additional_user_filter_objectclasses[0]:
 	default_user_filter_objectclasses.extend(additional_user_filter_objectclasses)
-print 'user_filter = (&(|%s)(|(!(univentionMailHomeServer=*))(univentionMailHomeServer=%s.%s))(|(mailPrimaryAddress=%%Lu)(uid=%%u)))' % (
+print 'user_filter = (&(|%s)(|(!(univentionMailHomeServer=*))(univentionMailHomeServer=%s.%s))(|(mailPrimaryAddress=%%Lu)(&(uid=%%u)(mailPrimaryAddress=*))))' % (
 	"".join(["(objectClass=%s)" % obj for obj in default_user_filter_objectclasses]),
 	configRegistry.get("hostname"),
 	configRegistry.get("domainname"))
