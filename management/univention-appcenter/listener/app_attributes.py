@@ -61,6 +61,7 @@ class AppAttributes(ListenerModuleHandler):
 		if 'en_US' not in locales:
 			locales.append('en_US')
 		cache = {}
+		custom_attributes_base = 'cn=custom attributes,cn=univention,%s' % self.ucr.get('ldap/base')
 		for current_locale in locales:
 			locale_cache = cache[current_locale] = {}
 			app_objs = search_objects('appcenter/app', self.lo, self.po)
@@ -77,10 +78,10 @@ class AppAttributes(ListenerModuleHandler):
 			for app in apps.itervalues():
 				for attribute in app.umc_options_attributes:
 					attribute, option_name = (attribute.split(':', 1) * 2)[:2]
-					objs = search_objects('settings/extended_attribute', self.lo, self.po, CLIName=attribute)
+					objs = search_objects('settings/extended_attribute', self.lo, self.po, custom_attributes_base, CLIName=attribute)
 					for obj in objs:
 						for module in obj['module']:
-							if search_objects('settings/extended_options', self.lo, self.po, objectClass=obj['objectClass'], module=module):
+							if search_objects('settings/extended_options', self.lo, self.po, custom_attributes_base, objectClass=obj['objectClass'], module=module):
 								# a newer version of the App is installed that uses the
 								# superior settings/extended_option
 								continue
