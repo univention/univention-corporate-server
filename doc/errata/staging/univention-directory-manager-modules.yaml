@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-directory-manager-modules
-fix: 14.0.12-12A~4.4.0.201903181414
+fix: 14.0.12-15A~4.4.0.201903191108
 desc: |
  This update addresses the following issue(s):
  * udm users/user create without --set username does not cause a exception
@@ -13,7 +13,8 @@ desc: |
  * The computers/* UDM handlers now share a common base class. Code
    redundancy has therefore been reduced.
  * The UMC now uses json instead of simplejson.
- * It is now possible again to modify the LDAP base, for example reference policies.
-   This was broken since UCS 4.3-0.
- * Default containers for domain controller computer objects can now be configured.
+ * It is now possible again to modify the LDAP base, for example reference
+   policies.  This was broken since UCS 4.3-0.
+ * Default containers for domain controller computer objects can now be
+   configured.
 bug: [48441,42791,27804,41659,35687,47377,46919]

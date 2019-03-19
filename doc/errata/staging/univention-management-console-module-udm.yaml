@@ -10,5 +10,6 @@ desc: |-
    rather than doing it in the UMC module
  * Preparations for better browser cache-control have been implemented.
  * Prevent high CPU usage in the "Users" module.
- * Default containers for domain controller computer objects can now be configured.
+ * Default containers for domain controller computer objects can now be
+   configured.
 bug: [48895, 48995, 47985, 46919]
