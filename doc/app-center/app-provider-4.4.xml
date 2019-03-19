@@ -1171,6 +1171,30 @@ docker-compose -p $appid logs
 
 </chapter>
 
+<chapter id="app-workflow">
+    <title>App workflow on UCS host</title>
+    <para>
+        This chapter describes what is going on in detail on the UCS host when
+        an app is installed, updated or removed. It shows the commands that are
+        called by the App Center, what work is done by the App Center and what
+        information can be used by the various scripts during the respective
+        workflows.
+    </para>
+
+    <section id="app-workflow:installation">
+        <title>Installation</title>
+    </section>
+
+    <section id="app-workflow:update">
+        <title>Update</title>
+    </section>
+
+    <section id="app-workflow:remove">
+        <title>Uninstallation</title>
+    </section>
+
+</chapter>
+
 <chapter id="app-presentation">
     <title>App presentation</title>
 
