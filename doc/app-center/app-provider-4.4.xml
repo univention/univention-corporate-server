@@ -123,12 +123,23 @@
                 It is also recommended to publish the Docker container to
                 <ulink url="https://hub.docker.com/">Docker hub</ulink>. This
                 makes referencing the image later much easier and simplifies
-                the development and test cycle during development. If public
-                access to the image is not wanted, it can be made private and
-                granted access to the Docker Hub user
-                <userinput>univention</userinput>. In this case, the image has
-                to be copied manually by the App Center team to the Univention
-                Docker registry.
+                the development and test cycle during development.
+            </para>
+            <para>
+                If public access to the image is not wanted, it can be made
+                private. For use on a UCS test machine during app development,
+                the <userinput>docker login</userinput> needs to be used on the
+                command-line to grant your machine access to the private image.
+                For the release of the app, the Univention team needs to have
+                access to the image. Please then grant access to the Docker Hub
+                user <userinput>univention</userinput>. The image then has to
+                be copied manually by the App Center team to the Univention
+                Docker registry. Univention's Docker Registry is not browsable.
+                It needs credentials to be accessed. Before downloading the
+                image via the Univention App Center module in UCS, each user
+                (by default) needs to be registered by an email address. Yet,
+                the Docker image should be considered public by the time the
+                app is published in Univention App Center.
             </para>
             <para>
                 The image must have a version tag to distinguish different
