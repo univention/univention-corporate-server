@@ -81,7 +81,7 @@ def getDefaultContainer(lo, module):
 	if module == 'dns/':
 		module = 'dns/dns'
 	try:
-		univention.admin.modules.get(module).object.get_default_containers(lo)[0]
+		return univention.admin.modules.get(module).object.get_default_containers(lo)[0]
 	except IndexError:
 		return None
 

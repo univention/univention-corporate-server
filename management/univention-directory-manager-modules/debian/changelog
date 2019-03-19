@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.12-15) unstable; urgency=medium
+
+  * Bug #46919: fix missing return
+
+ -- Florian Best <best@univention.de>  Tue, 19 Mar 2019 11:06:52 +0100
+
 univention-directory-manager-modules (14.0.12-14) unstable; urgency=medium
 
   * Bug #46919: adjust also univention.udm
