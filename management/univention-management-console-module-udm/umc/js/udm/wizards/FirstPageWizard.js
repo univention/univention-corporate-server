@@ -420,8 +420,11 @@ define([
 						if (this.getWidget('firstPage', 'container').reloadDynamicValues) {
 							// widget might be HiddenInput instead of ComboBox
 							this.getWidget('firstPage', 'container').reloadDynamicValues();
+							// we must do a standby animation here, otherwise when clicking on next during the loading of default containers ldap errors occurr during creation of objects
+							setTimeout(lang.hitch(this, function() {
+								this.standbyDuring(this.getWidget('firstPage', 'container').ready());
+							}), 200);
 						}
-						//this.standbyDuring(this.getWidget('firstPage', 'container').ready());
 					}),
 					size: 'Two'
 				});

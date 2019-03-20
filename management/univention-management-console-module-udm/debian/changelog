@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.11-8) unstable; urgency=medium
+
+  * Bug #46919: force standby animation
+
+ -- Florian Best <best@univention.de>  Wed, 20 Mar 2019 15:39:59 +0100
+
 univention-management-console-module-udm (9.0.11-7) unstable; urgency=medium
 
   * Bug #46919: don't let combobox jump

@@ -156,7 +156,9 @@ define([
 				selectedContainer: this.selectedContainer,
 				selectedSuperordinate: this.selectedSuperordinate,
 				showObjectTemplate: this.showObjectTemplate,
-				showObjectType: this.showObjectType
+				showObjectType: this.showObjectType,
+				standby: lang.hitch(this, 'standby'),
+				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
 
 			this._preWizard.canContinue().then(lang.hitch(this, function() {
