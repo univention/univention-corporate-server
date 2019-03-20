@@ -406,7 +406,7 @@ define([
 					}, this);
 
 					if (allValid) {
-						// everythin fine, continue
+						// everything fine, continue
 						return;
 					}
 
