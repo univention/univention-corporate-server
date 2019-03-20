@@ -6,6 +6,6 @@ src: univention-directory-manager-modules
 fix: 13.0.25-28A~4.3.0.201903172141
 desc: |
  This update addresses the following issue(s):
- * It is now possible again to modify the LDAP base, for example reference policies.
-   This was broken since UCS 4.3-0.
+ * It is now possible again to modify the LDAP base, for example reference
+   policies. This was broken since UCS 4.3-0.
 bug: [49018]
