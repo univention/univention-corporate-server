@@ -9,3 +9,5 @@ desc: |
  * It is now possible again to modify the LDAP base, for example reference
    policies. This was broken since UCS 4.3-0.
 bug: [49018]
+erratum: 458
+announced: 2019-03-20
