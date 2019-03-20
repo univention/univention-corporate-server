@@ -346,6 +346,8 @@ define([
 				layout.push('superordinate', 'superordinate_help');
 			}
 
+			layout.push('objectType');
+
 			var selectedContainer = this.selectedContainer && this.selectedContainer.id;
 			if (selectedContainer) {
 				// a container is already selected in a tree
@@ -415,13 +417,15 @@ define([
 						});
 					}),
 					onChange: lang.hitch(this, function() {
-						this.getWidget('firstPage', 'container').reloadDynamicValues();
+						if (this.getWidget('firstPage', 'container').reloadDynamicValues) {
+							// widget might be HiddenInput instead of ComboBox
+							this.getWidget('firstPage', 'container').reloadDynamicValues();
+						}
 						//this.standbyDuring(this.getWidget('firstPage', 'container').ready());
 					}),
 					size: 'Two'
 				});
 			}
-			layout.push('objectType');
 
 			// templates
 			if (this.showObjectTemplate) {

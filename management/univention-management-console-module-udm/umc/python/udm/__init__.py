@@ -163,7 +163,6 @@ class Instance(Base, ProgressMixin):
 
 	def __init__(self):
 		Base.__init__(self)
-		self.settings = None
 		self.reports_cfg = None
 		self.modules_with_childs = []
 		self.__license_checks = set()
