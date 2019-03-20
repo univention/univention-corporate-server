@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-#
-# Univention Admin Modules
-#  mappings
-#
+"""
+Functions to map between |UDM| properties and |LDAP| attributes.
+"""
 # Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -33,26 +32,67 @@
 import univention.debug
 import types
 import base64
+try:
+	from typing import List, Text, Tuple, TypeVar, Union  # noqa F401
+	_E = TypeVar('_E')
+except ImportError:
+	pass
 
 
 def DaysToSeconds(days):
+	# type: (str) -> str
+	"""
+	Convert number of days to seconds.
+
+	:param day: the number of days.
+	:returns: the number of seconds.
+
+	>>> DaysToSeconds('1')
+	'86400'
+	"""
 	return str(int(days) * 24 * 60 * 60)
 
 
 def SecondsToDays(seconds):
+	# type: (str) -> str
+	"""
+	Convert number of seconds to number of complete days.
+
+	:param seconds: 1-tuple with the number of seconds.
+	:returns: the number of complete days.
+
+	>>> SecondsToDays(('86401',))
+	'1'
+	"""
 	return str((int(seconds[0])) / (60 * 60 * 24))
 
 
 def StringToLower(string):
+	# type: (str) -> str
+	"""
+	Convert string to lower-case.
+
+	:param string: a string.
+	:returns: the lower-cased string.
+
+	>>> StringToLower("aa")
+	'aa'
+	"""
 	return string.lower()
 
 
 def ListUniq(list):
+	# type: (List[_E]) -> List[_E]
 	"""
+	Return list of unique items.
+
+	:param list: A list of elements.
+	:returns: a list with duplicate elements removed.
+
 	>>> ListUniq(['1', '1', '2'])
 	['1', '2']
 	"""
-	result = []
+	result = []  # type: List[_E]
 	if list:
 		for element in list:
 			if element not in result:
@@ -61,6 +101,19 @@ def ListUniq(list):
 
 
 def ListToString(list):
+	# type: (List[str]) -> str
+	"""
+	Return first element from list.
+	This is right mapping for single-valued properties, as |LDAP| always returns lists of values.
+
+	:param list: A list of elements.
+	:returns: the first element or the empty string.
+
+	>>> ListToString([])
+	''
+	>>> ListToString(['value'])
+	'value'
+	"""
 	if len(list) > 0:
 		return list[0]
 	else:
@@ -68,6 +121,18 @@ def ListToString(list):
 
 
 def ListToIntToString(list_):
+	# type: (List[str]) -> str
+	"""
+	Return first element from list if it is an integer.
+
+	:param list: A list of elements.
+	:returns: the first element or the empty string.
+
+	>>> ListToIntToString([])
+	''
+	>>> ListToIntToString(['1'])
+	'1'
+	"""
 	if list_:
 		try:
 			return str(int(list_[0]))
@@ -77,27 +142,85 @@ def ListToIntToString(list_):
 
 
 def ListToLowerString(list):
+	# type: (List[str]) -> str
+	"""
+	Return first element from list lower-cased.
+
+	:param list: A list of elements.
+	:returns: the first element lower-cased or the empty string.
+
+	>>> ListToLowerString([])
+	''
+	>>> ListToLowerString(['Value'])
+	'value'
+	"""
 	return StringToLower(ListToString(list))
 
 
 def ListToLowerList(list):
+	# type: (List[str]) -> List[str]
+	"""
+	Return the list with all elements converted to lower-case.
+
+	:param list: A list of elements.
+	:returns: a list of the elemets converted to lower case.
+
+	>>> ListToLowerList(['A', 'a'])
+	['a', 'a']
+	"""
 	return [StringToLower(string) for string in list]
 
 
 def ListToLowerListUniq(list):
+	# type: (List[str]) -> List[str]
+	"""
+	Return the list with all elements converted to lower-case and duplicates removed.
+
+	:param list: A list of elements.
+	:returns: a list of the elemets converted to lower case with duplicates removed.
+
+	>>> ListToLowerListUniq(['A', 'a'])
+	['a']
+	"""
 	return ListUniq(ListToLowerList(list))
 
 
 def nothing(a):
+	"""
+	'Do nothing' mapping returning `None`.
+	"""
 	pass
 
 
 def IgnoreNone(list):
+	# type: (str) -> Union[None, str]
+	"""
+	Return the value if it is not the sting `None`.
+
+	:param list: Some element(s).
+	:returns: The element(s) if it is not `None`.
+
+	>>> IgnoreNone('1')
+	'1'
+	>>> IgnoreNone('None')
+	"""
 	if list != 'None':
 		return list
 
 
 def _stringToInt(value):
+	# type: (str) -> int
+	"""
+	Try to convert string into inetger.
+
+	:param value: a srting.
+	:returns: the integer value or `0`.
+
+	>>> _stringToInt('1')
+	1
+	>>> _stringToInt('ucs')
+	0
+	"""
 	try:
 		return int(value)
 	except (ValueError, TypeError):
@@ -105,7 +228,13 @@ def _stringToInt(value):
 
 
 def unmapUNIX_TimeInterval(value):
+	# type: (Union[List[str], Tuple[str], str]) -> List[Text]
 	"""
+	Map number of seconds to a human understanable time interval.
+
+	:param value: number of seconds
+	:returns: a 2-tuple (value, unit)
+
 	>>> unmapUNIX_TimeInterval(['0'])
 	[u'0', 'days']
 	>>> unmapUNIX_TimeInterval(('1',))
@@ -134,7 +263,13 @@ def unmapUNIX_TimeInterval(value):
 
 
 def mapUNIX_TimeInterval(value):
+	# type: (Union[List[str], Tuple[str], str]) -> Text
 	"""
+	Unmap a human understanable time interval back to number of seconds.
+
+	:param value: a 2-tuple (value, unit)
+	:returns: the number of seconds.
+
 	>>> mapUNIX_TimeInterval(0)
 	u'0'
 	>>> mapUNIX_TimeInterval([1, 'days'])
@@ -160,7 +295,19 @@ def mapUNIX_TimeInterval(value):
 
 
 def unmapBase64(value):
-	'''mapBase64 converts binary data (as found in LDAP) to Base64 encoded UDM propertry values'''
+	"""
+	Convert binary data (as found in |LDAP|) to Base64 encoded |UDM| property value(s).
+
+	:param value: some binary data.
+	:returns: the base64 encoded data or the empty string on errors.
+
+	>>> unmapBase64(['a'])
+	'YQ=='
+	>>> unmapBase64(['a', 'b'])
+	['YQ==', 'Yg==']
+	>>> unmapBase64([None])
+	''
+	"""
 	if len(value) > 1:
 		try:
 			return map(base64.b64encode, value)
@@ -175,7 +322,22 @@ def unmapBase64(value):
 
 
 def mapBase64(value):
-	'''mapBase64 converts Base64 encoded UDM property values to binary data (for storage in LDAP)'''
+	# type: (Union[List[str], str]) -> Union[List[str], str]
+	# @overload (List[str]) -> List[str]
+	# @overload (str) -> str
+	"""
+	Convert Base64 encoded |UDM| property values to binary data (for storage in |LDAP|).
+
+	:param value: some base64 encoded value.
+	:returns: the decoded binary data.
+
+	>>> mapBase64('*')
+	'*'
+	>>> mapBase64(['YQ=='])
+	['a']
+	>>> mapBase64('YQ==')
+	'a'
+	"""
 	if value == '*':
 		# special case for filter pattern '*'
 		return value
@@ -193,6 +355,18 @@ def mapBase64(value):
 
 
 def BooleanListToString(list):
+	# type: (List[str]) -> str
+	"""
+	Convert |LDAP| boolean to |UDM|.
+
+	:param list: list of |LDAP| attribute values.
+	:returns: the empty string for `False` or otherwise the first element.
+
+	>>> BooleanListToString(['0'])
+	''
+	>>> BooleanListToString(['1'])
+	'1'
+	"""
 	v = ListToString(list)
 	if v == '0':
 		return ''
@@ -200,18 +374,33 @@ def BooleanListToString(list):
 
 
 def BooleanUnMap(value):
+	# type: (str) -> str
+	"""
+	Convert |LDAP| boolean to |UDM|.
+
+	:param list: One |LDAP| attribute values.
+	:returns: the empty string for `False` or otherwise the first element.
+
+	>>> BooleanUnMap('0')
+	''
+	>>> BooleanUnMap('1')
+	'1'
+	"""
 	if value == '0':
 		return ''
 	return value
 
 
 class dontMap(object):
+	"""
+	'Do nothing' mapping.
+	"""
 	pass
 
 
 class mapping(object):
 	"""
-	Map LDAP atribute names and values to UDM property names and values and back.
+	Map |LDAP| atribute names and values to |UDM| property names and values and back.
 	"""
 
 	def __init__(self):
@@ -222,13 +411,24 @@ class mapping(object):
 
 	def register(self, map_name, unmap_name, map_value=None, unmap_value=None):
 		"""
-		Register function 'map_value' to map values of UDM property 'map_name' to values as used in LDAP.
-		Register function 'unmap_value' to map values of LDAP attribute named 'unmap_name' to values as used by UDM.
+		Register a new mapping.
+
+		:param map_name: |UDM| property name.
+		:param unmap_name: |LDAP| attribute name.
+		:param map_value: function to map |UDM| property values to |LDAP| attribute values.
+		:param unmap_value: function to map |LDAP| attribute values to |UDM| property values.
 		"""
 		self._map[map_name] = (unmap_name, map_value)
 		self._unmap[unmap_name] = (map_name, unmap_value)
 
 	def unregister(self, map_name, pop_unmap=True):
+		# type: (str, bool) -> None
+		"""
+		Remove a mapping |UDM| to |LDAP| (and also the reverse).
+
+		:param map_name: |UDM| property name.
+		:param pop_unmap: `False` prevents the removal of the mapping from |LDAP| to |UDM|, which the default `True` also does.
+		"""
 		# unregister(pop_unmap=False) is used by LDAP_Search syntax classes with viewonly=True.
 		# See SimpleLdap._init_ldap_search().
 		unmap_name, map_value = self._map.pop(map_name, [None, None])
@@ -236,11 +436,17 @@ class mapping(object):
 			self._unmap.pop(unmap_name, None)
 
 	def registerUnmapping(self, unmap_name, unmap_value):
+		"""
+		Register a new unmapping from |LDAP| to |UDM|.
+
+		:param unmap_name: |LDAP| attribute name.
+		:param unmap_value: function to map |LDAP| attribute values to |UDM| property values.
+		"""
 		self._unmap_func[unmap_name] = unmap_value
 
 	def mapName(self, map_name):
 		"""
-		Map UDM property name to LDAP attribute name.
+		Map |UDM| property name to |LDAP| attribute name.
 
 		>>> map = mapping()
 		>>> map.mapName('unknown')
@@ -253,7 +459,7 @@ class mapping(object):
 
 	def unmapName(self, unmap_name):
 		"""
-		Map LDAP attribute name to UDM property name.
+		Map |LDAP| attribute name to |UDM| property name.
 
 		>>> map = mapping()
 		>>> map.unmapName('unknown')
@@ -266,7 +472,7 @@ class mapping(object):
 
 	def mapValue(self, map_name, value):
 		"""
-		Map UDM property value to LDAP attribute value.
+		Map |UDM| property value to |LDAP| attribute value.
 
 		>>> map = mapping()
 		>>> map.mapValue('unknown', None) #doctest: +IGNORE_EXCEPTION_DETAIL
@@ -300,7 +506,7 @@ class mapping(object):
 
 	def unmapValue(self, unmap_name, value):
 		"""
-		Map LDAP attribute value to UDM property value.
+		Map |LDAP| attribute value to |UDM| property value.
 
 		>>> map = mapping()
 		>>> map.unmapValue('unknown', None) #doctest: +IGNORE_EXCEPTION_DETAIL
@@ -318,7 +524,9 @@ class mapping(object):
 		return unmap_value(value) if unmap_value else value
 
 	def unmapValues(self, oldattr):
-		"""Unmaps LDAP attribute values to UDM property values"""
+		"""
+		Unmaps |LDAP| attribute values to |UDM| property values.
+		"""
 		info = mapDict(self, oldattr)
 		for key, func in self._unmap_func.items():
 			info[key] = func(oldattr)

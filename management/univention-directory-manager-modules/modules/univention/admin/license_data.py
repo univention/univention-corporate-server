@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-#
-# Univention Admin Modules
-#  mapping defining restricution for admin module
-#
+"""
+|UDM| licence data.
+"""
 # Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/

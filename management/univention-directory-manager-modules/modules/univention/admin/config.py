@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-#
-# Univention Admin Modules
-#  configuration basics
-#
+"""
+|UDM| configuration basics
+
+.. deprecated:: UCS 4.4
+"""
 # Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -32,17 +33,23 @@
 
 import univention.admin.modules
 import univention.admin.uldap
+try:
+	from typing import Dict, List, Optional, Set, Union  # noqa F401
+	from types import ModuleType  # noqa F401
+except ImportError:
+	pass
 
 
 class config:
 	"""
-	UDM configuration object.
+	|UDM| configuration object.
 
 	.. deprecated:: UCS 4.4
-		use None instead
+		use `None` instead
 	"""
 
 	def __init__(self, host=''):
+		# type: (str) -> None
 		base = univention.admin.uldap.getBaseDN(host)
 		self.data = {
 			'ldap/base': base,
@@ -67,6 +74,7 @@ class config:
 
 
 def getDefaultContainer(lo, module):
+	# type: (univention.admin.uldap.access, Union[ModuleType, str]) -> Optional[str]
 	"""
 	Return any random default container for a UDM module.
 
@@ -87,6 +95,7 @@ def getDefaultContainer(lo, module):
 
 
 def getDefaultValue(lo, name, position=None):
+	# type: (univention.admin.uldap.access, str, univention.admin.uldap.position) -> Optional[str]
 	"""
 	Return the default value for a UDM module.
 

@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-#
-# Univention Admin Modules
-#  wrapper around univention.uldap that replaces exceptions
-#
+"""
+|UDM| wrapper around :py:mod:`univention.uldap` that replaces exceptions.
+"""
 # Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -35,10 +34,15 @@ import ldap
 import string
 import time
 
+import univention.debug
 import univention.uldap
 from univention.admin import localization
 import univention.config_registry
 import univention.admin.license
+try:
+	from typing import Any, Dict, List, Optional, Tuple, Union  # noqa F401
+except ImportError:
+	pass
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
@@ -50,9 +54,12 @@ explodeDn = univention.uldap.explodeDn
 
 
 class DN(object):
-	"""A LDAP Distinguished Name"""
+	"""
+	A |LDAP| Distinguished Name.
+	"""
 
 	def __init__(self, dn):
+		# type: (str) -> None
 		self.dn = dn
 		try:
 			self._dn = ldap.dn.str2dn(self.dn)
@@ -103,21 +110,22 @@ class DN(object):
 	@classmethod
 	def set(cls, values):
 		"""
-			>>> len(DN.set(['CN=computers,dc=foo', 'cn=computers,dc=foo', 'cn = computers,dc=foo']))
-			1
+		>>> len(DN.set(['CN=computers,dc=foo', 'cn=computers,dc=foo', 'cn = computers,dc=foo']))
+		1
 		"""
 		return set(map(cls, values))
 
 	@classmethod
 	def values(cls, values):
 		"""
-			>>> DN.values(DN.set(['cn=foo', 'cn=bar']) - DN.set(['cn = foo']))
-			set(['cn=bar'])
+		>>> DN.values(DN.set(['cn=foo', 'cn=bar']) - DN.set(['cn = foo']))
+		set(['cn=bar'])
 		"""
 		return set(map(str, values))
 
 
-def getBaseDN(host='localhost', port=None, uri=None):  # type: (str, Optional[int], Optional[str]) -> str
+def getBaseDN(host='localhost', port=None, uri=None):
+	# type: (str, Optional[int], Optional[str]) -> str
 	"""
 	Return the naming context of the LDAP server.
 
@@ -142,7 +150,8 @@ def getBaseDN(host='localhost', port=None, uri=None):  # type: (str, Optional[in
 	return result[0][1]['namingContexts'][0]
 
 
-def getAdminConnection(start_tls=2, decode_ignorelist=[]):  # type: (int, list[str]) -> tuple[univention.admin.uldap.access, univention.admin.uldap.position]
+def getAdminConnection(start_tls=2, decode_ignorelist=[]):
+	# type: (int, List[str]) -> Tuple[univention.admin.uldap.access, univention.admin.uldap.position]
 	"""
 	Open a LDAP connection using the admin credentials.
 
@@ -157,7 +166,8 @@ def getAdminConnection(start_tls=2, decode_ignorelist=[]):  # type: (int, list[s
 	return access(lo=lo), pos
 
 
-def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True):  # type: (int, list[str], bool) -> tuple[univention.admin.uldap.access, univention.admin.uldap.position]
+def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True):
+	# type: (int, List[str], bool) -> Tuple[univention.admin.uldap.access, univention.admin.uldap.position]
 	"""
 	Open a LDAP connection using the machine credentials.
 
@@ -173,7 +183,8 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True):  
 	return access(lo=lo), pos
 
 
-def _err2str(err):  # type: (Exception) -> str
+def _err2str(err):
+	# type: (Exception) -> str
 	"""
 	Convert exception arguments to string.
 
@@ -196,10 +207,11 @@ def _err2str(err):  # type: (Exception) -> str
 
 class domain:
 	"""
-	A UDM domain name.
+	A |UDM| domain name.
 	"""
 
 	def __init__(self, lo, position):
+		# type: (univention.admin.uldap.access, univention.admin.uldap.position) -> None
 		"""
 		:param univention.admin.uldap.access lo: A LDAP connection object.
 		:param univention.admin.uldap.position position: A UDM position specifying the LDAP base container.
@@ -208,7 +220,8 @@ class domain:
 		self.position = position
 		self.domain = self.lo.get(self.position.getDomain(), attr=['sambaDomain', 'sambaSID', 'krb5RealmName'])
 
-	def getKerberosRealm(self):  # type: () -> str
+	def getKerberosRealm(self):
+		# type: () -> Optional[str]
 		"""
 		Return the name of the Kerberos realms.
 
@@ -220,11 +233,12 @@ class domain:
 
 class position:
 	"""
-	The position of a LDAP container.
+	The position of a |LDAP| container.
 	Supports relative distinguished names.
 	"""
 
 	def __init__(self, base, loginDomain=''):
+		# type: (str, str) -> None
 		"""
 		:param str base: The base distinguished name.
 		:param str loginDomain: The login domain name.
@@ -237,7 +251,8 @@ class position:
 		self.__pos = ""
 		self.__indomain = False
 
-	def setBase(self, base):  # type: (str) -> None
+	def setBase(self, base):
+		# type: (str) -> None
 		"""
 		Set a new base distinguished name.
 
@@ -245,7 +260,8 @@ class position:
 		"""
 		self.__base = base
 
-	def setLoginDomain(self, loginDomain):  # type: (str) -> None
+	def setLoginDomain(self, loginDomain):
+		# type: (str) -> None
 		"""
 		Set a new login domain name.
 
@@ -253,11 +269,13 @@ class position:
 		"""
 		self.__loginDomain = loginDomain
 
-	def __setPosition(self, pos):  # type: (str) -> None
+	def __setPosition(self, pos):
+		# type: (str) -> None
 		self.__pos = pos
 		self.__indomain = any('dc' == y[0] for x in ldap.dn.str2dn(self.__pos) for y in x)
 
-	def getDn(self):  # type: () -> str
+	def getDn(self):
+		# type: () -> str
 		"""
 		Return the distinguished name.
 
@@ -266,7 +284,8 @@ class position:
 		"""
 		return ldap.dn.dn2str(ldap.dn.str2dn(self.__pos) + ldap.dn.str2dn(self.__base))
 
-	def setDn(self, dn):  # type: (str) -> None
+	def setDn(self, dn):
+		# type: (str) -> None
 		"""
 		Set a new distinguished name.
 
@@ -279,7 +298,8 @@ class position:
 			dn = dn[:-len(base)]
 		self.__setPosition(ldap.dn.dn2str(dn))
 
-	def getRdn(self):  # type: () -> str
+	def getRdn(self):
+		# type: () -> str
 		"""
 		Return the distinguished name relative to the LDAP base.
 
@@ -288,7 +308,8 @@ class position:
 		"""
 		return ldap.dn.explode_rdn(self.getDn())[0]
 
-	def getBase(self):  # type: () -> str
+	def getBase(self):
+		# type: () -> str
 		"""
 		Return the LDAP base DN.
 
@@ -297,7 +318,8 @@ class position:
 		"""
 		return self.__base
 
-	def isBase(self):  # type: () -> bool
+	def isBase(self):
+		# type: () -> bool
 		"""
 		Check if the position equals the LDAP base DN.
 
@@ -306,7 +328,8 @@ class position:
 		"""
 		return access.compare_dn(self.getDn(), self.getBase())
 
-	def getDomain(self):  # type: () -> str
+	def getDomain(self):
+		# type: () -> str
 		"""
 		Return the distinguished name of the domain part of the position.
 
@@ -322,7 +345,8 @@ class position:
 			dn.append(part)
 		return ldap.dn.dn2str(dn[::-1])
 
-	def getDomainConfigBase(self):  # type: () -> str
+	def getDomainConfigBase(self):
+		# type: () -> str
 		"""
 		Return the distinguished name of the configuration container.
 
@@ -331,7 +355,8 @@ class position:
 		"""
 		return 'cn=univention,' + self.getDomain()
 
-	def isDomain(self):  # type: () -> bool
+	def isDomain(self):
+		# type: () -> bool
 		"""
 		Check if the position equals the domain DN.
 
@@ -340,7 +365,8 @@ class position:
 		"""
 		return self.getDn() == self.getDomain()
 
-	def getLoginDomain(self):  # type: () -> str
+	def getLoginDomain(self):
+		# type: () -> str
 		"""
 		Return the login domain name.
 
@@ -349,7 +375,8 @@ class position:
 		"""
 		return self.__loginDomain
 
-	def __getPositionInDomain(self):  # type: () -> str
+	def __getPositionInDomain(self):
+		# type: () -> str
 		components = explodeDn(self.__pos, 0)
 		components.reverse()
 		poscomponents = []
@@ -361,7 +388,8 @@ class position:
 		positionindomain = string.join(poscomponents, ',')
 		return positionindomain
 
-	def switchToParent(self):  # type: () -> bool
+	def switchToParent(self):
+		# type: () -> bool
 		"""
 		Switch position to parent container.
 
@@ -373,7 +401,8 @@ class position:
 		self.__setPosition(ldap.dn.dn2str(ldap.dn.str2dn(self.__pos)[1:]))
 		return True
 
-	def getPrintable(self, short=1, long=0, trailingslash=1):  # type: (int, int, int) -> str
+	def getPrintable(self, short=1, long=0, trailingslash=1):
+		# type: (int, int, int) -> str
 		"""
 		Return printable path of position.
 
@@ -405,7 +434,8 @@ class position:
 			printable = domain
 		return printable
 
-	def getPrintable_depth(self, short=1, long=0, trailingslash=1):  # type: (int, int, int) -> tuple[str, int]
+	def getPrintable_depth(self, short=1, long=0, trailingslash=1):
+		# type: (int, int, int) -> Tuple[str, int]
 		"""
 		Return printable path of position.
 		new "version" of :py:meth:`getPrintable`, returns the tree-depth as int instead of html-blanks
@@ -441,21 +471,23 @@ class position:
 
 class access:
 	"""
-	A UDM class to access a LDAP server.
+	A |UDM| class to access a |LDAP| server.
 	"""
 
 	@property
-	def binddn(self):  # type: () -> str
+	def binddn(self):
+		# type: () -> Optional[str]
 		"""
 		Return the distinguished name of the account.
 
-		:returns: The distinguished name of the account.
+		:returns: The distinguished name of the account (or `None` with |SAML|).
 		:rtype: str
 		"""
 		return self.lo.binddn
 
 	@property
-	def bindpw(self):  # type: () -> str
+	def bindpw(self):
+		# type: () -> str
 		"""
 		Return the user password or credentials.
 
@@ -465,7 +497,8 @@ class access:
 		return self.lo.bindpw
 
 	@property
-	def host(self):  # type: () -> str
+	def host(self):
+		# type: () -> str
 		"""
 		Return the host name of the LDAP server.
 
@@ -475,7 +508,8 @@ class access:
 		return self.lo.host
 
 	@property
-	def port(self):  # type: () -> int
+	def port(self):
+		# type: () -> int
 		"""
 		Return the TCP port number of the LDAP server.
 
@@ -485,7 +519,8 @@ class access:
 		return self.lo.port
 
 	@property
-	def base(self):  # type: () -> str
+	def base(self):
+		# type: () -> str
 		"""
 		Return the LDAP base of the LDAP server.
 
@@ -496,19 +531,20 @@ class access:
 
 	@property
 	def start_tls(self):
+		# type: () -> int
 		return self.lo.start_tls
 
 	def __init__(self, host='localhost', port=None, base='', binddn='', bindpw='', start_tls=2, lo=None, follow_referral=False):
+		# type: (str, int, str, str, str, int, univention.uldap.access, bool) -> None
 		"""
-		:param str host: The hostname of the LDAP server.
-		:param int port: The TCP port number of the LDAP server.
+		:param str host: The hostname of the |LDAP| server.
+		:param int port: The |TCP| port number of the |LDAP| server.
 		:param str base: The base distinguished name.
 		:param str binddn: The distinguished name of the account.
 		:param str bindpw: The user password for simple authentication.
-		:param int start_tls: Negotiate TLS with server. If `2` is given, the command will require the operation to be successful.
-		:param univention.uldap.access: Low-level
-
-		:param str uri: A complete LDAP URI.
+		:param int start_tls: Negotiate |TLS| with server. If `2` is given, the command will require the operation to be successful.
+		:param univention.uldap.access lo: |LDAP| connection.
+		:param:bool follow_referral: Follow |LDAP| referrals.
 		"""
 		if lo:
 			self.lo = lo
@@ -525,7 +561,8 @@ class access:
 		self.allow_modify = 1
 		self.licensetypes = ['UCS']
 
-	def bind(self, binddn, bindpw):  # type: (str, str) -> None
+	def bind(self, binddn, bindpw):
+		# type: (str, str) -> None
 		"""
 		Do simple LDAP bind using DN and password.
 
@@ -540,7 +577,8 @@ class access:
 			raise univention.admin.uexceptions.authFail(_("Authentication failed"))
 		self.__require_licence()
 
-	def bind_saml(self, bindpw):  # type: (str) -> None
+	def bind_saml(self, bindpw):
+		# type: (str) -> None
 		"""
 		Do LDAP bind using SAML message.
 
@@ -552,7 +590,8 @@ class access:
 			raise univention.admin.uexceptions.authFail(_("Authentication failed"))
 		self.__require_licence()
 
-	def __require_licence(self):  # type: () -> None
+	def __require_licence(self):
+		# type: () -> None
 		if self.require_license:
 			res = univention.admin.license.init_select(self.lo, 'admin')
 
@@ -593,13 +632,15 @@ class access:
 				self.allow_modify = 0
 				raise univention.admin.uexceptions.licenseDVSClients
 
-	def unbind(self):  # type: () -> None
+	def unbind(self):
+		# type: () -> None
 		"""
 		Unauthenticate.
 		"""
 		self.lo.unbind()
 
-	def whoami(self):  # type: () -> str
+	def whoami(self):
+		# type: () -> str
 		"""
 		Return the distinguished name of the authenticated user.
 
@@ -609,7 +650,8 @@ class access:
 		dn = self.lo.lo.whoami_s()
 		return re.sub('^dn:', '', dn)
 
-	def requireLicense(self, require=1):  # type: (int) -> None
+	def requireLicense(self, require=1):
+		# type: (int) -> None
 		"""
 		Enable or disable the UCS licence check.
 
@@ -617,7 +659,8 @@ class access:
 		"""
 		self.require_license = require
 
-	def _validateLicense(self):  # type: () -> None
+	def _validateLicense(self):
+		# type: () -> None
 		"""
 		Check if the UCS licence is valid.
 		"""
@@ -625,12 +668,20 @@ class access:
 			univention.admin.license.select('admin')
 
 	def get_schema(self):
+		# type: () -> ldap.schema.subentry.SubSchema
+		"""
+		Retrieve |LDAP| schema information from |LDAP| server.
+
+		:returns: The |LDAP| schema.
+		:rtype: ldap.schema.subentry.SubSchema
+		"""
 		if not hasattr(self.lo, 'get_schema'):  # introduced in UCS 4.1-2 erratum. can be removed in the future
 			return ldap.schema.SubSchema(self.lo.lo.read_subschemasubentry_s(self.lo.lo.search_subschemasubentry_s()), 0)
 		return self.lo.get_schema()
 
 	@classmethod
-	def compare_dn(cls, a, b):  # type: (str, str) -> bool
+	def compare_dn(cls, a, b):
+		# type: (str, str) -> bool
 		"""
 		Compare two distinguished names for equality.
 
@@ -641,7 +692,8 @@ class access:
 		"""
 		return univention.uldap.access.compare_dn(a, b)
 
-	def get(self, dn, attr=[], required=False, exceptions=False):  # type: (str, list[str], bool, bool) -> dict[str, list[str]]
+	def get(self, dn, attr=[], required=False, exceptions=False):
+		# type: (str, List[str], bool, bool) -> Dict[str, List[str]]
 		"""
 		Return multiple attributes of a single LDAP object.
 
@@ -655,7 +707,8 @@ class access:
 		"""
 		return self.lo.get(dn, attr, required)
 
-	def getAttr(self, dn, attr, required=False, exceptions=False):  # type: (str, str, bool, bool) -> list[str]
+	def getAttr(self, dn, attr, required=False, exceptions=False):
+		# type: (str, str, bool, bool) -> List[str]
 		"""
 		Return a single attribute of a single LDAP object.
 
@@ -669,7 +722,8 @@ class access:
 		"""
 		return self.lo.getAttr(dn, attr, required)
 
-	def search(self, filter='(objectClass=*)', base='', scope='sub', attr=[], unique=False, required=False, timeout=-1, sizelimit=0):  # type: (str, str, str, list[str], bool, bool, int, int) -> list[tuple[str, dict[str, list[str]]]]
+	def search(self, filter='(objectClass=*)', base='', scope='sub', attr=[], unique=False, required=False, timeout=-1, sizelimit=0):
+		# type: (str, str, str, List[str], bool, bool, int, int) -> List[Tuple[str, Dict[str, List[str]]]]
 		"""
 		Perform LDAP search and return values.
 
@@ -709,7 +763,8 @@ class access:
 		except ldap.LDAPError as msg:
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
-	def searchDn(self, filter='(objectClass=*)', base='', scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):  # type: (str, str, str, bool, bool, int, int) -> list[str]
+	def searchDn(self, filter='(objectClass=*)', base='', scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
+		# type: (str, str, str, bool, bool, int, int) -> List[str]
 		"""
 		Perform LDAP search and return distinguished names only.
 
@@ -750,10 +805,22 @@ class access:
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
 	def getPolicies(self, dn, policies=None, attrs=None, result=None, fixedattrs=None):
+		# type: (str, Optional[List[str]], Optional[Dict[str, List[Any]]], Any, Any) -> Dict[str, Dict[str, Any]]
+		"""
+		Return |UCS| policies for |LDAP| entry.
+
+		:param str dn: The distinguished name of the |LDAP| entry.
+		:param list policies: List of policy object classes...
+		:param dict attrs: |LDAP| attributes. If not given, the data is fetched from LDAP.
+		:param result: UNUSED!
+		:param fixedattrs: UNUSED!
+		:returns: A mapping of policy names to
+		"""
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'getPolicies modules dn %s result' % dn)
 		return self.lo.getPolicies(dn, policies, attrs, result, fixedattrs)
 
-	def add(self, dn, al, exceptions=False, serverctrls=None, response=None):  # type: (str, list[tuple], bool, Optional[list[ldap.controls.LDAPControl]], Optional[dict]) -> None
+	def add(self, dn, al, exceptions=False, serverctrls=None, response=None):
+		# type: (str, List[Tuple], bool, Optional[List[ldap.controls.LDAPControl]], Optional[Dict]) -> None
 		"""
 		Add LDAP entry at distinguished name and attributes in add_list=(attribute-name, old-values. new-values) or (attribute-name, new-values).
 
@@ -792,6 +859,7 @@ class access:
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
 	def modify(self, dn, changes, exceptions=False, ignore_license=0, serverctrls=None, response=None):
+		# type: (str, List[Tuple[str, Any, Any]], bool, int, Optional[List[ldap.controls.LDAPControl]], Optional[Dict]) -> str
 		"""
 		Modify LDAP entry DN with attributes in changes=(attribute-name, old-values, new-values).
 
@@ -828,6 +896,7 @@ class access:
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
 	def rename(self, dn, newdn, move_childs=0, ignore_license=False, serverctrls=None, response=None):
+		# type: (str, str, int, bool, Optional[List[ldap.controls.LDAPControl]], Optional[Dict]) -> None
 		"""
 		Rename a LDAP object.
 
@@ -861,7 +930,8 @@ class access:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'ren dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
-	def delete(self, dn, exceptions=False):  # type: (str, bool) -> None
+	def delete(self, dn, exceptions=False):
+		# type: (str, bool) -> None
 		"""
 		Delete a LDAP object.
 
@@ -893,7 +963,8 @@ class access:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'del dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
-	def parentDn(self, dn):  # type: (str) -> Optional[str]
+	def parentDn(self, dn):
+		# type: (str) -> Optional[str]
 		"""
 		Return the parent container of a distinguished name.
 
@@ -903,7 +974,8 @@ class access:
 		"""
 		return self.lo.parentDn(dn)
 
-	def explodeDn(self, dn, notypes=0):  # type: (str, int) -> list[str]
+	def explodeDn(self, dn, notypes=0):
+		# type: (str, int) -> List[str]
 		"""
 		Break up a DN into its component parts.
 

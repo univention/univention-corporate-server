@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-#
-# Univention Admin Modules
-#  allocator access
-#
+"""
+|UDM| allocators to allocate and lock resources for |LDAP| object creation.
+"""
 # Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/

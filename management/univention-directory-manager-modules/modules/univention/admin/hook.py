@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-#
-# Univention Admin Modules
-#  hook definitions
-#
+"""
+|UDM| hook definitions for modifying |LDAP| calls when objects are created, modifier or deleted.
+"""
 # Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -41,12 +40,11 @@ import traceback
 translation = localization.translation('univention/admin')
 _ = translation.translate
 
-#
-# load all additional hook files from */site-packages/univention/admin/hooks.d/*.py
-#
-
 
 def import_hook_files():
+	"""
+	Load all additional hook files from :file:`.../univention/admin/hooks.d/*.py`
+	"""
 	for dir in sys.path:
 		if os.path.exists(os.path.join(dir, 'univention/admin/hook.py')):
 			if os.path.isdir(os.path.join(dir, 'univention/admin/hooks.d/')):
@@ -63,6 +61,9 @@ def import_hook_files():
 
 
 class simpleHook(object):
+	"""
+	Base class for a |UDM| hook performing logging.
+	"""
 	type = 'simpleHook'
 
 	#
@@ -71,50 +72,112 @@ class simpleHook(object):
 	#
 
 	def hook_open(self, obj):
+		"""
+		This method is called by the default open handler just before the current state of all properties is saved.
+
+		:param obj: The |UDM| object instance.
+		"""
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _open called')
 
 	def hook_ldap_pre_create(self, obj):
+		"""
+		This method is called before an |UDM| object is created.
+		It is called after the module validated all properties but before the add-list is created.
+
+		:param obj: The |UDM| object instance.
+		"""
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_create called')
 
 	def hook_ldap_addlist(self, obj, al=[]):
+		"""
+		This method is called before an |UDM| object is created.
+
+		Notice that :py:meth:`hook_ldap_modlist` will also be called next.
+
+		:param obj: The |UDM| object instance.
+		:param al: A list of two-tuples (ldap-attribute-name, list-of-values) which will be used to create the LDAP object.
+		:returns: The (modified) add-list.
+		"""
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_addlist called')
 		return al
 
 	def hook_ldap_post_create(self, obj):
+		"""
+		This method is called after the object was created in |LDAP|.
+
+		:param obj: The |UDM| object instance.
+		"""
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_create called')
 
 	def hook_ldap_pre_modify(self, obj):
+		"""
+		This method is called before an |UDM| object is modified.
+		It is called after the module validated all properties but before the modification-list is created.
+
+		:param obj: The |UDM| object instance.
+		"""
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_modify called')
 
 	def hook_ldap_modlist(self, obj, ml=[]):
+		"""
+		This method is called before an |UDM| object is created or modified.
+
+		:param obj: The |UDM| object instance.
+		:param ml: A list of tuples, which are either two-tuples (ldap-attribute-name, list-of-new-values) or three-tuples (ldap-attribute-name, list-of-old-values, list-of-new-values). It will be used to create or modify the |LDAP| object.
+		:returns: The (modified) modification-list.
+		"""
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_modlist called')
 		return ml
 
 	def hook_ldap_post_modify(self, obj):
+		"""
+		This method is called after the object was modified in |LDAP|.
+
+		:param obj: The |UDM| object instance.
+		"""
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_modify called')
 
 	def hook_ldap_pre_remove(self, obj):
+		"""
+		This method is called before an |UDM| object is removed.
+
+		:param obj: The |UDM| object instance.
+		"""
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_remove called')
 
 	def hook_ldap_post_remove(self, obj):
+		"""
+		This method is called after the object was removed from |LDAP|.
+
+		:param obj: The |UDM| object instance.
+		"""
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_remove called')
 
 
-# ATTENTION: Only derive from this class when you are sure
-# every system in your domain has the update installed that
-# introduced this hook. (Nov 2018; UCS 4.3-2)
-# Otherwise you will get errors when you are distributing your new
-# hook via ucs_registerLDAPExtension --udm_hook
 class AttributeHook(simpleHook):
-	'''Convenience Hook that essentially implements a mapping
-	between UDM and LDAP for your extended attributes.
-	Derive from this class, set attribute_name to the name of
-	the (udm) attribute and implement map_attribute_value_to_udm
-	and map_attribute_value_to_ldap'''
+	"""
+	Convenience Hook that essentially implements a mapping
+	between |UDM| and |LDAP| for your extended attributes.
+	Derive from this class, set :py:attr:`attribute_name` to the name of
+	the |UDM| attribute and implement :py:meth:`map_attribute_value_to_udm`
+	and :py:meth:`map_attribute_value_to_ldap`.
+
+	.. warning::
+		Only derive from this class when you are sure
+		every system in your domain has the update installed that
+		introduced this hook. (Nov 2018; UCS 4.3-2)
+		Otherwise you will get errors when you are distributing your new
+		hook via `ucs_registerLDAPExtension --udm_hook`
+	"""
 	udm_attribute_name = None
 	ldap_attribute_name = None
 
 	def hook_open(self, obj):
+		"""
+		Open |UDM| object by loading value from |LDAP|.
+
+		:param obj: The |UDM| object instance.
+		"""
 		assert isinstance(self.udm_attribute_name, basestring), "udm_attribute_name has to be a str"
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.AttributeHook: Mapping %s (LDAP) -> %s (UDM)' % (self.ldap_attribute_name, self.udm_attribute_name))
 		old_value = obj[self.udm_attribute_name]
@@ -123,9 +186,23 @@ class AttributeHook(simpleHook):
 		obj[self.udm_attribute_name] = new_value
 
 	def hook_ldap_addlist(self, obj, al):
+		"""
+		Extend |LDAP| add list.
+
+		:param obj: The |UDM| object instance.
+		:param al: The add list to extend.
+		:returns: The extended add list.
+		"""
 		return self.hook_ldap_modlist(obj, al)
 
 	def hook_ldap_modlist(self, obj, ml):
+		"""
+		Extend |LDAP| modification list.
+
+		:param obj: The |UDM| object instance.
+		:param ml: The modification list to extend.
+		:returns: The extended modification list.
+		"""
 		assert isinstance(self.ldap_attribute_name, basestring), "ldap_attribute_name has to be a str"
 		new_ml = []
 		for ml_value in ml:
@@ -143,10 +220,21 @@ class AttributeHook(simpleHook):
 		return new_ml
 
 	def map_attribute_value_to_ldap(self, value):
-		# return value as it shall be saved in ldap
+		"""
+		Return value as it shall be saved in |LDAP|.
+
+		:param value: The |UDM| value.
+		:returns: The |LDAP| value.
+		"""
 		return value
 
 	def map_attribute_value_to_udm(self, value):
-		# return value as it shall be used in udm objects
-		# needs to be syntax compliant
+		"""
+		Return value as it shall be used in |UDM| objects.
+
+		The mapped value needs to be syntax compliant.
+
+		:param value: The |LDAP| value.
+		:returns: The |UDM| value.
+		"""
 		return value

@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-#
-# Univention Directory manager Modules
-#  classes to dsefine layouts
-#
+"""
+|UDM| classes to define layouts
+"""
 # Copyright 2011-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -34,8 +33,9 @@ import copy
 
 
 class ILayoutElement(dict):
-
-	"""Describes the layout information for a tab or a groupbox"""
+	"""
+	Describes the layout information for a tab or a groupbox.
+	"""
 
 	def __init__(self, label, description='', layout=[]):
 		dict.__init__(self)

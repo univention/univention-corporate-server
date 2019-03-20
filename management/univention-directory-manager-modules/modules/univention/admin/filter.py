@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-#
-# Univention Admin Modules
-#  parse, modify and create ldap-style search filters
-#
+"""
+|UDM| functions to parse, modify and create |LDAP|\ -style search filters
+"""
 # Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -36,21 +35,24 @@ import univention.admin.uexceptions
 
 
 class conjunction:
-
-	"""LDAP filter conjunction (&) or disjunction (|)."""
+	"""
+	LDAP filter conjunction (`&`) or disjunction (`|`).
+	"""
 	_type_ = 'conjunction'
 
 	def __init__(self, type, expressions):
-		'''Create LDAP filter conjunction or disjunction.
+		"""
+		Create LDAP filter conjunction or disjunction.
 
 		>>> c = conjunction('&', '(objectClass=*)')
 		>>> c = conjunction('|', '(objectClass=*)')
-		'''
+		"""
 		self.type = type
 		self.expressions = expressions
 
 	def __str__(self):
-		'''Return string representation.
+		"""
+		Return string representation.
 
 		>>> str(conjunction('&', '(objectClass=*)'))
 		'(&(objectClass=*))'
@@ -58,7 +60,7 @@ class conjunction:
 		'(|(objectClass=*))'
 		>>> str(conjunction('&', ''))
 		''
-		'''
+		"""
 		if not self.expressions:
 			return ''
 		return '(%s%s)' % (self.type, ''.join(map(unicode, self.expressions)))
@@ -67,13 +69,14 @@ class conjunction:
 		return self.__str__()
 
 	def __repr__(self):
-		'''Return canonical representation.
+		"""
+		Return canonical representation.
 
 		>>> conjunction('&', '(objectClass=*)')
 		conjunction('&', '(objectClass=*)')
 		>>> conjunction('|', '(objectClass=*)')
 		conjunction('|', '(objectClass=*)')
-		'''
+		"""
 		return '%s(%r, %r)' % (self.__class__._type_, self.type, self.expressions)
 
 	def append_unmapped_filter_string(self, filter_s, rewrite_function, mapping):
@@ -84,24 +87,27 @@ class conjunction:
 
 
 class expression:
-
-	"""LDAP filter expression."""
+	"""
+	LDAP filter expression.
+	"""
 	_type_ = 'expression'
 
 	def __init__(self, variable='', value='', operator='=', escape=False):
-		'''Create LDAP filter expression.
+		"""
+		Create LDAP filter expression.
 
 		>>> e = expression('objectClass', '*')
 		>>> e = expression('objectClass', '*', '!=')
 		>>> e = expression('uidNumber', '10', '<') # < <= > >=
-		'''
+		"""
 		self.variable = variable
 		self.value = value
 		self.operator = operator
 		self._escape = escape
 
 	def __str__(self):
-		'''Return string representation.
+		"""
+		Return string representation.
 
 		>>> str(expression('objectClass', '*'))
 		'(objectClass=*)'
@@ -109,7 +115,7 @@ class expression:
 		'(!(objectClass=*))'
 		>>> str(expression('uidNumber', '10', '<'))
 		'(!(uidNumber>=10))'
-		'''
+		"""
 		if self.operator == '<=':
 			return self.escape('(%s<=%s)', (self.variable, self.value))
 		elif self.operator == '<':
@@ -132,18 +138,20 @@ class expression:
 		return self.__str__()
 
 	def __repr__(self):
-		'''Return canonical representation.
+		"""
+		Return canonical representation.
 
 		>>> expression('objectClass', '*')
 		expression('objectClass', '*', '=')
 		>>> expression('objectClass', '*', '!=')
 		expression('objectClass', '*', '!=')
-		'''
+		"""
 		return '%s(%r, %r, %r)' % (self.__class__._type_, self.variable, self.value, self.operator)
 
 
 def parse(filter_s, begin=0, end=-1):
-	"""Parse LDAP filter string.
+	"""
+	Parse LDAP filter string.
 
 	>>> filter_s='(|(&(!(zone=univention.de))(soa=test))(nameserver=bar))'
 	>>> parse(filter_s)
@@ -211,7 +219,8 @@ def parse(filter_s, begin=0, end=-1):
 
 
 def walk(filter, expression_walk_function=None, conjunction_walk_function=None, arg=None):
-	"""Walk LDAP filter expression tree.
+	"""
+	Walk LDAP filter expression tree.
 
 	>>> filter='(|(&(!(zone=univention.de))(soa=test))(nameserver=bar))'
 	>>> tree = parse(filter)
@@ -239,7 +248,7 @@ FQDN_REGEX = re.compile(r'(?:^|\()fqdn=([^)]+)(?:\)|$)')
 
 
 def replace_fqdn_filter(filter_s):
-	'''
+	"""
 	Replaces a filter expression for the read-only attribute fqdn. If no
 	such expression can be found the unmodified filter is returned.
 
@@ -251,7 +260,7 @@ def replace_fqdn_filter(filter_s):
 	'(|(cn=domain)(associatedDomain=domain))'
 	>>> replace_fqdn_filter('(|(fqdn=host.domain.tld)(fqdn=other.domain.tld2))')
 	'(|(&(cn=host)(associatedDomain=domain.tld))(&(cn=other)(associatedDomain=domain.tld2)))'
-	'''
+	"""
 	if not isinstance(filter_s, basestring):
 		return filter_s
 	return FQDN_REGEX.sub(_replace_fqdn_filter, filter_s)

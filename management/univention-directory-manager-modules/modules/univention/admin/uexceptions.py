@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-#
-# Univention Admin Modules
-#  exceptions
-#
+"""
+|UDM| exceptions.
+"""
 # Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/

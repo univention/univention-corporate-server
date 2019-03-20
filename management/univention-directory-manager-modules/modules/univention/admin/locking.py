@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-#
-# Univention Admin Modules
-#  LDAP locking methods
-#
+"""
+|LDAP| locking methods for |UDM|.
+"""
 # Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -41,6 +40,16 @@ _ = translation.translate
 
 
 def lockDn(lo, position, type, value, scope):
+	"""
+	Build |DN| of lock object.
+
+	:param lo: |LDAP| connection.
+	:param position: |UDM| position specifying the |LDAP| base container.
+	:param type: A string describing the type of object, e.g. `user`.
+	:param value: A unique value for the object, e.g. `uid`.
+	:param scope: The scope for the lock, e.g. `domain`.
+	:returns: A |LDAP| |DN|.
+	"""
 	dn = [
 		[('cn', value, ldap.AVA_STRING)],
 		[('cn', type, ldap.AVA_STRING)],
@@ -55,6 +64,19 @@ def lockDn(lo, position, type, value, scope):
 
 
 def lock(lo, position, type, value, scope='domain', timeout=300):
+	"""
+	Lock an |UDM| object.
+
+	:param lo: |LDAP| connection.
+	:param position: |UDM| position specifying the |LDAP| base container.
+	:param type: A string describing the type of object, e.g. `user`.
+	:param value: A unique value for the object, e.g. `uid`.
+	:param scope: The scope for the lock, e.g. `domain`.
+	:param timeout: Number of seconds for the lock being valid.
+	:raises univention.admin.uexceptions.permissionDenied: if the lock time cannot be modified.
+	:raises univention.admin.uexceptions.noLock: if the lock cannot be acquired.
+	:returns: Number of seconds since the UNIX epoch until which the lock is acquired.
+	"""
 	_d = univention.debug.function('admin.locking.lock type=%s value=%s scope=%s timeout=%d' % (type, value, scope, timeout))
 	dn = lockDn(lo, position, type, value, scope)
 
@@ -98,6 +120,19 @@ def lock(lo, position, type, value, scope='domain', timeout=300):
 
 
 def relock(lo, position, type, value, scope='domain', timeout=300):
+	"""
+	Extend a lock of an |UDM| object.
+
+	:param lo: |LDAP| connection.
+	:param position: |UDM| position specifying the |LDAP| base container.
+	:param type: A string describing the type of object, e.g. `user`.
+	:param value: A unique value for the object, e.g. `uid`.
+	:param scope: The scope for the lock, e.g. `domain`.
+	:param timeout: Number of seconds for the lock being valid.
+	:raises univention.admin.uexceptions.permissionDenied: if the lock time cannot be modified.
+	:raises univention.admin.uexceptions.noLock: if the lock was not acquired.
+	:returns: Number of seconds since the UNIX epoch until which the lock is acquired.
+	"""
 	_d = univention.debug.function('admin.locking.relock type=%s value=%s scope=%s timeout=%d' % (type, value, scope, timeout))
 	dn = lockDn(lo, position, type, value, scope)
 
@@ -120,6 +155,15 @@ def relock(lo, position, type, value, scope='domain', timeout=300):
 
 
 def unlock(lo, position, type, value, scope='domain'):
+	"""
+	Unlock an |UDM| object.
+
+	:param lo: |LDAP| connection.
+	:param position: |UDM| position specifying the |LDAP| base container.
+	:param type: A string describing the type of object, e.g. `user`.
+	:param value: A unique value for the object, e.g. `uid`.
+	:param scope: The scope for the lock, e.g. `domain`.
+	"""
 	_d = univention.debug.function('admin.locking.unlock type=%s value=%s scope=%s' % (type, value, scope))
 	dn = lockDn(lo, position, type, value, scope)
 	try:
@@ -129,6 +173,16 @@ def unlock(lo, position, type, value, scope='domain'):
 
 
 def getLock(lo, position, type, value, scope='domain'):
+	"""
+	Check if an |UDM| object is locked.
+
+	:param lo: |LDAP| connection.
+	:param position: |UDM| position specifying the |LDAP| base container.
+	:param type: A string describing the type of object, e.g. `user`.
+	:param value: A unique value for the object, e.g. `uid`.
+	:param scope: The scope for the lock, e.g. `domain`.
+	:returns: Number of seconds since the UNIX epoch until which the lock is acquired or `0`.
+	"""
 	dn = lockDn(lo, position, type, value, scope)
 	try:
 		return int(lo.getAttr(dn, 'lockTime', exceptions=True)[0])

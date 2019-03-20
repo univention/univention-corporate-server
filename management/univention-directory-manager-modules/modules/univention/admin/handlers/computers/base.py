@@ -50,11 +50,13 @@ _ = translation.translate
 
 
 class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
-
-	CONFIG_NAME = None
-	SERVER_ROLE = None
-	SERVER_TYPE = None
-	SAMBA_ACCOUNT_FLAG = None
+	"""
+	|UDM| module for generic computer objects.
+	"""
+	CONFIG_NAME = None  # type: str
+	SERVER_ROLE = None  # type: str
+	SERVER_TYPE = None  # type: str
+	SAMBA_ACCOUNT_FLAG = None  # type: str
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
 		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate, attributes)

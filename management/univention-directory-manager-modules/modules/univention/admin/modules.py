@@ -1,9 +1,8 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# Univention Admin Modules
-#  access to handler modules
-#
+"""
+|UDM| access to handler modules.
+"""
 # Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -49,6 +48,24 @@ from univention.admin import localization
 from univention.admin.layout import Tab, Group, ILayoutElement
 
 import univention.config_registry
+try:
+	from typing import Any, Dict, List, Optional, Set, Tuple, Union  # noqa F401
+	from typing_extensions import Protocol
+
+	class UdmModule(Protocol):
+		module = ''  # type: str
+		operations = []  # type: List[str]
+		property_descriptions = {}  # type: Dict[str, univention.admin.property]
+		policy_apply_to = []  # type: List[str]
+		policy_position_dn_prefix = ''  # type: str
+		docleanup = 0  # type: int
+
+		@staticmethod
+		def identify(dn, attr):
+			# type: (str, Dict[str, List[Any]]) -> bool
+			pass
+except ImportError:
+	pass
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
@@ -56,22 +73,28 @@ configRegistry.load()
 translation = localization.translation('univention/admin')
 _ = translation.translate
 
-modules = {}
-_superordinates = set()  # list of all module names (strings) that are _superordinates
-containers = []
+modules = {}  # type: Dict[str, UdmModule]
+"""Mapping from module name to Python module."""
+_superordinates = set()  # type: Set[str]
+"""List of all module names (strings) that are _superordinates."""
+containers = []  # type: List[UdmModule]
 
 
 def update():
-	'''scan handler modules'''
+	# type: () -> None
+	"""
+	Scan file system and update interna list of |UDM| handler modules.
+	"""
 	global modules, _superordinates
-	_modules = {}
-	superordinates = set()
+	_modules = {}  # type: Dict[str, UdmModule]
+	superordinates = set()  # type: Set[str]
 
 	# since last update(), syntax.d and hooks.d may have changed (Bug #31154)
 	univention.admin.syntax.import_syntax_files()
 	univention.admin.hook.import_hook_files()
 
 	def _walk(root, dir, files):
+		# type: (str, str, List[str]) -> None
 		for file in files:
 			if not file.endswith('.py') or file.startswith('__'):
 				continue
@@ -105,8 +128,13 @@ def update():
 
 
 def get(module):
-	'''if module is instance of module, return that; if module is string, return the
-	corresponding instance of that module'''
+	# type: (Union[UdmModule, str]) -> Optional[UdmModule]
+	"""
+	Get |UDM| module.
+
+	:param module: either the name (str) of a module or the module itself.
+	:returns: the module or `None` if no module exists with the requested name.
+	"""
 	global modules
 	if not module:
 		return None
@@ -116,9 +144,15 @@ def get(module):
 
 
 def get_module(module):
-	'''interim function, must only be used by univention-directory-manager-modules!
-		.. deprecated :: UCS 4.4
-	'''
+	# type: (Union[UdmModule, str]) -> Optional[UdmModule]
+	"""
+	interim function, must only be used by `univention-directory-manager-modules`!
+
+	.. deprecated :: UCS 4.4
+
+	:param module: either the name (str) of a module or the module itself.
+	:returns: the module or `None` if no module exists with the requested name.
+	"""
 	if not modules:
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'univention.admin.modules.update() was not called')
 		update()
@@ -126,6 +160,16 @@ def get_module(module):
 
 
 def init(lo, position, module, template_object=None, force_reload=False):
+	# X-type: (univention.admin.uldap.access, univention.admin.uldap.position, UdmModule, univention.admin.handlers.simpleLdap, bool) -> None
+	"""
+	Initialize |UDM| handler module.
+
+	:param lo: |LDAP| connection.
+	:param position: |UDM| position instance.
+	:param module: |UDM| handler module.
+	:param template_object: Reference to a instance, from which the default values are used.
+	:param force_reload: With `True` force Python to reload the module from the file system.
+	"""
 	# you better do a reload if init is called a second time
 	# especially because update_extended_attributes
 	# called twice will have side-effects
@@ -210,7 +254,10 @@ def init(lo, position, module, template_object=None, force_reload=False):
 
 
 def update_extended_options(lo, module, position):
-	"""Overwrite options defined via LDAP."""
+	# X-type: (univention.admin.uldap.access, UdmModule, univention.admin.uldap.position) -> None
+	"""
+	Overwrite options defined via |LDAP|.
+	"""
 
 	# get current language
 	lang = locale.getlocale(locale.LC_MESSAGES)[0]
@@ -246,40 +293,51 @@ def update_extended_options(lo, module, position):
 
 
 class EA_Layout(dict):
+	"""
+	Extended attribute layout.
+	"""
 
 	def __init__(self, **kwargs):
 		dict.__init__(self, kwargs)
 
 	@property
 	def name(self):
+		# type: () -> str
 		return self.get('name', '')
 
 	@property
 	def overwrite(self):
+		# type: () -> Optional[str]
 		return self.get('overwrite', None)
 
 	@property
 	def tabName(self):
+		# type: () -> str
 		return self.get('tabName', '')
 
 	@property
 	def groupName(self):
+		# type: () -> str
 		return self.get('groupName', '')
 
 	@property
 	def position(self):
+		# type: () -> int
 		return self.get('position', -1)
 
 	@property
 	def groupPosition(self):
+		# type: () -> int
 		return self.get('groupPosition', -1)
 
 	@property
 	def advanced(self):
+		# type: () -> bool
 		return self.get('advanced', False)
 
 	@property
 	def is_app_tab(self):
+		# type: () -> bool
 		return self.get('is_app_tab', False)
 
 	def __cmp__(self, other):
@@ -287,15 +345,18 @@ class EA_Layout(dict):
 
 
 def update_extended_attributes(lo, module, position):
-
+	# X-type: (univention.admin.uldap.access, UdmModule, univention.admin.uldap.position) -> None
+	"""
+	Load extended attribute from |LDAP| and modify |UDM| handler.
+	"""
 	# add list of tabnames created by extended attributes
 	if not hasattr(module, 'extended_attribute_tabnames'):
 		module.extended_attribute_tabnames = []
 
 	# append UDM extended attributes
-	properties4tabs = {}
-	overwriteTabList = []
-	module.extended_udm_attributes = []
+	properties4tabs = {}  # type: Dict[str, List[EA_Layout]]
+	overwriteTabList = []  # type: List[str]
+	module.extended_udm_attributes = []  # type: List[univention.admin.extended_attribute]
 
 	module_filter = filter_format('(univentionUDMPropertyModule=%s)', [name(module)])
 	if name(module) == 'settings/usertemplate':
@@ -572,9 +633,19 @@ def update_extended_attributes(lo, module, position):
 
 
 def identify(dn, attr, module_name='', canonical=0, module_base=None):
+	# type: (str, Dict[str, List[Any]], str, int, Optional[str]) -> List[UdmModule]
+	"""
+	Return list of |UDM| handlers capable of handling the given |LDAP| object.
 
+	:param dn: |DN| of the |LDAP| object.
+	:param atr: |LDAP| attributes.
+	:param module_name: If given only the given module name is used if it is capable to handle the object.
+	:param canonical: UNUSED!
+	:param module_base: Optional string the module names must start with.
+	:returns: the list of |UDM| modules.
+	"""
 	global modules
-	res = []
+	res = []  # type: List[UdmModule]
 	if 'univentionObjectType' in attr and attr['univentionObjectType'] and attr['univentionObjectType'][0] in modules:
 		res.append(modules.get(attr['univentionObjectType'][0]))
 	else:
@@ -595,7 +666,15 @@ def identify(dn, attr, module_name='', canonical=0, module_base=None):
 
 
 def identifyOne(dn, attr, type=''):
+	# type: (str, Dict[str, List[Any]], str) -> Optional[UdmModule]
+	"""
+	Return the |UDM| handler capable of handling the given |LDAP| object.
 
+	:param dn: |DN| of the |LDAP| object.
+	:param atr: |LDAP| attributes.
+	:param type: If given only the given module name is used if it is capable to handle the object.
+	:returns: the |UDM| modules or `None`.
+	"""
 	res = identify(dn, attr, type)
 	if len(res) != 1:
 		return None
@@ -611,14 +690,18 @@ def recognize(module_name, dn, attr):
 
 
 def name(module):
-	'''return name of module'''
+	"""
+	Return name of module.
+	"""
 	if not module:
 		return ''
 	return get(module).module
 
 
 def superordinate_names(module_name):
-	'''return name of superordinate module'''
+	"""
+	Return name of superordinate module.
+	"""
 	module = get(module_name)
 	names = getattr(module, 'superordinate', [])
 	if isinstance(names, basestring):
@@ -626,32 +709,56 @@ def superordinate_names(module_name):
 	return names
 
 
-def superordinate_name(module_name):  # deprecated, use superordinate_names()!
-	'''return name of first superordinate module'''
+def superordinate_name(module_name):
+	"""
+	Return name of first superordinate module.
+
+	.. deprecated :: UCS 4.2
+		Use :py:func:`superordinate_names` instead.
+	"""
 	names = superordinate_names(module_name)
 	return names[0] if names else None
 
 
-def superordinate(module):  # deprecated, use superordinates()
-	'''return instance of superordinate module'''
+def superordinate(module):
+	"""
+	Return instance of superordinate module.
+
+	.. deprecated :: UCS 4.2
+		Use :py:func:`superordinates` instead.
+	"""
 	return get(superordinate_name(module))
 
 
 def superordinates(module):
-	'''return instance of superordinate module'''
+	"""
+	Return instance of superordinate module.
+	"""
 	return [get(x) for x in superordinate_names(module)]
 
 
 def subordinates(module):
-	'''return list of instances of subordinate modules'''
+	# type: (Any) -> List[UdmModule]
+	"""
+	Return list of instances of subordinate modules.
+
+	:param module: ???
+	:returns: list of |UDM| handler modules.
+	"""
 	return [mod for mod in modules.values() if name(module) in superordinate_names(mod) and not isContainer(mod)]
 
 
 def find_superordinate(dn, co, lo):
-	'''For a given DN, search in the LDAP path whether this LDAP object is
+	# type: (str, univention.admin.config, univention.admin.uldap.access) -> Optional[UdmModule]
+	"""
+	For a given |DN|, search in the |LDAP| path whether this LDAP object is
 	below an object that is a superordinate or is a superordinate itself.
-	Returns the superordinate module or None.'''
 
+	:param dn: |DN|.
+	:param co: |UDM| configuation object.
+	:param lo: |LDAP| connection.
+	:returns: the superordinate module or `None`.
+	"""
 	# walk up the ldap path and stop if we find an object type that is a superordinate
 	while dn:
 		attr = lo.get(dn)
@@ -663,7 +770,7 @@ def find_superordinate(dn, co, lo):
 
 
 def layout(module_name, object=None):
-	'''return layout of properties'''
+	"""return layout of properties"""
 	module = get(module_name)
 	defining_layout = None
 	if object:
@@ -717,13 +824,18 @@ def layout(module_name, object=None):
 
 
 def options(module_name):
-	'''return options available for module'''
+	"""return options available for module"""
 	module = get(module_name)
 	return getattr(module, 'options', {})
 
 
 def attributes(module_name):
-	'''return attributes for module'''
+	# type: (str) -> List[Dict[str, str]]
+	"""
+	Return attributes for module.
+
+	:param module_name: the name of the |UDM| module, e.g. `users/user`.
+	"""
 	module = get(module_name)
 	attributes = []
 	for attribute in module.property_descriptions.keys():
@@ -732,7 +844,12 @@ def attributes(module_name):
 
 
 def short_description(module_name):
-	'''return short description for module'''
+	"""
+	Return short description for module.
+
+	:param module_name: the name of the |UDM| module, e.g. `users/user`.
+	:returns: The short descriptive text.
+	"""
 	module = get(module_name)
 	if hasattr(module, 'short_description'):
 		return module.short_description
@@ -743,31 +860,59 @@ def short_description(module_name):
 
 
 def policy_short_description(module_name):
-	'''return short description for policy module primarily used for tab headers'''
+	# type: (str) -> str
+	"""
+	Return short description for policy module primarily used for tab headers.
+
+	:param module_name: the name of the |UDM| policy module, e.g. `policies/pwhistory`.
+	:returns: The short descriptive text.
+	"""
 	module = get(module_name)
 	return getattr(module, 'policy_short_description', short_description(module))
 
 
 def long_description(module_name):
-	'''return long description for module'''
+	# type: (str) -> str
+	"""
+	Return long description for module.
+
+	:param module_name: the name of the |UDM| module, e.g. `users/user`.
+	:returns: The long descriptive text.
+	"""
 	module = get(module_name)
 	return getattr(module, 'long_description', short_description(module))
 
 
 def childs(module_name):
-	'''return whether module may have subordinate modules'''
+	# type: (str) -> int
+	"""
+	Return whether module may have subordinate modules.
+
+	:param module_name: the name of the |UDM| module, e.g. `users/user`.
+	:returns: `1` if the module has children, `0` otherwise.
+	"""
 	module = get(module_name)
 	return getattr(module, 'childs', 0)
 
 
 def virtual(module_name):
-	'''return whether module may have subordinate modules'''
+	# type: (str) -> bool
+	"""
+	Return whether module may have subordinate modules.
+
+	:param module_name: the name of the |UDM| module, e.g. `users/user`.
+	:returns: `True` if the module is virtual, `False` otherwise.
+	"""
 	module = get(module_name)
 	return getattr(module, 'virtual', False)
 
 
 def lookup(module_name, co, lo, filter='', base='', superordinate=None, scope='base+one', unique=False, required=False, timeout=-1, sizelimit=0):
-	'''return objects of module that match the given criteria'''
+	"""
+	Return objects of module that match the given criteria.
+
+	:param module_name: the name of the |UDM| module, e.g. `users/user`.
+	"""
 	module = get(module_name)
 	tmpres = []
 
@@ -785,19 +930,44 @@ def quickDescription(module_name, dn):
 
 
 def isSuperordinate(module):
+	"""
+	Check if the module is a |UDM| superoridnate module.
+
+	:param module: A |UDM| handler class.
+	:returns: `True` if the handler is a superoridnate module, `False` otherwise.
+	"""
 	return name(module) in _superordinates
 
 
 def isContainer(module):
+	"""
+	Check if the module is a |UDM| container module.
+
+	:param module: A |UDM| handler class.
+	:returns: `True` if the handler is a container module, `False` otherwise.
+	"""
 	return name(module).startswith('container/')
 
 
 def isPolicy(module):
+	"""
+	Check if the module is a |UDM| policy module.
+
+	:param module: A |UDM| handler class.
+	:returns: `True` if the handler is a policy module, `False` otherwise.
+	"""
 	return name(module).startswith('policies/')
 
 
 def defaultPosition(module, superordinate=None):
-	'''returns default position for object of module'''
+	# type: (Any, Any) -> str
+	"""
+	Returns default position for object of module.
+
+	:param module: A |UDM| handler class.
+	:param superordinate: A optional superordinate |UDM| object instance.
+	:returns: The |DN| of the container for the object.
+	"""
 	rdns = ['users', 'dns', 'dhcp', 'shares', 'printers']
 	base = univention.admin.uldap.getBaseDN()
 	if superordinate:
@@ -809,7 +979,14 @@ def defaultPosition(module, superordinate=None):
 
 
 def supports(module_name, operation):
-	'''check if module supports operation'''
+	# type: (str, str) -> bool
+	"""
+	Check if module supports operation
+
+	:param module_name: the name of the |UDM| module, e.g. `users/user`.
+	:param operation: the name of the operation, e.g. 'modify'.
+	:returns: `True` if the operation is supported, `False` otherwise.
+	"""
 	module = get(module_name)
 	if not hasattr(module, 'operations'):
 		return True
@@ -865,18 +1042,33 @@ def findObject(co, lo, dn, type, attr=None, module_base=None):
 
 
 def policyOc(module_name):
+	# type: (str) -> str
+	"""
+	Return the |LDAP| objectClass used to store the policy.
+
+	:param module_name: the name of the |UDM| policy module, e.g. `policies/pwhistory`.
+	:returns: the objectClass.
+	"""
 	module = get(module_name)
 	return getattr(module, 'policy_oc', '')
 
 
 def policiesGroup(module_name):
+	# type: (Union[UdmModule, str]) -> str
+	"""
+	Return the name of the group the |UDM| policy belongs to.
+
+	:param module_name: the name of the |UDM| policy module, e.g. `policies/pwhistory`.
+	:returns: the group name.
+	"""
 	module = get(module_name)
 	return getattr(module, 'policies_group', 'top')
 
 
 def policies():
+	# type: () -> List
 	global modules
-	res = {}
+	res = {}  # type: Dict[str, List[str]]
 	for mod in modules.values():
 		if not isPolicy(mod):
 			continue
@@ -893,10 +1085,16 @@ def policies():
 
 
 def policyTypes(module_name):
-	"""Returns a list of policy types applying to the given module"""
+	# type: (str) -> List[str]
+	"""
+	Returns a list of policy types applying to the given module.
+
+	:param module_name: the name of the |UDM| module, e.g. `users/user`.
+	:returns: a list of |UDM| policy modules, e.g. `policies/pwhistory`.
+	"""
 	global modules
 
-	res = []
+	res = []  # type: List[str]
 
 	if not module_name or module_name not in modules:
 		return res
@@ -910,6 +1108,13 @@ def policyTypes(module_name):
 
 
 def policyPositionDnPrefix(module_name):
+	# type: (str) -> str
+	"""
+	Return the relative |DN| for a policy.
+
+	:param module_name: the name of the |UDM| policy module, e.g. `policies/pwhistory`.
+	:return: A |DN| string to append to the |LDAP| base to get the container for the policy.
+	"""
 	module = get(module_name)
 	if not hasattr(module, 'policy_position_dn_prefix'):
 		return ""
@@ -920,14 +1125,25 @@ def policyPositionDnPrefix(module_name):
 
 
 def defaultContainers(module):
-	'''checks for the attribute default_containers that should contain a
-	list of RDNs of default containers. This function returns a list of
-	DNs.'''
+	# type: (univention.admin.handlers.simpleLdap) -> List[str]
+	"""
+	Checks for the attribute default_containers that should contain a
+	list of RDNs of default containers.
+
+	:param module: |UDM|
+	:returns: a list of DNs.
+	"""
 	base = configRegistry['ldap/base']
 	return ['%s,%s' % (rdn, base) for rdn in getattr(module, 'default_containers', [])]
 
 
 def childModules(module_name):
-	'''return child modules if module is a super module'''
+	# type: (str) -> List[str]
+	"""
+	Return child modules if module is a super module.
+
+	:param module_name: the name of the |UDM| module, e.g. `users/user`.
+	:returns: List of child module names.
+	"""
 	module = get(module_name)
 	return copy.deepcopy(getattr(module, 'childmodules', []))

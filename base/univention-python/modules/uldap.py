@@ -44,7 +44,8 @@ except ImportError:
 	pass
 
 
-def parentDn(dn, base=''):  # type: (str, str) -> Optional[str]
+def parentDn(dn, base=''):
+	# type: (str, str) -> Optional[str]
 	"""
 	Return the parent container of a distinguished name.
 
@@ -60,7 +61,8 @@ def parentDn(dn, base=''):  # type: (str, str) -> Optional[str]
 	return ldap.dn.dn2str(dn[1:])
 
 
-def explodeDn(dn, notypes=0):  # type: (str, int) -> List[str]
+def explodeDn(dn, notypes=0):
+	# type: (str, int) -> List[str]
 	"""
 	Break up a DN into its component parts.
 
@@ -72,7 +74,8 @@ def explodeDn(dn, notypes=0):  # type: (str, int) -> List[str]
 	return ldap.dn.explode_dn(dn, notypes)
 
 
-def getRootDnConnection(start_tls=2, decode_ignorelist=[], reconnect=True):  # type: (int, List[str], bool) -> access
+def getRootDnConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
+	# type: (int, List[str], bool) -> access
 	"""
 	Open a LDAP connection to the local LDAP server with the LDAP root account.
 
@@ -96,7 +99,8 @@ def getRootDnConnection(start_tls=2, decode_ignorelist=[], reconnect=True):  # t
 	return access(host=host, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 
 
-def getAdminConnection(start_tls=2, decode_ignorelist=[], reconnect=True):  # type: (int, List[str], bool) -> access
+def getAdminConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
+	# type: (int, List[str], bool) -> access
 	"""
 	Open a LDAP connection to the Master LDAP server using the admin credentials.
 
@@ -114,7 +118,8 @@ def getAdminConnection(start_tls=2, decode_ignorelist=[], reconnect=True):  # ty
 	return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=admin,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 
 
-def getBackupConnection(start_tls=2, decode_ignorelist=[], reconnect=True):  # type: (int, List[str], bool) -> access
+def getBackupConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
+	# type: (int, List[str], bool) -> access
 	"""
 	Open a LDAP connection to a Backup LDAP server using the admin credentials.
 
@@ -138,7 +143,8 @@ def getBackupConnection(start_tls=2, decode_ignorelist=[], reconnect=True):  # t
 		return access(host=backup, port=port, base=ucr['ldap/base'], binddn='cn=backup,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 
 
-def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, secret_file="/etc/machine.secret", reconnect=True):  # type: (int, List[str], bool, str, bool) -> access
+def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, secret_file="/etc/machine.secret", reconnect=True):
+	# type: (int, List[str], bool, str, bool) -> access
 	"""
 	Open a LDAP connection using the machine credentials.
 
@@ -249,7 +255,8 @@ class access:
 		else:
 			return pwd
 
-	def bind(self, binddn, bindpw):  # type: (str, str) -> None
+	def bind(self, binddn, bindpw):
+		# type: (str, str) -> None
 		"""
 		Do simple LDAP bind using DN and password.
 
@@ -261,7 +268,8 @@ class access:
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'bind binddn=%s' % self.binddn)
 		self.lo.simple_bind_s(self.binddn, self.__encode_pwd(self.bindpw))
 
-	def bind_saml(self, bindpw):  # type: (str) -> None
+	def bind_saml(self, bindpw):
+		# type: (str) -> None
 		"""
 		Do LDAP bind using SAML message.
 
@@ -277,13 +285,15 @@ class access:
 		self.binddn = re.sub('^dn:', '', self.lo.whoami_s())
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'SAML bind binddn=%s' % self.binddn)
 
-	def unbind(self):  # type: () -> None
+	def unbind(self):
+		# type: () -> None
 		"""
 		Unauthenticate.
 		"""
 		self.lo.unbind_s()
 
 	def __open(self, ca_certfile):
+		# type: (Optional[str]) -> None
 		_d = univention.debug.function('uldap.__open host=%s port=%d base=%s' % (self.host, self.port, self.base))  # noqa F841
 
 		if self.reconnect:
@@ -355,7 +365,8 @@ class access:
 	def __decode_attribute(self, attr, val):
 		return self.__recode_attribute(attr, val)
 
-	def get(self, dn, attr=[], required=False):  # type: (str, List[str], bool) -> Dict[str, List[str]]
+	def get(self, dn, attr=[], required=False):
+		# type: (str, List[str], bool) -> Dict[str, List[str]]
 		"""
 		Return multiple attributes of a single LDAP object.
 
@@ -378,7 +389,8 @@ class access:
 			raise ldap.NO_SUCH_OBJECT({'desc': 'no object'})
 		return {}
 
-	def getAttr(self, dn, attr, required=False):  # type: (str, str, bool) -> List[str]
+	def getAttr(self, dn, attr, required=False):
+		# type: (str, str, bool) -> List[str]
 		"""
 		Return a single attribute of a single LDAP object.
 
@@ -469,13 +481,13 @@ class access:
 		return [x[0] for x in self.search(filter, base, scope, ['dn'], unique, required, timeout, sizelimit, serverctrls)]
 
 	def getPolicies(self, dn, policies=None, attrs=None, result=None, fixedattrs=None):
-		# type: (Optional[str], List[str], Dict[str, List[Any]], Any, Any) -> Dict[str, Dict[str, Any]]
+		# type: (str, List[str], Dict[str, List[Any]], Any, Any) -> Dict[str, Dict[str, Any]]
 		"""
-		Return UCS policies for LDAP entry.
+		Return |UCS| policies for |LDAP| entry.
 
-		:param str dn: The distinguished name of the LDAP entry.
+		:param str dn: The distinguished name of the |LDAP| entry.
 		:param list policies: List of policy object classes...
-		:param dict attrs: LDAP attributes. If not given, the data is fetched from LDAP.
+		:param dict attrs: |LDAP| attributes. If not given, the data is fetched from LDAP.
 		:param result: UNUSED!
 		:param fixedattrs: UNUSED!
 		:returns: A mapping of policy names to
@@ -573,9 +585,9 @@ class access:
 	def get_schema(self):
 		# type: () -> ldap.schema.subentry.SubSchema
 		"""
-		Retriev LDAP schema information from LDAP server.
+		Retrieve |LDAP| schema information from |LDAP| server.
 
-		:returns: The LDAP schema.
+		:returns: The |LDAP| schema.
 		:rtype: ldap.schema.subentry.SubSchema
 		"""
 		if self.reconnect and self.lo._reconnects_done > self.__reconnects_done:
@@ -586,7 +598,8 @@ class access:
 			self.__schema = ldap.schema.SubSchema(self.lo.read_subschemasubentry_s(self.lo.search_subschemasubentry_s()), 0)
 		return self.__schema
 
-	def add(self, dn, al, serverctrls=None, response=None):  # type: (str, List[Tuple], Optional[List[ldap.controls.LDAPControl]], Optional[dict]) -> None
+	def add(self, dn, al, serverctrls=None, response=None):
+		# type: (str, List[Tuple], Optional[List[ldap.controls.LDAPControl]], Optional[dict]) -> None
 		"""
 		Add LDAP entry at distinguished name and attributes in add_list=(attribute-name, old-values. new-values) or (attribute-name, new-values).
 
@@ -697,7 +710,8 @@ class access:
 			return ldap.dn.dn2str([ldap.dn.str2dn(new_rdn)[0]] + ldap.dn.str2dn(dn)[1:]), new_rdn
 		return dn, rdn
 
-	def modify_s(self, dn, ml):  # type: (str, List[Tuple[str, Optional[List[str]], List[str]]]) -> None
+	def modify_s(self, dn, ml):
+		# type: (str, List[Tuple[str, Optional[List[str]], List[str]]]) -> None
 		"""
 		Redirect `modify_s` directly to :py:attr:`lo`.
 
@@ -712,7 +726,8 @@ class access:
 			lo_ref = self._handle_referral(exc)
 			lo_ref.modify_ext_s(dn, ml)
 
-	def modify_ext_s(self, dn, ml, serverctrls=None, response=None):  # type: (str, List[Tuple[str, Any, Any]], Optional[List[ldap.controls.LDAPControl]], Optional[dict]) -> None
+	def modify_ext_s(self, dn, ml, serverctrls=None, response=None):
+		# type: (str, List[Tuple[str, Any, Any]], Optional[List[ldap.controls.LDAPControl]], Optional[dict]) -> None
 		"""
 		Redirect `modify_ext_s` directly to :py:attr:`lo`.
 
@@ -736,7 +751,8 @@ class access:
 		if serverctrls and isinstance(response, dict):
 			response['ctrls'] = resp_ctrls
 
-	def rename(self, dn, newdn, serverctrls=None, response=None):  # type: (str, str, Optional[List[ldap.controls.LDAPControl]], Optional[dict]) -> None
+	def rename(self, dn, newdn, serverctrls=None, response=None):
+		# type: (str, str, Optional[List[ldap.controls.LDAPControl]], Optional[dict]) -> None
 		"""
 		Rename a LDAP object.
 
@@ -761,7 +777,8 @@ class access:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename: modrdn %s to %s' % (dn, newrdn))
 			self.rename_ext_s(dn, newrdn, serverctrls=serverctrls, response=response)
 
-	def rename_ext_s(self, dn, newrdn, newsuperior=None, serverctrls=None, response=None):  # type: (str, str, Optional[str], Optional[List[ldap.controls.LDAPControl]], Optional[dict]) -> None
+	def rename_ext_s(self, dn, newrdn, newsuperior=None, serverctrls=None, response=None):
+		# type: (str, str, Optional[str], Optional[List[ldap.controls.LDAPControl]], Optional[dict]) -> None
 		"""
 		Redirect `rename_ext_s` directly to :py:attr:`lo`.
 
@@ -786,7 +803,8 @@ class access:
 		if serverctrls and isinstance(response, dict):
 			response['ctrls'] = resp_ctrls
 
-	def delete(self, dn):  # type: (str) -> None
+	def delete(self, dn):
+		# type: (str) -> None
 		"""
 		Delete a LDAP object.
 
@@ -803,7 +821,8 @@ class access:
 				lo_ref = self._handle_referral(exc)
 				lo_ref.delete_s(dn)
 
-	def parentDn(self, dn):  # type: (str) -> Optional[str]
+	def parentDn(self, dn):
+		# type: (str) -> Optional[str]
 		"""
 		Return the parent container of a distinguished name.
 
@@ -813,7 +832,8 @@ class access:
 		"""
 		return parentDn(dn, self.base)
 
-	def explodeDn(self, dn, notypes=False):  # type: (str, Union[bool, int]) -> List[str]
+	def explodeDn(self, dn, notypes=False):
+		# type: (str, Union[bool, int]) -> List[str]
 		"""
 		Break up a DN into its component parts.
 
@@ -825,7 +845,8 @@ class access:
 		return explodeDn(dn, notypes)
 
 	@classmethod
-	def compare_dn(cls, a, b):  # type: (str, str) -> bool
+	def compare_dn(cls, a, b):
+		# type: (str, str) -> bool
 		r"""Test DNs are same
 
 		:param str a: The first distinguished name.

@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
-#
-# Univention Admin Modules
-#  localization
-#
+"""
+|UDM| localization.
+
+usage::
+
+	translation = univention.admin.localization.translation()
+	_ = translation.translate
+"""
 # Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -31,11 +35,6 @@
 # <http://www.gnu.org/licenses/>.
 
 from univention.lib.i18n import Translation
-'''
-usage:
-translation=univention.admin.localization.translation()
-_=translation.translate
-'''
 
 translation = Translation
 

@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-#
-# Univention Admin Modules
-#  objects
-#
+"""
+|UDM| objects.
+"""
 # Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -35,11 +34,20 @@ import ldap
 
 import univention.debug
 import univention.admin.modules
+try:
+	from typing import Any, Dict, List, Optional, Tuple, Union  # noqa F401
+except ImportError:
+	pass
 
 
 def module(object):
-	'''returns module of object'''
+	# type: (univention.admin.handlers.simpleLdap) -> Optional[str]
+	"""
+	Return handler name for |UDM| object.
 
+	:param object: |UDM| object instance
+	:returns: |UDM| handler name or `None`.
+	"""
 	if hasattr(object, 'module'):
 		return object.module
 	else:
@@ -52,9 +60,16 @@ def module(object):
 
 
 def get_superordinate(module, co, lo, dn):
-	"""Searches for the superordinate object for the given DN. if the
-	object does not require a superordinate object or it is not found
-	None is returned."""
+	# type: (univention.admin.modules.UdmModule, univention.admin.uldap.config, univention.admin.uldap.access, str) -> Optional[univention.admin.handlers.simpleLdap]
+	"""
+	Searches for the superordinate object for the given DN.
+
+	:param module: ???
+	:param co: |UDM| configuation object.
+	:param lo: |LDAP| connection.
+	:param dn: |DN|.
+	:returns: the superoridnate or `None` if the object does not require a superordinate object or it is not found.
+	"""
 	super_modules = set(univention.admin.modules.superordinate_names(module))
 	if super_modules:
 		while dn:
@@ -69,9 +84,16 @@ def get_superordinate(module, co, lo, dn):
 
 
 def get(module, co, lo, position, dn='', attr=None, superordinate=None, attributes=None):
-	'''return object of module while trying to create objects of
-	superordinate modules as well'''
+	# type: (univention.admin.modules.UdmModule, univention.admin.uldap.config, univention.admin.uldap.access, univention.admin.uldap.position, str, Dict[str, List[Any]], Any, Any) -> univention.admin.handlers.simpleLdap
+	"""
+	Return object of module while trying to create objects of
+	superordinate modules as well.
 
+	:param module: |UDM| handler.
+	:param co: |UDM| configuation object.
+	:param lo: |LDAP| connection.
+	:param position: |UDM| position instance.
+	"""
 	# module was deleted
 	if not module:
 		return None
@@ -95,7 +117,12 @@ def get(module, co, lo, position, dn='', attr=None, superordinate=None, attribut
 
 
 def open(object):
-	'''initialization of properties not neccessary for browsing etc.'''
+	# type: (univention.admin.handlers.simpleLdap) -> None
+	"""
+	Initialization of properties not neccessary for browsing etc.
+
+	:param object: |UDM| object.
+	"""
 
 	if not object:
 		return
@@ -105,6 +132,16 @@ def open(object):
 
 
 def default(module, co, lo, position):
+	# type: (univention.admin.modules.UdmModule, univention.admin.uldap.config, univention.admin.uldap.access, univention.admin.uldap.position) -> univention.admin.handlers.simpleLdap
+	"""
+	Create |UDM| object and initialize default values.
+
+	:param module: |UDM| handler.
+	:param co: |UDM| configuation object.
+	:param lo: |LDAP| connection.
+	:param position: |UDM| position instance.
+	:returns: An initialized |UDM| object.
+	"""
 	_d = univention.debug.function('admin.objects.default')
 	module = univention.admin.modules.get(module)
 	object = module.object(co, lo, position)
@@ -116,8 +153,12 @@ def default(module, co, lo, position):
 
 
 def description(object):
-	'''return short description for object'''
+	# type: (univention.admin.handlers.simpleLdap) -> str
+	"""
+	Return short description for object.
 
+	:param object: |UDM| object.
+	"""
 	if hasattr(object, 'description'):
 		return object.description()
 	else:
@@ -140,9 +181,17 @@ def description(object):
 
 
 def shadow(lo, module, object, position):
-	'''if object is a container, return object and module the container
-	shadows (that is usually the one that is subordinate in the LDAP tree)'''
+	# type: (univention.admin.uldap.access, univention.admin.modules.UdmModule, univention.admin.handlers.simpleLdap, univention.admin.uldap.position) -> Union[Tuple[univention.admin.handlers.simpleLdap, univention.admin.modules.UdmModule], Tuple[None, None]]
+	"""
+	If object is a container, return object and module the container
+	shadows (that is usually the one that is subordinate in the LDAP tree).
 
+	:param lo: |LDAP| connection.
+	:param module: |UDM| handler.
+	:param object: |UDM| object.
+	:param position: |UDM| position instance.
+	:returnd: 2-tuple (module, object) or `(None, None)`
+	"""
 	if not object:
 		return (None, None)
 	dn = object.dn
@@ -161,6 +210,13 @@ def shadow(lo, module, object, position):
 
 
 def dn(object):
+	# type: (univention.admin.handlers.simpleLdap) -> Optional[str]
+	"""
+	Return the |DN| of the object.
+
+	:param object: |UDM| object.
+	:returns: the |DN| or `None`.
+	"""
 	if hasattr(object, 'dn'):
 		return object.dn
 	else:
@@ -168,12 +224,27 @@ def dn(object):
 
 
 def ocToType(oc):
+	# type: (str) -> Optional[str]
+	"""
+	Return the |UDM| module capabale of handling the given |LDAP| objectClass.
+
+	:param oc: |LDAP| object class.
+	:returns: name of the |UDM| module.
+	"""
 	for module in univention.admin.modules.modules.values():
 		if univention.admin.modules.policyOc(module) == oc:
 			return univention.admin.modules.name(module)
 
 
 def fixedAttribute(object, key):
+	# type: (univention.admin.handlers.simpleLdap, str) -> int
+	"""
+	Check if the named property is a fixed attribute (not overwritten my more specific policies).
+
+	:param object: |UDM| object.
+	:param key: |UDM| property name
+	:returns: `1` if the property is fixed, `0` otherwise.
+	"""
 	if not hasattr(object, 'fixedAttributes'):
 		return 0
 
@@ -181,6 +252,14 @@ def fixedAttribute(object, key):
 
 
 def emptyAttribute(object, key):
+	# type: (univention.admin.handlers.simpleLdap, str) -> int
+	"""
+	Check if the named property is an empty attribute (reset to empty by a general policy).
+
+	:param object: |UDM| object.
+	:param key: |UDM| property name
+	:returns: `1` if the property is empty, `0` otherwise.
+	"""
 	if not hasattr(object, 'emptyAttributes'):
 		return 0
 
@@ -188,6 +267,14 @@ def emptyAttribute(object, key):
 
 
 def getPolicyReference(object, policy_type):
+	# type: (univention.admin.handlers.simpleLdap, str) -> Optional[univention.admin.handlers.simplePolicy]
+	"""
+	Return the policy of the requested type.
+
+	:param object: |UDM| object.
+	:param policy_type: Name of the |UDM| policy to lookup.
+	:returns: The policy applying to the object or `None`.
+	"""
 	# FIXME: Move this to handlers.simpleLdap?
 	_d = univention.debug.function('admin.objects.getPolicyReference policy_type=%s' % (policy_type))
 
@@ -201,6 +288,13 @@ def getPolicyReference(object, policy_type):
 
 
 def removePolicyReference(object, policy_type):
+	# type: (univention.admin.handlers.simpleLdap, str) -> None
+	"""
+	Remove the policy of the requested type.
+
+	:param object: |UDM| object.
+	:param policy_type: Name of the |UDM| policy to lookup.
+	"""
 	# FIXME: Move this to handlers.simpleLdap?
 	_d = univention.debug.function('admin.objects.removePolicyReference policy_type=%s' % (policy_type))
 
@@ -215,6 +309,13 @@ def removePolicyReference(object, policy_type):
 
 
 def replacePolicyReference(object, policy_type, new_reference):
+	# type: (univention.admin.handlers.simpleLdap, str, univention.admin.handlers.simplePolicy) -> None
+	"""
+	Replace the policy of the requested type woth a new instance.
+
+	:param object: |UDM| object.
+	:param policy_type: Name of the |UDM| policy to lookup.
+	"""
 	# FIXME: Move this to handlers.simpleLdap?
 	_d = univention.debug.function('admin.objects.replacePolicyReference policy_type=%s new_reference=%s' % (policy_type, new_reference))
 
@@ -230,6 +331,13 @@ def replacePolicyReference(object, policy_type, new_reference):
 
 
 def restorePolicyReference(object, policy_type):
+	# type: (univention.admin.handlers.simpleLdap, str) -> None
+	"""
+	Restore the policy of the requested type.
+
+	:param object: |UDM| object.
+	:param policy_type: Name of the |UDM| policy to lookup.
+	"""
 	# FIXME: Move this to handlers.simpleLdap?
 	_d = univention.debug.function('admin.objects.restorePolicyReference policy_type=%s' % (policy_type))
 	module = univention.admin.modules.get(policy_type)
@@ -247,9 +355,14 @@ def restorePolicyReference(object, policy_type):
 
 
 def wantsCleanup(object):
-	'''check if the given object wants to perform a cleanup (delete
-	other objects, etc.) before it is deleted itself'''
+	# type: (univention.admin.handlers.simpleLdap) -> int
+	"""
+	Check if the given object wants to perform a cleanup (delete
+	other objects, etc.) before it is deleted itself.
 
+	:param object: parent object.
+	:returns: `1´ if a cleanup is requested, `0` otherwise.
+	"""
 	# TODO make this a method of object
 	wantsCleanup = 0
 
@@ -262,8 +375,12 @@ def wantsCleanup(object):
 
 
 def performCleanup(object):
-	'''some objects create other objects. remove those if neccessary.'''
+	# type: (univention.admin.handlers.simpleLdap) -> None
+	"""
+	some objects create other objects. remove those if neccessary.
 
+	:param object: parent object.
+	"""
 	try:
 		object.cleanup()
 	except Exception:

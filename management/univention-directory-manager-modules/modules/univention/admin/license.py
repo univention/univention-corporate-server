@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-#
-# Univention Admin Modules
-#  wrapper around univention.license that translates error codes to exceptions
-#
+"""
+|UDM| wrapper around :py:mod:`univention.license` that translates error codes to exceptions
+"""
 # Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/

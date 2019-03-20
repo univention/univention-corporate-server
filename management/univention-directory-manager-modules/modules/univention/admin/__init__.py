@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-#
-# Univention Admin Modules
-#  basic functionality
-#
+"""
+|UDM| basic functionality
+"""
 # Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -39,6 +38,10 @@ from ldap.filter import filter_format
 
 import univention.config_registry
 import univention.debug
+try:
+	from typing import Any, List, Optional, Type, Union  # noqa F401
+except ImportError:
+	pass
 
 __all__ = ('configRegistry', 'ucr_overwrite_properties', 'pattern_replace', 'property', 'option', 'ucr_overwrite_module_layout', 'ucr_overwrite_layout', 'extended_attribute', 'tab', 'field', 'policiesGroup', 'modules', 'objects', 'syntax', 'hook', 'mapping')
 
@@ -108,8 +111,10 @@ def ucr_overwrite_properties(module, lo):
 
 
 def pattern_replace(pattern, object):
-	"""Replaces patterns like <attribute:command,...>[range] with values
-	of the specified UDM attribute."""
+	"""
+	Replaces patterns like `<attribute:command,...>[range]` with values
+	of the specified UDM attribute.
+	"""
 
 	global_commands = []
 
@@ -246,32 +251,61 @@ class property:
 
 	def __init__(
 		self,
-		short_description='',
-		long_description='',
-		syntax=None,
-		module_search=None,
-		multivalue=False,
-		one_only=False,
-		parent=None,
-		options=[],
-		license=[],
-		required=False,
-		may_change=True,
-		identifies=False,
-		unique=False,
-		default=None,
-		prevent_umc_default_popup=False,
-		dontsearch=False,
-		show_in_lists=False,
-		editable=True,
-		configObjectPosition=None,
-		configAttributeName=None,
-		include_in_default_search=False,
-		nonempty_is_default=False,
-		readonly_when_synced=False,
-		size=None,
-		copyable=False):
+		short_description='',  # type: str
+		long_description='',  # type: str
+		syntax=None,  # type: Union[Type, Any]
+		module_search=None,  # type: None
+		multivalue=False,  # type: bool
+		one_only=False,  # type: bool
+		parent=None,  # type: str
+		options=[],  # type: List[str]
+		license=[],  # type: List[str]
+		required=False,  # type: bool
+		may_change=True,  # type: bool
+		identifies=False,  # type: bool
+		unique=False,  # type: bool
+		default=None,  # type: Any
+		prevent_umc_default_popup=False,  # type: bool
+		dontsearch=False,  # type: bool
+		show_in_lists=False,  # type: bool
+		editable=True,  # type: bool
+		configObjectPosition=None,  # type: None
+		configAttributeName=None,  # type: None
+		include_in_default_search=False,  # type: bool
+		nonempty_is_default=False,  # type: bool
+		readonly_when_synced=False,  # type: bool
+		size=None,  # type: str
+		copyable=False  # type: bool
+	):  # type: (...) -> None
+		"""
+		|UDM| property.
 
+		:param short_description: a short descriptive text - shown below the input filed in |UMC| by default.
+		:param long_description: a long descriptive text - shown only on demand in |UMC|.
+		:param syntax: a syntax class or instance to validate the value.
+		:param module_search: UNUSED?
+		:param multivalue: allow only a single value (`False`) or multiple values (`True`) .
+		:param one_only: UNUSED?
+		:param parent: UNUSED?
+		:param options: List of options, which enable this property.
+		:param license: List of license strings, which are required to use this property.
+		:param required: `True` for a required property, `False` for an optional property.
+		:param may_change: `True` if the property can be changed after the object has been created, `False` when the property can only be specified when the object is created.
+		:param identifies: `True` if the property is part of the set of properties, which are required to uniquely identify the object.
+		:param unique: `True` if the property must be unique for all object instances.
+		:param default: The default value for the property when a new object is created.
+		:param prevent_umc_default_popup: `True` to prevent a pop-up dialog in |UMC| when the default value is not set.
+		:param dontsearch: `True` to prevent searches using the property.
+		:param show_in_lists: UNUSED?
+		:param editable: `False` prevents the property from being modified by the user; it still can be modified by code.
+		:param configObjectPosition: UNUSED?
+		:param configAttributeName: UNUSED?
+		:param include_in_default_search: The default search searches this property when set to `True`.
+		:param nonempty_is_default: `True` selects the first non-empty value as the default. `False` always selects the first default value, even if it is empty.
+		:param readonly_when_synced: `True` only shows the value as read-only when synchronized from some upstream database.
+		:param size: The |UMC| widget size; one of :py:data:`univention.admin.syntax.SIZES`.
+		:param copyable: With `True` the property is copied when the object is clones; with `False` the new object will use the default value.
+		"""
 		self.short_description = short_description
 		self.long_description = long_description
 		if isinstance(syntax, types.ClassType):
@@ -295,7 +329,7 @@ class property:
 		self.editable = editable
 		self.configObjectPosition = configObjectPosition
 		self.configAttributeName = configAttributeName
-		self.templates = []
+		self.templates = []  # type: List  # univention.admin.handlers.simpleLdap
 		self.include_in_default_search = include_in_default_search
 		self.threshold = int(configRegistry.get('directory/manager/web/sizelimit', '2000') or 2000)
 		self.nonempty_is_default = nonempty_is_default
@@ -385,6 +419,9 @@ class property:
 
 
 class option(object):
+	"""
+	|UDM| option to make properties conditional.
+	"""
 
 	def __init__(self, short_description='', long_description='', default=0, editable=False, disabled=False, objectClasses=None, is_app_option=False):
 		self.short_description = short_description
@@ -426,9 +463,9 @@ def ucr_overwrite_layout(module, ucr_property, tab):
 
 
 def ucr_overwrite_module_layout(module):
-	'''
-	Overwrite the tab layout
-	'''
+	"""
+	Overwrite the tab layout through |UCR| variables.
+	"""
 	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "layout overwrite")
 	# there are modules without a layout definition
 	if not hasattr(module, 'layout'):
@@ -502,6 +539,9 @@ def ucr_overwrite_module_layout(module):
 
 
 class extended_attribute(object):
+	"""
+	Extended attributes extend |UDM| and |UMC| with additional properties defined in |LDAP|.
+	"""
 
 	def __init__(self, name, objClass, ldapMapping, deleteObjClass=False, syntax='string', hook=None):
 		self.name = name
@@ -519,7 +559,9 @@ class extended_attribute(object):
 
 
 class tab:
-
+	"""
+	|UDM| tab to group related properties together in |UMC|.
+	"""
 	is_app_tab = False
 
 	def __init__(self, short_description='', long_description='', fields=[], advanced=False):

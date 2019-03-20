@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-#
-# Univention Directory Manager Modules
-#  policy utilities
-#
+"""
+|UDM| policy utilities
+"""
 # Copyright 2015-2019 Univention GmbH
 #
 # http://www.univention.de/

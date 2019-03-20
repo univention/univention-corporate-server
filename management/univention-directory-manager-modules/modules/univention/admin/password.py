@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-#
-# Univention Admin Modules
-#  password encryption methods
-#
+"""
+|UDM| password encryption methods.
+"""
 # Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -37,6 +36,10 @@ import types
 import smbpasswd
 import string
 import univention.config_registry
+try:
+	from typing import List, Optional, Tuple  # noqa F401
+except ImportError:
+	pass
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
@@ -45,7 +48,15 @@ RE_PASSWORD_SCHEME = re.compile('^{(\w+)}(!?)(.*)', re.I)
 
 
 def crypt(password, method_id=None, salt=None):
-	"""return crypt hash"""
+	# type: (str, Optional[str], Optional[str]) -> str
+	"""
+	Return crypt hash.
+
+	:param password: password string.
+	:param method_id: optional hash type, MD5, SHA256/SHA-256, SHA512/SHA-512.
+	:param salt: salt for randomize the hashing.
+	:returns: the hashed password string.
+	"""
 	hashing_method = configRegistry.get('password/hashing/method', 'sha-512').upper()
 
 	if salt is None:
@@ -79,8 +90,13 @@ def crypt(password, method_id=None, salt=None):
 
 
 def ntlm(password):
-	"""return tuple with NT and LanMan hash"""
+	# type: (str) -> Tuple[str, str]
+	"""
+	Return tuple with NT and LanMan hash.
 
+	:param password: password string.
+	:returns: 2-tuple (NT, LanMan)
+	"""
 	nt = smbpasswd.nthash(password)
 
 	if configRegistry.is_true('password/samba/lmhash', False):
@@ -92,6 +108,15 @@ def ntlm(password):
 
 
 def krb5_asn1(principal, password, krb5_context=None):
+	# type: (str, str, Optional[heimdal.context]) -> List[bytes]
+	"""
+	Generate Kerberos password hashes.
+
+	:param principal: Kerberos principal name.
+	:param password: password string.
+	:param krb5_context: optional Kerberos context.
+	:returns: list of ASN1 encoded Kerberos hashes.
+	"""
 	list = []
 	if isinstance(principal, types.UnicodeType):
 		principal = str(principal)
@@ -110,7 +135,13 @@ def krb5_asn1(principal, password, krb5_context=None):
 
 
 def is_locked(password):
+	# type: (str) -> bool
 	"""
+	Check is the password (hash) is locked
+
+	:param password: password hash.
+	:returns: `True` when locked, `False` otherwise.
+
 	>>> is_locked('foo')
 	False
 	>>> is_locked('{crypt}$1$foo')
@@ -127,7 +158,13 @@ def is_locked(password):
 
 
 def unlock_password(password):
+	# type: (str) -> str
 	"""
+	Remove prefix from password used for locking.
+
+	:param password: password hash.
+	:returns: the unlocked password hash.
+
 	>>> unlock_password('{crypt}!$1$foo')
 	'{crypt}$1$foo'
 	>>> unlock_password('{LANMAN}!')
@@ -144,7 +181,13 @@ def unlock_password(password):
 
 
 def lock_password(password):
+	# type: (str) -> str
 	"""
+	Add prefix to password used for locking.
+
+	:param password: password hash.
+	:returns: the locked password hash.
+
 	>>> lock_password('{crypt}$1$foo')
 	'{crypt}!$1$foo'
 	>>> lock_password('{LANMAN}')
@@ -165,10 +208,28 @@ def lock_password(password):
 		password = '{%s}!%s' % (match[0], match[2])
 	return password
 
+
 def password_is_auth_saslpassthrough(password):
+	# type: (str) -> bool
+	"""
+	Check if the password hash indicates the use of |SASL|.
+
+	:param apssword: password hash.
+	:returns: `True` is |SASL| shall be used, `False` otherwise.
+	"""
 	return password.startswith('{SASL}') and configRegistry.get('directory/manager/web/modules/users/user/auth/saslpassthrough', 'no').lower() == 'keep'
 
+
 def get_password_history(newpwhash, pwhistory, pwhlen):
+	# type: (str, str, int) -> str
+	"""
+	Append the given password hash to the history of password hashed
+
+	:param newpwhash: new password hash.
+	:param pwhistory: history of previous password hashes.
+	:param pwhlen: length of the password history.
+	:returns: modified password hash history.
+	"""
 	# split the history
 	if len(string.strip(pwhistory)):
 		pwlist = string.split(pwhistory, ' ')
@@ -198,7 +259,16 @@ def get_password_history(newpwhash, pwhistory, pwhlen):
 	res = string.join(pwlist)
 	return res
 
+
 def password_already_used(password, pwhistory):
+	# type: (str, str) -> bool
+	"""
+	Check if the password is already used in the password hash history.
+
+	:param password: new password hash.
+	:param pwhistory: history of previous password hashes.
+	:returns: `True` when already used, `False` otherwise,
+	"""
 	for line in pwhistory.split(" "):
 		linesplit = line.split("$")  # $method_id$salt$password_hash
 		try:
@@ -212,7 +282,11 @@ def password_already_used(password, pwhistory):
 			return True
 	return False
 
+
 class PasswortHistoryPolicy(type('', (), {}).mro()[-1]):
+	"""
+	Policy for handling history of password hashes.
+	"""
 
 	def __init__(self, pwhistoryPolicy):
 		super(PasswortHistoryPolicy, self).__init__()
@@ -235,6 +309,7 @@ class PasswortHistoryPolicy(type('', (), {}).mro()[-1]):
 				self.expiryInterval = max(0, int(pwhistoryPolicy['expiryInterval'] or 0))
 			except ValueError:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (expiry interval): %r' % (pwhistoryPolicy.dn,))
+
 
 if __name__ == '__main__':
 	import doctest

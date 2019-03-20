@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-#
-# Univention Admin Modules
-#  methods and defines for nagios attributes
-#
+"""
+|UDM| methods and defines for Nagios related attributes.
+"""
 # Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -104,7 +103,9 @@ nagios_options = {
 
 
 def addPropertiesMappingOptionsAndLayout(new_property, new_mapping, new_options, new_layout):
-	# add nagios properties
+	"""
+	Add Nagios properties.
+	"""
 	for key, value in nagios_properties.items():
 		new_property[key] = value
 
@@ -204,13 +205,13 @@ class Support(object):
 						univention.admin.allocators.release(self.lo, self.position, i, j)
 					raise univention.admin.uexceptions.nagiosDNSForwardZoneEntryRequired
 
-		#	add nagios option
+		# add nagios option
 		if self.option_toggled('nagios') and 'nagios' in self.options:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'added nagios option')
 			if 'univentionNagiosHostClass' not in self.oldattr.get('objectClass', []):
 				ml.insert(0, ('univentionNagiosEnabled', '', '1'))
 
-		#	remove nagios option
+		# remove nagios option
 		if self.option_toggled('nagios') and 'nagios' not in self.options:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'remove nagios option')
 			for key in ['univentionNagiosParent', 'univentionNagiosEmail', 'univentionNagiosEnabled']:
@@ -285,7 +286,6 @@ class Support(object):
 					self.lo.modify(servicedn, [('univentionNagiosHostname', oldmembers, newmembers)])
 
 	def nagiosRemoveHostFromServices(self):
-
 		self.nagiosRemoveFromServices = False
 		fqdn = self.__getFQDN()
 
