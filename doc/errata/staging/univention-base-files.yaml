@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issue:
  * The script univention-policy-update-config-registry now has a new option to
    specify the LDAP server from which to get the policies.
-bug: [35208]
+bug: [49044]
