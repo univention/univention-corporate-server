@@ -1,3 +1,10 @@
+ucs-test (9.0.2-23) unstable; urgency=medium
+
+  * Bug #1234: fixed 40_mail/05open_relay
+
+ -- Felix Botner <botner@univention.de>  Wed, 20 Mar 2019 13:53:57 +0100
+
+
 ucs-test (9.0.2-22) unstable; urgency=medium
 
   * Bug #47306: check exit code of process
