@@ -89,7 +89,8 @@ class UMCTester(object):
 		signal = 'SIGKILL' if force else 'SIGTERM'
 		self.selenium.wait_for_text(_('Signal (%s) sent successfully') % signal)
 		self.selenium.wait_until_all_standby_animations_disappeared()
-		p.poll()
+		code = -9 if force else -15
+		assert code == p.poll()
 		self.search(p.pid)
 		try:
 			self.selenium.driver.find_element_by_xpath(self._pid_xpath(p.pid))
