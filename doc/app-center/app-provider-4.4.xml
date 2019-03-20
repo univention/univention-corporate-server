@@ -2067,17 +2067,75 @@ docker-compose -p $appid logs
 				installation will be successful or not. Any exit code other than 0
 				will result in cancellation of the installation process. This
 				script is also executed if the app is upgraded.
-			</para>
-		</section>
+            </para>
+            <para>
+                As figure <xref linkend="installation-scripts:app-flow:install"
+                    /> shows the script receives the LDAP bind DN of the
+                Administrator account and its password, the version of the app
+                that should be installed, the locale and an error log file for
+                log output as parameters.
+            </para>
+        </section>
+        <section id="installation:restore-data-before-setup">
+            <title>Docker script restore_data_before_setup</title>
+            <para>
+                This script is executed inside the Docker container before the
+                setup script is run. Its purpose is to restore the data which
+                has been stored by the store_data script. The parameters are
+                the appid, the app version and a filename for error logging.
+            </para>
+        </section>
 		<section id="installation:setup">
 			<title>Docker script setup</title>
 			<para>
-				This script is executed in the Docker container. It is normally
-				the heart of the initial app configuration. If the script
-				fails (exit code != 0) the installation is aborted.
-				<!-- TODO: parameters?-->
+                This script is executed inside the Docker container. It is
+                normally the heart of the initial app configuration and
+                typically used to make environment specific settings to the
+                container or apply certain changes that requirement the
+                container environment. If the script fails (exit code != 0)
+                the installation is aborted.
+            </para>
+            <para>
+                The parameters given to the script are the appid, the app
+                version, a filename for error logging and the username and
+                credentials for the Administrator user.
+            </para>
+        </section>
+
+		<section id="installation:restore_data_after_setup">
+			<title>Docker script restore_data_after_setup</title>
+			<para>
+                This script is executed inside the Docker container after the
+                setup script is run. Its purpose is to restore the data which
+                has been stored by the store_data script. The parameters are
+                the appid, the app version and a filename for error logging.
 			</para>
-		</section>
+        </section>
+
+        <section id="installation:configure_host">
+            <title>Settings script run on Docker host</title>
+            <para>
+                This script is executed on the Docker host after the
+                <filename>restore_data_after_setup</filename> script is run.
+                Its purpose is to make environment specific settings on the UCS host
+                regarding the app. The parameters are app action which is
+                <userinput>install</userinput> for the installation, the app
+                version, a filename for error logging and the locale.
+            </para>
+        </section>
+
+        <section id="installation:configure">
+            <title>Settings script run in Docker container</title>
+            <para>
+                This script is executed inside the Docker container after the
+                <filename>configure_host</filename> script is run.  Its purpose
+                is to make environment specific settings in the app container.
+                The parameters are app action which is
+                <userinput>install</userinput> for the installation, the appid,
+                the app version and a filename for error logging.
+            </para>
+        </section>
+
 		<section id="installation:joinscript">
 			<title>Join script</title>
 			<para>
