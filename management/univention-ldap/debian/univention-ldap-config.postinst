@@ -78,6 +78,7 @@ if [ "$1" = "configure" -a -n "$2" ]; then
 			rm "$diversion_target"
 		fi
 	fi
+	# UCS 4.4-0-errata: add univentionDomainControllerComputersObject attribute default value to "cn=default containers"
 	eval "$(ucr shell ldap/base server/role)"
 	if [ -e /var/univention-join/joined -a "$server_role" = "domaincontroller_master" ] && dpkg --compare-versions "$2" lt '15.0.0-16'; then
 		dc_content="$(ldapsearch -QLLLo ldif-wrap=no -Y EXTERNAL -H ldapi:/// -b "$(ucr get ldap/base)" -z 1 "objectClass=univentionDirectory" "univentionComputersObject")"
@@ -93,6 +94,7 @@ add: univentionDomainControllerComputersObject
 $dc_content
 
 __LDIF__
+		[ "$?" != 0 ] && echo 'ERROR: Modifying default container failed. Please run univention-run-join-scripts --force --run-scripts 18python-univention-directory-manager.inst.'
 		fi
 	fi
 fi
