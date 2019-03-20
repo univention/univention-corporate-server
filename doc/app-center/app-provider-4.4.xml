@@ -2091,7 +2091,7 @@ docker-compose -p $appid logs
                 This script is executed inside the Docker container. It is
                 normally the heart of the initial app configuration and
                 typically used to make environment specific settings to the
-                container or apply certain changes that requirement the
+                container or apply certain changes that require the
                 container environment. If the script fails (exit code != 0)
                 the installation is aborted.
             </para>
@@ -2271,12 +2271,12 @@ exit 0
 		<title>Uninstallation scripts</title>
 		<para>
             During the uninstallation of an app, the so-called prerm script is
-            executed first. Afterwards, the account for the Docker container is
-            removed and the Docker container is stopped. After that, the unjoin
-            script is executed. Please see an overview of the involved scripts
-            and the parameters they are called with in the figure below. More
-            information on the scripts themselves can be found in the following
-            sections.
+            executed first. Afterwards, the machine account for the Docker
+            container is removed and the Docker container is stopped. After
+            that, the unjoin script is executed. Please see an overview of the
+            involved scripts and the parameters they are called with in the
+            figure below. More information on the scripts themselves can be
+            found in the following sections.
         </para>
 
         <para>
@@ -2289,14 +2289,62 @@ exit 0
 		<section id="uninstallation:prerm">
 			<title>Script called before uninstalling to verify that App may be removed</title>
 			<para>
-				This script is executed on the UCS host system. It is also
-				called as prerm script. Its purpose is to check whether an
-				uninstallation is successful or not. For example, the prerm
-				may fail if other software still depends on it. Any exit code
-				other than 0 will result in cancellation of the uninstallation
-				process.
+                This script is executed on the UCS host system and is also
+                called <filename>prerm</filename> script. Its purpose is to
+                check the prerequisites for an uninstallation and abort if they
+                are not met. For example, the prerm may fail if other software
+                still depends on it. Any exit code other than 0 will result in
+                cancellation of the uninstallation process. The given
+                parameters are the LDAP bind DN of the Administrator account
+                and its password, the version of the app that should be
+                uninstalled/removed, the locale and an error log file for log
+                output.
 			</para>
-		</section>
+        </section>
+
+        <section id="uninstallation:configure_host">
+            <title>Settings script run on Docker host</title>
+
+            <para>
+                This script is executed on the Docker host after the
+                <filename>prerm</filename> script is run. Its purpose is to
+                make environment specific settings on the UCS host during the
+                removal of the app. The parameters are app action which is
+                <userinput>remove</userinput> for the uninstallation/removal,
+                the app version, a filename for error logging and the locale.
+            </para>
+        </section>
+
+        <section id="uninstallation:configure">
+            <title>Settings script run in Docker container</title>
+            <para>
+                This script is executed inside the Docker container after the
+                <filename>configure_host</filename> script is run. Its purpose
+                is to make environment specific settings in the app container
+                before it is removed. The parameters are app action which is
+                <userinput>remove</userinput> for the uninstallation/removal,
+                the appid, the app version and a filename for error logging.
+            </para>
+        </section>
+
+        <section id="uninstallation:store-data">
+            <title>Docker script store_data</title>
+
+			<para>
+                This script is required if data exists in the container which
+                should not be removed while the container is replaced with a
+                new container or if the app is uninstalled. The script is not
+                required if all the data is stored outside of the container for
+                example in a database or a mapped volume. The
+                <filename>store_data</filename> script is executed inside the
+                Docker container and it should copy the relevant data to
+                <filename>/var/lib/univention-appcenter/apps/$APPID/data/</filename>.
+                Afterwards, the data can be restored by one of the restore_data
+                scripts. The parameters are the appid, the app version and a
+                filename for error logging.
+			</para>
+        </section>
+
 		<section id="uninstallation:unjoin">
 			<title>Unjoin script</title>
 			<para>
