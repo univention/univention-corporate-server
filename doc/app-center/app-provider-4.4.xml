@@ -2380,19 +2380,35 @@ exit 0
             </figure>
         </para>
 
+		<section id="upgrade-scripts:preinst">
+			<title>Script called before installation to verify that App may be upgraded</title>
+			<para>
+				This script is executed on the UCS host system before the app upgrade is
+				initialized, even before the Docker image is downloaded. Its purpose is to check whether
+				the requirements for the upgrade are fulfilled. Any exit code other than 0
+				will result in cancellation of the upgrade process.
+            </para>
+            <para>
+                As figure <xref linkend="upgrade-scripts:app-flow:update" />
+                shows the script receives the LDAP bind DN of the Administrator
+                account and its password, the old version of the app and the
+                new version, the locale and an error log file for log output as
+                parameters.
+            </para>
+        </section>
+
 		<section id="upgrade:store_data">
 			<title>Docker script store_data</title>
 			<para>
-				This script is required if data exists in the container which
-				should not be removed while the container is replaced with a
-				new container or if the app is uninstalled.
-				It is not required if all the data is stored outside the container for
-				example in a database or a mapped volume.
-				This script is executed inside the Docker container and it
-				should copy the relevant data to
-				<filename>/var/lib/univention-appcenter/apps/$APPID/data/</filename>.
-			   	Afterwards, the data can be restored by one of the
-				restore_data scripts.
+                This script is required if data exists in the container which
+                should not be removed while it is replaced with a new container
+                or if the app is uninstalled. It is not required if all the
+                data is stored outside the container for example in a database
+                or a mapped volume. This script is executed inside the Docker
+                container and it should copy the relevant data to
+                <filename>/var/lib/univention-appcenter/apps/$APPID/data/</filename>.
+                Afterwards, the data can be restored by one of the restore_data
+                scripts when they are executed in the new container.
 			</para>
 		</section>
 		<section id="upgrade:restore_data_before_setup">
@@ -2403,16 +2419,74 @@ exit 0
 				Its purpose is to restore the data which has been stored by
 				the store_data script.
 			</para>
-		</section>
+        </section>
+
+        <section id="upgrade:setup">
+            <title>Docker script setup</title>
+
+			<para>
+                This script is executed inside the Docker container. It is
+                used to make environment specific settings to the new
+                container or apply certain changes that require the
+                container environment. If the script fails (exit code != 0)
+                the upgrade is aborted.
+            </para>
+            <para>
+                The parameters given to the script are the appid, the app
+                version, a filename for error logging and the username and
+                credentials for the Administrator user.
+            </para>
+        </section>
+
 		<section id="upgrade:restore_data_after_setup">
 			<title>Docker script restore_data_after_setup</title>
 			<para>
-				This script is executed inside the Docker container after the
-				setup script is run.
-				Its purpose is to restore the data which has been stored by
-				the store_data script.
+                This script is executed inside the Docker container after the
+                setup script is run. Its purpose is to restore the data which
+                has been stored by the <filename>store_data</filename> script
+                in the old container.
 			</para>
-		</section>
+        </section>
+
+        <section id="upgrade:configure_host">
+            <title>Settings script run on Docker host</title>
+            <para>
+                This script is executed on the Docker host after the
+                <filename>restore_data_after_setup</filename> script is run.
+                Its purpose is to make environment specific settings on the UCS
+                host regarding the app during the upgrade. The parameters are
+                app action which is <userinput>upgrade</userinput> for the
+                upgrade, the app version, a filename for error logging and the
+                locale.
+            </para>
+        </section>
+
+        <section id="upgrade:configure">
+            <title>Settings script run in Docker container</title>
+            <para>
+                This script is executed inside the Docker container after the
+                <filename>configure_host</filename> script is run. Its purpose
+                is to make environment specific settings in the app container
+                during the upgrade. The parameters are app action which is
+                <userinput>ugprade</userinput> for the upgrade, the appid, the
+                app version and a filename for error logging.
+            </para>
+        </section>
+
+        <section id="upgrade:joinscript">
+            <title>Join Script</title>
+            <para>
+                Finally, the join script is called to end the upgrade. With an
+                updated join script changes can be made to the environment that
+                require the necessary execution permissions or access to the
+                UCS directory service. When a join script should run during the
+                upgrade, please keep in mind to increment the
+                <userinput>VERSION</userinput> counter. For more information on
+                the join script in general see <xref
+                    linkend="installation:joinscript" />.
+            </para>
+        </section>
+
 	</section>
 
 	<section id="app-settings">
