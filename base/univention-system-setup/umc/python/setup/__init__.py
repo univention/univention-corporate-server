@@ -250,7 +250,7 @@ class Instance(Base, ProgressMixin):
 		self.finished(request.id, None)
 
 	@simple_response
-	def join(self, values=None, username=None, password=None):
+	def join(self, values=None, dcname=None, username=None, password=None):
 		'''Join and reconfigure the system according to the values specified in the dict given as
 		option named "values".'''
 
@@ -288,7 +288,7 @@ class Instance(Base, ProgressMixin):
 
 				# unjoined DC master (that is not being converted to a basesystem) -> run the join script
 				MODULE.info('runnning system setup join script')
-				util.run_joinscript(self._progressParser, values, username, password, lang=str(self.locale))
+				util.run_joinscript(self._progressParser, values, username, password, dcname, lang=str(self.locale))
 
 				# done :)
 				self._finishedResult = True

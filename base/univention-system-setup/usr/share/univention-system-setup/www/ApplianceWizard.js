@@ -2308,7 +2308,7 @@ define([
 			topic.publish('/umc/actions', this.moduleID, 'configure', 'start');
 
 			// function to save data
-			var _join = lang.hitch(this, function(values, username, password) {
+			var _join = lang.hitch(this, function(values, dcname, username, password) {
 				// make sure that no re-login is tried/required due to the server time
 				// being adjusted in 40_ssl/10ssl (cf., Bug #38455)
 				// and make sure no page reload is requested
@@ -2330,6 +2330,7 @@ define([
 						values: values,
 						// make sure that the username/password are null and not undefined
 						// ... server cannot handle "undefined"
+						dcname: dcname || null,
 						username: username || null,
 						password: password || null,
 					}, false);
@@ -2444,7 +2445,7 @@ define([
 			} else {
 				// for any other role, we need domain admin credentials
 				var credentials = this._getCredentials();
-				joinDeferred = _join(values, credentials.username, credentials.password);
+				joinDeferred = _join(values, credentials.ad ? null : credentials.address, credentials.username, credentials.password);
 			}
 			joinDeferred = joinDeferred.then(_checkJoinSuccessful);
 
