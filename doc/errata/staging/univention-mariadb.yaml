@@ -6,6 +6,6 @@ src: univention-mariadb
 fix: 2.0.0-5A~4.4.0.201903191553
 desc: |
  This update addresses the following issues:
- * Makes the systemd service timeout for mysqld configurable via the
+ * Make the systemd service timeout for mysqld configurable via the
    ucr variable mariadb/startup/timeout.
 bug: [46901]
