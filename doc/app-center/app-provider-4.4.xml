@@ -2035,8 +2035,40 @@ docker-compose -p $appid logs
 	<title>App configurations</title>
 	<para>
 		The App Center offers the possibility to add scripts at various
-		points during the installation and configuration of the app. The most
-		important scripts are described below.
+        points during the installation and configuration of the app. The
+        scripts are described below. They can be edited in the app in the App
+        Provider portal in the following sections:
+        <itemizedlist>
+            <listitem>
+                <simpara>
+                    Docker → Join/Un-join script
+                </simpara>
+            </listitem>
+            <listitem>
+                <simpara>
+                    Docker → Preinst/prerm script
+                </simpara>
+            </listitem>
+            <listitem>
+                <simpara>
+                    Docker → Life cycle scripts → Docker script
+                    <filename>setup</filename>,
+                    <filename>store_data</filename>,
+                    <filename>restore_data_before_setup</filename>,
+                    <filename>restore_data_after_setup</filename>
+                </simpara>
+            </listitem>
+            <listitem>
+                <simpara>
+                    Settings → Configuration script run in the Docker Container. (<filename>configure</filename>)
+                </simpara>
+            </listitem>
+            <listitem>
+                <simpara>
+                    Settings → Configuration script run on the Docker Host. (<filename>configure_host</filename>)
+                </simpara>
+            </listitem>
+        </itemizedlist>
 	</para>
 
 	<section id="installation-scripts">
