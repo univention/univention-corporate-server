@@ -135,11 +135,9 @@
                 user <userinput>univention</userinput>. The image then has to
                 be copied manually by the App Center team to the Univention
                 Docker registry. Univention's Docker Registry is not browsable.
-                It needs credentials to be accessed. Before downloading the
-                image via the Univention App Center module in UCS, each user
-                (by default) needs to be registered by an email address. Yet,
-                the Docker image should be considered public by the time the
-                app is published in Univention App Center.
+                It needs credentials to be accessed. The Docker image should be
+                considered public by the time the app is published in
+                Univention App Center.
             </para>
             <para>
                 The image must have a version tag to distinguish different
@@ -2074,12 +2072,9 @@ docker-compose -p $appid logs
 	<section id="installation-scripts">
 		<title>Installation scripts</title>
 		<para>
-            During the installation of an app, the so-called preinst script is
-            executed first. Afterwards, the account for the Docker container is
-            created and the Docker container is started. After that, the setup
-            script is called and finally the join script. Please see an
-            overview of the involved scripts and the parameters they are called
-            with in the figure below. More information on the scripts
+            During the installation of an app, various scripts are called.
+            Please see the overview below about of the involved scripts and the
+            parameters they are called with. More information on the scripts
             themselves can be found in the following sections.
         </para>
 
@@ -2093,39 +2088,42 @@ docker-compose -p $appid logs
 		<section id="installation:preinst">
 			<title>Script called before installation to verify that App may be installed</title>
 			<para>
-				This script is executed on the UCS host system before the app is
-				initialized, even before the app image is downloaded. It is
-				also called a preinst script. Its purpose is to check whether
-				installation will be successful or not. Any exit code other than 0
-				will result in cancellation of the installation process. This
-				script is also executed if the app is upgraded.
+                The <filename>preinst</filename> script is executed
+                on the UCS host system before the app is initialized, even
+                before the app image is downloaded. It is also called a preinst
+                script. Its purpose is to check whether installation will be
+                successful or not. Any exit code other than 0 will result in
+                cancellation of the installation process. This script is also
+                executed if the app is upgraded.
             </para>
             <para>
-                As figure <xref linkend="installation-scripts:app-flow:install"
-                    /> shows the script receives the LDAP bind DN of the
-                Administrator account and its password, the version of the app
-                that should be installed, the locale and an error log file for
-                log output as parameters.
+                The script receives the LDAP bind DN of the Administrator
+                account and its password, the version of the app that should be
+                installed, the locale and an error log file for log output as
+                parameters.
             </para>
         </section>
         <section id="installation:restore-data-before-setup">
             <title>Docker script restore_data_before_setup</title>
             <para>
-                This script is executed inside the Docker container before the
-                setup script is run. Its purpose is to restore the data which
-                has been stored by the store_data script. The parameters are
-                the appid, the app version and a filename for error logging.
+                The life cycle script
+                <filename>restore_data_before_setup</filename> is executed
+                inside the Docker container before the
+                <filename>setup</filename> script is run. Its purpose is to
+                restore the data which has been stored by the
+                <filename>store_data</filename> script. The parameters are the
+                appid, the app version and a filename for error logging.
             </para>
         </section>
 		<section id="installation:setup">
 			<title>Docker script setup</title>
 			<para>
-                This script is executed inside the Docker container. It is
-                normally the heart of the initial app configuration and
-                typically used to make environment specific settings to the
-                container or apply certain changes that require the
-                container environment. If the script fails (exit code != 0)
-                the installation is aborted.
+                The life cycle script <filename>setup</filename> is executed
+                inside the Docker container. It is the heart of the
+                initial app configuration and typically used to make
+                environment specific settings to the container or apply certain
+                changes that require the container environment. If the script
+                fails (exit code != 0) the installation is aborted.
             </para>
             <para>
                 The parameters given to the script are the appid, the app
@@ -2137,42 +2135,47 @@ docker-compose -p $appid logs
 		<section id="installation:restore_data_after_setup">
 			<title>Docker script restore_data_after_setup</title>
 			<para>
-                This script is executed inside the Docker container after the
-                setup script is run. Its purpose is to restore the data which
-                has been stored by the store_data script. The parameters are
-                the appid, the app version and a filename for error logging.
+                The life cycle script
+                <filename>restore_data_after_setup</filename> is executed
+                inside the Docker container after the
+                <filename>setup</filename> script is run. Its purpose is to
+                restore the data which has been stored by the
+                <filename>store_data</filename> script. The parameters are the
+                appid, the app version and a filename for error logging.
 			</para>
         </section>
 
         <section id="installation:configure_host">
             <title>Settings script run on Docker host</title>
             <para>
-                This script is executed on the Docker host after the
+                The settings script <filename>configure_host</filename> is
+                executed on the Docker host after the
                 <filename>restore_data_after_setup</filename> script is run.
-                Its purpose is to make environment specific settings on the UCS host
-                regarding the app. The parameters are app action which is
-                <userinput>install</userinput> for the installation, the app
-                version, a filename for error logging and the locale.
+                Its purpose is to make environment specific settings on the UCS
+                host regarding the app. The parameters are the app action
+                <userinput>install</userinput>, the app version, a filename for
+                error logging and the locale.
             </para>
         </section>
 
         <section id="installation:configure">
             <title>Settings script run in Docker container</title>
             <para>
-                This script is executed inside the Docker container after the
-                <filename>configure_host</filename> script is run.  Its purpose
-                is to make environment specific settings in the app container.
-                The parameters are app action which is
-                <userinput>install</userinput> for the installation, the appid,
-                the app version and a filename for error logging.
+                The settings script <filename>configure</filename> is executed
+                inside the Docker container after the
+                <filename>configure_host</filename> script. Its purpose is to
+                make environment specific settings in the app container. The
+                parameters are the app action <userinput>install</userinput>,
+                the appid, the app version and a filename for error logging.
             </para>
         </section>
 
 		<section id="installation:joinscript">
 			<title>Join script</title>
 			<para>
-                This script is executed on the UCS host system after the Docker
-                container is configured. Please refer to the <ulink
+                The joinscript <filename>inst</filename> is executed on the UCS
+                host system after the Docker container is configured. Please
+                refer to the <ulink
                     url="https://docs.software-univention.de/developer-reference.html#chap:join">Developer
                     Reference</ulink> about how to write a join script. In
                 principle a join script is a script that runs after the
@@ -2302,13 +2305,10 @@ exit 0
 	<section id="uninstallation-scripts">
 		<title>Uninstallation scripts</title>
 		<para>
-            During the uninstallation of an app, the so-called prerm script is
-            executed first. Afterwards, the machine account for the Docker
-            container is removed and the Docker container is stopped. After
-            that, the unjoin script is executed. Please see an overview of the
-            involved scripts and the parameters they are called with in the
-            figure below. More information on the scripts themselves can be
-            found in the following sections.
+            During the uninstallation of an app, various scripts are called.
+            Please see the overview below about the involved scripts and the
+            parameters they are called with. More information on the scripts
+            themselves can be found in the following sections.
         </para>
 
         <para>
@@ -2321,16 +2321,15 @@ exit 0
 		<section id="uninstallation:prerm">
 			<title>Script called before uninstalling to verify that App may be removed</title>
 			<para>
-                This script is executed on the UCS host system and is also
-                called <filename>prerm</filename> script. Its purpose is to
-                check the prerequisites for an uninstallation and abort if they
-                are not met. For example, the prerm may fail if other software
-                still depends on it. Any exit code other than 0 will result in
-                cancellation of the uninstallation process. The given
-                parameters are the LDAP bind DN of the Administrator account
-                and its password, the version of the app that should be
-                uninstalled/removed, the locale and an error log file for log
-                output.
+                The <filename>prerm</filename> script is executed on the UCS
+                host system. Its purpose is to check the prerequisites for an
+                uninstallation and abort if they are not met. For example, the
+                prerm may fail if other software still depends on it. Any exit
+                code other than 0 will result in cancellation of the
+                uninstallation process. The given parameters are the LDAP bind
+                DN of the Administrator account and its password, the version
+                of the app that should be uninstalled/removed, the locale and
+                an error log file for log output.
 			</para>
         </section>
 
@@ -2338,24 +2337,26 @@ exit 0
             <title>Settings script run on Docker host</title>
 
             <para>
-                This script is executed on the Docker host after the
+                The settings script <filename>configure_host</filename> is
+                executed on the Docker host after the
                 <filename>prerm</filename> script is run. Its purpose is to
                 make environment specific settings on the UCS host during the
-                removal of the app. The parameters are app action which is
-                <userinput>remove</userinput> for the uninstallation/removal,
-                the app version, a filename for error logging and the locale.
+                removal of the app. The parameters are the app action
+                <userinput>remove</userinput>, the app version, a filename for
+                error logging and the locale.
             </para>
         </section>
 
         <section id="uninstallation:configure">
             <title>Settings script run in Docker container</title>
             <para>
-                This script is executed inside the Docker container after the
-                <filename>configure_host</filename> script is run. Its purpose
-                is to make environment specific settings in the app container
-                before it is removed. The parameters are app action which is
-                <userinput>remove</userinput> for the uninstallation/removal,
-                the appid, the app version and a filename for error logging.
+                The settings script <filename>configure</filename> is
+                executed inside the Docker container after the
+                <filename>configure_host</filename> script. Its purpose is to
+                make environment specific settings in the app container before
+                it is removed. The parameters are the app action
+                <userinput>remove</userinput>, the appid, the app version and a
+                filename for error logging.
             </para>
         </section>
 
@@ -2363,32 +2364,32 @@ exit 0
             <title>Docker script store_data</title>
 
 			<para>
-                This script is required if data exists in the container which
-                should not be removed while the container is replaced with a
-                new container or if the app is uninstalled. The script is not
-                required if all the data is stored outside of the container for
-                example in a database or a mapped volume. The
-                <filename>store_data</filename> script is executed inside the
-                Docker container and it should copy the relevant data to
+                The life cycle script <filename>store_data</filename> is
+                required if data exists in the container which should not be
+                removed when the container is replaced with a new container or
+                if the app is uninstalled. The script is not required if all
+                the data is stored outside of the container for example in a
+                database or a mapped volume. It is executed inside the Docker
+                container and it should copy the relevant data to
                 <filename>/var/lib/univention-appcenter/apps/$APPID/data/</filename>.
-                Afterwards, the data can be restored by one of the restore_data
-                scripts. The parameters are the appid, the app version and a
-                filename for error logging.
+                Afterwards, the data can be restored by one of the
+                <filename>restore_data*</filename> scripts. The parameters are
+                the appid, the app version and a filename for error logging.
 			</para>
         </section>
 
 		<section id="uninstallation:unjoin">
 			<title>Unjoin script</title>
 			<para>
-                This script is executed on the UCS host system after the Docker
-                container is removed. See the <ulink
+                The unjoin script <filename>uinst</filename> is executed on the
+                UCS host system after the Docker container is removed. See the
+                <ulink
                     url="https://docs.software-univention.de/developer-reference.html">Developer
                     Reference</ulink> for how to write an unjoin script. It
-                should revert most (if not all) changes done in the
-                join script.  With the notable exception of schema
-                registration. An LDAP schema extension should never be removed
-                once it was
-				registered.
+                should revert most (if not all) changes done in the join
+                script. With the notable exception of schema registration. An
+                LDAP schema extension should never be removed once it was
+                registered.
 			</para>
 		</section>
 	</section>
@@ -2398,9 +2399,9 @@ exit 0
 		<para>
             It may be necessary to move data from the old container to the new
             container when the app container is replaced during an upgrade or
-            when the app is uninstalled. Therefore, the upgrade scripts can be
-            used. Please see an overview of the involved scripts and the
-            parameters they are called with in the figure below. More
+            when the app is uninstalled. The upgrade scripts can be used for
+            this purpose. Please see an overview of the involved scripts and
+            the parameters they are called with in the figure below. More
             information on the scripts themselves can be found in the following
             sections.
         </para>
@@ -2415,14 +2416,15 @@ exit 0
 		<section id="upgrade-scripts:preinst">
 			<title>Script called before installation to verify that App may be upgraded</title>
 			<para>
-				This script is executed on the UCS host system before the app upgrade is
-				initialized, even before the Docker image is downloaded. Its purpose is to check whether
-				the requirements for the upgrade are fulfilled. Any exit code other than 0
-				will result in cancellation of the upgrade process.
+                The <filename>preinst</filename> script is executed on the UCS
+                host system before the app upgrade is initialized, even before
+                the Docker image is downloaded. Its purpose is to check whether
+                the requirements for the upgrade are fulfilled. Any exit code
+                other than 0 will result in cancellation of the upgrade
+                process.
             </para>
             <para>
-                As figure <xref linkend="upgrade-scripts:app-flow:update" />
-                shows the script receives the LDAP bind DN of the Administrator
+                The script receives the LDAP bind DN of the Administrator
                 account and its password, the old version of the app and the
                 new version, the locale and an error log file for log output as
                 parameters.
@@ -2432,24 +2434,28 @@ exit 0
 		<section id="upgrade:store_data">
 			<title>Docker script store_data</title>
 			<para>
-                This script is required if data exists in the container which
-                should not be removed while it is replaced with a new container
-                or if the app is uninstalled. It is not required if all the
-                data is stored outside the container for example in a database
-                or a mapped volume. This script is executed inside the Docker
-                container and it should copy the relevant data to
+                The life cycle script <filename>store_data</filename> is
+                required if data exists in the container which should not be
+                removed when it is replaced with a new container or if the app
+                is uninstalled. It is not required if all the data is stored
+                outside the container for example in a database or a mapped
+                volume. The script is executed inside the Docker container and
+                it should copy the relevant data to
                 <filename>/var/lib/univention-appcenter/apps/$APPID/data/</filename>.
-                Afterwards, the data can be restored by one of the restore_data
-                scripts when they are executed in the new container.
+                Afterwards, the data can be restored by one of the
+                <filename>restore_data*</filename> scripts when they are
+                executed in the new container.
 			</para>
 		</section>
 		<section id="upgrade:restore_data_before_setup">
 			<title>Docker script restore_data_before_setup</title>
 			<para>
-				This script is executed inside the Docker container before the
-				setup script is run.
-				Its purpose is to restore the data which has been stored by
-				the store_data script.
+                The life cycle script
+                <filename>restore_data_before_setup</filename> is executed
+                inside the Docker container before the
+                <filename>setup</filename> script is run. Its purpose is to
+                restore the data which has been stored by the
+                <filename>store_data</filename> script.
 			</para>
         </section>
 
@@ -2457,11 +2463,11 @@ exit 0
             <title>Docker script setup</title>
 
 			<para>
-                This script is executed inside the Docker container. It is
-                used to make environment specific settings to the new
-                container or apply certain changes that require the
-                container environment. If the script fails (exit code != 0)
-                the upgrade is aborted.
+                The life cycle script <filename>setup</filename> is executed
+                inside the Docker container. It is used to make environment
+                specific settings to the new container or apply certain changes
+                that require the container environment. If the script fails
+                (exit code != 0) the upgrade is aborted.
             </para>
             <para>
                 The parameters given to the script are the appid, the app
@@ -2473,48 +2479,51 @@ exit 0
 		<section id="upgrade:restore_data_after_setup">
 			<title>Docker script restore_data_after_setup</title>
 			<para>
-                This script is executed inside the Docker container after the
-                setup script is run. Its purpose is to restore the data which
-                has been stored by the <filename>store_data</filename> script
-                in the old container.
+                The life cycle script
+                <filename>restore_data_after_setup</filename> is executed
+                inside the Docker container after the
+                <filename>setup</filename> script is run. Its purpose is to
+                restore the data which has been stored by the
+                <filename>store_data</filename> script in the old container.
 			</para>
         </section>
 
         <section id="upgrade:configure_host">
             <title>Settings script run on Docker host</title>
             <para>
-                This script is executed on the Docker host after the
+                The settings script <filename>configure_host</filename> is
+                executed on the Docker host after the
                 <filename>restore_data_after_setup</filename> script is run.
                 Its purpose is to make environment specific settings on the UCS
                 host regarding the app during the upgrade. The parameters are
-                app action which is <userinput>upgrade</userinput> for the
-                upgrade, the app version, a filename for error logging and the
-                locale.
+                the app action <userinput>upgrade</userinput>, the app version,
+                a filename for error logging and the locale.
             </para>
         </section>
 
         <section id="upgrade:configure">
             <title>Settings script run in Docker container</title>
             <para>
-                This script is executed inside the Docker container after the
+                The settings script <filename>configure</filename> is executed
+                inside the Docker container after the
                 <filename>configure_host</filename> script is run. Its purpose
                 is to make environment specific settings in the app container
-                during the upgrade. The parameters are app action which is
-                <userinput>ugprade</userinput> for the upgrade, the appid, the
-                app version and a filename for error logging.
+                during the upgrade. The parameters are the app action
+                <userinput>ugprade</userinput>, the appid, the app version and
+                a filename for error logging.
             </para>
         </section>
 
         <section id="upgrade:joinscript">
             <title>Join Script</title>
             <para>
-                Finally, the join script is called to end the upgrade. With an
-                updated join script changes can be made to the environment that
-                require the necessary execution permissions or access to the
-                UCS directory service. When a join script should run during the
-                upgrade, please keep in mind to increment the
-                <userinput>VERSION</userinput> counter. For more information on
-                the join script in general see <xref
+                Finally, the join script <filename>inst</filename> is called to
+                end the upgrade. With an updated join script changes can be
+                made to the environment that require the necessary execution
+                permissions or access to the UCS directory service. When a join
+                script should run during the upgrade, please keep in mind to
+                increment the <userinput>VERSION</userinput> counter. For more
+                information on the join script in general see <xref
                     linkend="installation:joinscript" />.
             </para>
         </section>
