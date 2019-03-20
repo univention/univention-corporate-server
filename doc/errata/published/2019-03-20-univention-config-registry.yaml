@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issues:
  * By default univention-ldapsearch appends the argument -o ldif-wrap=no now.
 bug: [48683]
+erratum: 6
+announced: 2019-03-20
