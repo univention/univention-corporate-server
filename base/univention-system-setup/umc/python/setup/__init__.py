@@ -470,23 +470,6 @@ class Instance(Base, ProgressMixin):
 						continue
 					_check(jkey, util.is_ipaddr, _('The specified IP address (%(name)s) is not valid: %(value)s') % {'name': iname, 'value': jval})
 
-		def guess_domain(obj):
-			for nameserver in ('nameserver1', 'nameserver2', 'nameserver3'):
-				nameserver = obj.get(nameserver)
-				if nameserver:
-					guessed_domain = None
-					if obj.get('ad/member') and obj.get('ad/address'):
-						try:
-							ad_domain_info = lookup_adds_dc(obj.get('ad/address'), ucr={'nameserver1': nameserver})
-						except failedADConnect:
-							pass
-						else:
-							guessed_domain = ad_domain_info['Domain']
-					else:
-						guessed_domain = util.get_ucs_domain(nameserver)
-					if guessed_domain:
-						return guessed_domain
-
 		if is_wizard_mode and not util.is_system_joined() and (newrole not in ['domaincontroller_master', 'basesystem'] or ad_member):
 			if all(nameserver in values and not values[nameserver] for nameserver in ('nameserver1', 'nameserver2', 'nameserver3')):
 				# 'nameserver1'-key exists → widget is displayed → = not in UCS/debian installer mode
@@ -496,17 +479,36 @@ class Instance(Base, ProgressMixin):
 
 			# see whether the domain can be determined automatically
 			ucr.load()
+			guessed_domain = None
 			for obj in [values, ucr]:
-				guessed_domain = values.get('domainname') or guess_domain(obj)
+				for nameserver in ('nameserver1', 'nameserver2', 'nameserver3'):
+					nameserver = obj.get(nameserver)
+					if nameserver:
+						guessed_domain = None
+						if obj.get('ad/member') and obj.get('ad/address'):
+							try:
+								ad_domain_info = lookup_adds_dc(obj.get('ad/address'), ucr={'nameserver1': nameserver})
+							except failedADConnect:
+								pass
+							else:
+								guessed_domain = ad_domain_info['Domain']
+						else:
+							guessed_domain = util.get_ucs_domain(nameserver)
+						if guessed_domain:
+							differing_domain_name = values.get('domainname') and values['domainname'].lower() != guessed_domain.lower()
+							if differing_domain_name:
+								_append('domainname', _('The specified domain name is different to the %s domain name found via the configured DNS server: %s') % (_('Active Directory') if ad_member else _('UCS'), guessed_domain,))
+							else:
+								# communicate guessed domainname to frontend
+								messages.append({
+									'valid': True,
+									'key': 'domainname',
+									'value': guessed_domain,
+								})
+							break
 				if guessed_domain:
-					# communicate guessed domainname to frontend
-					messages.append({
-						'valid': True,
-						'key': 'domainname',
-						'value': guessed_domain,
-					})
 					break
-			else:
+			if not guessed_domain:
 				if not values.get('domainname'):
 					_append('domainname', _('Cannot automatically determine the domain. Please specify the server\'s fully qualified domain name.'))
 

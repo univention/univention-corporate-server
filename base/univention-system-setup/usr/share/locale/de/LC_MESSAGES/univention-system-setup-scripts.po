@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-system-setup\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-27 17:45+0100\n"
+"POT-Creation-Date: 2019-03-21 15:01+0100\n"
 "PO-Revision-Date: 2012-02-20 14:41+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,27 +12,27 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: usr/lib/univention-system-setup/scripts/setup-join.sh:166
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:171
 msgid "Recreating SSH keys"
 msgstr "Erstellen von SSH-Schlüsseln"
 
-#: usr/lib/univention-system-setup/scripts/setup-join.sh:167
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:172
 msgid "This might take a moment..."
 msgstr "Dies kann einen Moment dauern..."
 
-#: usr/lib/univention-system-setup/scripts/setup-join.sh:249
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:254
 msgid "Domain setup (this might take a while)"
 msgstr "Domäneneinrichtung (Dies kann einige Zeit dauern)"
 
-#: usr/lib/univention-system-setup/scripts/setup-join.sh:255
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:260
 msgid "Preparing domain join"
 msgstr "Vorbereitung des Domänenbeitritts"
 
-#: usr/lib/univention-system-setup/scripts/setup-join.sh:295
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:304
 msgid "Configure"
 msgstr "Einrichten von"
 
-#: usr/lib/univention-system-setup/scripts/setup-join.sh:344
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:353
 msgid "Running appliance scripts"
 msgstr "Ausführen der Appliance-Skripte"
 
@@ -269,7 +269,8 @@ msgstr "Das Administrator Konto konnte in UCS nicht erstellt werden."
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:149
 msgid "The sambaSID could not set for the Administrator account in UCS."
-msgstr "Die sambaSID für das Administrator Konto konnte in UCS nicht gesetzt werden."
+msgstr ""
+"Die sambaSID für das Administrator Konto konnte in UCS nicht gesetzt werden."
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:151
 msgid "Failed to search for the well known SID."
@@ -277,7 +278,9 @@ msgstr "Die Suche nach der bekannten SID ist fehlgeschlagen."
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:153
 msgid "Failed to add the Administrator account to the Domain Admins group."
-msgstr "Das Administrator Konto konnte nicht zur Gruppe der Domänenadministratoren hinzugefügt werden."
+msgstr ""
+"Das Administrator Konto konnte nicht zur Gruppe der Domänenadministratoren "
+"hinzugefügt werden."
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:155
 #, python-format

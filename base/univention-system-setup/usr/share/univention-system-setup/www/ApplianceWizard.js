@@ -1830,9 +1830,9 @@ define([
 			msg += '<p><b>' + _('Domain and host configuration') + '</b></p>';
 			msg += '<ul>';
 			_append(_('Fully qualified domain name'), _vals._fqdn);
-			if (_validateHostname(_vals.hostname) && guessedDomainName) {
+			if (_validateHostname(vals.hostname) && guessedDomainName) {
 				// if the backend gave us a guess for the domain name, show it here
-				var fqdn = _vals.hostname + '.' + guessedDomainName;
+				var fqdn = vals.hostname + '.' + guessedDomainName;
 				_append(_('Fully qualified domain name'), fqdn);
 				this._newFQDN = fqdn;
 			}
