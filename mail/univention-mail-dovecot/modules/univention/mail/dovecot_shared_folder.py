@@ -394,9 +394,9 @@ class DovecotSharedFolderListener(DovecotListener):
 		for acl in acls:
 			identifier, right = self._split_udm_imap_acl_doveadm(acl)
 			if right == "none":
-				cmd = ["/usr/bin/doveadm", "acl", "delete", "-u", "Administrator", mailbox, identifier]
+				cmd = ["/usr/bin/doveadm", "acl", "delete", "-A", mailbox, identifier]
 			else:
-				cmd = ["/usr/bin/doveadm", "acl", "set", "-u", "Administrator", mailbox, identifier]
+				cmd = ["/usr/bin/doveadm", "acl", "set", "-A", mailbox, identifier]
 				cmd.extend(dovecot_acls[right][1])
 			try:
 				self.read_from_ext_proc_as_root(cmd)
