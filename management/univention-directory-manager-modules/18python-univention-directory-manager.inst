@@ -88,6 +88,23 @@ univention-directory-manager container/cn create "$@" --ignore_exists \
 	--set name="data" \
 	--set description="LDAP data storage." || die
 
+# Code for failed univention-ldap-config.postinst during UCS 4.4-0-errata update. Should be removed somewhen.
+if [ "$server_role" = "domaincontroller_master" -a -n "$JOIN_FORCE" ] && ! ldapsearch -QLLLo ldif-wrap=no -Y EXTERNAL -H ldapi:/// -b "$(ucr get ldap/base)" -z 1 "objectClass=univentionDirectory" "univentionDomainControllerComputersObject" | grep -q '^univentionDomainControllerComputersObject:'; then
+	dc_content="$(ldapsearch -QLLLo ldif-wrap=no -Y EXTERNAL -H ldapi:/// -b "$(ucr get ldap/base)" -z 1 "objectClass=univentionDirectory" "univentionComputersObject")"
+	dc_dn="$(echo "$dc_content" | sed -ne 's/^dn: //p;T;q')"
+	dc_content="$(echo "$dc_content" | grep '^univentionComputersObject:' | grep -v -i -e "^univentionComputersObject: cn=computers,$ldap_base" -e "^univentionComputersObject: cn=memberserver,cn=computers,$ldap_base" | sed 's/^univentionComputersObject/univentionDomainControllerComputersObject/g')"
+
+	if [ -n "$dc_dn" -a -n "$dc_content" ]; then
+		cat <<__LDIF__ | ldapmodify -QY EXTERNAL -H ldapi:///
+dn: $dc_dn
+changetype: modify
+add: univentionDomainControllerComputersObject
+$dc_content
+
+__LDIF__
+	fi
+fi
+
 stop_udm_cli_server
 
 joinscript_save_current_version
