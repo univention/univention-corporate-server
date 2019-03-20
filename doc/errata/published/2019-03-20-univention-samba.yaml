@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issues:
  * Internal improvement: fixed quoting of shell variables.
 bug: [48989]
+erratum: 11
+announced: 2019-03-20
