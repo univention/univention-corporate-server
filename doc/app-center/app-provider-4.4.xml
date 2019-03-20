@@ -1182,51 +1182,6 @@ docker-compose -p $appid logs
 
 </chapter>
 
-<chapter id="app-workflow">
-    <title>App workflow on UCS host</title>
-    <para>
-        This chapter describes what is going on in detail on the UCS host when
-        an app is installed, updated or removed. It shows the commands that are
-        called by the App Center, what work is done by the App Center and what
-        information can be used by the various scripts during the respective
-        workflows.
-    </para>
-
-    <section id="app-workflow:installation">
-        <title>Installation</title>
-
-        <para>
-			<figure id="app-workflow:app-flow:install">
-				<title>App workflow for installation</title>
-				<graphic scalefit="1" width="100%" fileref="illustrations44/app-flow-install.png"/>
-            </figure>
-        </para>
-    </section>
-
-    <section id="app-workflow:update">
-        <title>Update</title>
-
-        <para>
-			<figure id="app-workflow:app-flow:update">
-				<title>App workflow for update</title>
-				<graphic scalefit="1" width="100%" fileref="illustrations44/app-flow-update.png"/>
-            </figure>
-        </para>
-    </section>
-
-    <section id="app-workflow:remove">
-        <title>Removal</title>
-
-        <para>
-			<figure id="app-workflow:app-flow:remove">
-				<title>App workflow for Removal</title>
-				<graphic scalefit="1" width="100%" fileref="illustrations44/app-flow-remove.png"/>
-            </figure>
-        </para>
-    </section>
-
-</chapter>
-
 <chapter id="app-presentation">
     <title>App presentation</title>
 
@@ -2087,11 +2042,22 @@ docker-compose -p $appid logs
 	<section id="installation-scripts">
 		<title>Installation scripts</title>
 		<para>
-			During the installation of an app, the so-called preinst script is
-			executed first. Afterwards, the account for the Docker container is
-			created and the Docker container is started. After that, the setup
-			script is called and finally the join script.
-		</para>
+            During the installation of an app, the so-called preinst script is
+            executed first. Afterwards, the account for the Docker container is
+            created and the Docker container is started. After that, the setup
+            script is called and finally the join script. Please see an
+            overview of the involved scripts and the parameters they are called
+            with in the figure below. More information on the scripts
+            themselves can be found in the following sections.
+        </para>
+
+        <para>
+			<figure id="installation-scripts:app-flow:install">
+				<title>App workflow for installation</title>
+				<graphic scalefit="1" width="100%" fileref="illustrations44/app-flow-install.png"/>
+            </figure>
+        </para>
+
 		<section id="installation:preinst">
 			<title>Script called before installation to verify that App may be installed</title>
 			<para>
@@ -2246,11 +2212,22 @@ exit 0
 	<section id="uninstallation-scripts">
 		<title>Uninstallation scripts</title>
 		<para>
-			During the uninstallation of an app, the so-called prerm script is
-			executed first. Afterwards, the account for the Docker container is
-			removed and the Docker container is stopped. After that, the
-			unjoin script is executed.
-		</para>
+            During the uninstallation of an app, the so-called prerm script is
+            executed first. Afterwards, the account for the Docker container is
+            removed and the Docker container is stopped. After that, the unjoin
+            script is executed. Please see an overview of the involved scripts
+            and the parameters they are called with in the figure below. More
+            information on the scripts themselves can be found in the following
+            sections.
+        </para>
+
+        <para>
+			<figure id="uninstallation-scripts:app-flow:remove">
+				<title>App workflow for Removal</title>
+				<graphic scalefit="1" width="100%" fileref="illustrations44/app-flow-remove.png"/>
+            </figure>
+        </para>
+
 		<section id="uninstallation:prerm">
 			<title>Script called before uninstalling to verify that App may be removed</title>
 			<para>
@@ -2281,10 +2258,22 @@ exit 0
 	<section id="upgrade-scripts">
 		<title>Upgrade scripts</title>
 		<para>
-			It may be necessary to move data from the old container to the new
-			container when the app container is replaced during an upgrade or
-			the app is uninstalled. Therefore, the upgrade scripts can be used.
-		</para>
+            It may be necessary to move data from the old container to the new
+            container when the app container is replaced during an upgrade or
+            when the app is uninstalled. Therefore, the upgrade scripts can be
+            used. Please see an overview of the involved scripts and the
+            parameters they are called with in the figure below. More
+            information on the scripts themselves can be found in the following
+            sections.
+        </para>
+
+        <para>
+			<figure id="upgrade-scripts:app-flow:update">
+				<title>App workflow for update</title>
+				<graphic scalefit="1" width="100%" fileref="illustrations44/app-flow-update.png"/>
+            </figure>
+        </para>
+
 		<section id="upgrade:store_data">
 			<title>Docker script store_data</title>
 			<para>
