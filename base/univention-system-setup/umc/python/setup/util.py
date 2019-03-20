@@ -585,7 +585,7 @@ def _temporary_password_file(password):
 		os.remove(PATH_PASSWORD_FILE)
 
 
-def run_joinscript(progressParser, values, _username, password, lang='C'):
+def run_joinscript(progressParser, values, _username, password, dcname=None, lang='C'):
 	# write header before executing join script
 	f = open(LOG_FILE, 'a')
 	f.write('\n\n=== RUNNING SETUP JOIN SCRIPT (%s) ===\n\n' % timestamp())
@@ -629,6 +629,8 @@ def run_joinscript(progressParser, values, _username, password, lang='C'):
 
 	cmd = [PATH_JOIN_SCRIPT]
 	if _username and password:
+		if dcname:
+			cmd.extend(['--dcname', dcname])
 
 		with _temporary_password_file(password) as password_file:
 			# sanitize username

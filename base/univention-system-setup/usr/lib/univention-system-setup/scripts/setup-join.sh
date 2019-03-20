@@ -33,10 +33,15 @@
 
 password_file=""
 dcaccount=""
+dcname=""
 runcleanup=true
 
 while [ "$#" -gt 0 ]; do
 	case $1 in
+		--dcname)
+			dcname="$2"
+			shift 2
+			;;
 		--dcaccount)
 			dcaccount="$2"
 			shift 2
@@ -54,12 +59,12 @@ while [ "$#" -gt 0 ]; do
 			shift 1
 			;;
 		--help)
-			echo "Usage: $0 [--dcaccount <dcaccount> --password_file <passwordfile>] [--do_not_run_cleanup]"
+			echo "Usage: $0 [--dcname <dcname>] [--dcaccount <dcaccount> --password_file <passwordfile>] [--do_not_run_cleanup]"
 			exit 1
 			;;
 		*)
 			echo "WARNING: Unknown parameter $1"
-			echo "Usage: $0 [--dcaccount <dcaccount> --password_file <passwordfile>] [--do_not_run_cleanup]"
+			echo "Usage: $0 [--dcname <dcname>] [--dcaccount <dcaccount> --password_file <passwordfile>] [--do_not_run_cleanup]"
 			exit 1
 	esac
 done
@@ -280,7 +285,11 @@ if [ $? -ne 1 ]; then
 				# with the given user credentials. This will not work.
 				pwd_file="$(mktemp)"
 				cp "$password_file" "$pwd_file"
-				/usr/share/univention-join/univention-join -dcaccount "$dcaccount" -dcpwd "$pwd_file"
+				if [ -n "$dcname" ]; then
+					/usr/share/univention-join/univention-join -dcname "$dcname" -dcaccount "$dcaccount" -dcpwd "$pwd_file"
+				else
+					/usr/share/univention-join/univention-join -dcaccount "$dcaccount" -dcpwd "$pwd_file"
+				fi
 				rm -f "$pwd_file"
 			fi
 		fi
