@@ -121,6 +121,8 @@ define([
 						widgets: ipage.widgets,
 						buttons: ipage.buttons,
 						layout: ipage.layout,
+						standby: ipage.standby,
+						standbyDuring: ipage.standbyDuring,
 						onSubmit: lang.hitch(this, function(e) {
 							if (e && e.preventDefault) {
 								e.preventDefault();

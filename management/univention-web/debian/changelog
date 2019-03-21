@@ -1,3 +1,10 @@
+univention-web (3.0.5-6) unstable; urgency=medium
+
+  * Bug #46919: add possibility to enable standby animations during reloading
+  	of dynamic values
+
+ -- Florian Best <best@univention.de>  Thu, 21 Mar 2019 11:57:11 +0100
+
 univention-web (3.0.5-5) unstable; urgency=medium
 
   * Bug #48995: remove unused imports

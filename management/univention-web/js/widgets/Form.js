@@ -113,6 +113,10 @@ define([
 
 		progressDeferred: null,
 
+		// standby functionality. If given, dependency loading triggers standby animation
+		standby: null,
+		standbyDuring: null,
+
 		addNotification: function(/*innerHTML*/ message, /*function (optional)*/ action, /*String*/ actionLabel) {
 			dialog.contextNotify(message, action, actionLabel);
 		},
@@ -427,11 +431,14 @@ define([
 			if (publisherName in this._dependencyMap) {
 				var values = this.get('value');
 				var readyInfo = this._allReadyNamed;
-				array.forEach(this._dependencyMap[publisherName], function(ireceiver) {
+				array.forEach(this._dependencyMap[publisherName], lang.hitch(this, function(ireceiver) {
 					if (ireceiver && ireceiver._loadValues) {
 						ireceiver._loadValues(values, readyInfo);
+						if (this.standbyDuring) {
+							this.standbyDuring(this.ready());
+						}
 					}
-				});
+				}));
 			}
 		},
 
