@@ -55,7 +55,7 @@ define([
 			this.inherited(arguments);
 			this._canContinue = new Deferred();
 
-			if (this.moduleFlavor == 'navigation') {
+			if (this.moduleFlavor === 'navigation') {
 				this.pages = [this._getOptionSelectionPage(), this._getActiveDirectoryWarningPage()];
 			} else {
 				this.pages = [this._getActiveDirectoryWarningPage(), this._getOptionSelectionPage()];
@@ -372,7 +372,7 @@ define([
 					label: _('Container'),
 					description: _('The container in which the LDAP object shall be created.'),
 					autoHide: true,
-					// depends: ['objectType'], // causes dependency loop, moved to objectType.onChange()
+					depends: ['objectType'],
 					dynamicValues: lang.hitch(this, function() {
 						return this.moduleCache.getContainers(this.getWidget('objectType').get('value') || undefined).then(function(result) {
 							result.sort(tools.cmpObjects('label'));
@@ -402,7 +402,7 @@ define([
 					description: _('The exact object type of the new LDAP object.'),
 					autoHide: true,
 					visible: this.showObjectType,
-					depends: selectedContainer ? [] : ['container'/*, 'superordinate'*/],
+					depends: (selectedContainer || this.moduleFlavor !== 'navigation') ? [] : ['container'/*, 'superordinate'*/],
 					dynamicValues: lang.hitch(this, function() {
 						var containerWidget = this.getWidget('firstPage', 'container');
 						var superordinateWidget = this.getWidget('firstPage', 'superordinate');
@@ -415,16 +415,6 @@ define([
 							result.sort(tools.cmpObjects('label'));
 							return result;
 						});
-					}),
-					onChange: lang.hitch(this, function() {
-						if (this.getWidget('firstPage', 'container').reloadDynamicValues) {
-							// widget might be HiddenInput instead of ComboBox
-							this.getWidget('firstPage', 'container').reloadDynamicValues();
-							// we must do a standby animation here, otherwise when clicking on next during the loading of default containers ldap errors occurr during creation of objects
-							setTimeout(lang.hitch(this, function() {
-								this.standbyDuring(this.getWidget('firstPage', 'container').ready());
-							}), 200);
-						}
 					}),
 					size: 'Two'
 				});
@@ -467,7 +457,9 @@ define([
 			return {
 				name: 'firstPage',
 				widgets: widgets,
-				layout: layout
+				layout: layout,
+				standbyDuring: lang.hitch(this, 'standbyDuring'),
+				standby: lang.hitch(this, 'standby'),
 			};
 		},
 
