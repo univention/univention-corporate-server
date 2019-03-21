@@ -67,12 +67,12 @@
 
 	  <figure id="mittelstand">
 		<title>Systemübersicht von Ganupa Technologies am zentralen Standort (die Virtualisierung wird in diesem Schaubild nicht berücksichtigt)</title>
-		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/mittelstand.jpg"/>
+		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/mittelstand.png"/>
 	  </figure>
 
 	  <figure id="mittelstand-ueberblick">
 		<title>Globaler Systemaufbau von Ganupa Technologies</title>
-		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/mittelstand-ueberblick.jpg"/>
+		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/mittelstand-ueberblick.png"/>
 	  </figure>
   </section>
 

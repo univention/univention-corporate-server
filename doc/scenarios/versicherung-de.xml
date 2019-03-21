@@ -90,7 +90,7 @@
 
 	  <figure id="versicherung-gesamt">
 		<title>Gesamtüberblick (nicht im Bild: Storage, DNS, DHCP, Druckdienste, Virtualisierung, Backup)</title>
-		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/versicherung.jpg"/>
+		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/versicherung.png"/>
 	  </figure>
 
 	<para>
@@ -114,7 +114,7 @@
 
 	  <figure id="versicherung-standort">
 		<title>Aufbau eines Standort-Servers</title>
-		<graphic align="center" scalefit="1" width="80%" fileref="illustrations44/versicherung-standort.jpg"/>
+		<graphic align="center" scalefit="1" width="80%" fileref="illustrations44/versicherung-standort.png"/>
 	  </figure>
   </section>
 
