@@ -206,15 +206,6 @@ define([
 			//		and initiate the rendering process.
 			this.inherited(arguments);
 
-			this.watch('selected', lang.hitch(this, function() {
-				var readyDeferred = this.ready();
-				this.standbyDuring(readyDeferred);
-				this._headerButtons.submit.set('disabled', true);
-				readyDeferred.then(lang.hitch(this, function() {
-					this._headerButtons.submit.set('disabled', false);
-				}));
-			}));
-
 			domClass.add(this.domNode, 'umcUDMDetailPage');
 			domClass.toggle(this.domNode, 'umcUDMUsersModule', this.moduleFlavor === 'users/user');
 
@@ -272,6 +263,20 @@ define([
 				}), 50);
 			}), lang.hitch(this, function() {
 				this._pageRenderedDeferred.reject();
+			}));
+		},
+
+		postCreate: function() {
+			this.inherited(arguments);
+
+			// standby handling
+			this.watch('selected', lang.hitch(this, function() {
+				var readyDeferred = this.ready();
+				this.standbyDuring(readyDeferred);
+				this._headerButtons.submit.set('disabled', true);
+				readyDeferred.then(lang.hitch(this, function() {
+					this._headerButtons.submit.set('disabled', false);
+				}));
 			}));
 		},
 
