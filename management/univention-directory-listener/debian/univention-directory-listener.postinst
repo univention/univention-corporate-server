@@ -43,7 +43,7 @@ mkdir -p /var/lib/univention-ldap/listener
 if [ ! -e /var/lib/univention-ldap/listener/listener ]; then
 	touch /var/lib/univention-ldap/listener/listener
 	touch /var/lib/univention-ldap/listener/listener.lock
-	chown listener /var/lib/univention-ldap/listener/listener*
+	chown listener -- /var/lib/univention-ldap/listener/listener*
 fi
 
 #DEBHELPER#

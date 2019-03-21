@@ -65,8 +65,8 @@ if dpkg --compare-versions "$2" lt-nl 5.0.20-37; then
 fi
 
 if dpkg --compare-versions "$2" lt-nl 5.0.20-44; then
-	chown root:root /var/cache/univention-appcenter/*
-	chmod 664 /var/cache/univention-appcenter/*
+	chown root:root -- /var/cache/univention-appcenter/*
+	chmod 664 -- /var/cache/univention-appcenter/*
 fi
 
 if dpkg --compare-versions "$2" lt-nl 6.0.8-20; then

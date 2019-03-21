@@ -68,7 +68,7 @@ if [ -e "/var/lib/univention-directory-replication" ]; then
 fi
 
 if [ -e "/var/lib/univention-ldap/listener/listener" ]; then
-	chown listener /var/lib/univention-ldap/listener/listener*
+	chown listener -- /var/lib/univention-ldap/listener/listener*
 	write_translog=1
 else
 	write_translog=''

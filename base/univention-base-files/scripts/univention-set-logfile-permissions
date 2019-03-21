@@ -30,8 +30,8 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-chmod 640 /var/log/univention/*.log
-chmod 640 /var/log/univention/*.log.[1-9]*
+chmod 640 -- /var/log/univention/*.log
+chmod 640 -- /var/log/univention/*.log.[1-9]*
 
 FNLIST="/var/log/univention/directory-manager-web.log \
         /var/log/univention/management-console-web.log"

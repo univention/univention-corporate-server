@@ -886,7 +886,7 @@ cp /root/slapd.conf /etc/ldap
 mkdir /root/ldap_backup_dir
 mv /var/lib/ldap/*.* /root/ldap_backup_dir
 slapadd -f /etc/ldap/slapd.conf -l /root/data.ldif
-chown openldap.openldap /var/lib/ldap/*.*
+chown openldap.openldap -- /var/lib/ldap/*.*
 chgrp openldap /etc/ldap/slapd.conf
 chgrp -R openldap /etc/univention/ssl
 /etc/init.d/slapd start
