@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * Preparations for better browser cache-control have been implemented.
  * It is possible to define standby animations for form dependencies now.
-bug: [48995,46919]
+ * Password input fields can now have a button to show the password
+   in clear text.
+bug: [48995,46919,47646]
