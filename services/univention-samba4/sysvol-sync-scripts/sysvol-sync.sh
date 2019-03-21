@@ -150,6 +150,13 @@ get_remote_lock() {
 		trap - EXIT
 		return 1
 	fi
+
+	## if the file does not exists on upstream, the default permissions for $SYSVOL_LOCKFILE are wrong,
+	## we need to fix them to ensure other hosts can get a lock too
+	univention-ssh --no-split /etc/machine.secret "$remote_login" -o ServerAliveInterval=20 \
+		"test -G '$SYSVOL_LOCKFILE' && chgrp 'DC Slave Hosts' '$SYSVOL_LOCKFILE' && chmod 664 '$SYSVOL_LOCKFILE'" \
+		2>/dev/null
+
 	return 0
 }
 
