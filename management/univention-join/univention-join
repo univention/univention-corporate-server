@@ -762,7 +762,7 @@ do
 		echo -e "\033[60Gdone"
 	fi
 done
-rm -Rf /var/lib/univention-directory-listener/*
+rm -Rf -- /var/lib/univention-directory-listener/*
 
 set_kerberos_realm () {
 	local DCPWD="$1"

@@ -83,7 +83,7 @@ cp -a /var/lib/univention-ldap/notify/transaction /var/cache/univention-system-s
 /usr/lib/univention-system-setup/scripts/ldif_rewrite.py $ldap_base $new_ldap_base /var/cache/univention-system-setup/ldif.$d /var/cache/univention-system-setup/new_ldif.$d
 sed -i "s|$ldap_base |$new_ldap_base |" /var/lib/univention-ldap/notify/transaction
 
-rm -Rf /var/lib/univention-ldap/ldap/*
+rm -Rf -- /var/lib/univention-ldap/ldap/*
 
 
 univention-config-registry set ldap/base="$new_ldap_base"

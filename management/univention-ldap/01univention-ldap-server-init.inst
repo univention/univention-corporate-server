@@ -68,7 +68,7 @@ fi
 files=$(find /var/lib/univention-ldap/ldap/ -name "$database_name.*" -type f)
 if [ -z "$files" ]
 then
-	rm -f /var/lib/univention-ldap/ldap/*
+	rm -f -- /var/lib/univention-ldap/ldap/*
 
 	if [ -e "/etc/ldap/slapd.d/cn=config.ldif" ]; then
 		mv "/etc/ldap/slapd.d/cn=config.ldif" "/etc/ldap/slapd.d/cn=config.ldif.DISABLED"

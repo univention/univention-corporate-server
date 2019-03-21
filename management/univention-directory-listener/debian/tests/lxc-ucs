@@ -133,7 +133,7 @@ EOF
             mv "$rootfs/etc/init/ssh.conf" "$rootfs/etc/init/ssh.conf.disabled"
         fi
 
-        rm -f "$rootfs/etc/ssh/"ssh_host_*key*
+        rm -f -- "$rootfs/etc/ssh/"ssh_host_*key*
 
         DPKG_MAINTSCRIPT_PACKAGE=openssh DPKG_MAINTSCRIPT_NAME=postinst chroot "$rootfs" /var/lib/dpkg/info/openssh-server.postinst configure
         sed -i "s/root@$(hostname)/root@$hostname/g" "$rootfs/etc/ssh/"ssh_host_*.pub

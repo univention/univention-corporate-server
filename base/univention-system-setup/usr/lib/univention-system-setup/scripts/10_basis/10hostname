@@ -429,7 +429,7 @@ fi
 # stop the dns server and remove the cache
 service stop bind9 heimdal-kdc
 sleep 1
-rm -f /var/cache/bind/*
+rm -f -- /var/cache/bind/*
 service start bind9 heimdal-kdc
 
 #invalidate the hosts cache

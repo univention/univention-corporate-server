@@ -33,5 +33,5 @@ build: $(shell find  www/css -name '*.styl' | sed "s/.styl/.css/g")
 	stylus "$<"
 
 #clean:
-#	rm -f www/css/*.css
+#	rm -f -- www/css/*.css
 

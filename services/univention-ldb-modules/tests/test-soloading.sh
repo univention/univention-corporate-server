@@ -10,7 +10,7 @@ export LDB_URL
 PATH=bin:$PATH
 export PATH
 
-rm -f $LDB_URL*
+rm -f -- $LDB_URL*
 
 if [ -z "$LDBDIR" ]; then
     LDBDIR=`dirname $0`/..

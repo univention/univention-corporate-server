@@ -64,7 +64,7 @@ umc_udm () {
 
 umc_frontend_new_hash () {
 	# remove deprecated symlink
-	rm -f /var/www/univention/js_* || true
+	rm -f -- /var/www/univention/js_* || true
 
 	/usr/sbin/univention-config-registry set "umc/web/cache_bust=$(date +%s)"
 

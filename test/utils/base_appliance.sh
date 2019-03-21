@@ -809,14 +809,14 @@ __EOF__
 
     ucr set update/secure_apt=yes
 	# Manual cleanup
-	rm -rf /tmp/*
+	rm -rf -- /tmp/*
 	for dir in python-cherrypy3 libwibble-dev texlive-base texlive-lang-german texmf texlive-latex-recommended groff-base libept-dev texlive-doc; do
 		[ -d "/usr/share/doc/$dir" ] && rm -rf "/usr/share/doc/$dir"
 	done
 
 	[ -e /var/lib/logrotate/status ] && :> /var/lib/logrotate/status
 	test -e /var/mail/systemmail && rm /var/mail/systemmail
-	rm -r /var/univention-backup/* || true
+	rm -r -- /var/univention-backup/* || true
 
 	# fill up HDD with ZEROs to maximize possible compression
 	dd if=/dev/zero of=/fill-it-up bs=1M || true

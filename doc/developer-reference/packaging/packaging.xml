@@ -192,8 +192,8 @@ and not in / .
 			To improve understandability they are deleted:
 		</para>
 		<programlisting><![CDATA[
-rm debian/*.ex debian/*.EX
-rm debian/README* debian/doc
+rm -- debian/*.ex debian/*.EX
+rm -- debian/README* debian/doc
 	]]></programlisting>
 		<para>
 			The remaining files are required and control the build process of all binary packages.
@@ -398,7 +398,7 @@ TESTCOMP="testcomp/all"
 install -m755 -d "$WWW_BASE/$TESTCOMP"
 install -m644 -t "$WWW_BASE/$TESTCOMP" *.deb
 ( cd "$WWW_BASE" &&
-  rm -f "$TESTCOMP/Packages"* &&
+  rm -f -- "$TESTCOMP/Packages"* &&
   apt-ftparchive packages "$TESTCOMP" > "Packages" &&
   gzip -9 < "Packages" > "$TESTCOMP/Packages.gz" &&
   mv "Packages" "$TESTCOMP/Packages" )

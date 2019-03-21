@@ -50,8 +50,8 @@ case "$1" in
     rm -f /etc/pki/CA/cacert.pem
     rm -f /var/run/uvmmd.pid
     rm -f /var/run/uvmm.socket
-	rm -f /var/log/univention/virtual-machine-manager-daemon.log*
-	rm -f /var/log/univention/virtual-machine-manager-daemon-errors.log*
+	rm -f -- /var/log/univention/virtual-machine-manager-daemon.log*
+	rm -f -- /var/log/univention/virtual-machine-manager-daemon-errors.log*
 	rm -f /var/lib/univention-directory-listener/handlers/uvmmd-nodes
 	rm -rf /var/cache/univention-virtual-machine-manager-daemon
 	rm -f /etc/runit/univention/univention-virtual-machine-manager-daemon

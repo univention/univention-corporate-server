@@ -24,7 +24,7 @@ tests () {
 	for cmd in _aptget _pyapt _apt _aptitude  # _dselect
 	do
 		have "$cmd" || continue
-		rm -f /var/lib/apt/lists/*_Release*
+		rm -f -- /var/lib/apt/lists/*_Release*
 		echo "=== $1 $cmd ==="
 		"$cmd" "$1"
 	done

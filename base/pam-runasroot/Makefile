@@ -74,12 +74,12 @@ remove:
 	rm -f $(DESTDIR)$(SECUREDIR)/$(TITLE).so
 
 clean:
-	rm -f $(LIBOBJD) $(LIBOBJS) core *~ ${LIBSHARED}
+	rm -f -- $(LIBOBJD) $(LIBOBJS) core *~ ${LIBSHARED}
 	rm -rf ./dynamic
 
 
 extraclean: clean
-	rm -f *.a *.o *.so *.bak
+	rm -f -- *.a *.o *.so *.bak
 
 .c.o:
 	$(CC) $(CFLAGS) -c $<

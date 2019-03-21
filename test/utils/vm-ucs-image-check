@@ -96,7 +96,7 @@ check_ssh () {
 	for key in /etc/ssh/ssh_host_*
 	do
 		[ -f "$key" ] || continue
-		issue "SSH keys exist" rm -f /etc/ssh/ssh_host_*
+		issue "SSH keys exist" rm -f -- /etc/ssh/ssh_host_*
 		break
 	done
 }
@@ -106,7 +106,7 @@ check_postfix () {
 	for pfs in /etc/postfix/dh_*.pem
 	do
 		[ -f "$pfs" ] || continue
-		issue "Postfix PFS files exist" rm -f /etc/postfix/dh_*.pem
+		issue "Postfix PFS files exist" rm -f -- /etc/postfix/dh_*.pem
 		break
 	done
 }
@@ -162,7 +162,7 @@ check_ec2 () {
 	[ "${grub_generate_menu_lst:-}" = no ] ||
 		issue "generate-menu-lst is enabled" ucr set grub/generate-menu-lst='no'
 	[ -e /boot/grub/menu.lst ] &&
-		issue "menu.lst exists" rm -f /boot/grub/menu.lst*
+		issue "menu.lst exists" rm -f -- /boot/grub/menu.lst*
 	case "${grub_append:-}" in
 	*console=ttyS*) ;;
 	*) issue "Missing serial console" ucr set grub/append="${grub_append:+$grub_append }console=tty0 console=ttyS0" ;;

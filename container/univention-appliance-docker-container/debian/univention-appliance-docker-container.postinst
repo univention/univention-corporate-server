@@ -49,7 +49,7 @@ if [ "$1" = "configure" ] && [ -z "$2" ] && [ ! -e /var/univention-join/joined ]
 		ucr set aptconf/dockerclean='false'
 	fi
 	if [ -d /var/cache/univention-system-setup/packages ]; then
-		rm /var/cache/univention-system-setup/packages/*
+		rm -- /var/cache/univention-system-setup/packages/*
 		touch /var/cache/univention-system-setup/packages/Packages
 	fi
 

@@ -14,4 +14,4 @@ install:
 	chmod 0644 $(BINDIR)/$(PROG)
 
 clean:
-	rm -f $(OBJS) *~
+	rm -f -- $(OBJS) *~

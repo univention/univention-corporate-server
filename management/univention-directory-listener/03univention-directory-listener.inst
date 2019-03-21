@@ -60,11 +60,11 @@ ln -snf /etc/runit/univention-directory-listener /etc/runit/univention/univentio
 service univention-directory-listener stop
 
 if [ -e "/var/lib/univention-directory-listener" ]; then
-	rm -Rf /var/lib/univention-directory-listener/*
+	rm -Rf -- /var/lib/univention-directory-listener/*
 fi
 
 if [ -e "/var/lib/univention-directory-replication" ]; then
-	rm -Rf /var/lib/univention-directory-replication/*
+	rm -Rf -- /var/lib/univention-directory-replication/*
 fi
 
 if [ -e "/var/lib/univention-ldap/listener/listener" ]; then

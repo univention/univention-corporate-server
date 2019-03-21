@@ -12,7 +12,7 @@ while test \! -d "$p/$d"; do d="../$d"; done
 echo "Found buildtools in $p/$d"
 
 echo "Setting up configure"
-rm -f $p/configure $p/include/config*.h*
+rm -f -- $p/configure $p/include/config*.h*
 sed "s|BUILDTOOLS|$d|g;s|BUILDPATH|$p|g" < "$p/$d/scripts/configure.waf" > $p/configure
 chmod +x $p/configure
 

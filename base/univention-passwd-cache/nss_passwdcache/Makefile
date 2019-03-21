@@ -7,4 +7,4 @@ libnss_passwdcache.so.2:	nss_passwdcache.o
 	gcc -fPIC -Wall -D_GNU_SOURCE -c $<
 
 clean:
-	rm -f *.o *.so.2
+	rm -f -- *.o *.so.2

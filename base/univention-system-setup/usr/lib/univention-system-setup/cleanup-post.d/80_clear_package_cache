@@ -32,7 +32,7 @@
 # clear package cache via cleanup script in order to avoid re-downloading
 # all packages again when univention-system-setup-boot is updated
 if [ -s /var/cache/univention-system-setup/profile ]; then
-	rm -f /var/cache/univention-system-setup/packages/*.deb
+	rm -f -- /var/cache/univention-system-setup/packages/*.deb
 	rm -f /var/cache/univention-system-setup/packages/Packages
 	rm -f /etc/apt/sources.list.d/05univention-system-setup.list
 fi

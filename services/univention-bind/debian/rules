@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 #clean:
-#	rm -f *~ univention-name-to-unicode
+#	rm -f -- *~ univention-name-to-unicode
 
 override_dh_auto_clean:
 	dh_auto_clean

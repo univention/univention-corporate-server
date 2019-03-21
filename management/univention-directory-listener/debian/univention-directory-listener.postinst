@@ -74,7 +74,7 @@ cleanup_and_convert_to_lmdb () {
 	local CACHE_MDB_DIR="$CACHE_DIR/cache"
 
 	[ -f "$BDB" ] || return 0
-	rm -f "$CACHE_MDB_DIR"/*
+	rm -f -- "$CACHE_MDB_DIR"/*
 
 	convert_to_lmdb
 }

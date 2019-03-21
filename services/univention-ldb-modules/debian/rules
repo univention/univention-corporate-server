@@ -81,6 +81,6 @@ override_dh_auto_clean:
 	dh_testdir
 	dh_testroot
 	-$(WAF) clean
-	rm -rf buildtools/bin/.waf-*
-	rm -f buildtools/wafsamba/*.pyc
+	rm -rf -- buildtools/bin/.waf-*
+	rm -f -- buildtools/wafsamba/*.pyc
 	dh_clean

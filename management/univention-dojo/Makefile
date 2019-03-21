@@ -48,7 +48,7 @@ all: install
 clean:
 	rm -rf dojo $(LIBDIR)
 	rm -rf univention-dojo-api-viewer
-	rm -rf dojo-*.tar.gz
+	rm -rf -- dojo-*.tar.gz
 
 dojo: dojo-release-1.12.4-src.tar.gz
 dojo-release-1.12.4-src.tar.gz:

@@ -182,7 +182,7 @@ if [ "$system_setup_boot_installer" != "true" ]; then
 	# Re-create ssh keys
 	ssh_installation_status="$(dpkg --get-selections openssh-server 2>/dev/null | awk '{print $2}')"
 	if [ "$ssh_installation_status" = "install" ]; then
-		rm -f /etc/ssh/ssh_host_*
+		rm -f -- /etc/ssh/ssh_host_*
 		DEBIAN_FRONTEND=noninteractive dpkg-reconfigure openssh-server
 	fi
 	progress_next_step 3

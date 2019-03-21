@@ -142,7 +142,7 @@ directory       "/var/lib/ldap"
 lastmod         on
 __CONF__
 
-	rm /var/lib/ldap/*.mdb
+	rm -- /var/lib/ldap/*.mdb
 
 	ucr filter < /usr/share/univention-ldap/base.ldif | slapadd -f /etc/ldap/slapd2.conf
 	chown openldap: /var/lib/ldap/*.mdb

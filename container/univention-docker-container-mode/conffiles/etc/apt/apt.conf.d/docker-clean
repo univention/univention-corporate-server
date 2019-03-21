@@ -15,8 +15,8 @@ if configRegistry.is_true('aptconf/dockerclean'):
 # that ended up being cyclic and we got stuck on APT's lock, so we get this fun
 # creation that's essentially just "apt-get clean".
 
-DPkg::Post-Invoke { "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb /var/cache/apt/*.bin || true"; };
-APT::Update::Post-Invoke { "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb /var/cache/apt/*.bin || true"; };
+DPkg::Post-Invoke { "rm -f -- /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb /var/cache/apt/*.bin || true"; };
+APT::Update::Post-Invoke { "rm -f -- /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb /var/cache/apt/*.bin || true"; };
 
 Dir::Cache::pkgcache "";
 Dir::Cache::srcpkgcache "";

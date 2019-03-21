@@ -241,7 +241,7 @@ univention-scp -timeout 60 "$pw" "root@$rmhost2:/tmp/ldap_dump_$rmhost2.tmp" /tm
 echo -e "\v ###### $test " >> result.txt
 echo -e "diff /tmp/ldap_dump_$rmhost.tmp /tmp/ldap_dump_$rmhost2.tmp :\v" >> result.txt
 diff "/tmp/ldap_dump_$rmhost.tmp" "/tmp/ldap_dump_$rmhost2.tmp" >> result.txt
-cmd="rm /tmp/ldap_dump*"
+cmd="rm -- /tmp/ldap_dump*"
 echo -e "\v===> deleting temp-files"
 univention-ssh -timeout 60 "$pw" "root@$rmhost" $cmd &> /dev/null
 univention-ssh -timeout 60 "$pw" "root@$rmhost2" $cmd &> /dev/null

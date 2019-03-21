@@ -67,8 +67,8 @@ test -z $indexhtm && {
 }
 
 # Delete old mrtg files
-rm -f $wwwdir/ucs_*.png $wwwdir/ucs_*.txt
-rm -f $wwwdir/uds_*.png $wwwdir/uds_*.txt
+rm -f -- $wwwdir/ucs_*.png $wwwdir/ucs_*.txt
+rm -f -- $wwwdir/uds_*.png $wwwdir/uds_*.txt
 for i in $(ls $wwwdir/uds_*.log 2>/dev/null); do
 	new=$(echo $i | sed 's/\/uds/\/ucs/')
 	mv $i $new

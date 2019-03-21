@@ -45,7 +45,7 @@ cleanup () { # undo object creation
 	set +e
 	"$SHELL" "$undo"
 	rm -rf "$undo"
-	rm -f "$TMPDIR"/univention-directory-reports-*
+	rm -f -- "$TMPDIR"/univention-directory-reports-*
 }
 trap cleanup EXIT
 
