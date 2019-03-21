@@ -50,10 +50,7 @@ class UMCTester(object):
 		self.portals = selenium_udm.Portals(self.selenium)
 		self.selenium.open_module('Portal settings')
 		self.portal_name = self.portals.add(hostname=self.ucr.get('hostname'))
-		portal = self.udm.obj_by_dn('cn=%s,cn=portal,cn=univention,%s' % (self.portal_name, self.ucr.get('ldap/base')))
-		portal_dname = portal.props.displayName['en_US']
-
-
+		portal_dname = list(self.udm.get('settings/portal').search('name={}'.format(self.portal_name)))[0].props.displayName['en_US']
 		logger.info('Visiting portal')
 		self.selenium.driver.get(self.selenium.base_url)
 		try:
