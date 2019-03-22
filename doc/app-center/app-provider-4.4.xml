@@ -733,9 +733,13 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                 times. Among them are for example an optional <userinput>docker
                     login</userinput> to gain access to a private Docker image
                 or even the own Docker registry, and the manual download of the
-                app's Docker image(s) with <userinput>docker pull</userinput>.
-                And then also make a new snapshot. Especially, having the
-                Docker image(s) locally saves download time during recurring
+                app's Docker image(s) with <userinput>docker pull</userinput>
+                (for single container apps) or <userinput>docker-compose -p
+                    $appid pull</userinput> (for multi container apps) from the
+                within the <filename>docker-compose.yml</filename> directory of
+                the app (see <xref linkend="testing:debugging" />). And then
+                also make a new snapshot. Especially, having the Docker
+                image(s) locally saves download time during recurring
                 installation test cycles.
             </para>
             <para>
