@@ -1,3 +1,13 @@
+univention-mail-dovecot (5.0.1-4) unstable; urgency=medium
+
+  * Bug #48485: Add SNI Support to univention-mail-dovecot
+
+    Additional fqdns and certificates can be configured with UCRvs
+    mail/dovecot/ssl/sni/$fqdn/certificate=$path_to_certificate and
+    mail/dovecot/ssl/sni/$fqdn/key=$path_to_certificate_key
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 22 Mar 2019 15:54:13 +0100
+
 univention-mail-dovecot (5.0.1-3) unstable; urgency=low
 
   * Bug #49038: use doveadm without a user, as it'd now requires an email
