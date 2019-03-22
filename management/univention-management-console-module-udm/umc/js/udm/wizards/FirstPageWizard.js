@@ -402,7 +402,7 @@ define([
 					description: _('The exact object type of the new LDAP object.'),
 					autoHide: true,
 					visible: this.showObjectType,
-					depends: (selectedContainer || this.moduleFlavor !== 'navigation') ? [] : ['container'/*, 'superordinate'*/],
+					//depends: (selectedContainer || this.moduleFlavor !== 'navigation') ? [] : ['container'/*, 'superordinate'*/],
 					dynamicValues: lang.hitch(this, function() {
 						var containerWidget = this.getWidget('firstPage', 'container');
 						var superordinateWidget = this.getWidget('firstPage', 'superordinate');
