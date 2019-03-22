@@ -458,7 +458,7 @@ Categories=service-mail
 
 [mail/dovecot/ssl/key]
 Description[de]=Der vollständige Dateiname der SSL-Schlüsseldatei, das von Dovecot für SSL-Verbindungen verwendet wird. Ist die Variable nicht gesetzt, wird der lokale SSL-Host-Schlüssel (/etc/univention/ssl/<FQDN>/private.key) verwendet.
-Description[en]=The full path name of SSL key file that is used by Dovecot to establish SSL connections. If the variable is unset the l    ocal host key (/etc/univention/ssl/<FQDN>/private.key) is used.
+Description[en]=The full path name of SSL key file that is used by Dovecot to establish SSL connections. If the variable is unset the local host key (/etc/univention/ssl/<FQDN>/private.key) is used.
 Type=str
 Categories=service-mail
 
@@ -479,6 +479,11 @@ Description[de]=Zu verwendende SSL-Protokolle. Standard ist "!SSLv2 !SSLv3".
 Description[en]=SSL protocols to use. Defaults to "!SSLv2 !SSLv3".
 Type=str
 Categories=service-mail
+
+[mail/dovecot/ssl/sni/.*]
+Description[de]=Konfiguration von SNI zur Verwendung verschiedener Zertifikate pro FQDN. Für jeden FQDN und Zertifikat sind zwei Variablen zu konfigurieren: mail/dovecot/ssl/sni/$fqdn/certificate=$pfad_zum_zertifikat und mail/dovecot/ssl/sni/$fqdn/key=$pfad_zum_zertifikatsschlüssel
+Description[en]=Configuration of SNI to use different certificates per fqdn. For each fqdn and certificate two variables have to be configured: mail/dovecot/ssl/sni/$fqdn/certificate=$path_to_certificate and mail/dovecot/ssl/sni/$fqdn/key=$path_to_certificate_key
+Type=str
 
 [mail/dovecot/verbose_proctitle]
 Description[de]=Zeige längere Prozesstitel (in ps). Zeigt zur Zeit Benutzernamen und IP-Adresse. Praktisch um zu sehen wer einen IMAP-Prozess verwendet. Standard ist "no".
