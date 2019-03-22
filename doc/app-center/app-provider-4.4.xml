@@ -1175,6 +1175,13 @@ docker exec "$CONTAINER" ...
             url="https://www.univention.com/products/univention-app-center/app-catalog/">App
             Catalog</ulink>.
     </para>
+    <para>
+        All changes are made in the App Provider portal. They need to be saved
+        by pressing the button <guimenu>Sync to Test App Center</guimenu>. Then
+        a release can be requested via the button <guimenu>Publish
+            App</guimenu>. The items mentioned in this chapter can be changed
+        and published any time and do not require a new version of the app.
+    </para>
 
     <section id="logos">
         <title>Logos</title>
