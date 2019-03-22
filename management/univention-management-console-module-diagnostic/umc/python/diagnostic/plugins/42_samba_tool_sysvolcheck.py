@@ -39,7 +39,7 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check Samba sysvol ACLs for errors')
 description = _('No errors found.'),
-run_descr = ['This can be checked by running: samba-tool ntacl sysvolcheck']
+run_descr = ['This can be checked by running: samba-tool ntacl sysvolcheck --mask-msad-differences']
 
 
 def run_samba_tool_ntacl_sysvolreset(umc_instance):
@@ -79,7 +79,7 @@ def run(_umc_instance, rerun=False, fix_log=''):
 		'label': _('Run `samba-tool ntacl sysvolreset`'),
 	}]
 
-	cmd = ['samba-tool', 'ntacl', 'sysvolcheck']
+	cmd = ['samba-tool', 'ntacl', 'sysvolcheck', '--mask-msad-differences']
 	(success, output) = util.run_with_output(cmd)
 	if not success or output:
 		error = _('`samba-tool ntacl sysvolcheck` returned a problem with the sysvol ACLs.')

@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (5.0.1-8) unstable; urgency=medium
+
+  * Bug #46643: Use new option --mask-msad-differences for ntacl sysvolcheck
+
+ -- Arvid Requate <requate@univention.de>  Fri, 22 Mar 2019 11:48:07 +0100
+
 univention-management-console-module-diagnostic (5.0.1-7) unstable; urgency=medium
 
   * Bug #48642: Merge UDN protocol 3
