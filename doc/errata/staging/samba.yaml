@@ -3,8 +3,12 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: samba
-fix: 2:4.10.0-1A~4.4.0.201903212048
+fix: 2:4.10.0-1A~4.4.0.201903221132
 desc: |
  This update addresses the following issue(s):
  * Update to Samba 4.10.0
-bug: [49034]
+ * Improve samba-tool ntacl sysvolcheck to reduce reporting false positives.
+   This can be run by using new option --mask-msad-differences. Without
+   the new option the reporting is unchanged. This is another step in the
+   ongoing quest of improving the quality this tool for NTACL inheritence.
+bug: [49034, 46643]
