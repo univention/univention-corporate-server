@@ -459,6 +459,7 @@ define([
 				widgets: widgets,
 				layout: layout,
 				standbyDuring: lang.hitch(this, 'standbyDuring'),
+				standbyOptions: {delay: 200},
 				standby: lang.hitch(this, 'standby'),
 			};
 		},

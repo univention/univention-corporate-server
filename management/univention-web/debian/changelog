@@ -1,3 +1,10 @@
+univention-web (3.0.5-8) unstable; urgency=medium
+
+  * Bug #46919: add hack for standby animation not showing some
+    milliseconds
+
+ -- Florian Best <best@univention.de>  Fri, 22 Mar 2019 16:16:37 +0100
+
 univention-web (3.0.5-7) unstable; urgency=medium
 
   * Bug #47646: the PasswordBox can now have a toggle to

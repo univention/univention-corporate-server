@@ -435,7 +435,7 @@ define([
 					if (ireceiver && ireceiver._loadValues) {
 						ireceiver._loadValues(values, readyInfo);
 						if (this.standbyDuring) {
-							this.standbyDuring(this.ready());
+							this.standbyDuring(this.ready(), this.standbyContent, this.standbyOptions);
 						}
 					}
 				}));

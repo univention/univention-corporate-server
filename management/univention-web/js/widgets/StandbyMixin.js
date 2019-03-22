@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define,console */
+/*global define,console,require */
 
 define([
 	"dojo/_base/declare",
@@ -102,21 +102,24 @@ define([
 			}
 		},
 
-		_updateContent: function(content) {
+		_updateContent: function(content, options) {
+			options = options || {};
 			// type check of the content
-			if (typeof content == "string") {
+			if (typeof content === "string") {
 				// string
 				this._cleanUp();
 				this._standbyWidget.set('text', content);
 				this._standbyWidget.set('centerIndicator', 'text');
+				this._standbyWidget.set('opacity', options.standbyOpacity || this.standbyOpacity);
 			}
-			else if (typeof content == "object" && content.declaredClass && content.domNode) {
+			else if (typeof content === "object" && content.declaredClass && content.domNode) {
 				// widget
 				if (!this._lastContent || this._lastContent != content) {
 					// we only need to add a new widget to the DOM
 					this._cleanUp();
 					this._standbyWidget.set('text', '');
 					this._standbyWidget.set('centerIndicator', 'text');
+					this._standbyWidget.set('opacity', options.standbyOpacity || this.standbyOpacity);
 
 					// hook the given widget to the text node
 					construct.place(content.domNode, this._standbyWidget._textNode);
@@ -127,20 +130,21 @@ define([
 				// set default image
 				this._cleanUp();
 				this._standbyWidget.set('centerIndicator', 'image');
+				this._standbyWidget.set('opacity', options.standbyOpacity || this.standbyOpacity);
 			}
 
 			// cache the widget
 			this._lastContent = content;
 		},
 
-		standby: function(/*Boolean*/ doStandby, /*mixed?*/ content) {
+		standby: function(/*Boolean*/ doStandby, /*mixed?*/ content, /*object?*/options) {
 			if (doStandby) {
 				this.set('standingBy', true);
 			}
 			this._standbyStartedDeferred.then(lang.hitch(this, function() {
 				if (doStandby) {
 					// update the content of the standby widget
-					this._updateContent(content);
+					this._updateContent(content, options);
 
 					// place the standby widget last in the body
 					// to ensure correct z-indexing
@@ -157,20 +161,26 @@ define([
 			}));
 		},
 
-		standbyDuring: function(deferred, content) {
+		standbyDuring: function(deferred, content, options) {
+			if (options && options.delay) { // FIXME: remove me one day... replace with something better
+				setTimeout(lang.hitch(this, function() {
+					this.standbyDuring(deferred, content);
+				}), options.delay);
+				return;
+			}
 			if (!deferred.isFulfilled()) {
 				// dont standby if already finished
 				var id = this._standbyDuringID += 1;
 				var thisEntry = [id, content];
 				this._standbyDuringQueue.push(thisEntry);
-				this.standby(true, content);
+				this.standby(true, content, options);
 				var finish = lang.hitch(this, function() {
 					this._standbyDuringQueue = array.filter(this._standbyDuringQueue, function(entry) {
 						return id !== entry[0];
 					});
 					if (this._standbyDuringQueue.length) {
-						var oldContent = this._standbyDuringQueue[this._standbyDuringQueue.length - 1];
-						this.standby(true, oldContent);
+						var oldContent = this._standbyDuringQueue[this._standbyDuringQueue.length - 1][1];
+						this.standby(true, oldContent, options);
 					} else {
 						this.standby(false);
 					}
@@ -181,4 +191,3 @@ define([
 		}
 	});
 });
-

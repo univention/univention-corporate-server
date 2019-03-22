@@ -123,6 +123,8 @@ define([
 						layout: ipage.layout,
 						standby: ipage.standby,
 						standbyDuring: ipage.standbyDuring,
+						standbyContent: ipage.standbyContent,
+						standbyOptions: ipage.standbyOptions,
 						onSubmit: lang.hitch(this, function(e) {
 							if (e && e.preventDefault) {
 								e.preventDefault();
