@@ -705,6 +705,52 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
             This part of the life cycle can be divided into two steps: setup
             and integration.
         </para>
+
+        <section id="development:best-practice">
+            <title>Best practice for app development environment</title>
+            <para>
+                This section briefly describes best practices on the development and
+                testing environment for apps dedicated to the Univention App
+                Center. The recommendations aim at reducing repeatable time
+                efforts that, for example, are caused by the download of Docker
+                images.
+            </para>
+            <para>
+                The development of apps mainly involves the App Provider portal
+                and a local instance of Univention Corporate Server (UCS). To
+                setup your UCS environment the best practice is to download one
+                of the UCS virtual machine images and use VirtualBox or VMware
+                (see <xref linkend="testing:download" />). After the
+                installation, <ulink
+                    url="https://docs.software-univention.de/manual.html#central:license">activate
+                    the system</ulink> and copy your SSH key to the UCS system
+                to save typing the password on each remote console login.
+                Finally, activate the Test App Center (see <xref
+                    linkend="testing:test-app-center" />). With that status it
+                is a good time to make a snapshot of the system, which allows
+                to got back to that status. Afterwards, app specific time
+                consuming tasks can be prepared to reduce recurring waiting
+                times. Among them are for example an optional <userinput>docker
+                    login</userinput> to gain access to a private Docker image
+                or even the own Docker registry, and the manual download of the
+                app's Docker image(s) with <userinput>docker pull</userinput>.
+                And then also make a new snapshot. Especially, having the
+                Docker image(s) locally saves download time during recurring
+                installation test cycles.
+            </para>
+            <para>
+                With the last snapshot there is a prepared system that can
+                serve as starting point for app installation and associated
+                testing. The development iteration cycles are a dance of
+                changes in the App Provider portal and testing the installation
+                and app integration. After returning to a snapshot, it is
+                recommended to update the local App Center cache. This is
+                either automatically done during login and opening of the App
+                Center module in the UCS management system or triggered
+                manually with <userinput>univention-app update</userinput> on
+                the console.
+            </para>
+        </section>
     </section>
 
     <section id="testing">
