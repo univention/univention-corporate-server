@@ -3,9 +3,9 @@ release: "4.2"
 version: [5]
 scope: ucs_4.2-0-errata4.2-5
 src: linux-4.9
-fix: 4.9.110-3+deb9u5~deb8u1A~4.2.0.201903151513
+fix: 4.9.144-3.1~deb8u1A~4.2.0.201903191858
 desc: |
- This update of the Linux kernel to version 4.9.163 addresses the following
+ This update of the Linux kernel to version 4.9.164 addresses the following
  issues:
  * Null pointer dereference in fs/f2fs/segment.c via mounting fs with
    noflush_merge option allows local denial of service (CVE-2017-18241)
@@ -113,7 +113,7 @@ desc: |
  * Lack of check for mmap minimum address in expand_downwards in mm/mmap.c
    leads to NULL pointer dereferences exploit on non-SMAP platforms
    (CVE-2019-9213)
-note: This is the first of two parts of this update.
+note: This is the first of three parts of this update.
 bug: [47905]
 cve:
 - CVE-2018-6554
