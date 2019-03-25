@@ -522,7 +522,7 @@ msgstr "Erweiterte Option"
 
 #: modules/univention/admin/handlers/settings/extended_options.py:49
 msgid "Extended options"
-msgstr "Erweiterte Optionenen"
+msgstr "Erweiterte Optionen"
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:334
 msgid ""
