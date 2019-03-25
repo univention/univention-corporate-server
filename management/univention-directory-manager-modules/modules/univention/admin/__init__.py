@@ -291,7 +291,7 @@ class property:
 		:param license: List of license strings, which are required to use this property.
 		:param required: `True` for a required property, `False` for an optional property.
 		:param may_change: `True` if the property can be changed after the object has been created, `False` when the property can only be specified when the object is created.
-		:param identifies: `True` if the property is part of the set of properties, which are required to uniquely identify the object.
+		:param identifies: `True` if the property is part of the set of properties, which are required to uniquely identify the object. The properties are used by default to build |RDN| for a new object.
 		:param unique: `True` if the property must be unique for all object instances.
 		:param default: The default value for the property when a new object is created.
 		:param prevent_umc_default_popup: `True` to prevent a pop-up dialog in |UMC| when the default value is not set.
@@ -304,7 +304,7 @@ class property:
 		:param nonempty_is_default: `True` selects the first non-empty value as the default. `False` always selects the first default value, even if it is empty.
 		:param readonly_when_synced: `True` only shows the value as read-only when synchronized from some upstream database.
 		:param size: The |UMC| widget size; one of :py:data:`univention.admin.syntax.SIZES`.
-		:param copyable: With `True` the property is copied when the object is clones; with `False` the new object will use the default value.
+		:param copyable: With `True` the property is copied when the object is cloned; with `False` the new object will use the default value.
 		"""
 		self.short_description = short_description
 		self.long_description = long_description

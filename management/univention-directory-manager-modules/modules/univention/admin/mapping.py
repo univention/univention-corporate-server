@@ -75,7 +75,7 @@ def StringToLower(string):
 	:param string: a string.
 	:returns: the lower-cased string.
 
-	>>> StringToLower("aa")
+	>>> StringToLower("Aa")
 	'aa'
 	"""
 	return string.lower()
@@ -211,7 +211,7 @@ def IgnoreNone(list):
 def _stringToInt(value):
 	# type: (str) -> int
 	"""
-	Try to convert string into inetger.
+	Try to convert string into integer.
 
 	:param value: a srting.
 	:returns: the integer value or `0`.
@@ -230,7 +230,7 @@ def _stringToInt(value):
 def unmapUNIX_TimeInterval(value):
 	# type: (Union[List[str], Tuple[str], str]) -> List[Text]
 	"""
-	Map number of seconds to a human understanable time interval.
+	Map number of seconds to a human understandable time interval.
 
 	:param value: number of seconds
 	:returns: a 2-tuple (value, unit)
@@ -265,7 +265,7 @@ def unmapUNIX_TimeInterval(value):
 def mapUNIX_TimeInterval(value):
 	# type: (Union[List[str], Tuple[str], str]) -> Text
 	"""
-	Unmap a human understanable time interval back to number of seconds.
+	Unmap a human understandable time interval back to number of seconds.
 
 	:param value: a 2-tuple (value, unit)
 	:returns: the number of seconds.

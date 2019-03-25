@@ -83,7 +83,7 @@ containers = []  # type: List[UdmModule]
 def update():
 	# type: () -> None
 	"""
-	Scan file system and update interna list of |UDM| handler modules.
+	Scan file system and update internal list of |UDM| handler modules.
 	"""
 	global modules, _superordinates
 	_modules = {}  # type: Dict[str, UdmModule]

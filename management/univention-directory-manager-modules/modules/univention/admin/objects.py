@@ -311,7 +311,7 @@ def removePolicyReference(object, policy_type):
 def replacePolicyReference(object, policy_type, new_reference):
 	# type: (univention.admin.handlers.simpleLdap, str, univention.admin.handlers.simplePolicy) -> None
 	"""
-	Replace the policy of the requested type woth a new instance.
+	Replace the policy of the requested type with a new instance.
 
 	:param object: |UDM| object.
 	:param policy_type: Name of the |UDM| policy to lookup.
