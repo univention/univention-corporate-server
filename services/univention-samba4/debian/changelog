@@ -1,3 +1,9 @@
+univention-samba4 (8.0.0-17) unstable; urgency=medium
+
+  * Bug #49025: Fix mode of dns_update_list and spn_update_list
+
+ -- Arvid Requate <requate@univention.de>  Mon, 25 Mar 2019 19:21:45 +0100
+
 univention-samba4 (8.0.0-16) unstable; urgency=medium
 
   * Bug #48917: set permission on upstream in sysvol-sync.sh
