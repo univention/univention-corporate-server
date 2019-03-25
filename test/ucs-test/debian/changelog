@@ -1,3 +1,9 @@
+ucs-test (9.0.2-25) unstable; urgency=medium
+
+  * Bug #47643: check if password change has already been executed today
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 25 Mar 2019 17:53:11 +0100
+
 ucs-test (9.0.2-24) unstable; urgency=medium
 
   * Bug #1234: fixed 86_selenium/186_portal_administration_umc
