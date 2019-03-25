@@ -8,12 +8,12 @@ desc: |
  This update addresses the following issues:
  * 6LoWPAN dissector crash in epan/dissectors/packet-6lowpan.c (CVE-2019-5716)
  * P_MUL dissector crash in epan/dissectors/packet-p_mul.c (CVE-2019-5717)
- * out-of-bounds read in get_t61_string() in epan/charsets.c (CVE-2019-5718)
+ * Out-of-bounds read in get_t61_string() in epan/charsets.c (CVE-2019-5718)
  * ISAKMP dissector crash in epan/dissectors/packet-isakmp.c (CVE-2019-5719)
- * null-pointer dereference in TCAP dissector (CVE-2019-9208)
+ * Null-pointer dereference in TCAP dissector (CVE-2019-9208)
  * Stack-based off-by-one buffer overflow in dissect_ber_GeneralizedTime
    (CVE-2019-9209)
- * null-deference read in RPCAP dissector (CVE-2019-9214)
+ * Null-deference read in RPCAP dissector (CVE-2019-9214)
 bug: [49067]
 cve:
 - CVE-2019-5716
