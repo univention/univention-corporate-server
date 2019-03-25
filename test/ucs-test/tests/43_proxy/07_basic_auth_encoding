@@ -2,7 +2,6 @@
 # -*- coding: utf8 -*-
 ## desc: http-proxy-basic-auth-encoding-check
 ## roles: [domaincontroller_master, domaincontroller_backup, domaincontroller_slave, memberserver]
-## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-squid]
 ## bugs: [34154]
