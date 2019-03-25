@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: openjdk-8
+fix: 8u212-b01-1~deb9u1
+desc: |
+ This update addresses the following issue:
+ * memory disclosure in FileChannelImpl (Libraries, 8206290) (CVE-2019-2422)
+bug: [49075]
+cve:
+- CVE-2019-2422
