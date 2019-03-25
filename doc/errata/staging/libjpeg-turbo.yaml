@@ -6,7 +6,7 @@ src: libjpeg-turbo
 fix: 1:1.3.1-12+deb8u2
 desc: |
  This update addresses the following issue:
- * heap-based buffer over-read via crafted 8-bit BMP in get_8bit_row in
+ * Heap-based buffer over-read via crafted 8-bit BMP in get_8bit_row in
    rdbmp.c leads to denial of service (CVE-2018-14498)
 bug: [49077]
 cve:
