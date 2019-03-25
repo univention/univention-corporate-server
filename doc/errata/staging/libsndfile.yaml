@@ -1,0 +1,14 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: libsndfile
+fix: 1.0.25-9.1+deb8u4
+desc: |
+ This update addresses the following issues:
+ * incomplete fix for CVE-2018-19758 still allow to read beyond buffer limits
+   (CVE-2019-3832)
+bug: [49071]
+cve:
+- CVE-2019-3832
+- CVE-2018-19758
