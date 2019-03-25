@@ -6,7 +6,7 @@ src: ntfs-3g
 fix: 1:2016.2.22AR.1+dfsg-1+deb9u1
 desc: |
  This update addresses the following issue:
- * ntfs-3g (CVE-2019-9755)
+ * Fix heap-based buffer overflow (CVE-2019-9755)
 bug: [49070]
 cve:
 - CVE-2019-9755
