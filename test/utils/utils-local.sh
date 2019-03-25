@@ -56,13 +56,14 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 		'ucs-test.log'
 		'/usr/share/ucs-test/*/selenium'
 		'/var/log/apache2/error.log'='apache2-error.log'
-		'/var/log/auth.log*'
-		'/var/log/daemon.log*'
-		'/var/log/dovecot.log*'
+		'/var/log/auth.log*'=
+		'/var/log/daemon.log*'=
+		'/var/log/dovecot.log*'=
 		'/var/log/journalctl.log'
-		'/var/log/mail.log*'
-		'/var/log/samba/log.*'
-		'/var/log/syslog*'
+		'/var/log/mail.log*'=
+		'/var/log/samba/*'=
+		'/var/log/univention/sysvol-sync.log'
+		'/var/log/syslog*'=
 		'/var/log/univention/actualise.log'
 		'/var/log/univention/appcenter.log'
 		'/var/log/univention/config-registry.replog'='config-registry.replog.log'
