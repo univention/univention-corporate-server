@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: ntfs-3g
+fix: 1:2014.2.15AR.2-1+deb8u4
+desc: |
+ This update addresses the following issue:
+ * ntfs-3g (CVE-2019-9755)
+bug: [49069]
+cve:
+- CVE-2019-9755
