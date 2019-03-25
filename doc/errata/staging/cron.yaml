@@ -6,8 +6,7 @@ src: cron
 fix: 3.0pl1-127+deb8u2
 desc: |
  This update addresses the following issues:
- * In the cron package
-   the postinst maintainer script allows for
+ * In the cron package the postinst maintainer script allows for
    group-crontab-to-root privilege escalation via symlink attacks against
    unsafe usage of the chown and chmod programs. (CVE-2017-9525)
  * calloc() return value resulting in remote DoS (CVE-2019-9704)
