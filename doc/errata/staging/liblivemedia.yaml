@@ -6,8 +6,8 @@ src: liblivemedia
 fix: 2014.01.13-1+deb8u3
 desc: |
  This update addresses the following issue:
- * In Live555 before 2019.02.27, malformed headers lead to invalid memory
-   access in the parseAuthorizationHeader function. (CVE-2019-9215)
+ * In Live555 malformed headers lead to invalid memory access in the
+   parseAuthorizationHeader function. (CVE-2019-9215)
 bug: [49072]
 cve:
 - CVE-2019-9215
