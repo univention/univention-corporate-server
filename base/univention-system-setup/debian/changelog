@@ -1,3 +1,9 @@
+univention-system-setup (11.0.5-36) unstable; urgency=medium
+
+  * Bug #48986: fix joining into specified DC master
+
+ -- Florian Best <best@univention.de>  Tue, 26 Mar 2019 09:24:16 +0100
+
 univention-system-setup (11.0.5-35) unstable; urgency=medium
 
   * Bug #48134: fix joining when specifying a domain to join instead of the
