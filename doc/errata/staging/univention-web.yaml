@@ -10,4 +10,4 @@ desc: |
  * It is possible to define standby animations for form dependencies now.
  * Password input fields can now have a button to show the password
    in clear text.
-bug: [48995,46919,47646]
+bug: [48995,46919,49099]
