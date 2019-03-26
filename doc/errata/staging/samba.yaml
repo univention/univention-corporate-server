@@ -11,5 +11,5 @@ desc: |
    This can be run by using new option --mask-msad-differences. Without
    the new option the reporting is unchanged. This is another step in the
    ongoing quest of improving the quality this tool for NTACL inheritence.
- * Fix regression in Python samba.smbd.set_nt_acl causing umask set to 0.
+ * Fix mode of dns_update_list and spn_update_list, broken after provision
 bug: [49034, 46643, 49025]
