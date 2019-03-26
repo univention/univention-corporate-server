@@ -19,7 +19,7 @@ desc: |
  * Use-after-free with SMIL animation controller (CVE-2019-9796)
  * IonMonkey MArraySlice has incorrect alias information (CVE-2019-9810)
  * Ionmonkey type confusion with __proto__ mutations (CVE-2019-9813)
-bug: [49073, 49095]
+bug: [49073]
 cve:
 - CVE-2018-18506
 - CVE-2019-9788
