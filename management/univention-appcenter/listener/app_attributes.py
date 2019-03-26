@@ -40,6 +40,8 @@ import shutil
 
 from ldap.dn import dn2str, str2dn
 
+import univention.debug
+
 from univention.listener.handler import ListenerModuleHandler
 from univention.appcenter.app_cache import AllApps
 from univention.appcenter.udm import search_objects
@@ -54,6 +56,16 @@ class AppAttributes(ListenerModuleHandler):
 			return
 		with self.as_root():
 			os.makedirs(dirname)
+
+	def _write_json_without_some_debug_output(self):
+		# otherwise UDM lib unintentionally clutters the log file. univention.debug opened a
+		# file handle to listener.log in the listener itself and this is used in every
+		# listener module
+		univention.debug.set_function(univention.debug.NO_FUNCTION)
+		try:
+			self._write_json()
+		finally:
+			univention.debug.set_function(univention.debug.FUNCTION)
 
 	def _write_json(self):
 		self.logger.info('Gathering AppAttributes...')
@@ -179,13 +191,13 @@ class AppAttributes(ListenerModuleHandler):
 			shutil.move(tmp_fname, FNAME)
 
 	def create(self, dn, new):
-		self._write_json()
+		self._write_json_without_some_debug_output()
 
 	def modify(self, dn, old, new, old_dn):
-		self._write_json()
+		self._write_json_without_some_debug_output()
 
 	def remove(self, dn, old):
-		self._write_json()
+		self._write_json_without_some_debug_output()
 
 	class Configuration(ListenerModuleHandler.Configuration):
 		name = name
