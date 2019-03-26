@@ -10,7 +10,7 @@ desc: |
  * Out-of-bounds pointer arithmetic in inffast.c (CVE-2016-9841)
  * Undefined left shift of negative number (CVE-2016-9842)
  * Big-endian out-of-bounds pointer (CVE-2016-9843)
- * sanitization bypass in parse_argument in options.c (CVE-2018-5764)
+ * Sanitization bypass in parse_argument in options.c (CVE-2018-5764)
 bug: [49093]
 cve:
 - CVE-2016-9840
