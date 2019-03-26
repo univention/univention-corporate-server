@@ -1,3 +1,17 @@
+ucs-test (9.0.2-26) unstable; urgency=medium
+
+  * Bug #49109 - Test 62_udm-groups.20_group_removal.test failed in jenkins
+  * Bug #49090 - Test 62_udm-groups.11_remove_user_which_is_group_member.test
+    failed in jenkins
+  * Bug #49088 - Test 43_proxy.04_http_proxy_ntlm_auth_performance_check.test
+    failed in jenkins
+  * Bug #49087 - Test 43_proxy.07_basic_auth_encoding.test failed in jenkins
+  * Bug #49084 - Test 66_udm-computers.01_all_roles_removal.test failed in
+    jenkins
+  * Bug #49083 - Test 40_mail.24_mailHomeServer.test failed in jenkins
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 26 Mar 2019 20:39:37 +0100
+
 ucs-test (9.0.2-25) unstable; urgency=medium
 
   * Bug #47643: check if password change has already been executed today
