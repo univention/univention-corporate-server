@@ -1,7 +1,9 @@
-prepare_on_master () {
+#!/bin/bash
 
-	set -x
-	set -e
+set -x
+set -e
+
+prepare_on_master () {
 
 	echo -e "UserKnownHostsFile=/dev/null\nStrictHostKeyChecking=no" > ~/.ssh/config
 	service slapd stop
@@ -25,9 +27,6 @@ prepare_on_master () {
 type1_listener_fake () {
 
 	# type1 fake for replication and nss with additional listener/init/fake/helper for nss
-
-	set -x
-	set -e
 
 	echo -n "$DOMAIN_PWD" > /tmp/join_secret
 	test -f /usr/share/univention-directory-listener/resync-objects.py
@@ -57,9 +56,6 @@ type2_listener_fake () {
 
 	# type2 fake for replication and nss without listener/init/fake/helper
 
-	set -x
-	set -e
-
 	echo -n "$DOMAIN_PWD" > /tmp/join_secret
 	test -f /usr/share/univention-directory-listener/resync-objects.py
 	test -f /usr/share/univention-directory-listener/univention-get-ldif-from-master.py
@@ -79,9 +75,6 @@ type2_listener_fake () {
 type3_listener_fake () {
 
 	# type3 fake for replication
-
-	set -x
-	set -e
 
 	echo -n "$DOMAIN_PWD" > /tmp/join_secret
 	test -f /usr/share/univention-directory-listener/resync-objects.py

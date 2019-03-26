@@ -1,9 +1,12 @@
-prepare_trust () {
+#!/bin/bash
+
+set -x
+set -e
+
+check_trust () {
 
 	. product-tests/samba/utils.sh
 	eval "$(ucr shell)"
-	set -x
-	set -e
 
 	# create some ucs/windows users
 	udm users/user create --set username=ucs1 --set lastname=ucs1 --set password=univention
