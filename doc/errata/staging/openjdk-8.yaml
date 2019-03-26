@@ -6,7 +6,7 @@ src: openjdk-8
 fix: 8u212-b01-1~deb9u1
 desc: |
  This update addresses the following issue:
- * Memory disclosure in FileChannelImpl (Libraries, 8206290) (CVE-2019-2422)
+ * Memory disclosure in FileChannelImpl (CVE-2019-2422)
 bug: [49075]
 cve:
 - CVE-2019-2422
