@@ -6,8 +6,8 @@ src: wireshark
 fix: 1.12.1+g01b65bf-4+deb8u18
 desc: |
  This update addresses the following issues:
- * BT L2CAP dissector divide by zero (wnpa-sec-2017-29) (CVE-2017-9344)
- * DICOM dissector infinite loop (wnpa-sec-2017-27) (CVE-2017-9349)
+ * BT L2CAP dissector divide by zero (CVE-2017-9344)
+ * DICOM dissector infinite loop (CVE-2017-9349)
  * Stack-based off-by-one buffer overflow in dissect_ber_GeneralizedTime
    (CVE-2019-9209)
 bug: [49094]
