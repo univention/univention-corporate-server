@@ -3,7 +3,7 @@ release: "4.2"
 version: [5]
 scope: ucs_4.2-0-errata4.2-5
 src: firefox-esr
-fix: 60.6.0esr-1~deb8u1
+fix: 60.6.1esr-1~deb8u1
 desc: |
  This update addresses the following issues:
  * Proxy Auto-Configuration file can define localhost access to be proxied
@@ -17,7 +17,9 @@ desc: |
    (CVE-2019-9793)
  * Type-confusion in IonMonkey JIT compiler (CVE-2019-9795)
  * Use-after-free with SMIL animation controller (CVE-2019-9796)
-bug: [49073]
+ * IonMonkey MArraySlice has incorrect alias information (CVE-2019-9810)
+ * Ionmonkey type confusion with __proto__ mutations (CVE-2019-9813)
+bug: [49073, 49095]
 cve:
 - CVE-2018-18506
 - CVE-2019-9788
@@ -27,3 +29,5 @@ cve:
 - CVE-2019-9793
 - CVE-2019-9795
 - CVE-2019-9796
+- CVE-2019-9810
+- CVE-2019-9813
