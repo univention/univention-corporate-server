@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-management-console-module-udm
-fix: 9.0.12-2A~4.4.0.201903211324
+fix: 9.0.12-3A~4.4.0.201903221620
 desc: |-
  This update addresses the following issue(s):
  * Rely on the App Center listener to create the App Attributes mapping
