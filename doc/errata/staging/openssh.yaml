@@ -1,0 +1,18 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: openssh
+fix: 1:6.7p1-5+deb8u8
+desc: |
+ This update addresses the following issues:
+ * scp client improper directory name validation (CVE-2018-20685)
+ * Missing character encoding in progress display allows for spoofing of scp
+   client output (CVE-2019-6109)
+ * Improper validation of object names allows malicious server to overwrite
+   files via scp client (CVE-2019-6111)
+bug: [49097]
+cve:
+- CVE-2018-20685
+- CVE-2019-6109
+- CVE-2019-6111
