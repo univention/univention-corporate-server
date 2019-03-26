@@ -1,0 +1,20 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: rsync
+fix: 3.1.1-3+deb8u2A~4.2.5.201903260804
+desc: |
+ This update addresses the following issues:
+ * Out-of-bounds pointer arithmetic in inftrees.c (CVE-2016-9840)
+ * Out-of-bounds pointer arithmetic in inffast.c (CVE-2016-9841)
+ * Undefined left shift of negative number (CVE-2016-9842)
+ * Big-endian out-of-bounds pointer (CVE-2016-9843)
+ * sanitization bypass in parse_argument in options.c (CVE-2018-5764)
+bug: [49093]
+cve:
+- CVE-2016-9840
+- CVE-2016-9841
+- CVE-2016-9842
+- CVE-2016-9843
+- CVE-2018-5764
