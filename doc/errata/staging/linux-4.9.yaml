@@ -3,9 +3,9 @@ release: "4.2"
 version: [5]
 scope: ucs_4.2-0-errata4.2-5
 src: linux-4.9
-fix: 4.9.144-3.1~deb8u1A~4.2.0.201903191858
+fix: 4.9.144-3.1~deb8u1A~4.2.0.201903260900
 desc: |
- This update of the Linux kernel to version 4.9.164 addresses the following
+ This update of the Linux kernel to version 4.9.165 addresses the following
  issues:
  * Null pointer dereference in fs/f2fs/segment.c via mounting fs with
    noflush_merge option allows local denial of service (CVE-2017-18241)
