@@ -1,6 +1,6 @@
 product: ucs
 release: "4.3"
-version: [0]
+version: [3]
 scope: ucs_4.3-0-errata4.3-3
 src: univention-pam
 fix: 11.0.1-5A~4.3.0.201903201159
