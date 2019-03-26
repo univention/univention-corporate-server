@@ -1,0 +1,14 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: bash
+fix: 4.3-11+deb8u2
+desc: |
+ This update addresses the following issues:
+ * popd controlled free (CVE-2016-9401)
+ * BASH_CMD is writable in restricted bash shells (CVE-2019-9924)
+bug: [49096]
+cve:
+- CVE-2016-9401
+- CVE-2019-9924
