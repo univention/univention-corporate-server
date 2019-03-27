@@ -9,3 +9,5 @@ desc: |
  * The script univention-policy-update-config-registry now has a new option to
    specify the LDAP server from which to get the policies.
 bug: [49044]
+erratum: 463
+announced: 2019-03-27
