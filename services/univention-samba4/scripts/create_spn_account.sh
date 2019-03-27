@@ -146,8 +146,6 @@ create_spn_account () {
 	replace: servicePrincipalName
 	servicePrincipalName: $servicePrincipalName
 	-
-	replace: msDS-SupportedEncryptionTypes
-	msDS-SupportedEncryptionTypes: 31
 	%EOF
 
 	key_version="$(ldbsearch -H "$samba_private_dir/sam.ldb" samAccountName="$samAccountName" msDS-KeyVersionNumber | sed -n 's/^msDS-KeyVersionNumber: //p')"
@@ -165,6 +163,11 @@ create_spn_account () {
 		-
 		replace: msDS-KeyVersionNumber
 		msDS-KeyVersionNumber: $key_version
+		replace: servicePrincipalName
+		servicePrincipalName: $servicePrincipalName
+		-
+		replace: msDS-SupportedEncryptionTypes
+		msDS-SupportedEncryptionTypes: 31
 		%EOF
 	else
 		## trigger Samba4 to create service keytab
