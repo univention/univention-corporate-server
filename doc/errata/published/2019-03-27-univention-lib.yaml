@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Preparations for better browser cache-control have been implemented.
 bug: [48995]
+erratum: 26
+announced: 2019-03-27
