@@ -37,6 +37,10 @@ eval "$(univention-config-registry shell)"
 #DEBHELPER#
 
 if [ "$1" = "configure" ]; then
+	if which update-python-modules >/dev/null 2>&1; then
+		update-python-modules --post-install
+	fi
+
 	if [ -z "$2" ]; then
 		# only set this for new installations
 		univention-config-registry set \

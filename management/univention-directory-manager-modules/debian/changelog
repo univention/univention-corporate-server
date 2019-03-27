@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.12-17) unstable; urgency=medium
+
+  * Bug #41659: call update-python-modules explicit
+
+ -- Florian Best <best@univention.de>  Wed, 27 Mar 2019 09:01:54 +0100
+
 univention-directory-manager-modules (14.0.12-16) unstable; urgency=medium
 
   * Bug #46919: add code to postinst to re-execute migration
