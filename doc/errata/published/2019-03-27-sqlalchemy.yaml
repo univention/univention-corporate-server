@@ -12,3 +12,5 @@ bug: [49074]
 cve:
 - CVE-2019-7164
 - CVE-2019-7548
+erratum: 626
+announced: 2019-03-27
