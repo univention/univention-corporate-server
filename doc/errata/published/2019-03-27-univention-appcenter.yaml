@@ -12,3 +12,5 @@ desc: |-
  * A crash when registering attributes is prevented during the activation
    of new schema extensions.
 bug: [48895, 48982, 45513]
+erratum: 29
+announced: 2019-03-27
