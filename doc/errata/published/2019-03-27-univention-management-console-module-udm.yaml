@@ -13,3 +13,5 @@ desc: |-
  * Default containers for domain controller computer objects can now be
    configured.
 bug: [48895, 48995, 47985, 46919]
+erratum: 27
+announced: 2019-03-27
