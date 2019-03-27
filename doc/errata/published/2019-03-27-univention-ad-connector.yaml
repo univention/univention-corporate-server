@@ -9,3 +9,5 @@ desc: |
  * The use of obsolete univention.admin.config has been removed.
  * Preparations for better browser cache-control have been implemented.
 bug: [27804, 48995]
+erratum: 28
+announced: 2019-03-27
