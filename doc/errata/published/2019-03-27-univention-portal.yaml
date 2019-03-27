@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issues:
  * Obsolete code has been removed.
 bug: [48943]
+erratum: 24
+announced: 2019-03-27
