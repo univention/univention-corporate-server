@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The use of obsolete univention.admin.config has been removed.
 bug: [27804]
+erratum: 23
+announced: 2019-03-27
