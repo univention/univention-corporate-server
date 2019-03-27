@@ -527,7 +527,7 @@ msgstr "Netzwerk"
 msgid "Network settings "
 msgstr "Netzwerk-Einstellungen"
 
-#: modules/univention/admin/handlers/computers/base.py:307
+#: modules/univention.admin.handlers.computers.__base.py:307
 msgid "Open Univention Management Console on this computer"
 msgstr "Univention Management Console auf diesem Rechner öffnen"
 

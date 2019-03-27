@@ -1,3 +1,10 @@
+univention-directory-manager-modules (14.0.12-18) unstable; urgency=medium
+
+  * Bug #41659: rename base.py into __base.py to prevent error message in
+  	modules.update()
+
+ -- Florian Best <best@univention.de>  Wed, 27 Mar 2019 11:11:01 +0100
+
 univention-directory-manager-modules (14.0.12-17) unstable; urgency=medium
 
   * Bug #41659: call update-python-modules explicit

@@ -38,7 +38,7 @@ computers = []
 
 def __walk(root, dir, files):
 	for file_ in files:
-		if file_.endswith('.py') and not file_.startswith('__') and file_ not in ('computer.py', 'base.py'):
+		if file_.endswith('.py') and not file_.startswith('__') and file_ not in ('computer.py',):
 			computers.append(__import__(file_[: -3], globals(), locals(), ['']))
 
 

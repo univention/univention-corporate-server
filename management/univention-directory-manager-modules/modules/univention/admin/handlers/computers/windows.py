@@ -35,7 +35,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.nagios as nagios
-from univention.admin.handlers.computers.base import ComputerObject
+from univention.admin.handlers.computers.__base import ComputerObject
 
 translation = univention.admin.localization.translation('univention.admin.handlers.computers')
 _ = translation.translate
