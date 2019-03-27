@@ -8,7 +8,7 @@ export TARGET_VERSION=${TARGET_VERSION:-4.4-0}
 export UCS_VERSION=${UCS_VERSION:-4.4-0}
 export TEMPLATE_VERSION=${TEMPLATE_VERSION:-$TARGET_VERSION}
 export KVM_BUILD_SERVER=${KVM_BUILD_SERVER:-lattjo.knut.univention.de}
-export KVM_USER=${KVM_USER:-$USER}
+export KVM_USER=${KVM_USER:-${BUILD_USER:-$USER}}
 export HALT=${HALT:-true}
 export CFG=$1
 
