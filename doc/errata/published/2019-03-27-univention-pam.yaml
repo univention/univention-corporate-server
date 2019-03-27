@@ -9,3 +9,5 @@ desc: |
  * An open SSH connection will now properly get closed when shutting down a
    system.
 bug: [49045]
+erratum: 464
+announced: 2019-03-27
