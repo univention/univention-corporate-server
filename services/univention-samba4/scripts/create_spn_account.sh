@@ -163,11 +163,6 @@ create_spn_account () {
 		-
 		replace: msDS-KeyVersionNumber
 		msDS-KeyVersionNumber: $key_version
-		replace: servicePrincipalName
-		servicePrincipalName: $servicePrincipalName
-		-
-		replace: msDS-SupportedEncryptionTypes
-		msDS-SupportedEncryptionTypes: 31
 		%EOF
 	else
 		## trigger Samba4 to create service keytab
