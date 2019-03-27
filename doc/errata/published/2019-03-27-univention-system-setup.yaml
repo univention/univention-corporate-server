@@ -10,3 +10,5 @@ desc: |
    hostname may now differ from the value read from the DNS server.
  * The unused dependency to python-simplejson has been removed.
 bug: [48134,35687]
+erratum: 17
+announced: 2019-03-27
