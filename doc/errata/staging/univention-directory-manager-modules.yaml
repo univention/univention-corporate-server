@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-0
 src: univention-directory-manager-modules
 fix: 14.0.12-18A~4.4.0.201903271114
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * udm users/user create without --set username does not cause a exception
    anymore.
  * Various LDAP filters are now escaped.
