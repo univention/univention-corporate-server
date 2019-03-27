@@ -16,7 +16,7 @@ export ERRATA_UPDATE="${errata_update:-testing}"
 export TARGET_VERSION="${TARGET_VERSION:=$release}"
 export UCS_VERSION="${UCS_VERSION:=$release}"
 export TEMPLATE_VERSION="${TEMPLATE_VERSION:=$UCS_VERSION}"
-export UCSSCHOOL_RELEASE=${UCSSCHOOL_RELEASE:=scope}
+export UCSSCHOOL_RELEASE="${UCSSCHOOL_RELEASE:=scope}"
 export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=lattjo.knut.univention.de}"
 export KVM_USER="${KVM_USER:=$USER}"
 if [ "$KVM_USER" = "jenkins" ]; then
