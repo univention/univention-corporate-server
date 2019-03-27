@@ -184,20 +184,22 @@ class AppAttributes(ListenerModuleHandler):
 								if unsorted:
 									group['layout'].append(unsorted)
 		self.logger.info('Finished')
-		with self.as_root():
-			tmp_fname = FNAME + '.tmp'
-			with open(tmp_fname, 'w') as fd:
-				json.dump(cache, fd)
-			shutil.move(tmp_fname, FNAME)
+		tmp_fname = FNAME + '.tmp'
+		with open(tmp_fname, 'w') as fd:
+			json.dump(cache, fd)
+		shutil.move(tmp_fname, FNAME)
 
 	def create(self, dn, new):
-		self._write_json_without_some_debug_output()
+		with self.as_root():
+			self._write_json_without_some_debug_output()
 
 	def modify(self, dn, old, new, old_dn):
-		self._write_json_without_some_debug_output()
+		with self.as_root():
+			self._write_json_without_some_debug_output()
 
 	def remove(self, dn, old):
-		self._write_json_without_some_debug_output()
+		with self.as_root():
+			self._write_json_without_some_debug_output()
 
 	class Configuration(ListenerModuleHandler.Configuration):
 		name = name

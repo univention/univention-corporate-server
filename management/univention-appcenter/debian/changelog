@@ -1,3 +1,10 @@
+univention-appcenter (8.0.11-8) unstable; urgency=medium
+
+  * Bug #48895: Run listener handler as root as it may need to build the App
+    Cache
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 27 Mar 2019 11:38:24 +0100
+
 univention-appcenter (8.0.11-7) unstable; urgency=medium
 
   * Bug #48895: Remove some unwanted debug output
