@@ -9,4 +9,4 @@ desc: |
  * Fixed a special case for the initial domain join, the DC master
    hostname may now differ from the value read from the DNS server.
  * The unused dependency to python-simplejson has been removed.
-bug: [48134,49053]
+bug: [48134,35687]
