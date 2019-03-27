@@ -5,7 +5,7 @@ set -e
 
 test_ldap_in_samba_domain () {
 
-	. product-tests/samba/utils.sh
+	. product-tests/ldap/utils.sh
 	eval "$(ucr shell ldap/base windows/domain)"
 
 	# check winrm
