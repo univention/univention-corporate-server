@@ -11,3 +11,5 @@ desc: |
    objects are set as default container for domaincontroller objects
    except cn=computers and cn=memberservers,cn=computer.
 bug: [46919]
+erratum: 18
+announced: 2019-03-27
