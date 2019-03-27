@@ -11,3 +11,5 @@ desc: |
  * Password input fields can now have a button to show the password
    in clear text.
 bug: [48995,46919,49099]
+erratum: 22
+announced: 2019-03-27
