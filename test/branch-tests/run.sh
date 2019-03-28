@@ -69,9 +69,9 @@ ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "jenkins@${BUILD
 sed -i '/^deb /!d' utils/apt-get-branch-repo.list
 
 
-TARGET_VERSION="4.4-0"
-RELEASE_UPDATE="public"
-ERRATA_UPDATE="public"
+export TARGET_VERSION="4.4-0"
+export RELEASE_UPDATE="public"
+export ERRATA_UPDATE="public"
 
 declare -a cmd=("./ucs-ec2-tools/ucs-kvm-create" "-c" "$CFG_FILE")
 "$HALT" && cmd+=("-t")
