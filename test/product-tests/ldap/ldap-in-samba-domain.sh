@@ -3,6 +3,12 @@
 set -x
 set -e
 
+test_ldap_in_samba_domain_master () {
+	. product-tests/ldap/create_5000_users_in_1000_groups.sh
+	measure_time_for_create_5000_users_distributed_in_1000_groups
+	# measure_time_for_create_group_with_5000_members
+}
+
 test_ldap_in_samba_domain () {
 
 	. product-tests/ldap/utils.sh
