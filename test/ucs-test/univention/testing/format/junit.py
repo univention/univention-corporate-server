@@ -99,7 +99,7 @@ class Junit(TestFormatInterface):
             xml.endElement('properties')
 
             xml.startElement('testcase', {
-                'name': 'test',
+                'name': result.environment.hostname,
                 # 'assertions': '%d' % (0,),
                 'time': '%0.3f' % (result.duration / 1000.0,),
                 'classname': classname,
