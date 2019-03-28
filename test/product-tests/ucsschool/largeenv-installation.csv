@@ -1,0 +1,262 @@
+"instance";"profile";"command1";"command2";"command3";"command4";"command5";"command6";"command7";"command8";"command9";"command10";"files"
+"ptimaster";"hostname=""ptimaster""
+ domainname=""autotestpti.local""
+ windows/domain=""AUTOTESTPTI""
+ ldap/base=""dc=autotestpti,dc=local""
+ root_password=""univention""
+ locale/default=""de_DE.UTF-8:UTF-8""
+ packages_install=""univention-samba4 univention-s4-connector""
+ packages_remove=""""
+ server/role=""domaincontroller_master""";" . utils.sh && basic_setup
+ . utils.sh && rotate_logfiles
+ ucr set ldap/database/mdb/envflags=nosync connector/s4/retryrejected=2
+ # Disable samba cron, see Bug #36728
+ ucr set samba4/backup/cron=""#0 3 * * *""
+ . utils.sh && jenkins_updates && touch UCS_UPDATED
+ . utils.sh && assert_version ""[ENV:TARGET_VERSION]""
+# convert generic image into master
+ . utils.sh && run_setup_join
+ . utils.sh && do_reboot
+ . utils.sh && wait_for_reboot
+ . utils.sh && import_license
+ . utils.sh && assert_join
+ . utils.sh && assert_packages univention-server-master
+";;" . utils.sh && switch_to_test_app_center
+ . utils.sh && install_ucsschool
+ univention-app info
+ . utils.sh && run_join_scripts
+/root/schoolinstaller.py -uAdministrator -p univention -M
+";;" /usr/share/ucs-school-import/scripts/create_ou ""School1"" ""ptiedu1"" ""ptiadm1"" --displayName=""Erste Schule""
+ /usr/share/ucs-school-import/scripts/create_ou ""School2"" ""ptiedu2"" --displayName=""Zweite Schule""
+ /usr/share/ucs-school-import/scripts/ucs-school-testuser-import --students 50 --classes 3 --teachers 10 --inclasses 2 -v School1 School2";;;". utils.sh && run_minimal_tests
+ . utils.sh && prepare_results
+ LOCAL utils/utils-local.sh fetch-results [ENV:ptimaster_IP] ptimaster
+";;". utils.sh && run_minimal_tests
+ . utils.sh && prepare_results
+ LOCAL utils/utils-local.sh fetch-results [ENV:ptimaster_IP] ptimaster-postrejoin
+";" utils/schoolinstaller.py /root/
+ utils/utils.sh /root/
+ ~/ec2/license/license.secret /etc/
+ ~/ec2/scripts/activate-errata-test-scope.sh /root/
+"
+"ptibackup1";" hostname=ptibackup1
+ domainname=autotestpti.local
+ windows/domain=AUTOTESTPTI
+ server/role=""domaincontroller_backup""
+ root_password=univention
+ locale/default=""de_DE.UTF-8:UTF-8""
+ packages_install=""univention-samba4 univention-s4-connector""
+ packages_remove=""""
+ nameserver=[ptimaster_IP]
+";" . utils.sh && basic_setup
+ . utils.sh && rotate_logfiles
+ ucr set ldap/database/mdb/envflags=nosync connector/s4/retryrejected=2
+ # Disable samba cron, see Bug #36728
+ ucr set samba4/backup/cron=""#0 3 * * *""
+ . utils.sh && jenkins_updates && touch UCS_UPDATED
+ . utils.sh && assert_version ""[ENV:TARGET_VERSION]""
+";". utils.sh && run_setup_join_on_non_master
+ . utils.sh && do_reboot
+ . utils.sh && wait_for_reboot
+ . utils.sh && assert_join
+ . utils.sh && assert_packages univention-server-backup
+";" . utils.sh && switch_to_test_app_center";". utils.sh && run_join_scripts
+ . utils.sh && assert_packages univention-server-slave";;;;". utils.sh && run_minimal_tests
+ . utils.sh && prepare_results
+ LOCAL utils/utils-local.sh fetch-results [ENV:ptibackup1_IP] ptibackup1
+";". utils.sh && run_rejoin";". utils.sh && run_minimal_tests
+ . utils.sh && prepare_results
+ LOCAL utils/utils-local.sh fetch-results [ENV:ptibackup1_IP] ptibackup1-postrejoin
+";" utils/schoolinstaller.py /root/
+ utils/utils.sh /root/
+ ~/ec2/license/license.secret /etc/
+ ~/ec2/scripts/activate-errata-test-scope.sh /root/
+"
+"ptibackup2";" hostname=ptibackup2
+ domainname=autotestpti.local
+ windows/domain=AUTOTESTPTI
+ server/role=""domaincontroller_backup""
+ root_password=univention
+ locale/default=""de_DE.UTF-8:UTF-8""
+ packages_install=""univention-samba4 univention-s4-connector""
+ packages_remove=""""
+ nameserver=[ptimaster_IP]
+";" . utils.sh && basic_setup
+ . utils.sh && rotate_logfiles
+ ucr set ldap/database/mdb/envflags=nosync connector/s4/retryrejected=2
+ # Disable samba cron, see Bug #36728
+ ucr set samba4/backup/cron=""#0 3 * * *""
+ . utils.sh && jenkins_updates && touch UCS_UPDATED
+ . utils.sh && assert_version ""[ENV:TARGET_VERSION]""
+";;" . utils.sh && switch_to_test_app_center";;;;". utils.sh && run_setup_join_on_non_master
+ . utils.sh && do_reboot
+ . utils.sh && wait_for_reboot
+ . utils.sh && assert_join
+ . utils.sh && assert_packages univention-server-backup
+";". utils.sh && run_minimal_tests
+ . utils.sh && prepare_results
+ LOCAL utils/utils-local.sh fetch-results [ENV:ptibackup2_IP] ptibackup2
+";;". utils.sh && run_minimal_tests
+ . utils.sh && prepare_results
+ LOCAL utils/utils-local.sh fetch-results [ENV:ptibackup2_IP] ptibackup2-postrejoin
+";" utils/schoolinstaller.py /root/
+ utils/utils.sh /root/
+ ~/ec2/license/license.secret /etc/
+ ~/ec2/scripts/activate-errata-test-scope.sh /root/
+"
+"ptislave1";"hostname=ptislave1
+ domainname=autotestpti.local
+ windows/domain=AUTOTESTPTI
+ server/role=""domaincontroller_slave""
+ root_password=univention
+ locale/default=""de_DE.UTF-8:UTF-8""
+ packages_install=""univention-samba4 univention-s4-connector""
+ packages_remove=""""
+ nameserver=[ptimaster_IP]";" . utils.sh && basic_setup
+ . utils.sh && rotate_logfiles
+ ucr set ldap/database/mdb/envflags=nosync connector/s4/retryrejected=2
+ # Disable samba cron, see Bug #36728
+ ucr set samba4/backup/cron=""#0 3 * * *""
+ . utils.sh && jenkins_updates && touch UCS_UPDATED
+ . utils.sh && assert_version ""[ENV:TARGET_VERSION]""
+";". utils.sh && run_setup_join_on_non_master
+ . utils.sh && do_reboot
+ . utils.sh && wait_for_reboot
+ . utils.sh && assert_join
+ . utils.sh && assert_packages univention-server-slave
+";" . utils.sh && switch_to_test_app_center";". utils.sh && run_join_scripts
+ . utils.sh && assert_packages univention-server-slave";;;;". utils.sh && run_minimal_tests
+ . utils.sh && prepare_results
+ LOCAL utils/utils-local.sh fetch-results [ENV:ptislave1_IP] ptislave1
+";;". utils.sh && run_minimal_tests
+ . utils.sh && prepare_results
+ LOCAL utils/utils-local.sh fetch-results [ENV:ptislave1_IP] ptislave1-postrejoin
+";" utils/schoolinstaller.py /root/
+ utils/utils.sh /root/
+ ~/ec2/license/license.secret /etc/
+ ~/ec2/scripts/activate-errata-test-scope.sh /root/
+"
+"ptislave2";"hostname=ptislave2
+ domainname=autotestpti.local
+ windows/domain=AUTOTESTPTI
+ server/role=""domaincontroller_slave""
+ root_password=univention
+ locale/default=""de_DE.UTF-8:UTF-8""
+ packages_install=""univention-samba4 univention-s4-connector""
+ packages_remove=""""
+ nameserver=[ptimaster_IP]";" . utils.sh && basic_setup
+ . utils.sh && rotate_logfiles
+ ucr set ldap/database/mdb/envflags=nosync connector/s4/retryrejected=2
+ # Disable samba cron, see Bug #36728
+ ucr set samba4/backup/cron=""#0 3 * * *""
+ . utils.sh && jenkins_updates && touch UCS_UPDATED
+ . utils.sh && assert_version ""[ENV:TARGET_VERSION]""
+";;" . utils.sh && switch_to_test_app_center";;;;". utils.sh && run_setup_join_on_non_master
+ . utils.sh && do_reboot
+ . utils.sh && wait_for_reboot
+ . utils.sh && assert_join
+ . utils.sh && assert_packages univention-server-slave
+";". utils.sh && run_minimal_tests
+ . utils.sh && prepare_results
+ LOCAL utils/utils-local.sh fetch-results [ENV:ptislave2_IP] ptislave2
+";". utils.sh && run_rejoin";". utils.sh && run_minimal_tests
+ . utils.sh && prepare_results
+ LOCAL utils/utils-local.sh fetch-results [ENV:ptislave2_IP] ptislave2-postrejoin
+";" utils/schoolinstaller.py /root/
+ utils/utils.sh /root/
+ ~/ec2/license/license.secret /etc/
+ ~/ec2/scripts/activate-errata-test-scope.sh /root/
+"
+"ptiedu1";"hostname=ptiedu1
+ domainname=autotestpti.local
+ windows/domain=AUTOTESTPTI
+ server/role=""domaincontroller_slave""
+ root_password=univention
+ locale/default=""de_DE.UTF-8:UTF-8""
+ packages_install=""univention-samba4 univention-s4-connector""
+ packages_remove=""""
+ nameserver=[ptimaster_IP]";" . utils.sh && basic_setup
+ . utils.sh && rotate_logfiles
+ ucr set ldap/database/mdb/envflags=nosync connector/s4/retryrejected=2
+ # Disable samba cron, see Bug #36728
+ ucr set samba4/backup/cron=""#0 3 * * *""
+ . utils.sh && jenkins_updates && touch UCS_UPDATED
+ . utils.sh && assert_version ""[ENV:TARGET_VERSION]""
+";;" . utils.sh && switch_to_test_app_center";;;". utils.sh && run_setup_join_on_non_master
+ . utils.sh && do_reboot
+ . utils.sh && wait_for_reboot
+ . utils.sh && assert_join
+ . utils.sh && assert_packages univention-server-slave
+";;". utils.sh && run_minimal_tests
+ . utils.sh && prepare_results
+ LOCAL utils/utils-local.sh fetch-results [ENV:ptiedu1_IP] ptiedu1
+";". utils.sh && run_rejoin";". utils.sh && run_minimal_tests
+ . utils.sh && prepare_results
+ LOCAL utils/utils-local.sh fetch-results [ENV:ptiedu1_IP] ptiedu1-postrejoin
+";" utils/schoolinstaller.py /root/
+ utils/utils.sh /root/
+ ~/ec2/license/license.secret /etc/
+ ~/ec2/scripts/activate-errata-test-scope.sh /root/
+"
+"ptiadm1";"hostname=ptiadm1
+ domainname=autotestpti.local
+ windows/domain=AUTOTESTPTI
+ server/role=""domaincontroller_slave""
+ root_password=univention
+ locale/default=""de_DE.UTF-8:UTF-8""
+ packages_install=""univention-samba4 univention-s4-connector""
+ packages_remove=""""
+ nameserver=[ptimaster_IP]";" . utils.sh && basic_setup
+ . utils.sh && rotate_logfiles
+ ucr set ldap/database/mdb/envflags=nosync connector/s4/retryrejected=2
+ # Disable samba cron, see Bug #36728
+ ucr set samba4/backup/cron=""#0 3 * * *""
+ . utils.sh && jenkins_updates && touch UCS_UPDATED
+ . utils.sh && assert_version ""[ENV:TARGET_VERSION]""
+";;" . utils.sh && switch_to_test_app_center";;;". utils.sh && run_setup_join_on_non_master
+ . utils.sh && do_reboot
+ . utils.sh && wait_for_reboot
+ . utils.sh && assert_join
+ . utils.sh && assert_packages univention-server-slave
+";;". utils.sh && run_minimal_tests
+ . utils.sh && prepare_results
+ LOCAL utils/utils-local.sh fetch-results [ENV:ptiadm1_IP] ptiadm1
+";". utils.sh && run_rejoin";". utils.sh && run_minimal_tests
+ . utils.sh && prepare_results
+ LOCAL utils/utils-local.sh fetch-results [ENV:ptiadm1_IP] ptiadm1-postrejoin
+";" utils/schoolinstaller.py /root/
+ utils/utils.sh /root/
+ ~/ec2/license/license.secret /etc/
+ ~/ec2/scripts/activate-errata-test-scope.sh /root/
+"
+"ptiedu2";"hostname=ptiedu2
+ domainname=autotestpti.local
+ windows/domain=AUTOTESTPTI
+ server/role=""domaincontroller_slave""
+ root_password=univention
+ locale/default=""de_DE.UTF-8:UTF-8""
+ packages_install=""univention-samba4 univention-s4-connector""
+ packages_remove=""""
+ nameserver=[ptimaster_IP]";" . utils.sh && basic_setup
+ . utils.sh && rotate_logfiles
+ ucr set ldap/database/mdb/envflags=nosync connector/s4/retryrejected=2
+ # Disable samba cron, see Bug #36728
+ ucr set samba4/backup/cron=""#0 3 * * *""
+ . utils.sh && jenkins_updates && touch UCS_UPDATED
+ . utils.sh && assert_version ""[ENV:TARGET_VERSION]""
+";;" . utils.sh && switch_to_test_app_center";;;". utils.sh && run_setup_join_on_non_master
+ . utils.sh && do_reboot
+ . utils.sh && wait_for_reboot
+ . utils.sh && assert_join
+ . utils.sh && assert_packages univention-server-slave
+";;". utils.sh && run_minimal_tests
+ . utils.sh && prepare_results
+ LOCAL utils/utils-local.sh fetch-results [ENV:ptiedu2_IP] ptiedu2
+";;". utils.sh && run_minimal_tests
+ . utils.sh && prepare_results
+ LOCAL utils/utils-local.sh fetch-results [ENV:ptiedu2_IP] ptiedu2-postrejoin
+";" utils/schoolinstaller.py /root/
+ utils/utils.sh /root/
+ ~/ec2/license/license.secret /etc/
+ ~/ec2/scripts/activate-errata-test-scope.sh /root/
+"
