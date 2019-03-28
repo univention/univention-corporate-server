@@ -43,7 +43,6 @@ class UMCTester(object):
 		self.selenium.submit_input('pattern')
 		self.selenium.wait_until_all_standby_animations_disappeared()
 
-
 	def search_and_action(self, name, action):
 		self.search(name)
 		self.selenium.click_grid_entry(name)
@@ -52,12 +51,10 @@ class UMCTester(object):
 		self.selenium.wait_until_all_standby_animations_disappeared()
 		#  self.search(name) # grid should autoreload
 
-
 	def setup(self):
 		self.srvs = ServiceInfo()
 		self.selenium.do_login()
 		self.selenium.open_module(_('System services'))
-
 
 	def reset(self):
 		# TODO This is not really a reset.
@@ -76,13 +73,11 @@ class UMCTester(object):
 		self.selenium.click_button(_('OK'))
 		self.selenium.wait_until_all_standby_animations_disappeared()
 
-
 	def test_umc(self):
 		self.setup()
 		self.test_start_stop_restart_all_services()
 		self.test_chaning_start_type()
 		self.reset()
-
 
 	#
 	# Code for chaning start type
@@ -101,7 +96,7 @@ class UMCTester(object):
 		]
 		services = [key for key in self.srvs.services.iterkeys() if key not in ignore_these]
 		if len(services) < 3:
-			pass # TODO can't test all start types at onces
+			pass  # TODO can't test all start types at onces
 		count_per_start_type = len(services) / 3
 		d = {}
 		for idx, start_type in enumerate(('automatically', 'manually', 'never')):
@@ -114,7 +109,6 @@ class UMCTester(object):
 				if start_type != 'automatically':
 					self.do_and_confirm_start_type_change(service, start_type)
 				self.search_and_action(service, _('Stop'))
-
 
 	def do_and_confirm_start_type_change(self, service, start_type):
 		self.search(service)
@@ -135,11 +129,9 @@ class UMCTester(object):
 		if grid_start_type != wanted_start_type:
 			raise UmcError('Trying to change the start type of service "%s" to "%s" failed. The start type in the grid did not change' % (service, start_type))
 
-
 	def get_service_grid_start_type(self, service):
 		start_type_cell_xpath = expand_path('//td[@containsClass="field-service"]/descendant-or-self::*[text() = "%s"]/following::td[@containsClass="field-autostart"]/descendant-or-self::*[text() = "Automatically" or text() = "Manually" or text() = "Never"]' % service)
 		return self.selenium.driver.find_element_by_xpath(start_type_cell_xpath).text
-
 
 	#
 	# Code for starting, stopping, restarting
@@ -157,11 +149,9 @@ class UMCTester(object):
 				continue
 			self.test_stop_start_and_restart(service)
 
-
 	def test_stop_start_and_restart(self, service):
 		for cmd in ('stop', 'start', 'stop', 'restart', 'restart'):
 			self.do_and_confirm_status_change(service, cmd)
-
 
 	def do_and_confirm_status_change(self, service, cmd):
 		action = {
@@ -171,7 +161,6 @@ class UMCTester(object):
 		}[cmd]
 		self.search_and_action(service, action)
 		self.confirm_status(service, cmd)
-
 
 	def confirm_status(self, service, cmd):
 		err_txt_for_cmd = {
@@ -200,7 +189,6 @@ class UMCTester(object):
 			raise UmcError('Service "%s" was %s but is still visible in psutil' % (service, err_txt_for_cmd))
 		elif cmd != 'stop' and not proc:
 			raise UmcError('Service "%s" was %s but is not visible in psutil' % (service, err_txt_for_cmd))
-
 
 	def get_service_grid_status(self, service):
 		status_cell_xpath = expand_path('//td[@containsClass="field-service"]/descendant-or-self::*[text() = "%s"]/following::td[@containsClass="field-isRunning"]/descendant-or-self::*[text() = "stopped" or text() = "running"]' % service)

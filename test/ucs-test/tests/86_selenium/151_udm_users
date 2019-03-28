@@ -129,6 +129,7 @@ class UMCTester(object):
 		self.selenium.click_button(_('Move user'))
 		self.users.wait_for_main_grid_load()
 
+
 if __name__ == '__main__':
 	with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm, selenium.UMCSeleniumTest() as s:
 		umc_tester = UMCTester()
