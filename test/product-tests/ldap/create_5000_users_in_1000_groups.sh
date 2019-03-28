@@ -2,6 +2,7 @@
 
 set -e
 
+. utils.sh
 . /usr/share/ucs-test/lib/samba.sh
 eval "$(ucr shell ldap/base connector/s4/poll/sleep connector/s4/retryrejected)"
 
@@ -164,38 +165,6 @@ create_group_with_5000_members() {
 			--append users="uid=$TESTUSER_PREFIX$((c+48)),cn=users,$ldap_base" \
 			--append users="uid=$TESTUSER_PREFIX$((c+49)),cn=users,$ldap_base" 
 	done
-}
-
-measure_duration() {
-	local limit
-	## poor mans option parsing
-	limit="${1#--limit=}"
-	if [ "$1" != "$limit" ]; then
-		shift
-	else
-		unset limit
-	fi
-
-	local operation="$1"
-	local timestamp_start
-	local timestamp_end
-	local duration
-
-	eval "$(ucr shell ldap/base)"
-
-	timestamp_start=$(date +%Y%m%d%H%M%S)
-	echo -e "START $operation\tTIMESTAMP: $timestamp_start"
-
-	"$@"
-
-	timestamp_end=$(date +%Y%m%d%H%M%S)
-	echo -e "END $operation\tTIMESTAMP: $timestamp_end"
-
-	duration=$((timestamp_end - timestamp_start))
-	echo "INFO: $operation took $duration seconds"
-	if [ -n "$limit" ] && [ "$duration" -gt "$limit" ]; then
-		echo "ERROR: $operation took too long (allowed time: $limit seconds)"
-	fi
 }
 
 create_5000_users_plus_drs_replication() {	## TODO: Adjust numbers back to 5000 users:
