@@ -21,4 +21,8 @@ tail -f /var/log/syslog | grep "not indexed" >> not_indexed.txt &
 
 run_umc_tests
 
+# LDAP-Indizes
+cat not_indexed.txt
+find -maxdepth 1 -name not_indexed.txt -empty | grep -q not_indexed.txt
+
 exit 0
