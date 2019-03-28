@@ -5,7 +5,7 @@ set -e
 
 test_ldap_non_samba_domain () {
 
-	. product-tests/ldap/utils.sh
+	. product-tests/base/utils.sh
 	eval "$(ucr shell ldap/base)"
 
 

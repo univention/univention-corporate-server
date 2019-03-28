@@ -4,16 +4,62 @@ set -x
 set -e
 
 test_ldap_in_samba_domain_master () {
-	. product-tests/ldap/create_5000_users_in_1000_groups.sh
+	. product-tests/base/create_5000_users_in_1000_groups.sh
 	measure_time_for_create_5000_users_distributed_in_1000_groups
 	# measure_time_for_create_group_with_5000_members
 }
 
-test_ldap_in_samba_domain () {
+test_ldap_in_samba_domain_backup () {
 
-	. product-tests/ldap/utils.sh
+	. product-tests/base/utils.sh
 	eval "$(ucr shell ldap/base windows/domain)"
 
+	### Skalierungstests
+	# TODO:
+	#    An UMC anmelden: < 1 Sek
+	#        users/user öffnen: ca. 3 Sek (Autosuche weitere 9 Sek)
+	#        Benutzersuche mit 5000 Usern als Suchergebnis: 10 Sekunde
+	#        Gruppe mit 5000 Mitgliedern öffnen: 4 Sekunden
+	#        Anlegen der User 5001 bis 5010: 17 Sekunden
+	#    Benutzer zu 5000er-Gruppe hinzufügen:
+	#        Öffnen der Benutzerauswahl zum Hinzufügen:
+	#            initiales Öffnen des Dialogs: 12 Sekunden
+	#            erneutes Öffnen des Dialogs: < 1 Sekunde
+	#        Suchen in der Benutzerauswahl zum Hinzufügen:
+	#            abhängig von der Ergebnisanzahl:
+	#            10 User → < 1 Sekunde
+	#            100 User → ca. < 2 Sekunden
+	#            5000 User → ca. 12 Sekunden
+	#        Gruppe modifizieren/speichern: ca. 6 Sekunden
+
+	measure_duration --limit=1 umc_login
+	# measure_duration --limit=3  umc_open_users_user
+	# measure_duration --limit=12 umc_open_users_user_autosearch
+	# measure_duration --limit=10 umc_search_5000_users
+	# measure_duration --limit=4  umc_open_group_with_5000_users
+	# measure_duration --limit=17 umc_create_10_users
+	# measure_duration --limit=12 umc_open_group_with_5000_users
+	# measure_duration --limit=1  umc_open_group_with_5000_users    ## second time
+	## TODO: Timing of user add select box
+	# measure_duration --limit=6 umc_add_user_to_group_with_5000_users
+
+	### Passwort-Tests
+	# TODO:
+	# https://hutten.knut.univention.de/mediawiki/index.php/Produkttests_UCS_4.4_LDAP#Passw.C3.B6rter.2FKonten
+
+	### Replikation
+	# TODO:
+	# https://hutten.knut.univention.de/mediawiki/index.php/Produkttests_UCS_4.4_LDAP#Replikation
+	# 	in Wesentlichen: failed.ldif
+
+	### Unix-Konto / Home-Share
+	# TODO:
+	# https://hutten.knut.univention.de/mediawiki/index.php/Produkttests_UCS_4.4_LDAP#Unix-Konto_.28Home-Share.29
+
+	### END - After this, the cfg file may run backup2master
+}
+
+test_ldap_in_samba_domain_windowsclient () {
 	# check winrm
 	if ! dpkg -l python-winrm | grep ^ii 1>/dev/null; then
 		( . utils.sh && install_winrm )
