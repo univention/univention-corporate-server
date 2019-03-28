@@ -34,6 +34,11 @@ test_saml () {
 	python shared-utils/ucs-winrm.py domain-user-validate-password --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
 	python shared-utils/ucs-winrm.py domain-user-validate-password --domainuser "newuser01" --domainpassword "Univention.99"
 
+	# Java + Selenium installieren
+	python shared-utils/ucs-winrm.py run-ps --cmd "Invoke-WebRequest -Uri https://bit.ly/2TlkRyu -OutFile C:\\selenium-server.jar" # hopefully stable link
+	python shared-utils/ucs-winrm.py run-ps --cmd "Invoke-WebRequest -Uri https://javadl.oracle.com/webapps/download/AutoDL?BundleId=236885_42970487e3af4f5aa5bca3f542482c60 -OutFile C:\\javasetup.exe" # probably not a stable link
+	python shared-utils/ucs-winrm.py run-ps --cmd "C:\\javasetup.exe /s" # silent installation
+
 	# Auf core prüfen: find /var -name core
 	test -z "$(find /var -name core)"
 
