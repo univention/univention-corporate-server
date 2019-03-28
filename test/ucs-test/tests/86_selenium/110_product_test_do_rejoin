@@ -5,15 +5,13 @@
 ## roles-not:
 ##  - domaincontroller_master
 ##  - basesystem
-## tags: [SKIP]
+## tags: [SKIP, umc-producttest]
 ## exposure: dangerous
-# TODO: This test hasn't been proven to work, yet.
 
 from shutil import copyfile
 from univention.admin import localization
 from univention.testing import selenium
 import os
-import time
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate
@@ -51,9 +49,7 @@ class UMCTester(object):
 		self.selenium.click_button(_('Rejoin system'))
 
 		self.selenium.wait_for_text(_('A reboot of the server is recommended'), timeout=600)
-		self.selenium.click_button(_('Reboot'))
-
-		time.sleep(60)
+		self.selenium.click_button(_('Cancel'))
 
 	def test_if_login_works(self):
 		self.selenium.do_login()

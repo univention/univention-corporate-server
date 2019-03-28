@@ -10,5 +10,6 @@ run_umc_tests () {
 }
 
 run_umc_join () {
-	echo TODO;
+	/usr/share/ucs-test/86_selenium/110_product_test_do_rejoin -f
+	univention-check-join-status
 }
