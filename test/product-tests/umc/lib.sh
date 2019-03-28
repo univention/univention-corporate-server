@@ -17,3 +17,7 @@ run_umc_join () {
 umc_reboot_server() {
 	/usr/share/ucs-test/86_selenium/138_reboot_server -f
 }
+
+check_uptime() {
+	[ "$(uptime  -p | sed 's/^up //g; s/ minutes$//g')" -lt 7 ]
+}
