@@ -68,6 +68,14 @@ ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "jenkins@${BUILD
 # replace non deb lines
 sed -i '/^deb /!d' utils/apt-get-branch-repo.list
 
+ver="$(git describe --match 'milestone-[0-9]*.[0-9]*-[0-9]*-[0-9]*'  --match 'release-[0-9]*.[0-9]*-[0-9]*' --no-match --tags --abbrev=0)"
+version=${ver#*-}
+
+
+TARGET_VERSION=$version
+RELEASE_UPDATE="public"
+ERRATA_UPDATE="public"
+
 declare -a cmd=("./ucs-ec2-tools/ucs-kvm-create" "-c" "$CFG_FILE")
 "$HALT" && cmd+=("-t")
 "${cmd[@]}"
