@@ -86,3 +86,4 @@ with test:
 
 	except Exception:
 		test.save_screenshot("error", append_timestamp=True)
+		raise
