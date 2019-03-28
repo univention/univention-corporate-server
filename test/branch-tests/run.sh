@@ -60,9 +60,6 @@ get_ucsschool_git_checkout
 # copy UCS@school specific files to UCS test directory
 [ -d "$GIT_DIR_UCSSCHOOL/test" ] && cp -Rav "$GIT_DIR_UCSSCHOOL/test/"* "test/"
 
-ver="$(git describe --match 'milestone-[0-9]*.[0-9]*-[0-9]*-[0-9]*'  --match 'release-[0-9]*.[0-9]*-[0-9]*' --no-match --tags --abbrev=0)"
-version=${ver#*-}
-
 cd test
 
 # update packages
@@ -72,7 +69,7 @@ ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "jenkins@${BUILD
 sed -i '/^deb /!d' utils/apt-get-branch-repo.list
 
 
-TARGET_VERSION=$version
+TARGET_VERSION="4.4-0"
 RELEASE_UPDATE="public"
 ERRATA_UPDATE="public"
 
