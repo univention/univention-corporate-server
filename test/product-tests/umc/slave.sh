@@ -3,5 +3,7 @@
 set -x
 set -e
 
-. lib.sh
+. product-tests/umc/lib.sh
 
+run_umc_join
+run_umc_tests
