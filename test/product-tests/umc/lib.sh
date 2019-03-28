@@ -13,3 +13,7 @@ run_umc_join () {
 	/usr/share/ucs-test/86_selenium/110_product_test_do_rejoin -f
 	univention-check-join-status
 }
+
+umc_reboot_server() {
+	/usr/share/ucs-test/86_selenium/138_reboot_server -f
+}

@@ -5,5 +5,4 @@ set -e
 
 . product-tests/umc/lib.sh
 
-run_umc_join
 run_umc_tests
