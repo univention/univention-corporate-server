@@ -448,6 +448,8 @@ ucsschool_scope_enabled () {
 
 install_ucsschool () {
 	local rv=0
+	test -n "$UCSSCHOOL_RELEASE" && ucsschool_release="$UCSSCHOOL_RELEASE"
+
 	case "${ucsschool_release:-scope}" in
 		appcenter.test)
 			switch_to_test_app_center || rv=$?
