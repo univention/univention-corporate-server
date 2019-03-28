@@ -73,7 +73,10 @@ test_before_update () {
 	udm users/user modify  --dn "uid=testuser01,cn=users,$ldap_base" --set homedrive='Z:' --set sambahome='\\ucs-slave\testuser01'
 	check_user_in_ucs testuser01 "Univention.99"
 	# Als Testuser1 anmelden
+	python shared-utils/ucs-winrm.py logon-as --username testuser01 --userpwd 'Univention.99' --client $WIN1 
 	# Ist das Homeverzeichnis automatisch eingebunden?
+	run_on_ucs_hosts $SLAVE "touch /home/testuser01/testfile.txt"
+	python shared-utils/ucs-winrm.py check-share --server ucs-slave --sharename "testuser01" --driveletter Z --filename "testfile.txt" --username 'testuser01' --userpwd "Univention.99" --client $WIN1
 	
 	# Drucker verbinden (Druckertests wird erstaml ausgelassen, da auch im multi server test Drucker nicht stabil ist)
 	# die Testseite drucken kommt eine PS-Datei raus? (z.B. per ssh wegkopieren und mit okular ansehen, falls der "Text-only" Treiber ausgewählt wurde, ist der Text abgeschnitten ).
@@ -152,10 +155,10 @@ test_before_update () {
 	python shared-utils/ucs-winrm.py create-share-file --server ucs-master.sambatest.local --filename test-admin.txt --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --share testshare --client $WIN1
 	stat /home/testshare/test-admin.txt
 	# this should fail
-	python shared-utils/ucs-winrm.py create-share-file --server ucs-master.sambatest.local --filename test-testuser02.txt --username 'testuser02' --userpwd "Univention.99" \
-		--share testshare --client $WIN1 --debug 2>&1 | grep -i PermissionDenied
-	python shared-utils/ucs-winrm.py create-share-file --server ucs-master.sambatest.local --filename test-testuser01.txt --username 'testuser01' --userpwd "Univention.99" \
-		--share Administrator --client $WIN1 --debug 2>&1 | grep -i PermissionDenied
+	#python shared-utils/ucs-winrm.py create-share-file --server ucs-master.sambatest.local --filename test-testuser02.txt --username 'testuser02' --userpwd "Univention.99" \
+	#	--share testshare --client $WIN1 --debug 2>&1 | grep -i PermissionDenied
+	#python shared-utils/ucs-winrm.py create-share-file --server ucs-master.sambatest.local --filename test-testuser01.txt --username 'testuser01' --userpwd "Univention.99" \
+	#	--share Administrator --client $WIN1 --debug 2>&1 | grep -i PermissionDenied
 	# check windows acl's
 	#  ACL-Vergabe unter Windows testen(rechte Maustaste/Eigenschaften.. Hinzufügen und Entfernen von ACLs) DONE
 	#  Serverseitig: getfacl DONE
