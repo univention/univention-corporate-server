@@ -1,3 +1,9 @@
+ucs-test (9.0.2-29) unstable; urgency=low
+
+  * Bug #48485: add test for SNI support in univention-mail-dovecot
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 29 Mar 2019 12:33:03 +0100
+
 ucs-test (9.0.2-28) unstable; urgency=medium
 
   * Bug #49188: Change name of the testcase to <testcase>.$hostname instead
