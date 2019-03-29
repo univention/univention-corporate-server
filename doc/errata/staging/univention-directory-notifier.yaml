@@ -1,0 +1,18 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: univention-directory-notifier
+fix: 12.0.1-12A~4.3.0.201903291627
+desc: |
+ This update addresses the following issue:
+ * Since UCS-4.3-3 erratum 427 the Univention Directory Notifier (UDN) writes
+   transactions both to the file `/var/lib/univention-ldap/notify/transaction`
+   and the `cn=translog` database in OpenLDAP. A failed write to the later can
+   make UDN abort, in which case UDN is restarted automatically and writes the
+   pending transactions to said file again. This leads to inconsistency and
+   also can fill up all space of the file system.
+   The order has been swapped to prevent this issue from happening again.
+   The transaction file might require manual corrections if UDN fails to start
+   up properly. Details of this procedure will be provided by a future update.
+bug: [49199]
