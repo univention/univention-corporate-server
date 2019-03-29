@@ -413,7 +413,7 @@ char *notify_transcation_get_one_dn(NotifyId last_known_id) {
 	NotifyId id;
 	bool found = false;
 	FILE *index = NULL;
-	ssize_t pos;
+	size_t pos;
 
 	if ((notify.tf = fopen_lock(FILE_NAME_TF, "r", &(notify.l_tf))) == NULL) {
 		return NULL;
@@ -425,7 +425,7 @@ char *notify_transcation_get_one_dn(NotifyId last_known_id) {
 	i = 0;
 	memset(buffer, 0, sizeof(buffer));
 
-	if ((pos = index_get(index, last_known_id)) >= 0) {
+	if ((pos = index_get(index, last_known_id)) != -1) {
 		fseek(notify.tf, pos, SEEK_SET);
 		if (fgets(buffer, sizeof(buffer), notify.tf) != NULL) {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "BUFFER=%s", buffer);
