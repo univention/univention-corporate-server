@@ -64,6 +64,7 @@ import univention.debug as ud
 from univention.management.console.protocol import Request, Response, Client, NoSocketError, TEMPUPLOADDIR
 from univention.management.console.log import CORE, log_init, log_reopen
 from univention.management.console.config import ucr, get_int
+from univention.management.console.ldap import get_machine_connection, reset_cache
 
 from saml2 import BINDING_HTTP_POST, BINDING_HTTP_ARTIFACT, BINDING_HTTP_REDIRECT
 from saml2.client import Saml2Client
@@ -73,17 +74,9 @@ from saml2.s_utils import UnknownPrincipal, UnsupportedBinding, rndstr
 from saml2.sigver import MissingKey, SignatureError
 
 from univention.lib.i18n import NullTranslation
-from univention.admin.uldap import getMachineConnection
 _ = NullTranslation('univention-management-console-frontend').translate
 
 _session_timeout = get_int('umc/http/session/timeout', 300)
-
-
-def _get_ldap_connection():
-	if _get_ldap_connection._lo is None:
-		_get_ldap_connection._lo = getMachineConnection(ldap_master=False)[0]
-	return _get_ldap_connection._lo
-_get_ldap_connection._lo = None
 
 
 def sessionidhash():
@@ -376,13 +369,14 @@ class User(object):
 
 	def get_user_groups(self):
 		try:
-			lo = _get_ldap_connection()
+			lo = get_machine_connection(write=False)[0]
 			user_dn = lo.searchDn(ldap.filter.filter_format('(&(uid=%s)(objectClass=person))', (self.username,)))[0]
 			user_groups = lo.search(base=user_dn, scope='base', attr=['memberOf'])
 			return user_groups[0][1]['memberOf']
 		except KeyError:
 			CORE.info('Could not get groups for %r: Maybe memberof overlay module is inactive' % (self.username,))
 		except Exception:
+			reset_cache()
 			CORE.error('Could not get groups for %r: %s' % (self.username, traceback.format_exc()))
 
 	def reset_timeout(self):
@@ -1444,7 +1438,7 @@ def reload_webserver():
 		func()
 
 
-reload_webserver.callbacks = [log_reopen]
+reload_webserver.callbacks = [log_reopen, reset_cache]
 
 
 class UMC_HTTP_Daemon(DaemonRunner):
