@@ -566,7 +566,7 @@ char* notify_transcation_get_one_dn ( unsigned long last_known_id )
 	unsigned long id;
 	bool found = false;
 	FILE *index = NULL;
-	ssize_t pos;
+	size_t pos;
 
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK from notify_transcation_get_one_dn");
@@ -582,7 +582,7 @@ char* notify_transcation_get_one_dn ( unsigned long last_known_id )
 	i=0;
 	memset(buffer, 0, sizeof(buffer));
 
-	if ((pos = index_get(index, last_known_id)) >= 0) {
+	if ((pos = index_get(index, last_known_id)) != -1) {
 		fseek(notify.tf, pos, SEEK_SET);
 		if (fgets(buffer, sizeof(buffer), notify.tf) != NULL) {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "BUFFER=%s", buffer);
