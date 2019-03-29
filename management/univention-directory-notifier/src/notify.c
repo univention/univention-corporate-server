@@ -959,8 +959,8 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data)
 
 	if ( (nread = fread( buf, sizeof(char), stat_buf.st_size, file)) != 0 ) {
 		split_transaction_buffer ( entry, buf, nread);
-		notify_dump_to_files(&notify, entry);
 		notify_dump_to_ldap(entry);
+		notify_dump_to_files(&notify, entry);
 		fseek(file, 0, SEEK_SET);
 		ftruncate(fileno(file), 0);
 
