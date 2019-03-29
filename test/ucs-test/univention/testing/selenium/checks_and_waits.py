@@ -37,6 +37,7 @@ import logging
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions
 import selenium.common.exceptions as selenium_exceptions
+from univention.testing.selenium.utils import expand_path
 
 logger = logging.getLogger(__name__)
 
@@ -57,6 +58,14 @@ class ChecksAndWaits(object):
 			self.get_all_visible_elements, 'waited %s seconds for texts %r' % (timeout, texts)
 		)
 
+	def wait_for_button(self, button_text, **kwargs):
+		logger.info("Waiting for the button %r", button_text)
+		self.click_element(
+			expand_path('//*[@containsClass="dijitButtonText"][text() = "%s"]')
+			% (button_text,),
+			**kwargs
+		)
+
 	def wait_until_all_dialogues_closed(self):
 		logger.info("Waiting for all dialogues to close.")
 		xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " dijitDialogUnderlay ")]'
@@ -64,10 +73,10 @@ class ChecksAndWaits(object):
 			self.elements_invisible
 		)
 
-	def wait_until_all_standby_animations_disappeared(self):
+	def wait_until_all_standby_animations_disappeared(self, timeout=60):
 		logger.info("Waiting for all standby animations to disappear.")
 		xpath = '//*[starts-with(@id, "dojox_widget_Standby_")]/img'
-		webdriver.support.ui.WebDriverWait(xpath, timeout=60).until(
+		webdriver.support.ui.WebDriverWait(xpath, timeout).until(
 			self.elements_invisible
 		)
 
@@ -83,9 +92,9 @@ class ChecksAndWaits(object):
 		else:
 			logger.info("Found standby animation")
 
-	def wait_until_standby_animation_appears_and_disappears(self):
-		self.wait_until_standby_animation_appears()
-		self.wait_until_all_standby_animations_disappeared()
+	def wait_until_standby_animation_appears_and_disappears(self, appear_timeout=5, disappear_timeout=60):
+		self.wait_until_standby_animation_appears(timeout=appear_timeout)
+		self.wait_until_all_standby_animations_disappeared(timeout=disappear_timeout)
 
 	def wait_until_progress_bar_finishes(self, timeout=300):
 		logger.info("Waiting for all progress bars to disappear.")

@@ -11,25 +11,16 @@
 ## join: true
 ## exposure: dangerous
 
-import re
 import psutil
 import time
 
 from univention.testing import selenium
 from univention.service_info import ServiceInfo
 from univention.admin import localization
+from univention.testing.selenium.utils import expand_path
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate
-
-
-def expand_path(xpath):
-	# replaces instances of [@containsClass="className"]
-	# with
-	# [contains(concat(" ", normalize-space(@class), " "), " className ")]
-	pattern = r'(?<=\[)@containsClass=([\"\'])(.*?)\1(?=\])'
-	replacement = r'contains(concat(\1 \1, normalize-space(@class), \1 \1), \1 \2 \1)'
-	return re.sub(pattern, replacement, xpath)
 
 
 class UmcError(Exception):

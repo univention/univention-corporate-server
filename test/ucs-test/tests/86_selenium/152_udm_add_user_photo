@@ -11,7 +11,6 @@
 ## join: true
 ## exposure: dangerous
 
-import re
 import time
 
 from selenium.common.exceptions import NoSuchElementException
@@ -21,18 +20,10 @@ from univention.testing.utils import get_ldap_connection
 import univention.testing.udm as udm_test
 import univention.testing.selenium as selenium
 import univention.testing.selenium.udm as selenium_udm
+from univention.testing.selenium.utils import expand_path
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate
-
-
-def expand_path(xpath):
-	# replaces instances of [@containsClass="className"]
-	# with
-	# [contains(concat(" ", normalize-space(@class), " "), " className ")]
-	pattern = r'(?<=\[)@containsClass=([\"\'])(.*?)\1(?=\])'
-	replacement = r'contains(concat(\1 \1, normalize-space(@class), \1 \1), \1 \2 \1)'
-	return re.sub(pattern, replacement, xpath)
 
 
 class UmcUdmError(Exception):
@@ -45,7 +36,6 @@ class UMCTester(object):
 		self.create_test_user()
 		self.login_and_open_module()
 
-
 	def create_test_user(self):
 		self.users = selenium_udm.Users(self.selenium)
 		userdn = self.udm.create_user()[0]
@@ -56,12 +46,10 @@ class UMCTester(object):
 		user['lastname'] = user_object['sn'][0]
 		self.user = user
 
-
 	def login_and_open_module(self):
 		self.selenium.do_login()
 		self.selenium.open_module(self.users.name)
 		self.users.wait_for_main_grid_load()
-
 
 	def test_umc(self):
 		self.setup()
@@ -72,14 +60,13 @@ class UMCTester(object):
 			raise UmcUdmError('The src in the img tag did not change after a new image has been uploaded')
 		self.test_clear_image(self.user)
 
-
 	def test_upload_image(self, user, img_path):
 		self.users.open_details(user)
 		self.selenium.driver.save_screenshot(img_path)
 		uploader = self.selenium.driver.find_element_by_xpath('//*[contains(@id, "_ImageUploader_")]//input[@type="file"]')
 		uploader.send_keys(img_path)
 
-		time.sleep(1) # wait_for_text('Uploading...') is too inconsistent
+		time.sleep(1)  # wait_for_text('Uploading...') is too inconsistent
 		self.selenium.wait_for_text('Upload new image')
 
 		if not self.get_uploaded_src():
@@ -93,7 +80,6 @@ class UMCTester(object):
 
 		return uploaded_src
 
-
 	def test_clear_image(self, user):
 		self.users.open_details(user)
 		self.selenium.click_button('Clear image data')
@@ -103,7 +89,6 @@ class UMCTester(object):
 		self.users.open_details(user)
 		if self.get_uploaded_src():
 			raise UmcUdmError('There is still an img tag in the Image widget after clearing the image, saving and opening the detailspage again')
-
 
 	def get_uploaded_src(self):
 		try:

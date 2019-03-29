@@ -8,13 +8,12 @@
 ## join: true
 ## exposure: dangerous
 
-import logging
-import re
 import apt
 
 from univention.testing import selenium
 from univention.admin import localization
 import univention.testing.utils as utils
+from univention.testing.selenium.utils import expand_path
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate
@@ -22,16 +21,6 @@ _ = translator.translate
 
 class UmcError(Exception):
 	pass
-
-
-def expand_path(xpath):
-	# replaces instances of [@containsClass="className"]
-	# with
-	# [contains(concat(" ", normalize-space(@class), " "), " className ")]
-	pattern = r'(?<=\[)@containsClass=([\"\'])(.*?)\1(?=\])'
-	replacement = r'contains(concat(\1 \1, normalize-space(@class), \1 \1), \1 \2 \1)'
-	return re.sub(pattern, replacement, xpath)
-
 
 
 class UMCTester(object):
@@ -56,7 +45,6 @@ class UMCTester(object):
 			utils.fail('Did not find small, installed package with no dependencies and recommends')
 		print("Found small, uninstalled package: %s" % small_package)
 		return small_package.name
-
 
 	def test_umc(self):
 		self.selenium.do_login()

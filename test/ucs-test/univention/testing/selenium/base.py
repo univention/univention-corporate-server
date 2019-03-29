@@ -40,16 +40,17 @@ import json
 
 from PIL import Image
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions
 import selenium.common.exceptions as selenium_exceptions
 
 from univention.admin import localization
 from univention.testing.selenium.checks_and_waits import ChecksAndWaits
 from univention.testing.selenium.interactions import Interactions
+from univention.testing.selenium.utils import expand_path
 
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
+from univention.config_registry import handler_set
 
 logger = logging.getLogger(__name__)
 
@@ -85,6 +86,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		logging.basicConfig(level=logging.INFO)
 
 	def __enter__(self):
+		self._ucr.__enter__()
 		if self.selenium_grid:
 			self.driver = webdriver.Remote(
 				command_executor='http://jenkins.knut.univention.de:4444/wd/hub',  # FIXME: url should be configurable via UCR
@@ -100,6 +102,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 				self.driver = webdriver.Firefox()
 
 		self.ldap_base = self._ucr.get('ldap/base')
+		handler_set(['umc/web/hooks/suppress_notifications=suppress_notifications'])
 
 		self.account = utils.UCSTestDomainAdminCredentials()
 		self.umcLoginUsername = self.account.username
@@ -116,11 +119,14 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		return self
 
 	def __exit__(self, exc_type, exc_value, traceback):
-		if exc_type:
-			logger.error('Exception: %s %s' % (exc_type, exc_value))
-			self.save_screenshot(hide_notifications=False, append_timestamp=True)
-			self.save_browser_log()
-		self.driver.quit()
+		try:
+			if exc_type:
+				logger.error('Exception: %s %s' % (exc_type, exc_value))
+				self.save_screenshot(hide_notifications=False, append_timestamp=True)
+				self.save_browser_log()
+			self.driver.quit()
+		finally:
+			self._ucr.__exit__(exc_type, exc_value, traceback)
 
 	def set_viewport_size(self, width, height):
 		self.driver.set_window_size(width, height)
@@ -251,29 +257,27 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		"""
 		self.driver.get(self.base_url + 'univention/logout')
 
-	def open_module(self, name):
-		self.search_module(name)
+	def open_module(self, name, wait_for_standby=True, do_reload=True):
+		self.search_module(name, do_reload)
 		self.click_tile(name)
-		self.wait_until_all_standby_animations_disappeared()
+		if wait_for_standby:
+			self.wait_until_standby_animation_appears_and_disappears()
+			if name == 'System diagnostic':
+				self.wait_until_progress_bar_finishes()
 
-	def search_module(self, name):
-		self.driver.get(self.base_url + 'univention/management/?lang=%s' % (self.language,))
+	def search_module(self, name, do_reload=True):
+		if do_reload:
+			self.driver.get(self.base_url + 'univention/management/?lang=%s' % (self.language,))
 
-		search_field_xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcLiveSearch ")]'
+		input_field_xpath = expand_path('//*[@containsClass="umcLiveSearch"]//input[@containsClass="dijitInputInner"]')
 		self.wait_until(
 			expected_conditions.presence_of_element_located(
-				(webdriver.common.by.By.XPATH, search_field_xpath)
+				(webdriver.common.by.By.XPATH, input_field_xpath)
 			)
 		)
-		search_field = self.driver.find_element_by_xpath(search_field_xpath)
-		search_field.click()
-
-		input_field_xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcLiveSearch ")]//input[contains(concat(" ", normalize-space(@class), " "), " dijitInputInner ")]'
 		input_field = self.driver.find_element_by_xpath(input_field_xpath)
-		input_field.click()
+		input_field.clear()
 		input_field.send_keys(name)
-		input_field.send_keys(Keys.RETURN)
-
 		self.wait_for_text(_('Search query'))
 
 	#def check_checkbox_by_name(self, inputname, checked=True):
