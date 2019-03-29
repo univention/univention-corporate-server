@@ -35,7 +35,8 @@ int main(int argc, char *argv[])
 {
 	FILE *fp = fopen(argv[1], "r");
 	unsigned long magic;
-	ssize_t offset, index;
+	size_t offset;
+	int index;
 	char valid;
 
 	fread(&magic, sizeof(unsigned long), 1, fp);
@@ -49,7 +50,7 @@ int main(int argc, char *argv[])
 		if (fread(&offset, sizeof(size_t), 1, fp) != 1)
 			break;
 
-		printf("%8d[%c]: %d\n", index,
+		printf("%8d[%c]: %zd\n", index,
 				valid == 1 ? 'x' : ' ', offset);
 	}
 

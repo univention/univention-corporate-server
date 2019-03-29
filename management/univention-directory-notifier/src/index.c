@@ -62,7 +62,7 @@ void index_invalidate(FILE *fp)
 	fwrite(&magic, sizeof(unsigned long), 1, fp);
 }
 
-ssize_t index_get(FILE *fp, unsigned long id)
+size_t index_get(FILE *fp, unsigned long id)
 {
 	char valid;
 	size_t result;
