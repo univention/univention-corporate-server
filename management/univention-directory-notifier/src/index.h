@@ -36,7 +36,7 @@
 
 FILE* index_open(const char *filename);
 void index_invalidate(FILE *fp);
-ssize_t index_get(FILE *fp, unsigned long id);
+size_t index_get(FILE *fp, unsigned long id);
 void index_set(FILE *fp, unsigned long id, size_t offset);
 
 #endif /* __NOTIFIER_INDEX_H__ */
