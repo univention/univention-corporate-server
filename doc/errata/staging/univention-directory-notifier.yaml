@@ -3,12 +3,16 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-directory-notifier
-fix: 13.0.1-8A~4.4.0.201903181747
+fix: 13.0.1-9A~4.4.0.201903291753
 desc: |
  This update addresses the following issue:
- * Fixed a remote triggerable Denial of Service issue.
-bug: [48466]
-cve:
- - CVE-TMP48466
-ignore:
- - cve.CVE-TMP48466
+ * Since UCS-4.3-3 erratum 427 the Univention Directory Notifier (UDN) writes
+   transactions both to the file `/var/lib/univention-ldap/notify/transaction`
+   and the `cn=translog` database in OpenLDAP. A failed write to the later can
+   make UDN abort, in which case UDN is restarted automatically and writes the
+   pending transactions to said file again. This leads to inconsistency and
+   also can fill up all space of the file system.
+   The order has been swapped to prevent this issue from happening again.
+   The transaction file might require manual corrections if UDN fails to start
+   up properly. Details of this procedure will be provided by a future update.
+bug: [49198]
