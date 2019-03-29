@@ -30,10 +30,14 @@
  */
 #include <stdio.h>
 #include "index.h"
+#include "notify.h"
 
 int main(int argc, char *argv[])
 {
-	FILE *fp = fopen(argv[1], "r");
+	char *filename = argc > 1 ? argv[1] : FILE_NAME_TF_IDX;
+	printf("FILE: %s\n", filename);
+
+	FILE *fp = fopen(filename, "r");
 	unsigned long magic;
 	size_t offset;
 	int index;
