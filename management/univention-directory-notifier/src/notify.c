@@ -576,7 +576,7 @@ char* notify_transcation_get_one_dn ( unsigned long last_known_id )
 	}
 	if ( ( index = index_open(FILE_NAME_TF_IDX) ) == NULL ) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "unable to open index\n");
-		goto error;
+		goto done;
 	}
 
 	i=0;
@@ -593,8 +593,12 @@ char* notify_transcation_get_one_dn ( unsigned long last_known_id )
 			if (id == last_known_id) {
 				found = true;
 				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Found (get_one_dn, index) %ld",id);
+				goto done;
 			}
 		}
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "tid=%ld not found in index, but tid=%ld instead at off=%zd. Now sequential search.", last_known_id, id, pos);
+	} else {
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "tid=%ld not found in index. Now sequential search.", last_known_id);
 	}
 
 	fseek(notify.tf, 0, SEEK_SET);
@@ -612,7 +616,7 @@ char* notify_transcation_get_one_dn ( unsigned long last_known_id )
 			if ( id == last_known_id ) {
 				found = true;
 				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Found (get_one_dn) %ld",id);
-				break;
+				goto done;
 			}
 
 			i=0;
@@ -623,8 +627,9 @@ char* notify_transcation_get_one_dn ( unsigned long last_known_id )
 			i++;
 		}
 	}
+	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "tid=%ld not found in transactions.", last_known_id);
 
-error:
+done:
 	if (index)
 		fclose(index);
 	fclose_lock(FILE_NAME_TF, &notify.tf, &notify.l_tf);
