@@ -550,8 +550,8 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data) {
 
 	if ((nread = fread(buf, sizeof(char), stat_buf.st_size, file)) != 0) {
 		entry = split_transaction_buffer(buf, nread);
-		notify_dump_to_files(entry);
 		notify_dump_to_ldap(entry);
+		notify_dump_to_files(entry);
 		fseek(file, 0, SEEK_SET);
 		if (ftruncate(fileno(file), 0))
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "Failed to truncate translog");
