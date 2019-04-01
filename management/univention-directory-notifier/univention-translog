@@ -43,7 +43,7 @@ import ldap
 from ldap.ldapobject import ReconnectLDAPObject
 from ldap.modlist import addModlist
 try:
-    from typing import Iterator, List, Optional, Tuple, Type, NamedTuple  # noqa F401
+    from typing import BinaryIO, Iterator, List, Optional, Tuple, Type, NamedTuple  # noqa F401
     from types import TracebackType  # noqa F401
     from argparse import Namespace  # noqa F401
     Transaction = NamedTuple("Transaction", [("tid", int), ("dn", str), ("command", str)])
@@ -93,11 +93,12 @@ class Index(object):
         # type: (str) -> None
         self.filename = filename + ".index"
         self.log = getLogger(__name__).getChild("Index")
-        self.index = None
+        self.index = None  # type: Optional[BinaryIO]
         self.size = 0
         self.count = 0
 
     def __enter__(self):
+        # type: () -> Index
         try:
             self.index = index = open(self.filename, 'rb')
 
@@ -117,7 +118,7 @@ class Index(object):
             self.index = index = open(self.filename, 'wb+')
 
             header = IndexHeader(IndexHeader.MAGIC)
-            data = buffer(header)[:]
+            data = buffer(header)[:]  # type: ignore
             self.index.write(data)
 
             self.size = size = len(data)
@@ -175,7 +176,7 @@ class Index(object):
         self.seek(tid)
 
         entry = IndexEntry(True, offset)
-        data = buffer(entry)[:]
+        data = buffer(entry)[:]  # type: ignore
         self.index.write(data)
         self.log.debug("Transaction %d is %s and at position %d", tid, entry.valid, entry.offset)
 
@@ -205,7 +206,7 @@ class Translog(object):
         self.filename = filename
         self.index = index or Index(filename).__enter__()  # type: Index
         self.log = getLogger(__name__).getChild("Log")
-        self.translog = None
+        self.translog = None  # type: Optional[BinaryIO]
         self.size = 0
         self.first = 0
         self.last = 0
@@ -235,6 +236,7 @@ class Translog(object):
         return Transaction(int(tid), dn, command)
 
     def __enter__(self):
+        # type: () -> Translog
         self.translog = translog = open(self.filename, 'r')
 
         stat = fstat(translog.fileno())
