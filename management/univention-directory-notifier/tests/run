@@ -1,4 +1,7 @@
 #!/bin/bash
+# Copyright 2019 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0
+
 set -e -u  # -x
 
 DIR="$(dirname "$(readlink -f "$0")")"
