@@ -15,3 +15,5 @@ desc: |
    The transaction file might require manual corrections if UDN fails to start
    up properly. Details of this procedure will be provided by a future update.
 bug: [49198]
+erratum: 30
+announced: 2019-04-01
