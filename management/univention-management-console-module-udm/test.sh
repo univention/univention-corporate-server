@@ -8,11 +8,12 @@
 #</LocationMatch>
 
 
-host="10.200.27.130"
-host="192.168.188.129"
+host="10.200.27.20"
+#host="192.168.188.129"
 base="http://Administrator:univention@$host:8888/udm"
 ldap_base="dc%3Dschool%2Cdc%3Dlocal"
 ldap_base="dc%3Dfbest%2Cdc%3Ddev"
+ldap_base="dc%3Ddev%2Cdc%3Dlocal"
 
 _curl() {
 	curl -s -f "$@" > /dev/null || echo curl "$@"
@@ -45,7 +46,7 @@ _curl -i "$base/users/user/uid%3DAdministrator%2Ccn%3Dusers%2C$ldap_base/layout"
 _curl -i "$base/users/user/"
 
 # create a user:
-#_curl -XPOST -i "$base/users/user/"
+_curl -XPOST -i "$base/users/user/" -H 'Content-Type: application/json' -d '{"container":"cn=users,dc=dev,dc=local","objectType":"users/user","objectTemplate":null, "disabled":false,"lastname":"Lastname","password":"univention","oxTimeZone":"Europe/Berlin","oxDisplayName":"Firstname Lastname","unlock":false,"oxLanguage":"de_DE","mailForwardCopyToSelf":"0","overridePWHistory":false,"pwdChangeNextLogin":false,"primaryGroup":"cn=Domain Users,cn=groups,dc=dev,dc=local","username":"Username'$RANDOM'","shell":"/bin/bash","mailHomeServer":"master20.dev.local","oxAccess":"premium","mailUserQuota":"0","homeSharePath":"Username","unixhome":"/home/Username","firstname":"Firstname","overridePWLength":false,"displayName":"Firstname Lastname","options": ["oxUser"], "$options$":{"oxUser":true,"owncloudEnabled":true,"pki":false}}'
 
 # get a specific user:
 _curl -i "$base/users/user/uid%3DAdministrator%2Ccn%3Dusers%2C$ldap_base"
