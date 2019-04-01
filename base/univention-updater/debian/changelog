@@ -1,3 +1,9 @@
+univention-updater (12.0.11-22) unstable; urgency=medium
+
+  * Bug #49105: Re-enable updater warning
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 01 Apr 2019 11:01:40 +0200
+
 univention-updater (12.0.11-21) unstable; urgency=medium
 
   * Bug #47828: Disable updater message in errata component

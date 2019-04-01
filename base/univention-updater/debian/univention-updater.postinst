@@ -113,11 +113,12 @@ if [ "$1" = "configure" ]; then
 				repository/online/component/${version_version}-${version_patchlevel}-errata/version="${version_version}"
 	fi
 
-	# Set for UCS 4.2-5-errata only. Do not merge this change to other ucs versions! Bug #47828
-	if ! is_ucr_true license/extended_maintenance/disable_warning; then
-		ucr set license/extended_maintenance/disable_warning=true \
-			license/extended_maintenance/disable_warning/set_by_425-updater?true
+	# Unset changes introduced in version 12.0.11-21 (Bug #47828)
+	if is_ucr_true license/extended_maintenance/disable_warning/set_by_425-updater; then
+		ucr unset license/extended_maintenance/disable_warning \
+			license/extended_maintenance/disable_warning/set_by_425-updater
 	fi
+
 fi
 
 call_joinscript 41univention-updater.inst
