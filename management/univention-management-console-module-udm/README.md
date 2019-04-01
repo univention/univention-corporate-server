@@ -1,6 +1,10 @@
 HTTP Interface for UDM in REST architectural style
 ==================================================
 
+# DEPRECATED
+These information were just ideas for development.
+Use [this document](README.vergleich.md) instead!
+
 # Summary of REST constraints:
 
 1. Client - Server components
