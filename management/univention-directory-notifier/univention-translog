@@ -195,31 +195,18 @@ class Index(object):
         self.index.seek(pos, SEEK_SET)
 
 
-class Translog(object):
+class RawTranslog(object):
     """
-    Transactions log file.
+    Transactions log file unparsed.
     :file:`/var/lib/univention-ldap/notify/transaction`
     """
-
-    def __init__(self, filename, index=None):
-        # type: (str, Optional[Index]) -> None
+    def __init__(self, filename):
+        # type: (str) -> None
         self.filename = filename
-        self.index = index or Index(filename).__enter__()  # type: Index
         self.log = getLogger(__name__).getChild("Log")
         self.translog = None  # type: Optional[BinaryIO]
         self.size = 0
-        self.first = 0
-        self.last = 0
-
-    @property
-    def count(self):
-        # type: () -> int
-        """
-        Return count of transactions.
-        """
-        if self.last == 0:
-            return 0
-        return self.last - self.first + 1
+        self.offset = 0
 
     @staticmethod
     def parse_line(line):
@@ -236,14 +223,74 @@ class Translog(object):
         return Transaction(int(tid), dn, command)
 
     def __enter__(self):
-        # type: () -> Translog
+        # type: () -> RawTranslog
         self.translog = translog = open(self.filename, 'r')
+        self.offset = 0
 
         stat = fstat(translog.fileno())
-        self.size = size = stat.st_size
+        self.size = stat.st_size
 
-        if size:
-            line = translog.readline()
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
+        assert self.translog
+        self.translog.close()
+
+    def __iter__(self):
+        # type: () -> Iterator[str]
+        """
+        Iterate over all transactions.
+        """
+        assert self.translog
+        for line in self.translog:
+            self.log.debug("Read line %r", line)
+            yield line
+            self.offset += len(line)
+
+    def seek(self, pos):
+        # type: (int) -> None
+        """
+        Seek to given transaction id.
+
+        :param pos: File offset.
+        """
+        assert 0 <= pos < self.size, pos
+        assert self.translog
+        self.translog.seek(pos, SEEK_SET)
+        self.offset = pos
+
+
+class Translog(RawTranslog):
+    """
+    Transactions log file.
+    :file:`/var/lib/univention-ldap/notify/transaction`
+    """
+
+    def __init__(self, filename, index=None):
+        # type: (str, Optional[Index]) -> None
+        super(Translog, self).__init__(filename)
+        self.index = index or Index(filename).__enter__()  # type: Index
+        self.first = 0
+        self.last = 0
+
+    @property
+    def count(self):
+        # type: () -> int
+        """
+        Return count of transactions.
+        """
+        if self.last == 0:
+            return 0
+        return self.last - self.first + 1
+
+    def __enter__(self):
+        # type: () -> Translog
+        super(Translog, self).__enter__()
+
+        if self.size:
+            assert self.translog
+            line = self.translog.readline()
             rec = self.parse_line(line)
             assert 1 <= rec.tid, rec.tid
             self.first = rec.tid
@@ -253,7 +300,7 @@ class Translog(object):
                 self.log.debug("Seeking to last transaction %d...", last)
                 self.seek(last)
             else:
-                offset = 0 if size < BSIZE else size - BSIZE
+                offset = 0 if self.size < BSIZE else self.size - BSIZE
                 self.read(offset)
 
             for line in self.translog:
@@ -267,11 +314,6 @@ class Translog(object):
             self.translog.seek(0, SEEK_SET)
 
         return self
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
-        assert self.translog
-        self.translog.close()
 
     def __getitem__(self, tid):
         # type: (int) -> Transaction
