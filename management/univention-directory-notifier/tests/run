@@ -1,0 +1,19 @@
+#!/bin/bash
+set -e -u -x
+
+BASE='dc=example,dc=com'
+
+dir="$(dirname "$(readlink -f "$0")")"
+
+[ $# -ge 1 ] || set -- "$dir/"*.in
+for test in "$@"
+do
+	[ -f "$test" ] || continue
+	echo "=== $test ==="
+	rm -f ./transaction ./transaction.index ./transaction.rewrite ./transaction.index.rewrite
+	cp -f "$test" ./transaction
+	../univention-translog -T ./transaction -vvvv check -b "$BASE" --fix
+	diff -u ./transaction "${test%.in}.out"
+	rm -f ./transaction ./transaction.index ./transaction.rewrite ./transaction.index.rewrite
+	echo
+done
