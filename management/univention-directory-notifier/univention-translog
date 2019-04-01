@@ -142,9 +142,9 @@ class Index(object):
 
         :param tid: Transaction id.
         :returns: The index entry.
-        :raises IndexEntry: for transactions before 1 or after the current count.
+        :raises IndexEntry: for transactions before 0 or after the current count.
         """
-        if tid < 1 or tid > self.count:
+        if tid < 0 or tid > self.count:
             raise IndexError(tid)
 
         assert self.index
@@ -164,9 +164,9 @@ class Index(object):
 
         :param tid: Transaction id.
         :param offset: File offset.
-        :raises IndexEntry: for transactions before 1.
+        :raises IndexEntry: for transactions before 0.
         """
-        if tid < 1:
+        if tid < 0:
             raise IndexError(tid)
 
         if tid > self.count:
@@ -187,7 +187,7 @@ class Index(object):
 
         :param tid: Transaction id.
         """
-        assert 1 <= tid <= self.count
+        assert 0 <= tid <= self.count
         assert self.index
 
         pos = sizeof(IndexHeader) + tid * sizeof(IndexEntry)
