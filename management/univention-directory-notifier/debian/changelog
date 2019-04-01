@@ -1,3 +1,9 @@
+univention-directory-notifier (13.0.1-10) unstable; urgency=low
+
+  * Bug #48466: Version bump after Bug #49198
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 01 Apr 2019 10:33:05 +0200
+
 univention-directory-notifier (13.0.1-9) unstable; urgency=low
 
   * Bug #49198: Fix translog writing order
