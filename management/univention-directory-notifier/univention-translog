@@ -158,12 +158,12 @@ class Index(object):
         return entry
 
     def __setitem__(self, tid, offset):
-        # type: (int, int) -> None
+        # type: (int, Optional[int]) -> None
         """
         Set index entry for given transaction.
 
         :param tid: Transaction id.
-        :param offset: File offset.
+        :param offset: File offset or `None` to invalidate entry.
         :raises IndexEntry: for transactions before 0.
         """
         if tid < 0:
@@ -175,7 +175,7 @@ class Index(object):
         assert self.index
         self.seek(tid)
 
-        entry = IndexEntry(True, offset)
+        entry = IndexEntry(offset is not None, offset or 0)
         data = buffer(entry)[:]  # type: ignore
         self.index.write(data)
         self.log.debug("Transaction %d is %s and at position %d", tid, entry.valid, entry.offset)
