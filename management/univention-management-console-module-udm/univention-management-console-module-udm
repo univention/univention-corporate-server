@@ -120,6 +120,7 @@ class Ressource(RequestHandler):
 			return self.force_authorization()
 
 		self.request.content_negotiation_lang = self.check_acceptable()
+		self.decode_request_arguments()
 
 	def get_module(self, object_type):
 		module = UDM_Module(object_type)
@@ -159,6 +160,20 @@ class Ressource(RequestHandler):
 		if not lang:
 			raise HTTPError(406)
 		return lang
+
+	def decode_request_arguments(self):
+		if self.request.headers.get('Content-Type', '').startswith('application/json'):
+			self.request.body_arguments = json.loads(self.request.body)
+
+	def get_body_argument(self, name, *args):
+		if self.request.headers.get('Content-Type', '').startswith('application/json'):
+			return self.request.body_arguments.get(name)
+		return super(Ressource, self).get_body_argument(name, *args)
+
+	def get_body_arguments(self, name, *args):
+		if self.request.headers.get('Content-Type', '').startswith('application/json'):
+			return self.request.body_arguments.get(name)
+		return super(Ressource, self).get_body_arguments(name, *args)
 
 	def content_negotiation(self, response):
 		# TODO: implement XML
