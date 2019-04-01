@@ -1,0 +1,14 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: univention-directory-notifier
+fix: 12.0.1-13A~4.3.0.201904011243
+desc: |
+ This update addresses the following issue:
+ * Fixed a remote triggerable Denial of Service issue.
+bug: [49211]
+cve:
+ - CVE-TMP48466
+ignore:
+ - cve.CVE-TMP48466
