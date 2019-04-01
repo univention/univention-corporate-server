@@ -66,9 +66,7 @@ UDN = 'univention-directory-notifier.service'
 UDL = 'univention-directory-listener.service'
 SERVICES = {
     'domaincontroller_master': (SLD, UDN, UDL),
-    'domaincontroller_backup': (SLD, UDN, UDL),
-    'domaincontroller_slave': (SLD, UDL),
-    'memberserver': (UDL,),
+    'domaincontroller_backup': (UDL, SLD, UDN),
 }  # type: Dict[str, Tuple[str, ...]]
 
 
@@ -646,6 +644,10 @@ def check(opt):
 
     :param opt: Command line options.
     """
+    if opt.role not in SERVICES:
+        print('This command is only for UCS Master and Backups.')
+        exit(0)
+
     with stopped(opt):
         translog = CheckTranslog(opt, opt.translog_file)
         translog.run()
@@ -657,7 +659,7 @@ def check(opt):
 
         check_last(opt, opt.last_file, listener.last_tid, listener.last_line)
 
-        # TODO: check cn=translog
+        # TODO: check cn=translog (Bug #49225)
 
 
 @contextmanager
