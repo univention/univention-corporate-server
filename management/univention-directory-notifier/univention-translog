@@ -898,9 +898,9 @@ class CheckGeneric(object):
                             assert next_tid == 0 or next_tid <= rec.tid, (next_tid, rec.tid)
                             while next_tid != 0 and next_tid < rec.tid:
                                 self.log.info('Filling %d ...', next_tid)
-                                rec = Transaction(tid=next_tid, dn=self.opt.base, command='m')
-                                fill = Translog.format_line(rec)
-                                new.write(fill)
+                                fill_rec = Transaction(tid=next_tid, dn=self.opt.base, command='m')
+                                fill_line = Translog.format_line(fill_rec)
+                                new.write(fill_line)
                                 next_tid += 1
 
                             next_tid = rec.tid + 1
