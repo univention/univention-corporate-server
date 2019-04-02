@@ -137,6 +137,15 @@ app = Apps().find('$app')
 print app.component_id"
 }
 
+app_get_compose_file ()
+{
+	local app=$1
+	python -c "
+from univention.appcenter.app_cache import Apps
+app = Apps().find('$app')
+print app.get_cache_file('compose')"
+}
+
 app_appliance_is_software_blacklisted ()
 {
 	local app="$1"
@@ -270,16 +279,29 @@ prepare_docker_app () {
 	if [ "$app" == "egroupware" ]; then
 		extra_packages="univention-apache libapache2-mod-php7.0 php-tidy php-gd php-imap php-ldap php-xsl php-mysql php-common php-mbstring php-json php-fpm php-bz2"
 	fi
+	local dockercompose="$(app_get_compose_file $app)"
 	local dockerimage="$(get_app_attr $app DockerImage)"
-	if [ "$?" != 0 ]; then
-		echo "Error: No docker image for docker app!"
+	local local_app_component_id=$(app_get_component $app)""
+	if [ ! -e "$dockercompose" -a -z "$dockerimage" ]; then
+		echo "Error: No docker image and compose file for docker app $app!"
 		exit 1
+	fi
+	if [ -z "$local_app_component_id" ]; then
+		echo "Error: No docker component id for $app!"
 	fi
 	# generate .dockercfg as appcenter does it
 	docker login -e invalid -u ucs -p readonly docker.software-univention.de
-	docker pull "$dockerimage"
-	local local_app_docker_image="$dockerimage"
-	local local_app_component_id=$(app_get_component $app)""
+	local local_app_docker_image=""
+	# compose
+	if [ -e "$dockercompose" ]; then
+		local_app_docker_image=""
+		while read image; do
+			docker pull $image
+		done < <(cat "$dockercompose" | sed -n 's/.*image: //p')
+	else
+		local_app_docker_image="$dockerimage"
+		docker pull "$dockerimage"
+	fi
 	# appbox image
 	if ! appliance_app_has_external_docker_image $app; then
 			container_id=$(docker create "$dockerimage")
@@ -375,12 +397,24 @@ ucr set --force appcenter/index/verify=false
 python -c "from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions import get_action
 from univention.appcenter.log import log_to_logfile, log_to_stream
+from univention.appcenter.utils import mkdir
+
+import shutil
+import os
 
 log_to_stream()
 get_action('update')()._update_local_files()
 
 app=Apps().find_by_component_id('$local_app_component_id')
-app.docker_image='${local_app_docker_image}'
+if '${local_app_docker_image}':
+	app.docker_image='${local_app_docker_image}'
+if '$dockercompose':
+	# bummer, this is what the appcenter does in compose.pull()
+	# should be done even if pull_image=False
+	mkdir(app.get_compose_dir())
+	yml_file = app.get_compose_file('docker-compose.yml')
+	shutil.copy2(app.get_cache_file('compose'), yml_file)
+	os.chmod(yml_file, 0600)
 
 install = get_action('install')
 install.call(app=app, noninteractive=True, skip_checks=['must_have_valid_license'], pwdfile='/tmp/joinpwd', pull_image=False, username='\$USER')
@@ -388,7 +422,7 @@ install.call(app=app, noninteractive=True, skip_checks=['must_have_valid_license
 
 # fix docker app image name
 ucr unset --force appcenter/index/verify
-ucr set appcenter/apps/${app}/image="${dockerimage}"
+test -n "${local_app_docker_image}" && ucr set appcenter/apps/${app}/image="${dockerimage}"
 
 # re activate repo
 univention-app shell ${app} ucr set repository/online=yes || true
