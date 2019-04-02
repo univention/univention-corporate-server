@@ -1,3 +1,9 @@
+univention-directory-notifier (13.0.1-11) unstable; urgency=low
+
+  * Bug #28233: Check available file system space
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 02 Apr 2019 17:05:13 +0200
+
 univention-directory-notifier (13.0.1-10) unstable; urgency=low
 
   * Bug #48466: Version bump after Bug #49198

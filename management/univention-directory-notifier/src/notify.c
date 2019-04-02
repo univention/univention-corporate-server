@@ -30,13 +30,14 @@
  */
 
 #define __USE_GNU
-#include <sys/file.h>
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <stdbool.h>
-#include <sys/types.h>
+#include <fcntl.h>
+#include <errno.h>
 #include <sys/stat.h>
 #include <pthread.h>
 #include <time.h>
@@ -44,7 +45,6 @@
 #include <sasl/sasl.h>
 #include <univention/debug.h>
 
-#include <univention/debug.h>
 #include "notify.h"
 #include "network.h"
 #include "cache.h"
@@ -244,6 +244,7 @@ static long split_transaction_buffer ( NotifyEntry_t *entry, char *buf, long l_b
 void notify_dump_to_files( Notify_t *notify, NotifyEntry_t *entry)
 {
 	NotifyEntry_t *tmp;
+	char buffer[2048];
 	FILE *index = NULL;
 
 	if (entry == NULL)
@@ -274,10 +275,24 @@ void notify_dump_to_files( Notify_t *notify, NotifyEntry_t *entry)
 
 	for (tmp = entry; tmp != NULL; tmp = tmp->next) {
 		if (tmp->dn != NULL && tmp->notify_id.id >= 0) {
-			index_set(index, tmp->notify_id.id, ftell(notify->tf));
+			long offset = ftell(notify->tf);
+			int len = snprintf(buffer, sizeof(buffer), "%ld %s %c\n", tmp->notify_id.id, tmp->dn, tmp->command);
+			if (len >= sizeof(buffer)) {
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "buffer too small");
+				abort();
+			}
+
+			index_set(index, tmp->notify_id.id, offset);
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "want to write to transaction file; id=%ld", tmp->notify_id.id);
+			if (fallocate(fileno(notify->tf), FALLOC_FL_KEEP_SIZE, offset, len) == -1 && (errno != ENOSYS) && (errno != EOPNOTSUPP)) {
+				perror("Failed fallocate(tf)");
+				abort();
+			}
+			if (fprintf(notify->tf, "%s", buffer) != len) {
+				perror("Failed fprintf(tf)");
+				abort();
+			}
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "wrote to transaction file; id=%ld; dn=%s, cmd=%c", tmp->notify_id.id, tmp->dn, tmp->command);
-			fprintf(notify->tf, "%ld %s %c\n", tmp->notify_id.id, tmp->dn, tmp->command);
 			if (tmp->buf != NULL) {
 				if (WRITE_REPLOG)
 					fprintf(notify->orf, "%s", tmp->buf);
