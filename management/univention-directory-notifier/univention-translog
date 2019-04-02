@@ -528,6 +528,24 @@ def show_stat(opt):
     print("Ldap.okay: %s" % ('yes' if last == tid else 'no',))
 
 
+def dump_index(opt):
+    # type: (Namespace) -> None
+    """
+    Dump transaction index
+
+    :param opt: Command line options.
+    """
+    log = getLogger(__name__).getChild("INDEX")
+
+    with Index(opt.translog_file) as index:
+        begin = opt.min
+        end = min(opt.max or index.count, index.count)
+        log.debug('Dumping index from [%d, %d] ...', begin, end)
+        for tid in xrange(begin, end + 1):
+            rec = index[tid]
+            print('%8d[%c]: %d' % (tid, 'x' if rec.valid else ' ', rec.offset))
+
+
 def lookup(opt):
     # type: (Namespace) -> None
     """
@@ -640,6 +658,11 @@ def parse_args(args=None):
 
     parser_stat = subparsers.add_parser("stat", help="Show statistics")
     parser_stat.set_defaults(func=show_stat)
+
+    parser_index = subparsers.add_parser("index", help="Dump index file")
+    parser_index.add_argument("--min", "-m", action="store", type=parse_count, help="First transaction ID to process [%(default)s]", default=1)
+    parser_index.add_argument("--max", "-M", action="store", type=parse_count, help="Last transaction ID to process")
+    parser_index.set_defaults(func=dump_index)
 
     opt = parser.parse_args(args)
 
