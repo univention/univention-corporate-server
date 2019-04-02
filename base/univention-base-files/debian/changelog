@@ -1,3 +1,9 @@
+univention-base-files (8.0.0-4) unstable; urgency=medium
+
+  * Bug #48508: allow multiple syslog remotes
+
+ -- Arvid Requate <requate@univention.de>  Tue, 02 Apr 2019 12:00:42 +0200
+
 univention-base-files (8.0.0-3) unstable; urgency=medium
 
   * Bug #35208: added ldap server option to univention-policy-update-config-registry.py
