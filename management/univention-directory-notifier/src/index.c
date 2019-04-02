@@ -29,8 +29,12 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+#define _GNU_SOURCE
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
 #include "index.h"
 
 FILE* index_open(const char *filename)
@@ -41,13 +45,16 @@ FILE* index_open(const char *filename)
 	if ((fp = fopen(filename, "r+")) != NULL) {
 		if (fread(&header, sizeof(header), 1, fp) == 1 && header.magic == MAGIC)
 			return fp;
+		fclose(fp);
 	}
 	if ((fp = fopen(filename, "w+")) != NULL) {
 		header.magic = MAGIC;
 		if (fwrite(&header, sizeof(header), 1, fp) == 1)
 			return fp;
+		fclose(fp);
 	}
-	return NULL;
+	perror("Failed fopen(idx)");
+	abort();
 }
 
 void index_invalidate(FILE *fp)
@@ -55,10 +62,14 @@ void index_invalidate(FILE *fp)
 	struct index_header header = { .magic = MAGIC };
 
 	fseek(fp, 0, SEEK_SET);
-	ftruncate(fileno(fp), 0);
-	fseek(fp, 0, SEEK_SET);
-
-	fwrite(&header, sizeof(header), 1, fp);
+	if (!ftruncate(fileno(fp), sizeof(header))) {
+		perror("Failed ftruncate(idx)");
+		abort();  // disk full?
+	}
+	if (fwrite(&header, sizeof(header), 1, fp) != 1) {
+		perror("Failed fwrite(idx)");
+		abort();  // disk full?
+	}
 }
 
 static unsigned long index_seek(FILE *fp, unsigned long id) {
@@ -84,7 +95,13 @@ void index_set(FILE *fp, unsigned long id, size_t offset)
 	struct index_entry entry = {
 		.valid = 1, .offset = offset,
 	};
-	index_seek(fp, id);
-	if (fwrite(&entry, sizeof(entry), 1, fp) != 1)
-		return;
+	unsigned long index_offset = index_seek(fp, id);
+	if (fallocate(fileno(fp), FALLOC_FL_KEEP_SIZE, index_offset, sizeof(entry)) == -1 && (errno != ENOSYS) && (errno != EOPNOTSUPP)) {
+		perror("Failed fallocate(idx)");
+		abort();
+	}
+	if (fwrite(&entry, sizeof(entry), 1, fp) != 1) {
+		perror("Failed fwrite(idx)");
+		abort();
+	}
 }
