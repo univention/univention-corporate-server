@@ -38,24 +38,22 @@ int main(int argc, char *argv[])
 	printf("FILE: %s\n", filename);
 
 	FILE *fp = fopen(filename, "r");
-	unsigned long magic;
-	size_t offset;
+	struct index_header header;
 	int index;
-	char valid;
 
-	fread(&magic, sizeof(unsigned long), 1, fp);
+	if (fread(&header, sizeof(header), 1, fp) != 1)
+		perror("Failed fread()");
 	printf("MAGIC: 0x%lx\n", magic);
 
-	while (!feof(fp)) {
-		index =(ftell(fp)-sizeof(unsigned long))/(sizeof(char)+sizeof(size_t));
-		
-		if (fread(&valid, sizeof(char), 1, fp) != 1)
+	for (index = 0; !feof(fp); index++) {
+		struct index_entry entry;
+		if (fread(&entry, sizeof(entry), 1, fp) != 1) {
+			if (!feof(fp))
+				perror("Failed fread()");
 			break;
-		if (fread(&offset, sizeof(size_t), 1, fp) != 1)
-			break;
+		}
 
-		printf("%8d[%c]: %zd\n", index,
-				valid == 1 ? 'x' : ' ', offset);
+		printf("%8d[%c]: %zd\n", index, entry.valid == 1 ? 'x' : ' ', entry.offset);
 	}
 
 	return 0;
