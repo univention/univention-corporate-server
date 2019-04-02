@@ -35,7 +35,7 @@ import sys
 import re
 import pwd
 import os
-from pexpect import *
+from pexpect import spawn, EOF
 import univention.config_registry
 
 args = sys.argv[1:]

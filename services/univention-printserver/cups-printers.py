@@ -30,19 +30,22 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
+
 import listener
 import os
 import time
+import pipes
 import subprocess
 import univention.debug as ud
 import univention.config_registry
 # for the ucr commit below in postrun we need ucr configHandlers
 from univention.config_registry import configHandlers
+from univention.config_registry.interfaces import Interfaces
+from ldap.dn import str2dn
+
 ucr_handlers = configHandlers()
 ucr_handlers.load()
-from univention.config_registry.interfaces import Interfaces
-from ldap.dn import explode_dn
 interfaces = Interfaces(listener.configRegistry)
 
 hostname = listener.baseConfig['hostname']
@@ -59,10 +62,41 @@ EMPTY = ('',)
 reload_samba_in_postrun = None
 
 
-def lpadmin(args):
+def _rdn(_dn):
+	return str2dn(_dn)[0][0][1]
 
-	args = map(lambda x: '%s' % x.replace('"', '').strip(), args)
-	args = map(lambda x: '%s' % x.replace("'", '').strip(), args)
+
+def _validate_smb_share_name(name):
+	if len(name) > 80:
+		return False
+	illegal_chars = '\\/[]:|<>+=;,*?"' + ''.join(map(chr, range(0x1F + 1)))
+	if set(str(name)) & illegal_chars:
+		return False
+	return True
+
+
+class BasedirLimit(Exception):
+	pass
+
+
+def _escape_filename(name):
+	name = name.replace('/', '').replace('\x00', '')
+	if name in ('.', '..', ''):
+		ud.debug(ud.LISTENER, ud.ERROR, "Invalid filename: %r" % (name,))
+		raise BasedirLimit('Invalid filename: %s' % (name,))
+	return name
+
+
+def _join_basedir_filename(basedir, filename):
+	_filename = os.path.join(basedir, _escape_filename(filename))
+	if not os.path.abspath(_filename).startswith(basedir):
+		ud.debug(ud.LISTENER, ud.ERROR, "Basedir manipulation: %r" % (filename,))
+		raise BasedirLimit('Invalid filename: %s' % (filename,))
+	return _filename
+
+
+def lpadmin(args):
+	args = [pipes.quote(x) for x in args]
 
 	# Show this info message by default
 	ud.debug(ud.LISTENER, ud.WARN, "cups-printers: info: univention-lpadmin %s" % ' '.join(args))
@@ -71,14 +105,14 @@ def lpadmin(args):
 	if rc != 0:
 		ud.debug(ud.LISTENER, ud.ERROR, "cups-printers: Failed to execute the univention-lpadmin command. Please check the cups state.")
 		filename = os.path.join('/var/cache/univention-printserver/', '%f.sh' % time.time())
-		f = open(filename, 'w+')
-		os.chmod(filename, 0o755)
-		print >>f, '#!/bin/sh'
-		print >>f, '/usr/sbin/univention-lpadmin ' + ' '.join(map(lambda x: "'%s'" % x, args))
-		f.close()
+		with open(filename, 'w+') as fd:
+			os.chmod(filename, 0o755)
+			fd.write('#!/bin/sh\n')
+			fd.write('/usr/sbin/univention-lpadmin %s\n' % (' '.join(args),))
 
 
 def pkprinters(args):
+	args = [pipes.quote(x) for x in args]
 	listener.setuid(0)
 	try:
 		if os.path.exists("/usr/sbin/pkprinters"):
@@ -94,10 +128,9 @@ def pkprinters(args):
 
 
 def filter_match(object):
+	fqdn = ('%s.%s' % (hostname, domainname)).lower()
 	for host in object.get('univentionPrinterSpoolHost', ()):
-		if host == ip:
-			return True
-		elif host == '%s.%s' % (hostname, domainname):
+		if host.lower() in (ip.lower(), fqdn):
 			return True
 	return False
 
@@ -135,7 +168,7 @@ def handler(dn, new, old):
 				old_sharename = old['univentionPrinterSambaName'][0]
 			else:
 				old_sharename = old['cn'][0]
-			old_filename = '/etc/samba/printers.conf.d/%s' % old_sharename
+			old_filename = _join_basedir_filename('/etc/samba/printers.conf.d/', old_sharename)
 			samba_force_printername = testparm_is_true(old_filename, old_sharename, 'force printername')
 
 		if 'univentionPrinterGroup' in old.get('objectClass', ()):
@@ -207,7 +240,7 @@ def handler(dn, new, old):
 
 		# Deletions done via editing the Samba config
 		if old.get('univentionPrinterSambaName'):
-			filename = '/etc/samba/printers.conf.d/%s' % old['univentionPrinterSambaName'][0]
+			filename = _join_basedir_filename('/etc/samba/printers.conf.d/', old['univentionPrinterSambaName'][0])
 			listener.setuid(0)
 			try:
 				if os.path.exists(filename):
@@ -215,7 +248,7 @@ def handler(dn, new, old):
 			finally:
 				listener.unsetuid()
 
-		filename = '/etc/samba/printers.conf.d/%s' % old['cn'][0]
+		filename = _join_basedir_filename('/etc/samba/printers.conf.d/', old['cn'][0])
 		listener.setuid(0)
 		try:
 			if os.path.exists(filename):
@@ -252,8 +285,6 @@ def handler(dn, new, old):
 		description = ""
 		page_price = 0
 		job_price = 0
-		aclUsers = []
-		aclGroups = []
 
 		args = []  # lpadmin args
 
@@ -271,9 +302,9 @@ def handler(dn, new, old):
 				args.append('-u')
 				argument = "%s:" % new['univentionPrinterACLtype'][0]
 				for userDn in new.get('univentionPrinterACLUsers', ()):
-					argument += '%s,' % (explode_dn(userDn, True)[0],)
+					argument += '%s,' % (_rdn(userDn),)
 				for groupDn in new.get('univentionPrinterACLGroups', ()):
-					argument += '@%s,' % (explode_dn(groupDn, True)[0],)
+					argument += '@%s,' % (_rdn(groupDn),)
 				args.append(argument[:-1])
 		else:
 			args += ['-o', 'auth-info-required=none']
@@ -293,7 +324,7 @@ def handler(dn, new, old):
 				add = new['univentionPrinterGroupMember']
 
 			if new.get('univentionPrinterQuotaSupport', EMPTY)[0] == "1":
-				pkprinters(["--add", "-D", '"%s"' % description, "--charge", "%s,%s" % (page_price, job_price), new['cn'][0]])
+				pkprinters(["--add", "-D", description, "--charge", "%s,%s" % (page_price, job_price), new['cn'][0]])
 				for member in new['univentionPrinterGroupMember']:
 					pkprinters(["--groups", new['cn'][0], member])
 			elif new.get('univentionPrinterQuotaSupport', EMPTY)[0] == "0" and old:
@@ -312,14 +343,13 @@ def handler(dn, new, old):
 			lpadmin(args)
 		# Add/Modify Printer
 		else:
-
 			args.append('-p')
 			args.append(new['cn'][0])
 			for a in changes:
 				if a == 'univentionPrinterQuotaSupport':
 					if new.get('univentionPrinterQuotaSupport'):
 						if new['univentionPrinterQuotaSupport'][0] == '1':
-							pkprinters(["--add", "-D", '"%s"' % description, "--charge", "%s,%s" % (page_price, job_price), new['cn'][0]])
+							pkprinters(["--add", "-D", description, "--charge", "%s,%s" % (page_price, job_price), new['cn'][0]])
 						else:
 							pkprinters(['--delete', new['cn'][0]])
 
@@ -341,10 +371,9 @@ def handler(dn, new, old):
 						model = 'raw'
 					args += [options[a], model]
 				else:
-					args += [options[a], '%s' % new.get(a, EMPTY)[0]]
+					args += [options[a], new.get(a, EMPTY)[0]]
 
 			args += [options['univentionPrinterURI'], modified_uri]
-
 			args += ['-E']
 
 			# insert printer
@@ -353,63 +382,56 @@ def handler(dn, new, old):
 
 			# Modifications done via editing Samba config
 			printername = new['cn'][0]
+			cups_printername = new['cn'][0]
 			if new.get('univentionPrinterSambaName'):
 				printername = new['univentionPrinterSambaName'][0]
 
-			filename = '/etc/samba/printers.conf.d/%s' % printername
-			listener.setuid(0)
+			filename = _join_basedir_filename('/etc/samba/printers.conf.d/', printername)
+
+			if not _validate_smb_share_name(printername):
+				ud.debug(ud.LISTENER, ud.ERROR, "Invalid printer share name: %r. Ignoring!" % (printername,))
+				return
+
+			def _quote(arg):
+				if ' ' in arg:
+					arg = '"%s"' % (arg.replace('"', '\\"'),)
+				return arg.replace('\n', '')
+
+			user_and_groups = [_quote(_rdn(_dn)) for _dn in new.get('univentionPrinterACLUsers', ())]
+			user_and_groups.extend(_quote("@" + _rdn(_dn)) for _dn in new.get('univentionPrinterACLGroups', ()))
+			perm = ' '.join(user_and_groups)
 
 			# samba permissions
-			perm = ""
-
-			# users
-			for dn in new.get('univentionPrinterACLUsers', ()):
-				user = explode_dn(dn, True)[0]
-				if " " in user:
-					user = "\"" + user + "\""
-				perm = perm + " " + user
-			# groups
-			for dn in new.get('univentionPrinterACLGroups', ()):
-				group = "@" + explode_dn(dn, True)[0]
-				if " " in group:
-					group = "\"" + group + "\""
-				perm = perm + " " + group
-
+			listener.setuid(0)
 			try:
-				fp = open(filename, 'w')
+				with open(filename, 'w') as fp:
+					fp.write('[%s]\n' % (printername,))
+					fp.write('printer name = %s\n' % (cups_printername,))
+					fp.write('path = /tmp\n')
+					fp.write('guest ok = yes\n')
+					fp.write('printable = yes\n')
+					if samba_force_printername:
+						fp.write('force printername = yes\n')
+					if perm:
+						if new['univentionPrinterACLtype'][0] == 'allow':
+							fp.write('valid users = %s\n' % perm)
+						if new['univentionPrinterACLtype'][0] == 'deny':
+							fp.write('invalid users = %s\n' % perm)
 
-				print >>fp, '[%s]' % printername
-				print >>fp, 'printer name = %s' % new['cn'][0]
-				print >>fp, 'path = /tmp'
-				print >>fp, 'guest ok = yes'
-				print >>fp, 'printable = yes'
-				if samba_force_printername:
-					print >>fp, 'force printername = yes'
-				if perm:
-					if new['univentionPrinterACLtype'][0] == 'allow':
-						print >>fp, 'valid users = %s' % perm
-					if new['univentionPrinterACLtype'][0] == 'deny':
-						print >>fp, 'invalid users = %s' % perm
+					if new.get('univentionPrinterUseClientDriver', [''])[0] == '1':
+						fp.write('use client driver = yes\n')
 
-				if new.get('univentionPrinterUseClientDriver', [''])[0] == '1':
-					print >>fp, 'use client driver = yes'
-
-				uid = 0
-				gid = 0
-				mode = '0755'
-
-				os.chmod(filename, int(mode, 0))
-				os.chown(filename, uid, gid)
+				os.chmod(filename, 0o755)
+				os.chown(filename, 0, 0)
 			finally:
 				listener.unsetuid()
 
 	if change_affects_this_host:
 		listener.setuid(0)
 		try:
-			fp = open('/etc/samba/printers.conf.temp', 'w')
-			for f in os.listdir('/etc/samba/printers.conf.d'):
-				print >>fp, 'include = %s' % os.path.join('/etc/samba/printers.conf.d', f)
-			fp.close()
+			with open('/etc/samba/printers.conf.temp', 'w') as fp:
+				for f in os.listdir('/etc/samba/printers.conf.d'):
+					fp.write('include = %s\n' % os.path.join('/etc/samba/printers.conf.d', f))
 			os.rename('/etc/samba/printers.conf.temp', '/etc/samba/printers.conf')
 
 		finally:
@@ -437,11 +459,12 @@ def reload_cups_daemon():
 
 
 def reload_printer_restrictions():
-		listener.setuid(0)
-		try:
-			subprocess.call(['python', '/usr/share/pyshared/univention/lib/share_restrictions.py'])
-		finally:
-			listener.unsetuid()
+	listener.setuid(0)
+	try:
+		subprocess.call(['python', '-m', 'univention.lib.share_restrictions'])
+	finally:
+		listener.unsetuid()
+
 
 def reload_smbd():
 	global reload_samba_in_postrun
@@ -465,6 +488,7 @@ def initialize():
 		listener.setuid(0)
 		try:
 			os.mkdir('/etc/samba/printers.conf.d')
+			os.chmod('/etc/samba/printers.conf.d', 0o755)
 		finally:
 			listener.unsetuid()
 
