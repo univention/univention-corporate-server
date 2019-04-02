@@ -1,3 +1,9 @@
+univention-management-console (10.0.6-22) unstable; urgency=medium
+
+  * Bug #48990: reload ldap connections after server password change
+
+ -- Florian Best <best@univention.de>  Tue, 02 Apr 2019 08:23:35 +0200
+
 univention-management-console (10.0.6-21) unstable; urgency=medium
 
   * Bug #48985: fix typo
