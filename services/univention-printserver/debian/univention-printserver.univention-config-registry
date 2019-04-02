@@ -12,6 +12,10 @@ Variables: cups/server/alias
 Variables: cups/include/local
 Variables: hostname
 Variables: domainname
+Variables: cups/printmode/hosts/all
+Variables: cups/printmode/hosts/none
+Variables: cups/policy/.*
+Variables: cups/access/limit
 
 Type: file
 File: etc/pam.d/cups
