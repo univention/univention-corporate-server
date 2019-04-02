@@ -29,8 +29,10 @@ export CFG="$1"
 if ! grep -Fq kvm_template "$CFG"
 then
 	exe='ucs-ec2-create'
+	test -e ./ucs-ec2-tools/ucs-ec2-create && exe="./ucs-ec2-tools/ucs-ec2-create"
 else
 	exe='ucs-kvm-create'
+	test -e ./ucs-ec2-tools/ucs-kvm-create && exe="./ucs-ec2-tools/ucs-kvm-create"
 fi
 declare -a cmd=("$exe" -c "$CFG")
 "$HALT" && cmd+=("-t")
