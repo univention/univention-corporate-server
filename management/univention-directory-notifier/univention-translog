@@ -391,9 +391,9 @@ def ldapi(opt):
 
     log.debug("ldap_set_option(PROTOCOL_VERSION)")
     ldap.set_option(ldap.OPT_PROTOCOL_VERSION, ldap.VERSION3)
-    log.debug("ldap_initialize(%s)", opt.ldap)
+    log.debug("ldap_initialize(%s)", opt.translog_ldap)
     ld = ReconnectLDAPObject(
-        opt.ldap,
+        opt.translog_ldap,
         trace_level=max(0, opt.verbose - 4),
         retry_max=3,
         retry_delay=10.0,
@@ -415,9 +415,9 @@ def import_all(opt):
     :param opt: Command line options.
     """
     log = getLogger(__name__).getChild("import")
-    log.info("Reading transactions from file '%s'...", opt.translog)
+    log.info("Reading transactions from file '%s'...", opt.translog_file)
 
-    with Index(opt.translog) as index, Translog(opt.translog, index) as translog, ldapi(opt) as ld:
+    with Index(opt.translog_file) as index, Translog(opt.translog_file, index) as translog, ldapi(opt) as ld:
         if not translog.size:
             log.debug("File is empty; no transactions to process.")
             return
@@ -488,7 +488,7 @@ def load_single(opt):
 
     :param opt: Command line options.
     """
-    with Index(opt.translog) as index, Translog(opt.translog, index) as translog, ldapi(opt) as ld:
+    with Index(opt.translog_file) as index, Translog(opt.translog_file, index) as translog, ldapi(opt) as ld:
         for tid in opt.trans:
             try:
                 rec = translog[tid]
@@ -505,7 +505,7 @@ def show_stat(opt):
 
     :param opt: Command line options.
     """
-    with Index(opt.translog) as index, Translog(opt.translog, index) as translog:
+    with Index(opt.translog_file) as index, Translog(opt.translog_file, index) as translog:
         print("Index.file: %s" % index.filename)
         print("Index.size: %d" % index.size)
         print("Index.count: %d" % index.count)
@@ -520,7 +520,7 @@ def show_stat(opt):
     tid = last
     with ldapi(opt) as ld:
         while tid >= first:
-            dn = "reqSession={},{}".format(tid, opt.base)
+            dn = "reqSession={},{}".format(tid, opt.translog_base)
             try:
                 ld.search_ext_s(dn, ldap.SCOPE_BASE)
                 break
@@ -555,7 +555,7 @@ def lookup(opt):
 
     :param opt: Command line options.
     """
-    with Index(opt.translog) as index, Translog(opt.translog, index) as translog:
+    with Index(opt.translog_file) as index, Translog(opt.translog_file, index) as translog:
         for tid in opt.trans:
             print(translog[tid])
 
@@ -571,7 +571,7 @@ def lookup_ldap(opt):
 
     with ldapi(opt) as ld:
         for tid in opt.trans:
-            dn = "reqSession={},{}".format(tid, opt.base)
+            dn = "reqSession={},{}".format(tid, opt.translog_base)
             try:
                 result = ld.search_ext_s(dn, ldap.SCOPE_BASE)
             except ldap.NO_SUCH_OBJECT as ex:
@@ -594,7 +594,7 @@ def add_transaction(opt, ld, rec):
     """
     log = getLogger(__name__).getChild("LDAP")
 
-    dn = "reqSession={.tid},{}".format(rec, opt.base)
+    dn = "reqSession={.tid},{}".format(rec, opt.translog_base)
     modlist = addModlist({
         "objectClass": ["auditObject"],
         "reqStart": [opt.datetime],
@@ -625,9 +625,9 @@ def parse_args(args=None):
     :returns: a Namespace instance.
     """
     parser = ArgumentParser(description=__doc__)
-    parser.add_argument("--translog", "-t", metavar="FILENAME", help="Transaction file [%(default)s]", default="/var/lib/univention-ldap/notify/transaction")
-    parser.add_argument("--ldap", "-H", metavar="URL", help="LDAP URL [%(default)s]", default="ldapi:///")
-    parser.add_argument("--base", "-b", metavar="DN", help="LDAP base [%(default)s]", default="cn=translog")
+    parser.add_argument("--translog-file", "-T", metavar="FILENAME", help="Transaction file [%(default)s]", default="/var/lib/univention-ldap/notify/transaction")
+    parser.add_argument("--translog-ldap", "-H", metavar="URL", help="LDAP URL [%(default)s]", default="ldapi:///")
+    parser.add_argument("--translog-base", "-B", metavar="DN", help="LDAP base for translog [%(default)s]", default="cn=translog")
     parser.add_argument("--lenient", "-l", action="store_true", help="Ignore existing entries")
     parser.add_argument("--verbose", "-v", action="count", help="Increase verbosity", default=0)
     parser.add_argument("--dry-run", "-n", action="store_true", help="Do not modify anything")
