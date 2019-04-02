@@ -107,8 +107,7 @@ class Index(object):
             header = IndexHeader.from_buffer_copy(data)
             assert header.magic == header.MAGIC, header.magic
 
-            stat = fstat(index.fileno())
-            self.size = size = stat.st_size
+            size = self._update_size()
         except EnvironmentError as ex:
             self.log.warning("Failed to open %s: %s", self.filename, ex)
             if ex.errno != ENOENT:
@@ -129,6 +128,18 @@ class Index(object):
         assert reminder == 0, reminder
 
         return self
+
+    def _update_size(self):
+        # type: () -> int
+        """
+        Update and return index file size.
+
+        :returns: file size in bytes.
+        """
+        assert self.index
+        stat = fstat(self.index.fileno())
+        self.size = size = stat.st_size
+        return size
 
     def __exit__(self, exc_type, exc_value, traceback):
         # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
@@ -178,6 +189,7 @@ class Index(object):
         entry = IndexEntry(offset is not None, offset or 0)
         data = buffer(entry)[:]  # type: ignore
         self.index.write(data)
+        self._update_size()
         self.log.debug("Transaction %d is %s and at position %d", tid, entry.valid, entry.offset)
 
     def seek(self, tid):
