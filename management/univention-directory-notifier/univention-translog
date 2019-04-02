@@ -259,7 +259,7 @@ class Translog(object):
             rec = self.parse_line(line)
             assert last <= rec.tid, (last, rec.tid)
             if last < rec.tid:
-                self.log.warn("Index=%d < translog=%d entries")
+                self.log.warn("Index=%d < translog=%d entries", last, rec.tid)
             self.last = rec.tid
 
             self.translog.seek(0, SEEK_SET)
