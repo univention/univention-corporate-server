@@ -9,4 +9,4 @@ desc: |
  * The script univention-policy-update-config-registry now has a new option to
    specify the LDAP server from which to get the policies.
  * Support multiple rsyslog remotes
-bug: [48508, 35208]
+bug: [35208, 48508]
