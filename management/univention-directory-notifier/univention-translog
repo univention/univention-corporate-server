@@ -29,7 +29,9 @@ Univention Directory Notifier Transaction log admin commmand
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 from __future__ import print_function
-from os import SEEK_SET, fstat
+from array import array
+from os import SEEK_SET, fstat, fchmod, fchown, lstat, chmod, lchown, rename, unlink, getuid
+from stat import S_ISREG, S_IMODE
 from sys import stderr
 from argparse import ArgumentParser, ArgumentTypeError
 from collections import namedtuple
@@ -39,19 +41,25 @@ from ctypes import c_bool, c_ulong, sizeof, Structure
 from errno import ENOENT
 from contextlib import contextmanager
 from itertools import chain
+from grp import getgrnam
 import ldap
 from ldap.ldapobject import ReconnectLDAPObject
 from ldap.modlist import addModlist
+from ldap.dn import is_dn
+from univention.config_registry import ConfigRegistry
 try:
-    from typing import BinaryIO, Iterator, List, Optional, Tuple, Type, NamedTuple  # noqa F401
+    from typing import BinaryIO, Callable, Iterator, List, Optional, Tuple, Type, NamedTuple  # noqa F401
     from types import TracebackType  # noqa F401
     from argparse import Namespace  # noqa F401
     Transaction = NamedTuple("Transaction", [("tid", int), ("dn", str), ("command", str)])
+    from mypy_extensions import DefaultArg  # noqa F401
 except ImportError:
     Transaction = namedtuple("Transaction", ["tid", "dn", "command"])  # type: ignore
 
 LOG_FORMAT = "%(asctime)-15s:%(levelname)s:%(message)s"
 BSIZE = 4096
+INVALID = 1  # file offset 1 is invalid as a transaction line contains of 3 parts
+GR_GID = -1
 
 
 class IndexHeader(Structure):
@@ -100,7 +108,7 @@ class Index(object):
     def __enter__(self):
         # type: () -> Index
         try:
-            self.index = index = open(self.filename, 'rb')
+            self.index = index = open(self.filename, 'rb+')
 
             data = index.read(sizeof(IndexHeader))
             assert data, "Empty index"
@@ -212,6 +220,8 @@ class RawTranslog(object):
     Transactions log file unparsed.
     :file:`/var/lib/univention-ldap/notify/transaction`
     """
+    MODE = 'r'
+
     def __init__(self, filename):
         # type: (str) -> None
         self.filename = filename
@@ -236,7 +246,7 @@ class RawTranslog(object):
 
     def __enter__(self):
         # type: () -> RawTranslog
-        self.translog = translog = open(self.filename, 'r')
+        self.translog = translog = open(self.filename, self.MODE)
         self.offset = 0
 
         stat = fstat(translog.fileno())
@@ -282,7 +292,7 @@ class Translog(RawTranslog):
     def __init__(self, filename, index=None):
         # type: (str, Optional[Index]) -> None
         super(Translog, self).__init__(filename)
-        self.index = index or Index(filename).__enter__()  # type: Index
+        self.index = index or Index(filename)  # type: Index
         self.first = 0
         self.last = 0
 
@@ -299,6 +309,7 @@ class Translog(RawTranslog):
     def __enter__(self):
         # type: () -> Translog
         super(Translog, self).__enter__()
+        self.index.__enter__()
 
         if self.size:
             assert self.translog
@@ -316,16 +327,20 @@ class Translog(RawTranslog):
                 self.read(offset)
 
             for line in self.translog:
-                self.log.debug("Read line %r", line)
+                pass
             rec = self.parse_line(line)
-            assert last <= rec.tid, (last, rec.tid)
-            if last < rec.tid:
-                self.log.warn("Index=%d < translog=%d entries", last, rec.tid)
+            if last != rec.tid:
+                self.log.warn("Index=%d != translog=%d entries", last, rec.tid)
             self.last = rec.tid
 
             self.translog.seek(0, SEEK_SET)
 
         return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
+        self.index.__exit__(exc_type, exc_value, traceback)
+        super(Translog, self).__exit__(exc_type, exc_value, traceback)
 
     def __getitem__(self, tid):
         # type: (int) -> Transaction
@@ -356,9 +371,7 @@ class Translog(RawTranslog):
         """
         Iterate over all transactions.
         """
-        assert self.translog
-        for line in self.translog:
-            self.log.debug("Read line %r", line)
+        for line in super(Translog, self).__iter__():
             rec = self.parse_line(line)
             yield rec
 
@@ -401,7 +414,7 @@ class Translog(RawTranslog):
         pos = max(0, offset - BSIZE)
         self.translog.seek(pos, SEEK_SET)
         data = self.translog.read(offset - pos)
-        self.log.debug("Read from %d: %r", pos, data)
+        self.log.debug("Read from offset %d: %r", pos, data)
 
         before = data.rsplit('\n', 1)[-1]
         after = self.translog.readline()
@@ -411,6 +424,79 @@ class Translog(RawTranslog):
         rec = self.parse_line(line)
 
         return rec
+
+
+class WriteableTranslog(Translog):
+    """
+    Transactions log file writeable.
+    :file:`/var/lib/univention-ldap/notify/transaction`
+    """
+    MODE = 'a+'
+
+    def __init__(self, filename):
+        # type: (str) -> None
+        rewrite_filename = filename + '.rewrite'
+        index = Index(rewrite_filename)  # type: Index
+        super(WriteableTranslog, self).__init__(rewrite_filename, index)
+        self.orig_filename = filename
+        self.changed = False
+
+    def __enter__(self):
+        # type: () -> WriteableTranslog
+        super(WriteableTranslog, self).__enter__()
+        assert self.translog
+        fchmod(self.translog.fileno(), 0o640)
+        fchown(self.translog.fileno(), 0, GR_GID)
+        self.changed = False
+        return self
+
+    def write(self, rec, changed=True):
+        # type: (Transaction, bool) -> None
+        """
+        Append transaction.
+
+        :param rec: The transaction to append.
+        :param changed: Transaction is modified compared to original.
+        """
+        line = self.format(rec)
+        length = len(line)
+
+        assert self.index
+        self.index[rec.tid] = self.offset
+
+        assert self.translog
+        self.translog.write(line)
+        self.offset += length
+        self.size += length
+        if self.first == 0:
+            self.first = rec.tid
+        if rec.tid > self.last:
+            self.last = rec.tid
+
+        self.changed |= changed
+
+    def format(self, rec):
+        # type: (Transaction) -> str
+        return '%d %s %s\n' % rec
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
+        super(WriteableTranslog, self).__exit__(exc_type, exc_value, traceback)
+
+        if exc_type is not None:
+            self.log.info('Dropping %s after %s', self.filename, exc_value)
+            unlink(self.filename)
+            unlink(self.index.filename)
+        elif self.changed:
+            self.log.info('Replacing %s with %s ...', self.orig_filename, self.filename)
+            rename(self.filename, self.orig_filename)
+            new_name = self.orig_filename + '.index'  # FIXME hard-coded name.
+            self.log.info('Replacing %s with %s ...', new_name, self.index.filename)
+            rename(self.index.filename, new_name)  # FIXME hard-coded name
+        else:
+            self.log.info('Dropping unchanged %s', self.filename)
+            unlink(self.filename)
+            unlink(self.index.filename)
 
 
 class Abort(Exception):
@@ -584,6 +670,365 @@ def show_stat(opt):
     print("Ldap.okay: %s" % ('yes' if last == tid else 'no',))
 
 
+def check(opt):
+    # type: (Namespace) -> None
+    """
+    Check transaction files for consistency.
+
+    :param opt: Command line options.
+    """
+    grpent = getgrnam("DC Backup Hosts")
+    global GR_GID
+    GR_GID = grpent.gr_gid
+
+    checker = Checker(opt)
+    checker.run()
+
+
+class Checker(object):
+    """
+    Check transaction files for consistency.
+    """
+
+    def __init__(self, opt):
+        # type: (Namespace) -> None
+        """
+        Check transaction files for consistency.
+
+        :param opt: Command line options.
+        """
+        self.opt = opt
+        self.index = Index(opt.translog_file)
+        self.translog = Translog(opt.translog_file)
+        self.new_translog = WriteableTranslog(opt.translog_file)
+        self.log = getLogger(__name__).getChild("Check")
+        self.changed_index = False
+
+    @contextmanager
+    def check(self, text):
+        # type: (str) -> Iterator[Callable[[DefaultArg(str, 'text')], bool]]
+        print('%s: ...' % (text,))
+
+        result = []
+
+        def fail_and_fix(text=''):
+            # type: (str) -> bool
+            result.append(text)
+            print('%s: %s' % (text, ': '.join(result)))
+            return self.opt.fix
+
+        try:
+            yield fail_and_fix
+            result.append('FIXED' if result else 'OKAY')
+        except Exception as ex:
+            self.log.error("Exception: %s", ex, exc_info=True)
+            result.append('FAIL')
+            if not isinstance(ex, StandardError):
+                raise
+        finally:
+            print('%s: %s' % (text, ': '.join(result)))
+
+    def run(self):
+        # type: () -> None
+        for name in sorted(dir(self)):
+            if not name.startswith('check_'):
+                continue
+            func = getattr(self, name)
+            func()
+
+    def skip_if(cond):  # type: ignore
+        # type: (bool) -> Callable[[Callable], Callable]
+        if not cond:
+            return lambda f: lambda self: None
+        else:
+            return lambda f: f
+
+    def check_00transactions_exists(self):
+        # type: () -> None
+        with self.check("Checking %s exists" % (self.translog.filename,)) as check:
+            try:
+                stats = lstat(self.translog.filename)
+                if S_ISREG(stats.st_mode):
+                    return
+                if check('not a file'):
+                    unlink(self.translog.filename)
+            except EnvironmentError:
+                pass
+            if check('missing file'):
+                with self.translog:
+                    pass
+
+    @skip_if(getuid() != 0)
+    def check_02transactions_permissions(self):
+        # type: () -> None
+        with self.check("Checking %s permissions" % (self.translog.filename,)) as check:
+            stats = lstat(self.translog.filename)
+            if S_IMODE(stats.st_mode) == 0o640:
+                return
+            if check('chmod: %03o -> %03o' % (S_IMODE(stats.st_mode), 0o640)):
+                chmod(self.translog.filename, 0o640)
+
+    @skip_if(getuid() != 0)
+    def check_03transactions_ownership(self):
+        # type: () -> None
+        with self.check("Checking %s owner" % (self.translog.filename,)) as check:
+            stats = lstat(self.translog.filename)
+            if stats.st_uid == 0 and stats.st_gid == GR_GID:
+                return
+            if check('chown owner: %s:%s -> %s:%s' % (stats.st_uid, stats.st_gid, 0, GR_GID)):
+                lchown(self.translog.filename, 0, GR_GID)
+
+    def check_04transaction_lines(self):
+        # type: () -> None
+        with self.check("Checking transaction lines") as check, RawTranslog(self.opt.translog_file) as translog, self.new_translog as new_translog:
+            for line in translog:
+                if line.endswith('\n'):
+                    line = line[:-1]
+                elif check('Missing newline'):
+                    pass
+
+                if line == line.strip():
+                    pass
+                elif check('Extra whitespace'):
+                    line = line.strip()
+
+                try:
+                    tid_, rest = line.split(' ', 1)
+                    tid = int(tid_)
+                    if tid < 1 and check('Invalid TID: %d' % (tid,)):
+                        tid = 1
+                except ValueError:
+                    if check('Invalid transaction: %r' % (line,)):
+                        continue
+
+                try:
+                    dn, command = rest.rsplit(' ', 1)
+                    if command not in {'r', 'd', 'a', 'm'}:  # mod_Rdn Delete Add Modify
+                        raise ValueError()
+                except ValueError:
+                    if check('Missing command'):
+                        command = 'm'
+
+                if dn.endswith(self.opt.base) and is_dn(dn):
+                    pass
+                elif check('Invalid DN: %s' % (dn,)):
+                    dn = self.opt.base
+                    command = 'm'
+
+                rec = Transaction(tid, dn, command)
+                new_line = new_translog.format(rec)
+                self.log.debug('Replacing %r with %r', line, new_line)
+                new_translog.write(rec, new_line != line)
+
+    def check_05transaction_duplicates(self):
+        # type: () -> None
+        index = array('L')
+        with self.check("Checking transaction duplicates") as check, self.translog as translog, self.new_translog as new_translog:
+            assert translog.translog
+            for rec in translog:
+                try:
+                    old_offset = index[rec.tid]
+                    if old_offset == INVALID:
+                        raise IndexError()
+                    cur_offset = translog.offset
+                    try:
+                        old_rec = translog.read(old_offset)
+                    finally:
+                        translog.translog.seek(cur_offset, SEEK_SET)
+
+                    if old_rec == rec and check('Duplicate transaction %s from %d already at %d' % (rec.tid, cur_offset, old_offset)):
+                        new_translog.changed = True
+                        continue
+                except IndexError:
+                    if len(index) <= rec.tid:
+                        index.extend([INVALID] * (rec.tid - len(index) + 1))
+
+                    index[rec.tid] = translog.offset
+
+                new_translog.write(rec, False)
+
+
+
+    def check_06transaction_order(self):
+        # type: () -> None
+        index = array('L')
+        with self.check("Checking transaction order") as check, self.translog as translog, self.new_translog as new_translog:
+            assert translog.translog
+            last = 0
+            for rec in translog:
+                if rec.tid < last and check('Out-of-order transaction %s at %d' % (rec.tid, translog.offset)):
+                    new_translog.changed = True
+
+                last = rec.tid
+
+                if len(index) <= rec.tid:
+                    index.extend([INVALID] * (rec.tid - len(index) + 1))
+
+                self.log.debug('TID=%d @ %d', rec.tid, translog.offset)
+                index[rec.tid] = translog.offset
+
+            if not new_translog.changed:
+                return
+
+            self.log.info('Re-writing ordered ... %r', index)
+            for offset in index[1:]:
+                if index == INVALID:
+                    continue
+                rec = translog.read(offset)
+                new_translog.write(rec)
+
+    def check_07transaction_holes(self):
+        # type: () -> None
+        with self.check("Checking transaction holes") as check, self.translog as translog, self.new_translog as new_translog:
+            last = 0
+            for rec in translog:
+                if last == 0:
+                    if rec.tid != 1:
+                        self.log.info("assuming truncated transactions starting wtih %d" % (rec.tid,))
+                elif last + 1 < rec.tid:
+                    if check('Hole between %d and %d' % (last, rec.tid)):
+                        self.changed_translog = True
+                        last += 1
+                        while last < rec.tid:
+                            hole = Transaction(last, self.opt.base, 'm')
+                            new_translog.write(hole)
+                            last += 1
+                else:
+                    assert last + 1 == rec.tid
+                last = rec.tid
+                new_translog.write(rec, False)
+
+    def check_10index_exists(self):
+        # type: () -> None
+        with self.check("Checking %s exists" % (self.index.filename,)) as check:
+            try:
+                stats = lstat(self.index.filename)
+                if S_ISREG(stats.st_mode):
+                    return
+                if check('not a file'):
+                    unlink(self.index.filename)
+            except EnvironmentError:
+                pass
+            if check('missing file'):
+                with self.index:
+                    pass
+
+    def check_11index_header(self):
+        # type: () -> None
+        with self.check("Checking %s header" % (self.index.filename,)) as check:
+            stats = lstat(self.index.filename)
+            if stats.st_size >= sizeof(IndexHeader):
+                return
+            if check('Re-create'):
+                unlink(self.index.filename)
+                with self.index:
+                    pass
+
+    @skip_if(getuid() != 0)
+    def check_12index_permissions(self):
+        # type: () -> None
+        with self.check("Checking %s permissions.index" % (self.index.filename,)) as check:
+            stats = lstat(self.index.filename)
+            if S_IMODE(stats.st_mode) == 0o644:
+                return
+            if check('chmod: %03o -> %03o' % (S_IMODE(stats.st_mode), 0o644)):
+                chmod(self.index.filename, 0o644)
+
+    @skip_if(getuid() != 0)
+    def check_13index_ownership(self):
+        # type: () -> None
+        with self.check("Checking %s owner" % (self.index.filename,)) as check:
+            stats = lstat(self.index.filename)
+            if stats.st_uid == 0 and stats.st_gid == 0:
+                return
+            if check('chown owner: %s:%s -> %s:%s' % (stats.st_uid, stats.st_gid, 0, 0)):
+                lchown(self.index.filename, 0, 0)
+
+    def check_14index_size(self):
+        # type: () -> None
+        with self.check("Checking %s size" % (self.index.filename,)) as check, self.index as index:
+            quotient, remainder = divmod(index.size - sizeof(IndexHeader), sizeof(IndexEntry))
+            if remainder == 0:
+                return
+            size = sizeof(IndexHeader) + quotient * sizeof(IndexEntry)
+            assert size < index.size
+            if check('truncating %d' % (index.size - size,)):
+                assert index.index
+                index.index.truncate(size)
+
+    def check_15index_tid0(self):
+        # type: () -> None
+        with self.check("Checking transaction 0") as check, self.index as index:
+            if index.count == 0:
+                return
+            try:
+                entry = index[0]
+                if not entry.valid and entry.offset == 0:
+                    return
+            except IndexError:
+                pass
+            if check('invalidating'):
+                index[0] = None
+
+    def check_16index_offsets(self):
+        # type: () -> None
+        return
+        with self.check("Checking transaction offsets") as check, self.index as index, self.translog as translog:
+            last = 0
+            tid = 1
+            for lnr, line in enumerate(translog):
+                offset = translog.offset
+                self.log.debug('Processing line %d at %d: %r', lnr + 1, offset, line)
+
+                if last == 0:
+                    if tid < 1 and check('Invalid first transaction'):
+                        tid = 1
+                    if tid != 1:
+                        self.log.info("assuming truncated transactions starting wtih %s" % (tid,))
+                elif last + 1 < tid:
+                    if check('Hole'):
+                        self.changed_translog = True
+                        self.changed_index = True
+                        last += 1
+                        while last < tid:
+                            index[last] = new_translog.tell()
+                            new_translog.write('%d %s %s\n' % (last, self.opt.base, 'm'))
+                            last += 1
+                elif last >= tid:
+                    if check('Repeated'):
+                        try:
+                            rec = index[tid]
+                            if not rec.valid:
+                                raise IndexError()
+                        except IndexError:
+                            if check("Wrong order"):
+                                # FIXME
+                                pass
+                else:
+                    assert last + 1 == tid
+
+                new_line = '%d %s %s\n' % (tid, dn, command)
+                if new_line != line:
+                    self.changed_translog = True
+                    offset = new_translog.tell()
+                    new_translog.write(new_line)
+
+                try:
+                    rec = index[tid]
+                    if not rec.valid or rec.offset != offset:
+                        raise IndexError()
+                except IndexError:
+                    if check('Wrong offset'):
+                        self.changed_index = True
+                        index[tid] = translog.offset
+
+                last = tid
+
+    def check_20ldap(self):
+        # type: () -> None
+        pass
+
+
 def dump_index(opt):
     # type: (Namespace) -> None
     """
@@ -678,6 +1123,9 @@ def parse_args(args=None):
     :param args: the list of arguments to process (default: `sys.argv[1:]`)
     :returns: a Namespace instance.
     """
+    ucr = ConfigRegistry()
+    ucr.load()
+
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--translog-file", "-T", metavar="FILENAME", help="Transaction file [%(default)s]", default="/var/lib/univention-ldap/notify/transaction")
     parser.add_argument("--translog-ldap", "-H", metavar="URL", help="LDAP URL [%(default)s]", default="ldapi:///")
@@ -714,6 +1162,11 @@ def parse_args(args=None):
 
     parser_stat = subparsers.add_parser("stat", help="Show statistics")
     parser_stat.set_defaults(func=show_stat)
+
+    parser_check = subparsers.add_parser("check", help="Check transaction files")
+    parser_check.add_argument("--fix", "-f", action="store_true", help="Try to fix issues")
+    parser_check.add_argument("--base", "-b", metavar="DN", help="LDAP base [%(default)s]", default=ucr['ldap/base'])
+    parser_check.set_defaults(func=check)
 
     parser_index = subparsers.add_parser("index", help="Dump index file")
     parser_index.add_argument("--min", "-m", action="store", type=parse_count, help="First transaction ID to process [%(default)s]", default=1)
