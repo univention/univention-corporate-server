@@ -31,21 +31,20 @@
 
 #include <stdio.h>
 #include <unistd.h>
-
-#define MAGIC 0x3395e0d4
+#include "index.h"
 
 FILE* index_open(const char *filename)
 {
 	FILE* fp;
-	unsigned long magic;
+	struct index_header header;
 
 	if ((fp = fopen(filename, "r+")) != NULL) {
-		if (fread(&magic, sizeof(unsigned long), 1, fp) == 1 && magic == MAGIC)
+		if (fread(&header, sizeof(header), 1, fp) == 1 && header.magic == MAGIC)
 			return fp;
 	}
 	if ((fp = fopen(filename, "w+")) != NULL) {
-		magic = MAGIC;
-		if (fwrite(&magic, sizeof(unsigned long), 1, fp) == 1)
+		header.magic = MAGIC;
+		if (fwrite(&header, sizeof(header), 1, fp) == 1)
 			return fp;
 	}
 	return NULL;
@@ -53,38 +52,39 @@ FILE* index_open(const char *filename)
 
 void index_invalidate(FILE *fp)
 {
-	unsigned long magic = MAGIC;
-	
+	struct index_header header = { .magic = MAGIC };
+
 	fseek(fp, 0, SEEK_SET);
 	ftruncate(fileno(fp), 0);
 	fseek(fp, 0, SEEK_SET);
 
-	fwrite(&magic, sizeof(unsigned long), 1, fp);
+	fwrite(&header, sizeof(header), 1, fp);
+}
+
+static unsigned long index_seek(FILE *fp, unsigned long id) {
+	unsigned long offset = sizeof(struct index_header) + id * sizeof(struct index_entry);
+	fseek(fp, offset, SEEK_SET);
+	return offset;
 }
 
 size_t index_get(FILE *fp, unsigned long id)
 {
-	char valid;
-	size_t result;
-	
-	fseek(fp, sizeof(unsigned long)+id*(sizeof(char)+sizeof(size_t)), SEEK_SET);
-	if (fread(&valid, sizeof(char), 1, fp) != 1)
-		return -1;
-	if (valid != 1)
-		return -1;
-	if (fread(&result, sizeof(size_t), 1, fp) != 1)
-		return -1;
+	struct index_entry entry;
 
-	return result;
+	index_seek(fp, id);
+	if (fread(&entry, sizeof(entry), 1, fp) != 1)
+		return -1;
+	if (entry.valid != 1)
+		return -1;
+	return entry.offset;
 }
 
 void index_set(FILE *fp, unsigned long id, size_t offset)
 {
-	char valid = 1;
-	fseek(fp, sizeof(unsigned long)+id*(sizeof(char)+sizeof(size_t)), SEEK_SET);
-	if (fwrite(&valid, sizeof(char), 1, fp) != 1)
-		return;
-	if (fwrite(&offset, sizeof(size_t), 1, fp) != 1)
+	struct index_entry entry = {
+		.valid = 1, .offset = offset,
+	};
+	index_seek(fp, id);
+	if (fwrite(&entry, sizeof(entry), 1, fp) != 1)
 		return;
 }
-

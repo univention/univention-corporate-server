@@ -32,7 +32,16 @@
 #define __NOTIFIER_INDEX_H__
 
 #include <stdio.h>
-#include <fcntl.h>
+
+static const unsigned long MAGIC = 0x3395e0d4;
+
+struct index_header {
+    unsigned long magic;
+} __attribute__((__packed__));
+struct index_entry {
+    char valid;
+    size_t offset;  // BUG: should have been off_t as size_t is 32 bit even with _FILE_OFFSET_BITS=64 on i386
+} __attribute__((__packed__));
 
 FILE* index_open(const char *filename);
 void index_invalidate(FILE *fp);
