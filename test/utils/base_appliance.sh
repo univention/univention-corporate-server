@@ -177,7 +177,7 @@ app_appliance_AllowPreconfiguredSetup ()
 {
 	local app="$1"
 	local value="$(get_app_attr $app ApplianceAllowPreconfiguredSetup)"
-	. /usr/share/univention-lib/ucr.sh 
+	. /usr/share/univention-lib/ucr.sh
 	case "$(echo -n "$value" | tr '[:upper:]' '[:lower:]')" in
 		1|yes|on|true|enable|enabled) return 0 ;;
 		0|no|off|false|disable|disabled) return 1 ;;
@@ -191,6 +191,8 @@ app_appliance_IsDockerApp ()
 	[ -z "$app" ] && return 1
 	local image="$(get_app_attr $app dockerimage)"
 	test -n "$image" && return 0
+	local dockercompose="$(app_get_compose_file $app)"
+	test -e "$dockercompose" && return 0
 	return 1
 }
 
