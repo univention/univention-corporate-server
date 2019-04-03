@@ -122,10 +122,6 @@ def update():
 	modules = _modules
 	_superordinates = superordinates
 
-	# since last update(), syntax.d may have new choices
-	# put here as one syntax wants to provide all modules
-	#univention.admin.syntax.update_choices()
-
 
 def get(module):
 	# type: (Union[UdmModule, str]) -> Optional[UdmModule]
