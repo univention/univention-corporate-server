@@ -9,3 +9,5 @@ desc: |
  *  UCS 4.2 is out of maintenance. With this update a
    warning is shown on all UCS systems.
 bug: [49105]
+erratum: 631
+announced: 2019-04-03
