@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: samba
-fix: 2:4.10.0-1A~4.4.0.201904021016
+fix: 2:4.10.0-1A~4.4.0.201904031201
 desc: |
  This update addresses the following issue(s):
  * Update to Samba 4.10.0
