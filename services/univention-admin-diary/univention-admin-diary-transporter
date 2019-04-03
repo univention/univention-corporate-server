@@ -151,7 +151,7 @@ def main():
 		except Exception as exc:
 			get_logger().exception(exc)
 			raise
-		time.sleep(5)
+		time.sleep(int(ucr.get('admin/diary/transport/sleep', 5)))
 
 if __name__ == '__main__':
 	main()

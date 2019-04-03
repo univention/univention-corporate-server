@@ -3,3 +3,9 @@ Description[de]=Die Liste der zu kontaktierenden Admin Diary Backend-Server, get
 Description[en]=The list of Admin Diary backend servers to write to, space separated.
 Type=str
 Categories=admin-diary
+
+[admin/diary/transport/sleep]
+Description[de]=Das Admin Diary versendet alle lokalen Nachrichten an das Backend. Wenn es keine weiteren Nachrichten findet, wartet es 5 Sekunden. Die Anzahl der Sekunden kann hier überschrieben werden.
+Description[en]=The Admin Diary sends all local messages to the Backend. When no messages are found, it sleeps for 5 seconds. The amount of seconds can be overridden.
+Type=int
+Categories=admin-diary
