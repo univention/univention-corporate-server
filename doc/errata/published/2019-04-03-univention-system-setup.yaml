@@ -9,3 +9,5 @@ desc: |
  * Fixed a special case for the initial domain join, the DC master
    hostname may now differ from the value read from the DNS server.
 bug: [48986]
+erratum: 469
+announced: 2019-04-03
