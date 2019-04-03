@@ -129,19 +129,10 @@ class DiaryEntry(object):
 			'hostname': self.hostname,
 			'message': self.message,
 			'args': self.args,
-			'timestamp': self.timestamp.strftime('%Y-%m-%d %H:%M:%S%z'),
+			'timestamp': self.timestamp.isoformat(),
 			'tags': self.tags,
 			'context_id': self.context_id,
 			'event': self.event_name,
 			'type': 'Entry v1',
 			}
 		return json.dumps(attrs)
-
-	@classmethod
-	def from_json(cls, body):
-		json_body = json.loads(body)
-		entry = cls(json_body['username'], json_body['message'], json_body['args'], json_body['tags'], json_body['context_id'], json_body['event'])
-		entry.timestamp = datetime.strptime(json_body['timestamp'], '%Y-%m-%d %H:%M:%S')
-		entry.hostname = json_body['hostname']
-		entry.assert_types()
-		return entry
