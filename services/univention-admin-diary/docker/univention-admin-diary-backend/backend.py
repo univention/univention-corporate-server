@@ -47,6 +47,9 @@ from flask_restplus import Api, Resource, abort, fields, reqparse
 from flask_restplus.inputs import datetime_from_iso8601
 from werkzeug.contrib.fixers import ProxyFix
 
+from ldap3 import Server, Connection, ALL
+from ldap3.core.exceptions import LDAPException
+
 
 logging.getLogger().setLevel(logging.DEBUG)  # INFO
 
@@ -72,6 +75,8 @@ api = Api(
 )
 app.register_blueprint(blueprint)
 db = SQLAlchemy(app)
+
+LDAP_HOST = '10.200.3.141'
 
 
 def get_engine_url():
@@ -478,14 +483,24 @@ def add_entry_v1(entry):  # type: (DiaryEntry) -> None
 
 @auth.verify_password
 def verify_pw(username, password):  # type: (str, str) -> bool
-	app.logger.debug('*** username=%r password=%r', username, password)
 	if not (username and password):
 		return False
+	s = Server(host=LDAP_HOST, port=7636, use_ssl=True, get_info='ALL')
+	c = Connection(
+		s, user=username, password=password, auto_bind='NONE',
+		version=3, authentication='SIMPLE', client_strategy='SYNC', auto_referrals=True,
+		check_names=True, read_only=False, lazy=False, raise_exceptions=True)
 	try:
-		# TODO: try LDAP bind
-		return True
-	except:  # TODO: except LDAP.error
+		c.bind()
+	except LDAPException as exc:
+		app.logger.error('Trying to bind as %r to %r: %s', username, LDAP_HOST, exc)
 		return False
+
+	if c.bound:
+		app.logger.debug('Sucessfully authenticated as %r to %r.', username, LDAP_HOST)
+	else:
+		app.logger.info('Trying to bind as %r to %r: %r', username, LDAP_HOST, c.result)
+	return c.bound
 
 
 create_entry_parser = reqparse.RequestParser()
