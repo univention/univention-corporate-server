@@ -2444,7 +2444,7 @@ class XColorDepth(simple):
 	regex = re.compile('^[0-9]+$')
 
 
-class XModule(select):
+class XModule(combobox):
 	"""
 	Syntax to select graphics driver for X11.
 	"""
@@ -2496,7 +2496,7 @@ class XModule(select):
 	]
 
 
-class XMouseProtocol(select):
+class XMouseProtocol(combobox):
 	"""
 	Syntax to select mouse protocol for X11.
 	"""
@@ -2532,7 +2532,7 @@ class XDisplayPosition(select):
 	]
 
 
-class XMouseDevice(select):
+class XMouseDevice(combobox):
 	"""
 	Syntax to select mouse device for X11.
 	"""
@@ -2544,7 +2544,7 @@ class XMouseDevice(select):
 	]
 
 
-class XKeyboardLayout(select):
+class XKeyboardLayout(combobox):
 	"""
 	Syntax to select keyboard layout for X11.
 	"""
@@ -2638,7 +2638,7 @@ class XKeyboardLayout(select):
 	]
 
 
-class soundModule(select):
+class soundModule(combobox):
 	"""
 	Syntax to select ALSA audio device driver.
 	"""
