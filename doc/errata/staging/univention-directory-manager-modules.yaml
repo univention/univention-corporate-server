@@ -11,4 +11,5 @@ desc: |
  * It is checked if containers are moveable before moving them and trying to
    revert the changes in case the moving fails.
  * An error in the creation of container/ou objects has been fixed.
-bug: [42607, 49594, 49234, 49478]
+ * The combobox syntax class has been added.
+bug: [42607, 49594, 49234, 49478, 48811]

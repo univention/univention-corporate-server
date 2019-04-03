@@ -7,4 +7,5 @@ fix: 9.0.12-18A~4.4.0.201907162023
 desc: |
  This update addresses the following issue(s):
  * Searching for users in a certain group is now possible.
-bug: [42607]
+ * SuggestionBox has been added to the mapping of syntax classes.
+bug: [42607, 48811]

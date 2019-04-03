@@ -222,7 +222,7 @@ class select(ISyntax):
 	"""
 	Select item from list of choices::
 
-	    self.choice = [(id, _("Display text"), ...]
+	    self.choices = [(id, _("Display text"), ...]
 	"""
 	empty_value = False
 	"""Allow the empty value."""
@@ -244,6 +244,18 @@ class select(ISyntax):
 	@classmethod
 	def any(self):
 		return '*'
+
+
+class combobox(select):
+	"""
+	Select item from list of choices but accept all kind of values::
+
+	    self.choices = [(id, _("Display text"), ...]
+	"""
+
+	@classmethod
+	def parse(cls, text):
+		return super(combobox, cls).parse(text) or text
 
 
 class MultiSelect(ISyntax):

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.13-3) unstable; urgency=medium
+
+  * Bug #48811: add combobox syntax class
+
+ -- Florian Best <best@univention.de>  Thu, 25 Jul 2019 17:03:43 +0200
+
 univention-directory-manager-modules (14.0.13-2) unstable; urgency=medium
 
   * Bug #49234: check if container content is moveable
