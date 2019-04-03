@@ -1,3 +1,9 @@
+univention-directory-notifier (13.0.1-12) unstable; urgency=low
+
+  * Bug #49201: Implement 'univention-translog check --fix'
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 03 Apr 2019 20:34:21 +0200
+
 univention-directory-notifier (13.0.1-11) unstable; urgency=low
 
   * Bug #28233: Check available file system space
