@@ -34,12 +34,15 @@ from logging.handlers import SysLogHandler
 import uuid
 from getpass import getuser
 from functools import partial, wraps
+from datetime import datetime
+from json import dump, loads
 
 from univention.admindiary import DiaryEntry, get_logger, get_events_to_reject
 from univention.admindiary.events import DiaryEvent
 
 get_logger = partial(get_logger, 'client')
 
+INBOX_DIR = '/var/lib/univention-admindiary/inbox'
 
 def exceptionlogging(f):
 	@wraps(f)
@@ -62,7 +65,18 @@ class RsyslogEmitter(object):
 		record = logging.LogRecord('diary-rsyslogger', logging.INFO, None, None, 'ADMINDIARY: ' + str(entry), (), None, None)
 		self.handler.emit(record)
 
-emitter = RsyslogEmitter()
+class FileEmitter(object):
+	def emit(self, entry):
+		entry = loads(entry)
+		timestamp = datetime.now().strftime('%Y-%m-%d-%H-%M-%S%f')
+		fname = os.path.join(INBOX_DIR, '%s.json' % timestamp)
+		get_logger().debug('Writing to %s' % fname)
+		with open(fname, 'wb') as fd:
+			os.fchmod(fd.fileno(), 0600)
+			content = {'version': 2, 'entry': entry}
+			dump(content, fd)
+
+emitter = FileEmitter()
 
 
 @exceptionlogging
