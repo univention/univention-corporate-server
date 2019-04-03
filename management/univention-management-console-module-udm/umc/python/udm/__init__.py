@@ -180,6 +180,7 @@ class Instance(Base, ProgressMixin):
 		# read user settings and initial UDR
 		self.reports_cfg = udr.Config()
 		self.modules_with_childs = container_modules()
+		udm_syntax.update_choices()
 
 	def set_locale(self, _locale):
 		super(Instance, self).set_locale(_locale)

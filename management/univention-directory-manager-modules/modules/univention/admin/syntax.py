@@ -2383,22 +2383,49 @@ class ldapDnOrNone(simple):
 		raise univention.admin.uexceptions.valueError(_("Not a valid LDAP DN"))
 
 
-class ldapObjectClass(simple):
+class ldapObjectClass(combobox):
 	"""
 	Syntax to enter a |LDAP| objectClass name.
 	"""
-	@classmethod
-	def parse(self, text):
-		return text
+	choices = (('top', 'top'))
 
 
-class ldapAttribute(simple):
+class ldapAttribute(combobox):
 	"""
 	Syntax to enter a |LDAP| attribute name.
 	"""
-	@classmethod
-	def parse(self, text):
-		return text
+
+
+def _update_schema():
+	from univention.uldap import getMachineConnection
+	from ldap.schema import ObjectClass, AttributeType
+	try:
+		conn = getMachineConnection()
+		subschema = conn.get_schema()
+
+		ocs = set()
+		for oid in subschema.listall(ObjectClass):
+			oc = subschema.get_obj(ObjectClass, oid)
+			if oc:
+				ocs |= set(oc.names)
+		ldapObjectClass.choices = [(_oc, _oc) for _oc in sorted(ocs, key=lambda s: s.lower())]
+
+		attrs = set()
+		for oid in subschema.listall(AttributeType):
+			attr = subschema.get_obj(AttributeType, oid)
+			if attr:
+				attrs |= set(attr.names)
+		ldapAttribute.choices = [(_attr, _attr) for _attr in sorted(attrs, key=lambda s: s.lower())]
+	except ldap.SERVER_DOWN:
+		pass
+	finally:
+		try:
+			conn.unbind()
+		except:
+			pass
+
+
+__register_choice_update_function(_update_schema)
 
 
 class ldapFilter(simple):
@@ -4051,24 +4078,19 @@ class univentionAdminModules(select):
 				return text
 		raise univention.admin.uexceptions.valueInvalidSyntax(_('"%s" is not a Univention Admin Module.') % text)
 
-# Unfortunately, Python doesn't seem to support (static) class methods;
-# however, (static) class variables such as "choices" seem to work;
-# so, we'll modify "choices" using this global method
+	@classmethod
+	def update_choices(cls):
+		"""
+		Update internal list of |UDM| modules in :py:class:`univentionAdminModules`.
+		"""
+		cls.choices = sorted([
+			(name, univention.admin.modules.short_description(mod))
+			for name, mod in univention.admin.modules.modules.items()
+			if not univention.admin.modules.virtual(mod)
+		], key=operator.itemgetter(1))
 
 
-def univentionAdminModules_update():
-	"""
-	Update internal list of |UDM| modules in :py:class:`univentionAdminModules`.
-	"""
-	temp = []
-	for name, mod in univention.admin.modules.modules.items():
-		if not univention.admin.modules.virtual(mod):
-			temp.append((name, univention.admin.modules.short_description(mod)))
-
-	univentionAdminModules.choices = sorted(temp, key=operator.itemgetter(1))
-
-
-__register_choice_update_function(univentionAdminModules_update)
+__register_choice_update_function(univentionAdminModules.update_choices)
 
 
 class UDM_PropertySelect(complex):

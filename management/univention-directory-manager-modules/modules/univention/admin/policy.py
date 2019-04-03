@@ -58,7 +58,7 @@ def requiredObjectClassesProperty(**kwargs):
 	pargs = dict(
 		short_description=_('Required object class'),
 		long_description='',
-		syntax=univention.admin.syntax.string,
+		syntax=univention.admin.syntax.ldapObjectClass,
 		multivalue=True,
 		options=[],
 		required=False,
@@ -73,7 +73,7 @@ def prohibitedObjectClassesProperty(**kwargs):
 	pargs = dict(
 		short_description=_('Excluded object class'),
 		long_description='',
-		syntax=univention.admin.syntax.string,
+		syntax=univention.admin.syntax.ldapObjectClass,
 		multivalue=True,
 		options=[],
 		required=False,
