@@ -43,7 +43,7 @@ from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Sequence, T
 from flask import Blueprint, Flask
 from flask_httpauth import HTTPBasicAuth
 from flask_sqlalchemy import SQLAlchemy
-from flask_restplus import Api, Resource, fields, reqparse
+from flask_restplus import Api, Resource, abort, fields, reqparse
 from flask_restplus.inputs import datetime_from_iso8601
 from werkzeug.contrib.fixers import ProxyFix
 
@@ -56,13 +56,15 @@ authorizations = {
 }  # https://swagger.io/docs/specification/2-0/authentication/
 auth = HTTPBasicAuth()
 
+API_VERSION = 2
+ALLOWED_TYPES = ('Entry v1',)
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.wsgi_app = ProxyFix(app.wsgi_app)
-blueprint = Blueprint('api', __name__, url_prefix='/admindiary')
+blueprint = Blueprint('api', __name__, url_prefix='/admindiary/api/v{}'.format(API_VERSION))
 api = Api(
 	blueprint,
-	version=2,
+	version=API_VERSION,
 	title='Univention Admin Diary API',
 	description='API to create entries in the Admin Diary.',
 	authorizations=authorizations,
@@ -103,12 +105,6 @@ def get_engine():
 
 
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=get_engine()))
-
-
-app.logger.debug('DEbug')
-app.logger.info('INfo')
-app.logger.warning('WArning')
-app.logger.error('ERror')
 
 
 # def make_session_class():
@@ -396,12 +392,12 @@ class UnsupportedVersion(Exception):
 
 
 class DiaryEntry(object):
-	def __init__(self, username, message, args, tags, context_id, event_name):
+	def __init__(self, username, message, args, tags, context_id, event_name, hostname=None, timestamp=None):
 		self.username = username
-		self.hostname = gethostname()
+		self.hostname = hostname or gethostname()
 		self.message = message
 		self.args = args
-		self.timestamp = datetime.now()
+		self.timestamp = timestamp or datetime.now()
 		self.tags = tags
 		self.context_id = context_id
 		self.event_name = event_name
@@ -515,7 +511,6 @@ entry_model = api.model('Model', {
 	'event': fields.String,
 	'type': fields.String,
 })
-app.logger.debug('entry_model=%r', entry_model)
 
 
 @api.route('/')
@@ -532,6 +527,13 @@ class AdminDiaryEntryList(Resource):
 		app.logger.debug('AdminDiaryEntryList.post()')
 		args = create_entry_parser.parse_args()
 		app.logger.debug('AdminDiaryEntryList.post() args=%r', args)
+		if args['type'] not in ALLOWED_TYPES:
+			msg = '"type" not allowed.'
+			api.logger.error('403: %s', msg)
+			abort(403, msg)  # TODO: correct number
+		del args['type']
+		args['event_name'] = args.pop('event')
+		add_entry_v1(DiaryEntry(**args))
 		return {}, 201
 
 
