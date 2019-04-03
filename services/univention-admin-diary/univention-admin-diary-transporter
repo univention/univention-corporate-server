@@ -1,0 +1,157 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+#
+# Univention Admin Diary
+#  Transport layer to send all queued messages to the corresponding Backends
+#
+# Copyright 2019 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+#
+
+import os.path
+from glob import glob
+from functools import partial
+import shutil
+import time
+from json import load
+
+from requests import post, ConnectionError
+from requests.auth import HTTPBasicAuth
+
+from univention.config_registry import ConfigRegistry
+
+from univention.admindiary.client import INBOX_DIR, OUTBOX_DIR
+from univention.admindiary import get_logger
+
+get_logger = partial(get_logger, 'client')
+
+def get_backends(ucr):
+	return ucr.get('admin/diary/backend', '').split()
+
+
+class BackendError(Exception):
+	pass
+
+class ServerDown(BackendError):
+	pass
+
+
+def move_file_to_outbox(fname, backend, hardlink=False):
+	basename = os.path.basename(fname)
+	outbox_dir = os.path.join(OUTBOX_DIR, backend)
+	dst = os.path.join(outbox_dir, basename)
+	get_logger().debug('Creating %s' % dst)
+	if not os.path.exists(outbox_dir):
+		os.makedirs(outbox_dir)
+	if hardlink:
+		os.link(fname, dst)
+	else:
+		shutil.move(fname, dst)
+	return dst
+
+def send_all_entries_to_backends(ucr):
+	backends = get_backends(ucr)
+	for backend in backends:
+		send_all_entries_to_backend(backend, ucr)
+
+def send_all_entries_to_backend(backend, ucr):
+	fnames = sorted(glob(os.path.join(OUTBOX_DIR, backend, '*.json')))
+	for fname in fnames:
+		get_logger().debug('Sending %s' % fname)
+		try:
+			with open(fname) as fd:
+				content = load(fd)
+				entry = content['entry']
+				version = content['version']
+			send_entry_to_backend(version, entry, backend, ucr)
+		except BackendError as exc:
+			get_logger().warning(str(exc))
+			move_to_failed(fname)
+		except ServerDown:
+			get_logger().warning('Admin Diary Backend on %s seems to be down. Ignoring all messages for the server' % backend)
+			break
+		except Exception as exc:
+			get_logger().exception(exc)
+			move_to_failed(fname)
+		else:
+			os.unlink(fname)
+
+def get_auth(ucr):
+	if get_auth._auth is None:
+		username = ucr.get('ldap/hostdn')
+		password = open('/etc/machine.secret').read()
+		get_auth._auth = HTTPBasicAuth(username, password)
+	return get_auth._auth
+get_auth._auth = None
+
+def send_entry_to_backend(version, entry, backend, ucr):
+	url = 'https://%s/admindiary/api/v%s/' % (backend, version)
+	get_logger().debug('POSTing to %s' % url)
+	try:
+		response = post(url, json=entry, auth=get_auth(ucr))
+	except ConnectionError as exc:
+		raise BackendError(str(exc))
+	else:
+		if 200 <= response.status_code < 300:
+			get_logger().debug('Successfully added entry into the Backend')
+			return True
+		if response.status_code == 503:
+			raise ServerDown()
+		else:
+			raise BackendError('Server responded with %s' % response.status_code)
+
+def copy_files_from_inbox_to_outboxes(ucr):
+	fnames = sorted(glob(os.path.join(INBOX_DIR, '*.json')))
+	backends = get_backends(ucr)
+	for fname in fnames:
+		get_logger().debug('Found new file %s' % fname)
+		if backends:
+			first_backend = backends[0]
+			moved_file = move_file_to_outbox(fname, first_backend)
+			for further_backend in backends[1:]:
+				move_file_to_outbox(moved_file, further_backend, hardlink=True)
+
+def move_to_failed(fname):
+	dst_dir = os.path.join(os.path.dirname(fname), 'failed')
+	if not os.path.exists(dst_dir):
+		os.makedirs(dst_dir)
+	shutil.move(fname, os.path.join(dst_dir, os.path.basename(fname)))
+
+def main():
+	ucr = ConfigRegistry()
+	while True:
+		ucr.load()
+		try:
+			copy_files_from_inbox_to_outboxes(ucr)
+			send_all_entries_to_backends(ucr)
+		except Exception as exc:
+			get_logger().exception(exc)
+			raise
+		time.sleep(5)
+
+if __name__ == '__main__':
+	main()

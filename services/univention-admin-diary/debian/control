@@ -58,7 +58,7 @@ Description: UMC module for the Admin Diary
 Package: univention-admin-diary-client
 Architecture: all
 Depends: ${misc:Depends},
- rsyslog-relp,
+ python-requests,
  python-univention-admin-diary (= ${binary:Version})
 Description: Univention Admin Diary client
  .

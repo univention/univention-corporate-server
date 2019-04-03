@@ -43,6 +43,7 @@ from univention.admindiary.events import DiaryEvent
 get_logger = partial(get_logger, 'client')
 
 INBOX_DIR = '/var/lib/univention-admindiary/inbox'
+OUTBOX_DIR = '/var/lib/univention-admindiary/outbox'
 
 def exceptionlogging(f):
 	@wraps(f)

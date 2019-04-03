@@ -1,6 +1,5 @@
-#!/bin/sh
-#
-# postinst script
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
 #
 # Copyright 2019 Univention GmbH
 #
@@ -29,27 +28,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-update-python-modules univention-admin-diary-client.public
-update-python-modules --post-install
+import os
+import os.path
+import shutil
 
-#DEBHELPER#
+from univention.config_registry import ConfigRegistry
 
-case "$1" in
-configure)
-	if [ -x /etc/init.d/univention-directory-listener ]; then
-		invoke-rc.d univention-directory-listener crestart
-		systemctl daemon-reload
-		systemctl enable univention-admin-diary-transporter.service
-	fi
-	;;
-abort-upgrade|abort-remove|abort-deconfigure)
-	;;
-*)
-	echo "postinst called with unknown argument \`$1'" >&2
-	exit 1
-	;;
-esac
+from univention.admindiary.client import OUTBOX_DIR
 
-systemctl restart univention-admin-diary-transporter.service
+ucr = ConfigRegistry()
+ucr.load()
 
-exit 0
+backends = ucr.get('admin/diary/backend', '').split()
+
+for fname in os.listdir(OUTBOX_DIR):
+	dirname = os.path.join(OUTBOX_DIR, fname)
+	if os.path.isdir(dirname):
+		if fname not in backends:
+			shutil.rmtree(dirname)

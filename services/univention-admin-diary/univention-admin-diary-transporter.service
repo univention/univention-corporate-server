@@ -1,0 +1,11 @@
+[Unit]
+Description=Transports local messages to the Admin Diary Backends
+After=network.service
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/univention-admin-diary-transporter
+Restart=on-failure
