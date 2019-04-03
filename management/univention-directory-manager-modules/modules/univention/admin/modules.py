@@ -124,7 +124,7 @@ def update():
 
 	# since last update(), syntax.d may have new choices
 	# put here as one syntax wants to provide all modules
-	univention.admin.syntax.update_choices()
+	#univention.admin.syntax.update_choices()
 
 
 def get(module):
