@@ -1,4 +1,5 @@
 #!/usr/bin/python2.7
+# vim: set fileencoding=utf-8 filetype=python foldmethod=expr expandtab shiftwidth=4 tabstop=4 :
 """
 Univention Directory Notifier Transaction log admin commmand
 """
@@ -29,7 +30,8 @@ Univention Directory Notifier Transaction log admin commmand
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 from __future__ import print_function
-from os import SEEK_SET, fstat
+from os import SEEK_SET, fstat, rename, unlink
+from os.path import exists
 from sys import stderr
 from argparse import ArgumentParser, ArgumentTypeError
 from collections import namedtuple
@@ -39,11 +41,16 @@ from ctypes import c_bool, c_ulong, sizeof, Structure
 from errno import ENOENT
 from contextlib import contextmanager
 from itertools import chain
+from subprocess import call
+
 import ldap
+from ldap.dn import is_dn
 from ldap.ldapobject import ReconnectLDAPObject
 from ldap.modlist import addModlist
+from univention.config_registry import ConfigRegistry
+
 try:
-    from typing import BinaryIO, Iterator, List, Optional, Tuple, Type, NamedTuple  # noqa F401
+    from typing import Any, BinaryIO, Dict, Iterator, List, Optional, Tuple, Type, NamedTuple  # noqa F401
     from types import TracebackType  # noqa F401
     from argparse import Namespace  # noqa F401
     Transaction = NamedTuple("Transaction", [("tid", int), ("dn", str), ("command", str)])
@@ -52,6 +59,17 @@ except ImportError:
 
 LOG_FORMAT = "%(asctime)-15s:%(levelname)s:%(message)s"
 BSIZE = 4096
+HELP_RESET = 'https://help.univention.com/t/how-to-reset-listener-notifier-replication/11710'
+HELP_FIX = 'https://help.univention.com/t/problem-umc-diagnostic-module-complains-about-problems-with-udn-replication/11707/1'
+SLD = 'slapd.service'
+UDN = 'univention-directory-notifier.service'
+UDL = 'univention-directory-listener.service'
+SERVICES = {
+    'domaincontroller_master': (SLD, UDN, UDL),
+    'domaincontroller_backup': (SLD, UDN, UDL),
+    'domaincontroller_slave': (SLD, UDL),
+    'memberserver': (UDL,),
+}  # type: Dict[str, Tuple[str, ...]]
 
 
 class IndexHeader(Structure):
@@ -234,6 +252,11 @@ class Translog(object):
         tid, rest = line.split(' ', 1)
         dn, command = rest.rsplit(' ', 1)
         return Transaction(int(tid), dn, command)
+
+    @staticmethod
+    def format_line(rec):
+        # type: (Transaction) -> str
+        return '%d %s %s\n' % rec
 
     def __enter__(self):
         # type: () -> Translog
@@ -616,6 +639,375 @@ def add_transaction(opt, ld, rec):
         raise Abort()
 
 
+def check(opt):
+    # type: (Namespace) -> None
+    """
+    Check transaction files for consistency.
+
+    :param opt: Command line options.
+    """
+    with stopped(opt):
+        translog = CheckTranslog(opt, opt.translog_file)
+        translog.run()
+
+        listener = CheckListener(opt, opt.listener_file)
+        listener.first_tid = translog.last_tid
+        listener.first_line = translog.last_line
+        listener.run()
+
+        check_last(opt, opt.last_file, listener.last_tid, listener.last_line)
+
+        # TODO: check cn=translog
+
+
+@contextmanager
+def stopped(opt):
+    # type: (Namespace) -> Iterator
+    if opt.fix:
+        cmd = ('systemctl', 'stop') + SERVICES[opt.role]
+        call(cmd)
+
+    try:
+        yield
+    except Exception:
+        raise
+    else:
+        if opt.fix:
+            cmd = ('systemctl', 'start') + SERVICES[opt.role]
+            call(cmd)
+
+
+@contextmanager
+def rewrite(filename):
+    # type: (str) -> Iterator[str]
+    log = getLogger(__name__).getChild("rewrite")
+    cur = filename
+    new = filename + '.new'
+    bak = filename + '.bak'
+    try:
+        yield new
+    except Exception as ex:
+        log.debug('abort: %s', ex)
+        if exists(new):
+            try:
+                unlink(new)
+            except EnvironmentError as ex:
+                log.debug('unlink %s: %s', new, ex)
+                if ex.errno != ENOENT:
+                    raise
+        raise
+    else:
+        log.debug('renaming %s %s', cur, bak)
+        try:
+            rename(cur, bak)
+        except EnvironmentError as ex:
+            log.debug('rename %s %s: %s', cur, bak)
+            if ex.errno != ENOENT:
+                raise
+
+        log.debug('renaming %s %s', new, cur)
+        rename(new, cur)
+
+
+class CheckGeneric(object):
+    def __init__(self, opt, filename):
+        # type: (Namespace, str) -> None
+        self.opt = opt
+        self.filename = filename
+        self.log = getLogger(__name__).getChild("CHECK").getChild(self.__class__.__name__)
+        self.first_tid = 0
+        self.first_line = ''
+        self.reset()
+
+    def reset(self):
+        # type: () -> None
+        self.needs_fixing = False
+        self.needs_sort = False
+        self.needs_fill = False
+        self.needs_syntax = False
+        self.lnr = 0
+        self.line = ''
+        self.last_line = self.first_line
+        self.last_tid = self.first_tid
+
+    def error(self, string, *args, **kwargs):
+        # type: (str, *Any, **bool) -> None
+        self.log.error('%s:%d:%r: ' + string, self.filename, self.lnr, self.line, *args)
+        self.needs_fixing |= kwargs.get('fix', True)
+        self.needs_sort |= kwargs.get('sort', False)
+        self.needs_fill |= kwargs.get('fill', False)
+        self.needs_syntax |= kwargs.get('syntax', False)
+
+    def run(self, filename=''):
+        # type: (str) -> None
+        self.reset()
+        with open(filename or self.filename, 'r') as stream:
+            self.log.info("Rading %s ...", filename or self.filename)
+            for lnr, line, rec in self.loop(stream):
+                self.check_transaction(rec)
+            self.log.info("Rading %s done", filename or self.filename)
+
+        if self.needs_fixing and filename == '':
+            print()
+            print('%s needs fixing:' % (self.filename,))
+            self.fixit()
+
+    def loop(self, stream):
+        # type: (BinaryIO) -> Iterator[Tuple[int, str, Transaction]]
+        for self.lnr, line in enumerate(stream, start=1):
+            self.line = line
+            try:
+                if line.endswith('\n'):
+                    line = line[:-1]
+                else:
+                    self.error("Missing newline line", fix=False)
+
+                stripped = line.strip()
+                if line != stripped:
+                    self.error("Extra whitespace", fix=False)
+                    line = stripped
+                stripped = line.strip('\x00')
+                if line != stripped:
+                    self.error("Binary zeros", fix=False)
+                    line = stripped
+
+                try:
+                    rec = Translog.parse_line(line)
+                except ValueError:
+                    self.error("Invalid line", syntax=True)
+                    try:
+                        tid_, rest = line.split(' ', 1)
+                    except ValueError:
+                        continue
+                    try:
+                        tid = int(tid_)
+                    except ValueError:
+                        tid = 0
+                    try:
+                        dn, command = rest.split(' ', 1)
+                    except ValueError:
+                        dn, command = rest, ''
+
+                    rec = Transaction(tid, command, dn)
+
+                if not 0 < rec.tid:
+                    self.error("Invalid transaction id", syntax=True)
+                    continue
+
+                if rec.command not in {'r', 'd', 'a', 'm'}:  # mod_Rdn Delete Add Modify
+                    self.error("Invalid command")
+                    # if self.opt.fix:
+                    #     rec = rec._replace(command='m')
+
+                if not is_dn(rec.dn):
+                    self.error("Invalid dn")
+                    # if self.opt.fix:
+                    #     rec = rec._replace(dn=self.opt.base)
+                elif not rec.dn.endswith(self.opt.base):
+                    self.error("Foreign dn", fix=False)
+
+                yield (self.lnr, line, rec)
+
+                self.last_tid = rec.tid
+            finally:
+                self.last_line = line
+
+    def check_transaction(self, rec):
+        # type: (Transaction) -> None
+        raise NotImplementedError()
+
+    def fixit(self):
+        # type: () -> None
+        self.fix_syntax()
+        self.fix_sort()
+        self.fix_fill()
+
+    def fix_syntax(self):
+        # type: () -> None
+        # TODO: Loop over lines and
+        # - strip binary zeros
+        # - add missing command in 3rd column
+        # - optional: fake invalid DNs in 2nd column
+        # - optional: fake transaction number
+        # see commented out code in :py:meth:`loop`.
+        if self.needs_syntax:
+            self.log.info('Syntax ...')
+
+            print('- contains unparseable lines!')
+            print()
+            print('See <%s> for details.' % (HELP_RESET,))
+            exit(1)
+
+        assert not self.needs_syntax
+
+    def fix_sort(self):
+        # type: () -> None
+        if self.needs_sort:
+            self.log.info('Sorting ...')
+
+            with rewrite(self.filename) as tmp:
+                cmd = ('sort', '-k1n', '-u', self.filename)
+                self.log.debug('Running %r > %r ...', cmd, tmp)
+                with open(tmp, 'w') as stream:
+                    call(cmd, stdout=stream)
+
+                self.run(filename=tmp)
+
+                if self.needs_sort:
+                    print('- still contains duplicate transactions after unique sorting!')
+                    print('UCS Master must be reset and all other UCS systems must be re-joined!')
+                    print()
+                    print('See <%s> for details.' % (HELP_RESET,))
+                    exit(1)
+
+                if not self.opt.fix:
+                    print('- the transactions are not sorted uniquely')
+                    print()
+                    print('See <%s> for details.' % (HELP_FIX,))
+                    exit(1)
+
+                self.remove_index()
+
+        assert not self.needs_sort
+
+    def fix_fill(self):
+        # type: () -> None
+        raise NotImplementedError()
+
+    def remove_index(self):
+        # type: () -> None
+        raise NotImplementedError()
+
+
+class CheckTranslog(CheckGeneric):
+    def check_transaction(self, rec):
+        # type: (Transaction) -> None
+        if self.lnr == 1:
+            self.log.info("%s:%d: Starts with: %r", self.filename, self.lnr, self.line)
+        elif rec.tid <= self.last_tid:
+            self.error("Repeated line after %r", self.last_line, sort=True)
+        elif self.last_tid + 1 != rec.tid:
+            self.error("Hole after %r", self.last_line, fill=True)
+
+    def fix_fill(self):
+        # type: () -> None
+        if self.needs_fill:
+            self.log.info('Filling holes ...')
+
+            if not self.opt.fix:
+                print('- missing transactions in sequence')
+                print()
+                print('See <%s> for details.' % (HELP_FIX,))
+                exit(1)
+
+            with rewrite(self.filename) as tmp:
+                with open(self.filename, 'r') as old, open(tmp, 'w') as new:
+                    next_tid = 0
+                    for line in old:
+                        try:
+                            rec = Translog.parse_line(line)
+                            assert next_tid == 0 or next_tid <= rec.tid, (next_tid, rec.tid)
+                            while next_tid != 0 and next_tid < rec.tid:
+                                self.log.info('Filling %d ...', next_tid)
+                                rec = Transaction(tid=next_tid, dn=self.opt.base, command='m')
+                                fill = Translog.format_line(rec)
+                                new.write(fill)
+                                next_tid += 1
+
+                            next_tid = rec.tid + 1
+                        except ValueError:
+                            pass
+                        new.write(line)
+
+                self.run(filename=tmp)
+
+                self.remove_index()
+
+        assert not self.needs_fill
+
+    def remove_index(self):
+        # type: () -> None
+        """
+        Remove .index file.
+        """
+        idx = self.filename + '.index'
+        self.log.info('Removing %s ...', idx)
+        try:
+            unlink(idx)
+        except EnvironmentError as ex:
+            self.log.debug('unlink %s: %s', idx, ex)
+            if ex.errno != ENOENT:
+                raise
+
+
+class CheckListener(CheckGeneric):
+    def check_transaction(self, rec):
+        # type: (Transaction) -> None
+        if self.last_tid + 1 == rec.tid:
+            pass
+        elif rec.tid <= self.last_tid:
+            self.error("Repeated line %r", self.last_line, sort=True)
+        elif self.lnr == 1:
+            self.error("Not continuous with %s: %r", self.opt.translog_file, self.last_line)
+        else:
+            self.error("Hole after %r", self.last_line, fill=True)
+
+    def fix_fill(self):
+        # type: () -> None
+        if self.needs_fill:
+            self.log.info('Filling holes ...')
+
+            if not self.opt.fix or True:
+                print('- missing transactions in sequence')
+                print()
+                print('See <%s> for details.' % (HELP_FIX,))
+                exit(1)
+
+            with rewrite(self.filename) as tmp:
+                with open(self.filename, 'r') as old, open(tmp, 'w') as new:
+                    for line, tid in enumerate(old, start=self.first_tid + 1):
+                        try:
+                            rec = Translog.parse_line(line)
+                            rec = rec._replace(tid, tid)
+                        except ValueError:
+                            pass
+                        new.write(line)
+
+                self.run(filename=tmp)
+
+        assert not self.needs_fill
+
+    def remove_index(self):
+        # type: () -> None
+        """
+        Remove .index file.
+        """
+        pass
+
+
+def check_last(opt, filename, last_tid, last_id):
+    # type: (Namespace, str, int, str) -> None
+    log = getLogger(__name__).getChild("CHECK")
+
+    try:
+        with open(filename, 'r') as last:
+            line = last.read()
+        tid = int(line)
+        if tid != last_tid:
+            raise ValueError('should be %d, but is %d' % (last_tid, tid))
+    except (EnvironmentError, ValueError) as ex:
+        log.error("%s: Invalid last id: %s", filename, ex)
+        if opt.fix:
+            with open(filename, 'w') as last:
+                last.write('%d' % (last_tid,))
+            log.debug("%s: Updated to: %d", filename, last_id)
+        else:
+            print()
+            print('%s needs manual fixing!' % (filename,))
+            print('See <%s> for details.' % (HELP_FIX,))
+            exit(1)
+
+
 def parse_args(args=None):
     # type: (List[str]) -> Namespace
     """
@@ -624,12 +1016,15 @@ def parse_args(args=None):
     :param args: the list of arguments to process (default: `sys.argv[1:]`)
     :returns: a Namespace instance.
     """
+    ucr = ConfigRegistry()
+    ucr.load()
+
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--translog-file", "-T", metavar="FILENAME", help="Transaction file [%(default)s]", default="/var/lib/univention-ldap/notify/transaction")
     parser.add_argument("--translog-ldap", "-H", metavar="URL", help="LDAP URL [%(default)s]", default="ldapi:///")
     parser.add_argument("--translog-base", "-B", metavar="DN", help="LDAP base for translog [%(default)s]", default="cn=translog")
     parser.add_argument("--lenient", "-l", action="store_true", help="Ignore existing entries")
-    parser.add_argument("--verbose", "-v", action="count", help="Increase verbosity", default=0)
+    parser.add_argument("--verbose", "-v", action="count", help="Increase verbosity", default=1)
     parser.add_argument("--dry-run", "-n", action="store_true", help="Do not modify anything")
     parser.add_argument("--datetime", "-d", help="Overwrite time-stamp for import [%(default)s]", default=strftime("%Y%m%d%H%M%SZ"))
     subparsers = parser.add_subparsers(title="subcommands", description="valid subcommands")
@@ -665,6 +1060,14 @@ def parse_args(args=None):
     parser_index.add_argument("--min", "-m", action="store", type=parse_count, help="First transaction ID to process [%(default)s]", default=1)
     parser_index.add_argument("--max", "-M", action="store", type=parse_count, help="Last transaction ID to process")
     parser_index.set_defaults(func=dump_index)
+
+    parser_check = subparsers.add_parser("check", help="Check transaction files")
+    parser_check.add_argument("--fix", "-f", action="store_true", help="Try to fix issues")
+    parser_check.add_argument("--base", "-b", metavar="DN", help="LDAP base [%(default)s]", default=ucr['ldap/base'])
+    parser_check.add_argument("--role", "-r", metavar="ROLE", help="Server role [%(default)s]", default=ucr['server/role'])
+    parser_check.add_argument("--listener-file", "-L", metavar="FILENAME", help="Listener file [%(default)s]", default="/var/lib/univention-ldap/listener/listener")
+    parser_check.add_argument("--last-file", "-I", metavar="FILENAME", help="Last_id file [%(default)s]", default="/var/lib/univention-ldap/last_id")
+    parser_check.set_defaults(func=check)
 
     opt = parser.parse_args(args)
 
