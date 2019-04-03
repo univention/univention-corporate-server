@@ -1,0 +1,46 @@
+#!/bin/bash
+
+set -e
+
+APP="4.4/ox-app-suite=7.10.1-ucs1"
+
+UAC_PATH="/tmp/univention-appcenter-control"
+UAC_URL="https://provider-portal.software-univention.de/appcenter-selfservice/univention-appcenter-control"
+
+while [[ $# -gt 1 ]]; do
+	case $1 in
+		--username)
+			UAPPUSER="$2"
+			shift
+			;;
+		*)
+			echo "Unknown option $1."
+			exit 1
+			;;
+	esac
+	shift
+done
+
+
+if ! [ -e "$UAC_PATH" ]; then
+	echo "Downloading univention-appcenter-control from provider-portal.software-univention.de"
+	echo "to $UAC_PATH."
+	curl -s -o "$UAC_PATH" "$UAC_URL"
+	chmod +x "$UAC_PATH"
+fi
+
+echo "Uploading scripts and settings for app ${APP}:"
+ls -l appcenter_scripts/*
+
+if [[ -z "$UAPPUSER" ]]; then
+	UAPPUSERCMD=""
+	echo -e "\nTo upload the files to provider-portal.software-univention.de"
+	echo "you will now be asked for your username and password."
+	echo "Hint: use --username <username> to supply it."
+else
+	UAPPUSERCMD="--username $UAPPUSER"
+	echo -e "\nTo upload the files to provider-portal.software-univention.de you will now be"
+	echo "asked for your password:"
+fi
+
+"$UAC_PATH" upload $UAPPUSERCMD "$APP" appcenter_scripts/*

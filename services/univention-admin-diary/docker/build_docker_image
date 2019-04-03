@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+set -x
+
+TAG="docker-test.software-univention.de/admin-diary-backend:2.0"
+
+# remove old image
+docker rmi -f "$TAG" || true
+
+# build/tag image
+docker build -t "$TAG" univention-admin-diary-backend
+
+docker push "$TAG"
