@@ -4107,7 +4107,7 @@ class timeSpec(select):
 	] + _times
 
 
-class optionsUsersUser(select):
+class optionsUsersUser(combobox):
 	"""
 	Syntax to select options for |UDM| module :py:class:`univention.admin.handlers.users.user`.
 	"""
