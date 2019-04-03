@@ -2,7 +2,7 @@
 
 set -e
 
-APP="4.4/ox-app-suite=7.10.1-ucs1"
+APP="4.4/admin-diary-backend=2.0"
 
 UAC_PATH="/tmp/univention-appcenter-control"
 UAC_URL="https://provider-portal.software-univention.de/appcenter-selfservice/univention-appcenter-control"
