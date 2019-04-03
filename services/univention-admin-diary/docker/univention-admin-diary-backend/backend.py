@@ -528,9 +528,9 @@ class AdminDiaryEntryList(Resource):
 		args = create_entry_parser.parse_args()
 		app.logger.debug('AdminDiaryEntryList.post() args=%r', args)
 		if args['type'] not in ALLOWED_TYPES:
-			msg = '"type" not allowed.'
-			api.logger.error('403: %s', msg)
-			abort(403, msg)  # TODO: correct number
+			msg = '"type" {!r} not allowed.'.format(args['type'])
+			api.logger.error('400: %s', msg)
+			abort(400, msg)
 		del args['type']
 		args['event_name'] = args.pop('event')
 		add_entry_v1(DiaryEntry(**args))
