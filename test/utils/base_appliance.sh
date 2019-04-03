@@ -403,6 +403,7 @@ from univention.appcenter.utils import mkdir
 
 import shutil
 import os
+import os.path
 
 log_to_stream()
 get_action('update')()._update_local_files()
@@ -410,7 +411,7 @@ get_action('update')()._update_local_files()
 app=Apps().find_by_component_id('$local_app_component_id')
 if '${local_app_docker_image}':
 	app.docker_image='${local_app_docker_image}'
-if '$dockercompose':
+if '$dockercompose' and os.path.isfile('$dockercompose'):
 	# bummer, this is what the appcenter does in compose.pull()
 	# should be done even if pull_image=False
 	mkdir(app.get_compose_dir())
