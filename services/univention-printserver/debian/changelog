@@ -1,3 +1,9 @@
+univention-printserver (11.0.1-6) unstable; urgency=medium
+
+  * Bug #49197: Make cupsd.conf a multifile to avoid removed cups include directive
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 04 Apr 2019 17:57:18 +0200
+
 univention-printserver (11.0.1-5) unstable; urgency=medium
 
   * Bug #47843: allow switching back to "None", "smb" raw model
