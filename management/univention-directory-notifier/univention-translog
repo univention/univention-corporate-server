@@ -848,7 +848,10 @@ class CheckGeneric(object):
                 cmd = ('sort', '-k1n', '-u', self.filename)
                 self.log.debug('Running %r > %r ...', cmd, tmp)
                 with open(tmp, 'w') as stream:
-                    call(cmd, stdout=stream)
+                    if call(cmd, stdout=stream):
+                        print('- failed to sort file!')
+                        print('Check available space of filesystem?')
+                        exit(2)
 
                 self.run(filename=tmp)
 
