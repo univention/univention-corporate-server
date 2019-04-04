@@ -984,8 +984,7 @@ def ucs_host_record_create(s4connector, object):
 	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
-		superordinate = s4connector_get_superordinate('dns/host_record', s4connector.lo, searchResult[0][0])
-		newRecord = univention.admin.handlers.dns.host_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
+		newRecord = univention.admin.handlers.dns.host_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], attributes=[], update_zone=False)
 		newRecord.open()
 		if set(newRecord['a']) != set(a):
 			newRecord['a'] = a
@@ -996,12 +995,10 @@ def ucs_host_record_create(s4connector, object):
 		zoneDN = __get_zone_dn(s4connector, zoneName)
 
 		ud.debug(ud.LDAP, ud.INFO, 'ucs_host_record_create: zoneDN: %s' % zoneDN)
-		superordinate = s4connector_get_superordinate('dns/host_record', s4connector.lo, zoneDN)
-		ud.debug(ud.LDAP, ud.INFO, 'ucs_host_record_create: superordinate: %s' % superordinate)
 
 		position = univention.admin.uldap.position(zoneDN)
 
-		newRecord = univention.admin.handlers.dns.host_record.object(None, s4connector.lo, position, dn=None, superordinate=superordinate, attributes=[], update_zone=False)
+		newRecord = univention.admin.handlers.dns.host_record.object(None, s4connector.lo, position, dn=None, attributes=[], update_zone=False)
 		newRecord.open()
 		newRecord['name'] = relativeDomainName
 		newRecord['a'] = a
@@ -1018,8 +1015,7 @@ def ucs_host_record_delete(s4connector, object):
 	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
-		superordinate = s4connector_get_superordinate('dns/host_record', s4connector.lo, searchResult[0][0])
-		newRecord = univention.admin.handlers.dns.host_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
+		newRecord = univention.admin.handlers.dns.host_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], attributes=[], update_zone=False)
 		newRecord.open()
 		newRecord.delete()
 	else:
@@ -1054,8 +1050,7 @@ def ucs_ptr_record_create(s4connector, object):
 	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
-		superordinate = s4connector_get_superordinate('dns/ptr_record', s4connector.lo, searchResult[0][0])
-		newRecord = univention.admin.handlers.dns.ptr_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
+		newRecord = univention.admin.handlers.dns.ptr_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], attributes=[], update_zone=False)
 		newRecord.open()
 		if set(newRecord['ptr_record']) != set(ptr):
 			newRecord['ptr_record'] = ptr[0]
@@ -1065,12 +1060,9 @@ def ucs_ptr_record_create(s4connector, object):
 	else:
 		zoneDN = __get_zone_dn(s4connector, zoneName)
 
-		superordinate = s4connector_get_superordinate('dns/ptr_record', s4connector.lo, zoneDN)
-		ud.debug(ud.LDAP, ud.INFO, 'ucs_ptr_record_create: superordinate: %s' % superordinate)
-
 		position = univention.admin.uldap.position(zoneDN)
 
-		newRecord = univention.admin.handlers.dns.ptr_record.object(None, s4connector.lo, position, dn=None, superordinate=superordinate, attributes=[], update_zone=False)
+		newRecord = univention.admin.handlers.dns.ptr_record.object(None, s4connector.lo, position, dn=None, attributes=[], update_zone=False)
 		newRecord.open()
 		newRecord['address'] = relativeDomainName
 		newRecord['ptr_record'] = ptr[0]
@@ -1087,8 +1079,7 @@ def ucs_ptr_record_delete(s4connector, object):
 	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
-		superordinate = s4connector_get_superordinate('dns/ptr_record', s4connector.lo, searchResult[0][0])
-		newRecord = univention.admin.handlers.dns.ptr_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
+		newRecord = univention.admin.handlers.dns.ptr_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], attributes=[], update_zone=False)
 		newRecord.open()
 		newRecord.delete()
 	else:
@@ -1111,8 +1102,7 @@ def ucs_cname_create(s4connector, object):
 	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
-		superordinate = s4connector_get_superordinate('dns/alias', s4connector.lo, searchResult[0][0])
-		newRecord = univention.admin.handlers.dns.alias.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
+		newRecord = univention.admin.handlers.dns.alias.object(None, s4connector.lo, position=None, dn=searchResult[0][0], attributes=[], update_zone=False)
 		newRecord.open()
 		if set(newRecord['cname']) != set(c):
 			newRecord['cname'] = c[0]
@@ -1122,12 +1112,9 @@ def ucs_cname_create(s4connector, object):
 	else:
 		zoneDN = __get_zone_dn(s4connector, zoneName)
 
-		superordinate = s4connector_get_superordinate('dns/alias', s4connector.lo, zoneDN)
-		ud.debug(ud.LDAP, ud.INFO, 'ucs_cname_create: superordinate: %s' % superordinate)
-
 		position = univention.admin.uldap.position(zoneDN)
 
-		newRecord = univention.admin.handlers.dns.alias.object(None, s4connector.lo, position, dn=None, superordinate=superordinate, attributes=[], update_zone=False)
+		newRecord = univention.admin.handlers.dns.alias.object(None, s4connector.lo, position, dn=None, attributes=[], update_zone=False)
 		newRecord.open()
 		newRecord['name'] = relativeDomainName
 		newRecord['cname'] = c[0]
@@ -1144,8 +1131,7 @@ def ucs_cname_delete(s4connector, object):
 	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
-		superordinate = s4connector_get_superordinate('dns/alias', s4connector.lo, searchResult[0][0])
-		newRecord = univention.admin.handlers.dns.alias.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
+		newRecord = univention.admin.handlers.dns.alias.object(None, s4connector.lo, position=None, dn=searchResult[0][0], attributes=[], update_zone=False)
 		newRecord.open()
 		newRecord.delete()
 	else:
@@ -1185,8 +1171,7 @@ def ucs_srv_record_create(s4connector, object):
 	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
-		superordinate = s4connector_get_superordinate('dns/srv_record', s4connector.lo, searchResult[0][0])
-		newRecord = univention.admin.handlers.dns.srv_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
+		newRecord = univention.admin.handlers.dns.srv_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], attributes=[], update_zone=False)
 		newRecord.open()
 		if ucr_locations:
 			ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: do not write SRV record back from S4 to UCS because location of SRV record have been overwritten by UCR')
@@ -1203,12 +1188,9 @@ def ucs_srv_record_create(s4connector, object):
 	else:
 		zoneDN = __get_zone_dn(s4connector, zoneName)
 
-		superordinate = s4connector_get_superordinate('dns/srv_record', s4connector.lo, zoneDN)
-		ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: superordinate: %s' % superordinate)
-
 		position = univention.admin.uldap.position(zoneDN)
 
-		newRecord = univention.admin.handlers.dns.srv_record.object(None, s4connector.lo, position, dn=None, superordinate=superordinate, attributes=[], update_zone=False)
+		newRecord = univention.admin.handlers.dns.srv_record.object(None, s4connector.lo, position, dn=None, attributes=[], update_zone=False)
 		newRecord.open()
 		# Make syntax UDM compatible
 		parts = univention.admin.handlers.dns.srv_record.unmapName([relativeDomainName])
@@ -1235,8 +1217,7 @@ def ucs_srv_record_delete(s4connector, object):
 	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
-		superordinate = s4connector_get_superordinate('dns/srv_record', s4connector.lo, searchResult[0][0])
-		newRecord = univention.admin.handlers.dns.srv_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
+		newRecord = univention.admin.handlers.dns.srv_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], attributes=[], update_zone=False)
 		newRecord.open()
 		newRecord.delete()
 	else:
@@ -1305,8 +1286,7 @@ def ucs_txt_record_create(s4connector, object):
 	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
-		superordinate = s4connector_get_superordinate('dns/txt_record', s4connector.lo, searchResult[0][0])
-		foundRecord = univention.admin.handlers.dns.txt_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
+		foundRecord = univention.admin.handlers.dns.txt_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], attributes=[], update_zone=False)
 		foundRecord.open()
 
 		# use normalized TXT records for comparison
@@ -1323,12 +1303,9 @@ def ucs_txt_record_create(s4connector, object):
 	else:
 		zoneDN = __get_zone_dn(s4connector, zoneName)
 
-		superordinate = s4connector_get_superordinate('dns/txt_record', s4connector.lo, zoneDN)
-		ud.debug(ud.LDAP, ud.INFO, 'ucs_txt_record_create: superordinate: %s' % superordinate)
-
 		position = univention.admin.uldap.position(zoneDN)
 
-		newRecord = univention.admin.handlers.dns.txt_record.object(None, s4connector.lo, position, dn=None, superordinate=superordinate, attributes=[], update_zone=False)
+		newRecord = univention.admin.handlers.dns.txt_record.object(None, s4connector.lo, position, dn=None, attributes=[], update_zone=False)
 		newRecord.open()
 		newRecord['name'] = relativeDomainName
 		newRecord[udm_property] = c
@@ -1345,8 +1322,7 @@ def ucs_txt_record_delete(s4connector, object):
 	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
-		superordinate = s4connector_get_superordinate('dns/txt_record', s4connector.lo, searchResult[0][0])
-		newRecord = univention.admin.handlers.dns.txt_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
+		newRecord = univention.admin.handlers.dns.txt_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], attributes=[], update_zone=False)
 		newRecord.open()
 		newRecord.delete()
 	else:
@@ -1380,8 +1356,7 @@ def ucs_ns_record_create(s4connector, object):
 	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
-		superordinate = s4connector_get_superordinate('dns/ns_record', s4connector.lo, searchResult[0][0])
-		foundRecord = univention.admin.handlers.dns.ns_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
+		foundRecord = univention.admin.handlers.dns.ns_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], attributes=[], update_zone=False)
 		foundRecord.open()
 
 		if set(foundRecord[udm_property]) != set(c):
@@ -1391,13 +1366,9 @@ def ucs_ns_record_create(s4connector, object):
 			ud.debug(ud.LDAP, ud.INFO, 'ucs_ns_record_create: do not modify ns record')
 	else:
 		zoneDN = __get_zone_dn(s4connector, zoneName)
-
-		superordinate = s4connector_get_superordinate('dns/ns_record', s4connector.lo, zoneDN)
-		ud.debug(ud.LDAP, ud.INFO, 'ucs_ns_record_create: superordinate: %s' % superordinate)
-
 		position = univention.admin.uldap.position(zoneDN)
 
-		newRecord = univention.admin.handlers.dns.ns_record.object(None, s4connector.lo, position, dn=None, superordinate=superordinate, attributes=[], update_zone=False)
+		newRecord = univention.admin.handlers.dns.ns_record.object(None, s4connector.lo, position, dn=None, attributes=[], update_zone=False)
 		newRecord.open()
 		newRecord['zone'] = relativeDomainName
 		newRecord[udm_property] = c
@@ -1414,8 +1385,7 @@ def ucs_ns_record_delete(s4connector, object):
 	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
-		superordinate = s4connector_get_superordinate('dns/ns_record', s4connector.lo, searchResult[0][0])
-		newRecord = univention.admin.handlers.dns.ns_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
+		newRecord = univention.admin.handlers.dns.ns_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], attributes=[], update_zone=False)
 		newRecord.open()
 		newRecord.delete()
 	else:
@@ -1476,9 +1446,9 @@ def ucs_zone_create(s4connector, object, dns_type):
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		if dns_type == 'forward_zone':
-			zone = univention.admin.handlers.dns.forward_zone.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=None, attributes=[])
+			zone = univention.admin.handlers.dns.forward_zone.object(None, s4connector.lo, position=None, dn=searchResult[0][0], attributes=[])
 		elif dns_type == 'reverse_zone':
-			zone = univention.admin.handlers.dns.reverse_zone.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=None, attributes=[])
+			zone = univention.admin.handlers.dns.reverse_zone.object(None, s4connector.lo, position=None, dn=searchResult[0][0], attributes=[])
 		zone.open()
 		udm_zone_nameservers_lower = [x.lower() for x in zone['nameserver']]
 		if set(ns_lower) != set(udm_zone_nameservers_lower):
@@ -1516,10 +1486,10 @@ def ucs_zone_create(s4connector, object, dns_type):
 		position = univention.admin.uldap.position(s4connector.property['dns'].ucs_default_dn)
 
 		if dns_type == 'forward_zone':
-			zone = univention.admin.handlers.dns.forward_zone.object(None, s4connector.lo, position, dn=None, superordinate=None, attributes=[])
+			zone = univention.admin.handlers.dns.forward_zone.object(None, s4connector.lo, position, dn=None, attributes=[])
 			name_key = 'zone'
 		elif dns_type == 'reverse_zone':
-			zone = univention.admin.handlers.dns.reverse_zone.object(None, s4connector.lo, position, dn=None, superordinate=None, attributes=[])
+			zone = univention.admin.handlers.dns.reverse_zone.object(None, s4connector.lo, position, dn=None, attributes=[])
 			name_key = 'subnet'
 			zoneName = univention.admin.handlers.dns.reverse_zone.unmapSubnet(zoneName)
 		zone.open()
@@ -1551,9 +1521,9 @@ def ucs_zone_delete(s4connector, object, dns_type):
 	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
 	if len(searchResult) > 0:
 		if dns_type == 'forward_zone':
-			zone = univention.admin.handlers.dns.forward_zone.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=None, attributes=[], update_zone=False)
+			zone = univention.admin.handlers.dns.forward_zone.object(None, s4connector.lo, position=None, dn=searchResult[0][0], attributes=[], update_zone=False)
 		elif dns_type == 'reverse_zone':
-			zone = univention.admin.handlers.dns.reverse_zone.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=None, attributes=[], update_zone=False)
+			zone = univention.admin.handlers.dns.reverse_zone.object(None, s4connector.lo, position=None, dn=searchResult[0][0], attributes=[], update_zone=False)
 		zone.open()
 		zone.delete()
 
@@ -1778,19 +1748,3 @@ def con2ucs(s4connector, key, object):
 		# ignore move
 
 	return True
-
-
-def s4connector_get_superordinate(module, lo, dn):
-	'''
-	We have to use our own get_superordinate function. Otherwise
-	identifyOne in udm will return two results
-	'''
-	super_module = univention.admin.modules.superordinate(module)
-	if super_module:
-		while dn:
-			attr = lo.get(dn)
-			for mod in univention.admin.modules.identify(dn, attr):
-				if mod == super_module:
-					return univention.admin.objects.get(super_module, None, lo, None, dn)
-			dn = lo.parentDn(dn)
-	return None

@@ -1,3 +1,10 @@
+univention-s4-connector (13.0.2-5) unstable; urgency=medium
+
+  * Bug #45068: Remove unnecessary explicit superordinate search in S4
+    Connector
+
+ -- Florian Best <best@univention.de>  Thu, 11 Apr 2019 10:32:45 +0200
+
 univention-s4-connector (13.0.2-4) unstable; urgency=medium
 
   * Bug #27804: remove the use of univention.admin.config
