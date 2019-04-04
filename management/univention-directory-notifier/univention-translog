@@ -657,7 +657,8 @@ def check(opt):
         listener.first_line = translog.last_line
         listener.run()
 
-        check_last(opt, opt.last_file, listener.last_tid, listener.last_line)
+        if opt.role == 'domaincontroller_master':
+            check_last(opt, opt.last_file, listener.last_tid)
 
         # TODO: check cn=translog (Bug #49225)
 
@@ -990,13 +991,15 @@ class CheckListener(CheckGeneric):
         pass
 
 
-def check_last(opt, filename, last_tid, last_id):
-    # type: (Namespace, str, int, str) -> None
+def check_last(opt, filename, last_tid):
+    # type: (Namespace, str, int) -> None
     log = getLogger(__name__).getChild("CHECK")
 
     try:
         with open(filename, 'r') as last:
             line = last.read()
+        if not line:
+            raise ValueError('should be %d, but is empty' % (last_tid,))
         tid = int(line)
         if tid != last_tid:
             raise ValueError('should be %d, but is %d' % (last_tid, tid))
@@ -1005,7 +1008,7 @@ def check_last(opt, filename, last_tid, last_id):
         if opt.fix:
             with open(filename, 'w') as last:
                 last.write('%d' % (last_tid,))
-            log.debug("%s: Updated to: %d", filename, last_id)
+            log.debug("%s: Updated to: %d", filename, last_tid)
         else:
             print()
             print('%s needs manual fixing!' % (filename,))
