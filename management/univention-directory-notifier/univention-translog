@@ -30,7 +30,7 @@ Univention Directory Notifier Transaction log admin commmand
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 from __future__ import print_function
-from os import SEEK_SET, fstat, rename, unlink
+from os import SEEK_SET, fstat, rename, unlink, environ
 from os.path import exists
 from sys import stderr
 from argparse import ArgumentParser, ArgumentTypeError
@@ -853,13 +853,24 @@ class CheckGeneric(object):
             print('- the transactions are not sorted uniquely')
 
             with rewrite(self.filename) as tmp:
-                cmd = ('sort', '-k1n', '-u', self.filename)
-                self.log.debug('Running %r > %r ...', cmd, tmp)
-                with open(tmp, 'w') as stream:
-                    if call(cmd, stdout=stream):
-                        print('- failed to sort file!')
-                        print('Check available space of filesystem?')
-                        exit(2)
+                cmd = (
+                    'sort',
+                    '--ignore-leading-blanks',
+                    '--ignore-nonprinting',
+                    '--key', '1n',  # transaction ID
+                    '--key', '2',  # DN
+                    '--key', '3r',  # command 'r', 'm', 'd', 'a'
+                    '--unique',
+                    '--output', tmp,
+                    self.filename,
+                )
+                env = dict(environ)
+                env['LC_ALL'] = 'C.UTF-8'
+                self.log.debug('Running %r ...', cmd)
+                if call(cmd, env=env):
+                    print('- failed to sort file!')
+                    print('Check available space of filesystem?')
+                    exit(2)
 
                 self.run(filename=tmp)
 
