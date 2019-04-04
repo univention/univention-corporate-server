@@ -3,8 +3,13 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-printserver
-fix: 12.0.1-5A~4.4.0.201904021243
+fix: 12.0.1-7A~4.4.0.201904041026
 desc: |
  This update addresses the following issue(s):
- * Replace removed cups directive Include in cupsd.conf
+ * Since the cups Include directive was removed
+   cups-access-limit is now a subfile of cupsd.conf.
+   If changes to /etc/cups/cupsd.local.conf are made
+   it is now neccessary to execute
+   ucr commit /etc/cups/cupsd.conf
+   afterwards to apply these changes
 bug: [48437]
