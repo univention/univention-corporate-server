@@ -143,7 +143,13 @@ additional_user_filter_objectclasses = configRegistry.get("mail/dovecot/auth/lda
 additional_user_filter_objectclasses = additional_user_filter_objectclasses.split(",")
 if additional_user_filter_objectclasses[0]:
 	default_user_filter_objectclasses.extend(additional_user_filter_objectclasses)
-print 'user_filter = (&(|%s)(|(!(univentionMailHomeServer=*))(univentionMailHomeServer=%s.%s))(|(mailPrimaryAddress=%%Lu)(&(uid=%%u)(mailPrimaryAddress=*))))' % (
+# Meaning of / reason for (|(mailPrimaryAddress=%%Lu)(&(uid=%%u)(|(mailPrimaryAddress=*)(uid=Administrator)))) is:
+# A user logging in must either use an email address (mailPrimaryAddress=%%Lu) or use a username (uid=%%u) but must then
+# have an email address (mailPrimaryAddress=*) - except for the user Administrator, which can login without an email
+# address (but will not be able to access a mailbox).
+# Reason for the Administrator exception is, that in the listener (at modules/univention/mail/dovecot_shared_folder.py:397
+# in doveadm_set_mailbox_acls()) we need a user account to use "doveadm" without knowing a valid email address.
+print 'user_filter = (&(|%s)(|(!(univentionMailHomeServer=*))(univentionMailHomeServer=%s.%s))(|(mailPrimaryAddress=%%Lu)(&(uid=%%u)(|(mailPrimaryAddress=*)(uid=Administrator)))))' % (
 	"".join(["(objectClass=%s)" % obj for obj in default_user_filter_objectclasses]),
 	configRegistry.get("hostname"),
 	configRegistry.get("domainname"))
