@@ -726,6 +726,7 @@ class CheckGeneric(object):
         self.needs_fixing = False
         self.needs_sort = False
         self.needs_fill = False
+        self.needs_renum = False
         self.needs_syntax = False
         self.lnr = 0
         self.line = ''
@@ -738,6 +739,7 @@ class CheckGeneric(object):
         self.needs_fixing |= kwargs.get('fix', True)
         self.needs_sort |= kwargs.get('sort', False)
         self.needs_fill |= kwargs.get('fill', False)
+        self.needs_renum |= kwargs.get('renum', False)
         self.needs_syntax |= kwargs.get('syntax', False)
 
     def run(self, filename=''):
@@ -820,9 +822,7 @@ class CheckGeneric(object):
 
     def fixit(self):
         # type: () -> None
-        self.fix_syntax()
-        self.fix_sort()
-        self.fix_fill()
+        raise NotImplementedError()
 
     def fix_syntax(self):
         # type: () -> None
@@ -832,7 +832,6 @@ class CheckGeneric(object):
         # - optional: fake invalid DNs in 2nd column
         # - optional: fake transaction number
         # see commented out code in :py:meth:`loop`.
-        if self.needs_syntax:
             self.log.info('Syntax ...')
 
             print('- contains unparseable lines!')
@@ -840,11 +839,8 @@ class CheckGeneric(object):
             print('See <%s> for details.' % (HELP_RESET,))
             exit(1)
 
-        assert not self.needs_syntax
-
     def fix_sort(self):
         # type: () -> None
-        if self.needs_sort:
             self.log.info('Sorting ...')
 
             with rewrite(self.filename) as tmp:
@@ -870,30 +866,8 @@ class CheckGeneric(object):
 
                 self.remove_index()
 
-        assert not self.needs_sort
-
     def fix_fill(self):
         # type: () -> None
-        raise NotImplementedError()
-
-    def remove_index(self):
-        # type: () -> None
-        raise NotImplementedError()
-
-
-class CheckTranslog(CheckGeneric):
-    def check_transaction(self, rec):
-        # type: (Transaction) -> None
-        if self.lnr == 1:
-            self.log.info("%s:%d: Starts with: %r", self.filename, self.lnr, self.line)
-        elif rec.tid <= self.last_tid:
-            self.error("Repeated line after %r", self.last_line, sort=True)
-        elif self.last_tid + 1 != rec.tid:
-            self.error("Hole after %r", self.last_line, fill=True)
-
-    def fix_fill(self):
-        # type: () -> None
-        if self.needs_fill:
             self.log.info('Filling holes ...')
 
             if not self.opt.fix:
@@ -923,9 +897,56 @@ class CheckTranslog(CheckGeneric):
 
                 self.run(filename=tmp)
 
+                assert not self.needs_fill
+
                 self.remove_index()
 
-        assert not self.needs_fill
+    def fix_renumber(self):
+        # type: () -> None
+            self.log.info('Renumbering ...')
+
+            if not self.opt.fix:
+                print('- pending transactions are not consecutive')
+                print()
+                print('See <%s> for details.' % (HELP_FIX,))
+                exit(1)
+
+            with rewrite(self.filename) as tmp:
+                with open(self.filename, 'r') as old, open(tmp, 'w') as new:
+                    for self.last_tid, line in enumerate(old, start=self.first_tid + 1):
+                        self.log.debug('Renum %r to %d ...', line, self.last_tid)
+                        rec = Translog.parse_line(line)
+                        rec = rec._replace(tid=self.last_tid)
+                        line = Translog.format_line(rec)
+                        new.write(line)
+
+                self.run(filename=tmp)
+
+                assert not self.needs_renum
+
+    def remove_index(self):
+        # type: () -> None
+        raise NotImplementedError()
+
+
+class CheckTranslog(CheckGeneric):
+    def check_transaction(self, rec):
+        # type: (Transaction) -> None
+        if self.lnr == 1:
+            self.log.info("%s:%d: Starts with: %r", self.filename, self.lnr, self.line)
+        elif rec.tid <= self.last_tid:
+            self.error("Repeated line after %r", self.last_line, sort=True)
+        elif self.last_tid + 1 != rec.tid:
+            self.error("Hole after %r", self.last_line, fill=True)
+
+    def fixit(self):
+        # type: () -> None
+        if self.needs_syntax:
+            self.fix_syntax()
+        if self.needs_sort:
+            self.fix_sort()
+        if self.needs_fill:
+            self.fix_fill()
 
     def remove_index(self):
         # type: () -> None
@@ -948,36 +969,18 @@ class CheckListener(CheckGeneric):
         if self.last_tid + 1 == rec.tid:
             pass
         elif rec.tid <= self.last_tid:
-            self.error("Repeated line %r", self.last_line, sort=True)
+            self.error("Repeated line %r", self.last_line, renum=True)
         elif self.lnr == 1:
-            self.error("Not continuous with %s: %r", self.opt.translog_file, self.last_line)
+            self.error("Not continuous with %s: %r", self.opt.translog_file, self.last_line, renum=True)
         else:
-            self.error("Hole after %r", self.last_line, fill=True)
+            self.error("Hole after %r", self.last_line, renum=True)
 
-    def fix_fill(self):
+    def fixit(self):
         # type: () -> None
-        if self.needs_fill:
-            self.log.info('Filling holes ...')
-
-            if not self.opt.fix or True:
-                print('- missing transactions in sequence')
-                print()
-                print('See <%s> for details.' % (HELP_FIX,))
-                exit(1)
-
-            with rewrite(self.filename) as tmp:
-                with open(self.filename, 'r') as old, open(tmp, 'w') as new:
-                    for line, tid in enumerate(old, start=self.first_tid + 1):
-                        try:
-                            rec = Translog.parse_line(line)
-                            rec = rec._replace(tid, tid)
-                        except ValueError:
-                            pass
-                        new.write(line)
-
-                self.run(filename=tmp)
-
-        assert not self.needs_fill
+        if self.needs_syntax:
+            self.fix_syntax()
+        if self.needs_renum:
+            self.fix_renumber()
 
     def remove_index(self):
         # type: () -> None
