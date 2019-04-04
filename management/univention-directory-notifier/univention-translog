@@ -59,8 +59,9 @@ except ImportError:
 
 LOG_FORMAT = "%(asctime)-15s:%(levelname)s:%(message)s"
 BSIZE = 4096
-HELP_RESET = 'https://help.univention.com/t/how-to-reset-listener-notifier-replication/11710'
-HELP_FIX = 'https://help.univention.com/t/problem-umc-diagnostic-module-complains-about-problems-with-udn-replication/11707/1'
+HELP_RESET = 'See <https://help.univention.com/t/how-to-reset-listener-notifier-replication/11710> for more details.'
+HELP_RERUN = 'You can re-run this tool with the option "--fix" in order to try to fix this issue.'
+HELP_FIX = 'See <https://help.univention.com/t/problem-umc-diagnostic-module-complains-about-problems-with-udn-replication/11707/1> for more details. '
 SLD = 'slapd.service'
 UDN = 'univention-directory-notifier.service'
 UDL = 'univention-directory-listener.service'
@@ -758,7 +759,7 @@ class CheckGeneric(object):
             if self.opt.role != 'domaincontroller_master':
                 print('This UCS system must be re-joined!')
                 print()
-                print('See <%s> for details.' % (HELP_FIX,))
+                print(HELP_FIX)
                 exit(1)
 
             self.fixit()
@@ -843,12 +844,13 @@ class CheckGeneric(object):
 
             print('- contains unparseable lines!')
             print()
-            print('See <%s> for details.' % (HELP_RESET,))
+            print(HELP_RESET)
             exit(1)
 
     def fix_sort(self):
         # type: () -> None
             self.log.info('Sorting ...')
+            print('- the transactions are not sorted uniquely')
 
             with rewrite(self.filename) as tmp:
                 cmd = ('sort', '-k1n', '-u', self.filename)
@@ -865,13 +867,13 @@ class CheckGeneric(object):
                     print('- still contains duplicate transactions after unique sorting!')
                     print('UCS Master must be reset and all other UCS systems must be re-joined!')
                     print()
-                    print('See <%s> for details.' % (HELP_RESET,))
+                    print(HELP_RESET)
                     exit(1)
 
                 if not self.opt.fix:
-                    print('- the transactions are not sorted uniquely')
                     print()
-                    print('See <%s> for details.' % (HELP_FIX,))
+                    print(HELP_RERUN)
+                    print(HELP_FIX)
                     exit(1)
 
                 self.remove_index()
@@ -879,11 +881,12 @@ class CheckGeneric(object):
     def fix_fill(self):
         # type: () -> None
             self.log.info('Filling holes ...')
+            print('- missing transactions in sequence')
 
             if not self.opt.fix:
-                print('- missing transactions in sequence')
                 print()
-                print('See <%s> for details.' % (HELP_FIX,))
+                print(HELP_RERUN)
+                print(HELP_FIX)
                 exit(1)
 
             with rewrite(self.filename) as tmp:
@@ -914,11 +917,12 @@ class CheckGeneric(object):
     def fix_renumber(self):
         # type: () -> None
             self.log.info('Renumbering ...')
+            print('- pending transactions are not consecutive')
 
             if not self.opt.fix:
-                print('- pending transactions are not consecutive')
                 print()
-                print('See <%s> for details.' % (HELP_FIX,))
+                print(HELP_RERUN)
+                print(HELP_FIX)
                 exit(1)
 
             with rewrite(self.filename) as tmp:
@@ -1021,7 +1025,9 @@ def check_last(opt, filename, last_tid):
         else:
             print()
             print('%s needs manual fixing!' % (filename,))
-            print('See <%s> for details.' % (HELP_FIX,))
+            print()
+            print(HELP_RERUN)
+            print(HELP_FIX)
             exit(1)
 
 
