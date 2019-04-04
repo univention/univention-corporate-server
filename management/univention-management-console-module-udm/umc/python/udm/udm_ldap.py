@@ -1146,26 +1146,14 @@ def list_objects(container, object_type=None, ldap_connection=None, ldap_positio
 		if not module.module:
 			MODULE.process('The UDM module %r could not be found. Ignoring LDAP object %r' % (modules[0], dn))
 			continue
-		if module.superordinate_names:
-			for superordinate in module.superordinate_names:
-				so_module = UDM_Module(superordinate)
-				so_obj = so_module.get(container)
-				try:
-					yield (module, module.get(dn, so_obj, attributes=attrs))
-				except BaseException:
-					try:
-						yield (module, module.get(dn, so_obj))
-					except (UDM_Error, udm_errors.base):
-						MODULE.error('Could not load object %r (%r) exception: %s' % (dn, module.module, traceback.format_exc()))
-				break
-		else:
+
+		try:
+			yield (module, module.get(dn, attributes=attrs))
+		except BaseException:
 			try:
-				yield (module, module.get(dn, attributes=attrs))
-			except BaseException:
-				try:
-					yield (module, module.get(dn))
-				except (UDM_Error, udm_errors.base):
-					MODULE.error('Could not load object %r (%r) exception: %s' % (dn, module.module, traceback.format_exc()))
+				yield (module, module.get(dn))
+			except (UDM_Error, udm_errors.base):
+				MODULE.error('Could not load object %r (%r) exception: %s' % (dn, module.module, traceback.format_exc()))
 
 
 def split_module_attr(value):

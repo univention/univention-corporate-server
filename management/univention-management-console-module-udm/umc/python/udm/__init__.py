@@ -999,7 +999,8 @@ class Instance(Base, ProgressMixin):
 		thread = notifier.threads.Simple('NavContainerQuery', notifier.Callback(self._container_query, request, container, modules, scope), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
-	def _container_query(self, request, container, modules, scope):
+	@LDAP_Connection
+	def _container_query(self, request, container, modules, scope, ldap_connection=None, ldap_position=None):
 		"""Get a list of containers or child objects of the specified container."""
 
 		if not container:
@@ -1027,15 +1028,7 @@ class Instance(Base, ProgressMixin):
 		result = []
 		for xmodule in modules:
 			xmodule = UDM_Module(xmodule)
-			superordinate = None
-			if xmodule.superordinate_names:
-				for module_superordinate in xmodule.superordinate_names:
-					try:
-						superordinate = UDM_Module(module_superordinate).get(container)
-					except UDM_Error:  # the container is not a direct superordinate  # FIXME: get the "real" superordinate; Bug #40885
-						continue
-				if superordinate is None:
-					continue  # superordinate object could not be load -> ignore module
+			superordinate = udm_objects.get_superordinate(xmodule.module, None, ldap_connection, container)
 			try:
 				for item in xmodule.search(container, scope=scope, superordinate=superordinate):
 					module = UDM_Module(item.module)
