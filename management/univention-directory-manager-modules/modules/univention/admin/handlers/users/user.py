@@ -1214,6 +1214,8 @@ mapping.register('password', 'userPassword', univention.admin.mapping.dontMap(),
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
+	use_performant_ldap_search_filter = True
+
 	@property
 	def __forward_copy_to_self(self):
 		return self.get('mailForwardCopyToSelf') == '1'
@@ -2245,16 +2247,12 @@ class object(univention.admin.handlers.simpleLdap):
 
 	@classmethod
 	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'posixAccount'),
-			univention.admin.filter.expression('objectClass', 'shadowAccount'),
-			univention.admin.filter.expression('objectClass', 'sambaSamAccount'),
-			univention.admin.filter.expression('objectClass', 'krb5Principal'),
-			univention.admin.filter.expression('objectClass', 'krb5KDCEntry'),
+		filter_p = super(object, cls).unmapped_lookup_filter()
+		filter_p.expressions.extend([
 			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uidNumber', '0')]),
-			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uid', '*$')]),
 			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('univentionObjectFlag', 'functional')]),
 		])
+		return filter_p
 
 	@classmethod
 	def _ldap_attributes(cls):
@@ -2327,14 +2325,15 @@ class object(univention.admin.handlers.simpleLdap):
 		else:
 			super(object, cls).rewrite_filter(filter, mapping)
 
+	@classmethod
+	def identify(cls, dn, attr, canonical=False):
+		if '0' in attr.get('uidNumber', []) or '$' in attr.get('uid', [''])[0] or 'univentionHost' in attr.get('objectClass', []) or 'functional' in attr.get('univentionObjectFlag', []):
+			return False
+		required_ocs = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'person', 'krb5KDCEntry', 'krb5Principal'}
+		ocs = set(attr.get('objectClass', []))
+		return ocs & required_ocs == required_ocs
+
 
 lookup = object.lookup
 lookup_filter = object.lookup_filter
-
-
-def identify(dn, attr, canonical=0):
-	if '0' in attr.get('uidNumber', []) or '$' in attr.get('uid', [''])[0] or 'univentionHost' in attr.get('objectClass', []) or 'functional' in attr.get('univentionObjectFlag', []):
-		return False
-	required_ocs = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'person', 'krb5KDCEntry', 'krb5Principal'}
-	ocs = set(attr.get('objectClass', []))
-	return ocs & required_ocs == required_ocs
+identify = object.identify
