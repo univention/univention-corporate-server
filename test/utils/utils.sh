@@ -51,7 +51,7 @@ basic_setup () {
 	ucr set update/check/cron/enabled=false update/check/boot/enabled=false
 	service cron reload || true
 	# wait until Univention System Setup is running and profile file has been moved
-	while pgrep -f "/etc/init.d/rc 2" && ! pgrep -f "startxwithfirefox" ; do
+	while ! pgrep -f "startxwithfirefox" ; do
 		sleep 1s
 	done
 	sleep 5s
