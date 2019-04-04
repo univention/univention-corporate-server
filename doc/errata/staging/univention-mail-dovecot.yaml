@@ -3,7 +3,7 @@ release: "4.3"
 version: [3]
 scope: ucs_4.3-0-errata4.3-3
 src: univention-mail-dovecot
-fix: 4.0.0-16A~4.3.0.201903221611
+fix: 4.0.0-17A~4.3.0.201904041645
 desc: |
  This update addresses the following issue(s):
  * Prevent creation of empty mailboxes in /var/spool/dovecot/private by
