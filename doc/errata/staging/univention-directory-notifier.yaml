@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-directory-notifier
-fix: 13.0.1-12A~4.4.0.201904032046
+fix: 13.0.1-13A~4.4.0.201904041219
 desc: |
  This update addresses the following issue:
  * Add 'univention-translog check --fix' command to check (and fix)
