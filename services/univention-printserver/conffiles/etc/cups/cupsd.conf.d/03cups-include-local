@@ -1,0 +1,14 @@
+@!@
+#
+# Print contents of file /etc/cups/cupsd.local.conf to /etc/cups/cupsd.conf
+# since the Cups Include directive was removed.
+# If changes in cupsd.local.conf are made
+# it is now neccessary to execute ucr commit /etc/cups/cupsd.conf
+#
+import os
+path = "/etc/cups/cupsd.local.conf"
+if configRegistry.is_true("cups/include/local", False) and os.path.isfile(path):
+	with open(path) as fd:
+		print fd.read()
+@!@
+
