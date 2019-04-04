@@ -1,0 +1,6 @@
+tests/*/transaction
+tests/*/transaction.index
+tests/*/listener
+tests/*/last
+tests/*/*.new
+tests/*/*.bak

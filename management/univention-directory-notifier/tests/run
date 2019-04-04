@@ -1,0 +1,68 @@
+#!/bin/bash
+# Copyright 2019 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0
+
+set -e -u  # -x
+
+DIR="$(dirname "$(readlink -f "$0")")"
+
+main () {
+	local test
+	[ $# -ge 1 ] || set -- "$DIR/"*/
+	for test in "$@"
+	do
+		test="${test%/}"
+		[ -d "$test" ] || continue
+		echo "=== $test BEGIN ==="
+
+		cleanup "$test"
+		copy "$test"
+		run "$test"
+		compare "$test"
+		cleanup "$test"
+		echo "=== $test END ==="
+	done
+}
+cleanup () {
+	local test="$1"
+	find "$test" -type f -not -name '*.in' -not -name '*.out' -not -name '[A-Z]*' -delete
+}
+copy () {
+	local f test="$1"
+	for f in "$test/"*.in
+	do
+		cp -f "$f" "${f%.in}"
+	done
+}
+run () {
+	local base role result test="$1"
+	base='dc=example,dc=com'
+	[ -f "$test/BASE" ] && read -r base <"$test/BASE"
+	role='domaincontroller_master'
+	[ -f "$test/ROLE" ] && read -r role <"$test/ROLE"
+	declare -a args=(
+		--translog-file "$test/transaction"
+		-vvvv
+		check
+		--fix
+		--base "$base"
+		--role "$role"
+		--listener-file "$test/listener"
+		--last-file "$test/last"
+		--skip-services
+	)
+	[ -f "$test/ARGS" ] && read -r -a args <"$test/ARGS"
+	result='0'
+	[ -f "$test/RESULT" ] && read -r result <"$test/RESULT"
+
+	"$DIR/../univention-translog" "${args[@]}" || [ "$?" -eq "$result" ]
+}
+compare () {
+	local f test="$1"
+	for f in "$test/"*.out
+	do
+		diff -u "$f" "${f%.out}"
+	done
+}
+
+main ${1:+"$@"}
