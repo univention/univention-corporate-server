@@ -42,6 +42,7 @@ import tempfile
 import univention.admin.modules
 from univention.admin.uldap import getMachineConnection
 from univention.config_registry import handler_set
+from univention.lib.misc import custom_username
 from univention.mail.dovecot import DovecotListener
 
 
@@ -394,9 +395,9 @@ class DovecotSharedFolderListener(DovecotListener):
 		for acl in acls:
 			identifier, right = self._split_udm_imap_acl_doveadm(acl)
 			if right == "none":
-				cmd = ["/usr/bin/doveadm", "acl", "delete", "-u", "Administrator", mailbox, identifier]
+				cmd = ["/usr/bin/doveadm", "acl", "delete", "-u", custom_username("Administrator"), mailbox, identifier]
 			else:
-				cmd = ["/usr/bin/doveadm", "acl", "set", "-u", "Administrator", mailbox, identifier]
+				cmd = ["/usr/bin/doveadm", "acl", "set", "-u", custom_username("Administrator"), mailbox, identifier]
 				cmd.extend(dovecot_acls[right][1])
 			try:
 				self.read_from_ext_proc_as_root(cmd)
