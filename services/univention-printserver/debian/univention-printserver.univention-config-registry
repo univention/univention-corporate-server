@@ -1,5 +1,16 @@
+Type: multifile
+Multifile: etc/cups/cupsd.conf
+
 Type: file
-File: etc/cups/cupsd.conf
+File: etc/pam.d/cups
+
+Type: file
+File: etc/logrotate.d/univention-printserver
+Variables: logrotate/.*
+
+Type: subfile
+Multifile: etc/cups/cupsd.conf
+Subfile: etc/cups/cupsd.conf.d/01cups-base
 Variables: interfaces/eth.*/network
 Variables: interfaces/eth.*/netmask
 Variables: cups/admin
@@ -12,20 +23,10 @@ Variables: cups/server/alias
 Variables: cups/include/local
 Variables: hostname
 Variables: domainname
-Variables: cups/printmode/hosts/all
-Variables: cups/printmode/hosts/none
-Variables: cups/policy/.*
-Variables: cups/access/limit
 
-Type: file
-File: etc/pam.d/cups
-
-Type: file
-File: etc/logrotate.d/univention-printserver
-Variables: logrotate/.*
-
-Type: file
-File: etc/cups/cups-access-limit.conf
+Type: subfile
+Multifile: etc/cups/cupsd.conf
+Subfile: etc/cups/cupsd.conf.d/02cups-access-limit
 Variables: cups/printmode/hosts/all
 Variables: cups/printmode/hosts/none
 Variables: cups/policy/.*
