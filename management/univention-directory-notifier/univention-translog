@@ -667,18 +667,20 @@ def check(opt):
 @contextmanager
 def stopped(opt):
     # type: (Namespace) -> Iterator
-    if opt.fix:
-        cmd = ('systemctl', 'stop') + SERVICES[opt.role]
-        call(cmd)
+    if opt.skip_services or not opt.fix:
+        yield
+        return
+
+    cmd = ('systemctl', 'stop') + SERVICES[opt.role]
+    call(cmd)
 
     try:
         yield
     except Exception:
         raise
     else:
-        if opt.fix:
-            cmd = ('systemctl', 'start') + SERVICES[opt.role]
-            call(cmd)
+        cmd = ('systemctl', 'start') + SERVICES[opt.role]
+        call(cmd)
 
 
 @contextmanager
@@ -1101,6 +1103,7 @@ def parse_args(args=None):
     parser_check.add_argument("--role", "-r", metavar="ROLE", help="Server role [%(default)s]", default=ucr['server/role'])
     parser_check.add_argument("--listener-file", "-L", metavar="FILENAME", help="Listener file [%(default)s]", default="/var/lib/univention-ldap/listener/listener")
     parser_check.add_argument("--last-file", "-I", metavar="FILENAME", help="Last_id file [%(default)s]", default="/var/lib/univention-ldap/last_id")
+    parser_check.add_argument("--skip-services", "-S", action="store_true", help="Skip stopping and starting services")
     parser_check.set_defaults(func=check)
 
     opt = parser.parse_args(args)
