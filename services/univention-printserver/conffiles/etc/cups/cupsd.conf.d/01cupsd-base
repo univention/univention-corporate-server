@@ -656,15 +656,3 @@ else:
 #Encryption Required
 </Location>
 
-
-@!@
-#
-# Print contents of file /etc/cups/cupsd.local.conf to /etc/cups/cupsd.conf
-# since the Cups Include directive was removed.
-# If changes in cupsd.local.conf are made
-# it is now neccessary to execute ucr commit /etc/cups/cupsd.conf
-#
-if configRegistry.is_true("cups/include/local", False):
-	with open("/etc/cups/cupsd.local.conf") as fd:
-		print fd.read()
-@!@
