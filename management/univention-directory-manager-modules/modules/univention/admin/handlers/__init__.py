@@ -1803,6 +1803,12 @@ class simpleLdap(object):
 			filter.value = filter.value[0]
 
 	@classmethod
+	def identify(cls, dn, attr, canonical=False):
+		ocs = set(attr.get('objectClass', []))
+		required_object_classes = univention.admin.modules.options(cls.module).get('default', univention.admin.option()).objectClasses - {'top', 'univentionPolicy', 'univentionObjectMetadata'}
+		return (ocs & required_object_classes) == required_object_classes
+
+	@classmethod
 	def _ldap_attributes(cls):
 		return []
 

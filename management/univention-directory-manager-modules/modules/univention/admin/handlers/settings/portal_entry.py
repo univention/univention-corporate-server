@@ -37,8 +37,6 @@ import univention.admin.localization
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate
 
-OC = "univentionPortalEntry"
-
 module = 'settings/portal_entry'
 superordinate = 'settings/cn'
 default_containers = ['cn=portal,cn=univention']
@@ -51,7 +49,7 @@ long_description = _('One link in https://fqdn/univention/portal. Belongs to one
 options = {
 	'default': univention.admin.option(
 		default=True,
-		objectClasses=['top', OC],
+		objectClasses=['top', 'univentionPortalEntry'],
 	),
 }
 property_descriptions = {
@@ -282,9 +280,5 @@ class object(univention.admin.handlers.simpleLdap):
 				portal_obj.modify()
 
 
-
 lookup = object.lookup
-
-
-def identify(dn, attr, canonical=0):
-	return OC in attr.get('objectClass', [])
+identify = object.identify

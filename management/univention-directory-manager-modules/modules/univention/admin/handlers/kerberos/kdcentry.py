@@ -185,8 +185,4 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 lookup = object.lookup
-
-
-def identify(dn, attr, canonical=0):
-	ocs = attr.get('objectClass', [])
-	return 'top' in ocs and 'account' in ocs and 'krb5Principal' in ocs and 'krb5KDCEntry' in ocs
+identify = object.identify

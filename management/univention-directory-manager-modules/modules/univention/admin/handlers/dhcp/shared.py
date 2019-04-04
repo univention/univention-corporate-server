@@ -86,9 +86,6 @@ class object(DHCPBase):
 	module = module
 
 
-def identify(dn, attr):
-	return 'dhcpSharedNetwork' in attr.get('objectClass', [])
-
-
 lookup_filter = object.lookup_filter
 lookup = object.lookup
+identify = object.identify

@@ -41,8 +41,6 @@ import apt
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate
 
-OC = "univentionUDMSyntax"
-
 module = 'settings/udm_syntax'
 superordinate = 'settings/cn'
 childs = 0
@@ -54,7 +52,7 @@ long_description = ''
 options = {
 	'default': univention.admin.option(
 		default=True,
-		objectClasses=['top', 'univentionObjectMetadata', OC],
+		objectClasses=['top', 'univentionObjectMetadata', 'univentionUDMSyntax'],
 	),
 }
 property_descriptions = {
@@ -206,7 +204,4 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 lookup = object.lookup
-
-
-def identify(dn, attr, canonical=0):
-	return OC in attr.get('objectClass', [])
+identify = object.identify

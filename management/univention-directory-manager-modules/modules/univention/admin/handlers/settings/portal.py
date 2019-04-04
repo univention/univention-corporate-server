@@ -40,8 +40,6 @@ import univention.admin.localization
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate
 
-OC = "univentionPortal"
-
 module = 'settings/portal'
 superordinate = 'settings/cn'
 default_containers = ['cn=portal,cn=univention']
@@ -54,7 +52,7 @@ long_description = _('Object that feeds everything in https://fqdn/univention/po
 options = {
 	'default': univention.admin.option(
 		default=True,
-		objectClasses=['top', OC],
+		objectClasses=['top', 'univentionPortal'],
 	),
 }
 property_descriptions = {
@@ -411,7 +409,4 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 lookup = object.lookup
-
-
-def identify(dn, attr, canonical=0):
-	return OC in attr.get('objectClass', [])
+identify = object.identify

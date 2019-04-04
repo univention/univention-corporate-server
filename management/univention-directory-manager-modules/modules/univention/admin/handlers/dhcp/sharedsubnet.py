@@ -109,9 +109,6 @@ class object(DHCPBase):
 	module = module
 
 
-def identify(dn, attr):
-	return 'univentionDhcpSubnet' in attr.get('objectClass', []) and 'univentionDhcpSharedSubnet' in attr.get('objectClass', [])
-
-
 lookup_filter = object.lookup_filter
 lookup = object.lookup
+identify = object.identify

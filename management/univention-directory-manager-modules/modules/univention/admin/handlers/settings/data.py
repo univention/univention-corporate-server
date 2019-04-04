@@ -37,8 +37,6 @@ import univention.admin.localization
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate
 
-OC = "univentionData"
-
 module = 'settings/data'
 superordinate = 'settings/cn'
 default_containers = ['cn=data,cn=univention']
@@ -51,7 +49,7 @@ long_description = _('Arbitrary data files')
 options = {
 	'default': univention.admin.option(
 		default=True,
-		objectClasses=['top', OC],
+		objectClasses=['top', 'univentionData'],
 	),
 }
 property_descriptions = {
@@ -151,7 +149,4 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 lookup = object.lookup
-
-
-def identify(dn, attr, canonical=0):
-	return OC in attr.get('objectClass', [])
+identify = object.identify

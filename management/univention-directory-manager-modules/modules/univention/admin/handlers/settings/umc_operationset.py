@@ -31,7 +31,6 @@
 # <http://www.gnu.org/licenses/>.
 
 from univention.admin.layout import Tab, Group
-import univention.admin.filter as udm_filter
 import univention.admin.syntax as udm_syntax
 import univention.admin.mapping as udm_mapping
 
@@ -137,7 +136,4 @@ class object(simpleLdap):
 
 
 lookup = object.lookup
-
-
-def identify(dn, attr, canonical=0):
-	return 'umcOperationSet' in attr.get('objectClass', [])
+identify = object.identify

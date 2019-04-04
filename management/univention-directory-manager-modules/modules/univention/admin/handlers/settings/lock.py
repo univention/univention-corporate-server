@@ -93,7 +93,4 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 lookup = object.lookup
-
-
-def identify(dn, attr, canonical=0):
-	return 'lock' in attr.get('objectClass', [])
+identify = object.identify

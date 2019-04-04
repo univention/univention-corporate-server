@@ -108,9 +108,6 @@ class object(DHCPBase):
 		return filter
 
 
-def identify(dn, attr):
-	return 'dhcpServer' in attr.get('objectClass', [])
-
-
 lookup = object.lookup
 lookup_filter = object.lookup_filter
+identify = object.identify
