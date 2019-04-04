@@ -10,7 +10,7 @@ Variables: logrotate/.*
 
 Type: subfile
 Multifile: etc/cups/cupsd.conf
-Subfile: etc/cups/cupsd.conf.d/01cups-base
+Subfile: etc/cups/cupsd.conf.d/01cupsd-base
 Variables: interfaces/eth.*/network
 Variables: interfaces/eth.*/netmask
 Variables: cups/admin
