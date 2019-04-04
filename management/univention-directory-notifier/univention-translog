@@ -755,6 +755,12 @@ class CheckGeneric(object):
         if self.needs_fixing and filename == '':
             print()
             print('%s needs fixing:' % (self.filename,))
+            if self.opt.role != 'domaincontroller_master':
+                print('This UCS system must be re-joined!')
+                print()
+                print('See <%s> for details.' % (HELP_FIX,))
+                exit(1)
+
             self.fixit()
 
     def loop(self, stream):
