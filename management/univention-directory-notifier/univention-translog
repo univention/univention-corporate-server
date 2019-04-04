@@ -742,10 +742,10 @@ class CheckGeneric(object):
         # type: (str) -> None
         self.reset()
         with open(filename or self.filename, 'r') as stream:
-            self.log.info("Rading %s ...", filename or self.filename)
+            self.log.info("Reading %s ...", filename or self.filename)
             for lnr, line, rec in self.loop(stream):
                 self.check_transaction(rec)
-            self.log.info("Rading %s done", filename or self.filename)
+            self.log.info("Reading %s done", filename or self.filename)
 
         if self.needs_fixing and filename == '':
             print()
