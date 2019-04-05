@@ -9,4 +9,7 @@ desc: |
  * The LDAP connections are reestablished in the UMC-Web-Server after
    a server password change. This causes that the correct portal entries
    for authenticated users are shown again.
-bug: [48990]
+ * pam_cracklib has been removed from the UMC pam configuration.
+   Therefore password changes do not require strong passwords anymore if no
+   passord policy is defined in the environment.
+bug: [48990, 49039]
