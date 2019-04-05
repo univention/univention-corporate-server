@@ -3,7 +3,7 @@ release: "4.3"
 version: [3]
 scope: ucs_4.3-0-errata4.3-3
 src: univention-printserver
-fix: 11.0.1-6A~4.3.0.201904041804
+fix: 11.0.1-7A~4.3.0.201904051313
 desc: |
  This update addresses the following issue(s):
  * The cups configuration in /etc/cups/cupsd.local.conf is applied again.
