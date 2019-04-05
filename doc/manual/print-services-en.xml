@@ -97,7 +97,7 @@
 	The configuration of the CUPS print server is performed via settings from the LDAP directory
 	service and &ucsUCR;. If the &ucsUCRV; <envar>cups/include/local</envar> is set to
 	<literal>true</literal>, the <filename>/etc/cups/cupsd.local.conf</filename> file is included,
-	in which arbitrary options can be defined.
+	in which arbitrary options can be defined. Changes in this file require <command>ucr commit /etc/cups/cupsd.conf</command> to get applied.
   </para>
 
   <para>

@@ -97,7 +97,7 @@
 	LDAP-Verzeichnisdienst und &ucsUCR;. Wird die &ucsUCRV; <envar>cups/include/local</envar> auf
 	<literal>true</literal> gesetzt, wird zusätzlich die Datei
 	<filename>/etc/cups/cupsd.local.conf</filename> eingebunden, in der beliebige weitere Optionen
-	hinterlegt werden können.
+	hinterlegt werden können. Änderungen an dieser Datei benötigen <command>ucr commit /etc/cups/cupsd.conf</command> um aktiv zu werden.
   </para>
 
   <para>
