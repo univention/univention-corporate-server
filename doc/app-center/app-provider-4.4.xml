@@ -3379,7 +3379,9 @@ univention-config-registry set \
 	security/packetfilter/package/"$APP"/udp/6644/all="ACCEPT" \
     security/packetfilter/package/"$APP"/udp/6644/all/en="$APP"
 
-[ -x "/etc/init.d/univention-firewall" ] && service univention-firewall restart
+if [ -x "/etc/init.d/univention-firewall" ]; then
+    service univention-firewall restart
+fi
             </programlisting>
         </para>
         <para>
