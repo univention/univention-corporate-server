@@ -1,3 +1,9 @@
+univention-printserver (12.0.1-10) unstable; urgency=medium
+
+  * Bug #48437: Update Variable description
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 05 Apr 2019 12:54:38 +0200
+
 univention-printserver (12.0.1-9) unstable; urgency=medium
 
   * Bug #48437: Check if cupsd.local.conf exists
