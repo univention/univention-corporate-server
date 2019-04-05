@@ -65,8 +65,8 @@ Type=str
 Categories=service-cups
 
 [cups/include/local]
-Description[de]=Ist diese Option aktiviert, wird am Ende der Konfigurationsdatei /etc/cups/cupsd.conf die zusätzliche Konfigurationsdatei /etc/cups/cupsd.local.conf eingebunden, in die beliebige weitere Optionen eingetragen werden können. Ist die Variable nicht gesetzt, wird die Datei nicht eingebunden.
-Description[en]=If this option is activated, the additional configuration file /etc/cups/cupsd.local.conf is included at the end of the configuration file /etc/cups/cupsd.conf. This allows the configuration of arbitrary options. If the variable is unset, the file is not included.
+Description[de]=Ist diese Option aktiviert, wird am Ende der Konfigurationsdatei /etc/cups/cupsd.conf die zusätzliche Konfigurationsdatei /etc/cups/cupsd.local.conf eingebunden, in die beliebige weitere Optionen eingetragen werden können. Ist die Variable nicht gesetzt, wird die Datei nicht eingebunden. Änderungen an /etc/cups/cupsd.local.conf benötigen das Ausführen von ucr commit /etc/cups/cupsd.conf.
+Description[en]=If this option is activated, the additional configuration file /etc/cups/cupsd.local.conf is included at the end of the configuration file /etc/cups/cupsd.conf. This allows the configuration of arbitrary options. If the variable is unset, the file is not included. Changes in /etc/cups/cupsd.local.conf require to execute ucr commit /etc/cups/cupsd.conf.
 Type=bool
 Categories=service-cups
 
