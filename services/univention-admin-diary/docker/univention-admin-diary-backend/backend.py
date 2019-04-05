@@ -47,7 +47,7 @@ from flask_restplus import Api, Resource, abort, fields, reqparse
 from flask_restplus.inputs import datetime_from_iso8601
 from werkzeug.contrib.fixers import ProxyFix
 
-from ldap3 import Server, Connection, ALL
+from ldap3 import Server, Connection, ALL, BASE
 from ldap3.core.exceptions import LDAPException
 
 
@@ -76,10 +76,15 @@ api = Api(
 app.register_blueprint(blueprint)
 db = SQLAlchemy(app)
 
+# TODO: get from env and disk when started by appcenter
 LDAP_HOST = '10.200.3.141'
+LDAP_BASE_DN = 'dc=uni,dc=dtr'
+LDAP_HOSTDN = f'cn=m141-ox,cn=dc,cn=computers,{LDAP_BASE_DN}'
+LDAP_HOST_PW = 'n6VgQ7fKr3n5jJIbxebn'
+ADMIN_DIARY_WRITER_GROUP_DN = f'cn=admin-diary-writers,cn=groups,{LDAP_BASE_DN}'
 
 
-def get_engine_url():
+def get_engine_url():  # type: () -> str
 	# ucr = ConfigRegistry()
 	# ucr.load()
 	#
@@ -110,22 +115,6 @@ def get_engine():
 
 
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=get_engine()))
-
-
-# def make_session_class():
-# 	if make_session_class._session is None:
-# 		engine = get_engine()
-# 		make_session_class._session = sessionmaker(bind=engine)
-# 	return make_session_class._session
-# make_session_class._session = None
-#
-#
-# @contextmanager
-# def get_session():
-# 	session = make_session_class()()
-# 	yield session
-# 	session.commit()
-# 	session.close()
 
 
 @app.teardown_appcontext
@@ -356,7 +345,7 @@ class Client(object):
 			})
 		return res
 
-	def get(self, context_id):
+	def get(self, context_id):  # type: (str) -> typing.List[typing.Dict[str, typing.Any]]
 		res = []
 		for entry in self._session.query(Entry).filter(Entry.context_id == context_id).order_by('id'):
 			args = dict((arg.key, arg.value) for arg in entry.args)
@@ -382,7 +371,7 @@ class Client(object):
 
 
 @contextmanager
-def get_client(version):
+def get_client(version):  # type: (int) -> Client
 	if version != 1:
 		raise UnsupportedVersion(version)
 	# with get_session() as session:
@@ -481,26 +470,81 @@ def add_entry_v1(entry):  # type: (DiaryEntry) -> None
 		client.add(entry)
 
 
+def get_ldap_conection(dn, password):  # type: (str, str) -> Connection
+	"""
+	Use result as context manager.
+	"""
+	s = Server(host=LDAP_HOST, port=7636, use_ssl=True, get_info='ALL')
+	return Connection(
+		s, user=dn, password=password, version=3, authentication='SIMPLE', client_strategy='SYNC', auto_referrals=True,
+		check_names=True, read_only=False, lazy=False, raise_exceptions=True)
+
+
+def get_machine_connection():  # type: () -> Connection
+	"""
+	Use result as context manager.
+	"""
+	return get_ldap_conection(LDAP_HOSTDN, LDAP_HOST_PW)
+
+
+def get_group_members(connection, dn, known_groups=None):
+	# type: (Connection, str, typing.Optional[typing.Iterable[str]]) -> typing.Iterable[str]
+	known_groups = known_groups or set()
+	try:
+		q_res = connection.search(
+			dn,
+			'(objectClass=univentionGroup)',
+			attributes=['uniqueMember'],
+			search_scope=BASE)
+		if not q_res:
+			app.logger.error('Looking up group %r: %s', dn, connection.last_error)
+			return []
+	except LDAPException as exc:
+		app.logger.exception('Looking up group %r: %s', dn, exc)
+		return []
+	members = connection.entries[0].uniqueMember
+	users = set()
+	groups = set()
+	for member in [m for m in members if m not in known_groups]:
+		res = connection.search(member, '(objectClass=univentionGroup)', attributes=['uniqueMember'], search_scope=BASE)
+		if res:
+			groups.add(member)
+		else:
+			users.add(member)
+	for group in groups:
+		users.update(set(get_group_members(connection, group, known_groups=set(known_groups).union(groups))))
+
+	return users
+
+
+def get_allowed_user_dns():  # type: () -> typing.Iterable[str]
+	# TODO: cache for 1 min: get_group_members()
+	with get_machine_connection() as conn:
+		return get_group_members(conn, ADMIN_DIARY_WRITER_GROUP_DN)
+
+
 @auth.verify_password
 def verify_pw(username, password):  # type: (str, str) -> bool
 	if not (username and password):
 		return False
-	s = Server(host=LDAP_HOST, port=7636, use_ssl=True, get_info='ALL')
-	c = Connection(
-		s, user=username, password=password, auto_bind='NONE',
-		version=3, authentication='SIMPLE', client_strategy='SYNC', auto_referrals=True,
-		check_names=True, read_only=False, lazy=False, raise_exceptions=True)
-	try:
-		c.bind()
-	except LDAPException as exc:
-		app.logger.error('Trying to bind as %r to %r: %s', username, LDAP_HOST, exc)
+	if username not in get_allowed_user_dns():
+		app.logger.debug('User %r not allowed.', username)
 		return False
-
-	if c.bound:
-		app.logger.debug('Sucessfully authenticated as %r to %r.', username, LDAP_HOST)
-	else:
-		app.logger.info('Trying to bind as %r to %r: %r', username, LDAP_HOST, c.result)
-	return c.bound
+	# TODO: cache for 1min: hash(username + password, get_ldap_conection())
+	with get_ldap_conection(username, password) as conn:
+		try:
+			conn.bind()
+		except LDAPException as exc:
+			app.logger.error('Trying to bind as %r to %r: %s', username, LDAP_HOST, exc)
+			return False
+		finally:
+			res = conn.bound
+			conn.unbind()
+		if res:
+			app.logger.debug('Sucessfully authenticated as %r to %r.', username, LDAP_HOST)
+		else:
+			app.logger.info('Trying to bind as %r to %r: %r', username, LDAP_HOST, conn.result)
+	return res
 
 
 create_entry_parser = reqparse.RequestParser()
