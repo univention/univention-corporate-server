@@ -1,3 +1,10 @@
+univention-nagios (12.0.1-5) unstable; urgency=medium
+
+  * Bug #48422: add check for listener mdb database maxsize
+  * Bug #48617: add check for translog mdb database maxsize
+
+ -- Florian Best <best@univention.de>  Fri, 05 Apr 2019 16:33:09 +0200
+
 univention-nagios (12.0.1-4) unstable; urgency=low
 
   * Bug #48603: Fix local root exploit

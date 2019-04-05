@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/usr/bin/python2.7
 #
 # Univention Nagios Plugin
-#  check slapd's mdb maxsize
+#  check slapd's/udl's mdb maxsize
 #
 # Copyright 2007-2019 Univention GmbH
 #
@@ -30,74 +30,72 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import os
+import sys
+import argparse
+import subprocess
 
-eval "$(ucr shell ldap/database/mdb/maxsize ldap/database/type)"
+from univention.config_registry import ConfigRegistry
 
-STATE_OK=0
-STATE_WARNING=1
-STATE_CRITICAL=2
-STATE_UNKNOWN=3
+STATE_OK = 0
+STATE_WARNING = 1
+STATE_CRITICAL = 2
 
-nagios_exit() {
-	local state="$1"
-	local msg="$2"
+parser = argparse.ArgumentParser()
+parser.add_argument('-w', '--warn', type=int, default=75)
+parser.add_argument('-c', '--critical', type=int, default=90)
+parser.add_argument('-l', '--listener-only', action='store_true')
+args = parser.parse_args()
 
-	case $state in
-	0)
-		echo "SLAPD MDB OK: $msg"
-		exit 0
-		;;
-	1)
-		echo "SLAPD MDB WARNING: $msg"
-		exit 1
-		;;
-	2)
-		echo "SLAPD MDB CRITICAL: $msg"
-		exit 2
-		;;
-	*)
-		echo "SLAPD MDB UNKNOWN: $msg"
-		exit 3
-		;;
-	esac
-}
+ucr = ConfigRegistry()
+ucr.load()
 
-critical=90
-warn=75
-while test -n "$1"; do
-	case "$1" in
-		-w)
-			warn=$2
-			shift
-			;;
-		-c)
-			critical=$2
-			shift
-			;;
-	esac
-	shift
-done
+service = 'univention-directory-listener' if args.listener_only else 'slapd'
+ucr_variable = 'listener/cache/mdb/maxsize' if args.listener_only else 'ldap/database/mdb/maxsize'
 
-LC_ALL=C
 
-if [ "$ldap_database_type" = "mdb" ]; then
-	mdb_dir="/var/lib/univention-ldap/ldap"
-	mdb_file="$mdb_dir/data.mdb"
-	if [ -e "$mdb_file" ]; then
-		test -x /usr/bin/mdb_stat || nagios_exit "$STATE_WARNING" "mdb_stat not found, please install lmdb-utils"
-		max_pages="$(mdb_stat -e $mdb_dir | sed -ne 's| *Max pages: ||p')"
-		used_pages="$(mdb_stat -e $mdb_dir | sed -ne 's| *Number of pages used: ||p')"
-		in_use=$(($used_pages*100/$max_pages))	
-		if [ $in_use -ge $critical ]; then
-			nagios_exit $STATE_CRITICAL "More than $critical% (in fact $in_use%) of mdb database is use, please increase ldap/database/mdb/maxsize (and restart ldap server)"
-			echo "cri"
-		elif [ $in_use -ge $warn ]; then
-			nagios_exit "$STATE_WARNING" "More than $warn% (in fact $in_use%) of mdb database is use, consider increasing ldap/database/mdb/maxsize (and restart ldap server)"
-		else
-			nagios_exit $STATE_OK "System operational"
-		fi
-	fi
-	nagios_exit $STATE_OK "Slapd database file $mdb_file not found"
-fi
+def nagios_exit(state, msg):
+	print('%s %s: %s' % (service, {STATE_OK: 'MDB OK', STATE_WARNING: 'MDB WARNING', STATE_CRITICAL: 'MDB CRITICAL'}.get(state, 'MDB UNKNOWN'), msg))
+	sys.exit(state)
 
-nagios_exit $STATE_OK "Slapd backend is not mdb"
+
+files = []
+if args.listener_only:
+	files.append('/var/lib/univention-directory-listener/cache')
+else:
+	if ucr.get('ldap/database/type') == 'mdb':
+		files.append('/var/lib/univention-ldap/ldap')
+	if sys.maxsize > 2 ** 32:
+		files.append('/var/lib/univention-ldap/translog')
+
+files = [file_ for file_ in files if os.path.exists('%s/data.mdb' % (file_))]
+
+if files and not os.path.exists('/usr/bin/mdb_stat'):
+	nagios_exit(STATE_WARNING, 'mdb_stat not found, please install lmdb-utils')
+
+if not files:
+	nagios_exit(STATE_OK, 'Slapd backend is not mdb')
+
+errors = []
+warnings = []
+success = []
+for mdb_dir in files:
+	try:
+		output = subprocess.check_output(['/usr/bin/mdb_stat', '-e', mdb_dir], close_fds=True, env={'LC_ALL': 'C'})
+	except subprocess.CalledProcessError:
+		nagios_exit(STATE_CRITICAL, 'mdb_stat -e %s failed' % (mdb_dir,))
+
+	stat = dict(line.strip().lower().split(': ', 1) for line in output.splitlines() if ': ' in line)
+	try:
+		in_use = int((int(stat['number of pages used']) * 100) / int(stat['max pages']))
+	except KeyError:  # API change in the future
+		nagios_exit(STATE_CRITICAL, 'mdb_stat output could not be parsed: %s' % (output,))
+
+	if in_use >= args.critical:
+		errors.append("More than %s%% (in fact %s%%) of mdb database %s is use, please increase %s (and restart %s)" % (args.critical, in_use, mdb_dir, ucr_variable, service))
+	elif in_use >= args.warn:
+		warnings.append("More than %s%% (in fact %s%%) of mdb database %s is use, consider increasing %s (and restart %s)" % (args.warn, in_use, mdb_dir, ucr_variable, service))
+	else:
+		success.append("Database %s operational (in fact %s%%)" % (mdb_dir, in_use))
+result = STATE_CRITICAL if errors else (STATE_WARNING if warnings else STATE_OK)
+nagios_exit(result, '\n'.join(errors + warnings + success))

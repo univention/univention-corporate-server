@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-nagios
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * A nagios check for the translog mdb database maxsize has been added.
+ * A nagios check for the univention-directory-listener mdb database
+   maxsize has been added. To apply it execute:
+   univention-run-join-scripts --force --run-scripts \
+   26univention-nagios-common.inst \
+   30univention-nagios-client.inst
+bug: [48422, 48617]

@@ -155,6 +155,20 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
 		done
     fi
 
+    # add slapd mdb maxsize check only on role "domaincontroler_*"
+    if [ "$server_role" = "domaincontroller_master" -o \
+         "$server_role" = "domaincontroller_backup" -o \
+         "$server_role" = "memberserver" -o \
+         "$server_role" = "domaincontroller_slave" ] ; then
+		for dn in "cn=UNIVENTION_LISTENER_MDB_MAXSIZE,cn=nagios,$ldap_base"; do
+			rdn="$(echo $dn | sed -e 's|,.*||')"
+			if udm nagios/service list "$@" --filter "$rdn" | grep "^DN: $dn" 2>/dev/null >/dev/null; then
+				univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "$dn" || die
+			else
+				echo "Skipping $dn (code $?)"
+			fi
+		done
+    fi
 fi
 
 joinscript_save_current_version

@@ -3,12 +3,14 @@
 #include <pwd.h>
 #include <unistd.h>
 #include <errno.h>
+#include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
 #define COMMAND "/usr/lib/nagios/plugins/check_univention_nscd"
 
 
-main( int argc, char ** argv, char ** envp )
+int main( int argc, char ** argv, char ** envp )
 {
     int status = 0;
 	int i = 0;
