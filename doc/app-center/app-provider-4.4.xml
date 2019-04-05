@@ -3357,9 +3357,9 @@ service bind9 reload  # same here
         <para>
             This section describes how the local Univention Firewall based on
             iptables is changed by apps and how it can be customized. Docker
-            containers have acess to the Docker host. And the Docker containers
-            can be made available for external clients with the <guimenu>Ports
-                redirection</guimenu> (see <xref
+            containers have access to the Docker host. And the Docker containers
+            can be made available for external clients with <guimenu>Ports
+                redirection</guimenu> settings (see <xref
                 linkend="create-app-with-docker:ports" />).
         </para>
         <para>
