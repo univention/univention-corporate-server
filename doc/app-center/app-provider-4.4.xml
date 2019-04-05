@@ -481,8 +481,14 @@
                 be defined in the <guimenu>Ports</guimenu> section
                 on the <guimenu>Web interface</guimenu> tab. A list of ports can be
                 defined that the Docker host shall exclusively acquire for the
-                Docker container. Ports defined here cannot be used by other
-                services or other Docker containers on the UCS host.
+                Docker container (<guimenu>Port to be acquired
+                    exclusively</guimenu>). Ports defined here cannot be used
+                by other services or other Docker containers on the UCS host. A
+                second list can be defined for ports that should be forwarded
+                from the host to the Docker container (<guimenu>Host port to be
+                    forwarded</guimenu>). Ports defined here will build an
+                implicit conflict list against other apps that want to use
+                these ports.
             </para>
             <para>
                 For example, the solution exposes the API under the dedicated port
@@ -3344,7 +3350,45 @@ service bind9 reload  # same here
         <para>
 					Note: Although this seems convenient for some Apps, this feature creates an <emphasis>internal</emphasis> name. It may still be inconvenient for testers that run UCS in a virtual environment where their browser is not part of UCS' DNS.
         </para>
-			</section>
+    </section>
+
+    <section id="firewall">
+        <title>Firewall</title>
+        <para>
+            This section describes how the local Univention Firewall based on
+            iptables is changed by apps and how it can be customized. Docker
+            containers have acess to the Docker host. And the Docker containers
+            can be made available for external clients with the <guimenu>Ports
+                redirection</guimenu> (see <xref
+                linkend="create-app-with-docker:ports" />).
+        </para>
+        <para>
+            If MySQL/MariaDB or PostgreSQL are used as database, those ports
+            will be opened automatically for the Docker container (section
+            <xref linkend="create-app-with-docker:database" />).
+        </para>
+        <para>
+            Every app can provide additional custom rules to open required
+            ports. This can be done in the join script (section <xref
+                linkend="installation:joinscript" />). In the example the port
+            6644 is opened for TCP and UDP:
+            <programlisting>
+univention-config-registry set \
+	security/packetfilter/package/"$APP"/tcp/6644/all="ACCEPT" \
+	security/packetfilter/package/"$APP"/tcp/6644/all/en="$APP" \
+	security/packetfilter/package/"$APP"/udp/6644/all="ACCEPT" \
+    security/packetfilter/package/"$APP"/udp/6644/all/en="$APP"
+
+[ -x "/etc/init.d/univention-firewall" ] && service univention-firewall restart
+            </programlisting>
+        </para>
+        <para>
+            Please also add corresponding <userinput>ucr unset</userinput>
+            commands in the unjoin script so that the firewall rules will be
+            removed when the app is removed from the system (section <xref
+                linkend="uninstallation:unjoin" />).
+        </para>
+    </section>
 </chapter>
 
 
