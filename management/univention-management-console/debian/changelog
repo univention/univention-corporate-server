@@ -1,3 +1,10 @@
+univention-management-console (10.0.6-23) unstable; urgency=medium
+
+  * Bug #49039: remove pam_cracklib from univention-management-console pam
+  	configuration
+
+ -- Florian Best <best@univention.de>  Fri, 05 Apr 2019 12:52:37 +0200
+
 univention-management-console (10.0.6-22) unstable; urgency=medium
 
   * Bug #48990: reload ldap connections after server password change
