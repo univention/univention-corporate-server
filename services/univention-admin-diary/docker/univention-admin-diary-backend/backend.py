@@ -30,7 +30,9 @@
 
 import json
 import typing
+import hashlib
 import logging
+import datetime
 from contextlib import contextmanager
 from socket import gethostname
 from datetime import datetime
@@ -40,7 +42,7 @@ from sqlalchemy.orm import sessionmaker, relationship, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Sequence, Text, DateTime, func, Table
 
-from flask import Blueprint, Flask
+from flask import Blueprint, Flask, g
 from flask_httpauth import HTTPBasicAuth
 from flask_sqlalchemy import SQLAlchemy
 from flask_restplus import Api, Resource, abort, fields, reqparse
@@ -48,7 +50,9 @@ from flask_restplus.inputs import datetime_from_iso8601
 from werkzeug.contrib.fixers import ProxyFix
 
 from ldap3 import Server, Connection, ALL, BASE
-from ldap3.core.exceptions import LDAPException
+from ldap3.core.exceptions import LDAPException, LDAPInvalidCredentialsResult
+
+from pymemcache.client.base import Client as MemcachedClient
 
 
 logging.getLogger().setLevel(logging.DEBUG)  # INFO
@@ -78,10 +82,14 @@ db = SQLAlchemy(app)
 
 # TODO: get from env and disk when started by appcenter
 LDAP_HOST = '10.200.3.141'
+LDAP_PORT = 7636
 LDAP_BASE_DN = 'dc=uni,dc=dtr'
 LDAP_HOSTDN = f'cn=m141-ox,cn=dc,cn=computers,{LDAP_BASE_DN}'
 LDAP_HOST_PW = 'n6VgQ7fKr3n5jJIbxebn'
 ADMIN_DIARY_WRITER_GROUP_DN = f'cn=admin-diary-writers,cn=groups,{LDAP_BASE_DN}'
+MEMCACHED_HOST = 'memcached'
+MEMBER_CACHE_EXPIRE_SECONDS = 60
+AUTH_CACHE_EXPIRE_SECONDS = 60
 
 
 def get_engine_url():  # type: () -> str
@@ -470,92 +478,194 @@ def add_entry_v1(entry):  # type: (DiaryEntry) -> None
 		client.add(entry)
 
 
-def get_ldap_conection(dn, password):  # type: (str, str) -> Connection
-	"""
-	Use result as context manager.
-	"""
-	s = Server(host=LDAP_HOST, port=7636, use_ssl=True, get_info='ALL')
-	return Connection(
-		s, user=dn, password=password, version=3, authentication='SIMPLE', client_strategy='SYNC', auto_referrals=True,
-		check_names=True, read_only=False, lazy=False, raise_exceptions=True)
+class Cache(object):
+	def __init__(self, object_type, timeout):  # type: (str, int) -> None
+		self._object_type = object_type
+		self.timeout = timeout
+		self._memcache_kwargs = {
+			'server': (MEMCACHED_HOST, 11211),
+			'serializer': self._json_serializer,
+			'deserializer': self._json_deserializer,
+			'connect_timeout': 1.0,
+			'timeout': 1.0,
+			'no_delay': True,
+			'ignore_exc': False,
+		}
 
 
-def get_machine_connection():  # type: () -> Connection
-	"""
-	Use result as context manager.
-	"""
-	return get_ldap_conection(LDAP_HOSTDN, LDAP_HOST_PW)
+	@property
+	def _memcached_client(self):  # type: () -> MemcachedClient
+		try:
+			client = g.get('memcached_client')
+		except RuntimeError as exc:
+			# Working outside of flask application context (from interactive console).
+			# Don't store in flask.g
+			app.logger.warning('Ignoring RuntimeError: %s', str(exc).split('\n', 1)[0])
+			return MemcachedClient(**self._memcache_kwargs)
+		if client is None:
+			g.memcached_client = MemcachedClient(**self._memcache_kwargs)
+		return g.memcached_client
+
+	def _memcached_key(self, key):  # type: (str) -> str
+		return f'{self._object_type}_{key}'
+
+	@staticmethod
+	def _json_serializer(key, value):
+		if isinstance(value, str):
+			return value, 1
+		if isinstance(value, set):
+			value = list(value)
+		return json.dumps(value), 2
+
+	@staticmethod
+	def _json_deserializer(key, value, flags):
+		if flags == 1:
+			return value.decode('utf-8')
+		elif flags == 2:
+			res = json.loads(value.decode('utf-8'))
+			if isinstance(res, list):
+				res = set(res)
+			return res
+		raise ValueError("Unknown serialization format")
+
+	def __contains__(self, item):  # type: (str) -> bool
+		res = self._memcached_client.get(self._memcached_key(item))
+		return res is not None
+
+	def get(self, key, default=None):
+		return self._memcached_client.get(self._memcached_key(key), default)
+
+	def save(self, key, value, expire=None):
+		expire = expire or self.timeout
+		return self._memcached_client.add(self._memcached_key(key), value, expire)
 
 
-def get_group_members(connection, dn, known_groups=None):
-	# type: (Connection, str, typing.Optional[typing.Iterable[str]]) -> typing.Iterable[str]
-	known_groups = known_groups or set()
-	try:
-		q_res = connection.search(
-			dn,
-			'(objectClass=univentionGroup)',
-			attributes=['uniqueMember'],
-			search_scope=BASE)
-		if not q_res:
-			app.logger.error('Looking up group %r: %s', dn, connection.last_error)
-			return []
-	except LDAPException as exc:
-		app.logger.exception('Looking up group %r: %s', dn, exc)
-		return []
-	members = connection.entries[0].uniqueMember
-	users = set()
-	groups = set()
-	for member in [m for m in members if m not in known_groups]:
-		res = connection.search(member, '(objectClass=univentionGroup)', attributes=['uniqueMember'], search_scope=BASE)
-		if res:
-			groups.add(member)
+class AdminDiaryAuth(object):
+	group_cache = Cache('members', MEMBER_CACHE_EXPIRE_SECONDS)
+	auth_cache = Cache('auth', AUTH_CACHE_EXPIRE_SECONDS)
+
+	def __init__(
+			self,
+			ldap_host_address,  # type: str
+			ldap_host_port,  # type: int
+			ldap_host_dn,  # type: str
+			ldap_host_password  # type: str
+	):
+		# type: (...) -> None
+		self.ldap_host_address = ldap_host_address
+		self.ldap_host_port = ldap_host_port
+		self.ldap_host_dn = ldap_host_dn
+		self.ldap_host_password = ldap_host_password
+		self._ldap_connection = None
+
+	def ldap_connection(self, dn, password):  # type: (str, str) -> Connection
+		"""context manager"""
+		if not self._ldap_connection:
+			server = Server(host=self.ldap_host_address, port=self.ldap_host_port, use_ssl=True, get_info='ALL')
+			self._ldap_connection = Connection(
+				server, user=dn, password=password, version=3, authentication='SIMPLE', client_strategy='SYNC',
+				auto_referrals=True, check_names=True, read_only=False, lazy=False, raise_exceptions=True
+			)
+		return self._ldap_connection
+
+	def machine_connection(self):  # type: () -> Connection
+		"""context manager"""
+		return self.ldap_connection(self.ldap_host_dn, self.ldap_host_password)
+
+	def group_members(self, dn, known_groups=None):
+		# type: (str, typing.Optional[typing.Iterable[str]]) -> typing.Iterable[str]
+		known_groups = known_groups or set()
+		users = set()
+		groups = set()
+
+		with self.machine_connection() as conn:
+			try:
+				if not conn.search(
+						dn,
+						'(objectClass=univentionGroup)',
+						attributes=['uniqueMember'],
+						search_scope=BASE
+				):
+					app.logger.error('Looking up group %r: %s', dn, conn.last_error)
+					return []
+			except LDAPException as exc:
+				app.logger.exception('Looking up group %r: %s', dn, exc)
+				return []
+			members = conn.entries[0].uniqueMember
+			for member in [m for m in members if m not in known_groups]:
+				res = conn.search(member, '(objectClass=univentionGroup)', attributes=['uniqueMember'], search_scope=BASE)
+				if res:
+					groups.add(member)
+				else:
+					users.add(member)
+			for group in groups:
+				users.update(set(self.group_members(group, known_groups=set(known_groups).union(groups))))  # recursion
+
+		return users
+
+	def allowed_user_dns(self):  # type: () -> typing.Iterable[str]
+		members = self.group_cache.get(ADMIN_DIARY_WRITER_GROUP_DN)
+		if members is None:
+			# group_cache miss
+			members = self.group_members(ADMIN_DIARY_WRITER_GROUP_DN)
+			self.group_cache.save(ADMIN_DIARY_WRITER_GROUP_DN, members)
+		# else: group_cache hit
 		else:
-			users.add(member)
-	for group in groups:
-		users.update(set(get_group_members(connection, group, known_groups=set(known_groups).union(groups))))
+		return members
 
-	return users
+	def verify_pw(self, dn, password):  # type: (str, str) -> bool
+		if not (dn and password):
+			return False
 
+		# 1. authentication
+		cache_key = '{}/{}'.format(dn, hashlib.sha256(password.encode('utf-8')).hexdigest())
+		authenticated = self.auth_cache.get(cache_key)
+		if authenticated is None:
+			try:
+				with self.ldap_connection(dn, password) as conn:
+					assert conn.bound is True
+					app.logger.info('LDAP bind: sucessfully authenticated as %r to %r.', dn, LDAP_HOST)
+					authenticated = True
+			except LDAPInvalidCredentialsResult as exc:
+				app.logger.info('LDAP bind: denied access as %r to %r: %s', dn, LDAP_HOST, exc)
+				authenticated = False
+			except LDAPException as exc:
+				app.logger.error('LDAP bind: trying to bind as %r to %r: %s', dn, LDAP_HOST, exc)
+				authenticated = False
+			self.auth_cache.save(cache_key, authenticated)
+		elif authenticated is True:
+			app.logger.info('Cache: sucessfully authenticated as %r.', dn)
+		else:
+			app.logger.info('Cache: denied access to %r.', dn)
+			authenticated = False
 
-def get_allowed_user_dns():  # type: () -> typing.Iterable[str]
-	# TODO: cache for 1 min: get_group_members()
-	with get_machine_connection() as conn:
-		return get_group_members(conn, ADMIN_DIARY_WRITER_GROUP_DN)
+		# 2. authorization
+		if not authenticated:
+			return False
+		elif authenticated and dn in self.allowed_user_dns():
+			return True
+		else:
+			app.logger.info('User %r not authorized (not member of %r).', dn, ADMIN_DIARY_WRITER_GROUP_DN.split(',', 1)[0])
+			return False
 
 
 @auth.verify_password
 def verify_pw(username, password):  # type: (str, str) -> bool
-	if not (username and password):
-		return False
-	if username not in get_allowed_user_dns():
-		app.logger.debug('User %r not allowed.', username)
-		return False
-	# TODO: cache for 1min: hash(username + password, get_ldap_conection())
-	with get_ldap_conection(username, password) as conn:
-		try:
-			conn.bind()
-		except LDAPException as exc:
-			app.logger.error('Trying to bind as %r to %r: %s', username, LDAP_HOST, exc)
-			return False
-		finally:
-			res = conn.bound
-			conn.unbind()
-		if res:
-			app.logger.debug('Sucessfully authenticated as %r to %r.', username, LDAP_HOST)
-		else:
-			app.logger.info('Trying to bind as %r to %r: %r', username, LDAP_HOST, conn.result)
+	if not g.get('auth'):
+		g.auth = AdminDiaryAuth(LDAP_HOST, LDAP_PORT, LDAP_HOSTDN, LDAP_HOST_PW)
+	res = g.auth.verify_pw(username, password)
 	return res
 
 
 create_entry_parser = reqparse.RequestParser()
-create_entry_parser.add_argument('username', type=str, required=True, help='TODO.')
-create_entry_parser.add_argument('hostname', type=str, required=True, help='TODO.')
-create_entry_parser.add_argument('message', type=dict, required=True, help='TODO.')
-create_entry_parser.add_argument('args', type=dict, default={}, help='TODO.')
-create_entry_parser.add_argument('timestamp', type=datetime_from_iso8601, required=True, help='TODO.')
-create_entry_parser.add_argument('tags', type=str, default=[], action='append', help='TODO.')
+create_entry_parser.add_argument('username', type=str, required=True, help='User that triggered the logged event.')
+create_entry_parser.add_argument('hostname', type=str, required=True, help='Host on which the event took place.')
+create_entry_parser.add_argument('message', type=dict, required=True, help='Message.')
+create_entry_parser.add_argument('args', type=dict, default={}, help='Arguments to fill variables in message text.')
+create_entry_parser.add_argument('timestamp', type=datetime_from_iso8601, required=True, help='Date and time event took place.')
+create_entry_parser.add_argument('tags', type=str, default=[], action='append', help='Tags.')
 create_entry_parser.add_argument('context_id', type=str, required=True, help='TODO.')
-create_entry_parser.add_argument('event', type=str, required=True, help='TODO.')
+create_entry_parser.add_argument('event', type=str, required=True, help='Event ID.')
 create_entry_parser.add_argument('type', type=str, required=True, help='API version (must be "Entry v1").')
 
 

@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+  memcached:
+    image: memcached:alpine
+    command: ["memcached", "-v", "-m", "4"]
+  admin-diary:
+    image: docker-test.software-univention.de/admin-diary-backend:2.0
+    build: ./
+    depends_on:
+      - memcached

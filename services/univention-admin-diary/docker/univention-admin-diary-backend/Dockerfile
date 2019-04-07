@@ -12,7 +12,7 @@ RUN apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing/ \
     py3-ldap3
 
 RUN virtualenv --system-site-packages /uadb/venv && \
-	/uadb/venv/bin/pip3 --no-cache-dir install flask-restplus Flask-HTTPAuth
+	/uadb/venv/bin/pip3 --no-cache-dir install flask-restplus Flask-HTTPAuth pymemcache
 
 WORKDIR /uadb
 
