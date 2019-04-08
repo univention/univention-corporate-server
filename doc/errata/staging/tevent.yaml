@@ -2,8 +2,8 @@ product: ucs
 release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
-src: univention-ldb-modules
-fix: 7.0.0-4A~4.4.0.201903221026
+src: tevent
+fix: 0.9.39-1A~4.4.0.201903211405
 desc: |
  This update addresses the following issue:
  * Update to Samba 4.10.0
