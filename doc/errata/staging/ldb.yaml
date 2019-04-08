@@ -6,5 +6,5 @@ src: ldb
 fix: 2:1.5.4-1A~4.4.0.201903211536
 desc: |
  This update addresses the following issue:
- * Update to Samba 4.10.2.
+ * Update to Samba 4.10.1
 bug: [49034]
