@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: wget
+fix: 1.18-5+deb9u3
+desc: |
+ This update addresses the following issue:
+ * Buffer overflow vulnerability (CVE-2019-5953)
+bug: [49241]
+cve:
+- CVE-2019-5953
