@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Update to Samba 4.10.2.
 bug: [49034]
+erratum: 38
+announced: 2019-04-08
