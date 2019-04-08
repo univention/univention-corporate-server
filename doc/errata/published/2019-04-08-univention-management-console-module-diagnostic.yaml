@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Updated sysvolcheck check
 bug: [46643]
+erratum: 41
+announced: 2019-04-08
