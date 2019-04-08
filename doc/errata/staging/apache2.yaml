@@ -9,7 +9,7 @@ desc: |
  * mod_http2: DoS via slow, unneeded request bodies (CVE-2018-17189)
  * mod_session_cookie does not respect expiry time (CVE-2018-17199)
  * mod_http2: read-after-free on a string compare (CVE-2019-0196)
- * privilege escalation from modules scripts (CVE-2019-0211)
+ * Privilege escalation from modules scripts (CVE-2019-0211)
  * mod_auth_digest: access control bypass due to race condition
    (CVE-2019-0217)
  * URL normalization inconsistency (CVE-2019-0220)
