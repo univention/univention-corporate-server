@@ -6,5 +6,5 @@ src: tevent
 fix: 0.9.39-1A~4.4.0.201903211405
 desc: |
  This update addresses the following issue:
- * Update to Samba 4.10.0
+ * Update to Samba 4.10.2.
 bug: [49034]
