@@ -1,3 +1,9 @@
+univention-management-console (10.0.6-24) unstable; urgency=medium
+
+  * Bug ##49039: restore original pam_cracklib behavior (reverts Bug #48684).
+
+ -- Florian Best <best@univention.de>  Tue, 09 Apr 2019 09:36:40 +0200
+
 univention-management-console (10.0.6-23) unstable; urgency=medium
 
   * Bug #49039: remove pam_cracklib from univention-management-console pam
