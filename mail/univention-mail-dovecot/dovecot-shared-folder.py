@@ -57,7 +57,7 @@
 #   taken from LDAP. Info is in objectClass=univentionMailSharedFolder
 #    → univentionMailUserQuota. The quota info (and the name) for the public
 #   folders are cached in the UCRV mail/dovecot/internal/sharedfolders.
-# * runss "$ doveadm" commands as root, using the "Administrator" user as
+# * runs "$ doveadm" commands as root, using the "Administrator" user as
 #   login.
 # * assumes Dovecot runs as dovecot:dovecot.
 # * stores the list of shared (private) mailboxes in a flat text file:

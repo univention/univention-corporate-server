@@ -138,6 +138,7 @@ print ",".join(default_user_attrs)
 #   %n - user part in user@domain, same as %u if there's no domain
 #   %d - domain part in user@domain, empty if user there's no domain
 @!@
+from univention.lib.misc import custom_username
 default_user_filter_objectclasses = ["univentionMail", "univentionMailSharedFolder"]
 additional_user_filter_objectclasses = configRegistry.get("mail/dovecot/auth/ldap/user/objectclasses", "")
 additional_user_filter_objectclasses = additional_user_filter_objectclasses.split(",")
@@ -149,10 +150,12 @@ if additional_user_filter_objectclasses[0]:
 # address (but will not be able to access a mailbox).
 # Reason for the Administrator exception is, that in the listener (at modules/univention/mail/dovecot_shared_folder.py:397
 # in doveadm_set_mailbox_acls()) we need a user account to use "doveadm" without knowing a valid email address.
-print 'user_filter = (&(|%s)(|(!(univentionMailHomeServer=*))(univentionMailHomeServer=%s.%s))(|(mailPrimaryAddress=%%Lu)(&(uid=%%u)(|(mailPrimaryAddress=*)(uid=Administrator)))))' % (
-	"".join(["(objectClass=%s)" % obj for obj in default_user_filter_objectclasses]),
-	configRegistry.get("hostname"),
-	configRegistry.get("domainname"))
+print('user_filter = (&(|%(ocs)s)(|(!(univentionMailHomeServer=*))(univentionMailHomeServer=%(hostname)s.%(domainname)s))(|(mailPrimaryAddress=%%Lu)(&(uid=%%u)(|(mailPrimaryAddress=*)(uid=%(admin_user)s)))))' % {
+	"ocs": "".join(["(objectClass=%s)" % obj for obj in default_user_filter_objectclasses]),
+	"hostname": configRegistry.get("hostname"),
+	"domainname": configRegistry.get("domainname"),
+	"admin_user": custom_username("Administrator"),
+})
 @!@
 
 # Password checking attributes:
