@@ -1,3 +1,9 @@
+univention-mail-dovecot (4.0.0-19) unstable; urgency=low
+
+  * Bug #48628: localize Administrator username also in config template
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 09 Apr 2019 15:16:55 +0200
+
 univention-mail-dovecot (4.0.0-18) unstable; urgency=low
 
   * Bug #48628: handle localized Administrator username
