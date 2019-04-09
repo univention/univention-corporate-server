@@ -145,15 +145,12 @@ test_before_update () {
 	run_on_ucs_hosts $SLAVE "stat /home/testshare/test-testuser01.txt"
 	#python shared-utils/ucs-winrm.py create-share-file --server ucs-slave --filename testuser03-test.txt \
 	#	--username 'testuser03' --userpwd "Univention.99" --share testshareSlave --debug 2>&1 | grep -i PermissionDenied
-	python shared-utils/ucs-winrm.py create-share-file --server $MASTER --share "testshare" --filename "testfile.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
 	python shared-utils/ucs-winrm.py create-share-file --server $MASTER --filename test-admin.txt --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --share Administrator
 	stat /home/Administrator/test-admin.txt
 	getfacl /home/Administrator/test-admin.txt | grep "Domain.*Admin"
 	python shared-utils/ucs-winrm.py create-share-file --server ucs-master.sambatest.local --filename test-testuser02.txt --username 'testuser02' --userpwd "Univention.99" --share testuser02 --client $WIN1
 	#stat /home/testuser02/test-testuser02.txt
 	getfacl /home/testuser02/test-testuser02.txt | grep "Domain.*Users"
-	python shared-utils/ucs-winrm.py create-share-file --server ucs-master.sambatest.local --filename test-admin.txt --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --share testshare --client $WIN1
-	stat /home/testshare/test-admin.txt
 	# this should fail
 	#python shared-utils/ucs-winrm.py create-share-file --server ucs-master.sambatest.local --filename test-testuser02.txt --username 'testuser02' --userpwd "Univention.99" \
 	#	--share testshare --client $WIN1 --debug 2>&1 | grep -i PermissionDenied
