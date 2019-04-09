@@ -109,7 +109,7 @@ def get_auth(ucr):
 get_auth._auth = None
 
 def send_entry_to_backend(version, entry, backend, ucr):
-	url = 'https://%s/admindiary/api/v%s/' % (backend, version)
+	url = 'https://%s/admindiary/api/v%s/entries/' % (backend, version)
 	get_logger().debug('POSTing to %s' % url)
 	try:
 		response = post(url, json=entry, auth=get_auth(ucr))

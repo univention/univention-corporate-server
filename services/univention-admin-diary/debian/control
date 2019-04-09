@@ -45,6 +45,7 @@ Description: Univention Admin Diary backend library
 Package: univention-management-console-module-admindiary
 Architecture: all
 Depends: univention-management-console-server,
+ python-requests,
  python-univention-admin-diary-backend (= ${binary:Version})
 Suggests: univention-admin-diary-backend
 Description: UMC module for the Admin Diary

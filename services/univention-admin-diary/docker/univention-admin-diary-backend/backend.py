@@ -28,6 +28,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import os
 import json
 import typing
 import hashlib
@@ -42,7 +43,7 @@ from sqlalchemy.orm import sessionmaker, relationship, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Sequence, Text, DateTime, func, Table
 
-from flask import Blueprint, Flask, g
+from flask import Blueprint, Flask, request, g
 from flask_httpauth import HTTPBasicAuth
 from flask_sqlalchemy import SQLAlchemy
 from flask_restplus import Api, Resource, abort, fields, reqparse
@@ -54,6 +55,7 @@ from ldap3.core.exceptions import LDAPException, LDAPInvalidCredentialsResult
 
 from pymemcache.client.base import Client as MemcachedClient
 
+DEBUG = os.environ.get('DEBUG') == 'TRUE'
 
 logging.getLogger().setLevel(logging.DEBUG)  # INFO
 
@@ -105,13 +107,7 @@ def get_engine_url():  # type: () -> str
 	# 	dbhost = admin_diary_backend.split()[0]
 	# if dbhost == ucr.get('hostname') or dbhost == '%s.%s' % (ucr.get('hostname'), ucr.get('domainname')):
 	# 	dbhost = 'localhost'
-	dbms = 'mysql'
-	password = 'mnultnm8KkUy6nZgQmEi'
-	dbhost = '10.200.3.141'
-	db_url = '%s://admindiary:%s@%s/admindiary' % (dbms, password, dbhost)
-	if dbms == 'mysql':
-		db_url = db_url + '?charset=utf8mb4'
-	return db_url
+	return os.environ.get('DB_URI', 'mysql://admindiary:mnultnm8KkUy6nZgQmEi@10.200.3.141/admindiary?charset=utf8mb4')
 
 
 db_url = get_engine_url()
@@ -119,7 +115,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 
 
 def get_engine():
-	return sqlalchemy.create_engine(db_url)
+	return sqlalchemy.create_engine(db_url, echo=DEBUG)
 
 
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=get_engine()))
@@ -327,6 +323,7 @@ class Client(object):
 				ids = pattern_ids
 			else:
 				ids.intersection_update(pattern_ids)
+		app.logger.debug(repr(ids))
 		if ids is None:
 			entries = self._session.query(Entry).filter(Entry.event_id != None)
 		else:
@@ -342,13 +339,13 @@ class Client(object):
 			comments = self._session.query(Entry).filter(Entry.context_id == entry.context_id, Entry.message != None).count()
 			res.append({
 				'id': entry.id,
-				'date': entry.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
-				'event_name': event_name,
-				'hostname': entry.hostname,
+				'timestamp': entry.timestamp,
 				'username': entry.username,
-				'context_id': entry.context_id,
+				'hostname': entry.hostname,
 				'message': entry.message,
 				'args': args,
+				'context_id': entry.context_id,
+				'event': event_name,
 				'comments': comments > 0,
 			})
 		return res
@@ -668,6 +665,27 @@ create_entry_parser.add_argument('context_id', type=str, required=True, help='TO
 create_entry_parser.add_argument('event', type=str, required=True, help='Event ID.')
 create_entry_parser.add_argument('type', type=str, required=True, help='API version (must be "Entry v1").')
 
+query_entries_parser = reqparse.RequestParser()
+query_entries_parser.add_argument('time_from', type=datetime_from_iso8601, required=False, help='TODO.')
+query_entries_parser.add_argument('time_until', type=datetime_from_iso8601, required=False, help='TODO.')
+query_entries_parser.add_argument('tag', type=str, required=False, help='TODO.')
+query_entries_parser.add_argument('event', type=str, required=False, help='TODO.')
+query_entries_parser.add_argument('username', type=str, required=False, help='TODO.')
+query_entries_parser.add_argument('hostname', type=str, required=False, help='TODO.')
+query_entries_parser.add_argument('message', type=dict, required=False, help='TODO.')
+query_entries_parser.add_argument('locale', type=str, default='en', required=False, help='TODO.')
+
+@app.route('/admindiary/options')
+def options():
+	with get_client(version=1) as client:
+		return json.dumps(client.options()), {'Content-Type': 'application/json'}
+
+@app.route('/admindiary/translate')
+def translate():
+	event_name = request.args['event']
+	locale = request.args['locale']
+	with get_client(version=1) as client:
+		return json.dumps(client.translate(event_name, locale)), {'Content-Type': 'application/json'}
 
 entry_model = api.model('Model', {
 	'username': fields.String,
@@ -681,14 +699,37 @@ entry_model = api.model('Model', {
 	'type': fields.String,
 })
 
+entry_list_model = api.model('Model', {
+	'id': fields.Integer,
+	'timestamp': fields.DateTime(dt_format='iso8601'),
+	'username': fields.String,
+	'hostname': fields.String,
+	'message': fields.Raw,
+	'args': fields.Raw,
+	'context_id': fields.String,
+	'event': fields.String,
+	'comments': fields.Boolean,
+})
 
-@api.route('/')
+@api.route('/entries/')
 @api.doc('AdminDiaryEntry')
 class AdminDiaryEntryList(Resource):
 	method_decorators = (auth.login_required,)
 
-	@api.doc('create')
-	@api.expect(entry_model)
+	@api.doc('list_entries')
+	@api.marshal_list_with(entry_list_model)
+	@api.expect(query_entries_parser)
+	def get(self):  # type: () -> typing.Tuple[typing.Dict[str, typing.Any], int]
+		app.logger.debug('AdminDiaryEntryList.get()')
+		args = query_entries_parser.parse_args()
+		app.logger.debug(str(args))
+		app.logger.debug(repr(args))
+		with get_client(version=1) as client:
+			entries = client.query(args.time_from, args.time_until, args.tag, args.event, args.username, args.hostname, args.message, args.locale)
+			app.logger.debug(repr(entries))
+			return entries
+
+	@api.doc('create_entry')
 	@api.marshal_with(entry_model, skip_none=True, code=201)
 	@api.expect(create_entry_parser)
 	def post(self):  # type: () -> typing.Tuple[typing.Dict[str, typing.Any], int]
@@ -707,4 +748,4 @@ class AdminDiaryEntryList(Resource):
 
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	app.run(debug=DEBUG)
