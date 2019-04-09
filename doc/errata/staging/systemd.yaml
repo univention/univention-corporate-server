@@ -1,0 +1,17 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: systemd
+fix: 232-25+deb9u11A~4.3.3.201904091044
+desc: |
+ This update addresses the following issues:
+ * automount: access to automounted volumes can lock up (CVE-2018-1049)
+ * Line splitting via fgets() allows for state injection during daemon-reexec
+   (CVE-2018-15686)
+ * systemd (CVE-2019-3842)
+bug: [49261]
+cve:
+- CVE-2018-1049
+- CVE-2018-15686
+- CVE-2019-3842
