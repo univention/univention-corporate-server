@@ -70,13 +70,13 @@ test_before_update () {
 
 	# Einem Testuser1 als "Windows home path" den UNC-Pfad "\\memberserver\homes" eintragen (z.B. auf Laufwerk Z:). OK
 	run_on_ucs_hosts $SLAVE "! stat /home/testuser01"
-	udm users/user modify  --dn "uid=testuser01,cn=users,$ldap_base" --set homedrive='Z:' --set sambahome='\\ucs-slave\testuser01'
+	udm users/user modify  --dn "uid=testuser01,cn=users,$ldap_base" --set homedrive='Y:' --set sambahome='\\ucs-slave\testuser01'
 	check_user_in_ucs testuser01 "Univention.99"
 	# Als Testuser1 anmelden
 	python shared-utils/ucs-winrm.py logon-as --username testuser01 --userpwd 'Univention.99' --client $WIN1 
 	# Ist das Homeverzeichnis automatisch eingebunden?
 	run_on_ucs_hosts $SLAVE "touch /home/testuser01/testfile.txt"
-	python shared-utils/ucs-winrm.py check-share --server ucs-slave --sharename "testuser01" --driveletter Z --filename "testfile.txt" --username 'testuser01' --userpwd "Univention.99" --client $WIN1
+	python shared-utils/ucs-winrm.py check-share --server ucs-slave --sharename "testuser01" --driveletter V --filename "testfile.txt" --username 'testuser01' --userpwd "Univention.99" --client $WIN1
 	
 	# Drucker verbinden (Druckertests wird erstaml ausgelassen, da auch im multi server test Drucker nicht stabil ist)
 	# die Testseite drucken kommt eine PS-Datei raus? (z.B. per ssh wegkopieren und mit okular ansehen, falls der "Text-only" Treiber ausgewählt wurde, ist der Text abgeschnitten ).
@@ -138,7 +138,7 @@ test_before_update () {
 	#	Funktioniert Schreib- und Lesezugriff DONE
 	#	Rechtevergabe prüfen DONE (simuliert durch Zugriff mit anderen Benutzer)
 	run_on_ucs_hosts $SLAVE "touch /home/testshare/test.txt"
-	python shared-utils/ucs-winrm.py check-share --server ucs-slave --sharename "testshareSlave" --driveletter Q --filename "test.txt" --username 'Administrator' --userpwd "$ADMIN_PASSWORD"
+	python shared-utils/ucs-winrm.py check-share --server ucs-slave --sharename "testshareSlave" --driveletter F --filename "test.txt" --username 'Administrator' --userpwd "$ADMIN_PASSWORD"
 	python shared-utils/ucs-winrm.py create-share-file --server ucs-slave --filename test-admin01.txt --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --share testshareSlave
 	python shared-utils/ucs-winrm.py create-share-file --server ucs-slave --filename test-testuser01.txt --username 'testuser01' --userpwd "Univention.99" --share testshareSlave
 	run_on_ucs_hosts $SLAVE "stat /home/testshare/test-admin01.txt"
@@ -241,7 +241,7 @@ test_after_update () {
 	python shared-utils/ucs-winrm.py logon-as --username testuser01 --userpwd 'Univention.99' --client $WIN1 
 	#        Ist das Homeverzeichnis automatisch eingebunden?
 	run_on_ucs_hosts $SLAVE "touch /home/testuser01/test.txt"
-	python shared-utils/ucs-winrm.py check-share --server ucs-slave --sharename "testuser01" --driveletter Z --filename "test.txt" --username 'testuser01' --userpwd "Univention.99" --client $WIN1
+	python shared-utils/ucs-winrm.py check-share --server ucs-slave --sharename "testuser01" --driveletter G --filename "test.txt" --username 'testuser01' --userpwd "Univention.99" --client $WIN1
 	#        Kann eine Datei dort angelegt werden?
 	python shared-utils/ucs-winrm.py create-share-file --server ucs-slave --filename test-user01.txt --username 'testuser01' --userpwd "Univention.99" --share testuser01 --client $WIN1
 	#        Wurden die GPOs ausgewertet?
@@ -270,7 +270,7 @@ test_after_update () {
 	# "kinit testuser2" auf UDM geht mit neuem Passwort?
 	# Ist das Homeverzeichnis am Windows-Client automatisch eingebunden?
 	run_on_ucs_hosts $SLAVE "touch /home/testuser02/test.txt"
-	python shared-utils/ucs-winrm.py check-share --server ucs-slave --sharename "testuser02" --driveletter Z --filename "test.txt" --username 'testuser02' --userpwd "Univention.99" --client $WIN2
+	python shared-utils/ucs-winrm.py check-share --server ucs-slave --sharename "testuser02" --driveletter R --filename "test.txt" --username 'testuser02' --userpwd "Univention.99" --client $WIN2
 	# Kann eine Datei dort angelegt werden?
 	python shared-utils/ucs-winrm.py create-share-file --server ucs-slave --filename test-admin02.txt --username 'testuser02' --userpwd "Univention.99" --share testuser02 --client $WIN2
 	# Wurden die GPOs ausgewertet?
