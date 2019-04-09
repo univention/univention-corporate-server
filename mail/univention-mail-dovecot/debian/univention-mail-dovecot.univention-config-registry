@@ -16,6 +16,7 @@ Variables: mail/dovecot/auth/ldap/cafile
 Variables: mail/dovecot/auth/ldap/user/attributes
 Variables: mail/dovecot/auth/ldap/user/objectclasses
 Variables: mail/dovecot/logging/ldap_debug_level
+Variables: users/default/administrator
 Variables: hostname
 Variables: domainname
 User: root
