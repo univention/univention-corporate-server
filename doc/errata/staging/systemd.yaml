@@ -6,10 +6,10 @@ src: systemd
 fix: 232-25+deb9u11A~4.3.3.201904091044
 desc: |
  This update addresses the following issues:
- * automount: access to automounted volumes can lock up (CVE-2018-1049)
+ * Automount: access to automounted volumes can lock up (CVE-2018-1049)
  * Line splitting via fgets() allows for state injection during daemon-reexec
    (CVE-2018-15686)
- * systemd (CVE-2019-3842)
+ * Unsafe environment usage in pam_systemd (CVE-2019-3842)
 bug: [49261]
 cve:
 - CVE-2018-1049
