@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-10) unstable; urgency=medium
+
+  * Bug #49239: deactivate pam_cracklib
+
+ -- Florian Best <best@univention.de>  Tue, 09 Apr 2019 12:38:26 +0200
+
 univention-management-console (11.0.4-9) unstable; urgency=medium
 
   * Bug #48897: improve pw change error message
