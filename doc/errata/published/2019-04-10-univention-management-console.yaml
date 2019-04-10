@@ -13,3 +13,5 @@ desc: |
    Therefore password changes do not require strong passwords anymore if no
    passord policy is defined in the domain.
 bug: [48990, 49039]
+erratum: 475
+announced: 2019-04-10
