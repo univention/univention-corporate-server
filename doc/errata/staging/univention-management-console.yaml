@@ -5,7 +5,7 @@ scope: ucs_4.3-0-errata4.3-3
 src: univention-management-console
 fix: 10.0.6-24A~4.3.0.201904090938
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The LDAP connections are reestablished in the UMC-Web-Server after
    a server password change. This causes that the correct portal entries
    for authenticated users are shown again.

@@ -5,7 +5,7 @@ scope: ucs_4.3-0-errata4.3-3
 src: univention-mail-dovecot
 fix: 4.0.0-20A~4.3.0.201904091539
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * Prevent creation of empty mailboxes in /var/spool/dovecot/private by
    unsuccessful login attempts of users without a primary mail address.
  * Add SNI Support to univention-mail-dovecot.
