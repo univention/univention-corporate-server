@@ -11,3 +11,5 @@ desc: |
    Changes in the /etc/cups/cupsd.local.conf configuration require a
    ucr commit /etc/cups/cupsd.conf now.
 bug: [48437]
+erratum: 46
+announced: 2019-04-10
