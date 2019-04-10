@@ -18,3 +18,5 @@ cve:
 ignore:
   - release+scope.consistent
   - version.scope
+erratum: 43
+announced: 2019-04-10
