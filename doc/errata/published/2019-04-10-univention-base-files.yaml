@@ -11,3 +11,5 @@ desc: |
  * Multiple rsyslog remote servers can now be specified in the UCR variable
    syslog/remote.
 bug: [35208, 48508]
+erratum: 44
+announced: 2019-04-10
