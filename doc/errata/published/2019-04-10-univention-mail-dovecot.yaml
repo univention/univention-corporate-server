@@ -13,3 +13,5 @@ desc: |
    mail/dovecot/ssl/sni/$fqdn/certificate=$path_to_certificate and
    mail/dovecot/ssl/sni/$fqdn/key=$path_to_certificate_key
 bug: [48628,49064]
+erratum: 474
+announced: 2019-04-10
