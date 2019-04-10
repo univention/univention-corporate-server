@@ -101,7 +101,6 @@ Depends: python-univention-appcenter (= ${source:Version}),
  docker-compose,
  python-ruamel.yaml,
  univention-apache,
- python-requests,
  ${misc:Depends},
  ${python:Depends},
 Description: Docker integration for Univention App Center

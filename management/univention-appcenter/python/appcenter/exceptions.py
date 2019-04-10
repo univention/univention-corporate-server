@@ -228,6 +228,9 @@ class RegisterSchemaFileFailed(Abort):
 class DockerVerificationFailed(Abort):
 	code = 427
 
+	def get_exc_details(self):
+		return str(self)
+
 
 class LocalAppCenterError(Abort):
 	# this is a bit lazy...

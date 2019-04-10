@@ -49,7 +49,7 @@ from base64 import encodestring
 
 import ruamel.yaml as yaml
 
-from univention.appcenter.utils import app_ports_with_protocol, app_ports, call_process, call_process2, shell_safe, get_sha256, mkdir, unique, urlopen, _
+from univention.appcenter.utils import app_ports_with_protocol, app_ports, call_process, call_process2, shell_safe, get_sha256, mkdir, unique, urlopen
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.exceptions import DockerVerificationFailed, DockerImagePullFailed
 from univention.appcenter.ucr import ucr_save, ucr_is_false, ucr_get, ucr_run_filter, ucr_is_true
@@ -62,24 +62,10 @@ DOCKER_READ_USER_CRED = {
 }
 
 
-class DockerImageVerificationFailedRegistryContact(Exception):
-
-	def __init__(self, app_name, docker_image_manifest_url):
-		reason_en_US = 'Error while contacting Docker registry server %s' % (docker_image_manifest_url,)
-		reason_message = _('Error while contacting Docker registry server %s') % (docker_image_manifest_url,)
-
-		_logger.error(reason_en_US)
-		super(DockerImageVerificationFailedRegistryContact, self).__init__(reason_message)
-
-
 class DockerImageVerificationFailedChecksum(Exception):
-
-	def __init__(self, app_name):
-		reason_en_US = 'Manifest checksum mismatch'
-		reason_message = _('Manifest checksum mismatch')
-
-		_logger.error(reason_en_US)
-		super(DockerImageVerificationFailedChecksum, self).__init__(reason_message)
+	def __init__(self, appcenter_hash, manifest_hash):
+		reason = 'Manifest checksum mismatch: %r != %r' % (appcenter_hash, manifest_hash)
+		super(DockerImageVerificationFailedChecksum, self).__init__(reason)
 
 
 def inspect(name):
@@ -105,17 +91,17 @@ def verify(app, image):
 		_logger.error('Error looking up DockerImage checksum for %s from index.json' % app.id)
 		return  # Nothing we can do here, this is the case of ISV Docker repos
 
-	import requests
-	https_request_auth = requests.auth.HTTPBasicAuth(DOCKER_READ_USER_CRED['username'], DOCKER_READ_USER_CRED['password'])
-	https_request_answer = requests.get(docker_image_manifest_url, auth=https_request_auth)
-	if not https_request_answer.ok:
-		raise DockerImageVerificationFailedRegistryContact(app.id, docker_image_manifest_url)
 
-	docker_image_manifest_hash = get_sha256(https_request_answer.content)
+	username, password = DOCKER_READ_USER_CRED['username'], DOCKER_READ_USER_CRED['password']
+	auth = encodestring('%s:%s' % (username, password)).replace('\n', '')
+	request = urllib2.Request(docker_image_manifest_url, headers={'Authorization': 'Basic %s' % auth})
+	response = urlopen(request)
+
+	docker_image_manifest_hash = get_sha256(response.read())
 
 	# compare with docker registry
 	if appcenter_sha256sum != docker_image_manifest_hash:
-		raise DockerImageVerificationFailedChecksum(app.id, docker_image_manifest_url)
+		raise DockerImageVerificationFailedChecksum(appcenter_sha256sum, docker_image_manifest_hash)
 
 
 def login(hub, with_license):
@@ -306,8 +292,7 @@ class Docker(object):
 		try:
 			verify(self.app, self.image)
 		except Exception as exc:
-			self.logger.fatal(str(exc))
-			raise DockerVerificationFailed()
+			raise DockerVerificationFailed(str(exc))
 
 	@contextmanager
 	def tmp_file(self):

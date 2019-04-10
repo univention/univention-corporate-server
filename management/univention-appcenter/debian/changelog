@@ -1,3 +1,10 @@
+univention-appcenter (8.0.11-9) unstable; urgency=medium
+
+  * Bug #48670: Verifying the checksum of a docker image is now more verbose
+    and uses a new function that works behind a proxy without reboot
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 10 Apr 2019 19:02:51 +0200
+
 univention-appcenter (8.0.11-8) unstable; urgency=medium
 
   * Bug #48895: Run listener handler as root as it may need to build the App
