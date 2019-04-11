@@ -1,3 +1,9 @@
+ucs-test (9.0.2-30) unstable; urgency=medium
+
+  * Bug #41006: Re-enable test case 175sync_create_dns_txt
+
+ -- Arvid Requate <requate@univention.de>  Thu, 11 Apr 2019 14:48:29 +0200
+
 ucs-test (9.0.2-29) unstable; urgency=low
 
   * Bug #48485: add test for SNI support in univention-mail-dovecot

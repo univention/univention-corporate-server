@@ -8,6 +8,7 @@
 ##   - dnsutils
 ## versions:
 ##  3.2-0: skip
+##  4.2-0: fixed
 
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
