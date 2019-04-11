@@ -116,7 +116,6 @@ property_descriptions = {
 		long_description='GNU message catalog (syntax: <language tag> <Base64 encoded GNU message catalog>)',
 		syntax=univention.admin.syntax.Localesubdirname_and_GNUMessageCatalog,
 		multivalue=True,
-		include_in_default_search=False,
 	),
 	'umcregistration': univention.admin.property(
 		short_description=_('UMC registration data'),
