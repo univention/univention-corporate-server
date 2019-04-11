@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-directory-manager-modules
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Searching for IP addresses of DNS host records is now possible.
+   The Zone Time-to-Live and Mail Exchanger properties of DNS objects
+   aren't shown in the search field list anymore in UMC.
+bug: [40668]
