@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import time
+import functools
 from ldap.filter import filter_format
 
 import univention.admin.filter
@@ -314,26 +315,38 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 	def rewrite_filter(cls, filter, mapping):
 		if filter.variable == 'ip':
 			filter.variable = 'aRecord'
+		if filter.variable == 'dnsAlias':
+			pass  # prevent mapping!
+		elif filter.variable == 'fqdn':
+			filter.transform_to_conjunction(univention.admin.filter.parse(univention.admin.filter.replace_fqdn_filter(str(filter))))
 		else:
 			super(ComputerObject, cls).rewrite_filter(filter, mapping)
 
 	@classmethod
-	def lookup_filter(cls, filter_s=None, lo=None):
-		filter_s = univention.admin.filter.replace_fqdn_filter(filter_s)
-		if str(filter_s).find('(dnsAlias=') != -1:
-			filter_s = univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)
-			if filter_s:
-				return cls.lookup_filter(filter_s, lo)
+	def rewrite_alias_filter(cls, filter, mapping, lo):
+		if filter.variable == 'dnsAlias':
+			found = univention.admin.filter.parse(univention.admin.handlers.dns.alias.lookup_alias_filter(lo, unicode(filter)))
+			if isinstance(found, univention.admin.filter.conjunction):
+				filter.transform_to_conjunction(found)
 			else:
-				return None
+				filter.variable = found.variable
+				filter.value = found.value
+
+	@classmethod
+	def lookup_filter(cls, filter_s=None, lo=None):
 		lookup_filter_obj = univention.admin.filter.conjunction('&', [x for x in [
 			univention.admin.filter.expression('objectClass', 'univentionHost'),
 			univention.admin.filter.expression('objectClass', cls.SERVER_TYPE),
 			None if not cls.SERVER_ROLE or cls.SERVER_ROLE == 'member' else univention.admin.filter.expression('univentionServerRole', cls.SERVER_ROLE),
 		] if x is not None])
 
+		def _remove_dns_alias(con, arg):
+			con.expressions = [x for x in con.expressions if getattr(x, 'variable', None) != 'dnsAlias']
+
 		# ATTENTION: has its own rewrite function.
 		lookup_filter_obj.append_unmapped_filter_string(filter_s, cls.rewrite_filter, cls.mapping)
+		lookup_filter_obj.append_unmapped_filter_string(filter_s, functools.partial(cls.rewrite_alias_filter, lo=lo), cls.mapping)
+		univention.admin.filter.walk(lookup_filter_obj, None, _remove_dns_alias)
 		return lookup_filter_obj
 
 	@classmethod

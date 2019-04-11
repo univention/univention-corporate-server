@@ -34,7 +34,7 @@ import re
 import univention.admin.uexceptions
 
 
-class conjunction:
+class conjunction(object):
 	"""
 	LDAP filter conjunction (`&`) or disjunction (`|`).
 	"""
@@ -86,7 +86,7 @@ class conjunction:
 			self.expressions.append(filter_p)
 
 
-class expression:
+class expression(object):
 	"""
 	LDAP filter expression.
 	"""
@@ -135,9 +135,11 @@ class expression:
 		return string % args
 
 	def transform_to_conjunction(self, con):
+		if not isinstance(con, conjunction):
+			raise TypeError('must be conjunction, got %r (%r)' % (type(con).__name__, repr(con)))
 		self.__dict__.clear()
 		self.__dict__.update(con.__dict__.copy())
-		self.__class__ = conjunction
+		self.__class__ = type(con)
 
 	def __unicode__(self):
 		return self.__str__()

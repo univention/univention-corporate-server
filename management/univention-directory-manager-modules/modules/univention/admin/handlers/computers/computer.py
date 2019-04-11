@@ -153,13 +153,8 @@ class object(univention.admin.handlers.simpleLdap):
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 	res = []
-	if str(filter_s).find('(dnsAlias=') != -1:
-		filter_s = univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)
-		if filter_s:
-			res += lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
-	else:
-		for computer in univention.admin.handlers.computers.computers:
-			res.extend(computer.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit))
+	for computer in univention.admin.handlers.computers.computers:
+		res.extend(computer.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit))
 	return res
 
 
