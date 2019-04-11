@@ -215,14 +215,12 @@ property_descriptions = {
 		short_description=_('Primary e-mail address'),
 		long_description='',
 		syntax=univention.admin.syntax.emailAddressTemplate,
-		dontsearch=False,
 	),
 	'mailAlternativeAddress': univention.admin.property(
 		short_description=_('Alternative e-mail address'),
 		long_description='',
 		syntax=univention.admin.syntax.emailAddressTemplate,
 		multivalue=True,
-		dontsearch=False,
 	),
 	'_options': univention.admin.property(
 		short_description=_('Options'),

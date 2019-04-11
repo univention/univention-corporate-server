@@ -73,7 +73,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.printerModel,
 		multivalue=True,
 		include_in_default_search=True,
-		dontsearch=False,
 	),
 }
 

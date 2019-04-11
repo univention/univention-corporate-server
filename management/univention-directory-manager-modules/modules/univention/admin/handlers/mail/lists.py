@@ -82,7 +82,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.emailAddressValidDomain,
 		include_in_default_search=True,
-		dontsearch=False,
 	),
 	'allowedEmailUsers': univention.admin.property(
 		short_description=_('Users that are allowed to send e-mails to the list'),

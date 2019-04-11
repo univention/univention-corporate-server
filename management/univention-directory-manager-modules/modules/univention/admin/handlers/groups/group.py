@@ -115,7 +115,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.SambaPrivileges,
 		multivalue=True,
 		options=['samba'],
-		dontsearch=False,
 		copyable=True,
 	),
 	'adGroupType': univention.admin.property(
@@ -164,7 +163,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.emailAddressValidDomain,
 		include_in_default_search=True,
 		options=['posix'],
-		dontsearch=False,
 		readonly_when_synced=True,
 		copyable=False,
 	),
