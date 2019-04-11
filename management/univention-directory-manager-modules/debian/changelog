@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.12-23) unstable; urgency=medium
+
+  * Bug #31494: fix searching in UMC
+
+ -- Florian Best <best@univention.de>  Thu, 11 Apr 2019 18:21:22 +0200
+
 univention-directory-manager-modules (14.0.12-22) unstable; urgency=medium
 
   * Bug #31494: fix filtering for dnsAlias=foo
