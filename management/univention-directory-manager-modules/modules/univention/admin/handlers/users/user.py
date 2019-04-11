@@ -245,7 +245,6 @@ property_descriptions = {
 		short_description=_('Lockout till'),
 		long_description=_('Shows the time when the account gets unlocked again according to policy.'),
 		syntax=univention.admin.syntax.string,  # see posixSecondsToLocaltimeDate
-		default=None,
 		may_change=False,
 		editable=False,
 		show_in_lists=True,
