@@ -228,7 +228,6 @@ property_descriptions = {
 		default=0,
 		may_change=False,  # caution! this gets overwritten by some scripts
 		editable=False,  # caution! this gets overwritten by some scripts
-		show_in_lists=False,
 		dontsearch=True,
 	),
 	'unlock': univention.admin.property(  # Just a trigger to reset self['locked']
