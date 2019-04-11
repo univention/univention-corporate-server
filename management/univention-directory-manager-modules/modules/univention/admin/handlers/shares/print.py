@@ -74,7 +74,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		required=False,
 		may_change=True,
 		identifies=False,
 		unique=True
@@ -83,7 +82,6 @@ property_descriptions = {
 		short_description=_('Enable quota support'),
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -91,7 +89,6 @@ property_descriptions = {
 		short_description=_('Price per page'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -99,7 +96,6 @@ property_descriptions = {
 		short_description=_('Price per print job'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		required=False,
 		may_change=True,
 		identifies=False
 	),

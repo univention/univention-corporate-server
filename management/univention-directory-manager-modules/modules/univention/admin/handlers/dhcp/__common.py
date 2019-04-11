@@ -46,7 +46,6 @@ _properties = {
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		options=['options'],
-		required=False,
 		may_change=True,
 		identifies=False,
 	),
@@ -56,7 +55,6 @@ _properties = {
 		syntax=univention.admin.syntax.TextArea,
 		multivalue=True,
 		options=['options'],
-		required=False,
 		may_change=True,
 		identifies=False,
 	)

@@ -76,7 +76,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -85,7 +84,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -94,7 +92,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -103,7 +100,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -112,7 +108,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -121,7 +116,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -130,7 +124,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -139,7 +132,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -148,7 +140,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -157,7 +148,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -166,7 +156,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -175,7 +164,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	)

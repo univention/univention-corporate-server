@@ -146,7 +146,6 @@ property_descriptions = {
 		long_description=_('The FQDNs of the hosts responsible for receiving mail for this DNS name.'),
 		syntax=univention.admin.syntax.dnsMX,
 		multivalue=True,
-		required=False,
 		may_change=True
 	),
 	'txt': univention.admin.property(
@@ -154,7 +153,6 @@ property_descriptions = {
 		long_description=_('One or more arbitrary text strings.'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		required=False,
 		may_change=True
 	),
 	'a': univention.admin.property(
@@ -162,7 +160,6 @@ property_descriptions = {
 		long_description=_('One or more IP addresses, to which the name is resolved to.'),
 		syntax=univention.admin.syntax.ipAddress,
 		multivalue=True,
-		required=False,
 		may_change=True
 	),
 }

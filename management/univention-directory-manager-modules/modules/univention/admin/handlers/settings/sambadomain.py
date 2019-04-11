@@ -101,7 +101,6 @@ property_descriptions = {
 		short_description=_('Next user RID'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		required=False,
 		may_change=True,
 		default='1000',
 		identifies=False
@@ -110,7 +109,6 @@ property_descriptions = {
 		short_description=_('Next group RID'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		required=False,
 		may_change=True,
 		default='1000',
 		identifies=False
@@ -119,7 +117,6 @@ property_descriptions = {
 		short_description=_('Next RID'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		required=False,
 		may_change=True,
 		default='1000',
 		identifies=False
@@ -128,7 +125,6 @@ property_descriptions = {
 		short_description=_('Password length'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -136,7 +132,6 @@ property_descriptions = {
 		short_description=_('Password history'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -144,7 +139,6 @@ property_descriptions = {
 		short_description=_('Minimum password age'),
 		long_description='',
 		syntax=univention.admin.syntax.SambaMinPwdAge,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -152,7 +146,6 @@ property_descriptions = {
 		short_description=_('Bad lockout attempts'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -160,7 +153,6 @@ property_descriptions = {
 		short_description=_('User must logon to change password'),
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -168,7 +160,6 @@ property_descriptions = {
 		short_description=_('Maximum password age'),
 		long_description='',
 		syntax=univention.admin.syntax.SambaMaxPwdAge,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -176,7 +167,6 @@ property_descriptions = {
 		short_description=_('Lockout duration minutes'),
 		long_description='',
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -184,7 +174,6 @@ property_descriptions = {
 		short_description=_('Reset count minutes'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -192,7 +181,6 @@ property_descriptions = {
 		short_description=_('Disconnect time'),
 		long_description='',
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -200,7 +188,6 @@ property_descriptions = {
 		short_description=_('Refuse machine password change'),
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -208,7 +195,6 @@ property_descriptions = {
 		short_description=_('Passwords must meet complexity requirements'),
 		long_description=_("Is not based on the user's account name. Contains at least six characters. Contains characters from three of the following four categories: Uppercase alphabet characters (A-Z), Lowercase alphabet characters (a-z), Arabic numerals (0-9), Nonalphanumeric characters (for example, !$#,%)"),
 		syntax=univention.admin.syntax.boolean,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -216,7 +202,6 @@ property_descriptions = {
 		short_description=_('Store plaintext passwords'),
 		long_description=_('Store plaintext passwords where account have "store passwords with reversible encryption" set.'),
 		syntax=univention.admin.syntax.boolean,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -224,7 +209,6 @@ property_descriptions = {
 		short_description=_('Password properties'),
 		long_description=_('A bitfield to indicate complexity and storage restrictions.'),
 		syntax=univention.admin.syntax.integer,
-		required=False,
 		may_change=True,
 		identifies=False
 	),

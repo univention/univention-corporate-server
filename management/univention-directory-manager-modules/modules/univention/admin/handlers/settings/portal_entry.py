@@ -86,7 +86,6 @@ property_descriptions = {
 		short_description=_('Favorite'),
 		long_description=_('Shown in the favorite section'),
 		syntax=univention.admin.syntax.TrueFalseUp,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -97,7 +96,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.PortalCategory,
 		default='service',
 		dontsearch=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -116,7 +114,6 @@ property_descriptions = {
 		long_description=_('Shown on portals'),
 		syntax=univention.admin.syntax.Portals,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -125,7 +122,6 @@ property_descriptions = {
 		long_description=_('Deprecated by allowedGroups'),
 		syntax=univention.admin.syntax.AuthRestriction,
 		default='anonymous',
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -134,7 +130,6 @@ property_descriptions = {
 		long_description=_('If one or more groups are selected then the portal entry will only be visible to logged in users that are in any of the selected groups. If no groups are selected then the portal entry is always visible.'),
 		syntax=univention.admin.syntax.GroupDNOrEmpty,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -143,7 +138,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='TRUE',
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -152,7 +146,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.Base64BaseUpload,
 		dontsearch=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),

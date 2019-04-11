@@ -89,7 +89,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='FALSE',
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -98,7 +97,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.TextArea,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -106,7 +104,6 @@ property_descriptions = {
 		short_description=_('Software package'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -114,7 +111,6 @@ property_descriptions = {
 		short_description=_('Software package version'),
 		long_description='',
 		syntax=univention.admin.syntax.DebianPackageVersion,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -122,7 +118,6 @@ property_descriptions = {
 		short_description=_('Minimal UCS version'),
 		long_description='',
 		syntax=univention.admin.syntax.UCSVersion,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -130,7 +125,6 @@ property_descriptions = {
 		short_description=_('Maximal UCS version'),
 		long_description='',
 		syntax=univention.admin.syntax.UCSVersion,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -140,7 +134,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.Localesubdirname_and_GNUMessageCatalog,
 		multivalue=True,
 		include_in_default_search=False,
-		required=False,
 		may_change=True,
 		identifies=False,
 	),
@@ -148,7 +141,6 @@ property_descriptions = {
 		short_description=_('UMC registration data'),
 		long_description='UMC registration data (syntax: Bzip2 compressed and Base64 encoded XML)',
 		syntax=univention.admin.syntax.Base64Bzip2XML,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -157,7 +149,6 @@ property_descriptions = {
 		long_description='UMC icon (syntax: Base64 encoded jpeg, png or svgz)',
 		syntax=univention.admin.syntax.Base64UMCIcon,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),

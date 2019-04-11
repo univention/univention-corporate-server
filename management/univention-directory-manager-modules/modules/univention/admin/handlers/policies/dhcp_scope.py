@@ -91,7 +91,6 @@ property_descriptions = {
 		short_description=_('Unknown clients'),
 		long_description=_('Dynamically assign addresses to unknown clients. Allowed by default. This option should not be used anymore.'),
 		syntax=univention.admin.syntax.AllowDenyIgnore,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -99,7 +98,6 @@ property_descriptions = {
 		short_description=_('BOOTP'),
 		long_description=_('Respond to BOOTP queries. Allowed by default.'),
 		syntax=univention.admin.syntax.AllowDenyIgnore,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -107,7 +105,6 @@ property_descriptions = {
 		short_description=_('Booting'),
 		long_description=_('Respond to queries from a particular client. Has meaning only when it appears in a host declaration. Allowed by default.'),
 		syntax=univention.admin.syntax.AllowDenyIgnore,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -115,7 +112,6 @@ property_descriptions = {
 		short_description=_('Duplicates'),
 		long_description=_('If a request is received from a client that matches the MAC address of a host declaration, any other leases matching that MAC address will be discarded by the server, if this is set to deny. Allowed by default. Setting this to deny violates the DHCP protocol.'),
 		syntax=univention.admin.syntax.AllowDeny,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -123,7 +119,6 @@ property_descriptions = {
 		short_description=_('Declines'),
 		long_description=_("Honor DHCPDECLINE messages. deny/ignore will prevent malicious or buggy clients from completely exhausting the DHCP server's allocation pool."),
 		syntax=univention.admin.syntax.AllowDenyIgnore,
-		required=False,
 		may_change=True,
 		identifies=False
 	),

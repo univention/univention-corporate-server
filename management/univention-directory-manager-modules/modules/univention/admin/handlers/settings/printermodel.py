@@ -75,7 +75,6 @@ property_descriptions = {
 		multivalue=True,
 		include_in_default_search=True,
 		dontsearch=False,
-		required=False,
 		may_change=True,
 		identifies=False,
 	),

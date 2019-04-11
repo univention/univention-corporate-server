@@ -92,7 +92,6 @@ property_descriptions = {
 		long_description='',
 		syntax=udm_syntax.UMC_OperationSet,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),

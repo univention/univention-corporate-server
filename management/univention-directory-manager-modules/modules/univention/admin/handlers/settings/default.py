@@ -127,7 +127,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False,
 	),

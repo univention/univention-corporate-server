@@ -80,7 +80,6 @@ property_descriptions = {
 		long_description=_('Long description for the option as shown on the Option tab.'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -90,7 +89,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.translationTupleShortDescription,
 		multivalue=True,
 		include_in_default_search=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -100,7 +98,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.translationTupleLongDescription,
 		multivalue=True,
 		include_in_default_search=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -108,7 +105,6 @@ property_descriptions = {
 		short_description=_('Default'),
 		long_description=_('Enable option by default.'),
 		syntax=univention.admin.syntax.boolean,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -116,7 +112,6 @@ property_descriptions = {
 		short_description=_('Editable'),
 		long_description=_('Option may be repeatedly turned on and off.'),
 		syntax=univention.admin.syntax.boolean,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -134,7 +129,6 @@ property_descriptions = {
 		long_description=_('Mapping to LDAP objectClasses'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -142,7 +136,6 @@ property_descriptions = {
 		short_description=_('Application'),
 		long_description=_('Specifies that the option belongs to a UCS Application'),
 		syntax=univention.admin.syntax.boolean,
-		required=False,
 		may_change=True,
 	),
 }

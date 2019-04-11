@@ -91,7 +91,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.Month,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -100,7 +99,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.Day,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -109,7 +107,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.Weekday,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -118,7 +115,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.Hour,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -127,7 +123,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.Minute,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),

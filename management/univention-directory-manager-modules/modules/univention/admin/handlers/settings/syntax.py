@@ -69,7 +69,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -85,7 +84,6 @@ property_descriptions = {
 		short_description=_('LDAP Base'),
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -96,7 +94,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.listAttributes,
 		multivalue=True,
 		include_in_default_search=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -105,7 +102,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -113,7 +109,6 @@ property_descriptions = {
 		short_description=_('Show Only'),
 		long_description='',
 		syntax=univention.admin.syntax.TrueFalseUp,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -121,7 +116,6 @@ property_descriptions = {
 		short_description=_('Add an empty value to choice list'),
 		long_description='',
 		syntax=univention.admin.syntax.TrueFalseUp,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -131,7 +125,6 @@ property_descriptions = {
 		# syntax = univention.admin.syntax.UDM_PropertySelect,
 		syntax=univention.admin.syntax.listAttributes,
 		include_in_default_search=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -139,7 +132,6 @@ property_descriptions = {
 		short_description=_('Stored LDAP Attribute'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		required=False,
 		may_change=True,
 		identifies=False
 	),

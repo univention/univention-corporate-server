@@ -81,7 +81,6 @@ property_descriptions = {
 		short_description=_('Failover peer configuration'),
 		long_description=_('The name of the "failover peer" configuration to use.'),
 		syntax=univention.admin.syntax.string,
-		required=False,
 		may_change=True,
 		identifies=False,
 	),
@@ -89,7 +88,6 @@ property_descriptions = {
 		short_description=_('Allow known clients'),
 		long_description=_('Addresses from this pool are given to clients which have a DHCP host entry matching their MAC address, but with no IP address assigned.'),
 		syntax=univention.admin.syntax.AllowDeny,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -97,7 +95,6 @@ property_descriptions = {
 		short_description=_('Allow unknown clients'),
 		long_description=_('Addresses from this pool are given to clients, which do not have a DHCP host entry matching their MAC address.'),
 		syntax=univention.admin.syntax.AllowDeny,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -105,7 +102,6 @@ property_descriptions = {
 		short_description=_('Allow dynamic BOOTP clients'),
 		long_description=_('Addresses from this pool are given to clients using the old BOOTP protocol, which has no mechanism to free addresses again.'),
 		syntax=univention.admin.syntax.AllowDeny,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -113,7 +109,6 @@ property_descriptions = {
 		short_description=_('All clients'),
 		long_description=_('Globally enable or disable this pool.'),
 		syntax=univention.admin.syntax.AllowDeny,
-		required=False,
 		may_change=True,
 		identifies=False
 	),

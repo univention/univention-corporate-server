@@ -84,7 +84,6 @@ property_descriptions = {
 		syntax=udm_syntax.UMC_CommandPattern,
 		multivalue=True,
 		dontsearch=True,
-		required=False,
 		may_change=True,
 		identifies=False,
 	),
@@ -94,7 +93,6 @@ property_descriptions = {
 		syntax=udm_syntax.string,
 		include_in_default_search=True,
 		dontsearch=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -104,7 +102,6 @@ property_descriptions = {
 		syntax=udm_syntax.string,
 		multivalue=True,
 		dontsearch=True,
-		required=False,
 		may_change=True,
 		identifies=False,
 	),

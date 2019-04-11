@@ -68,7 +68,6 @@ property_descriptions = {
 		short_description=_('Description'),
 		long_description=_('The description'),
 		syntax=univention.admin.syntax.string,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -76,7 +75,6 @@ property_descriptions = {
 		short_description=_('File name of file to store data in.'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		required=False,
 		may_change=True,
 		default='',
 		identifies=False
@@ -85,7 +83,6 @@ property_descriptions = {
 		short_description=_('The data'),
 		long_description=_('The actual data, bzipped and base64 encoded'),
 		syntax=univention.admin.syntax.Base64Bzip2Text,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -101,7 +98,6 @@ property_descriptions = {
 		short_description=_('Minimal UCS version'),
 		long_description='',
 		syntax=univention.admin.syntax.UCSVersion,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -109,7 +105,6 @@ property_descriptions = {
 		short_description=_('Maximal UCS version'),
 		long_description='',
 		syntax=univention.admin.syntax.UCSVersion,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -118,7 +113,6 @@ property_descriptions = {
 		long_description='The data objects meta information',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -126,7 +120,6 @@ property_descriptions = {
 		short_description=_('Software package'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -134,7 +127,6 @@ property_descriptions = {
 		short_description=_('Software package version'),
 		long_description='',
 		syntax=univention.admin.syntax.DebianPackageVersion,
-		required=False,
 		may_change=True,
 		identifies=False
 	),

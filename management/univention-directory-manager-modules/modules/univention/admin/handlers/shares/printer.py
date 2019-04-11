@@ -89,7 +89,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -98,7 +97,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -133,7 +131,6 @@ property_descriptions = {
 		short_description=_('Printer producer'),
 		long_description='',
 		syntax=univention.admin.syntax.PrinterProducerList,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -141,7 +138,6 @@ property_descriptions = {
 		short_description=_('Windows name'),
 		long_description='',
 		syntax=univention.admin.syntax.string_numbers_letters_dots_spaces,
-		required=False,
 		may_change=True,
 		identifies=False,
 		unique=True
@@ -150,7 +146,6 @@ property_descriptions = {
 		short_description=_('Enable quota support'),
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -158,7 +153,6 @@ property_descriptions = {
 		short_description=_('Price per page'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -166,7 +160,6 @@ property_descriptions = {
 		short_description=_('Price per print job'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -174,7 +167,6 @@ property_descriptions = {
 		short_description=_('Access control'),
 		long_description=_('Access list can allow or deny listed users and groups.'),
 		syntax=printerACLTypes,
-		required=False,
 		may_change=True,
 		identifies=False,
 		default="allow all"
@@ -184,7 +176,6 @@ property_descriptions = {
 		long_description=_('For the given users printing is explicitly allowed or denied.'),
 		syntax=univention.admin.syntax.UserDN,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False,
 	),
@@ -193,7 +184,6 @@ property_descriptions = {
 		long_description=_('For the given groups printing is explicitly allowed or denied.'),
 		syntax=univention.admin.syntax.GroupDN,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False,
 	),

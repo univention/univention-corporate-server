@@ -89,7 +89,6 @@ property_descriptions = {
 		short_description=_('Password Length'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -97,7 +96,6 @@ property_descriptions = {
 		short_description=_('Password History'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -105,7 +103,6 @@ property_descriptions = {
 		short_description=_('Minimum Password Age'),
 		long_description='',
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -113,7 +110,6 @@ property_descriptions = {
 		short_description=_('Bad Lockout Attempts'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -121,7 +117,6 @@ property_descriptions = {
 		short_description=_('User must Logon to Change Password'),
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -129,7 +124,6 @@ property_descriptions = {
 		short_description=_('Maximum Password Age'),
 		long_description='',
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -137,7 +131,6 @@ property_descriptions = {
 		short_description=_('Lockout Duration Minutes'),
 		long_description='',
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -145,7 +138,6 @@ property_descriptions = {
 		short_description=_('Reset Count Minutes'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -153,7 +145,6 @@ property_descriptions = {
 		short_description=_('Disconnect Time'),
 		long_description='',
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -161,7 +152,6 @@ property_descriptions = {
 		short_description=_('Refuse Machine Password Change'),
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
-		required=False,
 		may_change=True,
 		identifies=False
 	),

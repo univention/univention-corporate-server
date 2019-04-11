@@ -89,7 +89,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='FALSE',
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -98,7 +97,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.TextArea,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -106,7 +104,6 @@ property_descriptions = {
 		short_description=_('Software package'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -114,7 +111,6 @@ property_descriptions = {
 		short_description=_('Software package version'),
 		long_description='',
 		syntax=univention.admin.syntax.DebianPackageVersion,
-		required=False,
 		may_change=True,
 		identifies=False
 	),

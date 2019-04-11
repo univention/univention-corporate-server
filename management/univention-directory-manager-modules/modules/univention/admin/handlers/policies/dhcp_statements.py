@@ -92,7 +92,6 @@ property_descriptions = {
 		short_description=_('Authoritative'),
 		long_description=_('Send DHCPNAK messages to misconfigured clients. Disabled by default.'),
 		syntax=univention.admin.syntax.booleanNone,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -100,7 +99,6 @@ property_descriptions = {
 		short_description=_('Boot unknown clients'),
 		long_description=_('Enable clients for which there is no host declaration to obtain IP addresses. Allow and deny statements within pool declarations will still be respected.'),
 		syntax=univention.admin.syntax.TrueFalse,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -108,7 +106,6 @@ property_descriptions = {
 		short_description=_('Ping check'),
 		long_description=_('First send an ICMP Echo request (a ping) when considering dynamically allocating an IP address. Should only be disabled if the delay of one second introduced by this is a problem for a client.'),
 		syntax=univention.admin.syntax.TrueFalse,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -116,7 +113,6 @@ property_descriptions = {
 		short_description=_('Add hostnames to leases'),
 		long_description=_('Look up the domain name corresponding to the IP address of each address in the lease pool and use that address for the DHCP hostname option. Disabled by default.'),
 		syntax=univention.admin.syntax.TrueFalse,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -124,7 +120,6 @@ property_descriptions = {
 		short_description=_('Server identifier'),
 		long_description=_('The IP address identifying the DHCP server that should be used by the clients. Use this only if auto-detection fails for servers with multiple IP addresses.'),
 		syntax=univention.admin.syntax.hostOrIP,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -132,7 +127,6 @@ property_descriptions = {
 		short_description=_('Server name'),
 		long_description=_('Define the name of the DHCP server'),
 		syntax=univention.admin.syntax.hostName,
-		required=False,
 		may_change=True,
 		identifies=False
 	),

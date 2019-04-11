@@ -82,7 +82,6 @@ property_descriptions = {
 		long_description=_('Service description'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -98,7 +97,6 @@ property_descriptions = {
 		short_description=_('Plugin command arguments'),
 		long_description=_('Arguments of used Nagios plugin'),
 		syntax=univention.admin.syntax.string,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -106,7 +104,6 @@ property_descriptions = {
 		short_description=_('Use NRPE'),
 		long_description=_('Use NRPE to check remote services'),
 		syntax=univention.admin.syntax.boolean,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -203,7 +200,6 @@ property_descriptions = {
 		long_description=_('Check services on these hosts'),
 		syntax=univention.admin.syntax.nagiosHostsEnabledDn,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	)

@@ -78,7 +78,6 @@ property_descriptions = {
 		short_description=_('Broadcast address'),
 		long_description=_('The IP addresses used to send data to all hosts inside the network.'),
 		syntax=univention.admin.syntax.ipv4Address,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
@@ -87,7 +86,6 @@ property_descriptions = {
 		long_description=_('Define a pool of addresses available for dynamic address assignment.'),
 		syntax=univention.admin.syntax.IPv4_AddressRange,
 		multivalue=True,
-		required=False,
 		may_change=True,
 		identifies=False
 	),
