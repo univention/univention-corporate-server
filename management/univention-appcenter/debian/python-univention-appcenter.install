@@ -1,5 +1,0 @@
-python/appcenter/actions/*.py usr/share/pyshared/univention/appcenter/actions
-python/appcenter/*.py usr/share/pyshared/univention/appcenter
-scripts/joinscripthelper.sh usr/share/univention-appcenter
-scripts/univention-appcenter-listener-converter usr/share/
-scripts/univention-appcenter-listener-converter@.service /lib/systemd/system/

@@ -3,7 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7.0.50~),
- python-support,
+ dh-python,
  ucslint-univention,
  univention-join,
  univention-config-dev,
@@ -12,6 +12,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  ucslint,
  stylus
 Standards-Version: 3.8.2
+X-Python-Version: 2.7
 
 Package: univention-management-console-module-appcenter
 Architecture: all
@@ -20,6 +21,7 @@ Depends: univention-management-console-server,
  shell-univention-lib (>= 3.0.12-4),
  python-univention-directory-manager (>=9.0.22-13),
  python-univention-appcenter (= ${source:Version}),
+ python-support,
  univention-config,
  univention-updater,
  univention-management-console-module-lib,
@@ -62,6 +64,7 @@ Depends: univention-ssh,
  univention-join (>= 10.0.0-12),
  univention-directory-manager-tools (>= 13.0.21-21),
  univention-admin-diary-client (>= 1.0.0-29),
+ python-univention-legacy,
  python-univention-config-registry,
  python-univention-directory-manager,
  python-mysqldb,
@@ -116,6 +119,7 @@ Package: univention-management-console-module-apps
 Architecture: all
 Depends: univention-management-console-module-appcenter (= ${source:Version}),
  python-polib,
+ python-support,
  ${misc:Depends},
  ${python:Depends},
 Description: UMC module for application overview

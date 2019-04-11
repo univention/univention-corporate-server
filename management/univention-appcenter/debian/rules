@@ -30,8 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+export DH_VERBOSE=1
+
 %:
-	dh $@ --with 'python_support'
+	dh $@ --with python2
 
 UDM_PO_FILES := $(shell find udm -name '*.po')
 UDM_MO_FILES := $(UDM_PO_FILES:%.po=%.mo)
@@ -42,17 +44,30 @@ APPCENTER_DST_DIR := debian/$(APPCENTER_PKG_NAME)
 GERMAN_LC_MSG_DIR := /usr/share/locale/de/LC_MESSAGES
 APPCENTER_LC_MSG_DIR := $(APPCENTER_DST_DIR)$(GERMAN_LC_MSG_DIR)
 
+export PYBUILD_NAME=univention-appcenter
+
 %.mo:	%.po
 	msgfmt --check -o $@ $<
 
+override_dh_auto_clean:
+	dh_auto_clean --buildsystem=pybuild
+	rm -rf build/
+	dh_auto_clean
+
 override_dh_auto_build: $(UDM_MO_FILES) $(APPCENTER_MO_FILE)
 	dh-umc-module-build
+	dh_auto_build --buildsystem=pybuild
 	dh_auto_build
+
 
 override_dh_auto_install:
 	univention-install-config-registry
 	univention-install-joinscript
 	dh-umc-module-install
+	dh_auto_install --buildsystem=pybuild
+	python setup_dev.py build --force -b build/univention-appcenter-dev install --force --root=debian/univention-appcenter-dev --install-layout=deb
+	python setup_docker.py build --force -b build/univention-appcenter-docker install --force --root=debian/univention-appcenter-docker --install-layout=deb
+	python setup_umc.py build --force -b build/univention-appcenter-umc install --force --root=debian/univention-management-console-module-appcenter --install-layout=deb
 	dh_auto_install
 
 	@set -e;\
@@ -71,4 +86,5 @@ override_dh_auto_install:
 
 override_dh_auto_test:
 	ucslint
+	dh_auto_test --buildsystem=pybuild
 	dh_auto_test
