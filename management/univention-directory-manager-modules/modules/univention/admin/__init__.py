@@ -316,8 +316,8 @@ class property:
 		self.multivalue = multivalue
 		self.one_only = one_only
 		self.parent = parent
-		self.options = options
-		self.license = license
+		self.options = options or []
+		self.license = license or []
 		self.required = required
 		self.may_change = may_change
 		self.identifies = identifies
