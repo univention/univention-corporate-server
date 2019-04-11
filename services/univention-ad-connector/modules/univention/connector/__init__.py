@@ -1049,29 +1049,25 @@ class ucs:
 					value = object['attributes'][attributes.ldap_attribute]
 					ud.debug(ud.LDAP, ud.INFO, '__set_values: set attribute, ucs_key: %s - value: %s' % (ucs_key, value))
 
-					# check if ucs_key is an custom attribute
-					detected_ca = False
+					if isinstance(value, type(types.ListType())) and len(value) == 1:
+						value = value[0]
+					equal = False
 
-					if not detected_ca:
-						if isinstance(value, type(types.ListType())) and len(value) == 1:
-							value = value[0]
-						equal = False
-
-						# set encoding
-						compare = [ucs_object[ucs_key], value]
-						for i in [0, 1]:
-							if isinstance(compare[i], type([])):
-								compare[i] = univention.connector.ad.compatible_list(compare[i])
-							else:
-								compare[i] = univention.connector.ad.compatible_modstring(compare[i])
-
-						if attributes.compare_function != '':
-							equal = attributes.compare_function(compare[0], compare[1])
+					# set encoding
+					compare = [ucs_object[ucs_key], value]
+					for i in [0, 1]:
+						if isinstance(compare[i], type([])):
+							compare[i] = univention.connector.ad.compatible_list(compare[i])
 						else:
-							equal = compare[0] == compare[1]
-						if not equal:
-							ucs_object[ucs_key] = value
-							ud.debug(ud.LDAP, ud.INFO, "set key in ucs-object: %s" % ucs_key)
+							compare[i] = univention.connector.ad.compatible_modstring(compare[i])
+
+					if attributes.compare_function != '':
+						equal = attributes.compare_function(compare[0], compare[1])
+					else:
+						equal = compare[0] == compare[1]
+					if not equal:
+						ucs_object[ucs_key] = value
+						ud.debug(ud.LDAP, ud.INFO, "set key in ucs-object: %s" % ucs_key)
 				else:
 					ud.debug(ud.LDAP, ud.WARN, '__set_values: no ucs_attribute found in %s' % attributes)
 			else:
