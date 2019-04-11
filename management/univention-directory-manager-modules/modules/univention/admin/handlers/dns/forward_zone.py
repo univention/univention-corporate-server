@@ -79,7 +79,8 @@ property_descriptions = {
 		required=True,
 		may_change=True,
 		identifies=False,
-		default=(('3', 'hours'), [])
+		default=(('3', 'hours'), []),
+		dontsearch=True,
 	),
 	'contact': univention.admin.property(
 		short_description=_('Contact person'),

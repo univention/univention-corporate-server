@@ -1745,9 +1745,7 @@ class simpleLdap(object):
 			filter.variable = 'objectClass'
 			if len(ocs.objectClasses) > 1:
 				con = univention.admin.filter.conjunction('&', [univention.admin.filter.expression('objectClass', oc, escape=True) for oc in ocs.objectClasses])
-				filter.__dict__.clear()
-				filter.__dict__.update(con.__dict__.copy())
-				filter.__class__ = univention.admin.filter.conjunction
+				filter.transform_to_conjunction(con)
 			elif ocs.objectClasses:
 				filter.value = list(ocs.objectClasses)[0]
 			return

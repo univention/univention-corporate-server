@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.12-19) unstable; urgency=medium
+
+  * Bug #40668: repair searches of DNS objects
+
+ -- Florian Best <best@univention.de>  Thu, 11 Apr 2019 08:51:31 +0200
+
 univention-directory-manager-modules (14.0.12-18) unstable; urgency=medium
 
   * Bug #41659: rename base.py into __base.py to prevent error message in

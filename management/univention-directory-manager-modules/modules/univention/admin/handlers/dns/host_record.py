@@ -78,7 +78,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default=(('3', 'hours'), [])
+		default=(('3', 'hours'), []),
+		dontsearch=True,
 	),
 	'a': univention.admin.property(
 		short_description=_('IP addresses'),
@@ -96,7 +97,8 @@ property_descriptions = {
 		multivalue=True,
 		options=[],
 		required=False,
-		may_change=True
+		may_change=True,
+		dontsearch=True,
 	),
 	'txt': univention.admin.property(
 		short_description=_('Text Record'),
@@ -240,6 +242,16 @@ class object(univention.admin.handlers.simpleLdap):
 	def lookup_filter_superordinate(cls, filter, superordinate):
 		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('zone', superordinate['zone']), escape=True))
 		return filter
+
+	@classmethod
+	def rewrite_filter(cls, filter, mapping):
+		if filter.variable == 'a':
+			filter.transform_to_conjunction(univention.admin.filter.conjunction('|', [
+				univention.admin.filter.expression('aRecord', filter.value, escape=False),
+				univention.admin.filter.expression('aAAARecord', filter.value, escape=False),
+			]))
+		else:
+			return super(object, cls).rewrite_filter(filter, mapping)
 
 
 lookup = object.lookup

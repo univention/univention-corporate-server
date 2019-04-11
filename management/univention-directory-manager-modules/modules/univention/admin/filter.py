@@ -134,6 +134,11 @@ class expression:
 			return filter_format(string, args)
 		return string % args
 
+	def transform_to_conjunction(self, con):
+		self.__dict__.clear()
+		self.__dict__.update(con.__dict__.copy())
+		self.__class__ = conjunction
+
 	def __unicode__(self):
 		return self.__str__()
 

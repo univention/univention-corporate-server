@@ -75,7 +75,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default=(('22', 'hours'), [])
+		default=(('22', 'hours'), []),
+		dontsearch=True,
 	),
 	'nameserver': univention.admin.property(
 		short_description=_('Name servers'),

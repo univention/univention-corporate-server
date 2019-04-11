@@ -86,7 +86,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default=(('3', 'hours'), [])
+		default=(('3', 'hours'), []),
+		dontsearch=True,
 	),
 }
 layout = [
