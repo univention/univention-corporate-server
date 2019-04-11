@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-directory-manager-modules
-fix: 14.0.12-21A~4.4.0.201904111008
+fix: 14.0.12-22A~4.4.0.201904111643
 desc: |
  This update addresses the following issue(s):
  * Searching for IP addresses of DNS host records is now possible.
@@ -13,4 +13,5 @@ desc: |
    that overwrites a not existing layout group.
  * The object class univentionPolicyReference is now removed from objects
    when the last policy is dereferenced.
-bug: [40668, 48551, 46466]
+ * The search filter dnsAlias in the computer modules has been repaired.
+bug: [40668, 48551, 46466, 31494]
