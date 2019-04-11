@@ -59,7 +59,6 @@ property_descriptions = {
 		short_description=_('Service name'),
 		long_description=_('A unique name for this DHCP service.'),
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		include_in_default_search=True,
 		options=[],
 		required=True,

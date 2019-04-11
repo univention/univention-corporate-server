@@ -61,7 +61,6 @@ property_descriptions = {
 		short_description=_('Shared network name'),
 		long_description=_('A unique name for this shared network.'),
 		syntax=univention.admin.syntax.uid,
-		multivalue=False,
 		include_in_default_search=True,
 		options=[],
 		required=True,

@@ -65,7 +65,6 @@ property_descriptions = {
 		short_description=_('Mail domain name'),
 		long_description='',
 		syntax=univention.admin.syntax.dnsName,
-		multivalue=False,
 		include_in_default_search=True,
 		required=True,
 		may_change=True,

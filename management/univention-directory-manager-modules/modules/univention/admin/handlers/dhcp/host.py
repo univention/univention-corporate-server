@@ -60,7 +60,6 @@ property_descriptions = {
 		short_description=_('Hostname'),
 		long_description=_('A unique name for this DHCP host entry. Using the hostname is recommended.'),
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		include_in_default_search=True,
 		options=[],
 		required=True,
@@ -72,7 +71,6 @@ property_descriptions = {
 		long_description=_('Currently, only the ethernet and token-ring types are recognized. \
 The hardware-address should be a set of hexadecimal octets (numbers from 0 through ff) separated by colons.'),
 		syntax=univention.admin.syntax.DHCP_HardwareAddress,
-		multivalue=False,
 		options=[],
 		required=True,
 		may_change=True,

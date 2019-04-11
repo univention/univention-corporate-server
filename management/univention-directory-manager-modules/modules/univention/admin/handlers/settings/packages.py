@@ -61,7 +61,6 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description=_('Name'),
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		include_in_default_search=True,
 		options=[],
 		required=True,

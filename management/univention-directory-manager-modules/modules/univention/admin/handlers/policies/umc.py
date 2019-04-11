@@ -82,7 +82,6 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description='',
 		syntax=udm_syntax.policyName,
-		multivalue=False,
 		include_in_default_search=True,
 		options=[],
 		required=True,
