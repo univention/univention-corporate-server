@@ -66,33 +66,28 @@ property_descriptions = {
 		syntax=univention.admin.syntax.ServicePrint_FQDN,
 		multivalue=True,
 		required=True,
-		identifies=False
 	),
 	'sambaName': univention.admin.property(
 		short_description=_('Windows name'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		identifies=False,
 		unique=True
 	),
 	'setQuota': univention.admin.property(
 		short_description=_('Enable quota support'),
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
-		identifies=False
 	),
 	'pagePrice': univention.admin.property(
 		short_description=_('Price per page'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		identifies=False
 	),
 	'jobPrice': univention.admin.property(
 		short_description=_('Price per print job'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		identifies=False
 	),
 }
 

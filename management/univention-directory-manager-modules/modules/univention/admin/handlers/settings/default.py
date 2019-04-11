@@ -74,7 +74,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.GroupDN,
 		include_in_default_search=True,
 		required=True,
-		identifies=False,
 	),
 	'defaultComputerGroup': univention.admin.property(
 		short_description=_('Default Computer Group'),
@@ -82,7 +81,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.GroupDN,
 		include_in_default_search=True,
 		required=True,
-		identifies=False,
 	),
 	'defaultDomainControllerGroup': univention.admin.property(
 		short_description=_('Default DC Slave Computer Group'),
@@ -90,7 +88,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.GroupDN,
 		include_in_default_search=True,
 		required=True,
-		identifies=False,
 	),
 	'defaultDomainControllerMBGroup': univention.admin.property(
 		short_description=_('Default DC Master & Backup Server Group'),
@@ -98,7 +95,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.GroupDN,
 		include_in_default_search=True,
 		required=True,
-		identifies=False,
 	),
 	'defaultMemberServerGroup': univention.admin.property(
 		short_description=_('Default Member Server Group'),
@@ -106,7 +102,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.GroupDN,
 		include_in_default_search=True,
 		required=True,
-		identifies=False,
 	),
 	'defaultClientGroup': univention.admin.property(
 		short_description=_('Default Client Computer Group'),
@@ -114,14 +109,12 @@ property_descriptions = {
 		syntax=univention.admin.syntax.GroupDN,
 		include_in_default_search=True,
 		required=True,
-		identifies=False,
 	),
 	'defaultKdeProfiles': univention.admin.property(
 		short_description=_('Default KDE Profiles'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		identifies=False,
 	),
 }
 

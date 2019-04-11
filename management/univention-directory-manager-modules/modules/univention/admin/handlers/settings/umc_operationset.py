@@ -74,7 +74,6 @@ property_descriptions = {
 		include_in_default_search=True,
 		dontsearch=True,
 		required=True,
-		identifies=False,
 	),
 	'operation': univention.admin.property(
 		short_description=_('UMC commands'),
@@ -82,7 +81,6 @@ property_descriptions = {
 		syntax=udm_syntax.UMC_CommandPattern,
 		multivalue=True,
 		dontsearch=True,
-		identifies=False,
 	),
 	'flavor': univention.admin.property(
 		short_description=_('Flavor'),
@@ -90,7 +88,6 @@ property_descriptions = {
 		syntax=udm_syntax.string,
 		include_in_default_search=True,
 		dontsearch=True,
-		identifies=False
 	),
 	'hosts': univention.admin.property(
 		short_description=_('Restrict to host'),
@@ -98,7 +95,6 @@ property_descriptions = {
 		syntax=udm_syntax.string,
 		multivalue=True,
 		dontsearch=True,
-		identifies=False,
 	),
 }
 

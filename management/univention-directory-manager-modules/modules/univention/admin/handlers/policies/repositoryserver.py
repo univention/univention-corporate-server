@@ -90,7 +90,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.UCS_Server,
 		include_in_default_search=True,
-		identifies=False
 	),
 
 }

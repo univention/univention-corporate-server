@@ -95,49 +95,41 @@ property_descriptions = {
 		long_description=_("Hostname that will be used for the client's A and PTR records"),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		identifies=False
 	),
 	'ddnsDomainname': univention.admin.property(
 		short_description=_('DDNS domain name'),
 		long_description=_("Domain name that will be appended to the client's hostname to form a fully-qualified domain-name (FQDN)"),
 		syntax=univention.admin.syntax.string,
-		identifies=False
 	),
 	'ddnsRevDomainname': univention.admin.property(
 		short_description=_('DDNS reverse domain name'),
 		long_description=_("Domain name that will be appended to the client's hostname to produce a name for use in the client's PTR record"),
 		syntax=univention.admin.syntax.string,
-		identifies=False
 	),
 	'ddnsUpdates': univention.admin.property(
 		short_description=_('DDNS updates'),
 		long_description=_("Attempt to do a DNS update when a DHCP lease is confirmed"),
 		syntax=univention.admin.syntax.ddnsUpdates,
-		identifies=False
 	),
 	'ddnsUpdateStyle': univention.admin.property(
 		short_description=_('DDNS update style'),
 		long_description=_("Specify the DDNS Update Style to use for a DHCP Service"),
 		syntax=univention.admin.syntax.ddnsUpdateStyle,
-		identifies=False
 	),
 	'ddnsDoForwardUpdate': univention.admin.property(
 		short_description=_('DDNS forward update'),
 		long_description=_("Attempt to update a DHCP client's A record when the client acquires or renews a lease"),
 		syntax=univention.admin.syntax.TrueFalse,
-		identifies=False
 	),
 	'updateStaticLeases': univention.admin.property(
 		short_description=_('Update static leases'),
 		long_description=_("Do DNS updates for clients even if their IP addresses are assigned using fixed addresses"),
 		syntax=univention.admin.syntax.TrueFalse,
-		identifies=False
 	),
 	'clientUpdates': univention.admin.property(
 		short_description=_('Client updates'),
 		long_description=_("Honor the client's intention to do its own update of its A record"),
 		syntax=univention.admin.syntax.AllowDeny,
-		identifies=False
 	),
 }
 property_descriptions.update(dict([

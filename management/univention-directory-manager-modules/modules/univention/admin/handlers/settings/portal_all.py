@@ -60,7 +60,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.LocalizedDisplayName,
 		multivalue=True,
 		required=True,
-		identifies=False
 	),
 }
 layout = [Tab(_('General'), _('Basic settings'), layout=["name"])]

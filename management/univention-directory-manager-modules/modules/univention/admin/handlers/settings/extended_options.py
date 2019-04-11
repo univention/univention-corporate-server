@@ -72,14 +72,12 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 		required=True,
-		identifies=False
 	),
 	'longDescription': univention.admin.property(
 		short_description=_('Default long description'),
 		long_description=_('Long description for the option as shown on the Option tab.'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		identifies=False
 	),
 	'translationShortDescription': univention.admin.property(
 		short_description=_('Translations of short description'),
@@ -87,7 +85,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.translationTupleShortDescription,
 		multivalue=True,
 		include_in_default_search=True,
-		identifies=False
 	),
 	'translationLongDescription': univention.admin.property(
 		short_description=_('Translations of long description'),
@@ -95,19 +92,16 @@ property_descriptions = {
 		syntax=univention.admin.syntax.translationTupleLongDescription,
 		multivalue=True,
 		include_in_default_search=True,
-		identifies=False
 	),
 	'default': univention.admin.property(
 		short_description=_('Default'),
 		long_description=_('Enable option by default.'),
 		syntax=univention.admin.syntax.boolean,
-		identifies=False
 	),
 	'editable': univention.admin.property(
 		short_description=_('Editable'),
 		long_description=_('Option may be repeatedly turned on and off.'),
 		syntax=univention.admin.syntax.boolean,
-		identifies=False
 	),
 	'module': univention.admin.property(
 		short_description=_('Needed module'),
@@ -115,14 +109,12 @@ property_descriptions = {
 		syntax=univention.admin.syntax.univentionAdminModules,
 		multivalue=True,
 		required=True,
-		identifies=False
 	),
 	'objectClass': univention.admin.property(
 		short_description=_('LDAP object class'),
 		long_description=_('Mapping to LDAP objectClasses'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		identifies=False
 	),
 	'isApp': univention.admin.property(
 		short_description=_('Application'),

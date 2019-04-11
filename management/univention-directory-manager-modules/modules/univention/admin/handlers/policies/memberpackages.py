@@ -91,14 +91,12 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.Packages,
 		multivalue=True,
-		identifies=False
 	),
 	'memberPackagesRemove': univention.admin.property(
 		short_description=_('Package removal list'),
 		long_description='',
 		syntax=univention.admin.syntax.PackagesRemove,
 		multivalue=True,
-		identifies=False
 	),
 
 }

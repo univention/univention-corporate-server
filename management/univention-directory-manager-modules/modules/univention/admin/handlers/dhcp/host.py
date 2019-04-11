@@ -70,7 +70,6 @@ property_descriptions = {
 The hardware-address should be a set of hexadecimal octets (numbers from 0 through ff) separated by colons.'),
 		syntax=univention.admin.syntax.DHCP_HardwareAddress,
 		required=True,
-		identifies=False
 	),
 	'fixedaddress': univention.admin.property(
 		short_description=_('Fixed IP addresses'),
@@ -78,7 +77,6 @@ The hardware-address should be a set of hexadecimal octets (numbers from 0 throu
 Each address should be either an IP address or a domain name that resolves to one or more IP addresses.'),
 		syntax=univention.admin.syntax.hostOrIP,
 		multivalue=True,
-		identifies=False
 	),
 }
 layout = [

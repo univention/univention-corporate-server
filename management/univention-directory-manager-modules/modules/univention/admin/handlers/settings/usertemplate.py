@@ -65,40 +65,34 @@ property_descriptions = {
 		short_description=_('Title'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		identifies=False
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		identifies=False
 	),
 	'displayName': univention.admin.property(
 		short_description=_('Display name'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		default='<firstname> <lastname><:strip>',
-		identifies=False
 	),
 	'organisation': univention.admin.property(
 		short_description=_('Organisation'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		identifies=False
 	),
 	'pwdChangeNextLogin': univention.admin.property(
 		short_description=_('Change password on next login'),
 		long_description=_('Change password on next login'),
 		syntax=univention.admin.syntax.boolean,
 		dontsearch=True,
-		identifies=False
 	),
 	'disabled': univention.admin.property(
 		short_description=_('Account deactivation'),
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
-		identifies=False,
 		show_in_lists=True
 	),
 	'e-mail': univention.admin.property(
@@ -106,13 +100,11 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		identifies=False,
 	),
 	'unixhome': univention.admin.property(
 		short_description=_('Unix home directory'),
 		long_description='',
 		syntax=univention.admin.syntax.absolutePath,
-		identifies=False,
 		default='/home/<username>',
 	),
 	'homeShare': univention.admin.property(
@@ -120,114 +112,96 @@ property_descriptions = {
 		long_description=_('Share, the user\'s home directory resides on'),
 		syntax=univention.admin.syntax.WritableShare,
 		dontsearch=True,
-		identifies=False,
 	),
 	'homeSharePath': univention.admin.property(
 		short_description=_('Home share path'),
 		long_description=_('Path to the home directory on the home share'),
 		syntax=univention.admin.syntax.string,
 		dontsearch=True,
-		identifies=False,
 	),
 	'shell': univention.admin.property(
 		short_description=_('Login shell'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		identifies=False,
 		default='/bin/bash'
 	),
 	'sambahome': univention.admin.property(
 		short_description=_('Windows home path'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		identifies=False
 	),
 	'scriptpath': univention.admin.property(
 		short_description=_('Windows logon path'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		identifies=False
 	),
 	'profilepath': univention.admin.property(
 		short_description=_('Windows profile directory'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		identifies=False
 	),
 	'homedrive': univention.admin.property(
 		short_description=_('Windows home drive'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		identifies=False
 	),
 	'street': univention.admin.property(
 		short_description=_('Street'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		identifies=False
 	),
 	'postcode': univention.admin.property(
 		short_description=_('Postal code'),
 		long_description='',
 		syntax=univention.admin.syntax.OneThirdString,
-		identifies=False
 	),
 	'city': univention.admin.property(
 		short_description=_('City'),
 		long_description='',
 		syntax=univention.admin.syntax.TwoThirdsString,
-		identifies=False
 	),
 	'country': univention.admin.property(
 		short_description=_('Country'),
 		long_description='',
 		syntax=univention.admin.syntax.Country,
-		identifies=False,
 	),
 	'phone': univention.admin.property(
 		short_description=_('Telephone number'),
 		long_description='',
 		syntax=univention.admin.syntax.phone,
 		multivalue=True,
-		identifies=False
 	),
 	'employeeNumber': univention.admin.property(
 		short_description=_('Employee number'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		identifies=False,
 	),
 	'roomNumber': univention.admin.property(
 		short_description=_('Room number'),
 		long_description='',
 		syntax=univention.admin.syntax.OneThirdString,
-		identifies=False,
 	),
 	'secretary': univention.admin.property(
 		short_description=_('Superior'),
 		long_description='',
 		syntax=univention.admin.syntax.UserDN,
 		multivalue=True,
-		identifies=False
 	),
 	'departmentNumber': univention.admin.property(
 		short_description=_('Department number'),
 		long_description='',
 		syntax=univention.admin.syntax.OneThirdString,
-		identifies=False
 	),
 	'employeeType': univention.admin.property(
 		short_description=_('Employee type'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		identifies=False
 	),
 	'groups': univention.admin.property(
 		short_description=_('Groups'),
 		long_description='',
 		syntax=univention.admin.syntax.GroupDN,
 		multivalue=True,
-		identifies=False
 	),
 	'primaryGroup': univention.admin.property(
 		short_description=_('Primary group'),
@@ -236,14 +210,12 @@ property_descriptions = {
 		one_only=True,
 		parent='groups',
 		dontsearch=True,
-		identifies=False
 	),
 	'mailPrimaryAddress': univention.admin.property(
 		short_description=_('Primary e-mail address'),
 		long_description='',
 		syntax=univention.admin.syntax.emailAddressTemplate,
 		dontsearch=False,
-		identifies=False,
 	),
 	'mailAlternativeAddress': univention.admin.property(
 		short_description=_('Alternative e-mail address'),
@@ -251,7 +223,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.emailAddressTemplate,
 		multivalue=True,
 		dontsearch=False,
-		identifies=False,
 	),
 	'_options': univention.admin.property(
 		short_description=_('Options'),
@@ -259,7 +230,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.optionsUsersUser,
 		multivalue=True,
 		dontsearch=True,
-		identifies=False,
 	),
 }
 

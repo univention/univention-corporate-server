@@ -87,7 +87,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.DNS_ForwardZone,
 		multivalue=True,
 		may_change=False,
-		identifies=False
 	),
 	'dnsReverseZone': univention.admin.property(
 		short_description=_('DNS reverse lookup zone'),
@@ -95,7 +94,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.DNS_ReverseZone,
 		multivalue=True,
 		may_change=False,
-		identifies=False
 	),
 	'sambaDomainName': univention.admin.property(
 		short_description=_('Samba domain name'),
@@ -105,7 +103,6 @@ property_descriptions = {
 		options=['samba'],
 		required=True,
 		default=(configRegistry.get('domainname', '').upper(), []),
-		identifies=False
 	),
 	'sambaSID': univention.admin.property(
 		short_description=_('Samba SID'),
@@ -114,7 +111,6 @@ property_descriptions = {
 		options=['samba'],
 		required=True,
 		may_change=False,
-		identifies=False
 	),
 	'sambaNextUserRid': univention.admin.property(
 		short_description=_('Samba Next User RID'),
@@ -122,7 +118,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		options=['samba'],
 		default=('1000', []),
-		identifies=False
 	),
 	'sambaNextGroupRid': univention.admin.property(
 		short_description=_('Samba Next Group RID'),
@@ -130,7 +125,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		options=['samba'],
 		default=('1000', []),
-		identifies=False
 	),
 	'kerberosRealm': univention.admin.property(
 		short_description=_('Kerberos realm'),
@@ -140,7 +134,6 @@ property_descriptions = {
 		required=True,
 		may_change=False,
 		default=(configRegistry.get('domainname', '').upper(), []),
-		identifies=False
 	),
 }
 

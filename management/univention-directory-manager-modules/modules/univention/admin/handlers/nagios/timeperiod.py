@@ -100,49 +100,41 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string_numbers_letters_dots_spaces,
 		include_in_default_search=True,
 		required=True,
-		identifies=False
 	),
 	'periodMonday': univention.admin.property(
 		short_description=_('Monday'),
 		long_description=_('enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)'),
 		syntax=syntax_timeperiod,
-		identifies=False
 	),
 	'periodTuesday': univention.admin.property(
 		short_description=_('Tuesday'),
 		long_description=_('enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)'),
 		syntax=syntax_timeperiod,
-		identifies=False
 	),
 	'periodWednesday': univention.admin.property(
 		short_description=_('Wednesday'),
 		long_description=_('enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)'),
 		syntax=syntax_timeperiod,
-		identifies=False
 	),
 	'periodThursday': univention.admin.property(
 		short_description=_('Thursday'),
 		long_description=_('enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)'),
 		syntax=syntax_timeperiod,
-		identifies=False
 	),
 	'periodFriday': univention.admin.property(
 		short_description=_('Friday'),
 		long_description=_('enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)'),
 		syntax=syntax_timeperiod,
-		identifies=False
 	),
 	'periodSaturday': univention.admin.property(
 		short_description=_('Saturday'),
 		long_description=_('enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)'),
 		syntax=syntax_timeperiod,
-		identifies=False
 	),
 	'periodSunday': univention.admin.property(
 		short_description=_('Sunday'),
 		long_description=_('enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)'),
 		syntax=syntax_timeperiod,
-		identifies=False
 	)
 }
 

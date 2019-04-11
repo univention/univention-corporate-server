@@ -67,7 +67,6 @@ property_descriptions = {
 		short_description=_('Time to live'),
 		long_description=_('The time this entry may be cached.'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		identifies=False,
 		default=(('22', 'hours'), []),
 		dontsearch=True,
 	),

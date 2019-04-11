@@ -69,7 +69,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.LocalizedDisplayName,
 		multivalue=True,
 		required=True,
-		identifies=False
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
@@ -77,13 +76,11 @@ property_descriptions = {
 		syntax=univention.admin.syntax.LocalizedDescription,
 		multivalue=True,
 		required=True,
-		identifies=False
 	),
 	'favorite': univention.admin.property(
 		short_description=_('Favorite'),
 		long_description=_('Shown in the favorite section'),
 		syntax=univention.admin.syntax.TrueFalseUp,
-		identifies=False
 	),
 	# 'category' - deprecated in favor of 'content' of settings/portal
 	'category': univention.admin.property(
@@ -92,7 +89,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.PortalCategory,
 		default='service',
 		dontsearch=True,
-		identifies=False
 	),
 	'link': univention.admin.property(
 		short_description=_('Link'),
@@ -100,7 +96,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		required=True,
-		identifies=False
 	),
 	# 'portal' - deprecated in favor of 'content' of settings/portal
 	'portal': univention.admin.property(
@@ -108,35 +103,30 @@ property_descriptions = {
 		long_description=_('Shown on portals'),
 		syntax=univention.admin.syntax.Portals,
 		multivalue=True,
-		identifies=False
 	),
 	'authRestriction': univention.admin.property(
 		short_description=_('Authorization'),
 		long_description=_('Deprecated by allowedGroups'),
 		syntax=univention.admin.syntax.AuthRestriction,
 		default='anonymous',
-		identifies=False
 	),
 	'allowedGroups': univention.admin.property(
 		short_description=_('Restrict visibility to groups'),
 		long_description=_('If one or more groups are selected then the portal entry will only be visible to logged in users that are in any of the selected groups. If no groups are selected then the portal entry is always visible.'),
 		syntax=univention.admin.syntax.GroupDNOrEmpty,
 		multivalue=True,
-		identifies=False
 	),
 	'activated': univention.admin.property(
 		short_description=_('Activated'),
 		long_description='',
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='TRUE',
-		identifies=False
 	),
 	'icon': univention.admin.property(
 		short_description=_('Icon'),
 		long_description='',
 		syntax=univention.admin.syntax.Base64BaseUpload,
 		dontsearch=True,
-		identifies=False
 	),
 }
 

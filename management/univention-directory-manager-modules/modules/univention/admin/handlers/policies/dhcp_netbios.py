@@ -90,19 +90,16 @@ property_descriptions = {
 		long_description=_('List of WINS servers listed in order of preference'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		identifies=False
 	),
 	'netbios_scope': univention.admin.property(
 		short_description=_('NetBIOS scope'),
 		long_description=_('NetBIOS over TCP/IP scope parameter'),
 		syntax=univention.admin.syntax.string,
-		identifies=False
 	),
 	'netbios_node_type': univention.admin.property(
 		short_description=_('NetBIOS node type'),
 		long_description=_('The node type of clients for NetBIOS over TCP/IP'),
 		syntax=univention.admin.syntax.netbiosNodeType,
-		identifies=False
 	),
 }
 property_descriptions.update(dict([

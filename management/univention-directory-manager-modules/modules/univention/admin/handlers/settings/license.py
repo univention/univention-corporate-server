@@ -82,7 +82,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		required=True,
 		may_change=False,
-		identifies=False,
 	),
 	'module': univention.admin.property(
 		short_description=_('Module'),
@@ -91,7 +90,6 @@ property_descriptions = {
 		options=['Version 1'],
 		required=True,
 		may_change=False,
-		identifies=False,
 	),
 	'base': univention.admin.property(
 		short_description=_('Base DN'),
@@ -100,7 +98,6 @@ property_descriptions = {
 		include_in_default_search=True,
 		required=True,
 		may_change=False,
-		identifies=False,
 	),
 	'signature': univention.admin.property(
 		short_description=_('Signature'),
@@ -108,7 +105,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		required=True,
 		may_change=False,
-		identifies=False,
 	),
 	'accounts': univention.admin.property(
 		short_description=_('Max. user accounts'),
@@ -116,7 +112,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		options=['Version 1'],
 		may_change=False,
-		identifies=False,
 	),
 	'clients': univention.admin.property(
 		short_description=_('Max. clients'),
@@ -124,7 +119,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		options=['Version 1'],
 		may_change=False,
-		identifies=False,
 	),
 	'groupwareaccounts': univention.admin.property(
 		short_description=_('Max. groupware accounts'),
@@ -132,7 +126,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		options=['Version 1'],
 		may_change=False,
-		identifies=False,
 	),
 	'desktops': univention.admin.property(
 		short_description=_('Max. desktops'),
@@ -140,7 +133,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		options=['Version 1'],
 		may_change=False,
-		identifies=False,
 	),
 	'productTypes': univention.admin.property(
 		short_description=_('Valid product types'),
@@ -149,7 +141,6 @@ property_descriptions = {
 		multivalue=True,
 		options=['Version 1'],
 		may_change=False,
-		identifies=False,
 	),
 	'oemProductTypes': univention.admin.property(
 		short_description=_('Valid OEM product types'),
@@ -157,7 +148,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		may_change=False,
-		identifies=False,
 	),
 	'product': univention.admin.property(
 		short_description=_('Product type'),
@@ -165,7 +155,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		may_change=False,
-		identifies=False,
 	),
 	'keyID': univention.admin.property(
 		short_description=_('Key ID'),
@@ -173,7 +162,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		options=['Version 2'],
 		may_change=False,
-		identifies=False,
 	),
 	'servers': univention.admin.property(
 		short_description=_('Servers'),
@@ -181,7 +169,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		options=['Version 2'],
 		may_change=False,
-		identifies=False,
 	),
 	'support': univention.admin.property(
 		short_description=_('Servers with standard support'),
@@ -189,7 +176,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		options=['Version 2'],
 		may_change=False,
-		identifies=False,
 	),
 	'premiumsupport': univention.admin.property(
 		short_description=_('Premium Support'),
@@ -197,7 +183,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		options=['Version 2'],
 		may_change=False,
-		identifies=False,
 	),
 	'managedclients': univention.admin.property(
 		short_description=_('Managed Clients'),
@@ -205,7 +190,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		options=['Version 2'],
 		may_change=False,
-		identifies=False,
 	),
 	'users': univention.admin.property(
 		short_description=_('Users'),
@@ -213,7 +197,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		options=['Version 2'],
 		may_change=False,
-		identifies=False,
 	),
 	'virtualdesktopusers': univention.admin.property(
 		short_description=_('DVS users'),
@@ -221,7 +204,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		options=['Version 2'],
 		may_change=False,
-		identifies=False,
 	),
 	'virtualdesktopclients': univention.admin.property(
 		short_description=_('DVS clients'),
@@ -229,7 +211,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		options=['Version 2'],
 		may_change=False,
-		identifies=False,
 	),
 	'corporateclients': univention.admin.property(
 		short_description=_('Corporate clients'),
@@ -237,7 +218,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		options=['Version 2'],
 		may_change=False,
-		identifies=False,
 	),
 	'version': univention.admin.property(
 		short_description=_('Version'),
@@ -245,7 +225,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		options=['Version 2'],
 		may_change=False,
-		identifies=False,
 	),
 
 }

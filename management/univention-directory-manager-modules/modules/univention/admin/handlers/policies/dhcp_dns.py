@@ -89,14 +89,12 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		identifies=False
 	),
 	'domain_name_servers': univention.admin.property(
 		short_description=_('Domain name servers'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		identifies=False
 	),
 }
 property_descriptions.update(dict([

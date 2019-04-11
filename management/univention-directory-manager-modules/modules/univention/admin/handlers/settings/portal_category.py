@@ -69,7 +69,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.LocalizedDisplayName,
 		multivalue=True,
 		required=True,
-		identifies=False
 	),
 }
 

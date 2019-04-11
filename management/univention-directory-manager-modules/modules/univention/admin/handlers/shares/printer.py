@@ -89,14 +89,12 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		identifies=False
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		identifies=False
 	),
 	'spoolHost': univention.admin.property(
 		short_description=_('Print server'),
@@ -104,7 +102,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.ServicePrint_FQDN,
 		multivalue=True,
 		required=True,
-		identifies=False
 	),
 	'uri': univention.admin.property(
 		short_description=_('Connection'),
@@ -112,7 +109,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.PrinterURI,
 		include_in_default_search=True,
 		required=True,
-		identifies=False
 	),
 	'model': univention.admin.property(
 		short_description=_('Printer model'),
@@ -120,44 +116,37 @@ property_descriptions = {
 		syntax=univention.admin.syntax.PrinterDriverList,
 		include_in_default_search=True,
 		required=True,
-		identifies=False
 	),
 	'producer': univention.admin.property(
 		short_description=_('Printer producer'),
 		long_description='',
 		syntax=univention.admin.syntax.PrinterProducerList,
-		identifies=False
 	),
 	'sambaName': univention.admin.property(
 		short_description=_('Windows name'),
 		long_description='',
 		syntax=univention.admin.syntax.string_numbers_letters_dots_spaces,
-		identifies=False,
 		unique=True
 	),
 	'setQuota': univention.admin.property(
 		short_description=_('Enable quota support'),
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
-		identifies=False
 	),
 	'pagePrice': univention.admin.property(
 		short_description=_('Price per page'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		identifies=False
 	),
 	'jobPrice': univention.admin.property(
 		short_description=_('Price per print job'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		identifies=False
 	),
 	'ACLtype': univention.admin.property(
 		short_description=_('Access control'),
 		long_description=_('Access list can allow or deny listed users and groups.'),
 		syntax=printerACLTypes,
-		identifies=False,
 		default="allow all"
 	),
 	'ACLUsers': univention.admin.property(
@@ -165,14 +154,12 @@ property_descriptions = {
 		long_description=_('For the given users printing is explicitly allowed or denied.'),
 		syntax=univention.admin.syntax.UserDN,
 		multivalue=True,
-		identifies=False,
 	),
 	'ACLGroups': univention.admin.property(
 		short_description=_('Allowed/denied groups'),
 		long_description=_('For the given groups printing is explicitly allowed or denied.'),
 		syntax=univention.admin.syntax.GroupDN,
 		multivalue=True,
-		identifies=False,
 	),
 }
 

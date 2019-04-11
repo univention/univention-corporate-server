@@ -89,19 +89,16 @@ property_descriptions = {
 		short_description=_('Default lease time'),
 		long_description=_('Lease time used if the client does not request a specific expiration time'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		identifies=False
 	),
 	'lease_time_max': univention.admin.property(
 		short_description=_('Maximum lease time'),
 		long_description=_('Maximum lease time that the server will accept if asked for'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		identifies=False
 	),
 	'lease_time_min': univention.admin.property(
 		short_description=_('Minimum lease time'),
 		long_description=_('Minimum granted lease time'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		identifies=False
 	),
 }
 property_descriptions.update(dict([

@@ -72,40 +72,34 @@ property_descriptions = {
 		syntax=univention.admin.syntax.BaseFilename,
 		required=True,
 		default='',
-		identifies=False
 	),
 	'data': univention.admin.property(
 		short_description=_('Schema data'),
 		long_description='',
 		syntax=univention.admin.syntax.Base64Bzip2Text,
 		required=True,
-		identifies=False
 	),
 	'active': univention.admin.property(
 		short_description=_('Active'),
 		long_description='',
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='FALSE',
-		identifies=False
 	),
 	'appidentifier': univention.admin.property(
 		short_description=_('App identifier'),
 		long_description='',
 		syntax=univention.admin.syntax.TextArea,
 		multivalue=True,
-		identifies=False
 	),
 	'package': univention.admin.property(
 		short_description=_('Software package'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		identifies=False
 	),
 	'packageversion': univention.admin.property(
 		short_description=_('Software package version'),
 		long_description='',
 		syntax=univention.admin.syntax.DebianPackageVersion,
-		identifies=False
 	),
 }
 

@@ -74,37 +74,31 @@ property_descriptions = {
 		syntax=univention.admin.syntax.IPv4_AddressRange,
 		multivalue=True,
 		required=True,
-		identifies=False
 	),
 	'failover_peer': univention.admin.property(
 		short_description=_('Failover peer configuration'),
 		long_description=_('The name of the "failover peer" configuration to use.'),
 		syntax=univention.admin.syntax.string,
-		identifies=False,
 	),
 	'known_clients': univention.admin.property(
 		short_description=_('Allow known clients'),
 		long_description=_('Addresses from this pool are given to clients which have a DHCP host entry matching their MAC address, but with no IP address assigned.'),
 		syntax=univention.admin.syntax.AllowDeny,
-		identifies=False
 	),
 	'unknown_clients': univention.admin.property(
 		short_description=_('Allow unknown clients'),
 		long_description=_('Addresses from this pool are given to clients, which do not have a DHCP host entry matching their MAC address.'),
 		syntax=univention.admin.syntax.AllowDeny,
-		identifies=False
 	),
 	'dynamic_bootp_clients': univention.admin.property(
 		short_description=_('Allow dynamic BOOTP clients'),
 		long_description=_('Addresses from this pool are given to clients using the old BOOTP protocol, which has no mechanism to free addresses again.'),
 		syntax=univention.admin.syntax.AllowDeny,
-		identifies=False
 	),
 	'all_clients': univention.admin.property(
 		short_description=_('All clients'),
 		long_description=_('Globally enable or disable this pool.'),
 		syntax=univention.admin.syntax.AllowDeny,
-		identifies=False
 	),
 }
 

@@ -71,7 +71,6 @@ property_descriptions = {
 		long_description=_('The time this entry may be cached.'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
 		required=True,
-		identifies=False,
 		default=(('3', 'hours'), []),
 		dontsearch=True,
 	),
@@ -80,7 +79,6 @@ property_descriptions = {
 		long_description=_('The email address of the person responsible for this zone.'),
 		syntax=univention.admin.syntax.string,
 		required=True,
-		identifies=False,
 		default=('root@%s.' % configRegistry.get('domainname', ''), []),
 	),
 	'serial': univention.admin.property(
@@ -88,7 +86,6 @@ property_descriptions = {
 		long_description=_('The sequence number for this zone. Updates automatically.'),
 		syntax=univention.admin.syntax.integer,
 		required=True,
-		identifies=False,
 		default=('1', [])
 	),
 	'refresh': univention.admin.property(
@@ -96,7 +93,6 @@ property_descriptions = {
 		long_description=_('The time interval secondary DNS servers use to check the zone for updates.'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
 		required=True,
-		identifies=False,
 		default=(('8', 'hours'), [])
 	),
 	'retry': univention.admin.property(
@@ -104,7 +100,6 @@ property_descriptions = {
 		long_description=_('The time interval secondary DNS servers use to retry failed refresh updates.'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
 		required=True,
-		identifies=False,
 		default=(('2', 'hours'), [])
 	),
 	'expire': univention.admin.property(
@@ -112,7 +107,6 @@ property_descriptions = {
 		long_description=_('The time interval after which secondary DNS servers will expire failed zones.'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
 		required=True,
-		identifies=False,
 		default=(('7', 'days'), [])
 	),
 	'ttl': univention.admin.property(
@@ -120,7 +114,6 @@ property_descriptions = {
 		long_description=_('The time interval "not found" answers are cached.'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
 		required=True,
-		identifies=False,
 		default=(('1', 'days'), [])
 	),
 	'nameserver': univention.admin.property(
@@ -129,7 +122,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.dnsHostname,
 		multivalue=True,
 		required=True,
-		identifies=False
 	),
 }
 

@@ -88,7 +88,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.hostOrIP,
 		multivalue=True,
-		identifies=False
 	),
 }
 property_descriptions.update(dict([

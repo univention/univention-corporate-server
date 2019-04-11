@@ -88,7 +88,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.UCR_Variable,
 		multivalue=True,
-		identifies=False,
 	),
 
 }

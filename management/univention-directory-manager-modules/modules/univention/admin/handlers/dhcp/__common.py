@@ -46,7 +46,6 @@ _properties = {
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		options=['options'],
-		identifies=False,
 	),
 	'statements': univention.admin.property(
 		short_description=_('DHCP Statements'),
@@ -54,7 +53,6 @@ _properties = {
 		syntax=univention.admin.syntax.TextArea,
 		multivalue=True,
 		options=['options'],
-		identifies=False,
 	)
 }
 _options = {

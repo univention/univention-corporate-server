@@ -76,70 +76,60 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.XResolution,
 		multivalue=True,
-		identifies=False
 	),
 	'colorDepth': univention.admin.property(
 		short_description=_('Color Depth'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
 		multivalue=True,
-		identifies=False
 	),
 	'mouseProtocol': univention.admin.property(
 		short_description=_('Mouse Protocol'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		identifies=False
 	),
 	'mouseDevice': univention.admin.property(
 		short_description=_('Mouse Device'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		identifies=False
 	),
 	'keyboardLayout': univention.admin.property(
 		short_description=_('Keyboard Layout'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		identifies=False
 	),
 	'keyboardVariant': univention.admin.property(
 		short_description=_('Keyboard Variant'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		identifies=False
 	),
 	'hSync': univention.admin.property(
 		short_description=_('Horizontal Sync'),
 		long_description='',
 		syntax=univention.admin.syntax.XSync,
 		multivalue=True,
-		identifies=False
 	),
 	'vRefresh': univention.admin.property(
 		short_description=_('Vertical Refresh'),
 		long_description='',
 		syntax=univention.admin.syntax.XSync,
 		multivalue=True,
-		identifies=False
 	),
 	'xModule': univention.admin.property(
 		short_description=_('X Module'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		identifies=False
 	),
 	'displaySize': univention.admin.property(
 		short_description=_('Display Size (mm)'),
 		long_description='',
 		syntax=univention.admin.syntax.XResolution,
 		multivalue=True,
-		identifies=False
 	),
 }
 

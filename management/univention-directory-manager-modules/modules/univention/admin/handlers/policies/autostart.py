@@ -87,7 +87,6 @@ property_descriptions = {
 		short_description=_('Autostart session'),
 		long_description=_('Session script to be launched by autostart'),
 		syntax=univention.admin.syntax.string,
-		identifies=False
 	),
 }
 property_descriptions.update(dict([

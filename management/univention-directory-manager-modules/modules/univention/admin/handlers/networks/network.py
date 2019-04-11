@@ -78,7 +78,6 @@ property_descriptions = {
 		include_in_default_search=True,
 		required=True,
 		may_change=False,
-		identifies=False
 	),
 	'netmask': univention.admin.property(
 		short_description=_('Netmask'),
@@ -87,14 +86,12 @@ property_descriptions = {
 		include_in_default_search=True,
 		required=True,
 		may_change=False,
-		identifies=False
 	),
 	'nextIp': univention.admin.property(
 		short_description=_('Next IP address'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		dontsearch=True,
-		identifies=False
 	),
 	'ipRange': univention.admin.property(
 		short_description=_('IP address range'),
@@ -102,28 +99,24 @@ property_descriptions = {
 		syntax=univention.admin.syntax.IP_AddressRange,
 		multivalue=True,
 		dontsearch=True,
-		identifies=False
 	),
 	'dnsEntryZoneForward': univention.admin.property(
 		short_description=_('DNS forward lookup zone'),
 		long_description='',
 		syntax=univention.admin.syntax.DNS_ForwardZone,
 		dontsearch=True,
-		identifies=False
 	),
 	'dnsEntryZoneReverse': univention.admin.property(
 		short_description=_('DNS reverse lookup zone'),
 		long_description='',
 		syntax=univention.admin.syntax.DNS_ReverseZone,
 		dontsearch=True,
-		identifies=False
 	),
 	'dhcpEntryZone': univention.admin.property(
 		short_description=_('DHCP service'),
 		long_description='',
 		syntax=univention.admin.syntax.dhcpService,
 		dontsearch=True,
-		identifies=False
 	),
 }
 

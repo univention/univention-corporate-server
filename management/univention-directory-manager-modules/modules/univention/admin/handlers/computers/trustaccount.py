@@ -67,7 +67,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		identifies=False
 	),
 	'password': univention.admin.property(
 		short_description=_('Machine Password'),
@@ -75,7 +74,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.passwd,
 		required=True,
 		dontsearch=True,
-		identifies=False
 	),
 }
 

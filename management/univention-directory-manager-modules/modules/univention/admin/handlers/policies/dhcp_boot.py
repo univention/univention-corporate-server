@@ -89,13 +89,11 @@ property_descriptions = {
 		long_description=_('Numeric IP address or name of the \
 server from which the initial boot file is retrieved.'),
 		syntax=univention.admin.syntax.string,
-		identifies=False
 	),
 	'boot_filename': univention.admin.property(
 		short_description=_('Boot filename'),
 		long_description=_('Initial boot file to be loaded by a client'),
 		syntax=univention.admin.syntax.string,
-		identifies=False
 	),
 }
 property_descriptions.update(dict([

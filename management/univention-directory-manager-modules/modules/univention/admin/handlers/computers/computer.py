@@ -67,14 +67,12 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		identifies=False
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		identifies=False
 	),
 	'mac': univention.admin.property(
 		short_description=_('MAC address'),
@@ -82,7 +80,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		include_in_default_search=True,
-		identifies=False
 	),
 	'ip': univention.admin.property(
 		short_description=_('IP address'),
@@ -90,7 +87,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.ipAddress,
 		multivalue=True,
 		include_in_default_search=True,
-		identifies=False
 	),
 	'inventoryNumber': univention.admin.property(
 		short_description=_('Inventory number'),
@@ -98,7 +94,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		include_in_default_search=True,
-		identifies=False
 	),
 	'fqdn': univention.admin.property(
 		short_description='FQDN',
@@ -106,7 +101,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 		may_change=False,
-		identifies=False,
 		dontsearch=True
 	)
 }

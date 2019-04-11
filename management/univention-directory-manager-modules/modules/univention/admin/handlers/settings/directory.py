@@ -76,84 +76,72 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		identifies=False
 	),
 	'dns': univention.admin.property(
 		short_description=_('DNS Link'),
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		identifies=False
 	),
 	'dhcp': univention.admin.property(
 		short_description=_('DHCP Link'),
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		identifies=False
 	),
 	'users': univention.admin.property(
 		short_description=_('User Link'),
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		identifies=False
 	),
 	'groups': univention.admin.property(
 		short_description=_('Group Link'),
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		identifies=False
 	),
 	'computers': univention.admin.property(
 		short_description=_('Computer Link'),
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		identifies=False
 	),
 	'domaincontroller': univention.admin.property(
 		short_description=_('Domaincontroller Computer Link'),
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		identifies=False
 	),
 	'networks': univention.admin.property(
 		short_description=_('Network Link'),
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		identifies=False
 	),
 	'shares': univention.admin.property(
 		short_description=_('Share Link'),
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		identifies=False
 	),
 	'printers': univention.admin.property(
 		short_description=_('Printer Link'),
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		identifies=False
 	),
 	'mail': univention.admin.property(
 		short_description=_('Mail Link'),
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		identifies=False
 	),
 	'license': univention.admin.property(
 		short_description=_('License Link'),
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		identifies=False
 	)
 }
 

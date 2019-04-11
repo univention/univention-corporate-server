@@ -89,7 +89,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ServicePrint_FQDN,
 		include_in_default_search=True,
-		identifies=False
 	),
 
 }

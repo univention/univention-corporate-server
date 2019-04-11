@@ -89,7 +89,6 @@ property_descriptions = {
 		short_description=_('Desktop language'),
 		long_description='',
 		syntax=univention.admin.syntax.language,
-		identifies=False
 	),
 	'profile': univention.admin.property(
 		short_description=_('Desktop profile'),
@@ -97,21 +96,18 @@ property_descriptions = {
 		syntax=univention.admin.syntax.KDE_Profile,
 		multivalue=True,
 		include_in_default_search=True,
-		identifies=False
 	),
 	'logonScripts': univention.admin.property(
 		short_description=_('Logon scripts'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		identifies=False
 	),
 	'logoutScripts': univention.admin.property(
 		short_description=_('Logout scripts'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		identifies=False
 	),
 
 }

@@ -72,7 +72,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		required=True,
 		may_change=False,
-		identifies=False,
 	),
 }
 

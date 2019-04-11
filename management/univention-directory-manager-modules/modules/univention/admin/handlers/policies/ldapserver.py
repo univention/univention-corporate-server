@@ -90,7 +90,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.DomainController,
 		multivalue=True,
-		identifies=False
 	),
 
 }
