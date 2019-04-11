@@ -34,6 +34,7 @@
 
 import os
 import fcntl
+import time
 import re
 from logging import Handler
 from contextlib import contextmanager
@@ -118,6 +119,27 @@ def package_lock():
 			except EnvironmentError:
 				pass
 			fd.close()
+
+
+def wait_for_dpkg_lock(timeout=120):
+	lock_file = '/var/lib/dpkg/lock'
+	package_logger.debug('Trying to get a lock for %s...' % lock_file)
+	first = True
+	while timeout > 0:
+		returncode = call_process(['fuser', lock_file]).returncode
+		if returncode == 0:
+			if first:
+				package_logger.info('Could not lock %s. Is another process using it? Waiting up to %s seconds' % (lock_file, timeout))
+				first = False
+			time.sleep(1)
+			timeout -= 1
+		else:
+			if not first:
+				package_logger.info('Finally got the lock. Continuing...')
+			return True
+	package_logger.info('Unable to get a lock. Giving up...')
+	return False
+
 
 
 def _apt_args(dry_run=False):
