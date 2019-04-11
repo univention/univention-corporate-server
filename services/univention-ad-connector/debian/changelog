@@ -1,3 +1,9 @@
+univention-ad-connector (13.0.0-6) unstable; urgency=medium
+
+  * Bug #41553: remove dead custom attribute code
+
+ -- Florian Best <best@univention.de>  Thu, 11 Apr 2019 09:17:21 +0200
+
 univention-ad-connector (13.0.0-5) unstable; urgency=medium
 
   * Bug #48995: adjust require.toUrl() call for dojoConfig.cacheBust

@@ -1052,30 +1052,6 @@ class ucs:
 					# check if ucs_key is an custom attribute
 					detected_ca = False
 
-					ucs_module = self.modules[property_type]
-
-					if hasattr(ucs_module, 'ldap_extra_objectclasses'):
-						ud.debug(ud.LDAP, ud.INFO, '__set_values: module %s has custom attributes' % ucs_object.module)
-						for oc, pname, syntax, ldapMapping, deleteValues, deleteObjectClass in ucs_module.ldap_extra_objectclasses:
-							if ucs_key == ucs_module.property_descriptions[pname].short_description:
-								ud.debug(ud.LDAP, ud.INFO, '__set_values: detected a custom attribute')
-								detected_ca = True
-								old_value = ''
-								if modtype == 'modify':
-									old_value_result = self.search_ucs(base=ucs_object.dn, attr=[ldapMapping])
-									if len(old_value_result) > 0 and ldapMapping in old_value_result[0][1]:
-										old_value = old_value_result[0][1][ldapMapping]
-
-								if 'custom_attributes' in object:
-									object['custom_attributes']['modlist'].append((ldapMapping, old_value, value))
-								else:
-									object['custom_attributes'] = {'modlist': [(ldapMapping, old_value, value)], 'extraOC': []}
-								object['custom_attributes']['extraOC'].append(oc)
-								ud.debug(ud.LDAP, ud.INFO, '__set_values: extended list of custom attributes: %s' % object['custom_attributes'])
-								continue
-					else:
-						ud.debug(ud.LDAP, ud.INFO, '__set_values: module %s has no custom attributes' % ucs_object.module)
-
 					if not detected_ca:
 						if isinstance(value, type(types.ListType())) and len(value) == 1:
 							value = value[0]
@@ -1106,8 +1082,6 @@ class ucs:
 
 				ucs_key = attributes.ucs_attribute
 				if ucs_key in ucs_object:
-					ucs_module = self.modules[property_type]
-
 					# Special handling for con other attributes, see Bug #20599
 					if attributes.con_other_attribute:
 						if object['attributes'].get(attributes.con_other_attribute):
@@ -1144,36 +1118,6 @@ class ucs:
 				else:
 					set_values(self.property[property_type].post_attributes[attr_key])
 
-	def __modify_custom_attributes(self, property_type, object, ucs_object, module, position, modtype="modify"):
-		if 'custom_attributes' in object:
-			ud.debug(ud.LDAP, ud.INFO, '__modify_custom_attributes: custom attributes found: %s' % object['custom_attributes'])
-			modlist = object['custom_attributes']['modlist']
-			extraOC = object['custom_attributes']['extraOC']
-
-			# set extra objectClasses
-			if len(extraOC) > 0:
-				oc = self.search_ucs(base=ucs_object.dn, scope='base', attr=['objectClass'])
-				ud.debug(ud.LDAP, ud.INFO, '__modify_custom_attributes: should have extraOC %s, got %s' % (extraOC, oc))
-				noc = []
-				for i in range(len(oc[0][1]['objectClass'])):
-					noc.append(oc[0][1]['objectClass'][i])
-
-				for i in range(len(extraOC)):
-					if extraOC[i] not in noc:
-						noc.append(extraOC[i])
-
-				if oc[0][1]['objectClass'] != noc:
-					ud.debug(ud.LDAP, ud.INFO, '__modify_custom_attributes: modify objectClasses')
-					modlist.append(('objectClass', oc[0][1]['objectClass'], noc))
-
-			ud.debug(ud.LDAP, ud.INFO, '__modify_custom_attributes: modlist: %s' % modlist)
-			self.lo.modify(ucs_object.dn, modlist)
-
-			return True
-		else:
-			ud.debug(ud.LDAP, ud.INFO, '__modify_custom_attributes: no custom attributes found')
-			return True
-
 	def add_in_ucs(self, property_type, object, module, position):
 		_d = ud.function('ldap.add_in_ucs')
 		ucs_object = module.object(None, self.lo, position=position)
@@ -1186,7 +1130,7 @@ class ucs:
 		self.__set_values(property_type, object, ucs_object, modtype='add')
 		for function in self.property[property_type].ucs_create_functions:
 			function(self, property_type, ucs_object)
-		return ucs_object.create() and self.__modify_custom_attributes(property_type, object, ucs_object, module, position)
+		return bool(ucs_object.create())
 
 	def modify_in_ucs(self, property_type, object, module, position):
 		_d = ud.function('ldap.modify_in_ucs')
@@ -1195,7 +1139,7 @@ class ucs:
 		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=ucs_object_dn, position='')
 		self.__set_values(property_type, object, ucs_object)
 
-		return ucs_object.modify() and self.__modify_custom_attributes(property_type, object, ucs_object, module, position)
+		return bool(ucs_object.modify())
 
 	def move_in_ucs(self, property_type, object, module, position):
 		_d = ud.function('ldap.move_in_ucs')
