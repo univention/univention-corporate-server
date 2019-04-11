@@ -61,7 +61,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string_numbers_letters_dots,
 		include_in_default_search=True,
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'displayName': univention.admin.property(
@@ -70,7 +69,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.LocalizedDisplayName,
 		multivalue=True,
 		required=True,
-		may_change=True,
 		identifies=False
 	),
 	'description': univention.admin.property(
@@ -79,14 +77,12 @@ property_descriptions = {
 		syntax=univention.admin.syntax.LocalizedDescription,
 		multivalue=True,
 		required=True,
-		may_change=True,
 		identifies=False
 	),
 	'favorite': univention.admin.property(
 		short_description=_('Favorite'),
 		long_description=_('Shown in the favorite section'),
 		syntax=univention.admin.syntax.TrueFalseUp,
-		may_change=True,
 		identifies=False
 	),
 	# 'category' - deprecated in favor of 'content' of settings/portal
@@ -96,7 +92,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.PortalCategory,
 		default='service',
 		dontsearch=True,
-		may_change=True,
 		identifies=False
 	),
 	'link': univention.admin.property(
@@ -105,7 +100,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		required=True,
-		may_change=True,
 		identifies=False
 	),
 	# 'portal' - deprecated in favor of 'content' of settings/portal
@@ -114,7 +108,6 @@ property_descriptions = {
 		long_description=_('Shown on portals'),
 		syntax=univention.admin.syntax.Portals,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'authRestriction': univention.admin.property(
@@ -122,7 +115,6 @@ property_descriptions = {
 		long_description=_('Deprecated by allowedGroups'),
 		syntax=univention.admin.syntax.AuthRestriction,
 		default='anonymous',
-		may_change=True,
 		identifies=False
 	),
 	'allowedGroups': univention.admin.property(
@@ -130,7 +122,6 @@ property_descriptions = {
 		long_description=_('If one or more groups are selected then the portal entry will only be visible to logged in users that are in any of the selected groups. If no groups are selected then the portal entry is always visible.'),
 		syntax=univention.admin.syntax.GroupDNOrEmpty,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'activated': univention.admin.property(
@@ -138,7 +129,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='TRUE',
-		may_change=True,
 		identifies=False
 	),
 	'icon': univention.admin.property(
@@ -146,7 +136,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.Base64BaseUpload,
 		dontsearch=True,
-		may_change=True,
 		identifies=False
 	),
 }

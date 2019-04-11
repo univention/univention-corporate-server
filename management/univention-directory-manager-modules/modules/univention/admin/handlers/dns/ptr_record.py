@@ -64,7 +64,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.dnsPTR,
 		include_in_default_search=False,
 		required=True,
-		may_change=True,
 		identifies=True,
 	),
 	'ip': univention.admin.property(
@@ -72,7 +71,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ipAddress,
 		include_in_default_search=True,
-		may_change=True,
 	),
 	'ptr_record': univention.admin.property(
 		short_description=_('Pointer record'),
@@ -81,7 +79,6 @@ property_descriptions = {
 		multivalue=True,
 		include_in_default_search=True,
 		required=True,
-		may_change=True
 	),
 }
 

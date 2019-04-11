@@ -65,7 +65,6 @@ property_descriptions = {
 		syntax=udm_syntax.string,
 		include_in_default_search=True,
 		required=True,
-		may_change=True,
 		identifies=True,
 	),
 	'description': univention.admin.property(
@@ -75,7 +74,6 @@ property_descriptions = {
 		include_in_default_search=True,
 		dontsearch=True,
 		required=True,
-		may_change=True,
 		identifies=False,
 	),
 	'operation': univention.admin.property(
@@ -84,7 +82,6 @@ property_descriptions = {
 		syntax=udm_syntax.UMC_CommandPattern,
 		multivalue=True,
 		dontsearch=True,
-		may_change=True,
 		identifies=False,
 	),
 	'flavor': univention.admin.property(
@@ -93,7 +90,6 @@ property_descriptions = {
 		syntax=udm_syntax.string,
 		include_in_default_search=True,
 		dontsearch=True,
-		may_change=True,
 		identifies=False
 	),
 	'hosts': univention.admin.property(
@@ -102,7 +98,6 @@ property_descriptions = {
 		syntax=udm_syntax.string,
 		multivalue=True,
 		dontsearch=True,
-		may_change=True,
 		identifies=False,
 	),
 }

@@ -60,7 +60,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.dnsName_umlauts,
 		include_in_default_search=True,
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'description': univention.admin.property(
@@ -68,7 +67,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		may_change=True,
 		identifies=False
 	),
 	'password': univention.admin.property(
@@ -77,7 +75,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.passwd,
 		required=True,
 		dontsearch=True,
-		may_change=True,
 		identifies=False
 	),
 }

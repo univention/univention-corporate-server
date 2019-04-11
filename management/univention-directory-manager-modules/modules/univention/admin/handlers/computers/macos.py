@@ -78,7 +78,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.dnsName_umlauts,
 		include_in_default_search=True,
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'description': univention.admin.property(
@@ -86,7 +85,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		may_change=True,
 		identifies=False
 	),
 	'operatingSystem': univention.admin.property(
@@ -94,14 +92,12 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		may_change=True,
 		identifies=False
 	),
 	'operatingSystemVersion': univention.admin.property(
 		short_description=_('Operating system version'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		may_change=True,
 		identifies=False
 	),
 	'domain': univention.admin.property(
@@ -109,7 +105,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		may_change=True,
 		identifies=False
 	),
 	'mac': univention.admin.property(
@@ -118,14 +113,12 @@ property_descriptions = {
 		syntax=univention.admin.syntax.MAC_Address,
 		multivalue=True,
 		include_in_default_search=True,
-		may_change=True,
 		identifies=False
 	),
 	'network': univention.admin.property(
 		short_description=_('Network'),
 		long_description='',
 		syntax=univention.admin.syntax.network,
-		may_change=True,
 		identifies=False
 	),
 	'ip': univention.admin.property(
@@ -134,7 +127,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.ipAddress,
 		multivalue=True,
 		include_in_default_search=True,
-		may_change=True,
 		identifies=False
 	),
 	'dnsEntryZoneForward': univention.admin.property(
@@ -142,7 +134,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.dnsEntry,
 		multivalue=True,
-		may_change=True,
 		dontsearch=True,
 		identifies=False
 	),
@@ -151,7 +142,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.dnsEntryReverse,
 		multivalue=True,
-		may_change=True,
 		dontsearch=True,
 		identifies=False
 	),
@@ -160,7 +150,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.dnsEntryAlias,
 		multivalue=True,
-		may_change=True,
 		dontsearch=True,
 		identifies=False
 	),
@@ -169,7 +158,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'dhcpEntryZone': univention.admin.property(
@@ -177,7 +165,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.dhcpEntry,
 		multivalue=True,
-		may_change=True,
 		dontsearch=True,
 		identifies=False
 	),
@@ -186,7 +173,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.passwd,
 		options=['kerberos', 'posix', 'samba'],
-		may_change=True,
 		identifies=False,
 		dontsearch=True
 	),
@@ -196,7 +182,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.absolutePath,
 		options=['posix'],
 		required=True,
-		may_change=True,
 		identifies=False,
 		default=('/dev/null', [])
 	),
@@ -205,7 +190,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		options=['posix'],
-		may_change=True,
 		identifies=False,
 		default=('/bin/false', [])
 	),
@@ -217,7 +201,6 @@ property_descriptions = {
 		options=['posix'],
 		required=True,
 		dontsearch=True,
-		may_change=True,
 		identifies=False
 	),
 	'inventoryNumber': univention.admin.property(
@@ -226,7 +209,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		include_in_default_search=True,
-		may_change=True,
 		identifies=False
 	),
 	'groups': univention.admin.property(
@@ -234,7 +216,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.GroupDN,
 		multivalue=True,
-		may_change=True,
 		dontsearch=True,
 		identifies=False
 	),
@@ -242,7 +223,6 @@ property_descriptions = {
 		short_description=_('Relative ID'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		may_change=True,
 		dontsearch=True,
 		identifies=False,
 		options=['samba']

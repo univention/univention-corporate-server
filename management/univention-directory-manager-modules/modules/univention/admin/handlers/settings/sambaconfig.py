@@ -82,77 +82,66 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'passwordLength': univention.admin.property(
 		short_description=_('Password Length'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		may_change=True,
 		identifies=False
 	),
 	'passwordHistory': univention.admin.property(
 		short_description=_('Password History'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		may_change=True,
 		identifies=False
 	),
 	'minPasswordAge': univention.admin.property(
 		short_description=_('Minimum Password Age'),
 		long_description='',
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		may_change=True,
 		identifies=False
 	),
 	'badLockoutAttempts': univention.admin.property(
 		short_description=_('Bad Lockout Attempts'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		may_change=True,
 		identifies=False
 	),
 	'logonToChangePW': univention.admin.property(
 		short_description=_('User must Logon to Change Password'),
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
-		may_change=True,
 		identifies=False
 	),
 	'maxPasswordAge': univention.admin.property(
 		short_description=_('Maximum Password Age'),
 		long_description='',
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		may_change=True,
 		identifies=False
 	),
 	'lockoutDuration': univention.admin.property(
 		short_description=_('Lockout Duration Minutes'),
 		long_description='',
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		may_change=True,
 		identifies=False
 	),
 	'resetCountMinutes': univention.admin.property(
 		short_description=_('Reset Count Minutes'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		may_change=True,
 		identifies=False
 	),
 	'disconnectTime': univention.admin.property(
 		short_description=_('Disconnect Time'),
 		long_description='',
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		may_change=True,
 		identifies=False
 	),
 	'refuseMachinePWChange': univention.admin.property(
 		short_description=_('Refuse Machine Password Change'),
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
-		may_change=True,
 		identifies=False
 	),
 }

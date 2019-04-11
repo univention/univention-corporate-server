@@ -91,7 +91,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.Packages,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'memberPackagesRemove': univention.admin.property(
@@ -99,7 +98,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.PackagesRemove,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 

@@ -82,7 +82,6 @@ property_descriptions = {
 		long_description=_('Service description'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		may_change=True,
 		identifies=False
 	),
 	'checkCommand': univention.admin.property(
@@ -90,21 +89,18 @@ property_descriptions = {
 		long_description=_('Command name of Nagios plugin'),
 		syntax=univention.admin.syntax.string,
 		required=True,
-		may_change=True,
 		identifies=False
 	),
 	'checkArgs': univention.admin.property(
 		short_description=_('Plugin command arguments'),
 		long_description=_('Arguments of used Nagios plugin'),
 		syntax=univention.admin.syntax.string,
-		may_change=True,
 		identifies=False
 	),
 	'useNRPE': univention.admin.property(
 		short_description=_('Use NRPE'),
 		long_description=_('Use NRPE to check remote services'),
 		syntax=univention.admin.syntax.boolean,
-		may_change=True,
 		identifies=False
 	),
 	'checkPeriod': univention.admin.property(
@@ -112,7 +108,6 @@ property_descriptions = {
 		long_description=_('Check services within check period'),
 		syntax=ldap_search_period,
 		required=True,
-		may_change=True,
 		identifies=False
 	),
 	'maxCheckAttempts': univention.admin.property(
@@ -120,7 +115,6 @@ property_descriptions = {
 		long_description=_('Maximum number of check attempts with non-OK-result until contact will be notified'),
 		syntax=univention.admin.syntax.integer,
 		required=True,
-		may_change=True,
 		default='10',
 		identifies=False,
 		size='One',
@@ -130,7 +124,6 @@ property_descriptions = {
 		long_description=_('Interval between checks'),
 		syntax=univention.admin.syntax.integer,
 		required=True,
-		may_change=True,
 		default='10',
 		identifies=False,
 		size='One',
@@ -140,7 +133,6 @@ property_descriptions = {
 		long_description=_('Interval between re-checks if service is in non-OK-state'),
 		syntax=univention.admin.syntax.integer,
 		required=True,
-		may_change=True,
 		default='1',
 		identifies=False,
 		size='One',
@@ -150,7 +142,6 @@ property_descriptions = {
 		long_description=_('Interval between notifications'),
 		syntax=univention.admin.syntax.integer,
 		required=True,
-		may_change=True,
 		default='180',
 		identifies=False,
 		size='One',
@@ -160,7 +151,6 @@ property_descriptions = {
 		long_description=_('Send notifications during this period'),
 		syntax=ldap_search_period,
 		required=True,
-		may_change=True,
 		identifies=False
 	),
 	'notificationOptionWarning': univention.admin.property(
@@ -168,7 +158,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
 		default='1',
-		may_change=True,
 		identifies=False
 	),
 	'notificationOptionCritical': univention.admin.property(
@@ -176,7 +165,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
 		default='1',
-		may_change=True,
 		identifies=False
 	),
 	'notificationOptionUnreachable': univention.admin.property(
@@ -184,7 +172,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
 		default='1',
-		may_change=True,
 		identifies=False
 	),
 	'notificationOptionRecovered': univention.admin.property(
@@ -192,7 +179,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
 		default='1',
-		may_change=True,
 		identifies=False
 	),
 	'assignedHosts': univention.admin.property(
@@ -200,7 +186,6 @@ property_descriptions = {
 		long_description=_('Check services on these hosts'),
 		syntax=univention.admin.syntax.nagiosHostsEnabledDn,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	)
 }

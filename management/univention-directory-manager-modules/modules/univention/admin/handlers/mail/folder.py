@@ -92,7 +92,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.SharedFolderUserACL,
 		multivalue=True,
-		may_change=True,
 		identifies=False,
 	),
 	'sharedFolderGroupACL': univention.admin.property(
@@ -100,14 +99,12 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.SharedFolderGroupACL,
 		multivalue=True,
-		may_change=True,
 		identifies=False,
 	),
 	'mailQuota': univention.admin.property(
 		short_description=_('Quota in MB'),
 		long_description=_('How many MB of emails can be stored in the shared folder (independent of the users that stored them).'),
 		syntax=univention.admin.syntax.integer,
-		may_change=True,
 		identifies=False,
 	),
 	'mailHomeServer': univention.admin.property(
@@ -116,7 +113,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.MailHomeServer,
 		nonempty_is_default=True,
 		required=True,
-		may_change=True,
 		identifies=False,
 	),
 	'mailPrimaryAddress': univention.admin.property(
@@ -125,7 +121,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.emailAddressValidDomain,
 		include_in_default_search=True,
 		dontsearch=False,
-		may_change=True,
 		identifies=False,
 	),
 }

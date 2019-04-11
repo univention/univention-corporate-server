@@ -62,7 +62,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.hostName,
 		include_in_default_search=True,
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'description': univention.admin.property(
@@ -70,7 +69,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		may_change=True,
 		identifies=False
 	),
 	'mac': univention.admin.property(
@@ -79,14 +77,12 @@ property_descriptions = {
 		syntax=univention.admin.syntax.MAC_Address,
 		multivalue=True,
 		include_in_default_search=True,
-		may_change=True,
 		identifies=False
 	),
 	'network': univention.admin.property(
 		short_description=_('Network'),
 		long_description='',
 		syntax=univention.admin.syntax.network,
-		may_change=True,
 		identifies=False
 	),
 	'ip': univention.admin.property(
@@ -95,7 +91,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.ipAddress,
 		multivalue=True,
 		include_in_default_search=True,
-		may_change=True,
 		identifies=False
 	),
 	'dnsEntryZoneForward': univention.admin.property(
@@ -103,7 +98,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.dnsEntry,
 		multivalue=True,
-		may_change=True,
 		dontsearch=True,
 		identifies=False
 	),
@@ -112,7 +106,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.dnsEntryReverse,
 		multivalue=True,
-		may_change=True,
 		dontsearch=True,
 		identifies=False
 	),
@@ -121,7 +114,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.dnsEntryAlias,
 		multivalue=True,
-		may_change=True,
 		dontsearch=True,
 		identifies=False
 	),
@@ -130,7 +122,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'dhcpEntryZone': univention.admin.property(
@@ -138,7 +129,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.dhcpEntry,
 		multivalue=True,
-		may_change=True,
 		dontsearch=True,
 		identifies=False
 	),
@@ -148,7 +138,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		include_in_default_search=True,
-		may_change=True,
 		identifies=False
 	),
 	'groups': univention.admin.property(
@@ -156,7 +145,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.GroupDN,
 		multivalue=True,
-		may_change=True,
 		dontsearch=True,
 		identifies=False
 	),
@@ -165,7 +153,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		may_change=True,
 		identifies=False
 	),
 }

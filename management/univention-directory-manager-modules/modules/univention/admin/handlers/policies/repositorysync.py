@@ -91,7 +91,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.Month,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'day': univention.admin.property(
@@ -99,7 +98,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.Day,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'weekday': univention.admin.property(
@@ -107,7 +105,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.Weekday,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'hour': univention.admin.property(
@@ -115,7 +112,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.Hour,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'minute': univention.admin.property(
@@ -123,7 +119,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.Minute,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 

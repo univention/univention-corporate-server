@@ -69,7 +69,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.userPasswd,
 		required=True,
-		may_change=True,
 		identifies=False,
 		dontsearch=True
 	),

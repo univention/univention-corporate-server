@@ -93,7 +93,6 @@ property_descriptions = {
 		short_description=_('Next IP address'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		may_change=True,
 		dontsearch=True,
 		identifies=False
 	),
@@ -103,14 +102,12 @@ property_descriptions = {
 		syntax=univention.admin.syntax.IP_AddressRange,
 		multivalue=True,
 		dontsearch=True,
-		may_change=True,
 		identifies=False
 	),
 	'dnsEntryZoneForward': univention.admin.property(
 		short_description=_('DNS forward lookup zone'),
 		long_description='',
 		syntax=univention.admin.syntax.DNS_ForwardZone,
-		may_change=True,
 		dontsearch=True,
 		identifies=False
 	),
@@ -118,7 +115,6 @@ property_descriptions = {
 		short_description=_('DNS reverse lookup zone'),
 		long_description='',
 		syntax=univention.admin.syntax.DNS_ReverseZone,
-		may_change=True,
 		dontsearch=True,
 		identifies=False
 	),
@@ -126,7 +122,6 @@ property_descriptions = {
 		short_description=_('DHCP service'),
 		long_description='',
 		syntax=univention.admin.syntax.dhcpService,
-		may_change=True,
 		dontsearch=True,
 		identifies=False
 	),

@@ -61,7 +61,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string_numbers_letters_dots,
 		include_in_default_search=True,
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'displayName': univention.admin.property(
@@ -70,7 +69,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.LocalizedDisplayName,
 		multivalue=True,
 		required=True,
-		may_change=True,
 		identifies=False
 	),
 }

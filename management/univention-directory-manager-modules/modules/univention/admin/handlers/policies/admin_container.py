@@ -88,7 +88,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.univentionAdminModules,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 }

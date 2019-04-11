@@ -89,14 +89,12 @@ property_descriptions = {
 		short_description=_('Activate release updates (Errata updates are activated by default).'),
 		long_description='',
 		syntax=univention.admin.syntax.TrueFalseUp,
-		may_change=True,
 		identifies=False
 	),
 	'releaseVersion': univention.admin.property(
 		short_description=_('Update to this UCS version'),
 		long_description=_('Without specifying the most recent version will be used'),
 		syntax=univention.admin.syntax.string,
-		may_change=True,
 		identifies=False
 	),
 

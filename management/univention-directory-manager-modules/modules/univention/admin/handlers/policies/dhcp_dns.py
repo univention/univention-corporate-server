@@ -89,7 +89,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		may_change=True,
 		identifies=False
 	),
 	'domain_name_servers': univention.admin.property(
@@ -97,7 +96,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 }

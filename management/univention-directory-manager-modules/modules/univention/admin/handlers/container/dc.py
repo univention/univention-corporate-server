@@ -104,7 +104,6 @@ property_descriptions = {
 		multivalue=True,
 		options=['samba'],
 		required=True,
-		may_change=True,
 		default=(configRegistry.get('domainname', '').upper(), []),
 		identifies=False
 	),
@@ -122,7 +121,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		options=['samba'],
-		may_change=True,
 		default=('1000', []),
 		identifies=False
 	),
@@ -131,7 +129,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		options=['samba'],
-		may_change=True,
 		default=('1000', []),
 		identifies=False
 	),

@@ -65,7 +65,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 		required=True,
-		may_change=True,
 		identifies=True,
 	),
 	'printmodel': univention.admin.property(
@@ -75,7 +74,6 @@ property_descriptions = {
 		multivalue=True,
 		include_in_default_search=True,
 		dontsearch=False,
-		may_change=True,
 		identifies=False,
 	),
 }

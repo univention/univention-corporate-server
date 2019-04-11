@@ -62,7 +62,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.mailinglist_name,
 		include_in_default_search=True,
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'description': univention.admin.property(
@@ -70,7 +69,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		may_change=True,
 		identifies=False
 	),
 	'members': univention.admin.property(
@@ -78,7 +76,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.emailAddress,
 		multivalue=True,
-		may_change=True,
 		dontsearch=True,
 		identifies=False
 	),
@@ -87,7 +84,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.emailAddressValidDomain,
 		include_in_default_search=True,
-		may_change=True,
 		dontsearch=False,
 		identifies=False
 	),
@@ -96,7 +92,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.UserDN,
 		multivalue=True,
-		may_change=True,
 		dontsearch=True,
 		identifies=False
 	),
@@ -105,7 +100,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.GroupDN,
 		multivalue=True,
-		may_change=True,
 		dontsearch=True,
 		identifies=False
 	)

@@ -61,7 +61,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'description': univention.admin.property(
@@ -69,7 +68,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		may_change=True,
 		identifies=False
 	),
 	'filter': univention.admin.property(
@@ -77,14 +75,12 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		required=True,
-		may_change=True,
 		identifies=False
 	),
 	'base': univention.admin.property(
 		short_description=_('LDAP Base'),
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
-		may_change=True,
 		identifies=False
 	),
 	'attribute': univention.admin.property(
@@ -94,7 +90,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.listAttributes,
 		multivalue=True,
 		include_in_default_search=True,
-		may_change=True,
 		identifies=False
 	),
 	'ldapattribute': univention.admin.property(
@@ -102,21 +97,18 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'viewonly': univention.admin.property(
 		short_description=_('Show Only'),
 		long_description='',
 		syntax=univention.admin.syntax.TrueFalseUp,
-		may_change=True,
 		identifies=False
 	),
 	'addEmptyValue': univention.admin.property(
 		short_description=_('Add an empty value to choice list'),
 		long_description='',
 		syntax=univention.admin.syntax.TrueFalseUp,
-		may_change=True,
 		identifies=False
 	),
 	'value': univention.admin.property(
@@ -125,14 +117,12 @@ property_descriptions = {
 		# syntax = univention.admin.syntax.UDM_PropertySelect,
 		syntax=univention.admin.syntax.listAttributes,
 		include_in_default_search=True,
-		may_change=True,
 		identifies=False
 	),
 	'ldapvalue': univention.admin.property(
 		short_description=_('Stored LDAP Attribute'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		may_change=True,
 		identifies=False
 	),
 }

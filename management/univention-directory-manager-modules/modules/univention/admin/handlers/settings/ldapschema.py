@@ -64,7 +64,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'filename': univention.admin.property(
@@ -72,7 +71,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.BaseFilename,
 		required=True,
-		may_change=True,
 		default='',
 		identifies=False
 	),
@@ -81,7 +79,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.Base64Bzip2Text,
 		required=True,
-		may_change=True,
 		identifies=False
 	),
 	'active': univention.admin.property(
@@ -89,7 +86,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='FALSE',
-		may_change=True,
 		identifies=False
 	),
 	'appidentifier': univention.admin.property(
@@ -97,21 +93,18 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.TextArea,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'package': univention.admin.property(
 		short_description=_('Software package'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		may_change=True,
 		identifies=False
 	),
 	'packageversion': univention.admin.property(
 		short_description=_('Software package version'),
 		long_description='',
 		syntax=univention.admin.syntax.DebianPackageVersion,
-		may_change=True,
 		identifies=False
 	),
 }

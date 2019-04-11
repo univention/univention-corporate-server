@@ -76,7 +76,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.XResolution,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'colorDepth': univention.admin.property(
@@ -84,7 +83,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.integer,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'mouseProtocol': univention.admin.property(
@@ -92,7 +90,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'mouseDevice': univention.admin.property(
@@ -100,7 +97,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'keyboardLayout': univention.admin.property(
@@ -108,7 +104,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'keyboardVariant': univention.admin.property(
@@ -116,7 +111,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'hSync': univention.admin.property(
@@ -124,7 +118,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.XSync,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'vRefresh': univention.admin.property(
@@ -132,7 +125,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.XSync,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'xModule': univention.admin.property(
@@ -140,7 +132,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'displaySize': univention.admin.property(
@@ -148,7 +139,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.XResolution,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 }

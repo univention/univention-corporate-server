@@ -76,7 +76,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'dns': univention.admin.property(
@@ -84,7 +83,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'dhcp': univention.admin.property(
@@ -92,7 +90,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'users': univention.admin.property(
@@ -100,7 +97,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'groups': univention.admin.property(
@@ -108,7 +104,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'computers': univention.admin.property(
@@ -116,7 +111,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'domaincontroller': univention.admin.property(
@@ -124,7 +118,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'networks': univention.admin.property(
@@ -132,7 +125,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'shares': univention.admin.property(
@@ -140,7 +132,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'printers': univention.admin.property(
@@ -148,7 +139,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'mail': univention.admin.property(
@@ -156,7 +146,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'license': univention.admin.property(
@@ -164,7 +153,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	)
 }

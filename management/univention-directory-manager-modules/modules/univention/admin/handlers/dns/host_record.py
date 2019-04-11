@@ -64,14 +64,12 @@ property_descriptions = {
 		syntax=univention.admin.syntax.dnsName,
 		include_in_default_search=True,
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'zonettl': univention.admin.property(
 		short_description=_('Time to live'),
 		long_description=_('The time this entry may be cached.'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		may_change=True,
 		identifies=False,
 		default=(('3', 'hours'), []),
 		dontsearch=True,
@@ -81,14 +79,12 @@ property_descriptions = {
 		long_description=_('One or more IP addresses, to which the name is resolved to.'),
 		syntax=univention.admin.syntax.ipAddress,
 		multivalue=True,
-		may_change=True
 	),
 	'mx': univention.admin.property(
 		short_description=_('Mail exchanger host'),
 		long_description=_('The FQDNs of the hosts responsible for receiving mail for this DNS name.'),
 		syntax=univention.admin.syntax.dnsMX,
 		multivalue=True,
-		may_change=True,
 		dontsearch=True,
 	),
 	'txt': univention.admin.property(
@@ -96,7 +92,6 @@ property_descriptions = {
 		long_description=_('One or more arbitrary text strings.'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		may_change=True
 	)
 }
 

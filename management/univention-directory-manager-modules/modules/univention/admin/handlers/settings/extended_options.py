@@ -72,7 +72,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 		required=True,
-		may_change=True,
 		identifies=False
 	),
 	'longDescription': univention.admin.property(
@@ -80,7 +79,6 @@ property_descriptions = {
 		long_description=_('Long description for the option as shown on the Option tab.'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		may_change=True,
 		identifies=False
 	),
 	'translationShortDescription': univention.admin.property(
@@ -89,7 +87,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.translationTupleShortDescription,
 		multivalue=True,
 		include_in_default_search=True,
-		may_change=True,
 		identifies=False
 	),
 	'translationLongDescription': univention.admin.property(
@@ -98,21 +95,18 @@ property_descriptions = {
 		syntax=univention.admin.syntax.translationTupleLongDescription,
 		multivalue=True,
 		include_in_default_search=True,
-		may_change=True,
 		identifies=False
 	),
 	'default': univention.admin.property(
 		short_description=_('Default'),
 		long_description=_('Enable option by default.'),
 		syntax=univention.admin.syntax.boolean,
-		may_change=True,
 		identifies=False
 	),
 	'editable': univention.admin.property(
 		short_description=_('Editable'),
 		long_description=_('Option may be repeatedly turned on and off.'),
 		syntax=univention.admin.syntax.boolean,
-		may_change=True,
 		identifies=False
 	),
 	'module': univention.admin.property(
@@ -121,7 +115,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.univentionAdminModules,
 		multivalue=True,
 		required=True,
-		may_change=True,
 		identifies=False
 	),
 	'objectClass': univention.admin.property(
@@ -129,14 +122,12 @@ property_descriptions = {
 		long_description=_('Mapping to LDAP objectClasses'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'isApp': univention.admin.property(
 		short_description=_('Application'),
 		long_description=_('Specifies that the option belongs to a UCS Application'),
 		syntax=univention.admin.syntax.boolean,
-		may_change=True,
 	),
 }
 

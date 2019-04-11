@@ -90,28 +90,24 @@ property_descriptions = {
 		short_description=_('Perform maintenance after system startup'),
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
-		may_change=True,
 		identifies=False
 	),
 	'shutdown': univention.admin.property(
 		short_description=_('Perform maintenance before system shutdown'),
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
-		may_change=True,
 		identifies=False
 	),
 	'reboot': univention.admin.property(
 		short_description=_('Reboot after maintenance'),
 		long_description='',
 		syntax=univention.admin.syntax.timeSpec,
-		may_change=True,
 		identifies=False,
 	),
 	'cron': univention.admin.property(
 		short_description=_('Use Cron settings'),
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
-		may_change=True,
 		identifies=False
 	),
 	'month': univention.admin.property(
@@ -119,7 +115,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.Month,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'day': univention.admin.property(
@@ -127,7 +122,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.Day,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'weekday': univention.admin.property(
@@ -135,7 +129,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.Weekday,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'hour': univention.admin.property(
@@ -143,7 +136,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.Hour,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'minute': univention.admin.property(
@@ -151,7 +143,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.Minute,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 

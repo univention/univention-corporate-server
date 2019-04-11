@@ -73,7 +73,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.LocalizedDisplayName,
 		multivalue=True,
 		required=True,
-		may_change=True,
 		identifies=False
 	),
 	'showMenu': univention.admin.property(
@@ -81,7 +80,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='TRUE',
-		may_change=True,
 		identifies=False
 	),
 	'showSearch': univention.admin.property(
@@ -89,7 +87,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='TRUE',
-		may_change=True,
 		identifies=False
 	),
 	'showLogin': univention.admin.property(
@@ -97,7 +94,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='TRUE',
-		may_change=True,
 		identifies=False
 	),
 	'showApps': univention.admin.property(
@@ -105,7 +101,6 @@ property_descriptions = {
 		long_description=_('Shows links to locally installed Apps'),
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='TRUE',
-		may_change=True,
 		identifies=False
 	),
 	'showServers': univention.admin.property(
@@ -113,7 +108,6 @@ property_descriptions = {
 		long_description=_('Shows links to all UCS servers'),
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='TRUE',
-		may_change=True,
 		identifies=False
 	),
 	'background': univention.admin.property(
@@ -121,7 +115,6 @@ property_descriptions = {
 		long_description=_('Background image of the Portal'),
 		syntax=univention.admin.syntax.Base64BaseUpload,
 		dontsearch=True,
-		may_change=True,
 		identifies=False
 	),
 	'logo': univention.admin.property(
@@ -129,7 +122,6 @@ property_descriptions = {
 		long_description=_('Logo image for the portal.'),
 		syntax=univention.admin.syntax.Base64BaseUpload,
 		dontsearch=True,
-		may_change=True,
 		identifies=False
 	),
 	'cssBackground': univention.admin.property(
@@ -137,7 +129,6 @@ property_descriptions = {
 		long_description=_("Style definition for the CSS 'background' property which will be applied to the portal page, e.g. linear-gradient(black, white)"),
 		syntax=univention.admin.syntax.TwoString,
 		dontsearch=True,
-		may_change=True,
 		identifies=False
 	),
 	'fontColor': univention.admin.property(
@@ -146,7 +137,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.PortalFontColor,
 		default='black',
 		dontsearch=True,
-		may_change=True,
 		identifies=False
 	),
 	'portalComputers': univention.admin.property(
@@ -155,7 +145,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.PortalComputer,
 		multivalue=True,
 		dontsearch=True,
-		may_change=True,
 		identifies=False
 	),
 	'ensureLogin': univention.admin.property(
@@ -163,14 +152,12 @@ property_descriptions = {
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='FALSE',
 		dontsearch=True,
-		may_change=True,
 		identifies=False
 	),
 	'anonymousEmpty': univention.admin.property(
 		syntax=univention.admin.syntax.LocalizedAnonymousEmpty,
 		multivalue=True,
 		dontsearch=True,
-		may_change=True,
 		identifies=False
 	),
 	'autoLayoutCategories': univention.admin.property(
@@ -178,7 +165,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='FALSE',
 		dontsearch=True,
-		may_change=True,
 		identifies=False
 	),
 	# 'portalEntriesOrder' - deprecated by 'content' of settings/portal
@@ -187,7 +173,6 @@ property_descriptions = {
 		long_description=_('The order in which the portal entries are shown on this portal'),
 		syntax=univention.admin.syntax.PortalEntries,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'links': univention.admin.property(
@@ -195,13 +180,11 @@ property_descriptions = {
 		long_description=_('List of static links shown on this portal. Only those links for the selected locale are shown (e.g.,: en_US, de_DE).'),
 		syntax=univention.admin.syntax.PortalLinks,
 		multivalue=True,
-		may_change=True,
 		identifies=False
 	),
 	'content': univention.admin.property(
 		short_description=_('Portal content'),
 		syntax=univention.admin.syntax.PortalCategorySelection,
-		may_change=True,
 		identifies=False
 	),
 }
