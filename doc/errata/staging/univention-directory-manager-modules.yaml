@@ -11,4 +11,6 @@ desc: |
    aren't shown in the search field list anymore in UMC.
  * A crash of UDM is prevented which was caused by an extended attribute
    which overwrites a not existing layout group.
-bug: [40668, 48551]
+ * The object class univentionPolicyReference is now removed from objects
+   when the last policy is dereferenced.
+bug: [40668, 48551, 46466]
