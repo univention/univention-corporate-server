@@ -977,6 +977,7 @@ class SessionHandler(ProcessorBase):
 			from univention.management.console.protocol.server import Server
 			Server.reload()
 			try:
+				request.body['locale'] = str(self.i18n.locale)
 				self.__auth.authenticate(request)
 			except (TypeError, KeyError):
 				response = Response(request)

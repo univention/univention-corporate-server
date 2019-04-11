@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-11) unstable; urgency=medium
+
+  * Bug #49029: fix translation of authentication messages
+
+ -- Florian Best <best@univention.de>  Thu, 11 Apr 2019 17:10:18 +0200
+
 univention-management-console (11.0.4-10) unstable; urgency=medium
 
   * Bug #49239: deactivate pam_cracklib
