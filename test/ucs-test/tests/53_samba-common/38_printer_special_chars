@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner bash
-## desc: "Creating a shared printer and printing from smbclient"
+## desc: "Creating a shared printer and printing from smbclient and lp with special characters in printer name"
 ## exposure: dangerous
 ## packages:
 ##  - univention-samba | univention-samba4
@@ -21,12 +21,16 @@ PERSON="false"
 POSIX="true"
 
 username="$(user_randomname)"
-printername="$(random_chars 12)"
+#printername="$(random_chars 12)"'" '"$(random_chars 46)"
+#sambaprintername="$(random_chars 12)"'" '"$(random_chars 46)"
+printername="$(random_chars 12) $(random_chars 46)"
+sambaprintername="$(random_chars 12) $(random_chars 46)"
 password=univention
 
 eval "$(ucr shell)"
 
 printsharebasedn="cn=shares,$ldap_base"
+printerdn="cn=$printername,$printsharebasedn"
 
 if ! [ -x /bin/nc.openbsd ]; then
 	apt-get install -y netcat-openbsd
@@ -35,29 +39,33 @@ fi
 trap '
 user_remove "$username";
 rm -rf "/tmp/$printername"/ /tmp/print_input;
-udm-test shares/printer remove --dn="cn=$printername,$printsharebasedn"
+udm-test shares/printer remove --dn="$printerdn"
+ucr unset directory/manager/web/modules/shares/printer/properties/name/syntax directory/manager/web/modules/shares/printer/properties/sambaName/syntax
 wait_for_replication_and_postrun
 ' INT TERM EXIT
 
+ucr set directory/manager/web/modules/shares/printer/properties/name/syntax=string directory/manager/web/modules/shares/printer/properties/sambaName/syntax=string
 user_create "$username" || fail_fast 1 "Could not create user $username."
 
 #create printer
 echo "----create printer"
-udm-test shares/printer create \
+printerdn=$(udm-test shares/printer create \
 	--position "$printsharebasedn" \
 	--set "name=$printername" \
+	--set "sambaName=$sambaprintername" \
 	--set "spoolHost=$hostname.$domainname" \
 	--set "uri=socket:// 127.0.0.1:12345" \
-	--set "model=None"
+	--set "model=None" | grep 'Object created:' | sed 's/Object created: //g')
 
 wait_for_replication_and_postrun
 
 ## look for printer and user
-echo "----Testing wether printer share '$printername' and user '$username' have been created"
+echo "----Testing wether printer share '$sambaprintername' and user '$username' have been created"
 i=0
-while ! output="$(smbclient //localhost/$printername -U "$username%$password" -c "exit" 2>&1)"
+while ! output="$(smbclient "//localhost/$sambaprintername" -U "$username%$password" -c "exit" 2>&1)"
 do
         echo '.'
+        sleep 50
         let i=$i+1
         if [ $i = 20 ]; then
 		if echo "$output" | grep NT_STATUS_ACCESS_DENIED; then
@@ -82,7 +90,7 @@ nc_pid=$!
 ## initiate print
 echo "initiate print"
 i=0
-while ! smbclient -U"$username%$password" "//$hostname.$domainname/$printername" -c "print \"$tmp_filename\""
+while ! smbclient -U"$username%$password" "//$hostname.$domainname/$sambaprintername" -c "print \"$tmp_filename\""
 do
 	let i=$i+1
 	if [ $i = 20 ]; then

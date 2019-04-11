@@ -44,10 +44,10 @@ def main():
 					binddn=account.binddn,
 					bindpwd=account.bindpw,
 					set={
-					'spoolHost': '%(hostname)s.%(domainname)s' % ucr,
-					'model': 'None',
-					'uri': '%s:// /tmp/%s' % (uri, printer_name)
-				}
+						'spoolHost': '%(hostname)s.%(domainname)s' % ucr,
+						'model': 'None',
+						'uri': '%s:// /tmp/%s' % (uri, printer_name)
+					}
 				)
 				if not printer_enabled(printer_name):
 					print 'Wait for 30 seconds and try again'

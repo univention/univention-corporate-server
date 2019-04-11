@@ -1,3 +1,9 @@
+ucs-test (9.0.2-32) unstable; urgency=medium
+
+  * Bug #48947: add 53_samba-common/38_printer_special_chars
+
+ -- Florian Best <best@univention.de>  Sat, 13 Apr 2019 11:42:07 +0200
+
 ucs-test (9.0.2-31) unstable; urgency=medium
 
   * Bug #49029: set english language in test cases

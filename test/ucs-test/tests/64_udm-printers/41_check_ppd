@@ -16,7 +16,6 @@
 
 import os
 import sys
-import pprint
 import univention.testing.utils as utils
 
 if __name__ == '__main__':
