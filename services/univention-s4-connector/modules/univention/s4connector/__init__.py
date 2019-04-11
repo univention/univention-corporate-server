@@ -1177,37 +1177,33 @@ class ucs:
 					value = object['attributes'][attributes.ldap_attribute]
 					ud.debug(ud.LDAP, ud.INFO, '__set_values: set attribute, ucs_key: %s - value: %s' % (ucs_key, value))
 
-					# check if ucs_key is an custom attribute
-					detected_ca = False
-
 					ucs_module = self.modules[property_type]
 					position = univention.admin.uldap.position(self.lo.base)
 					position.setDn(object['dn'])
 					univention.admin.modules.init(self.lo, position, ucs_module)
 
-					if not detected_ca:
-						if isinstance(value, type(types.ListType())) and len(value) == 1:
-							value = value[0]
+					if isinstance(value, type(types.ListType())) and len(value) == 1:
+						value = value[0]
 
-						# set encoding
-						compare = [ucs_object[ucs_key], value]
-						for i in [0, 1]:
-							if isinstance(compare[i], type([])):
-								compare[i] = univention.s4connector.s4.compatible_list(compare[i])
-							else:
-								compare[i] = univention.s4connector.s4.compatible_modstring(compare[i])
+					# set encoding
+					compare = [ucs_object[ucs_key], value]
+					for i in [0, 1]:
+						if isinstance(compare[i], type([])):
+							compare[i] = univention.s4connector.s4.compatible_list(compare[i])
+						else:
+							compare[i] = univention.s4connector.s4.compatible_modstring(compare[i])
 
-						if not attributes.compare_function(compare[0], compare[1]):
-							# This is deduplication of LDAP attribute values for S4 -> UCS.
-							# It destroys ordering of multi-valued attributes. This seems problematic
-							# as the handling of `con_other_attribute` assumes preserved ordering
-							# (this is not guaranteed by LDAP).
-							# See the MODIFY-case in `sync_from_ucs()` for more.
-							if isinstance(value, list):
-								ucs_object[ucs_key] = list(set(value))
-							else:
-								ucs_object[ucs_key] = value
-							ud.debug(ud.LDAP, ud.INFO, "set key in ucs-object: %s" % ucs_key)
+					if not attributes.compare_function(compare[0], compare[1]):
+						# This is deduplication of LDAP attribute values for S4 -> UCS.
+						# It destroys ordering of multi-valued attributes. This seems problematic
+						# as the handling of `con_other_attribute` assumes preserved ordering
+						# (this is not guaranteed by LDAP).
+						# See the MODIFY-case in `sync_from_ucs()` for more.
+						if isinstance(value, list):
+							ucs_object[ucs_key] = list(set(value))
+						else:
+							ucs_object[ucs_key] = value
+						ud.debug(ud.LDAP, ud.INFO, "set key in ucs-object: %s" % ucs_key)
 				else:
 					ud.debug(ud.LDAP, ud.INFO, '__set_values: no ucs_attribute found in %s' % attributes)
 			else:
