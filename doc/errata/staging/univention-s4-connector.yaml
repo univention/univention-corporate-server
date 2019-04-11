@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Unnecessary duplicated code for the detection of superordinates has
    been removed.
-bug: [45068]
+ * Dead code for obsolete custom attributes from UCS 2 has been removed.
+bug: [45068, 41554]
