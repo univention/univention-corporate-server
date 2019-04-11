@@ -9,4 +9,6 @@ desc: |
  * Searching for IP addresses of DNS host records is now possible.
    The Zone Time-to-Live and Mail Exchanger properties of DNS objects
    aren't shown in the search field list anymore in UMC.
-bug: [40668]
+ * A crash of UDM is prevented which was caused by an extended attribute
+   which overwrites a not existing layout group.
+bug: [40668, 48551]
