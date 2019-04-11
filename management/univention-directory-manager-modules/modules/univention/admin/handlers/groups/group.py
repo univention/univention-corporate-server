@@ -164,7 +164,6 @@ property_descriptions = {
 		include_in_default_search=True,
 		options=['posix'],
 		readonly_when_synced=True,
-		copyable=False,
 	),
 	'memberOf': univention.admin.property(
 		short_description=_('Member of'),
