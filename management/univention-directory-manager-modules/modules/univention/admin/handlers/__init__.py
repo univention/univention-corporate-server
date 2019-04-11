@@ -1816,7 +1816,6 @@ class simpleComputer(simpleLdap):
 			short_description='FQDN',
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			options=[],
 			required=False,
 			may_change=False,
 			identifies=False

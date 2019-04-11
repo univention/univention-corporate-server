@@ -63,7 +63,6 @@ property_descriptions = {
 		long_description=_('The host part of the IP address in reverse notation (e.g. \"172.16.1.2/16\" -> \"2.1\" or \"2001:0db8:0100::0007:0008/96\" -> \"8.0.0.0.7.0.0.0\").'),
 		syntax=univention.admin.syntax.dnsPTR,
 		include_in_default_search=False,
-		options=[],
 		required=True,
 		may_change=True,
 		identifies=True,
@@ -73,7 +72,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ipAddress,
 		include_in_default_search=True,
-		options=[],
 		required=False,
 		may_change=True,
 	),
@@ -83,7 +81,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.dnsName,
 		multivalue=True,
 		include_in_default_search=True,
-		options=[],
 		required=True,
 		may_change=True
 	),

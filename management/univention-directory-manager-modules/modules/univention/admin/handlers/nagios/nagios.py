@@ -62,7 +62,6 @@ property_descriptions = {
 		long_description=_('Nagios object name'),
 		syntax=univention.admin.syntax.string_numbers_letters_dots,
 		include_in_default_search=True,
-		options=[],
 		required=True,
 		may_change=False,
 		identifies=True

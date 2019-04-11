@@ -62,7 +62,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.policyName,
 		include_in_default_search=True,
-		options=[],
 		required=True,
 		may_change=True,
 		identifies=True

@@ -61,7 +61,6 @@ property_descriptions = {
 		long_description=_('A unique name for this DHCP host entry. Using the hostname is recommended.'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		options=[],
 		required=True,
 		may_change=True,
 		identifies=True
@@ -71,7 +70,6 @@ property_descriptions = {
 		long_description=_('Currently, only the ethernet and token-ring types are recognized. \
 The hardware-address should be a set of hexadecimal octets (numbers from 0 through ff) separated by colons.'),
 		syntax=univention.admin.syntax.DHCP_HardwareAddress,
-		options=[],
 		required=True,
 		may_change=True,
 		identifies=False
@@ -82,7 +80,6 @@ The hardware-address should be a set of hexadecimal octets (numbers from 0 throu
 Each address should be either an IP address or a domain name that resolves to one or more IP addresses.'),
 		syntax=univention.admin.syntax.hostOrIP,
 		multivalue=True,
-		options=[],
 		required=False,
 		may_change=True,
 		identifies=False

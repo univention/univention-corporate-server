@@ -64,7 +64,6 @@ property_descriptions = {
 		long_description=_('The name of the server, which should handle this DHCP service.'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		options=[],
 		required=True,
 		may_change=True,
 		identifies=True

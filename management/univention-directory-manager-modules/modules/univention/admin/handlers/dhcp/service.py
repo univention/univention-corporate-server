@@ -60,7 +60,6 @@ property_descriptions = {
 		long_description=_('A unique name for this DHCP service.'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
-		options=[],
 		required=True,
 		may_change=False,
 		identifies=True
