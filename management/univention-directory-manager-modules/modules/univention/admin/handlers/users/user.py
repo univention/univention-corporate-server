@@ -452,7 +452,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.emailAddressValidDomain,
 		multivalue=True,
-		readonly_when_synced=False,
 		copyable=True,
 	),
 	'mailForwardAddress': univention.admin.property(
@@ -460,7 +459,6 @@ property_descriptions = {
 		long_description=_("Incoming e-mails for this user are copied/redirected to the specified forward e-mail adresses. Depending on the forwarding setting, a local copy of each e-mail is kept. If no forwarding e-mail addresses are specified, the e-mails are always kept in the user's mailbox."),
 		syntax=univention.admin.syntax.emailAddress,
 		multivalue=True,
-		readonly_when_synced=False,
 		copyable=True,
 	),
 	'mailForwardCopyToSelf': univention.admin.property(
@@ -468,7 +466,6 @@ property_descriptions = {
 		long_description=_("Specifies if a local copy of each incoming e-mail is kept for this user. If no forwarding e-mail addresses are specified, the e-mails are always kept in the user's mailbox."),
 		syntax=univention.admin.syntax.emailForwardSetting,
 		dontsearch=True,
-		readonly_when_synced=False,
 		copyable=True,
 	),
 	'overridePWHistory': univention.admin.property(
