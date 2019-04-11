@@ -122,7 +122,6 @@ property_descriptions = {
 		short_description=_('Reset lockout'),
 		long_description=_('If the account is locked out due to too many login failures, this checkbox allows unlocking.'),
 		syntax=univention.admin.syntax.locked,
-		editable=True,
 		show_in_lists=True,
 		default='0',
 	),
