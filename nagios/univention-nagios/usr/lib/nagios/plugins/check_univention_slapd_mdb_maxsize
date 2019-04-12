@@ -50,12 +50,13 @@ args = parser.parse_args()
 ucr = ConfigRegistry()
 ucr.load()
 
+service_prefix = 'LISTENER' if args.listener_only else 'SLAPD'
 service = 'univention-directory-listener' if args.listener_only else 'slapd'
 ucr_variable = 'listener/cache/mdb/maxsize' if args.listener_only else 'ldap/database/mdb/maxsize'
 
 
 def nagios_exit(state, msg):
-	print('%s %s: %s' % (service, {STATE_OK: 'MDB OK', STATE_WARNING: 'MDB WARNING', STATE_CRITICAL: 'MDB CRITICAL'}.get(state, 'MDB UNKNOWN'), msg))
+	print('%s %s: %s' % (service_prefix, {STATE_OK: 'MDB OK', STATE_WARNING: 'MDB WARNING', STATE_CRITICAL: 'MDB CRITICAL'}.get(state, 'MDB UNKNOWN'), msg))
 	sys.exit(state)
 
 
@@ -70,11 +71,11 @@ else:
 
 files = [file_ for file_ in files if os.path.exists('%s/data.mdb' % (file_))]
 
-if files and not os.path.exists('/usr/bin/mdb_stat'):
-	nagios_exit(STATE_WARNING, 'mdb_stat not found, please install lmdb-utils')
-
 if not files:
-	nagios_exit(STATE_OK, 'Slapd backend is not mdb')
+	nagios_exit(STATE_OK, 'OpenLDAP backend is not mdb')
+
+if not os.path.exists('/usr/bin/mdb_stat'):
+	nagios_exit(STATE_WARNING, 'mdb_stat not found, please install lmdb-utils')
 
 errors = []
 warnings = []
@@ -89,7 +90,7 @@ for mdb_dir in files:
 	try:
 		in_use = int((int(stat['number of pages used']) * 100) / int(stat['max pages']))
 	except KeyError:  # API change in the future
-		nagios_exit(STATE_CRITICAL, 'mdb_stat output could not be parsed: %s' % (output,))
+		nagios_exit(STATE_CRITICAL, 'output of "mdb_stat -e %s" could not be parsed: %s' % (mdb_dir, output,))
 
 	if in_use >= args.critical:
 		errors.append("More than %s%% (in fact %s%%) of mdb database %s is use, please increase %s (and restart %s)" % (args.critical, in_use, mdb_dir, ucr_variable, service))
