@@ -1,3 +1,9 @@
+univention-nagios (12.0.1-6) unstable; urgency=medium
+
+  * Bug #48422: create objects in postinst
+
+ -- Florian Best <best@univention.de>  Fri, 12 Apr 2019 12:53:48 +0200
+
 univention-nagios (12.0.1-5) unstable; urgency=medium
 
   * Bug #48422: add check for listener mdb database maxsize
