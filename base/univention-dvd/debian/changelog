@@ -1,3 +1,9 @@
+univention-dvd (3.0.0-14) unstable; urgency=medium
+
+  * Bug #49253: UCS-4.3-4 DVD
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Apr 2019 14:58:08 +0200
+
 univention-dvd (3.0.0-13) unstable; urgency=medium
 
   * Bug #48279: UCS-4.3-3 DVD
