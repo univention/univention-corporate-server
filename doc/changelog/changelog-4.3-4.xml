@@ -185,6 +185,8 @@
 			</itemizedlist>
 		</section>
 
+		<section id="changelog:basis:ucr">
+			<title>Univention Configuration Registry</title>
 			<section id="changelog:basis:ucr:template">
 				<title>Changes to templates and modules</title>
 				<itemizedlist>
