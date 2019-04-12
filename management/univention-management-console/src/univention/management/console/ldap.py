@@ -30,6 +30,59 @@ _ucr.load()
 __all__ = ('user_connection', 'get_user_connection', 'machine_connection', 'get_machine_connection', 'admin_connection', 'get_admin_connection')
 
 
+class _WrappedAccess(_access, object):
+
+	def __apply(self, func, *args, **kwargs):
+		try:
+			return func(*args, **kwargs)
+		except (ldap.SERVER_DOWN, ldap.UNAVAILABLE, ldap.TIMEOUT, ldap.TIMELIMIT_EXCEEDED, udm_errors.ldapTimeout):
+			reset_cache()
+			raise
+		except udm_errors.ldapError as exc:
+			if isinstance(exc.original_exception, (ldap.SERVER_DOWN, ldap.UNAVAILABLE, ldap.TIMEOUT, ldap.TIMELIMIT_EXCEEDED)):
+				reset_cache()
+			raise
+
+	def unbind(self, *args, **kwargs):
+		return self.__apply(super(_WrappedAccess, self).unbind, *args, **kwargs)
+
+	def whoami(self, *args, **kwargs):
+		return self.__apply(super(_WrappedAccess, self).whoami, *args, **kwargs)
+
+	def get_schema(self, *args, **kwargs):
+		return self.__apply(super(_WrappedAccess, self).get_schema, *args, **kwargs)
+
+	def getAttr(self, *args, **kwargs):
+		return self.__apply(super(_WrappedAccess, self).getAttr, *args, **kwargs)
+
+	def get(self, *args, **kwargs):
+		return self.__apply(super(_WrappedAccess, self).get, *args, **kwargs)
+
+	def add(self, *args, **kwargs):
+		return self.__apply(super(_WrappedAccess, self).add, *args, **kwargs)
+
+	def modify(self, *args, **kwargs):
+		return self.__apply(super(_WrappedAccess, self).modify, *args, **kwargs)
+
+	def modify_s(self, *args, **kwargs):
+		return self.__apply(super(_WrappedAccess, self).modify_s, *args, **kwargs)
+
+	def searchDn(self, *args, **kwargs):
+		return self.__apply(super(_WrappedAccess, self).searchDn, *args, **kwargs)
+
+	def search(self, *args, **kwargs):
+		return self.__apply(super(_WrappedAccess, self).search, *args, **kwargs)
+
+	def getPolicies(self, *args, **kwargs):
+		return self.__apply(super(_WrappedAccess, self).getPolicies, *args, **kwargs)
+
+	def delete(self, *args, **kwargs):
+		return self.__apply(super(_WrappedAccess, self).delete, *args, **kwargs)
+
+	def rename(self, *args, **kwargs):
+		return self.__apply(super(_WrappedAccess, self).rename, *args, **kwargs)
+
+
 class LDAP(object):
 
 	_LDAP_CONNECTION = 'ldap_connection'
@@ -132,6 +185,8 @@ class LDAP(object):
 					lo, po = conn
 				except (TypeError, ValueError):
 					lo, po = None, None
+			if lo is not None:
+				lo.__class__ = _WrappedAccess
 			return lo, po
 
 		def _decorator(func):
