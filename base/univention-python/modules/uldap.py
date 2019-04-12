@@ -400,6 +400,10 @@ class access:
 		:returns: A list of values.
 		:rtype: list[str]
 		:raises ldap.NO_SUCH_OBJECT: If the LDAP object is not accessible.
+
+		.. warning:: the attribute name is currently case sensitive and must be given as in the LDAP schema
+
+		.. warning:: when `required=True` it raises `ldap.NO_SUCH_OBJECT` even if the object exists but the attribute is not set
 		"""
 		_d = univention.debug.function('uldap.getAttr %s %s' % (dn, attr))  # noqa F841
 		if dn:
