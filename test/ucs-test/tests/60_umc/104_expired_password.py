@@ -29,7 +29,7 @@ class TestPwdChangeNextLogin(object):
 		print 'test_expired_password_detection_create_pwdchangenextlogin(%r)' % (options,)
 		password = random_string()
 		userdn, username = udm.create_user(options=options, password=password, pwdChangeNextLogin=1)
-		client = Client()
+		client = Client(language='en-US')
 		with pytest.raises(Unauthorized) as msg:
 			client.authenticate(username, password)
 		self.assert_password_expired(msg.value)
@@ -39,12 +39,12 @@ class TestPwdChangeNextLogin(object):
 		print 'test_expired_password_detection_modify_pwdchangenextlogin(%r)' % (options,)
 		password = random_string()
 		userdn, username = udm.create_user(options=options, password=password)
-		client = Client()
+		client = Client(language='en-US')
 		client.authenticate(username, password)
 
 		udm.modify_object('users/user', dn=userdn, pwdChangeNextLogin=1)
 
-		client = Client()
+		client = Client(language='en-US')
 		with pytest.raises(Unauthorized) as msg:
 			client.authenticate(username, password)
 		self.assert_password_expired(msg.value)
@@ -65,12 +65,12 @@ class TestPwdChangeNextLogin(object):
 		if samba4_installed:
 			utils.wait_for_connector_replication()
 
-		client = Client()
+		client = Client(language='en-US')
 		print 'check login with pwdChangeNextLogin=1'
-		with pytest.raises(Unauthorized) as msg:
+		with pytest.raises(Unauthorized):
 			client.umc_auth(username, password)
 
-		client = Client()
+		client = Client(language='en-US')
 		print 'change password from %r to %r' % (password, new_password)
 		client.umc_auth(username, password, new_password=new_password)
 
@@ -79,12 +79,12 @@ class TestPwdChangeNextLogin(object):
 			utils.wait_for_connector_replication()
 
 		print 'check login with new password'
-		client = Client()
+		client = Client(language='en-US')
 		client.authenticate(username, new_password)
 
 		print 'ensure login with old password does not work anymore'
 		with pytest.raises(Unauthorized):
-			client = Client()
+			client = Client(language='en-US')
 			client.authenticate(username, password)
 
 
@@ -94,18 +94,18 @@ class TestBasics(object):
 		password = random_string()
 		userdn, username = udm.create_user(password=password)
 		with pytest.raises(Unauthorized):
-			client = Client()
+			client = Client(language='en-US')
 			client.authenticate('UNKNOWN' + username, password)
 
 	def test_login_invalid_password(self, udm, Client, random_string, Unauthorized):
 		password = random_string()
 		userdn, username = udm.create_user(password=password)
 		with pytest.raises(Unauthorized):
-			client = Client()
+			client = Client(language='en-US')
 			client.authenticate(username, password + 'INVALID')
 
 	def test_login_as_root(self, Client):
-		client = Client()
+		client = Client(language='en-US')
 		# Actually this is the password of the Administrator account but probably in most test scenarios also the root password
 		client.authenticate('root', utils.UCSTestDomainAdminCredentials().bindpw)
 
@@ -116,5 +116,5 @@ class TestLDAPUsers(object):
 	def test_ldap_pwd_user_umc_authentication(self, udm, Client, random_string, Unauthorized):
 		password = random_string()
 		userdn, username = udm.create_ldap_user(password=password)
-		client = Client()
+		client = Client(language='en-US')
 		client.authenticate(username, password)
