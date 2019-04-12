@@ -95,7 +95,7 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 12.0.1-6
 		for dn in "cn=UNIVENTION_LISTENER_MDB_MAXSIZE,cn=nagios,$ldap_base"; do
 			rdn="$(echo "$dn" | sed -e 's|,.*||')"
 			if udm nagios/service list "$@" --filter "$rdn" | grep "^DN: $dn" 2>/dev/null >/dev/null; then
-				univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "$dn" || die
+				univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "$dn"
 			else
 				echo "Skipping $dn (code $?)"
 			fi
