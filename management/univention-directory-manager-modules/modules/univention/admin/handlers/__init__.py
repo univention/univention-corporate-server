@@ -332,7 +332,8 @@ class simpleLdap(object):
 		:returns: True if the property exists and is enabled, False otherwise.
 		:rtype: bool
 
-		This method is deprecated - use :func:`univention.admin.handlers.simpleLdap.has_property` instead!
+		.. deprecated:: 4.4
+		Use :func:`univention.admin.handlers.simpleLdap.has_property` instead!
 		"""
 		return self.has_property(key)
 
@@ -343,8 +344,6 @@ class simpleLdap(object):
 		:param str key: The name of a property.
 		:returns: True if the property exists and is enabled, False otherwise.
 		:rtype: bool
-
-		This method is deprecated - use :func:`univention.admin.handlers.simpleLdap.has_property` instead!
 		"""
 		try:
 			p = self.descriptions[key]
@@ -508,6 +507,8 @@ class simpleLdap(object):
 
 		:returns: a list of 2-tuples (udm-property-name, property-value).
 		:rtype: list[tuple]
+
+		.. warning:: In certain circumstances this sets the default value for every property (e.g. when having a new object).
 		"""
 		return [(key, self[key]) for key in self.keys() if self.has_property(key)]
 
