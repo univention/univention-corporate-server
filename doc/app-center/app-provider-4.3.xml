@@ -2414,7 +2414,7 @@ Group[de] = Lizenz und Liste
         <para>
             UCS provides a certificate infrastructure for secure communication
             protocols. See <ulink
-                url="http://docs.software-univention.de/manual.html#domain:ssl">SSL
+                url="https://docs.software-univention.de/manual.html#domain:ssl">SSL
                 certificate management</ulink> in the UCS manual.
         </para>
         <para>
