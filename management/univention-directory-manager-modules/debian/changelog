@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.12-24) unstable; urgency=medium
+
+  * Bug #31494: fix replacing of filter if it's not a string
+
+ -- Florian Best <best@univention.de>  Fri, 12 Apr 2019 11:36:27 +0200
+
 univention-directory-manager-modules (14.0.12-23) unstable; urgency=medium
 
   * Bug #31494: fix searching in UMC

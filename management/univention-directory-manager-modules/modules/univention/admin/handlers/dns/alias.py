@@ -165,9 +165,6 @@ def identify(dn, attr, canonical=0):
 
 
 def lookup_alias_filter(lo, filter_s):
-	if 'dnsAlias' not in filter_s:
-		return filter_s
-
 	alias_pattern = re.compile('(?:^|\()dnsAlias=([^)]+)($|\))', flags=re.I)
 
 	def _replace_alias_filter(match):
