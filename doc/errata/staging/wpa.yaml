@@ -1,7 +1,7 @@
 product: ucs
 release: "4.3"
-version: [3]
-scope: ucs_4.3-0-errata4.3-3
+version: [3,4]
+scope: ucs_4.3-0-errata4.3-4
 src: wpa
 fix: 2:2.4-1+deb9u3A~4.3.4.201904131053
 desc: |
