@@ -21,9 +21,9 @@ PERSON="false"
 POSIX="true"
 
 username="$(user_randomname)"
-#printername="$(random_chars 12)"'" '"$(random_chars 46)"
+#printername="$(random_chars 5)"'"'"$(random_chars 5)"  # lp fails with " in the name (Permission denied)
+printername="$(random_chars 10)"
 #sambaprintername="$(random_chars 12)"'" '"$(random_chars 46)"
-printername="$(random_chars 12) $(random_chars 46)"
 sambaprintername="$(random_chars 12) $(random_chars 46)"
 password=univention
 
@@ -49,13 +49,16 @@ user_create "$username" || fail_fast 1 "Could not create user $username."
 
 #create printer
 echo "----create printer"
-printerdn=$(udm-test shares/printer create \
+
+printercreated="$(udm-test shares/printer create \
 	--position "$printsharebasedn" \
 	--set "name=$printername" \
 	--set "sambaName=$sambaprintername" \
 	--set "spoolHost=$hostname.$domainname" \
-	--set "uri=socket:// 127.0.0.1:12345" \
-	--set "model=None" | grep 'Object created:' | sed 's/Object created: //g')
+	--set "uri=socket:// 127.0.0.1:12346" \
+	--set "model=None" || fail_fast 1 "Could not create printer")"
+echo "$printercreated"
+printerdn="$(echo "$printercreated" | grep 'Object created:' | sed 's/Object created: //g')"
 
 wait_for_replication_and_postrun
 
@@ -65,7 +68,6 @@ i=0
 while ! output="$(smbclient "//localhost/$sambaprintername" -U "$username%$password" -c "exit" 2>&1)"
 do
         echo '.'
-        sleep 50
         let i=$i+1
         if [ $i = 20 ]; then
 		if echo "$output" | grep NT_STATUS_ACCESS_DENIED; then
@@ -78,23 +80,24 @@ do
 done
 
 #create input file
-echo "----Creating input file"
+echo "----Creating cups input file"
 
 tmp_filename="$(mktemp)"
 echo "$(uname -a)" > "$tmp_filename"
 
 #create output socket
-nc -l 12345 > "/tmp/$printername" &
+nc -l 12346 > "/tmp/$printername" &
 nc_pid=$!
 
 ## initiate print
 echo "initiate print"
 i=0
-while ! smbclient -U"$username%$password" "//$hostname.$domainname/$sambaprintername" -c "print \"$tmp_filename\""
+while ! lp -d "$printername" -U "$username" "$tmp_filename"
 do
+	echo lp -d "$printername" -U "$username" "$tmp_filename"
 	let i=$i+1
 	if [ $i = 20 ]; then
-		fail_fast 1 "Initiate printing has not been successful."
+		fail_fast 1 "CUPS: Initiate printing has not been successful."
 	fi
 	sleep 1
 done
@@ -107,7 +110,44 @@ while ! grep -q "$(uname -a)" "/tmp/$printername"
 do
 	let i=$i+1
 	if [ $i = 20 ]; then
-		fail_fast 1 "Nothing has been printed to the output file."
+		fail_fast 1 "CUPS: Nothing has been printed to the output file."
+	fi
+	sleep 1
+done
+
+kill "$nc_pid" >/dev/null 2>&1
+
+# SAME for samba!
+echo "----Creating samba input file"
+
+tmp_filename="$(mktemp)"
+echo "$(uname -a)" > "$tmp_filename"
+
+#create output socket
+nc -l 12346 > "/tmp/$sambaprintername" &
+nc_pid=$!
+
+## initiate print
+echo "initiate print"
+i=0
+while ! smbclient -U"$username%$password" "//$hostname.$domainname/$sambaprintername" -c "print \"$tmp_filename\""
+do
+	let i=$i+1
+	if [ $i = 20 ]; then
+		fail_fast 1 "SAMBA: Initiate printing has not been successful."
+	fi
+	sleep 1
+done
+rm "$tmp_filename"
+
+## check output
+echo "check output"
+i=0
+while ! grep -q "$(uname -a)" "/tmp/$sambaprintername"
+do
+	let i=$i+1
+	if [ $i = 20 ]; then
+		fail_fast 1 "SAMBA: Nothing has been printed to the output file."
 	fi
 	sleep 1
 done
