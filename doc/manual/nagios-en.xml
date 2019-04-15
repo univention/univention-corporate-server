@@ -1116,7 +1116,7 @@
 	  <para>
 		The Nagios interface is linked on the system overview page (see <xref
 		linkend="central-management-umc:login"/>) under <guimenu>Nagios</guimenu> and can
-		be opened directly at <uri>http://SERVERNAME-OR-IP/nagios/</uri>.
+		be opened directly at <uri>http://<replaceable>SERVERNAME-OR-IP</replaceable>/nagios/</uri>.
 	  </para>
 
 	  <figure id="nagios-tact-overview">

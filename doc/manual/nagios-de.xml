@@ -1111,7 +1111,7 @@
 	  <para>
 		Die Nagios-Oberfläche ist auf der Übersichtswebseite (siehe <xref
 		linkend="central-management-umc:login"/>) unter <guimenu>Nagios</guimenu> verlinkt und
-		kann auch direkt unter <uri>https://SERVERNAME-OR-IP/nagios/</uri> erreicht werden.
+		kann auch direkt unter <uri>https://<replaceable>SERVERNAME-ODER-IP</replaceable>/nagios/</uri> erreicht werden.
 	  </para>
 
 		<figure id="nagios-tact-overview">
