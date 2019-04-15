@@ -51,6 +51,20 @@
 
 		<itemizedlist>
 			<listitem><para>
+				A new &ucsUDN; protocol version has been added.
+				Directory replication metadata is now additionally stored in the LDAP Database <uri>cn=translog</uri>.
+			</para></listitem>
+			<listitem><para>
+				Support to configure multiple certificates for Server Name Indication (SNI) has been added to <package>univention-mail-dovecot</package>.
+			</para></listitem>
+			<listitem><para>
+				Various improvements have been implemented for the UCS Virtual Machine Manager (UVMM):
+				CPU and RAM usage of virtualization hosts is now displayed.
+				Hyper-V Enlightenment is configured for Windows virtual machines.
+				RAM overcommitment protection can now be configured with &ucsUCRV; <envar>uvmm/overcommit/reserved</envar>.
+			</para></listitem>
+			<listitem><para>
+				It is now possible to modify the LDAP base, for example modify references to policies.
 			</para></listitem>
 			<listitem><para>
 				Various security updates have been integrated into UCS 4.3-4, e.g. <wordasword>Apache2</wordasword>, the Linux kernel and <wordasword>Samba4</wordasword>.
