@@ -69,7 +69,7 @@ def _rdn(_dn):
 def _validate_smb_share_name(name):
 	if len(name) > 80:
 		return False
-	illegal_chars = '\\/[]:|<>+=;,*?"' + ''.join(map(chr, range(0x1F + 1)))
+	illegal_chars = set('\\/[]:|<>+=;,*?"' + ''.join(map(chr, range(0x1F + 1))))
 	if set(str(name)) & illegal_chars:
 		return False
 	return True
