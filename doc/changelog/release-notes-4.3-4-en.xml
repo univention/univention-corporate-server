@@ -55,7 +55,7 @@
 				Directory replication metadata is now additionally stored in the LDAP Database <uri>cn=translog</uri>.
 			</para></listitem>
 			<listitem><para>
-				Support to configure multiple certificates for Server Name Indication (SNI) has been added to <package>univention-mail-dovecot</package>.
+				Support to configure multiple certificates for Server Name Indication (SNI) has been added to the package <package>univention-mail-dovecot</package>.
 			</para></listitem>
 			<listitem><para>
 				Various improvements have been implemented for the UCS Virtual Machine Manager (UVMM):
