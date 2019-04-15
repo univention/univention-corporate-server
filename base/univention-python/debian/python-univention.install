@@ -1,1 +1,2 @@
-modules/*.py usr/share/pyshared/univention/
+modules/__init__.py usr/share/pyshared/univention/
+modules/__init__.py usr/lib/pymodules/python2.7/univention/

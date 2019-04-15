@@ -4,6 +4,7 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.9.8
 Build-Depends: debhelper (>= 7.0.50~),
+ dh-python,
  ucslint-univention,
  python-all
 
@@ -17,7 +18,7 @@ Depends: ${misc:Depends}, ${python:Depends},
 Provides: ${python:Provides}
 Replaces: python-univention-config-registry
 Breaks: python-univention-config-registry (<< 7)
-Description: UCS - common Python modules
+Description: UCS - common Python 2 modules
  This package contains Python modules used by various
  components of UCS.
  .

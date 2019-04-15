@@ -28,3 +28,10 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+
+# "univention" is a namespace package for:
+# (old) /usr/share/pyshared/univention/* (from pysupport) and
+# (old) /usr/lib/pymodules/python2.7/univention/* (from pysupport) and
+# (new) /usr/lib/python2.7/dist-packages/univention/* (from dh_python2)
+from pkgutil import extend_path
+__path__ = extend_path(__path__, __name__)

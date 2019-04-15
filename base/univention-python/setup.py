@@ -1,7 +1,6 @@
-#!/bin/sh
-# preinst script for python-univention
+#!/usr/bin/python2.7
 #
-# Copyright 2011-2019 Univention GmbH
+# Copyright 2019 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,12 +27,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-set -e
 
-if [ "$1" = upgrade ] && dpkg --compare-versions "$2" lt 6.0.0; then
-	pycentral pkgremove python-univention
-fi
+from distutils.core import setup
 
-#DEBHELPER#
-
-exit 0
+setup(name='univention-python',
+	packages=['univention'],
+	package_dir={'univention': 'modules'},
+)
