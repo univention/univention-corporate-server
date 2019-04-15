@@ -1232,8 +1232,6 @@
 	Section <xref linkend="domain-ldap:acls"/>.
   </para>
 
-
-  <para>
 	<table>
 	  <title>Policy 'UMC'</title>
 	  <tgroup cols="2">
@@ -1258,7 +1256,6 @@
 
 	  </tgroup>
 	</table>
-  </para>
   <caution>
     <para>
 	  For access to UMC, only policies are considered that are assigned to

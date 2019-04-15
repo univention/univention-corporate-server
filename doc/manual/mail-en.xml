@@ -239,12 +239,12 @@ doveadm auth cache flush
 		mailing list has its own e-mail address. If an e-mail is sent to this
 		address, it is received by all the members of the mailing list.
 	  </para>
-	  <para>
+
 		<figure id="mail-mailinglist">
 		  <title>Creating a mailing list</title>
 		  <graphic scalefit="1" width="90%" align="center" fileref="illustrations44/mail_mailinglist_en.png"/>
 		</figure>
-	  </para>
+
 	  <para>
 		Mail domains are managed in the UMC module <emphasis>Mail</emphasis>
 		with the <guimenu>Mailing list</guimenu> object type.
@@ -319,7 +319,6 @@ doveadm auth cache flush
 		Shared IMAP folders are managed in the UMC module <emphasis>Mail</emphasis>
 		with the <guimenu>Mail folder (IMAP)</guimenu> object type.
 	  </para>
-
 		<para>
 			Shared folders cannot be renamed, therefore the &ucsUCRV;
 			<envar>mail/dovecot/mailbox/rename</envar> is not taken into account. When a shared
@@ -328,12 +327,10 @@ doveadm auth cache flush
 			<envar>mail/dovecot/mailbox/delete</envar> is set to <literal>yes</literal>. The default value is <literal>no</literal>.
 		</para>
 
-	  <para>
 		<figure id="mail-sharedfolder">
 		  <title>Creating a shared IMAP folder</title>
 		  <graphic scalefit="1" width="100%" fileref="illustrations44/mail_imapfolder_en.png"/>
 		</figure>
-	  </para>
 
 	  <table>
 		<title>'General' tab</title>
@@ -1206,12 +1203,10 @@ invoke-rc.d dovecot restart
 	  the setup of Mozilla Thunderbird as an example.
 	</para>
 
-	<para>
 	  <figure id="mail:clients:thunderbird">
 		<title>Setup of Mozilla Thunderbird</title>
 		<graphic scalefit="1" align="center" width="80%" fileref="illustrations44/thunderbird_en.png"/>
 	  </figure>
-	</para>
   </section>
 
   <section id="mail::horde">
@@ -1229,12 +1224,12 @@ invoke-rc.d dovecot restart
 		linkend="central-management-umc:login"/>) under <guimenu>Horde web client</guimenu> and can
 		be opened directly at <uri>http://SERVERNAME/horde/</uri>.
 	  </para>
-	  <para>
+
 		<figure id="horde-login">
 		  <title>Login on Horde</title>
 		  <graphic scalefit="1" align="center" width="35%" fileref="illustrations44/login_en.png"/>
 		  </figure>
-	  </para>
+
 	  <para>
 		Either the UCS user name or the primary e-mail address can be used as the user name. The
 		webmail interface can be used in a number of display modes. The preferred version can be
@@ -1261,12 +1256,12 @@ invoke-rc.d dovecot restart
 		and are stored in <guimenu>Inbox</guimenu> as standard. A <emphasis>Sent</emphasis>
 		folder is created automatically the first time an e-mail is sent.
 	  </para>
-	  <para>
+
 		<figure id="horde-inbox">
 		  <title>Web mail (Inbox)</title>
 		  <graphic scalefit="1" width="95%" fileref="illustrations44/inbox_en.png"/>
 		  </figure>
-	  </para>
+
 	  <para>
 		Horde differentiates between two types of deletion: An e-mail deleted with
 		<guimenu>Delete</guimenu> is initially moved to the <emphasis>Trash</emphasis> folder. From

@@ -249,12 +249,10 @@ doveadm auth cache flush
 		Mailingliste.
 	  </para>
 
-	  <para>
 		<figure id="mail-mailinglist">
 		  <title>Einrichtung einer Mailingliste</title>
 		  <graphic scalefit="1" width="90%" align="center" fileref="illustrations44/mail_mailinglist_de.png"/>
 		</figure>
-	  </para>
 
 	  <para>
 		Mail-Domänen werden im UMC-Modul <emphasis>E-Mail</emphasis>
@@ -328,7 +326,6 @@ doveadm auth cache flush
 		vergeben, so dass es weiteren Benutzern gestattet ist, E-Mails in diesen
 		Ordnern zu lesen oder weitere E-Mails in diesen Ordnern abzulegen.
 	  </para>
-
 	  <para>
 		Alternativ können eigene IMAP-Ordner für Benutzer oder
 		Benutzergruppen freigegeben werden. Ein solcher Ordner wird als globaler
@@ -336,7 +333,6 @@ doveadm auth cache flush
 		Globale IMAP-Ordner werden im UMC-Modul <emphasis>Mail</emphasis>
 		mit dem Objekttyp <guimenu>Mail-Ordner (IMAP)</guimenu> verwaltet.
 	  </para>
-
 		<para>
 			Globale IMAP-Ordner können nicht umbenannt werden. Die &ucsUCRV;
 			<envar>mail/dovecot/mailbox/rename</envar> kommt daher nicht zur Anwendung. Nur wenn
@@ -345,14 +341,11 @@ doveadm auth cache flush
 			<emphasis>Mail</emphasis> auch tatsächlich von der Festplatte gelöscht.
 		</para>
 
-	  <para>
 		<figure id="mail-sharedfolder">
 		  <title>Einrichtung eines globalen IMAP-Ordners</title>
 		  <graphic scalefit="1" width="100%" fileref="illustrations44/mail_imapfolder_de.png"/>
 		</figure>
-	  </para>
 
-	  <para>
 		<table>
 		  <title>Reiter 'Allgemein'</title>
 		  <tgroup cols="2">
@@ -418,7 +411,6 @@ doveadm auth cache flush
 			</tbody>
 		  </tgroup>
 		</table>
-	  </para>
 
 		<table>
 		  <title>Reiter 'Zugriffsrechte'</title>
@@ -1264,12 +1256,10 @@ invoke-rc.d dovecot restart
 	  Mozilla Thunderbird:
 	</para>
 
-	<para>
 	  <figure id="mail:clients:thunderbird">
 		<title>Einrichtung von Mozilla Thunderbird</title>
 		<graphic scalefit="1" align="center" width="80%" fileref="illustrations44/thunderbird_de.png"/>
 	  </figure>
-	</para>
   </section>
 
 
@@ -1291,12 +1281,10 @@ invoke-rc.d dovecot restart
 		<uri>http://SERVERNAME/horde/</uri> erreicht werden.
 	  </para>
 
-	  <para>
 		<figure id="horde-login">
 		  <title>Anmeldung an Horde</title>
 		  <graphic scalefit="1" align="center" width="35%" fileref="illustrations44/login_de.png"/>
 		</figure>
-	  </para>
 
 	  <para>
 		Als <guimenu>Benutzername</guimenu> kann entweder der UCS-Benutzername oder die
@@ -1331,12 +1319,10 @@ invoke-rc.d dovecot restart
 		<emphasis>Gesendet</emphasis>-Ordner erstellt.
 	  </para>
 
-	  <para>
 		<figure id="horde-inbox">
 		  <title>Webmail (Posteingang)</title>
 		  <graphic scalefit="1" width="95%" fileref="illustrations44/inbox_de.png"/>
 		</figure>
-	  </para>
 
 	  <para>
 		Horde unterscheidet zwei Arten von Löschungen: Eine mit
@@ -1355,12 +1341,10 @@ invoke-rc.d dovecot restart
 		gespeichert.
 	  </para>
 
-	  <para>
 		<figure id="horde-address">
 		  <title>Adressbuch für Webmail</title>
 		  <graphic scalefit="1" width="100%" fileref="illustrations44/addressbook_de.png"/>
 		</figure>
-	  </para>
 
 	  <para>
 		Mit der einfachen oder erweiterten Suche gefundene Kontaktdaten lassen sich in
@@ -1393,12 +1377,10 @@ invoke-rc.d dovecot restart
 		Benutzer, die über einen Standard-Mail-Client auf ihre Postfächer zugreifen.
 	  </para>
 
-	  <para>
 		<figure id="horde-filter">
 		  <title>Filterverwaltung in Horde</title>
 		  <graphic scalefit="1" width="100%" fileref="illustrations44/filter_de.png"/>
 		</figure>
-	  </para>
 
 	  <para>
 		Die Regeln lassen sich unter <guimenu>Webmail &ar; Filter</guimenu> bearbeiten

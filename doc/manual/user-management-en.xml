@@ -807,7 +807,6 @@
 		logins to Windows and UCS systems.
 	  </para>
 
-	  <para>
 		<table>
 		  <title>'General' tab</title>
 		  <tgroup cols="2">
@@ -861,7 +860,6 @@
 			</tbody>
 		  </tgroup>
 		</table>
-	  </para>
 
 	</section>
 

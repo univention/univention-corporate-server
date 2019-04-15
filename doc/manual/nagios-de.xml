@@ -94,12 +94,10 @@
 			</para>
 			<section id="dashboard::nutzung:domain">
 				<title>Domain Dashboard</title>
-				<para>
 					<figure id="dashboard-domain">
 						<title>Domain Dashboard</title>
 						<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/dashboard-domain.png"/>
 					</figure>
-				</para>
 				<para>
 					Nach der Anmeldung wird standardmäßig das Domain Dashboard geöffnet. Auf diesem
 					Dashboard werden allgemeine Informationen über die Domäne angezeigt, bspw. wie
@@ -118,12 +116,10 @@
 			</section>
 			<section id="dashboard::nutzung:server">
 				<title>Server Dashboard</title>
-				<para>
 					<figure id="dashboard-server">
 						<title>Server Dashboard</title>
 						<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/dashboard-server.png"/>
 					</figure>
-				</para>
 				<para>
 					Standardmäßig wird zusätzlich das Server Dashboard eingerichtet. Auf diesem Dashboard sind
 					detaillierte Informationen zu einzelnen Serversystemen aufgelistet, wie bspw. die CPU- oder

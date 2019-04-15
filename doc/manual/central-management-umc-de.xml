@@ -1274,7 +1274,6 @@
 	Kapitel <xref linkend="domain-ldap:acls"/>.
   </para>
 
-  <para>
 	<table>
 	  <title>Richtlinie 'UMC'</title>
 	  <tgroup cols="2">
@@ -1299,7 +1298,6 @@
 
 	  </tgroup>
 	</table>
-  </para>
   <caution>
     <para>
 	  Für den Zugriff auf UMC-Module werden nur Richtlinien ausgewertet, die

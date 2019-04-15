@@ -88,12 +88,10 @@
 				</para>
 				<section id="dashboard::use:domain">
 					<title>Domain dashboard</title>
-					<para>
 						<figure id="dashboard-domain">
 							<title>Domain dashboard</title>
 							<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/dashboard-domain.png"/>
 						</figure>
-					</para>
 					<para>
 						After the login, the Domain dashboard is opened by default. On this
 						dashboard, general information about the domain is displayed, such as
@@ -112,12 +110,10 @@
 				</section>
 				<section id="dashboard::nutzung:server">
 					<title>Server dashboard</title>
-					<para>
 						<figure id="dashboard-server">
 							<title>Server dashboard</title>
 							<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/dashboard-server.png"/>
 						</figure>
-					</para>
 					<para>
 						By default, the server dashboard is also configured. On this dashboard, 
 						detailed information about individual server systems are shown, such as the CPU- or

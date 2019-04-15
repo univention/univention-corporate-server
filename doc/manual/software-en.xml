@@ -716,11 +716,9 @@ univention-install PACKAGENAME
 		Packages can be removed with the following command:
 	  </para>
 
-	  <para>
 		<programlisting language="sh">
 		  univention-remove PACKAGENAME
 		</programlisting>
-	  </para>
 
 	  <para>
 		If the name of a package is unknown, the command <command>apt-cache

@@ -577,11 +577,9 @@
                 GRUB kann auch direkt auf Dateisysteme zugreifen, so dass im Fehlerfall
                 etwa ein abweichender Kernel geladen werden kann.
             </para>
-            <para>
                 <figure id="grub-selection"><title>GRUB-Auswahlmenü</title>
                     <graphic scalefit="1" width="80%" align="center" fileref="illustrations44/computers_grub.png"/>
                 </figure>
-            </para>
             <para>
                 GRUB wird in einem zweistufigen Verfahren geladen: in den Master
                 Boot Record der Festplatte wird der Stage 1-Loader geschrieben, der auf die

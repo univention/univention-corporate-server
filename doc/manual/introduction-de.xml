@@ -221,11 +221,9 @@ Weiterführende Informationen finden sich in <xref linkend="domain:ldap"/>.
 
 <section id="introduction:Domaenenadministration"><title>Domänenadministration</title>
 
-<para>
 <figure id="introduction:umc"><title>Univention Management Console</title>
  <graphic scalefit="1" width="100%" fileref="illustrations44/umc-favorites-tab-de.png"/>
 </figure>
-</para>
 
 <para>
 Der Zugang zum LDAP-Verzeichnis erfolgt über die webbasierte Benutzerschnittstelle &ucsUMC; (UMC).

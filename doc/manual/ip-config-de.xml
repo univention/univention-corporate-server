@@ -2163,7 +2163,6 @@ dansguardian -g
 		wird.
 	  </para>
 
-	  <para>
 		<table>
 		  <title>UCR-Variablen für Filterregeln'</title>
 		  <tgroup cols="2">
@@ -2267,7 +2266,6 @@ dansguardian -g
 			</tbody>
 		  </tgroup>
 		</table>
-	  </para>
 
 	  <caution>
 		  <para>
@@ -2316,12 +2314,10 @@ dansguardian -g
 					auch für Gruppen gesetzt werden, so dass alle Benutzer in der Gruppe Zugang
 					erlangen.
 				</para>
-				<para>
 					<figure id="ip-config:radius:group">
 						<title>Beispiel für eine Gruppe, die ihren Benutzern Zugang gewährt</title>
 						<graphic fileref="illustrations44/radius-group-allow-network_DE.png" scalefit="1" width="100%"/>
 					</figure>
-				</para>
 			</section>
 			<section id="ip-config:radius:configuration:mac-filtering">
 				<title>MAC-Adressfilter</title>
@@ -2378,18 +2374,14 @@ client AP01 {
 					dies verzögert (etwa 15 Sekunden). Neue <foreignphrase>Access Points</foreignphrase>
 					haben erst nach diesem Neustart Zugriff auf den RADIUS-Server.
 				</para>
-				<para>
 					<figure id="ip-config:radius:option">
 						<title>Setzen der RADIUS-Option</title>
 						<graphic fileref="illustrations44/radius_option_DE.png" align="center" scalefit="1" width="75%"/>
 					</figure>
-				</para>
-				<para>
 					<figure id="ip-config:radius:authenticator">
 						<title>RADIUS an einem Computerobjekt einstellen</title>
 						<graphic fileref="illustrations44/radius_authenticator_DE.png" scalefit="1" width="100%"/>
 					</figure>
-				</para>
 			</section>
 			<section id="ip-config:radius:configuration:access-points_clients">
 				<title><foreignphrase>Access Points</foreignphrase> und Clients einstellen</title>

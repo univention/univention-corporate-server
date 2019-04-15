@@ -678,7 +678,6 @@
 		  the left column. <guimenu>Add &ar; DNS: Alias record</guimenu> can be used to create a new
 		  record.
 		</para>
-		<para>
 		  <table>
 			<title>'General' tab</title>
 			<tgroup cols="2">
@@ -722,7 +721,6 @@
 			  </tbody>
 			</tgroup>
 		  </table>
-		</para>
 	  </section>
 
 	  <section id="networks::dns::hostrecord">
@@ -737,7 +735,6 @@
 		  When adding or editing a computer object a host record can be created
 		  automatically or edited.
 		</para>
-		<para>
 		  <table>
 			<title>'General' tab</title>
 			<tgroup cols="2">
@@ -789,7 +786,6 @@
 			  </tbody>
 			</tgroup>
 		  </table>
-		</para>
 	  </section>
 
 	  <section id="ip-config:Service_records">
@@ -812,7 +808,6 @@
 		  can therefore only be added to a forward lookup zone or a subordinate
 		  container.
 		</para>
-		<para>
 		  <table>
 			<title>'General' tab</title>
 			<tgroup cols="2">
@@ -932,7 +927,6 @@
 			  </tbody>
 			</tgroup>
 		  </table>
-		</para>
 	  </section>
 
 	  <section id="ip-config:Reverse_lookup_zone">
@@ -2410,12 +2404,10 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 		DansGuardian allows the blocking of individual file types and suffixes
 		or access to websites or domains.
 	  </para>
-	  <para>
 		<figure id="net-dansguardian">
 		  <title>DansGuardian blocking a web site</title>
 		  <graphic fileref="illustrations44/dansguardian_EN.png" scalefit="1" width="100%"/>
 		</figure>
-	  </para>
 	  <para>
 		It is also possible to scan requested files for viruses. In the
 		default setting, the free virus scanner <application>ClamAV</application> is used.
@@ -2639,12 +2631,10 @@ dansguardian -g
 				the user access to the network. The checkbox can also be set on groups, which
 				allows all users in this group access.
 			  </para>
-			  <para>
 			  <figure id="ip-config:radius:group">
 				  <title>Example for a group allowing network access to its users</title>
 				  <graphic fileref="illustrations44/radius-group-allow-network_EN.png" scalefit="1" width="100%"/>
 			  </figure>
-			  </para>
 		  </section>
 		  <section id="ip-config:radius:configuration:mac-filtering">
 			  <title>MAC filtering</title>
@@ -2696,18 +2686,14 @@ client AP01 {
 					a slight delay (around 15 seconds). New access points can only access the RADIUS server
 					after this restart.
 				</para>
-				<para>
 					<figure id="ip-config:radius:option">
 						<title>RADIUS option</title>
 						<graphic fileref="illustrations44/radius_option_EN.png" align="center" scalefit="1" width="75%"/>
 					</figure>
-				</para>
-				<para>
 					<figure id="ip-config:radius:authenticator">
 						<title>RADIUS authenticator options</title>
 						<graphic fileref="illustrations44/radius_authenticator_EN.png" scalefit="1" width="100%"/>
 					</figure>
-				</para>
 		</section>
 		  <section id="ip-config:radius:configuration:access-points_clients">
 			<title>Access point and client configuration</title>
