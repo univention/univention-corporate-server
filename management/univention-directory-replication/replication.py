@@ -47,6 +47,7 @@ import ldif as ldifparser
 import re
 import time
 import base64
+import subprocess
 import univention.debug as ud
 import smtplib
 from email.MIMEText import MIMEText
@@ -1001,29 +1002,20 @@ def initialize():
 	init_slapd('start')
 
 
-def randpw(length=8):
+def randpw(length=64):
 	"""Create random password.
 	>>> randpw().isalnum()
 	True
 	"""
-	password = []
-	rand = open('/dev/urandom', 'r')
-	try:
-		for _ in xrange(length):
-			octet = ord(rand.read(1))
-			octet %= len(randpw.VALID)  # pylint: disable-msg=E1101
-			char = randpw.VALID[octet]  # pylint: disable-msg=E1101
-			password.append(char)
-	finally:
-		rand.close()
-	return ''.join(password)
-
-
-randpw.VALID = (
-	'0123456789'  # pylint: disable-msg=W0612
-	'abcdefghijklmnopqrstuvwxyz'
-	'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-)
+	password = subprocess.check_output([
+		'pwgen',
+		'--numerals',
+		'--capitalize',
+		'--secure',
+		str(length),
+		'1',
+	]).strip()
+	return password
 
 
 def new_password():

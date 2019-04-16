@@ -37,7 +37,8 @@
 create_logfile /var/log/univention/ldap-replication-resync.log "root:adm" 640
 
 # make sure rootpw.conf is not readable
-test -f /etc/ldap/rootpw.conf && chmod 600 /etc/ldap/rootpw.conf || true
+rootpw_filepath="/etc/ldap/rootpw.conf"
+test -f "$rootpw_filepath" && chmod 600 "$rootpw_filepath" || true
 
 univention-config-registry set	ldap/replication/filesystem/check?false \
 						ldap/replication/filesystem/limit?10 \
@@ -49,6 +50,15 @@ install -d -o listener -g root -m 0700 /var/univention-backup/replication
 
 #DEBHELPER#
 
-/etc/init.d/univention-directory-listener crestart
+if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 12.0.0-2 && [ -f "$rootpw_filepath" ]; then
+	rm "$rootpw_filepath"
+	new_password="$(pwgen --numerals --capitalize --secure 64 1)"
+	echo "rootpw \"$new_password\"" > "$rootpw_filepath"
+	chmod 600 "$rootpw_filepath"
+	service slapd crestart
+fi
+
+
+service univention-directory-listener crestart
 
 exit 0
