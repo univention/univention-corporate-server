@@ -559,6 +559,15 @@ if [ "$CHECK_RUN" = "false" ] && [ "$server_role" = "domaincontroller_backup" -o
 	fi
 fi
 
+#Check if failed.ldif exists
+if [ "$server_role" = "domaincontroller_slave" -o "$server_role" = "domaincontroller_backup" ]; then
+	echo "Check if /var/lib/univention-directory-replication/failed.ldif exists" >>/var/log/univention/join.log
+	if [ -e /var/lib/univention-directory-replication/failed.ldif ]; then
+		rm /var/lib/univention-directory-replication/failed.ldif
+		echo "Removed failed.ldif" >>/var/log/univention/join.log
+	fi
+fi
+
 if [ "$CHECK_RUN" = "false" -a -x /etc/init.d/univention-s4-connector ]; then
 	echo -n "Stop S4-Connector: "
 	/etc/init.d/univention-s4-connector stop >>/var/log/univention/join.log 2>&1
