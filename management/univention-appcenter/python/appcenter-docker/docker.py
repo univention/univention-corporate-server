@@ -49,10 +49,10 @@ from base64 import encodestring
 
 import ruamel.yaml as yaml
 
-from univention.appcenter.utils import app_ports_with_protocol, app_ports, call_process, call_process2, shell_safe, get_sha256, mkdir, unique, urlopen
+from univention.appcenter.utils import app_ports_with_protocol, app_ports, call_process, call_process2, shell_safe, mkdir, unique, urlopen
 from univention.appcenter.log import get_base_logger
-from univention.appcenter.exceptions import DockerVerificationFailed, DockerImagePullFailed
-from univention.appcenter.ucr import ucr_save, ucr_is_false, ucr_get, ucr_run_filter, ucr_is_true
+from univention.appcenter.exceptions import DockerImagePullFailed
+from univention.appcenter.ucr import ucr_save, ucr_get, ucr_run_filter, ucr_is_true
 
 _logger = get_base_logger().getChild('docker')
 
@@ -74,34 +74,8 @@ def inspect(name):
 
 
 def verify(app, image):
-	from univention.appcenter.actions import get_action
-	update = get_action('update')()
-	appinfo = update.get_app_info(app)
-
-	if not appinfo:
-		_logger.error('Warning: Cannot check DockerImage checksum because app is not in index.json: %s' % app.id)
-		return  # Nothing we can do here, this is mainly for ucs-test apps
-
-	try:
-		appfileinfo = appinfo['ini']
-		dockerimageinfo = appfileinfo['DockerImageManifestV2S1']
-		appcenter_sha256sum = dockerimageinfo['sha256']
-		docker_image_manifest_url = dockerimageinfo['url']
-	except KeyError:
-		_logger.error('Error looking up DockerImage checksum for %s from index.json' % app.id)
-		return  # Nothing we can do here, this is the case of ISV Docker repos
-
-
-	username, password = DOCKER_READ_USER_CRED['username'], DOCKER_READ_USER_CRED['password']
-	auth = encodestring('%s:%s' % (username, password)).replace('\n', '')
-	request = urllib2.Request(docker_image_manifest_url, headers={'Authorization': 'Basic %s' % auth})
-	response = urlopen(request)
-
-	docker_image_manifest_hash = get_sha256(response.read())
-
-	# compare with docker registry
-	if appcenter_sha256sum != docker_image_manifest_hash:
-		raise DockerImageVerificationFailedChecksum(appcenter_sha256sum, docker_image_manifest_hash)
+	# deprecated and not used anymore. Bug #48670
+	return
 
 
 def login(hub, with_license):
@@ -287,12 +261,8 @@ class Docker(object):
 			raise DockerImagePullFailed(self.image, out)
 
 	def verify(self):
-		if ucr_is_false('appcenter/index/verify'):
-			return
-		try:
-			verify(self.app, self.image)
-		except Exception as exc:
-			raise DockerVerificationFailed(str(exc))
+		# deprecated and not used anymore. Bug #48670
+		return
 
 	@contextmanager
 	def tmp_file(self):
@@ -415,7 +385,8 @@ class Docker(object):
 
 class MultiDocker(Docker):
 	def verify(self):
-		return True
+		# deprecated and not used anymore. Bug #48670
+		return
 
 	def pull(self):
 		mkdir(self.app.get_compose_dir())

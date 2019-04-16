@@ -225,6 +225,7 @@ class RegisterSchemaFileFailed(Abort):
 	default_error_msg = 'Registering schema file %(filename)s failed'
 
 
+# Not used. Here for reference (and to prevent re-using the code)
 class DockerVerificationFailed(Abort):
 	code = 427
 
