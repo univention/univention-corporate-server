@@ -1,3 +1,9 @@
+univention-samba4 (8.0.0-18) unstable; urgency=medium
+
+  * Bug #48541: Hide folder windows-profiles in home share
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 16 Apr 2019 11:48:05 +0200
+
 univention-samba4 (8.0.0-17) unstable; urgency=medium
 
   * Bug #49025: Fix mode of dns_update_list and spn_update_list
