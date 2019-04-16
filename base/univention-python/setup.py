@@ -30,7 +30,8 @@
 
 from distutils.core import setup
 
-setup(name='univention-python',
+setup(
+	name='univention-python',
 	packages=['univention'],
 	package_dir={'univention': 'modules'},
 )
