@@ -1,6 +1,6 @@
 univention-management-console-module-adtakeover (6.0.1-4) unstable; urgency=medium
 
-  * Bug #40055: added filter for PDC Netbios name of AD DC
+  * Bug #40055: fixes LDAP filter for PDC Netbios name of AD DC
 
  -- Fathan Vidjaja <fvidjaja@alvine.knut.univention.de>  Tue, 16 Apr 2019 18:43:41 +0200
 

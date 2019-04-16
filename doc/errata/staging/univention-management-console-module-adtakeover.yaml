@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-management-console-module-adtakeover.yaml
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * All broken LDAP filters and DN operations in AD takeover are now fixed.
+bug: [40055]
