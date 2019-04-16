@@ -8,6 +8,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  univention-join,
  univention-config-dev,
  univention-management-console-dev,
+ python-debian,
  python-all,
  ucslint,
  stylus

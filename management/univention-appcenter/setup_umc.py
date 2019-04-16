@@ -1,10 +1,10 @@
-from distutils.core import setup
+from packaging import setup
 
-setup(name='univention-management-console-modules-appcenter',
-    packages=[
-	'univention.appcenter.actions',
+setup(name='univention-management-console-module-appcenter',
+	packages=[
+		'univention.appcenter.actions',
 	],
-    package_dir={
-	'univention.appcenter.actions': 'python/appcenter-umc/actions',
+	package_dir={
+		'univention.appcenter.actions': 'python/appcenter-umc/actions',
 	},
 )

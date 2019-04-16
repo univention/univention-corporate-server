@@ -54,6 +54,4 @@ create_portal_entries.handler(ucr_instance(), changes)
 '
 fi
 
-univention-app info
-
 exit 0

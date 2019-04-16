@@ -34,18 +34,9 @@
 # Needs to be done because the source package uses dh_python2, but UMC modules
 # are still installed the old way
 # TODO: Remove once we migrated all UMC modules (namely dh-umc-module-install)
-if [ -e "/usr/share/pyshared/univention/admin/handlers/appcenter/__init__.py" ] ; then
-cat > /usr/share/python-support/univention-management-console-module-appcenter.public <<-EOF
-/usr/share/pyshared/univention/admin/handlers/appcenter/__init__.py
-/usr/share/pyshared/univention/admin/handlers/appcenter/app.py
-/usr/share/pyshared/univention/management/console/modules/appcenter/__init__.py
-/usr/share/pyshared/univention/management/console/modules/appcenter/app_center.py
-/usr/share/pyshared/univention/management/console/modules/appcenter/constants.py
-/usr/share/pyshared/univention/management/console/modules/appcenter/sanitizers.py
-/usr/share/pyshared/univention/management/console/modules/appcenter/util.py
-EOF
-update-python-modules univention-management-console-module-appcenter.public
-update-python-modules --post-install
+if which update-python-modules >/dev/null 2>&1; then
+	update-python-modules univention-management-console-module-appcenter.public
+	update-python-modules --post-install
 fi
 
 #DEBHELPER#

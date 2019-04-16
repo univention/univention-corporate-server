@@ -1,0 +1,7 @@
+/usr/share/pyshared/univention/admin/handlers/appcenter/__init__.py
+/usr/share/pyshared/univention/admin/handlers/appcenter/app.py
+/usr/share/pyshared/univention/management/console/modules/appcenter/__init__.py
+/usr/share/pyshared/univention/management/console/modules/appcenter/app_center.py
+/usr/share/pyshared/univention/management/console/modules/appcenter/constants.py
+/usr/share/pyshared/univention/management/console/modules/appcenter/sanitizers.py
+/usr/share/pyshared/univention/management/console/modules/appcenter/util.py

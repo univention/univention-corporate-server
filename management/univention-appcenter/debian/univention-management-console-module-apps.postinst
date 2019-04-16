@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Univention Management Console Module Apps
 #  postinst file for the debian package
@@ -34,12 +34,9 @@
 # Needs to be done because the source package uses dh_python2, but UMC modules
 # are still installed the old way
 # TODO: Remove once we migrated all UMC modules (namely dh-umc-module-install)
-if [ -e "/usr/share/pyshared/univention/management/console/modules/apps/__init__.py" ] ; then
-cat > /usr/share/python-support/univention-management-console-module-apps.public <<-EOF
-/usr/share/pyshared/univention/management/console/modules/apps/__init__.py
-EOF
-update-python-modules univention-management-console-module-apps.public
-update-python-modules --post-install
+if which update-python-modules >/dev/null 2>&1; then
+	update-python-modules univention-management-console-module-apps.public
+	update-python-modules --post-install
 fi
 
 #DEBHELPER#
