@@ -1,3 +1,9 @@
+univention-join (11.0.1-16) unstable; urgency=medium
+
+  * Bug #47603: Detect failed.ldif early and remove
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 16 Apr 2019 17:24:37 +0200
+
 univention-join (11.0.1-15) unstable; urgency=medium
 
   * Bug #48972: Make path to admin-diary cli explicit
