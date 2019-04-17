@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-s4-connector
-fix: 13.0.2-5A~4.4.0.201904111038
+fix: 13.0.2-6A~4.4.0.201904171907
 desc: |
  This update addresses the following issues:
  * Duplicated code for the detection of superordinates has been removed.
