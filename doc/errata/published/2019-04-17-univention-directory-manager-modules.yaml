@@ -15,3 +15,5 @@ desc: |
    when the last policy is dereferenced.
  * The search filter dnsAlias in the computer modules has been repaired.
 bug: [40668, 48551, 46466, 31494]
+erratum: 50
+announced: 2019-04-17
