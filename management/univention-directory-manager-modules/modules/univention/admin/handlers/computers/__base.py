@@ -320,7 +320,10 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 	@classmethod
 	def rewrite_filter(cls, filter, mapping, lo=None):
 		if filter.variable == 'ip':
-			filter.variable = 'aRecord'
+			filter.transform_to_conjunction(univention.admin.filter.conjunction('|', [
+				univention.admin.filter.expression('aRecord', filter.value, escape=False),
+				univention.admin.filter.expression('aAAARecord', filter.value, escape=False),
+			]))
 		elif filter.variable == 'dnsAlias':
 			found = univention.admin.filter.parse(univention.admin.handlers.dns.alias.lookup_alias_filter(lo, unicode(filter)))
 			if isinstance(found, univention.admin.filter.conjunction):

@@ -14,4 +14,6 @@ desc: |
    properties has been done.
  * The properties allowedEmailUsers and allowedEmailGroups of groups/group
    and mail/lists have been added to the UDM module mapping.
-bug: [50288, 44937, 50236, 50239]
+ * Searching for the IP address property of computer objects now also searches
+   for IPv6 addresses.
+bug: [50288, 44937, 50236, 50239, 49313]

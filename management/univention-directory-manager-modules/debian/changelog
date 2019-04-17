@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.14-5) unstable; urgency=medium
+
+  * Bug #49313: fix searching for IPv6 addresses
+
+ -- Florian Best <best@univention.de>  Thu, 10 Oct 2019 12:12:06 +0200
+
 univention-directory-manager-modules (14.0.14-4) unstable; urgency=medium
 
   * Bug #50236: fix users/user filter rewrite to not create invalid
