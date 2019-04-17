@@ -315,3 +315,10 @@ Description[de]=Diese Variable bestimmt die Basis-DN der DNS Objekte im Samba Ve
 Description[en]=This variable determins the base DN of DNS objects in the Samba directory service. When set to 'legacy', the S4 Connector writes new DNS zones in Samba4 below CN=System instead of below DC=DomainDnsZones. This variable should only be modified once after manual migration of the DNS objects, if it still has the value 'legacy'.
 Type=str
 Categories=service-s4con
+
+[connector/s4/mapping/ignoresubtree/.*]
+Description[de]=Definiert die Positionen im Verzeichnisdienst, die nicht durch den Connector synchronisiert werden sollen. Standardmäßig ist die Variable nicht gesetzt.
+Description[en]=Defines the locations in the directory service that shall not be synchronised by the connector. By default, the variable is not set.
+Type=str
+Categories=service-s4con
+
