@@ -7,7 +7,7 @@
 
 import pytest
 import contextlib
-from univention.config_registry import ConfigRegistry, handler_set
+from univention.config_registry import ConfigRegistry
 from univention.admin.uldap import getAdminConnection
 from univention.testing import utils
 
@@ -35,6 +35,15 @@ reasons = {
 	REASON_DICTIONARY: ['chocolate'],
 	REASON_DIFFERENT_WORDS: ['ooooooooo'],
 }
+if samba4_installed:
+	reasons = {
+		REASON_TOO_SHORT: [],
+		REASON_TOO_SHORT_AT_LEAST_CHARACTERS: ['Test', 'ana'],
+		REASON_TOO_SIMPLE: ['123456789', 'chocolate', 'ooooooooo'],
+		REASON_PALINDROME: [],
+		REASON_DICTIONARY: [],
+		REASON_DIFFERENT_WORDS: [],
+	}
 
 
 @contextlib.contextmanager
