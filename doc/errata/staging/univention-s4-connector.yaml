@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issues:
  * Duplicated code for the detection of superordinates has been removed.
  * Dead code for obsolete custom attributes from UCS 2 has been removed.
-bug: [45068, 41554]
+ * Excluding subtrees from synchronization in s4connector is now possible
+   by configuring UCR variable connector/s4/mapping/ignoresubtree/.*
+bug: [45068, 41554, 47008]
