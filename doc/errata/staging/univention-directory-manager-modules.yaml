@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-directory-manager-modules
-fix: 14.0.12-22A~4.4.0.201904111643
+fix: 14.0.12-24A~4.4.0.201904121138
 desc: |
  This update addresses the following issues:
  * Searching for IP addresses of DNS host records is now possible.
