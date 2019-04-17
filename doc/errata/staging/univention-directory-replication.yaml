@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-0
 src: univention-directory-replication
 fix: 12.0.0-2A~4.4.0.201904161246
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * Increase the length of the ldap root password (/etc/ldap/rootpw.conf)
    used for ldap replication to improve security against brute force attacks.
 bug: [48606]

@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-0
 src: univention-management-console
 fix: 11.0.4-11A~4.4.0.201904111711
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The pam_cracklib behavior prior to UCS 4.3 errata 450 has been restored.
    Therefore password changes do not require strong passwords anymore if no
    passord policy is defined in the domain.

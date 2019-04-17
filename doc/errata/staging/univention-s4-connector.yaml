@@ -5,8 +5,7 @@ scope: ucs_4.4-0-errata4.4-0
 src: univention-s4-connector
 fix: 13.0.2-5A~4.4.0.201904111038
 desc: |
- This update addresses the following issue(s):
- * Unnecessary duplicated code for the detection of superordinates has
-   been removed.
+ This update addresses the following issues:
+ * Duplicated code for the detection of superordinates has been removed.
  * Dead code for obsolete custom attributes from UCS 2 has been removed.
 bug: [45068, 41554]
