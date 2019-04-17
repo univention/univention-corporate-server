@@ -50,15 +50,21 @@ install -d -o listener -g root -m 0700 /var/univention-backup/replication
 
 #DEBHELPER#
 
-if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 12.0.0-2 && [ -f "$rootpw_filepath" ]; then
-	rm "$rootpw_filepath"
+if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 12.0.0-3 && [ -f "$rootpw_filepath" ]; then
+	listenerpid=$(pgrep -f /usr/sbin/univention-directory-listener)
+	if [ -n "$listenerpid" ]; then
+		service univention-directory-listener stop
+	fi
+
 	new_password="$(pwgen --numerals --capitalize --secure 64 1)"
 	echo "rootpw \"$new_password\"" > "$rootpw_filepath"
-	chmod 600 "$rootpw_filepath"
 	service slapd crestart
+
+	if [ -n "$listenerpid" ]; then
+		service univention-directory-listener start
+	fi
+else
+	service univention-directory-listener crestart
 fi
-
-
-service univention-directory-listener crestart
 
 exit 0
