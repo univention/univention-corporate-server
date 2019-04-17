@@ -13,11 +13,11 @@ Depends: ${misc:Depends},
  univention-ldap-server (>= 1.8),
  shell-univention-lib,
  univention-directory-listener,
- python-univention | python2.6-univention | python2.6-univention-2005,
+ python-univention,
  python-univention-debug,
  python-ldap,
- python-univention-lib (>= 1.0.25-1)
-Conflicts: univention-ldap-replication (<< 1.2.0)
+ python-univention-lib (>= 1.0.25-1),
+ pwgen
 Description: UCS - Directory replication
  This package implements a client initiated LDAP master/slave
  replication, based on the UCS Directory Notifier/Listener.
