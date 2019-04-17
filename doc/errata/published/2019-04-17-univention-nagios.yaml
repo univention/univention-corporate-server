@@ -13,3 +13,5 @@ desc: |
    univention-run-join-scripts --force --run-scripts \
    30univention-nagios-client.inst
 bug: [48422, 48617]
+erratum: 51
+announced: 2019-04-17
