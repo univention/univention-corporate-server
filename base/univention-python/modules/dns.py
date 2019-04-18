@@ -46,10 +46,9 @@ def lookup(query, type='a'):
 	result = map(lambda x: x['data'], rr)
 	return result
 
+
 # for backward compatibility
-
-
-from ipv4 import *
+from univention.ipv4 import *
 
 if __name__ == '__main__':
 	import doctest

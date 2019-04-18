@@ -44,11 +44,11 @@ class HookManager:
 	Simple hook file example:
 	------------------------------------------------------------------------------------------
 	def my_test_hook(*args, **kwargs):
-		print 'TEST_HOOK:', args, kwargs
+		print('TEST_HOOK:', args, kwargs)
 		return ['Mein', 'Result', 123]
 
 	def other_hook(*args, **kwargs):
-		print 'MY_SECOND_TEST_HOOK:', args, kwargs
+		print('MY_SECOND_TEST_HOOK:', args, kwargs)
 		return ['Mein', 'Result', 123]
 
 	def register_hooks():
@@ -165,5 +165,5 @@ class HookManager:
 # test code
 if __name__ == '__main__':
 	x = HookManager('./test')
-	print 'get_hook_list()=', x.get_hook_list()
-	print 'call_hook(test_hook)=', x.call_hook('test_hook', 'abc', 123, x=1, y='B')
+	print('get_hook_list()={}'.format(x.get_hook_list()))
+	print('call_hook(test_hook)={}'.format(x.call_hook('test_hook', 'abc', 123, x=1, y='B')))
