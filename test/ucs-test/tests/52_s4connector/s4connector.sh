@@ -629,6 +629,38 @@ function ad_connector_restart ()
 	sleep 3 # wait a few seconds
 }
 
+function connector_mapping_adjust ()
+{
+	MAIN_FILE="/usr/lib/python2.7/dist-packages/univention/s4connector/s4/main.py"
+	if [ -e "$MAIN_FILE" ]; then
+		cp -f "$MAIN_FILE" "$MAIN_FILE".ucs-test-backup
+		if [ -n "$3" ]; then
+			sed -i "/^mapping = imp.*/a ucs_test_filter = mapping.s4_mapping ['$1'].ignore_filter\nucs_test_filter = ucs_test_filter[0:len(ucs_test_filter)-1]\nucs_test_filter=ucs_test_filter+'(uid=$2))'\nmapping.s4_mapping ['$1'].ignore_filter = ucs_test_filter/" "$MAIN_FILE"
+		else
+			sed -i "/^mapping = imp.*/a mapping.s4_mapping ['$1'].ignore_subtree = mapping.s4_mapping ['$1'].ignore_subtree + ['$2']/" "$MAIN_FILE"
+		fi
+	else
+		MAIN_FILE="/usr/share/pyshared/univention/s4connector/s4/main.py"
+		cp -f "$MAIN_FILE" "$MAIN_FILE".ucs-test-backup
+		if [ -n "$3" ]; then
+			sed -i "s/import mapping/import mapping\nucs_test_filter = mapping.s4_mapping ['$1'].ignore_filter\nucs_test_filter = ucs_test_filter[0:len(ucs_test_filter)-1]\nucs_test_filter=ucs_test_filter+'(uid=$2))'\nmapping.s4_mapping ['$1'].ignore_filter = ucs_test_filter/" "$MAIN_FILE"
+		else
+			sed -i "s/import mapping/import mapping\nmapping.s4_mapping ['$1'].ignore_subtree = mapping.s4_mapping ['$1'].ignore_subtree + ['$2']/" "$MAIN_FILE"
+		fi
+	fi
+
+}
+
+
+function connector_mapping_restore ()
+{
+	MAIN_FILE="/usr/lib/python2.7/dist-packages/univention/s4connector/s4/main.py"
+	if [ ! -e "$MAIN_FILE" ]; then
+		MAIN_FILE="/usr/share/pyshared/univention/s4connector/s4/main.py"
+	fi
+	mv -f "$MAIN_FILE".ucs-test-backup "$MAIN_FILE"
+}
+
 
 # vim:syntax=sh
 # Local Variables:

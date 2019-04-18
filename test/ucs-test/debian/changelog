@@ -1,3 +1,9 @@
+ucs-test (9.0.2-60) unstable; urgency=medium
+
+  * Bug #49176: adjust test cases for new s4 connector path
+
+ -- Florian Best <best@univention.de>  Tue, 21 May 2019 18:22:27 +0200
+
 ucs-test (9.0.2-59) unstable; urgency=medium
 
   * Bug #28497: migrate to dh_python2
