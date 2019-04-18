@@ -59,22 +59,14 @@ property_descriptions = {
 		short_description=_('Zone name'),
 		long_description=_('The name of the subzone relative to the parent.'),
 		syntax=univention.admin.syntax.dnsName,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
-		may_change=True,
 		identifies=True,
 	),
 	'zonettl': univention.admin.property(
 		short_description=_('Time to live'),
 		long_description=_('The time this entry may be cached.'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False,
 		default=(('22', 'hours'), []),
 		dontsearch=True,
 	),
@@ -83,9 +75,7 @@ property_descriptions = {
 		long_description=_('The FQDNs of the hosts serving the named zone.'),
 		syntax=univention.admin.syntax.dnsHostname,
 		multivalue=True,
-		options=[],
 		required=True,
-		may_change=True,
 	)
 }
 

@@ -66,9 +66,7 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
 		may_change=False,
 		identifies=True,
@@ -78,100 +76,60 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.XResolution,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'colorDepth': univention.admin.property(
 		short_description=_('Color Depth'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'mouseProtocol': univention.admin.property(
 		short_description=_('Mouse Protocol'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'mouseDevice': univention.admin.property(
 		short_description=_('Mouse Device'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'keyboardLayout': univention.admin.property(
 		short_description=_('Keyboard Layout'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'keyboardVariant': univention.admin.property(
 		short_description=_('Keyboard Variant'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'hSync': univention.admin.property(
 		short_description=_('Horizontal Sync'),
 		long_description='',
 		syntax=univention.admin.syntax.XSync,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'vRefresh': univention.admin.property(
 		short_description=_('Vertical Refresh'),
 		long_description='',
 		syntax=univention.admin.syntax.XSync,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'xModule': univention.admin.property(
 		short_description=_('X Module'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'displaySize': univention.admin.property(
 		short_description=_('Display Size (mm)'),
 		long_description='',
 		syntax=univention.admin.syntax.XResolution,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 }
 

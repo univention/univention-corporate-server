@@ -81,9 +81,7 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description='',
 		syntax=univention.admin.syntax.policyName,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
 		may_change=False,
 		identifies=True,
@@ -92,41 +90,21 @@ property_descriptions = {
 		short_description=_('History length'),
 		long_description=_('This number indicates after how many changes the user may reuse the old password again'),
 		syntax=univention.admin.syntax.integer,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'expiryInterval': univention.admin.property(
 		short_description=_('Password expiry interval'),
 		long_description=_('Number of days after which the password has to be changed'),
 		syntax=univention.admin.syntax.integer,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'pwLength': univention.admin.property(
 		short_description=_('Password length'),
 		long_description=_('Minimal amount of characters'),
 		syntax=univention.admin.syntax.integer,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'pwQualityCheck': univention.admin.property(
 		short_description=_('Password quality check'),
 		long_description=_('Enables/disables password quality checks for example dictionary entries'),
 		syntax=univention.admin.syntax.TrueFalseUp,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 
 }

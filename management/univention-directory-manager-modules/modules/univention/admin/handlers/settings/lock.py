@@ -61,9 +61,7 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description=_('Name'),
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
 		may_change=False,
 		identifies=True,
@@ -72,11 +70,8 @@ property_descriptions = {
 		short_description=_('Lock Time'),
 		long_description=_('Locked until'),
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
-		options=[],
 		required=True,
 		may_change=False,
-		identifies=False,
 	),
 }
 

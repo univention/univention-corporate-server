@@ -60,22 +60,15 @@ property_descriptions = {
 		short_description=_('IP managed client name'),
 		long_description='',
 		syntax=univention.admin.syntax.hostName,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		include_in_default_search=True,
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'mac': univention.admin.property(
 		short_description=_('MAC address'),
@@ -83,20 +76,11 @@ property_descriptions = {
 		syntax=univention.admin.syntax.MAC_Address,
 		multivalue=True,
 		include_in_default_search=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'network': univention.admin.property(
 		short_description=_('Network'),
 		long_description='',
 		syntax=univention.admin.syntax.network,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'ip': univention.admin.property(
 		short_description=_('IP address'),
@@ -104,64 +88,40 @@ property_descriptions = {
 		syntax=univention.admin.syntax.ipAddress,
 		multivalue=True,
 		include_in_default_search=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'dnsEntryZoneForward': univention.admin.property(
 		short_description=_('Forward zone for DNS entry'),
 		long_description='',
 		syntax=univention.admin.syntax.dnsEntry,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
 		dontsearch=True,
-		identifies=False
 	),
 	'dnsEntryZoneReverse': univention.admin.property(
 		short_description=_('Reverse zone for DNS entry'),
 		long_description='',
 		syntax=univention.admin.syntax.dnsEntryReverse,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
 		dontsearch=True,
-		identifies=False
 	),
 	'dnsEntryZoneAlias': univention.admin.property(
 		short_description=_('Zone for DNS alias'),
 		long_description='',
 		syntax=univention.admin.syntax.dnsEntryAlias,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
 		dontsearch=True,
-		identifies=False
 	),
 	'dnsAlias': univention.admin.property(
 		short_description=_('DNS alias'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'dhcpEntryZone': univention.admin.property(
 		short_description=_('DHCP service'),
 		long_description='',
 		syntax=univention.admin.syntax.dhcpEntry,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
 		dontsearch=True,
-		identifies=False
 	),
 	'inventoryNumber': univention.admin.property(
 		short_description=_('Inventory number'),
@@ -169,31 +129,19 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		include_in_default_search=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'groups': univention.admin.property(
 		short_description=_('Groups'),
 		long_description='',
 		syntax=univention.admin.syntax.GroupDN,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
 		dontsearch=True,
-		identifies=False
 	),
 	'domain': univention.admin.property(
 		short_description=_('Domain'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		include_in_default_search=True,
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 }
 

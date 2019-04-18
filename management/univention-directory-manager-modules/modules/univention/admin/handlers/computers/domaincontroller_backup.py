@@ -76,9 +76,7 @@ property_descriptions = {
 		short_description=_('Domain controller name'),
 		long_description='',
 		syntax=univention.admin.syntax.hostName,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
 		may_change=False,
 		identifies=True
@@ -87,40 +85,24 @@ property_descriptions = {
 		short_description=_('Description'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		include_in_default_search=True,
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'operatingSystem': univention.admin.property(
 		short_description=_('Operating system'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		include_in_default_search=True,
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'operatingSystemVersion': univention.admin.property(
 		short_description=_('Operating system version'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'domain': univention.admin.property(
 		short_description=_('Domain'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		include_in_default_search=True,
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'mac': univention.admin.property(
 		short_description=_('MAC address'),
@@ -128,20 +110,11 @@ property_descriptions = {
 		syntax=univention.admin.syntax.MAC_Address,
 		multivalue=True,
 		include_in_default_search=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'network': univention.admin.property(
 		short_description=_('Network'),
 		long_description='',
 		syntax=univention.admin.syntax.network,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'ip': univention.admin.property(
 		short_description=_('IP address'),
@@ -149,10 +122,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.ipAddress,
 		multivalue=True,
 		include_in_default_search=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'serverRole': univention.admin.property(
 		short_description=_('System role'),
@@ -160,179 +129,110 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		include_in_default_search=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'service': univention.admin.property(
 		short_description=_('Service'),
 		long_description='',
 		syntax=univention.admin.syntax.Service,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'dnsEntryZoneForward': univention.admin.property(
 		short_description=_('Forward zone for DNS entry'),
 		long_description='',
 		syntax=univention.admin.syntax.dnsEntry,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
 		dontsearch=True,
-		identifies=False
 	),
 	'dnsEntryZoneReverse': univention.admin.property(
 		short_description=_('Reverse zone for DNS entry'),
 		long_description='',
 		syntax=univention.admin.syntax.dnsEntryReverse,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
 		dontsearch=True,
-		identifies=False
 	),
 	'dnsEntryZoneAlias': univention.admin.property(
 		short_description=_('Zone for DNS alias'),
 		long_description='',
 		syntax=univention.admin.syntax.dnsEntryAlias,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
 		dontsearch=True,
-		identifies=False
 	),
 	'dnsAlias': univention.admin.property(
 		short_description=_('DNS alias'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'dhcpEntryZone': univention.admin.property(
 		short_description=_('DHCP service'),
 		long_description='',
 		syntax=univention.admin.syntax.dhcpEntry,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
 		dontsearch=True,
-		identifies=False
 	),
 	'password': univention.admin.property(
 		short_description=_('Password'),
 		long_description='',
 		syntax=univention.admin.syntax.passwd,
-		multivalue=False,
 		options=['kerberos', 'posix', 'samba'],
-		required=False,
-		may_change=True,
-		identifies=False,
 		dontsearch=True
 	),
 	'unixhome': univention.admin.property(
 		short_description=_('Unix home directory'),
 		long_description='',
 		syntax=univention.admin.syntax.absolutePath,
-		multivalue=False,
 		options=['posix'],
 		required=True,
-		may_change=True,
-		identifies=False,
 		default=('/dev/null', [])
 	),
 	'shell': univention.admin.property(
 		short_description=_('Login shell'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		options=['posix'],
-		required=False,
-		may_change=True,
-		identifies=False,
 		default=('/bin/bash', [])
 	),
 	'primaryGroup': univention.admin.property(
 		short_description=_('Primary group'),
 		long_description='',
 		syntax=univention.admin.syntax.GroupDN,
-		multivalue=False,
 		options=['posix'],
 		required=True,
 		dontsearch=True,
-		may_change=True,
-		identifies=False
 	),
 	'reinstall': univention.admin.property(
 		short_description=_('(Re-)install on next boot'),
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'reinstalloption': univention.admin.property(
 		short_description=_('additional start options'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'instprofile': univention.admin.property(
 		short_description=_('Name of installation profile'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'inventoryNumber': univention.admin.property(
 		short_description=_('Inventory number'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'groups': univention.admin.property(
 		short_description=_('Groups'),
 		long_description='',
 		syntax=univention.admin.syntax.GroupDN,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
 		dontsearch=True,
-		identifies=False
 	),
 	'sambaRID': univention.admin.property(
 		short_description=_('Relative ID'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		multivalue=False,
-		required=False,
-		may_change=True,
 		dontsearch=True,
-		identifies=False,
 		options=['samba']
 	),
 }

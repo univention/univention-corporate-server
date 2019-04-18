@@ -60,62 +60,42 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description='',
 		syntax=univention.admin.syntax.mailinglist_name,
-		multivalue=False,
 		include_in_default_search=True,
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		include_in_default_search=True,
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'members': univention.admin.property(
 		short_description=_('Members'),
 		long_description='',
 		syntax=univention.admin.syntax.emailAddress,
 		multivalue=True,
-		required=False,
-		may_change=True,
 		dontsearch=True,
-		identifies=False
 	),
 	'mailAddress': univention.admin.property(
 		short_description=_('Mail address'),
 		long_description='',
 		syntax=univention.admin.syntax.emailAddressValidDomain,
-		multivalue=False,
 		include_in_default_search=True,
-		required=False,
-		may_change=True,
-		dontsearch=False,
-		identifies=False
 	),
 	'allowedEmailUsers': univention.admin.property(
 		short_description=_('Users that are allowed to send e-mails to the list'),
 		long_description='',
 		syntax=univention.admin.syntax.UserDN,
 		multivalue=True,
-		required=False,
-		may_change=True,
 		dontsearch=True,
-		identifies=False
 	),
 	'allowedEmailGroups': univention.admin.property(
 		short_description=_('Groups that are allowed to send e-mails to the list'),
 		long_description='',
 		syntax=univention.admin.syntax.GroupDN,
 		multivalue=True,
-		required=False,
-		may_change=True,
 		dontsearch=True,
-		identifies=False
 	)
 }
 

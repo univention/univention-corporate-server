@@ -62,105 +62,60 @@ property_descriptions = {
 		short_description=_('UDM syntax name'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'filename': univention.admin.property(
 		short_description=_('UDM syntax file name'),
 		long_description='',
 		syntax=univention.admin.syntax.BaseFilename,
-		multivalue=False,
-		options=[],
 		required=True,
-		may_change=True,
 		default='',
-		identifies=False
 	),
 	'data': univention.admin.property(
 		short_description=_('UDM syntax data'),
 		long_description='',
 		syntax=univention.admin.syntax.Base64Bzip2Text,
-		multivalue=False,
-		options=[],
 		required=True,
-		may_change=True,
-		identifies=False
 	),
 	'active': univention.admin.property(
 		short_description=_('Active'),
 		long_description='',
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='FALSE',
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'appidentifier': univention.admin.property(
 		short_description=_('App identifier'),
 		long_description='',
 		syntax=univention.admin.syntax.TextArea,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'package': univention.admin.property(
 		short_description=_('Software package'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'packageversion': univention.admin.property(
 		short_description=_('Software package version'),
 		long_description='',
 		syntax=univention.admin.syntax.DebianPackageVersion,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'ucsversionstart': univention.admin.property(
 		short_description=_('Minimal UCS version'),
 		long_description='',
 		syntax=univention.admin.syntax.UCSVersion,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'ucsversionend': univention.admin.property(
 		short_description=_('Maximal UCS version'),
 		long_description='',
 		syntax=univention.admin.syntax.UCSVersion,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'messagecatalog': univention.admin.property(
 		short_description=_('GNU message catalog for translations'),
 		long_description='GNU message catalog (syntax: <language tag> <Base64 encoded GNU message catalog>)',
 		syntax=univention.admin.syntax.Localesubdirname_and_GNUMessageCatalog,
 		multivalue=True,
-		include_in_default_search=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False,
 	),
 }
 

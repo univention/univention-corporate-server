@@ -63,9 +63,7 @@ property_descriptions = {
 		short_description=_('Zone name'),
 		long_description=_('The name of the domain.'),
 		syntax=univention.admin.syntax.dnsName,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
 		may_change=False,
 		identifies=True
@@ -74,11 +72,7 @@ property_descriptions = {
 		short_description=_('Zone time to live'),
 		long_description=_('The time this entry may be cached.'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		multivalue=False,
-		options=[],
 		required=True,
-		may_change=True,
-		identifies=False,
 		default=(('3', 'hours'), []),
 		dontsearch=True,
 	),
@@ -86,66 +80,42 @@ property_descriptions = {
 		short_description=_('Contact person'),
 		long_description=_('The email address of the person responsible for this zone.'),
 		syntax=univention.admin.syntax.emailAddress,
-		multivalue=False,
-		options=[],
 		required=True,
-		may_change=True,
-		identifies=False,
 		default=('root@%s' % configRegistry.get('domainname'), []),
 	),
 	'serial': univention.admin.property(
 		short_description=_('Serial number'),
 		long_description=_('The sequence number for this zone. Updates automatically.'),
 		syntax=univention.admin.syntax.integer,
-		multivalue=False,
-		options=[],
 		required=True,
-		may_change=True,
-		identifies=False,
 		default=('1', [])
 	),
 	'refresh': univention.admin.property(
 		short_description=_('Refresh interval'),
 		long_description=_('The time interval secondary DNS servers use to check the zone for updates.'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		multivalue=False,
-		options=[],
 		required=True,
-		may_change=True,
-		identifies=False,
 		default=(('8', 'hours'), [])
 	),
 	'retry': univention.admin.property(
 		short_description=_('Retry interval'),
 		long_description=_('The time interval secondary DNS servers use to retry failed refresh updates.'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		multivalue=False,
-		options=[],
 		required=True,
-		may_change=True,
-		identifies=False,
 		default=(('2', 'hours'), [])
 	),
 	'expire': univention.admin.property(
 		short_description=_('Expiry interval'),
 		long_description=_('The time interval after which secondary DNS servers will expire failed zones.'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		multivalue=False,
-		options=[],
 		required=True,
-		may_change=True,
-		identifies=False,
 		default=(('7', 'days'), [])
 	),
 	'ttl': univention.admin.property(
 		short_description=_('Negative time to live'),
 		long_description=_('The time interval "not found" answers are cached.'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		multivalue=False,
-		options=[],
 		required=True,
-		may_change=True,
-		identifies=False,
 		default=(('3', 'hours'), [])
 	),
 	'nameserver': univention.admin.property(
@@ -153,37 +123,25 @@ property_descriptions = {
 		long_description=_('The FQDNs of the servers serving this zone.'),
 		syntax=univention.admin.syntax.dnsHostname,
 		multivalue=True,
-		options=[],
 		required=True,
-		may_change=True,
-		identifies=False
 	),
 	'mx': univention.admin.property(
 		short_description=_('Mail exchanger host'),
 		long_description=_('The FQDNs of the hosts responsible for receiving mail for this DNS name.'),
 		syntax=univention.admin.syntax.dnsMX,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True
 	),
 	'txt': univention.admin.property(
 		short_description=_('Text Record'),
 		long_description=_('One or more arbitrary text strings.'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True
 	),
 	'a': univention.admin.property(
 		short_description=_('IP addresses'),
 		long_description=_('One or more IP addresses, to which the name is resolved to.'),
 		syntax=univention.admin.syntax.ipAddress,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True
 	),
 }
 

@@ -62,74 +62,44 @@ property_descriptions = {
 		short_description=_('Schema name'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'filename': univention.admin.property(
 		short_description=_('Schema file name'),
 		long_description='',
 		syntax=univention.admin.syntax.BaseFilename,
-		multivalue=False,
-		options=[],
 		required=True,
-		may_change=True,
 		default='',
-		identifies=False
 	),
 	'data': univention.admin.property(
 		short_description=_('Schema data'),
 		long_description='',
 		syntax=univention.admin.syntax.Base64Bzip2Text,
-		multivalue=False,
-		options=[],
 		required=True,
-		may_change=True,
-		identifies=False
 	),
 	'active': univention.admin.property(
 		short_description=_('Active'),
 		long_description='',
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='FALSE',
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'appidentifier': univention.admin.property(
 		short_description=_('App identifier'),
 		long_description='',
 		syntax=univention.admin.syntax.TextArea,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'package': univention.admin.property(
 		short_description=_('Software package'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'packageversion': univention.admin.property(
 		short_description=_('Software package version'),
 		long_description='',
 		syntax=univention.admin.syntax.DebianPackageVersion,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 }
 

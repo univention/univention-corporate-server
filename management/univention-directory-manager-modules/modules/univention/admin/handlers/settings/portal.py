@@ -62,9 +62,7 @@ property_descriptions = {
 		short_description=_('Internal name'),
 		long_description='',
 		syntax=univention.admin.syntax.string_numbers_letters_dots,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
 		may_change=False,
 		identifies=True
@@ -74,110 +72,62 @@ property_descriptions = {
 		long_description=_('Headline of the portal. At least one entry; strongly encouraged to have one for en_US'),
 		syntax=univention.admin.syntax.LocalizedDisplayName,
 		multivalue=True,
-		options=[],
 		required=True,
-		may_change=True,
-		identifies=False
 	),
 	'showMenu': univention.admin.property(
 		short_description=_('Show menu'),
 		long_description='',
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='TRUE',
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'showSearch': univention.admin.property(
 		short_description=_('Show search'),
 		long_description='',
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='TRUE',
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'showLogin': univention.admin.property(
 		short_description=_('Show login'),
 		long_description='',
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='TRUE',
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'showApps': univention.admin.property(
 		short_description=_('Show apps'),
 		long_description=_('Shows links to locally installed Apps'),
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='TRUE',
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'showServers': univention.admin.property(
 		short_description=_('Show servers'),
 		long_description=_('Shows links to all UCS servers'),
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='TRUE',
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'background': univention.admin.property(
 		short_description=_('Background'),
 		long_description=_('Background image of the Portal'),
 		syntax=univention.admin.syntax.Base64BaseUpload,
-		multivalue=False,
 		dontsearch=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'logo': univention.admin.property(
 		short_description=_('Portal logo'),
 		long_description=_('Logo image for the portal.'),
 		syntax=univention.admin.syntax.Base64BaseUpload,
-		multivalue=False,
 		dontsearch=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'cssBackground': univention.admin.property(
 		short_description=_('CSS background'),
 		long_description=_("Style definition for the CSS 'background' property which will be applied to the portal page, e.g. linear-gradient(black, white)"),
 		syntax=univention.admin.syntax.TwoString,
-		multivalue=False,
 		dontsearch=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'fontColor': univention.admin.property(
 		short_description=_('Font color'),
 		long_description=_('Defines the color which is used for the fonts on the portal page as well as the icons in the header.'),
 		syntax=univention.admin.syntax.PortalFontColor,
 		default='black',
-		multivalue=False,
 		dontsearch=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'portalComputers': univention.admin.property(
 		short_description=_('Show on server'),
@@ -185,40 +135,23 @@ property_descriptions = {
 		syntax=univention.admin.syntax.PortalComputer,
 		multivalue=True,
 		dontsearch=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'ensureLogin': univention.admin.property(
 		short_description=_('Redirect anonymous visitors to the login'),
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='FALSE',
-		multivalue=False,
 		dontsearch=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'anonymousEmpty': univention.admin.property(
 		syntax=univention.admin.syntax.LocalizedAnonymousEmpty,
 		multivalue=True,
 		dontsearch=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'autoLayoutCategories': univention.admin.property(
 		short_description=_('The categories are displayed side by side if there is enough space'),
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='FALSE',
 		dontsearch=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	# 'portalEntriesOrder' - deprecated by 'content' of settings/portal
 	'portalEntriesOrder': univention.admin.property(
@@ -226,28 +159,16 @@ property_descriptions = {
 		long_description=_('The order in which the portal entries are shown on this portal'),
 		syntax=univention.admin.syntax.PortalEntries,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'links': univention.admin.property(
 		short_description=_('Portal links'),
 		long_description=_('List of static links shown on this portal. Only those links for the selected locale are shown (e.g.,: en_US, de_DE).'),
 		syntax=univention.admin.syntax.PortalLinks,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'content': univention.admin.property(
 		short_description=_('Portal content'),
 		syntax=univention.admin.syntax.PortalCategorySelection,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 }
 

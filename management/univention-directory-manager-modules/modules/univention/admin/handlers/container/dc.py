@@ -76,9 +76,7 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
 		may_change=False,
 		identifies=True
@@ -88,20 +86,14 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.DNS_ForwardZone,
 		multivalue=True,
-		options=[],
-		required=False,
 		may_change=False,
-		identifies=False
 	),
 	'dnsReverseZone': univention.admin.property(
 		short_description=_('DNS reverse lookup zone'),
 		long_description='',
 		syntax=univention.admin.syntax.DNS_ReverseZone,
 		multivalue=True,
-		options=[],
-		required=False,
 		may_change=False,
-		identifies=False
 	),
 	'sambaDomainName': univention.admin.property(
 		short_description=_('Samba domain name'),
@@ -110,52 +102,38 @@ property_descriptions = {
 		multivalue=True,
 		options=['samba'],
 		required=True,
-		may_change=True,
 		default=(configRegistry.get('domainname', '').upper(), []),
-		identifies=False
 	),
 	'sambaSID': univention.admin.property(
 		short_description=_('Samba SID'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		options=['samba'],
 		required=True,
 		may_change=False,
-		identifies=False
 	),
 	'sambaNextUserRid': univention.admin.property(
 		short_description=_('Samba Next User RID'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		options=['samba'],
-		required=False,
-		may_change=True,
 		default=('1000', []),
-		identifies=False
 	),
 	'sambaNextGroupRid': univention.admin.property(
 		short_description=_('Samba Next Group RID'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		options=['samba'],
-		required=False,
-		may_change=True,
 		default=('1000', []),
-		identifies=False
 	),
 	'kerberosRealm': univention.admin.property(
 		short_description=_('Kerberos realm'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		options=['kerberos'],
 		required=True,
 		may_change=False,
 		default=(configRegistry.get('domainname', '').upper(), []),
-		identifies=False
 	),
 }
 

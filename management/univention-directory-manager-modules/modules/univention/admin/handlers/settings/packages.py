@@ -61,11 +61,8 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description=_('Name'),
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
-		may_change=True,
 		identifies=True,
 	),
 	'packageList': univention.admin.property(
@@ -73,11 +70,7 @@ property_descriptions = {
 		long_description=_('Package List'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		options=[],
 		dontsearch=True,
-		required=False,
-		may_change=True,
-		identifies=False,
 	),
 }
 

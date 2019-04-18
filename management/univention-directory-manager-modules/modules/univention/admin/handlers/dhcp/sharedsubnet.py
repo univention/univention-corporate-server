@@ -61,9 +61,7 @@ property_descriptions = {
 		short_description=_('Subnet address'),
 		long_description=_('The network address.'),
 		syntax=univention.admin.syntax.ipv4Address,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
 		may_change=False,
 		identifies=True
@@ -72,31 +70,18 @@ property_descriptions = {
 		short_description=_('Address prefix length (or Netmask)'),
 		long_description=_('The number of leading bits of the IP address used to identify the network.'),
 		syntax=univention.admin.syntax.v4netmask,
-		multivalue=False,
-		options=[],
 		required=True,
-		may_change=True,
-		identifies=False
 	),
 	'broadcastaddress': univention.admin.property(
 		short_description=_('Broadcast address'),
 		long_description=_('The IP addresses used to send data to all hosts inside the network.'),
 		syntax=univention.admin.syntax.ipv4Address,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'range': univention.admin.property(
 		short_description=_('Dynamic address assignment'),
 		long_description=_('Define a pool of addresses available for dynamic address assignment.'),
 		syntax=univention.admin.syntax.IPv4_AddressRange,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 }
 

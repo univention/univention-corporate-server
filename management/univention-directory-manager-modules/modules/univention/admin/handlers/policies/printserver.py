@@ -79,9 +79,7 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description='',
 		syntax=univention.admin.syntax.policyName,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
 		may_change=False,
 		identifies=True,
@@ -90,12 +88,7 @@ property_descriptions = {
 		short_description=_('Print server'),
 		long_description='',
 		syntax=univention.admin.syntax.ServicePrint_FQDN,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 
 }

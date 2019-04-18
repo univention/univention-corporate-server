@@ -1816,11 +1816,7 @@ class simpleComputer(simpleLdap):
 			short_description='FQDN',
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			options=[],
-			required=False,
 			may_change=False,
-			identifies=False
 		)
 		self['dnsAlias'] = []  # defined here to avoid pseudo non-None value of [''] in modwizard search
 		self.oldinfo['ip'] = []

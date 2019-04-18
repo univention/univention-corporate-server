@@ -58,11 +58,8 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description='',
 		syntax=univention.admin.syntax.hostName,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'dnsAlias': univention.admin.property(
@@ -70,20 +67,12 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		include_in_default_search=True,
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'mac': univention.admin.property(
 		short_description=_('MAC address'),
@@ -91,10 +80,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		include_in_default_search=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'ip': univention.admin.property(
 		short_description=_('IP address'),
@@ -102,10 +87,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.ipAddress,
 		multivalue=True,
 		include_in_default_search=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'inventoryNumber': univention.admin.property(
 		short_description=_('Inventory number'),
@@ -113,21 +94,13 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		include_in_default_search=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'fqdn': univention.admin.property(
 		short_description='FQDN',
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
-		required=False,
 		may_change=False,
-		identifies=False,
 		dontsearch=True
 	)
 }

@@ -82,9 +82,7 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description='',
 		syntax=udm_syntax.policyName,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
 		may_change=False,
 		identifies=True,
@@ -94,10 +92,6 @@ property_descriptions = {
 		long_description='',
 		syntax=udm_syntax.UMC_OperationSet,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 }
 property_descriptions.update(dict([

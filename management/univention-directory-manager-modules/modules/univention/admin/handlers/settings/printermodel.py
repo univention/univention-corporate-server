@@ -63,11 +63,8 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description=_('Name'),
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
-		may_change=True,
 		identifies=True,
 	),
 	'printmodel': univention.admin.property(
@@ -76,11 +73,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.printerModel,
 		multivalue=True,
 		include_in_default_search=True,
-		options=[],
-		dontsearch=False,
-		required=False,
-		may_change=True,
-		identifies=False,
 	),
 }
 

@@ -59,11 +59,8 @@ property_descriptions = {
 		short_description=_('Internal name'),
 		long_description='',
 		syntax=univention.admin.syntax.string_numbers_letters_dots,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'displayName': univention.admin.property(
@@ -71,10 +68,7 @@ property_descriptions = {
 		long_description=_('Display name of the category. At least one entry; strongly encouraged to have one for en_US'),
 		syntax=univention.admin.syntax.LocalizedDisplayName,
 		multivalue=True,
-		options=[],
 		required=True,
-		may_change=True,
-		identifies=False
 	),
 }
 

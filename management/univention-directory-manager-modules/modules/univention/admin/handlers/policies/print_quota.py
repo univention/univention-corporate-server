@@ -87,9 +87,7 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description='',
 		syntax=univention.admin.syntax.policyName,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
 		may_change=False,
 		identifies=True,
@@ -99,30 +97,18 @@ property_descriptions = {
 		long_description=_('Soft and hard limits for each allowed group'),
 		syntax=univention.admin.syntax.PrintQuotaGroup,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'quotaGroupsPerUsers': univention.admin.property(
 		short_description=_('Print quota for groups per user'),
 		long_description=_('Soft and hard limits for each member of allowed group'),
 		syntax=univention.admin.syntax.PrintQuotaGroupPerUser,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'quotaUsers': univention.admin.property(
 		short_description=_('Print quota for users'),
 		long_description=_('Soft and hard limits for each allowed user'),
 		syntax=univention.admin.syntax.PrintQuotaUser,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 
 }

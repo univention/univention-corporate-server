@@ -81,9 +81,7 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description='',
 		syntax=univention.admin.syntax.policyName,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
 		may_change=False,
 		identifies=True,
@@ -92,91 +90,51 @@ property_descriptions = {
 		short_description=_('Perform maintenance after system startup'),
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'shutdown': univention.admin.property(
 		short_description=_('Perform maintenance before system shutdown'),
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'reboot': univention.admin.property(
 		short_description=_('Reboot after maintenance'),
 		long_description='',
 		syntax=univention.admin.syntax.timeSpec,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False,
 	),
 	'cron': univention.admin.property(
 		short_description=_('Use Cron settings'),
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'month': univention.admin.property(
 		short_description=_('Month'),
 		long_description='',
 		syntax=univention.admin.syntax.Month,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'day': univention.admin.property(
 		short_description=_('Day'),
 		long_description='',
 		syntax=univention.admin.syntax.Day,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'weekday': univention.admin.property(
 		short_description=_('Day of week'),
 		long_description='',
 		syntax=univention.admin.syntax.Weekday,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'hour': univention.admin.property(
 		short_description=_('Hour'),
 		long_description='',
 		syntax=univention.admin.syntax.Hour,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'minute': univention.admin.property(
 		short_description=_('Minute'),
 		long_description='',
 		syntax=univention.admin.syntax.Minute,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 
 }

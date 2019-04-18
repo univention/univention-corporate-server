@@ -58,33 +58,22 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description='',
 		syntax=univention.admin.syntax.dnsName_umlauts,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		include_in_default_search=True,
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'password': univention.admin.property(
 		short_description=_('Machine Password'),
 		long_description='',
 		syntax=univention.admin.syntax.passwd,
-		multivalue=False,
-		options=[],
 		required=True,
 		dontsearch=True,
-		may_change=True,
-		identifies=False
 	),
 }
 

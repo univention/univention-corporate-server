@@ -78,9 +78,7 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description='',
 		syntax=univention.admin.syntax.policyName,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
 		may_change=False,
 		identifies=True,
@@ -90,10 +88,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.UCR_Variable,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False,
 	),
 
 }

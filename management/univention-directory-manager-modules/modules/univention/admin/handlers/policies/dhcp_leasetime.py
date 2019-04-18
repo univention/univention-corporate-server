@@ -80,9 +80,7 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description='',
 		syntax=univention.admin.syntax.policyName,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
 		may_change=False,
 		identifies=True,
@@ -91,31 +89,16 @@ property_descriptions = {
 		short_description=_('Default lease time'),
 		long_description=_('Lease time used if the client does not request a specific expiration time'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'lease_time_max': univention.admin.property(
 		short_description=_('Maximum lease time'),
 		long_description=_('Maximum lease time that the server will accept if asked for'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'lease_time_min': univention.admin.property(
 		short_description=_('Minimum lease time'),
 		long_description=_('Minimum granted lease time'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 }
 property_descriptions.update(dict([

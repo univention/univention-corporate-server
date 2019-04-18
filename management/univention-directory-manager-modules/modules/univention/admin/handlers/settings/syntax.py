@@ -59,43 +59,26 @@ property_descriptions = {
 		short_description=_('Syntax Name'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'description': univention.admin.property(
 		short_description=_('Syntax Description'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'filter': univention.admin.property(
 		short_description=_('LDAP Search Filter'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
-		options=[],
 		required=True,
-		may_change=True,
-		identifies=False
 	),
 	'base': univention.admin.property(
 		short_description=_('LDAP Base'),
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'attribute': univention.admin.property(
 		short_description=_('Displayed Attributes'),
@@ -104,62 +87,34 @@ property_descriptions = {
 		syntax=univention.admin.syntax.listAttributes,
 		multivalue=True,
 		include_in_default_search=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'ldapattribute': univention.admin.property(
 		short_description=_('Displayed LDAP Attributes'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'viewonly': univention.admin.property(
 		short_description=_('Show Only'),
 		long_description='',
 		syntax=univention.admin.syntax.TrueFalseUp,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'addEmptyValue': univention.admin.property(
 		short_description=_('Add an empty value to choice list'),
 		long_description='',
 		syntax=univention.admin.syntax.TrueFalseUp,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'value': univention.admin.property(
 		short_description=_('Stored Attribute'),
 		long_description='',
 		# syntax = univention.admin.syntax.UDM_PropertySelect,
 		syntax=univention.admin.syntax.listAttributes,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'ldapvalue': univention.admin.property(
 		short_description=_('Stored LDAP Attribute'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 }
 

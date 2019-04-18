@@ -66,7 +66,6 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
 		include_in_default_search=True,
 		required=True,
 		may_change=False,
@@ -76,31 +75,23 @@ property_descriptions = {
 		short_description=_('Networks'),
 		long_description='',
 		syntax=univention.admin.syntax.ipAddress,
-		multivalue=False,
 		include_in_default_search=True,
 		required=True,
 		may_change=False,
-		identifies=False
 	),
 	'netmask': univention.admin.property(
 		short_description=_('Netmask'),
 		long_description='',
 		syntax=univention.admin.syntax.netmask,
-		multivalue=False,
 		include_in_default_search=True,
 		required=True,
 		may_change=False,
-		identifies=False
 	),
 	'nextIp': univention.admin.property(
 		short_description=_('Next IP address'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
-		required=False,
-		may_change=True,
 		dontsearch=True,
-		identifies=False
 	),
 	'ipRange': univention.admin.property(
 		short_description=_('IP address range'),
@@ -108,42 +99,24 @@ property_descriptions = {
 		syntax=univention.admin.syntax.IP_AddressRange,
 		multivalue=True,
 		dontsearch=True,
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'dnsEntryZoneForward': univention.admin.property(
 		short_description=_('DNS forward lookup zone'),
 		long_description='',
 		syntax=univention.admin.syntax.DNS_ForwardZone,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
 		dontsearch=True,
-		identifies=False
 	),
 	'dnsEntryZoneReverse': univention.admin.property(
 		short_description=_('DNS reverse lookup zone'),
 		long_description='',
 		syntax=univention.admin.syntax.DNS_ReverseZone,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
 		dontsearch=True,
-		identifies=False
 	),
 	'dhcpEntryZone': univention.admin.property(
 		short_description=_('DHCP service'),
 		long_description='',
 		syntax=univention.admin.syntax.dhcpService,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
 		dontsearch=True,
-		identifies=False
 	),
 }
 

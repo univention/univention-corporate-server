@@ -61,11 +61,8 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description=_('The name and protocol of the service.'),
 		syntax=univention.admin.syntax.dnsSRVName,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'location': univention.admin.property(
@@ -73,19 +70,12 @@ property_descriptions = {
 		long_description=_('The host providing the service.'),
 		syntax=univention.admin.syntax.dnsSRVLocation,
 		multivalue=True,
-		options=[],
 		required=True,
-		may_change=True
 	),
 	'zonettl': univention.admin.property(
 		short_description=_('Time to live'),
 		long_description=_('The time this entry may be cached.'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False,
 		default=(('3', 'hours'), []),
 		dontsearch=True,
 	),

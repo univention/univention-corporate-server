@@ -60,9 +60,7 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description='',
 		syntax=univention.admin.syntax.printerName,
-		multivalue=False,
 		include_in_default_search=True,
-		options=[],
 		required=True,
 		may_change=False,
 		identifies=True
@@ -72,61 +70,35 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.ServicePrint_FQDN,
 		multivalue=True,
-		options=[],
 		required=True,
-		may_change=True,
-		identifies=False
 	),
 	'groupMember': univention.admin.property(
 		short_description=_('Group members'),
 		long_description='',
 		syntax=univention.admin.syntax.PrinterNames,
 		multivalue=True,
-		options=[],
 		required=True,
-		may_change=True,
-		identifies=False
 	),
 	'sambaName': univention.admin.property(
 		short_description=_('Windows name'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False,
 		unique=True
 	),
 	'setQuota': univention.admin.property(
 		short_description=_('Enable quota support'),
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'pagePrice': univention.admin.property(
 		short_description=_('Price per page'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'jobPrice': univention.admin.property(
 		short_description=_('Price per print job'),
 		long_description='',
 		syntax=univention.admin.syntax.integer,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 }
 
