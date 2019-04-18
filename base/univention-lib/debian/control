@@ -22,7 +22,8 @@ Depends: ${python:Depends},
  python-ldb,
  python-samba,
  python-ldap,
- python-imaging
+ python-imaging,
+ python-six,
 Provides: ${python:Provides}
 Description: UCS - common scripting functions for Python 2 scripts
  This package contains Python functions used by various
@@ -47,7 +48,8 @@ Depends: ${python3:Depends},
  python3-ldb,
  python3-samba,
  python3-ldap,
- python3-pil
+ python3-pil,
+ python3-six,
 Provides: ${python3:Provides}
 Description: UCS - common scripting functions for Python 3 scripts
  This package contains Python functions used by various

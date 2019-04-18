@@ -41,6 +41,8 @@ import threading
 from logging import getLogger, DEBUG, Handler
 from time import sleep
 
+import six
+
 import apt_pkg
 import apt
 import apt.progress
@@ -1009,7 +1011,7 @@ class PackageManager(object):
 		"""
 		message = [_('Could not initialize package manager.')]
 		message = '%s %s' % (_('Could not initialize package manager.'), '\n'.join(self._get_error_message(exc)))
-		raise etype, etype(message), etraceback
+		six.reraise(etype, etype(message), etraceback)
 
 	def _get_error_message(self, exc):
 		# type: (BaseException) -> List[str]
