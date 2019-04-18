@@ -33,6 +33,7 @@
 
 
 import os
+import imp
 import signal
 import sys
 import time
@@ -59,10 +60,8 @@ if options.configbasename:
 	CONFIGBASENAME = options.configbasename
 STATUSLOGFILE = "/var/log/univention/%s-s4-status.log" % CONFIGBASENAME
 
-sys.path = ['/etc/univention/%s/s4/' % CONFIGBASENAME] + sys.path
 
-
-import mapping
+mapping = imp.load_source('mapping', '/etc/univention/%s/s4/mapping.py' % CONFIGBASENAME)
 
 
 def bind_stdout():

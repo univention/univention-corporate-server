@@ -33,6 +33,7 @@
 
 
 import sys
+import imp
 
 import univention
 import univention.s4connector
@@ -69,8 +70,7 @@ if len(sys.argv) > 1:
 			print "use configbase %s" % CONFIGBASENAME
 
 
-sys.path = ['/etc/univention/%s/s4/' % CONFIGBASENAME] + sys.path
-import mapping
+mapping = imp.load_source('mapping', '/etc/univention/%s/s4/mapping.py' % CONFIGBASENAME)
 
 
 def main():

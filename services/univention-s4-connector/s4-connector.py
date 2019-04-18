@@ -108,7 +108,7 @@ def _is_module_disabled():
 def _restart_connector():
 	listener.setuid(0)
 	try:
-		if not subprocess.call(['pgrep', '-f', 's4connector/s4/main.py']):
+		if not subprocess.call(['pgrep', '-f', 'python.*s4connector.s4.main']):
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "s4-connector: restarting connector ...")
 			subprocess.call(('service', 'univention-s4-connector', 'restart'))
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "s4-connector: ... done")
@@ -211,6 +211,7 @@ def postrun():
 	if connector_needs_restart is True:
 		_restart_connector()
 		connector_needs_restart = False
+
 
 def initialize():
 	global s4_init_mode
