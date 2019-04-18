@@ -37,6 +37,7 @@ import sys
 import time
 import locale
 import shutil
+import string
 import logging
 import traceback
 import subprocess
