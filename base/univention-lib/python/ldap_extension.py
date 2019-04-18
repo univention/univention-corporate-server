@@ -32,7 +32,6 @@ Python function to register |UDM| extensions in |LDAP|.
 
 from optparse import OptionParser, OptionGroup, Option, OptionValueError
 from copy import copy
-import json
 import inspect
 import os
 import shutil
@@ -912,12 +911,12 @@ def option_validate_gnu_message_catalogfile(option, opt, value):
 	return value
 
 
-class UCSOption (Option):
-    TYPES = Option.TYPES + ("existing_filename", "ucs_version", )
-    TYPE_CHECKER = copy(Option.TYPE_CHECKER)
-    TYPE_CHECKER["existing_filename"] = option_validate_existing_filename
-    TYPE_CHECKER["ucs_version"] = option_validate_ucs_version
-    TYPE_CHECKER["gnu_message_catalogfile"] = option_validate_gnu_message_catalogfile
+class UCSOption(Option):
+	TYPES = Option.TYPES + ("existing_filename", "ucs_version", )
+	TYPE_CHECKER = copy(Option.TYPE_CHECKER)
+	TYPE_CHECKER["existing_filename"] = option_validate_existing_filename
+	TYPE_CHECKER["ucs_version"] = option_validate_ucs_version
+	TYPE_CHECKER["gnu_message_catalogfile"] = option_validate_gnu_message_catalogfile
 
 
 def option_callback_udm_passthrough_options(option, opt_str, value, parser, *args):
@@ -935,9 +934,11 @@ def check_data_module_options(option, opt_str, value, parser):
 	if not parser.values.data:
 		raise OptionValueError("%s can only be used after --data" % (opt_str,))
 
+
 def option_callback_set_data_module_options(option, opt_str, value, parser):
 	check_data_module_options(option, opt_str, value, parser)
 	setattr(parser.values, option.dest, value)
+
 
 def option_callback_append_data_module_options(option, opt_str, value, parser):
 	check_data_module_options(option, opt_str, value, parser)
