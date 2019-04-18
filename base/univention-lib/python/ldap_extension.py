@@ -1,7 +1,7 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 """
-Python function to register |UDM| exitensions in |LDAP|.
+Python function to register |UDM| extensions in |LDAP|.
 """
 # Copyright 2011-2019 Univention GmbH
 #
@@ -1247,3 +1247,9 @@ def ucs_unregisterLDAPExtension():
 		for schemaobject in opts.schemaobject:
 			univentionLDAPSchema = UniventionLDAPSchema(ucr)
 			univentionLDAPSchema.unregister(schemaobject, opts, udm_passthrough_options)
+
+
+if __name__ == '__main__':
+	commands = {'ucs_unregisterLDAPExtension': ucs_unregisterLDAPExtension, 'ucs_registerLDAPExtension': ucs_registerLDAPExtension}
+	if len(sys.argv) > 1 and sys.argv[1] in commands:
+		commands[sys.argv.pop(1)]()
