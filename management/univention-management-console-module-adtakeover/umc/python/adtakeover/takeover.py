@@ -2251,13 +2251,6 @@ class UserRenameHandler:
 			log.debug("Renaming of user '%s' failed: %s." % (userdn, exc,))
 			return
 
-		dnparts = ldap.explode_dn(userdn)
-		rdn = dnparts[0].split('=', 1)
-		dnparts[0] = '='.join((rdn[0], new_name))
-		new_userdn = ",".join(dnparts)
-
-		return new_userdn
-
 	def rename_ucs_user(self, ucsldap_object_name, ad_object_name):
 		userdns = self.lo.searchDn(
 			filter=filter_format("(&(objectClass=sambaSamAccount)(uid=%s))", (ucsldap_object_name, )),
@@ -2309,13 +2302,6 @@ class GroupRenameHandler:
 		except uexceptions.ldapError as exc:
 			log.debug("Renaming of group '%s' failed: %s." % (groupdn, exc,))
 			return
-
-		dnparts = ldap.explode_dn(groupdn)
-		rdn = dnparts[0].split('=', 1)
-		dnparts[0] = '='.join((rdn[0], new_name))
-		new_groupdn = ",".join(dnparts)
-
-		return new_groupdn
 
 	def udm_rename_ucs_defaultGroup(self, groupdn, new_groupdn):
 		if not new_groupdn:
