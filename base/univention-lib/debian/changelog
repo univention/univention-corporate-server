@@ -1,3 +1,9 @@
+univention-lib (8.0.1-18) unstable; urgency=medium
+
+  * Bug #49176: fix absolute import of dns module
+
+ -- Florian Best <best@univention.de>  Thu, 23 May 2019 12:14:51 +0200
+
 univention-lib (8.0.1-17) unstable; urgency=medium
 
   * Bug #44054: enhance UCR variable descriptions
