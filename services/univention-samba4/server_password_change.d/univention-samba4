@@ -51,8 +51,25 @@ set_machine_secret() {
 	samba-tool user setpassword "${hostname}\$" --newpassword="$(cat /etc/machine.secret)"
 }
 
-if [ "$1" = "postchange" ]; then
+if [ "$1" = "localchange" ]; then
 	set_machine_secret
+
+	## if samba-tool user setpassword fails, revert changes to secrets.ldb
+	if [ "$?" -ne "0" ]; then
+		ldbmodify -H /var/lib/samba/private/secrets.ldb <<-%EOF
+		dn: flatname=${windows_domain},cn=Primary Domains
+		changetype: modify
+		replace: secret
+		secret: $(cat /etc/machine.secret.old | tail -n 1 | sed 's/[0-9]*: //g')
+		-
+		replace: msDS-KeyVersionNumber
+		msDS-KeyVersionNumber: $old_kvno
+		-
+		%EOF
+		test -x /etc/init.d/samba && /etc/init.d/samba restart
+		exit 1
+	fi
 
 	test -x /etc/init.d/samba && /etc/init.d/samba restart
 fi
+
