@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import ldb
 import ldap
 import ldap.sasl
@@ -1300,14 +1301,14 @@ def add_host_record_in_ad(uid=None, binddn=None, bindpw=None, bindpwdfile=None, 
 		fqdn = ucr.get('ucs/server/sso/fqdn', 'ucs-sso.' + domainname)
 
 	if not uid or not pwdfile or not fqdn or not ip:
-		print 'Missing binddn/bindpw/bindpwdfile/fqdn or ip, do nothing!'
+		print('Missing binddn/bindpw/bindpwdfile/fqdn or ip, do nothing!')
 		return False
 
 	ad_domain_info = lookup_adds_dc()
 	ad_ip = ad_domain_info['DC IP']
 	found = False
 
-	print "Create %s (%s) A record on %s" % (fqdn, ip, ad_ip)
+	print("Create %s (%s) A record on %s" % (fqdn, ip, ad_ip))
 
 	# check if we are already defined as host record
 	try:
@@ -1321,10 +1322,10 @@ def add_host_record_in_ad(uid=None, binddn=None, bindpw=None, bindpwdfile=None, 
 	except dns.resolver.NXDOMAIN:
 		found = False
 	except Exception as err:
-		print 'failed to query for A record (%s, %s)' % (err.__class__.__name__, err.message)
+		print('failed to query for A record (%s, %s)' % (err.__class__.__name__, err.message))
 		found = False
 	if found:
-		print '%s A record for %s found' % (fqdn, ip)
+		print('%s A record for %s found' % (fqdn, ip))
 		return True
 
 	# create host record
@@ -1349,8 +1350,8 @@ def add_host_record_in_ad(uid=None, binddn=None, bindpw=None, bindpwdfile=None, 
 		stdout, stderr = p1.communicate()
 		ud.debug(ud.MODULE, ud.PROCESS, '%s' % stdout)
 		if p1.returncode:
-			print '%s failed with %d (%s)' % (cmd, p1.returncode, stderr)
-			print 'failed to add A record for ucs-sso to %s' % ad_ip
+			print('%s failed with %d (%s)' % (cmd, p1.returncode, stderr))
+			print('failed to add A record for ucs-sso to %s' % ad_ip)
 			return False
 	finally:
 		os.unlink(fd.name)

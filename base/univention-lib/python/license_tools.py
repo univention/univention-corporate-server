@@ -28,6 +28,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 from optparse import OptionParser
 import sys
 import datetime
@@ -94,16 +95,16 @@ Possible exitcodes:
 	try:
 		result = is_CSP_license()
 	except LicenseExpired:
-		print 'License expired'
+		print('License expired')
 		sys.exit(11)
 	except LicenseNotFound:
-		print 'License not found'
+		print('License not found')
 		sys.exit(12)
 	except LicenseCheckError:
-		print 'License verfication error'
+		print('License verfication error')
 		sys.exit(12)
 
-	print 'CSP=%s' % (result,)
+	print('CSP=%s' % (result,))
 	if not result:
 		sys.exit(10)
 

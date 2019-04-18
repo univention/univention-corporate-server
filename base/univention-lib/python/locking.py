@@ -2,6 +2,7 @@
 """
 Univention Common Python Library for file locking
 """
+from __future__ import print_function
 # Copyright 2011-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -69,7 +70,7 @@ def get_lock(name, nonblocking=False):
 		if e.errno == 11:
 			return None
 		raise
-	print >>fd, '%s\n' % os.getpid()
+	print('%s\n' % os.getpid(), file=fd)
 	return fd
 
 

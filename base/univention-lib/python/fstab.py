@@ -3,6 +3,7 @@
 """
 Read and write :file:`/etc/fstab`.
 """
+from __future__ import print_function
 # Copyright 2006-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -199,4 +200,4 @@ class InvalidEntry(Exception):
 
 if __name__ == '__main__':
 	fstab = File('fstab')
-	print fstab.get(['xfs', 'ext3'])
+	print(fstab.get(['xfs', 'ext3']))

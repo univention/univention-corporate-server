@@ -3,6 +3,7 @@
 """
 Python function to register |UDM| extensions in |LDAP|.
 """
+from __future__ import print_function
 # Copyright 2011-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -104,17 +105,17 @@ class UniventionLDAPExtension(object):
 		return (p.returncode, object_dn)
 
 	def wait_for_activation(self, timeout=180):
-		print "Waiting for activation of the extension object %s:" % (self.objectname,),
+		print("Waiting for activation of the extension object %s:" % (self.objectname,), end=' ')
 		t0 = time.time()
 		while not self.is_local_active()[1]:
 			if time.time() - t0 > timeout:
-				print "ERROR"
-				print >>sys.stderr, "ERROR: Master did not mark the extension object active within %s seconds." % (timeout,)
+				print("ERROR")
+				print("ERROR: Master did not mark the extension object active within %s seconds." % (timeout,), file=sys.stderr)
 				return False
 			sys.stdout.write(".")
 			sys.stdout.flush()
 			time.sleep(3)
-		print "OK"
+		print("OK")
 		return True
 
 	def udm_find_object(self):
@@ -153,7 +154,7 @@ class UniventionLDAPExtension(object):
 			with open(self.filename, 'r') as f:
 				compressed_data = bz2.compress(f.read())
 		except Exception as e:
-			print >>sys.stderr, "Compression of file %s failed: %s" % (self.filename, e)
+			print("Compression of file %s failed: %s" % (self.filename, e), file=sys.stderr)
 			sys.exit(1)
 
 		new_data = base64.b64encode(compressed_data)
@@ -194,7 +195,7 @@ class UniventionLDAPExtension(object):
 					with open(options.umcregistration, 'r') as f:
 						compressed_data = bz2.compress(f.read())
 				except Exception as e:
-					print >>sys.stderr, "Compression of file %s failed: %s" % (options.umcregistration, e)
+					print("Compression of file %s failed: %s" % (options.umcregistration, e), file=sys.stderr)
 					sys.exit(1)
 				common_udm_options.extend(["--set", "umcregistration=%s" % (base64.b64encode(compressed_data),), ])
 			for icon in options.icon:
@@ -224,7 +225,7 @@ class UniventionLDAPExtension(object):
 			] + common_udm_options + active_change_udm_options
 			p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 			(stdout, stderr) = p.communicate()
-			print stdout
+			print(stdout)
 			if p.returncode == 0:
 				regex = re.compile('^Object created: (.*)$', re.M)
 				m = regex.search(stdout)
@@ -241,11 +242,11 @@ class UniventionLDAPExtension(object):
 					]
 					p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 					(stdout, stderr) = p.communicate()
-					print stdout
+					print(stdout)
 			else:  # check again, might be a race
 				rc, self.object_dn, stdout = self.udm_find_object_dn()
 				if not self.object_dn:
-					print >>sys.stderr, "ERROR: Failed to create %s object." % (self.udm_module_name,)
+					print("ERROR: Failed to create %s object." % (self.udm_module_name,), file=sys.stderr)
 					sys.exit(1)
 
 		if self.object_dn:  # object exists already, modify it
@@ -270,10 +271,10 @@ class UniventionLDAPExtension(object):
 			if registered_package == options.packagename:
 				rc = apt.apt_pkg.version_compare(options.packageversion, registered_package_version)
 				if not rc > -1:
-					print >>sys.stderr, "WARNING: Registered package version %s is newer, refusing registration." % (registered_package_version,)
+					print("WARNING: Registered package version %s is newer, refusing registration." % (registered_package_version,), file=sys.stderr)
 					sys.exit(4)
 			else:
-				print >>sys.stderr, "WARNING: Object %s was registered by package %s version %s, changing ownership." % (self.objectname, registered_package, registered_package_version,)
+				print("WARNING: Object %s was registered by package %s version %s, changing ownership." % (self.objectname, registered_package, registered_package_version,), file=sys.stderr)
 
 			regex = re.compile('^ *data: (.*)$', re.M)
 			m = regex.search(stdout)
@@ -293,7 +294,7 @@ class UniventionLDAPExtension(object):
 			else:
 				old_filename = None
 			if new_data == old_data and self.target_filename == old_filename:
-				print >>sys.stderr, "INFO: No change of core data of object %s." % (self.objectname,)
+				print("INFO: No change of core data of object %s." % (self.objectname,), file=sys.stderr)
 				active_change_udm_options = []
 
 			cmd = ["univention-directory-manager", self.udm_module_name, "modify"] + self.udm_passthrough_options + [
@@ -301,9 +302,9 @@ class UniventionLDAPExtension(object):
 			] + common_udm_options + active_change_udm_options
 			p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 			(stdout, stderr) = p.communicate()
-			print stdout
+			print(stdout)
 			if p.returncode != 0:
-				print >>sys.stderr, "ERROR: Modification of %s object failed." % (self.udm_module_name,)
+				print("ERROR: Modification of %s object failed." % (self.udm_module_name,), file=sys.stderr)
 				sys.exit(1)
 
 			appidentifier = os.environ.get('UNIVENTION_APP_IDENTIFIER')
@@ -314,7 +315,7 @@ class UniventionLDAPExtension(object):
 				]
 				p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 				(stdout, stderr) = p.communicate()
-				print stdout
+				print(stdout)
 
 		if not self.object_dn:
 			self.object_dn = new_object_dn
@@ -326,7 +327,7 @@ class UniventionLDAPExtension(object):
 
 		rc, object_dn, stdout = self.udm_find_object_dn()
 		if not object_dn:
-			print >>sys.stderr, "ERROR: Object not found in UDM."
+			print("ERROR: Object not found in UDM.", file=sys.stderr)
 			return
 
 		app_filter = ""
@@ -340,12 +341,12 @@ class UniventionLDAPExtension(object):
 			p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 			(stdout, stderr) = p.communicate()
 			if p.returncode:
-				print >>sys.stderr, "ERROR: LDAP search failed: %s" % (stdout,)
+				print("ERROR: LDAP search failed: %s" % (stdout,), file=sys.stderr)
 				sys.exit(1)
 			if stdout:
 				regex = re.compile('^cn: (.*)$', re.M)
 				apps = ",".join(regex.findall(stdout))
-				print >>sys.stderr, "INFO: The object %s is still registered by the following apps: %s" % (objectname, apps,)
+				print("INFO: The object %s is still registered by the following apps: %s" % (objectname, apps,), file=sys.stderr)
 				sys.exit(2)
 
 		cmd = ["univention-directory-manager", self.udm_module_name, "delete"] + self.udm_passthrough_options + [
@@ -353,7 +354,7 @@ class UniventionLDAPExtension(object):
 		]
 		p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 		(stdout, stderr) = p.communicate()
-		print stdout
+		print(stdout)
 
 	def mark_active(self):
 		if self._todo_list:
@@ -837,17 +838,17 @@ class UniventionUDMExtension(UniventionLDAPExtension):
 			return False
 
 		timeout = 60
-		print "Waiting for file %s:" % (self.filename,),
+		print("Waiting for file %s:" % (self.filename,), end=' ')
 		t0 = time.time()
 		while not os.path.exists(self.filename):
 			if time.time() - t0 > timeout:
-				print "ERROR"
-				print >>sys.stderr, "ERROR: Timout waiting for %s." % (self.filename,)
+				print("ERROR")
+				print("ERROR: Timout waiting for %s." % (self.filename,), file=sys.stderr)
 				return False
 			sys.stdout.write(".")
 			sys.stdout.flush()
 			time.sleep(3)
-		print "OK"
+		print("OK")
 		return True
 
 
@@ -864,7 +865,7 @@ class UniventionUDMModule(UniventionUDMExtension):
 		try:
 			module_name = imp.load_source('dummy', filename).module
 		except AttributeError:
-			print "ERROR: python variable 'module' undefined in given file:", filename
+			print("ERROR: python variable 'module' undefined in given file:", filename)
 			sys.exit(1)
 		sys.dont_write_bytecode = saved_value
 
@@ -1161,11 +1162,11 @@ def ucs_registerLDAPExtension():
 
 	for obj in objects:
 		if not obj.wait_for_activation():
-			print "%s: registraton of %s failed." % (functionname, obj.filename)
+			print("%s: registraton of %s failed." % (functionname, obj.filename))
 			sys.exit(1)
 
 	if opts.udm_module:
-		print "Terminating running univention-cli-server processes."
+		print("Terminating running univention-cli-server processes.")
 		p = subprocess.Popen(['pkill', '-f', 'univention-cli-server'], close_fds=True)
 		p.wait()
 
