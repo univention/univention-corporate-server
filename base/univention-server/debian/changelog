@@ -1,3 +1,9 @@
+univention-server (14.0.0-3) unstable; urgency=medium
+
+  * Bug #49193: Set new sambapassword in server_password_change earlier, to be able to rollback if this fails.
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 18 Apr 2019 14:08:24 +0200
+
 univention-server (14.0.0-2) unstable; urgency=medium
 
   * Bug #48342: Add dependency for the Admin Diary client
