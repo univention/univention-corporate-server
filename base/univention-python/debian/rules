@@ -35,10 +35,5 @@ export PYBUILD_NAME=univention
 override_dh_auto_test:
 	ucslint
 
-override_dh_python2:
-	dh_python2
-	mkdir -p debian/python-univention/usr/lib/pymodules/python2.7/univention
-	cp debian/python-univention/usr/lib/python2.7/dist-packages/univention/__init__.py debian/python-univention/usr/lib/pymodules/python2.7/univention
-
 %:
-	dh $@ --with python2 --buildsystem=pybuild
+	dh $@ --with python2,python3 --buildsystem=pybuild
