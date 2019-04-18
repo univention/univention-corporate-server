@@ -5,7 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.9.8
 Build-Depends: debhelper (>= 7),
  python-all,
- python-support (>= 0.90),
+ dh-python,
  univention-config-dev,
  ucslint-univention
 
@@ -13,6 +13,7 @@ Package: python-univention-lib
 Architecture: all
 Depends: ${python:Depends},
  ${misc:Depends},
+ python-univention (>= 12.0.0-4),
  python-univention-config-registry (>= 10.0.0-1),
  pwgen,
  python-magic,
@@ -23,8 +24,8 @@ Depends: ${python:Depends},
  python-ldap,
  python-imaging
 Provides: ${python:Provides}
-Description: UCS - common scripting functions for Python scripts
- This package contains Python functions used by various
+Description: UCS - common scripting functions for Python2 scripts
+ This package contains Python2 functions used by various
  components of UCS.
  .
  It is part of Univention Corporate Server (UCS), an

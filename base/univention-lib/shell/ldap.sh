@@ -398,9 +398,7 @@ ucs_registerLDAPExtension () {
 	fi
 
 	local rc
-	PYTHONPATH="/usr/lib/pymodules/$(pyversions -d)/univention/lib" \
-		python -c 'import ldap_extension; ldap_extension.ucs_registerLDAPExtension()' \
-			--packagename "$package_name" --packageversion "$package_version" "$@"
+	python -m univention.lib.ldap_extension ucs_registerLDAPExtension --packagename "$package_name" --packageversion "$package_version" "$@"
 
 	rc=$?
 	case $rc in
@@ -418,8 +416,7 @@ ucs_registerLDAPExtension () {
 # e.g. ucs_unregisterLDAPExtension --acl <acl object name> --schema <schema object name>
 #
 ucs_unregisterLDAPExtension () {
-	PYTHONPATH="/usr/lib/pymodules/$(pyversions -d)/univention/lib" \
-		python -c 'import ldap_extension; ldap_extension.ucs_unregisterLDAPExtension()' "$@"
+	python -m univention.lib.ldap_extension ucs_unregisterLDAPExtension "$@"
 }
 
 

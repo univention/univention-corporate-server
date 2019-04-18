@@ -70,7 +70,7 @@ finally:
 	if orig_path:
 		sys.path = orig_path
 
-# Ensure unviention debug is initialized
+# Ensure univention debug is initialized
 def initialize_debug():
 	# Use a little hack to determine if univention.debug has been initialized
 	# get_level(..) returns always ud.ERROR if univention.debug is not initialized

@@ -1,3 +1,9 @@
+univention-lib (8.0.0-6) unstable; urgency=medium
+
+  * Bug #49136: migrate to dh_python
+
+ -- Florian Best <best@univention.de>  Thu, 18 Apr 2019 12:43:30 +0200
+
 univention-lib (8.0.0-5) unstable; urgency=medium
 
   * Bug #48995: adjust old umc_frontend_new_hash

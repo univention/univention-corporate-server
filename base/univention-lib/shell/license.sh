@@ -41,5 +41,5 @@
 # 10
 #
 ucs_check_license_csp () {
-	python /usr/share/pyshared/univention/lib/license_tools.py
+	python -m univention.lib.license_tools
 }
