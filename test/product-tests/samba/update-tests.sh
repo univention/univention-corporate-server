@@ -230,6 +230,7 @@ test_before_update () {
 test_after_update () {
 	set -x
 	set -e
+	. product-tests/samba/utils.sh
 	# Auf einigen Systemen sollte einmal server-password-change aufgerufen werden
 	run_on_ucs_hosts "$MASTER $BACKUP" "ucr set server/password/interval='0' && /usr/lib/univention-server/server_password_change"
 	# Windows-Heimatverzeichnis" am Benutzer auf \\memberserver\homes setzen, "Laufwerk für das Windows-Heimatverzeichnis" muss vermutlich auch gesetzt werden.
