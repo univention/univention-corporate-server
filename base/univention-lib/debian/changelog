@@ -1,3 +1,9 @@
+univention-lib (8.0.0-7) unstable; urgency=medium
+
+  * Bug #49136: Add python3-univention-lib package
+
+ -- Florian Best <best@univention.de>  Thu, 18 Apr 2019 15:07:19 +0200
+
 univention-lib (8.0.0-6) unstable; urgency=medium
 
   * Bug #49136: migrate to dh_python

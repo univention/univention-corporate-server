@@ -24,8 +24,33 @@ Depends: ${python:Depends},
  python-ldap,
  python-imaging
 Provides: ${python:Provides}
-Description: UCS - common scripting functions for Python2 scripts
- This package contains Python2 functions used by various
+Description: UCS - common scripting functions for Python 2 scripts
+ This package contains Python functions used by various
+ components of UCS.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: python3-univention-lib
+Architecture: all
+Depends: ${python3:Depends},
+ ${misc:Depends},
+ python3-univention,
+ python-univention-lib,
+ python3-univention-config-registry,
+ pwgen,
+ python3-magic,
+ python3-ipaddr,
+ dnsutils,
+ python3-ldb,
+ python3-samba,
+ python3-ldap,
+ python3-pil
+Provides: ${python3:Provides}
+Description: UCS - common scripting functions for Python 3 scripts
+ This package contains Python functions used by various
  components of UCS.
  .
  It is part of Univention Corporate Server (UCS), an
