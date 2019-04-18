@@ -2246,7 +2246,7 @@ class UserRenameHandler:
 		try:
 			log.debug("Renaming '%s' to '%s' in UCS LDAP." % (user.dn, new_name))
 			user['username'] = new_name
-			user.modify()
+			return user.modify()
 		except uexceptions.ldapError as exc:
 			log.debug("Renaming of user '%s' failed: %s." % (userdn, exc,))
 			return
@@ -2305,7 +2305,7 @@ class GroupRenameHandler:
 		try:
 			log.debug("Renaming '%s' to '%s' in UCS LDAP." % (group.dn, new_name))
 			group['name'] = new_name
-			group.modify()
+			return group.modify()
 		except uexceptions.ldapError as exc:
 			log.debug("Renaming of group '%s' failed: %s." % (groupdn, exc,))
 			return
