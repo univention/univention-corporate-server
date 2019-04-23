@@ -3,8 +3,10 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-ad-connector
-fix: 13.0.0-6A~4.4.0.201904111037
+fix: 13.0.0-7A~4.4.0.201904231629
 desc: |
  This update addresses the following issues:
  * Dead code for obsolete custom attributes from UCS 2 has been removed.
-bug: [41553]
+ * Reconnect to DRS service in case the DRS replication for the password
+   synchronization fails.
+bug: [41553,45127]
