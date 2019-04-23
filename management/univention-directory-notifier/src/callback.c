@@ -51,9 +51,6 @@
 #include "notify.h"
 #include "network.h"
 #include "cache.h"
-#include "sem.h"
-
-extern int sem_id;
 
 extern fd_set readfds;
 
@@ -134,7 +131,6 @@ int data_on_connection(int fd, callback_remove_handler remove)
 
 	memset(network_line, 0, 8192);
 	p=network_packet;
-	p_sem(sem_id);
 
 	while ( get_network_line(p, network_line) ) {
 
@@ -337,7 +333,6 @@ int data_on_connection(int fd, callback_remove_handler remove)
 
 		}
 	}
-	v_sem(sem_id);
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "END Package");
 	

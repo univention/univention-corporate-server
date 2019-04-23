@@ -57,21 +57,6 @@ FILE* index_open(const char *filename)
 	abort();
 }
 
-void index_invalidate(FILE *fp)
-{
-	struct index_header header = { .magic = MAGIC };
-
-	fseek(fp, 0, SEEK_SET);
-	if (!ftruncate(fileno(fp), sizeof(header))) {
-		perror("Failed ftruncate(idx)");
-		abort();  // disk full?
-	}
-	if (fwrite(&header, sizeof(header), 1, fp) != 1) {
-		perror("Failed fwrite(idx)");
-		abort();  // disk full?
-	}
-}
-
 static unsigned long index_seek(FILE *fp, unsigned long id) {
 	unsigned long offset = sizeof(struct index_header) + id * sizeof(struct index_entry);
 	fseek(fp, offset, SEEK_SET);

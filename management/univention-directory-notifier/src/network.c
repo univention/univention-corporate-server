@@ -45,7 +45,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <signal.h>
 
 #include <errno.h>
 #include <univention/debug.h>
@@ -59,13 +58,10 @@ static NetworkClient_t *network_client_first = NULL;
 static int server_socketfd_listener;
 fd_set readfds;
 
-extern void set_replog_callback ( int sig, siginfo_t *si, void *data);
 extern void set_schema_callback ( int sig, siginfo_t *si, void *data);
 extern void set_listener_callback ( int sig, siginfo_t *si, void *data);
-extern int get_replog_callback ();
 extern int get_schema_callback ();
 extern int get_listener_callback ();
-extern void unset_replog_callback ();
 extern void unset_schema_callback ();
 extern void unset_listener_callback ();
 
@@ -114,8 +110,7 @@ int network_create_socket( int port )
 	return server_socketfd;
 }
 
-
-int network_client_add ( int fd, callback_handler handler, int notify, int old_port)
+int network_client_add ( int fd, callback_handler handler, int notify)
 {
 	NetworkClient_t *tmp = network_client_first;
 
@@ -127,9 +122,6 @@ int network_client_add ( int fd, callback_handler handler, int notify, int old_p
 		tmp->handler = handler;
 
 		tmp->notify = notify;
-
-		tmp->old_port = old_port;
-
 		tmp->next_id = 0;
 
 		tmp->next = NULL;
@@ -147,9 +139,6 @@ int network_client_add ( int fd, callback_handler handler, int notify, int old_p
 		tmp->handler = handler;
 
 		tmp->notify = notify;
-
-		tmp->old_port = old_port;
-
 		tmp->next_id = 0;
 
 		tmp->next = NULL;
@@ -188,51 +177,6 @@ int network_client_del ( int fd )
 			}
 			tmp=tmp1;
 		}
-	}
-
-	return 0;
-}
-unsigned long network_client_get_next_id( int fd)
-{
-	NetworkClient_t *tmp = network_client_first;
-
-	while(tmp != NULL )
-	{
-		if ( tmp->fd == fd )
-		{
-			return tmp->next_id;
-		}
-		tmp = tmp->next;
-	}
-
-	return 0;
-}
-unsigned long network_client_get_msg_id( int fd)
-{
-	NetworkClient_t *tmp = network_client_first;
-
-	while(tmp != NULL )
-	{
-		if ( tmp->fd == fd )
-		{
-			return tmp->msg_id;
-		}
-		tmp = tmp->next;
-	}
-
-	return 0;
-}
-int network_client_waiting( int fd )
-{
-	NetworkClient_t *tmp = network_client_first;
-
-	while(tmp != NULL )
-	{
-		if ( tmp->fd == fd )
-		{
-			return tmp->waiting;
-		}
-		tmp = tmp->next;
 	}
 
 	return 0;
@@ -328,7 +272,7 @@ static int new_connection(int fd, callback_remove_handler remove)
 
 	FD_SET(client_socketfd, &readfds);
 
-	network_client_add(client_socketfd, data_on_connection, 0, 0);
+	network_client_add(client_socketfd, data_on_connection, 0);
 
 	return 0;
 }
@@ -337,7 +281,7 @@ static int new_connection(int fd, callback_remove_handler remove)
 int network_client_init ( int port )
 {
 	server_socketfd_listener = network_create_socket(6669);
-	network_client_add(server_socketfd_listener, new_connection, 0, 0 );
+	network_client_add(server_socketfd_listener, new_connection, 0);
 
 	return 0;
 }
@@ -347,10 +291,6 @@ void check_callbacks()
 	if ( get_schema_callback () ) {
 		notify_schema_change_callback ( 0, NULL, NULL);
 		unset_schema_callback();
-	}
-	if ( get_replog_callback() ) {
-		notify_replog_change_callback ( 0, NULL, NULL);
-		unset_replog_callback();
 	}
 	if ( get_listener_callback () ) {
 		notify_listener_change_callback ( 0, NULL, NULL);
@@ -370,10 +310,9 @@ int network_client_main_loop ( )
 	/* main loop */
 	while(1) {
 		int fd;
-		int rc;
 
 		testfds = readfds;
-		if( ((rc=select (FD_SETSIZE, &testfds, (fd_set*)0, (fd_set*)0, (struct timeval *) 0))) < 1) {
+		if( ((select (FD_SETSIZE, &testfds, (fd_set*)0, (fd_set*)0, (struct timeval *) 0))) < 1) {
 								  /*FIXME */
 			if ( errno == EINTR || errno == 29) {
 				/* Ignore signal */
@@ -470,19 +409,12 @@ int network_client_check_clients ( unsigned long last_known_id )
 int network_client_all_write ( unsigned long id, char *buf, long l_buf)
 {
 	NetworkClient_t *tmp = network_client_first;
-	char *tmp_buf;
 	int rc;
 	char string[8192];
 
 	if ( l_buf == 0 ) {
 		return 0;
 	}
-	if ( (tmp_buf = malloc(sizeof(long)+l_buf)) == NULL ) {
-		return -1;
-	}
-
-	memcpy(tmp_buf, &(l_buf), sizeof(long));
-	memcpy(tmp_buf+sizeof(long), buf, l_buf);
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "l=%ld, --> [%s]",l_buf,buf);
 
@@ -521,8 +453,6 @@ int network_client_all_write ( unsigned long id, char *buf, long l_buf)
 		}
 		tmp = tmp->next;
 	}
-
-	free(tmp_buf);
 
 	return rc;
 }

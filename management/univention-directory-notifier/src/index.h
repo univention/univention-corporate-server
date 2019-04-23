@@ -44,7 +44,6 @@ struct index_entry {
 } __attribute__((__packed__));
 
 FILE* index_open(const char *filename);
-void index_invalidate(FILE *fp);
 size_t index_get(FILE *fp, unsigned long id);
 void index_set(FILE *fp, unsigned long id, size_t offset);
 

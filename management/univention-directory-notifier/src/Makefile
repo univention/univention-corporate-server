@@ -31,13 +31,13 @@
 #
 CFLAGS := -Wall -g -D_FILE_OFFSET_BITS=64
 LDADD := -luniventiondebug
-NOTIFIER_LDADD = $(LDADD) -lpthread -lldap
+NOTIFIER_LDADD = $(LDADD) -lldap
 DUMP_LDADD = $(LDADD)
 
 
 all: univention-directory-notifier
 
-univention-directory-notifier: index.o sem.o cache.o callback.o network.o notify.o univention-directory-notifier.o
+univention-directory-notifier: index.o cache.o callback.o network.o notify.o univention-directory-notifier.o
 	$(CC) $(CFLAGS) -o $@ $^ $(NOTIFIER_LDADD)
 
 univention-directory-notifier-index-dump: index.o index-dump.o

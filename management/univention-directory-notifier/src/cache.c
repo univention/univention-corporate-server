@@ -45,19 +45,6 @@ static notify_cache_t *cache;
 static int entry_min_pos = 0;
 static int max_filled = 0;
 
-unsigned long notifier_cache_get_max_id ( )
-{
-	if ( entry_min_pos == 0 ) {
-		return cache[notifier_cache_size-1].id;
-	} else {
-		return cache[entry_min_pos].id;
-	}
-}
-
-unsigned long notifier_cache_get_min_id ( )
-{
-	return cache[entry_min_pos].id;
-}
 
 int notifier_cache_init ( unsigned long max_id)
 {
