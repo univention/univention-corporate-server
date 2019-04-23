@@ -1,0 +1,14 @@
+product: ucs
+release: "4.3"
+version: [3, 4]
+scope: ucs_4.3-0-errata4.3-4
+src: ghostscript
+fix: 9.26a~dfsg-0+deb9u2
+desc: |
+ This update addresses the following issues:
+ * superexec operator is available (700585) (CVE-2019-3835)
+ * forceput in DefineResource is still accessible (700576) (CVE-2019-3838)
+bug: [49327]
+cve:
+- CVE-2019-3835
+- CVE-2019-3838
