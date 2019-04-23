@@ -1,0 +1,24 @@
+product: ucs
+release: "4.3"
+version: [3, 4]
+scope: ucs_4.3-0-errata4.3-4
+src: ruby2.3
+fix: 2.3.3-1+deb9u6
+desc: |
+ This update addresses the following issues:
+ * Delete directory using symlink when decompressing tar (CVE-2019-8320)
+ * Escape sequence injection vulnerability in verbose (CVE-2019-8321)
+ * Escape sequence injection vulnerability in gem owner (CVE-2019-8322)
+ * Escape sequence injection vulnerability in API response handling
+   (CVE-2019-8323)
+ * Installing a malicious gem may lead to arbitrary code execution
+   (CVE-2019-8324)
+ * Escape sequence injection vulnerability in errors (CVE-2019-8325)
+bug: [49328]
+cve:
+- CVE-2019-8320
+- CVE-2019-8321
+- CVE-2019-8322
+- CVE-2019-8323
+- CVE-2019-8324
+- CVE-2019-8325
