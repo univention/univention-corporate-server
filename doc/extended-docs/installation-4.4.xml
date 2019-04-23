@@ -860,7 +860,7 @@ univention-system-setup-boot uss/server/role string memberserver
 			<callout arearefs="preseed:release-co" id="preseed:release">
 				<para>
 					These directory and release names must be kept in sync to select the right UCS release.
-					This example consistently uses the <wordasword>UCS-4.4-0</wordasword>
+					This example consistently uses <wordasword>UCS-4.4-0</wordasword>
 					For use with the public repository remove the prefix <uri>univention-repository/</uri> here.
 				</para>
 			</callout>
