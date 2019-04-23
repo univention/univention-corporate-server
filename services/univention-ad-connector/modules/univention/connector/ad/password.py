@@ -157,13 +157,13 @@ def set_password_in_ad(connector, samaccountname, pwd):
 	return info
 
 
-def get_password_from_ad(connector, user_dn):
+def get_password_from_ad(connector, user_dn, reconnect=False):
 	_d = ud.function('ldap.ad.get_password_from_ad')
 	ud.debug(ud.LDAP, ud.INFO, "get_password_from_ad: Read password from AD: %s" % user_dn)
 
 	nt_hash = None
 
-	if not connector.drs:
+	if not connector.drs or reconnect:
 		connector.open_drs_connection()
 
 	req8 = drsuapi.DsGetNCChangesRequest8()
@@ -278,7 +278,12 @@ def password_sync_ucs(connector, key, object):
 		ud.debug(ud.LDAP, ud.INFO, "password_sync: UCS pwdlastset: %s" % (sambaPwdLastSet))
 
 	pwd_set = False
-	pwd_ad = get_password_from_ad(connector, univention.connector.ad.compatible_modstring(object['dn']))
+	try:
+		pwd_ad = get_password_from_ad(connector, univention.connector.ad.compatible_modstring(object['dn']))
+	except Exception as e:
+		ud.debug(ud.LDAP, ud.PROCESS, "password_sync_ucs: get_password_from_ad failed with %s, retry with reconnect" % str(e))
+		pwd_ad = get_password_from_ad(connector, univention.connector.ad.compatible_modstring(object['dn']), reconnect=True)
+
 	if not pwd_ad:
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: No password hash could be read from AD")
 	res = ''
@@ -379,7 +384,11 @@ def password_sync(connector, key, ucs_object):
 		ud.debug(ud.LDAP, ud.INFO, "password_sync:  AD pwdlastset: %s (original (%s))" % (ad_password_last_set, pwdLastSet))
 		ud.debug(ud.LDAP, ud.INFO, "password_sync: UCS pwdlastset: %s" % (sambaPwdLastSet))
 
-	res = get_password_from_ad(connector, univention.connector.ad.compatible_modstring(object['dn']))
+	try:
+		res = get_password_from_ad(connector, univention.connector.ad.compatible_modstring(object['dn']))
+	except Exception as e:
+		ud.debug(ud.LDAP, ud.PROCESS, "password_sync_ucs: get_password_from_ad failed with %s, retry with reconnect" % str(e))
+		res = get_password_from_ad(connector, univention.connector.ad.compatible_modstring(object['dn']), reconnect=True)
 
 	if res:
 		ntPwd_ucs = ''
