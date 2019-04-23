@@ -6,8 +6,8 @@ src: ghostscript
 fix: 9.26a~dfsg-0+deb9u2
 desc: |
  This update addresses the following issues:
- * superexec operator is available (700585) (CVE-2019-3835)
- * forceput in DefineResource is still accessible (700576) (CVE-2019-3838)
+ * superexec operator is available (CVE-2019-3835)
+ * forceput in DefineResource is still accessible (CVE-2019-3838)
 bug: [49327]
 cve:
 - CVE-2019-3835
