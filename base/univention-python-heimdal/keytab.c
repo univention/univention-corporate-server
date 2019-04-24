@@ -134,7 +134,6 @@ static PyObject *keytab_add(krb5KeytabObject *self, PyObject *args)
 	char *password_string = NULL;
 	int salt_flag = 1;
 	int random_flag = 0;
-	int error = 0;
 
 	if (!PyArg_ParseTuple(args, "sissii", &principal_string, &kvno,
 				&enctype_string, &password_string,
@@ -145,7 +144,6 @@ static PyObject *keytab_add(krb5KeytabObject *self, PyObject *args)
 
 	ret = krb5_parse_name(*self->context, principal_string, &entry.principal);
 	if(ret) {
-		error = 1;
 		krb5_exception(*self->context, ret, "%s", principal_string);
 		goto out;
 	}
@@ -156,7 +154,6 @@ static PyObject *keytab_add(krb5KeytabObject *self, PyObject *args)
 		if(sscanf(enctype_string, "%d", &t) == 1)
 			enctype = t;
 		else {
-			error = 1;
 			krb5_exception(*self->context, ret, "%s", enctype_string);
 			goto out;
 		}
@@ -187,7 +184,6 @@ static PyObject *keytab_add(krb5KeytabObject *self, PyObject *args)
 	entry.timestamp = time (NULL);
 	ret = krb5_kt_add_entry(*self->context, *self->keytab, &entry);
 	if(ret) {
-		error = 1;
 		krb5_exception(*self->context, ret, "add");
 		goto out;
 	}
