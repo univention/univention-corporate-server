@@ -46,11 +46,23 @@ database_logger = get_base_logger().getChild('database')
 
 
 class DatabaseError(Exception):
-	pass
+	def exception_value(self):
+		return str(self)
 
 
 class DatabaseCreationFailed(DatabaseError):
-	pass
+	def __init__(self, msg, details=None):
+		self.msg = msg
+		self.details = details
+
+	def __str__(self):
+		return self.msg
+
+	def exception_value(self):
+		if self.details:
+			return '%s: %s' % (self, self.details)
+		else:
+			return str(self)
 
 
 class DatabaseConnectionFailed(DatabaseError):
@@ -115,10 +127,12 @@ class DatabaseConnector(object):
 				mark_packages_as_manually_installed(packages)
 			else:
 				database_logger.info('Installing/upgrading %s' % ', '.join(packages))
-				wait_for_dpkg_lock()
-				update_packages()
-				if not install_packages(packages):
-					raise DatabaseCreationFailed('Could not install software packages')
+				if wait_for_dpkg_lock():
+					update_packages()
+					if not install_packages(packages):
+						raise DatabaseCreationFailed('Could not install software packages')
+				else:
+					raise DatabaseCreationFailed('Could not install software packages due to missing lock')
 
 	@classmethod
 	def get_connector(cls, app):
@@ -144,7 +158,10 @@ class DatabaseConnector(object):
 		service_name = self._get_service_name()
 		if service_name:
 			if call_process(['service', service_name, 'start'], database_logger).returncode:
-				raise DatabaseCreationFailed('Could not start %s' % service_name)
+				catcher = LogCatcher(database_logger)
+				call_process(['service', service_name, 'status'], catcher)
+				details = '\n'.join(catcher.stdstream())
+				raise DatabaseCreationFailed('Could not start %s' % service_name, details=details)
 
 	def _write_password(self, password):
 		db_password_file = self.get_db_password_file()

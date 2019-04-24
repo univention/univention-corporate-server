@@ -449,7 +449,7 @@ class AppListener(AppListener):
 			try:
 				database_connector.create_database()
 			except DatabaseError as exc:
-				raise DatabaseConnectorError(str(exc))
+				raise DatabaseConnectorError(exc.exception_value())
 
 	def _register_docker_variables(self, app):
 		updates = {}
