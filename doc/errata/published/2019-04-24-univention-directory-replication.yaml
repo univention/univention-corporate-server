@@ -9,3 +9,5 @@ desc: |
  * Increase the length of the ldap root password (/etc/ldap/rootpw.conf)
    used for ldap replication to improve security against brute force attacks.
 bug: [48606]
+erratum: 55
+announced: 2019-04-24
