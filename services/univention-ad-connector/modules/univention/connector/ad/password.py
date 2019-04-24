@@ -387,7 +387,7 @@ def password_sync(connector, key, ucs_object):
 	try:
 		res = get_password_from_ad(connector, univention.connector.ad.compatible_modstring(object['dn']))
 	except Exception as e:
-		ud.debug(ud.LDAP, ud.PROCESS, "password_sync_ucs: get_password_from_ad failed with %s, retry with reconnect" % str(e))
+		ud.debug(ud.LDAP, ud.PROCESS, "password_sync: get_password_from_ad failed with %s, retry with reconnect" % str(e))
 		res = get_password_from_ad(connector, univention.connector.ad.compatible_modstring(object['dn']), reconnect=True)
 
 	if res:
