@@ -10,3 +10,5 @@ desc: |
  * Reconnect to DRS service in case the DRS replication for the password
    synchronization fails.
 bug: [41553,45127]
+erratum: 59
+announced: 2019-04-24
