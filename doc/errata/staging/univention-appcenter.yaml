@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-appcenter
+fix: 8.0.11-12A~4.4.0.201904240953
+desc: |-
+  This update addresses the following issue(s):
+  * Docker image verification was removed from the App Center code. Instead,
+    we rely on the functions of Docker itself.
+  * The App Center waits for a dpkg lock before attempting to install database
+    software packages. If starting the database service fails anyway, we now
+    send more verbose information.
+  * univention-appcenter is now built with dh_python2
+bug: [48670, 48669, 49145]
