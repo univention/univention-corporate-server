@@ -36,6 +36,9 @@ set_machine_secret() {
 	old_kvno=$(ldbsearch -H /var/lib/samba/private/sam.ldb samAccountName="${hostname}\$" msDS-KeyVersionNumber | sed -n 's/msDS-KeyVersionNumber: \(.*\)/\1/p')
 	new_kvno=$(($old_kvno + 1))
 
+	## Backup /etc/krb5.keytab to avoid key duplication in case a revert is necessary
+	install -m 0600 /etc/krb5.keytab /etc/krb5.keytab.SAVE
+
 	ldbmodify -H /var/lib/samba/private/secrets.ldb <<-%EOF
 	dn: flatname=${windows_domain},cn=Primary Domains
 	changetype: modify
@@ -46,6 +49,10 @@ set_machine_secret() {
 	msDS-KeyVersionNumber: $new_kvno
 	-
 	%EOF
+	if [ "$?" -ne "0" ]; then
+		install -m 0600 /etc/krb5.keytab.SAVE /etc/krb5.keytab
+		exit 1
+	fi
 
 	## 2. replace random machine secret in SAM with /etc/machine.secret
 	samba-tool user setpassword "${hostname}\$" --newpassword="$(cat /etc/machine.secret)"
@@ -54,22 +61,24 @@ set_machine_secret() {
 if [ "$1" = "localchange" ]; then
 	set_machine_secret
 
-	## if samba-tool user setpassword fails, revert changes to secrets.ldb
+	## if samba-tool user setpassword fails, revert changes to secrets.ldb and krb5.keytab
 	if [ "$?" -ne "0" ]; then
+		old_password=$(tail -n 1 /etc/machine.secret.old | sed -n 's/^[0-9]*: //p')
 		ldbmodify -H /var/lib/samba/private/secrets.ldb <<-%EOF
 		dn: flatname=${windows_domain},cn=Primary Domains
 		changetype: modify
 		replace: secret
-		secret: $(cat /etc/machine.secret.old | tail -n 1 | sed 's/[0-9]*: //g')
+		secret: $old_password
 		-
 		replace: msDS-KeyVersionNumber
 		msDS-KeyVersionNumber: $old_kvno
 		-
 		%EOF
-		test -x /etc/init.d/samba && /etc/init.d/samba restart
+
+		install -m 0600 /etc/krb5.keytab.SAVE /etc/krb5.keytab
+
 		exit 1
 	fi
 
 	test -x /etc/init.d/samba && /etc/init.d/samba restart
 fi
-
