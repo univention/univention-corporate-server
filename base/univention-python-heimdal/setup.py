@@ -31,21 +31,24 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from distutils.core import setup, Extension
-import platform as plat
+from setuptools import setup, Extension
+import pkgconfig
+from debian.changelog import Changelog
+from debian.deb822 import Deb822
+from email.utils import parseaddr
 
-if '64bit' in plat.architecture():
-	libdir = '/usr/lib/x86_64-linux-gnu'
-else:
-	libdir = '/usr/lib/i386-linux-gnu'
+d = pkgconfig.parse('heimdal-krb5')
+dch = Changelog(open('debian/changelog', 'r'))
+dsc = Deb822(open('debian/control', 'r'))
+realname, email_address = parseaddr(dsc['Maintainer'])
 
 setup(
-	name='python-heimdal',
-	version='0.1',
-	description='Heimdal Python bindings',
-	author='Univention GmbH',
-	author_email='packages@univention.de',
-	url='http://www.univention.de/',
+	name=dch.package,
+	version=dch.version.full_version,
+	description='Heimdal Kerberos Python bindings',
+	maintainer=realname,
+	maintainer_email=email_address,
+	url='https://www.univention.de/',
 
 	ext_modules=[
 		Extension(
@@ -54,8 +57,8 @@ setup(
 				'creds.c', 'ticket.c', 'keytab.c', 'ccache.c',
 				'salt.c', 'enctype.c', 'keyblock.c', 'asn1.c'],
 			libraries=['krb5', 'kadm5clnt', 'hdb', 'asn1', 'com_err', 'roken'],
-			library_dirs=[libdir + '/heimdal'],
-			include_dirs=['/usr/include/heimdal']
+			library_dirs=d['library_dirs'],
+			include_dirs=d['include_dirs'],
 		)
 	],
 )

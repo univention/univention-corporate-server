@@ -1,8 +1,5 @@
 #!/usr/bin/make -f
 #
-# Python Heimdal
-#  rules file for the python-heimdal debian package
-#
 # Copyright 2003-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -30,21 +27,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# Made with the aid of dh_make, by Craig Small
-# debian/rules that uses debhelper. GNU copyright 1997 by Joey Hess.
-# Some lines taken from debmake, by Cristoph Lameter.
-# Modified for python-heimdal, by Roland Bauerschmidt 2003.
-
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
-
-.PHONY: override_dh_strip
-override_dh_strip:
-	dh_strip --dbg-package=python-univention-heimdal
+export PYBUILD_NAME=python-univention-heimdal
 
 override_dh_auto_test:
+	dh_auto_test
 	ucslint
 
 %:
-	dh $@ --with 'python_support'
-
+	dh $@ --with python2 --buildsystem=pybuild

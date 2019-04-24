@@ -1,3 +1,9 @@
+univention-python-heimdal (9.0.0-2) unstable; urgency=low
+
+  * Bug #49139: Migrate to dh_python2
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 24 Apr 2019 17:32:39 +0200
+
 univention-python-heimdal (9.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump

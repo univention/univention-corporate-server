@@ -1,0 +1,9 @@
+heimdal.so
+build/
+*.egg-info/
+debian/.debhelper/
+debian/debhelper-build-stamp
+debian/files
+debian/python-univention-heimdal/
+debian/*.debhelper.log
+debian/*.substvars

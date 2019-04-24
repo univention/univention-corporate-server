@@ -2,20 +2,28 @@ Source: univention-python-heimdal
 Section: python
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0.50~),
- python-all-dev,
- python-support (>> 1.0.10),
+Build-Depends:
+ debhelper (>= 9),
+ dh-python,
  heimdal-dev,
- sharutils,
- ucslint-univention
+ python-all-dev,
+ python-debian,
+ python-pkgconfig,
+ python-setuptools,
+ ucslint-univention,
 Standards-Version: 3.8.2
+X-Python-Version: 2.7
 
 Package: python-univention-heimdal
 Architecture: any
-Depends: ${python:Depends}, ${shlibs:Depends}, python-ldap
-Replaces: python-heimdal
-Provides: ${python:Provides}, python-heimdal
-Conflicts: python2.4-heimdal (<< 1.0.1)
+Depends:
+ ${python:Depends},
+ ${shlibs:Depends},
+Replaces:
+ python-heimdal,
+Provides:
+ python-heimdal,
+ ${python:Provides},
 Description: UCS - Kerberos interface module for Python.
  This module provides a Python interface to the Heimdal Kerberos library.
  .
