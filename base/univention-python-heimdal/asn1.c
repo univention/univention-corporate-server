@@ -126,7 +126,7 @@ PyObject* asn1_encode_key(PyObject *self, PyObject* args)
 		Py_RETURN_NONE;
 	} else {
 		PyObject *s = PyString_FromStringAndSize(buf, len);
-		Py_INCREF(s); /* FIXME */
+		free(buf);
 		return s;
 	}
 }
@@ -135,44 +135,47 @@ PyObject* asn1_decode_key(PyObject *unused, PyObject* args)
 {
 	uint8_t *key_buf;
 	size_t key_len;
-	krb5KeyblockObject *keyblock;
-	krb5SaltObject *salt;
+	krb5KeyblockObject *keyblock = NULL;
+	krb5SaltObject *salt = NULL;
 	krb5_error_code ret;
 	Key asn1_key;
 	size_t len;
-	PyObject *self;
-	int error = 0;
+	PyObject *self = NULL;
 
 	if (!PyArg_ParseTuple(args, "s#", &key_buf, &key_len))
 		return NULL;
 
 	ret = decode_Key(key_buf, key_len, &asn1_key, &len);
 	if (ret) {
-		error = 1;
 		krb5_exception(NULL, ret);
-		goto out;
+		goto except;
 	}
 
 	keyblock = (krb5KeyblockObject *) PyObject_NEW(krb5KeyblockObject, &krb5KeyblockType);
+	if (keyblock == NULL) {
+		PyErr_NoMemory();
+		goto except;
+	}
 	keyblock->keyblock.keytype = asn1_key.key.keytype;
-
 	keyblock->keyblock.keyvalue.data = malloc(asn1_key.key.keyvalue.length);
 	if (keyblock->keyblock.keyvalue.data == NULL) {
-		error = 1;
-		krb5_exception(NULL, -1, "malloc for keyvalue.data failed");
-		goto out;
+		PyErr_NoMemory();
+		goto except;
 	}
 	memcpy(keyblock->keyblock.keyvalue.data, asn1_key.key.keyvalue.data, asn1_key.key.keyvalue.length);
 	keyblock->keyblock.keyvalue.length = asn1_key.key.keyvalue.length;
 
 	salt = (krb5SaltObject *) PyObject_NEW(krb5SaltObject, &krb5SaltType);
+	if (salt == NULL) {
+		PyErr_NoMemory();
+		goto except;
+	}
 	if (asn1_key.salt != NULL) {
 		salt->salt.salttype = asn1_key.salt->type;
 		salt->salt.saltvalue.data = malloc(asn1_key.salt->salt.length);
 		if (salt->salt.saltvalue.data == NULL) {
-			error = 1;
-			krb5_exception(NULL, -1, "malloc for saltvalue.data failed");
-			goto out;
+			PyErr_NoMemory();
+			goto except;
 		}
 		memcpy(salt->salt.saltvalue.data, asn1_key.salt->salt.data, asn1_key.salt->salt.length);
 		salt->salt.saltvalue.length = asn1_key.salt->salt.length;
@@ -185,15 +188,13 @@ PyObject* asn1_decode_key(PyObject *unused, PyObject* args)
 		salt->salt.saltvalue.data   = NULL;
 		salt->salt.saltvalue.length = 0;
 	}
-	
 	self = Py_BuildValue("(OOi)", keyblock, salt, asn1_key.mkvno);
+	goto finally;
 
-	if (!self)
-		error = 1;
- out:
-	if (error)
-		return NULL;
-	else
-		return self;
+except:
+	free(keyblock->keyblock.keyvalue.data);
+finally:
+	Py_XDECREF(keyblock);
+	Py_XDECREF(salt);
+	return self;
 }
-

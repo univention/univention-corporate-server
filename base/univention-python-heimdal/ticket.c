@@ -41,13 +41,13 @@
 krb5TicketObject *ticket_new(PyObject *unused, PyObject *args)
 {
 	krb5ContextObject *context;
-	krb5TicketObject *self = (krb5TicketObject *) PyObject_New(krb5TicketObject, &krb5TicketType);
-
 	if (!PyArg_ParseTuple(args, "O", &context))
 		return NULL;
 
+	krb5TicketObject *self = (krb5TicketObject *) PyObject_New(krb5TicketObject, &krb5TicketType);
 	if (self == NULL)
 		return NULL;
+
 	self->context = context->context;
 
 	return self;

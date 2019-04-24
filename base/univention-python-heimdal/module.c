@@ -62,6 +62,9 @@ initheimdal(void)
 {
 	PyObject *module, *self;
 	module = Py_InitModule("heimdal", module_methods);
+	if (module == NULL)
+		return;
+
 	self = PyModule_GetDict(module);
 
 	error_init(self);

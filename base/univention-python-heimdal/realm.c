@@ -41,6 +41,8 @@
 krb5RealmObject *realm_from_realm(krb5_context context, krb5_realm *realm)
 {
 	krb5RealmObject *self = (krb5RealmObject *) PyObject_New(krb5RealmObject, &krb5RealmType);
+	if (self == NULL)
+		return NULL;
 
 	self->context = context;
 	self->realm = realm;

@@ -60,6 +60,8 @@ static krb5_error_code kerb_prompter(krb5_context ctx, void *data,
 krb5CredsObject *creds_from_creds(krb5_context context, krb5_creds creds)
 {
 	krb5CredsObject *self = (krb5CredsObject *) PyObject_New(krb5CredsObject, &krb5CredsType);
+	if (self == NULL)
+		return NULL;
 
 	self->context = context;
 	self->creds = creds;
@@ -74,35 +76,30 @@ krb5CredsObject *creds_new(PyObject *unused, PyObject *args)
 	krb5PrincipalObject *principal;
 	char *password_string;
 	char *in_tkt_service;
-	krb5CredsObject *self = (krb5CredsObject *) PyObject_NEW(krb5CredsObject, &krb5CredsType);
-	int error = 0;
-
 	if (!PyArg_ParseTuple(args, "OOss", &context, &principal, &password_string,
 				&in_tkt_service))
+		return NULL;
+
+	krb5CredsObject *self = (krb5CredsObject *) PyObject_NEW(krb5CredsObject, &krb5CredsType);
+	if (self == NULL)
 		return NULL;
 
 	/* FIXME */
 	if (in_tkt_service[0] == '\0')
 		in_tkt_service = NULL;
 
-	if (self == NULL)
-		return NULL;
 	self->context = context->context;
 
 	ret = krb5_get_init_creds_password(self->context, &self->creds,
 			principal->principal, NULL, kerb_prompter, password_string,
 			0, in_tkt_service, NULL);
 	if (ret) {
-		error = 1;
+		Py_DECREF(self);
 		krb5_exception(NULL, ret);
-		goto out;
+		return NULL;
 	}
 
- out:
-	if (error)
-		return NULL;
-	else
-		return self;
+	return self;
 }
 
 /* FIXME */
@@ -113,18 +110,18 @@ PyObject *creds_parse(krb5CredsObject *self, PyObject *args)
 	Ticket t;
 	size_t len;
 	char *s;
-	int error = 0;
 
-	if ((tuple = PyTuple_New(3)) == NULL) {
-		error = 1;
-		goto out;
-	};
+	if ((tuple = PyTuple_New(3)) == NULL)
+		return NULL;
 
 	decode_Ticket(self->creds.ticket.data, self->creds.ticket.length, &t, &len);
 
 	ret = krb5_enctype_to_string(self->context, t.enc_part.etype, &s);
 	if (ret != 0) {
-		asprintf(&s, "unknown (%d)", t.enc_part.etype);
+		if (asprintf(&s, "unknown (%d)", t.enc_part.etype) < 0) {
+			Py_DECREF(tuple);
+			return PyErr_NoMemory();
+		}
 	}
 	PyTuple_SetItem(tuple, 0, PyString_FromString(s));
 	free(s);
@@ -135,8 +132,11 @@ PyObject *creds_parse(krb5CredsObject *self, PyObject *args)
 		PyTuple_SetItem(tuple, 1, PyInt_FromLong(-1));
 
 	ret = krb5_unparse_name(self->context, self->creds.server, &s);
-	if (ret)
+	if (ret) {
 		krb5_exception(self->context, 1, ret, "krb5_unparse_name");
+		Py_DECREF(tuple);
+		return NULL;
+	}
 	PyTuple_SetItem(tuple, 2, PyString_FromString(s));
 	free(s);
 
@@ -146,11 +146,7 @@ PyObject *creds_parse(krb5CredsObject *self, PyObject *args)
 	//PyTuple_SetItem(tuple, 3, PyInt_FromLong(entry.timestamp));
 	//PyTuple_SetItem(tuple, 4, PyString_FromString(entry.keyblock.keyvalue.data));
 
- out:
-	if (error)
-		return NULL;
-	else
-		return tuple;
+	return tuple;
 }
 
 PyObject *creds_change_password(krb5CredsObject *self, PyObject *args)
@@ -160,7 +156,6 @@ PyObject *creds_change_password(krb5CredsObject *self, PyObject *args)
 	int result_code;
 	krb5_data result_code_string;
 	krb5_data result_string;
-	int error = 0;
 
 	if (!PyArg_ParseTuple(args, "s", &newpw))
 		return NULL;
@@ -169,19 +164,14 @@ PyObject *creds_change_password(krb5CredsObject *self, PyObject *args)
 	ret = krb5_set_password(self->context, &self->creds, newpw, NULL, &result_code,
 			&result_code_string, &result_string);
 	if (ret) {
-		error = 1;
 		krb5_exception(NULL, ret);
-		goto out;
+		return NULL;
 	}
 
 	krb5_data_free(&result_code_string);
 	krb5_data_free(&result_string);
- out:
-	if (error)
-		return NULL;
-	else {
-		Py_RETURN_NONE;
-	}
+
+	Py_RETURN_NONE;
 }
 
 void creds_destroy(krb5CredsObject *self)

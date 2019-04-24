@@ -46,22 +46,20 @@ krb5CcacheObject *ccache_open(PyObject *unused, PyObject *args)
 {
 	krb5_error_code ret;
 	krb5ContextObject *context;
-	krb5CcacheObject *self = (krb5CcacheObject *) PyObject_NEW(krb5CcacheObject, &krb5CcacheType);
-	int error = 0;
-
-	if (self == NULL)
+	if (!PyArg_ParseTuple(args, "O", &context))
 		return NULL;
 
-	if (!PyArg_ParseTuple(args, "O", &context))
+	krb5CcacheObject *self = (krb5CcacheObject *) PyObject_NEW(krb5CcacheObject, &krb5CcacheType);
+	if (self == NULL)
 		return NULL;
 
 	self->context = context->context;
 
 	ret = krb5_cc_default(self->context, &self->ccache);
 	if (ret) {
-		error = 1;
 		krb5_exception(self->context, ret);
-		goto out;
+		Py_DECREF(self);
+		return NULL;
 	}
 
 #if 0
@@ -74,11 +72,7 @@ krb5CcacheObject *ccache_open(PyObject *unused, PyObject *args)
 		krb5_exception(self->context, 1, ret, "krb5_cc_get_principal");
 #endif
 
- out:
-	if (error)
-		return NULL;
-	else
-		return self;
+	return self;
 }
 
 void ccache_close(krb5CcacheObject *self)
@@ -108,17 +102,17 @@ static PyObject *ccache_list(krb5CcacheObject *self, PyObject *args)
 	krb5_cc_cursor cursor;
 	krb5_creds creds;
 	PyObject *list = NULL;
-	int error = 0;
 
 	ret = krb5_cc_start_seq_get (self->context, self->ccache, &cursor);
 	if (ret) {
-		error = 1;
 		krb5_exception(self->context, ret, "krb5_cc_start_seq_get");
-		goto out;
+		return NULL;
 	}
 
-	if ((list = PyList_New(0)) == NULL)
-		return NULL;
+	if ((list = PyList_New(0)) == NULL) {
+		krb5_cc_end_seq_get (self->context, self->ccache, &cursor);
+		return PyErr_NoMemory();
+	}
 
 	while((ret = krb5_cc_next_cred(self->context, self->ccache, &cursor, &creds)) == 0) {
 		krb5CredsObject *i;
@@ -128,71 +122,46 @@ static PyObject *ccache_list(krb5CcacheObject *self, PyObject *args)
 
 	ret = krb5_cc_end_seq_get (self->context, self->ccache, &cursor);
 	if (ret) {
-		error = 1;
+		Py_DECREF(list);
 		krb5_exception(self->context, 1, ret, "krb5_cc_end_seq_get");
-		goto out;
+		return NULL;
 	}
 
-out:
-	if (error)
-		return NULL;
-	else {
-		return list;
-	}
+	return list;
 }
 
 static PyObject *ccache_initialize(krb5CcacheObject *self, PyObject *args)
 {
 	krb5_error_code ret;
 	krb5PrincipalObject *principal;
-	int error = 0;
-
-	if (self == NULL)
-		return NULL;
 
 	if (!PyArg_ParseTuple(args, "O", &principal))
 		return NULL;
 
 	ret = krb5_cc_initialize(self->context, self->ccache, principal->principal);
 	if (ret) {
-		error = 1;
 		krb5_exception(self->context, ret);
-		goto out;
+		return NULL;
 	}
 
- out:
-	if (error)
-		return NULL;
-	else {
-		Py_RETURN_NONE;
-	}
+	Py_RETURN_NONE;
 }
 
 static PyObject *ccache_store_cred(krb5CcacheObject *self, PyObject *args)
 {
 	krb5_error_code ret;
 	krb5CredsObject *creds;
-	int error = 0;
-
-	if (self == NULL)
-		return NULL;
 
 	if (!PyArg_ParseTuple(args, "O", &creds))
 		return NULL;
 
 	ret = krb5_cc_store_cred(self->context, self->ccache, &creds->creds);
 	if (ret) {
-		error = 1;
 		krb5_exception(self->context, ret);
-		goto out;
+		return NULL;
 	}
 
- out:
-	if (error)
-		return NULL;
-	else {
-		Py_RETURN_NONE;
-	}
+	Py_RETURN_NONE;
 }
 
 static PyObject *ccache_getattr(krb5CcacheObject *self, char *name)

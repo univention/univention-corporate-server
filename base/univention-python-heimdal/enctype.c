@@ -43,9 +43,9 @@ static struct PyMethodDef enctype_methods[];
 krb5EnctypeObject *enctype_from_enctype(krb5_context context, krb5_enctype enctype)
 {
 	krb5EnctypeObject *self = (krb5EnctypeObject *) PyObject_NEW(krb5EnctypeObject, &krb5EnctypeType);
-
 	if (self == NULL)
 		return NULL;
+
 	self->context = context;
 	self->enctype = enctype;
 
@@ -57,29 +57,24 @@ krb5EnctypeObject *enctype_new(PyObject *unused, PyObject *args)
 	krb5_error_code ret;
 	krb5ContextObject *context;
 	char *enctype_string;
-	krb5EnctypeObject *self = (krb5EnctypeObject *) PyObject_NEW(krb5EnctypeObject, &krb5EnctypeType);
-	int error = 0;
-
 	if (!PyArg_ParseTuple(args, "Os", &context, &enctype_string))
 		return NULL;
 
+	krb5EnctypeObject *self = (krb5EnctypeObject *) PyObject_NEW(krb5EnctypeObject, &krb5EnctypeType);
 	if (self == NULL)
 		return NULL;
+
 	self->context = context->context;
 
 	ret = krb5_string_to_enctype(context->context, enctype_string,
 			&self->enctype);
 	if (ret) {
-		error = 1;
+		Py_DECREF(self);
 		krb5_exception(NULL, ret);
-		goto out;
+		return NULL;
 	}
 
- out:
-	if (error)
-		return NULL;
-	else
-		return self;
+	return self;
 }
 
 PyObject *enctype_string(krb5EnctypeObject *self)
@@ -87,23 +82,16 @@ PyObject *enctype_string(krb5EnctypeObject *self)
 	krb5_error_code ret;
 	char *enctype_c_string;
 	PyObject *enctype_string;
-	int error = 0;
 
 	ret = krb5_enctype_to_string(self->context, self->enctype, &enctype_c_string);
 	if (ret) {
-		error = 1;
 		krb5_exception(NULL, ret);
-		goto out;
+		return NULL;
 	}
 	enctype_string = PyString_FromString(enctype_c_string);
 	free(enctype_c_string);
 
- out:
-	if (error)
-		return NULL;
-	else
-		return enctype_string;
-
+	return enctype_string;
 }
 
 PyObject *enctype_int(krb5EnctypeObject *self, PyObject *args)

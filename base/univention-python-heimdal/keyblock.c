@@ -51,15 +51,14 @@ krb5KeyblockObject *keyblock_new(PyObject *unused, PyObject *args)
 	krb5EnctypeObject *enctype;
 	char *password;
 	PyObject *arg;
-	krb5KeyblockObject *self = (krb5KeyblockObject *) PyObject_New(krb5KeyblockObject, &krb5KeyblockType);
-	int error = 0;
-
 	if (!PyArg_ParseTuple(args, "OOsO", &context, &enctype, &password,
 				&arg))
 		return NULL;
 
+	krb5KeyblockObject *self = (krb5KeyblockObject *) PyObject_New(krb5KeyblockObject, &krb5KeyblockType);
 	if (self == NULL)
 		return NULL;
+
 	self->context = context->context;
 
 #if PY_MAJOR_VERSION >= 2 && PY_MINOR_VERSION >= 2
@@ -76,20 +75,16 @@ krb5KeyblockObject *keyblock_new(PyObject *unused, PyObject *args)
 				principal->principal, &self->keyblock);
 	} else {
 		PyErr_SetString(PyExc_TypeError, "either principal or salt needs to be passed");
-		error = 1;
-		goto out;
+		Py_DECREF(self);
+		return NULL;
 	}
 	if (ret) {
-		error = 1;
 		krb5_exception(NULL, ret);
-		goto out;
+		Py_DECREF(self);
+		return NULL;
 	}
 
- out:
-	if (error)
-		return NULL;
-	else
-		return self;
+	return self;
 }
 
 krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args)
@@ -101,13 +96,11 @@ krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args)
 	uint8_t *key_buf;
 	size_t key_len;
 	krb5_enctype enctype;
-	int error = 0;
-
-	krb5KeyblockObject *self = (krb5KeyblockObject *) PyObject_NEW(krb5KeyblockObject, &krb5KeyblockType);
 
 	if (!PyArg_ParseTuple(args, "O!OS", &krb5ContextType, &py_context, &py_enctype, &py_key))
 		return NULL;
 
+	krb5KeyblockObject *self = (krb5KeyblockObject *) PyObject_NEW(krb5KeyblockObject, &krb5KeyblockType);
 	if (self == NULL)
 		return NULL;
 
@@ -120,8 +113,8 @@ krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args)
 		enctype = PyInt_AsLong(py_enctype);
 	} else {
 		PyErr_SetString(PyExc_TypeError, "enctype must be of type integer or krb5EnctypeObject");
-		error = 1;
-		goto out;
+		Py_DECREF(self);
+		return NULL;
 	}
 
 	key_buf = (uint8_t *) PyString_AsString(py_key);
@@ -130,16 +123,12 @@ krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args)
 	ret = krb5_keyblock_init(py_context->context, enctype, key_buf, key_len, &self->keyblock);
 
 	if (ret) {
-		error = 1;
 		krb5_exception(NULL, ret);
-		goto out;
+		Py_DECREF(self);
+		return NULL;
 	}
 
- out:
-	if (error)
-		return NULL;
-	else
-		return self;
+	return self;
 }
 
 PyObject *keyblock_keytype(krb5KeyblockObject *self, PyObject *args)

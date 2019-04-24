@@ -44,23 +44,17 @@ krb5ContextObject *context_open(PyObject *unused, PyObject *args)
 {
 	krb5_error_code ret;
 	krb5ContextObject *self = (krb5ContextObject *) PyObject_NEW(krb5ContextObject, &krb5ContextType);
-	int error = 0;
-
 	if (self == NULL)
 		return NULL;
 
 	ret = krb5_init_context(&self->context);
 	if (ret) {
-		error = 1;
+		Py_DECREF(self);
 		krb5_exception(NULL, ret);
-		goto out;
+		return NULL;
 	}
 
- out:
-	if (error)
-		return NULL;
-	else
-		return self;
+	return self;
 }
 
 PyObject *context_get_permitted_enctypes(krb5ContextObject *self, PyObject *args)
@@ -69,19 +63,15 @@ PyObject *context_get_permitted_enctypes(krb5ContextObject *self, PyObject *args
 	krb5_enctype *etypes;
 	PyObject* list;
 	int i;
-	int error = 0;
 
-	if ((list = PyList_New(0)) == NULL) {
-		/* FIXME: raise exception */
-		error = 1;
-		goto out;
-	}
+	if ((list = PyList_New(0)) == NULL)
+		return PyErr_NoMemory();
 
 	ret = krb5_get_permitted_enctypes(self->context, &etypes);
 	if (ret) {
-		error = 1;
 		krb5_exception(NULL, ret);
-		goto out;
+		Py_DECREF(list);
+		return NULL;
 	}
 
 	for (i=0; etypes && etypes[i] != KRB5_ENCTYPE_NULL; i++) {
@@ -91,11 +81,7 @@ PyObject *context_get_permitted_enctypes(krb5ContextObject *self, PyObject *args
 		Py_DECREF(enctype);
 	}
 
- out:
-	if (error)
-		return NULL;
-	else
-		return list;
+	return list;
 }
 
 static PyObject *context_getattr(krb5ContextObject *self, char *name)

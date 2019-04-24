@@ -44,9 +44,9 @@ static struct PyMethodDef salt_methods[];
 krb5SaltObject *salt_from_salt(krb5_context context, krb5_salt salt)
 {
 	krb5SaltObject *self = (krb5SaltObject *) PyObject_New(krb5SaltObject, &krb5SaltType);
-
 	if (self == NULL)
 		return NULL;
+
 	self->context = context;
 	self->salt = salt;
 
@@ -58,29 +58,24 @@ krb5SaltObject *salt_new(PyObject *unused, PyObject *args)
 	krb5_error_code ret;
 	krb5ContextObject *context;
 	krb5PrincipalObject *principal;
-	krb5SaltObject *self = (krb5SaltObject *) PyObject_NEW(krb5SaltObject, &krb5SaltType);
-	int error = 0;
-
 	if (!PyArg_ParseTuple(args, "OO", &context, &principal))
 		return NULL;
 
+	krb5SaltObject *self = (krb5SaltObject *) PyObject_NEW(krb5SaltObject, &krb5SaltType);
 	if (self == NULL)
 		return NULL;
+
 	self->context = context->context;
 
 	ret = krb5_get_pw_salt(context->context, principal->principal,
 			&self->salt);
 	if (ret) {
-		error = 1;
 		krb5_exception(NULL, ret);
-		goto out;
+		Py_DECREF(self);
+		return NULL;
 	}
 
- out:
-	if (error)
-		return NULL;
-	else
-		return self;
+	return self;
 }
 
 krb5SaltObject *salt_raw_new(PyObject *unused, PyObject *args) {
@@ -88,13 +83,12 @@ krb5SaltObject *salt_raw_new(PyObject *unused, PyObject *args) {
 	krb5ContextObject *context;
 	char *saltstring = NULL;
 	int saltlen;
-	krb5SaltObject *self = (krb5SaltObject *) PyObject_NEW(krb5SaltObject, &krb5SaltType);
-
-	if (self == NULL)
+	if (! PyArg_ParseTuple(args, "Os#", &context, &saltstring, &saltlen))
 		return NULL;
 
-	if (! PyArg_ParseTuple(args, "Os#", &context, &saltstring, &saltlen))
-		return NULL; 
+	krb5SaltObject *self = (krb5SaltObject *) PyObject_NEW(krb5SaltObject, &krb5SaltType);
+	if (self == NULL)
+		return NULL;
 
 	self->context = context->context;
 	self->salt.salttype = KRB5_PW_SALT;
