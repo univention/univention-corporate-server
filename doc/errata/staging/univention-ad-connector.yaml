@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-ad-connector
-fix: 13.0.0-7A~4.4.0.201904231629
+fix: 13.0.0-8A~4.4.0.201904240957
 desc: |
  This update addresses the following issues:
  * Dead code for obsolete custom attributes from UCS 2 has been removed.
