@@ -1,0 +1,34 @@
+#!/usr/share/ucs-test/runner python
+## desc: Checks if apps can be re-installed after uninstalling
+## tags: [appuninstalltest]
+## roles-not: [basesystem]
+## packages:
+##   - univention-directory-manager-tools
+##   - univention-management-console-module-appcenter
+## exposure: dangerous
+
+import univention.testing.utils as utils
+import univention.config_registry
+import univention.uldap as uldap
+from univention.appcenter.actions import get_action
+from appcenteruninstalltest import get_requested_apps
+from univention.appcenter.log import log_to_logfile, log_to_stream
+
+log_to_stream()
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
+username = uldap.explodeDn(ucr['tests/domainadmin/account'], 1)[0]
+pwdfile = ucr['tests/domainadmin/pwdfile']
+install = get_action('install')
+
+failed = []
+for app in get_requested_apps():
+	print 'Checking', app
+	if not app._allowed_on_local_server():
+		print 'Not allowed ... skipping'
+		continue
+	if not install.call(app=app, noninteractive=True, pwdfile=pwdfile, username=username):
+		failed.append(app.id)
+
+if failed:
+	utils.fail('Failed to re-install apps: {}'.format(' '.join(failed)))
