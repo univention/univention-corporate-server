@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Password Settings</title>
-		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
-		<link rel="stylesheet" href="/univention/self-service/css/self-service.css">
-		<script type="text/javascript">
+		<link rel="icon" href="/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css">
+		<link rel="stylesheet" href="css/self-service.css">
+		<link rel="stylesheet" href="css/custom.css">
+		<script>
 			var umcConfig = {
 				deps: ["selfservice"],
 				callback: function(selfservice) {
@@ -16,14 +17,14 @@
 				}
 			};
 		</script>
-		<script type="text/javascript" src="/univention/js/config.js"></script>
-		<script type="text/javascript">
+		<script src="/univention/js/config.js"></script>
+		<script>
 			dojoConfig.packages.push({
 				name: 'selfservice',
 				location: '/univention/self-service'
 			});
 		</script>
-		<script type="text/javascript" async src="/univention/js/dojo/dojo.js"></script>
+		<script async src="/univention/js/dojo/dojo.js"></script>
 	</head>
 	<body class="umc umcOverviewNotShown">
 		<div class="umcHeader umcWhiteIcons">
