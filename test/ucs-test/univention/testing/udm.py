@@ -473,6 +473,13 @@ class UCSTestUDM(object):
             print 'removing DN:', dn
             child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
             (stdout, stderr) = child.communicate()
+            utils.wait_for_replication(verbose=False)
+            if utils.package_installed('univention-samba4'):
+                if dn.startswith('uid='):
+                    s4_object_base = 'cn' + dn[3:]
+                else:
+                    s4_object_base = dn
+                wait_for_drs_replication('cn=*', base=s4_object_base, scope=0, should_exist=False)
 
             if child.returncode or 'Object removed:' not in stdout:
                 failedObjects.setdefault(module, []).append(dn)
@@ -485,6 +492,13 @@ class UCSTestUDM(object):
 
                 child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
                 (stdout, stderr) = child.communicate()
+                utils.wait_for_replication(verbose=False)
+                if utils.package_installed('univention-samba4'):
+                    if dn.startswith('uid='):
+                        s4_object_base = 'cn' + dn[3:]
+                    else:
+                        s4_object_base = dn
+                    wait_for_drs_replication('cn=*', base=s4_object_base, scope=0, should_exist=False)
 
                 if child.returncode or 'Object removed:' not in stdout:
                     print >> sys.stderr, 'Warning: Failed to remove %r object %r' % (module, dn)
