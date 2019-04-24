@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-7) unstable; urgency=medium
+
+  * Bug #47008: Wording
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 24 Apr 2019 08:54:26 +0200
+
 univention-s4-connector (13.0.2-6) unstable; urgency=medium
 
   * Bug #47008: global_ignore_subtree in s4connector is now configurable via ucr variable connector/s4/mapping/ignoresubtree/.*
