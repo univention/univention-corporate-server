@@ -893,6 +893,10 @@
 				to reset their lost password by requesting a token to be sent to a previously registered
 				contact e-mail address. The token has to be entered on the dedicated password reset web page.
 			</para>
+			<para>
+				The design of the Self Service app can be customized via the file <filename>/usr/share/univention-self-service/www/css/custom.css</filename>.
+				This file is not overwritten during an update.
+			</para>
 		</section>
 		<section id="user-management:password-changes-by-users:contact-data">
 			<title>Contact information</title>
