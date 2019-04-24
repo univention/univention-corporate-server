@@ -19,6 +19,7 @@ Package: univention-management-console-module-appcenter
 Architecture: all
 Depends: univention-management-console-server,
  python-univention-lib,
+ python-univention (>= 12.0.0-5),
  shell-univention-lib (>= 3.0.12-4),
  python-univention-directory-manager (>=9.0.22-13),
  python-univention-appcenter (= ${source:Version}),
@@ -65,7 +66,7 @@ Depends: univention-ssh,
  univention-join (>= 10.0.0-12),
  univention-directory-manager-tools (>= 13.0.21-21),
  univention-admin-diary-client (>= 1.0.0-29),
- python-univention-legacy,
+ python-univention (>= 12.0.0-5),
  python-univention-config-registry,
  python-univention-directory-manager,
  python-mysqldb,
@@ -86,6 +87,7 @@ Package: univention-appcenter-dev
 Architecture: all
 Replaces: python-univention-appcenter-dev
 Depends: univention-appcenter (= ${source:Version}),
+ python-univention (>= 12.0.0-5),
  dpkg,
  apt-utils,
  zsync,
@@ -102,6 +104,7 @@ Package: univention-appcenter-docker
 Architecture: all
 Depends: python-univention-appcenter (= ${source:Version}),
  univention-docker (>= 2.0.0-4),
+ python-univention (>= 12.0.0-5),
  docker-compose,
  python-ruamel.yaml,
  univention-apache,
