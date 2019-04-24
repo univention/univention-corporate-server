@@ -317,7 +317,7 @@ Type=str
 Categories=service-s4con
 
 [connector/s4/mapping/ignoresubtree/.*]
-Description[de]=Definiert die Positionen im Verzeichnisdienst, die nicht durch den Connector synchronisiert werden sollen. Die Werte können sowohl Positionen im Samba/AD als auch im UCS-LDAP enthalten. Mehrere zu ignorierende Zweige müssen jeweils ein einer eigenen, z.B. durchnummerierten Variable konfiguriert werden. Standardmäßig ist keine dieser Variablen gesetzt.
+Description[de]=Definiert die Positionen im Verzeichnisdienst, die nicht durch den Connector synchronisiert werden sollen. Die Werte können sowohl Positionen im Samba/AD als auch im UCS-LDAP enthalten. Mehrere zu ignorierende Zweige müssen jeweils in einer eigenen, z.B. durchnummerierten Variable konfiguriert werden. Standardmäßig ist keine dieser Variablen gesetzt.
 Description[en]=Defines the locations in the directory service that shall not be synchronised by the connector. The values can contain positions in Samba/AD and in the UCS LDAP. If multiple subtrees shall be ignored, they need to be configured in separate, e.g. numbered variables. By default, none of these variables are set.
 Type=str
 Categories=service-s4con
