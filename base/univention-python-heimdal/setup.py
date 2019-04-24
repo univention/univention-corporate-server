@@ -56,7 +56,7 @@ setup(
 			['module.c', 'error.c', 'context.c', 'principal.c',
 				'creds.c', 'ticket.c', 'keytab.c', 'ccache.c',
 				'salt.c', 'enctype.c', 'keyblock.c', 'asn1.c'],
-			libraries=['krb5', 'kadm5clnt', 'hdb', 'asn1', 'com_err', 'roken'],
+			libraries=['krb5', 'hdb', 'asn1'],
 			library_dirs=d['library_dirs'],
 			include_dirs=d['include_dirs'],
 		)
