@@ -16,3 +16,5 @@ cve:
 - CVE-2019-9497
 - CVE-2019-9498
 - CVE-2019-9499
+erratum: 57
+announced: 2019-04-24
