@@ -99,6 +99,9 @@ define([
 		 * */
 		_addSubPages: function(page_list) {
 			array.forEach(page_list, lang.hitch(this, function(page_name){
+				if (page_name === 'user_attributes' && tools.isFalse(tools.status('umc/self-service/profiledata/enabled'))) {
+					return;
+				}
 				var module = this.subpages[page_name];
 				if (module) {
 					module.standby = this._standby;

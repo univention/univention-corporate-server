@@ -73,9 +73,6 @@ define([
 		},
 
 		getContent: function() {
-			if (tools.isFalse(tools.status('umc/self-service/profiledata/enabled'))) {
-				return;
-			}
 			if (!this.contentContainer) {
 				this.contentContainer = put('div.contentWrapper');
 				put(this.contentContainer, 'h2', this.getTitle());
