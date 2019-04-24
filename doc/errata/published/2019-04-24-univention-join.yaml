@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * If a failed.ldif file exists at the start of a join, it will be removed.
 bug: [47603]
+erratum: 56
+announced: 2019-04-24
