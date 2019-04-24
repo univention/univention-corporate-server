@@ -12,3 +12,5 @@ desc: |
    by configuring UCR variables matching the pattern
    connector/s4/mapping/ignoresubtree/.*
 bug: [45068, 41554, 47008]
+erratum: 58
+announced: 2019-04-24
