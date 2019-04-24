@@ -52,6 +52,10 @@ if [ "$1" = "configure" ]; then
 	[ -e "$uinst" ] && rm "$uinst"
 fi
 
+if [ ! -e "/usr/share/univention-self-service/www/css/custom.css" ]; then
+	cp /usr/share/univention-self-service/www/css/custom.css.example /usr/share/univention-self-service/www/css/custom.css
+fi
+
 . /usr/share/univention-lib/base.sh
 call_joinscript 34univention-self-service.inst
 
