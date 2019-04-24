@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-8) unstable; urgency=medium
+
+  * Bug #47008: Fix typo
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 24 Apr 2019 09:41:38 +0200
+
 univention-s4-connector (13.0.2-7) unstable; urgency=medium
 
   * Bug #47008: Wording
