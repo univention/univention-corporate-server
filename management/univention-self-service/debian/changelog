@@ -1,3 +1,9 @@
+univention-self-service (4.0.3-8) unstable; urgency=medium
+
+  * Bug #49343: Add custom.css for self service
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 24 Apr 2019 14:57:38 +0200
+
 univention-self-service (4.0.3-7) unstable; urgency=medium
 
   * Bug #45041: Fix crash when umc/self-service/profiledata/enabled is set to
