@@ -3104,6 +3104,14 @@ cat /etc/univention/ssl/ucsCA/CAcert.pem >> /opt/my-app/ca-bundle.crt
 service my-app-daemon restart
 </programlisting>
         </para>
+        <para>
+            The script has to be uploaded via the upload API (section <xref
+                linkend="upload-interface" />). The script should be written
+            locally and then uploaded with the following command:
+<programlisting>
+./univention-appcenter-control upload --username $your-username 4.4/myapp=1.0 update_certificates
+</programlisting>
+        </para>
 
     </section>
 
