@@ -3,11 +3,12 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-s4-connector
-fix: 13.0.2-6A~4.4.0.201904171907
+fix: 13.0.2-7A~4.4.0.201904240903
 desc: |
  This update addresses the following issues:
  * Duplicated code for the detection of superordinates has been removed.
  * Dead code for obsolete custom attributes from UCS 2 has been removed.
- * Excluding subtrees from synchronization in s4connector is now possible
-   by configuring UCR variable connector/s4/mapping/ignoresubtree/.*
+ * Excluding subtrees from synchronization by S4-Connector is now possible
+   by configuring UCR variables matching the pattern
+   connector/s4/mapping/ignoresubtree/.*
 bug: [45068, 41554, 47008]
