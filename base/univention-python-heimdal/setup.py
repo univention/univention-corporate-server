@@ -61,4 +61,6 @@ setup(
 			include_dirs=d['include_dirs'],
 		)
 	],
+
+	test_suite='test',
 )
