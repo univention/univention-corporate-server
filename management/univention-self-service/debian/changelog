@@ -1,3 +1,10 @@
+univention-self-service (4.0.3-7) unstable; urgency=medium
+
+  * Bug #45041: Fix crash when umc/self-service/profiledata/enabled is set to
+  	false
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 24 Apr 2019 12:40:28 +0200
+
 univention-self-service (4.0.3-6) unstable; urgency=medium
 
   * Bug #48446: Only generate invitation triggerfile on DC master
