@@ -84,7 +84,7 @@ PyObject *context_get_permitted_enctypes(krb5ContextObject *self, PyObject *args
 		goto out;
 	}
 
-	for (i=0; etypes && etypes[i] != ETYPE_NULL; i++) {
+	for (i=0; etypes && etypes[i] != KRB5_ENCTYPE_NULL; i++) {
 		krb5EnctypeObject *enctype;
 		enctype = enctype_from_enctype(self->context, etypes[i]);
 		PyList_Append(list, (PyObject*) enctype);
