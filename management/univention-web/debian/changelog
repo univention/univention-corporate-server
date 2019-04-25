@@ -1,3 +1,9 @@
+univention-web (3.0.5-10) unstable; urgency=medium
+
+  * Bug #48812: do not load purify during build time
+
+ -- Florian Best <best@univention.de>  Thu, 25 Apr 2019 11:43:00 +0200
+
 univention-web (3.0.5-9) unstable; urgency=medium
 
   * Bug #48812: fix Cross Site Scripting issue in umc.widgets.Editor which is
