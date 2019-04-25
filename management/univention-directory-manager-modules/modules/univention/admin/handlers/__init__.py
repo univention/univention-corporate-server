@@ -1754,7 +1754,7 @@ class simpleLdap(object):
 		if cls.use_performant_ldap_search_filter:
 			filter_conditions.append(univention.admin.filter.expression('univentionObjectType', cls.module, escape=True))
 		else:
-			object_classes = univention.admin.modules.options(cls.module).get('default', univention.admin.option()).objectClasses - {'top', 'univentionPolicy', 'univentionObjectMetadata'}
+			object_classes = univention.admin.modules.options(cls.module).get('default', univention.admin.option()).objectClasses - {'top', 'univentionPolicy', 'univentionObjectMetadata', 'person'}
 			filter_conditions.extend(univention.admin.filter.expression('objectClass', ocs) for ocs in object_classes)
 
 		return univention.admin.filter.conjunction('&', filter_conditions)
@@ -1805,7 +1805,7 @@ class simpleLdap(object):
 	@classmethod
 	def identify(cls, dn, attr, canonical=False):
 		ocs = set(attr.get('objectClass', []))
-		required_object_classes = univention.admin.modules.options(cls.module).get('default', univention.admin.option()).objectClasses - {'top', 'univentionPolicy', 'univentionObjectMetadata'}
+		required_object_classes = univention.admin.modules.options(cls.module).get('default', univention.admin.option()).objectClasses - {'top', 'univentionPolicy', 'univentionObjectMetadata', 'person'}
 		return (ocs & required_object_classes) == required_object_classes
 
 	@classmethod

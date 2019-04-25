@@ -301,10 +301,8 @@ nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, opti
 
 class object(ComputerObject):
 	module = module
-	mapping = mapping
 	CONFIG_NAME = 'univentionDefaultDomainControllerGroup'
 	SAMBA_ACCOUNT_FLAG = 'S'
-	SERVER_TYPE = 'univentionDomainController'
 	SERVER_ROLE = 'slave'
 
 
