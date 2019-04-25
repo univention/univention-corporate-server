@@ -175,7 +175,6 @@ static PyObject *keytab_add(krb5KeytabObject *self, PyObject *args)
 			krb5_string_to_key(*self->context, enctype, password_string,
 					entry.principal, &entry.keyblock);
 		}
-		memset (password_string, 0, strlen(password_string));
 	} else {
 		krb5_generate_random_keyblock(*self->context, enctype, &entry.keyblock);
 	}
