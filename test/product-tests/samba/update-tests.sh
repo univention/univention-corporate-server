@@ -237,6 +237,12 @@ test_after_update () {
 	# Windows-Heimatverzeichnis" am Benutzer auf \\memberserver\homes setzen, "Laufwerk für das Windows-Heimatverzeichnis" muss vermutlich auch gesetzt werden.
 	# Login als Benutzer, Heimatverzeichnis sollte verbunden sein. Datei anlegen.
 	#    Anmeldung als Testuser1 am Windows-Client
+	for client in $WIN2; do
+		python shared-utils/ucs-winrm.py domain-join --client $client --dnsserver "$MASTER" --domainuser "$ADMIN" --domainpassword "$ADMIN_PASSWORD"
+		python shared-utils/ucs-winrm.py domain-user-validate-password --client $client --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
+		python shared-utils/ucs-winrm.py domain-user-validate-password --client $client --domainuser "testuser01" --domainpassword "Univention.99"
+		python shared-utils/ucs-winrm.py domain-user-validate-password --client $client --domainuser "testuser02" --domainpassword "Univention.99"
+	done
 	python shared-utils/ucs-winrm.py logon-as --username testuser01 --userpwd 'Univention.99' --client $WIN1 
 	#        Ist das Homeverzeichnis automatisch eingebunden?
 	run_on_ucs_hosts $SLAVE "touch /home/testuser01/test.txt"
