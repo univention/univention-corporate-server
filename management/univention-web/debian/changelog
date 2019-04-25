@@ -1,3 +1,10 @@
+univention-web (3.0.5-9) unstable; urgency=medium
+
+  * Bug #48812: fix Cross Site Scripting issue in umc.widgets.Editor which is
+  	used by portal entries
+
+ -- Florian Best <best@univention.de>  Thu, 25 Apr 2019 11:17:20 +0200
+
 univention-web (3.0.5-8) unstable; urgency=medium
 
   * Bug #46919: add hack for standby animation not showing some
