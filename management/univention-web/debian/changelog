@@ -1,3 +1,9 @@
+univention-web (3.0.5-11) unstable; urgency=medium
+
+  * Bug #48812: fix get/set('value')
+
+ -- Florian Best <best@univention.de>  Thu, 25 Apr 2019 12:17:35 +0200
+
 univention-web (3.0.5-10) unstable; urgency=medium
 
   * Bug #48812: do not load purify during build time

@@ -38,6 +38,7 @@ define([
 ], function(declare, Editor, _FormWidgetMixin) {
 	var purify;
 	require(["dompurify/purify"], function(_purify) {
+		// lazy loading because dompurify is not available during the dojo build process
 		purify = _purify;
 	});
 
@@ -45,11 +46,21 @@ define([
 		labelPosition: 'top',
 		extraPlugins: ['viewSource', 'fullscreen', 'prettyprint'],
 
+		_setValueAttr: function(value) {
+			value = purify.sanitize(value);
+			this.inherited(arguments);
+		},
+
+		_getValueAttr: function() {
+			var value = this.inherited(arguments);
+			return purify.sanitize(value);
+		},
+
 		contentPreFilters: [
-			purify.sanitize
+			function(value) { return purify.sanitize(value) }
 		],
 		contentPostFilters: [
-			purify.sanitize
+			function(value) { return purify.sanitize(value) }
 		],
 
 		ready: function() {
