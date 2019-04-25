@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-management-console-module-adtakeover.yaml
-fix: 6.0.1-4A~4.4.0.201904181556
+fix: 6.0.1-5A~4.4.0.201904251218
 desc: |
  This update addresses the following issue:
  * The escaping of LDAP filter and distinguished names has been corrected.
