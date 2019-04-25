@@ -41,10 +41,7 @@ LOGFILE="/var/log/univention/samba4-provision.log"
 touch $LOGFILE
 chmod 600 $LOGFILE
 
-usage(){ echo "$0 [-h|--help] [-w <samba4-admin password file>] [-W]"; exit 1; }
-
-adminpw="$(pwgen -1 -s -c -n 16)"
-adminpw2="$adminpw"
+usage(){ echo "$0 [-h|--help]"; exit 1; }
 
 while getopts  "h-:W:" option; do
 	case "${option}" in
@@ -83,8 +80,6 @@ while getopts  "h-:W:" option; do
 				echo "Unknown option --${OPTARG}" >&2
 				;;
 		esac;;
-		w) if [ -r "$OPTARG" ]; then adminpw="$(< $OPTARG)"; adminpw2="$adminpw"; fi ;;
-		W) adminpw2='!unset';;
 	esac
 done
 
@@ -183,18 +178,6 @@ fi
 set -- "${UDM_ARGV[@]}"
 
 
-while [ "$adminpw" != "$adminpw2" ]; do
-	read -p "Choose Samba4 admin password: " adminpw
-	if [ "${#adminpw}" -lt 8 ]; then
-		echo "Password too short, Samba4 minimal requirements: 8 characters, one digit, one uppercase"
-		continue
-	fi
-	read -p "Confirm password: " adminpw2
-	if [ "$adminpw" != "$adminpw2" ]; then
-		echo "Passwords don't match, please try again"
-	fi
-done
-
 ## Provision Samba4
 stop_conflicting_services
 
@@ -252,7 +235,6 @@ run_samba_domain_provision() {
 	    --domain="$windows_domain" \
 	    --domain-sid="$DOMAIN_SID" \
 	    --function-level="$samba4_function_level" \
-	    --adminpass="$adminpw" \
 	    --server-role='domain controller' \
 	    ${sitename:+--site="$sitename"} \
 	    --machinepass="$(</etc/machine.secret)" 2>&1 | tee -a "$LOGFILE"
