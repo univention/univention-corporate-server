@@ -69,7 +69,6 @@ void error_init(PyObject *self)
 #	define seterrobj2(n, o) { \
 		PyObject *i = PyInt_FromLong(n);			\
 		PyDict_SetItem(error_objects, i, o);			\
-		PyDict_SetItemString(self, #n, o);			\
 	}
 
 #	define seterrobj(n) { \
@@ -78,6 +77,7 @@ void error_init(PyObject *self)
 		e = PyErr_NewException("heimdal."#n,			\
 				Krb5_exception_class, d);		\
 		seterrobj2(n, e);					\
+		PyDict_SetItemString(self, #n, e);			\
 		Py_DECREF(e);						\
 	}
 
