@@ -227,8 +227,10 @@ class simpleLdap(object):
 		if self.oldattr:
 			self._exists = True
 			if not univention.admin.modules.recognize(self.module, self.dn, self.oldattr):
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'object %s is not recognized as %s.' % (self.dn, self.module))
-				# raise univention.admin.uexceptions.wrongObjectType()
+				if self.use_performant_ldap_search_filter:
+					raise univention.admin.uexceptions.wrongObjectType('%s is not recognized as %s.' % (self.dn, self.module))
+				else:
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'object %s is not recognized as %s. Ignoring for now. Please report!' % (self.dn, self.module))
 			oldinfo = self.mapping.unmapValues(self.oldattr)
 			oldinfo = self._post_unmap(oldinfo, self.oldattr)
 			oldinfo = self._falsy_boolean_extended_attributes(oldinfo)
@@ -1715,6 +1717,8 @@ class simpleLdap(object):
 				result.append(cls(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs))
 			except univention.admin.uexceptions.base as exc:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'lookup() of object %r failed: %s' % (dn, exc))
+		if required and not result:
+			raise univention.admin.uexceptions.noObject('lookup(base=%r, filter_s=%r)' % (base, filter_s))
 		return result
 
 	@classmethod
