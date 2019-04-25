@@ -52,21 +52,12 @@ def main():
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
 	base = ucr.get("ldap/base")
-	binddn = "cn=update,%s" % base
-	with open("/etc/ldap/rootpw.conf", "r") as fh:
-		for line in fh:
-			line = line.strip()
-			if line.startswith('rootpw '):
-				bindpw = line[7:].strip('"')
-				break
-		else:
-			exit(1)
 
 	if not opts.filter:
 		opts.filter = '(uid=%s$)' % ucr['hostname']
 
 	# get local and master connection
-	local = uldap.access(binddn=binddn, bindpw=bindpw, start_tls=0, host="localhost", port=389)
+	local = uldap.getRootDnConnection()
 	if ucr.get("server/role", "") == "domaincontroller_backup":
 		master = uldap.getAdminConnection()
 	else:
@@ -75,6 +66,8 @@ def main():
 	# delete local
 	if opts.remove:
 		res = local.search(base=base, filter=opts.filter)
+		if not res:
+			print('object does not exist local')
 		for dn, data in res:
 			print("remove from local: %s" % (dn,))
 			if not opts.simulate:
@@ -82,14 +75,23 @@ def main():
 
 	# resync from master
 	res = master.search(base=base, filter=opts.filter)
+	if not res:
+		print('object does not exist on master')
 	for dn, data in res:
 		print("resync from master: %s" % (dn,))
-		local_res = local.search(base=dn)
-		if not local_res or not opts.update:
+		try:
+			local_res = local.search(base=dn)
+		except ldap.NO_SUCH_OBJECT:
+			local_res = None
+		if local_res and opts.remove and opts.simulate:
+			local_res = None
+		if not local_res and not opts.update:
 			print('  ==> adding object')
 			if not opts.simulate:
 				local.add(dn, ldap.modlist.addModlist(data))
-		else:
+		elif not local_res and opts.update:
+			print('  ==> object does not exist, can not update')
+		elif local_res and opts.update:
 			modlist = []
 			local_data = local_res[0][1]
 			for key in set(data.keys()) | set(local_data.keys()):
@@ -101,7 +103,8 @@ def main():
 				print('  ==> modifying object')
 				if not opts.simulate:
 					local.modify(dn, modlist)
-
+		elif local_res and not opts.update:
+			print('  ==> object does exist, can not create')
 
 
 if __name__ == "__main__":

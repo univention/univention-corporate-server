@@ -1,3 +1,9 @@
+univention-directory-listener (13.0.2-3) unstable; urgency=medium
+
+  * Bug #49228: Fix resync-objects script
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 24 Apr 2019 17:45:01 +0200
+
 univention-directory-listener (13.0.2-2) unstable; urgency=medium
 
   * Bug #48642: Merge UDN protocol 3
