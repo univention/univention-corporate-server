@@ -37,7 +37,6 @@ import sys
 import time
 import locale
 import shutil
-import string
 import logging
 import traceback
 import subprocess
@@ -2489,13 +2488,8 @@ def add_servicePrincipals(ucr, secretsdb, spn_list):
 
 
 def sync_position_s4_to_ucs(ucr, udm_type, ucs_object_dn, s4_object_dn):
-	rdn_list = ldap.explode_dn(s4_object_dn)
-	rdn_list.pop(0)
-	new_position = string.replace(','.join(rdn_list).lower(), ucr['connector/s4/ldap/base'].lower(), ucr['ldap/base'].lower())
-
-	rdn_list = ldap.explode_dn(ucs_object_dn)
-	rdn_list.pop(0)
-	old_position = ','.join(rdn_list)
+	new_position = parentDn(s4_object_dn).lower().replace(ucr['connector/s4/ldap/base'].lower(), ucr['ldap/base'].lower())
+	old_position = parentDn(ucs_object_dn)
 
 	if new_position.lower() != old_position.lower():
 		run_and_output_to_log(["/usr/sbin/univention-directory-manager", udm_type, "move", "--dn", ucs_object_dn, "--position", new_position], log.debug)
