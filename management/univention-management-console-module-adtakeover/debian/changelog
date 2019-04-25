@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (6.0.1-6) unstable; urgency=medium
+
+  * Bug #40055 : added missing fixes
+
+ -- Fathan Vidjaja <fvidjaja@alvine.knut.univention.de>  Thu, 25 Apr 2019 13:36:38 +0200
+
 univention-management-console-module-adtakeover (6.0.1-5) unstable; urgency=medium
 
   * Bug #40055 : fixed missing import in takeover
