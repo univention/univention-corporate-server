@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-web
+fix: 3.0.5-9A~4.4.0.201904251122
+desc: |
+ This update addresses the following issue(s):
+ * A cross site scripting vulnerability in umc.widgets.Editor has been fixed.
+   This affected portal entries.
+bug: [48812]
