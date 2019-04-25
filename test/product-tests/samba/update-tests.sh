@@ -237,6 +237,7 @@ test_after_update () {
 	# Windows-Heimatverzeichnis" am Benutzer auf \\memberserver\homes setzen, "Laufwerk für das Windows-Heimatverzeichnis" muss vermutlich auch gesetzt werden.
 	# Login als Benutzer, Heimatverzeichnis sollte verbunden sein. Datei anlegen.
 	#    Anmeldung als Testuser1 am Windows-Client
+	# Zweiten/Neuen Windows-Client joinen (ggf. vorher Zeit manuell setzen, sonst zwei mal neu Booten, DNS record prüfen)
 	for client in $WIN2; do
 		python shared-utils/ucs-winrm.py domain-join --client $client --dnsserver "$MASTER" --domainuser "$ADMIN" --domainpassword "$ADMIN_PASSWORD"
 		python shared-utils/ucs-winrm.py domain-user-validate-password --client $client --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
@@ -259,13 +260,6 @@ test_after_update () {
 	#        Passwort ändern am Windows-Client (per Alt-Ctrl-Del)
 	#        Danach neues Passwort unter UCS mit "kinit testuser1" testen.
 	#        Abmeldung des Testuser1 vom Windows-Client.
-	# Zweiten/Neuen Windows-Client joinen (ggf. vorher Zeit manuell setzen, sonst zwei mal neu Booten, DNS record prüfen)
-	for client in $WIN1; do
-		python shared-utils/ucs-winrm.py domain-join --client $client --dnsserver "$MASTER" --domainuser "$ADMIN" --domainpassword "$ADMIN_PASSWORD"
-		python shared-utils/ucs-winrm.py domain-user-validate-password --client $client --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
-		python shared-utils/ucs-winrm.py domain-user-validate-password --client $client --domainuser "testuser01" --domainpassword "Univention.99"
-		python shared-utils/ucs-winrm.py domain-user-validate-password --client $client --domainuser "testuser02" --domainpassword "Univention.99"
-	done
 	# Unter UDM neuen Testuser2 anlegen, als Home-share "\\memberserver\homes" eintragen (z.B. auf Laufwerk Z:), gleiche Gruppe wie Testuser1. "Passwort bei nächster Anmeldung ändern" auswählen.
 	udm users/user modify  --dn "uid=testuser02,cn=users,$ldap_base" --set homedrive='Z:' --set sambahome='\\ucs-slave\testuser02'
 	check_user_in_ucs testuser01 "Univention.99"
