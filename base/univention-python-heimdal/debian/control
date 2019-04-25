@@ -27,9 +27,7 @@ Provides:
 Description: UCS - Kerberos interface module for Python.
  This module provides a Python interface to the Heimdal Kerberos library.
  .
- This dummy package just depends on the default version of python-heimdal.
- .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/

@@ -1,6 +1,7 @@
 univention-python-heimdal (9.0.0-2) unstable; urgency=low
 
   * Bug #49139: Migrate to dh_python2
+  * Bug #28681: Fix package description
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 24 Apr 2019 17:32:39 +0200
 
