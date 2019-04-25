@@ -457,6 +457,14 @@ class UCSTestUDM(object):
     def addCleanupLock(self, lockType, lockValue):
         self._cleanupLocks.setdefault(lockType, []).append(lockValue)
 
+    def _wait_for_drs_removal(self, dn):
+        if utils.package_installed('univention-samba4'):
+            if dn.startswith('uid='):
+                s4_object_base = 'cn' + dn[3:]
+            else:
+                s4_object_base = dn
+            wait_for_drs_replication(None, base=s4_object_base, scope=0, should_exist=False)
+
     def cleanup(self):
         """
         Automatically removes LDAP objects via UDM CLI that have been created before.
@@ -474,15 +482,11 @@ class UCSTestUDM(object):
             child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
             (stdout, stderr) = child.communicate()
             utils.wait_for_replication(verbose=False)
-            if utils.package_installed('univention-samba4'):
-                if dn.startswith('uid='):
-                    s4_object_base = 'cn' + dn[3:]
-                else:
-                    s4_object_base = dn
-                wait_for_drs_replication('cn=*', base=s4_object_base, scope=0, should_exist=False)
 
             if child.returncode or 'Object removed:' not in stdout:
                 failedObjects.setdefault(module, []).append(dn)
+            else:
+                self._wait_for_drs_removal(dn)
 
         # simply iterate over the remaining objects again, removing them might just have failed for chronology reasons
         # (e.g groups can not be removed while there are still objects using it as primary group)
@@ -493,16 +497,12 @@ class UCSTestUDM(object):
                 child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
                 (stdout, stderr) = child.communicate()
                 utils.wait_for_replication(verbose=False)
-                if utils.package_installed('univention-samba4'):
-                    if dn.startswith('uid='):
-                        s4_object_base = 'cn' + dn[3:]
-                    else:
-                        s4_object_base = dn
-                    wait_for_drs_replication('cn=*', base=s4_object_base, scope=0, should_exist=False)
 
                 if child.returncode or 'Object removed:' not in stdout:
                     print >> sys.stderr, 'Warning: Failed to remove %r object %r' % (module, dn)
                     print >> sys.stderr, 'stdout=%r %r %r' % (stdout, stderr, self._lo.get(dn))
+                else:
+                    self._wait_for_drs_removal(dn)
         self._cleanup = {}
 
         for lock_type, values in self._cleanupLocks.items():

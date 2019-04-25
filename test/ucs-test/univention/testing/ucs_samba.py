@@ -63,7 +63,7 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
         return
 
     if verbose:
-        print "Waiting for DRS replication, filter: '%s', base: %s" % (ldap_filter, base),
+        print "Waiting for DRS replication, filter: '%s', base: %s, scope: %s, should_exist: %s" % (ldap_filter, base, scope, should_exist),
     t = t0 = time.time()
     while t < t0 + timeout:
         try:

@@ -1,3 +1,9 @@
+ucs-test (9.0.2-41) unstable; urgency=medium
+
+  * Bug #47345: only call wait_for_drs_replication if udm deletion succeeded
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 25 Apr 2019 11:37:57 +0200
+
 ucs-test (9.0.2-40) unstable; urgency=medium
 
   * Bug #49345: added tests/21_appcenter-uninstall/99_install_after_uninstall
