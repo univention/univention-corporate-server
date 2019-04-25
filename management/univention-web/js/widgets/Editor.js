@@ -46,22 +46,11 @@ define([
 		labelPosition: 'top',
 		extraPlugins: ['viewSource', 'fullscreen', 'prettyprint'],
 
-		_setValueAttr: function(value) {
-			value = purify.sanitize(value);
+		postMixInProperties: function() {
 			this.inherited(arguments);
+			this.contentPreFilters.push(purify.sanitize);
+			this.contentPostFilters.push(purify.sanitize);
 		},
-
-		_getValueAttr: function() {
-			var value = this.inherited(arguments);
-			return purify.sanitize(value);
-		},
-
-		contentPreFilters: [
-			function(value) { return purify.sanitize(value) }
-		],
-		contentPostFilters: [
-			function(value) { return purify.sanitize(value) }
-		],
 
 		ready: function() {
 			return this.onLoadDeferred;

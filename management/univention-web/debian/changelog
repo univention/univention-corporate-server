@@ -1,3 +1,9 @@
+univention-web (3.0.5-12) unstable; urgency=medium
+
+  * Bug #48812: cleanup
+
+ -- Florian Best <best@univention.de>  Thu, 25 Apr 2019 12:32:15 +0200
+
 univention-web (3.0.5-11) unstable; urgency=medium
 
   * Bug #48812: fix get/set('value')
