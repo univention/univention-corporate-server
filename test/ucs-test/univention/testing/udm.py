@@ -119,6 +119,10 @@ class UCSTestUDM_CannotModifyExistingObject(UCSTestUDM_Exception):
     pass
 
 
+class UCSTestUDM_ListUDMObjectFailed(UCSTestUDM_Exception):
+    pass
+
+
 class UCSTestUDM(object):
     PATH_UDM_CLI_SERVER = '/usr/share/univention-directory-manager-tools/univention-cli-server'
     PATH_UDM_CLI_CLIENT = '/usr/sbin/udm'
@@ -464,6 +468,28 @@ class UCSTestUDM(object):
             else:
                 s4_object_base = dn
             wait_for_drs_replication(None, base=s4_object_base, scope=0, should_exist=False)
+
+    def list_objects(self, module):
+        cmd = ['/usr/sbin/udm-test', module, 'list']
+        child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+        (stdout, stderr) = child.communicate()
+        if child.returncode:
+            raise UCSTestUDM_ListUDMObjectFailed(child.returncode, stdout, stderr)
+        objects = []
+        dn = None
+        attrs = {}
+        for line in stdout.splitlines():
+            if line.startswith('DN: '):
+                dn = line[3:].strip()
+            elif not line.strip():
+                if dn:
+                    objects.append((dn, attrs))
+                    dn = None
+                    attrs = {}
+            elif line.startswith(' ') and ':' in line:
+                name, value = line.split(':', 1)
+                attrs.setdefault(name.strip(), []).append(value.strip())
+        return objects
 
     def cleanup(self):
         """

@@ -1,3 +1,9 @@
+ucs-test (9.0.2-43) unstable; urgency=medium
+
+  * Bug #48390: add UDM.list_objects('users/user')
+
+ -- Florian Best <best@univention.de>  Thu, 25 Apr 2019 18:43:44 +0200
+
 ucs-test (9.0.2-42) unstable; urgency=medium
 
   * Bug #49228: add test for resync_objects.py script
