@@ -1,3 +1,9 @@
+univention-samba4 (8.0.0-20) unstable; urgency=medium
+
+  * Bug #49193: Restore keytab if samba password change fails, and code cleanup
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 25 Apr 2019 10:33:14 +0200
+
 univention-samba4 (8.0.0-19) unstable; urgency=medium
 
   * Bug #49193: Set new sambapassword in server_password_change earlier, to be able to rollback if this fails.
