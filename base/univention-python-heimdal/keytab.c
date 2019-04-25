@@ -360,4 +360,5 @@ static struct PyMethodDef keytab_methods[] = {
 	{"add", (PyCFunction)keytab_add, METH_VARARGS, "Add principal to keytab"},
 	{"list", (PyCFunction)keytab_list, METH_VARARGS, "List keytab"},
 	{"remove", (PyCFunction)keytab_remove, METH_VARARGS, "Remove principal from keytab"},
+	{NULL}
 };

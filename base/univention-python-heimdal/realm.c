@@ -75,4 +75,6 @@ PyTypeObject krb5RealmType = {
 	0,				/*tp_hash*/
 };
 
-static struct PyMethodDef realm_methods[] = {};
+static struct PyMethodDef realm_methods[] = {
+	{NULL},
+};
