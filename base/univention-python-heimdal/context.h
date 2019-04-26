@@ -40,4 +40,4 @@ typedef struct {
 
 PyTypeObject krb5ContextType;
 
-krb5ContextObject *context_open(PyObject *unused, PyObject *args);
+krb5ContextObject *context_open(PyObject *unused);

@@ -206,7 +206,7 @@ static PyObject *keytab_add(krb5KeytabObject *self, PyObject *args)
 	Py_RETURN_NONE;
 }
 
-static PyObject *keytab_list(krb5KeytabObject *self, PyObject *args)
+static PyObject *keytab_list(krb5KeytabObject *self)
 {
 	krb5_error_code ret;
 	krb5_keytab_entry entry;
@@ -333,7 +333,7 @@ static PyObject *keytab_remove(krb5KeytabObject *self, PyObject *args)
 
 static struct PyMethodDef keytab_methods[] = {
 	{"add", (PyCFunction)keytab_add, METH_VARARGS, "Add principal to keytab"},
-	{"list", (PyCFunction)keytab_list, METH_VARARGS, "List keytab"},
+	{"list", (PyCFunction)keytab_list, METH_NOARGS, "List keytab"},
 	{"remove", (PyCFunction)keytab_remove, METH_VARARGS, "Remove principal from keytab"},
 	{NULL}
 };

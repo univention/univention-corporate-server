@@ -38,7 +38,7 @@
 #include "context.h"
 #include "enctype.h"
 
-krb5ContextObject *context_open(PyObject *unused, PyObject *args)
+krb5ContextObject *context_open(PyObject *unused)
 {
 	krb5_error_code ret;
 	krb5ContextObject *self = (krb5ContextObject *) PyObject_NEW(krb5ContextObject, &krb5ContextType);
@@ -55,7 +55,7 @@ krb5ContextObject *context_open(PyObject *unused, PyObject *args)
 	return self;
 }
 
-static PyObject *context_get_permitted_enctypes(krb5ContextObject *self, PyObject *args)
+static PyObject *context_get_permitted_enctypes(krb5ContextObject *self)
 {
 	krb5_error_code ret;
 	krb5_enctype *etypes;
@@ -89,7 +89,7 @@ static void context_destroy(krb5ContextObject *self)
 }
 
 static struct PyMethodDef context_methods[] = {
-	{"get_permitted_enctypes", (PyCFunction)context_get_permitted_enctypes, METH_VARARGS, "Return etypes for context"},
+	{"get_permitted_enctypes", (PyCFunction)context_get_permitted_enctypes, METH_NOARGS, "Return etypes for context"},
 	{NULL}
 };
 

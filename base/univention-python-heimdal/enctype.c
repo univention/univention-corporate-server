@@ -92,7 +92,7 @@ static PyObject *enctype_string(krb5EnctypeObject *self)
 	return enctype_string;
 }
 
-static PyObject *enctype_int(krb5EnctypeObject *self, PyObject *args)
+static PyObject *enctype_int(krb5EnctypeObject *self)
 {
 	return PyInt_FromLong(self->enctype);
 }
@@ -104,7 +104,7 @@ static void enctype_destroy(krb5EnctypeObject *self)
 }
 
 static struct PyMethodDef enctype_methods[] = {
-	{"toint", (PyCFunction)enctype_int, METH_VARARGS, "Convert enctype to integer"},
+	{"toint", (PyCFunction)enctype_int, METH_NOARGS, "Convert enctype to integer"},
 	{NULL}
 };
 

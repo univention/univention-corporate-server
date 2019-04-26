@@ -129,12 +129,12 @@ krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args)
 	return self;
 }
 
-static PyObject *keyblock_keytype(krb5KeyblockObject *self, PyObject *args)
+static PyObject *keyblock_keytype(krb5KeyblockObject *self)
 {
 	return (PyObject*) enctype_from_enctype(self->context, self->keyblock.keytype);
 }
 
-static PyObject *keyblock_keyvalue(krb5KeyblockObject *self, PyObject *args)
+static PyObject *keyblock_keyvalue(krb5KeyblockObject *self)
 {
 	return PyString_FromStringAndSize(self->keyblock.keyvalue.data, self->keyblock.keyvalue.length);
 }
@@ -147,8 +147,8 @@ static void keyblock_destroy(krb5KeyblockObject *self)
 }
 
 static struct PyMethodDef keyblock_methods[] = {
-	{"keytype", (PyCFunction)keyblock_keytype, METH_VARARGS, "Return keytype"},
-	{"keyvalue", (PyCFunction)keyblock_keyvalue, METH_VARARGS, "Return keyvalue"},
+	{"keytype", (PyCFunction)keyblock_keytype, METH_NOARGS, "Return keytype"},
+	{"keyvalue", (PyCFunction)keyblock_keyvalue, METH_NOARGS, "Return keyvalue"},
 	{NULL}
 };
 

@@ -103,7 +103,7 @@ krb5CredsObject *creds_new(PyObject *unused, PyObject *args)
 }
 
 /* FIXME */
-static PyObject *creds_parse(krb5CredsObject *self, PyObject *args)
+static PyObject *creds_parse(krb5CredsObject *self)
 {
 	krb5_error_code ret;
 	PyObject *tuple;
@@ -181,7 +181,7 @@ static void creds_destroy(krb5CredsObject *self)
 }
 
 static struct PyMethodDef creds_methods[] = {
-	{"parse", (PyCFunction)creds_parse, METH_VARARGS, "Parse creds to tuple"},
+	{"parse", (PyCFunction)creds_parse, METH_NOARGS, "Parse creds to tuple"},
 	{"change_password", (PyCFunction)creds_change_password, METH_VARARGS, "Change password"},
 	{NULL}
 };

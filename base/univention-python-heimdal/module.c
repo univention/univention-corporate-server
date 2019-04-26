@@ -42,7 +42,7 @@
 #include "asn1.h"
 
 static struct PyMethodDef module_methods[] = {
-	{"context", (PyCFunction)context_open, METH_VARARGS, "Open context"},
+	{"context", (PyCFunction)context_open, METH_NOARGS, "Open context"},
 	{"principal", (PyCFunction)principal_new, METH_VARARGS, "New principal"},
 	{"creds", (PyCFunction)creds_new, METH_VARARGS, "New credentials"},
 	{"keytab", (PyCFunction)keytab_open, METH_VARARGS, "Open keytab"},

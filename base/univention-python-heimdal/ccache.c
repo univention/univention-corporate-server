@@ -82,7 +82,7 @@ static void ccache_close(krb5CcacheObject *self)
 	PyObject_Del(self);
 }
 
-static PyObject *ccache_destroy(krb5CcacheObject *self, PyObject *args)
+static PyObject *ccache_destroy(krb5CcacheObject *self)
 {
 	krb5_error_code ret;
 	ret = krb5_cc_destroy(self->context, self->ccache);
@@ -94,7 +94,7 @@ static PyObject *ccache_destroy(krb5CcacheObject *self, PyObject *args)
 	Py_RETURN_NONE;
 }
 
-static PyObject *ccache_list(krb5CcacheObject *self, PyObject *args)
+static PyObject *ccache_list(krb5CcacheObject *self)
 {
 	krb5_error_code ret;
 	krb5_cc_cursor cursor;
@@ -163,10 +163,10 @@ static PyObject *ccache_store_cred(krb5CcacheObject *self, PyObject *args)
 }
 
 static struct PyMethodDef ccache_methods[] = {
-	{"list", (PyCFunction)ccache_list, METH_VARARGS, "List credentials"},
+	{"list", (PyCFunction)ccache_list, METH_NOARGS, "List credentials"},
 	{"initialize", (PyCFunction)ccache_initialize, METH_VARARGS, "Initialize credential cache"},
 	{"store_cred", (PyCFunction)ccache_store_cred, METH_VARARGS, "Store credentials"},
-	{"destroy", (PyCFunction)ccache_destroy, METH_VARARGS, "Destroy credential cache"},
+	{"destroy", (PyCFunction)ccache_destroy, METH_NOARGS, "Destroy credential cache"},
 	{NULL}
 };
 
