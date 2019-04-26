@@ -137,6 +137,8 @@ def validate_zonename(zonename):
 		raise InvalidZone('.zone or .proxy TLD are not supported.')
 	if '..' in zonename or zonename in ('.', '..'):
 		raise InvalidZone('zone name must not be ".", ".." or contain "..".')
+	if zonename in ('0.in-addr.arpa', '127.in-addr.arpa', '255.in-addr.arpa'):
+		raise InvalidZone('zone must not be 0, 127, 255.')
 	return zonename
 
 
