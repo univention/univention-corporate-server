@@ -111,7 +111,7 @@ PyTypeObject krb5PrincipalType = {
 	.tp_basicsize = sizeof(krb5PrincipalObject),
 	/* methods */
 	.tp_dealloc = (destructor)principal_destroy,
-	.tp_repr = (reprfunc)principal_name,
+	.tp_str = (reprfunc)principal_name,
 	.tp_methods = principal_methods,
 	.tp_flags = Py_TPFLAGS_DEFAULT,
 };

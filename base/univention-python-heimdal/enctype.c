@@ -114,7 +114,7 @@ PyTypeObject krb5EnctypeType = {
 	.tp_basicsize = sizeof(krb5EnctypeObject),
 	/* methods */
 	.tp_dealloc = (destructor)enctype_destroy,
-	.tp_repr = (reprfunc)enctype_string,
+	.tp_str = (reprfunc)enctype_string,
 	.tp_methods = enctype_methods,
 	.tp_flags = Py_TPFLAGS_DEFAULT,
 };
