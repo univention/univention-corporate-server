@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-bind
-fix: 
+fix: 13.0.1-3A~4.4.0.201904261205
 desc: |
  This update addresses the following issue(s):
  * The robustness of the listener for DNS zones has been improoved.
