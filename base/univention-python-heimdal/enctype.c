@@ -38,8 +38,6 @@
 #include "context.h"
 #include "enctype.h"
 
-static struct PyMethodDef enctype_methods[];
-
 krb5EnctypeObject *enctype_from_enctype(krb5_context context, krb5_enctype enctype)
 {
 	krb5EnctypeObject *self = (krb5EnctypeObject *) PyObject_NEW(krb5EnctypeObject, &krb5EnctypeType);
@@ -99,16 +97,16 @@ static PyObject *enctype_int(krb5EnctypeObject *self, PyObject *args)
 	return PyInt_FromLong(self->enctype);
 }
 
-static PyObject *enctype_getattr(krb5EnctypeObject *self, char *name)
-{
-	return Py_FindMethod(enctype_methods, (PyObject *)self, name);
-}
-
 static void enctype_destroy(krb5EnctypeObject *self)
 {
 	/* enctype really is integer; nothing to free */
 	PyObject_Del( self );
 }
+
+static struct PyMethodDef enctype_methods[] = {
+	{"toint", (PyCFunction)enctype_int, METH_VARARGS, "Convert enctype to integer"},
+	{NULL}
+};
 
 PyTypeObject krb5EnctypeType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
@@ -116,11 +114,7 @@ PyTypeObject krb5EnctypeType = {
 	.tp_basicsize = sizeof(krb5EnctypeObject),
 	/* methods */
 	.tp_dealloc = (destructor)enctype_destroy,
-	.tp_getattr = (getattrfunc)enctype_getattr,
 	.tp_repr = (reprfunc)enctype_string,
-};
-
-static struct PyMethodDef enctype_methods[] = {
-	{"toint", (PyCFunction)enctype_int, METH_VARARGS, "Convert enctype to integer"},
-	{NULL, NULL, 0, NULL}
+	.tp_methods = enctype_methods,
+	.tp_flags = Py_TPFLAGS_DEFAULT,
 };

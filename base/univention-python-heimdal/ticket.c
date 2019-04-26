@@ -65,6 +65,5 @@ PyTypeObject krb5TicketType = {
 	.tp_basicsize = sizeof(krb5TicketObject),
 	/* methods */
 	.tp_dealloc = (destructor)ticket_destroy,
+	.tp_flags = Py_TPFLAGS_DEFAULT,
 };
-
-//static struct PyMethodDef ticket_methods[] = {};

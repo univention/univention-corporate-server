@@ -39,8 +39,6 @@
 #include "principal.h"
 #include "creds.h"
 
-static struct PyMethodDef creds_methods[];
-
 static krb5_error_code kerb_prompter(krb5_context ctx, void *data,
 	       const char *name, const char *banner, int num_prompts,
 	       krb5_prompt prompts[])
@@ -182,10 +180,11 @@ static void creds_destroy(krb5CredsObject *self)
 	PyObject_Del(self);
 }
 
-static PyObject *creds_getattr(krb5CredsObject *self, char *name)
-{
-	return Py_FindMethod(creds_methods, (PyObject *)self, name);
-}
+static struct PyMethodDef creds_methods[] = {
+	{"parse", (PyCFunction)creds_parse, METH_VARARGS, "Parse creds to tuple"},
+	{"change_password", (PyCFunction)creds_change_password, METH_VARARGS, "Change password"},
+	{NULL}
+};
 
 PyTypeObject krb5CredsType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
@@ -193,11 +192,6 @@ PyTypeObject krb5CredsType = {
 	.tp_basicsize = sizeof(krb5CredsObject),
 	/* methods */
 	.tp_dealloc = (destructor)creds_destroy,
-	.tp_getattr = (getattrfunc)creds_getattr,
-};
-
-static struct PyMethodDef creds_methods[] = {
-	{"parse", (PyCFunction)creds_parse, METH_VARARGS, "Parse creds to tuple"},
-	{"change_password", (PyCFunction)creds_change_password, METH_VARARGS, "Change password"},
-	{NULL, NULL, 0, NULL}
+	.tp_methods = creds_methods,
+	.tp_flags = Py_TPFLAGS_DEFAULT,
 };

@@ -39,8 +39,6 @@
 #include "principal.h"
 #include "salt.h"
 
-static struct PyMethodDef salt_methods[];
-
 krb5SaltObject *salt_from_salt(krb5_context context, krb5_salt salt)
 {
 	krb5SaltObject *self = (krb5SaltObject *) PyObject_New(krb5SaltObject, &krb5SaltType);
@@ -109,10 +107,10 @@ static void salt_destroy(krb5SaltObject *self)
 	PyObject_Del(self);
 }
 
-static PyObject *salt_getattr(krb5SaltObject *self, char *name)
-{
-	return Py_FindMethod(salt_methods, (PyObject *)self, name);
-}
+static struct PyMethodDef salt_methods[] = {
+	{"saltvalue", (PyCFunction)salt_saltvalue, METH_VARARGS, "Return saltvalue"},
+	{NULL, NULL, 0, NULL}
+};
 
 PyTypeObject krb5SaltType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
@@ -120,10 +118,6 @@ PyTypeObject krb5SaltType = {
 	.tp_basicsize = sizeof(krb5SaltObject),
 	/* methods */
 	.tp_dealloc = (destructor)salt_destroy,
-	.tp_getattr = (getattrfunc)salt_getattr,
-};
-
-static struct PyMethodDef salt_methods[] = {
-	{"saltvalue", (PyCFunction)salt_saltvalue, METH_VARARGS, "Return saltvalue"},
-	{NULL, NULL, 0, NULL}
+	.tp_methods = salt_methods,
+	.tp_flags = Py_TPFLAGS_DEFAULT,
 };

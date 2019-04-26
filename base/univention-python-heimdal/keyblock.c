@@ -42,8 +42,6 @@
 #include "salt.h"
 #include "keyblock.h"
 
-static struct PyMethodDef keyblock_methods[];
-
 krb5KeyblockObject *keyblock_new(PyObject *unused, PyObject *args)
 {
 	krb5_error_code ret;
@@ -148,10 +146,11 @@ static void keyblock_destroy(krb5KeyblockObject *self)
 	PyObject_Del(self);
 }
 
-static PyObject *keyblock_getattr(krb5KeyblockObject *self, char *name)
-{
-	return Py_FindMethod(keyblock_methods, (PyObject *)self, name);
-}
+static struct PyMethodDef keyblock_methods[] = {
+	{"keytype", (PyCFunction)keyblock_keytype, METH_VARARGS, "Return keytype"},
+	{"keyvalue", (PyCFunction)keyblock_keyvalue, METH_VARARGS, "Return keyvalue"},
+	{NULL}
+};
 
 PyTypeObject krb5KeyblockType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
@@ -159,11 +158,6 @@ PyTypeObject krb5KeyblockType = {
 	.tp_basicsize = sizeof(krb5KeyblockObject),
 	/* methods */
 	.tp_dealloc = (destructor)keyblock_destroy,
-	.tp_getattr = (getattrfunc)keyblock_getattr,
-};
-
-static struct PyMethodDef keyblock_methods[] = {
-	{"keytype", (PyCFunction)keyblock_keytype, METH_VARARGS, "Return keytype"},
-	{"keyvalue", (PyCFunction)keyblock_keyvalue, METH_VARARGS, "Return keyvalue"},
-	{NULL, NULL, 0, NULL}
+	.tp_methods = keyblock_methods,
+	.tp_flags = Py_TPFLAGS_DEFAULT,
 };

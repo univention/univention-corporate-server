@@ -39,8 +39,6 @@
 #include "realm.h"
 #include "principal.h"
 
-static struct PyMethodDef principal_methods[];
-
 krb5PrincipalObject *principal_new(PyObject *unused, PyObject *args)
 {
 	krb5_error_code ret;
@@ -102,10 +100,10 @@ static void principal_destroy(krb5PrincipalObject *self)
 	PyObject_Del(self);
 }
 
-static PyObject *principal_getattr(krb5PrincipalObject *self, char *name)
-{
-	return Py_FindMethod(principal_methods, (PyObject *)self, name);
-}
+static struct PyMethodDef principal_methods[] = {
+	{"realm", (PyCFunction)principal_realm, METH_VARARGS, "Return realm of principal"},
+	{NULL}
+};
 
 PyTypeObject krb5PrincipalType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
@@ -113,11 +111,7 @@ PyTypeObject krb5PrincipalType = {
 	.tp_basicsize = sizeof(krb5PrincipalObject),
 	/* methods */
 	.tp_dealloc = (destructor)principal_destroy,
-	.tp_getattr = (getattrfunc)principal_getattr,
 	.tp_repr = (reprfunc)principal_name,
-};
-
-static struct PyMethodDef principal_methods[] = {
-	{"realm", (PyCFunction)principal_realm, METH_VARARGS, "Return realm of principal"},
-	{NULL}
+	.tp_methods = principal_methods,
+	.tp_flags = Py_TPFLAGS_DEFAULT,
 };

@@ -38,8 +38,6 @@
 #include "context.h"
 #include "enctype.h"
 
-static struct PyMethodDef context_methods[];
-
 krb5ContextObject *context_open(PyObject *unused, PyObject *args)
 {
 	krb5_error_code ret;
@@ -84,16 +82,16 @@ static PyObject *context_get_permitted_enctypes(krb5ContextObject *self, PyObjec
 	return list;
 }
 
-static PyObject *context_getattr(krb5ContextObject *self, char *name)
-{
-	return Py_FindMethod(context_methods, (PyObject *)self, name);
-}
-
 static void context_destroy(krb5ContextObject *self)
 {
 	krb5_free_context(self->context);
 	PyObject_Del( self );
 }
+
+static struct PyMethodDef context_methods[] = {
+	{"get_permitted_enctypes", (PyCFunction)context_get_permitted_enctypes, METH_VARARGS, "Return etypes for context"},
+	{NULL}
+};
 
 PyTypeObject krb5ContextType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
@@ -101,10 +99,6 @@ PyTypeObject krb5ContextType = {
 	.tp_basicsize = sizeof(krb5ContextObject),
 	/* methods */
 	.tp_dealloc = (destructor)context_destroy,
-	.tp_getattr = (getattrfunc)context_getattr,
-};
-
-static struct PyMethodDef context_methods[] = {
-	{"get_permitted_enctypes", (PyCFunction)context_get_permitted_enctypes, METH_VARARGS, "Return etypes for context"},
-	{NULL}
+	.tp_methods = context_methods,
+	.tp_flags = Py_TPFLAGS_DEFAULT,
 };

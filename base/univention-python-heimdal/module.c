@@ -65,28 +65,55 @@ static struct PyModuleDef moduledef = {
 	.m_size = -1,
 	.m_methods = module_methods,
 };
+#endif
 
-PyMODINIT_FUNC PyInit_heimdal(void) {
+static PyObject * moduleinit(void) {
 	PyObject *module, *self;
+#if PY_MAJOR_VERSION >= 3
 	module = PyModule_Create(&moduledef);
+#else
+	module = Py_InitModule("heimdal", module_methods);
+#endif
 	if (module == NULL)
 		return NULL;
+
+	if (PyType_Ready(&krb5CcacheType) < 0)
+		return NULL;
+	if (PyType_Ready(&krb5ContextType) < 0)
+		return NULL;
+	if (PyType_Ready(&krb5CredsType) < 0)
+		return NULL;
+	if (PyType_Ready(&krb5EnctypeType) < 0)
+		return NULL;
+	if (PyType_Ready(&krb5KeyblockType) < 0)
+		return NULL;
+	if (PyType_Ready(&krb5KeytabType) < 0)
+		return NULL;
+	if (PyType_Ready(&krb5PrincipalType) < 0)
+		return NULL;
+#if 0
+	if (PyType_Ready(&krb5RealmType) < 0)
+		return NULL;
+#endif
+	if (PyType_Ready(&krb5SaltType) < 0)
+		return NULL;
+#if 0
+	if (PyType_Ready(&krb5TicketType) < 0)
+		return NULL;
+#endif
 
 	self = PyModule_GetDict(module);
 	error_init(self);
 
 	return module;
 }
-#else
-PyMODINIT_FUNC
-initheimdal(void)
-{
-	PyObject *module, *self;
-	module = Py_InitModule("heimdal", module_methods);
-	if (module == NULL)
-		return;
 
-	self = PyModule_GetDict(module);
-	error_init(self);
+#if PY_MAJOR_VERSION >= 3
+PyMODINIT_FUNC PyInit_heimdal(void) {
+	return moduleinit();
+}
+#else
+PyMODINIT_FUNC initheimdal(void) {
+	moduleinit();
 }
 #endif

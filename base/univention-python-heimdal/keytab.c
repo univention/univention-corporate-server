@@ -69,8 +69,6 @@
 #include "keytab.h"
 #include "context.h"
 
-static struct PyMethodDef keytab_methods[];
-
 krb5KeytabObject *keytab_open(PyObject *unused, PyObject *args)
 {
 	char *keytab_string;
@@ -333,10 +331,12 @@ static PyObject *keytab_remove(krb5KeytabObject *self, PyObject *args)
 	return NULL;
 }
 
-static PyObject *keytab_getattr(krb5KeytabObject *self, char *name)
-{
-	return Py_FindMethod(keytab_methods, (PyObject *)self, name);
-}
+static struct PyMethodDef keytab_methods[] = {
+	{"add", (PyCFunction)keytab_add, METH_VARARGS, "Add principal to keytab"},
+	{"list", (PyCFunction)keytab_list, METH_VARARGS, "List keytab"},
+	{"remove", (PyCFunction)keytab_remove, METH_VARARGS, "Remove principal from keytab"},
+	{NULL}
+};
 
 PyTypeObject krb5KeytabType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
@@ -344,12 +344,6 @@ PyTypeObject krb5KeytabType = {
 	.tp_basicsize = sizeof(krb5KeytabObject),
 	/* methods */
 	.tp_dealloc = (destructor)keytab_destroy,
-	.tp_getattr = (getattrfunc)keytab_getattr,
-};
-
-static struct PyMethodDef keytab_methods[] = {
-	{"add", (PyCFunction)keytab_add, METH_VARARGS, "Add principal to keytab"},
-	{"list", (PyCFunction)keytab_list, METH_VARARGS, "List keytab"},
-	{"remove", (PyCFunction)keytab_remove, METH_VARARGS, "Remove principal from keytab"},
-	{NULL}
+	.tp_methods = keytab_methods,
+	.tp_flags = Py_TPFLAGS_DEFAULT,
 };

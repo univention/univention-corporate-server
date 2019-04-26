@@ -40,8 +40,6 @@
 #include "creds.h"
 #include "ccache.h"
 
-static struct PyMethodDef ccache_methods[];
-
 krb5CcacheObject *ccache_open(PyObject *unused, PyObject *args)
 {
 	krb5_error_code ret;
@@ -164,10 +162,13 @@ static PyObject *ccache_store_cred(krb5CcacheObject *self, PyObject *args)
 	Py_RETURN_NONE;
 }
 
-static PyObject *ccache_getattr(krb5CcacheObject *self, char *name)
-{
-	return Py_FindMethod(ccache_methods, (PyObject *)self, name);
-}
+static struct PyMethodDef ccache_methods[] = {
+	{"list", (PyCFunction)ccache_list, METH_VARARGS, "List credentials"},
+	{"initialize", (PyCFunction)ccache_initialize, METH_VARARGS, "Initialize credential cache"},
+	{"store_cred", (PyCFunction)ccache_store_cred, METH_VARARGS, "Store credentials"},
+	{"destroy", (PyCFunction)ccache_destroy, METH_VARARGS, "Destroy credential cache"},
+	{NULL}
+};
 
 PyTypeObject krb5CcacheType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
@@ -175,13 +176,6 @@ PyTypeObject krb5CcacheType = {
 	.tp_basicsize = sizeof(krb5CcacheObject),
 	/* methods */
 	.tp_dealloc = (destructor)ccache_close,
-	.tp_getattr = (getattrfunc)ccache_getattr,
-};
-
-static struct PyMethodDef ccache_methods[] = {
-	{"list", (PyCFunction)ccache_list, METH_VARARGS, "List credentials"},
-	{"initialize", (PyCFunction)ccache_initialize, METH_VARARGS, "Initialize credential cache"},
-	{"store_cred", (PyCFunction)ccache_store_cred, METH_VARARGS, "Store credentials"},
-	{"destroy", (PyCFunction)ccache_destroy, METH_VARARGS, "Destroy credential cache"},
-	{NULL, NULL, 0, NULL}
+	.tp_methods = ccache_methods,
+	.tp_flags = Py_TPFLAGS_DEFAULT,
 };
