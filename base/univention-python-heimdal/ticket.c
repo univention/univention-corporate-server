@@ -53,7 +53,7 @@ krb5TicketObject *ticket_new(PyObject *unused, PyObject *args)
 	return self;
 }
 
-void ticket_destroy(krb5TicketObject *self)
+static void ticket_destroy(krb5TicketObject *self)
 {
 	krb5_free_ticket(self->context, &self->ticket);
 	PyObject_Del(self);

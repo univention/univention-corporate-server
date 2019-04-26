@@ -66,7 +66,7 @@ krb5PrincipalObject *principal_new(PyObject *unused, PyObject *args)
 	return self;
 }
 
-PyObject *principal_name(krb5PrincipalObject *self)
+static PyObject *principal_name(krb5PrincipalObject *self)
 {
 	krb5_error_code ret;
 	char *principal_string;
@@ -83,7 +83,7 @@ PyObject *principal_name(krb5PrincipalObject *self)
 	return principal;
 }
 
-PyObject *principal_realm(krb5PrincipalObject *self, PyObject *args)
+static PyObject *principal_realm(krb5PrincipalObject *self, PyObject *args)
 {
 	//krb5_error_code ret;
 	//krb5_realm *realm;
@@ -96,7 +96,7 @@ PyObject *principal_realm(krb5PrincipalObject *self, PyObject *args)
 	return realm_string;
 }
 
-void principal_destroy(krb5PrincipalObject *self)
+static void principal_destroy(krb5PrincipalObject *self)
 {
 	krb5_free_principal(self->context, self->principal);
 	PyObject_Del(self);

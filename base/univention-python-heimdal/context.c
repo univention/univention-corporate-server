@@ -57,7 +57,7 @@ krb5ContextObject *context_open(PyObject *unused, PyObject *args)
 	return self;
 }
 
-PyObject *context_get_permitted_enctypes(krb5ContextObject *self, PyObject *args)
+static PyObject *context_get_permitted_enctypes(krb5ContextObject *self, PyObject *args)
 {
 	krb5_error_code ret;
 	krb5_enctype *etypes;
@@ -89,7 +89,7 @@ static PyObject *context_getattr(krb5ContextObject *self, char *name)
 	return Py_FindMethod(context_methods, (PyObject *)self, name);
 }
 
-void context_destroy(krb5ContextObject *self)
+static void context_destroy(krb5ContextObject *self)
 {
 	krb5_free_context(self->context);
 	PyObject_Del( self );

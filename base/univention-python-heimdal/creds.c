@@ -105,7 +105,7 @@ krb5CredsObject *creds_new(PyObject *unused, PyObject *args)
 }
 
 /* FIXME */
-PyObject *creds_parse(krb5CredsObject *self, PyObject *args)
+static PyObject *creds_parse(krb5CredsObject *self, PyObject *args)
 {
 	krb5_error_code ret;
 	PyObject *tuple;
@@ -151,7 +151,7 @@ PyObject *creds_parse(krb5CredsObject *self, PyObject *args)
 	return tuple;
 }
 
-PyObject *creds_change_password(krb5CredsObject *self, PyObject *args)
+static PyObject *creds_change_password(krb5CredsObject *self, PyObject *args)
 {
 	krb5_error_code ret;
 	char *newpw;
@@ -176,7 +176,7 @@ PyObject *creds_change_password(krb5CredsObject *self, PyObject *args)
 	Py_RETURN_NONE;
 }
 
-void creds_destroy(krb5CredsObject *self)
+static void creds_destroy(krb5CredsObject *self)
 {
 	krb5_free_cred_contents(self->context, &self->creds);
 	PyObject_Del(self);

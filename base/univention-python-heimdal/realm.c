@@ -50,7 +50,7 @@ krb5RealmObject *realm_from_realm(krb5_context context, krb5_realm *realm)
 	return self;
 }
 
-void realm_destroy(krb5RealmObject *self)
+static void realm_destroy(krb5RealmObject *self)
 {
 	PyObject_Del(self);
 }

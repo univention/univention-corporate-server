@@ -98,12 +98,12 @@ krb5SaltObject *salt_raw_new(PyObject *unused, PyObject *args) {
 	return self;
 }
 
-PyObject *salt_saltvalue(krb5SaltObject *self, PyObject *args)
+static PyObject *salt_saltvalue(krb5SaltObject *self, PyObject *args)
 {
 	return PyString_FromStringAndSize(self->salt.saltvalue.data, self->salt.saltvalue.length);
 }
 
-void salt_destroy(krb5SaltObject *self)
+static void salt_destroy(krb5SaltObject *self)
 {
 	krb5_free_salt(self->context, self->salt);
 	PyObject_Del(self);

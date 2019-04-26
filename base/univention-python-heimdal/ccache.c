@@ -75,7 +75,7 @@ krb5CcacheObject *ccache_open(PyObject *unused, PyObject *args)
 	return self;
 }
 
-void ccache_close(krb5CcacheObject *self)
+static void ccache_close(krb5CcacheObject *self)
 {
 	krb5_error_code ret;
 	ret = krb5_cc_close(self->context, self->ccache);
@@ -84,7 +84,7 @@ void ccache_close(krb5CcacheObject *self)
 	PyObject_Del(self);
 }
 
-PyObject *ccache_destroy(krb5CcacheObject *self, PyObject *args)
+static PyObject *ccache_destroy(krb5CcacheObject *self, PyObject *args)
 {
 	krb5_error_code ret;
 	ret = krb5_cc_destroy(self->context, self->ccache);

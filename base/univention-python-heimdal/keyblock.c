@@ -131,17 +131,17 @@ krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args)
 	return self;
 }
 
-PyObject *keyblock_keytype(krb5KeyblockObject *self, PyObject *args)
+static PyObject *keyblock_keytype(krb5KeyblockObject *self, PyObject *args)
 {
 	return (PyObject*) enctype_from_enctype(self->context, self->keyblock.keytype);
 }
 
-PyObject *keyblock_keyvalue(krb5KeyblockObject *self, PyObject *args)
+static PyObject *keyblock_keyvalue(krb5KeyblockObject *self, PyObject *args)
 {
 	return PyString_FromStringAndSize(self->keyblock.keyvalue.data, self->keyblock.keyvalue.length);
 }
 
-void keyblock_destroy(krb5KeyblockObject *self)
+static void keyblock_destroy(krb5KeyblockObject *self)
 {
 	/* FIXME: this segfaults: krb5_free_keyblock(self->context, &self->keyblock); */
 	krb5_free_keyblock_contents(self->context, &self->keyblock);

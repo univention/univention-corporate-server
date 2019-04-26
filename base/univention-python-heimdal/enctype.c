@@ -77,7 +77,7 @@ krb5EnctypeObject *enctype_new(PyObject *unused, PyObject *args)
 	return self;
 }
 
-PyObject *enctype_string(krb5EnctypeObject *self)
+static PyObject *enctype_string(krb5EnctypeObject *self)
 {
 	krb5_error_code ret;
 	char *enctype_c_string;
@@ -94,7 +94,7 @@ PyObject *enctype_string(krb5EnctypeObject *self)
 	return enctype_string;
 }
 
-PyObject *enctype_int(krb5EnctypeObject *self, PyObject *args)
+static PyObject *enctype_int(krb5EnctypeObject *self, PyObject *args)
 {
 	return PyInt_FromLong(self->enctype);
 }
@@ -104,7 +104,7 @@ static PyObject *enctype_getattr(krb5EnctypeObject *self, char *name)
 	return Py_FindMethod(enctype_methods, (PyObject *)self, name);
 }
 
-void enctype_destroy(krb5EnctypeObject *self)
+static void enctype_destroy(krb5EnctypeObject *self)
 {
 	/* enctype really is integer; nothing to free */
 	PyObject_Del( self );
