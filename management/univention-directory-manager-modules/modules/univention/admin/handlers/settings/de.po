@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2019-03-18 14:43+0100\n"
-"PO-Revision-Date: 2015-07-19 22:32+0200\n"
+"PO-Revision-Date: 2019-04-26 17:51+0200\n"
 "Last-Translator: Daniel Tröder <troeder@univention.de>\n"
 "Language-Team: Deutsch <German <packages@univention.de>>\n"
 "Language: de\n"
@@ -17,12 +17,11 @@ msgstr "Ein Bitfeld um Komplexität und Speicherbeschränkungen anzuzeigen."
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:81
 msgid "A longer descriptive text, which is shown as a bubble-help in the UMC"
-msgstr ""
-"Ein längerer Beschreibungstext, der in der UMC als Popup-Hilfe angezeigt wird"
+msgstr "Ein längerer Beschreibungstext, der in der UMC als Popup-Hilfe angezeigt wird."
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:70
 msgid "A short descriptive text which is used as label in the UMC"
-msgstr "Kurze Beschreibung die in der UMC als Label verwendet wird"
+msgstr "Kurze Beschreibung, die in der UMC als Label verwendet wird."
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:296
 msgid "A value for this extended attribute is required and must be given"
@@ -83,8 +82,7 @@ msgstr "Alternative E-Mail-Adresse"
 
 #: modules/univention/admin/handlers/settings/syntax.py:198
 msgid "An LDAP attribute is required of which the information will be stored."
-msgstr ""
-"Ein LDAP-Attribut wird benötigt dessen Information gespeichert werden soll."
+msgstr "Ein LDAP-Attribut wird benötigt, dessen Information gespeichert werden soll."
 
 #: modules/univention/admin/handlers/settings/ldapacl.py:105
 #: modules/univention/admin/handlers/settings/ldapschema.py:105
@@ -347,17 +345,13 @@ msgstr "Vorgabewert"
 msgid ""
 "Default value which is set for this extended attribute when a new object is "
 "created"
-msgstr ""
-"Standard Wert der für dieses erweiterte Attribut gesetzt wird wenn ein neues "
-"Objekt erstellt wird"
+msgstr "Standardwert, der für dieses erweiterte Attribut gesetzt wird, wenn ein neues Objekt erstellt wird."
 
 #: modules/univention/admin/handlers/settings/umc_operationset.py:98
 msgid ""
 "Defines a specific flavor of the UMC module. If given the operations are "
 "permitted only if the flavor matches."
-msgstr ""
-"Definiert eine spezielle Variante des UMC-Moduls. Wenn diese angegeben ist, "
-"müssen Operationen diese setzen, ansonsten werden sie zurückgewiesen"
+msgstr "Definiert eine spezielle Variante des UMC-Moduls. Wenn diese angegeben ist, müssen Operationen diese setzen, ansonsten werden sie zurückgewiesen."
 
 #: modules/univention/admin/handlers/settings/umc_operationset.py:110
 msgid ""
@@ -365,12 +359,7 @@ msgid ""
 "either a host name (as filename pattern e.g. server1*), a server role (e.g. "
 "serverrole:domaincontroller_slave) or a service, which must run on the host, "
 "(e.g. service:LDAP). Leaving this empty causes all hosts to be allowed."
-msgstr ""
-"Definiert auf welchen Rechnern diese Befehle erlaubt sind. Der Wert kann "
-"entweder ein Rechnername (als Dateinamenmuster z.B. server1*), eine "
-"Serverrolle (z.B. serverrole:domaincontroller_slave) oder ein Dienst, der "
-"auf dem Rechner laufen muss, sein (z.B. service:LDAP). Wenn das Feld leer "
-"gelassen wird sind alle Rechner erlaubt."
+msgstr "Definiert, auf welchen Rechnern diese Befehle erlaubt sind. Der Wert kann entweder ein Rechnername (als Dateinamenmuster z.B. server1*), eine Serverrolle (z.B. serverrole:domaincontroller_slave) oder ein Dienst, der auf dem Rechner laufen muss, sein (z.B. service:LDAP). Wenn das Feld leer gelassen wird, sind alle Rechner erlaubt."
 
 #: modules/univention/admin/handlers/settings/portal.py:172
 msgid ""
@@ -501,11 +490,11 @@ msgstr "Erweitertes Attribut"
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:391
 msgid "Extended attribute description"
-msgstr "Erweitertes Attribut Beszeichnung"
+msgstr "Bezeichnung des erweiterten Attributs"
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:48
 msgid "Extended attributes"
-msgstr "Erweitertes Attribute"
+msgstr "Erweiterte Attribute"
 
 #: modules/univention/admin/handlers/settings/extended_options.py:48
 msgid "Extended option"
@@ -519,9 +508,7 @@ msgstr "Erweiterte Optionenen"
 msgid ""
 "Extending the users module is only possible if a default value for a "
 "required value is given."
-msgstr ""
-"Um das Benutzer-Modul zu erweitern muss für benötigte Werte ein Vorgabewert "
-"gesetzt werden."
+msgstr "Um das Benutzer-Modul zu erweitern, muss für benötigte Werte ein Vorgabewert gesetzt werden."
 
 #: modules/univention/admin/handlers/settings/portal_entry.py:90
 msgid "Favorite"
@@ -735,9 +722,7 @@ msgstr "Icon"
 msgid ""
 "If a tab with the given name already exists, it is replaced by a new tab "
 "only containing extended attributes"
-msgstr ""
-"Wenn bereits eine Karteikarte mit diesem Namen existiert, wird sie durch "
-"eine Karteikarte ersetzt die nur erweiterte Attribute enthält"
+msgstr "Wenn bereits eine Karteikarte mit diesem Namen existiert, wird sie durch eine Karteikarte ersetzt, die nur erweiterte Attribute enthält."
 
 #: modules/univention/admin/handlers/settings/portal_entry.py:146
 msgid ""
@@ -750,9 +735,7 @@ msgstr ""
 msgid ""
 "If possible, the LDAP object class is removed when this extended attribute "
 "gets unset"
-msgstr ""
-"Entferne die LDAP-Klasse (wenn möglich) wenn dieses erweitere Attribut leer "
-"gesetzt wird"
+msgstr "Entferne die LDAP-Klasse (wenn möglich), wenn dieses erweitere Attribut leer gesetzt wird."
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:245
 msgid ""
@@ -763,15 +746,7 @@ msgid ""
 "pyshared/univention/admin/handlers directory. It is the name which comes "
 "before the colon in the declarations of univention.admin.property objects, e."
 "g., roomNumber for a  user's room number"
-msgstr ""
-"In einigen Fällen ist es sinnvoll, vorgegebene Eingabefelder mit erweiterten "
-"Attributen zu überschreiben. Wird hier der interne UDM-Name eines Attributs "
-"konfiguriert, wird dessen Eingabefeld von diesem erweiterten Attribut "
-"überschrieben. Der UDM-Attributname kann nur durch eine Suche unterhalb des "
-"Verzeichnisses /usr/share/pyshared/univention/admin/handlers/ ermittelt "
-"werden. Es handelt sich dabei um den Namen, der in den Deklarationen von "
-"univention.admin.property-Objekten vor dem Doppelpunkt steht, z.B. "
-"roomNumber für die Raumnummer eines Benutzers"
+msgstr "In einigen Fällen ist es sinnvoll, vorgegebene Eingabefelder mit erweiterten Attributen zu überschreiben. Wird hier der interne UDM-Name eines Attributs konfiguriert, wird dessen Eingabefeld von diesem erweiterten Attribut überschrieben. Der UDM-Attributname kann nur durch eine Suche unterhalb des Verzeichnisses /usr/share/pyshared/univention/admin/handlers/ ermittelt werden. Es handelt sich dabei um den Namen, der in den Deklarationen von univention.admin.property-Objekten vor dem Doppelpunkt steht, z.B. roomNumber für die Raumnummer eines Benutzers."
 
 #: modules/univention/admin/handlers/settings/portal.py:62
 #: modules/univention/admin/handlers/settings/portal_all.py:50
@@ -1125,9 +1100,7 @@ msgstr "Für dieses Modul ist die Lizenz gültig."
 msgid ""
 "Modules this extended attribute is added to, e.g. \"users/user\" or "
 "\"computers/windows\""
-msgstr ""
-"Module zu denen dieses erweiterte Attribute hinzugefügt wird, z.B \"users/"
-"user\" oder \"computers/windows\""
+msgstr "Module, zu denen dieses erweiterte Attribute hinzugefügt wird, z.B \"users/user\" oder \"computers/windows\""
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:325
 msgid "Modules to be extended"
@@ -1174,27 +1147,19 @@ msgid ""
 "Name of a Python class implementing the univention.admin.hook interface, "
 "which can be used to execute additional actions when an object is created, "
 "modified or deleted"
-msgstr ""
-"Name einer Python-Klasse die das univention.admin.hook interface "
-"implementiert und dazu benutzt werden kann, zusätzliche Aktionen auszuführen "
-"wenn ein Objekt erstellt, modifiziert oder gelöscht wird"
+msgstr "Name einer Python-Klasse, die das univention.admin.hook interface implementiert und dazu benutzt werden kann, zusätzliche Aktionen auszuführen, wenn ein Objekt erstellt, modifiziert oder gelöscht wird."
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:185
 msgid ""
 "Name of the tab in the UMC on which this extended attribute is be placed. A "
 "new tab is created automatically if no tab with the name exists"
-msgstr ""
-"Name der Karteikarte in der UMC auf der dieses erweiterte Attribut platziert "
-"wird. Eine neue Karteikarte wird erstellt wenn noch keine Karteikarte mit "
-"diesem Namen existiert"
+msgstr "Name der Karteikarte in der UMC, auf der dieses erweiterte Attribut platziert wird. Eine neue Karteikarte wird erstellt, wenn noch keine Karteikarte mit diesem Namen existiert."
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:59
 msgid ""
 "Name which by default is used by UDM CLI and internally to identify the "
 "extended attribute"
-msgstr ""
-"Name der standardmäßig vom UDM-CLI und intern zur Identifizierung des "
-"erweiterten Attributs verwendet wird"
+msgstr "Name, der standardmäßig vom UDM-CLI und intern zur Identifizierung des erweiterten Attributs verwendet wird."
 
 #: modules/univention/admin/handlers/settings/extended_options.py:136
 msgid "Needed module"
@@ -1230,7 +1195,7 @@ msgstr "Objekt für die Anzeige in https://fqdn/univention/portal"
 
 #: modules/univention/admin/handlers/settings/portal_category.py:50
 msgid "Object under which settings/portal_entry objects can be displayed"
-msgstr "Objekt unter dem settings/portal_entry Objekte angezeigt werden können"
+msgstr "Objekt, unter dem settings/portal_entry Objekte angezeigt werden können."
 
 #: modules/univention/admin/handlers/settings/portal_entry.py:50
 msgid ""
@@ -1498,10 +1463,7 @@ msgstr "Verbotene Benutzernamen"
 msgid ""
 "Put this extended attribute under \"Advanced settings\". No autonomous tab "
 "will be created"
-msgstr ""
-"Das erweiterte Attribut wird unter \"Erweiterte Einstellungen\" "
-"untergebracht. Es wird keine eigenständige Karteikarte für das erweiterte "
-"Attribut angelegt"
+msgstr "Das erweiterte Attribut wird unter \"Erweiterte Einstellungen\" untergebracht. Es wird keine eigenständige Karteikarte für das erweiterte Attribut angelegt."
 
 #: modules/univention/admin/handlers/settings/portal.py:194
 msgid "Redirect anonymous visitors to the login"
@@ -1520,10 +1482,7 @@ msgid ""
 "Related properties can be grouped. This field specifies the name of the "
 "group in which this extended attribute is put in. If no name is given, no "
 "group is used"
-msgstr ""
-"Zusammenhängende Attribute können gruppiert werden. Dieses Feld gibt den "
-"Name der Gruppe an in welcher dieses erweiterte Attribut platziert wird.Wenn "
-"kein Name gegeben wird, wird keine Gruppe verwendet"
+msgstr "Zusammenhängende Attribute können gruppiert werden. Dieses Feld gibt den Name der Gruppe an, in welcher dieses erweiterte Attribut platziert wird. Wenn kein Name gegeben wird, wird keine Gruppe verwendet."
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:315
 msgid "Remove object class if the attribute is removed"
@@ -2156,13 +2115,7 @@ msgid ""
 "extended attributes without restrictions. It offers 20 freely usable "
 "attributes (univentionFreeAttribute1 to univentionFreeAttribute20) and can "
 "be used in connection with any LDAP object (e.g., a user object)"
-msgstr ""
-"Univention Corporate Server bringt ein eigenes LDAP-Schema für "
-"Kundenerweiterungen mit. Die LDAP-Objektklasse univentionFreeAttributes kann "
-"ohne Einschränkungen für erweiterte Attribute verwendet werden. Sie bringt "
-"20 frei zu verwendende Attribute (univentionFreeAttribute1 bis "
-"univentionFreeAttribute20) mit und kann in Verbindung mit jedem beliebigen "
-"LDAP-Objekt (z.B. einem Benutzerobjekt) verwendet werden"
+msgstr "Univention Corporate Server bringt ein eigenes LDAP-Schema für Kundenerweiterungen mit. Die LDAP-Objektklasse univentionFreeAttributes kann ohne Einschränkungen für erweiterte Attribute verwendet werden. Sie bringt 20 frei zu verwendende Attribute (univentionFreeAttribute1 bis univentionFreeAttribute20) mit und kann in Verbindung mit jedem beliebigen LDAP-Objekt (z.B. einem Benutzerobjekt) verwendet werden."
 
 #: modules/univention/admin/handlers/settings/license.py:52
 msgid "Univention License"
