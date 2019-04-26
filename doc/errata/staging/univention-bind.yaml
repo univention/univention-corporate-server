@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-bind
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The robustness of the listener for DNS zones has been improoved.
+   Certain LDAP DNS objects could cause path injection vulnerabilies
+   causing arbitrary file reading and modifications as well as crashes
+   of the bind service.
+bug: [41005]

@@ -36,7 +36,7 @@ configuration directory (should-state) and reload/restart as appropriate.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
 import listener
 import os
 import subprocess
@@ -45,6 +45,7 @@ import time
 import errno
 import signal
 import grp
+import urllib
 
 name = 'bind'
 description = 'Update BIND zones'
@@ -61,6 +62,14 @@ RNDC_BIN = "/usr/sbin/rndc"
 SIGNAL = dict([(getattr(signal, _), _) for _ in dir(signal) if _.startswith('SIG') and not _.startswith('SIG_')])
 
 __zone_created_or_removed = False
+
+
+class InvalidZone(Exception):
+	pass
+
+
+class BaseDirRestriction(InvalidZone):
+	pass
 
 
 def initialize():
@@ -82,6 +91,57 @@ def chgrp_bind(filename):
 	os.chown(filename, 0, bind_gid)
 
 
+def safe_path_join(basedir, filename):
+	path = os.path.join(basedir, filename)
+	if not os.path.abspath(path).startswith(basedir):
+		raise BaseDirRestriction('basedir manipulation: %s' % (filename,))
+	return path
+
+
+def validate_zonename(zonename):
+	"""
+	>>> validate_zonename('foo')
+	'foo'
+	>>> validate_zonename('foo.bar')
+	'foo.bar'
+	>>> validate_zonename('foo.zone')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	InvalidZone:
+	>>> validate_zonename('foo.proxy')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	InvalidZone:
+	>>> validate_zonename('.')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	InvalidZone:
+	>>> validate_zonename('..')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	InvalidZone:
+	>>> validate_zonename('fo..o')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	InvalidZone:
+	>>> validate_zonename('fo"bar"o')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	InvalidZone:
+	"""
+	if not zonename:
+		raise InvalidZone('empty zonename not allowed')
+	if set(zonename) & set('\x00"/' + ''.join(map(chr, range(0x1F + 1)))):
+		raise InvalidZone('zone name %r contains invalid characters' % (zonename,))
+	if zonename.endswith('.zone') or zonename.endswith('.proxy'):
+		raise InvalidZone('.zone or .proxy TLD are not supported.')
+	if '..' in zonename or zonename in ('.', '..'):
+		raise InvalidZone('zone name must not be ".", ".." or contain "..".')
+	if zonename in ('0.in-addr.arpa', '127.in-addr.arpa', '255.in-addr.arpa'):
+		raise InvalidZone('zone must not be 0, 127, 255.')
+	return zonename
+
+
 def handler(dn, new, old):
 	"""Handle LDAP changes."""
 	base = listener.configRegistry.get('dns/ldap/base')
@@ -99,23 +159,26 @@ def handler(dn, new, old):
 		if new.get('zoneName'):
 			# Change
 			# Create an empty file to trigger the postrun()
-			zonefile = os.path.join(PROXY_CACHE_DIR, "%s.zone" % (new['zoneName'][0],))
+			zonename = new['zoneName'][0]
+			zonename = validate_zonename(zonename)
+			zonefile = safe_path_join(PROXY_CACHE_DIR, "%s.zone" % (zonename,))
 			proxy_cache = open(zonefile, 'w')
 			proxy_cache.close()
 			os.chmod(zonefile, 0o640)
 			chgrp_bind(zonefile)
+	except InvalidZone as exc:
+		ud.debug(ud.LISTENER, ud.ERROR, '%s is invalid: %s' % (dn, exc))
 	finally:
 		listener.unsetuid()
 
 
 def _ldap_auth_string(ucr):
 	"""Build extended LDAP query URI part containing bind credentials."""
-	account = ucr.get('bind/binddn', ucr.get('ldap/hostdn')).replace(',', '%2c')
+	account = ucr.get('bind/binddn', ucr.get('ldap/hostdn'))
 
 	pwdfile = ucr.get('bind/bindpw', '/etc/machine.secret')
-	pwd = open(pwdfile).readlines()
-
-	return '????!bindname=%s,!x-bindpw=%s,x-tls' % (account, pwd[0])
+	with open(pwdfile) as fd:
+		return '????!bindname=%s,!x-bindpw=%s,x-tls' % (urllib.quote(account), urllib.quote(fd.readline().rstrip()))
 
 
 def _new_zone(ucr, zonename, dn):
@@ -125,7 +188,8 @@ def _new_zone(ucr, zonename, dn):
 		os.mkdir(NAMED_CONF_DIR)
 		os.chmod(NAMED_CONF_DIR, 0o755)
 
-	zonefile = os.path.join(NAMED_CONF_DIR, zonename)
+	zonename = validate_zonename(zonename)
+	zonefile = safe_path_join(NAMED_CONF_DIR, zonename)
 
 	# Create empty file and restrict permission
 	named_zone = open(zonefile, 'w')
@@ -149,7 +213,7 @@ def _new_zone(ucr, zonename, dn):
 	named_zone.close()
 
 	# Create proxy configuration file
-	proxy_file = os.path.join(NAMED_CONF_DIR, zonename + '.proxy')
+	proxy_file = safe_path_join(NAMED_CONF_DIR, zonename + '.proxy')
 	proxy_zone = open(proxy_file, 'w')
 	proxy_zone.write('zone "%s" {\n' % (zonename,))
 	proxy_zone.write('\ttype slave;\n')
@@ -167,8 +231,9 @@ def _new_zone(ucr, zonename, dn):
 def _remove_zone(zonename):
 	"""Handle removal of zone."""
 	ud.debug(ud.LISTENER, ud.INFO, 'DNS: Removing zone %s' % (zonename,))
-	zonefile = os.path.join(NAMED_CONF_DIR, zonename)
-	cached_zonefile = os.path.join(NAMED_CACHE_DIR, zonename + '.zone')
+	zonename = validate_zonename(zonename)
+	zonefile = safe_path_join(NAMED_CONF_DIR, zonename)
+	cached_zonefile = safe_path_join(NAMED_CACHE_DIR, zonename + '.zone')
 	# Remove zone file
 	if os.path.exists(zonefile):
 		os.unlink(zonefile)
@@ -258,7 +323,7 @@ def _wait_children(pids, timeout=15):
 				continue
 
 		if time.time() > timeout:
-			ud.debug(ud.LISTENER, ud.WARN, 'DNS: Pending children: %s' % (' '.join([str(pid) for pid in pids]),))
+			ud.debug(ud.LISTENER, ud.WARN, 'DNS: Pending children: %s' % (' '.join([str(_pid) for _pid in pids]),))
 			break
 		time.sleep(1)
 
@@ -322,9 +387,11 @@ def postrun():
 				if not os.path.exists(os.path.join(NAMED_CACHE_DIR, filename)):
 					ud.debug(ud.LISTENER, ud.PROCESS, 'DNS: %s does not exist. Triggering a bind9 restart.' % (os.path.join(NAMED_CACHE_DIR, filename)))
 					restart = True
-				else:
-					zone = filename.replace(".zone", "")
+				elif filename.endswith('.zone'):
+					zone = filename[:-len('.zone')]
 					zones.append(zone)
+				else:
+					zones.append(filename)
 			if zones:
 				ud.debug(ud.LISTENER, ud.INFO, 'DNS: Zones: %s' % (zones,))
 		elif dns_backend == 'none':
@@ -339,5 +406,7 @@ def postrun():
 		pids = _reload(zones, restart, dns_backend)
 		_wait_children(pids)
 		_kill_children(pids)
+	except InvalidZone as exc:
+		ud.debug(ud.LISTENER, ud.ERROR, 'postrun: invalid: %s' % (exc,))
 	finally:
 		listener.unsetuid()

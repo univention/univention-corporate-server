@@ -53,7 +53,3 @@ def resolveDnsEntry(zoneName, resourceRecord, timeout=120, tries=3):
 				raise
 
 		time.sleep(1)
-
-
-if __name__ == '__main__':
-    pass
