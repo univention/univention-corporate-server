@@ -98,6 +98,48 @@ def safe_path_join(basedir, filename):
 	return path
 
 
+def validate_zonename(zonename):
+	"""
+	>>> validate_zonename('foo')
+	'foo'
+	>>> validate_zonename('foo.bar')
+	'foo.bar'
+	>>> validate_zonename('foo.zone')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	InvalidZone:
+	>>> validate_zonename('foo.proxy')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	InvalidZone:
+	>>> validate_zonename('.')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	InvalidZone:
+	>>> validate_zonename('..')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	InvalidZone:
+	>>> validate_zonename('fo..o')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	InvalidZone:
+	>>> validate_zonename('fo"bar"o')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	InvalidZone:
+	"""
+	if not zonename:
+		raise InvalidZone('empty zonename not allowed')
+	if set(zonename) & set('\x00"/' + ''.join(map(chr, range(0x1F + 1)))):
+		raise InvalidZone('zone name %r contains invalid characters' % (zonename,))
+	if zonename.endswith('.zone') or zonename.endswith('.proxy'):
+		raise InvalidZone('.zone or .proxy TLD are not supported.')
+	if '..' in zonename or zonename in ('.', '..'):
+		raise InvalidZone('zone name must not be ".", ".." or contain "..".')
+	return zonename
+
+
 def handler(dn, new, old):
 	"""Handle LDAP changes."""
 	base = listener.configRegistry.get('dns/ldap/base')
@@ -115,7 +157,9 @@ def handler(dn, new, old):
 		if new.get('zoneName'):
 			# Change
 			# Create an empty file to trigger the postrun()
-			zonefile = safe_path_join(PROXY_CACHE_DIR, "%s.zone" % (new['zoneName'][0],))
+			zonename = new['zoneName'][0]
+			zonename = validate_zonename(zonename)
+			zonefile = safe_path_join(PROXY_CACHE_DIR, "%s.zone" % (zonename,))
 			proxy_cache = open(zonefile, 'w')
 			proxy_cache.close()
 			os.chmod(zonefile, 0o640)
@@ -142,6 +186,7 @@ def _new_zone(ucr, zonename, dn):
 		os.mkdir(NAMED_CONF_DIR)
 		os.chmod(NAMED_CONF_DIR, 0o755)
 
+	zonename = validate_zonename(zonename)
 	zonefile = safe_path_join(NAMED_CONF_DIR, zonename)
 
 	# Create empty file and restrict permission
@@ -184,6 +229,7 @@ def _new_zone(ucr, zonename, dn):
 def _remove_zone(zonename):
 	"""Handle removal of zone."""
 	ud.debug(ud.LISTENER, ud.INFO, 'DNS: Removing zone %s' % (zonename,))
+	zonename = validate_zonename(zonename)
 	zonefile = safe_path_join(NAMED_CONF_DIR, zonename)
 	cached_zonefile = safe_path_join(NAMED_CACHE_DIR, zonename + '.zone')
 	# Remove zone file
