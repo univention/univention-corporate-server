@@ -3085,7 +3085,7 @@ univention-app update-certificates my-app
                 </listitem>
                 <listitem>
                     <simpara>
-                        <guimenu>update-ca-certificates</guimenu> is executed inside the container.
+                        <guimenu>update-ca-certificates</guimenu> is executed in the Docker container, if it exists, to update the CA certificate list.
                     </simpara>
                 </listitem>
                 <listitem>
