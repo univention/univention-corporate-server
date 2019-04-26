@@ -69,6 +69,8 @@
 #include "keytab.h"
 #include "context.h"
 
+static struct PyMethodDef keytab_methods[];
+
 krb5KeytabObject *keytab_open(PyObject *unused, PyObject *args)
 {
 	char *keytab_string;

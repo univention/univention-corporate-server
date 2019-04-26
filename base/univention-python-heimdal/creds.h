@@ -40,7 +40,6 @@ typedef struct {
 } krb5CredsObject;
 
 PyTypeObject krb5CredsType;
-static struct PyMethodDef creds_methods[];
 
 krb5CredsObject *creds_from_creds(krb5_context context, krb5_creds creds);
 krb5CredsObject *creds_new(PyObject *unused, PyObject *args);

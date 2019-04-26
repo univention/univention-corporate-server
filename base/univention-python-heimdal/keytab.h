@@ -73,7 +73,6 @@ typedef struct {
 	krb5_context *context;
 } krb5KeytabObject;
 
-static struct PyMethodDef keytab_methods[];
 PyTypeObject krb5KeytabType;
 
 krb5KeytabObject *keytab_open(PyObject *unused, PyObject *args);

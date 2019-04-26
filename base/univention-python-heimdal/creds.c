@@ -39,6 +39,8 @@
 #include "principal.h"
 #include "creds.h"
 
+static struct PyMethodDef creds_methods[];
+
 static krb5_error_code kerb_prompter(krb5_context ctx, void *data,
 	       const char *name, const char *banner, int num_prompts,
 	       krb5_prompt prompts[])
