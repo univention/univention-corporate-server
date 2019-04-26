@@ -322,9 +322,11 @@ def postrun():
 				if not os.path.exists(os.path.join(NAMED_CACHE_DIR, filename)):
 					ud.debug(ud.LISTENER, ud.PROCESS, 'DNS: %s does not exist. Triggering a bind9 restart.' % (os.path.join(NAMED_CACHE_DIR, filename)))
 					restart = True
-				else:
-					zone = filename.replace(".zone", "")
+				elif filename.endswith('.zone'):
+					zone = filename[:-len('.zone')]
 					zones.append(zone)
+				else:
+					zones.append(filename)
 			if zones:
 				ud.debug(ud.LISTENER, ud.INFO, 'DNS: Zones: %s' % (zones,))
 		elif dns_backend == 'none':
