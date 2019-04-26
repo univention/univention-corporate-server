@@ -2407,7 +2407,7 @@ exit 0
 
         <para>
 			<figure id="upgrade-scripts:app-flow:update">
-				<title>App workflow for update</title>
+				<title>App workflow for upgrade</title>
 				<graphic scalefit="1" width="100%" fileref="illustrations44/app-flow-update.png"/>
             </figure>
         </para>
