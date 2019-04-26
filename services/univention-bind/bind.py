@@ -36,7 +36,7 @@ configuration directory (should-state) and reload/restart as appropriate.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
 import listener
 import os
 import subprocess
@@ -64,6 +64,14 @@ SIGNAL = dict([(getattr(signal, _), _) for _ in dir(signal) if _.startswith('SIG
 __zone_created_or_removed = False
 
 
+class InvalidZone(Exception):
+	pass
+
+
+class BaseDirRestriction(InvalidZone):
+	pass
+
+
 def initialize():
 	"""Initialize module on first run."""
 
@@ -83,6 +91,13 @@ def chgrp_bind(filename):
 	os.chown(filename, 0, bind_gid)
 
 
+def safe_path_join(basedir, filename):
+	path = os.path.join(basedir, filename)
+	if not os.path.abspath(path).startswith(basedir):
+		raise BaseDirRestriction('basedir manipulation: %s' % (filename,))
+	return path
+
+
 def handler(dn, new, old):
 	"""Handle LDAP changes."""
 	base = listener.configRegistry.get('dns/ldap/base')
@@ -100,11 +115,13 @@ def handler(dn, new, old):
 		if new.get('zoneName'):
 			# Change
 			# Create an empty file to trigger the postrun()
-			zonefile = os.path.join(PROXY_CACHE_DIR, "%s.zone" % (new['zoneName'][0],))
+			zonefile = safe_path_join(PROXY_CACHE_DIR, "%s.zone" % (new['zoneName'][0],))
 			proxy_cache = open(zonefile, 'w')
 			proxy_cache.close()
 			os.chmod(zonefile, 0o640)
 			chgrp_bind(zonefile)
+	except InvalidZone as exc:
+		ud.debug(ud.LISTENER, ud.ERROR, '%s is invalid: %s' % (dn, exc))
 	finally:
 		listener.unsetuid()
 
@@ -125,7 +142,7 @@ def _new_zone(ucr, zonename, dn):
 		os.mkdir(NAMED_CONF_DIR)
 		os.chmod(NAMED_CONF_DIR, 0o755)
 
-	zonefile = os.path.join(NAMED_CONF_DIR, zonename)
+	zonefile = safe_path_join(NAMED_CONF_DIR, zonename)
 
 	# Create empty file and restrict permission
 	named_zone = open(zonefile, 'w')
@@ -149,7 +166,7 @@ def _new_zone(ucr, zonename, dn):
 	named_zone.close()
 
 	# Create proxy configuration file
-	proxy_file = os.path.join(NAMED_CONF_DIR, zonename + '.proxy')
+	proxy_file = safe_path_join(NAMED_CONF_DIR, zonename + '.proxy')
 	proxy_zone = open(proxy_file, 'w')
 	proxy_zone.write('zone "%s" {\n' % (zonename,))
 	proxy_zone.write('\ttype slave;\n')
@@ -167,8 +184,8 @@ def _new_zone(ucr, zonename, dn):
 def _remove_zone(zonename):
 	"""Handle removal of zone."""
 	ud.debug(ud.LISTENER, ud.INFO, 'DNS: Removing zone %s' % (zonename,))
-	zonefile = os.path.join(NAMED_CONF_DIR, zonename)
-	cached_zonefile = os.path.join(NAMED_CACHE_DIR, zonename + '.zone')
+	zonefile = safe_path_join(NAMED_CONF_DIR, zonename)
+	cached_zonefile = safe_path_join(NAMED_CACHE_DIR, zonename + '.zone')
 	# Remove zone file
 	if os.path.exists(zonefile):
 		os.unlink(zonefile)
@@ -258,7 +275,7 @@ def _wait_children(pids, timeout=15):
 				continue
 
 		if time.time() > timeout:
-			ud.debug(ud.LISTENER, ud.WARN, 'DNS: Pending children: %s' % (' '.join([str(pid) for pid in pids]),))
+			ud.debug(ud.LISTENER, ud.WARN, 'DNS: Pending children: %s' % (' '.join([str(_pid) for _pid in pids]),))
 			break
 		time.sleep(1)
 
@@ -341,5 +358,7 @@ def postrun():
 		pids = _reload(zones, restart, dns_backend)
 		_wait_children(pids)
 		_kill_children(pids)
+	except InvalidZone as exc:
+		ud.debug(ud.LISTENER, ud.ERROR, 'postrun: invalid: %s' % (exc,))
 	finally:
 		listener.unsetuid()
