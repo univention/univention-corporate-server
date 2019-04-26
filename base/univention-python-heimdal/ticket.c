@@ -61,7 +61,7 @@ static void ticket_destroy(krb5TicketObject *self)
 
 PyTypeObject krb5TicketType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
-	"krb5Ticket",			/*tp_name*/
+	.tp_name = "heimdal.krb5Ticket",
 	sizeof(krb5TicketObject),	/*tp_basicsize*/
 	0,				/*tp_itemsize*/
 	/* methods */

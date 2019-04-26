@@ -171,7 +171,7 @@ static PyObject *ccache_getattr(krb5CcacheObject *self, char *name)
 
 PyTypeObject krb5CcacheType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
-	"krb5Ccache",			/*tp_name*/
+	.tp_name = "heimdal.krb5Ccache",
 	sizeof(krb5CcacheObject),	/*tp_basicsize*/
 	0,				/*tp_itemsize*/
 	/* methods */

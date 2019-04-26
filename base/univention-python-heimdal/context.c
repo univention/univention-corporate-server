@@ -97,7 +97,7 @@ static void context_destroy(krb5ContextObject *self)
 
 PyTypeObject krb5ContextType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
-	"krb5Context",			/*tp_name*/
+	.tp_name = "heimdal.krb5Context",
 	sizeof(krb5ContextObject),	/*tp_basicsize*/
 	0,				/*tp_itemsize*/
 	/* methods */

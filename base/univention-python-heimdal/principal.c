@@ -109,7 +109,7 @@ static PyObject *principal_getattr(krb5PrincipalObject *self, char *name)
 
 PyTypeObject krb5PrincipalType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
-	"krb5Principal",		/*tp_name*/
+	.tp_name = "heimdal.krb5Principal",
 	sizeof(krb5PrincipalObject),	/*tp_basicsize*/
 	0,				/*tp_itemsize*/
 	/* methods */

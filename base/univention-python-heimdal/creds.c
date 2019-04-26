@@ -189,7 +189,7 @@ static PyObject *creds_getattr(krb5CredsObject *self, char *name)
 
 PyTypeObject krb5CredsType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
-	"krb5Creds",			/*tp_name*/
+	.tp_name = "heimdal.krb5Creds",
 	sizeof(krb5CredsObject),	/*tp_basicsize*/
 	0,				/*tp_itemsize*/
 	/* methods */

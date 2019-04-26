@@ -116,7 +116,7 @@ static PyObject *salt_getattr(krb5SaltObject *self, char *name)
 
 PyTypeObject krb5SaltType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
-	"krb5Salt",			/*tp_name*/
+	.tp_name = "heimdal.krb5Salt",
 	sizeof(krb5SaltObject),		/*tp_basicsize*/
 	0,				/*tp_itemsize*/
 	/* methods */

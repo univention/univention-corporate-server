@@ -155,7 +155,7 @@ static PyObject *keyblock_getattr(krb5KeyblockObject *self, char *name)
 
 PyTypeObject krb5KeyblockType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
-	"krb5Keyblock",			/*tp_name*/
+	.tp_name = "heimdal.krb5Keyblock",
 	sizeof(krb5KeyblockObject),	/*tp_basicsize*/
 	0,				/*tp_itemsize*/
 	/* methods */
