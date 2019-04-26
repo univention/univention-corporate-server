@@ -1,3 +1,9 @@
+univention-directory-listener (13.0.2-4) unstable; urgency=medium
+
+  * Bug #49228: exit resync-objects.py early on master servers
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 26 Apr 2019 14:37:10 +0200
+
 univention-directory-listener (13.0.2-3) unstable; urgency=medium
 
   * Bug #49228: Fix resync-objects script

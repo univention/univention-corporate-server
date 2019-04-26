@@ -52,13 +52,20 @@ def main():
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
 	base = ucr.get("ldap/base")
+	server_role = ucr.get("server/role", "")
+	if server_role == 'domaincontroller_master':
+		print('local ldap is master server, nothing todo')
+		return
+	if server_role not in ['domaincontroller_backup', 'domaincontroller_slave']:
+		print('server role ("{}") has no ldap, nothing todo'.format(server_role))
+		return
 
 	if not opts.filter:
 		opts.filter = '(uid=%s$)' % ucr['hostname']
 
 	# get local and master connection
 	local = uldap.getRootDnConnection()
-	if ucr.get("server/role", "") == "domaincontroller_backup":
+	if server_role == "domaincontroller_backup":
 		master = uldap.getAdminConnection()
 	else:
 		master = uldap.getMachineConnection(ldap_master=True)
