@@ -2088,13 +2088,12 @@ docker-compose -p $appid logs
 		<section id="installation:preinst">
 			<title>Script called before installation to verify that App may be installed</title>
 			<para>
-                The <filename>preinst</filename> script is executed
-                on the UCS host system before the app is initialized, even
-                before the app image is downloaded. It is also called a preinst
-                script. Its purpose is to check whether installation will be
-                successful or not. Any exit code other than 0 will result in
-                cancellation of the installation process. This script is also
-                executed if the app is upgraded.
+                The <filename>preinst</filename> script is executed on the UCS
+                host system before the app is initialized, even before the app
+                image is downloaded. Its purpose is to check whether
+                installation will be successful or not. Any exit code other
+                than 0 will result in cancellation of the installation process.
+                This script is also executed if the app is upgraded.
             </para>
             <para>
                 The script receives the LDAP bind DN of the Administrator
