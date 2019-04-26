@@ -3061,7 +3061,7 @@ Group[de] = Lizenz und Liste
             to be aware of changes to the certificates. Starting with UCS 4.3
             errata 91 the Univention App Center provides a simple way to manage
             certificates inside an app. This is simply a new action named
-            <guimenu>update-certificates</guimenu> in the app Center which is
+            <guimenu>update-certificates</guimenu> in the App Center which is
             called automatically during the installation and upgrade of apps
             (but can also be executed manually) and provides apps a simple way
             to gain access to certificates and to react to changes to
@@ -3095,7 +3095,7 @@ univention-app update-certificates my-app
                 </listitem>
                 <listitem>
                     <simpara>
-                        The Docker host UCS certificate is copied to <filename>/etc/univention/ssl/docker-host-certificate/{cert.pem,private.key}</filename> and <filename>/etc/univention/ssl/$FQDN_DOCKER_HOST/{cert.pem,private.key}</filename>.
+                        The Docker host UCS certificate is copied to <filename>/etc/univention/ssl/docker-host-certificate/{cert.perm,private.key}</filename> and <filename>/etc/univention/ssl/$FQDN_DOCKER_HOST/{cert.perm,private.key}</filename>.
                     </simpara>
                 </listitem>
             </itemizedlist>
