@@ -57,6 +57,27 @@ static struct PyMethodDef module_methods[] = {
 	{NULL, NULL, 0, NULL}
 };
 
+#if PY_MAJOR_VERSION >= 3
+static struct PyModuleDef moduledef = {
+	PyModuleDef_HEAD_INIT,
+	.m_name = "heimdal",
+	.m_doc = "Heimdal Kerberos Python binding",
+	.m_size = -1,
+	.m_methods = module_methods,
+};
+
+PyMODINIT_FUNC PyInit_heimdal(void) {
+	PyObject *module, *self;
+	module = PyModule_Create(&moduledef);
+	if (module == NULL)
+		return NULL;
+
+	self = PyModule_GetDict(module);
+	error_init(self);
+
+	return module;
+}
+#else
 PyMODINIT_FUNC
 initheimdal(void)
 {
@@ -66,6 +87,6 @@ initheimdal(void)
 		return;
 
 	self = PyModule_GetDict(module);
-
 	error_init(self);
 }
+#endif

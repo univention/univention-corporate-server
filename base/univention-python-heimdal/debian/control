@@ -6,13 +6,17 @@ Build-Depends:
  debhelper (>= 9),
  dh-python,
  heimdal-dev,
- python-all-dev,
+ python-dev,
+ python3-dev,
  python-debian,
+ python3-debian,
  python-pkgconfig,
+ python3-pkgconfig,
  python-setuptools,
+ python3-setuptools,
  ucslint-univention,
 Standards-Version: 3.8.2
-X-Python-Version: 2.7
+X-Python-Version: 2.7, 3.5
 
 Package: python-univention-heimdal
 Architecture: any
@@ -24,7 +28,21 @@ Replaces:
 Provides:
  python-heimdal,
  ${python:Provides},
-Description: UCS - Kerberos interface module for Python.
+Description: UCS - Kerberos interface module for Python 2.
+ This module provides a Python interface to the Heimdal Kerberos library.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: python3-univention-heimdal
+Architecture: any
+Depends:
+ ${python3:Depends},
+ ${shlibs:Depends},
+Provides: ${python3:Provides}
+Description: UCS - Kerberos interface module for Python 3.
  This module provides a Python interface to the Heimdal Kerberos library.
  .
  It is part of Univention Corporate Server (UCS), an
