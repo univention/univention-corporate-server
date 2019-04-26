@@ -111,8 +111,7 @@ static void enctype_destroy(krb5EnctypeObject *self)
 }
 
 PyTypeObject krb5EnctypeType = {
-	PyObject_HEAD_INIT(&PyType_Type)
-	0,				/*ob_size*/
+	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	"krb5Enctype",			/*tp_name*/
 	sizeof(krb5EnctypeObject),	/*tp_basicsize*/
 	0,				/*tp_itemsize*/

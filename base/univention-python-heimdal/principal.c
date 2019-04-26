@@ -108,8 +108,7 @@ static PyObject *principal_getattr(krb5PrincipalObject *self, char *name)
 }
 
 PyTypeObject krb5PrincipalType = {
-	PyObject_HEAD_INIT(&PyType_Type)
-	0,				/*ob_size*/
+	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	"krb5Principal",		/*tp_name*/
 	sizeof(krb5PrincipalObject),	/*tp_basicsize*/
 	0,				/*tp_itemsize*/

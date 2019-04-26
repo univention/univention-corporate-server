@@ -170,8 +170,7 @@ static PyObject *ccache_getattr(krb5CcacheObject *self, char *name)
 }
 
 PyTypeObject krb5CcacheType = {
-	PyObject_HEAD_INIT(&PyType_Type)
-	0,				/*ob_size*/
+	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	"krb5Ccache",			/*tp_name*/
 	sizeof(krb5CcacheObject),	/*tp_basicsize*/
 	0,				/*tp_itemsize*/

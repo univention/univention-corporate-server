@@ -96,8 +96,7 @@ static void context_destroy(krb5ContextObject *self)
 }
 
 PyTypeObject krb5ContextType = {
-	PyObject_HEAD_INIT(&PyType_Type)
-	0,				/*ob_size*/
+	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	"krb5Context",			/*tp_name*/
 	sizeof(krb5ContextObject),	/*tp_basicsize*/
 	0,				/*tp_itemsize*/

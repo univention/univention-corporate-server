@@ -115,8 +115,7 @@ static PyObject *salt_getattr(krb5SaltObject *self, char *name)
 }
 
 PyTypeObject krb5SaltType = {
-	PyObject_HEAD_INIT(&PyType_Type)
-	0,				/*ob_size*/
+	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	"krb5Salt",			/*tp_name*/
 	sizeof(krb5SaltObject),		/*tp_basicsize*/
 	0,				/*tp_itemsize*/
