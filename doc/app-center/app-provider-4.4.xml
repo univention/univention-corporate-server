@@ -2413,7 +2413,7 @@ exit 0
         </para>
 
 		<section id="upgrade-scripts:preinst">
-			<title>Script called before installation to verify that App may be upgraded</title>
+			<title>Script called before upgrade to verify that App may be upgraded</title>
 			<para>
                 The <filename>preinst</filename> script is executed on the UCS
                 host system before the app upgrade is initialized, even before
