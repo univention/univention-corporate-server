@@ -2509,7 +2509,7 @@ exit 0
                 <filename>configure_host</filename> script is run. Its purpose
                 is to make environment specific settings in the app container
                 during the upgrade. The parameters are the app action
-                <userinput>ugprade</userinput>, the appid, the app version and
+                <userinput>upgrade</userinput>, the appid, the app version and
                 a filename for error logging.
             </para>
         </section>
