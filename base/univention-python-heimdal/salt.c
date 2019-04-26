@@ -53,7 +53,6 @@ krb5SaltObject *salt_from_salt(krb5_context context, krb5_salt salt)
 	return self;
 }
 
-
 krb5SaltObject *salt_new(PyObject *unused, PyObject *args)
 {
 	krb5_error_code ret;

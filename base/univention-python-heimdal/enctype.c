@@ -52,7 +52,6 @@ krb5EnctypeObject *enctype_from_enctype(krb5_context context, krb5_enctype encty
 	return self;
 }
 
-
 krb5EnctypeObject *enctype_new(PyObject *unused, PyObject *args)
 {
 	krb5_error_code ret;

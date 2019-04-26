@@ -253,7 +253,6 @@ static PyObject *keytab_list(krb5KeytabObject *self, PyObject *args)
 
 out:
 	return list;
-
 }
 
 static PyObject *keytab_remove(krb5KeytabObject *self, PyObject *args)
