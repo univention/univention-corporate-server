@@ -45,6 +45,7 @@ import time
 import errno
 import signal
 import grp
+import urllib
 
 name = 'bind'
 description = 'Update BIND zones'
@@ -110,12 +111,11 @@ def handler(dn, new, old):
 
 def _ldap_auth_string(ucr):
 	"""Build extended LDAP query URI part containing bind credentials."""
-	account = ucr.get('bind/binddn', ucr.get('ldap/hostdn')).replace(',', '%2c')
+	account = ucr.get('bind/binddn', ucr.get('ldap/hostdn'))
 
 	pwdfile = ucr.get('bind/bindpw', '/etc/machine.secret')
-	pwd = open(pwdfile).readlines()
-
-	return '????!bindname=%s,!x-bindpw=%s,x-tls' % (account, pwd[0])
+	with open(pwdfile) as fd:
+		return '????!bindname=%s,!x-bindpw=%s,x-tls' % (urllib.quote(account), urllib.quote(fd.readline().rstrip()))
 
 
 def _new_zone(ucr, zonename, dn):
