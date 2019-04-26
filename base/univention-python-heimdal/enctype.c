@@ -113,20 +113,11 @@ static void enctype_destroy(krb5EnctypeObject *self)
 PyTypeObject krb5EnctypeType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	.tp_name = "heimdal.krb5Enctype",
-	sizeof(krb5EnctypeObject),	/*tp_basicsize*/
-	0,				/*tp_itemsize*/
+	.tp_basicsize = sizeof(krb5EnctypeObject),
 	/* methods */
-	(destructor)enctype_destroy,	/*tp_dealloc*/
-	0,				/*tp_print*/
-	(getattrfunc)enctype_getattr,	/*tp_getattr*/
-	0,				/*tp_setattr*/
-	0,				/*tp_compare*/
-	(reprfunc)enctype_string,	/*tp_repr*/
-	0,				/*tp_repr*/
-	0,				/*tp_as_number*/
-	0,				/*tp_as_sequence*/
-	0,				/*tp_as_mapping*/
-	0,				/*tp_hash*/
+	.tp_dealloc = (destructor)enctype_destroy,
+	.tp_getattr = (getattrfunc)enctype_getattr,
+	.tp_repr = (reprfunc)enctype_string,
 };
 
 static struct PyMethodDef enctype_methods[] = {

@@ -190,20 +190,10 @@ static PyObject *creds_getattr(krb5CredsObject *self, char *name)
 PyTypeObject krb5CredsType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	.tp_name = "heimdal.krb5Creds",
-	sizeof(krb5CredsObject),	/*tp_basicsize*/
-	0,				/*tp_itemsize*/
+	.tp_basicsize = sizeof(krb5CredsObject),
 	/* methods */
-	(destructor)creds_destroy,	/*tp_dealloc*/
-	0,				/*tp_print*/
-	(getattrfunc)creds_getattr,	/*tp_getattr*/
-	0,				/*tp_setattr*/
-	0,				/*tp_compare*/
-	0,				/*tp_repr*/
-	0,				/*tp_repr*/
-	0,				/*tp_as_number*/
-	0,				/*tp_as_sequence*/
-	0,				/*tp_as_mapping*/
-	0,				/*tp_hash*/
+	.tp_dealloc = (destructor)creds_destroy,
+	.tp_getattr = (getattrfunc)creds_getattr,
 };
 
 static struct PyMethodDef creds_methods[] = {

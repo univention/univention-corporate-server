@@ -58,20 +58,9 @@ static void realm_destroy(krb5RealmObject *self)
 PyTypeObject krb5RealmType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	.tp_name = "heimdal.krb5Realm",
-	sizeof(krb5RealmObject),	/*tp_basicsize*/
-	0,				/*tp_itemsize*/
+	.tp_basicsize = sizeof(krb5RealmObject),
 	/* methods */
-	(destructor)realm_destroy,	/*tp_dealloc*/
-	0,				/*tp_print*/
-	0,				/*tp_getattr*/
-	0,				/*tp_setattr*/
-	0,				/*tp_compare*/
-	0,				/*tp_repr*/
-	0,				/*tp_repr*/
-	0,				/*tp_as_number*/
-	0,				/*tp_as_sequence*/
-	0,				/*tp_as_mapping*/
-	0,				/*tp_hash*/
+	.tp_dealloc = (destructor)realm_destroy,
 };
 
 static struct PyMethodDef realm_methods[] = {

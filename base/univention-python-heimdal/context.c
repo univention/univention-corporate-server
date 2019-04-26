@@ -98,20 +98,10 @@ static void context_destroy(krb5ContextObject *self)
 PyTypeObject krb5ContextType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	.tp_name = "heimdal.krb5Context",
-	sizeof(krb5ContextObject),	/*tp_basicsize*/
-	0,				/*tp_itemsize*/
+	.tp_basicsize = sizeof(krb5ContextObject),
 	/* methods */
-	(destructor)context_destroy,	/*tp_dealloc*/
-	0,				/*tp_print*/
-	(getattrfunc)context_getattr,	/*tp_getattr*/
-	0,				/*tp_setattr*/
-	0,				/*tp_compare*/
-	0,				/*tp_repr*/
-	0,				/*tp_repr*/
-	0,				/*tp_as_number*/
-	0,				/*tp_as_sequence*/
-	0,				/*tp_as_mapping*/
-	0,				/*tp_hash*/
+	.tp_dealloc = (destructor)context_destroy,
+	.tp_getattr = (getattrfunc)context_getattr,
 };
 
 static struct PyMethodDef context_methods[] = {

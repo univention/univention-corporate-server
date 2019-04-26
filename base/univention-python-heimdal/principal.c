@@ -110,20 +110,11 @@ static PyObject *principal_getattr(krb5PrincipalObject *self, char *name)
 PyTypeObject krb5PrincipalType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	.tp_name = "heimdal.krb5Principal",
-	sizeof(krb5PrincipalObject),	/*tp_basicsize*/
-	0,				/*tp_itemsize*/
+	.tp_basicsize = sizeof(krb5PrincipalObject),
 	/* methods */
-	(destructor)principal_destroy,	/*tp_dealloc*/
-	0,				/*tp_print*/
-	(getattrfunc)principal_getattr,	/*tp_getattr*/
-	0,				/*tp_setattr*/
-	0,				/*tp_compare*/
-	(reprfunc)principal_name,	/*tp_repr*/
-	0,				/*tp_repr*/
-	0,				/*tp_as_number*/
-	0,				/*tp_as_sequence*/
-	0,				/*tp_as_mapping*/
-	0,				/*tp_hash*/
+	.tp_dealloc = (destructor)principal_destroy,
+	.tp_getattr = (getattrfunc)principal_getattr,
+	.tp_repr = (reprfunc)principal_name,
 };
 
 static struct PyMethodDef principal_methods[] = {

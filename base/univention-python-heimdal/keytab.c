@@ -341,20 +341,10 @@ static PyObject *keytab_getattr(krb5KeytabObject *self, char *name)
 PyTypeObject krb5KeytabType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	.tp_name = "heimdal.Keytab",
-	sizeof(krb5KeytabObject),	/*tp_basicsize*/
-	0,				/*tp_itemsize*/
+	.tp_basicsize = sizeof(krb5KeytabObject),
 	/* methods */
-	(destructor)keytab_destroy,	/*tp_dealloc*/
-	0,				/*tp_print*/
-	(getattrfunc)keytab_getattr,	/*tp_getattr*/
-	0,				/*tp_setattr*/
-	0,				/*tp_compare*/
-	0,				/*tp_repr*/
-	0,				/*tp_repr*/
-	0,				/*tp_as_number*/
-	0,				/*tp_as_sequence*/
-	0,				/*tp_as_mapping*/
-	0,				/*tp_hash*/
+	.tp_dealloc = (destructor)keytab_destroy,
+	.tp_getattr = (getattrfunc)keytab_getattr,
 };
 
 static struct PyMethodDef keytab_methods[] = {

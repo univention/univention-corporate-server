@@ -156,20 +156,10 @@ static PyObject *keyblock_getattr(krb5KeyblockObject *self, char *name)
 PyTypeObject krb5KeyblockType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	.tp_name = "heimdal.krb5Keyblock",
-	sizeof(krb5KeyblockObject),	/*tp_basicsize*/
-	0,				/*tp_itemsize*/
+	.tp_basicsize = sizeof(krb5KeyblockObject),
 	/* methods */
-	(destructor)keyblock_destroy,	/*tp_dealloc*/
-	0,				/*tp_print*/
-	(getattrfunc)keyblock_getattr,	/*tp_getattr*/
-	0,				/*tp_setattr*/
-	0,				/*tp_compare*/
-	0,				/*tp_repr*/
-	0,				/*tp_repr*/
-	0,				/*tp_as_number*/
-	0,				/*tp_as_sequence*/
-	0,				/*tp_as_mapping*/
-	0,				/*tp_hash*/
+	.tp_dealloc = (destructor)keyblock_destroy,
+	.tp_getattr = (getattrfunc)keyblock_getattr,
 };
 
 static struct PyMethodDef keyblock_methods[] = {

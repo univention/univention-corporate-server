@@ -172,20 +172,10 @@ static PyObject *ccache_getattr(krb5CcacheObject *self, char *name)
 PyTypeObject krb5CcacheType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	.tp_name = "heimdal.krb5Ccache",
-	sizeof(krb5CcacheObject),	/*tp_basicsize*/
-	0,				/*tp_itemsize*/
+	.tp_basicsize = sizeof(krb5CcacheObject),
 	/* methods */
-	(destructor)ccache_close,	/*tp_dealloc*/
-	0,				/*tp_print*/
-	(getattrfunc)ccache_getattr,	/*tp_getattr*/
-	0,				/*tp_setattr*/
-	0,				/*tp_compare*/
-	0,				/*tp_repr*/
-	0,				/*tp_repr*/
-	0,				/*tp_as_number*/
-	0,				/*tp_as_sequence*/
-	0,				/*tp_as_mapping*/
-	0,				/*tp_hash*/
+	.tp_dealloc = (destructor)ccache_close,
+	.tp_getattr = (getattrfunc)ccache_getattr,
 };
 
 static struct PyMethodDef ccache_methods[] = {
