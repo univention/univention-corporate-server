@@ -102,7 +102,7 @@ def main():
 			modlist = []
 			local_data = local_res[0][1]
 			for key in set(data.keys()) | set(local_data.keys()):
-				if local_data.get(key, []) != data.get(key, []):
+				if set(local_data.get(key, [])).symmetric_difference(set(data.get(key, []))):
 					modlist.append([key, local_data.get(key, []), data.get(key, [])])
 			if not modlist:
 				print('  ==> no change')

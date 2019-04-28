@@ -1,3 +1,9 @@
+univention-directory-listener (13.0.2-5) unstable; urgency=medium
+
+  * Bug #49228: only update object if attributes differ
+
+ -- Jürn Brodersen <brodersen@univention.de>  Sun, 28 Apr 2019 21:51:54 +0200
+
 univention-directory-listener (13.0.2-4) unstable; urgency=medium
 
   * Bug #49228: exit resync-objects.py early on master servers
