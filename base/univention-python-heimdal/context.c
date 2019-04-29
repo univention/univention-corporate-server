@@ -40,51 +40,73 @@
 
 krb5ContextObject *context_open(PyObject *unused)
 {
-	krb5_error_code ret;
-	krb5ContextObject *self = (krb5ContextObject *) PyObject_NEW(krb5ContextObject, &krb5ContextType);
-	if (self == NULL)
-		return NULL;
-
-	ret = krb5_init_context(&self->context);
-	if (ret) {
-		Py_DECREF(self);
-		krb5_exception(NULL, ret);
-		return NULL;
-	}
-
-	return self;
+	return (krb5ContextObject *)PyObject_CallObject((PyObject *)&krb5ContextType, NULL);
 }
 
 static PyObject *context_get_permitted_enctypes(krb5ContextObject *self)
 {
 	krb5_error_code ret;
-	krb5_enctype *etypes;
-	PyObject* list;
+	krb5_enctype *etypes = NULL;
+	PyObject* list = NULL;
 	int i;
 
-	if ((list = PyList_New(0)) == NULL)
-		return PyErr_NoMemory();
+	if ((list = PyList_New(0)) == NULL) {
+		PyErr_NoMemory();
+		goto exception;
+	}
 
 	ret = krb5_get_permitted_enctypes(self->context, &etypes);
 	if (ret) {
 		krb5_exception(NULL, ret);
-		Py_DECREF(list);
-		return NULL;
+		goto exception;
 	}
 
 	for (i=0; etypes && etypes[i] != KRB5_ENCTYPE_NULL; i++) {
 		krb5EnctypeObject *enctype;
 		enctype = enctype_from_enctype(self->context, etypes[i]);
+		if (enctype == NULL) {
+			goto exception;
+		}
 		PyList_Append(list, (PyObject*) enctype);
 	}
+	goto finally;
 
+exception:
+	Py_XDECREF(list);
+	list = NULL;
+finally:
+	if (etypes)
+#if 0
+		krb5_free_enctypes(self->context, etypes);
+#else
+		free(etypes);
+#endif
 	return list;
+}
+
+static PyObject *context_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
+{
+	krb5ContextObject *self = (krb5ContextObject *)type->tp_alloc(type, 0);
+	return (PyObject *)self;
+}
+
+static int context_init(krb5ContextObject *self, PyObject *args, PyObject *kwds)
+{
+	if (self->context) {
+		krb5_free_context(self->context);
+		self->context = NULL;
+	}
+	krb5_error_code ret = krb5_init_context(&self->context);
+	if (ret) {
+		return -1;
+	}
+	return 0;
 }
 
 static void context_destroy(krb5ContextObject *self)
 {
 	krb5_free_context(self->context);
-	PyObject_Del( self );
+	self->ob_type->tp_free((PyObject *)self);
 }
 
 static struct PyMethodDef context_methods[] = {
@@ -100,4 +122,6 @@ PyTypeObject krb5ContextType = {
 	.tp_dealloc = (destructor)context_destroy,
 	.tp_methods = context_methods,
 	.tp_flags = Py_TPFLAGS_DEFAULT,
+	.tp_init = (initproc)context_init,
+	.tp_new = context_new,
 };
