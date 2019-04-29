@@ -685,7 +685,7 @@ else
 			args+=(-netmask "$NETMASK")
 		fi
 	fi
-	mac_addr="$(find /sys/class/net/* -not -lname ../../devices/virtual/\* -exec cat {}/address \;)"
+	mac_addr="$(find /sys/class/net/* -not -lname ../../devices/virtual/\* -type l,d -exec cat {}/address \; | sort -u)"
 	if [ -n "$mac_addr" ]; then
 		while read line; do
 			if [ -n "$line" ]; then

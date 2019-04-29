@@ -1,3 +1,9 @@
+univention-join (11.0.1-17) unstable; urgency=medium
+
+  * Bug #49298: Repair join when using bonding
+
+ -- Jannik Ahlers <ahlers@univention.de>  Mon, 29 Apr 2019 11:22:44 +0200
+
 univention-join (11.0.1-16) unstable; urgency=medium
 
   * Bug #47603: Detect failed.ldif early and remove
