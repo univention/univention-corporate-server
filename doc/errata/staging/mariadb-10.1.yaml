@@ -6,16 +6,13 @@ src: mariadb-10.1
 fix: 10.1.38-0+deb9u1
 desc: |
  This update addresses the following issues:
- * Vulnerability in the MySQL Server component of Oracle MySQL (subcomponent:
-   Server: Optimizer). Supported versions that are affected are 5.6.42 and
-   prior, 5.7.24 and prior and 8.0.13 and prior. Easily exploitable
-   vulnerability allows low privileged attacker with network access via
-   multiple protocols to compromise MySQL Server. Successful attacks of this
-   vulnerability can result in unauthorized ability to cause a hang or
-   frequently repeatable crash (complete DOS) of MySQL Server. CVSS 3.0 Base
-   Score 6.5 (Availability impacts). CVSS Vector:
-   (CVSS:3.0/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H). (CVE-2019-2529)
- * Server: DDL unspecified vulnerability (CPU Jan 2019) (CVE-2019-2537)
+ * Vulnerability in the MySQL Server component of Oracle MySQL. Easily
+   exploitable vulnerability allows low privileged attacker with network
+   access via multiple protocols to compromise MySQL Server. Successful
+   attacks of this vulnerability can result in unauthorized ability to cause a
+   hang or frequently repeatable crash (complete DOS) of MySQL Server.
+   (CVE-2019-2529)
+ * DDL unspecified vulnerability (CPU Jan 2019) (CVE-2019-2537)
 bug: [49362]
 cve:
 - CVE-2019-2529
