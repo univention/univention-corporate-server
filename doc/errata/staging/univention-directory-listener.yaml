@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-directory-listener
-fix: 13.0.2-4A~4.4.0.201904261449
+fix: 13.0.2-5A~4.4.0.201904282204
 desc: |
  This update addresses the following issue(s):
  * The resync_objects.py helper script now respects the configured local
