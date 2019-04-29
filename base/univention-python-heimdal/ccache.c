@@ -68,7 +68,7 @@ krb5CcacheObject *ccache_open(PyObject *unused, PyObject *args)
 		PyErr_SetObject(PyExc_IOError, Py_None);
 		goto out;
 	} else if (err)
-		krb5_exception(self->context->context, 1, err, "krb5_cc_get_principal");
+		krb5_exception(self->context->context, err, "krb5_cc_get_principal");
 #endif
 
 	return self;
@@ -79,7 +79,7 @@ static void ccache_dealloc(krb5CcacheObject *self)
 	krb5_error_code err;
 	err = krb5_cc_close(self->context->context, self->ccache);
 	if (err)
-		krb5_exception(self->context->context, 1, err, "krb5_cc_close");
+		krb5_exception(self->context->context, err, "krb5_cc_close");
 	Py_DECREF(self->context);
 	Py_TYPE(self)->tp_free(self);
 }
