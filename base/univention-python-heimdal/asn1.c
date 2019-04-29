@@ -152,12 +152,6 @@ PyObject* asn1_decode_key(PyObject *unused, PyObject* args)
 	if (!PyArg_ParseTuple(args, "s#|O!", &key_buf, &key_len, &krb5ContextType, &context))
 		return NULL;
 
-	err = decode_Key(key_buf, key_len, &asn1_key, &len);
-	if (err) {
-		krb5_exception(NULL, err);
-		goto except;
-	}
-
 	if (context == NULL) {
 		context = context_open(NULL);
 		if (context == NULL) {
@@ -166,6 +160,12 @@ PyObject* asn1_decode_key(PyObject *unused, PyObject* args)
 		}
 	} else {
 		Py_INCREF(context);
+	}
+
+	err = decode_Key(key_buf, key_len, &asn1_key, &len);
+	if (err) {
+		krb5_exception(context->context, err);
+		goto except;
 	}
 
 	keyblock = (krb5KeyblockObject *) PyObject_NEW(krb5KeyblockObject, &krb5KeyblockType);

@@ -53,7 +53,7 @@ static PyObject *context_get_permitted_enctypes(krb5ContextObject *self)
 
 	err = krb5_get_permitted_enctypes(self->context, &etypes);
 	if (err) {
-		krb5_exception(NULL, err);
+		krb5_exception(self->context, err);
 		goto exception;
 	}
 

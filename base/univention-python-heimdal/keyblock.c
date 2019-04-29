@@ -82,7 +82,7 @@ krb5KeyblockObject *keyblock_new(PyObject *unused, PyObject *args)
 		return NULL;
 	}
 	if (err) {
-		krb5_exception(NULL, err);
+		krb5_exception(self->context->context, err);
 		Py_DECREF(self);
 		return NULL;
 	}
@@ -134,7 +134,7 @@ krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args)
 	err = krb5_keyblock_init(self->context->context, enctype, key_data, key_len, &self->keyblock);
 
 	if (err) {
-		krb5_exception(NULL, err);
+		krb5_exception(self->context->context, err);
 		Py_DECREF(self);
 		return NULL;
 	}

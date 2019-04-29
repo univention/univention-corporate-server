@@ -62,7 +62,7 @@ krb5PrincipalObject *principal_new(PyObject *unused, PyObject *args)
 
 	err = krb5_parse_name(self->context->context, principal_string, &self->principal);
 	if (err) {
-		krb5_exception(NULL, err);
+		krb5_exception(self->context->context, err);
 		Py_DECREF(self);
 		return NULL;
 	}
@@ -78,7 +78,7 @@ static PyObject *principal_name(krb5PrincipalObject *self)
 
 	err = krb5_unparse_name(self->context->context, self->principal, &principal_string);
 	if (err) {
-		krb5_exception(NULL, err);
+		krb5_exception(self->context->context, err);
 		return NULL;
 	}
 	principal = PyString_FromString(principal_string);

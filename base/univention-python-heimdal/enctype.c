@@ -80,7 +80,7 @@ krb5EnctypeObject *enctype_new(PyObject *unused, PyObject *args)
 			&self->enctype);
 	if (err) {
 		Py_DECREF(self);
-		krb5_exception(NULL, err);
+		krb5_exception(self->context->context, err);
 		return NULL;
 	}
 
@@ -95,7 +95,7 @@ static PyObject *enctype_string(krb5EnctypeObject *self)
 
 	err = krb5_enctype_to_string(self->context->context, self->enctype, &enctype_c_string);
 	if (err) {
-		krb5_exception(NULL, err);
+		krb5_exception(self->context->context, err);
 		return NULL;
 	}
 	enctype_string = PyString_FromString(enctype_c_string);

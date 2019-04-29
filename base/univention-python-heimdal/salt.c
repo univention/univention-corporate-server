@@ -80,7 +80,7 @@ krb5SaltObject *salt_new(PyObject *unused, PyObject *args)
 	err = krb5_get_pw_salt(context->context, principal->principal,
 			&self->salt);
 	if (err) {
-		krb5_exception(NULL, err);
+		krb5_exception(self->context->context, err);
 		Py_DECREF(self);
 		return NULL;
 	}

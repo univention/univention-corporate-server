@@ -55,7 +55,13 @@ PyObject *krb5_exception(krb5_context context, int code, ...)
 		Py_DECREF(i);
 		if (errobj == NULL)
 			errobj = Krb5_exception_class;
-		PyErr_SetNone(errobj);
+		if (context) {
+			const char *msg = krb5_get_error_message(context, code);
+			PyErr_Format(errobj, "%s (%d)", msg, code);
+			krb5_free_error_message(context, msg);
+		} else {
+			PyErr_SetNone(errobj);
+		}
 	}
 
 	return NULL;
