@@ -40,6 +40,10 @@
 #include "enctype.h"
 #include "keyblock.h"
 #include "asn1.h"
+#if 0
+#include "realm.h"
+#include "ticket.h"
+#endif
 
 static struct PyMethodDef module_methods[] = {
 	{"context", (PyCFunction)context_open, METH_NOARGS, "Open context"},
@@ -67,8 +71,31 @@ static struct PyModuleDef moduledef = {
 };
 #endif
 
+static const struct types {
+	const char *name;
+	PyTypeObject *type;
+} types[] = {
+	{"krb5Ccache", &krb5CcacheType},
+	{"krb5Context", &krb5ContextType},
+	{"krb5Creds", &krb5CredsType},
+	{"krb5Enctype", &krb5EnctypeType},
+	{"krb5Keyblock", &krb5KeyblockType},
+	{"krb5Keytab", &krb5KeytabType},
+	{"krb5Principal", &krb5PrincipalType},
+#if 0
+	{"krb5Realm", &krb5RealmType},
+#endif
+	{"krb5Salt", &krb5SaltType},
+#if 0
+	{"krb5Ticket", &krb5TicketType},
+#endif
+	{NULL, NULL}
+};
+
+
 static PyObject * moduleinit(void) {
 	PyObject *module, *self;
+	const struct types *type;
 #if PY_MAJOR_VERSION >= 3
 	module = PyModule_Create(&moduledef);
 #else
@@ -77,30 +104,12 @@ static PyObject * moduleinit(void) {
 	if (module == NULL)
 		return NULL;
 
-	if (PyType_Ready(&krb5CcacheType) < 0)
-		return NULL;
-	if (PyType_Ready(&krb5ContextType) < 0)
-		return NULL;
-	if (PyType_Ready(&krb5CredsType) < 0)
-		return NULL;
-	if (PyType_Ready(&krb5EnctypeType) < 0)
-		return NULL;
-	if (PyType_Ready(&krb5KeyblockType) < 0)
-		return NULL;
-	if (PyType_Ready(&krb5KeytabType) < 0)
-		return NULL;
-	if (PyType_Ready(&krb5PrincipalType) < 0)
-		return NULL;
-#if 0
-	if (PyType_Ready(&krb5RealmType) < 0)
-		return NULL;
-#endif
-	if (PyType_Ready(&krb5SaltType) < 0)
-		return NULL;
-#if 0
-	if (PyType_Ready(&krb5TicketType) < 0)
-		return NULL;
-#endif
+	for (type = types; type->name; type++) {
+		if (PyType_Ready(type->type) < 0)
+			return NULL;
+		Py_INCREF(type->type);
+		PyModule_AddObject(module, type->name, (PyObject *)type->type);
+	}
 
 	self = PyModule_GetDict(module);
 	error_init(self);
