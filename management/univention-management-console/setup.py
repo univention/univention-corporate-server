@@ -31,12 +31,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import os
+import subprocess
+
 from distutils.core import setup
 from distutils.command.build import build
 from distutils import cmd
 
-import os
-import subprocess
+from email.utils import parseaddr
+from debian.changelog import Changelog
+from debian.deb822 import Deb822
+
+dch = Changelog(open('debian/changelog', 'r'))
+dsc = Deb822(open('debian/control', 'r'))
+realname, email_address = parseaddr(dsc['Maintainer'])
 
 
 class BuildI18N(cmd.Command):
@@ -88,14 +96,16 @@ def all_xml_files_in(dir):
 
 
 setup(
-	name='univention-management-console',
-	description='Univention Management Console',
-	author='Univention GmbH',
-	author_email='packages@univention.de',
-	version='1.0',
 	package_dir={'': 'src'},
 	packages=['univention', 'univention.management', 'univention.management.console', 'univention.management.console.protocol', 'univention.management.console.modules'],
 	scripts=['scripts/univention-management-console-server', 'scripts/univention-management-console-module', 'scripts/univention-management-console-client', 'scripts/univention-management-console-acls'],
 	data_files=[('share/univention-management-console/categories', all_xml_files_in('data/categories')), ],
-	cmdclass={'build': Build, 'build_i18n': BuildI18N}
+	cmdclass={'build': Build, 'build_i18n': BuildI18N},
+
+	name=dch.package,
+	version=dch.version.full_version,
+	maintainer=realname,
+	maintainer_email=email_address,
+	url='https://www.univention.de/',
+	description='Univention Management Console',
 )

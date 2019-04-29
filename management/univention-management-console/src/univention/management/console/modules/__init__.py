@@ -31,6 +31,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from pkgutil import extend_path
+__path__ = extend_path(__path__, __name__)
+
 import univention.management.console.protocol
 from univention.management.console.base import *
 from univention.management.console.base import _, __doc__
