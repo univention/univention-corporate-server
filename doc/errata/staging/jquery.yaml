@@ -6,7 +6,7 @@ src: jquery
 fix: 3.1.1-2+deb9u1
 desc: |
  This update addresses the following issue:
- * prototype pollution in object's prototype leading to denial of service or
+ * Prototype pollution in object's prototype leading to denial of service or
    remote code execution or property injection (CVE-2019-11358)
 bug: [49369]
 cve:
