@@ -8,4 +8,7 @@ desc: |
  This update addresses the following issue:
  * Explicit initialization of the default values of UDM properties has been
    removed from the code of all UDM modules.
-bug: [49235]
+ * The users/user UDM module now uses the ldap filter
+   "univentionObjectType=users/user" when searching for objects to increase
+   performance.
+bug: [49235, 48390]
