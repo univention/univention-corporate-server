@@ -3,11 +3,12 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-self-service
-fix: 4.0.3-8A~4.4.0.201904241721
+fix: 4.0.3-9A~4.4.0.201904291701
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * Fixed links to the Self Service-App not working when the UCR variable
    umc/self-service/profiledata/enabled is set to false.
  * The Self Service-App can now be styled via the
    /var/www/univention/self-service/css/custom.css CSS file.
-bug: [45041, 49343]
+ * Fix German translation.
+bug: [45041, 49343, 49380]
