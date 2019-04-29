@@ -231,6 +231,7 @@ test_after_update () {
 	set -x
 	set -e
 	. product-tests/samba/utils.sh
+	eval "$(ucr shell ldap/base windows/domain)"
 	export UCS_ROOT="root" UCS_PASSWORD="$ADMIN_PASSWORD"
 	# Auf einigen Systemen sollte einmal server-password-change aufgerufen werden
 	run_on_ucs_hosts "$MASTER $BACKUP" "ucr set server/password/interval='0' && /usr/lib/univention-server/server_password_change"
