@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [3, 4]
+scope: ucs_4.3-0-errata4.3-4
+src: kauth
+fix: 5.28.0-2+deb9u1
+desc: |
+ This update addresses the following issue:
+ * kauth (CVE-2019-7443)
+bug: [49367]
+cve:
+- CVE-2019-7443
