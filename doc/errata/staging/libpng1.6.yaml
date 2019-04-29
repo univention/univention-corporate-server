@@ -6,7 +6,7 @@ src: libpng1.6
 fix: 1.6.28-1+deb9u1
 desc: |
  This update addresses the following issue:
- * use-after-free in png_image_free in png.c (CVE-2019-7317)
+ * Use-after-free in png_image_free in png.c (CVE-2019-7317)
 bug: [49363]
 cve:
 - CVE-2019-7317
