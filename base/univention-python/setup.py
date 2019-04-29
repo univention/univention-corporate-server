@@ -27,11 +27,25 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-
 from distutils.core import setup
+from email.utils import parseaddr
+from debian.changelog import Changelog
+from debian.deb822 import Deb822
+
+dch = Changelog(open('debian/changelog', 'r'))
+dch = Changelog(open('debian/changelog', 'r'))
+dsc = Deb822(open('debian/control', 'r'))
+realname, email_address = parseaddr(dsc['Maintainer'])
 
 setup(
-	name='univention-python',
 	packages=['univention'],
 	package_dir={'univention': 'modules'},
+	description='Univention Python',
+	license='GNU Affero General Public License v3',
+
+	name=dch.package,
+	version=dch.version.full_version,
+	maintainer=realname,
+	maintainer_email=email_address,
+	url='https://www.univention.de/',
 )
