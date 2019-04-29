@@ -55,6 +55,7 @@ class Module(object):
 	def __init__(self, module):
 		self.module = module
 		self.destdir = os.path.join('debian', self.module.package)
+		self.python_destdirs = [os.path.join(self.destdir, 'usr/lib/python%s/dist-packages/' % (self.module.python_version,))]
 		self.languages = dh_umc.LANGUAGES
 
 	def dh_module_install(self):
@@ -99,19 +100,19 @@ class Module(object):
 		dh_ucs.doIt('install', '-m', '644', self.module.xml_categories, target)
 
 	def install_python(self):
-		target = os.path.join(self.destdir, 'usr/share/pyshared/univention/management/console/modules/%(Module)s' % self.module)
 		python_files = list(self.module.python_files)
 
 		if not python_files:
 			print('I: no python files found in %s' % (self.module.python_path,), file=sys.stderr)
 			return
 
-		for src_file in python_files:
-			target_file = os.path.join(target, src_file[len(self.module.python_path):])
-			target_dir = os.path.dirname(target_file)
-			if not os.path.exists(target_dir):
-				dh_ucs.doIt('install', '-d', target_dir)
-			dh_ucs.doIt('install', '-m', '644', src_file, target_file)
+		for target in self.python_destdirs:
+			for src_file in python_files:
+				target_file = os.path.join(target, 'univention/management/console/modules/%(Module)s' % self.module, src_file[len(self.module.python_path):])
+				target_dir = os.path.dirname(target_file)
+				if not os.path.exists(target_dir):
+					dh_ucs.doIt('install', '-d', target_dir)
+				dh_ucs.doIt('install', '-m', '644', src_file, target_file)
 
 		# copy translation files (python)
 		target_i18n = os.path.join(self.destdir, 'usr/share/locale/%s/LC_MESSAGES/')

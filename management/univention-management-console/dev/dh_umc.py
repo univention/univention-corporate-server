@@ -69,6 +69,7 @@ except ImportError:
 
 MODULE = 'Module'
 PYTHON = 'Python'
+PYTHON_VERSION = 'PythonVersion'
 DEFINITION = 'Definition'
 JAVASCRIPT = 'Javascript'
 CATEGORY = 'Category'
@@ -117,6 +118,11 @@ class UMC_Module(dict):
 			return '%(Python)s/%(Module)s/' % self
 		except KeyError:
 			pass
+
+	@property
+	def python_version(self):
+		# type: () -> int
+		return 3 if self.get(PYTHON_VERSION, ['2.7'])[0].startswith('3') else 2
 
 	@property
 	def js_path(self):
