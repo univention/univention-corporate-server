@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: rsync
+fix: 3.1.2-1+deb9u2A~4.3.4.201904290751
+desc: |
+ This update addresses the following issues:
+ * Out-of-bounds pointer arithmetic in inffast.c (CVE-2016-9841)
+ * Undefined left shift of negative number (CVE-2016-9842)
+ * Big-endian out-of-bounds pointer (CVE-2016-9843)
+bug: [49371]
+cve:
+- CVE-2016-9841
+- CVE-2016-9842
+- CVE-2016-9843
