@@ -57,7 +57,8 @@ krb5KeyblockObject *keyblock_new(PyObject *unused, PyObject *args)
 	if (self == NULL)
 		return NULL;
 
-	self->context = context->context;
+	Py_INCREF(context);
+	self->context = context;
 
 #if PY_MAJOR_VERSION >= 2 && PY_MINOR_VERSION >= 2
 	if (PyObject_TypeCheck(arg, &krb5SaltType)) {
@@ -88,7 +89,7 @@ krb5KeyblockObject *keyblock_new(PyObject *unused, PyObject *args)
 krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args)
 {
 	krb5_error_code err;
-	krb5ContextObject *py_context;
+	krb5ContextObject *context;
 	PyObject *py_enctype;
 	PyObject *py_key;
 	uint8_t *key_buf;
@@ -102,7 +103,8 @@ krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args)
 	if (self == NULL)
 		return NULL;
 
-	self->context = py_context->context;
+	Py_INCREF(context);
+	self->context = context;
 
 	if (PyObject_TypeCheck(py_enctype, &krb5EnctypeType)) {
 		krb5EnctypeObject *enctype_obj = (krb5EnctypeObject*)py_enctype;
@@ -118,7 +120,7 @@ krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args)
 	key_buf = (uint8_t *) PyString_AsString(py_key);
 	key_len = PyString_Size(py_key);
 
-	err = krb5_keyblock_init(py_context->context, enctype, key_buf, key_len, &self->keyblock);
+	err = krb5_keyblock_init(self->context->context, enctype, key_buf, key_len, &self->keyblock);
 
 	if (err) {
 		krb5_exception(NULL, err);
@@ -139,11 +141,12 @@ static PyObject *keyblock_keyvalue(krb5KeyblockObject *self)
 	return PyString_FromStringAndSize(self->keyblock.keyvalue.data, self->keyblock.keyvalue.length);
 }
 
-static void keyblock_destroy(krb5KeyblockObject *self)
+static void keyblock_dealloc(krb5KeyblockObject *self)
 {
-	/* FIXME: this segfaults: krb5_free_keyblock(self->context, &self->keyblock); */
-	krb5_free_keyblock_contents(self->context, &self->keyblock);
-	PyObject_Del(self);
+	/* FIXME: this segfaults: krb5_free_keyblock(self->context->context, &self->keyblock); */
+	krb5_free_keyblock_contents(self->context->context, &self->keyblock);
+	Py_DECREF(self->context);
+	Py_TYPE(self)->tp_free(self);
 }
 
 static struct PyMethodDef keyblock_methods[] = {
@@ -157,7 +160,7 @@ PyTypeObject krb5KeyblockType = {
 	.tp_name = "heimdal.krb5Keyblock",
 	.tp_basicsize = sizeof(krb5KeyblockObject),
 	/* methods */
-	.tp_dealloc = (destructor)keyblock_destroy,
+	.tp_dealloc = (destructor)keyblock_dealloc,
 	.tp_methods = keyblock_methods,
 	.tp_flags = Py_TPFLAGS_DEFAULT,
 };

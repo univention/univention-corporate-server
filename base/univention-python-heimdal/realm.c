@@ -39,12 +39,13 @@
 #include "realm.h"
 
 #if 0
-krb5RealmObject *realm_from_realm(krb5_context context, krb5_realm *realm)
+krb5RealmObject *realm_from_realm(krb5ContextObject *context, krb5_realm *realm)
 {
 	krb5RealmObject *self = (krb5RealmObject *) PyObject_New(krb5RealmObject, &krb5RealmType);
 	if (self == NULL)
 		return NULL;
 
+	Py_INCREF(context);
 	self->context = context;
 	self->realm = realm;
 
@@ -52,9 +53,12 @@ krb5RealmObject *realm_from_realm(krb5_context context, krb5_realm *realm)
 }
 #endif
 
-static void realm_destroy(krb5RealmObject *self)
+static void realm_dealloc(krb5RealmObject *self)
 {
-	PyObject_Del(self);
+#if 0
+	Py_DECREF(self->context);
+#endif
+	Py_TYPE(self)->tp_free(self);
 }
 
 static struct PyMethodDef realm_methods[] = {
@@ -66,7 +70,7 @@ PyTypeObject krb5RealmType = {
 	.tp_name = "heimdal.krb5Realm",
 	.tp_basicsize = sizeof(krb5RealmObject),
 	/* methods */
-	.tp_dealloc = (destructor)realm_destroy,
+	.tp_dealloc = (destructor)realm_dealloc,
 	.tp_methods = realm_methods,
 	.tp_flags = Py_TPFLAGS_DEFAULT,
 };

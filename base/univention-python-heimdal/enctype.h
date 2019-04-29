@@ -34,16 +34,17 @@
 
 #include <Python.h>
 #include <krb5.h>
+#include "context.h"
 
 typedef struct {
 	PyObject_HEAD
-	krb5_context context;
+	krb5ContextObject *context;
 	krb5_enctype enctype;
 } krb5EnctypeObject;
 
 PyTypeObject krb5EnctypeType;
 
 krb5EnctypeObject *enctype_new(PyObject *unused, PyObject *args);
-krb5EnctypeObject *enctype_from_enctype(krb5_context context, krb5_enctype enctype);
+krb5EnctypeObject *enctype_from_enctype(krb5ContextObject *context, krb5_enctype enctype);
 
 #endif /* __ENCTYPE_H__ */

@@ -57,12 +57,13 @@ static krb5_error_code kerb_prompter(krb5_context ctx, void *data,
 	return 0;
 }
 
-krb5CredsObject *creds_from_creds(krb5_context context, krb5_creds creds)
+krb5CredsObject *creds_from_creds(krb5ContextObject *context, krb5_creds creds)
 {
 	krb5CredsObject *self = (krb5CredsObject *) PyObject_New(krb5CredsObject, &krb5CredsType);
 	if (self == NULL)
 		return NULL;
 
+	Py_INCREF(context);
 	self->context = context;
 	self->creds = creds;
 
@@ -88,14 +89,15 @@ krb5CredsObject *creds_new(PyObject *unused, PyObject *args)
 	if (in_tkt_service[0] == '\0')
 		in_tkt_service = NULL;
 
-	self->context = context->context;
+	Py_INCREF(context);
+	self->context = context;
 
-	err = krb5_get_init_creds_password(self->context, &self->creds,
+	err = krb5_get_init_creds_password(self->context->context, &self->creds,
 			principal->principal, NULL, kerb_prompter, password_string,
 			0, in_tkt_service, NULL);
 	if (err) {
 		Py_DECREF(self);
-		krb5_exception(NULL, err);
+		krb5_exception(self->context->context, err);
 		return NULL;
 	}
 
@@ -116,7 +118,7 @@ static PyObject *creds_parse(krb5CredsObject *self)
 
 	decode_Ticket(self->creds.ticket.data, self->creds.ticket.length, &t, &len);
 
-	err = krb5_enctype_to_string(self->context, t.enc_part.etype, &s);
+	err = krb5_enctype_to_string(self->context->context, t.enc_part.etype, &s);
 	if (err != 0) {
 		if (asprintf(&s, "unknown (%d)", t.enc_part.etype) < 0) {
 			Py_DECREF(tuple);
@@ -131,9 +133,9 @@ static PyObject *creds_parse(krb5CredsObject *self)
 	else
 		PyTuple_SetItem(tuple, 1, PyInt_FromLong(-1));
 
-	err = krb5_unparse_name(self->context, self->creds.server, &s);
+	err = krb5_unparse_name(self->context->context, self->creds.server, &s);
 	if (err) {
-		krb5_exception(self->context, err, "krb5_unparse_name");
+		krb5_exception(self->context->context, err, "krb5_unparse_name");
 		Py_DECREF(tuple);
 		return NULL;
 	}
@@ -161,10 +163,10 @@ static PyObject *creds_change_password(krb5CredsObject *self, PyObject *args)
 		return NULL;
 
 	// principal is set to NULL -> set_password uses the default principal in set case
-	err = krb5_set_password(self->context, &self->creds, newpw, NULL, &result_code,
+	err = krb5_set_password(self->context->context, &self->creds, newpw, NULL, &result_code,
 			&result_code_string, &result_string);
 	if (err) {
-		krb5_exception(NULL, err);
+		krb5_exception(self->context->context, err);
 		return NULL;
 	}
 
@@ -174,10 +176,11 @@ static PyObject *creds_change_password(krb5CredsObject *self, PyObject *args)
 	Py_RETURN_NONE;
 }
 
-static void creds_destroy(krb5CredsObject *self)
+static void creds_dealloc(krb5CredsObject *self)
 {
-	krb5_free_cred_contents(self->context, &self->creds);
-	PyObject_Del(self);
+	krb5_free_cred_contents(self->context->context, &self->creds);
+	Py_DECREF(self->context);
+	Py_TYPE(self)->tp_free(self);
 }
 
 static struct PyMethodDef creds_methods[] = {
@@ -191,7 +194,7 @@ PyTypeObject krb5CredsType = {
 	.tp_name = "heimdal.krb5Creds",
 	.tp_basicsize = sizeof(krb5CredsObject),
 	/* methods */
-	.tp_dealloc = (destructor)creds_destroy,
+	.tp_dealloc = (destructor)creds_dealloc,
 	.tp_methods = creds_methods,
 	.tp_flags = Py_TPFLAGS_DEFAULT,
 };

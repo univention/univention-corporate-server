@@ -34,16 +34,17 @@
 
 #include <Python.h>
 #include <krb5.h>
+#include "context.h"
 
 typedef struct {
 	PyObject_HEAD
-	krb5_context context;
+	krb5ContextObject *context;
 	krb5_creds creds;
 } krb5CredsObject;
 
 PyTypeObject krb5CredsType;
 
-krb5CredsObject *creds_from_creds(krb5_context context, krb5_creds creds);
+krb5CredsObject *creds_from_creds(krb5ContextObject *context, krb5_creds creds);
 krb5CredsObject *creds_new(PyObject *unused, PyObject *args);
 
 #endif /* __CREDS_H__ */

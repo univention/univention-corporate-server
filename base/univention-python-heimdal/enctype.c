@@ -38,12 +38,13 @@
 #include "context.h"
 #include "enctype.h"
 
-krb5EnctypeObject *enctype_from_enctype(krb5_context context, krb5_enctype enctype)
+krb5EnctypeObject *enctype_from_enctype(krb5ContextObject *context, krb5_enctype enctype)
 {
 	krb5EnctypeObject *self = (krb5EnctypeObject *) PyObject_NEW(krb5EnctypeObject, &krb5EnctypeType);
 	if (self == NULL)
 		return NULL;
 
+	Py_INCREF(context);
 	self->context = context;
 	self->enctype = enctype;
 
@@ -62,7 +63,8 @@ krb5EnctypeObject *enctype_new(PyObject *unused, PyObject *args)
 	if (self == NULL)
 		return NULL;
 
-	self->context = context->context;
+	Py_INCREF(context);
+	self->context = context;
 
 	err = krb5_string_to_enctype(context->context, enctype_string,
 			&self->enctype);
@@ -81,7 +83,7 @@ static PyObject *enctype_string(krb5EnctypeObject *self)
 	char *enctype_c_string;
 	PyObject *enctype_string;
 
-	err = krb5_enctype_to_string(self->context, self->enctype, &enctype_c_string);
+	err = krb5_enctype_to_string(self->context->context, self->enctype, &enctype_c_string);
 	if (err) {
 		krb5_exception(NULL, err);
 		return NULL;
@@ -97,10 +99,11 @@ static PyObject *enctype_int(krb5EnctypeObject *self)
 	return PyInt_FromLong(self->enctype);
 }
 
-static void enctype_destroy(krb5EnctypeObject *self)
+static void enctype_dealloc(krb5EnctypeObject *self)
 {
 	/* enctype really is integer; nothing to free */
-	PyObject_Del( self );
+	Py_DECREF(self->context);
+	Py_TYPE(self)->tp_free(self);
 }
 
 static struct PyMethodDef enctype_methods[] = {
@@ -113,7 +116,7 @@ PyTypeObject krb5EnctypeType = {
 	.tp_name = "heimdal.krb5Enctype",
 	.tp_basicsize = sizeof(krb5EnctypeObject),
 	/* methods */
-	.tp_dealloc = (destructor)enctype_destroy,
+	.tp_dealloc = (destructor)enctype_dealloc,
 	.tp_str = (reprfunc)enctype_string,
 	.tp_methods = enctype_methods,
 	.tp_flags = Py_TPFLAGS_DEFAULT,

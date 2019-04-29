@@ -34,10 +34,11 @@
 
 #include <Python.h>
 #include <krb5.h>
+#include "context.h"
 
 typedef struct {
 	PyObject_HEAD
-	krb5_context context;
+	krb5ContextObject *context;
 	krb5_ticket ticket;
 } krb5TicketObject;
 

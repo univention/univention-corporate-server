@@ -63,7 +63,7 @@ static PyObject *context_get_permitted_enctypes(krb5ContextObject *self)
 
 	for (i=0; etypes && etypes[i] != KRB5_ENCTYPE_NULL; i++) {
 		krb5EnctypeObject *enctype;
-		enctype = enctype_from_enctype(self->context, etypes[i]);
+		enctype = enctype_from_enctype(self, etypes[i]);
 		if (enctype == NULL) {
 			goto exception;
 		}
@@ -103,10 +103,10 @@ static int context_init(krb5ContextObject *self, PyObject *args, PyObject *kwds)
 	return 0;
 }
 
-static void context_destroy(krb5ContextObject *self)
+static void context_dealloc(krb5ContextObject *self)
 {
 	krb5_free_context(self->context);
-	self->ob_type->tp_free((PyObject *)self);
+	Py_TYPE(self)->tp_free(self);
 }
 
 static struct PyMethodDef context_methods[] = {
@@ -119,7 +119,7 @@ PyTypeObject krb5ContextType = {
 	.tp_name = "heimdal.krb5Context",
 	.tp_basicsize = sizeof(krb5ContextObject),
 	/* methods */
-	.tp_dealloc = (destructor)context_destroy,
+	.tp_dealloc = (destructor)context_dealloc,
 	.tp_methods = context_methods,
 	.tp_flags = Py_TPFLAGS_DEFAULT,
 	.tp_init = (initproc)context_init,

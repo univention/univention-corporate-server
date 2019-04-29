@@ -48,15 +48,17 @@ krb5TicketObject *ticket_new(PyObject *unused, PyObject *args)
 	if (self == NULL)
 		return NULL;
 
-	self->context = context->context;
+	Py_INCREF(context);
+	self->context = context;
 
 	return self;
 }
 
-static void ticket_destroy(krb5TicketObject *self)
+static void ticket_dealloc(krb5TicketObject *self)
 {
-	krb5_free_ticket(self->context, &self->ticket);
-	PyObject_Del(self);
+	krb5_free_ticket(self->context->context, &self->ticket);
+	Py_DECREF(self->context);
+	Py_TYPE(self)->tp_free(self);
 }
 
 PyTypeObject krb5TicketType = {
@@ -64,6 +66,6 @@ PyTypeObject krb5TicketType = {
 	.tp_name = "heimdal.krb5Ticket",
 	.tp_basicsize = sizeof(krb5TicketObject),
 	/* methods */
-	.tp_dealloc = (destructor)ticket_destroy,
+	.tp_dealloc = (destructor)ticket_dealloc,
 	.tp_flags = Py_TPFLAGS_DEFAULT,
 };

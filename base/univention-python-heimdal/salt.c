@@ -40,12 +40,13 @@
 #include "salt.h"
 
 #if 0
-krb5SaltObject *salt_from_salt(krb5_context context, krb5_salt salt)
+krb5SaltObject *salt_from_salt(krb5ContextObject *context, krb5_salt salt)
 {
 	krb5SaltObject *self = (krb5SaltObject *) PyObject_New(krb5SaltObject, &krb5SaltType);
 	if (self == NULL)
 		return NULL;
 
+	Py_INCREF(context);
 	self->context = context;
 	self->salt = salt;
 
@@ -65,7 +66,8 @@ krb5SaltObject *salt_new(PyObject *unused, PyObject *args)
 	if (self == NULL)
 		return NULL;
 
-	self->context = context->context;
+	Py_INCREF(context);
+	self->context = context;
 
 	err = krb5_get_pw_salt(context->context, principal->principal,
 			&self->salt);
@@ -90,7 +92,8 @@ krb5SaltObject *salt_raw_new(PyObject *unused, PyObject *args) {
 	if (self == NULL)
 		return NULL;
 
-	self->context = context->context;
+	Py_INCREF(context);
+	self->context = context;
 	self->salt.salttype = KRB5_PW_SALT;
 	self->salt.saltvalue.length = saltlen;
 	self->salt.saltvalue.data = strdup(saltstring);
@@ -103,10 +106,11 @@ static PyObject *salt_saltvalue(krb5SaltObject *self, PyObject *args)
 	return PyString_FromStringAndSize(self->salt.saltvalue.data, self->salt.saltvalue.length);
 }
 
-static void salt_destroy(krb5SaltObject *self)
+static void salt_dealloc(krb5SaltObject *self)
 {
-	krb5_free_salt(self->context, self->salt);
-	PyObject_Del(self);
+	krb5_free_salt(self->context->context, self->salt);
+	Py_DECREF(self->context);
+	Py_TYPE(self)->tp_free(self);
 }
 
 static struct PyMethodDef salt_methods[] = {
@@ -119,7 +123,7 @@ PyTypeObject krb5SaltType = {
 	.tp_name = "heimdal.krb5Salt",
 	.tp_basicsize = sizeof(krb5SaltObject),
 	/* methods */
-	.tp_dealloc = (destructor)salt_destroy,
+	.tp_dealloc = (destructor)salt_dealloc,
 	.tp_methods = salt_methods,
 	.tp_flags = Py_TPFLAGS_DEFAULT,
 };

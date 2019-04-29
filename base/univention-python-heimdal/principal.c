@@ -52,9 +52,10 @@ krb5PrincipalObject *principal_new(PyObject *unused, PyObject *args)
 	if (self == NULL)
 		return NULL;
 
-	self->context = context->context;
+	Py_INCREF(context);
+	self->context = context;
 
-	err = krb5_parse_name(self->context, principal_string, &self->principal);
+	err = krb5_parse_name(self->context->context, principal_string, &self->principal);
 	if (err) {
 		krb5_exception(NULL, err);
 		Py_DECREF(self);
@@ -70,7 +71,7 @@ static PyObject *principal_name(krb5PrincipalObject *self)
 	char *principal_string;
 	PyObject *principal;
 
-	err = krb5_unparse_name(self->context, self->principal, &principal_string);
+	err = krb5_unparse_name(self->context->context, self->principal, &principal_string);
 	if (err) {
 		krb5_exception(NULL, err);
 		return NULL;
@@ -94,10 +95,11 @@ static PyObject *principal_realm(krb5PrincipalObject *self, PyObject *args)
 	return realm_string;
 }
 
-static void principal_destroy(krb5PrincipalObject *self)
+static void principal_dealloc(krb5PrincipalObject *self)
 {
-	krb5_free_principal(self->context, self->principal);
-	PyObject_Del(self);
+	krb5_free_principal(self->context->context, self->principal);
+	Py_DECREF(self->context);
+	Py_TYPE(self)->tp_free(self);
 }
 
 static struct PyMethodDef principal_methods[] = {
@@ -110,7 +112,7 @@ PyTypeObject krb5PrincipalType = {
 	.tp_name = "heimdal.krb5Principal",
 	.tp_basicsize = sizeof(krb5PrincipalObject),
 	/* methods */
-	.tp_dealloc = (destructor)principal_destroy,
+	.tp_dealloc = (destructor)principal_dealloc,
 	.tp_str = (reprfunc)principal_name,
 	.tp_methods = principal_methods,
 	.tp_flags = Py_TPFLAGS_DEFAULT,
