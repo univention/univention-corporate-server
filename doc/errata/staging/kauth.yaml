@@ -6,7 +6,9 @@ src: kauth
 fix: 5.28.0-2+deb9u1
 desc: |
  This update addresses the following issue:
- * kauth (CVE-2019-7443)
+ * KAuth allows to pass parameters with arbitrary types to helpers running as
+   root over DBus. Certain types can cause crashes and trigger decoding
+   arbitrary images with dynamically loaded plugins. (CVE-2019-7443)
 bug: [49367]
 cve:
 - CVE-2019-7443
