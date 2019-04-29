@@ -104,42 +104,42 @@ def validate_zonename(zonename):
 	'foo'
 	>>> validate_zonename('foo.bar')
 	'foo.bar'
-	>>> validate_zonename('foo.zone')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> validate_zonename('foo.zone')  # doctest: +ELLIPSIS
 	Traceback (most recent call last):
 	...
-	InvalidZone:
-	>>> validate_zonename('foo.proxy')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	InvalidZone: ...
+	>>> validate_zonename('foo.proxy')  # doctest: +ELLIPSIS
 	Traceback (most recent call last):
 	...
-	InvalidZone:
-	>>> validate_zonename('.')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	InvalidZone: ...
+	>>> validate_zonename('.')  # doctest: +ELLIPSIS
 	Traceback (most recent call last):
 	...
-	InvalidZone:
-	>>> validate_zonename('..')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	InvalidZone: ...
+	>>> validate_zonename('..')  # doctest: +ELLIPSIS
 	Traceback (most recent call last):
 	...
-	InvalidZone:
-	>>> validate_zonename('fo..o')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	InvalidZone: ...
+	>>> validate_zonename('fo..o')  # doctest: +ELLIPSIS
 	Traceback (most recent call last):
 	...
-	InvalidZone:
-	>>> validate_zonename('fo"bar"o')  # doctest: +IGNORE_EXCEPTION_DETAIL
-	Traceback (most recent call last):
-	...
-	InvalidZone:
+	InvalidZone: ...
 	"""
 	if not zonename:
 		raise InvalidZone('empty zonename not allowed')
-	if set(zonename) & set('\x00"/' + ''.join(map(chr, range(0x1F + 1)))):
+	if set(zonename) & set('\x00/' + ''.join(map(chr, range(0x1F + 1)))):
 		raise InvalidZone('zone name %r contains invalid characters' % (zonename,))
 	if zonename.endswith('.zone') or zonename.endswith('.proxy'):
 		raise InvalidZone('.zone or .proxy TLD are not supported.')
-	if '..' in zonename or zonename in ('.', '..'):
+	if '..' in zonename or zonename == '.':
 		raise InvalidZone('zone name must not be ".", ".." or contain "..".')
 	if zonename in ('0.in-addr.arpa', '127.in-addr.arpa', '255.in-addr.arpa'):
 		raise InvalidZone('zone must not be 0, 127, 255.')
 	return zonename
+
+
+def _quote_config_parameter(arg):
+	return arg.replace('\\', '\\\\').replace('"', '\\"')
 
 
 def handler(dn, new, old):
@@ -205,19 +205,19 @@ def _new_zone(ucr, zonename, dn):
 		_ldap_auth_string(ucr)
 	)
 	named_zone = open(zonefile, 'w+')
-	named_zone.write('zone "%s" {\n' % (zonename,))
+	named_zone.write('zone "%s" {\n' % (_quote_config_parameter(zonename),))
 	named_zone.write('\ttype master;\n')
 	named_zone.write('\tnotify yes;\n')
-	named_zone.write('\tdatabase "ldap %s 172800";\n' % (ldap_uri,))
+	named_zone.write('\tdatabase "ldap %s 172800";\n' % (_quote_config_parameter(ldap_uri),))
 	named_zone.write('};\n')
 	named_zone.close()
 
 	# Create proxy configuration file
 	proxy_file = safe_path_join(NAMED_CONF_DIR, zonename + '.proxy')
 	proxy_zone = open(proxy_file, 'w')
-	proxy_zone.write('zone "%s" {\n' % (zonename,))
+	proxy_zone.write('zone "%s" {\n' % (_quote_config_parameter(zonename),))
 	proxy_zone.write('\ttype slave;\n')
-	proxy_zone.write('\tfile "%s.zone";\n' % (zonename,))
+	proxy_zone.write('\tfile "%s.zone";\n' % (_quote_config_parameter(zonename),))
 	proxy_zone.write('\tmasters port 7777 { 127.0.0.1; };\n')
 	proxy_zone.write('};\n')
 	proxy_zone.close()
@@ -361,9 +361,9 @@ def postrun():
 		if os.path.isdir(NAMED_CONF_DIR):
 			for f in os.listdir(NAMED_CONF_DIR):
 				if not f.endswith('.proxy'):
-					named_conf.write('include "%s";\n' % os.path.join(NAMED_CONF_DIR, f))
+					named_conf.write('include "%s";\n' % _quote_config_parameter(os.path.join(NAMED_CONF_DIR, f)))
 				else:
-					proxy_conf.write('include "%s";\n' % os.path.join(NAMED_CONF_DIR, f))
+					proxy_conf.write('include "%s";\n' % _quote_config_parameter(os.path.join(NAMED_CONF_DIR, f)))
 		named_conf.close()
 		proxy_conf.close()
 
@@ -390,7 +390,7 @@ def postrun():
 				elif filename.endswith('.zone'):
 					zone = filename[:-len('.zone')]
 					zones.append(zone)
-				else:
+				else:  # TODO: why are we removing this file?
 					zones.append(filename)
 			if zones:
 				ud.debug(ud.LISTENER, ud.INFO, 'DNS: Zones: %s' % (zones,))
