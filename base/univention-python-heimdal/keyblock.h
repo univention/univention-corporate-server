@@ -29,6 +29,8 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+#ifndef __KEYBLOCK_H__
+#define __KEYBLOCK_H__
 
 #include <Python.h>
 #include <krb5.h>
@@ -43,3 +45,5 @@ PyTypeObject krb5KeyblockType;
 
 krb5KeyblockObject *keyblock_new(PyObject *unused, PyObject *args);
 krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args);
+
+#endif /* __KEYBLOCK_H__ */

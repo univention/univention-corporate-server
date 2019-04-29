@@ -29,6 +29,8 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+#ifndef __ENCTYPE_H__
+#define __ENCTYPE_H__
 
 #include <Python.h>
 #include <krb5.h>
@@ -43,3 +45,5 @@ PyTypeObject krb5EnctypeType;
 
 krb5EnctypeObject *enctype_new(PyObject *unused, PyObject *args);
 krb5EnctypeObject *enctype_from_enctype(krb5_context context, krb5_enctype enctype);
+
+#endif /* __ENCTYPE_H__ */

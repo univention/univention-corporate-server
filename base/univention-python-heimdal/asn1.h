@@ -29,8 +29,12 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+#ifndef __ASN1_H__
+#define __ASN1_H__
 
 #include <Python.h>
 
 PyObject* asn1_encode_key(PyObject* args);
 PyObject* asn1_decode_key(PyObject *unused, PyObject* args);
+
+#endif /* __ASN1_H__ */

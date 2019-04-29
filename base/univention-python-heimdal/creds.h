@@ -29,6 +29,8 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+#ifndef __CREDS_H__
+#define __CREDS_H__
 
 #include <Python.h>
 #include <krb5.h>
@@ -43,3 +45,5 @@ PyTypeObject krb5CredsType;
 
 krb5CredsObject *creds_from_creds(krb5_context context, krb5_creds creds);
 krb5CredsObject *creds_new(PyObject *unused, PyObject *args);
+
+#endif /* __CREDS_H__ */

@@ -29,6 +29,8 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+#ifndef __CCACHE_H__
+#define __CCACHE_H__
 
 #include <Python.h>
 #include <krb5.h>
@@ -42,3 +44,5 @@ typedef struct {
 PyTypeObject krb5CcacheType;
 
 krb5CcacheObject *ccache_open(PyObject *unused, PyObject *args);
+
+#endif /* __CCACHE_H__ */

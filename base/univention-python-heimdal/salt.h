@@ -29,6 +29,8 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+#ifndef __SALT_H__
+#define __SALT_H__
 
 #include <Python.h>
 #include <krb5.h>
@@ -46,3 +48,5 @@ krb5SaltObject *salt_raw_new(PyObject *unused, PyObject *args);
 #if 0
 krb5SaltObject *salt_from_salt(krb5_context context, krb5_salt salt);
 #endif
+
+#endif /* __SALT_H__ */

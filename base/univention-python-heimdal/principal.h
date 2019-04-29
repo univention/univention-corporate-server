@@ -29,6 +29,8 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+#ifndef __PRINCIPAL_H__
+#define __PRINCIPAL_H__
 
 #include <Python.h>
 #include <krb5.h>
@@ -42,3 +44,5 @@ typedef struct {
 PyTypeObject krb5PrincipalType;
 
 krb5PrincipalObject *principal_new(PyObject *unused, PyObject *args);
+
+#endif /* __PRINCIPAL_H__ */
