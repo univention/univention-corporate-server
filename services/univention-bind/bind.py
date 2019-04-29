@@ -390,8 +390,6 @@ def postrun():
 				elif filename.endswith('.zone'):
 					zone = filename[:-len('.zone')]
 					zones.append(zone)
-				else:  # TODO: why are we removing this file?
-					zones.append(filename)
 			if zones:
 				ud.debug(ud.LISTENER, ud.INFO, 'DNS: Zones: %s' % (zones,))
 		elif dns_backend == 'none':

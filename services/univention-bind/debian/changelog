@@ -1,3 +1,9 @@
+univention-bind (13.0.1-5) unstable; urgency=medium
+
+  * Bug #41005: remove useless lines
+
+ -- Florian Best <best@univention.de>  Mon, 29 Apr 2019 21:10:25 +0200
+
 univention-bind (13.0.1-4) unstable; urgency=medium
 
   * Bug #41005: quote all config parameters
