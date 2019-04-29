@@ -43,4 +43,6 @@ PyTypeObject krb5SaltType;
 
 krb5SaltObject *salt_new(PyObject *unused, PyObject *args);
 krb5SaltObject *salt_raw_new(PyObject *unused, PyObject *args);
+#if 0
 krb5SaltObject *salt_from_salt(krb5_context context, krb5_salt salt);
+#endif

@@ -38,6 +38,7 @@
 #include "context.h"
 #include "realm.h"
 
+#if 0
 krb5RealmObject *realm_from_realm(krb5_context context, krb5_realm *realm)
 {
 	krb5RealmObject *self = (krb5RealmObject *) PyObject_New(krb5RealmObject, &krb5RealmType);
@@ -49,6 +50,7 @@ krb5RealmObject *realm_from_realm(krb5_context context, krb5_realm *realm)
 
 	return self;
 }
+#endif
 
 static void realm_destroy(krb5RealmObject *self)
 {
