@@ -2,10 +2,10 @@ product: ucs
 release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
-src: Univention-management-console-modules-udm
+src: univention-management-console-module-udm
 fix: 9.0.12-4A~4.4.0.201904291357
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The users/user UDM module now uses the ldap filter
    "univentionObjectType=users/user" when searching for objects to increase
    performance.
