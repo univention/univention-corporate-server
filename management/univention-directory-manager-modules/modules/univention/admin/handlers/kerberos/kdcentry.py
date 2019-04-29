@@ -183,19 +183,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 		return ml
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'top'),
-			univention.admin.filter.expression('objectClass', 'account'),
-			univention.admin.filter.expression('objectClass', 'krb5Principal'),
-			univention.admin.filter.expression('objectClass', 'krb5KDCEntry'),
-		])
-
 
 lookup = object.lookup
-
-
-def identify(dn, attr, canonical=0):
-	ocs = attr.get('objectClass', [])
-	return 'top' in ocs and 'account' in ocs and 'krb5Principal' in ocs and 'krb5KDCEntry' in ocs
+identify = object.identify

@@ -93,15 +93,6 @@ mapping.register('printeruri', 'printerURI')
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'univentionPrinterURIs')
-		])
-
 
 lookup = object.lookup
-
-
-def identify(dn, attr, canonical=0):
-	return 'univentionPrinterURIs' in attr.get('objectClass', [])
+identify = object.identify

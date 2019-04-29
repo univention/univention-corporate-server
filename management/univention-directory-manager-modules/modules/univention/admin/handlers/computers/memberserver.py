@@ -302,10 +302,8 @@ nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, opti
 
 class object(ComputerObject):
 	module = module
-	mapping = mapping
 	CONFIG_NAME = 'univentionDefaultMemberserverGroup'
 	SAMBA_ACCOUNT_FLAG = 'W'
-	SERVER_TYPE = 'univentionMemberServer'
 	SERVER_ROLE = 'member'
 
 

@@ -1,3 +1,10 @@
+ucs-test (9.0.2-44) unstable; urgency=medium
+
+  * Bug #48390: use univentionObjectType=users/user for the users/user
+    filter
+
+ -- Florian Best <best@univention.de>  Mon, 29 Apr 2019 13:50:51 +0200
+
 ucs-test (9.0.2-43) unstable; urgency=medium
 
   * Bug #48390: add UDM.list_objects('users/user')

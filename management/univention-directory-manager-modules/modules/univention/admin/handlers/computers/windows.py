@@ -275,10 +275,8 @@ nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, opti
 
 class object(ComputerObject):
 	module = module
-	mapping = mapping
 	CONFIG_NAME = 'computerGroup'
 	SAMBA_ACCOUNT_FLAG = 'W'
-	SERVER_TYPE = 'univentionWindows'
 	SERVER_ROLE = 'windows_client'
 
 	def _ldap_modlist(self):

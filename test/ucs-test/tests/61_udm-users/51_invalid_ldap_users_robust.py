@@ -4,7 +4,6 @@
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
 ## packages: [python-univention-directory-manager]
-## tags: SKIP
 
 import random
 import traceback

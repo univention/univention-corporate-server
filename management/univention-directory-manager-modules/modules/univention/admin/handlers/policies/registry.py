@@ -169,15 +169,6 @@ class object(univention.admin.handlers.simplePolicy):
 		self.polinfo = univention.admin.mapping.mapDict(self.mapping, values)
 		self.polinfo = self._post_unmap(self.polinfo, values)
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'univentionPolicyRegistry'),
-		])
-
 
 lookup = object.lookup
-
-
-def identify(dn, attr, canonical=0):
-	return 'univentionPolicyRegistry' in attr.get('objectClass', [])
+identify = object.identify

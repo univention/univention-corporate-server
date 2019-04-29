@@ -263,10 +263,8 @@ nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, opti
 
 class object(ComputerObject):
 	module = module
-	mapping = mapping
 	CONFIG_NAME = 'univentionDefaultClientGroup'
 	SAMBA_ACCOUNT_FLAG = 'W'
-	SERVER_TYPE = 'univentionMacOSClient'
 
 	def link(self):
 		pass

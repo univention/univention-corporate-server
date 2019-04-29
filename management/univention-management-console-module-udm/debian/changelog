@@ -1,3 +1,10 @@
+univention-management-console-module-udm (9.0.12-4) unstable; urgency=medium
+
+  * Bug #48390: use univentionObjectType=users/user for the users/user
+    filter
+
+ -- Florian Best <best@univention.de>  Mon, 29 Apr 2019 13:50:38 +0200
+
 univention-management-console-module-udm (9.0.12-3) unstable; urgency=medium
 
   * Bug #46919: add hack for standby animation not showing some

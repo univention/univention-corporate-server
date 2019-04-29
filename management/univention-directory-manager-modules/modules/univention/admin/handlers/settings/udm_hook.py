@@ -41,8 +41,6 @@ import apt
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate
 
-OC = "univentionUDMHook"
-
 module = 'settings/udm_hook'
 superordinate = 'settings/cn'
 childs = 0
@@ -54,7 +52,7 @@ long_description = ''
 options = {
 	'default': univention.admin.option(
 		default=True,
-		objectClasses=['top', 'univentionObjectMetadata', OC],
+		objectClasses=['top', 'univentionObjectMetadata', 'univentionUDMHook'],
 	),
 }
 property_descriptions = {
@@ -204,15 +202,6 @@ class object(univention.admin.handlers.simpleLdap):
 				break
 		return modlist
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', OC),
-		])
-
 
 lookup = object.lookup
-
-
-def identify(dn, attr, canonical=0):
-	return OC in attr.get('objectClass', [])
+identify = object.identify

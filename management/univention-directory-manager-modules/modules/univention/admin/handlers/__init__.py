@@ -149,6 +149,8 @@ class simpleLdap(object):
 			Properties should be assigned in the following way: obj['name'] = 'value'
 	"""
 
+	use_performant_ldap_search_filter = False
+
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
 		self._exists = False
 		self.exceptions = []
@@ -225,8 +227,10 @@ class simpleLdap(object):
 		if self.oldattr:
 			self._exists = True
 			if not univention.admin.modules.recognize(self.module, self.dn, self.oldattr):
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'object %s is not recognized as %s.' % (self.dn, self.module))
-				# raise univention.admin.uexceptions.wrongObjectType()
+				if self.use_performant_ldap_search_filter:
+					raise univention.admin.uexceptions.wrongObjectType('%s is not recognized as %s.' % (self.dn, self.module))
+				else:
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'object %s is not recognized as %s. Ignoring for now. Please report!' % (self.dn, self.module))
 			oldinfo = self.mapping.unmapValues(self.oldattr)
 			oldinfo = self._post_unmap(oldinfo, self.oldattr)
 			oldinfo = self._falsy_boolean_extended_attributes(oldinfo)
@@ -1713,6 +1717,8 @@ class simpleLdap(object):
 				result.append(cls(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs))
 			except univention.admin.uexceptions.base as exc:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'lookup() of object %r failed: %s' % (dn, exc))
+		if required and not result:
+			raise univention.admin.uexceptions.noObject('lookup(base=%r, filter_s=%r)' % (base, filter_s))
 		return result
 
 	@classmethod
@@ -1748,7 +1754,14 @@ class simpleLdap(object):
 
 		See :py:meth:`lookup_filter`.
 		"""
-		return univention.admin.filter.conjunction('&', [])
+		filter_conditions = []
+		if cls.use_performant_ldap_search_filter:
+			filter_conditions.append(univention.admin.filter.expression('univentionObjectType', cls.module, escape=True))
+		else:
+			object_classes = univention.admin.modules.options(cls.module).get('default', univention.admin.option()).objectClasses - {'top', 'univentionPolicy', 'univentionObjectMetadata', 'person'}
+			filter_conditions.extend(univention.admin.filter.expression('objectClass', ocs) for ocs in object_classes)
+
+		return univention.admin.filter.conjunction('&', filter_conditions)
 
 	@classmethod
 	def rewrite_filter(cls, filter, mapping):
@@ -1792,6 +1805,12 @@ class simpleLdap(object):
 		if isinstance(filter.value, (list, tuple)) and filter.value:
 			# complex syntax
 			filter.value = filter.value[0]
+
+	@classmethod
+	def identify(cls, dn, attr, canonical=False):
+		ocs = set(attr.get('objectClass', []))
+		required_object_classes = univention.admin.modules.options(cls.module).get('default', univention.admin.option()).objectClasses - {'top', 'univentionPolicy', 'univentionObjectMetadata', 'person'}
+		return (ocs & required_object_classes) == required_object_classes
 
 	@classmethod
 	def _ldap_attributes(cls):

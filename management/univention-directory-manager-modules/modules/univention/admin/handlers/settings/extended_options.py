@@ -195,15 +195,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 		return ml
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'univentionUDMOption')
-		])
-
 
 lookup = object.lookup
-
-
-def identify(dn, attr, canonical=False):
-	return 'univentionUDMOption' in attr.get('objectClass', [])
+identify = object.identify

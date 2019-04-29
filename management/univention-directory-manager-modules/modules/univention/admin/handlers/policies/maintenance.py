@@ -229,15 +229,6 @@ class object(univention.admin.handlers.simplePolicy):
 			ml.append(('univentionCron', self.oldattr.get('univentionCron', []), [cron]))
 		return ml
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'univentionPolicyInstallationTime')
-		])
-
 
 lookup = object.lookup
-
-
-def identify(dn, attr, canonical=0):
-	return 'univentionPolicyInstallationTime' in attr.get('objectClass', [])
+identify = object.identify

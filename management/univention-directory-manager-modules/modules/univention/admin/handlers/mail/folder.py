@@ -263,16 +263,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 		return ml
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('cn', '*'),
-			univention.admin.filter.expression('objectClass', 'univentionMailSharedFolder')
-		])
-
 
 lookup = object.lookup
-
-
-def identify(dn, attr, canonical=0):
-	return 'univentionMailSharedFolder' in attr.get('objectClass', [])
+identify = object.identify

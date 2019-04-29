@@ -40,8 +40,6 @@ import univention.admin.localization
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate
 
-OC = "univentionPortal"
-
 module = 'settings/portal'
 superordinate = 'settings/cn'
 default_containers = ['cn=portal,cn=univention']
@@ -54,7 +52,7 @@ long_description = _('Object that feeds everything in https://fqdn/univention/po
 options = {
 	'default': univention.admin.option(
 		default=True,
-		objectClasses=['top', OC],
+		objectClasses=['top', 'univentionPortal'],
 	),
 }
 property_descriptions = {
@@ -397,7 +395,6 @@ class object(univention.admin.handlers.simpleLdap):
 					entry_obj['portal'] = new_portal
 					entry_obj.modify()
 
-
 	def _ldap_post_remove(self):
 		for obj in univention.admin.modules.lookup('settings/portal_entry', None, self.lo, scope='sub', filter=filter_format('portal=%s', [self.dn])):
 			obj.open()
@@ -410,15 +407,6 @@ class object(univention.admin.handlers.simpleLdap):
 			obj['portal'] = [x for x in obj.info.get('portal', []) + [self.dn] if not self.lo.compare_dn(x, olddn)]
 			obj.modify()
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', OC),
-		])
-
 
 lookup = object.lookup
-
-
-def identify(dn, attr, canonical=0):
-	return OC in attr.get('objectClass', [])
+identify = object.identify

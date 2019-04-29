@@ -85,16 +85,7 @@ add_dhcp_options(__name__)
 class object(DHCPBase):
 	module = module
 
-	@staticmethod
-	def unmapped_lookup_filter():
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'dhcpSharedNetwork')
-		])
-
-
-def identify(dn, attr):
-	return 'dhcpSharedNetwork' in attr.get('objectClass', [])
-
 
 lookup_filter = object.lookup_filter
 lookup = object.lookup
+identify = object.identify

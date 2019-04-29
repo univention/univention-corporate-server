@@ -41,8 +41,6 @@ import apt
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate
 
-OC = "univentionLDAPExtensionSchema"
-
 module = 'settings/ldapschema'
 superordinate = 'settings/cn'
 childs = 0
@@ -54,7 +52,7 @@ long_description = ''
 options = {
 	'default': univention.admin.option(
 		default=True,
-		objectClasses=['top', 'univentionObjectMetadata', OC],
+		objectClasses=['top', 'univentionObjectMetadata', 'univentionLDAPExtensionSchema'],
 	),
 }
 property_descriptions = {
@@ -143,15 +141,6 @@ class object(univention.admin.handlers.simpleLdap):
 			if not apt.apt_pkg.version_compare(self['packageversion'], old_version) > -1:
 				raise univention.admin.uexceptions.valueInvalidSyntax(_('packageversion: Version must not be lower than the current one.'))
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', OC),
-		])
-
 
 lookup = object.lookup
-
-
-def identify(dn, attr, canonical=0):
-	return OC in attr.get('objectClass', [])
+identify = object.identify

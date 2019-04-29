@@ -262,10 +262,8 @@ nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, opti
 
 class object(ComputerObject):
 	module = module
-	mapping = mapping
 	CONFIG_NAME = 'univentionDefaultClientGroup'
 	SAMBA_ACCOUNT_FLAG = 'W'
-	SERVER_TYPE = 'univentionLinuxClient'
 
 	def check_required_options(self):
 		if not set(self.options) & set(['posix', 'kerberos']):

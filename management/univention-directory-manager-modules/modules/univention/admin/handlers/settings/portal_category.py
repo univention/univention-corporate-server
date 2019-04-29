@@ -37,8 +37,6 @@ import univention.admin.localization
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate
 
-OC = "univentionPortalCategory"
-
 module = 'settings/portal_category'
 superordinate = 'settings/cn'
 default_containers = ['cn=categories,cn=portal,cn=univention']
@@ -51,7 +49,7 @@ long_description = _('Object under which settings/portal_entry objects can be di
 options = {
 	'default': univention.admin.option(
 		default=True,
-		objectClasses=['top', OC],
+		objectClasses=['top', 'univentionPortalCategory'],
 	),
 }
 property_descriptions = {
@@ -102,7 +100,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_post_modify(self):
 		if self.hasChanged('name'):
-			newdn = 'cn=%s,%s' % (self['name'], self.lo.parentDn(self.dn),)								
+			newdn = 'cn=%s,%s' % (self['name'], self.lo.parentDn(self.dn),)
 			self.__update_property__content__of__portal(self.dn, newdn)
 
 	def _ldap_post_move(self, olddn):
@@ -130,22 +128,5 @@ class object(univention.admin.handlers.simpleLdap):
 			portal_obj.modify()
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-
-	filter = univention.admin.filter.conjunction('&', [
-		univention.admin.filter.expression('objectClass', OC),
-	])
-
-	if filter_s:
-		filter_p = univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-		filter.expressions.append(filter_p)
-
-	res = []
-	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append(object(co, lo, None, dn, attributes=attrs))
-	return res
-
-
-def identify(dn, attr, canonical=0):
-	return OC in attr.get('objectClass', [])
+lookup = object.lookup
+identify = object.identify

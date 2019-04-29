@@ -102,21 +102,12 @@ class object(DHCPBase):
 		shadow_module, shadow_object = univention.admin.objects.shadow(self.lo, module, obj, self.position)
 		self.lo.modify(self.dn, [('dhcpServiceDN', oldServiceDN[0], shadow_object.dn)])
 
-	@staticmethod
-	def unmapped_lookup_filter():
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'dhcpServer')
-		])
-
 	@classmethod
 	def lookup_filter_superordinate(cls, filter, superordinate):
 		filter.expressions.append(univention.admin.filter.expression('dhcpServiceDN', superordinate.dn, escape=True))
 		return filter
 
 
-def identify(dn, attr):
-	return 'dhcpServer' in attr.get('objectClass', [])
-
-
 lookup = object.lookup
 lookup_filter = object.lookup_filter
+identify = object.identify

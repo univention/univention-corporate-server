@@ -202,15 +202,6 @@ class object(univention.admin.handlers.simplePolicy):
 			ml.append(('univentionRepositoryCron', self.oldattr.get('univentionRepositoryCron', []), [cron]))
 		return ml
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'univentionPolicyRepositorySync')
-		])
-
 
 lookup = object.lookup
-
-
-def identify(dn, attr, canonical=0):
-	return 'univentionPolicyRepositorySync' in attr.get('objectClass', [])
+identify = object.identify

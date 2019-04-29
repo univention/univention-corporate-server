@@ -56,7 +56,6 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 	"""
 	CONFIG_NAME = None  # type: str
 	SERVER_ROLE = None  # type: str
-	SERVER_TYPE = None  # type: str
 	SAMBA_ACCOUNT_FLAG = None  # type: str
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
@@ -312,6 +311,13 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 		return None
 
 	@classmethod
+	def unmapped_lookup_filter(cls):  # type: () -> univention.admin.filter.conjunction
+		filter_p = super(ComputerObject, cls).unmapped_lookup_filter()
+		if cls.SERVER_ROLE and cls.SERVER_ROLE != 'member':
+			filter_p.expressions.append(univention.admin.filter.expression('univentionServerRole', cls.SERVER_ROLE, escape=True))
+		return filter_p
+
+	@classmethod
 	def rewrite_filter(cls, filter, mapping, lo=None):
 		if filter.variable == 'ip':
 			filter.variable = 'aRecord'
@@ -329,16 +335,14 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 
 	@classmethod
 	def lookup_filter(cls, filter_s=None, lo=None):
-		lookup_filter_obj = univention.admin.filter.conjunction('&', [x for x in [
-			univention.admin.filter.expression('objectClass', 'univentionHost'),
-			univention.admin.filter.expression('objectClass', cls.SERVER_TYPE),
-			None if not cls.SERVER_ROLE or cls.SERVER_ROLE == 'member' else univention.admin.filter.expression('univentionServerRole', cls.SERVER_ROLE),
-		] if x is not None])
-
+		lookup_filter_obj = cls.unmapped_lookup_filter()
+		module = univention.admin.modules.get_module(cls.module)
 		# ATTENTION: has its own rewrite function.
-		lookup_filter_obj.append_unmapped_filter_string(filter_s, functools.partial(cls.rewrite_filter, lo=lo), cls.mapping)
+		lookup_filter_obj.append_unmapped_filter_string(filter_s, functools.partial(cls.rewrite_filter, lo=lo), module.mapping)
 		return lookup_filter_obj
 
 	@classmethod
-	def identify(cls, dn, attr, canonical=0):
-		return 'univentionHost' in attr.get('objectClass', []) and cls.SERVER_TYPE in attr.get('objectClass', []) and (True if not cls.SERVER_ROLE else cls.SERVER_ROLE in attr.get('univentionServerRole', []))
+	def identify(cls, dn, attr, canonical=False):
+		if cls.SERVER_ROLE and cls.SERVER_ROLE != 'member' and cls.SERVER_ROLE not in attr.get('univentionServerRole', []):
+			return False
+		return super(ComputerObject, cls).identify(dn, attr, canonical)
