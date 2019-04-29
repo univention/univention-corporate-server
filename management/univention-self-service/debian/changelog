@@ -1,3 +1,9 @@
+univention-self-service (4.0.3-9) unstable; urgency=low
+
+  * Bug #49383: Fix German translation
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 29 Apr 2019 16:59:35 +0200
+
 univention-self-service (4.0.3-8) unstable; urgency=medium
 
   * Bug #49343: Add custom.css for self service

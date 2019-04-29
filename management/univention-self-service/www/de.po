@@ -42,8 +42,8 @@ msgid ""
 "Everyone forgets his password now and then. Protect yourself and activate "
 "the opportunity to set a new password."
 msgstr ""
-"Jeder vergißt mal das Passwort. Schützen Sie sich und aktivieren Sie die "
-"Möglichkeit ihr Passwort erneuern zu können."
+"Jeder vergisst mal das Passwort. Schützen Sie sich und aktivieren Sie die "
+"Möglichkeit, ihr Passwort erneuern zu können."
 
 #: www/lib.js:54
 msgid ""
