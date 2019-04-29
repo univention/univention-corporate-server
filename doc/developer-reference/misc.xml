@@ -265,7 +265,7 @@ override_dh_auto_test:
 				</varlistentry>
 				<varlistentry>
 					<term><cmdsynopsis>
-							<command>/usr/lib/python2.7/dist-packages/univention/lib/getMailFromMailOrUid.py</command>
+							<command>python -m univention.lib.getMailFromMailOrUid</command>
 							<group choice="req">
 								<arg choice="plain">uid</arg>
 								<arg choice="plain">email</arg>
