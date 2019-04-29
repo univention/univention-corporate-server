@@ -36,6 +36,7 @@ UMCP is a simple RPC protocol using two message types (request and
 response message). The API of the Python objects representing the
 messages are based on the class :class:`.Message`.
 """
+from __future__ import print_function
 
 import mimetypes
 import time
@@ -314,13 +315,13 @@ if __name__ == '__main__':
 
 	for msg in (req, res, auth):
 		if msg.isType(Message.REQUEST):
-			print ">>> a request:",
+			print(">>> a request:", end=' ')
 		if msg.isType(Message.RESPONSE):
-			print "<<< a response:",
-		print msg
+			print("<<< a response:", end=' ')
+		print(msg)
 
-	print Message(data=str(auth))
+	print(Message(data=str(auth)))
 	# decode
 	data = str(req)
 	msg = Message(data=data)
-	print msg
+	print(msg)

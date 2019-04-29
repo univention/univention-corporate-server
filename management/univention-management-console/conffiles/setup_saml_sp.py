@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import os
 from glob import glob
 from subprocess import call
@@ -43,7 +44,7 @@ workaround = set()
 def handler(config_registry, changes):
 	if not isinstance(changes.get('umc/saml/idp-server'), (list, tuple)):
 		# workaround for Bug #39444
-		print 'skipping UCR registration'
+		print('skipping UCR registration')
 		return
 	if workaround:
 		return  # Bug #39443
@@ -85,7 +86,7 @@ def download_idp_metadata(metadata):
 	idp = bytes(urlparse(metadata).netloc)
 	filename = '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,)
 	for i in range(0, 60):
-		print 'Try to download idp metadata (%s/60)' % (i + 1)
+		print('Try to download idp metadata (%s/60)' % (i + 1))
 		rc = call([
 			'/usr/bin/curl',
 			'--fail',

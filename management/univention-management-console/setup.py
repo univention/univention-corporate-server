@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import os
 import subprocess
 
@@ -73,13 +74,13 @@ class BuildI18N(cmd.Command):
 				if not os.path.exists(dest_path):
 					os.makedirs(dest_path)
 				if not os.path.exists(dest):
-					print 'Compiling %s' % src
+					print('Compiling %s' % src)
 					subprocess.call(['msgfmt', src, '-o', dest])
 				else:
 					src_mtime = os.stat(src)[8]
 					dest_mtime = os.stat(dest)[8]
 					if src_mtime > dest_mtime:
-						print 'Compiling %s' % src
+						print('Compiling %s' % src)
 						subprocess.call(['msgfmt', src, '-o', dest])
 				data_files.append(('share/locale/%s/LC_MESSAGES' % lang, (dest, )))
 

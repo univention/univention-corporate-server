@@ -183,10 +183,10 @@ Response: Search for users
 	{"status": 200, "message": null, "options": {"objectProperty": "name", "objectPropertyValue": "test1*1", "objectType": "users/user"}, "result": [{"ldap-dn": "uid=test11,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test11", "objectType": "users/user"}, {"ldap-dn": "uid=test101,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test101", "objectType": "users/user"}, {"ldap-dn": "uid=test111,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test111", "objectType": "users/user"}, {"ldap-dn": "uid=test121,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test121", "objectType": "users/user"}, {"ldap-dn": "uid=test131,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test131", "objectType": "users/user"}, {"ldap-dn": "uid=test141,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test141", "objectType": "users/user"}, {"ldap-dn": "uid=test151,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test151", "objectType": "users/user"}, {"ldap-dn": "uid=test161,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test161", "objectType": "users/user"}, {"ldap-dn": "uid=test171,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test171", "objectType": "users/user"}, {"ldap-dn": "uid=test181,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test181", "objectType": "users/user"}, {"ldap-dn": "uid=test191,cn=users,dc=univention,dc=qa", "path": "univention.qa:/users", "name": "test191", "objectType": "users/user"}]}
 """
 
-from message import *
-from session import *
-from server import *
-from client import *
-from definitions import *
-from version import *
-from modserver import *
+from .message import *
+from .session import *
+from .server import *
+from .client import *
+from .definitions import *
+from .version import *
+from .modserver import *

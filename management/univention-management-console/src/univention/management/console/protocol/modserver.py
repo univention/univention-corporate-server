@@ -40,7 +40,9 @@ import errno
 import sys
 import traceback
 import socket
+
 import notifier
+import six
 
 from .server import Server
 from .message import Response, Message, IncompleteMessageError, ParseError
@@ -252,7 +254,7 @@ class ModuleServer(Server):
 
 		if self.__init_etype:
 			notifier.timer_add(10000, self._timed_out)
-			raise self.__init_etype, self.__init_exc, self.__init_etraceback
+			six.reraise(self.__init_etype, self.__init_exc, self.__init_etraceback)
 
 		if msg.command == 'SET':
 			for key, value in msg.options.items():

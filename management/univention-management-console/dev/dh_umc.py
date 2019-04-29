@@ -22,6 +22,7 @@ Example::
 	Category: umc/categories/ucr.xml
 	Icons: umc/icons
 """
+from __future__ import print_function
 #
 # Copyright 2011-2019 Univention GmbH
 #
@@ -291,7 +292,7 @@ def module_xml2po(module, po_file, language):
 			try:
 				po.append(entry)
 			except ValueError as exc:  # Entry "..." already exists
-				print >> sys.stderr, 'Warning: Appending %r to po file failed: %s' % (xml_entry.text, exc)
+				print('Warning: Appending %r to po file failed: %s' % (xml_entry.text, exc), file=sys.stderr)
 
 	if module.xml_definition and os.path.isfile(module.xml_definition):
 		tree = ET.ElementTree(file=module.xml_definition)

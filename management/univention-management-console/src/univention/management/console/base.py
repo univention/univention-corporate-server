@@ -113,6 +113,7 @@ import locale
 import urlparse
 import traceback
 
+import six
 import ldap
 import ldap.sasl
 from notifier import signals
@@ -354,7 +355,7 @@ class Base(signals.Provider, Translation):
 			except:
 				raise
 			else:
-				raise etype, exc, etraceback
+				six.reraise(etype, exc, etraceback)
 		except UMC_Error as exc:
 			status = exc.status
 			result = exc.result
@@ -418,13 +419,13 @@ class Base(signals.Provider, Translation):
 						lo.lo.bind_saml(self._password)
 					except ldap.OTHER:
 						CORE.error('SAML authentication failed.')
-						raise etype, exc, etraceback
+						six.reraise(etype, exc, etraceback)
 					CORE.error('Wrong authentication type. Resetting.')
 					self.auth_type = 'SAML'
 		except ldap.INVALID_CREDENTIALS:
 			etype, exc, etraceback = sys.exc_info()
 			exc = etype('An error during LDAP authentication happened. Auth type: %s; SAML message length: %s; DN length: %s; Original Error: %s' % (self.auth_type, len(self._password or '') if len(self._password or '') > 25 else False, len(self._user_dn or ''), exc))
-			raise etype, exc, etraceback
+			six.reraise(etype, exc, etraceback)
 
 	def require_password(self):
 		if self.auth_type is not None:

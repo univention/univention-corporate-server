@@ -79,7 +79,8 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-openssl,
  python-pam,
  python-polib,
- python-notifier (>= 0.9.5-1)
+ python-notifier (>= 0.9.5-1),
+ python-six,
 Provides: ${python:Provides}
 Description: UCS Management Console - Python 2 Modules
  UCS Management Console is a web based program to manage computers.
@@ -106,6 +107,7 @@ Depends: ${misc:Depends}, ${python3:Depends},
  python3-pam,
  python3-polib,
  python3-notifier,
+ python3-six,
 Provides: ${python3:Provides}
 Description: UCS Management Console - Python 3 Modules
  UCS Management Console is a web based program to manage computers.

@@ -62,7 +62,7 @@ from __future__ import absolute_import
 
 import os
 import ldap
-import cPickle
+import pickle
 import itertools
 import operator
 import traceback
@@ -303,7 +303,7 @@ class ACLs(object):
 
 		try:
 			with open(filename, 'r') as fd:
-				acls = cPickle.load(fd)
+				acls = pickle.load(fd)
 		except EnvironmentError as exc:
 			ACL.process('Could not load ACLs of %r: %s' % (username, exc,))
 			return False
@@ -322,7 +322,7 @@ class ACLs(object):
 
 		try:
 			file = os.open(filename, os.O_WRONLY | os.O_TRUNC | os.O_CREAT, 0o600)
-			os.write(file, cPickle.dumps(self.acls))
+			os.write(file, pickle.dumps(self.acls))
 			os.close(file)
 		except EnvironmentError as exc:
 			ACL.error('Could not write ACL file: %s' % (exc,))

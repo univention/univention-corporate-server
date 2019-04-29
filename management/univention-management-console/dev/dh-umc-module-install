@@ -7,6 +7,7 @@ Install UMC modules. It parses a RFC 822 file called
 $(package).umc-modules and installs the specified components of a module
 into the correct directories.
 """
+from __future__ import print_function
 #
 # Copyright 2011-2019 Univention GmbH
 #
@@ -68,7 +69,7 @@ class Module(object):
 
 	def install_xml(self):
 		if not self.module.xml_definition:
-			print >> sys.stderr, 'I: no module definition file'
+			print('I: no module definition file', file=sys.stderr)
 			return
 		target = os.path.join(self.destdir, 'usr/share/univention-management-console/modules')
 		dh_ucs.doIt('install', '-d', target)
@@ -90,7 +91,7 @@ class Module(object):
 
 	def install_categories(self):
 		if not self.module.xml_categories:
-			print >> sys.stderr, 'I: no category definition file'
+			print('I: no category definition file', file=sys.stderr)
 			return
 
 		target = os.path.join(self.destdir, 'usr/share/univention-management-console/categories')
@@ -102,7 +103,7 @@ class Module(object):
 		python_files = list(self.module.python_files)
 
 		if not python_files:
-			print >> sys.stderr, 'I: no python files found in %s' % (self.module.python_path,)
+			print('I: no python files found in %s' % (self.module.python_path,), file=sys.stderr)
 			return
 
 		for src_file in python_files:
@@ -117,7 +118,7 @@ class Module(object):
 		for lang in self.languages:
 			mo_file = os.path.join(self.module.python_path, '%s.mo' % lang)
 			if not os.path.exists(mo_file):
-				print >> sys.stderr, 'W: no translation file %r found' % (mo_file,)
+				print('W: no translation file %r found' % (mo_file,), file=sys.stderr)
 				continue
 			destdir_i18n = target_i18n % (lang,)
 			dh_ucs.doIt('install', '-d', destdir_i18n)
@@ -128,7 +129,7 @@ class Module(object):
 		js_files = list(self.module.js_files)
 
 		if not js_files:
-			print >> sys.stderr, 'I: no javascript files found in %s' % (self.module.js_path,)
+			print('I: no javascript files found in %s' % (self.module.js_path,), file=sys.stderr)
 			return
 
 		for src_file in js_files:
@@ -143,7 +144,7 @@ class Module(object):
 		for lang in self.languages:
 			json_file = os.path.join(self.module.js_path, '%s.json' % lang)
 			if not os.path.exists(json_file):
-				print >> sys.stderr, 'W: no translation file %r found' % (json_file,)
+				print('W: no translation file %r found' % (json_file,), file=sys.stderr)
 				continue
 			destdir_i18n = target_i18n % (lang,)
 			dh_ucs.doIt('install', '-d', destdir_i18n)
@@ -158,7 +159,7 @@ class Module(object):
 		if self.module.icons is None:
 			return
 		if not os.path.isdir(self.module.icons):
-			print >> sys.stderr, 'W: could not find icon directory %s' % (self.module.icons,)
+			print('W: could not find icon directory %s' % (self.module.icons,), file=sys.stderr)
 			return
 
 		for dirname, dirs, files in os.walk(self.module.icons):

@@ -7,6 +7,7 @@ Install UMC modules. It parses a RFC 822 file called
 $(package).umc-modules and installs the specified components of a module
 into the correct directories.
 """
+from __future__ import print_function
 #
 # Copyright 2011-2019 Univention GmbH
 #
@@ -88,5 +89,5 @@ if __name__ == '__main__':
 	try:
 		main()
 	except dh_umc.Error as exc:
-		print >> sys.stderr, 'Error: %s' % (exc,)
+		print('Error: %s' % (exc,), file=sys.stderr)
 		sys.exit(1)
