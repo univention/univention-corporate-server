@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-python-heimdal
+fix: 9.0.0-2A~4.4.0.201904291351
+desc: |
+ This update addresses the following issues:
+ * The build system for the package has been changed to `dh_python2`.
+ * The package description has been fixed.
+bug: [49139, 28681]
