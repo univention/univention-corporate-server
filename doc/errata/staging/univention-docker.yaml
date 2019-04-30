@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-docker
-fix: 4.0.0-3A~4.4.0.201904301715
+fix: 4.0.0-4A~4.4.0.201904301731
 desc: |
  This update addresses the following issue(s):
  * Log rotation for container logs has been enabled in the
