@@ -1,3 +1,9 @@
+univention-docker (4.0.0-4) unstable; urgency=medium
+
+  * Bug #47416: fixed postinst
+
+ -- Felix Botner <botner@univention.de>  Tue, 30 Apr 2019 17:30:33 +0200
+
 univention-docker (4.0.0-3) unstable; urgency=medium
 
   * Bug #47416: restart docker daemon
