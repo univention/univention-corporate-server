@@ -1,3 +1,9 @@
+univention-kernel-image (11.0.1-12) unstable; urgency=low
+
+  * Bug #49377: Update to linux-4.9.0-9
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 30 Apr 2019 10:16:32 +0200
+
 univention-kernel-image (12.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump
