@@ -1,4 +1,4 @@
-univention-kernel-image (11.0.1-12) unstable; urgency=low
+univention-kernel-image (12.0.0-2) unstable; urgency=low
 
   * Bug #49377: Update to linux-4.9.0-9
 
