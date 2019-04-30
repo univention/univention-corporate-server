@@ -46,8 +46,8 @@ if __name__ == '__main__':
 				'mac': '01:23:45:67:89:%s' % rand_mac,
 				'network': udm.create_object('networks/network', name=uts.random_name(), network='10.20.30.0', netmask='24'),
 				'ip': '10.20.30.%s' % rand_ip,
-				'dnsEntryZoneForward': udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_string(numeric=False)),
-				'dnsEntryZoneReverse': udm.create_object('dns/reverse_zone', subnet='10.20.30', nameserver=uts.random_string(numeric=False)),
+				'dnsEntryZoneForward': udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_string(numeric=False), check_for_drs_replication=True),
+				'dnsEntryZoneReverse': udm.create_object('dns/reverse_zone', subnet='10.20.30', nameserver=uts.random_string(numeric=False), check_for_drs_replication=True),
 				'inventoryNumber': uts.random_string(),
 				'domain': '%s.%s' % (uts.random_name(), uts.random_name())
 			}
@@ -68,8 +68,8 @@ if __name__ == '__main__':
 				properties['password'] = uts.random_string()
 				properties['unixhome'] = '/home/'
 				properties['shell'] = uts.random_string()
-				properties['primaryGroup'] = udm.create_group(check_for_drs_replication=False)[0]
-				properties['groups'] = [udm.create_group(check_for_drs_replication=False)[0], udm.create_group(check_for_drs_replication=False)[0]]
+				properties['primaryGroup'] = udm.create_group()[0]
+				properties['groups'] = [udm.create_group()[0], udm.create_group()[0]]
 				expectedLdap['gidNumber'] = ldap.search(base=properties['primaryGroup'], attr=['gidNumber'])[0][1].get('gidNumber', [])
 				expectedLdap['loginShell'] = [properties['shell']]
 				expectedLdap['sambaPrimaryGroupSID'] = [ldap.getAttr(properties['primaryGroup'], 'sambaSID')[0]]
@@ -88,7 +88,7 @@ if __name__ == '__main__':
 				expectedLdap['univentionOperatingSystemVersion'] = [properties['operatingSystemVersion']]
 
 			# create object
-			computer_DN = udm.create_object(role, **properties)
+			computer_DN = udm.create_object(role, check_for_drs_replication=True, **properties)
 
 			# FIXME: workaround for remaining locks
 			udm.addCleanupLock('aRecord', ldap.getAttr(computer_DN, 'aRecord')[0])
@@ -132,3 +132,5 @@ if __name__ == '__main__':
 				# validate group memberships
 				for group in [properties['primaryGroup']] + properties['groups']:
 					utils.verify_ldap_object(group, {'memberUid': ['%s$' % properties['name']], 'uniqueMember': [computer_DN]})
+			#  Delete the computer object manually to avoid s4 connector dns tracebacks
+			udm.remove_object(role, dn=computer_DN)

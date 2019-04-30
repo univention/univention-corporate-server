@@ -286,9 +286,13 @@ class UCSTestUDM(object):
         if wait_for_replication:
             utils.wait_for_replication(verbose=False)
             if check_for_drs_replication:
-                if utils.package_installed('univention-samba4'):
-                    if "options" not in kwargs or "kerberos" in kwargs["options"]:
-                        wait_for_drs_replication(ldap.filter.filter_format('cn=%s', (ldap.dn.str2dn(dn)[0][0][1],)))
+                self._wait_for_drs_replication(modulename, dn)
+                print(kwargs)
+                if 'dnsEntryZoneForward' in kwargs and 'name' in kwargs:
+                    self._wait_for_drs_replication('dns/host_record', 'relativeDomainName={},{}'.format(kwargs['name'], kwargs['dnsEntryZoneForward']))
+                if 'dnsEntryZoneReverse' in kwargs and 'ip' in kwargs:
+                    self._wait_for_drs_replication('dns/ptr_record', 'relativeDomainName={},{}'.format(kwargs['ip'].split('.')[-1], kwargs['dnsEntryZoneReverse']))
+
         return dn
 
     def modify_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, **kwargs):
@@ -386,12 +390,12 @@ class UCSTestUDM(object):
 
         if child.returncode:
             raise UCSTestUDM_RemoveUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
-
         if dn in self._cleanup.get(modulename, []):
             self._cleanup[modulename].remove(dn)
 
         if wait_for_replication:
             utils.wait_for_replication(verbose=False)
+            self._wait_for_drs_replication(modulename, dn, should_exist=False)
 
     def create_user(self, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
         """
@@ -461,13 +465,46 @@ class UCSTestUDM(object):
     def addCleanupLock(self, lockType, lockValue):
         self._cleanupLocks.setdefault(lockType, []).append(lockValue)
 
-    def _wait_for_drs_removal(self, dn):
-        if utils.package_installed('univention-samba4'):
-            if dn.startswith('uid='):
-                s4_object_base = 'cn' + dn[3:]
-            else:
-                s4_object_base = dn
-            wait_for_drs_replication(None, base=s4_object_base, scope=0, should_exist=False)
+    def _wait_for_drs_replication(self, module, dn, should_exist=True):
+        if not utils.package_installed('univention-samba4'):
+            return
+        not_replicated_modules = (
+            'users/ldap',
+            'computers/domaincontroller_master',
+            'computers/domaincontroller_backup',
+            'computers/domaincontroller_slave',
+            'computers/ipmanagedclient',
+            'dhcp/',
+        )
+        if module.startswith(not_replicated_modules):
+            print('Module: "{}" will not be replicated to s4'.format(module))
+            return
+        elif module.startswith('users/'):
+            s4_search_base = 'cn' + dn[3:]
+            s4_filter = None
+            s4_scope = 0
+        elif module.startswith(('computers/', 'container/', 'groups/', 'users/',)):
+            s4_search_base = dn
+            s4_filter = None
+            s4_scope = 0
+        elif module in ['dns/forward_zone', 'dns/reverse_zone']:
+            zonename = ldap.dn.str2dn(dn)[0][0][1]
+            s4_search_base = 'dc={},CN=MicrosoftDNS,DC=DomainDnsZones,{}'.format(zonename, self.LDAP_BASE)
+            s4_filter = None
+            s4_scope = 0
+        elif module in ['dns/host_record', 'dns/ptr_record']:
+            relative_domain_name = ldap.dn.str2dn(dn)[0][0][1]
+            zonename = ldap.dn.str2dn(dn)[1][0][1]
+            s4_search_base = 'dc={},dc={},CN=MicrosoftDNS,DC=DomainDnsZones,{}'.format(relative_domain_name, zonename, self.LDAP_BASE)
+            s4_filter = None
+            s4_scope = 0
+        else:
+            print('Module: "{}" has no wait_for_replication implemented (yet)'.format(module))
+            return
+        wait_for_drs_replication(s4_filter, base=s4_search_base, scope=s4_scope, should_exist=should_exist, timeout=20)
+
+        #  Wait fo ldap replication in case the s4 connector writes something back
+        utils.wait_for_replication(verbose=False)
 
     def list_objects(self, module):
         cmd = ['/usr/sbin/udm-test', module, 'list']
@@ -512,7 +549,7 @@ class UCSTestUDM(object):
             if child.returncode or 'Object removed:' not in stdout:
                 failedObjects.setdefault(module, []).append(dn)
             else:
-                self._wait_for_drs_removal(dn)
+                self._wait_for_drs_replication(module, dn, should_exist=False)
 
         # simply iterate over the remaining objects again, removing them might just have failed for chronology reasons
         # (e.g groups can not be removed while there are still objects using it as primary group)
@@ -528,7 +565,7 @@ class UCSTestUDM(object):
                     print >> sys.stderr, 'Warning: Failed to remove %r object %r' % (module, dn)
                     print >> sys.stderr, 'stdout=%r %r %r' % (stdout, stderr, self._lo.get(dn))
                 else:
-                    self._wait_for_drs_removal(dn)
+                    self._wait_for_drs_replication(module, dn, should_exist=False)
         self._cleanup = {}
 
         for lock_type, values in self._cleanupLocks.items():
