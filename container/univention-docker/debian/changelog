@@ -1,3 +1,9 @@
+univention-docker (4.0.0-2) unstable; urgency=medium
+
+  * Bug #47416: added logging configuration (maxfile, maxsize)
+
+ -- Felix Botner <botner@univention.de>  Tue, 30 Apr 2019 16:48:32 +0200
+
 univention-docker (4.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump

@@ -11,10 +11,14 @@
 @!@
 docker_opts = ''
 for var in configRegistry:
-	if var.startswith('docker/daemon/default/opts'):
+	if var.startswith('docker/daemon/default/map'):
+		opt = var.split('/')[-1]
+		for i in configRegistry[var].split(','):
+			docker_opts += '--%s=%s ' % (opt, i)
+	elif var.startswith('docker/daemon/default/opts'):
 		opt = var.split('/')[-1]
 		docker_opts += '--%s=%s ' % (opt, configRegistry[var])
-	if var.startswith('docker/daemon/default/parameter'):
+	elif var.startswith('docker/daemon/default/parameter'):
 		if configRegistry.is_true(var):
 			opt = var.split('/')[-1]
 			docker_opts += '--%s ' % (opt)
