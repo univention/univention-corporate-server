@@ -1344,7 +1344,7 @@ class gid(simple):
 	"""
 	min_length = 1
 	max_length = 32
-	regex = re.compile(ur"(?u)^\w([\w -.’]*\w)?$")
+	regex = re.compile(r"(?u)^\w([\w -.’]*\w)?$")
 	error_message = _(
 		"A group name must start and end with a letter, number or underscore. In between additionally spaces, dashes "
 		"and dots are allowed."
@@ -1907,11 +1907,11 @@ class date(simple):
 	@classmethod
 	def parse(self, text):
 		if text and self._re_iso.match(text):
-			year, month, day = map(lambda(x): int(x), text.split('-'))
+			year, month, day = map(int, text.split('-', 2))
 			if 1960 < year < 2100 and 1 <= month <= 12 and 1 <= day <= 31:
 				return '%02d.%02d.%02d' % (day, month, year % 100)
 		if text and self._re_de.match(text):
-			day, month, year = map(lambda(x): int(x), text.split('.'))
+			day, month, year = map(int, text.split('.', 2))
 			if 0 <= year <= 99 and 1 <= month <= 12 and 1 <= day <= 31:
 				return text
 		if text is not None:
@@ -1950,11 +1950,11 @@ class date2(date):  # fixes the century
 		if text is None:
 			return ''
 		if self._re_iso.match(text):
-			year, month, day = map(lambda(x): int(x), text.split('-'))
+			year, month, day = map(int, text.split('-', 2))
 			if 1960 < year < 2100 and 1 <= month <= 12 and 1 <= day <= 31:
 				return text
 		if text and self._re_de.match(text):
-			day, month, year = map(lambda(x): int(x), text.split('.'))
+			day, month, year = map(int, text.split('.', 2))
 			if 0 <= year <= 99 and 1 <= month <= 12 and 1 <= day <= 31:
 				# Workaround: Don't wrap 2.1.1970 to 2.1.2070:
 				if year >= 70:  # Epoch 0
@@ -2099,9 +2099,9 @@ class dnsHostname(dnsName):
 
 
 class dnsName_umlauts(simple):
-	ur"""
+	u"""
 	>>> dnsName_umlauts.parse(u'ä')
-	u'\xe4'
+	u'\\xe4'
 	>>> dnsName_umlauts.parse('a_0-A')
 	'a_0-A'
 	>>> dnsName_umlauts.parse('0')
