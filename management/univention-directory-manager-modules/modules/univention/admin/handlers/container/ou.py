@@ -38,7 +38,6 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 import univention.debug
-import ldap
 
 from univention.admin.handlers.container import default_container_for_objects
 
@@ -231,8 +230,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_pre_modify(self):
 		if self.hasChanged('name'):
-			newdn = 'ou=%s,%s' % (ldap.dn.escape_dn_chars(self.info['name']), self.lo.parentDn(self.dn))
-			self.move(newdn)
+			self.move(self._ldap_dn())
 
 	def _ldap_post_move(self, olddn):
 		settings_module = univention.admin.modules.get('settings/directory')

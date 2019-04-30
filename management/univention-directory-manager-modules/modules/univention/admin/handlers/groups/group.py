@@ -730,21 +730,13 @@ class object(univention.admin.handlers.simpleLdap):
 		# rewrite membership attributes in "supergroup" if we have a new name (rename)
 		if old_name and old_name != new_name:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: rewrite memberuid after rename')
-			ldapdn = ldap.dn.str2dn(self.dn)
-			newldaprdn = []
-			for attr, val, ava_type in ldapdn[0]:
-				if attr.lower() == 'cn' and val.lower() == new_name.lower():
-					val = new_name
-				newldaprdn.append((attr, new_name, ava_type))
-			ldapdn[0] = newldaprdn
-			newdn = ldap.dn.dn2str(ldapdn)
 			for group in self.info.get('memberOf', []):
-				if isinstance(group, type([])):
+				if isinstance(group, list):
 					group = group[0]
 				members = self.lo.getAttr(group, 'uniqueMember')
 				newmembers = copy.deepcopy(members)
-				newmembers = self.__case_insensitive_remove_from_list(self.dn, newmembers)
-				newmembers.append(newdn)
+				newmembers = self.__case_insensitive_remove_from_list(self.old_dn, newmembers)
+				newmembers.append(self.dn)
 				self.__set_membership_attributes(group, members, newmembers)
 
 		add_to_group = []
@@ -773,10 +765,11 @@ class object(univention.admin.handlers.simpleLdap):
 			if isinstance(group, list):
 				group = group[0]
 			members = self.lo.getAttr(group, 'uniqueMember')
-			if not self.__case_insensitive_in_list(self.dn, members):
+			if not self.__case_insensitive_in_list(self.dn, members) and not self.__case_insensitive_in_list(self.old_dn, members):
 				continue
 			newmembers = copy.deepcopy(members)
 			newmembers = self.__case_insensitive_remove_from_list(self.dn, newmembers)
+			newmembers = self.__case_insensitive_remove_from_list(self.old_dn, newmembers)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: remove from supergroup %s' % group)
 			self.__set_membership_attributes(group, members, newmembers)
 
