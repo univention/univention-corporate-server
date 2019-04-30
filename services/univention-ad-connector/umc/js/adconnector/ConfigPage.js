@@ -102,7 +102,7 @@ define([
 					this.showHideElements();
 				})
 			}, {
-				name: 'downloadInfoADMember',
+				name: 'pwdsyncInfoADMember',
 				type: Text,
 				content: makeParagraphs([
 					_('By default the Active Directory connection does not transfer encrypted password data into the UCS directory service. The system uses the Active Directory Kerberos infrastructure for authentication.'),
@@ -144,8 +144,8 @@ define([
 			}];
 			if (this.initialState.mode_admember) {
 				layout.push({
-					label: _('Password service'),
-					layout: ['downloadInfoADMember']
+					label: _('Password sync'),
+					layout: ['pwdsyncInfoADMember']
 				});
 			}
 			var _container = render.layout(layout, this._widgets, this._buttons);
@@ -209,7 +209,7 @@ define([
 				this._widgets.unencryptedActivateSSL.set('visible', showEnableSSL);
 				this._buttons.activate.set('visible', showEnableSSL);
 
-				this._widgets.downloadInfoADMember.set('visible', state.mode_admember);
+				this._widgets.pwdsyncInfoADMember.set('visible', state.mode_admember);
 //				this._buttons.password_sync.set('visible', state.mode_admember && !state.password_sync_enabled);
 //				this._buttons.password_sync_stop.set('visible', state.mode_admember && state.password_sync_enabled);
 			}));
