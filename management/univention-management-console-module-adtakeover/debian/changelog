@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (6.0.1-7) unstable; urgency=medium
+
+  * Bug #40055 : fixing getting older DN group name after renaming in takeover
+
+ -- Fathan Vidjaja <fvidjaja@alvine.knut.univention.de>  Tue, 30 Apr 2019 13:13:19 +0200
+
 univention-management-console-module-adtakeover (6.0.1-6) unstable; urgency=medium
 
   * Bug #40055 : added missing fixes
