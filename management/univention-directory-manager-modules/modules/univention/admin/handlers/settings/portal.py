@@ -233,7 +233,6 @@ def unmapContent(vals):
 	return json.loads(vals[0])
 
 
-
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('displayName', 'univentionPortalDisplayName', mapTranslationValue, unmapTranslationValue)
@@ -261,13 +260,6 @@ class object(univention.admin.handlers.simpleLdap):
 		super(object, self).open()
 		self['portalComputers'] = self.lo.searchDn(filter=filter_format('(&(objectClass=univentionPortalComputer)(univentionComputerPortal=%s))', [self.dn]))
 		self.save()
-
-	def _ldap_addlist(self):
-		ocs = ['top', OC]
-
-		return [
-			('objectClass', ocs),
-		]
 
 	def _ldap_pre_create(self):
 		super(object, self)._ldap_pre_create()
@@ -349,7 +341,7 @@ class object(univention.admin.handlers.simpleLdap):
 				compobj.open()
 				compobj['portal'] = self.dn
 				compobj.modify()
-	
+
 	def __update_deprecated_property__portal__of__portal_entry(self):
 		# Remove this portal from the 'portal' property of settings/portal_entry objects
 		# if they were removed from the 'content' property.
