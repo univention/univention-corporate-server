@@ -60,6 +60,8 @@ if [ "$1" = "configure" ]; then
 			/etc/init.d/univention-directory-listener crestart
 		elif dpkg --compare-versions "$2" lt-nl 10.0.21-1; then
 			univention-directory-listener-ctrl resync udm_extension
+		elif dpkg --compare-versions "$2" lt-nl 14.0.14-18; then
+			univention-directory-listener-ctrl resync udm_extension
 		fi
 	fi
 fi
