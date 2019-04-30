@@ -2,8 +2,8 @@ product: ucs
 release: "4.3"
 version: [3, 4]
 scope: ucs_4.3-0-errata4.3-4
-src: linux
-fix: 4.9.168-1
+src: univention-kernel-image
+fix: 11.0.1-12A~4.3.0.201904301019
 desc: |
  This update of the Linux kernel to version 4.9.168 addresses the following
  issues:
@@ -36,7 +36,7 @@ desc: |
    (CVE-2019-9213)
  * hwpoison implementation in mm/memory-failure.c leads to denial of service
    (CVE-2019-10124)
-notes: This is the first of three parts.
+notes: This is the thirs of three parts.
 bug: [49364]
 cve:
 - CVE-2018-5953
