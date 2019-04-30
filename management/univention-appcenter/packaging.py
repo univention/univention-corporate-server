@@ -3,21 +3,18 @@ from distutils.core import setup as orig_setup
 from debian.deb822 import Deb822
 from debian.changelog import Changelog
 
+
 def _get_version():
-	changelog = Changelog(open('debian/changelog'))
+	changelog = Changelog(open('debian/changelog', 'r'))
 	return changelog.full_version
 
+
 def _get_description(name):
-	contents = open('debian/control').read().split('\n\n')
-	for content in contents:
-		package = Deb822(content)
-		if 'Package' in package and package['Package'] == name:
-			if 'Description' in package:
-				description = package['Description']
-				if '\n .\n' in description:
-					return description.split('\n .\n')[0]
-				return description
-			return None
+	for package in Deb822.iter_paragraphs(open('debian/control', 'r')):
+		if package.get('Package') == name:
+			description = package['Description']
+			return description.split('\n .\n')[0]
+
 
 def setup(name, **attrs):
 	if 'name' not in attrs:
@@ -29,7 +26,7 @@ def setup(name, **attrs):
 	if 'author' not in attrs:
 		attrs['author'] = 'Univention GmbH'
 	if 'url' not in attrs:
-		attrs['url'] = 'http://www.univention.de/'
+		attrs['url'] = 'https://www.univention.de/'
 	if 'version' not in attrs:
 		attrs['version'] = _get_version()
 	if 'description' not in attrs:

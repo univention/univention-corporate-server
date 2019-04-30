@@ -59,7 +59,6 @@ override_dh_auto_build: $(UDM_MO_FILES) $(APPCENTER_MO_FILE)
 	dh_auto_build --buildsystem=pybuild
 	dh_auto_build
 
-
 override_dh_auto_install:
 	univention-install-config-registry
 	univention-install-joinscript
@@ -70,8 +69,8 @@ override_dh_auto_install:
 	python setup_umc.py build --force -b build/univention-appcenter-umc install --force --root=debian/univention-management-console-module-appcenter --install-layout=deb
 	dh_auto_install
 
-	( cd debian/univention-management-console-module-appcenter && install -m755 -o root -g root -d usr/share/python-support && cp ../../python-legacy/univention-management-console-module-appcenter.public usr/share/python-support/univention-management-console-module-appcenter.public )
-	( cd debian/univention-management-console-module-apps && install -m755 -o root -g root -d usr/share/python-support && cp ../../python-legacy/univention-management-console-module-apps.public usr/share/python-support/univention-management-console-module-apps.public )
+	install -D python-legacy/univention-management-console-module-appcenter.public debian/univention-management-console-module-appcenter/usr/share/python-support/univention-management-console-module-appcenter.public
+	install -D python-legacy/univention-management-console-module-apps.public debian/univention-management-console-module-apps/usr/share/python-support/univention-management-console-module-apps.public
 
 	@set -e;\
 	for i in $(UDM_MO_FILES); do\
