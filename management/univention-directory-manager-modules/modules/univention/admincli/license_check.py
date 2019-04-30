@@ -67,7 +67,7 @@ def parse_options(argv):
 	long_opts = ['binddn=', 'bindpw=', 'list-dns']
 	try:
 		opts, args = getopt.getopt(argv, '', long_opts)
-	except getopt.error, msg:
+	except getopt.error as msg:
 		raise UsageError(str(msg))
 	if args:
 		raise UsageError('options "%s" not recognized' % ' '.join(args))
@@ -227,5 +227,5 @@ def doit(argv):
 	try:
 		out = main(argv[1:])
 		return out
-	except UsageError, msg:
+	except UsageError as msg:
 		return usage(str(msg))

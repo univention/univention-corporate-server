@@ -107,7 +107,7 @@ def ucr_overwrite_properties(module, lo):
 						setattr(prop, attr, prop_val_type(new_prop_val))
 					ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_properties: get property attribute: %s' % old_prop_val)
 					ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_properties: get property attribute (type): %s' % prop_val_type)
-		except Exception, e:
+		except Exception as e:
 			ud.debug(ud.ADMIN, ud.ERROR, 'ucr_overwrite_properties: failed to set property attribute: %s' % str(e))
 			continue
 

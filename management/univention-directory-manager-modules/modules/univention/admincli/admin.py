@@ -295,7 +295,7 @@ def object_input(module, object, input, append=None, remove=None):
 							tmp = list(object[key])
 							tmp.append(val)
 							object[key] = list(tmp)
-						except univention.admin.uexceptions.valueInvalidSyntax, errmsg:
+						except univention.admin.uexceptions.valueInvalidSyntax as errmsg:
 							out.append('E: Invalid Syntax: %s' % str(errmsg))
 	if remove:
 		for key, value in remove.items():
@@ -383,9 +383,9 @@ def object_input(module, object, input, append=None, remove=None):
 			else:
 				try:
 					object[key] = value
-				except univention.admin.uexceptions.ipOverridesNetwork, e:
+				except univention.admin.uexceptions.ipOverridesNetwork as e:
 					out.append('WARNING: %s' % e.message)
-				except univention.admin.uexceptions.valueMayNotChange, e:
+				except univention.admin.uexceptions.valueMayNotChange as e:
 					raise univention.admin.uexceptions.valueMayNotChange("%s: %s" % (e.message, key))
 	return out
 
@@ -408,7 +408,7 @@ def doit(arglist):
 		out = _doit(arglist)
 	except ldap.SERVER_DOWN:
 		return out + ["E: The LDAP Server is currently not available.", "OPERATION FAILED"]
-	except univention.admin.uexceptions.base, e:
+	except univention.admin.uexceptions.base as e:
 		ud.debug(ud.ADMIN, ud.WARN, traceback.format_exc())
 
 		# collect error information
@@ -456,7 +456,7 @@ def _doit(arglist):
 	longopts = ['position=', 'dn=', 'set=', 'append=', 'remove=', 'superordinate=', 'option=', 'append-option=', 'remove-option=', 'filter=', 'tls=', 'ignore_exists', 'ignore_not_exists', 'logfile=', 'policies=', 'binddn=', 'bindpwd=', 'bindpwdfile=', 'policy-reference=', 'policy-dereference=', 'remove_referring', 'recursive']
 	try:
 		opts, args = getopt.getopt(arglist[3:], '', longopts)
-	except getopt.error, msg:
+	except getopt.error as msg:
 		out.append(str(msg))
 		return out + ["OPERATION FAILED"]
 
@@ -556,7 +556,7 @@ def _doit(arglist):
 		ud.debug(ud.ADMIN, ud.INFO, "using %s account" % binddn)
 		try:
 			lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, start_tls=tls, bindpw=bindpwd)
-		except Exception, e:
+		except Exception as e:
 			ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % str(e))
 			out.append('authentication error: %s' % str(e))
 			return out + ["OPERATION FAILED"]
@@ -584,7 +584,7 @@ def _doit(arglist):
 
 		try:
 			lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, bindpw=pwd, start_tls=tls)
-		except Exception, e:
+		except Exception as e:
 			ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % str(e))
 			out.append('authentication error: %s' % str(e))
 			return out + ["OPERATION FAILED"]
@@ -895,7 +895,7 @@ def _doit(arglist):
 
 				try:
 					out.extend(object_input(module, object, input, append, remove))
-				except univention.admin.uexceptions.valueMayNotChange, e:
+				except univention.admin.uexceptions.valueMayNotChange as e:
 					out.append(unicode(e[0]))
 					return out + ["OPERATION FAILED"]
 
@@ -912,10 +912,10 @@ def _doit(arglist):
 					except univention.admin.uexceptions.invalidDhcpEntry:
 						out.append('E: The DHCP entry for this host should contain the zone dn, the ip address and the mac address.')
 						return out + ["OPERATION FAILED"]
-					except univention.admin.uexceptions.circularGroupDependency, e:
+					except univention.admin.uexceptions.circularGroupDependency as e:
 						out.append('E: circular group dependency detected: %s' % e)
 						return out + ["OPERATION FAILED"]
-					except univention.admin.uexceptions.valueInvalidSyntax, e:
+					except univention.admin.uexceptions.valueInvalidSyntax as e:
 						out.append('E: Invalid Syntax: %s' % e)
 						return out + ["OPERATION FAILED"]
 
@@ -1106,10 +1106,10 @@ def _doit(arglist):
 									out.append('')
 
 				out.append('')
-		except univention.admin.uexceptions.ldapError, errmsg:
+		except univention.admin.uexceptions.ldapError as errmsg:
 			out.append('%s' % str(errmsg))
 			return out + ["OPERATION FAILED"]
-		except univention.admin.uexceptions.valueInvalidSyntax, errmsg:
+		except univention.admin.uexceptions.valueInvalidSyntax as errmsg:
 			out.append('%s' % str(errmsg.message))
 			return out + ["OPERATION FAILED"]
 	else:

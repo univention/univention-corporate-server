@@ -425,7 +425,7 @@ class simpleLdap(object):
 					s = self.descriptions[key].syntax
 					p = s.parse(v)
 
-				except univention.admin.uexceptions.valueError, emsg:
+				except univention.admin.uexceptions.valueError as emsg:
 					err = emsg
 				if not p:
 					if not err:
@@ -445,7 +445,7 @@ class simpleLdap(object):
 			try:
 				s = self.descriptions[key].syntax
 				p = s.parse(value)
-			except univention.admin.uexceptions.valueError, e:
+			except univention.admin.uexceptions.valueError as e:
 				err = e
 			if not p:
 				if not err:
@@ -1963,7 +1963,7 @@ class simpleComputer(simpleLdap):
 
 						try:
 							results = self.lo.searchDn(base=tmppos.getBase(), scope='domain', filter=searchFilter, unique=False)
-						except univention.admin.uexceptions.insufficientInformation, msg:
+						except univention.admin.uexceptions.insufficientInformation as msg:
 							raise univention.admin.uexceptions.insufficientInformation, msg
 
 						ud.debug(ud.ADMIN, ud.INFO, 'results: %s' % results)
@@ -1973,7 +1973,7 @@ class simpleComputer(simpleLdap):
 									self['dnsEntryZoneForward'].append([result, ip])
 							ud.debug(ud.ADMIN, ud.INFO, 'dnsEntryZoneForward: %s' % str(self['dnsEntryZoneForward']))
 
-			except univention.admin.uexceptions.insufficientInformation, msg:
+			except univention.admin.uexceptions.insufficientInformation as msg:
 				self['dnsEntryZoneForward'] = []
 				raise univention.admin.uexceptions.insufficientInformation, msg
 
@@ -1990,7 +1990,7 @@ class simpleComputer(simpleLdap):
 							entry = [self.lo.parentDn(dn), ip]
 							if entry not in self['dnsEntryZoneReverse']:
 								self['dnsEntryZoneReverse'].append(entry)
-					except univention.admin.uexceptions.insufficientInformation, msg:
+					except univention.admin.uexceptions.insufficientInformation as msg:
 						self['dnsEntryZoneReverse'] = []
 						raise univention.admin.uexceptions.insufficientInformation, msg
 			ud.debug(ud.ADMIN, ud.INFO, 'simpleComputer: dnsEntryZoneReverse: %s' % self['dnsEntryZoneReverse'])
@@ -2012,7 +2012,7 @@ class simpleComputer(simpleLdap):
 							entry = [dnsForwardZone, dnsAliasZoneContainer, dnsAlias]
 							if entry not in self['dnsEntryZoneAlias']:
 								self['dnsEntryZoneAlias'].append(entry)
-					except univention.admin.uexceptions.insufficientInformation, msg:
+					except univention.admin.uexceptions.insufficientInformation as msg:
 						self['dnsEntryZoneAlias'] = []
 						raise univention.admin.uexceptions.insufficientInformation, msg
 			ud.debug(ud.ADMIN, ud.INFO, 'simpleComputer: dnsEntryZoneAlias: %s' % self['dnsEntryZoneAlias'])
@@ -2044,7 +2044,7 @@ class simpleComputer(simpleLdap):
 									self['dhcpEntryZone'].append(entry)
 						ud.debug(ud.ADMIN, ud.INFO, 'open: DHCP; self[ dhcpEntryZone ] = "%s"' % self['dhcpEntryZone'])
 
-					except univention.admin.uexceptions.insufficientInformation, msg:
+					except univention.admin.uexceptions.insufficientInformation as msg:
 						raise univention.admin.uexceptions.insufficientInformation, msg
 
 		if self.exists():
@@ -3195,7 +3195,7 @@ class simpleComputer(simpleLdap):
 				dn, ip = self.__split_dns_line(dnsEntryZoneForward)
 				try:
 					self.__remove_dns_forward_object(self['name'], dn, None)
-				except Exception, e:
+				except Exception as e:
 					self.exceptions.append([_('DNS forward zone'), _('delete'), e])
 
 		if self['dnsEntryZoneReverse']:
@@ -3203,7 +3203,7 @@ class simpleComputer(simpleLdap):
 				dn, ip = self.__split_dns_line(dnsEntryZoneReverse)
 				try:
 					self.__remove_dns_reverse_object(self['name'], dn, ip)
-				except Exception, e:
+				except Exception as e:
 					self.exceptions.append([_('DNS reverse zone'), _('delete'), e])
 
 		if self['dhcpEntryZone']:
@@ -3211,7 +3211,7 @@ class simpleComputer(simpleLdap):
 				dn, ip, mac = self.__split_dhcp_line(dhcpEntryZone)
 				try:
 					self.__remove_from_dhcp_object(mac=mac)
-				except Exception, e:
+				except Exception as e:
 					self.exceptions.append([_('DHCP'), _('delete'), e])
 
 		if self['dnsEntryZoneAlias']:
@@ -3219,7 +3219,7 @@ class simpleComputer(simpleLdap):
 				dnsForwardZone, dnsAliasZoneContainer, alias = entry
 				try:
 					self.__remove_dns_alias_object(self['name'], dnsForwardZone, dnsAliasZoneContainer, alias)
-				except Exception, e:
+				except Exception as e:
 					self.exceptions.append([_('DNS Alias'), _('delete'), e])
 
 		# remove service record entries (see Bug #26400)

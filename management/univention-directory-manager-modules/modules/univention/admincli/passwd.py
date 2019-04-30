@@ -77,7 +77,7 @@ def doit(arglist):
 	ud.debug(ud.ADMIN, ud.WARN, 'binddn: %s; bindpwd: *************' % (binddn))
 	try:
 		lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, bindpw=bindpw, start_tls=2)
-	except Exception, e:
+	except Exception as e:
 		ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % str(e))
 		out.append('authentication error: %s' % e)
 		return out
@@ -118,7 +118,7 @@ def doit(arglist):
 		out.append('passwd error: password already used')
 		return out
 
-	except Exception, e:
+	except Exception as e:
 		ud.debug(ud.ADMIN, ud.WARN, 'passwd error: %s' % e)
 		out.append('passwd error: %s' % e)
 		return out
@@ -155,7 +155,7 @@ def doit(arglist):
 					dn = object.modify()
 
 					ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: password changed')
-	except Exception, e:
+	except Exception as e:
 		ud.debug(ud.ADMIN, ud.WARN, 'passwd error: %s' % e)
 
 	return out

@@ -406,11 +406,11 @@ class object(univention.admin.handlers.simpleLdap):
 		if ml:
 			try:
 				return self.lo.modify(self.dn, ml)
-			except ldap.NO_SUCH_OBJECT, msg:
+			except ldap.NO_SUCH_OBJECT as msg:
 				raise univention.admin.uexceptions.noObject
-			except ldap.INSUFFICIENT_ACCESS, msg:
+			except ldap.INSUFFICIENT_ACCESS as msg:
 				raise univention.admin.uexceptions.permissionDenied
-			except ldap.LDAPError, msg:
+			except ldap.LDAPError as msg:
 				raise univention.admin.uexceptions.ldapError(msg[0]['desc'])
 
 		# return True if object has been modified
@@ -442,11 +442,11 @@ class object(univention.admin.handlers.simpleLdap):
 		if ml:
 			try:
 				return self.lo.modify(self.dn, ml, ignore_license=ignore_license)
-			except ldap.NO_SUCH_OBJECT, msg:
+			except ldap.NO_SUCH_OBJECT as msg:
 				raise univention.admin.uexceptions.noObject
-			except ldap.INSUFFICIENT_ACCESS, msg:
+			except ldap.INSUFFICIENT_ACCESS as msg:
 				raise univention.admin.uexceptions.permissionDenied
-			except ldap.LDAPError, msg:
+			except ldap.LDAPError as msg:
 				raise univention.admin.uexceptions.ldapError(msg[0]['desc'])
 
 		# return True if object has been modified
@@ -499,25 +499,25 @@ class object(univention.admin.handlers.simpleLdap):
 			self.alloc.append(('groupName', self['name']))
 			name = univention.admin.allocators.request(self.lo, self.position, 'groupName', value=self['name'])
 			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname without exception')
-		except univention.admin.uexceptions.permissionDenied, e:
+		except univention.admin.uexceptions.permissionDenied as e:
 			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname with permissionDenied exception')
 			raise e
-		except univention.admin.uexceptions.licenseNotFound, e:
+		except univention.admin.uexceptions.licenseNotFound as e:
 			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname with licenseNotFound exception')
 			raise e
-		except univention.admin.uexceptions.licenseInvalid, e:
+		except univention.admin.uexceptions.licenseInvalid as e:
 			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname with licenseInvalid exception')
 			raise e
-		except univention.admin.uexceptions.licenseExpired, e:
+		except univention.admin.uexceptions.licenseExpired as e:
 			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname with licenseExpired exception')
 			raise e
-		except univention.admin.uexceptions.licenseWrongBaseDn, e:
+		except univention.admin.uexceptions.licenseWrongBaseDn as e:
 			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname with licenseWrongbaseDn exception')
 			raise e
-		except univention.admin.uexceptions.licenseDisableModify, e:
+		except univention.admin.uexceptions.licenseDisableModify as e:
 			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname with licenseDisableModify exception')
 			raise e
-		except univention.admin.uexceptions.base, e:
+		except univention.admin.uexceptions.base as e:
 			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname with base (%s) exception' % e)
 			error = 1
 
