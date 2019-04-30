@@ -33,7 +33,6 @@ from debian.changelog import Changelog
 from debian.deb822 import Deb822
 
 dch = Changelog(open('debian/changelog', 'r'))
-dch = Changelog(open('debian/changelog', 'r'))
 dsc = Deb822(open('debian/control', 'r'))
 realname, email_address = parseaddr(dsc['Maintainer'])
 
