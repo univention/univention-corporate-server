@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-docker
+fix: 4.0.0-3A~4.4.0.201904301715
+desc: |
+ This update addresses the following issue(s):
+ * Log rotation for container logs has been enabled in the
+   docker daemon, and can be configured via the UCR variables
+   docker/daemon/default/opts/log-driver (default json-file) and
+   docker/daemon/default/map/log-opt (default max-file=4,max-size=10m).
+bug: [47416]
