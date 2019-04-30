@@ -45,23 +45,16 @@ eval "$(univention-config-registry shell)"
 . /usr/share/univention-lib/all.sh
 
 if [ "$1" = "configure" ]; then
-	if [ -z "$2" ]; then	# New installation
+	if [ -z "$2" ]; then
+		# New installation
 		systemctl enable docker.service
 		systemctl daemon-reload
 		systemctl restart docker.service
-	else			# Update installation
-
-		# remove docker/autostart[appcenter] variables set during
-		# 4.1-0 update
-		if dpkg --compare-versions "$2" lt 1.0.1-5; then
-			if is_ucr_true docker/autostart/update41/disabled; then
-				ucr unset docker/autostart/update41/disabled
-				ucr set docker/autostart=yes
-			fi
-			if is_ucr_true appcenter/docker/update41/disabled; then
-				ucr unset appcenter/docker/update41/disabled
-				ucr set appcenter/docker=enabled
-			fi
+	else
+		# Update installation
+		if dpkg --compare-versions "$2" lt 4.0.0-3; then
+			systemctl daemon-reload
+			systemctl restart docker.service
 		fi
 	fi
 fi
