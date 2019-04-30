@@ -27,6 +27,7 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import, unicode_literals
+from __future__ import print_function
 import sys
 import univention.debug as ud
 
