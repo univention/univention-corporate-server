@@ -28,6 +28,7 @@
 
 from __future__ import absolute_import, unicode_literals
 import sys
+import six
 import ldap
 from ldap.filter import filter_format
 import univention.admin.uldap
@@ -57,15 +58,15 @@ class LDAP_connection(object):
 		try:
 			return func(**kwargs)
 		except IOError:
-			raise ConnectionError, ConnectionError('Could not read secret file'), sys.exc_info()[2]
+			six.reraise(ConnectionError, ConnectionError('Could not read secret file'), sys.exc_info()[2])
 		except univention.admin.uexceptions.authFail:
-			raise ConnectionError, ConnectionError('Credentials invalid'), sys.exc_info()[2]
+			six.reraise(ConnectionError, ConnectionError('Credentials invalid'), sys.exc_info()[2])
 		except ldap.INVALID_CREDENTIALS:
-			raise ConnectionError, ConnectionError('Credentials invalid'), sys.exc_info()[2]
+			six.reraise(ConnectionError, ConnectionError('Credentials invalid'), sys.exc_info()[2])
 		except ldap.CONNECT_ERROR:
-			raise ConnectionError, ConnectionError('Connection refused'), sys.exc_info()[2]
+			six.reraise(ConnectionError, ConnectionError('Connection refused'), sys.exc_info()[2])
 		except ldap.SERVER_DOWN:
-			raise ConnectionError, ConnectionError('The LDAP Server is not running'), sys.exc_info()[2]
+			six.reraise(ConnectionError, ConnectionError('The LDAP Server is not running'), sys.exc_info()[2])
 
 	@classmethod
 	def get_admin_connection(cls):
@@ -98,7 +99,7 @@ class LDAP_connection(object):
 			try:
 				identity = dns[0]
 			except IndexError:
-				raise ConnectionError, ConnectionError('Cannot get DN for username'), sys.exc_info()[2]
+				six.reraise(ConnectionError, ConnectionError('Cannot get DN for username'), sys.exc_info()[2])
 		access_kwargs = {'binddn': identity, 'bindpw': password, 'base': base or cls._ucr['ldap/base']}
 		if server:
 			access_kwargs['host'] = server

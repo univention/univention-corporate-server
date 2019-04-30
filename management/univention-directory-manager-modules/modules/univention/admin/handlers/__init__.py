@@ -50,6 +50,7 @@ import sys
 import inspect
 import traceback
 
+import six
 import ipaddr
 import ldap
 from ldap.filter import filter_format
@@ -1295,7 +1296,7 @@ class simpleLdap(object):
 					self.remove()
 			except:
 				ud.debug(ud.ADMIN, ud.ERROR, "Post-create: remove() failed: %s" % (traceback.format_exc(),))
-			raise exc[0], exc[1], exc[2]
+			six.reraise(exc[0], exc[1], exc[2])
 
 		self.call_udm_property_hook('hook_ldap_post_create', self)
 
@@ -1966,8 +1967,8 @@ class simpleComputer(simpleLdap):
 
 						try:
 							results = self.lo.searchDn(base=tmppos.getBase(), scope='domain', filter=searchFilter, unique=False)
-						except univention.admin.uexceptions.insufficientInformation as msg:
-							raise univention.admin.uexceptions.insufficientInformation, msg
+						except univention.admin.uexceptions.insufficientInformation:
+							raise
 
 						ud.debug(ud.ADMIN, ud.INFO, 'results: %s' % results)
 						if results:
@@ -1976,9 +1977,9 @@ class simpleComputer(simpleLdap):
 									self['dnsEntryZoneForward'].append([result, ip])
 							ud.debug(ud.ADMIN, ud.INFO, 'dnsEntryZoneForward: %s' % str(self['dnsEntryZoneForward']))
 
-			except univention.admin.uexceptions.insufficientInformation as msg:
+			except univention.admin.uexceptions.insufficientInformation:
 				self['dnsEntryZoneForward'] = []
-				raise univention.admin.uexceptions.insufficientInformation, msg
+				raise
 
 			if zoneNames:
 				for zoneName in zoneNames:
@@ -1993,9 +1994,9 @@ class simpleComputer(simpleLdap):
 							entry = [self.lo.parentDn(dn), ip]
 							if entry not in self['dnsEntryZoneReverse']:
 								self['dnsEntryZoneReverse'].append(entry)
-					except univention.admin.uexceptions.insufficientInformation as msg:
+					except univention.admin.uexceptions.insufficientInformation:
 						self['dnsEntryZoneReverse'] = []
-						raise univention.admin.uexceptions.insufficientInformation, msg
+						raise
 			ud.debug(ud.ADMIN, ud.INFO, 'simpleComputer: dnsEntryZoneReverse: %s' % self['dnsEntryZoneReverse'])
 
 			if zoneNames:
@@ -2015,9 +2016,9 @@ class simpleComputer(simpleLdap):
 							entry = [dnsForwardZone, dnsAliasZoneContainer, dnsAlias]
 							if entry not in self['dnsEntryZoneAlias']:
 								self['dnsEntryZoneAlias'].append(entry)
-					except univention.admin.uexceptions.insufficientInformation as msg:
+					except univention.admin.uexceptions.insufficientInformation:
 						self['dnsEntryZoneAlias'] = []
-						raise univention.admin.uexceptions.insufficientInformation, msg
+						raise
 			ud.debug(ud.ADMIN, ud.INFO, 'simpleComputer: dnsEntryZoneAlias: %s' % self['dnsEntryZoneAlias'])
 
 			if self['mac']:
@@ -2047,8 +2048,8 @@ class simpleComputer(simpleLdap):
 									self['dhcpEntryZone'].append(entry)
 						ud.debug(ud.ADMIN, ud.INFO, 'open: DHCP; self[ dhcpEntryZone ] = "%s"' % self['dhcpEntryZone'])
 
-					except univention.admin.uexceptions.insufficientInformation as msg:
-						raise univention.admin.uexceptions.insufficientInformation, msg
+					except univention.admin.uexceptions.insufficientInformation:
+						raise
 
 		if self.exists():
 			if self.has_property('network'):
@@ -2291,7 +2292,7 @@ class simpleComputer(simpleLdap):
 				# '2001:db8:100:5' → '2001:0db8:0100:0000:0000:0000:0000:0005'
 				ip = ipaddr.IPv6Address(ip).exploded
 				if not ip.startswith(subnet):
-					raise univention.admin.uexceptions.missingInformation, _('Reverse zone and IP address are incompatible.')
+					raise univention.admin.uexceptions.missingInformation(_('Reverse zone and IP address are incompatible.'))
 				# '2001:0db8:0100:0000:0000:0000:0000:0005' → '00:0000:0000:0000:0000:0005'
 				ipPart = ip[len(subnet):]
 				# '00:0000:0000:0000:0000:0005' → '0000000000000000000005' → ['0', '0', …, '0', '0', '5', ]
@@ -2307,7 +2308,7 @@ class simpleComputer(simpleLdap):
 				subnet = '%s.' % ('.'.join(reversed(explode_dn(zoneDn, 1)[0].replace('.in-addr.arpa', '').split('.'))))
 				ipPart = re.sub('^%s' % (re.escape(subnet),), '', ip)
 				if ipPart == ip:
-					raise univention.admin.uexceptions.InvalidDNS_Information, _('Reverse zone and IP address are incompatible.')
+					raise univention.admin.uexceptions.InvalidDNS_Information(_('Reverse zone and IP address are incompatible.'))
 				ipPart = '.'.join(reversed(ipPart.split('.')))
 				tmppos = univention.admin.uldap.position(self.position.getDomain())
 				# check in which forward zone the ip is set
@@ -2557,7 +2558,7 @@ class simpleComputer(simpleLdap):
 				zone.modify()
 			else:
 				# throw exception, cNAMERecord is single value
-				raise univention.admin.uexceptions.dnsAliasAlreadyUsed, _('DNS alias is already in use.')
+				raise univention.admin.uexceptions.dnsAliasAlreadyUsed(_('DNS alias is already in use.'))
 
 	def __remove_dns_alias_object(self, name, dnsForwardZone, dnsAliasZoneContainer, alias=None):
 		ud.debug(ud.ADMIN, ud.INFO, 'remove a dns alias object: name="%s", dnsForwardZone="%s", dnsAliasZoneContainer="%s", alias="%s"' % (name, dnsForwardZone, dnsAliasZoneContainer, alias))
@@ -2789,7 +2790,7 @@ class simpleComputer(simpleLdap):
 				except univention.admin.uexceptions.noLock:
 					self.cancel()
 					univention.admin.allocators.release(self.lo, self.position, "mac", macAddress)
-					raise univention.admin.uexceptions.macAlreadyUsed, ' %s' % macAddress
+					raise univention.admin.uexceptions.macAlreadyUsed(' %s' % macAddress)
 				self.macRequest = 1
 			for macAddress in self.oldinfo.get('mac', []):
 				if macAddress in self.info.get('mac', []):
@@ -2835,7 +2836,7 @@ class simpleComputer(simpleLdap):
 						self.cancel()
 						univention.admin.allocators.release(self.lo, self.position, "aRecord", ipAddress)
 						self.ip_alredy_requested = 0
-						raise univention.admin.uexceptions.ipAlreadyUsed, ' %s' % ipAddress
+						raise univention.admin.uexceptions.ipAlreadyUsed(' %s' % ipAddress)
 				else:
 					IpAddr = ipAddress
 
@@ -2894,7 +2895,7 @@ class simpleComputer(simpleLdap):
 						if entry not in self.oldinfo.get('dhcpEntryZone', []):
 							self.__changes['dhcpEntryZone']['add'].append(entry)
 					else:
-						raise univention.admin.uexceptions.invalidDhcpEntry, _('The DHCP entry for this host should contain the zone LDAP-DN, the IP address and the MAC address.')
+						raise univention.admin.uexceptions.invalidDhcpEntry(_('The DHCP entry for this host should contain the zone LDAP-DN, the IP address and the MAC address.'))
 
 		if self.hasChanged('dnsEntryZoneForward'):
 			for entry in self.oldinfo.get('dnsEntryZoneForward', []):
@@ -2927,7 +2928,7 @@ class simpleComputer(simpleLdap):
 					if entry not in self.oldinfo.get('dnsEntryZoneAlias', []):
 						self.__changes['dnsEntryZoneAlias']['add'].append(entry)
 				else:
-					raise univention.admin.uexceptions.invalidDNSAliasEntry, _('The DNS alias entry for this host should contain the zone name, the alias zone container LDAP-DN and the alias.')
+					raise univention.admin.uexceptions.invalidDNSAliasEntry(_('The DNS alias entry for this host should contain the zone name, the alias zone container LDAP-DN and the alias.'))
 
 		self.__multiip = len(self['mac']) > 1 or len(self['ip']) > 1
 
@@ -3568,7 +3569,7 @@ class simplePolicy(simpleLdap):
 		if key in self.polinfo:
 			if self.polinfo[key] != newvalue or self.polinfo_more[key]['policy'] == self.cloned or (key in self.info and self.info[key] != newvalue):
 				if self.polinfo_more[key]['fixed'] and self.polinfo_more[key]['policy'] != self.cloned:
-					raise univention.admin.uexceptions.policyFixedAttribute, key
+					raise univention.admin.uexceptions.policyFixedAttribute(key)
 				simpleLdap.__setitem__(self, key, newvalue)
 				ud.debug(ud.ADMIN, ud.INFO, 'polinfo: set key %s to newvalue %s' % (key, newvalue))
 				if self.hasChanged(key):
