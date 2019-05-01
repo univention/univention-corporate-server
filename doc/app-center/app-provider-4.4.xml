@@ -27,7 +27,7 @@
             Univention App Center is an ecosystem similar to the app stores
             known from mobile platforms like Apple or Google. It provides an
             infrastructure to build, deploy and run enterprise applications on
-            Univention Corporate Server (UCS). The App Center uses well-known
+            &ucsUCS; (UCS). The App Center uses well-known
             technologies like <ulink url="https://www.docker.com/">Docker</ulink>.
         </para>
     </section>
@@ -134,7 +134,7 @@
                 access to the image. Please then grant access to the Docker Hub
                 user <userinput>univention</userinput>. The image then has to
                 be copied manually by the App Center team to the Univention
-                Docker registry. Univention's Docker Registry is not browsable.
+                Docker registry, which is not browsable.
                 It needs credentials to be accessed. The Docker image should be
                 considered public by the time the app is published in
                 Univention App Center.
@@ -386,19 +386,29 @@
             </para>
             <para>
                 For example:
-                <itemizedlist>
-                    <listitem>
-                        <simpara>
-                            <option>Host</option>: <userinput>/var/lib/app_etc</userinput>
-                        </simpara>
-                    </listitem>
-                    <listitem>
-                        <simpara>
-                            <option>Docker container</option>: <userinput>/etc/app</userinput>
-                        </simpara>
-                    </listitem>
-                </itemizedlist>
             </para>
+            <variablelist>
+                <varlistentry>
+                    <term>
+                        <guilabel>Host</guilabel>
+                    </term>
+                    <listitem>
+                        <simpara>
+                            <userinput>/var/lib/app_etc</userinput>
+                        </simpara>
+                    </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <guilabel>Docker container</guilabel>
+                    </term>
+                    <listitem>
+                        <simpara>
+                            <userinput>/etc/app</userinput>
+                        </simpara>
+                    </listitem>
+                </varlistentry>
+            </variablelist>
         </section>
 
         <section id="create-app-with-docker:web-interface">
@@ -417,37 +427,53 @@
                 the container's ports 80 and 443 to
                 <userinput>/myapp</userinput>, the following settings have to
                 be made:
-                <itemizedlist>
+            </para>
+            <variablelist>
+                <varlistentry>
+                    <term>
+                        <guilabel>Relative URL to web application</guilabel>
+                    </term>
                     <listitem>
                         <simpara>
-                            <option>Relative URL to web application</option>:
                             <userinput>/myapp</userinput>
                         </simpara>
                     </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <guilabel>HTTP port of web application</guilabel>
+                    </term>
                     <listitem>
                         <simpara>
-                            <option>HTTP port of web application</option>:
                             <userinput>80</userinput>
                         </simpara>
                     </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <guilabel>HTTPS port of web application</guilabel>
+                    </term>
                     <listitem>
                         <simpara>
-                            <option>HTTPS port of web application</option>:
                             <userinput>443</userinput>
                         </simpara>
                     </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <guilabel>Supported protocols by the container's web interface</guilabel>
+                    </term>
                     <listitem>
                         <simpara>
-                            <option>Supported protocols by the container's web
-                                interface</option>: On the tab
+                            On the tab
                             <guimenu>Docker</guimenu> in the section
                             <guimenu>Advanced Docker settings</guimenu>, select
                             <userinput>HTTP and HTTPS</userinput>, if both
                             protocol schemes should be covered.
                         </simpara>
                     </listitem>
-                </itemizedlist>
-            </para>
+                </varlistentry>
+            </variablelist>
         </section>
 
         <section id="create-app-with-docker:ports">
@@ -480,7 +506,7 @@
             <title>Database</title>
             <para>
                 Many applications need a relational database management system
-                (<wordasword>RDMS</wordasword>) somewhere in the environment to
+                (RDMS) somewhere in the environment to
                 function properly. If the app needs such a database the App
                 Center takes care of providing one directly to the Docker host.
                 In two sections on the <guimenu>Docker</guimenu> tab the
@@ -536,7 +562,7 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
     <section id="create-app-with-docker:compose">
         <title>Create a Multi Container App</title>
         <para>
-            Starting with UCS 4.3-2 errata 345 Univention App Center supports
+            Starting with <u:erratum release="4.3-2">345</u:erratum> Univention App Center supports
             apps that consist of multiple Docker images. It uses <ulink
                 url="https://docs.docker.com/compose/overview/">Docker
                 Compose</ulink>, a tool for defining and running
@@ -585,14 +611,14 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
             <title>Post processing of Docker Compose file</title>
             <para>
                 Before a Multi Container App is started by the App Center, the
-                <option>docker-compose.yml</option> is altered by the App
+                <filename>docker-compose.yml</filename> is altered by the App
                 Center with the following changes:
             </para>
                 <orderedlist>
                     <listitem>
                         <simpara>
                             When a Multi Container App is released, the
-                            <option>docker-compose.yml</option> is adjusted on
+                            <filename>docker-compose.yml</filename> is adjusted on
                             the server side and the Docker Image information is
                             changed to point to the Docker Images in the
                             Univention Docker Registry.  All Docker Images from
@@ -607,13 +633,13 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                             The App Center adds two standard volumes for the
                             main service, as they are also included in Single
                             Container Apps. These are the
-                            <filename>/var/lib/univention-appcenter/apps/$appid/data</filename>
+                            <filename>/var/lib/univention-appcenter/apps/<replaceable>$appid</replaceable>/data</filename>
                             and
-                            <filename>/var/lib/univention-appcenter/apps/$appid/conf</filename>
+                            <filename>/var/lib/univention-appcenter/apps/<replaceable>$appid</replaceable>/conf</filename>
                             directories on the UCS host. If volumes are defined
                             in the App Provider Portal in the App
                             Configuration, these are also supplemented in
-                            <option>docker-compose.yml</option> by the App
+                            <filename>docker-compose.yml</filename> by the App
                             Center for the main service.
                         </simpara>
                     </listitem>
@@ -621,28 +647,28 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                         <simpara>
                             If ports are defined in the App Provider Portal,
                             they are also added to
-                            <option>docker-compose.yml</option>.  Ports that
+                            <filename>docker-compose.yml</filename>.  Ports that
                             have already been defined continue to exist. If the
                             same port is defined in the portal and in
-                            <option>docker-compose.yml</option>, the
+                            <filename>docker-compose.yml</filename>, the
                             configuration in the App Provider Portal takes
                             precedence. For example, if
-                            <option>docker-compose.yml</option> states that
+                            <filename>docker-compose.yml</filename> states that
                             port 4500 is provided externally as port 4500, but
                             the portal defines that this port is to be used as
-                            6500, <option>docker-compose.yml</option> will be
-                            modified to map port 4500 to 6500 on the host. 
+                            6500, <filename>docker-compose.yml</filename> will be
+                            modified to map port 4500 to 6500 on the host.
                         </simpara>
                     </listitem>
                     <listitem>
                         <simpara>
-                            If <option>docker-compose.yml</option> specifies
+                            If <filename>docker-compose.yml</filename> specifies
                             that port 80 or 443 should be opened to the outside
                             and the App Configuration specifies that these
                             ports should be used by the App Center for the web
                             interface, the App Center will define a port on the
                             fly define it in
-                            <option>docker-compose.yml</option>. This is
+                            <filename>docker-compose.yml</filename>. This is
                             because UCS hosts usually occupy ports 80 and 443
                             with a web server. The App Center creates an Apache
                             Reverse Proxy configuration. See section <xref
@@ -655,8 +681,8 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                             UCS provides a number of environment variables via
                             the App Center, e.g. parameters for an LDAP
                             connection. The necessary variables are also
-                            written to <option>docker-compose.yml</option> in
-                            the <option>environments</option> section. 
+                            written to <filename>docker-compose.yml</filename> in
+                            the <option>environments</option> section.
                         </simpara>
                     </listitem>
                     <listitem>
@@ -675,8 +701,8 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                     As a result, Docker Compose starts a configuration on the
                     UCS system that no longer matches 100% of the App
                     Provider's input. The modified
-                    <option>docker-compose.yml</option> can be found at
-                    <filename>/var/lib/univention-appcenter/apps/$appid/compose/docker-compose.yml</filename>.
+                    <filename>docker-compose.yml</filename> can be found at
+                    <filename>/var/lib/univention-appcenter/apps/<replaceable>$appid</replaceable>/compose/docker-compose.yml</filename>.
                 </para>
         </section>
         <section id="create-app-with-docker:finish">
@@ -736,12 +762,12 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                 is a good time to make a snapshot of the system, which allows
                 to got back to that status. Afterwards, app specific time
                 consuming tasks can be prepared to reduce recurring waiting
-                times. Among them are for example an optional <userinput>docker
-                    login</userinput> to gain access to a private Docker image
+                times. Among them are for example an optional <command>docker
+                    login</command> to gain access to a private Docker image
                 or even the own Docker registry, and the manual download of the
-                app's Docker image(s) with <userinput>docker pull</userinput>
-                (for single container apps) or <userinput>docker-compose -p
-                    $appid pull</userinput> (for multi container apps) from the
+                app's Docker image(s) with <command>docker pull</command>
+                (for single container apps) or <command>docker-compose -p
+                    <replaceable>$appid</replaceable> pull</command> (for multi container apps) from the
                 within the <filename>docker-compose.yml</filename> directory of
                 the app (see <xref linkend="testing:debugging" />). And then
                 also make a new snapshot. Especially, having the Docker
@@ -757,7 +783,7 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                 recommended to update the local App Center cache. This is
                 either automatically done during login and opening of the App
                 Center module in the UCS management system or triggered
-                manually with <userinput>univention-app update</userinput> on
+                manually with <command>univention-app update</command> on
                 the console.
             </para>
         </section>
@@ -799,7 +825,7 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
             <para>
                 Switch to the Test App Center Repository and test the app
                 directly on the UCS system set up before.
-<programlisting>
+<programlisting language="sh">
 univention-install univention-appcenter-dev
 univention-app dev-use-test-appcenter
 </programlisting>
@@ -817,12 +843,10 @@ univention-app dev-use-test-appcenter
                 the app from there.
             </para>
 
-            <para>
                 <figure id="testing:install:app-center-umc-module">
                     <title>Univention Management Console overview with App Center module</title>
                     <graphic scalefit="1" width="80%" fileref="illustrations44/umc-module-app-center.png"/>
                 </figure>
-            </para>
 
             <para>
                 The following points are mandatory for the App to be published:
@@ -876,7 +900,7 @@ univention-app dev-use-test-appcenter
                 the app, please go to the console and install a version
                 explicitly:
 
-                <programlisting>
+                <programlisting language="sh">
                     univention-app install myapp=1.0
                 </programlisting>
 
@@ -892,7 +916,7 @@ univention-app dev-use-test-appcenter
             <para>
                 To switch back to the productive App Center, please run:
 
-                <programlisting>
+                <programlisting language="sh">
                     univention-app dev-use-test-appcenter --revert
                 </programlisting>
             </para>
@@ -937,7 +961,7 @@ univention-app dev-use-test-appcenter
                 For certain tests user credentials for access to the directory
                 service are needed. They are passed with the parameters
                 <option>binddn</option> and <option>bindpwd</option>. In many
-                cases the user <option>Administrator</option> is used.
+                cases the user <systemitem class="username">Administrator</systemitem> is used.
             </para>
         </section>
 
@@ -950,7 +974,7 @@ univention-app dev-use-test-appcenter
                 have a deeper look into what happened. With the following
                 command the App Center will not throw away a failed app
                 installation. The container is kept on the system.
-                <programlisting>
+                <programlisting language="sh">
                     univention-app install myapp --do-not-revert
                 </programlisting>
             </para>
@@ -958,36 +982,36 @@ univention-app dev-use-test-appcenter
                 For debugging or support cases it can be helpful to enter the
                 app container. The following command opens a shell in the
                 container.
-                <programlisting>
+                <programlisting language="sh">
                     univention-app shell myapp
                 </programlisting>
                 If the container does not support a shell, the container can be
                 entered with the plain Docker commands.
-                <programlisting>
+                <programlisting language="sh">
 CONTAINER="$(ucr get appcenter/apps/myapp/container)"
 docker exec "$CONTAINER" ...
                 </programlisting>
             </para>
             <para>
                 To view the docker logfiles for the app, please use the following command:
-                <programlisting>
+                <programlisting language="sh">
 univention-app logs $appid  # equivalent to docker logs $CONTAINER
                 </programlisting>
                 For multi container apps using Docker Compose, those logging information can be viewed with:
-                <programlisting>
+                <programlisting language="sh">
 cd /var/lib/univention-appcenter/apps/$appid/compose
 docker-compose -p $appid logs
                 </programlisting>
             </para>
             <para>
                 Important logfiles on the UCS host for debugging are:
-                <itemizedlist>
-                    <listitem><simpara><option>/var/log/univention/appcenter.log</option></simpara></listitem>
-                    <listitem><simpara><option>/var/log/univention/management-console-module-appcenter.log</option></simpara></listitem>
-                    <listitem><simpara><option>/var/log/univention/join.log</option></simpara></listitem>
-                    <listitem><simpara><option>/var/log/docker.log</option></simpara></listitem>
-                </itemizedlist>
             </para>
+            <itemizedlist spacing="compact">
+                <listitem><simpara><filename>/var/log/univention/appcenter.log</filename></simpara></listitem>
+                <listitem><simpara><filename>/var/log/univention/management-console-module-appcenter.log</filename></simpara></listitem>
+                <listitem><simpara><filename>/var/log/univention/join.log</filename></simpara></listitem>
+                <listitem><simpara><filename>/var/log/docker.log</filename></simpara></listitem>
+            </itemizedlist>
         </section>
     </section>
 
@@ -1080,16 +1104,14 @@ docker-compose -p $appid logs
             </orderedlist>
         </para>
 
-        <para>
             <figure id="app-life-cycle:update:create-new-version">
-                <title>Menu for Add a new App</title>
+                <title>Menu to add a new App</title>
                 <graphic scalefit="1" width="28%" fileref="illustrations44/app_portal_create_new_version.png"/>
             </figure>
             <figure id="app-life-cycle:update:new-version">
                 <title>Add a new App version</title>
                 <graphic scalefit="1" width="28%" fileref="illustrations44/app_portal_new_version.png"/>
             </figure>
-        </para>
     </section>
 
     <section id="termination">
@@ -1140,7 +1162,7 @@ docker-compose -p $appid logs
                 url="https://provider-portal.software-univention.de/appcenter-selfservice/univention-appcenter-control">https://provider-portal.software-univention.de/appcenter-selfservice/univention-appcenter-control</ulink>.
             It requires Python 2.7 and cURL to run. For a list of available
             actions and their parameters, use the script's help:
-                <programlisting>
+                <programlisting language="sh">
 ./univention-appcenter-control --help
 ./univention-appcenter-control upload --help
                 </programlisting>
@@ -1148,30 +1170,32 @@ docker-compose -p $appid logs
 
         <para>
             The following examples show how the script can be used.
-            <programlisting>
+            <programlisting language="sh">
 # creates a new version based on the latest version of myapp
 ./univention-appcenter-control new-version 4.4/myapp
 
 # finds out on which UCS versions this Docker App may be installed
 # Note: jq is an external tool: apt-get install jq
 # you may parse JSON without it, of course
-./univention-appcenter-control get --json 4.4/myapp | jq '._ini_vars.SupportedUCSVersions'
+./univention-appcenter-control get --json 4.4/myapp |
+	jq '._ini_vars.SupportedUCSVersions'
 
 # creates version 2.0 of myapp based on the (formerly) latest version
 ./univention-appcenter-control new-version 4.4/myapp 4.4/myapp=2.0
 
 # sets the DockerImage of the new app
-./univention-appcenter-control set 4.4/myapp=2.0 --json '{"DockerImage": "mycompany/myimage:2.0"}'
+./univention-appcenter-control set 4.4/myapp=2.0 \
+	--json '{"DockerImage": "mycompany/myimage:2.0"}'
 
 # copies myapp Version 1.0 from UCS 4.2 to UCS 4.4.
 ./univention-appcenter-control new-version 4.2/myapp=1.0 4.4/myapp=1.0
 
-# uploads all README files in the current folder to the latest version 
+# uploads all README files in the current folder to the latest version
 # myapp in UCS 4.2
 ./univention-appcenter-control upload 4.4/myapp README*
 
-# uploads an image. Will be rejected if this image is not specified somewhere 
-# in the ini file. Note: This may overwrite the logo for other
+# uploads an image. Will be rejected if this image is not specified
+# somewhere in the ini file. Note: This may overwrite the logo for other
 # version using the same logo name, too.
 ./univention-appcenter-control upload 4.4/myapp=1.0 myapp.svg
             </programlisting>
@@ -1254,8 +1278,8 @@ docker-compose -p $appid logs
             Comprehensive visualizations can be added optionally which make it
             easier to understand the app's description. Give the image files
             sensible names including the keywords. An example of a bad file
-            name for an image would be “app_76bz3.jpg”, whereas
-            “<wordasword>app_name.jpg</wordasword>” would be much better.
+            name for an image would be <filename>app_76bz3.jpg</filename>, whereas
+            <filename>app_name.jpg</filename> would be much better.
         </para>
     </section>
 
@@ -1372,12 +1396,12 @@ docker-compose -p $appid logs
         <para>
             For the users it is important to know who is the producer of the
             app. For this purpose there is the <guimenu>Contact</guimenu> tab
-            in the App Provider Portal. Please provide <option>Gerneal product
-                contact information</option> like an email address and a
+            in the App Provider Portal. Please provide <guilabel>Gerneal product
+                contact information</guilabel> like an email address and a
             website to the solution.  Please also link to a website, where the
             app provider's support options and pricing is explained to
-            potential customers and place the link in the field <option>Website
-                with information regarding support options</option>.
+            potential customers and place the link in the field <guilabel>Website
+                with information regarding support options</guilabel>.
         </para>
     </section>
 
@@ -1396,8 +1420,8 @@ docker-compose -p $appid logs
         <para>
             UCS system administrators have to register with a valid email
             address in order to use the App Center. If the app provider
-            configures an email address in the field <option>E-mail address for
-                App install notifications</option> it receives information on a
+            configures an email address in the field <guimenu>E-mail address for
+                App install notifications</guimenu> it receives information on a
             daily basis about who installed the app. The App Center UMC
             module informs the user that the app provider may contact them. App
             providers can use the address, for example, for lead management.
@@ -1508,7 +1532,7 @@ docker-compose -p $appid logs
             <listitem>
                 <simpara>
                     The version of the software solution offered in the App
-                    Center is maintained by the app provider. 
+                    Center is maintained by the app provider.
                 </simpara>
             </listitem>
             <listitem>
@@ -1613,37 +1637,54 @@ docker-compose -p $appid logs
             </para>
             <para>
 				The parameters for the LDAP server can be read from the environment variables:
-				<itemizedlist>
+            </para>
+            <variablelist>
+                <varlistentry>
+                    <term>
+                        <envar>LDAP_SERVER_NAME</envar>
+                    </term>
 					<listitem>
 						<simpara>
-							<option>LDAP_SERVER_NAME</option>:
 							The fully-qualified host name of the OpenLDAP
 							server the app may connect to.
 						</simpara>
 					</listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <envar>LDAP_SERVER_PORT</envar>
+                    </term>
 					<listitem>
 						<simpara>
-							<option>LDAP_SERVER_PORT</option>:
 							The port of the OpenLDAP server the app may
 							connect to.
 						</simpara>
 					</listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <envar>LDAP_SERVER_ADDITION</envar>
+                    </term>
 					<listitem>
 						<simpara>
-							<option>LDAP_SERVER_ADDITION</option>:
 							A list of alternative OpenLDAP servers. These
 							values should be used for failover.
 						</simpara>
 					</listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <envar>LDAP_BASE</envar>
+                    </term>
 					<listitem>
 						<simpara>
-							<option>LDAP_BASE</option>:
 							The base for the whole LDAP database, e.g.,
 							<uri>dc=mydomain,dc=intranet</uri> or
 							<uri>o=mydomain</uri>.
 						</simpara>
 					</listitem>
-				</itemizedlist>
+                </varlistentry>
+            </variablelist>
 				<important>
 					<para>
 						As a rule, the LDAP base should not be further
@@ -1652,14 +1693,13 @@ docker-compose -p $appid logs
 						environments.
 					</para>
 				</important>
-            </para>
 
             <para>
 				By default, the OpenLDAP server in UCS does not allow
 				anonymous connections. For every app a user account is
 				created. The account has read access to the LDAP directory.
 				The username is passed as the environment variable
-				<option>LDAP_HOSTDN</option>. The password is written in the
+				<envar>LDAP_HOSTDN</envar>. The password is written in the
 				file <filename>/etc/machine.secret</filename>. The
 				credentials are not changed when an app is upgraded. But they
 				change if an app is reinstalled.
@@ -1676,10 +1716,7 @@ docker-compose -p $appid logs
 				is created.
             </para>
             <para>
-                <ulink
-                    url="https://errata.software-univention.de/ucs/4.3/211.html">UCS
-                    4.3-1 errata 211</ulink> is required on the user's system
-                for this feature.
+                <u:erratum release="4.3">211</u:erratum> is required on the user's system for this feature.
             </para>
 			<section id="provision:push:setup">
 				<title>Setup in App configuration</title>
@@ -1704,7 +1741,7 @@ docker-compose -p $appid logs
 				<title>How the mechanism works</title>
 				<para>
 					The JSON files are created in the directory
-					<filename>/var/lib/univention-appcenter/apps/$appid/data/listener/</filename>.
+					<filename class="directory">/var/lib/univention-appcenter/apps/$appid/data/listener/</filename>.
 					As soon as any attribute of the watched object types is
 					changed a JSON file is created in the directory. The script is
 					called in a defined and configurable interval by the App
@@ -1750,7 +1787,7 @@ docker-compose -p $appid logs
 						</listitem>
                     </itemizedlist>
                     Logging information about the listener can found in
-                    <filename>/var/log/univention/listener_modules/$appid.log</filename>.
+                    <filename>/var/log/univention/listener_modules/<replaceable>$appid</replaceable>.log</filename>.
 				</para>
 			</section>
 			<section id="provision:push:script">
@@ -1769,7 +1806,7 @@ docker-compose -p $appid logs
 						</listitem>
 						<listitem>
 							<simpara>
-                                UCS can "<wordasword>resync</wordasword>" a
+                                UCS can re-synchronize a
                                 listener. In this case, each and every object
                                 appears once again as a JSON file. The script
                                 needs to cover the case where no real
@@ -1819,7 +1856,8 @@ docker-compose -p $appid logs
             	<para>
 					This is an example of a JSON file for a user change. It is
 					not complete, but should clarify the idea.
-<programlisting language="sh">
+                </para>
+<programlisting language="js">
 {
     "dn": "uid=Administrator,cn=users,dc=sparka-43,dc=intranet",
     "id": "b2f13544-e3cb-1037-810e-23ad4765aade",
@@ -1873,7 +1911,6 @@ docker-compose -p $appid logs
     "udm_object_type": "users/user"
 }
 </programlisting>
-                </para>
             </section>
         </section>
     </section>
@@ -1909,36 +1946,53 @@ docker-compose -p $appid logs
             <para>
 				The parameters for the LDAP server can be read from the
 				environment variables:
-				<itemizedlist>
+            </para>
+            <variablelist>
+                <varlistentry>
+                    <term>
+                        <envar>LDAP_SERVER_NAME</envar>
+                    </term>
 					<listitem>
 						<simpara>
-							<option>LDAP_SERVER_NAME</option>:
 							The fully-qualified host name of the OpenLDAP
 							server the app may connect to.
 						</simpara>
 					</listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <envar>LDAP_SERVER_PORT</envar>
+                    </term>
 					<listitem>
 						<simpara>
-							<option>LDAP_SERVER_PORT</option>:
 							The port of the OpenLDAP server the app may connect to.
 						</simpara>
 					</listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <envar>LDAP_SERVER_ADDITION</envar>
+                    </term>
 					<listitem>
 						<simpara>
-							<option>LDAP_SERVER_ADDITION</option>:
 							A list of alternative OpenLDAP servers. These
 							values should be used for failover.
 						</simpara>
 					</listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <envar>LDAP_BASE</envar>
+                    </term>
 					<listitem>
 						<simpara>
-							<option>LDAP_BASE</option>:
 							The base for the whole LDAP database, e.g.,
 							<uri>dc=mydomain,dc=intranet</uri> or
 							<uri>o=mydomain</uri>.
 						</simpara>
 					</listitem>
-				</itemizedlist>
+                </varlistentry>
+            </variablelist>
 				<important>
 					<para>
 						As a rule, the LDAP basis should not be further
@@ -1947,14 +2001,13 @@ docker-compose -p $appid logs
 						environments.
 					</para>
 				</important>
-            </para>
 
             <para>
 				By default, the OpenLDAP server in UCS does not allow
 				anonymous authentications. For every app a user account is
 				created. The account has read access to the LDAP directory.
 				The username is passed as the environment variable
-				<option>LDAP_HOSTDN</option>. The password is written in the
+				<envar>LDAP_HOSTDN</envar>. The password is written in the
 				file <filename>/etc/machine.secret</filename>. The credentials
 				are not changed when an app is upgraded. But they change if an
 				app is reinstalled.
@@ -1980,22 +2033,22 @@ docker-compose -p $appid logs
 				UCS integrates a Kerberos server by default. As usual with
 				Kerberos, the data for the Kerberos configuration can be
 				obtained from DNS. By default, the DNS domain name is
-				passed through the <option>DOMAINNAME</option> environment
+				passed through the <envar>DOMAINNAME</envar> environment
 				variable. The following settings can then be queried via DNS:
 				<itemizedlist>
 					<listitem>
 						<simpara>
 							<emphasis>Kerberos Realm</emphasis>:
 							It an be queried by the TXT record
-							<option>_kerberos.DOMAINNAME</option>.
+							<systemitem class="domainname">_kerberos.DOMAINNAME</systemitem>.
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
 							<emphasis>Kerberos KDC</emphasis>:
 							It an be queried by the SRV records
-							<option>_kerberos._tcp.DOMAINNAME</option> and
-							<option>_kerberos._udp.DOMAINNAME</option>.
+							<systemitem class="domainname">_kerberos._tcp.DOMAINNAME</systemitem> and
+							<systemitem class="domainname">_kerberos._udp.DOMAINNAME</systemitem>.
 						</simpara>
 					</listitem>
 				</itemizedlist>
@@ -2041,17 +2094,17 @@ docker-compose -p $appid logs
         <itemizedlist>
             <listitem>
                 <simpara>
-                    Docker → Join/Un-join script
+                    <guilabel>Docker</guilabel> → <guilabel>Join/Unjoin script</guilabel>
                 </simpara>
             </listitem>
             <listitem>
                 <simpara>
-                    Docker → Preinst/prerm script
+                    <guilabel>Docker</guilabel> → <guilabel>preinst/prerm script</guilabel>
                 </simpara>
             </listitem>
             <listitem>
                 <simpara>
-                    Docker → Life cycle scripts → Docker script
+                    <guilabel>Docker</guilabel> → <guilabel>Life cycle scripts</guilabel> → <guilabel>Docker script</guilabel>
                     <filename>setup</filename>,
                     <filename>store_data</filename>,
                     <filename>restore_data_before_setup</filename>,
@@ -2060,12 +2113,12 @@ docker-compose -p $appid logs
             </listitem>
             <listitem>
                 <simpara>
-                    Settings → Configuration script run in the Docker Container. (<filename>configure</filename>)
+                    <guilabel>Settings</guilabel> → <guilabel>Configuration script run in the Docker Container</guilabel>. (<filename>configure</filename>)
                 </simpara>
             </listitem>
             <listitem>
                 <simpara>
-                    Settings → Configuration script run on the Docker Host. (<filename>configure_host</filename>)
+                    <guilabel>Settings</guilabel> → <guilabel>Configuration script run on the Docker Host</guilabel>. (<filename>configure_host</filename>)
                 </simpara>
             </listitem>
         </itemizedlist>
@@ -2080,12 +2133,10 @@ docker-compose -p $appid logs
             themselves can be found in the following sections.
         </para>
 
-        <para>
 			<figure id="installation-scripts:app-flow:install">
 				<title>App workflow for installation</title>
 				<graphic scalefit="1" width="100%" fileref="illustrations44/app-flow-install.png"/>
             </figure>
-        </para>
 
 		<section id="installation:preinst">
 			<title>Script called before installation to verify that App may be installed</title>
@@ -2197,23 +2248,51 @@ docker-compose -p $appid logs
                     the below listed functions are available in join scripts for
                     dealing with apps. They require the following line in the
                     script:
-                    <programlisting>
+                    <programlisting language="sh">
 . /usr/share/univention-appcenter/joinscripthelper.sh
                     </programlisting>
                     Furthermore, this call provides access to the following variables:
-                    <programlisting>
-$APP # app id
-$APP_VERSION # app version
-$SERVICE # app name
-$CONTAINER # docker container id
-                    </programlisting>
                 </para>
+                <variablelist>
+                    <varlistentry>
+                        <term>
+                            <envar>$APP</envar>
+                        </term>
+                        <listitem>
+                            <simpara>app id</simpara>
+                        </listitem>
+                    </varlistentry>
+                    <varlistentry>
+                        <term>
+                            <envar>$APP_VERSION</envar>
+                        </term>
+                        <listitem>
+                            <simpara>app version</simpara>
+                        </listitem>
+                    </varlistentry>
+                    <varlistentry>
+                        <term>
+                            <envar>$SERVICE</envar>
+                        </term>
+                        <listitem>
+                            <simpara>app name</simpara>
+                        </listitem>
+                    </varlistentry>
+                    <varlistentry>
+                        <term>
+                            <envar>$CONTAINER</envar>
+                        </term>
+                        <listitem>
+                            <simpara>Docker container id</simpara>
+                        </listitem>
+                    </varlistentry>
+                </variablelist>
             </section>
 
             <section id="installation:joinscript:functions">
                 <title>Join script functions</title>
                 <para>
-                    <emphasis>joinscript_add_simple_app_system_user</emphasis>
+                    <function>joinscript_add_simple_app_system_user</function>
                     adds a domain wide user to the LDAP directory that is
                     not a real Domain User and offers an authentication
                     account. It can be used as bind user for the app to
@@ -2221,48 +2300,48 @@ $CONTAINER # docker container id
                     stored on the Docker Host at
                     <filename>/etc/$APP.secret</filename>. The DN will be
                     <option>uid=$APP-systemuser,cn=users,$ldap_base</option>.
-                    <programlisting>
+                    <programlisting language="sh">
 joinscript_add_simple_app_system_user "$@" --set mailPrimaryAddress=...
                    </programlisting>
                </para>
                <para>
-                   <emphasis>joinscript_container_is_running</emphasis>
+                   <function>joinscript_container_is_running</function>
                    returns whether or not the Docker container is
                    currently running. 0: Yes, 1: No. Can be used in an if
                    statement.
-                   <programlisting>
+                   <programlisting language="sh">
 joinscript_container_is_running || die "Container is not running"
                    </programlisting>
                </para>
                <para>
-                   <emphasis>joinscript_run_in_container</emphasis> runs
+                   <function>joinscript_run_in_container</function> runs
                    one command inside the container. Returns the return
                    code of the command.
-                   <programlisting>
+                   <programlisting language="sh">
 joinscript_run_in_container service myapp restart || die "Could not restart the service"
                    </programlisting>
                </para>
                <para>
-                   <emphasis>joinscript_container_file</emphasis> prints the
+                   <function>joinscript_container_file</function> prints the
                    absolute path for the Docker host for the filename given inside
                    the container.
-                   <programlisting>
+                   <programlisting language="sh">
 FILENAME="$(joinscript_container_file "/opt/$APP/my.cnf")"
                    </programlisting>
                </para>
                <para>
-                   <emphasis>joinscript_container_file_touch</emphasis>
+                   <function>joinscript_container_file_touch</function>
                    creates a file inside the container. Directories are
                    created along the way. Prints the resulting filename
                    just like "joinscript_container_file".
                </para>
                <para>
-                   <emphasis>joinscript_register_schema</emphasis>
+                   <function>joinscript_register_schema</function>
                    registers a LDAP schema file semi automatically. The
                    schema file allows to extend LDAP objects with new
                    attributes. The file will be copied to the Docker
                    host's
-                   <filename>/usr/share/univention-appcenter/apps/APPID/APPID.schema</filename>
+                   <filename>/usr/share/univention-appcenter/apps/<replaceable>APPID</replaceable>/<replaceable>APPID</replaceable>.schema</filename>
                    during installation. See the <ulink
                        url="http://www.openldap.org/doc/admin24/schema.html">LDAP
                        documentation</ulink> for the syntax of a schema file. If an
@@ -2274,7 +2353,7 @@ FILENAME="$(joinscript_container_file "/opt/$APP/my.cnf")"
                    <guimenu>Docker</guimenu> tab, in the <guimenu>Configuration
                        files</guimenu> section in the field for <guimenu>Schema
                        extension for LDAP</guimenu>.
-                   <programlisting>
+                   <programlisting language="sh">
 joinscript_register_schema "$@"
                    </programlisting>
                </para>
@@ -2285,7 +2364,7 @@ joinscript_register_schema "$@"
                <para>
                    The following boilerplate can be used as a starting point
                    for the app's own join script.
-                   <programlisting>
+                   <programlisting language="sh">
 #!/bin/bash
 VERSION=1
 
@@ -2312,12 +2391,10 @@ exit 0
             themselves can be found in the following sections.
         </para>
 
-        <para>
 			<figure id="uninstallation-scripts:app-flow:remove">
 				<title>App workflow for Removal</title>
 				<graphic scalefit="1" width="100%" fileref="illustrations44/app-flow-remove.png"/>
             </figure>
-        </para>
 
 		<section id="uninstallation:prerm">
 			<title>Script called before uninstalling to verify that App may be removed</title>
@@ -2372,7 +2449,7 @@ exit 0
                 the data is stored outside of the container for example in a
                 database or a mapped volume. It is executed inside the Docker
                 container and it should copy the relevant data to
-                <filename>/var/lib/univention-appcenter/apps/$APPID/data/</filename>.
+                <filename>/var/lib/univention-appcenter/apps/<replaceable>$APPID</replaceable>/data/</filename>.
                 Afterwards, the data can be restored by one of the
                 <filename>restore_data*</filename> scripts. The parameters are
                 the appid, the app version and a filename for error logging.
@@ -2407,12 +2484,10 @@ exit 0
             sections.
         </para>
 
-        <para>
 			<figure id="upgrade-scripts:app-flow:update">
 				<title>App workflow for upgrade</title>
 				<graphic scalefit="1" width="100%" fileref="illustrations44/app-flow-update.png"/>
             </figure>
-        </para>
 
 		<section id="upgrade-scripts:preinst">
 			<title>Script called before upgrade to verify that App may be upgraded</title>
@@ -2442,7 +2517,7 @@ exit 0
                 outside the container for example in a database or a mapped
                 volume. The script is executed inside the Docker container and
                 it should copy the relevant data to
-                <filename>/var/lib/univention-appcenter/apps/$APPID/data/</filename>.
+                <filename>/var/lib/univention-appcenter/apps/<replaceable>$APPID</replaceable>/data/</filename>.
                 Afterwards, the data can be restored by one of the
                 <filename>restore_data*</filename> scripts when they are
                 executed in the new container.
@@ -2560,12 +2635,12 @@ exit 0
 			<title>React on App settings</title>
 			<para>
 				The settings are saved inside the Docker container in the file
-				<filename>/etc/univention/base.conf</filename> in the type
+				<filename>/etc/univention/base.conf</filename> in the format
 				<wordasword>key: value</wordasword>.
 				After the settings are changed, two scripts are executed.
-				First, the script <wordasword>configure_host</wordasword>. This script is run on the
+				First, the script <filename>configure_host</filename>. This script is run on the
 				Docker host.
-				Second, the <wordasword>configure</wordasword> script is
+				Second, the script <filename>configure</filename> is
 				executed. It is executed inside the Docker container. In the
 				App Provider Portal, the path of the script can be given
 				(<guimenu>Configuration script run in the Docker
@@ -2585,7 +2660,7 @@ exit 0
 			<para>
 				The name of a setting is the name of the section in the ini
 				file, for example
-				<programlisting>
+				<programlisting language="ini">
 [myapp/mysetting]
 				</programlisting>
 				It is recommended to use the app ID as a prefix. This prevents
@@ -2595,55 +2670,99 @@ exit 0
 				The type of the attribute is defined with the keyword
 				<emphasis>Type</emphasis>. The following types are
 				supported:
-				<itemizedlist>
+			</para>
+            <variablelist>
+                <varlistentry>
+                    <term>
+                        <guimenu>String</guimenu>
+                    </term>
 					<listitem>
 						<simpara>
-							<guimenu>String</guimenu> A standard input field
+							A standard input field
 							with no restrictions. This is used by default.
 						</simpara>
 					</listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <guimenu>Int</guimenu>
+                    </term>
 					<listitem>
 						<simpara>
-							<guimenu>Int</guimenu> A number field which is
+							A number field which is
 							validated accordingly.
 						</simpara>
 					</listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <guimenu>Bool</guimenu>
+                    </term>
 					<listitem>
 						<simpara>
-							<guimenu>Bool</guimenu> A checkbox. The value
+							A checkbox. The value
 							<option>true</option> or <option>false</option> is
 							set.
 						</simpara>
 					</listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <guimenu>List</guimenu>
+                    </term>
 					<listitem>
 						<simpara>
-							<guimenu>List</guimenu> A widget that lets the
+							A widget that lets the
 							user choose from a predefined set of values.
 						</simpara>
 					</listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <guimenu>Password</guimenu>
+                    </term>
 					<listitem>
 						<simpara>
-							<guimenu>Password</guimenu> A password input.
-							Note: The content will be stored as clear text
-							value inside the Docker container.
+							A password input.
 						</simpara>
+                        <note>
+                            <simpara>
+							The content will be stored as clear text
+							value inside the Docker container.
+                            </simpara>
+                        </note>
 					</listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <guimenu>File</guimenu>
+                    </term>
 					<listitem>
 						<simpara>
-							<guimenu>File</guimenu> An upload widget. The
+							An upload widget. The
 							content is stored directly in a file according to
 							the definition of the setting.
 						</simpara>
 					</listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <guimenu>PasswordFile</guimenu>
+                    </term>
 					<listitem>
 						<simpara>
-							<guimenu>PasswordFile</guimenu> As a File, but
+							As a File, but
 							shown as a password input.
 						</simpara>
 					</listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <guimenu>Status</guimenu>
+                    </term>
 					<listitem>
 						<simpara>
-							<guimenu>Status</guimenu> A read-only settings
+							A read-only settings
 							that is actually meant as a feedback channel for
 							the user. This does not render a widget, but
 							instead just writes a text with whatever was
@@ -2652,8 +2771,8 @@ exit 0
 							script).
 						</simpara>
 					</listitem>
-				</itemizedlist>
-			</para>
+                </varlistentry>
+            </variablelist>
 			<para>
 				The attribute <guimenu>Description</guimenu> is used to
 				define the description of the setting. It is shown next to the
@@ -2722,7 +2841,7 @@ exit 0
 			<title>App settings examples</title>
 			<para>
 				This is a minimal settings definition:
-				<programlisting>
+				<programlisting language="ini">
 [myapp/mysetting]
 Type = String
 Description = This is the description of the setting
@@ -2731,7 +2850,7 @@ Description[de] = Das ist die Beschreibung der Einstellung
 			</para>
 			<para>
 				These are two more advanced settings
-				<programlisting>
+				<programlisting language="ini">
 [myapp/myfile]
 Type = File
 Filename = /opt/myapp/license
@@ -2742,7 +2861,7 @@ Group = License and List
 Group[de] = Lizenz und Liste
 				</programlisting>
 
-				<programlisting>
+				<programlisting language="ini">
 [myapp/list]
 Type = List
 Description = List of values
@@ -2775,9 +2894,8 @@ Group[de] = Lizenz und Liste
         </para>
         <para>
             Apps may need access to the UCS certificate infrastructure or need
-            to be aware of changes to the certificates. Starting with <ulink
-                url="https://errata.software-univention.de/ucs/4.3/91.html">UCS
-                4.3-0 errata 91</ulink> the Univention App Center provides a
+            to be aware of changes to the certificates. Starting with <u:erratum release="4.3">91</u:erratum>
+            the Univention App Center provides a
             simple way to manage certificates inside an app.  This is simply a
             new action named <guimenu>update-certificates</guimenu> in the app
             Center which is called automatically during the installation and
@@ -2785,12 +2903,12 @@ Group[de] = Lizenz und Liste
             a simple way to gain access to certificates and to react to
             changes to certificates.
         </para>
-<programlisting>
+<programlisting language="sh">
 # update all apps
--> univention-app update-certificates
+univention-app update-certificates
 
 # update app "my-app"
--> univention-app update-certificates my-app
+univention-app update-certificates my-app
 </programlisting>
 
         <para>
@@ -2827,7 +2945,7 @@ Group[de] = Lizenz und Liste
         </para>
         <para>
             Example:
-<programlisting>
+<programlisting language="sh">
 #!/bin/bash
 # cat the UCS root CA to the app's root CA chain
 cat /etc/univention/ssl/ucsCA/CAcert.pem >> /opt/my-app/ca-bundle.crt
@@ -2857,7 +2975,7 @@ service my-app-daemon restart
             with the <guimenu>Mailstack</guimenu> in the App Center. It
             includes Postfix as MTA for SMTP and Dovecot for IMAP. If the app
             relies on an existing mail infrastructure, it is best practice to
-            use the Mailstack app and require its installation in the UCS
+            use the mailstack app and require its installation in the UCS
             domain. This can be configured in the App Provider portal for the
             app under <guimenu>Software</guimenu> in the section
             <guimenu>Required Apps</guimenu> by selecting the
@@ -2872,12 +2990,12 @@ service my-app-daemon restart
             servers. This is done in the Join Script (see <xref linkend="installation:joinscript" />).
             The following snippet gives an example what should be included in
             the Join Script:
-            <programlisting>
+            <programlisting language="sh">
 ...
 eval "$(univention-config-registry shell)"
 ...
 # use the first IMAP server as smtp and imap server
-mailserver="$(univention-ldapsearch -LLL univentionService=IMAP cn | grep "^cn: " | sed s/"^cn: "// | head -n1)"
+mailserver="$(univention-ldapsearch -LLL '(univentionService=IMA)' cn | sed -ne 's/^cn: "//p;T;q')"
 if [ -n "$mailserver" ]; then
         mailserver="$mailserver.$domainname"
 
@@ -2939,7 +3057,7 @@ fi
                 </listitem>
                 <listitem>
                     <simpara>
-                        Auth Login or Auth Plain
+                        Mechanism Login or Mechanism Plain
                     </simpara>
                 </listitem>
             </itemizedlist>
@@ -2953,7 +3071,7 @@ fi
                 stopped on the Docker host. This can be done in the App's
                 preinst Docker script, see <xref linkend="installation:preinst"
                     />. Example:
-                <programlisting><![CDATA[
+                <programlisting language="sh"><![CDATA[
 #!/bin/bash
 
 # stop imap/smtp on docker host
@@ -2965,8 +3083,8 @@ ucr set dovecot/autostart='no'
                 To map SMTP and/or IMAP ports from the container to the host to
                 be able to use the Docker host as IMAP/SMTP server exclusive
                 ports for the container have to be set to the relevant ports
-                (e.g. 110, 143, 993, 995, 587, 25, 465, 4190 for pop3(s),
-                imap(s), smtp(s), submission and sieve). See section <xref
+                (e.g. 110, 143, 993, 995, 587, 25, 465, 4190 for <systemitem class="service">pop3(s)</systemitem>,
+                <systemitem class="service">imap(s)</systemitem>, <systemitem class="service">smtp(s)</systemitem>, <systemitem class="service">submission</systemitem> and <systemitem class="service">sieve</systemitem>). See section <xref
                     linkend="create-app-with-docker:ports" /> on how to set an
                 exclusive port.
             </para>
@@ -2974,7 +3092,7 @@ ucr set dovecot/autostart='no'
                 Firewall exceptions for these ports are create automatically.
             </para>
             <para>
-                Best practice is to at least map the imap data store to the
+                Best practice is to at least map the IMAP data store to the
                 Docker host to provide a separation of data and container
                 (important for migration to Docker and Docker image updates).
                 See section <xref linkend="create-app-with-docker:volumes" />.
@@ -2990,10 +3108,10 @@ ucr set dovecot/autostart='no'
             </para>
 
             <para>
-                Install the "extremely simple MTA" ssmtp and configure this MTA
-                to use the localhost (our Docker container is listening on
+                Install the <phrase>extremely simple MTA</phrase> <package>ssmtp</package> and configure this MTA
+                to use the <systemitem class="systemname">localhost</systemitem> (our Docker container is listening on
                 localhost:25).
-                <programlisting>
+                <programlisting language="sh">
 univention-install --yes ssmtp
 # add mailhub=localhost:25 in to /etc/ssmtp/ssmtp.conf
                 </programlisting>
@@ -3001,8 +3119,8 @@ univention-install --yes ssmtp
             <para>
                 Now configure postfix in the Docker container to deliver mails
                 from the Docker host locally by adding the FQDN of the Docker
-                host to mydestination:
-                <programlisting>
+                host to <envar>mydestination</envar>:
+                <programlisting language="sh">
 ucr set mail/postfix/mydestination="\$myhostname, localhost.\$mydomain, localhost, $DOCKER_HOST_NAME"
                 </programlisting>
             </para>
@@ -3077,7 +3195,7 @@ ucr set mail/postfix/mydestination="\$myhostname, localhost.\$mydomain, localhos
                 kept in mind and provided.
             </para>
         </section>
-      
+
         <section id="appliance:umc-favorites">
             <title>Customize UMC favorite category</title>
             <para>
@@ -3140,12 +3258,10 @@ ucr set mail/postfix/mydestination="\$myhostname, localhost.\$mydomain, localhos
                 Please define in the <guimenu>Primary appliance color</guimenu>
                 setting.
             </para>
-            <para>
                 <figure id="appliance:branding:bootloader-figure">
                     <title>Boot loader</title>
                     <graphic scalefit="1" width="80%" fileref="illustrations44/Appliance_Branding_Bootloader.png"/>
                 </figure>
-            </para>
         </section>
 
         <section id="appliance:branding:bootsplash">
@@ -3167,12 +3283,10 @@ ucr set mail/postfix/mydestination="\$myhostname, localhost.\$mydomain, localhos
                     linear-gradient() function on
                     <wordasword>w3schools</wordasword></ulink>.
             </para>
-            <para>
                 <figure id="appliance:branding:bootsplash-figure">
                     <title>Boot splash</title>
                     <graphic scalefit="1" width="80%" fileref="illustrations44/Appliance_Branding_Bootsplash.png"/>
                 </figure>
-            </para>
         </section>
 
         <section id="appliance:branding:setup-wizard">
@@ -3198,18 +3312,14 @@ ucr set mail/postfix/mydestination="\$myhostname, localhost.\$mydomain, localhos
                 color for smaller graphical elements throughout the setup
                 wizard (see <xref linkend="appliance:branding:umc-branding-figure" />).
             </para>
-            <para>
                 <figure id="appliance:branding:setup-wizard-figure">
                     <title>System setup first screen</title>
                     <graphic scalefit="1" width="80%" fileref="illustrations44/Appliance_Branding_Setup_Wizard.png"/>
                 </figure>
-            </para>
-            <para>
                 <figure id="appliance:branding:umc-branding-figure">
                     <title>System setup summary screen</title>
                     <graphic scalefit="1" width="80%" fileref="illustrations44/Appliance_Branding_UMC.png"/>
                 </figure>
-            </para>
         </section>
 
         <section id="appliance:branding:welcome-screen">
@@ -3231,12 +3341,10 @@ ucr set mail/postfix/mydestination="\$myhostname, localhost.\$mydomain, localhos
                     screen</guimenu> should be either set to
                 <userinput>White</userinput> or <userinput>Black</userinput>.
             </para>
-            <para>
                 <figure id="appliance:branding:umc-branding-welcome-screen">
                     <title>Appliance welcome screen</title>
                     <graphic scalefit="1" width="80%" fileref="illustrations44/Appliance_Branding_Welcome_Screen.png"/>
                 </figure>
-            </para>
         </section>
 
         <section id="appliance:branding:portal-page">
@@ -3252,12 +3360,10 @@ ucr set mail/postfix/mydestination="\$myhostname, localhost.\$mydomain, localhos
                 background color gradient as described in <xref
                     linkend="appliance:branding:bootsplash" />.
             </para>
-            <para>
                 <figure id="appliance:branding:portal-page-figure">
                     <title>Appliance portal page</title>
                     <graphic scalefit="1" width="80%" fileref="illustrations44/Appliance_Branding_Portal_Page.png"/>
                 </figure>
-            </para>
         </section>
 
     </section>
