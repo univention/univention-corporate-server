@@ -7,4 +7,6 @@ fix: 12.0.1-12A~4.4.0.201904151222
 desc: |
  This update addresses the following issue:
  * It is now possible to use space characters in samba printer names.
-bug: [48947]
+ * A security vulnerability in the listener has been fixed which caused
+   overwriting or removal of arbitraty files.
+bug: [48947, 49296]
