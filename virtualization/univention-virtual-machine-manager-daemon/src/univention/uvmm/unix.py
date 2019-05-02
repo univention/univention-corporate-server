@@ -202,7 +202,12 @@ def unix(options):
 			rlist, wlist, xlist = select.select(sockets.keys(), [], [], None)
 			for fd in rlist:
 				sockets[fd].handle_request()
-		except (select.error, socket.error) as ex:
+		except select.error as ex:
+			if ex.args[0] == errno.EINTR:
+				continue
+			else:
+				raise
+		except socket.error as ex:
 			if ex.errno == errno.EINTR:
 				continue
 			else:
