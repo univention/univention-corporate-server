@@ -11,3 +11,5 @@ desc: |
    passord policy is defined in the domain.
  * Error messages during login or password changing are translated again.
 bug: [49239, 49029]
+erratum: 70
+announced: 2019-05-02
