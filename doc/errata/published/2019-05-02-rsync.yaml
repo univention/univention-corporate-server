@@ -14,3 +14,5 @@ cve:
 - CVE-2016-9841
 - CVE-2016-9842
 - CVE-2016-9843
+erratum: 67
+announced: 2019-05-02
