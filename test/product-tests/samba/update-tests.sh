@@ -271,7 +271,7 @@ test_after_update () {
 	# "kinit testuser2" auf UDM geht mit neuem Passwort?
 	# Ist das Homeverzeichnis am Windows-Client automatisch eingebunden?
 	#run_on_ucs_hosts $SLAVE "touch /home/testuser02/test.txt"
-	python shared-utils/ucs-winrm.py check-share --server ucs-slave --sharename "testuser02" --driveletter R --filename "test.txt" --username 'testuser02' --userpwd "Univention.99" --client $WIN2
+	python shared-utils/ucs-winrm.py check-share --server ucs-slave --sharename "testuser02" --driveletter R --filename "test-testuser02.txt" --username 'testuser02' --userpwd "Univention.99" --client $WIN2
 	# Kann eine Datei dort angelegt werden?
 	python shared-utils/ucs-winrm.py create-share-file --server ucs-slave --filename test-admin02.txt --username 'testuser02' --userpwd "Univention.99" --share testuser02 --client $WIN2
 	# Wurden die GPOs ausgewertet?
