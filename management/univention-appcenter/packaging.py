@@ -31,5 +31,4 @@ def setup(name, **attrs):
 		attrs['version'] = _get_version()
 	if 'description' not in attrs:
 		attrs['description'] = _get_description(name)
-	print attrs
 	return orig_setup(**attrs)

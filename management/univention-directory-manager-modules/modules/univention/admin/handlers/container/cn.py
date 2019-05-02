@@ -38,6 +38,8 @@ import univention.admin.handlers
 import univention.admin.localization
 import ldap
 
+from univention.admin.handlers.container import default_container_for_objects
+
 translation = univention.admin.localization.translation('univention.admin.handlers.container')
 _ = translation.translate
 
@@ -187,18 +189,14 @@ class object(univention.admin.handlers.simpleLdap):
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 
-		pathResult = self.lo.get('cn=directory,cn=univention,' + self.position.getDomain())
-		self.default_dn = 'cn=directory,cn=univention,' + self.position.getDomain()
-		if not pathResult:
-			pathResult = self.lo.get('cn=default containers,cn=univention,' + self.position.getDomain())
-			self.default_dn = 'cn=default containers,cn=univention,' + self.position.getDomain()
+		pathResult, self.default_dn = default_container_for_objects(self.lo, self.position.getDomain())
 
 		for prop in self.PATH_KEYS:
-			self[prop] = '0'
+			self.info[prop] = '0'
 
 		for prop, attr in self.PATH_KEYS.iteritems():
 			if any(x == self.dn for x in pathResult.get(attr, [])):
-				self[prop] = '1'
+				self.info[prop] = '1'
 
 		self.save()
 
