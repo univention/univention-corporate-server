@@ -6,9 +6,9 @@ src: gst-plugins-base1.0
 fix: 1.10.4-1+deb9u1
 desc: |
  This update addresses the following issue:
- * GStreamer before 1.16.0 has a heap-based buffer overflow in the RTSP
-   connection parser via a crafted response from a server, potentially
-   allowing remote code execution. (CVE-2019-9928)
+ * GStreamer has a heap-based buffer overflow in the RTSP connection parser
+   via a crafted response from a server, potentially allowing remote code
+   execution. (CVE-2019-9928)
 bug: [49401]
 cve:
 - CVE-2019-9928
