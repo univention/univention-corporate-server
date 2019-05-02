@@ -11,3 +11,5 @@ desc: |
    causing arbitrary file reading and modifications as well as crashes
    of the bind service.
 bug: [41005]
+erratum: 68
+announced: 2019-05-02
