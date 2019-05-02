@@ -6,7 +6,7 @@ src: univention-bind
 fix: 13.0.1-5A~4.4.0.201904292112
 desc: |
  This update addresses the following issue(s):
- * The robustness of the listener for DNS zones has been improoved.
+ * The robustness of the listener for DNS zones has been improved.
    Certain LDAP DNS objects could cause path injection vulnerabilies
    causing arbitrary file reading and modifications as well as crashes
    of the bind service.
