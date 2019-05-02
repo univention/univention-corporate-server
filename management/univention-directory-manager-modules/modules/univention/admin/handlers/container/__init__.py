@@ -32,6 +32,7 @@
 
 import time
 
+
 def default_container_for_objects(lo, domain):
 	ttl = 2
 	cache = default_container_for_objects._cache
@@ -45,4 +46,6 @@ def default_container_for_objects(lo, domain):
 		value = {'value': (pathResult, default_dn), 'expire': time.time() + ttl}
 		cache[key] = value
 	return cache[key]['value']
+
+
 default_container_for_objects._cache = {}
