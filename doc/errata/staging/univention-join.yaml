@@ -5,6 +5,6 @@ scope: ucs_4.4-0-errata4.4-0
 src: univention-join
 fix: 11.0.1-17A~4.4.0.201905021401
 desc: |
- This update addresses the following issue(s):
- * Fixed joining into an UCS domain when using bonded network interfaces
+ This update addresses the following issue:
+ * Fixed joining host into an UCS domain when using bonded network interfaces.
 bug: [49298]
