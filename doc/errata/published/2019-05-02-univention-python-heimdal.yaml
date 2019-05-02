@@ -9,3 +9,5 @@ desc: |
  * The build system for the package has been changed to `dh_python2`.
  * The package description has been fixed.
 bug: [49139, 28681]
+erratum: 72
+announced: 2019-05-02
