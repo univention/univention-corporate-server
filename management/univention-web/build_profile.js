@@ -46,7 +46,8 @@ var profile = (function() {
 			"dgrid",
 			"dstore",
 			"put-selector",
-			"xstyle"
+			"xstyle",
+			"dompurify"
 		],
 
 		layerOptimize : "closure",
@@ -56,7 +57,7 @@ var profile = (function() {
 
 		layers: {
 			"dojo/dojo": {
-				include: [ "dojo/dojo", "umc/_all", "dgrid"],
+				include: [ "dojo/dojo", "umc/_all", "dgrid" ],
 				exclude: [ "login/main" ],
 				customBase: true,
 				boot: true

@@ -32,16 +32,11 @@ define([
 	"dojo/_base/declare",
 	"dijit/Editor",
 	"umc/widgets/_FormWidgetMixin",
+	"dompurify/purify",
 	"dijit/_editor/plugins/ViewSource",
 	"dijit/_editor/plugins/FullScreen",
 	"dojox/editor/plugins/PrettyPrint"
-], function(declare, Editor, _FormWidgetMixin) {
-	var purify;
-	require(["dompurify/purify"], function(_purify) {
-		// lazy loading because dompurify is not available during the dojo build process
-		purify = _purify;
-	});
-
+], function(declare, Editor, _FormWidgetMixin, purify) {
 	return declare("umc.widgets.Editor", [ Editor, _FormWidgetMixin ], {
 		labelPosition: 'top',
 		extraPlugins: ['viewSource', 'fullscreen', 'prettyprint'],
