@@ -9,3 +9,5 @@ desc: |
  * The resync_objects.py helper script now respects the configured local
    ldap port.
 bug: [49228]
+erratum: 69
+announced: 2019-05-02
