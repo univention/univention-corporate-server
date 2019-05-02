@@ -8,5 +8,5 @@ desc: |
  This update addresses the following issue:
  * It is now possible to use space characters in samba printer names.
  * A security vulnerability in the listener has been fixed which caused
-   overwriting or removal of arbitraty files.
+   overwriting or removal of arbitrary files.
 bug: [48947, 49296]
