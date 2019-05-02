@@ -10,3 +10,5 @@ desc: |
  * A security vulnerability in the listener has been fixed which caused
    overwriting or removal of arbitrary files.
 bug: [48947, 49296]
+erratum: 71
+announced: 2019-05-02
