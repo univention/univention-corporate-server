@@ -4,8 +4,9 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.9.8
 Build-Depends: debhelper (>= 7.0.50~),
- python-support,
+ dh-python,
  python-all,
+ python3-all,
  ucslint-univention
 
 Package: python-univention-package-template
@@ -13,7 +14,19 @@ Architecture: all
 Depends: ${python:Depends}, ${misc:Depends}
 Provides: ${python:Provides}
 Description: UCS - python module template
- This package contains an example Python module.
+ This package contains an example Python 2 module.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: python3-univention-package-template
+Architecture: all
+Depends: ${python3:Depends}, ${misc:Depends}
+Provides: ${python3:Provides}
+Description: UCS - python module template
+ This package contains an example Python 3 module.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
