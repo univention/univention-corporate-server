@@ -211,6 +211,19 @@ class Index(object):
         self.log.debug("Looking up transaction %d at position %d in index", tid, pos)
         self.index.seek(pos, SEEK_SET)
 
+    def remove(self):
+        # type: () -> None
+        """
+        Remove `.index` file.
+        """
+        self.log.info('Removing %s ...', self.filename)
+        try:
+            unlink(self.filename)
+        except EnvironmentError as ex:
+            self.log.debug('unlink %s: %s', self.filename, ex)
+            if ex.errno != ENOENT:
+                raise
+
 
 class Translog(object):
     """
@@ -980,14 +993,7 @@ class CheckTranslog(CheckGeneric):
         """
         Remove .index file.
         """
-        idx = self.filename + '.index'
-        self.log.info('Removing %s ...', idx)
-        try:
-            unlink(idx)
-        except EnvironmentError as ex:
-            self.log.debug('unlink %s: %s', idx, ex)
-            if ex.errno != ENOENT:
-                raise
+        Index(self.filename).remove()
 
 
 class CheckListener(CheckGeneric):
