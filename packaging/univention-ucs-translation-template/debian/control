@@ -4,12 +4,15 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7.0.50~),
  ucslint-univention,
+ dh-python,
+ python-all,
+ python3-all,
  univention-config-dev
 Standards-Version: 3.8.2
 
 Package: univention-ucs-translation-template
 Architecture: all
-Depends: ${misc:Depends},
+Depends: ${misc:Depends}, ${python:Depends}, ${python3:Depends},
  univention-management-console,
  univention-management-console-dev
 Description: UCS Management Console translation files
