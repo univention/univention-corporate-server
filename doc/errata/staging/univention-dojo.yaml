@@ -2,8 +2,8 @@ product: ucs
 release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
-src: univention-web
-fix: 3.0.5-13A~4.4.0.201905031246
+src: univention-dojo
+fix: 12.0.0-2A~4.4.0.201905031243
 desc: |
  This update addresses the following issue(s):
  * A cross site scripting vulnerability in umc.widgets.Editor has been fixed.
