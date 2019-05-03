@@ -1,3 +1,9 @@
+univention-web (3.0.5-13) unstable; urgency=medium
+
+  * Bug #48812: add dompurify to dojo build
+
+ -- Florian Best <best@univention.de>  Fri, 03 May 2019 12:42:24 +0200
+
 univention-web (3.0.5-12) unstable; urgency=medium
 
   * Bug #48812: cleanup

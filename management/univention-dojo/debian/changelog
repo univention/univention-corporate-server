@@ -1,3 +1,9 @@
+univention-dojo (12.0.0-2) unstable; urgency=medium
+
+  * Bug #48812: add dompurify to dojo build
+
+ -- Florian Best <best@univention.de>  Fri, 03 May 2019 12:42:28 +0200
+
 univention-dojo (12.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump
