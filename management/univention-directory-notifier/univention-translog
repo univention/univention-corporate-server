@@ -649,7 +649,7 @@ def check(opt):
         print('This command is only for UCS Master and Backups.')
         exit(0)
 
-    with stopped(opt):
+    with stopped(opt, SERVICES[opt.role]):
         translog = CheckTranslog(opt, opt.translog_file)
         translog.run()
 
@@ -665,13 +665,13 @@ def check(opt):
 
 
 @contextmanager
-def stopped(opt):
-    # type: (Namespace) -> Iterator
+def stopped(opt, services):
+    # type: (Namespace, Tuple[str, ...]) -> Iterator
     if opt.skip_services or not opt.fix:
         yield
         return
 
-    cmd = ('systemctl', 'stop') + SERVICES[opt.role]
+    cmd = ('systemctl', 'stop') + services
     call(cmd)
 
     try:
@@ -679,7 +679,7 @@ def stopped(opt):
     except Exception:
         raise
     else:
-        cmd = ('systemctl', 'start') + SERVICES[opt.role]
+        cmd = ('systemctl', 'start') + services
         call(cmd)
 
 
