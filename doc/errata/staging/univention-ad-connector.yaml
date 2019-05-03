@@ -6,5 +6,5 @@ src: univention-ad-connector
 fix: 13.0.0-9A~4.4.0.201904301223
 desc: |
  This update addresses the following issue(s):
- * References to the obsolete password servive have been removed.
+ * References to the obsolete password service have been removed.
 bug: [49111]
