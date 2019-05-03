@@ -155,7 +155,7 @@ class Index(object):
     def __getitem__(self, tid):
         # type: (int) -> IndexEntry
         """
-        Retrun index entry for given transaction.
+        Return index entry for given transaction.
 
         :param tid: Transaction id.
         :returns: The index entry.
@@ -311,7 +311,7 @@ class Translog(object):
     def __getitem__(self, tid):
         # type: (int) -> Transaction
         """
-        Retrun given transaction.
+        Return given transaction.
 
         :param tid: Transaction id.
         :returns: The transaction.
@@ -371,7 +371,7 @@ class Translog(object):
         Read next transaction after given offset.
 
         :param offset: absolute file offset.
-        :retruns: The transaction.
+        :returns: The transaction.
         :raises EOFError: if reading past the end.
         """
         assert 0 <= offset <= self.size, offset
@@ -395,7 +395,9 @@ class Translog(object):
 
 
 class Abort(Exception):
-    pass
+    """
+    Fatal abort.
+    """
 
 
 def main():
@@ -680,6 +682,12 @@ def check(opt):
 @contextmanager
 def stopped(opt, services):
     # type: (Namespace, Tuple[str, ...]) -> Iterator
+    """
+    Stop services while in context.
+
+    :param opt: Command line options.
+    :param services: Sequence of service names.
+    """
     if opt.skip_services or not opt.fix:
         yield
         return
@@ -699,6 +707,12 @@ def stopped(opt, services):
 @contextmanager
 def rewrite(filename):
     # type: (str) -> Iterator[str]
+    """
+    Return name of temporary file to replace given file on success.
+
+    :param filename: Name of file to replace on success.
+    :returns: Name of temporary file.
+    """
     log = getLogger(__name__).getChild("rewrite")
     cur = filename
     new = filename + '.new'
@@ -729,8 +743,18 @@ def rewrite(filename):
 
 
 class CheckGeneric(object):
+    """
+    Check transaction file for consistency.
+    """
+
     def __init__(self, opt, filename):
         # type: (Namespace, str) -> None
+        """
+        Check transaction file for consistency.
+
+        :param opt: Command line options.
+        :param filename: The name of the file containing transaction lines.
+        """
         self.opt = opt
         self.filename = filename
         self.log = getLogger(__name__).getChild("CHECK").getChild(self.__class__.__name__)
@@ -740,6 +764,9 @@ class CheckGeneric(object):
 
     def reset(self):
         # type: () -> None
+        """
+        Reset internal state.
+        """
         self.needs_fixing = False
         self.needs_sort = False
         self.needs_fill = False
@@ -752,6 +779,16 @@ class CheckGeneric(object):
 
     def error(self, string, *args, **kwargs):
         # type: (str, *Any, **bool) -> None
+        """
+        Flag error in file.
+
+        :param string: A descriptive format string, which is formatted using any additional positional arguments.
+        :param bool fix: The error must be fixed.
+        :param bool sort: The error can be fixed by sorting the transactions.
+        :param bool fill: The error can be fixed by filling the hole with dummy entries.
+        :param bool renum: The error can be fixed by re-numbering all transactions.
+        :param bool syntax: The line contains syntax error needing manual fixing.
+        """
         self.log.error('%s:%d:%r: ' + string, self.filename, self.lnr, self.line, *args)
         self.needs_fixing |= kwargs.get('fix', True)
         self.needs_sort |= kwargs.get('sort', False)
@@ -761,6 +798,11 @@ class CheckGeneric(object):
 
     def run(self, filename=''):
         # type: (str) -> None
+        """
+        Run check on trasnaction file.
+
+        :param filename: The name of the transaction file. Defaults to :py:attribute:`filename`.
+        """
         self.reset()
         with open(filename or self.filename, 'r') as stream:
             self.log.info("Reading %s ...", filename or self.filename)
@@ -781,6 +823,12 @@ class CheckGeneric(object):
 
     def loop(self, stream):
         # type: (BinaryIO) -> Iterator[Tuple[int, str, Transaction]]
+        """
+        Loop over all lines in the stream.
+
+        :param stream: The input stream.
+        :returns: yields 3-tuples (line-number, original-line-content, parsed-transaction-record).
+        """
         for self.lnr, line in enumerate(stream, start=1):
             self.line = line
             try:
@@ -841,10 +889,18 @@ class CheckGeneric(object):
 
     def check_transaction(self, rec):
         # type: (Transaction) -> None
+        """
+        Check transaction for consistency.
+
+        :param rec: The transaction record to check.
+        """
         raise NotImplementedError()
 
     def fixit(self):
         # type: () -> None
+        """
+        Fix transactions.
+        """
         raise NotImplementedError()
 
     def fix_syntax(self):
@@ -855,6 +911,9 @@ class CheckGeneric(object):
         # - optional: fake invalid DNs in 2nd column
         # - optional: fake transaction number
         # see commented out code in :py:meth:`loop`.
+        """
+        Handle syntax errors.
+        """
         self.log.info('Syntax ...')
 
         print('- contains unparseable lines!')
@@ -864,6 +923,9 @@ class CheckGeneric(object):
 
     def fix_sort(self):
         # type: () -> None
+        """
+        Handle transactions not being sorted strong monotonically increasing.
+        """
         self.log.info('Sorting ...')
         print('- the transactions are not sorted uniquely')
 
@@ -906,6 +968,9 @@ class CheckGeneric(object):
 
     def fix_fill(self):
         # type: () -> None
+        """
+        Handle transactions not being consecutive.
+        """
         self.log.info('Filling holes ...')
         print('- missing transactions in sequence')
 
@@ -942,6 +1007,9 @@ class CheckGeneric(object):
 
     def fix_renumber(self):
         # type: () -> None
+        """
+        Handle transactions being out-of-order.
+        """
         self.log.info('Renumbering ...')
         print('- pending transactions are not consecutive')
 
@@ -966,12 +1034,25 @@ class CheckGeneric(object):
 
     def remove_index(self):
         # type: () -> None
+        """
+        Remove any associated index file.
+        """
         raise NotImplementedError()
 
 
 class CheckTranslog(CheckGeneric):
+    """
+    Check transactions log file for consistency.
+    :file:`/var/lib/univention-ldap/notify/transaction`
+    """
+
     def check_transaction(self, rec):
         # type: (Transaction) -> None
+        """
+        Check committed transaction.
+
+        :param rec: The transaction record to check.
+        """
         if self.lnr == 1:
             self.log.info("%s:%d: Starts with: %r", self.filename, self.lnr, self.line)
         elif rec.tid <= self.last_tid:
@@ -981,6 +1062,9 @@ class CheckTranslog(CheckGeneric):
 
     def fixit(self):
         # type: () -> None
+        """
+        Fix transactions.
+        """
         if self.needs_syntax:
             self.fix_syntax()
         if self.needs_sort:
@@ -991,14 +1075,24 @@ class CheckTranslog(CheckGeneric):
     def remove_index(self):
         # type: () -> None
         """
-        Remove .index file.
+        Remove `.index` file.
         """
         Index(self.filename).remove()
 
 
 class CheckListener(CheckGeneric):
+    """
+    Check pending transactions log file for consistency.
+    :file:`/var/lib/univention-ldap/listener/listener`
+    """
+
     def check_transaction(self, rec):
         # type: (Transaction) -> None
+        """
+        Check pending transaction.
+
+        :param rec: Transaction record.
+        """
         if self.last_tid + 1 == rec.tid:
             pass
         elif rec.tid <= self.last_tid:
@@ -1010,6 +1104,9 @@ class CheckListener(CheckGeneric):
 
     def fixit(self):
         # type: () -> None
+        """
+        Fix transactions.
+        """
         if self.needs_syntax:
             self.fix_syntax()
         if self.needs_renum:
@@ -1018,13 +1115,21 @@ class CheckListener(CheckGeneric):
     def remove_index(self):
         # type: () -> None
         """
-        Remove .index file.
+        No associated `.index` file to remove.
         """
         pass
 
 
 def check_last(opt, filename, last_tid):
     # type: (Namespace, str, int) -> None
+    """
+    Check last used transactions id.
+    :file:`/var/lib/univention-ldap/last_id`
+
+    :param opt: Command line options.
+    :param filename: File name.
+    :param last_tid: Expected transaction id.
+    """
     log = getLogger(__name__).getChild("CHECK")
 
     try:
@@ -1122,7 +1227,7 @@ def parse_count(string):
     """
     Parse count string.
 
-    :param str: The command line string.
+    :param string: The command line string.
     :returns: The parsed count.
     :raises ArgumentTypeError: if the string is valid.
     """
@@ -1140,7 +1245,7 @@ def parse_percent(string):
     """
     Parse percentage string.
 
-    :param str: The command line string.
+    :param string: The command line string.
     :returns: The parsed percentage.
     :raises ArgumentTypeError: if the string is valid.
     """
@@ -1158,7 +1263,7 @@ def parse_size(string):
     """
     Parse size string.
 
-    :param str: The command line string.
+    :param string: The command line string.
     :returns: The parsed size.
     :raises ArgumentTypeError: if the string is valid.
     """
