@@ -44,8 +44,9 @@ from itertools import chain
 from subprocess import call
 
 import ldap
-from ldap.dn import is_dn
+from ldap.dn import is_dn, str2dn
 from ldap.ldapobject import ReconnectLDAPObject
+from ldap.controls import SimplePagedResultsControl
 from ldap.modlist import addModlist
 from univention.config_registry import ConfigRegistry
 
@@ -397,6 +398,12 @@ class Translog(object):
 class Abort(Exception):
     """
     Fatal abort.
+    """
+
+
+class DryRun(Exception):
+    """
+    Abort dry-run mode.
     """
 
 
@@ -1155,6 +1162,111 @@ def check_last(opt, filename, last_tid):
             exit(1)
 
 
+def prune(opt):
+    # type: (Namespace) -> None
+    """
+    Prune old transactions.
+
+    :param opt: Command line options.
+    """
+    if opt.role not in SERVICES:
+        print('This command is only for UCS Master and Backups.')
+        exit(0)
+
+    opt.skip_services = opt.dry_run
+    with stopped(opt, (UDN,)):
+        try:
+            prune_file(opt)
+        except DryRun:
+            pass
+        prune_ldap(opt)
+
+
+def prune_file(opt):
+    """
+    Prune old transactions from file.
+
+    :param opt: Command line options.
+    """
+    log = getLogger(__name__).getChild("prune").getChild("file")
+
+    with Index(opt.translog_file) as index, Translog(opt.translog_file, index) as translog:
+        if opt.trans < 0:
+            log.info('Keeeling last %d transactions before %d', -opt.trans, translog.last)
+            opt.trans = translog.last + opt.trans + 1
+
+        log.info('Purging/keeping %d..%d..%d', translog.first, opt.trans, translog.last)
+        if opt.trans <= translog.first:
+            log.fatal('Already purged.')
+            raise Abort()
+        if opt.trans >= translog.last:
+            log.fatal('Nothing to purge.')
+            raise Abort()
+        assert translog.first < opt.trans < translog.last
+
+        with rewrite(opt.translog_file) as tmp, open(tmp, 'w') as new:
+            for rec in translog:
+                if rec.tid < opt.trans:
+                    log.debug('Dropping %d', rec.tid)
+                    continue
+                line = Translog.format_line(rec)
+                new.write(line)
+
+            if opt.dry_run:
+                raise DryRun()
+
+        index.remove()
+
+
+def prune_ldap(opt):
+    """
+    Prune old transactions from LDAP.
+
+    :param opt: Command line options.
+    """
+    log = getLogger(__name__).getChild("prune").getChild("ldap")
+
+    base = opt.translog_base
+    scope = ldap.SCOPE_ONELEVEL
+    filterstr = '(reqSession=*)'
+    attrlist = ['1.1']  # LDAP_NO_ATTRS
+    page_control = SimplePagedResultsControl(True, size=1000, cookie='')
+    with ldapi(opt) as ld:
+        while True:
+            response = ld.search_ext(base, scope, filterstr, attrlist, serverctrls=[page_control])
+            rtype, rdata, rmsgid, serverctrls = ld.result3(response)
+
+            for control in serverctrls:
+                if control.controlType == SimplePagedResultsControl.controlType:
+                    break
+            else:
+                log.fatal('Server ignores RFC 2696 control: %r', serverctrls)
+                raise Abort()
+
+            for (dn, attrs) in rdata:
+                ava = str2dn(dn)
+                for (attr, value, _flags) in ava[0]:
+                    if attr == 'reqSession':
+                        break
+                else:
+                    continue
+                tid = int(value)
+                if tid >= opt.trans:
+                    log.debug('Keeping %s', dn)
+                    continue
+                try:
+                    log.debug("ldap_delete(%s)", dn)
+                    if not opt.dry_run:
+                        ld.delete_ext_s(dn)
+                    log.info("Deleted %s", dn)
+                except ldap.LDAPError as ex:
+                    log.error("ldap_delete(%s): %s", dn, ex)
+
+            if not control.cookie:
+                break
+            page_control.cookie = control.cookie
+
+
 def parse_args(args=None):
     # type: (List[str]) -> Namespace
     """
@@ -1216,6 +1328,11 @@ def parse_args(args=None):
     parser_check.add_argument("--last-file", "-I", metavar="FILENAME", help="Last_id file [%(default)s]", default="/var/lib/univention-ldap/last_id")
     parser_check.add_argument("--skip-services", "-S", action="store_true", help="Skip stopping and starting services")
     parser_check.set_defaults(func=check)
+
+    parser_prune = subparsers.add_parser("prune", help="Prune transaction files")
+    parser_prune.add_argument("trans", metavar="tid", type=int, help="Oldest transaction number to keep")
+    parser_prune.add_argument("--role", "-r", metavar="ROLE", help="Server role [%(default)s]", default=ucr['server/role'])
+    parser_prune.set_defaults(func=prune, fix=True)
 
     opt = parser.parse_args(args)
 
