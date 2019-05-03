@@ -283,12 +283,7 @@ class UCSTestUDM(object):
         else:
             raise UCSTestUDM_CreateUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
 
-        if wait_for_replication:
-            utils.wait_for_replication(verbose=False)
-            if check_for_drs_replication:
-                if utils.package_installed('univention-samba4'):
-                    if "options" not in kwargs or "kerberos" in kwargs["options"]:
-                        wait_for_drs_replication(ldap.filter.filter_format('cn=%s', (ldap.dn.str2dn(dn)[0][0][1],)))
+        self.wait_for(modulename, dn, wait_for_replication, check_for_drs_replication=(wait_for_replication and check_for_drs_replication and ("options" not in kwargs or "kerberos" in kwargs["options"])))
         return dn
 
     def modify_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, **kwargs):
@@ -329,11 +324,7 @@ class UCSTestUDM(object):
         else:
             raise UCSTestUDM_ModifyUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
 
-        if wait_for_replication:
-            utils.wait_for_replication(verbose=False)
-            if check_for_drs_replication:
-                if utils.package_installed('univention-samba4'):
-                    wait_for_drs_replication(ldap.filter.filter_format('cn=%s', (ldap.dn.str2dn(dn)[0][0][1],)))
+        self.wait_for(modulename, dn, wait_for_replication, check_for_drs_replication)
         return dn
 
     def move_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, **kwargs):
@@ -363,11 +354,7 @@ class UCSTestUDM(object):
         else:
             raise UCSTestUDM_ModifyUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
 
-        if wait_for_replication:
-            utils.wait_for_replication(verbose=False)
-            if check_for_drs_replication:
-                if utils.package_installed('univention-samba4'):
-                    wait_for_drs_replication(ldap.filter.filter_format('cn=%s', (ldap.dn.str2dn(dn)[0][0][1],)))
+        self.wait_for(modulename, dn, wait_for_replication, check_for_drs_replication)
         return new_dn
 
     def remove_object(self, modulename, wait_for_replication=True, **kwargs):
@@ -390,8 +377,14 @@ class UCSTestUDM(object):
         if dn in self._cleanup.get(modulename, []):
             self._cleanup[modulename].remove(dn)
 
-        if wait_for_replication:
-            utils.wait_for_replication(verbose=False)
+        self.wait_for(modulename, dn, wait_for_replication)
+
+    def wait_for(self, modulename, dn, wait_for_replication=True, wait_for_drs_replication=False, wait_for_s4connector=False):
+        drs_replication = wait_for_drs_replication
+        if wait_for_drs_replication and not isinstance(wait_for_drs_replication, basestring):
+            attr = {'container/ou': 'ou'}.get(modulename, 'cn')
+            drs_replication = ldap.filter.filter_format('%s=%s', (attr, ldap.dn.str2dn(dn)[0][0][1],))
+        return utils.wait_for(replication=wait_for_replication, drs_replication=drs_replication, s4_connector=False, verbose=False)
 
     def create_user(self, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
         """

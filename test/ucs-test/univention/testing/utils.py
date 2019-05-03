@@ -342,6 +342,21 @@ class FollowLogfile(object):
                     print "=" * 79
 
 
+def wait_for(self, replication=True, replication_postrun=False, drs_replication=False, s4_connector=True, verbose=True):
+    """Wait for all kind of replications"""
+    # the order matters!
+    if replication or drs_replication:  # does wait_for_drs_replication depend on wait_for_replication?!
+        if replication_postrun:
+            wait_for_replication_and_postrun(verbose)
+        else:
+            wait_for_replication(verbose)
+    from univention.testing.ucs_samba import wait_for_drs_replication, wait_for_s4connector
+    if drs_replication:
+        wait_for_drs_replication(drs_replication)
+    if s4_connector:
+        wait_for_s4connector(120)
+
+
 def wait_for_replication(verbose=True):
     sys.stdout.flush()
     time.sleep(1)  # Give the notifier some time to increase its transaction id
