@@ -1,4 +1,5 @@
 #!/usr/share/ucs-test/runner python
+# -*- coding: utf-8 -*-
 ## desc: Rename a container/cn with subobjects from lower to upper case
 ## tags: [udm]
 ## roles: [domaincontroller_master]
@@ -18,6 +19,21 @@ import ldap.filter
 if __name__ == '__main__':
 	ucr = configRegistry.ConfigRegistry()
 	ucr.load()
+
+	if utils.package_installed('univention-s4-connector'):
+		# this test is not stable with the s4-connector
+		# somehow we end up with
+		#
+		# Creating container/cn object with /usr/sbin/udm-test container/cn create --position dc=four,dc=four --set 'name=ĝkn}_>ä%\6'
+		# Waiting for connector replication
+		# Modifying container/cn object with /usr/sbin/udm-test container/cn modify --dn 'cn=ĝkn}_\>ä%\\6,dc=four,dc=four' --set 'name=ĝKN}_>ä%\6'
+		# modrdn detected: 'cn=\xc4\x9dkn}_\\>\xc3\xa4%\\\\6,dc=four,dc=four' ==> 'cn=\xc4\x9dKN}_\\>\xc3\xa4%\\\\6,dc=four,dc=four'
+		# Waiting for connector replication
+		# ### FAIL ###
+		# #cn = ĝkn}_>ä%\6; expected: ĝKN}_>ä%\6
+		import sys
+		from univention.testing.codes import TestCodes
+		sys.exit(TestCodes.RESULT_SKIP)
 
 	with udm_test.UCSTestUDM() as udm:
 		def test_container(parent, add_user):
@@ -56,12 +72,8 @@ if __name__ == '__main__':
 				utils.verify_ldap_object(new_user, should_exist=True)
 
 			for dn, entry in lo.search(filter=ldap.filter.filter_format('cn=%s', [cn_name_new])):
-				if utils.package_installed('univention-s4-connector'):
-					if entry.get('cn')[0].lower() != cn_name_new.lower():
-						utils.fail('cn = %s; expected: %s' % (entry.get('cn')[0], cn_name_new))
-				else:
-					if entry.get('cn')[0] != cn_name_new:
-						utils.fail('cn = %s; expected: %s' % (entry.get('cn')[0], cn_name_new))
+				if entry.get('cn')[0] != cn_name_new:
+					utils.fail('cn = %s; expected: %s' % (entry.get('cn')[0], cn_name_new))
 			return new_cn
 
 		# EMPTY
