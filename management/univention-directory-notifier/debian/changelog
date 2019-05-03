@@ -1,3 +1,9 @@
+univention-directory-notifier (13.0.1-15) unstable; urgency=low
+
+  * Bug #48729: Implement prune command
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 03 May 2019 08:41:37 +0200
+
 univention-directory-notifier (13.0.1-14) unstable; urgency=low
 
   * Bug #49277: Remove unused and deprecated code
