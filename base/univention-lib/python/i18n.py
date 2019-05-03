@@ -34,6 +34,8 @@ import gettext
 from locale import getlocale, Error, LC_MESSAGES
 import re
 
+import six
+
 
 class I18N_Error(Exception):
 	"""
@@ -75,7 +77,7 @@ class Locale(object):
 		:raises TypeError: if `locale` is not a string.
 		:raises I18N_Error: if `locale` does not match the format.
 		"""
-		if not isinstance(locale, basestring):
+		if not isinstance(locale, six.string_types):
 			raise TypeError('locale must be of type string')
 		self.__reset()
 		regex = Locale.REGEX.match(locale)
@@ -88,9 +90,10 @@ class Locale(object):
 				continue
 			setattr(self, key, value)
 
-	def __nonzero__(self):
+	def __bool__(self):
 		# type: () -> bool
 		return self.language is not None
+	__nonzero__ = __bool__
 
 	def __str__(self):
 		# type: () -> str

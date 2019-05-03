@@ -1,3 +1,9 @@
+univention-lib (8.0.0-8) unstable; urgency=medium
+
+  * Bug #49136: make univention.lib.i18n usable for python3
+
+ -- Florian Best <best@univention.de>  Fri, 03 May 2019 15:35:51 +0200
+
 univention-lib (8.0.0-7) unstable; urgency=medium
 
   * Bug #49136: Add python3-univention-lib package
