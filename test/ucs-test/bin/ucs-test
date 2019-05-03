@@ -14,6 +14,7 @@ from univention.testing.coverage import Coverage
 from univention.testing.data import TestEnvironment, TestCase, TestResult, TestFormatInterface
 from univention.testing.errors import TestError
 from univention.testing.internal import setup_environment, setup_debug, LOG_BASE, get_sections, get_tests
+from univention.testing.pytest import PytestRunner
 
 
 def parse_options(sections: Iterable[str]) -> Tuple[argparse.Namespace, List[str]]:
@@ -80,6 +81,7 @@ def parse_options(sections: Iterable[str]) -> Tuple[argparse.Namespace, List[str
 		default=LOG_BASE % (time(),),
 		help="Path to log file [%(default)s]")
 
+	PytestRunner.get_argument_group(parser)
 	Coverage.get_argument_group(parser)
 	return parser.parse_known_args()
 
@@ -137,10 +139,12 @@ class TestSet(object):
 						check = test_result.check()
 						if filter_condition and not check:
 							continue
+
 						if self.prefix:
 							self.format.begin_test(test_case, self.prefix % (count, self.max_count))
 						else:
 							self.format.begin_test(test_case)
+
 						try:
 							if not dry_run:
 								test_result.run()
@@ -176,6 +180,7 @@ def main() -> Optional[int]:
 
 	coverage = Coverage(options)
 	coverage.start()
+	PytestRunner.set_arguments(options)
 	test_set = TestSet(tests)
 
 	if options.dry:

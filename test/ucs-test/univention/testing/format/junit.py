@@ -42,6 +42,8 @@ class Junit(TestFormatInterface):
 
 	def end_test(self, result):  # type: (TestResult) -> None
 		"""Called after each test."""
+		if result.case.is_pytest:
+			return  # pytest itself already writes the junit file!
 		failures = errors = skipped = disabled = 0
 		if result.eofs == 'O':
 			pass
