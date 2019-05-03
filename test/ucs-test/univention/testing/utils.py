@@ -411,7 +411,14 @@ def wait_for_replication_and_postrun(verbose=True):
 
 def wait_for_connector_replication():
     print 'Waiting for connector replication'
-    time.sleep(17)
+    import univention.testing.ucs_samba
+    try:
+        univention.testing.ucs_samba.wait_for_s4connector(17)
+    except OSError as exc:  # nagios not installed
+        print >> sys.stderr, 'Nagios not installed: %s' % (exc,)
+        time.sleep(16)
+    except univention.testing.ucs_samba.WaitForS4ConnectorTimeout:
+        print >> sys.stderr, 'Warning: S4 Connector replication was not finished after 17 seconds'
 
 
 def package_installed(package):
