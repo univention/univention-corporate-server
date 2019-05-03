@@ -97,7 +97,8 @@ def pidof(name, docker='/var/run/docker.pid'):
 		cmdline = os.path.join('/proc', proc, 'cmdline')
 		try:
 			with open(cmdline, 'r') as fd:
-				commandline = fd.read()
+				commandline = fd.read().rstrip('\x00')
+			link = os.readlink(os.path.join('/proc', proc, 'exe'))
 		except EnvironmentError:
 			continue
 		# kernel thread
@@ -114,16 +115,14 @@ def pidof(name, docker='/var/run/docker.pid'):
 			except (EnvironmentError, ValueError) as ex:
 				log.error('Failed getting parent: %s', ex)
 
-		args = commandline.split('\0')
-		if cmd[0] not in args and not commandline.startswith(name):
-			log.debug('skip %d: %s', pid, commandline)
-			continue
-		if len(args) >= len(cmd) > 1:
-			if any(a != c for a, c in zip(args, cmd)):
-				log.debug('mismatch %d: %r != %r', pid, args, cmd)
-				continue
-		log.info('found %d: %r', pid, commandline)
-		result.add(pid)
+		def _running():
+			yield cmd == [link]
+			args = commandline.split('\x00') if '\x00' in commandline else shlex.split(commandline)
+			yield len(cmd) == 1 and cmd[0] in args  # FIXME: it detects "vim /usr/sbin/service" as running process!
+			yield len(cmd) > 1 and all(a == c for a, c in zip(args, cmd))
+		if any(_running()):
+			log.info('found %d: %r', pid, commandline)
+			result.add(pid)
 
 	if docker:
 		remove = children.pop(docker, [])
