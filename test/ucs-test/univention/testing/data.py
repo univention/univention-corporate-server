@@ -23,6 +23,7 @@ from hashlib import md5
 from time import time
 from functools import reduce
 
+from univention.testing.pytest import PytestRunner
 
 __all__ = ['TestEnvironment', 'TestCase', 'TestResult', 'TestFormatInterface']
 
@@ -495,6 +496,7 @@ class TestCase(object):
 		self.otrs = set()
 		self.timeout = None
 		self.signaled = None
+		self.is_pytest = False  # type: bool
 
 	def load(self, filename):
 		"""
@@ -564,6 +566,7 @@ class TestCase(object):
 				exc_info=True)
 			raise TestError(ex)
 
+		self.is_pytest = PytestRunner.is_pytest(self)
 		return self
 
 	def check(self, environment):
@@ -714,6 +717,9 @@ class TestCase(object):
 		dirname = os.path.dirname(self.filename)
 		cmd = [self.exe.filename, base] + self.args
 
+		if self.is_pytest:
+			cmd = PytestRunner.extend_command(self, cmd)
+
 		time_start = datetime.now()
 
 		print('\n*** BEGIN *** %r ***' % (
@@ -813,6 +819,7 @@ class TestResult(object):
 		self.artifacts = {}
 		self.condition = None
 		self.eofs = None
+		self.is_pytest = False
 
 	def dump(self, stream=sys.stdout):
 		"""Dump test result data."""
