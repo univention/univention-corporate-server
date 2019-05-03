@@ -258,19 +258,25 @@ class TestUsers(object):
 
 	def test_lock_unlock_preserves_password(self, udm, lo):
 		user = udm.create_user(password='univention')[0]
+		wait_for_connector_replication()
 		password = lo.getAttr(user, 'userPassword')[0]
 		assert password.startswith('{crypt}')
 		udm.modify_object('users/user', dn=user, disabled='1')
+		wait_for_connector_replication()
 		udm.verify_ldap_object(user, {'userPassword': [password.replace('{crypt}', '{crypt}!')]})
 		udm.modify_object('users/user', dn=user, disabled='0')
+		wait_for_connector_replication()
 		udm.verify_ldap_object(user, {'userPassword': [password]})
 
 	def test_disable_enable_preserves_password(self, udm, lo):
 		user = udm.create_user(password='univention')[0]
+		wait_for_connector_replication()
 		password = lo.getAttr(user, 'userPassword')[0]
 		udm.modify_object('users/user', dn=user, disabled='1')
+		wait_for_connector_replication()
 		udm.verify_ldap_object(user, {'userPassword': [password.replace('{crypt}', '{crypt}!')]})
 		udm.modify_object('users/user', dn=user, disabled='0')
+		wait_for_connector_replication()
 		udm.verify_ldap_object(user, {'userPassword': [password]})
 
 	@pytest.mark.parametrize('password', [

@@ -34,19 +34,20 @@ def do_test(computer_module):
 		udm.modify_object('dns/reverse_zone', dn=reverse, nameserver=[fqdn_dot])
 		utils.wait_for_connector_replication()
 		dn, attr = utils.get_ldap_connection().search(filter='(objectClass=*)', base=forward)[0]
+		print(dn, attr)
 		assert fqdn_dot in attr['nSRecord']
 		dn, attr = utils.get_ldap_connection().search(filter='(objectClass=*)', base=reverse)[0]
-		print(attr['nSRecord'])
+		print(dn, attr)
 		assert fqdn_dot in attr['nSRecord']
 
 		# delete computer and check new name in zones
 		udm.remove_object(computer_module, dn=computer)
 		utils.wait_for_connector_replication()
 		dn, attr = utils.get_ldap_connection().search(filter='(objectClass=*)', base=forward)[0]
-		print(attr['nSRecord'])
+		print(dn, attr)
 		assert fqdn_dot not in attr['nSRecord']
 		dn, attr = utils.get_ldap_connection().search(filter='(objectClass=*)', base=reverse)[0]
-		print(attr['nSRecord'])
+		print(dn, attr)
 		assert fqdn_dot not in attr['nSRecord']
 
 
