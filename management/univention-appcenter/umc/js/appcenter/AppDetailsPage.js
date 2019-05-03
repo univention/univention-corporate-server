@@ -95,6 +95,9 @@ define([
 		configDialog: null,
 		isSubPage: false,
 
+		// For tracking of interaction with the "Suggestions based on installed apps" category
+		fromSuggestionCategory: false,
+
 		appCenterInformation: _('<p>Univention App Center is designed for easy and comfortable administration of Apps. It uses online services provided by Univention, for example, for downloading Apps, descriptions or graphics, or for the search function.</p><p>By using Univention App Center, you agree that originating user data may be stored and evaluated by Univention for product improvements as well as market research purposes. Usage data consists of information such as installing / uninstalling Apps or search queries. These will be transmitted to Univention together with a unique identification of the UCS system.</p><p>When installing and uninstalling some Apps, the App provider will be notified of the operation. The e-mail address used to activate the system is transferred to the provider. Other than that, no transfer of personal or individually assignable data is made to third parties.</p><p>'),
 		appCenterInformationReadAgain: _('<p><b>Note:</b> This information has been updated. Please read it again.</p>'),
 
@@ -983,7 +986,11 @@ define([
 				}
 
 				if (!force) {
-					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, func);
+					if (this.fromSuggestionCategory) {
+						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, `${func}FromSuggestion`);
+					} else {
+						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, func);
+					}
 				}
 
 				var command = 'appcenter/invoke';

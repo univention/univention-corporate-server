@@ -202,7 +202,9 @@ define([
 				label: _('Suggestions based on installed apps'),
 				query: function(app) {
 					return app.$isSuggested;
-				}
+				},
+				// For tracking of interaction with the "Suggestions based on installed apps" category
+				isSuggestionCategory: true
 			},
 			{
 				label: _('Available'),

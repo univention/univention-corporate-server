@@ -74,6 +74,9 @@ define([
 
 		galleryClass: AppCenterGallery,
 
+		// For tracking of interaction with the "Suggestions based on installed apps" category
+		isSuggestionCategory: false,
+
 		buildRendering: function() {
 			this.inherited(arguments);
 
@@ -112,12 +115,12 @@ define([
 							var appNode = domQuery(lang.replace('[moduleid="{id}"]', app), this.grid.contentNode)[0];
 							var isSecondTouch = domClass.contains(appNode, 'secondTouch');
 							if (isSecondTouch) {
-								this.onShowApp(app);
+								this.onShowApp(app, this.isSuggestionCategory);
 							} else {
 								domClass.add(appNode, 'hover secondTouch');
 							}
 						} else {
-							this.onShowApp(app);
+							this.onShowApp(app, this.isSuggestionCategory);
 						}
 					})
 				}],
@@ -227,7 +230,7 @@ define([
 			domClass.toggle(this.domNode, 'dijitDisplayNone', isMetaCategoryEmpty);
 		},
 
-		onShowApp: function(app) {
+		onShowApp: function(app, fromSuggestionCategory) {
 		}
 	});
 });
