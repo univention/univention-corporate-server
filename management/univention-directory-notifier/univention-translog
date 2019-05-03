@@ -842,114 +842,114 @@ class CheckGeneric(object):
         # - optional: fake invalid DNs in 2nd column
         # - optional: fake transaction number
         # see commented out code in :py:meth:`loop`.
-            self.log.info('Syntax ...')
+        self.log.info('Syntax ...')
 
-            print('- contains unparseable lines!')
-            print()
-            print(HELP_RESET)
-            exit(1)
+        print('- contains unparseable lines!')
+        print()
+        print(HELP_RESET)
+        exit(1)
 
     def fix_sort(self):
         # type: () -> None
-            self.log.info('Sorting ...')
-            print('- the transactions are not sorted uniquely')
+        self.log.info('Sorting ...')
+        print('- the transactions are not sorted uniquely')
 
-            with rewrite(self.filename) as tmp:
-                cmd = (
-                    'sort',
-                    '--ignore-leading-blanks',
-                    '--ignore-nonprinting',
-                    '--key', '1n',  # transaction ID
-                    '--key', '2',  # DN
-                    '--key', '3r',  # command 'r', 'm', 'd', 'a'
-                    '--unique',
-                    '--output', tmp,
-                    self.filename,
-                )
-                env = dict(environ)
-                env['LC_ALL'] = 'C.UTF-8'
-                self.log.debug('Running %r ...', cmd)
-                if call(cmd, env=env):
-                    print('- failed to sort file!')
-                    print('Check available space of filesystem?')
-                    exit(2)
+        with rewrite(self.filename) as tmp:
+            cmd = (
+                'sort',
+                '--ignore-leading-blanks',
+                '--ignore-nonprinting',
+                '--key', '1n',  # transaction ID
+                '--key', '2',  # DN
+                '--key', '3r',  # command 'r', 'm', 'd', 'a'
+                '--unique',
+                '--output', tmp,
+                self.filename,
+            )
+            env = dict(environ)
+            env['LC_ALL'] = 'C.UTF-8'
+            self.log.debug('Running %r ...', cmd)
+            if call(cmd, env=env):
+                print('- failed to sort file!')
+                print('Check available space of filesystem?')
+                exit(2)
 
-                self.run(filename=tmp)
+            self.run(filename=tmp)
 
-                if self.needs_sort:
-                    print('- still contains duplicate transactions after unique sorting!')
-                    print('UCS Master must be reset and all other UCS systems must be re-joined!')
-                    print()
-                    print(HELP_RESET)
-                    exit(1)
+            if self.needs_sort:
+                print('- still contains duplicate transactions after unique sorting!')
+                print('UCS Master must be reset and all other UCS systems must be re-joined!')
+                print()
+                print(HELP_RESET)
+                exit(1)
 
-                if not self.opt.fix:
-                    print()
-                    print(HELP_RERUN)
-                    print(HELP_FIX)
-                    exit(1)
+            if not self.opt.fix:
+                print()
+                print(HELP_RERUN)
+                print(HELP_FIX)
+                exit(1)
 
-                self.remove_index()
+            self.remove_index()
 
     def fix_fill(self):
         # type: () -> None
-            self.log.info('Filling holes ...')
-            print('- missing transactions in sequence')
+        self.log.info('Filling holes ...')
+        print('- missing transactions in sequence')
 
-            if not self.opt.fix:
-                print()
-                print(HELP_RERUN)
-                print(HELP_FIX)
-                exit(1)
+        if not self.opt.fix:
+            print()
+            print(HELP_RERUN)
+            print(HELP_FIX)
+            exit(1)
 
-            with rewrite(self.filename) as tmp:
-                with open(self.filename, 'r') as old, open(tmp, 'w') as new:
-                    next_tid = 0
-                    for line in old:
-                        try:
-                            rec = Translog.parse_line(line)
-                            assert next_tid == 0 or next_tid <= rec.tid, (next_tid, rec.tid)
-                            while next_tid != 0 and next_tid < rec.tid:
-                                self.log.info('Filling %d ...', next_tid)
-                                fill_rec = Transaction(tid=next_tid, dn=self.opt.base, command='m')
-                                fill_line = Translog.format_line(fill_rec)
-                                new.write(fill_line)
-                                next_tid += 1
+        with rewrite(self.filename) as tmp:
+            with open(self.filename, 'r') as old, open(tmp, 'w') as new:
+                next_tid = 0
+                for line in old:
+                    try:
+                        rec = Translog.parse_line(line)
+                        assert next_tid == 0 or next_tid <= rec.tid, (next_tid, rec.tid)
+                        while next_tid != 0 and next_tid < rec.tid:
+                            self.log.info('Filling %d ...', next_tid)
+                            fill_rec = Transaction(tid=next_tid, dn=self.opt.base, command='m')
+                            fill_line = Translog.format_line(fill_rec)
+                            new.write(fill_line)
+                            next_tid += 1
 
-                            next_tid = rec.tid + 1
-                        except ValueError:
-                            pass
-                        new.write(line)
+                        next_tid = rec.tid + 1
+                    except ValueError:
+                        pass
+                    new.write(line)
 
-                self.run(filename=tmp)
+            self.run(filename=tmp)
 
-                assert not self.needs_fill
+            assert not self.needs_fill
 
-                self.remove_index()
+            self.remove_index()
 
     def fix_renumber(self):
         # type: () -> None
-            self.log.info('Renumbering ...')
-            print('- pending transactions are not consecutive')
+        self.log.info('Renumbering ...')
+        print('- pending transactions are not consecutive')
 
-            if not self.opt.fix:
-                print()
-                print(HELP_RERUN)
-                print(HELP_FIX)
-                exit(1)
+        if not self.opt.fix:
+            print()
+            print(HELP_RERUN)
+            print(HELP_FIX)
+            exit(1)
 
-            with rewrite(self.filename) as tmp:
-                with open(self.filename, 'r') as old, open(tmp, 'w') as new:
-                    for self.last_tid, line in enumerate(old, start=self.first_tid + 1):
-                        self.log.debug('Renum %r to %d ...', line, self.last_tid)
-                        rec = Translog.parse_line(line)
-                        rec = rec._replace(tid=self.last_tid)
-                        line = Translog.format_line(rec)
-                        new.write(line)
+        with rewrite(self.filename) as tmp:
+            with open(self.filename, 'r') as old, open(tmp, 'w') as new:
+                for self.last_tid, line in enumerate(old, start=self.first_tid + 1):
+                    self.log.debug('Renum %r to %d ...', line, self.last_tid)
+                    rec = Translog.parse_line(line)
+                    rec = rec._replace(tid=self.last_tid)
+                    line = Translog.format_line(rec)
+                    new.write(line)
 
-                self.run(filename=tmp)
+            self.run(filename=tmp)
 
-                assert not self.needs_renum
+            assert not self.needs_renum
 
     def remove_index(self):
         # type: () -> None
