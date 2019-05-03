@@ -67,6 +67,9 @@ class Junit(TestFormatInterface):
 			classname = classname[:-3]
 
 		filename = os.path.join(self.outdir, '%s.xml' % (result.case.uid,))
+		if result.case.is_pytest and os.path.exists(filename):
+			return  # pytest itself already writes the junit file! create one if pytest did not
+
 		dirname = os.path.dirname(filename)
 		try:
 			os.makedirs(dirname)

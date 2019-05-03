@@ -28,6 +28,7 @@ from univention.config_registry import ConfigRegistry
 from univention.testing.codes import TestCodes
 from univention.testing.errors import TestError
 from univention.testing.internal import UCSVersion
+from univention.testing.pytest import PytestRunner
 
 __all__ = ['TestEnvironment', 'TestCase', 'TestResult', 'TestFormatInterface']
 
@@ -497,6 +498,7 @@ class TestCase(object):
 		self.otrs = set()  # type: Set[str]
 		self.timeout = None  # type: Optional[int]
 		self.signaled = None  # type: Optional[int]
+		self.is_pytest = False  # type: bool
 
 	def load(self):  # type: () -> TestCase
 		"""
@@ -563,6 +565,7 @@ class TestCase(object):
 				exc_info=True)
 			raise TestError(ex)
 
+		self.is_pytest = PytestRunner.is_pytest(self)
 		return self
 
 	def check(self, environment):  # type: (TestEnvironment) -> List[Check]
@@ -714,6 +717,9 @@ class TestCase(object):
 		dirname = os.path.dirname(self.filename)
 		cmd = [self.exe.filename, base] + self.args
 
+		if self.is_pytest:
+			cmd = PytestRunner.extend_command(self, cmd)
+
 		time_start = datetime.now()
 
 		print('\n*** BEGIN *** %r ***' % (
@@ -813,6 +819,7 @@ class TestResult(object):
 		self.artifacts = {}
 		self.condition = None
 		self.eofs = None
+		self.is_pytest = False
 
 	def dump(self, stream=sys.stdout):
 		"""Dump test result data."""
