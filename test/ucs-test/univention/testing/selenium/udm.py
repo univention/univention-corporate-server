@@ -194,7 +194,7 @@ class Portals(UDMBase):
 		self.selenium.enter_input('__displayName-0-1', uts.random_string())
 
 		if hostname is not None:
-			self.selenium.click_button('Add') # FIXME at the moment there is only 1 Add button on the screen
+			self.selenium.click_button('Add')  # FIXME at the moment there is only 1 Add button on the screen
 			self.selenium.wait_for_text('Add objects')
 			self.selenium.wait_until_standby_animation_appears_and_disappears()
 			self.selenium.click_checkbox_of_dojox_grid_entry(hostname)

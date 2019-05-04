@@ -82,7 +82,7 @@ class ChecksAndWaits(object):
 			logger.info("No standby animation appeared during timeout. Ignoring")
 		else:
 			logger.info("Found standby animation")
-	
+
 	def wait_until_standby_animation_appears_and_disappears(self):
 		self.wait_until_standby_animation_appears()
 		self.wait_until_all_standby_animations_disappeared()

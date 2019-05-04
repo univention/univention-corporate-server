@@ -53,6 +53,7 @@ def expand_path(xpath):
 	replacement = r'contains(concat(\1 \1, normalize-space(@class), \1 \1), \1 \2 \1)'
 	return re.sub(pattern, replacement, xpath)
 
+
 class Interactions(object):
 
 	def click_text(self, text, **kwargs):
@@ -189,7 +190,7 @@ class Interactions(object):
 		elem.clear()
 		elem.send_keys(inputvalue)
 
-	def enter_input_combobox(self, inputname, inputvalue): # type: (str, str) -> void
+	def enter_input_combobox(self, inputname, inputvalue):  # type: (str, str) -> void
 		xpath = "//*[@role='combobox' and .//input[@name='{}']]//input[@role='textbox']".format(inputname)
 		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
 			self.get_all_enabled_elements
@@ -268,7 +269,6 @@ class Interactions(object):
 				break
 			last_height = new_height
 
-
 	def upload_image(self, img_path, timeout=60, xpath_prefix=''):
 		"""
 		Get an ImageUploader widget on screen and upload the given img_path.
@@ -283,7 +283,7 @@ class Interactions(object):
 		logger.info("Uploading the image: %s" % img_path)
 		uploader.send_keys(img_path)
 		logger.info("Waiting for upload to finish")
-		time.sleep(1) # wait_for_text('Uploading...') is too inconsistent
+		time.sleep(1)  # wait_for_text('Uploading...') is too inconsistent
 		self.wait_until_element_visible(xpath_prefix + uploader_button_xpath)
 
 	def drag_and_drop(self, source, target, find_by='xpath'):
@@ -303,4 +303,3 @@ class Interactions(object):
 		if isinstance(source, basestring):  # py3 python3 python 3
 			source = getattr(self.driver, 'find_element_by_%s' % find_by)(source)
 		ActionChains(self.driver).drag_and_drop_by_offset(source, xoffset, yoffset).perform()
-

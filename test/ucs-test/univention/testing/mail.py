@@ -34,15 +34,16 @@ import os
 import pwd
 import subprocess
 
+
 class MailSinkGuard(object):
 	"""
 	This class is a simple context manager that stops all attached mail sinks
 	if the context is left.
 
 	with MaiLSinkGuard() as msg:
-        sink = MailSink(......)
-        msg.add(sink)
-        ....use sink....
+		sink = MailSink(......)
+		msg.add(sink)
+		....use sink....
 	"""
 	def __init__(self):
 		self.mail_sinks = set()  # type: Set[MailSink]
@@ -75,7 +76,7 @@ class MailSink(object):
 	>>> ms.stop()
 
 	>>> with MailSink('127.0.0.1', 12345, filename='/tmp/sinkfile.eml') as ms:
-	>>>     <do some stuff>
+	>>> 	<do some stuff>
 	"""
 	def __init__(self, address, port, filename=None, target_dir=None, fqdn=None):
 		self.address = address

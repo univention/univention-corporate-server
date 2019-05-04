@@ -67,512 +67,519 @@ from univention.testing.ucs_samba import wait_for_drs_replication
 
 class UCSTestUDM_Exception(Exception):
 
-    def __str__(self):
-        if self.args and len(self.args) == 1 and isinstance(self.args[0], dict):
-            return '\n'.join('%s=%s' % (key, value) for key, value in self.args[0].iteritems())
-        else:
-            return Exception.__str__(self)
-    __repr__ = __str__
+	def __str__(self):
+		if self.args and len(self.args) == 1 and isinstance(self.args[0], dict):
+			return '\n'.join('%s=%s' % (key, value) for key, value in self.args[0].iteritems())
+		else:
+			return Exception.__str__(self)
+	__repr__ = __str__
 
 
 class UCSTestUDM_MissingModulename(UCSTestUDM_Exception):
-    pass
+	pass
 
 
 class UCSTestUDM_MissingDn(UCSTestUDM_Exception):
-    pass
+	pass
 
 
 class UCSTestUDM_CreateUDMObjectFailed(UCSTestUDM_Exception):
-    pass
+	pass
 
 
 class UCSTestUDM_CreateUDMUnknownDN(UCSTestUDM_Exception):
-    pass
+	pass
 
 
 class UCSTestUDM_ModifyUDMObjectFailed(UCSTestUDM_Exception):
-    pass
+	pass
 
 
 class UCSTestUDM_MoveUDMObjectFailed(UCSTestUDM_Exception):
-    pass
+	pass
 
 
 class UCSTestUDM_NoModification(UCSTestUDM_Exception):
-    pass
+	pass
 
 
 class UCSTestUDM_ModifyUDMUnknownDN(UCSTestUDM_Exception):
-    pass
+	pass
 
 
 class UCSTestUDM_RemoveUDMObjectFailed(UCSTestUDM_Exception):
-    pass
+	pass
 
 
 class UCSTestUDM_CleanupFailed(UCSTestUDM_Exception):
-    pass
+	pass
 
 
 class UCSTestUDM_CannotModifyExistingObject(UCSTestUDM_Exception):
-    pass
+	pass
 
 
 class UCSTestUDM_ListUDMObjectFailed(UCSTestUDM_Exception):
-    pass
+	pass
 
 
 class UCSTestUDM(object):
-    PATH_UDM_CLI_SERVER = '/usr/share/univention-directory-manager-tools/univention-cli-server'
-    PATH_UDM_CLI_CLIENT = '/usr/sbin/udm'
-    PATH_UDM_CLI_CLIENT_WRAPPED = '/usr/sbin/udm-test'
-
-    COMPUTER_MODULES = ('computers/ubuntu',
-                        'computers/linux',
-                        'computers/windows',
-                        'computers/windows_domaincontroller',
-                        'computers/domaincontroller_master',
-                        'computers/domaincontroller_backup',
-                        'computers/domaincontroller_slave',
-                        'computers/memberserver',
-                        'computers/macos',
-                        'computers/ipmanagedclient')
-
-    __lo = None
-    __ucr = None
-
-    @property
-    def _lo(self):
-        if self.__lo is None:
-            self.__lo = utils.get_ldap_connection()
-        return self.__lo
-
-    @property
-    def _ucr(self):
-        if self.__ucr is None:
-            self.__ucr = univention.testing.ucr.UCSTestConfigRegistry()
-            self.__ucr.load()
-        return self.__ucr
-
-    @property
-    def LDAP_BASE(self):
-        return self._ucr['ldap/base']
-
-    @property
-    def FQHN(self):
-        return '%(hostname)s.%(domainname)s.' % self._ucr
-
-    @property
-    def UNIVENTION_CONTAINER(self):
-        return 'cn=univention,%(ldap/base)s' % self._ucr
-
-    @property
-    def UNIVENTION_TEMPORARY_CONTAINER(self):
-        return 'cn=temporary,cn=univention,%(ldap/base)s' % self._ucr
-
-    def __init__(self):
-        self._cleanup = {}
-        self._cleanupLocks = {}
-
-    @staticmethod
-    def _build_udm_cmdline(modulename, action, kwargs):
-        """
-        Pass modulename, action (create, modify, delete) and a bunch of keyword arguments
-        to _build_udm_cmdline to build a command for UDM CLI.
-
-        :param str modulename: name of UDM module (e.g. 'users/user')
-        :param str action: An action, like 'create', 'modify', 'delete'.
-        :param dict kwargs: A dictionary containing properties or one of the following special keys:
-
-        :param str binddn: The LDAP simple-bind DN.
-        :param str bindpwd: The LDAP simple-bind password.
-        :param str bindpwdfile: A pathname to a file containing the LDAP simple-bind password.
-        :param str dn: The LDAP distinguished name to operate on.
-        :param str position: The LDAP distinguished name of the parent container.
-        :param str superordinate: The LDAP distinguished name of the logical parent.
-        :param str policy_reference: The LDAP distinguished name of the UDM policy to add.
-        :param str policy_dereference: The LDAP distinguished name of the UDM policy to remove.
-        :param str append_option: The name of an UDM option group to add.
-        :param list options: A list of UDM option group to set.
-        :param str_or_list set: A list or one single *name=value* property.
-        :param list append: A list of *name=value* properties to add.
-        :param list remove: A list of *name=value* properties to add.
-        :param boolean remove_referring: Remove other LDAP entries referred by this entry.
-        :param boolean ignore_exists: Ignore error on creation if entry already exists.
-        :param boolean ignore_not_exists: Ignore error on deletion if entry does not exists.
-
-        >>> UCSTestUDM._build_udm_cmdline('users/user', 'create', {'username': 'foobar'})
-        ['/usr/sbin/udm-test', 'users/user', 'create', '--set', 'username=foobar']
-        """
-        cmd = [UCSTestUDM.PATH_UDM_CLI_CLIENT_WRAPPED, modulename, action]
-        args = copy.deepcopy(kwargs)
-
-        for arg in ('binddn', 'bindpwd', 'bindpwdfile', 'dn', 'position', 'superordinate', 'policy_reference', 'policy_dereference', 'append_option'):
-            if arg not in args:
-                continue
-            value = args.pop(arg)
-            if not isinstance(value, (list, tuple)):
-                value = (value,)
-            for item in value:
-                cmd.extend(['--%s' % arg.replace('_', '-'), item])
-
-        for option in args.pop('options', ()):
-            cmd.extend(['--option', option])
-
-        for key, value in args.pop('set', {}).items():
-            if isinstance(value, (list, tuple)):
-                for item in value:
-                    cmd.extend(['--set', '%s=%s' % (key, item)])
-            else:
-                cmd.extend(['--set', '%s=%s' % (key, value)])
-
-        for operation in ('append', 'remove'):
-            for key, values in args.pop(operation, {}).items():
-                for value in values:
-                    cmd.extend(['--%s' % operation, '%s=%s' % (key, value)])
-
-        if args.pop('remove_referring', True) and action == 'remove':
-            cmd.append('--remove_referring')
-
-        if args.pop('ignore_exists', False) and action == 'create':
-            cmd.append('--ignore_exists')
-
-        if args.pop('ignore_not_exists', False) and action == 'remove':
-            cmd.append('--ignore_not_exists')
-
-        # set all other remaining properties
-        for key, value in args.items():
-            if isinstance(value, (list, tuple)):
-                for item in value:
-                    cmd.extend(['--append', '%s=%s' % (key, item)])
-            elif value:
-                cmd.extend(['--set', '%s=%s' % (key, value)])
-
-        return cmd
-
-    def create_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, **kwargs):
-        r"""
-        Creates a LDAP object via UDM. Values for UDM properties can be passed via keyword arguments
-        only and have to exactly match UDM property names (case-sensitive!).
-
-        :param str modulename: name of UDM module (e.g. 'users/user')
-        :param bool wait_for_replication: delay return until Listener has settled.
-        :param bool check_for_drs_replication: delay return until Samab4 has settled.
-        :param \*\*kwargs:
-        """
-        if not modulename:
-            raise UCSTestUDM_MissingModulename()
-
-        dn = None
-        cmd = self._build_udm_cmdline(modulename, 'create', kwargs)
-        print('Creating %s object with %s' % (modulename, _prettify_cmd(cmd)))
-        child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
-        (stdout, stderr) = child.communicate()
-
-        if child.returncode:
-            raise UCSTestUDM_CreateUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
-
-        # find DN of freshly created object and add it to cleanup list
-        for line in stdout.splitlines():  # :pylint: disable-msg=E1103
-            if line.startswith('Object created: ') or line.startswith('Object exists: '):
-                dn = line.split(': ', 1)[-1]
-                if not line.startswith('Object exists: '):
-                    self._cleanup.setdefault(modulename, []).append(dn)
-                break
-        else:
-            raise UCSTestUDM_CreateUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
-
-        self.wait_for(modulename, dn, wait_for_replication, wait_for_drs_replication=(wait_for_replication and check_for_drs_replication and ("options" not in kwargs or "kerberos" in kwargs["options"])))
-        return dn
-
-    def modify_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, **kwargs):
-        """
-        Modifies a LDAP object via UDM. Values for UDM properties can be passed via keyword arguments
-        only and have to exactly match UDM property names (case-sensitive!).
-        Please note: the object has to be created by create_object otherwise this call will raise an exception!
-
-        :param str modulename: name of UDM module (e.g. 'users/user')
-        """
-        if not modulename:
-            raise UCSTestUDM_MissingModulename()
-        dn = kwargs.get('dn')
-        if not dn:
-            raise UCSTestUDM_MissingDn()
-        if dn not in self._cleanup.get(modulename, set()):
-            raise UCSTestUDM_CannotModifyExistingObject(dn)
-
-        cmd = self._build_udm_cmdline(modulename, 'modify', kwargs)
-        print('Modifying %s object with %s' % (modulename, _prettify_cmd(cmd)))
-        child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
-        (stdout, stderr) = child.communicate()
-
-        if child.returncode:
-            raise UCSTestUDM_ModifyUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
-
-        for line in stdout.splitlines():  # :pylint: disable-msg=E1103
-            if line.startswith('Object modified: '):
-                dn = line.split('Object modified: ', 1)[-1]
-                if dn != kwargs.get('dn'):
-                    print('modrdn detected: %r ==> %r' % (kwargs.get('dn'), dn))
-                    if kwargs.get('dn') in self._cleanup.get(modulename, []):
-                        self._cleanup.setdefault(modulename, []).append(dn)
-                        self._cleanup[modulename].remove(kwargs.get('dn'))
-                break
-            elif line.startswith('No modification: '):
-                raise UCSTestUDM_NoModification({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
-        else:
-            raise UCSTestUDM_ModifyUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
-
-        self.wait_for(modulename, dn, wait_for_replication, check_for_drs_replication)
-        return dn
-
-    def move_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, **kwargs):
-        if not modulename:
-            raise UCSTestUDM_MissingModulename()
-        dn = kwargs.get('dn')
-        if not dn:
-            raise UCSTestUDM_MissingDn()
-        if dn not in self._cleanup.get(modulename, set()):
-            raise UCSTestUDM_CannotModifyExistingObject(dn)
-
-        cmd = self._build_udm_cmdline(modulename, 'move', kwargs)
-        print('Moving %s object %s' % (modulename, _prettify_cmd(cmd)))
-        child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
-        (stdout, stderr) = child.communicate()
-
-        if child.returncode:
-            raise UCSTestUDM_MoveUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
-
-        for line in stdout.splitlines():  # :pylint: disable-msg=E1103
-            if line.startswith('Object modified: '):
-                self._cleanup.get(modulename, []).remove(dn)
-
-                new_dn = ldap.dn.dn2str(ldap.dn.str2dn(dn)[0:1] + ldap.dn.str2dn(kwargs.get('position', '')))
-                self._cleanup.setdefault(modulename, []).append(new_dn)
-                break
-        else:
-            raise UCSTestUDM_ModifyUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
-
-        self.wait_for(modulename, dn, wait_for_replication, check_for_drs_replication)
-        return new_dn
-
-    def remove_object(self, modulename, wait_for_replication=True, **kwargs):
-        if not modulename:
-            raise UCSTestUDM_MissingModulename()
-        dn = kwargs.get('dn')
-        if not dn:
-            raise UCSTestUDM_MissingDn()
-        if dn not in self._cleanup.get(modulename, set()):
-            raise UCSTestUDM_CannotModifyExistingObject(dn)
-
-        cmd = self._build_udm_cmdline(modulename, 'remove', kwargs)
-        print('Removing %s object %s' % (modulename, _prettify_cmd(cmd)))
-        child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
-        (stdout, stderr) = child.communicate()
-
-        if child.returncode:
-            raise UCSTestUDM_RemoveUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
-
-        if dn in self._cleanup.get(modulename, []):
-            self._cleanup[modulename].remove(dn)
-
-        self.wait_for(modulename, dn, wait_for_replication)
-
-    def wait_for(self, modulename, dn, wait_for_replication=True, wait_for_drs_replication=False, wait_for_s4connector=False):
-        drs_replication = wait_for_drs_replication
-        if wait_for_drs_replication and not isinstance(wait_for_drs_replication, basestring):
-            attr = {'container/ou': 'ou'}.get(modulename, 'cn')
-            drs_replication = ldap.filter.filter_format('%s=%s', (attr, ldap.dn.str2dn(dn)[0][0][1],))
-        return utils.wait_for(replication=wait_for_replication, drs_replication=drs_replication, s4_connector=False, verbose=False)
-
-    def create_user(self, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
-        """
-        Creates a user via UDM CLI. Values for UDM properties can be passed via keyword arguments only and
-        have to exactly match UDM property names (case-sensitive!). Some properties have default values:
-
-        :param str position: 'cn=users,$ldap_base'
-        :param str password: 'univention'
-        :param str firstname: 'Foo Bar'
-        :param str lastname: <random string>
-        :param str username: <random string> If username is missing, a random user name will be used.
-        :return: (dn, username)
-        """
-
-        attr = self._set_module_default_attr(kwargs, (('position', 'cn=users,%s' % self.LDAP_BASE),
-                                                      ('password', 'univention'),
-                                                      ('username', uts.random_username()),
-                                                      ('lastname', uts.random_name()),
-                                                      ('firstname', uts.random_name())))
-
-        return (self.create_object('users/user', wait_for_replication, check_for_drs_replication, **attr), attr['username'])
-
-    def create_ldap_user(self, wait_for_replication=True, check_for_drs_replication=False, **kwargs):  # :pylint: disable-msg=W0613
-        # check_for_drs_replication=False -> ldap users are not replicated to s4
-        attr = self._set_module_default_attr(kwargs, (('position', 'cn=users,%s' % self.LDAP_BASE),
-                                                      ('password', 'univention'),
-                                                      ('username', uts.random_username()),
-                                                      ('lastname', uts.random_name()),
-                                                      ('name', uts.random_name())))
-
-        return (self.create_object('users/ldap', wait_for_replication, check_for_drs_replication, **attr), attr['username'])
-
-    def remove_user(self, username, wait_for_replication=True):
-        """Removes a user object from the ldap given it's username."""
-        kwargs = {
-            'dn': 'uid=%s,cn=users,%s' % (username, self.LDAP_BASE)
-        }
-        self.remove_object('users/user', wait_for_replication, **kwargs)
-
-    def create_group(self, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
-        """
-        Creates a group via UDM CLI. Values for UDM properties can be passed via keyword arguments only and
-        have to exactly match UDM property names (case-sensitive!). Some properties have default values:
-
-        :param str position: `cn=users,$ldap_base`
-        :param str name: <random value>
-        :return: (dn, groupname)
-
-        If "groupname" is missing, a random group name will be used.
-        """
-        attr = self._set_module_default_attr(kwargs, (('position', 'cn=groups,%s' % self.LDAP_BASE),
-                                                      ('name', uts.random_groupname())))
-
-        return (self.create_object('groups/group', wait_for_replication, check_for_drs_replication, **attr), attr['name'])
-
-    def _set_module_default_attr(self, attributes, defaults):
-        """
-        Returns the given attributes, extented by every property given in defaults if not yet set.
-
-        :param tuple defaults: should be a tupel containing tupels like "('username', <default_value>)".
-        """
-        attr = copy.deepcopy(attributes)
-        for prop, value in defaults:
-            attr.setdefault(prop, value)
-        return attr
-
-    def addCleanupLock(self, lockType, lockValue):
-        self._cleanupLocks.setdefault(lockType, []).append(lockValue)
-
-    def _wait_for_drs_removal(self, dn):
-        if utils.package_installed('univention-samba4'):
-            if dn.startswith('uid='):
-                s4_object_base = 'cn' + dn[3:]
-            else:
-                s4_object_base = dn
-            wait_for_drs_replication(None, base=s4_object_base, scope=0, should_exist=False)
-
-    def list_objects(self, module):
-        cmd = ['/usr/sbin/udm-test', module, 'list']
-        child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
-        (stdout, stderr) = child.communicate()
-        if child.returncode:
-            raise UCSTestUDM_ListUDMObjectFailed(child.returncode, stdout, stderr)
-        objects = []
-        dn = None
-        attrs = {}
-        for line in stdout.splitlines():
-            if line.startswith('DN: '):
-                dn = line[3:].strip()
-            elif not line.strip():
-                if dn:
-                    objects.append((dn, attrs))
-                    dn = None
-                    attrs = {}
-            elif line.startswith(' ') and ':' in line:
-                name, value = line.split(':', 1)
-                attrs.setdefault(name.strip(), []).append(value.strip())
-        return objects
-
-    def cleanup(self):
-        """
-        Automatically removes LDAP objects via UDM CLI that have been created before.
-        """
-        failedObjects = {}
-        print('Performing UCSTestUDM cleanup...')
-        objects = []
-        for module, objs in self._cleanup.items():
-            objects.extend((module, dn) for dn in objs)
-
-        for module, dn in sorted(objects, key=lambda x: len(x[1]), reverse=True):
-            cmd = ['/usr/sbin/udm-test', module, 'remove', '--dn', dn, '--remove_referring']
-
-            print 'removing DN:', dn
-            child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
-            (stdout, stderr) = child.communicate()
-            utils.wait_for_replication(verbose=False)
-
-            if child.returncode or 'Object removed:' not in stdout:
-                failedObjects.setdefault(module, []).append(dn)
-            else:
-                self._wait_for_drs_removal(dn)
-
-        # simply iterate over the remaining objects again, removing them might just have failed for chronology reasons
-        # (e.g groups can not be removed while there are still objects using it as primary group)
-        for module, objects in failedObjects.items():
-            for dn in objects:
-                cmd = ['/usr/sbin/udm-test', module, 'remove', '--dn', dn, '--remove_referring']
-
-                child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
-                (stdout, stderr) = child.communicate()
-                utils.wait_for_replication(verbose=False)
-
-                if child.returncode or 'Object removed:' not in stdout:
-                    print >> sys.stderr, 'Warning: Failed to remove %r object %r' % (module, dn)
-                    print >> sys.stderr, 'stdout=%r %r %r' % (stdout, stderr, self._lo.get(dn))
-                else:
-                    self._wait_for_drs_removal(dn)
-        self._cleanup = {}
-
-        for lock_type, values in self._cleanupLocks.items():
-            for value in values:
-                lockDN = 'cn=%s,cn=%s,%s' % (value, lock_type, self.UNIVENTION_TEMPORARY_CONTAINER)
-                try:
-                    self._lo.delete(lockDN)
-                except ldap.NO_SUCH_OBJECT:
-                    pass
-                except Exception as ex:
-                    print('Failed to remove locking object "%s" during cleanup: %r' % (lockDN, ex))
-        self._cleanupLocks = {}
-
-        self.stop_cli_server()
-        print('UCSTestUDM cleanup done')
-
-    def stop_cli_server(self):
-        """ restart UDM CLI server """
-        print('trying to restart UDM CLI server')
-        procs = []
-        for proc in psutil.process_iter():
-            try:
-                cmdline = proc.cmdline()
-                if len(cmdline) >= 2 and cmdline[0].startswith('/usr/bin/python') and cmdline[1] == self.PATH_UDM_CLI_SERVER:
-                    procs.append(proc)
-            except psutil.NoSuchProcess:
-                pass
-        for signal in (15, 9):
-            for proc in procs:
-                try:
-                    print('sending signal %s to process %s (%r)' % (signal, proc.pid, proc.cmdline(),))
-                    os.kill(proc.pid, signal)
-                except (psutil.NoSuchProcess, EnvironmentError):
-                    print('process already terminated')
-                    procs.remove(proc)
-            if signal == 15:
-                time.sleep(1)
-
-    def verify_udm_object(self, *args, **kwargs):
-        return verify_udm_object(*args, **kwargs)
-
-    def verify_ldap_object(self, *args, **kwargs):
-        return utils.verify_ldap_object(*args, **kwargs)
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        if exc_type:
-            print('Cleanup after exception: %s %s' % (exc_type, exc_value))
-        self.cleanup()
+	PATH_UDM_CLI_SERVER = '/usr/share/univention-directory-manager-tools/univention-cli-server'
+	PATH_UDM_CLI_CLIENT = '/usr/sbin/udm'
+	PATH_UDM_CLI_CLIENT_WRAPPED = '/usr/sbin/udm-test'
+
+	COMPUTER_MODULES = (
+		'computers/ubuntu',
+		'computers/linux',
+		'computers/windows',
+		'computers/windows_domaincontroller',
+		'computers/domaincontroller_master',
+		'computers/domaincontroller_backup',
+		'computers/domaincontroller_slave',
+		'computers/memberserver',
+		'computers/macos',
+		'computers/ipmanagedclient')
+
+	__lo = None
+	__ucr = None
+
+	@property
+	def _lo(self):
+		if self.__lo is None:
+			self.__lo = utils.get_ldap_connection()
+		return self.__lo
+
+	@property
+	def _ucr(self):
+		if self.__ucr is None:
+			self.__ucr = univention.testing.ucr.UCSTestConfigRegistry()
+			self.__ucr.load()
+		return self.__ucr
+
+	@property
+	def LDAP_BASE(self):
+		return self._ucr['ldap/base']
+
+	@property
+	def FQHN(self):
+		return '%(hostname)s.%(domainname)s.' % self._ucr
+
+	@property
+	def UNIVENTION_CONTAINER(self):
+		return 'cn=univention,%(ldap/base)s' % self._ucr
+
+	@property
+	def UNIVENTION_TEMPORARY_CONTAINER(self):
+		return 'cn=temporary,cn=univention,%(ldap/base)s' % self._ucr
+
+	def __init__(self):
+		self._cleanup = {}
+		self._cleanupLocks = {}
+
+	@staticmethod
+	def _build_udm_cmdline(modulename, action, kwargs):
+		"""
+		Pass modulename, action (create, modify, delete) and a bunch of keyword arguments
+		to _build_udm_cmdline to build a command for UDM CLI.
+
+		:param str modulename: name of UDM module (e.g. 'users/user')
+		:param str action: An action, like 'create', 'modify', 'delete'.
+		:param dict kwargs: A dictionary containing properties or one of the following special keys:
+
+		:param str binddn: The LDAP simple-bind DN.
+		:param str bindpwd: The LDAP simple-bind password.
+		:param str bindpwdfile: A pathname to a file containing the LDAP simple-bind password.
+		:param str dn: The LDAP distinguished name to operate on.
+		:param str position: The LDAP distinguished name of the parent container.
+		:param str superordinate: The LDAP distinguished name of the logical parent.
+		:param str policy_reference: The LDAP distinguished name of the UDM policy to add.
+		:param str policy_dereference: The LDAP distinguished name of the UDM policy to remove.
+		:param str append_option: The name of an UDM option group to add.
+		:param list options: A list of UDM option group to set.
+		:param str_or_list set: A list or one single *name=value* property.
+		:param list append: A list of *name=value* properties to add.
+		:param list remove: A list of *name=value* properties to add.
+		:param boolean remove_referring: Remove other LDAP entries referred by this entry.
+		:param boolean ignore_exists: Ignore error on creation if entry already exists.
+		:param boolean ignore_not_exists: Ignore error on deletion if entry does not exists.
+
+		>>> UCSTestUDM._build_udm_cmdline('users/user', 'create', {'username': 'foobar'})
+		['/usr/sbin/udm-test', 'users/user', 'create', '--set', 'username=foobar']
+		"""
+		cmd = [UCSTestUDM.PATH_UDM_CLI_CLIENT_WRAPPED, modulename, action]
+		args = copy.deepcopy(kwargs)
+
+		for arg in ('binddn', 'bindpwd', 'bindpwdfile', 'dn', 'position', 'superordinate', 'policy_reference', 'policy_dereference', 'append_option'):
+			if arg not in args:
+				continue
+			value = args.pop(arg)
+			if not isinstance(value, (list, tuple)):
+				value = (value,)
+			for item in value:
+				cmd.extend(['--%s' % arg.replace('_', '-'), item])
+
+		for option in args.pop('options', ()):
+			cmd.extend(['--option', option])
+
+		for key, value in args.pop('set', {}).items():
+			if isinstance(value, (list, tuple)):
+				for item in value:
+					cmd.extend(['--set', '%s=%s' % (key, item)])
+			else:
+				cmd.extend(['--set', '%s=%s' % (key, value)])
+
+		for operation in ('append', 'remove'):
+			for key, values in args.pop(operation, {}).items():
+				for value in values:
+					cmd.extend(['--%s' % operation, '%s=%s' % (key, value)])
+
+		if args.pop('remove_referring', True) and action == 'remove':
+			cmd.append('--remove_referring')
+
+		if args.pop('ignore_exists', False) and action == 'create':
+			cmd.append('--ignore_exists')
+
+		if args.pop('ignore_not_exists', False) and action == 'remove':
+			cmd.append('--ignore_not_exists')
+
+		# set all other remaining properties
+		for key, value in args.items():
+			if isinstance(value, (list, tuple)):
+				for item in value:
+					cmd.extend(['--append', '%s=%s' % (key, item)])
+			elif value:
+				cmd.extend(['--set', '%s=%s' % (key, value)])
+
+		return cmd
+
+	def create_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, **kwargs):
+		r"""
+		Creates a LDAP object via UDM. Values for UDM properties can be passed via keyword arguments
+		only and have to exactly match UDM property names (case-sensitive!).
+
+		:param str modulename: name of UDM module (e.g. 'users/user')
+		:param bool wait_for_replication: delay return until Listener has settled.
+		:param bool check_for_drs_replication: delay return until Samab4 has settled.
+		:param \*\*kwargs:
+		"""
+		if not modulename:
+			raise UCSTestUDM_MissingModulename()
+
+		dn = None
+		cmd = self._build_udm_cmdline(modulename, 'create', kwargs)
+		print('Creating %s object with %s' % (modulename, _prettify_cmd(cmd)))
+		child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+		(stdout, stderr) = child.communicate()
+
+		if child.returncode:
+			raise UCSTestUDM_CreateUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
+
+		# find DN of freshly created object and add it to cleanup list
+		for line in stdout.splitlines():  # :pylint: disable-msg=E1103
+			if line.startswith('Object created: ') or line.startswith('Object exists: '):
+				dn = line.split(': ', 1)[-1]
+				if not line.startswith('Object exists: '):
+					self._cleanup.setdefault(modulename, []).append(dn)
+				break
+		else:
+			raise UCSTestUDM_CreateUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
+
+		self.wait_for(modulename, dn, wait_for_replication, wait_for_drs_replication=(wait_for_replication and check_for_drs_replication and ("options" not in kwargs or "kerberos" in kwargs["options"])))
+		return dn
+
+	def modify_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, **kwargs):
+		"""
+		Modifies a LDAP object via UDM. Values for UDM properties can be passed via keyword arguments
+		only and have to exactly match UDM property names (case-sensitive!).
+		Please note: the object has to be created by create_object otherwise this call will raise an exception!
+
+		:param str modulename: name of UDM module (e.g. 'users/user')
+		"""
+		if not modulename:
+			raise UCSTestUDM_MissingModulename()
+		dn = kwargs.get('dn')
+		if not dn:
+			raise UCSTestUDM_MissingDn()
+		if dn not in self._cleanup.get(modulename, set()):
+			raise UCSTestUDM_CannotModifyExistingObject(dn)
+
+		cmd = self._build_udm_cmdline(modulename, 'modify', kwargs)
+		print('Modifying %s object with %s' % (modulename, _prettify_cmd(cmd)))
+		child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+		(stdout, stderr) = child.communicate()
+
+		if child.returncode:
+			raise UCSTestUDM_ModifyUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
+
+		for line in stdout.splitlines():  # :pylint: disable-msg=E1103
+			if line.startswith('Object modified: '):
+				dn = line.split('Object modified: ', 1)[-1]
+				if dn != kwargs.get('dn'):
+					print('modrdn detected: %r ==> %r' % (kwargs.get('dn'), dn))
+					if kwargs.get('dn') in self._cleanup.get(modulename, []):
+						self._cleanup.setdefault(modulename, []).append(dn)
+						self._cleanup[modulename].remove(kwargs.get('dn'))
+				break
+			elif line.startswith('No modification: '):
+				raise UCSTestUDM_NoModification({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
+		else:
+			raise UCSTestUDM_ModifyUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
+
+		self.wait_for(modulename, dn, wait_for_replication, check_for_drs_replication)
+		return dn
+
+	def move_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, **kwargs):
+		if not modulename:
+			raise UCSTestUDM_MissingModulename()
+		dn = kwargs.get('dn')
+		if not dn:
+			raise UCSTestUDM_MissingDn()
+		if dn not in self._cleanup.get(modulename, set()):
+			raise UCSTestUDM_CannotModifyExistingObject(dn)
+
+		cmd = self._build_udm_cmdline(modulename, 'move', kwargs)
+		print('Moving %s object %s' % (modulename, _prettify_cmd(cmd)))
+		child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+		(stdout, stderr) = child.communicate()
+
+		if child.returncode:
+			raise UCSTestUDM_MoveUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
+
+		for line in stdout.splitlines():  # :pylint: disable-msg=E1103
+			if line.startswith('Object modified: '):
+				self._cleanup.get(modulename, []).remove(dn)
+
+				new_dn = ldap.dn.dn2str(ldap.dn.str2dn(dn)[0:1] + ldap.dn.str2dn(kwargs.get('position', '')))
+				self._cleanup.setdefault(modulename, []).append(new_dn)
+				break
+		else:
+			raise UCSTestUDM_ModifyUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
+
+		self.wait_for(modulename, dn, wait_for_replication, check_for_drs_replication)
+		return new_dn
+
+	def remove_object(self, modulename, wait_for_replication=True, **kwargs):
+		if not modulename:
+			raise UCSTestUDM_MissingModulename()
+		dn = kwargs.get('dn')
+		if not dn:
+			raise UCSTestUDM_MissingDn()
+		if dn not in self._cleanup.get(modulename, set()):
+			raise UCSTestUDM_CannotModifyExistingObject(dn)
+
+		cmd = self._build_udm_cmdline(modulename, 'remove', kwargs)
+		print('Removing %s object %s' % (modulename, _prettify_cmd(cmd)))
+		child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+		(stdout, stderr) = child.communicate()
+
+		if child.returncode:
+			raise UCSTestUDM_RemoveUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
+
+		if dn in self._cleanup.get(modulename, []):
+			self._cleanup[modulename].remove(dn)
+
+		self.wait_for(modulename, dn, wait_for_replication)
+
+	def wait_for(self, modulename, dn, wait_for_replication=True, wait_for_drs_replication=False, wait_for_s4connector=False):
+		drs_replication = wait_for_drs_replication
+		if wait_for_drs_replication and not isinstance(wait_for_drs_replication, basestring):
+			attr = {'container/ou': 'ou'}.get(modulename, 'cn')
+			drs_replication = ldap.filter.filter_format('%s=%s', (attr, ldap.dn.str2dn(dn)[0][0][1],))
+		return utils.wait_for(replication=wait_for_replication, drs_replication=drs_replication, s4_connector=False, verbose=False)
+
+	def create_user(self, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+		"""
+		Creates a user via UDM CLI. Values for UDM properties can be passed via keyword arguments only and
+		have to exactly match UDM property names (case-sensitive!). Some properties have default values:
+
+		:param str position: 'cn=users,$ldap_base'
+		:param str password: 'univention'
+		:param str firstname: 'Foo Bar'
+		:param str lastname: <random string>
+		:param str username: <random string> If username is missing, a random user name will be used.
+		:return: (dn, username)
+		"""
+
+		attr = self._set_module_default_attr(kwargs, (
+			('position', 'cn=users,%s' % self.LDAP_BASE),
+			('password', 'univention'),
+			('username', uts.random_username()),
+			('lastname', uts.random_name()),
+			('firstname', uts.random_name())
+		))
+
+		return (self.create_object('users/user', wait_for_replication, check_for_drs_replication, **attr), attr['username'])
+
+	def create_ldap_user(self, wait_for_replication=True, check_for_drs_replication=False, **kwargs):  # :pylint: disable-msg=W0613
+		# check_for_drs_replication=False -> ldap users are not replicated to s4
+		attr = self._set_module_default_attr(kwargs, (
+			('position', 'cn=users,%s' % self.LDAP_BASE),
+			('password', 'univention'),
+			('username', uts.random_username()),
+			('lastname', uts.random_name()),
+			('name', uts.random_name())
+		))
+
+		return (self.create_object('users/ldap', wait_for_replication, check_for_drs_replication, **attr), attr['username'])
+
+	def remove_user(self, username, wait_for_replication=True):
+		"""Removes a user object from the ldap given it's username."""
+		kwargs = {
+			'dn': 'uid=%s,cn=users,%s' % (username, self.LDAP_BASE)
+		}
+		self.remove_object('users/user', wait_for_replication, **kwargs)
+
+	def create_group(self, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+		"""
+		Creates a group via UDM CLI. Values for UDM properties can be passed via keyword arguments only and
+		have to exactly match UDM property names (case-sensitive!). Some properties have default values:
+
+		:param str position: `cn=users,$ldap_base`
+		:param str name: <random value>
+		:return: (dn, groupname)
+
+		If "groupname" is missing, a random group name will be used.
+		"""
+		attr = self._set_module_default_attr(kwargs, (
+			('position', 'cn=groups,%s' % self.LDAP_BASE),
+			('name', uts.random_groupname())
+		))
+
+		return (self.create_object('groups/group', wait_for_replication, check_for_drs_replication, **attr), attr['name'])
+
+	def _set_module_default_attr(self, attributes, defaults):
+		"""
+		Returns the given attributes, extented by every property given in defaults if not yet set.
+
+		:param tuple defaults: should be a tupel containing tupels like "('username', <default_value>)".
+		"""
+		attr = copy.deepcopy(attributes)
+		for prop, value in defaults:
+			attr.setdefault(prop, value)
+		return attr
+
+	def addCleanupLock(self, lockType, lockValue):
+		self._cleanupLocks.setdefault(lockType, []).append(lockValue)
+
+	def _wait_for_drs_removal(self, dn):
+		if utils.package_installed('univention-samba4'):
+			if dn.startswith('uid='):
+				s4_object_base = 'cn' + dn[3:]
+			else:
+				s4_object_base = dn
+			wait_for_drs_replication(None, base=s4_object_base, scope=0, should_exist=False)
+
+	def list_objects(self, module):
+		cmd = ['/usr/sbin/udm-test', module, 'list']
+		child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+		(stdout, stderr) = child.communicate()
+		if child.returncode:
+			raise UCSTestUDM_ListUDMObjectFailed(child.returncode, stdout, stderr)
+		objects = []
+		dn = None
+		attrs = {}
+		for line in stdout.splitlines():
+			if line.startswith('DN: '):
+				dn = line[3:].strip()
+			elif not line.strip():
+				if dn:
+					objects.append((dn, attrs))
+					dn = None
+					attrs = {}
+			elif line.startswith(' ') and ':' in line:
+				name, value = line.split(':', 1)
+				attrs.setdefault(name.strip(), []).append(value.strip())
+		return objects
+
+	def cleanup(self):
+		"""
+		Automatically removes LDAP objects via UDM CLI that have been created before.
+		"""
+		failedObjects = {}
+		print('Performing UCSTestUDM cleanup...')
+		objects = []
+		for module, objs in self._cleanup.items():
+			objects.extend((module, dn) for dn in objs)
+
+		for module, dn in sorted(objects, key=lambda x: len(x[1]), reverse=True):
+			cmd = ['/usr/sbin/udm-test', module, 'remove', '--dn', dn, '--remove_referring']
+
+			print 'removing DN:', dn
+			child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+			(stdout, stderr) = child.communicate()
+			utils.wait_for_replication(verbose=False)
+
+			if child.returncode or 'Object removed:' not in stdout:
+				failedObjects.setdefault(module, []).append(dn)
+			else:
+				self._wait_for_drs_removal(dn)
+
+		# simply iterate over the remaining objects again, removing them might just have failed for chronology reasons
+		# (e.g groups can not be removed while there are still objects using it as primary group)
+		for module, objects in failedObjects.items():
+			for dn in objects:
+				cmd = ['/usr/sbin/udm-test', module, 'remove', '--dn', dn, '--remove_referring']
+
+				child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+				(stdout, stderr) = child.communicate()
+				utils.wait_for_replication(verbose=False)
+
+				if child.returncode or 'Object removed:' not in stdout:
+					print >> sys.stderr, 'Warning: Failed to remove %r object %r' % (module, dn)
+					print >> sys.stderr, 'stdout=%r %r %r' % (stdout, stderr, self._lo.get(dn))
+				else:
+					self._wait_for_drs_removal(dn)
+		self._cleanup = {}
+
+		for lock_type, values in self._cleanupLocks.items():
+			for value in values:
+				lockDN = 'cn=%s,cn=%s,%s' % (value, lock_type, self.UNIVENTION_TEMPORARY_CONTAINER)
+				try:
+					self._lo.delete(lockDN)
+				except ldap.NO_SUCH_OBJECT:
+					pass
+				except Exception as ex:
+					print('Failed to remove locking object "%s" during cleanup: %r' % (lockDN, ex))
+		self._cleanupLocks = {}
+
+		self.stop_cli_server()
+		print('UCSTestUDM cleanup done')
+
+	def stop_cli_server(self):
+		""" restart UDM CLI server """
+		print('trying to restart UDM CLI server')
+		procs = []
+		for proc in psutil.process_iter():
+			try:
+				cmdline = proc.cmdline()
+				if len(cmdline) >= 2 and cmdline[0].startswith('/usr/bin/python') and cmdline[1] == self.PATH_UDM_CLI_SERVER:
+					procs.append(proc)
+			except psutil.NoSuchProcess:
+				pass
+		for signal in (15, 9):
+			for proc in procs:
+				try:
+					print('sending signal %s to process %s (%r)' % (signal, proc.pid, proc.cmdline(),))
+					os.kill(proc.pid, signal)
+				except (psutil.NoSuchProcess, EnvironmentError):
+					print('process already terminated')
+					procs.remove(proc)
+			if signal == 15:
+				time.sleep(1)
+
+	def verify_udm_object(self, *args, **kwargs):
+		return verify_udm_object(*args, **kwargs)
+
+	def verify_ldap_object(self, *args, **kwargs):
+		return utils.verify_ldap_object(*args, **kwargs)
+
+	def __enter__(self):
+		return self
+
+	def __exit__(self, exc_type, exc_value, traceback):
+		if exc_type:
+			print('Cleanup after exception: %s %s' % (exc_type, exc_value))
+		self.cleanup()
 
 
 def verify_udm_object(module, dn, expected_properties):
@@ -624,10 +631,10 @@ def verify_udm_object(module, dn, expected_properties):
 
 
 def _prettify_cmd(cmd):
-    cmd = ' '.join(pipes.quote(x) for x in cmd)
-    if set(cmd) & set(['\x00', '\n']):
-        cmd = repr(cmd)
-    return cmd
+	cmd = ' '.join(pipes.quote(x) for x in cmd)
+	if set(cmd) & set(['\x00', '\n']):
+		cmd = repr(cmd)
+	return cmd
 
 
 def _to_unicode(string):
@@ -648,33 +655,33 @@ def _normalize_dn(dn):
 
 
 if __name__ == '__main__':
-    import doctest
-    print(doctest.testmod())
+	import doctest
+	print(doctest.testmod())
 
-    ucr = univention.testing.ucr.UCSTestConfigRegistry()
-    ucr.load()
+	ucr = univention.testing.ucr.UCSTestConfigRegistry()
+	ucr.load()
 
-    with UCSTestUDM() as udm:
-        # create user
-        dnUser, _username = udm.create_user()
+	with UCSTestUDM() as udm:
+		# create user
+		dnUser, _username = udm.create_user()
 
-        # stop CLI daemon
-        udm.stop_cli_server()
+		# stop CLI daemon
+		udm.stop_cli_server()
 
-        # create group
-        _dnGroup, _groupname = udm.create_group()
+		# create group
+		_dnGroup, _groupname = udm.create_group()
 
-        # modify user from above
-        udm.modify_object('users/user', dn=dnUser, description='Foo Bar')
+		# modify user from above
+		udm.modify_object('users/user', dn=dnUser, description='Foo Bar')
 
-        # test with malformed arguments
-        try:
-            _dnUser, _username = udm.create_user(username='')
-        except UCSTestUDM_CreateUDMObjectFailed as ex:
-            print('Caught anticipated exception UCSTestUDM_CreateUDMObjectFailed - SUCCESS')
+		# test with malformed arguments
+		try:
+			_dnUser, _username = udm.create_user(username='')
+		except UCSTestUDM_CreateUDMObjectFailed as ex:
+			print('Caught anticipated exception UCSTestUDM_CreateUDMObjectFailed - SUCCESS')
 
-        # try to modify object not created by create_udm_object()
-        try:
-            udm.modify_object('users/user', dn='uid=Administrator,cn=users,%s' % ucr.get('ldap/base'), description='Foo Bar')
-        except UCSTestUDM_CannotModifyExistingObject as ex:
-            print('Caught anticipated exception UCSTestUDM_CannotModifyExistingObject - SUCCESS')
+		# try to modify object not created by create_udm_object()
+		try:
+			udm.modify_object('users/user', dn='uid=Administrator,cn=users,%s' % ucr.get('ldap/base'), description='Foo Bar')
+		except UCSTestUDM_CannotModifyExistingObject as ex:
+			print('Caught anticipated exception UCSTestUDM_CannotModifyExistingObject - SUCCESS')

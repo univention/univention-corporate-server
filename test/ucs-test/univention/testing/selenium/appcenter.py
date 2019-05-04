@@ -82,7 +82,7 @@ class AppCenter(object):
 
 		self.selenium.wait_for_text(_('Please confirm to uninstall the application'))
 		self.selenium.wait_until_all_standby_animations_disappeared()
-		sleep(2) # there is still something in the way even with wait_until_all_standby_animations_disappeared
+		sleep(2)  # there is still something in the way even with wait_until_all_standby_animations_disappeared
 		self.selenium.click_button(_('Uninstall'))
 
 		self.selenium.wait_for_text(_('Running tests'))
