@@ -27,6 +27,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 from univention.testing.strings import random_name, random_version
 from univention.testing.utils import get_ldap_connection, fail
 from univention.config_registry import ConfigRegistry
@@ -71,7 +72,7 @@ def call_cmd(cmd, fail_on_error=True):
 	"""
 	Calls the given cmd (list of strings).
 	"""
-	print 'CMD: %r' % cmd
+	print('CMD: %r' % cmd)
 	sys.stdout.flush()
 	exitcode = subprocess.call(cmd)
 	if fail_on_error and exitcode:
@@ -392,10 +393,10 @@ def remove_extension_by_name(extension_type, extension_name, fail_on_error=True)
 	assert(extension_type in VALID_EXTENSION_TYPES)
 	for dn in get_dn_of_extension_by_name(extension_type, extension_name):
 		cmd = ['/usr/sbin/udm-test', 'settings/udm_%s' % extension_type, 'remove', '--dn', dn]
-		print 'CMD: %r' % cmd
+		print('CMD: %r' % cmd)
 		sys.stdout.flush()
 		if subprocess.call(cmd):
 			if fail_on_error:
 				fail('Failed to remove %s' % dn)
 			else:
-				print 'ERROR: failed to remove %s' % dn
+				print('ERROR: failed to remove %s' % dn)

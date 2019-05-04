@@ -1,5 +1,6 @@
 # vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :
 """Format UCS Test results as Jenkins report."""
+from __future__ import print_function
 import sys
 from univention.testing.data import TestFormatInterface
 from xml.sax.saxutils import escape as escape_xml
@@ -20,22 +21,22 @@ class Jenkins(TestFormatInterface):
 
 	def end_test(self, result):
 		"""Called after each test."""
-		print >> self.stream, '<run>'
+		print('<run>', file=self.stream)
 		try:
 			mime, content = result.artifacts['stdout']
 		except KeyError:
 			pass
 		else:
-			print >> self.stream, '<log encoding="hexBinary">%s</log>' % \
-				(encode(content, 'hex'),)
-		print >> self.stream, '<result>%d</result>' % (result.result,)
-		print >> self.stream, '<duration>%d</duration>' % \
-			(result.duration or -1,)
-		print >> self.stream, '<displayName>%s</displayName>' % \
-			(escape_xml(result.case.uid),)
-		print >> self.stream, '<description>%s</description>' % \
-			(escape_xml(result.case.description or ''),)
-		print >> self.stream, '</run>'
+			print('<log encoding="hexBinary">%s</log>' % \
+				(encode(content, 'hex'),), file=self.stream)
+		print('<result>%d</result>' % (result.result,), file=self.stream)
+		print('<duration>%d</duration>' % \
+			(result.duration or -1,), file=self.stream)
+		print('<displayName>%s</displayName>' % \
+			(escape_xml(result.case.uid),), file=self.stream)
+		print('<description>%s</description>' % \
+			(escape_xml(result.case.description or ''),), file=self.stream)
+		print('</run>', file=self.stream)
 		super(Jenkins, self).end_test(result)
 
 	def format(self, result):

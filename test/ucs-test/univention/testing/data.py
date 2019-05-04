@@ -1,5 +1,6 @@
 # vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :
 """Test case, environment, result and related classes."""
+from __future__ import print_function
 # pylint: disable-msg=R0902,W0201,R0903,E1101,E0611
 import sys
 import os
@@ -120,16 +121,16 @@ class TestEnvironment(object):
 
 	def dump(self, stream=sys.stdout):
 		"""Dump environment informations."""
-		print >> stream, 'hostname: %s' % (self.hostname,)
-		print >> stream, 'architecture: %s' % (self.architecture,)
-		print >> stream, 'version: %s' % (self.ucs_version,)
-		print >> stream, 'role: %s' % (self.role,)
-		print >> stream, 'joined: %s' % (self.joined,)
-		print >> stream, 'tags_required: %s' % \
-			(' '.join(self.tags_required) or '-',)
-		print >> stream, 'tags_prohibited: %s' % \
-			(' '.join(self.tags_prohibited) or '-',)
-		print >> stream, 'timeout: %d' % (self.timeout,)
+		print('hostname: %s' % (self.hostname,), file=stream)
+		print('architecture: %s' % (self.architecture,), file=stream)
+		print('version: %s' % (self.ucs_version,), file=stream)
+		print('role: %s' % (self.role,), file=stream)
+		print('joined: %s' % (self.joined,), file=stream)
+		print('tags_required: %s' % \
+			(' '.join(self.tags_required) or '-',), file=stream)
+		print('tags_prohibited: %s' % \
+			(' '.join(self.tags_prohibited) or '-',), file=stream)
+		print('timeout: %d' % (self.timeout,), file=stream)
 
 	def tag(self, require=set(), ignore=set(), prohibit=set()):
 		"""Update required, ignored, prohibited tags."""
@@ -706,12 +707,12 @@ class TestCase(object):
 
 		time_start = datetime.now()
 
-		print >> result.environment.log, '\n*** BEGIN *** %r ***' % (
-			cmd,)
-		print >> result.environment.log, '*** %s *** %s ***' % (
-			self.uid, self.description,)
-		print >> result.environment.log, '*** START TIME: %s ***' % (
-			time_start.strftime("%Y-%m-%d %H:%M:%S"))
+		print('\n*** BEGIN *** %r ***' % (
+			cmd,), file=result.environment.log)
+		print('*** %s *** %s ***' % (
+			self.uid, self.description,), file=result.environment.log)
+		print('*** START TIME: %s ***' % (
+			time_start.strftime("%Y-%m-%d %H:%M:%S")), file=result.environment.log)
 		result.environment.log.flush()
 
 		# Protect wrapper from Ctrl-C as long as test case is running
@@ -772,12 +773,12 @@ class TestCase(object):
 		time_end = datetime.now()
 		time_delta = time_end - time_start
 
-		print >> result.environment.log, '*** END TIME: %s ***' % (
-			time_end.strftime("%Y-%m-%d %H:%M:%S"))
-		print >> result.environment.log, '*** TEST DURATION (H:MM:SS.ms): %s ***' % (
-			time_delta)
-		print >> result.environment.log, '*** END *** %d ***' % (
-			result.result,)
+		print('*** END TIME: %s ***' % (
+			time_end.strftime("%Y-%m-%d %H:%M:%S")), file=result.environment.log)
+		print('*** TEST DURATION (H:MM:SS.ms): %s ***' % (
+			time_delta), file=result.environment.log)
+		print('*** END *** %d ***' % (
+			result.result,), file=result.environment.log)
 		result.environment.log.flush()
 
 		result.duration = time_delta.total_seconds() * 1000
@@ -806,13 +807,13 @@ class TestResult(object):
 
 	def dump(self, stream=sys.stdout):
 		"""Dump test result data."""
-		print >> stream, 'Case: %s' % (self.case.uid,)
-		print >> stream, 'Environment: %s' % (self.environment.hostname,)
-		print >> stream, 'Result: %d %s' % (self.result, self.eofs)
-		print >> stream, 'Reason: %s (%s)' % (self.reason, TestCodes.MESSAGE.get(self.reason, ''))
-		print >> stream, 'Duration: %d' % (self.duration or 0,)
+		print('Case: %s' % (self.case.uid,), file=stream)
+		print('Environment: %s' % (self.environment.hostname,), file=stream)
+		print('Result: %d %s' % (self.result, self.eofs), file=stream)
+		print('Reason: %s (%s)' % (self.reason, TestCodes.MESSAGE.get(self.reason, '')), file=stream)
+		print('Duration: %d' % (self.duration or 0,), file=stream)
 		for (key, (mime, content)) in self.artifacts.items():
-			print 'Artifact[%s]: %s %r' % (key, mime, content)
+			print('Artifact[%s]: %s %r' % (key, mime, content))
 
 	def attach(self, key, mime, content):
 		"""Attach artifact 'content' of mime-type 'mime'."""

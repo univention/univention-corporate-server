@@ -1,3 +1,4 @@
+from __future__ import print_function
 import subprocess
 import time
 import socket
@@ -26,7 +27,7 @@ class WaitForS4ConnectorTimeout(Exception):
 @contextlib.contextmanager
 def password_policy(complexity=False, minimum_password_age=0, maximum_password_age=3):
 	if not package_installed('univention-samba4'):
-		print 'skipping samba password policy adjustment'
+		print('skipping samba password policy adjustment')
 		yield
 		return
 	complexity = 'on' if complexity else 'off'
@@ -45,7 +46,7 @@ def password_policy(complexity=False, minimum_password_age=0, maximum_password_a
 def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE_SUBTREE, lp=None, timeout=360, delta_t=1, verbose=True, should_exist=True):
 	if not package_installed('univention-samba4'):
 		if verbose:
-			print 'wait_for_drs_replication(): skip, univention-samba4 not installed.'
+			print('wait_for_drs_replication(): skip, univention-samba4 not installed.')
 		return
 	if not lp:
 		lp = LoadParm()
@@ -62,26 +63,26 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
 	else:
 		if len(ldap.dn.str2dn(base)[0]) > 1:
 			if verbose:
-				print 'wait_for_drs_replication(): skip, multiple RDNs are not supported'
+				print('wait_for_drs_replication(): skip, multiple RDNs are not supported')
 			return
 	if not base or base == 'None':
 		if verbose:
-			print 'wait_for_drs_replication(): skip, no samba domain found'
+			print('wait_for_drs_replication(): skip, no samba domain found')
 		return
 
 	if verbose:
-		print "Waiting for DRS replication, filter: %r, base: %r, scope: %r, should_exist: %r" % (ldap_filter, base, scope, should_exist),
+		print("Waiting for DRS replication, filter: %r, base: %r, scope: %r, should_exist: %r" % (ldap_filter, base, scope, should_exist), end=' ')
 	t = t0 = time.time()
 	while t < t0 + timeout:
 		try:
 			res = samdb.search(base=base, scope=scope, expression=ldap_filter, attrs=attrs, controls=controls)
 			if res and should_exist:
 				if verbose:
-					print "\nDRS replication took %d seconds" % (t - t0, )
+					print("\nDRS replication took %d seconds" % (t - t0, ))
 				return res
 			if not res and not should_exist:
 				if verbose:
-					print "\nDRS replication took %d seconds" % (t - t0, )
+					print("\nDRS replication took %d seconds" % (t - t0, ))
 				return res
 		except ldb.LdbError as exc:
 			(_num, msg) = exc.args
@@ -89,11 +90,11 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
 				raise
 			if _num == ldb.ERR_NO_SUCH_OBJECT and not should_exist:
 				if verbose:
-					print "\nDRS replication took %d seconds" % (t - t0, )
+					print("\nDRS replication took %d seconds" % (t - t0, ))
 				return
-			print "Error during samdb.search: %s" % (msg, )
+			print("Error during samdb.search: %s" % (msg, ))
 
-		print '.',
+		print('.', end=' ')
 		time.sleep(delta_t)
 		t = time.time()
 	raise DRSReplicationFailed("DRS replication for filter: %r failed due to timeout after %d sec." % (ldap_filter, t - t0))
@@ -104,13 +105,13 @@ def get_available_s4connector_dc():
 	p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
 	stdout, _stderr = p.communicate()
 	if not stdout:
-		print "WARNING: Automatic S4 Connector host detection failed"
+		print("WARNING: Automatic S4 Connector host detection failed")
 		return
 	matches = re.compile('^uid: (.*)\$$', re.M).findall(stdout)
 	if len(matches) == 1:
 		return matches[0]
 	elif len(matches) == 0:
-		print "WARNING: Automatic S4 Connector host detection failed"
+		print("WARNING: Automatic S4 Connector host detection failed")
 		return
 
 	# check if this is UCS@school
@@ -118,7 +119,7 @@ def get_available_s4connector_dc():
 	p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
 	stdout, _stderr = p.communicate()
 	if not stdout:
-		print "ERROR: Automatic S4 Connector host detection failed: Found %s S4 Connector services" % len(matches)
+		print("ERROR: Automatic S4 Connector host detection failed: Found %s S4 Connector services" % len(matches))
 		return
 	# Look for replicating DCs
 	dcs_replicating_with_this_one = []
@@ -132,13 +133,13 @@ def get_available_s4connector_dc():
 	if len(dcs_replicating_with_this_one) == 1:
 		return dcs_replicating_with_this_one[0]
 	else:
-		print "ERROR: Automatic S4 Connector host detection failed: Replicating with %s S4 Connector services" % len(dcs_replicating_with_this_one)
+		print("ERROR: Automatic S4 Connector host detection failed: Replicating with %s S4 Connector services" % len(dcs_replicating_with_this_one))
 		return
 
 
 def force_drs_replication(source_dc=None, destination_dc=None, partition_dn=None, direction="in"):
 	if not package_installed('univention-samba4'):
-		print 'force_drs_replication(): skip, univention-samba4 not installed.'
+		print('force_drs_replication(): skip, univention-samba4 not installed.')
 		return
 	if not source_dc:
 		source_dc = get_available_s4connector_dc()
@@ -156,7 +157,7 @@ def force_drs_replication(source_dc=None, destination_dc=None, partition_dn=None
 		lp.load('/etc/samba/smb.conf')
 		samdb = SamDB("tdb://%s" % lp.private_path("sam.ldb"), session_info=system_session(lp), lp=lp)
 		partition_dn = str(samdb.domain_dn())
-		print "USING partition_dn:", partition_dn
+		print("USING partition_dn:", partition_dn)
 
 	if direction == "in":
 		cmd = ("/usr/bin/samba-tool", "drs", "replicate", destination_dc, source_dc, partition_dn)
@@ -174,10 +175,10 @@ def wait_for_s4connector(timeout=360, delta_t=1, s4cooldown_t=10):
 	ucr.load()
 
 	if not package_installed('univention-s4-connector'):
-		print 'wait_for_s4connector(): skip, univention-s4-connector not installed.'
+		print('wait_for_s4connector(): skip, univention-s4-connector not installed.')
 		return
 	if ucr.is_false('connector/s4/autostart'):
-		print 'wait_for_s4connector(): skip, connector/s4/autostart is set to false.'
+		print('wait_for_s4connector(): skip, connector/s4/autostart is set to false.')
 		return
 	conn = sqlite3.connect('/etc/univention/connector/s4internal.sqlite')
 	c = conn.cursor()
@@ -220,10 +221,10 @@ def wait_for_s4connector(timeout=360, delta_t=1, s4cooldown_t=10):
 
 		if not (lastUSN == highestCommittedUSN and lastUSN == previous_lastUSN and highestCommittedUSN == previous_highestCommittedUSN):
 			static_count = 0
-			print 'Reset counter'
+			print('Reset counter')
 		else:
 			static_count = static_count + 1
-		print 'Counter: %d' % static_count
+		print('Counter: %d' % static_count)
 		if static_count * delta_t >= s4cooldown_t:
 			return 0
 		t = time.time()

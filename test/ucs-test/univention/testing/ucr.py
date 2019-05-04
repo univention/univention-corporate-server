@@ -15,6 +15,7 @@ and therefore changes in configuration files created by UCR!
 WARNING2:
 The API is currently under development and may change before next UCS release!
 """
+from __future__ import print_function
 #
 # Copyright 2013-2019 Univention GmbH
 #
@@ -107,29 +108,29 @@ if __name__ == '__main__':
 
 	# Usage variant 1 "the manual way"
 
-	print 'Loading UCR...'
+	print('Loading UCR...')
 	ucr = UCSTestConfigRegistry()
 	ucr.load()
-	print 'Setting some variables...'
+	print('Setting some variables...')
 	univention.config_registry.handler_set(['foo/bar=ding/dong'])
 	univention.config_registry.handler_set(['repository/online/server=ftp.debian.org'])
 	univention.config_registry.handler_unset(['server/role'])
-	print 'Waiting for 3 seconds...'
+	print('Waiting for 3 seconds...')
 	time.sleep(3)
-	print 'Cleanup...'
+	print('Cleanup...')
 	ucr.revert_to_original_registry()
 
 	# Usage variant 2 "with statement"
 
 	with UCSTestConfigRegistry() as ucr2:
-		print 'Old values...'
-		print ucr2.get('foo/bar', '<unset>')
-		print ucr2.get('repository/online/server', '<unset>')
-		print ucr2.get('server/role', '<unset>')
-		print 'Setting some variables...'
+		print('Old values...')
+		print(ucr2.get('foo/bar', '<unset>'))
+		print(ucr2.get('repository/online/server', '<unset>'))
+		print(ucr2.get('server/role', '<unset>'))
+		print('Setting some variables...')
 		univention.config_registry.handler_set(['foo/bar=ding/dong'])
 		univention.config_registry.handler_set(['repository/online/server=ftp.debian.org'])
 		univention.config_registry.handler_unset(['server/role'])
-		print 'Waiting for 3 seconds...'
+		print('Waiting for 3 seconds...')
 		time.sleep(3)
-		print 'Cleanup...'
+		print('Cleanup...')

@@ -1,6 +1,7 @@
 """Code coverage measurement for ucs-test"""
 
 from __future__ import absolute_import
+from __future__ import print_function
 
 import os
 import sys
@@ -36,8 +37,8 @@ class Coverage(object):
 			try:
 				__import__('coverage')
 			except ImportError as exc:
-				print >> sys.stderr, 'Could not load coverage: %s' % (exc,)
-				print >> sys.stderr, "use: ucr set repository/online/unmaintained='yes'; univention-install -y --force-yes python-pip; pip install coverage"
+				print('Could not load coverage: %s' % (exc,), file=sys.stderr)
+				print("use: ucr set repository/online/unmaintained='yes'; univention-install -y --force-yes python-pip; pip install coverage", file=sys.stderr)
 				self.coverage = False
 				return
 

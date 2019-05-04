@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import sys
 import pprint
 
@@ -61,19 +62,19 @@ class Client(_Client):
 			self.print_response = True
 
 	def request(self, method, path, data=None, headers=None):
-		print ''
-		print '*** UMC request: "%s %s" %s' % (method, path, '(%s)' % (data.get('flavor'),) if isinstance(data, dict) else '')
+		print('')
+		print('*** UMC request: "%s %s" %s' % (method, path, '(%s)' % (data.get('flavor'),) if isinstance(data, dict) else ''))
 		if self.print_request_data:
-			print 'UMC request payload: \n%s' % (pprint.pformat(data), )
+			print('UMC request payload: \n%s' % (pprint.pformat(data), ))
 		try:
 			response = super(Client, self).request(method, path, data, headers)
 		except:
-			print 'UMC request failed: %s' % (sys.exc_info()[1],)
-			print ''
+			print('UMC request failed: %s' % (sys.exc_info()[1],))
+			print('')
 			raise
 		if self.print_response:
-			print '*** UMC response: \n%s\n***' % (pprint.pformat(response.data),)
+			print('*** UMC response: \n%s\n***' % (pprint.pformat(response.data),))
 		else:
-			print '*** UMC reponse received'
-		print ''
+			print('*** UMC reponse received')
+		print('')
 		return response

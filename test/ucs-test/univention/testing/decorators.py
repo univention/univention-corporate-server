@@ -1,3 +1,4 @@
+from __future__ import print_function
 import time
 
 DEFAULT_TIMEOUT = 90  # seconds
@@ -28,12 +29,12 @@ class SetTimeout(object):
 	def __call__(self, *args, **kwargs):
 		for i in xrange(self.timeout):
 			try:
-				print "** Entering", self.func.__name__
+				print("** Entering", self.func.__name__)
 				self.func(*args, **kwargs)
-				print "** Exiting", self.func.__name__
+				print("** Exiting", self.func.__name__)
 				break
 			except Exception as ex:
-				print "(%d)-- Exception cought: %s %s" % (i, type(ex), str(ex))
+				print("(%d)-- Exception cought: %s %s" % (i, type(ex), str(ex)))
 				time.sleep(1)
 		else:
 			self.func(*args, **kwargs)
@@ -43,12 +44,12 @@ def setTimeout(func, timeout=DEFAULT_TIMEOUT):
 	def wrapper(*args, **kwargs):
 		for i in xrange(timeout):
 			try:
-				print "** Entering", func.__name__
+				print("** Entering", func.__name__)
 				func(*args, **kwargs)
-				print "** Exiting", func.__name__
+				print("** Exiting", func.__name__)
 				break
 			except Exception as ex:
-				print "(%d)-- Exception cought: %s %s" % (i, type(ex), str(ex))
+				print("(%d)-- Exception cought: %s %s" % (i, type(ex), str(ex)))
 				time.sleep(1)
 		else:
 			func(*args, **kwargs)

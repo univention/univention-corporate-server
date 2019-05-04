@@ -1,5 +1,6 @@
 # vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :
 """Format UCS Test results as simple text report."""
+from __future__ import print_function
 import sys
 from univention.testing.data import TestFormatInterface, TestCodes
 import univention.config_registry
@@ -59,15 +60,15 @@ class Text(TestFormatInterface):
 		"""Called before first test."""
 		super(Text, self).begin_run(environment, count)
 		now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-		print >> self.stream, "Starting %s ucs-test at %s to %s" % \
-			(count, now, environment.log.name)
+		print("Starting %s ucs-test at %s to %s" % \
+			(count, now, environment.log.name), file=self.stream)
 		try:
 			ucs_test_version = subprocess.check_output(['/usr/bin/dpkg-query', '--showformat=${Version}', '--show', 'ucs-test-framework'])
 		except subprocess.CalledProcessError:
 			ucs_test_version = 'not installed'
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
-		print >> self.stream, "UCS %s-%s-e%s ucs-test %s" % (ucr.get('version/version'), ucr.get('version/patchlevel'), ucr.get('version/erratalevel'), ucs_test_version)
+		print("UCS %s-%s-e%s ucs-test %s" % (ucr.get('version/version'), ucr.get('version/patchlevel'), ucr.get('version/erratalevel'), ucs_test_version), file=self.stream)
 
 	def begin_section(self, section):
 		"""Called before each section."""
@@ -75,7 +76,7 @@ class Text(TestFormatInterface):
 		if section:
 			header = " Section '%s' " % (section,)
 			line = header.center(self.term.COLS, '=')
-			print >> self.stream, line
+			print(line, file=self.stream)
 
 	def begin_test(self, case, prefix=''):
 		"""Called before each test."""
@@ -87,10 +88,10 @@ class Text(TestFormatInterface):
 		if cols < 1:
 			cols = self.term.COLS
 		while len(title) > cols:
-			print >> self.stream, title[:cols]
+			print(title[:cols], file=self.stream)
 			title = title[cols:]
 		ruler = '.' * (cols - len(title))
-		print >> self.stream, '%s%s' % (title, ruler),
+		print('%s%s' % (title, ruler), end=' ', file=self.stream)
 		self.stream.flush()
 
 	def end_test(self, result):
@@ -101,13 +102,13 @@ class Text(TestFormatInterface):
 		colorname = TestCodes.COLOR.get(result.reason, 'BLACK')
 		color = getattr(self.term, colorname.upper(), '')
 
-		print >> self.stream, '%s%s%s' % (color, msg, self.term.NORMAL)
+		print('%s%s%s' % (color, msg, self.term.NORMAL), file=self.stream)
 		super(Text, self).end_test(result)
 
 	def end_section(self):
 		"""Called after each section."""
 		if self.section:
-			print >> self.stream
+			print(file=self.stream)
 		super(Text, self).end_section()
 
 	def format(self, result):

@@ -29,6 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import time
 import os
 import pwd
@@ -94,7 +95,7 @@ class MailSink(object):
 		self.stop()
 
 	def start(self):
-		print '*** Starting SMTPSink at %s:%s' % (self.address, self.port)
+		print('*** Starting SMTPSink at %s:%s' % (self.address, self.port))
 		cmd = ['/usr/sbin/smtp-sink']  # use postfix' smtp-sink tool
 		if self.filename is not None:
 			cmd.extend(['-D', self.filename])
@@ -108,7 +109,7 @@ class MailSink(object):
 			cmd.extend(['-u', pwd.getpwuid(os.getuid()).pw_name])
 		cmd.append('{}:{}'.format(self.address, self.port))
 		cmd.append('10')
-		print '*** {!r}'.format(cmd)
+		print('*** {!r}'.format(cmd))
 		self.process = subprocess.Popen(cmd)
 
 	def stop(self):
@@ -116,18 +117,18 @@ class MailSink(object):
 			self.process.terminate()
 			time.sleep(1)
 			self.process.kill()
-			print '*** SMTPSink at %s:%s stopped' % (self.address, self.port)
+			print('*** SMTPSink at %s:%s stopped' % (self.address, self.port))
 			self.process = None
 
 
 if __name__ == '__main__':
 	# ms = MailSink('127.0.0.1', 12345, target_dir='/tmp/')
 	ms = MailSink('127.0.0.1', 12345, filename='/tmp/sink.eml')
-	print 'Starting sink'
+	print('Starting sink')
 	ms.start()
-	print 'Waiting'
+	print('Waiting')
 	time.sleep(25)
-	print 'Stopping sink'
+	print('Stopping sink')
 	ms.stop()
-	print 'Waiting'
+	print('Waiting')
 	time.sleep(5)

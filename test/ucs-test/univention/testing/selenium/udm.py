@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+from __future__ import print_function
 
 import time
 
@@ -59,7 +60,7 @@ class UDMBase(object):
 		return objectname
 
 	def exists(self, objectname):
-		print '*** check if object exists', objectname
+		print('*** check if object exists', objectname)
 		# This method will work with *most* UDM modules.
 		self.search(self._get_search_value(objectname))
 		time.sleep(5)
@@ -72,24 +73,24 @@ class UDMBase(object):
 		return False
 
 	def open_details(self, objectname):
-		print '*** open detail page of object', objectname
+		print('*** open detail page of object', objectname)
 		# This method will work with *most* UDM modules.
 		self.search(self._get_search_value(objectname))
 		self.selenium.click_grid_entry(self._get_grid_value(objectname))
 		self.selenium.wait_until_standby_animation_appears_and_disappears()
 
 	def close_details(self):
-		print '*** close the detailpage'
+		print('*** close the detailpage')
 		self.selenium.click_button(_('Back'))
 		self.wait_for_main_grid_load()
 
 	def save_details(self):
-		print '*** save the detailpage'
+		print('*** save the detailpage')
 		self.selenium.click_button(_('Save'))
 		self.wait_for_main_grid_load()
 
 	def delete(self, objectname):
-		print '*** remove the object with name=', objectname
+		print('*** remove the object with name=', objectname)
 		# This method will work with *most* UDM modules.
 		self.search(self._get_search_value(objectname))
 
@@ -105,7 +106,7 @@ class UDMBase(object):
 		# self.wait_for_main_grid_load()
 
 	def search(self, objectname):
-		print '*** searching for objects with name=', objectname
+		print('*** searching for objects with name=', objectname)
 		# This method will work with *most* UDM modules.
 		xpath = '//input[@name="objectPropertyValue"]'
 		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
@@ -118,11 +119,11 @@ class UDMBase(object):
 		elems[0].clear()
 
 	def wait_for_main_grid_load(self, timeout=60):
-		print '*** waiting for main grid load'
+		print('*** waiting for main grid load')
 		self.selenium.wait_until_standby_animation_appears_and_disappears()
 
 	def open_add_dialog(self, container=None, template=None):
-		print '*** open the add dialog'
+		print('*** open the add dialog')
 		self.selenium.click_button(_('Add'))
 		self.selenium.wait_until_all_standby_animations_disappeared()
 

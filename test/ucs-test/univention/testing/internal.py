@@ -1,6 +1,7 @@
 """
 Internal functions for test finding and setup.
 """
+from __future__ import print_function
 # Copyright 2013-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -56,9 +57,9 @@ def package_installed(package):
 
 
 def fail(log_message=None, returncode=1):
-	print '### FAIL ###'
+	print('### FAIL ###')
 	if log_message:
-		print '%s\n###      ###' % log_message
+		print('%s\n###      ###' % log_message)
 	sys.exit(returncode)
 
 

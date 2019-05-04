@@ -1,6 +1,7 @@
 """
 Common functions used by tests.
 """
+from __future__ import print_function
 # Copyright 2013-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -339,9 +340,9 @@ class FollowLogfile(object):
 					log.seek(pos, 0)
 					lim = (79 - len(logfile) - 2) / 2
 					lin = "{0} {1} {0}".format("=" * lim, logfile)
-					print lin + "=" * (79 - len(lin))
+					print(lin + "=" * (79 - len(lin)))
 					sys.stdout.writelines(log)
-					print "=" * 79
+					print("=" * 79)
 
 
 class ReplicationType(Enum):
@@ -414,7 +415,7 @@ def wait_for_listener_replication(verbose=True):
 	sys.stdout.flush()
 	time.sleep(1)  # Give the notifier some time to increase its transaction id
 	if verbose:
-		print 'Waiting for replication...'
+		print('Waiting for replication...')
 	for _ in xrange(300):
 		# The "-c 1" option ensures listener and notifier id are equal.
 		# Otherwise the check is successful as long as the listener id changed since the last check.
@@ -423,12 +424,12 @@ def wait_for_listener_replication(verbose=True):
 		stdout, _stderr = proc.communicate()
 		if proc.returncode == 0:
 			if verbose:
-				print 'Done: replication complete.'
+				print('Done: replication complete.')
 			return
-		print '.',
+		print('.', end=' ')
 		time.sleep(1)
 
-	print 'Error: replication incomplete.'
+	print('Error: replication incomplete.')
 	raise LDAPReplicationFailed()
 
 
@@ -440,12 +441,12 @@ def wait_for_listener_replication_and_postrun(verbose=True):
 
 	wait_for_listener_replication(verbose=verbose)
 	if verbose:
-		print "Waiting for postrun..."
+		print("Waiting for postrun...")
 	lid = get_lid()
 	seconds_since_last_change = 0
 	for _ in xrange(300):
 		time.sleep(1)
-		print '.',
+		print('.', end=' ')
 		if lid == get_lid():
 			seconds_since_last_change += 1
 		else:
@@ -470,11 +471,11 @@ def wait_for_s4connector_replication(verbose=True):
 		univention.testing.ucs_samba.wait_for_s4connector(17)
 	except OSError as exc:  # nagios not installed
 		if verbose:
-			print >> sys.stderr, 'Nagios not installed: %s' % (exc,)
+			print('Nagios not installed: %s' % (exc,), file=sys.stderr)
 		time.sleep(16)
 	except univention.testing.ucs_samba.WaitForS4ConnectorTimeout:
 		if verbose:
-			print >> sys.stderr, 'Warning: S4 Connector replication was not finished after 17 seconds'
+			print('Warning: S4 Connector replication was not finished after 17 seconds', file=sys.stderr)
 
 
 # backwards compatibility
@@ -490,9 +491,9 @@ def package_installed(package):
 
 
 def fail(log_message=None, returncode=1):
-	print '### FAIL ###'
+	print('### FAIL ###')
 	if log_message:
-		print '%s\n###      ###' % log_message
+		print('%s\n###      ###' % log_message)
 	sys.exit(returncode)
 
 

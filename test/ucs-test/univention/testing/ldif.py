@@ -5,6 +5,7 @@
 This program compares LDAP host entries with a local comparative ldif file.
 All differences will be displayed at the console.
 """
+from __future__ import print_function
 
 from optparse import OptionParser, OptionGroup, SUPPRESS_HELP
 import re
@@ -277,9 +278,9 @@ def stream2object(ldif):
 			dname, = obj.pop('dn')
 			objects[dname] = obj
 		except KeyError:
-			print >> sys.stderr, 'Missing dn: %r' % (obj,)
+			print('Missing dn: %r' % (obj,), file=sys.stderr)
 		except ValueError:
-			print >> sys.stderr, 'Multiple dn: %r' % (obj,)
+			print('Multiple dn: %r' % (obj,), file=sys.stderr)
 	return objects
 
 
@@ -329,23 +330,23 @@ def compare_ldif(lldif, rldif, options):
 		order = cmp(sort_dn(ldn) if ldn else None, sort_dn(rdn) if rdn else None)
 		if order < 0:
 			diffs = list(compare_keys({}, rights[rdn]))
-			print '+dn: %s' % (rdn,)
+			print('+dn: %s' % (rdn,))
 			rdn = None
 		elif order > 0:
 			diffs = list(compare_keys(lefts[ldn], {}))
-			print '-dn: %s' % (ldn,)
+			print('-dn: %s' % (ldn,))
 			ldn = None
 		else:
 			diffs = list(compare_keys(lefts[ldn], rights[rdn]))
 			if not options.objects and all((diff == 0 for diff, key, val in diffs)):
 				ldn = rdn = None
 				continue
-			print ' dn: %s' % (rdn,)
+			print(' dn: %s' % (rdn,))
 			ldn = rdn = None
 		for diff, key, val in diffs:
 			if options.attributes or diff:
-				print '%s%s: %s' % (' +-'[diff], key, val)
-		print
+				print('%s%s: %s' % (' +-'[diff], key, val))
+		print()
 		ret = 1
 	return ret
 
@@ -547,11 +548,11 @@ def run_compare(ldif1, ldif2, options):
 			signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 			os.kill(os.getpid(), signal.SIGPIPE)
 		else:
-			print >> sys.stderr, 'Error: %s' % (ex,)
+			print('Error: %s' % (ex,), file=sys.stderr)
 	except OSError as ex:
-		print >> sys.stderr, 'Error: %s' % (ex,)
+		print('Error: %s' % (ex,), file=sys.stderr)
 	except LdifError as ex:
-		print >> sys.stderr, 'Invalid LDIF: %s' % (ex,)
+		print('Invalid LDIF: %s' % (ex,), file=sys.stderr)
 	sys.exit(ret)
 
 

@@ -1,5 +1,6 @@
 # vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :
 """Format UCS Test results as HTML."""
+from __future__ import print_function
 import sys
 from univention.testing.codes import TestCodes
 from xml.sax.saxutils import escape as escape_xml
@@ -24,17 +25,17 @@ class HTML(TestFormatInterface):
 	def begin_run(self, environment, count=1):
 		"""Called before first test."""
 		super(HTML, self).begin_run(environment, count)
-		print >> self.stream, '<html>'
-		print >> self.stream, '<head>'
-		print >> self.stream, '<title>ucs-test</title>'
-		print >> self.stream, '</head>'
-		print >> self.stream, '<body>'
+		print('<html>', file=self.stream)
+		print('<head>', file=self.stream)
+		print('<title>ucs-test</title>', file=self.stream)
+		print('</head>', file=self.stream)
+		print('<body>', file=self.stream)
 
 	def begin_section(self, section):
 		"""Called before each section."""
 		super(HTML, self).begin_section(section)
-		print >> self.stream, '<h2>Section %s</h2>' % (escape_xml(section),)
-		print >> self.stream, '<table>'
+		print('<h2>Section %s</h2>' % (escape_xml(section),), file=self.stream)
+		print('<table>', file=self.stream)
 
 	def end_test(self, result):
 		"""Called after each test."""
@@ -57,18 +58,18 @@ class HTML(TestFormatInterface):
 		colorname = TestCodes.COLOR.get(result.reason, 'BLACK')
 		msg = '<span style="color:%s;">%s</span>' % \
 			(colorname.lower(), escape_xml(msg))
-		print >> self.stream, '<tr><td>%s</td><td>%s</td></tr>' % (title, msg)
+		print('<tr><td>%s</td><td>%s</td></tr>' % (title, msg), file=self.stream)
 		super(HTML, self).end_test(result)
 
 	def end_section(self):
 		"""Called after each section."""
-		print >> self.stream, '</table>'
+		print('</table>', file=self.stream)
 		super(HTML, self).end_section()
 
 	def end_run(self):
 		"""Called after all test."""
-		print >> self.stream, '</body>'
-		print >> self.stream, '</html>'
+		print('</body>', file=self.stream)
+		print('</html>', file=self.stream)
 		super(HTML, self).end_run()
 
 	def format(self, result):

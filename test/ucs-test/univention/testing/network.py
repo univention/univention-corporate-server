@@ -10,6 +10,7 @@ The networking helper will install special iptables rules that may completely
 break routing from/to the test system. Especially if the test script does
 not clean up in error cases!
 """
+from __future__ import print_function
 #
 # Copyright 2014-2019 Univention GmbH
 #
@@ -125,16 +126,16 @@ class NetworkRedirector(object):
 		self.cleanup_rules = []  # [ ('loop', 'addr1', 'addr2'), ('redirection', 'remoteaddr', remoteport, localport), ... ]
 
 	def __enter__(self):
-		print '*** Entering with-statement of NetworkRedirector()'
+		print('*** Entering with-statement of NetworkRedirector()')
 		self.used_by_with_statement = True
 		return self
 
 	def __exit__(self, exc_type, exc_value, traceback):
-		print '*** Leaving with-statement of NetworkRedirector()'
+		print('*** Leaving with-statement of NetworkRedirector()')
 		self.revert_network_settings()
 
 	def revert_network_settings(self):
-		print '*** NetworkRedirector.revert_network_settings()'
+		print('*** NetworkRedirector.revert_network_settings()')
 		for entry in copy.deepcopy(self.cleanup_rules):
 			if entry[0] == 'loop':
 				self.remove_loop(entry[1], entry[2], ignore_errors=True)
@@ -151,10 +152,10 @@ class NetworkRedirector(object):
 			cmd = copy.deepcopy(cmd)
 			for i, val in enumerate(cmd):
 				cmd[i] = val % argdict
-			print '*** %r' % cmd
+			print('*** %r' % cmd)
 			result = subprocess.call(cmd)
 			if result and not ignore_errors:
-				print '*** Exitcode: %r' % result
+				print('*** Exitcode: %r' % result)
 				raise UCSTestNetworkCmdFailed('Command returned with non-zero exitcode: %r' % cmd)
 
 	def add_loop(self, addr1, addr2):
@@ -179,7 +180,7 @@ class NetworkRedirector(object):
 			'local_external_addr': self._external_address,
 			'action': '-A',
 		}
-		print '*** Adding network loop (%s <--> %s)' % (addr1, addr2)
+		print('*** Adding network loop (%s <--> %s)' % (addr1, addr2))
 		self.run_commands(self.CMD_LIST_LOOP, args)
 
 	def remove_loop(self, addr1, addr2, ignore_errors=False):
@@ -197,7 +198,7 @@ class NetworkRedirector(object):
 			'local_external_addr': self._external_address,
 			'action': '-D',
 		}
-		print '*** Removing network loop (%s <--> %s)' % (addr1, addr2)
+		print('*** Removing network loop (%s <--> %s)' % (addr1, addr2))
 		self.run_commands(self.CMD_LIST_LOOP, args, ignore_errors)
 
 	def add_redirection(self, remote_addr, remote_port, local_port):
@@ -218,7 +219,7 @@ class NetworkRedirector(object):
 				'local_port': local_port,
 				'action': '-A',
 			}
-			print '*** Adding network redirection (%s:%s --> 127.0.0.1:%s)' % (remote_addr, remote_port, local_port)
+			print('*** Adding network redirection (%s:%s --> 127.0.0.1:%s)' % (remote_addr, remote_port, local_port))
 			self.run_commands(self.CMD_LIST_REDIRECTION, args)
 
 	def remove_redirection(self, remote_addr, remote_port, local_port, ignore_errors=False):
@@ -236,5 +237,5 @@ class NetworkRedirector(object):
 			'local_port': local_port,
 			'action': '-D',
 		}
-		print '*** Removing network redirection (%s:%s <--> 127.0.0.1:%s)' % (remote_addr, remote_port, local_port)
+		print('*** Removing network redirection (%s:%s <--> 127.0.0.1:%s)' % (remote_addr, remote_port, local_port))
 		self.run_commands(self.CMD_LIST_REDIRECTION, args, ignore_errors)

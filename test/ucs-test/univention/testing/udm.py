@@ -17,6 +17,7 @@ UDM object types are currently supported.
 WARNING2:
 The API is currently under heavy development and may/will change before next UCS release!
 """
+from __future__ import print_function
 # Copyright 2013-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -517,7 +518,7 @@ class UCSTestUDM(object):
 		for module, dn in sorted(objects, key=lambda x: len(x[1]), reverse=True):
 			cmd = ['/usr/sbin/udm-test', module, 'remove', '--dn', dn, '--remove_referring']
 
-			print 'removing DN:', dn
+			print('removing DN:', dn)
 			child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 			(stdout, stderr) = child.communicate()
 			utils.wait_for_replication(verbose=False)
@@ -538,8 +539,8 @@ class UCSTestUDM(object):
 				utils.wait_for_replication(verbose=False)
 
 				if child.returncode or 'Object removed:' not in stdout:
-					print >> sys.stderr, 'Warning: Failed to remove %r object %r' % (module, dn)
-					print >> sys.stderr, 'stdout=%r %r %r' % (stdout, stderr, self._lo.get(dn))
+					print('Warning: Failed to remove %r object %r' % (module, dn), file=sys.stderr)
+					print('stdout=%r %r %r' % (stdout, stderr, self._lo.get(dn)), file=sys.stderr)
 				else:
 					self._wait_for_drs_removal(module, dn)
 		self._cleanup = {}

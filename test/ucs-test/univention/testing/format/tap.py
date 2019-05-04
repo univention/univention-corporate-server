@@ -1,5 +1,6 @@
 # vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :
 """Format UCS Test results as Test Anything Protocol report."""
+from __future__ import print_function
 import sys
 from univention.testing.data import TestFormatInterface
 from univention.testing.codes import TestCodes
@@ -20,7 +21,7 @@ class TAP(TestFormatInterface):
 	def begin_run(self, environment, count=1):
 		"""Called before first test."""
 		super(TAP, self).begin_run(environment, count)
-		print "1..%d" % (count,)
+		print("1..%d" % (count,))
 
 	def end_test(self, result):
 		"""Called after each test."""
@@ -33,7 +34,7 @@ class TAP(TestFormatInterface):
 		else:
 			prefix = 'not ok'
 			suffix = ''
-		print >> self.stream, '%s %s%s' % (prefix, result.case.uid, suffix)
+		print('%s %s%s' % (prefix, result.case.uid, suffix), file=self.stream)
 		super(TAP, self).end_test(result)
 
 	def format(self, result):
