@@ -4,14 +4,16 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper (>> 7),
- python-support,
- python-all
+ dh-python,
+ python-all,
+ python3-all,
 Standards-Version: 3.6.1
 
 Package: ucslint
 Architecture: all
 Depends:
  ${python:Depends},
+ ${python3:Depends},
  ${misc:Depends},
  devscripts,
  flake8,
@@ -32,6 +34,7 @@ Package: ucslint-univention
 Architecture: all
 Depends:
  ${python:Depends},
+ ${python3:Depends},
  ${misc:Depends},
  ucslint
 Conflicts: ucs-tools (<< 1.2.5)

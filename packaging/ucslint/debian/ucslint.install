@@ -1,2 +1,3 @@
 bin/ucslint usr/bin
-ucslint/*.py usr/share/pyshared/univention/ucslint/
+ucslint/*.py usr/lib/python2.7/dist-packages/univention/ucslint/
+ucslint/*.py usr/lib/python3/dist-packages/univention/ucslint/

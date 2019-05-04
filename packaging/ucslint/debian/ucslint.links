@@ -1,1 +1,1 @@
-usr/share/pyshared/univention/ucslint/0020-flake8.py usr/bin/ucspep8
+usr/lib/python2.7/dist-packages/univention/ucslint/0020-flake8.py usr/bin/ucspep8
