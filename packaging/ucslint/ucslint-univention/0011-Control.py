@@ -59,6 +59,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0011-14': [uub.RESULT_WARN, 'no matching package in debian/control'],
 			'0011-15': [uub.RESULT_WARN, 'non-prefixed debhelper file'],
 			'0011-16': [uub.RESULT_INFO, 'unknown debhelper file'],
+			'0011-17': [uub.RESULT_WARN, 'debian/control: please use dh-python instead of python-support in Build-Depends'],
+			'0011-18': [uub.RESULT_WARN, 'debian/rules: please use --with python2,python3 instead of python_support'],
 		}
 
 	def postinit(self, path):
@@ -118,10 +120,22 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		if 'python-central' in parser.source_section.get('Build-Depends', ''):
 			self.addmsg('0011-12', 'please use python-support instead of python-central in Build-Depends', filename=fn_control)
 
+		if 'python-support' in parser.source_section.get('Build-Depends', ''):
+			self.addmsg('0011-17', 'please use dh-python instead of python-support in Build-Depends', filename=fn_control)
+
 		if 'ucslint' not in parser.source_section.get('Build-Depends', ''):
 			self.addmsg('0011-13', 'ucslint is missing in Build-Depends', filename=fn_control)
 
 		self.check_debhelper(path, parser)
+
+		try:
+			fn_rules = os.path.join(path, 'debian', 'rules')
+			with open(fn_rules) as fd:
+				rules = fd.read()
+				if re.search('--with[ =]*["\']?python_support', rules):
+					self.addmsg('0011-18', 'please use --with python2,python3 instead of python_support', filename=fn_rules)
+		except IOError:
+			pass
 
 	EXCEPTION_FILES = set((
 		'changelog',  # dh_installchangelogs default
