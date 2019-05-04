@@ -283,7 +283,7 @@ class UCSTestUDM(object):
         else:
             raise UCSTestUDM_CreateUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
 
-        self.wait_for(modulename, dn, wait_for_replication, check_for_drs_replication=(wait_for_replication and check_for_drs_replication and ("options" not in kwargs or "kerberos" in kwargs["options"])))
+        self.wait_for(modulename, dn, wait_for_replication, wait_for_drs_replication=(wait_for_replication and check_for_drs_replication and ("options" not in kwargs or "kerberos" in kwargs["options"])))
         return dn
 
     def modify_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, **kwargs):
