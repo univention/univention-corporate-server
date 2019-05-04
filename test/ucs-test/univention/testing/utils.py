@@ -342,7 +342,7 @@ class FollowLogfile(object):
                     print "=" * 79
 
 
-def wait_for(self, replication=True, replication_postrun=False, drs_replication=False, s4_connector=True, verbose=True):
+def wait_for(replication=True, replication_postrun=False, drs_replication=False, s4_connector=True, verbose=True):
     """Wait for all kind of replications"""
     # the order matters!
     if replication or drs_replication:  # does wait_for_drs_replication depend on wait_for_replication?!
