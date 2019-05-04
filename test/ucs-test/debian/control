@@ -4,7 +4,9 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 8.0.0),
  ucslint-univention,
- python-support,
+ dh-python,
+ python-all,
+ python3-all,
  python-yaml,
  python-apt,
  univention-management-console-dev,
@@ -35,12 +37,17 @@ Depends: univention-config,
  python-yaml,
  python-apt (>= 0.8),
  python-argparse,
+ python-univention (>= 12.0.0-5),
  ucs-test-modules-all | ucs-test-module,
  dpkg-dev,
  debhelper,
  fakeroot,
  ${python:Depends},
- ${misc:Depends}
+ ${python3:Depends},
+ ${misc:Depends},
+Provides:
+ ${python:Provides},
+ ${python3:Provides},
 Description: UCS test environment
  This package includes some scripts for testing the UCS installation or the UCS
  upgrade.

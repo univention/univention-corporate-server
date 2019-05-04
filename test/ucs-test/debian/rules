@@ -37,7 +37,7 @@ SPACE := $(BLANK) $(BLANK)
 COMMA := ,
 
 %:
-	dh $@ --with python_support
+	dh $@ --with python2,python3
 
 override_dh_install:
 	dh_install --sourcedir=$(CURDIR)
@@ -58,3 +58,7 @@ override_dh_auto_install:
 
 override_dh_gencontrol:
 	dh_gencontrol -- -Vucs-test:all-packages=$(subst $(SPACE),$(COMMA),$(PACKAGES))
+
+override_dh_auto_clean:
+	find -name '*.pyc' -delete
+	dh_auto_clean

@@ -3,4 +3,5 @@ bin/ucs-test usr/sbin/
 bin/runner usr/share/ucs-test/
 bin/selenium usr/share/ucs-test/
 bin/udm-test usr/sbin/
-univention/testing usr/share/pyshared/univention
+univention/testing usr/lib/python2.7/dist-packages/univention
+univention/testing usr/lib/python3/dist-packages/univention
