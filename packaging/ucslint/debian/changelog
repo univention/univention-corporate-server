@@ -1,3 +1,9 @@
+ucslint (8.0.0-6) unstable; urgency=medium
+
+  * Bug #31771: enable ucslint plugin 0020-flake8
+
+ -- Florian Best <best@univention.de>  Sat, 04 May 2019 17:18:18 +0200
+
 ucslint (8.0.0-5) unstable; urgency=medium
 
   * Bug #28497: check for dh-python instead of python_support

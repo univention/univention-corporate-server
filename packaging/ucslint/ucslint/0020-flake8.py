@@ -29,7 +29,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import re
-import os.path
+import os
 import subprocess
 from argparse import ArgumentParser
 
@@ -39,7 +39,7 @@ except ImportError:
 	import ucslint.base as uub
 
 
-class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
+class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 	"""Python specific flake8 checks."""
 
@@ -66,38 +66,40 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		re.compile('univention-directory-manager-modules/'): 'W601',  # UDM allows has_key() Bug #W601
 	}
 
-	DEFAULT_IGNORE = 'N,B,E501,W191,E265,E266'
+	DEFAULT_IGNORE = os.environ.get('UCSLINT_FLAKE8_IGNORE', 'N,B,E501,W191,E265,E266')
 	DEFAULT_SELECT = None
 	MAX_LINE_LENGTH = 220
+	GRACEFUL = not os.environ.get('UCSLINT_FLAKE8_STRICT')
 
 	def __init__(self, *args, **kwargs):
 		self.show_statistics = kwargs.pop('show_statistics', False)
 		super(UniventionPackageCheck, self).__init__(*args, **kwargs)
 
 	def getMsgIds(self):
+		ERROR_BUT_WARN = uub.RESULT_WARN if self.GRACEFUL else uub.RESULT_ERROR
 		return {
-			'0020-F401': [uub.RESULT_ERROR, 'module imported but unused'],
-			'0020-F402': [uub.RESULT_ERROR, 'import module from line N shadowed by loop variable'],
-			'0020-F403': [uub.RESULT_ERROR, '‘from module import *’ used; unable to detect undefined names'],
-			'0020-F404': [uub.RESULT_ERROR, 'future import(s) name after other statements'],
-			'0020-F405': [uub.RESULT_ERROR, 'name may be undefined, or defined from star imports: module'],
+			'0020-F401': [ERROR_BUT_WARN, 'module imported but unused'],
+			'0020-F402': [ERROR_BUT_WARN, 'import module from line N shadowed by loop variable'],
+			'0020-F403': [ERROR_BUT_WARN, '‘from module import *’ used; unable to detect undefined names'],
+			'0020-F404': [ERROR_BUT_WARN, 'future import(s) name after other statements'],
+			'0020-F405': [ERROR_BUT_WARN, 'name may be undefined, or defined from star imports: module'],
 
-			'0020-F811': [uub.RESULT_ERROR, 'redefinition of unused name from line N'],
-			'0020-F812': [uub.RESULT_ERROR, 'list comprehension redefines name from line N'],
-			'0020-F821': [uub.RESULT_ERROR, 'undefined name name'],
-			'0020-F822': [uub.RESULT_ERROR, 'undefined name name in __all__'],
-			'0020-F823': [uub.RESULT_ERROR, 'local variable name ... referenced before assignment'],
-			'0020-F831': [uub.RESULT_ERROR, 'duplicate argument name in function definition'],
-			'0020-F841': [uub.RESULT_ERROR, 'local variable name is assigned to but never used'],
+			'0020-F811': [ERROR_BUT_WARN, 'redefinition of unused name from line N'],
+			'0020-F812': [ERROR_BUT_WARN, 'list comprehension redefines name from line N'],
+			'0020-F821': [ERROR_BUT_WARN, 'undefined name name'],
+			'0020-F822': [ERROR_BUT_WARN, 'undefined name name in __all__'],
+			'0020-F823': [ERROR_BUT_WARN, 'local variable name ... referenced before assignment'],
+			'0020-F831': [ERROR_BUT_WARN, 'duplicate argument name in function definition'],
+			'0020-F841': [ERROR_BUT_WARN, 'local variable name is assigned to but never used'],
 
-			'0020-E1': [uub.RESULT_ERROR, 'Indentation'],
-			'0020-E101': [uub.RESULT_ERROR, 'indentation contains mixed spaces and tabs'],
-			'0020-E111': [uub.RESULT_ERROR, 'indentation is not a multiple of four'],
-			'0020-E112': [uub.RESULT_ERROR, 'expected an indented block'],
-			'0020-E113': [uub.RESULT_ERROR, 'unexpected indentation'],
-			'0020-E114': [uub.RESULT_ERROR, 'indentation is not a multiple of four (comment)'],
-			'0020-E115': [uub.RESULT_ERROR, 'expected an indented block (comment)'],
-			'0020-E116': [uub.RESULT_ERROR, 'unexpected indentation (comment)'],
+			'0020-E1': [ERROR_BUT_WARN, 'Indentation'],
+			'0020-E101': [ERROR_BUT_WARN, 'indentation contains mixed spaces and tabs'],
+			'0020-E111': [ERROR_BUT_WARN, 'indentation is not a multiple of four'],
+			'0020-E112': [ERROR_BUT_WARN, 'expected an indented block'],
+			'0020-E113': [ERROR_BUT_WARN, 'unexpected indentation'],
+			'0020-E114': [ERROR_BUT_WARN, 'indentation is not a multiple of four (comment)'],
+			'0020-E115': [ERROR_BUT_WARN, 'expected an indented block (comment)'],
+			'0020-E116': [ERROR_BUT_WARN, 'unexpected indentation (comment)'],
 
 			'0020-E121': [uub.RESULT_WARN, 'continuation line under-indented for hanging indent'],
 			'0020-E122': [uub.RESULT_WARN, 'continuation line missing indentation or outdented'],
@@ -111,92 +113,92 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0020-E131': [uub.RESULT_WARN, 'continuation line unaligned for hanging indent'],
 			'0020-E133': [uub.RESULT_WARN, 'closing bracket is missing indentation'],
 
-			'0020-E2': [uub.RESULT_ERROR, 'Whitespace'],
-			'0020-E201': [uub.RESULT_ERROR, 'whitespace after ‘(‘'],
-			'0020-E202': [uub.RESULT_ERROR, 'whitespace before ‘)’'],
-			'0020-E203': [uub.RESULT_ERROR, 'whitespace before ‘:’'],
+			'0020-E2': [ERROR_BUT_WARN, 'Whitespace'],
+			'0020-E201': [ERROR_BUT_WARN, 'whitespace after ‘(‘'],
+			'0020-E202': [ERROR_BUT_WARN, 'whitespace before ‘)’'],
+			'0020-E203': [ERROR_BUT_WARN, 'whitespace before ‘:’'],
 
-			'0020-E211': [uub.RESULT_ERROR, 'whitespace before ‘(‘'],
+			'0020-E211': [ERROR_BUT_WARN, 'whitespace before ‘(‘'],
 
-			'0020-E221': [uub.RESULT_ERROR, 'multiple spaces before operator'],
-			'0020-E222': [uub.RESULT_ERROR, 'multiple spaces after operator'],
-			'0020-E223': [uub.RESULT_ERROR, 'tab before operator'],
-			'0020-E224': [uub.RESULT_ERROR, 'tab after operator'],
-			'0020-E225': [uub.RESULT_ERROR, 'missing whitespace around operator'],
-			'0020-E226': [uub.RESULT_ERROR, 'missing whitespace around arithmetic operator'],
-			'0020-E227': [uub.RESULT_ERROR, 'missing whitespace around bitwise or shift operator'],
-			'0020-E228': [uub.RESULT_ERROR, 'missing whitespace around modulo operator'],
+			'0020-E221': [ERROR_BUT_WARN, 'multiple spaces before operator'],
+			'0020-E222': [ERROR_BUT_WARN, 'multiple spaces after operator'],
+			'0020-E223': [ERROR_BUT_WARN, 'tab before operator'],
+			'0020-E224': [ERROR_BUT_WARN, 'tab after operator'],
+			'0020-E225': [ERROR_BUT_WARN, 'missing whitespace around operator'],
+			'0020-E226': [ERROR_BUT_WARN, 'missing whitespace around arithmetic operator'],
+			'0020-E227': [ERROR_BUT_WARN, 'missing whitespace around bitwise or shift operator'],
+			'0020-E228': [ERROR_BUT_WARN, 'missing whitespace around modulo operator'],
 
-			'0020-E231': [uub.RESULT_ERROR, 'missing whitespace after ‘,’, ‘;’, or ‘:’'],
+			'0020-E231': [ERROR_BUT_WARN, 'missing whitespace after ‘,’, ‘;’, or ‘:’'],
 
-			'0020-E241': [uub.RESULT_ERROR, 'multiple spaces after ‘,’'],
-			'0020-E242': [uub.RESULT_ERROR, 'tab after ‘,’'],
+			'0020-E241': [ERROR_BUT_WARN, 'multiple spaces after ‘,’'],
+			'0020-E242': [ERROR_BUT_WARN, 'tab after ‘,’'],
 
-			'0020-E251': [uub.RESULT_ERROR, 'unexpected spaces around keyword / parameter equals'],
+			'0020-E251': [ERROR_BUT_WARN, 'unexpected spaces around keyword / parameter equals'],
 
-			'0020-E261': [uub.RESULT_ERROR, 'at least two spaces before inline comment'],
-			'0020-E262': [uub.RESULT_ERROR, 'inline comment should start with ‘# ‘'],
+			'0020-E261': [ERROR_BUT_WARN, 'at least two spaces before inline comment'],
+			'0020-E262': [ERROR_BUT_WARN, 'inline comment should start with ‘# ‘'],
 			'0020-E265': [uub.RESULT_STYLE, 'block comment should start with ‘# ‘'],
 			'0020-E266': [uub.RESULT_WARN, 'too many leading ‘#’ for block comment'],
 
-			'0020-E271': [uub.RESULT_ERROR, 'multiple spaces after keyword'],
-			'0020-E272': [uub.RESULT_ERROR, 'multiple spaces before keyword'],
-			'0020-E273': [uub.RESULT_ERROR, 'tab after keyword'],
-			'0020-E274': [uub.RESULT_ERROR, 'tab before keyword'],
+			'0020-E271': [ERROR_BUT_WARN, 'multiple spaces after keyword'],
+			'0020-E272': [ERROR_BUT_WARN, 'multiple spaces before keyword'],
+			'0020-E273': [ERROR_BUT_WARN, 'tab after keyword'],
+			'0020-E274': [ERROR_BUT_WARN, 'tab before keyword'],
 
-			'0020-E3': [uub.RESULT_ERROR, 'Blank line'],
-			'0020-E301': [uub.RESULT_ERROR, 'expected 1 blank line, found 0'],
-			'0020-E302': [uub.RESULT_ERROR, 'expected 2 blank lines, found 0'],
-			'0020-E303': [uub.RESULT_ERROR, 'too many blank lines (3)'],
-			'0020-E304': [uub.RESULT_ERROR, 'blank lines found after function decorator'],
-			'0020-E305': [uub.RESULT_ERROR, 'expected 2 blank lines after end of function or class'],
-			'0020-E306': [uub.RESULT_ERROR, 'expected 1 blank line before a nested definition, found 0'],
+			'0020-E3': [ERROR_BUT_WARN, 'Blank line'],
+			'0020-E301': [ERROR_BUT_WARN, 'expected 1 blank line, found 0'],
+			'0020-E302': [ERROR_BUT_WARN, 'expected 2 blank lines, found 0'],
+			'0020-E303': [ERROR_BUT_WARN, 'too many blank lines (3)'],
+			'0020-E304': [ERROR_BUT_WARN, 'blank lines found after function decorator'],
+			'0020-E305': [ERROR_BUT_WARN, 'expected 2 blank lines after end of function or class'],
+			'0020-E306': [ERROR_BUT_WARN, 'expected 1 blank line before a nested definition, found 0'],
 
-			'0020-E4': [uub.RESULT_ERROR, 'Import'],
-			'0020-E401': [uub.RESULT_ERROR, 'multiple imports on one line'],
+			'0020-E4': [ERROR_BUT_WARN, 'Import'],
+			'0020-E401': [ERROR_BUT_WARN, 'multiple imports on one line'],
 			'0020-E402': [uub.RESULT_WARN, 'module level import not at top of file'],  # Bug #42806: should be RESULT_ERROR when fixed
 
-			'0020-E5': [uub.RESULT_ERROR, 'Line length'],
+			'0020-E5': [ERROR_BUT_WARN, 'Line length'],
 			'0020-E501': [uub.RESULT_STYLE, 'line too long (82 > 79 characters)'],
-			'0020-E502': [uub.RESULT_ERROR, 'the backslash is redundant between brackets'],
+			'0020-E502': [ERROR_BUT_WARN, 'the backslash is redundant between brackets'],
 
-			'0020-E7': [uub.RESULT_ERROR, 'Statement'],
-			'0020-E701': [uub.RESULT_ERROR, 'multiple statements on one line (colon)'],
-			'0020-E702': [uub.RESULT_ERROR, 'multiple statements on one line (semicolon)'],
-			'0020-E703': [uub.RESULT_ERROR, 'statement ends with a semicolon'],
-			'0020-E704': [uub.RESULT_ERROR, 'multiple statements on one line (def)'],
-			'0020-E711': [uub.RESULT_ERROR, 'comparison to None should be ‘if cond is None:’'],
-			'0020-E712': [uub.RESULT_ERROR, 'comparison to True should be ‘if cond is True:’ or ‘if cond:’'],
-			'0020-E713': [uub.RESULT_ERROR, 'test for membership should be ‘not in’'],
-			'0020-E714': [uub.RESULT_ERROR, 'test for object identity should be ‘is not’'],
-			'0020-E721': [uub.RESULT_ERROR, 'do not compare types, use ‘isinstance()’'],
-			'0020-E731': [uub.RESULT_ERROR, 'do not assign a lambda expression, use a def'],
+			'0020-E7': [ERROR_BUT_WARN, 'Statement'],
+			'0020-E701': [ERROR_BUT_WARN, 'multiple statements on one line (colon)'],
+			'0020-E702': [ERROR_BUT_WARN, 'multiple statements on one line (semicolon)'],
+			'0020-E703': [ERROR_BUT_WARN, 'statement ends with a semicolon'],
+			'0020-E704': [ERROR_BUT_WARN, 'multiple statements on one line (def)'],
+			'0020-E711': [ERROR_BUT_WARN, 'comparison to None should be ‘if cond is None:’'],
+			'0020-E712': [ERROR_BUT_WARN, 'comparison to True should be ‘if cond is True:’ or ‘if cond:’'],
+			'0020-E713': [ERROR_BUT_WARN, 'test for membership should be ‘not in’'],
+			'0020-E714': [ERROR_BUT_WARN, 'test for object identity should be ‘is not’'],
+			'0020-E721': [ERROR_BUT_WARN, 'do not compare types, use ‘isinstance()’'],
+			'0020-E731': [ERROR_BUT_WARN, 'do not assign a lambda expression, use a def'],
 			'0020-E741': [uub.RESULT_WARN, 'do not use variables named ‘l’, ‘O’, or ‘I’'],
-			'0020-E742': [uub.RESULT_ERROR, 'do not define classes named ‘l’, ‘O’, or ‘I’'],
-			'0020-E743': [uub.RESULT_ERROR, 'do not define functions named ‘l’, ‘O’, or ‘I’'],
+			'0020-E742': [ERROR_BUT_WARN, 'do not define classes named ‘l’, ‘O’, or ‘I’'],
+			'0020-E743': [ERROR_BUT_WARN, 'do not define functions named ‘l’, ‘O’, or ‘I’'],
 
 
-			'0020-E9': [uub.RESULT_ERROR, 'Runtime'],
-			'0020-E901': [uub.RESULT_ERROR, 'SyntaxError or IndentationError'],
-			'0020-E902': [uub.RESULT_ERROR, 'IOError'],
+			'0020-E9': [ERROR_BUT_WARN, 'Runtime'],
+			'0020-E901': [ERROR_BUT_WARN, 'SyntaxError or IndentationError'],
+			'0020-E902': [ERROR_BUT_WARN, 'IOError'],
 
-			'0020-W1': [uub.RESULT_ERROR, 'Indentation warning'],
+			'0020-W1': [ERROR_BUT_WARN, 'Indentation warning'],
 			'0020-W191': [uub.RESULT_STYLE, 'indentation contains tabs'],
 
-			'0020-W2': [uub.RESULT_ERROR, 'Whitespace warning'],
-			'0020-W291': [uub.RESULT_ERROR, 'trailing whitespace'],
-			'0020-W292': [uub.RESULT_ERROR, 'no newline at end of file'],
-			'0020-W293': [uub.RESULT_ERROR, 'blank line contains whitespace'],
+			'0020-W2': [ERROR_BUT_WARN, 'Whitespace warning'],
+			'0020-W291': [ERROR_BUT_WARN, 'trailing whitespace'],
+			'0020-W292': [ERROR_BUT_WARN, 'no newline at end of file'],
+			'0020-W293': [ERROR_BUT_WARN, 'blank line contains whitespace'],
 
-			'0020-W3': [uub.RESULT_ERROR, 'Blank line warning'],
-			'0020-W391': [uub.RESULT_ERROR, 'blank line at end of file'],
+			'0020-W3': [ERROR_BUT_WARN, 'Blank line warning'],
+			'0020-W391': [ERROR_BUT_WARN, 'blank line at end of file'],
 
-			'0020-W5': [uub.RESULT_ERROR, 'Line break warning'],
-			'0020-W503': [uub.RESULT_ERROR, 'line break occurred before a binary operator'],
+			'0020-W5': [ERROR_BUT_WARN, 'Line break warning'],
+			'0020-W503': [ERROR_BUT_WARN, 'line break occurred before a binary operator'],
 
-			'0020-W6': [uub.RESULT_ERROR, 'Deprecation warning'],
-			'0020-W601': [uub.RESULT_WARN, '.has_key() is deprecated, use ‘in’'],  # Bug #42787: should be RESULT_ERROR when fixed
-			'0020-W602': [uub.RESULT_ERROR, 'deprecated form of raising exception'],
+			'0020-W6': [ERROR_BUT_WARN, 'Deprecation warning'],
+			'0020-W601': [uub.RESULT_WARN, '.has_key() is deprecated, use ‘in’'],  # Bug #42787: should be RESULT_ERROR when fixed in UDM
+			'0020-W602': [ERROR_BUT_WARN, 'deprecated form of raising exception'],
 			'0020-W603': [uub.RESULT_ERROR, '‘<>’ is deprecated, use ‘!=’'],
 			'0020-W604': [uub.RESULT_ERROR, 'backticks are deprecated, use ‘repr()’'],
 
@@ -219,19 +221,19 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				"be explicit and write `except BaseException:`.",
 			],
 			'0020-B002': [
-				uub.RESULT_ERROR,
+				ERROR_BUT_WARN,
 				" Python does not support the unary prefix increment. Writing "
 				"++n is equivalent to +(+(n)), which equals n. You meant n += 1."
 			],
 			'0020-B003': [
-				uub.RESULT_ERROR,
+				ERROR_BUT_WARN,
 				" Assigning to `os.environ` doesn't clear the environment. "
 				"Subprocesses are going to see outdated variables, in disagreement "
 				"with the current process. Use `os.environ.clear()` or the `env=` "
 				"argument to Popen."
 			],
 			'0020-B004': [
-				uub.RESULT_ERROR,
+				ERROR_BUT_WARN,
 				" Using `hasattr(x, '__call__')` to test if `x` is callable "
 				"is unreliable. If `x` implements custom `__getattr__` or its "
 				"`__call__` is itself not callable, you might get misleading "
@@ -381,10 +383,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		parser.add_argument('--select', default=cls.DEFAULT_SELECT, help='default: %(default)s')
 		parser.add_argument('--ignore', default=cls.DEFAULT_IGNORE, help='default: %(default)s')
 		parser.add_argument('--max-line-length', default=cls.MAX_LINE_LENGTH, help='default: %(default)s')
+		parser.add_argument('--graceful', action='store_true', default=False, help='behave like calling ucslint would do: do not fail on certain errors')
 		args, args.arguments = parser.parse_known_args()
 		cls.DEFAULT_IGNORE = args.ignore
 		cls.DEFAULT_SELECT = args.select
 		cls.MAX_LINE_LENGTH = args.max_line_length
+		cls.GRACEFUL = args.graceful
 		self = cls(show_statistics=args.statistics)
 		self.setdebug(args.debug)
 		self.postinit(args.path)
