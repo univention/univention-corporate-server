@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-ssl
+fix: 13.0.0-2
+desc: |
+ This update addresses the following issue:
+ * An issue in the Univention Directory Listener module `gencertificate.py` to
+   create new host certificates has been fixed, which lead to directories
+   getting the wrong file permissions.
+bug: [49036]

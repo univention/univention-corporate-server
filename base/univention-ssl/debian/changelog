@@ -1,3 +1,9 @@
+univention-ssl (13.0.0-6) unstable; urgency=low
+
+  * Bug #49036: Fix file permission when creating new host certificates
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 12 Sep 2019 09:45:10 +0200
+
 univention-ssl (13.0.0-5) unstable; urgency=medium
 
   * Bug #45115: move fetch-certificates to univention-ssl
