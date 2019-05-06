@@ -37,6 +37,7 @@ from listener import configRegistry, setuid, unsetuid
 import grp
 import os
 from shutil import rmtree
+from errno import ENOENT
 
 import univention.debug as ud
 import subprocess
@@ -176,12 +177,13 @@ def create_certificate(hostname, domainname):
 	# Create symlink
 	try:
 		os.remove(link_path)
-	except OSError:
-		pass
+	except EnvironmentError as ex:
+		if ex.errno != ENOENT:
+			ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Failed to remove %s: %s' % (link_path, ex))
 	try:
 		os.symlink(fqdn, link_path)
-	except OSError:
-		pass
+	except EnvironmentError as ex:
+		ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Failed to create %s: %s' % (link_path, ex))
 
 
 def remove_certificate(hostname, domainname):
