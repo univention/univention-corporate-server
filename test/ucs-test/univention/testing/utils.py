@@ -34,6 +34,7 @@ import ldap
 import time
 import socket
 import os
+from enum import Enum
 
 import univention.config_registry
 import univention.uldap as uldap
@@ -343,22 +344,73 @@ class FollowLogfile(object):
 					print "=" * 79
 
 
-def wait_for(replication=True, replication_postrun=False, drs_replication=False, s4_connector=True, verbose=True):
+class ReplicationType(Enum):
+	LISTENER = 1
+	POSTRUN = 2
+	S4C_FROM_UCS = 3
+	S4C_TO_UCS = 4
+	DRS = 5
+
+
+def wait_for_replication_from_master_openldap_to_local_samba(replication_postrun=False, ldap_filter=None, verbose=True):
 	"""Wait for all kind of replications"""
 	# the order matters!
-	if replication or drs_replication:  # does wait_for_drs_replication depend on wait_for_replication?!
-		if replication_postrun:
-			wait_for_replication_and_postrun(verbose)
-		else:
-			wait_for_replication(verbose)
-	from univention.testing.ucs_samba import wait_for_drs_replication, wait_for_s4connector
-	if drs_replication:
-		wait_for_drs_replication(drs_replication)
-	if s4_connector:
-		wait_for_s4connector(120)
+	if replication_postrun:
+		conditions = [(ReplicationType.LISTENER, 'postrun')]
+	else:
+		conditions = [(ReplicationType.LISTENER, True)]
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+	if ucr.get('samba4/ldap/base'):
+		conditions.append((ReplicationType.S4C_FROM_UCS, ldap_filter))
+	if ucr.get('server/role') in ('domaincontroller_backup', 'domaincontroller_slave'):
+		conditions.append((ReplicationType.DRS, ldap_filter))
+	wait_for(conditions, verbose=True)
 
 
-def wait_for_replication(verbose=True):
+def wait_for_replication_from_local_samba_to_local_openldap(replication_postrun=False, ldap_filter=None, verbose=True):
+	"""Wait for all kind of replications"""
+	conditions = []
+	# the order matters!
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+	if ucr.get('server/role') in ('domaincontroller_backup', 'domaincontroller_slave'):
+		conditions.append((ReplicationType.DRS, ldap_filter))
+	if ucr.get('samba4/ldap/base'):
+		conditions.append((ReplicationType.S4C_FROM_UCS, ldap_filter))
+	if replication_postrun:
+		conditions.append((ReplicationType.LISTENER, 'postrun'))
+	else:
+		conditions.append((ReplicationType.LISTENER, None))
+	wait_for(conditions, verbose=True)
+
+
+def wait_for(conditions=None, verbose=True):
+	"""Wait for all kind of replications"""
+	for replicationtype, detail in conditions or []:
+		if replicationtype == ReplicationType.LISTENER:
+			if detail == 'postrun':
+				wait_for_listener_replication_and_postrun(verbose)
+			else:
+				wait_for_listener_replication(verbose)
+		elif replicationtype == ReplicationType.S4C_FROM_UCS:
+			wait_for_s4connector_replication(verbose)
+			if detail:
+				# TODO: search in Samba/AD with filter=detail
+				pass
+		elif replicationtype == ReplicationType.S4C_TO_UCS:
+			wait_for_s4connector_replication(verbose)
+			if detail:
+				# TODO: search in OpenLDAP with filter=detail
+				pass
+		elif replicationtype == ReplicationType.DRS:
+			from univention.testing.ucs_samba import wait_for_drs_replication
+			if not isinstance(detail, dict):
+				detail = {'ldap_filter': detail}
+			wait_for_drs_replication(verbose=verbose, **detail)
+
+
+def wait_for_listener_replication(verbose=True):
 	sys.stdout.flush()
 	time.sleep(1)  # Give the notifier some time to increase its transaction id
 	if verbose:
@@ -380,13 +432,13 @@ def wait_for_replication(verbose=True):
 	raise LDAPReplicationFailed()
 
 
-def wait_for_replication_and_postrun(verbose=True):
+def wait_for_listener_replication_and_postrun(verbose=True):
 	# Postrun function in listener modules are called after 15 seconds without any events
 	def get_lid():
 		with open("/var/lib/univention-directory-listener/notifier_id", "r") as notifier_id:
 			return int(notifier_id.readline())
 
-	wait_for_replication(verbose=verbose)
+	wait_for_listener_replication(verbose=verbose)
 	if verbose:
 		print "Waiting for postrun..."
 	lid = get_lid()
@@ -410,16 +462,24 @@ def wait_for_replication_and_postrun(verbose=True):
 	raise LDAPReplicationFailed
 
 
-def wait_for_connector_replication():
-	print 'Waiting for connector replication'
+# backwards compatibility
+wait_for_replication = wait_for_listener_replication
+wait_for_replication_and_postrun = wait_for_listener_replication_and_postrun
+
+
+def wait_for_s4connector_replication(verbose=True):
+	if verbose:
+		print('Waiting for connector replication')
 	import univention.testing.ucs_samba
 	try:
 		univention.testing.ucs_samba.wait_for_s4connector(17)
 	except OSError as exc:  # nagios not installed
-		print >> sys.stderr, 'Nagios not installed: %s' % (exc,)
+		if verbose:
+			print >> sys.stderr, 'Nagios not installed: %s' % (exc,)
 		time.sleep(16)
 	except univention.testing.ucs_samba.WaitForS4ConnectorTimeout:
-		print >> sys.stderr, 'Warning: S4 Connector replication was not finished after 17 seconds'
+		if verbose:
+			print >> sys.stderr, 'Warning: S4 Connector replication was not finished after 17 seconds'
 
 
 def package_installed(package):
@@ -484,4 +544,4 @@ if __name__ == '__main__':
 	import doctest
 	doctest.testmod()
 
-# vim: set fileencoding=utf-8 ft=python sw=4 ts=4 et :
+# vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :

@@ -1,4 +1,4 @@
-# vim: set fileencoding=utf-8 ft=python sw=4 ts=4 et :
+# vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :
 """Format UCS Test results as HTML."""
 import sys
 from univention.testing.codes import TestCodes

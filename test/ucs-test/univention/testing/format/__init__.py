@@ -1,4 +1,4 @@
-# vim: set fileencoding=utf-8 ft=python sw=4 ts=4 et :
+# vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :
 """Import all UCS Test formatters."""
 from univention.testing.format.tap import TAP as format_tap
 from univention.testing.format.text import Text as format_text

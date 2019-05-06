@@ -242,4 +242,4 @@ if __name__ == '__main__':
 	import doctest
 	doctest.testmod()
 
-# vim: set fileencoding=utf-8 ft=python sw=4 ts=4 et :
+# vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :

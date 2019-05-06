@@ -1,4 +1,4 @@
-# vim: set fileencoding=utf-8 ft=python sw=4 ts=4 et :
+# vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :
 """Test case, environment, result and related classes."""
 # pylint: disable-msg=R0902,W0201,R0903,E1101,E0611
 import sys

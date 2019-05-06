@@ -1,4 +1,4 @@
-# vim: set fileencoding=utf-8 ft=python sw=4 ts=4 et :
+# vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :
 """UCS Test errors."""
 __all__ = ['TestError', 'TestConditionError']
 
