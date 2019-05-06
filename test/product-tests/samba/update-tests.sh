@@ -278,8 +278,6 @@ test_after_update () {
 	python shared-utils/ucs-winrm.py check-applied-gpos --username 'testuser02' --userpwd "Univention.99" --client $WIN2 \
 		--usergpo 'GPO5' --usergpo 'GPO3' --usergpo 'Default Domain Policy' \
 		--computergpo 'GPO4' --computergpo 'Default Domain Policy'
-	# Schreibzugriff auf share am Slave?
-	python shared-utils/ucs-winrm.py check-share --server ucs-slave --sharename "testshareSlave" --driveletter Q --filename "test.txt" --username 'testuser02' --userpwd "Univention.99" --client $WIN2
 	python shared-utils/ucs-winrm.py create-share-file --server ucs-slave --filename test-admin01.txt --username 'testuser02' --userpwd "Univention.99" --share testshareSlave --client $WIN2
 	# Sieht man die Server der Domäne unter Explorer->Netzwerkumgebung?
 	# Windows Kommando ausfüren: echo %LOGONSERVER%
