@@ -147,18 +147,11 @@ def file_and_permission_checks():
 		cf_type('/var/run/univention-saml/memcached.socket', 'samlcgi', 'nogroup', 0o700, False),
 		cf_type('/var/run/uvmm.socket', 'root', 'root', 0o755, False),
 		cf_type('/var/lock/sysvol-sync-dir', 'root', 'DC Slave Hosts', 0o664, False),
-		cf_type('/var/cache/univention-ad-connector', 'root', 'root', 0o755, False),
-		cf_type('/var/cache/univention-appcenter', 'root', 'root', 0o755, False),
-		cf_type('/var/cache/univention-bind-proxy', 'root', 'root', 0o755, False),
-		cf_type('/var/cache/univention-config', 'root', 'root', 0o755, False),
-		cf_type('/var/cache/univention-directory-listener', 'root', 'root', 0o755, False),
-		cf_type('/var/cache/univention-directory-reports', 'root', 'root', 0o755, False),
-		cf_type('/var/cache/univention-management-console', 'root', 'root', 0o755, False),
-		cf_type('/var/cache/univention-management-console-module-diagnostic', 'root', 'root', 0o755, False),
-		cf_type('/var/cache/univention-printserver', 'root', 'root', 0o755, False),
-		cf_type('/var/cache/univention-samba4', 'root', 'root', 0o755, False),
 		cf_type('/var/cache/univention-quota', 'root', 'root', 0o750, False),
 		cf_type('/var/cache/univention-ox', 'listener', 'root', 0o770, False),
+		# cf_type('/var/cache/univention-system-activation', 'root', 'root', 0o777, False),  # BUG: world writeable directory
+		cf_type('/var/cache/univention-system-setup', 'root', 'root', 0o700, False),
+		cf_type('/var/cache/univention-virtual-machine-manager-daemon', 'root', 'root', 0o700, False),
 		cf_type('/var/mail', 'root', 'mail', 0o2775, True),
 		cf_type('/var/mail/systemmail', 'systemmail', 'mail', 0o600, False),
 		cf_type('/var/tmp/univention-management-console-frontend', 'root', 'root', 0o755, False),
@@ -166,7 +159,7 @@ def file_and_permission_checks():
 
 	iglob_paths = [
 		('/var/run/univention-management-console/*.socket', ('root', 'root', 0o700, False)),
-		('/var/cache/univention-*', ('root', 'root', 0o700, False)),
+		('/var/cache/univention-*', ('root', 'root', 0o755, False)),
 		('/var/tmp/univention-management-console-frontend/*', ('root', 'root', 0o600, False)),
 		('/etc/univention/connector/*.sqlite', ('root', 'root', 0o644, False)),
 	]

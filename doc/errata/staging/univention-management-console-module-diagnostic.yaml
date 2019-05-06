@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-management-console-module-diagnostic
+fix: 5.0.1-9
+desc: |
+ This update addresses the following issue:
+ * Fix permission checks for `/var/cache/univention-*`.
+bug: [48814]
