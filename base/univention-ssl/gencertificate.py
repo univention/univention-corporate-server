@@ -41,11 +41,15 @@ from errno import ENOENT
 
 import univention.debug as ud
 import subprocess
+try:
+	from typing import Dict, List, Optional  # noqa F401
+except ImportError:
+	pass
 
 name = 'gencertificate'
 description = 'Generate new Certificates'
 filter = '(|%s)' % ''.join('(objectClass=%s)' % oc for oc in set(configRegistry['ssl/host/objectclass'].split(',')))
-attributes = []
+attributes = []  # type: List[str]
 modrdn = "1"
 
 
@@ -55,11 +59,13 @@ _delay = None
 
 
 def initialize():
+	# type: () -> None
 	"""Initialize the module once on first start or after clean."""
 	ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Initialize')
 
 
 def domain(info):
+	# type: (Dict[str, List[str]]) -> str
 	"""
 	Return domain name of machine account.
 
@@ -78,6 +84,7 @@ def wildcard_certificate(info):
 
 
 def handler(dn, new, old, command=''):
+	# type: (str, Optional[Dict[str, List[str]]], Optional[Dict[str, List[str]]], str) -> None
 	"""
 	Handle changes to 'dn'.
 
@@ -142,6 +149,7 @@ def handler(dn, new, old, command=''):
 
 
 def fix_permissions(certpath, dn, new):
+	# type: (str, str, Dict[str, List[str]]) -> None
 	"""
 	Set file permission on directory and files within.
 
@@ -176,6 +184,7 @@ def fix_permissions(certpath, dn, new):
 
 
 def create_certificate(hostname, domainname):
+	# type: (str, str) -> None
 	"""
 	Create SSL host certificate.
 
@@ -210,6 +219,7 @@ def create_certificate(hostname, domainname):
 
 
 def remove_certificate(hostname, domainname):
+	# type: (str, str) -> None
 	"""
 	Remove SSL host certificate.
 
@@ -230,10 +240,12 @@ def remove_certificate(hostname, domainname):
 
 
 def clean():
+	# type: () -> None
 	"""Handle request to clean-up the module."""
 	return
 
 
 def postrun():
+	# type: () -> None
 	"""Transition from prepared-state to not-prepared."""
 	return
