@@ -1,3 +1,9 @@
+univention-system-setup (13.0.3-36) unstable; urgency=low
+
+  * Bug #49042: Remove static IP configuration from installation
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 12 Jan 2022 17:37:56 +0100
+
 univention-system-setup (13.0.3-35) unstable; urgency=low
 
   * Bug #53345: Fix dependency on python-univention-ipcalc

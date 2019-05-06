@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-system-setup
+fix: 13.0.3-36
+desc: |
+ This update addresses the following issue:
+ * Remove static IP address mapping left-over from installation.
+bug: [49042]
