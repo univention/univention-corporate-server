@@ -36,6 +36,7 @@ __package__ = ''  # workaround for PEP 366
 from listener import configRegistry, setuid, unsetuid
 import grp
 import os
+from shutil import rmtree
 
 import univention.debug as ud
 import subprocess
@@ -155,14 +156,6 @@ def fix_permissions(certpath, dn, new):
 			os.chmod(filename, 0o640)
 
 
-def remove_dir(_arg, directory, fnames):
-	"""Remove directory and all files within."""
-	for fname in fnames:
-		filename = os.path.join(directory, fname)
-		os.remove(filename)
-	os.rmdir(directory)
-
-
 def create_certificate(hostname, domainname):
 	"""Create SSL host certificate."""
 	fqdn = '%s.%s' % (hostname, domainname)
@@ -203,7 +196,7 @@ def remove_certificate(hostname, domainname):
 
 	certpath = os.path.join(SSLDIR, fqdn)
 	if os.path.exists(certpath):
-		os.path.walk(certpath, remove_dir, None)
+		rmtree(certpath, ignore_errors=True)
 
 
 def clean():
