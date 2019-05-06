@@ -118,38 +118,41 @@ def handler(dn, new, old, command=''):
 			# Reset permissions
 			fqdn = "%s.%s" % (new['cn'][0], domain(new))
 			certpath = os.path.join(SSLDIR, fqdn)
-			os.path.walk(certpath, set_permissions, (dn, new))
+			fix_permissions(certpath, dn, new)
 			if wildcard_certificate(new):
 				fqdn = "*.%s.%s" % (new['cn'][0], domain(new))
 				certpath = os.path.join(SSLDIR, fqdn)
-				os.path.walk(certpath, set_permissions, (dn, new))
+				fix_permissions(certpath, dn, new)
 	finally:
 		unsetuid()
 
 
-def set_permissions(arg, directory, fnames):
+def fix_permissions(certpath, dn, new):
 	"""Set file permission on directory and files within."""
-	dn, new = arg
 	try:
 		uidNumber = int(new.get('uidNumber', ['0'])[0])
 	except (LookupError, TypeError, ValueError):
 		uidNumber = 0
 
 	try:
-		gidNumber = int(grp.getgrnam('DC Backup Hosts')[2])
+		ent = grp.getgrnam('DC Backup Hosts')
+		gidNumber = int(ent.gr_gid)
 	except (LookupError, TypeError, ValueError):
 		ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Failed to get groupID for "%s"' % dn)
 		gidNumber = 0
 
-	ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (directory, uidNumber, gidNumber))
-	os.chown(directory, uidNumber, gidNumber)
-	os.chmod(directory, 0o750)
+	for directory, dirnames, filenames in os.walk(certpath):
+		ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (directory, uidNumber, gidNumber))
+		os.chown(directory, uidNumber, gidNumber)
+		os.chmod(directory, 0o750)
 
-	for fname in fnames:
-		filename = os.path.join(directory, fname)
-		ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (filename, uidNumber, gidNumber))
-		os.chown(filename, uidNumber, gidNumber)
-		os.chmod(filename, 0o640)
+		for fname in filenames:
+			filename = os.path.join(directory, fname)
+			if os.path.islink(filename):
+				continue
+			ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (filename, uidNumber, gidNumber))
+			os.chown(filename, uidNumber, gidNumber)
+			os.chmod(filename, 0o640)
 
 
 def remove_dir(_arg, directory, fnames):
