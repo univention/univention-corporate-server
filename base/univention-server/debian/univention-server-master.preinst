@@ -47,7 +47,7 @@ if [ -n "$hostname" -a -n "$domainname" ]; then
 	if ! test -e "/etc/univention/ssl/$hostname/cert.pem"; then
 		. /usr/share/univention-ssl/make-certificates.sh
 		gencert "$hostname.$domainname" "$hostname.$domainname"
-		ln -sf "/etc/univention/ssl/$hostname.$domainname" "/etc/univention/ssl/$hostname"
+		ln -snf "$hostname.$domainname" "/etc/univention/ssl/$hostname"
 	fi
 fi
 
