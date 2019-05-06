@@ -60,6 +60,11 @@ def initialize():
 
 
 def domain(info):
+	"""
+	Return domain name of machine account.
+
+	:param info: LDAP attribute values.
+	"""
 	try:
 		return info['associatedDomain'][0]
 	except LookupError:
@@ -73,7 +78,14 @@ def wildcard_certificate(info):
 
 
 def handler(dn, new, old, command=''):
-	"""Handle changes to 'dn'."""
+	"""
+	Handle changes to 'dn'.
+
+	:param dn: Distinguished name.
+	:param new: Current LDAP attribute values.
+	:param old: Previous LDAP attribute values.
+	:param command: LDAp transaction type.
+	"""
 	if configRegistry['server/role'] != 'domaincontroller_master':
 		return
 
@@ -130,7 +142,13 @@ def handler(dn, new, old, command=''):
 
 
 def fix_permissions(certpath, dn, new):
-	"""Set file permission on directory and files within."""
+	"""
+	Set file permission on directory and files within.
+
+	:param certpath: Base directory path.
+	:param dn: Distinguished name.
+	:param new: LDAP attribute values.
+	"""
 	try:
 		uidNumber = int(new.get('uidNumber', ['0'])[0])
 	except (LookupError, TypeError, ValueError):
@@ -158,7 +176,12 @@ def fix_permissions(certpath, dn, new):
 
 
 def create_certificate(hostname, domainname):
-	"""Create SSL host certificate."""
+	"""
+	Create SSL host certificate.
+
+	:param hostname: host name.
+	:param domainname: domain name,
+	"""
 	fqdn = '%s.%s' % (hostname, domainname)
 	certpath = os.path.join(SSLDIR, fqdn)
 	link_path = os.path.join(SSLDIR, hostname)
@@ -187,7 +210,12 @@ def create_certificate(hostname, domainname):
 
 
 def remove_certificate(hostname, domainname):
-	"""Remove SSL host certificate."""
+	"""
+	Remove SSL host certificate.
+
+	:param hostname: host name.
+	:param domainname: domain name,
+	"""
 	fqdn = '%s.%s' % (hostname, domainname)
 	ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Revoke certificate %s' % (fqdn,))
 	subprocess.call(('/usr/sbin/univention-certificate', 'revoke', '-name', fqdn))
