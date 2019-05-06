@@ -217,7 +217,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 
 	# Create initial certificate for master
 	univention-certificate new -name "$hostname.$domainname"
-	ln -sf "/etc/univention/ssl/$hostname.$domainname" "/etc/univention/ssl/$hostname"
+	ln -snf "$hostname.$domainname" "/etc/univention/ssl/$hostname"
 	
 	invoke-rc.d apache2 restart
 else
@@ -235,7 +235,7 @@ else
 		chgrp -R "DC Backup Hosts" "$SSLBASE/$name"
 		chmod -R g+rX "$SSLBASE/$name"
 	fi
-	ln -sf "/etc/univention/ssl/$fqdn" "/etc/univention/ssl/$hostname"
+	ln -snf "$fqdn" "/etc/univention/ssl/$hostname"
 fi
 
 run-parts -v /usr/lib/univention-system-setup/scripts/45_modules
