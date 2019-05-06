@@ -74,7 +74,7 @@ domaincontroller_master|basesystem|'')
 		. /usr/share/univention-ssl/make-certificates.sh
 		init
 		univention-certificate new -name "$hostname.$domainname"
-		ln -sf "/etc/univention/ssl/$hostname.$domainname" "/etc/univention/ssl/$hostname"
+		ln -snf "$hostname.$domainname" "/etc/univention/ssl/$hostname"
 	else
 		echo "skipped. SSL Certificate found in $CERTPATH"
 	fi

@@ -186,7 +186,7 @@ def create_certificate(hostname, domainname):
 	except OSError:
 		pass
 	try:
-		os.symlink(certpath, link_path)
+		os.symlink(fqdn, link_path)
 	except OSError:
 		pass
 
