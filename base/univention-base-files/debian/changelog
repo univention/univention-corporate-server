@@ -1,3 +1,9 @@
+univention-base-files (9.0.3-7) unstable; urgency=low
+
+  * Bug #49042: Fix wrong static fallback IP address mapping from installation
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 12 Jan 2022 17:54:02 +0100
+
 univention-base-files (9.0.3-6) unstable; urgency=medium
 
   * Bug #54184: Confusing text in /etc/motd

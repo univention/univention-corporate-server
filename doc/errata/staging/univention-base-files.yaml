@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [1]
+scope: ucs_5.0-0-errata5.0-1
+src: univention-base-files
+fix: 9.0.3-7
+desc: |
+ This update addresses the following issue:
+ * Correct wrong static fallback IP address mapping left over from
+   installation.
+bug: [49042]

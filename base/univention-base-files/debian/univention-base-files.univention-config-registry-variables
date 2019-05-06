@@ -607,6 +607,14 @@ Description[en]=If multiple network interfaces exist on a system, this variable 
 Type=str
 Categories=system-network
 
+[hosts/static/127.0.1.1]
+Description[de]=Statische locale Adresse für diesen Rechner im Falle eines Netzwerkausfalls.
+Description[en]=Static local address for this computer in case the network is down.
+Type=str
+Categories=system-base
+ReadOnly=yes
+Default=@%@hostname@%@.@%@domainname@%@ @%@hostname@%@
+
 [hosts/static/.*]
 Description[de]=Mit Variablen nach dem Schema hosts/static/IPADRESSE=RECHNERNAME können Einträge zur /etc/hosts hinzugefügt werden. Beispiel: 'hosts/static/192.168.0.100=w2k8-32.ad.example.com'.
 Description[en]=With variables following the scheme hosts/static/IPADDRESS=HOSTNAME entries can be added to /etc/hosts. Example: 'hosts/static/192.168.0.100=w2k8-32.ad.example.com'.

@@ -156,4 +156,8 @@ if test -x /etc/init.d/ssh; then
     invoke-rc.d ssh reload
 fi
 
+[ "$1" = "configure" ] &&
+	dpkg --compare-versions "$2" lt 9.0.3-7 &&
+	univention-config-registry unset hosts/static/127.0.1.1
+
 exit 0
