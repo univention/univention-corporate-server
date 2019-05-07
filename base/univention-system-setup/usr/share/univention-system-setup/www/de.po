@@ -278,8 +278,24 @@ msgstr ""
 "personalisierter Lizenzschlüssel zugesendet. Die Lizenz kann über den "
 "Lizenzdialog der Univention Management Console eingespielt werden."
 
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2339
+msgid ""
+"This server is already set as an administrative server for a school. "
+"Please correct this before continuing."
+msgstr ""
+"Dieser Server ist bereits als administrativer Server für eine Schule "
+"eingestellt. Bitte korrigieren Sie dies bevor Sie fortfahren."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2342
+msgid ""
+"This server is already set as an educational server for a school. "
+"Please correct this before continuing."
+msgstr ""
+"Dieser Server ist bereits als edukativer Server für eine Schule "
+"eingestellt. Bitte korrigieren Sie dies bevor Sie fortfahren."
+
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:668
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1822
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1861
 msgid "Account information"
 msgstr "Kontoinformationen"
 
@@ -319,6 +335,10 @@ msgstr "Rechnernamen anpassen"
 msgid "Adjust settings"
 msgstr "Einstellungen anpassen"
 
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:860
+msgid "Administrative server"
+msgstr "Administrativer Server"
+
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:538
 msgid "Alternate DNS server"
 msgstr "Alternativer DNS-Server"
@@ -351,6 +371,16 @@ msgstr "Wenigstens ein Netzwerkgerät muss konfiguriert werden."
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:2963
 msgid "Cancel"
 msgstr "Abbrechen"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:871
+msgid "Central server"
+msgstr "Zentraler Server"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:843
+msgid ""
+"Choose what role this server is supposed to take in your UCS@school domain."
+msgstr ""
+"Wählen Sie welche Rolle dieser Server in Ihrer UCS@school Domäne übernehmen soll."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:352
 msgid "Choose your language"
@@ -515,6 +545,10 @@ msgstr "E-Mail-Adresse zur Aktivierung von %s Appliance"
 msgid "E-mail address to activate UCS"
 msgstr "E-Mail-Adresse zur Aktivierung von UCS"
 
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:848
+msgid "Educational server"
+msgstr "Edukativer Server"
+
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:365
 msgid ""
 "Enter a city nearby to preconfigure settings such as timezone, system "
@@ -642,6 +676,25 @@ msgstr "IPv4-Netzmaske/IPv6-Präfix {interface}"
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:508
 msgid "IPv4/IPv6 address {interface}"
 msgstr "IPv4/IPv6-Adresse {interface}"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2348
+msgid ""
+"If this server is supposed to become an administrative slave, please create "
+"a school first and set the hostname of this server as the administrative "
+"server."
+msgstr ""
+"Falls dieser Server ein administrativer Slave werden soll, erstellen Sie bitte "
+"zunächst eine Schule und setzen den Rechnernamen dieses Servers als administrativen "
+"Server."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2345
+msgid ""
+"If this server is supposed to become an educational slave, please create a "
+"school first and set the hostname of this server as the educational server."
+msgstr ""
+"Falls dieser Server ein edukativer Slave werden soll, erstellen Sie bitte "
+"zunächst eine Schule und setzen den Rechnernamen dieses Servers als edukativen "
+"Server."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:624
 #, javascript-format
@@ -890,6 +943,10 @@ msgstr "Bitte lesen Sie die nachstehende Lizenzvereinbarung für %s Appliance."
 msgid "Please select your domain settings."
 msgstr "Bitte wählen Sie die Domäneneinstellungen."
 
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:842
+msgid "Serverrole inside the UCS@school domain"
+msgstr "Serverrolle in der UCS@school Domäne"
+
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:532
 msgid "Preferred DNS server"
 msgstr "Bevorzugter DNS-Server"
@@ -1059,6 +1116,18 @@ msgstr ""
 #: usr/share/univention-system-setup/www/main.js:275
 msgid "This may take a few seconds..."
 msgstr "Dies kann einige Sekunden in Anspruch nehmen..."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:865
+msgid "This server provides administrative UCS@school services for a school."
+msgstr "Dieser Server übernimmt administrative UCS@school Aufgaben für eine Schule."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:854
+msgid "This server provides educational UCS@school services for a school."
+msgstr "Dieser Server übernimmt edukative UCS@school Aufgaben für eine Schule."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:876
+msgid "This server provides no UCS@school services."
+msgstr "Dieser Server übernimmt keine UCS@school Aufgaben."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:619
 msgid ""
@@ -1445,9 +1514,6 @@ msgstr "des UCS-Systems"
 
 #~ msgid "Ethernet"
 #~ msgstr "Ethernet"
-
-#~ msgid "External name server"
-#~ msgstr "Externer DNS-Server"
 
 #~ msgid "External name server (max. 3)"
 #~ msgstr "Externer DNS-Server (max. 3)"
