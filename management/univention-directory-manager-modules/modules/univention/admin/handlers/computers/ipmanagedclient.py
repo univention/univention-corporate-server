@@ -236,7 +236,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 	def cancel(self):
 		for key, value in self.alloc:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'cancel: release (%s): %s' % (key, value))
+			ud.debug(ud.ADMIN, ud.WARN, 'cancel: release (%s): %s' % (key, value))
 			univention.admin.allocators.release(self.lo, self.position, key, value)
 
 

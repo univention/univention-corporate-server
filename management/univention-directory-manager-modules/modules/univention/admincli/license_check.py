@@ -34,7 +34,7 @@ import getopt
 import datetime
 import traceback
 
-import univention.debug
+import univention.debug as ud
 import univention.admin.license
 import univention.admin.uexceptions as uexceptions
 import univention.admin.uldap

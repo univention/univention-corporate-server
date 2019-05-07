@@ -43,7 +43,7 @@ from univention.admin.policy import (
 )
 
 
-import univention.debug
+import univention.debug as ud
 
 translation = univention.admin.localization.translation('univention.admin.handlers.policies')
 _ = translation.translate

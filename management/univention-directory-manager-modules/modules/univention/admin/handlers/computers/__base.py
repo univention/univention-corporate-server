@@ -69,12 +69,12 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 		if self.exists():
 			if 'posix' in self.options and not self.info.get('primaryGroup'):
 				primaryGroupNumber = self.oldattr.get('gidNumber', [''])[0]
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'primary group number = %s' % (primaryGroupNumber))
+				ud.debug(ud.ADMIN, ud.INFO, 'primary group number = %s' % (primaryGroupNumber))
 				if primaryGroupNumber:
 					primaryGroupResult = self.lo.searchDn(filter_format('(&(objectClass=posixGroup)(gidNumber=%s))', [primaryGroupNumber]))
 					if primaryGroupResult:
 						self['primaryGroup'] = primaryGroupResult[0]
-						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Set primary group = %s' % (self['primaryGroup']))
+						ud.debug(ud.ADMIN, ud.INFO, 'Set primary group = %s' % (self['primaryGroup']))
 					else:
 						self['primaryGroup'] = None
 						self.save()
@@ -288,7 +288,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 
 	def cancel(self):
 		for i, j in self.alloc:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'cancel: release (%s): %s' % (i, j))
+			ud.debug(ud.ADMIN, ud.WARN, 'cancel: release (%s): %s' % (i, j))
 			univention.admin.allocators.release(self.lo, self.position, i, j)
 
 	def link(self):

@@ -37,7 +37,7 @@ import univention.admin.mapping as udm_mapping
 from univention.admin.handlers import simplePolicy
 import univention.admin.localization
 
-import univention.debug
+import univention.debug as ud
 
 from univention.admin.policy import (
 	register_policy_mapping, policy_object_tab,

@@ -42,7 +42,7 @@ import traceback
 
 import ldap
 
-import univention.debug
+import univention.debug as ud
 
 import univention.admin.uexceptions
 import univention.admin.uldap
@@ -409,7 +409,7 @@ def doit(arglist):
 	except ldap.SERVER_DOWN:
 		return out + ["E: The LDAP Server is currently not available.", "OPERATION FAILED"]
 	except univention.admin.uexceptions.base, e:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, traceback.format_exc())
+		ud.debug(ud.ADMIN, ud.WARN, traceback.format_exc())
 
 		# collect error information
 		msg = []
@@ -534,7 +534,7 @@ def _doit(arglist):
 			policy_dereference.append(val)
 
 	if logfile:
-		univention.debug.init(logfile, 1, 0)
+		ud.init(logfile, 1, 0)
 	else:
 		out.append("WARNING: no logfile specified")
 
@@ -549,27 +549,27 @@ def _doit(arglist):
 	else:
 		debug_level = 0
 
-	univention.debug.set_level(univention.debug.LDAP, int(debug_level))
-	univention.debug.set_level(univention.debug.ADMIN, int(debug_level))
+	ud.set_level(ud.LDAP, int(debug_level))
+	ud.set_level(ud.ADMIN, int(debug_level))
 
 	if binddn and bindpwd:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using %s account" % binddn)
+		ud.debug(ud.ADMIN, ud.INFO, "using %s account" % binddn)
 		try:
 			lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, start_tls=tls, bindpw=bindpwd)
 		except Exception, e:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
+			ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % str(e))
 			out.append('authentication error: %s' % str(e))
 			return out + ["OPERATION FAILED"]
 		policyOptions.extend(['-D', binddn, '-w', bindpwd])  # FIXME not so nice
 
 	else:
 		if os.path.exists('/etc/ldap.secret'):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using cn=admin,%s account" % baseDN)
+			ud.debug(ud.ADMIN, ud.INFO, "using cn=admin,%s account" % baseDN)
 			secretFileName = '/etc/ldap.secret'
 			binddn = 'cn=admin,' + baseDN
 			policyOptions.extend(['-D', binddn, '-y', secretFileName])
 		elif os.path.exists('/etc/machine.secret'):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using %s account" % configRegistry['ldap/hostdn'])
+			ud.debug(ud.ADMIN, ud.INFO, "using %s account" % configRegistry['ldap/hostdn'])
 			secretFileName = '/etc/machine.secret'
 			binddn = configRegistry['ldap/hostdn']
 			policyOptions.extend(['-D', binddn, '-y', secretFileName])
@@ -585,7 +585,7 @@ def _doit(arglist):
 		try:
 			lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, bindpw=pwd, start_tls=tls)
 		except Exception, e:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
+			ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % str(e))
 			out.append('authentication error: %s' % str(e))
 			return out + ["OPERATION FAILED"]
 

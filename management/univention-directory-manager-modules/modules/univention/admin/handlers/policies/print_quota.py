@@ -38,7 +38,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.uexceptions
-import univention.debug
+import univention.debug as ud
 import string
 
 from univention.admin.policy import (

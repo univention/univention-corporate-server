@@ -34,7 +34,7 @@ import ldap
 import string
 import time
 
-import univention.debug
+import univention.debug as ud
 import univention.uldap
 from univention.admin import localization
 import univention.config_registry
@@ -816,7 +816,7 @@ class access:
 		:param fixedattrs: UNUSED!
 		:returns: A mapping of policy names to
 		"""
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'getPolicies modules dn %s result' % dn)
+		ud.debug(ud.ADMIN, ud.INFO, 'getPolicies modules dn %s result' % dn)
 		return self.lo.getPolicies(dn, policies, attrs, result, fixedattrs)
 
 	def add(self, dn, al, exceptions=False, serverctrls=None, response=None):
@@ -838,24 +838,24 @@ class access:
 		"""
 		self._validateLicense()
 		if not self.allow_modify:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'add dn: %s' % dn)
+			ud.debug(ud.ADMIN, ud.ERROR, 'add dn: %s' % dn)
 			raise univention.admin.uexceptions.licenseDisableModify
 			return []
-		univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'add dn=%s al=%s' % (dn, al))
+		ud.debug(ud.LDAP, ud.ALL, 'add dn=%s al=%s' % (dn, al))
 		if exceptions:
 			return self.lo.add(dn, al, serverctrls=serverctrls, response=response)
 		try:
 			return self.lo.add(dn, al, serverctrls=serverctrls, response=response)
 		except ldap.ALREADY_EXISTS as msg:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'add dn=%s err=%s' % (dn, msg))
+			ud.debug(ud.LDAP, ud.ALL, 'add dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.objectExists(dn)
 		except ldap.INSUFFICIENT_ACCESS as msg:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'add dn=%s err=%s' % (dn, msg))
+			ud.debug(ud.LDAP, ud.ALL, 'add dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.permissionDenied
 		except ldap.INVALID_DN_SYNTAX as msg:
 			raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), dn), original_exception=msg)
 		except ldap.LDAPError as msg:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'add dn=%s err=%s' % (dn, msg))
+			ud.debug(ud.LDAP, ud.ALL, 'add dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
 	def modify(self, dn, changes, exceptions=False, ignore_license=0, serverctrls=None, response=None):
@@ -875,24 +875,24 @@ class access:
 		"""
 		self._validateLicense()
 		if not self.allow_modify and not ignore_license:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'modify dn: %s' % dn)
+			ud.debug(ud.ADMIN, ud.ERROR, 'modify dn: %s' % dn)
 			raise univention.admin.uexceptions.licenseDisableModify
 			return []
-		univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'mod dn=%s ml=%s' % (dn, changes))
+		ud.debug(ud.LDAP, ud.ALL, 'mod dn=%s ml=%s' % (dn, changes))
 		if exceptions:
 			return self.lo.modify(dn, changes, serverctrls=serverctrls, response=response)
 		try:
 			return self.lo.modify(dn, changes, serverctrls=serverctrls, response=response)
 		except ldap.NO_SUCH_OBJECT as msg:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'mod dn=%s err=%s' % (dn, msg))
+			ud.debug(ud.LDAP, ud.ALL, 'mod dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.noObject(dn)
 		except ldap.INSUFFICIENT_ACCESS as msg:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'mod dn=%s err=%s' % (dn, msg))
+			ud.debug(ud.LDAP, ud.ALL, 'mod dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.permissionDenied
 		except ldap.INVALID_DN_SYNTAX as msg:
 			raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), dn), original_exception=msg)
 		except ldap.LDAPError as msg:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'mod dn=%s err=%s' % (dn, msg))
+			ud.debug(ud.LDAP, ud.ALL, 'mod dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
 	def rename(self, dn, newdn, move_childs=0, ignore_license=False, serverctrls=None, response=None):
@@ -912,22 +912,22 @@ class access:
 			raise univention.admin.uexceptions.noObject(_("Moving children is not supported."))
 		self._validateLicense()
 		if not self.allow_modify and not ignore_license:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'move dn: %s' % dn)
+			ud.debug(ud.ADMIN, ud.WARN, 'move dn: %s' % dn)
 			raise univention.admin.uexceptions.licenseDisableModify
 			return []
-		univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'ren dn=%s newdn=%s' % (dn, newdn))
+		ud.debug(ud.LDAP, ud.ALL, 'ren dn=%s newdn=%s' % (dn, newdn))
 		try:
 			return self.lo.rename(dn, newdn, serverctrls=serverctrls, response=response)
 		except ldap.NO_SUCH_OBJECT as msg:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'ren dn=%s err=%s' % (dn, msg))
+			ud.debug(ud.LDAP, ud.ALL, 'ren dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.noObject(dn)
 		except ldap.INSUFFICIENT_ACCESS as msg:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'ren dn=%s err=%s' % (dn, msg))
+			ud.debug(ud.LDAP, ud.ALL, 'ren dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.permissionDenied
 		except ldap.INVALID_DN_SYNTAX as msg:
 			raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), dn), original_exception=msg)
 		except ldap.LDAPError as msg:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'ren dn=%s err=%s' % (dn, msg))
+			ud.debug(ud.LDAP, ud.ALL, 'ren dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
 	def delete(self, dn, exceptions=False):
@@ -948,19 +948,19 @@ class access:
 				return self.lo.delete(dn)
 			except ldap.INSUFFICIENT_ACCESS as msg:
 				raise univention.admin.uexceptions.permissionDenied
-		univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'del dn=%s' % (dn,))
+		ud.debug(ud.LDAP, ud.ALL, 'del dn=%s' % (dn,))
 		try:
 			return self.lo.delete(dn)
 		except ldap.NO_SUCH_OBJECT as msg:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'del dn=%s err=%s' % (dn, msg))
+			ud.debug(ud.LDAP, ud.ALL, 'del dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.noObject(dn)
 		except ldap.INSUFFICIENT_ACCESS as msg:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'del dn=%s err=%s' % (dn, msg))
+			ud.debug(ud.LDAP, ud.ALL, 'del dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.permissionDenied
 		except ldap.INVALID_DN_SYNTAX as msg:
 			raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), dn), original_exception=msg)
 		except ldap.LDAPError as msg:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'del dn=%s err=%s' % (dn, msg))
+			ud.debug(ud.LDAP, ud.ALL, 'del dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
 	def parentDn(self, dn):

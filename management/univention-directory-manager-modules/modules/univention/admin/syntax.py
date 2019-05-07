@@ -34,7 +34,7 @@ import ldap
 import operator
 import ipaddr
 import inspect
-import univention.debug
+import univention.debug as ud
 import univention.admin.modules
 import univention.admin.uexceptions
 from univention.admin import localization
@@ -83,10 +83,10 @@ def import_syntax_files():
 				try:
 					with open(fn, 'r') as fd:
 						exec fd in sys.modules[__name__].__dict__
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_syntax_files: importing "%s"' % fn)
+					ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.import_syntax_files: importing "%s"' % fn)
 				except:
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'admin.syntax.import_syntax_files: loading %s failed' % fn)
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'admin.syntax.import_syntax_files: TRACEBACK:\n%s' % traceback.format_exc())
+					ud.debug(ud.ADMIN, ud.ERROR, 'admin.syntax.import_syntax_files: loading %s failed' % fn)
+					ud.debug(ud.ADMIN, ud.ERROR, 'admin.syntax.import_syntax_files: TRACEBACK:\n%s' % traceback.format_exc())
 				finally:
 					_ = gettext
 
@@ -304,8 +304,8 @@ class complex(ISyntax):
 
 		parsed = []
 		for i, (text, (desc, syn)) in enumerate(zip(texts, self.subsyntaxes)):
-			univention.debug.debug(
-				univention.debug.ADMIN, univention.debug.INFO,
+			ud.debug(
+				ud.ADMIN, ud.INFO,
 				'syntax.py: subsyntax[%s]=%s, texts=%s' % (i, syn, text))
 			if text is None and i + 1 < minn:
 				raise univention.admin.uexceptions.valueInvalidSyntax(_("Missing argument"))
@@ -668,7 +668,7 @@ class jpegPhoto(Upload):
 					raw = text.getvalue()
 					text = base64.b64encode(raw)
 				except (KeyError, IOError, IndexError):
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Failed to convert PNG file into JPEG: %s' % (traceback.format_exc(),))
+					ud.debug(ud.ADMIN, ud.WARN, 'Failed to convert PNG file into JPEG: %s' % (traceback.format_exc(),))
 					raise univention.admin.uexceptions.valueError(_('Failed to convert PNG file into JPEG format.'))
 			# imghdr.what(None, base64.b64dcode(text)) == 'jpeg'  # See Bug #36304
 			# this is what imghdr.py probably does in  the future:
@@ -1648,10 +1648,10 @@ class emailAddressValidDomain(emailAddress):
 					ldapfilter = '(&(objectClass=univentionMailDomainname)(cn=%s))' % domain
 					result = lo.searchDn(filter=ldapfilter)
 					domainCache[domain] = bool(result)
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.%s: address=%r   domain=%r   result=%r' % (self.name, mailaddress, domain, result))
+					ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.%s: address=%r   domain=%r   result=%r' % (self.name, mailaddress, domain, result))
 				if not domainCache[domain]:
 					faillist.append(mailaddress)
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.%s: address=%r   domain=%r' % (self.name, mailaddress, domain))
+					ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.%s: address=%r   domain=%r' % (self.name, mailaddress, domain))
 
 		if faillist:
 			raise univention.admin.uexceptions.valueError(self.errMsgDomain % (', '.join(faillist),))
@@ -4485,7 +4485,7 @@ class PrinterURI(complex):
 			raise univention.admin.uexceptions.valueInvalidSyntax(_("too many arguments"))
 
 		for i in range(len(texts)):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'syntax.py: self.subsyntax[%s] is %s, texts is %s' % (i, self.subsyntaxes[i], texts))
+			ud.debug(ud.ADMIN, ud.INFO, 'syntax.py: self.subsyntax[%s] is %s, texts is %s' % (i, self.subsyntaxes[i], texts))
 			if not inspect.isclass(self.subsyntaxes[i][1]):
 				s = self.subsyntaxes[i][1]
 			else:

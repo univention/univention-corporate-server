@@ -57,18 +57,18 @@ class groupRecursionDetected(univention.admin.uexceptions.base):
 
 def get_ldap_connection(baseDN):
 	if os.path.exists('/etc/ldap.secret'):
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using cn=admin,%s account" % baseDN)
+		ud.debug(ud.ADMIN, ud.INFO, "using cn=admin,%s account" % baseDN)
 		secretFileName = '/etc/ldap.secret'
 		binddn = 'cn=admin,' + baseDN
 	elif os.path.exists('/etc/machine.secret'):
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using %s account" % configRegistry.get('ldap/hostdn'))
+		ud.debug(ud.ADMIN, ud.INFO, "using %s account" % configRegistry.get('ldap/hostdn'))
 		secretFileName = '/etc/machine.secret'
 		binddn = configRegistry.get('ldap/hostdn')
 
 	try:
 		secretFile = open(secretFileName, 'r')
 	except IOError:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "loading %s failed" % secretFileName)
+		ud.debug(ud.ADMIN, ud.ERROR, "loading %s failed" % secretFileName)
 		sys.exit(1)
 	pwdLine = secretFile.readline()
 	pwd = re.sub('\n', '', pwdLine)
@@ -76,13 +76,13 @@ def get_ldap_connection(baseDN):
 	try:
 		lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], base=baseDN, binddn=binddn, bindpw=pwd, start_tls=2)
 	except Exception as e:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'authentication error: %s' % str(e))
+		ud.debug(ud.ADMIN, ud.ERROR, 'authentication error: %s' % str(e))
 		sys.exit(1)
 
 	try:
 		position = univention.admin.uldap.position(baseDN)
 	except univention.admin.uexceptions.noObject:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'invalid position: %s' % baseDN)
+		ud.debug(ud.ADMIN, ud.ERROR, 'invalid position: %s' % baseDN)
 		sys.exit(1)
 
 	return lo, position
@@ -113,7 +113,7 @@ def checkChilds(grp_module, dn, parents, verbose=False, exception=False):
 def main():
 	global lo, co, position
 
-	univention.debug.init('/var/log/univention/check_group_recursion.log', 1, 0)
+	ud.init('/var/log/univention/check_group_recursion.log', 1, 0)
 
 	basedn = configRegistry['ldap/base']
 
@@ -130,7 +130,7 @@ def main():
 
 	grpobjlist = univention.admin.modules.lookup(grp_module, co, lo, scope='sub', superordinate=None, base=basedn, filter=None)
 	print 'Number of groups: %d' % len(grpobjlist)
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Testing %d groups...' % len(grpobjlist))
+	ud.debug(ud.ADMIN, ud.ERROR, 'Testing %d groups...' % len(grpobjlist))
 	for i in range(len(grpobjlist)):
 		if options.verbose:
 			print
@@ -145,14 +145,14 @@ def main():
 			txtring = ''
 			for dn in e.recursionlist:
 				txtring += '--> %s\n' % dn
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Recursion detected: %s\n%s' % (grpobjlist[i].dn, txtring))
+			ud.debug(ud.ADMIN, ud.ERROR, 'Recursion detected: %s\n%s' % (grpobjlist[i].dn, txtring))
 			print
 			print 'Recursion detected:'
 			for dn in e.recursionlist:
 				print '--> %s' % dn
 			recursionCnt += 1
 
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Tests have been finished. %d group(s) with circular recursion found.' % recursionCnt)
+	ud.debug(ud.ADMIN, ud.ERROR, 'Tests have been finished. %d group(s) with circular recursion found.' % recursionCnt)
 	if options.verbose:
 		print
 		print 'Tests have been finished. %d group(s) with circular recursion found.' % recursionCnt

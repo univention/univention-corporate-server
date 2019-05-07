@@ -33,7 +33,7 @@ from ldap.filter import filter_format
 import operator
 
 import univention.license
-import univention.debug
+import univention.debug as ud
 import univention.admin.modules
 import univention.admin.filter
 import univention.admin.uexceptions
@@ -208,10 +208,10 @@ class License(object):
 			self.__selected = True
 
 	def isValidFor(self, module):
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'LICENSE: check license for module %s, "%s"' % (module, str(self.types)))
+		ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: check license for module %s, "%s"' % (module, str(self.types)))
 		if module in licenses.modules:
 			mlics = licenses.modules[module]
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'LICENSE: module license: %s' % str(mlics))
+			ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: module license: %s' % str(mlics))
 			# empty list -> valid
 			return mlics.valid(self.types)
 		# unknown modules are always valid (e.g. customer modules)
@@ -223,7 +223,7 @@ class License(object):
 			if opts:
 				module = univention.admin.modules.modules[mod]
 				if module and hasattr(module, 'options'):
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modifyOptions: %s' % str(opts))
+					ud.debug(ud.ADMIN, ud.INFO, 'modifyOptions: %s' % str(opts))
 					for opt, val in opts:
 						if callable(val):
 							val = val(self)
@@ -231,18 +231,18 @@ class License(object):
 							module.options[opt].disabled, module.options[opt].default = val
 						else:
 							default = val
-						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modifyOption: %s, %d, %d' % (str(opt), module.options[opt].disabled, module.options[opt].default))
+						ud.debug(ud.ADMIN, ud.INFO, 'modifyOption: %s, %d, %d' % (str(opt), module.options[opt].disabled, module.options[opt].default))
 
 	def checkModules(self):
 		deleted_mods = []
 		for mod in univention.admin.modules.modules.keys():
 			# remove module if valid license is missing
 			if self.isValidFor(mod):
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'update: License is valid for module %s!!' % mod)
+				ud.debug(ud.ADMIN, ud.INFO, 'update: License is valid for module %s!!' % mod)
 				# check module options according to given license type
 				self.modifyOptions(mod)
 			else:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'update: License is NOT valid for module %s!!' % mod)
+				ud.debug(ud.ADMIN, ud.INFO, 'update: License is NOT valid for module %s!!' % mod)
 				del univention.admin.modules.modules[mod]
 				deleted_mods.append(mod)
 
@@ -359,11 +359,11 @@ class License(object):
 					disable_add = 2
 			if lic_desktop:
 				if real_desktop and self.__cmp_gt(real_desktop, lic_desktop):
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'LICENSE: 3')
+					ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: 3')
 					disable_add = 3
 			if lic_groupware:
 				if real_groupware and self.__cmp_gt(real_groupware, lic_groupware):
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'LICENSE: 4')
+					ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: 4')
 					disable_add = 4
 		elif self.version == '2':
 			lic_users, lic_servers, lic_managedclients, lic_corporateclients, = lic
@@ -393,7 +393,7 @@ class License(object):
 			self.sysAccountsFound = len(searchResult)
 		except univention.admin.uexceptions.noObject:
 			pass
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'LICENSE: Univention sysAccountsFound: %d' % self.sysAccountsFound)
+		ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: Univention sysAccountsFound: %d' % self.sysAccountsFound)
 
 	def __countObject(self, obj, lo):
 		if self.licenses[self.version][obj] and not self.licenses[self.version][obj] == 'unlimited':
@@ -402,7 +402,7 @@ class License(object):
 				self.real[self.version][obj] = 0
 			else:
 				self.real[self.version][obj] = len(result)
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'LICENSE: Univention %s real %d' % (self.names[self.version][obj], self.real[self.version][obj]))
+			ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: Univention %s real %d' % (self.names[self.version][obj], self.real[self.version][obj]))
 		else:
 			self.real[self.version][obj] = 0
 
@@ -421,7 +421,7 @@ class License(object):
 		try:
 			value = univention.license.getValue(key)
 			self.new_license = True
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'LICENSE: Univention %s allowed %s' % (name, str(value)))
+			ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: Univention %s allowed %s' % (name, str(value)))
 		except:
 			if self.searchResult:
 				if isinstance(default, type([])):
@@ -430,10 +430,10 @@ class License(object):
 					value = self.searchResult[0][1].get(key, [default])[0]
 				self.new_license = True
 			else:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'LICENSE: %s' % errormsg)
+				ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: %s' % errormsg)
 				value = default
 
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'LICENSE: %s = %s' % (name, value))
+		ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: %s = %s' % (name, value))
 		return value
 
 	def __readLicense(self):

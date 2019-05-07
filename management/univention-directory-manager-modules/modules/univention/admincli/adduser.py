@@ -34,7 +34,7 @@ import os
 import getopt
 import codecs
 import types
-import univention.debug
+import univention.debug as ud
 import univention.misc
 
 import univention.config_registry
@@ -64,13 +64,13 @@ def status(msg):
 
 def nscd_invalidate(table):
 	if table:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'NSCD: --invalidate %s' % table)
+		ud.debug(ud.ADMIN, ud.INFO, 'NSCD: --invalidate %s' % table)
 		try:
 			univention.misc.close_fd_spawn('/usr/sbin/nscd', ['nscd', '--invalidate', table])
 		except:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'NSCD: failed')
+			ud.debug(ud.ADMIN, ud.INFO, 'NSCD: failed')
 		else:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'NSCD: ok')
+			ud.debug(ud.ADMIN, ud.INFO, 'NSCD: ok')
 
 
 def get_user_object(user, position, lo, co):
@@ -96,7 +96,7 @@ def get_user_object(user, position, lo, co):
 
 
 def doit(arglist):
-	univention.debug.init('/var/log/univention/directory-manager-cmd.log', 1, 1)
+	ud.init('/var/log/univention/directory-manager-cmd.log', 1, 1)
 	out = []
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
@@ -128,11 +128,11 @@ def doit(arglist):
 	try:
 		lo, position = univention.admin.uldap.getAdminConnection()
 	except Exception, e:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
+		ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % str(e))
 		try:
 			lo, position = univention.admin.uldap.getMachineConnection()
 		except Exception, e2:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e2))
+			ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % str(e2))
 			out.append('authentication error: %s' % str(e))
 			out.append('authentication error: %s' % str(e2))
 			return out

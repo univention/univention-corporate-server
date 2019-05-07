@@ -61,7 +61,7 @@ import univention.admin.handlers.settings.prohibited_username
 from univention.admin import configRegistry
 from univention.lib.s4 import rids_for_well_known_security_identifiers
 
-import univention.debug
+import univention.debug as ud
 import univention.password
 
 translation = univention.admin.localization.translation('univention.admin.handlers.users')
@@ -837,12 +837,12 @@ def posixDaysToDate(days):
 
 
 def sambaWorkstationsMap(workstations):
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'samba: sambaWorkstationMap: in=%s; out=%s' % (workstations, string.join(workstations, ',')))
+	ud.debug(ud.ADMIN, ud.ALL, 'samba: sambaWorkstationMap: in=%s; out=%s' % (workstations, string.join(workstations, ',')))
 	return string.join(workstations, ',')
 
 
 def sambaWorkstationsUnmap(workstations):
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'samba: sambaWorkstationUnmap: in=%s; out=%s' % (workstations[0], string.split(workstations[0], ',')))
+	ud.debug(ud.ADMIN, ud.ALL, 'samba: sambaWorkstationUnmap: in=%s; out=%s' % (workstations[0], string.split(workstations[0], ',')))
 	return string.split(workstations[0], ',')
 
 
@@ -962,7 +962,7 @@ def load_certificate(user_certificate):
 	except (X509.X509Error, AttributeError):
 		return {}
 
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'value=%s' % values)
+	ud.debug(ud.ADMIN, ud.INFO, 'value=%s' % values)
 	return values
 
 
@@ -1005,7 +1005,7 @@ def unmapShadowExpireToUserexpiry(oldattr):
 	# shadowExpire contains the absolute date to expire the account.
 
 	if 'shadowExpire' in oldattr and len(oldattr['shadowExpire']) > 0:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'userexpiry: %s' % posixDaysToDate(oldattr['shadowExpire'][0]))
+		ud.debug(ud.ADMIN, ud.INFO, 'userexpiry: %s' % posixDaysToDate(oldattr['shadowExpire'][0]))
 		if oldattr['shadowExpire'][0] != '1':
 			return posixDaysToDate(oldattr['shadowExpire'][0])
 
@@ -1013,13 +1013,13 @@ def unmapShadowExpireToUserexpiry(oldattr):
 def unmapKrb5ValidEndToUserexpiry(oldattr):
 	if 'krb5ValidEnd' in oldattr:
 		krb5validend = oldattr['krb5ValidEnd'][0]
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5validend is: %s' % krb5validend)
+		ud.debug(ud.ADMIN, ud.INFO, 'krb5validend is: %s' % krb5validend)
 		return "%s-%s-%s" % (krb5validend[0:4], krb5validend[4:6], krb5validend[6:8])
 
 
 def unmapSambaKickoffTimeToUserexpiry(oldattr):
 	if 'sambaKickoffTime' in oldattr:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaKickoffTime is: %s' % oldattr['sambaKickoffTime'][0])
+		ud.debug(ud.ADMIN, ud.INFO, 'sambaKickoffTime is: %s' % oldattr['sambaKickoffTime'][0])
 		return time.strftime("%Y-%m-%d", time.gmtime(long(oldattr['sambaKickoffTime'][0]) + (3600 * 24)))
 
 
@@ -1030,7 +1030,7 @@ def unmapPasswordExpiry(oldattr):
 		try:
 			shadow_last_change = int(oldattr['shadowLastChange'][0])
 		except ValueError:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'users/user: failed to calculate password expiration correctly, use only shadowMax instead')
+			ud.debug(ud.ADMIN, ud.WARN, 'users/user: failed to calculate password expiration correctly, use only shadowMax instead')
 		return posixDaysToDate(shadow_last_change + shadow_max)
 
 
@@ -1278,7 +1278,7 @@ class object(univention.admin.handlers.simpleLdap):
 			if loadGroups:  # this is optional because it can take much time on larger installations, default is true
 				self['groups'] = self.lo.searchDn(filter=filter_format('(&(cn=*)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping))(uniqueMember=%s))', [self.dn]))
 			else:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'user: open with loadGroups=false for user %s' % self['username'])
+				ud.debug(ud.ADMIN, ud.INFO, 'user: open with loadGroups=false for user %s' % self['username'])
 			self.groupsLoaded = loadGroups
 			primaryGroupNumber = self.oldattr.get('gidNumber', [''])[0]
 			if primaryGroupNumber:
@@ -1295,7 +1295,7 @@ class object(univention.admin.handlers.simpleLdap):
 					except:
 						primaryGroup = None
 
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'user: could not find primaryGroup, setting primaryGroup to %s' % primaryGroup)
+					ud.debug(ud.ADMIN, ud.INFO, 'user: could not find primaryGroup, setting primaryGroup to %s' % primaryGroup)
 
 					if not primaryGroup:
 						raise univention.admin.uexceptions.primaryGroup(self.dn)
@@ -1491,26 +1491,26 @@ class object(univention.admin.handlers.simpleLdap):
 
 		# change memberUid if we have a new username
 		if old_uid and old_uid != new_uid and self.exists():
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: rewrite memberuid after rename')
+			ud.debug(ud.ADMIN, ud.INFO, 'users/user: rewrite memberuid after rename')
 			for group in new_groups:
 				self.__rewrite_member_uid(group)
 
 		group_mod = univention.admin.modules.get('groups/group')
 
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: check groups in old_groups')
+		ud.debug(ud.ADMIN, ud.INFO, 'users/user: check groups in old_groups')
 		for group in old_groups:
 			if group and not case_insensitive_in_list(group, self.info.get('groups', [])) and group.lower() != self['primaryGroup'].lower():
 				grpobj = group_mod.object(None, self.lo, self.position, group)
 				grpobj.fast_member_remove([self.old_dn], [old_uid])
 
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: check groups in info[groups]')
+		ud.debug(ud.ADMIN, ud.INFO, 'users/user: check groups in info[groups]')
 		for group in self.info.get('groups', []):
 			if group and not case_insensitive_in_list(group, old_groups):
 				grpobj = group_mod.object(None, self.lo, self.position, group)
 				grpobj.fast_member_add([self.dn], [new_uid])
 
 		if univention.admin.configRegistry.is_true("directory/manager/user/primarygroup/update", True):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: check primaryGroup')
+			ud.debug(ud.ADMIN, ud.INFO, 'users/user: check primaryGroup')
 			if not self.exists() and self.info.get('primaryGroup'):
 				grpobj = group_mod.object(None, self.lo, self.position, self.info.get('primaryGroup'))
 				grpobj.fast_member_add([self.dn], [new_uid])
@@ -1529,7 +1529,7 @@ class object(univention.admin.handlers.simpleLdap):
 				if UIDs:
 					new_uids.append(UIDs[0])
 					if len(UIDs) > 1:
-						univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'users/user: A groupmember has multiple UIDs (%s %r)' % (memberDNstr, UIDs))
+						ud.debug(ud.ADMIN, ud.WARN, 'users/user: A groupmember has multiple UIDs (%s %r)' % (memberDNstr, UIDs))
 		self.lo.modify(group, [('memberUid', uids, new_uids)])
 
 	def __primary_group(self):
@@ -1537,12 +1537,12 @@ class object(univention.admin.handlers.simpleLdap):
 			return
 
 		primaryGroupNumber = self.get_gid_for_primary_group()
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: set gidNumber')
+		ud.debug(ud.ADMIN, ud.INFO, 'users/user: set gidNumber')
 		self.lo.modify(self.dn, [('gidNumber', 'None', primaryGroupNumber)])
 
 		# Samba
 		primaryGroupSambaNumber = self.get_sid_for_primary_group()
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: set sambaPrimaryGroupSID')
+		ud.debug(ud.ADMIN, ud.INFO, 'users/user: set sambaPrimaryGroupSID')
 		self.lo.modify(self.dn, [('sambaPrimaryGroupSID', 'None', primaryGroupSambaNumber)])
 
 		if univention.admin.configRegistry.is_true("directory/manager/user/primarygroup/update", True):
@@ -1550,7 +1550,7 @@ class object(univention.admin.handlers.simpleLdap):
 			group_mod = univention.admin.modules.get('groups/group')
 			grpobj = group_mod.object(None, self.lo, self.position, self['primaryGroup'])
 			grpobj.fast_member_add([self.dn], [new_uid])
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: adding to new primaryGroup %s (uid=%s)' % (self['primaryGroup'], new_uid))
+			ud.debug(ud.ADMIN, ud.INFO, 'users/user: adding to new primaryGroup %s (uid=%s)' % (self['primaryGroup'], new_uid))
 
 		self.save()
 
@@ -1572,7 +1572,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_pre_create(self):
 		super(object, self)._ldap_pre_create()
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: dn was set to %s' % self.dn)
+		ud.debug(ud.ADMIN, ud.INFO, 'users/user: dn was set to %s' % self.dn)
 
 		if self['mailPrimaryAddress']:
 			self['mailPrimaryAddress'] = self['mailPrimaryAddress'].lower()
@@ -1843,7 +1843,7 @@ class object(univention.admin.handlers.simpleLdap):
 		# if pwdChangeNextLogin has been set, set sambaPwdLastSet to 0 (see UCS Bug #17890)
 		# OLD behavior was: set sambaPwdLastSet to 1 (see UCS Bug #8292 and Samba Bug #4313)
 		sambaPwdLastSetValue = '0' if pwd_change_next_login else str(long(time.time()))
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaPwdLastSetValue: %s' % sambaPwdLastSetValue)
+		ud.debug(ud.ADMIN, ud.INFO, 'sambaPwdLastSetValue: %s' % sambaPwdLastSetValue)
 		ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
 
 		krb5PasswordEnd = ''
@@ -1853,7 +1853,7 @@ class object(univention.admin.handlers.simpleLdap):
 				expiry = expiry + (pwhistoryPolicy.expiryInterval * 3600 * 24)
 			krb5PasswordEnd = time.strftime("%Y%m%d000000Z", time.gmtime(expiry))
 
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5PasswordEnd: %s' % krb5PasswordEnd)
+		ud.debug(ud.ADMIN, ud.INFO, 'krb5PasswordEnd: %s' % krb5PasswordEnd)
 		old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', [''])[0]
 		if old_krb5PasswordEnd != krb5PasswordEnd:
 			ml.append(('krb5PasswordEnd', old_krb5PasswordEnd, krb5PasswordEnd))
@@ -1946,7 +1946,7 @@ class object(univention.admin.handlers.simpleLdap):
 			sambaKickoffTime = ''
 			if self['userexpiry']:
 				sambaKickoffTime = "%d" % long(time.mktime(time.strptime(self['userexpiry'], "%Y-%m-%d")))
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaKickoffTime: %s' % sambaKickoffTime)
+				ud.debug(ud.ADMIN, ud.INFO, 'sambaKickoffTime: %s' % sambaKickoffTime)
 			old_sambaKickoffTime = self.oldattr.get('sambaKickoffTime', '')
 			if old_sambaKickoffTime != sambaKickoffTime:
 				ml.append(('sambaKickoffTime', self.oldattr.get('sambaKickoffTime', [''])[0], sambaKickoffTime))
@@ -1957,7 +1957,7 @@ class object(univention.admin.handlers.simpleLdap):
 			krb5ValidEnd = ''
 			if self['userexpiry']:
 				krb5ValidEnd = "%s%s%s000000Z" % (self['userexpiry'][0:4], self['userexpiry'][5:7], self['userexpiry'][8:10])
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5ValidEnd: %s' % krb5ValidEnd)
+				ud.debug(ud.ADMIN, ud.INFO, 'krb5ValidEnd: %s' % krb5ValidEnd)
 			old_krb5ValidEnd = self.oldattr.get('krb5ValidEnd', '')
 			if old_krb5ValidEnd != krb5ValidEnd:
 				if not self['userexpiry']:

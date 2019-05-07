@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.12-39) unstable; urgency=low
+
+  * Bug #49422: Shorten univention.debug usage
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 07 May 2019 11:25:02 +0200
+
 univention-directory-manager-modules (14.0.12-38) unstable; urgency=medium
 
   * Bug #49638: Implement servercontrols for search()

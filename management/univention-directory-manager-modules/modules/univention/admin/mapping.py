@@ -29,7 +29,7 @@ Functions to map between |UDM| properties and |LDAP| attributes.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import univention.debug
+import univention.debug as ud
 import types
 import base64
 try:
@@ -312,12 +312,12 @@ def unmapBase64(value):
 		try:
 			return map(base64.b64encode, value)
 		except Exception, e:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in unmapBase64: %s' % e)
+			ud.debug(ud.ADMIN, ud.ERROR, 'ERROR in unmapBase64: %s' % e)
 	else:
 		try:
 			return base64.b64encode(value[0])
 		except Exception, e:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in unmapBase64: %s' % e)
+			ud.debug(ud.ADMIN, ud.ERROR, 'ERROR in unmapBase64: %s' % e)
 	return ""
 
 
@@ -345,12 +345,12 @@ def mapBase64(value):
 		try:
 			return map(base64.b64decode, value)
 		except Exception, e:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in mapBase64: %s' % e)
+			ud.debug(ud.ADMIN, ud.ERROR, 'ERROR in mapBase64: %s' % e)
 	else:
 		try:
 			return base64.b64decode(value)
 		except Exception, e:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in mapBase64: %s' % e)
+			ud.debug(ud.ADMIN, ud.ERROR, 'ERROR in mapBase64: %s' % e)
 	return ""
 
 

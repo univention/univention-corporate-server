@@ -381,7 +381,7 @@ class object(univention.admin.handlers.simpleLdap):
 			self._ldap_post_move(olddn)
 		except:
 			# move back
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'simpleLdap._move: self._ldap_post_move failed, move object back to %s' % olddn)
+			ud.debug(ud.ADMIN, ud.WARN, 'simpleLdap._move: self._ldap_post_move failed, move object back to %s' % olddn)
 			self.lo.rename(self.dn, olddn)
 			self.dn = olddn
 			raise

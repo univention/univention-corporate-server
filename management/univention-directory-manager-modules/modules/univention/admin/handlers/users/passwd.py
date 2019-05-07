@@ -39,7 +39,7 @@ import univention.admin.uexceptions
 import univention.admin.uldap
 import univention.admin.handlers.users.user
 
-import univention.debug
+import univention.debug as ud
 
 translation = univention.admin.localization.translation('univention.admin.handlers.users')
 _ = translation.translate

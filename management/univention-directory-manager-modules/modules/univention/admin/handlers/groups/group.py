@@ -42,7 +42,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.allocators
 import univention.admin.localization
-import univention.debug
+import univention.debug as ud
 from univention.admin import configRegistry
 from univention.admin.uldap import DN
 
@@ -372,7 +372,7 @@ class object(univention.admin.handlers.simpleLdap):
 						self['users'].append(i)
 
 			time_end = time.time()
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: open(): member check duration: %1.2fs' % (time_end - time_start))
+			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: open(): member check duration: %1.2fs' % (time_end - time_start))
 
 			self['allowedEmailUsers'] = self.oldattr.get('univentionAllowedEmailUsers', [])
 			self['allowedEmailGroups'] = self.oldattr.get('univentionAllowedEmailGroups', [])
@@ -497,27 +497,27 @@ class object(univention.admin.handlers.simpleLdap):
 		try:
 			self.alloc.append(('groupName', self['name']))
 			name = univention.admin.allocators.request(self.lo, self.position, 'groupName', value=self['name'])
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname without exception')
+			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname without exception')
 		except univention.admin.uexceptions.permissionDenied, e:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname with permissionDenied exception')
+			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname with permissionDenied exception')
 			raise e
 		except univention.admin.uexceptions.licenseNotFound, e:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname with licenseNotFound exception')
+			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname with licenseNotFound exception')
 			raise e
 		except univention.admin.uexceptions.licenseInvalid, e:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname with licenseInvalid exception')
+			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname with licenseInvalid exception')
 			raise e
 		except univention.admin.uexceptions.licenseExpired, e:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname with licenseExpired exception')
+			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname with licenseExpired exception')
 			raise e
 		except univention.admin.uexceptions.licenseWrongBaseDn, e:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname with licenseWrongbaseDn exception')
+			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname with licenseWrongbaseDn exception')
 			raise e
 		except univention.admin.uexceptions.licenseDisableModify, e:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname with licenseDisableModify exception')
+			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname with licenseDisableModify exception')
 			raise e
 		except univention.admin.uexceptions.base, e:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname with base (%s) exception' % e)
+			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname with base (%s) exception' % e)
 			error = 1
 
 		if not name or error:
@@ -588,7 +588,7 @@ class object(univention.admin.handlers.simpleLdap):
 						if uid_list:
 							result.append(uid_list[0])
 							if len(uid_list) > 1:
-								univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'groups/group: A groupmember has multiple UIDs (%s %r)' % (uniqueMember, uid_list))
+								ud.debug(ud.ADMIN, ud.WARN, 'groups/group: A groupmember has multiple UIDs (%s %r)' % (uniqueMember, uid_list))
 				return result
 
 			# calling keepCase is not necessary as the LDAP server already handles the case when removing elements
@@ -687,7 +687,7 @@ class object(univention.admin.handlers.simpleLdap):
 				continue
 			newmembers = copy.deepcopy(members)
 			newmembers = self.__case_insensitive_remove_from_list(self.dn, newmembers)
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: remove from supergroup %s' % group)
+			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: remove from supergroup %s' % group)
 			self.__set_membership_attributes(group, members, newmembers)
 
 	def _ldap_post_move(self, olddn):
@@ -708,12 +708,12 @@ class object(univention.admin.handlers.simpleLdap):
 			newmembers = copy.deepcopy(members)
 			newmembers = self.__case_insensitive_remove_from_list(olddn, newmembers)
 			newmembers.append(self.dn)
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: updating supergroup %s' % group)
+			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: updating supergroup %s' % group)
 			self.__set_membership_attributes(group, members, newmembers)
 
 	def cancel(self):
 		for i, j in self.alloc:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'cancel: release (%s): %s' % (i, j))
+			ud.debug(ud.ADMIN, ud.WARN, 'cancel: release (%s): %s' % (i, j))
 			univention.admin.allocators.release(self.lo, self.position, i, j)
 
 	def __update_membership(self):
@@ -729,7 +729,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		# rewrite membership attributes in "supergroup" if we have a new name (rename)
 		if old_name and old_name != new_name:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: rewrite memberuid after rename')
+			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: rewrite memberuid after rename')
 			for group in self.info.get('memberOf', []):
 				if isinstance(group, list):
 					group = group[0]
@@ -758,7 +758,7 @@ class object(univention.admin.handlers.simpleLdap):
 				continue
 			newmembers = copy.deepcopy(members)
 			newmembers.append(self.dn)
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: add to supergroup %s' % group)
+			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: add to supergroup %s' % group)
 			self.__set_membership_attributes(group, members, newmembers)
 
 		for group in remove_from_group:
@@ -771,7 +771,7 @@ class object(univention.admin.handlers.simpleLdap):
 			if self.__case_insensitive_in_list(self.old_dn, newmembers):
 				newmembers = self.__case_insensitive_remove_from_list(self.old_dn, newmembers)
 			if members != newmembers:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: remove from supergroup %s' % group)
+				ud.debug(ud.ADMIN, ud.INFO, 'groups/group: remove from supergroup %s' % group)
 				self.__set_membership_attributes(group, members, newmembers)
 
 	def __set_membership_attributes(self, group, members, newmembers):
@@ -918,8 +918,8 @@ class object(univention.admin.handlers.simpleLdap):
 		old_groupType = self.oldinfo.get('adGroupType', 0)
 		new_groupType = self.info.get('adGroupType', 0)
 
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: old_groupType: %s' % old_groupType)
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: new_groupType: %s' % new_groupType)
+		ud.debug(ud.ADMIN, ud.INFO, 'groups/group: old_groupType: %s' % old_groupType)
+		ud.debug(ud.ADMIN, ud.INFO, 'groups/group: new_groupType: %s' % new_groupType)
 
 		if not old_groupType or not new_groupType:
 			return
@@ -961,7 +961,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		new_groupType = self.info.get('adGroupType', 0)
 
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: new_groupType: %s' % new_groupType)
+		ud.debug(ud.ADMIN, ud.INFO, 'groups/group: new_groupType: %s' % new_groupType)
 		if self['sambaRID']:
 			searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
 			if self.__is_groupType_local(new_groupType):

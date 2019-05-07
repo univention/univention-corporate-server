@@ -137,7 +137,7 @@ class object(DHCPBase):
 					dhcpRange.append(' '.join(i))
 				else:
 					raise univention.admin.uexceptions.rangeNotInNetwork('%s-%s' % (i[0], i[1]))
-			# univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'old Range: %s' % self.oldinfo['range'])
+			# ud.debug(ud.ADMIN, ud.ERROR, 'old Range: %s' % self.oldinfo['range'])
 			if '' in dhcpRange:
 				dhcpRange.remove('')
 			ml.append(('dhcpRange', self.oldattr.get('dhcpRange', []), dhcpRange))

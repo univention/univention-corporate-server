@@ -37,7 +37,7 @@ import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.cron
 
-import univention.debug
+import univention.debug as ud
 
 from univention.admin.policy import (
 	register_policy_mapping, policy_object_tab,
@@ -159,7 +159,7 @@ class object(univention.admin.handlers.simplePolicy):
 
 	def parse_cron(self, cronstring):
 		# don't use self[key] inside here - it will be recursive call(ed by) __getitem__
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'repositorysync cron: %s' % cronstring)
+		ud.debug(ud.ADMIN, ud.INFO, 'repositorysync cron: %s' % cronstring)
 		cron = univention.admin.cron.cron_split(cronstring)
 		keys = ['minute', 'hour', 'day', 'month', 'weekday']
 		for key in keys:

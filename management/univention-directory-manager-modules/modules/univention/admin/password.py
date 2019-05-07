@@ -273,7 +273,7 @@ def password_already_used(password, pwhistory):
 		linesplit = line.split("$")  # $method_id$salt$password_hash
 		try:
 			password_hash = univention.admin.password.crypt(password, linesplit[1], linesplit[2])
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, '\n== [%s]\n== [%s]' % (password_hash, line))
+			ud.debug(ud.ADMIN, ud.ERROR, '\n== [%s]\n== [%s]' % (password_hash, line))
 		except IndexError:  # old style password history entry, no method id/salt in there
 			hash_algorithm = hashlib.new("sha1")
 			hash_algorithm.update(password.encode("utf-8"))
@@ -299,16 +299,16 @@ class PasswortHistoryPolicy(type('', (), {}).mro()[-1]):
 			try:
 				self.pwhistoryLength = max(0, int(pwhistoryPolicy['length'] or 0))
 			except ValueError:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (history length): %r' % (pwhistoryPolicy.dn,))
+				ud.debug(ud.ADMIN, ud.WARN, 'Corrupt Password history policy (history length): %r' % (pwhistoryPolicy.dn,))
 			try:
 				self.pwhistoryPasswordLength = max(0, int(pwhistoryPolicy['pwLength'] or 0))
 			except ValueError:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (password length): %r' % (pwhistoryPolicy.dn,))
+				ud.debug(ud.ADMIN, ud.WARN, 'Corrupt Password history policy (password length): %r' % (pwhistoryPolicy.dn,))
 			self.pwhistoryPasswordCheck = (pwhistoryPolicy['pwQualityCheck'] or '').lower() in ['true', '1']
 			try:
 				self.expiryInterval = max(0, int(pwhistoryPolicy['expiryInterval'] or 0))
 			except ValueError:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (expiry interval): %r' % (pwhistoryPolicy.dn,))
+				ud.debug(ud.ADMIN, ud.WARN, 'Corrupt Password history policy (expiry interval): %r' % (pwhistoryPolicy.dn,))
 
 
 if __name__ == '__main__':

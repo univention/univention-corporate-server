@@ -34,7 +34,7 @@ from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
-import univention.debug
+import univention.debug as ud
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate
@@ -347,7 +347,7 @@ class object(univention.admin.handlers.simpleLdap):
 					txt = self.oldattr.get(key)[0]
 					translations.append((lang, txt))
 
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'extended_attribute: added translations for %s: %s' % (transKey, str(translations)))
+			ud.debug(ud.ADMIN, ud.INFO, 'extended_attribute: added translations for %s: %s' % (transKey, str(translations)))
 			self['translation%s' % transKey] = translations
 
 		self.save()

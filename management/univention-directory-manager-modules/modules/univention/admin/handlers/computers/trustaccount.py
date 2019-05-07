@@ -182,7 +182,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def cancel(self):
 		for i, j in self.alloc:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'cancel: release (%s): %s' % (i, j))
+			ud.debug(ud.ADMIN, ud.WARN, 'cancel: release (%s): %s' % (i, j))
 			univention.admin.allocators.release(self.lo, self.position, i, j)
 
 

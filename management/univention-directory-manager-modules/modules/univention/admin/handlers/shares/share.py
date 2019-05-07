@@ -39,7 +39,7 @@ import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
-import univention.debug
+import univention.debug as ud
 
 translation = univention.admin.localization.translation('univention.admin.handlers.shares')
 _ = translation.translate

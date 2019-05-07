@@ -154,7 +154,7 @@ def get_module(module):
 	:returns: the module or `None` if no module exists with the requested name.
 	"""
 	if not modules:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'univention.admin.modules.update() was not called')
+		ud.debug(ud.ADMIN, ud.WARN, 'univention.admin.modules.update() was not called')
 		update()
 	return get(module)
 

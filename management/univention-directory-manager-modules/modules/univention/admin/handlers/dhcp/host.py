@@ -34,7 +34,7 @@ from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
-import univention.debug
+import univention.debug as ud
 
 from .__common import DHCPBase, add_dhcp_options
 
@@ -91,14 +91,14 @@ layout = [
 
 
 def unmapHWAddress(old):
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'host.py: unmapHWAddress: old: %s' % old)
+	ud.debug(ud.ADMIN, ud.INFO, 'host.py: unmapHWAddress: old: %s' % old)
 	if not old:
 		return ['', '']
 	return old[0].split(' ')
 
 
 def mapHWAddress(old):
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'host.py: mapHWAddress: old: %s' % old)
+	ud.debug(ud.ADMIN, ud.INFO, 'host.py: mapHWAddress: old: %s' % old)
 	if not old[0]:
 		return ''
 	else:

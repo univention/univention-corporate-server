@@ -163,7 +163,7 @@ class Support(object):
 
 				res = self.lo.search(filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=%s)(aRecord=*))', (zoneName, relDomainName)))
 				if not res:
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'nagios.py: NGPH: couldn''t find dNSZone of %s' % parent)
+					ud.debug(ud.ADMIN, ud.INFO, 'nagios.py: NGPH: couldn''t find dNSZone of %s' % parent)
 				else:
 					# found dNSZone
 					filter = '(&(objectClass=univentionHost)'
@@ -207,13 +207,13 @@ class Support(object):
 
 		# add nagios option
 		if self.option_toggled('nagios') and 'nagios' in self.options:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'added nagios option')
+			ud.debug(ud.ADMIN, ud.INFO, 'added nagios option')
 			if 'univentionNagiosHostClass' not in self.oldattr.get('objectClass', []):
 				ml.insert(0, ('univentionNagiosEnabled', '', '1'))
 
 		# remove nagios option
 		if self.option_toggled('nagios') and 'nagios' not in self.options:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'remove nagios option')
+			ud.debug(ud.ADMIN, ud.INFO, 'remove nagios option')
 			for key in ['univentionNagiosParent', 'univentionNagiosEmail', 'univentionNagiosEnabled']:
 				if self.oldattr.get(key, []):
 					ml.insert(0, (key, self.oldattr.get(key, []), ''))
@@ -270,19 +270,19 @@ class Support(object):
 
 		if 'nagios' in self.options:
 			# add host to new services
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'nagios.py: NMSL: nagios in options')
+			ud.debug(ud.ADMIN, ud.INFO, 'nagios.py: NMSL: nagios in options')
 			for servicedn in self.info.get('nagiosServices', []):
 				if not servicedn:
 					continue
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'nagios.py: NMSL: servicedn %s' % servicedn)
+				ud.debug(ud.ADMIN, ud.INFO, 'nagios.py: NMSL: servicedn %s' % servicedn)
 				if 'nagios' not in self.old_options or servicedn not in self.oldinfo['nagiosServices']:
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'nagios.py: NMSL: add')
+					ud.debug(ud.ADMIN, ud.INFO, 'nagios.py: NMSL: add')
 					# option nagios was freshly enabled or service has been enabled just now
 					oldmembers = self.lo.getAttr(servicedn, 'univentionNagiosHostname')
 					newmembers = copy.deepcopy(oldmembers)
 					newmembers.append(fqdn)
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'nagios.py: NMSL: oldmembers: %s' % oldmembers)
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'nagios.py: NMSL: newmembers: %s' % newmembers)
+					ud.debug(ud.ADMIN, ud.WARN, 'nagios.py: NMSL: oldmembers: %s' % oldmembers)
+					ud.debug(ud.ADMIN, ud.WARN, 'nagios.py: NMSL: newmembers: %s' % newmembers)
 					self.lo.modify(servicedn, [('univentionNagiosHostname', oldmembers, newmembers)])
 
 	def nagiosRemoveHostFromServices(self):

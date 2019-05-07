@@ -32,7 +32,7 @@
 import re
 import ldap
 
-import univention.debug
+import univention.debug as ud
 import univention.admin.modules
 try:
 	from typing import Any, Dict, List, Optional, Tuple, Union  # noqa F401
@@ -109,7 +109,7 @@ def get(module, co, lo, position, dn='', attr=None, superordinate=None, attribut
 		except (ldap.NO_SUCH_OBJECT, univention.admin.uexceptions.noObject):
 			if not lo.get(dn):
 				raise univention.admin.uexceptions.noObject(dn)
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'univention.admin.objects.get(): The object %s is not a %s. Ignoring this error.' % (dn, module.module,))
+			ud.debug(ud.ADMIN, ud.ERROR, 'univention.admin.objects.get(): The object %s is not a %s. Ignoring this error.' % (dn, module.module,))
 			return module.object(co, lo, position, dn, superordinate=superordinate, attributes=attributes)
 			# raise univention.admin.uexceptions.wrongObjectType('The object %s is not a %s.' % (dn, module.module,))
 
@@ -142,7 +142,7 @@ def default(module, co, lo, position):
 	:param position: |UDM| position instance.
 	:returns: An initialized |UDM| object.
 	"""
-	_d = univention.debug.function('admin.objects.default')
+	_d = ud.function('admin.objects.default')
 	module = univention.admin.modules.get(module)
 	object = module.object(co, lo, position)
 	for name, property in module.property_descriptions.items():
@@ -174,7 +174,7 @@ def description(object):
 		if not description:
 			if object.dn:
 				description = univention.admin.uldap.explodeDn(object.dn, 1)[0]
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'falling back to rdn: %s' % (object.dn))
+				ud.debug(ud.ADMIN, ud.INFO, 'falling back to rdn: %s' % (object.dn))
 			else:
 				description = 'None'
 		return description
@@ -276,14 +276,14 @@ def getPolicyReference(object, policy_type):
 	:returns: The policy applying to the object or `None`.
 	"""
 	# FIXME: Move this to handlers.simpleLdap?
-	_d = univention.debug.function('admin.objects.getPolicyReference policy_type=%s' % (policy_type))
+	_d = ud.function('admin.objects.getPolicyReference policy_type=%s' % (policy_type))
 
 	policyReference = None
 	for policy_dn in object.policies:
 		for m in univention.admin.modules.identify(policy_dn, object.lo.get(policy_dn)):
 			if univention.admin.modules.name(m) == policy_type:
 				policyReference = policy_dn
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'getPolicyReference: returning: %s' % policyReference)
+	ud.debug(ud.ADMIN, ud.INFO, 'getPolicyReference: returning: %s' % policyReference)
 	return policyReference
 
 
@@ -296,7 +296,7 @@ def removePolicyReference(object, policy_type):
 	:param policy_type: Name of the |UDM| policy to lookup.
 	"""
 	# FIXME: Move this to handlers.simpleLdap?
-	_d = univention.debug.function('admin.objects.removePolicyReference policy_type=%s' % (policy_type))
+	_d = ud.function('admin.objects.removePolicyReference policy_type=%s' % (policy_type))
 
 	remove = None
 	for policy_dn in object.policies:
@@ -304,7 +304,7 @@ def removePolicyReference(object, policy_type):
 			if univention.admin.modules.name(m) == policy_type:
 				remove = policy_dn
 	if remove:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'removePolicyReference: removing reference: %s' % remove)
+		ud.debug(ud.ADMIN, ud.INFO, 'removePolicyReference: removing reference: %s' % remove)
 		object.policies.remove(remove)
 
 
@@ -317,16 +317,16 @@ def replacePolicyReference(object, policy_type, new_reference):
 	:param policy_type: Name of the |UDM| policy to lookup.
 	"""
 	# FIXME: Move this to handlers.simpleLdap?
-	_d = univention.debug.function('admin.objects.replacePolicyReference policy_type=%s new_reference=%s' % (policy_type, new_reference))
+	_d = ud.function('admin.objects.replacePolicyReference policy_type=%s new_reference=%s' % (policy_type, new_reference))
 
 	module = univention.admin.modules.get(policy_type)
 	if not univention.admin.modules.recognize(module, new_reference, object.lo.get(new_reference)):
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'replacePolicyReference: error.')
+		ud.debug(ud.ADMIN, ud.INFO, 'replacePolicyReference: error.')
 		return
 
 	removePolicyReference(object, policy_type)
 
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'replacePolicyReference: appending reference: %s' % new_reference)
+	ud.debug(ud.ADMIN, ud.INFO, 'replacePolicyReference: appending reference: %s' % new_reference)
 	object.policies.append(new_reference)
 
 
@@ -339,7 +339,7 @@ def restorePolicyReference(object, policy_type):
 	:param policy_type: Name of the |UDM| policy to lookup.
 	"""
 	# FIXME: Move this to handlers.simpleLdap?
-	_d = univention.debug.function('admin.objects.restorePolicyReference policy_type=%s' % (policy_type))
+	_d = ud.function('admin.objects.restorePolicyReference policy_type=%s' % (policy_type))
 	module = univention.admin.modules.get(policy_type)
 	if not module:
 		return

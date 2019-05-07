@@ -32,7 +32,7 @@
 import ldap
 from ldap.filter import filter_format
 
-import univention.debug
+import univention.debug as ud
 import univention.admin.locking
 import univention.admin.uexceptions
 from univention.admin import localization
@@ -76,7 +76,7 @@ def requestUserSid(lo, position, uid_s):
 	domainsid = searchResult[0][1]['sambaSID'][0]
 	sid = domainsid + '-' + rid
 
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: request user sid. SID = %s-%s' % (domainsid, rid))
+	ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE: request user sid. SID = %s-%s' % (domainsid, rid))
 
 	return request(lo, position, 'sid', sid)
 
@@ -98,14 +98,14 @@ def requestGroupSid(lo, position, gid_s, generateDomainLocalSid=False):
 
 def acquireRange(lo, position, atype, attr, ranges, scope='base'):
 
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Start allocation for type = %r' % atype)
+	ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE: Start allocation for type = %r' % atype)
 	startID = lo.getAttr('cn=%s,cn=temporary,cn=univention,%s' % (ldap.dn.escape_dn_chars(atype), position.getBase()), 'univentionLastUsedValue')
 
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Start ID = %r' % startID)
+	ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE: Start ID = %r' % startID)
 
 	if not startID:
 		startID = ranges[0]['first']
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Set Start ID to first %r' % startID)
+		ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE: Set Start ID to first %r' % startID)
 	else:
 		startID = int(startID[0])
 
@@ -117,40 +117,40 @@ def acquireRange(lo, position, atype, attr, ranges, scope='base'):
 
 		while startID < last:
 			startID += 1
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Set Start ID %r' % startID)
+			ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE: Set Start ID %r' % startID)
 			try:
 				if other:
 					# exception occurred while locking other, so atype was successfully locked and must be released
 					univention.admin.locking.unlock(lo, position, atype, str(startID - 1), scope=scope)
 					other = None
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Lock ID %r for %r' % (startID, atype))
+				ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE: Lock ID %r for %r' % (startID, atype))
 				univention.admin.locking.lock(lo, position, atype, str(startID), scope=scope)
 				if atype in ('uidNumber', 'gidNumber'):
 					# reserve the same ID for both
 					other = 'uidNumber' if atype == 'gidNumber' else 'gidNumber'
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Lock ID %r for %r' % (startID, other))
+					ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE: Lock ID %r for %r' % (startID, other))
 					univention.admin.locking.lock(lo, position, other, str(startID), scope=scope)
 			except univention.admin.uexceptions.noLock:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Cant Lock ID %r' % startID)
+				ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE: Cant Lock ID %r' % startID)
 				continue
 			except univention.admin.uexceptions.objectExists:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Cant Lock existing ID %r' % startID)
+				ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE: Cant Lock existing ID %r' % startID)
 				continue
 
 			if atype in ('uidNumber', 'gidNumber'):
 				_filter = filter_format('(|(uidNumber=%s)(gidNumber=%s))', (str(startID), str(startID)))
 			else:
 				_filter = '(%s=%d)' % (attr, startID)
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: searchfor %r' % _filter)
+			ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE: searchfor %r' % _filter)
 			if lo.searchDn(base=position.getBase(), filter=_filter):
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Already used ID %r' % startID)
+				ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE: Already used ID %r' % startID)
 				univention.admin.locking.unlock(lo, position, atype, str(startID), scope=scope)
 				if other:
 					univention.admin.locking.unlock(lo, position, other, str(startID), scope=scope)
 					other = None
 				continue
 
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Return ID %r' % startID)
+			ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE: Return ID %r' % startID)
 			if other:
 				univention.admin.locking.unlock(lo, position, other, str(startID), scope=scope)
 			return str(startID)
@@ -159,7 +159,7 @@ def acquireRange(lo, position, atype, attr, ranges, scope='base'):
 
 
 def acquireUnique(lo, position, type, value, attr, scope='base'):
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'LOCK acquireUnique scope = %s' % scope)
+	ud.debug(ud.ADMIN, ud.INFO, 'LOCK acquireUnique scope = %s' % scope)
 	if scope == 'domain':
 		searchBase = position.getDomain()
 	else:
@@ -172,18 +172,18 @@ def acquireUnique(lo, position, type, value, attr, scope='base'):
 	elif type in ['groupName', 'uid'] and configRegistry.is_true('directory/manager/user_group/uniqueness', True):
 		univention.admin.locking.lock(lo, position, type, value, scope=scope)
 		if not lo.searchDn(base=searchBase, filter=filter_format('(|(&(cn=%s)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping)(objectClass=posixGroup)))(uid=%s))', (value, value))):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE return %s' % value)
+			ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE return %s' % value)
 			return value
 	elif type == "groupName":  # search filter is more complex then in general case
 		univention.admin.locking.lock(lo, position, type, value, scope=scope)
 		if not lo.searchDn(base=searchBase, filter=filter_format('(&(%s=%s)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping)(objectClass=posixGroup)))', (attr, value))):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE return %s' % value)
+			ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE return %s' % value)
 			return value
 	else:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'LOCK univention.admin.locking.lock scope = %s' % scope)
+		ud.debug(ud.ADMIN, ud.INFO, 'LOCK univention.admin.locking.lock scope = %s' % scope)
 		univention.admin.locking.lock(lo, position, type, value, scope=scope)
 		if not lo.searchDn(base=searchBase, filter=filter_format('%s=%s', (attr, value))):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE return %s' % value)
+			ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE return %s' % value)
 			return value
 
 	raise univention.admin.uexceptions.noLock(_('The attribute %r could not get locked.') % (type,))
