@@ -1,3 +1,9 @@
+ucs-test (9.0.2-50) unstable; urgency=medium
+
+  * Bug #31771: fixup fix tab indentation in ucs-test
+
+ -- Florian Best <best@univention.de>  Tue, 07 May 2019 09:02:52 +0200
+
 ucs-test (9.0.2-49) unstable; urgency=medium
 
   * Bug #49414: apply patch from Arvid for wait_for() handling
