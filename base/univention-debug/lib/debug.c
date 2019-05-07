@@ -44,7 +44,7 @@
 #define UV_DEBUG_DEFAULT        UV_DEBUG_WARN
 
 static enum uv_debug_level *univention_debug_level;
-static const char *univention_debug_filename = NULL;
+static char *univention_debug_filename = NULL;
 static FILE *univention_debug_file = NULL;
 static enum uv_debug_flag_flush univention_debug_flush;
 static enum uv_debug_flag_function univention_debug_function;
