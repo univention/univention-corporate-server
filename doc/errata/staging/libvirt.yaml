@@ -1,0 +1,18 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: libvirt
+fix: 3.0.0-4+deb9u3A~4.3.0.201904041619
+desc: |
+ This update addresses the following issue:
+ * Since UCS-4.3 erratum 269 UVMM can be configured to check the CPU model
+   before performing a live migration. Due to a bug in `libvirt` the use of
+   `host-model` does not survive the creation of snapshots or suspend to disk
+   and gets rewritten to the concrete CPU model of the host system. This has
+   been fixed.
+   Old snapshots created and domains suspended before this erratum might fail
+   to start, in which case the <cpu/> configuration must be manually removed
+   from the XML description using `virsh snapshot-edit` or `virsh
+   save-image-edit` respectively.
+bug: [49425]
