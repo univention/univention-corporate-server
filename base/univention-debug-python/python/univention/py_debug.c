@@ -56,8 +56,7 @@ py_univention_debug_debug(PyObject *self, PyObject *args)
 
     univention_debug(id, level, "%s", string);
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_RETURN_NONE;
 }
 PyDoc_STRVAR(py_univention_debug_debug__doc__,
         "debug(category, level, message) - Log debug message.\n"
@@ -115,8 +114,7 @@ py_univention_debug_set_level(PyObject *self, PyObject *args)
 
     univention_debug_set_level(id, level);
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_RETURN_NONE;
 }
 PyDoc_STRVAR(py_univention_debug_set_level__doc__,
         "set_level(category, level) - Set debug level for category.\n"
@@ -156,8 +154,7 @@ py_univention_debug_set_function(PyObject *self, PyObject *args)
 
     univention_debug_set_function(function);
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_RETURN_NONE;
 }
 PyDoc_STRVAR(py_univention_debug_set_function__doc__,
         "set_function(flag) - Enable function tracing.\n"
@@ -176,8 +173,7 @@ py_univention_debug_begin(PyObject *self, PyObject *args)
 
     univention_debug_begin(string);
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_RETURN_NONE;
 }
 PyDoc_STRVAR(py_univention_debug_begin__doc__,
         "begin(function) - Function starts here.\n"
@@ -196,8 +192,7 @@ py_univention_debug_end(PyObject *self, PyObject *args)
 
     univention_debug_end(string);
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_RETURN_NONE;
 }
 PyDoc_STRVAR(py_univention_debug_end__doc__,
         "end(function) - Function ends here.\n"
@@ -210,8 +205,7 @@ py_univention_debug_exit(PyObject *self)
 {
     univention_debug_exit();
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_RETURN_NONE;
 }
 PyDoc_STRVAR(py_univention_debug_exit__doc__,
         "exit() - Close debug log.\n"
@@ -223,8 +217,7 @@ py_univention_debug_reopen(PyObject *self)
 {
     univention_debug_reopen();
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_RETURN_NONE;
 }
 PyDoc_STRVAR(py_univention_debug_reopen__doc__,
         "reopen() - Re-open logfile.\n"
