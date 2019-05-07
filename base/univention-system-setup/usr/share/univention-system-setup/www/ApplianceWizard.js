@@ -838,6 +838,45 @@ define([
 					required: this.local_mode
 				}]
 			}), lang.mixin({}, pageConf, {
+				name: 'schooldomain-slave',
+				headerText: _('Serverrole inside the UCS@school domain'),
+				helpText: _('Choose what role this server is supposed to take in your UCS@school domain.'),
+				widgets: [{
+					type: RadioButton,
+					radioButtonGroup: 'schoolrole',
+					name: '_schoolRoleEducational',
+					label: _('Educational server'),
+					checked: true,
+					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
+				}, {
+					type: Text,
+					name: 'helpEducational',
+					content: _('This server provides educatinal UCS@school services for a school.'),
+					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
+				}, {
+					type: RadioButton,
+					radioButtonGroup: 'schoolrole',
+					name: '_schoolRoleAdministrative',
+					label: _('Administrativer server'),
+					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
+				}, {
+					type: Text,
+					name: 'helpAdministrative',
+					content: _('This server provides administrative UCS@school services for a school.'),
+					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
+				}, {
+					type: RadioButton,
+					radioButtonGroup: 'schoolrole',
+					name: '_schoolRoleCentral',
+					label: _('Central server'),
+					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
+				}, {
+					type: Text,
+					name: 'helpCentral',
+					content: _('This server provides no UCS@school services.'),
+					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
+				}]
+			}), lang.mixin({}, pageConf, {
 				name: 'software',
 				headerText: _('Software configuration'),
 				helpText: _('<p>Select UCS software components for installation on this system. This step can be skipped; the components are also available in the Univention App Center in the category <i>UCS components</i>.</p><p>Third-party software (e.g., groupware) is also available through the Univention App Center.</p>')
@@ -2283,6 +2322,67 @@ define([
 				}
 			}
 
+			if (pageName === 'schooldomain-slave') {
+				var hasEduSchoolRole = lang.hitch(this, function() {
+					return array.some(this._serverSchoolRoles, function(role) {
+						return role.startsWith('dc_slave_edu:school:');
+					});
+				});
+				var hasAdminSchoolRole = lang.hitch(this, function() {
+					return array.some(this._serverSchoolRoles, function(role) {
+						return role.startsWith('dc_slave_admin:school:');
+					});
+				});
+				if (this._getRole() === 'domaincontroller_slave' && this._isSchoolMultiServerDomain) {
+					var _vals = this._gatherVisibleValues();
+					var hasAdminAlert = function() {
+						_alert(_('According to the LDAP object for this server it should become an administrative slave. Please correct this before continuing. E.g delete the host object.'));
+					};
+					var hasEduAlert = function() {
+						_alert(_('According to the LDAP object for this server it should become an educational slave. Please correct this before continuing. E.g delete the host object.'));
+					};
+					var missingEduAlert = function() {
+						_alert(_('If this server is supposed to become an educational slave, please create a school first and set the hostname of this server as the educational server.'));
+					};
+					var missingAdminAlert = function() {
+						_alert(_('If this server is supposed to become an administrative slave, please create a school first and set the hostname of this server as the administrative server.'));
+					};
+
+
+					if (_vals._schoolRoleEducational) {
+						if (hasEduSchoolRole()) {
+							return true;
+						} else if (hasAdminSchoolRole()) {
+							hasAdminAlert();
+							return false;
+						} else {
+							missingEduAlert();
+							return false;
+						}
+					} else if (_vals._schoolRoleAdministrative) {
+						if (hasAdminSchoolRole()) {
+							return true;
+						} else if (hasEduSchoolRole()) {
+							hasEduAlert();
+							return false;
+						} else {
+							missingAdminAlert();
+							return false;
+						}
+					} else {
+						if (hasEduSchoolRole()) {
+							hasEduAlert();
+							return false;
+						} else if (hasAdminSchoolRole()) {
+							hasAdminAlert();
+							return false;
+						} else {
+							return true;
+						}
+					}
+				}
+			}
+
 			// check network device configuration
 			if (pageName == 'network' && this.getWidget('network', '_ip0').get('visible')) {
 				var _vals = this._pages.network._form.get('value');
@@ -2524,6 +2624,16 @@ define([
 			};
 			lang.mixin(params, this._getCredentials());
 			return this.umcpCommand('setup/check/join_info', params).then(function(data) {
+				return data.result;
+			});
+		},
+
+		_checkSchoolInformation: function() {
+			var params = {
+				hostname: this.getWidget('fqdn-nonmaster-all', 'hostname').get('value'),
+			};
+			lang.mixin(params, this._getCredentials());
+			return this.umcpCommand('setup/check/school_info', params).then(function(data) {
 				return data.result;
 			});
 		},
@@ -2920,6 +3030,12 @@ define([
 					return pageName;
 				});
 			});
+			var shouldShowSchooldomainSlavePage = lang.hitch(this, function() {
+				return (pageName === 'fqdn-nonmaster-all' && this._getRole() === 'domaincontroller_slave');
+			});
+			if ((nextPage === 'schooldomain-slave') && ! shouldShowSchooldomainSlavePage()) {
+				nextPage = this.next(nextPage);
+			}
 
 			// confirm empty passwords (if not required)
 			if (pageName == 'credentials-master' || pageName == 'fqdn-nonmaster-all') {
@@ -2947,11 +3063,23 @@ define([
 					});
 				}
 
-				if (pageName == 'fqdn-nonmaster-all' && this._isRoleNonMaster() && this._wantsToJoin()) {
-					deferred = deferred.then(
+				if (pageName === 'fqdn-nonmaster-all') {
+					deferred = deferred.then(lang.hitch(this, function(selectedNextPage) {
 						// callback; will only be called, if previous dialog was not canceled
-						lang.hitch(this, this.warnIfUidIsUsedElsewhere)
-					);
+						if (this._isRoleNonMaster() && this._wantsToJoin()) {
+							lang.hitch(this, this.warnIfUidIsUsedElsewhere)
+						}
+						if (nextPage === 'schooldomain-slave') {
+							return this._checkSchoolInformation().then(lang.hitch(this, function(result) {
+								this._serverSchoolRoles = result.server_school_roles;
+								this._isSchoolMultiServerDomain = result.is_school_multiserver_domain;
+							})).then(lang.hitch(this, function() {
+								if (! this._isSchoolMultiServerDomain) {
+									 nextPage = this.next(nextPage);
+								}
+							}));
+						}
+					}));
 				}
 
 				deferred = deferred.then(lang.hitch(this, function(selectedNextPage) {
@@ -3006,6 +3134,11 @@ define([
 					previousPage = 'role-nonmaster-ad';
 				} else {
 					previousPage = 'role';
+				}
+			}
+			if (previousPage === 'schooldomain-slave') {
+				if ( this._getRole() !== 'domaincontroller_slave' || ! this._isSchoolMultiServerDomain) {
+					return this.previous(previousPage);
 				}
 			}
 

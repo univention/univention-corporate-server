@@ -74,6 +74,7 @@ from univention.management.console.modules.setup.checks.ldap import check_if_uid
 from univention.management.console.modules.setup.checks.repositories import get_unreachable_repository_servers
 from univention.management.console.modules.setup.checks.univention_join import receive_domaincontroller_master_information
 from univention.management.console.modules.setup.checks.univention_join import set_role_and_check_if_join_will_work
+from univention.management.console.modules.setup.checks.univention_join import check_for_school_domain
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -798,6 +799,10 @@ class Instance(Base, ProgressMixin):
 			set_role_and_check_if_join_will_work(role, address, username, password)
 		# master? basesystem? no domain check necessary
 		return result
+
+	@simple_response
+	def check_school_information(self, hostname, address, username, password):
+		return check_for_school_domain(hostname, address, username, password)
 
 	@simple_response
 	def check_repository_accessibility(self):

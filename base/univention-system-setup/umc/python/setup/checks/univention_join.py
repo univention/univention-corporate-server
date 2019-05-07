@@ -121,3 +121,82 @@ def check_memberof_overlay_is_installed(address, username, password):
 		except subprocess.CalledProcessError as exc:
 			MODULE.error('Could not query DC Master for memberof overlay: %s' % (exc,))
 	return False
+
+
+def check_for_school_domain(hostname, address, username, password):
+	is_school_multiserver_domain = check_is_school_multiserver_domain(address, username, password)
+	if is_school_multiserver_domain:
+		server_school_roles = get_server_school_roles(hostname, address, username, password)
+	else:
+		server_school_roles = []
+	return {'server_school_roles': server_school_roles, 'is_school_multiserver_domain': is_school_multiserver_domain}
+
+
+def check_is_school_multiserver_domain(address, username, password):
+	is_school_multiserver_domain = False
+	with _temporary_password_file(password) as password_file:
+		try:
+			master_hostdn = subprocess.check_output([
+				'univention-ssh',
+				password_file,
+				'%s@%s' % (username, address),
+				'/usr/sbin/univention-config-registry',
+				'get',
+				'ldap/hostdn'
+			]).strip()
+			ldap_base = subprocess.check_output([
+				'univention-ssh',
+				password_file,
+				'%s@%s' % (username, address),
+				'/usr/sbin/univention-config-registry',
+				'get',
+				'ldap/base'
+			]).strip()
+			is_school_multiserver_domain = 'dn: {}'.format(master_hostdn) in subprocess.check_output([
+				'univention-ssh',
+				password_file,
+				'%s@%s' % (username, address),
+				'univention-ldapsearch',
+				'-D',
+				'\\"cn=admin,{}\\"'.format(ldap_base),
+				'-y',
+				'/etc/ldap.secret',
+				'-b',
+				'\\"{}\\"'.format(master_hostdn),
+				'\\"(&(ucsschoolRole=dc_master:school:-)(!(ucsschoolRole=single_master:school:-))(univentionService=UCS@school))\\"',
+				'dn',
+			]).strip().splitlines()
+		except subprocess.CalledProcessError as exc:
+			MODULE.error('Could not query DC Master if the domain is a multiserver school domain: %s' % (exc,))
+	return is_school_multiserver_domain
+
+
+def get_server_school_roles(hostname, address, username, password):
+	school_roles = []
+	with _temporary_password_file(password) as password_file:
+		try:
+			ldap_base = subprocess.check_output([
+				'univention-ssh',
+				password_file,
+				'%s@%s' % (username, address),
+				'/usr/sbin/univention-config-registry',
+				'get',
+				'ldap/base'
+			]).strip()
+			school_roles = subprocess.check_output([
+				'univention-ssh',
+				password_file,
+				'%s@%s' % (username, address),
+				'univention-ldapsearch',
+				'-D',
+				'\\"cn=admin,{}\\"'.format(ldap_base),
+				'-y',
+				'/etc/ldap.secret',
+				'-LLL',
+				'\\"(uid={}$)\\"'.format(hostname),
+				'ucsschoolRole',
+			]).strip().splitlines()[1:]
+			school_roles = [role.split()[-1] for role in school_roles]
+		except (subprocess.CalledProcessError, IndexError) as exc:
+			MODULE.error('Could not query DC Master for ucsschoolRole: %s' % (exc,))
+	return school_roles
