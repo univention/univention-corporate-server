@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-12) unstable; urgency=medium
+
+  * Bug #48157: prevent UMC server crash in rare situations
+
+ -- Florian Best <best@univention.de>  Tue, 07 May 2019 10:54:37 +0200
+
 univention-management-console (11.0.4-11) unstable; urgency=medium
 
   * Bug #49029: fix translation of authentication messages

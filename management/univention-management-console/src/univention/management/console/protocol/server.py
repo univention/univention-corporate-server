@@ -215,8 +215,12 @@ class MagicBucket(object):
 					del state.requests[msg.id]
 		except (SSL.WantReadError, SSL.WantWriteError, SSL.WantX509LookupError):
 			CRYPT.info('UMCP: SSL error need to re-send chunk')
-			notifier.socket_add(state.socket, self._do_send, notifier.IO_WRITE)
-			state.resend_queue.append(data)
+			try:
+				notifier.socket_add(state.socket, self._do_send, notifier.IO_WRITE)
+				state.resend_queue.append((msg.id, data[ret:]))
+			except socket.error as error:
+				CRYPT.error('Socket error in _response: %s. Probably the socket was closed by the client.' % str(error))
+				self._cleanup(state.socket)
 		except (SSL.SysCallError, SSL.Error, socket.error) as error:
 			CRYPT.warn('SSL error in _response: %s. Probably the socket was closed by the client.' % str(error))
 			self._cleanup(state.socket)
