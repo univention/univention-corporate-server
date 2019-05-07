@@ -97,9 +97,10 @@ FILE * univention_debug_init(const char *logfile, enum uv_debug_flag_flush flush
 {
 	int i;
 
-	if (univention_debug_ready) {
+	if (univention_debug_ready)
 		return NULL;
-	}
+	if (!logfile)
+		return NULL;
 
 	for (i=0; i<DEBUG_MODUL_COUNT; i++) {
 		univention_debug_level[i] = UV_DEBUG_DEFAULT;
@@ -109,13 +110,13 @@ FILE * univention_debug_init(const char *logfile, enum uv_debug_flag_flush flush
 		univention_debug_file = stderr;
 	else if (!strcmp(logfile,"stdout"))
 		univention_debug_file = stdout;
-	else if (logfile != NULL) {
+	else {
 		if ((univention_debug_file = fopen(logfile, "a+")) == NULL) {
 			fprintf(stderr, "Could not open logfile \"%s\"\n", logfile);
 			return NULL;
 		}
 	}
-	univention_debug_filename = logfile ? strdup(logfile) : NULL;
+	univention_debug_filename = strdup(logfile);
 
 	univention_debug_flush = flush;
 	univention_debug_function = function;
@@ -132,10 +133,23 @@ void univention_debug(enum uv_debug_category id, enum uv_debug_level level, cons
 {
 	va_list ap;
 
-	if (!univention_debug_ready || id < 0 || id >= DEBUG_MODUL_COUNT)
+	if (!univention_debug_ready)
 		return;
-	if (univention_debug_file && level <= univention_debug_level[id]) {
+	if (id < 0)
+		return;
+	if (id >= DEBUG_MODUL_COUNT)
+		return;
+	if (!univention_debug_file)
+		return;
+	if (level > univention_debug_level[id])
+		return;
+
+	if (level >= UV_DEBUG_ERROR && level <= UV_DEBUG_ALL)
 		LOG("%-11s ( %-7s ) : ", univention_debug_id_text[id], univention_debug_level_text[level]);
+	else
+		LOG("%-11s ( %-7d ) : ", univention_debug_id_text[id], level);
+
+	{
 		va_start(ap, fmt);
 		vfprintf(univention_debug_file, fmt, ap);
 		va_end(ap);
@@ -148,7 +162,12 @@ void univention_debug(enum uv_debug_category id, enum uv_debug_level level, cons
 
 void univention_debug_begin(const char *s)
 {
-	if (univention_debug_file && univention_debug_function == UV_DEBUG_FUNCTION) {
+	if (!univention_debug_file)
+		return;
+	if (univention_debug_function != UV_DEBUG_FUNCTION)
+		return;
+
+	{
 		fprintf(univention_debug_file, "UNIVENTION_DEBUG_BEGIN  : %s\n", s);
 		if (univention_debug_flush == UV_DEBUG_FLUSH)
 			fflush(univention_debug_file);
@@ -157,7 +176,12 @@ void univention_debug_begin(const char *s)
 
 void univention_debug_end(const char *s)
 {
-	if (univention_debug_file && univention_debug_function == UV_DEBUG_FUNCTION) {
+	if (!univention_debug_file)
+		return;
+	if (univention_debug_function != UV_DEBUG_FUNCTION)
+		return;
+
+	{
 		fprintf(univention_debug_file, "UNIVENTION_DEBUG_END    : %s\n", s);
 		if (univention_debug_flush == UV_DEBUG_FLUSH)
 			fflush(univention_debug_file);
@@ -166,9 +190,10 @@ void univention_debug_end(const char *s)
 
 void univention_debug_reopen(void)
 {
-	if (!univention_debug_ready) {
+	if (!univention_debug_ready)
 		return;
-	}
+	if (!univention_debug_filename)
+		return;
 
 	if (univention_debug_file == stderr || univention_debug_file == stdout)
 		return;
@@ -181,7 +206,7 @@ void univention_debug_reopen(void)
 		univention_debug_file = stderr;
 	else if (!strcmp(univention_debug_filename ,"stdout"))
 		univention_debug_file = stdout;
-	else if (univention_debug_filename != NULL) {
+	else {
 		if ((univention_debug_file = fopen(univention_debug_filename, "a+")) == NULL) {
 			fprintf(stderr, "Could not open logfile \"%s\"\n", univention_debug_filename);
 			return /*1*/;
@@ -191,9 +216,8 @@ void univention_debug_reopen(void)
 
 void univention_debug_exit(void)
 {
-	if (!univention_debug_ready) {
+	if (!univention_debug_ready)
 		return;
-	}
 
 	LOG("DEBUG_EXIT\n");
 	fflush(univention_debug_file);
@@ -208,15 +232,23 @@ void univention_debug_exit(void)
 
 void univention_debug_set_level(enum uv_debug_category id, enum uv_debug_level level)
 {
-	if (!univention_debug_ready || id < 0 || id >= DEBUG_MODUL_COUNT)
+	if (id < 0)
 		return;
+	if (id >= DEBUG_MODUL_COUNT)
+		return;
+
 	univention_debug_level[id] = level;
 }
 
 enum uv_debug_level univention_debug_get_level(enum uv_debug_category id)
 {
-	if (!univention_debug_ready || id < 0 || id >= DEBUG_MODUL_COUNT)
+	if (!univention_debug_ready)
 		return UV_DEBUG_ERROR;
+	if (id < 0)
+		return UV_DEBUG_ERROR;
+	if (id >= DEBUG_MODUL_COUNT)
+		return UV_DEBUG_ERROR;
+
 	return univention_debug_level[id];
 }
 
