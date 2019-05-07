@@ -462,11 +462,6 @@ def wait_for_listener_replication_and_postrun(verbose=True):
 	raise LDAPReplicationFailed
 
 
-# backwards compatibility
-wait_for_replication = wait_for_listener_replication
-wait_for_replication_and_postrun = wait_for_listener_replication_and_postrun
-
-
 def wait_for_s4connector_replication(verbose=True):
 	if verbose:
 		print('Waiting for connector replication')
@@ -480,6 +475,12 @@ def wait_for_s4connector_replication(verbose=True):
 	except univention.testing.ucs_samba.WaitForS4ConnectorTimeout:
 		if verbose:
 			print >> sys.stderr, 'Warning: S4 Connector replication was not finished after 17 seconds'
+
+
+# backwards compatibility
+wait_for_replication = wait_for_listener_replication
+wait_for_replication_and_postrun = wait_for_listener_replication_and_postrun
+wait_for_connector_replication = wait_for_s4connector_replication
 
 
 def package_installed(package):
