@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (5.0.1-9) unstable; urgency=medium
+
+  * Bug #49335: Remove 42_samba_tool_sysvolcheck.py
+
+ -- Arvid Requate <requate@univention.de>  Tue, 07 May 2019 19:51:12 +0200
+
 univention-management-console-module-diagnostic (5.0.1-8) unstable; urgency=medium
 
   * Bug #46643: Use new option --mask-msad-differences for ntacl sysvolcheck
