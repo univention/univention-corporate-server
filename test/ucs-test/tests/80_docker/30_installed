@@ -5,9 +5,9 @@
 ## packages:
 ##   - docker.io
 
-from dockertest import *
+from dockertest import Appcenter, get_app_name, get_app_version, tiny_app, App
 from univention.config_registry import ConfigRegistry
-from univention.testing.utils import get_ldap_connection
+
 
 if __name__ == '__main__':
 
@@ -15,6 +15,7 @@ if __name__ == '__main__':
 		app_name = get_app_name()
 		app_version = get_app_version()
 
+		app_docker1 = app_docker2 = app_nondocker = None
 		try:
 			app_docker1 = tiny_app(get_app_name(), get_app_version())
 			app_docker1.set_ini_parameter(Code='D1')
@@ -48,9 +49,12 @@ if __name__ == '__main__':
 			assert 'ND' in codes_new, 'Wrong new Codes: %r' % codes_new
 
 		finally:
-			app_docker1.uninstall()
-			app_docker1.remove()
-			app_docker2.uninstall()
-			app_docker2.remove()
-			app_nondocker.uninstall()
-			app_nondocker.remove()
+			if app_docker1 is not None:
+				app_docker1.uninstall()
+				app_docker1.remove()
+			if app_docker2 is not None:
+				app_docker2.uninstall()
+				app_docker2.remove()
+			if app_nondocker is not None:
+				app_nondocker.uninstall()
+				app_nondocker.remove()
