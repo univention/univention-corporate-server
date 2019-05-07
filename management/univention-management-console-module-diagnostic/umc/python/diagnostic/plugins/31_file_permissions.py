@@ -155,6 +155,10 @@ def file_and_permission_checks():
 		cf_type('/var/mail', 'root', 'mail', 0o2775, True),
 		cf_type('/var/mail/systemmail', 'systemmail', 'mail', 0o600, False),
 		cf_type('/var/tmp/univention-management-console-frontend', 'root', 'root', 0o755, False),
+		cf_type('/etc/squid.secret', 'proxy', 'root', 0o600, must_exist=False),
+		cf_type('/etc/postgresql/pam_ldap.conf', 'postgres', 'postgres', 0o640, must_exist=False),
+		cf_type('/var/lib/samba/private/secrets.ldb', 'root', 'root', 0o600, must_exist=False),
+		cf_type('/etc/exports', 'root', 'root', 0o644, must_exist=False),
 	]
 
 	iglob_paths = [
@@ -162,6 +166,9 @@ def file_and_permission_checks():
 		('/var/cache/univention-*', ('root', 'root', 0o755, False)),
 		('/var/tmp/univention-management-console-frontend/*', ('root', 'root', 0o600, False)),
 		('/etc/univention/connector/*.sqlite', ('root', 'root', 0o644, False)),
+		('/etc/postfix/ldap.*', ('root', 'root', 0o440, False)),
+		('/etc/bind/univention.conf.d/*', ('root', 'root', 0o640, False)),
+		('/etc/samba/shares.conf.d/*', ('root', 'nogroup', 0o644, False)),
 	]
 
 	for glob_path, args in iglob_paths:
