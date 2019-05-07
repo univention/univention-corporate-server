@@ -388,12 +388,12 @@ class UCSTestUDM(object):
 		if wait_for_drs_replication and not isinstance(wait_for_drs_replication, basestring):
 			attr = {'container/ou': 'ou'}.get(modulename, 'cn')
 			drs_replication = ldap.filter.filter_format('%s=%s', (attr, ldap.dn.str2dn(dn)[0][0][1],))
+		if wait_for_s4connector:
+			conditions.append((utils.ReplicationType.S4C_TO_UCS, wait_for_s4connector))
 		if drs_replication:
 			if not wait_for_replication:
 				conditions.append((utils.ReplicationType.LISTENER, wait_for_replication))
 			conditions.append((utils.ReplicationType.DRS, drs_replication))
-		if wait_for_s4connector:
-			conditions.append((utils.ReplicationType.S4C_TO_UCS, wait_for_s4connector))
 		return utils.wait_for(conditions, verbose=False)
 
 	def create_user(self, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
