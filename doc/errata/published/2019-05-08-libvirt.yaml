@@ -16,3 +16,5 @@ desc: |
    from the XML description using `virsh snapshot-edit` or `virsh
    save-image-edit` respectively.
 bug: [49425]
+erratum: 79
+announced: 2019-05-08
