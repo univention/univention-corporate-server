@@ -9,3 +9,5 @@ desc: |
  * A cross site scripting vulnerability in umc.widgets.Editor has been fixed.
    This affected portal entries.
 bug: [48812]
+erratum: 88
+announced: 2019-05-08
