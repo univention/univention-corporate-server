@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The escaping of LDAP filters and distinguished names has been corrected.
 bug: [40055]
+erratum: 85
+announced: 2019-05-08
