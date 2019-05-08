@@ -63,7 +63,7 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
 		return
 
 	if verbose:
-		print "Waiting for DRS replication, filter: '%s', base: %s, scope: %s, should_exist: %s" % (ldap_filter, base, scope, should_exist),
+		print "Waiting for DRS replication, filter: %r, base: %r, scope: %r, should_exist: %r" % (ldap_filter, base, scope, should_exist),
 	t = t0 = time.time()
 	while t < t0 + timeout:
 		try:
@@ -87,7 +87,7 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
 		print '.',
 		time.sleep(delta_t)
 		t = time.time()
-	raise DRSReplicationFailed("DRS replication for filter: '%s' failed due to timeout after %d sec." % (ldap_filter, t - t0))
+	raise DRSReplicationFailed("DRS replication for filter: %r failed due to timeout after %d sec." % (ldap_filter, t - t0))
 
 
 def get_available_s4connector_dc():
