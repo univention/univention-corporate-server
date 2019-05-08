@@ -12,3 +12,5 @@ desc: |
    /var/www/univention/self-service/css/custom.css CSS file.
  * Fix German translation.
 bug: [45041, 49343, 49380]
+erratum: 90
+announced: 2019-05-08
