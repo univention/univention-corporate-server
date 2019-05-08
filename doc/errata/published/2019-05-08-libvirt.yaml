@@ -18,3 +18,5 @@ desc: |
 bug: [48536]
 ignore:
   - version.scope
+erratum: 496
+announced: 2019-05-08
