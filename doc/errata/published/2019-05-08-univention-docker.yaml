@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-0
 src: univention-docker
 fix: 4.0.0-4A~4.4.0.201904301731
 desc: |
- This update addresses the following issues:
+ This update addresses the following issue:
  * Log rotation for container logs has been enabled in the
    docker daemon, and can be configured via the UCR variables
    docker/daemon/default/opts/log-driver (default json-file) and

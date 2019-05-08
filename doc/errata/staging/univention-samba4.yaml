@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-0
 src: univention-samba4
 fix: 8.0.0-22A~4.4.0.201905131313
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * The folder windows-profiles in the home share is now hidden.
  * If samba fails to set the new password in a server password change,
    the changes will be reverted.
