@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-directory-notifier
-fix: 13.0.1-15A~4.4.0.201905031308
+fix: 13.0.1-16A~4.4.0.201905080824
 desc: |
  This update addresses the following issue:
  * Implement command "univention-translog prune" to prune old transactions
