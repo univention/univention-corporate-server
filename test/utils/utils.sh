@@ -1036,7 +1036,7 @@ restart_umc_bug_48157 ()
 run_workarounds_before_starting_the_tests ()
 {
 	restart_services_bug_47762
-	restart_umc_bug_48157
+	#restart_umc_bug_48157 # Bug is verified for now. Code can be removed if bug is closed.
 }
 
 sa_bug47030 () {
