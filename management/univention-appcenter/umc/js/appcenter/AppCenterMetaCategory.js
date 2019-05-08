@@ -36,7 +36,6 @@ define([
 	"dojo/on",
 	"dojo/has",
 	"dojo/query",
-	"dojo/dom",
 	"dojo/dom-class",
 	"dojo/dom-style",
 	"dojo/dom-geometry",
@@ -48,7 +47,7 @@ define([
 	"umc/modules/appcenter/AppCenterGallery",
 	"umc/widgets/ContainerWidget",
 	"umc/i18n!"
-], function(declare, lang, array, win, on, has, domQuery, dom, domClass, domStyle, domGeom, Memory, Observable, tools, Text, Button, AppCenterGallery, Container, _) {
+], function(declare, lang, array, win, on, has, domQuery, domClass, domStyle, domGeom, Memory, Observable, tools, Text, Button, AppCenterGallery, Container, _) {
 	return declare("umc.modules.appcenter.AppCenterMetaCategory", [Container], {
 		// summary:
 		//		Offers a container which contains a label, More/Less button and a grid to
@@ -73,6 +72,9 @@ define([
 		baseClass: 'appcenterMetaCategory',
 
 		galleryClass: AppCenterGallery,
+
+		// For tracking of interaction with the "Suggestions based on installed apps" category
+		isSuggestionCategory: false,
 
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -112,12 +114,12 @@ define([
 							var appNode = domQuery(lang.replace('[moduleid="{id}"]', app), this.grid.contentNode)[0];
 							var isSecondTouch = domClass.contains(appNode, 'secondTouch');
 							if (isSecondTouch) {
-								this.onShowApp(app);
+								this.onShowApp(app, this.isSuggestionCategory);
 							} else {
 								domClass.add(appNode, 'hover secondTouch');
 							}
 						} else {
-							this.onShowApp(app);
+							this.onShowApp(app, this.isSuggestionCategory);
 						}
 					})
 				}],
@@ -227,7 +229,7 @@ define([
 			domClass.toggle(this.domNode, 'dijitDisplayNone', isMetaCategoryEmpty);
 		},
 
-		onShowApp: function(app) {
+		onShowApp: function(app, fromSuggestionCategory) {
 		}
 	});
 });

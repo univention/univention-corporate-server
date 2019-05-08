@@ -37,7 +37,6 @@ define([
 	"dojo/promise/all",
 	"dojo/json",
 	"dojo/when",
-	"dojo/query",
 	"dojo/io-query",
 	"dojo/topic",
 	"dojo/Deferred",
@@ -49,7 +48,6 @@ define([
 	"dojo/store/Observable",
 	"dijit/Tooltip",
 	"dijit/layout/ContentPane",
-	"dojox/image/LightboxNano",
 	"dojox/html/entities",
 	"umc/app",
 	"umc/tools",
@@ -65,7 +63,7 @@ define([
 	"umc/modules/appcenter/App",
 	"umc/modules/appcenter/ThumbnailGallery",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, dojoEvent, all, json, when, query, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, ContentPane, Lightbox, entities, UMCApplication, tools, dialog, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, AppCenterGallery, App, ThumbnailGallery, _) {
+], function(declare, lang, kernel, array, dojoEvent, all, json, when, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, ContentPane, entities, UMCApplication, tools, dialog, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, AppCenterGallery, App, ThumbnailGallery, _) {
 
 	var adaptedGrid = declare([Grid], {
 		_updateContextActions: function() {
@@ -93,7 +91,9 @@ define([
 		backLabel: _('Back to overview'),
 		detailsDialog: null,
 		configDialog: null,
-		isSubPage: false,
+
+		// For tracking of interaction with the "Suggestions based on installed apps" category
+		fromSuggestionCategory: false,
 
 		appCenterInformation: _('<p>Univention App Center is designed for easy and comfortable administration of Apps. It uses online services provided by Univention, for example, for downloading Apps, descriptions or graphics, or for the search function.</p><p>By using Univention App Center, you agree that originating user data may be stored and evaluated by Univention for product improvements as well as market research purposes. Usage data consists of information such as installing / uninstalling Apps or search queries. These will be transmitted to Univention together with a unique identification of the UCS system.</p><p>When installing and uninstalling some Apps, the App provider will be notified of the operation. The e-mail address used to activate the system is transferred to the provider. Other than that, no transfer of personal or individually assignable data is made to third parties.</p><p>'),
 		appCenterInformationReadAgain: _('<p><b>Note:</b> This information has been updated. Please read it again.</p>'),
@@ -983,7 +983,11 @@ define([
 				}
 
 				if (!force) {
-					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, func);
+					if (this.fromSuggestionCategory) {
+						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, `${func}FromSuggestion`);
+					} else {
+						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, func);
+					}
 				}
 
 				var command = 'appcenter/invoke';

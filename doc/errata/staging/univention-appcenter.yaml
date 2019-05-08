@@ -11,5 +11,6 @@ desc: |-
   * The App Center waits for a dpkg lock before attempting to install database
     software packages. If starting the database service fails anyway, we now
     send more verbose information.
-  * The package univention-appcenter is now built with dh_python2
-bug: [48670, 48669, 49145]
+  * The package univention-appcenter is now built with dh_python2.
+  * The App Center now shows app suggestions based on already installed apps.
+bug: [48670, 48669, 49145, 49431]

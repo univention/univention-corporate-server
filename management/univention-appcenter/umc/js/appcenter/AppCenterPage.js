@@ -34,7 +34,6 @@ define([
 	"dojo/_base/array",
 	"dojo/when",
 	"dojo/dom-construct",
-	"dojo/dom-style",
 	"dojo/Deferred",
 	"umc/dialog",
 	"umc/tools",
@@ -44,7 +43,7 @@ define([
 	"umc/modules/appcenter/AppLiveSearchSidebar",
 	"umc/modules/appcenter/AppCenterMetaCategory",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, when, domConstruct, domStyle, Deferred, dialog, tools, Page, Text, CheckBox, AppLiveSearchSidebar, AppCenterMetaCategory, _) {
+], function(declare, lang, array, when, domConstruct, Deferred, dialog, tools, Page, Text, CheckBox, AppLiveSearchSidebar, AppCenterMetaCategory, _) {
 
 	return declare("umc.modules.appcenter.AppCenterPage", [ Page ], {
 
@@ -199,6 +198,14 @@ define([
 				}
 			},
 			{
+				label: _('Suggestions based on installed apps'),
+				query: function(app) {
+					return app.$isSuggested;
+				},
+				// For tracking of interaction with the "Suggestions based on installed apps" category
+				isSuggestionCategory: true
+			},
+			{
 				label: _('Available'),
 				query: function(app) {
 					return !app.is_installed_anywhere;
@@ -269,11 +276,73 @@ define([
 			return this._applications;
 		},
 
+		_markAppsAsSuggested: function(applications) {
+			let suggestions = this._getAppSuggestions();
+			let installedApps = applications.filter(app => app.is_installed_anywhere);
+
+			this._getSuggestedAppIds(suggestions, installedApps).forEach(id => {
+				let app = applications.find(app => app.id === id);
+				if (app) {
+					app.$isSuggested = true;
+				}
+			});
+		},
+
+		_getAppSuggestions: function() {
+			return [{
+				condition: ['owncloud', 'adconnector', 'letsencrypt'],
+				ids: ['onlyoffice-ds', 'collabora', 'kopano-core']
+			}, {
+				condition: ['owncloud', 'adconnector'],
+				ids: ['samba-memberserver', 'letsencrypt', 'onlyoffice-ds']
+			}, {
+				condition: ['nextcloud', 'kopano-core'],
+				ids: ['letsencrypt', 'fetchmail', 'samba4', 'onlyoffice-ds']
+			}, {
+				condition: ['nextcloud', 'letsencrypt'],
+				ids: ['kopano-core', 'samba4', 'onlyoffice-ds', 'self-service']
+			}, {
+				condition: ['kopano-core', 'samba4'],
+				ids: ['fetchmail', 'letsencrypt', 'self-service', 'nextcloud']
+			}, {
+				condition: ['kopano-core', 'letsencrypt'],
+				ids: ['fetchmail', 'samba4', 'nextcloud', 'self-service']
+			}, {
+				condition: ['samba4', 'letsencrypt'],
+				ids: ['self-service', 'kopano-core', 'nextcloud', 'cups']
+			}, {
+				condition: ['owncloud'],
+				ids: ['adconnector', 'letsencrypt', 'samba-memberserver', 'samba4']
+			}, {
+				condition: ['nextcloud'],
+				ids: ['samba4', 'letsencrypt', 'onlyoffice-ds', 'kopano-core']
+			}, {
+				condition: ['kopano-core'],
+				ids: ['samba4', 'fetchmail', 'letsencrypt', 'nextcloud']
+			}, {
+				condition: ['samba4'],
+				ids: ['dhcp-server', 'cups', 'self-service', 'pkgdb']
+			}, {
+				condition: ['letsencrypt'],
+				ids: ['samba4', 'kopano-core', 'nextcloud', 'owncloud']
+			}];
+		},
+
+		_getSuggestedAppIds: function(suggestions, installedApps) {
+			let res = [];
+			let match = suggestions.find(suggestion => suggestion.condition.every(id => installedApps.find(app => app.id === id)));
+			if (match) {
+				res.push(...match.ids.filter(id => !installedApps.find(app => app.id === id)));
+			}
+			return res;
+		},
+
 		updateApplications: function(quick) {
 			// query all applications
 			quick = quick !== false;
 			this._applications = null;
 			var updating = when(this.getApplications(quick)).then(lang.hitch(this, function(applications) {
+				this._markAppsAsSuggested(applications);
 				var metaLabels = [];
 				array.forEach(this.metaCategories, function(metaObj) {
 					metaObj.set('store', applications);
@@ -288,7 +357,7 @@ define([
 					var voteForApps = false;
 					array.forEach(applications, function(application) {
 						array.forEach(application.app_categories, function(category) {
-							if (array.indexOf(categories.map(function(x){return x.id}), category) < 0) {
+							if (array.indexOf(categories.map(x => x.id), category) < 0) {
 								categories.push({
 									id: category,
 									description: category
@@ -306,7 +375,7 @@ define([
 								});
 							}
 						});
-						if (array.indexOf(licenses.map(function(x){return x.id}), application.license) < 0) {
+						if (array.indexOf(licenses.map(x => x.id), application.license) < 0) {
 							licenses.push({
 								id: application.license,
 								description: application.license_description
@@ -316,8 +385,8 @@ define([
 							voteForApps = true;
 						}
 					});
-					badges.sort(function(a, b){return a.description > b.description ? 1 : -1});
-					categories.sort(function(a, b){return a.description > b.description ? 1 : -1});
+					badges.sort((a, b) => a.description > b.description ? 1 : -1);
+					categories.sort((a, b) => a.description > b.description ? 1 : -1);
 					this._sortLicenses(licenses);
 					this._searchSidebar.set('badges', badges);
 					this._searchSidebar.set('voteForApps', voteForApps);

@@ -191,14 +191,17 @@ define([
 			}
 		},
 
-		showApp: function(app) {
+		showApp: function(app, fromSuggestionCategory = false) {
 			this._bottomScrollYBeforeShowApp = this._bottom.domNode.scrollTop;
 			this._tabContainerScrollYBeforeShowApp = lang.getObject('umc.app._tabContainer.domNode.scrollTop');
 			if (this._appDetailsPage) {
 				this._appDetailsPage.destroyRecursive();
 			}
-			topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'show');
-			//this.standby(true);
+			if (fromSuggestionCategory) {
+				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'showFromSuggestion');
+			} else {
+				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'show');
+			}
 			var appDetailsDialog = new AppDetailsDialog({
 				moduleID: this.moduleID,
 				moduleFlavor: this.moduleFlavor,
@@ -232,7 +235,7 @@ define([
 				udmAccessible: this.udmAccessible(),
 				standby: lang.hitch(this, 'standby'),
 				standbyDuring: lang.hitch(this, 'standbyDuring'),
-				isSubPage: true
+				fromSuggestionCategory: fromSuggestionCategory
 			});
 			this._appDetailsPage.own(appChooseHostDialog);
 			this._appDetailsPage.own(appDetailsDialog);

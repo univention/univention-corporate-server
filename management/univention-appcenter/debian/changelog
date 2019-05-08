@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-16) unstable; urgency=medium
+
+  * Bug #49431: show suggested apps based on installed apps
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 08 May 2019 17:08:50 +0200
+
 univention-appcenter (8.0.11-15) unstable; urgency=low
 
   * Bug #49145: Migrate to dh_python2
