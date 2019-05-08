@@ -9,3 +9,5 @@ desc: |
  * Remove the sysvolcheck as it reports irritating false positives for GPOs
    created via GPMC.
 bug: [49335]
+erratum: 86
+announced: 2019-05-08
