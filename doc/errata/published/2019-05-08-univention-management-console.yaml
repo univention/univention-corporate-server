@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * A crash of the UMC-Server in rare situations has been corrected.
 bug: [48157]
+erratum: 84
+announced: 2019-05-08
