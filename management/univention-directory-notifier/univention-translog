@@ -1192,7 +1192,7 @@ def prune_file(opt):
 
     with Index(opt.translog_file) as index, Translog(opt.translog_file, index) as translog:
         if opt.trans < 0:
-            log.info('Keeeling last %d transactions before %d', -opt.trans, translog.last)
+            log.info('Keeping last %d transactions before %d', -opt.trans, translog.last)
             opt.trans = translog.last + opt.trans + 1
 
         log.info('Purging/keeping %d..%d..%d', translog.first, opt.trans, translog.last)
@@ -1283,7 +1283,7 @@ def parse_args(args=None):
     parser.add_argument("--translog-ldap", "-H", metavar="URL", help="LDAP URL [%(default)s]", default="ldapi:///")
     parser.add_argument("--translog-base", "-B", metavar="DN", help="LDAP base for translog [%(default)s]", default="cn=translog")
     parser.add_argument("--lenient", "-l", action="store_true", help="Ignore existing entries")
-    parser.add_argument("--verbose", "-v", action="count", help="Increase verbosity", default=1)
+    parser.add_argument("--verbose", "-v", action="count", help="Increase verbosity", default=2)
     parser.add_argument("--dry-run", "-n", action="store_true", help="Do not modify anything")
     parser.add_argument("--datetime", "-d", help="Overwrite time-stamp for import [%(default)s]", default=strftime("%Y%m%d%H%M%SZ"))
     subparsers = parser.add_subparsers(title="subcommands", description="valid subcommands")
@@ -1299,7 +1299,7 @@ def parse_args(args=None):
     import_limit.add_argument("--max", "-M", action="store", type=parse_count, help="Last transaction ID to process")
     parser_import.set_defaults(func=import_all)
 
-    parser_load = subparsers.add_parser("load", help="Load sepcified transactions into LDAP")
+    parser_load = subparsers.add_parser("load", help="Load specified transactions into LDAP")
     parser_load.add_argument("trans", metavar="tid", type=int, nargs='+', help="Transaction number to process")
     parser_load.add_argument("--index", "-i", action="store_false", help="Do not use index to find transactions")
     parser_load.set_defaults(func=load_single)
