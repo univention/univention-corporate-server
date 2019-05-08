@@ -11,3 +11,5 @@ desc: |
    docker/daemon/default/opts/log-driver (default json-file) and
    docker/daemon/default/map/log-opt (default max-file=4,max-size=10m).
 bug: [47416]
+erratum: 82
+announced: 2019-05-08
