@@ -36,7 +36,6 @@ define([
 	"dojo/on",
 	"dojo/has",
 	"dojo/query",
-	"dojo/dom",
 	"dojo/dom-class",
 	"dojo/dom-style",
 	"dojo/dom-geometry",
@@ -48,7 +47,7 @@ define([
 	"umc/modules/appcenter/AppCenterGallery",
 	"umc/widgets/ContainerWidget",
 	"umc/i18n!"
-], function(declare, lang, array, win, on, has, domQuery, dom, domClass, domStyle, domGeom, Memory, Observable, tools, Text, Button, AppCenterGallery, Container, _) {
+], function(declare, lang, array, win, on, has, domQuery, domClass, domStyle, domGeom, Memory, Observable, tools, Text, Button, AppCenterGallery, Container, _) {
 	return declare("umc.modules.appcenter.AppCenterMetaCategory", [Container], {
 		// summary:
 		//		Offers a container which contains a label, More/Less button and a grid to

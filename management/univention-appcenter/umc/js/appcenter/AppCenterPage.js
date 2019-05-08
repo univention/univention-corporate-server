@@ -34,7 +34,6 @@ define([
 	"dojo/_base/array",
 	"dojo/when",
 	"dojo/dom-construct",
-	"dojo/dom-style",
 	"dojo/Deferred",
 	"umc/dialog",
 	"umc/tools",
@@ -44,7 +43,7 @@ define([
 	"umc/modules/appcenter/AppLiveSearchSidebar",
 	"umc/modules/appcenter/AppCenterMetaCategory",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, when, domConstruct, domStyle, Deferred, dialog, tools, Page, Text, CheckBox, AppLiveSearchSidebar, AppCenterMetaCategory, _) {
+], function(declare, lang, array, when, domConstruct, Deferred, dialog, tools, Page, Text, CheckBox, AppLiveSearchSidebar, AppCenterMetaCategory, _) {
 
 	return declare("umc.modules.appcenter.AppCenterPage", [ Page ], {
 
@@ -358,7 +357,7 @@ define([
 					var voteForApps = false;
 					array.forEach(applications, function(application) {
 						array.forEach(application.app_categories, function(category) {
-							if (array.indexOf(categories.map(function(x){return x.id}), category) < 0) {
+							if (array.indexOf(categories.map(x => x.id), category) < 0) {
 								categories.push({
 									id: category,
 									description: category
@@ -376,7 +375,7 @@ define([
 								});
 							}
 						});
-						if (array.indexOf(licenses.map(function(x){return x.id}), application.license) < 0) {
+						if (array.indexOf(licenses.map(x => x.id), application.license) < 0) {
 							licenses.push({
 								id: application.license,
 								description: application.license_description
@@ -386,8 +385,8 @@ define([
 							voteForApps = true;
 						}
 					});
-					badges.sort(function(a, b){return a.description > b.description ? 1 : -1});
-					categories.sort(function(a, b){return a.description > b.description ? 1 : -1});
+					badges.sort((a, b) => a.description > b.description ? 1 : -1);
+					categories.sort((a, b) => a.description > b.description ? 1 : -1);
 					this._sortLicenses(licenses);
 					this._searchSidebar.set('badges', badges);
 					this._searchSidebar.set('voteForApps', voteForApps);

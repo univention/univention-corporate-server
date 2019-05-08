@@ -37,7 +37,6 @@ define([
 	"dojo/promise/all",
 	"dojo/json",
 	"dojo/when",
-	"dojo/query",
 	"dojo/io-query",
 	"dojo/topic",
 	"dojo/Deferred",
@@ -49,7 +48,6 @@ define([
 	"dojo/store/Observable",
 	"dijit/Tooltip",
 	"dijit/layout/ContentPane",
-	"dojox/image/LightboxNano",
 	"dojox/html/entities",
 	"umc/app",
 	"umc/tools",
@@ -65,7 +63,7 @@ define([
 	"umc/modules/appcenter/App",
 	"umc/modules/appcenter/ThumbnailGallery",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, dojoEvent, all, json, when, query, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, ContentPane, Lightbox, entities, UMCApplication, tools, dialog, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, AppCenterGallery, App, ThumbnailGallery, _) {
+], function(declare, lang, kernel, array, dojoEvent, all, json, when, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, ContentPane, entities, UMCApplication, tools, dialog, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, AppCenterGallery, App, ThumbnailGallery, _) {
 
 	var adaptedGrid = declare([Grid], {
 		_updateContextActions: function() {
@@ -93,7 +91,6 @@ define([
 		backLabel: _('Back to overview'),
 		detailsDialog: null,
 		configDialog: null,
-		isSubPage: false,
 
 		// For tracking of interaction with the "Suggestions based on installed apps" category
 		fromSuggestionCategory: false,

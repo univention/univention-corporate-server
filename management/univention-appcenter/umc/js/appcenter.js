@@ -197,7 +197,6 @@ define([
 			if (this._appDetailsPage) {
 				this._appDetailsPage.destroyRecursive();
 			}
-			//this.standby(true);
 			if (fromSuggestionCategory) {
 				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'showFromSuggestion');
 			} else {
@@ -236,7 +235,6 @@ define([
 				udmAccessible: this.udmAccessible(),
 				standby: lang.hitch(this, 'standby'),
 				standbyDuring: lang.hitch(this, 'standbyDuring'),
-				isSubPage: true,
 				fromSuggestionCategory: fromSuggestionCategory
 			});
 			this._appDetailsPage.own(appChooseHostDialog);
