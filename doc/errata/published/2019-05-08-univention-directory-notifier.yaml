@@ -16,3 +16,5 @@ desc: |
  backup, must also be re-joined if their last processed transaction is no
  longer part contained in the purged translog.
 bug: [48729]
+erratum: 81
+announced: 2019-05-08
