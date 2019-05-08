@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Fixed joining host into an UCS domain when using bonded network interfaces.
 bug: [49298]
+erratum: 83
+announced: 2019-05-08
