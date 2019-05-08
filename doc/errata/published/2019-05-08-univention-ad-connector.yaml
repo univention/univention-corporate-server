@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * References to the obsolete password service have been removed.
 bug: [49111]
+erratum: 80
+announced: 2019-05-08
