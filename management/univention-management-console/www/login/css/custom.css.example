@@ -7,11 +7,11 @@ body.umc {
 }
 
 /* (div) Container for the entire header*/
-#umcHeader {
+.umcHeader {
 }
 
 /* (div) Right part of the header containing live search, login button, etc*/
-#umcHeaderRight {
+.umcHeaderRight {
 }
 
 /* (div) Menues toggle button
