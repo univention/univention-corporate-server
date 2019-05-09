@@ -34,7 +34,6 @@ from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.password
-import univention.admin.allocators
 import univention.admin.localization
 import apt
 

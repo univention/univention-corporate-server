@@ -547,7 +547,7 @@ class simpleLdap(object):
 
 			dn = self._create(response=response, serverctrls=serverctrls)
 		except:
-			self._save_cancel()
+			self._safe_cancel()
 			raise
 
 		for c in response.get('ctrls', []):
@@ -640,7 +640,7 @@ class simpleLdap(object):
 
 			dn = self._modify(modify_childs, ignore_license=ignore_license, response=response)
 		except:
-			self._save_cancel()
+			self._safe_cancel()
 			raise
 
 		for c in response.get('ctrls', []):
@@ -920,7 +920,7 @@ class simpleLdap(object):
 
 	def _ldap_post_create(self):  # type: () -> None
 		"""Hook which is called after the object creation."""
-		pass
+		self._confirm_locks()
 
 	def _ldap_pre_modify(self):  # type: () -> None
 		"""Hook which is called before the object modification."""
@@ -928,7 +928,7 @@ class simpleLdap(object):
 
 	def _ldap_post_modify(self):  # type: () -> None
 		"""Hook which is called after the object modification."""
-		pass
+		self._confirm_locks()
 
 	def _ldap_pre_move(self, newdn):  # type: (str) -> None
 		"""
@@ -952,9 +952,9 @@ class simpleLdap(object):
 
 	def _ldap_post_remove(self):  # type: () -> None
 		"""Hook which is called after the object removal."""
-		pass
+		self._release_locks()
 
-	def _save_cancel(self):  # type: () -> None
+	def _safe_cancel(self):  # type: () -> None
 		try:
 			self.cancel()
 		except (KeyboardInterrupt, SystemExit, SyntaxError):
@@ -1622,6 +1622,7 @@ class simpleLdap(object):
 		"""Release all temporary done locks"""
 		while self.alloc:
 			name, value = self.alloc.pop()[0:2]
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'release_lock(%s): %r' % (name, value))
 			univention.admin.allocators.release(self.lo, self.position, name, value)
 
 	def _confirm_locks(self):  # type: () -> None
@@ -1636,6 +1637,23 @@ class simpleLdap(object):
 			if len(item) > 2:
 				updateLastUsedValue = item[2]
 			univention.admin.allocators.confirm(self.lo, self.position, name, value, updateLastUsedValue=updateLastUsedValue)
+
+	def request_lock(self, name, value=None, updateLastUsedValue=True):
+		"""Request a lock for the given value"""
+		try:
+			if name == 'sid+user':
+				value = univention.admin.allocators.requestUserSid(self.lo, self.position, value)
+				name = 'sid'
+			else:
+				value = univention.admin.allocators.request(self.lo, self.position, name, value)
+		except univention.admin.uexceptions.noLock:
+			self._release_locks()
+			raise
+		if not updateLastUsedValue:  # backwards compatibility: 2er-tuples required!
+			self.alloc.append((name, value, updateLastUsedValue))
+		else:
+			self.alloc.append((name, value))
+		return value
 
 	def _call_checkLdap_on_all_property_syntaxes(self):  # type: () -> None
 		"""Calls checkLdap() method on every property if present.
@@ -1831,8 +1849,6 @@ class simpleComputer(simpleLdap):
 		self.network_object = False
 		self.old_network = 'None'
 		self.__saved_dhcp_entry = None
-		self.macRequest = 0
-		self.ipRequest = 0
 		# read-only attribute containing the FQDN of the host
 		self.descriptions['fqdn'] = univention.admin.property(
 			short_description='FQDN',
@@ -1854,21 +1870,18 @@ class simpleComputer(simpleLdap):
 			searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
 			domainsid = searchResult[0][1]['sambaSID'][0].decode('ASCII')
 			sid = domainsid + u'-' + rid
-			univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
-			return sid
+			return self.request_lock('sid', sid)
 		else:
 			# if no rid is given, create a domain sid or local sid if connector is present
 			if self.s4connector_present:
 				return u'S-1-4-%s' % uidNum
 			else:
 				num = uidNum
-				machineSid = u""
-				while not machineSid or machineSid == u'None':
+				while True:
 					try:
-						machineSid = univention.admin.allocators.requestUserSid(lo, position, num)
+						return self.request_lock('sid+user', num)
 					except univention.admin.uexceptions.noLock:
 						num = str(int(num) + 1)
-				return machineSid
 
 	# HELPER
 	@classmethod
@@ -2579,6 +2592,7 @@ class simpleComputer(simpleLdap):
 					pass
 
 	def _ldap_post_modify(self):
+		super(simpleComputer, self)._ldap_post_modify()
 
 		self.__multiip |= len(self['mac']) > 1 or len(self['ip']) > 1
 
@@ -2713,18 +2727,6 @@ class simpleComputer(simpleLdap):
 			self.__rename_dhcp_object(old_name=self.__changes['name'][0], new_name=self.__changes['name'][1])
 			self.__rename_dns_object(position=None, old_name=self.__changes['name'][0], new_name=self.__changes['name'][1])
 
-		if self.ipRequest == 1 and self['ip']:
-			for ipAddress in self['ip']:
-				if ipAddress:
-					univention.admin.allocators.confirm(self.lo, self.position, 'aRecord', ipAddress)
-			self.ipRequest = 0
-
-		if self.macRequest == 1 and self['mac']:
-			for macAddress in self['mac']:
-				if macAddress:
-					univention.admin.allocators.confirm(self.lo, self.position, 'mac', macAddress)
-			self.macRequest = 0
-
 		self.update_groups()
 
 	def __remove_associated_domain(self, entry):
@@ -2755,17 +2757,9 @@ class simpleComputer(simpleLdap):
 				if macAddress in self.oldinfo.get('mac', []):
 					continue
 				try:
-					mac = univention.admin.allocators.request(self.lo, self.position, 'mac', value=macAddress)
-					if not mac:
-						self.cancel()
-						raise univention.admin.uexceptions.noLock
-					self.alloc.append(('mac', macAddress))
-					self.__changes['mac']['add'].append(macAddress)
+					self.__changes['mac']['add'].append(self.request_lock('mac', macAddress))
 				except univention.admin.uexceptions.noLock:
-					self.cancel()
-					univention.admin.allocators.release(self.lo, self.position, "mac", macAddress)
-					raise univention.admin.uexceptions.macAlreadyUsed(' %s' % macAddress)
-				self.macRequest = 1
+					raise univention.admin.uexceptions.macAlreadyUsed(macAddress)
 			for macAddress in self.oldinfo.get('mac', []):
 				if macAddress in self.info.get('mac', []):
 					continue
@@ -2791,22 +2785,11 @@ class simpleComputer(simpleLdap):
 					continue
 				if not self.ip_alredy_requested:
 					try:
-						IpAddr = univention.admin.allocators.request(self.lo, self.position, 'aRecord', value=ipAddress)
-						if not IpAddr:
-							self.cancel()
-							raise univention.admin.uexceptions.noLock
-						self.alloc.append(('aRecord', ipAddress))
+						ipAddress = self.request_lock('aRecord', ipAddress)
 					except univention.admin.uexceptions.noLock:
-						self.cancel()
-						univention.admin.allocators.release(self.lo, self.position, "aRecord", ipAddress)
 						self.ip_alredy_requested = 0
-						raise univention.admin.uexceptions.ipAlreadyUsed(' %s' % ipAddress)
-				else:
-					IpAddr = ipAddress
+						raise univention.admin.uexceptions.ipAlreadyUsed(ipAddress)
 
-				self.alloc.append(('aRecord', IpAddr))
-
-				self.ipRequest = 1
 				self.__changes['ip']['add'].append(ipAddress)
 
 			for ipAddress in self.oldinfo.get('ip', []):
@@ -2921,9 +2904,11 @@ class simpleComputer(simpleLdap):
 		self.check_common_name_length()
 
 	def _ldap_pre_modify(self):
+		super(simpleComputer, self)._ldap_pre_modify()
 		self.check_common_name_length()
 
 	def _ldap_post_create(self):
+		super(simpleComputer, self)._ldap_post_create()
 		for entry in self.__changes['dhcpEntryZone']['remove']:
 			ud.debug(ud.ADMIN, ud.INFO, 'simpleComputer: dhcp check: removed: %s' % (entry,))
 			dn, ip, mac = self.__split_dhcp_line(entry)
@@ -3015,21 +3000,10 @@ class simpleComputer(simpleLdap):
 			else:
 				self.__add_dns_alias_object(self['name'], dnsForwardZone, dnsAliasZoneContainer, alias)
 
-		if self.ipRequest == 1 and self['ip']:
-			for ipAddress in self['ip']:
-				if ipAddress:
-					univention.admin.allocators.confirm(self.lo, self.position, 'aRecord', ipAddress)
-			self.ipRequest = 0
-
-		if self.macRequest == 1 and self['mac']:
-			for macAddress in self['mac']:
-				if macAddress:
-					univention.admin.allocators.confirm(self.lo, self.position, 'mac', macAddress)
-			self.macRequest = 0
-
 		self.update_groups()
 
 	def _ldap_post_remove(self):
+		super(simpleComputer, self)._ldap_post_remove()
 		if self['mac']:
 			for macAddress in self['mac']:
 				if macAddress:
@@ -3279,11 +3253,9 @@ class simpleComputer(simpleLdap):
 							ips = [ip for ip in self['ip'] if ip] if self.has_property('ip') and self['ip'] else []
 							ip1 = self['ip'][0] if len(ips) == 1 else ''
 							try:
-								IpAddr = univention.admin.allocators.request(self.lo, self.position, 'aRecord', value=self['ip'][0])
-								self.ip_alredy_requested = 1
-								self.alloc.append(('aRecord', IpAddr))
-								self.ip = IpAddr
-							except:
+								self.ip = self.request_lock('aRecord', self['ip'][0])
+								self.ip_alredy_requested = True
+							except univention.admin.uexceptions.noLock:
 								pass
 
 						self.network_object = network_object

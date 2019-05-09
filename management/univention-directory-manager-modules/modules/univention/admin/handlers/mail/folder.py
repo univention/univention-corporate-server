@@ -175,10 +175,6 @@ class object(univention.admin.handlers.simpleLdap):
 		name = '%s@%s' % (self.info['name'], self.info['mailDomain'])
 		return 'cn=%s,%s' % (ldap.dn.escape_dn_chars(name), self.position.getDn())
 
-	def _ldap_post_create(self):
-		if self['mailPrimaryAddress']:
-			univention.admin.allocators.release(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])
-
 	def _ldap_addlist(self):
 		al = []
 
@@ -189,20 +185,14 @@ class object(univention.admin.handlers.simpleLdap):
 			address = '%s@%s' % (self['name'], self['mailDomain'])
 			if self['mailPrimaryAddress'] != address:
 				try:
-					self.alloc.append(('mailPrimaryAddress', self['mailPrimaryAddress']))
-					univention.admin.allocators.request(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])
-				except:
-					univention.admin.allocators.release(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])
-					raise univention.admin.uexceptions.mailAddressUsed
+					self.request_lock('mailPrimaryAddress', self['mailPrimaryAddress'])
+				except univention.admin.uexceptions.noLock:
+					raise univention.admin.uexceptions.mailAddressUsed(self['mailPrimaryAddress'])
 
 		value = "%s@%s" % (self.info['name'], self.info['mailDomain'])
 		al.append(('cn', value.encode('UTF-8')))
 
 		return al
-
-	def _ldap_post_modify(self):
-		if self['mailPrimaryAddress']:
-			univention.admin.allocators.release(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])
 
 	def _ldap_modlist(self):
 		# we get a list of modifications to be done (called 'ml' down below)
@@ -213,10 +203,7 @@ class object(univention.admin.handlers.simpleLdap):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
 		if self.hasChanged('mailPrimaryAddress') and self['mailPrimaryAddress']:
-			for i, j in self.alloc:
-				if i == 'mailPrimaryAddress':
-					break
-			else:
+			if not any(x[0] == 'mailPrimaryAddress' for x in self.alloc):
 				value = 'univentioninternalpostuser+shared/%s@%s' % (self['name'].lower(), self['mailDomain'].lower())
 				ml.append((
 					'univentionMailSharedFolderDeliveryAddress',
@@ -227,11 +214,9 @@ class object(univention.admin.handlers.simpleLdap):
 				address = '%s@%s' % (self['name'], self['mailDomain'])
 				if self['mailPrimaryAddress'] != address:
 					try:
-						self.alloc.append(('mailPrimaryAddress', self['mailPrimaryAddress']))
-						univention.admin.allocators.request(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])
-					except:
-						univention.admin.allocators.release(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])
-						raise univention.admin.uexceptions.mailAddressUsed
+						self.request_lock('mailPrimaryAddress', self['mailPrimaryAddress'])
+					except univention.admin.uexceptions.noLock:
+						raise univention.admin.uexceptions.mailAddressUsed(self['mailPrimaryAddress'])
 
 		if not self['mailPrimaryAddress']:
 			ml.append(('univentionMailSharedFolderDeliveryAddress', self.oldattr.get('univentionMailSharedFolderDeliveryAddress', []), []))

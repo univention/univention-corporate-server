@@ -1584,7 +1584,7 @@ class object(univention.admin.handlers.simpleLdap):
 		fg = univention.admin.filter.expression('gidNumber', self['uidNumber'])
 		group_objects = univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=fg)
 		if group_objects:
-			raise univention.admin.uexceptions.uidNumberAlreadyUsedAsGidNumber('%r' % self["uidNumber"])
+			raise univention.admin.uexceptions.uidNumberAlreadyUsedAsGidNumber(repr(self["uidNumber"]))
 
 	def _ldap_pre_create(self):
 		super(object, self)._ldap_pre_create()
@@ -1599,8 +1599,7 @@ class object(univention.admin.handlers.simpleLdap):
 			# "False" ==> do not update univentionLastUsedValue in LDAP if a specific value has been specified
 			self.alloc.append(('uidNumber', self['uidNumber'], False))
 		else:
-			self['uidNumber'] = univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
-			self.alloc.append(('uidNumber', self['uidNumber']))
+			self['uidNumber'] = self.request_lock('uidNumber')
 
 		self._check_uid_gid_uniqueness()
 
@@ -1623,7 +1622,7 @@ class object(univention.admin.handlers.simpleLdap):
 			# get lock for username
 			try:
 				if self['username']:  # might not be set when using CLI without --set username=
-					self.alloc.append(('uid', univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])))
+					self.request_lock('uid', self['username'])
 			except univention.admin.uexceptions.noLock:
 				raise univention.admin.uexceptions.uidAlreadyUsed(self['username'])
 
@@ -1632,7 +1631,7 @@ class object(univention.admin.handlers.simpleLdap):
 			# ignore case in change of mailPrimaryAddress, we only store the lowercase address anyway
 			if self['mailPrimaryAddress'] and self['mailPrimaryAddress'].lower() != self.oldinfo.get('mailPrimaryAddress', '').lower():
 				try:
-					self.alloc.append(('mailPrimaryAddress', univention.admin.allocators.request(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])))
+					self.request_lock('mailPrimaryAddress', self['mailPrimaryAddress'])
 				except univention.admin.uexceptions.noLock:
 					raise univention.admin.uexceptions.mailAddressUsed(self['mailPrimaryAddress'])
 
@@ -1654,26 +1653,15 @@ class object(univention.admin.handlers.simpleLdap):
 		return al
 
 	def _ldap_post_create(self):
-		self._confirm_locks()
+		super(object, self)._ldap_post_create()
 		self.__update_groups()
 		self.__primary_group()
 
 	def _ldap_post_modify(self):
+		super(object, self)._ldap_post_modify()
 		# POSIX
 		self.__update_groups()
 		self.__primary_group()
-
-		if self.hasChanged('mailPrimaryAddress'):
-			if self['mailPrimaryAddress']:
-				univention.admin.allocators.confirm(self.lo, self.position, 'mailPrimaryAddress', self['mailPrimaryAddress'])
-			else:  # FIXME: why is this in the else block? it needs to be done always!
-				univention.admin.allocators.release(self.lo, self.position, 'mailPrimaryAddress', self.oldinfo['mailPrimaryAddress'])
-
-		# Samba
-		if self.hasChanged('sambaRID'):
-			old_sid = self.oldattr.get('sambaSID', [''])[0]
-			if old_sid:
-				univention.admin.allocators.release(self.lo, self.position, 'sid', old_sid.decode('UTF-8'))
 
 	def _ldap_pre_modify(self):
 		if self.hasChanged('mailPrimaryAddress'):
@@ -2121,7 +2109,7 @@ class object(univention.admin.handlers.simpleLdap):
 		self.alloc.append(('uidNumber', self.oldattr['uidNumber'][0].decode('ASCII')))
 		if self['mailPrimaryAddress']:
 			self.alloc.append(('mailPrimaryAddress', self['mailPrimaryAddress']))
-		self._release_locks()
+		super(object, self)._ldap_post_remove()
 
 		groupObjects = univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format(u'uniqueMember=%s', [self.dn]))
 		if groupObjects:
@@ -2236,43 +2224,27 @@ class object(univention.admin.handlers.simpleLdap):
 		domainsid = searchResult[0][1]['sambaSID'][0]
 		sid = domainsid.decode('ASCII') + u'-' + rid
 		try:
-			userSid = univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
-			self.alloc.append(('sid', userSid))
+			return self.request_lock('sid', sid)
 		except univention.admin.uexceptions.noLock:
 			raise univention.admin.uexceptions.sidAlreadyUsed(rid)
-		return userSid
 
 	def __generate_user_sid(self, uidNum):
-		# TODO: cleanup function
-		userSid = None
-
 		if self['sambaRID']:
-			userSid = self.__allocate_rid(self['sambaRID'])
-		else:
-			if self.s4connector_present:
-				# In this case Samba 4 must create the SID, the s4 connector will sync the
-				# new sambaSID back from Samba 4.
-				userSid = 'S-1-4-%s' % uidNum
-			else:
-				rid = rids_for_well_known_security_identifiers.get(self['username'].lower())
-				if rid:
-					userSid = self.__allocate_rid(rid)
-				else:
-					try:
-						userSid = univention.admin.allocators.requestUserSid(self.lo, self.position, uidNum)
-					except:
-						pass
-			if not userSid or userSid == 'None':
-				num = uidNum
-				while not userSid or userSid == 'None':
-					num = str(int(num) + 1)
-					try:
-						userSid = univention.admin.allocators.requestUserSid(self.lo, self.position, num)
-					except univention.admin.uexceptions.noLock:
-						num = str(int(num) + 1)
-				self.alloc.append(('sid', userSid))
+			return self.__allocate_rid(self['sambaRID'])
+		elif self.s4connector_present:
+			# In this case Samba 4 must create the SID, the s4 connector will sync the
+			# new sambaSID back from Samba 4.
+			return 'S-1-4-%s' % (uidNum,)
 
-		return userSid
+		rid = rids_for_well_known_security_identifiers.get(self['username'].lower())
+		if rid:
+			return self.__allocate_rid(rid)
+
+		while True:
+			try:
+				return self.request_lock('sid+user', uidNum)
+			except univention.admin.uexceptions.noLock:
+				uidNum = str(int(uidNum) + 1)
 
 	def getbytes(self, string):
 		# return byte values of a string (for smbPWHistory)
