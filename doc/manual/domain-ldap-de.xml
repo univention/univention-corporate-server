@@ -1343,6 +1343,10 @@ univention-directory-listener-ctrl resync cups-printers
 		Für den Login direkt am UCS-System (also ohne <foreignphrase>Single Sign-On</foreignphrase>) gelangt man über den Link <guimenu>Ohne Single Sign-On anmelden</guimenu>.
 	</para>
 	<para>
+		Über die Datei <filename>/usr/share/univention-management-console-login/css/custom.css</filename> kann das Design des Anmeldedialogs
+		angepasst werden. Diese Datei wird niemals automatisch überschrieben.
+	</para>
+	<para>
 		Andere Webdienste leiten ebenfalls auf die Anmeldeseite des UCS Identity Providers weiter, wenn ein <foreignphrase>Single Sign-On</foreignphrase> durchgeführt wird.
 		Nach erfolgreicher Authentifizierung wird der Benutzer wieder auf die Seite des Webdienstes gesendet werden.
 		Diese Dienste müssen wie in <xref linkend="domain:saml:additionalserviceprovider"/> beschrieben registriert werden.
