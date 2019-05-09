@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: rename and change groups at once
-## tags: [udm-computers,apptest,SKIP]
+## tags: [udm-computers,apptest]
 ## bugs: [41694]
 ## roles: [domaincontroller_master]
 ## exposure: careful
@@ -14,17 +14,19 @@ def main():
 	with UCSTestUDM() as udm:
 		groupdn_a, name = udm.create_group()
 		groupdn_b, name = udm.create_group()
+		groupdn_c, name = udm.create_group()
 		computerdn = udm.create_object('computers/ubuntu', name=uts.random_string(), groups=[groupdn_a, groupdn_b])
 		utils.verify_ldap_object(groupdn_a, {'uniqueMember': [computerdn]})
 		utils.verify_ldap_object(groupdn_b, {'uniqueMember': [computerdn]})
 		print 'created %s in %s and %s' % (computerdn, groupdn_a, groupdn_b)
 
 		new_name = uts.random_string()
-		computerdn_new = udm.modify_object('computers/ubuntu', dn=computerdn, name=new_name, groups=[groupdn_b])
+		computerdn_new = udm.modify_object('computers/ubuntu', dn=computerdn, name=new_name, remove={'groups': [groupdn_a]}, append={'groups': [groupdn_c]})
 		print 'moved to %s' % (computerdn_new,)
 		utils.verify_ldap_object(computerdn, should_exist=False)
 		utils.verify_ldap_object(computerdn_new, should_exist=True)
 		utils.verify_ldap_object(groupdn_b, {'uniqueMember': [computerdn_new]})
+		utils.verify_ldap_object(groupdn_c, {'uniqueMember': [computerdn_new]})
 		utils.verify_ldap_object(groupdn_a, {'uniqueMember': []})
 
 
