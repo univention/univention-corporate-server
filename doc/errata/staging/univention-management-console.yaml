@@ -7,6 +7,6 @@ fix: 11.0.4-15A~4.4.0.201905091615
 desc: |
  This update addresses the following issue(s):
  * A custom css file for manual style changes was added to the univention login
- * The UMC-Server does not respond with an error anymore if no english
+ * The UMC-Server does not respond with an error anymore if no English
    locale is configured.
 bug: [49436, 47602]
