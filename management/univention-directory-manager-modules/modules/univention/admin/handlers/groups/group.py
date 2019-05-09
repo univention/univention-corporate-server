@@ -301,8 +301,6 @@ class object(univention.admin.handlers.simpleLdap):
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 
-		self.updateLastUsedValue = True
-
 		try:
 			caching_timeout = int(configRegistry.get('directory/manager/web/modules/groups/group/caching/uniqueMember/timeout', '300'))
 			self.cache_uniqueMember.set_timeout(caching_timeout)
@@ -422,7 +420,7 @@ class object(univention.admin.handlers.simpleLdap):
 			fg = univention.admin.filter.expression('uidNumber', self['gidNumber'], escape=True)
 			user_objects = univention.admin.handlers.users.user.lookup(self.co, self.lo, filter_s=fg)
 			if user_objects:
-				raise univention.admin.uexceptions.gidNumberAlreadyUsedAsUidNumber('%r' % self["gidNumber"])
+				raise univention.admin.uexceptions.gidNumberAlreadyUsedAsUidNumber(repr(self["gidNumber"]))
 
 	def _ldap_pre_create(self):
 		super(object, self)._ldap_pre_create()
@@ -440,57 +438,28 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_addlist(self):
 		if self['gidNumber']:
 			self.gidNum = univention.admin.allocators.acquireUnique(self.lo, self.position, 'gidNumber', self['gidNumber'], 'gidNumber', scope='base')
-			self.updateLastUsedValue = False
+			self.alloc.append(('gidNumber', self.gidNum, False))
 		else:
-			self.gidNum = univention.admin.allocators.request(self.lo, self.position, 'gidNumber')
-		self.alloc.append(('gidNumber', self.gidNum))
+			self.gidNum = self.request_lock('gidNumber')
 
 		if self['mailAddress']:
 			try:
-				self.alloc.append(('mailPrimaryAddress', self['mailAddress']))
-				univention.admin.allocators.request(self.lo, self.position, 'mailPrimaryAddress', value=self['mailAddress'])
-			except:
-				raise univention.admin.uexceptions.mailAddressUsed
+				self.request_lock('mailPrimaryAddress', self['mailAddress'])
+			except univention.admin.uexceptions.noLock:
+				raise univention.admin.uexceptions.mailAddressUsed(self['mailAddress'])
 
 		if 'samba' in self.options and self.gidNum:
 			self.groupSid = self.__generate_group_sid(self.gidNum)
 
-		error = 0
-		name = None
-
 		try:
-			self.alloc.append(('groupName', self['name']))
-			name = univention.admin.allocators.request(self.lo, self.position, 'groupName', value=self['name'])
-			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname without exception')
-		except univention.admin.uexceptions.permissionDenied as e:
-			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname with permissionDenied exception')
-			raise e
-		except univention.admin.uexceptions.licenseNotFound as e:
-			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname with licenseNotFound exception')
-			raise e
-		except univention.admin.uexceptions.licenseInvalid as e:
-			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname with licenseInvalid exception')
-			raise e
-		except univention.admin.uexceptions.licenseExpired as e:
-			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname with licenseExpired exception')
-			raise e
-		except univention.admin.uexceptions.licenseWrongBaseDn as e:
-			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname with licenseWrongbaseDn exception')
-			raise e
-		except univention.admin.uexceptions.licenseDisableModify as e:
-			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname with licenseDisableModify exception')
-			raise e
-		except univention.admin.uexceptions.base as e:
-			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: requested groupname with base (%s) exception' % e)
-			error = 1
-
-		if not name or error:
+			self.request_lock('groupName', self['name'])
+		except univention.admin.uexceptions.noLock:
 			name = self['name']
-			del(self.info['name'])
+			del self.info['name']
 			self.oldinfo = {}
 			self.dn = None
 			self._exists = 0
-			raise univention.admin.uexceptions.groupNameAlreadyUsed(': %s' % (name))
+			raise univention.admin.uexceptions.groupNameAlreadyUsed(name)
 
 		al = []
 		if 'posix' not in self.options:
@@ -525,10 +494,9 @@ class object(univention.admin.handlers.simpleLdap):
 					break
 			else:
 				try:
-					self.alloc.append(('mailPrimaryAddress', self['mailAddress']))
-					univention.admin.allocators.request(self.lo, self.position, 'mailPrimaryAddress', value=self['mailAddress'])
-				except:
-					raise univention.admin.uexceptions.mailAddressUsed
+					self.request_lock('mailPrimaryAddress', self['mailAddress'])
+				except univention.admin.uexceptions.noLock:
+					raise univention.admin.uexceptions.mailAddressUsed(self['mailAddress'])
 
 		old = DN.set(self.oldinfo.get('users', []) + self.oldinfo.get('hosts', []) + self.oldinfo.get('nestedGroup', []))
 		new = DN.set(self.info.get('users', []) + self.info.get('hosts', []) + self.info.get('nestedGroup', []))
@@ -588,31 +556,16 @@ class object(univention.admin.handlers.simpleLdap):
 		return ml
 
 	def _ldap_post_create(self):
-		univention.admin.allocators.release(self.lo, self.position, 'groupName', value=self['name'])
-		if 'posix' in self.options:
-			univention.admin.allocators.confirm(self.lo, self.position, 'gidNumber', self.gidNum, updateLastUsedValue=self.updateLastUsedValue)
-			self.updateLastUsedValue = True
-		if 'samba' in self.options:
-			univention.admin.allocators.confirm(self.lo, self.position, 'sid', self.groupSid)
-		if self['mailAddress']:
-			univention.admin.allocators.confirm(self.lo, self.position, 'mailPrimaryAddress', self['mailAddress'])
+		super(object, self)._ldap_post_create()
 		self.__update_membership()
 
 	def _ldap_post_modify(self):
-		if self.hasChanged('mailAddress') and self['mailAddress']:
-			univention.admin.allocators.confirm(self.lo, self.position, 'mailPrimaryAddress', self['mailAddress'])
 		self.__update_membership()
 		if hasattr(self, 'groupSid'):
 			self._update_sambaPrimaryGroupSID(self.oldattr.get('sambaSID', [b''])[0].decode('ASCII'), self.groupSid)
 
 	def _ldap_pre_remove(self):
-		if not hasattr(self, "options"):
-			self.open()
 		self.open()
-		if 'posix' in self.options:
-			self.gidNum = self.oldattr['gidNumber'][0].decode('ASCII')
-		if 'samba' in self.options:
-			self.groupSid = self.oldattr['sambaSID'][0].decode('ASCII')
 		# is this group in mentioned in settings/default?
 		try:
 			dn, attrs = self.lo.search(filter='objectClass=univentionDefault', base=self.position.getDomain(), scope='domain', unique=True, required=True)[0]
@@ -622,21 +575,24 @@ class object(univention.admin.handlers.simpleLdap):
 			for attr, value in attrs.items():
 				if attr.lower().endswith('group') and self.dn in value:
 					raise univention.admin.uexceptions.primaryGroupUsed(_('It is used as %s.') % attr)
-		if getattr(self, 'gidNum', None):
-			searchResult = self.lo.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=person)(gidNumber=%s))', [self.gidNum]), scope='domain')
-			if searchResult:
-				raise univention.admin.uexceptions.primaryGroupUsed
-		if getattr(self, 'groupSid', None):
-			searchResult = self.lo.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=person)(sambaPrimaryGroupSID=%s))', [self.groupSid]), scope='domain')
-			if searchResult:
-				raise univention.admin.uexceptions.primaryGroupUsed
+
+		gidNum = None
+		groupSid = None
+		if 'posix' in self.old_options:
+			gidNum = self.oldattr['gidNumber'][0].decode('ASCII')
+			if self.lo.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=person)(gidNumber=%s))', [gidNum]), scope='domain'):
+				raise univention.admin.uexceptions.primaryGroupUsed(gidNum)
+		if 'samba' in self.old_options:
+			groupSid = self.oldattr['sambaSID'][0].decode('ASCII')
+			if self.lo.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=person)(sambaPrimaryGroupSID=%s))', [groupSid]), scope='domain'):
+				raise univention.admin.uexceptions.primaryGroupUsed(groupSid)
+		if gidNum:
+			self.alloc.append(('gidNumber', gidNum))
+		if groupSid:
+			self.alloc.append(('sid', groupSid))
 
 	def _ldap_post_remove(self):
-		if 'posix' in self.options:
-			univention.admin.allocators.release(self.lo, self.position, 'gidNumber', self.gidNum)
-		if 'samba' in self.options:
-			univention.admin.allocators.release(self.lo, self.position, 'sid', self.groupSid)
-
+		super(object, self)._ldap_post_remove()
 		for group in self.info.get('memberOf', []):
 			if isinstance(group, type([])):
 				group = group[0]
@@ -668,11 +624,6 @@ class object(univention.admin.handlers.simpleLdap):
 			newmembers.append(self.dn)
 			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: updating supergroup %s' % group)
 			self.__set_membership_attributes(group, members, newmembers)
-
-	def cancel(self):
-		for i, j in self.alloc:
-			ud.debug(ud.ADMIN, ud.WARN, 'cancel: release (%s): %s' % (i, j))
-			univention.admin.allocators.release(self.lo, self.position, i, j)
 
 	def __update_membership(self):
 
@@ -913,8 +864,6 @@ class object(univention.admin.handlers.simpleLdap):
 				raise univention.admin.uexceptions.adGroupTypeChangeUniversalToGlobal
 
 	def __generate_group_sid(self, gidNum):
-		groupSid = None
-
 		new_groupType = self.info.get('adGroupType', 0)
 
 		ud.debug(ud.ADMIN, ud.INFO, 'groups/group: new_groupType: %s' % new_groupType)
@@ -925,23 +874,21 @@ class object(univention.admin.handlers.simpleLdap):
 			else:
 				domainsid = searchResult[0][1]['sambaSID'][0].decode('ASCII')
 				sid = domainsid + u'-' + self['sambaRID']
-			groupSid = univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
-			self.alloc.append(('sid', groupSid))
+			return self.request_lock('sid', sid)
+		elif self.s4connector_present and not self.__is_groupType_local(new_groupType):
+			# In this case Samba 4 must create the SID, the s4 connector will sync the
+			# new sambaSID back from Samba 4.
+			return u'S-1-4-%s' % (self.gidNum,)
 		else:
 			num = self.gidNum
-			if self.s4connector_present and not self.__is_groupType_local(new_groupType):
-				# In this case Samba 4 must create the SID, the s4 connector will sync the
-				# new sambaSID back from Samba 4.
-				groupSid = u'S-1-4-%s' % num
-			else:
-				generateDomainLocalSid = self.__is_groupType_local(new_groupType)
-				while not groupSid or groupSid == 'None':
-					try:
-						groupSid = univention.admin.allocators.requestGroupSid(self.lo, self.position, num, generateDomainLocalSid=generateDomainLocalSid)
-					except univention.admin.uexceptions.noLock:
-						num = str(int(num) + 1)
-				self.alloc.append(('sid', groupSid))
-		return groupSid
+			generateDomainLocalSid = self.__is_groupType_local(new_groupType)
+			while True:
+				try:
+					groupSid = univention.admin.allocators.requestGroupSid(self.lo, self.position, num, generateDomainLocalSid=generateDomainLocalSid)
+					self.alloc.append(('sid', groupSid))
+					return groupSid
+				except univention.admin.uexceptions.noLock:
+					num = str(int(num) + 1)
 
 	def _update_sambaPrimaryGroupSID(self, oldSid, newSid):
 		if hasattr(self, 'update_sambaPrimaryGroupSid') and self.update_sambaPrimaryGroupSid:

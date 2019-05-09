@@ -127,11 +127,9 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 				# can't do kerberos
 				self._remove_option('kerberos')
 		if 'posix' in self.options:
-			self.uidNum = univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
-			self.alloc.append(('uidNumber', self.uidNum))
-			gidNum = self.get_gid_for_primary_group()
-			al.append(('uidNumber', [self.uidNum.encode('ASCII')]))
-			al.append(('gidNumber', [gidNum.encode('ASCII')]))
+			uidNum = self.request_lock('uidNumber')
+			al.append(('uidNumber', [uidNum.encode('ASCII')]))
+			al.append(('gidNumber', [self.get_gid_for_primary_group().encode('ASCII')]))
 
 		if self.modifypassword or self['password']:
 			if 'kerberos' in self.options:
@@ -147,10 +145,9 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 				sambaPwdLastSetValue = str(int(time.time()))
 				al.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [b''])[0], sambaPwdLastSetValue.encode('ASCII')))
 			self.modifypassword = 0
-		if 'samba' in self.options:
+		if 'samba' in self.options:  # FIXME: uidNum is undefined if posix option is not enabled
 			acctFlags = univention.admin.samba.acctFlags(flags={self.SAMBA_ACCOUNT_FLAG: 1})
-			self.machineSid = self.getMachineSid(self.lo, self.position, self.uidNum, self.get('sambaRID'))
-			self.alloc.append(('sid', self.machineSid))
+			self.machineSid = self.getMachineSid(self.lo, self.position, uidNum, self.get('sambaRID'))
 			al.append(('sambaSID', [self.machineSid.encode('ASCII')]))
 			al.append(('sambaAcctFlags', [acctFlags.decode().encode('ASCII')]))
 			al.append(('displayName', self.info['name'].encode('ASCII')))
@@ -163,21 +160,21 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 		pass
 
 	def _ldap_post_create(self):
+		super(ComputerObject, self)._ldap_post_create()
 		if 'posix' in self.options:
-			if hasattr(self, 'uid') and self.uid:
-				univention.admin.allocators.confirm(self.lo, self.position, 'uid', self.uid)
 			univention.admin.handlers.simpleComputer.primary_group(self)
-		univention.admin.handlers.simpleComputer._ldap_post_create(self)
 		self.nagios_ldap_post_create()
 
 	def _ldap_pre_remove(self):
+		super(ComputerObject, self)._ldap_pre_remove()
 		self.open()
-		if 'posix' in self.options and self.oldattr.get('uidNumber'):
-			self.uidNum = self.oldattr['uidNumber'][0].decode('ASCII')
+		if 'posix' in self.old_options and self.oldattr.get('uidNumber'):
+			self.alloc.append(('uidNumber', self.oldattr['uidNumber'][0].decode('ASCII')))
+		# if 'samba' in self.old_options and self.oldattr.get('sambaSID'):
+		# 	self.alloc.append(('sid', self.oldattr['sambaSID'][0].decode('ASCII')))
 
 	def _ldap_post_remove(self):
-		if 'posix' in self.options:
-			univention.admin.allocators.release(self.lo, self.position, 'uidNumber', self.uidNum)
+		super(ComputerObject, self)._ldap_post_remove()
 
 		#for group in univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format('uniqueMember=%s', [self.dn])):
 		#	group.open()
@@ -186,7 +183,6 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 		#		group.modify(ignore_license=True)
 
 		self.nagios_ldap_post_remove()
-		univention.admin.handlers.simpleComputer._ldap_post_remove(self)
 		# Need to clean up oldinfo. If remove was invoked, because the
 		# creation of the object has failed, the next try will result in
 		# a 'object class violation' (Bug #19343)
@@ -226,16 +222,11 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 
 		if self.hasChanged('name'):
 			if 'posix' in self.options:
-				if hasattr(self, 'uidNum'):
-					univention.admin.allocators.confirm(self.lo, self.position, 'uidNumber', self.uidNum)
 				requested_uid = "%s$" % self['name']
 				try:
-					self.uid = univention.admin.allocators.request(self.lo, self.position, 'uid', value=requested_uid)
-				except Exception:
-					self.cancel()
-					raise univention.admin.uexceptions.uidAlreadyUsed(': %s' % requested_uid)
-
-				self.alloc.append(('uid', self.uid))
+					self.uid = self.request_lock('uid', requested_uid)
+				except univention.admin.uexceptions.noLock:
+					raise univention.admin.uexceptions.uidAlreadyUsed(requested_uid)
 
 				ml.append(('uid', self.oldattr.get('uid', [None])[0], self.uid.encode('UTF-8')))
 
@@ -265,7 +256,6 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 		if self.exists() and self.option_toggled('samba') and 'samba' in self.options:
 			acctFlags = univention.admin.samba.acctFlags(flags={self.SAMBA_ACCOUNT_FLAG: 1})
 			self.machineSid = self.getMachineSid(self.lo, self.position, self.oldattr['uidNumber'][0].decode('ASCII'), self.get('sambaRID'))
-			self.alloc.append(('sid', self.machineSid))
 			ml.append(('sambaSID', b'', [self.machineSid.encode('ASCII')]))
 			ml.append(('sambaAcctFlags', b'', [acctFlags.decode().encode('ASCII')]))
 			ml.append(('displayName', b'', self.info['name'].encode('ASCII')))
@@ -286,11 +276,6 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 		self.open()
 		self.nagios_cleanup()
 		univention.admin.handlers.simpleComputer.cleanup(self)
-
-	def cancel(self):
-		for i, j in self.alloc:
-			ud.debug(ud.ADMIN, ud.WARN, 'cancel: release (%s): %s' % (i, j))
-			univention.admin.allocators.release(self.lo, self.position, i, j)
 
 	def link(self):
 		result = []
