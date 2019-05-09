@@ -82,6 +82,12 @@ py_univention_debug_init(PyObject *self, PyObject *args)
     fd = univention_debug_init(logfile, (char)flush, (char)function);
 
     if ( fd == NULL ) {
+        /* BUG: We should raise an exception here using
+         * return PyErr_SetFromErrnoWithFilename(PyExc_IOError, logfile);
+         * but univention_debug_init() returns NULL in many cases:
+         * - when already initialized
+         * - when open() fails
+         */
         Py_RETURN_NONE;
     }
 
@@ -200,7 +206,7 @@ PyDoc_STRVAR(py_univention_debug_end__doc__,
         "function - name of the function ending.");
 
 static PyObject *
-py_univention_debug_exit(PyObject *self, PyObject *args)
+py_univention_debug_exit(PyObject *self)
 {
     univention_debug_exit();
 
@@ -213,7 +219,7 @@ PyDoc_STRVAR(py_univention_debug_exit__doc__,
         "Close the debug logfile.");
 
 static PyObject *
-py_univention_debug_reopen(PyObject *self, PyObject *args)
+py_univention_debug_reopen(PyObject *self)
 {
     univention_debug_reopen();
 
@@ -234,8 +240,8 @@ static struct PyMethodDef debug_methods[] = {
     {"set_function", (PyCFunction)py_univention_debug_set_function, METH_VARARGS, py_univention_debug_set_function__doc__},
     {"begin", (PyCFunction)py_univention_debug_begin, METH_VARARGS, py_univention_debug_begin__doc__},
     {"end", (PyCFunction)py_univention_debug_end, METH_VARARGS, py_univention_debug_end__doc__},
-    {"exit", (PyCFunction)py_univention_debug_exit, METH_VARARGS, py_univention_debug_exit__doc__},
-    {"reopen", (PyCFunction)py_univention_debug_reopen, METH_VARARGS, py_univention_debug_reopen__doc__},
+    {"exit", (PyCFunction)py_univention_debug_exit, METH_NOARGS, py_univention_debug_exit__doc__},
+    {"reopen", (PyCFunction)py_univention_debug_reopen, METH_NOARGS, py_univention_debug_reopen__doc__},
     { NULL, NULL, 0, NULL}
 };
 
