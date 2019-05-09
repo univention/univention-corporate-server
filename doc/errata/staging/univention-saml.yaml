@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-saml
+fix: 6.0.2-2A~4.4.0.201905091050
+desc: |
+ This update addresses the following issue(s):
+ * A custom css file for manual style changes was added to the saml login
+bug: [49436]
