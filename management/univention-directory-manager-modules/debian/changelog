@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.12-32) unstable; urgency=low
+
+  * Bug #49359: fix typo in german translation
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 09 May 2019 18:03:29 +0200
+
 univention-directory-manager-modules (14.0.12-31) unstable; urgency=low
 
   * Bug #49359: update several german translations
