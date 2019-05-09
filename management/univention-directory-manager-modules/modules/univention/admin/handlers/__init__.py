@@ -157,6 +157,7 @@ class simpleLdap(object):
 		self.co = co
 		self.lo = lo
 		self.dn = dn
+		self.old_dn = self.dn
 		self.superordinate = superordinate
 
 		self.set_defaults = 0
@@ -251,6 +252,7 @@ class simpleLdap(object):
 		"""
 
 		self.oldinfo = copy.deepcopy(self.info)
+		self.old_dn = self.dn
 		self.oldpolicies = copy.deepcopy(self.policies)
 		self.options = list(set(self.options))
 		self.old_options = []
@@ -910,7 +912,7 @@ class simpleLdap(object):
 		for name, prop in self.descriptions.items():
 			if prop.identifies:
 				identifier.append((self.mapping.mapName(name), self.mapping.mapValue(name, self.info[name]), 2))
-		return '%s,%s' % (dn2str([identifier]), self.position.getDn())
+		return '%s,%s' % (dn2str([identifier]), dn2str(str2dn(self.dn)[1:]) if self.exists() else self.position.getDn())
 
 	def _ldap_post_create(self):  # type: () -> None
 		"""Hook which is called after the object creation."""
@@ -1307,7 +1309,7 @@ class simpleLdap(object):
 
 		# FIXME: timeout without exception if objectClass of Object is not exsistant !!
 		univention.debug.debug(univention.debug.ADMIN, 99, 'Modify dn=%r;\nmodlist=%r;\noldattr=%r;' % (self.dn, ml, self.oldattr))
-		self.lo.modify(self.dn, ml, ignore_license=ignore_license, serverctrls=serverctrls, response=response)
+		self.dn = self.lo.modify(self.dn, ml, ignore_license=ignore_license, serverctrls=serverctrls, response=response)
 		if ml:
 			self._write_admin_diary_modify()
 
@@ -3085,16 +3087,16 @@ class simpleComputer(simpleLdap):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, '__update_groups_after_namechange: oldname is empty')
 			return
 
-		# Since self.dn is not updated yet, self.dn contains still the old DN.
-		# Thats why olddn and newdn get reassebled from scratch.
-		olddn = 'cn=%s,%s' % (escape_dn_chars(oldname), self.lo.parentDn(self.dn))
-		newdn = 'cn=%s,%s' % (escape_dn_chars(newname), self.lo.parentDn(self.dn))
+		olddn = self.old_dn
+		newdn = self.dn
 
+		oldUid = '%s$' % oldname
+		newUid = '%s$' % newname
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '__update_groups_after_namechange: olddn=%s' % olddn)
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '__update_groups_after_namechange: newdn=%s' % newdn)
 
 		for group in self.info.get('groups', []):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '__update_groups_after_namechange: grp=%s' % group)
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '__update_groups_after_namechange: grp=%s' % (group,))
 
 			# Using the UDM groups/group object does not work at this point. The computer object has already been renamed.
 			# During open() of groups/group each member is checked if it exists. Because the computer object with "olddn" is missing,
@@ -3108,8 +3110,6 @@ class simpleComputer(simpleLdap):
 			if newdn not in newUniqueMembers:
 				newUniqueMembers.append(newdn)
 
-			oldUid = '%s$' % oldname
-			newUid = '%s$' % newname
 			oldMemberUids = self.lo.getAttr(group, 'memberUid')
 			newMemberUids = copy.deepcopy(oldMemberUids)
 			if oldUid in newMemberUids:
@@ -3118,6 +3118,10 @@ class simpleComputer(simpleLdap):
 				newMemberUids.append(newUid)
 
 			self.lo.modify(group, [('uniqueMember', oldUniqueMembers, newUniqueMembers), ('memberUid', oldMemberUids, newMemberUids)])
+
+		for group in set(self.oldinfo.get('groups', [])) - set(self.info.get('groups', [])):
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '__update_groups_after_namechange: removing from grp=%s' % (group,))
+			self.lo.modify(group, [('uniqueMember', olddn, ''), ('memberUid', oldUid, ''),])
 
 	def update_groups(self):  # type: () -> None
 		if not self.hasChanged('groups') and not self.oldPrimaryGroupDn and not self.newPrimaryGroupDn:
@@ -3144,10 +3148,12 @@ class simpleComputer(simpleLdap):
 			groupObject = univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, groupdn)
 			groupObject.open()
 			# add this computer to the group
-			hosts = DN.set(groupObject['hosts'] + [self.dn])
+			hosts = DN.set(groupObject['hosts'])
 			if group not in new_groups:
 				# remove this computer from the group
-				hosts -= DN.set([self.dn])
+				hosts.discard(DN(self.old_dn))
+			else:
+				hosts.add(DN(self.dn))
 			groupObject['hosts'] = list(DN.values(hosts))
 			groupObject.modify(ignore_license=1)
 

@@ -1501,7 +1501,7 @@ class object(univention.admin.handlers.simpleLdap):
 		for group in old_groups:
 			if group and not case_insensitive_in_list(group, self.info.get('groups', [])) and group.lower() != self['primaryGroup'].lower():
 				grpobj = group_mod.object(None, self.lo, self.position, group)
-				grpobj.fast_member_remove([self.dn], [old_uid])
+				grpobj.fast_member_remove([self.old_dn], [old_uid])
 
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: check groups in info[groups]')
 		for group in self.info.get('groups', []):

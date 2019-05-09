@@ -165,7 +165,6 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 			if hasattr(self, 'uid') and self.uid:
 				univention.admin.allocators.confirm(self.lo, self.position, 'uid', self.uid)
 			univention.admin.handlers.simpleComputer.primary_group(self)
-			univention.admin.handlers.simpleComputer.update_groups(self)
 		univention.admin.handlers.simpleComputer._ldap_post_create(self)
 		self.nagios_ldap_post_create()
 
@@ -203,7 +202,6 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 
 	def _ldap_post_modify(self):
 		univention.admin.handlers.simpleComputer.primary_group(self)
-		univention.admin.handlers.simpleComputer.update_groups(self)
 		univention.admin.handlers.simpleComputer._ldap_post_modify(self)
 		self.nagios_ldap_post_modify()
 
