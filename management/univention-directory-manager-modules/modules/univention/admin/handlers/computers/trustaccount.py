@@ -107,41 +107,38 @@ class object(univention.admin.handlers.simpleLdap):
 
 		self.save()
 
-	def _ldap_addlist(self):
-
-		self.uidNum = None
-		self.machineSid = None
-		while not self.uidNum or not self.machineSid:
-			self.uidNum = univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
-			if self.uidNum:
-				self.alloc.append(('uidNumber', self.uidNum))
-				self.machineSid = univention.admin.allocators.requestUserSid(self.lo, self.position, self.uidNum)
-				if not self.machineSid:
-					univention.admin.allocators.release(self.lo, self.position, 'uidNumber', self.uidNum)
+	def getMachineSid(self, lo, position, uidNum, rid=None):
+		# if rid is given, use it regardless of s4 connector
+		if rid:
+			searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
+			domainsid = searchResult[0][1]['sambaSID'][0]
+			sid = domainsid + '-' + rid
+			return self.request_lock('sid', sid)
+		else:
+			# if no rid is given, create a domain sid or local sid if connector is present
+			if self.s4connector_present:
+				return 'S-1-4-%s' % uidNum
 			else:
-				self.machineSid = None
+				num = uidNum
+				while True:
+					try:
+						return self.request_lock('sid+user', num)
+					except univention.admin.uexceptions.noLock:
+						num = str(int(num) + 1)
 
-		self.alloc.append(('sid', self.machineSid))
+	def _ldap_addlist(self):
 		acctFlags = univention.admin.samba.acctFlags(flags={'I': 1})
 
 		al = []
 		ocs = [b'top', b'person', b'sambaSamAccount']
 
-		al.append(('sambaSID', [self.machineSid.encode('ASCII')]))
+		al.append(('sambaSID', [self.getMachineSid(self.lo, self.position, self.request_lock('uidNumber')).encode('ASCII')]))
 		al.append(('sambaAcctFlags', [acctFlags.decode().encode('ASCII')]))
 		al.append(('sn', self['name'].encode('UTF-8')))
 
 		al.insert(0, ('objectClass', ocs))
 
 		return al
-
-	def _ldap_post_create(self):
-		if hasattr(self, 'uidNum') and self.uidNum and hasattr(self, 'machineSid') and self.machineSid:
-			univention.admin.allocators.confirm(self.lo, self.position, 'uidNumber', self.uidNum)
-			univention.admin.allocators.confirm(self.lo, self.position, 'sid', self.machineSid)
-
-		if hasattr(self, 'uid') and self.uid:
-			univention.admin.allocators.confirm(self.lo, self.position, 'uid', self.uid)
 
 	def _ldap_pre_modify(self):
 		if self.hasChanged('password'):
@@ -156,24 +153,11 @@ class object(univention.admin.handlers.simpleLdap):
 		ml = super(object, self)._ldap_modlist()
 
 		if self.hasChanged('name') and self['name']:
-			error = 0
 			requested_uid = "%s$" % self['name']
-			self.uid = None
 			try:
-				self.uid = univention.admin.allocators.request(self.lo, self.position, 'uid', value=requested_uid)
-			except Exception:
-				error = 1
-
-			if not self.uid or error:
-				del(self.info['name'])
-				self.oldinfo = {}
-				self.dn = None
-				self._exists = 0
-				raise univention.admin.uexceptions.uidAlreadyUsed(': %s' % requested_uid)
-				return []
-
-			self.alloc.append(('uid', self.uid))
-			ml.append(('uid', self.oldattr.get('uid', [None])[0], self.uid.encode('ASCII')))
+				ml.append(('uid', self.oldattr.get('uid', []), [self.request_lock('uid', requested_uid).encode('ASCII')]))
+			except univention.admin.uexceptions.noLock:
+				raise univention.admin.uexceptions.uidAlreadyUsed(requested_uid)
 
 		if self.modifypassword:
 			password_nt, password_lm = univention.admin.password.ntlm(self['password'])
@@ -181,11 +165,6 @@ class object(univention.admin.handlers.simpleLdap):
 			ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [b''])[0], password_lm.encode('ASCII')))
 
 		return ml
-
-	def cancel(self):
-		for i, j in self.alloc:
-			ud.debug(ud.ADMIN, ud.WARN, 'cancel: release (%s): %s' % (i, j))
-			univention.admin.allocators.release(self.lo, self.position, i, j)
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):

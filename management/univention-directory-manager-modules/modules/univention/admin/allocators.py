@@ -97,7 +97,6 @@ def requestGroupSid(lo, position, gid_s, generateDomainLocalSid=False):
 
 
 def acquireRange(lo, position, atype, attr, ranges, scope='base'):
-
 	ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE: Start allocation for type = %r' % atype)
 	startID = lo.getAttr('cn=%s,cn=temporary,cn=univention,%s' % (ldap.dn.escape_dn_chars(atype), position.getBase()), 'univentionLastUsedValue')
 

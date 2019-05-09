@@ -127,39 +127,21 @@ mapping.register('allowedEmailGroups', 'univentionAllowedEmailGroups')
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
-	def _ldap_post_create(self):
-		if self['mailAddress']:
-			univention.admin.allocators.confirm(self.lo, self.position, 'mailPrimaryAddress', self['mailAddress'])
+	def open(self):
+		univention.admin.handlers.simpleLdap.open(self)
+		self['allowedEmailUsers'] = self.oldattr.get('univentionAllowedEmailUsers', [])
+		self['allowedEmailGroups'] = self.oldattr.get('univentionAllowedEmailGroups', [])
+		self.save()
 
-	def _ldap_post_modify(self):
-		if self['mailAddress'] and self.hasChanged('mailAddress'):
-			univention.admin.allocators.confirm(self.lo, self.position, 'mailPrimaryAddress', self['mailAddress'])
-
-	def _ldap_addlist(self):
-		al = []
-		# mail address MUST be unique
-		if self['mailAddress']:
+	def _ldap_pre_ready(self):
+		if not self.exists() or self.hasChanged('mailAddress'):
 			try:
-				self.alloc.append(('mailPrimaryAddress', self['mailAddress']))
-				univention.admin.allocators.request(self.lo, self.position, 'mailPrimaryAddress', value=self['mailAddress'])
-			except:
-				univention.admin.allocators.release(self.lo, self.position, 'mailPrimaryAddress', value=self['mailAddress'])
-				raise univention.admin.uexceptions.mailAddressUsed
-
-		return al
+				if self['mailAddress']:
+					self.request_lock('mailPrimaryAddress', self['mailAddress'])
+			except univention.admin.uexceptions.noLock:
+				raise univention.admin.uexceptions.mailAddressUsed(self['mailAddress'])
 
 	def _ldap_modlist(self):
-		if self.hasChanged('mailAddress') and self['mailAddress']:
-			for i, j in self.alloc:
-				if i == 'mailPrimaryAddress':
-					break
-			else:
-				try:
-					univention.admin.allocators.request(self.lo, self.position, 'mailPrimaryAddress', value=self['mailAddress'])
-				except:
-					univention.admin.allocators.release(self.lo, self.position, 'mailPrimaryAddress', value=self['mailAddress'])
-					raise univention.admin.uexceptions.mailAddressUsed
-
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 		return ml
 

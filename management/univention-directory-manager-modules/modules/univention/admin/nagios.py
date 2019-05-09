@@ -181,13 +181,9 @@ class Support(object):
 	def nagios_ldap_modlist(self, ml):
 		if 'nagios' in self.options:
 			if ('ip' not in self.info) or (not self.info['ip']) or (len(self.info['ip']) == 1 and self.info['ip'][0] == ''):
-				for i, j in self.alloc:
-					univention.admin.allocators.release(self.lo, self.position, i, j)
 				raise univention.admin.uexceptions.nagiosARecordRequired()
 			if not self.info.get('domain', None):
 				if ('dnsEntryZoneForward' not in self.info) or (not self.info['dnsEntryZoneForward']) or (len(self.info['dnsEntryZoneForward']) == 1 and self.info['dnsEntryZoneForward'][0] == ''):
-					for i, j in self.alloc:
-						univention.admin.allocators.release(self.lo, self.position, i, j)
 					raise univention.admin.uexceptions.nagiosDNSForwardZoneEntryRequired()
 
 		# add nagios option
