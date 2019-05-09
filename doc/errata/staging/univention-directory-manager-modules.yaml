@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-directory-manager-modules
-fix: 14.0.12-30
+fix: 14.0.12-31
 desc: |-
   This update addresses the following issue:
   * Explicit initialization of the default values of UDM properties has been
@@ -18,4 +18,5 @@ desc: |-
   * After renaming an object the internal DN  (self.dn) is updated correctly.
     The old DN can now be obtained via self.old_dn. This fixes the concurrent
     renaming and update of group membership for e.g. computer objects.
-bug: [49235, 48390, 49408, 41694]
+  * Several german translations have been updated (Bug #49359).
+bug: [49235, 48390, 49408, 41694, 49359]
