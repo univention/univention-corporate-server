@@ -14,6 +14,7 @@ Build-Depends:
 Package: python-univention-connector-s4
 Architecture: all
 Depends:
+ python-inotifyx,
  python-pyasn1-modules,
  python-univention (>=12.0.0-5),
  python-univention-directory-manager (>= 14.0.14-14),
@@ -34,6 +35,7 @@ Description: UCS - Modules for connector synchronisation
 Package: python3-univention-connector-s4
 Architecture: all
 Depends:
+ python3-inotifyx,
  python3-pyasn1-modules,
  python3-univention,
  python3-univention-directory-manager,
