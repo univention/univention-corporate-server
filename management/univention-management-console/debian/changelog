@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-13) unstable; urgency=medium
+
+  * Bug #49436: Add custom css to login page
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Thu, 09 May 2019 09:56:43 +0200
+
 univention-management-console (11.0.4-12) unstable; urgency=medium
 
   * Bug #48157: prevent UMC server crash in rare situations
