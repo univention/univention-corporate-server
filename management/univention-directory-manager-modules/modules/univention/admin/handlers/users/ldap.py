@@ -193,12 +193,10 @@ class object(univention.admin.handlers.simpleLdap):
 
 			# get lock for username
 			try:
-				self.alloc.append(('uid', univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])))
+				if self['username']:  # might not be set when using CLI without --set username=
+					self.request_lock('uid', self['username'])
 			except univention.admin.uexceptions.noLock:
 				raise univention.admin.uexceptions.uidAlreadyUsed(self['username'])
-
-	def _ldap_post_create(self):
-		self._confirm_locks()
 
 	def _ldap_pre_modify(self):
 		if self.hasChanged('username'):
@@ -304,6 +302,7 @@ class object(univention.admin.handlers.simpleLdap):
 				raise univention.admin.uexceptions.pwQuality(str(e).replace('W?rterbucheintrag', 'Wörterbucheintrag').replace('enth?lt', 'enthält'))
 
 	def _ldap_post_remove(self):
+		super(object, self)._ldap_post_remove()
 		univention.admin.allocators.release(self.lo, self.position, 'uid', self['username'])
 
 		admin_settings_dn = 'uid=%s,cn=admin-settings,cn=univention,%s' % (ldap.dn.escape_dn_chars(self['username']), self.lo.base)

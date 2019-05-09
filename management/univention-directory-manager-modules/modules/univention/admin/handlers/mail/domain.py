@@ -35,7 +35,6 @@ import ldap
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.allocators
 import univention.admin.localization
 from univention.admin.handlers.dns import stripDot
 
