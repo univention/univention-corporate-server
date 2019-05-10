@@ -43,6 +43,10 @@
  * univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Fatal error, var = '+j)
  */
 
+#if PY_MAJOR_VERSION >= 3
+    #define PyInt_FromLong PyLong_FromLong
+#endif
+
 static PyObject *
 py_univention_debug_debug(PyObject *self, PyObject *args)
 {
@@ -85,7 +89,12 @@ py_univention_debug_init(PyObject *self, PyObject *args)
         Py_RETURN_NONE;
     }
 
+    #if PY_MAJOR_VERSION >= 3
+    file = PyFile_FromFd( fileno(fd), logfile, "a+", -1, NULL, NULL, NULL, 1 );
+    #else
     file = PyFile_FromFile( fd, logfile, "a+", NULL );
+    #endif
+
 
     return file;
 }
@@ -240,11 +249,32 @@ static struct PyMethodDef debug_methods[] = {
 };
 
 PyMODINIT_FUNC
+#if PY_MAJOR_VERSION >= 3
+PyInit__debug(void)
+#else
 init_debug(void)
+#endif
 {
     PyObject *module, *dict;
+    #if PY_MAJOR_VERSION >= 3
+    static struct PyModuleDef moduledef = {
+        PyModuleDef_HEAD_INIT,
+        "_debug",     /* m_name */
+        "univention debug",  /* m_doc */
+        -1,                  /* m_size */
+        debug_methods,    /* m_methods */
+        NULL,                /* m_reload */
+        NULL,                /* m_traverse */
+        NULL,                /* m_clear */
+        NULL,                /* m_free */
+    };
+    #endif
 
+    #if PY_MAJOR_VERSION >= 3
+    module = PyModule_Create(&moduledef);
+    #else
     module = Py_InitModule("_debug", debug_methods);
+    #endif
 
     dict = PyModule_GetDict(module);
 
@@ -282,6 +312,9 @@ init_debug(void)
 
     PyDict_SetItemString(dict, "NO_FUNCTION", PyInt_FromLong(UV_DEBUG_NO_FUNCTION));
     PyDict_SetItemString(dict, "FUNCTION", PyInt_FromLong(UV_DEBUG_FUNCTION));
+    #if PY_MAJOR_VERSION >= 3
+    return module;
+    #endif
 }
 
 /* vim:set ts=4 sw=4 et: */

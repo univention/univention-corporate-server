@@ -216,7 +216,8 @@ void univention_debug_exit(void)
 
 	fprintf(univention_debug_file, "%02d.%02d.%02d %02d:%02d:%02d.%03d  DEBUG_EXIT\n", tm.tm_mday, tm.tm_mon+1, tm.tm_year-100, tm.tm_hour,tm.tm_min, tm.tm_sec, ( int ) ( tv.tv_usec / 1000 ) );
 	fflush(univention_debug_file);
-	fclose(univention_debug_file);
+	if (univention_debug_file != stderr && univention_debug_file != stdout)
+		fclose(univention_debug_file);
 	univention_debug_file = NULL;
 
 	free(univention_debug_filename);

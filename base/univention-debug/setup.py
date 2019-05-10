@@ -30,18 +30,34 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-from distutils.core import setup, Extension
 
-setup(name='univention-debug',
-	version='@VERSION@',
-	py_modules=['univention.debug', 'univention.debug2'],
-	package_dir={'univention': '@top_srcdir@/python'},
-	ext_modules=[Extension('univention._debug', ['python/py_debug.c'],  # BUG: top_srcdir not distutils compatible
-		include_dirs=['@top_srcdir@/include'],
-		library_dirs=['@top_builddir@/lib/.libs'],
-		libraries=['univentiondebug'])],
-	author='Univention GmbH',
-	author_email='packages@univention.de',
-	url='http://www.univention.de/',
+import io
+from distutils.core import setup, Extension
+from email.utils import parseaddr
+from debian.changelog import Changelog
+from debian.deb822 import Deb822
+
+dch = Changelog(io.open('debian/changelog', 'r', encoding='utf-8'))
+dsc = Deb822(io.open('debian/control', 'r', encoding='utf-8'))
+realname, email_address = parseaddr(dsc['Maintainer'])
+
+setup(
+	packages=['univention'],
+	package_dir={'univention': 'python'},
+	ext_modules=[Extension(
+		'univention._debug',
+		['modules/py_debug.c'],
+		include_dirs=['include'],
+		library_dirs=['lib/.libs'],
+		libraries=['univentiondebug']
+	)],
 	description='Univention debugging and logging library',
+
+	url='https://www.univention.de/',
+	license='GNU Affero General Public License v3',
+
+	name=dch.package,
+	version=dch.version.full_version,
+	maintainer=realname,
+	maintainer_email=email_address,
 )

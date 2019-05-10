@@ -1,3 +1,9 @@
+univention-debug (11.0.0-2) unstable; urgency=medium
+
+  * Bug #00000: python3
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 13 May 2019 20:49:13 +0200
+
 univention-debug (11.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump

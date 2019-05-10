@@ -42,8 +42,8 @@ example:
 ... ...  LISTENER    ( ERROR   ) : Fatal error: var=42
 """
 
-import _debug
-from _debug import *
+import univention._debug as _debug
+from univention._debug import *
 
 
 def debug(id, level, ustring, utf8=True):

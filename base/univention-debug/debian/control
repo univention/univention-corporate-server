@@ -7,8 +7,15 @@ Build-Depends: debhelper (>= 7.0.50~),
  autoconf,
  automake,
  libtool,
+ dh-python,
+ python-debian,
+ python3-debian,
+ python-all,
  python-all-dev,
- python-support,
+ python-pytest,
+ python3-all,
+ python3-all-dev,
+ python3-pytest,
  ucslint-univention
 
 Package: libunivention-debug1
@@ -46,6 +53,21 @@ Depends: ${misc:Depends},
  ${python:Depends},
  ${shlibs:Depends}
 Provides: ${python:Provides}
+Description: UCS - debugging and logging library (Python interface)
+ This package includes the Python interface to the
+ UCS debugging and logging  library.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: python3-univention-debug
+Architecture: any
+Depends: ${misc:Depends},
+ ${python3:Depends},
+ ${shlibs:Depends}
+Provides: ${python3:Provides}
 Description: UCS - debugging and logging library (Python interface)
  This package includes the Python interface to the
  UCS debugging and logging  library.
