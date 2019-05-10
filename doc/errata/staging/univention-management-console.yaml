@@ -3,10 +3,13 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-management-console
-fix: 11.0.4-15A~4.4.0.201905091615
+fix: 11.0.4-16A~4.4.0.201905101258
 desc: |
  This update addresses the following issue(s):
  * A custom css file for manual style changes was added to the univention login
  * The UMC-Server does not respond with an error anymore if no English
    locale is configured.
-bug: [49436, 47602]
+ * LDAP connection problems could result in an error loop, with the following
+   error "ldapError: Insufficient access". This has been fixed by ensuring a
+   new connection is used after LDAP connection problems.
+bug: [49436, 47602, 46089]
