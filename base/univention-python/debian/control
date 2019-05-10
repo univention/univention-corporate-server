@@ -33,7 +33,7 @@ Description: UCS - common Python 2 modules
 Package: python3-univention
 Architecture: all
 Depends: ${misc:Depends}, ${python3:Depends},
- python3-ldap,
+ python3-ldap | python3-pyldap,
  python3-dns,
  python3-univention-debug,
  python3-cracklib

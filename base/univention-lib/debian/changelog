@@ -1,3 +1,9 @@
+univention-lib (8.0.0-9) unstable; urgency=medium
+
+  * Bug #49136: depend on python3-pyldap
+
+ -- Florian Best <best@univention.de>  Fri, 10 May 2019 14:50:27 +0200
+
 univention-lib (8.0.0-8) unstable; urgency=medium
 
   * Bug #49136: make univention.lib.i18n usable for python3

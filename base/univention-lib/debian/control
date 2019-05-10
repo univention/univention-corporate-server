@@ -5,6 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.9.8
 Build-Depends: debhelper (>= 7),
  python-all,
+ python3-all,
  dh-python,
  univention-config-dev,
  ucslint-univention
@@ -47,7 +48,7 @@ Depends: ${python3:Depends},
  dnsutils,
  python3-ldb,
  python3-samba,
- python3-ldap,
+ python3-ldap | python3-pyldap,
  python3-pil,
  python3-six,
 Provides: ${python3:Provides}
