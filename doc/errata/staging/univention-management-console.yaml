@@ -6,7 +6,8 @@ src: univention-management-console
 fix: 11.0.4-16A~4.4.0.201905101258
 desc: |
  This update addresses the following issue(s):
- * A custom css file for manual style changes was added to the univention login
+ * The design of the UMC login page can now be adjusted via
+   /usr/share/univention-management-console-login/css/custom.css.
  * The UMC-Server does not respond with an error anymore if no English
    locale is configured.
  * LDAP connection problems could result in an error loop, with the following

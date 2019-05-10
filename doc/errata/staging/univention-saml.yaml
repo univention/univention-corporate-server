@@ -6,5 +6,6 @@ src: univention-saml
 fix: 6.0.2-2A~4.4.0.201905091050
 desc: |
  This update addresses the following issue(s):
- * A custom css file for manual style changes was added to the saml login
+ * The design of the UMC single sign-on page can now be adjusted via
+   /usr/share/univention-management-console-login/css/custom.css.
 bug: [49436]
