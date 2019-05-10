@@ -122,14 +122,15 @@ def package_lock():
 
 
 def wait_for_dpkg_lock(timeout=120):
-	lock_file = '/var/lib/dpkg/lock'
-	package_logger.debug('Trying to get a lock for %s...' % lock_file)
+	lock_files = ['/var/lib/dpkg/lock', '/var/lib/apt/lists/lock']
+	lock_file_string = ' or '.join(lock_files)
+	package_logger.debug('Trying to get a lock for %s...' % lock_file_string)
 	first = True
-	while timeout > 0:
-		returncode = call_process(['fuser', lock_file]).returncode
+	while first or timeout > 0:
+		returncode = call_process(['fuser'] + lock_files).returncode
 		if returncode == 0:
 			if first:
-				package_logger.info('Could not lock %s. Is another process using it? Waiting up to %s seconds' % (lock_file, timeout))
+				package_logger.info('Could not lock %s. Is another process using it? Waiting up to %s seconds' % (lock_file_string, timeout))
 				first = False
 			time.sleep(1)
 			timeout -= 1
