@@ -768,8 +768,10 @@ class object(univention.admin.handlers.simpleLdap):
 			if not self.__case_insensitive_in_list(self.dn, members) and not self.__case_insensitive_in_list(self.old_dn, members):
 				continue
 			newmembers = copy.deepcopy(members)
-			newmembers = self.__case_insensitive_remove_from_list(self.dn, newmembers)
-			newmembers = self.__case_insensitive_remove_from_list(self.old_dn, newmembers)
+			if self.__case_insensitive_in_list(self.dn, newmembers):
+				newmembers = self.__case_insensitive_remove_from_list(self.dn, newmembers)
+			if self.__case_insensitive_in_list(self.old_dn, newmembers):
+				newmembers = self.__case_insensitive_remove_from_list(self.old_dn, newmembers)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: remove from supergroup %s' % group)
 			self.__set_membership_attributes(group, members, newmembers)
 

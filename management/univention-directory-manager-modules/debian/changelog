@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.12-33) unstable; urgency=medium
+
+  * Bug #41694: check if dn is in list before removing it
+
+ -- Florian Best <best@univention.de>  Fri, 10 May 2019 09:51:31 +0200
+
 univention-directory-manager-modules (14.0.12-32) unstable; urgency=low
 
   * Bug #49359: fix typo in german translation
