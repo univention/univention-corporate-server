@@ -177,10 +177,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			'0020-E742': [ERROR_BUT_WARN, 'do not define classes named ‘l’, ‘O’, or ‘I’'],
 			'0020-E743': [ERROR_BUT_WARN, 'do not define functions named ‘l’, ‘O’, or ‘I’'],
 
-
 			'0020-E9': [ERROR_BUT_WARN, 'Runtime'],
 			'0020-E901': [ERROR_BUT_WARN, 'SyntaxError or IndentationError'],
 			'0020-E902': [ERROR_BUT_WARN, 'IOError'],
+			'0020-E999': [ERROR_BUT_WARN, 'SyntaxError: invalid syntax'],  # python3 only? should be RESULT_ERROR
 
 			'0020-W1': [ERROR_BUT_WARN, 'Indentation warning'],
 			'0020-W191': [uub.RESULT_STYLE, 'indentation contains tabs'],
@@ -297,7 +297,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 		errors = []
 		for ignore, pathes in self._iter_pathes(path):
-			cmd = ['flake8', '--config=/dev/null']
+			cmd = ['python2.7', '/usr/bin/flake8', '--config=/dev/null']
 			if ignore:
 				cmd.extend(['--ignore', ignore])
 			if self.DEFAULT_SELECT:

@@ -1,3 +1,9 @@
+ucslint (8.0.0-7) unstable; urgency=medium
+
+  * Bug #31771: execute 0020-flake8 with python2
+
+ -- Florian Best <best@univention.de>  Fri, 10 May 2019 12:54:50 +0200
+
 ucslint (8.0.0-6) unstable; urgency=medium
 
   * Bug #31771: enable ucslint plugin 0020-flake8
