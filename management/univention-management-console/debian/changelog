@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-16) unstable; urgency=medium
+
+  * Bug #46089: fix "ldapError: Insufficient access" errors
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 10 May 2019 12:00:04 +0200
+
 univention-management-console (11.0.4-15) unstable; urgency=medium
 
   * Bug #47602: be graceful about missing english locale
