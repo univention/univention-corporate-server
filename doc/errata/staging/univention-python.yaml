@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-python
+fix: 12.0.0-9A~4.4.0.201905101454
+desc: |
+ This update addresses the following issue(s):
+ * The python3-univention package dependencies have been adjusted.
+bug: [49136]
