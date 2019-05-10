@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * Searching for users in a certain group is now possible.
  * Nagios objects are created again in their default containers.
-bug: [42607, 49594]
+ * It is checked if containers are moveable before moving them and trying to
+   revert the changes in case the moving fails.
+bug: [42607, 49594, 49234]

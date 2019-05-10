@@ -753,6 +753,7 @@ class simpleLdap(object):
 					copyobject[key] = self[key]
 				copyobject.policies = self.policies
 				copyobject.create()
+				to_be_moved = []
 				moved = []
 				pattern = re.compile('%s$' % (re.escape(self.dn),), flags=re.I)
 				try:
@@ -773,9 +774,13 @@ class simpleLdap(object):
 						if not subobject or not (univention.admin.modules.supports(submodule, 'move') or univention.admin.modules.supports(submodule, 'subtree_move')):
 							subold_rdn = '+'.join(explode_rdn(subolddn, 1))
 							raise univention.admin.uexceptions.invalidOperation(_('Unable to move object %(name)s (%(type)s) in subtree, trying to revert changes.') % {'name': subold_rdn, 'type': univention.admin.modules.identifyOne(subolddn, suboldattrs)})
+						to_be_moved.append((subobject, subolddn, subnewdn))
+
+					for subobject, subolddn, subnewdn in to_be_moved:
 						subobject.open()
 						subobject.move(subnewdn)
 						moved.append((subolddn, subnewdn))
+
 					univention.admin.objects.get(univention.admin.modules.get(self.module), None, self.lo, position='', dn=self.dn).remove()
 					self._delete_temporary_ou_if_empty(temporary_ou)
 				except BaseException:
