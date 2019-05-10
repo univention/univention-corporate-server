@@ -198,7 +198,7 @@ class UCSTestUDM(object):
 		:param list options: A list of UDM option group to set.
 		:param str_or_list set: A list or one single *name=value* property.
 		:param list append: A list of *name=value* properties to add.
-		:param list remove: A list of *name=value* properties to add.
+		:param list remove: A list of *name=value* properties to remove.
 		:param boolean remove_referring: Remove other LDAP entries referred by this entry.
 		:param boolean ignore_exists: Ignore error on creation if entry already exists.
 		:param boolean ignore_not_exists: Ignore error on deletion if entry does not exists.
