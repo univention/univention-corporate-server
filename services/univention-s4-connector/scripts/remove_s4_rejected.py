@@ -43,11 +43,11 @@ class ObjectNotFound(BaseException):
 def remove_s4_rejected(s4_dn):
 	cache_db = sqlite3.connect('/etc/univention/connector/s4internal.sqlite')
 	c = cache_db.cursor()
-	c.execute("SELECT key FROM 'S4 rejected' WHERE value='%s'" % s4_dn)
+	c.execute("SELECT key FROM 'S4 rejected' WHERE value=?", [unicode(s4_dn)])
 	key = c.fetchone()
 	if not key:
 		raise ObjectNotFound
-	c.execute("DELETE FROM 'S4 rejected' WHERE value='%s'" % s4_dn)
+	c.execute("DELETE FROM 'S4 rejected' WHERE value=?", [unicode(s4_dn)])
 	cache_db.commit()
 	cache_db.close()
 

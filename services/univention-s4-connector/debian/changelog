@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-16) unstable; urgency=medium
+
+  * Bug #49445: fix sql evaluation in remove_{ucs,s4}_rejected.py
+
+ -- Florian Best <best@univention.de>  Thu, 13 Jun 2019 13:15:18 +0200
+
 univention-s4-connector (13.0.2-15) unstable; urgency=medium
 
   * Bug #40773: Remove lockingdb and s4cache during re-join
