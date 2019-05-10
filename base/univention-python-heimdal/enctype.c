@@ -52,7 +52,7 @@ krb5EnctypeObject *enctype_from_enctype(krb5_context context, krb5_enctype encty
 
 krb5EnctypeObject *enctype_new(PyObject *unused, PyObject *args)
 {
-	krb5_error_code ret;
+	krb5_error_code err;
 	krb5ContextObject *context;
 	char *enctype_string;
 	if (!PyArg_ParseTuple(args, "Os", &context, &enctype_string))
@@ -64,11 +64,11 @@ krb5EnctypeObject *enctype_new(PyObject *unused, PyObject *args)
 
 	self->context = context->context;
 
-	ret = krb5_string_to_enctype(context->context, enctype_string,
+	err = krb5_string_to_enctype(context->context, enctype_string,
 			&self->enctype);
-	if (ret) {
+	if (err) {
 		Py_DECREF(self);
-		krb5_exception(NULL, ret);
+		krb5_exception(NULL, err);
 		return NULL;
 	}
 
@@ -77,13 +77,13 @@ krb5EnctypeObject *enctype_new(PyObject *unused, PyObject *args)
 
 static PyObject *enctype_string(krb5EnctypeObject *self)
 {
-	krb5_error_code ret;
+	krb5_error_code err;
 	char *enctype_c_string;
 	PyObject *enctype_string;
 
-	ret = krb5_enctype_to_string(self->context, self->enctype, &enctype_c_string);
-	if (ret) {
-		krb5_exception(NULL, ret);
+	err = krb5_enctype_to_string(self->context, self->enctype, &enctype_c_string);
+	if (err) {
+		krb5_exception(NULL, err);
 		return NULL;
 	}
 	enctype_string = PyString_FromString(enctype_c_string);

@@ -44,7 +44,7 @@
 
 krb5KeyblockObject *keyblock_new(PyObject *unused, PyObject *args)
 {
-	krb5_error_code ret;
+	krb5_error_code err;
 	krb5ContextObject *context;
 	krb5EnctypeObject *enctype;
 	char *password;
@@ -62,22 +62,22 @@ krb5KeyblockObject *keyblock_new(PyObject *unused, PyObject *args)
 #if PY_MAJOR_VERSION >= 2 && PY_MINOR_VERSION >= 2
 	if (PyObject_TypeCheck(arg, &krb5SaltType)) {
 		krb5SaltObject *salt = (krb5SaltObject*)arg;
-		ret = krb5_string_to_key_salt(context->context, enctype->enctype, password,
+		err = krb5_string_to_key_salt(context->context, enctype->enctype, password,
 				salt->salt, &self->keyblock);
 	} else if (PyObject_TypeCheck(arg, &krb5PrincipalType)) {
 #else
 	if (1) {
 #endif
 		krb5PrincipalObject *principal = (krb5PrincipalObject*)arg;
-		ret = krb5_string_to_key(context->context, enctype->enctype, password,
+		err = krb5_string_to_key(context->context, enctype->enctype, password,
 				principal->principal, &self->keyblock);
 	} else {
 		PyErr_SetString(PyExc_TypeError, "either principal or salt needs to be passed");
 		Py_DECREF(self);
 		return NULL;
 	}
-	if (ret) {
-		krb5_exception(NULL, ret);
+	if (err) {
+		krb5_exception(NULL, err);
 		Py_DECREF(self);
 		return NULL;
 	}
@@ -87,7 +87,7 @@ krb5KeyblockObject *keyblock_new(PyObject *unused, PyObject *args)
 
 krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args)
 {
-	krb5_error_code ret;
+	krb5_error_code err;
 	krb5ContextObject *py_context;
 	PyObject *py_enctype;
 	PyObject *py_key;
@@ -118,10 +118,10 @@ krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args)
 	key_buf = (uint8_t *) PyString_AsString(py_key);
 	key_len = PyString_Size(py_key);
 
-	ret = krb5_keyblock_init(py_context->context, enctype, key_buf, key_len, &self->keyblock);
+	err = krb5_keyblock_init(py_context->context, enctype, key_buf, key_len, &self->keyblock);
 
-	if (ret) {
-		krb5_exception(NULL, ret);
+	if (err) {
+		krb5_exception(NULL, err);
 		Py_DECREF(self);
 		return NULL;
 	}

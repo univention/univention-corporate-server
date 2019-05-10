@@ -45,7 +45,7 @@ krb5ContextObject *context_open(PyObject *unused)
 
 static PyObject *context_get_permitted_enctypes(krb5ContextObject *self)
 {
-	krb5_error_code ret;
+	krb5_error_code err;
 	krb5_enctype *etypes = NULL;
 	PyObject* list = NULL;
 	int i;
@@ -55,9 +55,9 @@ static PyObject *context_get_permitted_enctypes(krb5ContextObject *self)
 		goto exception;
 	}
 
-	ret = krb5_get_permitted_enctypes(self->context, &etypes);
-	if (ret) {
-		krb5_exception(NULL, ret);
+	err = krb5_get_permitted_enctypes(self->context, &etypes);
+	if (err) {
+		krb5_exception(NULL, err);
 		goto exception;
 	}
 
@@ -96,8 +96,8 @@ static int context_init(krb5ContextObject *self, PyObject *args, PyObject *kwds)
 		krb5_free_context(self->context);
 		self->context = NULL;
 	}
-	krb5_error_code ret = krb5_init_context(&self->context);
-	if (ret) {
+	krb5_error_code err = krb5_init_context(&self->context);
+	if (err) {
 		return -1;
 	}
 	return 0;

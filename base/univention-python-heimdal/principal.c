@@ -41,7 +41,7 @@
 
 krb5PrincipalObject *principal_new(PyObject *unused, PyObject *args)
 {
-	krb5_error_code ret;
+	krb5_error_code err;
 	krb5ContextObject *context;
 	char *principal_string;
 
@@ -54,9 +54,9 @@ krb5PrincipalObject *principal_new(PyObject *unused, PyObject *args)
 
 	self->context = context->context;
 
-	ret = krb5_parse_name(self->context, principal_string, &self->principal);
-	if (ret) {
-		krb5_exception(NULL, ret);
+	err = krb5_parse_name(self->context, principal_string, &self->principal);
+	if (err) {
+		krb5_exception(NULL, err);
 		Py_DECREF(self);
 		return NULL;
 	}
@@ -66,13 +66,13 @@ krb5PrincipalObject *principal_new(PyObject *unused, PyObject *args)
 
 static PyObject *principal_name(krb5PrincipalObject *self)
 {
-	krb5_error_code ret;
+	krb5_error_code err;
 	char *principal_string;
 	PyObject *principal;
 
-	ret = krb5_unparse_name(self->context, self->principal, &principal_string);
-	if (ret) {
-		krb5_exception(NULL, ret);
+	err = krb5_unparse_name(self->context, self->principal, &principal_string);
+	if (err) {
+		krb5_exception(NULL, err);
 		return NULL;
 	}
 	principal = PyString_FromString(principal_string);
@@ -83,7 +83,7 @@ static PyObject *principal_name(krb5PrincipalObject *self)
 
 static PyObject *principal_realm(krb5PrincipalObject *self, PyObject *args)
 {
-	//krb5_error_code ret;
+	//krb5_error_code err;
 	//krb5_realm *realm;
 	PyObject *realm_string;
 

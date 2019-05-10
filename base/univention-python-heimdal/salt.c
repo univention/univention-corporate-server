@@ -55,7 +55,7 @@ krb5SaltObject *salt_from_salt(krb5_context context, krb5_salt salt)
 
 krb5SaltObject *salt_new(PyObject *unused, PyObject *args)
 {
-	krb5_error_code ret;
+	krb5_error_code err;
 	krb5ContextObject *context;
 	krb5PrincipalObject *principal;
 	if (!PyArg_ParseTuple(args, "OO", &context, &principal))
@@ -67,10 +67,10 @@ krb5SaltObject *salt_new(PyObject *unused, PyObject *args)
 
 	self->context = context->context;
 
-	ret = krb5_get_pw_salt(context->context, principal->principal,
+	err = krb5_get_pw_salt(context->context, principal->principal,
 			&self->salt);
-	if (ret) {
-		krb5_exception(NULL, ret);
+	if (err) {
+		krb5_exception(NULL, err);
 		Py_DECREF(self);
 		return NULL;
 	}

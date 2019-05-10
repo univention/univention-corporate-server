@@ -72,7 +72,7 @@
 krb5KeytabObject *keytab_open(PyObject *unused, PyObject *args)
 {
 	char *keytab_string;
-	krb5_error_code ret;
+	krb5_error_code err;
 	char keytab_buf[256];
 	krb5ContextObject *context;
 	if (!PyArg_ParseTuple(args, "Os", &context, &keytab_string))
@@ -95,14 +95,14 @@ krb5KeytabObject *keytab_open(PyObject *unused, PyObject *args)
 	}
 	*self->context = context->context;
 
-	ret = krb5_init_context(self->context);
-	if (ret)
-		errx (1, "krb5_init_context failed: %d", ret);
+	err = krb5_init_context(self->context);
+	if (err)
+		errx (1, "krb5_init_context failed: %d", err);
 
 	if (keytab_string == NULL) {
-		ret = krb5_kt_default_name (*self->context, keytab_buf, sizeof(keytab_buf));
-		if (ret) {
-			krb5_warn(*self->context, ret, "krb5_kt_default_name");
+		err = krb5_kt_default_name (*self->context, keytab_buf, sizeof(keytab_buf));
+		if (err) {
+			krb5_warn(*self->context, err, "krb5_kt_default_name");
 			free(self->keytab);
 			free(self->context);
 			Py_DECREF(self);
@@ -111,9 +111,9 @@ krb5KeytabObject *keytab_open(PyObject *unused, PyObject *args)
 		keytab_string = keytab_buf;
 	}
 
-	ret = krb5_kt_resolve(*self->context, keytab_string, self->keytab);
-	if (ret) {
-		krb5_warn(*self->context, ret, "resolving keytab %s", keytab_string);
+	err = krb5_kt_resolve(*self->context, keytab_string, self->keytab);
+	if (err) {
+		krb5_warn(*self->context, err, "resolving keytab %s", keytab_string);
 		free(self->keytab);
 		free(self->context);
 		Py_DECREF(self);
@@ -138,7 +138,7 @@ static void keytab_destroy(krb5KeytabObject *self)
 
 static PyObject *keytab_add(krb5KeytabObject *self, PyObject *args)
 {
-	krb5_error_code ret;
+	krb5_error_code err;
 	krb5_keytab_entry entry;
 	char *principal_string = NULL;
 	int kvno = -1;
@@ -155,19 +155,19 @@ static PyObject *keytab_add(krb5KeytabObject *self, PyObject *args)
 
 	memset(&entry, 0, sizeof(entry));
 
-	ret = krb5_parse_name(*self->context, principal_string, &entry.principal);
-	if(ret) {
-		krb5_exception(*self->context, ret, "%s", principal_string);
+	err = krb5_parse_name(*self->context, principal_string, &entry.principal);
+	if(err) {
+		krb5_exception(*self->context, err, "%s", principal_string);
 		goto out;
 	}
 
-	ret = krb5_string_to_enctype(*self->context, enctype_string, &enctype);
-	if(ret) {
+	err = krb5_string_to_enctype(*self->context, enctype_string, &enctype);
+	if(err) {
 		int t;
 		if(sscanf(enctype_string, "%d", &t) == 1)
 			enctype = t;
 		else {
-			krb5_exception(*self->context, ret, "%s", enctype_string);
+			krb5_exception(*self->context, err, "%s", enctype_string);
 			goto out;
 		}
 	}
@@ -194,9 +194,9 @@ static PyObject *keytab_add(krb5KeytabObject *self, PyObject *args)
 
 	entry.vno = kvno;
 	entry.timestamp = time (NULL);
-	ret = krb5_kt_add_entry(*self->context, *self->keytab, &entry);
-	if(ret) {
-		krb5_exception(*self->context, ret, "add");
+	err = krb5_kt_add_entry(*self->context, *self->keytab, &entry);
+	if(err) {
+		krb5_exception(*self->context, err, "add");
 		goto out;
 	}
 
@@ -208,14 +208,14 @@ static PyObject *keytab_add(krb5KeytabObject *self, PyObject *args)
 
 static PyObject *keytab_list(krb5KeytabObject *self)
 {
-	krb5_error_code ret;
+	krb5_error_code err;
 	krb5_keytab_entry entry;
 	krb5_kt_cursor cursor;
 	PyObject *list = NULL;
 
-	ret = krb5_kt_start_seq_get(*self->context, *self->keytab, &cursor);
-	if(ret) {
-		krb5_exception(*self->context, ret, "krb5_kt_start_seq_get");
+	err = krb5_kt_start_seq_get(*self->context, *self->keytab, &cursor);
+	if(err) {
+		krb5_exception(*self->context, err, "krb5_kt_start_seq_get");
 		return NULL;
 	}
 
@@ -224,7 +224,7 @@ static PyObject *keytab_list(krb5KeytabObject *self)
 		return PyErr_NoMemory();
 	}
 
-	while((ret = krb5_kt_next_entry(*self->context, *self->keytab, &entry, &cursor)) == 0){
+	while((err = krb5_kt_next_entry(*self->context, *self->keytab, &entry, &cursor)) == 0){
 		char *etype, *principal;
 		PyObject *tuple;
 
@@ -236,9 +236,9 @@ static PyObject *keytab_list(krb5KeytabObject *self)
 
 		PyTuple_SetItem(tuple, 0, PyInt_FromLong(entry.vno));
 
-		ret = krb5_enctype_to_string(*self->context,
+		err = krb5_enctype_to_string(*self->context,
 						 entry.keyblock.keytype, &etype);
-		if (ret != 0) {
+		if (err != 0) {
 			if (asprintf(&etype, "unknown (%d)", entry.keyblock.keytype) < 0) {
 				krb5_kt_free_entry(*self->context, &entry);
 				Py_DECREF(tuple);
@@ -275,7 +275,7 @@ static PyObject *keytab_list(krb5KeytabObject *self)
 
 static PyObject *keytab_remove(krb5KeytabObject *self, PyObject *args)
 {
-	krb5_error_code ret = 0;
+	krb5_error_code err = 0;
 	krb5_keytab_entry entry;
 	char *principal_string = NULL;
 	krb5_principal principal = NULL;
@@ -288,20 +288,20 @@ static PyObject *keytab_remove(krb5KeytabObject *self, PyObject *args)
 		return NULL;
 
 	if (principal_string) {
-		ret = krb5_parse_name(*self->context, principal_string, &principal);
-		if (ret) {
-			krb5_exception(*self->context, ret, "%s", principal_string);
+		err = krb5_parse_name(*self->context, principal_string, &principal);
+		if (err) {
+			krb5_exception(*self->context, err, "%s", principal_string);
 			return NULL;
 		}
 	}
 	if (keytype_string) {
-		ret = krb5_string_to_enctype(*self->context, keytype_string, &enctype);
-		if (ret) {
+		err = krb5_string_to_enctype(*self->context, keytype_string, &enctype);
+		if (err) {
 			int t;
 			if(sscanf(keytype_string, "%d", &t) == 1)
 				enctype = t;
 			else {
-				krb5_exception(*self->context, ret, "%s", keytype_string);
+				krb5_exception(*self->context, err, "%s", keytype_string);
 				goto out;
 			}
 		}
@@ -316,10 +316,10 @@ static PyObject *keytab_remove(krb5KeytabObject *self, PyObject *args)
 	entry.principal = principal;
 	entry.keyblock.keytype = enctype;
 	entry.vno = kvno;
-	ret = krb5_kt_remove_entry(*self->context, *self->keytab, &entry);
+	err = krb5_kt_remove_entry(*self->context, *self->keytab, &entry);
 
-	if(ret) {
-		krb5_exception(*self->context, ret);
+	if(err) {
+		krb5_exception(*self->context, err);
 		goto out;
 	}
 	Py_RETURN_NONE;

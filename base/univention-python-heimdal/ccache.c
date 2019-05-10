@@ -42,7 +42,7 @@
 
 krb5CcacheObject *ccache_open(PyObject *unused, PyObject *args)
 {
-	krb5_error_code ret;
+	krb5_error_code err;
 	krb5ContextObject *context;
 	if (!PyArg_ParseTuple(args, "O", &context))
 		return NULL;
@@ -53,21 +53,21 @@ krb5CcacheObject *ccache_open(PyObject *unused, PyObject *args)
 
 	self->context = context->context;
 
-	ret = krb5_cc_default(self->context, &self->ccache);
-	if (ret) {
-		krb5_exception(self->context, ret);
+	err = krb5_cc_default(self->context, &self->ccache);
+	if (err) {
+		krb5_exception(context->context, err);
 		Py_DECREF(self);
 		return NULL;
 	}
 
 #if 0
-	ret = krb5_cc_get_principal(self->context, self->ccache, &principal);
-	if (ret == ENOENT) {
+	err = krb5_cc_get_principal(self->context, self->ccache, &principal);
+	if (err == ENOENT) {
 		error = 1;
 		PyErr_SetObject(PyExc_IOError, Py_None);
 		goto out;
-	} else if (ret)
-		krb5_exception(self->context, 1, ret, "krb5_cc_get_principal");
+	} else if (err)
+		krb5_exception(self->context, 1, err, "krb5_cc_get_principal");
 #endif
 
 	return self;
@@ -75,19 +75,19 @@ krb5CcacheObject *ccache_open(PyObject *unused, PyObject *args)
 
 static void ccache_close(krb5CcacheObject *self)
 {
-	krb5_error_code ret;
-	ret = krb5_cc_close(self->context, self->ccache);
-	if (ret)
-		krb5_exception (self->context, 1, ret, "krb5_cc_close");
+	krb5_error_code err;
+	err = krb5_cc_close(self->context, self->ccache);
+	if (err)
+		krb5_exception(self->context, 1, err, "krb5_cc_close");
 	PyObject_Del(self);
 }
 
 static PyObject *ccache_destroy(krb5CcacheObject *self)
 {
-	krb5_error_code ret;
-	ret = krb5_cc_destroy(self->context, self->ccache);
-	if (ret) {
-		krb5_exception(self->context, ret, "krb5_cc_destroy");
+	krb5_error_code err;
+	err = krb5_cc_destroy(self->context, self->ccache);
+	if (err) {
+		krb5_exception(self->context, err, "krb5_cc_destroy");
 	}
 	PyObject_Del(self);
 
@@ -96,14 +96,14 @@ static PyObject *ccache_destroy(krb5CcacheObject *self)
 
 static PyObject *ccache_list(krb5CcacheObject *self)
 {
-	krb5_error_code ret;
+	krb5_error_code err;
 	krb5_cc_cursor cursor;
 	krb5_creds creds;
 	PyObject *list = NULL;
 
-	ret = krb5_cc_start_seq_get (self->context, self->ccache, &cursor);
-	if (ret) {
-		krb5_exception(self->context, ret, "krb5_cc_start_seq_get");
+	err = krb5_cc_start_seq_get (self->context, self->ccache, &cursor);
+	if (err) {
+		krb5_exception(self->context, err, "krb5_cc_start_seq_get");
 		return NULL;
 	}
 
@@ -112,16 +112,16 @@ static PyObject *ccache_list(krb5CcacheObject *self)
 		return PyErr_NoMemory();
 	}
 
-	while((ret = krb5_cc_next_cred(self->context, self->ccache, &cursor, &creds)) == 0) {
+	while((err = krb5_cc_next_cred(self->context, self->ccache, &cursor, &creds)) == 0) {
 		krb5CredsObject *i;
 		i = creds_from_creds(self->context, creds);
 		PyList_Append(list, (PyObject *)i);
 	}
 
-	ret = krb5_cc_end_seq_get (self->context, self->ccache, &cursor);
-	if (ret) {
+	err = krb5_cc_end_seq_get (self->context, self->ccache, &cursor);
+	if (err) {
 		Py_DECREF(list);
-		krb5_exception(self->context, 1, ret, "krb5_cc_end_seq_get");
+		krb5_exception(self->context, err, "krb5_cc_end_seq_get");
 		return NULL;
 	}
 
@@ -130,15 +130,15 @@ static PyObject *ccache_list(krb5CcacheObject *self)
 
 static PyObject *ccache_initialize(krb5CcacheObject *self, PyObject *args)
 {
-	krb5_error_code ret;
+	krb5_error_code err;
 	krb5PrincipalObject *principal;
 
 	if (!PyArg_ParseTuple(args, "O", &principal))
 		return NULL;
 
-	ret = krb5_cc_initialize(self->context, self->ccache, principal->principal);
-	if (ret) {
-		krb5_exception(self->context, ret);
+	err = krb5_cc_initialize(self->context, self->ccache, principal->principal);
+	if (err) {
+		krb5_exception(self->context, err);
 		return NULL;
 	}
 
@@ -147,15 +147,15 @@ static PyObject *ccache_initialize(krb5CcacheObject *self, PyObject *args)
 
 static PyObject *ccache_store_cred(krb5CcacheObject *self, PyObject *args)
 {
-	krb5_error_code ret;
+	krb5_error_code err;
 	krb5CredsObject *creds;
 
 	if (!PyArg_ParseTuple(args, "O", &creds))
 		return NULL;
 
-	ret = krb5_cc_store_cred(self->context, self->ccache, &creds->creds);
-	if (ret) {
-		krb5_exception(self->context, ret);
+	err = krb5_cc_store_cred(self->context, self->ccache, &creds->creds);
+	if (err) {
+		krb5_exception(self->context, err);
 		return NULL;
 	}
 

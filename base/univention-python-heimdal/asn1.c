@@ -92,7 +92,7 @@ PyObject* asn1_encode_key(PyObject *self, PyObject* args)
 	krb5KeyblockObject *keyblock;
 	krb5SaltObject *salt;
 	int mkvno;
-	krb5_error_code ret;
+	krb5_error_code err;
 	char *buf;
 	size_t len;
 	Key asn1_key;
@@ -121,8 +121,8 @@ PyObject* asn1_encode_key(PyObject *self, PyObject* args)
 		asn1_key.salt = NULL;
 	}
 
-	ASN1_MALLOC_ENCODE(Key, buf, len, &asn1_key, &len, ret);
-	if (ret != 0) {
+	ASN1_MALLOC_ENCODE(Key, buf, len, &asn1_key, &len, err);
+	if (err != 0) {
 		Py_RETURN_NONE;
 	} else {
 		PyObject *s = PyString_FromStringAndSize(buf, len);
@@ -137,7 +137,7 @@ PyObject* asn1_decode_key(PyObject *unused, PyObject* args)
 	size_t key_len;
 	krb5KeyblockObject *keyblock = NULL;
 	krb5SaltObject *salt = NULL;
-	krb5_error_code ret;
+	krb5_error_code err;
 	Key asn1_key;
 	size_t len;
 	PyObject *self = NULL;
@@ -145,9 +145,9 @@ PyObject* asn1_decode_key(PyObject *unused, PyObject* args)
 	if (!PyArg_ParseTuple(args, "s#", &key_buf, &key_len))
 		return NULL;
 
-	ret = decode_Key(key_buf, key_len, &asn1_key, &len);
-	if (ret) {
-		krb5_exception(NULL, ret);
+	err = decode_Key(key_buf, key_len, &asn1_key, &len);
+	if (err) {
+		krb5_exception(NULL, err);
 		goto except;
 	}
 
