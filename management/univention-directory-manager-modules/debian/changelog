@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.13-8) unstable; urgency=medium
+
+  * Bug #47961: fix translation of de-AT extended attributes
+
+ -- Florian Best <best@univention.de>  Thu, 08 Aug 2019 17:03:26 +0200
+
 univention-directory-manager-modules (14.0.13-7) unstable; urgency=medium
 
   * Bug #48698: Fix GUI visible spelling errors

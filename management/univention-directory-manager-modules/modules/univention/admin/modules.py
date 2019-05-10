@@ -262,10 +262,6 @@ def update_extended_options(lo, module, position):
 	# get current language
 	lang = locale.getlocale(locale.LC_MESSAGES)[0]
 	ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_options: LANG=%s' % lang)
-	if lang:
-		lang = lang.replace('_', '-').lower()
-	else:
-		lang = 'xxxxx'
 
 	module_filter = filter_format('(univentionUDMOptionModule=%s)', [name(module)])
 	if name(module) == 'settings/usertemplate':
@@ -274,8 +270,8 @@ def update_extended_options(lo, module, position):
 	# append UDM extended options
 	for dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMOption)%s)' % (module_filter,)):
 		oname = attrs['cn'][0]
-		shortdesc = attrs.get('univentionUDMOptionTranslationShortDescription;entry-%s' % lang, attrs['univentionUDMOptionShortDescription'])[0]
-		longdesc = attrs.get('univentionUDMOptionTranslationLongDescription;entry-%s' % lang, attrs.get('univentionUDMOptionLongDescription', ['']))[0]
+		shortdesc = _get_translation(lang, attrs, 'univentionUDMOptionTranslationShortDescription;entry-%s', 'univentionUDMOptionShortDescription')
+		longdesc = _get_translation(lang, attrs, 'univentionUDMOptionTranslationLongDescription;entry-%s', 'univentionUDMOptionLongDescription')
 		default = attrs.get('univentionUDMOptionDefault', ['0'])[0] == '1'
 		editable = attrs.get('univentionUDMOptionEditable', ['0'])[0] == '1'
 		classes = attrs.get('univentionUDMOptionObjectClass', [])
@@ -437,14 +433,10 @@ def update_extended_attributes(lo, module, position):
 		# get current language
 		lang = locale.getlocale(locale.LC_MESSAGES)[0]
 		ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: LANG = %s' % str(lang))
-		if lang:
-			lang = lang.replace('_', '-').lower()
-		else:
-			lang = 'xxxxx'
 
 		# get descriptions
-		shortdesc = attrs.get('univentionUDMPropertyTranslationShortDescription;entry-%s' % lang, attrs['univentionUDMPropertyShortDescription'])[0]
-		longdesc = attrs.get('univentionUDMPropertyTranslationLongDescription;entry-%s' % lang, attrs.get('univentionUDMPropertyLongDescription', ['']))[0]
+		shortdesc = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationShortDescription;entry-%s', 'univentionUDMPropertyShortDescription')
+		longdesc = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationLongDescription;entry-%s', 'univentionUDMPropertyLongDescription')
 
 		# create property
 		fullWidth = (attrs.get('univentionUDMPropertyLayoutFullWidth', ['0'])[0].upper() in ['1', 'TRUE'])
@@ -471,7 +463,7 @@ def update_extended_attributes(lo, module, position):
 			module.mapping.register(pname, attrs['univentionUDMPropertyLdapMapping'][0], univention.admin.mapping.nothing, univention.admin.mapping.nothing)
 
 		if hasattr(module, 'layout'):
-			tabname = attrs.get('univentionUDMPropertyTranslationTabName;entry-%s' % lang, attrs.get('univentionUDMPropertyLayoutTabName', [_('Custom')]))[0]
+			tabname = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationTabName;entry-%s', 'univentionUDMPropertyLayoutTabName', _('Custom'))
 			overwriteTab = (attrs.get('univentionUDMPropertyLayoutOverwriteTab', ['0'])[0].upper() in ['1', 'TRUE'])
 			# in the first generation of extended attributes of version 2
 			# this field was a position defining the attribute to
@@ -482,7 +474,7 @@ def update_extended_attributes(lo, module, position):
 			deleteObjectClass = (attrs.get('univentionUDMPropertyDeleteObjectClass', ['0'])[0].upper() in ['1', 'TRUE'])
 			tabAdvanced = (attrs.get('univentionUDMPropertyLayoutTabAdvanced', ['0'])[0].upper() in ['1', 'TRUE'])
 
-			groupname = attrs.get('univentionUDMPropertyTranslationGroupName;entry-%s' % lang, attrs.get('univentionUDMPropertyLayoutGroupName', ['']))[0]
+			groupname = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationGroupName;entry-%s', 'univentionUDMPropertyLayoutGroupName')
 			try:
 				groupPosition = int(attrs.get('univentionUDMPropertyLayoutGroupPosition', ['-1'])[0])
 			except TypeError:
@@ -1147,3 +1139,18 @@ def childModules(module_name):
 	"""
 	module = get(module_name)
 	return copy.deepcopy(getattr(module, 'childmodules', []))
+
+
+def _get_translation(locale, attrs, name, defaultname, default=''):
+	if locale:
+		locale = locale.replace('_', '-').lower()
+		if name % (locale,) in attrs:
+			return attrs[name % (locale,)][0]
+		locale = locale.split('-', 1)[0]
+		name_short_lang = name % (locale,)
+		if name_short_lang in attrs:
+			return attrs[name_short_lang][0]
+		for key in attrs:
+			if key.startswith(name_short_lang):
+				return attrs[key][0]
+	return attrs.get(defaultname, [default])[0]

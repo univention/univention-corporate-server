@@ -12,4 +12,7 @@ desc: |
  * The UDM module users/user properties departmentNumber and roomNumber
    have been changed to be multivalue, as allowed in the LDAP schema. This
    change has been made to support synchronization with Samba/AD.
-bug: [49092]
+ * The fallback language for extended attribute translations is now based
+   on the primary language of the locale. Austrian german will then be
+   translated in german instead of english.
+bug: [49092, 47961]
