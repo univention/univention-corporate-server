@@ -306,7 +306,7 @@ class Base(signals.Provider, Translation):
 		:param exc: The exception instance.
 		:param etraceback: The exception traceback instance; may be None.
 		"""
-		if isinstance(exc, udm_errors.ldapError) and isinstance(getattr(exc, 'original_exception', None), ldap.LDAPError):
+		if (isinstance(exc, udm_errors.ldapError) and isinstance(getattr(exc, 'original_exception', None), ldap.LDAPError)) or isinstance(exc, ldap.LDAPError):
 			#  After an exception the ReconnectLDAPObject instance can be in a state without a bind. Which can result
 			#  in a "ldapError: Insufficient access" exception, because the connection is anonymous. Prevent the usage
 			#  of a ReconnectLDAPObject instance after an exception by clearing the connection cache.
