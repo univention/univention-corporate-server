@@ -26,7 +26,7 @@ test_master () {
 	export UCS_ROOT="root" UCS_PASSWORD="$ADMIN_PASSWORD"
 
 	# Auf allen Systemen sollte einmal server-password-change aufgerufen werden
-	run_on_ucs_hosts "$MASTER $BACKUP $SLAVE $SLAVE_RODC $MEMBER" "ucr set server/password/interval='0' && /usr/lib/univention-server/server_password_change"
+	run_on_ucs_hosts "$MASTER $BACKUP $SLAVE $MEMBER" "ucr set server/password/interval='0' && /usr/lib/univention-server/server_password_change"
 
 	# get windows client info/name
 	python shared-utils/ucs-winrm.py run-ps --cmd ipconfig
