@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: insserv
-fix: 1.14.0-5.4A~4.4.0.201905092023
+fix: 1.14.0-5.A~4.4.0.201905101844
 desc: |
  This update addresses the following issue:
  * Re-add accidentally dropped patch to ignore files ending on `.debian`.
