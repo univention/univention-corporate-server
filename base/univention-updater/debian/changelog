@@ -1,3 +1,10 @@
+univention-updater (14.0.0-18) unstable; urgency=medium
+
+  * Bug #49056: Fix traceback in admindiary.client.write_event() occurring
+    in Docker containers during docker build
+
+ -- Arvid Requate <requate@univention.de>  Mon, 13 May 2019 15:13:40 +0200
+
 univention-updater (14.0.0-17) unstable; urgency=low
 
   * Bug #48910: Prefix local repository URLs with UCS release version

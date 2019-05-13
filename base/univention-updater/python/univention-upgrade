@@ -37,6 +37,7 @@ from optparse import OptionParser, OptionGroup
 import subprocess
 import traceback
 import logging
+import socket
 
 from univention.config_registry import ConfigRegistry, handler_set
 
@@ -217,7 +218,8 @@ def do_package_updates(options, checkForUpdates, silent):
     dprint(silent, 'Starting dist-update at %s...' % (time.ctime()), debug=True)
     dprint(silent, 'Starting package upgrade', newline=False)
 
-    context_id = write_event(UPDATE_STARTED, {'hostname': configRegistry.get('hostname')})
+    hostname = socket.gethostname()
+    context_id = write_event(UPDATE_STARTED, {'hostname': hostname})
     os.environ['ADMINDIARY_CONTEXT'] = context_id
     returncode, stdout, stderr = updater.run_dist_upgrade()
 
@@ -225,11 +227,11 @@ def do_package_updates(options, checkForUpdates, silent):
         dprint(silent, 'exitcode of apt-get dist-upgrade: %s' % returncode, debug=True)
         dprint(silent, 'ERROR: update failed. Please check /var/log/univention/updater.log\n')
         update_status(status='FAILED', errorsource='UPDATE')
-        write_event(UPDATE_FINISHED_FAILURE, {'hostname': configRegistry.get('hostname')})
+        write_event(UPDATE_FINISHED_FAILURE, {'hostname': hostname})
         sys.exit(1)
     dprint(silent, 'dist-update finished at %s...' % (time.ctime()), debug=True)
     dprint(silent, 'done')
-    write_event(UPDATE_FINISHED_SUCCESS, {'hostname': configRegistry.get('hostname'), 'version': 'UCS %(version/version)s-%(version/patchlevel)s errata%(version/erratalevel)s' % configRegistry})
+    write_event(UPDATE_FINISHED_SUCCESS, {'hostname': hostname, 'version': 'UCS %(version/version)s-%(version/patchlevel)s errata%(version/erratalevel)s' % configRegistry})
     time.sleep(1)
     return True
 
