@@ -190,6 +190,9 @@ class Interactions(object):
 			logger.warn("Found {!d} input elements instead of one. Try using the first one".format(len(elems)))
 		elems[0].clear()
 		elems[0].send_keys(inputvalue)
+		xpath = expand_path('//*[@containsClass="dijitMenuItem"]/descendant-or-self::node()[contains(text(), "%s")]' % (inputvalue))
+		self.wait_until_element_visible(xpath)
+		self.click_element(xpath)
 
 	def submit_input(self, inputname):
 		"""
