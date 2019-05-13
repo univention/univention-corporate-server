@@ -1,13 +1,15 @@
 import subprocess
-from samba.auth import system_session
-from samba.samdb import SamDB
-from samba.param import LoadParm
-import ldb
 import time
 import socket
 import re
 import contextlib
+
 import sqlite3
+import ldb
+import ldap
+from samba.auth import system_session
+from samba.samdb import SamDB
+from samba.param import LoadParm
 
 from univention.testing.utils import package_installed
 import univention.config_registry as config_registry
@@ -57,6 +59,11 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
 	controls = ["domain_scope:0"]
 	if base is None:
 		base = samdb.domain_dn()
+	else:
+		if len(ldap.dn.str2dn(base)[0]) > 1:
+			if verbose:
+				print 'wait_for_drs_replication(): skip, multiple RDNs are not supported'
+			return
 	if not base or base == 'None':
 		if verbose:
 			print 'wait_for_drs_replication(): skip, no samba domain found'
@@ -78,7 +85,9 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
 				return res
 		except ldb.LdbError as exc:
 			(_num, msg) = exc.args
-			if _num == 32 and not should_exist:
+			if _num == ldb.ERR_INVALID_DN_SYNTAX:
+				raise
+			if _num == ldb.ERR_NO_SUCH_OBJECT and not should_exist:
 				if verbose:
 					print "\nDRS replication took %d seconds" % (t - t0, )
 				return
@@ -221,3 +230,10 @@ def wait_for_s4connector(timeout=360, delta_t=1, s4cooldown_t=10):
 
 	conn.close()
 	raise WaitForS4ConnectorTimeout()
+
+
+def append_dot(verify_list):
+	"""The S4-Connector appends dots to various dns records. Helper function to adjust a list."""
+	if not package_installed('univention-s4-connector'):
+		return verify_list
+	return ['%s.' % (x,) for x in verify_list]
