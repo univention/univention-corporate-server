@@ -101,27 +101,27 @@ class DiaryEntry(object):
 
 	def assert_types(self):
 		if not isinstance(self.username, basestring):
-			raise TypeError('Username has to be "string"')
+			raise TypeError('DiaryEntry() argument "username" has to be "string", but is: %s (%s)' % (type(self.username), self.username))
 		if not isinstance(self.hostname, basestring):
-			raise TypeError('Hostname has to be "string"')
+			raise TypeError('DiaryEntry().hostname has to be "string", but is: %s (%s)' % (type(self.hostname), self.hostname))
 		if not isinstance(self.args, dict) or not all(isinstance(key, basestring) and isinstance(value, basestring) for key, value in self.args.iteritems()):
-			raise TypeError('Args have to be "dict of string/string"')
+			raise TypeError('DiaryEntry() argument "args" has to be "dict of string/string", but is: %s (%s)' % (type(self.args), self.args))
 		if self.message is not None:
 			if not isinstance(self.message, dict) or not all(isinstance(key, basestring) and isinstance(value, basestring) for key, value in self.message.iteritems()):
-				raise TypeError('Message has to be "dict of string/string"')
+				raise TypeError('DiaryEntry() argument "message" has to be "dict of string/string", but is: %s (%s)' % (type(self.message), self.message))
 			for locale, message in self.message.iteritems():
 				try:
 					message.format(**self.args)
 				except:
-					raise TypeError('Message (%s, %r) has wrong format for given args (%r).', locale, message, self.args)
+					raise TypeError('DiaryEntry() argument "message" (%s, %r) has wrong format for given args (%r).', locale, message, self.args)
 		if not isinstance(self.timestamp, datetime):
-			raise TypeError('timestamp has to be "datetime"')
+			raise TypeError('DiaryEntry().timestamp has to be "datetime"')
 		if not isinstance(self.tags, list) or not all(isinstance(tag, basestring) for tag in self.tags):
-			raise TypeError('Tags have to be "list of string"')
+			raise TypeError('DiaryEntry() argument "tags" have to be "list of string", but is: %s (%s)' % (type(self.tags), self.tags))
 		if not isinstance(self.context_id, basestring):
-			raise TypeError('Diary ID has to be "string"')
+			raise TypeError('DiaryEntry() argument "context_id" has to be "string", but is: %s (%s)' % (type(self.context_id), self.context_id))
 		if not isinstance(self.event_name, basestring):
-			raise TypeError('Event name has to be "string"')
+			raise TypeError('DiaryEntry() argument "event" name has to be "string", but is: %s (%s)' % (type(self.event_name), self.event_name))
 
 	def to_json(self):
 		attrs = {

@@ -48,7 +48,9 @@ def exceptionlogging(f):
 			return f(*args, **kwds)
 		except Exception as exc:
 			get_logger().error('%s failed! %s' % (f.__name__, exc))
-			return None
+			import traceback
+			get_logger().error(traceback.format_exc())
+			return ''
 	return wrapper
 
 
@@ -58,7 +60,11 @@ class RsyslogEmitter(object):
 
 	def emit(self, entry):
 		if self.handler is None:
-			self.handler = SysLogHandler(address='/dev/log', facility='user')
+			if os.path.exists('/dev/log'):
+				self.handler = SysLogHandler(address='/dev/log', facility='user')
+			else:
+				get_logger().error('RsyslogEmitter().emit() failed: /dev/log does not exist, cannot emit entry (%s)' % (entry,))
+				return
 		record = logging.LogRecord('diary-rsyslogger', logging.INFO, None, None, 'ADMINDIARY: ' + str(entry), (), None, None)
 		self.handler.emit(record)
 

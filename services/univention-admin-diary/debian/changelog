@@ -1,3 +1,9 @@
+univention-admin-diary (1.0.0-45) unstable; urgency=medium
+
+  * Bug #49056: Improve robustness and traceback logging
+
+ -- Arvid Requate <requate@univention.de>  Mon, 13 May 2019 15:09:42 +0200
+
 univention-admin-diary (1.0.0-44) unstable; urgency=medium
 
   * Bug #48972: Encode HTML entities in page
