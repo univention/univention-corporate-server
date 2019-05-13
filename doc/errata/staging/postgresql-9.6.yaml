@@ -1,7 +1,7 @@
 product: ucs
 release: "4.3"
-version: [3]
-scope: ucs_4.3-0-errata4.3-3
+version: [3, 4]
+scope: ucs_4.3-0-errata4.3-4
 src: postgresql-9.6
 fix: 9.6.13-0+deb9u1
 desc: |
