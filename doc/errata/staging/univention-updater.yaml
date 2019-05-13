@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-updater
+fix: 14.0.0-18A~4.4.0.201905131519
+desc: |
+ This update addresses the following issue(s):
+ * Fix traceback in admindiary.client.write_event() occurring in Docker
+   containers during docker build.
+bug: [49056]
