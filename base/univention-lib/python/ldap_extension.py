@@ -3,7 +3,6 @@
 """
 Python function to register |UDM| extensions in |LDAP|.
 """
-from __future__ import print_function
 # Copyright 2011-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -30,31 +29,49 @@ from __future__ import print_function
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import
+from __future__ import print_function
 
-from optparse import OptionParser, OptionGroup, Option, OptionValueError
-from copy import copy
 import inspect
 import os
 import shutil
 import re
 import sys
-import univention.debug as ud
-from univention.config_registry import configHandlers, ConfigRegistry
-from univention.admin import uldap as udm_uldap
-from univention.admin import modules as udm_modules
-from univention.admin import uexceptions as udm_errors
-from univention.lib.ucs import UCS_Version
+import imp
 import subprocess
 import bz2
 import base64
 import time
 import tempfile
 import datetime
-import apt
+from optparse import OptionParser, OptionGroup, Option, OptionValueError
+from copy import copy
 from abc import ABCMeta, abstractproperty, abstractmethod
-import imp
+
+import apt
 import listener
+from ldap.filter import filter_format
+
+import univention.debug as ud
+from univention.config_registry import configHandlers, ConfigRegistry
+from univention.admin import uldap as udm_uldap
+from univention.admin import modules as udm_modules
+from univention.admin import uexceptions as udm_errors
+from univention.lib.ucs import UCS_Version
 from univention.lib.umc_module import MIME_DESCRIPTION
+
+
+class BaseDirRestriction(Exception):
+	pass
+
+
+def safe_path_join(basedir, filename):
+	path = os.path.join(basedir, filename)
+	if not os.path.abspath(path).startswith(basedir):
+		raise BaseDirRestriction('filename %r invalid, not underneath of %r' % (filename, basedir))
+	if set(filename) & {'\x00', '/'}:  # also restrict subdirectories, and ../local-schema/foo
+		raise BaseDirRestriction('invalid filename: %r' % (filename,))
+	return path
 
 
 class UniventionLDAPExtension(object):
@@ -93,7 +110,7 @@ class UniventionLDAPExtension(object):
 	def is_local_active(self):
 		object_dn = None
 
-		cmd = ["univention-ldapsearch", "-LLL", "-b", self.object_dn, "-s", "base", "(&(cn=%s)(%s=TRUE))" % (self.objectname, self.active_flag_attribute)]
+		cmd = ["univention-ldapsearch", "-LLL", "-b", self.object_dn, "-s", "base", filter_format("(&(cn=%s)(%s=TRUE))", (self.objectname, self.active_flag_attribute))]
 		p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 		(stdout, stderr) = p.communicate()
 		if p.returncode:
@@ -120,7 +137,7 @@ class UniventionLDAPExtension(object):
 
 	def udm_find_object(self):
 		cmd = ["univention-directory-manager", self.udm_module_name, "list"] + self.udm_passthrough_options + [
-			"--filter", "name=%s" % self.objectname,
+			"--filter", filter_format("name=%s", [self.objectname]),
 		]
 		p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
 		(stdout, stderr) = p.communicate()
@@ -334,10 +351,10 @@ class UniventionLDAPExtension(object):
 		regex = re.compile('^ *appidentifier: (.*)$', re.M)
 		for appidentifier in regex.findall(stdout):
 			if appidentifier != "None":
-				app_filter = app_filter + "(cn=%s)" % appidentifier
+				app_filter = app_filter + filter_format("(cn=%s)", [appidentifier])
 
 		if app_filter:
-			cmd = ["univention-ldapsearch", "-LLL", "(&(objectClass=univentionApp)%s)", "cn" % (app_filter,)]
+			cmd = ["univention-ldapsearch", "-LLL", "(&(objectClass=univentionApp)%s)" % (app_filter,), "cn"]
 			p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 			(stdout, stderr) = p.communicate()
 			if p.returncode:
@@ -405,11 +422,17 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 	basedir = '/var/lib/univention-ldap/local-schema'
 
 	def handler(self, dn, new, old, name=None):
+		try:
+			return self._handler(dn, new, old, name)
+		except BaseDirRestriction as exc:
+			ud.debug(ud.LISTENER, ud.ERROR, '%r basedir conflict: %s' % (dn, exc))
+
+	def _handler(self, dn, new, old, name=None):
 		"""Handle LDAP schema extensions on Master and Backup"""
 		if not listener.configRegistry.get('server/role') in ('domaincontroller_master', 'domaincontroller_backup'):
 			return
 
-		if new:
+		if new:  # create / modify
 			new_version = new.get('univentionOwnedByPackageVersion', [None])[0]
 			if not new_version:
 				return
@@ -441,12 +464,19 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 				ud.debug(ud.LISTENER, ud.ERROR, '%s: Error uncompressing data of object %s.' % (name, dn))
 				return
 
-			new_filename = os.path.join(self.basedir, new.get('univentionLDAPSchemaFilename')[0])
+			try:
+				new_filename = safe_path_join(self.basedir, new.get('univentionLDAPSchemaFilename')[0])
+			except BaseDirRestriction as exc:
+				if old:
+					ud.debug(ud.LISTENER, ud.ERROR, 'invalid filename detected during modification. removing file!')
+					self._handler(dn, [], old, name)
+				raise exc
+
 			listener.setuid(0)
 			try:
 				backup_filename = None
 				if old:
-					old_filename = os.path.join(self.basedir, old.get('univentionLDAPSchemaFilename')[0])
+					old_filename = safe_path_join(self.basedir, old.get('univentionLDAPSchemaFilename')[0])
 					if os.path.exists(old_filename):
 						backup_fd, backup_filename = tempfile.mkstemp()
 						ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old file %s to %s.' % (name, old_filename, backup_filename))
@@ -513,8 +543,8 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 
 			finally:
 				listener.unsetuid()
-		elif old:
-			old_filename = os.path.join(self.basedir, old.get('univentionLDAPSchemaFilename')[0])
+		elif old:  # remove
+			old_filename = safe_path_join(self.basedir, old.get('univentionLDAPSchemaFilename')[0])
 			if os.path.exists(old_filename):
 				listener.setuid(0)
 				try:
@@ -563,7 +593,6 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 
 				finally:
 					listener.unsetuid()
-		return
 
 
 class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
@@ -574,6 +603,12 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 	file_prefix = 'ldapacl_'
 
 	def handler(self, dn, new, old, name=None):
+		try:
+			return self._handler(dn, new, old, name)
+		except BaseDirRestriction as exc:
+			ud.debug(ud.LISTENER, ud.ERROR, '%r basedir conflict: %s' % (dn, exc))
+
+	def _handler(self, dn, new, old, name=None):
 		"""Handle LDAP ACL extensions on Master, Backup and Slave"""
 
 		if not listener.configRegistry.get('ldap/server/type'):
@@ -639,14 +674,20 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 				return
 
 			new_basename = new.get('univentionLDAPACLFilename')[0]
-			new_filename = os.path.join(self.ucr_slapd_conf_subfile_dir, new_basename)
+			try:
+				new_filename = safe_path_join(self.ucr_slapd_conf_subfile_dir, new_basename)
+			except BaseDirRestriction as exc:
+				if old:
+					ud.debug(ud.LISTENER, ud.ERROR, 'invalid filename detected during modification. removing file!')
+					self._handler(dn, [], old, name)
+				raise exc
 			listener.setuid(0)
 			try:
 				backup_filename = None
 				backup_ucrinfo_filename = None
 				backup_backlink_filename = None
 				if old:
-					old_filename = os.path.join(self.ucr_slapd_conf_subfile_dir, old.get('univentionLDAPACLFilename')[0])
+					old_filename = safe_path_join(self.ucr_slapd_conf_subfile_dir, old.get('univentionLDAPACLFilename')[0])
 					if os.path.exists(old_filename):
 						backup_fd, backup_filename = tempfile.mkstemp()
 						ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old file %s to %s.' % (name, old_filename, backup_filename))
@@ -672,7 +713,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 							os.close(backup_backlink_fd)
 
 					# and the old UCR registration
-					old_ucrinfo_filename = os.path.join(self.ucr_info_basedir, "%s%s.info" % (self.file_prefix, old.get('univentionLDAPACLFilename')[0]))
+					old_ucrinfo_filename = safe_path_join(self.ucr_info_basedir, "%s%s.info" % (self.file_prefix, old.get('univentionLDAPACLFilename')[0]))
 					if os.path.exists(old_ucrinfo_filename):
 						backup_ucrinfo_fd, backup_ucrinfo_filename = tempfile.mkstemp()
 						ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old UCR info file %s to %s.' % (name, old_ucrinfo_filename, backup_ucrinfo_filename))
@@ -712,7 +753,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 
 				# and UCR registration
 				try:
-					new_ucrinfo_filename = os.path.join(self.ucr_info_basedir, "%s%s.info" % (self.file_prefix, new.get('univentionLDAPACLFilename')[0]))
+					new_ucrinfo_filename = safe_path_join(self.ucr_info_basedir, "%s%s.info" % (self.file_prefix, new.get('univentionLDAPACLFilename')[0]))
 					ud.debug(ud.LISTENER, ud.INFO, '%s: Writing UCR info file %s.' % (name, new_ucrinfo_filename))
 					with open(new_ucrinfo_filename, 'w') as f:
 						f.write("Type: multifile\nMultifile: etc/ldap/slapd.conf\n\nType: subfile\nMultifile: etc/ldap/slapd.conf\nSubfile: etc/ldap/slapd.conf.d/%s\n" % new_basename)
@@ -788,11 +829,11 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 			finally:
 				listener.unsetuid()
 		elif old:
-			old_filename = os.path.join(self.ucr_slapd_conf_subfile_dir, old.get('univentionLDAPACLFilename')[0])
+			old_filename = safe_path_join(self.ucr_slapd_conf_subfile_dir, old.get('univentionLDAPACLFilename')[0])
 			# plus backlink file
 			old_backlink_filename = "%s.info" % old_filename
 			# and the old UCR registration
-			old_ucrinfo_filename = os.path.join(self.ucr_info_basedir, "%s%s.info" % (self.file_prefix, old.get('univentionLDAPACLFilename')[0]))
+			old_ucrinfo_filename = safe_path_join(self.ucr_info_basedir, "%s%s.info" % (self.file_prefix, old.get('univentionLDAPACLFilename')[0]))
 			if os.path.exists(old_filename):
 				listener.setuid(0)
 				try:
@@ -991,101 +1032,121 @@ def ucs_registerLDAPExtension():
 	functionname = inspect.stack()[0][3]
 	parser = OptionParser(prog=functionname, option_class=UCSOption)
 
-	parser.add_option("--schema", dest="schemafile",
-			action="append", type="existing_filename", default=[],
-			help="Register LDAP schema", metavar="<LDAP schema file>")
+	parser.add_option(
+		"--schema", dest="schemafile",
+		action="append", type="existing_filename", default=[],
+		help="Register LDAP schema", metavar="<LDAP schema file>")
 
-	parser.add_option("--acl", dest="aclfile",
-			action="append", type="existing_filename", default=[],
-			help="Register LDAP ACL", metavar="<UCR template for OpenLDAP ACL file>")
+	parser.add_option(
+		"--acl", dest="aclfile",
+		action="append", type="existing_filename", default=[],
+		help="Register LDAP ACL", metavar="<UCR template for OpenLDAP ACL file>")
 
-	parser.add_option("--udm_module", dest="udm_module",
-			action="append", type="existing_filename", default=[],
-			help="UDM module", metavar="<filename>")
+	parser.add_option(
+		"--udm_module", dest="udm_module",
+		action="append", type="existing_filename", default=[],
+		help="UDM module", metavar="<filename>")
 
-	parser.add_option("--udm_syntax", dest="udm_syntax",
-			action="append", type="existing_filename", default=[],
-			help="UDM syntax", metavar="<filename>")
+	parser.add_option(
+		"--udm_syntax", dest="udm_syntax",
+		action="append", type="existing_filename", default=[],
+		help="UDM syntax", metavar="<filename>")
 
-	parser.add_option("--udm_hook", dest="udm_hook",
-			action="append", type="existing_filename", default=[],
-			help="UDM hook", metavar="<filename>")
+	parser.add_option(
+		"--udm_hook", dest="udm_hook",
+		action="append", type="existing_filename", default=[],
+		help="UDM hook", metavar="<filename>")
 
-	parser.add_option("--data", dest="data",
-			action="append", type="existing_filename", default=[],
-			help="Data object", metavar="<filename>")
+	parser.add_option(
+		"--data", dest="data",
+		action="append", type="existing_filename", default=[],
+		help="Data object", metavar="<filename>")
 
-	parser.add_option("--packagename", dest="packagename",
-			help="Package name")
-	parser.add_option("--packageversion", dest="packageversion",
-			help="Package version")
+	parser.add_option(
+		"--packagename", dest="packagename",
+		help="Package name")
+	parser.add_option(
+		"--packageversion", dest="packageversion",
+		help="Package version")
 
-	parser.add_option("--ucsversionstart", dest="ucsversionstart",
-			action="store", type="ucs_version",
-			help="Start activation with UCS version", metavar="<UCS Version>")
-	parser.add_option("--ucsversionend", dest="ucsversionend",
-			action="store", type="ucs_version",
-			help="End activation with UCS version", metavar="<UCS Version>")
+	parser.add_option(
+		"--ucsversionstart", dest="ucsversionstart",
+		action="store", type="ucs_version",
+		help="Start activation with UCS version", metavar="<UCS Version>")
+	parser.add_option(
+		"--ucsversionend", dest="ucsversionend",
+		action="store", type="ucs_version",
+		help="End activation with UCS version", metavar="<UCS Version>")
 
 	data_module_options = OptionGroup(parser, "Data object specific options")
-	data_module_options.add_option("--data_type", dest="data_type",
-			type="string",
-			action="callback", callback=option_callback_set_data_module_options,
-			help="type of data object", metavar="<Data object type>")
-	data_module_options.add_option("--data_meta", dest="data_meta", default=[],
-			type="string",
-			action="callback", callback=option_callback_append_data_module_options,
-			help="meta data for data object", metavar="<string>")
+	data_module_options.add_option(
+		"--data_type", dest="data_type",
+		type="string",
+		action="callback", callback=option_callback_set_data_module_options,
+		help="type of data object", metavar="<Data object type>")
+	data_module_options.add_option(
+		"--data_meta", dest="data_meta", default=[],
+		type="string",
+		action="callback", callback=option_callback_append_data_module_options,
+		help="meta data for data object", metavar="<string>")
 	parser.add_option_group(data_module_options)
 
 	udm_module_options = OptionGroup(parser, "UDM module specific options")
-	udm_module_options.add_option("--messagecatalog", dest="udm_module_messagecatalog",
-			type="existing_filename", default=[],
-			action="callback", callback=option_callback_append_udm_module_options,
-			help="Gettext mo file", metavar="<GNU message catalog file>")
-	udm_module_options.add_option("--udm_module_messagecatalog", dest="udm_module_messagecatalog",
-			type="existing_filename", default=[],
-			action="callback", callback=option_callback_append_udm_module_options,
-			help="Gettext mo file", metavar="<GNU message catalog file>")
-	udm_module_options.add_option("--umcregistration", dest="umcregistration",
-			type="existing_filename",
-			action="callback", callback=option_callback_set_udm_module_options,
-			help="UMC registration xml file", metavar="<XML file>")
-	udm_module_options.add_option("--icon", dest="icon",
-			type="existing_filename", default=[],
-			action="callback", callback=option_callback_append_udm_module_options,
-			help="UDM module icon", metavar="<Icon file>")
+	udm_module_options.add_option(
+		"--messagecatalog", dest="udm_module_messagecatalog",
+		type="existing_filename", default=[],
+		action="callback", callback=option_callback_append_udm_module_options,
+		help="Gettext mo file", metavar="<GNU message catalog file>")
+	udm_module_options.add_option(
+		"--udm_module_messagecatalog", dest="udm_module_messagecatalog",
+		type="existing_filename", default=[],
+		action="callback", callback=option_callback_append_udm_module_options,
+		help="Gettext mo file", metavar="<GNU message catalog file>")
+	udm_module_options.add_option(
+		"--umcregistration", dest="umcregistration",
+		type="existing_filename",
+		action="callback", callback=option_callback_set_udm_module_options,
+		help="UMC registration xml file", metavar="<XML file>")
+	udm_module_options.add_option(
+		"--icon", dest="icon",
+		type="existing_filename", default=[],
+		action="callback", callback=option_callback_append_udm_module_options,
+		help="UDM module icon", metavar="<Icon file>")
 	parser.add_option_group(udm_module_options)
 
 	udm_module_options = OptionGroup(parser, "UDM syntax specific options")
-	udm_module_options.add_option("--udm_syntax_messagecatalog", dest="udm_syntax_messagecatalog",
-			type="existing_filename", default=[],
-			action="callback", callback=option_callback_append_udm_syntax_options,
-			help="Gettext mo file", metavar="<GNU message catalog file>")
+	udm_module_options.add_option(
+		"--udm_syntax_messagecatalog", dest="udm_syntax_messagecatalog",
+		type="existing_filename", default=[],
+		action="callback", callback=option_callback_append_udm_syntax_options,
+		help="Gettext mo file", metavar="<GNU message catalog file>")
 	parser.add_option_group(udm_module_options)
 
 	udm_module_options = OptionGroup(parser, "UDM hook specific options")
-	udm_module_options.add_option("--udm_hook_messagecatalog", dest="udm_hook_messagecatalog",
-			type="existing_filename", default=[],
-			action="callback", callback=option_callback_append_udm_hook_options,
-			help="Gettext mo file", metavar="<GNU message catalog file>")
+	udm_module_options.add_option(
+		"--udm_hook_messagecatalog", dest="udm_hook_messagecatalog",
+		type="existing_filename", default=[],
+		action="callback", callback=option_callback_append_udm_hook_options,
+		help="Gettext mo file", metavar="<GNU message catalog file>")
 	parser.add_option_group(udm_module_options)
 
 	# parser.add_option("-v", "--verbose", action="count")
 
 	udm_passthrough_options = []
-	auth_options = OptionGroup(parser, "Authentication Options",
-			"These options are usually passed e.g. from a calling joinscript")
-	auth_options.add_option("--binddn", dest="binddn", type="string",
-			action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
-			help="LDAP binddn", metavar="<LDAP DN>")
-	auth_options.add_option("--bindpwd", dest="bindpwd", type="string",
-			action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
-			help="LDAP bindpwd", metavar="<LDAP bindpwd>")
-	auth_options.add_option("--bindpwdfile", dest="bindpwdfile",
-			action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
-			type="existing_filename",
-			help="File containing LDAP bindpwd", metavar="<filename>")
+	auth_options = OptionGroup(parser, "Authentication Options", "These options are usually passed e.g. from a calling joinscript")
+	auth_options.add_option(
+		"--binddn", dest="binddn", type="string",
+		action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
+		help="LDAP binddn", metavar="<LDAP DN>")
+	auth_options.add_option(
+		"--bindpwd", dest="bindpwd", type="string",
+		action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
+		help="LDAP bindpwd", metavar="<LDAP bindpwd>")
+	auth_options.add_option(
+		"--bindpwdfile", dest="bindpwdfile",
+		action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
+		type="existing_filename",
+		help="File containing LDAP bindpwd", metavar="<filename>")
 	parser.add_option_group(auth_options)
 
 	opts, args = parser.parse_args()
@@ -1175,45 +1236,53 @@ def ucs_unregisterLDAPExtension():
 	functionname = inspect.stack()[0][3]
 	parser = OptionParser(prog=functionname, option_class=UCSOption)
 
-	parser.add_option("--schema", dest="schemaobject",
-			action="append", type="string",
-			help="LDAP schema", metavar="<schema name>")
+	parser.add_option(
+		"--schema", dest="schemaobject",
+		action="append", type="string",
+		help="LDAP schema", metavar="<schema name>")
 
-	parser.add_option("--acl", dest="aclobject",
-			action="append", type="string",
-			help="LDAP ACL", metavar="<ACL name>")
+	parser.add_option(
+		"--acl", dest="aclobject",
+		action="append", type="string",
+		help="LDAP ACL", metavar="<ACL name>")
 
-	parser.add_option("--udm_module", dest="udm_module",
-			action="append", type="string",
-			help="UDM module", metavar="<module name>")
+	parser.add_option(
+		"--udm_module", dest="udm_module",
+		action="append", type="string",
+		help="UDM module", metavar="<module name>")
 
-	parser.add_option("--udm_syntax", dest="udm_syntax",
-			action="append", type="string",
-			help="UDM syntax", metavar="<syntax name>")
+	parser.add_option(
+		"--udm_syntax", dest="udm_syntax",
+		action="append", type="string",
+		help="UDM syntax", metavar="<syntax name>")
 
-	parser.add_option("--udm_hook", dest="udm_hook",
-			action="append", type="string",
-			help="UDM hook", metavar="<hook name>")
+	parser.add_option(
+		"--udm_hook", dest="udm_hook",
+		action="append", type="string",
+		help="UDM hook", metavar="<hook name>")
 
-	parser.add_option("--data", dest="data",
-			action="append", type="string",
-			help="Data object", metavar="<path to data object>")
+	parser.add_option(
+		"--data", dest="data",
+		action="append", type="string",
+		help="Data object", metavar="<path to data object>")
 
 	# parser.add_option("-v", "--verbose", action="count")
 
 	udm_passthrough_options = []
-	auth_options = OptionGroup(parser, "Authentication Options",
-			"These options are usually passed e.g. from a calling joinscript")
-	auth_options.add_option("--binddn", dest="binddn", type="string",
-			action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
-			help="LDAP binddn", metavar="<LDAP DN>")
-	auth_options.add_option("--bindpwd", dest="bindpwd", type="string",
-			action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
-			help="LDAP bindpwd", metavar="<LDAP bindpwd>")
-	auth_options.add_option("--bindpwdfile", dest="bindpwdfile",
-			action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
-			type="existing_filename",
-			help="File containing LDAP bindpwd", metavar="<filename>")
+	auth_options = OptionGroup(parser, "Authentication Options", "These options are usually passed e.g. from a calling joinscript")
+	auth_options.add_option(
+		"--binddn", dest="binddn", type="string",
+		action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
+		help="LDAP binddn", metavar="<LDAP DN>")
+	auth_options.add_option(
+		"--bindpwd", dest="bindpwd", type="string",
+		action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
+		help="LDAP bindpwd", metavar="<LDAP bindpwd>")
+	auth_options.add_option(
+		"--bindpwdfile", dest="bindpwdfile",
+		action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
+		type="existing_filename",
+		help="File containing LDAP bindpwd", metavar="<filename>")
 	parser.add_option_group(auth_options)
 	opts, args = parser.parse_args()
 

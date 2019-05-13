@@ -5,8 +5,6 @@
 ##  - domaincontroller_master
 ## packages:
 ##   - univention-config
-## tags:
-##  - SKIP
 ## exposure: dangerous
 
 import bz2
@@ -19,6 +17,7 @@ import univention.testing.udm as udm_test
 from univention.testing import utils, strings
 
 
+# TODO: add a test case for subdirectories
 @pytest.mark.parametrize('modify', [False, True])
 @pytest.mark.parametrize('prefix', ['/', '../../../../../../../../../'])
 @pytest.mark.parametrize('path,position,attr,ocs', [
@@ -75,13 +74,20 @@ def test_filename_validation(modify, prefix, path, position, attr, ocs, name):
 			# create fake files and see if the listener would remove them.
 			with open(fullpath_modify, 'w') as fd:
 				fd.write('TEMP')
+			if ocs == 'univentionLDAPExtensionACL':
+				with open(fullpath_modify + '.info', 'w') as fd:
+					fd.write('TEMP')
 		finally:
 			lo.delete(dn)
 
 		utils.wait_for_replication_and_postrun()
 		assert os.path.exists(fullpath_modify), err(fullpath_modify)
 		assert 'TEMP' in err(fullpath_modify)
-		os.path.unlink(fullpath_modify)
+		os.unlink(fullpath_modify)
+		if ocs == 'univentionLDAPExtensionACL':
+			assert os.path.exists(fullpath_modify + '.info'), err(fullpath_modify)
+			assert 'TEMP' in err(fullpath_modify + '.info')
+			os.unlink(fullpath_modify + '.info')
 
 
 def err(filename):
