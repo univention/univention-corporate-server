@@ -56,6 +56,8 @@ import imp
 import listener
 from univention.lib.umc_module import MIME_DESCRIPTION
 
+from ldap.filter import filter_format
+
 
 class UniventionLDAPExtension(object):
 	__metaclass__ = ABCMeta
@@ -93,7 +95,7 @@ class UniventionLDAPExtension(object):
 	def is_local_active(self):
 		object_dn = None
 
-		cmd = ["univention-ldapsearch", "-LLL", "-b", self.object_dn, "-s", "base", "(&(cn=%s)(%s=TRUE))" % (self.objectname, self.active_flag_attribute)]
+		cmd = ["univention-ldapsearch", "-LLL", "-b", self.object_dn, "-s", "base", filter_format("(&(cn=%s)(%s=TRUE))", (self.objectname, self.active_flag_attribute))]
 		p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 		(stdout, stderr) = p.communicate()
 		if p.returncode:
@@ -120,7 +122,7 @@ class UniventionLDAPExtension(object):
 
 	def udm_find_object(self):
 		cmd = ["univention-directory-manager", self.udm_module_name, "list"] + self.udm_passthrough_options + [
-			"--filter", "name=%s" % self.objectname,
+			"--filter", filter_format("name=%s", [self.objectname]),
 		]
 		p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
 		(stdout, stderr) = p.communicate()
@@ -334,10 +336,10 @@ class UniventionLDAPExtension(object):
 		regex = re.compile('^ *appidentifier: (.*)$', re.M)
 		for appidentifier in regex.findall(stdout):
 			if appidentifier != "None":
-				app_filter = app_filter + "(cn=%s)" % appidentifier
+				app_filter = app_filter + filter_format("(cn=%s)", [appidentifier])
 
 		if app_filter:
-			cmd = ["univention-ldapsearch", "-LLL", "(&(objectClass=univentionApp)%s)", "cn" % (app_filter,)]
+			cmd = ["univention-ldapsearch", "-LLL", "(&(objectClass=univentionApp)%s)" % (app_filter,), "cn"]
 			p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 			(stdout, stderr) = p.communicate()
 			if p.returncode:
