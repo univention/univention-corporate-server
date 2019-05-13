@@ -5,9 +5,8 @@ scope: ucs_4.3-0-errata4.3-4
 src: ghostscript
 fix: 9.26a~dfsg-0+deb9u3
 desc: |
- This update addresses the following issues:
- * missing attack vector protections for CVE-2019-6116 (CVE-2019-3839)
+ This update addresses the following issue:
+ * Missing attack vector protections for CVE-2019-6116 (CVE-2019-3839)
 bug: [49456]
 cve:
 - CVE-2019-3839
-- CVE-2019-6116
