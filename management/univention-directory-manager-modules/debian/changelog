@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.12-34) unstable; urgency=medium
+
+  * Bug #41694: optimize performance
+
+ -- Florian Best <best@univention.de>  Mon, 13 May 2019 18:30:49 +0200
+
 univention-directory-manager-modules (14.0.12-33) unstable; urgency=medium
 
   * Bug #41694: check if dn is in list before removing it
