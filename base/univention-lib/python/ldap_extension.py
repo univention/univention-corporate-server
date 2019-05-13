@@ -59,6 +59,19 @@ from univention.lib.umc_module import MIME_DESCRIPTION
 from ldap.filter import filter_format
 
 
+class BaseDirRestriction(Exception):
+	pass
+
+
+def safe_path_join(basedir, filename):
+	path = os.path.join(basedir, filename)
+	if not os.path.abspath(path).startswith(basedir):
+		raise BaseDirRestriction('filename %r invalid, not underneath of %r' % (filename, basedir))
+	if set(filename) & {'\x00', '/'}:  # also restrict subdirectories, and ../local-schema/foo
+		raise BaseDirRestriction('invalid filename: %r' % (filename,))
+	return path
+
+
 class UniventionLDAPExtension(object):
 	__metaclass__ = ABCMeta
 
@@ -407,11 +420,17 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 	basedir = '/var/lib/univention-ldap/local-schema'
 
 	def handler(self, dn, new, old, name=None):
+		try:
+			return self._handler(dn, new, old, name)
+		except BaseDirRestriction as exc:
+			ud.debug(ud.LISTENER, ud.ERROR, '%r basedir conflict: %s' % (dn, exc))
+
+	def _handler(self, dn, new, old, name=None):
 		"""Handle LDAP schema extensions on Master and Backup"""
 		if not listener.configRegistry.get('server/role') in ('domaincontroller_master', 'domaincontroller_backup'):
 			return
 
-		if new:
+		if new:  # create / modify
 			new_version = new.get('univentionOwnedByPackageVersion', [None])[0]
 			if not new_version:
 				return
@@ -443,12 +462,19 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 				ud.debug(ud.LISTENER, ud.ERROR, '%s: Error uncompressing data of object %s.' % (name, dn))
 				return
 
-			new_filename = os.path.join(self.basedir, new.get('univentionLDAPSchemaFilename')[0])
+			try:
+				new_filename = safe_path_join(self.basedir, new.get('univentionLDAPSchemaFilename')[0])
+			except BaseDirRestriction as exc:
+				if old:
+					ud.debug(ud.LISTENER, ud.ERROR, 'invalid filename detected during modification. removing file!')
+					self._handler(dn, [], old, name)
+				raise exc
+
 			listener.setuid(0)
 			try:
 				backup_filename = None
 				if old:
-					old_filename = os.path.join(self.basedir, old.get('univentionLDAPSchemaFilename')[0])
+					old_filename = safe_path_join(self.basedir, old.get('univentionLDAPSchemaFilename')[0])
 					if os.path.exists(old_filename):
 						backup_fd, backup_filename = tempfile.mkstemp()
 						ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old file %s to %s.' % (name, old_filename, backup_filename))
@@ -515,8 +541,8 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 
 			finally:
 				listener.unsetuid()
-		elif old:
-			old_filename = os.path.join(self.basedir, old.get('univentionLDAPSchemaFilename')[0])
+		elif old:  # remove
+			old_filename = safe_path_join(self.basedir, old.get('univentionLDAPSchemaFilename')[0])
 			if os.path.exists(old_filename):
 				listener.setuid(0)
 				try:
@@ -565,7 +591,6 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 
 				finally:
 					listener.unsetuid()
-		return
 
 
 class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
@@ -576,6 +601,12 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 	file_prefix = 'ldapacl_'
 
 	def handler(self, dn, new, old, name=None):
+		try:
+			return self._handler(dn, new, old, name)
+		except BaseDirRestriction as exc:
+			ud.debug(ud.LISTENER, ud.ERROR, '%r basedir conflict: %s' % (dn, exc))
+
+	def _handler(self, dn, new, old, name=None):
 		"""Handle LDAP ACL extensions on Master, Backup and Slave"""
 
 		if not listener.configRegistry.get('ldap/server/type'):
@@ -641,14 +672,20 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 				return
 
 			new_basename = new.get('univentionLDAPACLFilename')[0]
-			new_filename = os.path.join(self.ucr_slapd_conf_subfile_dir, new_basename)
+			try:
+				new_filename = safe_path_join(self.ucr_slapd_conf_subfile_dir, new_basename)
+			except BaseDirRestriction as exc:
+				if old:
+					ud.debug(ud.LISTENER, ud.ERROR, 'invalid filename detected during modification. removing file!')
+					self._handler(dn, [], old, name)
+				raise exc
 			listener.setuid(0)
 			try:
 				backup_filename = None
 				backup_ucrinfo_filename = None
 				backup_backlink_filename = None
 				if old:
-					old_filename = os.path.join(self.ucr_slapd_conf_subfile_dir, old.get('univentionLDAPACLFilename')[0])
+					old_filename = safe_path_join(self.ucr_slapd_conf_subfile_dir, old.get('univentionLDAPACLFilename')[0])
 					if os.path.exists(old_filename):
 						backup_fd, backup_filename = tempfile.mkstemp()
 						ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old file %s to %s.' % (name, old_filename, backup_filename))
@@ -674,7 +711,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 							os.close(backup_backlink_fd)
 
 					# and the old UCR registration
-					old_ucrinfo_filename = os.path.join(self.ucr_info_basedir, "%s%s.info" % (self.file_prefix, old.get('univentionLDAPACLFilename')[0]))
+					old_ucrinfo_filename = safe_path_join(self.ucr_info_basedir, "%s%s.info" % (self.file_prefix, old.get('univentionLDAPACLFilename')[0]))
 					if os.path.exists(old_ucrinfo_filename):
 						backup_ucrinfo_fd, backup_ucrinfo_filename = tempfile.mkstemp()
 						ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old UCR info file %s to %s.' % (name, old_ucrinfo_filename, backup_ucrinfo_filename))
@@ -714,7 +751,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 
 				# and UCR registration
 				try:
-					new_ucrinfo_filename = os.path.join(self.ucr_info_basedir, "%s%s.info" % (self.file_prefix, new.get('univentionLDAPACLFilename')[0]))
+					new_ucrinfo_filename = safe_path_join(self.ucr_info_basedir, "%s%s.info" % (self.file_prefix, new.get('univentionLDAPACLFilename')[0]))
 					ud.debug(ud.LISTENER, ud.INFO, '%s: Writing UCR info file %s.' % (name, new_ucrinfo_filename))
 					with open(new_ucrinfo_filename, 'w') as f:
 						f.write("Type: multifile\nMultifile: etc/ldap/slapd.conf\n\nType: subfile\nMultifile: etc/ldap/slapd.conf\nSubfile: etc/ldap/slapd.conf.d/%s\n" % new_basename)
@@ -790,11 +827,11 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 			finally:
 				listener.unsetuid()
 		elif old:
-			old_filename = os.path.join(self.ucr_slapd_conf_subfile_dir, old.get('univentionLDAPACLFilename')[0])
+			old_filename = safe_path_join(self.ucr_slapd_conf_subfile_dir, old.get('univentionLDAPACLFilename')[0])
 			# plus backlink file
 			old_backlink_filename = "%s.info" % old_filename
 			# and the old UCR registration
-			old_ucrinfo_filename = os.path.join(self.ucr_info_basedir, "%s%s.info" % (self.file_prefix, old.get('univentionLDAPACLFilename')[0]))
+			old_ucrinfo_filename = safe_path_join(self.ucr_info_basedir, "%s%s.info" % (self.file_prefix, old.get('univentionLDAPACLFilename')[0]))
 			if os.path.exists(old_filename):
 				listener.setuid(0)
 				try:
