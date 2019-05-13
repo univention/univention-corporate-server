@@ -3,3 +3,4 @@ jenkins_description: Various UCS installation tests (fail immediately if one set
 jenkins_run_sequentially: true
 jenkins_default_kvm_server: utby.knut.univention.de
 jenkins_recipients: botner@univention.de,damrose@univention.de
+jenkins_bycron: H 0 * * *
