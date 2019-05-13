@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: bind9
-fix: 1:9.10.3.dfsg.P4-12.3+deb9u5A~4.4.0.201905130912
+fix: 1:9.10.3.dfsg.P4-12.3+deb9u5A~4.4.0.201905131414
 desc: |
  This update addresses the following issues:
  * Limiting simultaneous TCP clients is ineffective (CVE-2018-5743)
