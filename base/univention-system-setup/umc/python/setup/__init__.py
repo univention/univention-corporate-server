@@ -398,7 +398,14 @@ class Instance(Base, ProgressMixin):
 		# host and domain name
 		packages = set(values.get('components', []))
 		_check('hostname', util.is_hostname, _('The hostname or the hostname part of the fully qualified domain name is invalid. Please go back to the host setting and make sure, that the hostname only contains letter (a-zA-Z) and digits (0-9).'))
-		_check('hostname', lambda x: len(x) <= 13, _('A valid NetBIOS name can not be longer than 13 characters. If Samba is installed, the hostname should be shortened.'), critical=(ad_member or 'univention-samba' in packages or 'univention-samba4' in packages))
+
+		hostname_length_critical = ad_member or 'univention-samba' in packages or 'univention-samba4' in packages
+		appliance_str = _('the UCS system')
+		if ucr['umc/web/appliance/name']:
+			appliance_str = _('the %s appliance') % (ucr['umc/web/appliance/name'],)
+		hostname_length_message = _('A valid NetBIOS name can not be longer than 13 characters. If Samba is installed, the hostname should be shortened.') if hostname_length_critical else _('The hostname %s is longer than 13 characters. It will not be possible to install an Active Directory compatible Domaincontroller (Samba 4) or UCS@school. The hostname cannot be changed after the installation of %s. It is recommended to shorten the hostname to maximal 13 characters.') % (values['hostname'], appliance_str,)
+		_check('hostname', lambda x: len(x) <= 13, hostname_length_message, critical=hostname_length_critical)
+
 		_check('domainname', util.is_domainname, _("Please enter a valid fully qualified domain name (e.g. host.example.com)."))
 		hostname = allValues.get('hostname', '')
 		domainname = allValues.get('domainname', '')

@@ -1829,14 +1829,18 @@ define([
 			// network settings
 			msg += '<p><b>' + _('Domain and host configuration') + '</b></p>';
 			msg += '<ul>';
-			_append(_('Fully qualified domain name'), _vals._fqdn);
+
+			var fqdn_msg = _vals._fqdn;
+			if (serverValues.hostnameMessage) {
+				fqdn_msg += '<br><b>' + _('Warning') + ':</b> ' + entities.encode(serverValues.hostnameMessage);
+			}
+			_append(_('Fully qualified domain name'), fqdn_msg);
 			if (_validateHostname(vals.hostname) && guessedDomainName) {
 				// if the backend gave us a guess for the domain name, show it here
 				var fqdn = vals.hostname + '.' + guessedDomainName;
 				_append(_('Fully qualified domain name'), fqdn);
 				this._newFQDN = fqdn;
-			}
-			else {
+			} else {
 				// 'hostname' can be host name or FQDN... choose the correct label
 				var hostLabel = _validateFQDN(_vals.hostname) ? _('Fully qualified domain name') : _('Hostname');
 				_append(hostLabel, _vals.hostname);
@@ -2091,6 +2095,9 @@ define([
 				var allValid = true;
 				var result = {};
 				array.forEach(response.result, function(ientry) {
+					if (ientry.key && ientry.message) {
+						result[`${ientry.key}Message`] = ientry.message;
+					}
 					if (ientry.key && ientry.value) {
 						// check for values that the server returned
 						result[ientry.key] = ientry.value;
@@ -2590,6 +2597,26 @@ define([
 			}
 
 			var nextPage = this.inherited(arguments);
+
+			if (pageName == 'fqdn-master' || pageName == 'fqdn-nonmaster-all') {
+				var hostname = this.getValues().hostname || '';
+				if (hostname.length > 13) {
+					var applianceName = _('the UCS system');
+					if (this.ucr['umc/web/appliance/name']) {
+						applianceName = _('the %s Appliance', this.ucr['umc/web/appliance/name']);
+					}
+					var msg = _('<p>The hostname <i>%s</i> is longer than 13 characters.</p><p>It will not be possible to install an Active Directory compatible Domaincontroller (Samba 4) or UCS@school. The hostname cannot be changed after the installation of %s. It is recommended to shorten the hostname to maximal 13 characters.</p>', hostname, applianceName);
+					return dialog.confirm(msg, [{
+						label: _('Adjust hostname'),
+						name: pageName
+					}, {
+						label: _('Continue'),
+						name: nextPage,
+						default: true
+					}], _('Warning'));
+				}
+			} 
+
 			if (nextPage == 'network' && this._initialDHCPQueriesDeferred) {
 				// process the initial dhcp queries
 				this._processDHCPQueries(this._initialDHCPQueriesDeferred);
