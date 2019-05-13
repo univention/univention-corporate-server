@@ -1,3 +1,9 @@
+univention-lib (8.0.0-10) unstable; urgency=medium
+
+  * Bug #41780: add basedir restriction in ldap extension listener
+
+ -- Florian Best <best@univention.de>  Mon, 13 May 2019 17:14:02 +0200
+
 univention-lib (8.0.0-9) unstable; urgency=medium
 
   * Bug #49136: depend on python3-pyldap
