@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [1]
+scope: ucs_4.4-0-errata4.4-1
+src: univention-management-console-module-services
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Restarting, Starting and Stopping of services whichs service name is
+   different to the systemd service is possible again. This was e.g. the
+   case for the Samba 4 service.
+bug: [42241]

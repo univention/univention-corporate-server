@@ -1,3 +1,10 @@
+univention-management-console-module-services (8.0.1-2) unstable; urgency=medium
+
+  * Bug #42241: fix start/restart/stop of services with different systemd name
+  	than the service definition name
+
+ -- Florian Best <best@univention.de>  Tue, 30 Jul 2019 13:26:12 +0200
+
 univention-management-console-module-services (8.0.1-1) unstable; urgency=medium
 
   * Bug #46969: bindpwdfile support

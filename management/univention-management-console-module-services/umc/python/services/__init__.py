@@ -97,13 +97,15 @@ class Instance(Base):
 
 	def _change_services(self, services, action):
 		error_messages = []
+		srvs = ServiceInfo()
 		for srv in services:
-			process = subprocess.Popen(('/usr/sbin/service', srv, action), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+			service_name = srvs.get_service(srv).get('systemd', srv)
+			process = subprocess.Popen(('/usr/sbin/service', service_name, action), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 			output = process.communicate()[0]
 			if process.returncode:
 				try:
-					MODULE.warn('Error during %s of %s: %s' % (action, srv, output.strip()))
-					process = subprocess.Popen(('/bin/systemctl', 'status', srv), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+					MODULE.warn('Error during %s of %s: %s' % (action, service_name, output.strip()))
+					process = subprocess.Popen(('/bin/systemctl', 'status', service_name), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 					output = process.communicate()[0]
 				except EnvironmentError:
 					pass
