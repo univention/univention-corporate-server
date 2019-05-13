@@ -1,3 +1,10 @@
+univention-system-setup (12.0.2-6) unstable; urgency=medium
+
+  * Bug #43326: add a message to warn about inability to install
+    Samba4 or UCS@school when hostname is longer than 13 characters
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 13 May 2019 12:33:52 +0200
+
 univention-system-setup (12.0.2-5) unstable; urgency=medium
 
   * Bug #48134: fix joining into specified DC master
