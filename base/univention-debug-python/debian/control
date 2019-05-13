@@ -1,0 +1,47 @@
+Source: univention-debug
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.7.2
+Build-Depends: debhelper (>= 9),
+ dh-python,
+ libunivention-debug-dev (>= 11.0.0-2),
+ python-all-dev,
+ python3-all-dev,
+ python-debian,
+ python3-debian,
+ ucslint-univention,
+
+Package: python-univention-debug
+Architecture: any
+Depends:
+ python-univention (>= 12.0.0-8),
+ ${misc:Depends},
+ ${python:Depends},
+ ${shlibs:Depends},
+Provides: ${python:Provides}
+Description: UCS - debugging and logging library (Python2 interface)
+ This package includes the Python2 interface to the
+ UCS debugging and logging  library.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: python3-univention-debug
+Architecture: any
+Depends:
+ python3-univention,
+ ${misc:Depends},
+ ${python3:Depends},
+ ${shlibs:Depends},
+Provides: ${python3:Provides}
+Description: UCS - debugging and logging library (Python3 interface)
+ This package includes the Python3 interface to the
+ UCS debugging and logging  library.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/

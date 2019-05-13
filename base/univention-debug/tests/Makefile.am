@@ -11,12 +11,8 @@ TESTS_ENVIRONMENT = \
 	PYTHON_VERSION=$(PYTHON_VERSION) \
 	LC_ALL=C
 TESTS = test_c
-if HAVE_PYTHON
-TESTS += test_py
-endif
 
 check_PROGRAMS = test_debug
-check_SCRIPTS = test_debug.py test_c test_py
 
 test_debug_SOURCES = test_debug.c
 test_debug_LDADD = $(top_builddir)/lib/libuniventiondebug.la

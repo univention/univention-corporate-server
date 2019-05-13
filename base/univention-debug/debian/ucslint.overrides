@@ -1,7 +1,3 @@
-0009-2: tests/test_debug.py
-0010-2: tests/test_py
 0010-2: tests/test_c
-0010-2: tests/test_debug.py
-0006-5: debian/python-univention-debug.preinst
 0010-2: tests/test_debug
 0013-2: ltmain.sh

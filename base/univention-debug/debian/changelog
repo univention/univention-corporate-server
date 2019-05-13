@@ -1,3 +1,9 @@
+univention-debug (11.0.0-2) unstable; urgency=low
+
+  * Bug #49130: Split Python binding into separate package
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 13 May 2019 14:44:46 +0200
+
 univention-debug (11.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump
