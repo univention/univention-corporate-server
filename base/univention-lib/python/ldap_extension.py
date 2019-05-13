@@ -3,7 +3,6 @@
 """
 Python function to register |UDM| extensions in |LDAP|.
 """
-from __future__ import print_function
 # Copyright 2011-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -30,33 +29,36 @@ from __future__ import print_function
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import
+from __future__ import print_function
 
-from optparse import OptionParser, OptionGroup, Option, OptionValueError
-from copy import copy
 import inspect
 import os
 import shutil
 import re
 import sys
-import univention.debug as ud
-from univention.config_registry import configHandlers, ConfigRegistry
-from univention.admin import uldap as udm_uldap
-from univention.admin import modules as udm_modules
-from univention.admin import uexceptions as udm_errors
-from univention.lib.ucs import UCS_Version
+import imp
 import subprocess
 import bz2
 import base64
 import time
 import tempfile
 import datetime
-import apt
+from optparse import OptionParser, OptionGroup, Option, OptionValueError
+from copy import copy
 from abc import ABCMeta, abstractproperty, abstractmethod
-import imp
-import listener
-from univention.lib.umc_module import MIME_DESCRIPTION
 
+import apt
+import listener
 from ldap.filter import filter_format
+
+import univention.debug as ud
+from univention.config_registry import configHandlers, ConfigRegistry
+from univention.admin import uldap as udm_uldap
+from univention.admin import modules as udm_modules
+from univention.admin import uexceptions as udm_errors
+from univention.lib.ucs import UCS_Version
+from univention.lib.umc_module import MIME_DESCRIPTION
 
 
 class BaseDirRestriction(Exception):
@@ -1030,101 +1032,121 @@ def ucs_registerLDAPExtension():
 	functionname = inspect.stack()[0][3]
 	parser = OptionParser(prog=functionname, option_class=UCSOption)
 
-	parser.add_option("--schema", dest="schemafile",
-			action="append", type="existing_filename", default=[],
-			help="Register LDAP schema", metavar="<LDAP schema file>")
+	parser.add_option(
+		"--schema", dest="schemafile",
+		action="append", type="existing_filename", default=[],
+		help="Register LDAP schema", metavar="<LDAP schema file>")
 
-	parser.add_option("--acl", dest="aclfile",
-			action="append", type="existing_filename", default=[],
-			help="Register LDAP ACL", metavar="<UCR template for OpenLDAP ACL file>")
+	parser.add_option(
+		"--acl", dest="aclfile",
+		action="append", type="existing_filename", default=[],
+		help="Register LDAP ACL", metavar="<UCR template for OpenLDAP ACL file>")
 
-	parser.add_option("--udm_module", dest="udm_module",
-			action="append", type="existing_filename", default=[],
-			help="UDM module", metavar="<filename>")
+	parser.add_option(
+		"--udm_module", dest="udm_module",
+		action="append", type="existing_filename", default=[],
+		help="UDM module", metavar="<filename>")
 
-	parser.add_option("--udm_syntax", dest="udm_syntax",
-			action="append", type="existing_filename", default=[],
-			help="UDM syntax", metavar="<filename>")
+	parser.add_option(
+		"--udm_syntax", dest="udm_syntax",
+		action="append", type="existing_filename", default=[],
+		help="UDM syntax", metavar="<filename>")
 
-	parser.add_option("--udm_hook", dest="udm_hook",
-			action="append", type="existing_filename", default=[],
-			help="UDM hook", metavar="<filename>")
+	parser.add_option(
+		"--udm_hook", dest="udm_hook",
+		action="append", type="existing_filename", default=[],
+		help="UDM hook", metavar="<filename>")
 
-	parser.add_option("--data", dest="data",
-			action="append", type="existing_filename", default=[],
-			help="Data object", metavar="<filename>")
+	parser.add_option(
+		"--data", dest="data",
+		action="append", type="existing_filename", default=[],
+		help="Data object", metavar="<filename>")
 
-	parser.add_option("--packagename", dest="packagename",
-			help="Package name")
-	parser.add_option("--packageversion", dest="packageversion",
-			help="Package version")
+	parser.add_option(
+		"--packagename", dest="packagename",
+		help="Package name")
+	parser.add_option(
+		"--packageversion", dest="packageversion",
+		help="Package version")
 
-	parser.add_option("--ucsversionstart", dest="ucsversionstart",
-			action="store", type="ucs_version",
-			help="Start activation with UCS version", metavar="<UCS Version>")
-	parser.add_option("--ucsversionend", dest="ucsversionend",
-			action="store", type="ucs_version",
-			help="End activation with UCS version", metavar="<UCS Version>")
+	parser.add_option(
+		"--ucsversionstart", dest="ucsversionstart",
+		action="store", type="ucs_version",
+		help="Start activation with UCS version", metavar="<UCS Version>")
+	parser.add_option(
+		"--ucsversionend", dest="ucsversionend",
+		action="store", type="ucs_version",
+		help="End activation with UCS version", metavar="<UCS Version>")
 
 	data_module_options = OptionGroup(parser, "Data object specific options")
-	data_module_options.add_option("--data_type", dest="data_type",
-			type="string",
-			action="callback", callback=option_callback_set_data_module_options,
-			help="type of data object", metavar="<Data object type>")
-	data_module_options.add_option("--data_meta", dest="data_meta", default=[],
-			type="string",
-			action="callback", callback=option_callback_append_data_module_options,
-			help="meta data for data object", metavar="<string>")
+	data_module_options.add_option(
+		"--data_type", dest="data_type",
+		type="string",
+		action="callback", callback=option_callback_set_data_module_options,
+		help="type of data object", metavar="<Data object type>")
+	data_module_options.add_option(
+		"--data_meta", dest="data_meta", default=[],
+		type="string",
+		action="callback", callback=option_callback_append_data_module_options,
+		help="meta data for data object", metavar="<string>")
 	parser.add_option_group(data_module_options)
 
 	udm_module_options = OptionGroup(parser, "UDM module specific options")
-	udm_module_options.add_option("--messagecatalog", dest="udm_module_messagecatalog",
-			type="existing_filename", default=[],
-			action="callback", callback=option_callback_append_udm_module_options,
-			help="Gettext mo file", metavar="<GNU message catalog file>")
-	udm_module_options.add_option("--udm_module_messagecatalog", dest="udm_module_messagecatalog",
-			type="existing_filename", default=[],
-			action="callback", callback=option_callback_append_udm_module_options,
-			help="Gettext mo file", metavar="<GNU message catalog file>")
-	udm_module_options.add_option("--umcregistration", dest="umcregistration",
-			type="existing_filename",
-			action="callback", callback=option_callback_set_udm_module_options,
-			help="UMC registration xml file", metavar="<XML file>")
-	udm_module_options.add_option("--icon", dest="icon",
-			type="existing_filename", default=[],
-			action="callback", callback=option_callback_append_udm_module_options,
-			help="UDM module icon", metavar="<Icon file>")
+	udm_module_options.add_option(
+		"--messagecatalog", dest="udm_module_messagecatalog",
+		type="existing_filename", default=[],
+		action="callback", callback=option_callback_append_udm_module_options,
+		help="Gettext mo file", metavar="<GNU message catalog file>")
+	udm_module_options.add_option(
+		"--udm_module_messagecatalog", dest="udm_module_messagecatalog",
+		type="existing_filename", default=[],
+		action="callback", callback=option_callback_append_udm_module_options,
+		help="Gettext mo file", metavar="<GNU message catalog file>")
+	udm_module_options.add_option(
+		"--umcregistration", dest="umcregistration",
+		type="existing_filename",
+		action="callback", callback=option_callback_set_udm_module_options,
+		help="UMC registration xml file", metavar="<XML file>")
+	udm_module_options.add_option(
+		"--icon", dest="icon",
+		type="existing_filename", default=[],
+		action="callback", callback=option_callback_append_udm_module_options,
+		help="UDM module icon", metavar="<Icon file>")
 	parser.add_option_group(udm_module_options)
 
 	udm_module_options = OptionGroup(parser, "UDM syntax specific options")
-	udm_module_options.add_option("--udm_syntax_messagecatalog", dest="udm_syntax_messagecatalog",
-			type="existing_filename", default=[],
-			action="callback", callback=option_callback_append_udm_syntax_options,
-			help="Gettext mo file", metavar="<GNU message catalog file>")
+	udm_module_options.add_option(
+		"--udm_syntax_messagecatalog", dest="udm_syntax_messagecatalog",
+		type="existing_filename", default=[],
+		action="callback", callback=option_callback_append_udm_syntax_options,
+		help="Gettext mo file", metavar="<GNU message catalog file>")
 	parser.add_option_group(udm_module_options)
 
 	udm_module_options = OptionGroup(parser, "UDM hook specific options")
-	udm_module_options.add_option("--udm_hook_messagecatalog", dest="udm_hook_messagecatalog",
-			type="existing_filename", default=[],
-			action="callback", callback=option_callback_append_udm_hook_options,
-			help="Gettext mo file", metavar="<GNU message catalog file>")
+	udm_module_options.add_option(
+		"--udm_hook_messagecatalog", dest="udm_hook_messagecatalog",
+		type="existing_filename", default=[],
+		action="callback", callback=option_callback_append_udm_hook_options,
+		help="Gettext mo file", metavar="<GNU message catalog file>")
 	parser.add_option_group(udm_module_options)
 
 	# parser.add_option("-v", "--verbose", action="count")
 
 	udm_passthrough_options = []
-	auth_options = OptionGroup(parser, "Authentication Options",
-			"These options are usually passed e.g. from a calling joinscript")
-	auth_options.add_option("--binddn", dest="binddn", type="string",
-			action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
-			help="LDAP binddn", metavar="<LDAP DN>")
-	auth_options.add_option("--bindpwd", dest="bindpwd", type="string",
-			action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
-			help="LDAP bindpwd", metavar="<LDAP bindpwd>")
-	auth_options.add_option("--bindpwdfile", dest="bindpwdfile",
-			action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
-			type="existing_filename",
-			help="File containing LDAP bindpwd", metavar="<filename>")
+	auth_options = OptionGroup(parser, "Authentication Options", "These options are usually passed e.g. from a calling joinscript")
+	auth_options.add_option(
+		"--binddn", dest="binddn", type="string",
+		action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
+		help="LDAP binddn", metavar="<LDAP DN>")
+	auth_options.add_option(
+		"--bindpwd", dest="bindpwd", type="string",
+		action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
+		help="LDAP bindpwd", metavar="<LDAP bindpwd>")
+	auth_options.add_option(
+		"--bindpwdfile", dest="bindpwdfile",
+		action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
+		type="existing_filename",
+		help="File containing LDAP bindpwd", metavar="<filename>")
 	parser.add_option_group(auth_options)
 
 	opts, args = parser.parse_args()
@@ -1214,45 +1236,53 @@ def ucs_unregisterLDAPExtension():
 	functionname = inspect.stack()[0][3]
 	parser = OptionParser(prog=functionname, option_class=UCSOption)
 
-	parser.add_option("--schema", dest="schemaobject",
-			action="append", type="string",
-			help="LDAP schema", metavar="<schema name>")
+	parser.add_option(
+		"--schema", dest="schemaobject",
+		action="append", type="string",
+		help="LDAP schema", metavar="<schema name>")
 
-	parser.add_option("--acl", dest="aclobject",
-			action="append", type="string",
-			help="LDAP ACL", metavar="<ACL name>")
+	parser.add_option(
+		"--acl", dest="aclobject",
+		action="append", type="string",
+		help="LDAP ACL", metavar="<ACL name>")
 
-	parser.add_option("--udm_module", dest="udm_module",
-			action="append", type="string",
-			help="UDM module", metavar="<module name>")
+	parser.add_option(
+		"--udm_module", dest="udm_module",
+		action="append", type="string",
+		help="UDM module", metavar="<module name>")
 
-	parser.add_option("--udm_syntax", dest="udm_syntax",
-			action="append", type="string",
-			help="UDM syntax", metavar="<syntax name>")
+	parser.add_option(
+		"--udm_syntax", dest="udm_syntax",
+		action="append", type="string",
+		help="UDM syntax", metavar="<syntax name>")
 
-	parser.add_option("--udm_hook", dest="udm_hook",
-			action="append", type="string",
-			help="UDM hook", metavar="<hook name>")
+	parser.add_option(
+		"--udm_hook", dest="udm_hook",
+		action="append", type="string",
+		help="UDM hook", metavar="<hook name>")
 
-	parser.add_option("--data", dest="data",
-			action="append", type="string",
-			help="Data object", metavar="<path to data object>")
+	parser.add_option(
+		"--data", dest="data",
+		action="append", type="string",
+		help="Data object", metavar="<path to data object>")
 
 	# parser.add_option("-v", "--verbose", action="count")
 
 	udm_passthrough_options = []
-	auth_options = OptionGroup(parser, "Authentication Options",
-			"These options are usually passed e.g. from a calling joinscript")
-	auth_options.add_option("--binddn", dest="binddn", type="string",
-			action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
-			help="LDAP binddn", metavar="<LDAP DN>")
-	auth_options.add_option("--bindpwd", dest="bindpwd", type="string",
-			action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
-			help="LDAP bindpwd", metavar="<LDAP bindpwd>")
-	auth_options.add_option("--bindpwdfile", dest="bindpwdfile",
-			action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
-			type="existing_filename",
-			help="File containing LDAP bindpwd", metavar="<filename>")
+	auth_options = OptionGroup(parser, "Authentication Options", "These options are usually passed e.g. from a calling joinscript")
+	auth_options.add_option(
+		"--binddn", dest="binddn", type="string",
+		action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
+		help="LDAP binddn", metavar="<LDAP DN>")
+	auth_options.add_option(
+		"--bindpwd", dest="bindpwd", type="string",
+		action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
+		help="LDAP bindpwd", metavar="<LDAP bindpwd>")
+	auth_options.add_option(
+		"--bindpwdfile", dest="bindpwdfile",
+		action="callback", callback=option_callback_udm_passthrough_options, callback_args=(udm_passthrough_options,),
+		type="existing_filename",
+		help="File containing LDAP bindpwd", metavar="<filename>")
 	parser.add_option_group(auth_options)
 	opts, args = parser.parse_args()
 
