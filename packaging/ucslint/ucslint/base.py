@@ -109,28 +109,28 @@ class UniventionPackageCheckBase(object):
 
 class UniventionPackageCheckDebian(UniventionPackageCheckBase):
 
-    """Check for debian/ directory."""
+	"""Check for debian/ directory."""
 
-    def check(self, path):
-        """ the real check """
-        super(UniventionPackageCheckDebian, self).check(path)
-        if not os.path.isdir(os.path.join(path, 'debian')):
-            raise UCSLintException("directory '%s' does not exist!" % (path,))
+	def check(self, path):
+		""" the real check """
+		super(UniventionPackageCheckDebian, self).check(path)
+		if not os.path.isdir(os.path.join(path, 'debian')):
+			raise UCSLintException("directory '%s' does not exist!" % (path,))
 
 
 class UCSLintException(Exception):
 
-    """Top level exception."""
+	"""Top level exception."""
 
 
 class DebianControlNotEnoughSections(UCSLintException):
 
-    """Content exception."""
+	"""Content exception."""
 
 
 class DebianControlParsingError(UCSLintException):
 
-    """Parsing exception."""
+	"""Parsing exception."""
 
 
 class FailedToReadFile(UCSLintException):
@@ -444,4 +444,4 @@ def _test():
 
 
 if __name__ == '__main__':
-    _test()
+	_test()

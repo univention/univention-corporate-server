@@ -29,45 +29,45 @@
 # <http://www.gnu.org/licenses/>.
 
 try:
-    import univention.ucslint.base as uub
+	import univention.ucslint.base as uub
 except ImportError:
-    import ucslint.base as uub
+	import ucslint.base as uub
 from os import listdir
 from os.path import join, splitext
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-    def __init__(self):
-        super(UniventionPackageCheck, self).__init__()
-        self.name = __name__
+	def __init__(self):
+		super(UniventionPackageCheck, self).__init__()
+		self.name = __name__
 
-    def getMsgIds(self):
-        return {
-            '0018-1': [uub.RESULT_STYLE, 'wrong script name in comment'],
-        }
+	def getMsgIds(self):
+		return {
+			'0018-1': [uub.RESULT_STYLE, 'wrong script name in comment'],
+		}
 
-    def check(self, path):
-        SCRIPTS = frozenset(('preinst', 'postinst', 'prerm', 'postrm'))
-        for filename in listdir(join(path, 'debian')):
-            if '.' in filename:
-                package, suffix = splitext(filename)
-                suffix = suffix.lstrip('.')
-            else:
-                package, suffix = None, filename
+	def check(self, path):
+		SCRIPTS = frozenset(('preinst', 'postinst', 'prerm', 'postrm'))
+		for filename in listdir(join(path, 'debian')):
+			if '.' in filename:
+				package, suffix = splitext(filename)
+				suffix = suffix.lstrip('.')
+			else:
+				package, suffix = None, filename
 
-            if suffix not in SCRIPTS:
-                continue
+			if suffix not in SCRIPTS:
+				continue
 
-            script_path = join(path, 'debian', filename)
-            with open(script_path, 'r') as script_file:
-                for nr, line in enumerate(script_file, start=1):
-                    if not line.startswith('#'):
-                        break
-                    for script_name in SCRIPTS - set((suffix,)):
-                        if script_name in line:
-                            self.addmsg(
-                                '0018-1',
-                                'wrong script name: %r' % (line.strip(),),
-                                filename=script_path,
-                                line=nr)
+			script_path = join(path, 'debian', filename)
+			with open(script_path, 'r') as script_file:
+				for nr, line in enumerate(script_file, start=1):
+					if not line.startswith('#'):
+						break
+					for script_name in SCRIPTS - set((suffix,)):
+						if script_name in line:
+							self.addmsg(
+								'0018-1',
+								'wrong script name: %r' % (line.strip(),),
+								filename=script_path,
+								line=nr)
