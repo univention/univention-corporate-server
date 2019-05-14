@@ -14,7 +14,6 @@ Depends:
  ${python:Depends},
  ${misc:Depends},
  devscripts,
- python-libtre,
  flake8,
  python-flake8,
  python-apt,

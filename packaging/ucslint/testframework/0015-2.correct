@@ -2,7 +2,8 @@ W:0015-2: LIST-OF-WRONG-ENTRIES:1: univention is incorrectly spelled: uinvention
 W:0015-2: LIST-OF-WRONG-ENTRIES:2: univention is incorrectly spelled: Univentoin
 W:0015-2: LIST-OF-WRONG-ENTRIES:3: univention is incorrectly spelled: uninvention
 W:0015-2: LIST-OF-WRONG-ENTRIES:4: univention is incorrectly spelled: Univetion
+W:0015-2: LIST-OF-WRONG-ENTRIES:5: univention is incorrectly spelled: UNivention
 W:0015-2: conffiles/etc/cron.daily/univention-ssl-validity:12: univention is incorrectly spelled: Univetion
 W:0015-2: debian/changelog:7: univention is incorrectly spelled: uinvention
 W:0015-2: debian/control:19: univention is incorrectly spelled: Univentoin
-W:0015-2: univention-certificate:105: univention is incorrectly spelled: uninvention
+W:0015-2: univention-certificate:79: univention is incorrectly spelled: uninvention

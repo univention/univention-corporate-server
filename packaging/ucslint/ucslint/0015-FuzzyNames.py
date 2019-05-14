@@ -31,11 +31,50 @@ try:
 	import univention.ucslint.base as uub
 except ImportError:
 	import ucslint.base as uub
+from itertools import chain
 import re
 try:
-	import tre
+	from typing import Iterator  # noqa F401
 except ImportError:
-	tre = None
+	pass
+
+
+def levenshtein(word, distance=1, subst='.'):
+	# type: (str, int, str) -> Iterator[str]
+	"""
+	Return modified list of words with given Levenshtein distance.
+
+	:param word: The word to modify.
+	:param distance: Levenshtein distance.
+	:param subst: Character used for substitution.
+	:returns: List of regular expressions.
+
+	>>> set(levenshtein("ab")) == {'ab', '.b', 'a.', '.ab', 'a.b', 'ab.', 'a', 'b', 'ba'}
+	True
+	"""
+	yield word
+	if distance == 0:
+		return
+
+	l = len(word)
+	m_sub = ('%s%s%s' % (word[0:i], subst, word[i + 1:]) for i in xrange(l))
+	m_ins = ('%s%s%s' % (word[0:i], subst, word[i:]) for i in xrange(l + 1))
+	m_del = ('%s%s' % (word[0:i], word[1 + i:]) for i in xrange(l))
+	m_swp = ('%s%s%s%s%s' % (word[0:i], word[j], word[i + 1:j], word[i], word[j + 1:]) for j in xrange(l) for i in xrange(j))
+	for modified in chain(m_sub, m_ins, m_del, m_swp):
+		for result in levenshtein(modified, distance - 1):
+			yield result
+
+
+UNIVENTION = ('univention', 'Univention', 'UNIVENTION')
+"""Correct spellings."""
+RE_UNIVENTION = re.compile(
+	r'\b(?!{})(?:{})\b'.format(
+		'|'.join(UNIVENTION),
+		'|'.join(chain(*[levenshtein(word, 2) for word in UNIVENTION])).replace('.', r'\w')
+	)
+)
+"""Regular expression to find misspellings."""
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
@@ -76,28 +115,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	def check(self, path):
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
-		if not tre:
-			return
-
-		fz = tre.Fuzzyness(maxerr=2)
-		pt = tre.compile("\<univention\>", tre.EXTENDED | tre.ICASE)
 
 		for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=['.gz', '.zip', '.jpeg', '.jpg', '.png', '.svg', '.mo']):
-			fd = open(fn, 'r')
-			try:
+			with open(fn, 'r') as fd:
 				for lnr, line in enumerate(fd, start=1):
 					origline = line
 					if UniventionPackageCheck.RE_WHITELINE.match(line):
 						continue
-					pos = 0
-					while True:
-						m = pt.search(line[pos:], fz)
-						if m:
-							if not UniventionPackageCheck.RE_WHITEWORD.match(m[0]):
-								self.debug('%s:%d: found="%s"  origline="%s"' % (fn, lnr, m[0], origline))
-								self.addmsg('0015-2', 'univention is incorrectly spelled: %s' % m[0], filename=fn, line=lnr)
-							pos += m.groups()[0][1]
-						else:
-							break
-			finally:
-				fd.close()
+					for match in RE_UNIVENTION.finditer(line):
+						found = match.group(0)
+						if UniventionPackageCheck.RE_WHITEWORD.match(found):
+							continue
+						self.debug('%s:%d: found="%s"  origline="%s"' % (fn, lnr, found, origline))
+						self.addmsg('0015-2', 'univention is incorrectly spelled: %s' % found, filename=fn, line=lnr)
