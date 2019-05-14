@@ -28,7 +28,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-
+from __future__ import print_function
 try:
 	import univention.ucslint.base as uub
 except ImportError:
@@ -650,7 +650,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			try:
 				fn = obj['File'][0]
 			except LookupError:
-				print >> sys.stderr, 'FIXME: no File entry in obj: %s' % obj
+				print('FIXME: no File entry in obj: %s' % obj, file=sys.stderr)
 			else:
 				try:
 					conffn = find_conf(fn)
@@ -671,7 +671,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				try:
 					fn = obj['Subfile'][0]
 				except LookupError:
-					print >> sys.stderr, 'FIXME: no Subfile entry in obj: %s' % obj
+					print('FIXME: no Subfile entry in obj: %s' % obj, file=sys.stderr)
 				else:
 					try:
 						conffn = find_conf(fn)

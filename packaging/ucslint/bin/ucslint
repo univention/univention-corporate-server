@@ -30,8 +30,8 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-#
-#
+
+from __future__ import print_function
 from fnmatch import fnmatch
 import os
 from os.path import abspath, dirname, join, pardir
@@ -45,11 +45,11 @@ try:
 except ImportError:
 	try:
 		import ucslint.base as uub
-		print >> sys.stderr, 'using fallback ucslint.base instead of univention.ucslint.base'
+		print('using fallback ucslint.base instead of univention.ucslint.base', file=sys.stderr)
 	except ImportError:
 		sys.path.insert(0, join(dirname(sys.argv[0]), pardir))
 		import ucslint.base as uub
-		print >> sys.stderr, 'using local ucslint.base instead of univention.ucslint.base'
+		print('using local ucslint.base instead of univention.ucslint.base', file=sys.stderr)
 try:
 	from typing import Any, Container, Dict, List, Optional, Sequence, Set, Tuple  # noqa F401
 	from types import ModuleType  # noqa F401
@@ -92,7 +92,7 @@ class DebianPackageCheck(object):
 			plugindir = os.path.expanduser(plugindir)
 			if not os.path.exists(plugindir):
 				if self.debuglevel:
-					print >> sys.stderr, 'WARNING: plugindir %s does not exist' % plugindir
+					print('WARNING: plugindir %s does not exist' % plugindir, file=sys.stderr)
 			else:
 				for f in os.listdir(plugindir):
 					if f.endswith('.py') and f[0:4].isdigit():
@@ -106,14 +106,14 @@ class DebianPackageCheck(object):
 								exec(fd, module.__dict__)
 								self.pluginlist[modname] = module
 								if self.debuglevel:
-									print >> sys.stderr, 'Loaded module %s' % modname
+									print('Loaded module %s' % modname, file=sys.stderr)
 							except Exception as exc:
-								print >> sys.stderr, 'ERROR: Loading module %s failed: %s' % (f, exc)
+								print('ERROR: Loading module %s failed: %s' % (f, exc), file=sys.stderr)
 								if self.debuglevel:
 									raise
 						else:
 							if self.debuglevel:
-								print >> sys.stderr, 'Module %s is not enabled' % f
+								print('Module %s is not enabled' % f, file=sys.stderr)
 
 	def check(self):
 		# type: () -> None
@@ -128,7 +128,7 @@ class DebianPackageCheck(object):
 			try:
 				obj.check(self.path)
 			except uub.UCSLintException as ex:
-				print >> sys.stderr, ex
+				print(ex, file=sys.stderr)
 			self.msglist.extend(obj.result())
 
 	def modifyMsgIdList(self, newmap):
@@ -164,7 +164,7 @@ class DebianPackageCheck(object):
 						continue
 					result = RE.match(line)
 					if not result:
-						print >> sys.stderr, 'IGNORED: debian/ucslint.overrides: %s' % (line,)
+						print('IGNORED: debian/ucslint.overrides: %s' % (line,), file=sys.stderr)
 						continue
 
 					module, filename, linenumber = result.groups()
@@ -172,7 +172,7 @@ class DebianPackageCheck(object):
 					self.overrides.add(override)
 		except IOError as ex:
 			if ex.errno != ENOENT:
-				print >> sys.stderr, 'WARNING: load debian/ucslint.overrides: %s' % (ex,)
+				print('WARNING: load debian/ucslint.overrides: %s' % (ex,), file=sys.stderr)
 
 	def in_overrides(self, msg):
 		# type: (uub.UPCMessage) -> bool
@@ -218,7 +218,7 @@ class DebianPackageCheck(object):
 				continue
 			category = uub.RESULT_INT2STR.get(self.msgidlist.get(msg.getId(), ['FIXME'])[0], 'FIXME')
 			if category in display_only_categories or display_only_categories == '':
-				print '%s:%s' % (category, str(msg))
+				print('%s:%s' % (category, str(msg)))
 				incident_cnt += 1
 
 				if category in exitcode_categories or exitcode_categories == '':
@@ -384,7 +384,7 @@ def main():
 	try:
 		chk.check()
 	except uub.UCSLintException as ex:
-		print >> sys.stderr, ex
+		print(ex, file=sys.stderr)
 	incident_cnt, exitcode_cnt = chk.printResult(options.ignore_IDs, options.display_only_IDs, options.display_only_categories, options.exitcode_categories)
 
 	if exitcode_cnt:

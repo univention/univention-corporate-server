@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """Sort ucslint output for stable comparison."""
 #
+from __future__ import print_function
 import sys
 import re
 
@@ -15,7 +16,7 @@ def main():
 	elif len(sys.argv) == 2:
 		content = open(sys.argv[1], 'r')
 	else:
-		print >> sys.stderr, 'ucslint-sort-output.py <filename>'
+		print('ucslint-sort-output.py <filename>', file=sys.stderr)
 		sys.exit(2)
 
 	tmplines = []
@@ -34,7 +35,7 @@ def main():
 	eventlist.sort()
 
 	for event in eventlist:
-		print event
+		print(event)
 
 
 if __name__ == '__main__':

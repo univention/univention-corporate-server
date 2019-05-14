@@ -28,6 +28,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import re
 import os
 import subprocess
@@ -398,7 +399,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			self.check(args.path)
 		msgids = self.getMsgIds()
 		for msg in self.result():
-			print uub.RESULT_INT2STR.get(msgids.get(msg.getId(), [None])[0]) or 'FIXME', str(msg)
+			print(uub.RESULT_INT2STR.get(msgids.get(msg.getId(), [None])[0]) or 'FIXME', str(msg))
 
 
 if __name__ == '__main__':

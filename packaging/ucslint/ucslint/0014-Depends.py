@@ -29,6 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 from os import listdir
 from os.path import join, exists, curdir, splitext
 import re
@@ -281,4 +282,4 @@ if __name__ == '__main__':
 	upc.check(curdir)
 	msglist = upc.result()
 	for msg in msglist:
-		print str(msg)
+		print(str(msg))

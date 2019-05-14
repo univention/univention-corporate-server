@@ -28,6 +28,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import os
 try:
 	from typing import Any, Container, Dict, Iterable, Iterator, List, Pattern, Optional, Tuple  # noqa F401
@@ -142,7 +143,7 @@ class UniventionPackageCheckBase(object):
 		:param msg: Text string.
 		"""
 		if self.debuglevel > 0:
-			print '%s: %s' % (self.name, msg)
+			print('%s: %s' % (self.name, msg))
 
 	def postinit(self, path):
 		# type: (str) -> None
@@ -208,7 +209,7 @@ class FailedToReadFile(UCSLintException):
 	"""
 
 	def __init__(self, fn):
-		UCSLintException.__init__(self)
+		super(FailedToReadFile, self).__init__()
 		self.fn = fn
 
 
@@ -465,7 +466,7 @@ class FilteredDirWalkGenerator(object):
 
 		example:
 		>>> for fn in FilteredDirWalkGenerator(path, suffixes=['.py']):
-		>>>   print fn
+		>>>   print(fn)
 		"""
 		self.path = path
 		if ignore_dirs is None:
@@ -555,11 +556,11 @@ def _test():
 	x.open('/etc/fstab')
 	msglist = x.runTests()
 	for msg in msglist:
-		print str(msg)
+		print(str(msg))
 	x.open('/etc/passwd')
 	msglist = x.runTests()
 	for msg in msglist:
-		print str(msg)
+		print(str(msg))
 
 
 if __name__ == '__main__':
