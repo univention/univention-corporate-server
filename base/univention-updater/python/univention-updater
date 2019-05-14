@@ -570,7 +570,8 @@ def main():
 
                 detailed_status = FN_STATUS + '.details'
                 context_id = write_event(UPDATE_STARTED, {'hostname': ucr.get('hostname')})
-                os.environ['ADMINDIARY_CONTEXT'] = context_id
+                if context_id:
+                    os.environ['ADMINDIARY_CONTEXT'] = context_id
                 with open(detailed_status, 'w+b') as detailed_status_fd:
                     resultCode = os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive %s -o APT::Status-FD=%s >>%s 2>&1' % (cmd_dist_upgrade, detailed_status_fd.fileno(), LOGNAME))
                     if os.path.exists(detailed_status):

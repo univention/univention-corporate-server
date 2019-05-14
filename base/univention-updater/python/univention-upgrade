@@ -220,7 +220,8 @@ def do_package_updates(options, checkForUpdates, silent):
 
     hostname = socket.gethostname()
     context_id = write_event(UPDATE_STARTED, {'hostname': hostname})
-    os.environ['ADMINDIARY_CONTEXT'] = context_id
+    if context_id:
+        os.environ['ADMINDIARY_CONTEXT'] = context_id
     returncode, stdout, stderr = updater.run_dist_upgrade()
 
     if returncode:

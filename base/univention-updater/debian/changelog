@@ -1,3 +1,10 @@
+univention-updater (14.0.0-19) unstable; urgency=medium
+
+  * Bug #49056: Fix traceback in admindiary.client.write_event() occurring
+    when admin/diary/reject="UPDATE_STARTED" is set
+
+ -- Arvid Requate <requate@univention.de>  Tue, 14 May 2019 16:12:24 +0200
+
 univention-updater (14.0.0-18) unstable; urgency=medium
 
   * Bug #49056: Fix traceback in admindiary.client.write_event() occurring
