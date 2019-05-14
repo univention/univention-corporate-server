@@ -290,15 +290,10 @@ class RegExTest(object):
 		self.regex = regex
 		self.msgid = msgid
 		self.msg = msg
-		self.formatmsg = False
 		self.cntmin = cntmin
 		self.cntmax = cntmax
 		self.cnt = 0
-
-		for val in ['%(startline)s', '%(startpos)s', '%(endline)s', '%(endpos)s', '%(basename)s', '%(filename)s']:
-			if val in msg:
-				self.formatmsg = True
-				break
+		self.formatmsg = any(val in msg for val in ['%(startline)s', '%(startpos)s', '%(endline)s', '%(endpos)s', '%(basename)s', '%(filename)s'])
 
 
 class UPCFileTester(object):
@@ -466,20 +461,11 @@ class FilteredDirWalkGenerator(object):
 		>>>   print(fn)
 		"""
 		self.path = path
-		if ignore_dirs is None:
-			self.ignore_dirs = ['.git', '.svn', 'CVS']
-		else:
-			self.ignore_dirs = ignore_dirs
+		self.ignore_dirs = ignore_dirs if ignore_dirs is not None else ['.git', '.svn', 'CVS']
 		self.prefixes = prefixes
 		self.suffixes = suffixes
-		if ignore_suffixes is None:
-			self.ignore_suffixes = ['~', '.bak']
-		else:
-			self.ignore_suffixes = ignore_suffixes
-		if ignore_files is None:
-			self.ignore_files = ('config.guess', 'configure', 'libtool', 'depcomp', 'install-sh', 'config.sub', 'missing', 'config.status')
-		else:
-			self.ignore_files = ignore_files
+		self.ignore_suffixes = ignore_suffixes if ignore_suffixes is not None else ['~', '.bak', '.pyc', '.pyo', '.swp']
+		self.ignore_files = ignore_files if ignore_files is not None else {'config.guess', 'configure', 'libtool', 'depcomp', 'install-sh', 'config.sub', 'missing', 'config.status'}
 		self.ignore_debian_subdirs = ignore_debian_subdirs
 		self.reHashBang = reHashBang
 		self.readSize = readSize
