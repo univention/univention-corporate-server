@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.12-35) unstable; urgency=medium
+
+  * Bug #41694: fix up
+
+ -- Florian Best <best@univention.de>  Tue, 14 May 2019 16:47:29 +0200
+
 univention-directory-manager-modules (14.0.12-34) unstable; urgency=medium
 
   * Bug #41694: optimize performance

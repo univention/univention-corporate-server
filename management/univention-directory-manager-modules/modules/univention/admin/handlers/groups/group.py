@@ -765,17 +765,14 @@ class object(univention.admin.handlers.simpleLdap):
 			if isinstance(group, list):
 				group = group[0]
 			members = self.lo.getAttr(group, 'uniqueMember')
-			dn_in_members = self.__case_insensitive_in_list(self.dn, members)
-			old_dn_in_members = self.__case_insensitive_in_list(self.old_dn, members)
-			if not (dn_in_members or old_dn_in_members):
-				continue
 			newmembers = copy.deepcopy(members)
-			if dn_in_members:
+			if self.__case_insensitive_in_list(self.dn, members):
 				newmembers = self.__case_insensitive_remove_from_list(self.dn, newmembers)
-			if old_dn_in_members:
+			if self.__case_insensitive_in_list(self.old_dn, newmembers):
 				newmembers = self.__case_insensitive_remove_from_list(self.old_dn, newmembers)
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: remove from supergroup %s' % group)
-			self.__set_membership_attributes(group, members, newmembers)
+			if members != newmembers:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: remove from supergroup %s' % group)
+				self.__set_membership_attributes(group, members, newmembers)
 
 	def __set_membership_attributes(self, group, members, newmembers):
 		self.lo.modify(group, [('uniqueMember', members, newmembers)])
