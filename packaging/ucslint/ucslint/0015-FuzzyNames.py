@@ -82,7 +82,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		fz = tre.Fuzzyness(maxerr=2)
 		pt = tre.compile("\<univention\>", tre.EXTENDED | tre.ICASE)
 
-		for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=['~', '.gz', '.zip', '.bak', '.jpeg', '.jpg', '.png', '.svg', '.mo']):
+		for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=['.gz', '.zip', '.jpeg', '.jpg', '.png', '.svg', '.mo']):
 			fd = open(fn, 'r')
 			try:
 				for lnr, line in enumerate(fd, start=1):

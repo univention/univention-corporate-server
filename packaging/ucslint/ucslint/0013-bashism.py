@@ -70,7 +70,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 		for fn in uub.FilteredDirWalkGenerator(
 			path,
-			ignore_suffixes=['~', '.py', '.bak', '.po'],
+			ignore_suffixes=['.po'],
 			reHashBang=re.compile('^#![ \t]*/bin/(?:d?a)?sh')
 		):
 			self.debug('Testing file %s' % fn)

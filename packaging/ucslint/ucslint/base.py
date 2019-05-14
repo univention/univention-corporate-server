@@ -31,7 +31,7 @@
 from __future__ import print_function
 import os
 try:
-	from typing import Any, Container, Dict, Iterable, Iterator, List, Pattern, Optional, Tuple  # noqa F401
+	from typing import Any, Dict, Iterable, Iterator, List, Pattern, Optional, Tuple  # noqa F401
 except ImportError:
 	pass
 
@@ -429,6 +429,30 @@ class UPCFileTester(object):
 
 class FilteredDirWalkGenerator(object):
 
+	IGNORE_DIRS = {
+		'.git',
+		'.pybuild',
+		'.svn',
+		'CVS',
+	}
+	IGNORE_SUFFIXES = {
+		'~',
+		'.bak',
+		'.pyc',
+		'.pyo',
+		'.swp',
+	}
+	IGNORE_FILES = {
+		'config.guess',
+		'configure',
+		'libtool',
+		'depcomp',
+		'install-sh',
+		'config.sub',
+		'missing',
+		'config.status',
+	}
+
 	def __init__(
 		self,
 		path,  # type: str
@@ -436,7 +460,7 @@ class FilteredDirWalkGenerator(object):
 		prefixes=None,  # type: Iterable[str]
 		suffixes=None,  # type: Iterable[str]
 		ignore_suffixes=None,  # type: Iterable[str]
-		ignore_files=None,  # type: Container[str]
+		ignore_files=None,  # type: Iterable[str]
 		ignore_debian_subdirs=True,  # type: bool
 		reHashBang=None,  # type: Pattern
 		readSize=2048,  # type: int
@@ -447,11 +471,11 @@ class FilteredDirWalkGenerator(object):
 
 		There are several posibilities to limit returned results:
 
-		:param ignore_dirs: a list of directory names that will be excluded when traversing subdirectories (e.g. `['.git', '.svn']`)
+		:param ignore_dirs: a list of additional directory names that will be excluded when traversing subdirectories (e.g. `['.git', '.svn']`)
 		:param prefixes: a list of prefixes files have to start with (e.g. `['univention-', 'preinst']`)
 		:param suffixes: a list of suffixes files have to end with (e.g. `['.py', '.sh', '.patch']`)
-		:param ignore_suffixes: files, that end with one of defined suffixes, will be ignored (e.g. `['~', '.bak']`)
-		:param ignore_files: list of files that will be ignored (e.g. `['.gitignore', 'config.sub']`).
+		:param ignore_suffixes: a list of additional files, that end with one of defined suffixes, will be ignored (e.g. `['~', '.bak']`)
+		:param ignore_files: list of additional files that will be ignored (e.g. `['.gitignore', 'config.sub']`).
 		:param ignore_debian_subdirs: boolean that defines if :file:`.../debian/*` directories are ignored or not.
 		:param reHashBang: if defined, only files are returned whose first bytes match specified regular expression.
 		:param readSize: number of bytes that will be read for e.g. reHashBang
@@ -461,11 +485,11 @@ class FilteredDirWalkGenerator(object):
 		>>>   print(fn)
 		"""
 		self.path = path
-		self.ignore_dirs = ignore_dirs if ignore_dirs is not None else ['.git', '.svn', 'CVS']
+		self.ignore_dirs = set(ignore_dirs or ()) | self.IGNORE_DIRS
 		self.prefixes = prefixes
 		self.suffixes = suffixes
-		self.ignore_suffixes = ignore_suffixes if ignore_suffixes is not None else ['~', '.bak', '.pyc', '.pyo', '.swp']
-		self.ignore_files = ignore_files if ignore_files is not None else {'config.guess', 'configure', 'libtool', 'depcomp', 'install-sh', 'config.sub', 'missing', 'config.status'}
+		self.ignore_suffixes = set(ignore_suffixes or ()) | self.IGNORE_SUFFIXES
+		self.ignore_files = set(ignore_files or ()) | self.IGNORE_FILES
 		self.ignore_debian_subdirs = ignore_debian_subdirs
 		self.reHashBang = reHashBang
 		self.readSize = readSize

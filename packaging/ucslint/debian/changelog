@@ -1,3 +1,9 @@
+ucslint (8.0.0-8) unstable; urgency=low
+
+  * Bug #42480: Ignore more files.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 14 May 2019 15:25:01 +0200
+
 ucslint (8.0.0-7) unstable; urgency=medium
 
   * Bug #31771: execute 0020-flake8 with python2
