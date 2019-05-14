@@ -29,6 +29,10 @@
 # <http://www.gnu.org/licenses/>.
 
 import os
+try:
+	from typing import Any, Container, Dict, Iterable, Iterator, List, Pattern, Optional, Tuple  # noqa F401
+except ImportError:
+	pass
 
 RESULT_UNKNOWN = -1
 RESULT_OK = 0
@@ -44,7 +48,7 @@ RESULT_INT2STR = {
 	RESULT_ERROR: 'E',
 	RESULT_INFO: 'I',
 	RESULT_STYLE: 'S',
-}
+}  # type: Dict[int, str]
 
 
 class UPCMessage(object):
@@ -59,6 +63,7 @@ class UPCMessage(object):
 	"""
 
 	def __init__(self, id_, msg=None, filename=None, line=None, pos=None):
+		# type: (str, str, str, int, int) -> None
 		self.id = id_
 		self.msg = msg
 		self.filename = filename
@@ -69,6 +74,7 @@ class UPCMessage(object):
 			self.filename = self.filename[2:]
 
 	def __str__(self):
+		# type: () -> str
 		if self.filename:
 			s = '%s' % self.filename
 			if self.line is not None:
@@ -79,6 +85,7 @@ class UPCMessage(object):
 		return '%s: %s' % (self.id, self.msg)
 
 	def getId(self):
+		# type: () -> str
 		"""
 		Return unique message identifier.
 		"""
@@ -91,11 +98,13 @@ class UniventionPackageCheckBase(object):
 	"""
 
 	def __init__(self):
-		self.name = None
-		self.msg = []
-		self.debuglevel = 0
+		# type: () -> None
+		self.name = None  # type: Optional[str]
+		self.msg = []  # type: List[UPCMessage]
+		self.debuglevel = 0  # type: int
 
 	def addmsg(self, msgid, msg=None, filename=None, line=None, pos=None):
+		# type: (str, str, str, int, int) -> None
 		"""
 		Add :py:class:`UPCMessage` message.
 
@@ -109,12 +118,15 @@ class UniventionPackageCheckBase(object):
 		self.msg.append(message)
 
 	def getMsgIds(self):  # pylint: disable-msg=R0201
+		# type: () -> Dict[str, List[Any]]
+		# BUG: Actually it is a Tuple[int, str], but level gets assigned!
 		"""
 		Return mapping from message-identifiert to 2-tuple (severity, message-text).
 		"""
 		return {}
 
 	def setdebug(self, level):
+		# type: (int) -> None
 		"""
 		Set debug level.
 
@@ -123,6 +135,7 @@ class UniventionPackageCheckBase(object):
 		self.debuglevel = level
 
 	def debug(self, msg):
+		# type: (str) -> None
 		"""
 		Print debug message.
 
@@ -132,6 +145,7 @@ class UniventionPackageCheckBase(object):
 			print '%s: %s' % (self.name, msg)
 
 	def postinit(self, path):
+		# type: (str) -> None
 		"""
 		Checks to be run before real check or to create precalculated data for several runs. Only called once!
 
@@ -139,6 +153,7 @@ class UniventionPackageCheckBase(object):
 		"""
 
 	def check(self, path):
+		# type: (str) -> None
 		"""
 		The real check.
 
@@ -146,6 +161,7 @@ class UniventionPackageCheckBase(object):
 		"""
 
 	def result(self):
+		# type: () -> List[UPCMessage]
 		"""
 		Return result as list of messages.
 
@@ -204,6 +220,7 @@ class DebianControlEntry(dict):
 	"""
 
 	def __init__(self, content):
+		# type: (str) -> None
 		dict.__init__(self)
 
 		lines = content.splitlines()
@@ -237,9 +254,10 @@ class ParserDebianControl(object):
 	"""
 
 	def __init__(self, filename):
+		# type: (str) -> None
 		self.filename = filename
-		self.source_section = None
-		self.binary_sections = []
+		self.source_section = None  # type: Optional[DebianControlEntry]
+		self.binary_sections = []  # type: List[DebianControlEntry]
 
 		try:
 			content = open(self.filename, 'r').read()
@@ -269,6 +287,7 @@ class RegExTest(object):
 	"""
 
 	def __init__(self, regex, msgid, msg, cntmin=None, cntmax=None):
+		# type: (Pattern, str, str, int, int) -> None
 		self.regex = regex
 		self.msgid = msgid
 		self.msg = msg
@@ -304,19 +323,21 @@ class UPCFileTester(object):
 	"""
 
 	def __init__(self, maxsize=100 * 1024):
+		# type: (int) -> None
 		"""
 		creates a new :py:class:`UPCFileTester` object
 
 		:param maxsize: maximum number of bytes read from specified file
 		"""
 		self.maxsize = maxsize
-		self.filename = None
-		self.basename = None
-		self.raw = None
-		self.lines = []
-		self.tests = []
+		self.filename = None  # type: Optional[str]
+		self.basename = None  # type: Optional[str]
+		self.raw = ''  # type: str
+		self.lines = []  # type: List[str]
+		self.tests = []  # type: List[RegExTest]
 
 	def open(self, filename):
+		# type: (str) -> None
 		"""
 		Opens the specified file and reads up to `maxsize` bytes into memory.
 
@@ -333,6 +354,7 @@ class UPCFileTester(object):
 		self.lines = lines.splitlines()
 
 	def _getpos(self, linenumber, pos_in_line):
+		# type: (int, int) -> Tuple[int, int]
 		"""
 		Converts 'unwrapped' position values (line and position in line) into
 		position values corresponding to the raw file.
@@ -350,6 +372,7 @@ class UPCFileTester(object):
 		return (realline + 1, realpos)
 
 	def addTest(self, regex, msgid, msg, cntmin=None, cntmax=None):
+		# type: (Pattern, str, str, int, int) -> None
 		"""
 		add a new test
 
@@ -368,6 +391,7 @@ class UPCFileTester(object):
 		self.tests.append(RegExTest(regex, msgid, msg, cntmin, cntmax))
 
 	def runTests(self):
+		# type: () -> List[UPCMessage]
 		"""
 		Runs all given tests on loaded file.
 
@@ -412,7 +436,19 @@ class UPCFileTester(object):
 
 class FilteredDirWalkGenerator(object):
 
-	def __init__(self, path, ignore_dirs=None, prefixes=None, suffixes=None, ignore_suffixes=None, ignore_files=None, ignore_debian_subdirs=True, reHashBang=None, readSize=2048, dangling_symlinks=False):
+	def __init__(
+		self,
+		path,  # type: str
+		ignore_dirs=None,  # type: Iterable[str]
+		prefixes=None,  # type: Iterable[str]
+		suffixes=None,  # type: Iterable[str]
+		ignore_suffixes=None,  # type: Iterable[str]
+		ignore_files=None,  # type: Container[str]
+		ignore_debian_subdirs=True,  # type: bool
+		reHashBang=None,  # type: Pattern
+		readSize=2048,  # type: int
+		dangling_symlinks=False,  # type: bool
+	):  # type: (...) -> None
 		"""
 		FilteredDirWalkGenerator is a generator that walks down all directories and returns all matching filenames.
 
@@ -452,6 +488,7 @@ class FilteredDirWalkGenerator(object):
 		self.dangling_symlinks = dangling_symlinks
 
 	def __iter__(self):
+		# type: () -> Iterator[str]
 		for dirpath, dirnames, filenames in os.walk(self.path):
 			# remove undesired directories
 			if self.ignore_dirs:

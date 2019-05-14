@@ -50,6 +50,12 @@ except ImportError:
 		sys.path.insert(0, join(dirname(sys.argv[0]), pardir))
 		import ucslint.base as uub
 		print >> sys.stderr, 'using local ucslint.base instead of univention.ucslint.base'
+try:
+	from typing import Any, Container, Dict, List, Optional, Sequence, Set, Tuple  # noqa F401
+	from types import ModuleType  # noqa F401
+	from optparse import Values  # noqa F401
+except ImportError:
+	pass
 
 
 class DebianPackageCheck(object):
@@ -64,18 +70,21 @@ class DebianPackageCheck(object):
 	"""
 
 	def __init__(self, path, plugindirs, enabled_modules=None, disabled_modules=None, debuglevel=0):
+		# type: (str, Sequence[str], Container[str], Container[str], int) -> None
 		self.path = path
 		self.plugindirs = plugindirs
-		self.pluginlist = {}
-		self.msglist = []
-		self.enabled_modules = enabled_modules
-		self.disabled_modules = disabled_modules
+		self.pluginlist = {}  # type: Dict[str, ModuleType]
+		self.msglist = []  # type: List[uub.UPCMessage]
+		self.enabled_modules = enabled_modules or ()  # type: Container[str]
+		self.disabled_modules = disabled_modules or ()  # type: Container[str]
 		self.debuglevel = debuglevel
-		self.msgidlist = {}
-		self.overrides = set()
+		self.msgidlist = {}  # type: Dict[str, List[Any]]
+		# BUG: Actually it is a Tuple[int, str], but level gets assigned!
+		self.overrides = set()  # type: Set[Tuple[str, Optional[str], Optional[int]]]
 		self.loadplugins()
 
 	def loadplugins(self):
+		# type: () -> None
 		"""
 		Load modules from plugin directory.
 		"""
@@ -107,11 +116,12 @@ class DebianPackageCheck(object):
 								print >> sys.stderr, 'Module %s is not enabled' % f
 
 	def check(self):
+		# type: () -> None
 		"""
 		Run plugin on files in path.
 		"""
 		for plugin in self.pluginlist.values():
-			obj = plugin.UniventionPackageCheck()
+			obj = plugin.UniventionPackageCheck()  # type: ignore
 			self.msgidlist.update(obj.getMsgIds())
 			obj.setdebug(self.debuglevel)
 			obj.postinit(self.path)
@@ -122,6 +132,7 @@ class DebianPackageCheck(object):
 			self.msglist.extend(obj.result())
 
 	def modifyMsgIdList(self, newmap):
+		# type: (Dict[int, Sequence[str]]) -> None
 		"""
 		Set severity level of messages.
 
@@ -138,6 +149,7 @@ class DebianPackageCheck(object):
 					self.msgidlist[curid][0] = level
 
 	def loadOverrides(self):
+		# type: () -> None
 		"""
 		Parse :file:`debian/ucslint.overrides` file.
 		"""
@@ -156,20 +168,14 @@ class DebianPackageCheck(object):
 						continue
 
 					module, filename, linenumber = result.groups()
-					if not filename:
-						filename = linenumber = None
-					elif not linenumber:
-						linenumber = None
-					else:
-						linenumber = int(linenumber)
-
-					override = (module, filename, linenumber)
+					override = (module, filename or None, int(linenumber) if filename and linenumber else None)
 					self.overrides.add(override)
 		except IOError as ex:
 			if ex.errno != ENOENT:
 				print >> sys.stderr, 'WARNING: load debian/ucslint.overrides: %s' % (ex,)
 
 	def in_overrides(self, msg):
+		# type: (uub.UPCMessage) -> bool
 		"""
 		Check message agains overrides.
 
@@ -222,6 +228,7 @@ class DebianPackageCheck(object):
 
 
 def clean_id(idstr):
+	# type: (str) -> str
 	"""
 	Format message ID string.
 
@@ -238,6 +245,7 @@ def clean_id(idstr):
 
 
 def clean_modid(modid):
+	# type: (str) -> str
 	"""
 	Format module ID string.
 
@@ -253,6 +261,7 @@ def clean_modid(modid):
 
 
 def clean_msgid(msgid):
+	# type: (str) -> str
 	"""
 	Format message ID string.
 
@@ -268,6 +277,7 @@ def clean_msgid(msgid):
 
 
 def parse_args():
+	# type: () -> Tuple[Values, str]
 	"""
 	Parse command line arguments.
 
@@ -335,6 +345,7 @@ def parse_args():
 
 
 def main():
+	# type: () -> None
 	"""
 	Run checks.
 	"""
