@@ -510,11 +510,11 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 
 	sambaPwdLastSet = None
 	if 'sambaPwdLastSet' in ucs_object_attributes:
-		sambaPwdLastSet = long(ucs_object_attributes['sambaPwdLastSet'][0])
+		sambaPwdLastSet = int(ucs_object_attributes['sambaPwdLastSet'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: sambaPwdLastSet: %s" % sambaPwdLastSet)
 
 	if 'sambaPwdMustChange' in ucs_object_attributes:
-		sambaPwdMustChange = long(ucs_object_attributes['sambaPwdMustChange'][0])
+		sambaPwdMustChange = int(ucs_object_attributes['sambaPwdMustChange'][0])
 		ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs_to_s4: Ignoring sambaPwdMustChange: %s" % sambaPwdMustChange)
 
 	ucsLMhash = ucs_object_attributes.get('sambaLMPassword', [None])[0]
@@ -534,7 +534,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 	s4_object_attributes = s4connector.lo_s4.get(compatible_modstring(object['dn']), ['pwdLastSet', 'objectSid'])
 	pwdLastSet = None
 	if 'pwdLastSet' in s4_object_attributes:
-		pwdLastSet = long(s4_object_attributes['pwdLastSet'][0])
+		pwdLastSet = int(s4_object_attributes['pwdLastSet'][0])
 	objectSid = univention.s4connector.s4.decode_sid(s4_object_attributes['objectSid'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: pwdLastSet from S4 : %s" % pwdLastSet)
 	# rid = None
@@ -675,7 +675,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 
 	pwdLastSet = None
 	if 'pwdLastSet' in s4_object_attributes:
-		pwdLastSet = long(s4_object_attributes['pwdLastSet'][0])
+		pwdLastSet = int(s4_object_attributes['pwdLastSet'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: pwdLastSet from S4: %s (%s)" % (pwdLastSet, s4_object_attributes))
 	objectSid = univention.s4connector.s4.decode_sid(s4_object_attributes['objectSid'][0])
 
@@ -777,7 +777,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 
 			if pwdLastSet == 0:  # pwd change on next login
 				new_shadowMax = '1'
-				expiry = long(time.time())
+				expiry = int(time.time())
 				new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime(expiry))
 			else:                # not pwd change on next login
 				new_shadowLastChange = str(pwdLastSet_unix / 3600 / 24)

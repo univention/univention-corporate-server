@@ -1457,11 +1457,11 @@ def ucs_zone_create(s4connector, object, dns_type):
 		if soa['rname'].replace('.', '@', 1) != zone['contact'].rstrip('.'):
 			zone['contact'] = soa['rname'].replace('.', '@', 1)
 			modify = True
-		if long(soa['serial']) != long(zone['serial']):
+		if int(soa['serial']) != int(zone['serial']):
 			zone['serial'] = soa['serial']
 			modify = True
 		for k in ['refresh', 'retry', 'expire', 'ttl']:
-			if long(soa[k]) != _unixTimeInverval2seconds(zone[k]):
+			if int(soa[k]) != _unixTimeInverval2seconds(zone[k]):
 				zone[k] = unmapUNIX_TimeInterval(soa[k])
 				modify = True
 		if dns_type == 'forward_zone':
