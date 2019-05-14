@@ -218,24 +218,24 @@ def encode_s4_resultlist(s4_resultlist):
 
 
 def unix2s4_time(l):
-	d = 116444736000000000L  # difference between 1601 and 1970
+	d = 116444736000000000  # difference between 1601 and 1970
 	return int(time.mktime(time.gmtime(time.mktime(time.strptime(l, "%Y-%m-%d")) + 90000))) * 10000000 + d  # 90000s are one day and one hour
 
 
 def s42unix_time(l):
-	d = 116444736000000000L  # difference between 1601 and 1970
+	d = 116444736000000000  # difference between 1601 and 1970
 	return time.strftime("%d.%m.%y", time.gmtime((l - d) / 10000000))
 
 
 def samba2s4_time(l):
-	d = 116444736000000000L  # difference between 1601 and 1970
+	d = 116444736000000000  # difference between 1601 and 1970
 	return int(time.mktime(time.localtime(l))) * 10000000 + d
 
 
 def s42samba_time(l):
 	if l == 0:
 		return l
-	d = 116444736000000000L  # difference between 1601 and 1970
+	d = 116444736000000000  # difference between 1601 and 1970
 	return int(((l - d)) / 10000000)
 
 # mapping funtions
