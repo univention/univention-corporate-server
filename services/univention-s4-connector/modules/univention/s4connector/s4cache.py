@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import univention.debug2 as ud
 import sqlite3
 import inspect
@@ -334,7 +335,7 @@ class S4Cache:
 
 if __name__ == '__main__':
 
-	print 'Starting S4cache test example ',
+	print('Starting S4cache test example ', end=' ')
 
 	s4cache = S4Cache('cache.sqlite')
 
@@ -350,7 +351,7 @@ if __name__ == '__main__':
 	diff_entry = s4cache.diff_entry(entry_old, entry)
 	if diff_entry.get('changed') or diff_entry.get('removed') or diff_entry.get('added'):
 		raise Exception('Test 1 failed: %s' % diff_entry)
-	print '.',
+	print('.', end=' ')
 
 	entry['attr3'] = ['val2']
 	entry['attr2'] = ['val1', 'val3']
@@ -358,13 +359,13 @@ if __name__ == '__main__':
 	diff_entry = s4cache.diff_entry(entry_old, entry)
 	if diff_entry.get('changed') != set(['attr2']) or diff_entry.get('removed') or diff_entry.get('added') != set(['attr3']):
 		raise Exception('Test 2 failed: %s' % diff_entry)
-	print '.',
+	print('.', end=' ')
 
 	s4cache.add_entry(guid, entry)
 	entry_old = s4cache.get_entry(guid)
 	diff_entry = s4cache.diff_entry(entry_old, entry)
 	if diff_entry.get('changed') or diff_entry.get('removed') or diff_entry.get('added'):
 		raise Exception('Test 3 failed: %s' % diff_entry)
-	print '.',
+	print('.', end=' ')
 
-	print ' done'
+	print(' done')

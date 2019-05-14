@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 
+from __future__ import print_function
 import base64
 import copy
 import ldap
@@ -982,7 +983,7 @@ class s4(univention.s4connector.ucs):
 			self.s4_sid = univention.s4connector.s4.decode_sid(
 				self.lo_s4.lo.search_ext_s(s4_ldap_base, ldap.SCOPE_BASE, 'objectclass=domain', ['objectSid'], timeout=-1, sizelimit=0)[0][1]['objectSid'][0])
 		except Exception, msg:
-			print "Failed to get SID from S4: %s" % msg
+			print("Failed to get SID from S4: %s" % msg)
 			sys.exit(1)
 
 	def open_s4(self):
@@ -1465,7 +1466,7 @@ class s4(univention.s4connector.ucs):
 			return int(res)
 		except Exception, msg:
 			self._debug_traceback(ud.ERROR, "search for highestCommittedUSN failed")
-			print "ERROR: initial search in S4 failed, check network and configuration"
+			print("ERROR: initial search in S4 failed, check network and configuration")
 			return 0
 
 	def set_primary_group_to_ucs_user(self, object_key, object_ucs):
@@ -1528,7 +1529,7 @@ class s4(univention.s4connector.ucs):
 			sid = ldap_object_s4_group['objectSid'][0]
 			rid = sid[string.rfind(sid, "-") + 1:]
 		else:
-			print "no SID !!!"
+			print("no SID !!!")
 
 		# to set a valid primary group we need to:
 		# - check if either the primaryGroupID is already set to rid or
@@ -2202,8 +2203,8 @@ class s4(univention.s4connector.ucs):
 
 	def initialize(self):
 		_d = ud.function('ldap.initialize')
-		print "--------------------------------------"
-		print "Initialize sync from S4"
+		print("--------------------------------------")
+		print("Initialize sync from S4")
 		if self._get_lastUSN() == 0:  # we startup new
 			ud.debug(ud.LDAP, ud.PROCESS, "initialize S4: last USN is 0, sync all")
 			# query highest USN in LDAP
@@ -2222,18 +2223,18 @@ class s4(univention.s4connector.ucs):
 			self.resync_rejected()
 			polled = self.poll()
 			self._commit_lastUSN()
-		print "--------------------------------------"
+		print("--------------------------------------")
 
 	def resync_rejected(self):
 		'''
 		tries to resync rejected dn
 		'''
-		print "--------------------------------------"
+		print("--------------------------------------")
 
 		_d = ud.function('ldap.resync_rejected')
 		change_count = 0
 		rejected = self._list_rejected()
-		print "Sync %s rejected changes from S4 to UCS" % len(rejected)
+		print("Sync %s rejected changes from S4 to UCS" % len(rejected))
 		sys.stdout.flush()
 		if rejected:
 			for id, dn in rejected:
@@ -2269,8 +2270,8 @@ class s4(univention.s4connector.ucs):
 					raise
 				except Exception, msg:
 					self._debug_traceback(ud.ERROR, "unexpected Error during s4.resync_rejected")
-		print "restored %s rejected changes" % change_count
-		print "--------------------------------------"
+		print("restored %s rejected changes" % change_count)
+		print("--------------------------------------")
 		sys.stdout.flush()
 
 	def poll(self, show_deleted=True):
@@ -2288,9 +2289,9 @@ class s4(univention.s4connector.ucs):
 		except:  # FIXME: which exception is to be caught?
 			self._debug_traceback(ud.WARN, "Exception during search_s4_changes")
 
-		print "--------------------------------------"
-		print "try to sync %s changes from S4" % len(changes)
-		print "done:",
+		print("--------------------------------------")
+		print("try to sync %s changes from S4" % len(changes))
+		print("done:", end=' ')
 		sys.stdout.flush()
 		done_counter = 0
 		object = None
@@ -2330,14 +2331,14 @@ class s4(univention.s4connector.ucs):
 						else:
 							self.__update_lastUSN(object)
 							done_counter += 1
-							print "%s" % done_counter,
+							print("%s" % done_counter, end=' ')
 							continue
 
 					if object['dn'].find('\\0ACNF:') > 0:
 						ud.debug(ud.LDAP, ud.PROCESS, 'Ignore conflicted object: %s' % object['dn'])
 						self.__update_lastUSN(object)
 						done_counter += 1
-						print "%s" % done_counter,
+						print("%s" % done_counter, end=' ')
 						continue
 
 					sync_successfull = False
@@ -2391,13 +2392,13 @@ class s4(univention.s4connector.ucs):
 					newUSN = max(self.__get_change_usn(object), newUSN)
 
 				done_counter += 1
-				print "%s" % done_counter,
+				print("%s" % done_counter, end=' ')
 			else:
 				done_counter += 1
-				print "(%s)" % done_counter,
+				print("(%s)" % done_counter, end=' ')
 			sys.stdout.flush()
 
-		print ""
+		print("")
 
 		if newUSN != lastUSN:
 			self._set_lastUSN(newUSN)
@@ -2406,10 +2407,10 @@ class s4(univention.s4connector.ucs):
 		# return number of synced objects
 		rejected = self._list_rejected()
 		if rejected:
-			print "Changes from S4:  %s (%s saved rejected)" % (change_count, len(rejected))
+			print("Changes from S4:  %s (%s saved rejected)" % (change_count, len(rejected)))
 		else:
-			print "Changes from S4:  %s (%s saved rejected)" % (change_count, '0')
-		print "--------------------------------------"
+			print("Changes from S4:  %s (%s saved rejected)" % (change_count, '0'))
+		print("--------------------------------------")
 		sys.stdout.flush()
 		return change_count
 

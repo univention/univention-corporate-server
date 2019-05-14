@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import univention.debug2 as ud
 import sqlite3
 import inspect
@@ -187,7 +188,7 @@ if __name__ == '__main__':
 
 	import random
 
-	print 'Starting LockingDB test example '
+	print('Starting LockingDB test example ')
 
 	l = LockingDB('lock.sqlite')
 
@@ -196,35 +197,35 @@ if __name__ == '__main__':
 	guid1 = random.random()
 
 	if l.is_s4_locked(guid1):
-		print 'E: guid1 is locked for S4'
+		print('E: guid1 is locked for S4')
 	if l.is_s4_locked(uuid1):
-		print 'E: uuid1 is locked for S4'
+		print('E: uuid1 is locked for S4')
 	if l.is_ucs_locked(guid1):
-		print 'E: guid1 is locked for UCS'
+		print('E: guid1 is locked for UCS')
 	if l.is_ucs_locked(uuid1):
-		print 'E: uuid1 is locked for UCS'
+		print('E: uuid1 is locked for UCS')
 
 	l.lock_s4(guid1)
 
 	if not l.is_s4_locked(guid1):
-		print 'E: guid1 is not locked for S4'
+		print('E: guid1 is not locked for S4')
 	if l.is_s4_locked(uuid1):
-		print 'E: uuid1 is locked for S4'
+		print('E: uuid1 is locked for S4')
 	if l.is_ucs_locked(guid1):
-		print 'E: guid1 is locked for UCS'
+		print('E: guid1 is locked for UCS')
 	if l.is_ucs_locked(uuid1):
-		print 'E: uuid1 is locked for UCS'
+		print('E: uuid1 is locked for UCS')
 
 	l.unlock_s4(guid1)
 
 	if l.is_s4_locked(guid1):
-		print 'E: guid1 is locked for S4'
+		print('E: guid1 is locked for S4')
 	if l.is_s4_locked(uuid1):
-		print 'E: uuid1 is locked for S4'
+		print('E: uuid1 is locked for S4')
 	if l.is_ucs_locked(guid1):
-		print 'E: guid1 is locked for UCS'
+		print('E: guid1 is locked for UCS')
 	if l.is_ucs_locked(uuid1):
-		print 'E: uuid1 is locked for UCS'
+		print('E: uuid1 is locked for UCS')
 
 	l.lock_ucs(uuid1)
 	l.lock_ucs(uuid1)
@@ -233,23 +234,23 @@ if __name__ == '__main__':
 	l.lock_ucs(uuid1)
 
 	if l.is_s4_locked(guid1):
-		print 'E: guid1 is locked for S4'
+		print('E: guid1 is locked for S4')
 	if l.is_s4_locked(uuid1):
-		print 'E: uuid1 is locked for S4'
+		print('E: uuid1 is locked for S4')
 	if l.is_ucs_locked(guid1):
-		print 'E: guid1 is locked for UCS'
+		print('E: guid1 is locked for UCS')
 	if not l.is_ucs_locked(uuid1):
-		print 'E: uuid1 is not locked for UCS'
+		print('E: uuid1 is not locked for UCS')
 
 	l.unlock_ucs(uuid1)
 
 	if l.is_s4_locked(guid1):
-		print 'E: guid1 is locked for S4'
+		print('E: guid1 is locked for S4')
 	if l.is_s4_locked(uuid1):
-		print 'E: uuid1 is locked for S4'
+		print('E: uuid1 is locked for S4')
 	if l.is_ucs_locked(guid1):
-		print 'E: guid1 is locked for UCS'
+		print('E: guid1 is locked for UCS')
 	if l.is_ucs_locked(uuid1):
-		print 'E: uuid1 is locked for UCS'
+		print('E: uuid1 is locked for UCS')
 
-	print 'done'
+	print('done')
