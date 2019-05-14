@@ -7,8 +7,11 @@
 
 import pytest
 from univention.testing import utils
+from ldap.filter import filter_format
 # TODO: test detection of expired password + account disabled + both
 # TODO: test password history, complexity, length
+
+from univention.testing.ucs_samba import wait_for_drs_replication
 
 samba4_installed = utils.package_installed('univention-samba4')
 
@@ -64,6 +67,7 @@ class TestPwdChangeNextLogin(object):
 		userdn, username = udm.create_user(options=options, password=password, pwdChangeNextLogin=1)
 		if samba4_installed:
 			utils.wait_for_connector_replication()
+			wait_for_drs_replication(filter_format('sAMAccountName=%s', [username]))
 
 		client = Client(language='en-US')
 		print 'check login with pwdChangeNextLogin=1'
@@ -77,6 +81,7 @@ class TestPwdChangeNextLogin(object):
 		wait_for_replication()
 		if samba4_installed:
 			utils.wait_for_connector_replication()
+			wait_for_drs_replication(filter_format('sAMAccountName=%s', [username]))
 
 		print 'check login with new password'
 		client = Client(language='en-US')

@@ -1,3 +1,11 @@
+ucs-test (9.0.2-56) unstable; urgency=medium
+
+  * Bug #49415: tests/60_umc/104_expired_password.py
+    wait for drs repl. in test_change_password (to fix
+    test on backup role with samba)
+
+ -- Felix Botner <botner@univention.de>  Tue, 14 May 2019 17:20:24 +0200
+
 ucs-test (9.0.2-55) unstable; urgency=medium
 
   * Bug #49415: 61_udm-users/100_test_users.py
