@@ -154,10 +154,15 @@ class DatabaseConnector(object):
 	def _get_service_name(self):
 		return self.__class__.__name__.lower()
 
-	def start(self):
+	def start(self, attempts=2):
 		service_name = self._get_service_name()
 		if service_name:
 			if call_process(['service', service_name, 'start'], database_logger).returncode:
+				if attempts > 1:
+					# try again. sometimes, under heavy load, mysql seems to fail to
+					# start although it is just slow
+					database_logger.info('Starting %s failed. Retrying...' % service_name)
+					return self.start(attempts=attempts - 1)
 				catcher = LogCatcher(database_logger)
 				call_process(['service', service_name, 'status'], catcher)
 				details = '\n'.join(catcher.stdstream())
