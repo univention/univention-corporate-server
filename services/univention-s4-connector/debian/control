@@ -5,18 +5,20 @@ Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
 Build-Depends: debhelper (>> 7),
  ucslint-univention,
- python-support,
+ dh-python,
+ python-all,
  univention-config-dev
 
 Package: python-univention-connector-s4
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
- python-univention (>=8.0.3-1),
+ python-univention (>=12.0.0-5),
  python-univention-license,
  python-univention-heimdal (>= 4.0.2-2),
  python-univention-directory-manager (>= 13.0.21-28),
  python-pyasn1-modules,
- python-pysqlite2
+ python-pysqlite2,
+ python-support,
 Provides: ${python:Provides}
 Description: UCS - Modules for connector sychronisation
  This package contains the modules that implement the
