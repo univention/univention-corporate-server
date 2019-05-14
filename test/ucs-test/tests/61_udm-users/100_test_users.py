@@ -14,6 +14,7 @@ import subprocess
 from univention.config_registry import handler_set
 from univention.testing.strings import random_username
 from univention.testing.utils import wait_for_connector_replication
+from univention.testing.udm import UCSTestUDM_NoModification
 
 
 class TestUsers(object):
@@ -418,6 +419,13 @@ class TestUsers(object):
 				print i
 				print old[i], new[i]
 		udm.modify_object('users/user', dn=user, locked='0')
+		try:
+			udm.modify_object('users/user', dn=user, locked='0')
+		except UCSTestUDM_NoModification as e:
+			# ignore this, maybe the connector already unlocked the user
+			# in this case sambaBadPasswordCount should be correctly
+			# set to 0 by the connector
+			pass
 		udm.verify_ldap_object(user, {'sambaBadPasswordCount': ['0']})
 
 	@pytest.mark.xfail(reason='Not migrated since Bug #39817')

@@ -1,3 +1,10 @@
+ucs-test (9.0.2-55) unstable; urgency=medium
+
+  * Bug #49415: 61_udm-users/100_test_users.py
+    ignore NoModification in test_modlist_samba_bad_pw_count
+
+ -- Felix Botner <botner@univention.de>  Tue, 14 May 2019 15:32:19 +0200
+
 ucs-test (9.0.2-54) unstable; urgency=medium
 
   * Bug #49415: fix hanging wait_for_drs_replication if base contains
