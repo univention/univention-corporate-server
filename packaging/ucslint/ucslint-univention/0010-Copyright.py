@@ -70,7 +70,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		fn = os.path.join(path, 'debian', 'copyright')
 		try:
 			with open(fn, 'r') as stream:
-				line = stream.readline()
+				line = stream.readline().rstrip()
 				if line != DEP5:
 					self.addmsg('0010-6', 'not machine-readable DEP-5', filename=fn)
 		except EnvironmentError:
