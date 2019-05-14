@@ -179,7 +179,7 @@ class S4Cache:
 					ud.debug(ud.LDAP, ud.INFO, "S4Cache: Return SQL result: '%s'" % rows)
 					return rows
 				return None
-			except sqlite3.Error, exp:
+			except sqlite3.Error as exp:
 				ud.debug(ud.LDAP, ud.WARN, "S4Cache: sqlite: %s. SQL command was: %s" % (exp, sql_commands))
 				if self._dbcon:
 					self._dbcon.close()

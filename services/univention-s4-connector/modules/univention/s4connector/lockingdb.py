@@ -177,7 +177,7 @@ class LockingDB:
 					ud.debug(ud.LDAP, ud.INFO, "LockingDB: Return SQL result: '%s'" % rows)
 					return rows
 				return None
-			except sqlite3.Error, exp:
+			except sqlite3.Error as exp:
 				ud.debug(ud.LDAP, ud.WARN, "LockingDB: sqlite: %s. SQL command was: %s" % (exp, sql_commands))
 				if self._dbcon:
 					self._dbcon.close()

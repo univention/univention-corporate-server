@@ -982,7 +982,7 @@ class s4(univention.s4connector.ucs):
 		try:
 			self.s4_sid = univention.s4connector.s4.decode_sid(
 				self.lo_s4.lo.search_ext_s(s4_ldap_base, ldap.SCOPE_BASE, 'objectclass=domain', ['objectSid'], timeout=-1, sizelimit=0)[0][1]['objectSid'][0])
-		except Exception, msg:
+		except Exception as msg:
 			print("Failed to get SID from S4: %s" % msg)
 			sys.exit(1)
 
@@ -1071,7 +1071,7 @@ class s4(univention.s4connector.ucs):
 		_d = ud.function('ldap._save_rejected')
 		try:
 			self._set_config_option('S4 rejected', str(id), encode_attrib(dn))
-		except UnicodeEncodeError, msg:
+		except UnicodeEncodeError as msg:
 			self._set_config_option('S4 rejected', str(id), 'unknown')
 			self._debug_traceback(ud.WARN, "failed to set dn in configfile (S4 rejected)")
 
@@ -1464,7 +1464,7 @@ class s4(univention.s4connector.ucs):
 			)[0][1]['highestCommittedUSN'][0]
 
 			return int(res)
-		except Exception, msg:
+		except Exception as msg:
 			self._debug_traceback(ud.ERROR, "search for highestCommittedUSN failed")
 			print("ERROR: initial search in S4 failed, check network and configuration")
 			return 0
@@ -2268,7 +2268,7 @@ class s4(univention.s4connector.ucs):
 							self._set_DN_for_GUID(elements[0][1]['objectGUID'][0], elements[0][0])
 				except (ldap.SERVER_DOWN, SystemExit):
 					raise
-				except Exception, msg:
+				except Exception as msg:
 					self._debug_traceback(ud.ERROR, "unexpected Error during s4.resync_rejected")
 		print("restored %s rejected changes" % change_count)
 		print("--------------------------------------")
@@ -2355,13 +2355,13 @@ class s4(univention.s4connector.ucs):
 						self.open_s4()
 					except SystemExit:
 						raise
-					except univention.admin.uexceptions.ldapError, msg:
+					except univention.admin.uexceptions.ldapError as msg:
 						ud.debug(ud.LDAP, ud.INFO, "Exception during poll with message (1) %s" % msg)
 						if msg == "Can't contact LDAP server":
 							raise ldap.SERVER_DOWN
 						else:
 							self._debug_traceback(ud.WARN, "Exception during poll/sync_to_ucs")
-					except univention.admin.uexceptions.ldapError, msg:
+					except univention.admin.uexceptions.ldapError as msg:
 						ud.debug(ud.LDAP, ud.INFO, "Exception during poll with message (2) %s" % msg)
 						if msg == "Can't contact LDAP server":
 							raise ldap.SERVER_DOWN

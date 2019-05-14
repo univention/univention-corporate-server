@@ -76,7 +76,7 @@ def bind_stdout():
 def daemon(lock_file):
 	try:
 		pid = os.fork()
-	except OSError, e:
+	except OSError as e:
 		print('Daemon Mode Error: %s' % e.strerror)
 
 	if (pid == 0):
@@ -84,7 +84,7 @@ def daemon(lock_file):
 		signal.signal(signal.SIGHUP, signal.SIG_IGN)
 		try:
 			pid = os.fork()
-		except OSError, e:
+		except OSError as e:
 			print('Daemon Mode Error: %s' % e.strerror)
 		if (pid == 0):
 			os.chdir("/")
