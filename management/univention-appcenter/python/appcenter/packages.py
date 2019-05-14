@@ -132,8 +132,13 @@ def wait_for_dpkg_lock(timeout=120):
 			if first:
 				package_logger.info('Could not lock %s. Is another process using it? Waiting up to %s seconds' % (lock_file_string, timeout))
 				first = False
-			time.sleep(1)
-			timeout -= 1
+			# there seems to be a timing issue with the fuser approach
+			# in which the second (the apt) process releases its lock before
+			# re-grabbing it once again
+			# we hope to minimize this error by having a relatively high sleep duration
+			sleep_duration = 3
+			time.sleep(sleep_duration)
+			timeout -= sleep_duration
 		else:
 			if not first:
 				package_logger.info('Finally got the lock. Continuing...')
