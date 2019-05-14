@@ -226,14 +226,12 @@ class DebianControlEntry(dict):
 
 		lines = content.splitlines()
 		i = 0
-		inDescription = False
 		# handle multiline entries and merge them into one line
 		while i < len(lines):
 			if not lines[i] or lines[i].startswith('#'):
 				del lines[i]
 				continue
 			if lines[i].startswith(' ') or lines[i].startswith('\t'):
-				if not inDescription:
 					lines[i - 1] += ' %s' % lines[i].lstrip(' \t')
 					del lines[i]
 					continue
@@ -350,7 +348,6 @@ class UPCFileTester(object):
 		# the raw version is required to calculate the correct position.
 		# tests will be done with unwrapped version.
 		self.raw = open(filename, 'r').read(self.maxsize)
-		self.raw.rstrip('\n')
 		lines = self.raw.replace('\\\n', '  ').replace('\\\r\n', '   ')
 		self.lines = lines.splitlines()
 
@@ -544,7 +541,6 @@ class FilteredDirWalkGenerator(object):
 
 				# return complete filename
 				yield fn
-		return
 
 
 def _test():
