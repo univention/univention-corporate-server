@@ -1,3 +1,10 @@
+univention-appcenter (8.0.11-19) unstable; urgency=medium
+
+  * Bug #48669: Give the start of a database service one more try if the first
+    one failed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 14 May 2019 15:25:36 +0200
+
 univention-appcenter (8.0.11-18) unstable; urgency=medium
 
   * Bug #48669: Wait for dpkg and apt lock even longer
