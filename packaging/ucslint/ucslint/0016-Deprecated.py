@@ -41,10 +41,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	"""Find use of deprecated functions / programs / scripts."""
 
-	def __init__(self):
-		super(UniventionPackageCheck, self).__init__()
-		self.name = '0016-Deprecated'
-
 	def getMsgIds(self):  # pylint: disable-msg=R0201
 		"""Return severity and description for message identifiers."""
 		return {

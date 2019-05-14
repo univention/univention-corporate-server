@@ -39,10 +39,6 @@ import os
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def __init__(self):
-		super(UniventionPackageCheck, self).__init__()
-		self.name = '0002-CopyPasteErrors'
-
 	def getMsgIds(self):
 		return {
 			'0002-1': [uub.RESULT_WARN, 'cannot open file'],

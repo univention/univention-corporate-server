@@ -38,10 +38,6 @@ import os
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def __init__(self):
-		super(UniventionPackageCheck, self).__init__()
-		self.name = '0001-CheckJoinScript'
-
 	def getMsgIds(self):
 		return {
 			'0001-1': [uub.RESULT_STYLE, 'the old command "univention-admin" is used'],

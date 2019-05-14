@@ -44,8 +44,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 	"""Python specific flake8 checks."""
 
-	name = '0020-flake8'
-
 	PYTHON_HASH_BANG = re.compile('^#!.*[ /]python[0-9.]*')
 
 	IGNORED_FILES = [

@@ -46,9 +46,6 @@ DEP5 = "Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
-	def __init__(self):
-		super(UniventionPackageCheck, self).__init__()
-		self.name = '0010-Copyright'
 
 	def getMsgIds(self):
 		return {

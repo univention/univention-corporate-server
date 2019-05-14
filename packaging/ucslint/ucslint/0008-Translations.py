@@ -39,10 +39,6 @@ import re
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def __init__(self):
-		super(UniventionPackageCheck, self).__init__()
-		self.name = '0008-Translations'
-
 	def getMsgIds(self):
 		return {
 			'0008-1': [uub.RESULT_ERROR, 'substitutes before translation'],

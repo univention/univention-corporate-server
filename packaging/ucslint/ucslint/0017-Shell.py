@@ -55,7 +55,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	def __init__(self):
 		super(UniventionPackageCheck, self).__init__()
-		self.name = '0017-Shell'
 		self.tester = uub.UPCFileTester()
 		self.tester.addTest(re.compile(r'eval\s+(`|[$][(])\s*(/usr/sbin/)?(ucr|univention-baseconfig|univention-config-registry)\s+shell\s*[^`)]*[`)]\s*'),
 			'0017-1', 'unquoted call of eval "$(ucr shell)"', cntmax=0)

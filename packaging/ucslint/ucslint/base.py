@@ -100,7 +100,7 @@ class UniventionPackageCheckBase(object):
 
 	def __init__(self):
 		# type: () -> None
-		self.name = None  # type: Optional[str]
+		self.name = self.__class__.__module__  # type: str
 		self.msg = []  # type: List[UPCMessage]
 		self.debuglevel = 0  # type: int
 

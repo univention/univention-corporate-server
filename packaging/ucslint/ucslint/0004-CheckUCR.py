@@ -57,11 +57,7 @@ import sys
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	RE_PYTHON = re.compile('@!@')
 	RE_VAR = re.compile('@%@')
-
-	def __init__(self):
-		super(UniventionPackageCheck, self).__init__()
-		self.name = '0004-CheckUCR'
-		self.UCR_VALID_SPECIAL_CHARACTERS = '/_-'
+	UCR_VALID_SPECIAL_CHARACTERS = '/_-'
 
 	def getMsgIds(self):
 		return {

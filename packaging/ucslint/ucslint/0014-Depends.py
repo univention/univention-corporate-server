@@ -54,7 +54,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	def __init__(self):
 		super(UniventionPackageCheck, self).__init__()
-		self.name = '0014-Depends'
 		self.apt = None
 
 	def getMsgIds(self):

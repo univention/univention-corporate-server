@@ -53,10 +53,6 @@ RE_LOCAL = re.compile(
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def __init__(self):
-		super(UniventionPackageCheck, self).__init__()
-		self.name = '0013-bashism'
-
 	def getMsgIds(self):
 		return {
 			'0013-1': [uub.RESULT_WARN, 'failed to open file'],

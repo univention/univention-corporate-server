@@ -38,10 +38,6 @@ from os.path import join, splitext
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def __init__(self):
-		super(UniventionPackageCheck, self).__init__()
-		self.name = __name__
-
 	def getMsgIds(self):
 		return {
 			'0018-1': [uub.RESULT_STYLE, 'wrong script name in comment'],

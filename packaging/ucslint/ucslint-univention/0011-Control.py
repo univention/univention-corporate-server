@@ -37,10 +37,6 @@ import os
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def __init__(self):
-		super(UniventionPackageCheck, self).__init__()
-		self.name = '0011-Control'
-
 	def getMsgIds(self):
 		return {
 			'0011-1': [uub.RESULT_WARN, 'failed to open/read file'],

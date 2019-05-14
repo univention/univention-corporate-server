@@ -40,10 +40,6 @@ except ImportError:
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def __init__(self):
-		super(UniventionPackageCheck, self).__init__()
-		self.name = '0015-Names'
-
 	def getMsgIds(self):
 		return {
 			'0015-1': [uub.RESULT_WARN, 'failed to open file'],
