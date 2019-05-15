@@ -1,3 +1,9 @@
+univention-kernel-image-signed (5.0.0-3) unstable; urgency=medium
+
+  * Bug #49476: Update to linux-4.9.168-1+deb9u2
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 15 May 2019 10:18:00 +0200
+
 univention-kernel-image-signed (5.0.0-2) unstable; urgency=medium
 
   * Bug #49377: Update to linux-4.9.168-1
