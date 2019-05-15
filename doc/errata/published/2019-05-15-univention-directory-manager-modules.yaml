@@ -20,3 +20,5 @@ desc: |-
     renaming and update of group membership for e.g. computer objects.
   * Several german translations have been updated.
 bug: [49235, 48390, 49408, 41694, 49359]
+erratum: 102
+announced: 2019-05-15
