@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-appcenter
-fix: 8.0.11-19A~4.4.0.201905141526
+fix: 8.0.11-21A~4.4.0.201905151326
 desc: |-
   This update addresses the following issues:
   * Docker image verification was removed from the App Center code. Instead,
@@ -13,4 +13,5 @@ desc: |-
     send more verbose information.
   * The package univention-appcenter is now built with dh_python2.
   * The App Center now shows app suggestions based on already installed apps.
-bug: [48670, 48669, 49145, 49431]
+  * A visual flickering in the App Center overview has been removed.
+bug: [48670, 48669, 49145, 49431, 49089]
