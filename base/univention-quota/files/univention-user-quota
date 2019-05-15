@@ -34,6 +34,7 @@
 import cPickle
 import sys
 import os
+import re
 import subprocess
 import pwd
 import time
@@ -100,63 +101,92 @@ def quota_enabled(mtab_line):
 	return False
 
 
-def get_mountpoints_with_quota(user, shares):
-	_mountpoints = {}
-	p = subprocess.Popen(['quota', '-vwpu', user], stdout=subprocess.PIPE)
-	# quota_stdout has the parseable quota output
-	# format:
-	# Dateisystemquotas fuer user univention2 (uid 2006):
-	# Dateisystem Bloecke   Quota   LimitGnadenfrist Dateien   Quota   LimitGnadenfrist
-	# /dev/mapper/vg_ucs-rootfs      24  307200  409600       0       8       0       0       0
-	# /dev/vda2       0       0       0       0       0       0       0       0
-	quota_stdout, stderr_empty = p.communicate()
-	quota_stdout = quota_stdout.splitlines()
+class Mountpoints:
+	mountpoints_with_quota = {}
 
-	with open('/etc/mtab', 'r') as etc_mtab:
-		mtab = etc_mtab.readlines()
+	def __init__(self, user, shares):
+		self.user = user
+		self.shares = shares
+		# Create dict of all mountpoints who have usrquota activated.
+		# Set updatequota flag to True if setquota has to be called.
+		# check what the current userquota is (0 0 0 0 is unlimited/undefined)
+		for mount in self.mtab():
+			if mount['mountpoint'] not in shares.values()[0]['mountpoint']:
+				# no need to include quotas not set on shares, as they can't get overwritten by policies
+				continue
+			if not mount['quotaenabled']:
+				continue
 
-	# Create dict of all mountpoints who have usrquota activated.
-	# Set updatequota flag to True if setquota has to be called.
-	for share, attrs in shares.iteritems():
-		if not attrs['mountpoint'] in _mountpoints:
-			# We do not know this MP, so get its quota settings
-			# check what the current userquota is (0 0 0 0 is unlimited/undefined)
+			quotas = self.get_quota()
+			for quota in quotas.itervalues():
+				if quota['device'] == mount['device']:
+					# If quota is unset, set flag that the quota should be set:
+					initialValue = quota['bsoft'] == 0 and quota['bhard'] == 0 and quota['fsoft'] == 0 and quota['fhard'] == 0
+					# Now the current quota values are known
+					self.mountpoints_with_quota[mount['mountpoint']] = {
+						'spaceSoftLimit': quota['bsoft'],
+						'spaceHardLimit': quota['bhard'],
+						'inodeSoftLimit': quota['fsoft'],
+						'inodeHardLimit': quota['fhard'],
+						'reapplyQuota': initialValue
+					}
+
+		for share in shares.values():
+			if share['mountpoint'] not in self.mountpoints_with_quota.keys():
+					self.mountpoints_with_quota[share['mountpoint']] = share
+
+		for mountpoint, attrs in self.mountpoints_with_quota.iteritems():
+			shares_on_mount = self.get_shares_with_mountpoint(mountpoint)
+			if not shares_on_mount:
+				continue
+			for policy_value in ['inodeSoftLimit', 'inodeHardLimit', 'spaceSoftLimit', 'spaceHardLimit']:
+				smallest_quota = self.calculate_smallest_quota(shares_on_mount, policy_value)
+				self.mountpoints_with_quota[mountpoint][policy_value] = smallest_quota
+
+	def get_shares_with_mountpoint(self, mountpoint):
+		_shares = filter(lambda x: mountpoint not in x, iter(self.shares.values()))
+		return _shares
+
+	def calculate_smallest_quota(self, shares_on_mount, policy_value):
+		filtered_zero = []
+		for _share in shares_on_mount:
+			if _share[policy_value] > 0:
+				filtered_zero.append(_share[policy_value])
+		smallest = min(filtered_zero)
+		return smallest
+
+	def get_quota(self):
+		# parses the output of 'quota -vwpu <user>'
+		devices = {}
+		p = subprocess.Popen(['quota', '-vwpu', self.user], stdout=subprocess.PIPE)
+		# quota_stdout has the parseable quota output
+		# format:
+		# Dateisystemquotas fuer user univention2 (uid 2006):
+		# Dateisystem Bloecke   Quota   LimitGnadenfrist Dateien   Quota   LimitGnadenfrist
+		# /dev/mapper/vg_ucs-rootfs      24  307200  409600       0       8       0       0       0
+		# /dev/vda2       0       0       0       0       0       0       0       0
+		quota_stdout, stderr_empty = p.communicate()
+		regex = re.compile('^(?P<device>[^ ]*) *(?P<bused>[0-9]*). *(?P<bsoft>[0-9]*) *(?P<bhard>[0-9]*) *(?P<btime>[0-9]*) *(?P<fused>[0-9]*). *(?P<fsoft>[0-9]*) *(?P<fhard>[0-9]*) *(?P<ftime>[0-9]*)$')
+		for quotaline in quota_stdout.split('\n'):
+			matches = regex.match(quotaline)
+			if not matches:
+				continue
+			grp = matches.groupdict()
+			devices[grp['device']] = grp
+		return devices
+
+	def mtab(self):
+		# parses /etc/mtab
+		mounts = []
+		with open('/etc/mtab', 'r') as etc_mtab:
+			mtab = etc_mtab.readlines()
 			for line in mtab:
-				current_mountpoint = line.split()[1]  # shares are defined on mountpoints
-				current_device = line.split()[0]  # quotas are defined on devices
-
-				if current_mountpoint == attrs['mountpoint'] and quota_enabled(line):
-					for quotaline in quota_stdout:
-						quota_values = quotaline.split()
-						if quota_values[0] == current_device:
-							initialValue = False
-							# If quota is unset, set flag that the quota should be set.
-							if quota_values[2] == '0' and quota_values[3] == '0' and quota_values[6] == '0' and quota_values[7] == '0':
-								initialValue = True
-							# Now the current quota values are known
-							_mountpoints[current_mountpoint] = {
-								'spaceSoftLimit': quota_values[2],
-								'spaceHardLimit': quota_values[3],
-								'inodeSoftLimit': quota_values[6],
-								'inodeHardLimit': quota_values[7],
-								'updatequota': initialValue
-							}
-
-		# The mountpoint will not be in _mountpoints if no quota is activated for it
-		# Continue with next share definition
-		if not attrs['mountpoint'] in _mountpoints:
-			continue
-
-		# If the policy flag for updating the quota is set, set flag that the quota should be set.
-		if attrs['reapplyQuota']:
-			_mountpoints[attrs['mountpoint']]['updatequota'] = True
-
-		# Compare the share policy against the current mp quota. Always set share quota if current mp value = 0
-		for policy_value in ['inodeSoftLimit', 'inodeHardLimit', 'spaceSoftLimit', 'spaceHardLimit']:
-			if _mountpoints[attrs['mountpoint']][policy_value] == '0' or int(attrs[policy_value]) < int(_mountpoints[attrs['mountpoint']][policy_value]):
-				_mountpoints[attrs['mountpoint']][policy_value] = str(attrs[policy_value])
-
-	return _mountpoints
+				mounts.append({
+					'mountpoint': line.split()[1],  # shares are defined on mountpoints
+					'device': line.split()[0],  # quotas are defined on devices
+					'quotaenabled': quota_enabled(line)
+				})
+		return mounts
 
 
 if __name__ == '__main__':
@@ -186,7 +216,7 @@ if __name__ == '__main__':
 	log.write('Set quota for user %s\n' % user)
 
 	shares = get_shares()
-	mountpoints = get_mountpoints_with_quota(user, shares)
+	mountpoints = Mountpoints(user, shares).mountpoints_with_quota
 	if not shares:
 		log.write('No shares found on this host\n')
 	elif not mountpoints:
@@ -194,7 +224,7 @@ if __name__ == '__main__':
 	else:
 		log.write('Found %i shares and %i mountpoints\n' % (len(shares), len(mountpoints)))
 		for mountpoint_path, attrs in mountpoints.iteritems():
-			if attrs['updatequota']:
+			if attrs['reapplyQuota']:
 				log.write('Set quota on mountpoint "%s": /usr/sbin/setquota -u %s %s %s %s %s %s\n' % (mountpoint_path, user, attrs['spaceSoftLimit'], attrs['spaceHardLimit'], attrs['inodeSoftLimit'], attrs['inodeHardLimit'], mountpoint_path))
 				set_quota = subprocess.Popen(['/usr/sbin/setquota', '-u', user, str(attrs['spaceSoftLimit']), str(attrs['spaceHardLimit']), str(attrs['inodeSoftLimit']), str(attrs['inodeHardLimit']), mountpoint_path])
 				set_quota.wait()
