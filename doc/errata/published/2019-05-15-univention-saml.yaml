@@ -9,3 +9,5 @@ desc: |
  * The design of the UMC single sign-on page can now be adjusted via
    /usr/share/univention-management-console-login/css/custom.css.
 bug: [49436]
+erratum: 103
+announced: 2019-05-15
