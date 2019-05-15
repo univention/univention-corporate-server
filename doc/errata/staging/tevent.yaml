@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [4]
+scope: ucs_4.3-0-errata4.3-4
+src: tevent
+fix: 0.9.39-1A~4.3.0.201905151323
+desc: |
+ This update addresses the following issue(s):
+ * New tevent library version required for update to Samba 4.10.3
+bug: [49479]
