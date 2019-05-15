@@ -9,3 +9,5 @@ desc: |
  * If samba fails to set the new password in a server password change,
    the changes will be reverted.
 bug: [49193]
+erratum: 107
+announced: 2019-05-15
