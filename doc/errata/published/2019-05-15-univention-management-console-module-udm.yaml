@@ -10,3 +10,5 @@ desc: |
    "univentionObjectType=users/user" when searching for objects to increase
    performance.
 bug: [48390]
+erratum: 101
+announced: 2019-05-15
