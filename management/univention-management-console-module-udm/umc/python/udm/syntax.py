@@ -147,6 +147,7 @@ __widgets.extend([
 	Widget(lambda syn, prop: 'umc/modules/udm/LinkList' if syn.viewonly else 'ComboBox', (udm_syntax.LDAP_Search, ), [], subclasses=False),
 	Widget('ComboBox', udm_syntax.select, []),
 	Widget('TextBox', (udm_syntax.ldapDnOrNone, udm_syntax.ldapDn), '', subclasses=False),
+	Widget(lambda syn, prop: 'umc/modules/udm/MultiObjectSelect' if prop['multivalue'] and len(syn.udm_modules) == 1 and not syn.simple else 'umc/modules/udm/ComboBox', udm_syntax.GroupDN, []),
 	Widget(lambda syn, prop: 'umc/modules/udm/MultiObjectSelect' if prop['multivalue'] and len(syn.udm_modules) == 1 and not syn.simple else 'umc/modules/udm/ComboBox', udm_syntax.UDM_Objects, ''),
 	Widget('ComboBox', udm_syntax.UDM_Attribute, ''),
 	Widget(lambda syn, prop: 'umc/modules/udm/MultiObjectSelect' if prop['multivalue'] else 'ComboBox', (udm_syntax.ldapDnOrNone, udm_syntax.ldapDn), ''),

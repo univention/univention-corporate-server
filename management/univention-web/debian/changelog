@@ -1,3 +1,9 @@
+univention-web (3.0.5-20) unstable; urgency=medium
+
+  * Bug #42607: adjust styling of ComboBox inside of SearchForms
+
+ -- Florian Best <best@univention.de>  Tue, 16 Jul 2019 18:50:31 +0200
+
 univention-web (3.0.5-19) unstable; urgency=medium
 
   * Bug #49731: bell notifications can now be shown non-truncated

@@ -420,7 +420,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.GroupDN,
 		multivalue=True,
-		dontsearch=True,
 		readonly_when_synced=True,
 		copyable=True,
 	),
@@ -2262,6 +2261,8 @@ class object(univention.admin.handlers.simpleLdap):
 	def rewrite_filter(cls, filter, mapping):
 		if filter.variable == 'primaryGroup':
 			filter.variable = 'gidNumber'
+		elif filter.variable == 'groups':
+			filter.variable = 'memberOf'
 		elif filter.variable == 'disabled':
 			# substring match for userPassword is not possible
 			if filter.value == '1':

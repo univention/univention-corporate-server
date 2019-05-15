@@ -1312,6 +1312,7 @@ def info_syntax_choices(syn, options={}, ldap_connection=None, ldap_position=Non
 
 
 def read_syntax_choices(syn, options={}, module_search_options={}, ldap_connection=None, ldap_position=None):
+	syn = syn() if inspect.isclass(syn) else syn
 	syntax_name = syn.name
 
 	choices = getattr(syn, 'choices', [])
