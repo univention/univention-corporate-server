@@ -72,9 +72,9 @@ from univention.management.console.modules.setup import network
 from univention.management.console.modules.setup import util
 from univention.management.console.modules.setup.checks.ldap import check_if_uid_is_available
 from univention.management.console.modules.setup.checks.repositories import get_unreachable_repository_servers
-from univention.management.console.modules.setup.checks.univention_join import receive_domaincontroller_master_information
-from univention.management.console.modules.setup.checks.univention_join import set_role_and_check_if_join_will_work
-from univention.management.console.modules.setup.checks.univention_join import check_for_school_domain
+from univention.management.console.modules.setup.checks.univention_join import (
+	receive_domaincontroller_master_information, set_role_and_check_if_join_will_work, check_for_school_domain,
+)
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -543,7 +543,7 @@ class Instance(Base, ProgressMixin):
 		'''Return a list of all available time zones.'''
 		try:
 			file = open('/usr/share/univention-system-setup/locale/timezone')
-		except:
+		except EnvironmentError:
 			MODULE.error('Cannot find locale data for timezones in /usr/share/univention-system-setup/locale')
 			self.finished(request.id, None)
 			return

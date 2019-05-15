@@ -1,6 +1,7 @@
 from distutils.version import LooseVersion
 import subprocess
 import traceback
+import pipes
 
 from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
@@ -152,19 +153,23 @@ def check_is_school_multiserver_domain(address, username, password):
 				'get',
 				'ldap/base'
 			]).strip()
-			is_school_multiserver_domain = 'dn: {}'.format(master_hostdn) in subprocess.check_output([
-				'univention-ssh',
-				password_file,
-				'%s@%s' % (username, address),
+			remote_cmd = ' '.join(pipes.quote(x) for x in [
 				'univention-ldapsearch',
 				'-D',
-				'\\"cn=admin,{}\\"'.format(ldap_base),
+				'cn=admin,{}'.format(ldap_base),
 				'-y',
 				'/etc/ldap.secret',
 				'-b',
-				'\\"{}\\"'.format(master_hostdn),
-				'\\"(&(ucsschoolRole=dc_master:school:-)(!(ucsschoolRole=single_master:school:-))(univentionService=UCS@school))\\"',
+				'{}'.format(master_hostdn),
+				'(&(ucsschoolRole=dc_master:school:-)(!(ucsschoolRole=single_master:school:-))(univentionService=UCS@school))',
 				'dn',
+			])
+			is_school_multiserver_domain = 'dn: {}'.format(master_hostdn) in subprocess.check_output([
+				'univention-ssh',
+				'--no-split',
+				password_file,
+				'%s@%s' % (username, address),
+				remote_cmd,
 			]).strip().splitlines()
 		except subprocess.CalledProcessError as exc:
 			MODULE.error('Could not query DC Master if the domain is a multiserver school domain: %s' % (exc,))
@@ -183,18 +188,22 @@ def get_server_school_roles(hostname, address, username, password):
 				'get',
 				'ldap/base'
 			]).strip()
-			school_roles = subprocess.check_output([
-				'univention-ssh',
-				password_file,
-				'%s@%s' % (username, address),
+			remote_cmd = ' '.join(pipes.quote(x) for x in [
 				'univention-ldapsearch',
 				'-D',
-				'\\"cn=admin,{}\\"'.format(ldap_base),
+				'cn=admin,{}'.format(ldap_base),
 				'-y',
 				'/etc/ldap.secret',
 				'-LLL',
-				'\\"(uid={}$)\\"'.format(hostname),
+				'(uid={}$)'.format(hostname),
 				'ucsschoolRole',
+			])
+			school_roles = subprocess.check_output([
+				'univention-ssh',
+				'--no-split',
+				password_file,
+				'%s@%s' % (username, address),
+				remote_cmd,
 			]).strip().splitlines()[1:]
 			school_roles = [role.split()[-1] for role in school_roles]
 		except (subprocess.CalledProcessError, IndexError) as exc:
