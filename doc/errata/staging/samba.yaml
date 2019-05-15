@@ -7,4 +7,5 @@ fix: 2:4.10.1-1A~4.3.0.201905151331
 desc: |
  This update addresses the following issue(s):
  * Update to Samba 4.10.3
-bug: [49479]
+ * Re-add "auth methods" option removed from upstream Samba sources
+bug: [49479, 47314]
