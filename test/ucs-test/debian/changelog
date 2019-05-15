@@ -1,3 +1,9 @@
+ucs-test (9.0.2-58) unstable; urgency=medium
+
+  * Bug #49415: stabilize tests tests/60_umc/104_expired_password.py
+
+ -- Felix Botner <botner@univention.de>  Wed, 15 May 2019 16:59:54 +0200
+
 ucs-test (9.0.2-57) unstable; urgency=medium
 
   * Bug #49415: remove deprecated options checking
