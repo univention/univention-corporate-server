@@ -38,10 +38,12 @@ import signal
 import sys
 import time
 from optparse import OptionParser
-
 import fcntl
-import ldap
 import traceback
+
+import ldap
+import setproctitle
+
 import univention
 import univention.s4connector
 import univention.s4connector.s4
@@ -91,6 +93,9 @@ def daemon(lock_file):
 			pf.write(str(pid))
 			pf.close()
 			os._exit(0)
+
+		# backwards compatibility for nagios checks not updated to UCS 4.4
+		setproctitle.setproctitle('%s # /usr/lib/pymodules/python2.7/univention/s4connector/s4/main.py' % (setproctitle.getproctitle(),))
 	else:
 		os._exit(0)
 
@@ -262,7 +267,6 @@ def lock(filename):
 
 
 def main():
-
 	try:
 		lock_file = lock('/var/lock/univention-s4-%s' % CONFIGBASENAME)
 	except IOError:
