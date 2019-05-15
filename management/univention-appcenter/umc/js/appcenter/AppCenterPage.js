@@ -289,43 +289,7 @@ define([
 		},
 
 		_getAppSuggestions: function() {
-			return [{
-				condition: ['owncloud', 'adconnector', 'letsencrypt'],
-				ids: ['onlyoffice-ds', 'collabora', 'kopano-core']
-			}, {
-				condition: ['owncloud', 'adconnector'],
-				ids: ['samba-memberserver', 'letsencrypt', 'onlyoffice-ds']
-			}, {
-				condition: ['nextcloud', 'kopano-core'],
-				ids: ['letsencrypt', 'fetchmail', 'samba4', 'onlyoffice-ds']
-			}, {
-				condition: ['nextcloud', 'letsencrypt'],
-				ids: ['kopano-core', 'samba4', 'onlyoffice-ds', 'self-service']
-			}, {
-				condition: ['kopano-core', 'samba4'],
-				ids: ['fetchmail', 'letsencrypt', 'self-service', 'nextcloud']
-			}, {
-				condition: ['kopano-core', 'letsencrypt'],
-				ids: ['fetchmail', 'samba4', 'nextcloud', 'self-service']
-			}, {
-				condition: ['samba4', 'letsencrypt'],
-				ids: ['self-service', 'kopano-core', 'nextcloud', 'cups']
-			}, {
-				condition: ['owncloud'],
-				ids: ['adconnector', 'letsencrypt', 'samba-memberserver', 'samba4']
-			}, {
-				condition: ['nextcloud'],
-				ids: ['samba4', 'letsencrypt', 'onlyoffice-ds', 'kopano-core']
-			}, {
-				condition: ['kopano-core'],
-				ids: ['samba4', 'fetchmail', 'letsencrypt', 'nextcloud']
-			}, {
-				condition: ['samba4'],
-				ids: ['dhcp-server', 'cups', 'self-service', 'pkgdb']
-			}, {
-				condition: ['letsencrypt'],
-				ids: ['samba4', 'kopano-core', 'nextcloud', 'owncloud']
-			}];
+			return [];
 		},
 
 		_getSuggestedAppIds: function(suggestions, installedApps) {
