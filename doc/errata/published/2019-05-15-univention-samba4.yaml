@@ -11,3 +11,5 @@ desc: |
    the changes will be reverted.
  * UCS will now use password generation from samba for administrator accounts
 bug: [34828, 48541, 49193]
+erratum: 106
+announced: 2019-05-15
