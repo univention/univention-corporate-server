@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * The LDAP-ACLs for read access to cn=monitor can now be extended via UCR
    variables.
-bug: [49387]
+ * The creation of a default ldap server policy is now configurable via the
+   UCR variable ldap/create-ldap-server-policy.
+bug: [49387, 49386]

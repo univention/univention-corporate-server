@@ -275,3 +275,9 @@ Description[de]=Definiert Tagging-Attributoptionen oder Options-Tags/Range-Präf
 Description[en]=Define tagging attribute options or option tag/range prefixes (see man slapd.conf).
 Type=str
 Categories=service-ldap
+
+[ldap/create-ldap-server-policy]
+Description[de]=Definiert, ob eine LDAP-Server Richtlinie automatisch während der Installation angelegt wird.
+Description[en]=Defines, whether an ldap server policy is automatically created during the installation.
+Type=bool
+Categories=service-ldap

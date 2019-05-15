@@ -38,18 +38,6 @@ joinscript_init
 
 . /usr/share/univention-lib/all.sh
 
-# Bug #27001
-local_is_ucr_false () { # test if UCS variable is "true" or "false"
-    local value
-    value="$(univention-config-registry get "$1")"
-    case "$(echo -n "$value" | tr '[:upper:]' '[:lower:]')" in
-        1|yes|on|true|enable|enabled) return 1 ;;
-        0|no|off|false|disable|disabled) return 0 ;;
-        *) return 2 ;;
-    esac
-}
-
-
 eval "$(univention-config-registry shell)"
 
 IP="$(get_default_ip_address)"
@@ -93,7 +81,7 @@ then
 	fi
 fi
 
-if ! local_is_ucr_false dns/register/srv_records/ldap; then
+if ! is_ucr_false dns/register/srv_records/ldap; then
 	S4_DCS="$(univention-ldapsearch "(&(objectclass=univentionDomainController)(univentionService=Samba 4))" cn | sed -n 's/^cn: \(.*\)/\1/p')"
 	if [ -z "$S4_DCS" ]; then
 		wait_named
@@ -271,7 +259,7 @@ fi
 # Create kerberos principal for ldap/hostname.domainname
 udm kerberos/kdcentry create "$@" --ignore_exists --position "cn=kerberos,$ldap_base" --set name="ldap/${hostname}.${domainname}" --set generateRandomPassword=1 || die
 
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ] && ! is_ucr_false "ldap/create-ldap-server-policy"; then
 	# Create a LDAP server policy so member server use the LDAP servers of
 	# dc master and all dc backups.
 	if ! univention-directory-manager policies/ldapserver list "$@" --filter cn=default-settings | egrep -q '^DN'; then
@@ -312,7 +300,9 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 	univention-directory-manager policies/ldapserver modify "$@" \
 		--dn="cn=default-settings,cn=ldap,cn=policies,$ldap_base" \
 		$ADDSTR
+fi
 
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
 	# Slaves currently do not support LDAP server policies, let's create a
 	# UCR policy from the LDAP server policy.
 	# Do no use it automatically, UCS admins can use it if they wish to.

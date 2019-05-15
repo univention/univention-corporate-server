@@ -2,6 +2,8 @@ univention-ldap (15.0.0-21) unstable; urgency=medium
 
   * Bug #49387: allow further groups via UCR to acceess the cn=monitor
     backend
+  * Bug #49386: make it possible to disable creation of policies/ldapserver
+  	object
 
  -- Florian Best <best@univention.de>  Mon, 01 Jul 2019 12:14:35 +0200
 
