@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 """Univention Configuration Registry helper functions."""
+from __future__ import print_function
 #  main configuration registry classes
 #
 # Copyright 2004-2019 Univention GmbH
@@ -113,22 +114,20 @@ def validate_key(key, out=sys.stderr):
 	key = replace_umlaut(key)
 
 	if old != key:
-		print >> out, \
-			'Please fix invalid umlaut in config variable key "%s" to %s.' % \
-			(old, key)
+		print('Please fix invalid umlaut in config variable key "%s" to %s.' % \
+			(old, key), file=out)
 		return False
 
 	if len(key) > 0:
 		if ': ' in key:
-			print >> out, 'Please fix invalid ": " in config variable key "%s".' % (key,)
+			print('Please fix invalid ": " in config variable key "%s".' % (key,), file=out)
 			return False
 		match = INVALID_KEY_CHARS.search(key)
 
 		if not match:
 			return True
-		print >> out, \
-			'Please fix invalid character "%s" in config variable key "%s".' % \
-			(match.group(), key)
+		print('Please fix invalid character "%s" in config variable key "%s".' % \
+			(match.group(), key), file=out)
 	return False
 
 

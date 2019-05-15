@@ -3,6 +3,7 @@
 #
 # Univention Configuration Registry
 """Install service files."""
+from __future__ import print_function
 #
 # Copyright 2007-2019 Univention GmbH
 #
@@ -48,12 +49,12 @@ def install_services(info, package):
 	info.read_services(source)
 	failed = info.check_services()
 	if failed:
-		print >> sys.stderr, 'Incomplete entries in services definition %s' % \
-			(cfile,)
+		print('Incomplete entries in services definition %s' % \
+			(cfile,), file=sys.stderr)
 		for service, keys in failed.items():
-			print >> sys.stderr, '  [%s]' % (service,)
+			print('  [%s]' % (service,), file=sys.stderr)
 			for key in keys:
-				print >> sys.stderr, '    %s' % (key,)
+				print('    %s' % (key,), file=sys.stderr)
 		sys.exit(1)
 	dest_path = os.path.join('debian', package,
 			us_info.ServiceInfo.BASE_DIR[1:],
@@ -88,7 +89,7 @@ The service descriptions debian/*.univention-service go to
 		for package in binary_packages():
 			install_services(info, package)
 	except IOError as ex:
-		print >> sys.stderr, ex
+		print(ex, file=sys.stderr)
 		sys.exit(1)
 
 

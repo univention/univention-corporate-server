@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 """Univention Configuration Registry handlers."""
+from __future__ import print_function
 #  main configuration registry classes
 #
 # Copyright 2004-2019 Univention GmbH
@@ -157,7 +158,7 @@ def run_module(modpath, arg, ucr, changes):
 		module = __import__(module_name.replace(os.path.sep, '.'))
 		arg2meth[arg](module)(ucr, changes)
 	except (AttributeError, ImportError) as ex:
-		print >> sys.stderr, ex
+		print(ex, file=sys.stderr)
 	del sys.path[0]
 
 
@@ -318,7 +319,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 	def __call__(self, args):
 		"""Generate multfile from subfile templates."""
 		ucr, changed = args
-		print 'Multifile: %s' % self.to_file
+		print('Multifile: %s' % self.to_file)
 
 		if hasattr(self, 'preinst') and self.preinst:
 			run_module(self.preinst, 'preinst', ucr, changed)
@@ -407,7 +408,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 		if hasattr(self, 'preinst') and self.preinst:
 			run_module(self.preinst, 'preinst', ucr, changed)
 
-		print 'File: %s' % self.to_file
+		print('File: %s' % self.to_file)
 
 		to_dir = os.path.dirname(self.to_file)
 		if not os.path.isdir(to_dir):
@@ -416,7 +417,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 		try:
 			stat = os.stat(self.from_file)
 		except EnvironmentError:
-			print >> sys.stderr, "The referenced template file does not exist"
+			print("The referenced template file does not exist", file=sys.stderr)
 			return None
 
 		tmp_to_file = self._temp_file_name()
@@ -484,7 +485,7 @@ class ConfigHandlerScript(ConfigHandler):
 	def __call__(self, args):
 		"""Call external programm after change."""
 		_ucr, changed = args
-		print 'Script: %s' % self.script
+		print('Script: %s' % self.script)
 		if os.path.isfile(self.script):
 			run_script(self.script, 'generate', changed)
 
@@ -516,7 +517,7 @@ class ConfigHandlerModule(ConfigHandler):
 	def __call__(self, args):
 		"""Call python module after change."""
 		ucr, changed = args
-		print 'Module: %s' % self.module
+		print('Module: %s' % self.module)
 		run_module(self.module, 'generate', ucr, changed)
 
 
@@ -620,8 +621,8 @@ class ConfigHandlers:
 			try:
 				handler.user = getpwnam(user).pw_uid
 			except LookupError:
-				print >> sys.stderr, ('W: failed to convert the username ' +
-					'%s to the uid' % (user,))
+				print(('W: failed to convert the username ' +
+					'%s to the uid' % (user,)), file=sys.stderr)
 
 		try:
 			group = entry['Group'][0]
@@ -631,8 +632,8 @@ class ConfigHandlers:
 			try:
 				handler.group = getgrnam(group).gr_gid
 			except LookupError:
-				print >> sys.stderr, ('W: failed to convert the groupname ' +
-					'%s to the gid' % (group,))
+				print(('W: failed to convert the groupname ' +
+					'%s to the gid' % (group,)), file=sys.stderr)
 
 		try:
 			mode = entry['Mode'][0]
@@ -642,7 +643,7 @@ class ConfigHandlers:
 			try:
 				handler.mode = int(mode, 8)
 			except ValueError:
-				print >> sys.stderr, 'W: failed to convert mode %s' % (mode,)
+				print('W: failed to convert mode %s' % (mode,), file=sys.stderr)
 
 	def _get_handler_file(self, entry):
 		"""Parse file entry and return Handler instance."""
@@ -722,7 +723,7 @@ class ConfigHandlers:
 			finally:
 				temp_file.close()
 		except EnvironmentError:
-			print >> sys.stderr, "Failed to process Subfile %s" % (name,)
+			print("Failed to process Subfile %s" % (name,), file=sys.stderr)
 			return None
 		qentry = (name, variables)
 		# if multifile handler does not yet exists, queue subfiles for later
@@ -858,8 +859,8 @@ class ConfigHandlers:
 			else:
 				continue
 			if not handler:  # Bug #17913
-				print >> sys.stderr, ("Skipping internal error: no handler " +
-					"for %r in %s" % (section, package))
+				print(("Skipping internal error: no handler " +
+					"for %r in %s" % (section, package)), file=sys.stderr)
 				continue
 			if handler.uninstall_divert():
 				obsolete_handlers.add(handler)
@@ -884,7 +885,7 @@ class ConfigHandlers:
 			try:
 				_re = re.compile(reg_var)
 			except re.error as ex:
-				print >> sys.stderr, 'Failed to compile regular expression %s: %s' % (reg_var, ex)
+				print('Failed to compile regular expression %s: %s' % (reg_var, ex), file=sys.stderr)
 				continue
 
 			for variable in variables:

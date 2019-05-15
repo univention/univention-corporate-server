@@ -3,6 +3,7 @@
 #
 # Univention Configuration Registry
 """Install config registry script."""
+from __future__ import print_function
 #
 # Copyright 2004-2019 Univention GmbH
 #
@@ -64,7 +65,7 @@ def srcPath(file):
 		f = 'conffiles/' + file[4:]
 		if os.path.exists(f):
 			return f
-	print >>sys.stderr, "file %s was not found" % file
+	print("file %s was not found" % file, file=sys.stderr)
 	sys.exit(1)
 
 
@@ -129,7 +130,7 @@ def do_package(package):
 			doIt('install', '-d', destDir(f, package, 'modules'))
 			doIt('cp', '-a', srcPath(f), destPath(f, package, 'modules'))
 		else:
-			print >>sys.stderr, 'Unknown type: %s' % typ
+			print('Unknown type: %s' % typ, file=sys.stderr)
 			return
 
 	f_ucr.close()
@@ -207,7 +208,7 @@ The mapping files debian/*.univention-config-registry-mapping go to /etc/univent
 		for package in binary_packages():
 			do_package(package)
 	except (LookupError, IOError) as ex:
-		print >> sys.stderr, ex
+		print(ex, file=sys.stderr)
 		sys.exit(1)
 
 	doIt("univention-install-config-registry-info")
