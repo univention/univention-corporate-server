@@ -173,6 +173,11 @@ def encode_attrib(attrib):
 	return unicode(attrib, 'utf8')
 
 
+def fix_dn_in_search(result):
+	# Samba LDAP returns broken DN, which cannot be parsed: ldap.dn.str2dn('cn=foo\\?,dc=base')
+	return [(dn.replace('\\?', '?'), attrs) for dn, attrs in result]
+
+
 def encode_attriblist(attriblist):
 	if not isinstance(attriblist, type([])):
 		return encode_attrib(attriblist)
@@ -348,7 +353,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 					filter_parts_s4.append(format_escaped('({0}={1!e})', dn_attr, dn_attr_val))
 				filter_s4 = unicode_to_utf8(u'(&{})'.format(''.join(filter_parts_s4)))
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: search in s4 for %s" % filter_s4)
-				result = s4connector.lo_s4.lo.search_ext_s(s4connector.lo_s4.base, ldap.SCOPE_SUBTREE, filter_s4, ['sAMAccountName'])
+				result = fix_dn_in_search(s4connector.lo_s4.lo.search_ext_s(s4connector.lo_s4.base, ldap.SCOPE_SUBTREE, filter_s4, ['sAMAccountName']))
 
 				if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
 					if dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in object):
@@ -376,7 +381,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 						search_dn = object['deleted_dn']
 					try:
 						samaccountname_filter = format_escaped('(objectClass={0!e})', ocs4)
-						samaccountname_search_result = s4connector.lo_s4.lo.search_ext_s(compatible_modstring(search_dn), ldap.SCOPE_BASE, samaccountname_filter, ['sAMAccountName'])
+						samaccountname_search_result = fix_dn_in_search(s4connector.lo_s4.lo.search_ext_s(compatible_modstring(search_dn), ldap.SCOPE_BASE, samaccountname_filter, ['sAMAccountName']))
 						samaccountname_attribute = samaccountname_search_result[0][1]['sAMAccountName'][0]
 						samaccountname = encode_attrib(samaccountname_attribute)
 						ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: got samaccountname from S4")
@@ -482,7 +487,7 @@ def old_user_dn_mapping(s4connector, given_object):
 			if attrib == 'uid':
 				# lookup the uid as sAMAccountName in S4 to get corresponding DN, if not found create new User
 				ud.debug(ud.LDAP, ud.INFO, "search in s4 samaccountname=%s" % value)
-				result = s4connector.lo_s4.lo.search_ext_s(s4connector.lo_s4.base, ldap.SCOPE_SUBTREE, '(&(objectclass=user)(samaccountname=%s))' % compatible_modstring(value))
+				result = fix_dn_in_search(s4connector.lo_s4.lo.search_ext_s(s4connector.lo_s4.base, ldap.SCOPE_SUBTREE, '(&(objectclass=user)(samaccountname=%s))' % compatible_modstring(value)))
 				ud.debug(ud.LDAP, ud.INFO, "search in result %s" % result)
 				if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
 					s4dn = encode_attrib(result[0][0])
@@ -503,8 +508,8 @@ def old_user_dn_mapping(s4connector, given_object):
 					if 'deleted_dn' in object:
 						search_dn = object['deleted_dn']
 					try:
-						samaccountname = encode_attrib(
-							s4connector.lo_s4.lo.search_ext_s(compatible_modstring(search_dn), ldap.SCOPE_BASE, '(objectClass=user)', ['sAMAccountName'], serverctrls=ctrls)[0][1]['sAMAccountName'][0])
+						samaccountname = encode_attrib(fix_dn_in_search(
+							s4connector.lo_s4.lo.search_ext_s(compatible_modstring(search_dn), ldap.SCOPE_BASE, '(objectClass=user)', ['sAMAccountName'], serverctrls=ctrls)[0][1]['sAMAccountName'][0]))
 					except ldap.NO_SUCH_OBJECT:  # S4 may need time
 						if i > 5:
 							raise
@@ -892,7 +897,7 @@ class s4(univention.s4connector.ucs):
 			self.config.add_section('S4 GUID')
 		try:
 			self.ctrl_show_deleted = LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1)
-			res = self.lo_s4.lo.search_ext_s('', ldap.SCOPE_BASE, 'objectclass=*', [], serverctrls=[self.ctrl_show_deleted], timeout=-1, sizelimit=0)
+			res = fix_dn_in_search(self.lo_s4.lo.search_ext_s('', ldap.SCOPE_BASE, 'objectclass=*', [], serverctrls=[self.ctrl_show_deleted], timeout=-1, sizelimit=0))
 		except ldap.UNAVAILABLE_CRITICAL_EXTENSION:
 			# e.g. Samba4:
 			#   ldapsearch -x -H ldap://localhost -b '' -s base '(objectClass=*)' supportedControl
@@ -980,8 +985,8 @@ class s4(univention.s4connector.ucs):
 			ud.debug(ud.LDAP, ud.PROCESS, 'Internal group membership cache was created')
 
 		try:
-			self.s4_sid = univention.s4connector.s4.decode_sid(
-				self.lo_s4.lo.search_ext_s(s4_ldap_base, ldap.SCOPE_BASE, 'objectclass=domain', ['objectSid'], timeout=-1, sizelimit=0)[0][1]['objectSid'][0])
+			self.s4_sid = univention.s4connector.s4.decode_sid(fix_dn_in_search(
+				self.lo_s4.lo.search_ext_s(s4_ldap_base, ldap.SCOPE_BASE, 'objectclass=domain', ['objectSid'], timeout=-1, sizelimit=0))[0][1]['objectSid'][0])
 		except Exception as msg:
 			print("Failed to get SID from S4: %s" % msg)
 			sys.exit(1)
@@ -1003,7 +1008,7 @@ class s4(univention.s4connector.ucs):
 		# Determine s4_ldap_base with exact case
 		try:
 			self.lo_s4 = univention.uldap.access(host=self.s4_ldap_host, port=int(self.s4_ldap_port), base='', binddn=None, bindpw=None, start_tls=tls_mode, ca_certfile=self.s4_ldap_certificate, uri=ldapuri, reconnect=False)
-			self.s4_ldap_base = self.lo_s4.lo.search_ext_s('', ldap.SCOPE_BASE, 'objectclass=*', ['defaultNamingContext'], timeout=-1, sizelimit=0)[0][1]['defaultNamingContext'][0]
+			self.s4_ldap_base = fix_dn_in_search(self.lo_s4.lo.search_ext_s('', ldap.SCOPE_BASE, 'objectclass=*', ['defaultNamingContext'], timeout=-1, sizelimit=0)[0][1]['defaultNamingContext'][0])
 		except Exception:
 			ud.debug(ud.LDAP, ud.ERROR, 'Failed to lookup S4 LDAP base, using UCR value.')
 
@@ -1121,7 +1126,7 @@ class s4(univention.s4connector.ucs):
 		_d = ud.function('ldap.get_object_dn')
 		for i in [0, 1]:  # do it twice if the LDAP connection was closed
 			try:
-				dn, s4_object = self.lo_s4.lo.search_ext_s(compatible_modstring(dn), ldap.SCOPE_BASE, '(objectClass=*)', ('dn',))[0]
+				dn, s4_object = fix_dn_in_search(self.lo_s4.lo.search_ext_s(compatible_modstring(dn), ldap.SCOPE_BASE, '(objectClass=*)', ('dn',)))[0]
 				try:
 					ud.debug(ud.LDAP, ud.INFO, "get_object: got object: %s" % dn)
 				except:  # FIXME: which exception is to be caught?
@@ -1189,7 +1194,7 @@ class s4(univention.s4connector.ucs):
 		_d = ud.function('ldap.get_object')
 		for i in [0, 1]:  # do it twice if the LDAP connection was closed
 			try:
-				dn, s4_object = self.lo_s4.lo.search_ext_s(compatible_modstring(dn), ldap.SCOPE_BASE, '(objectClass=*)', attrlist=attrlist)[0]
+				dn, s4_object = fix_dn_in_search(self.lo_s4.lo.search_ext_s(compatible_modstring(dn), ldap.SCOPE_BASE, '(objectClass=*)', attrlist=attrlist))[0]
 				try:
 					ud.debug(ud.LDAP, ud.INFO, "get_object: got object: %s" % dn)
 				except:  # FIXME: which exception is to be caught?
@@ -1275,7 +1280,7 @@ class s4(univention.s4connector.ucs):
 				ud.debug(ud.LDAP, ud.WARN, "S4 ignores PAGE_RESULTS")
 				break
 
-		return encode_s4_resultlist(res)
+		return encode_s4_resultlist(fix_dn_in_search(res))
 
 	def __remove_duplicates_with_order_preserving(self, searchResult, idFunction):
 		seen = {}
@@ -1455,13 +1460,13 @@ class s4(univention.s4connector.ucs):
 		'''
 		_d = ud.function('ldap.__get_highestCommittedUSN')
 		try:
-			res = self.lo_s4.lo.search_ext_s(
+			res = fix_dn_in_search(self.lo_s4.lo.search_ext_s(
 				'',  # base
 				ldap.SCOPE_BASE,
 				'objectclass=*',  # filter
 				['highestCommittedUSN'],
 				timeout=-1, sizelimit=0
-			)[0][1]['highestCommittedUSN'][0]
+			))[0][1]['highestCommittedUSN'][0]
 
 			return int(res)
 		except Exception as msg:
@@ -1774,7 +1779,7 @@ class s4(univention.s4connector.ucs):
 
 		# need to remove users from s4_members_from_ucs which have this group as primary group. may failed earlier if groupnames are mapped
 		try:
-			group_rid = decode_sid(self.lo_s4.lo.search_s(compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)', ['objectSid'])[0][1]['objectSid'][0]).split('-')[-1]
+			group_rid = decode_sid(fix_dn_in_search(self.lo_s4.lo.search_s(compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)', ['objectSid'])[0][1]['objectSid'][0])).split('-')[-1]
 		except ldap.NO_SUCH_OBJECT:
 			group_rid = None
 
@@ -2461,7 +2466,7 @@ class s4(univention.s4connector.ucs):
 				old_dn = self._subtree_replace(old_dn, self.lo.base, self.lo_s4.base)
 			# the old object was moved in UCS, but does this object exist in S4?
 			try:
-				old_object = self.lo_s4.lo.search_ext_s(compatible_modstring(old_dn), ldap.SCOPE_BASE, 'objectClass=*', timeout=-1, sizelimit=0)
+				old_object = fix_dn_in_search(self.lo_s4.lo.search_ext_s(compatible_modstring(old_dn), ldap.SCOPE_BASE, 'objectClass=*', timeout=-1, sizelimit=0))
 			except (ldap.SERVER_DOWN, SystemExit):
 				raise
 			except:
@@ -2471,7 +2476,7 @@ class s4(univention.s4connector.ucs):
 				try:
 					self.lo_s4.rename(unicode(old_dn), object['dn'])
 				except ldap.NO_SUCH_OBJECT:  # check if object is already moved (we may resync now)
-					new = encode_s4_resultlist(self.lo_s4.lo.search_ext_s(compatible_modstring(object['dn']), ldap.SCOPE_BASE, 'objectClass=*', timeout=-1, sizelimit=0))
+					new = encode_s4_resultlist(fix_dn_in_search(self.lo_s4.lo.search_ext_s(compatible_modstring(object['dn']), ldap.SCOPE_BASE, 'objectClass=*', timeout=-1, sizelimit=0)))
 					if not new:
 						raise
 				# need to actualise the GUID, group cache and DN-Mapping
@@ -2481,7 +2486,7 @@ class s4(univention.s4connector.ucs):
 				self.group_member_mapping_cache_ucs[pre_mapped_ucs_dn.lower()] = object['dn']
 				self.group_member_mapping_cache_con[object['dn'].lower()] = pre_mapped_ucs_dn
 
-				self._set_DN_for_GUID(self.lo_s4.lo.search_ext_s(compatible_modstring(object['dn']), ldap.SCOPE_BASE, 'objectClass=*', timeout=-1, sizelimit=0)[0][1]['objectGUID'][0], object['dn'])
+				self._set_DN_for_GUID(fix_dn_in_search(self.lo_s4.lo.search_ext_s(compatible_modstring(object['dn']), ldap.SCOPE_BASE, 'objectClass=*', timeout=-1, sizelimit=0)[0][1]['objectGUID'][0], object['dn']))
 				self._remove_dn_mapping(pre_mapped_ucs_old_dn, unicode(old_dn))
 				self._check_dn_mapping(pre_mapped_ucs_dn, object['dn'])
 
@@ -2565,8 +2570,8 @@ class s4(univention.s4connector.ucs):
 					filter_s4 = format_escaped(u'(&(sAMAccountName={0!e})(objectSid={1!e})(isDeleted=TRUE))', sAMAccountName, sambaSID)
 					ud.debug(ud.LDAP, ud.PROCESS, "sync_from_ucs: error during add, searching for conflicting deleted object in S4")
 					ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: search filter: %s" % filter_s4)
-					result = self.lo_s4.lo.search_ext_s(self.lo_s4.base, ldap.SCOPE_SUBTREE, filter_s4, ['dn'], serverctrls=[LDAPControl(
-						LDAP_SERVER_SHOW_DELETED_OID, criticality=1), LDAPControl(LDB_CONTROL_DOMAIN_SCOPE_OID, criticality=0)])
+					result = fix_dn_in_search(self.lo_s4.lo.search_ext_s(self.lo_s4.base, ldap.SCOPE_SUBTREE, filter_s4, ['dn'], serverctrls=[LDAPControl(
+						LDAP_SERVER_SHOW_DELETED_OID, criticality=1), LDAPControl(LDB_CONTROL_DOMAIN_SCOPE_OID, criticality=0)]))
 					if not result or len(result) > 1:  # the latter would indicate corruption
 						ud.debug(ud.LDAP, ud.PROCESS, "sync_from_ucs: no conflicting deleted object found")
 						raise  # unknown situation, raise original traceback
@@ -2800,13 +2805,13 @@ class s4(univention.s4connector.ucs):
 			if self.property[property_type].con_subtree_delete_objects:
 				_l = ["(%s)" % x for x in self.property[property_type].con_subtree_delete_objects]
 				allow_delete_filter = "(|%s)" % ''.join(_l)
-				for result in self.lo_s4.lo.search_ext_s(compatible_modstring(object['dn']), ldap.SCOPE_SUBTREE, allow_delete_filter, timeout=-1, sizelimit=0):
+				for result in fix_dn_in_search(self.lo_s4.lo.search_ext_s(compatible_modstring(object['dn']), ldap.SCOPE_SUBTREE, allow_delete_filter, timeout=-1, sizelimit=0)):
 					if univention.s4connector.compare_lowercase(result[0], object['dn']):
 						continue
 					ud.debug(ud.LDAP, ud.INFO, "delete: %s" % result[0])
 					self.lo_s4.lo.delete_s(compatible_modstring(result[0]))
 
-			for result in self.lo_s4.lo.search_ext_s(compatible_modstring(object['dn']), ldap.SCOPE_SUBTREE, 'objectClass=*', timeout=-1, sizelimit=0):
+			for result in fix_dn_in_search(self.lo_s4.lo.search_ext_s(compatible_modstring(object['dn']), ldap.SCOPE_SUBTREE, 'objectClass=*', timeout=-1, sizelimit=0)):
 				if univention.s4connector.compare_lowercase(result[0], object['dn']):
 					continue
 				ud.debug(ud.LDAP, ud.INFO, "delete: %s" % result[0])
