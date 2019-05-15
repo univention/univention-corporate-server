@@ -40,7 +40,7 @@ import os
 import random
 import re
 import subprocess
-import cPickle
+import pickle
 import errno
 from pwd import getpwnam
 from grp import getgrnam
@@ -569,7 +569,7 @@ class ConfigHandlers:
 				chv = ConfigHandlers
 				if not chv.VERSION_MIN <= version <= chv.VERSION_MAX:
 					raise TypeError("Invalid cache file version.")
-				pickler = cPickle.Unpickler(cache_file)
+				pickler = pickle.Unpickler(cache_file)
 				self._handlers = pickler.load()
 				if version <= 1:
 					# version <= 1: _handlers[multifile] -> [handlers]
@@ -582,7 +582,7 @@ class ConfigHandlers:
 				self._multifiles = pickler.load()
 			finally:
 				cache_file.close()
-		except (Exception, cPickle.UnpicklingError):
+		except (Exception, pickle.UnpicklingError):
 			self.update()
 
 	def strip_basepath(self, path, basepath):
@@ -798,7 +798,7 @@ class ConfigHandlers:
 		try:
 			with open(ConfigHandlers.CACHE_FILE, 'w') as cache_file:
 				cache_file.write(ConfigHandlers.VERSION_NOTICE)
-				pickler = cPickle.Pickler(cache_file)
+				pickler = pickle.Pickler(cache_file)
 				pickler.dump(self._handlers)
 				pickler.dump(self._subfiles)
 				pickler.dump(self._multifiles)
