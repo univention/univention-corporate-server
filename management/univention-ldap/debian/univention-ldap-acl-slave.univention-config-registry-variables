@@ -1,0 +1,5 @@
+[ldap/acl/read/slave/default-attributes]
+Description[de]=Definiert die LDAP-Attribute, die alle Benutzer standardmäßig lesen dürfen. Standardmäßig sind alle Attribute (*) lesbar, ausgenommen von Passwörtern und durch anderen Regeln eingeschränkte Attribute. Es sollte mindestens "entry,objectClass" angegeben werden.
+Description[en]=Defines the ldap attributes all users are allowed to read by default. By default all attributes (*) except passwords and by prior rules restricted attributes are readable. As minimum at least "entry,objectClass" should be specified.
+Type=str
+Categories=service-ldap
