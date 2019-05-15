@@ -35,14 +35,7 @@ import locale
 import os
 import sys
 
-try:
-	import univention.config_registry as ub
-except ImportError as e:
-	# Workaround for UCS 3.0:
-	#   While updating to UCS 3.0 the normal UCR import may fail. For this
-	#   case the pyshared file will be imported directly
-	sys.path.append('/usr/share/pyshared')
-	import univention.config_registry as ub
+import univention.config_registry as ub
 
 
 def convertToUtf8(arguments):
