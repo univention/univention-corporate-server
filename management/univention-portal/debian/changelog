@@ -1,3 +1,9 @@
+univention-portal (3.0.1-22) unstable; urgency=medium
+
+  * Bug #49113: Add debug statements
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Wed, 15 May 2019 16:36:18 +0100
+
 univention-portal (3.0.1-21) unstable; urgency=medium
 
   * Bug #48943: remove obsolete code

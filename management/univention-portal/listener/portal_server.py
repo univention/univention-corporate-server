@@ -32,6 +32,7 @@ from __future__ import absolute_import
 
 import listener
 from univention.config_registry import ConfigRegistry
+import univention.debug as ud
 
 ucr = ConfigRegistry()
 ucr.load()
@@ -43,7 +44,9 @@ attributes = []
 
 def handler(dn, new, old):
 	listener.setuid(0)
+	ud.debug(ud.LISTENER, ud.INFO, 'portal server handler has fired!')
 	try:
 		open('/var/cache/univention-portal/refresh_portal', 'w')
+		ud.debug(ud.LISTENER, ud.INFO, 'refresh_portal file was created.')
 	finally:
 		listener.unsetuid()
