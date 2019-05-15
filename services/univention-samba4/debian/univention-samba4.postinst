@@ -416,7 +416,7 @@ secret: $machine_secret
 				fi
 		fi
 
-		if dpkg --compare-versions "$2" lt-nl "8.0.0-1"; then
+		if dpkg --compare-versions "$2" lt-nl "7.0.3-2"; then
 			/etc/init.d/samba stop
 			/usr/bin/samba-tool dbcheck --reindex
 			/etc/init.d/samba start

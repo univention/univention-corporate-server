@@ -1,3 +1,9 @@
+univention-samba4 (7.0.3-2) unstable; urgency=medium
+
+  * Bug #49479: Adjust reindex condition on version number in postinst
+
+ -- Arvid Requate <requate@univention.de>  Wed, 15 May 2019 18:12:31 +0200
+
 univention-samba4 (7.0.3-1) unstable; urgency=medium
 
   * Bug #49479: Samba 4.10
