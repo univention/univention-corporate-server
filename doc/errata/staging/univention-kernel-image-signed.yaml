@@ -2,8 +2,8 @@ product: ucs
 release: "4.3"
 version: [3, 4]
 scope: ucs_4.3-0-errata4.3-4
-src: linux
-fix: 4.9.168-1+deb9u2
+src: univention-kernel-image-signed
+fix: 4.0.0-12A~4.3.0.201905151101
 desc: |
  This update addresses the following issues:
  * Microarchitectural Store Buffer Data Sampling (MSBDS) (CVE-2018-12126)
@@ -12,7 +12,7 @@ desc: |
  * Microarchitectural Fill Buffer Data Sampling (MFBDS) (CVE-2018-12130)
  * Microarchitectural Data Sampling Uncacheable Memory (MDSUM)
    (CVE-2019-11091)
-note: This is the 1st part of two parts.
+note: This is the 2nd part of two parts.
 bug: [49477]
 cve:
 - CVE-2018-12126
