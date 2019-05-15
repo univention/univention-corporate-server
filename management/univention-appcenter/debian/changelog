@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-20) unstable; urgency=medium
+
+  * Bug #49431: remove suggested apps rules
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 15 May 2019 13:17:53 +0200
+
 univention-appcenter (8.0.11-19) unstable; urgency=medium
 
   * Bug #48669: Give the start of a database service one more try if the first
