@@ -3,8 +3,10 @@ release: "4.3"
 version: [4]
 scope: ucs_4.3-0-errata4.3-4
 src: univention-s4-connector
-fix: 12.0.3-1A~4.3.0.201905151354
+fix: 12.0.4-2A~4.3.0.201905151418
 desc: |
  This update addresses the following issue(s):
  * The connector now properly handles the AD passsword change.
-bug: [49480]
+ * Use new LDAP control DSDB_CONTROL_REPLICATED_UPDATE_OID when
+   changing objectSid's in ucs@school.
+bug: [49480,49481]
