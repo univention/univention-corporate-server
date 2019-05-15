@@ -310,7 +310,6 @@ define([
 				var metaLabels = [];
 				array.forEach(this.metaCategories, function(metaObj) {
 					metaObj.set('store', applications);
-					metaObj.set('visible', true);
 					metaLabels.push(metaObj.label);
 				});
 
