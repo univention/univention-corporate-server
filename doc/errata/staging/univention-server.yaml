@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-0
 src: univention-server
 fix: 14.0.0-6A~4.4.0.201905131311
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * If samba fails to set the new password in a server password change,
    the changes will be reverted.
 bug: [49193]

@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-0
 src: univention-directory-manager-modules
 fix: 14.0.12-35A~4.4.0.201905141649
 desc: |-
-  This update addresses the following issue:
+  This update addresses the following issues:
   * Explicit initialization of the default values of UDM properties has been
     removed from the code of all UDM modules.
   * The users/user UDM module now uses the ldap filter
@@ -13,10 +13,10 @@ desc: |-
     performance.
   * When opening container objects, a lookup is performed to check whether
     this container is the default container for certain UDM objects. This
-    lookup is now cached which makes opening many objects at once conserably
+    lookup is now cached which makes opening many objects at once considerably
     faster.
-  * After renaming an object the internal DN  (self.dn) is updated correctly.
+  * After renaming an object the internal DN (self.dn) is updated correctly.
     The old DN can now be obtained via self.old_dn. This fixes the concurrent
     renaming and update of group membership for e.g. computer objects.
-  * Several german translations have been updated (Bug #49359).
+  * Several german translations have been updated.
 bug: [49235, 48390, 49408, 41694, 49359]
