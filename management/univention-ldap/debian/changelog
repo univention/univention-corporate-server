@@ -1,3 +1,10 @@
+univention-ldap (15.0.0-21) unstable; urgency=medium
+
+  * Bug #49387: allow further groups via UCR to acceess the cn=monitor
+    backend
+
+ -- Florian Best <best@univention.de>  Mon, 01 Jul 2019 12:14:35 +0200
+
 univention-ldap (15.0.0-20) unstable; urgency=low
 
   * Bug #49505: Unlimited page size for UDN translog

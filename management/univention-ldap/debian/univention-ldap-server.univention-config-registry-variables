@@ -54,6 +54,12 @@ Description[en]=If this variable is activated and the LDAP server restarted, Dom
 Type=bool
 Categories=service-ldap
 
+[ldap/monitor/acl/read/groups/.*]
+Description[de]=Weitere Gruppen DN's, die über das cn=monitor LDAP-Backend auf statistische Daten des LDAP-Servers zugreifen dürfen.
+Description[en]=Further group DN'S which may access statistical data about the LDAP server via the cn=monitor LDAP backend.
+Type=str
+Categories=service-ldap
+
 [ldap/database/type]
 Description[de]=Diese Variable konfiguriert das Datenbank-Backend des LDAP-Servers ('bdb' oder 'hdb'). Diese Variable sollte nur in Ausnahmefällen angepasst werden.
 Description[en]=This variable configures the database backend of the LDAP server ('bdb' or 'hdb'). This variable should only be modified in exceptional cases.

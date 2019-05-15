@@ -83,6 +83,7 @@ Type: subfile
 Multifile: etc/ldap/slapd.conf
 Subfile: etc/ldap/slapd.conf.d/39monitor
 Variables: ldap/monitor
+Variables: ldap/monitor/acl/read/groups/.*
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
