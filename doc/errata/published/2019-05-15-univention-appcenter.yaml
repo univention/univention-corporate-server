@@ -16,3 +16,5 @@ desc: |-
     installed apps.
   * A visual flickering in the App Center overview has been removed.
 bug: [48670, 48669, 49145, 49431, 49089]
+erratum: 96
+announced: 2019-05-15
