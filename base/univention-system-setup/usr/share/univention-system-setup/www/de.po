@@ -266,20 +266,19 @@ msgstr ""
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:2339
 msgid ""
+"This server is already set as an administrative server for a school. "
+"Please correct this before continuing."
+msgstr ""
+"Dieser Server ist bereits als administrativer Server für eine Schule "
+"eingestellt. Bitte korrigieren Sie dies bevor Sie fortfahren."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2342
+msgid ""
 "This server is already set as an educational server for a school. "
 "Please correct this before continuing."
 msgstr ""
 "Dieser Server ist bereits als edukativer Server für eine Schule "
 "eingestellt. Bitte korrigieren Sie dies bevor Sie fortfahren."
-
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2342
-msgid ""
-"According to the LDAP object for this server it should become an educational"
-" slave. Please correct this before continuing."
-msgstr ""
-"Laut dem LDAP Objekt für diesen Server, sollte dieser ein "
-"edukativer Slave werden. Bitte korrigieren Sie dies bevor Sie "
-"fortfahren. Zum Beispiel durch Löschen des Rechnerobjekts."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:668
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1861
