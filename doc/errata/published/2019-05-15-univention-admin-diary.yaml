@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Improve robustness and traceback logging.
 bug: [49056]
+erratum: 100
+announced: 2019-05-15
