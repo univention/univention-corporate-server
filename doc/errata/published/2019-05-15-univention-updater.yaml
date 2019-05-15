@@ -9,3 +9,5 @@ desc: |
  * Fix traceback in admindiary.client.write_event() occurring in Docker
    containers during docker build.
 bug: [49056]
+erratum: 99
+announced: 2019-05-15
