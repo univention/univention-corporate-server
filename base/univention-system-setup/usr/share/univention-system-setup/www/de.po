@@ -266,18 +266,16 @@ msgstr ""
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:2339
 msgid ""
-"According to the LDAP object for this server it should become an "
-"administrative slave. Please correct this before continuing. E.g delete the "
-"host object."
+"This server is already set as an educational server for a school. "
+"Please correct this before continuing."
 msgstr ""
-"Laut dem LDAP Objekt für diesen Server, sollte dieser ein "
-"administrativer Slave werden. Bitte korrigieren Sie dies bevor Sie "
-"fortfahren. Zum Beispiel durch Löschen des Rechnerobjekts."
+"Dieser Server ist bereits als edukativer Server für eine Schule "
+"eingestellt. Bitte korrigieren Sie dies bevor Sie fortfahren."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:2342
 msgid ""
 "According to the LDAP object for this server it should become an educational"
-" slave. Please correct this before continuing. E.g delete the host object."
+" slave. Please correct this before continuing."
 msgstr ""
 "Laut dem LDAP Objekt für diesen Server, sollte dieser ein "
 "edukativer Slave werden. Bitte korrigieren Sie dies bevor Sie "
@@ -321,7 +319,7 @@ msgid "Adjust settings"
 msgstr "Einstellungen anpassen"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:860
-msgid "Administrativer server"
+msgid "Administrative server"
 msgstr "Administrativer Server"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:538
@@ -1106,7 +1104,7 @@ msgid "This server provides administrative UCS@school services for a school."
 msgstr "Dieser Server übernimmt administrative UCS@school Aufgaben für eine Schule."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:854
-msgid "This server provides educatinal UCS@school services for a school."
+msgid "This server provides educational UCS@school services for a school."
 msgstr "Dieser Server übernimmt edukative UCS@school Aufgaben für eine Schule."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:876

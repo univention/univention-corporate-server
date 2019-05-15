@@ -851,13 +851,13 @@ define([
 				}, {
 					type: Text,
 					name: 'helpEducational',
-					content: _('This server provides educatinal UCS@school services for a school.'),
+					content: _('This server provides educational UCS@school services for a school.'),
 					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
 				}, {
 					type: RadioButton,
 					radioButtonGroup: 'schoolrole',
 					name: '_schoolRoleAdministrative',
-					label: _('Administrativer server'),
+					label: _('Administrative server'),
 					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}, {
 					type: Text,
@@ -2336,10 +2336,10 @@ define([
 				if (this._getRole() === 'domaincontroller_slave' && this._isSchoolMultiServerDomain) {
 					var _vals = this._gatherVisibleValues();
 					var hasAdminAlert = function() {
-						_alert(_('According to the LDAP object for this server it should become an administrative slave. Please correct this before continuing. E.g delete the host object.'));
+						_alert(_('This server is already set as an administrative server for a school. Please correct this before continuing.'));
 					};
 					var hasEduAlert = function() {
-						_alert(_('According to the LDAP object for this server it should become an educational slave. Please correct this before continuing. E.g delete the host object.'));
+						_alert(_('This server is already set as an educational server for a school. Please correct this before continuing.'));
 					};
 					var missingEduAlert = function() {
 						_alert(_('If this server is supposed to become an educational slave, please create a school first and set the hostname of this server as the educational server.'));
