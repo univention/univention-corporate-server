@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-directory-manager-modules
-fix: 14.0.12-32A~4.4.0.201905091804
+fix: 14.0.12-35A~4.4.0.201905141649
 desc: |-
   This update addresses the following issue:
   * Explicit initialization of the default values of UDM properties has been
