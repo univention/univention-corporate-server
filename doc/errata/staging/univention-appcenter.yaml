@@ -12,6 +12,7 @@ desc: |-
     software packages. If starting the database service fails anyway, we now
     send more verbose information.
   * The package univention-appcenter is now built with dh_python2.
-  * The App Center now shows app suggestions based on already installed apps.
+  * The App Center is now prepared to show app suggestions based on already
+    installed apps.
   * A visual flickering in the App Center overview has been removed.
 bug: [48670, 48669, 49145, 49431, 49089]
