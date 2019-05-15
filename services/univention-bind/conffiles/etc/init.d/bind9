@@ -4,9 +4,16 @@
 # Provides:          bind9
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Required-Start:    slapd samba-ad-dc
-# Required-Stop:     slapd samba-ad-dc
-# Short-Description: bind9 Domain Name Server (DNS)
+@!@
+SERVICES = {
+	'samba4': 'samba-ad-dc',
+	'ldap': 'slapd',
+}
+backend = configRegistry.get('dns/backend', 'ldap')
+service = SERVICES.get(backend, '')
+print("# Required-Start:    %s" % (service,))
+print("# Required-Stop:     %s" % (service,))
+@!@# Short-Description: bind9 Domain Name Server (DNS)
 ### END INIT INFO
 #
 # Copyright 2001-2019 Univention GmbH

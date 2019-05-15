@@ -47,6 +47,16 @@ then
 		--add /lib/systemd/system/bind9.service
 fi
 
+# Bug #49440: Switch "insserv" from "SysV" to "systemd" mode to make it use
+# "-f" to ignore wrong runtime-dependency of "univention-bind" on "samba-ad-dc"
+# in non-Samba4-environments, which is called through "update-rc.d" from
+# "bind9.postinst" and breaks the upgrade of old systems installed with
+# "sysv-rc" before UCS-4.2
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 13.0.1-6
+then
+	rm -f /etc/rcS.d/S??mountkernfs.sh
+fi
+
 #DEBHELPER#
 
 exit 0
