@@ -238,7 +238,7 @@ def debug(id, level, msg, utf8=True):
 					handler.flush()
 
 
-class function:
+class function(object):
 
 	def __init__(self, text, utf8=True):
 		"""

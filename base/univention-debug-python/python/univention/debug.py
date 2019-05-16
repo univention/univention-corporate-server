@@ -42,15 +42,16 @@ example:
 ... ...  LISTENER    ( ERROR   ) : Fatal error: var=42
 """
 
-import _debug
-from _debug import *
+from __future__ import absolute_import
+from univention import _debug
+from univention._debug import *  # noqa F403
 
 
 def debug(id, level, ustring, utf8=True):
 	_debug.debug(id, level, ustring)
 
 
-class function:
+class function(object):
 
 	def __init__(self, text, utf8=True):
 		self.text = text
