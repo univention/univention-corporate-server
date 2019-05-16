@@ -6,5 +6,6 @@ src: univention-portal
 fix: 3.0.1-22A~4.4.0.201905151640
 desc: |
  This update addresses the following issue(s):
- * Add debug statements to the portal server listener to investigate Bug #49113
+ * Debug statements where added to the portal server listener to investigate
+   Bug #49113.
 bug: [49113]
