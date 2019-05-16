@@ -32,6 +32,7 @@ implementation.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import sys
 import logging
 # import logging.handlers
@@ -144,7 +145,7 @@ def init(logfilename, do_flush=0, enable_function=0, enable_syslog=0):
 			_handler_console.setFormatter(formatter)
 			logging.getLogger('').addHandler(_handler_console)
 		except:
-			print 'opening %s failed' % logfilename
+			print('opening %s failed' % logfilename)
 	else:
 		if _handler_file:
 			logging.getLogger('').removeHandler(_handler_file)
@@ -156,7 +157,7 @@ def init(logfilename, do_flush=0, enable_function=0, enable_syslog=0):
 			_handler_file.setFormatter(formatter)
 			logging.getLogger('').addHandler(_handler_file)
 		except:
-			print 'opening %s failed' % logfilename
+			print('opening %s failed' % logfilename)
 
 # 	if enable_syslog:
 # 		try:
@@ -167,7 +168,7 @@ def init(logfilename, do_flush=0, enable_function=0, enable_syslog=0):
 # 			logging.getLogger('').addHandler(_handler_syslog)
 # 		except:
 # 			raise
-# 			print 'opening syslog failed'
+# 			print('opening syslog failed')
 
 	logging.addLevelName(25, 'PROCESS')
 	logging.addLevelName(15, 'ALL')
