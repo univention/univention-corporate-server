@@ -283,7 +283,7 @@ class _ConfigRegistry(dict):
 
 	def __init__(self, filename=None):
 		dict.__init__(self)
-		if file:
+		if filename:
 			self.file = filename
 		else:
 			self.file = '/etc/univention/base.conf'
