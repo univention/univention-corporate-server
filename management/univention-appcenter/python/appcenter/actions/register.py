@@ -363,9 +363,8 @@ class AppListener(AppListener):
 		if hostdn:
 			if lo.get(hostdn):
 				self.log('Already found %s as a host for %s. Trying to retrieve machine secret.' % (hostdn, app.id))
-				secret_on_host = os.path.join('/var/lib/univention-appcenter/apps', app.id, 'machine.secret')
 				password = None
-				if os.path.isfile(secret_on_host):
+				if os.path.isfile(app.secret_on_host):
 					with open(secret_on_host) as pwfile:
 						password = pwfile.read()
 				return hostdn, password
@@ -388,6 +387,11 @@ class AppListener(AppListener):
 		policies = ['cn=app-release-update,cn=policies,%s' % ucr_get('ldap/base'), 'cn=app-update-schedule,cn=policies,%s' % ucr_get('ldap/base')]
 		obj = create_object_if_not_exists('computers/%s' % app.docker_server_role, lo, pos, name=hostname, description=description, domain=domain, password=password, objectFlag='docker', policies=policies)
 		ucr_save({app.ucr_hostdn_key: obj.dn})
+		# save password on docker host
+		if password:
+			with open(app.secret_on_host, 'w+b') as f:
+				os.chmod(app.secret_on_host, 0o600)
+				f.write(password)
 		return obj.dn, password
 
 	def _unregister_host(self, app, args):

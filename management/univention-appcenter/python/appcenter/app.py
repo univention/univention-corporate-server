@@ -1223,6 +1223,10 @@ class App(object):
 		if os.path.exists(self.get_cache_file('logodetailpage')):
 			return 'apps-%s-detail.svg' % self.component_id
 
+	@property
+	def secret_on_host(self):
+		return os.path.join(DATA_DIR, self.id, 'machine.secret')
+
 	def get_thumbnail_urls(self):
 		if not self.thumbnails:
 			return []
