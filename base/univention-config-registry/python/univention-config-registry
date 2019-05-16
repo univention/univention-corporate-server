@@ -36,11 +36,14 @@ import locale
 import os
 import sys
 
+import six
 import univention.config_registry as ub
 
 
 def convertToUtf8(arguments):
 	'Try to decode as UTF-8, then try to decode with locale encoding. If decoded successfully encode with UTF-8.'
+	if six.PY3:
+		return arguments  # Python 3, we already have "unicode" objects
 	localeencoding = locale.getpreferredencoding()
 	new_arguments = []
 	for argument in arguments:
