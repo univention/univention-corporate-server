@@ -35,7 +35,7 @@ from univention.config_registry.misc import key_shell_escape, escape_value
 __all__ = ['Output', 'filter_shell', 'filter_keys_only', 'filter_sort']
 
 
-class Output:
+class Output(object):
 
 	"""Output buffer for applying filter."""
 
@@ -46,6 +46,9 @@ class Output:
 		"""Append singe line."""
 		if line and line.strip():
 			self.text.append(line)
+
+	def flush(self):
+		pass
 
 	def writelines(self, lines):
 		"""Append multiple lines."""
