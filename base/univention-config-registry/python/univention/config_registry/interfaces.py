@@ -261,7 +261,7 @@ class Interfaces(object):
 		return (primary,
 			cmp_alnum(iface.order),
 			cmp_alnum(iface.name),
-          )
+		)
 
 	def _cmp_name(self, iname):
 		"""Compare IPv6 sub-interfaces by name."""
