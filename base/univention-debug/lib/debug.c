@@ -220,9 +220,12 @@ void univention_debug_exit(void)
 		return;
 
 	LOG("DEBUG_EXIT\n");
-	fflush(univention_debug_file);
-	fclose(univention_debug_file);
-	univention_debug_file = NULL;
+	if (univention_debug_file) {
+		fflush(univention_debug_file);
+		if (univention_debug_file != stderr && univention_debug_file != stdout)
+			fclose(univention_debug_file);
+		univention_debug_file = NULL;
+	}
 
 	free(univention_debug_filename);
 	univention_debug_filename = NULL;
