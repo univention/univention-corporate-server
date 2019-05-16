@@ -58,6 +58,7 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 		'/var/log/apache2/error.log'='apache2-error.log'
 		'/var/log/auth.log*'=
 		'/var/log/daemon.log*'=
+		'/var/log/dpkg.log'
 		'/var/log/dovecot.log*'=
 		'/var/log/journalctl.log'
 		'/var/log/mail.log*'=
