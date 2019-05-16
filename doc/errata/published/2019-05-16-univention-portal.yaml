@@ -9,3 +9,5 @@ desc: |
  * Debug statements where added to the portal server listener to investigate
    Bug #49113.
 bug: [49113]
+erratum: 109
+announced: 2019-05-16
