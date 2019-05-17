@@ -51,37 +51,37 @@ static enum uv_debug_flag_function univention_debug_function;
 
 static bool univention_debug_ready = false;
 
-static const char *univention_debug_id_text[] = {
-	"MAIN       ",
-	"LDAP       ",
-	"USERS      ",
-	"NETWORK    ",
-	"SSL        ",
-	"SLAPD      ",
-	"SEARCH     ",
-	"TRANSFILE  ",
-	"LISTENER   ",
-	"POLICY     ",
-	"ADMIN      ",
-	"CONFIG     ",
-	"LICENSE    ",
-	"KERBEROS   ",
-	"DHCP       ",
-	"PROTOCOL   ",
-	"MODULE     ",
-	"ACL        ",
-	"RESOURCES  ",
-	"PARSER     ",
-	"LOCALE     ",
-	"AUTH       ",
+static const char *const univention_debug_id_text[] = {
+	"MAIN",
+	"LDAP",
+	"USERS",
+	"NETWORK",
+	"SSL",
+	"SLAPD",
+	"SEARCH",
+	"TRANSFILE",
+	"LISTENER",
+	"POLICY",
+	"ADMIN",
+	"CONFIG",
+	"LICENSE",
+	"KERBEROS",
+	"DHCP",
+	"PROTOCOL",
+	"MODULE",
+	"ACL",
+	"RESOURCES",
+	"PARSER",
+	"LOCALE",
+	"AUTH",
 };
 
-static const char *univention_debug_level_text[] = {
-	"( ERROR   ) : ",
-	"( WARN    ) : ",
-	"( PROCESS ) : ",
-	"( INFO    ) : ",
-	"( ALL     ) : "
+static const char *const univention_debug_level_text[] = {
+	"ERROR",
+	"WARN",
+	"PROCESS",
+	"INFO",
+	"ALL"
 };
 
 #define LOG(fmt, ...) do { \
@@ -135,7 +135,7 @@ void univention_debug(enum uv_debug_category id, enum uv_debug_level level, cons
 	if (!univention_debug_ready || id < 0 || id >= DEBUG_MODUL_COUNT)
 		return;
 	if (univention_debug_file && level <= univention_debug_level[id]) {
-		LOG("%s %s", univention_debug_id_text[id], univention_debug_level_text[level]);
+		LOG("%-11s ( %-7s ) : ", univention_debug_id_text[id], univention_debug_level_text[level]);
 		va_start(ap, fmt);
 		vfprintf(univention_debug_file, fmt, ap);
 		va_end(ap);
