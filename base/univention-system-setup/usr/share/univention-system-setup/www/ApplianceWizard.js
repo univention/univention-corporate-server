@@ -206,7 +206,7 @@ define([
 	var _validateHostOrFQDN = function(hostOrFQDN) {
 		hostOrFQDN = hostOrFQDN || '';
 		var acceptEmtpy = !hostOrFQDN && !this.required;
-		return acceptEmtpy || _validateFQDN(hostOrFQDN) || _validateHostname(hostOrFQDN);
+		return acceptEmtpy || _validateFQDN.call(this, hostOrFQDN)  || _validateHostname.call(this, hostOrFQDN);
 	};
 
 	var _regDN = /^(dc|cn|c|o|l)=[a-zA-Z0-9-]+(,(dc|cn|c|o|l)=[a-zA-Z0-9-]+)+$/;
