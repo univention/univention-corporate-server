@@ -44,10 +44,6 @@ REticket = re.compile(r'''
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def __init__(self):
-		super(UniventionPackageCheck, self).__init__()
-		self.name = '0007-Changelog'
-
 	def getMsgIds(self):
 		return {
 			'0007-1': [uub.RESULT_WARN, 'failed to open file'],

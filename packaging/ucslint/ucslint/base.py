@@ -28,7 +28,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import os
+try:
+	from typing import Any, Dict, Iterable, Iterator, List, Pattern, Optional, Tuple  # noqa F401
+except ImportError:
+	pass
 
 RESULT_UNKNOWN = -1
 RESULT_OK = 0
@@ -44,14 +49,22 @@ RESULT_INT2STR = {
 	RESULT_ERROR: 'E',
 	RESULT_INFO: 'I',
 	RESULT_STYLE: 'S',
-}
+}  # type: Dict[int, str]
 
 
 class UPCMessage(object):
+	"""
+	Univention Policy Check message.
 
-	"""Univention Policy Check message."""
+	:param id: Message identifier.
+	:param msg: Message test.
+	:param filename: Associated file name.
+	:param line: Associated line number.
+	:param pos: Associated column number.
+	"""
 
 	def __init__(self, id_, msg=None, filename=None, line=None, pos=None):
+		# type: (str, str, str, int, int) -> None
 		self.id = id_
 		self.msg = msg
 		self.filename = filename
@@ -62,6 +75,7 @@ class UPCMessage(object):
 			self.filename = self.filename[2:]
 
 	def __str__(self):
+		# type: () -> str
 		if self.filename:
 			s = '%s' % self.filename
 			if self.line is not None:
@@ -72,91 +86,152 @@ class UPCMessage(object):
 		return '%s: %s' % (self.id, self.msg)
 
 	def getId(self):
+		# type: () -> str
+		"""
+		Return unique message identifier.
+		"""
 		return self.id
 
 
 class UniventionPackageCheckBase(object):
+	"""
+	Abstract base class for checks.
+	"""
 
 	def __init__(self):
-		self.name = None
-		self.msg = []
-		self.debuglevel = 0
+		# type: () -> None
+		self.name = self.__class__.__module__  # type: str
+		self.msg = []  # type: List[UPCMessage]
+		self.debuglevel = 0  # type: int
 
 	def addmsg(self, msgid, msg=None, filename=None, line=None, pos=None):
+		# type: (str, str, str, int, int) -> None
+		"""
+		Add :py:class:`UPCMessage` message.
+
+		:param msgid: Message identifier.
+		:param msg: Message text.
+		:param filename: Associated file name.
+		:param line: Associated line number.
+		:param pos: Associated column number.
+		"""
 		message = UPCMessage(msgid, msg=msg, filename=filename, line=line, pos=pos)
 		self.msg.append(message)
 
 	def getMsgIds(self):  # pylint: disable-msg=R0201
+		# type: () -> Dict[str, List[Any]]
+		# BUG: Actually it is a Tuple[int, str], but level gets assigned!
+		"""
+		Return mapping from message-identifiert to 2-tuple (severity, message-text).
+		"""
 		return {}
 
 	def setdebug(self, level):
+		# type: (int) -> None
+		"""
+		Set debug level.
+
+		:param level: Debug level.
+		"""
 		self.debuglevel = level
 
 	def debug(self, msg):
+		# type: (str) -> None
+		"""
+		Print debug message.
+
+		:param msg: Text string.
+		"""
 		if self.debuglevel > 0:
-			print '%s: %s' % (self.name, msg)
+			print('%s: %s' % (self.name, msg))
 
 	def postinit(self, path):
-		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
+		# type: (str) -> None
+		"""
+		Checks to be run before real check or to create precalculated data for several runs. Only called once!
+
+		:param path: Directory or file to check.
+		"""
 
 	def check(self, path):
-		""" the real check """
+		# type: (str) -> None
+		"""
+		The real check.
+
+		:param path: Directory or file to check.
+		"""
 
 	def result(self):
-		""" return result """
+		# type: () -> List[UPCMessage]
+		"""
+		Return result as list of messages.
+
+		:returns: List of :py:class:`UPCMessage`
+		"""
 		return self.msg
 
 
 class UniventionPackageCheckDebian(UniventionPackageCheckBase):
+	"""
+	Check for :file:`debian/` directory.
+	"""
 
-    """Check for debian/ directory."""
-
-    def check(self, path):
-        """ the real check """
-        super(UniventionPackageCheckDebian, self).check(path)
-        if not os.path.isdir(os.path.join(path, 'debian')):
-            raise UCSLintException("directory '%s' does not exist!" % (path,))
+	def check(self, path):
+		"""
+		the real check.
+		"""
+		super(UniventionPackageCheckDebian, self).check(path)
+		if not os.path.isdir(os.path.join(path, 'debian')):
+			raise UCSLintException("directory '%s' does not exist!" % (path,))
 
 
 class UCSLintException(Exception):
-
-    """Top level exception."""
+	"""
+	Top level exception.
+	"""
 
 
 class DebianControlNotEnoughSections(UCSLintException):
-
-    """Content exception."""
+	"""
+	Content exception.
+	"""
 
 
 class DebianControlParsingError(UCSLintException):
-
-    """Parsing exception."""
+	"""
+	Parsing exception.
+	"""
 
 
 class FailedToReadFile(UCSLintException):
-
-	"""File reading exception."""
+	"""
+	File reading exception.
+	"""
 
 	def __init__(self, fn):
-		UCSLintException.__init__(self)
+		super(FailedToReadFile, self).__init__()
 		self.fn = fn
 
 
 class DebianControlEntry(dict):
+	"""
+	Handle paragraph in Deb822 control file.
+
+	:param content: String content of paragraph.
+	"""
 
 	def __init__(self, content):
+		# type: (str) -> None
 		dict.__init__(self)
 
 		lines = content.splitlines()
 		i = 0
-		inDescription = False
 		# handle multiline entries and merge them into one line
 		while i < len(lines):
 			if not lines[i] or lines[i].startswith('#'):
 				del lines[i]
 				continue
 			if lines[i].startswith(' ') or lines[i].startswith('\t'):
-				if not inDescription:
 					lines[i - 1] += ' %s' % lines[i].lstrip(' \t')
 					del lines[i]
 					continue
@@ -171,13 +246,17 @@ class DebianControlEntry(dict):
 
 
 class ParserDebianControl(object):
+	"""
+	Parse :file:`debian/control` file.
 
-	"""Parse debian/control file."""
+	:param filename: Full path.
+	"""
 
 	def __init__(self, filename):
+		# type: (str) -> None
 		self.filename = filename
-		self.source_section = None
-		self.binary_sections = []
+		self.source_section = None  # type: Optional[DebianControlEntry]
+		self.binary_sections = []  # type: List[DebianControlEntry]
 
 		try:
 			content = open(self.filename, 'r').read()
@@ -196,57 +275,67 @@ class ParserDebianControl(object):
 
 
 class RegExTest(object):
+	"""
+	Regular expression test.
+
+	:param regex: Compiled regular expression
+	:param msgid: Message identifier.
+	:param msg: Message text.
+	:param cntmin: Required minimum number of matches.
+	:param cntmax: Required maximum number of matches.
+	"""
 
 	def __init__(self, regex, msgid, msg, cntmin=None, cntmax=None):
+		# type: (Pattern, str, str, int, int) -> None
 		self.regex = regex
 		self.msgid = msgid
 		self.msg = msg
-		self.formatmsg = False
 		self.cntmin = cntmin
 		self.cntmax = cntmax
 		self.cnt = 0
-
-		for val in ['%(startline)s', '%(startpos)s', '%(endline)s', '%(endpos)s', '%(basename)s', '%(filename)s']:
-			if val in msg:
-				self.formatmsg = True
-				break
+		self.formatmsg = any(val in msg for val in ['%(startline)s', '%(startpos)s', '%(endline)s', '%(endpos)s', '%(basename)s', '%(filename)s'])
 
 
 class UPCFileTester(object):
+	"""
+	Univention Package Check - File Tester
+	simple class to test if a certain text exists/does not exist in a textfile
 
-	""" Univention Package Check - File Tester
-		simple class to test if a certain text exists/does not exist in a textfile
+	By default only the first 100k of the file will be read.
 
-		By default only the first 100k of the file will be read.
-
-		>>>	import re
-		>>>	x = UPCFileTester()
-		>>>	x.open('/etc/fstab')
-		>>>	x.addTest( re.compile('ext[234]'), '5432-1', 'Habe ein extfs in Zeile %(startline)s und Position %(startpos)s in Datei %(basename)s gefunden.', cntmax=0)
-		>>>	x.addTest( re.compile('squashfs'), '1234-5', 'Habe kein squashfs in Datei %(basename)s gefunden.', cntmin=1)
-		>>>	msglist = x.runTests()
-		>>>	for msg in msglist:
-		>>>		print '%s ==> %s ==> %s' % (msg.id, msg.filename, msg.msg)
-		5432-1: /etc/fstab:4:29: Habe ein extfs in Zeile 4 und Position 29 in Datei fstab gefunden.
-		5432-1: /etc/fstab:7:19: Habe ein extfs in Zeile 7 und Position 19 in Datei fstab gefunden.
-		1234-5: /etc/fstab: Habe kein squashfs in Datei fstab gefunden.
+	>>>	import re
+	>>>	x = UPCFileTester()
+	>>>	x.open('/etc/fstab')
+	>>>	x.addTest( re.compile('ext[234]'), '5432-1', 'Habe ein extfs in Zeile %(startline)s und Position %(startpos)s in Datei %(basename)s gefunden.', cntmax=0)
+	>>>	x.addTest( re.compile('squashfs'), '1234-5', 'Habe kein squashfs in Datei %(basename)s gefunden.', cntmin=1)
+	>>>	msglist = x.runTests()
+	>>>	for msg in msglist:
+	>>>		print('%s ==> %s ==> %s' % (msg.id, msg.filename, msg.msg))
+	5432-1: /etc/fstab:4:29: Habe ein extfs in Zeile 4 und Position 29 in Datei fstab gefunden.
+	5432-1: /etc/fstab:7:19: Habe ein extfs in Zeile 7 und Position 19 in Datei fstab gefunden.
+	1234-5: /etc/fstab: Habe kein squashfs in Datei fstab gefunden.
 	"""
 
 	def __init__(self, maxsize=100 * 1024):
+		# type: (int) -> None
 		"""
-		creates a new UPCFileTester object
-		maxsize: maximum number of bytes read from specified file
+		creates a new :py:class:`UPCFileTester` object
+
+		:param maxsize: maximum number of bytes read from specified file
 		"""
 		self.maxsize = maxsize
-		self.filename = None
-		self.basename = None
-		self.raw = None
-		self.lines = []
-		self.tests = []
+		self.filename = None  # type: Optional[str]
+		self.basename = None  # type: Optional[str]
+		self.raw = ''  # type: str
+		self.lines = []  # type: List[str]
+		self.tests = []  # type: List[RegExTest]
 
 	def open(self, filename):
+		# type: (str) -> None
 		"""
-		opens the specified file and reads up to 'maxsize' bytes into memory
+		Opens the specified file and reads up to `maxsize` bytes into memory.
+
+		:param filename: File to process.
 		"""
 		self.filename = filename
 		self.basename = os.path.basename(self.filename)
@@ -254,15 +343,19 @@ class UPCFileTester(object):
 		# the raw version is required to calculate the correct position.
 		# tests will be done with unwrapped version.
 		self.raw = open(filename, 'r').read(self.maxsize)
-		self.raw.rstrip('\n')
 		lines = self.raw.replace('\\\n', '  ').replace('\\\r\n', '   ')
 		self.lines = lines.splitlines()
 
 	def _getpos(self, linenumber, pos_in_line):
+		# type: (int, int) -> Tuple[int, int]
 		"""
 		Converts 'unwrapped' position values (line and position in line) into
 		position values corresponding to the raw file.
 		Counting of lines and position starts at 1, so first byte is at line 1 pos 1!
+
+		:param linenumber: Line number starting at 1.
+		:param pos_in_line: Column number startin at 1.
+		:returns: 2-tuple (line-number, column-number).
 		"""
 		pos = sum((len(_) + 1 for _ in self.lines[:linenumber]))
 		pos += pos_in_line
@@ -272,25 +365,30 @@ class UPCFileTester(object):
 		return (realline + 1, realpos)
 
 	def addTest(self, regex, msgid, msg, cntmin=None, cntmax=None):
+		# type: (Pattern, str, str, int, int) -> None
 		"""
 		add a new test
-		regex: regular expression
-		msgid: msgid for UPCMessage
-		msg: message for UPCMessage
+
+		:param regex: regular expression.
+		:param msgid: msgid for UPCMessage
+		:param msg: message for UPCMessage
 			if msg contains one or more of the keywords '%(startline)s', '%(startpos)s', '%(endline)s', '%(endpos)s' or '%(basename)s'
 			they will get replaced by their corresponding value.
-		cntmin: 'regex' has to match at least 'cntmin' times otherwise a UPCMessage will be added
-		cntmax: 'regex' has to match at most 'cntmax' times otherwise a UPCMessage will be added
+		:param cntmin: 'regex' has to match at least 'cntmin' times otherwise a UPCMessage will be added
+		:param cntmax: 'regex' has to match at most 'cntmax' times otherwise a UPCMessage will be added
 
-		an exception will be raised if neither cntmin nor cntmax has been set
+		:raises ValueError: if neither `cntmin` nor `cntmax` has been set
 		"""
 		if cntmin is None and cntmax is None:
 			raise ValueError('cntmin or cntmax has to be set')
 		self.tests.append(RegExTest(regex, msgid, msg, cntmin, cntmax))
 
 	def runTests(self):
+		# type: () -> List[UPCMessage]
 		"""
-		runs all given tests on loaded file and returns a list of UPCMessage objects
+		Runs all given tests on loaded file.
+
+		:returns: a list of UPCMessage objects
 		"""
 		if not self.filename:
 			raise Exception('no file has been loaded')
@@ -331,45 +429,74 @@ class UPCFileTester(object):
 
 class FilteredDirWalkGenerator(object):
 
-	def __init__(self, path, ignore_dirs=None, prefixes=None, suffixes=None, ignore_suffixes=None, ignore_files=None, ignore_debian_subdirs=True, reHashBang=None, readSize=2048, dangling_symlinks=False):
+	IGNORE_DIRS = {
+		'.git',
+		'.pybuild',
+		'.svn',
+		'CVS',
+	}
+	IGNORE_SUFFIXES = {
+		'~',
+		'.bak',
+		'.pyc',
+		'.pyo',
+		'.swp',
+	}
+	IGNORE_FILES = {
+		'config.guess',
+		'configure',
+		'libtool',
+		'depcomp',
+		'install-sh',
+		'config.sub',
+		'missing',
+		'config.status',
+	}
+
+	def __init__(
+		self,
+		path,  # type: str
+		ignore_dirs=None,  # type: Iterable[str]
+		prefixes=None,  # type: Iterable[str]
+		suffixes=None,  # type: Iterable[str]
+		ignore_suffixes=None,  # type: Iterable[str]
+		ignore_files=None,  # type: Iterable[str]
+		ignore_debian_subdirs=True,  # type: bool
+		reHashBang=None,  # type: Pattern
+		readSize=2048,  # type: int
+		dangling_symlinks=False,  # type: bool
+	):  # type: (...) -> None
 		"""
 		FilteredDirWalkGenerator is a generator that walks down all directories and returns all matching filenames.
 
 		There are several posibilities to limit returned results:
-		- ignore_dirs: a list of directory names that will be excluded when traversing subdirectories (e.g. [ '.git', '.svn' ] )
-		- prefixes: a list of prefixes files have to start with (e.g. ['univention-', 'preinst'])
-		- suffixes: a list of suffixes files have to end with (e.g. [ '.py', '.sh', '.patch' ])
-		- ignore_suffixes: files, that end with one of defined suffixes, will be ignored (e.g. ['~', '.bak'])
-		- ignore_files: list of files that will be ignored (e.g. ['.gitignore', 'config.sub'])
-		- ignore_debian_subdirs: boolean that defines if .../debian/* directories are ignored or not
-		- reHashBang: if defined, only files are returned whose first bytes match specified regular expression
-		- readSize: number of bytes that will be read for e.g. reHashBang
+
+		:param ignore_dirs: a list of additional directory names that will be excluded when traversing subdirectories (e.g. `['.git', '.svn']`)
+		:param prefixes: a list of prefixes files have to start with (e.g. `['univention-', 'preinst']`)
+		:param suffixes: a list of suffixes files have to end with (e.g. `['.py', '.sh', '.patch']`)
+		:param ignore_suffixes: a list of additional files, that end with one of defined suffixes, will be ignored (e.g. `['~', '.bak']`)
+		:param ignore_files: list of additional files that will be ignored (e.g. `['.gitignore', 'config.sub']`).
+		:param ignore_debian_subdirs: boolean that defines if :file:`.../debian/*` directories are ignored or not.
+		:param reHashBang: if defined, only files are returned whose first bytes match specified regular expression.
+		:param readSize: number of bytes that will be read for e.g. reHashBang
 
 		example:
 		>>> for fn in FilteredDirWalkGenerator(path, suffixes=['.py']):
-		>>>   print fn
+		>>>   print(fn)
 		"""
 		self.path = path
-		if ignore_dirs is None:
-			self.ignore_dirs = ['.git', '.svn', 'CVS']
-		else:
-			self.ignore_dirs = ignore_dirs
+		self.ignore_dirs = set(ignore_dirs or ()) | self.IGNORE_DIRS
 		self.prefixes = prefixes
 		self.suffixes = suffixes
-		if ignore_suffixes is None:
-			self.ignore_suffixes = ['~', '.bak']
-		else:
-			self.ignore_suffixes = ignore_suffixes
-		if ignore_files is None:
-			self.ignore_files = ('config.guess', 'configure', 'libtool', 'depcomp', 'install-sh', 'config.sub', 'missing', 'config.status')
-		else:
-			self.ignore_files = ignore_files
+		self.ignore_suffixes = set(ignore_suffixes or ()) | self.IGNORE_SUFFIXES
+		self.ignore_files = set(ignore_files or ()) | self.IGNORE_FILES
 		self.ignore_debian_subdirs = ignore_debian_subdirs
 		self.reHashBang = reHashBang
 		self.readSize = readSize
 		self.dangling_symlinks = dangling_symlinks
 
 	def __iter__(self):
+		# type: () -> Iterator[str]
 		for dirpath, dirnames, filenames in os.walk(self.path):
 			# remove undesired directories
 			if self.ignore_dirs:
@@ -395,23 +522,17 @@ class FilteredDirWalkGenerator(object):
 
 				# check if filename ends with ignoresuffix
 				if self.ignore_suffixes:
-					if any([fn.endswith(suffix) for suffix in self.ignore_suffixes]):
+					if any(fn.endswith(suffix) for suffix in self.ignore_suffixes):
 						continue
 
 				# check if filename starts with required prefix
 				if self.prefixes:
-					for prefix in self.prefixes:
-						if filename.startswith(prefix):
-							break
-					else:
+					if not any(filename.startswith(prefix) for prefix in self.prefixes):
 						continue
 
 				# check if filename ends with required suffix
 				if self.suffixes:
-					for suffix in self.suffixes:
-						if filename.endswith(suffix):
-							break
-					else:
+					if not any(filename.endswith(suffix) for suffix in self.suffixes):
 						continue
 
 				if self.reHashBang:
@@ -424,7 +545,6 @@ class FilteredDirWalkGenerator(object):
 
 				# return complete filename
 				yield fn
-		return
 
 
 def _test():
@@ -436,12 +556,12 @@ def _test():
 	x.open('/etc/fstab')
 	msglist = x.runTests()
 	for msg in msglist:
-		print str(msg)
+		print(str(msg))
 	x.open('/etc/passwd')
 	msglist = x.runTests()
 	for msg in msglist:
-		print str(msg)
+		print(str(msg))
 
 
 if __name__ == '__main__':
-    _test()
+	_test()

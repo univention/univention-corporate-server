@@ -28,7 +28,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-
+from __future__ import print_function
 try:
 	import univention.ucslint.base as uub
 except ImportError:
@@ -57,11 +57,7 @@ import sys
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	RE_PYTHON = re.compile('@!@')
 	RE_VAR = re.compile('@%@')
-
-	def __init__(self):
-		super(UniventionPackageCheck, self).__init__()
-		self.name = '0004-CheckUCR'
-		self.UCR_VALID_SPECIAL_CHARACTERS = '/_-'
+	UCR_VALID_SPECIAL_CHARACTERS = '/_-'
 
 	def getMsgIds(self):
 		return {
@@ -650,7 +646,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			try:
 				fn = obj['File'][0]
 			except LookupError:
-				print >> sys.stderr, 'FIXME: no File entry in obj: %s' % obj
+				print('FIXME: no File entry in obj: %s' % obj, file=sys.stderr)
 			else:
 				try:
 					conffn = find_conf(fn)
@@ -671,7 +667,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				try:
 					fn = obj['Subfile'][0]
 				except LookupError:
-					print >> sys.stderr, 'FIXME: no Subfile entry in obj: %s' % obj
+					print('FIXME: no Subfile entry in obj: %s' % obj, file=sys.stderr)
 				else:
 					try:
 						conffn = find_conf(fn)

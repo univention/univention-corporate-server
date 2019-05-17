@@ -36,10 +36,6 @@ import os
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def __init__(self):
-		super(UniventionPackageCheck, self).__init__()
-		self.name = '0006-CheckPostinst'
-
 	def getMsgIds(self):
 		return {
 			'0006-1': [uub.RESULT_WARN, 'postinst script does not contain string "#DEBHELPER#"'],

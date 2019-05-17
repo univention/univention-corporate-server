@@ -38,10 +38,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	"""Python specific checks."""
 
-	def __init__(self):
-		super(UniventionPackageCheck, self).__init__()
-		self.name = '0009-Python'
-
 	def getMsgIds(self):
 		return {
 			'0009-1': [uub.RESULT_WARN, 'failed to open file'],
