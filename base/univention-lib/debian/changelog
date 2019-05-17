@@ -1,3 +1,9 @@
+univention-lib (8.0.0-11) unstable; urgency=medium
+
+  * Bug #49500: log stderr if schema validation fails
+
+ -- Felix Botner <botner@univention.de>  Fri, 17 May 2019 10:12:58 +0200
+
 univention-lib (8.0.0-10) unstable; urgency=medium
 
   * Bug #41780: add basedir restriction in ldap extension listener
