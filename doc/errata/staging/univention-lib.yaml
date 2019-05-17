@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-lib
-fix: 8.0.0-10A~4.4.0.201905131719
+fix: 8.0.0-11A~4.4.0.201905171015
 desc: |
  This update addresses the following issue(s):
  * The package now uses dh_python2 instead of python-support.
@@ -11,4 +11,5 @@ desc: |
    /usr/lib/python2.7/dist-packages/univention/lib/.
  * A path traversal vulnerability in the ldap_extension.py listener
    utilities has been fixed.
-bug: [49136,41780]
+ * Log stderr if LDAP schema validation fails.
+bug: [49136,41780,49500]
