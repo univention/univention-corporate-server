@@ -1,3 +1,9 @@
+univention-portal (3.0.1-23) unstable; urgency=medium
+
+  * Bug #48814: Stricter permissions for /var/cache/univention-portal
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 16 May 2019 14:32:10 +0200
+
 univention-portal (3.0.1-22) unstable; urgency=medium
 
   * Bug #49113: Add debug statements
