@@ -148,13 +148,10 @@ def init(logfilename, do_flush=0, enable_function=0, enable_syslog=0):
 						datefmt=_datefmt)
 
 	formatter = logging.Formatter(_outfmt, _datefmt)
+	exit()
 	if logfilename == 'stderr' or logfilename == 'stdout':
 		# add stderr or stdout handler
 		try:
-			if _handler_console:
-				logging.getLogger('').removeHandler(_handler_console)
-				_handler_console = None
-
 			if logfilename == 'stdout':
 				_handler_console = logging.StreamHandler(sys.stdout)
 			else:
@@ -166,9 +163,6 @@ def init(logfilename, do_flush=0, enable_function=0, enable_syslog=0):
 		except:
 			print('opening %s failed' % logfilename)
 	else:
-		if _handler_file:
-			logging.getLogger('').removeHandler(_handler_file)
-			_handler_file = None
 		try:
 			# add file handler
 			_handler_file = logging.FileHandler(logfilename, 'a+')
@@ -201,6 +195,21 @@ def init(logfilename, do_flush=0, enable_function=0, enable_syslog=0):
 	_enable_syslog = enable_syslog
 
 	return result
+
+
+def exit():
+	"""
+	Close debug logfile.
+	"""
+	global _handler_console, _handler_file, _handler_syslog
+	logging.getLogger('MAIN').log(100, 'DEBUG_EXIT')
+	if _handler_console:
+		logging.getLogger('').removeHandler(_handler_console)
+		_handler_console = None
+
+	if _handler_file:
+		logging.getLogger('').removeHandler(_handler_file)
+		_handler_file = None
 
 
 def reopen():
