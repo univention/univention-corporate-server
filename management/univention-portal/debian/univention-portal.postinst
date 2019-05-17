@@ -40,6 +40,7 @@ create_logfile /var/log/univention/portal.log "root:adm" 640
 
 
 if [ "$1" = "configure" ]; then
+	chmod 700 /var/cache/univention-portal
 	systemctl daemon-reload
 	systemctl reload apache2
 	systemctl enable univention-portal-server.service
