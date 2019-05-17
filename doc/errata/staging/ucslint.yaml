@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: ucslint
+fix: 8.0.0-8A~4.4.0.201905171712
+desc: |
+ This update addresses the following issue:
+ * Also ignore temporary directoriy used by dh_python2
+bug: [42480]
