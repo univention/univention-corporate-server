@@ -123,11 +123,7 @@ _handler_syslog = None
 _do_flush = False
 _enable_function = False
 _enable_syslog = False
-_logger_level = {}
-
-# set default level for each logger
-for key in _map_id_old2new.values():
-	_logger_level[key] = _map_lvl_old2new[DEFAULT]
+_logger_level = dict((key, DEFAULT) for key in _map_id_old2new.values())
 
 
 def init(logfilename, do_flush=0, enable_function=0, enable_syslog=0):
@@ -229,8 +225,7 @@ def set_level(id, level):
 		level = ALL
 	elif level < ERROR:
 		level = ERROR
-	new_level = _map_lvl_old2new[level]
-	_logger_level[new_id] = new_level
+	_logger_level[new_id] = level
 
 
 def set_function(activated):
@@ -254,8 +249,8 @@ def debug(id, level, msg, utf8=True):
 	"""
 	global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
 	new_id = _map_id_old2new.get(id, 'MAIN')
-	new_level = _map_lvl_old2new[level]
-	if new_level >= _logger_level[new_id]:
+	if level <= _logger_level[new_id]:
+		new_level = _map_lvl_old2new[level]
 		logging.getLogger(new_id).log(new_level, msg)
 		# flush if requested
 		if _do_flush:
