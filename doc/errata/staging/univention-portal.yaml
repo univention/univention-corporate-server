@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-portal
+fix: 3.0.1-23A~4.4.0.201905171116
+desc: |-
+  This update addresses the following issue(s):
+  * The file permissions for the cache directory of the Portal is now stricter.
+    This prevents warnings in the UMC diagnosis module.
+bug: [48814]
