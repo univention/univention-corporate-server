@@ -43,7 +43,7 @@
 
 #define UV_DEBUG_DEFAULT        UV_DEBUG_WARN
 
-static enum uv_debug_level *univention_debug_level;
+static enum uv_debug_level univention_debug_level[DEBUG_MODUL_COUNT];
 static char *univention_debug_filename = NULL;
 static FILE *univention_debug_file = NULL;
 static enum uv_debug_flag_flush univention_debug_flush;
@@ -94,12 +94,6 @@ FILE * univention_debug_init(const char *logfile, enum uv_debug_flag_flush flush
 		return NULL;
 	}
 
-	univention_debug_level = malloc(DEBUG_MODUL_COUNT * sizeof(int));
-	if (univention_debug_level == NULL) {
-		fprintf(stderr, "Could not initialize univention_debug!\n");
-		return NULL;
-	}
-
 	for (i=0; i<DEBUG_MODUL_COUNT; i++) {
 		univention_debug_level[i] = UV_DEBUG_DEFAULT;
 	}
@@ -110,8 +104,6 @@ FILE * univention_debug_init(const char *logfile, enum uv_debug_flag_flush flush
 		univention_debug_file = stdout;
 	else if (logfile != NULL) {
 		if ((univention_debug_file = fopen(logfile, "a+")) == NULL) {
-			free(univention_debug_level);
-			univention_debug_level = NULL;
 			fprintf(stderr, "Could not open logfile \"%s\"\n", logfile);
 			return NULL;
 		}
@@ -221,9 +213,6 @@ void univention_debug_exit(void)
 
 	free(univention_debug_filename);
 	univention_debug_filename = NULL;
-
-	free(univention_debug_level);
-	univention_debug_level = NULL;
 
 	univention_debug_ready = false;
 }
