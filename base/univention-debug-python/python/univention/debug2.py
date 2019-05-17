@@ -138,9 +138,11 @@ def init(logfilename, do_flush=0, enable_function=0, enable_syslog=0):
 	:param bool do_flush: force flushing of messages (True).
 	:param bool enable_function: enable (True) or disable (False) function tracing.
 	:param bool enable_syslog: enable (True) or disable (False) logging to SysLog.
+	:returns: output file or None.
 	"""
 	global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
 
+	result = None
 	_logfilename = logfilename
 
 	# create root logger
@@ -164,6 +166,7 @@ def init(logfilename, do_flush=0, enable_function=0, enable_syslog=0):
 			_handler_console.setLevel(logging.DEBUG)
 			_handler_console.setFormatter(formatter)
 			logging.getLogger('').addHandler(_handler_console)
+			result = _handler_console.stream
 		except:
 			print('opening %s failed' % logfilename)
 	else:
@@ -176,6 +179,7 @@ def init(logfilename, do_flush=0, enable_function=0, enable_syslog=0):
 			_handler_file.setLevel(logging.DEBUG)
 			_handler_file.setFormatter(formatter)
 			logging.getLogger('').addHandler(_handler_file)
+			result = _handler_file.stream
 		except:
 			print('opening %s failed' % logfilename)
 
@@ -199,6 +203,8 @@ def init(logfilename, do_flush=0, enable_function=0, enable_syslog=0):
 	_do_flush = do_flush
 	_enable_function = enable_function
 	_enable_syslog = enable_syslog
+
+	return result
 
 
 def reopen():
