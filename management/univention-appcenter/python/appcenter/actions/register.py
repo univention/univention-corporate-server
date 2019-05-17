@@ -365,7 +365,7 @@ class AppListener(AppListener):
 				self.log('Already found %s as a host for %s. Trying to retrieve machine secret.' % (hostdn, app.id))
 				password = None
 				if os.path.isfile(app.secret_on_host):
-					with open(secret_on_host) as pwfile:
+					with open(app.secret_on_host) as pwfile:
 						password = pwfile.read()
 				return hostdn, password
 			else:

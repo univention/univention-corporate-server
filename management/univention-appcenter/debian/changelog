@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-23) unstable; urgency=medium
+
+  * Bug #49491: create machine.secret on host
+
+ -- Felix Botner <botner@univention.de>  Fri, 17 May 2019 09:40:40 +0200
+
 univention-appcenter (8.0.11-22) unstable; urgency=medium
 
   * Bug #49491: create machine.secret on host
