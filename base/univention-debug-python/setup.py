@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Debug
-#  debug.py
+#  setup.py
 #
 # Copyright 2004-2019 Univention GmbH
 #
@@ -30,36 +30,30 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-"""Univention debugging and logging library.
+import io
+from distutils.core import setup, Extension
+from email.utils import parseaddr
+from debian.changelog import Changelog
+from debian.deb822 import Deb822
 
-example:
+dch = Changelog(io.open('debian/changelog', 'r', encoding='utf-8'))  # ³
+dsc = Deb822(io.open('debian/control', 'r', encoding='utf-8'))
+realname, email_address = parseaddr(dsc['Maintainer'])
 
->>> import univention.debug as ud
->>> ud.init("stdout", ud.NO_FLUSH, ud.FUNCTION) #doctest: +ELLIPSIS
-... ...  DEBUG_INIT
->>> ud.set_level(ud.LISTENER, ud.ERROR)
->>> ud.debug(ud.LISTENER, ud.ERROR, 'Fatal error: var=%s' % 42) #doctest: +ELLIPSIS
-... ...  LISTENER    ( ERROR   ) : Fatal error: var=42
-"""
+setup(
+	package_dir={'': 'python'},
+	description='Univention debugging and logging library',
 
-import _debug
-from _debug import *
+	py_modules=['univention.debug', 'univention.debug2'],
+	ext_modules=[Extension(
+		'univention._debug', ['python/univention/py_debug.c'],
+		libraries=['univentiondebug'])],
 
+	url='https://www.univention.de/',
+	license='GNU Affero General Public License v3',
 
-def debug(id, level, ustring, utf8=True):
-	_debug.debug(id, level, ustring)
-
-
-class function:
-
-	def __init__(self, text, utf8=True):
-		self.text = text
-		_debug.begin(self.text)
-
-	def __del__(self):
-		_debug.end(self.text)
-
-
-if __name__ == '__main__':
-	import doctest
-	doctest.testmod()
+	name=dch.package,
+	version=dch.version.full_version,
+	maintainer=realname,
+	maintainer_email=email_address,
+)

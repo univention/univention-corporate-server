@@ -33,6 +33,10 @@
 #include <Python.h>
 #include <univention/debug.h>
 
+#if PY_MAJOR_VERSION >= 3
+#define PyInt_FromLong PyLong_FromLong
+#endif
+
 /*
  * example:
  *
@@ -56,8 +60,7 @@ py_univention_debug_debug(PyObject *self, PyObject *args)
 
     univention_debug(id, level, "%s", string);
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_RETURN_NONE;
 }
 PyDoc_STRVAR(py_univention_debug_debug__doc__,
         "debug(category, level, message) - Log debug message.\n"
@@ -82,20 +85,30 @@ py_univention_debug_init(PyObject *self, PyObject *args)
     fd = univention_debug_init(logfile, (char)flush, (char)function);
 
     if ( fd == NULL ) {
+        /* BUG: We should raise an exception here using
+         * return PyErr_SetFromErrnoWithFilename(PyExc_IOError, logfile);
+         * but univention_debug_init() returns NULL in many cases:
+         * - when already initialized
+         * - when open() fails
+         */
         Py_RETURN_NONE;
     }
 
+#if PY_MAJOR_VERSION >= 3
+    file = PyFile_FromFd(fileno(fd), logfile, "a+", -1, NULL, NULL, NULL, 1);
+#else
     file = PyFile_FromFile( fd, logfile, "a+", NULL );
+#endif
 
     return file;
 }
 PyDoc_STRVAR(py_univention_debug_init__doc__,
-        "init(logfile, flush, function) - Initialize debugging library.\n"
+        "init(logfile, force_flush, trace_function) - Initialize debugging library.\n"
         "\n"
-        "Initialize debugging library for logging to 'logfile', forcing 'flush' and tracing 'function's.\n"
+        "Initialize debugging library for logging to 'logfile'.\n"
         "logfile - name of the logfile, or 'stderr', or 'stdout'.\n"
-        "flush - force flushing of messages (True).\n"
-        "function - enable (True) or disable (False) function tracing.");
+        "force_flush - force flushing of messages (True).\n"
+        "trace_function - enable (True) or disable (False) function tracing.");
 
 static PyObject *
 py_univention_debug_set_level(PyObject *self, PyObject *args)
@@ -109,8 +122,7 @@ py_univention_debug_set_level(PyObject *self, PyObject *args)
 
     univention_debug_set_level(id, level);
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_RETURN_NONE;
 }
 PyDoc_STRVAR(py_univention_debug_set_level__doc__,
         "set_level(category, level) - Set debug level for category.\n"
@@ -150,14 +162,13 @@ py_univention_debug_set_function(PyObject *self, PyObject *args)
 
     univention_debug_set_function(function);
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_RETURN_NONE;
 }
 PyDoc_STRVAR(py_univention_debug_set_function__doc__,
-        "set_function(flag) - Enable function tracing.\n"
+        "set_function(activate) - Enable function tracing.\n"
         "\n"
         "Enable or disable the logging of function begins and ends.\n"
-        "flag - enable (True) or disable (False) function tracing.");
+        "activate - enable (True) or disable (False) function tracing.");
 
 static PyObject *
 py_univention_debug_begin(PyObject *self, PyObject *args)
@@ -170,14 +181,13 @@ py_univention_debug_begin(PyObject *self, PyObject *args)
 
     univention_debug_begin(string);
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_RETURN_NONE;
 }
 PyDoc_STRVAR(py_univention_debug_begin__doc__,
-        "begin(function) - Function starts here.\n"
+        "begin(fname) - Function starts here.\n"
         "\n"
-        "Log the begin of function 'function'.\n"
-        "function - name of the function starting.");
+        "Log the begin of function 'fname'.\n"
+        "fname - name of the function starting.");
 
 static PyObject *
 py_univention_debug_end(PyObject *self, PyObject *args)
@@ -190,22 +200,20 @@ py_univention_debug_end(PyObject *self, PyObject *args)
 
     univention_debug_end(string);
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_RETURN_NONE;
 }
 PyDoc_STRVAR(py_univention_debug_end__doc__,
-        "end(function) - Function ends here.\n"
+        "end(fname) - Function ends here.\n"
         "\n"
-        "Log the end of function 'function'.\n"
-        "function - name of the function ending.");
+        "Log the end of function 'fname'.\n"
+        "fname - name of the function ending.");
 
 static PyObject *
-py_univention_debug_exit(PyObject *self, PyObject *args)
+py_univention_debug_exit(PyObject *self)
 {
     univention_debug_exit();
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_RETURN_NONE;
 }
 PyDoc_STRVAR(py_univention_debug_exit__doc__,
         "exit() - Close debug log.\n"
@@ -213,12 +221,11 @@ PyDoc_STRVAR(py_univention_debug_exit__doc__,
         "Close the debug logfile.");
 
 static PyObject *
-py_univention_debug_reopen(PyObject *self, PyObject *args)
+py_univention_debug_reopen(PyObject *self)
 {
     univention_debug_reopen();
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_RETURN_NONE;
 }
 PyDoc_STRVAR(py_univention_debug_reopen__doc__,
         "reopen() - Re-open logfile.\n"
@@ -234,17 +241,36 @@ static struct PyMethodDef debug_methods[] = {
     {"set_function", (PyCFunction)py_univention_debug_set_function, METH_VARARGS, py_univention_debug_set_function__doc__},
     {"begin", (PyCFunction)py_univention_debug_begin, METH_VARARGS, py_univention_debug_begin__doc__},
     {"end", (PyCFunction)py_univention_debug_end, METH_VARARGS, py_univention_debug_end__doc__},
-    {"exit", (PyCFunction)py_univention_debug_exit, METH_VARARGS, py_univention_debug_exit__doc__},
-    {"reopen", (PyCFunction)py_univention_debug_reopen, METH_VARARGS, py_univention_debug_reopen__doc__},
+    {"exit", (PyCFunction)py_univention_debug_exit, METH_NOARGS, py_univention_debug_exit__doc__},
+    {"reopen", (PyCFunction)py_univention_debug_reopen, METH_NOARGS, py_univention_debug_reopen__doc__},
     { NULL, NULL, 0, NULL}
 };
 
-PyMODINIT_FUNC
-init_debug(void)
+#if PY_MAJOR_VERSION >= 3
+PyDoc_STRVAR(m_doc,
+        "univention._debug module");
+static struct PyModuleDef moduledef = {
+    PyModuleDef_HEAD_INIT,
+    .m_name = "_debug",
+    .m_doc = m_doc,
+    .m_methods = debug_methods,
+};
+#endif
+
+
+#if PY_MAJOR_VERSION >= 3
+PyMODINIT_FUNC PyInit__debug(void)
+#else
+PyMODINIT_FUNC init_debug(void)
+#endif
 {
     PyObject *module, *dict;
 
-    module = Py_InitModule("_debug", debug_methods);
+#if PY_MAJOR_VERSION >= 3
+    module = PyModule_Create(&moduledef);
+#else
+    module = Py_InitModule("univention._debug", debug_methods);
+#endif
 
     dict = PyModule_GetDict(module);
 
@@ -282,6 +308,10 @@ init_debug(void)
 
     PyDict_SetItemString(dict, "NO_FUNCTION", PyInt_FromLong(UV_DEBUG_NO_FUNCTION));
     PyDict_SetItemString(dict, "FUNCTION", PyInt_FromLong(UV_DEBUG_FUNCTION));
+
+#if PY_MAJOR_VERSION >= 3
+    return module;
+#endif
 }
 
 /* vim:set ts=4 sw=4 et: */
