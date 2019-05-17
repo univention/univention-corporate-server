@@ -109,10 +109,10 @@ _map_id_old2new = {
 }
 
 
-# 13.08.08 13:13:57  LISTENER    ( ERROR   ) : listener: 1
-# 13.08.08 13:13:57  LISTENER    ( WARN    ) : received signal 2
-# 13.08.08 13:14:02  DEBUG_INIT
-_outfmt = '%(asctime)s,%(msecs)d %(name)-11s (%(levelname)-7s): %(message)s'
+# 13.08.08 13:13:57.123  LISTENER    ( ERROR   ) : listener: 1
+# 13.08.08 13:13:57.123  LISTENER    ( WARN    ) : received signal 2
+# 13.08.08 13:14:02.123  DEBUG_INIT
+_outfmt = '%(asctime)s.%(msecs)03d %(name)-11s (%(levelname)-7s): %(message)s'
 _outfmt_syslog = '%(name)-11s (%(levelname)-7s): %(message)s'
 _datefmt = '%d.%m.%Y %H:%M:%S'
 
