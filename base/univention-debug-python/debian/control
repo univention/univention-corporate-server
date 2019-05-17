@@ -11,7 +11,7 @@ Build-Depends: debhelper (>= 9),
  python-debian,
  python3-debian,
  python-pytest,
- python3-pytest
+ python3-pytest,
  ucslint-univention,
 
 Package: python-univention-debug

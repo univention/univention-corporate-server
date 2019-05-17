@@ -6,7 +6,7 @@ import sys
 import re
 from datetime import datetime
 import pytest
-import univention.debug as ud
+import univention.debug2 as ud
 try:
 	from typing import Callable, Dict, Iterator, Tuple  # noqa F401
 except ImportError:
@@ -15,15 +15,13 @@ except ImportError:
 
 RE = re.compile(
 	r'''
-	(?P<datetime>[0-3]\d\.[01]\d\.\d{2}\s[0-2]\d:[0-5]\d:[0-5]\d)\.(?P<msec>\d{3})\s{2}(?P<text>
-	  (?:DEBUG_INIT
-	    |DEBUG_EXIT
-	    |(?P<category>\S+)\s+\(\s(?P<level>\S+)\s+\)\s:\s(?P<msg>.*)
+	(?P<datetime>[0-3]\d\.[01]\d\.\d{4}\s[0-2]\d:[0-5]\d:[0-5]\d)\.(?P<msec>\d{3})\s(?P<category>\S+)\s+\((?P<level>\S+)\s*\):\s(?P<text>
+	  (?:UNIVENTION_DEBUG_BEGIN\s:\s(?P<begin>.*)
+	    |UNIVENTION_DEBUG_END\s{3}:\s(?P<end>.*)
+	    |(?P<msg>.*)
 	))$
-	|UNIVENTION_DEBUG_BEGIN\s{2}:\s(?P<begin>.*)$
-	|UNIVENTION_DEBUG_END\s{4}:\s(?P<end>.*)$
 	''', re.VERBOSE)
-LEVEL = ['ERROR', 'WARN', 'PROCESS', 'INFO', 'ALL']
+LEVEL = ['ERROR', 'WARNING', 'PROCESS', 'INFO', 'ALL']
 CATEGORY = [
 	'MAIN',
 	'LDAP',
@@ -77,15 +75,17 @@ def parse():
 
 			stamp = groups.get('datetime')
 			if stamp is not None:
-				assert start <= datetime.strptime(stamp, '%d.%m.%y %H:%M:%S').replace(microsecond=int(groups['msec']) * 1000) <= end
+				assert start <= datetime.strptime(stamp, '%d.%m.%Y %H:%M:%S').replace(microsecond=int(groups['msec']) * 1000) <= end
 
 			if groups.get('begin') is not None:
 				yield ('begin', groups)
 			elif groups.get('end') is not None:
 				yield ('end', groups)
-			elif groups.get('text') == 'DEBUG_INIT':
+			elif groups.get('msg') == 'DEBUG_INIT':
 				yield ('init', groups)
-			elif groups.get('text') == 'DEBUG_EXIT':
+			elif groups.get('msg') == 'DEBUG_REINIT':
+				yield ('reinit', groups)
+			elif groups.get('msg') == 'DEBUG_EXIT':
 				yield ('exit', groups)
 			elif groups.get('text') is not None:
 				yield ('msg', groups)
@@ -153,7 +153,7 @@ def test_debug_closed():
 
 @pytest.mark.parametrize('name', LEVEL)
 def test_level(name, parse, tmplog):
-	level = getattr(ud, name)
+	level = getattr(ud, 'WARN' if name == 'WARNING' else name)
 	ud.set_level(ud.MAIN, level)
 	assert level == ud.get_level(ud.MAIN)
 
