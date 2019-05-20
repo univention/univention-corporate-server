@@ -11,44 +11,13 @@ Build-Depends: debhelper (>= 7.0.50~),
  python-all,
  python3-all
 
-Package: python-univention-namespace
-Architecture: all
-Depends:
- ${misc:Depends},
- ${python:Depends},
-Provides: ${python:Provides}
-Replaces: python-univention-config-registry
-Breaks: python-univention-config-registry (<< 7)
-Description: UCS - Python 2 namespace module
- This package declares the 'univention' namespace for Python 2.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: python3-univention-namespace
-Architecture: all
-Depends:
- ${misc:Depends},
- ${python3:Depends},
-Provides: ${python3:Provides}
-Description: UCS - Python 3 namespace module
- This package declares the 'univention' namespace for Python 3.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
 Package: python-univention
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
- python-univention-namespace,
  python-ldap,
  python-dns,
  python-univention-debug,
- python-cracklib,
+ python-cracklib
 Provides: ${python:Provides}
 Replaces: python-univention-config-registry
 Breaks: python-univention-config-registry (<< 7)
@@ -64,11 +33,10 @@ Description: UCS - common Python 2 modules
 Package: python3-univention
 Architecture: all
 Depends: ${misc:Depends}, ${python3:Depends},
- python3-univention-namespace,
  python3-ldap | python3-pyldap,
  python3-dns,
  python3-univention-debug,
- python3-cracklib,
+ python3-cracklib
 Provides: ${python3:Provides}
 Description: UCS - common Python 3 modules
  This package contains Python modules used by various
