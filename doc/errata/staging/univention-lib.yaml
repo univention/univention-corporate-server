@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-lib
-fix: 8.0.0-11A~4.4.0.201905171015
+fix: 8.0.0-12A~4.4.0.201905201645
 desc: |
  This update addresses the following issue(s):
  * The package now uses dh_python2 instead of python-support.
