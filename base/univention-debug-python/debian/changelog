@@ -1,4 +1,4 @@
-univention-debug (1.0.0-1) unstable; urgency=low
+univention-debug-python (1.0.0-1) unstable; urgency=low
 
   * Bug #49130: Split Python binding into separate package
   * Bug #46100: Add missing log targets to debug2.py

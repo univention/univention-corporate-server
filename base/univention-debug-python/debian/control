@@ -1,4 +1,4 @@
-Source: univention-debug
+Source: univention-debug-python
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
