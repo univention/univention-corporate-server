@@ -45,7 +45,7 @@ from json import load
 from univention.management.console import Translation
 from univention.management.console.protocol.definitions import BAD_REQUEST_UNAUTH
 from univention.management.console.modules import UMC_OptionTypeError, UMC_OptionMissing, UMC_Error
-from univention.management.console.ldap import user_connection
+from univention.management.console.ldap import user_connection, get_user_connection
 from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
 
@@ -78,10 +78,21 @@ def set_bind_function(connection_getter):
 	__bind_function = connection_getter
 
 
+def get_bind_function():
+	return __bind_function
+
+
 def LDAP_Connection(func):
+	"""Get a cached ldap connection bound to the user connection.
+
+	.. deprecated :: UCS 4.4
+		This must not be used in udm_ldap.py.
+		Use something explicit like self.get_ldap_connection() instead.
+
+	"""
 	@functools.wraps(func)
 	def _decorated(*args, **kwargs):
-		method = user_connection(func, bind=__bind_function, write=True)
+		method = user_connection(func, bind=get_bind_function(), write=True)
 		try:
 			return method(*args, **kwargs)
 		except (LDAPError, udm_errors.ldapError):
@@ -363,7 +374,6 @@ class UDM_Error(Exception):
 class UDM_ModuleCache(dict):
 	lock = threading.Lock()
 
-	@LDAP_Connection
 	def get(self, name, template_object=None, force_reload=False, ldap_connection=None, ldap_position=None):
 		UDM_ModuleCache.lock.acquire()
 		try:
@@ -391,25 +401,35 @@ class UDM_Module(object):
 
 	"""Wraps UDM modules to provie a simple access to the properties and functions"""
 
-	def __init__(self, module, force_reload=False):
+	def __init__(self, module, force_reload=False, ldap_connection=None, ldap_position=None):
 		"""Initializes the object"""
+		self.ldap_connection = ldap_connection
+		self.ldap_position = ldap_position
 		self._initialized_with_module = module
 		self.module = None
 		self.load(force_reload=force_reload)
 		if force_reload:
 			AppAttributes._cache = None
 
+	def get_ldap_connection(self):
+		if get_bind_function():
+			try:
+				self.ldap_connection, po = get_user_connection(bind=get_bind_function(), write=True)
+			except (LDAPError, udm_errors.ldapError):
+				self.ldap_connection, po = get_user_connection(bind=get_bind_function(), write=True)
+			self.ldap_position = udm.uldap.position(self.ldap_connection.base)
+		return self.ldap_connection, udm.uldap.position(self.ldap_connection.base)
+
 	def load(self, module=None, template_object=None, force_reload=False):
 		"""Tries to load an UDM module with the given name. Optional a
 		template object is passed to the init function of the module. As
 		the initialisation of a module is expensive the function uses a
 		cache to ensure that each module is just initialized once."""
-		global _module_cache
 
 		if module is None:
 			module = self._initialized_with_module
 		try:
-			self.module = _module_cache.get(module, force_reload=force_reload)
+			self.module = _module_cache.get(module, None, force_reload, *self.get_ldap_connection())  # FIXME: template_object not used?!
 		except udm_errors.noObject:
 			# can happen if the ldap connection is not bound to any user
 			# e.g. due to a rename of the current logged in user
@@ -432,11 +452,12 @@ class UDM_Module(object):
 		"""Depending on the syntax of the given property a default
 		search pattern/value is returned"""
 		MODULE.info('Searching for property %s' % property_name)
+		ldap_connection, ldap_position = self.get_ldap_connection()
 		for key, prop in getattr(self.module, 'property_descriptions', {}).items():
 			if key == property_name:
 				value = default_value(prop.syntax)
 				if isinstance(value, (list, tuple)):
-					value = read_syntax_choices(prop.syntax)
+					value = read_syntax_choices(prop.syntax, ldap_connection=ldap_connection, ldap_position=ldap_position)
 				return value
 
 	def _map_properties(self, obj, properties):
@@ -491,9 +512,9 @@ class UDM_Module(object):
 
 		return obj
 
-	@LDAP_Connection
-	def create(self, ldap_object, container=None, superordinate=None, ldap_connection=None, ldap_position=None):
+	def create(self, ldap_object, container=None, superordinate=None):
 		"""Creates a LDAP object"""
+		ldap_connection, ldap_position = self.get_ldap_connection()
 		if superordinate == 'None':
 			superordinate = None
 		if container:
@@ -517,7 +538,7 @@ class UDM_Module(object):
 			ldap_position.setDn(container)
 
 		if superordinate:
-			mod = get_module(self.name, superordinate)
+			mod = get_module(self.name, superordinate, ldap_connection)
 			if not mod:
 				MODULE.error('Superordinate module not found: %s' % (superordinate,))
 				raise SuperordinateDoesNotExist(superordinate)
@@ -549,9 +570,9 @@ class UDM_Module(object):
 
 		return obj.dn
 
-	@LDAP_Connection
-	def move(self, ldap_dn, container, ldap_connection=None, ldap_position=None):
+	def move(self, ldap_dn, container):
 		"""Moves an LDAP object"""
+		ldap_connection, ldap_position = self.get_ldap_connection()
 		superordinate = udm_objects.get_superordinate(self.module, None, ldap_connection, ldap_dn)
 		obj = self.module.object(None, ldap_connection, ldap_position, dn=ldap_dn, superordinate=superordinate)
 		try:
@@ -566,9 +587,9 @@ class UDM_Module(object):
 			MODULE.warn('Failed to move LDAP object %s: %s: %s' % (ldap_dn, e.__class__.__name__, str(e)))
 			UDM_Error(e).reraise()
 
-	@LDAP_Connection
-	def remove(self, ldap_dn, cleanup=False, recursive=False, ldap_connection=None, ldap_position=None):
+	def remove(self, ldap_dn, cleanup=False, recursive=False):
 		"""Removes an LDAP object"""
+		ldap_connection, ldap_position = self.get_ldap_connection()
 		superordinate = udm_objects.get_superordinate(self.module, None, ldap_connection, ldap_dn)
 		obj = self.module.object(None, ldap_connection, ldap_position, dn=ldap_dn, superordinate=superordinate)
 		try:
@@ -581,9 +602,9 @@ class UDM_Module(object):
 			MODULE.warn('Failed to remove LDAP object %s: %s: %s' % (ldap_dn, e.__class__.__name__, str(e)))
 			UDM_Error(e).reraise()
 
-	@LDAP_Connection
-	def modify(self, ldap_object, ldap_connection=None, ldap_position=None):
+	def modify(self, ldap_object):
 		"""Modifies a LDAP object"""
+		ldap_connection, ldap_position = self.get_ldap_connection()
 		superordinate = udm_objects.get_superordinate(self.module, None, ldap_connection, ldap_object['$dn$'])
 		MODULE.info('Modifying object %s with superordinate %s' % (ldap_object['$dn$'], superordinate))
 		obj = self.module.object(None, ldap_connection, ldap_position, dn=ldap_object.get('$dn$'), superordinate=superordinate)
@@ -614,9 +635,9 @@ class UDM_Module(object):
 			MODULE.warn('Failed to modify LDAP object %s: %s: %s' % (obj.dn, e.__class__.__name__, str(e)))
 			UDM_Error(e).reraise()
 
-	@LDAP_Connection
-	def search(self, container=None, attribute=None, value=None, superordinate=None, scope='sub', filter='', simple=False, simple_attrs=None, ldap_connection=None, ldap_position=None, hidden=True):
+	def search(self, container=None, attribute=None, value=None, superordinate=None, scope='sub', filter='', simple=False, simple_attrs=None, hidden=True):
 		"""Searches for LDAP objects based on a search pattern"""
+		ldap_connection, ldap_position = self.get_ldap_connection()
 		if container == 'all':
 			container = ldap_position.getBase()
 		elif container is None:
@@ -666,9 +687,9 @@ class UDM_Module(object):
 
 		return result
 
-	@LDAP_Connection
-	def get(self, ldap_dn=None, superordinate=None, attributes=[], ldap_connection=None, ldap_position=None):
+	def get(self, ldap_dn=None, superordinate=None, attributes=[]):
 		"""Retrieves details for a given LDAP object"""
+		ldap_connection, ldap_position = self.get_ldap_connection()
 		try:
 			if ldap_dn is not None:
 				if superordinate is None:
@@ -762,10 +783,11 @@ class UDM_Module(object):
 		if self.module is None:
 			return []
 		MODULE.info('Collecting child modules ...')
+		ldap_connection, ldap_position = self.get_ldap_connection()
 		children = getattr(self.module, 'childmodules', None) or []
 		modules = []
 		for child in children:
-			mod = UDM_Module(child)
+			mod = UDM_Module(child, ldap_connection=ldap_connection, ldap_position=ldap_position)
 			if not mod.module:
 				continue
 			MODULE.info('Found module %s' % str(mod))
@@ -822,9 +844,10 @@ class UDM_Module(object):
 
 	def get_layout(self, ldap_dn=None):
 		"""Layout information"""
+		ldap_connection, ldap_position = self.get_ldap_connection()
 		layout = getattr(self.module, 'layout', [])
 		if ldap_dn is not None:
-			mod = get_module(None, ldap_dn)
+			mod = get_module(None, ldap_dn, ldap_connection)
 			if mod is not None and self.name == mod.name and self.is_policy_module():
 				layout = copy.copy(layout)
 				tab = udm_layout.Tab(_('Referencing objects'), _('Objects referencing this policy object'), layout=['$references$'])
@@ -887,9 +910,9 @@ class UDM_Module(object):
 
 		return properties
 
-	@LDAP_Connection
-	def properties(self, position_dn, ldap_connection=None, ldap_position=None):
+	def properties(self, position_dn):
 		"""All properties of the UDM module"""
+		ldap_connection, ldap_position = self.get_ldap_connection()
 		props = [{'id': '$dn$', 'type': 'HiddenInput', 'label': '', 'searchable': False}]
 		for key, prop in getattr(self.module, 'property_descriptions', {}).items():
 			if key == 'filler':
@@ -951,7 +974,7 @@ class UDM_Module(object):
 				# E.g. users/user mailHomeServer; see Bug #33329, Bug #42903
 
 				try:
-					item['default'] = [x['id'] for x in read_syntax_choices(_get_syntax(prop.syntax.name)) if x['id']][0]
+					item['default'] = [x['id'] for x in read_syntax_choices(_get_syntax(prop.syntax.name), ldap_connection=ldap_connection, ldap_position=ldap_position) if x['id']][0]
 				except IndexError:
 					pass
 
@@ -1011,9 +1034,9 @@ class UDM_Module(object):
 		"""List of UDM module names of templates"""
 		return getattr(self.module, 'template', None)
 
-	@LDAP_Connection
-	def get_default_containers(self, ldap_connection=None, ldap_position=None):
+	def get_default_containers(self):
 		"""List of LDAP DNs of default containers"""
+		ldap_connection, ldap_position = self.get_ldap_connection()
 		return self.module.object.get_default_containers(ldap_connection)
 
 	@property
@@ -1025,6 +1048,7 @@ class UDM_Module(object):
 		"""Searches in all policy objects for the given object type and
 		returns a list of all matching policy types"""
 
+		ldap_connection, ldap_position = self.get_ldap_connection()
 		policyTypes = udm_modules.policyTypes(self.name)
 		if not policyTypes and self.childs:
 			# allow all policies for containers
@@ -1032,15 +1056,16 @@ class UDM_Module(object):
 
 		policies = []
 		for policy in policyTypes:
-			module = UDM_Module(policy)
+			module = UDM_Module(policy, ldap_connection=ldap_connection, ldap_position=ldap_position)
 			policies.append({'objectType': policy, 'label': module.title, 'description': module.description})
 
 		return policies
 
 	def get_references(self, dn):
+		ldap_connection, ldap_position = self.get_ldap_connection()
 		if self.is_policy_module():  # TODO: move into the handlers/policies/*.py
 			search_filter = filter_format("(&(objectClass=univentionPolicyReference)(univentionPolicyReference=%s))", (dn,))
-			return read_syntax_choices(udm_syntax.LDAP_Search(filter=search_filter, viewonly=True))
+			return read_syntax_choices(udm_syntax.LDAP_Search(filter=search_filter, viewonly=True), ldap_connection=ldap_connection, ldap_position=ldap_position)
 		return []
 
 	@property
@@ -1052,9 +1077,10 @@ class UDM_Module(object):
 			return 'dhcp/dhcp'
 		if self.name.startswith('dns/'):
 			return 'dns/dns'
+		ldap_connection, ldap_position = self.get_ldap_connection()
 		base, name = split_module_name(self.name)
 		for module in filter(lambda x: x.startswith(base), udm_modules.modules.keys()):
-			mod = UDM_Module(module)
+			mod = UDM_Module(module, ldap_connection=ldap_connection, ldap_position=ldap_position)
 			children = getattr(mod.module, 'childmodules', [])
 			if self.name in children:
 				return mod.name
@@ -1094,7 +1120,6 @@ def ldap_dn2path(ldap_dn, include_rdn=True):
 	return '%s:/%s' % ('.'.join(reversed(explode_dn(ldap_base, True))), '/'.join(reversed(rel_path)))
 
 
-@LDAP_Connection
 def get_module(flavor, ldap_dn, ldap_connection=None, ldap_position=None):
 	"""Determines an UDM module handling the LDAP object identified by the given LDAP DN"""
 	if flavor is None or flavor == 'navigation':
@@ -1106,14 +1131,13 @@ def get_module(flavor, ldap_dn, ldap_connection=None, ldap_position=None):
 	if not modules:
 		return None
 
-	module = UDM_Module(modules[0])
+	module = UDM_Module(modules[0], ldap_connection=ldap_connection, ldap_position=ldap_position)
 	if module.module is None:
 		MODULE.error('Identified module %s for %s (flavor=%s) does not have a relating UDM module.' % (modules[0], ldap_dn, flavor))
 		return None
 	return module
 
 
-@LDAP_Connection
 def list_objects(container, object_type=None, ldap_connection=None, ldap_position=None):
 	"""Yields UDM objects"""
 	try:
@@ -1139,7 +1163,7 @@ def list_objects(container, object_type=None, ldap_connection=None, ldap_positio
 			MODULE.warn('Found multiple object types for %r: %r' % (dn, modules))
 			MODULE.info('dn: %r, attrs: %r' % (dn, attrs))
 		for mod in modules:
-			module = UDM_Module(mod)
+			module = UDM_Module(mod, ldap_connection=ldap_connection, ldap_position=ldap_position)
 			if module.module:
 				break
 
@@ -1223,12 +1247,12 @@ def _get_syntax(syntax_name):
 	return udm_syntax.__dict__[syntax_name]()
 
 
-def search_syntax_choices_by_key(syn, key):
+def search_syntax_choices_by_key(syn, key, ldap_connection, ldap_position):
 	if issubclass(syn.__class__, udm_syntax.UDM_Objects):
 		if syn.key == 'dn':
 			module_search_options = {'scope': 'base', 'container': key}
 			try:
-				return read_syntax_choices(syn, {}, module_search_options)
+				return read_syntax_choices(syn, {}, module_search_options, ldap_connection=ldap_connection, ldap_position=ldap_position)
 			except udm_errors.base:  # TODO: which exception is raised here exactly?
 				# invalid DN
 				return []
@@ -1237,21 +1261,21 @@ def search_syntax_choices_by_key(syn, key):
 			if match:
 				attr = match.groups()[0]
 				options = {'objectProperty': attr, 'objectPropertyValue': key}
-				return read_syntax_choices(syn, options)
+				return read_syntax_choices(syn, options, ldap_connection=ldap_connection, ldap_position=ldap_position)
 
 	MODULE.warn('Syntax %r: No fast search function' % syn.name)
 	# return them all, as there is no reason to filter after everything has loaded
 	# frontend will cache it.
-	return read_syntax_choices(syn)
+	return read_syntax_choices(syn, ldap_connection=ldap_connection, ldap_position=ldap_position)
 
 
-def info_syntax_choices(syn, options={}):
+def info_syntax_choices(syn, options={}, ldap_connection=None, ldap_position=None):
 	if issubclass(syn.__class__, udm_syntax.UDM_Objects):
 		size = 0
 		if syn.static_values is not None:
 			size += len(syn.static_values)
 		for udm_module in syn.udm_modules:
-			module = UDM_Module(udm_module)
+			module = UDM_Module(udm_module, ldap_connection=ldap_connection, ldap_position=ldap_position)
 			if module.module is None:
 				continue
 			filter_s = _create_ldap_filter(syn, options, module)
@@ -1264,7 +1288,6 @@ def info_syntax_choices(syn, options={}):
 	return {'size': 0, 'performs_well': False}
 
 
-@LDAP_Connection
 def read_syntax_choices(syn, options={}, module_search_options={}, ldap_connection=None, ldap_position=None):
 	syntax_name = syn.name
 
@@ -1280,7 +1303,7 @@ def read_syntax_choices(syn, options={}, module_search_options={}, ldap_connecti
 			if syn.label:
 				attr.update(re.findall(r'%\(([^)]+)\)', syn.label))
 			for udm_module in syn.udm_modules:
-				module = UDM_Module(udm_module)
+				module = UDM_Module(udm_module, ldap_connection=ldap_connection, ldap_position=ldap_position)
 				if not module.allows_simple_lookup():
 					break
 				if module is not None:
@@ -1332,7 +1355,7 @@ def read_syntax_choices(syn, options={}, module_search_options={}, ldap_connecti
 				return result
 
 			for udm_module in syn.udm_modules:
-				module = UDM_Module(udm_module)
+				module = UDM_Module(udm_module, ldap_connection=ldap_connection, ldap_position=ldap_position)
 				if module.module is None:
 					continue
 				filter_s = _create_ldap_filter(syn, options, module)
@@ -1342,7 +1365,7 @@ def read_syntax_choices(syn, options={}, module_search_options={}, ldap_connecti
 					choices.extend(map_choices(module.search(**search_options)))
 		else:
 			for udm_module in syn.udm_modules:
-				module = UDM_Module(udm_module)
+				module = UDM_Module(udm_module, ldap_connection=ldap_connection, ldap_position=ldap_position)
 				if module.module is None:
 					continue
 				filter_s = _create_ldap_filter(syn, options, module)
@@ -1401,7 +1424,7 @@ def read_syntax_choices(syn, options={}, module_search_options={}, ldap_connecti
 				return _choices
 			return [(x, x) for x in values]
 
-		module = UDM_Module(syn.udm_module)
+		module = UDM_Module(syn.udm_module, ldap_connection=ldap_connection, ldap_position=ldap_position)
 		if module.module is None:
 			return []
 		MODULE.info('Found syntax %s with udm_module property' % syntax_name)
@@ -1434,7 +1457,7 @@ def read_syntax_choices(syn, options={}, module_search_options={}, ldap_connecti
 			syntax = syn
 
 		if '$dn$' in options:
-			filter_mod = get_module(None, options['$dn$'])
+			filter_mod = get_module(None, options['$dn$'], ldap_connection)
 			if filter_mod:
 				obj = filter_mod.get(options['$dn$'])
 				syntax.filter = udm.pattern_replace(syntax.filter, obj)
@@ -1451,9 +1474,9 @@ def read_syntax_choices(syn, options={}, module_search_options={}, ldap_connecti
 			if display_attr:
 				# currently we just support one display attribute
 				mod_display, display = split_module_attr(display_attr[0])
-				module = get_module(mod_display, dn)  # mod_display might be None
+				module = get_module(mod_display, dn, ldap_connection)  # mod_display might be None
 			else:
-				module = get_module(None, dn)
+				module = get_module(None, dn, ldap_connection)
 				display = None
 			if not module:
 				continue

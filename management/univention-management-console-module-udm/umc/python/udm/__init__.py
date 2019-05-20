@@ -57,12 +57,14 @@ from univention.management.console.modules.sanitizers import (
 )
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.log import MODULE
+from univention.management.console.ldap import get_user_connection
 from univention.management.console.protocol.session import TEMPUPLOADDIR
 
 import univention.admin.syntax as udm_syntax
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
 import univention.admin.uexceptions as udm_errors
+import univention.admin.uldap as udm_uldap
 
 from univention.config_registry import handler_set
 
@@ -209,6 +211,16 @@ class Instance(Base, ProgressMixin):
 			lo.allow_modify = False
 		lo.requireLicense()
 
+	def get_ldap_connection(self):
+		try:
+			lo, po = get_user_connection(bind=self.bind_user_connection, write=True)
+		except (LDAPError, udm_errors.ldapError):
+			lo, po = get_user_connection(bind=self.bind_user_connection, write=True)
+		return lo, udm_uldap.position(lo.base)
+
+	def get_module(self, flavor, ldap_dn):
+		return get_module(flavor, ldap_dn, self.get_ldap_connection()[0])
+
 	def _get_module_by_request(self, request, object_type=None):
 		"""Tries to determine the UDM module to use. If no specific
 		object type is given the request option 'objectType' is used. In
@@ -351,7 +363,7 @@ class Instance(Base, ProgressMixin):
 			if 'container' not in options:
 				yield {'$dn$': object, 'success': False, 'details': _('The destination is missing')}
 				continue
-			module = get_module(None, object)
+			module = self.get_module(None, object)
 			if not module:
 				yield {'$dn$': object, 'success': False, 'details': _('Could not identify the given LDAP object')}
 			elif 'move' not in module.operations:
@@ -415,7 +427,7 @@ class Instance(Base, ProgressMixin):
 			for obj in request.options:
 				properties = obj.get('object') or {}
 				ldap_dn = properties['$dn$']
-				module = get_module(request.flavor, ldap_dn)
+				module = self.get_module(request.flavor, ldap_dn)
 				if module is None:
 					if len(request.options) == 1:
 						raise ObjectDoesNotExist(ldap_dn)
@@ -447,7 +459,7 @@ class Instance(Base, ProgressMixin):
 			for item in request.options:
 				ldap_dn = item.get('object')
 				options = item.get('options', {})
-				module = get_module(request.flavor, ldap_dn)
+				module = self.get_module(request.flavor, ldap_dn)
 				if module is None:
 					result.append({'$dn$': ldap_dn, 'success': False, 'details': _('LDAP object could not be identified')})
 					continue
@@ -499,7 +511,7 @@ class Instance(Base, ProgressMixin):
 		for ldap_dn in request.options:
 			if request.flavor == 'users/self':
 				ldap_dn = self._user_dn
-			module = get_module(request.flavor, ldap_dn)
+			module = self.get_module(request.flavor, ldap_dn)
 			if module is None:
 				raise ObjectDoesNotExist(ldap_dn)
 			else:
@@ -529,7 +541,7 @@ class Instance(Base, ProgressMixin):
 						props['$options$'][opt['id']] = opt['value']
 					props['$policies$'] = {}
 					for policy in obj.policies:
-						pol_mod = get_module(None, policy)
+						pol_mod = self.get_module(None, policy)
 						if pol_mod and pol_mod.name:
 							props['$policies$'].setdefault(pol_mod.name, []).append(policy)
 					props['$labelObjectType$'] = module.title
@@ -574,7 +586,7 @@ class Instance(Base, ProgressMixin):
 				superordinate = None
 			elif superordinate is not None:
 				MODULE.info('Query defines a superordinate %s' % superordinate)
-				mod = get_module(request.flavor, superordinate)
+				mod = self.get_module(request.flavor, superordinate)
 				if mod is not None:
 					MODULE.info('Found UDM module %r for superordinate %s' % (mod.name, superordinate))
 					superordinate = mod.get(superordinate)
@@ -599,9 +611,9 @@ class Instance(Base, ProgressMixin):
 			for obj in result:
 				if obj is None:
 					continue
-				module = get_module(object_type, obj.dn)
+				module = self.get_module(object_type, obj.dn)
 				if module is None:
-					# This happens when concurrent a object is removed between the module.search() and get_module() call
+					# This happens when concurrent a object is removed between the module.search() and self.get_module() call
 					MODULE.warn('LDAP object does not exists %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
 					continue
 				entry = {
@@ -771,7 +783,7 @@ class Instance(Base, ProgressMixin):
 		if request.flavor != 'navigation':
 			module = UDM_Module(request.flavor)
 			if superordinate:
-				module = get_module(request.flavor, superordinate) or module
+				module = self.get_module(request.flavor, superordinate) or module
 			self.finished(request.id, module.child_modules)
 			return
 
@@ -926,18 +938,20 @@ class Instance(Base, ProgressMixin):
 	)
 	@simple_response
 	def syntax_choices_key(self, syntax, key):
+		lo, po = self.get_ldap_connection()
 		syntax = _get_syntax(syntax)
 		if syntax is None:
 			return
-		return search_syntax_choices_by_key(syntax, key)
+		return search_syntax_choices_by_key(syntax, key, lo, po)
 
 	@sanitize(syntax=StringSanitizer(required=True))
 	@simple_response
 	def syntax_choices_info(self, syntax):
+		lo, po = self.get_ldap_connection()
 		syntax = _get_syntax(syntax)
 		if syntax is None:
 			return
-		return info_syntax_choices(syntax)
+		return info_syntax_choices(syntax, ldap_connection=lo, ldap_position=po)
 
 	@sanitize(
 		objectPropertyValue=LDAPSearchSanitizer(),
@@ -953,11 +967,12 @@ class Instance(Base, ProgressMixin):
 		return: [ { 'id' : <name>, 'label' : <text> }, ... ]
 		"""
 
-		def _thread(request):
+		@LDAP_Connection
+		def _thread(request, ldap_connection=None, ldap_position=None):
 			syntax = _get_syntax(request.options['syntax'])
 			if syntax is None:
 				return
-			return read_syntax_choices(syntax, request.options)
+			return read_syntax_choices(syntax, request.options, ldap_connection=ldap_connection, ldap_position=ldap_position)
 
 		thread = notifier.threads.Simple('SyntaxChoice', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
@@ -1080,7 +1095,7 @@ class Instance(Base, ProgressMixin):
 
 		def _thread(container):
 			entries = []
-			for module, obj in list_objects(container, object_type=object_type):
+			for module, obj in list_objects(container, object_type=object_type, ldap_connection=ldap_connection, ldap_position=ldap_position):
 				if obj is None:
 					continue
 				if object_type != '$containers$' and module.childs:
@@ -1149,7 +1164,7 @@ class Instance(Base, ProgressMixin):
 					_obj = _get_object(_object_dn, _module)
 				elif _container_dn:
 					# editing a new (i.e. non existing) object -> use the parent container
-					_module = get_module(None, _container_dn)
+					_module = self.get_module(None, _container_dn)
 					_obj = _get_object(_container_dn, _module)
 
 				return (_object_dn, _container_dn, _obj)
