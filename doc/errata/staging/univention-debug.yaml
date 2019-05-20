@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-debug
+fix: 11.0.0-2A~4.4.0.201905171721
+desc: |
+ This update addresses the following issue:
+ * Split low-level C implementation from Python binding to simplify transition
+   to using `dh_python2` and adding Python3 support.
+bug: [49130]
