@@ -289,15 +289,120 @@ define([
 		},
 
 		_getAppSuggestions: function() {
-			return [];
+			return [{
+				condition: ['owncloud', 'adconnector', 'letsencrypt'],
+				candidates: [
+					{ id: 'onlyoffice-ds', mayNotBeInstalled: ['collabora', 'collabora-online'] },
+					{ id: 'collabora', mayNotBeInstalled: ['onlyoffice-ds'] },
+					{ id: 'kopano-core', mayNotBeInstalled: ['oxseforucs', 'egroupware', 'tine20', 'zimbra', 'horde'] },
+				]
+			}, {
+				condition: ['owncloud', 'adconnector'],
+				candidates: [
+					{ id: 'samba-memberserver', mayNotBeInstalled: ['samba4'] },
+					{ id: 'letsencrypt', mayNotBeInstalled: [] },
+					{ id: 'onlyoffice-ds', mayNotBeInstalled: ['collabora', 'collabora-online'] },
+				]
+			}, {
+				condition: ['nextcloud', 'kopano-core'],
+				candidates: [
+					{ id: 'letsencrypt', mayNotBeInstalled: [] },
+					{ id: 'fetchmail', mayNotBeInstalled: ['oxseforucs'] },
+					{ id: 'samba4', mayNotBeInstalled: ['samba-memberserver'] },
+					{ id: 'onlyoffice-ds', mayNotBeInstalled: ['collabora', 'collabora-online'] },
+				]
+			}, {
+				condition: ['nextcloud', 'letsencrypt'],
+				candidates: [
+					{ id: 'kopano-core', mayNotBeInstalled: ['oxseforucs', 'egroupware', 'tine20', 'zimbra', 'horde'] },
+					{ id: 'samba4', mayNotBeInstalled: ['samba-memberserver'] },
+					{ id: 'onlyoffice-ds', mayNotBeInstalled: ['collabora', 'collabora-online'] },
+					{ id: 'self-service', mayNotBeInstalled: [] },
+				]
+			}, {
+				condition: ['kopano-core', 'samba4'],
+				candidates: [
+					{ id: 'fetchmail', mayNotBeInstalled: ['oxseforucs'] },
+					{ id: 'letsencrypt', mayNotBeInstalled: [] },
+					{ id: 'self-service', mayNotBeInstalled: [] },
+					{ id: 'nextcloud', mayNotBeInstalled: ['owncloud'] },
+				]
+			}, {
+				condition: ['kopano-core', 'letsencrypt'],
+				candidates: [
+					{ id: 'fetchmail', mayNotBeInstalled: ['oxseforucs'] },
+					{ id: 'samba4', mayNotBeInstalled: ['samba-memberserver'] },
+					{ id: 'nextcloud', mayNotBeInstalled: ['owncloud'] },
+					{ id: 'self-service', mayNotBeInstalled: [] },
+				]
+			}, {
+				condition: ['samba4', 'letsencrypt'],
+				candidates: [
+					{ id: 'self-service', mayNotBeInstalled: [] },
+					{ id: 'kopano-core', mayNotBeInstalled: ['oxseforucs', 'egroupware', 'tine20', 'zimbra', 'horde'] },
+					{ id: 'nextcloud', mayNotBeInstalled: ['owncloud'] },
+					{ id: 'cups', mayNotBeInstalled: [] },
+				]
+			}, {
+				condition: ['owncloud'],
+				candidates: [
+					{ id: 'adconnector', mayNotBeInstalled: [] },
+					{ id: 'letsencrypt', mayNotBeInstalled: [] },
+					{ id: 'samba-memberserver', mayNotBeInstalled: ['samba4'] },
+					{ id: 'samba4', mayNotBeInstalled: ['samba-memberserver'] },
+				]
+			}, {
+				condition: ['nextcloud'],
+				candidates: [
+					{ id: 'samba4', mayNotBeInstalled: ['samba-memberserver'] },
+					{ id: 'letsencrypt', mayNotBeInstalled: [] },
+					{ id: 'onlyoffice-ds', mayNotBeInstalled: ['collabora', 'collabora-online'] },
+					{ id: 'kopano-core', mayNotBeInstalled: ['oxseforucs', 'egroupware', 'tine20', 'zimbra', 'horde'] },
+				]
+			}, {
+				condition: ['kopano-core'],
+				candidates: [
+					{ id: 'samba4', mayNotBeInstalled: ['samba-memberserver'] },
+					{ id: 'fetchmail', mayNotBeInstalled: ['oxseforucs'] },
+					{ id: 'letsencrypt', mayNotBeInstalled: [] },
+					{ id: 'nextcloud', mayNotBeInstalled: ['owncloud'] },
+				]
+			}, {
+				condition: ['samba4'],
+				candidates: [
+					{ id: 'dhcp-server', mayNotBeInstalled: [] },
+					{ id: 'cups', mayNotBeInstalled: [] },
+					{ id: 'self-service', mayNotBeInstalled: [] },
+					{ id: 'pkgdb', mayNotBeInstalled: [] },
+				]
+			}, {
+				condition: ['letsencrypt'],
+				candidates: [
+					{ id: 'samba4', mayNotBeInstalled: ['samba-memberserver'] },
+					{ id: 'kopano-core', mayNotBeInstalled: ['oxseforucs', 'egroupware', 'tine20', 'zimbra', 'horde'] },
+					{ id: 'nextcloud', mayNotBeInstalled: ['owncloud'] },
+					{ id: 'owncloud', mayNotBeInstalled: ['nextcloud'] },
+				]
+			}];
 		},
 
 		_getSuggestedAppIds: function(suggestions, installedApps) {
 			let res = [];
-			let match = suggestions.find(suggestion => suggestion.condition.every(id => installedApps.find(app => app.id === id)));
-			if (match) {
-				res.push(...match.ids.filter(id => !installedApps.find(app => app.id === id)));
-			}
+			suggestions.some(suggestion => {
+				let doesMatch = suggestion.condition.every(id => installedApps.find(app => app.id === id));
+				if (doesMatch) {
+					res = suggestion.candidates.filter(candidate => (
+						!installedApps.find(app => app.id === candidate.id) &&
+						candidate.mayNotBeInstalled.every(id => (
+							!installedApps.find(app => app.id === id))
+						)
+					)).map(candidate => candidate.id);
+					if (res.length) {
+						return true;
+					}
+				}
+				return false;
+			});
 			return res;
 		},
 
