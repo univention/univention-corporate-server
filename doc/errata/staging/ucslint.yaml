@@ -6,5 +6,5 @@ src: ucslint
 fix: 8.0.0-10A~4.4.0.201905201554
 desc: |
  This update addresses the following issue:
- * Also ignore temporary directoriy used by dh_python2
+ * Also ignore temporary directory used by dh_python2.
 bug: [42480]
