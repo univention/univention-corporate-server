@@ -1,3 +1,9 @@
+univention-python (12.0.0-10) unstable; urgency=low
+
+  * Bug #49136: Split namespace into separate packages.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 20 May 2019 09:20:58 +0200
+
 univention-python (12.0.0-9) unstable; urgency=medium
 
   * Bug #49136: depend on python3-pyldap
