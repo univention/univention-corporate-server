@@ -1,11 +1,11 @@
 product: ucs
 release: "4.3"
-version: [4]
+version: [3, 4]
 scope: ucs_4.3-0-errata4.3-4
 src: univention-bind
-fix: 12.0.2-8A~4.3.0.201905151707
+fix: 12.0.2-9A~4.3.0.201905201657
 desc: |
  This update addresses the following issue:
  * Fix dependency header of legacy SysV init script to work in environments
-   without Samba4.
+   installed with UCS-4.2 or older and without Samba4.
 bug: [49440]
