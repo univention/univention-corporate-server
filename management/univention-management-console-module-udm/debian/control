@@ -16,12 +16,26 @@ Depends: ${misc:Depends},
  univention-directory-manager-tools (>= 9.0.16-1),
  univention-management-console-server,
  univention-directory-reports,
- python-tornado,
  python-mimeparse,
 Provides: univention-directory-manager
 Replaces: univention-directory-manager (<< 9.0.0)
 Description: UMC module for UCS Directory Manager
  This package contains the UMC module for UCS Directory Manager.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-http-service-udm
+Architecture: all
+Depends: ${misc:Depends},
+ univention-management-console-module-udm,
+ python-tornado,
+ python-mimeparse,
+ python-concurrent.futures,
+Description: HTTP service for UCS Directory Manager
+ This package contains the HTTP service for UCS Directory Manager.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
