@@ -10,7 +10,7 @@ from univention.testing.umc import Client
 import quota_cache as qc
 
 
-class QuoataCheck(object):
+class QuotaCheck(object):
 
 	def __init__(self, quota_type="usrquota", fs_type="ext4"):
 		ucr = ucr_test.UCSTestConfigRegistry()

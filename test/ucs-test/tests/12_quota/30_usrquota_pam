@@ -5,14 +5,14 @@
 ## packages:
 ##   - univention-quota
 
-from quota_test import QuoataCheck
+from quota_test import QuotaCheck
 
 
 def main():
 	for fs_type in ['ext4', 'xfs']:
 		print("Now checking fs type: {}".format(fs_type))
-		quoataCheck = QuoataCheck(quota_type="usrquota", fs_type=fs_type)
-		quoataCheck.test_quota_pam()
+		quotaCheck = QuotaCheck(quota_type="usrquota", fs_type=fs_type)
+		quotaCheck.test_quota_pam()
 
 
 if __name__ == '__main__':
