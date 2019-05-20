@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-samba
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Several vulnerabilities in the listener for shares have been fixed:
+   The name of shares are validated.
+   The blacklist for share pathes is now evaluated correctly.
+   Configuration values are now correctly quoted to prevent injecting
+   multiple further share entries.
+bug: [44054]

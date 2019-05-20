@@ -12,4 +12,6 @@ desc: |
  * A path traversal vulnerability in the ldap_extension.py listener
    utilities has been fixed.
  * Log stderr if LDAP schema validation fails.
-bug: [49136,41780,49500]
+ * A symlink and code execution vulnerabiliy has been fixed in
+  univention.lib.listenerSharePath.
+bug: [49136,41780,49500,44054]

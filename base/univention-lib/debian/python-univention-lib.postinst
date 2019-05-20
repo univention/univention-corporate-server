@@ -1,0 +1,63 @@
+#!/bin/sh
+# postinst script for python-univention-lib
+#
+# Copyright 2019 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+#DEBHELPER#
+
+univention-config-registry set \
+	'listener/shares/whitelist/defaults?/home/*:/opt/*:/run/*:/media/*:/mnt/*:/srv/*' \
+	'listener/shares/whitelist/opsi4ucs?/var/lib/opsi/*' \
+	'listener/shares/whitelist/univention-printserver-pdf?/var/spool/cups-pdf/*' \
+	'listener/shares/whitelist/ucs-school-import?/home/*' \
+	'listener/shares/whitelist/italc-windows?/usr/share/italc-windows'
+
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 8.0.0-11; then
+	service univention-directory-listener force-reload 2>/dev/null || true
+fi
+
+python <<EOL
+import pipes
+import univention.uldap
+import univention.lib.listenerSharePath
+from univention.config_registry import ConfigRegistry
+ucr = ConfigRegistry()
+ucr.load()
+try:
+	lo = univention.uldap.getMachineConnection()
+	attrs = lo.search('univentionSharePath=*', attr=['univentionSharePath'])
+except:
+	pass
+else:
+	for dn, attr in attrs:
+		for directory in attr.get('univentionSharePath', []):
+			if univention.lib.listenerSharePath.is_blacklisted(directory, ucr):
+				print('WARNING: the share %s has a blacklisted path: You should execute: ucr set listener/shares/whitelist/%s=%s' % (dn, pipes.quote(univention.uldap.explodeDn(dn, True)[0]), pipes.quote(directory)))
+EOL
+
+exit 0

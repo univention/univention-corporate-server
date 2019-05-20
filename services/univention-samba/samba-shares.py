@@ -51,11 +51,19 @@ filter = '(&(objectClass=univentionShare)(objectClass=univentionShareSamba))'  #
 attributes = []
 modrdn = '1'
 
-tmpFile = os.path.join("/var", "cache", "univention-directory-listener", name + ".oldObject")
+tmpFile = '/var/cache/univention-directory-listener/samba-shares.oldObject'
+
+
+def _validate_smb_share_name(name):
+	if not name or len(name) > 80:
+		return False
+	illegal_chars = set('\\/[]:|<>+=;,*?"' + ''.join(map(chr, range(0x1F + 1))))
+	if set(str(name)) & illegal_chars:
+		return False
+	return True
 
 
 def handler(dn, new, old, command):
-
 	configRegistry = ConfigRegistry()
 	configRegistry.load()
 	interfaces = Interfaces(configRegistry)
@@ -120,7 +128,8 @@ def handler(dn, new, old, command):
 		listener.unsetuid()
 
 	if old:
-		share_name_mapped = urllib.quote(old.get('univentionShareSambaName', [''])[0], safe='')
+		share_name = old.get('univentionShareSambaName', [''])[0]
+		share_name_mapped = urllib.quote(share_name, safe='')
 		filename = '/etc/samba/shares.conf.d/%s' % (share_name_mapped,)
 		listener.setuid(0)
 		try:
@@ -129,16 +138,44 @@ def handler(dn, new, old, command):
 		finally:
 			listener.unsetuid()
 
+	def _quote(arg):
+		if ' ' in arg or '"' in arg or '\\' in arg:
+			arg = '"%s"' % (arg.replace('\\', '\\\\').replace('"', '\\"'),)
+		return arg.replace('\n', '')
+
+	def _map_quote(args):
+		return (_quote(arg) for arg in args)
+
 	if new:
-		share_name_mapped = urllib.quote(new.get('univentionShareSambaName', [''])[0], safe='')
+		share_name = new.get('univentionShareSambaName', [''])[0]
+		if not _validate_smb_share_name(share_name):
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "invalid samba share name: %r" % (share_name,))
+			return
+		share_name_mapped = urllib.quote(share_name, safe='')
 		filename = '/etc/samba/shares.conf.d/%s' % (share_name_mapped,)
+
+		# important!: createOrRename() checks if the share path is allowed. this must be done prior to writing any files.
+		# try to create directory to share
+		if share_name != 'homes':
+			# object was renamed
+			if not old and oldObject and command == "a":
+				old = oldObject
+			listener.setuid(0)
+			try:
+				ret = univention.lib.listenerSharePath.createOrRename(old, new, listener.configRegistry)
+			finally:
+				listener.unsetuid()
+			if ret:
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "%s: rename/create of sharePath for %s failed (%s)" % (name, dn, ret))
+				return
+
 		listener.setuid(0)
 		try:
 			fp = open(filename, 'w')
 
-			print >>fp, '[%s]' % new['univentionShareSambaName'][0]
-			if new['univentionShareSambaName'][0] != 'homes':
-				print >>fp, 'path = %s' % new['univentionSharePath'][0]
+			print >>fp, '[%s]' % (share_name,)
+			if share_name != 'homes':
+				print >>fp, 'path = %s' % _quote(new['univentionSharePath'][0])
 			mapping = [
 				('description', 'comment'),
 				('univentionShareSambaMSDFS', 'msdfs root'),
@@ -190,33 +227,22 @@ def handler(dn, new, old, command):
 				vfs_objects.extend(additional_vfs_objects)
 
 			if vfs_objects:
-				print >>fp, 'vfs objects = %s' % ' '.join(vfs_objects)
+				print >>fp, 'vfs objects = %s' % (' '.join(_map_quote(vfs_objects)), )
 
 			for attr, var in mapping:
 				if not new.get(attr):
 					continue
 				if attr == 'univentionShareSambaVFSObjects':
 					continue
-				if attr == 'univentionShareSambaDirectoryMode' and new['univentionSharePath'] == '/tmp':
+				if attr == 'univentionShareSambaDirectoryMode' and new['univentionSharePath'] in ('/tmp', '/tmp/'):
 					continue
 				if attr in ('univentionShareSambaHostsAllow', 'univentionShareSambaHostsDeny'):
-					print >>fp, '%s = %s' % (var, ', '.join(new[attr]))
+					print >>fp, '%s = %s' % (var, (', '.join(_map_quote(new[attr]))))
 				else:
-					print >>fp, '%s = %s' % (var, new[attr][0])
-			# try to create directory to share
-			if new['univentionShareSambaName'][0] != 'homes':
-				# object was renamed
-				if not old and oldObject and command == "a":
-					old = oldObject
-				ret = univention.lib.listenerSharePath.createOrRename(old, new, listener.configRegistry)
-				if ret:
-					univention.debug.debug(
-						univention.debug.LISTENER, univention.debug.ERROR,
-						"%s: rename/create of sharePath for %s failed (%s)" % (name, dn, ret))
+					print >>fp, '%s = %s' % (var, _quote(new[attr][0]))
 
-			if new.get('univentionShareSambaCustomSetting'):
-				for setting in new['univentionShareSambaCustomSetting']:
-					print >>fp, setting
+			for setting in new.get('univentionShareSambaCustomSetting', []):  # FIXME: vulnerable to injection of further paths and entries
+				print >>fp, setting.replace('\n', '')
 
 			# implicit settings
 
@@ -237,7 +263,7 @@ def handler(dn, new, old, command):
 			print >>fp, '# Warning: This file is auto-generated and will be overwritten by \n#          univention-directory-listener module. \n#          Please edit the following file instead: \n#          /etc/samba/local.conf \n  \n# Warnung: Diese Datei wurde automatisch generiert und wird durch ein \n#          univention-directory-listener Modul überschrieben werden. \n#          Ergänzungen können an folgender Datei vorgenommen werden: \n# \n#          /etc/samba/local.conf \n#'
 
 			for f in os.listdir('/etc/samba/shares.conf.d'):
-				print >>fp, 'include = %s' % os.path.join('/etc/samba/shares.conf.d', f)
+				print >>fp, 'include = %s' % _quote(os.path.join('/etc/samba/shares.conf.d', f))
 			fp.close()
 			os.rename('/etc/samba/shares.conf.temp', '/etc/samba/shares.conf')
 			if run_ucs_commit:

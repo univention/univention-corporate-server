@@ -11,6 +11,12 @@ Description[en]=The automatic move of file shares - configurable through the var
 Type=str
 Categories=service-misc
 
+[listener/shares/whitelist/.*]
+Description[de]=Standardmäßig wird die Erstellung von Freigaben für einige Systemverzeichnisse verhindert. Diese Variablen ermöglichen das Freigeben von Verzeichnissen, die sonst auf der Standard-Blackist stehen. Die Werte der Variablen können eine durch Doppelpunkte separierte Liste von erlaubten Verzeichnissen enthalten (z.B. /var/*:/usr/*). Die Variable listener/shares/whitelist/default liefert eine empfohlene Standardliste für UCS.
+Description[en]=For security reasons creating shares for some system directories is denied by default. This family of variables allows overriding the default blacklist. The values may contain a colon separated list of allowed directories (e.g. /var/*:/usr/*). The variable listener/shares/whitelist/default specifies the UCS recommended default whitelist.
+Type=str
+Categories=service-misc
+
 [backup/clean/max_age]
 Description[en]=Automatic deletion of backup-files in /var/univention-backup/, of files older than backup/clean/max_age. If unset, no files are deleted. If less than backup/clean/min_backups backup-files exist, no files are deleted.
 Description[de]=Automatisches Löschen von Backup-Dateien in /var/univention-backup, die älter als backup/clean/max_age sind. Wenn diese Variable nicht gesetzt ist, werden keine Dateien gelöscht. Wenn weniger als backup/clean/min_backups Backup-Dateien existieren, werden keine Dateien gelöscht.
