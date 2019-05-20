@@ -17,7 +17,7 @@ Build-Depends: debhelper (>= 9),
 Package: python-univention-debug
 Architecture: any
 Depends:
- python-univention (>= 12.0.0-8),
+ python-univention-namespace (>= 12.0.0-10),
  ${misc:Depends},
  ${python:Depends},
  ${shlibs:Depends},
@@ -34,7 +34,6 @@ Description: UCS - debugging and logging library (Python2 interface)
 Package: python3-univention-debug
 Architecture: any
 Depends:
- python3-univention,
  ${misc:Depends},
  ${python3:Depends},
  ${shlibs:Depends},
