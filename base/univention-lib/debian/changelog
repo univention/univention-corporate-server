@@ -1,3 +1,12 @@
+univention-lib (8.0.0-12) unstable; urgency=medium
+
+  * Bug #44054: fix security vulnerabilities in listenerSharePath.py:
+  * symlink attacks via /foo/../root/
+  * code execution listenerSharePath.checkDirFileSystem("/'; id; echo 'foo", {})
+  * added whitelist via UCR variables listener/shares/whitelist/.*
+
+ -- Florian Best <best@univention.de>  Mon, 20 May 2019 12:59:03 +0200
+
 univention-lib (8.0.0-11) unstable; urgency=medium
 
   * Bug #49500: log stderr if schema validation fails
