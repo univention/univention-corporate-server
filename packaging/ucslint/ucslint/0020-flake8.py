@@ -31,6 +31,7 @@
 from __future__ import print_function
 import re
 import os
+import sys
 import subprocess
 from argparse import ArgumentParser
 
@@ -72,6 +73,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 	def __init__(self, *args, **kwargs):
 		self.show_statistics = kwargs.pop('show_statistics', False)
+		self.python_versions = ['python2.7', 'python3.5']
+		try:
+			with open('debian/rules') as fd:
+				content = fd.read()
+			if not re.search('\s*dh .*--with.*python2', content):
+				self.python_versions.remove('python2.7')
+			if not re.search('\s*dh .*--with.*python3', content):
+				self.python_versions.remove('python3.5')
+		except EnvironmentError:
+			pass
 		super(UniventionPackageCheck, self).__init__(*args, **kwargs)
 
 	def getMsgIds(self):
@@ -295,23 +306,25 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		super(UniventionPackageCheck, self).check(path)
 
 		errors = []
-		for ignore, pathes in self._iter_pathes(path):
-			cmd = ['python2.7', '/usr/bin/flake8', '--config=/dev/null']
-			if ignore:
-				cmd.extend(['--ignore', ignore])
-			if self.DEFAULT_SELECT:
-				cmd.extend(['--select', self.DEFAULT_SELECT])
-			cmd.extend(['--max-line-length', str(self.MAX_LINE_LENGTH)])
-			cmd.extend(['--format', '0020-%(code)s %(path)s %(row)s %(col)s %(text)s'])
-			if self.show_statistics:
-				cmd.append('--statistics')
-			if self.debuglevel > 0:
-				cmd.append('--show-source')
-			cmd.append('--')
-			cmd.extend(pathes)
+		print('Checking with', self.python_versions)
+		for python in self.python_versions:
+			for ignore, pathes in self._iter_pathes(path):
+				cmd = [python, '/usr/bin/flake8', '--config=/dev/null']
+				if ignore:
+					cmd.extend(['--ignore', ignore])
+				if self.DEFAULT_SELECT:
+					cmd.extend(['--select', self.DEFAULT_SELECT])
+				cmd.extend(['--max-line-length', str(self.MAX_LINE_LENGTH)])
+				cmd.extend(['--format', '0020-%(code)s %(path)s %(row)s %(col)s %(text)s'])
+				if self.show_statistics:
+					cmd.append('--statistics')
+				if self.debuglevel > 0:
+					cmd.append('--show-source')
+				cmd.append('--')
+				cmd.extend(pathes)
 
-			process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-			errors.extend(process.communicate()[0].splitlines())
+				process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+				errors.extend(process.communicate()[0].splitlines())
 
 		self.format_errors(errors)
 
@@ -383,12 +396,15 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		parser.add_argument('--ignore', default=cls.DEFAULT_IGNORE, help='default: %(default)s')
 		parser.add_argument('--max-line-length', default=cls.MAX_LINE_LENGTH, help='default: %(default)s')
 		parser.add_argument('--graceful', action='store_true', default=False, help='behave like calling ucslint would do: do not fail on certain errors')
+		parser.add_argument('--versions', default='2.7,3.5', help='Which python versions to run (e.g. 2.7,3.5)')
 		args, args.arguments = parser.parse_known_args()
 		cls.DEFAULT_IGNORE = args.ignore
 		cls.DEFAULT_SELECT = args.select
 		cls.MAX_LINE_LENGTH = args.max_line_length
 		cls.GRACEFUL = args.graceful
 		self = cls(show_statistics=args.statistics)
+		if args.versions:
+			self.python_versions = ['python%s' % (float(x),) for x in args.versions.split(',')]
 		self.setdebug(args.debug)
 		self.postinit(args.path)
 		if args.fix:
@@ -396,9 +412,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		if args.check or not args.fix:
 			self.check(args.path)
 		msgids = self.getMsgIds()
+		exitcode = 0
 		for msg in self.result():
-			print(uub.RESULT_INT2STR.get(msgids.get(msg.getId(), [None])[0]) or 'FIXME', str(msg))
+			errno = msgids.get(msg.getId(), [None])[0]
+			if errno == uub.RESULT_ERROR:
+				exitcode = 1
+			print(uub.RESULT_INT2STR.get(errno) or 'FIXME', str(msg))
+		return exitcode
 
 
 if __name__ == '__main__':
-	UniventionPackageCheck.main()
+	sys.exit(UniventionPackageCheck.main())
