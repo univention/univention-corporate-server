@@ -329,7 +329,7 @@ class ObjectTypes(Ressource):
 		superordinate = self.get_query_argument('superordinate', None)
 		module = UDM_Module(object_type)
 		if superordinate:
-			module = get_module(object_type, superordinate) or module  # FIXME: the object_type param is wrong?!
+			module = get_module(object_type, superordinate, self.ldap_connection) or module  # FIXME: the object_type param is wrong?!
 
 		result = module.child_modules or []
 		if not result:
@@ -706,7 +706,7 @@ class Objects(Ressource):
 		fields = (set(fields) | set([objectProperty])) - set(['name', 'None', None, ''])
 
 		if superordinate:
-			mod = get_module(superordinate, superordinate)
+			mod = get_module(superordinate, superordinate, self.ldap_connection)
 			if not mod:
 				raise SuperordinateDoesNotExist(superordinate)
 			superordinate = mod.get(superordinate)
@@ -718,7 +718,7 @@ class Objects(Ressource):
 		for obj in result or []:
 			if obj is None:
 				continue
-			module = get_module(object_type, obj.dn)
+			module = get_module(object_type, obj.dn, self.ldap_connection)
 			if module is None:
 				# This happens when concurrent a object is removed between the module.search() and get_module() call
 				# MODULE.warn('LDAP object does not exists %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
@@ -795,7 +795,7 @@ class Object(Ressource):
 		if object_type == 'users/self' and dn != self.request.user_dn:
 			raise HTTPError(403)
 
-		module = get_module(object_type, dn)
+		module = get_module(object_type, dn, self.ldap_connection)
 		if module is None:
 			raise NotFound(object_type, dn)
 
@@ -818,7 +818,7 @@ class Object(Ressource):
 			props['$options$'][opt['id']] = opt['value']
 		props['$policies$'] = {}
 		for policy in obj.policies:
-			pol_mod = get_module(None, policy)
+			pol_mod = get_module(None, policy, self.ldap_connection)
 			if pol_mod and pol_mod.name:
 				props['$policies$'].setdefault(pol_mod.name, []).append(policy)
 		props['$labelObjectType$'] = module.title
@@ -832,7 +832,7 @@ class Object(Ressource):
 	@tornado.gen.coroutine
 	def put(self, object_type, dn):
 		"""PUT udm/users/user/$DN (Benutzer hinzufügen / modifizieren)"""
-		module = get_module(object_type, dn)
+		module = get_module(object_type, dn, self.ldap_connection)
 		if not module:
 			raise NotFound(object_type)  # FIXME: create
 
@@ -840,7 +840,7 @@ class Object(Ressource):
 
 	@tornado.gen.coroutine
 	def patch(self, object_type, dn):
-		module = get_module(object_type, dn)
+		module = get_module(object_type, dn, self.ldap_connection)
 		if not module:
 			raise NotFound(object_type)
 		yield self.modify(module, self.request.body_arguments)
@@ -866,7 +866,7 @@ class Object(Ressource):
 	@tornado.gen.coroutine
 	def delete(self, object_type, dn):
 		"""DELETE udm/users/user/$DN (Benutzer löschen)"""
-		module = get_module(object_type, dn)
+		module = get_module(object_type, dn, self.ldap_connection)
 		if not module:
 			raise NotFound(object_type)
 
@@ -939,7 +939,7 @@ class PropertyChoices(Ressource):
 		except KeyError:
 			raise NotFound(object_type, dn)
 		request_body = {'syntax': syntax.name}  # FIXME
-		choices = yield self.pool.submit(read_syntax_choices, _get_syntax(syntax.name), request_body)
+		choices = yield self.pool.submit(read_syntax_choices, _get_syntax(syntax.name), request_body, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 		self.content_negotiation(choices)
 
 
@@ -971,7 +971,7 @@ class PolicyResult(Ressource):
 
 		if is_container:
 			# editing a new (i.e. non existing) object -> use the parent container
-			obj = self.get_object(get_module(None, dn).module, dn)
+			obj = self.get_object(get_module(None, dn, self.ldap_connection).module, dn)
 		else:
 			# editing an exiting UDM object -> use the object itself
 			obj = self.get_object(object_type, dn)
