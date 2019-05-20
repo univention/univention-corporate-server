@@ -54,6 +54,8 @@ define([
 
 		query: null,
 
+		defaultLinkTarget: null,
+
 		_setQueryAttr: function(query) {
 			domClass.remove(this.domNode, 'dijitDisplayNone'); // The category has to be visible so that this.grid._resizeItemNames() works
 			this.grid.set('query', query);
@@ -77,7 +79,8 @@ define([
 				entries: this.entries,
 				domainName: this.domainName,
 				category: this.category,
-				renderMode: this.renderMode
+				renderMode: this.renderMode,
+				defaultLinkTarget: this.defaultLinkTarget,
 			});
 
 			switch (this.renderMode) {

@@ -168,6 +168,12 @@ property_descriptions = {
 		short_description=_('Portal content'),
 		syntax=univention.admin.syntax.PortalCategorySelection,
 	),
+	'defaultLinkTarget': univention.admin.property(
+		short_description=_('Default browser tab for portal entries'),
+		syntax=univention.admin.syntax.PortalDefaultLinkTarget,
+		default='newwindow',
+		dontsearch=True,
+	),
 }
 
 layout = [
@@ -190,6 +196,7 @@ layout = [
 			# ["showMenu"],
 			# ["showSearch"],
 			# ["showLogin"],
+			['defaultLinkTarget'],
 			['showApps'],
 			# ["showServers"],
 			['links'],
@@ -251,6 +258,7 @@ mapping.register('logo', 'univentionPortalLogo', None, univention.admin.mapping.
 mapping.register('portalEntriesOrder', 'univentionPortalEntriesOrder')
 mapping.register('links', 'univentionPortalLinks', mapLinkValue, unmapLinkValue)
 mapping.register('content', 'univentionPortalContent', mapContent, unmapContent)
+mapping.register('defaultLinkTarget', 'univentionPortalDefaultLinkTarget', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):

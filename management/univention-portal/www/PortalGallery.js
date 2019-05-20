@@ -79,6 +79,8 @@ define([
 
 		domainName: null,
 
+		defaultLinkTarget: null,
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this.baseClass += ' umcPortalGallery';
@@ -264,7 +266,22 @@ define([
 			switch (this.renderMode) {
 				case portalTools.RenderMode.NORMAL:
 					domNode = this.inherited(arguments);
-					put(domNode, 'a[href=$]', this._getWebInterfaceUrl(item), query('.umcGalleryItem', domNode)[0]);
+					var link = put('a[href=$]', this._getWebInterfaceUrl(item));
+					var openLinkInNewWindow = true;
+					if (this.defaultLinkTarget && this.defaultLinkTarget === 'samewindow') {
+						openLinkInNewWindow = false;
+					}
+					switch (item.linkTarget) {
+						case 'samewindow':
+							openLinkInNewWindow = false; break;
+						case 'newwindow':
+							openLinkInNewWindow = true;  break;
+					}
+					if (openLinkInNewWindow) {
+						link.target = '_blank';
+						link.rel = 'noopener';
+					}
+					put(domNode, link, query('.umcGalleryItem', domNode)[0]);
 					break;
 				case portalTools.RenderMode.EDIT:
 					if (item.id && item.id === '$addEntryTile$') {

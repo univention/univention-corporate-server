@@ -4639,6 +4639,21 @@ class PortalFontColor(select):
 	]
 
 
+class PortalDefaultLinkTarget(select):
+	choices = [
+		('samewindow', _('Same tab')),
+		('newwindow', _('New tab')),
+	]
+
+
+class PortalEntryLinkTarget(select):
+	choices = [
+		('useportaldefault', _('Use default of portal')),
+		('samewindow', _('Same tab')),
+		('newwindow', _('New tab')),
+	]
+
+
 class LocalizedDisplayName(translationTuple):
 	"""
 	Syntax for a translated display name of a portal entry.
