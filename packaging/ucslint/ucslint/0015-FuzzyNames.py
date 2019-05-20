@@ -116,7 +116,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
-		for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=['.gz', '.zip', '.jpeg', '.jpg', '.png', '.svg', '.mo']):
+		for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=['.gz', '.zip', '.jpeg', '.jpg', '.png', '.svg', '.mo', '.jar', '.bz2', '.xz']):
 			with open(fn, 'r') as fd:
 				for lnr, line in enumerate(fd, start=1):
 					origline = line

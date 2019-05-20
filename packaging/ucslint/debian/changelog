@@ -1,3 +1,9 @@
+ucslint (8.0.0-9) unstable; urgency=low
+
+  * Bug #42480: Ignore more files.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 20 May 2019 10:23:59 +0200
+
 ucslint (8.0.0-8) unstable; urgency=low
 
   * Bug #42480: Ignore more files.
