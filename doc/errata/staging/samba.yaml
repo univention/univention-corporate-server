@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: samba
+fix: 2:4.10.1-1A~4.4.0.201905201811
+desc: |
+ This update addresses the following issue:
+ * Re-add "auth methods" option removed from upstream Samba sources
+bug: [49426]
