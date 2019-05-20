@@ -72,7 +72,7 @@ from univention.lib.i18n import Translation
 # TODO: use http link header
 # TODO: set Last-Modified
 # FIXME: add_asterisks sanitizer
-# FIXME: prevent in the javascript that navigation container query is called with container=='None'
+# FIXME: prevent in the javascript UMC module that navigation container query is called with container=='None'
 # TODO: translation
 # FIXME: it seems request.path contains the un-urlencoded path, could be security issue!
 
@@ -662,7 +662,12 @@ class NextFreeIpAddress(Ressource):
 		except udm_errors.nextFreeIp:
 			raise NoIpLeft(dn)
 
-		result = {'ip': obj['nextIp'], 'dnsEntryZoneForward': obj['dnsEntryZoneForward'], 'dhcpEntryZone': obj['dhcpEntryZone'], 'dnsEntryZoneReverse': obj['dnsEntryZoneReverse']}
+		result = {
+			'ip': obj['nextIp'],
+			'dnsEntryZoneForward': obj['dnsEntryZoneForward'],
+			'dhcpEntryZone': obj['dhcpEntryZone'],
+			'dnsEntryZoneReverse': obj['dnsEntryZoneReverse']
+		}
 
 		self.content_negotiation(result)
 
