@@ -75,6 +75,8 @@ define([
 	};
 
 	return declare("PortalGallery", [ AppGallery ], {
+		doSetGalleryItemContextMenuHandlers: false,
+
 		iconClassPrefix: 'umcPortal',
 
 		domainName: null,
