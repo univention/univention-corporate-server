@@ -1,0 +1,7 @@
+.pybuild/
+debian/*.debhelper
+debian/debhelper-build-stamp
+debian/files
+debian/python-univention-namespace/
+debian/python-univention/
+debian/python3-univention/
