@@ -1,3 +1,9 @@
+ucslint (8.0.0-10) unstable; urgency=low
+
+  * Bug #42480: Speed-up spelling detection
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 20 May 2019 15:21:03 +0200
+
 ucslint (8.0.0-9) unstable; urgency=low
 
   * Bug #42480: Ignore more files.
