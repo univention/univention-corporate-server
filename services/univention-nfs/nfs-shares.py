@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
 import listener
 import os
 import re
@@ -52,7 +52,7 @@ modrdn = '1'
 __exports = '/etc/exports'
 __comment_pattern = re.compile('^"*/.*#[ \t]*LDAP:[ \t]*(.*)')
 
-tmpFile = os.path.join("/var", "cache", "univention-directory-listener", name + ".oldObject")
+tmpFile = '/var/cache/univention-directory-listener/nfs-shares.oldObject'
 
 
 def handler(dn, new, old, command):
@@ -100,7 +100,7 @@ def handler(dn, new, old, command):
 		listener.unsetuid()
 
 	# update exports file
-	lines = _read(lambda match: not match or match.group(1) != dn)
+	lines = _read(lambda match: not match or match.group(1) != _quote(dn))
 
 	if new and 'objectClass' in new and 'univentionShareNFS' in new['objectClass']:
 		path = new['univentionSharePath'][0]
@@ -112,9 +112,9 @@ def handler(dn, new, old, command):
 		] + new.get('univentionShareNFSCustomSetting', [])
 		lines.append('%s -%s %s # LDAP:%s' % (
 			_exports_escape(path),
-			','.join(options),
-			' '.join(new.get('univentionShareNFSAllowed', ['*'])),
-			dn
+			_quote(','.join(options)),
+			_quote(' '.join(new.get('univentionShareNFSAllowed', ['*']))),
+			_quote(dn)
 		))
 
 		_write(lines)
@@ -149,6 +149,7 @@ def _read(keep=lambda match: True):
 def _write(lines):
 	listener.setuid(0)
 	try:
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'Writing /etc/exports with %d lines' % (len(lines),))
 		with open(__exports, 'w') as fp:
 			fp.write('\n'.join(lines) + '\n')
 	finally:
@@ -170,6 +171,10 @@ def _exports_escape(text):
 	'"a\\042b"'
 	"""
 	return '"%s"' % (''.join(r'\%03o' % (ord(c),) if c < ' ' or c == '"' else c for c in text),)
+
+
+def _quote(text):
+	return _exports_escape(text)[1:-1]
 
 
 def postrun():

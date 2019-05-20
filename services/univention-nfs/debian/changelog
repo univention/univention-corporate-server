@@ -1,3 +1,9 @@
+univention-nfs (11.0.1-2) unstable; urgency=medium
+
+  * Bug #44054: fix newline injection into /etc/exports
+
+ -- Florian Best <best@univention.de>  Mon, 20 May 2019 13:27:06 +0200
+
 univention-nfs (11.0.1-1) unstable; urgency=medium
 
   * Bug #46969: bindpwdfile support
