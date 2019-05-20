@@ -7,4 +7,6 @@ fix: 8.0.11-23A~4.4.0.201905170946
 desc: |
  This update addresses the following issue(s):
  * Create app password file on host before starting container.
-bug: [49491]
+ * The App Center now shows app suggestions based on already
+   installed apps.
+bug: [49491, 49510]
