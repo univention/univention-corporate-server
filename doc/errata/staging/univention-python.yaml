@@ -5,6 +5,8 @@ scope: ucs_4.4-0-errata4.4-0
 src: univention-python
 fix: 12.0.0-9A~4.4.0.201905101454
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The python3-univention package dependencies have been adjusted.
-bug: [49136]
+ * The package dependency loop for `python-univention-debug` has been broken
+   by intriducing a new binary package `python-univention-namespace`.
+bug: [49136, 49506]
