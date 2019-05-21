@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-debug-python
-fix: 1.0.0-1A~4.4.0.201905201332
+fix: 11.0.0-2A~4.4.0.201905210851
 desc: |
  This update addresses the following issue:
  * Split low-level C implementation from Python binding to simplify transition
