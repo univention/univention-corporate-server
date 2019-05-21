@@ -143,6 +143,9 @@ def handler(dn, new, old, command):
 			arg = '"%s"' % (arg.replace('\\', '\\\\').replace('"', '\\"'),)
 		return arg.replace('\n', '')
 
+	def _simple_quote(arg):
+		return arg.replace('\n', '')
+
 	def _map_quote(args):
 		return (_quote(arg) for arg in args)
 
@@ -236,6 +239,8 @@ def handler(dn, new, old, command):
 					continue
 				if attr in ('univentionShareSambaHostsAllow', 'univentionShareSambaHostsDeny'):
 					print >>fp, '%s = %s' % (var, (', '.join(_map_quote(new[attr]))))
+				elif attr in ('univentionShareSambaValidUsers', 'univentionShareSambaInvalidUsers'):
+					print >>fp, '%s = %s' % (var, _simple_quote(new[attr][0]))
 				else:
 					print >>fp, '%s = %s' % (var, _quote(new[attr][0]))
 

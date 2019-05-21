@@ -1,3 +1,10 @@
+univention-samba4 (8.0.0-24) unstable; urgency=medium
+
+  * Bug #44054: do not quote already quoted
+    univentionShareSambaValidUsers univentionShareSambaInvalidUsers
+
+ -- Florian Best <best@univention.de>  Tue, 21 May 2019 12:19:02 +0200
+
 univention-samba4 (8.0.0-23) unstable; urgency=medium
 
   * Bug #44054: Fix vulnerabilities in samba-shares listener:
