@@ -35,7 +35,7 @@ univention-config-registry set \
 	'listener/shares/whitelist/opsi4ucs?/var/lib/opsi/*' \
 	'listener/shares/whitelist/univention-printserver-pdf?/var/spool/cups-pdf/*' \
 	'listener/shares/whitelist/ucs-school-import?/home/*' \
-	'listener/shares/whitelist/italc-windows?/usr/share/italc-windows'
+	'listener/shares/whitelist/italc-windows?/usr/share/italc-windows/*'
 
 if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 8.0.0-11; then
 	service univention-directory-listener force-reload 2>/dev/null || true

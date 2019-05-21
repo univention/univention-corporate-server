@@ -280,12 +280,16 @@ def is_blacklisted(path, ucr):
 	True
 	>>> is_blacklisted('/home/Administrator', {'listener/shares/whitelist/default': '/home/*:/var/*'})
 	False
+	>>> is_blacklisted('/home/Administrator/', {'listener/shares/whitelist/admin': '/home/Administrator'})
+	False
 	"""
 	path = '%s/' % (path.rstrip('/'),)
 	whitelist = [set(val.split(':')) for key, val in ucr.items() if key.startswith('listener/shares/whitelist/')]
 	whitelist = reduce(set.union, whitelist) if whitelist else set()
+	if 'italc' in path:
+		print 'whitelist', whitelist, 'path', path
 	for directory in DIR_BLACKLIST:
-		if any(fnmatch.fnmatch(path, allowed) for allowed in whitelist):
+		if any(path in allowed or path.rstrip('/') in allowed or fnmatch.fnmatch(path, allowed) for allowed in whitelist):
 			continue
 		if path.startswith(directory):
 			return True
