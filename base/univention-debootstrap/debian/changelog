@@ -134,7 +134,7 @@ univention-debootstrap (0.1.8) unstable; urgency=low
 
   * remove ipchains from powerpc list
 
- -- Stefan Gohmann <gohmann@univention.dunivention.de>  Fri, 10 Feb 2006 09:44:27 +0100
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 10 Feb 2006 09:44:27 +0100
 
 univention-debootstrap (0.1.6) unstable; urgency=low
 
@@ -160,6 +160,3 @@ univention-debootstrap (0.1.0) unstable; urgency=low
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Aug 2003 13:49:40 +0200
 
-Local variables:
-mode: debian-changelog
-End:

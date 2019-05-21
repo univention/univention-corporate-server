@@ -26,7 +26,7 @@ then
 fi
 
 # do NOT call "joinscript_save_current_version"
-# otherwise an entry will be appended to /var/univenion-join/status
+# otherwise an entry will be appended to /var/univention-join/status
 # instead the join script needs to be removed from the status file
 joinscript_remove_script_from_status_file join-template
 
