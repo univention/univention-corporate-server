@@ -1,3 +1,9 @@
+ucs-test-tools (8.0.0-2) unstable; urgency=medium
+
+  * Bug #28497: migrate to dh_python2
+
+ -- Florian Best <best@univention.de>  Tue, 21 May 2019 12:48:02 +0200
+
 ucs-test-tools (8.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump
