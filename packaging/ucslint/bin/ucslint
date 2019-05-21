@@ -45,11 +45,9 @@ try:
 except ImportError:
 	try:
 		import ucslint.base as uub
-		print('using fallback ucslint.base instead of univention.ucslint.base', file=sys.stderr)
 	except ImportError:
 		sys.path.insert(0, join(dirname(sys.argv[0]), pardir))
 		import ucslint.base as uub
-		print('using local ucslint.base instead of univention.ucslint.base', file=sys.stderr)
 try:
 	from typing import Any, Container, Dict, List, Optional, Sequence, Set, Tuple  # noqa F401
 	from types import ModuleType  # noqa F401
@@ -350,6 +348,8 @@ def main():
 	Run checks.
 	"""
 	options, pkgpath = parse_args()
+	if options.debug:
+		print('Using univention.ucslint.base from %s' % (uub.__file__,))
 
 	plugindirs = [
 		'~/.ucslint',
