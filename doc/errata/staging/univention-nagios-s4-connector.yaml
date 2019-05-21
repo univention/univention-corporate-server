@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-nagios-s4-connector
-fix: 
+fix: 4.0.1-2A~4.4.0.201905212123
 desc: |
  This update addresses the following issue(s):
  * The detection of a running univention-s4-connector has been enhanced.
