@@ -144,6 +144,7 @@ def createOrRename(old, new, cr):
 	newPath = os.path.realpath(newPath)
 	if newPath == "/":
 		return "/ as new path is not allowed"
+	share_name = new.get('univentionShareSambaName', new.get('cn', ['']))[0]
 
 	# rename it
 	if rename:
@@ -171,9 +172,9 @@ def createOrRename(old, new, cr):
 
 		# check blacklist
 		if is_blacklisted(newPath, cr):
-			return "%s as destination for renaming not allowed" % newPath
+			return "%r as destination for renaming not allowed! WARNING: the path %r for the share %r matches a blacklisted path. The whitelist can be extended via the URC variables listener/shares/whitelist/." % (newPath, newPath, share_name)
 		if is_blacklisted(oldPath, cr):
-			return "%s as source for renaming not allowed" % oldPath
+			return "%r as source for renaming not allowed! WARNING: the path %r for the share %r matches a blacklisted path. The whitelist can be extended via the URC variables listener/shares/whitelist/." % (oldPath, newPath, share_name)
 
 		# check mount point
 		for i in [oldPath, newPath]:
@@ -249,7 +250,7 @@ def createOrRename(old, new, cr):
 
 	# check blacklist
 	if is_blacklisted(newPath, cr):
-		return "custom permissions for %s not allowed" % newPath
+		return "WARNING: the path %r for the share %r matches a blacklisted path. The whitelist can be extended via the URC variables listener/shares/whitelist/." % (newPath, share_name)
 
 	# set permissions, only modify them if a change has occured
 	try:
