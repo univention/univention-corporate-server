@@ -1,3 +1,9 @@
+univention-system-setup (12.0.2-7) unstable; urgency=medium
+
+  * Bug #43326: QA feedback: typo and KeyError
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 21 May 2019 10:38:35 +0200
+
 univention-system-setup (12.0.2-6) unstable; urgency=medium
 
   * Bug #43326: add a message to warn about inability to install
