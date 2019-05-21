@@ -28,6 +28,10 @@
  */
 /*global define, require, navigator*/
 
+/**
+ * @module umc/widgets/AppGallery
+ * @extends module:umc/widgets/GalleryPane
+ */
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
@@ -45,7 +49,7 @@ define([
 	"./GalleryPane",
 	"../tools"
 ], function(declare, lang, dojoEvent, kernel, on, domClass, domConstruct, domGeometry, domStyle, query, mouse, Tooltip, entities, GalleryPane, tools) {
-	return declare("umc.widgets.AppGallery", [ GalleryPane ], {
+	return declare("umc.widgets.AppGallery", [ GalleryPane ], /** @lends module:umc/widgets/AppGallery# */ {
 		region: 'main',
 
 		bootstrapClasses: '',

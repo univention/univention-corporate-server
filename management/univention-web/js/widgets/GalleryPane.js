@@ -28,6 +28,12 @@
  */
 /*global define,console,window,setTimeout*/
 
+/**
+ * @module umc/widgets/GalleryPane
+ * @extends module:dgrid/List
+ * @mixes module:dijit/dgrid/extensions/DijitRegistry
+ * @mixes module:dijit/Destroyable
+ */
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
@@ -52,7 +58,7 @@ define([
 	"dgrid/extensions/DijitRegistry",
 	"put-selector/put"
 ], function(declare, lang, array, kernel, win, on, has, query, domClass, domStyle, domConstruct, domGeometry, touch, timing, Menu, MenuItem, Destroyable, tools, Tooltip, List, DijitRegistry, put) {
-	return declare("umc.widgets.GalleryPane", [ List, DijitRegistry, Destroyable ], {
+	return declare("umc.widgets.GalleryPane", [ List, DijitRegistry, Destroyable ], /** @lends module:umc/widgets/GalleryPane# */ {
 		style: "",
 
 		baseClass: 'umcGalleryPane',
@@ -65,6 +71,11 @@ define([
 
 		useTouchScroll: false,
 
+		/**
+		 * Whether left click /context menu handlers are set up for the gallery items
+		 * @type {Boolean}
+		 * @default
+		 */
 		doSetGalleryItemContextMenuHandlers: true,
 
 		_defaultActionHandle: null,

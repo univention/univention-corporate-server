@@ -28,6 +28,10 @@
  */
 /*global define, window, location*/
 
+/**
+ * @module portal/PortalGallery
+ * @extends module:umc/widgets/AppGallery
+ */
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
@@ -74,13 +78,23 @@ define([
 		return fqdn;
 	};
 
-	return declare("PortalGallery", [ AppGallery ], {
+	return declare("PortalGallery", [ AppGallery ], /** @lends module:portal/PortalGallery# */ {
+		/**
+		 * See {@link module:umc/widgets/GalleryPane#doSetGalleryItemContextMenuHandlers}
+		 * @type {Boolean}
+		 * @default false
+		 */
 		doSetGalleryItemContextMenuHandlers: false,
 
 		iconClassPrefix: 'umcPortal',
 
 		domainName: null,
 
+		/**
+		 * Defines whether portal entries are opened in the same window or in a new window/tab by default.
+		 * (The possible values are defined by the python univention.admin.syntax.PortalDefaultLinkTarget syntax class.)
+		 * @type {?String}
+         */
 		defaultLinkTarget: null,
 
 		postMixInProperties: function() {
@@ -140,7 +154,7 @@ define([
 					if (hint === 'avatar') {
 						node = put('div.umcAppGallery', node); // wrap the tile in div a with class umcAppGallery for correct styling
 						this._resizeItemNamesOfAvatarTile(node);
-						return { node: node }; 
+						return { node: node };
 					}
 
 					return {
