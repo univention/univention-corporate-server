@@ -306,7 +306,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		super(UniventionPackageCheck, self).check(path)
 
 		errors = []
-		print('Checking with', self.python_versions)
 		for python in self.python_versions:
 			for ignore, pathes in self._iter_pathes(path):
 				cmd = [python, '/usr/bin/flake8', '--config=/dev/null']
