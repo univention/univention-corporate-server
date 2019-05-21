@@ -1,3 +1,9 @@
+univention-debug-python (11.0.0-2) unstable; urgency=low
+
+  * Bug #49130: Split Python binding into separate package
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 21 May 2019 07:15:05 +0200
+
 univention-debug-python (1.0.0-1) unstable; urgency=low
 
   * Bug #49130: Split Python binding into separate package

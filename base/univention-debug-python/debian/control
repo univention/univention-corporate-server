@@ -24,7 +24,7 @@ Depends:
 Provides: ${python:Provides}
 Description: UCS - debugging and logging library (Python2 interface)
  This package includes the Python2 interface to the
- UCS debugging and logging  library.
+ UCS debugging and logging library.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -40,7 +40,7 @@ Depends:
 Provides: ${python3:Provides}
 Description: UCS - debugging and logging library (Python3 interface)
  This package includes the Python3 interface to the
- UCS debugging and logging  library.
+ UCS debugging and logging library.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
