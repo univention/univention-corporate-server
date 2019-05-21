@@ -1,3 +1,9 @@
+univention-lib (8.0.1-14) unstable; urgency=medium
+
+  * Bug #44054: remove debug output
+
+ -- Florian Best <best@univention.de>  Tue, 21 May 2019 13:25:16 +0200
+
 univention-lib (8.0.0-13) unstable; urgency=medium
 
   * Bug #44054: allow to leave out trailing slash

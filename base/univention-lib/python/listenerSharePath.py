@@ -286,8 +286,6 @@ def is_blacklisted(path, ucr):
 	path = '%s/' % (path.rstrip('/'),)
 	whitelist = [set(val.split(':')) for key, val in ucr.items() if key.startswith('listener/shares/whitelist/')]
 	whitelist = reduce(set.union, whitelist) if whitelist else set()
-	if 'italc' in path:
-		print 'whitelist', whitelist, 'path', path
 	for directory in DIR_BLACKLIST:
 		if any(path in allowed or path.rstrip('/') in allowed or fnmatch.fnmatch(path, allowed) for allowed in whitelist):
 			continue
