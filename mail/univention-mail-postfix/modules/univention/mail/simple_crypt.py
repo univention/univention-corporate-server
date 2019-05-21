@@ -60,15 +60,16 @@ class SimpleAsymmetric(object):
 	Asymmetric encryption: Encrypt, decrypt and sign using RSA. Create, store
 	and load keys.
 	"""
-	key_size = 2048
+	def __init__(self, key_size=2048):  # type: (int) -> None
+		assert isinstance(key_size, int)
 
-	def __init__(self):  # type: () -> None
 		self.private_key = None  # type: rsa.RSAPrivateKey
+		self.key_size = key_size
 
 	def create_keys(self):  # type: () -> None
 		"""
-		Create private and public keys and store them in
-			:py:attr:`self.private_key` and :py:attr:`self.public_key`.
+		Create private and public keys. They will be store in
+		:py:attr:`self.private_key` and :py:attr:`self.public_key`.
 
 		:return: None
 		"""
@@ -78,39 +79,41 @@ class SimpleAsymmetric(object):
 			backend=default_backend()
 		)
 
-	def store_keys(self, key_file, uid, gid, mode=None, write_pub=True):
-		# type: (str, int, int, Optional[int], Optional[bool]) -> None
+	def store_keys(self, key_file, uid=None, gid=None, mode=None, write_pub=True):
+		# type: (str, Optional[int], Optional[int], Optional[int], Optional[bool]) -> None
 		"""
-		Save :py:attr:`self.private_key` in `key_file`. The public key does
-		not need to be saved, it can be generated from the secret key. But
-		it can be exported too.
+		Save :py:attr:`self.private_key` in `key_file` in PEM format. The
+		public key does	not need to be saved, as it can be generated from the
+		secret key. But	it can be exported if desired.
 
 		Warning: will overwrite existing files.
 
 		:param str key_file: file to store secret key in
-		:param int uid: owner of files
-		:param int gid: group of files
-		:param int mode: file permissions, 600 if not set
+		:param int uid: owner of files or if not set current process's real user id
+		:param int gid: group of files or if not set current process's read group id
+		:param int mode: file permissions or if not set 0o600 (-rw-------)
 		:param bool write_pub: whether to write the public key to `key_file[:-3]+'pub'`
 		:return: None
 		:raises IOError: if `key_file` cannot be written to
 		"""
-		assert self.private_key is not None
-		assert isinstance(uid, int)
-		assert isinstance(gid, int)
+		assert self.private_key is not None, 'No private key: create or load keys first.'
+		assert isinstance(uid, int) or uid is None
+		assert isinstance(gid, int) or gid is None
 		assert isinstance(mode, int) or mode is None
 
-		mode = mode or stat.S_IRUSR | stat.S_IWUSR
-		with open(key_file, 'wb') as fp:
-			os.fchown(fp.fileno(), uid, gid)
-			os.fchmod(fp.fileno(), mode)
-			fp.write(self.private_key_as_str)
-		if write_pub:
-			path = '{}pub'.format(key_file[:-3])
+		def _save_write(path, text):
 			with open(path, 'wb') as fp:
 				os.fchown(fp.fileno(), uid, gid)
 				os.fchmod(fp.fileno(), mode)
-				fp.write(self.public_key_as_str)
+				fp.write(text)
+
+		uid = uid or os.getuid()
+		gid = gid or os.getgid()
+		mode = mode or stat.S_IRUSR | stat.S_IWUSR
+		_save_write(key_file, self.private_key_as_str)
+		if write_pub:
+			path = '{}pub'.format(key_file[:-3])
+			_save_write(path, self.public_key_as_str)
 
 	def load_keys(self, key_file):  # type: (str) -> None
 		"""
@@ -131,7 +134,7 @@ class SimpleAsymmetric(object):
 
 	@property
 	def private_key_as_str(self):  # type: () -> str
-		assert self.private_key is not None
+		assert self.private_key is not None, 'No private key: create or load keys first.'
 		return self.private_key.private_bytes(
 			encoding=serialization.Encoding.PEM,
 			format=serialization.PrivateFormat.PKCS8,
@@ -140,7 +143,7 @@ class SimpleAsymmetric(object):
 
 	@property
 	def public_key(self):  # type: () -> rsa.RSAPublicKey
-		assert self.private_key is not None
+		assert self.private_key is not None, 'No private key: create or load keys first.'
 		return self.private_key.public_key()
 
 	@property
@@ -170,17 +173,21 @@ class SimpleAsymmetric(object):
 			)
 		)
 
-	def decrypt(self, cyphertext):  # type: (str) -> str
+	def decrypt(self, cyphertext, private_key=None):  # type: (str, Optional[rsa.RSAPrivateKey]) -> str
 		"""
 		Decrypt `text` with :py:attr:`self.private_key`.
 
 		:param str cyphertext: the text to decrypt
+		:param str private_key: key used to decrypt `cyphertext`, if unset
+			:py:attr:`self.private_key` is used
 		:return: the decrypted text (clear text)
 		:rtype: str
-		:raises ValueError: if cyphertext
+		:raises ValueError: if cyphertext cannot be decrypted
 		"""
-		assert self.private_key is not None
-		return self.private_key.decrypt(
+		private_key = private_key or self.private_key
+		assert private_key is not None, 'No private key: create or load keys first.'
+
+		return private_key.decrypt(
 			cyphertext,
 			padding.OAEP(
 				mgf=padding.MGF1(algorithm=hashes.SHA256()),
@@ -189,17 +196,21 @@ class SimpleAsymmetric(object):
 			)
 		)
 
-	def sign(self, text):  # type: (str) -> None
+	def sign(self, text, private_key=None):  # type: (str, Optional[rsa.RSAPrivateKey]) -> None
 		"""
 		Create a signature for `text`.
 
 		:param str text: the text to sign
+		:param str private_key: key used to sign `text`, if unset
+			:py:attr:`self.private_key` is used
 		:return: signed hash of `text`
 		:rtype: str
 		"""
-		assert self.private_key is not None
+		private_key = private_key or self.private_key
+		assert private_key is not None, 'No private key: create or load keys first.'
+
 		hashed_msg = hashlib.sha256(bytes(text)).digest()
-		return self.private_key.sign(
+		return private_key.sign(
 			hashed_msg,
 			padding.PSS(
 				mgf=padding.MGF1(hashes.SHA256()),
@@ -261,8 +272,8 @@ class SimpleSymmetric(object):
 		"""
 		return Fernet.generate_key()
 
-	@staticmethod
-	def encrypt(text, key=None):  # type: (str, Optional[str]) -> Tuple[str, str]
+	@classmethod
+	def encrypt(cls, text, key=None):  # type: (str, Optional[str]) -> Tuple[str, str]
 		"""
 		Encrypt a text using the supplied or a fresh key.
 
@@ -271,7 +282,7 @@ class SimpleSymmetric(object):
 		:return: tuple: key, cyphertext
 		:rtype: tuple(str, str)
 		"""
-		key = key or Fernet.generate_key()
+		key = key or cls.create_key()
 		fernet = Fernet(key)
 		return key, fernet.encrypt(bytes(text))
 
