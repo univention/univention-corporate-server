@@ -1,3 +1,9 @@
+univention-debug (11.0.0-3) unstable; urgency=low
+
+  * Bug #49130: Fix cleanup mechanism
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 21 May 2019 07:25:47 +0200
+
 univention-debug (11.0.0-2) unstable; urgency=low
 
   * Bug #49130: Split Python binding into separate package

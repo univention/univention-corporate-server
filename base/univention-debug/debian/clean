@@ -1,0 +1,15 @@
+Makefile.in
+lib/Makefile.in
+include/Makefile.in
+include/univention/Makefile.in
+tests/Makefile.in
+configure
+aclocal.m4
+config.*
+install-sh
+ltmain.sh
+missing
+mkinstalldirs
+depcomp
+test-driver
+compile
