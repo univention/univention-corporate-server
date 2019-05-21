@@ -293,13 +293,12 @@ define([
 				condition: ['owncloud', 'adconnector', 'letsencrypt'],
 				candidates: [
 					{ id: 'onlyoffice-ds', mayNotBeInstalled: ['collabora', 'collabora-online'] },
-					{ id: 'collabora', mayNotBeInstalled: ['onlyoffice-ds'] },
+					{ id: 'collabora', mayNotBeInstalled: ['onlyoffice-ds', 'collabora-online'] },
 					{ id: 'kopano-core', mayNotBeInstalled: ['oxseforucs', 'egroupware', 'tine20', 'zimbra', 'horde'] },
 				]
 			}, {
 				condition: ['owncloud', 'adconnector'],
 				candidates: [
-					{ id: 'samba-memberserver', mayNotBeInstalled: ['samba4'] },
 					{ id: 'letsencrypt', mayNotBeInstalled: [] },
 					{ id: 'onlyoffice-ds', mayNotBeInstalled: ['collabora', 'collabora-online'] },
 				]
@@ -346,9 +345,7 @@ define([
 			}, {
 				condition: ['owncloud'],
 				candidates: [
-					{ id: 'adconnector', mayNotBeInstalled: [] },
 					{ id: 'letsencrypt', mayNotBeInstalled: [] },
-					{ id: 'samba-memberserver', mayNotBeInstalled: ['samba4'] },
 					{ id: 'samba4', mayNotBeInstalled: ['samba-memberserver'] },
 				]
 			}, {
