@@ -196,7 +196,7 @@ class SimpleAsymmetric(object):
 			)
 		)
 
-	def sign(self, text, private_key=None):  # type: (str, Optional[rsa.RSAPrivateKey]) -> None
+	def sign(self, text, private_key=None):  # type: (str, Optional[rsa.RSAPrivateKey]) -> str
 		"""
 		Create a signature for `text`.
 
