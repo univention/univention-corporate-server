@@ -1,6 +1,7 @@
 ucslint (8.0.0-13) unstable; urgency=low
 
   * Bug #42480: Speed-up spelling detection
+  * Bug #49520: Fix ucslint.overrides application
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 21 May 2019 12:33:51 +0200
 
