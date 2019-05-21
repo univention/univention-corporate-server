@@ -34,7 +34,7 @@ except ImportError:
 from itertools import chain
 import re
 try:
-	from typing import Iterator  # noqa F401
+	from typing import Any, Dict, Iterator, List  # noqa F401
 except ImportError:
 	pass
 
@@ -66,12 +66,82 @@ def levenshtein(word, distance=1, subst='.'):
 			yield result
 
 
+class Trie():
+	"""
+	Regex::Trie in Python. Creates a Trie out of a list of words. The trie can be exported to a Regex pattern.
+	The corresponding Regex should match much faster than a simple Regex union.
+	"""
+
+	def __init__(self, *args):
+		# type: (*str) -> None
+		self.data = {}  # type: Dict[str, Any]
+		for word in args:
+			self.add(word)
+
+	def add(self, word):
+		# type: (str) -> None
+		"""
+		Add new word.
+
+		:param word: Word to add.
+		"""
+		ref = self.data
+		for char in word:
+			ref = ref.setdefault(char, {})
+
+		ref[''] = None
+
+	def _pattern(self, pData):
+		# type: (Dict[str, Any]) -> str
+		"""
+		Recursively convert Trie structuture to regular expression.
+
+		:params pData: Partial Trie tree.
+		:returns: regular expression string.
+		"""
+		data = pData
+		if '' in data and len(data) == 1:
+			return ''
+
+		alt = []  # type: List[str]
+		cc = []  # type: List[str]
+		q = False
+		for char, subtree in sorted(data.items()):
+			if char == '':
+				q = True
+			else:
+				recurse = self._pattern(subtree)
+				if recurse == '':
+					cc.append(char)
+				else:
+					alt.append(char + recurse)
+
+		cconly = not alt
+
+		if cc:
+			alt.append(cc[0] if len(cc) == 1 else '[%s]' % ''.join(cc))
+
+		return '%s%s' % (
+			'(?:%s)' % '|'.join(alt) if len(alt) > 1 or q and not cconly else alt[0],
+			'?' if q else '',
+		)
+
+	def pattern(self):
+		# type: () -> str
+		"""
+		Convert Trie structuture to regular expression.
+
+		:returns: regular expression.
+		"""
+		return self._pattern(self.data)
+
+
 UNIVENTION = ('univention', 'Univention', 'UNIVENTION')
 """Correct spellings."""
 RE_UNIVENTION = re.compile(
-	r'\b(?!{})(?:{})\b'.format(
+	r'\b(?<![%\\])(?!{})(?:{})\b'.format(
 		'|'.join(UNIVENTION),
-		'|'.join(set(chain(*[levenshtein(word, 2) for word in UNIVENTION]))).replace('.', r'\w')
+		Trie(*chain(*[levenshtein(word, 2) for word in UNIVENTION])).pattern().replace('.', r'\w')
 	)
 )
 """Regular expression to find misspellings."""
