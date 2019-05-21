@@ -12,6 +12,7 @@ Standards-Version: 3.6.1
 Package: ucslint
 Architecture: all
 Depends:
+ python-univention-namespace,
  ${python:Depends},
  ${python3:Depends},
  ${misc:Depends},

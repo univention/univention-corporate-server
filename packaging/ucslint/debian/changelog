@@ -1,3 +1,9 @@
+ucslint (8.0.0-12) unstable; urgency=low
+
+  * Bug #28497: Fix migration to dh-python
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 21 May 2019 08:37:44 +0200
+
 ucslint (8.0.0-11) unstable; urgency=medium
 
   * Bug #28497: migrate ucslint to dh-python
