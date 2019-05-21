@@ -37,8 +37,7 @@ eval "$(ucr shell)"
 
 
 get_all_ip_addresses () {
-	PYTHONPATH=/usr/lib/pymodules/python2.7/univention/config_registry python2.7 2>/dev/null \
-	-c 'from interfaces import Interfaces;print(" https://".join([interface[1]["address"] for interface in Interfaces().all_interfaces]))'
+	python2.7 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; print(" https://".join([interface[1]["address"] for interface in Interfaces().all_interfaces]))'
 }
 
 remove_welcome_screen () {

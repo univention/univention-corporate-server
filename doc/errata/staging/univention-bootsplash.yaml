@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-bootsplash
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Calls to the inofficial UCR API have been adjusted.
+bug: [49129]
