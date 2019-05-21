@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-config-registry
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The detection of running services has been enhanced.
+bug: [49176]

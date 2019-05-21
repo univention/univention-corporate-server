@@ -1,3 +1,9 @@
+univention-config-registry (14.0.0-4) unstable; urgency=medium
+
+  * Bug #49176: Enhance detection of services
+
+ -- Florian Best <best@univention.de>  Tue, 21 May 2019 21:19:05 +0200
+
 univention-config-registry (14.0.0-3) unstable; urgency=medium
 
   * Bug #48683: univention-ldapsearch makes -o ldif-wrap=no by
