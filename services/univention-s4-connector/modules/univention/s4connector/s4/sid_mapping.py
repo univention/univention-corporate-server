@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 
+from __future__ import print_function
 import ldap
 import univention.debug2 as ud
 from ldap.controls import LDAPControl
@@ -56,7 +57,7 @@ def print_sid_mapping(configRegistry):
 		else:
 			mapping_str += 'None'
 			sync_mode = 'write'
-		print '''
+		print('''
 					'sid': univention.s4connector.attribute (
 						sync_mode='%s',
 						mapping=(%s),
@@ -65,7 +66,7 @@ def print_sid_mapping(configRegistry):
 						con_attribute='objectSid',
 						single_value=True,
 						compare_function=univention.s4connector.s4.compare_sid_lists,
-					), ''' % (sync_mode, mapping_str)
+					), ''' % (sync_mode, mapping_str))
 
 
 def sid_to_s4_mapping(s4connector, key, object):

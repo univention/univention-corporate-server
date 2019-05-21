@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import os
+import imp
 import sqlite3
 import sys
 import cPickle
@@ -42,8 +43,7 @@ import univention.s4connector.s4
 import subprocess
 
 CONFIGBASENAME = "connector"
-sys.path = ['/etc/univention/%s/s4/' % CONFIGBASENAME] + sys.path
-import mapping
+mapping = imp.load_source('mapping', '/etc/univention/%s/s4/mapping.py' % CONFIGBASENAME)
 
 configRegistry = ConfigRegistry()
 configRegistry.load()

@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import cPickle
 import copy
 import os
@@ -538,13 +539,13 @@ class ucs:
 		try:
 			result = self.lo.search(filter=filter, base=base, scope=scope, attr=attr, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit)
 			return result
-		except univention.admin.uexceptions.ldapError, search_exception:
+		except univention.admin.uexceptions.ldapError as search_exception:
 			ud.debug(ud.LDAP, ud.INFO, 'Lost connection to the LDAP server. Trying to reconnect ...')
 			try:
 				self.open_ucs()
 				result = self.lo.search(filter=filter, base=base, scope=scope, attr=attr, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit)
 				return result
-			except ldap.SERVER_DOWN, e:
+			except ldap.SERVER_DOWN as e:
 				ud.debug(ud.LDAP, ud.INFO, 'LDAP-Server seems to be down')
 				raise search_exception
 
@@ -1008,8 +1009,8 @@ class ucs:
 
 	def initialize_ucs(self):
 		_d = ud.function('ldap.initialize_ucs')
-		print "--------------------------------------"
-		print "Initialize sync from UCS"
+		print("--------------------------------------")
+		print("Initialize sync from UCS")
 		sys.stdout.flush()
 
 		# load UCS Modules
@@ -1039,7 +1040,7 @@ class ucs:
 		self.resync_rejected_ucs()
 		# call poll_ucs to sync
 		self.poll_ucs()
-		print "--------------------------------------"
+		print("--------------------------------------")
 		sys.stdout.flush()
 
 	def initialize(self):
@@ -1053,8 +1054,8 @@ class ucs:
 		_d = ud.function('ldap.resync_rejected_ucs')
 		rejected = self._list_rejected_ucs()
 		change_counter = 0
-		print "--------------------------------------"
-		print "Sync %s rejected changes from UCS" % len(rejected)
+		print("--------------------------------------")
+		print("Sync %s rejected changes from UCS" % len(rejected))
 		sys.stdout.flush()
 
 		if rejected:
@@ -1074,8 +1075,8 @@ class ucs:
 					self._save_rejected_ucs(filename, dn)
 					self._debug_traceback(ud.WARN, "sync failed, saved as rejected \n\t%s" % filename)
 
-		print "restored %s rejected changes" % change_counter
-		print "--------------------------------------"
+		print("restored %s rejected changes" % change_counter)
+		print("--------------------------------------")
 		sys.stdout.flush()
 
 	def resync_rejected(self):
@@ -1094,9 +1095,9 @@ class ucs:
 
 		self.rejected_files = self._list_rejected_filenames_ucs()
 
-		print "--------------------------------------"
-		print "try to sync %s changes from UCS" % (min(len(os.listdir(self.listener_dir)) - 1, MAX_SYNC_IN_ONE_INTERVAL))
-		print "done:",
+		print("--------------------------------------")
+		print("try to sync %s changes from UCS" % (min(len(os.listdir(self.listener_dir)) - 1, MAX_SYNC_IN_ONE_INTERVAL)))
+		print("done:", end=' ')
 		sys.stdout.flush()
 		done_counter = 0
 		files = sorted(os.listdir(self.listener_dir))
@@ -1145,18 +1146,18 @@ class ucs:
 						break
 
 				done_counter += 1
-				print "%s" % done_counter,
+				print("%s" % done_counter, end=' ')
 				sys.stdout.flush()
 
-		print ""
+		print("")
 
 		self.rejected_files = self._list_rejected_filenames_ucs()
 
 		if self.rejected_files:
-			print "Changes from UCS: %s (%s saved rejected)" % (change_counter, len(self.rejected_files))
+			print("Changes from UCS: %s (%s saved rejected)" % (change_counter, len(self.rejected_files)))
 		else:
-			print "Changes from UCS: %s (%s saved rejected)" % (change_counter, '0')
-		print "--------------------------------------"
+			print("Changes from UCS: %s (%s saved rejected)" % (change_counter, '0'))
+		print("--------------------------------------")
 		sys.stdout.flush()
 		return change_counter
 
@@ -1419,7 +1420,7 @@ class ucs:
 			ucs_object.remove()
 			self.update_deleted_cache_after_removal(entryUUID, objectGUID)
 			return True
-		except Exception, e:
+		except Exception as e:
 			ud.debug(ud.LDAP, ud.INFO, "delete object exception: %s" % e)
 			if str(e).startswith("Operation not allowed on non-leaf"):  # need to delete subtree
 				ud.debug(ud.LDAP, ud.INFO, "remove object from UCS failed, need to delete subtree")
@@ -1589,13 +1590,13 @@ class ucs:
 			ud.debug(ud.LDAP, ud.INFO, "Return  result for DN (%s)" % object['dn'])
 			return result
 
-		except univention.admin.uexceptions.valueInvalidSyntax, msg:
+		except univention.admin.uexceptions.valueInvalidSyntax as msg:
 			try:
 				ud.debug(ud.LDAP, ud.ERROR, "InvalidSyntax: %s (%s)" % (msg, object['dn']))
 			except:  # FIXME: which exception is to be caught?
 				ud.debug(ud.LDAP, ud.ERROR, "InvalidSyntax: %s" % msg)
 			return False
-		except univention.admin.uexceptions.valueMayNotChange, msg:
+		except univention.admin.uexceptions.valueMayNotChange as msg:
 			ud.debug(ud.LDAP, ud.ERROR, "Value may not change: %s (%s)" % (msg, object['dn']))
 			return False
 		except (ldap.SERVER_DOWN, SystemExit):

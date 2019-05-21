@@ -55,13 +55,13 @@ def _unixTimeInverval2seconds(unixTime):
 		return 0
 
 	if unixTime[1] == 'seconds':
-		return long(unixTime[0])
+		return int(unixTime[0])
 	elif unixTime[1] == 'minutes':
-		return long(unixTime[0]) * 60
+		return int(unixTime[0]) * 60
 	elif unixTime[1] == 'hours':
-		return long(unixTime[0]) * 3600  # 60 * 60
+		return int(unixTime[0]) * 3600  # 60 * 60
 	elif unixTime[1] == 'days':
-		return long(unixTime[0]) * 86400  # 60 * 60 * 24
+		return int(unixTime[0]) * 86400  # 60 * 60 * 24
 	else:
 		ud.debug(ud.LDAP, ud.WARN, 'dc _unixTimeInverval2seconds: Not a valid time unit: %s' % unixTime)
 		return 0
@@ -101,8 +101,8 @@ def ucs2con(s4connector, key, object):
 
 		sync_times = [('sambaMaxPwdAge', 'maxPwdAge'), ('sambaMinPwdAge', 'minPwdAge'), ('sambaLockoutDuration', 'lockoutDuration')]
 		for (ucs_attr, s4_attr) in sync_times:
-			ucs_time = long(object['attributes'].get(ucs_attr, [0])[0])
-			s4_time = _nano2s(long(s4base_attr.get(s4_attr, [0])[0]) * -1)
+			ucs_time = int(object['attributes'].get(ucs_attr, [0])[0])
+			s4_time = _nano2s(int(s4base_attr.get(s4_attr, [0])[0]) * -1)
 
 			ud.debug(ud.LDAP, ud.INFO, 'dc ucs2con: ucs_time (%s): %s' % (ucs_attr, ucs_time))
 			ud.debug(ud.LDAP, ud.INFO, 'dc ucs2con: s4-time (%s): %s' % (s4_attr, s4_time))
@@ -149,7 +149,7 @@ def con2ucs(s4connector, key, object):
 		sync_times = [('maxPasswordAge', 'maxPwdAge'), ('minPasswordAge', 'minPwdAge'), ('lockoutDuration', 'lockoutDuration')]
 		for (ucs_attr, s4_attr) in sync_times:
 			ucs_time = _unixTimeInverval2seconds(sambadomainnameObject.get(ucs_attr, 0))
-			s4_time = _nano2s(long(object['attributes'].get(s4_attr, [0])[0]) * -1)
+			s4_time = _nano2s(int(object['attributes'].get(s4_attr, [0])[0]) * -1)
 
 			if ucs_time != s4_time:
 				sambadomainnameObject[ucs_attr] = [str(s4_time), 'seconds']

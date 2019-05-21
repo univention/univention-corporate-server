@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 
+from __future__ import print_function
 import base64
 import copy
 import ldap
@@ -217,25 +218,25 @@ def encode_s4_resultlist(s4_resultlist):
 
 
 def unix2s4_time(l):
-	d = 116444736000000000L  # difference between 1601 and 1970
-	return long(time.mktime(time.gmtime(time.mktime(time.strptime(l, "%Y-%m-%d")) + 90000))) * 10000000 + d  # 90000s are one day and one hour
+	d = 116444736000000000  # difference between 1601 and 1970
+	return int(time.mktime(time.gmtime(time.mktime(time.strptime(l, "%Y-%m-%d")) + 90000))) * 10000000 + d  # 90000s are one day and one hour
 
 
 def s42unix_time(l):
-	d = 116444736000000000L  # difference between 1601 and 1970
+	d = 116444736000000000  # difference between 1601 and 1970
 	return time.strftime("%d.%m.%y", time.gmtime((l - d) / 10000000))
 
 
 def samba2s4_time(l):
-	d = 116444736000000000L  # difference between 1601 and 1970
-	return long(time.mktime(time.localtime(l))) * 10000000 + d
+	d = 116444736000000000  # difference between 1601 and 1970
+	return int(time.mktime(time.localtime(l))) * 10000000 + d
 
 
 def s42samba_time(l):
 	if l == 0:
 		return l
-	d = 116444736000000000L  # difference between 1601 and 1970
-	return long(((l - d)) / 10000000)
+	d = 116444736000000000  # difference between 1601 and 1970
+	return int(((l - d)) / 10000000)
 
 # mapping funtions
 
@@ -563,10 +564,10 @@ def encode_sid(value):
 	a.append(chr(0))
 	a.append(chr(int(vlist[1])))
 	for i in range(2, len(vlist)):
-		a.append(chr((long(vlist[i]) & 0xff)))
-		a.append(chr((long(vlist[i]) & 0xff00) >> 8))
-		a.append(chr((long(vlist[i]) & 0xff0000) >> 16))
-		a.append(chr((long(vlist[i]) & 0xff000000) >> 24))
+		a.append(chr((int(vlist[i]) & 0xff)))
+		a.append(chr((int(vlist[i]) & 0xff00) >> 8))
+		a.append(chr((int(vlist[i]) & 0xff0000) >> 16))
+		a.append(chr((int(vlist[i]) & 0xff000000) >> 24))
 
 	return a
 
@@ -981,8 +982,8 @@ class s4(univention.s4connector.ucs):
 		try:
 			self.s4_sid = univention.s4connector.s4.decode_sid(
 				self.lo_s4.lo.search_ext_s(s4_ldap_base, ldap.SCOPE_BASE, 'objectclass=domain', ['objectSid'], timeout=-1, sizelimit=0)[0][1]['objectSid'][0])
-		except Exception, msg:
-			print "Failed to get SID from S4: %s" % msg
+		except Exception as msg:
+			print("Failed to get SID from S4: %s" % msg)
 			sys.exit(1)
 
 	def open_s4(self):
@@ -1070,7 +1071,7 @@ class s4(univention.s4connector.ucs):
 		_d = ud.function('ldap._save_rejected')
 		try:
 			self._set_config_option('S4 rejected', str(id), encode_attrib(dn))
-		except UnicodeEncodeError, msg:
+		except UnicodeEncodeError as msg:
 			self._set_config_option('S4 rejected', str(id), 'unknown')
 			self._debug_traceback(ud.WARN, "failed to set dn in configfile (S4 rejected)")
 
@@ -1463,9 +1464,9 @@ class s4(univention.s4connector.ucs):
 			)[0][1]['highestCommittedUSN'][0]
 
 			return int(res)
-		except Exception, msg:
+		except Exception as msg:
 			self._debug_traceback(ud.ERROR, "search for highestCommittedUSN failed")
-			print "ERROR: initial search in S4 failed, check network and configuration"
+			print("ERROR: initial search in S4 failed, check network and configuration")
 			return 0
 
 	def set_primary_group_to_ucs_user(self, object_key, object_ucs):
@@ -1528,7 +1529,7 @@ class s4(univention.s4connector.ucs):
 			sid = ldap_object_s4_group['objectSid'][0]
 			rid = sid[string.rfind(sid, "-") + 1:]
 		else:
-			print "no SID !!!"
+			print("no SID !!!")
 
 		# to set a valid primary group we need to:
 		# - check if either the primaryGroupID is already set to rid or
@@ -2145,7 +2146,7 @@ class s4(univention.s4connector.ucs):
 		# This value represents the number of 100 nanosecond intervals since January 1, 1601 (UTC). A value of 0 or 0x7FFFFFFFFFFFFFFF (9223372036854775807) indicates that the account never expires.
 		if not ucs_admin_object['userexpiry']:
 			# ucs account not expired
-			if 'accountExpires' in ldap_object_s4 and (long(ldap_object_s4['accountExpires'][0]) != long(9223372036854775807) or ldap_object_s4['accountExpires'][0] == '0'):
+			if 'accountExpires' in ldap_object_s4 and (int(ldap_object_s4['accountExpires'][0]) != int(9223372036854775807) or ldap_object_s4['accountExpires'][0] == '0'):
 				# s4 account expired -> change
 				modlist.append((ldap.MOD_REPLACE, 'accountExpires', ['9223372036854775807']))
 		else:
@@ -2182,7 +2183,7 @@ class s4(univention.s4connector.ucs):
 				# user enabled in UCS -> change
 				ucs_admin_object['disabled'] = '1'
 				modified = 1
-		if 'accountExpires' in ldap_object_s4 and (long(ldap_object_s4['accountExpires'][0]) == long(9223372036854775807) or ldap_object_s4['accountExpires'][0] == '0'):
+		if 'accountExpires' in ldap_object_s4 and (int(ldap_object_s4['accountExpires'][0]) == int(9223372036854775807) or ldap_object_s4['accountExpires'][0] == '0'):
 			# s4 account not expired
 			if ucs_admin_object['userexpiry']:
 				# ucs account expired -> change
@@ -2190,11 +2191,11 @@ class s4(univention.s4connector.ucs):
 				modified = 1
 		else:
 			# s4 account expired
-			ud.debug(ud.LDAP, ud.INFO, "sync account_expire:      s4time: %s    unixtime: %s" % (long(ldap_object_s4['accountExpires'][0]), ucs_admin_object['userexpiry']))
+			ud.debug(ud.LDAP, ud.INFO, "sync account_expire:      s4time: %s    unixtime: %s" % (int(ldap_object_s4['accountExpires'][0]), ucs_admin_object['userexpiry']))
 
-			if s42unix_time(long(ldap_object_s4['accountExpires'][0])) != ucs_admin_object['userexpiry']:
+			if s42unix_time(int(ldap_object_s4['accountExpires'][0])) != ucs_admin_object['userexpiry']:
 				# ucs account not expired -> change
-				ucs_admin_object['userexpiry'] = s42unix_time(long(ldap_object_s4['accountExpires'][0]))
+				ucs_admin_object['userexpiry'] = s42unix_time(int(ldap_object_s4['accountExpires'][0]))
 				modified = 1
 
 		if modified:
@@ -2202,8 +2203,8 @@ class s4(univention.s4connector.ucs):
 
 	def initialize(self):
 		_d = ud.function('ldap.initialize')
-		print "--------------------------------------"
-		print "Initialize sync from S4"
+		print("--------------------------------------")
+		print("Initialize sync from S4")
 		if self._get_lastUSN() == 0:  # we startup new
 			ud.debug(ud.LDAP, ud.PROCESS, "initialize S4: last USN is 0, sync all")
 			# query highest USN in LDAP
@@ -2222,18 +2223,18 @@ class s4(univention.s4connector.ucs):
 			self.resync_rejected()
 			polled = self.poll()
 			self._commit_lastUSN()
-		print "--------------------------------------"
+		print("--------------------------------------")
 
 	def resync_rejected(self):
 		'''
 		tries to resync rejected dn
 		'''
-		print "--------------------------------------"
+		print("--------------------------------------")
 
 		_d = ud.function('ldap.resync_rejected')
 		change_count = 0
 		rejected = self._list_rejected()
-		print "Sync %s rejected changes from S4 to UCS" % len(rejected)
+		print("Sync %s rejected changes from S4 to UCS" % len(rejected))
 		sys.stdout.flush()
 		if rejected:
 			for id, dn in rejected:
@@ -2267,10 +2268,10 @@ class s4(univention.s4connector.ucs):
 							self._set_DN_for_GUID(elements[0][1]['objectGUID'][0], elements[0][0])
 				except (ldap.SERVER_DOWN, SystemExit):
 					raise
-				except Exception, msg:
+				except Exception as msg:
 					self._debug_traceback(ud.ERROR, "unexpected Error during s4.resync_rejected")
-		print "restored %s rejected changes" % change_count
-		print "--------------------------------------"
+		print("restored %s rejected changes" % change_count)
+		print("--------------------------------------")
 		sys.stdout.flush()
 
 	def poll(self, show_deleted=True):
@@ -2288,9 +2289,9 @@ class s4(univention.s4connector.ucs):
 		except:  # FIXME: which exception is to be caught?
 			self._debug_traceback(ud.WARN, "Exception during search_s4_changes")
 
-		print "--------------------------------------"
-		print "try to sync %s changes from S4" % len(changes)
-		print "done:",
+		print("--------------------------------------")
+		print("try to sync %s changes from S4" % len(changes))
+		print("done:", end=' ')
 		sys.stdout.flush()
 		done_counter = 0
 		object = None
@@ -2330,14 +2331,14 @@ class s4(univention.s4connector.ucs):
 						else:
 							self.__update_lastUSN(object)
 							done_counter += 1
-							print "%s" % done_counter,
+							print("%s" % done_counter, end=' ')
 							continue
 
 					if object['dn'].find('\\0ACNF:') > 0:
 						ud.debug(ud.LDAP, ud.PROCESS, 'Ignore conflicted object: %s' % object['dn'])
 						self.__update_lastUSN(object)
 						done_counter += 1
-						print "%s" % done_counter,
+						print("%s" % done_counter, end=' ')
 						continue
 
 					sync_successfull = False
@@ -2354,13 +2355,13 @@ class s4(univention.s4connector.ucs):
 						self.open_s4()
 					except SystemExit:
 						raise
-					except univention.admin.uexceptions.ldapError, msg:
+					except univention.admin.uexceptions.ldapError as msg:
 						ud.debug(ud.LDAP, ud.INFO, "Exception during poll with message (1) %s" % msg)
 						if msg == "Can't contact LDAP server":
 							raise ldap.SERVER_DOWN
 						else:
 							self._debug_traceback(ud.WARN, "Exception during poll/sync_to_ucs")
-					except univention.admin.uexceptions.ldapError, msg:
+					except univention.admin.uexceptions.ldapError as msg:
 						ud.debug(ud.LDAP, ud.INFO, "Exception during poll with message (2) %s" % msg)
 						if msg == "Can't contact LDAP server":
 							raise ldap.SERVER_DOWN
@@ -2391,13 +2392,13 @@ class s4(univention.s4connector.ucs):
 					newUSN = max(self.__get_change_usn(object), newUSN)
 
 				done_counter += 1
-				print "%s" % done_counter,
+				print("%s" % done_counter, end=' ')
 			else:
 				done_counter += 1
-				print "(%s)" % done_counter,
+				print("(%s)" % done_counter, end=' ')
 			sys.stdout.flush()
 
-		print ""
+		print("")
 
 		if newUSN != lastUSN:
 			self._set_lastUSN(newUSN)
@@ -2406,10 +2407,10 @@ class s4(univention.s4connector.ucs):
 		# return number of synced objects
 		rejected = self._list_rejected()
 		if rejected:
-			print "Changes from S4:  %s (%s saved rejected)" % (change_count, len(rejected))
+			print("Changes from S4:  %s (%s saved rejected)" % (change_count, len(rejected)))
 		else:
-			print "Changes from S4:  %s (%s saved rejected)" % (change_count, '0')
-		print "--------------------------------------"
+			print("Changes from S4:  %s (%s saved rejected)" % (change_count, '0'))
+		print("--------------------------------------")
 		sys.stdout.flush()
 		return change_count
 

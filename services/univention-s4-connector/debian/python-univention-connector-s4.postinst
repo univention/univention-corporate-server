@@ -1,10 +1,9 @@
-#!/usr/bin/python2.7
-# -*- coding: utf-8 -*-
+#!/bin/bash
 #
-# Univention S4 Connector
-#  reads the internal configuration
+# Univention Samba4 Connector
+#  postinst script of the samba4 connector package
 #
-# Copyright 2004-2019 Univention GmbH
+# Copyright 2019 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,32 +30,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+# Legacy code with python-support
+# Needs to be done because the source package uses dh_python2, but UDM modules
+# are still installed the old way
+# TODO: Remove once we migrated UDM: Bug #49147
+if which update-python-modules >/dev/null 2>&1; then
+	update-python-modules python-univention-connector-s4.public
+	update-python-modules --post-install
+fi
 
-from __future__ import print_function
-import ConfigParser
-import cPickle
-import os
+#DEBHELPER#
 
-
-def fixup(s):
-	# add proper padding to a base64 string
-	n = len(s) & 3
-	if n:
-		s = s + "=" * (4 - n)
-	return s
-
-
-configfile = '/etc/univention/s4connector/s4internal.cfg'
-if not os.path.exists(configfile):
-	print("ERROR: Config-File not found, maybe connector was never started")
-config = ConfigParser.ConfigParser()
-config.readfp(open(configfile))
-
-for section in config.sections():
-	print("SECTION: %s" % section)
-	for name, value in config.items(section):
-		if section == "S4 GUID":
-			print(" --%s: %s" % (name, value))
-			print(" --%s: %s" % (fixup(name).decode('base64'), fixup(value).decode('base64')))
-		else:
-			print(" -- %50s : %s" % (name, value))
+exit 0

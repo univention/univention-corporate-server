@@ -5,21 +5,42 @@ Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
 Build-Depends: debhelper (>> 7),
  ucslint-univention,
- python2.6-dev,
- python-support,
+ dh-python,
+ python-all,
+ python3-all,
  univention-config-dev
 
 Package: python-univention-connector-s4
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
- python-univention (>=8.0.3-1),
+ python-univention (>=12.0.0-5),
  python-univention-license,
+ python-setproctitle,
  python-univention-heimdal (>= 4.0.2-2),
  python-univention-directory-manager (>= 13.0.21-28),
  python-pyasn1-modules,
- python-pysqlite2
+ python-support,
 Provides: ${python:Provides}
-Description: UCS - Modules for connector sychronisation
+Description: UCS - Modules for connector synchronisation
+ This package contains the modules that implement the
+ features of UCS Samba4 Connector.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: python3-univention-connector-s4
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends},
+ python3-univention,
+ python3-univention-license,
+ python3-univention-heimdal,
+ python3-univention-directory-manager,
+ python3-pyasn1-modules,
+ python3-setproctitle,
+Provides: ${python3:Provides}
+Description: UCS - Modules for connector synchronisation
  This package contains the modules that implement the
  features of UCS Samba4 Connector.
  .
@@ -33,7 +54,7 @@ Architecture: all
 Depends: ${misc:Depends},
  python-univention-connector-s4 (= ${binary:Version}),
  shell-univention-lib (>= 3.0.26-25),
- python-univention-lib (>= 3.0.26-7),
+ python-univention-lib (>= 8.0.0-6),
  samba-common-bin,
  univention-samba4 (>= 6.0.10-3),
  attr,

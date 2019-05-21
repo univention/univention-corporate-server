@@ -32,15 +32,19 @@
 # <http://www.gnu.org/licenses/>.
 
 
+from __future__ import print_function
 import os
+import imp
 import signal
 import sys
 import time
 from optparse import OptionParser
-
 import fcntl
-import ldap
 import traceback
+
+import ldap
+import setproctitle
+
 import univention
 import univention.s4connector
 import univention.s4connector.s4
@@ -59,10 +63,8 @@ if options.configbasename:
 	CONFIGBASENAME = options.configbasename
 STATUSLOGFILE = "/var/log/univention/%s-s4-status.log" % CONFIGBASENAME
 
-sys.path = ['/etc/univention/%s/s4/' % CONFIGBASENAME] + sys.path
 
-
-import mapping
+mapping = imp.load_source('mapping', '/etc/univention/%s/s4/mapping.py' % CONFIGBASENAME)
 
 
 def bind_stdout():
@@ -74,16 +76,16 @@ def bind_stdout():
 def daemon(lock_file):
 	try:
 		pid = os.fork()
-	except OSError, e:
-		print 'Daemon Mode Error: %s' % e.strerror
+	except OSError as e:
+		print('Daemon Mode Error: %s' % e.strerror)
 
 	if (pid == 0):
 		os.setsid()
 		signal.signal(signal.SIGHUP, signal.SIG_IGN)
 		try:
 			pid = os.fork()
-		except OSError, e:
-			print 'Daemon Mode Error: %s' % e.strerror
+		except OSError as e:
+			print('Daemon Mode Error: %s' % e.strerror)
 		if (pid == 0):
 			os.chdir("/")
 			os.umask(0)
@@ -92,6 +94,9 @@ def daemon(lock_file):
 			pf.write(str(pid))
 			pf.close()
 			os._exit(0)
+
+		# backwards compatibility for nagios checks not updated to UCS 4.4
+		setproctitle.setproctitle('%s # /usr/lib/pymodules/python2.7/univention/s4connector/s4/main.py' % (setproctitle.getproctitle(),))
 	else:
 		os._exit(0)
 
@@ -114,27 +119,27 @@ def daemon(lock_file):
 
 
 def connect():
-	print time.ctime()
+	print(time.ctime())
 
 	baseConfig = ConfigRegistry()
 	baseConfig.load()
 
 	if '%s/s4/ldap/host' % CONFIGBASENAME not in baseConfig:
-		print '%s/s4/ldap/host not set' % CONFIGBASENAME
+		print('%s/s4/ldap/host not set' % CONFIGBASENAME)
 		sys.exit(1)
 	if '%s/s4/ldap/port' % CONFIGBASENAME not in baseConfig:
-		print '%s/s4/ldap/port not set' % CONFIGBASENAME
+		print('%s/s4/ldap/port not set' % CONFIGBASENAME)
 		sys.exit(1)
 	if '%s/s4/ldap/base' % CONFIGBASENAME not in baseConfig:
-		print '%s/s4/ldap/base not set' % CONFIGBASENAME
+		print('%s/s4/ldap/base not set' % CONFIGBASENAME)
 		sys.exit(1)
 
 	if '%s/s4/ldap/certificate' % CONFIGBASENAME not in baseConfig and not ('%s/s4/ldap/ssl' % CONFIGBASENAME in baseConfig and baseConfig['%s/s4/ldap/ssl' % CONFIGBASENAME] == 'no'):
-		print '%s/s4/ldap/certificate not set' % CONFIGBASENAME
+		print('%s/s4/ldap/certificate not set' % CONFIGBASENAME)
 		sys.exit(1)
 
 	if '%s/s4/listener/dir' % CONFIGBASENAME not in baseConfig:
-		print '%s/s4/listener/dir not set' % CONFIGBASENAME
+		print('%s/s4/listener/dir not set' % CONFIGBASENAME)
 		sys.exit(1)
 
 	if '%s/s4/retryrejected' % CONFIGBASENAME not in baseConfig:
@@ -167,7 +172,7 @@ def connect():
 			)
 			s4_init = True
 		except ldap.SERVER_DOWN:
-			print "Warning: Can't initialize LDAP-Connections, wait..."
+			print("Warning: Can't initialize LDAP-Connections, wait...")
 			sys.stdout.flush()
 			time.sleep(poll_sleep)
 
@@ -180,7 +185,7 @@ def connect():
 			s4.initialize_ucs()
 			ucs_init = True
 		except ldap.SERVER_DOWN:
-			print "Can't contact LDAP server during ucs-poll, sync not possible."
+			print("Can't contact LDAP server during ucs-poll, sync not possible.")
 			sys.stdout.flush()
 			time.sleep(poll_sleep)
 			s4.open_s4()
@@ -191,7 +196,7 @@ def connect():
 			s4.initialize()
 			s4_init = True
 		except ldap.SERVER_DOWN:
-			print "Can't contact LDAP server during ucs-poll, sync not possible."
+			print("Can't contact LDAP server during ucs-poll, sync not possible.")
 			sys.stdout.flush()
 			time.sleep(poll_sleep)
 			s4.open_s4()
@@ -200,7 +205,7 @@ def connect():
 	retry_rejected = 0
 	connected = True
 	while connected:
-		print time.ctime()
+		print(time.ctime())
 		# Aenderungen pollen
 		sys.stdout.flush()
 		while True:
@@ -215,7 +220,7 @@ def connect():
 				else:
 					break
 			except ldap.SERVER_DOWN:
-				print "Can't contact LDAP server during ucs-poll, sync not possible."
+				print("Can't contact LDAP server during ucs-poll, sync not possible.")
 				connected = False
 				sys.stdout.flush()
 				break
@@ -231,7 +236,7 @@ def connect():
 				else:
 					break
 			except ldap.SERVER_DOWN:
-				print "Can't contact LDAP server during s4-poll, sync not possible."
+				print("Can't contact LDAP server during s4-poll, sync not possible.")
 				connected = False
 				sys.stdout.flush()
 				break
@@ -244,13 +249,13 @@ def connect():
 			else:
 				retry_rejected += 1
 		except ldap.SERVER_DOWN:
-			print "Can't contact LDAP server during resync rejected, sync not possible."
+			print("Can't contact LDAP server during resync rejected, sync not possible.")
 			connected = False
 			sys.stdout.flush()
 			change_counter = 0
 			retry_rejected += 1
 
-		print '- sleep %s seconds (%s/%s until resync) -' % (poll_sleep, retry_rejected, baseconfig_retry_rejected)
+		print('- sleep %s seconds (%s/%s until resync) -' % (poll_sleep, retry_rejected, baseconfig_retry_rejected))
 		sys.stdout.flush()
 		time.sleep(poll_sleep)
 	s4.close_debug()
@@ -263,11 +268,10 @@ def lock(filename):
 
 
 def main():
-
 	try:
 		lock_file = lock('/var/lock/univention-s4-%s' % CONFIGBASENAME)
 	except IOError:
-		print >>sys.stderr, 'Error: Another S4 connector process is already running.'
+		print('Error: Another S4 connector process is already running.', file=sys.stderr)
 		sys.exit(1)
 
 	if options.daemonize:
@@ -281,11 +285,11 @@ def main():
 			lock_file.close()
 			raise
 		except:
-			print time.ctime()
+			print(time.ctime())
 
-			print " --- connect failed, failure was: ---"
-			print traceback.format_exc()
-			print " ---     retry in 30 seconds      ---"
+			print(" --- connect failed, failure was: ---")
+			print(traceback.format_exc())
+			print(" ---     retry in 30 seconds      ---")
 			sys.stdout.flush()
 			time.sleep(30)
 	f.close()
