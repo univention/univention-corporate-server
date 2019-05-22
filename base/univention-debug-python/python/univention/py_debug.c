@@ -95,7 +95,8 @@ py_univention_debug_init(PyObject *self, PyObject *args)
     }
 
 #if PY_MAJOR_VERSION >= 3
-    file = PyFile_FromFd(fileno(fd), logfile, "a+", -1, NULL, NULL, NULL, 1);
+    /* use "w+" instead of "a+" as Python3 handels O_APPEND internally by using lseek(), which breaks on STDOUT and STDERR */
+    file = PyFile_FromFd(/*fd*/fileno(fd), /*name*/logfile, /*mode*/"wb+", /*buffering*/0, /*encoding*/NULL, /*errors*/NULL, /*newline*/NULL, /*closefd*/0);
 #else
     file = PyFile_FromFile( fd, logfile, "a+", NULL );
 #endif

@@ -3,6 +3,7 @@
 
 from __future__ import print_function
 import sys
+import os
 import re
 from datetime import datetime
 import pytest
@@ -210,6 +211,38 @@ def test_unicode(parse, tmplog):
 		assert c_type == e_type
 		for key, val in e_groups.items():
 			assert c_groups[key] == val
+
+
+def test_close(parse, tmpdir):
+	"""
+	Closing the Python wrapped file should not close the underlying file descriptor.
+	"""
+	tmp = tmpdir.ensure('log')
+	fd = ud.init(str(tmp), ud.NO_FLUSH, ud.FUNCTION)
+	fd.close()
+	ud.debug(ud.MAIN, ud.ERROR, 'open')
+	ud.exit()
+
+	output = tmp.read()
+	assert [typ for typ, groups in parse(output)] == ['init', 'msg', 'exit']
+
+
+def test_fifo(parse, tmpdir):
+	"""
+	Using a non-seekable file should not crash Python.
+	"""
+	tmp = tmpdir.join('log')
+	os.mkfifo(str(tmp))
+
+	fd = os.open(str(tmp), os.O_RDONLY | os.O_NONBLOCK)
+	try:
+		ud.init(str(tmp), ud.NO_FLUSH, ud.FUNCTION)
+		ud.exit()
+		output = os.read(fd, 4096).decode('ascii')
+	finally:
+		os.close(fd)
+
+	assert [typ for typ, groups in parse(output)] == ['init', 'exit']
 
 
 def test_trace_plain(parse, tmplog):
