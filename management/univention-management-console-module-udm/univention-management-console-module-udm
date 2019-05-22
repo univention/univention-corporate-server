@@ -33,6 +33,7 @@
 
 import os
 import json
+import time
 import copy
 import urllib
 import base64
@@ -237,7 +238,7 @@ class Ressource(RequestHandler):
 
 	def urljoin(self, *args):
 		base = urlparse(self.request.full_url())
-		return urljoin(urljoin(urlunparse((base.scheme, base.netloc, 'univention/' if self.request.headers.get('X-Forwarded-Host') else '/', '', '', '')), self.request.path_decoded.lstrip('/')), *args)
+		return urljoin(urljoin(urlunparse((base.scheme, base.netloc, 'univention/' if self.request.headers.get('X-Forwarded-Host') else '/', '', '', '')), self.request.path_decoded.lstrip('/')), '/'.join(args))
 
 
 class Favicon(Ressource):
@@ -338,7 +339,7 @@ class ObjectTypes(Ressource):
 		if not result:
 			result.append({'id': module.name, 'label': module.title})
 
-		self.add_header('Link', '<%s>; rel="parent"; name="%s"; title="%s"' % (self.urljoin('../'), '', _('Object modules')))
+		self.add_header('Link', '<%s>; rel="parent"; name="%s"; title="%s"' % (self.urljoin('../'), 'udm/relation/object-modules', _('Object modules')))
 		for mod in result:
 			self.add_header('Link', '<%s/>; rel="/udm/relation/object-types"; name="%s"; title="%s"' % (self.urljoin('../%s' % quote(mod['id'])), mod['id'], mod['label']))
 		self.content_negotiation(result)
@@ -770,10 +771,11 @@ class Objects(Ressource):
 
 	def options(self, object_type):
 		self.set_header('Allow', 'GET, POST, OPTIONS')
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('../../'), 'udm/relation/object-modules', _('Object modules')))
 		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('../'), 'parent', ''))
 		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin(''), 'search', ''))
 		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('add/'), 'create-form', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('edit/'), 'edit-form', ''))
+		#self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('edit/'), 'edit-form', ''))
 		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('favicon'), 'icon', ''))
 		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('properties'), 'udm/relation/properties', ''))
 		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('options'), 'udm/relation/options', ''))
@@ -790,7 +792,9 @@ class Object(Ressource):
 	@tornado.gen.coroutine
 	def get(self, object_type, dn):
 		"""GET udm/users/user/$DN (get all properties/values of the user)"""
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('../'), 'parent', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('../../'), 'udm/relation/object-modules', _('Object modules')))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('../'), '/udm/relation/object-types', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('x/../'), 'parent', ''))
 		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin(''), 'self', ''))
 		copy = bool(self.get_query_argument('copy', None))  # TODO: move into own ressource
 
@@ -810,6 +814,8 @@ class Object(Ressource):
 
 		obj = yield self.pool.submit(module.get, dn)
 		if not obj:
+			raise NotFound(object_type, dn)
+		if object_type not in ('users/self', 'users/passwd') and not univention.admin.modules.recognize(object_type, obj.dn, obj.oldattr):
 			raise NotFound(object_type, dn)
 
 		_remove_uncopyable_properties(obj)
@@ -837,8 +843,13 @@ class Object(Ressource):
 		props['$operations$'] = module.operations
 		props['$references$'] = module.get_references(dn)
 		props['$url$'] = self.urljoin(quote_dn(obj.dn))
+		if set(module.operations) & {'edit', 'move', 'remove'}:
+			self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin(quote_dn(obj.dn), 'edit/'), 'edit-form', _('Modify, move or remove this object')))
 
 		props['properties'] = dict(decode_properties(module.name, properties, self.ldap_connection))
+		meta = dict((key, [val.decode('utf-8', 'replace') for val in value]) for key, value in self.ldap_connection.get(obj.dn, attr=['+']).items())
+		props['properties']['meta'] = meta
+		self.add_header('Last-Modified', last_modified(time.strptime(meta['modifyTimestamp'][0], '%Y%m%d%H%M%SZ')))
 		self.content_negotiation(props)
 
 	@tornado.gen.coroutine
@@ -1075,6 +1086,15 @@ def encode_properties(object_type, properties, lo):
 
 def quote_dn(dn):
 	return quote(dn).replace('/', quote('/', safe=''))
+
+
+def last_modified(date):
+	return '%s, %02d %s %04d %02d:%02d:%02d GMT' % (
+		('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun')[date.tm_wday],
+		date.tm_mday,
+		('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')[date.tm_mon - 1],
+		date.tm_year, date.tm_hour, date.tm_min, date.tm_sec
+	)
 
 
 def start():
