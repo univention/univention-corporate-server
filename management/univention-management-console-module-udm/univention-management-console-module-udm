@@ -31,17 +31,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-#
-# Setup for development:
-#
-# ucr set security/packetfilter/package/univention-udm/tcp/8888/all=ACCEPT
-# service univention-firewall restart
-# univention-install python-concurrent.futures python-tornado
-# ./univention-management-console-module-udm
-#
-# curl -ik --user Administrator:univention http://<IP>:8888/udm/
-#
-
 import os
 import json
 import copy
@@ -49,6 +38,7 @@ import urllib
 import base64
 import binascii
 from urlparse import urljoin
+import argparse
 
 import tornado.ioloop
 from tornado.web import Application, RequestHandler, HTTPError
@@ -1031,7 +1021,13 @@ class Operations(Ressource):
 		return
 
 
-if __name__ == "__main__":
+def start():
+	if os.fork() > 0:
+		os._exit(0)
+	run()
+
+
+def run():
 	module_type = '([a-z]+)'
 	object_type = '([a-z]+/[a-z_]+)'
 	policies_object_type = '(policies/[a-z_]+)'
@@ -1074,3 +1070,12 @@ if __name__ == "__main__":
 	])
 	application.listen(8888)
 	tornado.ioloop.IOLoop.current().start()
+
+
+if __name__ == "__main__":
+	parser = argparse.ArgumentParser()
+	subparsers = parser.add_subparsers(title='actions', description='All available actions')
+	start_parser = subparsers.add_parser('start', description='Start the service')
+	start_parser.set_defaults(func=start)
+	args = parser.parse_args()
+	args.func()
