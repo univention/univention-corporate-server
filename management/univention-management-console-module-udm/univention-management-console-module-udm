@@ -826,17 +826,17 @@ class Object(Ressource):
 		if not module:
 			raise NotFound(object_type)  # FIXME: create
 
-		yield self.modify(module)
+		yield self.modify(module, None, dn)
 
 	@tornado.gen.coroutine
 	def patch(self, object_type, dn):
 		module = get_module(object_type, dn, self.ldap_connection)
 		if not module:
 			raise NotFound(object_type)
-		yield self.modify(module, self.request.body_arguments)
+		yield self.modify(module, self.request.body_arguments, dn)
 
 	@tornado.gen.coroutine
-	def modify(self, module, properties=None):
+	def modify(self, module, properties, dn):
 		obj = module.module.object(None, self.ldap_connection, self.ldap_position, dn)
 		obj.open()
 		obj.options = self.get_body_arguments('$options$')
