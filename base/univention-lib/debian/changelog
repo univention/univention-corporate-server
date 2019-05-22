@@ -1,3 +1,9 @@
+univention-lib (8.0.1-17) unstable; urgency=medium
+
+  * Bug #44054: enhance UCR variable descriptions
+
+ -- Florian Best <best@univention.de>  Wed, 22 May 2019 12:03:49 +0200
+
 univention-lib (8.0.1-16) unstable; urgency=medium
 
   * Bug #44054: enhance postinst

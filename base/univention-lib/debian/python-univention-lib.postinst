@@ -60,7 +60,7 @@ else:
 		for path in attr.get('univentionSharePath', []):
 			directory = os.path.realpath(path)
 			if univention.lib.listenerSharePath.is_blacklisted(directory, ucr):
-				print('WARNING: the path %s for share %s matches a blacklisted path: You should execute: ucr set listener/shares/whitelist/%s=%s' % (path, dn, pipes.quote(univention.uldap.explodeDn(dn, True)[0]), pipes.quote(directory)))
+				print('WARNING: the path %s for share %s matches a blacklisted path: You should execute: "ucr set listener/shares/whitelist/%s=%s" and then restart univention-directory-listener.' % (path, dn, pipes.quote(univention.uldap.explodeDn(dn, True)[0]), pipes.quote(directory)))
 EOL
 
 fi
