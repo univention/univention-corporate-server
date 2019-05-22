@@ -7,5 +7,5 @@ fix: 3.0.1-23A~4.4.0.201905171116
 desc: |-
   This update addresses the following issue(s):
   * The file permissions for the cache directory of the Portal is now stricter.
-    This prevents warnings in the UMC diagnosis module.
+    This prevents warnings in the System diagnostic UMC module.
 bug: [48814]
