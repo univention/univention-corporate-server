@@ -178,6 +178,9 @@ class DockerCouldNotStartContainer(Abort):
 	code = 417
 	default_error_msg = 'Unable to start the container!'
 
+	def get_exc_details(self):
+		return str(self)
+
 
 class DatabaseConnectorError(Abort):
 	code = 418

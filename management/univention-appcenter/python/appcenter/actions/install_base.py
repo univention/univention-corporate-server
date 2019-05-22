@@ -162,7 +162,10 @@ class InstallRemoveUpgrade(Register):
 					self._revert(app, args)
 				if args.send_info:
 					try:
-						self._send_information(app, status, status_details)
+						# do not send more than 500 char of status_details
+						if status_details is not None:
+							status_details = status_details[:500]
+						self._send_information(app, status, status_details[:500])
 					except NetworkError:
 						self.log('Ignoring this error...')
 				self._register_installed_apps_in_ucr()

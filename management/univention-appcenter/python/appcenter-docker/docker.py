@@ -51,7 +51,7 @@ import ruamel.yaml as yaml
 
 from univention.appcenter.utils import app_ports_with_protocol, app_ports, call_process, call_process2, shell_safe, mkdir, unique, urlopen
 from univention.appcenter.log import get_base_logger
-from univention.appcenter.exceptions import DockerImagePullFailed
+from univention.appcenter.exceptions import DockerImagePullFailed, DockerCouldNotStartContainer
 from univention.appcenter.ucr import ucr_save, ucr_get, ucr_run_filter, ucr_is_true
 
 _logger = get_base_logger().getChild('docker')
@@ -389,10 +389,7 @@ class MultiDocker(Docker):
 		return
 
 	def pull(self):
-		mkdir(self.app.get_compose_dir())
-		yml_file = self.app.get_compose_file('docker-compose.yml')
-		shutil.copy2(self.app.get_cache_file('compose'), yml_file)
-		os.chmod(yml_file, 0600)
+		self._setup_yml(recreate=True)
 		self.logger.info('Downloading app images')
 		ret, out = call_process2(['docker-compose', '-p', self.app.id, 'pull'], cwd=self.app.get_compose_dir(), logger=_logger)
 		if ret != 0:
@@ -422,11 +419,11 @@ class MultiDocker(Docker):
 		template_file = '%s.template' % yml_file
 		mkdir(self.app.get_compose_dir())
 		shutil.copy2(self.app.get_cache_file('compose'), template_file)
-		os.chmod(yml_file, 0600)
 		with open(template_file) as fd:
 			template = fd.read()
 			content = ucr_run_filter(template)
 		with open(yml_file, 'wb') as fd:
+			os.chmod(yml_file, 0600)
 			fd.write(content)
 		content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
 		container_def = content['services'][self.app.docker_main_service]
@@ -448,17 +445,13 @@ class MultiDocker(Docker):
 					used_ports[service_name][container_port] = host_port
 				else:
 					used_ports[service_name][_port] = _port
-			service_env = service.get('environment')
-			if service_env:
-				if isinstance(service_env, list):
-					service_env = {k: None for k in service_env}
-				for k in env.copy():
-					if k in service_env:
-						service_env[k] = env.pop(k)
-				service['environment'] = service_env
 		if 'environment' not in container_def:
 			container_def['environment'] = {}
-		container_def['environment'].update(env)
+		if isinstance(container_def['environment'], list):
+			for key, val in env.iteritems():
+				container_def['environment'].append('{}={}'.format(key, val))
+		else:
+			container_def['environment'].update(env)
 		for app_id, container_port, host_port in app_ports():
 			if app_id != self.app.id:
 				continue
@@ -483,7 +476,9 @@ class MultiDocker(Docker):
 		env = {k: yaml.scalarstring.DoubleQuotedScalarString(v) for k, v in env.iteritems()}
 		env.update({shell_safe(k).upper(): v for k, v in env.iteritems()})
 		self._setup_yml(recreate=True, env=env)
-		call_process(['docker-compose', '-p', self.app.id, 'up', '-d', '--no-build', '--no-recreate'], cwd=self.app.get_compose_dir())
+		ret, out = call_process2(['docker-compose', '-p', self.app.id, 'up', '-d', '--no-build', '--no-recreate'], cwd=self.app.get_compose_dir())
+		if ret != 0:
+			raise DockerCouldNotStartContainer(out)
 		try:
 			out = ps(only_running=True)
 		except CalledProcessError:

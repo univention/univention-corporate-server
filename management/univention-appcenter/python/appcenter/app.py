@@ -50,7 +50,7 @@ from univention.appcenter.log import get_base_logger
 from univention.appcenter.packages import get_package_manager, packages_are_installed, reload_package_manager
 from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
 from univention.appcenter.utils import app_ports, mkdir, get_current_ram_available, get_locale, container_mode, _
-from univention.appcenter.ucr import ucr_get, ucr_includes, ucr_is_true, ucr_load
+from univention.appcenter.ucr import ucr_get, ucr_includes, ucr_is_true, ucr_load, ucr_run_filter
 from univention.appcenter.settings import Setting
 from univention.appcenter.ini_parser import read_ini_file
 
@@ -986,7 +986,7 @@ class App(object):
 				# appcenter-docker is not installed
 				return None
 			yml_file = self.get_cache_file('compose')
-			content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
+			content = yaml.load(ucr_run_filter(open(yml_file).read()), yaml.RoundTripLoader, preserve_quotes=True)
 			image = content['services'][self.docker_main_service]['image']
 			return image
 		else:
