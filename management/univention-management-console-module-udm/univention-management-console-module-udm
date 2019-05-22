@@ -37,7 +37,8 @@ import copy
 import urllib
 import base64
 import binascii
-from urlparse import urljoin
+from urlparse import urljoin, urlparse, urlunparse
+from urllib import quote
 import argparse
 
 import tornado.ioloop
@@ -212,19 +213,23 @@ class Ressource(RequestHandler):
 				if isinstance(thing, dict) and thing.get('$url$'):
 					x = thing.copy()
 					a = ET.Element("a", href=x.pop('$url$'), rel="/udm/relation/object")
-					a.text = json.dumps(x)
+					a.text = json.dumps(x, indent=4)
 					root.append(a)
 					root.append(ET.Element("br"))
 				else:
 					pre = ET.Element("pre")
-					pre.text = json.dumps(thing)
+					pre.text = json.dumps(thing, indent=4)
 					root.append(pre)
 					root.append(ET.Element("br"))
 		else:
 			pre = ET.Element("pre")
-			pre.text = json.dumps(response)
+			pre.text = json.dumps(response, indent=4)
 			root.append(pre)
 		return root
+
+	def urljoin(self, *args):
+		base = urlparse(self.request.full_url())
+		return urljoin(urljoin(urlunparse((base.scheme, base.netloc, 'univention/' if self.request.headers.get('X-Forwarded-Host') else '/', '', '', '')), self.request.path_decoded.lstrip('/')), *args)
 
 
 class Favicon(Ressource):
@@ -297,7 +302,7 @@ class Modules(Ressource):
 
 	def get(self):
 		for main_type in self.mapping:
-			self.add_header('Link', '</udm/%s/>; rel="/udm/relation/object-modules"; name="%s"; title=""' % (main_type, main_type,))
+			self.add_header('Link', '<%s/>; rel="/udm/relation/object-modules"; name="%s"; title=""' % (self.urljoin(quote(main_type)), main_type,))
 			# TODO: add license-import
 		self.content_negotiation("Hello, world")
 
@@ -326,7 +331,7 @@ class ObjectTypes(Ressource):
 			result.append({'id': module.name, 'label': module.title})
 
 		for mod in result:
-			self.add_header('Link', '</udm/%s/>; rel="/udm/relation/object-types"; name="%s"; title="%s"' % (mod['id'], mod['id'], mod['label']))
+			self.add_header('Link', '<%s/>; rel="/udm/relation/object-types"; name="%s"; title="%s"' % (self.urljoin('../%s' % quote(mod['id'])), mod['id'], mod['label']))
 		self.content_negotiation(result)
 
 
@@ -342,7 +347,7 @@ class ObjectTypesNavigation(Ressource):
 				'label': getattr(module[1], 'short_description', module[0])
 			} for module in udm_modules.modules.items()]
 			for mod in result:
-				self.add_header('Link', '</udm/%s/>; rel="/udm/relation/object-types"; name="%s"; title="%s"' % (mod['id'], mod['id'], mod['label']))
+				self.add_header('Link', '<%s/>; rel="/udm/relation/object-types"; name="%s"; title="%s"' % (self.urljoin(quote(mod['id'])), mod['id'], mod['label']))
 			self.content_negotiation(result)
 			return
 
@@ -373,7 +378,7 @@ class ObjectTypesNavigation(Ressource):
 			'label': getattr(module, 'short_description', udm_modules.name(module))
 		} for module in allowed_modules]
 		for mod in result:
-			self.add_header('Link', '</udm/%s/>; rel="/udm/relation/object-types"; name="%s"; title="%s"' % (mod['id'], mod['id'], mod['label']))
+			self.add_header('Link', '<%s/>; rel="/udm/relation/object-types"; name="%s"; title="%s"' % (self.urljoin(quote(mod['id'])), mod['id'], mod['label']))
 		self.content_negotiation(result)
 
 
@@ -724,7 +729,7 @@ class Objects(Ressource):
 				'labelObjectType': module.subtitle,
 				'name': module.obj_description(obj),
 				'path': ldap_dn2path(obj.dn, include_rdn=False),
-				'$url$': urljoin(self.request.path_decoded, urllib.quote(obj.dn)),
+				'$url$': self.urljoin(quote(obj.dn)),
 			}
 			if '$value$' in fields:
 				entry['$value$'] = [module.property_description(obj, column['name']) for column in module.columns]
@@ -748,23 +753,23 @@ class Objects(Ressource):
 		properties = dict((prop, self.get_body_arguments(prop)) for prop in dict(obj.items()))
 
 		dn = yield self.pool.submit(module.create, properties, container=container, superordinate=superordinate)
-		self.set_header('Location', urljoin(self.request.path_decoded, urllib.quote(dn)))
+		self.set_header('Location', self.urljoin(quote(dn)))
 		self.set_status(201)
 
 	def options(self, object_type):
 		self.set_header('Allow', 'GET, POST, OPTIONS')
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.request.path_decoded, 'search', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'add/'), 'create-form', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'edit/'), 'edit-form', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'favicon'), 'icon', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'properties'), 'udm/relation/properties', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'options'), 'udm/relation/options', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'layout'), 'udm/relation/layout', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'templates'), 'udm/relation/templates', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'containers'), 'udm/relation/containers', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'policies'), 'udm/relation/policies', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'report-types'), 'udm/relation/report-types', ''))
-#		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, ''), '', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin(''), 'search', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('add/'), 'create-form', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('edit/'), 'edit-form', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('favicon'), 'icon', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('properties'), 'udm/relation/properties', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('options'), 'udm/relation/options', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('layout'), 'udm/relation/layout', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('templates'), 'udm/relation/templates', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('containers'), 'udm/relation/containers', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('policies'), 'udm/relation/policies', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('report-types'), 'udm/relation/report-types', ''))
+#		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin(''), '', ''))
 
 
 class Object(Ressource):
@@ -782,7 +787,7 @@ class Object(Ressource):
 				if not p.copyable:
 					obj.info.pop(name, None)
 
-		if object_type == 'users/self' and dn != self.request.user_dn:
+		if object_type == 'users/self' and not self.ldap_connection.compare_dn(dn, self.request.user_dn):
 			raise HTTPError(403)
 
 		module = get_module(object_type, dn, self.ldap_connection)
@@ -797,10 +802,10 @@ class Object(Ressource):
 		obj.set_defaults = True
 		obj.set_default_values()
 		_remove_uncopyable_properties(obj)
-		props = obj.info
+		props = {}
+		props['properties'] = obj.info
 		for passwd in module.password_properties:
-			if passwd in props:
-				del props[passwd]
+			props['properties'].pop(passwd, None)
 		if not copy:
 			props['$dn$'] = obj.dn
 		props['$options$'] = {}
@@ -816,7 +821,7 @@ class Object(Ressource):
 		props['$operations$'] = module.operations
 		props['$references$'] = module.get_references(dn)
 		assert '/' not in obj.dn  # TODO: escape /
-		props['$url$'] = urljoin(self.request.path_decoded, urllib.quote(obj.dn))
+		props['$url$'] = self.urljoin(quote(obj.dn))
 		self.content_negotiation(props)
 
 	@tornado.gen.coroutine
