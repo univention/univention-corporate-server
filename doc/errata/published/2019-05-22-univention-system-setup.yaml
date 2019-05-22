@@ -9,3 +9,5 @@ desc: |
  * A message is shown to warn about the inability to install Samba4 or
    UCS@school if a host name with more than 13 characters is chosen.
 bug: [43326]
+erratum: 111
+announced: 2019-05-22
