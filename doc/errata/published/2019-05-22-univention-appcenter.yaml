@@ -10,3 +10,5 @@ desc: |
  * The App Center now shows app suggestions based on already
    installed apps.
 bug: [49491, 49510]
+erratum: 110
+announced: 2019-05-22
