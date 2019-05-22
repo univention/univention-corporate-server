@@ -1,9 +1,6 @@
-#!/usr/bin/make -f
+#!/bin/sh
 #
-# Univention UCS test
-#  rules file for the debian package
-#
-# Copyright 2013-2019 Univention GmbH
+# Copyright 2019 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,37 +27,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-export DH_ALWAYS_EXCLUDE=.svn
-PACKAGES := $(shell sed -rne '/^Provides: ucs-test-module$$/{g;p};s/Package: //;T;h' debian/control)
-BLANK :=
-SPACE := $(BLANK) $(BLANK)
-COMMA := ,
+#DEBHELPER#
 
-%:
-	dh $@ --with python2,python3
+# Legacy code with python-support
+# Needs to be done because the source package uses dh_python2, but UDM modules
+# are still installed the old way
+# TODO: Remove once we migrated UDM: Bug #49147
+if which update-python-modules >/dev/null 2>&1; then
+        update-python-modules -c ucs-test-udm.public
+fi
 
-override_dh_install:
-	dh_install --sourcedir=$(CURDIR)
-	mkdir -p debian/ucs-test-udm/usr/share/pyshared/univention/
-	mv debian/ucs-test-udm/usr/lib/python2.7/dist-packages/univention/admin debian/ucs-test-udm/usr/share/pyshared/univention/
-
-override_dh_auto_test:
-	ucslint
-	./lint
-
-override_dh_auto_build:
-	dh-umc-module-build
-	univention-l10n-build de
-	dh_auto_build
-
-override_dh_auto_install:
-	dh-umc-module-install
-	univention-l10n-install de
-	dh_auto_install
-
-override_dh_gencontrol:
-	dh_gencontrol -- -Vucs-test:all-packages=$(subst $(SPACE),$(COMMA),$(PACKAGES))
-
-override_dh_auto_clean:
-	find -name '*.pyc' -delete
-	dh_auto_clean
+exit 0
