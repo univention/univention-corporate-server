@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-27) unstable; urgency=medium
+
+  * Bug #49517: fixed status_details limit
+
+ -- Felix Botner <botner@univention.de>  Wed, 22 May 2019 16:07:08 +0200
+
 univention-appcenter (8.0.11-26) unstable; urgency=medium
 
   * Bug #49517: ucr convert compose file before use,
