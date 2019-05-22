@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-12) unstable; urgency=medium
+
+  * Bug #49176: revert the new pathes of UDM modules
+
+ -- Florian Best <best@univention.de>  Wed, 22 May 2019 18:34:02 +0200
+
 univention-s4-connector (13.0.2-11) unstable; urgency=medium
 
   * Bug #49176: only use one process definition for the service
