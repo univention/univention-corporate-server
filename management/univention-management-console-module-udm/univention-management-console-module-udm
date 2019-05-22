@@ -1077,5 +1077,7 @@ if __name__ == "__main__":
 	subparsers = parser.add_subparsers(title='actions', description='All available actions')
 	start_parser = subparsers.add_parser('start', description='Start the service')
 	start_parser.set_defaults(func=start)
+	run_parser = subparsers.add_parser('run', description='Start the service in foreground')
+	run_parser.set_defaults(func=run)
 	args = parser.parse_args()
 	args.func()
