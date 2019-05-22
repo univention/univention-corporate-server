@@ -33,7 +33,6 @@ attributes = []
 __package__ = ''  # workaround for PEP 366
 import listener
 import univention.debug
-import univention.utf8
 import re
 import univention.config_registry
 import univention.uldap

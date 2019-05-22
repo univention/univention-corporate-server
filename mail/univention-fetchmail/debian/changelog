@@ -1,3 +1,9 @@
+univention-fetchmail (12.0.1-2) unstable; urgency=medium
+
+  * Bug #48608: Fix LDAP ACL ordering
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 22 May 2019 10:14:32 +0200
+
 univention-fetchmail (12.0.1-1) unstable; urgency=medium
 
   * Bug #46969: bindpwdfile support
