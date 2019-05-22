@@ -9,3 +9,5 @@ desc: |
  * Fix dependency header of legacy SysV init script to work in environments
    installed with UCS-4.2 or older and without Samba4.
 bug: [49441]
+erratum: 113
+announced: 2019-05-22
