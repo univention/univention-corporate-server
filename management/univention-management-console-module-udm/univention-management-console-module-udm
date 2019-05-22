@@ -55,9 +55,13 @@ from univention.management.console.ldap import get_user_connection, get_machine_
 from univention.management.console.modules.udm.udm_ldap import get_module, set_bind_function, UDM_Module, ldap_dn2path, read_syntax_choices, _get_syntax, container_modules, UDM_Error
 from univention.management.console.modules.udm.udm_ldap import SuperordinateDoesNotExist, NoIpLeft
 from univention.management.console.modules.udm.tools import check_license, LicenseError
+
 import univention.directory.reports as udr
 import univention.admin.uexceptions as udm_errors
 import univention.admin.modules as udm_modules
+
+import univention.udm
+
 from univention.lib.i18n import Translation
 # TODO: PAM authentication ?
 # TODO: use http link header
@@ -750,7 +754,7 @@ class Objects(Ressource):
 		obj = module.module.object(None, self.ldap_connection, self.ldap_position)
 		obj.open()
 		obj.options = options
-		properties = dict((prop, self.get_body_arguments(prop)) for prop in dict(obj.items()))
+		properties = encode_properties(module.name, dict((prop, self.get_body_arguments(prop)) for prop in dict(obj.items())), self.ldap_connection)
 
 		dn = yield self.pool.submit(module.create, properties, container=container, superordinate=superordinate)
 		self.set_header('Location', self.urljoin(quote(dn)))
@@ -803,9 +807,9 @@ class Object(Ressource):
 		obj.set_default_values()
 		_remove_uncopyable_properties(obj)
 		props = {}
-		props['properties'] = obj.info
+		properties = obj.info.copy()
 		for passwd in module.password_properties:
-			props['properties'].pop(passwd, None)
+			properties.pop(passwd, None)
 		if not copy:
 			props['$dn$'] = obj.dn
 		props['$options$'] = {}
@@ -822,6 +826,8 @@ class Object(Ressource):
 		props['$references$'] = module.get_references(dn)
 		assert '/' not in obj.dn  # TODO: escape /
 		props['$url$'] = self.urljoin(quote(obj.dn))
+
+		props['properties'] = dict(decode_properties(module.name, properties, self.ldap_connection))
 		self.content_negotiation(props)
 
 	@tornado.gen.coroutine
@@ -847,6 +853,8 @@ class Object(Ressource):
 		obj.options = self.get_body_arguments('$options$')
 		if properties is None:
 			properties = dict((prop, self.get_body_arguments(prop)) for prop in dict(obj.items()))
+
+		properties = encode_properties(module.name, properties, self.ldap_connection)
 
 		valid = all(x['valid'] if isinstance(x['valid'], bool) else all(x['valid']) for x in self._validate(module, properties))
 		if not valid:
@@ -1024,6 +1032,34 @@ class Operations(Ressource):
 
 	def get(self, progress):
 		return
+
+
+def decode_properties(object_type, properties, lo):
+	mod = univention.udm.UDM(lo, 1).get(object_type)
+	mod.connection = lo
+	codecs = mod._udm_object_class.udm_prop_class._encoders
+	for key, value in properties.items():
+		if key in codecs:
+			mod_obj = mod._udm_object_class()
+			mod_obj._udm_module = mod
+			mod_obj._lo = lo
+			codec = mod_obj._init_encoder(codecs[key], property_name=key)
+			value = codec.decode(value)
+		yield key, value
+
+
+def encode_properties(object_type, properties, lo):
+	mod = univention.udm.UDM(lo, 1).get(object_type)
+	mod.connection = lo
+	codecs = mod._udm_object_class.udm_prop_class._encoders
+	for key, value in properties.items():
+		if key in codecs:
+			mod_obj = mod._udm_object_class()
+			mod_obj._udm_module = mod
+			mod_obj._lo = lo
+			codec = mod_obj._init_encoder(codecs[key], property_name=key)
+			value = codec.encode(value)
+		yield key, value
 
 
 def start():
