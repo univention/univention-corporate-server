@@ -1,3 +1,9 @@
+univention-python (12.0.0-11) unstable; urgency=low
+
+  * Bug #49506: Make namespace switch more robust.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 22 May 2019 07:26:30 +0200
+
 univention-python (12.0.0-10) unstable; urgency=low
 
   * Bug #49506: Split namespace into separate packages.
