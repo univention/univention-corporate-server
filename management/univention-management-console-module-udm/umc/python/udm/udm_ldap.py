@@ -1131,11 +1131,12 @@ def get_module(flavor, ldap_dn, ldap_connection=None, ldap_position=None):
 	if not modules:
 		return None
 
-	module = UDM_Module(modules[0], ldap_connection=ldap_connection, ldap_position=ldap_position)
-	if module.module is None:
-		MODULE.error('Identified module %s for %s (flavor=%s) does not have a relating UDM module.' % (modules[0], ldap_dn, flavor))
-		return None
-	return module
+	for module in modules:
+		module = UDM_Module(module, ldap_connection=ldap_connection, ldap_position=ldap_position)
+		if module.module is not None:
+			return module
+
+	MODULE.error('Identified modules %r for %s (flavor=%s) does not have a relating UDM module.' % (modules, ldap_dn, flavor))
 
 
 def list_objects(container, object_type=None, ldap_connection=None, ldap_position=None):
