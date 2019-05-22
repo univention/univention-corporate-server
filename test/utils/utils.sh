@@ -1046,4 +1046,15 @@ sa_bug47030 () {
 	service amavis restart || true
 }
 
+online_fsresize () {
+	# cloud-initramfs-growroot doesn't always work (bug #49337)
+	# Try on-line resizing
+	echo "Grow root partition"
+	root_device="$(readlink -f "$(df --output=source / | tail -n 1)")"
+	disk="${root_device%[0-9]}"
+	part_number="${root_device#${disk}}"
+	growpart "$disk" "$part_number"
+	resize2fs "$root_device"
+}
+
 # vim:set filetype=sh ts=4:
