@@ -1,0 +1,17 @@
+[Unit]
+Description=Univention Directory Manager HTTP service
+After=network.target
+ConditionPathExists=/var/www
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/univention-management-console-module-udm run
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+User=root
+Group=root
+WorkingDirectory=/var/www
+#SystemCallFilter=@basic-io @io-event @network-io
+
+[Install]
+WantedBy=multi-user.target

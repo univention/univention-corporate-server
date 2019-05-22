@@ -35,6 +35,7 @@ Depends: ${misc:Depends},
  python-tornado,
  python-mimeparse,
  python-concurrent.futures,
+ systemd,
 Description: HTTP service for UCS Directory Manager
  This package contains the HTTP service for UCS Directory Manager.
  .
