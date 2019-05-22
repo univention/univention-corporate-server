@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-0
 src: univention-system-setup
 fix: 12.0.2-8A~4.4.0.201905211320
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * A message is shown to warn about the inability to install Samba4 or
    UCS@school if a host name with more than 13 characters is chosen.
 bug: [43326]
