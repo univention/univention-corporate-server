@@ -255,11 +255,12 @@ class Ressource(RequestHandler):
 	def add_link(self, obj, relation, href, **kwargs):
 		links = obj.setdefault('_links', {})
 		links.setdefault(relation, []).append(dict(kwargs, href=href))
-		self.add_header('Link', '<%s>; rel="%s"; name="%s"; title="%s"' % (href, relation, kwargs.get('name', ''), kwargs.get('title', '')))
+		self.add_header('Link', '<%s>; rel="%s"; name="%s"; title="%s"' % (href, relation, kwargs.get('name', ''), kwargs.get('title', '')))  # TODO: quoting
 
 	def write_error(self, status_code, exc_info=None, **kwargs):
 		if not exc_info:
 			return super(Ressource, self).write_error(status_code, exc_info=exc_info, **kwargs)
+
 		etype, exc, etraceback = exc_info
 		_traceback = None
 		message = str(exc)
@@ -783,7 +784,7 @@ class Objects(Ressource):
 			objects = yield self.pool.submit(module.search, container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden)
 		except SearchLimitReached as exc:
 			objects = []
-			result['errors'] = [str(exc)]
+			result['errors'] = [str(exc) + '?scope=sub&fields=name&container=&objectProperty=name&objectPropertyValue=foo']
 
 		for obj in objects or []:
 			if obj is None:
@@ -804,11 +805,15 @@ class Objects(Ressource):
 				'name': module.obj_description(obj),
 				'path': ldap_dn2path(obj.dn, include_rdn=False),
 				'url': self.urljoin(quote_dn(obj.dn)),
+				'properties': {},  # TODO: wrap via encode_properties() instead of module.property_description() ?!
 			}
 			if '$value$' in fields:
 				entry['$value$'] = [module.property_description(obj, column['name']) for column in module.columns]
+			if '*' in fields:
+				obj.open()
+				fields = set(obj.info.keys())
 			for field in fields - set(module.password_properties) - set(entry.keys()):
-				entry[field] = module.property_description(obj, field)
+				entry['properties'][field] = module.property_description(obj, field)
 			entries.append(entry)
 
 		result['entries'] = entries
@@ -832,13 +837,17 @@ class Objects(Ressource):
 		self.set_status(201)
 
 	def options(self, object_type):
-		self.set_header('Allow', 'GET, POST, OPTIONS')
 		result = {}
+		module = self.get_module(object_type)
+		methods = ['GET', 'OPTIONS']
 		self.add_link(result, 'udm/relation/object-modules', self.urljoin('../../'), title=_('Object modules'))
 		self.add_link(result, 'parent', self.urljoin('../'))
-		self.add_link(result, 'search', self.urljoin(''))
 		self.add_link(result, 'self', self.urljoin(''))
-		self.add_link(result, 'create-form', self.urljoin('add'))
+		if 'search' in module.operations:
+			self.add_link(result, 'search', self.urljoin(''))
+		if 'add' in module.operations:
+			methods.append('POST')
+			self.add_link(result, 'create-form', self.urljoin('add'))
 #		self.add_link(result, 'edit-form', self.urljoin('edit'))
 		self.add_link(result, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
 		self.add_link(result, 'udm/relation/properties', self.urljoin('properties'))
@@ -849,6 +858,7 @@ class Objects(Ressource):
 		self.add_link(result, 'udm/relation/policies', self.urljoin('policies'))
 		self.add_link(result, 'udm/relation/report-types', self.urljoin('report-types'))
 #		self.add_link(result, '', self.urljoin(''))
+		self.set_header('Allow', ', '.join(methods))
 		return result
 
 
@@ -913,7 +923,7 @@ class Object(Ressource):
 		props['id'] = '+'.join(explode_rdn(obj.dn, True))
 		props['superordinate'] = obj.superordinate and obj.superordinate.dn
 		props['position'] = self.ldap_connection.parentDn(obj.dn)
-		if set(module.operations) & {'edit', 'move', 'remove'}:
+		if set(module.operations) & {'edit', 'move', 'remove', 'subtree_move'}:
 			self.add_link(props, 'edit-form', self.urljoin(quote_dn(obj.dn), 'edit'), title=_('Modify, move or remove this object'))
 
 		props['properties'] = dict(decode_properties(module.name, properties, self.ldap_connection))
