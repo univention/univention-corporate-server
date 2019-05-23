@@ -7,3 +7,4 @@ Type: subfile
 Multifile: etc/ldap/slapd.conf
 Subfile: etc/ldap/slapd.conf.d/58univention-fetchmail_acl-settings
 Variables: ldap/base
+Variables: ldap/server/type

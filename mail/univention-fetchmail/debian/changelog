@@ -1,3 +1,9 @@
+univention-fetchmail (12.0.1-3) unstable; urgency=medium
+
+  * Bug #48608: Fix ACL access on slaves, only allow write on dc master
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 23 May 2019 14:35:12 +0200
+
 univention-fetchmail (12.0.1-2) unstable; urgency=medium
 
   * Bug #48608: Fix LDAP ACL ordering
