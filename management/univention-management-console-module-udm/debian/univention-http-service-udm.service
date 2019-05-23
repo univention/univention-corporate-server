@@ -11,6 +11,8 @@ Restart=always
 User=root
 Group=root
 WorkingDirectory=/var/www
+StandardOutput=/var/log/univention/udm-http.log
+StandardError=/var/log/univention/udm-http.log
 #SystemCallFilter=@basic-io @io-event @network-io
 
 [Install]

@@ -774,8 +774,8 @@ class Objects(Ressource):
 		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('../../'), 'udm/relation/object-modules', _('Object modules')))
 		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('../'), 'parent', ''))
 		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin(''), 'search', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('add/'), 'create-form', ''))
-		#self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('edit/'), 'edit-form', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('add'), 'create-form', ''))
+		#self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('edit'), 'edit-form', ''))
 		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('favicon'), 'icon', ''))
 		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('properties'), 'udm/relation/properties', ''))
 		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('options'), 'udm/relation/options', ''))
@@ -844,7 +844,7 @@ class Object(Ressource):
 		props['$references$'] = module.get_references(dn)
 		props['$url$'] = self.urljoin(quote_dn(obj.dn))
 		if set(module.operations) & {'edit', 'move', 'remove'}:
-			self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin(quote_dn(obj.dn), 'edit/'), 'edit-form', _('Modify, move or remove this object')))
+			self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin(quote_dn(obj.dn), 'edit'), 'edit-form', _('Modify, move or remove this object')))
 
 		props['properties'] = dict(decode_properties(module.name, properties, self.ldap_connection))
 		meta = dict((key, [val.decode('utf-8', 'replace') for val in value]) for key, value in self.ldap_connection.get(obj.dn, attr=['+']).items())
@@ -878,7 +878,7 @@ class Object(Ressource):
 
 		properties = encode_properties(module.name, properties, self.ldap_connection)
 
-		valid = all(x['valid'] if isinstance(x['valid'], bool) else all(x['valid']) for x in self._validate(module, properties))
+		valid = all(x['valid'] if isinstance(x['valid'], bool) else all(x['valid']) for x in self._validate(module, properties))  # TODO: run in thread pool
 		if not valid:
 			raise HTTPError(422)
 
@@ -946,11 +946,19 @@ class Object(Ressource):
 
 
 class ObjectAdd(Ressource):
-	pass
+	"""GET a form containing information about all properties, methods, URLs to create a specific object"""
+
+	@tornado.gen.coroutine
+	def get(self, object_type):
+		pass
 
 
 class ObjectEdit(Ressource):
-	pass
+	"""GET a form containing ways to modify, remove, move a specific object"""
+
+	@tornado.gen.coroutine
+	def get(self, object_type, dn):
+		pass
 
 
 class PropertyChoices(Ressource):
@@ -1133,10 +1141,10 @@ def run():
 		(r"/udm/%s/properties/%s/default" % (object_type, property_), DefaultValue),
 		(r"/udm/%s/%s/%s/" % (object_type, dn, policies_object_type), PolicyTypes),
 		(r"/udm/%s/%s/%s/" % (object_type, policies_object_type, dn), PolicyResult),
-		(r"/udm/%s/add" % (object_type,), ObjectAdd),
+		(r"/udm/%s/add/?" % (object_type,), ObjectAdd),
 		(r"/udm/%s/" % (object_type,), Objects),
 		(r"/udm/%s/%s" % (object_type, dn), Object),
-		(r"/udm/%s/%s/edit" % (object_type, dn), ObjectEdit),
+		(r"/udm/%s/%s/edit/?" % (object_type, dn), ObjectEdit),
 		(r"/udm/%s/layout" % (object_type,), Layout),
 		(r"/udm/%s/%s/layout" % (object_type, dn), Layout),
 		(r"/udm/networks/network/([^/]+)/next-free-ip-address", NextFreeIpAddress),
