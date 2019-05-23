@@ -938,7 +938,11 @@ class Object(Ressource):
 		if not module:
 			raise NotFound(object_type)  # FIXME: create
 
-		yield self.modify(module, None, dn)
+		position = self.get_body_arguments('position')
+		if position and not self.ldap_connection.compare_dn(self.ldap_connection.parentDn(dn), position):
+			yield self.move(module, dn, position)
+		else:
+			yield self.modify(module, None, dn)
 
 	@tornado.gen.coroutine
 	def patch(self, object_type, dn):
@@ -973,6 +977,29 @@ class Object(Ressource):
 			yield self.pool.submit(obj.modify)
 		except udm_errors.base as exc:
 			UDM_Error(exc).reraise()
+
+	@tornado.gen.coroutine
+	def move(self, module, dn, position):
+		queue = Operations.queue.setdefault(self.request.user_dn, {})
+		status = {
+			'id': '1',
+			'finished': False,
+			'errors': False,
+		}
+		queue[status['id']] = status
+		self.set_status(201)
+		self.set_header('Location', self.urljoin('progress', status['id']))
+		self.finish()
+		try:
+			dn = yield self.pool.submit(module.move, dn, position)
+		except:
+			status['errors'] = True
+			status['traceback'] = traceback.format_exc()  # FIXME: error handling
+			raise
+		else:
+			status['uri'] = self.urljoin(dn)
+		finally:
+			status['finished'] = True
 
 	@tornado.gen.coroutine
 	def delete(self, object_type, dn):
@@ -1045,7 +1072,44 @@ class ObjectEdit(Ressource):
 
 	@tornado.gen.coroutine
 	def get(self, object_type, dn):
-		self.content_negotiation({})
+		module = get_module(object_type, dn, self.ldap_connection)
+		if module is None:
+			raise NotFound(object_type, dn)
+
+		obj = yield self.pool.submit(module.get, dn)
+		if not obj:
+			raise NotFound(object_type, dn)
+		if object_type not in ('users/self', 'users/passwd') and not univention.admin.modules.recognize(object_type, obj.dn, obj.oldattr):
+			raise NotFound(object_type, dn)
+		result = {'module': module, 'object': obj}
+		self.content_negotiation(result)
+
+	def get_html(self, response):
+		root = []
+		mod = response['module']
+		obj = response['object']
+		if 'remove' in mod.operations:
+			form = ET.Element('form', action=self.urljoin('.').rstrip('/'), method='DELETE', rel='')
+			form.append(ET.Element('input', type='submit', value=_('Remove')))
+			root.append(form)
+			root.append(ET.Element('br'))
+		if set(mod.operations) & {'move', 'subtree_move'}:
+			form = ET.Element('form', action=self.urljoin('.').rstrip('/'), method='PUT', rel='')
+			form.append(ET.Element('input', type='text', name='position', value=obj.position.getDn()))
+			form.append(ET.Element('input', type='submit', value=_('Move')))
+			root.append(form)
+			root.append(ET.Element('br'))
+		if 'edit' in mod.operations:
+			form = ET.Element('form', action=self.urljoin('.').rstrip('/'), method='PUT', rel='')
+			for key, value in encode_properties(obj.module, obj.info, self.ldap_connection):
+				label = ET.Element('label', **{'for': key})
+				label.text = key
+				form.append(label)
+				form.append(ET.Element('input', type='text', value=str(value), name=key))
+				form.append(ET.Element('br'))
+			form.append(ET.Element('input', type='submit', value=_('Modify')))
+			root.append(form)
+		return root
 
 
 class PropertyChoices(Ressource):
@@ -1147,8 +1211,15 @@ class PolicyResult(Ressource):
 class Operations(Ressource):
 	"""GET /udm/progress/$progress-id (get the progress of a started operation like move, report, maybe add/put?, ...)"""
 
+	queue = {}
+
 	def get(self, progress):
-		self.content_negotiation({})
+		result = self.queue.get(self.request.user_dn, {}).get(progress, {})
+		if result.get('uri'):
+			self.set_status(303)
+			self.add_header('Location', result['uri'])
+			self.add_link
+		self.content_negotiation(result)
 
 
 def decode_properties(object_type, properties, lo):
