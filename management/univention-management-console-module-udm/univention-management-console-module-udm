@@ -53,6 +53,7 @@ from ldap.dn import explode_rdn
 import xml.etree.cElementTree as ET
 
 from univention.management.console.config import ucr
+from univention.management.console.log import log_init
 from univention.management.console.ldap import get_user_connection, get_machine_connection
 from univention.management.console.modules.udm.udm_ldap import get_module, set_bind_function, UDM_Module, ldap_dn2path, read_syntax_choices, _get_syntax, container_modules, UDM_Error
 from univention.management.console.modules.udm.udm_ldap import SuperordinateDoesNotExist, NoIpLeft, SearchLimitReached
@@ -354,7 +355,7 @@ class ObjectTypes(Ressource):
 
 		result = {}
 		result['entries'] = module.child_modules or []
-		if not result['entries']:
+		if not result['entries'] and module.module:
 			result['entries'].append({'id': module.name, 'label': module.title})
 
 		self.add_link(result, 'parent', self.urljoin('../'), title=_('Object modules'), name='FIXME:udm/relation/object-modules')  # FIXME: name is wrong
@@ -530,7 +531,7 @@ class LicenseCheck(Ressource):
 class License(Ressource):
 
 	def get(self):
-		pass  # TODO: implement license_info()
+		return {}  # TODO: implement license_info()
 
 	def post(self):
 		pass  # TODO: implement license_import()
@@ -903,18 +904,24 @@ class Object(Ressource):
 	def modify(self, module, properties, dn):
 		obj = module.module.object(None, self.ldap_connection, self.ldap_position, dn)
 		obj.open()
-		obj.options = [opt for opt, enabled in self.get_body_arguments('options') if enabled]
+		obj.options = [opt for opt, enabled in self.get_body_arguments('options').items() if enabled]
 		obj.policies = reduce(lambda x, y: x + y, self.get_body_arguments('policies'), [])
 		if properties is None:
-			properties = dict((prop, self.get_body_arguments(prop)) for prop in dict(obj.items()))
+			properties = self.get_body_arguments('properties')
+			properties = dict((prop, properties[prop]) for prop in dict(obj.items()) if obj.has_property(prop) and prop in properties)  # FIXME: remove prop in properties?!
 
-		properties = encode_properties(module.name, properties, self.ldap_connection)
+		properties = dict(encode_properties(module.name, properties, self.ldap_connection))
 
 		valid = all(x['valid'] if isinstance(x['valid'], bool) else all(x['valid']) for x in self._validate(module, properties))  # TODO: run in thread pool?!
 		if not valid:
 			raise HTTPError(422)
 
 		try:
+			for key, value in dict(properties.items()).items():  # UDM_Error: Value may not change. key=gidNumber old=5086 new=5086
+				if not obj.descriptions[key].may_change:
+					if obj[key] == value:
+						properties.pop(key)
+
 			module._map_properties(obj, properties)
 			yield self.pool.submit(obj.modify)
 		except udm_errors.base as exc:
@@ -951,8 +958,9 @@ class Object(Ressource):
 			if property_obj is None:
 				raise HTTPError(400, None, _('Property %s not found') % property_name)
 
-			if not property_obj.multivalue:
-				value = value[0]
+			# FIXME: the following seems to be obsolete since encode_properties() is called?!
+			#if not property_obj.multivalue:
+			#	value = value[0]
 
 			# check each element if 'value' is a list
 			if isinstance(value, (tuple, list)) and property_obj.multivalue:
@@ -1196,4 +1204,5 @@ if __name__ == "__main__":
 	run_parser = subparsers.add_parser('run', description='Start the service in foreground')
 	run_parser.set_defaults(func=run)
 	args = parser.parse_args()
+	log_init('/dev/stdout', 4)
 	args.func()
