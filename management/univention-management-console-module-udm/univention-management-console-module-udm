@@ -255,8 +255,14 @@ class Ressource(RequestHandler):
 
 class Favicon(Ressource):
 
-	def get(self):
-		return
+	def get(self, object_type='users/user'):
+		value = object_type.replace('/', '-')
+		if not value.replace('-', '').replace('_', '').isalpha():
+			raise NotFound(object_type)
+		with open('/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/udm-%s.png' % (value,)) as fd:
+			# TODO: caching header
+			self.set_header('Content-Type', 'image/x-icon')
+			self.finish(fd.read())
 
 
 class Relations(Ressource):
@@ -514,7 +520,7 @@ class MoveDestinations(ContainerQueryBase):
 class LicenseRequest(Ressource):
 
 	def post(self):
-		pass  # TODO: implement request_new_license()
+		self.content_negotiation({})  # TODO: implement request_new_license()
 
 
 class LicenseCheck(Ressource):
@@ -531,10 +537,10 @@ class LicenseCheck(Ressource):
 class License(Ressource):
 
 	def get(self):
-		return {}  # TODO: implement license_info()
+		self.content_negotiation({})  # TODO: implement license_info()
 
 	def post(self):
-		pass  # TODO: implement license_import()
+		self.content_negotiation({})  # TODO: implement license_import()
 
 
 class Properties(Ressource):
@@ -802,7 +808,7 @@ class Objects(Ressource):
 		self.add_link(result, 'self', self.urljoin(''))
 		self.add_link(result, 'create-form', self.urljoin('add'))
 #		self.add_link(result, 'edit-form', self.urljoin('edit'))
-		self.add_link(result, 'icon', self.urljoin('favicon'), type='image/x-icon')
+		self.add_link(result, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
 		self.add_link(result, 'udm/relation/properties', self.urljoin('properties'))
 		self.add_link(result, 'udm/relation/options', self.urljoin('options'))
 		self.add_link(result, 'udm/relation/layout', self.urljoin('layout'))
@@ -990,7 +996,7 @@ class ObjectAdd(Ressource):
 
 	@tornado.gen.coroutine
 	def get(self, object_type):
-		pass
+		self.content_negotiation({})
 
 
 class ObjectEdit(Ressource):
@@ -998,7 +1004,7 @@ class ObjectEdit(Ressource):
 
 	@tornado.gen.coroutine
 	def get(self, object_type, dn):
-		pass
+		self.content_negotiation({})
 
 
 class PropertyChoices(Ressource):
@@ -1101,7 +1107,7 @@ class Operations(Ressource):
 	"""GET /udm/progress/$progress-id (get the progress of a started operation like move, report, maybe add/put?, ...)"""
 
 	def get(self, progress):
-		return
+		self.content_negotiation({})
 
 
 def decode_properties(object_type, properties, lo):
@@ -1174,6 +1180,7 @@ def run():
 		(r"/udm/%s/templates" % (object_type,), Templates),
 		(r"/udm/%s/containers" % (object_type,), Containers),  # TODO: maybe rename conflicts with above except trailing slash
 		(r"/udm/%s/policies" % (object_type,), Policies),
+		(r"/udm/%s/favicon.ico" % (object_type,), Favicon),
 		(r"/udm/%s/report-types" % (object_type,), ReportTypes),
 		(r"/udm/%s/report/([^/]+)" % (object_type,), Report),
 		(r"/udm/%s/%s/properties/" % (object_type, dn), Properties),
