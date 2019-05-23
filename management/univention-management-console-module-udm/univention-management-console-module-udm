@@ -228,10 +228,10 @@ class Ressource(RequestHandler):
 					break
 		if isinstance(response, (list, tuple)):
 			for thing in response:
-				if isinstance(thing, dict) and thing.get('$url$'):
+				if isinstance(thing, dict) and thing.get('uri'):
 					x = thing.copy()
-					a = ET.Element("a", href=x.pop('$url$'), rel="/udm/relation/object")
-					a.text = x.get('$dn$')
+					a = ET.Element("a", href=x.pop('uri'), rel="/udm/relation/object")
+					a.text = x.get('dn')
 					pre = ET.Element("pre")
 					pre.text = json.dumps(x, indent=4)
 					root.append(ET.Element("br"))
@@ -289,7 +289,7 @@ class Ressource(RequestHandler):
 
 class Favicon(Ressource):
 
-	def get(self, object_type='users/user'):
+	def get(self, object_type='users/user'):  # TODO: use tornados static server
 		value = object_type.replace('/', '-')
 		if not value.replace('-', '').replace('_', '').isalpha():
 			raise NotFound(object_type)
@@ -798,7 +798,7 @@ class Objects(Ressource):
 				'$labelObjectType$': module.subtitle,
 				'name': module.obj_description(obj),
 				'path': ldap_dn2path(obj.dn, include_rdn=False),
-				'url': self.urljoin(quote_dn(obj.dn)),
+				'uri': self.urljoin(quote_dn(obj.dn)),
 				'properties': {},  # TODO: wrap via encode_properties() instead of module.property_description() ?!
 			}
 			if '$value$' in fields:
