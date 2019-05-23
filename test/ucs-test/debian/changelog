@@ -1,3 +1,10 @@
+ucs-test (9.0.2-63) unstable; urgency=medium
+
+  * Bug #49537: Remove apptest flag for
+    66_udm-computers.54_concurrent_rename_and_group_change
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 23 May 2019 23:43:22 +0200
+
 ucs-test (9.0.2-62) unstable; urgency=medium
 
   * Bug #49176: fix typo in sed call in s4connector.py
