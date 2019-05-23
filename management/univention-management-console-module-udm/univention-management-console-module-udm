@@ -49,6 +49,7 @@ import tornado.gen
 from concurrent.futures import ThreadPoolExecutor
 
 from ldap.filter import filter_format
+from ldap.dn import explode_rdn
 import xml.etree.cElementTree as ET
 
 from univention.management.console.config import ucr
@@ -187,12 +188,8 @@ class Ressource(RequestHandler):
 
 		root = ET.Element("html")
 		head = ET.SubElement(root, "head")
-		title = 'Test'
-		if isinstance(response, dict):
-			self = response.get('_links', {}).get('self')
-			self = self if isinstance(self, dict) else self[0]
-			title = self.get('title', self.get('href'))
-		ET.SubElement(head, "title").text = title
+		titleelement = ET.SubElement(head, "title")
+		titleelement.text = 'FIXME: fallback'
 		body = ET.SubElement(root, "body")
 		for link in self._headers.get_list('Link'):
 			link, foo, _params = link.partition(';')
@@ -203,6 +200,8 @@ class Ressource(RequestHandler):
 			ET.SubElement(head, "link", href=link, **params)
 			ET.SubElement(body, "a", href=link, **params).text = params.get('title', link) or link
 			ET.SubElement(body, "br")
+			if params.get('rel') == 'self':
+				titleelement.text = params.get('title') or link or 'FIXME:notitle'
 
 		if isinstance(response, (list, tuple)):
 			body.extend(response)
@@ -328,8 +327,8 @@ class Modules(Ressource):
 		result = {}
 		for main_type in self.mapping:
 			self.add_link(result, '/udm/relation/object-modules', self.urljoin(quote(main_type)) + '/', name=main_type)
-		self.add_link(result, '/udm/relation/object-modules', self.urljoin('navigation') + '/')
-		self.add_link(result, '/udm/relation/object-modules/all', self.urljoin('navigation') + '/')
+		self.add_link(result, '/udm/relation/object-modules', self.urljoin('navigation') + '/', name='all')
+		self.add_link(result, '/udm/relation/object-modules/all', self.urljoin('navigation') + '/', name='all')
 		self.add_link(result, '/udm/relation/object-modules', self.urljoin('license') + '/', name='license')
 		self.content_negotiation(result)
 
@@ -359,6 +358,7 @@ class ObjectTypes(Ressource):
 			result['entries'].append({'id': module.name, 'label': module.title})
 
 		self.add_link(result, 'parent', self.urljoin('../'), title=_('Object modules'), name='FIXME:udm/relation/object-modules')  # FIXME: name is wrong
+		self.add_link(result, 'self', self.urljoin(''))
 		for mod in result['entries']:
 			self.add_link(result, '/udm/relation/object-types', self.urljoin('../%s' % quote(mod['id'])) + '/', name=mod['id'], title=mod['label'])
 		self.content_negotiation(result)
@@ -798,6 +798,7 @@ class Objects(Ressource):
 		self.add_link(result, 'udm/relation/object-modules', self.urljoin('../../'), title=_('Object modules'))
 		self.add_link(result, 'parent', self.urljoin('../'))
 		self.add_link(result, 'search', self.urljoin(''))
+		self.add_link(result, 'self', self.urljoin(''))
 		self.add_link(result, 'create-form', self.urljoin('add'))
 #		self.add_link(result, 'edit-form', self.urljoin('edit'))
 		self.add_link(result, 'icon', self.urljoin('favicon'), type='image/x-icon')
@@ -854,22 +855,25 @@ class Object(Ressource):
 		for passwd in module.password_properties:
 			properties.pop(passwd, None)
 		if not copy:
-			props['$dn$'] = obj.dn
-		props['$options$'] = {}
+			props['dn'] = obj.dn
+		props['options'] = {}
 		for opt in module.get_options(udm_object=obj):
-			props['$options$'][opt['id']] = opt['value']
-		props['$policies$'] = {}
+			props['options'][opt['id']] = opt['value']
+		props['policies'] = {}
 		for policy in obj.policies:
 			pol_mod = get_module(None, policy, self.ldap_connection)
 			if pol_mod and pol_mod.name:
-				props['$policies$'].setdefault(pol_mod.name, []).append(policy)
+				props['policies'].setdefault(pol_mod.name, []).append(policy)
 		props['$labelObjectType$'] = module.title
 		props['$labelObjectTypeSingular$'] = module.object_name
 		props['$labelObjectTypePlural$'] = module.object_name_plural
-		props['$flags$'] = obj.oldattr.get('univentionObjectFlag', [])
+		props['flags'] = obj.oldattr.get('univentionObjectFlag', [])
 		props['$operations$'] = module.operations
 		props['$references$'] = module.get_references(dn)
-		props['$url$'] = self.urljoin(quote_dn(obj.dn))
+		props['uri'] = self.urljoin(quote_dn(obj.dn))
+		props['id'] = '+'.join(explode_rdn(obj.dn, True))
+		props['superordinate'] = obj.superordinate and obj.superordinate.dn
+		props['position'] = self.ldap_connection.parentDn(obj.dn)
 		if set(module.operations) & {'edit', 'move', 'remove'}:
 			self.add_link(props, 'edit-form', self.urljoin(quote_dn(obj.dn), 'edit'), title=_('Modify, move or remove this object'))
 
@@ -1147,7 +1151,7 @@ def run():
 	application = Application([
 		(r"/favicon.ico", Favicon),
 		(r"/udm/", Modules),
-		(r"/udm/relation/.*", Relations),
+		(r"/udm/relation/(.*)", Relations),
 		(r"/udm/license/", License),
 		(r"/udm/license/check", LicenseCheck),
 		(r"/udm/license/request", LicenseRequest),
