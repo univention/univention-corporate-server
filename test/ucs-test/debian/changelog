@@ -1,3 +1,10 @@
+ucs-test (9.0.2-65) unstable; urgency=medium
+
+  * Bug #49539: Remove apptest flag for
+    61_udm-users.12_user_creation_with_username_already_in_use
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 23 May 2019 23:51:00 +0200
+
 ucs-test (9.0.2-64) unstable; urgency=medium
 
   * Bug #49538: Remove apptest flag for
