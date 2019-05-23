@@ -635,9 +635,9 @@ function connector_mapping_adjust ()
 	if [ -e "$MAIN_FILE" ]; then
 		cp -f "$MAIN_FILE" "$MAIN_FILE".ucs-test-backup
 		if [ -n "$3" ]; then
-			sed -i "/^mapping = imp.*/a ucs_test_filter = mapping.s4_mapping ['$1'].ignore_filter\nucs_test_filter = ucs_test_filter[0:len(ucs_test_filter)-1]\nucs_test_filter=ucs_test_filter+'(uid=$2))'\nmapping.s4_mapping ['$1'].ignore_filter = ucs_test_filter/" "$MAIN_FILE"
+			sed -i "/^mapping = imp.*/a ucs_test_filter = mapping.s4_mapping['$1'].ignore_filter\nucs_test_filter = ucs_test_filter[0:len(ucs_test_filter)-1]\nucs_test_filter = ucs_test_filter + '(uid=$2))'\nmapping.s4_mapping['$1'].ignore_filter = ucs_test_filter" "$MAIN_FILE"
 		else
-			sed -i "/^mapping = imp.*/a mapping.s4_mapping ['$1'].ignore_subtree = mapping.s4_mapping ['$1'].ignore_subtree + ['$2']/" "$MAIN_FILE"
+			sed -i "/^mapping = imp.*/a mapping.s4_mapping['$1'].ignore_subtree = mapping.s4_mapping['$1'].ignore_subtree + ['$2']" "$MAIN_FILE"
 		fi
 	else
 		MAIN_FILE="/usr/share/pyshared/univention/s4connector/s4/main.py"
