@@ -41,6 +41,7 @@ import binascii
 from urlparse import urljoin, urlparse, urlunparse
 from urllib import quote
 import argparse
+import traceback
 
 import tornado.ioloop
 from tornado.web import Application, RequestHandler, HTTPError
@@ -58,6 +59,7 @@ from univention.management.console.ldap import get_user_connection, get_machine_
 from univention.management.console.modules.udm.udm_ldap import get_module, set_bind_function, UDM_Module, ldap_dn2path, read_syntax_choices, _get_syntax, container_modules, UDM_Error
 from univention.management.console.modules.udm.udm_ldap import SuperordinateDoesNotExist, NoIpLeft, SearchLimitReached
 from univention.management.console.modules.udm.tools import check_license, LicenseError
+from univention.management.console.modules import UMC_Error
 
 import univention.directory.reports as udr
 import univention.admin.uexceptions as udm_errors
@@ -218,8 +220,11 @@ class Ressource(RequestHandler):
 
 	def get_html(self, response):
 		root = []
-		if isinstance(response, dict) and 'entries' in response:
-			response = response['entries']
+		if isinstance(response, dict):
+			for key in ('entries', 'error', 'errors'):
+				if response.get(key):
+					response = response[key]
+					break
 		if isinstance(response, (list, tuple)):
 			for thing in response:
 				if isinstance(thing, dict) and thing.get('$url$'):
@@ -251,6 +256,33 @@ class Ressource(RequestHandler):
 		links = obj.setdefault('_links', {})
 		links.setdefault(relation, []).append(dict(kwargs, href=href))
 		self.add_header('Link', '<%s>; rel="%s"; name="%s"; title="%s"' % (href, relation, kwargs.get('name', ''), kwargs.get('title', '')))
+
+	def write_error(self, status_code, exc_info=None, **kwargs):
+		if not exc_info:
+			return super(Ressource, self).write_error(status_code, exc_info=exc_info, **kwargs)
+		etype, exc, etraceback = exc_info
+		_traceback = None
+		message = str(exc)
+		title = ''
+		if not isinstance(exc, (UDM_Error, UMC_Error)):
+			_traceback = traceback.format_exception(etype, exc, etraceback)
+
+		if isinstance(exc, UMC_Error):
+			status_code = exc.status
+			title = exc.msg
+
+		if not self.settings.get("serve_traceback"):
+			_traceback = None
+
+		self.set_status(status_code)
+		self.content_negotiation({
+			'error': {
+				'title': title,
+				'code': status_code,
+				'message': message,
+				'traceback': _traceback,
+			},
+		})
 
 
 class Favicon(Ressource):
@@ -751,7 +783,7 @@ class Objects(Ressource):
 			objects = yield self.pool.submit(module.search, container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden)
 		except SearchLimitReached as exc:
 			objects = []
-			entries.append(str(exc))
+			result['errors'] = [str(exc)]
 
 		for obj in objects or []:
 			if obj is None:
@@ -763,15 +795,15 @@ class Objects(Ressource):
 				continue
 
 			entry = {
-				'$dn$': obj.dn,
+				'dn': obj.dn,
 				'$childs$': module.childs,
 				'$flags$': obj.oldattr.get('univentionObjectFlag', []),
 				'$operations$': module.operations,
 				'objectType': module.name,
-				'labelObjectType': module.subtitle,
+				'$labelObjectType$': module.subtitle,
 				'name': module.obj_description(obj),
 				'path': ldap_dn2path(obj.dn, include_rdn=False),
-				'$url$': self.urljoin(quote_dn(obj.dn)),
+				'url': self.urljoin(quote_dn(obj.dn)),
 			}
 			if '$value$' in fields:
 				entry['$value$'] = [module.property_description(obj, column['name']) for column in module.columns]
