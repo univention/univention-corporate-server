@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Move container/cn into another container/cn and the latter one into another container/cn
-## tags: [udm,apptest]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:
