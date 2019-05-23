@@ -1,3 +1,10 @@
+ucs-test (9.0.2-64) unstable; urgency=medium
+
+  * Bug #49538: Remove apptest flag for
+    63_udm-containers.14_container_cn_recursive_relocation_with_special_characters
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 23 May 2019 23:49:19 +0200
+
 ucs-test (9.0.2-63) unstable; urgency=medium
 
   * Bug #49537: Remove apptest flag for
