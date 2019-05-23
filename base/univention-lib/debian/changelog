@@ -1,3 +1,10 @@
+univention-lib (8.0.1-19) unstable; urgency=medium
+
+  * Bug #49176: Add Breaks: python-univention-connector-s4 to ensure
+    safe upgrade
+
+ -- Florian Best <best@univention.de>  Thu, 23 May 2019 12:40:22 +0200
+
 univention-lib (8.0.1-18) unstable; urgency=medium
 
   * Bug #49176: fix absolute import of dns module
