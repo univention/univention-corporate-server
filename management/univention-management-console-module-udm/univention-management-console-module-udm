@@ -1198,8 +1198,9 @@ def run():
 		(r"/udm/progress/([0-9]+)", Operations),
 		# TODO: meta info
 		# TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
-	])
+	], serve_traceback=True, autoreload=True)
 	application.listen(8888)
+	tornado.log.enable_pretty_logging()
 	tornado.ioloop.IOLoop.current().start()
 
 
