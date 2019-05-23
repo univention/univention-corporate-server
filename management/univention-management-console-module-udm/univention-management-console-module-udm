@@ -903,13 +903,14 @@ class Object(Ressource):
 	def modify(self, module, properties, dn):
 		obj = module.module.object(None, self.ldap_connection, self.ldap_position, dn)
 		obj.open()
-		obj.options = self.get_body_arguments('$options$')
+		obj.options = [opt for opt, enabled in self.get_body_arguments('options') if enabled]
+		obj.policies = reduce(lambda x, y: x + y, self.get_body_arguments('policies'), [])
 		if properties is None:
 			properties = dict((prop, self.get_body_arguments(prop)) for prop in dict(obj.items()))
 
 		properties = encode_properties(module.name, properties, self.ldap_connection)
 
-		valid = all(x['valid'] if isinstance(x['valid'], bool) else all(x['valid']) for x in self._validate(module, properties))  # TODO: run in thread pool
+		valid = all(x['valid'] if isinstance(x['valid'], bool) else all(x['valid']) for x in self._validate(module, properties))  # TODO: run in thread pool?!
 		if not valid:
 			raise HTTPError(422)
 
