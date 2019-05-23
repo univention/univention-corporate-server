@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Create users/user with username which is already in use
-## tags: [udm,apptest]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:
