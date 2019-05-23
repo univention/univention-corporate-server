@@ -187,7 +187,12 @@ class Ressource(RequestHandler):
 
 		root = ET.Element("html")
 		head = ET.SubElement(root, "head")
-		ET.SubElement(head, "title", name="blah").text = "Test"
+		title = 'Test'
+		if isinstance(response, dict):
+			self = response.get('_links', {}).get('self')
+			self = self if isinstance(self, dict) else self[0]
+			title = self.get('title', self.get('href'))
+		ET.SubElement(head, "title").text = title
 		body = ET.SubElement(root, "body")
 		for link in self._headers.get_list('Link'):
 			link, foo, _params = link.partition(';')
@@ -213,6 +218,8 @@ class Ressource(RequestHandler):
 
 	def get_html(self, response):
 		root = []
+		if isinstance(response, dict) and 'entries' in response:
+			response = response['entries']
 		if isinstance(response, (list, tuple)):
 			for thing in response:
 				if isinstance(thing, dict) and thing.get('$url$'):
@@ -239,6 +246,11 @@ class Ressource(RequestHandler):
 	def urljoin(self, *args):
 		base = urlparse(self.request.full_url())
 		return urljoin(urljoin(urlunparse((base.scheme, base.netloc, 'univention/' if self.request.headers.get('X-Forwarded-Host') else '/', '', '', '')), self.request.path_decoded.lstrip('/')), '/'.join(args))
+
+	def add_link(self, obj, relation, href, **kwargs):
+		links = obj.setdefault('_links', {})
+		links.setdefault(relation, []).append(dict(kwargs, href=href))
+		self.add_header('Link', '<%s>; rel="%s"; name="%s"; title="%s"' % (href, relation, kwargs.get('name', ''), kwargs.get('title', '')))
 
 
 class Favicon(Ressource):
@@ -274,7 +286,8 @@ class Relations(Ressource):
 			'icon': 'Refers to an icon representing the link\'s context.',
 			# Univention:
 			'object': '',
-			'object-modules': '',
+			'object-modules': 'list of available module categories',
+			'object-modules/all': 'list of all available modules',
 			'object-types': 'list of object types matching the given flavor or container',
 			'properties': 'properties of the given object type',
 			'options': 'options specified for the given object type',
@@ -286,6 +299,8 @@ class Relations(Ressource):
 			'default-search': 'default search pattern/value for the given object property',
 			'next-free-ip': 'next IP configuration based on the given network object',
 			'property-choices': 'determine valid values for a given syntax class',
+			'object/remove': 'remove this object, edit-form is preferable',
+			'object/edit': 'modify this object, edit-form is preferable',
 		}
 		result = relations.get(relation)
 		self.content_negotiation(result)
@@ -310,10 +325,13 @@ class Modules(Ressource):
 	}
 
 	def get(self):
+		result = {}
 		for main_type in self.mapping:
-			self.add_header('Link', '<%s/>; rel="/udm/relation/object-modules"; name="%s"; title=""' % (self.urljoin(quote(main_type)), main_type,))
-			# TODO: add license-import
-		self.content_negotiation("Hello, world")
+			self.add_link(result, '/udm/relation/object-modules', self.urljoin(quote(main_type)) + '/', name=main_type)
+		self.add_link(result, '/udm/relation/object-modules', self.urljoin('navigation') + '/')
+		self.add_link(result, '/udm/relation/object-modules/all', self.urljoin('navigation') + '/')
+		self.add_link(result, '/udm/relation/object-modules', self.urljoin('license') + '/', name='license')
+		self.content_negotiation(result)
 
 
 class ObjectTypes(Ressource):
@@ -335,13 +353,14 @@ class ObjectTypes(Ressource):
 		if superordinate:
 			module = get_module(object_type, superordinate, self.ldap_connection) or module  # FIXME: the object_type param is wrong?!
 
-		result = module.child_modules or []
-		if not result:
-			result.append({'id': module.name, 'label': module.title})
+		result = {}
+		result['entries'] = module.child_modules or []
+		if not result['entries']:
+			result['entries'].append({'id': module.name, 'label': module.title})
 
-		self.add_header('Link', '<%s>; rel="parent"; name="%s"; title="%s"' % (self.urljoin('../'), 'udm/relation/object-modules', _('Object modules')))
-		for mod in result:
-			self.add_header('Link', '<%s/>; rel="/udm/relation/object-types"; name="%s"; title="%s"' % (self.urljoin('../%s' % quote(mod['id'])), mod['id'], mod['label']))
+		self.add_link(result, 'parent', self.urljoin('../'), title=_('Object modules'), name='FIXME:udm/relation/object-modules')  # FIXME: name is wrong
+		for mod in result['entries']:
+			self.add_link(result, '/udm/relation/object-types', self.urljoin('../%s' % quote(mod['id'])) + '/', name=mod['id'], title=mod['label'])
 		self.content_negotiation(result)
 
 
@@ -350,14 +369,16 @@ class ObjectTypesNavigation(Ressource):
 	def get(self):
 		superordinate = self.get_query_argument('superordinate', None)
 		container = self.get_query_argument('container', None) or superordinate
+		result = {}
 		if not container:
 			# no container is specified, return all existing object types
-			result = [{
+			entries = [{
 				'id': module[0],
 				'label': getattr(module[1], 'short_description', module[0])
 			} for module in udm_modules.modules.items()]
-			for mod in result:
-				self.add_header('Link', '<%s/>; rel="/udm/relation/object-types"; name="%s"; title="%s"' % (self.urljoin(quote(mod['id'])), mod['id'], mod['label']))
+			for mod in entries:
+				self.add_link(result, '/udm/relation/object-types', self.urljoin('../%s' % quote(mod['id'])) + '/', name=mod['id'], title=mod['label'])
+			result['entries'] = entries
 			self.content_negotiation(result)
 			return
 
@@ -383,12 +404,13 @@ class ObjectTypesNavigation(Ressource):
 		allowed_modules = [mod for mod in allowed_modules if udm_modules.supports(mod, 'add')]
 
 		# return the final list of object types
-		result = [{
+		entries = [{
 			'id': udm_modules.name(module),
 			'label': getattr(module, 'short_description', udm_modules.name(module))
 		} for module in allowed_modules]
-		for mod in result:
-			self.add_header('Link', '<%s/>; rel="/udm/relation/object-types"; name="%s"; title="%s"' % (self.urljoin(quote(mod['id'])), mod['id'], mod['label']))
+		for mod in entries:
+			self.add_link(result, '/udm/relation/object-types', self.urljoin('../%s' % quote(mod['id'])) + '/', name=mod['id'], title=mod['label'])
+		result['entries'] = entries
 		self.content_negotiation(result)
 
 
@@ -697,7 +719,7 @@ class Objects(Ressource):
 	def get(self, object_type):
 		"""GET udm/users/user/ (nach Benutzern suchen)"""
 		module = self.get_module(object_type)
-		self.options(object_type)
+		result = self.options(object_type)
 
 		# TODO: replace the superordinate concept by container
 		superordinate = self.get_query_argument('superordinate', None)
@@ -719,12 +741,12 @@ class Objects(Ressource):
 
 		entries = []
 		try:
-			result = yield self.pool.submit(module.search, container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden)
+			objects = yield self.pool.submit(module.search, container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden)
 		except SearchLimitReached as exc:
-			result = []
+			objects = []
 			entries.append(str(exc))
 
-		for obj in result or []:
+		for obj in objects or []:
 			if obj is None:
 				continue
 			module = get_module(object_type, obj.dn, self.ldap_connection)
@@ -750,7 +772,8 @@ class Objects(Ressource):
 				entry[field] = module.property_description(obj, field)
 			entries.append(entry)
 
-		self.content_negotiation(entries)
+		result['entries'] = entries
+		self.content_negotiation(result)
 
 	@tornado.gen.coroutine
 	def post(self, object_type):
@@ -771,20 +794,22 @@ class Objects(Ressource):
 
 	def options(self, object_type):
 		self.set_header('Allow', 'GET, POST, OPTIONS')
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('../../'), 'udm/relation/object-modules', _('Object modules')))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('../'), 'parent', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin(''), 'search', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('add'), 'create-form', ''))
-		#self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('edit'), 'edit-form', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('favicon'), 'icon', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('properties'), 'udm/relation/properties', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('options'), 'udm/relation/options', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('layout'), 'udm/relation/layout', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('templates'), 'udm/relation/templates', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('containers'), 'udm/relation/containers', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('policies'), 'udm/relation/policies', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('report-types'), 'udm/relation/report-types', ''))
-#		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin(''), '', ''))
+		result = {}
+		self.add_link(result, 'udm/relation/object-modules', self.urljoin('../../'), title=_('Object modules'))
+		self.add_link(result, 'parent', self.urljoin('../'))
+		self.add_link(result, 'search', self.urljoin(''))
+		self.add_link(result, 'create-form', self.urljoin('add'))
+#		self.add_link(result, 'edit-form', self.urljoin('edit'))
+		self.add_link(result, 'icon', self.urljoin('favicon'), type='image/x-icon')
+		self.add_link(result, 'udm/relation/properties', self.urljoin('properties'))
+		self.add_link(result, 'udm/relation/options', self.urljoin('options'))
+		self.add_link(result, 'udm/relation/layout', self.urljoin('layout'))
+		self.add_link(result, 'udm/relation/templates', self.urljoin('templates'))
+		self.add_link(result, 'udm/relation/containers', self.urljoin('containers'))
+		self.add_link(result, 'udm/relation/policies', self.urljoin('policies'))
+		self.add_link(result, 'udm/relation/report-types', self.urljoin('report-types'))
+#		self.add_link(result, '', self.urljoin(''))
+		return result
 
 
 class Object(Ressource):
@@ -792,10 +817,13 @@ class Object(Ressource):
 	@tornado.gen.coroutine
 	def get(self, object_type, dn):
 		"""GET udm/users/user/$DN (get all properties/values of the user)"""
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('../../'), 'udm/relation/object-modules', _('Object modules')))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('../'), '/udm/relation/object-types', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin('x/../'), 'parent', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin(''), 'self', ''))
+		props = {}
+		self.add_link(props, 'udm/relation/object-modules', self.urljoin('../../'), title=_('Object modules'))
+		self.add_link(props, '/udm/relation/object-types', self.urljoin('../'))
+		self.add_link(props, 'parent', self.urljoin('x/../'))
+		self.add_link(props, 'self', self.urljoin(''))
+		self.add_link(props, '/udm/relation/object/remove', self.urljoin(''), method='DELETE')
+		self.add_link(props, '/udm/relation/object/edit', self.urljoin(''), method='PUT')
 		copy = bool(self.get_query_argument('copy', None))  # TODO: move into own ressource
 
 		def _remove_uncopyable_properties(obj):
@@ -822,7 +850,6 @@ class Object(Ressource):
 		obj.set_defaults = True
 		obj.set_default_values()
 		_remove_uncopyable_properties(obj)
-		props = {}
 		properties = obj.info.copy()
 		for passwd in module.password_properties:
 			properties.pop(passwd, None)
@@ -844,11 +871,11 @@ class Object(Ressource):
 		props['$references$'] = module.get_references(dn)
 		props['$url$'] = self.urljoin(quote_dn(obj.dn))
 		if set(module.operations) & {'edit', 'move', 'remove'}:
-			self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.urljoin(quote_dn(obj.dn), 'edit'), 'edit-form', _('Modify, move or remove this object')))
+			self.add_link(props, 'edit-form', self.urljoin(quote_dn(obj.dn), 'edit'), title=_('Modify, move or remove this object'))
 
 		props['properties'] = dict(decode_properties(module.name, properties, self.ldap_connection))
 		meta = dict((key, [val.decode('utf-8', 'replace') for val in value]) for key, value in self.ldap_connection.get(obj.dn, attr=['+']).items())
-		props['properties']['meta'] = meta
+		props['meta'] = meta
 		self.add_header('Last-Modified', last_modified(time.strptime(meta['modifyTimestamp'][0], '%Y%m%d%H%M%SZ')))
 		self.content_negotiation(props)
 
