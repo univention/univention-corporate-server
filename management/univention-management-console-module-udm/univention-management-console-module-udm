@@ -75,6 +75,7 @@ from univention.lib.i18n import Translation
 # FIXME: prevent in the javascript UMC module that navigation container query is called with container=='None'
 # TODO: translation
 # FIXME: it seems request.path contains the un-urlencoded path, could be security issue!
+# TODO: 0f77c317e03844e8a16c484dde69abbcd2d2c7e3 is not integrated
 
 _ = Translation('univention-management-console-module-udm').translate
 
@@ -332,7 +333,8 @@ class Relations(Ressource):
 			'options': 'options specified for the given object type',
 			'layout': 'layout information for the given object type',
 			'templates': 'list of template objects for the given object type',
-			'containers': 'list of default containers for the given object type',
+			'default-containers': 'list of default containers for the given object type',
+			'tree': 'list of tree content for providing a hierarchical navigation',
 			'policies': 'list of policy types that apply to the given object type',  # virtual policy object containing the values that the given object or container inherits
 			'report-types': 'list of reports for the given object type',
 			'default-search': 'default search pattern/value for the given object property',
@@ -470,6 +472,7 @@ class ContainerQueryBase(Ressource):
 					'label': UDM_Module(object_type).title,
 					'icon': 'udm-%s' % (object_type.replace('/', '-'),),
 				})
+			self.add_link({}, 'next', self.urljoin('?container=%s' % (quote(container))))
 			raise tornado.gen.Return([dict({
 				'id': container,
 				'label': ldap_dn2path(container),
@@ -485,15 +488,7 @@ class ContainerQueryBase(Ressource):
 		result = []
 		for xmodule in modules:
 			xmodule = UDM_Module(xmodule)
-			superordinate = None
-			if xmodule.superordinate_names:
-				for module_superordinate in xmodule.superordinate_names:
-					try:
-						superordinate = UDM_Module(module_superordinate).get(container)
-					except UDM_Error:  # the container is not a direct superordinate  # FIXME: get the "real" superordinate; Bug #40885
-						continue
-				if superordinate is None:
-					continue  # superordinate object could not be load -> ignore module
+			superordinate = univention.admin.objects.get_superordinate(xmodule.module, None, self.ldap_connection, container)  # TODO: should also better be in a thread
 			try:
 				items = yield self.pool.submit(xmodule.search, container, scope=scope, superordinate=superordinate)
 				for item in items:
@@ -539,6 +534,7 @@ class Navigation(ContainerQueryBase):
 
 class MoveDestinations(ContainerQueryBase):
 
+	@tornado.gen.coroutine
 	def get(self, object_type):
 		scope = 'one'
 		modules = container_modules()
@@ -546,7 +542,7 @@ class MoveDestinations(ContainerQueryBase):
 		if not container:
 			scope = 'base'
 
-		containers = self._container_query(object_type, container, modules, scope)
+		containers = yield self._container_query(object_type, container, modules, scope)
 		self.content_negotiation(containers)
 
 
@@ -634,7 +630,7 @@ class Templates(Ressource):
 		self.content_negotiation(result)
 
 
-class Containers(Ressource):
+class DefaultContainers(Ressource):
 	"""GET udm/users/user/containers (get default containers for users/user)"""
 
 	def get(self, object_type):
@@ -645,8 +641,6 @@ class Containers(Ressource):
 		module = self.get_module(object_type)
 		containers = [{'id': x, 'label': ldap_dn2path(x)} for x in module.get_default_containers()]
 		containers.sort(cmp=lambda x, y: cmp(x['label'].lower(), y['label'].lower()))
-		return containers
-
 		self.content_negotiation(containers)
 
 
@@ -854,7 +848,8 @@ class Objects(Ressource):
 		self.add_link(result, 'udm/relation/options', self.urljoin('options'))
 		self.add_link(result, 'udm/relation/layout', self.urljoin('layout'))
 		self.add_link(result, 'udm/relation/templates', self.urljoin('templates'))
-		self.add_link(result, 'udm/relation/containers', self.urljoin('containers'))
+		self.add_link(result, 'udm/relation/default-containers', self.urljoin('default-containers'))
+		self.add_link(result, 'udm/relation/tree', self.urljoin('tree'))
 		self.add_link(result, 'udm/relation/policies', self.urljoin('policies'))
 		self.add_link(result, 'udm/relation/report-types', self.urljoin('report-types'))
 #		self.add_link(result, '', self.urljoin(''))
@@ -1213,14 +1208,14 @@ def run():
 		(r"/udm/license/check", LicenseCheck),
 		(r"/udm/license/request", LicenseRequest),
 		(r"/udm/navigation/", ObjectTypesNavigation),
-		(r"/udm/%s/containers/" % (object_type,), Navigation),
+		(r"/udm/%s/tree" % (object_type,), Navigation),
 		(r"/udm/%s/properties" % (object_type,), Properties),
 		(r"/udm/%s/" % (module_type,), ObjectTypes),
-		(r"/udm/(navigation)/containers/", Navigation),
+		(r"/udm/(navigation)/tree", Navigation),
 		(r"/udm/(%s|navigation)/move-destinations/" % (object_type,), MoveDestinations),
 		(r"/udm/%s/options" % (object_type,), Options),
 		(r"/udm/%s/templates" % (object_type,), Templates),
-		(r"/udm/%s/containers" % (object_type,), Containers),  # TODO: maybe rename conflicts with above except trailing slash
+		(r"/udm/%s/default-containers" % (object_type,), DefaultContainers),  # TODO: maybe rename conflicts with above except trailing slash
 		(r"/udm/%s/policies" % (object_type,), Policies),
 		(r"/udm/%s/favicon.ico" % (object_type,), Favicon),
 		(r"/udm/%s/report-types" % (object_type,), ReportTypes),
