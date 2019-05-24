@@ -128,11 +128,10 @@ class Ressource(RequestHandler):
 		except (ValueError, IndexError, binascii.Error):
 			raise HTTPError(400)
 
-		# TODO: caching
-		lo, po = get_machine_connection()
+		lo, po = get_machine_connection(write=False)
 		try:
 			userdn = lo.searchDn(filter_format('(&(objectClass=person)(uid=%s))', [username]), unique=True)[0]
-			self.ldap_connection, self.ldap_position = get_user_connection(bind=lambda lo: lo.bind(userdn, password))
+			self.ldap_connection, self.ldap_position = get_user_connection(bind=lambda lo: lo.bind(userdn, password), write=True)
 			set_bind_function(lambda lo: lo.bind(userdn, password))
 			self.request.user_dn = userdn
 			self.request.username = username
@@ -195,7 +194,6 @@ class Ressource(RequestHandler):
 		return super(Ressource, self).get_body_arguments(name, *args)
 
 	def content_negotiation(self, response):
-		# TODO: implement XML
 		lang = self.request.content_negotiation_lang
 		formatter = getattr(self, '%s_%s' % (self.request.method.lower(), lang), getattr(self, 'get_%s' % (lang,)))
 		codec = getattr(self, 'content_negotiation_%s' % (lang,))
@@ -277,7 +275,7 @@ class Ressource(RequestHandler):
 		self.add_header('Link', '<%s>; rel="%s"; name="%s"; title="%s"' % (href, relation, kwargs.get('name', ''), kwargs.get('title', '')))  # TODO: quoting
 
 	def write_error(self, status_code, exc_info=None, **kwargs):
-		if not exc_info:
+		if not exc_info:  # or isinstance(exc_info[1], HTTPError):
 			return super(Ressource, self).write_error(status_code, exc_info=exc_info, **kwargs)
 
 		etype, exc, etraceback = exc_info
@@ -290,12 +288,12 @@ class Ressource(RequestHandler):
 		_traceback = None
 		message = str(exc)
 		title = ''
-		if not isinstance(exc, (UDM_Error, UMC_Error)):
-			_traceback = traceback.format_exception(etype, exc, etraceback)
-
 		if isinstance(exc, UMC_Error):
 			status_code = exc.status
 			title = exc.msg
+
+		if not isinstance(exc, (UDM_Error, UMC_Error)) and status_code >= 500:
+			_traceback = traceback.format_exception(etype, exc, etraceback)
 
 		if not self.settings.get("serve_traceback"):
 			_traceback = None
@@ -317,7 +315,10 @@ class Favicon(Ressource):
 		value = object_type.replace('/', '-')
 		if not value.replace('-', '').replace('_', '').isalpha():
 			raise NotFound(object_type)
-		with open('/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/udm-%s.png' % (value,)) as fd:
+		filename = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/udm-%s.png' % (value,)
+		if not os.path.exists(filename):
+			raise NotFound(object_type)
+		with open(filename, 'rb') as fd:
 			# TODO: caching header
 			self.set_header('Content-Type', 'image/x-icon')
 			self.finish(fd.read())
@@ -783,12 +784,22 @@ class Objects(Ressource):
 		superordinate = self.get_query_argument('superordinate', None)
 
 		container = self.get_query_argument('container', None)
-		objectProperty = self.get_query_argument('objectProperty', None)
-		objectPropertyValue = self.get_query_argument('objectPropertyValue', None)
+		objectProperty = self.get_query_argument('property', None)
+		objectPropertyValue = self.get_query_argument('propertyvalue', None)
 		scope = self.get_query_argument('scope', 'sub')
 		hidden = self.get_query_argument('hidden', False)
 		fields = self.get_query_arguments('fields', [])
 		fields = (set(fields) | set([objectProperty])) - set(['name', 'None', None, ''])
+
+		# TODO: add limit, page, ordering, ...
+		result['query'] = {
+			'container': container,
+			'property': objectProperty,
+			'propertyvalue': objectPropertyValue,
+			'scope': 'sub',
+			'hidden': '1' if hidden else '',
+			'fields': list(fields),
+		}
 
 		if superordinate:
 			mod = get_module(superordinate, superordinate, self.ldap_connection)
@@ -802,7 +813,7 @@ class Objects(Ressource):
 			objects = yield self.pool.submit(module.search, container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden)
 		except SearchLimitReached as exc:
 			objects = []
-			result['errors'] = [str(exc) + '?scope=sub&fields=name&container=&objectProperty=name&objectPropertyValue=foo']
+			result['errors'] = [str(exc)]
 
 		for obj in objects or []:
 			if obj is None:
@@ -836,6 +847,24 @@ class Objects(Ressource):
 
 		result['entries'] = entries
 		self.content_negotiation(result)
+
+	def get_html(self, response):
+		root = super(Objects, self).get_html(response)
+		if self.request.method == 'GET' and isinstance(root, list) and isinstance(response, dict) and response.get('query'):
+			form = ET.Element('form', method='GET', rel='search')
+			for key, value in response['query'].items():
+				label = ET.Element('label', **{'for': key})
+				label.text = key
+				form.append(label)
+				if isinstance(value, list):
+					for value in value:
+						form.append(ET.Element('input', type={'hidden': 'checkbox'}.get(key, 'text'), name=key, placeholder=key, value=value or ''))
+				else:
+					form.append(ET.Element('input', type={'hidden': 'checkbox'}.get(key, 'text'), name=key, placeholder=key, value=value or ''))
+				form.append(ET.Element('br'))
+			form.append(ET.Element('input', type='submit', value=_('Search')))
+			root.insert(0, form)
+		return root
 
 	@tornado.gen.coroutine
 	def post(self, object_type):
@@ -1253,6 +1282,8 @@ def decode_properties(object_type, properties, lo):
 			mod_obj._lo = lo
 			codec = mod_obj._init_encoder(codecs[key], property_name=key)
 			value = codec.decode(value)
+			if key == 'jpegPhoto':
+				value = value.raw.decode('latin-1')
 		yield key, value
 
 
@@ -1380,6 +1411,7 @@ class Server(object):
 		args = parser.parse_args()
 		log_init('/dev/stdout', 4)
 		locale.setlocale(locale.LC_MESSAGES, str(Locale(args.language)))  # FIXME: we must import all modules only after this!
+		udm_modules.update()
 		args.func()
 
 
