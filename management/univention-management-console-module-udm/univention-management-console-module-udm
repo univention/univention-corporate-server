@@ -97,6 +97,8 @@ class Ressource(RequestHandler):
 
 	pool = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
+	authenticated = {}
+
 	def force_authorization(self):
 		self.set_header('WWW-Authenticate', 'Basic realm="Univention Management Console"')
 		self.set_status(401)
@@ -108,6 +110,17 @@ class Ressource(RequestHandler):
 		if not authorization:
 			return self.force_authorization()
 
+		try:
+			self.parse_authorization(authorization)
+		finally:
+			self.request.content_negotiation_lang = self.check_acceptable()
+			self.decode_request_arguments()
+
+	def parse_authorization(self, authorization):
+		if authorization in self.authenticated:
+			(self.request.userdn, self.request.username, self.ldap_connection, self.ldap_position) = self.authenticated[authorization]
+			if self.ldap_connection.whoami():
+				return
 		try:
 			if not authorization.lower().startswith('basic '):
 				raise ValueError()
@@ -122,11 +135,11 @@ class Ressource(RequestHandler):
 			self.ldap_connection, self.ldap_position = get_user_connection(bind=lambda lo: lo.bind(userdn, password))
 			set_bind_function(lambda lo: lo.bind(userdn, password))
 			self.request.user_dn = userdn
+			self.request.username = username
 		except:
 			return self.force_authorization()
-
-		self.request.content_negotiation_lang = self.check_acceptable()
-		self.decode_request_arguments()
+		else:
+			self.authenticated[authorization] = (userdn, username, self.ldap_connection, self.ldap_position)
 
 	def get_module(self, object_type):
 		module = UDM_Module(object_type)
