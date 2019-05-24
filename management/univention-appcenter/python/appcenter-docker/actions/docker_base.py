@@ -242,18 +242,19 @@ docker inspect:
 				graphdriver=inspect.get('GraphDriver')
 			)
 			raise AppCenterErrorContainerStart(msg)
-		if password:
-			f_name = docker.path('/etc/machine.secret')
-			with open(f_name, 'w+b') as f:
-				os.chmod(f_name, 0o600)
-				f.write(password)
+		# copy password files
+		if os.path.isfile(app.secret_on_host):
+			ret, out = docker.cp_to_container(app.secret_on_host, '/etc/machine.secret')
+			if ret != 0:
+				raise DockerCouldNotStartContainer('Could not copy machine.secret to container: %s %s' % (docker.logs(), out))
+		if database_password_file:
+			docker.cp_to_container(database_password_file, database_password_file)
 		# update timezone in container
 		logfile_logger = get_logfile_logger('docker.base')
 		docker.execute('rm', '-f', '/etc/timezone', '/etc/localtime', _logger=logfile_logger)
 		docker.cp_to_container('/etc/timezone', '/etc/timezone', _logger=logfile_logger)
 		docker.cp_to_container('/etc/localtime', '/etc/localtime', _logger=logfile_logger)
-		if database_password_file:
-			docker.cp_to_container(database_password_file, database_password_file)
+		# configure app
 		after_image_configuration.update(set_vars)
 		configure = get_action('configure')
 		configure.call(app=app, autostart=autostart, run_script='no', set_vars=after_image_configuration)
