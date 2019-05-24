@@ -788,7 +788,7 @@ class Objects(Ressource):
 	def get(self, object_type):
 		"""GET udm/users/user/ (nach Benutzern suchen)"""
 		module = self.get_module(object_type)
-		result = self.options(object_type)
+		result = self._options(object_type)
 
 		# TODO: replace the superordinate concept by container
 		superordinate = self.get_query_argument('superordinate', None)
@@ -883,20 +883,59 @@ class Objects(Ressource):
 		container = self.get_body_argument('position')
 		superordinate = self.get_body_argument('superordinate')
 		options = self.get_body_arguments('options')
+		policies = self.get_body_arguments('policies')
 		properties = self.get_body_arguments('properties')
 
-		obj = module.module.object(None, self.ldap_connection, self.ldap_position)
-		obj.open()
-		obj.options = options
-		properties = dict((prop, properties[prop]) for prop in dict(obj.items()))
-		properties = dict(encode_properties(module.name, properties, self.ldap_connection))  # if obj.has_property(prop) and prop in properties))  # FIXME: remove prop in properties?!
+		ldap_position = self.ldap_position
+		if container:
+			ldap_position = univention.admin.uldap.position(container)
+		elif superordinate:
+			ldap_position = univention.admin.uldap.position(superordinate)
+		else:
+			if hasattr(module.module, 'policy_position_dn_prefix'):
+				container = '%s,cn=policies,%s' % (self.module.policy_position_dn_prefix, ldap_position.getBase())
+			else:
+				defaults = module.get_default_containers()
+				container = defaults[0] if defaults else ldap_position.getBase()
 
-		dn = yield self.pool.submit(module.create, properties, container=container, superordinate=superordinate)
+			ldap_position = univention.admin.uldap.position(container)
+
+		#if superordinate:
+		#	mod = get_module(module.name, superordinate, ldap_connection)
+		#	if not mod:
+		#		MODULE.error('Superordinate module not found: %s' % (superordinate,))
+		#		raise SuperordinateDoesNotExist(superordinate)
+		#	MODULE.info('Found UDM module for superordinate')
+		#	superordinate = mod.get(superordinate)
+
+		obj = module.module.object(None, self.ldap_connection, ldap_position, superordinate=superordinate)
+		obj.open()
+		obj.options = [opt for opt, enabled in dict(options).items() if enabled]  # TODO: AppAttributes.data_for_module(self.name).iteritems() ?
+		obj.policies = reduce(lambda x, y: x + y, policies, [])
+		properties = dict((prop, properties[prop]) for prop in dict(obj.items()) if obj.has_property(prop) and prop in properties)  # FIXME: remove prop in properties?!
+		properties = dict(encode_properties(module.name, properties, self.ldap_connection))
+
+		try:
+			#for key, value in dict(properties.items()).items():  # UDM_Error: Value may not change. key=gidNumber old=5086 new=5086
+			#	if not obj.descriptions[key].may_change:
+			#		if obj[key] == value:
+			#			properties.pop(key)
+
+			module._map_properties(obj, properties)
+			dn = yield self.pool.submit(obj.create)
+		except udm_errors.objectExists as e:
+			raise
+		except udm_errors.base as exc:
+			UDM_Error(exc).reraise()
 		self.set_header('Location', self.urljoin(quote_dn(dn)))
 		self.set_status(201)
 		self.content_negotiation({})
 
 	def options(self, object_type):
+		result = self._options(object_type)
+		self.content_negotiation(result)
+
+	def _options(self, object_type):
 		result = {}
 		module = self.get_module(object_type)
 		methods = ['GET', 'OPTIONS']
@@ -1080,6 +1119,7 @@ class Object(Ressource):
 		cleanup = bool(self.get_query_argument('cleanup', False))
 		recursive = bool(self.get_query_argument('recursive', False))
 		yield self.pool.submit(module.remove, dn, cleanup, recursive)
+		self.content_negotiation({})
 
 	def options(self, object_type, dn):
 		self.set_header('Allow', 'GET, PUT, DELETE, OPTIONS')
