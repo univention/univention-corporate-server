@@ -53,6 +53,7 @@ from tornado.concurrent import run_on_executor
 import tornado.gen
 from concurrent.futures import ThreadPoolExecutor
 
+import ldap
 from ldap.filter import filter_format
 from ldap.dn import explode_rdn
 import xml.etree.cElementTree as ET
@@ -63,7 +64,7 @@ from univention.management.console.ldap import get_user_connection, get_machine_
 from univention.management.console.modules.udm.udm_ldap import get_module, set_bind_function, UDM_Module, ldap_dn2path, read_syntax_choices, _get_syntax, container_modules, UDM_Error
 from univention.management.console.modules.udm.udm_ldap import SuperordinateDoesNotExist, NoIpLeft, SearchLimitReached
 from univention.management.console.modules.udm.tools import check_license, LicenseError
-from univention.management.console.modules import UMC_Error
+from univention.management.console.error import UMC_Error, LDAP_ServerDown, LDAP_ConnectionFailed
 
 import univention.directory.reports as udr
 import univention.admin.uexceptions as udm_errors
@@ -267,6 +268,12 @@ class Ressource(RequestHandler):
 			return super(Ressource, self).write_error(status_code, exc_info=exc_info, **kwargs)
 
 		etype, exc, etraceback = exc_info
+		if isinstance(exc, udm_errors.ldapError) and isinstance(getattr(exc, 'original_exception', None), (ldap.SERVER_DOWN, ldap.CONNECT_ERROR, ldap.INVALID_CREDENTIALS)):
+			exc = exc.original_exception
+		if isinstance(exc, ldap.SERVER_DOWN):
+			exc = LDAP_ServerDown()
+		if isinstance(exc, ldap.CONNECT_ERROR):
+			exc = LDAP_ConnectionFailed(exc)
 		_traceback = None
 		message = str(exc)
 		title = ''
