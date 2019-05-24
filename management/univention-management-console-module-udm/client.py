@@ -219,7 +219,7 @@ class Object(object):
             return self._create()
 
     def delete(self):
-        return make_request('delete', self.module.uri, credentials=self.module)
+        return make_request('delete', self.uri, credentials=self.module)
 
     def _modify(self):
         data = {
@@ -234,10 +234,8 @@ class Object(object):
         entry = eval_response(resp)
         self.dn = entry['dn']
         self.reload()
-        return self
 
-    def reload(self):
-        obj = self.module.get(self.dn)
+    def _copy_from_obj(self, obj):
         self.dn = obj.dn
         self.props = obj.props
         self.options = obj.options
@@ -246,6 +244,10 @@ class Object(object):
         self.superordinate = obj.superordinate
         self.module = obj.module
         self.uri = obj.uri
+
+    def reload(self):
+        obj = self.module.get(self.dn)
+        self._copy_from_obj(obj)
 
     def _create(self):
         data = {
@@ -257,10 +259,9 @@ class Object(object):
                 }
         print(data)
         resp = make_request('post', self.module.uri, credentials=self.module, data=data)
-        entry = eval_response(resp)
-        self.dn = entry['dn']
-        self.reload()
-        return self
+        uri = resp.headers['Location']
+        obj = ShallowObject(self.module, None, uri).open()
+        self._copy_from_obj(obj)
 
     def __repr__(self):
         return 'Object(module={}, dn={}, uri={})'.format(self.module.name, self.dn, self.uri)
@@ -298,9 +299,9 @@ if __name__ == '__main__':
         print(f)
     obj = folder.new()
     obj.props['name'] = 'example.com'
-    obj.save()
-    for f in folder.search():
-        print(f)
+    #obj.save()
+    #for f in folder.search():
+    #    print(f)
 
     #obj = get_entry(uri, username, password, 'users/user', 'uid=Administrator,cn=users,l=school,l=dev')
     #print(obj.props['description'])
