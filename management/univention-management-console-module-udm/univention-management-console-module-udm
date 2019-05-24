@@ -181,7 +181,10 @@ class Ressource(RequestHandler):
 
 	def decode_request_arguments(self):
 		if self.request.headers.get('Content-Type', '').startswith('application/json'):
-			self.request.body_arguments = json.loads(self.request.body)
+			try:
+				self.request.body_arguments = json.loads(self.request.body)
+			except ValueError as exc:
+				raise HTTPError(400, _('Invalid JSON document: %r' % (exc,)))
 
 	def get_body_argument(self, name, *args):
 		if self.request.headers.get('Content-Type', '').startswith('application/json'):
@@ -783,7 +786,7 @@ class Objects(Ressource):
 		# TODO: replace the superordinate concept by container
 		superordinate = self.get_query_argument('superordinate', None)
 
-		container = self.get_query_argument('container', None)
+		container = self.get_query_argument('position', None)
 		objectProperty = self.get_query_argument('property', None)
 		objectPropertyValue = self.get_query_argument('propertyvalue', None)
 		scope = self.get_query_argument('scope', 'sub')
@@ -793,7 +796,7 @@ class Objects(Ressource):
 
 		# TODO: add limit, page, ordering, ...
 		result['query'] = {
-			'container': container,
+			'position': container,
 			'property': objectProperty,
 			'propertyvalue': objectPropertyValue,
 			'scope': 'sub',
@@ -870,14 +873,14 @@ class Objects(Ressource):
 	def post(self, object_type):
 		"""POST udm/users/user/ (Benutzer hinzufügen)"""
 		module = self.get_module(object_type)
-		container = self.get_body_argument('container')
+		container = self.get_body_argument('position')
 		superordinate = self.get_body_argument('superordinate')
 		options = self.get_body_arguments('options')
 
 		obj = module.module.object(None, self.ldap_connection, self.ldap_position)
 		obj.open()
 		obj.options = options
-		properties = encode_properties(module.name, dict((prop, self.get_body_arguments(prop)) for prop in dict(obj.items())), self.ldap_connection)
+		properties = dict(encode_properties(module.name, dict((prop, self.get_body_arguments(prop)) for prop in dict(obj.items())), self.ldap_connection))
 
 		dn = yield self.pool.submit(module.create, properties, container=container, superordinate=superordinate)
 		self.set_header('Location', self.urljoin(quote_dn(dn)))
@@ -991,7 +994,11 @@ class Object(Ressource):
 		if position and not self.ldap_connection.compare_dn(self.ldap_connection.parentDn(dn), position):
 			yield self.move(module, dn, position)
 		else:
-			yield self.modify(module, None, dn)
+			obj = yield self.modify(module, None, dn)
+			self.set_status(302)
+			self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
+
+		self.content_negotiation({})
 
 	@tornado.gen.coroutine
 	def patch(self, object_type, dn):
@@ -999,12 +1006,13 @@ class Object(Ressource):
 		if not module:
 			raise NotFound(object_type)
 		yield self.modify(module, self.request.body_arguments, dn)
+		self.content_negotiation({})
 
 	@tornado.gen.coroutine
 	def modify(self, module, properties, dn):
 		obj = module.module.object(None, self.ldap_connection, self.ldap_position, dn)
 		obj.open()
-		obj.options = [opt for opt, enabled in self.get_body_arguments('options').items() if enabled]
+		obj.options = [opt for opt, enabled in dict(self.get_body_arguments('options')).items() if enabled]
 		obj.policies = reduce(lambda x, y: x + y, self.get_body_arguments('policies'), [])
 		if properties is None:
 			properties = self.get_body_arguments('properties')
@@ -1012,8 +1020,8 @@ class Object(Ressource):
 
 		properties = dict(encode_properties(module.name, properties, self.ldap_connection))
 
-		valid = all(x['valid'] if isinstance(x['valid'], bool) else all(x['valid']) for x in self._validate(module, properties))  # TODO: run in thread pool?!
-		if not valid:
+		validation = yield self._validate(module, properties)
+		if not all(x['valid'] if isinstance(x['valid'], bool) else all(x['valid']) for x in validation):
 			raise HTTPError(422)
 
 		try:
@@ -1026,6 +1034,8 @@ class Object(Ressource):
 			yield self.pool.submit(obj.modify)
 		except udm_errors.base as exc:
 			UDM_Error(exc).reraise()
+		else:
+			raise tornado.gen.Return(obj)
 
 	@tornado.gen.coroutine
 	def move(self, module, dn, position):
@@ -1064,6 +1074,7 @@ class Object(Ressource):
 	def options(self, object_type, dn):
 		self.set_header('Allow', 'GET, PUT, DELETE, OPTIONS')
 
+	@tornado.gen.coroutine
 	def _validate(self, module, properties):  # (thread)
 		"""Validates the correctness of values for properties of the
 		given object type. Therefor the syntax definition of the properties is used.
@@ -1105,7 +1116,7 @@ class Object(Ressource):
 					result.append({'property': property_name, 'valid': True})
 				except (udm_errors.valueInvalidSyntax, udm_errors.valueError) as exc:
 					result.append({'property': property_name, 'valid': False, 'details': str(exc)})
-		return result
+		raise tornado.gen.Return(result)
 
 
 class ObjectAdd(Ressource):
@@ -1271,8 +1282,8 @@ class Operations(Ressource):
 		self.content_negotiation(result)
 
 
-def decode_properties(object_type, properties, lo):
-	mod = univention.udm.UDM(lo, 1).get(object_type)
+def decode_properties(object_type, properties, lo, version=1):
+	mod = univention.udm.UDM(lo, version).get(object_type)
 	mod.connection = lo
 	codecs = mod._udm_object_class.udm_prop_class._encoders
 	for key, value in properties.items():
@@ -1287,8 +1298,8 @@ def decode_properties(object_type, properties, lo):
 		yield key, value
 
 
-def encode_properties(object_type, properties, lo):
-	mod = univention.udm.UDM(lo, 1).get(object_type)
+def encode_properties(object_type, properties, lo, version=1):
+	mod = univention.udm.UDM(lo, version).get(object_type)
 	mod.connection = lo
 	codecs = mod._udm_object_class.udm_prop_class._encoders
 	for key, value in properties.items():
