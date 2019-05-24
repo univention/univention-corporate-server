@@ -1,3 +1,9 @@
+ucs-test (9.0.2-67) unstable; urgency=medium
+
+  * Bug #49415: wait_for_s4connector_replication in 72_udm-extensions/40_test_udm_hook
+
+ -- Felix Botner <botner@univention.de>  Fri, 24 May 2019 18:56:34 +0200
+
 ucs-test (9.0.2-66) unstable; urgency=medium
 
   * Bug #49337: ignore "Not enough space" in 66_app_upgrade_in_container

@@ -8,7 +8,7 @@
 
 from univention.config_registry import ConfigRegistry
 import univention.testing.udm as udm_test
-from univention.testing.utils import verify_ldap_object, wait_for_replication_and_postrun
+from univention.testing.utils import verify_ldap_object, wait_for_replication_and_postrun, wait_for_s4connector_replication
 from univention.testing.strings import random_name, random_version, random_ucs_version
 from univention.testing.udm_extensions import *
 import bz2
@@ -86,10 +86,12 @@ if __name__ == '__main__':
 
 		# create user
 		user_dn, username = udm.create_user()
+		wait_for_s4connector_replication()
 
 		# set lastname of user ==> hook should set description
 		lastname = random_name()
 		udm.modify_object('users/user', dn=user_dn, lastname=lastname)
+		wait_for_s4connector_replication()
 		verify_ldap_object(user_dn, {
 			'uid': [username],
 			'sn': [lastname],
@@ -99,6 +101,7 @@ if __name__ == '__main__':
 		# set lastname of user ==> hook should set description
 		lastname = random_name()
 		udm.modify_object('users/user', dn=user_dn, lastname=lastname)
+		wait_for_s4connector_replication()
 		verify_ldap_object(user_dn, {
 			'uid': [username],
 			'sn': [lastname],
