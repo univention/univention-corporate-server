@@ -1,0 +1,39 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: firefox-esr
+fix: 60.7.0esr-1~deb9u1
+desc: |
+ This update addresses the following issues:
+ * Cross-origin theft of images with ImageBitmapRenderingContext
+   (CVE-2018-18511)
+ * Out of bounds read in Skia (CVE-2019-5798)
+ * use-after-free in png_image_free in png.c (CVE-2019-7317)
+ * Cross-origin theft of images with createImageBitmap (CVE-2019-9797)
+ * Memory safety bugs fixed in Firefox 67 and Firefox ESR 60.7 (CVE-2019-9800)
+ * Type confusion with object groups and UnboxedObjects (CVE-2019-9816)
+ * Stealing of cross-domain images using canvas (CVE-2019-9817)
+ * Compartment mismatch with fetch API (CVE-2019-9819)
+ * Use-after-free of ChromeEventHandler by DocShell (CVE-2019-9820)
+ * Use-after-free in XMLHttpRequest (CVE-2019-11691)
+ * Use-after-free removing listeners in the event listener manager
+   (CVE-2019-11692)
+ * Buffer overflow in WebGL bufferdata on Linux (CVE-2019-11693)
+ * Theft of user history data through drag and drop of hyperlinks to and from
+   bookmarks (CVE-2019-11698)
+bug: [49544]
+cve:
+- CVE-2018-18511
+- CVE-2019-5798
+- CVE-2019-7317
+- CVE-2019-9797
+- CVE-2019-9800
+- CVE-2019-9816
+- CVE-2019-9817
+- CVE-2019-9819
+- CVE-2019-9820
+- CVE-2019-11691
+- CVE-2019-11692
+- CVE-2019-11693
+- CVE-2019-11698
