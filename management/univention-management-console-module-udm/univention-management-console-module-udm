@@ -311,6 +311,13 @@ class Ressource(RequestHandler):
 			},
 		})
 
+	def add_caching(self, expires=None):
+		cache_control = ''
+		if cache_control:
+			self.add_header('Cache-Control', cache_control)
+		if expires:
+			self.add_header('Expires', expires)
+
 
 class Favicon(Ressource):
 
@@ -876,15 +883,18 @@ class Objects(Ressource):
 		container = self.get_body_argument('position')
 		superordinate = self.get_body_argument('superordinate')
 		options = self.get_body_arguments('options')
+		properties = self.get_body_arguments('properties')
 
 		obj = module.module.object(None, self.ldap_connection, self.ldap_position)
 		obj.open()
 		obj.options = options
-		properties = dict(encode_properties(module.name, dict((prop, self.get_body_arguments(prop)) for prop in dict(obj.items())), self.ldap_connection))
+		properties = dict((prop, properties[prop]) for prop in dict(obj.items()))
+		properties = dict(encode_properties(module.name, properties, self.ldap_connection))  # if obj.has_property(prop) and prop in properties))  # FIXME: remove prop in properties?!
 
 		dn = yield self.pool.submit(module.create, properties, container=container, superordinate=superordinate)
 		self.set_header('Location', self.urljoin(quote_dn(dn)))
 		self.set_status(201)
+		self.content_negotiation({})
 
 	def options(self, object_type):
 		result = {}
