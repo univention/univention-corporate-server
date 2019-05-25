@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.3-0
+src: numad
+fix: 0.5+20150602-5
+desc: |
+ This update addresses the following issue:
+ * Move to maintained as a dependency of libvirt.
+bug: [49548]
+ignore:
+  - release+scope.consistent
+  - version.scope
