@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [4]
+scope: ucs_4.3-0-errata4.3-4
+src: libvirt
+fix: 3.0.0-4+deb9u3A~4.3.0.201905250642
+desc: |
+ This update addresses the following issue:
+ * Re-compile libvirt with NUMA support enabled.
+bug: [49548]
