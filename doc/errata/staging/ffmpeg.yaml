@@ -6,21 +6,18 @@ src: ffmpeg
 fix: 7:3.2.14-1~deb9u1
 desc: |
  This update addresses the following issues:
- * The flv_write_packet function in libavformat/flvenc.c in FFmpeg through
-   4.0.2 does not check for an empty audio packet, leading to an assertion
-   failure. (CVE-2018-15822)
- * FFmpeg before commit 2b46ebdbff1d8dec7a3d8ea280a612b91a582869 contains a
-   Buffer Overflow vulnerability in asf_o format demuxer that can result in
-   heap-buffer-overflow that may result in remote code execution. This attack
-   appears to be exploitable via specially crafted ASF file that has to be
-   provided as input to FFmpeg. This vulnerability appears to have been fixed
-   in 2b46ebdbff1d8dec7a3d8ea280a612b91a582869 and later. (CVE-2018-1999011)
- * denial of service in subtitle decoder allows attackers to hog CPU via
+ * The flv_write_packet function in libavformat/flvenc.c does not check for an
+   empty audio packet, leading to an assertion failure. (CVE-2018-15822)
+ * FFmpeg contains a Buffer Overflow vulnerability in asf_o format demuxer
+   that can result in heap-buffer-overflow that may result in remote code
+   execution. This attack appears to be exploitable via specially crafted ASF
+   file that has to be provided as input to FFmpeg.  (CVE-2018-1999011)
+ * Denial of service in subtitle decoder allows attackers to hog CPU via
    crafted video file (CVE-2019-9718)
- * libavcodec/hevcdec.c in FFmpeg 4.1.2 mishandles detection of duplicate
-   first slices, which allows remote attackers to cause a denial of service
-   (NULL pointer dereference and out-of-array access) or possibly have
-   unspecified other impact via crafted HEVC data. (CVE-2019-11338)
+ * libavcodec/hevcdec.c mishandles detection of duplicate first slices, which
+   allows remote attackers to cause a denial of service (NULL pointer
+   dereference and out-of-array access) or possibly have unspecified other
+   impact via crafted HEVC data. (CVE-2019-11338)
 bug: [49547]
 cve:
 - CVE-2018-15822
