@@ -5,8 +5,8 @@ scope: ucs_4.4-0-errata4.4-0
 src: univention-s4-connector
 fix: 13.0.2-12A~4.4.0.201905221835
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The package now uses dh_python2 instead of python-support.
    Therefore python modules are installed into
-  /usr/lib/python2.7/dist-packages/univention/s4connector/.
+   /usr/lib/python2.7/dist-packages/univention/s4connector/.
 bug: [49176]
