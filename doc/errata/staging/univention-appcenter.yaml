@@ -10,4 +10,4 @@ desc: |
    been fixed.
  * Abort installation if machine.secret could not be copied
    into container.
-bug: [49129,49543]
+bug: [49517,49543]
