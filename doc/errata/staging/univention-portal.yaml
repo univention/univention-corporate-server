@@ -8,4 +8,6 @@ desc: |-
   This update addresses the following issue(s):
   * The file permissions for the cache directory of the Portal is now stricter.
     This prevents warnings in the System diagnostic UMC module.
-bug: [48814]
+  * Whether portal entries are opened in the same tab or a new tab is now
+    configurable.
+bug: [48814, 45318]
