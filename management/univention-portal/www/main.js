@@ -805,7 +805,8 @@ define([
 				renderMode: renderMode,
 				category: category.dn,
 				categoryIndex: category.dn === 'localApps' ? null : this._categoryIndex++,
-				$notInPortalJSON$: category.$notInPortalJSON$
+				$notInPortalJSON$: category.$notInPortalJSON$,
+				defaultLinkTarget: portalJson.portal.defaultLinkTarget,
 			});
 			this._cleanupList.widgets.push(portalCategory);
 
@@ -1607,7 +1608,8 @@ define([
 					logo_name: _getLogoName(entry.logo_name),
 					web_interface: linkAndHostname.link,
 					host_name: linkAndHostname.hostname,
-					activated: entry.activated
+					activated: entry.activated,
+					linkTarget: entry.linkTarget,
 				};
 			}));
 			if (renderMode === portalTools.RenderMode.EDIT) {

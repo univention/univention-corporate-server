@@ -1,3 +1,9 @@
+univention-web (3.0.5-14) unstable; urgency=medium
+
+  * Bug #45318: make target="_blank" for portal entries configurable
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 27 May 2019 10:22:10 +0200
+
 univention-web (3.0.5-13) unstable; urgency=medium
 
   * Bug #48812: add dompurify to dojo build

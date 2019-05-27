@@ -126,6 +126,12 @@ property_descriptions = {
 		syntax=univention.admin.syntax.Base64BaseUpload,
 		dontsearch=True,
 	),
+	'linkTarget': univention.admin.property(
+		short_description=_('Browser tab when opening link'),
+		syntax=univention.admin.syntax.PortalEntryLinkTarget,
+		default='useportaldefault',
+		dontsearch=True,
+	),
 }
 
 layout = [
@@ -141,6 +147,7 @@ layout = [
 			["description"],
 		]),
 		Group(_('Link'), layout=[
+			["linkTarget"],
 			["link"],
 		]),
 		Group(_('Advanced'), layout=[
@@ -168,6 +175,7 @@ mapping.register('description', 'univentionPortalEntryDescription', mapTranslati
 mapping.register('favorite', 'univentionPortalEntryFavorite', None, univention.admin.mapping.ListToString)
 mapping.register('category', 'univentionPortalEntryCategory', None, univention.admin.mapping.ListToString)
 mapping.register('link', 'univentionPortalEntryLink')
+mapping.register('linkTarget', 'univentionPortalEntryLinkTarget', None, univention.admin.mapping.ListToString)
 mapping.register('portal', 'univentionPortalEntryPortal')
 mapping.register('activated', 'univentionPortalEntryActivate', None, univention.admin.mapping.ListToString)
 mapping.register('allowedGroups', 'univentionPortalEntryAllowedUserGroup')

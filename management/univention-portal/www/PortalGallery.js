@@ -28,6 +28,10 @@
  */
 /*global define, window, location*/
 
+/**
+ * @module portal/PortalGallery
+ * @extends module:umc/widgets/AppGallery
+ */
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
@@ -74,10 +78,24 @@ define([
 		return fqdn;
 	};
 
-	return declare("PortalGallery", [ AppGallery ], {
+	return declare("PortalGallery", [ AppGallery ], /** @lends module:portal/PortalGallery# */ {
+		/**
+		 * See {@link module:umc/widgets/GalleryPane#doSetGalleryItemContextMenuHandlers}
+		 * @type {Boolean}
+		 * @default false
+		 */
+		doSetGalleryItemContextMenuHandlers: false,
+
 		iconClassPrefix: 'umcPortal',
 
 		domainName: null,
+
+		/**
+		 * Defines whether portal entries are opened in the same window or in a new window/tab by default.
+		 * (The possible values are defined by the python univention.admin.syntax.PortalDefaultLinkTarget syntax class.)
+		 * @type {?String}
+         */
+		defaultLinkTarget: null,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
@@ -136,7 +154,7 @@ define([
 					if (hint === 'avatar') {
 						node = put('div.umcAppGallery', node); // wrap the tile in div a with class umcAppGallery for correct styling
 						this._resizeItemNamesOfAvatarTile(node);
-						return { node: node }; 
+						return { node: node };
 					}
 
 					return {
@@ -264,7 +282,22 @@ define([
 			switch (this.renderMode) {
 				case portalTools.RenderMode.NORMAL:
 					domNode = this.inherited(arguments);
-					put(domNode, 'a[href=$]', this._getWebInterfaceUrl(item), query('.umcGalleryItem', domNode)[0]);
+					var link = put('a[href=$]', this._getWebInterfaceUrl(item));
+					var openLinkInNewWindow = true;
+					if (this.defaultLinkTarget && this.defaultLinkTarget === 'samewindow') {
+						openLinkInNewWindow = false;
+					}
+					switch (item.linkTarget) {
+						case 'samewindow':
+							openLinkInNewWindow = false; break;
+						case 'newwindow':
+							openLinkInNewWindow = true;  break;
+					}
+					if (openLinkInNewWindow) {
+						link.target = '_blank';
+						link.rel = 'noopener';
+					}
+					put(domNode, link, query('.umcGalleryItem', domNode)[0]);
 					break;
 				case portalTools.RenderMode.EDIT:
 					if (item.id && item.id === '$addEntryTile$') {

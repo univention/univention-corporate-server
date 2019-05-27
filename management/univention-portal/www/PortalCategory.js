@@ -28,6 +28,10 @@
  */
 /*global define*/
 
+/**
+ * @module portal/PortalCategory
+ * @extends module:umc/widgets/ContainerWidget
+ */
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
@@ -40,7 +44,7 @@ define([
 	"./tools.js",
 	"umc/i18n!portal"
 ], function(declare, lang, aspect, on, domClass, ContainerWidget, put, PortalGallery, portalTools, _) {
-	return declare("PortalCategory", [ContainerWidget], {
+	return declare("PortalCategory", [ContainerWidget], /** @lends module:portal/PortalCategory# */ {
 		baseClass: 'portalCategory',
 
 		entries: null,
@@ -53,6 +57,13 @@ define([
 		grid: null,
 
 		query: null,
+
+		/**
+		 * Passed to {@link module:portal/PortalGallery}.
+		 * Refer to {@link module:portal/PortalGallery#defaultLinkTarget}.
+		 * @type {?String}
+         */
+		defaultLinkTarget: null,
 
 		_setQueryAttr: function(query) {
 			domClass.remove(this.domNode, 'dijitDisplayNone'); // The category has to be visible so that this.grid._resizeItemNames() works
@@ -77,7 +88,8 @@ define([
 				entries: this.entries,
 				domainName: this.domainName,
 				category: this.category,
-				renderMode: this.renderMode
+				renderMode: this.renderMode,
+				defaultLinkTarget: this.defaultLinkTarget,
 			});
 
 			switch (this.renderMode) {
