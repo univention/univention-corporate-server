@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.12-36) unstable; urgency=medium
+
+  * Bug #45318: make target="_blank" for portal entries configurable
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 27 May 2019 10:20:16 +0200
+
 univention-directory-manager-modules (14.0.12-35) unstable; urgency=medium
 
   * Bug #41694: fix up
