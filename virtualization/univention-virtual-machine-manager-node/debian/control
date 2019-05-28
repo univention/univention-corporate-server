@@ -38,7 +38,8 @@ Depends: ${misc:Depends},
  iproute2,
  shell-univention-lib,
  python-libvirt,
- python-libxml2
+ python-libxml2,
+ numactl,
 Recommends: univention-nagios-libvirtd-kvm, univention-kvm-virtio
 Description: UCS Virtual Machine Manager node using QEMU/KVM
  This meta-package provides basic configuration for virtualization nodes using

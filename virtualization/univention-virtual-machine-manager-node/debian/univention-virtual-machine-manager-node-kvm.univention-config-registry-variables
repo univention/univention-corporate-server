@@ -15,3 +15,9 @@ Description[de]=Konfiguriert ein Standard-Passwort für VNC-Verbindungen, sofern
 Description[en]=Configures a default password for VNC connections, unless a password is configured individually for a virtual machine. A maximum of 8 characters are used! Depending on the version of Qemu the empty string prevents the use of VNC. The password is stored and transmitted in clear-text!
 Type=str
 Categories=uvmm
+
+[libvirt/numa/policy/memory]
+Description[de]=Auf `no` setzten um die Benutzung von `numactl --interleave=all` beim Start von `libvirtd` zu deaktivieren. Standardmäßig wird ansonsten der Speicher aller NUMA-Knoten verwendet.
+Description[en]=Set to `no` to disbale the use of `numactl --interleave=all` when starting `libvirtd`. Otherwise by default memory from all NUMA cells will be used.
+Type=bool
+Categories=uvmm,system-services
