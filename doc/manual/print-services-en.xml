@@ -378,14 +378,12 @@
 <section id="druckergruppen">
 <title>Creating a printer group</title>
 	<para>
-		CUPS offers the possibility to group printers into
-		classes. These are implemented in UCS as <emphasis>printer groups</emphasis>
-		Printer groups appear to clients as normal printers
-		The aim of such a printer group is to create a higher
-		availability of printer services. If the printer group is used to
-		print, the job is sent to the first printer in the printer group to
-		become available. The printers are selected based on the round robin
-		principle so that the degree of utilization is kept uniform.
+		CUPS offers the possibility to group printers into classes.
+		These are implemented in UCS as <emphasis>printer groups</emphasis>.
+		Printer groups appear to clients as normal printers.
+		The aim of such a printer group is to create a higher availability of printer services.
+		If the printer group is used to print, the job is sent to the first printer in the printer group to become available.
+		The printers are selected based on the round robin principle so that the degree of utilization is kept uniform.
 	</para>
 	<figure id="printergroup">
 	<title>Configuring a printer group</title>
