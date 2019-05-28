@@ -1,3 +1,9 @@
+univention-lib (8.0.1-20) unstable; urgency=low
+
+  * Bug #49176: Fix pysupport during update
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 28 May 2019 14:18:35 +0200
+
 univention-lib (8.0.1-19) unstable; urgency=medium
 
   * Bug #49176: Add Breaks: python-univention-connector-s4 to ensure

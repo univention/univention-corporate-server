@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+__path__ = __import__('pkgutil').extend_path(__path__, __name__)
+
 from univention.lib.error import *
 from univention.lib.shell import *
 from univention.lib.locking import *
@@ -39,6 +41,3 @@ try:
 	from univention.lib.misc import *
 except ImportError:
 	pass
-
-from pkgutil import extend_path
-__path__ = extend_path(__path__, __name__)
