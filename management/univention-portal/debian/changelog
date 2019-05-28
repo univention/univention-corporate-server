@@ -1,3 +1,9 @@
+univention-portal (3.0.1-25) unstable; urgency=medium
+
+  * Bug #45318: use same tab as default
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 28 May 2019 16:30:54 +0200
+
 univention-portal (3.0.1-24) unstable; urgency=medium
 
   * Bug #45318: make target="_blank" for portal entries configurable
