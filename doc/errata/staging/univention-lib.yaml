@@ -3,9 +3,9 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-lib
-fix: 8.0.1-19A~4.4.0.201905231242
+fix: 8.0.1-20A~4.4.0.201905281421
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The package now uses dh_python2 instead of python-support.
    Therefore python modules are installed into
    /usr/lib/python2.7/dist-packages/univention/lib/.
@@ -13,6 +13,6 @@ desc: |
    utilities has been fixed.
  * Log stderr if LDAP schema validation fails.
  * A symlink and code execution vulnerabiliy has been fixed in
-  univention.lib.listenerSharePath.
+   univention.lib.listenerSharePath.
  * Python3 compatibility for univention.lib.admember has been enhanced.
 bug: [49136,41780,49500,44054,49176]
