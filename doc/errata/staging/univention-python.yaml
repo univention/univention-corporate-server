@@ -8,5 +8,5 @@ desc: |
  This update addresses the following issues:
  * The python3-univention package dependencies have been adjusted.
  * The package dependency loop for `python-univention-debug` has been broken
-   by intriducing a new binary package `python-univention-namespace`.
+   by introducing a new binary package `python-univention-namespace`.
 bug: [49136, 49506]
