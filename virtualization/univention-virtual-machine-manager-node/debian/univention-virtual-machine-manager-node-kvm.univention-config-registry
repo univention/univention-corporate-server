@@ -9,3 +9,7 @@ Mode: 0600
 Type: file
 File: etc/udev/rules.d/99-uvmm-node-kvm.rules
 Variables: uvmm/kvm/qemu/group
+
+Type: file
+File: etc/systemd/system/libvirtd.service.d/ucr.conf
+Variables: libvirt/numa/policy/memory

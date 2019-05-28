@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (6.0.0-3) unstable; urgency=low
+
+  * Bug #49548: Enable NUMA memory interleave by default
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 28 May 2019 17:12:31 +0200
+
 univention-virtual-machine-manager-node (6.0.0-2) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version
