@@ -58,7 +58,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Internal name'),
-		long_description='',
+		long_description=_('Unique name of this entry'),
 		syntax=univention.admin.syntax.string_numbers_letters_dots,
 		include_in_default_search=True,
 		required=True,
@@ -66,7 +66,7 @@ property_descriptions = {
 		identifies=True
 	),
 	'displayName': univention.admin.property(
-		short_description=_('Display Name'),
+		short_description=_('Display name'),
 		long_description=_('Headline of the portal. At least one entry; strongly encouraged to have one for en_US'),
 		syntax=univention.admin.syntax.LocalizedDisplayName,
 		multivalue=True,
@@ -74,19 +74,19 @@ property_descriptions = {
 	),
 	'showMenu': univention.admin.property(
 		short_description=_('Show menu'),
-		long_description='',
+		long_description=_('Show the menu on the Portal page'),
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='TRUE',
 	),
 	'showSearch': univention.admin.property(
 		short_description=_('Show search'),
-		long_description='',
+		long_description=_('Show the search box on the Portal page'),
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='TRUE',
 	),
 	'showLogin': univention.admin.property(
 		short_description=_('Show login'),
-		long_description='',
+		long_description=_('Show the login fields on the Portal page'),
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='TRUE',
 	),
@@ -136,17 +136,21 @@ property_descriptions = {
 	),
 	'ensureLogin': univention.admin.property(
 		short_description=_('Redirect anonymous visitors to the login'),
+		long_description=_('Anonymous visitors are re-directed to the login page'),
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='FALSE',
 		dontsearch=True,
 	),
 	'anonymousEmpty': univention.admin.property(
+		# short_description=_(''),
+		# long_description=_(''),
 		syntax=univention.admin.syntax.LocalizedAnonymousEmpty,
 		multivalue=True,
 		dontsearch=True,
 	),
 	'autoLayoutCategories': univention.admin.property(
-		short_description=_('The categories are displayed side by side if there is enough space'),
+		short_description=_('Automatic column layout'),
+		long_description=_('The categories are displayed side by side if there is enough space'),
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='FALSE',
 		dontsearch=True,
@@ -166,6 +170,7 @@ property_descriptions = {
 	),
 	'content': univention.admin.property(
 		short_description=_('Portal content'),
+		long_description=_('List of Portal categories to show'),
 		syntax=univention.admin.syntax.PortalCategorySelection,
 	),
 	'defaultLinkTarget': univention.admin.property(

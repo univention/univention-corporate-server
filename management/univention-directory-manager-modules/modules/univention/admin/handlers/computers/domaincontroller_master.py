@@ -47,7 +47,7 @@ childs = 0
 short_description = _('Computer: Domain Controller Master')
 object_name = _('DC Master')
 object_name_plural = _('DC Masters')
-long_description = ''
+long_description = _('Computer machine account for the UCS Domain Controller Master')
 options = {
 	'default': univention.admin.option(
 		short_description=_('Computer: Domain Controller Master'),
@@ -56,16 +56,19 @@ options = {
 	),
 	'posix': univention.admin.option(
 		short_description=_('Posix account'),
+		long_description=_('Make this account an POSIX account, which is required i.a. for Linux'),
 		default=1,
 		objectClasses=('posixAccount', 'shadowAccount'),
 	),
 	'kerberos': univention.admin.option(
 		short_description=_('Kerberos principal'),
+		long_description=_('Make this account a Kerberos account, which is required i.a. for Single-Sign-On with Linux and Windows'),
 		default=1,
 		objectClasses=('krb5Principal', 'krb5KDCEntry'),
 	),
 	'samba': univention.admin.option(
 		short_description=_('Samba account'),
+		long_description=_('Make this account a Windows account'),
 		editable=True,
 		default=1,
 		objectClasses=('sambaSamAccount',),
@@ -74,7 +77,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Domain controller name'),
-		long_description='',
+		long_description=_('The node name of this computer'),
 		syntax=univention.admin.syntax.hostName,
 		include_in_default_search=True,
 		required=True,
@@ -83,103 +86,103 @@ property_descriptions = {
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
-		long_description='',
+		long_description=_('Some descriptive text for this host'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 	),
 	'operatingSystem': univention.admin.property(
 		short_description=_('Operating system'),
-		long_description='',
+		long_description=_('Name of the operating system'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 	),
 	'operatingSystemVersion': univention.admin.property(
 		short_description=_('Operating system version'),
-		long_description='',
+		long_description=_('Version number of the operating system'),
 		syntax=univention.admin.syntax.string,
 	),
 	'domain': univention.admin.property(
 		short_description=_('Domain'),
-		long_description='',
+		long_description=_('The DNS domain of this host'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 	),
 	'mac': univention.admin.property(
 		short_description=_('MAC address'),
-		long_description='',
+		long_description=_('One or more (Ethernet) Media-Access-Control addresses of network interfaces'),
 		syntax=univention.admin.syntax.MAC_Address,
 		multivalue=True,
 		include_in_default_search=True,
 	),
 	'network': univention.admin.property(
 		short_description=_('Network'),
-		long_description='',
+		long_description=_('Reference to a network zone containing initial DNS and DHCP settings'),
 		syntax=univention.admin.syntax.network,
 	),
 	'ip': univention.admin.property(
 		short_description=_('IP address'),
-		long_description='',
+		long_description=_('One or more IPv4 or IPv6 addresses of this host'),
 		syntax=univention.admin.syntax.ipAddress,
 		multivalue=True,
 		include_in_default_search=True,
 	),
 	'serverRole': univention.admin.property(
 		short_description=_('System role'),
-		long_description='',
+		long_description=_('The function of this host within the domain, e.g. "master", "member"'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		include_in_default_search=True,
 	),
 	'service': univention.admin.property(
 		short_description=_('Service'),
-		long_description='',
+		long_description=_('The services registered at this host'),
 		syntax=univention.admin.syntax.Service,
 		multivalue=True,
 	),
 	'dnsEntryZoneForward': univention.admin.property(
 		short_description=_('Forward zone for DNS entry'),
-		long_description='',
+		long_description=_('Reference to the DNS zone containing forward DNS entries of this host, e.g. hostname to IP addresses'),
 		syntax=univention.admin.syntax.dnsEntry,
 		multivalue=True,
 		dontsearch=True,
 	),
 	'dnsEntryZoneReverse': univention.admin.property(
 		short_description=_('Reverse zone for DNS entry'),
-		long_description='',
+		long_description=_('Reference to the DNS zone containing reverse DNS entries of this host, e.g. IP address to hostname'),
 		syntax=univention.admin.syntax.dnsEntryReverse,
 		multivalue=True,
 		dontsearch=True,
 	),
 	'dnsEntryZoneAlias': univention.admin.property(
 		short_description=_('Zone for DNS alias'),
-		long_description='',
+		long_description=_('Reference to the DNS zone containing DNS alias entries of this host'),
 		syntax=univention.admin.syntax.dnsEntryAlias,
 		multivalue=True,
 		dontsearch=True,
 	),
 	'dnsAlias': univention.admin.property(
 		short_description=_('DNS alias'),
-		long_description='',
+		long_description=_('Additional names of this host in DNS'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 	),
 	'dhcpEntryZone': univention.admin.property(
 		short_description=_('DHCP service'),
-		long_description='',
+		long_description=_('Reference to the DHCP service for this host'),
 		syntax=univention.admin.syntax.dhcpEntry,
 		multivalue=True,
 		dontsearch=True,
 	),
 	'password': univention.admin.property(
 		short_description=_('Password'),
-		long_description='',
+		long_description=_('Machine secret of this host. Must be synchronized with the password stored on the host itself, e.g. "/etc/machine.secret".'),
 		syntax=univention.admin.syntax.passwd,
 		options=['kerberos', 'posix', 'samba'],
 		dontsearch=True
 	),
 	'unixhome': univention.admin.property(
 		short_description=_('Unix home directory'),
-		long_description='',
+		long_description=_('Absolute path to the home directory of this account'),
 		syntax=univention.admin.syntax.absolutePath,
 		options=['posix'],
 		required=True,
@@ -187,14 +190,14 @@ property_descriptions = {
 	),
 	'shell': univention.admin.property(
 		short_description=_('Login shell'),
-		long_description='',
+		long_description=_('Absolute path to the login shell of this account'),
 		syntax=univention.admin.syntax.string,
 		options=['posix'],
 		default=('/bin/bash', [])
 	),
 	'primaryGroup': univention.admin.property(
 		short_description=_('Primary group'),
-		long_description='',
+		long_description=_('The name of the default group of this account'),
 		syntax=univention.admin.syntax.GroupDN,
 		options=['posix'],
 		required=True,
@@ -202,35 +205,35 @@ property_descriptions = {
 	),
 	'reinstall': univention.admin.property(
 		short_description=_('(Re-)install on next boot'),
-		long_description='',
+		long_description=_('The DHCP server will be configured to serve the UCS installer over the network to the host when next the host boots from the network'),
 		syntax=univention.admin.syntax.boolean,
 	),
 	'reinstalloption': univention.admin.property(
 		short_description=_('additional start options'),
-		long_description='',
+		long_description=_('Additional parameters for network booting, e.g. Linux kernel command line parameters or UCS installer options'),
 		syntax=univention.admin.syntax.string,
 	),
 	'instprofile': univention.admin.property(
 		short_description=_('Name of installation profile'),
-		long_description='',
+		long_description=_('An absolute URL or path relative to "preseed/" directory on the installation server to the "preseed" file for the UCS installer'),
 		syntax=univention.admin.syntax.string,
 	),
 	'inventoryNumber': univention.admin.property(
 		short_description=_('Inventory number'),
-		long_description='',
+		long_description=_('An unique identifier to identify this host as an asset of your company'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 	),
 	'groups': univention.admin.property(
 		short_description=_('Groups'),
-		long_description='',
+		long_description=_('References to additional groups of this account'),
 		syntax=univention.admin.syntax.GroupDN,
 		multivalue=True,
 		dontsearch=True,
 	),
 	'sambaRID': univention.admin.property(
 		short_description=_('Relative ID'),
-		long_description='',
+		long_description=_('Host specific part of the security identifier to uniquely identify this computer account within your domain'),
 		syntax=univention.admin.syntax.integer,
 		dontsearch=True,
 		options=['samba']

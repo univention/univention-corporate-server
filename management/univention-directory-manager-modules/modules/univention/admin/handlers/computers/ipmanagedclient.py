@@ -52,13 +52,13 @@ childs = 0
 short_description = _('Computer: IP managed client')
 object_name = _('IP managed client')
 object_name_plural = _('IP managed clients')
-long_description = ''
+long_description = _('Computer machine account for an IP managed client, e.g. a router or network printer')
 options = {
 }
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('IP managed client name'),
-		long_description='',
+		long_description=_('The node name of this computer'),
 		syntax=univention.admin.syntax.hostName,
 		include_in_default_search=True,
 		required=True,
@@ -66,80 +66,80 @@ property_descriptions = {
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
-		long_description='',
+		long_description=_('Some descriptive text for this host'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 	),
 	'mac': univention.admin.property(
 		short_description=_('MAC address'),
-		long_description='',
+		long_description=_('One or more (Ethernet) Media-Access-Control addresses of network interfaces'),
 		syntax=univention.admin.syntax.MAC_Address,
 		multivalue=True,
 		include_in_default_search=True,
 	),
 	'network': univention.admin.property(
 		short_description=_('Network'),
-		long_description='',
+		long_description=_('Reference to a network zone containing initial DNS and DHCP settings'),
 		syntax=univention.admin.syntax.network,
 	),
 	'ip': univention.admin.property(
 		short_description=_('IP address'),
-		long_description='',
+		long_description=_('One or more IPv4 or IPv6 addresses of this host'),
 		syntax=univention.admin.syntax.ipAddress,
 		multivalue=True,
 		include_in_default_search=True,
 	),
 	'dnsEntryZoneForward': univention.admin.property(
 		short_description=_('Forward zone for DNS entry'),
-		long_description='',
+		long_description=_('Reference to the DNS zone containing forward DNS entries of this host, e.g. hostname to IP addresses'),
 		syntax=univention.admin.syntax.dnsEntry,
 		multivalue=True,
 		dontsearch=True,
 	),
 	'dnsEntryZoneReverse': univention.admin.property(
 		short_description=_('Reverse zone for DNS entry'),
-		long_description='',
+		long_description=_('Reference to the DNS zone containing reverse DNS entries of this host, e.g. IP address to hostname'),
 		syntax=univention.admin.syntax.dnsEntryReverse,
 		multivalue=True,
 		dontsearch=True,
 	),
 	'dnsEntryZoneAlias': univention.admin.property(
 		short_description=_('Zone for DNS alias'),
-		long_description='',
+		long_description=_('Reference to the DNS zone containing DNS alias entries of this host'),
 		syntax=univention.admin.syntax.dnsEntryAlias,
 		multivalue=True,
 		dontsearch=True,
 	),
 	'dnsAlias': univention.admin.property(
 		short_description=_('DNS alias'),
-		long_description='',
+		long_description=_('Additional names of this host in DNS'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 	),
 	'dhcpEntryZone': univention.admin.property(
 		short_description=_('DHCP service'),
-		long_description='',
+		long_description=_('Reference to the DHCP service for this host'),
 		syntax=univention.admin.syntax.dhcpEntry,
 		multivalue=True,
 		dontsearch=True,
 	),
 	'inventoryNumber': univention.admin.property(
 		short_description=_('Inventory number'),
-		long_description='',
+		long_description=_('An unique identifier to identify this host as an asset of your company'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		include_in_default_search=True,
 	),
 	'groups': univention.admin.property(
 		short_description=_('Groups'),
-		long_description='',
+		long_description=_('References to additional groups of this account'),
 		syntax=univention.admin.syntax.GroupDN,
 		multivalue=True,
 		dontsearch=True,
 	),
 	'domain': univention.admin.property(
 		short_description=_('Domain'),
-		long_description='',
+		long_description=_('The DNS domain of this host'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 	),

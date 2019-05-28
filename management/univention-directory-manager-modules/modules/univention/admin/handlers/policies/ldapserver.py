@@ -78,7 +78,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
-		long_description='',
+		long_description=_('Unique name for this policy'),
 		syntax=univention.admin.syntax.policyName,
 		include_in_default_search=True,
 		required=True,
@@ -87,7 +87,7 @@ property_descriptions = {
 	),
 	'ldapServer': univention.admin.property(
 		short_description=_('LDAP server'),
-		long_description='',
+		long_description=_('List of LDAP servers to be used'),
 		syntax=univention.admin.syntax.DomainController,
 		multivalue=True,
 	),

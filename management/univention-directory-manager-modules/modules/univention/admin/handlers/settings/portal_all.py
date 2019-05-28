@@ -48,15 +48,15 @@ virtual = True
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Internal name'),
-		long_description='',
+		long_description=_('Unique name of this entry'),
 		syntax=univention.admin.syntax.string_numbers_letters_dots,
 		include_in_default_search=True,
 		required=True,
 		identifies=True
 	),
 	'displayName': univention.admin.property(
-		short_description=_('Display Name'),
-		long_description='',
+		short_description=_('Display name'),
+		long_description=_('Name as displayed on the Portal page'),
 		syntax=univention.admin.syntax.LocalizedDisplayName,
 		multivalue=True,
 		required=True,

@@ -77,7 +77,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
-		long_description='',
+		long_description=_('Unique name for this policy'),
 		syntax=univention.admin.syntax.policyName,
 		include_in_default_search=True,
 		required=True,
@@ -86,13 +86,13 @@ property_descriptions = {
 	),
 	'domain_name': univention.admin.property(
 		short_description=_('Domain name'),
-		long_description='',
+		long_description=_('Name of the DNS domain'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 	),
 	'domain_name_servers': univention.admin.property(
 		short_description=_('Domain name servers'),
-		long_description='',
+		long_description=_('List of DNS name servers'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 	),

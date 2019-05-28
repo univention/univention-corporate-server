@@ -76,7 +76,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
-		long_description='',
+		long_description=_('Unique name for this policy'),
 		syntax=univention.admin.syntax.policyName,
 		include_in_default_search=True,
 		required=True,
@@ -85,7 +85,7 @@ property_descriptions = {
 	),
 	'routers': univention.admin.property(
 		short_description=_('Routers'),
-		long_description='',
+		long_description=_('List of gateways/routers to be used to access other networks/the internet'),
 		syntax=univention.admin.syntax.hostOrIP,
 		multivalue=True,
 	),

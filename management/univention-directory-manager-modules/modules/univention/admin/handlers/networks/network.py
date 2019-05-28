@@ -64,7 +64,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
-		long_description='',
+		long_description=_('Unique name of this entry'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 		required=True,
@@ -73,7 +73,7 @@ property_descriptions = {
 	),
 	'network': univention.admin.property(
 		short_description=_('Networks'),
-		long_description='',
+		long_description=_('The network address of this network'),
 		syntax=univention.admin.syntax.ipAddress,
 		include_in_default_search=True,
 		required=True,
@@ -81,7 +81,7 @@ property_descriptions = {
 	),
 	'netmask': univention.admin.property(
 		short_description=_('Netmask'),
-		long_description='',
+		long_description=_('The netmask of this network'),
 		syntax=univention.admin.syntax.netmask,
 		include_in_default_search=True,
 		required=True,
@@ -89,32 +89,32 @@ property_descriptions = {
 	),
 	'nextIp': univention.admin.property(
 		short_description=_('Next IP address'),
-		long_description='',
+		long_description=_('The next IP address available for assignment'),
 		syntax=univention.admin.syntax.string,
 		dontsearch=True,
 	),
 	'ipRange': univention.admin.property(
 		short_description=_('IP address range'),
-		long_description='',
+		long_description=_('The range of IP addresses used for assignment'),
 		syntax=univention.admin.syntax.IP_AddressRange,
 		multivalue=True,
 		dontsearch=True,
 	),
 	'dnsEntryZoneForward': univention.admin.property(
 		short_description=_('DNS forward lookup zone'),
-		long_description='',
+		long_description=_('The DNS forward zone, where new hosts are automatically added to'),
 		syntax=univention.admin.syntax.DNS_ForwardZone,
 		dontsearch=True,
 	),
 	'dnsEntryZoneReverse': univention.admin.property(
 		short_description=_('DNS reverse lookup zone'),
-		long_description='',
+		long_description=_('The DNS reverse zone, where new hosts are automatically added to'),
 		syntax=univention.admin.syntax.DNS_ReverseZone,
 		dontsearch=True,
 	),
 	'dhcpEntryZone': univention.admin.property(
 		short_description=_('DHCP service'),
-		long_description='',
+		long_description=_('The DHCP service, where new hosts are automatically added to'),
 		syntax=univention.admin.syntax.dhcpService,
 		dontsearch=True,
 	),

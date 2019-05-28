@@ -67,7 +67,7 @@ options = {
 property_descriptions = {
 	'username': univention.admin.property(
 		short_description=_('User name'),
-		long_description='',
+		long_description=_('Unique name for the user'),
 		syntax=univention.admin.syntax.uid_umlauts,
 		include_in_default_search=True,
 		required=True,
@@ -76,7 +76,7 @@ property_descriptions = {
 	),
 	'lastname': univention.admin.property(
 		short_description=_('Last name'),
-		long_description='',
+		long_description=_('Surname or family name'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 		required=True,
@@ -86,7 +86,7 @@ property_descriptions = {
 	),
 	'name': univention.admin.property(
 		short_description=_('Name'),
-		long_description='',
+		long_description=_('Given name or personal name'),
 		syntax=univention.admin.syntax.TwoThirdsString,
 		include_in_default_search=True,
 		required=True,
@@ -96,7 +96,7 @@ property_descriptions = {
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
-		long_description='',
+		long_description=_('Some descriptive text for the user'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 		readonly_when_synced=True,
@@ -104,7 +104,7 @@ property_descriptions = {
 	),
 	'disabled': univention.admin.property(
 		short_description=_('Account deactivation'),
-		long_description='',
+		long_description=_('Disable the user account for Windows, Kerberos and POSIX.'),
 		syntax=univention.admin.syntax.boolean,
 		dontsearch=True,
 		show_in_lists=True,
@@ -112,7 +112,7 @@ property_descriptions = {
 	),
 	'password': univention.admin.property(
 		short_description=_('Password'),
-		long_description='',
+		long_description=_('Secret password of the user'),
 		syntax=univention.admin.syntax.userPasswd,
 		required=True,
 		dontsearch=True,

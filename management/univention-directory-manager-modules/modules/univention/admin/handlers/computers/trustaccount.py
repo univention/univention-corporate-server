@@ -50,13 +50,13 @@ childs = 0
 short_description = _('Computer: Domain trust account')
 object_name = _('Domain trust account')
 object_name_plural = _('Domain trust accounts')
-long_description = ''
+long_description = _('Computer machine account for some computer')
 options = {
 }
 property_descriptions = {
 	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description='',
+		short_description=_('Trust account name'),
+		long_description=_('The node name of this computer'),
 		syntax=univention.admin.syntax.dnsName_umlauts,
 		include_in_default_search=True,
 		required=True,
@@ -64,13 +64,13 @@ property_descriptions = {
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
-		long_description='',
+		long_description=_('Some descriptive text for this host'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 	),
 	'password': univention.admin.property(
 		short_description=_('Machine Password'),
-		long_description='',
+		long_description=_('Machine secret of this host. Must be synchronized with the password stored on the host itself.'),
 		syntax=univention.admin.syntax.passwd,
 		required=True,
 		dontsearch=True,

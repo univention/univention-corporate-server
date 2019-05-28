@@ -80,7 +80,7 @@ module_search_filter = univention.admin.filter.conjunction('&', [
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
-		long_description='',
+		long_description=_('Unique name of the group'),
 		syntax=univention.admin.syntax.gid,
 		include_in_default_search=True,
 		required=True,
@@ -89,21 +89,21 @@ property_descriptions = {
 	),
 	'gidNumber': univention.admin.property(
 		short_description=_('Group ID'),
-		long_description='',
+		long_description=_('Numerical POSIX group identifier of the group'),
 		syntax=univention.admin.syntax.integer,
 		may_change=False,
 		options=['posix', 'samba']
 	),
 	'sambaRID': univention.admin.property(
 		short_description=_('Relative ID'),
-		long_description='',
+		long_description=_('Relative (Security) Identifier for Windows'),
 		syntax=univention.admin.syntax.integer,
 		readonly_when_synced=True,
 		options=['samba']
 	),
 	'sambaGroupType': univention.admin.property(
 		short_description=_('Windows group type'),
-		long_description='',
+		long_description=_('The visibility of this group in Windows'),
 		syntax=univention.admin.syntax.sambaGroupType,
 		default=('2', []),
 		options=['samba'],
@@ -129,7 +129,7 @@ property_descriptions = {
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
-		long_description='',
+		long_description=_('Some descriptive text for this group'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 		options=['posix', 'samba'],
@@ -138,7 +138,7 @@ property_descriptions = {
 	),
 	'users': univention.admin.property(
 		short_description=_('Users'),
-		long_description='',
+		long_description=_('The list user accounts, who participate in this group'),
 		syntax=univention.admin.syntax.UserDN,
 		multivalue=True,
 		options=['posix'],
@@ -148,7 +148,7 @@ property_descriptions = {
 	),
 	'hosts': univention.admin.property(
 		short_description=_('Hosts'),
-		long_description='',
+		long_description=_('The list of host accounts, which participate in this group'),
 		syntax=univention.admin.syntax.HostDN,
 		multivalue=True,
 		options=['posix'],
@@ -159,7 +159,7 @@ property_descriptions = {
 	),
 	'mailAddress': univention.admin.property(
 		short_description=_('Mail address'),
-		long_description='',
+		long_description=_('An e-mail address associated with the group: any member of this group receives a copy of all e-mails sent to that address'),
 		syntax=univention.admin.syntax.emailAddressValidDomain,
 		include_in_default_search=True,
 		options=['posix'],
@@ -167,7 +167,7 @@ property_descriptions = {
 	),
 	'memberOf': univention.admin.property(
 		short_description=_('Member of'),
-		long_description='',
+		long_description=_('List of other super-groups this group is a member in'),
 		syntax=univention.admin.syntax.GroupDN,
 		multivalue=True,
 		options=['posix'],
@@ -177,7 +177,7 @@ property_descriptions = {
 	),
 	'nestedGroup': univention.admin.property(
 		short_description=_('Groups'),
-		long_description='',
+		long_description=_('List of sub-groups, which particiapte in this group'),
 		syntax=univention.admin.syntax.GroupDN,
 		multivalue=True,
 		options=['posix'],
@@ -187,7 +187,7 @@ property_descriptions = {
 	),
 	'allowedEmailUsers': univention.admin.property(
 		short_description=_('Users that are allowed to send e-mails to the group'),
-		long_description='',
+		long_description=_('List of user, which are allowed to use this group as a e-mail distribution list'),
 		syntax=univention.admin.syntax.UserDN,
 		multivalue=True,
 		options=['posix'],
@@ -196,7 +196,7 @@ property_descriptions = {
 	),
 	'allowedEmailGroups': univention.admin.property(
 		short_description=_('Groups that are allowed to send e-mails to the group'),
-		long_description='',
+		long_description=_('List of groups of which the users are allowed to use this group as a e-mail distribution list'),
 		syntax=univention.admin.syntax.GroupDN,
 		multivalue=True,
 		options=['posix'],

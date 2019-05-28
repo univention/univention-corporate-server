@@ -92,7 +92,7 @@ property_descriptions = {
 		include_in_default_search=True,
 	),
 	'host': univention.admin.property(
-		short_description=_('Host'),
+		short_description=_('Hostname'),
 		long_description=_('The computer that exports this share'),
 		syntax=univention.admin.syntax.UCS_Server,
 		include_in_default_search=True,
@@ -322,7 +322,7 @@ property_descriptions = {
 	),
 	'sambaBlockSize': univention.admin.property(
 		short_description=_('Block size'),
-		long_description='',
+		long_description=_('The block size in bytes in which unoccupied disk space is to be reported to the clients. By default, this size is defined as 1024 bytes.'),
 		syntax=univention.admin.syntax.integer,
 		options=['samba'],
 	),
@@ -335,27 +335,27 @@ property_descriptions = {
 	),
 	'sambaHostsAllow': univention.admin.property(
 		short_description=_('Allowed host/network'),
-		long_description='',
+		long_description=_('List of host (name or IP address) and networks, which are allowed to access this share.'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		options=['samba'],
 	),
 	'sambaHostsDeny': univention.admin.property(
 		short_description=_('Denied host/network'),
-		long_description='',
+		long_description=_('List of host (name or IP address) and networks, which are denied from accessing this share.'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		options=['samba'],
 	),
 	'sambaValidUsers': univention.admin.property(
 		short_description=_('Valid users or groups'),
-		long_description='',
+		long_description=_('Space separated list of users and group, which are allowed to access this share. Names starting with "+" mark UNIX groups, "&" NIS groups, "+&" for first UNIX and NIS as fallback, "&+" and "@" for the reverse.'),
 		syntax=univention.admin.syntax.string,
 		options=['samba'],
 	),
 	'sambaInvalidUsers': univention.admin.property(
 		short_description=_('Invalid users or groups'),
-		long_description='',
+		long_description=_('Space separated list of users and group, which are denied from accessing this share. Names starting with "+" mark UNIX groups, "&" NIS groups, "+&" for first UNIX and NIS as fallback, "&+" and "@" for the reverse.'),
 		syntax=univention.admin.syntax.string,
 		options=['samba'],
 	),
@@ -373,7 +373,7 @@ property_descriptions = {
 	),
 	'sambaHideFiles': univention.admin.property(
 		short_description=_('Hide files'),
-		long_description='',
+		long_description=_('A forward-slash ("/") separated list of filenames and globbing patterns ("*", "?"), which are maked with the DOS attribute "hidden".'),
 		syntax=univention.admin.syntax.string,
 		options=['samba'],
 	),
@@ -407,7 +407,7 @@ property_descriptions = {
 	),
 	'sambaWriteList': univention.admin.property(
 		short_description=_('Restrict write access to these users/groups'),
-		long_description='',
+		long_description=_('Space separated list of users and group, which have write access to this share. Names starting with "+" mark UNIX groups, "&" NIS groups, "+&" for first UNIX and NIS as fallback, "&+" and "@" for the reverse.'),
 		syntax=univention.admin.syntax.string,
 		options=['samba'],
 	),

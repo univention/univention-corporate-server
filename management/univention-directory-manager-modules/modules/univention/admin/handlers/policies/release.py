@@ -78,7 +78,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
-		long_description='',
+		long_description=_('Unique name for this policy'),
 		syntax=univention.admin.syntax.policyName,
 		include_in_default_search=True,
 		required=True,
@@ -87,7 +87,7 @@ property_descriptions = {
 	),
 	'activate': univention.admin.property(
 		short_description=_('Activate release updates (Errata updates are activated by default).'),
-		long_description='',
+		long_description=_('When disabled, only Errata and package updates are installed. When enabled, UCS release updates will be performed, too.'),
 		syntax=univention.admin.syntax.TrueFalseUp,
 	),
 	'releaseVersion': univention.admin.property(

@@ -94,7 +94,7 @@ options = {
 property_descriptions = {
 	'username': univention.admin.property(
 		short_description=_('User name'),
-		long_description='',
+		long_description=_('Unique POSIX user name'),
 		syntax=univention.admin.syntax.uid_umlauts,
 		include_in_default_search=True,
 		required=True,
@@ -103,14 +103,14 @@ property_descriptions = {
 	),
 	'uidNumber': univention.admin.property(
 		short_description=_('User ID'),
-		long_description='',
+		long_description=_('Numerical POSIX user identifier'),
 		syntax=univention.admin.syntax.integer,
 		may_change=False,
 		dontsearch=True,
 	),
 	'gidNumber': univention.admin.property(
 		short_description=_('Group ID of the primary group'),
-		long_description='',
+		long_description=_('Numerical POSIX group identifier of the primary group'),
 		syntax=univention.admin.syntax.integer,
 		may_change=False,
 		editable=False,
@@ -119,7 +119,7 @@ property_descriptions = {
 	),
 	'firstname': univention.admin.property(
 		short_description=_('First name'),
-		long_description='',
+		long_description=_('Given name or personal name'),
 		syntax=univention.admin.syntax.TwoThirdsString,
 		include_in_default_search=True,
 		readonly_when_synced=True,
@@ -127,7 +127,7 @@ property_descriptions = {
 	),
 	'lastname': univention.admin.property(
 		short_description=_('Last name'),
-		long_description='',
+		long_description=_('Surname or family name'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 		required=True,
@@ -136,7 +136,7 @@ property_descriptions = {
 	),
 	'gecos': univention.admin.property(
 		short_description=_('GECOS'),
-		long_description='',
+		long_description=_('Field with extra information about the user, such as real name and phone number '),
 		syntax=univention.admin.syntax.IA5string,
 		default='<firstname> <lastname><:umlauts,strip>',
 		dontsearch=True,
@@ -144,7 +144,7 @@ property_descriptions = {
 	),
 	'displayName': univention.admin.property(
 		short_description=_('Display name'),
-		long_description='',
+		long_description=_('The displayed string, which is used to reference this user'),
 		syntax=univention.admin.syntax.string,
 		default='<firstname> <lastname><:strip>',
 		readonly_when_synced=True,
@@ -152,7 +152,7 @@ property_descriptions = {
 	),
 	'title': univention.admin.property(
 		short_description=_('Title'),
-		long_description='',
+		long_description=_('Academic titles of the user'),
 		syntax=univention.admin.syntax.OneThirdString,
 		readonly_when_synced=True,
 		copyable=True,
@@ -167,7 +167,7 @@ property_descriptions = {
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
-		long_description='',
+		long_description=_('Some descriptive text for the user'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 		readonly_when_synced=True,
@@ -175,7 +175,7 @@ property_descriptions = {
 	),
 	'organisation': univention.admin.property(
 		short_description=_('Organisation'),
-		long_description='',
+		long_description=_('Name of the organisation the user works for or is associated with'),
 		syntax=univention.admin.syntax.string64,
 		readonly_when_synced=True,
 		copyable=True,
@@ -197,7 +197,7 @@ property_descriptions = {
 		copyable=True,
 	),
 	'pwdChangeNextLogin': univention.admin.property(
-		short_description=_('User has to change password on next login'),
+		short_description=_('Change password on next login'),
 		long_description=_('If enabled, the user has to change his password the next time when he logs in.'),
 		syntax=univention.admin.syntax.boolean,
 		dontsearch=True,
@@ -205,7 +205,7 @@ property_descriptions = {
 		size='Two',
 	),
 	'disabled': univention.admin.property(
-		short_description=_('Account is deactivated'),
+		short_description=_('Account deactivation'),
 		long_description=_('Disable the user account for Windows, Kerberos and POSIX.'),
 		syntax=univention.admin.syntax.disabled,
 		show_in_lists=True,
@@ -248,7 +248,7 @@ property_descriptions = {
 	),
 	'password': univention.admin.property(
 		short_description=_('Password'),
-		long_description='',
+		long_description=_('Secret password of the user'),
 		syntax=univention.admin.syntax.userPasswd,
 		required=True,
 		dontsearch=True,
@@ -256,41 +256,41 @@ property_descriptions = {
 	),
 	'street': univention.admin.property(
 		short_description=_('Street'),
-		long_description='',
+		long_description=_('The name of the street address, where the user works'),
 		syntax=univention.admin.syntax.string,
 		readonly_when_synced=True,
 		copyable=True,
 	),
 	'e-mail': univention.admin.property(
 		short_description=_('E-mail address'),
-		long_description='',
+		long_description=_('Company e-mail address of the user'),
 		syntax=univention.admin.syntax.emailAddress,
 		multivalue=True,
 	),
 	'postcode': univention.admin.property(
 		short_description=_('Postal code'),
-		long_description='',
+		long_description=_('The postal code of the city, where the user works'),
 		syntax=univention.admin.syntax.OneThirdString,
 		readonly_when_synced=True,
 		copyable=True,
 	),
 	'city': univention.admin.property(
 		short_description=_('City'),
-		long_description='',
+		long_description=_('The name of the city, where the user works'),
 		syntax=univention.admin.syntax.TwoThirdsString,
 		readonly_when_synced=True,
 		copyable=True,
 	),
 	'country': univention.admin.property(
 		short_description=_('Country'),
-		long_description='',
+		long_description=_('The name of the county, where the user works'),
 		syntax=univention.admin.syntax.Country,
 		readonly_when_synced=True,
 		copyable=True,
 	),
 	'phone': univention.admin.property(
 		short_description=_('Telephone number'),
-		long_description='',
+		long_description=_('Telephone number of the users company phone'),
 		syntax=univention.admin.syntax.phone,
 		multivalue=True,
 		readonly_when_synced=True,
@@ -298,46 +298,46 @@ property_descriptions = {
 	),
 	'employeeNumber': univention.admin.property(
 		short_description=_('Employee number'),
-		long_description='',
+		long_description=_('An identifier within the company to uniquely identify to user (for financial purposes)'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 		copyable=True,
 	),
 	'roomNumber': univention.admin.property(
 		short_description=_('Room number'),
-		long_description='',
+		long_description=_('The room or location, where the user works'),
 		syntax=univention.admin.syntax.OneThirdString,
 		copyable=True,
 	),
 	'secretary': univention.admin.property(
 		short_description=_('Superior'),
-		long_description='',
+		long_description=_('The boss of the user'),
 		syntax=univention.admin.syntax.UserDN,
 		multivalue=True,
 		copyable=True,
 	),
 	'departmentNumber': univention.admin.property(
 		short_description=_('Department number'),
-		long_description='',
+		long_description=_('A number or identifier of the department, where the user works'),
 		syntax=univention.admin.syntax.OneThirdString,
 		copyable=True,
 	),
 	'employeeType': univention.admin.property(
 		short_description=_('Employee type'),
-		long_description='',
+		long_description=_('A description for the kind of employment'),
 		syntax=univention.admin.syntax.string,
 		copyable=True,
 	),
 	'homePostalAddress': univention.admin.property(
 		short_description=_('Private postal address'),
-		long_description='',
+		long_description=_('Home postal address of the user'),
 		syntax=univention.admin.syntax.postalAddress,
 		multivalue=True,
 		copyable=True,
 	),
 	'homeTelephoneNumber': univention.admin.property(
 		short_description=_('Private telephone number'),
-		long_description='',
+		long_description=_('Telephone number of the users private phone'),
 		syntax=univention.admin.syntax.phone,
 		multivalue=True,
 		readonly_when_synced=True,
@@ -345,7 +345,7 @@ property_descriptions = {
 	),
 	'mobileTelephoneNumber': univention.admin.property(
 		short_description=_('Mobile phone number'),
-		long_description='',
+		long_description=_('Telephone number of the users mobile phone'),
 		syntax=univention.admin.syntax.phone,
 		multivalue=True,
 		readonly_when_synced=True,
@@ -353,7 +353,7 @@ property_descriptions = {
 	),
 	'pagerTelephoneNumber': univention.admin.property(
 		short_description=_('Pager telephone number'),
-		long_description='',
+		long_description=_('Telephone number of the users pager'),
 		syntax=univention.admin.syntax.phone,
 		multivalue=True,
 		readonly_when_synced=True,
@@ -367,7 +367,7 @@ property_descriptions = {
 	),
 	'unixhome': univention.admin.property(
 		short_description=_('Unix home directory'),
-		long_description='',
+		long_description=_('The home directory for this account'),
 		syntax=univention.admin.syntax.absolutePath,
 		required=True,
 		default='/home/<username>'
@@ -375,7 +375,7 @@ property_descriptions = {
 
 	'shell': univention.admin.property(
 		short_description=_('Login shell'),
-		long_description='',
+		long_description=_('The login shell for the account'),
 		syntax=univention.admin.syntax.OneThirdString,
 		default='/bin/bash',
 		copyable=True,
@@ -417,7 +417,7 @@ property_descriptions = {
 	),
 	'groups': univention.admin.property(
 		short_description=_('Groups'),
-		long_description='',
+		long_description=_('List of supplementary POSIX group names'),
 		syntax=univention.admin.syntax.GroupDN,
 		multivalue=True,
 		dontsearch=True,
@@ -426,7 +426,7 @@ property_descriptions = {
 	),
 	'primaryGroup': univention.admin.property(
 		short_description=_('Primary group'),
-		long_description='',
+		long_description=_('The primary POSIX user group'),
 		syntax=univention.admin.syntax.GroupDN,
 		required=True,
 		dontsearch=True,
@@ -435,21 +435,21 @@ property_descriptions = {
 	),
 	'mailHomeServer': univention.admin.property(
 		short_description=_('Mail home server'),
-		long_description='',
+		long_description=_('The IMAP server, where all e-mails of the user are delivered to and stored on'),
 		syntax=univention.admin.syntax.MailHomeServer,
 		nonempty_is_default=True,
 		copyable=True,
 	),
 	'mailPrimaryAddress': univention.admin.property(
 		short_description=_('Primary e-mail address'),
-		long_description='',
+		long_description=_('The unique e-mail address of the user'),
 		syntax=univention.admin.syntax.primaryEmailAddressValidDomain,
 		include_in_default_search=True,
 		readonly_when_synced=True,
 	),
 	'mailAlternativeAddress': univention.admin.property(
 		short_description=_('Alternative e-mail address'),
-		long_description='',
+		long_description=_('A list of secondary e-mail addresses: The user receives a copy of all e-mails sent to those addresses'),
 		syntax=univention.admin.syntax.emailAddressValidDomain,
 		multivalue=True,
 		copyable=True,
@@ -501,7 +501,7 @@ property_descriptions = {
 	),
 	'sambaUserWorkstations': univention.admin.property(
 		short_description=_('Allow the authentication only on this Microsoft Windows host'),
-		long_description=(''),
+		long_description=_('List of Windows host name, where the user is allowed to log in'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		readonly_when_synced=True,
@@ -509,7 +509,7 @@ property_descriptions = {
 	),
 	'sambaLogonHours': univention.admin.property(
 		short_description=_('Permitted times for Windows logins'),
-		long_description=(""),
+		long_description=_('The hourly time slots per day, when the user is allowed to log in'),
 		syntax=univention.admin.syntax.SambaLogonHours,
 		dontsearch=True,
 		readonly_when_synced=True,

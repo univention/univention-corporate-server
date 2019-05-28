@@ -79,7 +79,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
-		long_description='',
+		long_description=_('Unique name for this policy'),
 		syntax=univention.admin.syntax.policyName,
 		include_in_default_search=True,
 		required=True,
@@ -88,31 +88,31 @@ property_descriptions = {
 	),
 	'month': univention.admin.property(
 		short_description=_('Month'),
-		long_description='',
+		long_description=_('Filter on the month of a year when to perform the update'),
 		syntax=univention.admin.syntax.Month,
 		multivalue=True,
 	),
 	'day': univention.admin.property(
 		short_description=_('Day'),
-		long_description='',
+		long_description=_('Filter on the day of a month when to perform the update'),
 		syntax=univention.admin.syntax.Day,
 		multivalue=True,
 	),
 	'weekday': univention.admin.property(
 		short_description=_('Day of week'),
-		long_description='',
+		long_description=_('Filter on the day of a week when to perform the update'),
 		syntax=univention.admin.syntax.Weekday,
 		multivalue=True,
 	),
 	'hour': univention.admin.property(
 		short_description=_('Hour'),
-		long_description='',
+		long_description=_('Filter on the hour of a day when to perform the update'),
 		syntax=univention.admin.syntax.Hour,
 		multivalue=True,
 	),
 	'minute': univention.admin.property(
 		short_description=_('Minute'),
-		long_description='',
+		long_description=_('Filter on the minute of an hour when to perform the update'),
 		syntax=univention.admin.syntax.Minute,
 		multivalue=True,
 	),

@@ -74,7 +74,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
-		long_description='',
+		long_description=_('Unique name of this entry'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 		required=True,
@@ -83,21 +83,21 @@ property_descriptions = {
 	),
 	'dnsForwardZone': univention.admin.property(
 		short_description=_('DNS forward lookup zone'),
-		long_description='',
+		long_description=_('The DNS forward zone associated with the domain'),
 		syntax=univention.admin.syntax.DNS_ForwardZone,
 		multivalue=True,
 		may_change=False,
 	),
 	'dnsReverseZone': univention.admin.property(
 		short_description=_('DNS reverse lookup zone'),
-		long_description='',
+		long_description=_('The DNS reverse zone associated with the domain'),
 		syntax=univention.admin.syntax.DNS_ReverseZone,
 		multivalue=True,
 		may_change=False,
 	),
 	'sambaDomainName': univention.admin.property(
 		short_description=_('Samba domain name'),
-		long_description='',
+		long_description=_('Name of the Windows domain'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		options=['samba'],
@@ -106,7 +106,7 @@ property_descriptions = {
 	),
 	'sambaSID': univention.admin.property(
 		short_description=_('Samba SID'),
-		long_description='',
+		long_description=_('The Windows Security Identifier used within the domain to uniquely identify objects'),
 		syntax=univention.admin.syntax.string,
 		options=['samba'],
 		required=True,
@@ -114,21 +114,21 @@ property_descriptions = {
 	),
 	'sambaNextUserRid': univention.admin.property(
 		short_description=_('Samba Next User RID'),
-		long_description='',
+		long_description=_('The Relative (Security) Identifier, which will be assigned to the next user created within the domain'),
 		syntax=univention.admin.syntax.string,
 		options=['samba'],
 		default=('1000', []),
 	),
 	'sambaNextGroupRid': univention.admin.property(
 		short_description=_('Samba Next Group RID'),
-		long_description='',
+		long_description=_('The Relative (Security) Identifier, which will be assigned to the next group created within the domain'),
 		syntax=univention.admin.syntax.string,
 		options=['samba'],
 		default=('1000', []),
 	),
 	'kerberosRealm': univention.admin.property(
 		short_description=_('Kerberos realm'),
-		long_description='',
+		long_description=_('Name of the Kerberos realm'),
 		syntax=univention.admin.syntax.string,
 		options=['kerberos'],
 		required=True,

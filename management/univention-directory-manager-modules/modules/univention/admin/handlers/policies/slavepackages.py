@@ -65,10 +65,10 @@ policy_apply_to = ["computers/domaincontroller_slave"]
 policy_position_dn_prefix = "cn=packages,cn=update"
 
 childs = 0
-short_description = _('Policy: Slave packages')
-object_name = _('Slave packages policy')
-object_name_plural = _('Slave packages policies')
-policy_short_description = _('Slave packages')
+short_description = _('Policy: Slaves packages')
+object_name = _('Slaves packages policy')
+object_name_plural = _('Slaves packages policies')
+policy_short_description = _('Slaves packages')
 long_description = ''
 options = {
 	'default': univention.admin.option(
@@ -79,7 +79,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
-		long_description='',
+		long_description=_('Unique name for this policy'),
 		syntax=univention.admin.syntax.policyName,
 		include_in_default_search=True,
 		required=True,
@@ -88,13 +88,13 @@ property_descriptions = {
 	),
 	'slavePackages': univention.admin.property(
 		short_description=_('Package installation list'),
-		long_description='',
+		long_description=_('List of package names to be installed when package maintenance happends'),
 		syntax=univention.admin.syntax.Packages,
 		multivalue=True,
 	),
 	'slavePackagesRemove': univention.admin.property(
 		short_description=_('Package removal list'),
-		long_description='',
+		long_description=_('List of package names to be removed when package maintenance happends'),
 		syntax=univention.admin.syntax.PackagesRemove,
 		multivalue=True,
 	),

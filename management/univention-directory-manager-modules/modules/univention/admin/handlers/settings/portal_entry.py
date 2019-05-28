@@ -55,14 +55,14 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Internal name'),
-		long_description='',
+		long_description=_('Unique name of this entry'),
 		syntax=univention.admin.syntax.string_numbers_letters_dots,
 		include_in_default_search=True,
 		required=True,
 		identifies=True
 	),
 	'displayName': univention.admin.property(
-		short_description=_('Display Name'),
+		short_description=_('Display name'),
 		long_description=_('Headline of the entry. At least one entry; strongly encouraged to have one for en_US'),
 		syntax=univention.admin.syntax.LocalizedDisplayName,
 		multivalue=True,
@@ -83,14 +83,14 @@ property_descriptions = {
 	# 'category' - deprecated in favor of 'content' of settings/portal
 	'category': univention.admin.property(
 		short_description=_('Category'),
-		long_description='',
+		long_description=_('The name of the category this entry belongs to'),
 		syntax=univention.admin.syntax.PortalCategory,
 		default='service',
 		dontsearch=True,
 	),
 	'link': univention.admin.property(
 		short_description=_('Link'),
-		long_description='',
+		long_description=_('An URL, where the user is redirected to when this entry is selected'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		required=True,
@@ -116,13 +116,13 @@ property_descriptions = {
 	),
 	'activated': univention.admin.property(
 		short_description=_('Activated'),
-		long_description='',
+		long_description=_('Indicates that the extension was successfully installed by the UDL module'),
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='TRUE',
 	),
 	'icon': univention.admin.property(
 		short_description=_('Icon'),
-		long_description='',
+		long_description=_('A base64 encoded icon'),
 		syntax=univention.admin.syntax.Base64BaseUpload,
 		dontsearch=True,
 	),

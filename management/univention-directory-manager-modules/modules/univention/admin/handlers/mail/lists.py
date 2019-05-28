@@ -45,7 +45,7 @@ childs = 0
 short_description = _('Mailing list')
 object_name = _('Mailing list')
 object_name_plural = _('Mailing lists')
-long_description = ''
+long_description = _('Mail distribution list')
 
 module_search_filter = univention.admin.filter.expression('objectClass', 'univentionMailList'),
 
@@ -58,7 +58,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
-		long_description='',
+		long_description=_('Unique name of this entry'),
 		syntax=univention.admin.syntax.mailinglist_name,
 		include_in_default_search=True,
 		required=True,
@@ -66,33 +66,33 @@ property_descriptions = {
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
-		long_description='',
+		long_description=_('Some descriptive text for this mail distribution list'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 	),
 	'members': univention.admin.property(
 		short_description=_('Members'),
-		long_description='',
+		long_description=_('List of e-mail addresses, which receive a copy of all e-mails sent to this mail distribution list'),
 		syntax=univention.admin.syntax.emailAddress,
 		multivalue=True,
 		dontsearch=True,
 	),
 	'mailAddress': univention.admin.property(
 		short_description=_('Mail address'),
-		long_description='',
+		long_description=_('An e-mail address associated with the group: any member of this group receives a copy of all e-mails sent to that address'),
 		syntax=univention.admin.syntax.emailAddressValidDomain,
 		include_in_default_search=True,
 	),
 	'allowedEmailUsers': univention.admin.property(
 		short_description=_('Users that are allowed to send e-mails to the list'),
-		long_description='',
+		long_description=_('List of user, which are allowed to use this group as a e-mail distribution list'),
 		syntax=univention.admin.syntax.UserDN,
 		multivalue=True,
 		dontsearch=True,
 	),
 	'allowedEmailGroups': univention.admin.property(
 		short_description=_('Groups that are allowed to send e-mails to the list'),
-		long_description='',
+		long_description=_('List of groups of which the users are allowed to use this group as a e-mail distribution list'),
 		syntax=univention.admin.syntax.GroupDN,
 		multivalue=True,
 		dontsearch=True,

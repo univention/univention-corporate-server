@@ -76,7 +76,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
-		long_description='',
+		long_description=_('Unique name for this policy'),
 		syntax=univention.admin.syntax.policyName,
 		include_in_default_search=True,
 		required=True,
@@ -85,7 +85,7 @@ property_descriptions = {
 	),
 	'registry': univention.admin.property(
 		short_description=_('Configuration Registry'),
-		long_description='',
+		long_description=_('List of Univention Configuration Registry variable names and values'),
 		syntax=univention.admin.syntax.UCR_Variable,
 		multivalue=True,
 	),

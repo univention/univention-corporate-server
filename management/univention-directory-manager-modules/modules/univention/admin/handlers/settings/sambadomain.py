@@ -81,7 +81,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Samba domain name'),
-		long_description='',
+		long_description=_('Name of the Windows domain'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 		required=True,
@@ -89,7 +89,7 @@ property_descriptions = {
 	),
 	'SID': univention.admin.property(
 		short_description=_('Samba SID'),
-		long_description='',
+		long_description=_('The Windows Security Identifier used within the domain to uniquely identify objects'),
 		syntax=univention.admin.syntax.string,
 		required=True,
 		may_change=False,
@@ -97,70 +97,70 @@ property_descriptions = {
 	),
 	'NextUserRid': univention.admin.property(
 		short_description=_('Next user RID'),
-		long_description='',
+		long_description=_('The Relative (Security) Identifier, which will be assigned to the next user created within the domain'),
 		syntax=univention.admin.syntax.integer,
 		default='1000',
 	),
 	'NextGroupRid': univention.admin.property(
 		short_description=_('Next group RID'),
-		long_description='',
+		long_description=_('The Relative (Security) Identifier, which will be assigned to the next group created within the domain'),
 		syntax=univention.admin.syntax.integer,
 		default='1000',
 	),
 	'NextRid': univention.admin.property(
 		short_description=_('Next RID'),
-		long_description='',
+		long_description=_('The Relative (Security) Identifier, which will be assigned to the next object created within the domain'),
 		syntax=univention.admin.syntax.integer,
 		default='1000',
 	),
 	'passwordLength': univention.admin.property(
 		short_description=_('Password length'),
-		long_description='',
+		long_description=_('Minimal amount of characters'),
 		syntax=univention.admin.syntax.integer,
 	),
 	'passwordHistory': univention.admin.property(
 		short_description=_('Password history'),
-		long_description='',
+		long_description=_('This number indicates after how many changes the user may reuse the old password again'),
 		syntax=univention.admin.syntax.integer,
 	),
 	'minPasswordAge': univention.admin.property(
 		short_description=_('Minimum password age'),
-		long_description='',
+		long_description=_('Minimum time span after which the password can be changed again'),
 		syntax=univention.admin.syntax.SambaMinPwdAge,
 	),
 	'badLockoutAttempts': univention.admin.property(
 		short_description=_('Bad lockout attempts'),
-		long_description='',
+		long_description=_('Number of failed logon attempts, after which the account is locked'),
 		syntax=univention.admin.syntax.integer,
 	),
 	'logonToChangePW': univention.admin.property(
 		short_description=_('User must logon to change password'),
-		long_description='',
+		long_description=_('Prevent users with expired password from login in'),
 		syntax=univention.admin.syntax.boolean,
 	),
 	'maxPasswordAge': univention.admin.property(
 		short_description=_('Maximum password age'),
-		long_description='',
+		long_description=_('Maximum time span after which the password must be changed'),
 		syntax=univention.admin.syntax.SambaMaxPwdAge,
 	),
 	'lockoutDuration': univention.admin.property(
 		short_description=_('Lockout duration minutes'),
-		long_description='',
+		long_description=_('Time span in minutes, for which the account is locked after too many failed logon attempts'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
 	),
 	'resetCountMinutes': univention.admin.property(
 		short_description=_('Reset count minutes'),
-		long_description='',
+		long_description=_('Time span in minutes, after which the failed logon counter is automatically reset'),
 		syntax=univention.admin.syntax.integer,
 	),
 	'disconnectTime': univention.admin.property(
 		short_description=_('Disconnect time'),
-		long_description='',
+		long_description=_('Disconnect users outside logon hours'),
 		syntax=univention.admin.syntax.UNIX_TimeInterval,
 	),
 	'refuseMachinePWChange': univention.admin.property(
 		short_description=_('Refuse machine password change'),
-		long_description='',
+		long_description=_('Forbid any machine account password being changed'),
 		syntax=univention.admin.syntax.boolean,
 	),
 	'domainPasswordComplex': univention.admin.property(

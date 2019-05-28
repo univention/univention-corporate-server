@@ -55,14 +55,14 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Internal name'),
-		long_description='',
+		long_description=_('Unique name of this entry'),
 		syntax=univention.admin.syntax.string_numbers_letters_dots,
 		include_in_default_search=True,
 		required=True,
 		identifies=True
 	),
 	'displayName': univention.admin.property(
-		short_description=_('Display Name'),
+		short_description=_('Display name'),
 		long_description=_('Display name of the category. At least one entry; strongly encouraged to have one for en_US'),
 		syntax=univention.admin.syntax.LocalizedDisplayName,
 		multivalue=True,

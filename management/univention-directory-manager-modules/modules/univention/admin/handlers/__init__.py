@@ -1835,7 +1835,7 @@ class simpleComputer(simpleLdap):
 		# read-only attribute containing the FQDN of the host
 		self.descriptions['fqdn'] = univention.admin.property(
 			short_description='FQDN',
-			long_description='',
+			long_description=_('Fully qualified domain name of this computer'),
 			syntax=univention.admin.syntax.string,
 			may_change=False,
 		)

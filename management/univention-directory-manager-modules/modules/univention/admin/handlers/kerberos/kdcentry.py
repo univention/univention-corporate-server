@@ -61,7 +61,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Principal name'),
-		long_description='',
+		long_description=_('The name of the principal, e.g. $user@$REALM or $service/$host@$REALM'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 		required=True,
@@ -69,46 +69,46 @@ property_descriptions = {
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
-		long_description='',
+		long_description=_('Some descriptive text for this entry'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 	),
 	'password': univention.admin.property(
 		short_description=_('Password'),
-		long_description='',
+		long_description=_('A secret password'),
 		syntax=univention.admin.syntax.passwd,
 		dontsearch=True
 	),
 	'generateRandomPassword': univention.admin.property(
 		short_description=_('Generate random password'),
-		long_description='',
+		long_description=_('Automatically generate a random password'),
 		syntax=univention.admin.syntax.boolean,
 		dontsearch=True
 	),
 	'keyVersionNumber': univention.admin.property(
 		short_description=_('Key version'),
-		long_description='',
+		long_description=_('The key version number (KVNO) is automatically incremented on each password change to invalidate all previous version.'),
 		syntax=univention.admin.syntax.integer,
 		dontsearch=True,
 		default='1'
 	),
 	'KDCFlags': univention.admin.property(
 		short_description=_('KDC Flags'),
-		long_description='',
+		long_description=_('A bit field describing features of this principal'),
 		syntax=univention.admin.syntax.integer,
 		dontsearch=True,
 		default='126'
 	),
 	'maxLife': univention.admin.property(
 		short_description=_('Maximum life time'),
-		long_description='',
+		long_description=_('The maximum live time of the key, after which the user must reauthenticate.'),
 		syntax=univention.admin.syntax.integer,
 		dontsearch=True,
 		default='86400'
 	),
 	'maxRenew': univention.admin.property(
 		short_description=_('Maximum renew time'),
-		long_description='',
+		long_description=_('The maximum time Kerberos will automatically renew the key.'),
 		syntax=univention.admin.syntax.integer,
 		dontsearch=True,
 		default='604800'

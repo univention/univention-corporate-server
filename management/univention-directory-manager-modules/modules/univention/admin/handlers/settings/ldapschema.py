@@ -58,7 +58,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Schema name'),
-		long_description='',
+		long_description=_('Unique name for this extension'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 		required=True,
@@ -66,37 +66,37 @@ property_descriptions = {
 	),
 	'filename': univention.admin.property(
 		short_description=_('Schema file name'),
-		long_description='',
+		long_description=_('Base file name used to store this extension to'),
 		syntax=univention.admin.syntax.BaseFilename,
 		required=True,
 		default='',
 	),
 	'data': univention.admin.property(
 		short_description=_('Schema data'),
-		long_description='',
+		long_description=_('Base64 encoded Bzip2 compressed extension data'),
 		syntax=univention.admin.syntax.Base64Bzip2Text,
 		required=True,
 	),
 	'active': univention.admin.property(
 		short_description=_('Active'),
-		long_description='',
+		long_description=_('Indicates that the extension was successfully installed by the UDL module'),
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='FALSE',
 	),
 	'appidentifier': univention.admin.property(
 		short_description=_('App identifier'),
-		long_description='',
+		long_description=_('Name of the App this extension is part of'),
 		syntax=univention.admin.syntax.TextArea,
 		multivalue=True,
 	),
 	'package': univention.admin.property(
 		short_description=_('Software package'),
-		long_description='',
+		long_description=_('Name of the software package this extension is part of'),
 		syntax=univention.admin.syntax.string,
 	),
 	'packageversion': univention.admin.property(
 		short_description=_('Software package version'),
-		long_description='',
+		long_description=_('Version of the software package this extension is part of'),
 		syntax=univention.admin.syntax.DebianPackageVersion,
 	),
 }

@@ -66,14 +66,14 @@ property_descriptions = {
 		identifies=True,
 	),
 	'ip': univention.admin.property(
-		short_description=_('IP Address'),
-		long_description='',
+		short_description=_('IP address'),
+		long_description=_('An IPv4 or IPv6 addresses of the host'),
 		syntax=univention.admin.syntax.ipAddress,
 		include_in_default_search=True,
 	),
 	'ptr_record': univention.admin.property(
 		short_description=_('Pointer record'),
-		long_description=_("FQDNs must end with a dot."),
+		long_description=_("Fully qualified host name, which must end with a dot."),
 		syntax=univention.admin.syntax.dnsName,
 		multivalue=True,
 		include_in_default_search=True,

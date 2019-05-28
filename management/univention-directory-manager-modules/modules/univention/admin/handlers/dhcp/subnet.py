@@ -78,8 +78,8 @@ property_descriptions = {
 		syntax=univention.admin.syntax.ipv4Address,
 	),
 	'range': univention.admin.property(
-		short_description=_('Dynamic address assignment'),
-		long_description=_('Define a pool of addresses available for dynamic address assignment.'),
+		short_description=_('Dynamic IPv4 address assignment'),
+		long_description=_('Define a pool of IPv4 addresses available for dynamic address assignment.'),
 		syntax=univention.admin.syntax.IPv4_AddressRange,
 		multivalue=True,
 	),

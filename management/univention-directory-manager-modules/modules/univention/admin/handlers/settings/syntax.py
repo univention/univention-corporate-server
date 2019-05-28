@@ -47,7 +47,7 @@ operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Settings: Syntax Definition')
 object_name = _('Syntax Definition')
 object_name_plural = _('Syntax Definitions')
-long_description = ''
+long_description = _('Syntax definition to lookup items from LDAP for selection')
 options = {
 	'default': univention.admin.option(
 		default=True,
@@ -56,33 +56,33 @@ options = {
 }
 property_descriptions = {
 	'name': univention.admin.property(
-		short_description=_('Syntax Name'),
-		long_description='',
+		short_description=_('Syntax name'),
+		long_description=_('Unique name for this syntax'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 		required=True,
 		identifies=True
 	),
 	'description': univention.admin.property(
-		short_description=_('Syntax Description'),
-		long_description='',
+		short_description=_('Syntax description'),
+		long_description=_('Some descriptive text for this syntax definition'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 	),
 	'filter': univention.admin.property(
-		short_description=_('LDAP Search Filter'),
-		long_description='',
+		short_description=_('LDAP search filter'),
+		long_description=_('Valid LDAP search filter string'),
 		syntax=univention.admin.syntax.string,
 		required=True,
 	),
 	'base': univention.admin.property(
-		short_description=_('LDAP Base'),
-		long_description='',
+		short_description=_('LDAP search base'),
+		long_description=_('Distinguished name of LDAP tree object, where the search starts'),
 		syntax=univention.admin.syntax.ldapDn,
 	),
 	'attribute': univention.admin.property(
-		short_description=_('Displayed Attributes'),
-		long_description='',
+		short_description=_('Displayed UDM properties'),
+		long_description=_('List of UDM propery names, which are displayed for the item'),
 		# syntax = univention.admin.syntax.UDM_PropertySelect,
 		syntax=univention.admin.syntax.listAttributes,
 		multivalue=True,
@@ -90,30 +90,30 @@ property_descriptions = {
 	),
 	'ldapattribute': univention.admin.property(
 		short_description=_('Displayed LDAP Attributes'),
-		long_description='',
+		long_description=_('List of LDAP attribute names, which are displayed for the item'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 	),
 	'viewonly': univention.admin.property(
-		short_description=_('Show Only'),
-		long_description='',
+		short_description=_('Show only'),
+		long_description=_('The syntax is only used to translate the stored value to some displayed value, but the selection cannot be changed'),
 		syntax=univention.admin.syntax.TrueFalseUp,
 	),
 	'addEmptyValue': univention.admin.property(
 		short_description=_('Add an empty value to choice list'),
-		long_description='',
+		long_description=_('Add an empty value to the choice list, which can be used to select no item.'),
 		syntax=univention.admin.syntax.TrueFalseUp,
 	),
 	'value': univention.admin.property(
-		short_description=_('Stored Attribute'),
-		long_description='',
+		short_description=_('Stored property'),
+		long_description=_('UDM property name, from which the value is used to reference the selected item'),
 		# syntax = univention.admin.syntax.UDM_PropertySelect,
 		syntax=univention.admin.syntax.listAttributes,
 		include_in_default_search=True,
 	),
 	'ldapvalue': univention.admin.property(
 		short_description=_('Stored LDAP Attribute'),
-		long_description='',
+		long_description=_('LDAP attribute name, from which the value is used to reference the selected item'),
 		syntax=univention.admin.syntax.string,
 	),
 }

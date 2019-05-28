@@ -58,7 +58,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
-		long_description='',
+		long_description=_('Unique name of this group of printers'),
 		syntax=univention.admin.syntax.printerName,
 		include_in_default_search=True,
 		required=True,
@@ -67,37 +67,37 @@ property_descriptions = {
 	),
 	'spoolHost': univention.admin.property(
 		short_description=_('Print server'),
-		long_description='',
+		long_description=_('The name of the server, where jobs for the printers are spooled'),
 		syntax=univention.admin.syntax.ServicePrint_FQDN,
 		multivalue=True,
 		required=True,
 	),
 	'groupMember': univention.admin.property(
-		short_description=_('Group members'),
-		long_description='',
+		short_description=_('Printers'),
+		long_description=_('List of printers, over which the print jobs are distributed'),
 		syntax=univention.admin.syntax.PrinterNames,
 		multivalue=True,
 		required=True,
 	),
 	'sambaName': univention.admin.property(
 		short_description=_('Windows name'),
-		long_description='',
+		long_description=_('Unique name of the printer as used from Windows'),
 		syntax=univention.admin.syntax.string,
 		unique=True
 	),
 	'setQuota': univention.admin.property(
 		short_description=_('Enable quota support'),
-		long_description='',
+		long_description=_('Enable quota support to limit the number of jobs/pages a user or group of users can print per time span'),
 		syntax=univention.admin.syntax.boolean,
 	),
 	'pagePrice': univention.admin.property(
 		short_description=_('Price per page'),
-		long_description='',
+		long_description=_('Enter the (virtual) price of one printed page. No currency'),
 		syntax=univention.admin.syntax.integer,
 	),
 	'jobPrice': univention.admin.property(
 		short_description=_('Price per print job'),
-		long_description='',
+		long_description=_('Enter the (virtual) price of a print job. No currency'),
 		syntax=univention.admin.syntax.integer,
 	),
 }

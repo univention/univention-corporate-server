@@ -67,14 +67,14 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 	),
 	'filename': univention.admin.property(
-		short_description=_('File name of file to store data in.'),
-		long_description='',
+		short_description=_('File name of file to store extension in.'),
+		long_description=_('Base file name used to store this data to'),
 		syntax=univention.admin.syntax.string,
 		default='',
 	),
 	'data': univention.admin.property(
 		short_description=_('The data'),
-		long_description=_('The actual data, bzipped and base64 encoded'),
+		long_description=_('Base64 encoded Bzip2 compressed extension'),
 		syntax=univention.admin.syntax.Base64Bzip2Text,
 	),
 	'data_type': univention.admin.property(
@@ -85,28 +85,28 @@ property_descriptions = {
 	),
 	'ucsversionstart': univention.admin.property(
 		short_description=_('Minimal UCS version'),
-		long_description='',
+		long_description=_('Minimum required UCS version for this extension'),
 		syntax=univention.admin.syntax.UCSVersion,
 	),
 	'ucsversionend': univention.admin.property(
 		short_description=_('Maximal UCS version'),
-		long_description='',
+		long_description=_('Maximum required UCS version for this extension'),
 		syntax=univention.admin.syntax.UCSVersion,
 	),
 	'meta': univention.admin.property(
 		short_description=_('Meta information'),
-		long_description='The data objects meta information',
+		long_description=_('The extension objects meta information'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 	),
 	'package': univention.admin.property(
 		short_description=_('Software package'),
-		long_description='',
+		long_description=_('Name of the software package this extension is part of'),
 		syntax=univention.admin.syntax.string,
 	),
 	'packageversion': univention.admin.property(
 		short_description=_('Software package version'),
-		long_description='',
+		long_description=_('Version of the software package this extension is part of'),
 		syntax=univention.admin.syntax.DebianPackageVersion,
 	),
 }

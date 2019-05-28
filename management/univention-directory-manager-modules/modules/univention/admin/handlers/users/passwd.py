@@ -57,7 +57,7 @@ options = {}
 property_descriptions = {
 	'username': univention.admin.property(
 		short_description=_('User name'),
-		long_description='',
+		long_description=_('Unique name of this entry'),
 		syntax=univention.admin.syntax.uid,
 		include_in_default_search=True,
 		required=True,
@@ -66,7 +66,7 @@ property_descriptions = {
 	),
 	'password': univention.admin.property(
 		short_description=_('Password'),
-		long_description='',
+		long_description=_('Secret password of the user'),
 		syntax=univention.admin.syntax.userPasswd,
 		required=True,
 		dontsearch=True

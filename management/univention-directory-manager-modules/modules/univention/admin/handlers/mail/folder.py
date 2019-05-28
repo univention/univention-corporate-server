@@ -49,7 +49,7 @@ childs = 0
 short_description = _('Mail folder (IMAP)')
 object_name = _('IMAP mail folder')
 object_name_plural = _('IMAP mail folders')
-long_description = ''
+long_description = _('Configure a shared IMAP folder')
 
 module_search_filter = univention.admin.filter.conjunction('&', [
 	univention.admin.filter.expression('objectClass', 'univentionMailSharedFolder'),
@@ -71,7 +71,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
-		long_description='',
+		long_description=_('Unique name of this entry'),
 		syntax=univention.admin.syntax.mail_folder_name,
 		include_in_default_search=True,
 		required=True,
@@ -80,7 +80,7 @@ property_descriptions = {
 	),
 	'mailDomain': univention.admin.property(
 		short_description=_('Mail domain'),
-		long_description='',
+		long_description=_('The DNS domain of this folder'),
 		syntax=ldap_search_maildomain,
 		include_in_default_search=True,
 		required=True,
@@ -89,13 +89,13 @@ property_descriptions = {
 	),
 	'sharedFolderUserACL': univention.admin.property(
 		short_description=_('User ACL'),
-		long_description='',
+		long_description=_('An Access Control List to give one or more users permissions to access this folder, e.g. read, append, write, post, all'),
 		syntax=univention.admin.syntax.SharedFolderUserACL,
 		multivalue=True,
 	),
 	'sharedFolderGroupACL': univention.admin.property(
 		short_description=_('Group ACL'),
-		long_description='',
+		long_description=_('An Access Control List to give one or more groups permissions to access this folder, e.g. read, append, write, post, all'),
 		syntax=univention.admin.syntax.SharedFolderGroupACL,
 		multivalue=True,
 	),
@@ -106,14 +106,14 @@ property_descriptions = {
 	),
 	'mailHomeServer': univention.admin.property(
 		short_description=_('Mail home server'),
-		long_description='',
+		long_description=_('The IMAP server, where this folder is stored on'),
 		syntax=univention.admin.syntax.MailHomeServer,
 		nonempty_is_default=True,
 		required=True,
 	),
 	'mailPrimaryAddress': univention.admin.property(
 		short_description=_('E-Mail address'),
-		long_description='',
+		long_description=_('Mail sent to this address is forwarded and stored in this folder'),
 		syntax=univention.admin.syntax.emailAddressValidDomain,
 		include_in_default_search=True,
 	),

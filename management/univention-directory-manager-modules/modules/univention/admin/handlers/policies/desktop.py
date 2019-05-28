@@ -78,7 +78,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
-		long_description='',
+		long_description=_('Unique name for this policy'),
 		syntax=univention.admin.syntax.policyName,
 		include_in_default_search=True,
 		required=True,
@@ -87,25 +87,25 @@ property_descriptions = {
 	),
 	'language': univention.admin.property(
 		short_description=_('Desktop language'),
-		long_description='',
+		long_description=_('Language for the Linux desktop environment'),
 		syntax=univention.admin.syntax.language,
 	),
 	'profile': univention.admin.property(
 		short_description=_('Desktop profile'),
-		long_description='',
+		long_description=_('Name of the K Desktop environment profile'),
 		syntax=univention.admin.syntax.KDE_Profile,
 		multivalue=True,
 		include_in_default_search=True,
 	),
 	'logonScripts': univention.admin.property(
 		short_description=_('Logon scripts'),
-		long_description='',
+		long_description=_('Name of scripts to execute when a user loges in'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 	),
 	'logoutScripts': univention.admin.property(
 		short_description=_('Logout scripts'),
-		long_description='',
+		long_description=_('Name of scripts to execute after a user logged off'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 	),

@@ -79,7 +79,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
-		long_description='',
+		long_description=_('Unique name for this policy'),
 		syntax=udm_syntax.policyName,
 		include_in_default_search=True,
 		required=True,
@@ -88,7 +88,7 @@ property_descriptions = {
 	),
 	'allow': univention.admin.property(
 		short_description=_('List of allowed UMC operation sets'),
-		long_description='',
+		long_description=_('List of UMC operation sets, which define the UMC commands allowed to the users'),
 		syntax=udm_syntax.UMC_OperationSet,
 		multivalue=True,
 	),

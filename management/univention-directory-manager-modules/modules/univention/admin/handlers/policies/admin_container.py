@@ -76,7 +76,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
-		long_description='',
+		long_description=_('Unique name for this policy'),
 		syntax=univention.admin.syntax.policyName,
 		include_in_default_search=True,
 		required=True,
@@ -84,8 +84,8 @@ property_descriptions = {
 		identifies=True,
 	),
 	'listModules': univention.admin.property(
-		short_description=_('Available Univention Directory Manager modules'),
-		long_description='',
+		short_description=_('Available UDM modules'),
+		long_description=_('List of enabled Univention Directory Manager modules'),
 		syntax=univention.admin.syntax.univentionAdminModules,
 		multivalue=True,
 	),

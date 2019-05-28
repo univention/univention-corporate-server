@@ -57,7 +57,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Service Name'),
-		long_description='',
+		long_description=_('Unique name of a service. This is used to find all host offering that service.'),
 		syntax=univention.admin.syntax.string,
 		include_in_default_search=True,
 		required=True,

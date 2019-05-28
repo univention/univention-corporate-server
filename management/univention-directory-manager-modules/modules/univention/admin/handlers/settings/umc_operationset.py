@@ -60,7 +60,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
-		long_description='',
+		long_description=_('A unique name for this entry'),
 		syntax=udm_syntax.string,
 		include_in_default_search=True,
 		required=True,
@@ -68,7 +68,7 @@ property_descriptions = {
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
-		long_description='',
+		long_description=_('Some descriptive text for this entry'),
 		syntax=udm_syntax.string,
 		include_in_default_search=True,
 		dontsearch=True,
