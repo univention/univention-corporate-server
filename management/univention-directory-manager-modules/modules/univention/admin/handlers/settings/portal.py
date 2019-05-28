@@ -171,7 +171,7 @@ property_descriptions = {
 	'defaultLinkTarget': univention.admin.property(
 		short_description=_('Default browser tab for portal entries'),
 		syntax=univention.admin.syntax.PortalDefaultLinkTarget,
-		default='newwindow',
+		default='samewindow',
 		dontsearch=True,
 	),
 }

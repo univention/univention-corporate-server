@@ -283,9 +283,9 @@ define([
 				case portalTools.RenderMode.NORMAL:
 					domNode = this.inherited(arguments);
 					var link = put('a[href=$]', this._getWebInterfaceUrl(item));
-					var openLinkInNewWindow = true;
-					if (this.defaultLinkTarget && this.defaultLinkTarget === 'samewindow') {
-						openLinkInNewWindow = false;
+					var openLinkInNewWindow = false;
+					if (this.defaultLinkTarget && this.defaultLinkTarget === 'newwindow') {
+						openLinkInNewWindow = true;
 					}
 					switch (item.linkTarget) {
 						case 'samewindow':
