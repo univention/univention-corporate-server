@@ -10,3 +10,5 @@ desc: |
  * Use new LDAP control DSDB_CONTROL_REPLICATED_UPDATE_OID when
    changing objectSid's in ucs@school.
 bug: [49480,49481]
+erratum: 518
+announced: 2019-05-29
