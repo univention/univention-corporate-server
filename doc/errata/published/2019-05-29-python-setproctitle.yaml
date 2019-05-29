@@ -9,3 +9,5 @@ desc: |
  This update addresses the following issue:
  * The package python-setproctitle has been added to maintained.
 bug: [49176]
+erratum: 116
+announced: 2019-05-29
