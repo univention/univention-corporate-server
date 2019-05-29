@@ -10,3 +10,5 @@ desc: |
  * The package dependency loop for `python-univention-debug` has been broken
    by introducing a new binary package `python-univention-namespace`.
 bug: [49136, 49506]
+erratum: 129
+announced: 2019-05-29
