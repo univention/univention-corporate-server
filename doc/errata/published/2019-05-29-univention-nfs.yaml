@@ -9,3 +9,5 @@ desc: |
  * A newline injection vulnerability has been fixed which allowed to add
    further entries to /etc/exports.
 bug: [44054]
+erratum: 127
+announced: 2019-05-29
