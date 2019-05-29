@@ -11,3 +11,5 @@ bug: [49574]
 ignore:
   - release+scope.consistent
   - version.scope
+erratum: 135
+announced: 2019-05-29
