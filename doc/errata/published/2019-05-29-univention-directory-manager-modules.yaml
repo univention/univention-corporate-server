@@ -9,3 +9,5 @@ desc: |
  * Whether portal entries are opened in the same tab or a new tab is now
    configurable.
 bug: [45318]
+erratum: 122
+announced: 2019-05-29
