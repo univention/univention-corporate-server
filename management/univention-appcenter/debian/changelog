@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-31) unstable; urgency=medium
+
+  * Bug #49543: added error handling for copying machine.secret
+
+ -- Felix Botner <botner@univention.de>  Wed, 29 May 2019 14:41:53 +0200
+
 univention-appcenter (8.0.11-30) unstable; urgency=medium
 
   * Bug #49543: added error handling for copying machine.secret

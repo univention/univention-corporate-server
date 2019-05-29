@@ -244,9 +244,21 @@ docker inspect:
 			raise AppCenterErrorContainerStart(msg)
 		# copy password files
 		if os.path.isfile(app.secret_on_host):
-			ret, out = docker.cp_to_container(app.secret_on_host, '/etc/machine.secret')
-			if ret != 0:
-				raise DockerCouldNotStartContainer('Could not copy machine.secret to container: %s %s' % (docker.logs(), out))
+			# we can not use docker-cp here, as we support read-only containers too :-(
+			f_name = docker.path('/etc/machine.secret')
+			f_dir = os.path.dirname(f_name)
+			# if the container start takes a little longer the f_dir may not exist yet
+			# so wait max 60s
+			for i in xrange(0, 12):
+				if os.path.isdir(f_dir):
+					break
+				time.sleep(5)
+			try:
+				with open(f_name, 'w+b') as f:
+					os.chmod(f_name, 0o600)
+					f.write(password)
+			except Exception as exc:
+				raise DockerCouldNotStartContainer('Could not copy machine.secret to container: %s (%s)' % (str(exc), docker.logs()))
 		if database_password_file:
 			docker.cp_to_container(database_password_file, database_password_file)
 		# update timezone in container
