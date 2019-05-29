@@ -10,3 +10,4 @@ desc: |
 bug: [49548]
 ignore:
   - version.scope
+maintained: true
