@@ -12,3 +12,5 @@ desc: |
    Configuration values are now correctly quoted to prevent injecting
    multiple further share entries.
 bug: [44054]
+erratum: 132
+announced: 2019-05-29
