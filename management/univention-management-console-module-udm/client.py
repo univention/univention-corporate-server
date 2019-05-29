@@ -2,56 +2,13 @@
 
 #import argparse
 #import json
-#import sys
 
+import sys
 import requests
+from getpass import getpass
 import http.client
 http.client._MAXHEADERS = 1000
 
-
-#uri = 'http://10.200.27.100/univention/udm/'
-#
-#class RequestData(object):
-#    def __init__(self, uri, username, password):
-#        self.uri = uri
-#        self.username = username
-#        self.password = password
-#
-#def _send_request(uri, verb, data):
-#    return requests.request(verb, uri, auth=('Administrator', 'univention'), headers={'Accept': 'application/json'})
-#
-#
-#def get(uri, data=None):
-#    return _send_request(uri, 'get', data)
-#
-#def post(uri, data=None):
-#    return _send_request(uri, 'post', data)
-#
-#def put(uri, data=None):
-#    return _send_request(uri, 'put', data)
-#
-#def delete(uri, data=None):
-#    return _send_request(uri, 'delete', data)
-#
-#def get_items(module):
-#    resp = get('{}/{}/'.format(uri, module))
-#    items = eval_response(resp)
-#    print_json(items)
-#
-#def print_json(obj):
-#    json.dump(obj, sys.stdout, indent=2, sort_keys=True)
-#    print()
-#
-#def get_item(module, dn):
-#    resp = get('{}/{}/{}'.format(uri, module, dn))
-#    item = eval_response(resp)
-#    print_json(item['properties'])
-#
-#get_items('users/user')
-##do_list('dns/forward_zone')
-#
-#get_item('dns/forward_zone', 'zoneName=school.dev,cn=dns,l=school,l=dev')
-#
 #def main():
 #    return
 #    description = '%(prog)s: command line interface for managing UCS'
@@ -109,43 +66,51 @@ http.client._MAXHEADERS = 1000
 #    move_parser.add_argument('--position', help='Move to position in tree')
 #
 #    #args = parser.parse_args()
-#
-#if __name__ == '__main__':
-#    request_data = RequestData('http://10.200.27.100/univention/udm/', 'Administrator', 'univention')
-#    modules = get_modules(request_data)
-#    for module in modules:
-#        print(module)
-#    users = get_entries(request_data, 'users/user')
-#    for user in users:
-#        print(user)
-#    user = get_entry(request_data, 'users/user', 'uid=krbtgt,cn=users,l=school,l=dev')
-#    print(user)
-#    user = create_entry(request_data, 'users/user')
-#    user = delete_entry(request_data, 'users/user', user)
-#    main()
 
+
+class UdmError(Exception):
+    pass
 
 def make_request(verb, uri, credentials, data=None):
     print('{} {}'.format(verb.upper(), uri))
-    return requests.request(verb, uri, auth=(credentials.username, credentials.password), json=data, headers={'Accept': 'application/json'})
+    if verb == 'get':
+        params = data
+        json = None
+    else:
+        params = None
+        json = data
+    return requests.request(verb, uri, auth=(credentials.username, credentials.password), params=params, json=json, headers={'Accept': 'application/json'})
 
 def eval_response(response):
     if response.status_code != 200:
-        raise ValueError(response.text)
+        msg = '{} {}: {}'.format(response.request.method, response.url, response.status_code)
+        try:
+            json = response.json()
+        except ValueError:
+            pass
+        else:
+            if isinstance(json, dict):
+                if 'error' in json:
+                    server_message = json['error'].get('message')
+                    # traceback = json['error'].get('traceback')
+                    if server_message:
+                        msg += '\n{}'.format(server_message)
+        raise UdmError(msg)
     return response.json()
 
 class UDM(object):
     @classmethod
-    def http(cls, uri, username, password, version):
-        return cls(uri, username, password, version)
+    def http(cls, uri, username, password):
+        return cls(uri, username, password)
 
-    def __init__(self, uri, username, password, version):
+    def __init__(self, uri, username, password):
         self.uri = uri
         self.username = username
         self.password = password
-        self.version = version
+        self._api_version = None
 
     def modules(self):
+        # TODO: cache - needs server side support
         resp = make_request('get', self.uri, credentials=self)
         prefix_modules = eval_response(resp)['_links']['/udm/relation/object-modules']
         for prefix_module in prefix_modules:
@@ -154,13 +119,21 @@ class UDM(object):
             for module_info in module_infos:
                 yield Module(self, module_info['href'], module_info['name'], module_info['title'])
 
+    def version(self, api_version):
+        self._api_version = api_version
+        return self
+
+    def obj_by_dn(self, dn):
+        # TODO: Needed?
+        raise NotImplementedError()
+
     def get(self, name):
         for module in self.modules():
             if module.name == name:
                 return module
 
     def __repr__(self):
-        return 'UDM(uri={}, username={}, password=****, version={})'.format(self.uri, self.username, self.version)
+        return 'UDM(uri={}, username={}, password=****, version={})'.format(self.uri, self.username, self._api_version)
 
 class Module(object):
     def __init__(self, udm, uri, name, title):
@@ -170,22 +143,36 @@ class Module(object):
         self.name = name
         self.title = title
 
-    def search(self):
-        resp = make_request('get', self.uri, credentials=self)
-        entries = eval_response(resp)['entries']
-        for entry in entries:
-            yield ShallowObject(self, entry['dn'], entry['uri'])
-
-    def get(self, dn):
-        # TODO: really wanted?
-        obj = ShallowObject(self, dn, '{}/{}'.format(self.uri, dn))
-        return obj.open()
+    def __repr__(self):
+        return 'Module(uri={}, name={})'.format(self.uri, self.name)
 
     def new(self, superordinate=None):
         return Object(self, None, {}, [], {}, None, superordinate, None)
 
-    def __repr__(self):
-        return 'Module(uri={}, name={})'.format(self.uri, self.name)
+    def get(self, dn):
+        # TODO: really wanted? there is some "uri knowledge" here.
+        # but then... we should support getting a dn, right?
+        obj = ShallowObject(self, dn, '{}/{}'.format(self.uri, dn))
+        return obj.open()
+
+    def get_by_id(self, dn):
+        # TODO: Needed?
+        raise NotImplementedError()
+
+    def search(self, filter=None, position=None, scope='sub', hidden=False):
+        # TODO: How to "fields"?
+        data = {}
+        if filter:
+            for prop, val in filter.items():
+                data['property'] = prop
+                data['propertyvalue'] = val
+        data['position'] = position
+        data['scope'] = scope
+        data['hidden'] = hidden
+        resp = make_request('get', self.uri, credentials=self, data=data)
+        entries = eval_response(resp)['entries']
+        for entry in entries:
+            yield ShallowObject(self, entry['dn'], entry['uri'])
 
 class ShallowObject(object):
     def __init__(self, module, dn, uri):
@@ -212,6 +199,13 @@ class Object(object):
         self.module = module
         self.uri = uri
 
+    def __repr__(self):
+        return 'Object(module={}, dn={}, uri={})'.format(self.module.name, self.dn, self.uri)
+
+    def reload(self):
+        obj = self.module.get(self.dn)
+        self._copy_from_obj(obj)
+
     def save(self):
         if self.dn:
             return self._modify()
@@ -229,7 +223,6 @@ class Object(object):
                 'position': self.position,
                 'superordinate': self.superordinate,
                 }
-        print(data)
         resp = make_request('put', self.uri, credentials=self.module, data=data)
         entry = eval_response(resp)
         self.dn = entry['dn']
@@ -245,10 +238,6 @@ class Object(object):
         self.module = obj.module
         self.uri = obj.uri
 
-    def reload(self):
-        obj = self.module.get(self.dn)
-        self._copy_from_obj(obj)
-
     def _create(self):
         data = {
                 'properties': self.props,
@@ -257,57 +246,33 @@ class Object(object):
                 'position': self.position,
                 'superordinate': self.superordinate,
                 }
-        print(data)
         resp = make_request('post', self.module.uri, credentials=self.module, data=data)
-        uri = resp.headers['Location']
-        obj = ShallowObject(self.module, None, uri).open()
-        self._copy_from_obj(obj)
-
-    def __repr__(self):
-        return 'Object(module={}, dn={}, uri={})'.format(self.module.name, self.dn, self.uri)
-
-def get_modules(uri, username, password):
-    udm = UDM.http(uri, username, password, version=1)
-    return list(udm.modules())
-
-def get_entries(uri, username, password, module_name):
-    udm = UDM.http(uri, username, password, version=1)
-    module = udm.get(module_name)
-    return module.search()
-
-def get_entry(uri, username, password, module_name, dn):
-    udm = UDM.http(uri, username, password, version=1)
-    module = udm.get(module_name)
-    return module.get(dn)
-
-def update_entry(entry, attrs):
-    entry.props.update(attrs)
-    return entry.save()
+        if resp.status_code == 200:
+            uri = resp.headers['Location']
+            obj = ShallowObject(self.module, None, uri).open()
+            self._copy_from_obj(obj)
+        else:
+            eval_response(resp)
 
 if __name__ == '__main__':
-    uri = 'http://10.200.27.100/univention/udm/'
-    username = 'Administrator'
-    password = 'univention'
-    udm = UDM.http(uri, username, password, version=1)
-    #obj = udm.get('users/user').get('uid=Administrator,cn=users,l=school,l=dev')
-    #print(obj.props['displayName'])
-    #obj.props['displayName'] = 'Admin Guy'
-    #obj.save()
-    #print(obj.props['displayName'])
-    folder = udm.get('mail/domain')
-    for f in folder.search():
-        print(f)
-    obj = folder.new()
-    obj.props['name'] = 'example.com'
-    #obj.save()
-    #for f in folder.search():
-    #    print(f)
-
-    #obj = get_entry(uri, username, password, 'users/user', 'uid=Administrator,cn=users,l=school,l=dev')
-    #print(obj.props['description'])
-    #obj.props['description'] = 'Admin Guy'
-    #for module in get_modules(uri, username, password):
-    #    print(module)
-    #for entry in get_entries(uri, username, password, 'users/user'):
-    #    print(entry)
-    #print(get_entry(uri, username, password, 'users/user', 'uid=Administrator,cn=users,l=school,l=dev'))
+    if sys.argv[1:]:
+        username = input('Username: ')
+        password = getpass()
+        uri = sys.argv[1]
+        module = sys.argv[2]
+        action = sys.argv[3]
+    else:
+        username = 'Administrator'
+        password = 'univention'
+        uri = 'http://10.200.27.100/univention/udm/'
+        module = 'mail/domain'
+        action = 'search'
+    udm = UDM.http(uri, username, password).version(1)
+    module = udm.get(module)
+    print('Found {}'.format(module))
+    print('Now performing {}'.format(action))
+    if action == 'search':
+        for entry in module.search():
+            print(entry)
+    else:
+        print('Not supported...')
