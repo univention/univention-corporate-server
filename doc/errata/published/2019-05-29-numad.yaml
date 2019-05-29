@@ -11,3 +11,5 @@ bug: [49548]
 ignore:
   - version.scope
 maintained: true
+erratum: 522
+announced: 2019-05-29
