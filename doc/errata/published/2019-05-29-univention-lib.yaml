@@ -16,3 +16,5 @@ desc: |
    univention.lib.listenerSharePath.
  * Python3 compatibility for univention.lib.admember has been enhanced.
 bug: [49136,41780,49500,44054,49176]
+erratum: 125
+announced: 2019-05-29
