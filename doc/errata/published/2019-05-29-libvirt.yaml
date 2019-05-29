@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Re-compile libvirt with NUMA support enabled.
 bug: [49548]
+erratum: 521
+announced: 2019-05-29
