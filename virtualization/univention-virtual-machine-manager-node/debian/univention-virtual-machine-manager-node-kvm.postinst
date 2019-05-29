@@ -72,4 +72,15 @@ ucr set security/packetfilter/package/univention-virtual-machine-manager-node-kv
 uinst=/usr/lib/univention-install/56univention-virtual-machine-manager-node-kvm.uinst
 [ -e "$uinst" ] && rm "$uinst"
 
+if [ "$1" = configure ] && dpkg --compare-versions "${2:-}" lt 5.0.0-8
+then
+	if [ -d /run/systemd/system ]
+	then
+		systemctl --system daemon-reload >/dev/null || true
+		! systemctl is-active -q libvirtd || deb-systemd-invoke restart libvirtd.service >/dev/null || true
+	else
+		invoke-rc.d libvirtd restart
+	fi
+fi
+
 exit 0
