@@ -11,3 +11,5 @@ desc: |
  * Unify pure-python version `debug2.py` again with C-version `debug.py`.
  * Deprecate `function` class in favor of `trace` decorator.
 bug: [49130, 46100, 43422]
+erratum: 120
+announced: 2019-05-29
