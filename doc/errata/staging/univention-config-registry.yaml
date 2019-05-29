@@ -5,6 +5,6 @@ scope: ucs_4.4-0-errata4.4-0
 src: univention-config-registry
 fix: 14.0.0-4A~4.4.0.201905212121
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The detection of running services has been enhanced.
 bug: [49176]

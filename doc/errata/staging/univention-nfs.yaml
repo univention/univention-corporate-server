@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-0
 src: univention-nfs
 fix: 11.0.1-2A~4.4.0.201905201646
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * A newline injection vulnerability has been fixed which allowed to add
    further entries to /etc/exports.
 bug: [44054]

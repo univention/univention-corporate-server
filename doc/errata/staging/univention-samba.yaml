@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-0
 src: univention-samba
 fix: 13.0.0-5A~4.4.0.201905211222
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * Several vulnerabilities in the listener for shares have been fixed:
    The name of shares are validated.
    The blacklist for share pathes is now evaluated correctly.
