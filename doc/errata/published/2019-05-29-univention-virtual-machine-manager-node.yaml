@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Use interleaved memory policy on NUMA architectures by default.
 bug: [49548]
+erratum: 523
+announced: 2019-05-29
