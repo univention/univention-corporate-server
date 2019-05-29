@@ -5,7 +5,7 @@ scope: ucs_4.3-0-errata4.3-4
 src: univention-samba4
 fix: 7.0.3-2A~4.3.0.201905151813
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * Run samba-tool dbcheck --reindex on update to Samba 4.10
  * Call samba_dnsupdate with --use-samba-tool instead of --local
    if samba4/join/dnsupdate is active (for UCS@school with Samba 4.10)
