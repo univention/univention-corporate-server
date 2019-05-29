@@ -9,3 +9,5 @@ desc: |
  * LDAP ACL ordering on DC slaves allowed regular users access
    to private information. Reordering of ACLs fixes this issue.
 bug: [48608]
+erratum: 123
+announced: 2019-05-29
