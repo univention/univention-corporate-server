@@ -3,7 +3,7 @@ release: "4.3"
 version: [4]
 scope: ucs_4.3-0-errata4.3-4
 src: univention-virtual-machine-manager-node
-fix: 6.0.0-3A~4.3.0.201905281729
+fix: 6.0.0-4A~4.3.0.201905291312
 desc: |
  This update addresses the following issue:
  * Use interleaved memory policy on NUMA architectures by default.
