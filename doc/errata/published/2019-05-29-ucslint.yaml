@@ -9,3 +9,5 @@ desc: |
  * Also ignore temporary directory used by dh_python2.
  * Fixed applying debian/ucslint.overrides when used with paths.
 bug: [42480, 49520]
+erratum: 118
+announced: 2019-05-29
