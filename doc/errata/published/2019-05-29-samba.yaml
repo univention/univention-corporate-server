@@ -9,3 +9,5 @@ desc: |
  * Update to Samba 4.10.3
  * Re-add "auth methods" option removed from upstream Samba sources
 bug: [49479, 47314]
+erratum: 516
+announced: 2019-05-29
