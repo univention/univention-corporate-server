@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The detection of a running univention-s4-connector has been enhanced.
 bug: [49176]
+erratum: 126
+announced: 2019-05-29
