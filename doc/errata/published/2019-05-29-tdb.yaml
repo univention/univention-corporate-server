@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * New tdb library version required for update to Samba 4.10.3
 bug: [49479]
+erratum: 513
+announced: 2019-05-29
