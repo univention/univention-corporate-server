@@ -7,7 +7,7 @@ fix: 0.5+20150602-5
 desc: |
  This update addresses the following issue:
  * Move to maintained as a dependency of libvirt.
-bug: [49548]
+bug: [49574]
 ignore:
   - release+scope.consistent
   - version.scope
