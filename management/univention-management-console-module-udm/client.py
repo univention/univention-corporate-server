@@ -150,10 +150,8 @@ class Module(object):
         return Object(self, None, {}, [], {}, None, superordinate, None)
 
     def get(self, dn):
-        # TODO: really wanted? there is some "uri knowledge" here.
-        # but then... we should support getting a dn, right?
-        obj = ShallowObject(self, dn, '{}/{}'.format(self.uri, dn))
-        return obj.open()
+        for obj in self.search(position=dn, scope='base'):
+            return obj.open()
 
     def get_by_id(self, dn):
         # TODO: Needed?
