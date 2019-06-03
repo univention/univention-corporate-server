@@ -4,3 +4,4 @@ jenkins_run_sequentially: true
 jenkins_default_kvm_server: utby.knut.univention.de
 jenkins_recipients: botner@univention.de,damrose@univention.de
 jenkins_bycron: H 0 * * *
+jenkins_default_view: true
