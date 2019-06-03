@@ -1,0 +1,17 @@
+product: ucs
+release: "4.3"
+version: [4]
+scope: ucs_4.3-0-errata4.3-4
+src: openjdk-8
+fix: 8u212-b03-2~deb9u1
+desc: |
+ This update addresses the following issues:
+ * Slow conversion of BigDecimal to long (CVE-2019-2602)
+ * Incorrect skeleton selection in RMI registry server-side dispatch handling
+   (CVE-2019-2684)
+ * Font layout engine out of bounds access setCurrGlyphID() (CVE-2019-2698)
+bug: [49585]
+cve:
+- CVE-2019-2602
+- CVE-2019-2684
+- CVE-2019-2698
