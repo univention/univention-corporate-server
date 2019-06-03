@@ -1,0 +1,52 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: qemu
+fix: 1:2.8+dfsg-6+deb9u6A~4.4.0.201906031001
+desc: |
+ This update addresses the following issues:
+
+ * 1:2.8+dfsg-6+deb9u6 (Wed, 29 May 2019 14:39:09 +0300) [ Moritz Mühlenhoff
+   <jmm@debian.org> ] *
+   slirp-correct-size-computation-concatenating-mbuf-CVE-2018-11806.patch
+ , CVE-2018-11806) *
+ qga-check-bytes-count-read-by-guest-file-read-CVE-2018-12617.patch
+ , CVE-2018-12617) * usb-mtp-use-O_NOFOLLOW-and-O_CLOEXEC-CVE-2018-16872.patch
+ , CVE-2018-16872) *
+ rtl8139-fix-possible-out-of-bound-access-CVE-2018-17958.patch
+ , CVE-2018-17958) *
+ lsi53c895a-check-message-length-value-is-valid-CVE-2018-18849.patch
+ , CVE-2018-18849) *
+ ppc-pnv-check-size-before-data-buffer-access-CVE-2018-18954.patch
+ , CVE-2018-18954) * 9p-write-lock-path-in-v9fs-co_open2.patch
+ 9p-take-write-lock-on-fid-path-updates-CVE-2018-19364.patch
+ , CVE-2018-19364) * 9p-fix-QEMU-crash-when-renaming-files-CVE-2018-19489.patch
+ , CVE-2018-19489) * i2c-ddc-fix-oob-read-CVE-2019-3812.patch
+ , CVE-2019-3812) *
+ slirp-check-data-length-while-emulating-ident-function-CVE-2019-6778.patch
+ , CVE-2019-6778) *
+ slirp-check-sscanf-result-when-emulating-ident-CVE-2019-9824.patch (Closes:
+ CVE-2019-9824) [ Michael Tokarev ] * enable-md-clear.patch define new CPUID for
+ MDS (Closes: CVE-2018-12126, CVE-2018-12127, CVE-2018-12130, CVE-2019-11091) *
+ qxl-check-release-info-object-CVE-2019-12155.patch fixes null-pointer deref in
+ qxl cleanup code
+ , CVE-2019-12155)
+bug: [49582]
+cve:
+- CVE-2018-11806
+- CVE-2018-12617
+- CVE-2018-16872
+- CVE-2018-17958
+- CVE-2018-18849
+- CVE-2018-18954
+- CVE-2018-19364
+- CVE-2018-19489
+- CVE-2019-3812
+- CVE-2019-6778
+- CVE-2019-9824
+- CVE-2018-12126
+- CVE-2018-12127
+- CVE-2018-12130
+- CVE-2019-11091
+- CVE-2019-12155
