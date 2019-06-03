@@ -1,3 +1,9 @@
+univention-config-registry (14.0.0-5) unstable; urgency=medium
+
+  * Bug #49129: migrate package to dh_python2
+
+ -- Florian Best <best@univention.de>  Mon, 03 Jun 2019 16:37:12 +0200
+
 univention-config-registry (14.0.0-4) unstable; urgency=medium
 
   * Bug #49176: Enhance detection of services
