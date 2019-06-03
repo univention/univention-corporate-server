@@ -75,8 +75,8 @@ def run_filter(template, directory, srcfiles=set(), opts=dict()):
 	while True:
 		i = VARIABLE_TOKEN.finditer(template)
 		try:
-			start = i.next()
-			end = i.next()
+			start = next(i)
+			end = next(i)
 			name = template[start.end():end.start()]
 
 			if name in directory:
@@ -86,8 +86,7 @@ def run_filter(template, directory, srcfiles=set(), opts=dict()):
 				if match:
 					mode, prefix = match.groups()
 					if mode == "UCRWARNING_ASCII":
-						value = warning_string(prefix, srcfiles=srcfiles,
-							enforce_ascii=True)
+						value = warning_string(prefix, srcfiles=srcfiles, enforce_ascii=True)
 					else:
 						value = warning_string(prefix, srcfiles=srcfiles)
 				else:
@@ -102,10 +101,11 @@ def run_filter(template, directory, srcfiles=set(), opts=dict()):
 	while True:
 		i = EXECUTE_TOKEN.finditer(template)
 		try:
-			start = i.next()
-			end = i.next()
+			start = next(i)
+			end = next(i)
 
-			proc = subprocess.Popen((sys.executable,),
+			proc = subprocess.Popen(
+				(sys.executable,),
 				stdin=subprocess.PIPE, stdout=subprocess.PIPE,
 				close_fds=True)
 			value = proc.communicate('''\
@@ -138,8 +138,7 @@ def run_script(script, arg, changes):
 			diff.append('%s@%%@%s@%%@%s\n' % (key, value[0], value[1]))
 
 	cmd = script + " " + arg
-	proc = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE,
-			close_fds=True)
+	proc = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE, close_fds=True)
 	proc.communicate(''.join(diff))
 
 
@@ -248,8 +247,7 @@ class ConfigHandlerDiverting(ConfigHandler):
 			# tell possibly wrapped dpkg-divert to really do the work
 			env = dict(os.environ)
 			env['DPKG_MAINTSCRIPT_PACKAGE'] = 'univention-config'
-			return subprocess.call(cmd, stdin=null, stdout=null, stderr=null,
-				env=env)
+			return subprocess.call(cmd, stdin=null, stdout=null, stderr=null, env=env)
 		finally:
 			null.close()
 
@@ -260,9 +258,7 @@ class ConfigHandlerDiverting(ConfigHandler):
 	def install_divert(self):
 		"""Prepare file for diversion."""
 		deb = '%s.debian' % self.to_file
-		self._call_silent('dpkg-divert', '--quiet', '--rename', '--local',
-			'--divert', deb,
-			'--add', self.to_file)
+		self._call_silent('dpkg-divert', '--quiet', '--rename', '--local', '--divert', deb, '--add', self.to_file)
 		# Make sure a valid file still exists
 		if os.path.exists(deb) and not os.path.exists(self.to_file):
 			# Don't use shutil.copy2() which looses file ownership (Bug #22596)
@@ -276,9 +272,7 @@ class ConfigHandlerDiverting(ConfigHandler):
 		except EnvironmentError:
 			pass
 		deb = '%s.debian' % self.to_file
-		self._call_silent('dpkg-divert', '--quiet', '--rename', '--local',
-			'--divert', deb,
-			'--remove', self.to_file)
+		self._call_silent('dpkg-divert', '--quiet', '--rename', '--local', '--divert', deb, '--remove', self.to_file)
 		return True
 
 	def _temp_file_name(self):
@@ -349,8 +343,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 					from_fp = open(from_file, 'r')
 				except EnvironmentError:
 					continue
-				to_fp.write(run_filter(from_fp.read(), ucr,
-					srcfiles=self.from_files, opts=filter_opts))
+				to_fp.write(run_filter(from_fp.read(), ucr, srcfiles=self.from_files, opts=filter_opts))
 
 			self._set_perm(stat, tmp_to_file)
 			to_fp.close()
@@ -427,8 +420,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 
 			filter_opts = {}
 
-			to_fp.write(run_filter(from_fp.read(), ucr,
-				srcfiles=[self.from_file], opts=filter_opts))
+			to_fp.write(run_filter(from_fp.read(), ucr, srcfiles=[self.from_file], opts=filter_opts))
 
 			self._set_perm(stat, tmp_to_file)
 			from_fp.close()
@@ -574,8 +566,7 @@ class ConfigHandlers:
 				if version <= 1:
 					# version <= 1: _handlers[multifile] -> [handlers]
 					# version >= 2: _handlers[multifile] -> set([handlers])
-					self._handlers = dict(((k, set(v)) for k, v in
-						self._handlers.items()))
+					self._handlers = dict(((k, set(v)) for k, v in self._handlers.items()))
 					# version <= 1: _files UNUSED
 					_files = pickler.load()
 				self._subfiles = pickler.load()
@@ -621,8 +612,7 @@ class ConfigHandlers:
 			try:
 				handler.user = getpwnam(user).pw_uid
 			except LookupError:
-				print(('W: failed to convert the username ' +
-					'%s to the uid' % (user,)), file=sys.stderr)
+				print(('W: failed to convert the username %s to the uid' % (user,)), file=sys.stderr)
 
 		try:
 			group = entry['Group'][0]
@@ -632,8 +622,7 @@ class ConfigHandlers:
 			try:
 				handler.group = getgrnam(group).gr_gid
 			except LookupError:
-				print(('W: failed to convert the groupname ' +
-					'%s to the gid' % (group,)), file=sys.stderr)
+				print(('W: failed to convert the groupname %s to the gid' % (group,)), file=sys.stderr)
 
 		try:
 			mode = entry['Mode'][0]
@@ -760,8 +749,7 @@ class ConfigHandlers:
 
 	def update_divert(self, handlers):
 		"""Synchronize diversions with handlers."""
-		wanted = dict([(h.to_file, h) for h in handlers if
-			isinstance(h, ConfigHandlerDiverting) and h.need_divert()])
+		wanted = dict([(h.to_file, h) for h in handlers if isinstance(h, ConfigHandlerDiverting) and h.need_divert()])
 		to_remove = set()
 		# Scan for diversions done by UCR
 		div_file = open('/var/lib/dpkg/diversions', 'r')
@@ -769,9 +757,9 @@ class ConfigHandlers:
 		try:
 			try:
 				while True:
-					path_from = div_file.next().rstrip()
-					path_to = div_file.next().rstrip()
-					diversion = div_file.next().rstrip()
+					path_from = next(div_file).rstrip()
+					path_to = next(div_file).rstrip()
+					diversion = next(div_file).rstrip()
 					if path_from + '.debian' != path_to:
 						continue
 					if ':' != diversion:  # local diversion
@@ -859,8 +847,7 @@ class ConfigHandlers:
 			else:
 				continue
 			if not handler:  # Bug #17913
-				print(("Skipping internal error: no handler " +
-					"for %r in %s" % (section, package)), file=sys.stderr)
+				print(("Skipping internal error: no handler for %r in %s" % (section, package)), file=sys.stderr)
 				continue
 			if handler.uninstall_divert():
 				obsolete_handlers.add(handler)
