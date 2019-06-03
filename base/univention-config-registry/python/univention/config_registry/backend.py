@@ -253,7 +253,7 @@ class ConfigRegistry(MutableMapping):
 		"""
 		registry = self._registry[self.scope]
 		changed = {}
-		for key, value in changes.iteritems():
+		for key, value in changes.items():
 			old_value = registry.get(key, None)
 			if value is None:
 				try:

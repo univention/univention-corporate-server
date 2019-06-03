@@ -192,7 +192,7 @@ def ucr_update(ucr, changes):
 
 
 def _run_changed(ucr, changed, msg=None):
-	for key, (old_value, new_value) in changed.iteritems():
+	for key, (old_value, new_value) in changed.items():
 		replog(ucr, key, old_value, new_value)
 		if msg:
 			scope, _value = ucr.get(key, (0, None), getscope=True)
@@ -201,7 +201,7 @@ def _run_changed(ucr, changed, msg=None):
 
 	handlers = ConfigHandlers()
 	handlers.load()
-	handlers(changed.keys(), (ucr, changed))
+	handlers(list(changed.keys()), (ucr, changed))
 
 
 def _ucr_from_opts(opts):

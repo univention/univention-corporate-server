@@ -107,7 +107,7 @@ def run_filter(template, directory, srcfiles=set(), opts=dict()):
 			proc = subprocess.Popen(
 				(sys.executable,),
 				stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-				close_fds=True)
+				close_fds=True, universal_newlines=True)
 			value = proc.communicate('''\
 # -*- coding: utf-8 -*-
 import univention.config_registry
@@ -555,7 +555,7 @@ class ConfigHandlers:
 	def load(self):
 		"""Load cached .info data or force update."""
 		try:
-			cache_file = open(ConfigHandlers.CACHE_FILE, 'r')
+			cache_file = open(ConfigHandlers.CACHE_FILE, 'rb')
 			try:
 				version = self._get_cache_version(cache_file)
 				chv = ConfigHandlers
@@ -784,8 +784,8 @@ class ConfigHandlers:
 	def _save_cache(self):
 		"""Write cache file."""
 		try:
-			with open(ConfigHandlers.CACHE_FILE, 'w') as cache_file:
-				cache_file.write(ConfigHandlers.VERSION_NOTICE)
+			with open(ConfigHandlers.CACHE_FILE, 'wb') as cache_file:
+				cache_file.write(ConfigHandlers.VERSION_NOTICE.encode('utf-8'))
 				pickler = pickle.Pickler(cache_file)
 				pickler.dump(self._handlers)
 				pickler.dump(self._subfiles)
