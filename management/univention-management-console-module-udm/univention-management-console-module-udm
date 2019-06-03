@@ -545,8 +545,8 @@ class ContainerQueryBase(Ressource):
 		raise tornado.gen.Return(result)
 
 
-class Navigation(ContainerQueryBase):
-	"""GET udm/(dns|dhcp|)/navigation/ (the tree content of navigation/DNS/DHCP)"""
+class Tree(ContainerQueryBase):
+	"""GET udm/(dns/dns|dhcp/dhcp|)/tree/ (the tree content of navigation/DNS/DHCP)"""
 
 	@tornado.gen.coroutine
 	def get(self, object_type):
@@ -1396,10 +1396,10 @@ class Server(object):
 			(r"/udm/license/check", LicenseCheck),
 			(r"/udm/license/request", LicenseRequest),
 			(r"/udm/navigation/", ObjectTypesNavigation),
-			(r"/udm/%s/tree" % (object_type,), Navigation),
+			(r"/udm/%s/tree" % (object_type,), Tree),
 			(r"/udm/%s/properties" % (object_type,), Properties),
 			(r"/udm/%s/" % (module_type,), ObjectTypes),
-			(r"/udm/(navigation)/tree", Navigation),
+			(r"/udm/(navigation)/tree", Tree),
 			(r"/udm/(%s|navigation)/move-destinations/" % (object_type,), MoveDestinations),
 			(r"/udm/%s/options" % (object_type,), Options),
 			(r"/udm/%s/templates" % (object_type,), Templates),
