@@ -42,9 +42,9 @@ Depends: ${misc:Depends}, ${python:Depends},
  ldap-utils,
  python-debian,
 Replaces: univention-config-registry (<< 7.0.9~),
- shell-univention-lib (<< 8.0.0-10),
+ shell-univention-lib (<< 8.0.1-21),
 Breaks:
- shell-univention-lib (<< 8.0.0-10),
+ shell-univention-lib (<< 8.0.1-21),
 Description: UCS - configuration manager
  This package contains the univention-config configuration
  manager, primarily used by the UCS base configuration.
