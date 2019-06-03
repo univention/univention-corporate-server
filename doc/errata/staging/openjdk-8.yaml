@@ -6,11 +6,10 @@ src: openjdk-8
 fix: 8u212-b03-2~deb9u1
 desc: |
  This update addresses the following issues:
- * Slow conversion of BigDecimal to long (Libraries, 8211936) (CVE-2019-2602)
+ * Slow conversion of BigDecimal to long (CVE-2019-2602)
  * Incorrect skeleton selection in RMI registry server-side dispatch handling
-   (RMI, 8218453) (CVE-2019-2684)
- * Font layout engine out of bounds access setCurrGlyphID() (2D, 8219022)
-   (CVE-2019-2698)
+   (CVE-2019-2684)
+ * Font layout engine out of bounds access setCurrGlyphID() (CVE-2019-2698)
 bug: [49583]
 cve:
 - CVE-2019-2602
