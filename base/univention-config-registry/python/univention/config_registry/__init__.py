@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 """Univention Configuration Registry module."""
+from __future__ import print_function
 #  main configuration registry classes
 #
 # Copyright 2004-2019 Univention GmbH
@@ -50,9 +51,9 @@ if __name__ == '__main__':
 	try:
 		main(sys.argv[1:])
 	except StrictModeException as ex2:
-		print >> sys.stderr, ('E: UCR is running in strict mode ' +
-			'and thus cannot accept the given input:')
-		print >> sys.stderr, ex2
+		print(('E: UCR is running in strict mode ' +
+			'and thus cannot accept the given input:'), file=sys.stderr)
+		print(ex2, file=sys.stderr)
 		sys.exit(1)
 
 # vim:set sw=4 ts=4 noet:

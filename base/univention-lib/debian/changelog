@@ -1,3 +1,9 @@
+univention-lib (8.0.1-21) unstable; urgency=medium
+
+  * Bug #49129: fix usage of UCR
+
+ -- Florian Best <best@univention.de>  Mon, 03 Jun 2019 16:37:28 +0200
+
 univention-lib (8.0.1-20) unstable; urgency=low
 
   * Bug #49176: Fix pysupport during update

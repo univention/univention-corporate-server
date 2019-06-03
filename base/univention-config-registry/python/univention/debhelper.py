@@ -2,6 +2,7 @@
 #
 # Univention Configuration Registry
 """Debhelper compatible routines."""
+from __future__ import print_function
 #
 # Copyright 2010-2019 Univention GmbH
 #
@@ -42,7 +43,7 @@ def doIt(*argv):
 	0
 	"""
 	if os.environ.get('DH_VERBOSE', False):
-		print '\t%s' % ' '.join(argv)
+		print('\t%s' % ' '.join(argv))
 	return subprocess.call(argv)
 
 

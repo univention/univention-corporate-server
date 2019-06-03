@@ -31,22 +31,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import locale
 import os
 import sys
 
-try:
-	import univention.config_registry as ub
-except ImportError as e:
-	# Workaround for UCS 3.0:
-	#   While updating to UCS 3.0 the normal UCR import may fail. For this
-	#   case the pyshared file will be imported directly
-	sys.path.append('/usr/share/pyshared')
-	import univention.config_registry as ub
+import six
+import univention.config_registry as ub
 
 
 def convertToUtf8(arguments):
 	'Try to decode as UTF-8, then try to decode with locale encoding. If decoded successfully encode with UTF-8.'
+	if six.PY3:
+		return arguments  # Python 3, we already have "unicode" objects
 	localeencoding = locale.getpreferredencoding()
 	new_arguments = []
 	for argument in arguments:
@@ -63,10 +60,10 @@ def convertToUtf8(arguments):
 
 if __name__ == '__main__' and not os.path.exists('/etc/univention/disable_baseconfig') and not os.path.exists('/etc/univention/disable_config_registry'):
 	if os.path.basename(sys.argv[0]) == 'univention-baseconfig':
-		print >>sys.stderr, 'WARNING: univention-baseconfig is deprecated by univention-config-registry.'
+		print('WARNING: univention-baseconfig is deprecated by univention-config-registry.', file=sys.stderr)
 	try:
 		ub.main(convertToUtf8(sys.argv[1:]))
 	except ub.StrictModeException as e:
-		print 'Error: UCR is running in strict mode and thus cannot accept the given input:'
-		print e
+		print('Error: UCR is running in strict mode and thus cannot accept the given input:')
+		print(e)
 		sys.exit(1)

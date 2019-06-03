@@ -1,0 +1,5 @@
+python/univention/config_registry_info.py usr/lib/python3/dist-packages/univention/
+python/univention/info_tools.py usr/lib/python3/dist-packages/univention/
+python/univention/service_info.py usr/lib/python3/dist-packages/univention/
+python/univention/debhelper.py usr/lib/python3/dist-packages/univention/
+python/univention/config_registry/ usr/lib/python3/dist-packages/univention/

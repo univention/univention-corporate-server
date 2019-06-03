@@ -4,6 +4,7 @@
 """
 List modified and not updated UCR templates.
 """
+from __future__ import print_function
 #
 # Copyright 2011-2019 Univention GmbH
 #
@@ -53,12 +54,12 @@ def main():
 	if opt.md5:
 		modified |= check_md5(opt.verbose)
 	if modified:
-		print >> sys.stderr, dedent("""\
+		print(dedent("""\
 			WARNING: The following UCR files are modified locally.
 			Updated versions will be named FILENAME.dpkg-*.
 			The files should be checked for differences.
-			""")
-		print '\n'.join(sorted(modified))
+			"""), file=sys.stderr)
+		print('\n'.join(sorted(modified)))
 		return 1
 	return 0
 
@@ -91,7 +92,7 @@ def check_find(verbose=False):
 				if filename.endswith(suffix):
 					filepath = os.path.join(dirpath, filename)
 					if verbose:
-						print >> sys.stderr, filepath
+						print(filepath, file=sys.stderr)
 					basepath = filepath[:-len(suffix)]
 					if not os.path.exists(basepath):
 						continue
@@ -109,7 +110,7 @@ def check_md5(verbose=False):
 
 			current = md5sum(filepath)
 			if verbose:
-				print >> sys.stderr, "%s %s %s" % (filepath, expected, current)
+				print("%s %s %s" % (filepath, expected, current), file=sys.stderr)
 			if expected == current:
 				original.add(filepath)
 			elif current is None:
@@ -118,7 +119,7 @@ def check_md5(verbose=False):
 				modified.add(filepath)
 		return modified
 	except IOError as ex:
-		print >> sys.stderr, ex
+		print(ex, file=sys.stderr)
 		sys.exit(2)
 
 

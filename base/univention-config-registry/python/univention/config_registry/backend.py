@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 """Univention Configuration Registry backend for data storage."""
+from __future__ import print_function
 #  main configuration registry classes
 #
 # Copyright 2004-2019 Univention GmbH
@@ -51,9 +52,8 @@ class StrictModeException(Exception):
 
 def exception_occured(out=sys.stderr):
 	"""Print exception message and exit."""
-	print >> out, 'E: your request could not be fulfilled'
-	print >> out, \
-		'try `univention-config-registry --help` for more information'
+	print('E: your request could not be fulfilled', file=out)
+	print('try `univention-config-registry --help` for more information', file=out)
 	sys.exit(1)
 
 
@@ -283,7 +283,7 @@ class _ConfigRegistry(dict):
 
 	def __init__(self, filename=None):
 		dict.__init__(self)
-		if file:
+		if filename:
 			self.file = filename
 		else:
 			self.file = '/etc/univention/base.conf'
@@ -340,7 +340,7 @@ class _ConfigRegistry(dict):
 		except EnvironmentError as ex:
 			if ex.errno != errno.EEXIST:
 				msg = "E: file '%s' does not exist and could not be created"
-				print >> sys.stderr, msg % (self.file,)
+				print(msg % (self.file,), file=sys.stderr)
 				exception_occured()
 
 	def __save_file(self, filename):

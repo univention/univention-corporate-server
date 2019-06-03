@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 """Univention Configuration Registry command line implementation."""
+from __future__ import print_function
 #  main configuration registry classes
 #
 # Copyright 2004-2019 Univention GmbH
@@ -113,8 +114,8 @@ def replog(ucr, var, old_value, value=None):
 			logfile.write(log)
 			logfile.close()
 		except EnvironmentError as ex:
-			print >> sys.stderr, ("E: exception occurred while writing to " +
-				"replication log: %s" % (ex,))
+			print(("E: exception occurred while writing to " +
+				"replication log: %s" % (ex,)), file=sys.stderr)
 			exception_occured()
 
 
@@ -130,9 +131,8 @@ def handler_set(args, opts=dict(), quiet=False):
 			sep_set = arg.find('=')  # set
 			sep_def = arg.find('?')  # set if not already set
 			if sep_set == -1 and sep_def == -1:
-				print >> sys.stderr, \
-					"W: Missing value for config registry variable '%s'" % \
-					(arg,)
+				print("W: Missing value for config registry variable '%s'" % \
+					(arg,), file=sys.stderr)
 				continue
 			else:
 				if sep_set > 0 and sep_def == -1:
@@ -147,16 +147,16 @@ def handler_set(args, opts=dict(), quiet=False):
 			if (not key_exists or sep == sep_set) and validate_key(key):
 				if not quiet:
 					if key_exists:
-						print 'Setting %s' % key
+						print('Setting %s' % key)
 					else:
-						print 'Create %s' % key
+						print('Create %s' % key)
 				changes[key] = value
 			else:
 				if not quiet:
 					if key_exists:
-						print 'Not updating %s' % key
+						print('Not updating %s' % key)
 					else:
-						print 'Not setting %s' % key
+						print('Not setting %s' % key)
 		changed = ucr.update(changes)
 
 	_run_changed(ucr, changed,
@@ -172,11 +172,11 @@ def handler_unset(args, opts=dict()):
 		changes = {}
 		for arg in args:
 			if ucr.has_key(arg, write_registry_only=True):
-				print 'Unsetting %s' % arg
+				print('Unsetting %s' % arg)
 				changes[arg] = None
 			else:
 				msg = "W: The config registry variable '%s' does not exist"
-				print >> sys.stderr, msg % (arg,)
+				print(msg % (arg,), file=sys.stderr)
 		changed = ucr.update(changes)
 
 	_run_changed(ucr, changed, 'W: %s is still set in scope "%s"')
@@ -197,7 +197,7 @@ def _run_changed(ucr, changed, msg=None):
 		if msg:
 			scope, _value = ucr.get(key, (0, None), getscope=True)
 			if scope > ucr.scope:
-				print >> sys.stderr, msg % (key, SCOPE[scope])
+				print(msg % (key, SCOPE[scope]), file=sys.stderr)
 
 	handlers = ConfigHandlers()
 	handlers.load()
@@ -222,7 +222,7 @@ def handler_dump(args, opts=dict()):
 	ucr = ConfigRegistry()
 	ucr.load()
 	for line in str(ucr).split('\n'):
-		print line
+		print(line)
 
 
 def handler_update(args, opts=dict()):
@@ -282,8 +282,7 @@ def handler_search(args, opts=dict()):
 	search_all = opts.get('all', False)
 	count_search = int(search_keys) + int(search_values) + int(search_all)
 	if count_search > 1:
-		print >> sys.stderr, \
-			'E: at most one out of [--key|--value|--all] may be set'
+		print('E: at most one out of [--key|--value|--all] may be set', file=sys.stderr)
 		sys.exit(1)
 	elif count_search == 0:
 		search_keys = True
@@ -296,7 +295,7 @@ def handler_search(args, opts=dict()):
 		try:
 			regex = [re.compile(_) for _ in args]
 		except re.error as ex:
-			print >> sys.stderr, 'E: invalid regular expression: %s' % (ex,)
+			print('E: invalid regular expression: %s' % (ex,), file=sys.stderr)
 			sys.exit(1)
 
 	# Import located here, because on module level, a circular import would be
@@ -307,7 +306,7 @@ def handler_search(args, opts=dict()):
 
 	category = opts.get('category', None)
 	if category and not info.get_category(category):
-		print >> sys.stderr, 'E: unknown category: "%s"' % (category,)
+		print('E: unknown category: "%s"' % (category,), file=sys.stderr)
 		sys.exit(1)
 
 	ucr = ConfigRegistry()
@@ -357,9 +356,9 @@ def handler_get(args, opts=dict()):
 	if not args[0] in ucr:
 		return
 	if OPT_FILTERS['shell'][2]:
-		print '%s: %s' % (args[0], ucr.get(args[0], ''))
+		print('%s: %s' % (args[0], ucr.get(args[0], '')))
 	else:
-		print ucr.get(args[0], '')
+		print(ucr.get(args[0], ''))
 
 
 def print_variable_info_string(key, value, variable_info, scope=None,
@@ -403,7 +402,7 @@ def print_variable_info_string(key, value, variable_info, scope=None,
 	if (_SHOW_CATEGORIES | _SHOW_DESCRIPTION) & details:
 		info.append('')
 
-	print '\n'.join(info)
+	print('\n'.join(info))
 
 
 def handler_info(args, opts=dict()):
@@ -422,18 +421,18 @@ def handler_info(args, opts=dict()):
 				info.get_variable(arg),
 				details=_SHOW_EMPTY | _SHOW_DESCRIPTION | _SHOW_CATEGORIES)
 		except UnknownKeyException as ex:
-			print >> sys.stderr, ex
+			print(ex, file=sys.stderr)
 
 
 def handler_version(args, opts=dict()):
 	"""Print version info."""
-	print 'univention-config-registry @%@package_version@%@'
+	print('univention-config-registry @%@package_version@%@')
 	sys.exit(0)
 
 
 def handler_help(args, opts=dict(), out=sys.stdout):
 	"""Print config registry command line usage."""
-	print >> out, '''
+	print('''
 univention-config-registry: base configuration for UCS
 copyright (c) 2001-2019 Univention GmbH, Germany
 
@@ -503,15 +502,14 @@ Actions:
 Description:
   univention-config-registry is a tool to handle the basic configuration for
   Univention Corporate Server (UCS)
-'''
+''', file=out)
 	sys.exit(0)
 
 
 def missing_parameter(action):
 	"""Print missing parameter error."""
-	print >> sys.stderr, 'E: too few arguments for command [%s]' % (action,)
-	print >> sys.stderr, \
-		'try `univention-config-registry --help` for more information'
+	print('E: too few arguments for command [%s]' % (action,), file=sys.stderr)
+	print('try `univention-config-registry --help` for more information', file=sys.stderr)
 	sys.exit(1)
 
 
@@ -593,7 +591,7 @@ def main(args):
 				try:
 					OPT_FILTERS[arg[2:]][2] = True
 				except LookupError:
-					print >> sys.stderr, 'E: unknown option %s' % (arg,)
+					print('E: unknown option %s' % (arg,), file=sys.stderr)
 					sys.exit(1)
 
 		# is action already defined by global option?
@@ -605,7 +603,7 @@ def main(args):
 		try:
 			action = args.pop(0)
 		except IndexError:
-			print >> sys.stderr, 'E: missing action, see --help'
+			print('E: missing action, see --help', file=sys.stderr)
 			sys.exit(1)
 		# COMPAT: the 'shell' command is now an option and equivalent to
 		# --shell search
@@ -640,9 +638,8 @@ def main(args):
 		for name, (_prio, func, state, actions) in OPT_FILTERS.items():
 			if state:
 				if action not in actions:
-					print >> sys.stderr, \
-						'E: invalid option --%s for command %s' % \
-						(name, action)
+					print('E: invalid option --%s for command %s' % \
+						(name, action), file=sys.stderr)
 					sys.exit(1)
 				else:
 					post_filter = True
@@ -656,8 +653,7 @@ def main(args):
 			try:
 				cmd_opt_tuple = cmd_opts[arg[2:]]
 			except LookupError:
-				print >> sys.stderr, \
-					'E: invalid option %s for command %s' % (arg, action)
+				print('E: invalid option %s for command %s' % (arg, action), file=sys.stderr)
 				sys.exit(1)
 			else:
 				if cmd_opt_tuple[0] == BOOL:
@@ -667,7 +663,7 @@ def main(args):
 						cmd_opt_tuple[1] = args.pop(0)
 					except IndexError:
 						msg = 'E: option %s for command %s expects an argument'
-						print >> sys.stderr, msg % (arg, action)
+						print(msg % (arg, action), file=sys.stderr)
 						sys.exit(1)
 
 		# Drop type
@@ -678,7 +674,7 @@ def main(args):
 		try:
 			handler_func, min_args = HANDLERS[action]
 		except LookupError:
-			print >> sys.stderr, 'E: unknown action "%s", see --help' % (action,)
+			print('E: unknown action "%s", see --help' % (action,), file=sys.stderr)
 			sys.exit(1)
 		else:
 			# enough arguments?
@@ -698,7 +694,7 @@ def main(args):
 					if state:
 						text = filter_func(args, text)
 				for line in text:
-					print line
+					print(line)
 
 	except (EnvironmentError, TypeError):
 		if OPT_ACTIONS['debug'][1]:

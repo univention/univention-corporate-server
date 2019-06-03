@@ -181,40 +181,35 @@ is_domain_controller () {
 # returns the default IP address
 #
 get_default_ip_address () {
-	PYTHONPATH=/usr/lib/pymodules/python2.7/univention/config_registry python2.7 2>/dev/null \
-	-c 'from interfaces import Interfaces;print Interfaces().get_default_ip_address().ip'
+	python2.7 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; print(Interfaces().get_default_ip_address().ip)'
 }
 
 #
 # returns the default IPv4 address
 #
 get_default_ipv4_address () {
-	PYTHONPATH=/usr/lib/pymodules/python2.7/univention/config_registry python2.7 2>/dev/null \
-	-c 'from interfaces import Interfaces;print Interfaces().get_default_ipv4_address().ip'
+	python2.7 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; print(Interfaces().get_default_ipv4_address().ip)'
 }
 
 #
 # returns the default IPv6 address
 #
 get_default_ipv6_address () {
-	PYTHONPATH=/usr/lib/pymodules/python2.7/univention/config_registry python2.7 2>/dev/null \
-	-c 'from interfaces import Interfaces;print Interfaces().get_default_ipv6_address().ip'
+	python2.7 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; print(Interfaces().get_default_ipv6_address().ip)'
 }
 
 #
 # returns the default netmask
 #
 get_default_netmask () {
-	PYTHONPATH=/usr/lib/pymodules/python2.7/univention/config_registry python2.7 2>/dev/null \
-	-c 'from interfaces import Interfaces;import ipaddr;a=Interfaces().get_default_ip_address();print a.netmask if isinstance(a,ipaddr.IPv4Network) else a.prefixlen'
+	python2.7 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; import ipaddr; a=Interfaces().get_default_ip_address(); print(a.netmask if isinstance(a,ipaddr.IPv4Network) else a.prefixlen)'
 }
 
 #
 # returns the default network
 #
 get_default_network () {
-	PYTHONPATH=/usr/lib/pymodules/python2.7/univention/config_registry python2.7 2>/dev/null \
-	-c 'from interfaces import Interfaces;print Interfaces().get_default_ip_address().network'
+	python2.7 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; print(Interfaces().get_default_ip_address().network)'
 }
 
 
