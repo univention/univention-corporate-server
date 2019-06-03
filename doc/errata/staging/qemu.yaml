@@ -1,0 +1,51 @@
+product: ucs
+release: "4.3"
+version: [4]
+scope: ucs_4.3-0-errata4.3-4
+src: qemu
+fix: 1:2.8+dfsg-6+deb9u6A~4.3.0.201906031137
+desc: |
+ This update addresses the following issues:
+ * slirp: heap buffer overflow while reassembling fragmented datagrams
+   (CVE-2018-11806)
+ * Microarchitectural Store Buffer Data Sampling (MSBDS) (CVE-2018-12126)
+ * Micro-architectural Load Port Data Sampling - Information Leak (MLPDS)
+   (CVE-2018-12127)
+ * Microarchitectural Fill Buffer Data Sampling (MFBDS) (CVE-2018-12130)
+ * qemu-guest-agent: Integer overflow causes segmentation fault in
+   qmp_guest_file_read() (CVE-2018-12617)
+ * usb-mtp: path traversal by host filesystem manipulation in Media Transfer
+   Protocol (MTP) (CVE-2018-16872)
+ * rtl8139: integer overflow leads to buffer overflow (CVE-2018-17958)
+ * lsi53c895a: OOB msg buffer access leads to DoS (CVE-2018-18849)
+ * ppc64: Out-of-bounds r/w stack access in pnv_lpc_do_eccb (CVE-2018-18954)
+ * 9pfs: Use-after-free due to race condition while updating fid path
+   (CVE-2018-19364)
+ * 9pfs: crash due to race condition in renaming files (CVE-2018-19489)
+ * Out-of-bounds read in hw/i2c/i2c-ddc.c allows for memory disclosure
+   (CVE-2019-3812)
+ * slirp: heap buffer overflow in tcp_emu() (CVE-2019-6778)
+ * Slirp: information leakage in tcp_emu() due to uninitialized stack
+   variables (CVE-2019-9824)
+ * Microarchitectural Data Sampling Uncacheable Memory (MDSUM)
+   (CVE-2019-11091)
+ * qxl: null pointer dereference while releasing spice resources
+   (CVE-2019-12155)
+bug: [49584]
+cve:
+- CVE-2018-11806
+- CVE-2018-12617
+- CVE-2018-16872
+- CVE-2018-17958
+- CVE-2018-18849
+- CVE-2018-18954
+- CVE-2018-19364
+- CVE-2018-19489
+- CVE-2019-3812
+- CVE-2019-6778
+- CVE-2019-9824
+- CVE-2018-12126
+- CVE-2018-12127
+- CVE-2018-12130
+- CVE-2019-11091
+- CVE-2019-12155
