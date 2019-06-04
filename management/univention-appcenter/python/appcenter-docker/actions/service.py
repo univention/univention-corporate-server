@@ -37,6 +37,7 @@ import os.path
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.docker import MultiDocker
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction
+from univention.appcenter.utils import call_process2
 
 ORIGINAL_INIT_SCRIPT = '/usr/share/docker-app-container-init-script'
 
@@ -127,3 +128,16 @@ class Status(Service):
 				self.log('App is not running')
 			return running
 		return self.call_init(args.app, 'status')
+
+	@classmethod
+	def get_status(cls, app):
+		if app.uses_docker_compose():
+			return ''
+		else:
+			try:
+				ret, out = call_process2([cls.get_init(app), 'status'])
+				# dirty, but we have a limit for sending status information
+				out = out[500:]
+			except Exception as e:
+				out = ''
+			return out

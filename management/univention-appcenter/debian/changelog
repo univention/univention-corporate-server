@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-32) unstable; urgency=medium
+
+  * Bug #48881: raise DockerCouldNotStartContainer if container is None
+
+ -- Felix Botner <botner@univention.de>  Mon, 03 Jun 2019 17:36:44 +0200
+
 univention-appcenter (8.0.11-31) unstable; urgency=medium
 
   * Bug #49543: added error handling for copying machine.secret

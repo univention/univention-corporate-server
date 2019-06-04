@@ -43,7 +43,7 @@ from univention.appcenter.docker import Docker, MultiDocker
 from univention.appcenter.database import DatabaseConnector, DatabaseError
 from univention.appcenter.actions import get_action
 from univention.appcenter.exceptions import DockerCouldNotStartContainer, DatabaseConnectorError, AppCenterErrorContainerStart
-from univention.appcenter.actions.service import Start, Stop
+from univention.appcenter.actions.service import Start, Stop, Status
 from univention.appcenter.utils import mkdir  # get_locale
 from univention.appcenter.ucr import ucr_keys, ucr_get, ucr_is_true
 from univention.appcenter.log import LogCatcher, get_logfile_logger
@@ -218,7 +218,7 @@ class DockerActionMixin(object):
 		self.log('Preconfiguring container %s' % container)
 		autostart = 'yes'
 		if not Start.call(app=app):
-			raise DockerCouldNotStartContainer()
+			raise DockerCouldNotStartContainer(str(Status.get_status(app)))
 		time.sleep(3)
 		if not docker.is_running():
 			dlogs = docker.dockerd_logs()

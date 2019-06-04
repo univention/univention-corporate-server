@@ -202,6 +202,7 @@ def rmdir(directory):
 def call_process2(cmd, logger=None, env=None, cwd=None):
 	if logger is None:
 		logger = utils_logger
+	cmd = list(map(lambda x: str(x), cmd))
 	if cwd:
 		logger.debug('Running in %s:' % cwd)
 	logger.info('Running command: {0}'.format(' '.join(cmd)))

@@ -69,7 +69,7 @@ class DockerImageVerificationFailedChecksum(Exception):
 
 
 def inspect(name):
-	out = check_output(['docker', 'inspect', name])
+	out = check_output(['docker', 'inspect', str(name)])
 	return loads(out)[0]
 
 
@@ -157,9 +157,7 @@ def create(image, command, hostname=None, ports=None, volumes=None, env_file=Non
 	if command:
 		_args.extend(command)
 	args = ['docker', 'create'] + _args
-	_logger.debug('Creating a new Docker Container:')
-	_logger.debug(' '.join(args))
-	return check_output(args).strip()
+	return call_process2(args)
 
 
 def rmi(image):
@@ -354,7 +352,12 @@ class Docker(object):
 		seccomp_profile = "/etc/docker/seccomp-systemd.json"
 		args.extend(["--security-opt", "seccomp:%s" % seccomp_profile])     # systemd
 		args.extend(["-e", "container=docker"])                             # systemd
-		container = create(self.image, command, hostname, ports, volumes, env_file, args)
+		ret, out = create(self.image, command, hostname, ports, volumes, env_file, args)
+		if ret != 0:
+			raise DockerCouldNotStartContainer(str(out))
+		container = out.strip()
+		if not container:
+			raise DockerCouldNotStartContainer(str(out))
 		ucr_save({self.app.ucr_container_key: container})
 		self.container = container
 		return container
@@ -476,18 +479,18 @@ class MultiDocker(Docker):
 		env = {k: yaml.scalarstring.DoubleQuotedScalarString(v) for k, v in env.iteritems()}
 		env.update({shell_safe(k).upper(): v for k, v in env.iteritems()})
 		self._setup_yml(recreate=True, env=env)
-		ret, out = call_process2(['docker-compose', '-p', self.app.id, 'up', '-d', '--no-build', '--no-recreate'], cwd=self.app.get_compose_dir())
+		ret, out_up = call_process2(['docker-compose', '-p', self.app.id, 'up', '-d', '--no-build', '--no-recreate'], cwd=self.app.get_compose_dir())
 		if ret != 0:
-			raise DockerCouldNotStartContainer(out)
+			raise DockerCouldNotStartContainer(out_up)
 		try:
-			out = ps(only_running=True)
+			out_ps = ps(only_running=True)
 		except CalledProcessError:
-			return False
+			out_ps = str()
 		else:
 			yml_file = self.app.get_compose_file('docker-compose.yml')
 			content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
 			docker_image = content['services'][self.app.docker_main_service]['image']
-			for line in out.splitlines():
+			for line in out_ps.splitlines():
 				try:
 					container, image = line.split()[:2]
 				except ValueError:
@@ -497,6 +500,8 @@ class MultiDocker(Docker):
 						ucr_save({self.app.ucr_container_key: container})
 						self.container = container
 						return container
+		if self.container is None:
+			raise DockerCouldNotStartContainer('coud not find container for %s (image: %s) in docker-ps %s (docker-compose: %s)' % (self.app.docker_main_service, docker_image, out_ps, out_up))
 
 	def start(self):
 		self._setup_yml(recreate=False)
