@@ -35,7 +35,7 @@
 # for development allow this port FIXME: remove me later
 univention-config-registry set security/packetfilter/package/univention-udm/tcp/8888/all?ACCEPT
 
-a2ensite 1univention-http-service-udm.conf
+a2ensite 1univention-management-module-udm.conf
 service apache2 reload
 service univention-firewall flush
 
