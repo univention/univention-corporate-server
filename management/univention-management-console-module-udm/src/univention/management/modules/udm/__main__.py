@@ -47,6 +47,7 @@ import traceback
 import tornado.log
 import tornado.ioloop
 from tornado.httpserver import HTTPServer
+from tornado.netutil import bind_unix_socket
 
 # IMPORTANT NOTICE: we must import as few modules as possible, so that univention.admin is not yet imported
 # because importing the UDM handlers would cause that the gettext translation gets applied before we set a locale
@@ -69,6 +70,7 @@ class Server(object):
 		locale.setlocale(locale.LC_MESSAGES, language)
 		os.umask(0o077)  # FIXME: should probably be changed, this is what UMC sets
 
+		# The UMC-Server and module processes are clearing environment variables
 		os.environ.clear()
 		os.environ['PATH'] = '/bin:/sbin:/usr/bin:/usr/sbin'
 		os.environ['LANG'] = language
@@ -81,6 +83,8 @@ class Server(object):
 
 		server = HTTPServer(application)
 		server.listen(args.port)
+		socket = bind_unix_socket('/var/run/univention-management-module-udm-%s.socket' % (language,))
+		server.add_socket(socket)
 		signal.signal(signal.SIGTERM, partial(self.signal_handler_stop, server))
 		signal.signal(signal.SIGINT, partial(self.signal_handler_stop, server))
 		signal.signal(signal.SIGHUP, self.signal_handler_reload)

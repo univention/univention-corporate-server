@@ -75,13 +75,13 @@ import univention.udm
 
 from univention.lib.i18n import Translation
 # TODO: PAM authentication ?
-# TODO: use http link header
 # TODO: set Last-Modified
 # FIXME: add_asterisks sanitizer
 # FIXME: prevent in the javascript UMC module that navigation container query is called with container=='None'
 # TODO: translation
 # FIXME: it seems request.path contains the un-urlencoded path, could be security issue!
 # TODO: 0f77c317e03844e8a16c484dde69abbcd2d2c7e3 is not integrated
+# TODO: replace etree with genshi, etc.
 
 _ = Translation('univention-management-console-module-udm').translate
 

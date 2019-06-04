@@ -36,6 +36,8 @@ from __future__ import division
 #from __future__ import print_function
 from __future__ import unicode_literals
 
+import argparse
+
 import tornado.httpserver
 import tornado.ioloop
 import tornado.iostream
@@ -75,14 +77,15 @@ class Server(tornado.web.RequestHandler):
 			headers=self.request.headers,
 			allow_nonstandard_methods=True,
 			follow_redirects=False,
-			connect_timeout=20.0,
-			request_timeout=20.0,
+			connect_timeout=20.0,  # FIXME: raise value
+			request_timeout=20.0,  # FIXME: raise value
 		)
 		client = tornado.httpclient.AsyncHTTPClient()
 		response = yield client.fetch(request, raise_error=False)
 		self.set_status(response.code, response.reason)
 		self._headers = tornado.httputil.HTTPHeaders()
 
+		self.add_header('Content-Language', accepted_language.replace('_', '-'))
 		for header, v in response.headers.get_all():
 			if header not in ('Content-Length', 'Transfer-Encoding', 'Content-Encoding', 'Connection', 'X-Http-Reason'):
 				self.add_header(header, v)
@@ -114,6 +117,8 @@ class Server(tornado.web.RequestHandler):
 
 	@classmethod
 	def main(cls):
+		parser = argparse.ArgumentParser(prog='python -m univention.management.server')
+		parser.parse_args()
 		tornado.httpclient.AsyncHTTPClient.configure('tornado.curl_httpclient.CurlAsyncHTTPClient')
 		tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-management-console-module-udm')
 		app = tornado.web.Application([
