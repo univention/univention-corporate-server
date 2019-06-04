@@ -28,7 +28,7 @@ Description: UMC module for UCS Directory Manager
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-http-service-udm
+Package: univention-management-module-udm
 Architecture: all
 Depends: ${misc:Depends},
  univention-management-console-module-udm,
