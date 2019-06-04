@@ -3,11 +3,12 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-appcenter
-fix: 8.0.11-31A~4.4.0.201905291443
+fix: 8.0.11-32A~4.4.0.201906040947
 desc: |
  This update addresses the following issues:
  * Handling of the docker-compose UCR template file has
    been fixed.
  * Abort installation if machine.secret could not be copied
    into container.
-bug: [49517,49543]
+ * Improve error handling during container start.
+bug: [49517,49543,48881]
