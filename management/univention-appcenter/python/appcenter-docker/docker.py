@@ -501,7 +501,7 @@ class MultiDocker(Docker):
 						self.container = container
 						return container
 		if self.container is None:
-			raise DockerCouldNotStartContainer('coud not find container for %s (image: %s) in docker-ps %s (docker-compose: %s)' % (self.app.docker_main_service, docker_image, out_ps, out_up))
+			raise DockerCouldNotStartContainer('could not find container for %s (image: %s) in docker-ps %s (docker-compose: %s)' % (self.app.docker_main_service, docker_image, out_ps, out_up))
 
 	def start(self):
 		self._setup_yml(recreate=False)

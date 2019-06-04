@@ -139,5 +139,4 @@ class Status(Service):
 				# dirty, but we have a limit for sending status information
 				out = out[500:]
 			except Exception as e:
-				out = ''
-			return out
+				out = str(e)
