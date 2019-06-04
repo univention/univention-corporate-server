@@ -48,7 +48,7 @@ try:
 			except:
 				pass
 		else:
-			print(line, end=' ')
+			print(line, end='')
 		line = sys.stdin.readline()
 except:
 	sys.stdout.flush()
