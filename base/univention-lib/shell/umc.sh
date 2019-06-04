@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+. /usr/share/univention-lib/base.sh
 
 eval "$(/usr/sbin/univention-config-registry shell ldap/base)"
 
@@ -72,8 +73,6 @@ umc_frontend_new_hash () {
 }
 
 umc_init () {
-	eval "$(/usr/sbin/univention-config-registry shell groups/default/domainadmins groups/default/domainusers)"
-
 	# containers
 	umc_udm container/cn create --ignore_exists --position "cn=univention,$ldap_base" --set name=UMC || exit $?
 	umc_udm container/cn create --ignore_exists --position "cn=policies,$ldap_base" --set name=UMC --set policyPath=1 || exit $?
@@ -84,8 +83,7 @@ umc_init () {
 		--position "cn=UMC,cn=policies,$ldap_base" || exit $?
 
 	# link default admin policy to the group "Domain Admins"
-	group_admins="${groups_default_domainadmins:-Domain Admins}"
-	group_admins_dn="$(udm groups/group list --filter name="$group_admins" | sed -ne 's/^DN: //p')"
+	group_admins_dn="$(umc_udm groups/group list --filter name="$(custom_groupname "Domain Admins")" | sed -ne 's/^DN: //p')"
 	umc_udm groups/group modify --ignore_exists --dn "$group_admins_dn" \
 		--policy-reference="cn=default-umc-all,cn=UMC,cn=policies,$ldap_base" || exit $?
 
@@ -94,8 +92,7 @@ umc_init () {
 		--position "cn=UMC,cn=policies,$ldap_base" || exit $?
 
 	# link default user policy to the group "Domain Users"
-	group_users="${groups_default_domainusers:-Domain Users}"
-	group_users_dn="$(udm groups/group list --filter name="$group_users" | sed -ne 's/^DN: //p')"
+	group_users_dn="$(umc_udm groups/group list --filter name="$(custom_groupname "Domain Users")" | sed -ne 's/^DN: //p')"
 	umc_udm groups/group modify --ignore_exists --dn "$group_users_dn" \
 		--policy-reference="cn=default-umc-users,cn=UMC,cn=policies,$ldap_base" || exit $?
 }

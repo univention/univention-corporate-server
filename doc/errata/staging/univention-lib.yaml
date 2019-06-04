@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [1]
+scope: ucs_4.4-0-errata4.4-1
+src: univention-lib
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Attaching UMC policies during rejoin failed because the machine account
+   credentials were used. Now the Administrator credentials are used again.
+bug: [49592]
