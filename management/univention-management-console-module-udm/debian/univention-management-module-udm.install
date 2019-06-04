@@ -1,1 +1,1 @@
-univention-management-console-module-udm usr/sbin
+src/univention/management/* usr/share/pyshared/univention/management/

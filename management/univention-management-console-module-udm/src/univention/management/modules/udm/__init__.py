@@ -31,26 +31,28 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import os
 import json
 import time
 import copy
-import locale
 import urllib
-import signal
 import base64
 import binascii
 from urlparse import urljoin, urlparse, urlunparse
 from urllib import quote
-from functools import partial
-import argparse
 import traceback
 
-import tornado.ioloop
-from tornado.web import Application, RequestHandler, HTTPError
-from tornado.httpserver import HTTPServer
-from tornado.concurrent import run_on_executor
+import tornado.web
 import tornado.gen
+import tornado.log
+import tornado.ioloop
+from tornado.web import RequestHandler, HTTPError
+from tornado.concurrent import run_on_executor
 from concurrent.futures import ThreadPoolExecutor
 
 import ldap
@@ -59,7 +61,6 @@ from ldap.dn import explode_rdn
 import xml.etree.cElementTree as ET
 
 from univention.management.console.config import ucr
-from univention.management.console.log import log_init, log_reopen, CORE
 from univention.management.console.ldap import get_user_connection, get_machine_connection
 from univention.management.console.modules.udm.udm_ldap import get_module, set_bind_function, UDM_Module, ldap_dn2path, read_syntax_choices, _get_syntax, container_modules, UDM_Error
 from univention.management.console.modules.udm.udm_ldap import SuperordinateDoesNotExist, NoIpLeft, SearchLimitReached
@@ -72,7 +73,7 @@ import univention.admin.modules as udm_modules
 
 import univention.udm
 
-from univention.lib.i18n import Locale, Translation
+from univention.lib.i18n import Translation
 # TODO: PAM authentication ?
 # TODO: use http link header
 # TODO: set Last-Modified
@@ -184,7 +185,7 @@ class Ressource(RequestHandler):
 			try:
 				self.request.body_arguments = json.loads(self.request.body)
 			except ValueError as exc:
-				raise HTTPError(400, _('Invalid JSON document: %r' % (exc,)))
+				raise HTTPError(400, _('Invalid JSON document: %r') % (exc,))
 
 	def get_body_argument(self, name, *args):
 		if self.request.headers.get('Content-Type', '').startswith('application/json'):
@@ -923,7 +924,7 @@ class Objects(Ressource):
 
 			module._map_properties(obj, properties)
 			dn = yield self.pool.submit(obj.create)
-		except udm_errors.objectExists as e:
+		except udm_errors.objectExists:
 			raise
 		except udm_errors.base as exc:
 			UDM_Error(exc).reraise()
@@ -1375,20 +1376,15 @@ def last_modified(date):
 	)
 
 
-class Server(object):
+class Application(tornado.web.Application):
 
-	def start(self, args):
-		if os.fork() > 0:
-			os._exit(0)
-		self.run()
-
-	def run(self, args):
+	def __init__(self, **kwargs):
 		module_type = '([a-z]+)'
 		object_type = '([a-z]+/[a-z_]+)'
 		policies_object_type = '(policies/[a-z_]+)'
 		dn = '([^/]+(?:=|%3d|%3D)[^/]+)'  # Bug in tornado: requests go against the raw url; https://github.com/tornadoweb/tornado/issues/2548
 		property_ = '([^/]+)'
-		application = Application([
+		super(Application, self).__init__([
 			(r"/favicon.ico", Favicon),
 			(r"/udm/", Modules),
 			(r"/udm/relation/(.*)", Relations),
@@ -1423,59 +1419,4 @@ class Server(object):
 			(r"/udm/progress/([0-9]+)", Operations),
 			# TODO: meta info
 			# TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
-		], serve_traceback=True, autoreload=True)
-		server = HTTPServer(application)
-		server.listen(args.port)
-		signal.signal(signal.SIGTERM, partial(self.sig_stop, server))
-		signal.signal(signal.SIGINT, partial(self.sig_stop, server))
-		signal.signal(signal.SIGHUP, self.sig_hup)
-		tornado.log.enable_pretty_logging()
-		os.umask(0o077)  # FIXME: can probably be changed, this is what UMC sets
-		try:
-			tornado.ioloop.IOLoop.current().start()
-		except (SystemExit, KeyboardInterrupt):
-			raise
-		except:
-			CORE.error(traceback.format_exc())
-			raise
-
-	def sig_stop(self, server, sig, frame):
-		io_loop = tornado.ioloop.IOLoop.instance()
-
-		def stop_loop(deadline):
-			now = time.time()
-			if now < deadline and (io_loop._callbacks or io_loop._timeouts):
-				io_loop.add_timeout(now + 1, stop_loop, deadline)
-			else:
-				io_loop.stop()
-
-		def shutdown():
-			server.stop()
-			stop_loop(time.time() + 2)
-
-		io_loop.add_callback_from_signal(shutdown)
-
-	def sig_hup(self, signal, frame):
-		ucr.load()
-		log_reopen()
-
-	@classmethod
-	def main(cls):
-		server = cls()
-		parser = argparse.ArgumentParser()
-		parser.add_argument('-l', '--language', default='C')
-		parser.add_argument('-p', '--port', default=8888)
-		subparsers = parser.add_subparsers(title='actions', description='All available actions')
-		start_parser = subparsers.add_parser('start', description='Start the service')
-		start_parser.set_defaults(func=server.start)
-		run_parser = subparsers.add_parser('run', description='Start the service in foreground')
-		run_parser.set_defaults(func=server.run)
-		args = parser.parse_args()
-		log_init('/dev/stdout', 4)
-		locale.setlocale(locale.LC_MESSAGES, str(Locale(args.language)))  # FIXME: we must import all modules only after this!
-		udm_modules.update()
-		args.func(args)
-
-
-if __name__ == "__main__":
-	Server.main()
+		])
