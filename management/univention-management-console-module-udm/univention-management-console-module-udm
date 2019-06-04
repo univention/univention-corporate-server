@@ -1377,12 +1377,12 @@ def last_modified(date):
 
 class Server(object):
 
-	def start(self):
+	def start(self, args):
 		if os.fork() > 0:
 			os._exit(0)
 		self.run()
 
-	def run(self):
+	def run(self, args):
 		module_type = '([a-z]+)'
 		object_type = '([a-z]+/[a-z_]+)'
 		policies_object_type = '(policies/[a-z_]+)'
@@ -1425,7 +1425,7 @@ class Server(object):
 			# TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
 		], serve_traceback=True, autoreload=True)
 		server = HTTPServer(application)
-		server.listen(8888)
+		server.listen(args.port)
 		signal.signal(signal.SIGTERM, partial(self.sig_stop, server))
 		signal.signal(signal.SIGINT, partial(self.sig_stop, server))
 		signal.signal(signal.SIGHUP, self.sig_hup)
@@ -1464,6 +1464,7 @@ class Server(object):
 		server = cls()
 		parser = argparse.ArgumentParser()
 		parser.add_argument('-l', '--language', default='C')
+		parser.add_argument('-p', '--port', default=8888)
 		subparsers = parser.add_subparsers(title='actions', description='All available actions')
 		start_parser = subparsers.add_parser('start', description='Start the service')
 		start_parser.set_defaults(func=server.start)
@@ -1473,7 +1474,7 @@ class Server(object):
 		log_init('/dev/stdout', 4)
 		locale.setlocale(locale.LC_MESSAGES, str(Locale(args.language)))  # FIXME: we must import all modules only after this!
 		udm_modules.update()
-		args.func()
+		args.func(args)
 
 
 if __name__ == "__main__":
