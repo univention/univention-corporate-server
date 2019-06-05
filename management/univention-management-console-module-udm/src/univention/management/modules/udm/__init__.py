@@ -886,11 +886,11 @@ class Objects(Ressource):
 		policies = self.get_body_arguments('policies')
 		properties = self.get_body_arguments('properties')
 
-		ldap_position = self.ldap_position
+		ldap_position = univention.admin.uldap.position(self.ldap_position.getBase())
 		if container:
-			ldap_position = univention.admin.uldap.position(container)
+			ldap_position.setDn(container)
 		elif superordinate:
-			ldap_position = univention.admin.uldap.position(superordinate)
+			ldap_position.setDn(superordinate)
 		else:
 			if hasattr(module.module, 'policy_position_dn_prefix'):
 				container = '%s,cn=policies,%s' % (self.module.policy_position_dn_prefix, ldap_position.getBase())
@@ -898,7 +898,7 @@ class Objects(Ressource):
 				defaults = module.get_default_containers()
 				container = defaults[0] if defaults else ldap_position.getBase()
 
-			ldap_position = univention.admin.uldap.position(container)
+			ldap_position.setDn(container)
 
 		#if superordinate:
 		#	mod = get_module(module.name, superordinate, ldap_connection)
