@@ -1,3 +1,9 @@
+univention-ldap (15.0.0-20) unstable; urgency=low
+
+  * Bug #49505: Unlimited page size for UDN translog
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 05 Jun 2019 18:57:38 +0200
+
 univention-ldap (15.0.0-19) unstable; urgency=medium
 
   * Bug #45318: make target="_blank" for portal entries configurable

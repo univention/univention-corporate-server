@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-ldap
+fix: 15.0.0-20
+desc: |
+ This update addresses the following issue:
+ * OpenLDAP restricts the number of returned entries when searching. This can
+   be configured using the UCR variable 'ldap/sizelimit', which defaults to
+   400k. This is not enough for `univention-translog prune`. Remove the limit
+   for parged searches connecting via <ldapi:///>.
+bug: [49505]
