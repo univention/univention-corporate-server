@@ -10,3 +10,5 @@ desc: |
    `default-jre-headless` as the former is deprecated and no longer
    maintained.
 bug: [49508]
+erratum: 142
+announced: 2019-06-05
