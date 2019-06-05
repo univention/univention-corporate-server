@@ -916,10 +916,10 @@ class Objects(Ressource):
 		properties = dict(encode_properties(module.name, properties, self.ldap_connection))
 
 		try:
-			#for key, value in dict(properties.items()).items():  # UDM_Error: Value may not change. key=gidNumber old=5086 new=5086
-			#	if not obj.descriptions[key].may_change:
-			#		if obj[key] == value:
-			#			properties.pop(key)
+			for key, value in dict(properties.items()).items():  # UDM_Error: Value may not change. key=gidNumber old=5086 new=5086
+				if not obj.descriptions[key].may_change:
+					if obj[key] == value:
+						properties.pop(key)
 
 			module._map_properties(obj, properties)
 			dn = yield self.pool.submit(obj.create)
