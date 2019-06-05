@@ -635,7 +635,7 @@ class UDM_Module(object):
 			MODULE.warn('Failed to modify LDAP object %s: %s: %s' % (obj.dn, e.__class__.__name__, str(e)))
 			UDM_Error(e).reraise()
 
-	def search(self, container=None, attribute=None, value=None, superordinate=None, scope='sub', filter='', simple=False, simple_attrs=None, hidden=True):
+	def search(self, container=None, attribute=None, value=None, superordinate=None, scope='sub', filter='', simple=False, simple_attrs=None, hidden=True, serverctrls=None, response=None):
 		"""Searches for LDAP objects based on a search pattern"""
 		ldap_connection, ldap_position = self.get_ldap_connection()
 		if container == 'all':
@@ -656,12 +656,16 @@ class UDM_Module(object):
 					result = []
 				else:
 					if simple_attrs is not None:
-						result = ldap_connection.search(filter=unicode(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, attr=simple_attrs)
+						result = ldap_connection.search(filter=unicode(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, attr=simple_attrs, serverctrls=serverctrls, response=response)
 					else:
-						result = ldap_connection.searchDn(filter=unicode(lookup_filter), base=container, scope=scope, sizelimit=sizelimit)
+						result = ldap_connection.searchDn(filter=unicode(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, serverctrls=serverctrls, response=response)
 			else:
 				if self.module:
-					result = self.module.lookup(None, ldap_connection, filter_s, base=container, superordinate=superordinate, scope=scope, sizelimit=sizelimit)
+					kwargs = {}
+					if serverctrls and 'serverctrls' in inspect.getargspec(self.module.lookup).args:  # not every UDM handler supports serverctrls
+						kwargs['serverctrls'] = serverctrls
+						kwargs['response'] = response
+					result = self.module.lookup(None, ldap_connection, filter_s, base=container, superordinate=superordinate, scope=scope, sizelimit=sizelimit, **kwargs)
 				else:
 					result = None
 		except udm_errors.insufficientInformation:
