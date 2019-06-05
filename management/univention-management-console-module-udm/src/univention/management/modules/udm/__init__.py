@@ -119,7 +119,7 @@ class RessourceBase(object):
 
 	def parse_authorization(self, authorization):
 		if authorization in self.authenticated:
-			(self.request.userdn, self.request.username, self.ldap_connection, self.ldap_position) = self.authenticated[authorization]
+			(self.request.user_dn, self.request.username, self.ldap_connection, self.ldap_position) = self.authenticated[authorization]
 			if self.ldap_connection.whoami():
 				return
 		try:
