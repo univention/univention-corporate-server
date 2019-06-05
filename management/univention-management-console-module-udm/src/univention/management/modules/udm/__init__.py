@@ -816,7 +816,7 @@ class Objects(Ressource):
 			if not mod:
 				raise SuperordinateDoesNotExist(superordinate)
 			superordinate = mod.get(superordinate)
-			container = container or superordinate
+			container = container or superordinate.dn
 
 		entries = []
 		try:
