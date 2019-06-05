@@ -43,7 +43,7 @@ import copy
 import urllib
 import base64
 import binascii
-from urlparse import urljoin, urlparse, urlunparse
+from urlparse import urljoin, urlparse, urlunparse, parse_qs
 from urllib import quote
 import traceback
 
@@ -58,6 +58,7 @@ from concurrent.futures import ThreadPoolExecutor
 import ldap
 from ldap.filter import filter_format
 from ldap.dn import explode_rdn
+from ldap.controls import SimplePagedResultsControl
 import xml.etree.cElementTree as ET
 
 from univention.management.console.config import ucr
@@ -790,16 +791,25 @@ class Objects(Ressource):
 		module = self.get_module(object_type)
 		result = self._options(object_type)
 
+		print(self.request.full_url())
 		# TODO: replace the superordinate concept by container
 		superordinate = self.get_query_argument('superordinate', None)
 
 		container = self.get_query_argument('position', None)
 		objectProperty = self.get_query_argument('property', None)
-		objectPropertyValue = self.get_query_argument('propertyvalue', None)
+		objectPropertyValue = self.get_query_argument('propertyvalue', '*')
 		scope = self.get_query_argument('scope', 'sub')
 		hidden = self.get_query_argument('hidden', False)
 		fields = self.get_query_arguments('fields', [])
 		fields = (set(fields) | set([objectProperty])) - set(['name', 'None', None, ''])
+		try:
+			page = int(self.get_query_argument('page', 1))
+			items_per_page = int(self.get_query_argument('pagesize', None))  # TODO: rename: items-per-page, pagelength, pagecount, pagesize
+			if items_per_page <= 0:
+				raise ValueError()
+		except (TypeError, ValueError):
+			items_per_page = None
+			page = None
 
 		# TODO: add limit, page, ordering, ...
 		result['query'] = {
@@ -809,6 +819,8 @@ class Objects(Ressource):
 			'scope': 'sub',
 			'hidden': '1' if hidden else '',
 			'fields': list(fields),
+			'page': str(page or '1'),
+			'pagesize': str(items_per_page or '0'),
 		}
 
 		if superordinate:
@@ -818,10 +830,16 @@ class Objects(Ressource):
 			superordinate = mod.get(superordinate)
 			container = container or superordinate.dn
 
+		ctrls = {}
+		serverctrls = []
+		if items_per_page:
+			serverctrls = [SimplePagedResultsControl(True, size=items_per_page, cookie='')]
 		entries = []
 		try:
 			ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000')
-			objects = yield self.pool.submit(module.search, container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden)
+			for i in range(page or 1):  # FIXME: iterating over searches is slower than doing it all by hand
+				objects = yield self.pool.submit(module.search, container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls)
+				serverctrls[0].cookie = ctrls['ctrls'][0].cookie
 		except SearchLimitReached as exc:
 			objects = []
 			result['errors'] = [str(exc)]
@@ -856,6 +874,15 @@ class Objects(Ressource):
 				entry['properties'][field] = module.property_description(obj, field)
 			entries.append(entry)
 
+		if items_per_page:
+			qs = parse_qs(urlparse(self.request.full_url()).query)
+			qs['page'] = ['1']
+			self.add_link(result, 'first', '%s?%s' % (self.urljoin(''), urllib.urlencode(qs, True)))
+			if page > 1:
+				qs['page'] = [str(page - 1)]
+				self.add_link(result, 'prev', '%s?%s' % (self.urljoin(''), urllib.urlencode(qs, True)))
+			qs['page'] = [str(page + 1)]
+			self.add_link(result, 'next', '%s?%s' % (self.urljoin(''), urllib.urlencode(qs, True)))
 		result['entries'] = entries
 		self.content_negotiation(result)
 
