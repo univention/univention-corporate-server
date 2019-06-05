@@ -14,8 +14,8 @@ TEMPLATE_BASE_UCS="/mnt/omar/vmwares/kvm/single/UCS"
 TEMPLATE_XML="${TEMPLATE_BASE_BRANCH}/branchtest_template.xml"
 MEMORY=2097152
 
-XML='
-<?xml version="1.0" ?><domain type="kvm">
+XML='<?xml version="1.0" ?>
+<domain type="kvm">
   <name>${VERSION}_branchtest</name>
   <memory unit="KiB">${MEMORY}</memory>
   <currentMemory unit="KiB">${MEMORY}</currentMemory>
