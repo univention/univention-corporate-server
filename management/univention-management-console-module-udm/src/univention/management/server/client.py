@@ -205,7 +205,7 @@ class Module(object):
                 data['propertyvalue'] = val
         data['position'] = position
         data['scope'] = scope
-        data['hidden'] = hidden
+        data['hidden'] = '1' if hidden else ''
         resp = make_request('get', self.uri, credentials=self, data=data)
         entries = eval_response(resp)['entries']
         for entry in entries:
