@@ -838,8 +838,9 @@ class Objects(Ressource):
 		try:
 			ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000')
 			for i in range(page or 1):  # FIXME: iterating over searches is slower than doing it all by hand
-				objects = yield self.pool.submit(module.search, container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls)
-				serverctrls[0].cookie = ctrls['ctrls'][0].cookie
+				objects = yield self.pool.submit(module.search, container, objectProperty or None, objectPropertyValue, superordinate, scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls)
+				if ctrls.get('ctrls'):
+					serverctrls[0].cookie = ctrls['ctrls'][0].cookie
 		except SearchLimitReached as exc:
 			objects = []
 			result['errors'] = [str(exc)]
@@ -877,12 +878,12 @@ class Objects(Ressource):
 		if items_per_page:
 			qs = parse_qs(urlparse(self.request.full_url()).query)
 			qs['page'] = ['1']
-			self.add_link(result, 'first', '%s?%s' % (self.urljoin(''), urllib.urlencode(qs, True)))
+			self.add_link(result, 'first', '%s?%s' % (self.urljoin(''), urllib.urlencode(qs, True)), title=_('First page'))
 			if page > 1:
 				qs['page'] = [str(page - 1)]
-				self.add_link(result, 'prev', '%s?%s' % (self.urljoin(''), urllib.urlencode(qs, True)))
+				self.add_link(result, 'prev', '%s?%s' % (self.urljoin(''), urllib.urlencode(qs, True)), title=_('Previous page'))
 			qs['page'] = [str(page + 1)]
-			self.add_link(result, 'next', '%s?%s' % (self.urljoin(''), urllib.urlencode(qs, True)))
+			self.add_link(result, 'next', '%s?%s' % (self.urljoin(''), urllib.urlencode(qs, True)), title=_('Next page'))
 		result['entries'] = entries
 		self.content_negotiation(result)
 
