@@ -12,3 +12,5 @@ desc: |
    into container.
  * Improve error handling during container start.
 bug: [49517,49543,48881]
+erratum: 141
+announced: 2019-06-05
