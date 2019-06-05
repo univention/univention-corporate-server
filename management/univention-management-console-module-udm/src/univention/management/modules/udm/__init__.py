@@ -820,6 +820,7 @@ class Objects(Ressource):
 
 		entries = []
 		try:
+			ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000')
 			objects = yield self.pool.submit(module.search, container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden)
 		except SearchLimitReached as exc:
 			objects = []
