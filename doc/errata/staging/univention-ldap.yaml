@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-ldap
-fix: 15.0.0-20
+fix: 15.0.0-20A~4.4.0.201906052030
 desc: |
  This update addresses the following issue:
  * OpenLDAP restricts the number of returned entries when searching. This can
