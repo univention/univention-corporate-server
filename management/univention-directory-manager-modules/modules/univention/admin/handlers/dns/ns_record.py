@@ -146,12 +146,12 @@ def lookup_filter(filter_s=None, superordinate=None):
 	return lookup_filter_obj
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=False, required=False, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
 
 	filter = lookup_filter(filter_s, superordinate)
 
 	res = []
-	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
+	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit, serverctrls, response):
 		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs)))
 	return res
 

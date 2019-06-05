@@ -722,7 +722,7 @@ class access:
 		"""
 		return self.lo.getAttr(dn, attr, required)
 
-	def search(self, filter='(objectClass=*)', base='', scope='sub', attr=[], unique=False, required=False, timeout=-1, sizelimit=0):
+	def search(self, filter='(objectClass=*)', base='', scope='sub', attr=[], unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
 		# type: (str, str, str, List[str], bool, bool, int, int) -> List[Tuple[str, Dict[str, List[str]]]]
 		"""
 		Perform LDAP search and return values.
@@ -747,7 +747,7 @@ class access:
 		:raises univention.admin.uexceptions.ldapError: on any other LDAP error.
 		"""
 		try:
-			return self.lo.search(filter, base, scope, attr, unique, required, timeout, sizelimit)
+			return self.lo.search(filter, base, scope, attr, unique, required, timeout, sizelimit, serverctrls=serverctrls, response=response)
 		except ldap.NO_SUCH_OBJECT as msg:
 			raise univention.admin.uexceptions.noObject(_err2str(msg))
 		except ldap.INAPPROPRIATE_MATCHING as msg:
@@ -763,7 +763,7 @@ class access:
 		except ldap.LDAPError as msg:
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
-	def searchDn(self, filter='(objectClass=*)', base='', scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
+	def searchDn(self, filter='(objectClass=*)', base='', scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
 		# type: (str, str, str, bool, bool, int, int) -> List[str]
 		"""
 		Perform LDAP search and return distinguished names only.
@@ -788,7 +788,7 @@ class access:
 		:raises univention.admin.uexceptions.ldapError: on any other LDAP error.
 		"""
 		try:
-			return self.lo.searchDn(filter, base, scope, unique, required, timeout, sizelimit)
+			return self.lo.searchDn(filter, base, scope, unique, required, timeout, sizelimit, serverctrls=serverctrls, response=response)
 		except ldap.NO_SUCH_OBJECT as msg:
 			raise univention.admin.uexceptions.noObject(_err2str(msg))
 		except ldap.INAPPROPRIATE_MATCHING as msg:

@@ -186,7 +186,7 @@ class object(univention.admin.handlers.simpleLdap):
 			univention.admin.allocators.release(self.lo, self.position, i, j)
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
 	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'sambaSamAccount'),
 		univention.admin.filter.expression('sambaAcctFlags', '[I          ]'),
@@ -198,7 +198,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 		filter.expressions.append(filter_p)
 
 	res = []
-	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
+	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit, serverctrls, response):
 		res.append(object(co, lo, None, dn, attributes=attrs))
 	return res
 

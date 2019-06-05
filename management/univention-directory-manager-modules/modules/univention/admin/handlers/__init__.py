@@ -1691,7 +1691,7 @@ class simpleLdap(object):
 		return containers
 
 	@classmethod
-	def lookup(cls, co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):  # type: (univention.admin.uldap.config, univention.admin.uldap.access, str, str, Optional[str], str, bool, bool, int, int) -> list[simpleLdap]
+	def lookup(cls, co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):  # type: (univention.admin.uldap.config, univention.admin.uldap.access, str, str, Optional[str], str, bool, bool, int, int, Optional[list], Optional[Dict]) -> list[simpleLdap]
 		"""
 		Perform a LDAP search and return a list of instances.
 
@@ -1714,7 +1714,7 @@ class simpleLdap(object):
 		filter_str = unicode(filter_s or '')
 		attr = cls._ldap_attributes()
 		result = []
-		for dn, attrs in lo.search(filter_str, base, scope, attr, unique, required, timeout, sizelimit):
+		for dn, attrs in lo.search(filter_str, base, scope, attr, unique, required, timeout, sizelimit, serverctrls=serverctrls, response=response):
 			try:
 				result.append(cls(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs))
 			except univention.admin.uexceptions.base as exc:
@@ -3121,7 +3121,7 @@ class simpleComputer(simpleLdap):
 
 		for group in set(self.oldinfo.get('groups', [])) - set(self.info.get('groups', [])):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '__update_groups_after_namechange: removing from grp=%s' % (group,))
-			self.lo.modify(group, [('uniqueMember', olddn, ''), ('memberUid', oldUid, ''),])
+			self.lo.modify(group, [('uniqueMember', olddn, ''), ('memberUid', oldUid, ''), ])
 
 	def update_groups(self):  # type: () -> None
 		if not self.hasChanged('groups') and not self.oldPrimaryGroupDn and not self.newPrimaryGroupDn:

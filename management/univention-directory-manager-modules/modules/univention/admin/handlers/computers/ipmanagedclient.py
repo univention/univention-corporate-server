@@ -247,7 +247,7 @@ def rewrite(filter, mapping):
 		univention.admin.mapping.mapRewrite(filter, mapping)
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
 	res = []
 	filter_s = univention.admin.filter.replace_fqdn_filter(filter_s)
 	filter_s = univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)
@@ -263,7 +263,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 		univention.admin.filter.walk(filter_p, rewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
+	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit, serverctrls, response):
 		res.append(object(co, lo, None, dn, attributes=attrs))
 	return res
 
