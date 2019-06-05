@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.12-38) unstable; urgency=medium
+
+  * Bug #49638: Implement servercontrols for search()
+
+ -- Florian Best <best@univention.de>  Thu, 13 Jun 2019 12:33:24 +0200
+
 univention-directory-manager-modules (14.0.12-37) unstable; urgency=medium
 
   * Bug #45318: use same tab as default

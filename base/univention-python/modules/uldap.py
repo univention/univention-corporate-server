@@ -417,7 +417,7 @@ class access:
 			raise ldap.NO_SUCH_OBJECT({'desc': 'no object'})
 		return []
 
-	def search(self, filter='(objectClass=*)', base='', scope='sub', attr=[], unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None):
+	def search(self, filter='(objectClass=*)', base='', scope='sub', attr=[], unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
 		# type: (str, str, str, List[str], bool, bool, int, int, Optional[List[ldap.controls.LDAPControl]]) -> List[Tuple[str, Dict[str, List[str]]]]
 		"""
 		Perform LDAP search and return values.
@@ -445,8 +445,8 @@ class access:
 			base = self.base
 
 		if scope == 'base+one':
-			res = self.lo.search_ext_s(base, ldap.SCOPE_BASE, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit) + \
-				self.lo.search_ext_s(base, ldap.SCOPE_ONELEVEL, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit)
+			res = self.__search(response, base, ldap.SCOPE_BASE, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit) + \
+				self.__search(response, base, ldap.SCOPE_ONELEVEL, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit)
 		else:
 			if scope == 'sub' or scope == 'domain':
 				ldap_scope = ldap.SCOPE_SUBTREE
@@ -454,7 +454,7 @@ class access:
 				ldap_scope = ldap.SCOPE_ONELEVEL
 			else:
 				ldap_scope = ldap.SCOPE_BASE
-			res = self.lo.search_ext_s(base, ldap_scope, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit)
+			res = self.__search(response, base, ldap_scope, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit)
 
 		if unique and len(res) > 1:
 			raise ldap.INAPPROPRIATE_MATCHING({'desc': 'more than one object'})
@@ -462,7 +462,20 @@ class access:
 			raise ldap.NO_SUCH_OBJECT({'desc': 'no object'})
 		return res
 
-	def searchDn(self, filter='(objectClass=*)', base='', scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None):
+	def __search(self, response, *args, **kwargs):
+		try:
+			rtype, rdata, rmsgid, resp_ctrls = self.lo.result3(self.lo.search_ext(*args, **kwargs))
+		except ldap.REFERRAL as exc:
+			if not self.follow_referral:
+				raise
+			lo_ref = self._handle_referral(exc)
+			rtype, rdata, rmsgid, resp_ctrls = lo_ref.result3(lo_ref.search_ext(*args, **kwargs))
+
+		if kwargs.get('serverctrls') and isinstance(response, dict):
+			response['ctrls'] = resp_ctrls
+		return rdata
+
+	def searchDn(self, filter='(objectClass=*)', base='', scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
 		# type: (str, str, str, bool, bool, int, int, Optional[List[ldap.controls.LDAPControl]]) -> List[str]
 		"""
 		Perform LDAP search and return distinguished names only.
@@ -482,7 +495,7 @@ class access:
 		:raises ldap.INAPPROPRIATE_MATCHING: Indicates that the matching rule specified in the search filter does not match a rule defined for the attribute's syntax.
 		"""
 		_d = univention.debug.function('uldap.searchDn filter=%s base=%s scope=%s unique=%d required=%d' % (filter, base, scope, unique, required))  # noqa F841
-		return [x[0] for x in self.search(filter, base, scope, ['dn'], unique, required, timeout, sizelimit, serverctrls)]
+		return [x[0] for x in self.search(filter, base, scope, ['dn'], unique, required, timeout, sizelimit, serverctrls, response)]
 
 	def getPolicies(self, dn, policies=None, attrs=None, result=None, fixedattrs=None):
 		# type: (str, List[str], Dict[str, List[Any]], Any, Any) -> Dict[str, Dict[str, Any]]
