@@ -72,7 +72,7 @@ class UdmError(Exception):
     pass
 
 
-def make_request(verb, uri, credentials, data=None):
+def make_request(verb, uri, credentials, data=None, **headers):
     print('{} {}'.format(verb.upper(), uri))
     if verb == 'get':
         params = data
@@ -80,7 +80,7 @@ def make_request(verb, uri, credentials, data=None):
     else:
         params = None
         json = data
-    return requests.request(verb, uri, auth=(credentials.username, credentials.password), params=params, json=json, headers={'Accept': 'application/json'})
+    return requests.request(verb, uri, auth=(credentials.username, credentials.password), params=params, json=json, headers=dict({'Accept': 'application/json; q=1; text/html; q=0.2, */*; q=0.1', 'Accept-Language': 'en-US'}, **headers))
 
 
 def eval_response(response):
@@ -186,14 +186,14 @@ class ShallowObject(object):
     def open(self):
         resp = make_request('get', self.uri, credentials=self.module)
         entry = eval_response(resp)
-        return Object(self.module, entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry['superordinate'], entry['uri'])
+        return Object(self.module, entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry['superordinate'], entry['uri'], etag=resp.headers.get('Etag'), last_modified=resp.headers.get('Last-Modified'))
 
     def __repr__(self):
         return 'ShallowObject(module={}, dn={})'.format(self.module.name, self.dn)
 
 
 class Object(object):
-    def __init__(self, module, dn, properties, options, policies, position, superordinate, uri):
+    def __init__(self, module, dn, properties, options, policies, position, superordinate, uri, etag=None, last_modified=None):
         self.dn = dn
         self.props = properties
         self.options = options
@@ -202,6 +202,8 @@ class Object(object):
         self.superordinate = superordinate
         self.module = module
         self.uri = uri
+        self.etag = etag
+        self.last_modified = last_modified
 
     def __repr__(self):
         return 'Object(module={}, dn={}, uri={})'.format(self.module.name, self.dn, self.uri)
@@ -227,7 +229,11 @@ class Object(object):
             'position': self.position,
             'superordinate': self.superordinate,
         }
-        resp = make_request('put', self.uri, credentials=self.module, data=data)
+        headers = dict((key, value) for key, value in {
+            'If-Unmodified-Since': self.last_modified,
+            'If-None-Match': self.etag,
+        }.items() if value)
+        resp = make_request('put', self.uri, credentials=self.module, data=data, **headers)
         entry = eval_response(resp)
         self.dn = entry['dn']
         self.reload()
@@ -241,6 +247,8 @@ class Object(object):
         self.superordinate = obj.superordinate
         self.module = obj.module
         self.uri = obj.uri
+        self.etag = obj.etag
+        self.last_modified = obj.last_modified
 
     def _create(self):
         data = {
