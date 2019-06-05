@@ -968,12 +968,6 @@ class Object(Ressource):
 	def get(self, object_type, dn):
 		"""GET udm/users/user/$DN (get all properties/values of the user)"""
 		props = {}
-		self.add_link(props, 'udm/relation/object-modules', self.urljoin('../../'), title=_('Object modules'))
-		self.add_link(props, '/udm/relation/object-types', self.urljoin('../'))
-		self.add_link(props, 'parent', self.urljoin('x/../'))
-		self.add_link(props, 'self', self.urljoin(''))
-		self.add_link(props, '/udm/relation/object/remove', self.urljoin(''), method='DELETE')
-		self.add_link(props, '/udm/relation/object/edit', self.urljoin(''), method='PUT')
 		copy = bool(self.get_query_argument('copy', None))  # TODO: move into own ressource
 
 		def _remove_uncopyable_properties(obj):
@@ -995,6 +989,17 @@ class Object(Ressource):
 			raise NotFound(object_type, dn)
 		if object_type not in ('users/self', 'users/passwd') and not univention.admin.modules.recognize(object_type, obj.dn, obj.oldattr):
 			raise NotFound(object_type, dn)
+
+		self.add_link(props, 'udm/relation/object-modules', self.urljoin('../../'), title=_('Object modules'))
+		self.add_link(props, '/udm/relation/object-types', self.urljoin('../'))
+		self.add_link(props, 'parent', self.urljoin('x/../'), name=module.name, title=module.object_name)
+		self.add_link(props, 'self', self.urljoin(''))
+		self.add_link(props, '/udm/relation/object/remove', self.urljoin(''), method='DELETE')
+		self.add_link(props, '/udm/relation/object/edit', self.urljoin(''), method='PUT')
+		for mod in module.child_modules:
+			mod = self.get_module(mod['id'])
+			if mod and set(mod.superordinate_names) & {module.name, }:
+				self.add_link(props, '/udm/relation/object-types', self.urljoin('../../%s/?superordinate=%s' % (quote(mod.name), quote(obj.dn))), name=mod.name, title=mod.object_name_plural)
 
 		_remove_uncopyable_properties(obj)
 		obj.set_defaults = True
