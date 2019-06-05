@@ -94,7 +94,7 @@ class NotFound(HTTPError):
 		super(NotFound, self).__init__(404, None, '%r %r' % (object_type, dn or ''))  # FIXME: create error message
 
 
-class Ressource(RequestHandler):
+class RessourceBase(object):
 
 	pool = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
@@ -320,19 +320,18 @@ class Ressource(RequestHandler):
 			self.add_header('Expires', expires)
 
 
-class Favicon(Ressource):
+class Ressource(RessourceBase, RequestHandler):
+	pass
 
-	def get(self, object_type='users/user'):  # TODO: use tornados static server
+
+class Favicon(RessourceBase, tornado.web.StaticFileHandler):
+
+	@classmethod
+	def get_absolute_path(cls, root, object_type):
 		value = object_type.replace('/', '-')
 		if not value.replace('-', '').replace('_', '').isalpha():
 			raise NotFound(object_type)
-		filename = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/udm-%s.png' % (value,)
-		if not os.path.exists(filename):
-			raise NotFound(object_type)
-		with open(filename, 'rb') as fd:
-			# TODO: caching header
-			self.set_header('Content-Type', 'image/x-icon')
-			self.finish(fd.read())
+		return '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/udm-%s.png' % (value,)
 
 
 class Relations(Ressource):
@@ -1385,7 +1384,7 @@ class Application(tornado.web.Application):
 		dn = '([^/]+(?:=|%3d|%3D)[^/]+)'  # Bug in tornado: requests go against the raw url; https://github.com/tornadoweb/tornado/issues/2548
 		property_ = '([^/]+)'
 		super(Application, self).__init__([
-			(r"/favicon.ico", Favicon),
+			(r"/favicon.ico", Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
 			(r"/udm/", Modules),
 			(r"/udm/relation/(.*)", Relations),
 			(r"/udm/license/", License),
@@ -1401,7 +1400,7 @@ class Application(tornado.web.Application):
 			(r"/udm/%s/templates" % (object_type,), Templates),
 			(r"/udm/%s/default-containers" % (object_type,), DefaultContainers),  # TODO: maybe rename conflicts with above except trailing slash
 			(r"/udm/%s/policies" % (object_type,), Policies),
-			(r"/udm/%s/favicon.ico" % (object_type,), Favicon),
+			(r"/udm/%s/favicon.ico" % (object_type,), Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
 			(r"/udm/%s/report-types" % (object_type,), ReportTypes),
 			(r"/udm/%s/report/([^/]+)" % (object_type,), Report),
 			(r"/udm/%s/%s/properties/" % (object_type, dn), Properties),
@@ -1412,6 +1411,7 @@ class Application(tornado.web.Application):
 			(r"/udm/%s/add/?" % (object_type,), ObjectAdd),
 			(r"/udm/%s/" % (object_type,), Objects),
 			(r"/udm/%s/%s" % (object_type, dn), Object),
+			# (r"/udm/%s/%s" % (object_type, uuid), ObjectByUiid),  # TODO: implement getting object by UUID
 			(r"/udm/%s/%s/edit/?" % (object_type, dn), ObjectEdit),
 			(r"/udm/%s/layout" % (object_type,), Layout),
 			(r"/udm/%s/%s/layout" % (object_type, dn), Layout),
