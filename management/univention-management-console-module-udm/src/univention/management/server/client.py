@@ -71,6 +71,7 @@ http.client._MAXHEADERS = 1000
 class UdmError(Exception):
     pass
 
+
 def make_request(verb, uri, credentials, data=None):
     print('{} {}'.format(verb.upper(), uri))
     if verb == 'get':
@@ -80,6 +81,7 @@ def make_request(verb, uri, credentials, data=None):
         params = None
         json = data
     return requests.request(verb, uri, auth=(credentials.username, credentials.password), params=params, json=json, headers={'Accept': 'application/json'})
+
 
 def eval_response(response):
     if response.status_code != 200:
@@ -97,6 +99,7 @@ def eval_response(response):
                         msg += '\n{}'.format(server_message)
         raise UdmError(msg)
     return response.json()
+
 
 class UDM(object):
     @classmethod
@@ -135,6 +138,7 @@ class UDM(object):
     def __repr__(self):
         return 'UDM(uri={}, username={}, password=****, version={})'.format(self.uri, self.username, self._api_version)
 
+
 class Module(object):
     def __init__(self, udm, uri, name, title):
         self.uri = uri
@@ -172,6 +176,7 @@ class Module(object):
         for entry in entries:
             yield ShallowObject(self, entry['dn'], entry['uri'])
 
+
 class ShallowObject(object):
     def __init__(self, module, dn, uri):
         self.module = module
@@ -185,6 +190,7 @@ class ShallowObject(object):
 
     def __repr__(self):
         return 'ShallowObject(module={}, dn={})'.format(self.module.name, self.dn)
+
 
 class Object(object):
     def __init__(self, module, dn, properties, options, policies, position, superordinate, uri):
@@ -215,12 +221,12 @@ class Object(object):
 
     def _modify(self):
         data = {
-                'properties': self.props,
-                'options': self.options,
-                'policies': self.policies,
-                'position': self.position,
-                'superordinate': self.superordinate,
-                }
+            'properties': self.props,
+            'options': self.options,
+            'policies': self.policies,
+            'position': self.position,
+            'superordinate': self.superordinate,
+        }
         resp = make_request('put', self.uri, credentials=self.module, data=data)
         entry = eval_response(resp)
         self.dn = entry['dn']
@@ -238,12 +244,12 @@ class Object(object):
 
     def _create(self):
         data = {
-                'properties': self.props,
-                'options': self.options,
-                'policies': self.policies,
-                'position': self.position,
-                'superordinate': self.superordinate,
-                }
+            'properties': self.props,
+            'options': self.options,
+            'policies': self.policies,
+            'position': self.position,
+            'superordinate': self.superordinate,
+        }
         resp = make_request('post', self.module.uri, credentials=self.module, data=data)
         if resp.status_code == 200:
             uri = resp.headers['Location']
@@ -251,6 +257,7 @@ class Object(object):
             self._copy_from_obj(obj)
         else:
             eval_response(resp)
+
 
 if __name__ == '__main__':
     if sys.argv[1:]:
