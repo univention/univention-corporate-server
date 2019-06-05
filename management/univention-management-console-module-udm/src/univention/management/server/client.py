@@ -115,7 +115,7 @@ def make_request(verb, uri, credentials, data=None, **headers):
 
 
 def eval_response(response):
-    if response.status_code != 200:
+    if response.status_code >= 299:
         msg = '{} {}: {}'.format(response.request.method, response.url, response.status_code)
         try:
             json = response.json()
@@ -188,6 +188,10 @@ class Module(object):
         for obj in self.search(position=dn, scope='base'):
             return obj.open()
 
+    def get_by_entry_uuid(self, uuid):
+        for obj in self.search(filter={'entryUUID': uuid}, scope='base'):
+            return obj.open()
+
     def get_by_id(self, dn):
         # TODO: Needed?
         raise NotImplementedError()
@@ -206,6 +210,11 @@ class Module(object):
         entries = eval_response(resp)['entries']
         for entry in entries:
             yield ShallowObject(self, entry['dn'], entry['uri'])
+
+    def create(self, properties, options, policies, position, superordinate=None):
+        obj = Object(self, None, properties, options, policies, position, superordinate, self.uri)
+        obj.save()
+        return obj
 
 
 class ShallowObject(object):
