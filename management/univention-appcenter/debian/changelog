@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-34) unstable; urgency=medium
+
+  * Bug #48881: raise DockerCouldNotStartContainer if container is None
+
+ -- Felix Botner <botner@univention.de>  Wed, 05 Jun 2019 10:35:40 +0200
+
 univention-appcenter (8.0.11-33) unstable; urgency=medium
 
   * Bug #48881: raise DockerCouldNotStartContainer if container is None

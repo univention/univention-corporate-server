@@ -202,10 +202,11 @@ def rmdir(directory):
 def call_process2(cmd, logger=None, env=None, cwd=None):
 	if logger is None:
 		logger = utils_logger
-	cmd = [str(x) for x in cmd]
+	# make sure we log strings only
+	str_cmd = [str(x) for x in cmd]
 	if cwd:
 		logger.debug('Running in %s:' % cwd)
-	logger.info('Running command: {0}'.format(' '.join(cmd)))
+	logger.info('Running command: {0}'.format(' '.join(str_cmd)))
 	out = str()
 	ret = 0
 	try:
@@ -221,7 +222,7 @@ def call_process2(cmd, logger=None, env=None, cwd=None):
 		out = str(err)
 		ret = 1
 	if ret:
-		logger.error('Command {} failed with: {} ({})'.format(' '.join(cmd), out.strip(), ret))
+		logger.error('Command {} failed with: {} ({})'.format(' '.join(str_cmd), out.strip(), ret))
 	return ret, out
 
 
