@@ -137,7 +137,7 @@ for d in $DIRS; do
 					tdbbackup $file
 					Status=$?
 					if [ $Status -ne 0 ]; then
-						echo "Error while backing up $file with tdbbackup - status $Status"
+						>&2 echo "Error while backing up $file with tdbbackup - status $Status"
 						exit 1
 					fi
 				fi
