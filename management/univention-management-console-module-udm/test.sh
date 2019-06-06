@@ -86,3 +86,8 @@ _curl -i "$base/users/user/uid%3DAdministrator%2Ccn%3Dusers%2C$ldap_base"
 #
 ## remove a specific user:
 #_curl -X DELETE -i "$base/users/user/uid%3DAdministrator%2Ccn%3Dusers%2C$ldap_base"
+
+univention-ldapsearch -LLLb cn=admin,cn=license,cn=univention,l=school,l=dev > license.ldif
+curl -i "$base/license/"
+curl -i "$base/license/" -F 'license=@license.ldif'
+curl -i "$base/license/request?email=best@univention.de"

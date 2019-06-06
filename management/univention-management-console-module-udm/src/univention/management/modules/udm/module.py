@@ -37,12 +37,14 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import os
+import re
 import json
 import time
 import copy
 import urllib
 import base64
 import binascii
+import tempfile
 from urlparse import urljoin, urlparse, urlunparse, parse_qs
 from urllib import quote
 import traceback
@@ -51,6 +53,7 @@ import tornado.web
 import tornado.gen
 import tornado.log
 import tornado.ioloop
+import tornado.httpclient
 from tornado.web import RequestHandler, HTTPError
 from tornado.concurrent import run_on_executor
 from concurrent.futures import ThreadPoolExecutor
@@ -65,12 +68,13 @@ from univention.management.console.config import ucr
 from univention.management.console.ldap import get_user_connection, get_machine_connection
 from univention.management.console.modules.udm.udm_ldap import get_module, set_bind_function, UDM_Module, ldap_dn2path, read_syntax_choices, _get_syntax, container_modules, UDM_Error
 from univention.management.console.modules.udm.udm_ldap import SuperordinateDoesNotExist, NoIpLeft, SearchLimitReached
-from univention.management.console.modules.udm.tools import check_license, LicenseError
+from univention.management.console.modules.udm.tools import check_license, LicenseError, LicenseImport, dump_license
 from univention.management.console.error import UMC_Error, LDAP_ServerDown, LDAP_ConnectionFailed
 
 import univention.directory.reports as udr
 import univention.admin.uexceptions as udm_errors
 import univention.admin.modules as udm_modules
+from univention.config_registry import handler_set
 
 import univention.udm
 
@@ -378,6 +382,9 @@ class Relations(Ressource):
 			'property-choices': 'determine valid values for a given syntax class',
 			'object/remove': 'remove this object, edit-form is preferable',
 			'object/edit': 'modify this object, edit-form is preferable',
+			'license-request': 'Request a new UCS Core Edition license',
+			'license-check': 'Check if the license limits are reached',
+			'license-import': 'Import a new license in LDIF format',
 		}
 		result = relations.get(relation)
 		self.content_negotiation(result)
@@ -580,32 +587,6 @@ class MoveDestinations(ContainerQueryBase):
 
 		containers = yield self._container_query(object_type, container, modules, scope)
 		self.content_negotiation(containers)
-
-
-class LicenseRequest(Ressource):
-
-	def post(self):
-		self.content_negotiation({})  # TODO: implement request_new_license()
-
-
-class LicenseCheck(Ressource):
-
-	def get(self):
-		message = None
-		try:
-			check_license(self.ldap_connection)
-		except LicenseError as exc:
-			message = str(exc)
-		self.content_negotiation(message)
-
-
-class License(Ressource):
-
-	def get(self):
-		self.content_negotiation({})  # TODO: implement license_info()
-
-	def post(self):
-		self.content_negotiation({})  # TODO: implement license_import()
 
 
 class Properties(Ressource):
@@ -1363,6 +1344,148 @@ class Operations(Ressource):
 			self.add_header('Location', result['uri'])
 			self.add_link
 		self.content_negotiation(result)
+
+
+class LicenseRequest(Ressource):
+
+	@tornado.gen.coroutine
+	def get(self):
+		data = {
+			'email': self.get_query_argument('email'),
+			'licence': dump_license(),
+		}
+		if not data['licence']:
+			raise HTTPError(400, _('Cannot parse License from LDAP'))
+
+		data = urllib.urlencode(data)
+		url = 'https://license.univention.de/keyid/conversion/submit'
+		http_client = tornado.httpclient.HTTPClient()
+		try:
+			yield http_client.fetch(url, method='POST', body=data, user_agent='UMC/AppCenter', headers={'Content-Type': 'application/x-www-form-urlencoded'})
+		except tornado.httpclient.HTTPError as exc:
+			error = str(exc)
+			if exc.response.code >= 500:
+				error = _('This seems to be a problem with the license server. Please try again later.')
+			match = re.search('<span id="details">(?P<details>.*?)</span>', exc.response.body, flags=re.DOTALL)
+			if match:
+				error = match.group(1).replace('\n', '')
+			# FIXME: use original error handling
+			raise HTTPError(400, _('Requesting license failed: %s') % (error,))
+
+		# creating a new ucr variable to prevent duplicated registration (Bug #35711)
+		handler_set(['ucs/web/license/requested=true'])
+		self.content_negotiation({'message': _('A new license has been requested.')})
+
+
+class LicenseCheck(Ressource):
+
+	def get(self):
+		message = _('The license is valid.')
+		try:
+			check_license(self.ldap_connection)
+		except LicenseError as exc:
+			message = str(exc)
+		self.content_negotiation(message)
+
+
+class License(Ressource):
+
+	def get(self):
+		license_data = {}
+		self.add_link(license_data, '/udm/relation/license-check', self.urljoin('check'), title=_('Check license status'))
+		try:
+			import univention.admin.license as udm_license
+		except:
+			license_data['licenseVersion'] = 'gpl'
+		else:
+			license_data['licenseVersion'] = udm_license._license.version
+			if udm_license._license.version == '1':
+				for item in ('licenses', 'real'):
+					license_data[item] = {}
+					for lic_type in ('CLIENT', 'ACCOUNT', 'DESKTOP', 'GROUPWARE'):
+						count = getattr(udm_license._license, item)[udm_license._license.version][getattr(udm_license.License, lic_type)]
+						if isinstance(count, basestring):
+							try:
+								count = int(count)
+							except:
+								count = None
+						license_data[item][lic_type.lower()] = count
+
+				if 'UGS' in udm_license._license.types:
+					udm_license._license.types = filter(lambda x: x != 'UGS', udm_license._license.types)
+			elif udm_license._license.version == '2':
+				for item in ('licenses', 'real'):
+					license_data[item] = {}
+					for lic_type in ('SERVERS', 'USERS', 'MANAGEDCLIENTS', 'CORPORATECLIENTS'):
+						count = getattr(udm_license._license, item)[udm_license._license.version][getattr(udm_license.License, lic_type)]
+						if isinstance(count, basestring):
+							try:
+								count = int(count)
+							except:
+								count = None
+						license_data[item][lic_type.lower()] = count
+				license_data['keyID'] = udm_license._license.licenseKeyID
+				license_data['support'] = udm_license._license.licenseSupport
+				license_data['premiumSupport'] = udm_license._license.licensePremiumSupport
+
+			license_data['licenseTypes'] = udm_license._license.types
+			license_data['oemProductTypes'] = udm_license._license.oemProductTypes
+			license_data['endDate'] = udm_license._license.endDate
+			license_data['baseDN'] = udm_license._license.licenseBase
+			free_license = ''
+			if license_data['baseDN'] == 'Free for personal use edition':
+				free_license = 'ffpu'
+			if license_data['baseDN'] == 'UCS Core Edition':
+				free_license = 'core'
+			if free_license:
+				license_data['baseDN'] = ucr.get('ldap/base', '')
+			license_data['freeLicense'] = free_license
+			license_data['sysAccountsFound'] = udm_license._license.sysAccountsFound
+		self.content_negotiation(license_data)
+
+	def get_html(self, response):
+		root = super(License, self).get_html(response)
+		if self.request.method == 'GET' and isinstance(root, list) and isinstance(response, dict):
+			form = ET.Element('form', method='get', rel='/udm/relation/license-request', action=self.urljoin('request'))
+			label = ET.Element('label', **{'for': 'email'})
+			label.text = _('E-Mail address')
+			form.append(label)
+			form.append(ET.Element('input', type='email', name='email'))
+			form.append(ET.Element('input', type='submit', value=_('Request new license')))
+			root.insert(0, form)
+
+			form = ET.Element('form', method='POST', enctype='multipart/form-data', rel='/udm/relation/license-import')
+			label = ET.Element('label', **{'for': 'license'})
+			label.text = _('License file (ldif format)')
+			form.append(label)
+			form.append(ET.Element('input', type='file', name='license'))
+			form.append(ET.Element('input', type='submit', value=_('Import license')))
+			root.insert(0, form)
+		return root
+
+	def post(self):
+		lic_file = tempfile.NamedTemporaryFile(delete=False)
+		lic_file.write(self.request.files['license'][0]['body'])
+		lic_file.close()
+		filename = lic_file.name
+		try:
+			with open(filename, 'rb') as fd:
+				# check license and write it to LDAP
+				importer = LicenseImport(fd)
+				importer.check(ucr.get('ldap/base', ''))
+				importer.write(self.ldap_connection)
+		except ldap.LDAPError as exc:
+			# LDAPError e.g. LDIF contained non existing attributes
+			raise HTTPError(400, _('Importing the license failed: LDAP error: %s.') % exc.args[0].get('info'))
+		except (ValueError, AttributeError) as exc:
+			# AttributeError: missing univentionLicenseBaseDN
+			# ValueError raised by ldif.LDIFParser when e.g. dn is duplicated
+			raise HTTPError(400, _('Importing the license failed: %s.') % (exc,))
+		except LicenseError as exc:
+			raise HTTPError(400, str(exc))
+		finally:
+			os.unlink(filename)
+		self.content_negotiation({'message': _('The license was imported successfully.')})
 
 
 def decode_properties(object_type, properties, lo, version=1):
