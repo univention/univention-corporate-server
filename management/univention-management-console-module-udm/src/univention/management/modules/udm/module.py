@@ -787,6 +787,7 @@ class Objects(Ressource):
 		hidden = self.get_query_argument('hidden', False)
 		fields = self.get_query_arguments('fields', [])
 		fields = (set(fields) | set([objectProperty])) - set(['name', 'None', None, ''])
+		properties = self.get_query_arguments('properties', [])
 		try:
 			page = int(self.get_query_argument('page', 1))
 			items_per_page = int(self.get_query_argument('pagesize', None))  # TODO: rename: items-per-page, pagelength, pagecount, pagesize
@@ -839,7 +840,7 @@ class Objects(Ressource):
 				# MODULE.warn('LDAP object does not exists %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
 				continue
 
-			entry = Object.get_representation(module, obj, self.ldap_connection)
+			entry = Object.get_representation(module, obj, properties, self.ldap_connection)
 			entry.update({
 				'$childs$': module.childs,
 				'name': module.obj_description(obj),
@@ -849,7 +850,7 @@ class Objects(Ressource):
 			})
 			if '$value$' in fields:
 				entry['$value$'] = [module.property_description(obj, column['name']) for column in module.columns]
-			if '*' in fields:
+			if '*' in fields or '*' in properties:
 				obj.open()
 				fields = set(obj.info.keys())
 			for field in fields - set(module.password_properties) - set(entry.keys()):
@@ -1007,7 +1008,7 @@ class Object(Ressource):
 				self.add_link(props, '/udm/relation/object-types', self.urljoin('../../%s/?superordinate=%s' % (quote(mod.name), quote(obj.dn))), name=mod.name, title=mod.object_name_plural)
 
 		props['uri'] = self.urljoin(quote_dn(obj.dn))
-		props.update(self.get_representation(module, obj, self.ldap_connection, copy))
+		props.update(self.get_representation(module, obj, ['*'], self.ldap_connection, copy))
 		if set(module.operations) & {'edit', 'move', 'remove', 'subtree_move'}:
 			self.add_link(props, 'edit-form', self.urljoin(quote_dn(obj.dn), 'edit'), title=_('Modify, move or remove this object'))
 
@@ -1017,7 +1018,7 @@ class Object(Ressource):
 		self.content_negotiation(props)
 
 	@classmethod
-	def get_representation(cls, module, obj, ldap_connection, copy=False):
+	def get_representation(cls, module, obj, properties, ldap_connection, copy=False):
 		def _remove_uncopyable_properties(obj):
 			if not copy:
 				return
@@ -1025,34 +1026,44 @@ class Object(Ressource):
 				if not p.copyable:
 					obj.info.pop(name, None)
 
-		props = {}
 		# TODO: check if we really want to set the default values
 		_remove_uncopyable_properties(obj)
 		obj.set_defaults = True
 		obj.set_default_values()
 		_remove_uncopyable_properties(obj)
-		properties = obj.info.copy()
-		for passwd in module.password_properties:
-			properties.pop(passwd, None)
-		if not copy:
-			props['dn'] = obj.dn
+		values = {}
+		if properties:
+			values = obj.info.copy()
+			for passwd in module.password_properties:
+				values.pop(passwd, None)
+			if '*' not in properties:
+				for key in list(values.keys()):
+					if key not in properties:
+						values.pop(key)
+			values = dict(decode_properties(module.name, values, ldap_connection))
+
+		props = {}
+		props['dn'] = obj.dn
+		props['objectType'] = module.name
+		props['id'] = '+'.join(explode_rdn(obj.dn, True))
+		props['superordinate'] = obj.superordinate and obj.superordinate.dn
+		props['position'] = ldap_connection.parentDn(obj.dn)
+		props['properties'] = values
 		props['options'] = dict((opt['id'], opt['value']) for opt in module.get_options(udm_object=obj))
 		props['policies'] = {}
-		for policy in obj.policies:
-			pol_mod = get_module(None, policy, ldap_connection)
-			if pol_mod and pol_mod.name:
-				props['policies'].setdefault(pol_mod.name, []).append(policy)
+		if '*' in properties:
+			for policy in obj.policies:
+				pol_mod = get_module(None, policy, ldap_connection)
+				if pol_mod and pol_mod.name:
+					props['policies'].setdefault(pol_mod.name, []).append(policy)
+			props['$references$'] = module.get_references(obj.dn)
 		props['$labelObjectType$'] = module.title
 		props['$labelObjectTypeSingular$'] = module.object_name
 		props['$labelObjectTypePlural$'] = module.object_name_plural
 		props['flags'] = obj.oldattr.get('univentionObjectFlag', [])
-		props['objectType'] = module.name
 		props['$operations$'] = module.operations
-		props['$references$'] = module.get_references(obj.dn)
-		props['id'] = '+'.join(explode_rdn(obj.dn, True))
-		props['superordinate'] = obj.superordinate and obj.superordinate.dn
-		props['position'] = ldap_connection.parentDn(obj.dn)
-		props['properties'] = dict(decode_properties(module.name, properties, ldap_connection))
+		if copy:
+			props.pop('dn')
 		return props
 
 	@tornado.gen.coroutine
