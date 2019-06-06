@@ -593,6 +593,8 @@ class Properties(Ressource):
 	"""GET udm/users/user/properties (get properties of users/user object type)"""
 
 	def get(self, object_type, dn=None):
+		if dn:
+			dn = unquote_dn(dn)
 		module = self.get_module(object_type)
 		module.load(force_reload=True)  # reload for instant extended attributes
 
@@ -625,6 +627,8 @@ class Layout(Ressource):
 		if object_type == 'users/self':
 			dn = None
 
+		if dn:
+			dn = unquote_dn(dn)
 		result = module.get_layout(dn)
 		self.content_negotiation(result)
 
@@ -734,6 +738,7 @@ class NextFreeIpAddress(Ressource):
 
 		return: {}
 		"""
+		dn = unquote_dn(dn)
 		obj = self.get_object('networks/network', dn)
 		try:
 			obj.refreshNextIp()
@@ -976,6 +981,7 @@ class Object(Ressource):
 	@tornado.gen.coroutine
 	def get(self, object_type, dn):
 		"""GET udm/users/user/$DN (get all properties/values of the user)"""
+		dn = unquote_dn(dn)
 		props = {}
 		copy = bool(self.get_query_argument('copy', None))  # TODO: move into own ressource
 
@@ -1049,6 +1055,7 @@ class Object(Ressource):
 	@tornado.gen.coroutine
 	def put(self, object_type, dn):
 		"""PUT udm/users/user/$DN (Benutzer hinzufügen / modifizieren)"""
+		dn = unquote_dn(dn)
 		module = get_module(object_type, dn, self.ldap_connection)
 		if not module:
 			raise NotFound(object_type)  # FIXME: create
@@ -1065,6 +1072,7 @@ class Object(Ressource):
 
 	@tornado.gen.coroutine
 	def patch(self, object_type, dn):
+		dn = unquote_dn(dn)
 		module = get_module(object_type, dn, self.ldap_connection)
 		if not module:
 			raise NotFound(object_type)
@@ -1126,6 +1134,7 @@ class Object(Ressource):
 	@tornado.gen.coroutine
 	def delete(self, object_type, dn):
 		"""DELETE udm/users/user/$DN (Benutzer löschen)"""
+		dn = unquote_dn(dn)
 		module = get_module(object_type, dn, self.ldap_connection)
 		if not module:
 			raise NotFound(object_type)
@@ -1136,6 +1145,7 @@ class Object(Ressource):
 		self.content_negotiation({})
 
 	def options(self, object_type, dn):
+		dn = unquote_dn(dn)
 		self.set_header('Allow', 'GET, PUT, DELETE, OPTIONS')
 
 	@tornado.gen.coroutine
@@ -1196,6 +1206,7 @@ class ObjectEdit(Ressource):
 
 	@tornado.gen.coroutine
 	def get(self, object_type, dn):
+		dn = unquote_dn(dn)
 		module = get_module(object_type, dn, self.ldap_connection)
 		if module is None:
 			raise NotFound(object_type, dn)
@@ -1241,6 +1252,7 @@ class PropertyChoices(Ressource):
 
 	@tornado.gen.coroutine
 	def get(self, object_type, dn, property_):
+		dn = unquote_dn(dn)
 		module = self.get_module(object_type)
 		try:
 			syntax = module.module.property_descriptions[property_].syntax
@@ -1256,6 +1268,7 @@ class PolicyTypes(Ressource):
 
 	def get(self, object_type, dn, policy_type):
 		"""Returns a list of policy types that apply to the given object type"""
+		dn = unquote_dn(dn)
 		module = self.get_module(object_type)
 		result = module.policies
 		self.content_negotiation(result)
@@ -1266,6 +1279,7 @@ class PolicyResult(Ressource):
 
 	@tornado.gen.coroutine
 	def get(self, object_type, policy_type, dn):
+		dn = unquote_dn(dn)
 		infos = yield self._get(object_type, policy_type, dn)
 		self.content_negotiation(infos)
 
@@ -1274,6 +1288,7 @@ class PolicyResult(Ressource):
 		"""Returns a virtual policy object containing the values that
 		the given object or container inherits"""
 
+		dn = unquote_dn(dn)
 		is_container = bool(self.get_query_argument('container', None))
 		policy_dn = self.get_query_argument('policy', None)
 
@@ -1393,6 +1408,8 @@ class License(Ressource):
 	def get(self):
 		license_data = {}
 		self.add_link(license_data, '/udm/relation/license-check', self.urljoin('check'), title=_('Check license status'))
+		self.add_link(license_data, '/udm/relation/license-request', self.urljoin('request'))
+		self.add_link(license_data, '/udm/relation/license-import', self.urljoin(''))
 		try:
 			import univention.admin.license as udm_license
 		except:
@@ -1519,7 +1536,14 @@ def encode_properties(object_type, properties, lo, version=1):
 
 
 def quote_dn(dn):
-	return quote(dn).replace('/', quote('/', safe=''))
+	if isinstance(dn, unicode):
+		dn = dn.encode('utf-8')
+	return quote(dn)  # .replace('/', quote('/', safe=''))
+
+
+def unquote_dn(dn):
+	# tornado already decoded it (UTF-8)
+	return dn
 
 
 def last_modified(date):
@@ -1537,7 +1561,10 @@ class Application(tornado.web.Application):
 		module_type = '([a-z]+)'
 		object_type = '([a-z]+/[a-z_]+)'
 		policies_object_type = '(policies/[a-z_]+)'
-		dn = '([^/]+(?:=|%3d|%3D)[^/]+)'  # Bug in tornado: requests go against the raw url; https://github.com/tornadoweb/tornado/issues/2548
+		dn = '([^/]+%s.+,%s)' % (self.multi_regex('='), self.multi_regex(ucr['ldap/base']),)
+		# FIXME: with that dn regex, it is not possible to have urls like (/udm/$dn/foo/$dn/) because ldap-base at the end matches the last dn
+		# Note: the ldap base is part of the url to support "/" as part of the DN. otherwise we can use: '([^/]+(?:=|%3d|%3D)[^/]+)'
+		# Note: we cannot use .replace('/', '%2F') for the dn part as url-normalization could replace this and apache doesn't pass URLs with %2F to the ProxyPass without http://httpd.apache.org/docs/current/mod/core.html#allowencodedslashes
 		property_ = '([^/]+)'
 		super(Application, self).__init__([
 			(r"/favicon.ico", Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
@@ -1576,3 +1603,7 @@ class Application(tornado.web.Application):
 			# TODO: meta info
 			# TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
 		])
+
+	def multi_regex(self, chars):
+		# Bug in tornado: requests go against the raw url; https://github.com/tornadoweb/tornado/issues/2548, therefore we must match =, %3d, %3D
+		return ''.join('(?:%s|%s|%s)' % (re.escape(c), re.escape(urllib.quote(c).lower()), re.escape(urllib.quote(c).upper())) if c in '=,' else re.escape(c) for c in chars)
