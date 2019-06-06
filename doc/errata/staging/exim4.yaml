@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: exim4
+fix: 4.89-2+deb9u4A~4.4.0.201906060939
+desc: |
+ This update addresses the following issue:
+ * Remote command execution in deliver_message() function in /src/deliver.c
+   (CVE-2019-10149)
+bug: [49603]
+cve:
+- CVE-2019-10149
