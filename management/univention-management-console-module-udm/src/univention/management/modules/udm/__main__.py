@@ -78,7 +78,7 @@ class Server(object):
 		import univention.admin.modules as udm_modules
 		udm_modules.update()
 
-		from univention.management.modules.udm import Application
+		from univention.management.modules.udm.module import Application
 		application = Application(serve_traceback=True, autoreload=True)
 
 		server = HTTPServer(application)
