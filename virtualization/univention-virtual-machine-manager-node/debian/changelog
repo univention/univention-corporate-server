@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (5.0.0-9) unstable; urgency=low
+
+  * Bug #49606: Re-connect VMs to bridges on network restart
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 06 Jun 2019 14:14:06 +0200
+
 univention-virtual-machine-manager-node (5.0.0-8) unstable; urgency=low
 
   * Bug #49573: Restart libvirtd on package upgrade

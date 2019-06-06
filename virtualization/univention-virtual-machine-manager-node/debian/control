@@ -28,6 +28,7 @@ Description: UCS Virtual Machine Manager node
 Package: univention-virtual-machine-manager-node-kvm
 Architecture: all
 Depends: ${misc:Depends},
+ ${python:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  libvirt-daemon-system,
  univention-virtual-machine-manager-node-common,
