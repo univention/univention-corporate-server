@@ -131,27 +131,43 @@ class Mountpoints:
 						'reapplyQuota': initialValue
 					}
 
+		# add shares whose quotas have never been set before
 		for share in shares.values():
 			if share['mountpoint'] not in self.mountpoints_with_quota.keys():
-					self.mountpoints_with_quota[share['mountpoint']] = share
+				self.mountpoints_with_quota[share['mountpoint']] = share
 
 		for mountpoint, attrs in self.mountpoints_with_quota.iteritems():
 			shares_on_mount = self.get_shares_with_mountpoint(mountpoint)
 			if not shares_on_mount:
 				continue
+
+			for share_on_mount in shares_on_mount:
+				if share_on_mount['reapplyQuota']:
+					self.mountpoints_with_quota[mountpoint]['reapplyQuota'] = True
+
 			for policy_value in ['inodeSoftLimit', 'inodeHardLimit', 'spaceSoftLimit', 'spaceHardLimit']:
 				smallest_quota = self.calculate_smallest_quota(shares_on_mount, policy_value)
 				self.mountpoints_with_quota[mountpoint][policy_value] = smallest_quota
+				if smallest_quota == 0:
+					# needed to reset the quota when a policy is deleted
+					self.mountpoints_with_quota[mountpoint]['reapplyQuota'] = True
 
 	def get_shares_with_mountpoint(self, mountpoint):
-		_shares = filter(lambda x: mountpoint not in x, iter(self.shares.values()))
+		_shares = []
+		for _share in self.shares.values():
+			if _share['mountpoint'] == mountpoint:
+				_shares.append(_share)
 		return _shares
 
 	def calculate_smallest_quota(self, shares_on_mount, policy_value):
+		# from one policy value of different shares on the same mount, calculate the smallest one.
+		# ignore 0 for the comparison, except every policy value is 0
 		filtered_zero = []
 		for _share in shares_on_mount:
 			if _share[policy_value] > 0:
 				filtered_zero.append(_share[policy_value])
+		if not filtered_zero:
+			return 0
 		smallest = min(filtered_zero)
 		return smallest
 
@@ -226,7 +242,8 @@ if __name__ == '__main__':
 		for mountpoint_path, attrs in mountpoints.iteritems():
 			if attrs['reapplyQuota']:
 				log.write('Set quota on mountpoint "%s": /usr/sbin/setquota -u %s %s %s %s %s %s\n' % (mountpoint_path, user, attrs['spaceSoftLimit'], attrs['spaceHardLimit'], attrs['inodeSoftLimit'], attrs['inodeHardLimit'], mountpoint_path))
-				set_quota = subprocess.Popen(['/usr/sbin/setquota', '-u', user, str(attrs['spaceSoftLimit']), str(attrs['spaceHardLimit']), str(attrs['inodeSoftLimit']), str(attrs['inodeHardLimit']), mountpoint_path])
+				command = ['/usr/sbin/setquota', '-u', user, str(attrs['spaceSoftLimit']), str(attrs['spaceHardLimit']), str(attrs['inodeSoftLimit']), str(attrs['inodeHardLimit']), mountpoint_path]
+				set_quota = subprocess.Popen(command, stderr=log)
 				set_quota.wait()
 			else:
 				log.write('Do not set/update quota for mountpoint "%s"\n' % mountpoint_path)

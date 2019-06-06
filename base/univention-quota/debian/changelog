@@ -1,3 +1,10 @@
+univention-quota (13.0.1-5) unstable; urgency=medium
+
+  * Bug #48000: make quota behave better when two shares with quota policies
+    are on the same mountpoint
+
+ -- Jannik Ahlers <ahlers@univention.de>  Thu, 06 Jun 2019 16:47:52 +0200
+
 univention-quota (13.0.1-4) unstable; urgency=medium
 
   * Bug #48471: UMC design adjustments
