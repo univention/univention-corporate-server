@@ -33,9 +33,10 @@
 
 from __future__ import absolute_import
 from __future__ import division
-#from __future__ import print_function
+from __future__ import print_function
 from __future__ import unicode_literals
 
+import sys
 import argparse
 
 import tornado.httpserver
@@ -44,6 +45,9 @@ import tornado.iostream
 import tornado.web
 import tornado.httpclient
 import tornado.httputil
+import tornado.process
+
+import pycurl
 
 from univention.management.console.config import ucr
 
@@ -55,23 +59,22 @@ class Server(tornado.web.RequestHandler):
 	TODO: Implement ACL handling (restriction on certain pathes for certain users/groups)
 	TODO: Implement a SAML service provider
 	TODO: Implement management of modules
-	TODO: use UNIX sockets instead of TCP services
 	"""
 
 	LANGUAGE_SERVICE_MAPPING = {
-		'de': 8887,
-		'de-DE': 8887,
-		'en': 8888,
-		'en-US': 8888,
+		'de': '/var/run/univention-management-module-udm-de-de.socket',
+		'de_DE': '/var/run/univention-management-module-udm-de-de.socket',
+		'en': '/var/run/univention-management-module-udm-en-us.socket',
+		'en_US': '/var/run/univention-management-module-udm-en-us.socket',
 	}
+	PROCESSES = {}
 
 	@tornado.gen.coroutine
 	def get(self):
 		accepted_language = self.get_browser_locale().code
-		port = self.LANGUAGE_SERVICE_MAPPING.get(accepted_language, self.LANGUAGE_SERVICE_MAPPING['en'])
-		uri = 'http://localhost:%d%s' % (port, self.request.uri,)
+		socket = self.LANGUAGE_SERVICE_MAPPING.get(accepted_language, self.LANGUAGE_SERVICE_MAPPING['en'])
 		request = tornado.httpclient.HTTPRequest(
-			uri,
+			self.request.full_url(),
 			method=self.request.method,
 			body=self.request.body or None,
 			headers=self.request.headers,
@@ -79,6 +82,7 @@ class Server(tornado.web.RequestHandler):
 			follow_redirects=False,
 			connect_timeout=20.0,  # FIXME: raise value
 			request_timeout=20.0,  # FIXME: raise value
+			prepare_curl_callback=lambda curl: curl.setopt(pycurl.UNIX_SOCKET_PATH, socket),
 		)
 		client = tornado.httpclient.AsyncHTTPClient()
 		response = yield client.fetch(request, raise_error=False)
@@ -121,10 +125,17 @@ class Server(tornado.web.RequestHandler):
 		parser.parse_args()
 		tornado.httpclient.AsyncHTTPClient.configure('tornado.curl_httpclient.CurlAsyncHTTPClient')
 		tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-management-console-module-udm')
+		cls.start_processes()
 		app = tornado.web.Application([
 			(r'.*', cls),
-		], debug=True
+		], debug=False
 		)
-		app.listen(int(ucr.get('umc/server/port', 8889)))
+		app.listen(int(ucr.get('umc/server/port', 8888)))
 		ioloop = tornado.ioloop.IOLoop.instance()
 		ioloop.start()
+
+	@classmethod
+	def start_processes(cls):
+		for language in ('de_DE', 'en_US'):
+			socket = cls.LANGUAGE_SERVICE_MAPPING[language]
+			cls.PROCESSES[language] = tornado.process.Subprocess(['/usr/bin/python2.7', '-m', 'univention.management.modules.udm', '-s', socket, '-l', language, 'run'], stdout=sys.stdout, stderr=sys.stderr)

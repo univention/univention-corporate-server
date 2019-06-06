@@ -82,9 +82,11 @@ class Server(object):
 		application = Application(serve_traceback=True, autoreload=True)
 
 		server = HTTPServer(application)
-		server.listen(args.port)
-		socket = bind_unix_socket('/var/run/univention-management-module-udm-%s.socket' % (language,))
-		server.add_socket(socket)
+		if args.port:
+			server.listen(args.port)
+		if args.unix_socket:
+			socket = bind_unix_socket(args.unix_socket)
+			server.add_socket(socket)
 		signal.signal(signal.SIGTERM, partial(self.signal_handler_stop, server))
 		signal.signal(signal.SIGINT, partial(self.signal_handler_stop, server))
 		signal.signal(signal.SIGHUP, self.signal_handler_reload)
@@ -124,8 +126,9 @@ class Server(object):
 		server = cls()
 
 		parser = argparse.ArgumentParser()
-		parser.add_argument('-l', '--language', default='C')
-		parser.add_argument('-p', '--port', default=ucr.get('umc/modules/udm/port', 8888))
+		parser.add_argument('-l', '--language', default='C', help='The process locale')
+		parser.add_argument('-s', '--unix-socket', help='Bind to a UNIX socket')
+		parser.add_argument('-p', '--port', help='Bind to a TCP port')
 		subparsers = parser.add_subparsers(title='actions', description='All available actions')
 
 		start_parser = subparsers.add_parser('start', description='Start the service')

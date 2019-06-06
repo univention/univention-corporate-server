@@ -791,7 +791,6 @@ class Objects(Ressource):
 		module = self.get_module(object_type)
 		result = self._options(object_type)
 
-		print(self.request.full_url())
 		# TODO: replace the superordinate concept by container
 		superordinate = self.get_query_argument('superordinate', None)
 
