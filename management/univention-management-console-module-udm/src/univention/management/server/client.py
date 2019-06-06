@@ -196,8 +196,7 @@ class Module(object):
         # TODO: Needed?
         raise NotImplementedError()
 
-    def search(self, filter=None, position=None, scope='sub', hidden=False):
-        # TODO: How to "fields"?
+    def search(self, filter=None, position=None, scope='sub', hidden=False, opened=False):
         data = {}
         if filter:
             for prop, val in filter.items():
@@ -206,10 +205,15 @@ class Module(object):
         data['position'] = position
         data['scope'] = scope
         data['hidden'] = '1' if hidden else ''
+        if opened:
+            data['properties'] = '*'
         resp = make_request('get', self.uri, credentials=self, data=data)
         entries = eval_response(resp)['entries']
         for entry in entries:
-            yield ShallowObject(self, entry['dn'], entry['uri'])
+            if opened:
+                yield Object(self, entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry['superordinate'], entry['uri'])  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
+            else:
+                yield ShallowObject(self, entry['dn'], entry['uri'])
 
     def create(self, properties, options, policies, position, superordinate=None):
         obj = Object(self, None, properties, options, policies, position, superordinate, self.uri)
