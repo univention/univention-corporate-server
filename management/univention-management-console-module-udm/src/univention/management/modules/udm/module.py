@@ -839,25 +839,21 @@ class Objects(Ressource):
 				# MODULE.warn('LDAP object does not exists %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
 				continue
 
-			entry = {
-				'dn': obj.dn,
+			entry = Object.get_representation(module, obj, self.ldap_connection)
+			entry.update({
 				'$childs$': module.childs,
-				'$flags$': obj.oldattr.get('univentionObjectFlag', []),
-				'$operations$': module.operations,
-				'objectType': module.name,
-				'$labelObjectType$': module.subtitle,
 				'name': module.obj_description(obj),
 				'path': ldap_dn2path(obj.dn, include_rdn=False),
 				'uri': self.urljoin(quote_dn(obj.dn)),
-				'properties': {},  # TODO: wrap via encode_properties() instead of module.property_description() ?!
-			}
+				'fields': {},  # TODO: wrap via encode_properties() instead of module.property_description() ?!
+			})
 			if '$value$' in fields:
 				entry['$value$'] = [module.property_description(obj, column['name']) for column in module.columns]
 			if '*' in fields:
 				obj.open()
 				fields = set(obj.info.keys())
 			for field in fields - set(module.password_properties) - set(entry.keys()):
-				entry['properties'][field] = module.property_description(obj, field)
+				entry['fields'][field] = module.property_description(obj, field)
 			entries.append(entry)
 
 		if items_per_page:
@@ -869,7 +865,8 @@ class Objects(Ressource):
 				self.add_link(result, 'prev', '%s?%s' % (self.urljoin(''), urllib.urlencode(qs, True)), title=_('Previous page'))
 			qs['page'] = [str(page + 1)]
 			self.add_link(result, 'next', '%s?%s' % (self.urljoin(''), urllib.urlencode(qs, True)), title=_('Next page'))
-		result['entries'] = entries
+
+		result['entries'] = entries  # TODO: is "entries" a good name? items, objects
 		self.content_negotiation(result)
 
 	def get_html(self, response):
@@ -983,14 +980,7 @@ class Object(Ressource):
 		"""GET udm/users/user/$DN (get all properties/values of the user)"""
 		dn = unquote_dn(dn)
 		props = {}
-		copy = bool(self.get_query_argument('copy', None))  # TODO: move into own ressource
-
-		def _remove_uncopyable_properties(obj):
-			if not copy:
-				return
-			for name, p in obj.descriptions.items():
-				if not p.copyable:
-					obj.info.pop(name, None)
+		copy = bool(self.get_query_argument('copy', None))  # TODO: move into own ressource: ./copy
 
 		if object_type == 'users/self' and not self.ldap_connection.compare_dn(dn, self.request.user_dn):
 			raise HTTPError(403)
@@ -1016,6 +1006,27 @@ class Object(Ressource):
 			if mod and set(mod.superordinate_names) & {module.name, }:
 				self.add_link(props, '/udm/relation/object-types', self.urljoin('../../%s/?superordinate=%s' % (quote(mod.name), quote(obj.dn))), name=mod.name, title=mod.object_name_plural)
 
+		props['uri'] = self.urljoin(quote_dn(obj.dn))
+		props.update(self.get_representation(module, obj, self.ldap_connection, copy))
+		if set(module.operations) & {'edit', 'move', 'remove', 'subtree_move'}:
+			self.add_link(props, 'edit-form', self.urljoin(quote_dn(obj.dn), 'edit'), title=_('Modify, move or remove this object'))
+
+		meta = dict((key, [val.decode('utf-8', 'replace') for val in value]) for key, value in self.ldap_connection.get(obj.dn, attr=[b'+']).items())
+		props['meta'] = meta
+		self.add_header('Last-Modified', last_modified(time.strptime(meta['modifyTimestamp'][0], '%Y%m%d%H%M%SZ')))
+		self.content_negotiation(props)
+
+	@classmethod
+	def get_representation(cls, module, obj, ldap_connection, copy=False):
+		def _remove_uncopyable_properties(obj):
+			if not copy:
+				return
+			for name, p in obj.descriptions.items():
+				if not p.copyable:
+					obj.info.pop(name, None)
+
+		props = {}
+		# TODO: check if we really want to set the default values
 		_remove_uncopyable_properties(obj)
 		obj.set_defaults = True
 		obj.set_default_values()
@@ -1025,32 +1036,24 @@ class Object(Ressource):
 			properties.pop(passwd, None)
 		if not copy:
 			props['dn'] = obj.dn
-		props['options'] = {}
-		for opt in module.get_options(udm_object=obj):
-			props['options'][opt['id']] = opt['value']
+		props['options'] = dict((opt['id'], opt['value']) for opt in module.get_options(udm_object=obj))
 		props['policies'] = {}
 		for policy in obj.policies:
-			pol_mod = get_module(None, policy, self.ldap_connection)
+			pol_mod = get_module(None, policy, ldap_connection)
 			if pol_mod and pol_mod.name:
 				props['policies'].setdefault(pol_mod.name, []).append(policy)
 		props['$labelObjectType$'] = module.title
 		props['$labelObjectTypeSingular$'] = module.object_name
 		props['$labelObjectTypePlural$'] = module.object_name_plural
 		props['flags'] = obj.oldattr.get('univentionObjectFlag', [])
+		props['objectType'] = module.name
 		props['$operations$'] = module.operations
-		props['$references$'] = module.get_references(dn)
-		props['uri'] = self.urljoin(quote_dn(obj.dn))
+		props['$references$'] = module.get_references(obj.dn)
 		props['id'] = '+'.join(explode_rdn(obj.dn, True))
 		props['superordinate'] = obj.superordinate and obj.superordinate.dn
-		props['position'] = self.ldap_connection.parentDn(obj.dn)
-		if set(module.operations) & {'edit', 'move', 'remove', 'subtree_move'}:
-			self.add_link(props, 'edit-form', self.urljoin(quote_dn(obj.dn), 'edit'), title=_('Modify, move or remove this object'))
-
-		props['properties'] = dict(decode_properties(module.name, properties, self.ldap_connection))
-		meta = dict((key, [val.decode('utf-8', 'replace') for val in value]) for key, value in self.ldap_connection.get(obj.dn, attr=[b'+']).items())
-		props['meta'] = meta
-		self.add_header('Last-Modified', last_modified(time.strptime(meta['modifyTimestamp'][0], '%Y%m%d%H%M%SZ')))
-		self.content_negotiation(props)
+		props['position'] = ldap_connection.parentDn(obj.dn)
+		props['properties'] = dict(decode_properties(module.name, properties, ldap_connection))
+		return props
 
 	@tornado.gen.coroutine
 	def put(self, object_type, dn):
