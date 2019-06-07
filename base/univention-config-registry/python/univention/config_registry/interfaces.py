@@ -188,11 +188,7 @@ class VengefulConfigRegistry(ConfigRegistry):
 
 	def __getitem__(self, key):
 		"""Return registry value."""
-		for reg in (ConfigRegistry.FORCED,
-				ConfigRegistry.SCHEDULE,
-				ConfigRegistry.LDAP,
-				ConfigRegistry.NORMAL,
-				ConfigRegistry.CUSTOM):
+		for reg in ConfigRegistry.LAYER_PRIORITIES:
 			try:
 				registry = self._registry[reg]
 				value = registry[key]

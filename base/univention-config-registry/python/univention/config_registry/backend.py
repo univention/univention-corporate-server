@@ -64,7 +64,8 @@ class ConfigRegistry(MutableMapping):
 	Merged persistent value store.
 	This is a merged view of several sub-registries.
 	"""
-	NORMAL, LDAP, SCHEDULE, FORCED, CUSTOM, MAX = range(6)
+	NORMAL, LDAP, SCHEDULE, FORCED, CUSTOM = range(5)
+	LAYER_PRIORITIES = (FORCED, SCHEDULE, LDAP, NORMAL, CUSTOM)
 	PREFIX = '/etc/univention'
 	BASES = {
 		NORMAL: 'base.conf',
@@ -81,7 +82,7 @@ class ConfigRegistry(MutableMapping):
 		else:
 			self.scope = write_registry
 		self._registry = {}
-		for reg in range(ConfigRegistry.MAX):
+		for reg in self.LAYER_PRIORITIES:
 			if self.file and reg != ConfigRegistry.CUSTOM:
 				self._registry[reg] = {}
 			elif not self.file and reg == ConfigRegistry.CUSTOM:
@@ -155,11 +156,7 @@ class ConfigRegistry(MutableMapping):
 
 	def __contains__(self, key):
 		"""Check if registry key is set."""
-		for reg in (ConfigRegistry.FORCED,
-				ConfigRegistry.SCHEDULE,
-				ConfigRegistry.LDAP,
-				ConfigRegistry.NORMAL,
-				ConfigRegistry.CUSTOM):
+		for reg in self.LAYER_PRIORITIES:
 			registry = self._registry[reg]
 			if key in registry:
 				return True
@@ -178,11 +175,7 @@ class ConfigRegistry(MutableMapping):
 
 	def get(self, key, default=None, getscope=False):
 		"""Return registry value (including optional scope)."""
-		for reg in (ConfigRegistry.FORCED,
-				ConfigRegistry.SCHEDULE,
-				ConfigRegistry.LDAP,
-				ConfigRegistry.NORMAL,
-				ConfigRegistry.CUSTOM):
+		for reg in self.LAYER_PRIORITIES:
 			try:
 				registry = self._registry[reg]
 				value = registry[key]
@@ -202,13 +195,7 @@ class ConfigRegistry(MutableMapping):
 	def _merge(self, getscope=False):
 		"""Merge sub registry."""
 		merge = {}
-		for reg in (
-			ConfigRegistry.FORCED,
-			ConfigRegistry.SCHEDULE,
-			ConfigRegistry.LDAP,
-			ConfigRegistry.NORMAL,
-			ConfigRegistry.CUSTOM,
-		):
+		for reg in self.LAYER_PRIORITIES:
 			registry = self._registry[reg]
 			if not isinstance(registry, _ConfigRegistry):
 				continue
