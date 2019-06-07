@@ -1,0 +1,2 @@
+E:0007-3: debian/changelog: not strict-monotonically increasing by time: Wed, 27 Feb 2019 08:16:59 +0100 <= Wed, 27 Feb 2019 08:16:59 +0100
+E:0007-4: debian/changelog: not strict-monotonically increasing by version: 1 <= 2
