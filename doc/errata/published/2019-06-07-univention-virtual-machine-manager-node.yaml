@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Re-connect VMs to bridges on network restart.
 bug: [47701]
+erratum: 143
+announced: 2019-06-07
