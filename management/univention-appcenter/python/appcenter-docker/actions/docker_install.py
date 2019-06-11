@@ -80,7 +80,7 @@ class Install(Install, DockerActionMixin):
 					code = -1
 					if process:
 						code = process.returncode
-					raise InstallSetupFailed(code=code, stderr=list(logger.stderr()))
+					raise InstallSetupFailed(code=code, stderr=list(logger.stdstream()))
 			finally:
 				del logger
 		self._execute_container_script(app, 'restore_data_after_setup', credentials=False)

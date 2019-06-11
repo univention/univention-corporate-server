@@ -164,7 +164,7 @@ class InstallRemoveUpgrade(Register):
 					try:
 						# do not send more than 500 char of status_details
 						if isinstance(status_details, basestring):
-							status_details = status_details[:500]
+							status_details = status_details[5000:]
 						self._send_information(app, status, status_details)
 					except NetworkError:
 						self.log('Ignoring this error...')

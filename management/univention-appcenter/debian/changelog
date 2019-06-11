@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-35) unstable; urgency=medium
+
+  * Bug #49625: more debug info in InstallSetupFailed
+
+ -- Felix Botner <botner@univention.de>  Tue, 11 Jun 2019 10:41:35 +0200
+
 univention-appcenter (8.0.11-34) unstable; urgency=medium
 
   * Bug #48881: raise DockerCouldNotStartContainer if container is None
