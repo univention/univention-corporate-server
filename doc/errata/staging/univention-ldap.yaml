@@ -9,5 +9,5 @@ desc: |
  * OpenLDAP restricts the number of returned entries when searching. This can
    be configured using the UCR variable 'ldap/sizelimit', which defaults to
    400k. This is not enough for `univention-translog prune`. Remove the limit
-   for parged searches connecting via <ldapi:///>.
+   for searches connecting via <ldapi:///>.
 bug: [49505]
