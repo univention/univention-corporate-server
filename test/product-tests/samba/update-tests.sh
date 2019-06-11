@@ -103,7 +103,7 @@ test_before_update () {
 	# reboot system to apply gpo's
 	python shared-utils/ucs-winrm.py reboot --client $WIN1
 	sleep 30
-	python shared-utils/ucs-winrm.py run-ps --cmd 'gpupdate /force' --client $WIN1  --credssp
+	#python shared-utils/ucs-winrm.py run-ps --cmd 'gpupdate /force' --client $WIN1  --credssp
 	# Werden die GPOs ausgewertet?
 	python shared-utils/ucs-winrm.py check-applied-gpos --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --client $WIN1 \
 		--usergpo 'GPO5' --usergpo 'GPO3' --usergpo 'Default Domain Policy' \
