@@ -1,6 +1,9 @@
 header {
 	background-color: #6e6e6e;
 	min-height: 48px;
+	position: fixed;
+	z-index: 1000;
+	width: 100%;
 }
 html, body {
 	padding: 0;
@@ -16,6 +19,8 @@ nav {
 }
 nav, main {
 	float: left;
+	position: relative;
+	top: 48px;
 }
 h1 {
 	margin: 0;

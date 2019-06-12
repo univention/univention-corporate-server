@@ -112,6 +112,7 @@ class RessourceBase(object):
 		self.finish()
 
 	def prepare(self):
+		self.set_header('Server', 'Univention/1.0')  # TODO:
 		self.request.path_decoded = urllib.unquote(self.request.path)
 		authorization = self.request.headers.get('Authorization')
 		if not authorization:
@@ -228,6 +229,7 @@ class RessourceBase(object):
 		home = ET.SubElement(h1, 'a', rel='home', href=self.abspath('/'))
 		home.text = ' '
 		links = ET.SubElement(body, 'nav')
+		links = ET.SubElement(links, 'ul')
 		main = ET.SubElement(body, 'main')
 		for link in self._headers.get_list('Link'):
 			link, foo, _params = link.partition(';')
@@ -244,8 +246,8 @@ class RessourceBase(object):
 			#	self.set_header('X-Frame-Options', 'SAMEORIGIN')
 			#	body.insert(1, ET.Element('iframe', src=link, name='tree'))
 			#	continue
-			ET.SubElement(links, "a", href=link, **params).text = params.get('title', link) or link
-			ET.SubElement(links, "br")
+			li = ET.SubElement(links, "li")
+			ET.SubElement(li, "a", href=link, **params).text = params.get('title', link) or link
 
 		if isinstance(response, (list, tuple)):
 			main.extend(response)
@@ -286,6 +288,7 @@ class RessourceBase(object):
 					response = response[key]
 					break
 		if isinstance(response, (list, tuple)):
+			print('WARNING: uses deprecated LIST response')
 			for thing in response:
 				if isinstance(thing, dict) and thing.get('uri'):
 					x = thing.copy()
@@ -303,12 +306,13 @@ class RessourceBase(object):
 					root.append(pre)
 					root.append(ET.Element("br"))
 		else:
-			pre = ET.Element("pre")
 			r = response.copy()
 			r.pop('_forms', None)
 			r.pop('_links', None)
-			pre.text = json.dumps(r, indent=4)
-			root.append(pre)
+			if r:
+				pre = ET.Element("pre")
+				pre.text = json.dumps(r, indent=4)
+				root.append(pre)
 		return root
 
 	def urljoin(self, *args):
