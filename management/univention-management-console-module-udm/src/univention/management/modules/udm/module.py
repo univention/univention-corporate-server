@@ -381,8 +381,18 @@ class RessourceBase(object):
 			},
 		})
 
-	def add_caching(self, expires=None):
-		cache_control = ''
+	def add_caching(self, expires=None, public=False, must_revalidate=False, no_cache=False, no_store=False, no_transform=False, max_age=None, shared_max_age=None, proxy_revalidate=False):
+		control = [
+			'public' if public else 'private',
+			'must-revalidate' if must_revalidate else '',
+			'no-cache' if no_cache else '',
+			'no-store' if no_store else '',
+			'no-transform' if no_transform else '',
+			'max-age=%d' % (max_age,) if max_age else '',
+			's-maxage=%d' % (shared_max_age,) if shared_max_age else '',
+			'proxy-revalidate' if proxy_revalidate else '',
+		]
+		cache_control = ', '.join(x for x in control if x)
 		if cache_control:
 			self.add_header('Cache-Control', cache_control)
 		if expires:
@@ -453,6 +463,7 @@ class Relations(Ressource):
 			'license-check': 'Check if the license limits are reached',
 			'license-import': 'Import a new license in LDIF format',
 		}
+		self.add_caching(public=True)
 		result = relations.get(relation)
 		self.content_negotiation(result)
 
@@ -483,6 +494,7 @@ class Modules(Ressource):
 		#self.add_link(result, '/udm/relation/object-modules/all', self.urljoin('navigation') + '/', name='all')
 		self.add_link(result, '/udm/relation/object-modules', self.urljoin('license') + '/', name='license')
 		self.add_link(result, '/udm/relation/ldap-base', self.urljoin('ldap/base') + '/')
+		self.add_caching(public=True)
 		self.content_negotiation(result)
 
 
@@ -516,6 +528,7 @@ class ObjectTypes(Ressource):
 			self.add_link(result, 'udm/relation/tree', self.urljoin('../', object_type, 'tree'))
 		for mod in result['entries']:
 			self.add_link(result, '/udm/relation/object-types', self.urljoin('../%s' % quote(mod['id'])) + '/', name=mod['id'], title=mod['label'])
+		self.add_caching(public=True)
 		self.content_negotiation(result)
 
 
@@ -535,6 +548,7 @@ class ObjectTypesNavigation(Ressource):
 				self.add_link(result, '/udm/relation/object-types', self.urljoin('../%s' % quote(mod['id'])) + '/', name=mod['id'], title=mod['label'])
 			result['entries'] = entries
 			self.add_link(result, 'udm/relation/tree', self.abspath('container/dc/tree'))
+			self.add_caching(public=True)
 			self.content_negotiation(result)
 			return
 
@@ -567,6 +581,7 @@ class ObjectTypesNavigation(Ressource):
 		for mod in entries:
 			self.add_link(result, '/udm/relation/object-types', self.urljoin('../%s' % quote(mod['id'])) + '/', name=mod['id'], title=mod['label'])
 		result['entries'] = entries
+		self.add_caching(public=True)
 		self.content_negotiation(result)
 
 
@@ -578,6 +593,7 @@ class LdapBase(Ressource):
 		self.add_link(result, '', url)
 		self.set_header('Location', url)
 		self.set_status(301)
+		self.add_caching(public=True)
 		self.content_negotiation(result)
 
 
@@ -654,6 +670,7 @@ class Tree(ContainerQueryBase):
 			modules = [object_type]
 
 		containers = yield self._container_query(object_type, container, modules, scope)
+		self.add_caching(public=False)
 		self.content_negotiation(containers)
 
 
@@ -668,6 +685,7 @@ class MoveDestinations(ContainerQueryBase):
 			scope = 'base'
 
 		containers = yield self._container_query(object_type, container, modules, scope)
+		self.add_caching(public=False)
 		self.content_negotiation(containers)
 
 
@@ -685,6 +703,7 @@ class Properties(Ressource):
 		if searchable:
 			properties = [prop for prop in properties if prop.get('searchable', False)]
 
+		self.add_caching(public=True)
 		self.content_negotiation(properties)
 
 
@@ -694,6 +713,7 @@ class Options(Ressource):
 	def get(self, object_type):
 		"""Returns the options specified for the given object type"""
 		result = self.get_module(object_type).options.keys()
+		self.add_caching(public=True)
 		self.content_negotiation(result)
 
 
@@ -712,6 +732,7 @@ class Layout(Ressource):
 		if dn:
 			dn = unquote_dn(dn)
 		result = module.get_layout(dn)
+		self.add_caching(public=True)
 		self.content_negotiation(result)
 
 
@@ -730,6 +751,7 @@ class Templates(Ressource):
 				obj.open()
 				result.append({'id': obj.dn, 'label': obj[template.identifies]})
 
+		self.add_caching(public=False)
 		self.content_negotiation(result)
 
 
@@ -744,6 +766,7 @@ class DefaultContainers(Ressource):
 		module = self.get_module(object_type)
 		containers = [{'id': x, 'label': ldap_dn2path(x)} for x in module.get_default_containers()]
 		containers.sort(cmp=lambda x, y: cmp(x['label'].lower(), y['label'].lower()))
+		self.add_caching(public=True)
 		self.content_negotiation(containers)
 
 
@@ -753,6 +776,7 @@ class Policies(Ressource):
 	def get(self, object_type):
 		module = self.get_module(object_type)
 		result = module.policies
+		self.add_caching(public=False)
 		self.content_negotiation(result)
 
 
@@ -770,6 +794,7 @@ class ReportTypes(ReportingBase):
 		# i18n: translattion for univention-directory-reports
 		# _('PDF Document')
 		result = [{'id': name, 'label': _(name)} for name in sorted(self.reports_cfg.get_report_names(object_type))]
+		self.add_caching(public=True)
 		self.content_negotiation(result)
 
 
@@ -834,6 +859,7 @@ class NextFreeIpAddress(Ressource):
 			'dnsEntryZoneReverse': obj['dnsEntryZoneReverse']
 		}
 
+		self.add_caching(public=False)
 		self.content_negotiation(result)
 
 		if self.request.get_query_argument('increaseCounter'):
@@ -848,6 +874,7 @@ class DefaultValue(Ressource):
 	def get(self, object_type, property_):
 		module = self.get_module(object_type)
 		result = module.get_default_values(property_)
+		self.add_caching(public=False)
 		self.content_negotiation(result)
 
 
@@ -950,6 +977,7 @@ class Objects(Ressource):
 			self.add_link(result, 'next', '%s?%s' % (self.urljoin(''), urllib.urlencode(qs, True)), title=_('Next page'))
 
 		result['entries'] = entries  # TODO: is "entries" a good name? items, objects
+		self.add_caching(public=False)
 		self.content_negotiation(result)
 
 	@tornado.gen.coroutine
@@ -1005,10 +1033,12 @@ class Objects(Ressource):
 			UDM_Error(exc).reraise()
 		self.set_header('Location', self.urljoin(quote_dn(dn)))
 		self.set_status(201)
+		self.add_caching(public=False)
 		self.content_negotiation({})
 
 	def options(self, object_type):
 		result = self._options(object_type)
+		self.add_caching(public=False)
 		self.content_negotiation(result)
 
 	def _options(self, object_type):
@@ -1081,6 +1111,7 @@ class Object(Ressource):
 		meta = dict((key, [val.decode('utf-8', 'replace') for val in value]) for key, value in self.ldap_connection.get(obj.dn, attr=[b'+']).items())
 		props['meta'] = meta
 		self.add_header('Last-Modified', last_modified(time.strptime(meta['modifyTimestamp'][0], '%Y%m%d%H%M%SZ')))
+		self.add_caching(public=False)
 		self.content_negotiation(props)
 
 	@classmethod
@@ -1148,6 +1179,7 @@ class Object(Ressource):
 			self.set_status(302)
 			self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
 
+		self.add_caching(public=False)
 		self.content_negotiation({})
 
 	@tornado.gen.coroutine
@@ -1157,6 +1189,7 @@ class Object(Ressource):
 		if not module:
 			raise NotFound(object_type)
 		yield self.modify(module, self.request.body_arguments, dn)
+		self.add_caching(public=False)
 		self.content_negotiation({})
 
 	@tornado.gen.coroutine
@@ -1222,6 +1255,7 @@ class Object(Ressource):
 		cleanup = bool(self.get_query_argument('cleanup', False))
 		recursive = bool(self.get_query_argument('recursive', False))
 		yield self.pool.submit(module.remove, dn, cleanup, recursive)
+		self.add_caching(public=False)
 		self.content_negotiation({})
 
 	def options(self, object_type, dn):
@@ -1278,6 +1312,7 @@ class ObjectAdd(Ressource):
 
 	@tornado.gen.coroutine
 	def get(self, object_type):
+		self.add_caching(public=True)
 		self.content_negotiation({})
 
 
@@ -1317,6 +1352,7 @@ class ObjectEdit(Ressource):
 			# modification of this object type is not possible
 			raise NotFound(object_type)
 
+		self.add_caching(public=True)
 		self.content_negotiation(result)
 
 
@@ -1333,6 +1369,7 @@ class PropertyChoices(Ressource):
 			raise NotFound(object_type, dn)
 		request_body = {'syntax': syntax.name}  # FIXME
 		choices = yield self.pool.submit(read_syntax_choices, _get_syntax(syntax.name), request_body, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
+		self.add_caching(public=False)
 		self.content_negotiation(choices)
 
 
@@ -1344,6 +1381,7 @@ class PolicyTypes(Ressource):
 		dn = unquote_dn(dn)
 		module = self.get_module(object_type)
 		result = module.policies
+		self.add_caching(public=True)
 		self.content_negotiation(result)
 
 
@@ -1354,6 +1392,7 @@ class PolicyResult(Ressource):
 	def get(self, object_type, policy_type, dn):
 		dn = unquote_dn(dn)
 		infos = yield self._get(object_type, policy_type, dn)
+		self.add_caching(public=False, no_cache=True, must_revalidate=True, no_store=True)
 		self.content_negotiation(infos)
 
 	@run_on_executor(executor='pool')
@@ -1436,6 +1475,7 @@ class Operations(Ressource):
 			self.set_status(301)
 			self.add_header('Location', self.urljoin(''))
 			self.add_header('Retry-After', '1')
+		self.add_caching(public=False, no_store=True, no_cache=True, must_revalidate=True)
 		self.content_negotiation(result)
 
 
@@ -1467,6 +1507,7 @@ class LicenseRequest(Ressource):
 
 		# creating a new ucr variable to prevent duplicated registration (Bug #35711)
 		handler_set(['ucs/web/license/requested=true'])
+		self.add_caching(public=False, no_store=True, no_cache=True, must_revalidate=True)
 		self.content_negotiation({'message': _('A new license has been requested.')})
 
 
@@ -1478,6 +1519,7 @@ class LicenseCheck(Ressource):
 			check_license(self.ldap_connection)
 		except LicenseError as exc:
 			message = str(exc)
+		self.add_caching(public=False, max_age=120)
 		self.content_negotiation(message)
 
 
@@ -1545,6 +1587,7 @@ class License(Ressource):
 				license_data['baseDN'] = ucr.get('ldap/base', '')
 			license_data['freeLicense'] = free_license
 			license_data['sysAccountsFound'] = udm_license._license.sysAccountsFound
+		self.add_caching(public=False, max_age=120)
 		self.content_negotiation(license_data)
 
 	def post(self):
