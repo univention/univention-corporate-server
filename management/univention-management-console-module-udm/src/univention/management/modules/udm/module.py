@@ -238,7 +238,8 @@ class RessourceBase(object):
 			body.append(response)
 
 		self.write('<!DOCTYPE html>\n')
-		tree = ET.ElementTree(root)
+		ajax = self.request.headers.get('X-Requested-With', '').lower() == 'xmlhttprequest'
+		tree = ET.ElementTree(body if ajax else root)
 		tree.write(self)
 
 	def get_json(self, response):
