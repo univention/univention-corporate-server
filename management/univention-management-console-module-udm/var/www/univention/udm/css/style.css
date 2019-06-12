@@ -1,0 +1,38 @@
+header {
+	background-color: #6e6e6e;
+	min-height: 48px;
+}
+html, body {
+	padding: 0;
+	margin: 0;
+	background-color: #f2f2f2;
+}
+main {
+	margin: 8px;
+}
+nav {
+	width: 400px;
+	word-break: break-all;
+}
+nav, main {
+	float: left;
+}
+h1 {
+	margin: 0;
+}
+
+#logo {
+	background-image: url('/univention/js/dijit/themes/umc/images/univention_u-white.svg');
+	background-repeat: no-repeat;
+	background-position: center center;
+	width: 56px;
+	height: 48px;
+	position: relative;
+	right: 0;
+}
+
+iframe[name=tree] {
+	float: left;
+	height: 100%;
+	border: 0 none;
+}

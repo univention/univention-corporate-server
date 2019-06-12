@@ -63,6 +63,9 @@ from ldap.filter import filter_format
 from ldap.dn import explode_rdn
 from ldap.controls import SimplePagedResultsControl
 import xml.etree.cElementTree as ET
+import xml.dom.minidom
+from genshi import XML
+from genshi.output import HTMLSerializer
 
 from univention.management.console.config import ucr
 from univention.management.console.ldap import get_user_connection, get_machine_connection
@@ -80,10 +83,8 @@ import univention.udm
 
 from univention.lib.i18n import Translation
 # TODO: PAM authentication ?
-# TODO: set Last-Modified
 # FIXME: add_asterisks sanitizer
 # FIXME: prevent in the javascript UMC module that navigation container query is called with container=='None'
-# TODO: translation
 # FIXME: it seems request.path contains the un-urlencoded path, could be security issue!
 # TODO: 0f77c317e03844e8a16c484dde69abbcd2d2c7e3 is not integrated
 # TODO: replace etree with genshi, etc.
@@ -213,13 +214,20 @@ class RessourceBase(object):
 		return json.dumps(response)
 
 	def content_negotiation_html(self, response):
-		self.set_header('Content-Type', 'text/html')
+		self.set_header('Content-Type', 'text/html; charset=UTF-8')
 
 		root = ET.Element("html")
 		head = ET.SubElement(root, "head")
 		titleelement = ET.SubElement(head, "title")
 		titleelement.text = 'FIXME: fallback'
+		ET.SubElement(head, 'meta', content='text/html; charset=utf-8', **{'http-equiv': 'content-type'})
 		body = ET.SubElement(root, "body")
+		header = ET.SubElement(body, 'header')
+		h1 = ET.SubElement(header, 'h1', id='logo')
+		home = ET.SubElement(h1, 'a', rel='home', href=self.abspath('/'))
+		home.text = ' '
+		links = ET.SubElement(body, 'nav')
+		main = ET.SubElement(body, 'main')
 		for link in self._headers.get_list('Link'):
 			link, foo, _params = link.partition(';')
 			link = link.strip().lstrip('<').rstrip('>')
@@ -227,20 +235,31 @@ class RessourceBase(object):
 			if _params.strip():
 				params = dict((x.strip(), y.strip().strip('"')) for x, y in ((param.split('=', 1) + [''])[:2] for param in _params.split(';')))
 			ET.SubElement(head, "link", href=link, **params)
-			ET.SubElement(body, "a", href=link, **params).text = params.get('title', link) or link
-			ET.SubElement(body, "br")
 			if params.get('rel') == 'self':
 				titleelement.text = params.get('title') or link or 'FIXME:notitle'
+			if params.get('rel') in ('stylesheet',):
+				continue
+			#if params.get('rel') in ('udm/relation/tree',):
+			#	self.set_header('X-Frame-Options', 'SAMEORIGIN')
+			#	body.insert(1, ET.Element('iframe', src=link, name='tree'))
+			#	continue
+			ET.SubElement(links, "a", href=link, **params).text = params.get('title', link) or link
+			ET.SubElement(links, "br")
 
 		if isinstance(response, (list, tuple)):
-			body.extend(response)
+			main.extend(response)
 		elif response is not None:
-			body.append(response)
+			main.append(response)
 
-		self.write('<!DOCTYPE html>\n')
 		ajax = self.request.headers.get('X-Requested-With', '').lower() == 'xmlhttprequest'
-		tree = ET.ElementTree(body if ajax else root)
-		tree.write(self)
+		if not ajax:
+			stream = XML(xml.dom.minidom.parseString(ET.tostring(root, encoding='utf-8', method='xml')).toprettyxml())
+			#stream = XML(ET.tostring(root, encoding='utf-8', method='html'))
+			self.write(''.join((HTMLSerializer('html5')(stream))))
+		else:
+			self.write('<!DOCTYPE html>\n')
+			tree = ET.ElementTree(body if ajax else root)
+			tree.write(self)
 
 	def get_json(self, response):
 		return response
@@ -248,6 +267,7 @@ class RessourceBase(object):
 	def get_html(self, response):
 		root = []
 		if isinstance(response, dict):
+			self.add_link(response, 'stylesheet', self.abspath('styles.css'))
 			for _form in response.get('_forms', []):
 				form = ET.Element('form', method=_form['method'], action=_form['action'] or '', rel=_form.get('rel', ''))
 				for field in _form['fields']:
@@ -283,13 +303,19 @@ class RessourceBase(object):
 					root.append(ET.Element("br"))
 		else:
 			pre = ET.Element("pre")
-			pre.text = json.dumps(response, indent=4)
+			r = response.copy()
+			r.pop('_form', None)
+			r.pop('_links', None)
+			pre.text = json.dumps(r, indent=4)
 			root.append(pre)
 		return root
 
 	def urljoin(self, *args):
 		base = urlparse(self.request.full_url())
 		return urljoin(urljoin(urlunparse((base.scheme, base.netloc, 'univention/' if self.request.headers.get('X-Forwarded-Host') else '/', '', '', '')), self.request.path_decoded.lstrip('/')), '/'.join(args))
+
+	def abspath(self, *args):
+		return urljoin(self.urljoin('/univention/udm/' if self.request.headers.get('X-Forwarded-Host') else '/udm/'), '/'.join(args))
 
 	def add_link(self, obj, relation, href, **kwargs):
 		links = obj.setdefault('_links', {})
@@ -404,7 +430,7 @@ class Relations(Ressource):
 			# Univention:
 			'object': '',
 			'object-modules': 'list of available module categories',
-			'object-modules/all': 'list of all available modules',
+			#'object-modules/all': 'list of all available modules',
 			'object-types': 'list of object types matching the given flavor or container',
 			'properties': 'properties of the given object type',
 			'options': 'options specified for the given object type',
@@ -442,7 +468,7 @@ class Modules(Ressource):
 		'nagios': 'nagios/nagios',
 		'policies': 'policies/policy',
 		'self': 'users/self',
-		#'directory': 'navigation',
+		#'navigation': 'directory',
 	}
 
 	def get(self):
@@ -450,8 +476,9 @@ class Modules(Ressource):
 		for main_type in self.mapping:
 			self.add_link(result, '/udm/relation/object-modules', self.urljoin(quote(main_type)) + '/', name=main_type)
 		self.add_link(result, '/udm/relation/object-modules', self.urljoin('navigation') + '/', name='all')
-		self.add_link(result, '/udm/relation/object-modules/all', self.urljoin('navigation') + '/', name='all')
+		#self.add_link(result, '/udm/relation/object-modules/all', self.urljoin('navigation') + '/', name='all')
 		self.add_link(result, '/udm/relation/object-modules', self.urljoin('license') + '/', name='license')
+		self.add_link(result, '/udm/relation/ldap-base', self.urljoin('ldap/base') + '/')
 		self.content_negotiation(result)
 
 
@@ -481,6 +508,8 @@ class ObjectTypes(Ressource):
 
 		self.add_link(result, 'parent', self.urljoin('../'), title=_('Object modules'), name='FIXME:udm/relation/object-modules')  # FIXME: name is wrong
 		self.add_link(result, 'self', self.urljoin(''))
+		if module.has_tree:
+			self.add_link(result, 'udm/relation/tree', self.urljoin('../', object_type, 'tree'))
 		for mod in result['entries']:
 			self.add_link(result, '/udm/relation/object-types', self.urljoin('../%s' % quote(mod['id'])) + '/', name=mod['id'], title=mod['label'])
 		self.content_negotiation(result)
@@ -501,6 +530,7 @@ class ObjectTypesNavigation(Ressource):
 			for mod in entries:
 				self.add_link(result, '/udm/relation/object-types', self.urljoin('../%s' % quote(mod['id'])) + '/', name=mod['id'], title=mod['label'])
 			result['entries'] = entries
+			self.add_link(result, 'udm/relation/tree', self.abspath('container/dc/tree'))
 			self.content_negotiation(result)
 			return
 
@@ -533,6 +563,17 @@ class ObjectTypesNavigation(Ressource):
 		for mod in entries:
 			self.add_link(result, '/udm/relation/object-types', self.urljoin('../%s' % quote(mod['id'])) + '/', name=mod['id'], title=mod['label'])
 		result['entries'] = entries
+		self.content_negotiation(result)
+
+
+class LdapBase(Ressource):
+
+	def get(self):
+		result = {}
+		url = self.abspath('container/dc', quote_dn(ucr['ldap/base']))
+		self.add_link(result, '', url)
+		self.set_header('Location', url)
+		self.set_status(301)
 		self.content_negotiation(result)
 
 
@@ -837,7 +878,7 @@ class Objects(Ressource):
 		# TODO: add limit, page, ordering, ...
 		form = self.add_form(result, None, 'GET', relation='search')
 		self.add_form_element(form, 'position', container or '')
-		self.add_form_element(form, 'property', objectProperty or '')
+		self.add_form_element(form, 'property', objectProperty or '')  # TODO: type=select
 		self.add_form_element(form, 'propertyvalue', objectPropertyValue or '')
 		self.add_form_element(form, 'scope', 'sub')
 		self.add_form_element(form, 'hidden', '1', type='checkbox', checked=bool(hidden))
@@ -985,7 +1026,8 @@ class Objects(Ressource):
 		self.add_link(result, 'udm/relation/layout', self.urljoin('layout'))
 		self.add_link(result, 'udm/relation/templates', self.urljoin('templates'))
 		self.add_link(result, 'udm/relation/default-containers', self.urljoin('default-containers'))
-		self.add_link(result, 'udm/relation/tree', self.urljoin('tree'))
+		if module.has_tree:
+			self.add_link(result, 'udm/relation/tree', self.urljoin('tree'))
 		self.add_link(result, 'udm/relation/policies', self.urljoin('policies'))
 		self.add_link(result, 'udm/relation/report-types', self.urljoin('report-types'))
 #		self.add_link(result, '', self.urljoin(''))
@@ -1259,13 +1301,18 @@ class ObjectEdit(Ressource):
 			self.add_form_element(form, '', _('Remove'), type='submit')
 		if set(module.operations) & {'move', 'subtree_move'}:
 			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='PUT', relation='')
-			self.add_form_element(form, 'position', obj.position.getDn())
+			self.add_form_element(form, 'position', self.ldap_connection.parentDn(obj.dn))  # TODO: replace with <select>
 			self.add_form_element(form, '', _('Move'), type='submit')
 		if 'edit' in module.operations:
 			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='PUT', relation='')
 			for key, value in encode_properties(obj.module, obj.info, self.ldap_connection):
 				self.add_form_element(form, key, value)
 			self.add_form_element(form, '', _('Modify'), type='submit')
+
+		if '_forms' not in result:
+			# modification of this object type is not possible
+			raise NotFound(object_type)
+
 		self.content_negotiation(result)
 
 
@@ -1579,12 +1626,13 @@ class Application(tornado.web.Application):
 		property_ = '([^/]+)'
 		super(Application, self).__init__([
 			(r"/favicon.ico", Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
-			(r"/udm/", Modules),
+			(r"/udm/(?:index.html)?", Modules),
 			(r"/udm/relation/(.*)", Relations),
 			(r"/udm/license/", License),
 			(r"/udm/license/check", LicenseCheck),
 			(r"/udm/license/request", LicenseRequest),
 			(r"/udm/navigation/", ObjectTypesNavigation),
+			(r"/udm/ldap/base/", LdapBase),
 			(r"/udm/%s/tree" % (object_type,), Tree),
 			(r"/udm/%s/properties" % (object_type,), Properties),
 			(r"/udm/%s/" % (module_type,), ObjectTypes),

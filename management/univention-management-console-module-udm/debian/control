@@ -36,6 +36,7 @@ Depends: ${misc:Depends},
  python-mimeparse,
  python-concurrent.futures,
  python-pycurl,
+ python-genshi,
  systemd,
 Description: HTTP service for UCS Directory Manager
  This package contains the HTTP service for UCS Directory Manager.
