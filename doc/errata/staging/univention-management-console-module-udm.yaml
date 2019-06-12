@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-management-console-module-udm
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * A new package has been added which contains a prototype of a HTTP
+   service for the Univention Directory Manager.
+bug: [27816]
