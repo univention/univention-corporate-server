@@ -247,6 +247,18 @@ class RessourceBase(object):
 	def get_html(self, response):
 		root = []
 		if isinstance(response, dict):
+			for _form in response.get('_forms', []):
+				form = ET.Element('form', method=_form['method'], action=_form['action'] or '', rel=_form.get('rel', ''))
+				for field in _form['fields']:
+					name = field['name']
+					label = ET.Element('label', **{'for': name})
+					label.text = field.get('label', name)
+					form.append(label)
+					form.append(ET.Element(field.get('element', 'input'), type=field.get('type', 'text'), name=name, placeholder=field.get('placeholder', name), value=str(field['value'])))
+					form.append(ET.Element('br'))
+				form.append(ET.Element('hr'))
+
+				root.insert(0, form)
 			for key in ('entries', 'error', 'errors'):
 				if response.get(key):
 					response = response[key]
@@ -282,6 +294,30 @@ class RessourceBase(object):
 		links = obj.setdefault('_links', {})
 		links.setdefault(relation, []).append(dict(kwargs, href=href))
 		self.add_header('Link', '<%s>; rel="%s"; name="%s"; title="%s"' % (href, relation, kwargs.get('name', ''), kwargs.get('title', '')))  # TODO: quoting
+
+	def add_form(self, obj, action, method, relation=None, **kwargs):
+		form = {
+			'action': action,
+			'method': method,
+		}
+		form.update(kwargs)
+		obj.setdefault('_forms', []).append(form)
+		return form
+
+	def add_form_element(self, form, name, value, label=None, type='text', relation=None, element='input', **kwargs):
+		field = {
+			'name': name,
+			'value': value,
+			'type': type,
+			'element': element,
+		}
+		if relation:
+			field['rel'] = relation
+		if label:
+			field['label'] = label
+		field.update(kwargs)
+		form.setdefault('fields', []).append(field)
+		return field
 
 	def write_error(self, status_code, exc_info=None, **kwargs):
 		if not exc_info:  # or isinstance(exc_info[1], HTTPError):
@@ -798,16 +834,16 @@ class Objects(Ressource):
 			page = None
 
 		# TODO: add limit, page, ordering, ...
-		result['query'] = {
-			'position': container,
-			'property': objectProperty,
-			'propertyvalue': objectPropertyValue,
-			'scope': 'sub',
-			'hidden': '1' if hidden else '',
-			'fields': list(fields),
-			'page': str(page or '1'),
-			'pagesize': str(items_per_page or '0'),
-		}
+		form = self.add_form(result, None, 'GET', relation='search')
+		self.add_form_element(form, 'position', container or '')
+		self.add_form_element(form, 'property', objectProperty or '')
+		self.add_form_element(form, 'propertyvalue', objectPropertyValue or '')
+		self.add_form_element(form, 'scope', 'sub')
+		self.add_form_element(form, 'hidden', '1', type='checkbox', checked=bool(hidden))
+		#self.add_form_element(form, 'fields', list(fields))
+		self.add_form_element(form, 'page', str(page or '1'))
+		self.add_form_element(form, 'pagesize', str(items_per_page or '0'))
+		self.add_form_element(form, '', _('Search'), type='submit')
 
 		if superordinate:
 			mod = get_module(superordinate, superordinate, self.ldap_connection)
@@ -869,24 +905,6 @@ class Objects(Ressource):
 
 		result['entries'] = entries  # TODO: is "entries" a good name? items, objects
 		self.content_negotiation(result)
-
-	def get_html(self, response):
-		root = super(Objects, self).get_html(response)
-		if self.request.method == 'GET' and isinstance(root, list) and isinstance(response, dict) and response.get('query'):
-			form = ET.Element('form', method='GET', rel='search')
-			for key, value in response['query'].items():
-				label = ET.Element('label', **{'for': key})
-				label.text = key
-				form.append(label)
-				if isinstance(value, list):
-					for value in value:
-						form.append(ET.Element('input', type={'hidden': 'checkbox'}.get(key, 'text'), name=key, placeholder=key, value=value or ''))
-				else:
-					form.append(ET.Element('input', type={'hidden': 'checkbox'}.get(key, 'text'), name=key, placeholder=key, value=value or ''))
-				form.append(ET.Element('br'))
-			form.append(ET.Element('input', type='submit', value=_('Search')))
-			root.insert(0, form)
-		return root
 
 	@tornado.gen.coroutine
 	def post(self, object_type):
@@ -1228,37 +1246,24 @@ class ObjectEdit(Ressource):
 		obj = yield self.pool.submit(module.get, dn)
 		if not obj:
 			raise NotFound(object_type, dn)
+
 		if object_type not in ('users/self', 'users/passwd') and not univention.admin.modules.recognize(object_type, obj.dn, obj.oldattr):
 			raise NotFound(object_type, dn)
-		result = {'module': module, 'object': obj}
-		self.content_negotiation(result)
 
-	def get_html(self, response):
-		root = []
-		mod = response['module']
-		obj = response['object']
-		if 'remove' in mod.operations:
-			form = ET.Element('form', action=self.urljoin('.').rstrip('/'), method='DELETE', rel='')
-			form.append(ET.Element('input', type='submit', value=_('Remove')))
-			root.append(form)
-			root.append(ET.Element('br'))
-		if set(mod.operations) & {'move', 'subtree_move'}:
-			form = ET.Element('form', action=self.urljoin('.').rstrip('/'), method='PUT', rel='')
-			form.append(ET.Element('input', type='text', name='position', value=obj.position.getDn()))
-			form.append(ET.Element('input', type='submit', value=_('Move')))
-			root.append(form)
-			root.append(ET.Element('br'))
-		if 'edit' in mod.operations:
-			form = ET.Element('form', action=self.urljoin('.').rstrip('/'), method='PUT', rel='')
+		result = {}
+		if 'remove' in module.operations:
+			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='DELETE', relation='')
+			self.add_form_element(form, '', _('Remove'), type='submit')
+		if set(module.operations) & {'move', 'subtree_move'}:
+			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='PUT', relation='')
+			self.add_form_element(form, 'position', obj.position.getDn())
+			self.add_form_element(form, '', _('Move'), type='submit')
+		if 'edit' in module.operations:
+			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='PUT', relation='')
 			for key, value in encode_properties(obj.module, obj.info, self.ldap_connection):
-				label = ET.Element('label', **{'for': key})
-				label.text = key
-				form.append(label)
-				form.append(ET.Element('input', type='text', value=str(value), name=key))
-				form.append(ET.Element('br'))
-			form.append(ET.Element('input', type='submit', value=_('Modify')))
-			root.append(form)
-		return root
+				self.add_form_element(form, key, value)
+			self.add_form_element(form, '', _('Modify'), type='submit')
+		self.content_negotiation(result)
 
 
 class PropertyChoices(Ressource):
@@ -1424,6 +1429,15 @@ class License(Ressource):
 		self.add_link(license_data, '/udm/relation/license-check', self.urljoin('check'), title=_('Check license status'))
 		self.add_link(license_data, '/udm/relation/license-request', self.urljoin('request'))
 		self.add_link(license_data, '/udm/relation/license-import', self.urljoin(''))
+
+		form = self.add_form(license_data, self.urljoin('request'), 'GET', relation='/udm/relation/license-request')
+		self.add_form_element(form, 'email', '', type='email', label=_('E-Mail address'))
+		self.add_form_element(form, '', _('Request new license'), type='submit')
+
+		form = self.add_form(license_data, '', 'POST', relation='/udm/relation/license-import', enctype='multipart/form-data')
+		self.add_form_element(form, 'license', '', type='file', label=_('License file (ldif format)'))
+		self.add_form_element(form, '', _('Import license'), type='submit')
+
 		try:
 			import univention.admin.license as udm_license
 		except:
@@ -1473,26 +1487,6 @@ class License(Ressource):
 			license_data['freeLicense'] = free_license
 			license_data['sysAccountsFound'] = udm_license._license.sysAccountsFound
 		self.content_negotiation(license_data)
-
-	def get_html(self, response):
-		root = super(License, self).get_html(response)
-		if self.request.method == 'GET' and isinstance(root, list) and isinstance(response, dict):
-			form = ET.Element('form', method='get', rel='/udm/relation/license-request', action=self.urljoin('request'))
-			label = ET.Element('label', **{'for': 'email'})
-			label.text = _('E-Mail address')
-			form.append(label)
-			form.append(ET.Element('input', type='email', name='email'))
-			form.append(ET.Element('input', type='submit', value=_('Request new license')))
-			root.insert(0, form)
-
-			form = ET.Element('form', method='POST', enctype='multipart/form-data', rel='/udm/relation/license-import')
-			label = ET.Element('label', **{'for': 'license'})
-			label.text = _('License file (ldif format)')
-			form.append(label)
-			form.append(ET.Element('input', type='file', name='license'))
-			form.append(ET.Element('input', type='submit', value=_('Import license')))
-			root.insert(0, form)
-		return root
 
 	def post(self):
 		lic_file = tempfile.NamedTemporaryFile(delete=False)
