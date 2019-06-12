@@ -1426,7 +1426,12 @@ class Operations(Ressource):
 		if result.get('uri'):
 			self.set_status(303)
 			self.add_header('Location', result['uri'])
-			self.add_link
+			self.add_link(result, 'self', result['uri'])
+			self.queue.get(self.request.user_dn, {}).pop(progress, {})
+		else:
+			self.set_status(301)
+			self.add_header('Location', self.urljoin(''))
+			self.add_header('Retry-After', '1')
 		self.content_negotiation(result)
 
 
