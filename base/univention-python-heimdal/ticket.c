@@ -41,7 +41,7 @@
 krb5TicketObject *ticket_new(PyObject *unused, PyObject *args)
 {
 	krb5ContextObject *context;
-	if (!PyArg_ParseTuple(args, "O", &context))
+	if (!PyArg_ParseTuple(args, "O!", &krb5ContextType, &context))
 		return NULL;
 
 	krb5TicketObject *self = (krb5TicketObject *) PyObject_New(krb5TicketObject, &krb5TicketType);

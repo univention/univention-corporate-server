@@ -75,7 +75,7 @@ krb5KeytabObject *keytab_open(PyObject *unused, PyObject *args)
 	krb5_error_code err;
 	char keytab_buf[256];
 	krb5ContextObject *context;
-	if (!PyArg_ParseTuple(args, "Os", &context, &keytab_string))
+	if (!PyArg_ParseTuple(args, "O!z", &krb5ContextType, &context, &keytab_string))
 		return NULL;
 
 	krb5KeytabObject *self = (krb5KeytabObject *) PyObject_New(krb5KeytabObject, &krb5KeytabType);
@@ -124,9 +124,7 @@ static PyObject *keytab_add(krb5KeytabObject *self, PyObject *args)
 	int salt_flag = 1;
 	int random_flag = 0;
 
-	if (!PyArg_ParseTuple(args, "sissii", &principal_string, &kvno,
-				&enctype_string, &password_string,
-				&salt_flag, &random_flag))
+	if (!PyArg_ParseTuple(args, "siszii", &principal_string, &kvno, &enctype_string, &password_string, &salt_flag, &random_flag))
 		return NULL;
 
 	memset(&entry, 0, sizeof(entry));
@@ -258,8 +256,7 @@ static PyObject *keytab_remove(krb5KeytabObject *self, PyObject *args)
 	char *keytype_string = NULL;
 	krb5_enctype enctype = 0;
 
-	if (!PyArg_ParseTuple(args, "sis", &principal_string, &kvno,
-				&keytype_string))
+	if (!PyArg_ParseTuple(args, "ziz", &principal_string, &kvno, &keytype_string))
 		return NULL;
 
 	if (principal_string) {

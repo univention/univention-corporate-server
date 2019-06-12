@@ -45,7 +45,7 @@ krb5PrincipalObject *principal_new(PyObject *unused, PyObject *args)
 	krb5ContextObject *context;
 	char *principal_string;
 
-	if (!PyArg_ParseTuple(args, "Os", &context, &principal_string))
+	if (!PyArg_ParseTuple(args, "O!s", &krb5ContextType, &context, &principal_string))
 		return NULL;
 
 	krb5PrincipalObject *self = (krb5PrincipalObject *) PyObject_New(krb5PrincipalObject, &krb5PrincipalType);

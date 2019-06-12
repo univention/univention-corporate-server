@@ -98,7 +98,7 @@ PyObject* asn1_encode_key(PyObject *self, PyObject* args)
 	Key asn1_key;
 	Salt asn1_salt;
 
-	if (!PyArg_ParseTuple(args, "OOi", &keyblock, &salt, &mkvno))
+	if (!PyArg_ParseTuple(args, "O!O!i", &krb5KeyblockType, &keyblock, &krb5SaltType, &salt, &mkvno))
 		return NULL;
 
 	//asn1_key.mkvno = &mkvno;

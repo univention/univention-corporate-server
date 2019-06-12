@@ -49,8 +49,7 @@ krb5KeyblockObject *keyblock_new(PyObject *unused, PyObject *args)
 	krb5EnctypeObject *enctype;
 	char *password;
 	PyObject *arg;
-	if (!PyArg_ParseTuple(args, "OOsO", &context, &enctype, &password,
-				&arg))
+	if (!PyArg_ParseTuple(args, "O!O!sO", &krb5ContextType, &context, &krb5EnctypeType, &enctype, &password, &arg))
 		return NULL;
 
 	krb5KeyblockObject *self = (krb5KeyblockObject *) PyObject_New(krb5KeyblockObject, &krb5KeyblockType);
@@ -91,12 +90,11 @@ krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args)
 	krb5_error_code err;
 	krb5ContextObject *context;
 	PyObject *py_enctype;
-	PyObject *py_key;
-	uint8_t *key_buf;
-	size_t key_len;
+	char *key_data = NULL;
+	int key_len;
 	krb5_enctype enctype;
 
-	if (!PyArg_ParseTuple(args, "O!OS", &krb5ContextType, &py_context, &py_enctype, &py_key))
+	if (!PyArg_ParseTuple(args, "O!Os#", &krb5ContextType, &context, &py_enctype, &key_data, &key_len))
 		return NULL;
 
 	krb5KeyblockObject *self = (krb5KeyblockObject *) PyObject_NEW(krb5KeyblockObject, &krb5KeyblockType);
@@ -117,10 +115,7 @@ krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args)
 		return NULL;
 	}
 
-	key_buf = (uint8_t *) PyString_AsString(py_key);
-	key_len = PyString_Size(py_key);
-
-	err = krb5_keyblock_init(self->context->context, enctype, key_buf, key_len, &self->keyblock);
+	err = krb5_keyblock_init(self->context->context, enctype, key_data, key_len, &self->keyblock);
 
 	if (err) {
 		krb5_exception(NULL, err);

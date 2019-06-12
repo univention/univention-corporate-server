@@ -90,6 +90,14 @@ class TestPrincipal(unittest.TestCase):
 		context = heimdal.context()
 		self.principal = heimdal.principal(context, USER)
 
+	def test_type(self):
+		with self.assertRaises(TypeError):
+			heimdal.principal(None, USER)
+		with self.assertRaises(TypeError):
+			heimdal.principal("", USER)
+		with self.assertRaises(TypeError):
+			heimdal.principal(object(), USER)
+
 	def test_principal(self):
 		self.assertEqual(USER, str(self.principal))
 
@@ -196,6 +204,14 @@ class TestEnctype(unittest.TestCase):
 	def setUp(self):
 		context = heimdal.context()
 		self.enctype = heimdal.enctype(context, ENCSTR)
+
+	def test_type(self):
+		with self.assertRaises(TypeError):
+			heimdal.enctype(None, ENCSTR)
+		with self.assertRaises(TypeError):
+			heimdal.enctype("", ENCSTR)
+		with self.assertRaises(TypeError):
+			heimdal.enctype(object(), ENCSTR)
 
 	def test_enctype(self):
 		self.assertEqual(ENCINT, self.enctype.toint())

@@ -56,7 +56,7 @@ krb5EnctypeObject *enctype_new(PyObject *unused, PyObject *args)
 	krb5_error_code err;
 	krb5ContextObject *context;
 	char *enctype_string;
-	if (!PyArg_ParseTuple(args, "Os", &context, &enctype_string))
+	if (!PyArg_ParseTuple(args, "O!s", &krb5ContextType, &context, &enctype_string))
 		return NULL;
 
 	krb5EnctypeObject *self = (krb5EnctypeObject *) PyObject_NEW(krb5EnctypeObject, &krb5EnctypeType);

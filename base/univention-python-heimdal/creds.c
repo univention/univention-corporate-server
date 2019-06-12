@@ -77,8 +77,7 @@ krb5CredsObject *creds_new(PyObject *unused, PyObject *args)
 	krb5PrincipalObject *principal;
 	char *password_string;
 	char *in_tkt_service;
-	if (!PyArg_ParseTuple(args, "OOss", &context, &principal, &password_string,
-				&in_tkt_service))
+	if (!PyArg_ParseTuple(args, "O!O!ss", &krb5ContextType, &context, &krb5PrincipalType, &principal, &password_string, &in_tkt_service))
 		return NULL;
 
 	krb5CredsObject *self = (krb5CredsObject *) PyObject_NEW(krb5CredsObject, &krb5CredsType);

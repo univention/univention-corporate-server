@@ -44,7 +44,7 @@ krb5CcacheObject *ccache_open(PyObject *unused, PyObject *args)
 {
 	krb5_error_code err;
 	krb5ContextObject *context;
-	if (!PyArg_ParseTuple(args, "O", &context))
+	if (!PyArg_ParseTuple(args, "O!", &krb5ContextType, &context))
 		return NULL;
 
 	krb5CcacheObject *self = (krb5CcacheObject *) PyObject_NEW(krb5CcacheObject, &krb5CcacheType);
@@ -135,7 +135,7 @@ static PyObject *ccache_initialize(krb5CcacheObject *self, PyObject *args)
 	krb5_error_code err;
 	krb5PrincipalObject *principal;
 
-	if (!PyArg_ParseTuple(args, "O", &principal))
+	if (!PyArg_ParseTuple(args, "O!", &krb5PrincipalType, &principal))
 		return NULL;
 
 	err = krb5_cc_initialize(self->context->context, self->ccache, principal->principal);
@@ -152,7 +152,7 @@ static PyObject *ccache_store_cred(krb5CcacheObject *self, PyObject *args)
 	krb5_error_code err;
 	krb5CredsObject *creds;
 
-	if (!PyArg_ParseTuple(args, "O", &creds))
+	if (!PyArg_ParseTuple(args, "O!", &krb5CredsType, &creds))
 		return NULL;
 
 	err = krb5_cc_store_cred(self->context->context, self->ccache, &creds->creds);

@@ -59,7 +59,8 @@ krb5SaltObject *salt_new(PyObject *unused, PyObject *args)
 	krb5_error_code err;
 	krb5ContextObject *context;
 	krb5PrincipalObject *principal;
-	if (!PyArg_ParseTuple(args, "OO", &context, &principal))
+
+	if (!PyArg_ParseTuple(args, "O!O!", &krb5ContextType, &context, &krb5PrincipalType, &principal))
 		return NULL;
 
 	krb5SaltObject *self = (krb5SaltObject *) PyObject_NEW(krb5SaltObject, &krb5SaltType);
@@ -81,11 +82,11 @@ krb5SaltObject *salt_new(PyObject *unused, PyObject *args)
 }
 
 krb5SaltObject *salt_raw_new(PyObject *unused, PyObject *args) {
-
 	krb5ContextObject *context;
 	char *saltstring = NULL;
 	int saltlen;
-	if (! PyArg_ParseTuple(args, "Os#", &context, &saltstring, &saltlen))
+
+	if (!PyArg_ParseTuple(args, "O!s#", &krb5ContextType, &context, &saltstring, &saltlen))
 		return NULL;
 
 	krb5SaltObject *self = (krb5SaltObject *) PyObject_NEW(krb5SaltObject, &krb5SaltType);
