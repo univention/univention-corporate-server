@@ -196,12 +196,12 @@ class RessourceBase(object):
 	def get_body_argument(self, name, *args):
 		if self.request.headers.get('Content-Type', '').startswith('application/json'):
 			return self.request.body_arguments.get(name)
-		return super(Ressource, self).get_body_argument(name, *args)
+		return super(RessourceBase, self).get_body_argument(name, *args)
 
 	def get_body_arguments(self, name, *args):
 		if self.request.headers.get('Content-Type', '').startswith('application/json'):
 			return self.request.body_arguments.get(name)
-		return super(Ressource, self).get_body_arguments(name, *args)
+		return super(RessourceBase, self).get_body_arguments(name, *args)
 
 	def content_negotiation(self, response):
 		self.add_header('Vary', ', '.join(self.vary()))
@@ -238,7 +238,7 @@ class RessourceBase(object):
 			ET.SubElement(head, "link", href=link, **params)
 			if params.get('rel') == 'self':
 				titleelement.text = params.get('title') or link or 'FIXME:notitle'
-			if params.get('rel') in ('stylesheet',):
+			if params.get('rel') in ('stylesheet', 'icon'):
 				continue
 			#if params.get('rel') in ('udm/relation/tree',):
 			#	self.set_header('X-Frame-Options', 'SAMEORIGIN')
@@ -271,7 +271,7 @@ class RessourceBase(object):
 			self.add_link(response, 'stylesheet', self.abspath('styles.css'))
 			for _form in response.get('_forms', []):
 				form = ET.Element('form', method=_form['method'], action=_form['action'] or '', rel=_form.get('rel', ''))
-				for field in _form['fields']:
+				for field in _form.get('fields', []):
 					name = field['name']
 					label = ET.Element('label', **{'for': name})
 					label.text = field.get('label', name)
@@ -305,7 +305,7 @@ class RessourceBase(object):
 		else:
 			pre = ET.Element("pre")
 			r = response.copy()
-			r.pop('_form', None)
+			r.pop('_forms', None)
 			r.pop('_links', None)
 			pre.text = json.dumps(r, indent=4)
 			root.append(pre)
@@ -349,7 +349,7 @@ class RessourceBase(object):
 
 	def write_error(self, status_code, exc_info=None, **kwargs):
 		if not exc_info:  # or isinstance(exc_info[1], HTTPError):
-			return super(Ressource, self).write_error(status_code, exc_info=exc_info, **kwargs)
+			return super(RessourceBase, self).write_error(status_code, exc_info=exc_info, **kwargs)
 
 		etype, exc, etraceback = exc_info
 		if isinstance(exc, udm_errors.ldapError) and isinstance(getattr(exc, 'original_exception', None), (ldap.SERVER_DOWN, ldap.CONNECT_ERROR, ldap.INVALID_CREDENTIALS)):
@@ -408,12 +408,16 @@ class Ressource(RessourceBase, RequestHandler):
 
 class Favicon(RessourceBase, tornado.web.StaticFileHandler):
 
+	size = '16'
+
 	@classmethod
-	def get_absolute_path(cls, root, object_type):
+	def get_absolute_path(cls, root, object_type=''):
 		value = object_type.replace('/', '-')
+		if value == 'favicon':
+			value = 'users-user'
 		if not value.replace('-', '').replace('_', '').isalpha():
 			raise NotFound(object_type)
-		return '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/udm-%s.png' % (value,)
+		return '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/%sx%s/udm-%s.png' % (cls.size, cls.size, value,)
 
 
 class Relations(Ressource):
@@ -692,19 +696,22 @@ class MoveDestinations(ContainerQueryBase):
 class Properties(Ressource):
 	"""GET udm/users/user/properties (get properties of users/user object type)"""
 
-	def get(self, object_type, dn=None):
+	def get(self, object_type, dn=None):  # TODO: add link to DefaultValue
+		result = {}
 		if dn:
 			dn = unquote_dn(dn)
 		module = self.get_module(object_type)
 		module.load(force_reload=True)  # reload for instant extended attributes
 
+		self.add_link(result, 'parent', self.urljoin('.'))
 		properties = module.get_properties(dn)
 		searchable = self.get_query_argument('searchable', False)
 		if searchable:
 			properties = [prop for prop in properties if prop.get('searchable', False)]
+		result['properties'] = properties
 
 		self.add_caching(public=True)
-		self.content_negotiation(properties)
+		self.content_negotiation(result)
 
 
 class Options(Ressource):
@@ -712,7 +719,9 @@ class Options(Ressource):
 
 	def get(self, object_type):
 		"""Returns the options specified for the given object type"""
-		result = self.get_module(object_type).options.keys()
+		result = {}
+		result['options'] = self.get_module(object_type).options.keys()
+		self.add_link(result, 'parent', self.urljoin('.'))
 		self.add_caching(public=True)
 		self.content_negotiation(result)
 
@@ -731,7 +740,9 @@ class Layout(Ressource):
 
 		if dn:
 			dn = unquote_dn(dn)
-		result = module.get_layout(dn)
+		result = {}
+		result['layout'] = module.get_layout(dn)
+		self.add_link(result, 'parent', self.urljoin('.'))
 		self.add_caching(public=True)
 		self.content_negotiation(result)
 
@@ -751,6 +762,8 @@ class Templates(Ressource):
 				obj.open()
 				result.append({'id': obj.dn, 'label': obj[template.identifies]})
 
+		result = {'templates': result}
+		self.add_link(result, 'parent', self.urljoin('.'))
 		self.add_caching(public=False)
 		self.content_negotiation(result)
 
@@ -766,8 +779,10 @@ class DefaultContainers(Ressource):
 		module = self.get_module(object_type)
 		containers = [{'id': x, 'label': ldap_dn2path(x)} for x in module.get_default_containers()]
 		containers.sort(cmp=lambda x, y: cmp(x['label'].lower(), y['label'].lower()))
+		result = {'containers': containers}
+		self.add_link(result, 'parent', self.urljoin('.'))
 		self.add_caching(public=True)
-		self.content_negotiation(containers)
+		self.content_negotiation(result)
 
 
 class Policies(Ressource):
@@ -775,7 +790,8 @@ class Policies(Ressource):
 
 	def get(self, object_type):
 		module = self.get_module(object_type)
-		result = module.policies
+		result = {'policies': module.policies}
+		self.add_link(result, 'parent', self.urljoin('.'))
 		self.add_caching(public=False)
 		self.content_negotiation(result)
 
@@ -834,7 +850,7 @@ class Report(ReportingBase):
 
 
 class NextFreeIpAddress(Ressource):
-	"""GET udm/networks/network/$DN/next-ip (get the next free IP in this network)"""
+	"""GET udm/networks/network/$DN/next-free-ip-address (get the next free IP in this network)"""
 
 	def get(self, dn):  # TODO: threaded?! (might have caused something in the past in system setup?!)
 		"""Returns the next IP configuration based on the given network object
@@ -862,7 +878,7 @@ class NextFreeIpAddress(Ressource):
 		self.add_caching(public=False)
 		self.content_negotiation(result)
 
-		if self.request.get_query_argument('increaseCounter'):
+		if self.get_query_argument('increaseCounter', False):
 			# increase the next free IP address
 			obj.stepIp()
 			obj.modify()
@@ -1108,6 +1124,9 @@ class Object(Ressource):
 		if set(module.operations) & {'edit', 'move', 'remove', 'subtree_move'}:
 			self.add_link(props, 'edit-form', self.urljoin(quote_dn(obj.dn), 'edit'), title=_('Modify, move or remove this object'))
 
+		if module.name == 'networks/network':
+			self.add_link(props, '/udm/relation/next-free-ip', self.urljoin(quote_dn(obj.dn), 'next-free-ip-address'), title=_('Next free IP address'))
+
 		meta = dict((key, [val.decode('utf-8', 'replace') for val in value]) for key, value in self.ldap_connection.get(obj.dn, attr=[b'+']).items())
 		props['meta'] = meta
 		self.add_header('Last-Modified', last_modified(time.strptime(meta['modifyTimestamp'][0], '%Y%m%d%H%M%SZ')))
@@ -1312,8 +1331,18 @@ class ObjectAdd(Ressource):
 
 	@tornado.gen.coroutine
 	def get(self, object_type):
+		# FIXME: respect layout
+		result = {}
+		module = self.get_module(object_type)
+		if 'add' not in module.operations:
+			raise NotFound(object_type)
+		form = self.add_form(result, action=self.urljoin('.'), method='POST', relation='')
+		self.add_form_element(form, '', _('Create'), type='submit')
+		# TODO: wizard
+		# TODO: select template
+		module.get_properties()
 		self.add_caching(public=True)
-		self.content_negotiation({})
+		self.content_negotiation(result)
 
 
 class ObjectEdit(Ressource):
@@ -1321,6 +1350,7 @@ class ObjectEdit(Ressource):
 
 	@tornado.gen.coroutine
 	def get(self, object_type, dn):
+		# FIXME: respect layout
 		dn = unquote_dn(dn)
 		module = get_module(object_type, dn, self.ldap_connection)
 		if module is None:
@@ -1335,6 +1365,8 @@ class ObjectEdit(Ressource):
 
 		result = {}
 		self.add_link(result, 'icon', self.urljoin('../favicon.ico'), type='image/x-icon')
+		self.add_link(result, 'self', self.urljoin(''))
+		self.add_link(result, 'parent', self.urljoin('..', quote_dn(obj.dn)))
 		if 'remove' in module.operations:
 			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='DELETE', relation='')
 			self.add_form_element(form, '', _('Remove'), type='submit')
@@ -1352,7 +1384,7 @@ class ObjectEdit(Ressource):
 			# modification of this object type is not possible
 			raise NotFound(object_type)
 
-		self.add_caching(public=True)
+		self.add_caching(public=False)
 		self.content_negotiation(result)
 
 
@@ -1671,13 +1703,13 @@ class Application(tornado.web.Application):
 		module_type = '([a-z]+)'
 		object_type = '([a-z]+/[a-z_]+)'
 		policies_object_type = '(policies/[a-z_]+)'
-		dn = '([^/]+%s.+,%s)' % (self.multi_regex('='), self.multi_regex(ucr['ldap/base']),)
+		dn = '((?:[^/]+%s.+,)?%s)' % (self.multi_regex('='), self.multi_regex(ucr['ldap/base']),)
 		# FIXME: with that dn regex, it is not possible to have urls like (/udm/$dn/foo/$dn/) because ldap-base at the end matches the last dn
 		# Note: the ldap base is part of the url to support "/" as part of the DN. otherwise we can use: '([^/]+(?:=|%3d|%3D)[^/]+)'
 		# Note: we cannot use .replace('/', '%2F') for the dn part as url-normalization could replace this and apache doesn't pass URLs with %2F to the ProxyPass without http://httpd.apache.org/docs/current/mod/core.html#allowencodedslashes
 		property_ = '([^/]+)'
 		super(Application, self).__init__([
-			(r"/favicon.ico", Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
+			(r"/(favicon).ico", Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
 			(r"/udm/(?:index.html)?", Modules),
 			(r"/udm/relation/(.*)", Relations),
 			(r"/udm/license/", License),
@@ -1709,7 +1741,7 @@ class Application(tornado.web.Application):
 			(r"/udm/%s/%s/edit/?" % (object_type, dn), ObjectEdit),
 			(r"/udm/%s/layout" % (object_type,), Layout),
 			(r"/udm/%s/%s/layout" % (object_type, dn), Layout),
-			(r"/udm/networks/network/([^/]+)/next-free-ip-address", NextFreeIpAddress),
+			(r"/udm/networks/network/%s/next-free-ip-address" % (dn,), NextFreeIpAddress),
 			(r"/udm/progress/([0-9]+)", Operations),
 			# TODO: meta info
 			# TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
