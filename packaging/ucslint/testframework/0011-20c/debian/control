@@ -1,0 +1,12 @@
+Source: ucs-tools
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper,
+Standards-Version: 3.6.1
+
+Package: ucs-tools
+Architecture: all
+Depends: python,
+Description: some text
+

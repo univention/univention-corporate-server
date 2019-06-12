@@ -1,1 +1,1 @@
-W:0011-20: debian/compat: debian/compat and debian/control disagree on the version for debhelper
+W:0011-20: debian/compat: debian/compat=9 < debian/control=11 disagree on the version for debhelper
