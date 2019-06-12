@@ -42,7 +42,6 @@ _locale = 'de'
 
 
 class Variable(uit.LocalizedDictionary):
-
 	"""UCR variable description."""
 
 	def __init__(self, registered=True):
@@ -51,7 +50,11 @@ class Variable(uit.LocalizedDictionary):
 		self._registered = registered
 
 	def check(self):
-		"""Check description for completeness."""
+		"""
+		Check description for completeness.
+
+		:returns: List of missing settings.
+		"""
 		missing = []
 		if not self._registered:
 			return missing
@@ -63,14 +66,17 @@ class Variable(uit.LocalizedDictionary):
 
 
 class Category(uit.LocalizedDictionary):
-
 	"""UCR category description."""
 
 	def __init__(self):
 		uit.LocalizedDictionary.__init__(self)
 
 	def check(self):
-		"""Check description for completeness."""
+		"""
+		Check description for completeness.
+
+		:returns: List of missing settings.
+		"""
 		missing = []
 		for key in ('name', 'icon'):
 			if not self.get(key, None):
@@ -79,7 +85,6 @@ class Category(uit.LocalizedDictionary):
 
 
 class ConfigRegistryInfo(object):
-
 	"""UCR variable and category descriptions."""
 	BASE_DIR = '/etc/univention/registry.info'
 	CATEGORIES = 'categories'
@@ -88,11 +93,12 @@ class ConfigRegistryInfo(object):
 	FILE_SUFFIX = '.cfg'
 
 	def __init__(self, install_mode=False, registered_only=True, load_customized=True):
-		"""Initialize variable and category descriptions.
+		"""
+		Initialize variable and category descriptions.
 
-		install_mode=True deactivates the use of an UCR instance.
-		registered_only=False creates syntetic entries for all undescribed but set variables.
-		load_customized=False deactivates loading customized descriptions.
+		:param install_mode: `True` deactivates the use of an UCR instance.
+		:param registered_only: `False` creates syntetic entries for all undescribed but set variables.
+		:param load_customized: `False` deactivates loading customized descriptions.
 		"""
 		self.categories = {}
 		self.variables = {}
@@ -106,8 +112,11 @@ class ConfigRegistryInfo(object):
 			self.__configRegistry = None
 
 	def check_categories(self):
-		"""Return dictionary of incomplete category descriptions."""
-		"""Check all categories for completeness."""
+		"""
+		Check all categories for completeness.
+
+		:returns: dictionary of incomplete category descriptions.
+		"""
 		incomplete = {}
 		for name, cat in self.categories.items():
 			miss = cat.check()
@@ -116,7 +125,11 @@ class ConfigRegistryInfo(object):
 		return incomplete
 
 	def check_variables(self):
-		"""Return dictionary of incomplete variable descriptions."""
+		"""
+		Check variables.
+
+		:returns: dictionary of incomplete variable descriptions.
+		"""
 		incomplete = {}
 		for name, var in self.variables.items():
 			miss = var.check()
@@ -125,7 +138,11 @@ class ConfigRegistryInfo(object):
 		return incomplete
 
 	def read_categories(self, filename):
-		"""Load a single category description file."""
+		"""
+		Load a single category description file.
+
+		:param filename: File to load.
+		"""
 		cfg = uit.UnicodeConfig()
 		cfg.read(filename)
 		for sec in cfg.sections():
@@ -152,6 +169,9 @@ class ConfigRegistryInfo(object):
 		return ((len(pattern), pattern), data)
 
 	def check_patterns(self):
+		"""
+		Match descriptions agains currently defined UCR variables.
+		"""
 		# in install mode
 		if self.__configRegistry is None:
 			return
@@ -174,10 +194,14 @@ class ConfigRegistryInfo(object):
 				self.variables[key] = var
 
 	def describe_search_term(self, term):
-		"""Try to apply a description to a search term.
+		"""
+		Try to apply a description to a search term.
 
 		This is not complete, because it would require a complete "intersect
 		two regular languages" algorithm.
+
+		:param term: Search term.
+		:returns: Dictionary mapping variable pattern to Variable info blocks.
 		"""
 		patterns = {}
 		for pattern, data in sorted(self.__patterns.items(), key=ConfigRegistryInfo.__pattern_sorter, reverse=True):
@@ -200,7 +224,14 @@ class ConfigRegistryInfo(object):
 		self.__write_variables(filename)
 
 	def __write_variables(self, filename=None, package=None):
-		"""Persist the variable descriptions into a file."""
+		"""
+		Persist the variable descriptions into a file.
+
+		:param filename: Explicit filename for saving.
+		:param package: Explicit package name.
+		:raises AttributeError: if neither `filename` nor `package` are given.
+		:returns: `True` on success, `False` otherwise.
+		"""
 		if filename:
 			pass
 		elif package:
@@ -232,7 +263,14 @@ class ConfigRegistryInfo(object):
 		self.read_variables(filename, override=True)
 
 	def read_variables(self, filename=None, package=None, override=False):
-		"""Read variable descriptions."""
+		"""
+		Read variable descriptions.
+
+		:param filename: Explicit filename for loading.
+		:param package: Explicit package name.
+		:param override: `True` to overwrite already loaded descriptions.
+		:raises AttributeError: if neither `filename` nor `package` are given.
+		"""
 		if filename:
 			pass
 		elif package:
@@ -258,11 +296,11 @@ class ConfigRegistryInfo(object):
 			self.variables[sec] = var
 
 	def __load_variables(self, registered_only=True, load_customized=True):
-		"""Read default and customized variable descriptions.
+		"""
+		Read default and customized variable descriptions.
 
-		With default registered_only=True only variables for which a
-		description exists are loaded, otherwise all currently set variables
-		are also included.
+		:param registered_only: With default `True` only variables for which a description exists are loaded, otherwise all currently set variables are also included.
+		:param load_customized: Load customized variable descriptions.
 		"""
 		path = os.path.join(ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES)
 		if os.path.exists(path):
@@ -283,18 +321,31 @@ class ConfigRegistryInfo(object):
 				self.read_customized()
 
 	def get_categories(self):
-		'''returns a list of category names'''
+		"""
+		Return a list of category names.
+
+		:returns: List if categories.
+		"""
 		return self.categories.keys()
 
 	def get_category(self, name):
-		'''returns a category object associated with the given name or
-		None'''
+		"""
+		Returns a category object associated with the given name or None.
+
+		:param name: Name of the category.
+		:returns:
+		"""
 		if name.lower() in self.categories:
 			return self.categories[name.lower()]
 		return None
 
 	def get_variables(self, category=None):
-		"""Return dictionary of variable info blocks belonging to given category."""
+		"""
+		Return dictionary of variable info blocks belonging to given category.
+
+		:param category: Name of the category. `None` defaults to all variables.
+		:returns: Dictionary mapping variable-name to :py:class:`Variable` instance.
+		"""
 		if not category:
 			return self.variables
 		temp = {}
@@ -307,12 +358,21 @@ class ConfigRegistryInfo(object):
 		return temp
 
 	def get_variable(self, key):
-		"""Return the description of requested variable."""
+		"""
+		Return the description of a variable.
+
+		:param key: Variable name.
+		:returns: description object or `None`.
+		"""
 		return self.variables.get(key, None)
 
 	def add_variable(self, key, variable):
-		'''this methods adds a new variable information item or
-		overrides an old entry'''
+		"""
+		Add a new variable information item or overrides an old entry.
+
+		:param key: Variable name.
+		:param variable: :py:class:`Variable` instance.
+		"""
 		self.variables[key] = variable
 
 

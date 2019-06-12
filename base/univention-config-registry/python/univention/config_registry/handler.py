@@ -70,7 +70,15 @@ Warnung: Diese Datei wurde automatisch generiert und kann durch
 
 
 def run_filter(template, directory, srcfiles=set(), opts=dict()):
-	"""Process a template file: substitute variables."""
+	"""
+	Process a template file: substitute variables.
+
+	:param template: Text string of template.
+	:param directory: UCR instance.
+	:param srcfiles: File names of source template.
+	:param opts: UNUSED.
+	:returns: The modified template with all UCR variables and sections replaced.
+	"""
 	while True:
 		i = VARIABLE_TOKEN.finditer(template)
 		try:
@@ -130,6 +138,10 @@ def run_script(script, arg, changes):
 	on STDIN.
 	For each changed variable a line with the 'name of the variable', the 'old
 	value', and the 'new value' are passed separated by '@%@'.
+
+	:param script: File name of the script.
+	:param arg: Execution mode, e.g. `generate` or `postinst`.
+	:param changes: Dictionary of changed UCR variables, mapping UCR variable names to 2-tuple (old-value, new-value).
 	"""
 	diff = []
 	for key, value in changes.items():
@@ -142,8 +154,15 @@ def run_script(script, arg, changes):
 
 
 def run_module(modpath, arg, ucr, changes):
-	"""loads the python module that MUST be located in 'module_dir' or any
-	subdirectory."""
+	"""
+	Load the Python module that MUST be located in :py:const:`MODULE_DIR` or any
+	subdirectory.
+
+	:param modpath: The path to the module relative to :py:const:`MODULE_DIR`.
+	:param arg: Execution mode, e.g. `generate` or `preinst` or `postinst`.
+	:param ucr: UCR instance.
+	:param changes: Dictionary of changed UCR variables, mapping UCR variable names to 2-tuple (old-value, new-value).
+	"""
 	arg2meth = {
 		'generate': lambda obj: getattr(obj, 'handler'),
 		'preinst': lambda obj: getattr(obj, 'preinst'),
@@ -161,7 +180,15 @@ def run_module(modpath, arg, ucr, changes):
 
 
 def warning_string(prefix='# ', width=80, srcfiles=set(), enforce_ascii=False):
-	"""Generate UCR warning text."""
+	"""
+	Generate UCR warning text.
+
+	:param prefix: String to prepend before each line.
+	:param width: Maximum line length. UNUSED.
+	:param srcfiles: File names of source template.
+	:param enforce_ascii: Transliterate Umlauts.
+	:returns: A warning sting based on :py:const:`WARNING_TEXT`.
+	"""
 	res = []
 
 	for line in WARNING_TEXT.splitlines():
@@ -179,14 +206,16 @@ def warning_string(prefix='# ', width=80, srcfiles=set(), enforce_ascii=False):
 
 
 class ConfigHandler(object):
-
 	"""Base class of all config handlers."""
 	variables = set()
 
 
 class ConfigHandlerDiverting(ConfigHandler):
+	"""
+	File diverting config handler.
 
-	"""File diverting config handler."""
+	:param to_file: Destination file name.
+	"""
 
 	def __init__(self, to_file):
 		super(ConfigHandlerDiverting, self).__init__()
@@ -214,7 +243,12 @@ class ConfigHandlerDiverting(ConfigHandler):
 		return NotImplemented
 
 	def _set_perm(self, stat, to_file=None):
-		"""Set file permissions."""
+		"""
+		Set file permissions.
+
+		:param stat: File status.
+		:param to_file: Destination file name.
+		"""
 		if not to_file:
 			to_file = self.to_file
 		elif self.to_file != to_file:
@@ -239,8 +273,12 @@ class ConfigHandlerDiverting(ConfigHandler):
 			os.chmod(to_file, stat.st_mode)
 
 	def _call_silent(self, *cmd):
-		"""Call command with stdin, stdout, and stderr redirected from/to
-		devnull."""
+		"""
+		Call command with stdin, stdout, and stderr redirected from/to :file:`/dev/null`.
+
+		:param cmd: List of command with arguments.
+		:returns: Process exit code.
+		"""
 		null = open(os.path.devnull, 'rw')
 		try:
 			# tell possibly wrapped dpkg-divert to really do the work
@@ -264,8 +302,11 @@ class ConfigHandlerDiverting(ConfigHandler):
 			self._call_silent('cp', '-p', deb, self.to_file)
 
 	def uninstall_divert(self):
-		"""Undo diversion of file.
-		Returns True because the diversion was removed."""
+		"""
+		Undo diversion of file.
+
+		:returns: `True` because the diversion was removed.
+		"""
 		try:
 			os.unlink(self.to_file)
 		except EnvironmentError:
@@ -281,8 +322,12 @@ class ConfigHandlerDiverting(ConfigHandler):
 
 
 class ConfigHandlerMultifile(ConfigHandlerDiverting):
+	"""
+	Handler for multifile.
 
-	"""Handler for multifile."""
+	:param dummy_from_file: Source file name used to copy file permissions from.
+	:param to_file: Destination file name.
+	"""
 
 	def __init__(self, dummy_from_file, to_file):
 		super(ConfigHandlerMultifile, self).__init__(to_file)
@@ -298,13 +343,21 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 		self.def_count  # :pylint: disable-msg=W0104
 
 	def add_subfiles(self, subfiles):
-		"""Add subfile to multifile."""
+		"""
+		Add subfiles to multifile.
+
+		:param subfiles: List of 2-tuples (file-name, set-of-variable-names).
+		"""
 		for from_file, variables in subfiles:
 			self.from_files.add(from_file)
 			self.variables |= variables
 
 	def remove_subfile(self, subfile):
-		"""Remove subfile and return if set is now empty."""
+		"""
+		Remove subfile.
+
+		Removed diversion of set of sub-files becomes empty.
+		"""
 		self.from_files.discard(subfile)
 		if not self.need_divert():
 			self.uninstall_divert()
@@ -377,17 +430,23 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 			super(ConfigHandlerMultifile, self).install_divert()
 
 	def uninstall_divert(self):
-		"""Undo diversion of file.
-		Returns True when the diversion is removed, False when the diversion is
-		still needed."""
+		"""
+		Undo diversion of file.
+
+		:returns: `True` when the diversion is removed, `False` when the diversion is still needed.
+		"""
 		if self.need_divert():
 			return False
 		return super(ConfigHandlerMultifile, self).uninstall_divert()
 
 
 class ConfigHandlerFile(ConfigHandlerDiverting):
+	"""
+	Handler for (single)file.
 
-	"""Handler for (single)file."""
+	:param from_file: Template source file name.
+	:param to_file: Destination file name.
+	"""
 
 	def __init__(self, from_file, to_file):
 		super(ConfigHandlerFile, self).__init__(to_file)
@@ -450,8 +509,11 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 
 
 class ConfigHandlerScript(ConfigHandler):
+	"""
+	Handler for UCR scripts.
 
-	"""Handler for scripts."""
+	:param script: Script file name.
+	"""
 
 	def __init__(self, script):
 		super(ConfigHandlerScript, self).__init__()
@@ -482,8 +544,11 @@ class ConfigHandlerScript(ConfigHandler):
 
 
 class ConfigHandlerModule(ConfigHandler):
+	"""
+	Handler for UCR Python module.
 
-	"""Handler for module."""
+	:param module: Module file name.
+	"""
 
 	def __init__(self, module):
 		super(ConfigHandlerModule, self).__init__()
@@ -506,20 +571,24 @@ class ConfigHandlerModule(ConfigHandler):
 		return NotImplemented
 
 	def __call__(self, args):
-		"""Call python module after change."""
+		"""Call Python module after change."""
 		ucr, changed = args
 		print('Module: %s' % self.module)
 		run_module(self.module, 'generate', ucr, changed)
 
 
 def grep_variables(text):
-	"""Return set of all variables inside @%@ delimiters."""
+	"""
+	Search UCR template text for used variables.
+
+	:returns: Set of all variables inside `@%@` delimiters.
+	"""
 	return set(VARIABLE_PATTERN.findall(text))
 
 
 class ConfigHandlers:
-
 	"""Manage handlers for configuration variables."""
+
 	CACHE_FILE = '/var/cache/univention-config/cache'
 	# 0: without version
 	# 1: with version header
@@ -540,7 +609,12 @@ class ConfigHandlers:
 		pass
 
 	def _get_cache_version(self, cache_file):
-		"""Read cached .info data."""
+		"""
+		Read cached `.info` data.
+
+		:param cache_file: Opened cache file.
+		:returns: Version.
+		"""
 		line = cache_file.readline()    # IOError is propagated
 		match = ConfigHandlers.VERSION_RE.match(line)
 		if match:
@@ -552,7 +626,7 @@ class ConfigHandlers:
 		return version
 
 	def load(self):
-		"""Load cached .info data or force update."""
+		"""Load cached `.info` data or force update."""
 		try:
 			cache_file = open(ConfigHandlers.CACHE_FILE, 'rb')
 			try:
@@ -576,11 +650,24 @@ class ConfigHandlers:
 			self.update()
 
 	def strip_basepath(self, path, basepath):
-		"""Strip basepath prefix from path."""
+		"""
+		Strip basepath prefix from path.
+
+		Better use :py:meth:`os.path.relpath`.
+
+		:param path: The path to strip from.
+		:param basepath: The path to strip off.
+		:returns: The stripped path.
+		"""
 		return path.replace(basepath, '')
 
 	def get_handler(self, entry):
-		"""Parse entry and return Handler instance."""
+		"""
+		Parse entry and return Handler instance.
+
+		:param entry: `.info` file entry dictionary.
+		:returns: An instance of `None`.
+		"""
 		try:
 			typ = entry['Type'][0]
 			handler = getattr(self, '_get_handler_%s' % typ)
@@ -590,7 +677,12 @@ class ConfigHandlers:
 			return handler(entry)
 
 	def _parse_common_file_handler(self, handler, entry):
-		"""Parse common file and multifile entries."""
+		"""
+		Parse common file and multifile entries.
+
+		:param handler: Handler instance.
+		:param entry: `.info` file entry dictionary.
+		"""
 		try:
 			handler.preinst = entry['Preinst'][0]
 		except LookupError:
@@ -634,7 +726,12 @@ class ConfigHandlers:
 				print('W: failed to convert mode %s' % (mode,), file=sys.stderr)
 
 	def _get_handler_file(self, entry):
-		"""Parse file entry and return Handler instance."""
+		"""
+		Parse file entry and return Handler instance.
+
+		:param entry: `.info` file entry dictionary.
+		:returns: An instance of `None`.
+		"""
 		try:
 			name = entry['File'][0]
 		except LookupError:
@@ -649,7 +746,12 @@ class ConfigHandlers:
 		return handler
 
 	def _get_handler_script(self, entry):
-		"""Parse script entry and return Handler instance."""
+		"""
+		Parse script entry and return Handler instance.
+
+		:param entry: `.info` file entry dictionary.
+		:returns: An instance of `None`.
+		"""
 		try:
 			script = entry['Script'][0]
 			variables = entry['Variables']
@@ -660,7 +762,12 @@ class ConfigHandlers:
 		return handler
 
 	def _get_handler_module(self, entry):
-		"""Parse module entry and return Handler instance."""
+		"""
+		Parse module entry and return Handler instance.
+
+		:param entry: `.info` file entry dictionary.
+		:returns: An instance of `None`.
+		"""
 		try:
 			module = entry['Module'][0]
 			variables = entry['Variables']
@@ -671,7 +778,12 @@ class ConfigHandlers:
 		return handler
 
 	def _get_handler_multifile(self, entry):
-		"""Parse multifile entry and return Handler instance."""
+		"""
+		Parse multifile entry and return Handler instance.
+
+		:param entry: `.info` file entry dictionary.
+		:returns: An instance of `None`.
+		"""
 		try:
 			mfile = entry['Multifile'][0]
 		except LookupError:
@@ -696,7 +808,12 @@ class ConfigHandlers:
 		return handler
 
 	def _get_handler_subfile(self, entry):
-		"""Parse subfile entry and return Handler instance."""
+		"""
+		Parse subfile entry and return Handler instance.
+
+		:param entry: `.info` file entry dictionary.
+		:returns: An instance of `None`.
+		"""
 		try:
 			mfile = entry['Multifile'][0]
 			subfile = entry['Subfile'][0]
@@ -725,7 +842,11 @@ class ConfigHandlers:
 		return handler
 
 	def update(self):
-		"""Parse all .info files to build list of handlers."""
+		"""
+		Parse all `.info` files to build list of handlers.
+
+		:returns: Set of all handlers.
+		"""
 		self._handlers.clear()
 		self._multifiles.clear()
 		self._subfiles.clear()
@@ -747,7 +868,11 @@ class ConfigHandlers:
 		return handlers
 
 	def update_divert(self, handlers):
-		"""Synchronize diversions with handlers."""
+		"""
+		Synchronize diversions with handlers.
+
+		:param handlers: List of handlers.
+		"""
 		wanted = dict([(h.to_file, h) for h in handlers if isinstance(h, ConfigHandlerDiverting) and h.need_divert()])
 		to_remove = set()
 		# Scan for diversions done by UCR
@@ -794,7 +919,13 @@ class ConfigHandlers:
 				raise
 
 	def register(self, package, ucr):
-		"""Register new info file for package."""
+		"""
+		Register new info file for package.
+
+		:param package: Name of the package to register.
+		:param ucr: UCR instance.
+		:returns: Set of (new) handlers.
+		"""
 		handlers = set()
 		fname = os.path.join(INFO_DIR, '%s.info' % package)
 		for section in parseRfc822(open(fname, 'r').read()):
@@ -816,8 +947,13 @@ class ConfigHandlers:
 		return handlers
 
 	def unregister(self, package, ucr):
-		"""Un-register info file for package.
-		Returns set of (then obsolete) handlers."""
+		"""
+		Un-register info file for package.
+
+		:param package: Name of the package to un-register.
+		:param ucr: UCR instance.
+		:returns: Set of (then obsolete) handlers.
+		"""
 		obsolete_handlers = set()  # Obsolete handlers
 		mf_handlers = set()  # Remaining Multifile handlers
 		fname = os.path.join(INFO_DIR, '%s.info' % package)
@@ -862,7 +998,12 @@ class ConfigHandlers:
 		return obsolete_handlers
 
 	def __call__(self, variables, arg):
-		"""Call handlers registered for changes in variables."""
+		"""
+		Call handlers registered for changes in variables.
+
+		:param variables: Changed UCR variable names.
+		:param arg: 2-tuple(UCR-instance, changed) where changed is a dictionary mapping ucs-variable-names to values.
+		"""
 		if not variables:
 			return
 		pending_handlers = set()
@@ -881,7 +1022,12 @@ class ConfigHandlers:
 			handler(arg)
 
 	def commit(self, ucr, filelist=list()):
-		"""Call handlers to (re-)generate files."""
+		"""
+		Call handlers to (re-)generate files.
+
+		:param ucr: UCR instance.
+		:param filelist: List of files to re-generate. By default *all* files will be re-generated and all modules and scripts will we re-invoked!
+		"""
 		_filelist = []
 		for fname in filelist:
 			fname = os.path.expanduser(fname)
@@ -916,7 +1062,12 @@ class ConfigHandlers:
 			self.call_handler(ucr, handler)
 
 	def call_handler(self, ucr, handler):
-		"""Call handler passing current configuration variables."""
+		"""
+		Call handler passing current configuration variables.
+
+		:param ucr: UCR instance.
+		:param handler: The handler to call.
+		"""
 		values = {}
 		for variable in handler.variables:
 			if variable in self._handlers.keys():

@@ -43,15 +43,19 @@ __all__ = [
 
 
 def replace_dict(line, dictionary):
-	'''Map any character from line to its value from dictionary.
+	"""
+	Map any character from line to its value from dictionary.
+
 	>>> replace_dict('kernel', {'e': 'E', 'k': '', 'n': 'pp'})
 	'ErppEl'
-	'''
+	"""
 	return ''.join((dictionary.get(_, _) for _ in line))
 
 
 def replace_umlaut(line):
-	u"""Replace german umlauts.
+	u"""
+	Replace german umlauts.
+
 	>>> replace_umlaut(u'überschrieben')
 	u'ueberschrieben'
 	"""
@@ -64,7 +68,12 @@ except ImportError:
 	_safechars = frozenset(string.ascii_letters + string.digits + '@%_-+=:,./')
 
 	def escape_value(text):
-		"""Return a shell-escaped version of the file string."""
+		"""
+		Return a shell-escaped version of the file string.
+
+		:param text: Shell command argument.
+		:returns: Escaped argument string.
+		"""
 		for c in text:
 			if c not in _safechars:
 				break
@@ -89,7 +98,12 @@ replace_umlaut.UMLAUTS = {  # pylint: disable-msg=W0612
 
 
 def key_shell_escape(line):
-	'''Escape variable name by substituting shell invalid characters by '_'.'''
+	"""
+	Escape variable name by substituting shell invalid characters by '_'.
+
+	:param line: UCR variable name.
+	:returns: substitued variable name
+	"""
 	if not line:
 		raise ValueError('got empty line')
 	new_line = []
@@ -100,6 +114,7 @@ def key_shell_escape(line):
 			new_line.append(letter)
 		else:
 			new_line.append('_')
+
 	return ''.join(new_line)
 
 
@@ -108,7 +123,13 @@ key_shell_escape.VALID_CHARS = (  # pylint: disable-msg=W0612
 
 
 def validate_key(key, out=sys.stderr):
-	"""Check if key consists of only shell valid characters."""
+	"""
+	Check if key consists of only shell valid characters.
+
+	:param key: UCR variable name to check.
+	:param out: Output stream where error message is printed to.
+	:returns: `True` if the name is valid, `False` otherwise.
+	"""
 	old = key
 	key = replace_umlaut(key)
 
@@ -132,7 +153,12 @@ INVALID_KEY_CHARS = re.compile('[][\r\n!"#$%&\'()+,;<=>?\\\\`{}§]')
 
 
 def directory_files(directory):
-	"""Return a list of all files below the given directory."""
+	"""
+	Return a list of all files below the given directory.
+
+	:param directory: Base directory path.
+	:returns: List of absolute file names.
+	"""
 	result = []
 	for dirpath, _dirnames, filenames in os.walk(directory):
 		for filename in filenames:

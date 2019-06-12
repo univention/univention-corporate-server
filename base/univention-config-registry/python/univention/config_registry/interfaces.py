@@ -61,7 +61,11 @@ RE_IFACE = re.compile(r'''^
 
 
 def forgiving(translation=None):
-	"""Decorator to translate exceptions into return values."""
+	"""
+	Decorator to translate exceptions into return values.
+
+	:param translation: Mapping from Exception class to return value.
+	"""
 	if translation is None:
 		translation = {}
 
@@ -89,10 +93,16 @@ def forgiving(translation=None):
 
 
 forgiving_addr = forgiving({ValueError: False, KeyError: None})
+"""Decorator to translate errors from IP address parsing to `None` instead of raising an exception."""
 
 
 def cmp_alnum(value):
-	"""Sort value split by digits / non-digits."""
+	"""
+	Sort value split by digits / non-digits.
+
+	:param value: The value to sort.
+	:returns: value split into tuple.
+	"""
 	value = str(value)
 	key = []
 	for num, text in cmp_alnum.RE.findall(value):  # pylint: disable-msg=E1101
@@ -105,7 +115,6 @@ cmp_alnum.RE = re.compile(r'([0-9]+)|([^0-9]+)')  # pylint: disable-msg=W0612
 
 
 class _Iface(dict):
-
 	"""Single network interface."""
 
 	def __init__(self, *args, **kwargs):
@@ -175,8 +184,10 @@ class _Iface(dict):
 
 
 class VengefulConfigRegistry(ConfigRegistry):
+	"""
+	Instance wrapper for Config Registry throwing exceptions.
 
-	"""Instance wrapper for Config Registry throwing exceptions.
+	:param base_object: UCR instance.
 
 	<https://forge.univention.org/bugzilla/show_bug.cgi?id=28276>
 	<http://stackoverflow.com/questions/1443129/>
@@ -187,7 +198,15 @@ class VengefulConfigRegistry(ConfigRegistry):
 		self.__dict__ = base_object.__dict__
 
 	def __getitem__(self, key):
-		"""Return registry value."""
+		"""
+		Return registry value.
+
+		Compared with :py:meth:`ConfigRegistry.__getitem__` this raises an exception instead of returning `None`.
+
+		:param key: UCR variable name.
+		:returns: the value.
+		:raises: KeyError when the value is not found.
+		"""
 		for reg in ConfigRegistry.LAYER_PRIORITIES:
 			try:
 				registry = self._registry[reg]
@@ -199,8 +218,11 @@ class VengefulConfigRegistry(ConfigRegistry):
 
 
 class Interfaces(object):
+	"""
+	Handle network interfaces configured by UCR.
 
-	"""Handle network interfaces configured by UCR."""
+	:param ucr: UCR instance.
+	"""
 
 	def __init__(self, ucr=None):
 		if ucr is None:

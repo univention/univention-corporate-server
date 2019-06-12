@@ -49,7 +49,11 @@ class StrictModeException(Exception):
 
 
 def exception_occured(out=sys.stderr):
-	"""Print exception message and exit."""
+	"""
+	Print exception message and exit.
+
+	:param out: Output stream for message.
+	"""
 	print('E: your request could not be fulfilled', file=out)
 	print('try `univention-config-registry --help` for more information', file=out)
 	sys.exit(1)
@@ -63,6 +67,9 @@ class ConfigRegistry(MutableMapping):
 	"""
 	Merged persistent value store.
 	This is a merged view of several sub-registries.
+
+	:param filename: File name for text database file.
+	:param write_registry: The UCR level used for writing.
 	"""
 	NORMAL, LDAP, SCHEDULE, FORCED, CUSTOM = range(5)
 	LAYER_PRIORITIES = (FORCED, SCHEDULE, LDAP, NORMAL, CUSTOM)
@@ -91,7 +98,12 @@ class ConfigRegistry(MutableMapping):
 				self._registry[reg] = self._create_registry(reg)
 
 	def _create_registry(self, reg):
-		"""Create internal sub registry."""
+		"""
+		Create internal sub registry.
+
+		:param reg: UCR level.
+		:returns: UCR instance.
+		"""
 		if reg == ConfigRegistry.CUSTOM:
 			filename = self.file
 		else:
@@ -126,6 +138,9 @@ class ConfigRegistry(MutableMapping):
 	def __enter__(self):
 		"""
 		Lock Config Registry for read-modify-write cycle.
+
+		:returns: The locked registry.
+
 		> with ConfigRegistry() as ucr:
 		>   ucr['key'] = 'value'
 		"""
@@ -134,28 +149,50 @@ class ConfigRegistry(MutableMapping):
 		return self
 
 	def __exit__(self, exc_type, exc_value, traceback):
+		"""
+		Unlock registry.
+		"""
 		if exc_type is None:
 			self.save()
 		self.unlock()
 
 	def __delitem__(self, key):
-		"""Delete registry key."""
+		"""
+		Delete registry key.
+
+		:param key: UCR variable name.
+		"""
 		registry = self._registry[self.scope]
 		del registry[key]
 
 	def __getitem__(self, key):
-		"""Return registry value.
+		"""
+		Return registry value.
+
+		:param key: UCR variable name.
+		:returns: the value or `None`.
+
 		Bug #28276: ucr[key] returns None instead of raising KeyError - it would break many UCR templates!
 		"""
 		return self.get(key)
 
 	def __setitem__(self, key, value):
-		"""Set registry value."""
+		"""
+		Set registry value.
+
+		:param key: UCR variable name.
+		:param value: UCR variable value.
+		"""
 		registry = self._registry[self.scope]
 		registry[key] = value
 
 	def __contains__(self, key):
-		"""Check if registry key is set."""
+		"""
+		Check if registry key is set.
+
+		:param key: UCR variable name.
+		:returns: `True` is set, `False` otherwise.
+		"""
 		for reg in self.LAYER_PRIORITIES:
 			registry = self._registry[reg]
 			if key in registry:
@@ -163,18 +200,33 @@ class ConfigRegistry(MutableMapping):
 		return False
 
 	def __iter__(self):
-		"""Iterate over all registry keys."""
+		"""
+		Iterate over all registry keys.
+
+		:returns: Iterator over all UCR variable names.
+		"""
 		merge = self._merge()
 		for key in merge:
 			yield key
 
 	def __len__(self):
-		"""Return length."""
+		"""
+		Return length.
+
+		:returns: Number of UCR variables set.
+		"""
 		merge = self._merge()
 		return len(merge)
 
 	def get(self, key, default=None, getscope=False):
-		"""Return registry value (including optional scope)."""
+		"""
+		Return registry value (including optional scope).
+
+		:param key: UCR variable name.
+		:param default: Default value when the UCR variable is not set.
+		:param getscope: `True` makes the method return the scope level in addition to the value itself.
+		:returns: the value or a 2-tuple (level, value) or the default.
+		"""
 		for reg in self.LAYER_PRIORITIES:
 			try:
 				registry = self._registry[reg]
@@ -185,7 +237,12 @@ class ConfigRegistry(MutableMapping):
 		return default
 
 	def has_key(self, key, write_registry_only=False):
-		"""Check if registry key is set (DEPRECATED)."""
+		"""
+		Check if registry key is set.
+
+		.. deprecated:: 3.1
+		    Use `in`.
+		"""
 		if write_registry_only:
 			registry = self._registry[self.scope]
 			return key in registry
@@ -193,7 +250,12 @@ class ConfigRegistry(MutableMapping):
 			return key in self
 
 	def _merge(self, getscope=False):
-		"""Merge sub registry."""
+		"""
+		Merge sub registry.
+
+		:param getscope: `True` makes the method return the scope level in addition to the value itself.
+		:returns: A mapping from varibal ename to eiter the value (if `getscope` is False) or a 2-tuple (level, value).
+		"""
 		merge = {}
 		for reg in self.LAYER_PRIORITIES:
 			registry = self._registry[reg]
@@ -205,7 +267,12 @@ class ConfigRegistry(MutableMapping):
 		return merge
 
 	def items(self, getscope=False):
-		"""Return all registry entries a 2-tuple (key, value) or (key, (scope, value)) if getscope is True."""
+		"""
+		Return all registry entries a 2-tuple (key, value) or (key, (scope, value)) if getscope is True.
+
+		:param getscope: `True` makes the method return the scope level in addition to the value itself.
+		:returns: A mapping from varibal ename to eiter the value (if `getscope` is False) or a 2-tuple (level, value).
+		"""
 		merge = self._merge(getscope=getscope)
 		return merge.items()
 
@@ -215,7 +282,25 @@ class ConfigRegistry(MutableMapping):
 		return '\n'.join(['%s: %s' % (key, val) for key, val in merge.items()])
 
 	def is_true(self, key=None, default=False, value=None):
-		"""Return if the strings value of key is considered as true."""
+		"""
+		Return if the strings value of key is considered as true.
+
+		:param key: UCR variable name.
+		:param default: Default value to return, if UCR variable is not set.
+		:param value: text string to directly evaulate instead of looking up the key.
+		:returns: `True` when the value is one of `yes`, `true`, `1`, `enable`, `enabled`, `on`.
+
+		>>> ucr = ConfigRegistry()
+		>>> ucr['key'] = 'yes'
+		>>> ucr.is_true('key')
+		True
+		>>> ucr.is_true('other')
+		False
+		>>> ucr.is_true('other', True)
+		True
+		>>> ucr.is_true(value='1')
+		True
+		"""
 		if value is None:
 			value = self.get(key)
 			if value is None:
@@ -223,7 +308,25 @@ class ConfigRegistry(MutableMapping):
 		return value.lower() in ('yes', 'true', '1', 'enable', 'enabled', 'on')
 
 	def is_false(self, key=None, default=False, value=None):
-		"""Return if the strings value of key is considered as false."""
+		"""
+		Return if the strings value of key is considered as false.
+
+		:param key: UCR variable name.
+		:param default: Default value to return, if UCR variable is not set.
+		:param value: text string to directly evaulate instead of looking up the key.
+		:returns: `True` when the value is one of `no`, `false`, `0`, `disable`, `disabled`, `off`.
+
+		>>> ucr = ConfigRegistry()
+		>>> ucr['key'] = 'no'
+		>>> ucr.is_false('key')
+		True
+		>>> ucr.is_false('other')
+		False
+		>>> ucr.is_false('other', True)
+		True
+		>>> ucr.is_false(value='0')
+		True
+		"""
 		if value is None:
 			value = self.get(key)
 			if value is None:
@@ -233,7 +336,9 @@ class ConfigRegistry(MutableMapping):
 	def update(self, changes):
 		"""
 		Set or unset the given config registry variables.
-		:changes: dictionary of ucr-variable-name: value-or-None.
+
+		:param changes: dictionary of ucr-variable-name: value-or-None.
+		:returns: A mapping from UCR variable name to a 2-tuple (old-value, new-value)
 		"""
 		registry = self._registry[self.scope]
 		changed = {}
@@ -251,6 +356,13 @@ class ConfigRegistry(MutableMapping):
 		return changed
 
 	def setdefault(self, key, default=None):
+		"""
+		Set value for variable only when not yet set.
+
+		:param key: UCR variable name.
+		:param default: UCR variable value.
+		:returns: The old value, if the variable was not yet set, otherwise the new value.
+		"""
 		# Bug #28276: setdefault() required KeyError
 		value = self.get(key, default=self)
 		if value is self:
@@ -263,6 +375,8 @@ class _ConfigRegistry(dict):
 	"""
 	Persistent value store.
 	This is a single value store using a text file.
+
+	:param filename: File name for text database file.
 	"""
 
 	def __init__(self, filename=None):
@@ -328,7 +442,12 @@ class _ConfigRegistry(dict):
 				exception_occured()
 
 	def __save_file(self, filename):
-		"""Save sub registry to file."""
+		"""
+		Save sub registry to file.
+
+		:param filename: File name for saving.
+		:raises EnvironmentError: on fatal errors.
+		"""
 		temp_filename = '%s.temp' % filename
 		try:
 			try:
@@ -388,7 +507,12 @@ class _ConfigRegistry(dict):
 		self.lock_file.close()
 
 	def __setitem__(self, key, value):
-		"""Set value in sub registry."""
+		"""
+		Set value in sub registry.
+
+		:param key: UCR variable name.
+		:param value: UCR variable value.
+		"""
 		if self.strict_encoding:
 			try:
 				key.decode('UTF-8')  # only accept valid UTF-8 encoded bytes
@@ -402,7 +526,12 @@ class _ConfigRegistry(dict):
 
 	@staticmethod
 	def remove_invalid_chars(seq):
-		"""Remove non-UTF-8 characters from value."""
+		"""
+		Remove non-UTF-8 characters from value.
+
+		:param seq: Text string.
+		:returns: Text string with invalid characters removed.
+		"""
 		for letter in INVALID_VALUE_CHARS:
 			seq = seq.replace(letter, '')
 		return seq

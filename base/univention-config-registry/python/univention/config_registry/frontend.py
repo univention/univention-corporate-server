@@ -81,6 +81,11 @@ def replog(ucr, var, old_value, value=None):
 	"""
 	This function writes a new entry to replication logfile if
 	this feature has been enabled.
+
+	:param ucr: UCR instance.
+	:param var: UCR variable name.
+	:param old_value: Old UCR variable value.
+	:param value: New UCR variable value. `None` is now unset.
 	"""
 	if ucr.is_true('ucr/replog/enabled', False):
 		if value is not None:
@@ -115,6 +120,10 @@ def handler_set(args, opts=dict(), quiet=False):
 	"""
 	Set config registry variables in args.
 	Args is an array of strings 'key=value' or 'key?value'.
+
+	:param args: Command line arguments.
+	:param opts: Command line options.
+	:param quiet: Hide output.
 	"""
 	ucr = _ucr_from_opts(opts)
 	with ucr:
@@ -156,6 +165,9 @@ def handler_set(args, opts=dict(), quiet=False):
 def handler_unset(args, opts=dict()):
 	"""
 	Unset config registry variables in args.
+
+	:param args: Command line arguments.
+	:param opts: Command line options.
 	"""
 	ucr = _ucr_from_opts(opts)
 	with ucr:
@@ -175,6 +187,9 @@ def handler_unset(args, opts=dict()):
 def ucr_update(ucr, changes):
 	"""
 	Set or unset the given config registry variables.
+
+	:param args: Command line arguments.
+	:param opts: Command line options.
 	"""
 	with ucr:
 		changed = ucr.update(changes)
@@ -182,6 +197,12 @@ def ucr_update(ucr, changes):
 
 
 def _run_changed(ucr, changed, msg=None):
+	"""
+	Run handlers for changes UCR variables.
+
+	:param ucr: UCR instance.
+	:param changed: Mapping from UCR variable name to 2-tuple (old-value, new-value).
+	"""
 	for key, (old_value, new_value) in changed.items():
 		replog(ucr, key, old_value, new_value)
 		if msg:
@@ -195,6 +216,12 @@ def _run_changed(ucr, changed, msg=None):
 
 
 def _ucr_from_opts(opts):
+	"""
+	Create :py:class:`ConfigRegistry` instance according to requested layer.
+
+	:param opts: Command line options.
+	:returns: A new UCR instance.
+	"""
 	if opts.get('ldap-policy', False):
 		scope = ConfigRegistry.LDAP
 	elif opts.get('force', False):
@@ -208,7 +235,12 @@ def _ucr_from_opts(opts):
 
 
 def handler_dump(args, opts=dict()):
-	"""Dump all variables."""
+	"""
+	Dump all variables.
+
+	:param args: Command line arguments.
+	:param opts: Command line options.
+	"""
 	ucr = ConfigRegistry()
 	ucr.load()
 	for line in str(ucr).split('\n'):
@@ -216,14 +248,24 @@ def handler_dump(args, opts=dict()):
 
 
 def handler_update(args, opts=dict()):
-	"""Update handlers."""
+	"""
+	Update handlers.
+
+	:param args: Command line arguments.
+	:param opts: Command line options.
+	"""
 	handlers = ConfigHandlers()
 	cur = handlers.update()
 	handlers.update_divert(cur)
 
 
 def handler_commit(args, opts=dict()):
-	"""Commit all registered templated files."""
+	"""
+	Commit all registered templated files.
+
+	:param args: Command line arguments.
+	:param opts: Command line options.
+	"""
 	ucr = ConfigRegistry()
 	ucr.load()
 
@@ -233,7 +275,12 @@ def handler_commit(args, opts=dict()):
 
 
 def handler_register(args, opts=dict()):
-	"""Register new info file."""
+	"""
+	Register new `.info` file.
+
+	:param args: Command line arguments.
+	:param opts: Command line options.
+	"""
 	ucr = ConfigRegistry()
 	ucr.load()
 
@@ -248,7 +295,12 @@ def handler_register(args, opts=dict()):
 
 
 def handler_unregister(args, opts=dict()):
-	"""Unregister old info file."""
+	"""
+	Unregister old `.info` file.
+
+	:param args: Command line arguments.
+	:param opts: Command line options.
+	"""
 	ucr = ConfigRegistry()
 	ucr.load()
 
@@ -266,7 +318,12 @@ def handler_filter(args, opts=dict()):
 
 
 def handler_search(args, opts=dict()):
-	"""Search for registry variable."""
+	"""
+	Search for registry variable.
+
+	:param args: Command line arguments.
+	:param opts: Command line options.
+	"""
 	search_keys = opts.get('key', False)
 	search_values = opts.get('value', False)
 	search_all = opts.get('all', False)
@@ -340,7 +397,12 @@ def handler_search(args, opts=dict()):
 
 
 def handler_get(args, opts=dict()):
-	"""Return config registry variable."""
+	"""
+	Return config registry variable.
+
+	:param args: Command line arguments.
+	:param opts: Command line options.
+	"""
 	ucr = ConfigRegistry()
 	ucr.load()
 
@@ -402,7 +464,12 @@ def variable_info_string(key, value, variable_info, scope=None, details=_SHOW_DE
 
 
 def handler_info(args, opts=dict()):
-	"""Print variable info."""
+	"""
+	Print variable info.
+
+	:param args: Command line arguments.
+	:param opts: Command line options.
+	"""
 	ucr = ConfigRegistry()
 	ucr.load()
 	# Import located here, because on module level, a circular import would be
@@ -422,13 +489,23 @@ def handler_info(args, opts=dict()):
 
 
 def handler_version(args, opts=dict()):
-	"""Print version info."""
+	"""
+	Print version info.
+
+	:param args: Command line arguments.
+	:param opts: Command line options.
+	"""
 	print('univention-config-registry @%@package_version@%@')
 	sys.exit(0)
 
 
 def handler_help(args, opts=dict(), out=sys.stdout):
-	"""Print config registry command line usage."""
+	"""
+	Print config registry command line usage.
+
+	:param args: Command line arguments.
+	:param opts: Command line options.
+	"""
 	print('''
 univention-config-registry: base configuration for UCS
 copyright (c) 2001-2019 Univention GmbH, Germany

@@ -36,7 +36,13 @@ __all__ = ['filter_shell', 'filter_keys_only', 'filter_sort']
 
 
 def filter_shell(args, text):  # pylint: disable-msg=W0613
-	"""Filter output for shell: escape keys."""
+	"""
+	Filter output for shell: escape keys.
+
+	:param args: UNUSED.
+	:param text: Text as list of lines.
+	:returns: Filteres list of lines.
+	"""
 	out = []
 	for line in text:
 		try:
@@ -49,7 +55,13 @@ def filter_shell(args, text):  # pylint: disable-msg=W0613
 
 
 def filter_keys_only(args, text):  # pylint: disable-msg=W0613
-	"""Filter output: strip values."""
+	"""
+	Filter output: strip values.
+
+	:param args: UNUSED.
+	:param text: Text as list of lines.
+	:returns: Filteres list of lines.
+	"""
 	out = []
 	for line in text:
 		out.append(line.split(': ', 1)[0])
@@ -57,7 +69,13 @@ def filter_keys_only(args, text):  # pylint: disable-msg=W0613
 
 
 def filter_sort(args, text):  # pylint: disable-msg=W0613
-	"""Filter output: sort by key."""
+	"""
+	Filter output: sort by key.
+
+	:param args: UNUSED.
+	:param text: Text as list of lines.
+	:returns: Filteres list of lines.
+	"""
 	text.sort()
 	return text
 

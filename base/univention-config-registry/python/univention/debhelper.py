@@ -38,6 +38,8 @@ def doIt(*argv):
 	"""
 	Execute argv and wait.
 
+	:param args: List of command and arguments.
+
 	>>> doIt('true')
 	0
 	"""

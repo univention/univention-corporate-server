@@ -39,6 +39,9 @@ import univention.info_tools as uit
 
 
 class Service(uit.LocalizedDictionary):
+	"""
+	Description for a system service.
+	"""
 
 	REQUIRED = frozenset(('description', 'programs'))
 	OPTIONAL = frozenset(('start_type', 'systemd', 'icon'))
@@ -73,6 +76,10 @@ class Service(uit.LocalizedDictionary):
 def pidof(name, docker='/var/run/docker.pid'):
 	"""
 	Return list of process IDs matching name.
+
+	:param name: Procress name.
+	:param docker: File name containing process ID of docker process.
+
 	>>> import os,sys;os.getpid() in list(pidof(os.path.realpath(sys.executable))) + list(pidof(sys.executable)) + list(pidof(sys.argv[0]))
 	True
 	"""
@@ -153,7 +160,11 @@ class ServiceInfo(object):
 			serv._update_status()
 
 	def check_services(self):
-		"""Return dictionary of incomplete service descriptions."""
+		"""
+		Check service descriptions for completeness.
+
+		:returns: dictionary of incomplete service descriptions.
+		"""
 		incomplete = {}
 		for name, srv in self.services.items():
 			miss = srv.check()
@@ -183,7 +194,14 @@ class ServiceInfo(object):
 		return True
 
 	def read_services(self, filename=None, package=None, override=False):
-		"""Read start/stop levels of services."""
+		"""
+		Read start/stop levels of services.
+
+		:param filename: Explicit filename for loading.
+		:param package: Explicit package name.
+		:param override: `True` to overwrite already loaded descriptions.
+		:raises AttributeError: if neither `filename` nor `package` are given.
+		"""
 		if not filename and not package:
 			raise AttributeError("neither 'filename' nor 'package' is specified")
 		if not filename:
@@ -225,17 +243,29 @@ class ServiceInfo(object):
 		self.read_services(custom, override=True)
 
 	def get_services(self):
-		'''returns a list fo service names'''
+		"""
+		Return a list fo service names.
+
+		:returns: List of service names.
+		"""
 		return self.services.keys()
 
 	def get_service(self, name):
-		'''returns a service object associated with the given name or
-		None if it does not exist'''
+		"""
+		Return the service object associated with the given name.
+
+		:param name: Service name.
+		:returns: description object or `None`.
+		"""
 		return self.services.get(name, None)
 
 	def add_service(self, name, service):
-		'''this methods adds a new service object or overrides an old
-		entry'''
+		"""
+		Add a new service object or overrides an old entry.
+
+		:param name: Service name.
+		:param service: :py:class:`Service` instance.
+		"""
 		if not service.check():
 			self.services[name] = service
 

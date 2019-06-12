@@ -40,7 +40,12 @@ import univention.config_registry as ub
 
 
 def convertToUtf8(arguments):
-	'Try to decode as UTF-8, then try to decode with locale encoding. If decoded successfully encode with UTF-8.'
+	"""
+	Try to decode as UTF-8, then try to decode with locale encoding. If decoded successfully encode with UTF-8.
+
+	:param arguments: List of command line arguments.
+	:returns: List of command line arguments.
+	"""
 	if six.PY3:
 		return arguments  # Python 3, we already have "unicode" objects
 	localeencoding = locale.getpreferredencoding()
