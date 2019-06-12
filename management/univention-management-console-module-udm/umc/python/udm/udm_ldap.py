@@ -808,6 +808,12 @@ class UDM_Module(object):
 		return modules
 
 	@property
+	def has_tree(self):
+		if not getattr(self.module, 'childmodules', None):
+			return False
+		return all(getattr(udm_modules.get(mod), 'childmodules', None) for mod in self.module.childmodules)
+
+	@property
 	def default_search_attrs(self):
 		ret = []
 		for key, prop in getattr(self.module, 'property_descriptions', {}).items():

@@ -304,7 +304,7 @@ define([
 					columns: this.getDefaultColumns()
 				}).then(lang.hitch(this, function(results) {
 					this._default_columns = results.columns;
-					this.renderSearchPage();
+					this.renderSearchPage(undefined, {has_tree: true});
 				}));
 			} else {
 				// render search page, we first need to query lists of containers/superordinates
@@ -464,9 +464,10 @@ define([
 			//		for the LDAP-directory and objects with superordinates.
 
 			// show help icon if help_link is given for the module
-			var hasSuperordinates = this.moduleFlavor === 'dhcp/dhcp' || this.moduleFlavor === 'dns/dns' || this.moduleFlavor === 'asterisk/asterisk';
-			var hasTree = 'navigation' == this.moduleFlavor || hasSuperordinates;
 			metaInfo = metaInfo || {};
+			var hasTree = metaInfo.has_tree;
+			var hasSuperordinates = hasTree && 'navigation' !== this.moduleFlavor;
+
 			var buttons = [];
 			if (metaInfo.help_link) {
 				buttons = [{name: 'help',

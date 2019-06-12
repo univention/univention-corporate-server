@@ -481,7 +481,8 @@ class Instance(Base, ProgressMixin):
 			return {
 				'help_link': module.help_link,
 				'help_text': module.help_text,
-				'columns': module.columns
+				'columns': module.columns,
+				'has_tree': module.has_tree,
 			}
 
 	def get(self, request):
