@@ -11,3 +11,5 @@ desc: |
    400k. This is not enough for `univention-translog prune`. Remove the limit
    for searches connecting via <ldapi:///>.
 bug: [49505]
+erratum: 146
+announced: 2019-06-12
