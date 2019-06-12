@@ -38,8 +38,7 @@ import errno
 import time
 from collections import MutableMapping
 
-__all__ = ['StrictModeException', 'exception_occured',
-		'SCOPE', 'ConfigRegistry']
+__all__ = ['StrictModeException', 'exception_occured', 'SCOPE', 'ConfigRegistry']
 
 INVALID_VALUE_CHARS = '\r\n'
 
@@ -95,8 +94,7 @@ class ConfigRegistry(MutableMapping):
 		if reg == ConfigRegistry.CUSTOM:
 			filename = self.file
 		else:
-			filename = os.path.join(ConfigRegistry.PREFIX,
-				ConfigRegistry.BASES[reg])
+			filename = os.path.join(ConfigRegistry.PREFIX, ConfigRegistry.BASES[reg])
 		return _ConfigRegistry(filename=filename)
 
 	def load(self):
@@ -424,7 +422,6 @@ class _ConfigRegistry(dict):
 
 	def __str__(self):
 		"""Return sub registry content as string."""
-		return '\n'.join(['%s: %s' % (key, self.remove_invalid_chars(val)) for
-			key, val in sorted(self.items())])
+		return '\n'.join(['%s: %s' % (key, self.remove_invalid_chars(val)) for key, val in sorted(self.items())])
 
 # vim:set sw=4 ts=4 noet:

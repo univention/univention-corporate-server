@@ -183,9 +183,7 @@ class VengefulConfigRegistry(ConfigRegistry):
 	"""
 
 	def __init__(self, base_object):
-		self.__class__ = type(base_object.__class__.__name__,
-			(self.__class__, base_object.__class__),
-			{})
+		self.__class__ = type(base_object.__class__.__name__, (self.__class__, base_object.__class__), {})
 		self.__dict__ = base_object.__dict__
 
 	def __getitem__(self, key):
@@ -253,8 +251,10 @@ class Interfaces(object):
 
 	def _cmp_order(self, iface):
 		"""Compare interfaces by order."""
-		return (cmp_alnum(iface.order),
-			cmp_alnum(iface.name))
+		return (
+			cmp_alnum(iface.order),
+			cmp_alnum(iface.name),
+		)
 
 	def _cmp_primary(self, iface):
 		"""Compare interfaces by primary."""
@@ -262,7 +262,8 @@ class Interfaces(object):
 			primary = self.primary.index(iface.name)
 		except ValueError:
 			primary = maxsize
-		return (primary,
+		return (
+			primary,
 			cmp_alnum(iface.order),
 			cmp_alnum(iface.name),
 		)
@@ -274,31 +275,27 @@ class Interfaces(object):
 	@property
 	def all_interfaces(self):
 		"""Yield IPv4 interfaces."""
-		for name_settings in sorted(self._all_interfaces.items(),
-				key=lambda name_iface: self._cmp_order(name_iface[1])):
+		for name_settings in sorted(self._all_interfaces.items(), key=lambda name_iface: self._cmp_order(name_iface[1])):
 			yield name_settings
 
 	@property
 	def ipv4_interfaces(self):
 		"""Yield IPv4 interfaces."""
-		for name, iface in sorted(self._all_interfaces.items(),
-				key=lambda _name_iface: self._cmp_order(_name_iface[1])):
+		for name, iface in sorted(self._all_interfaces.items(), key=lambda _name_iface: self._cmp_order(_name_iface[1])):
 			if iface.ipv4_address() is not None:
 				yield (name, iface)
 
 	@property
 	def ipv6_interfaces(self):
 		"""Yield names of IPv6 interfaces."""
-		for iface in sorted(self._all_interfaces.values(),
-				key=self._cmp_order):
+		for iface in sorted(self._all_interfaces.values(), key=self._cmp_order):
 			for name in sorted(iface.ipv6_names, key=self._cmp_name):
 				if iface.ipv6_address(name):
 					yield (iface, name)
 
 	def get_default_ip_address(self):
 		"""returns the default IP address."""
-		for iface in sorted(self._all_interfaces.values(),
-				key=self._cmp_primary):
+		for iface in sorted(self._all_interfaces.values(), key=self._cmp_primary):
 			addr = iface.ipv4_address()
 			if addr:
 				return addr
@@ -309,16 +306,14 @@ class Interfaces(object):
 
 	def get_default_ipv4_address(self):
 		"""returns the default IPv4 address."""
-		for iface in sorted(self._all_interfaces.values(),
-				key=self._cmp_primary):
+		for iface in sorted(self._all_interfaces.values(), key=self._cmp_primary):
 			addr = iface.ipv4_address()
 			if addr:
 				return addr
 
 	def get_default_ipv6_address(self):
 		"""returns the default IPv6 address."""
-		for iface in sorted(self._all_interfaces.values(),
-				key=self._cmp_primary):
+		for iface in sorted(self._all_interfaces.values(), key=self._cmp_primary):
 			for name in sorted(iface.ipv6_names, key=self._cmp_name):
 				addr = iface.ipv6_address(name)
 				if addr:
@@ -358,8 +353,7 @@ if __name__ == '__main__':
 			self.assertEqual(IPv4Network('1.2.3.4/24'), i.ipv4_address())
 			self.assertEqual(None, i.ipv6_address())
 			self.assertEqual(['1', '2'], list(i.options))
-			self.assertEqual(['net 192.168.0.0 netmask 255.255.255.128',
-				'host 192.168.0.240'], list(i.routes))
+			self.assertEqual(['net 192.168.0.0 netmask 255.255.255.128', 'host 192.168.0.240'], list(i.routes))
 
 		def test_incomplete_addr(self):
 			"""Test incomplete interface with address."""
@@ -401,12 +395,9 @@ if __name__ == '__main__':
 			})
 			self.assertEqual('NAME', i.name)
 			self.assertEqual(None, i.ipv4_address())
-			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'),
-				i.ipv6_address())
-			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'),
-				i.ipv6_address('default'))
-			self.assertEqual(IPv6Network('2:3:4:5:6:7:8:9/80'),
-				i.ipv6_address('other'))
+			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'), i.ipv6_address())
+			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'), i.ipv6_address('default'))
+			self.assertEqual(IPv6Network('2:3:4:5:6:7:8:9/80'), i.ipv6_address('other'))
 
 	class TestInterfaces(unittest.TestCase):
 
@@ -421,16 +412,11 @@ if __name__ == '__main__':
 			self.assertEqual(None, t.ipv4_gateway)
 			self.assertEqual(None, t.ipv6_gateway)
 			self.assertEqual(None, t.ipv6_gateway_zone_index)
-			self.assertEqual([],
-				[s.name for _n, s in t.ipv4_interfaces])
-			self.assertEqual([],
-				[s.name for s, _n in t.ipv6_interfaces])
-			self.assertEqual(None,
-				t.get_default_ip_address())
-			self.assertEqual(None,
-				t.get_default_ipv4_address())
-			self.assertEqual(None,
-				t.get_default_ipv6_address())
+			self.assertEqual([], [s.name for _n, s in t.ipv4_interfaces])
+			self.assertEqual([], [s.name for s, _n in t.ipv6_interfaces])
+			self.assertEqual(None, t.get_default_ip_address())
+			self.assertEqual(None, t.get_default_ipv4_address())
+			self.assertEqual(None, t.get_default_ipv6_address())
 
 		def test_ipv4_only(self):
 			"""Test IPv4 only interface."""
@@ -438,16 +424,11 @@ if __name__ == '__main__':
 				'interfaces/eth0/address': '1.2.3.4',
 				'interfaces/eth0/netmask': '255.255.255.0',
 			})
-			self.assertEqual(['eth0'],
-				[s.name for _n, s in t.ipv4_interfaces])
-			self.assertEqual([],
-				[s.name for s, _n in t.ipv6_interfaces])
-			self.assertEqual(IPv4Network('1.2.3.4/24'),
-				t.get_default_ip_address())
-			self.assertEqual(IPv4Network('1.2.3.4/24'),
-				t.get_default_ipv4_address())
-			self.assertEqual(None,
-				t.get_default_ipv6_address())
+			self.assertEqual(['eth0'], [s.name for _n, s in t.ipv4_interfaces])
+			self.assertEqual([], [s.name for s, _n in t.ipv6_interfaces])
+			self.assertEqual(IPv4Network('1.2.3.4/24'), t.get_default_ip_address())
+			self.assertEqual(IPv4Network('1.2.3.4/24'), t.get_default_ipv4_address())
+			self.assertEqual(None, t.get_default_ipv6_address())
 
 		def test_incomplete_addr(self):
 			"""Test incomplete interface with address."""
@@ -455,16 +436,11 @@ if __name__ == '__main__':
 				'interfaces/eth0/address': '2.3.4.5',
 				'interfaces/eth0/ipv6/default/address': '1:2:3:4:5:6:7:8',
 			})
-			self.assertEqual([],
-				[s.name for _n, s in t.ipv4_interfaces])
-			self.assertEqual([],
-				[s.name for s, _n in t.ipv6_interfaces])
-			self.assertEqual(None,
-				t.get_default_ip_address())
-			self.assertEqual(None,
-				t.get_default_ipv4_address())
-			self.assertEqual(None,
-				t.get_default_ipv6_address())
+			self.assertEqual([], [s.name for _n, s in t.ipv4_interfaces])
+			self.assertEqual([], [s.name for s, _n in t.ipv6_interfaces])
+			self.assertEqual(None, t.get_default_ip_address())
+			self.assertEqual(None, t.get_default_ipv4_address())
+			self.assertEqual(None, t.get_default_ipv6_address())
 
 		def test_incomplete_net(self):
 			"""Test incomplete interface with netmask/prefix."""
@@ -472,16 +448,11 @@ if __name__ == '__main__':
 				'interfaces/eth0/netmask': '255.255.255.0',
 				'interfaces/eth0/ipv6/default/prefix': '64',
 			})
-			self.assertEqual([],
-				[s.name for _n, s in t.ipv4_interfaces])
-			self.assertEqual([],
-				[s.name for s, _n in t.ipv6_interfaces])
-			self.assertEqual(None,
-				t.get_default_ip_address())
-			self.assertEqual(None,
-				t.get_default_ipv4_address())
-			self.assertEqual(None,
-				t.get_default_ipv6_address())
+			self.assertEqual([], [s.name for _n, s in t.ipv4_interfaces])
+			self.assertEqual([], [s.name for s, _n in t.ipv6_interfaces])
+			self.assertEqual(None, t.get_default_ip_address())
+			self.assertEqual(None, t.get_default_ipv4_address())
+			self.assertEqual(None, t.get_default_ipv6_address())
 
 		def test_ipv4_multi(self):
 			"""Test multiple IPv4 interfaces."""
@@ -491,16 +462,11 @@ if __name__ == '__main__':
 				'interfaces/eth1/address': '2.3.4.5',
 				'interfaces/eth1/netmask': '255.255.255.0',
 			})
-			self.assertEqual(['eth0', 'eth1'],
-				[s.name for _n, s in t.ipv4_interfaces])
-			self.assertEqual([],
-				[s.name for s, _n in t.ipv6_interfaces])
-			self.assertEqual(IPv4Network('1.2.3.4/24'),
-				t.get_default_ip_address())
-			self.assertEqual(IPv4Network('1.2.3.4/24'),
-				t.get_default_ipv4_address())
-			self.assertEqual(None,
-				t.get_default_ipv6_address())
+			self.assertEqual(['eth0', 'eth1'], [s.name for _n, s in t.ipv4_interfaces])
+			self.assertEqual([], [s.name for s, _n in t.ipv6_interfaces])
+			self.assertEqual(IPv4Network('1.2.3.4/24'), t.get_default_ip_address())
+			self.assertEqual(IPv4Network('1.2.3.4/24'), t.get_default_ipv4_address())
+			self.assertEqual(None, t.get_default_ipv6_address())
 
 		def test_ipv6_multi(self):
 			"""Test multiple IPv6 interfaces."""
@@ -510,16 +476,11 @@ if __name__ == '__main__':
 				'interfaces/eth1/ipv6/default/address': '2:3:4:5:6:7:8:9',
 				'interfaces/eth1/ipv6/default/prefix': '64',
 			})
-			self.assertEqual([],
-				[s.name for _n, s in t.ipv4_interfaces])
-			self.assertEqual(['eth0', 'eth1'],
-				[s.name for s, _n in t.ipv6_interfaces])
-			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'),
-				t.get_default_ip_address())
-			self.assertEqual(None,
-				t.get_default_ipv4_address())
-			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'),
-				t.get_default_ipv6_address())
+			self.assertEqual([], [s.name for _n, s in t.ipv4_interfaces])
+			self.assertEqual(['eth0', 'eth1'], [s.name for s, _n in t.ipv6_interfaces])
+			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'), t.get_default_ip_address())
+			self.assertEqual(None, t.get_default_ipv4_address())
+			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'), t.get_default_ipv6_address())
 
 		def test_dual(self):
 			"""Test dual stack interface."""
@@ -529,16 +490,11 @@ if __name__ == '__main__':
 				'interfaces/eth0/address': '2.3.4.5',
 				'interfaces/eth0/netmask': '255.255.255.0',
 			})
-			self.assertEqual(['eth0'],
-				[s.name for _n, s in t.ipv4_interfaces])
-			self.assertEqual(['eth0'],
-				[s.name for s, _n in t.ipv6_interfaces])
-			self.assertEqual(IPv4Network('2.3.4.5/24'),
-				t.get_default_ip_address())
-			self.assertEqual(IPv4Network('2.3.4.5/24'),
-				t.get_default_ipv4_address())
-			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'),
-				t.get_default_ipv6_address())
+			self.assertEqual(['eth0'], [s.name for _n, s in t.ipv4_interfaces])
+			self.assertEqual(['eth0'], [s.name for s, _n in t.ipv6_interfaces])
+			self.assertEqual(IPv4Network('2.3.4.5/24'), t.get_default_ip_address())
+			self.assertEqual(IPv4Network('2.3.4.5/24'), t.get_default_ipv4_address())
+			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'), t.get_default_ipv6_address())
 
 		def test_ipv6_disjunct(self):
 			"""Test disjunct IPv4 IPv6 interfaces."""
@@ -548,16 +504,11 @@ if __name__ == '__main__':
 				'interfaces/eth1/ipv6/default/address': '1:2:3:4:5:6:7:8',
 				'interfaces/eth1/ipv6/default/prefix': '64',
 			})
-			self.assertEqual(['eth0'],
-				[s.name for _n, s in t.ipv4_interfaces])
-			self.assertEqual(['eth1'],
-				[s.name for s, _n in t.ipv6_interfaces])
-			self.assertEqual(IPv4Network('2.3.4.5/24'),
-				t.get_default_ip_address())
-			self.assertEqual(IPv4Network('2.3.4.5/24'),
-				t.get_default_ipv4_address())
-			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'),
-				t.get_default_ipv6_address())
+			self.assertEqual(['eth0'], [s.name for _n, s in t.ipv4_interfaces])
+			self.assertEqual(['eth1'], [s.name for s, _n in t.ipv6_interfaces])
+			self.assertEqual(IPv4Network('2.3.4.5/24'), t.get_default_ip_address())
+			self.assertEqual(IPv4Network('2.3.4.5/24'), t.get_default_ipv4_address())
+			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'), t.get_default_ipv6_address())
 
 		def test_ipv4_order(self):
 			"""Test IPv4 ordering."""
@@ -570,16 +521,11 @@ if __name__ == '__main__':
 				'interfaces/eth2/address': '3.4.5.6',
 				'interfaces/eth2/netmask': '255.0.0.0',
 			})
-			self.assertEqual(['eth2', 'eth0', 'eth1'],
-				[s.name for _n, s in t.ipv4_interfaces])
-			self.assertEqual([],
-				[s.name for s, _n in t.ipv6_interfaces])
-			self.assertEqual(IPv4Network('1.2.3.4/24'),
-				t.get_default_ip_address())
-			self.assertEqual(IPv4Network('1.2.3.4/24'),
-				t.get_default_ipv4_address())
-			self.assertEqual(None,
-				t.get_default_ipv6_address())
+			self.assertEqual(['eth2', 'eth0', 'eth1'], [s.name for _n, s in t.ipv4_interfaces])
+			self.assertEqual([], [s.name for s, _n in t.ipv6_interfaces])
+			self.assertEqual(IPv4Network('1.2.3.4/24'), t.get_default_ip_address())
+			self.assertEqual(IPv4Network('1.2.3.4/24'), t.get_default_ipv4_address())
+			self.assertEqual(None, t.get_default_ipv6_address())
 
 		def test_ipv6_order(self):
 			"""Test IPv6 ordering."""
@@ -592,16 +538,11 @@ if __name__ == '__main__':
 				'interfaces/eth2/ipv6/default/address': '3:4:5:6:7:8:9:a',
 				'interfaces/eth2/ipv6/default/prefix': '80',
 			})
-			self.assertEqual([],
-				[s.name for _n, s in t.ipv4_interfaces])
-			self.assertEqual(['eth2', 'eth0', 'eth1'],
-				[s.name for s, _n in t.ipv6_interfaces])
-			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'),
-				t.get_default_ip_address())
-			self.assertEqual(None,
-				t.get_default_ipv4_address())
-			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'),
-				t.get_default_ipv6_address())
+			self.assertEqual([], [s.name for _n, s in t.ipv4_interfaces])
+			self.assertEqual(['eth2', 'eth0', 'eth1'], [s.name for s, _n in t.ipv6_interfaces])
+			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'), t.get_default_ip_address())
+			self.assertEqual(None, t.get_default_ipv4_address())
+			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'), t.get_default_ipv6_address())
 
 		def test_ipv6_order_multi(self):
 			"""Test multiple IPv6 ordering."""
@@ -620,8 +561,7 @@ if __name__ == '__main__':
 				'interfaces/eth2/ipv6/default/prefix': '72',
 				'interfaces/primary': 'eth2,eth1',
 			})
-			self.assertEqual([],
-				[s.name for _n, s in t.ipv4_interfaces])
+			self.assertEqual([], [s.name for _n, s in t.ipv4_interfaces])
 			self.assertEqual([
 				('eth2', 'default'),
 				('eth2', 'z'),
@@ -629,12 +569,9 @@ if __name__ == '__main__':
 				('eth1', 'a'),
 				('eth0', 'foo')],
 				[(s.name, n) for s, n in t.ipv6_interfaces])
-			self.assertEqual(IPv6Network('2:3:4:5:6:7:8:9/72'),
-				t.get_default_ip_address())
-			self.assertEqual(None,
-				t.get_default_ipv4_address())
-			self.assertEqual(IPv6Network('2:3:4:5:6:7:8:9/72'),
-				t.get_default_ipv6_address())
+			self.assertEqual(IPv6Network('2:3:4:5:6:7:8:9/72'), t.get_default_ip_address())
+			self.assertEqual(None, t.get_default_ipv4_address())
+			self.assertEqual(IPv6Network('2:3:4:5:6:7:8:9/72'), t.get_default_ipv6_address())
 
 		def test_order_mixed(self):
 			"""Test multiple IPv6 ordering."""

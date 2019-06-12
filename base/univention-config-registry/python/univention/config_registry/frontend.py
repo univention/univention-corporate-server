@@ -37,14 +37,10 @@ import os
 import sys
 import re
 import time
-from univention.config_registry.backend import \
-	exception_occured, SCOPE, ConfigRegistry
-from univention.config_registry.handler import \
-	run_filter, ConfigHandlers
-from univention.config_registry.misc import \
-	validate_key, escape_value
-from univention.config_registry.filters import \
-	Output, filter_shell, filter_keys_only, filter_sort
+from univention.config_registry.backend import exception_occured, SCOPE, ConfigRegistry
+from univention.config_registry.handler import run_filter, ConfigHandlers
+from univention.config_registry.misc import validate_key, escape_value
+from univention.config_registry.filters import Output, filter_shell, filter_keys_only, filter_sort
 
 __all__ = [
 	'REPLOG_FILE',
@@ -67,8 +63,7 @@ __all__ = [
 
 REPLOG_FILE = '/var/log/univention/config-registry.replog'
 
-_SHOW_EMPTY, _SHOW_DESCRIPTION, _SHOW_SCOPE, _SHOW_CATEGORIES = \
-	(1 << _ for _ in range(4))
+_SHOW_EMPTY, _SHOW_DESCRIPTION, _SHOW_SCOPE, _SHOW_CATEGORIES = (1 << _ for _ in range(4))
 
 
 class UnknownKeyException(Exception):
@@ -104,8 +99,7 @@ def replog(ucr, var, old_value, value=None):
 		if old_value is None:
 			old_value = "[Previously undefined]"
 
-		log = '%s: %s %s%s old:%s\n' % (time.strftime("%Y-%m-%d %H:%M:%S"),
-			method, scope_arg, varvalue, old_value)
+		log = '%s: %s %s%s old:%s\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), method, scope_arg, varvalue, old_value)
 		try:
 			if not os.path.isfile(REPLOG_FILE):
 				os.close(os.open(REPLOG_FILE, os.O_CREAT, 0o640))
@@ -113,8 +107,7 @@ def replog(ucr, var, old_value, value=None):
 			logfile.write(log)
 			logfile.close()
 		except EnvironmentError as ex:
-			print(("E: exception occurred while writing to " +
-				"replication log: %s" % (ex,)), file=sys.stderr)
+			print(("E: exception occurred while writing to replication log: %s" % (ex,)), file=sys.stderr)
 			exception_occured()
 
 
@@ -130,8 +123,7 @@ def handler_set(args, opts=dict(), quiet=False):
 			sep_set = arg.find('=')  # set
 			sep_def = arg.find('?')  # set if not already set
 			if sep_set == -1 and sep_def == -1:
-				print("W: Missing value for config registry variable '%s'" % \
-					(arg,), file=sys.stderr)
+				print("W: Missing value for config registry variable '%s'" % (arg,), file=sys.stderr)
 				continue
 			else:
 				if sep_set > 0 and sep_def == -1:
@@ -158,8 +150,7 @@ def handler_set(args, opts=dict(), quiet=False):
 						print('Not setting %s' % key)
 		changed = ucr.update(changes)
 
-	_run_changed(ucr, changed,
-			None if quiet else 'W: %s is overridden by scope "%s"')
+	_run_changed(ucr, changed, None if quiet else 'W: %s is overridden by scope "%s"')
 
 
 def handler_unset(args, opts=dict()):
@@ -332,10 +323,11 @@ def handler_search(args, opts=dict()):
 
 	for key, (value, vinfo, scope) in all_vars.items():
 		for reg in regex:
-			if ((search_keys and reg.search(key)) or
-					(search_values and value and reg.search(value)) or
-					(search_all and vinfo and
-						reg.search(vinfo.get('description', '')))):
+			if any((
+				search_keys and reg.search(key),
+				search_values and value and reg.search(value),
+				search_all and vinfo and reg.search(vinfo.get('description', ''))
+			)):
 				print_variable_info_string(key, value, vinfo, details=details)
 				break
 
@@ -360,8 +352,7 @@ def handler_get(args, opts=dict()):
 		print(ucr.get(args[0], ''))
 
 
-def print_variable_info_string(key, value, variable_info, scope=None,
-		details=_SHOW_DESCRIPTION):
+def print_variable_info_string(key, value, variable_info, scope=None, details=_SHOW_DESCRIPTION):
 	"""Print UCR variable key, value, description, scope and categories."""
 	if value is None and not variable_info:
 		raise UnknownKeyException(key)
@@ -376,10 +367,7 @@ def print_variable_info_string(key, value, variable_info, scope=None,
 	else:
 		value_string = '%s' % value
 
-	if scope in (None, 0) or \
-		scope > len(SCOPE) or \
-		not _SHOW_SCOPE & details or \
-		OPT_FILTERS['shell'][2]:  # Do not display scope in shell export
+	if scope is None or not 0 <= scope < len(SCOPE) or not _SHOW_SCOPE & details or OPT_FILTERS['shell'][2]:  # Do not display scope in shell export
 		key_value = '%s: %s' % (key, value_string)
 	else:
 		key_value = '%s (%s): %s' % (key, SCOPE[scope], value_string)
@@ -416,7 +404,8 @@ def handler_info(args, opts=dict()):
 
 	for arg in args:
 		try:
-			print_variable_info_string(arg, ucr.get(arg, None),
+			print_variable_info_string(
+				arg, ucr.get(arg, None),
 				info.get_variable(arg),
 				details=_SHOW_EMPTY | _SHOW_DESCRIPTION | _SHOW_CATEGORIES)
 		except UnknownKeyException as ex:
@@ -637,8 +626,7 @@ def main(args):
 		for name, (_prio, func, state, actions) in OPT_FILTERS.items():
 			if state:
 				if action not in actions:
-					print('E: invalid option --%s for command %s' % \
-						(name, action), file=sys.stderr)
+					print('E: invalid option --%s for command %s' % (name, action), file=sys.stderr)
 					sys.exit(1)
 				else:
 					post_filter = True
@@ -666,8 +654,7 @@ def main(args):
 						sys.exit(1)
 
 		# Drop type
-		cmd_opts = dict(((key, value) for key, (typ, value) in
-			cmd_opts.items()))
+		cmd_opts = dict(((key, value) for key, (typ, value) in cmd_opts.items()))
 
 		# action!
 		try:
@@ -688,8 +675,7 @@ def main(args):
 			if post_filter:
 				sys.stdout = old_stdout
 				text = capture.text
-				for _prio, (name, filter_func, state, actions) in \
-					sorted(OPT_FILTERS.items(), key=lambda k_v: k_v[1][0]):
+				for _prio, (name, filter_func, state, actions) in sorted(OPT_FILTERS.items(), key=lambda k_v: k_v[1][0]):
 					if state:
 						text = filter_func(args, text)
 				for line in text:

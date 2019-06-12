@@ -156,8 +156,7 @@ class ConfigRegistryInfo(object):
 		if self.__configRegistry is None:
 			return
 		# Try more specific (longer) regular expressions first
-		for pattern, data in sorted(self.__patterns.items(),
-				key=ConfigRegistryInfo.__pattern_sorter, reverse=True):
+		for pattern, data in sorted(self.__patterns.items(), key=ConfigRegistryInfo.__pattern_sorter, reverse=True):
 			regex = re.compile(pattern)
 			# find config registry variables that match this pattern and are
 			# not already listed in self.variables
@@ -181,8 +180,7 @@ class ConfigRegistryInfo(object):
 		two regular languages" algorithm.
 		"""
 		patterns = {}
-		for pattern, data in sorted(self.__patterns.items(),
-				key=ConfigRegistryInfo.__pattern_sorter, reverse=True):
+		for pattern, data in sorted(self.__patterns.items(), key=ConfigRegistryInfo.__pattern_sorter, reverse=True):
 			regex = re.compile(pattern)
 			match = regex.search(term)
 			if not match:

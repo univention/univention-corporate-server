@@ -194,9 +194,10 @@ The modules from conffiles/* go to /etc/univention/templates/modules/.
 The mapping files debian/*.univention-config-registry-mapping go to /etc/univention/templates/mapping/.
 	'''
 	parser = OptionParser(usage=usage, epilog=epilog)
-	parser.add_option('-v', '--verbose',
-			dest='verbose', action='store_true',
-			help='Verbose mode: show all commands that modify the package build directory.')
+	parser.add_option(
+		'-v', '--verbose',
+		dest='verbose', action='store_true',
+		help='Verbose mode: show all commands that modify the package build directory.')
 	options, args = parser.parse_args()
 	if options.verbose:
 		os.environ['DH_VERBOSE'] = '1'
