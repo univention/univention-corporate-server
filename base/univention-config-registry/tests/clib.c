@@ -35,10 +35,9 @@ int fork_exec(char **argv) {
 	}
 }
 
-int test_layer(void) {
+void test_layer(void) {
 	char assign[64];
 	int r, layer;
-	pid_t pid;
 
 	for (layer = 0; LAYER[layer]; layer++) {
 		size_t size;
