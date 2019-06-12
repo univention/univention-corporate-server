@@ -31,6 +31,18 @@ import univention.ucslint.base as uub
 import re
 import os
 
+RE_DEP = re.compile(
+	r'''
+	(?P<name>[0-9a-z][+.0-9a-z-]+)
+	(?:\s*
+		(?:
+			\((?P<version>\s*(?P<vcomp><<|<=|=|>=|>>)\s*(?P<vstr>[^)]*))\)|
+			\[(?P<arch>[^]]*)\]|
+			<(?P<spec>[^>]*)>
+		)
+	)*''', re.VERBOSE
+)
+
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
@@ -54,6 +66,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0011-16': (uub.RESULT_INFO, 'unknown debhelper file'),
 			'0011-17': (uub.RESULT_WARN, 'debian/control: please use dh-python instead of python-support in Build-Depends'),
 			'0011-18': (uub.RESULT_WARN, 'debian/rules: please use --with python2,python3 instead of python_support'),
+			'0011-19': (uub.RESULT_WARN, 'parsing error in debian/compat'),
+			'0011-20': (uub.RESULT_WARN, 'debian/compat and debian/control disagree on the version for debhelper'),
 		}
 
 	def check(self, path):
@@ -76,6 +90,17 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		except uub.UCSLintException:
 			self.addmsg('0011-11', 'parsing error', filename=fn_control)
 			return
+
+		compat_version = 0
+		fn_compat = os.path.join(path, 'debian', 'compat')
+		try:
+			content_compat = open(fn_compat, 'r').read()
+			compat_version = int(content_compat)
+		except EnvironmentError:
+			# self.addmsg('0011-1', 'failed to open and read file', filename=fn_compat)
+			pass
+		except ValueError:
+			self.addmsg('0011-19', 'parsing error', filename=fn_compat)
 
 		# compare package name
 		reChangelogPackage = re.compile('^([a-z0-9.-]+) \((.*?)\) (.*?)\n')
@@ -107,14 +132,46 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		if parser.source_section.get('XS-Python-Version', ''):
 			self.addmsg('0011-11', 'XS-Python-Version is not required any longer', filename=fn_control)
 
-		if 'python-central' in parser.source_section.get('Build-Depends', ''):
+		build_depends = dict(
+			(m.group(1), m.groupdict()) for m in (
+				RE_DEP.match(dep) for dep in (
+					alt.strip()
+					for dep in parser.source_section.get('Build-Depends', '').split(',')
+					for alt in dep.split('|')
+				) if dep
+			) if m
+		)
+
+		if 'python-central' in build_depends:
 			self.addmsg('0011-12', 'please use python-support instead of python-central in Build-Depends', filename=fn_control)
 
-		if 'python-support' in parser.source_section.get('Build-Depends', ''):
+		if 'python-support' in build_depends:
 			self.addmsg('0011-17', 'please use dh-python instead of python-support in Build-Depends', filename=fn_control)
 
-		if 'ucslint' not in parser.source_section.get('Build-Depends', ''):
+		if 'ucslint' in build_depends:
+			pass
+		elif 'ucslint-univention' in build_depends:
+			pass
+		else:
 			self.addmsg('0011-13', 'ucslint is missing in Build-Depends', filename=fn_control)
+
+		try:
+			dep = build_depends['debhelper']
+			vstr = dep['vstr']
+			vint = int(vstr.split('.')[0]) if vstr else 0
+		except LookupError:
+			pass
+		except ValueError:
+			self.addmsg('0011-10', 'failed parsing debhelper version', filename=fn_control)
+		else:
+			if not compat_version:
+				pass
+			elif vint < compat_version:
+				self.addmsg('0011-20', 'debian/compat and debian/control disagree on the version for debhelper', filename=fn_control)
+			elif vint > compat_version:
+				self.addmsg('0011-20', 'debian/compat and debian/control disagree on the version for debhelper', filename=fn_compat)
+			else:
+				pass
 
 		self.check_debhelper(path, parser)
 
