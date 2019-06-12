@@ -6,7 +6,7 @@ src: cyrus-imapd
 fix: 2.5.10-3+deb9u1
 desc: |
  This update addresses the following issue:
- * specialy crafted HTTP PUT operation in CalDAV feature of httpd in IMAP
+ * Specially crafted HTTP PUT operation in CalDAV feature of httpd in IMAP
    leading to arbitrary code execution (CVE-2019-11356)
 bug: [49631]
 cve:
