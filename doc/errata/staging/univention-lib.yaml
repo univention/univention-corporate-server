@@ -3,8 +3,8 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-lib
-fix: 
+fix: 8.0.1-21A~4.4.0.201906031641
 desc: |
- This update addresses the following issue(s):
- * Calls to the inofficial UCR API have been adjusted.
+ This update addresses the following issue:
+ * Fix usage of Univention Configuration Registry Python module.
 bug: [49129]
