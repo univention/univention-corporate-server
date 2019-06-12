@@ -204,6 +204,7 @@ class RessourceBase(object):
 		return super(Ressource, self).get_body_arguments(name, *args)
 
 	def content_negotiation(self, response):
+		self.add_header('Vary', ', '.join(self.vary()))
 		lang = self.request.content_negotiation_lang
 		formatter = getattr(self, '%s_%s' % (self.request.method.lower(), lang), getattr(self, 'get_%s' % (lang,)))
 		codec = getattr(self, 'content_negotiation_%s' % (lang,))
@@ -386,6 +387,9 @@ class RessourceBase(object):
 			self.add_header('Cache-Control', cache_control)
 		if expires:
 			self.add_header('Expires', expires)
+
+	def vary(self):
+		return ['Accept', 'Accept-Language', 'Accept-Encoding', 'Authorization']
 
 
 class Ressource(RessourceBase, RequestHandler):
