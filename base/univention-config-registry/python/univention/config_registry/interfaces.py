@@ -33,14 +33,14 @@
 
 # pylint: disable-msg=W0142,C0103,R0201,R0904
 
+from sys import maxsize
+import re
 from backend import ConfigRegistry
 import six
 if six.PY3:
 	from ipaddress import IPv4Address, IPv4Network, IPv6Address, IPv6Network
 else:
 	from ipaddr import IPv4Address, IPv4Network, IPv6Address, IPv6Network
-from sys import maxsize
-import re
 
 __all__ = ['RE_IFACE', 'forgiving', 'cmp_alnum', 'Interfaces']
 

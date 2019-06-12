@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 #
 """Univention Configuration Registry helper functions."""
-from __future__ import print_function
 #  main configuration registry classes
 #
 # Copyright 2004-2019 Univention GmbH
@@ -30,17 +29,17 @@ from __future__ import print_function
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+from __future__ import print_function
+import sys
+import os
+import re
+import string  # pylint: disable-msg=W0402
 
 __all__ = [
 	'replace_dict', 'replace_umlaut', 'directory_files',
 	'escape_value',
 	'key_shell_escape', 'validate_key', 'INVALID_KEY_CHARS',
 ]
-
-import sys
-import os
-import re
-import string  # pylint: disable-msg=W0402
 
 
 def replace_dict(line, dictionary):
