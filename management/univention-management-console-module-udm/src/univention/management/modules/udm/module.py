@@ -1018,6 +1018,7 @@ class Object(Ressource):
 		self.add_link(props, '/udm/relation/object-types', self.urljoin('../'))
 		self.add_link(props, 'parent', self.urljoin('x/../'), name=module.name, title=module.object_name)
 		self.add_link(props, 'self', self.urljoin(''))
+		self.add_link(props, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
 		self.add_link(props, '/udm/relation/object/remove', self.urljoin(''), method='DELETE')
 		self.add_link(props, '/udm/relation/object/edit', self.urljoin(''), method='PUT')
 		for mod in module.child_modules:
@@ -1251,6 +1252,7 @@ class ObjectEdit(Ressource):
 			raise NotFound(object_type, dn)
 
 		result = {}
+		self.add_link(result, 'icon', self.urljoin('../favicon.ico'), type='image/x-icon')
 		if 'remove' in module.operations:
 			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='DELETE', relation='')
 			self.add_form_element(form, '', _('Remove'), type='submit')
