@@ -16,7 +16,7 @@ static char *LAYER[] = {
 	NULL,
 };
 
-int fork_exec(char **argv) {
+int fork_exec(char *const *argv) {
 	pid_t pid;
 	int status;
 
@@ -44,7 +44,7 @@ void test_layer(void) {
 
 		size = snprintf(assign, sizeof assign, "%s=%s", key, LAYER[layer]);
 		assert(0 < size && size < sizeof assign);
-		char *argv[] = {
+		char *const argv[] = {
 			ucr_name,
 			"set",
 			LAYER[layer],
@@ -61,7 +61,7 @@ void test_layer(void) {
 	}
 
 	for (layer = 0; LAYER[layer]; layer++) {
-		char *argv[] = {
+		char *const argv[] = {
 			ucr_name,
 			"unset",
 			LAYER[layer],
@@ -97,7 +97,7 @@ int main(void) {
 
 	test_layer();
 
-	char *argv[] = {
+	char *const argv[] = {
 		ucr_name,
 		"unset",
 		key,

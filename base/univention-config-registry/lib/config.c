@@ -155,11 +155,12 @@ int univention_config_set_string(const char *key, const char *value)
 		return -1;
 	if (pid == 0) {
 		/* child */
-		char *argv[4];
-		argv[0] = "univention-config-registry";
-		argv[1] = "set";
-		argv[2] = str;
-		argv[3] = NULL;
+		char *const argv[] = {
+			"univention-config-registry",
+			"set",
+			str,
+			NULL
+		};
 		execve("/usr/sbin/univention-config-registry", argv, NULL);
 		exit(127);
 	}
