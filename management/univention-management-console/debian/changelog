@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-17) unstable; urgency=medium
+
+  * Bug #49639: remove legacy /umcp/ path
+
+ -- Florian Best <best@univention.de>  Thu, 13 Jun 2019 14:07:05 +0200
+
 univention-management-console (11.0.4-16) unstable; urgency=medium
 
   * Bug #46089: fix "ldapError: Insufficient access" errors
