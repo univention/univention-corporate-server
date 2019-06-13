@@ -1018,14 +1018,6 @@ msgstr "{number} Fehler sind aufgetreten: "
 #~ msgstr ""
 #~ "Bitte melden Sie sich mit einem gültigen Benutzernamen und Passwort an."
 
-#~ msgid ""
-#~ "Received an unsolicited SAML response. Please try to single sign on again "
-#~ "by accessing /univention-management-console/saml/. Error message: %s"
-#~ msgstr ""
-#~ "Unaufgeforderte SAML-Antwort erhalten. Bitte versuchen Sie einen erneuten "
-#~ "Single Sign-On durch aufrufen von /univention-management-console/saml/. "
-#~ "Fehlernachricht: %s"
-
 #~ msgid "Received answer from identity provider."
 #~ msgstr "Antwort vom Identity Provider erhalten."
 

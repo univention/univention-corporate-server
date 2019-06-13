@@ -66,7 +66,7 @@ The <foreignphrase>Single Sign-On</foreignphrase> Login page to be configured in
 	</section>
 
 	<section id="sso:addlink">
-		<title>Add direct login link to <wordasword>ucs-overview</wordasword> page</title>
+		<title>Add direct login link to the <wordasword>UCS Portal</wordasword> page</title>
 		<para>
 			To provide users with a convenient link to an identity provider initiated login, the following ucr command may be used
 <programlisting lang="sh"><![CDATA[
