@@ -59,6 +59,7 @@ import univention.admin.modules as udm_modules
 # TODO: set Last-Modified
 # FIXME: add_asterisks sanitizer
 # FIXME: prevent in the javascript that navigation container quer is called with container=='None'
+# TODO: translation
 
 
 MAX_WORKERS = 4
@@ -135,6 +136,7 @@ def xml_rendering():
 
 
 class MainHandler(Ressource):
+
 	def get(self):
 		for main_type in ('users', 'computers', 'groups', 'networks', 'dhcp', 'dns', 'shares', 'mail', 'nagios', 'policies'):  # ldap-navigation?
 			self.add_header('Link', '</udm/%s/>; rel="/udm/object-modules"; title=""' % (main_type,))
@@ -142,6 +144,7 @@ class MainHandler(Ressource):
 
 
 class MainTypes(Ressource):
+
 	def get(self, main_type):
 		sub_type = 'user'
 		self.add_header('Link', '</udm/%s/%s/>; rel="/udm/object-types"; title=""' % (main_type, sub_type))
@@ -333,7 +336,7 @@ class Options(Ressource):
 class Layout(Ressource):
 	"""GET udm/users/user/$dn/layout (get layout of users/user object type)"""
 
-	def get(self, object_type, dn):
+	def get(self, object_type, dn=None):
 		"""Returns the layout information for the given object type."""
 
 		module = self.get_module(object_type)
@@ -805,7 +808,7 @@ if __name__ == "__main__":
 		(r"/udm/([a-z]+/[a-z]+)/(policies/[a-z]+)/([^/]+)/", PolicyResult),
 		(r"/udm/([a-z]+/[a-z]+)/", Objects),
 		(r"/udm/([a-z]+/[a-z]+)/([^/]+)", Object),
-		(r"/udm/([a-z]+/[a-z]+)/([^/]+)/layout", Layout),
+		(r"/udm/([a-z]+/[a-z]+)/([^/]*)/layout", Layout),
 		(r"/udm/networks/network/([^/]+)/next-free-ip-address", NextFreeIpAddress),
 		(r"/udm/progress/$progress-id", Operations),  # operations?
 		# TODO: possible move locations
