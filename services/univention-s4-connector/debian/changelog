@@ -1,3 +1,10 @@
+univention-s4-connector (13.0.2-17) unstable; urgency=medium
+
+  * Bug #49643: Avoid rejects when DNS records have an uppercase DC
+    attribute.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 13 Jun 2019 17:56:30 +0200
+
 univention-s4-connector (13.0.2-16) unstable; urgency=medium
 
   * Bug #49445: fix sql evaluation in remove_{ucs,s4}_rejected.py
