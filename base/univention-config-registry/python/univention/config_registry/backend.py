@@ -455,7 +455,7 @@ class _ConfigRegistry(dict):
 				mode = file_stat.st_mode
 				user = file_stat.st_uid
 				group = file_stat.st_gid
-			except:
+			except EnvironmentError:
 				mode = 0o0644
 				user = 0
 				group = 0

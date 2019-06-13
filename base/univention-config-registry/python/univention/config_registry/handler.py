@@ -407,7 +407,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 					with open(self.to_file, 'w+') as fd:
 						fd.write(open(tmp_to_file, 'r').read())
 					os.unlink(tmp_to_file)
-		except:
+		except Exception:
 			if os.path.exists(tmp_to_file):
 				os.unlink(tmp_to_file)
 			raise
@@ -491,7 +491,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 					with open(self.to_file, 'w+') as fd:
 						fd.write(open(tmp_to_file, 'r').read())
 					os.unlink(tmp_to_file)
-		except:
+		except Exception:
 			if os.path.exists(tmp_to_file):
 				os.unlink(tmp_to_file)
 			raise
