@@ -270,7 +270,21 @@ define([
 		},
 
 		getLayout: function(module, objDN, forceLoad) {
-			return this._getInfos('layout', [module], objDN, forceLoad)[0];
+			return this.request_get('/univention/udm/' + module + '/' + encodeURIComponent(objDN || '') + '/layout');
+		},
+
+		request_get: function(url) {
+			return require("dojo/request/xhr").get(url, {
+				preventCache: true,
+				handleAs: 'json',
+				headers: lang.mixin({
+					'Accept-Language': require('umc/i18n/tools').defaultLang(),
+					'Accept': 'application/json; q=1.0, text/html; q=0.3; */*; q=0.1',
+					'X-XSRF-Protection': tools.getCookies().sessionID,
+					'Content-Type': 'application/json'
+				}),
+				withCredentials: true
+			});
 		},
 
 		_loadLayoutMulti: function(modules) {
