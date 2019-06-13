@@ -25,27 +25,26 @@ if __name__ == '__main__':
 
 		lo = univention.uldap.getMachineConnection()
 		res = {}
-		pctrl = SimplePagedResultsControl(True, size=2, cookie='')
+		page_size = 2
+		pctrl = SimplePagedResultsControl(True, size=page_size, cookie='')
 		sctrl = SSSRequestControl(ordering_rules=['uid:caseIgnoreOrderingMatch'])
 		users = univention.admin.modules.get('users/user')
 		ctrls = [sctrl, pctrl]
 		entries = []
-		entries.append([x.dn for x in users.lookup(None, lo, 'username=%s*' % (name,), serverctrls=ctrls, response=res)])
-		print('Found', entries[-1])
 
 		while True:
+			entries.append([x.dn for x in users.lookup(None, lo, 'username=%s*' % (name,), serverctrls=ctrls, response=res)])
+			print('Found', entries[-1])
 			for control in res['ctrls']:
 				if control.controlType == SimplePagedResultsControl.controlType:
 					pctrl.cookie = control.cookie
 			if not pctrl.cookie:
 				break
 
-			entries.append([x.dn for x in users.lookup(None, lo, '', serverctrls=ctrls, response=res)])
-			print('Found', entries[-1])
-			assert 0 < len(entries[-1]) <= 2
+			assert len(entries[-1]) == page_size
 
 		found = []
 		for entry in entries:
 			found.extend(entry)
 
-		assert set(found) == set(dns)
+		assert sorted(found) == sorted(dns)
