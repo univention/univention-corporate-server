@@ -954,7 +954,7 @@ class s4(univention.s4connector.ucs):
 		if init_group_cache:
 			ud.debug(ud.LDAP, ud.PROCESS, 'Building internal group membership cache')
 			s4_groups = self.__search_s4(filter='objectClass=group', attrlist=['member'])
-			ud.debug(ud.LDAP, ud.INFO, "__init__: s4_groups: %s" % s4_groups)
+			ud.debug(ud.LDAP, ud.ALL, "__init__: s4_groups: %s" % s4_groups)
 			for s4_group in s4_groups:
 				if not s4_group or not s4_group[0]:
 					continue
@@ -966,7 +966,7 @@ class s4(univention.s4connector.ucs):
 					group_cache = self.group_members_cache_con[s4_group_dn.lower()]
 					group_cache.extend(m.lower() for m in s4_members)
 
-			ud.debug(ud.LDAP, ud.INFO, "__init__: self.group_members_cache_con: %s" % self.group_members_cache_con)
+			ud.debug(ud.LDAP, ud.ALL, "__init__: self.group_members_cache_con: %s" % self.group_members_cache_con)
 
 			ucs_groups = self.search_ucs(filter='objectClass=univentionGroup', attr=['uniqueMember'])
 			for ucs_group in ucs_groups:
@@ -975,7 +975,7 @@ class s4(univention.s4connector.ucs):
 				if ucs_group[1]:
 					for member in ucs_group[1].get('uniqueMember'):
 						self.group_members_cache_ucs[group].append(member.lower())
-			ud.debug(ud.LDAP, ud.INFO, "__init__: self.group_members_cache_ucs: %s" % self.group_members_cache_ucs)
+			ud.debug(ud.LDAP, ud.ALL, "__init__: self.group_members_cache_ucs: %s" % self.group_members_cache_ucs)
 
 			ud.debug(ud.LDAP, ud.PROCESS, 'Internal group membership cache was created')
 
