@@ -766,7 +766,7 @@ define([
 					lang.hitch(this, function() {
 						this.showReadme(this.app.readmePostUninstall, _('Uninstall Information')).then(lang.hitch(this, 'markupErrors'));
 					}), lang.hitch(this, function() {
-						this.markupErrors();
+						this.markupErrors('uninstall');
 					})
 				);
 			}));
@@ -819,7 +819,7 @@ define([
 					UMCApplication.addFavoriteModule('apps', this.app.id);
 					this.showReadme(this.app.readmePostInstall, _('Install Information')).then(lang.hitch(this, 'markupErrors'));
 				}), lang.hitch(this, function() {
-					this.markupErrors();
+					this.markupErrors('install');
 				})
 			);
 		},
@@ -831,7 +831,7 @@ define([
 					lang.hitch(this, function() {
 						this.showReadme(this.app.candidateReadmePostUpdate, _('Upgrade Information')).then(lang.hitch(this, 'markupErrors'));
 					}), lang.hitch(this, function() {
-						this.markupErrors();
+						this.markupErrors('update');
 					})
 				);
 			}));
@@ -1153,7 +1153,7 @@ define([
 			return deferred;
 		},
 
-		markupErrors: function() {
+		markupErrors: function(action) {
 			var installMasterPackagesOnHostFailedRegex = (/Installing extension of LDAP schema for (.+) seems to have failed on (DC Master|DC Backup) (.+)/);
 			var logHintGiven = false;
 			var errors = array.map(this._progressBar._errors, lang.hitch(this, function(error) {
@@ -1170,7 +1170,25 @@ define([
 				} else {
 					error = entities.encode(error);
 					if (! logHintGiven) {
-						error += '<p>' + _('Further information can be found in the following log file on each of the involved systems: %s', '<br /><em>/var/log/univention/appcenter.log</em>') + '</p>';
+						if (action == 'update') {
+							error_msg = '<p><b>' + _('The App update has failed!') + '</b></p>';
+							error_msg += '<p>' + _('We are sorry for the inconvenience.');
+							error_msg += 'The error message was:' + '<pre>' + error + '</pre>';
+							error_msg +=  _('Further information can be found in the following log file on each of the involved systems: %s', '<br /><em>/var/log/univention/appcenter.log</em>') + '</p>';
+							error_msg += '<p>' + _('The next steps could be:');
+							error_msg += '<ul>'
+							error_msg += '<li>' + _('Check log files') + '</li>'
+							error_msg += '<li>' + _('Consult the forum or contact the Univention support') + '</li>'
+							error_msg += '<li>' + _('Backup all data and configs of the app') + '</li>'
+							error_msg += '<li>' + _('Try to uninstall the app') + '</li>'
+							error_msg += '<li>' + _('Try to install the app again') + '</li>'
+							error_msg += '</ul>'
+							error_msg += '</p>'
+							error = error_msg;
+						}
+						else {
+							error += '<p>' + _('Further information can be found in the following log file on each of the involved systems: %s', '<br /><em>/var/log/univention/appcenter.log</em>') + '</p>';
+						}
 						logHintGiven = true;
 					}
 				}
