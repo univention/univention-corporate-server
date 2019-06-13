@@ -1,3 +1,8 @@
+html, body {
+	padding: 0;
+	margin: 0;
+	background-color: #f2f2f2;
+}
 header {
 	background-color: #6e6e6e;
 	min-height: 48px;
@@ -5,19 +10,20 @@ header {
 	z-index: 1000;
 	width: 100%;
 }
-html, body {
-	padding: 0;
-	margin: 0;
-	background-color: #f2f2f2;
+header a {
+	color: #ffffff;
+}
+header h1 {
+	display: inline-block;
 }
 main {
 	margin: 8px;
 }
-nav {
+body > nav {
 	width: 400px;
 	word-break: break-all;
 }
-nav, main {
+body > nav, body > main {
 	float: left;
 	position: relative;
 	top: 48px;

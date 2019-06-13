@@ -227,12 +227,14 @@ class RessourceBase(object):
 		ET.SubElement(head, 'meta', content='text/html; charset=utf-8', **{'http-equiv': 'content-type'})
 		body = ET.SubElement(root, "body")
 		header = ET.SubElement(body, 'header')
-		h1 = ET.SubElement(header, 'h1', id='logo')
+		topnav = ET.SubElement(header, 'nav')
+		h1 = ET.SubElement(topnav, 'h1', id='logo')
 		home = ET.SubElement(h1, 'a', rel='home', href=self.abspath('/'))
 		home.text = ' '
 		links = ET.SubElement(body, 'nav')
 		links = ET.SubElement(links, 'ul')
 		main = ET.SubElement(body, 'main')
+		_links = {}
 		for link in self._headers.get_list('Link'):
 			link, foo, _params = link.partition(';')
 			link = link.strip().lstrip('<').rstrip('>')
@@ -240,9 +242,10 @@ class RessourceBase(object):
 			if _params.strip():
 				params = dict((x.strip(), y.strip().strip('"')) for x, y in ((param.split('=', 1) + [''])[:2] for param in _params.split(';')))
 			ET.SubElement(head, "link", href=link, **params)
+			_links[params.get('rel')] = dict(params, href=link)
 			if params.get('rel') == 'self':
 				titleelement.text = params.get('title') or link or 'FIXME:notitle'
-			if params.get('rel') in ('stylesheet', 'icon'):
+			if params.get('rel') in ('stylesheet', 'icon', 'self', 'parent', 'udm/relation/object-modules'):
 				continue
 			#if params.get('rel') in ('udm/relation/tree',):
 			#	self.set_header('X-Frame-Options', 'SAMEORIGIN')
@@ -250,6 +253,11 @@ class RessourceBase(object):
 			#	continue
 			li = ET.SubElement(links, "li")
 			ET.SubElement(li, "a", href=link, **params).text = params.get('title', link) or link
+
+		for name in ('udm/relation/object-modules', 'parent', 'self'):
+			params = _links.get(name)
+			if params:
+				ET.SubElement(topnav, 'a', **params).text = '›› %s' % (params.get('title') or params['href'],)
 
 		if isinstance(response, (list, tuple)):
 			main.extend(response)
@@ -523,7 +531,7 @@ class ObjectTypes(Ressource):
 
 		result = {'entries': [], }
 
-		self.add_link(result, 'parent', self.urljoin('../'), title=_('Object modules'))
+		self.add_link(result, 'parent', self.urljoin('../'), title=_('All modules'))
 		self.add_link(result, 'self', self.urljoin(''))
 		if module_type == 'navigation':
 			self.add_link(result, 'udm/relation/tree', self.abspath('container/dc/tree'))
@@ -1115,7 +1123,7 @@ class Objects(Ressource):
 		result = {}
 		module = self.get_module(object_type)
 		methods = ['GET', 'OPTIONS']
-		self.add_link(result, 'udm/relation/object-modules', self.urljoin('../../'), title=_('Object modules'))
+		self.add_link(result, 'udm/relation/object-modules', self.urljoin('../../'), title=_('All modules'))
 		self.add_link(result, 'parent', self.urljoin('../'))
 		self.add_link(result, 'self', self.urljoin(''))
 		if 'search' in module.operations:
@@ -1161,7 +1169,7 @@ class Object(Ressource):
 		if object_type not in ('users/self', 'users/passwd') and not univention.admin.modules.recognize(object_type, obj.dn, obj.oldattr):
 			raise NotFound(object_type, dn)
 
-		self.add_link(props, 'udm/relation/object-modules', self.urljoin('../../'), title=_('Object modules'))
+		self.add_link(props, 'udm/relation/object-modules', self.urljoin('../../'), title=_('All modules'))
 		self.add_link(props, '/udm/relation/object-types', self.urljoin('../'))
 		self.add_link(props, 'parent', self.urljoin('x/../'), name=module.name, title=module.object_name)
 		self.add_link(props, 'self', self.urljoin(''))
