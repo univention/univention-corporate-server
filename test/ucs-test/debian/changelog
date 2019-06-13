@@ -1,3 +1,9 @@
+ucs-test (9.0.2-68) unstable; urgency=low
+
+  * Bug #17807: activate test mail to nested groups
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 13 Jun 2019 10:14:03 +0200
+
 ucs-test (9.0.2-67) unstable; urgency=medium
 
   * Bug #49415: wait_for_s4connector_replication in 72_udm-extensions/40_test_udm_hook

@@ -4,14 +4,12 @@
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 ## versions:
-##  4.0-3: skip
-##  4.1-0: skip
 
-from essential.mail import send_mail, check_delivery
 import time
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
+from essential.mail import send_mail, check_delivery
 
 
 def main():
@@ -21,12 +19,13 @@ def main():
 			password = 'univention'
 			mails_list = []
 			users_list = []
-			for i in xrange(3):
+			fqdn = '%s.%s' % (ucr.get('hostname'), domain)
+			for i in range(3):
 				mail = '%s@%s' % (uts.random_name(), domain)
 				user_dn, username = udm.create_user(
 					set={
 						'password': password,
-						'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+						'mailHomeServer': fqdn,
 						'mailPrimaryAddress': mail
 					}
 				)
@@ -53,26 +52,22 @@ def main():
 			token = str(time.time())
 			send_mail(recipients=group1_mail, msg=token, debuglevel=0)
 			for i, mail in enumerate(mails_list):
-				should_be_delivered = False
-				if i == 0:
-					should_be_delivered = True
-				print 40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered)
+				should_be_delivered = i == 0
+				print(40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered))
 				check_delivery(token, mail, should_be_delivered)
 
 			token = str(time.time())
 			send_mail(recipients=group2_mail, msg=token, debuglevel=0)
 			for i, mail in enumerate(mails_list):
-				should_be_delivered = False
-				if i in [1, 2]:
-					should_be_delivered = True
-				print 40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered)
+				should_be_delivered = i in [1, 2]
+				print(40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered))
 				check_delivery(token, mail, should_be_delivered)
 
 			token = str(time.time())
 			send_mail(recipients=group3_mail, msg=token, debuglevel=0)
+			should_be_delivered = True
 			for i, mail in enumerate(mails_list):
-				should_be_delivered = True
-				print 40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered)
+				print(40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered))
 				check_delivery(token, mail, should_be_delivered)
 
 
