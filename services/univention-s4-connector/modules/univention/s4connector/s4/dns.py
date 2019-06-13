@@ -1560,10 +1560,7 @@ def _identify_dns_con_object(s4connector, object):
 
 	if object.get('attributes'):
 		oc = object['attributes'].get('objectClass')
-		for attr in ('dc', 'DC'):
-			dc = object['attributes'].get(attr)
-			if dc:
-				break
+		dc = object['attributes'].get('dc') or object['attributes'].get('DC')
 		if oc and 'dnsZone' in oc:
 			# forward or reverse zone
 			if dc and dc[0].endswith('in-addr.arpa'):
