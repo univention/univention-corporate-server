@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-15) unstable; urgency=medium
+
+  * Bug #40773: Remove lockingdb and s4cache during re-join
+
+ -- Arvid Requate <requate@univention.de>  Thu, 13 Jun 2019 12:00:49 +0200
+
 univention-s4-connector (13.0.2-14) unstable; urgency=medium
 
   * Bug #35237: Fix trivial ucr syntax error in joinscript
