@@ -39,6 +39,8 @@ import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
 
+import univention.debug as ud
+
 translation = univention.admin.localization.translation('univention.admin.handlers.dns')
 _ = translation.translate
 

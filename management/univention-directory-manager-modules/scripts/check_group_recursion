@@ -40,6 +40,8 @@ import univention.admin.objects
 import univention.admin.uexceptions
 from optparse import OptionParser
 
+import univention.debug as ud
+
 lo = None
 co = None
 position = None

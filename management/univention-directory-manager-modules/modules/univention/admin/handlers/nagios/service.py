@@ -43,6 +43,8 @@ import univention.admin.localization
 import univention.admin.uexceptions
 from univention.admin import configRegistry
 
+import univention.debug as ud
+
 translation = univention.admin.localization.translation('univention.admin.handlers.nagios')
 _ = translation.translate
 

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.12-41) unstable; urgency=medium
+
+  * Bug #49422: fixup shortening univention.debug usage
+
+ -- Florian Best <best@univention.de>  Thu, 13 Jun 2019 18:11:05 +0200
+
 univention-directory-manager-modules (14.0.12-40) unstable; urgency=medium
 
   * Bug #49422: fixup shortening univention.debug usage

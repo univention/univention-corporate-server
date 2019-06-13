@@ -36,6 +36,7 @@ import types
 import smbpasswd
 import string
 import univention.config_registry
+import univention.debug as ud
 try:
 	from typing import List, Optional, Tuple  # noqa F401
 except ImportError:

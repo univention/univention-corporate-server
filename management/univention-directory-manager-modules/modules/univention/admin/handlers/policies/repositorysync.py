@@ -37,6 +37,8 @@ import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.cron
 
+import univention.debug as ud
+
 from univention.admin.policy import (
 	register_policy_mapping, policy_object_tab,
 	requiredObjectClassesProperty, prohibitedObjectClassesProperty,
