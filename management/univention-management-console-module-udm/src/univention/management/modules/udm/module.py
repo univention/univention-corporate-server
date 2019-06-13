@@ -62,6 +62,7 @@ import ldap
 from ldap.filter import filter_format
 from ldap.dn import explode_rdn
 from ldap.controls import SimplePagedResultsControl
+from ldap.controls.sss import SSSRequestControl
 import xml.etree.cElementTree as ET
 import xml.dom.minidom
 from genshi import XML
@@ -917,6 +918,9 @@ class Objects(Ressource):
 		fields = self.get_query_arguments('fields', [])
 		fields = (set(fields) | set([objectProperty])) - set(['name', 'None', None, ''])
 		properties = self.get_query_arguments('properties', [])
+		direction = self.get_query_argument('dir', 'ASC')
+		reverse = direction == 'DESC'
+		by = self.get_query_argument('by', None)
 		try:
 			page = int(self.get_query_argument('page', 1))
 			items_per_page = int(self.get_query_argument('pagesize', None))  # TODO: rename: items-per-page, pagelength, pagecount, pagesize
@@ -936,6 +940,8 @@ class Objects(Ressource):
 		#self.add_form_element(form, 'fields', list(fields))
 		self.add_form_element(form, 'page', str(page or '1'))
 		self.add_form_element(form, 'pagesize', str(items_per_page or '0'))
+		self.add_form_element(form, 'by', by or '')
+		self.add_form_element(form, 'dir', direction if direction in ('ASC', 'DESC') else 'ASC')
 		self.add_form_element(form, '', _('Search'), type='submit')
 
 		if superordinate:
@@ -948,14 +954,19 @@ class Objects(Ressource):
 		ctrls = {}
 		serverctrls = []
 		if items_per_page:
-			serverctrls = [SimplePagedResultsControl(True, size=items_per_page, cookie='')]
+			page_ctrl = SimplePagedResultsControl(True, size=items_per_page, cookie='')
+			serverctrls.append(page_ctrl)
+		if by in ('uid', 'uidNumber', 'cn'):
+			rule = ':caseIgnoreOrderingMatch' if by not in ('uidNumber',) else ''
+			serverctrls.append(SSSRequestControl(ordering_rules=['%s%s%s' % ('-' if reverse else '', by, rule)]))
 		entries = []
 		try:
 			ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000')
 			for i in range(page or 1):  # FIXME: iterating over searches is slower than doing it all by hand
 				objects = yield self.pool.submit(module.search, container, objectProperty or None, objectPropertyValue, superordinate, scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls)
-				if ctrls.get('ctrls'):
-					serverctrls[0].cookie = ctrls['ctrls'][0].cookie
+				for control in ctrls.get('ctrls', []):
+					if control.controlType == SimplePagedResultsControl.controlType:
+						page_ctrl.cookie = control.cookie
 		except SearchLimitReached as exc:
 			objects = []
 			result['errors'] = [str(exc)]
