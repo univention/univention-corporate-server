@@ -30,7 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import time
 import argparse
 
 import univention.admin.uldap
@@ -40,6 +39,7 @@ import univention.admin.handlers.users.user
 import univention.debug as ud1
 
 univention.admin.modules.update()
+
 
 # Ensure univention debug is initialized
 def initialize_debug():

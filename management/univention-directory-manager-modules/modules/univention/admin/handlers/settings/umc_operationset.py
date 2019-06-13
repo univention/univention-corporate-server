@@ -37,7 +37,7 @@ import univention.admin.mapping as udm_mapping
 from univention.admin.localization import translation
 from univention.admin.handlers import simpleLdap
 
-import univention.debug as ud
+import univention.admin
 
 _ = translation('univention.admin.handlers.settings').translate
 

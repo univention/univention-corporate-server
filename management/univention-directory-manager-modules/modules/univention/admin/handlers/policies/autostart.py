@@ -36,7 +36,6 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 
-import univention.debug as ud
 from univention.admin.policy import (
 	register_policy_mapping, policy_object_tab,
 	requiredObjectClassesProperty, prohibitedObjectClassesProperty,

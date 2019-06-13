@@ -29,13 +29,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import sys
+import os
+import traceback
+
 import univention.debug as ud
 import univention.admin.modules
 import univention.admin.uexceptions
 from univention.admin import localization
-import sys
-import os
-import traceback
 
 translation = localization.translation('univention/admin')
 _ = translation.translate

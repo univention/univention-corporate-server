@@ -31,6 +31,7 @@
 
 import ldap
 import time
+
 import univention.debug as ud
 import univention.admin.uexceptions
 from univention.admin import localization

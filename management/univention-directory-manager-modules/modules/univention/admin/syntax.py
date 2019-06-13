@@ -4066,7 +4066,6 @@ class UDM_PropertySelect(complex):
 	subsyntaxes = ((_('UDM module'), string), (_('property'), string))
 
 
-
 class listAttributes(string):
 	"""
 	Syntax to enter |UDM| property name.
