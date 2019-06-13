@@ -1173,7 +1173,7 @@ define([
 						if (action == 'update') {
 							error_msg = '<p><b>' + _('The App update has failed!') + '</b></p>';
 							error_msg += '<p>' + _('We are sorry for the inconvenience.');
-							error_msg += 'The error message was:' + '<pre>' + error + '</pre>';
+							error_msg += _('The error message was:') + '<pre>' + error + '</pre>';
 							error_msg +=  _('Further information can be found in the following log file on each of the involved systems: %s', '<br /><em>/var/log/univention/appcenter.log</em>') + '</p>';
 							error_msg += '<p>' + _('The next steps could be:');
 							error_msg += '<ul>'

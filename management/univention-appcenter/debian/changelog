@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-38) unstable; urgency=medium
+
+  * Bug #49645: added translation
+
+ -- Felix Botner <botner@univention.de>  Thu, 13 Jun 2019 15:44:00 +0200
+
 univention-appcenter (8.0.11-37) unstable; urgency=medium
 
   * Bug #49645: do not revert after failed update
