@@ -781,7 +781,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 				new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime(expiry))
 			else:                # not pwd change on next login
 				new_shadowLastChange = str(pwdLastSet_unix / 3600 / 24)
-				userobject = s4connector.get_ucs_object('user', ucs_object['dn'])
+				userobject = s4connector.get_ucs_object(key, ucs_object['dn'])
 				if not userobject:
 					ud.debug(ud.LDAP, ud.ERROR, "password_sync_s4_to_ucs: couldn't get user-object from UCS")
 					return False
