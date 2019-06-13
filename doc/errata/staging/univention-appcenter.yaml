@@ -3,8 +3,9 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-appcenter
-fix: 8.0.11-36A~4.4.0.201906111504
+fix: 8.0.11-38A~4.4.0.201906131545
 desc: |
  This update addresses the following issue(s):
  * More debug messages during SetupFailed.
-bug: [49625]
+ * Do not revert (remove, reinstall old) after failed App update.
+bug: [49625, 49645]
