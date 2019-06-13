@@ -97,8 +97,8 @@ univention-config-registry set \
 
 if [ "$server_role" != 'domaincontroller_master' -a "$server_role" != 'domaincontroller_backup' ]; then
 	ucr set connector/ldap/bindpw?"/etc/machine.secret" \
-		set connector/ldap/binddn?"$ldap_hostdn" \
-		set connector/ldap/server?"$hostname.$domainname"
+		connector/ldap/binddn?"$ldap_hostdn" \
+		connector/ldap/server?"$hostname.$domainname"
 fi
 
 # Create an extended attribute to synchronize the GPO attributes

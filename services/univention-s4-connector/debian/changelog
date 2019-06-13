@@ -1,4 +1,10 @@
-univention-s4-connector (13.0.2-13) UNRELEASED; urgency=medium
+univention-s4-connector (13.0.2-14) unstable; urgency=medium
+
+  * Bug #35237: Fix trivial ucr syntax error in joinscript
+
+ -- Arvid Requate <requate@univention.de>  Thu, 13 Jun 2019 11:48:58 +0200
+
+univention-s4-connector (13.0.2-13) unstable; urgency=medium
 
   * Bug #48364: Lower log volume of group cache init
 
