@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-s4-connector
-fix: 13.0.2-18A~4.4.0.201906131811
+fix: 13.0.2-19A~4.4.0.201906131827
 desc: |
  This update addresses the following issue:
  * A trivial ucr syntax error has been fixed in the joinscript
