@@ -1131,6 +1131,9 @@ class Object(Ressource):
 		if module.name == 'networks/network':
 			self.add_link(props, '/udm/relation/next-free-ip', self.urljoin(quote_dn(obj.dn), 'next-free-ip-address'), title=_('Next free IP address'))
 
+		if obj.has_property('jpegPhoto'):
+			self.add_link(props, '', self.urljoin(quote_dn(obj.dn), 'properties/photo.jpg'), type='image/jpeg', title=_('User photo'))
+
 		meta = dict((key, [val.decode('utf-8', 'replace') for val in value]) for key, value in self.ldap_connection.get(obj.dn, attr=[b'+']).items())
 		props['meta'] = meta
 		self.add_header('Last-Modified', last_modified(time.strptime(meta['modifyTimestamp'][0], '%Y%m%d%H%M%SZ')))
@@ -1328,6 +1331,28 @@ class Object(Ressource):
 				except (udm_errors.valueInvalidSyntax, udm_errors.valueError) as exc:
 					result.append({'property': property_name, 'valid': False, 'details': str(exc)})
 		raise tornado.gen.Return(result)
+
+
+class UserPhoto(Ressource):
+
+	@tornado.gen.coroutine
+	def get(self, object_type, dn):
+		dn = unquote_dn(dn)
+		module = get_module(object_type, dn, self.ldap_connection)
+		if module is None:
+			raise NotFound(object_type, dn)
+
+		obj = yield self.pool.submit(module.get, dn)
+		if not obj:
+			raise NotFound(object_type, dn)
+
+		if not obj.has_property('jpegPhoto'):
+			raise NotFound(object_type, dn)
+
+		data = obj.info.get('jpegPhoto', '').decode('base64')
+		self.set_header('Content-Type', 'image/jpeg')
+		self.add_caching(public=False, max_age=2592000)
+		self.finish(data)
 
 
 class ObjectAdd(Ressource):
@@ -1735,6 +1760,7 @@ class Application(tornado.web.Application):
 			(r"/udm/%s/report/([^/]+)" % (object_type,), Report),
 			(r"/udm/%s/%s/properties/" % (object_type, dn), Properties),
 			(r"/udm/%s/%s/properties/%s/choices" % (object_type, dn, property_), PropertyChoices),
+			(r"/udm/%s/%s/properties/photo.jpg" % (object_type, dn), UserPhoto),
 			(r"/udm/%s/properties/%s/default" % (object_type, property_), DefaultValue),
 			(r"/udm/%s/%s/%s/" % (object_type, dn, policies_object_type), PolicyTypes),
 			(r"/udm/%s/%s/%s/" % (object_type, policies_object_type, dn), PolicyResult),
