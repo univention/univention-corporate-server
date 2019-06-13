@@ -140,19 +140,22 @@ class ConfigRegistry(MM):
 		# type: () -> None
 		"""Save registry to file."""
 		registry = self._registry[self.scope]
-		registry.save()
+		if isinstance(registry, _ConfigRegistry):
+			registry.save()
 
 	def lock(self):
 		# type: () -> None
 		"""Lock registry file."""
 		registry = self._registry[self.scope]
-		registry.lock()
+		if isinstance(registry, _ConfigRegistry):
+			registry.lock()
 
 	def unlock(self):
 		# type: () -> None
 		"""Un-lock registry file."""
 		registry = self._registry[self.scope]
-		registry.unlock()
+		if isinstance(registry, _ConfigRegistry):
+			registry.unlock()
 
 	def __enter__(self):
 		# type: () -> ConfigRegistry
