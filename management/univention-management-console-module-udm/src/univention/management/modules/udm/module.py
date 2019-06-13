@@ -151,7 +151,7 @@ class RessourceBase(object):
 			self.authenticated[authorization] = (userdn, username, self.ldap_connection, self.ldap_position)
 
 	def get_module(self, object_type):
-		module = UDM_Module(object_type)
+		module = UDM_Module(object_type, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 		if not module or not module.module:
 			raise NotFound(object_type)
 		return module
@@ -453,8 +453,8 @@ class Relations(Ressource):
 			# Univention:
 			'object': '',
 			'object-modules': 'list of available module categories',
-			#'object-modules/all': 'list of all available modules',
 			'object-types': 'list of object types matching the given flavor or container',
+			'children-types': 'list of object types which can be created underneath of the container or superordinate',
 			'properties': 'properties of the given object type',
 			'options': 'options specified for the given object type',
 			'layout': 'layout information for the given object type',
@@ -492,15 +492,13 @@ class Modules(Ressource):
 		'nagios': 'nagios/nagios',
 		'policies': 'policies/policy',
 		'self': 'users/self',
-		#'navigation': 'directory',
+		'navigation': 'directory',
 	}
 
 	def get(self):
 		result = {}
 		for main_type in self.mapping:
-			self.add_link(result, '/udm/relation/object-modules', self.urljoin(quote(main_type)) + '/', name=main_type)
-		self.add_link(result, '/udm/relation/object-modules', self.urljoin('navigation') + '/', name='all')
-		#self.add_link(result, '/udm/relation/object-modules/all', self.urljoin('navigation') + '/', name='all')
+			self.add_link(result, '/udm/relation/object-modules', self.urljoin(quote(main_type)) + '/', name='all' if main_type == 'navigation' else main_type)
 		self.add_link(result, '/udm/relation/object-modules', self.urljoin('license') + '/', name='license')
 		self.add_link(result, '/udm/relation/ldap-base', self.urljoin('ldap/base') + '/')
 		self.add_caching(public=True)
@@ -511,59 +509,65 @@ class ObjectTypes(Ressource):
 	"""get the object types of a specific flavor"""
 
 	def get(self, module_type):
+		object_type = Modules.mapping.get(module_type)
+		if not object_type:
+			raise NotFound(object_type)
+
+		module = None
+		if module_type != 'navigation':
+			# FIXME: what was/is the superordinate for?
+			superordinate = self.get_query_argument('superordinate', None)
+			module = UDM_Module(object_type, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
+			if superordinate:
+				module = get_module(object_type, superordinate, self.ldap_connection) or module  # FIXME: the object_type param is wrong?!
+
+		result = {'entries': [], }
+
+		self.add_link(result, 'parent', self.urljoin('../'), title=_('Object modules'))
+		self.add_link(result, 'self', self.urljoin(''))
+		if module_type == 'navigation':
+			self.add_link(result, 'udm/relation/tree', self.abspath('container/dc/tree'))
+		elif module.has_tree:
+			self.add_link(result, 'udm/relation/tree', self.urljoin('../', object_type, 'tree'))
+
+		if module_type == 'navigation':
+			modules = udm_modules.modules.keys()
+		else:
+			modules = [x['id'] for x in module.child_modules]
+
+		for name in sorted(modules):
+			_module = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
+			result['entries'].append({
+				'id': _module.name,
+				'label': _module.title,
+				'object_name': _module.object_name,
+				'object_name_plural': _module.object_name_plural,
+				'help_link': _module.help_link,
+				'help_text': _module.help_text,
+				'columns': _module.columns,
+				#'has_tree': _module.has_tree,
+			})
+			self.add_link(result, '/udm/relation/object-types', self.urljoin('../%s' % quote(_module.name)) + '/', name=_module.name, title=_module.title)
+
+		self.add_caching(public=True)
+		self.content_negotiation(result)
+
+
+class SubObjectTypes(Ressource):
+	"""A list of possible sub-object-types which can be created underneath of the specified container or superordinate."""
+
+	def get(self, object_type=None, position=None):
 		"""Returns the list of object types matching the given flavor or container.
 
 		requests.options = {}
 			'superordinate' -- if available only types for the given superordinate are returned (not for the navigation)
 			'container' -- if available only types suitable for the given container are returned (only for the navigation)
 		"""
-		object_type = Modules.mapping.get(module_type)
-		if not object_type:
-			raise NotFound(object_type)
-
-		superordinate = self.get_query_argument('superordinate', None)
-		module = UDM_Module(object_type)
-		if superordinate:
-			module = get_module(object_type, superordinate, self.ldap_connection) or module  # FIXME: the object_type param is wrong?!
-
-		result = {}
-		result['entries'] = module.child_modules or []
-		if not result['entries'] and module.module:
-			result['entries'].append({'id': module.name, 'label': module.title})
-
-		self.add_link(result, 'parent', self.urljoin('../'), title=_('Object modules'), name='FIXME:udm/relation/object-modules')  # FIXME: name is wrong
-		self.add_link(result, 'self', self.urljoin(''))
-		if module.has_tree:
-			self.add_link(result, 'udm/relation/tree', self.urljoin('../', object_type, 'tree'))
-		for mod in result['entries']:
-			self.add_link(result, '/udm/relation/object-types', self.urljoin('../%s' % quote(mod['id'])) + '/', name=mod['id'], title=mod['label'])
-		self.add_caching(public=True)
-		self.content_negotiation(result)
-
-
-class ObjectTypesNavigation(Ressource):
-
-	def get(self):
-		superordinate = self.get_query_argument('superordinate', None)
-		container = self.get_query_argument('container', None) or superordinate
-		result = {}
-		if not container:
+		if not position:
 			# no container is specified, return all existing object types
-			entries = [{
-				'id': module[0],
-				'label': getattr(module[1], 'short_description', module[0])
-			} for module in udm_modules.modules.items()]
-			for mod in entries:
-				self.add_link(result, '/udm/relation/object-types', self.urljoin('../%s' % quote(mod['id'])) + '/', name=mod['id'], title=mod['label'])
-			result['entries'] = entries
-			self.add_link(result, 'udm/relation/tree', self.abspath('container/dc/tree'))
-			self.add_caching(public=True)
-			self.content_negotiation(result)
-			return
+			return self.module_definition(udm_modules.modules.keys())
 
-		if 'None' == container:
-			# if 'None' is given, use the LDAP base
-			container = ucr.get('ldap/base')
+		position = unquote_dn(position)
 
 		# create a list of modules that can be created
 		# ... all container types except container/dc
@@ -571,7 +575,7 @@ class ObjectTypesNavigation(Ressource):
 
 		# the container may be a superordinate or have one as its parent
 		# (or grandparent, ....)
-		superordinate = udm_modules.find_superordinate(container, None, self.ldap_connection)
+		superordinate = udm_modules.find_superordinate(position, None, self.ldap_connection)
 		if superordinate:
 			# there is a superordinate... add its subtypes to the list of allowed modules
 			allowed_modules.update(udm_modules.subordinates(superordinate))
@@ -582,14 +586,23 @@ class ObjectTypesNavigation(Ressource):
 		# make sure that the object type can be created
 		allowed_modules = [mod for mod in allowed_modules if udm_modules.supports(mod, 'add')]
 
-		# return the final list of object types
-		entries = [{
-			'id': udm_modules.name(module),
-			'label': getattr(module, 'short_description', udm_modules.name(module))
-		} for module in allowed_modules]
-		for mod in entries:
-			self.add_link(result, '/udm/relation/object-types', self.urljoin('../%s' % quote(mod['id'])) + '/', name=mod['id'], title=mod['label'])
-		result['entries'] = entries
+		return self.module_definition(allowed_modules)
+
+	def module_definition(self, modules):
+		result = {'entries': []}
+		for name in modules:
+			_module = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
+			result['entries'].append({
+				'id': _module.name,
+				'label': _module.title,
+				#'object_name': _module.object_name,
+				#'object_name_plural': _module.object_name_plural,
+				#'help_link': _module.help_link,
+				#'help_text': _module.help_text,
+				#'columns': _module.columns,
+				#'has_tree': _module.has_tree,
+			})
+			self.add_link(result, '/udm/relation/object-types', self.abspath(_module.name) + '/', name=_module.name, title=_module.title)
 		self.add_caching(public=True)
 		self.content_negotiation(result)
 
@@ -619,7 +632,7 @@ class ContainerQueryBase(Ressource):
 				defaults['$operations$'] = ['search', ],  # disallow edit
 			if object_type in ('dns/dns', 'dhcp/dhcp'):
 				defaults.update({
-					'label': UDM_Module(object_type).title,
+					'label': UDM_Module(object_type, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).title,
 					'icon': 'udm-%s' % (object_type.replace('/', '-'),),
 				})
 			self.add_link({}, 'next', self.urljoin('?container=%s' % (quote(container))))
@@ -629,7 +642,7 @@ class ContainerQueryBase(Ressource):
 				'icon': 'udm-container-dc',
 				'path': ldap_dn2path(container),
 				'objectType': 'container/dc',
-				'$operations$': UDM_Module('container/dc').operations,
+				'$operations$': UDM_Module('container/dc', ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).operations,
 				'$flags$': [],
 				'$childs$': True,
 				'$isSuperordinate$': False,
@@ -637,12 +650,12 @@ class ContainerQueryBase(Ressource):
 
 		result = []
 		for xmodule in modules:
-			xmodule = UDM_Module(xmodule)
+			xmodule = UDM_Module(xmodule, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 			superordinate = univention.admin.objects.get_superordinate(xmodule.module, None, self.ldap_connection, container)  # TODO: should also better be in a thread
 			try:
 				items = yield self.pool.submit(xmodule.search, container, scope=scope, superordinate=superordinate)
 				for item in items:
-					module = UDM_Module(item.module)
+					module = UDM_Module(item.module, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 					result.append({
 						'id': item.dn,
 						'label': item[module.identifies],
@@ -761,7 +774,7 @@ class Templates(Ressource):
 		module = self.get_module(object_type)
 		result = []
 		if module.template:
-			template = UDM_Module(module.template)
+			template = UDM_Module(module.template, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 			objects = template.search(ucr.get('ldap/base'))
 			for obj in objects:
 				obj.open()
@@ -1155,10 +1168,12 @@ class Object(Ressource):
 		self.add_link(props, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
 		self.add_link(props, '/udm/relation/object/remove', self.urljoin(''), method='DELETE')
 		self.add_link(props, '/udm/relation/object/edit', self.urljoin(''), method='PUT')
-		for mod in module.child_modules:
-			mod = self.get_module(mod['id'])
-			if mod and set(mod.superordinate_names) & {module.name, }:
-				self.add_link(props, '/udm/relation/object-types', self.urljoin('../../%s/?superordinate=%s' % (quote(mod.name), quote(obj.dn))), name=mod.name, title=mod.object_name_plural)
+#		for mod in module.child_modules:
+#			mod = self.get_module(mod['id'])
+#			if mod and set(mod.superordinate_names) & {module.name, }:
+#				self.add_link(props, '/udm/relation/children-types', self.urljoin('../../%s/?superordinate=%s' % (quote(mod.name), quote(obj.dn))), name=mod.name, title=mod.object_name_plural)
+		if module.childs:
+			self.add_link(props, '/udm/relation/children-types', self.urljoin(quote(obj.dn), 'children-types/'), name=module.name, title=_('Sub object types of %s') % (module.object_name,))
 
 		props['uri'] = self.urljoin(quote_dn(obj.dn))
 		props.update(self.get_representation(module, obj, ['*'], self.ldap_connection, copy))
@@ -1781,13 +1796,14 @@ class Application(tornado.web.Application):
 			(r"/udm/license/", License),
 			(r"/udm/license/check", LicenseCheck),
 			(r"/udm/license/request", LicenseRequest),
-			(r"/udm/navigation/", ObjectTypesNavigation),
 			(r"/udm/ldap/base/", LdapBase),
 			(r"/udm/%s/tree" % (object_type,), Tree),
 			(r"/udm/%s/properties" % (object_type,), Properties),
 			(r"/udm/%s/" % (module_type,), ObjectTypes),
 			(r"/udm/(navigation)/tree", Tree),
 			(r"/udm/(%s|navigation)/move-destinations/" % (object_type,), MoveDestinations),
+			(r"/udm/navigation/children-types/", SubObjectTypes),
+			(r"/udm/%s/%s/children-types/" % (object_type, dn), SubObjectTypes),
 			(r"/udm/%s/options" % (object_type,), Options),
 			(r"/udm/%s/templates" % (object_type,), Templates),
 			(r"/udm/%s/default-containers" % (object_type,), DefaultContainers),  # TODO: maybe rename conflicts with above except trailing slash
