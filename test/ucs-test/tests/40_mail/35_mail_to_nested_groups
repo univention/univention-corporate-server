@@ -3,7 +3,6 @@
 ## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
-## versions:
 
 import time
 import univention.testing.strings as uts
