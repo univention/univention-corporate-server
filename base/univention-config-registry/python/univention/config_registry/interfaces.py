@@ -116,13 +116,13 @@ def cmp_alnum(value):
 	"""
 	value = str(value)
 	key = []
-	for num, text in cmp_alnum.RE.findall(value):  # pylint: disable-msg=E1101
+	for num, text in RE_ALNUM.findall(value):
 		key.append(int(num or maxsize))
 		key.append(text)
 	return tuple(key)
 
 
-cmp_alnum.RE = re.compile(r'([0-9]+)|([^0-9]+)')  # pylint: disable-msg=W0612
+RE_ALNUM = re.compile(r'([0-9]+)|([^0-9]+)')
 
 
 class _Iface(dict):

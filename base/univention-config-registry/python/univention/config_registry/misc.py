@@ -65,7 +65,7 @@ def replace_umlaut(line):
 	>>> replace_umlaut(u'überschrieben')
 	u'ueberschrieben'
 	"""
-	return replace_dict(line, replace_umlaut.UMLAUTS)  # pylint: disable-msg=E1101
+	return replace_dict(line, UMLAUTS)  # pylint: disable-msg=E1101
 
 
 try:
@@ -93,7 +93,7 @@ except ImportError:
 		return "'" + text.replace("'", "'\"'\"'") + "'"
 
 
-replace_umlaut.UMLAUTS = {  # type: ignore # pylint: disable-msg=W0612
+UMLAUTS = {  # type: ignore # pylint: disable-msg=W0612
 	u'Ä': 'Ae',
 	u'ä': 'ae',
 	u'Ö': 'Oe',
@@ -118,7 +118,7 @@ def key_shell_escape(line):
 	if line[0] in string.digits:
 		new_line.append('_')
 	for letter in line:
-		if letter in key_shell_escape.VALID_CHARS:  # pylint: disable-msg=E1101
+		if letter in VALID_CHARS:  # pylint: disable-msg=E1101
 			new_line.append(letter)
 		else:
 			new_line.append('_')
@@ -126,7 +126,7 @@ def key_shell_escape(line):
 	return ''.join(new_line)
 
 
-key_shell_escape.VALID_CHARS = (  # type: ignore # pylint: disable-msg=W0612
+VALID_CHARS = (  # type: ignore # pylint: disable-msg=W0612
 	string.ascii_letters + string.digits + '_')
 
 
