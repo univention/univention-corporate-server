@@ -451,7 +451,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 		# type: () -> bool
 		"""Diversion is needed when at least one multifile and one subfile
 		definition exists."""
-		return self.def_count >= 1 and self.from_files
+		return self.def_count >= 1 and bool(self.from_files)
 
 	def install_divert(self):
 		# type: () -> None
