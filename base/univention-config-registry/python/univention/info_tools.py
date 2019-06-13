@@ -33,13 +33,25 @@
 import re
 import six
 from six.moves import configparser
+try:
+	from typing import overload, Dict, Optional, TypeVar, Union  # noqa F401
+	_VT = TypeVar('_VT')
+except ImportError:
+	def overload(f):
+		pass
 
 # default locale
 _locale = 'de'
+MYPY = False
 
 
-class LocalizedValue(dict):
+if MYPY:
+	__LVD = Dict[str, str]
+else:
+	__LVD = dict
 
+
+class LocalizedValue(__LVD):
 	"""Localized description entry."""
 
 	def __init__(self, *args, **kwargs):
@@ -54,7 +66,8 @@ class LocalizedValue(dict):
 			self.__default,
 		)
 
-	def get(self, locale=None):
+	def get(self, locale=None):  # type: ignore
+		# type: (str) -> str
 		if not locale:
 			locale = _locale
 		if locale in self:
@@ -62,86 +75,114 @@ class LocalizedValue(dict):
 		return self.__default
 
 	def set(self, value, locale=None):
+		# type: (str, str) -> None
 		self[locale or _locale] = value
 
 	def set_default(self, default):
+		# type: (str) -> None
 		self.__default = default
 
 	def get_default(self):
+		# type: () -> str
 		return self.__default
 
 
-class LocalizedDictionary(dict):
+if MYPY:
+	__LD = Dict[str, str]
+else:
+	__LD = dict
+
+
+class LocalizedDictionary(__LD):
 
 	"""Localized descriptions."""
 	_LOCALE_REGEX = re.compile('(?P<key>[a-zA-Z]*)\[(?P<lang>[a-z]*)\]$')
 
 	def __init__(self):
+		# type: () -> None
 		dict.__init__(self)
 
 	def __setitem__(self, key, value):
+		# type: (str, str) -> None
 		key = key.lower()
 		matches = LocalizedDictionary._LOCALE_REGEX.match(key)
 		# localized value?
 		if matches:
 			key, lang = matches.groups()
-		val = self.setdefault(key, LocalizedValue())
+
+		val = self.setdefault(key, LocalizedValue())  # type: ignore
 		if matches:
-			val.set(value, lang)
+			val.set(value, lang)  # type: ignore
 		else:
-			val.set_default(value)
+			val.set_default(value)  # type: ignore
 
 	def __getitem__(self, key):
+		# type: (str) -> str
 		key = key.lower()
+		lang = None  # type: Optional[str]
 		matches = LocalizedDictionary._LOCALE_REGEX.match(key)
 		# localized value?
 		if matches:
 			key, lang = matches.groups()
-		else:
-			lang = None
-		return dict.__getitem__(self, key).get(lang)
 
-	def get(self, key, default=None):
+		return dict.__getitem__(self, key).get(lang)  # type: ignore
+
+	@overload
+	def get(self, key):
+		# type: (str) -> Optional[str]
+		pass
+
+	@overload  # noqa F811
+	def get(self, key, default):
+		# type: (str, _VT) -> Union[str, _VT]
+		pass
+
+	def get(self, key, default=None):  # noqa F811
+		# type: (str, _VT) -> Union[str, _VT]
 		try:
 			value = self.__getitem__(key) or default
-			return value
+			return value  # type: ignore
 		except KeyError:
-			return default
+			return default  # type: ignore
 
-	def __contains__(self, key):
+	def __contains__(self, key):  # type: ignore
+		# type: (str) -> bool
 		key = key.lower()
 		matches = LocalizedDictionary._LOCALE_REGEX.match(key)
 		if matches:
 			key = matches.group(1)
 		return dict.__contains__(self, key)
-	has_key = __contains__
+	has_key = __contains__  # type: ignore
 
 	def __normalize_key(self, key):
+		# type: (str) -> Dict[str, str]
 		if key not in self:
 			return {}
 
 		temp = {}
-		variable = dict.__getitem__(self, key)
+		variable = dict.__getitem__(self, key)  # type: LocalizedValue # type: ignore
 		for locale, value in variable.items():
 			temp['%s[%s]' % (key, locale)] = value
 
-		if variable.get_default():
+		if variable.get_default():  # type: ignore
 			temp[key] = variable.get_default()
 
 		return temp
 
-	def normalize(self, key=None):
+	def normalize(self, key=None):  # noqa F811
+		# type: (str) -> Dict[str, str]
 		if key:
 			return self.__normalize_key(key)
-		temp = {}
-		for key in self.keys():
-			temp.update(self.__normalize_key(key))
+		temp = {}  # type: Dict[str, str]
+		for key2 in self.keys():
+			temp.update(self.__normalize_key(key2))
 		return temp
 
 	def get_dict(self, key):
+		# type: (str) -> Dict[str, str]
 		if key not in self:
 			return {}
-		return dict.__getitem__(self, key)
+		return dict.__getitem__(self, key)  # type: ignore
 
 	def __eq__(self, other):
 		if not isinstance(other, dict):

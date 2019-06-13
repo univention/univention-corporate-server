@@ -34,6 +34,10 @@ import sys
 import os
 import re
 import string  # pylint: disable-msg=W0402
+try:
+	from typing import Dict, IO, List, Text  # noqa F401
+except ImportError:
+	pass
 
 __all__ = [
 	'replace_dict', 'replace_umlaut', 'directory_files',
@@ -43,6 +47,7 @@ __all__ = [
 
 
 def replace_dict(line, dictionary):
+	# type: (Text, Dict[Text, str]) -> Text
 	"""
 	Map any character from line to its value from dictionary.
 
@@ -53,6 +58,7 @@ def replace_dict(line, dictionary):
 
 
 def replace_umlaut(line):
+	# type: (Text) -> Text
 	u"""
 	Replace german umlauts.
 
@@ -67,7 +73,8 @@ try:
 except ImportError:
 	_safechars = frozenset(string.ascii_letters + string.digits + '@%_-+=:,./')
 
-	def escape_value(text):
+	def escape_value(text):  # type: ignore
+		# type: (str) -> str
 		"""
 		Return a shell-escaped version of the file string.
 
@@ -86,7 +93,7 @@ except ImportError:
 		return "'" + text.replace("'", "'\"'\"'") + "'"
 
 
-replace_umlaut.UMLAUTS = {  # pylint: disable-msg=W0612
+replace_umlaut.UMLAUTS = {  # type: ignore # pylint: disable-msg=W0612
 	u'Ä': 'Ae',
 	u'ä': 'ae',
 	u'Ö': 'Oe',
@@ -98,6 +105,7 @@ replace_umlaut.UMLAUTS = {  # pylint: disable-msg=W0612
 
 
 def key_shell_escape(line):
+	# type: (str) -> str
 	"""
 	Escape variable name by substituting shell invalid characters by '_'.
 
@@ -118,11 +126,12 @@ def key_shell_escape(line):
 	return ''.join(new_line)
 
 
-key_shell_escape.VALID_CHARS = (  # pylint: disable-msg=W0612
+key_shell_escape.VALID_CHARS = (  # type: ignore # pylint: disable-msg=W0612
 	string.ascii_letters + string.digits + '_')
 
 
 def validate_key(key, out=sys.stderr):
+	# type: (Text, IO) -> bool
 	"""
 	Check if key consists of only shell valid characters.
 
@@ -153,6 +162,7 @@ INVALID_KEY_CHARS = re.compile('[][\r\n!"#$%&\'()+,;<=>?\\\\`{}§]')
 
 
 def directory_files(directory):
+	# type: (str) -> List[str]
 	"""
 	Return a list of all files below the given directory.
 

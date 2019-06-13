@@ -37,18 +37,25 @@ import re
 import errno
 import time
 from collections import MutableMapping
+try:
+	from typing import overload, Any, Dict, IO, Iterator, List, NoReturn, Optional, Set, Tuple, Type, TypeVar, Union  # noqa F401
+	from types import TracebackType  # noqa
+	_VT = TypeVar('_VT')
+except ImportError:
+	def overload(f):
+		pass
 
 __all__ = ['StrictModeException', 'exception_occured', 'SCOPE', 'ConfigRegistry']
-
+MYPY = False
 INVALID_VALUE_CHARS = '\r\n'
 
 
 class StrictModeException(Exception):
-
 	"""Attempt to store non-UTF-8 characters in strict UTF-8 mode."""
 
 
 def exception_occured(out=sys.stderr):
+	# type: (IO) -> NoReturn
 	"""
 	Print exception message and exit.
 
@@ -62,8 +69,13 @@ def exception_occured(out=sys.stderr):
 SCOPE = ['normal', 'ldap', 'schedule', 'forced', 'custom']
 
 
-class ConfigRegistry(MutableMapping):
+if MYPY:
+	MM = MutableMapping[str, str]
+else:
+	MM = MutableMapping
 
+
+class ConfigRegistry(MM):
 	"""
 	Merged persistent value store.
 	This is a merged view of several sub-registries.
@@ -82,13 +94,15 @@ class ConfigRegistry(MutableMapping):
 	}
 
 	def __init__(self, filename=None, write_registry=NORMAL):
+		# type: (str, int) -> None
 		super(ConfigRegistry, self).__init__()
 		self.file = os.getenv('UNIVENTION_BASECONF') or filename or None
 		if self.file:
 			self.scope = ConfigRegistry.CUSTOM
 		else:
 			self.scope = write_registry
-		self._registry = {}
+
+		self._registry = {}  # type: Dict[int, Union[_ConfigRegistry, Dict[str, str]]]
 		for reg in self.LAYER_PRIORITIES:
 			if self.file and reg != ConfigRegistry.CUSTOM:
 				self._registry[reg] = {}
@@ -98,6 +112,7 @@ class ConfigRegistry(MutableMapping):
 				self._registry[reg] = self._create_registry(reg)
 
 	def _create_registry(self, reg):
+		# type: (int) -> _ConfigRegistry
 		"""
 		Create internal sub registry.
 
@@ -111,6 +126,7 @@ class ConfigRegistry(MutableMapping):
 		return _ConfigRegistry(filename=filename)
 
 	def load(self):
+		# type: () -> None
 		"""Load registry from file."""
 		for reg in self._registry.values():
 			if isinstance(reg, _ConfigRegistry):
@@ -121,21 +137,25 @@ class ConfigRegistry(MutableMapping):
 				reg.strict_encoding = strict
 
 	def save(self):
+		# type: () -> None
 		"""Save registry to file."""
 		registry = self._registry[self.scope]
 		registry.save()
 
 	def lock(self):
+		# type: () -> None
 		"""Lock registry file."""
 		registry = self._registry[self.scope]
 		registry.lock()
 
 	def unlock(self):
+		# type: () -> None
 		"""Un-lock registry file."""
 		registry = self._registry[self.scope]
 		registry.unlock()
 
 	def __enter__(self):
+		# type: () -> ConfigRegistry
 		"""
 		Lock Config Registry for read-modify-write cycle.
 
@@ -149,6 +169,7 @@ class ConfigRegistry(MutableMapping):
 		return self
 
 	def __exit__(self, exc_type, exc_value, traceback):
+		# type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
 		"""
 		Unlock registry.
 		"""
@@ -157,6 +178,7 @@ class ConfigRegistry(MutableMapping):
 		self.unlock()
 
 	def __delitem__(self, key):
+		# type: (str) -> None
 		"""
 		Delete registry key.
 
@@ -165,7 +187,8 @@ class ConfigRegistry(MutableMapping):
 		registry = self._registry[self.scope]
 		del registry[key]
 
-	def __getitem__(self, key):
+	def __getitem__(self, key):  # type: ignore
+		# type: (str) -> Optional[str]
 		"""
 		Return registry value.
 
@@ -177,6 +200,7 @@ class ConfigRegistry(MutableMapping):
 		return self.get(key)
 
 	def __setitem__(self, key, value):
+		# type: (str, str) -> None
 		"""
 		Set registry value.
 
@@ -186,7 +210,8 @@ class ConfigRegistry(MutableMapping):
 		registry = self._registry[self.scope]
 		registry[key] = value
 
-	def __contains__(self, key):
+	def __contains__(self, key):  # type: ignore
+		# type: (str) -> bool
 		"""
 		Check if registry key is set.
 
@@ -200,6 +225,7 @@ class ConfigRegistry(MutableMapping):
 		return False
 
 	def __iter__(self):
+		# type: () -> Iterator[str]
 		"""
 		Iterate over all registry keys.
 
@@ -210,6 +236,7 @@ class ConfigRegistry(MutableMapping):
 			yield key
 
 	def __len__(self):
+		# type: () -> int
 		"""
 		Return length.
 
@@ -218,7 +245,23 @@ class ConfigRegistry(MutableMapping):
 		merge = self._merge()
 		return len(merge)
 
-	def get(self, key, default=None, getscope=False):
+	@overload  # type: ignore
+	def get(self, key):
+		# type: (str) -> Optional[str]
+		pass
+
+	@overload  # noqa F811
+	def get(self, key, default):
+		# type: (str, _VT) -> Union[str, _VT]
+		pass
+
+	@overload  # noqa F811
+	def get(self, key, default, getscope):
+		# type: (str, _VT, bool) -> Tuple[int, Union[None, str, _VT]]
+		pass
+
+	def get(self, key, default=None, getscope=False):  # noqa F811
+		# type: (str, _VT, bool) -> Union[None, str, _VT, Tuple[int, Union[None, str, _VT]]]
 		"""
 		Return registry value (including optional scope).
 
@@ -230,13 +273,14 @@ class ConfigRegistry(MutableMapping):
 		for reg in self.LAYER_PRIORITIES:
 			try:
 				registry = self._registry[reg]
-				value = registry[key]
+				value = registry[key]  # type: str
 			except KeyError:
 				continue
 			return (reg, value) if getscope else value
 		return default
 
 	def has_key(self, key, write_registry_only=False):
+		# type: (str, bool) -> bool
 		"""
 		Check if registry key is set.
 
@@ -249,14 +293,25 @@ class ConfigRegistry(MutableMapping):
 		else:
 			return key in self
 
-	def _merge(self, getscope=False):
+	@overload
+	def _merge(self):
+		# type: () -> Dict[str, str]
+		pass
+
+	@overload  # noqa F811
+	def _merge(self, getscope):
+		# type: (bool) -> Dict[str, Tuple[int, str]]
+		pass
+
+	def _merge(self, getscope=False):  # noqa F811
+		# type: (bool) -> Union[Dict[str, str], Dict[str, Tuple[int, str]]]
 		"""
 		Merge sub registry.
 
 		:param getscope: `True` makes the method return the scope level in addition to the value itself.
 		:returns: A mapping from varibal ename to eiter the value (if `getscope` is False) or a 2-tuple (level, value).
 		"""
-		merge = {}
+		merge = {}  # type: Dict[str, Union[str, Tuple[int, str]]]
 		for reg in self.LAYER_PRIORITIES:
 			registry = self._registry[reg]
 			if not isinstance(registry, _ConfigRegistry):
@@ -264,9 +319,21 @@ class ConfigRegistry(MutableMapping):
 			for key, value in registry.items():
 				if key not in merge:
 					merge[key] = (reg, value) if getscope else value
-		return merge
 
-	def items(self, getscope=False):
+		return merge  # type: ignore
+
+	@overload  # type: ignore
+	def items(self):
+		# type: () -> Dict[str, str]
+		pass
+
+	@overload  # noqa F811
+	def items(self, getscope):
+		# type: (bool) -> Dict[str, Tuple[int, str]]
+		pass
+
+	def items(self, getscope=False):  # noqa F811
+		# type: (bool) -> Union[Dict[str, str], Dict[str, Tuple[int, str]]]
 		"""
 		Return all registry entries a 2-tuple (key, value) or (key, (scope, value)) if getscope is True.
 
@@ -274,14 +341,31 @@ class ConfigRegistry(MutableMapping):
 		:returns: A mapping from varibal ename to eiter the value (if `getscope` is False) or a 2-tuple (level, value).
 		"""
 		merge = self._merge(getscope=getscope)
-		return merge.items()
+		return merge.items()  # type: ignore
 
 	def __str__(self):
+		# type: () -> str
 		"""Return registry content as string."""
 		merge = self._merge()
 		return '\n'.join(['%s: %s' % (key, val) for key, val in merge.items()])
 
-	def is_true(self, key=None, default=False, value=None):
+	@overload
+	def is_true(self, key):
+		# type: (str) -> bool
+		pass
+
+	@overload  # noqa F811
+	def is_true(self, key, default):
+		# type: (str, bool) -> bool
+		pass
+
+	@overload  # noqa F811
+	def is_true(self, key, default, value):
+		# type: (str, bool, Optional[str]) -> bool
+		pass
+
+	def is_true(self, key=None, default=False, value=None):  # noqa F811
+		# type: (str, bool, Optional[str]) -> bool
 		"""
 		Return if the strings value of key is considered as true.
 
@@ -302,12 +386,28 @@ class ConfigRegistry(MutableMapping):
 		True
 		"""
 		if value is None:
-			value = self.get(key)
+			value = self.get(key)  # type: ignore
 			if value is None:
 				return default
 		return value.lower() in ('yes', 'true', '1', 'enable', 'enabled', 'on')
 
+	@overload
+	def is_false(self, key):
+		# type: (str) -> bool
+		pass
+
+	@overload  # noqa F811
+	def is_false(self, key, default):
+		# type: (str, bool) -> bool
+		pass
+
+	@overload  # noqa F811
 	def is_false(self, key=None, default=False, value=None):
+		# type: (str, bool, Optional[str]) -> bool
+		pass
+
+	def is_false(self, key=None, default=False, value=None):  # noqa F811
+		# type: (str, bool, Optional[str]) -> bool
 		"""
 		Return if the strings value of key is considered as false.
 
@@ -328,12 +428,13 @@ class ConfigRegistry(MutableMapping):
 		True
 		"""
 		if value is None:
-			value = self.get(key)
+			value = self.get(key)  # type: ignore
 			if value is None:
 				return default
 		return value.lower() in ('no', 'false', '0', 'disable', 'disabled', 'off')
 
-	def update(self, changes):
+	def update(self, changes):  # type: ignore
+		# type: (Dict[str, Optional[str]]) -> Dict[str, Tuple[Optional[str], Optional[str]]]
 		"""
 		Set or unset the given config registry variables.
 
@@ -355,7 +456,8 @@ class ConfigRegistry(MutableMapping):
 			changed[key] = (old_value, new_value)
 		return changed
 
-	def setdefault(self, key, default=None):
+	def setdefault(self, key, default):  # type: ignore
+		# type: (str, str) -> str
 		"""
 		Set value for variable only when not yet set.
 
@@ -367,11 +469,11 @@ class ConfigRegistry(MutableMapping):
 		value = self.get(key, default=self)
 		if value is self:
 			value = self[key] = default
-		return value
+
+		return value  # type: ignore
 
 
 class _ConfigRegistry(dict):
-
 	"""
 	Persistent value store.
 	This is a single value store using a text file.
@@ -380,6 +482,7 @@ class _ConfigRegistry(dict):
 	"""
 
 	def __init__(self, filename=None):
+		# type: (str) -> None
 		dict.__init__(self)
 		if filename:
 			self.file = filename
@@ -392,9 +495,10 @@ class _ConfigRegistry(dict):
 		# means the backend files are valid UTF-8 and should stay that way -->
 		# only accept valid UTF-8
 		self.strict_encoding = False
-		self.lock_file = None
+		self.lock_file = None  # type: Optional[IO]
 
 	def load(self):
+		# type: () -> None
 		"""Load sub registry from file."""
 		import_failed = False
 		try:
@@ -431,6 +535,7 @@ class _ConfigRegistry(dict):
 			self.__save_file(self.file)
 
 	def __create_base_conf(self):
+		# type: () -> None
 		"""Create sub registry file."""
 		try:
 			reg_file = os.open(self.file, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
@@ -442,6 +547,7 @@ class _ConfigRegistry(dict):
 				exception_occured()
 
 	def __save_file(self, filename):
+		# type: (str) -> None
 		"""
 		Save sub registry to file.
 
@@ -493,17 +599,21 @@ class _ConfigRegistry(dict):
 				raise
 
 	def save(self):
+		# type: () -> None
 		"""Save sub registry to file."""
 		for filename in (self.backup_file, self.file):
 			self.__save_file(filename)
 
 	def lock(self):
+		# type: () -> None
 		"""Lock sub registry file."""
 		self.lock_file = open(self.lock_filename, "a+")
 		fcntl.flock(self.lock_file.fileno(), fcntl.LOCK_EX)
 
 	def unlock(self):
+		# type: () -> None
 		"""Un-lock sub registry file."""
+		assert self.lock_file
 		self.lock_file.close()
 
 	def __setitem__(self, key, value):
@@ -526,6 +636,7 @@ class _ConfigRegistry(dict):
 
 	@staticmethod
 	def remove_invalid_chars(seq):
+		# type: (str) -> str
 		"""
 		Remove non-UTF-8 characters from value.
 
@@ -537,6 +648,7 @@ class _ConfigRegistry(dict):
 		return seq
 
 	def __str__(self):
+		# type: () -> str
 		"""Return sub registry content as string."""
 		return '\n'.join(['%s: %s' % (key, self.remove_invalid_chars(val)) for key, val in sorted(self.items())])
 

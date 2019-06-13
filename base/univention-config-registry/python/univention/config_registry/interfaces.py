@@ -42,6 +42,14 @@ if six.PY3:
 	from ipaddress import IPv4Address, IPv4Network, IPv6Address, IPv6Network
 else:
 	from ipaddr import IPv4Address, IPv4Network, IPv6Address, IPv6Network
+try:
+	from typing import Any, Callable, Dict, Iterator, Optional, Tuple, Type  # noqa F401
+	if six.PY3:
+		from ipaddress import IPvddress  # noqa F401
+	else:
+		from ipaddr import IPAddress  # noqa F401
+except ImportError:
+	pass
 
 __all__ = ['RE_IFACE', 'forgiving', 'cmp_alnum', 'Interfaces']
 
@@ -61,6 +69,7 @@ RE_IFACE = re.compile(r'''^
 
 
 def forgiving(translation=None):
+	# type: (Dict[Type[Exception], Any]) -> Callable[[Callable], Callable]
 	"""
 	Decorator to translate exceptions into return values.
 
@@ -70,6 +79,7 @@ def forgiving(translation=None):
 		translation = {}
 
 	def decorator(func):
+		# type: (Callable) -> Callable
 		"""Wrap function and translate exceptions."""
 
 		@wraps(func)
@@ -97,6 +107,7 @@ forgiving_addr = forgiving({ValueError: False, KeyError: None})
 
 
 def cmp_alnum(value):
+	# type: (str) -> Tuple
 	"""
 	Sort value split by digits / non-digits.
 
@@ -123,50 +134,59 @@ class _Iface(dict):
 
 	@property
 	def name(self):
+		# type: () -> str
 		"""Return interface name."""
 		return self['name'].replace('_', ':')
 
-	@property
+	@property  # type: ignore
 	@forgiving({KeyError: maxsize, ValueError: maxsize})
 	def order(self):
+		# type: () -> int
 		"""Return interface order."""
 		return int(self['order'])
 
 	@property
 	def type(self):
+		# type: () -> str
 		"""Return interface handler."""
 		return self.get('type', '')
 
 	@property
 	def start(self):
+		# type: () -> bool
 		"""Return automatic interface start."""
 		return ConfigRegistry().is_true(value=self.get('start', '1'))
 
-	@property
+	@property  # type: ignore
 	@forgiving_addr
 	def network(self):
+		# type: () -> IPv4Address
 		"""Return network address."""
 		return IPv4Address('%(network)s' % self)
 
-	@property
+	@property  # type: ignore
 	@forgiving_addr
 	def broadcast(self):
+		# type: () -> IPv4Address
 		"""Return broadcast address."""
 		return IPv4Address('%(broadcast)s' % self)
 
 	@forgiving_addr
 	def ipv4_address(self):
+		# type: () -> IPv4Address
 		"""Return IPv4 address."""
 		return IPv4Network('%(address)s/%(netmask)s' % self)
 
 	@forgiving_addr
 	def ipv6_address(self, name='default'):
+		# type: (str) -> IPv6Address
 		"""Return IPv6 address."""
 		key = '%%(ipv6/%s/address)s/%%(ipv6/%s/prefix)s' % (name, name)
 		return IPv6Network(key % self)
 
 	@property
 	def routes(self):
+		# type: () -> Iterator[str]
 		"""Return interface routes."""
 		for k, v in sorted(self.items()):
 			if not k.startswith('route/'):
@@ -176,6 +196,7 @@ class _Iface(dict):
 
 	@property
 	def options(self):
+		# type: () -> Iterator[str]
 		"""Return interface options."""
 		for k, v in sorted(self.items()):
 			if not k.startswith('options/'):
@@ -198,6 +219,7 @@ class VengefulConfigRegistry(ConfigRegistry):
 		self.__dict__ = base_object.__dict__
 
 	def __getitem__(self, key):
+		# type: (str) -> str
 		"""
 		Return registry value.
 
@@ -225,6 +247,7 @@ class Interfaces(object):
 	"""
 
 	def __init__(self, ucr=None):
+		# type: (ConfigRegistry) -> None
 		if ucr is None:
 			ucr = ConfigRegistry()
 			ucr.load()
@@ -254,7 +277,7 @@ class Interfaces(object):
 			self.ipv6_gateway = False
 			self.ipv6_gateway_zone_index = None
 
-		self._all_interfaces = {}
+		self._all_interfaces = {}  # type: Dict[str, _Iface]
 		for key, value in ucr.items():
 			if not value:
 				continue
@@ -268,14 +291,26 @@ class Interfaces(object):
 				data.ipv6_names.add(ipv6_name)
 
 	def _cmp_order(self, iface):
-		"""Compare interfaces by order."""
+		# type: (_Iface) -> Tuple[Tuple, Tuple]
+		"""
+		Compare interfaces by order.
+
+		:param iface: Other interface.
+		:returns: A tuple to be used as a key for sorting.
+		"""
 		return (
 			cmp_alnum(iface.order),
 			cmp_alnum(iface.name),
 		)
 
 	def _cmp_primary(self, iface):
-		"""Compare interfaces by primary."""
+		# type: (_Iface) -> Tuple[int, Tuple, Tuple]
+		"""
+		Compare interfaces by primary.
+
+		:param iface: Other interface.
+		:returns: 3-tuple to be used as a key for sorting.
+		"""
 		try:
 			primary = self.primary.index(iface.name)
 		except ValueError:
@@ -287,17 +322,25 @@ class Interfaces(object):
 		)
 
 	def _cmp_name(self, iname):
-		"""Compare IPv6 sub-interfaces by name."""
+		# type: (str) -> Optional[str]
+		"""
+		Compare IPv6 sub-interfaces by name.
+
+		:param name: Interface name.
+		:returns: string used as a key for sorting.
+		"""
 		return None if iname == 'default' else iname
 
 	@property
 	def all_interfaces(self):
+		# type: () -> Iterator[Tuple[str, _Iface]]
 		"""Yield IPv4 interfaces."""
 		for name_settings in sorted(self._all_interfaces.items(), key=lambda name_iface: self._cmp_order(name_iface[1])):
 			yield name_settings
 
 	@property
 	def ipv4_interfaces(self):
+		# type: () -> Iterator[Tuple[str, _Iface]]
 		"""Yield IPv4 interfaces."""
 		for name, iface in sorted(self._all_interfaces.items(), key=lambda _name_iface: self._cmp_order(_name_iface[1])):
 			if iface.ipv4_address() is not None:
@@ -305,6 +348,7 @@ class Interfaces(object):
 
 	@property
 	def ipv6_interfaces(self):
+		# type: () -> Iterator[Tuple[_Iface, str]]
 		"""Yield names of IPv6 interfaces."""
 		for iface in sorted(self._all_interfaces.values(), key=self._cmp_order):
 			for name in sorted(iface.ipv6_names, key=self._cmp_name):
@@ -312,6 +356,7 @@ class Interfaces(object):
 					yield (iface, name)
 
 	def get_default_ip_address(self):
+		# type: () -> Optional[IPAddress]
 		"""returns the default IP address."""
 		for iface in sorted(self._all_interfaces.values(), key=self._cmp_primary):
 			addr = iface.ipv4_address()
@@ -322,20 +367,28 @@ class Interfaces(object):
 				if addr:
 					return addr
 
+		return None
+
 	def get_default_ipv4_address(self):
+		# type: () -> Optional[IPv4Address]
 		"""returns the default IPv4 address."""
 		for iface in sorted(self._all_interfaces.values(), key=self._cmp_primary):
 			addr = iface.ipv4_address()
 			if addr:
 				return addr
 
+		return None
+
 	def get_default_ipv6_address(self):
+		# type: () -> Optional[IPv6Address]
 		"""returns the default IPv6 address."""
 		for iface in sorted(self._all_interfaces.values(), key=self._cmp_primary):
 			for name in sorted(iface.ipv6_names, key=self._cmp_name):
 				addr = iface.ipv6_address(name)
 				if addr:
 					return addr
+
+		return None
 
 
 if __name__ == '__main__':

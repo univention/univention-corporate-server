@@ -31,11 +31,16 @@
 # <http://www.gnu.org/licenses/>.
 
 from univention.config_registry.misc import key_shell_escape, escape_value
+try:
+	from typing import Any, Iterable  # noqa F401
+except ImportError:
+	pass
 
 __all__ = ['filter_shell', 'filter_keys_only', 'filter_sort']
 
 
 def filter_shell(args, text):  # pylint: disable-msg=W0613
+	# type: (Any, Iterable[str]) -> Iterable[str]
 	"""
 	Filter output for shell: escape keys.
 
@@ -55,6 +60,7 @@ def filter_shell(args, text):  # pylint: disable-msg=W0613
 
 
 def filter_keys_only(args, text):  # pylint: disable-msg=W0613
+	# type: (Any, Iterable[str]) -> Iterable[str]
 	"""
 	Filter output: strip values.
 
@@ -69,6 +75,7 @@ def filter_keys_only(args, text):  # pylint: disable-msg=W0613
 
 
 def filter_sort(args, text):  # pylint: disable-msg=W0613
+	# type: (Any, Iterable[str]) -> Iterable[str]
 	"""
 	Filter output: sort by key.
 
@@ -76,8 +83,7 @@ def filter_sort(args, text):  # pylint: disable-msg=W0613
 	:param text: Text as list of lines.
 	:returns: Filteres list of lines.
 	"""
-	text.sort()
-	return text
+	return sorted(text)
 
 
 # vim:set sw=4 ts=4 noet:

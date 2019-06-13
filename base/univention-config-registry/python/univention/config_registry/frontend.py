@@ -41,6 +41,10 @@ from univention.config_registry.backend import exception_occured, SCOPE, ConfigR
 from univention.config_registry.handler import run_filter, ConfigHandlers
 from univention.config_registry.misc import validate_key, escape_value
 from univention.config_registry.filters import filter_shell, filter_keys_only, filter_sort
+try:
+	from typing import Any, Callable, Dict, IO, Iterator, List, NoReturn, Optional, Tuple  # noqa F401
+except ImportError:
+	pass
 
 __all__ = [
 	'REPLOG_FILE',
@@ -78,6 +82,7 @@ class UnknownKeyException(Exception):
 
 
 def replog(ucr, var, old_value, value=None):
+	# type: (ConfigRegistry, str, Optional[str], Optional[str]) -> None
 	"""
 	This function writes a new entry to replication logfile if
 	this feature has been enabled.
@@ -117,6 +122,7 @@ def replog(ucr, var, old_value, value=None):
 
 
 def handler_set(args, opts=dict(), quiet=False):
+	# type: (List[str], Dict[str, Any], bool) -> None
 	"""
 	Set config registry variables in args.
 	Args is an array of strings 'key=value' or 'key?value'.
@@ -127,7 +133,7 @@ def handler_set(args, opts=dict(), quiet=False):
 	"""
 	ucr = _ucr_from_opts(opts)
 	with ucr:
-		changes = {}
+		changes = {}  # type: Dict[str, Optional[str]]
 		for arg in args:
 			sep_set = arg.find('=')  # set
 			sep_def = arg.find('?')  # set if not already set
@@ -163,6 +169,7 @@ def handler_set(args, opts=dict(), quiet=False):
 
 
 def handler_unset(args, opts=dict()):
+	# type: (List[str], Dict[str, Any]) -> None
 	"""
 	Unset config registry variables in args.
 
@@ -171,7 +178,7 @@ def handler_unset(args, opts=dict()):
 	"""
 	ucr = _ucr_from_opts(opts)
 	with ucr:
-		changes = {}
+		changes = {}  # type: Dict[str, Optional[str]]
 		for arg in args:
 			if ucr.has_key(arg, write_registry_only=True):
 				print('Unsetting %s' % arg)
@@ -185,6 +192,7 @@ def handler_unset(args, opts=dict()):
 
 
 def ucr_update(ucr, changes):
+	# type: (ConfigRegistry, Dict[str, Optional[str]]) -> None
 	"""
 	Set or unset the given config registry variables.
 
@@ -197,6 +205,7 @@ def ucr_update(ucr, changes):
 
 
 def _run_changed(ucr, changed, msg=None):
+	# type: (ConfigRegistry, Dict[str, Tuple[Optional[str], Optional[str]]], str) -> None
 	"""
 	Run handlers for changes UCR variables.
 
@@ -216,6 +225,7 @@ def _run_changed(ucr, changed, msg=None):
 
 
 def _ucr_from_opts(opts):
+	# type: (Dict[str, Any]) -> ConfigRegistry
 	"""
 	Create :py:class:`ConfigRegistry` instance according to requested layer.
 
@@ -235,6 +245,7 @@ def _ucr_from_opts(opts):
 
 
 def handler_dump(args, opts=dict()):
+	# type: (List[str], Dict[str, Any]) -> Iterator[str]
 	"""
 	Dump all variables.
 
@@ -248,6 +259,7 @@ def handler_dump(args, opts=dict()):
 
 
 def handler_update(args, opts=dict()):
+	# type: (List[str], Dict[str, Any]) -> None
 	"""
 	Update handlers.
 
@@ -260,6 +272,7 @@ def handler_update(args, opts=dict()):
 
 
 def handler_commit(args, opts=dict()):
+	# type: (List[str], Dict[str, Any]) -> None
 	"""
 	Commit all registered templated files.
 
@@ -275,6 +288,7 @@ def handler_commit(args, opts=dict()):
 
 
 def handler_register(args, opts=dict()):
+	# type: (List[str], Dict[str, Any]) -> None
 	"""
 	Register new `.info` file.
 
@@ -295,6 +309,7 @@ def handler_register(args, opts=dict()):
 
 
 def handler_unregister(args, opts=dict()):
+	# type: (List[str], Dict[str, Any]) -> None
 	"""
 	Unregister old `.info` file.
 
@@ -311,6 +326,7 @@ def handler_unregister(args, opts=dict()):
 
 
 def handler_filter(args, opts=dict()):
+	# type: (List[str], Dict[str, Any]) -> None
 	"""Run filter on STDIN to STDOUT."""
 	ucr = ConfigRegistry()
 	ucr.load()
@@ -318,6 +334,7 @@ def handler_filter(args, opts=dict()):
 
 
 def handler_search(args, opts=dict()):
+	# type: (List[str], Dict[str, Any]) -> Iterator[str]
 	"""
 	Search for registry variable.
 
@@ -369,7 +386,7 @@ def handler_search(args, opts=dict()):
 	if opts.get('verbose', False):
 		details |= _SHOW_CATEGORIES | _SHOW_DESCRIPTION
 
-	all_vars = {}  # key: (value, vinfo, scope)
+	all_vars = {}  # type: Dict[str, Tuple[Optional[str], Optional[cri.Variable], Optional[str]]] # key: (value, vinfo, scope)
 	for key, var in info.get_variables(category).items():
 		all_vars[key] = (None, var, None)
 	for key, (scope, value) in ucr.items(getscope=True):
@@ -378,18 +395,18 @@ def handler_search(args, opts=dict()):
 		except LookupError:
 			all_vars[key] = (value, None, scope)
 
-	for key, (value, vinfo, scope) in all_vars.items():
+	for key, (value2, vinfo, scope2) in all_vars.items():
 		for reg in regex:
 			if any((
 				search_keys and reg.search(key),
-				search_values and value and reg.search(value),
+				search_values and value2 and reg.search(value2),
 				search_all and vinfo and reg.search(vinfo.get('description', ''))
 			)):
 				yield variable_info_string(key, value2, vinfo, details=details)
 				break
 
 	if _SHOW_EMPTY & details and not OPT_FILTERS['shell'][2]:
-		patterns = {}
+		patterns = {}  # type: Dict
 		for arg in args or ('',):
 			patterns.update(info.describe_search_term(arg))
 		for pattern, vinfo in patterns.items():
@@ -397,6 +414,7 @@ def handler_search(args, opts=dict()):
 
 
 def handler_get(args, opts=dict()):
+	# type: (List[str], Dict[str, Any]) -> Iterator[str]
 	"""
 	Return config registry variable.
 
@@ -415,6 +433,7 @@ def handler_get(args, opts=dict()):
 
 
 def variable_info_string(key, value, variable_info, scope=None, details=_SHOW_DESCRIPTION):
+	# type: (str, Optional[str], Any, int, int) -> str
 	"""
 	Format UCR variable key, value, description, scope and categories.
 
@@ -464,6 +483,7 @@ def variable_info_string(key, value, variable_info, scope=None, details=_SHOW_DE
 
 
 def handler_info(args, opts=dict()):
+	# type: (List[str], Dict[str, Any]) -> Iterator[str]
 	"""
 	Print variable info.
 
@@ -489,6 +509,7 @@ def handler_info(args, opts=dict()):
 
 
 def handler_version(args, opts=dict()):
+	# type: (List[str], Dict[str, Any]) -> NoReturn
 	"""
 	Print version info.
 
@@ -500,6 +521,7 @@ def handler_version(args, opts=dict()):
 
 
 def handler_help(args, opts=dict(), out=sys.stdout):
+	# type: (List[str], Dict[str, Any], IO) -> None
 	"""
 	Print config registry command line usage.
 
@@ -581,6 +603,7 @@ Description:
 
 
 def missing_parameter(action):
+	# type: (str) -> NoReturn
 	"""Print missing parameter error."""
 	print('E: too few arguments for command [%s]' % (action,), file=sys.stderr)
 	print('try `univention-config-registry --help` for more information', file=sys.stderr)
@@ -599,7 +622,7 @@ HANDLERS = {
 	'search': (handler_search, 0),
 	'get': (handler_get, 1),
 	'info': (handler_info, 1),
-}
+}  # type: Dict[str, Tuple[Callable[[List[str], Dict[str, Any]], Optional[Iterator[str]]], int]]
 
 # action options: each of these options perform an action
 OPT_ACTIONS = {
@@ -607,7 +630,7 @@ OPT_ACTIONS = {
 	'help': [handler_help, False, ('-h', '-?')],
 	'version': [handler_version, False, ('-v',)],
 	'debug': [lambda args: None, False, ()],
-}
+}  # type: Dict[str, List]
 
 # filter options: these options define filter for the output
 OPT_FILTERS = {
@@ -615,7 +638,7 @@ OPT_FILTERS = {
 	'keys-only': [0, filter_keys_only, False, ('dump', 'search')],
 	'sort': [10, filter_sort, False, ('dump', 'search', 'info')],
 	'shell': [99, filter_shell, False, ('dump', 'search', 'get')],
-}
+}  # type: Dict[str, List]
 
 BOOL, STRING = range(2)
 
@@ -642,10 +665,11 @@ OPT_COMMANDS = {
 	'filter': {
 		'encode-utf8': [BOOL, False],
 	}
-}
+}  # type: Dict[str, Dict[str, List]]
 
 
 def main(args):
+	# type: (List[str]) -> None
 	"""Run config registry."""
 	try:
 		# close your eyes ...
