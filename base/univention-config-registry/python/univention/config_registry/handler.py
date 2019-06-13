@@ -641,7 +641,7 @@ class ConfigHandlers:
 					# version >= 2: _handlers[multifile] -> set([handlers])
 					self._handlers = dict(((k, set(v)) for k, v in self._handlers.items()))
 					# version <= 1: _files UNUSED
-					_files = pickler.load()
+					pickler.load()
 				self._subfiles = pickler.load()
 				self._multifiles = pickler.load()
 			finally:
