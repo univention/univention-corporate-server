@@ -279,7 +279,11 @@ class RessourceBase(object):
 					label = ET.Element('label', **{'for': name})
 					label.text = field.get('label', name)
 					form.append(label)
-					form.append(ET.Element(field.get('element', 'input'), type=field.get('type', 'text'), name=name, placeholder=field.get('placeholder', name), value=str(field['value'])))
+					element = ET.Element(field.get('element', 'input'), type=field.get('type', 'text'), name=name, placeholder=field.get('placeholder', name), value=str(field['value']))
+					form.append(element)
+					if field['element'] == 'select':
+						for option in field.get('options', []):
+							ET.SubElement(element, 'option', value=option['value']).text = option.get('label', option['value'])
 					form.append(ET.Element('br'))
 				form.append(ET.Element('hr'))
 
@@ -930,18 +934,17 @@ class Objects(Ressource):
 			items_per_page = None
 			page = None
 
-		# TODO: add limit, page, ordering, ...
 		form = self.add_form(result, None, 'GET', relation='search')
 		self.add_form_element(form, 'position', container or '')
-		self.add_form_element(form, 'property', objectProperty or '')  # TODO: type=select
+		self.add_form_element(form, 'property', objectProperty or '', element='select', options=[{'value': '', 'label': _('Defaults')}] + [{'value': prop['id'], 'label': prop['label']} for prop in module.properties(None) if prop.get('searchable')])  # TODO: type=select
 		self.add_form_element(form, 'propertyvalue', objectPropertyValue or '')
-		self.add_form_element(form, 'scope', 'sub')
+		self.add_form_element(form, 'scope', scope, element='select', options=[{'value': 'sub'}, {'value': 'one'}, {'value': 'base'}, {'value': 'base+one'}])
 		self.add_form_element(form, 'hidden', '1', type='checkbox', checked=bool(hidden))
 		#self.add_form_element(form, 'fields', list(fields))
-		self.add_form_element(form, 'page', str(page or '1'))
-		self.add_form_element(form, 'pagesize', str(items_per_page or '0'))
+		self.add_form_element(form, 'page', str(page or '1'), type='number')
+		self.add_form_element(form, 'pagesize', str(items_per_page or '0'), type='number')
 		self.add_form_element(form, 'by', by or '')
-		self.add_form_element(form, 'dir', direction if direction in ('ASC', 'DESC') else 'ASC')
+		self.add_form_element(form, 'dir', direction if direction in ('ASC', 'DESC') else 'ASC', element='select', options=[{'value': 'ASC', 'label': _('Ascending')}, {'value': 'DESC', 'label': _('Descending')}])
 		self.add_form_element(form, '', _('Search'), type='submit')
 
 		if superordinate:
