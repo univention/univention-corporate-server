@@ -43,6 +43,7 @@ import time
 import copy
 import urllib
 import base64
+import httplib
 import binascii
 import tempfile
 from urlparse import urljoin, urlparse, urlunparse, parse_qs
@@ -288,29 +289,23 @@ class RessourceBase(object):
 				form.append(ET.Element('hr'))
 
 				root.insert(0, form)
-			for key in ('entries', 'error', 'errors'):
-				if response.get(key):
-					response = response[key]
-					break
+			if isinstance(response.get('error'), dict) and response['error'].get('code', 0) >= 400:
+				error = ET.Element('div')
+				root.append(error)
+				ET.SubElement(error, 'h1').text = _('HTTP-Error %d: %s') % (response['error']['code'], response['error']['title'])
+				ET.SubElement(error, 'p', style='white-space: pre').text = response['error']['message']
+				if response['error'].get('traceback'):
+					ET.SubElement(error, 'pre').text = response['error']['traceback']
+				response = None
+
 		if isinstance(response, (list, tuple)):
 			print('WARNING: uses deprecated LIST response')
 			for thing in response:
-				if isinstance(thing, dict) and thing.get('uri'):
-					x = thing.copy()
-					a = ET.Element("a", href=x.pop('uri'), rel="/udm/relation/object")
-					a.text = x.get('dn')
-					pre = ET.Element("pre")
-					pre.text = json.dumps(x, indent=4)
-					root.append(ET.Element("br"))
-					root.append(a)
-					root.append(pre)
-					root.append(ET.Element("br"))
-				else:
-					pre = ET.Element("pre")
-					pre.text = json.dumps(thing, indent=4)
-					root.append(pre)
-					root.append(ET.Element("br"))
-		else:
+				pre = ET.Element("pre")
+				pre.text = json.dumps(thing, indent=4)
+				root.append(pre)
+				root.append(ET.Element("br"))
+		elif isinstance(response, dict):
 			r = response.copy()
 			r.pop('_forms', None)
 			r.pop('_links', None)
@@ -373,12 +368,13 @@ class RessourceBase(object):
 		if isinstance(exc, UMC_Error):
 			status_code = exc.status
 			title = exc.msg
+			if status_code == 503:
+				self.add_header('Retry-After', '15')
+			if title == message:
+				title = httplib.responses.get(status_code)
 
 		if not isinstance(exc, (UDM_Error, UMC_Error)) and status_code >= 500:
-			_traceback = traceback.format_exception(etype, exc, etraceback)
-
-		if not self.settings.get("serve_traceback"):
-			_traceback = None
+			_traceback = ''.join(traceback.format_exception(etype, exc, etraceback))
 
 		self.set_status(status_code)
 		self.content_negotiation({
@@ -386,7 +382,7 @@ class RessourceBase(object):
 				'title': title,
 				'code': status_code,
 				'message': message,
-				'traceback': _traceback,
+				'traceback': _traceback if self.application.settings.get("serve_traceback", True) else None,
 			},
 		})
 
@@ -1013,6 +1009,33 @@ class Objects(Ressource):
 		result['entries'] = entries  # TODO: is "entries" a good name? items, objects
 		self.add_caching(public=False)
 		self.content_negotiation(result)
+
+	def get_html(self, response):
+		if self.request.method in ('GET', 'HEAD'):
+			r = response.copy()
+			r.pop('errors', None)
+			r.pop('entries', None)
+			root = super(Objects, self).get_html(r)
+		else:
+			root = super(Objects, self).get_html(response)
+		if self.request.method in ('GET', 'HEAD'):
+			for thing in response.get('errors', response.get('entries', [])):
+				if isinstance(thing, dict) and thing.get('uri'):
+					x = thing.copy()
+					a = ET.Element("a", href=x.pop('uri'), rel="/udm/relation/object")
+					a.text = x.get('dn')
+					pre = ET.Element("pre")
+					pre.text = json.dumps(x, indent=4)
+					root.append(ET.Element("br"))
+					root.append(a)
+					root.append(pre)
+					root.append(ET.Element("br"))
+				else:
+					pre = ET.Element("pre")
+					pre.text = json.dumps(thing, indent=4)
+					root.append(pre)
+					root.append(ET.Element("br"))
+		return root
 
 	@tornado.gen.coroutine
 	def post(self, object_type):

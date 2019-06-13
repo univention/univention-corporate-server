@@ -128,7 +128,7 @@ class Server(tornado.web.RequestHandler):
 		cls.start_processes()
 		app = tornado.web.Application([
 			(r'.*', cls),
-		], debug=False
+		], debug=False, serve_traceback=True,
 		)
 		app.listen(int(ucr.get('umc/server/port', 8888)))
 		ioloop = tornado.ioloop.IOLoop.instance()
