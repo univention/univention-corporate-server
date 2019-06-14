@@ -108,15 +108,15 @@ class Client(object):
     def __init__(self, language='en-US'):
         self.language = language
 
-    def make_request(self, verb, uri, credentials, data=None, **headers):
-        print('{} {}'.format(verb.upper(), uri))
-        if verb == 'get':
+    def make_request(self, method, uri, credentials, data=None, **headers):
+        print('{} {}'.format(method.upper(), uri))
+        if method in ('get', 'head'):
             params = data
             json = None
         else:
             params = None
             json = data
-        return requests.request(verb, uri, auth=(credentials.username, credentials.password), params=params, json=json, headers=dict({'Accept': 'application/json; q=1; text/html; q=0.2, */*; q=0.1', 'Accept-Language': self.language}, **headers))
+        return requests.request(method, uri, auth=(credentials.username, credentials.password), params=params, json=json, headers=dict({'Accept': 'application/json; q=1; text/html; q=0.2, */*; q=0.1', 'Accept-Language': self.language}, **headers))
 
     def eval_response(self, response):
         if response.status_code >= 299:
