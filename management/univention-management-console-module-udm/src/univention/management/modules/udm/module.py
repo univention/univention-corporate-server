@@ -1467,6 +1467,7 @@ class UserPhoto(Ressource):
 			raise NotFound(object_type, dn)
 
 		data = obj.info.get('jpegPhoto', '').decode('base64')
+		self.add_header('Last-Modified', last_modified(time.strptime(self.ldap_connection.getAttr(obj.dn, b'modifyTimestamp')[0].decode('utf-8'), '%Y%m%d%H%M%SZ')))
 		self.set_header('Content-Type', 'image/jpeg')
 		self.add_caching(public=False, max_age=2592000)
 		self.finish(data)
