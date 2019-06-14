@@ -298,6 +298,8 @@ class RessourceBase(object):
 					if field['element'] == 'select':
 						for option in field.get('options', []):
 							ET.SubElement(element, 'option', value=option['value']).text = option.get('label', option['value'])
+					if field.get('type') == 'checkbox' and field.get('checked'):
+						element.set('checked', 'checked')
 					form.append(ET.Element('br'))
 				form.append(ET.Element('hr'))
 
@@ -1519,6 +1521,8 @@ class ObjectEdit(Ressource):
 		self.add_link(result, 'self', self.urljoin(''), title=_('Modify'))
 		if 'remove' in module.operations:
 			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='DELETE', relation='')
+			self.add_form_element(form, 'cleanup', '1', type='checkbox', checked=True)
+			self.add_form_element(form, 'recursive', '1', type='checkbox', checked=True)
 			self.add_form_element(form, '', _('Remove'), type='submit')
 		if set(module.operations) & {'move', 'subtree_move'}:
 			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='PUT', relation='')
