@@ -36,7 +36,9 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import os
 import sys
+import signal
 import argparse
 
 import tornado.httpserver
@@ -126,6 +128,7 @@ class Server(tornado.web.RequestHandler):
 		tornado.httpclient.AsyncHTTPClient.configure('tornado.curl_httpclient.CurlAsyncHTTPClient')
 		tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-management-console-module-udm')
 		cls.start_processes()
+		cls.register_signal_handlers()
 		app = tornado.web.Application([
 			(r'.*', cls),
 		], debug=False, serve_traceback=True,
@@ -139,3 +142,26 @@ class Server(tornado.web.RequestHandler):
 		for language in ('de_DE', 'en_US'):
 			socket = cls.LANGUAGE_SERVICE_MAPPING[language]
 			cls.PROCESSES[language] = tornado.process.Subprocess(['/usr/bin/python2.7', '-m', 'univention.management.modules.udm', '-s', socket, '-l', language, 'run'], stdout=sys.stdout, stderr=sys.stderr)
+
+	@classmethod
+	def register_signal_handlers(cls):
+		signal.signal(signal.SIGTERM, cls.signal_handler_stop)
+		signal.signal(signal.SIGINT, cls.signal_handler_stop)
+		signal.signal(signal.SIGHUP, cls.signal_handler_reload)
+
+	@classmethod
+	def signal_handler_reload(cls, sig, frame):
+		for process in cls.PROCESSES.values():
+			os.kill(process.pid, sig)
+
+	@classmethod
+	def signal_handler_stop(cls, sig, frame):
+		for process in cls.PROCESSES.values():
+			os.kill(process.pid, sig)
+
+		io_loop = tornado.ioloop.IOLoop.instance()
+
+		def shutdown():
+			io_loop.stop()
+
+		io_loop.add_callback_from_signal(shutdown)
