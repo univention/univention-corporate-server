@@ -103,41 +103,47 @@ class UdmError(Exception):
     pass
 
 
-def make_request(verb, uri, credentials, data=None, **headers):
-    print('{} {}'.format(verb.upper(), uri))
-    if verb == 'get':
-        params = data
-        json = None
-    else:
-        params = None
-        json = data
-    return requests.request(verb, uri, auth=(credentials.username, credentials.password), params=params, json=json, headers=dict({'Accept': 'application/json; q=1; text/html; q=0.2, */*; q=0.1', 'Accept-Language': 'en-US'}, **headers))
+class Client(object):
 
+    def __init__(self, language='en-US'):
+        self.language = language
 
-def eval_response(response):
-    if response.status_code >= 299:
-        msg = '{} {}: {}'.format(response.request.method, response.url, response.status_code)
-        try:
-            json = response.json()
-        except ValueError:
-            pass
+    def make_request(self, verb, uri, credentials, data=None, **headers):
+        print('{} {}'.format(verb.upper(), uri))
+        if verb == 'get':
+            params = data
+            json = None
         else:
-            if isinstance(json, dict):
-                if 'error' in json:
-                    server_message = json['error'].get('message')
-                    # traceback = json['error'].get('traceback')
-                    if server_message:
-                        msg += '\n{}'.format(server_message)
-        raise UdmError(msg)
-    return response.json()
+            params = None
+            json = data
+        return requests.request(verb, uri, auth=(credentials.username, credentials.password), params=params, json=json, headers=dict({'Accept': 'application/json; q=1; text/html; q=0.2, */*; q=0.1', 'Accept-Language': self.language}, **headers))
+
+    def eval_response(self, response):
+        if response.status_code >= 299:
+            msg = '{} {}: {}'.format(response.request.method, response.url, response.status_code)
+            try:
+                json = response.json()
+            except ValueError:
+                pass
+            else:
+                if isinstance(json, dict):
+                    if 'error' in json:
+                        server_message = json['error'].get('message')
+                        # traceback = json['error'].get('traceback')
+                        if server_message:
+                            msg += '\n{}'.format(server_message)
+            raise UdmError(msg)
+        return response.json()
 
 
-class UDM(object):
+class UDM(Client):
+
     @classmethod
     def http(cls, uri, username, password):
         return cls(uri, username, password)
 
-    def __init__(self, uri, username, password):
+    def __init__(self, uri, username, password, *args, **kwargs):
+        super(UDM, self).__init__(*args, **kwargs)
         self.uri = uri
         self.username = username
         self.password = password
@@ -145,11 +151,11 @@ class UDM(object):
 
     def modules(self):
         # TODO: cache - needs server side support
-        resp = make_request('get', self.uri, credentials=self)
-        prefix_modules = eval_response(resp)['_links']['/udm/relation/object-modules']
+        resp = self.make_request('get', self.uri, credentials=self)
+        prefix_modules = self.eval_response(resp)['_links']['/udm/relation/object-modules']
         for prefix_module in prefix_modules:
-            resp = make_request('get', prefix_module['href'], credentials=self)
-            module_infos = eval_response(resp).get('_links', {}).get('/udm/relation/object-types', [])
+            resp = self.make_request('get', prefix_module['href'], credentials=self)
+            module_infos = self.eval_response(resp).get('_links', {}).get('/udm/relation/object-types', [])
             for module_info in module_infos:
                 yield Module(self, module_info['href'], module_info['name'], module_info['title'])
 
@@ -170,8 +176,10 @@ class UDM(object):
         return 'UDM(uri={}, username={}, password=****, version={})'.format(self.uri, self.username, self._api_version)
 
 
-class Module(object):
-    def __init__(self, udm, uri, name, title):
+class Module(Client):
+
+    def __init__(self, udm, uri, name, title, *args, **kwargs):
+        super(Module, self).__init__(*args, **kwargs)
         self.uri = uri
         self.username = udm.username
         self.password = udm.password
@@ -207,8 +215,8 @@ class Module(object):
         data['hidden'] = '1' if hidden else ''
         if opened:
             data['properties'] = '*'
-        resp = make_request('get', self.uri, credentials=self, data=data)
-        entries = eval_response(resp)['entries']
+        resp = self.make_request('get', self.uri, credentials=self, data=data)
+        entries = self.eval_response(resp)['entries']
         for entry in entries:
             if opened:
                 yield Object(self, entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry['superordinate'], entry['uri'])  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
@@ -221,23 +229,27 @@ class Module(object):
         return obj
 
 
-class ShallowObject(object):
-    def __init__(self, module, dn, uri):
+class ShallowObject(Client):
+
+    def __init__(self, module, dn, uri, *args, **kwargs):
+        super(ShallowObject, self).__init__(*args, **kwargs)
         self.module = module
         self.dn = dn
         self.uri = uri
 
     def open(self):
-        resp = make_request('get', self.uri, credentials=self.module)
-        entry = eval_response(resp)
+        resp = self.make_request('get', self.uri, credentials=self.module)
+        entry = self.eval_response(resp)
         return Object(self.module, entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry['superordinate'], entry['uri'], etag=resp.headers.get('Etag'), last_modified=resp.headers.get('Last-Modified'))
 
     def __repr__(self):
         return 'ShallowObject(module={}, dn={})'.format(self.module.name, self.dn)
 
 
-class Object(object):
-    def __init__(self, module, dn, properties, options, policies, position, superordinate, uri, etag=None, last_modified=None):
+class Object(Client):
+
+    def __init__(self, module, dn, properties, options, policies, position, superordinate, uri, etag=None, last_modified=None, *args, **kwargs):
+        super(Object, self).__init__(*args, **kwargs)
         self.dn = dn
         self.props = properties
         self.options = options
@@ -263,7 +275,7 @@ class Object(object):
             return self._create()
 
     def delete(self):
-        return make_request('delete', self.uri, credentials=self.module)
+        return self.make_request('delete', self.uri, credentials=self.module)
 
     def _modify(self):
         data = {
@@ -277,8 +289,8 @@ class Object(object):
             'If-Unmodified-Since': self.last_modified,
             'If-None-Match': self.etag,
         }.items() if value)
-        resp = make_request('put', self.uri, credentials=self.module, data=data, **headers)
-        entry = eval_response(resp)
+        resp = self.make_request('put', self.uri, credentials=self.module, data=data, **headers)
+        entry = self.eval_response(resp)
         self.dn = entry['dn']
         self.reload()
 
@@ -302,13 +314,13 @@ class Object(object):
             'position': self.position,
             'superordinate': self.superordinate,
         }
-        resp = make_request('post', self.module.uri, credentials=self.module, data=data)
+        resp = self.make_request('post', self.module.uri, credentials=self.module, data=data)
         if resp.status_code == 200:
             uri = resp.headers['Location']
             obj = ShallowObject(self.module, None, uri).open()
             self._copy_from_obj(obj)
         else:
-            eval_response(resp)
+            self.eval_response(resp)
 
 
 if __name__ == '__main__':
