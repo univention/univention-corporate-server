@@ -142,7 +142,6 @@ class RessourceBase(object):
 		try:
 			userdn = lo.searchDn(filter_format('(&(objectClass=person)(uid=%s))', [username]), unique=True)[0]
 			self.ldap_connection, self.ldap_position = get_user_connection(bind=lambda lo: lo.bind(userdn, password), write=True)
-			set_bind_function(lambda lo: lo.bind(userdn, password))
 			self.request.user_dn = userdn
 			self.request.username = username
 		except:
