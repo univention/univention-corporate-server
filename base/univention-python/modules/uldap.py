@@ -433,6 +433,7 @@ class access(object):
 		:param int sizelimit: retrieve at most sizelimit entries for a search. `0` for no limit.
 		:param serverctrls: a list of :py:class:`ldap.controls.LDAPControl` instances sent to the server along with the LDAP request.
 		:type serverctrls: list[ldap.controls.LDAPControl]
+		:param dict response: An optional dictionary to receive the server controls of the result.
 		:returns: A list of 2-tuples (dn, values) for each LDAP object, where values is a dictionary mapping attribute names to a list of values.
 		:rtype: list[tuple[str, dict[str, list[str]]]]
 		:raises ldap.NO_SUCH_OBJECT: Indicates the target object cannot be found.
@@ -490,6 +491,7 @@ class access(object):
 		:param int sizelimit: retrieve at most sizelimit entries for a search. `0` for no limit.
 		:param serverctrls: a list of :py:class:`ldap.controls.LDAPControl` instances sent to the server along with the LDAP request.
 		:type serverctrls: list[ldap.controls.LDAPControl]
+		:param dict response: An optional dictionary to receive the server controls of the result.
 		:returns: A list of distinguished names.
 		:rtype: list[str]
 		:raises ldap.NO_SUCH_OBJECT: Indicates the target object cannot be found.
@@ -625,7 +627,7 @@ class access(object):
 		:param al: The add-list of 2-tuples (attribute-name, new-values).
 		:param serverctrls: a list of ldap.controls.LDAPControl instances sent to the server along with the LDAP request
 		:type serverctrls: list[ldap.controls.LDAPControl]
-		:param dict response: An optional dictionary to received the server controls of the result.
+		:param dict response: An optional dictionary to receive the server controls of the result.
 		"""
 		if not serverctrls:
 			serverctrls = []
@@ -663,7 +665,7 @@ class access(object):
 		:param changes: The modify-list of 3-tuples (attribute-name, old-values, new-values).
 		:param serverctrls: a list of ldap.controls.LDAPControl instances sent to the server along with the LDAP request
 		:type serverctrls: list[ldap.controls.LDAPControl]
-		:param dict response: An optional dictionary to received the server controls of the result.
+		:param dict response: An optional dictionary to receive the server controls of the result.
 		:returns: The distinguished name.
 		:rtype: str
 		"""
@@ -753,7 +755,7 @@ class access(object):
 		:param ml: The modify-list of 3-tuples (attribute-name, old-values, new-values).
 		:param serverctrls: a list of ldap.controls.LDAPControl instances sent to the server along with the LDAP request
 		:type serverctrls: list[ldap.controls.LDAPControl]
-		:param dict response: An optional dictionary to received the server controls of the result.
+		:param dict response: An optional dictionary to receive the server controls of the result.
 		"""
 		if not serverctrls:
 			serverctrls = []
@@ -778,7 +780,7 @@ class access(object):
 		:param str newdn: The new distinguished name of the object to rename.
 		:param serverctrls: a list of ldap.controls.LDAPControl instances sent to the server along with the LDAP request
 		:type serverctrls: list[ldap.controls.LDAPControl]
-		:param dict response: An optional dictionary to received the server controls of the result.
+		:param dict response: An optional dictionary to receive the server controls of the result.
 		"""
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename %s -> %s' % (dn, newdn))
 		oldsdn = self.parentDn(dn)
@@ -805,7 +807,7 @@ class access(object):
 		:param str newsuperior: The distinguished name of the new container.
 		:param serverctrls: a list of ldap.controls.LDAPControl instances sent to the server along with the LDAP request
 		:type serverctrls: list[ldap.controls.LDAPControl]
-		:param dict response: An optional dictionary to received the server controls of the result.
+		:param dict response: An optional dictionary to receive the server controls of the result.
 		"""
 		if not serverctrls:
 			serverctrls = []

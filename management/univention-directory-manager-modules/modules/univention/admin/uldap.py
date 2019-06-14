@@ -736,6 +736,9 @@ class access:
 		:param bool required: Raise an exception instead of returning an empty dictionary.
 		:param int timeout: wait at most `timeout` seconds for a search to complete. `-1` for no limit.
 		:param int sizelimit: retrieve at most `sizelimit` entries for a search. `0` for no limit.
+		:param serverctrls: a list of ldap.controls.LDAPControl instances sent to the server along with the LDAP request
+		:type serverctrls: list[ldap.controls.LDAPControl]
+		:param dict response: An optional dictionary to receive the server controls of the result.
 		:returns: A list of 2-tuples (dn, values) for each LDAP object, where values is a dictionary mapping attribute names to a list of values.
 		:rtype: list[tuple[str, dict[str, list[str]]]]
 		:raises univention.admin.uexceptions.noObject: Indicates the target object cannot be found.
@@ -777,6 +780,7 @@ class access:
 		:param int sizelimit: retrieve at most sizelimit entries for a search. `0` for no limit.
 		:param serverctrls: a list of :py:class:`ldap.controls.LDAPControl` instances sent to the server along with the LDAP request.
 		:type serverctrls: list[ldap.controls.LDAPControl]
+		:param dict response: An optional dictionary to receive the server controls of the result.
 		:returns: A list of distinguished names.
 		:rtype: list[str]
 		:raises univention.admin.uexceptions.noObject: Indicates the target object cannot be found.
@@ -829,7 +833,7 @@ class access:
 		:param bool exceptions: Raise the low level exception instead of the wrapping UDM exceptions.
 		:param serverctrls: a list of ldap.controls.LDAPControl instances sent to the server along with the LDAP request
 		:type serverctrls: list[ldap.controls.LDAPControl]
-		:param dict response: An optional dictionary to received the server controls of the result.
+		:param dict response: An optional dictionary to receive the server controls of the result.
 		:raises univention.admin.uexceptions.licenseDisableModify: if the UCS licence prohibits any modificcation
 		:raises univention.admin.uexceptions.objectExists: if the LDAP object already exists.
 		:raises univention.admin.uexceptions.permissionDenied: if the user does not have the required permissions.
@@ -869,7 +873,7 @@ class access:
 		:param bool ignore_license: Ignore license check if True.
 		:param serverctrls: a list of ldap.controls.LDAPControl instances sent to the server along with the LDAP request
 		:type serverctrls: list[ldap.controls.LDAPControl]
-		:param dict response: An optional dictionary to received the server controls of the result.
+		:param dict response: An optional dictionary to receive the server controls of the result.
 		:returns: The distinguished name.
 		:rtype: str
 		"""
@@ -906,7 +910,7 @@ class access:
 		:param bool ignore_license: Ignore license check if True.
 		:param serverctrls: a list of ldap.controls.LDAPControl instances sent to the server along with the LDAP request
 		:type serverctrls: list[ldap.controls.LDAPControl]
-		:param dict response: An optional dictionary to received the server controls of the result.
+		:param dict response: An optional dictionary to receive the server controls of the result.
 		"""
 		if not move_childs == 0:
 			raise univention.admin.uexceptions.noObject(_("Moving children is not supported."))

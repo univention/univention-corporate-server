@@ -529,6 +529,7 @@ class simpleLdap(object):
 
 			:param serverctrls: a list of :py:class:`ldap.controls.LDAPControl` instances sent to the server along with the LDAP request.
 			:type serverctrls: list[ldap.controls.LDAPControl]
+			:param dict response: An optional dictionary to receive the server controls of the result.
 			:returns: The DN of the created object.
 			:rtype: str
 		"""
@@ -1705,6 +1706,9 @@ class simpleLdap(object):
 		:param bool required: Raise an exception instead of returning an empty dictionary.
 		:param int timeout: wait at most `timeout` seconds for a search to complete. `-1` for no limit.
 		:param int sizelimit: retrieve at most `sizelimit` entries for a search. `0` for no limit.
+		:param serverctrls: a list of :py:class:`ldap.controls.LDAPControl` instances sent to the server along with the LDAP request.
+		:type serverctrls: list[ldap.controls.LDAPControl]
+		:param dict response: An optional dictionary to receive the server controls of the result.
 		:return: A list of UDM objects.
 		:rtype: list[simpleLdap]
 		"""
