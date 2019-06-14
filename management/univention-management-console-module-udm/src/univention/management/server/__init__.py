@@ -80,8 +80,8 @@ class Server(tornado.web.RequestHandler):
 			headers=self.request.headers,
 			allow_nonstandard_methods=True,
 			follow_redirects=False,
-			connect_timeout=20.0,  # FIXME: raise value
-			request_timeout=20.0,  # FIXME: raise value
+			connect_timeout=20.0,  # TODO: raise value?
+			request_timeout=int(ucr.get('umc/http/response-timeout', '310')) + 1,
 			prepare_curl_callback=lambda curl: curl.setopt(pycurl.UNIX_SOCKET_PATH, socket),
 		)
 		client = tornado.httpclient.AsyncHTTPClient()
