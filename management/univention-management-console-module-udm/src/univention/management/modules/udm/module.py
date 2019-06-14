@@ -245,7 +245,10 @@ class RessourceBase(object):
 			_links[params.get('rel')] = dict(params, href=link)
 			if params.get('rel') == 'self':
 				titleelement.text = params.get('title') or link or 'FIXME:notitle'
-			if params.get('rel') in ('stylesheet', 'icon', 'self', 'parent', 'udm/relation/object-modules'):
+			if params.get('rel') in ('stylesheet', 'icon', 'self', 'parent', 'udm/relation/object-modules', '/udm/relation/object/remove', '/udm/relation/object/edit'):
+				continue
+			if params.get('rel') in ('/udm/relation/user-photo',):
+				ET.SubElement(links, 'img', src=link, style='max-width: 200px')
 				continue
 			#if params.get('rel') in ('udm/relation/tree',):
 			#	self.set_header('X-Frame-Options', 'SAMEORIGIN')
@@ -476,6 +479,7 @@ class Relations(Ressource):
 			'property-choices': 'determine valid values for a given syntax class',
 			'object/remove': 'remove this object, edit-form is preferable',
 			'object/edit': 'modify this object, edit-form is preferable',
+			'user-photo': 'photo of the object',
 			'license-request': 'Request a new UCS Core Edition license',
 			'license-check': 'Check if the license limits are reached',
 			'license-import': 'Import a new license in LDIF format',
@@ -506,9 +510,13 @@ class Modules(Ressource):
 	def get(self):
 		result = {}
 		for main_type in self.mapping:
-			self.add_link(result, '/udm/relation/object-modules', self.urljoin(quote(main_type)) + '/', name='all' if main_type == 'navigation' else main_type)
-		self.add_link(result, '/udm/relation/object-modules', self.urljoin('license') + '/', name='license')
-		self.add_link(result, '/udm/relation/ldap-base', self.urljoin('ldap/base') + '/')
+			title = _('All object types')
+			if main_type != 'navigation':
+				title = UDM_Module(self.mapping[main_type], ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).object_name_plural
+
+			self.add_link(result, '/udm/relation/object-modules', self.urljoin(quote(main_type)) + '/', name='all' if main_type == 'navigation' else main_type, title=title)
+		self.add_link(result, '/udm/relation/object-modules', self.urljoin('license') + '/', name='license', title=_('UCS license'))
+		self.add_link(result, '/udm/relation/ldap-base', self.urljoin('ldap/base') + '/', title=_('LDAP base'))
 		self.add_caching(public=True)
 		self.content_negotiation(result)
 
@@ -521,6 +529,7 @@ class ObjectTypes(Ressource):
 		if not object_type:
 			raise NotFound(object_type)
 
+		title = _('All object types')
 		module = None
 		if module_type != 'navigation':
 			# FIXME: what was/is the superordinate for?
@@ -528,11 +537,12 @@ class ObjectTypes(Ressource):
 			module = UDM_Module(object_type, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 			if superordinate:
 				module = get_module(object_type, superordinate, self.ldap_connection) or module  # FIXME: the object_type param is wrong?!
+			title = module.object_name_plural
 
 		result = {'entries': [], }
 
 		self.add_link(result, 'parent', self.urljoin('../'), title=_('All modules'))
-		self.add_link(result, 'self', self.urljoin(''))
+		self.add_link(result, 'self', self.urljoin(''), title=title)
 		if module_type == 'navigation':
 			self.add_link(result, 'udm/relation/tree', self.abspath('container/dc/tree'))
 		elif module.has_tree:
@@ -1125,12 +1135,12 @@ class Objects(Ressource):
 		methods = ['GET', 'OPTIONS']
 		self.add_link(result, 'udm/relation/object-modules', self.urljoin('../../'), title=_('All modules'))
 		self.add_link(result, 'parent', self.urljoin('../'))
-		self.add_link(result, 'self', self.urljoin(''))
+		self.add_link(result, 'self', self.urljoin(''), title=module.object_name_plural)
 		if 'search' in module.operations:
 			self.add_link(result, 'search', self.urljoin(''))
 		if 'add' in module.operations:
 			methods.append('POST')
-			self.add_link(result, 'create-form', self.urljoin('add'))
+			self.add_link(result, 'create-form', self.urljoin('add'), title=_('Create a %s') % (module.object_name,))
 #		self.add_link(result, 'edit-form', self.urljoin('edit'))
 		self.add_link(result, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
 		self.add_link(result, 'udm/relation/properties', self.urljoin('properties'))
@@ -1172,7 +1182,7 @@ class Object(Ressource):
 		self.add_link(props, 'udm/relation/object-modules', self.urljoin('../../'), title=_('All modules'))
 		self.add_link(props, '/udm/relation/object-types', self.urljoin('../'))
 		self.add_link(props, 'parent', self.urljoin('x/../'), name=module.name, title=module.object_name)
-		self.add_link(props, 'self', self.urljoin(''))
+		self.add_link(props, 'self', self.urljoin(''), title=obj.dn)
 		self.add_link(props, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
 		self.add_link(props, '/udm/relation/object/remove', self.urljoin(''), method='DELETE')
 		self.add_link(props, '/udm/relation/object/edit', self.urljoin(''), method='PUT')
@@ -1192,7 +1202,7 @@ class Object(Ressource):
 			self.add_link(props, '/udm/relation/next-free-ip', self.urljoin(quote_dn(obj.dn), 'next-free-ip-address'), title=_('Next free IP address'))
 
 		if obj.has_property('jpegPhoto'):
-			self.add_link(props, '', self.urljoin(quote_dn(obj.dn), 'properties/photo.jpg'), type='image/jpeg', title=_('User photo'))
+			self.add_link(props, '/udm/relation/user-photo', self.urljoin(quote_dn(obj.dn), 'properties/photo.jpg'), type='image/jpeg', title=_('User photo'))
 
 		meta = dict((key, [val.decode('utf-8', 'replace') for val in value]) for key, value in self.ldap_connection.get(obj.dn, attr=[b'+']).items())
 		props['meta'] = meta
