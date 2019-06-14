@@ -504,15 +504,16 @@ class Modules(Ressource):
 		'nagios': 'nagios/nagios',
 		'policies': 'policies/policy',
 		'self': 'users/self',
-		'navigation': 'directory',
+		'navigation': 'object',
+		'container': 'container',
 	}
 
 	def get(self):
 		result = {}
-		for main_type in self.mapping:
-			title = _('All object types')
-			if main_type != 'navigation':
-				title = UDM_Module(self.mapping[main_type], ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).object_name_plural
+		for main_type, name in self.mapping.items():
+			title = _('All %s types') % (name,)
+			if '/' in main_type:
+				title = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).object_name_plural
 
 			self.add_link(result, '/udm/relation/object-modules', self.urljoin(quote(main_type)) + '/', name='all' if main_type == 'navigation' else main_type, title=title)
 		self.add_link(result, '/udm/relation/object-modules', self.urljoin('license') + '/', name='license', title=_('UCS license'))
@@ -531,7 +532,7 @@ class ObjectTypes(Ressource):
 
 		title = _('All object types')
 		module = None
-		if module_type != 'navigation':
+		if '/' in object_type:
 			# FIXME: what was/is the superordinate for?
 			superordinate = self.get_query_argument('superordinate', None)
 			module = UDM_Module(object_type, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
@@ -545,11 +546,13 @@ class ObjectTypes(Ressource):
 		self.add_link(result, 'self', self.urljoin(''), title=title)
 		if module_type == 'navigation':
 			self.add_link(result, 'udm/relation/tree', self.abspath('container/dc/tree'))
-		elif module.has_tree:
+		elif module and module.has_tree:
 			self.add_link(result, 'udm/relation/tree', self.urljoin('../', object_type, 'tree'))
 
 		if module_type == 'navigation':
 			modules = udm_modules.modules.keys()
+		elif module_type == 'container':
+			modules = container_modules()
 		else:
 			modules = [x['id'] for x in module.child_modules]
 
@@ -1799,7 +1802,8 @@ def last_modified(date):
 class Application(tornado.web.Application):
 
 	def __init__(self, **kwargs):
-		module_type = '([a-z]+)'
+		#module_type = '([a-z]+)'
+		module_type = '(%s)' % '|'.join(re.escape(mod) for mod in Modules.mapping.keys())
 		object_type = '([a-z]+/[a-z_]+)'
 		policies_object_type = '(policies/[a-z_]+)'
 		dn = '((?:[^/]+%s.+,)?%s)' % (self.multi_regex('='), self.multi_regex(ucr['ldap/base']),)
