@@ -420,6 +420,12 @@ class RessourceBase(object):
 	def vary(self):
 		return ['Accept', 'Accept-Language', 'Accept-Encoding', 'Authorization']
 
+	def get_parent_object_type(self, module):
+		flavor = module.flavor
+		if '/' not in flavor:
+			return module
+		return UDM_Module(flavor, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
+
 
 class Ressource(RessourceBase, RequestHandler):
 	pass
@@ -1167,9 +1173,10 @@ class Objects(Ressource):
 	def _options(self, object_type):
 		result = {}
 		module = self.get_module(object_type)
+		parent = self.get_parent_object_type(module)
 		methods = ['GET', 'OPTIONS']
 		self.add_link(result, 'udm/relation/object-modules', self.urljoin('../../'), title=_('All modules'))
-		self.add_link(result, 'parent', self.urljoin('../'), title=module.object_name_plural)
+		self.add_link(result, 'parent', self.urljoin('../'), title=parent.object_name_plural)
 		self.add_link(result, 'self', self.urljoin(''), title=module.object_name_plural)
 		if 'search' in module.operations:
 			self.add_link(result, 'search', self.urljoin(''), title=_('Search for %s') % (module.object_name_plural,))
@@ -1215,7 +1222,7 @@ class Object(Ressource):
 			raise NotFound(object_type, dn)
 
 		self.add_link(props, 'udm/relation/object-modules', self.urljoin('../../'), title=_('All modules'))
-		self.add_link(props, 'udm/relation/object-module', self.urljoin('../'), title=module.object_name_plural)
+		self.add_link(props, 'udm/relation/object-module', self.urljoin('../'), title=self.get_parent_object_type(module).object_name_plural)
 		#self.add_link(props, 'udm/relation/object-types', self.urljoin('../'))
 		self.add_link(props, 'parent', self.urljoin('x/../'), name=module.name, title=module.object_name)
 		self.add_link(props, 'self', self.urljoin(''), title=obj.dn)
@@ -1501,7 +1508,7 @@ class ObjectEdit(Ressource):
 		result = {}
 		self.add_link(result, 'icon', self.urljoin('../favicon.ico'), type='image/x-icon')
 		self.add_link(result, 'udm/relation/object-modules', self.urljoin('../../../'), title=_('All modules'))
-		self.add_link(result, 'udm/relation/object-module', self.urljoin('../../'), title=module.object_name_plural)
+		self.add_link(result, 'udm/relation/object-module', self.urljoin('../../'), title=self.get_parent_object_type(module).object_name_plural)
 		self.add_link(result, 'udm/relation/object-type', self.urljoin('../'), title=module.object_name)
 		self.add_link(result, 'parent', self.urljoin('..', quote_dn(obj.dn)), title=obj.dn)
 		self.add_link(result, 'self', self.urljoin(''), title=_('Modify'))
