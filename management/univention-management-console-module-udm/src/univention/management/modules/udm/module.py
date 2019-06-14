@@ -640,6 +640,26 @@ class LdapBase(Ressource):
 		self.content_negotiation(result)
 
 
+class ObjectLink(Ressource):
+	"""If the object-type is not known but only the DN, this resource redirects to the correct object."""
+
+	def get(self, dn):
+		dn = unquote_dn(dn)
+		attrs = self.ldap_connection.get(dn)
+		modules = udm_modules.objectType(None, self.ldap_connection, dn, attrs) or []
+		if not modules:
+			raise NotFound(None, dn)
+		for module in modules:
+			module = UDM_Module(module, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
+			if module.module:
+				break
+		url = self.abspath(module.name, quote_dn(dn))
+		self.set_header('Location', url)
+		self.set_status(301)
+		self.add_caching(public=True)
+		self.content_negotiation({})
+
+
 class ContainerQueryBase(Ressource):
 
 	@tornado.gen.coroutine
@@ -1199,7 +1219,7 @@ class Object(Ressource):
 		props['uri'] = self.urljoin(quote_dn(obj.dn))
 		props.update(self.get_representation(module, obj, ['*'], self.ldap_connection, copy))
 		if set(module.operations) & {'edit', 'move', 'remove', 'subtree_move'}:
-			self.add_link(props, 'edit-form', self.urljoin(quote_dn(obj.dn), 'edit'), title=_('Modify, move or remove this object'))
+			self.add_link(props, 'edit-form', self.urljoin(quote_dn(obj.dn), 'edit'), title=_('Modify, move or remove this %s' % (module.object_name,)))
 
 		if module.name == 'networks/network':
 			self.add_link(props, '/udm/relation/next-free-ip', self.urljoin(quote_dn(obj.dn), 'next-free-ip-address'), title=_('Next free IP address'))
@@ -1819,6 +1839,7 @@ class Application(tornado.web.Application):
 			(r"/udm/license/check", LicenseCheck),
 			(r"/udm/license/request", LicenseRequest),
 			(r"/udm/ldap/base/", LdapBase),
+			(r"/udm/object/%s" % (dn,), ObjectLink),
 			(r"/udm/%s/tree" % (object_type,), Tree),
 			(r"/udm/%s/properties" % (object_type,), Properties),
 			(r"/udm/%s/" % (module_type,), ObjectTypes),
