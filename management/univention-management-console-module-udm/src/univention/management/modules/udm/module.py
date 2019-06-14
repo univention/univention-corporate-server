@@ -567,6 +567,9 @@ class ObjectTypes(Ressource):
 		elif module and module.has_tree:
 			self.add_link(result, 'udm/relation/tree', self.urljoin('../', object_type, 'tree'))
 
+		if module and module.help_link or module.help_text:
+			self.add_link(result, 'help', module.help_link or '', title=module.help_text or module.help_link)
+
 		if module_type == 'navigation':
 			modules = udm_modules.modules.keys()
 		elif module_type == 'container':
@@ -576,14 +579,15 @@ class ObjectTypes(Ressource):
 
 		for name in sorted(modules):
 			_module = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
+			# TODO: get rid of entries. all of it can be put into the link!?
 			result['entries'].append({
 				'id': _module.name,
 				'label': _module.title,
 				'object_name': _module.object_name,
 				'object_name_plural': _module.object_name_plural,
-				'help_link': _module.help_link,
-				'help_text': _module.help_text,
-				'columns': _module.columns,
+				#'help_link': _module.help_link,
+				#'help_text': _module.help_text,
+				'columns': _module.columns,  # FIXME: move to Objects?
 				#'has_tree': _module.has_tree,
 			})
 			self.add_link(result, 'udm/relation/object-types', self.urljoin('../%s' % quote(_module.name)) + '/', name=_module.name, title=_module.title)
@@ -1183,7 +1187,8 @@ class Objects(Ressource):
 		if 'add' in module.operations:
 			methods.append('POST')
 			self.add_link(result, 'create-form', self.urljoin('add'), title=_('Create a %s') % (module.object_name,))
-#		self.add_link(result, 'edit-form', self.urljoin('edit'))
+		if module.help_link or module.help_text:
+			self.add_link(result, 'help', module.help_link or '', title=module.help_text or module.help_link)
 		self.add_link(result, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
 		self.add_link(result, 'udm/relation/properties', self.urljoin('properties'), title=_('Object type properties'))
 		self.add_link(result, 'udm/relation/options', self.urljoin('options'), title=_('Object type options'))
