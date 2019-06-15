@@ -1004,7 +1004,7 @@ class Objects(ReportingBase):
 			qs['page'] = [str(page + 1)]
 			self.add_link(result, 'next', '%s?%s' % (self.urljoin(''), urllib.urlencode(qs, True)), title=_('Next page'))
 
-		# i18n: translattion for univention-directory-reports
+		# i18n: translation for univention-directory-reports
 		_('PDF Document')
 		_('CSV Report')
 		for i, report_type in enumerate(sorted(self.reports_cfg.get_report_names(object_type)), 1):
@@ -1484,7 +1484,6 @@ class ObjectAdd(Ressource):
 			templates = template.search(ucr.get('ldap/base'))
 			self.add_form_element(form, 'template', '', element='select', options=[{'value': obj.dn, 'label': obj[template.identifies]} for obj in templates])
 		self.add_form_element(form, 'superordinate', '')  # TODO: replace with <select>
-		self.add_form_element(form, 'policies', '')  # TODO: replace with multiple <select>
 
 		# FIXME: respect layout
 		for prop in result['properties']:
@@ -1493,8 +1492,12 @@ class ObjectAdd(Ressource):
 			elif prop['id'] == '$options$':
 				self.add_form_element(form, 'options', [opt['id'] for opt in prop['widgets'] if opt['value']], element='select', multiple='multiple', options=[{'value': opt['id'], 'label': opt['label']} for opt in prop['widgets']])
 				continue
-			self.add_form_element(form, prop['id'], '', label=prop.get('label', prop['id']), title=prop.get('description', ''))
-		self.add_form_element(form, '', _('Create'), type='submit')
+			self.add_form_element(form, 'properties[%s]' % prop['id'], '', label=prop.get('label', prop['id']), placeholder=prop.get('label', prop['id']), title=prop.get('description', ''))
+
+		for policy in module.policies:
+			self.add_form_element(form, 'policies[%s]' % (policy['objectType']), 'FIXME', label=policy['label'])  # FIXME: value should be the currently set policy
+
+		self.add_form_element(form, '', _('Create %s') % (module.object_name,), type='submit')
 
 		# TODO: wizard: first select position & template
 		self.add_caching(public=True)
@@ -1570,14 +1573,20 @@ class ObjectEdit(Ressource):
 			for prop in result['properties']:
 				if prop['id'] == '$options$':
 					self.add_form_element(form, 'options', [opt['id'] for opt in prop['widgets'] if opt['value']], element='select', multiple='multiple', options=[{'value': opt['id'], 'label': opt['label']} for opt in prop['widgets']])
+
+			# TODO: iterate over all properties instead of obj.info, add better labels, etc.
 			password_properties = module.password_properties
 			for key, value in encode_properties(obj.module, obj.info, self.ldap_connection):
 				input_type = 'input'
 				if key in password_properties:
 					value = ''
 					input_type = 'password'
-				self.add_form_element(form, key, value, type=input_type)
-			self.add_form_element(form, '', _('Modify'), type='submit')
+				self.add_form_element(form, 'properties[%s]' % (key,), value, label=key, placeholder=key, type=input_type)
+
+			for policy in module.policies:
+				self.add_form_element(form, 'policies[%s]' % (policy['objectType']), 'FIXME', label=policy['label'])  # FIXME: value should be the currently set policy
+
+			self.add_form_element(form, '', _('Modify %s') % (module.object_name,), type='submit')
 
 		self.add_caching(public=False)
 		self.content_negotiation(result)
