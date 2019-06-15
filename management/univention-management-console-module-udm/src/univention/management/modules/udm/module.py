@@ -451,8 +451,7 @@ class Favicon(RessourceBase, tornado.web.StaticFileHandler):
 class Relations(Ressource):
 
 	def get(self, relation):
-		relations = {
-			# IANA:
+		iana_relations = {
 			'search': 'Refers to a resource that can be used to search through the link\'s context and related resources.',
 			'create-form': 'The target IRI points to a resource where a submission form can be obtained.',
 			'edit': 'Refers to a resource that can be used to edit the link\'s context.',
@@ -473,7 +472,8 @@ class Relations(Ressource):
 			'type': 'Refers to a resource identifying the abstract semantic type of which the link\'s context is considered to be an instance.',
 			'up': 'Refers to a parent document in a hierarchy of documents.',
 			'icon': 'Refers to an icon representing the link\'s context.',
-			# Univention:
+		}
+		univention_relations = {
 			'object': '',
 			'object-modules': 'list of available module categories',
 			'object-module': 'the module belonging to the current selected ressource',
@@ -496,7 +496,16 @@ class Relations(Ressource):
 			'license-import': 'Import a new license in LDIF format',
 		}
 		self.add_caching(public=True)
-		result = relations.get(relation)
+		result = {}
+		if relation:
+			result['relation'] = univention_relations.get(relation, iana_relations.get(relation))
+			if not result['relation']:
+				raise NotFound()
+		else:
+			for relation in iana_relations:
+				self.add_link(result, 'udm/relation', self.urljoin(relation), name=relation, title=relation)
+			for relation in univention_relations:
+				self.add_link(result, 'udm/relation', self.urljoin(relation), name='udm/relation/%s' % relation, title='udm/relation/%s' % relation)
 		self.content_negotiation(result)
 
 
@@ -536,6 +545,7 @@ class Modules(Ressource):
 			self.add_link(result, 'udm/relation/object-types', self.urljoin(quote(main_type)) + '/', name='all' if main_type == 'navigation' else main_type, title=title)
 		self.add_link(result, 'udm/relation/', self.urljoin('license') + '/', name='license', title=_('UCS license'))
 		self.add_link(result, 'udm/relation/ldap-base', self.urljoin('ldap/base') + '/', title=_('LDAP base'))
+		self.add_link(result, 'udm/relation', self.urljoin('relation') + '/', name='relation', title=_('All link relations'))
 		self.add_caching(public=True)
 		self.content_negotiation(result)
 
