@@ -1382,7 +1382,7 @@ class UserPhoto(Ressource):
 
 	@tornado.gen.coroutine
 	def post(self, object_type, dn):
-		pass
+		self.content_negotiation({})
 
 
 class ObjectAdd(Ressource):
@@ -1413,8 +1413,9 @@ class ObjectAdd(Ressource):
 			templates = template.search(ucr.get('ldap/base'))
 			self.add_form_element(form, 'template', '', element='select', options=[{'value': obj.dn, 'label': obj[template.identifies]} for obj in templates])
 		self.add_form_element(form, 'superordinate', '')  # TODO: replace with <select>
-		self.add_form_element(form, 'options', '')  # TODO: replace with <select>
-		self.add_form_element(form, 'policies', '')  # TODO: replace with <select>
+		self.add_form_element(form, 'policies', '')  # TODO: replace with multiple <select>
+		self.add_form_element(form, 'options', '')  # TODO: replace with multiple <select>
+
 		# FIXME: respect layout
 		for prop in result['properties']:
 			if prop['id'] in ('$dn$', '$options$'):
@@ -1531,7 +1532,7 @@ class PolicyResultBase(Ressource):
 		"""Returns a virtual policy object containing the values that
 		the given object or container inherits"""
 
-		policy_dn = self.get_query_argument('policy')
+		policy_dn = self.get_query_argument('policy', None)
 
 		if is_container:
 			# editing a new (i.e. non existing) object -> use the parent container
@@ -1585,6 +1586,8 @@ class PolicyResultBase(Ressource):
 				if isinstance(infos[key], (tuple, list)):
 					continue
 				infos[key]['value'] = policy_obj.polinfo[key]
+		if policy_dn:
+			self.add_link(infos, 'udm/relation/policy-edit', self.abspath(policy_obj.module, policy_dn), title=_('Click to edit the inherited properties of the policy'))
 		return infos
 
 
