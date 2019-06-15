@@ -91,6 +91,7 @@ from univention.lib.i18n import Translation
 # TODO: 0f77c317e03844e8a16c484dde69abbcd2d2c7e3 is not integrated
 # TODO: replace etree with genshi, etc.
 # TODO: consider Bug #38674
+# TODO: modify layout and properties for app-tabs
 
 _ = Translation('univention-management-console-module-udm').translate
 
@@ -981,7 +982,7 @@ class Objects(ReportingBase):
 
 		form = self.add_form(result, None, 'GET', rel='search')
 		self.add_form_element(form, 'position', container or '')
-		self.add_form_element(form, 'property', objectProperty or '', element='select', options=[{'value': '', 'label': _('Defaults')}] + [{'value': prop['id'], 'label': prop['label']} for prop in module.properties(None) if prop.get('searchable')])  # TODO: type=select
+		self.add_form_element(form, 'property', objectProperty or '', element='select', options=[{'value': '', 'label': _('Defaults')}] + [{'value': prop['id'], 'label': prop['label']} for prop in module.properties(None) if prop.get('searchable')])
 		self.add_form_element(form, 'propertyvalue', objectPropertyValue or '')
 		self.add_form_element(form, 'scope', scope, element='select', options=[{'value': 'sub'}, {'value': 'one'}, {'value': 'base'}, {'value': 'base+one'}])
 		self.add_form_element(form, 'hidden', '1', type='checkbox', checked=bool(hidden))
@@ -1469,6 +1470,12 @@ class ObjectEdit(Ressource):
 			result['layout'] = module.get_layout(dn if object_type != 'users/self' else None)
 			result['properties'] = module.get_properties(dn)
 			result['options'] = module.options.keys()
+			result['synced'] = ucr.is_true('ad/member') and 'synced' in obj.oldattr.get('univentionObjectFlag', [])
+			if result['synced']:
+				result['active_directory_warning'] = _('The %s "%s" is part of the Active Directory domain.') % (module.object_name, obj[module.identifies])
+				for prop in result['properties'].values():
+					if prop['readonly_when_synced']:
+						prop['disabled'] = True
 
 			for policy in module.policies:
 				form = self.add_form(result, action=self.urljoin(policy['objectType']) + '/', method='GET', name=policy['objectType'], rel='udm/relation/policy-result')
@@ -1834,9 +1841,9 @@ class Application(tornado.web.Application):
 			(r"/udm/%s/%s/children-types/" % (object_type, dn), SubObjectTypes),
 			(r"/udm/%s/favicon.ico" % (object_type,), Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
 			(r"/udm/%s/report/([^/]+)" % (object_type,), Report),
-			#(r"/udm/%s/%s/properties/" % (object_type, dn), Properties),  # TODO: only needed as choices for MultiObjectSelect anymore
 			(r"/udm/%s/%s/%s/" % (object_type, dn, policies_object_type), PolicyResult),
 			(r"/udm/%s/%s/" % (object_type, policies_object_type), PolicyResultContainer),
+			(r"/udm/%s/%s/properties/choices" % (object_type, dn), Properties),
 			(r"/udm/%s/%s/properties/%s/choices" % (object_type, dn, property_), PropertyChoices),
 			(r"/udm/%s/%s/properties/photo.jpg" % (object_type, dn), UserPhoto),
 			(r"/udm/%s/properties/%s/default" % (object_type, property_), DefaultValue),
