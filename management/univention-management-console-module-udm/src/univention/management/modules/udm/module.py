@@ -1482,11 +1482,13 @@ class ObjectAdd(Ressource):
 			self.add_form_element(form, 'template', '', element='select', options=[{'value': obj.dn, 'label': obj[template.identifies]} for obj in templates])
 		self.add_form_element(form, 'superordinate', '')  # TODO: replace with <select>
 		self.add_form_element(form, 'policies', '')  # TODO: replace with multiple <select>
-		self.add_form_element(form, 'options', '')  # TODO: replace with multiple <select>
 
 		# FIXME: respect layout
 		for prop in result['properties']:
-			if prop['id'] in ('$dn$', '$options$'):
+			if prop['id'] in ('$dn$',):
+				continue
+			elif prop['id'] == '$options$':
+				self.add_form_element(form, 'options', [opt['id'] for opt in prop['widgets'] if opt['value']], element='select', multiple='multiple', options=[{'value': opt['id'], 'label': opt['label']} for opt in prop['widgets']])
 				continue
 			self.add_form_element(form, prop['id'], '', label=prop.get('label', prop['id']), title=prop.get('description', ''))
 		self.add_form_element(form, '', _('Create'), type='submit')
@@ -1562,6 +1564,9 @@ class ObjectEdit(Ressource):
 
 			# FIXME: respect layout
 			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='PUT')
+			for prop in result['properties']:
+				if prop['id'] == '$options$':
+					self.add_form_element(form, 'options', [opt['id'] for opt in prop['widgets'] if opt['value']], element='select', multiple='multiple', options=[{'value': opt['id'], 'label': opt['label']} for opt in prop['widgets']])
 			password_properties = module.password_properties
 			for key, value in encode_properties(obj.module, obj.info, self.ldap_connection):
 				input_type = 'input'
