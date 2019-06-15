@@ -487,6 +487,7 @@ class Relations(Ressource):
 			'next-free-ip': 'next IP configuration based on the given network object',
 			'property-choices': 'determine valid values for a given syntax class',
 			'object/remove': 'remove this object, edit-form is preferable',
+			'object/move': 'move objects to a certain position',
 			'object/edit': 'modify this object, edit-form is preferable',
 			'user-photo': 'photo of the object',
 			'license-request': 'Request a new UCS Core Edition license',
@@ -980,7 +981,11 @@ class Objects(ReportingBase):
 			form = self.add_form(result, self.urljoin('report', quote(report_type)), 'POST', rel='udm/relation/report', name=report_type, id='report%d' % (i,))
 			self.add_form_element(form, '', _('Create %s report') % _(report_type), type='submit')
 
-		form = self.add_form(result, None, 'GET', rel='search')
+		form = self.add_form(result, self.urljoin('move'), 'POST', name='move', rel='udm/relation/object/move')
+		self.add_form_element(form, 'position', '')
+		self.add_form_element(form, '', _('Move %s') % (module.object_name_plural,), type='submit')
+
+		form = self.add_form(result, self.urljoin(''), 'GET', rel='search')
 		self.add_form_element(form, 'position', container or '')
 		self.add_form_element(form, 'property', objectProperty or '', element='select', options=[{'value': '', 'label': _('Defaults')}] + [{'value': prop['id'], 'label': prop['label']} for prop in module.properties(None) if prop.get('searchable')])
 		self.add_form_element(form, 'propertyvalue', objectPropertyValue or '')
