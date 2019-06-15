@@ -1380,6 +1380,10 @@ class UserPhoto(Ressource):
 		self.add_caching(public=False, max_age=2592000)
 		self.finish(data)
 
+	@tornado.gen.coroutine
+	def post(self, object_type, dn):
+		pass
+
 
 class ObjectAdd(Ressource):
 	"""GET a form containing information about all properties, methods, URLs to create a specific object"""
@@ -1481,6 +1485,11 @@ class ObjectEdit(Ressource):
 				form = self.add_form(result, action=self.urljoin(policy['objectType']) + '/', method='GET', name=policy['objectType'], rel='udm/relation/policy-result')
 				self.add_form_element(form, 'policy', '', label=policy['label'], title=policy['description'])  # TODO: value should be the currently set policy!
 				self.add_form_element(form, '', _('Policy result'), type='submit')
+
+			if obj.has_property('jpegPhoto'):
+				form = self.add_form(result, action=self.urljoin('properties/photo.jpg'), method='POST', enctype='multipart/form-data')
+				self.add_form_element(form, 'jpegPhoto', '', type='file', accept='image/jpg')
+				self.add_form_element(form, '', _('Upload user photo'), type='submit')
 
 			# FIXME: respect layout
 			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='PUT')
