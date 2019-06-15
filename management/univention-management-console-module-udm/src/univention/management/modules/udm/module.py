@@ -486,7 +486,7 @@ class Relations(Ressource):
 			'templates': 'list of template objects for the given object type',
 			'default-containers': 'list of default containers for the given object type',
 			'tree': 'list of tree content for providing a hierarchical navigation',
-			'policies': 'list of policy types that apply to the given object type',  # virtual policy object containing the values that the given object or container inherits
+			'policy-result': 'policy result by virtual policy object containing the values that the given object or container inherits',
 			'report-types': 'list of reports for the given object type',
 			'default-search': 'default search pattern/value for the given object property',
 			'next-free-ip': 'next IP configuration based on the given network object',
@@ -848,17 +848,6 @@ class DefaultContainers(Ressource):
 		self.content_negotiation(result)
 
 
-class Policies(Ressource):
-	"""GET udm/users/user/policies (get the list of policy-types that apply for users/user object type)"""
-
-	def get(self, object_type):
-		module = self.get_module(object_type)
-		result = {'policies': module.policies}
-		self.add_link(result, 'parent', self.urljoin('.'))
-		self.add_caching(public=False)
-		self.content_negotiation(result)
-
-
 class ReportingBase(Ressource):
 
 	def initialize(self):
@@ -1178,7 +1167,6 @@ class Objects(Ressource):
 		self.add_link(result, 'udm/relation/default-containers', self.urljoin('default-containers'), title=_('Object type default containers'))
 		if module.has_tree:
 			self.add_link(result, 'udm/relation/tree', self.urljoin('tree'), title=_('Object type tree'))
-		self.add_link(result, 'udm/relation/policies', self.urljoin('policies'), title=_('Object type policies'))
 		self.add_link(result, 'udm/relation/report-types', self.urljoin('report-types'), title=_('Object type report types'))
 #		self.add_link(result, '', self.urljoin(''))
 		self.set_header('Allow', ', '.join(methods))
@@ -1469,6 +1457,12 @@ class ObjectAdd(Ressource):
 		result['layout'] = module.get_layout()
 		result['properties'] = module.get_properties()
 
+		for policy in module.policies:
+			form = self.add_form(result, action=self.urljoin(policy['objectType']) + '/', method='GET', name=policy['objectType'], rel='udm/relation/policy-result')
+			self.add_form_element(form, 'position', '', label=_('The container where the object is going to be created in'))
+			self.add_form_element(form, 'policy', '', label=policy['label'], title=policy['description'])  # TODO: value should be the currently set policy!
+			self.add_form_element(form, '', _('Policy result'), type='submit')
+
 		form = self.add_form(result, action=self.urljoin('.'), method='POST', relation='')
 		self.add_form_element(form, 'position', '')  # TODO: replace with <select>
 		self.add_form_element(form, 'superordinate', '')  # TODO: replace with <select>
@@ -1533,6 +1527,12 @@ class ObjectEdit(Ressource):
 		if 'edit' in module.operations:
 			result['layout'] = module.get_layout(dn if object_type != 'users/self' else None)
 			result['properties'] = module.get_properties(dn)
+
+			for policy in module.policies:
+				form = self.add_form(result, action=self.urljoin(policy['objectType']) + '/', method='GET', name=policy['objectType'], rel='udm/relation/policy-result')
+				self.add_form_element(form, 'policy', '', label=policy['label'], title=policy['description'])  # TODO: value should be the currently set policy!
+				self.add_form_element(form, '', _('Policy result'), type='submit')
+
 			# FIXME: respect layout
 			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='PUT', relation='')
 			password_properties = module.password_properties
@@ -1565,36 +1565,15 @@ class PropertyChoices(Ressource):
 		self.content_negotiation(choices)
 
 
-class PolicyTypes(Ressource):
-	"""GET udm/users/user/$DN/policies/$policy_type (get the policies of policy-type for the given object)"""
-
-	def get(self, object_type, dn, policy_type):
-		"""Returns a list of policy types that apply to the given object type"""
-		dn = unquote_dn(dn)
-		module = self.get_module(object_type)
-		result = module.policies
-		self.add_caching(public=True)
-		self.content_negotiation(result)
-
-
-class PolicyResult(Ressource):
-	"""GET udm/users/user/policies/$policy_type/$dn?container=true...&policy=... (get the possible policies of the policy-type for user objects located at the containter)"""
-
-	@tornado.gen.coroutine
-	def get(self, object_type, policy_type, dn):
-		dn = unquote_dn(dn)
-		infos = yield self._get(object_type, policy_type, dn)
-		self.add_caching(public=False, no_cache=True, must_revalidate=True, no_store=True)
-		self.content_negotiation(infos)
+class PolicyResultBase(Ressource):
+	"""get the possible policies of the policy-type for user objects located at the containter"""
 
 	@run_on_executor(executor='pool')
-	def _get(self, object_type, policy_type, dn):
+	def _get(self, object_type, policy_type, dn, is_container=False):
 		"""Returns a virtual policy object containing the values that
 		the given object or container inherits"""
 
-		dn = unquote_dn(dn)
-		is_container = bool(self.get_query_argument('container', None))
-		policy_dn = self.get_query_argument('policy', None)
+		policy_dn = self.get_query_argument('policy')
 
 		if is_container:
 			# editing a new (i.e. non existing) object -> use the parent container
@@ -1649,6 +1628,32 @@ class PolicyResult(Ressource):
 					continue
 				infos[key]['value'] = policy_obj.polinfo[key]
 		return infos
+
+
+class PolicyResult(PolicyResultBase):
+	"""get the possible policies of the policy-type for user objects located at the containter
+	GET udm/users/user/$userdn/policies/$policy_type/?policy=$dn (for a existing object)
+	"""
+
+	@tornado.gen.coroutine
+	def get(self, object_type, dn, policy_type):
+		dn = unquote_dn(dn)
+		infos = yield self._get(object_type, policy_type, dn, is_container=False)
+		self.add_caching(public=False, no_cache=True, must_revalidate=True, no_store=True)
+		self.content_negotiation(infos)
+
+
+class PolicyResultContainer(PolicyResultBase):
+	"""get the possible policies of the policy-type for user objects located at the containter
+	GET udm/users/user/policies/$policy_type/?policy=$dn&position=$dn (for a container, where a object should be created in)
+	"""
+
+	@tornado.gen.coroutine
+	def get(self, object_type, policy_type):
+		container = self.get_query_argument('position')
+		infos = yield self._get(object_type, policy_type, container, is_container=True)
+		self.add_caching(public=False, no_cache=True, must_revalidate=True, no_store=True)
+		self.content_negotiation(infos)
 
 
 class Operations(Ressource):
@@ -1888,16 +1893,15 @@ class Application(tornado.web.Application):
 			(r"/udm/%s/options" % (object_type,), Options),
 			(r"/udm/%s/templates" % (object_type,), Templates),
 			(r"/udm/%s/default-containers" % (object_type,), DefaultContainers),  # TODO: maybe rename conflicts with above except trailing slash
-			(r"/udm/%s/policies" % (object_type,), Policies),
 			(r"/udm/%s/favicon.ico" % (object_type,), Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
 			(r"/udm/%s/report-types" % (object_type,), ReportTypes),
 			(r"/udm/%s/report/([^/]+)" % (object_type,), Report),
 			(r"/udm/%s/%s/properties/" % (object_type, dn), Properties),
+			(r"/udm/%s/%s/%s/" % (object_type, dn, policies_object_type), PolicyResult),
 			(r"/udm/%s/%s/properties/%s/choices" % (object_type, dn, property_), PropertyChoices),
 			(r"/udm/%s/%s/properties/photo.jpg" % (object_type, dn), UserPhoto),
 			(r"/udm/%s/properties/%s/default" % (object_type, property_), DefaultValue),
-			(r"/udm/%s/%s/%s/" % (object_type, dn, policies_object_type), PolicyTypes),
-			(r"/udm/%s/%s/%s/" % (object_type, policies_object_type, dn), PolicyResult),
+			(r"/udm/%s/%s/" % (object_type, policies_object_type), PolicyResultContainer),
 			(r"/udm/%s/add/?" % (object_type,), ObjectAdd),
 			(r"/udm/%s/" % (object_type,), Objects),
 			(r"/udm/%s/%s" % (object_type, dn), Object),
@@ -1905,7 +1909,6 @@ class Application(tornado.web.Application):
 			(r"/udm/%s/%s/edit/?" % (object_type, dn), ObjectEdit),
 			(r"/udm/networks/network/%s/next-free-ip-address" % (dn,), NextFreeIpAddress),
 			(r"/udm/progress/([0-9]+)", Operations),
-			# TODO: meta info
 			# TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
 		])
 
