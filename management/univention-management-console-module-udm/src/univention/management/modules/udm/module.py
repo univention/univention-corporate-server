@@ -41,6 +41,7 @@ import re
 import json
 import time
 import copy
+import uuid
 import urllib
 import base64
 import httplib
@@ -1116,6 +1117,39 @@ class Objects(ReportingBase):
 		return result
 
 
+class ObjectsMove(Ressource):
+
+	def post(self, object_type):
+		# FIXME: this can only move objects of the same object_type but should move everything
+		position = self.get_body_argument('position')
+		dns = self.get_body_arguments('dn')  # TODO: validate: remove duplicates, dn-syntax, moveable, etc.
+		queue = Operations.queue.setdefault(self.request.user_dn, {})
+		status = {
+			'id': str(uuid.uuid4()),
+			'finished': False,
+			'errors': False,
+			'moved': [],
+		}
+		queue[status['id']] = status
+		self.set_status(201)
+		self.set_header('Location', self.urljoin('progress', status['id']))
+		self.finish()
+		try:
+			for i, dn in enumerate(dns, 1):
+				module = get_module(object_type, dn, self.ldap_connection)
+				dn = yield self.pool.submit(module.move, dn, position)
+				status['moved'].append(dn)
+				status['progress'] = _('Moved %d of %d objects. Last object was: %s.') % (i, len(dns), dn)
+		except:
+			status['errors'] = True
+			status['traceback'] = traceback.format_exc()  # FIXME: error handling
+			raise
+		else:
+			status['uri'] = self.urljoin(dn)
+		finally:
+			status['finished'] = True
+
+
 class Object(Ressource):
 
 	@tornado.gen.coroutine
@@ -1281,7 +1315,7 @@ class Object(Ressource):
 	def move(self, module, dn, position):
 		queue = Operations.queue.setdefault(self.request.user_dn, {})
 		status = {
-			'id': '1',
+			'id': str(uuid.uuid4()),
 			'finished': False,
 			'errors': False,
 		}
@@ -1866,11 +1900,12 @@ class Application(tornado.web.Application):
 			(r"/udm/%s/properties/%s/default" % (object_type, property_), DefaultValue),
 			(r"/udm/%s/add/?" % (object_type,), ObjectAdd),
 			(r"/udm/%s/" % (object_type,), Objects),
+			(r"/udm/%s/move" % (object_type,), ObjectsMove),
 			(r"/udm/%s/%s" % (object_type, dn), Object),
 			# (r"/udm/%s/%s" % (object_type, uuid), ObjectByUiid),  # TODO: implement getting object by UUID
-			(r"/udm/%s/%s/edit/?" % (object_type, dn), ObjectEdit),
+			(r"/udm/%s/%s/edit" % (object_type, dn), ObjectEdit),
 			(r"/udm/networks/network/%s/next-free-ip-address" % (dn,), NextFreeIpAddress),
-			(r"/udm/progress/([0-9]+)", Operations),
+			(r"/udm/progress/([a-z0-9-]+)", Operations),
 			# TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
 		])
 
