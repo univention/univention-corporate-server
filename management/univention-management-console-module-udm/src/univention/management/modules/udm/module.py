@@ -71,7 +71,7 @@ from genshi.output import HTMLSerializer
 
 from univention.management.console.config import ucr
 from univention.management.console.ldap import get_user_connection, get_machine_connection
-from univention.management.console.modules.udm.udm_ldap import get_module, set_bind_function, UDM_Module, ldap_dn2path, read_syntax_choices, _get_syntax, container_modules, UDM_Error
+from univention.management.console.modules.udm.udm_ldap import get_module, UDM_Module, ldap_dn2path, read_syntax_choices, _get_syntax, container_modules, UDM_Error
 from univention.management.console.modules.udm.udm_ldap import SuperordinateDoesNotExist, NoIpLeft, SearchLimitReached
 from univention.management.console.modules.udm.tools import check_license, LicenseError, LicenseImport, dump_license
 from univention.management.console.error import UMC_Error, LDAP_ServerDown, LDAP_ConnectionFailed
@@ -90,6 +90,7 @@ from univention.lib.i18n import Translation
 # FIXME: it seems request.path contains the un-urlencoded path, could be security issue!
 # TODO: 0f77c317e03844e8a16c484dde69abbcd2d2c7e3 is not integrated
 # TODO: replace etree with genshi, etc.
+# TODO: consider Bug #38674
 
 _ = Translation('univention-management-console-module-udm').translate
 
@@ -1485,11 +1486,21 @@ class ObjectAdd(Ressource):
 		module = self.get_module(object_type)
 		if 'add' not in module.operations:
 			raise NotFound(object_type)
+
+		self.add_link(result, 'udm/relation/layout', self.urljoin('layout'), title=_('Object type layout'))
 		form = self.add_form(result, action=self.urljoin('.'), method='POST', relation='')
+		self.add_form_element(form, 'position', '')  # TODO: replace with <select>
+		self.add_form_element(form, 'superordinate', '')  # TODO: replace with <select>
+		self.add_form_element(form, 'options', '')  # TODO: replace with <select>
+		self.add_form_element(form, 'policies', '')  # TODO: replace with <select>
+		for prop in module.get_properties():
+			if prop['id'] in ('$dn$', '$options$'):
+				continue
+			self.add_form_element(form, prop['id'], '', label=prop.get('label', prop['id']), title=prop.get('description', ''))
 		self.add_form_element(form, '', _('Create'), type='submit')
+
 		# TODO: wizard
 		# TODO: select template
-		module.get_properties()
 		self.add_caching(public=True)
 		self.content_negotiation(result)
 
@@ -1517,6 +1528,7 @@ class ObjectEdit(Ressource):
 		self.add_link(result, 'udm/relation/object-modules', self.urljoin('../../../'), title=_('All modules'))
 		self.add_link(result, 'udm/relation/object-module', self.urljoin('../../'), title=self.get_parent_object_type(module).object_name_plural)
 		self.add_link(result, 'udm/relation/object-type', self.urljoin('../'), title=module.object_name)
+		self.add_link(result, 'udm/relation/layout', self.urljoin('layout'), title=_('Object type layout'))
 		self.add_link(result, 'parent', self.urljoin('..', quote_dn(obj.dn)), title=obj.dn)
 		self.add_link(result, 'self', self.urljoin(''), title=_('Modify'))
 		if 'remove' in module.operations:
