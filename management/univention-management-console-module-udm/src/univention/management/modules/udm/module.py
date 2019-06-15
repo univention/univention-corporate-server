@@ -339,9 +339,11 @@ class RessourceBase(object):
 		return urljoin(self.urljoin('/univention/udm/' if self.request.headers.get('X-Forwarded-Host') else '/udm/'), '/'.join(args))
 
 	def add_link(self, obj, relation, href, **kwargs):
+		def quote_param(s):
+			return s.replace('\\', '\\\\').replace('"', '\\"')
 		links = obj.setdefault('_links', {})
 		links.setdefault(relation, []).append(dict(kwargs, href=href))
-		self.add_header('Link', '<%s>; rel="%s"; name="%s"; title="%s"' % (href, relation, kwargs.get('name', ''), kwargs.get('title', '')))  # TODO: quoting
+		self.add_header('Link', '<%s>; rel="%s"; name="%s"; title="%s"' % (href, quote_param(relation), quote_param(kwargs.get('name', '')), quote_param(kwargs.get('title', ''))))
 
 	def add_form(self, obj, action, method, relation=None, **kwargs):
 		form = {
