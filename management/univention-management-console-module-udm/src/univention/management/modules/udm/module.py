@@ -479,7 +479,6 @@ class Relations(Ressource):
 			'object-type': 'the object type belonging to the current selected ressource',
 			'children-types': 'list of object types which can be created underneath of the container or superordinate',
 			'properties': 'properties of the given object type',
-			'options': 'options specified for the given object type',
 			'tree': 'list of tree content for providing a hierarchical navigation',
 			'policy-result': 'policy result by virtual policy object containing the values that the given object or container inherits',
 			'report': 'create a report',
@@ -789,18 +788,6 @@ class Properties(Ressource):
 			properties = [prop for prop in properties if prop.get('searchable', False)]
 		result['properties'] = properties
 
-		self.add_caching(public=True)
-		self.content_negotiation(result)
-
-
-class Options(Ressource):
-	"""GET udm/users/user/options (get options of users/user object type)"""
-
-	def get(self, object_type):
-		"""Returns the options specified for the given object type"""
-		result = {}
-		result['options'] = self.get_module(object_type).options.keys()
-		self.add_link(result, 'parent', self.urljoin('.'))
 		self.add_caching(public=True)
 		self.content_negotiation(result)
 
@@ -1115,7 +1102,6 @@ class Objects(ReportingBase):
 		if module.help_link or module.help_text:
 			self.add_link(result, 'help', module.help_link or '', title=module.help_text or module.help_link)
 		self.add_link(result, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
-		self.add_link(result, 'udm/relation/properties', self.urljoin('properties'), title=_('Object type properties'))
 		self.add_link(result, 'udm/relation/options', self.urljoin('options'), title=_('Object type options'))
 		if module.has_tree:
 			self.add_link(result, 'udm/relation/tree', self.urljoin('tree'), title=_('Object type tree'))
@@ -1407,6 +1393,7 @@ class ObjectAdd(Ressource):
 		module.load(force_reload=True)  # reload for instant extended attributes
 		result['layout'] = module.get_layout()
 		result['properties'] = module.get_properties()
+		result['options'] = module.options.keys()
 
 		for policy in module.policies:
 			form = self.add_form(result, action=self.urljoin(policy['objectType']) + '/', method='GET', name=policy['objectType'], rel='udm/relation/policy-result')
@@ -1481,6 +1468,7 @@ class ObjectEdit(Ressource):
 		if 'edit' in module.operations:
 			result['layout'] = module.get_layout(dn if object_type != 'users/self' else None)
 			result['properties'] = module.get_properties(dn)
+			result['options'] = module.options.keys()
 
 			for policy in module.policies:
 				form = self.add_form(result, action=self.urljoin(policy['objectType']) + '/', method='GET', name=policy['objectType'], rel='udm/relation/policy-result')
@@ -1844,7 +1832,6 @@ class Application(tornado.web.Application):
 			(r"/udm/(%s|navigation)/move-destinations/" % (object_type,), MoveDestinations),
 			(r"/udm/navigation/children-types/", SubObjectTypes),
 			(r"/udm/%s/%s/children-types/" % (object_type, dn), SubObjectTypes),
-			(r"/udm/%s/options" % (object_type,), Options),
 			(r"/udm/%s/favicon.ico" % (object_type,), Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
 			(r"/udm/%s/report/([^/]+)" % (object_type,), Report),
 			#(r"/udm/%s/%s/properties/" % (object_type, dn), Properties),  # TODO: only needed as choices for MultiObjectSelect anymore
