@@ -32,7 +32,7 @@
 
 #DEBHELPER#
 
-a2ensite 1univention-management-module-udm.conf
+a2ensite univention-management.conf
 service apache2 reload
 
 exit 0
