@@ -1029,8 +1029,6 @@ class Objects(ReportingBase):
 		_('PDF Document')
 		_('CSV Report')
 		for i, report_type in enumerate(sorted(self.reports_cfg.get_report_names(object_type)), 1):
-			if i != 2:
-				continue  # There is a bug in chrome, so we cannot have form='report1 report2'. so, only 1 report is possible :-/
 			form = self.add_form(result, self.urljoin('report', quote(report_type)), 'POST', rel='udm/relation/report', name=report_type, id='report%d' % (i,))
 			self.add_form_element(form, '', _('Create %s report') % _(report_type), type='submit')
 
@@ -1068,7 +1066,8 @@ class Objects(ReportingBase):
 					pre = ET.Element("pre")
 					pre.text = json.dumps(x, indent=4)
 					root.append(ET.Element("br"))
-					root.append(ET.Element('input', type='checkbox', name='dn', value=x['dn'], form=' '.join([report['id'] for report in response['_forms'] if report['rel'] == 'udm/relation/report'])))
+					# There is a bug in chrome, so we cannot have form='report1 report2'. so, only 1 report is possible :-/
+					root.append(ET.Element('input', type='checkbox', name='dn', value=x['dn'], form=' '.join([report['id'] for report in response['_forms'] if report['rel'] == 'udm/relation/report'][-1:])))
 					root.append(a)
 					root.append(pre)
 					root.append(ET.Element("br"))
