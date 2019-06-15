@@ -682,6 +682,16 @@ class ObjectLink(Ressource):
 		self.content_negotiation({})
 
 
+class ObjectByUiid(ObjectLink):
+
+	def get(self, uuid):
+		try:
+			dn = self.ldap_connection.searchDn(filter_format('entryUUID=%s', [uuid]))[0]
+		except IndexError:
+			raise NotFound()
+		return super(ObjectByUiid, self).get(dn)
+
+
 class ContainerQueryBase(Ressource):
 
 	@tornado.gen.coroutine
@@ -1883,14 +1893,20 @@ class Application(tornado.web.Application):
 			(r"/udm/license/request", LicenseRequest),
 			(r"/udm/ldap/base/", LdapBase),
 			(r"/udm/object/%s" % (dn,), ObjectLink),
-			(r"/udm/%s/tree" % (object_type,), Tree),
-			(r"/udm/%s/properties" % (object_type,), Properties),
+			(r"/udm/object/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", ObjectByUiid),
 			(r"/udm/%s/" % (module_type,), ObjectTypes),
 			(r"/udm/(navigation)/tree", Tree),
 			(r"/udm/(%s|navigation)/move-destinations/" % (object_type,), MoveDestinations),
 			(r"/udm/navigation/children-types/", SubObjectTypes),
-			(r"/udm/%s/%s/children-types/" % (object_type, dn), SubObjectTypes),
+			(r"/udm/%s/" % (object_type,), Objects),
+			(r"/udm/%s/add" % (object_type,), ObjectAdd),
+			(r"/udm/%s/move" % (object_type,), ObjectsMove),
+			(r"/udm/%s/tree" % (object_type,), Tree),
+			(r"/udm/%s/properties" % (object_type,), Properties),
 			(r"/udm/%s/favicon.ico" % (object_type,), Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
+			(r"/udm/%s/%s" % (object_type, dn), Object),
+			(r"/udm/%s/%s/edit" % (object_type, dn), ObjectEdit),
+			(r"/udm/%s/%s/children-types/" % (object_type, dn), SubObjectTypes),
 			(r"/udm/%s/report/([^/]+)" % (object_type,), Report),
 			(r"/udm/%s/%s/%s/" % (object_type, dn, policies_object_type), PolicyResult),
 			(r"/udm/%s/%s/" % (object_type, policies_object_type), PolicyResultContainer),
@@ -1898,12 +1914,6 @@ class Application(tornado.web.Application):
 			(r"/udm/%s/%s/properties/%s/choices" % (object_type, dn, property_), PropertyChoices),
 			(r"/udm/%s/%s/properties/photo.jpg" % (object_type, dn), UserPhoto),
 			(r"/udm/%s/properties/%s/default" % (object_type, property_), DefaultValue),
-			(r"/udm/%s/add/?" % (object_type,), ObjectAdd),
-			(r"/udm/%s/" % (object_type,), Objects),
-			(r"/udm/%s/move" % (object_type,), ObjectsMove),
-			(r"/udm/%s/%s" % (object_type, dn), Object),
-			# (r"/udm/%s/%s" % (object_type, uuid), ObjectByUiid),  # TODO: implement getting object by UUID
-			(r"/udm/%s/%s/edit" % (object_type, dn), ObjectEdit),
 			(r"/udm/networks/network/%s/next-free-ip-address" % (dn,), NextFreeIpAddress),
 			(r"/udm/progress/([a-z0-9-]+)", Operations),
 			# TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
