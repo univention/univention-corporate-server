@@ -1011,6 +1011,9 @@ class Objects(ReportingBase):
 			form = self.add_form(result, self.urljoin('report', quote(report_type)), 'POST', rel='udm/relation/report', name=report_type, id='report%d' % (i,))
 			self.add_form_element(form, '', _('Create %s report') % _(report_type), type='submit')
 
+		form = self.add_form(result, self.urljoin('multi-edit'), 'POST', name='multi-edit', rel='edit-form')
+		self.add_form_element(form, '', _('Modify %s (multi edit)') % (module.object_name_plural,), type='submit')
+
 		form = self.add_form(result, self.urljoin('move'), 'POST', name='move', rel='udm/relation/object/move')
 		self.add_form_element(form, 'position', '')
 		self.add_form_element(form, '', _('Move %s') % (module.object_name_plural,), type='submit')
