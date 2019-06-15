@@ -296,7 +296,12 @@ class RessourceBase(object):
 					label = ET.Element('label', **{'for': name})
 					label.text = field.get('label', name)
 					form.append(label)
-					element = ET.Element(field.get('element', 'input'), type=field.get('type', 'text'), name=name, placeholder=field.get('placeholder', name), value=str(field['value']))
+					elemattrs = dict((p, field[p]) for p in ('disabled', 'form', 'multiple', 'required', 'size', 'type', 'placeholder', 'accept', 'alt', 'autocomplete', 'checked', 'max', 'min', 'minlength', 'pattern', 'readonly', 'src', 'step') if field.get(p))
+					elemattrs.setdefault('type', 'text')
+					elemattrs.setdefault('placeholder', name)
+					if field.get('type') == 'checkbox' and field.get('checked'):
+						elemattrs['checked'] = 'checked'
+					element = ET.Element(field.get('element', 'input'), name=name, value=str(field['value']), **elemattrs)
 					form.append(element)
 					if field['element'] == 'select':
 						for option in field.get('options', []):
@@ -304,8 +309,6 @@ class RessourceBase(object):
 							if field['value'] == option['value'] or (isinstance(field['value'], list) and option['value'] in field['value']):
 								kwargs['selected'] = 'selected'
 							ET.SubElement(element, 'option', value=option['value'], **kwargs).text = option.get('label', option['value'])
-					if field.get('type') == 'checkbox' and field.get('checked'):
-						element.set('checked', 'checked')
 					form.append(ET.Element('br'))
 				form.append(ET.Element('hr'))
 
