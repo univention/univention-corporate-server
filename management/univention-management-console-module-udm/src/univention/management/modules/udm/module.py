@@ -288,7 +288,7 @@ class RessourceBase(object):
 		if isinstance(response, dict):
 			self.add_link(response, 'stylesheet', self.abspath('styles.css'))
 			for _form in response.get('_forms', []):
-				form = ET.Element('form', **dict((p, _form[p]) for p in ('name', 'method', 'action', 'rel', 'enctype') if _form.get(p)))
+				form = ET.Element('form', **dict((p, _form[p]) for p in ('id', 'name', 'method', 'action', 'rel', 'enctype') if _form.get(p)))
 				for field in _form.get('fields', []):
 					name = field['name']
 					label = ET.Element('label', **{'for': name})
@@ -484,7 +484,7 @@ class Relations(Ressource):
 			'default-containers': 'list of default containers for the given object type',
 			'tree': 'list of tree content for providing a hierarchical navigation',
 			'policy-result': 'policy result by virtual policy object containing the values that the given object or container inherits',
-			'report-types': 'list of reports for the given object type',
+			'report': 'create a report',
 			'default-search': 'default search pattern/value for the given object property',
 			'next-free-ip': 'next IP configuration based on the given network object',
 			'property-choices': 'determine valid values for a given syntax class',
@@ -851,18 +851,6 @@ class ReportingBase(Ressource):
 		self.reports_cfg = udr.Config()
 
 
-class ReportTypes(ReportingBase):
-	"""GET udm/users/user/report-types (get report-types of users/*)"""
-
-	def get(self, object_type):
-		"""Returns a list of reports for the given object type"""
-		# i18n: translattion for univention-directory-reports
-		# _('PDF Document')
-		result = [{'id': name, 'label': _(name)} for name in sorted(self.reports_cfg.get_report_names(object_type))]
-		self.add_caching(public=True)
-		self.content_negotiation(result)
-
-
 class Report(ReportingBase):
 	"""GET udm/users/user/report/$report_type?dn=...&dn=... (create a report of users)"""
 
@@ -943,7 +931,7 @@ class DefaultValue(Ressource):
 		self.content_negotiation(result)
 
 
-class Objects(Ressource):
+class Objects(ReportingBase):
 
 	@tornado.gen.coroutine
 	def get(self, object_type):
@@ -973,19 +961,6 @@ class Objects(Ressource):
 		except (TypeError, ValueError):
 			items_per_page = None
 			page = None
-
-		form = self.add_form(result, None, 'GET', rel='search')
-		self.add_form_element(form, 'position', container or '')
-		self.add_form_element(form, 'property', objectProperty or '', element='select', options=[{'value': '', 'label': _('Defaults')}] + [{'value': prop['id'], 'label': prop['label']} for prop in module.properties(None) if prop.get('searchable')])  # TODO: type=select
-		self.add_form_element(form, 'propertyvalue', objectPropertyValue or '')
-		self.add_form_element(form, 'scope', scope, element='select', options=[{'value': 'sub'}, {'value': 'one'}, {'value': 'base'}, {'value': 'base+one'}])
-		self.add_form_element(form, 'hidden', '1', type='checkbox', checked=bool(hidden))
-		#self.add_form_element(form, 'fields', list(fields))
-		self.add_form_element(form, 'page', str(page or '1'), type='number')
-		self.add_form_element(form, 'pagesize', str(items_per_page or '0'), type='number')
-		self.add_form_element(form, 'by', by or '')
-		self.add_form_element(form, 'dir', direction if direction in ('ASC', 'DESC') else 'ASC', element='select', options=[{'value': 'ASC', 'label': _('Ascending')}, {'value': 'DESC', 'label': _('Descending')}])
-		self.add_form_element(form, '', _('Search'), type='submit')
 
 		if superordinate:
 			mod = get_module(superordinate, superordinate, self.ldap_connection)
@@ -1050,6 +1025,28 @@ class Objects(Ressource):
 			qs['page'] = [str(page + 1)]
 			self.add_link(result, 'next', '%s?%s' % (self.urljoin(''), urllib.urlencode(qs, True)), title=_('Next page'))
 
+		# i18n: translattion for univention-directory-reports
+		_('PDF Document')
+		_('CSV Report')
+		for i, report_type in enumerate(sorted(self.reports_cfg.get_report_names(object_type)), 1):
+			if i != 2:
+				continue  # There is a bug in chrome, so we cannot have form='report1 report2'. so, only 1 report is possible :-/
+			form = self.add_form(result, self.urljoin('report', quote(report_type)), 'POST', rel='udm/relation/report', name=report_type, id='report%d' % (i,))
+			self.add_form_element(form, '', _('Create %s report') % _(report_type), type='submit')
+
+		form = self.add_form(result, None, 'GET', rel='search')
+		self.add_form_element(form, 'position', container or '')
+		self.add_form_element(form, 'property', objectProperty or '', element='select', options=[{'value': '', 'label': _('Defaults')}] + [{'value': prop['id'], 'label': prop['label']} for prop in module.properties(None) if prop.get('searchable')])  # TODO: type=select
+		self.add_form_element(form, 'propertyvalue', objectPropertyValue or '')
+		self.add_form_element(form, 'scope', scope, element='select', options=[{'value': 'sub'}, {'value': 'one'}, {'value': 'base'}, {'value': 'base+one'}])
+		self.add_form_element(form, 'hidden', '1', type='checkbox', checked=bool(hidden))
+		#self.add_form_element(form, 'fields', list(fields))
+		self.add_form_element(form, 'page', str(page or '1'), type='number')
+		self.add_form_element(form, 'pagesize', str(items_per_page or '0'), type='number')
+		self.add_form_element(form, 'by', by or '')
+		self.add_form_element(form, 'dir', direction if direction in ('ASC', 'DESC') else 'ASC', element='select', options=[{'value': 'ASC', 'label': _('Ascending')}, {'value': 'DESC', 'label': _('Descending')}])
+		self.add_form_element(form, '', _('Search'), type='submit')
+
 		result['entries'] = entries  # TODO: is "entries" a good name? items, objects
 		self.add_caching(public=False)
 		self.content_negotiation(result)
@@ -1071,6 +1068,7 @@ class Objects(Ressource):
 					pre = ET.Element("pre")
 					pre.text = json.dumps(x, indent=4)
 					root.append(ET.Element("br"))
+					root.append(ET.Element('input', type='checkbox', name='dn', value=x['dn'], form=' '.join([report['id'] for report in response['_forms'] if report['rel'] == 'udm/relation/report'])))
 					root.append(a)
 					root.append(pre)
 					root.append(ET.Element("br"))
@@ -1164,7 +1162,6 @@ class Objects(Ressource):
 		self.add_link(result, 'udm/relation/default-containers', self.urljoin('default-containers'), title=_('Object type default containers'))
 		if module.has_tree:
 			self.add_link(result, 'udm/relation/tree', self.urljoin('tree'), title=_('Object type tree'))
-		self.add_link(result, 'udm/relation/report-types', self.urljoin('report-types'), title=_('Object type report types'))
 #		self.add_link(result, '', self.urljoin(''))
 		self.set_header('Allow', ', '.join(methods))
 		return result
@@ -1891,7 +1888,6 @@ class Application(tornado.web.Application):
 			(r"/udm/%s/templates" % (object_type,), Templates),
 			(r"/udm/%s/default-containers" % (object_type,), DefaultContainers),  # TODO: maybe rename conflicts with above except trailing slash
 			(r"/udm/%s/favicon.ico" % (object_type,), Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
-			(r"/udm/%s/report-types" % (object_type,), ReportTypes),
 			(r"/udm/%s/report/([^/]+)" % (object_type,), Report),
 			(r"/udm/%s/%s/properties/" % (object_type, dn), Properties),
 			(r"/udm/%s/%s/%s/" % (object_type, dn, policies_object_type), PolicyResult),
