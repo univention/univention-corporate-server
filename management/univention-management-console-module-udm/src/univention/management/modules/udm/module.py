@@ -225,7 +225,7 @@ class RessourceBase(object):
 		root = ET.Element("html")
 		head = ET.SubElement(root, "head")
 		titleelement = ET.SubElement(head, "title")
-		titleelement.text = 'FIXME: fallback'
+		titleelement.text = 'FIXME: fallback title'  # FIXME: set title
 		ET.SubElement(head, 'meta', content='text/html; charset=utf-8', **{'http-equiv': 'content-type'})
 		body = ET.SubElement(root, "body")
 		header = ET.SubElement(body, 'header')
@@ -242,7 +242,7 @@ class RessourceBase(object):
 			link = link.strip().lstrip('<').rstrip('>')
 			params = {}
 			if _params.strip():
-				params = dict((x.strip(), y.strip().strip('"')) for x, y in ((param.split('=', 1) + [''])[:2] for param in _params.split(';')))
+				params = dict((x.strip(), y.strip().strip('"').replace('\\"', '"').replace('\\\\', '\\')) for x, y in ((param.split('=', 1) + [''])[:2] for param in _params.split(';')))
 			ET.SubElement(head, "link", href=link, **params)
 			_links[params.get('rel')] = dict(params, href=link)
 			if params.get('rel') == 'self':
