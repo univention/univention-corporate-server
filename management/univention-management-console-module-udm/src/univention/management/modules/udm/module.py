@@ -480,7 +480,6 @@ class Relations(Ressource):
 			'children-types': 'list of object types which can be created underneath of the container or superordinate',
 			'properties': 'properties of the given object type',
 			'options': 'options specified for the given object type',
-			'default-containers': 'list of default containers for the given object type',
 			'tree': 'list of tree content for providing a hierarchical navigation',
 			'policy-result': 'policy result by virtual policy object containing the values that the given object or container inherits',
 			'report': 'create a report',
@@ -806,23 +805,6 @@ class Options(Ressource):
 		self.content_negotiation(result)
 
 
-class DefaultContainers(Ressource):
-	"""GET udm/users/user/containers (get default containers for users/user)"""
-
-	def get(self, object_type):
-		"""Returns the list of default containers for the given object
-		type. Therefor the python module and the default object in the
-		LDAP directory are searched.
-		"""
-		module = self.get_module(object_type)
-		containers = [{'id': x, 'label': ldap_dn2path(x)} for x in module.get_default_containers()]
-		containers.sort(cmp=lambda x, y: cmp(x['label'].lower(), y['label'].lower()))
-		result = {'containers': containers}
-		self.add_link(result, 'parent', self.urljoin('.'))
-		self.add_caching(public=True)
-		self.content_negotiation(result)
-
-
 class ReportingBase(Ressource):
 
 	def initialize(self):
@@ -1135,7 +1117,6 @@ class Objects(ReportingBase):
 		self.add_link(result, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
 		self.add_link(result, 'udm/relation/properties', self.urljoin('properties'), title=_('Object type properties'))
 		self.add_link(result, 'udm/relation/options', self.urljoin('options'), title=_('Object type options'))
-		self.add_link(result, 'udm/relation/default-containers', self.urljoin('default-containers'), title=_('Object type default containers'))
 		if module.has_tree:
 			self.add_link(result, 'udm/relation/tree', self.urljoin('tree'), title=_('Object type tree'))
 #		self.add_link(result, '', self.urljoin(''))
@@ -1434,14 +1415,14 @@ class ObjectAdd(Ressource):
 			self.add_form_element(form, '', _('Policy result'), type='submit')
 
 		form = self.add_form(result, action=self.urljoin('.'), method='POST')
-		self.add_form_element(form, 'position', '')  # TODO: replace with <select>
-		self.add_form_element(form, 'superordinate', '')  # TODO: replace with <select>
-		self.add_form_element(form, 'options', '')  # TODO: replace with <select>
-		self.add_form_element(form, 'policies', '')  # TODO: replace with <select>
+		self.add_form_element(form, 'position', '', element='select', options=sorted(({'value': x, 'label': ldap_dn2path(x)} for x in module.get_default_containers()), key=lambda x: x['label'].lower()))
 		if module.template:
 			template = UDM_Module(module.template, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 			templates = template.search(ucr.get('ldap/base'))
 			self.add_form_element(form, 'template', '', element='select', options=[{'value': obj.dn, 'label': obj[template.identifies]} for obj in templates])
+		self.add_form_element(form, 'superordinate', '')  # TODO: replace with <select>
+		self.add_form_element(form, 'options', '')  # TODO: replace with <select>
+		self.add_form_element(form, 'policies', '')  # TODO: replace with <select>
 		# FIXME: respect layout
 		for prop in result['properties']:
 			if prop['id'] in ('$dn$', '$options$'):
@@ -1449,8 +1430,7 @@ class ObjectAdd(Ressource):
 			self.add_form_element(form, prop['id'], '', label=prop.get('label', prop['id']), title=prop.get('description', ''))
 		self.add_form_element(form, '', _('Create'), type='submit')
 
-		# TODO: wizard
-		# TODO: select template
+		# TODO: wizard: first select position & template
 		self.add_caching(public=True)
 		self.content_negotiation(result)
 
@@ -1865,7 +1845,6 @@ class Application(tornado.web.Application):
 			(r"/udm/navigation/children-types/", SubObjectTypes),
 			(r"/udm/%s/%s/children-types/" % (object_type, dn), SubObjectTypes),
 			(r"/udm/%s/options" % (object_type,), Options),
-			(r"/udm/%s/default-containers" % (object_type,), DefaultContainers),  # TODO: maybe rename conflicts with above except trailing slash
 			(r"/udm/%s/favicon.ico" % (object_type,), Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
 			(r"/udm/%s/report/([^/]+)" % (object_type,), Report),
 			#(r"/udm/%s/%s/properties/" % (object_type, dn), Properties),  # TODO: only needed as choices for MultiObjectSelect anymore
