@@ -300,7 +300,10 @@ class RessourceBase(object):
 					form.append(element)
 					if field['element'] == 'select':
 						for option in field.get('options', []):
-							ET.SubElement(element, 'option', value=option['value']).text = option.get('label', option['value'])
+							kwargs = {}
+							if field['value'] == option['value'] or (isinstance(field['value'], list) and option['value'] in field['value']):
+								kwargs['selected'] = 'selected'
+							ET.SubElement(element, 'option', value=option['value'], **kwargs).text = option.get('label', option['value'])
 					if field.get('type') == 'checkbox' and field.get('checked'):
 						element.set('checked', 'checked')
 					form.append(ET.Element('br'))
@@ -894,7 +897,8 @@ class NextFreeIpAddress(Ressource):
 
 
 class DefaultValue(Ressource):
-	"""GET udm/users/user/properties/$property/default (get the default value for the specified property)"""
+	"""GET udm/users/user/properties/$property/default (get the default value for the specified property)
+	Returns the default search pattern/value for the given object property"""
 
 	def get(self, object_type, property_):
 		module = self.get_module(object_type)
@@ -1011,7 +1015,7 @@ class Objects(ReportingBase):
 		form = self.add_form(result, self.urljoin(''), 'GET', rel='search')
 		self.add_form_element(form, 'position', container or '')
 		self.add_form_element(form, 'property', objectProperty or '', element='select', options=[{'value': '', 'label': _('Defaults')}] + [{'value': prop['id'], 'label': prop['label']} for prop in module.properties(None) if prop.get('searchable')])
-		self.add_form_element(form, 'propertyvalue', objectPropertyValue or '')
+		self.add_form_element(form, 'propertyvalue', objectPropertyValue or (module.get_default_values(objectProperty) if objectProperty else '*'))
 		self.add_form_element(form, 'scope', scope, element='select', options=[{'value': 'sub'}, {'value': 'one'}, {'value': 'base'}, {'value': 'base+one'}])
 		self.add_form_element(form, 'hidden', '1', type='checkbox', checked=bool(hidden))
 		#self.add_form_element(form, 'fields', list(fields))
