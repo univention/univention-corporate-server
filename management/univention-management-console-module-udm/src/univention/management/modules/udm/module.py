@@ -1466,6 +1466,12 @@ class ObjectAdd(Ressource):
 		if 'add' not in module.operations:
 			raise NotFound(object_type)
 
+		self.add_link(result, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
+		self.add_link(result, 'udm/relation/object-modules', self.urljoin('../../'), title=_('All modules'))
+		self.add_link(result, 'udm/relation/object-module', self.urljoin('../'), title=self.get_parent_object_type(module).object_name_plural)
+		self.add_link(result, 'udm/relation/object-type', self.urljoin('.'), title=module.object_name)
+		self.add_link(result, 'self', self.urljoin(''), title=_('Add'))
+
 		module.load(force_reload=True)  # reload for instant extended attributes
 		result['layout'] = module.get_layout()
 		result['properties'] = module.get_properties()
