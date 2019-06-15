@@ -480,7 +480,6 @@ class Relations(Ressource):
 			'children-types': 'list of object types which can be created underneath of the container or superordinate',
 			'properties': 'properties of the given object type',
 			'options': 'options specified for the given object type',
-			'templates': 'list of template objects for the given object type',
 			'default-containers': 'list of default containers for the given object type',
 			'tree': 'list of tree content for providing a hierarchical navigation',
 			'policy-result': 'policy result by virtual policy object containing the values that the given object or container inherits',
@@ -807,27 +806,6 @@ class Options(Ressource):
 		self.content_negotiation(result)
 
 
-class Templates(Ressource):
-	"""GET udm/users/user/templates (get the list of templates of users/user object type)"""
-
-	def get(self, object_type):
-		"""Returns the list of template objects for the given object"""
-
-		module = self.get_module(object_type)
-		result = []
-		if module.template:
-			template = UDM_Module(module.template, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
-			objects = template.search(ucr.get('ldap/base'))
-			for obj in objects:
-				obj.open()
-				result.append({'id': obj.dn, 'label': obj[template.identifies]})
-
-		result = {'templates': result}
-		self.add_link(result, 'parent', self.urljoin('.'))
-		self.add_caching(public=False)
-		self.content_negotiation(result)
-
-
 class DefaultContainers(Ressource):
 	"""GET udm/users/user/containers (get default containers for users/user)"""
 
@@ -1061,7 +1039,7 @@ class Objects(ReportingBase):
 			for thing in response.get('errors', response.get('entries', [])):
 				if isinstance(thing, dict) and thing.get('uri'):
 					x = thing.copy()
-					a = ET.Element("a", href=x.pop('uri'), rel="udm/relation/object")
+					a = ET.Element("a", href=x.pop('uri'), rel="udm/relation/object item")
 					a.text = x.get('dn')
 					pre = ET.Element("pre")
 					pre.text = json.dumps(x, indent=4)
@@ -1157,7 +1135,6 @@ class Objects(ReportingBase):
 		self.add_link(result, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
 		self.add_link(result, 'udm/relation/properties', self.urljoin('properties'), title=_('Object type properties'))
 		self.add_link(result, 'udm/relation/options', self.urljoin('options'), title=_('Object type options'))
-		self.add_link(result, 'udm/relation/templates', self.urljoin('templates'), title=_('Object type templates'))
 		self.add_link(result, 'udm/relation/default-containers', self.urljoin('default-containers'), title=_('Object type default containers'))
 		if module.has_tree:
 			self.add_link(result, 'udm/relation/tree', self.urljoin('tree'), title=_('Object type tree'))
@@ -1461,6 +1438,10 @@ class ObjectAdd(Ressource):
 		self.add_form_element(form, 'superordinate', '')  # TODO: replace with <select>
 		self.add_form_element(form, 'options', '')  # TODO: replace with <select>
 		self.add_form_element(form, 'policies', '')  # TODO: replace with <select>
+		if module.template:
+			template = UDM_Module(module.template, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
+			templates = template.search(ucr.get('ldap/base'))
+			self.add_form_element(form, 'template', '', element='select', options=[{'value': obj.dn, 'label': obj[template.identifies]} for obj in templates])
 		# FIXME: respect layout
 		for prop in result['properties']:
 			if prop['id'] in ('$dn$', '$options$'):
@@ -1884,16 +1865,15 @@ class Application(tornado.web.Application):
 			(r"/udm/navigation/children-types/", SubObjectTypes),
 			(r"/udm/%s/%s/children-types/" % (object_type, dn), SubObjectTypes),
 			(r"/udm/%s/options" % (object_type,), Options),
-			(r"/udm/%s/templates" % (object_type,), Templates),
 			(r"/udm/%s/default-containers" % (object_type,), DefaultContainers),  # TODO: maybe rename conflicts with above except trailing slash
 			(r"/udm/%s/favicon.ico" % (object_type,), Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
 			(r"/udm/%s/report/([^/]+)" % (object_type,), Report),
-			(r"/udm/%s/%s/properties/" % (object_type, dn), Properties),
+			#(r"/udm/%s/%s/properties/" % (object_type, dn), Properties),  # TODO: only needed as choices for MultiObjectSelect anymore
 			(r"/udm/%s/%s/%s/" % (object_type, dn, policies_object_type), PolicyResult),
+			(r"/udm/%s/%s/" % (object_type, policies_object_type), PolicyResultContainer),
 			(r"/udm/%s/%s/properties/%s/choices" % (object_type, dn, property_), PropertyChoices),
 			(r"/udm/%s/%s/properties/photo.jpg" % (object_type, dn), UserPhoto),
 			(r"/udm/%s/properties/%s/default" % (object_type, property_), DefaultValue),
-			(r"/udm/%s/%s/" % (object_type, policies_object_type), PolicyResultContainer),
 			(r"/udm/%s/add/?" % (object_type,), ObjectAdd),
 			(r"/udm/%s/" % (object_type,), Objects),
 			(r"/udm/%s/%s" % (object_type, dn), Object),
