@@ -537,7 +537,7 @@ class Modules(Ressource):
 	def get(self):
 		result = {}
 		self.add_link(result, 'self', self.urljoin(''), title=_('All modules'))
-		for main_type, name in sorted(self.mapping.items()):
+		for main_type, name in sorted(self.mapping.items(), key=lambda x: 0 if x[0] == 'navigation' else x[0]):
 			title = _('All %s types') % (name,)
 			if '/' in name:
 				title = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).object_name_plural
@@ -577,7 +577,7 @@ class ObjectTypes(Ressource):
 		elif module and module.has_tree:
 			self.add_link(result, 'udm/relation/tree', self.urljoin('../', object_type, 'tree'))
 
-		if module and module.help_link or module.help_text:
+		if module and (module.help_link or module.help_text):
 			self.add_link(result, 'help', module.help_link or '', title=module.help_text or module.help_link)
 
 		if module_type == 'navigation':
