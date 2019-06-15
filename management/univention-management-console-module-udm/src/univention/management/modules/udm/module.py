@@ -288,7 +288,7 @@ class RessourceBase(object):
 		if isinstance(response, dict):
 			self.add_link(response, 'stylesheet', self.abspath('styles.css'))
 			for _form in response.get('_forms', []):
-				form = ET.Element('form', method=_form['method'], action=_form['action'] or '', rel=_form.get('rel', ''))
+				form = ET.Element('form', **dict((p, _form[p]) for p in ('name', 'method', 'action', 'rel', 'enctype') if _form.get(p)))
 				for field in _form.get('fields', []):
 					name = field['name']
 					label = ET.Element('label', **{'for': name})
@@ -345,26 +345,23 @@ class RessourceBase(object):
 		links.setdefault(relation, []).append(dict(kwargs, href=href))
 		self.add_header('Link', '<%s>; rel="%s"; name="%s"; title="%s"' % (href, quote_param(relation), quote_param(kwargs.get('name', '')), quote_param(kwargs.get('title', ''))))
 
-	def add_form(self, obj, action, method, relation=None, **kwargs):
+	def add_form(self, obj, action, method, **kwargs):
 		form = {
 			'action': action,
 			'method': method,
 		}
+		form.setdefault('enctype', 'application/x-www-form-urlencoded')
 		form.update(kwargs)
 		obj.setdefault('_forms', []).append(form)
 		return form
 
-	def add_form_element(self, form, name, value, label=None, type='text', relation=None, element='input', **kwargs):
+	def add_form_element(self, form, name, value, type='text', element='input', **kwargs):
 		field = {
 			'name': name,
 			'value': value,
 			'type': type,
 			'element': element,
 		}
-		if relation:
-			field['rel'] = relation
-		if label:
-			field['label'] = label
 		field.update(kwargs)
 		form.setdefault('fields', []).append(field)
 		return field
@@ -977,7 +974,7 @@ class Objects(Ressource):
 			items_per_page = None
 			page = None
 
-		form = self.add_form(result, None, 'GET', relation='search')
+		form = self.add_form(result, None, 'GET', rel='search')
 		self.add_form_element(form, 'position', container or '')
 		self.add_form_element(form, 'property', objectProperty or '', element='select', options=[{'value': '', 'label': _('Defaults')}] + [{'value': prop['id'], 'label': prop['label']} for prop in module.properties(None) if prop.get('searchable')])  # TODO: type=select
 		self.add_form_element(form, 'propertyvalue', objectPropertyValue or '')
@@ -1463,7 +1460,7 @@ class ObjectAdd(Ressource):
 			self.add_form_element(form, 'policy', '', label=policy['label'], title=policy['description'])  # TODO: value should be the currently set policy!
 			self.add_form_element(form, '', _('Policy result'), type='submit')
 
-		form = self.add_form(result, action=self.urljoin('.'), method='POST', relation='')
+		form = self.add_form(result, action=self.urljoin('.'), method='POST')
 		self.add_form_element(form, 'position', '')  # TODO: replace with <select>
 		self.add_form_element(form, 'superordinate', '')  # TODO: replace with <select>
 		self.add_form_element(form, 'options', '')  # TODO: replace with <select>
@@ -1514,13 +1511,13 @@ class ObjectEdit(Ressource):
 
 		if 'remove' in module.operations:
 			# TODO: add referring objects
-			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='DELETE', relation='')
+			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='DELETE')
 			self.add_form_element(form, 'cleanup', '1', type='checkbox', checked=True)
 			self.add_form_element(form, 'recursive', '1', type='checkbox', checked=True)
 			self.add_form_element(form, '', _('Remove'), type='submit')
 
 		if set(module.operations) & {'move', 'subtree_move'}:
-			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='PUT', relation='')
+			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='PUT')
 			self.add_form_element(form, 'position', self.ldap_connection.parentDn(obj.dn))  # TODO: replace with <select>
 			self.add_form_element(form, '', _('Move'), type='submit')
 
@@ -1534,7 +1531,7 @@ class ObjectEdit(Ressource):
 				self.add_form_element(form, '', _('Policy result'), type='submit')
 
 			# FIXME: respect layout
-			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='PUT', relation='')
+			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='PUT')
 			password_properties = module.password_properties
 			for key, value in encode_properties(obj.module, obj.info, self.ldap_connection):
 				input_type = 'input'
@@ -1728,11 +1725,11 @@ class License(Ressource):
 		self.add_link(license_data, 'udm/relation/license-request', self.urljoin('request'))
 		self.add_link(license_data, 'udm/relation/license-import', self.urljoin(''))
 
-		form = self.add_form(license_data, self.urljoin('request'), 'GET', relation='udm/relation/license-request')
+		form = self.add_form(license_data, self.urljoin('request'), 'GET', rel='udm/relation/license-request')
 		self.add_form_element(form, 'email', '', type='email', label=_('E-Mail address'))
 		self.add_form_element(form, '', _('Request new license'), type='submit')
 
-		form = self.add_form(license_data, '', 'POST', relation='udm/relation/license-import', enctype='multipart/form-data')
+		form = self.add_form(license_data, '', 'POST', rel='udm/relation/license-import', enctype='multipart/form-data')
 		self.add_form_element(form, 'license', '', type='file', label=_('License file (ldif format)'))
 		self.add_form_element(form, '', _('Import license'), type='submit')
 
