@@ -483,7 +483,6 @@ class Relations(Ressource):
 			'children-types': 'list of object types which can be created underneath of the container or superordinate',
 			'properties': 'properties of the given object type',
 			'options': 'options specified for the given object type',
-			'layout': 'layout information for the given object type',
 			'templates': 'list of template objects for the given object type',
 			'default-containers': 'list of default containers for the given object type',
 			'tree': 'list of tree content for providing a hierarchical navigation',
@@ -806,27 +805,6 @@ class Options(Ressource):
 		"""Returns the options specified for the given object type"""
 		result = {}
 		result['options'] = self.get_module(object_type).options.keys()
-		self.add_link(result, 'parent', self.urljoin('.'))
-		self.add_caching(public=True)
-		self.content_negotiation(result)
-
-
-class Layout(Ressource):
-	"""GET udm/users/user/$dn/layout (get layout of users/user object type)"""
-
-	def get(self, object_type, dn=None):
-		"""Returns the layout information for the given object type."""
-
-		module = self.get_module(object_type)
-		module.load(force_reload=True)  # reload for instant extended attributes
-
-		if object_type == 'users/self':
-			dn = None
-
-		if dn:
-			dn = unquote_dn(dn)
-		result = {}
-		result['layout'] = module.get_layout(dn)
 		self.add_link(result, 'parent', self.urljoin('.'))
 		self.add_caching(public=True)
 		self.content_negotiation(result)
@@ -1196,7 +1174,6 @@ class Objects(Ressource):
 		self.add_link(result, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
 		self.add_link(result, 'udm/relation/properties', self.urljoin('properties'), title=_('Object type properties'))
 		self.add_link(result, 'udm/relation/options', self.urljoin('options'), title=_('Object type options'))
-		self.add_link(result, 'udm/relation/layout', self.urljoin('layout'), title=_('Object type layout'))
 		self.add_link(result, 'udm/relation/templates', self.urljoin('templates'), title=_('Object type templates'))
 		self.add_link(result, 'udm/relation/default-containers', self.urljoin('default-containers'), title=_('Object type default containers'))
 		if module.has_tree:
@@ -1489,7 +1466,9 @@ class ObjectAdd(Ressource):
 		if 'add' not in module.operations:
 			raise NotFound(object_type)
 
-		self.add_link(result, 'udm/relation/layout', self.urljoin('layout'), title=_('Object type layout'))
+		module.load(force_reload=True)  # reload for instant extended attributes
+		result['layout'] = module.get_layout()
+
 		form = self.add_form(result, action=self.urljoin('.'), method='POST', relation='')
 		self.add_form_element(form, 'position', '')  # TODO: replace with <select>
 		self.add_form_element(form, 'superordinate', '')  # TODO: replace with <select>
@@ -1518,6 +1497,10 @@ class ObjectEdit(Ressource):
 		if module is None:
 			raise NotFound(object_type, dn)
 
+		result = {}
+		module.load(force_reload=True)  # reload for instant extended attributes
+		result['layout'] = module.get_layout(dn if object_type != 'users/self' else None)
+
 		obj = yield self.pool.submit(module.get, dn)
 		if not obj:
 			raise NotFound(object_type, dn)
@@ -1525,12 +1508,10 @@ class ObjectEdit(Ressource):
 		if object_type not in ('users/self', 'users/passwd') and not univention.admin.modules.recognize(object_type, obj.dn, obj.oldattr):
 			raise NotFound(object_type, dn)
 
-		result = {}
 		self.add_link(result, 'icon', self.urljoin('../favicon.ico'), type='image/x-icon')
 		self.add_link(result, 'udm/relation/object-modules', self.urljoin('../../../'), title=_('All modules'))
 		self.add_link(result, 'udm/relation/object-module', self.urljoin('../../'), title=self.get_parent_object_type(module).object_name_plural)
 		self.add_link(result, 'udm/relation/object-type', self.urljoin('../'), title=module.object_name)
-		self.add_link(result, 'udm/relation/layout', self.urljoin('layout'), title=_('Object type layout'))
 		self.add_link(result, 'parent', self.urljoin('..', quote_dn(obj.dn)), title=obj.dn)
 		self.add_link(result, 'self', self.urljoin(''), title=_('Modify'))
 		if 'remove' in module.operations:
@@ -1916,8 +1897,6 @@ class Application(tornado.web.Application):
 			(r"/udm/%s/%s" % (object_type, dn), Object),
 			# (r"/udm/%s/%s" % (object_type, uuid), ObjectByUiid),  # TODO: implement getting object by UUID
 			(r"/udm/%s/%s/edit/?" % (object_type, dn), ObjectEdit),
-			(r"/udm/%s/layout" % (object_type,), Layout),
-			(r"/udm/%s/%s/layout" % (object_type, dn), Layout),
 			(r"/udm/networks/network/%s/next-free-ip-address" % (dn,), NextFreeIpAddress),
 			(r"/udm/progress/([0-9]+)", Operations),
 			# TODO: meta info
