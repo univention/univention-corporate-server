@@ -474,6 +474,7 @@ class Relations(Ressource):
 			'icon': 'Refers to an icon representing the link\'s context.',
 		}
 		univention_relations = {
+			'': 'description of all relations',
 			'object': '',
 			'object-modules': 'list of available module categories',
 			'object-module': 'the module belonging to the current selected ressource',
@@ -491,6 +492,7 @@ class Relations(Ressource):
 			'object/move': 'move objects to a certain position',
 			'object/edit': 'modify this object, edit-form is preferable',
 			'user-photo': 'photo of the object',
+			'license': 'information about UCS license',
 			'license-request': 'Request a new UCS Core Edition license',
 			'license-check': 'Check if the license limits are reached',
 			'license-import': 'Import a new license in LDIF format',
@@ -503,9 +505,9 @@ class Relations(Ressource):
 				raise NotFound()
 		else:
 			for relation in iana_relations:
-				self.add_link(result, 'udm/relation', self.urljoin(relation), name=relation, title=relation)
+				self.add_link(result, 'udm/relation/', self.urljoin(relation), name=relation, title=relation)
 			for relation in univention_relations:
-				self.add_link(result, 'udm/relation', self.urljoin(relation), name='udm/relation/%s' % relation, title='udm/relation/%s' % relation)
+				self.add_link(result, 'udm/relation/', self.urljoin(relation), name='udm/relation/%s' % relation, title='udm/relation/%s' % relation)
 		self.content_negotiation(result)
 
 
@@ -543,9 +545,9 @@ class Modules(Ressource):
 				title = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).object_name_plural
 
 			self.add_link(result, 'udm/relation/object-types', self.urljoin(quote(main_type)) + '/', name='all' if main_type == 'navigation' else main_type, title=title)
-		self.add_link(result, 'udm/relation/', self.urljoin('license') + '/', name='license', title=_('UCS license'))
+		self.add_link(result, 'udm/relation/license', self.urljoin('license') + '/', name='license', title=_('UCS license'))
 		self.add_link(result, 'udm/relation/ldap-base', self.urljoin('ldap/base') + '/', title=_('LDAP base'))
-		self.add_link(result, 'udm/relation', self.urljoin('relation') + '/', name='relation', title=_('All link relations'))
+		self.add_link(result, 'udm/relation/', self.urljoin('relation') + '/', name='relation', title=_('All link relations'))
 		self.add_caching(public=True)
 		self.content_negotiation(result)
 
