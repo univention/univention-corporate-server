@@ -1460,7 +1460,6 @@ class ObjectAdd(Ressource):
 
 	@tornado.gen.coroutine
 	def get(self, object_type):
-		# FIXME: respect layout
 		result = {}
 		module = self.get_module(object_type)
 		if 'add' not in module.operations:
@@ -1468,13 +1467,15 @@ class ObjectAdd(Ressource):
 
 		module.load(force_reload=True)  # reload for instant extended attributes
 		result['layout'] = module.get_layout()
+		result['properties'] = module.get_properties()
 
 		form = self.add_form(result, action=self.urljoin('.'), method='POST', relation='')
 		self.add_form_element(form, 'position', '')  # TODO: replace with <select>
 		self.add_form_element(form, 'superordinate', '')  # TODO: replace with <select>
 		self.add_form_element(form, 'options', '')  # TODO: replace with <select>
 		self.add_form_element(form, 'policies', '')  # TODO: replace with <select>
-		for prop in module.get_properties():
+		# FIXME: respect layout
+		for prop in result['properties']:
 			if prop['id'] in ('$dn$', '$options$'):
 				continue
 			self.add_form_element(form, prop['id'], '', label=prop.get('label', prop['id']), title=prop.get('description', ''))
@@ -1491,15 +1492,17 @@ class ObjectEdit(Ressource):
 
 	@tornado.gen.coroutine
 	def get(self, object_type, dn):
-		# FIXME: respect layout
 		dn = unquote_dn(dn)
 		module = get_module(object_type, dn, self.ldap_connection)
 		if module is None:
 			raise NotFound(object_type, dn)
 
+		if not set(module.operations) & {'remove', 'move', 'subtree_move', 'edit'}:
+			# modification of this object type is not possible
+			raise NotFound(object_type, dn)
+
 		result = {}
 		module.load(force_reload=True)  # reload for instant extended attributes
-		result['layout'] = module.get_layout(dn if object_type != 'users/self' else None)
 
 		obj = yield self.pool.submit(module.get, dn)
 		if not obj:
@@ -1514,16 +1517,23 @@ class ObjectEdit(Ressource):
 		self.add_link(result, 'udm/relation/object-type', self.urljoin('../'), title=module.object_name)
 		self.add_link(result, 'parent', self.urljoin('..', quote_dn(obj.dn)), title=obj.dn)
 		self.add_link(result, 'self', self.urljoin(''), title=_('Modify'))
+
 		if 'remove' in module.operations:
+			# TODO: add referring objects
 			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='DELETE', relation='')
 			self.add_form_element(form, 'cleanup', '1', type='checkbox', checked=True)
 			self.add_form_element(form, 'recursive', '1', type='checkbox', checked=True)
 			self.add_form_element(form, '', _('Remove'), type='submit')
+
 		if set(module.operations) & {'move', 'subtree_move'}:
 			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='PUT', relation='')
 			self.add_form_element(form, 'position', self.ldap_connection.parentDn(obj.dn))  # TODO: replace with <select>
 			self.add_form_element(form, '', _('Move'), type='submit')
+
 		if 'edit' in module.operations:
+			result['layout'] = module.get_layout(dn if object_type != 'users/self' else None)
+			result['properties'] = module.get_properties(dn)
+			# FIXME: respect layout
 			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='PUT', relation='')
 			password_properties = module.password_properties
 			for key, value in encode_properties(obj.module, obj.info, self.ldap_connection):
@@ -1533,10 +1543,6 @@ class ObjectEdit(Ressource):
 					input_type = 'password'
 				self.add_form_element(form, key, value, type=input_type)
 			self.add_form_element(form, '', _('Modify'), type='submit')
-
-		if '_forms' not in result:
-			# modification of this object type is not possible
-			raise NotFound(object_type, dn)
 
 		self.add_caching(public=False)
 		self.content_negotiation(result)
