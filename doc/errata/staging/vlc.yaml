@@ -1,0 +1,30 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: vlc
+fix: 3.0.7-0+deb9u1
+desc: |
+ This update addresses the following issue:
+
+ * 3.0.7-0+deb9u1 (Sun, 09 Jun 2019 22:00:27 +0200) * New upstream bug fix
+   release. - Fix multiple integer overflows. - Fix multiple buffer overflows.
+   - Fix use-after-free issue. - Fix NULL pointer dereference. - Fix other
+   memory access bugs and infinite loops. * debian/patches: Removed, included
+   upstream.
+
+ * 3.0.7-0+deb9u1 (Sun, 09 Jun 2019 22:00:27 +0200) * New upstream bug fix
+   release. - Fix multiple integer overflows. - Fix multiple buffer overflows.
+   - Fix use-after-free issue. - Fix NULL pointer dereference. - Fix other
+   memory access bugs and infinite loops. * debian/patches: Removed, included
+   upstream.
+
+ * 3.0.7-0+deb9u1 (Sun, 09 Jun 2019 22:00:27 +0200) * New upstream bug fix
+   release. - Fix multiple integer overflows. - Fix multiple buffer overflows.
+   - Fix use-after-free issue. - Fix NULL pointer dereference. - Fix other
+   memory access bugs and infinite loops. * debian/patches: Removed, included
+   upstream.
+ * vlc (CVE-2019-5439)
+bug: [49658]
+cve:
+- CVE-2019-5439
