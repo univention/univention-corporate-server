@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -37,8 +37,14 @@
 import sys
 import requests
 from getpass import getpass
-import http.client
-http.client._MAXHEADERS = 1000
+
+if sys.version_info.major > 2:
+    import http.client
+    http.client._MAXHEADERS = 1000
+else:
+    import httplib
+    httplib._MAXHEADERS = 1000
+
 
 #def main():
 #    return
