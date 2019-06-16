@@ -1,9 +1,9 @@
-#!/usr/bin/make -f
+#!/bin/sh
 #
-# Univention Directory Manager
-#  rules file for the debian package
+# Univention Directory Manager UMC service
+#  postinst file
 #
-# Copyright 2011-2019 Univention GmbH
+# Copyright 2019 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,18 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-%:
-	dh $@ --with 'python_support' --with systemd
+#DEBHELPER#
 
-override_dh_auto_test:
-	ucslint
+a2ensite univention-management.conf
+service apache2 reload
 
-override_dh_auto_build:
-	dh-umc-module-build
-	dh_auto_build
-
-override_dh_auto_install:
-	univention-install-config-registry
-	univention-install-config-registry-info
-	dh-umc-module-install
-	dh_auto_install
+exit 0

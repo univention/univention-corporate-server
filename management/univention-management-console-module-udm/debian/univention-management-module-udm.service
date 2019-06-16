@@ -1,0 +1,19 @@
+[Unit]
+Description=Univention Directory Manager HTTP service
+After=network.target
+#ConditionPathExists=/var/www
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python2.7 -m univention.management.server
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+User=root
+Group=root
+#WorkingDirectory=/var/www
+StandardOutput=/var/log/univention/udm-http.log
+StandardError=/var/log/univention/udm-http.log
+#SystemCallFilter=@basic-io @io-event @network-io
+
+[Install]
+WantedBy=multi-user.target
