@@ -1465,7 +1465,11 @@ class UserPhoto(Ressource):
 		if not obj.has_property('jpegPhoto'):
 			raise NotFound(object_type, dn)
 
-		obj['jpegPhoto'] = self.request.files['jpegPhoto'][0]['body']
+		photo = self.request.files['jpegPhoto'][0]['body']
+		if len(photo) > 262144:
+			raise HTTPError('too large: maximum: 262144 bytes')
+		obj['jpegPhoto'] = photo.encode('base64')
+
 		yield self.pool.submit(obj.modify)
 
 		self.content_negotiation({})
