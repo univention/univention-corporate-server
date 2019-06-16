@@ -237,6 +237,7 @@ class RessourceBase(object):
 		links = ET.SubElement(nav, 'ul')
 		main = ET.SubElement(body, 'main')
 		_links = {}
+		navigation_relations = self.navigation()
 		for link in self._headers.get_list('Link'):
 			link, foo, _params = link.partition(';')
 			link = link.strip().lstrip('<').rstrip('>')
@@ -247,7 +248,9 @@ class RessourceBase(object):
 			_links[params.get('rel')] = dict(params, href=link)
 			if params.get('rel') == 'self':
 				titleelement.text = params.get('title') or link or 'FIXME:notitle'
-			if params.get('rel') in ('stylesheet', 'icon', 'self', 'parent', 'udm/relation/object-modules', 'udm/relation/object-module', 'udm/relation/object-type', 'udm/relation/object/remove', 'udm/relation/object/edit'):
+			if params.get('rel') in ('stylesheet', 'icon', 'self', 'parent', 'udm/relation/object/remove', 'udm/relation/object/edit'):
+				continue
+			if params.get('rel') in navigation_relations:
 				continue
 			if params.get('rel') in ('udm/relation/user-photo',):
 				ET.SubElement(nav, 'img', src=link, style='max-width: 200px')
@@ -262,7 +265,7 @@ class RessourceBase(object):
 			li = ET.SubElement(links, "li")
 			ET.SubElement(li, "a", href=link, **params).text = params.get('title', link) or link
 
-		for name in ('udm/relation/object-modules', 'udm/relation/object-module', 'udm/relation/object-type', 'parent', 'self'):
+		for name in navigation_relations:
 			params = _links.get(name)
 			if params:
 				ET.SubElement(topnav, 'a', **params).text = '›› %s' % (params.get('title') or params['href'],)
@@ -435,6 +438,9 @@ class RessourceBase(object):
 			return module
 		return UDM_Module(flavor, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 
+	def navigation(self):
+		return ('udm/relation/object-modules', 'udm/relation/object-module', 'udm/relation/object-type', 'parent', 'self')
+
 
 class Ressource(RessourceBase, RequestHandler):
 	pass
@@ -550,12 +556,15 @@ class Modules(Ressource):
 			if '/' in name:
 				title = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).object_name_plural
 
-			self.add_link(result, 'udm/relation/object-types', self.urljoin(quote(main_type)) + '/', name='all' if main_type == 'navigation' else main_type, title=title)
+			self.add_link(result, 'udm/relation/object-modules', self.urljoin(quote(main_type)) + '/', name='all' if main_type == 'navigation' else main_type, title=title)
 		self.add_link(result, 'udm/relation/license', self.urljoin('license') + '/', name='license', title=_('UCS license'))
 		self.add_link(result, 'udm/relation/ldap-base', self.urljoin('ldap/base') + '/', title=_('LDAP base'))
 		self.add_link(result, 'udm/relation/', self.urljoin('relation') + '/', name='relation', title=_('All link relations'))
 		self.add_caching(public=True)
 		self.content_negotiation(result)
+
+	def navigation(self):
+		return ['self']
 
 
 class ObjectTypes(Ressource):
@@ -1141,7 +1150,6 @@ class Objects(ReportingBase):
 		if module.help_link or module.help_text:
 			self.add_link(result, 'help', module.help_link or '', title=module.help_text or module.help_link)
 		self.add_link(result, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
-		self.add_link(result, 'udm/relation/options', self.urljoin('options'), title=_('Object type options'))
 		if module.has_tree:
 			self.add_link(result, 'udm/relation/tree', self.urljoin('tree'), title=_('Object type tree'))
 #		self.add_link(result, '', self.urljoin(''))
