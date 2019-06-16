@@ -152,10 +152,10 @@ class UDM(Client):
     def modules(self):
         # TODO: cache - needs server side support
         resp = self.make_request('get', self.uri, credentials=self)
-        prefix_modules = self.eval_response(resp)['_links']['/udm/relation/object-modules']
+        prefix_modules = self.eval_response(resp)['_links']['udm/relation/object-modules']
         for prefix_module in prefix_modules:
             resp = self.make_request('get', prefix_module['href'], credentials=self)
-            module_infos = self.eval_response(resp).get('_links', {}).get('/udm/relation/object-types', [])
+            module_infos = self.eval_response(resp).get('_links', {}).get('udm/relation/object-types', [])
             for module_info in module_infos:
                 yield Module(self, module_info['href'], module_info['name'], module_info['title'])
 
