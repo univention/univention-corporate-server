@@ -1453,6 +1453,21 @@ class UserPhoto(Ressource):
 
 	@tornado.gen.coroutine
 	def post(self, object_type, dn):
+		dn = unquote_dn(dn)
+		module = get_module(object_type, dn, self.ldap_connection)
+		if module is None:
+			raise NotFound(object_type, dn)
+
+		obj = yield self.pool.submit(module.get, dn)
+		if not obj:
+			raise NotFound(object_type, dn)
+
+		if not obj.has_property('jpegPhoto'):
+			raise NotFound(object_type, dn)
+
+		obj['jpegPhoto'] = self.request.files['jpegPhoto'][0]['body']
+		yield self.pool.submit(obj.modify)
+
 		self.content_negotiation({})
 
 
