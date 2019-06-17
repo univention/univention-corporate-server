@@ -232,10 +232,18 @@ class ShallowObject(Client):
 
 class Object(Client):
 
+	@property
+	def props(self):
+		return self.properties
+
+	@props.setter
+	def props(self, props):
+		self.properties = props
+
 	def __init__(self, module, dn, properties, options, policies, position, superordinate, uri, etag=None, last_modified=None, *args, **kwargs):
 		super(Object, self).__init__(module.client, *args, **kwargs)
 		self.dn = dn
-		self.props = properties
+		self.properties = properties
 		self.options = options
 		self.policies = policies
 		self.position = position
