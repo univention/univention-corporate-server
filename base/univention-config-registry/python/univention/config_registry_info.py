@@ -330,7 +330,7 @@ class ConfigRegistryInfo(object):
 				if os.path.isfile(cfgfile) and cfgfile.endswith(ConfigRegistryInfo.FILE_SUFFIX) and entry != ConfigRegistryInfo.CUSTOMIZED:
 					self.read_variables(cfgfile)
 			self.check_patterns()
-			if not registered_only:
+			if not registered_only and self.__configRegistry is not None:
 				for key, value in self.__configRegistry.items():
 					if key in self.variables:
 						continue
