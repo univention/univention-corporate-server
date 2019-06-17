@@ -31,6 +31,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import sys
 import requests
 from getpass import getpass
@@ -47,20 +52,49 @@ class UdmError(Exception):
 	pass
 
 
-class Client(object):
+class Session(object):
 
-	def __init__(self, language='en-US'):
+	def __init__(self, credentials, language='en-US'):
 		self.language = language
+		self.credentials = credentials
+		self.session = self.create_session()
+		self.default_headers = {
+			'Accept': 'application/json; q=1; text/html; q=0.2, */*; q=0.1',
+			'Accept-Language': self.language,
+		}
 
-	def make_request(self, method, uri, credentials, data=None, **headers):
-		print('{} {}'.format(method.upper(), uri))
-		if method in ('get', 'head'):
+	def create_session(self):
+		sess = requests.session()
+		sess.auth = (self.credentials.username, self.credentials.password)
+		try:
+			from cachecontrol import CacheControl
+		except ImportError:
+			#print('Cannot cache!')
+			pass
+		else:
+			sess = CacheControl(sess)
+		return sess
+
+	def get_method(self, method):
+		sess = self.session
+		return {
+			'GET': sess.get,
+			'POST': sess.post,
+			'PUT': sess.put,
+			'DELETE': sess.delete,
+			'PATCH': sess.patch,
+			'OPTIONS': sess.options,
+		}.get(method.upper(), sess.get)
+
+	def make_request(self, method, uri, data=None, **headers):
+		#print('{} {}'.format(method, uri))
+		if method in ('GET', 'HEAD'):
 			params = data
 			json = None
 		else:
 			params = None
 			json = data
-		return requests.request(method, uri, auth=(credentials.username, credentials.password), params=params, json=json, headers=dict({'Accept': 'application/json; q=1; text/html; q=0.2, */*; q=0.1', 'Accept-Language': self.language}, **headers))
+		return self.get_method(method)(uri, params=params, json=json, headers=dict(self.default_headers, **headers))
 
 	def eval_response(self, response):
 		if response.status_code >= 299:
@@ -80,6 +114,12 @@ class Client(object):
 		return response.json()
 
 
+class Client(object):
+
+	def __init__(self, client):
+		self.client = client
+
+
 class UDM(Client):
 
 	@classmethod
@@ -87,19 +127,19 @@ class UDM(Client):
 		return cls(uri, username, password)
 
 	def __init__(self, uri, username, password, *args, **kwargs):
-		super(UDM, self).__init__(*args, **kwargs)
 		self.uri = uri
 		self.username = username
 		self.password = password
 		self._api_version = None
+		super(UDM, self).__init__(Session(self), *args, **kwargs)
 
 	def modules(self):
 		# TODO: cache - needs server side support
-		resp = self.make_request('get', self.uri, credentials=self)
-		prefix_modules = self.eval_response(resp)['_links']['udm/relation/object-modules']
+		resp = self.client.make_request('GET', self.uri)
+		prefix_modules = self.client.eval_response(resp)['_links']['udm/relation/object-modules']
 		for prefix_module in prefix_modules:
-			resp = self.make_request('get', prefix_module['href'], credentials=self)
-			module_infos = self.eval_response(resp).get('_links', {}).get('udm/relation/object-types', [])
+			resp = self.client.make_request('GET', prefix_module['href'])
+			module_infos = self.client.eval_response(resp).get('_links', {}).get('udm/relation/object-types', [])
 			for module_info in module_infos:
 				yield Module(self, module_info['href'], module_info['name'], module_info['title'])
 
@@ -123,7 +163,7 @@ class UDM(Client):
 class Module(Client):
 
 	def __init__(self, udm, uri, name, title, *args, **kwargs):
-		super(Module, self).__init__(*args, **kwargs)
+		super(Module, self).__init__(udm.client, *args, **kwargs)
 		self.uri = uri
 		self.username = udm.username
 		self.password = udm.password
@@ -159,8 +199,8 @@ class Module(Client):
 		data['hidden'] = '1' if hidden else ''
 		if opened:
 			data['properties'] = '*'
-		resp = self.make_request('get', self.uri, credentials=self, data=data)
-		entries = self.eval_response(resp)['entries']
+		resp = self.client.make_request('GET', self.uri, data=data)
+		entries = self.client.eval_response(resp)['entries']
 		for entry in entries:
 			if opened:
 				yield Object(self, entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry['superordinate'], entry['uri'])  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
@@ -176,14 +216,14 @@ class Module(Client):
 class ShallowObject(Client):
 
 	def __init__(self, module, dn, uri, *args, **kwargs):
-		super(ShallowObject, self).__init__(*args, **kwargs)
+		super(ShallowObject, self).__init__(module.client, *args, **kwargs)
 		self.module = module
 		self.dn = dn
 		self.uri = uri
 
 	def open(self):
-		resp = self.make_request('get', self.uri, credentials=self.module)
-		entry = self.eval_response(resp)
+		resp = self.client.make_request('GET', self.uri)
+		entry = self.client.eval_response(resp)
 		return Object(self.module, entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry['superordinate'], entry['uri'], etag=resp.headers.get('Etag'), last_modified=resp.headers.get('Last-Modified'))
 
 	def __repr__(self):
@@ -193,7 +233,7 @@ class ShallowObject(Client):
 class Object(Client):
 
 	def __init__(self, module, dn, properties, options, policies, position, superordinate, uri, etag=None, last_modified=None, *args, **kwargs):
-		super(Object, self).__init__(*args, **kwargs)
+		super(Object, self).__init__(module.client, *args, **kwargs)
 		self.dn = dn
 		self.props = properties
 		self.options = options
@@ -219,7 +259,7 @@ class Object(Client):
 			return self._create()
 
 	def delete(self):
-		return self.make_request('delete', self.uri, credentials=self.module)
+		return self.client.make_request('DELETE', self.uri)
 
 	def _modify(self):
 		data = {
@@ -233,8 +273,8 @@ class Object(Client):
 			'If-Unmodified-Since': self.last_modified,
 			'If-None-Match': self.etag,
 		}.items() if value)
-		resp = self.make_request('put', self.uri, credentials=self.module, data=data, **headers)
-		entry = self.eval_response(resp)
+		resp = self.client.make_request('PUT', self.uri, data=data, **headers)
+		entry = self.client.eval_response(resp)
 		self.dn = entry['dn']
 		self.reload()
 
@@ -258,13 +298,13 @@ class Object(Client):
 			'position': self.position,
 			'superordinate': self.superordinate,
 		}
-		resp = self.make_request('post', self.module.uri, credentials=self.module, data=data)
+		resp = self.client.make_request('POST', self.module.uri, data=data)
 		if resp.status_code == 200:
 			uri = resp.headers['Location']
 			obj = ShallowObject(self.module, None, uri).open()
 			self._copy_from_obj(obj)
 		else:
-			self.eval_response(resp)
+			self.client.eval_response(resp)
 
 
 if __name__ == '__main__':
