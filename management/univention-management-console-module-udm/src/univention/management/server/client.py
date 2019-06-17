@@ -169,6 +169,13 @@ class Module(Client):
 		self.password = udm.password
 		self.name = name
 		self.title = title
+		self.relations = {}
+
+	def load_relations(self):
+		if self.relations:
+			return
+		resp = self.client.make_request('GET', self.uri)
+		self.relations = self.client.eval_response(resp).get('_links', {})
 
 	def __repr__(self):
 		return 'Module(uri={}, name={})'.format(self.uri, self.name)
@@ -199,7 +206,8 @@ class Module(Client):
 		data['hidden'] = '1' if hidden else ''
 		if opened:
 			data['properties'] = '*'
-		resp = self.client.make_request('GET', self.uri, data=data)
+		self.load_relations()
+		resp = self.client.make_request('GET', self.relations['search'][0]['href'], data=data)
 		entries = self.client.eval_response(resp)['entries']
 		for entry in entries:
 			if opened:
@@ -208,9 +216,20 @@ class Module(Client):
 				yield ShallowObject(self, entry['dn'], entry['uri'])
 
 	def create(self, properties, options, policies, position, superordinate=None):
-		obj = Object(self, None, properties, options, policies, position, superordinate, self.uri)
+		obj = self.create_template()
+		obj.options = options
+		obj.properties = properties
+		obj.policies = policies
+		obj.position = position
+		obj.superordinate = superordinate
 		obj.save()
 		return obj
+
+	def create_template(self):
+		self.load_relations()
+		resp = self.client.make_request('GET', self.relations['create-form'][0]['href'])
+		entry = self.client.eval_response(resp)['entry']
+		return Object(self, None, entry['properties'], entry['options'], entry['policies'], entry['position'], entry['superordinate'], self.uri)
 
 
 class ShallowObject(Client):
@@ -283,6 +302,9 @@ class Object(Client):
 		}.items() if value)
 		resp = self.client.make_request('PUT', self.uri, data=data, **headers)
 		entry = self.client.eval_response(resp)
+		if resp.status_code == 201:  # move()
+			resp = self.client.make_request('GET', resp.headers['Location'])
+			entry = self.client.eval_response(resp)
 		self.dn = entry['dn']
 		self.reload()
 
@@ -307,7 +329,7 @@ class Object(Client):
 			'superordinate': self.superordinate,
 		}
 		resp = self.client.make_request('POST', self.module.uri, data=data)
-		if resp.status_code == 200:
+		if resp.status_code in (200, 201):
 			uri = resp.headers['Location']
 			obj = ShallowObject(self.module, None, uri).open()
 			self._copy_from_obj(obj)
