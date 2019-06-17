@@ -35,6 +35,7 @@
 
 from sys import maxsize
 import re
+from functools import wraps
 from backend import ConfigRegistry
 import six
 if six.PY3:
@@ -67,6 +68,7 @@ def forgiving(translation=None):
 	def decorator(func):
 		"""Wrap function and translate exceptions."""
 
+		@wraps(func)
 		def inner(self, *args, **kwargs):
 			"""Run function and translate exceptions."""
 			try:
@@ -80,9 +82,7 @@ def forgiving(translation=None):
 				if best:
 					return translation[best]
 				raise
-		inner.__name__ = func.__name__  # pylint: disable-msg=W0621,W0622
-		inner.__doc__ = func.__doc__  # pylint: disable-msg=W0621,W0622
-		inner.__dict__.update(func.__dict__)
+
 		return inner
 
 	return decorator
