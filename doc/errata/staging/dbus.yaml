@@ -6,9 +6,7 @@ src: dbus
 fix: 1.10.28-0+deb9u1
 desc: |
  This update addresses the following issue:
- * dbus before 1.10.28, 1.12.x before 1.12.16, and 1.13.x before 1.13.12, as
-   used in DBusServer in Canonical Upstart in Ubuntu 14.04 (and in some, less
-   common, uses of dbus-daemon), allows cookie spoofing because of symlink
+ * dbus as used in DBusServer allows cookie spoofing because of symlink
    mishandling in the reference implementation of DBUS_COOKIE_SHA1 in the
    libdbus library. (This only affects the DBUS_COOKIE_SHA1 authentication
    mechanism.) A malicious client with write access to its own home directory
