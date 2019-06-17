@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-directory-manager-modules
-fix: 14.0.12-39A~4.4.0.201906131735
+fix: 14.0.12-41A~4.4.0.201906131812
 desc: |
  This update addresses the following issues:
  * It is now possible to specifiy ldap server controls
