@@ -61,7 +61,7 @@ def install_categories(info, package):
 	dest = os.path.join(dest_path, package + ucr_info.ConfigRegistryInfo.FILE_SUFFIX)
 
 	doIt('install', '-m', '755', '-d', dest_path)
-	doIt('install', '-m', '644', source, dest)
+	doIt('install', '-m', '644', '-p', source, dest)
 
 
 def install_variables(info, package):
@@ -87,7 +87,7 @@ def install_variables(info, package):
 	dest = os.path.join(dest_path, package + ucr_info.ConfigRegistryInfo.FILE_SUFFIX)
 
 	doIt('install', '-m', '755', '-d', dest_path)
-	doIt('install', '-m', '644', source, dest)
+	doIt('install', '-m', '644', '-p', source, dest)
 
 
 def main():

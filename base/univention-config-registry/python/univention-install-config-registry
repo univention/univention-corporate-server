@@ -135,11 +135,11 @@ def do_package(package):
 	f_ucr.close()
 
 	doIt('install', '-d', destDir('', package, 'info'))
-	doIt('install', '-m644', n_ucr, destPath(package + '.info', package, 'info'))
+	doIt('install', '-m644', '-p', n_ucr, destPath(package + '.info', package, 'info'))
 	mapping_file = extFile(package, 'univention-config-registry-mapping')
 	if os.path.exists(mapping_file):
 		doIt('install', '-d', destDir('', package, 'mapping'))
-		doIt('install', '-m644', mapping_file, destPath(package + '.univention-config-registry-mapping', package, 'mapping'))
+		doIt('install', '-m644', '-p', mapping_file, destPath(package + '.univention-config-registry-mapping', package, 'mapping'))
 
 	data = {
 		'pkg': quote(package),

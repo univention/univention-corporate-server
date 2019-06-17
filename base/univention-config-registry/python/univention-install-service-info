@@ -61,7 +61,7 @@ def install_services(info, package):
 	dest = os.path.join(dest_path, package + us_info.ServiceInfo.FILE_SUFFIX)
 
 	doIt('install', '-m', '755', '-d', dest_path)
-	doIt('install', '-m', '644', source, dest)
+	doIt('install', '-m', '644', '-p', source, dest)
 
 
 def main():
