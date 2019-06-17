@@ -248,7 +248,7 @@ class RessourceBase(object):
 			_links[params.get('rel')] = dict(params, href=link)
 			if params.get('rel') == 'self':
 				titleelement.text = params.get('title') or link or 'FIXME:notitle'
-			if params.get('rel') in ('stylesheet', 'icon', 'self', 'parent', 'udm/relation/object/remove', 'udm/relation/object/edit'):
+			if params.get('rel') in ('stylesheet', 'icon', 'self', 'up', 'udm/relation/object/remove', 'udm/relation/object/edit'):
 				continue
 			if params.get('rel') in navigation_relations:
 				continue
@@ -439,7 +439,7 @@ class RessourceBase(object):
 		return UDM_Module(flavor, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 
 	def navigation(self):
-		return ('udm/relation/object-modules', 'udm/relation/object-module', 'udm/relation/object-type', 'parent', 'self')
+		return ('udm/relation/object-modules', 'udm/relation/object-module', 'udm/relation/object-type', 'up', 'self')
 
 
 class Ressource(RessourceBase, RequestHandler):
@@ -585,7 +585,7 @@ class ObjectTypes(Ressource):
 
 		result = {'entries': [], }
 
-		self.add_link(result, 'parent', self.urljoin('../'), title=_('All modules'))
+		self.add_link(result, 'up', self.urljoin('../'), title=_('All modules'))
 		self.add_link(result, 'self', self.urljoin(''), title=title)
 		if module_type == 'navigation':
 			self.add_link(result, 'udm/relation/tree', self.abspath('container/dc/tree'))
@@ -819,7 +819,7 @@ class Properties(Ressource):
 		module = self.get_module(object_type)
 		module.load(force_reload=True)  # reload for instant extended attributes
 
-		self.add_link(result, 'parent', self.urljoin('.'))
+		self.add_link(result, 'up', self.urljoin('.'))
 		properties = module.get_properties(dn)
 		searchable = self.get_query_argument('searchable', False)
 		if searchable:
@@ -1142,7 +1142,7 @@ class Objects(ReportingBase):
 		parent = self.get_parent_object_type(module)
 		methods = ['GET', 'OPTIONS']
 		self.add_link(result, 'udm/relation/object-modules', self.urljoin('../../'), title=_('All modules'))
-		self.add_link(result, 'parent', self.urljoin('../'), title=parent.object_name_plural)
+		self.add_link(result, 'up', self.urljoin('../'), title=parent.object_name_plural)
 		self.add_link(result, 'self', self.urljoin(''), title=module.object_name_plural)
 		if 'search' in module.operations:
 			self.add_link(result, 'search', self.urljoin(''), title=_('Search for %s') % (module.object_name_plural,))
@@ -1217,7 +1217,7 @@ class Object(Ressource):
 		self.add_link(props, 'udm/relation/object-modules', self.urljoin('../../'), title=_('All modules'))
 		self.add_link(props, 'udm/relation/object-module', self.urljoin('../'), title=self.get_parent_object_type(module).object_name_plural)
 		#self.add_link(props, 'udm/relation/object-types', self.urljoin('../'))
-		self.add_link(props, 'parent', self.urljoin('x/../'), name=module.name, title=module.object_name)
+		self.add_link(props, 'up', self.urljoin('x/../'), name=module.name, title=module.object_name)
 		self.add_link(props, 'self', self.urljoin(''), title=obj.dn)
 		self.add_link(props, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
 		self.add_link(props, 'udm/relation/object/remove', self.urljoin(''), method='DELETE')
@@ -1572,7 +1572,7 @@ class ObjectEdit(Ressource):
 		self.add_link(result, 'udm/relation/object-modules', self.urljoin('../../../'), title=_('All modules'))
 		self.add_link(result, 'udm/relation/object-module', self.urljoin('../../'), title=self.get_parent_object_type(module).object_name_plural)
 		self.add_link(result, 'udm/relation/object-type', self.urljoin('../'), title=module.object_name)
-		self.add_link(result, 'parent', self.urljoin('..', quote_dn(obj.dn)), title=obj.dn)
+		self.add_link(result, 'up', self.urljoin('..', quote_dn(obj.dn)), title=obj.dn)
 		self.add_link(result, 'self', self.urljoin(''), title=_('Modify'))
 
 		if 'remove' in module.operations:
