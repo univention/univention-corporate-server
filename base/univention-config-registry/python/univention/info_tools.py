@@ -31,10 +31,8 @@
 # <http://www.gnu.org/licenses/>.
 
 import re
-try:
-	import ConfigParser as configparser
-except ImportError:
-	import configparser
+import six
+from six.moves import configparser
 
 # default locale
 _locale = 'de'
@@ -161,7 +159,10 @@ class LocalizedDictionary(dict):
 class UnicodeConfig(configparser.ConfigParser):
 
 	def __init__(self):
-		configparser.ConfigParser.__init__(self)
+		if six.PY3:
+			configparser.ConfigParser.__init__(self, strict=False, interpolation=None)
+		else:
+			configparser.ConfigParser.__init__(self)
 
 	def write(self, fp):
 		"""Write an .ini-format representation of the configuration state."""
