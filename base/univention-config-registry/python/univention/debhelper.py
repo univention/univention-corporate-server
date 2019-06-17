@@ -2,7 +2,6 @@
 #
 # Univention Configuration Registry
 """Debhelper compatible routines."""
-from __future__ import print_function
 #
 # Copyright 2010-2019 Univention GmbH
 #
@@ -30,7 +29,7 @@ from __future__ import print_function
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-
+from __future__ import print_function
 import os
 import subprocess
 
@@ -38,6 +37,8 @@ import subprocess
 def doIt(*argv):
 	"""
 	Execute argv and wait.
+
+	:param args: List of command and arguments.
 
 	>>> doIt('true')
 	0

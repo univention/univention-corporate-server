@@ -3,7 +3,6 @@
 #
 # Univention Configuration Registry
 """Install config registry script."""
-from __future__ import print_function
 #
 # Copyright 2004-2019 Univention GmbH
 #
@@ -31,7 +30,7 @@ from __future__ import print_function
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-
+from __future__ import print_function
 import os
 import sys
 import univention.config_registry
@@ -136,11 +135,11 @@ def do_package(package):
 	f_ucr.close()
 
 	doIt('install', '-d', destDir('', package, 'info'))
-	doIt('install', '-m644', n_ucr, destPath(package + '.info', package, 'info'))
+	doIt('install', '-m644', '-p', n_ucr, destPath(package + '.info', package, 'info'))
 	mapping_file = extFile(package, 'univention-config-registry-mapping')
 	if os.path.exists(mapping_file):
 		doIt('install', '-d', destDir('', package, 'mapping'))
-		doIt('install', '-m644', mapping_file, destPath(package + '.univention-config-registry-mapping', package, 'mapping'))
+		doIt('install', '-m644', '-p', mapping_file, destPath(package + '.univention-config-registry-mapping', package, 'mapping'))
 
 	data = {
 		'pkg': quote(package),
@@ -195,9 +194,10 @@ The modules from conffiles/* go to /etc/univention/templates/modules/.
 The mapping files debian/*.univention-config-registry-mapping go to /etc/univention/templates/mapping/.
 	'''
 	parser = OptionParser(usage=usage, epilog=epilog)
-	parser.add_option('-v', '--verbose',
-			dest='verbose', action='store_true',
-			help='Verbose mode: show all commands that modify the package build directory.')
+	parser.add_option(
+		'-v', '--verbose',
+		dest='verbose', action='store_true',
+		help='Verbose mode: show all commands that modify the package build directory.')
 	options, args = parser.parse_args()
 	if options.verbose:
 		os.environ['DH_VERBOSE'] = '1'

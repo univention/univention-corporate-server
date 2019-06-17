@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 #
 """Univention Configuration Registry helper functions."""
-from __future__ import print_function
 #  main configuration registry classes
 #
 # Copyright 2004-2019 Univention GmbH
@@ -30,6 +29,15 @@ from __future__ import print_function
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+from __future__ import print_function
+import sys
+import os
+import re
+import string  # pylint: disable-msg=W0402
+try:
+	from typing import Dict, IO, List, Text  # noqa F401
+except ImportError:
+	pass
 
 __all__ = [
 	'replace_dict', 'replace_umlaut', 'directory_files',
@@ -37,26 +45,27 @@ __all__ = [
 	'key_shell_escape', 'validate_key', 'INVALID_KEY_CHARS',
 ]
 
-import sys
-import os
-import re
-import string  # pylint: disable-msg=W0402
-
 
 def replace_dict(line, dictionary):
-	'''Map any character from line to its value from dictionary.
+	# type: (Text, Dict[Text, str]) -> Text
+	"""
+	Map any character from line to its value from dictionary.
+
 	>>> replace_dict('kernel', {'e': 'E', 'k': '', 'n': 'pp'})
 	'ErppEl'
-	'''
+	"""
 	return ''.join((dictionary.get(_, _) for _ in line))
 
 
 def replace_umlaut(line):
-	u"""Replace german umlauts.
+	# type: (Text) -> Text
+	u"""
+	Replace german umlauts.
+
 	>>> replace_umlaut(u'überschrieben')
 	u'ueberschrieben'
 	"""
-	return replace_dict(line, replace_umlaut.UMLAUTS)  # pylint: disable-msg=E1101
+	return replace_dict(line, UMLAUTS)  # pylint: disable-msg=E1101
 
 
 try:
@@ -64,8 +73,14 @@ try:
 except ImportError:
 	_safechars = frozenset(string.ascii_letters + string.digits + '@%_-+=:,./')
 
-	def escape_value(text):
-		"""Return a shell-escaped version of the file string."""
+	def escape_value(text):  # type: ignore
+		# type: (str) -> str
+		"""
+		Return a shell-escaped version of the file string.
+
+		:param text: Shell command argument.
+		:returns: Escaped argument string.
+		"""
 		for c in text:
 			if c not in _safechars:
 				break
@@ -78,7 +93,7 @@ except ImportError:
 		return "'" + text.replace("'", "'\"'\"'") + "'"
 
 
-replace_umlaut.UMLAUTS = {  # pylint: disable-msg=W0612
+UMLAUTS = {  # type: ignore # pylint: disable-msg=W0612
 	u'Ä': 'Ae',
 	u'ä': 'ae',
 	u'Ö': 'Oe',
@@ -90,32 +105,45 @@ replace_umlaut.UMLAUTS = {  # pylint: disable-msg=W0612
 
 
 def key_shell_escape(line):
-	'''Escape variable name by substituting shell invalid characters by '_'.'''
+	# type: (str) -> str
+	"""
+	Escape variable name by substituting shell invalid characters by '_'.
+
+	:param line: UCR variable name.
+	:returns: substitued variable name
+	"""
 	if not line:
 		raise ValueError('got empty line')
 	new_line = []
 	if line[0] in string.digits:
 		new_line.append('_')
 	for letter in line:
-		if letter in key_shell_escape.VALID_CHARS:  # pylint: disable-msg=E1101
+		if letter in VALID_CHARS:  # pylint: disable-msg=E1101
 			new_line.append(letter)
 		else:
 			new_line.append('_')
+
 	return ''.join(new_line)
 
 
-key_shell_escape.VALID_CHARS = (  # pylint: disable-msg=W0612
+VALID_CHARS = (  # type: ignore # pylint: disable-msg=W0612
 	string.ascii_letters + string.digits + '_')
 
 
 def validate_key(key, out=sys.stderr):
-	"""Check if key consists of only shell valid characters."""
+	# type: (Text, IO) -> bool
+	"""
+	Check if key consists of only shell valid characters.
+
+	:param key: UCR variable name to check.
+	:param out: Output stream where error message is printed to.
+	:returns: `True` if the name is valid, `False` otherwise.
+	"""
 	old = key
 	key = replace_umlaut(key)
 
 	if old != key:
-		print('Please fix invalid umlaut in config variable key "%s" to %s.' % \
-			(old, key), file=out)
+		print('Please fix invalid umlaut in config variable key "%s" to %s.' % (old, key), file=out)
 		return False
 
 	if len(key) > 0:
@@ -126,8 +154,7 @@ def validate_key(key, out=sys.stderr):
 
 		if not match:
 			return True
-		print('Please fix invalid character "%s" in config variable key "%s".' % \
-			(match.group(), key), file=out)
+		print('Please fix invalid character "%s" in config variable key "%s".' % (match.group(), key), file=out)
 	return False
 
 
@@ -135,7 +162,13 @@ INVALID_KEY_CHARS = re.compile('[][\r\n!"#$%&\'()+,;<=>?\\\\`{}§]')
 
 
 def directory_files(directory):
-	"""Return a list of all files below the given directory."""
+	# type: (str) -> List[str]
+	"""
+	Return a list of all files below the given directory.
+
+	:param directory: Base directory path.
+	:returns: List of absolute file names.
+	"""
 	result = []
 	for dirpath, _dirnames, filenames in os.walk(directory):
 		for filename in filenames:

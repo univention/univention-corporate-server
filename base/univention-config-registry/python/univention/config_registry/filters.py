@@ -31,33 +31,23 @@
 # <http://www.gnu.org/licenses/>.
 
 from univention.config_registry.misc import key_shell_escape, escape_value
+try:
+	from typing import Any, Iterable  # noqa F401
+except ImportError:
+	pass
 
-__all__ = ['Output', 'filter_shell', 'filter_keys_only', 'filter_sort']
-
-
-class Output(object):
-
-	"""Output buffer for applying filter."""
-
-	def __init__(self):
-		self.text = []
-
-	def write(self, line):
-		"""Append singe line."""
-		if line and line.strip():
-			self.text.append(line)
-
-	def flush(self):
-		pass
-
-	def writelines(self, lines):
-		"""Append multiple lines."""
-		for line in lines:
-			self.text.append(line)
+__all__ = ['filter_shell', 'filter_keys_only', 'filter_sort']
 
 
 def filter_shell(args, text):  # pylint: disable-msg=W0613
-	"""Filter output for shell: escape keys."""
+	# type: (Any, Iterable[str]) -> Iterable[str]
+	"""
+	Filter output for shell: escape keys.
+
+	:param args: UNUSED.
+	:param text: Text as list of lines.
+	:returns: Filteres list of lines.
+	"""
 	out = []
 	for line in text:
 		try:
@@ -70,7 +60,14 @@ def filter_shell(args, text):  # pylint: disable-msg=W0613
 
 
 def filter_keys_only(args, text):  # pylint: disable-msg=W0613
-	"""Filter output: strip values."""
+	# type: (Any, Iterable[str]) -> Iterable[str]
+	"""
+	Filter output: strip values.
+
+	:param args: UNUSED.
+	:param text: Text as list of lines.
+	:returns: Filteres list of lines.
+	"""
 	out = []
 	for line in text:
 		out.append(line.split(': ', 1)[0])
@@ -78,9 +75,15 @@ def filter_keys_only(args, text):  # pylint: disable-msg=W0613
 
 
 def filter_sort(args, text):  # pylint: disable-msg=W0613
-	"""Filter output: sort by key."""
-	text.sort()
-	return text
+	# type: (Any, Iterable[str]) -> Iterable[str]
+	"""
+	Filter output: sort by key.
+
+	:param args: UNUSED.
+	:param text: Text as list of lines.
+	:returns: Filteres list of lines.
+	"""
+	return sorted(text)
 
 
 # vim:set sw=4 ts=4 noet:

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 #
 """Univention Configuration Registry backend for data storage."""
-from __future__ import print_function
 #  main configuration registry classes
 #
 # Copyright 2004-2019 Univention GmbH
@@ -30,7 +29,7 @@ from __future__ import print_function
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-
+from __future__ import print_function
 import sys
 import os
 import fcntl
@@ -38,20 +37,31 @@ import re
 import errno
 import time
 from collections import MutableMapping
+import six
+try:
+	from typing import overload, Any, Dict, IO, Iterator, List, NoReturn, Optional, Set, Tuple, Type, TypeVar, Union  # noqa F401
+	from types import TracebackType  # noqa
+	_VT = TypeVar('_VT')
+except ImportError:
+	def overload(f):
+		pass
 
-__all__ = ['StrictModeException', 'exception_occured',
-		'SCOPE', 'ConfigRegistry']
-
+__all__ = ['StrictModeException', 'exception_occured', 'SCOPE', 'ConfigRegistry']
+MYPY = False
 INVALID_VALUE_CHARS = '\r\n'
 
 
 class StrictModeException(Exception):
-
 	"""Attempt to store non-UTF-8 characters in strict UTF-8 mode."""
 
 
 def exception_occured(out=sys.stderr):
-	"""Print exception message and exit."""
+	# type: (IO) -> NoReturn
+	"""
+	Print exception message and exit.
+
+	:param out: Output stream for message.
+	"""
 	print('E: your request could not be fulfilled', file=out)
 	print('try `univention-config-registry --help` for more information', file=out)
 	sys.exit(1)
@@ -60,13 +70,22 @@ def exception_occured(out=sys.stderr):
 SCOPE = ['normal', 'ldap', 'schedule', 'forced', 'custom']
 
 
-class ConfigRegistry(MutableMapping):
+if MYPY:
+	MM = MutableMapping[str, str]
+else:
+	MM = MutableMapping
 
+
+class ConfigRegistry(MM):
 	"""
 	Merged persistent value store.
 	This is a merged view of several sub-registries.
+
+	:param filename: File name for text database file.
+	:param write_registry: The UCR level used for writing.
 	"""
-	NORMAL, LDAP, SCHEDULE, FORCED, CUSTOM, MAX = range(6)
+	NORMAL, LDAP, SCHEDULE, FORCED, CUSTOM = range(5)
+	LAYER_PRIORITIES = (FORCED, SCHEDULE, LDAP, NORMAL, CUSTOM)
 	PREFIX = '/etc/univention'
 	BASES = {
 		NORMAL: 'base.conf',
@@ -76,14 +95,16 @@ class ConfigRegistry(MutableMapping):
 	}
 
 	def __init__(self, filename=None, write_registry=NORMAL):
+		# type: (str, int) -> None
 		super(ConfigRegistry, self).__init__()
 		self.file = os.getenv('UNIVENTION_BASECONF') or filename or None
 		if self.file:
 			self.scope = ConfigRegistry.CUSTOM
 		else:
 			self.scope = write_registry
-		self._registry = {}
-		for reg in range(ConfigRegistry.MAX):
+
+		self._registry = {}  # type: Dict[int, Union[_ConfigRegistry, Dict[str, str]]]
+		for reg in self.LAYER_PRIORITIES:
 			if self.file and reg != ConfigRegistry.CUSTOM:
 				self._registry[reg] = {}
 			elif not self.file and reg == ConfigRegistry.CUSTOM:
@@ -92,42 +113,62 @@ class ConfigRegistry(MutableMapping):
 				self._registry[reg] = self._create_registry(reg)
 
 	def _create_registry(self, reg):
-		"""Create internal sub registry."""
+		# type: (int) -> _ConfigRegistry
+		"""
+		Create internal sub registry.
+
+		:param reg: UCR level.
+		:returns: UCR instance.
+		"""
 		if reg == ConfigRegistry.CUSTOM:
 			filename = self.file
 		else:
-			filename = os.path.join(ConfigRegistry.PREFIX,
-				ConfigRegistry.BASES[reg])
+			filename = os.path.join(ConfigRegistry.PREFIX, ConfigRegistry.BASES[reg])
 		return _ConfigRegistry(filename=filename)
 
 	def load(self):
+		# type: () -> None
 		"""Load registry from file."""
 		for reg in self._registry.values():
 			if isinstance(reg, _ConfigRegistry):
 				reg.load()
+
+		if six.PY3:
+			return  # Python 3 uses Unicode internally and uses UTF-8 for serialization; no need to check it.
+
 		strict = self.is_true('ucr/encoding/strict')
 		for reg in self._registry.values():
 			if isinstance(reg, _ConfigRegistry):
 				reg.strict_encoding = strict
 
 	def save(self):
+		# type: () -> None
 		"""Save registry to file."""
 		registry = self._registry[self.scope]
-		registry.save()
+		if isinstance(registry, _ConfigRegistry):
+			registry.save()
 
 	def lock(self):
+		# type: () -> None
 		"""Lock registry file."""
 		registry = self._registry[self.scope]
-		registry.lock()
+		if isinstance(registry, _ConfigRegistry):
+			registry.lock()
 
 	def unlock(self):
+		# type: () -> None
 		"""Un-lock registry file."""
 		registry = self._registry[self.scope]
-		registry.unlock()
+		if isinstance(registry, _ConfigRegistry):
+			registry.unlock()
 
 	def __enter__(self):
+		# type: () -> ConfigRegistry
 		"""
 		Lock Config Registry for read-modify-write cycle.
+
+		:returns: The locked registry.
+
 		> with ConfigRegistry() as ucr:
 		>   ucr['key'] = 'value'
 		"""
@@ -136,120 +177,277 @@ class ConfigRegistry(MutableMapping):
 		return self
 
 	def __exit__(self, exc_type, exc_value, traceback):
+		# type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
+		"""
+		Unlock registry.
+		"""
 		if exc_type is None:
 			self.save()
 		self.unlock()
 
 	def __delitem__(self, key):
-		"""Delete registry key."""
+		# type: (str) -> None
+		"""
+		Delete registry key.
+
+		:param key: UCR variable name.
+		"""
 		registry = self._registry[self.scope]
 		del registry[key]
 
-	def __getitem__(self, key):
-		"""Return registry value.
+	def __getitem__(self, key):  # type: ignore
+		# type: (str) -> Optional[str]
+		"""
+		Return registry value.
+
+		:param key: UCR variable name.
+		:returns: the value or `None`.
+
 		Bug #28276: ucr[key] returns None instead of raising KeyError - it would break many UCR templates!
 		"""
 		return self.get(key)
 
 	def __setitem__(self, key, value):
-		"""Set registry value."""
+		# type: (str, str) -> None
+		"""
+		Set registry value.
+
+		:param key: UCR variable name.
+		:param value: UCR variable value.
+		"""
 		registry = self._registry[self.scope]
 		registry[key] = value
 
-	def __contains__(self, key):
-		"""Check if registry key is set."""
-		for reg in (ConfigRegistry.FORCED,
-				ConfigRegistry.SCHEDULE,
-				ConfigRegistry.LDAP,
-				ConfigRegistry.NORMAL,
-				ConfigRegistry.CUSTOM):
+	def __contains__(self, key):  # type: ignore
+		# type: (str) -> bool
+		"""
+		Check if registry key is set.
+
+		:param key: UCR variable name.
+		:returns: `True` is set, `False` otherwise.
+		"""
+		for reg in self.LAYER_PRIORITIES:
 			registry = self._registry[reg]
 			if key in registry:
 				return True
 		return False
 
 	def __iter__(self):
-		"""Iterate over all registry keys."""
+		# type: () -> Iterator[str]
+		"""
+		Iterate over all registry keys.
+
+		:returns: Iterator over all UCR variable names.
+		"""
 		merge = self._merge()
 		for key in merge:
 			yield key
 
 	def __len__(self):
-		"""Return length."""
+		# type: () -> int
+		"""
+		Return length.
+
+		:returns: Number of UCR variables set.
+		"""
 		merge = self._merge()
 		return len(merge)
 
-	def get(self, key, default=None, getscope=False):
-		"""Return registry value (including optional scope)."""
-		for reg in (ConfigRegistry.FORCED,
-				ConfigRegistry.SCHEDULE,
-				ConfigRegistry.LDAP,
-				ConfigRegistry.NORMAL,
-				ConfigRegistry.CUSTOM):
+	@overload  # type: ignore
+	def get(self, key):
+		# type: (str) -> Optional[str]
+		pass
+
+	@overload  # noqa F811
+	def get(self, key, default):
+		# type: (str, _VT) -> Union[str, _VT]
+		pass
+
+	@overload  # noqa F811
+	def get(self, key, default, getscope):
+		# type: (str, _VT, bool) -> Tuple[int, Union[None, str, _VT]]
+		pass
+
+	def get(self, key, default=None, getscope=False):  # noqa F811
+		# type: (str, _VT, bool) -> Union[None, str, _VT, Tuple[int, Union[None, str, _VT]]]
+		"""
+		Return registry value (including optional scope).
+
+		:param key: UCR variable name.
+		:param default: Default value when the UCR variable is not set.
+		:param getscope: `True` makes the method return the scope level in addition to the value itself.
+		:returns: the value or a 2-tuple (level, value) or the default.
+		"""
+		for reg in self.LAYER_PRIORITIES:
 			try:
 				registry = self._registry[reg]
-				value = registry[key]
+				value = registry[key]  # type: str
 			except KeyError:
 				continue
 			return (reg, value) if getscope else value
 		return default
 
 	def has_key(self, key, write_registry_only=False):
-		"""Check if registry key is set (DEPRECATED)."""
+		# type: (str, bool) -> bool
+		"""
+		Check if registry key is set.
+
+		.. deprecated:: 3.1
+		    Use `in`.
+		"""
 		if write_registry_only:
 			registry = self._registry[self.scope]
 			return key in registry
 		else:
 			return key in self
 
-	def _merge(self, getscope=False):
-		"""Merge sub registry."""
-		merge = {}
-		for reg in (
-			ConfigRegistry.FORCED,
-			ConfigRegistry.SCHEDULE,
-			ConfigRegistry.LDAP,
-			ConfigRegistry.NORMAL,
-			ConfigRegistry.CUSTOM,
-		):
+	@overload
+	def _merge(self):
+		# type: () -> Dict[str, str]
+		pass
+
+	@overload  # noqa F811
+	def _merge(self, getscope):
+		# type: (bool) -> Dict[str, Tuple[int, str]]
+		pass
+
+	def _merge(self, getscope=False):  # noqa F811
+		# type: (bool) -> Union[Dict[str, str], Dict[str, Tuple[int, str]]]
+		"""
+		Merge sub registry.
+
+		:param getscope: `True` makes the method return the scope level in addition to the value itself.
+		:returns: A mapping from varibal ename to eiter the value (if `getscope` is False) or a 2-tuple (level, value).
+		"""
+		merge = {}  # type: Dict[str, Union[str, Tuple[int, str]]]
+		for reg in self.LAYER_PRIORITIES:
 			registry = self._registry[reg]
 			if not isinstance(registry, _ConfigRegistry):
 				continue
 			for key, value in registry.items():
 				if key not in merge:
 					merge[key] = (reg, value) if getscope else value
-		return merge
 
-	def items(self, getscope=False):
-		"""Return all registry entries a 2-tuple (key, value) or (key, (scope, value)) if getscope is True."""
+		return merge  # type: ignore
+
+	@overload  # type: ignore
+	def items(self):
+		# type: () -> Dict[str, str]
+		pass
+
+	@overload  # noqa F811
+	def items(self, getscope):
+		# type: (bool) -> Dict[str, Tuple[int, str]]
+		pass
+
+	def items(self, getscope=False):  # noqa F811
+		# type: (bool) -> Union[Dict[str, str], Dict[str, Tuple[int, str]]]
+		"""
+		Return all registry entries a 2-tuple (key, value) or (key, (scope, value)) if getscope is True.
+
+		:param getscope: `True` makes the method return the scope level in addition to the value itself.
+		:returns: A mapping from varibal ename to eiter the value (if `getscope` is False) or a 2-tuple (level, value).
+		"""
 		merge = self._merge(getscope=getscope)
-		return merge.items()
+		return merge.items()  # type: ignore
 
 	def __str__(self):
+		# type: () -> str
 		"""Return registry content as string."""
 		merge = self._merge()
 		return '\n'.join(['%s: %s' % (key, val) for key, val in merge.items()])
 
-	def is_true(self, key=None, default=False, value=None):
-		"""Return if the strings value of key is considered as true."""
+	@overload
+	def is_true(self, key):
+		# type: (str) -> bool
+		pass
+
+	@overload  # noqa F811
+	def is_true(self, key, default):
+		# type: (str, bool) -> bool
+		pass
+
+	@overload  # noqa F811
+	def is_true(self, key, default, value):
+		# type: (str, bool, Optional[str]) -> bool
+		pass
+
+	def is_true(self, key=None, default=False, value=None):  # noqa F811
+		# type: (str, bool, Optional[str]) -> bool
+		"""
+		Return if the strings value of key is considered as true.
+
+		:param key: UCR variable name.
+		:param default: Default value to return, if UCR variable is not set.
+		:param value: text string to directly evaulate instead of looking up the key.
+		:returns: `True` when the value is one of `yes`, `true`, `1`, `enable`, `enabled`, `on`.
+
+		>>> ucr = ConfigRegistry()
+		>>> ucr['key'] = 'yes'
+		>>> ucr.is_true('key')
+		True
+		>>> ucr.is_true('other')
+		False
+		>>> ucr.is_true('other', True)
+		True
+		>>> ucr.is_true(value='1')
+		True
+		"""
 		if value is None:
-			value = self.get(key)
+			value = self.get(key)  # type: ignore
 			if value is None:
 				return default
 		return value.lower() in ('yes', 'true', '1', 'enable', 'enabled', 'on')
 
+	@overload
+	def is_false(self, key):
+		# type: (str) -> bool
+		pass
+
+	@overload  # noqa F811
+	def is_false(self, key, default):
+		# type: (str, bool) -> bool
+		pass
+
+	@overload  # noqa F811
 	def is_false(self, key=None, default=False, value=None):
-		"""Return if the strings value of key is considered as false."""
+		# type: (str, bool, Optional[str]) -> bool
+		pass
+
+	def is_false(self, key=None, default=False, value=None):  # noqa F811
+		# type: (str, bool, Optional[str]) -> bool
+		"""
+		Return if the strings value of key is considered as false.
+
+		:param key: UCR variable name.
+		:param default: Default value to return, if UCR variable is not set.
+		:param value: text string to directly evaulate instead of looking up the key.
+		:returns: `True` when the value is one of `no`, `false`, `0`, `disable`, `disabled`, `off`.
+
+		>>> ucr = ConfigRegistry()
+		>>> ucr['key'] = 'no'
+		>>> ucr.is_false('key')
+		True
+		>>> ucr.is_false('other')
+		False
+		>>> ucr.is_false('other', True)
+		True
+		>>> ucr.is_false(value='0')
+		True
+		"""
 		if value is None:
-			value = self.get(key)
+			value = self.get(key)  # type: ignore
 			if value is None:
 				return default
 		return value.lower() in ('no', 'false', '0', 'disable', 'disabled', 'off')
 
-	def update(self, changes):
+	def update(self, changes):  # type: ignore
+		# type: (Dict[str, Optional[str]]) -> Dict[str, Tuple[Optional[str], Optional[str]]]
 		"""
 		Set or unset the given config registry variables.
-		:changes: dictionary of ucr-variable-name: value-or-None.
+
+		:param changes: dictionary of ucr-variable-name: value-or-None.
+		:returns: A mapping from UCR variable name to a 2-tuple (old-value, new-value)
 		"""
 		registry = self._registry[self.scope]
 		changed = {}
@@ -266,22 +464,33 @@ class ConfigRegistry(MutableMapping):
 			changed[key] = (old_value, new_value)
 		return changed
 
-	def setdefault(self, key, default=None):
+	def setdefault(self, key, default):  # type: ignore
+		# type: (str, str) -> str
+		"""
+		Set value for variable only when not yet set.
+
+		:param key: UCR variable name.
+		:param default: UCR variable value.
+		:returns: The old value, if the variable was not yet set, otherwise the new value.
+		"""
 		# Bug #28276: setdefault() required KeyError
 		value = self.get(key, default=self)
 		if value is self:
 			value = self[key] = default
-		return value
+
+		return value  # type: ignore
 
 
 class _ConfigRegistry(dict):
-
 	"""
 	Persistent value store.
 	This is a single value store using a text file.
+
+	:param filename: File name for text database file.
 	"""
 
 	def __init__(self, filename=None):
+		# type: (str) -> None
 		dict.__init__(self)
 		if filename:
 			self.file = filename
@@ -294,9 +503,10 @@ class _ConfigRegistry(dict):
 		# means the backend files are valid UTF-8 and should stay that way -->
 		# only accept valid UTF-8
 		self.strict_encoding = False
-		self.lock_file = None
+		self.lock_file = None  # type: Optional[IO]
 
 	def load(self):
+		# type: () -> None
 		"""Load sub registry from file."""
 		import_failed = False
 		try:
@@ -333,6 +543,7 @@ class _ConfigRegistry(dict):
 			self.__save_file(self.file)
 
 	def __create_base_conf(self):
+		# type: () -> None
 		"""Create sub registry file."""
 		try:
 			reg_file = os.open(self.file, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
@@ -344,7 +555,13 @@ class _ConfigRegistry(dict):
 				exception_occured()
 
 	def __save_file(self, filename):
-		"""Save sub registry to file."""
+		# type: (str) -> None
+		"""
+		Save sub registry to file.
+
+		:param filename: File name for saving.
+		:raises EnvironmentError: on fatal errors.
+		"""
 		temp_filename = '%s.temp' % filename
 		try:
 			try:
@@ -352,7 +569,7 @@ class _ConfigRegistry(dict):
 				mode = file_stat.st_mode
 				user = file_stat.st_uid
 				group = file_stat.st_gid
-			except:
+			except EnvironmentError:
 				mode = 0o0644
 				user = 0
 				group = 0
@@ -390,21 +607,30 @@ class _ConfigRegistry(dict):
 				raise
 
 	def save(self):
+		# type: () -> None
 		"""Save sub registry to file."""
 		for filename in (self.backup_file, self.file):
 			self.__save_file(filename)
 
 	def lock(self):
+		# type: () -> None
 		"""Lock sub registry file."""
 		self.lock_file = open(self.lock_filename, "a+")
 		fcntl.flock(self.lock_file.fileno(), fcntl.LOCK_EX)
 
 	def unlock(self):
+		# type: () -> None
 		"""Un-lock sub registry file."""
+		assert self.lock_file
 		self.lock_file.close()
 
 	def __setitem__(self, key, value):
-		"""Set value in sub registry."""
+		"""
+		Set value in sub registry.
+
+		:param key: UCR variable name.
+		:param value: UCR variable value.
+		"""
 		if self.strict_encoding:
 			try:
 				key.decode('UTF-8')  # only accept valid UTF-8 encoded bytes
@@ -418,14 +644,20 @@ class _ConfigRegistry(dict):
 
 	@staticmethod
 	def remove_invalid_chars(seq):
-		"""Remove non-UTF-8 characters from value."""
+		# type: (str) -> str
+		"""
+		Remove non-UTF-8 characters from value.
+
+		:param seq: Text string.
+		:returns: Text string with invalid characters removed.
+		"""
 		for letter in INVALID_VALUE_CHARS:
 			seq = seq.replace(letter, '')
 		return seq
 
 	def __str__(self):
+		# type: () -> str
 		"""Return sub registry content as string."""
-		return '\n'.join(['%s: %s' % (key, self.remove_invalid_chars(val)) for
-			key, val in sorted(self.items())])
+		return '\n'.join(['%s: %s' % (key, self.remove_invalid_chars(val)) for key, val in sorted(self.items())])
 
 # vim:set sw=4 ts=4 noet:

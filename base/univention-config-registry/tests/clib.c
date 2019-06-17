@@ -93,7 +93,7 @@ int main(void) {
 	assert(i == atoi(value));
 
 	long l = univention_config_get_long(key);
-	fprintf(stderr, "get_long %s=%d\n", key, l);
+	fprintf(stderr, "get_long %s=%ld\n", key, l);
 	assert(l == atol(value));
 
 	test_layer();
