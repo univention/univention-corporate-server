@@ -37,6 +37,7 @@ import re
 import errno
 import time
 from collections import MutableMapping
+import six
 try:
 	from typing import overload, Any, Dict, IO, Iterator, List, NoReturn, Optional, Set, Tuple, Type, TypeVar, Union  # noqa F401
 	from types import TracebackType  # noqa
@@ -131,6 +132,10 @@ class ConfigRegistry(MM):
 		for reg in self._registry.values():
 			if isinstance(reg, _ConfigRegistry):
 				reg.load()
+
+		if six.PY3:
+			return  # Python 3 uses Unicode internally and uses UTF-8 for serialization; no need to check it.
+
 		strict = self.is_true('ucr/encoding/strict')
 		for reg in self._registry.values():
 			if isinstance(reg, _ConfigRegistry):
