@@ -48,7 +48,15 @@ else:
 	httplib._MAXHEADERS = 1000
 
 
-class UdmError(Exception):
+class HTTPError(Exception):
+
+	def __init__(self, code, message, response):
+		self.code = code
+		self.response = response
+		super(HTTPError, self).__init__(message)
+
+
+class NotFound(HTTPError):
 	pass
 
 
@@ -110,7 +118,10 @@ class Session(object):
 						# traceback = json['error'].get('traceback')
 						if server_message:
 							msg += '\n{}'.format(server_message)
-			raise UdmError(msg)
+			cls = HTTPError
+			if response.status_code == 404:
+				cls = NotFound
+			raise cls(response.status_code, msg, response)
 		return response.json()
 
 
@@ -285,7 +296,7 @@ class Object(Client):
 		else:
 			return self._create()
 
-	def delete(self):
+	def delete(self, remove_referring=False):
 		return self.client.make_request('DELETE', self.uri)
 
 	def _modify(self):
