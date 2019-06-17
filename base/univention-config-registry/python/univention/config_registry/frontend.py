@@ -509,7 +509,6 @@ HANDLERS = {
 	'commit': (handler_commit, 0),
 	'register': (handler_register, 1),
 	'unregister': (handler_unregister, 1),
-	'shell': (None, 0),    # for compatibility only
 	'filter': (handler_filter, 0),
 	'search': (handler_search, 0),
 	'get': (handler_get, 1),
@@ -529,7 +528,7 @@ OPT_FILTERS = {
 	# name: [prio, function, state, (valid actions)]
 	'keys-only': [0, filter_keys_only, False, ('dump', 'search')],
 	'sort': [10, filter_sort, False, ('dump', 'search', 'info')],
-	'shell': [99, filter_shell, False, ('dump', 'search', 'shell', 'get')],
+	'shell': [99, filter_shell, False, ('dump', 'search', 'get')],
 }
 
 BOOL, STRING = range(2)
