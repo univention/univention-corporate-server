@@ -73,6 +73,11 @@ display_help() {
 	EOL
 }
 
+terminate_on_error() {
+	>&2 echo "$*" 
+	exit 1
+}
+
 FROMWHERE=/var/lib/samba
 WHERE=/var/univention-backup/samba
 DAYS=""
@@ -112,13 +117,11 @@ while [ $# -gt 0 ]; do
 done
 
 if [ ! -d $WHERE ]; then
-	echo "Missing backup directory $WHERE"
-	exit 1
+	terminate_on_error "Missing backup directory $WHERE"
 fi
 
 if [ ! -d $FROMWHERE ]; then
-	echo "Missing or wrong provision directory $FROMWHERE"
-	exit 1
+	terminate_on_error "Missing or wrong provision directory $FROMWHERE"
 fi
 
 cd $FROMWHERE
@@ -137,8 +140,7 @@ for d in $DIRS; do
 					tdbbackup $file
 					Status=$?
 					if [ $Status -ne 0 ]; then
-						>&2 echo "Error while backing up $file with tdbbackup - status $Status"
-						exit 1
+						terminate_on_error "Error while backing up $file with tdbbackup - status $Status"
 					fi
 				fi
 			done
@@ -157,8 +159,7 @@ for d in $DIRS; do
 		Status=$?
 		if [ $Status -ne 0 -a $Status -ne 1 ]; then
 			# Ignore 1 - private dir is always changing.
-			echo "Error while archiving ${WHERE}/samba4_${n}.${WHEN}.tar.bz2 - status = $Status"
-			exit 1
+			terminate_on_error "Error while archiving ${WHERE}/samba4_${n}.${WHEN}.tar.bz2 - status = $Status"
 		fi
 		for db in tdb ldb; do
 			find $relativedirname -name "*.$db.bak" -exec rm {} \;
@@ -173,8 +174,7 @@ for d in $DIRS; do
 		Status=$?
 		if [ $Status -ne 0 -a $Status -ne 1 ]; then
 			# Ignore 1 - sysvol may change
-			echo "Error while archiving ${WHERE}/${n}.${WHEN}.tar.bz2 - status = $Status"
-			exit 1
+			terminate_on_error "Error while archiving ${WHERE}/${n}.${WHEN}.tar.bz2 - status = $Status"
 		fi
 	fi
 done
