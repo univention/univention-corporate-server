@@ -448,16 +448,14 @@ class Ressource(RessourceBase, RequestHandler):
 
 class Favicon(RessourceBase, tornado.web.StaticFileHandler):
 
-	size = '16'
-
 	@classmethod
 	def get_absolute_path(cls, root, object_type=''):
 		value = object_type.replace('/', '-')
 		if value == 'favicon':
-			value = 'users-user'
+			return root
 		if not value.replace('-', '').replace('_', '').isalpha():
 			raise NotFound(object_type)
-		return '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/%sx%s/udm-%s.png' % (cls.size, cls.size, value,)
+		return os.path.join(root, 'udm-%s.png' % (value,))
 
 
 class Relations(Ressource):
@@ -930,6 +928,10 @@ class Objects(ReportingBase):
 		# TODO: replace the superordinate concept by container
 		superordinate = self.get_query_argument('superordinate', None)
 
+		# TODO: allow to specify an own ldap filter?
+		# TODO: add "opened" instead of giving property names?
+		# TODO: rename fields in the response into "printable"?
+
 		container = self.get_query_argument('position', None)
 		objectProperty = self.get_query_argument('property', None)
 		objectPropertyValue = self.get_query_argument('propertyvalue', '*')
@@ -988,7 +990,7 @@ class Objects(ReportingBase):
 
 			entry = Object.get_representation(module, obj, properties, self.ldap_connection)
 			entry.update({
-				'$childs$': module.childs,
+				#'$childs$': module.childs,
 				'name': module.obj_description(obj),
 				'path': ldap_dn2path(obj.dn, include_rdn=False),
 				'uri': self.urljoin(quote_dn(obj.dn)),
@@ -1283,12 +1285,12 @@ class Object(Ressource):
 				pol_mod = get_module(None, policy, ldap_connection)
 				if pol_mod and pol_mod.name:
 					props['policies'].setdefault(pol_mod.name, []).append(policy)
-			props['$references$'] = module.get_references(obj.dn)
-		props['$labelObjectType$'] = module.title
-		props['$labelObjectTypeSingular$'] = module.object_name
-		props['$labelObjectTypePlural$'] = module.object_name_plural
+			props['references'] = module.get_references(obj.dn)
+		#props['$labelObjectType$'] = module.title
+		#props['$labelObjectTypeSingular$'] = module.object_name
+		#props['$labelObjectTypePlural$'] = module.object_name_plural
 		props['flags'] = obj.oldattr.get('univentionObjectFlag', [])
-		props['$operations$'] = module.operations
+		#props['$operations$'] = module.operations
 		if copy:
 			props.pop('dn')
 		return props
@@ -1962,7 +1964,7 @@ class Application(tornado.web.Application):
 		# Note: we cannot use .replace('/', '%2F') for the dn part as url-normalization could replace this and apache doesn't pass URLs with %2F to the ProxyPass without http://httpd.apache.org/docs/current/mod/core.html#allowencodedslashes
 		property_ = '([^/]+)'
 		super(Application, self).__init__([
-			(r"/(favicon).ico", Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
+			(r"/(?:udm/)?(favicon).ico", Favicon, {"path": "/var/www/favicon.ico"}),
 			(r"/udm/(?:index.html)?", Modules),
 			(r"/udm/relation/(.*)", Relations),
 			(r"/udm/license/", License),
