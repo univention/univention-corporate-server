@@ -1041,7 +1041,7 @@ class ConfigHandlers:
 			if not handler:  # Bug #17913
 				print(("Skipping internal error: no handler for %r in %s" % (section, package)), file=sys.stderr)
 				continue
-			if handler.uninstall_divert():
+			if isinstance(handler, ConfigHandlerDiverting) and handler.uninstall_divert():
 				obsolete_handlers.add(handler)
 
 		for handler in mf_handlers - obsolete_handlers:
