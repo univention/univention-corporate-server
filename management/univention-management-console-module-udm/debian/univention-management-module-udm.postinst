@@ -35,4 +35,9 @@
 a2ensite univention-management.conf
 service apache2 reload
 
+# new installations
+if [ "$1" = "configure" -a -z "$2" ]; then
+	service univention-management-module-udm restart
+fi
+
 exit 0

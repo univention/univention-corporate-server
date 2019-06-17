@@ -291,7 +291,7 @@ class RessourceBase(object):
 	def get_html(self, response):
 		root = []
 		if isinstance(response, dict):
-			self.add_link(response, 'stylesheet', self.abspath('styles.css'))
+			self.add_link(response, 'stylesheet', self.abspath('css/style.css'))
 			for _form in response.get('_forms', []):
 				form = ET.Element('form', **dict((p, _form[p]) for p in ('id', 'name', 'method', 'action', 'rel', 'enctype') if _form.get(p)))
 				for field in _form.get('fields', []):
