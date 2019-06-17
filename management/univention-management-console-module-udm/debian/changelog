@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.12-8) unstable; urgency=medium
+
+  * Bug #27816: add example client
+
+ -- Florian Best <best@univention.de>  Mon, 17 Jun 2019 18:34:25 +0200
+
 univention-management-console-module-udm (9.0.12-7) unstable; urgency=medium
 
   * Bug #27816: add beta version of UDM HTTP service

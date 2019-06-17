@@ -448,16 +448,14 @@ class Ressource(RessourceBase, RequestHandler):
 
 class Favicon(RessourceBase, tornado.web.StaticFileHandler):
 
-	size = '16'
-
 	@classmethod
 	def get_absolute_path(cls, root, object_type=''):
 		value = object_type.replace('/', '-')
 		if value == 'favicon':
-			value = 'users-user'
+			return root
 		if not value.replace('-', '').replace('_', '').isalpha():
 			raise NotFound(object_type)
-		return '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/%sx%s/udm-%s.png' % (cls.size, cls.size, value,)
+		return os.path.join(root, 'udm-%s.png' % (value,))
 
 
 class Relations(Ressource):
@@ -930,6 +928,10 @@ class Objects(ReportingBase):
 		# TODO: replace the superordinate concept by container
 		superordinate = self.get_query_argument('superordinate', None)
 
+		# TODO: allow to specify an own ldap filter?
+		# TODO: add "opened" instead of giving property names?
+		# TODO: rename fields in the response into "printable"?
+
 		container = self.get_query_argument('position', None)
 		objectProperty = self.get_query_argument('property', None)
 		objectPropertyValue = self.get_query_argument('propertyvalue', '*')
@@ -988,7 +990,7 @@ class Objects(ReportingBase):
 
 			entry = Object.get_representation(module, obj, properties, self.ldap_connection)
 			entry.update({
-				'$childs$': module.childs,
+				#'$childs$': module.childs,
 				'name': module.obj_description(obj),
 				'path': ldap_dn2path(obj.dn, include_rdn=False),
 				'uri': self.urljoin(quote_dn(obj.dn)),
@@ -1172,7 +1174,7 @@ class ObjectsMove(Ressource):
 		}
 		queue[status['id']] = status
 		self.set_status(201)
-		self.set_header('Location', self.urljoin('progress', status['id']))
+		self.set_header('Location', self.abspath('progress', status['id']))
 		self.finish()
 		try:
 			for i, dn in enumerate(dns, 1):
@@ -1283,12 +1285,12 @@ class Object(Ressource):
 				pol_mod = get_module(None, policy, ldap_connection)
 				if pol_mod and pol_mod.name:
 					props['policies'].setdefault(pol_mod.name, []).append(policy)
-			props['$references$'] = module.get_references(obj.dn)
-		props['$labelObjectType$'] = module.title
-		props['$labelObjectTypeSingular$'] = module.object_name
-		props['$labelObjectTypePlural$'] = module.object_name_plural
+			props['references'] = module.get_references(obj.dn)
+		#props['$labelObjectType$'] = module.title
+		#props['$labelObjectTypeSingular$'] = module.object_name
+		#props['$labelObjectTypePlural$'] = module.object_name_plural
 		props['flags'] = obj.oldattr.get('univentionObjectFlag', [])
-		props['$operations$'] = module.operations
+		#props['$operations$'] = module.operations
 		if copy:
 			props.pop('dn')
 		return props
@@ -1304,6 +1306,7 @@ class Object(Ressource):
 		position = self.get_body_arguments('position')
 		if position and not self.ldap_connection.compare_dn(self.ldap_connection.parentDn(dn), position):
 			yield self.move(module, dn, position)
+			return
 		else:
 			obj = yield self.modify(module, None, dn)
 			self.set_status(302)
@@ -1361,8 +1364,9 @@ class Object(Ressource):
 		}
 		queue[status['id']] = status
 		self.set_status(201)
-		self.set_header('Location', self.urljoin('progress', status['id']))
-		self.finish()
+		self.set_header('Location', self.abspath('progress', status['id']))
+		self.add_caching(public=False)
+		self.content_negotiation(status)
 		try:
 			dn = yield self.pool.submit(module.move, dn, position)
 		except:
@@ -1502,7 +1506,6 @@ class ObjectAdd(Ressource):
 		module.load(force_reload=True)  # reload for instant extended attributes
 		result['layout'] = module.get_layout()
 		result['properties'] = module.get_properties()
-		result['options'] = module.options.keys()
 
 		for policy in module.policies:
 			form = self.add_form(result, action=self.urljoin(policy['objectType']) + '/', method='GET', name=policy['objectType'], rel='udm/relation/policy-result')
@@ -1510,12 +1513,16 @@ class ObjectAdd(Ressource):
 			self.add_form_element(form, 'policy', '', label=policy['label'], title=policy['description'])  # TODO: value should be the currently set policy!
 			self.add_form_element(form, '', _('Policy result'), type='submit')
 
+		obj = module.module.object(None, self.ldap_connection, self.ldap_position)
+		obj.open()
+		result['entry'] = Object.get_representation(module, obj, ['*'], self.ldap_connection)
+
 		form = self.add_form(result, action=self.urljoin('.'), method='POST')
 		self.add_form_element(form, 'position', '', element='select', options=sorted(({'value': x, 'label': ldap_dn2path(x)} for x in module.get_default_containers()), key=lambda x: x['label'].lower()))
 		if module.template:
 			template = UDM_Module(module.template, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 			templates = template.search(ucr.get('ldap/base'))
-			self.add_form_element(form, 'template', '', element='select', options=[{'value': obj.dn, 'label': obj[template.identifies]} for obj in templates])
+			self.add_form_element(form, 'template', '', element='select', options=[{'value': _obj.dn, 'label': _obj[template.identifies]} for _obj in templates])
 		self.add_form_element(form, 'superordinate', '')  # TODO: replace with <select>
 
 		# FIXME: respect layout
@@ -1741,7 +1748,10 @@ class Operations(Ressource):
 	queue = {}
 
 	def get(self, progress):
-		result = self.queue.get(self.request.user_dn, {}).get(progress, {})
+		progressbars = self.queue.get(self.request.user_dn, {})
+		if progress not in progressbars:
+			raise NotFound()
+		result = progressbars[progress]
 		if result.get('uri'):
 			self.set_status(303)
 			self.add_header('Location', result['uri'])
@@ -1954,7 +1964,7 @@ class Application(tornado.web.Application):
 		# Note: we cannot use .replace('/', '%2F') for the dn part as url-normalization could replace this and apache doesn't pass URLs with %2F to the ProxyPass without http://httpd.apache.org/docs/current/mod/core.html#allowencodedslashes
 		property_ = '([^/]+)'
 		super(Application, self).__init__([
-			(r"/(favicon).ico", Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
+			(r"/(?:udm/)?(favicon).ico", Favicon, {"path": "/var/www/favicon.ico"}),
 			(r"/udm/(?:index.html)?", Modules),
 			(r"/udm/relation/(.*)", Relations),
 			(r"/udm/license/", License),
@@ -1984,7 +1994,7 @@ class Application(tornado.web.Application):
 			(r"/udm/%s/%s/properties/photo.jpg" % (object_type, dn), UserPhoto),
 			(r"/udm/%s/properties/%s/default" % (object_type, property_), DefaultValue),
 			(r"/udm/networks/network/%s/next-free-ip-address" % (dn,), NextFreeIpAddress),
-			(r"/udm/progress/([a-z0-9-]+)", Operations),
+			(r"/udm/progress/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", Operations),
 			# TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
 		])
 
