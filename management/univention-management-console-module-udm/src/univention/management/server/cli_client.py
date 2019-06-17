@@ -1,57 +1,273 @@
-#def main():
-#	return
-#	description = '%(prog)s: command line interface for managing UCS'
-#	epilog = '%(prog)s is a tool to handle the configuration for UCS on command line level. Use "%(prog)s modules" for a list of available modules.'
-#	parser = argparse.ArgumentParser(description=description, epilog=epilog)
-#	parser.add_argument('module', help='UDM type, e.g. users/user or computers/memberserver')
-#	parser.add_argument('--binddn', help='bind DN')
-#	parser.add_argument('--bindpwd', help='bind password')
-#	parser.add_argument('--bindpwdfile', help='file containing bind password')
-#	parser.add_argument('--logfile', help='path and name of the logfile to be used')
-#	parser.add_argument('--tls', help='0 (no); 1 (try); 2 (must)')
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
 #
-#	subparsers = parser.add_subparsers(description='type %(prog)s <module> <action> --help for further help and possible arguments', metavar='action')
+# Univention Management Console
+#  Univention Directory Manager Module
 #
-#	# CREATE
-#	create_parser = subparsers.add_parser('create', help='Create a new UDM object')
-#	create_parser.add_argument('--position', help='Set position in tree')
-#	create_parser.add_argument('--set', help='Set variable to value, e.g. foo=bar')
-#	create_parser.add_argument('--superordinate', help='Use superordinate module')
-#	create_parser.add_argument('--option', help='Use only given module options')
-#	create_parser.add_argument('--append-option', help='Append the module option')
-#	create_parser.add_argument('--remove-option', help='Remove the module option')
-#	create_parser.add_argument('--policy-reference', help='Reference to policy given by DN')
-#	create_parser.add_argument('--ignore_exists')
+# Copyright 2019 Univention GmbH
 #
-#	# MODIFY
-#	modify_parser = subparsers.add_parser('modify', help='Modify an existing UDM object')
-#	modify_parser.add_argument('--dn', help='Edit object with DN')
-#	modify_parser.add_argument('--set', help='Set variable to value, e.g. foo=bar')
-#	modify_parser.add_argument('--append', help='Append value to variable, e.g. foo=bar')
-#	modify_parser.add_argument('--remove', help='Remove value from variable, e.g. foo=bar')
-#	modify_parser.add_argument('--option', help='Use only given module options')
-#	modify_parser.add_argument('--append-option', help='Append the module option')
-#	modify_parser.add_argument('--remove-option', help='Remove the module option')
-#	modify_parser.add_argument('--policy-reference', help='Reference to policy given by DN')
-#	modify_parser.add_argument('--policy-dereference', help='Remove reference to policy given by DN')
+# http://www.univention.de/
 #
-#	# REMOVE
-#	remove_parser = subparsers.add_parser('remove', help='Remove a UDM object')
-#	remove_parser.add_argument('--dn', help='Remove object with DN')
-#	remove_parser.add_argument('--superordinate', help='Use superordinate module')
-#	remove_parser.add_argument('--filter', help='Lookup filter e.g. foo=bar')
-#	remove_parser.add_argument('--remove_referring', help='remove referring objects')
-#	remove_parser.add_argument('--ignore_not_exists')
+# All rights reserved.
 #
-#	# LIST
-#	list_parser = subparsers.add_parser('list', help='Search and list UDM objects')
-#	list_parser.add_argument('--filter', help='Lookup filter e.g. foo=bar')
-#	list_parser.add_argument('--position', help='Search underneath of position in tree')
-#	list_parser.add_argument('--policies', choices=['0', '1'], help='List policy-based settings: 0:short, 1:long (with policy-DN)')
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
 #
-#	# MOVE
-#	move_parser = subparsers.add_parser('move', help='Move a UDM object to a different position in tree')
-#	move_parser.add_argument('--dn', help='Move object with DN')
-#	move_parser.add_argument('--position', help='Move to position in tree')
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
 #
-#	#args = parser.parse_args()
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
+import argparse
+
+import univention.config_registry
+from univention.management.server.client import UDM, NotFound
+
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
+
+
+class CLIClient(object):
+
+	def init(self, args):
+		self.udm = UDM('https://%(hostname)s.%(domainname)s/univention/udm/' % ucr, args.binddn, args.bindpwd)
+
+	def create_object(self, args):
+		module = self.udm.get(args.object_type)
+		obj = module.create_template()
+		if args.position:
+			obj.position = args.position
+		self.set_properties(obj, args)
+		obj.save()
+		print('Object created:', obj.dn)
+
+	def modify_object(self, args):
+		module = self.udm.get(args.object_type)
+		obj = module.get(args.dn)
+		self.set_properties(obj, args)
+		obj.save()
+		print('Object modified:', obj.dn)
+
+	def remove_object(self, args):
+		module = self.udm.get(args.object_type)
+		try:
+			obj = module.get(args.dn)
+		except NotFound:
+			if self.args.ignore_not_exists:
+				print('Object not found:', args.dn)
+			else:
+				raise
+		obj.delete(args.remove_referring)
+		print('Object removed:', obj.dn)
+
+	def move_object(self, args):
+		module = self.udm.get(args.object_type)
+		obj = module.get(args.dn)
+		obj.position = args.position
+		obj.save()
+		print('Object modified:', obj.dn)
+
+	def copy_object(self, args):
+		pass
+
+	def set_properties(self, obj, args):
+		for key, value in obj.options.items():
+			if key in args.option or key in args.append_option:
+				obj.options[key] = True
+			if key in args.remove_option:
+				obj.options[key] = False
+		for key_val in args.set:
+			key, value = key_val.split('=', 1)
+			if value.startswith('{') or value.startswith('[') or value.startswith('"') or value.startswith("'"):
+				value = eval(value)
+			obj.properties[key] = value
+
+		for key_val in args.append:
+			key, value = key_val.split('=', 1)
+			if value.startswith('{') or value.startswith('[') or value.startswith('"') or value.startswith("'"):
+				value = eval(value)
+			obj.properties[key].append(value)
+
+		for key_val in getattr(args, 'remove', []):
+			if '=' not in key_val:
+				obj.properties[key_val] = None
+			else:
+				key, value = key_val.split('=', 1)
+				if value.startswith('{') or value.startswith('[') or value.startswith('"') or value.startswith("'"):
+					value = eval(value)
+				if obj.properties[key] == value:
+					obj.properties[key] = None
+				elif isinstance(obj.properties[key], list) and value in obj.properties[key]:
+					obj.properties[key].remove(value)
+
+		for policy_dn in args.policy_reference:
+			pass  # FIXME: we need to know the type
+
+		for policy_dn in getattr(args, 'policy_dereference', []):
+			for key, values in list(obj.policies.items()):
+				if policy_dn in values:
+					values.remove(policy_dn)
+
+	def list_objects(self, args):
+		module = self.udm.get(args.object_type)
+		filter = None if '=' not in args.filter else dict([args.filter.split('=', 1)])
+		for entry in module.search(filter, args.position):
+			print()
+			print('DN:', entry.dn)
+			entry = entry.open()
+			for key, value in entry.props.items():
+				if isinstance(value, list):
+					for item in value:
+						if isinstance(item, (basestring, int)):
+							print('  %s: %s' % (key, item))
+						else:
+							print('  %s: %r' % (key, item))
+				elif isinstance(value, (basestring, int)):
+					print('  %s: %s' % (key, value))
+				else:
+					print('  %s: %r' % (key, value))
+			if args.policies:  # FIXME: do a policy result
+				print('  Policy-based Settings:')
+				for key, values in entry.policies.items():
+					for value in values:
+						print('    %s: %s' % (key, value))
+
+	def get_info(self, args):
+		module = self.udm.get(args.object_type)
+		module.load_relations()
+		resp = module.client.make_request('GET', module.relations['create-form'][0]['href'])  # TODO: integrate in client.py?
+		mod = module.client.eval_response(resp)
+		properties = dict((prop['id'], prop) for prop in mod['properties'])
+		layout = mod['layout']
+
+		def _print_prop(prop):
+			def _print(prop):
+				print('\t\t%s%s' % (prop.ljust(41), properties.get(prop, {}).get('label')))
+
+			if isinstance(prop, list):
+				for prop in prop:
+					_print(prop)
+			else:
+				_print(prop)
+
+		args.parser.print_help()
+		for sub in args.subparsers.choices.values():
+			sub.print_help()
+
+		for layout in layout:
+			print('  %s - %s:' % (layout['label'], layout['description']))
+			for sub in layout['layout']:
+				if isinstance(sub, dict):
+					print('\t%s %s' % (sub['label'], sub['description']))
+					for prop in sub['layout']:
+						_print_prop(prop)
+				else:
+					_print_prop(sub)
+			print()
+
+	def license(self, args):
+		pass
+
+
+def main():
+	client = CLIClient()
+	parser = argparse.ArgumentParser(
+		prog='univention-directory-manager',
+		description='copyright (c) 2001-2019 Univention GmbH, Germany',
+		usage='%(prog)s command line interface for managing UCS',
+		epilog='''Description:
+univention-directory-manager is a tool to handle the configuration for UCS on command line level.
+Use "univention-directory-manager modules" for a list of available modules.''',
+	)
+	parser.set_defaults(parser=parser)
+	parser.add_argument('--binddn', help='bind DN', default='Administrator')
+	parser.add_argument('--bindpwd', help='bind password', default='univention')
+	parser.add_argument('--bindpwdfile', help='file containing bind password')
+	parser.add_argument('--logfile', help='path and name of the logfile to be used')
+	parser.add_argument('--tls', choices=['0', '1', '2'], default='2', help='0 (no); 1 (try); 2 (must)')
+	parser.add_argument('object_type')
+
+	subparsers = parser.add_subparsers(title='actions', description='All available actions')
+	parser.set_defaults(subparsers=subparsers)
+	create = subparsers.add_parser('create', description='Create a new object')
+	create.set_defaults(func=client.create_object)
+	create.add_argument('--position', help='Set position in tree')
+	create.add_argument('--set', action='append', help='Set variable to value, e.g. foo=bar', default=[])
+	create.add_argument('--append', action='append', help='Append value to variable, e.g. foo=bar', default=[])
+	create.add_argument('--superordinate', help='Use superordinate module')
+	create.add_argument('--option', action='append', help='Use only given module options', default=[])
+	create.add_argument('--append-option', action='append', help='Append the module options', default=[])
+	create.add_argument('--remove-option', action='append', help='Remove the module options', default=[])
+	create.add_argument('--policy-reference', action='append', help='Reference to policy given by DN', default=[])
+	create.add_argument('--ignore-exists', action='store_true', help='ignore if object already exists')
+
+	modify = subparsers.add_parser('modify', description='Modify an existing object')
+	modify.set_defaults(func=client.modify_object)
+	modify.add_argument('--dn', help='Edit object with DN')
+	modify.add_argument('--set', action='append', help='Set variable to value, e.g. foo=bar', default=[])
+	modify.add_argument('--append', action='append', help='Append value to variable, e.g. foo=bar', default=[])
+	modify.add_argument('--remove', action='append', help='Remove value from variable, e.g. foo=bar', default=[])
+	modify.add_argument('--option', action='append', help='Use only given module options', default=[])
+	modify.add_argument('--append-option', action='append', help='Append the module options', default=[])
+	modify.add_argument('--remove-option', action='append', help='Remove the module options', default=[])
+	modify.add_argument('--policy-reference', action='append', help='Reference to policy given by DN', default=[])
+	modify.add_argument('--policy-dereference', action='append', help='Remove reference to policy given by DN', default=[])
+
+	remove = subparsers.add_parser('remove', description='Remove an existing object')
+	remove.set_defaults(func=client.remove_object)
+	remove.add_argument('--dn', help='Remove object with DN')
+	# remove.add_argument('--superordinate', help='Use superordinate module')  # not required
+	remove.add_argument('--filter', help='Lookup filter e.g. foo=bar')
+	remove.add_argument('--remove_referring', action='store_true', help='remove referring objects', default=False)
+	remove.add_argument('--ignore-not-exists', action='store_true', help='ignore if object does not exists')
+
+	list_ = subparsers.add_parser('list', description='List objects')
+	list_.set_defaults(func=client.list_objects)
+	list_.add_argument('--filter', help='Lookup filter e.g. foo=bar', default='')
+	list_.add_argument('--position', help='Search underneath of position in tree')
+	list_.add_argument('--policies', help='List policy-based settings: 0:short, 1:long (with policy-DN)')
+
+	move = subparsers.add_parser('move', description='Move object in directory tree')
+	move.set_defaults(func=client.move_object)
+	move.add_argument('--dn', help='Move object with DN')
+	move.add_argument('--position', help='Move to position in tree')
+
+	copy = subparsers.add_parser('copy', description='Copy object in directory tree')
+	copy.set_defaults(func=client.copy_object)
+
+	license = subparsers.add_parser('license', description='View or modify license information')
+	license.set_defaults(func=client.license)
+
+	reports = subparsers.add_parser('report', description='Create report for selected objects')
+	reports.add_argument('report_type')
+	reports.add_argument('dns', nargs='*')
+
+	info = subparsers.add_parser('info', description='ot info')
+	info.set_defaults(func=client.get_info)
+
+	parser.add_argument('--version', action='version', version='%(prog)s VERSION TODO', help='print version information')
+	args = parser.parse_args()
+	client.init(args)
+	args.func(args)
+
+
+if __name__ == '__main__':
+	main()
