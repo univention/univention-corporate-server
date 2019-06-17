@@ -33,7 +33,7 @@ from __future__ import print_function
 from univention.config_registry.backend import StrictModeException, SCOPE, ConfigRegistry  # noqa F401
 from univention.config_registry.handler import run_filter as filter, ConfigHandlers as configHandlers  # noqa F401
 from univention.config_registry.misc import key_shell_escape, validate_key, INVALID_KEY_CHARS as invalid_key_chars  # noqa F401
-from univention.config_registry.filters import Output, filter_shell, filter_keys_only, filter_sort  # noqa F401
+from univention.config_registry.filters import filter_shell, filter_keys_only, filter_sort  # noqa F401
 from univention.config_registry.frontend import (  # noqa F401
 	REPLOG_FILE, UnknownKeyException, main,
 	handler_set, handler_unset, handler_commit, handler_filter,

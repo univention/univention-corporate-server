@@ -32,28 +32,7 @@
 
 from univention.config_registry.misc import key_shell_escape, escape_value
 
-__all__ = ['Output', 'filter_shell', 'filter_keys_only', 'filter_sort']
-
-
-class Output(object):
-
-	"""Output buffer for applying filter."""
-
-	def __init__(self):
-		self.text = []
-
-	def write(self, line):
-		"""Append singe line."""
-		if line and line.strip():
-			self.text.append(line)
-
-	def flush(self):
-		pass
-
-	def writelines(self, lines):
-		"""Append multiple lines."""
-		for line in lines:
-			self.text.append(line)
+__all__ = ['filter_shell', 'filter_keys_only', 'filter_sort']
 
 
 def filter_shell(args, text):  # pylint: disable-msg=W0613

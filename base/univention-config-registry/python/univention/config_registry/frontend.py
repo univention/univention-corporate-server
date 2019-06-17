@@ -40,7 +40,7 @@ import time
 from univention.config_registry.backend import exception_occured, SCOPE, ConfigRegistry
 from univention.config_registry.handler import run_filter, ConfigHandlers
 from univention.config_registry.misc import validate_key, escape_value
-from univention.config_registry.filters import Output, filter_shell, filter_keys_only, filter_sort
+from univention.config_registry.filters import filter_shell, filter_keys_only, filter_sort
 
 __all__ = [
 	'REPLOG_FILE',
@@ -212,7 +212,7 @@ def handler_dump(args, opts=dict()):
 	ucr = ConfigRegistry()
 	ucr.load()
 	for line in str(ucr).split('\n'):
-		print(line)
+		yield line
 
 
 def handler_update(args, opts=dict()):
@@ -328,7 +328,7 @@ def handler_search(args, opts=dict()):
 				search_values and value and reg.search(value),
 				search_all and vinfo and reg.search(vinfo.get('description', ''))
 			)):
-				print_variable_info_string(key, value, vinfo, details=details)
+				yield variable_info_string(key, value2, vinfo, details=details)
 				break
 
 	if _SHOW_EMPTY & details and not OPT_FILTERS['shell'][2]:
@@ -336,7 +336,7 @@ def handler_search(args, opts=dict()):
 		for arg in args or ('',):
 			patterns.update(info.describe_search_term(arg))
 		for pattern, vinfo in patterns.items():
-			print_variable_info_string(pattern, None, vinfo, details=details)
+			yield variable_info_string(pattern, None, vinfo, details=details)
 
 
 def handler_get(args, opts=dict()):
@@ -347,17 +347,26 @@ def handler_get(args, opts=dict()):
 	if not args[0] in ucr:
 		return
 	if OPT_FILTERS['shell'][2]:
-		print('%s: %s' % (args[0], ucr.get(args[0], '')))
+		yield '%s: %s' % (args[0], ucr.get(args[0], ''))
 	else:
-		print(ucr.get(args[0], ''))
+		yield ucr.get(args[0], '')
 
 
-def print_variable_info_string(key, value, variable_info, scope=None, details=_SHOW_DESCRIPTION):
-	"""Print UCR variable key, value, description, scope and categories."""
+def variable_info_string(key, value, variable_info, scope=None, details=_SHOW_DESCRIPTION):
+	"""
+	Format UCR variable key, value, description, scope and categories.
+
+	:param key: UCR variable name.
+	:param value: UCR variable value.
+	:param variable_info: Description object.
+	:param scope: UCS layer.
+	:param details: bit-field for detail-level.
+	:returns: formatted string
+	"""
 	if value is None and not variable_info:
 		raise UnknownKeyException(key)
 	elif value in (None, '') and not _SHOW_EMPTY & details:
-		return
+		return ''
 	elif value is None:
 		# if not shell filter option is set
 		if not OPT_FILTERS['shell'][2]:
@@ -389,7 +398,7 @@ def print_variable_info_string(key, value, variable_info, scope=None, details=_S
 	if (_SHOW_CATEGORIES | _SHOW_DESCRIPTION) & details:
 		info.append('')
 
-	print('\n'.join(info))
+	return '\n'.join(info)
 
 
 def handler_info(args, opts=dict()):
@@ -404,7 +413,7 @@ def handler_info(args, opts=dict()):
 
 	for arg in args:
 		try:
-			print_variable_info_string(
+			yield variable_info_string(
 				arg, ucr.get(arg, None),
 				info.get_variable(arg),
 				details=_SHOW_EMPTY | _SHOW_DESCRIPTION | _SHOW_CATEGORIES)
@@ -621,14 +630,11 @@ def main(args):
 			OPT_COMMANDS['search']['brief'][1] = True
 
 		# if a filter option is set: verify that a valid command is given
-		post_filter = False
 		for name, (_prio, func, state, actions) in OPT_FILTERS.items():
 			if state:
 				if action not in actions:
 					print('E: invalid option --%s for command %s' % (name, action), file=sys.stderr)
 					sys.exit(1)
-				else:
-					post_filter = True
 
 		# check command options
 		cmd_opts = OPT_COMMANDS.get(action, {})
@@ -665,20 +671,21 @@ def main(args):
 			# enough arguments?
 			if len(args) < min_args:
 				missing_parameter(action)
+
 			# if any filter option is set
-			if post_filter:
-				old_stdout = sys.stdout
-				sys.stdout = capture = Output()
-			handler_func(args, cmd_opts)
+			result = handler_func(args, cmd_opts)
+			if result is None:
+				return
+
+			results = result
 			# let the filter options do their job
-			if post_filter:
-				sys.stdout = old_stdout
-				text = capture.text
-				for _prio, (name, filter_func, state, actions) in sorted(OPT_FILTERS.items(), key=lambda k_v: k_v[1][0]):
-					if state:
-						text = filter_func(args, text)
-				for line in text:
-					print(line)
+			for (_prio, filter_func, state, _actions) in sorted(OPT_FILTERS.values()):
+				if not state:
+					continue
+				results = filter_func(args, results)
+
+			for line in results:
+				print(line)
 
 	except (EnvironmentError, TypeError):
 		if OPT_ACTIONS['debug'][1]:
