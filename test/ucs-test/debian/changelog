@@ -1,3 +1,9 @@
+ucs-test (9.0.2-71) unstable; urgency=medium
+
+  * Bug #49638: skip test
+
+ -- Florian Best <best@univention.de>  Mon, 17 Jun 2019 12:08:37 +0200
+
 ucs-test (9.0.2-70) unstable; urgency=low
 
   * Bug #17807: fix typo

@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test serverctrls of ldap server
-## tags: [udm,apptest]
+## tags: [udm,apptest,SKIP]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

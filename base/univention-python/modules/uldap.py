@@ -446,8 +446,8 @@ class access(object):
 			base = self.base
 
 		if scope == 'base+one':
-			res = self.__search(base, ldap.SCOPE_BASE, filter, attr, serverctrls=serverctrls, response=response, clientctrls=None, timeout=timeout, sizelimit=sizelimit) + \
-				self.__search(base, ldap.SCOPE_ONELEVEL, filter, attr, serverctrls=serverctrls, response=response, clientctrls=None, timeout=timeout, sizelimit=sizelimit)
+			res = self.lo.search_ext_s(base, ldap.SCOPE_BASE, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit) + \
+				self.lo.search_ext_s(base, ldap.SCOPE_ONELEVEL, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit)
 		else:
 			if scope == 'sub' or scope == 'domain':
 				ldap_scope = ldap.SCOPE_SUBTREE
@@ -455,27 +455,13 @@ class access(object):
 				ldap_scope = ldap.SCOPE_ONELEVEL
 			else:
 				ldap_scope = ldap.SCOPE_BASE
-			res = self.__search(base, ldap_scope, filter, attr, serverctrls=serverctrls, response=response, clientctrls=None, timeout=timeout, sizelimit=sizelimit)
+			res = self.lo.search_ext_s(base, ldap_scope, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit)
 
 		if unique and len(res) > 1:
 			raise ldap.INAPPROPRIATE_MATCHING({'desc': 'more than one object'})
 		if required and len(res) < 1:
 			raise ldap.NO_SUCH_OBJECT({'desc': 'no object'})
 		return res
-
-	def __search(self, *args, **kwargs):
-		response = kwargs.pop('response', None)
-		try:
-			rtype, rdata, rmsgid, resp_ctrls = self.lo.result3(self.lo.search_ext(*args, **kwargs))
-		except ldap.REFERRAL as exc:
-			if not self.follow_referral:
-				raise
-			lo_ref = self._handle_referral(exc)
-			rtype, rdata, rmsgid, resp_ctrls = lo_ref.result3(lo_ref.search_ext(*args, **kwargs))
-
-		if kwargs.get('serverctrls') and isinstance(response, dict):
-			response['ctrls'] = resp_ctrls
-		return rdata
 
 	def searchDn(self, filter='(objectClass=*)', base='', scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
 		# type: (str, str, str, bool, bool, int, int, Optional[List[ldap.controls.LDAPControl]]) -> List[str]
