@@ -259,7 +259,7 @@ class UCSTestUDM(object):
 
 		return cmd
 
-	def create_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, **kwargs):
+	def create_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, wait_for=False, **kwargs):
 		r"""
 		Creates a LDAP object via UDM. Values for UDM properties can be passed via keyword arguments
 		only and have to exactly match UDM property names (case-sensitive!).
@@ -291,10 +291,13 @@ class UCSTestUDM(object):
 		else:
 			raise UCSTestUDM_CreateUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
 
-		self.wait_for(modulename, dn, wait_for_replication, wait_for_drs_replication=(wait_for_replication and check_for_drs_replication))
+		if wait_for:
+			self.wait_for_everything(modulename, dn)
+		else:
+			self.wait_for(modulename, dn, wait_for_replication, wait_for_drs_replication=(wait_for_replication and check_for_drs_replication))
 		return dn
 
-	def modify_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, **kwargs):
+	def modify_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, wait_for=False, **kwargs):
 		"""
 		Modifies a LDAP object via UDM. Values for UDM properties can be passed via keyword arguments
 		only and have to exactly match UDM property names (case-sensitive!).
@@ -332,10 +335,13 @@ class UCSTestUDM(object):
 		else:
 			raise UCSTestUDM_ModifyUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
 
-		self.wait_for(modulename, dn, wait_for_replication, check_for_drs_replication)
+		if wait_for:
+			self.wait_for_everything(modulename, dn)
+		else:
+			self.wait_for(modulename, dn, wait_for_replication, check_for_drs_replication)
 		return dn
 
-	def move_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, **kwargs):
+	def move_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, wait_for=False, **kwargs):
 		if not modulename:
 			raise UCSTestUDM_MissingModulename()
 		dn = kwargs.get('dn')
@@ -362,10 +368,13 @@ class UCSTestUDM(object):
 		else:
 			raise UCSTestUDM_ModifyUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
 
-		self.wait_for(modulename, dn, wait_for_replication, check_for_drs_replication)
+		if wait_for:
+			self.wait_for_everything(modulename, dn)
+		else:
+			self.wait_for(modulename, dn, wait_for_replication, check_for_drs_replication)
 		return new_dn
 
-	def remove_object(self, modulename, wait_for_replication=True, **kwargs):
+	def remove_object(self, modulename, wait_for_replication=True, wait_for=False, **kwargs):
 		if not modulename:
 			raise UCSTestUDM_MissingModulename()
 		dn = kwargs.get('dn')
@@ -385,7 +394,15 @@ class UCSTestUDM(object):
 		if dn in self._cleanup.get(modulename, []):
 			self._cleanup[modulename].remove(dn)
 
-		self.wait_for(modulename, dn, wait_for_replication)
+		if wait_for:
+			self.wait_for_everything(modulename, dn)
+		else:
+			self.wait_for(modulename, dn, wait_for_replication)
+
+	def wait_for_everything(self, modulename, dn):
+		# TODO: intelligent handling, wait_for_drs_replication is not always needed?!
+		# TODO: give filter and dns instead of booleans
+		self.wait_for(modulename, dn, wait_for_replication=True, wait_for_drs_replication=True, wait_for_s4connector=True)
 
 	def wait_for(self, modulename, dn, wait_for_replication=True, wait_for_drs_replication=False, wait_for_s4connector=False):
 		conditions = []
