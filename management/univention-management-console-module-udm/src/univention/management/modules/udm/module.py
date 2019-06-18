@@ -248,7 +248,7 @@ class RessourceBase(object):
 			_links[params.get('rel')] = dict(params, href=link)
 			if params.get('rel') == 'self':
 				titleelement.text = params.get('title') or link or 'FIXME:notitle'
-			if params.get('rel') in ('stylesheet', 'icon', 'self', 'parent', 'udm/relation/object/remove', 'udm/relation/object/edit'):
+			if params.get('rel') in ('stylesheet', 'icon', 'self', 'up', 'udm/relation/object/remove', 'udm/relation/object/edit'):
 				continue
 			if params.get('rel') in navigation_relations:
 				continue
@@ -293,29 +293,7 @@ class RessourceBase(object):
 		if isinstance(response, dict):
 			self.add_link(response, 'stylesheet', self.abspath('css/style.css'))
 			for _form in response.get('_forms', []):
-				form = ET.Element('form', **dict((p, _form[p]) for p in ('id', 'name', 'method', 'action', 'rel', 'enctype') if _form.get(p)))
-				for field in _form.get('fields', []):
-					name = field['name']
-					label = ET.Element('label', **{'for': name})
-					label.text = field.get('label', name)
-					form.append(label)
-					elemattrs = dict((p, field[p]) for p in ('disabled', 'form', 'multiple', 'required', 'size', 'type', 'placeholder', 'accept', 'alt', 'autocomplete', 'checked', 'max', 'min', 'minlength', 'pattern', 'readonly', 'src', 'step') if field.get(p))
-					elemattrs.setdefault('type', 'text')
-					elemattrs.setdefault('placeholder', name)
-					if field.get('type') == 'checkbox' and field.get('checked'):
-						elemattrs['checked'] = 'checked'
-					element = ET.Element(field.get('element', 'input'), name=name, value=str(field['value']), **elemattrs)
-					form.append(element)
-					if field['element'] == 'select':
-						for option in field.get('options', []):
-							kwargs = {}
-							if field['value'] == option['value'] or (isinstance(field['value'], list) and option['value'] in field['value']):
-								kwargs['selected'] = 'selected'
-							ET.SubElement(element, 'option', value=option['value'], **kwargs).text = option.get('label', option['value'])
-					form.append(ET.Element('br'))
-				form.append(ET.Element('hr'))
-
-				root.insert(0, form)
+				root.insert(0, self.get_html_form(_form, response))
 			if isinstance(response.get('error'), dict) and response['error'].get('code', 0) >= 400:
 				error = ET.Element('div')
 				root.append(error)
@@ -341,6 +319,65 @@ class RessourceBase(object):
 				pre.text = json.dumps(r, indent=4)
 				root.append(pre)
 		return root
+
+	def get_html_layout(self, root, layout, properties):
+		for sec in layout:
+			section = ET.SubElement(root, 'section')
+			ET.SubElement(section, 'h1').text = sec['label']
+			fieldset = ET.SubElement(section, 'fieldset')
+			ET.SubElement(fieldset, 'legend').text = sec['description']
+			self.render_layout(sec['layout'], fieldset, properties)
+		return root
+
+	def render_layout(self, layout, fieldset, properties):
+		for elem in layout:
+			if isinstance(elem, dict):
+				sub_fieldset = ET.SubElement(fieldset, 'fieldset')
+				ET.SubElement(sub_fieldset, 'legend').text = elem['label']
+				if elem['description']:
+					ET.SubElement(sub_fieldset, 'h2').text = elem['description']
+				self.render_layout(elem['layout'], sub_fieldset, properties)
+				continue
+			elements = [elem] if isinstance(elem, basestring) else elem
+			for elem in elements:
+				try:
+					field = [x for x in properties if x['name'] in (elem, 'properties[%s]' % elem)][0]
+				except IndexError:
+					print('ELEM', elem)
+				else:
+					self.render_form_field(fieldset, field)
+			if elements:
+				ET.SubElement(fieldset, 'br')
+
+	def get_html_form(self, _form, response):
+		form = ET.Element('form', **dict((p, _form[p]) for p in ('id', 'name', 'method', 'action', 'rel', 'enctype') if _form.get(p)))
+		if _form.get('layout'):
+			self.get_html_layout(form, response['layout'], _form.get('fields'))
+			return form
+		for field in _form.get('fields', []):
+			self.render_form_field(form, field)
+			form.append(ET.Element('br'))
+		form.append(ET.Element('hr'))
+		return form
+
+	def render_form_field(self, form, field):
+		name = field['name']
+		label = ET.Element('label', **{'for': name})
+		label.text = field.get('label', name)
+		form.append(label)
+		elemattrs = dict((p, field[p]) for p in ('disabled', 'form', 'multiple', 'required', 'size', 'type', 'placeholder', 'accept', 'alt', 'autocomplete', 'checked', 'max', 'min', 'minlength', 'pattern', 'readonly', 'src', 'step') if field.get(p))
+		elemattrs.setdefault('type', 'text')
+		elemattrs.setdefault('placeholder', name)
+		if field.get('type') == 'checkbox' and field.get('checked'):
+			elemattrs['checked'] = 'checked'
+		element = ET.Element(field.get('element', 'input'), name=name, value=str(field['value']), **elemattrs)
+		form.append(element)
+		if field['element'] == 'select':
+			for option in field.get('options', []):
+				kwargs = {}
+				if field['value'] == option['value'] or (isinstance(field['value'], list) and option['value'] in field['value']):
+					kwargs['selected'] = 'selected'
+				ET.SubElement(element, 'option', value=option['value'], **kwargs).text = option.get('label', option['value'])
 
 	def urljoin(self, *args):
 		base = urlparse(self.request.full_url())
@@ -439,7 +476,7 @@ class RessourceBase(object):
 		return UDM_Module(flavor, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 
 	def navigation(self):
-		return ('udm/relation/object-modules', 'udm/relation/object-module', 'udm/relation/object-type', 'parent', 'self')
+		return ('udm/relation/object-modules', 'udm/relation/object-module', 'udm/relation/object-type', 'up', 'self')
 
 
 class Ressource(RessourceBase, RequestHandler):
@@ -509,6 +546,8 @@ class Relations(Ressource):
 		}
 		self.add_caching(public=True)
 		result = {}
+		self.add_link(result, 'self', self.urljoin(''), title=_('Link relations'))
+		self.add_link(result, 'up', self.urljoin('../'), title=_('All modules'))
 		if relation:
 			result['relation'] = univention_relations.get(relation, iana_relations.get(relation))
 			if not result['relation']:
@@ -585,7 +624,7 @@ class ObjectTypes(Ressource):
 
 		result = {'entries': [], }
 
-		self.add_link(result, 'parent', self.urljoin('../'), title=_('All modules'))
+		self.add_link(result, 'up', self.urljoin('../'), title=_('All modules'))
 		self.add_link(result, 'self', self.urljoin(''), title=title)
 		if module_type == 'navigation':
 			self.add_link(result, 'udm/relation/tree', self.abspath('container/dc/tree'))
@@ -751,6 +790,7 @@ class ContainerQueryBase(Ressource):
 			xmodule = UDM_Module(xmodule, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 			superordinate = univention.admin.objects.get_superordinate(xmodule.module, None, self.ldap_connection, container)  # TODO: should also better be in a thread
 			try:
+				ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000')
 				items = yield self.pool.submit(xmodule.search, container, scope=scope, superordinate=superordinate)
 				for item in items:
 					module = UDM_Module(item.module, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
@@ -819,7 +859,7 @@ class Properties(Ressource):
 		module = self.get_module(object_type)
 		module.load(force_reload=True)  # reload for instant extended attributes
 
-		self.add_link(result, 'parent', self.urljoin('.'))
+		self.add_link(result, 'up', self.urljoin('.'))
 		properties = module.get_properties(dn)
 		searchable = self.get_query_argument('searchable', False)
 		if searchable:
@@ -925,13 +965,11 @@ class Objects(ReportingBase):
 		module = self.get_module(object_type)
 		result = self._options(object_type)
 
-		# TODO: replace the superordinate concept by container
-		superordinate = self.get_query_argument('superordinate', None)
-
 		# TODO: allow to specify an own ldap filter?
 		# TODO: add "opened" instead of giving property names?
 		# TODO: rename fields in the response into "printable"?
 
+		search = bool(self.request.query)
 		container = self.get_query_argument('position', None)
 		objectProperty = self.get_query_argument('property', None)
 		objectPropertyValue = self.get_query_argument('propertyvalue', '*')
@@ -952,6 +990,10 @@ class Objects(ReportingBase):
 			items_per_page = None
 			page = None
 
+		# TODO: replace the superordinate concept with container
+		superordinate = None
+		if module.superordinate_names:
+			superordinate = self.get_query_argument('superordinate', None)
 		if superordinate:
 			mod = get_module(superordinate, superordinate, self.ldap_connection)
 			if not mod:
@@ -968,13 +1010,15 @@ class Objects(ReportingBase):
 			rule = ':caseIgnoreOrderingMatch' if by not in ('uidNumber',) else ''
 			serverctrls.append(SSSRequestControl(ordering_rules=['%s%s%s' % ('-' if reverse else '', by, rule)]))
 		entries = []
+		objects = []
 		try:
-			ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000')
-			for i in range(page or 1):  # FIXME: iterating over searches is slower than doing it all by hand
-				objects = yield self.pool.submit(module.search, container, objectProperty or None, objectPropertyValue, superordinate, scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls)
-				for control in ctrls.get('ctrls', []):
-					if control.controlType == SimplePagedResultsControl.controlType:
-						page_ctrl.cookie = control.cookie
+			if search:
+				ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000')
+				for i in range(page or 1):  # FIXME: iterating over searches is slower than doing it all by hand
+					objects = yield self.pool.submit(module.search, container, objectProperty or None, objectPropertyValue, superordinate, scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls)
+					for control in ctrls.get('ctrls', []):
+						if control.controlType == SimplePagedResultsControl.controlType:
+							page_ctrl.cookie = control.cookie
 		except SearchLimitReached as exc:
 			objects = []
 			result['errors'] = [str(exc)]
@@ -1031,6 +1075,8 @@ class Objects(ReportingBase):
 
 		form = self.add_form(result, self.urljoin(''), 'GET', rel='search')
 		self.add_form_element(form, 'position', container or '')
+		if module.superordinate_names:
+			self.add_form_element(form, 'superordinate', superordinate or '')
 		self.add_form_element(form, 'property', objectProperty or '', element='select', options=[{'value': '', 'label': _('Defaults')}] + [{'value': prop['id'], 'label': prop['label']} for prop in module.properties(None) if prop.get('searchable')])
 		self.add_form_element(form, 'propertyvalue', objectPropertyValue or (module.get_default_values(objectProperty) if objectProperty else '*'))
 		self.add_form_element(form, 'scope', scope, element='select', options=[{'value': 'sub'}, {'value': 'one'}, {'value': 'base'}, {'value': 'base+one'}])
@@ -1142,7 +1188,7 @@ class Objects(ReportingBase):
 		parent = self.get_parent_object_type(module)
 		methods = ['GET', 'OPTIONS']
 		self.add_link(result, 'udm/relation/object-modules', self.urljoin('../../'), title=_('All modules'))
-		self.add_link(result, 'parent', self.urljoin('../'), title=parent.object_name_plural)
+		self.add_link(result, 'up', self.urljoin('../'), title=parent.object_name_plural)
 		self.add_link(result, 'self', self.urljoin(''), title=module.object_name_plural)
 		if 'search' in module.operations:
 			self.add_link(result, 'search', self.urljoin(''), title=_('Search for %s') % (module.object_name_plural,))
@@ -1217,7 +1263,7 @@ class Object(Ressource):
 		self.add_link(props, 'udm/relation/object-modules', self.urljoin('../../'), title=_('All modules'))
 		self.add_link(props, 'udm/relation/object-module', self.urljoin('../'), title=self.get_parent_object_type(module).object_name_plural)
 		#self.add_link(props, 'udm/relation/object-types', self.urljoin('../'))
-		self.add_link(props, 'parent', self.urljoin('x/../'), name=module.name, title=module.object_name)
+		self.add_link(props, 'up', self.urljoin('x/../'), name=module.name, title=module.object_name)
 		self.add_link(props, 'self', self.urljoin(''), title=obj.dn)
 		self.add_link(props, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
 		self.add_link(props, 'udm/relation/object/remove', self.urljoin(''), method='DELETE')
@@ -1275,7 +1321,8 @@ class Object(Ressource):
 		props['dn'] = obj.dn
 		props['objectType'] = module.name
 		props['id'] = '+'.join(explode_rdn(obj.dn, True))
-		props['superordinate'] = obj.superordinate and obj.superordinate.dn
+		if module.superordinate_names:
+			props['superordinate'] = obj.superordinate and obj.superordinate.dn
 		props['position'] = ldap_connection.parentDn(obj.dn)
 		props['properties'] = values
 		props['options'] = dict((opt['id'], opt['value']) for opt in module.get_options(udm_object=obj))
@@ -1506,6 +1553,8 @@ class ObjectAdd(Ressource):
 		module.load(force_reload=True)  # reload for instant extended attributes
 		result['layout'] = module.get_layout()
 		result['properties'] = module.get_properties()
+		meta_layout = {'layout': ['position', 'template', 'options'], 'advanced': False, 'description': _('Meta information'), 'label': _('Meta information'), 'is_app_tab': False}
+		result['layout'].insert(0, meta_layout)
 
 		for policy in module.policies:
 			form = self.add_form(result, action=self.urljoin(policy['objectType']) + '/', method='GET', name=policy['objectType'], rel='udm/relation/policy-result')
@@ -1517,13 +1566,15 @@ class ObjectAdd(Ressource):
 		obj.open()
 		result['entry'] = Object.get_representation(module, obj, ['*'], self.ldap_connection)
 
-		form = self.add_form(result, action=self.urljoin('.'), method='POST')
+		form = self.add_form(result, action=self.urljoin('.'), method='POST', layout=True)
 		self.add_form_element(form, 'position', '', element='select', options=sorted(({'value': x, 'label': ldap_dn2path(x)} for x in module.get_default_containers()), key=lambda x: x['label'].lower()))
 		if module.template:
 			template = UDM_Module(module.template, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 			templates = template.search(ucr.get('ldap/base'))
 			self.add_form_element(form, 'template', '', element='select', options=[{'value': _obj.dn, 'label': _obj[template.identifies]} for _obj in templates])
-		self.add_form_element(form, 'superordinate', '')  # TODO: replace with <select>
+		if module.superordinate_names:
+			meta_layout['layout'].append('superordinate')
+			self.add_form_element(form, 'superordinate', '')  # TODO: replace with <select>
 
 		# FIXME: respect layout
 		for prop in result['properties']:
@@ -1534,9 +1585,12 @@ class ObjectAdd(Ressource):
 				continue
 			self.add_form_element(form, 'properties[%s]' % prop['id'], '', label=prop.get('label', prop['id']), placeholder=prop.get('label', prop['id']), title=prop.get('description', ''))
 
+		result['layout'].append({'layout': [], 'advanced': False, 'description': _('Policies'), 'label': _('Policies'), 'is_app_tab': False})
 		for policy in module.policies:
+			result['layout'][-1]['layout'].append('policies[%s]' % (policy['objectType'],))
 			self.add_form_element(form, 'policies[%s]' % (policy['objectType']), 'FIXME', label=policy['label'])  # FIXME: value should be the currently set policy
 
+		meta_layout['layout'].append('')
 		self.add_form_element(form, '', _('Create %s') % (module.object_name,), type='submit')
 
 		# TODO: wizard: first select position & template
@@ -1572,7 +1626,7 @@ class ObjectEdit(Ressource):
 		self.add_link(result, 'udm/relation/object-modules', self.urljoin('../../../'), title=_('All modules'))
 		self.add_link(result, 'udm/relation/object-module', self.urljoin('../../'), title=self.get_parent_object_type(module).object_name_plural)
 		self.add_link(result, 'udm/relation/object-type', self.urljoin('../'), title=module.object_name)
-		self.add_link(result, 'parent', self.urljoin('..', quote_dn(obj.dn)), title=obj.dn)
+		self.add_link(result, 'up', self.urljoin('..', quote_dn(obj.dn)), title=obj.dn)
 		self.add_link(result, 'self', self.urljoin(''), title=_('Modify'))
 
 		if 'remove' in module.operations:
@@ -1588,7 +1642,10 @@ class ObjectEdit(Ressource):
 			self.add_form_element(form, '', _('Move'), type='submit')
 
 		if 'edit' in module.operations:
+			obj.open()
 			result['layout'] = module.get_layout(dn if object_type != 'users/self' else None)
+			meta_layout = {'layout': ['options', ''], 'advanced': False, 'description': _('Meta information'), 'label': _('Meta information'), 'is_app_tab': False}
+			result['layout'].insert(0, meta_layout)
 			result['properties'] = module.get_properties(dn)
 			result['options'] = module.options.keys()
 			result['synced'] = ucr.is_true('ad/member') and 'synced' in obj.oldattr.get('univentionObjectFlag', [])
@@ -1609,22 +1666,29 @@ class ObjectEdit(Ressource):
 				self.add_form_element(form, '', _('Upload user photo'), type='submit')
 
 			# FIXME: respect layout
-			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='PUT')
+			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='PUT', layout=True)
 			for prop in result['properties']:
 				if prop['id'] == '$options$':
 					self.add_form_element(form, 'options', [opt['id'] for opt in prop['widgets'] if opt['value']], element='select', multiple='multiple', options=[{'value': opt['id'], 'label': opt['label']} for opt in prop['widgets']])
 
 			# TODO: iterate over all properties instead of obj.info, add better labels, etc.
 			password_properties = module.password_properties
-			for key, value in encode_properties(obj.module, obj.info, self.ldap_connection):
+			for prop in result['properties']:
+				key = prop['id']
+				if key.startswith('$'):
+					continue
+				value = dict(encode_properties(obj.module, {key: obj[key]}, self.ldap_connection))[key]
 				input_type = 'input'
 				if key in password_properties:
 					value = ''
 					input_type = 'password'
 				self.add_form_element(form, 'properties[%s]' % (key,), value, label=key, placeholder=key, type=input_type)
 
+			result['layout'].append({'layout': [], 'advanced': False, 'description': _('Policies'), 'label': _('Policies'), 'is_app_tab': False})
 			for policy in module.policies:
+				result['layout'][-1]['layout'].append('policies[%s]' % (policy['objectType'],))
 				self.add_form_element(form, 'policies[%s]' % (policy['objectType']), 'FIXME', label=policy['label'])  # FIXME: value should be the currently set policy
+			# TODO: add references
 
 			self.add_form_element(form, '', _('Modify %s') % (module.object_name,), type='submit')
 
