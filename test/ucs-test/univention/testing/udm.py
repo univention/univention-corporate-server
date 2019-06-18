@@ -144,6 +144,7 @@ class UCSTestUDM(object):
 	# map identifying UDM module or rdn-attribute to samba4 rdn attribute
 	def ad_object_identifying_filter(self, modulename, objname):
 		udm_mainmodule, udm_submodule = modulename.split('/', 1)
+		attr = ''
 		if udm_mainmodule == 'users':
 			attr = 'sAMAccountName'
 			con_search_filter = '(&(objectClass=user)(!(objectClass=computer))(userAccountControl:1.2.840.113556.1.4.803:=512))'
@@ -151,10 +152,11 @@ class UCSTestUDM(object):
 			attr = 'sAMAccountName'
 			con_search_filter = '(objectClass=group)'
 		elif udm_mainmodule == 'computers':
-			attr = 'cn'
 			if udm_submodule.startswith('domaincontroller_'):
+				attr = 'cn'
 				con_search_filter = '(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=532480))'
 			elif udm_submodule in ('windows', 'memberserver', 'ucc', 'linux', 'ubuntu', 'macos'):
+				attr = 'cn'
 				con_search_filter = '(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=4096))'
 		elif modulename == 'containers/cn':
 			attr = 'cn'
@@ -172,8 +174,9 @@ class UCSTestUDM(object):
 			elif udm_submodule in ('forward_zone', 'reverse_zone'):
 				con_search_filter = '(objectClass=dnsZone)'  # partly true, actually we map the SOA too
 
-		filter_template = '(&(%s=%%s)%s)' % (attr, con_search_filter)
-		return ldap.filter.filter_format(filter_template, (objname,))
+		if attr:
+			filter_template = '(&(%s=%%s)%s)' % (attr, con_search_filter)
+			return ldap.filter.filter_format(filter_template, (objname,))
 
 	__lo = None
 	__ucr = None
@@ -523,7 +526,8 @@ class UCSTestUDM(object):
 
 	def _wait_for_drs_removal(self, modulename, dn):
 		ad_object_identifying_filter = self.ad_object_identifying_filter(modulename, ldap.dn.str2dn(dn)[0][0][1])
-		wait_for_drs_replication(ad_object_identifying_filter, should_exist=False)
+		if ad_object_identifying_filter:
+			wait_for_drs_replication(ad_object_identifying_filter, should_exist=False)
 
 	def list_objects(self, module):
 		cmd = ['/usr/sbin/udm-test', module, 'list']
