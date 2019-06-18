@@ -94,8 +94,9 @@ class Instance(Base):
 
 	def traceback_as_thread_result(self, request):
 		#  UVMM uses this to pass-through traceback from internal umc calls to the frontend
+		result = None
 		try:
-			raise ThreadedError
+			raise ThreadedError()
 		except ThreadedError as result:
 			etype, value, _ = sys.exc_info()
 			thread = FakeThread()
@@ -104,6 +105,7 @@ class Instance(Base):
 
 	def umc_error_as_thread_result(self, request):
 		#  UVMM uses this to pass-through traceback from internal umc calls to the frontend
+		result = None
 		try:
 			raise UMC_Error("This is an UMC Error")
 		except UMC_Error as result:
