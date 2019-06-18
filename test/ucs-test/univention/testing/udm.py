@@ -512,6 +512,7 @@ class UCSTestUDM(object):
 		failedObjects = {}
 		print('Performing UCSTestUDM cleanup...')
 		objects = []
+		removed = []
 		for module, objs in self._cleanup.items():
 			objects.extend((module, dn) for dn in objs)
 
@@ -521,12 +522,10 @@ class UCSTestUDM(object):
 			print('removing DN:', dn)
 			child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 			(stdout, stderr) = child.communicate()
-			utils.wait_for_replication(verbose=False)
-
 			if child.returncode or 'Object removed:' not in stdout:
 				failedObjects.setdefault(module, []).append(dn)
 			else:
-				self._wait_for_drs_removal(module, dn)
+				removed.append((module, dn))
 
 		# simply iterate over the remaining objects again, removing them might just have failed for chronology reasons
 		# (e.g groups can not be removed while there are still objects using it as primary group)
@@ -536,13 +535,12 @@ class UCSTestUDM(object):
 
 				child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 				(stdout, stderr) = child.communicate()
-				utils.wait_for_replication(verbose=False)
 
 				if child.returncode or 'Object removed:' not in stdout:
 					print('Warning: Failed to remove %r object %r' % (module, dn), file=sys.stderr)
 					print('stdout=%r %r %r' % (stdout, stderr, self._lo.get(dn)), file=sys.stderr)
 				else:
-					self._wait_for_drs_removal(module, dn)
+					removed.append((module, dn))
 		self._cleanup = {}
 
 		for lock_type, values in self._cleanupLocks.items():
@@ -555,6 +553,11 @@ class UCSTestUDM(object):
 				except Exception as ex:
 					print('Failed to remove locking object "%s" during cleanup: %r' % (lockDN, ex))
 		self._cleanupLocks = {}
+
+		print('Cleanup: wait for replication and drs removal')
+		utils.wait_for_replication(verbose=False)
+		for module, dn in removed:
+			self._wait_for_drs_removal(module, dn)
 
 		self.stop_cli_server()
 		print('UCSTestUDM cleanup done')
