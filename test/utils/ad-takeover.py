@@ -75,7 +75,7 @@ def wait(client):
 	path = 'adtakeover/progress'
 	waited = 0
 	result = None
-	while waited <= 720:
+	while waited <= 1080:
 		sleep(10)
 		waited += 1
 		try:
