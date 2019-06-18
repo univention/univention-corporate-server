@@ -1,3 +1,9 @@
+ucs-test (9.0.2-73) unstable; urgency=medium
+
+  * Bug #47306: add link to screenshot of selenium failure
+
+ -- Florian Best <best@univention.de>  Tue, 18 Jun 2019 11:08:11 +0200
+
 ucs-test (9.0.2-72) unstable; urgency=medium
 
   * Bug #40236: 72_udm-extensions/40_test_udm_hook: Wait for LDAP

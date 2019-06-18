@@ -146,6 +146,8 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 
 		filename = '%s/%s_%s%s.png' % (self.screenshot_path, name, self.language, timestamp)
 		logger.info('Saving screenshot %r', filename)
+		if os.environ.get('JENKINS_WS'):
+			logger.info('Screenshot URL: %stest/selenium/%s' % (os.environ['JENKINS_WS'], filename))
 
 		self.driver.save_screenshot(filename)
 		screenshot = self.crop_screenshot_to_element(filename, xpath)
