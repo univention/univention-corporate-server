@@ -753,6 +753,7 @@ class ContainerQueryBase(Ressource):
 			xmodule = UDM_Module(xmodule, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 			superordinate = univention.admin.objects.get_superordinate(xmodule.module, None, self.ldap_connection, container)  # TODO: should also better be in a thread
 			try:
+				ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000')
 				items = yield self.pool.submit(xmodule.search, container, scope=scope, superordinate=superordinate)
 				for item in items:
 					module = UDM_Module(item.module, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
