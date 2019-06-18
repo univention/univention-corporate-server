@@ -71,7 +71,7 @@ download_packages ()
 	install_cmd="$(univention-config-registry get update/commands/install)"
 
 	for package in "$1"; do
-		LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | 
+		LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} |
 		apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages $(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
 
 		check_returnvalue $? "Failed to download required packages for ${package}"
@@ -151,7 +151,7 @@ app_has_no_repository ()
 	local app="$1"
 	[ -z "$app" ] && return 1
 	local value="$(get_app_attr $app WithoutRepository)"
-	echo "$value" | grep -qs True 
+	echo "$value" | grep -qs True
 	return $?
 }
 
@@ -168,7 +168,7 @@ app_appliance_AllowPreconfiguredSetup ()
 {
 	local app="$1"
 	local value="$(get_app_attr $app ApplianceAllowPreconfiguredSetup)"
-	. /usr/share/univention-lib/ucr.sh 
+	. /usr/share/univention-lib/ucr.sh
 	case "$(echo -n "$value" | tr '[:upper:]' '[:lower:]')" in
 		1|yes|on|true|enable|enabled) return 0 ;;
 		0|no|off|false|disable|disabled) return 1 ;;
@@ -766,7 +766,7 @@ ucr set xorg/autodetect=yes
 exit 0
 __EOF__
 	chmod +x /usr/lib/univention-system-setup/appliance-hooks.d/20_remove_xorg_config
-	 
+
 	# deactivate kernel module; prevents bootsplash from appearing/freezing in vmware and virtualbox
 	ucr set kernel/blacklist="$(ucr get kernel/blacklist);vmwgfx;vboxvideo"
 
@@ -793,7 +793,7 @@ __EOF__
 	# Activate DHCP
 	ucr set interfaces/eth0/type=dhcp dhclient/options/timeout=12
 	ucr unset gateway
-	 
+
 	# Set a default nameserver and remove all local configured nameserver
 	ucr set nameserver1=208.67.222.222
 	ucr unset nameserver2 nameserver3
@@ -824,7 +824,7 @@ __EOF__
 
 	# Remove persistent net rule
 	rm -f /etc/udev/rules.d/70-persistent-net.rules
-	 
+
 	ucr set system/setup/boot/start=true
 }
 
@@ -839,7 +839,7 @@ appliance_basesettings ()
 	univention-install -y univention-app-appliance
 	ucr set repository/online/unmaintained='no'
 	apt-get update
-	
+
 	/usr/sbin/univention-app-appliance --not-configure-portal $main_app
 	ucr set grub/title="Start $main_app"
 
@@ -978,14 +978,6 @@ setup_ec2 ()
 	cat > /root/growroot.patch <<__EOF__
 --- /usr/share/initramfs-tools/scripts/init-premount/growroot.orig  2017-09-06 11:21:31.340000000 -0400
 +++ /usr/share/initramfs-tools/scripts/init-premount/growroot   2017-09-06 11:21:51.044000000 -0400
-@@ -1,5 +1,7 @@
- #!/bin/sh
-  set -e
-
-+udevadm settle --timeout \${ROOTDELAY:-30}
-+ 
- PREREQS=""
- case \$1 in
 @@ -73,10 +73,6 @@
  	*) msg "exited '\$ret'" "\${out}"; exit 1;;
  esac
@@ -1020,7 +1012,7 @@ setup_ec2 ()
 __EOF__
 
 	patch -p1 -d/ < growroot.patch
-	rm growroot.patch
+	rm -f growroot.patch /usr/share/initramfs-tools/scripts/init-premount/growroot.orig
 	update-initramfs -uk all
 
 	# resize2fs
