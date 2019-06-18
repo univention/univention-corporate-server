@@ -1,3 +1,9 @@
+ucs-test (9.0.2-74) unstable; urgency=medium
+
+  * Bug #49671: Add check to package object from cache
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 18 Jun 2019 11:11:30 +0200
+
 ucs-test (9.0.2-73) unstable; urgency=medium
 
   * Bug #47306: add link to screenshot of selenium failure
