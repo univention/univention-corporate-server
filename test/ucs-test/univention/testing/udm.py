@@ -145,6 +145,7 @@ class UCSTestUDM(object):
 	def ad_object_identifying_filter(self, modulename, objname):
 		udm_mainmodule, udm_submodule = modulename.split('/', 1)
 		attr = ''
+		ad_ldap_controls = None
 		if udm_mainmodule == 'users':
 			attr = 'sAMAccountName'
 			con_search_filter = '(&(objectClass=user)(!(objectClass=computer))(userAccountControl:1.2.840.113556.1.4.803:=512))'
@@ -169,6 +170,7 @@ class UCSTestUDM(object):
 			con_search_filter = 'objectClass=organizationalUnit'
 		elif udm_mainmodule == 'dns':
 			attr = 'dc'
+			ad_ldap_controls = ["search_options:1:2"]
 			if udm_submodule in ('alias', 'host_record', 'ptr_record', 'srv_record', 'txt_record', 'ns_record', 'host_record'):
 				con_search_filter = '(&(objectClass=dnsNode)(!(dNSTombstoned=TRUE)))'
 			elif udm_submodule in ('forward_zone', 'reverse_zone'):
@@ -176,7 +178,8 @@ class UCSTestUDM(object):
 
 		if attr:
 			filter_template = '(&(%s=%%s)%s)' % (attr, con_search_filter)
-			return ldap.filter.filter_format(filter_template, (objname,))
+			ad_ldap_search_args = {'ldap_filter': ldap.filter.filter_format(filter_template, (objname,)), 'controls': ad_ldap_controls}
+			return ad_ldap_search_args
 
 	__lo = None
 	__ucr = None
@@ -525,9 +528,9 @@ class UCSTestUDM(object):
 		self._cleanupLocks.setdefault(lockType, []).append(lockValue)
 
 	def _wait_for_drs_removal(self, modulename, dn):
-		ad_object_identifying_filter = self.ad_object_identifying_filter(modulename, ldap.dn.str2dn(dn)[0][0][1])
-		if ad_object_identifying_filter:
-			wait_for_drs_replication(ad_object_identifying_filter, should_exist=False)
+		ad_ldap_search_args = self.ad_object_identifying_filter(modulename, ldap.dn.str2dn(dn)[0][0][1])
+		if ad_ldap_search_args:
+			wait_for_drs_replication(**ad_ldap_search_args, should_exist=False)
 
 	def list_objects(self, module):
 		cmd = ['/usr/sbin/udm-test', module, 'list']
