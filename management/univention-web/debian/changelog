@@ -1,3 +1,9 @@
+univention-web (3.0.5-16) unstable; urgency=medium
+
+  * Bug #47306: convert to ES5
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 18 Jun 2019 15:44:37 +0200
+
 univention-web (3.0.5-15) unstable; urgency=medium
 
   * Bug #47306: add debug methods to umc/tools
