@@ -932,6 +932,7 @@ class Objects(ReportingBase):
 		# TODO: add "opened" instead of giving property names?
 		# TODO: rename fields in the response into "printable"?
 
+		search = bool(self.request.query)
 		container = self.get_query_argument('position', None)
 		objectProperty = self.get_query_argument('property', None)
 		objectPropertyValue = self.get_query_argument('propertyvalue', '*')
@@ -952,7 +953,7 @@ class Objects(ReportingBase):
 			items_per_page = None
 			page = None
 
-		# TODO: replace the superordinate concept by container
+		# TODO: replace the superordinate concept with container
 		superordinate = None
 		if module.superordinate_names:
 			superordinate = self.get_query_argument('superordinate', None)
@@ -972,13 +973,15 @@ class Objects(ReportingBase):
 			rule = ':caseIgnoreOrderingMatch' if by not in ('uidNumber',) else ''
 			serverctrls.append(SSSRequestControl(ordering_rules=['%s%s%s' % ('-' if reverse else '', by, rule)]))
 		entries = []
+		objects = []
 		try:
-			ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000')
-			for i in range(page or 1):  # FIXME: iterating over searches is slower than doing it all by hand
-				objects = yield self.pool.submit(module.search, container, objectProperty or None, objectPropertyValue, superordinate, scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls)
-				for control in ctrls.get('ctrls', []):
-					if control.controlType == SimplePagedResultsControl.controlType:
-						page_ctrl.cookie = control.cookie
+			if search:
+				ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000')
+				for i in range(page or 1):  # FIXME: iterating over searches is slower than doing it all by hand
+					objects = yield self.pool.submit(module.search, container, objectProperty or None, objectPropertyValue, superordinate, scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls)
+					for control in ctrls.get('ctrls', []):
+						if control.controlType == SimplePagedResultsControl.controlType:
+							page_ctrl.cookie = control.cookie
 		except SearchLimitReached as exc:
 			objects = []
 			result['errors'] = [str(exc)]
