@@ -2,8 +2,8 @@ product: ucs
 release: "4.3"
 version: [4]
 scope: ucs_4.3-0-errata4.3-4
-src: linux
-fix: 4.9.168-1+deb9u3
+src: univention-kernel-image-signed
+fix: 4.0.0-14A~4.3.0.201906181332
 desc: |
  This update addresses the following issues:
  * Heap overflow in mwifiex_update_bss_desc_with_ie function in
@@ -28,7 +28,7 @@ desc: |
  * fs/ext4/extents.c leads to information disclosure (CVE-2019-11833)
  * sensitive information disclosure from kernel stack memory via HIDPCONNADD
    command (CVE-2019-11884)
-note: This is the 1st of two related updates.
+note: This is the 2nd of two related updates.
 bug: [49677]
 cve:
 - CVE-2019-3846
