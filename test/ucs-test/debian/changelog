@@ -1,3 +1,9 @@
+ucs-test (9.0.2-84) unstable; urgency=medium
+
+  * Bug #49415: Use wait_for in some s4 connector corner cases
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Jun 2019 16:23:52 +0200
+
 ucs-test (9.0.2-83) unstable; urgency=medium
 
   * Bug #47306: added 86_selenium/16_umc_memory_leaks + code cleanup

@@ -36,6 +36,7 @@ if __name__ == '__main__':
 				dnsEntryZoneForward=udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_string(numeric=False)),
 				name=computerName,
 				ip=computerIp,
+				wait_for=True,
 			)
 			computerAssociatedDomain = ldap.getAttr(computer, 'associatedDomain')[0]
 

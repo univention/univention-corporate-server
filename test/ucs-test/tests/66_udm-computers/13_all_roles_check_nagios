@@ -40,7 +40,7 @@ if __name__ == '__main__':
 			# FIXME: workaround for remaining locks
 			udm.addCleanupLock('aRecord', computerProperties['ip'])
 
-			computer = udm.create_object(role, **computerProperties)
+			computer = udm.create_object(role, wait_for=True, **computerProperties)
 
 			# validate that nagios related properties of computer are set correctly
 			utils.verify_ldap_object(computer, {
