@@ -326,10 +326,7 @@ class UCSTestUDM(object):
 		else:
 			raise UCSTestUDM_CreateUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
 
-		if wait_for and wait_for_replication:
-			self.wait_for_everything(modulename, dn)
-		else:
-			self.wait_for(modulename, dn, wait_for_replication, wait_for_drs_replication=(wait_for_replication and check_for_drs_replication))
+		self.wait_for(modulename, dn, wait_for_replication, everything=wait_for)
 		return dn
 
 	def modify_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, wait_for=False, **kwargs):
@@ -370,10 +367,7 @@ class UCSTestUDM(object):
 		else:
 			raise UCSTestUDM_ModifyUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
 
-		if wait_for and wait_for_replication:
-			self.wait_for_everything(modulename, dn)
-		else:
-			self.wait_for(modulename, dn, wait_for_replication, check_for_drs_replication)
+		self.wait_for(modulename, dn, wait_for_replication, everything=wait_for)
 		return dn
 
 	def move_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, wait_for=False, **kwargs):
@@ -403,10 +397,7 @@ class UCSTestUDM(object):
 		else:
 			raise UCSTestUDM_ModifyUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
 
-		if wait_for and wait_for_replication:
-			self.wait_for_everything(modulename, dn)
-		else:
-			self.wait_for(modulename, dn, wait_for_replication, check_for_drs_replication)
+		self.wait_for(modulename, dn, wait_for_replication, everything=wait_for)
 		return new_dn
 
 	def remove_object(self, modulename, wait_for_replication=True, wait_for=False, **kwargs):
@@ -429,29 +420,34 @@ class UCSTestUDM(object):
 		if dn in self._cleanup.get(modulename, []):
 			self._cleanup[modulename].remove(dn)
 
-		if wait_for and wait_for_replication:
-			self.wait_for_everything(modulename, dn)
-		else:
-			self.wait_for(modulename, dn, wait_for_replication)
+		self.wait_for(modulename, dn, wait_for_replication, everything=wait_for)
 
-	def wait_for_everything(self, modulename, dn):
-		# TODO: intelligent handling, wait_for_drs_replication is not always needed?!
-		# TODO: give filter and dns instead of booleans
-		self.wait_for(modulename, dn, wait_for_replication=True, wait_for_drs_replication=True, wait_for_s4connector=True)
-
-	def wait_for(self, modulename, dn, wait_for_replication=True, wait_for_drs_replication=False, wait_for_s4connector=False):
+	def wait_for(self, modulename, dn, wait_for_replication=True, wait_for_drs_replication=False, wait_for_s4connector=False, everything=False):
+		# the order of the conditions is imporant
 		conditions = []
 		if wait_for_replication:
 			conditions.append((utils.ReplicationType.LISTENER, wait_for_replication))
+
+		if everything:
+			wait_for_drs_replication = True
+			wait_for_s4connector = True
+
+		ldap_filter_s4 = self.ad_object_identifying_filter(modulename, ldap.dn.str2dn(dn)[0][0][1])
 		drs_replication = wait_for_drs_replication
 		if wait_for_drs_replication and not isinstance(wait_for_drs_replication, basestring):
-			drs_replication = self.ad_object_identifying_filter(modulename, ldap.dn.str2dn(dn)[0][0][1])
-		if wait_for_s4connector:
-			conditions.append((utils.ReplicationType.S4C_TO_UCS, wait_for_s4connector))
+			drs_replication = ldap_filter_s4
+
+		if wait_for_s4connector and ldap_filter_s4:
+			if self._ucr.get('samba4/ldap/base'):
+				conditions.append((utils.ReplicationType.S4C_FROM_UCS, ldap_filter_s4))
+
 		if drs_replication:
 			if not wait_for_replication:
 				conditions.append((utils.ReplicationType.LISTENER, wait_for_replication))
-			conditions.append((utils.ReplicationType.DRS, drs_replication))
+
+			if self._ucr.get('server/role') in ('domaincontroller_backup', 'domaincontroller_slave'):
+				conditions.append((utils.ReplicationType.DRS, drs_replication))
+
 		return utils.wait_for(conditions, verbose=False)
 
 	def create_user(self, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
