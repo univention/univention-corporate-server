@@ -1015,14 +1015,6 @@ setup_ec2 ()
 	cat > /root/growroot.patch <<__EOF__
 --- /usr/share/initramfs-tools/scripts/init-premount/growroot.orig  2017-09-06 11:21:31.340000000 -0400
 +++ /usr/share/initramfs-tools/scripts/init-premount/growroot   2017-09-06 11:21:51.044000000 -0400
-@@ -1,5 +1,7 @@
- #!/bin/sh
-  set -e
-
-+udevadm settle --timeout \${ROOTDELAY:-30}
-+ 
- PREREQS=""
- case \$1 in
 @@ -73,10 +73,6 @@
  	*) msg "exited '\$ret'" "\${out}"; exit 1;;
  esac
@@ -1057,7 +1049,7 @@ setup_ec2 ()
 __EOF__
 
 	patch -p1 -d/ < growroot.patch
-	rm growroot.patch
+	rm -f growroot.patch /usr/share/initramfs-tools/scripts/init-premount/growroot.orig
 	update-initramfs -uk all
 
 	# resize2fs
