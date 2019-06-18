@@ -3,6 +3,45 @@
 set -x
 set -e
 
+test_printers () {
+	set -x
+	set -e
+
+	. product-tests/samba/utils.sh
+	# unstable, deactivated check later
+	# Druckerzugriff mit serverseitig hinterlegten Druckertreibern:
+	#  Anlegen eines Druckers auf dem DC Slave und auf dem Memberserver
+	#  Zugriff als Domänen-Administrator vom Windowsclient aus
+	#  serverseitig einen Druckertreiber hinterlegen, am einfachsten von 32bit XP aus (Windows 7 ist ein bisschen anders, 64bit ist zusätzlich hakelig ).
+	#  Verbinden eines Druckers als unpriviligierter Benutzer vom Windowsclient aus
+	#  Testdruck von wordpad aus auf den verbundenen Drucker
+	python shared-utils/ucs-winrm.py setup-printer --printername Masterprinter --server "$MASTER"
+	sleep 20
+	rpcclient  -UAdministrator%"$ADMIN_PASSWORD" localhost -c enumprinters
+	python shared-utils/ucs-winrm.py print-on-printer --printername Masterprinter --server "$MASTER" --impersonate --run-as-user Administrator
+	python shared-utils/ucs-winrm.py print-on-printer --printername Masterprinter --server "$MASTER" --impersonate --run-as-user newuser02 --run-as-password "Univention.99"
+	sleep 60
+	stat /var/spool/cups-pdf/administrator/job_1-document.pdf
+	stat /var/spool/cups-pdf/newuser02/job_2-document.pdf
+	# Druckerzugriff ohne serverseitige Druckertreiber
+	#  Anlegen eines Druckers auf dem DC Slave und auf dem Memberserver
+	#  Verbinden zum Drucker als unpriviligierter Benutzer vom Windowsclient aus
+	#  Testdruck von wordpad aus auf den verbundenen Drucker
+	python shared-utils/ucs-winrm.py setup-printer --printername Memberprinter --server "$MEMBER"
+	python shared-utils/ucs-winrm.py setup-printer --printername Memberprinter --server "ucs-member.sambatest.local" --client $WIN2016
+	sleep 20
+	python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server $MEMBER \
+		--impersonate --run-as-user Administrator
+	python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server "$MEMBER" \
+		--impersonate --run-as-user newuser02 --run-as-password "Univention.99"
+	python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server "ucs-member.sambatest.local" \
+		--impersonate --run-as-user newuser02 --run-as-password "Univention.99" --client $WIN2016
+	sleep 60
+	run_on_ucs_hosts $MEMBER 'stat /var/spool/cups-pdf/administrator/job_1-document.pdf'
+	run_on_ucs_hosts $MEMBER 'stat /var/spool/cups-pdf/newuser02/job_2-document.pdf'
+	run_on_ucs_hosts $MEMBER 'stat /var/spool/cups-pdf/newuser02/job_3-document.pdf'
+}
+
 test_master () {
 
 	# Es sollte eine größere UCS Domäne aufgesetzt werden, also DC Master, DC Backup, DC Slave und Memberserver
@@ -185,40 +224,8 @@ test_master () {
 	# in UMC Gruppenberechtigungen vergeben (valid users = @Gruppe) und prüfen TODO
 
 	# printing
-
-	## unstable, deactivated check later
-	## # Druckerzugriff mit serverseitig hinterlegten Druckertreibern:
-	## #  Anlegen eines Druckers auf dem DC Slave und auf dem Memberserver
-	## #  Zugriff als Domänen-Administrator vom Windowsclient aus
-	## #  serverseitig einen Druckertreiber hinterlegen, am einfachsten von 32bit XP aus (Windows 7 ist ein bisschen anders, 64bit ist zusätzlich hakelig ).
-	## #  Verbinden eines Druckers als unpriviligierter Benutzer vom Windowsclient aus
-	## #  Testdruck von wordpad aus auf den verbundenen Drucker
-	## python shared-utils/ucs-winrm.py setup-printer --printername Masterprinter --server "$MASTER"
-	## sleep 20
-	## rpcclient  -UAdministrator%"$ADMIN_PASSWORD" localhost -c enumprinters
-	## python shared-utils/ucs-winrm.py print-on-printer --printername Masterprinter --server "$MASTER" --impersonate --run-as-user Administrator
-	## python shared-utils/ucs-winrm.py print-on-printer --printername Masterprinter --server "$MASTER" --impersonate --run-as-user newuser02 --run-as-password "Univention.99"
-	## sleep 60
-	## stat /var/spool/cups-pdf/administrator/job_1-document.pdf
-	## stat /var/spool/cups-pdf/newuser02/job_2-document.pdf
-	## # Druckerzugriff ohne serverseitige Druckertreiber
-	## #  Anlegen eines Druckers auf dem DC Slave und auf dem Memberserver
-	## #  Verbinden zum Drucker als unpriviligierter Benutzer vom Windowsclient aus
-	## #  Testdruck von wordpad aus auf den verbundenen Drucker
-	## python shared-utils/ucs-winrm.py setup-printer --printername Memberprinter --server "$MEMBER"
-	## python shared-utils/ucs-winrm.py setup-printer --printername Memberprinter --server "ucs-member.sambatest.local" --client $WIN2016
-	## sleep 20
-	## python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server $MEMBER \
-	## 	--impersonate --run-as-user Administrator
-	## python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server "$MEMBER" \
-	## 	--impersonate --run-as-user newuser02 --run-as-password "Univention.99"
-	## python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server "ucs-member.sambatest.local" \
-	## 	--impersonate --run-as-user newuser02 --run-as-password "Univention.99" --client $WIN2016
-	## sleep 60
-	## run_on_ucs_hosts $MEMBER 'stat /var/spool/cups-pdf/administrator/job_1-document.pdf'
-	## run_on_ucs_hosts $MEMBER 'stat /var/spool/cups-pdf/newuser02/job_2-document.pdf'
-	## run_on_ucs_hosts $MEMBER 'stat /var/spool/cups-pdf/newuser02/job_3-document.pdf'
-	## # printer GPO's TODO
+	test_printers
+	# printer GPO's TODO
 
 	# Passworte
 
