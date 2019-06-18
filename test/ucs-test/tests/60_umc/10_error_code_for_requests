@@ -31,7 +31,10 @@ def kill_ucstest():
 		if not (search_mask - set(process.cmdline())):
 			print 'Found module process %s %r and killing it ...' % (process.pid, process.cmdline(),)
 			process.kill()
-			process.terminate()
+			try:  # if kill did not succeed, terminate
+				process.terminate()
+			except psutil.NoSuchProcess:
+				pass
 	time.sleep(0.5)
 	for process in psutil.process_iter():
 		if not (search_mask - set(process.cmdline())):
