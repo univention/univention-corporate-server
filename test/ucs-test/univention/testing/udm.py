@@ -146,6 +146,7 @@ class UCSTestUDM(object):
 		udm_mainmodule, udm_submodule = modulename.split('/', 1)
 		attr = ''
 		ad_ldap_controls = None
+		con_search_filter = ''
 		if udm_mainmodule == 'users':
 			attr = 'sAMAccountName'
 			con_search_filter = '(&(objectClass=user)(!(objectClass=computer))(userAccountControl:1.2.840.113556.1.4.803:=512))'
@@ -153,7 +154,7 @@ class UCSTestUDM(object):
 			attr = 'sAMAccountName'
 			con_search_filter = '(objectClass=group)'
 		elif udm_mainmodule == 'computers':
-			if udm_submodule.startswith('domaincontroller_'):
+			if udm_submodule.startswith('domaincontroller_') or udm_submodule == 'windows_domaincontroller':
 				attr = 'cn'
 				con_search_filter = '(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=532480))'
 			elif udm_submodule in ('windows', 'memberserver', 'ucc', 'linux', 'ubuntu', 'macos'):
