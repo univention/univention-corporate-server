@@ -76,7 +76,7 @@ def wait(client):
 	waited = 0
 	result = None
 	while waited <= 1080:
-		sleep(10)
+		sleep(11)
 		waited += 1
 		try:
 			result = client.umc_command(path).result
