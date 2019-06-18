@@ -2045,22 +2045,22 @@ define([
 		 */
 		dijitRegistryToMap: function() {
 			var m = {};
-			dijit.registry.toArray().forEach(w => {
+			dijit.registry.toArray().forEach(function(w) {
 				var k = w.declaredClass;
 				var o = m[k] = m[k] || {
 					count: 0,
-					id: [],
+					id: []
 				};
 				o.count += 1;
-				var id = `id: ${w.id}`;
+				var od = lang.replace('id: {0}', [w.id]);
 				if (w.domNode) {
-					let wid = w.domNode.getAttribute('widgetid');
+					var wid = w.domNode.getAttribute('widgetid');
 					if (w.id !== wid) {
-						id = `${id}; wid: ${wid}`;
+						id = lang.replace('{0}; wid: {1}', [id, wid]);
 					}
 				}
 				if (w.class) {
-					id = `${id}; class: ${w.class}`;
+					id = lang.replace('{0}; class: {1}', [id, w.class]);
 				}
 				o.id.push(id);
 			});
@@ -2074,10 +2074,10 @@ define([
 		 */
 		dijitRegistryMapDifference: function(minuend, subtrahend) {
 			var difference = lang.clone(minuend);
-			Object.keys(subtrahend).forEach(prop => {
+			Object.keys(subtrahend).forEach(function(prop) {
 				if (difference.hasOwnProperty(prop)) {
 					difference[prop].count = difference[prop].count - subtrahend[prop].count;
-					difference[prop].id = difference[prop].id.filter(e => !subtrahend[prop].id.includes(e));
+					difference[prop].id = difference[prop].id.filter(function(e) { return !subtrahend[prop].id.includes(e); });
 				} else {
 					difference[prop] = lang.clone(subtrahend[prop]);
 					difference[prop].count *= -1;
