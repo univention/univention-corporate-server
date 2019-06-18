@@ -1,3 +1,9 @@
+univention-web (3.0.5-15) unstable; urgency=medium
+
+  * Bug #47306: add debug methods to umc/tools
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 18 Jun 2019 14:32:46 +0200
+
 univention-web (3.0.5-14) unstable; urgency=medium
 
   * Bug #45318: make target="_blank" for portal entries configurable
