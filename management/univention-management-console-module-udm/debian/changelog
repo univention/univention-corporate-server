@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.12-10) unstable; urgency=medium
+
+  * Bug #27816: add enhancements, e.g. layout improovments
+
+ -- Florian Best <best@univention.de>  Tue, 18 Jun 2019 21:23:42 +0200
+
 univention-management-console-module-udm (9.0.12-9) unstable; urgency=medium
 
   * Bug #27816: fix stylesheet path and initial service starting
