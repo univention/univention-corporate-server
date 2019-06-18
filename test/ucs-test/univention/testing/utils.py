@@ -171,7 +171,7 @@ def verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=Tru
 			if difference:
 				unexpected_values[attribute] = difference
 
-	values_missing = '\n'.join('%s: %r, missing: \'%s\'' % (attribute, attr.get(attribute), '\', '.join(difference)) for attribute, difference in values_missing.iteritems())
+	values_missing = '\n'.join('%s: %r, missing   : \'%s\'' % (attribute, attr.get(attribute), '\', '.join(difference)) for attribute, difference in values_missing.iteritems())
 	unexpected_values = '\n'.join('%s: %r, unexpected: \'%s\'' % (attribute, attr.get(attribute), '\', '.join(difference)) for attribute, difference in unexpected_values.iteritems())
 	msg = 'DN: %s\n%s\n%s' % (baseDn, values_missing, unexpected_values)
 
