@@ -141,11 +141,39 @@ class UCSTestUDM(object):
 		'computers/macos',
 		'computers/ipmanagedclient')
 
-	# map UDM module or rdn-attribute to samba4 rdn attribute
-	S4_MAPPING = {
-		'container/ou': 'ou',
-		'uid': 'CN',
-	}
+	# map identifying UDM module or rdn-attribute to samba4 rdn attribute
+	def ad_object_identifying_filter(self, modulename, objname):
+		udm_mainmodule, udm_submodule = modulename.split('/', 1)
+		if udm_mainmodule == 'users':
+			attr = 'sAMAccountName'
+			con_search_filter = '(&(objectClass=user)(!(objectClass=computer))(userAccountControl:1.2.840.113556.1.4.803:=512))'
+		elif udm_mainmodule == 'groups':
+			attr = 'sAMAccountName'
+			con_search_filter = '(objectClass=group)'
+		elif udm_mainmodule == 'computers':
+			attr = 'cn'
+			if udm_submodule.startswith('domaincontroller_'):
+				con_search_filter = '(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=532480))'
+			elif udm_submodule in ('windows', 'memberserver', 'ucc', 'linux', 'ubuntu', 'macos'):
+				con_search_filter = '(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=4096))'
+		elif modulename == 'containers/cn':
+			attr = 'cn'
+			con_search_filter = '(&(|(objectClass=container)(objectClass=builtinDomain))(!(objectClass=groupPolicyContainer)))'
+		elif modulename == 'container/msgpo':
+			attr = 'cn'
+			con_search_filter = '(&(objectClass=container)(objectClass=groupPolicyContainer))'
+		elif modulename == 'containers/ou':
+			attr = 'ou'
+			con_search_filter = 'objectClass=organizationalUnit'
+		elif udm_mainmodule == 'dns':
+			attr = 'dc'
+			if udm_submodule in ('alias', 'host_record', 'ptr_record', 'srv_record', 'txt_record', 'ns_record', 'host_record'):
+				con_search_filter = '(&(objectClass=dnsNode)(!(dNSTombstoned=TRUE)))'
+			elif udm_submodule in ('forward_zone', 'reverse_zone'):
+				con_search_filter = '(objectClass=dnsZone)'  # partly true, actually we map the SOA too
+
+		filter_template = '(&(%s=%%s)%s)' % (attr, con_search_filter)
+		return ldap.filter.filter_format(filter_template, (objname,))
 
 	__lo = None
 	__ucr = None
@@ -410,8 +438,7 @@ class UCSTestUDM(object):
 			conditions.append((utils.ReplicationType.LISTENER, wait_for_replication))
 		drs_replication = wait_for_drs_replication
 		if wait_for_drs_replication and not isinstance(wait_for_drs_replication, basestring):
-			attr = self.S4_MAPPING.get(modulename, 'cn')
-			drs_replication = ldap.filter.filter_format('%s=%s', (attr, ldap.dn.str2dn(dn)[0][0][1],))
+			drs_replication = self.ad_object_identifying_filter(modulename, ldap.dn.str2dn(dn)[0][0][1])
 		if wait_for_s4connector:
 			conditions.append((utils.ReplicationType.S4C_TO_UCS, wait_for_s4connector))
 		if drs_replication:
