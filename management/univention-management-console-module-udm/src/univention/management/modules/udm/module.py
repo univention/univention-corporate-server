@@ -293,29 +293,7 @@ class RessourceBase(object):
 		if isinstance(response, dict):
 			self.add_link(response, 'stylesheet', self.abspath('css/style.css'))
 			for _form in response.get('_forms', []):
-				form = ET.Element('form', **dict((p, _form[p]) for p in ('id', 'name', 'method', 'action', 'rel', 'enctype') if _form.get(p)))
-				for field in _form.get('fields', []):
-					name = field['name']
-					label = ET.Element('label', **{'for': name})
-					label.text = field.get('label', name)
-					form.append(label)
-					elemattrs = dict((p, field[p]) for p in ('disabled', 'form', 'multiple', 'required', 'size', 'type', 'placeholder', 'accept', 'alt', 'autocomplete', 'checked', 'max', 'min', 'minlength', 'pattern', 'readonly', 'src', 'step') if field.get(p))
-					elemattrs.setdefault('type', 'text')
-					elemattrs.setdefault('placeholder', name)
-					if field.get('type') == 'checkbox' and field.get('checked'):
-						elemattrs['checked'] = 'checked'
-					element = ET.Element(field.get('element', 'input'), name=name, value=str(field['value']), **elemattrs)
-					form.append(element)
-					if field['element'] == 'select':
-						for option in field.get('options', []):
-							kwargs = {}
-							if field['value'] == option['value'] or (isinstance(field['value'], list) and option['value'] in field['value']):
-								kwargs['selected'] = 'selected'
-							ET.SubElement(element, 'option', value=option['value'], **kwargs).text = option.get('label', option['value'])
-					form.append(ET.Element('br'))
-				form.append(ET.Element('hr'))
-
-				root.insert(0, form)
+				root.insert(0, self.get_html_form(_form, response))
 			if isinstance(response.get('error'), dict) and response['error'].get('code', 0) >= 400:
 				error = ET.Element('div')
 				root.append(error)
@@ -341,6 +319,65 @@ class RessourceBase(object):
 				pre.text = json.dumps(r, indent=4)
 				root.append(pre)
 		return root
+
+	def get_html_layout(self, root, layout, properties):
+		for sec in layout:
+			section = ET.SubElement(root, 'section')
+			ET.SubElement(section, 'h1').text = sec['label']
+			fieldset = ET.SubElement(section, 'fieldset')
+			ET.SubElement(fieldset, 'legend').text = sec['description']
+			self.render_layout(sec['layout'], fieldset, properties)
+		return root
+
+	def render_layout(self, layout, fieldset, properties):
+		for elem in layout:
+			if isinstance(elem, dict):
+				sub_fieldset = ET.SubElement(fieldset, 'fieldset')
+				ET.SubElement(sub_fieldset, 'legend').text = elem['label']
+				if elem['description']:
+					ET.SubElement(sub_fieldset, 'h2').text = elem['description']
+				self.render_layout(elem['layout'], sub_fieldset, properties)
+				continue
+			elements = [elem] if isinstance(elem, basestring) else elem
+			for elem in elements:
+				try:
+					field = [x for x in properties if x['name'] in (elem, 'properties[%s]' % elem)][0]
+				except IndexError:
+					print('ELEM', elem)
+				else:
+					self.render_form_field(fieldset, field)
+			if elements:
+				ET.SubElement(fieldset, 'br')
+
+	def get_html_form(self, _form, response):
+		form = ET.Element('form', **dict((p, _form[p]) for p in ('id', 'name', 'method', 'action', 'rel', 'enctype') if _form.get(p)))
+		if _form.get('layout'):
+			self.get_html_layout(form, response['layout'], _form.get('fields'))
+			return form
+		for field in _form.get('fields', []):
+			self.render_form_field(form, field)
+			form.append(ET.Element('br'))
+		form.append(ET.Element('hr'))
+		return form
+
+	def render_form_field(self, form, field):
+		name = field['name']
+		label = ET.Element('label', **{'for': name})
+		label.text = field.get('label', name)
+		form.append(label)
+		elemattrs = dict((p, field[p]) for p in ('disabled', 'form', 'multiple', 'required', 'size', 'type', 'placeholder', 'accept', 'alt', 'autocomplete', 'checked', 'max', 'min', 'minlength', 'pattern', 'readonly', 'src', 'step') if field.get(p))
+		elemattrs.setdefault('type', 'text')
+		elemattrs.setdefault('placeholder', name)
+		if field.get('type') == 'checkbox' and field.get('checked'):
+			elemattrs['checked'] = 'checked'
+		element = ET.Element(field.get('element', 'input'), name=name, value=str(field['value']), **elemattrs)
+		form.append(element)
+		if field['element'] == 'select':
+			for option in field.get('options', []):
+				kwargs = {}
+				if field['value'] == option['value'] or (isinstance(field['value'], list) and option['value'] in field['value']):
+					kwargs['selected'] = 'selected'
+				ET.SubElement(element, 'option', value=option['value'], **kwargs).text = option.get('label', option['value'])
 
 	def urljoin(self, *args):
 		base = urlparse(self.request.full_url())
@@ -1516,6 +1553,8 @@ class ObjectAdd(Ressource):
 		module.load(force_reload=True)  # reload for instant extended attributes
 		result['layout'] = module.get_layout()
 		result['properties'] = module.get_properties()
+		meta_layout = {'layout': ['position', 'template', 'options'], 'advanced': False, 'description': _('Meta information'), 'label': _('Meta information'), 'is_app_tab': False}
+		result['layout'].insert(0, meta_layout)
 
 		for policy in module.policies:
 			form = self.add_form(result, action=self.urljoin(policy['objectType']) + '/', method='GET', name=policy['objectType'], rel='udm/relation/policy-result')
@@ -1527,13 +1566,14 @@ class ObjectAdd(Ressource):
 		obj.open()
 		result['entry'] = Object.get_representation(module, obj, ['*'], self.ldap_connection)
 
-		form = self.add_form(result, action=self.urljoin('.'), method='POST')
+		form = self.add_form(result, action=self.urljoin('.'), method='POST', layout=True)
 		self.add_form_element(form, 'position', '', element='select', options=sorted(({'value': x, 'label': ldap_dn2path(x)} for x in module.get_default_containers()), key=lambda x: x['label'].lower()))
 		if module.template:
 			template = UDM_Module(module.template, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 			templates = template.search(ucr.get('ldap/base'))
 			self.add_form_element(form, 'template', '', element='select', options=[{'value': _obj.dn, 'label': _obj[template.identifies]} for _obj in templates])
 		if module.superordinate_names:
+			meta_layout['layout'].append('superordinate')
 			self.add_form_element(form, 'superordinate', '')  # TODO: replace with <select>
 
 		# FIXME: respect layout
@@ -1545,9 +1585,12 @@ class ObjectAdd(Ressource):
 				continue
 			self.add_form_element(form, 'properties[%s]' % prop['id'], '', label=prop.get('label', prop['id']), placeholder=prop.get('label', prop['id']), title=prop.get('description', ''))
 
+		result['layout'].append({'layout': [], 'advanced': False, 'description': _('Policies'), 'label': _('Policies'), 'is_app_tab': False})
 		for policy in module.policies:
+			result['layout'][-1]['layout'].append('policies[%s]' % (policy['objectType'],))
 			self.add_form_element(form, 'policies[%s]' % (policy['objectType']), 'FIXME', label=policy['label'])  # FIXME: value should be the currently set policy
 
+		meta_layout['layout'].append('')
 		self.add_form_element(form, '', _('Create %s') % (module.object_name,), type='submit')
 
 		# TODO: wizard: first select position & template
@@ -1599,7 +1642,10 @@ class ObjectEdit(Ressource):
 			self.add_form_element(form, '', _('Move'), type='submit')
 
 		if 'edit' in module.operations:
+			obj.open()
 			result['layout'] = module.get_layout(dn if object_type != 'users/self' else None)
+			meta_layout = {'layout': ['options', ''], 'advanced': False, 'description': _('Meta information'), 'label': _('Meta information'), 'is_app_tab': False}
+			result['layout'].insert(0, meta_layout)
 			result['properties'] = module.get_properties(dn)
 			result['options'] = module.options.keys()
 			result['synced'] = ucr.is_true('ad/member') and 'synced' in obj.oldattr.get('univentionObjectFlag', [])
@@ -1620,22 +1666,29 @@ class ObjectEdit(Ressource):
 				self.add_form_element(form, '', _('Upload user photo'), type='submit')
 
 			# FIXME: respect layout
-			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='PUT')
+			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='PUT', layout=True)
 			for prop in result['properties']:
 				if prop['id'] == '$options$':
 					self.add_form_element(form, 'options', [opt['id'] for opt in prop['widgets'] if opt['value']], element='select', multiple='multiple', options=[{'value': opt['id'], 'label': opt['label']} for opt in prop['widgets']])
 
 			# TODO: iterate over all properties instead of obj.info, add better labels, etc.
 			password_properties = module.password_properties
-			for key, value in encode_properties(obj.module, obj.info, self.ldap_connection):
+			for prop in result['properties']:
+				key = prop['id']
+				if key.startswith('$'):
+					continue
+				value = dict(encode_properties(obj.module, {key: obj[key]}, self.ldap_connection))[key]
 				input_type = 'input'
 				if key in password_properties:
 					value = ''
 					input_type = 'password'
 				self.add_form_element(form, 'properties[%s]' % (key,), value, label=key, placeholder=key, type=input_type)
 
+			result['layout'].append({'layout': [], 'advanced': False, 'description': _('Policies'), 'label': _('Policies'), 'is_app_tab': False})
 			for policy in module.policies:
+				result['layout'][-1]['layout'].append('policies[%s]' % (policy['objectType'],))
 				self.add_form_element(form, 'policies[%s]' % (policy['objectType']), 'FIXME', label=policy['label'])  # FIXME: value should be the currently set policy
+			# TODO: add references
 
 			self.add_form_element(form, '', _('Modify %s') % (module.object_name,), type='submit')
 
