@@ -63,7 +63,7 @@ import univention.admin.objects
 import univention.testing.ucr
 import univention.testing.strings as uts
 import univention.testing.utils as utils
-from univention.testing.ucs_samba import wait_for_drs_replication
+from univention.testing.ucs_samba import wait_for_drs_replication, DRSReplicationFailed
 
 
 class UCSTestUDM_Exception(Exception):
@@ -528,10 +528,10 @@ class UCSTestUDM(object):
 	def addCleanupLock(self, lockType, lockValue):
 		self._cleanupLocks.setdefault(lockType, []).append(lockValue)
 
-	def _wait_for_drs_removal(self, modulename, dn):
+	def _wait_for_drs_removal(self, modulename, dn, verbose=True):
 		ad_ldap_search_args = self.ad_object_identifying_filter(modulename, ldap.dn.str2dn(dn)[0][0][1])
 		if ad_ldap_search_args:
-			wait_for_drs_replication(should_exist=False, **ad_ldap_search_args)
+			wait_for_drs_replication(should_exist=False, verbose=verbose, timeout=20, **ad_ldap_search_args)
 
 	def list_objects(self, module):
 		cmd = ['/usr/sbin/udm-test', module, 'list']
@@ -607,7 +607,10 @@ class UCSTestUDM(object):
 		print('Cleanup: wait for replication and drs removal')
 		utils.wait_for_replication(verbose=False)
 		for module, dn in removed:
-			self._wait_for_drs_removal(module, dn)
+			try:
+				self._wait_for_drs_removal(module, dn, verbose=True)
+			except DRSReplicationFailed as exc:
+				print('Cleanup: DRS replication failed:', exc)
 
 		self.stop_cli_server()
 		print('UCSTestUDM cleanup done')
