@@ -43,7 +43,7 @@ def password_policy(complexity=False, minimum_password_age=0, maximum_password_a
 		subprocess.call(['samba-tool', 'domain', 'passwordsettings', 'set', '--min-pwd-age', min_pwd_age, '--max-pwd-age', max_pwd_age, '--complexity', pwd_complexity])
 
 
-def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE_SUBTREE, lp=None, timeout=360, delta_t=1, verbose=True, should_exist=True):
+def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE_SUBTREE, lp=None, timeout=360, delta_t=1, verbose=True, should_exist=True, controls=None):
 	if not package_installed('univention-samba4'):
 		if verbose:
 			print('wait_for_drs_replication(): skip, univention-samba4 not installed.')
@@ -57,7 +57,8 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
 		attrs = [attrs]
 
 	samdb = SamDB("tdb://%s" % lp.private_path("sam.ldb"), session_info=system_session(lp), lp=lp)
-	controls = ["domain_scope:0"]
+	if not controls:
+		controls = ["domain_scope:0"]
 	if base is None:
 		base = samdb.domain_dn()
 	else:

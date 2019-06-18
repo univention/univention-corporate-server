@@ -1,3 +1,9 @@
+ucs-test (9.0.2-81) unstable; urgency=medium
+
+  * Bug #47345: fix ldap controls for DNS objects
+
+ -- Florian Best <best@univention.de>  Tue, 18 Jun 2019 14:04:57 +0200
+
 ucs-test (9.0.2-80) unstable; urgency=medium
 
   * Bug #47345: only wait for drs replication if object is mapped
