@@ -1,3 +1,10 @@
+ucs-test (9.0.2-76) unstable; urgency=medium
+
+  * Bug #49674: Increase timeout for
+    20_appcenter.60_check_appcenter_performance to 20 seconds
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 18 Jun 2019 11:32:13 +0200
+
 ucs-test (9.0.2-75) unstable; urgency=medium
 
   * Bug #49345: cat sources.list in 20_appcenter/20_can_apps_be_installed
