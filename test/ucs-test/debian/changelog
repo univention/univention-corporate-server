@@ -1,3 +1,9 @@
+ucs-test (9.0.2-77) unstable; urgency=medium
+
+  * Bug #49672: Only execute 61_udm-users/26_password_expire_date on dcmaster
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 18 Jun 2019 11:58:38 +0200
+
 ucs-test (9.0.2-76) unstable; urgency=medium
 
   * Bug #49674: Increase timeout for
