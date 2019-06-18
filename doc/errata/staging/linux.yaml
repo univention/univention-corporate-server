@@ -1,0 +1,45 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: linux
+fix: 4.9.168-1+deb9u3
+desc: |
+ This update addresses the following issues:
+ * Heap overflow in mwifiex_update_bss_desc_with_ie function in
+   marvell/mwifiex/scan.c (CVE-2019-3846)
+ * page cache side channel attacks (CVE-2019-5489)
+ * brcmfmac heap buffer overflow in brcmf_wowl_nd_results (CVE-2019-9500)
+ * brcmfmac frame validation bypass (CVE-2019-9503)
+ * Heap Overflow in mwifiex_uap_parse_tail_ies function in
+   drivers/net/wireless/marvell/mwifiex/ie.c (CVE-2019-10126)
+ * tcp: integer overflow while processing SACK blocks allows remote denial of
+   service (CVE-2019-11477)
+ * tcp: excessive resource consumption while processing SACK blocks allows
+   remote denial of service (CVE-2019-11478)
+ * tcp: excessive resource consumption for TCP connections with low MSS allows
+   remote denial of service (CVE-2019-11479)
+ * multiple race conditions in Siemens R3964 line discipline driver in
+   drivers/tty/n_r3964.c leading to denial of service (CVE-2019-11486)
+ * fix race condition between mmget_not_zero()/get_task_mm() and core dumping
+   (CVE-2019-11599)
+ * race condition in rds_tcp_kill_sock in net/rds/tcp.c leading to
+   use-after-free (CVE-2019-11815)
+ * fs/ext4/extents.c leads to information disclosure (CVE-2019-11833)
+ * sensitive information disclosure from kernel stack memory via HIDPCONNADD
+   command (CVE-2019-11884)
+bug: [49676]
+cve:
+- CVE-2019-3846
+- CVE-2019-5489
+- CVE-2019-9500
+- CVE-2019-9503
+- CVE-2019-10126
+- CVE-2019-11477
+- CVE-2019-11478
+- CVE-2019-11479
+- CVE-2019-11486
+- CVE-2019-11599
+- CVE-2019-11815
+- CVE-2019-11833
+- CVE-2019-11884
