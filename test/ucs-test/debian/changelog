@@ -1,3 +1,9 @@
+ucs-test (9.0.2-75) unstable; urgency=medium
+
+  * Bug #49345: cat sources.list in 20_appcenter/20_can_apps_be_installed
+
+ -- Felix Botner <botner@univention.de>  Tue, 18 Jun 2019 11:30:34 +0200
+
 ucs-test (9.0.2-74) unstable; urgency=medium
 
   * Bug #49671: Add check to package object from cache
