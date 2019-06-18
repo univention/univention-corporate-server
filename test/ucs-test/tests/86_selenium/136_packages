@@ -43,6 +43,9 @@ class UMCTester(object):
 		cache.open()
 		small_package = None
 		for package in cache:
+			if not package.candidate:
+				print('Package from cache has no candidate, skipping...: %s' % package)
+				continue
 			if not package.is_installed \
 					and package.candidate.installed_size < 0.5 * 1000 * 1000 \
 					and not package.candidate.recommends \
