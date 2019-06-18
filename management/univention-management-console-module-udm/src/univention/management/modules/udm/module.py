@@ -927,9 +927,6 @@ class Objects(ReportingBase):
 		module = self.get_module(object_type)
 		result = self._options(object_type)
 
-		# TODO: replace the superordinate concept by container
-		superordinate = self.get_query_argument('superordinate', None)
-
 		# TODO: allow to specify an own ldap filter?
 		# TODO: add "opened" instead of giving property names?
 		# TODO: rename fields in the response into "printable"?
@@ -954,6 +951,10 @@ class Objects(ReportingBase):
 			items_per_page = None
 			page = None
 
+		# TODO: replace the superordinate concept by container
+		superordinate = None
+		if module.superordinate_names:
+			superordinate = self.get_query_argument('superordinate', None)
 		if superordinate:
 			mod = get_module(superordinate, superordinate, self.ldap_connection)
 			if not mod:
@@ -1033,6 +1034,8 @@ class Objects(ReportingBase):
 
 		form = self.add_form(result, self.urljoin(''), 'GET', rel='search')
 		self.add_form_element(form, 'position', container or '')
+		if module.superordinate_names:
+			self.add_form_element(form, 'superordinate', superordinate or '')
 		self.add_form_element(form, 'property', objectProperty or '', element='select', options=[{'value': '', 'label': _('Defaults')}] + [{'value': prop['id'], 'label': prop['label']} for prop in module.properties(None) if prop.get('searchable')])
 		self.add_form_element(form, 'propertyvalue', objectPropertyValue or (module.get_default_values(objectProperty) if objectProperty else '*'))
 		self.add_form_element(form, 'scope', scope, element='select', options=[{'value': 'sub'}, {'value': 'one'}, {'value': 'base'}, {'value': 'base+one'}])
@@ -1277,7 +1280,8 @@ class Object(Ressource):
 		props['dn'] = obj.dn
 		props['objectType'] = module.name
 		props['id'] = '+'.join(explode_rdn(obj.dn, True))
-		props['superordinate'] = obj.superordinate and obj.superordinate.dn
+		if module.superordinate_names:
+			props['superordinate'] = obj.superordinate and obj.superordinate.dn
 		props['position'] = ldap_connection.parentDn(obj.dn)
 		props['properties'] = values
 		props['options'] = dict((opt['id'], opt['value']) for opt in module.get_options(udm_object=obj))
@@ -1525,7 +1529,8 @@ class ObjectAdd(Ressource):
 			template = UDM_Module(module.template, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 			templates = template.search(ucr.get('ldap/base'))
 			self.add_form_element(form, 'template', '', element='select', options=[{'value': _obj.dn, 'label': _obj[template.identifies]} for _obj in templates])
-		self.add_form_element(form, 'superordinate', '')  # TODO: replace with <select>
+		if module.superordinate_names:
+			self.add_form_element(form, 'superordinate', '')  # TODO: replace with <select>
 
 		# FIXME: respect layout
 		for prop in result['properties']:
