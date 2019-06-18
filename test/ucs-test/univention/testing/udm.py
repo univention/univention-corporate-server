@@ -294,7 +294,7 @@ class UCSTestUDM(object):
 
 		return cmd
 
-	def create_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, wait_for=True, **kwargs):
+	def create_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, wait_for=False, **kwargs):
 		r"""
 		Creates a LDAP object via UDM. Values for UDM properties can be passed via keyword arguments
 		only and have to exactly match UDM property names (case-sensitive!).
@@ -332,7 +332,7 @@ class UCSTestUDM(object):
 			self.wait_for(modulename, dn, wait_for_replication, wait_for_drs_replication=(wait_for_replication and check_for_drs_replication))
 		return dn
 
-	def modify_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, wait_for=True, **kwargs):
+	def modify_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, wait_for=False, **kwargs):
 		"""
 		Modifies a LDAP object via UDM. Values for UDM properties can be passed via keyword arguments
 		only and have to exactly match UDM property names (case-sensitive!).
@@ -376,7 +376,7 @@ class UCSTestUDM(object):
 			self.wait_for(modulename, dn, wait_for_replication, check_for_drs_replication)
 		return dn
 
-	def move_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, wait_for=True, **kwargs):
+	def move_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, wait_for=False, **kwargs):
 		if not modulename:
 			raise UCSTestUDM_MissingModulename()
 		dn = kwargs.get('dn')
@@ -409,7 +409,7 @@ class UCSTestUDM(object):
 			self.wait_for(modulename, dn, wait_for_replication, check_for_drs_replication)
 		return new_dn
 
-	def remove_object(self, modulename, wait_for_replication=True, wait_for=True, **kwargs):
+	def remove_object(self, modulename, wait_for_replication=True, wait_for=False, **kwargs):
 		if not modulename:
 			raise UCSTestUDM_MissingModulename()
 		dn = kwargs.get('dn')
