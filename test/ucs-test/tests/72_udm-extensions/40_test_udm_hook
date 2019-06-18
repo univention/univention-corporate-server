@@ -86,11 +86,15 @@ if __name__ == '__main__':
 
 		# create user
 		user_dn, username = udm.create_user()
+		# We also need to wait for the replication on backup or slave
+		wait_for_replication()
 		wait_for_s4connector_replication()
 
 		# set lastname of user ==> hook should set description
 		lastname = random_name()
 		udm.modify_object('users/user', dn=user_dn, lastname=lastname)
+		# We also need to wait for the replication on backup or slave
+		wait_for_replication()
 		wait_for_s4connector_replication()
 		verify_ldap_object(user_dn, {
 			'uid': [username],
@@ -101,6 +105,8 @@ if __name__ == '__main__':
 		# set lastname of user ==> hook should set description
 		lastname = random_name()
 		udm.modify_object('users/user', dn=user_dn, lastname=lastname)
+		# We also need to wait for the replication on backup or slave
+		wait_for_replication()
 		wait_for_s4connector_replication()
 		verify_ldap_object(user_dn, {
 			'uid': [username],
