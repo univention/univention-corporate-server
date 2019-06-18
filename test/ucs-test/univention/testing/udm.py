@@ -521,7 +521,7 @@ class UCSTestUDM(object):
 	def addCleanupLock(self, lockType, lockValue):
 		self._cleanupLocks.setdefault(lockType, []).append(lockValue)
 
-	def _wait_for_drs_removal(self, module, dn):
+	def _wait_for_drs_removal(self, modulename, dn):
 		s4_object_base = ldap.dn.str2dn(dn)
 		s4_object_base = [[(self.S4_MAPPING.get(x[0], x[0].upper()), x[1], x[2]) for x in s4_object_base.pop(0)]] + s4_object_base
 		s4_object_base = ldap.dn.dn2str(s4_object_base)
@@ -557,34 +557,34 @@ class UCSTestUDM(object):
 		print('Performing UCSTestUDM cleanup...')
 		objects = []
 		removed = []
-		for module, objs in self._cleanup.items():
-			objects.extend((module, dn) for dn in objs)
+		for modulename, objs in self._cleanup.items():
+			objects.extend((modulename, dn) for dn in objs)
 
-		for module, dn in sorted(objects, key=lambda x: len(x[1]), reverse=True):
-			cmd = ['/usr/sbin/udm-test', module, 'remove', '--dn', dn, '--remove_referring']
+		for modulename, dn in sorted(objects, key=lambda x: len(x[1]), reverse=True):
+			cmd = ['/usr/sbin/udm-test', modulename, 'remove', '--dn', dn, '--remove_referring']
 
 			print('removing DN:', dn)
 			child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 			(stdout, stderr) = child.communicate()
 			if child.returncode or 'Object removed:' not in stdout:
-				failedObjects.setdefault(module, []).append(dn)
+				failedObjects.setdefault(modulename, []).append(dn)
 			else:
-				removed.append((module, dn))
+				removed.append((modulename, dn))
 
 		# simply iterate over the remaining objects again, removing them might just have failed for chronology reasons
 		# (e.g groups can not be removed while there are still objects using it as primary group)
-		for module, objects in failedObjects.items():
+		for modulename, objects in failedObjects.items():
 			for dn in objects:
-				cmd = ['/usr/sbin/udm-test', module, 'remove', '--dn', dn, '--remove_referring']
+				cmd = ['/usr/sbin/udm-test', modulename, 'remove', '--dn', dn, '--remove_referring']
 
 				child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 				(stdout, stderr) = child.communicate()
 
 				if child.returncode or 'Object removed:' not in stdout:
-					print('Warning: Failed to remove %r object %r' % (module, dn), file=sys.stderr)
+					print('Warning: Failed to remove %r object %r' % (modulename, dn), file=sys.stderr)
 					print('stdout=%r %r %r' % (stdout, stderr, self._lo.get(dn)), file=sys.stderr)
 				else:
-					removed.append((module, dn))
+					removed.append((modulename, dn))
 		self._cleanup = {}
 
 		for lock_type, values in self._cleanupLocks.items():
