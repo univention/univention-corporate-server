@@ -509,6 +509,8 @@ class Relations(Ressource):
 		}
 		self.add_caching(public=True)
 		result = {}
+		self.add_link(result, 'self', self.urljoin(''), title=_('Link relations'))
+		self.add_link(result, 'up', self.urljoin('../'), title=_('All modules'))
 		if relation:
 			result['relation'] = univention_relations.get(relation, iana_relations.get(relation))
 			if not result['relation']:
