@@ -2023,6 +2023,70 @@ define([
 			var _color = Array.isArray(color) ? dojo.colorFromArray(color) : dojo.colorFromString(color);
 			this.assert(_color, 'Could not derive color from: ' + color);
 			return _color;
+		},
+
+		/**
+		 * @typedef {Object.<String, module:umc/tools~DijitRegistryDebugMapObj>} DijitRegistryDebugMap
+		 *
+		 * @description
+		 * 		A dict describing the dijit.registry to help debugging memory leaks.
+		 * 		A key in the dict is the declared class name of an existing widget instance (e.g. 'umc.widgets.Text')
+		 * 		and the value is a {@link module:umc/tools~DijitRegistryDebugMapObj}.
+		 */
+
+		/**
+		 * @typedef DijitRegistryDebugMapObj
+		 * @property {Number} count - number of existing widget instances
+		 * @property {String[]} ids - Array of strings describing the existing widget instances
+		 */
+
+		/**
+		 * @returns {module:umc/tools~DijitRegistryDebugMap}
+		 */
+		dijitRegistryToMap: function() {
+			var m = {};
+			dijit.registry.toArray().forEach(w => {
+				var k = w.declaredClass;
+				var o = m[k] = m[k] || {
+					count: 0,
+					id: [],
+				};
+				o.count += 1;
+				var id = `id: ${w.id}`;
+				if (w.domNode) {
+					let wid = w.domNode.getAttribute('widgetid');
+					if (w.id !== wid) {
+						id = `${id}; wid: ${wid}`;
+					}
+				}
+				if (w.class) {
+					id = `${id}; class: ${w.class}`;
+				}
+				o.id.push(id);
+			});
+			return m;
+		},
+
+		/**
+		 * @param {DijitRegistryDebugMap} minuend
+		 * @param {DijitRegistryDebugMap} subtrahend
+		 * @returns {DijitRegistryDebugMap}
+		 */
+		dijitRegistryMapDifference: function(minuend, subtrahend) {
+			var difference = lang.clone(minuend);
+			Object.keys(subtrahend).forEach(prop => {
+				if (difference.hasOwnProperty(prop)) {
+					difference[prop].count = difference[prop].count - subtrahend[prop].count;
+					difference[prop].id = difference[prop].id.filter(e => !subtrahend[prop].id.includes(e));
+				} else {
+					difference[prop] = lang.clone(subtrahend[prop]);
+					difference[prop].count *= -1;
+				}
+				if (difference[prop].count === 0) {
+					delete difference[prop];
+				}
+			});
+			return difference;
 		}
 	});
 

@@ -17,7 +17,7 @@ from univention.testing.udm import UCSTestUDM
 import univention.testing.strings as uts
 from univention.admin import localization
 from univention.udm import UDM, NoObject
-from univention.testing.selenium.interactions import expand_path
+from univention.testing.selenium.utils import expand_path
 from selenium.common.exceptions import NoSuchElementException
 
 logger = logging.getLogger(__name__)
@@ -43,9 +43,9 @@ class UMCTester(object):
 		logger.info('Creating dummy portal')
 		self.dummy_portal_title = uts.random_string()
 		self.dummy_portal_dn = self.udm_test.create_object(
-				'settings/portal',
-				name=uts.random_string(),
-				displayName=['en_US ' + self.dummy_portal_title]
+			'settings/portal',
+			name=uts.random_string(),
+			displayName=['en_US ' + self.dummy_portal_title]
 		)
 		logger.info('Saving previous set portal of host')
 		udm = UDM.admin().version(1)
@@ -54,7 +54,7 @@ class UMCTester(object):
 		logger.info('Setting dummy portal as portal for host')
 		machine.props.portal = self.dummy_portal_dn
 		machine.save()
-	
+
 	def do_test(self):
 		self.selenium.do_login()
 
@@ -94,8 +94,6 @@ class UMCTester(object):
 		except NoObject:
 			raise CreationError('Creation of the settings/portal_category UDM object failed')
 
-
-
 		logger.info('Create entry')
 		self.selenium.click_element(expand_path('//h2[text()="%s"]/following-sibling::*[1]//*[@containsClass="addEntryTile"]' % (cat_dname)))
 		self.selenium.wait_for_text('Internal name *')
@@ -124,7 +122,6 @@ class UMCTester(object):
 			raise CreationError('A settings/portal_entry UDM object was created but the entry was not immediately visible in the portal')
 		except NoObject:
 			raise CreationError('Creation of the settings/portal_entry UDM object failed')
-
 
 	def cleanup(self):
 		logger.info('Cleanup')

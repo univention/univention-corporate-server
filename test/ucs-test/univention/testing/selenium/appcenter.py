@@ -136,12 +136,11 @@ class AppCenter(object):
 	def click_app_tile(self, appid):
 		self.selenium.click_element('//div[contains(concat(" ", normalize-space(@class), " "), " umcGalleryWrapperItem ")][@moduleid="%s"]' % appid)
 
-	def open(self):
+	def open(self, do_reload=True):
 		# TODO: check if appcenter is already opened with the overview site
-		self.selenium.search_module(_('App Center'))
-		self.selenium.click_tile(_('App Center'))
+		self.selenium.open_module(_('App Center'), do_reload=do_reload, wait_for_standby=False)
 		self.close_info_dialog_if_visisble()
-		self.selenium.wait_until_all_standby_animations_disappeared()
+		self.selenium.wait_until_standby_animation_appears_and_disappears()
 
 	def open_app(self, app):
 		# TODO: check if appcenter is already opened with the app page

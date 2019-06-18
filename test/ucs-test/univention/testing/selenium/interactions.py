@@ -35,23 +35,14 @@ from __future__ import absolute_import
 import json
 import logging
 import time
-import re
 
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 import selenium.common.exceptions as selenium_exceptions
+from univention.testing.selenium.utils import expand_path
 
 logger = logging.getLogger(__name__)
-
-
-def expand_path(xpath):
-	# replaces instances of [@containsClass="className"]
-	# with
-	# [contains(concat(" ", normalize-space(@class), " "), " className ")]
-	pattern = r'(?<=\[)@containsClass=([\"\'])(.*?)\1(?=\])'
-	replacement = r'contains(concat(\1 \1, normalize-space(@class), \1 \1), \1 \2 \1)'
-	return re.sub(pattern, replacement, xpath)
 
 
 class Interactions(object):
@@ -92,11 +83,11 @@ class Interactions(object):
 			**kwargs
 		)
 
-	def click_button(self, buttonname, **kwargs):
-		logger.info("Clicking the button %r", buttonname)
+	def click_button(self, button_text, **kwargs):
+		logger.info("Clicking the button %r", button_text)
 		self.click_element(
-			'//*[contains(concat(" ", normalize-space(@class), " "), " dijitButtonText ")][text() = "%s"]'
-			% (buttonname,),
+			expand_path('//*[@containsClass="dijitButtonText"][text() = "%s"]')
+			% (button_text,),
 			**kwargs
 		)
 
