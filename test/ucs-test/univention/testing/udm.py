@@ -522,10 +522,8 @@ class UCSTestUDM(object):
 		self._cleanupLocks.setdefault(lockType, []).append(lockValue)
 
 	def _wait_for_drs_removal(self, modulename, dn):
-		s4_object_base = ldap.dn.str2dn(dn)
-		s4_object_base = [[(self.S4_MAPPING.get(x[0], x[0].upper()), x[1], x[2]) for x in s4_object_base.pop(0)]] + s4_object_base
-		s4_object_base = ldap.dn.dn2str(s4_object_base)
-		wait_for_drs_replication(None, base=s4_object_base, scope=0, should_exist=False)
+		ad_object_identifying_filter = self.ad_object_identifying_filter(modulename, ldap.dn.str2dn(dn)[0][0][1])
+		wait_for_drs_replication(ad_object_identifying_filter, should_exist=False)
 
 	def list_objects(self, module):
 		cmd = ['/usr/sbin/udm-test', module, 'list']
