@@ -432,17 +432,16 @@ def __get_zone_dn(s4connector, zone_name):
 	return unicode(ldap.dn.dn2str([zone_rdn] + ldap.dn.str2dn(unicode_to_utf8(default_dn))), 'utf8')
 
 
-def __append_dot(str):
-	if str[-1] != '.':
-		str += '.'
-	return str
+def __append_dot(string):
+	if string and not string.endswith('.') and ':' not in string and '.' in string:
+		string += '.'
+	return string
 
 
-def __remove_dot(str):
-	if str[-1] == '.':
-		return str[:-1]
-	else:
-		return str
+def __remove_dot(string):
+	if string.endswith('.'):
+		return string[:-1]
+	return string
 
 
 def __split_s4_dnsNode_dn(dn):
@@ -1430,9 +1429,7 @@ def ucs_zone_create(s4connector, object, dns_type):
 			msdcs_soa = __unpack_soaRecord(msdcs_soa_obj)
 			soa['serial'] = str(max(int(soa['serial']), int(msdcs_soa['serial'])))
 
-	mname = soa['mname']
-	if mname and not mname.endswith("."):
-		mname = "%s." % mname
+	mname = __append_dot(soa['mname'])
 
 	ns_lower = [x.lower() for x in ns]
 	mname_lower = mname.lower()
