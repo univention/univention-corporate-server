@@ -126,6 +126,7 @@ class RessourceBase(object):
 		try:
 			self.parse_authorization(authorization)
 		finally:
+			self.request.content_negotiation_lang = 'html'
 			self.request.content_negotiation_lang = self.check_acceptable()
 			self.decode_request_arguments()
 
@@ -133,7 +134,7 @@ class RessourceBase(object):
 		if authorization in self.authenticated:
 			(self.request.user_dn, self.request.username, self.ldap_connection, self.ldap_position) = self.authenticated[authorization]
 			if self.ldap_connection.whoami():
-				return
+				return  # the ldap connection is still valid and bound
 		try:
 			if not authorization.lower().startswith('basic '):
 				raise ValueError()
@@ -171,16 +172,19 @@ class RessourceBase(object):
 		for language in accept:
 			score = 1.0
 			parts = language.strip().split(";")
-			for part in (x for x in parts[1:] if x.startswith("q=")):
+			for part in (x for x in parts[1:] if x.strip().startswith("q=")):
 				try:
-					score = float(part)
+					score = float(part.strip()[2:])
 					break
 				except (ValueError, TypeError):
+					raise
 					score = 0.0
 			langs.append((parts[0].strip(), score))
 		langs.sort(key=lambda pair: pair[1], reverse=True)
 		lang = None
 		for name, q in langs:
+			if q <= 0:
+				continue
 			if name in ('text/html', 'text/xml', 'application/xml', 'text/*', '*/*'):
 				lang = 'html'
 				break
