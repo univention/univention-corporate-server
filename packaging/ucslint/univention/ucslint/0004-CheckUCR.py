@@ -32,6 +32,8 @@ import univention.ucslint.base as uub
 import re
 import os
 import sys
+from configparser import RawConfigParser, ParsingError, MissingSectionHeaderError, DuplicateSectionError, DuplicateOptionError
+from typing import Dict, Iterator, List, Set, Tuple, Union  # noqa F401
 
 # Check 4
 # 1) Nach UCR-Templates suchen und prüfen, ob die Templates in einem info-File auftauchen
@@ -118,6 +120,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0004-57': (uub.RESULT_INFO, 'No description found for UCR variable'),
 			'0004-58': (uub.RESULT_ERROR, 'UCR .info-file contains entry of "Type: multifile" with multiple "Preinst:" line'),
 			'0004-59': (uub.RESULT_ERROR, 'UCR .info-file contains entry of "Type: multifile" with multiple "Postinst:" line'),
+			'0004-60': (uub.RESULT_ERROR, 'Duplicate entry'),
+			'0004-61': (uub.RESULT_ERROR, 'Invalid entry'),
 		}
 
 	@classmethod
@@ -185,6 +189,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				content = open(fn, 'r').read()
 			except EnvironmentError:
 				self.addmsg('0004-27', 'cannot open/read file', fn)
+				continue
+			except UnicodeDecodeError as ex:
+				self.addmsg('0004-30', 'contains invalid characters', fn, ex.start)
 				continue
 
 			match = UniventionPackageCheck.RE_FUNC_PREINST.search(content)
@@ -259,6 +266,35 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 		return conffiles
 
+	def read_ini(self, fn):
+		# type: (str) -> RawConfigParser
+		self.debug('Reading %s' % fn)
+
+		cfg = RawConfigParser(interpolation=None)
+		try:
+			if not cfg.read(fn):
+				self.addmsg('0004-27', 'cannot open/read file', fn)
+
+			return cfg
+		except DuplicateSectionError as ex:
+			self.addmsg('0004-60', 'Duplicate section entry: %s' % (ex.section), ex.source, ex.lineno)
+		except MissingSectionHeaderError as ex:
+			self.addmsg('0004-61', 'Invalid entry', ex.filename, ex.lineno)
+		except DuplicateOptionError:
+			self.addmsg('0004-61', 'Invalid entry', fn)
+		except ParsingError:
+			self.addmsg('0004-61', 'Invalid entry', fn)
+		except UnicodeDecodeError as ex:
+			self.addmsg('0004-30', 'contains invalid characters', fn, ex.start)
+
+		cfg = RawConfigParser(strict=False, interpolation=None)
+		try:
+			cfg.read(fn)
+		except (DuplicateSectionError, ParsingError, UnicodeDecodeError):
+			pass
+
+		return cfg
+
 	def check(self, path):
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
@@ -292,7 +328,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 			# find debian/*.u-c-r and check for univention-config-registry-install in debian/rules
 			for f in os.listdir(os.path.join(path, 'debian')):
-				if f.endswith('.univention-config-registry') or f.endswith('.univention-baseconfig'):
+				fn = os.path.join(path, 'debian', f)
+				if f.endswith('.univention-config-registry-categories'):
+					self.read_ini(fn)
+				elif f.endswith('.univention-config-registry-mapping'):
+					pass
+				elif f.endswith('.univention-config-registry-variables'):
+					self.read_ini(fn)
+				elif f.endswith('.univention-service'):
+					self.read_ini(fn)
+				elif f.endswith('.univention-config-registry') or f.endswith('.univention-baseconfig'):
 					tmpfn = os.path.join(path, 'debian', '%s.univention-config-registry-variables' % f.rsplit('.', 1)[0])
 					self.debug('testing %s' % tmpfn)
 					if not os.path.exists(tmpfn):
