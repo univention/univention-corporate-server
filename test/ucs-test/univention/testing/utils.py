@@ -30,12 +30,15 @@ from __future__ import print_function
 # <http://www.gnu.org/licenses/>.
 
 import sys
+import functools
 import subprocess
 import ldap
 import time
 import socket
 import os
 from enum import Enum
+
+import six
 
 import univention.config_registry
 import univention.uldap as uldap
@@ -138,7 +141,25 @@ def get_ldap_connection(pwdfile=False, start_tls=2, decode_ignorelist=None, admi
 	raise ldap.SERVER_DOWN()
 
 
-def verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=True):
+def retry_on_error(func, exceptions=(Exception,), retry_count=20, max_delay=10):
+	for i in range(retry_count + 1):
+		try:
+			func()
+		except exceptions:
+			exc_info = sys.exc_info()
+			print('Exception occurred: %s. Retrying in %d seconds (loop %d/%d).' % (exc_info[0], max_delay, i, retry_count))
+			time.sleep(max_delay)
+		else:
+			break
+	else:
+		six.reraise(exc_info)
+
+
+def verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=True, retry_count=20, max_delay=10):
+	retry_on_error(functools.partial(__verify_ldap_object, baseDn, expected_attr, strict, should_exist), (LDAPUnexpectedObjectFound, LDAPObjectNotFound, LDAPObjectValueMissing), retry_count, max_delay)
+
+
+def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=True):
 	if expected_attr is None:
 		expected_attr = {}
 	try:
