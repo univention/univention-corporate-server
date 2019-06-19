@@ -1,3 +1,9 @@
+univention-lib (8.0.1-22) unstable; urgency=medium
+
+  * Bug #49596: more debug info for slapschema
+
+ -- Felix Botner <botner@univention.de>  Wed, 19 Jun 2019 15:55:24 +0200
+
 univention-lib (8.0.1-21) unstable; urgency=medium
 
   * Bug #49129: fix usage of UCR

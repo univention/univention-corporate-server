@@ -513,10 +513,10 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 
 				# validate
 				# Slapschema doesn't fail on schema errors, errors are printed to stdout (Bug #45571)
-				p = subprocess.Popen(['/usr/sbin/slapschema', ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+				p = subprocess.Popen(['/usr/sbin/slapschema', '-d', '-1'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
 				stdout, stderr = p.communicate()
 				if p.returncode != 0 or stdout:
-					ud.debug(ud.LISTENER, ud.ERROR, '%s: validation failed:\n%s\n%s.' % (name, stdout, stderr))
+					ud.debug(ud.LISTENER, ud.ERROR, '%s: validation failed (%s):\n%s\n%s.' % (name, p.returncode, stdout, stderr))
 					# Revert changes
 					ud.debug(ud.LISTENER, ud.ERROR, '%s: Removing new file %s.' % (name, new_filename))
 					os.unlink(new_filename)
