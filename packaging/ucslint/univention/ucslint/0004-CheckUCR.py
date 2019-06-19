@@ -168,7 +168,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				'headerfound': False,
 				'variables': [],  # Python code
 				'placeholder': [],  # @%@
-				'bcwarning': False,
 				'ucrwarning': False,
 				'pythonic': False,
 				'preinst': False,
@@ -213,10 +212,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						break
 					else:
 						var = match.group(1)
-						if var.startswith('BCWARNING='):
-							checks['bcwarning'] = True
-							warning_pos = warning_pos or match.start() + 1
-						elif var.startswith('UCRWARNING='):
+						if var.startswith('BCWARNING=') or var.startswith('UCRWARNING=') or var.startswith('UCRWARNING_ASCII='):
 							checks['ucrwarning'] = True
 							warning_pos = warning_pos or match.start() + 1
 						elif var not in checks['placeholder']:
@@ -722,9 +718,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					for _ in all_definitions[fn]:
 						self.addmsg('0004-15', 'UCR template file "%s" is registered but not found in conffiles/ (1)' % (fn,), _)
 				else:
-					if not conffiles[conffn]['headerfound'] and \
-						not conffiles[conffn]['bcwarning'] and \
-						not conffiles[conffn]['ucrwarning']:
+					if not any(conffiles[conffn][typ] for typ in ('headerfound', 'ucrwarning')):
 						self.addmsg('0004-16', 'UCR header is missing', conffn)
 				self.test_marker(os.path.join(path, 'conffiles', fn))
 
@@ -743,10 +737,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						for _ in all_definitions[fn]:
 							self.addmsg('0004-17', 'UCR template file "%s" is registered but not found in conffiles/ (2)' % (fn,), _)
 					else:
-						if conffiles[conffn]['headerfound']:
-							found = True
-						if conffiles[conffn]['bcwarning'] or conffiles[conffn]['ucrwarning']:
-							found = True
+						found |= any(conffiles[conffn][typ] for typ in ('headerfound', 'ucrwarning'))
 			if not found:
 				for _ in all_definitions[mfn]:
 					self.addmsg('0004-18', 'UCR header is maybe missing in multifile "%s"' % (mfn,), _)
