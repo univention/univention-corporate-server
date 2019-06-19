@@ -74,7 +74,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		'ff': 'firefox',
 	}
 
-	def __init__(self, language='en', host=None):
+	def __init__(self, language='en', host=None, suppress_notifications=True, suppress_welcome_dialog=True):
 		self._ucr = ucr_test.UCSTestConfigRegistry()
 		self._ucr.load()
 		self.browser = self.BROWSERS[os.environ.get('UCSTEST_SELENIUM_BROWSER', 'firefox')]
@@ -82,6 +82,8 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		self.language = language
 		self.base_url = 'https://%s/' % (host or '%s.%s' % (self._ucr.get('hostname'), self._ucr.get('domainname')))
 		self.screenshot_path = os.path.abspath('selenium/')
+		self.suppress_notifications = suppress_notifications
+		self.suppress_welcome_dialog = suppress_welcome_dialog
 		translator.set_language(self.language)
 		logging.basicConfig(level=logging.INFO)
 
@@ -102,7 +104,10 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 				self.driver = webdriver.Firefox()
 
 		self.ldap_base = self._ucr.get('ldap/base')
-		handler_set(['umc/web/hooks/suppress_notifications=suppress_notifications'])
+		if self.suppress_notifications:
+			handler_set(['umc/web/hooks/suppress_notifications=suppress_notifications'])
+		if self.suppress_welcome_dialog:
+			handler_set(['umc/web/startupdialog=false'])
 
 		self.account = utils.UCSTestDomainAdminCredentials()
 		self.umcLoginUsername = self.account.username
@@ -205,8 +210,6 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		if password is None:
 			password = self.umcLoginPassword
 
-		self.driver.add_cookie({'name': 'hideSummit2019Dialog', 'value': 'true'})
-		self.driver.add_cookie({'name': 'hideSummit2019Notification', 'value': 'true'})
 		self.driver.get(self.base_url + 'univention/login/?lang=%s' % (self.language,))
 
 		self.wait_until(
@@ -229,22 +232,6 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		try:
 			self.wait_for_text(_('no module available'), timeout=1)
 			self.click_button(_('Ok'))
-			self.wait_until_all_dialogues_closed()
-		except selenium_exceptions.TimeoutException:
-			pass
-		try:
-			self.wait_for_any_text_in_list([
-				_('Learn more about the Univention Summit now'),
-				_('Welcome to UMC'),
-			], timeout=10)
-			try:
-				self.click_button('OK', timeout=2)
-			except selenium_exceptions.TimeoutException:
-				pass
-			try:
-				self.click_button('Cancel', timeout=2)
-			except selenium_exceptions.TimeoutException:
-				pass
 			self.wait_until_all_dialogues_closed()
 		except selenium_exceptions.TimeoutException:
 			pass

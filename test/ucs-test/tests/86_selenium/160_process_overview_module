@@ -110,7 +110,7 @@ class UMCTester(object):
 
 
 if __name__ == '__main__':
-	with selenium.UMCSeleniumTest() as s:
+	with selenium.UMCSeleniumTest(suppress_notifications=False) as s:
 		umc_tester = UMCTester()
 		umc_tester.selenium = s
 
