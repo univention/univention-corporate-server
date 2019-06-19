@@ -1,3 +1,11 @@
+ucs-test (9.0.2-95) unstable; urgency=low
+
+  * Bug #47345:
+    - add mypy and doc annotations for utils.retry_on_error()
+    - some small fixes for utils.retry_on_error()
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 19 Jun 2019 12:40:48 +0200
+
 ucs-test (9.0.2-94) unstable; urgency=medium
 
   * Bug #49694: wait when selecting type

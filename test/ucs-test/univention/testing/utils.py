@@ -47,6 +47,10 @@ try:
 	from univention.admin.uldap import access
 except ImportError:
 	access = None
+try:
+	from typing import Any, Callable, Tuple, Dict, Type, Union  # noqa F401
+except ImportError:
+	pass
 
 S4CONNECTOR_INIT_SCRIPT = '/etc/init.d/univention-s4-connector'
 LISTENER_INIT_SCRIPT = '/etc/init.d/univention-directory-listener'
@@ -141,22 +145,41 @@ def get_ldap_connection(pwdfile=False, start_tls=2, decode_ignorelist=None, admi
 	raise ldap.SERVER_DOWN()
 
 
-def retry_on_error(func, exceptions=(Exception,), retry_count=20, max_delay=10):
+def retry_on_error(func, exceptions=(Exception,), retry_count=20, delay=10):
+	# type: (Callable, Tuple[Type[Exception], ...], int, Union[float, int]) -> Any
+	"""
+	This function calls the given function `func`.
+	If one of the specified `exceptions` is caught, `func` is called again until
+    the retry count is reached or any unspecified exception is caught. Between
+    two calls of `func` retry_on_error waits for `delay` seconds.
+
+	:param func: function to be called
+	:param exceptions: tuple of exception classes, that cause a rerun of `func`
+	:param retry_count: retry the execution of `func` max `retry_count` times
+	:param delay: waiting time in seconds between two calls of `func`
+	:returns: return value of `func`
+	"""
 	for i in range(retry_count + 1):
 		try:
-			func()
+			return func()
 		except exceptions:
 			exc_info = sys.exc_info()
-			print('Exception occurred: %s. Retrying in %d seconds (loop %d/%d).' % (exc_info[0], max_delay, i, retry_count))
-			time.sleep(max_delay)
+			print('Exception occurred: %s. Retrying in %d seconds (loop %d/%d).' % (exc_info[0], delay, i, retry_count))
+			if i != retry_count:
+				time.sleep(delay)
 		else:
 			break
 	else:
 		six.reraise(*exc_info)
 
 
-def verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=True, retry_count=20, max_delay=10):
-	retry_on_error(functools.partial(__verify_ldap_object, baseDn, expected_attr, strict, should_exist), (LDAPUnexpectedObjectFound, LDAPObjectNotFound, LDAPObjectValueMissing), retry_count, max_delay)
+def verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=True, retry_count=20, delay=10):
+	# type: (str, Dict[str, str], bool, bool, int, float) -> None
+	return retry_on_error(
+		functools.partial(__verify_ldap_object, baseDn, expected_attr, strict, should_exist),
+		(LDAPUnexpectedObjectFound, LDAPObjectNotFound, LDAPObjectValueMissing),
+		retry_count,
+		delay)
 
 
 def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=True):
