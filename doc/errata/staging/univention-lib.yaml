@@ -7,4 +7,5 @@ fix: 8.0.1-21A~4.4.0.201906031641
 desc: |
  This update addresses the following issue:
  * Fix usage of Univention Configuration Registry Python module.
-bug: [49129]
+ * More debug during LDAP schema activation.
+bug: [49129, 49596]
