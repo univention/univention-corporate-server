@@ -2,6 +2,8 @@ E:0004-21: debian/univention-lilo.univention-config-registry: file contains file
 E:0004-22: debian/univention-lilo.univention-config-registry: file contains file entry with 2 "Postinst:" lines
 E:0004-36: Module file "foobar.sh" does not exist
 E:0004-36: Module file "foobar2.sh" does not exist
+E:0004-60: debian/univention-lilo.univention-config-registry:51: Duplicate entry for Preinst: foobar.sh
+E:0004-60: debian/univention-lilo.univention-config-registry:56: Duplicate entry for Postinst: foobar2.sh
 I:0004-56: conffiles/etc/foobar1: No UCR variables used
 I:0004-56: conffiles/etc/foobar2: No UCR variables used
 I:0004-56: conffiles/etc/foobar3: No UCR variables used
