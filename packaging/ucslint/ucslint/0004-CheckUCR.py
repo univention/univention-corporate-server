@@ -507,23 +507,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					for multifile, subfileentries in subfiles.items():
 						if multifile not in multifiles:
 							self.addmsg('0004-10', 'file contains subfile entry without corresponding multifile entry.\n      - subfile = %s\n      - multifile = %s' % (subfileentries[0]['Subfile'][0], multifile), fn)
-# DISABLED DUE TO BUG #15422
-#						else:
-#							for entry in subfileentries:
-#								notregistered = []
-#								for var in entry.get('Variables',[]):
-#									if not var in multifiles[ multifile ].get('Variables',[]):
-#										found = False
-#										for mvar in multifiles[ multifile ].get('Variables',[]):
-#											if '.*' in mvar:
-#												regEx = re.compile(mvar)
-#												if regEx.match( var ):
-#													found = True
-#													break
-#										else:
-#											notregistered.append(var)
-#								if len(notregistered):
-#									self.addmsg( '0004-11', 'file contains subfile entry whose variables are not registered in multifile\n	  - subfile = %s\n		- multifile = %s\n		- unregistered variables:\n			   %s' % (entry['Subfile'][0], multifile, '\n			 '.join(notregistered)), fn )
 
 					# merge into global list
 					for mfn, item in multifiles.items():
