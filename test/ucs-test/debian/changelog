@@ -1,4 +1,4 @@
-ucs-test (9.0.2-98ubuntu1) unstable; urgency=medium
+ucs-test (9.0.2-98) unstable; urgency=medium
 
   * Bug #47643: Raise timeout value
 
