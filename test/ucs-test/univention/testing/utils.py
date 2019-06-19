@@ -152,7 +152,7 @@ def retry_on_error(func, exceptions=(Exception,), retry_count=20, max_delay=10):
 		else:
 			break
 	else:
-		six.reraise(exc_info)
+		six.reraise(*exc_info)
 
 
 def verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=True, retry_count=20, max_delay=10):
