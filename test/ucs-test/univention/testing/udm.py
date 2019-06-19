@@ -187,6 +187,9 @@ class UCSTestUDM(object):
 		if match_filter:
 			try:
 				res = self._lo.search(base=dn, filter=match_filter, scope='base', attr=[])
+			except ldap.NO_SUCH_OBJECT:
+				print("OpenLDAP object to check against S4-Connector match_filter doesn't exist: %s" % (dn, ))
+				res = None  # TODO: This happens during delete. By setting res=None here, we will not wait for DRS replication for deletes!
 			except Exception as ex:
 				print("OpenLDAP search with S4-Connector match_filter failed: %s" % (ex, ))
 				raise
