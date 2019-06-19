@@ -1277,6 +1277,14 @@ class ucs:
 
 	def add_in_ucs(self, property_type, object, module, position):
 		_d = ud.function('ldap.add_in_ucs')
+
+		if object['attributes'].get('objectGUID'):
+			guid_unicode = object['attributes'].get('objectGUID')[0]
+			objectGUID = guid_unicode.encode('ISO-8859-1')  # to compensate for __object_from_element
+			if self.was_objectGUID_deleted_by_ucs(objectGUID):
+				ud.debug(ud.LDAP, ud.PROCESS, "add_in_ucs: object %s already deleted in UCS, ignoring add" % object['dn'])
+				return True
+
 		ucs_object = module.object(None, self.lo, position=position)
 		if property_type == 'group':
 			ucs_object.open()
