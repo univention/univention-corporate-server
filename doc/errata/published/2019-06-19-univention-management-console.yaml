@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The legacy path /umcp/ to access the UMC-Server backend has been removed.
 bug: [49639]
+erratum: 154
+announced: 2019-06-19
