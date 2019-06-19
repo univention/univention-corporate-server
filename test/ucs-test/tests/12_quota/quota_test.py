@@ -69,7 +69,7 @@ class QuoataCheck(object):
 			utils.wait_for_replication_and_postrun()
 			qc.cache_must_exists(share)
 			print("Create user")
-			udm.create_user(username=self.username, check_for_drs_replication=False)
+			udm.create_user(username=self.username, check_for_drs_replication=False, wait_for=False)
 			print("Create quota policy")
 			policy = udm.create_object(
 				'policies/share_userquota',

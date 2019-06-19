@@ -450,7 +450,7 @@ class UCSTestUDM(object):
 
 		return utils.wait_for(conditions, verbose=False)
 
-	def create_user(self, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+	def create_user(self, wait_for_replication=True, check_for_drs_replication=True, wait_for=True, **kwargs):  # :pylint: disable-msg=W0613
 		"""
 		Creates a user via UDM CLI. Values for UDM properties can be passed via keyword arguments only and
 		have to exactly match UDM property names (case-sensitive!). Some properties have default values:
@@ -471,7 +471,7 @@ class UCSTestUDM(object):
 			('firstname', uts.random_name())
 		))
 
-		return (self.create_object('users/user', wait_for_replication, check_for_drs_replication, **attr), attr['username'])
+		return (self.create_object('users/user', wait_for_replication, check_for_drs_replication, wait_for=wait_for, **attr), attr['username'])
 
 	def create_ldap_user(self, wait_for_replication=True, check_for_drs_replication=False, **kwargs):  # :pylint: disable-msg=W0613
 		# check_for_drs_replication=False -> ldap users are not replicated to s4

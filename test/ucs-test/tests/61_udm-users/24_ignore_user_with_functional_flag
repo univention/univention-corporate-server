@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
 	with udm_test.UCSTestUDM() as udm:
 		# create user and check its existance
-		user_dn = udm.create_user(check_for_drs_replication=False)[0]
+		user_dn = udm.create_user(check_for_drs_replication=False, wait_for=False)[0]
 		utils.verify_ldap_object(user_dn)
 		stdout = subprocess.Popen([udm_test.UCSTestUDM.PATH_UDM_CLI_CLIENT, 'users/user', 'list'], stdout=subprocess.PIPE).communicate()[0]
 		if not user_dn.lower() in stdout.lower():
