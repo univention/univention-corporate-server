@@ -89,7 +89,7 @@ def test(password="univention"):
 	ucr.load()
 
 	with udm_test.UCSTestUDM() as udm:
-		(user_dn, username) = udm.create_user()
+		(user_dn, username) = udm.create_user(wait_for=True)
 
 		test_ldap_connection(ucr, user_dn, password)
 		test_samba_connection(ucr, username, password)
