@@ -266,6 +266,36 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 		return conffiles
 
+	def read_ucr(self, fn):
+		# type: (str) -> Iterator[Dict[str, List[str]]]
+		self.debug('Reading %s' % fn)
+		try:
+			entry = {}  # type: Dict[str, List[str]]
+			with open(fn, 'r') as stream:
+				for lnr, line in enumerate(stream, start=1):
+					line = line.strip()
+					if not line and entry:
+						yield entry
+						entry = {}
+						continue
+
+					try:
+						key, val = line.split(': ', 1)
+					except ValueError:
+						self.addmsg('0004-28', 'file contains line without ":"', fn, lnr)
+						continue
+
+					values = entry.setdefault(key, [])
+					if val in values:
+						self.addmsg('0004-60', 'Duplicate entry for %s: %s' % (key, val), fn, lnr)
+
+					values.append(val)
+
+				if entry:
+					yield entry
+		except EnvironmentError:
+			self.addmsg('0004-27', 'cannot open/read file', fn)
+
 	def read_ini(self, fn):
 		# type: (str) -> RawConfigParser
 		self.debug('Reading %s' % fn)
@@ -354,12 +384,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			for f in os.listdir(os.path.join(path, 'debian')):
 				if f.endswith('.univention-config-registry') or f.endswith('.univention-baseconfig'):
 					fn = os.path.join(path, 'debian', f)
-					self.debug('Reading %s' % fn)
-					try:
-						content = open(fn, 'r').read()
-					except EnvironmentError:
-						self.addmsg('0004-27', 'cannot open/read file', fn)
-						continue
 
 					# OBJ = { 'Type': [ STRING, ... ],
 					#         'Subfile': [ STRING, ... ] ,
@@ -373,16 +397,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					multifiles = {}  # { MULTIFILENAME ==> OBJ }
 					subfiles = {}    # { MULTIFILENAME ==> [ OBJ, OBJ, ... ] }
 					files = []       # [ OBJ, OBJ, ... ]
-					for part in content.split('\n\n'):
-						entry = {}
-						for line in part.splitlines():
-							try:
-								key, val = line.split(': ', 1)
-							except ValueError:
-								self.addmsg('0004-28', 'file contains line without ":"', fn)
-								continue
-							entry.setdefault(key, []).append(val)
 
+					for entry in self.read_ucr(fn):
 						self.debug('Entry: %s' % entry)
 
 						try:
