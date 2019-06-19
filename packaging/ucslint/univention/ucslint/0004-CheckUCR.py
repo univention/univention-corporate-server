@@ -51,9 +51,11 @@ import sys
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
-	RE_PYTHON = re.compile('@!@')
-	RE_VAR = re.compile('@%@')
+	RE_PYTHON = re.compile(r'@!@')
+	RE_VAR = re.compile(r'@%@')
 	RE_VALID_UCR = re.compile(r'^(?:[-/0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz]|%[sd])+$')
+	RE_UCR_HEADER_FILE = re.compile(r'#[\t ]+(/etc/univention/templates/files(/[^ \n\t\r]*?))[ \n\t\r]')
+	RE_UICR = re.compile(r'[\n\t ]univention-install-(baseconfig|config-registry)[\n\t ]')
 
 	def getMsgIds(self):
 		return {
@@ -140,12 +142,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		return cls.RE_VALID_UCR.match(var) is None
 
 	RE_UCR_VARLIST = [
-		re.compile("""(?:baseConfig|configRegistry)\s*\[\s*['"]([^'"]+)['"]\s*\]"""),
-		re.compile("""(?:baseConfig|configRegistry).has_key\s*\(\s*['"]([^'"]+)['"]\s*\)"""),
-		re.compile("""(?:baseConfig|configRegistry).get\s*\(\s*['"]([^'"]+)['"]"""),
-		re.compile("""(?:baseConfig|configRegistry).is_(?:true|false)\s*\(\s*['"]([^'"]+)['"]\s*"""),
+		re.compile(r"""(?:baseConfig|configRegistry)\s*\[\s*['"]([^'"]+)['"]\s*\]"""),
+		re.compile(r"""(?:baseConfig|configRegistry).has_key\s*\(\s*['"]([^'"]+)['"]\s*\)"""),
+		re.compile(r"""(?:baseConfig|configRegistry).get\s*\(\s*['"]([^'"]+)['"]"""),
+		re.compile(r"""(?:baseConfig|configRegistry).is_(?:true|false)\s*\(\s*['"]([^'"]+)['"]\s*"""),
 	]
-	RE_UCR_PLACEHOLDER_VAR1 = re.compile('@%@([^@]+)@%@')
+	RE_UCR_PLACEHOLDER_VAR1 = re.compile(r'@%@([^@]+)@%@')
 	RE_IDENTIFIER = re.compile(r"""<!DOCTYPE|<\?xml|<\?php|#!\s*/\S+""", re.MULTILINE)
 	RE_PYTHON_FNAME = re.compile(r'^[0-9A-Z_a-z][0-9A-Z_a-z-]*(?:/[0-9A-Z_a-z-][0-9A-Z_a-z-]*)*\.py$')
 	RE_FUNC_HANDLER = re.compile(r'^def\s+handler\s*\(\s*\w+\s*,\s*\w+\s*\)\s*:', re.MULTILINE)
@@ -249,8 +251,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				#
 				# subcheck: check if path in UCR header is correct
 				#
-				reUCRHeaderFile = re.compile('#[\t ]+(/etc/univention/templates/files(/[^ \n\t\r]*?))[ \n\t\r]')
-				match = reUCRHeaderFile.search(content)
+				match = self.RE_UCR_HEADER_FILE.search(content)
 				if match:
 					fname = fn[fn.find('/conffiles/') + 10:]
 					if match.group(2) != fname:
@@ -290,7 +291,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				self.addmsg('0004-25', 'file contains old univention-install-baseconfig call', fn_rules)
 
 			# find debian/*.u-c-r and check for univention-config-registry-install in debian/rules
-			reUICR = re.compile('[\n\t ]univention-install-(baseconfig|config-registry)[\n\t ]')
 			for f in os.listdir(os.path.join(path, 'debian')):
 				if f.endswith('.univention-config-registry') or f.endswith('.univention-baseconfig'):
 					tmpfn = os.path.join(path, 'debian', '%s.univention-config-registry-variables' % f.rsplit('.', 1)[0])
@@ -302,7 +302,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						vars = self.test_config_registry_variables(tmpfn)
 						all_descriptions |= vars
 
-					if not reUICR.search(rules_content):
+					if not self.RE_UICR.search(rules_content):
 						self.addmsg('0004-23', '%s exists but debian/rules contains no univention-install-config-registry' % f, fn_rules)
 						break
 

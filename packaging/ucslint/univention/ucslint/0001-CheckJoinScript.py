@@ -55,8 +55,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0001-16': (uub.RESULT_ERROR, 'join script does not use joinscript api (possible clear text passwords)'),
 		}
 
-	RE_LINE_ENDS_WITH_TRUE = re.compile('\|\|[ \t]+true[ \t]*$')
-	RE_LINE_CONTAINS_SET_E = re.compile('\n[\t ]*set -e', re.M)
+	RE_LINE_ENDS_WITH_TRUE = re.compile(r'\|\|[ \t]+true[ \t]*$')
+	RE_LINE_CONTAINS_SET_E = re.compile(r'\n[\t ]*set -e', re.M)
 	RE_DH_UMC = re.compile(r'\bdh-umc-module-install\b')
 	RE_DH_JOIN = re.compile(r'\bunivention-install-joinscript\b')
 

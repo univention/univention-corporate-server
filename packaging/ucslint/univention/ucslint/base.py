@@ -327,8 +327,8 @@ class UPCFileTester(object):
 	>>>	import re
 	>>>	x = UPCFileTester()
 	>>>	x.open('/etc/fstab')
-	>>>	x.addTest( re.compile('ext[234]'), '5432-1', 'Habe ein extfs in Zeile %(startline)s und Position %(startpos)s in Datei %(basename)s gefunden.', cntmax=0)
-	>>>	x.addTest( re.compile('squashfs'), '1234-5', 'Habe kein squashfs in Datei %(basename)s gefunden.', cntmin=1)
+	>>>	x.addTest(re.compile(r'ext[234]'), '5432-1', 'Habe ein extfs in Zeile %(startline)s und Position %(startpos)s in Datei %(basename)s gefunden.', cntmax=0)
+	>>>	x.addTest(re.compile(r'squashfs'), '1234-5', 'Habe kein squashfs in Datei %(basename)s gefunden.', cntmin=1)
 	>>>	msglist = x.runTests()
 	>>>	for msg in msglist:
 	>>>		print('%s ==> %s ==> %s' % (msg.id, msg.filename, msg.msg))
@@ -607,8 +607,8 @@ def _test():
 	"""Run simple test."""
 	import re
 	x = UPCFileTester()
-	x.addTest(re.compile('ext[234]'), '5432-1', 'Habe ein extfs in Zeile %(startline)s und Position %(startpos)s in Datei %(basename)s gefunden.', cntmax=0)
-	x.addTest(re.compile('squashfs'), '1234-5', 'Habe kein squashfs in Datei %(basename)s gefunden.', cntmin=1)
+	x.addTest(re.compile(r'ext[234]'), '5432-1', 'Habe ein extfs in Zeile %(startline)s und Position %(startpos)s in Datei %(basename)s gefunden.', cntmax=0)
+	x.addTest(re.compile(r'squashfs'), '1234-5', 'Habe kein squashfs in Datei %(basename)s gefunden.', cntmin=1)
 	x.open('/etc/fstab')
 	msglist = x.runTests()
 	for msg in msglist:

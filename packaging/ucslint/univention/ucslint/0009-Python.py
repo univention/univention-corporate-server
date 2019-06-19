@@ -58,14 +58,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		super(UniventionPackageCheck, self).check(path)
 
 		tester = uub.UPCFileTester()
-		tester.addTest(re.compile('.has_key\s*\('), '0009-5', 'dict.has_key is deprecated in python3 - please use "if key in dict:"', cntmax=0)
+		tester.addTest(re.compile(r'\.has_key\s*\('), '0009-5', 'dict.has_key is deprecated in python3 - please use "if key in dict:"', cntmax=0)
 		tester.addTest(re.compile(r'''\braise\s*(?:'[^']+'|"[^"]+")'''), '0009-6', 'raise "text" is deprecated in python3', cntmax=0)
 		tester.addTest(re.compile(r"""\b(?:if|while)\b.*(?:(?:!=|<>|==)\s*None\b|\bNone\s*(?:!=|<>|==)).*:"""), '0009-7', 'fragile comparison with None', cntmax=0)
 		tester.addTest(re.compile(
 			r'''(?:baseConfig|configRegistry|ucr)(?:\[.+\]|\.get\(.+\)).*\bin\s*
-			[[(]
+			[\[\(]
 			(?:\s*(['"])(?:yes|no|1|0|true|false|on|off|enabled?|disabled?)\1\s*,?\s*){3,}
-			[])]''', re.VERBOSE | re.IGNORECASE),
+			[\]\)]''', re.VERBOSE | re.IGNORECASE),
 			'0009-8', 'use ucr.is_true() or .is_false()', cntmax=0)
 
 		for fn in python_files(path):

@@ -42,6 +42,7 @@ RE_DEP = re.compile(
 		)
 	)*''', re.VERBOSE
 )
+RE_CHANGELOG_PACKAGE = re.compile(r'^([a-z0-9.-]+) \((.*?)\) (.*?)\n')
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
@@ -103,8 +104,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			self.addmsg('0011-19', 'parsing error', filename=fn_compat)
 
 		# compare package name
-		reChangelogPackage = re.compile('^([a-z0-9.-]+) \((.*?)\) (.*?)\n')
-		match = reChangelogPackage.match(content_changelog)
+		match = RE_CHANGELOG_PACKAGE.match(content_changelog)
 		if match:
 			srcpkgname = match.group(1)
 		else:

@@ -55,10 +55,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 		tester = uub.UPCFileTester()
 		tester.addTest(
-			re.compile('''(?:(?<=['" \t])|^)(?:/usr/sbin/)?univention-admin(?=['" \t]|$)'''),
+			re.compile(r'''(?:(?<=['" \t])|^)(?:/usr/sbin/)?univention-admin(?=['" \t]|$)'''),
 			'0016-2', 'Use of deprecated "univention-admin"', cntmax=0)
 		tester.addTest(
-			re.compile('''(?:(?<=['" \t])|^)(?:/usr/sbin/)?univention-baseconfig(?=["' \t]|$)'''),
+			re.compile(r'''(?:(?<=['" \t])|^)(?:/usr/sbin/)?univention-baseconfig(?=["' \t]|$)'''),
 			'0016-3', 'Use of deprecated "univention-baseconfig"', cntmax=0)
 		tester.addTest(
 			re.compile(r'''\bfrom\b.+\bunivention_baseconfig\b.+\bimport\b|\bimport\b.+\bunivention_baseconfig\b'''),

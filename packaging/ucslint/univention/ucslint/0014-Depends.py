@@ -38,14 +38,14 @@ from apt import Cache
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
-	RE_FIELD = re.compile("([a-z0-9_]+)[ \t]*(?:(<<|<=|=|>=|>>)[ \t]*([-a-zA-Z0-9.+~]+))?")
-	RE_INIT = re.compile("^(?:File|Subfile): (etc/init.d/.+)$")
+	RE_FIELD = re.compile(r"([a-z0-9_]+)[ \t]*(?:(<<|<=|=|>=|>>)[ \t]*([-a-zA-Z0-9.+~]+))?")
+	RE_INIT = re.compile(r"^(?:File|Subfile): (etc/init.d/.+)$")
 	RE_TRANSITIONAL = re.compile(r'\b[Tt]ransition(?:al)?(?: dummy)? [Pp]ackage\b')  # re.IGNORECASE
 	DEPS = {
-		'uicr': (re.compile("(?:/usr/bin/)?univention-install-(?:config-registry(?:-info)?|service-info)"), set(('univention-config-dev',))),
-		'umcb': (re.compile("(?:/usr/bin/)?dh-umc-module-build"), set(('univention-management-console-dev',))),
-		'ucr': (re.compile("""(?:^|(?<=['";& \t]))(?:/usr/sbin/)?(?:univention-config-registry|ucr)(?:(?=['";& \t])|$)"""), set(('univention-config', '${misc:Depends}'))),
-		'ial': (re.compile("/usr/share/univention-config-registry/init-autostart\.lib"), set(('univention-base-files',))),
+		'uicr': (re.compile(r"(?:/usr/bin/)?univention-install-(?:config-registry(?:-info)?|service-info)"), set(('univention-config-dev',))),
+		'umcb': (re.compile(r"(?:/usr/bin/)?dh-umc-module-build"), set(('univention-management-console-dev',))),
+		'ucr': (re.compile(r"""(?:^|(?<=['";& \t]))(?:/usr/sbin/)?(?:univention-config-registry|ucr)(?:(?=['";& \t])|$)"""), set(('univention-config', '${misc:Depends}'))),
+		'ial': (re.compile(r"/usr/share/univention-config-registry/init-autostart\.lib"), set(('univention-base-files',))),
 	}
 
 	def __init__(self):
