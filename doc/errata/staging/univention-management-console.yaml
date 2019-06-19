@@ -5,6 +5,6 @@ scope: ucs_4.4-0-errata4.4-0
 src: univention-management-console
 fix: 11.0.4-17A~4.4.0.201906131417
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The legacy path /umcp/ to access the UMC-Server backend has been removed.
 bug: [49639]

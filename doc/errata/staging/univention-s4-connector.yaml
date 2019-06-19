@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-0
 src: univention-s4-connector
 fix: 13.0.2-19A~4.4.0.201906131827
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * A trivial ucr syntax error has been fixed in the joinscript
  * Remove lockingdb and s4cache during re-join
  * When the S4-Connector starts, it logged the group cache initialization
