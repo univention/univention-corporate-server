@@ -364,7 +364,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				elif f.endswith('.univention-config-registry-mapping'):
 					pass
 				elif f.endswith('.univention-config-registry-variables'):
-					self.read_ini(fn)
+					cfg = self.read_ini(fn)
+					all_descriptions |= set(cfg.sections())
 				elif f.endswith('.univention-service'):
 					self.read_ini(fn)
 				elif f.endswith('.univention-config-registry') or f.endswith('.univention-baseconfig'):
@@ -372,10 +373,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					self.debug('testing %s' % tmpfn)
 					if not os.path.exists(tmpfn):
 						self.addmsg('0004-24', '%s exists but corresponding %s is missing' % (f, tmpfn), tmpfn)
-					else:
-						# test debian/$PACKAGENAME.u-c-r-variables
-						vars = self.test_config_registry_variables(tmpfn)
-						all_descriptions |= vars
 
 					if not self.RE_UICR.search(rules_content):
 						self.addmsg('0004-23', '%s exists but debian/rules contains no univention-install-config-registry' % f, fn_rules)
@@ -775,22 +772,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		return
 		for var in all_variables - all_descriptions:
 			self.addmsg('0004-57', 'No description found for UCR variable "%s"' % (var,))
-
-	def test_config_registry_variables(self, tmpfn):
-		"""Parse debian/*.univention-config-registry-variables file."""
-		variables = set()
-		try:
-			with open(tmpfn, 'rb') as f:
-				for linecnt, line in enumerate(f, start=1):
-					try:
-						line = line.decode('utf-8')
-						var = line.strip(' \t[]')
-						variables.add(var)
-					except UnicodeError:
-						self.addmsg('0004-30', 'contains invalid characters', tmpfn, linecnt)
-		except EnvironmentError:
-			self.addmsg('0004-27', 'cannot open/read file', tmpfn)
-		return variables
 
 	def test_marker(self, fn):  # type: (str) -> None
 		"""Bug #24728: count of markers must be even."""
