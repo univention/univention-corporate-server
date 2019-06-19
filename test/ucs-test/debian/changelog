@@ -1,3 +1,9 @@
+ucs-test (9.0.2-97) unstable; urgency=medium
+
+  * Bug #47643: Removed inconsistencies to avoid fail in special cases
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 19 Jun 2019 18:25:09 +0200
+
 ucs-test (9.0.2-96) unstable; urgency=medium
 
   * Bug #47345: Don't fail when deleted OpenLDAP objects cannot be
