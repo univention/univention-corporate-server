@@ -142,14 +142,19 @@ class UCSTestUDM(object):
 		'computers/ipmanagedclient')
 
 	# map identifying UDM module or rdn-attribute to samba4 rdn attribute
-	def ad_object_identifying_filter(self, modulename, objname):
+	def ad_object_identifying_filter(self, modulename, dn):
 		udm_mainmodule, udm_submodule = modulename.split('/', 1)
+		objname = ldap.dn.str2dn(dn)[0][0][1]
+
 		attr = ''
 		ad_ldap_controls = None
 		con_search_filter = ''
+		match_filter = ''
+
 		if udm_mainmodule == 'users':
 			attr = 'sAMAccountName'
 			con_search_filter = '(&(objectClass=user)(!(objectClass=computer))(userAccountControl:1.2.840.113556.1.4.803:=512))'
+			match_filter = '(&(|(&(objectClass=posixAccount)(objectClass=krb5Principal))(objectClass=user))(!(objectClass=univentionHost)))'
 		elif udm_mainmodule == 'groups':
 			attr = 'sAMAccountName'
 			con_search_filter = '(objectClass=group)'
@@ -157,9 +162,11 @@ class UCSTestUDM(object):
 			if udm_submodule.startswith('domaincontroller_') or udm_submodule == 'windows_domaincontroller':
 				attr = 'cn'
 				con_search_filter = '(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=532480))'
+				match_filter = '(|(&(objectClass=univentionDomainController)(univentionService=Samba 4))(objectClass=computer)(univentionServerRole=windows_domaincontroller))'
 			elif udm_submodule in ('windows', 'memberserver', 'ucc', 'linux', 'ubuntu', 'macos'):
 				attr = 'cn'
 				con_search_filter = '(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=4096))'
+				match_filter = '(|(&(objectClass=univentionWindows)(!(univentionServerRole=windows_domaincontroller)))(objectClass=computer)(objectClass=univentionMemberServer)(objectClass=univentionUbuntuClient)(objectClass=univentionLinuxClient)(objectClass=univentionMacOSClient)(objectClass=univentionCorporateClient))'
 		elif modulename == 'containers/cn':
 			attr = 'cn'
 			con_search_filter = '(&(|(objectClass=container)(objectClass=builtinDomain))(!(objectClass=groupPolicyContainer)))'
@@ -176,6 +183,16 @@ class UCSTestUDM(object):
 				con_search_filter = '(&(objectClass=dnsNode)(!(dNSTombstoned=TRUE)))'
 			elif udm_submodule in ('forward_zone', 'reverse_zone'):
 				con_search_filter = '(objectClass=dnsZone)'  # partly true, actually we map the SOA too
+
+		if match_filter:
+			try:
+				res = self._lo.search(base=dn, filter=match_filter, scope='base', attr=[])
+			except Exception as ex:
+				print("OpenLDAP search with S4-Connector match_filter failed: %s" % (ex, ))
+				raise
+			if not res:
+				print("DRS wait not required, S4-Connector match_filter did not match the OpenLDAP object: %s" % (dn,))
+				return
 
 		if attr:
 			filter_template = '(&(%s=%%s)%s)' % (attr, con_search_filter)
@@ -432,14 +449,15 @@ class UCSTestUDM(object):
 			wait_for_drs_replication = True
 			wait_for_s4connector = True
 
-		ldap_filter_s4 = self.ad_object_identifying_filter(modulename, ldap.dn.str2dn(dn)[0][0][1])
 		drs_replication = wait_for_drs_replication
 		if wait_for_drs_replication and not isinstance(wait_for_drs_replication, basestring):
-			drs_replication = ldap_filter_s4
+			ad_ldap_search_args = self.ad_object_identifying_filter(modulename, dn)
+			if ad_ldap_search_args:
+				drs_replication = ad_ldap_search_args
 
-		if wait_for_s4connector and ldap_filter_s4:
+		if wait_for_s4connector and ad_ldap_search_args:
 			if self._ucr.get('samba4/ldap/base'):
-				conditions.append((utils.ReplicationType.S4C_FROM_UCS, ldap_filter_s4))
+				conditions.append((utils.ReplicationType.S4C_FROM_UCS, ad_ldap_search_args))
 
 		if drs_replication:
 			if not wait_for_replication:
@@ -525,7 +543,7 @@ class UCSTestUDM(object):
 		self._cleanupLocks.setdefault(lockType, []).append(lockValue)
 
 	def _wait_for_drs_removal(self, modulename, dn, verbose=True):
-		ad_ldap_search_args = self.ad_object_identifying_filter(modulename, ldap.dn.str2dn(dn)[0][0][1])
+		ad_ldap_search_args = self.ad_object_identifying_filter(modulename, dn)
 		if ad_ldap_search_args:
 			wait_for_drs_replication(should_exist=False, verbose=verbose, timeout=20, **ad_ldap_search_args)
 
