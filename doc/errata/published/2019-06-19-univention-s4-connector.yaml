@@ -17,3 +17,5 @@ desc: |
  * Avoid rejects when DNS records have an uppercase DC attribute.
  * Fix traceback password sync_to_ucs for machine accounts.
 bug: [35237, 40773, 48364, 49445, 49643, 49649]
+erratum: 155
+announced: 2019-06-19
