@@ -67,7 +67,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		"""Check a single join script."""
 		try:
 			content = open(filename, 'r').read()
-		except (OSError, IOError):
+		except EnvironmentError:
 			self.addmsg('0001-9', 'failed to open and read file', filename)
 			return
 
@@ -179,7 +179,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		# Look for dh-umc-modules-install
 		try:
 			content = open(fn_rules, 'r').read()
-		except IOError:
+		except EnvironmentError:
 			self.addmsg('0001-9', 'failed to open and read file', fn_rules)
 		else:
 			if UniventionPackageCheck.RE_DH_JOIN.search(content):
@@ -211,7 +211,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		for fn in fnlist:
 			try:
 				content = open(fn, 'r').read()
-			except IOError:
+			except EnvironmentError:
 				self.addmsg('0001-9', 'failed to open and read file', fn)
 
 			for js in fnlist_joinscripts.keys():
@@ -234,7 +234,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				self.debug('loading %s' % (fn))
 				try:
 					content = open(fn, 'r').read()
-				except IOError:
+				except EnvironmentError:
 					self.addmsg('0001-9', 'failed to open and read file', fn)
 					continue
 

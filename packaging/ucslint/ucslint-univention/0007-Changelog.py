@@ -57,7 +57,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		fn = os.path.join(path, 'debian', 'changelog')
 		try:
 			content = open(fn, 'r').read()
-		except IOError:
+		except EnvironmentError:
 			self.addmsg('0007-1', 'failed to open and read file', fn)
 			return
 

@@ -78,7 +78,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		for fn, checks in fnlist_scripts.items():
 			try:
 				content = open(fn, 'r').read()
-			except (OSError, IOError):
+			except EnvironmentError:
 				content = ''
 
 			if not content:

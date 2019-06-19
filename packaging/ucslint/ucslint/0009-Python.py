@@ -65,7 +65,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 			try:
 				content = open(fn, 'r').read(100)  # add all files that contain a hashbang in first line
-			except (IOError, OSError):
+			except EnvironmentError:
 				self.debug('Failed to read 100 bytes from %r' % (fn,))
 			else:
 				if content.startswith('#!'):
@@ -84,7 +84,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		for fn in py_files:
 			try:
 				content = open(fn, 'r').read(100)
-			except (IOError, OSError):
+			except EnvironmentError:
 				self.addmsg('0009-1', 'failed to open and read file', filename=fn)
 				continue
 			self.debug('testing %s' % fn)

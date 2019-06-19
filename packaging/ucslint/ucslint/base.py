@@ -260,7 +260,7 @@ class ParserDebianControl(object):
 
 		try:
 			content = open(self.filename, 'r').read()
-		except (IOError, OSError):
+		except EnvironmentError:
 			raise FailedToReadFile(self.filename)
 
 		parts = content.split('\n\n')
@@ -538,7 +538,7 @@ class FilteredDirWalkGenerator(object):
 				if self.reHashBang:
 					try:
 						content = open(fn, 'r').read(self.readSize)
-					except (IOError, OSError):
+					except EnvironmentError:
 						continue
 					if not self.reHashBang.search(content):
 						continue

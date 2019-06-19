@@ -66,7 +66,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		fn_changelog = os.path.join(path, 'debian', 'changelog')
 		try:
 			content_changelog = open(fn_changelog, 'r').read(1024)
-		except IOError:
+		except EnvironmentError:
 			self.addmsg('0011-1', 'failed to open and read file', filename=fn_changelog)
 			return
 
@@ -127,7 +127,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				rules = fd.read()
 				if re.search('--with[ =]*["\']?python_support', rules):
 					self.addmsg('0011-18', 'please use --with python2,python3 instead of python_support', filename=fn_rules)
-		except IOError:
+		except EnvironmentError:
 			pass
 
 	EXCEPTION_FILES = set((

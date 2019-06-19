@@ -40,7 +40,7 @@ reHashBang = re.compile('#!\s*/bin/(?:ba|da|z|c)?sh')
 def containsHashBang(path):
 	try:
 		fp = open(path, 'r')
-	except IOError:
+	except EnvironmentError:
 		return False
 	try:
 		for line in fp:
@@ -88,5 +88,5 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					self.tester.open(fn)
 					msglist = self.tester.runTests()
 					self.msg.extend(msglist)
-				except (IOError, OSError):
+				except EnvironmentError:
 					continue

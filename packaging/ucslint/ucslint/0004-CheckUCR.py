@@ -177,7 +177,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 			try:
 				content = open(fn, 'r').read()
-			except (OSError, IOError):
+			except EnvironmentError:
 				self.addmsg('0004-27', 'cannot open/read file', fn)
 				continue
 
@@ -279,7 +279,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			fn_rules = os.path.join(path, 'debian', 'rules')
 			try:
 				rules_content = open(fn_rules, 'r').read()
-			except (OSError, IOError):
+			except EnvironmentError:
 				self.addmsg('0004-2', 'file is missing', fn_rules)
 				rules_content = ''
 			if 'univention-install-baseconfig' in rules_content:
@@ -308,7 +308,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					self.debug('Reading %s' % fn)
 					try:
 						content = open(fn, 'r').read()
-					except (OSError, IOError):
+					except EnvironmentError:
 						self.addmsg('0004-27', 'cannot open/read file', fn)
 						continue
 
@@ -690,7 +690,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		variables = set()
 		try:
 			f = open(tmpfn, 'r')
-		except (OSError, IOError):
+		except EnvironmentError:
 			self.addmsg('0004-27', 'cannot open/read file', tmpfn)
 			return variables
 		try:
@@ -711,7 +711,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		count_var = 0
 		try:
 			f = open(fn, 'r')
-		except (OSError, IOError):
+		except EnvironmentError:
 			# self.addmsg('0004-27', 'cannot open/read file', fn)
 			return
 		try:
