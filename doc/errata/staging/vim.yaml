@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: vim
+fix: 2:8.0.0197-4+deb9u2
+desc: |
+ This update addresses the following issue:
+ * The :source! command allows arbitrary command execution via the modeline
+   (CVE-2019-12735)
+bug: [49691]
+cve:
+- CVE-2019-12735
