@@ -64,7 +64,10 @@ class UCSInstallation(object):
 		self.client.enterText(self._['us_keyboard_layout'])
 		self.client.keyPress('enter')
 
-		self.network_setup()
+		if not self.network_setup():
+			self.client.mouseMove(100, 320)
+			self.client.mousePress(1)
+			time.sleep(1)
 
 		# root
 		self.client.waitForText(self._['user_and_password'], timeout=self.timeout)
@@ -154,6 +157,9 @@ class UCSInstallation(object):
 
 	def network_setup(self):
 		time.sleep(60)
+		# we may not see this because the only interface is configured via dhcp
+		if not self.text_is_visible(self._['configure_network'], timeout=120):
+			return False
 		self.client.waitForText(self._['configure_network'], timeout=self.timeout)
 		# always use first interface
 		self.click(self._['continue'])
@@ -179,6 +185,7 @@ class UCSInstallation(object):
 			if self.args.dns:
 				self.client.enterText(self.args.dns)
 			self.client.keyPress('enter')
+		return True
 
 	def configure_kvm_network(self):
 		if 'all' in self.args.components or 'kde' in self.args.components:
