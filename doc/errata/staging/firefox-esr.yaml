@@ -6,7 +6,7 @@ src: firefox-esr
 fix: 60.7.1esr-1~deb9u1
 desc: |
  This update addresses the following issue:
- * firefox-esr (CVE-2019-11707)
+ * Type confusion in Array.pop (CVE-2019-11707)
 bug: [49685]
 cve:
 - CVE-2019-11707
