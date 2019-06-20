@@ -1010,27 +1010,10 @@ class Objects(ReportingBase):
 			superordinate = mod.get(superordinate)
 			container = container or superordinate.dn
 
-		ctrls = {}
-		serverctrls = []
-		if items_per_page:
-			page_ctrl = SimplePagedResultsControl(True, size=items_per_page, cookie='')
-			serverctrls.append(page_ctrl)
-		if by in ('uid', 'uidNumber', 'cn'):
-			rule = ':caseIgnoreOrderingMatch' if by not in ('uidNumber',) else ''
-			serverctrls.append(SSSRequestControl(ordering_rules=['%s%s%s' % ('-' if reverse else '', by, rule)]))
 		entries = []
 		objects = []
-		try:
-			if search:
-				ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000')
-				for i in range(page or 1):  # FIXME: iterating over searches is slower than doing it all by hand
-					objects = yield self.pool.submit(module.search, container, objectProperty or None, objectPropertyValue, superordinate, scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls)
-					for control in ctrls.get('ctrls', []):
-						if control.controlType == SimplePagedResultsControl.controlType:
-							page_ctrl.cookie = control.cookie
-		except SearchLimitReached as exc:
-			objects = []
-			result['errors'] = [str(exc)]
+		if search:
+			objects, last_page = yield self.search(module, container, objectProperty, objectPropertyValue, superordinate, scope, hidden, items_per_page, page, by, reverse)
 
 		for obj in objects or []:
 			if obj is None:
@@ -1059,14 +1042,13 @@ class Objects(ReportingBase):
 			entries.append(entry)
 
 		if items_per_page:
-			qs = parse_qs(urlparse(self.request.full_url()).query)
-			qs['page'] = ['1']
-			self.add_link(result, 'first', '%s?%s' % (self.urljoin(''), urllib.urlencode(qs, True)), title=_('First page'))
+			self.add_link(result, 'first', self.urljoin('', page='1'), title=_('First page'))
 			if page > 1:
-				qs['page'] = [str(page - 1)]
-				self.add_link(result, 'prev', '%s?%s' % (self.urljoin(''), urllib.urlencode(qs, True)), title=_('Previous page'))
-			qs['page'] = [str(page + 1)]
-			self.add_link(result, 'next', '%s?%s' % (self.urljoin(''), urllib.urlencode(qs, True)), title=_('Next page'))
+				self.add_link(result, 'prev', self.urljoin('', page=str(page - 1)), title=_('Previous page'))
+			if not last_page:
+				self.add_link(result, 'next', self.urljoin('', page=str(page + 1)), title=_('Next page'))
+			else:
+				self.add_link(result, 'last', self.urljoin('', page=str(last_page)), title=_('Last page'))
 
 		# i18n: translation for univention-directory-reports
 		_('PDF Document')
@@ -1100,6 +1082,39 @@ class Objects(ReportingBase):
 		result['entries'] = entries  # TODO: is "entries" a good name? items, objects
 		self.add_caching(public=False)
 		self.content_negotiation(result)
+
+	@tornado.gen.coroutine
+	def search(self, module, container, prop, value, superordinate, scope, hidden, items_per_page, page, by, reverse):
+		ctrls = {}
+		serverctrls = []
+		hashed = (self.request.user_dn, module.name, container or None, prop or None, value or None, superordinate or None, scope or None, hidden or None, items_per_page or None, by or None, reverse or None)
+		session = self.search_sessions.get(hashed, {})
+		last_cookie = session.get('last_cookie', '')
+		current_page = session.get('page', 0)
+		page_ctrl = SimplePagedResultsControl(True, size=items_per_page, cookie=last_cookie)  # TODO: replace with VirtualListViewRequest
+		if module.supports_pagination:
+			if items_per_page:
+				serverctrls.append(page_ctrl)
+			if by in ('uid', 'uidNumber', 'cn'):
+				rule = ':caseIgnoreOrderingMatch' if by not in ('uidNumber',) else ''
+				serverctrls.append(SSSRequestControl(ordering_rules=['%s%s%s' % ('-' if reverse else '', by, rule)]))
+		objects = []
+		# TODO: we have to store the results of the previous pages (or make them cacheable)
+		# FIXME: we have to store the session across all processes
+		ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000')
+		last_page = page
+		for i in range(current_page, page or 1):
+			objects = yield self.pool.submit(module.search, container, prop or None, value, superordinate, scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls)
+			for control in ctrls.get('ctrls', []):
+				if control.controlType == SimplePagedResultsControl.controlType:
+					page_ctrl.cookie = control.cookie
+			if not page_ctrl.cookie:
+				self.search_sessions.pop(hashed, None)
+				break
+		else:
+			self.search_sessions[hashed] = {'last_cookie': page_ctrl.cookie, 'page': page}
+			last_page = 0
+		raise tornado.gen.Return((objects, last_page))
 
 	def get_html(self, response):
 		if self.request.method in ('GET', 'HEAD'):
