@@ -1,3 +1,10 @@
+ucs-test (9.0.2-100) unstable; urgency=medium
+
+  * Bug #49415: 51_samba4/62server_password_change_drs_replication
+    use wait_for_listener_replication
+
+ -- Felix Botner <botner@univention.de>  Thu, 20 Jun 2019 10:28:24 +0200
+
 ucs-test (9.0.2-99) unstable; urgency=medium
 
   * Bug #47345: fix not searching for DRS replication
