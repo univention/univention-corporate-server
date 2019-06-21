@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-19) unstable; urgency=medium
+
+  * Bug #44602: revert
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 21 Jun 2019 18:07:33 +0200
+
 univention-management-console (11.0.4-18) unstable; urgency=medium
 
   * Bug #44602: restrict password length to 10_000 for pam authentication
