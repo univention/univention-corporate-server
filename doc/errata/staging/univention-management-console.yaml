@@ -3,9 +3,9 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-management-console
-fix: 
+fix: 11.0.4-20A~4.4.0.201906212025
 desc: |
  This update addresses the following issue(s):
- * Prevent denial of service attack by using long passwords for PAM
+ * Prevent denial of service attack by using long passwords for Kerberos
    authentications.
 bug: [44602]
