@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention ucslint
@@ -36,7 +36,7 @@ from fnmatch import fnmatch
 import os
 from os.path import abspath, dirname, expanduser, join, normpath, pardir
 import sys
-from imp import new_module
+from importlib.util import spec_from_file_location, module_from_spec
 from optparse import OptionParser
 import re
 from errno import ENOENT
@@ -97,13 +97,13 @@ class DebianPackageCheck(object):
 						# otherwise load only listed modules
 						if (not self.enabled_modules or f[0:4] in self.enabled_modules) and not f[0:4] in self.disabled_modules:
 							modname = f[0:-3]
-							fd = open(os.path.join(plugindir, f))
-							module = new_module(modname)
 							try:
-								exec(fd, module.__dict__)
+								fn = os.path.join(plugindir, f)
+								spec = spec_from_file_location(f[:-3], fn)
+								module = module_from_spec(spec)
+								assert spec.loader
+								spec.loader.exec_module(module)  # type: ignore
 								self.pluginlist[modname] = module
-								if self.debuglevel:
-									print('Loaded module %s' % modname, file=sys.stderr)
 							except Exception as exc:
 								print('ERROR: Loading module %s failed: %s' % (f, exc), file=sys.stderr)
 								if self.debuglevel:

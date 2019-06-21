@@ -5,21 +5,19 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper (>> 7),
  dh-python,
- python-all,
  python3-all,
 Standards-Version: 3.6.1
 
 Package: ucslint
 Architecture: all
 Depends:
- python-univention-namespace,
- ${python:Depends},
  ${python3:Depends},
  ${misc:Depends},
  devscripts,
- flake8,
  python-flake8,
- python-apt,
+ python3-flake8,
+ python3-apt,
+ python3-debian,
 Conflicts: ucs-tools (<< 1.2.5)
 Description: Check packaging for UCS
  This package contains the Univention tool ucslint that
@@ -34,7 +32,6 @@ Description: Check packaging for UCS
 Package: ucslint-univention
 Architecture: all
 Depends:
- ${python:Depends},
  ${python3:Depends},
  ${misc:Depends},
  ucslint

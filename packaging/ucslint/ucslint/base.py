@@ -28,7 +28,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import print_function
 import os
 try:
 	from typing import Any, Dict, Iterable, Iterator, List, Pattern, Optional, Tuple  # noqa F401
@@ -538,7 +537,7 @@ class FilteredDirWalkGenerator(object):
 				if self.reHashBang:
 					try:
 						content = open(fn, 'r').read(self.readSize)
-					except EnvironmentError:
+					except (EnvironmentError, UnicodeDecodeError):
 						continue
 					if not self.reHashBang.search(content):
 						continue

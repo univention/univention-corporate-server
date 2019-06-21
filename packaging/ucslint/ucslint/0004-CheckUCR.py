@@ -57,7 +57,7 @@ import sys
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	RE_PYTHON = re.compile('@!@')
 	RE_VAR = re.compile('@%@')
-	UCR_VALID_SPECIAL_CHARACTERS = '/_-'
+	RE_VALID_UCR = re.compile(r'^(?:[-/0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz]|%[sd])+$')
 
 	def getMsgIds(self):
 		return {
@@ -122,18 +122,26 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0004-59': [uub.RESULT_ERROR, 'UCR .info-file contains entry of "Type: multifile" with multiple "Postinst:" line'],
 		}
 
-	def check_invalid_variable_name(self, var):
+	@classmethod
+	def check_invalid_variable_name(cls, var):
 		"""
 		Returns True if given variable name contains invalid characters
+
+		:param var: variable name to check.
+		:returns: `False` if the name is valid, `True` otherwise.
+
+		>>> UniventionPackageCheck.check_invalid_variable_name('')
+		True
+		>>> UniventionPackageCheck.check_invalid_variable_name('var')
+		False
+		>>> UniventionPackageCheck.check_invalid_variable_name('sub-section/var_name')
+		False
+		>>> UniventionPackageCheck.check_invalid_variable_name('ä')
+		True
+		>>> UniventionPackageCheck.check_invalid_variable_name('%x')
+		True
 		"""
-		for i, c in enumerate(var):
-			if not c.isalpha() and not c.isdigit() and c not in self.UCR_VALID_SPECIAL_CHARACTERS:
-				if c == '%' and (i < len(var) - 1):
-					if not var[i + 1] in ['d', 's']:
-						return True
-				else:
-					return True
-		return False
+		return cls.RE_VALID_UCR.match(var) is None
 
 	RE_UCR_VARLIST = [
 		re.compile("""(?:baseConfig|configRegistry)\s*\[\s*['"]([^'"]+)['"]\s*\]"""),
@@ -384,7 +392,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 									self.addmsg('0004-59', 'file contains multifile entry with %d "Postinst:" lines' % (len(post),), fn)
 								all_postinst |= set(post)
 
-								for key in set(entry.keys()) - set(('Type', 'Multifile', 'Variables', 'User', 'Group', 'Mode', 'Preinst', 'Postinst')):
+								for key in set(entry) - set(('Type', 'Multifile', 'Variables', 'User', 'Group', 'Mode', 'Preinst', 'Postinst')):
 									self.addmsg('0004-42', 'UCR .info-file contains entry with unexpected key "%s"' % (key,), fn)
 
 							elif typ == 'subfile':
@@ -417,7 +425,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 									self.addmsg('0004-20', 'file contains subfile entry with %d "Postinst:" lines' % (len(post),), fn)
 								all_postinst |= set(post)
 
-								for key in set(entry.keys()) - set(('Type', 'Subfile', 'Multifile', 'Variables')):
+								for key in set(entry) - set(('Type', 'Subfile', 'Multifile', 'Variables')):
 									self.addmsg('0004-42', 'UCR .info-file contains entry with unexpected key "%s"' % (key,), fn)
 
 							elif typ == 'file':
@@ -463,7 +471,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 									self.addmsg('0004-22', 'file contains file entry with %d "Postinst:" lines' % (len(post),), fn)
 								all_postinst |= set(post)
 
-								for key in set(entry.keys()) - set(('Type', 'File', 'Variables', 'User', 'Group', 'Mode', 'Preinst', 'Postinst')):
+								for key in set(entry) - set(('Type', 'File', 'Variables', 'User', 'Group', 'Mode', 'Preinst', 'Postinst')):
 									self.addmsg('0004-42', 'UCR .info-file contains entry with unexpected key "%s"' % (key,), fn)
 
 							elif typ == 'module':
@@ -474,7 +482,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 									objlist.setdefault(conffn, []).append(entry)
 								all_module |= set(module)
 
-								for key in set(entry.keys()) - set(('Type', 'Module', 'Variables')):
+								for key in set(entry) - set(('Type', 'Module', 'Variables')):
 									self.addmsg('0004-42', 'UCR .info-file contains entry with unexpected key "%s"' % (key,), fn)
 
 							elif typ == 'script':
@@ -485,7 +493,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 									objlist.setdefault(conffn, []).append(entry)
 								all_script |= set(script)
 
-								for key in set(entry.keys()) - set(('Type', 'Script', 'Variables')):
+								for key in set(entry) - set(('Type', 'Script', 'Variables')):
 									self.addmsg('0004-42', 'UCR .info-file contains entry with unexpected key "%s"' % (key,), fn)
 
 							else:
@@ -531,7 +539,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				else:
 					raise
 
-		for conffn in conffiles.keys():
+		for conffn in conffiles:
 			conffnfound = False
 			shortconffn = conffn[conffn.find('/conffiles/') + 11:]
 			short2conffn[shortconffn] = conffn
@@ -727,3 +735,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			self.addmsg('0004-31', 'odd number of @!@ markers', fn)
 		if count_var % 2:
 			self.addmsg('0004-32', 'odd number of @%@ markers', fn)
+
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()

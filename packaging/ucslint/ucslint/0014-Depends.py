@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 # vim:set fileencoding=utf-8 sw=4 ts=4 et:
 #

@@ -81,7 +81,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			# 1 = bashism found
 			# 0 = everything is posix compliant
 			if p.returncode == 1:
-				for item in stderr.split('possible bashism in '):
+				for item in stderr.decode('utf-8', 'replace').split('possible bashism in '):
 					item = item.strip()
 					if not item:
 						continue
