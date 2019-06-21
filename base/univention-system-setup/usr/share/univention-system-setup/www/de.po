@@ -1571,15 +1571,6 @@ msgstr "Datenschutzerklärung"
 #~ msgstr "Bezeichner"
 
 #~ msgid ""
-#~ "If this server is supposed to become an administrative slave, please create "
-#~ "a school first and set the hostname of this server as the administrative "
-#~ "server."
-#~ msgstr ""
-#~ "Falls dieser Server ein administrativer Slave werden soll, erstellen Sie "
-#~ "bitte zunächst eine Schule und setzen den Rechnernamen dieses Servers als "
-#~ "administrativen Server."
-
-#~ msgid ""
 #~ "In the <i>network settings</i>, IP addresses (IPv4 and IPv6) as well as name"
 #~ " servers, gateways, and HTTP proxies may be specified."
 #~ msgstr ""
@@ -1758,27 +1749,6 @@ msgstr "Datenschutzerklärung"
 
 #~ msgid "There are no more physical interfaces to create."
 #~ msgstr "Es gibt keine weiteren physikalischen Netzwerkgeräte zum Hinzufügen."
-
-#~ msgid ""
-#~ "This server is already set as an administrative server for a school. Please "
-#~ "correct this before continuing."
-#~ msgstr ""
-#~ "Dieser Server ist bereits als administrativer Server für eine Schule "
-#~ "eingestellt. Bitte korrigieren Sie dies bevor Sie fortfahren."
-
-#~ msgid ""
-#~ "This server is already set as an educational server for a school. Please "
-#~ "correct this before continuing."
-#~ msgstr ""
-#~ "Dieser Server ist bereits als edukativer Server für eine Schule eingestellt."
-#~ " Bitte korrigieren Sie dies bevor Sie fortfahren."
-
-#~ msgid "This server provides administrative UCS@school services for a school."
-#~ msgstr ""
-#~ "Dieser Server übernimmt administrative UCS@school Aufgaben für eine Schule."
-
-#~ msgid "This server provides no UCS@school services."
-#~ msgstr "Dieser Server übernimmt keine UCS@school Aufgaben."
 
 #~ msgid "Time zone and keyboard settings"
 #~ msgstr "Zeitzonen- und Tastatureinstellungen"
