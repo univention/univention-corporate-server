@@ -1,3 +1,9 @@
+ucs-test (9.0.2-101) unstable; urgency=medium
+
+  * Bug #47345: adjust some test scripts to not do retry in verify_ldap_object
+
+ -- Florian Best <best@univention.de>  Fri, 21 Jun 2019 11:04:24 +0200
+
 ucs-test (9.0.2-100) unstable; urgency=medium
 
   * Bug #49415: 51_samba4/62server_password_change_drs_replication

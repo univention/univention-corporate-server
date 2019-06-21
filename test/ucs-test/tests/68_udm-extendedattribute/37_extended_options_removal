@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
         udm.modify_object('groups/group', dn=group_dn, options=['posix'])
         try:
-            utils.verify_ldap_object(group_dn, expected_attr={'objectClass': ['univentionFreeAttributes']}, strict=False)
+            utils.verify_ldap_object(group_dn, expected_attr={'objectClass': ['univentionFreeAttributes']}, strict=False, retry_count=0)
             utils.fail('objectClass was not removed from group %r @ %r' % (group_name, group_dn))
         except utils.LDAPObjectValueMissing:
             pass

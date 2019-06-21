@@ -150,8 +150,8 @@ def retry_on_error(func, exceptions=(Exception,), retry_count=20, delay=10):
 	"""
 	This function calls the given function `func`.
 	If one of the specified `exceptions` is caught, `func` is called again until
-    the retry count is reached or any unspecified exception is caught. Between
-    two calls of `func` retry_on_error waits for `delay` seconds.
+	the retry count is reached or any unspecified exception is caught. Between
+	two calls of `func` retry_on_error waits for `delay` seconds.
 
 	:param func: function to be called
 	:param exceptions: tuple of exception classes, that cause a rerun of `func`

@@ -69,8 +69,7 @@ def check_app_version_ldap_registraton(new_version):
         ldap_object.remove_from_directory()
     except (utils.LDAPObjectNotFound, utils.LDAPUnexpectedObjectFound,
             utils.LDAPObjectValueMissing, utils.LDAPObjectUnexpectedValue) as exc:
-        utils.fail("An error occured while verifying App's LDAP object: %r"
-                   % exc)
+        utils.fail("An error occured while verifying App's LDAP object: %r" % exc)
 
 
 if __name__ == '__main__':
