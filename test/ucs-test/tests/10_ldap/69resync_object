@@ -13,6 +13,7 @@ import ldap
 from univention.uldap import getRootDnConnection
 from univention.testing.udm import UCSTestUDM
 from univention.testing import utils
+from univention.testing.ucs_samba import wait_for_drs_replication
 import univention.testing.strings as uts
 
 
@@ -20,6 +21,8 @@ def test_resync_missing_object():
 	print('Testing resync of missing object')
 	with UCSTestUDM() as udm:
 		user_dn, user_name = udm.create_user()
+		# in a samba environment we not only need to wait for u-d-l replication
+		wait_for_drs_replication(ldap.filter.filter_format('(sAMAccountName=%s)', (user_name, )))
 		user_filter = ldap.filter.filter_format('uid=%s', (user_name, ))
 		local_lo = getRootDnConnection()
 		local_lo.delete(user_dn)
