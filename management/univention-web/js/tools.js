@@ -2052,7 +2052,7 @@ define([
 					id: []
 				};
 				o.count += 1;
-				var od = lang.replace('id: {0}', [w.id]);
+				var id = lang.replace('id: {0}', [w.id]);
 				if (w.domNode) {
 					var wid = w.domNode.getAttribute('widgetid');
 					if (w.id !== wid) {
