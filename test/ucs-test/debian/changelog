@@ -1,3 +1,9 @@
+ucs-test (9.0.2-102) unstable; urgency=medium
+
+  * Bug #47306: tag 86_selenium/16_umc_memory_leaks as producttest
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 21 Jun 2019 12:10:28 +0200
+
 ucs-test (9.0.2-101) unstable; urgency=medium
 
   * Bug #49415: 10_ldap/69resync_object wait for drs
