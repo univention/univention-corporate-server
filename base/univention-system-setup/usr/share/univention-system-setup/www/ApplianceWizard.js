@@ -839,30 +839,30 @@ define([
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'schooldomain-slave',
-				headerText: _('Serverrole inside the UCS@school domain'),
-				helpText: _('Choose what role this server is supposed to take in your UCS@school domain.'),
+				headerText: _('Server role inside the UCS@school domain'),
+				helpText: _('Choose which role this server is supposed to take in your UCS@school domain.'),
 				widgets: [{
 					type: RadioButton,
 					radioButtonGroup: 'schoolrole',
 					name: '_schoolRoleEducational',
-					label: _('Educational server'),
+					label: _('School server of the educational network'),
 					checked: true,
 					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}, {
 					type: Text,
 					name: 'helpEducational',
-					content: _('This server provides educational UCS@school services for a school.'),
+					content: _('The server will provide educational UCS@school services for a school, e.g. exam mode.'),
 					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
 				}, {
 					type: RadioButton,
 					radioButtonGroup: 'schoolrole',
 					name: '_schoolRoleAdministrative',
-					label: _('Administrative server'),
+					label: _('School server of the administrative network'),
 					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}, {
 					type: Text,
 					name: 'helpAdministrative',
-					content: _('This server provides administrative UCS@school services for a school.'),
+					content: _('The server will only provide domain services to a school\'s administrative network, not educational UCS@school services.'),
 					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
 				}, {
 					type: RadioButton,
@@ -873,7 +873,7 @@ define([
 				}, {
 					type: Text,
 					name: 'helpCentral',
-					content: _('This server provides no UCS@school services.'),
+					content: _('The server will not be assigned to a specific school and will not provide UCS@school services.'),
 					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
 				}]
 			}), lang.mixin({}, pageConf, {
@@ -2343,16 +2343,16 @@ define([
 				if (this._getRole() === 'domaincontroller_slave' && this._isSchoolMultiServerDomain) {
 					var _vals = this._gatherVisibleValues();
 					var hasAdminAlert = function() {
-						_alert(_('This server is already set as an administrative server for a school. Please correct this before continuing.'));
+						_alert(_('For this system, a computer object already exists in the LDAP directory that has been configured for the role &quot;<i>school server in the administration network</i>&quot; and thus contradicts your selection. Please check and correct this before proceeding.'));
 					};
 					var hasEduAlert = function() {
-						_alert(_('This server is already set as an educational server for a school. Please correct this before continuing.'));
+						_alert(_('For this system, a computer object already exists in the LDAP directory that was configured for the role &quot;<i>school server in the educational network</i>&quot; and thus contradicts your selection. Please check and correct this before proceeding.'));
 					};
 					var missingEduAlert = function() {
-						_alert(_('If this server is supposed to become an educational slave, please create a school first and set the hostname of this server as the educational server.'));
+						_alert(_('If this system is to become a school server in the educational network, please first check whether a corresponding school exists and whether the computer name of this system was specified as the <i>school server for the educational network</i>.'));
 					};
 					var missingAdminAlert = function() {
-						_alert(_('If this server is supposed to become an administrative slave, please create a school first and set the hostname of this server as the administrative server.'));
+						_alert(_('If this system is to become a school server in the administration network, please first check whether a corresponding school exists and whether the computer name of this system has been specified as the <i>school server for the administration network</i>.'));
 					};
 
 

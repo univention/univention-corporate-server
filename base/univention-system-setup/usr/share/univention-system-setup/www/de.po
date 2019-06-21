@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-system-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-05-09 18:51+0200\n"
-"PO-Revision-Date: 2012-02-20 11:34+0100\n"
+"POT-Creation-Date: 2019-06-21 19:34+0000\n"
+"PO-Revision-Date: 2019-06-21 17:58+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -278,22 +278,6 @@ msgstr ""
 "personalisierter Lizenzschlüssel zugesendet. Die Lizenz kann über den "
 "Lizenzdialog der Univention Management Console eingespielt werden."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2339
-msgid ""
-"This server is already set as an administrative server for a school. "
-"Please correct this before continuing."
-msgstr ""
-"Dieser Server ist bereits als administrativer Server für eine Schule "
-"eingestellt. Bitte korrigieren Sie dies bevor Sie fortfahren."
-
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2342
-msgid ""
-"This server is already set as an educational server for a school. "
-"Please correct this before continuing."
-msgstr ""
-"Dieser Server ist bereits als edukativer Server für eine Schule "
-"eingestellt. Bitte korrigieren Sie dies bevor Sie fortfahren."
-
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:668
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1861
 msgid "Account information"
@@ -335,10 +319,6 @@ msgstr "Rechnernamen anpassen"
 msgid "Adjust settings"
 msgstr "Einstellungen anpassen"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:860
-msgid "Administrative server"
-msgstr "Administrativer Server"
-
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:538
 msgid "Alternate DNS server"
 msgstr "Alternativer DNS-Server"
@@ -378,9 +358,10 @@ msgstr "Zentraler Server"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:843
 msgid ""
-"Choose what role this server is supposed to take in your UCS@school domain."
+"Choose which role this server is supposed to take in your UCS@school domain."
 msgstr ""
-"Wählen Sie welche Rolle dieser Server in Ihrer UCS@school Domäne übernehmen soll."
+"Wählen Sie welche Rolle dieses System in Ihrer UCS@school-Domäne übernehmen "
+"soll."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:352
 msgid "Choose your language"
@@ -545,10 +526,6 @@ msgstr "E-Mail-Adresse zur Aktivierung von %s Appliance"
 msgid "E-mail address to activate UCS"
 msgstr "E-Mail-Adresse zur Aktivierung von UCS"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:848
-msgid "Educational server"
-msgstr "Edukativer Server"
-
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:365
 msgid ""
 "Enter a city nearby to preconfigure settings such as timezone, system "
@@ -610,6 +587,30 @@ msgstr ""
 "Server-Umgebungen mit unterschiedlichen Domänen notwendig sein.<br/>Der "
 "eingerichtete Domänenname kann nach dem Durchlaufen des UCS-"
 "Einrichtungsassistenten <b>nicht</b> mehr geändert werden."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2339
+msgid ""
+"For this system, a computer object already exists in the LDAP directory that"
+" has been configured for the role &quot;<i>school server in the "
+"administration network</i>&quot; and thus contradicts your selection. Please"
+" check and correct this before proceeding."
+msgstr ""
+"Für dieses System existiert im LDAP-Verzeichnis bereits ein Rechnerobjekt, "
+"das für die Rolle &quot;<i>Schulserver im Verwaltungsnetz</i>&quot; "
+"konfiguriert wurde, und widerspricht damit Ihrer Auswahl. Bitte prüfen und "
+"korrigieren Sie dies, bevor Sie fortfahren."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2342
+msgid ""
+"For this system, a computer object already exists in the LDAP directory that"
+" was configured for the role &quot;<i>school server in the educational "
+"network</i>&quot; and thus contradicts your selection. Please check and "
+"correct this before proceeding."
+msgstr ""
+"Für dieses System existiert im LDAP-Verzeichnis bereits ein Rechnerobjekt, "
+"das für die Rolle &quot;<i>Schulserver im Edukativnetz</i>&quot; "
+"konfiguriert wurde, und widerspricht damit Ihrer Auswahl. Bitte prüfen und "
+"korrigieren Sie dies, bevor Sie fortfahren."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:803
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1742
@@ -679,22 +680,25 @@ msgstr "IPv4/IPv6-Adresse {interface}"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:2348
 msgid ""
-"If this server is supposed to become an administrative slave, please create "
-"a school first and set the hostname of this server as the administrative "
-"server."
+"If this system is to become a school server in the administration network, "
+"please first check whether a corresponding school exists and whether the "
+"computer name of this system has been specified as the <i>school server for "
+"the administration network</i>."
 msgstr ""
-"Falls dieser Server ein administrativer Slave werden soll, erstellen Sie bitte "
-"zunächst eine Schule und setzen den Rechnernamen dieses Servers als administrativen "
-"Server."
+"Wenn dieses System ein Schulserver im Verwaltungsnetz werden soll, prüfen Sie "
+"bitte zuerst, ob eine entsprechende Schule existiert und der Rechnername "
+"dieses Systems als <i>Schulserver für das Verwaltungsnetz</i> angegeben wurde."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:2345
 msgid ""
-"If this server is supposed to become an educational slave, please create a "
-"school first and set the hostname of this server as the educational server."
+"If this system is to become a school server in the educational network, "
+"please first check whether a corresponding school exists and whether the "
+"computer name of this system was specified as the <i>school server for the "
+"educational network</i>."
 msgstr ""
-"Falls dieser Server ein edukativer Slave werden soll, erstellen Sie bitte "
-"zunächst eine Schule und setzen den Rechnernamen dieses Servers als edukativen "
-"Server."
+"Wenn dieses System ein Schulserver im Edukativnetz werden soll, prüfen Sie "
+"bitte zuerst, ob eine entsprechende Schule existiert und der Rechnername "
+"dieses Systems als <i>Schulserver für das Edukativnetz</i> angegeben wurde."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:624
 #, javascript-format
@@ -943,10 +947,6 @@ msgstr "Bitte lesen Sie die nachstehende Lizenzvereinbarung für %s Appliance."
 msgid "Please select your domain settings."
 msgstr "Bitte wählen Sie die Domäneneinstellungen."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:842
-msgid "Serverrole inside the UCS@school domain"
-msgstr "Serverrolle in der UCS@school Domäne"
-
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:532
 msgid "Preferred DNS server"
 msgstr "Bevorzugter DNS-Server"
@@ -984,6 +984,14 @@ msgstr "Neustart der Server-Komponenten..."
 msgid "Root password empty. Continue?"
 msgstr "Root-Passwort ist leer. Möchten Sie fortfahren?"
 
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:860
+msgid "School server of the administrative network"
+msgstr "Schulserver im Verwaltungsnetz"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:848
+msgid "School server of the educational network"
+msgstr "Schulserver im Edukativnetz"
+
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:742
 msgid "Search Domain controller master in DNS"
 msgstr "Domänencontroller Master im DNS suchen"
@@ -995,6 +1003,10 @@ msgstr "Feedback senden"
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1999
 msgid "Send to vendor"
 msgstr "An den Hersteller senden"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:842
+msgid "Server role inside the UCS@school domain"
+msgstr "Serverrolle in der UCS@school-Domäne"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:323
 msgid "Setup - An error occurred"
@@ -1096,7 +1108,31 @@ msgstr[1] ""
 "konfigurieren Sie das Netzwerk, alle Proxyserver und Firewalls so, dass "
 "diese Server erreichbar sind. Nur so kann UCS voll funktionsfähig sein."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2026
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:876
+msgid ""
+"The server will not be assigned to a specific school and will not provide "
+"UCS@school services."
+msgstr ""
+"Der Server wird keiner speziellen Schule zugeordnet und wird keine UCS"
+"@school-Dienste bereitstellen."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:865
+msgid ""
+"The server will only provide domain services to a school's administrative "
+"network, not educational UCS@school services."
+msgstr ""
+"Der Server wird nur Domänendienste für das Verwaltungsnetz einer Schule "
+"bereitstellen, jedoch keine edukativen UCS@school-Dienste."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:854
+msgid ""
+"The server will provide educational UCS@school services for a school, e.g. "
+"exam mode."
+msgstr ""
+"Dieser Server wird edukative UCS@school-Dienste für eine Schule "
+"bereitstellen, z.B. den Klassenarbeitsmodus."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2061
 msgid ""
 "The system configuration could not be completed. Please choose to retry the "
 "configuration process or finish the wizard."
@@ -1116,18 +1152,6 @@ msgstr ""
 #: usr/share/univention-system-setup/www/main.js:275
 msgid "This may take a few seconds..."
 msgstr "Dies kann einige Sekunden in Anspruch nehmen..."
-
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:865
-msgid "This server provides administrative UCS@school services for a school."
-msgstr "Dieser Server übernimmt administrative UCS@school Aufgaben für eine Schule."
-
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:854
-msgid "This server provides educational UCS@school services for a school."
-msgstr "Dieser Server übernimmt edukative UCS@school Aufgaben für eine Schule."
-
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:876
-msgid "This server provides no UCS@school services."
-msgstr "Dieser Server übernimmt keine UCS@school Aufgaben."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:619
 msgid ""
@@ -1348,6 +1372,9 @@ msgstr "des UCS-Systems"
 #~ msgid "Additional options for this network interface"
 #~ msgstr "Weitere Optionen für dieses Netzwerkgerät"
 
+#~ msgid "Administrative server"
+#~ msgstr "Administrativer Server"
+
 #~ msgid "Advanced configuration"
 #~ msgstr "Erweiterte Konfiguration"
 
@@ -1508,6 +1535,9 @@ msgstr "des UCS-Systems"
 
 #~ msgid "Edit a network interface"
 #~ msgstr "Bearbeite ein Netzwerkgerät"
+
+#~ msgid "Educational server"
+#~ msgstr "Edukativer Server"
 
 #~ msgid "Email address"
 #~ msgstr "E-Mail-Adresse"
