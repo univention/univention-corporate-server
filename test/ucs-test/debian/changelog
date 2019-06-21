@@ -1,3 +1,9 @@
+ucs-test (9.0.2-103) unstable; urgency=medium
+
+  * Bug #49415: 86_selenium/10_product_test_password_change
+
+ -- Felix Botner <botner@univention.de>  Fri, 21 Jun 2019 14:37:59 +0200
+
 ucs-test (9.0.2-102) unstable; urgency=medium
 
   * Bug #47306: tag 86_selenium/16_umc_memory_leaks as producttest
