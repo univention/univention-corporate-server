@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-20) unstable; urgency=medium
+
+  * Bug #44602: restrict password length to 1000 for non saml authentication
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 21 Jun 2019 20:23:09 +0200
+
 univention-management-console (11.0.4-19) unstable; urgency=medium
 
   * Bug #44602: revert
