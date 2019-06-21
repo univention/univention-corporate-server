@@ -65,6 +65,8 @@ _('The password has expired and must be renewed.')
 _('The minimum password age is not reached yet.')
 _('Make sure the kerberos service is functioning or inform an Administrator.')
 
+MAX_PASSWORD_LENGTH = 10000
+
 
 class AuthenticationError(Exception):  # abstract base class
 	pass
@@ -204,6 +206,8 @@ class PamAuth(object):
 		self.pam = self.init()
 
 	def authenticate(self, username, password, **answers):
+		if len(password) > MAX_PASSWORD_LENGTH:
+			raise AuthenticationError(self._('The maximum password length has been reached.'))
 		answers.update({
 			PAM_TEXT_INFO: '',
 			PAM_ERROR_MSG: '',
