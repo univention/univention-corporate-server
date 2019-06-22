@@ -113,6 +113,7 @@ class RessourceBase(object):
 
 	pool = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
+	requires_authentication = True
 	authenticated = {}
 
 	def force_authorization(self):
@@ -125,10 +126,12 @@ class RessourceBase(object):
 		self.request.path_decoded = urllib.unquote(self.request.path)
 		authorization = self.request.headers.get('Authorization')
 		if not authorization:
-			return self.force_authorization()
+			if self.requires_authentication:
+				return self.force_authorization()
 
 		try:
-			self.parse_authorization(authorization)
+			if authorization:
+				self.parse_authorization(authorization)
 		finally:
 			self.request.content_negotiation_lang = 'html'
 			self.request.content_negotiation_lang = self.check_acceptable()
@@ -571,6 +574,370 @@ class Relations(Ressource):
 			for relation in univention_relations:
 				self.add_link(result, 'udm/relation/', self.urljoin(relation), name='udm/relation/%s' % relation, title='udm/relation/%s' % relation)
 		self.content_negotiation(result)
+
+
+class Swagger(Ressource):
+
+	requires_authentication = False
+
+	def prepare(self):
+		super(Swagger, self).prepare()
+		self.request.content_negotiation_lang = 'json'
+		self.ldap_connection, self.ldap_position = get_machine_connection(write=False)
+
+	def get(self):
+		responses = {}
+		paths = {}
+		tags = []
+		definitions = {}
+		parameters = {}
+		parameters['search'] = [{
+			"in": "query",
+			"name": "position",
+			"type": "string",
+			"format": "dn",
+			"description": "Position which is used as search base",
+		}, {
+			"in": "query",
+			"name": "scope",
+			"type": "string",
+			"description": "The LDAP search scope (sub, base, one)",
+		}, {
+			"in": "query",
+			"name": "property",
+			"type": "string",
+			"description": "A property name to filter for",
+		}, {
+			"in": "query",
+			"name": "propertyvalue",
+			"type": "string",
+			"description": "The value to search for",
+		}, {
+			"in": "query",
+			"name": "hidden",
+			"type": "boolean",
+			"description": "Include hidden/system objects in the response",
+		}, {
+			"in": "query",
+			"name": "superordinate",
+			"type": "string",
+			"format": "dn",
+			"description": "The superordinate DN of the objects to find",
+		}, {
+			"in": "query",
+			"name": "pagesize",
+			"type": "integer",
+			"description": "How many results should be shown per page",
+		}, {
+			"in": "query",
+			"name": "page",
+			"type": "integer",
+			"description": "Which search page",
+		}, {
+			"in": "query",
+			"name": "dir",
+			"type": "string",
+			"description": "Sort direction (ASC or DESC)",
+		}, {
+			"in": "query",
+			"name": "by",
+			"type": "string",
+			"description": "Sort result by property",
+		}]
+		widget_type_map = {
+			'umc/modules/udm/LockedCheckBox': bool,
+			'umc/modules/udm/MultiObjectSelect': list,
+			'umc/modules/udm/PortalContent': str,
+			'CheckBox': bool,
+			'PasswordInputBox': (str, 'password'),
+			'DateBox': (str, 'date'),
+			'TimeBox': (str, 'time'),
+			'umc/modules/udm/LinkList': str,
+			'ComboBox': str,
+			'TextBox': str,
+			'umc/modules/udm/ComboBox': str,
+			'UnixAccessRights': str,
+			'UnixAccessRightsExtended': str,
+			'MultiSelect': list,
+			'umc/modules/udm/CertificateUploader': (str, 'byte'),
+			'ImageUploader': (str, 'binary'),
+			'TextArea': str,
+			'Editor': (str, 'html'),
+			'TextBox': str,
+			'MultiInput': list,
+			'ComplexInput': str,
+		}
+		typemap = {
+			int: 'integer',
+			float: 'number',
+			str: 'string',
+			bool: 'boolean',
+			None: 'void',
+			dict: 'object',
+			list: 'array',
+		}
+		for name, mod in sorted(udm_modules.modules.items()):
+			module = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
+			tag = name
+			tag_escaped = name.replace('/', '~1')
+			tags.append({
+				'description': '%s objects' % (module.title,),
+				'name': tag,
+			})
+			objects_pathes = {}
+			if 'search' in module.operations:
+				objects_pathes['get'] = {
+					"operationId": "list",
+					"parameters": parameters['search'],
+					#[
+					#	{
+					#		"$ref": "#/parameters/search"
+					#	}
+					#],
+					"responses": {
+						201: {
+							"description": "Success",
+							"schema": {
+								"type": "object",
+								"properties": {
+									"entries": {
+										"items": {
+											"$ref": "#/definitions/%s" % (tag_escaped,)
+										},
+										"type": "array"
+									}
+								}
+							}
+						}
+					},
+					"summary": "List all %s" % (module.object_name_plural,),
+					"tags": [tag],
+				}
+			if 'add' in module.operations:
+				objects_pathes['post'] = {
+					"operationId": "create",
+					"parameters": [{
+						"in": "body",
+						"name": "payload",
+						"required": True,
+						"schema": {
+							"$ref": "#/definitions/%s" % (tag_escaped,)
+						}
+					}],
+					"responses": {
+						201: {
+							"description": "Success",
+							"schema": {
+								"$ref": "#/definitions/%s" % (tag_escaped,)
+							}
+						}
+					},
+					"summary": "Create a new %s object" % (module.object_name,),
+					"tags": [tag],
+				}
+			object_pathes = {
+				"parameters": [
+					{
+						"description": "The objects DN (urlencoded)",
+						"in": "path",
+						"name": "dn",
+						"required": True,
+						"type": "string",
+						"format": "dn",
+					}
+				],
+				"get": {
+					"operationId": "get",
+					"responses": {
+						"200": {
+							"description": "Success",
+							"schema": {
+								"$ref": "#/definitions/%s" % (tag_escaped,)
+							}
+						},
+						"404": {
+							"description": "Object not found"
+						}
+					},
+					"summary": "Get a representation of the %s object" % (module.object_name,),
+					"tags": [tag]
+				},
+			}
+			if 'remove' in module.operations:
+				object_pathes["delete"] = {
+					"operationId": "delete",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "cleanup",
+							"type": "boolean",
+							"description": "Whether to perform a cleanup (e.g. of temporary objects, locks, etc).",
+						},
+						{
+							"in": "query",
+							"name": "recursive",
+							"type": "boolean",
+							"description": "Whether to remove referring objects (e.g. DNS or DHCP references).",
+						}
+					],
+					"responses": {
+						"204": {
+							"description": "Object deleted"
+						},
+						"404": {
+							"description": "Object not found"
+						}
+					},
+					"summary": "Remove a %s object" % (module.object_name_plural,),
+					"tags": [tag],
+				}
+			if set(module.operations) & {'edit', 'move', 'move_subtree'}:
+				object_pathes["put"] = {
+					"operationId": "modify",
+					"parameters": [
+						{
+							"in": "body",
+							"name": "payload",
+							"required": True,
+							"schema": {
+								"$ref": "#/definitions/%s" % (tag_escaped,)
+							}
+						},
+					],
+					"responses": {
+						"200": {
+							"description": "Success",
+							"schema": {
+								"$ref": "#/definitions/%s" % (tag_escaped,)
+							}
+						},
+						"404": {
+							"description": "Object not found"
+						}
+					},
+					"summary": "Modify or move an %s object" % (module.object_name,),
+					"tags": [tag],
+				}
+				object_pathes['patch'] = object_pathes['put'].copy()
+				object_pathes['patch']['operationId'] = 'patch'
+			paths['/%s/' % (name,)] = objects_pathes
+			paths['/%s/{dn}' % (name,)] = object_pathes
+			definitions[tag] = {
+				"allOf": [
+					{
+						"$ref": "#/definitions/base"
+					},
+					{
+						"properties": {
+							"properties": {
+								"$ref": "#/definitions/%s_properties" % (tag_escaped,)
+							},
+							"uri": {
+								"type": "string",
+								"format": "uri"
+							},
+							"options": {
+								"description": "Object type specific options.",
+								"properties": dict((oname, {
+									"description": opt.short_description,
+									"type": "boolean",
+								}) for oname, opt in module.options.items()),
+								"type": "object"
+							},
+							"policies": {
+								"description": "Policies which apply for this object.",
+								"properties": dict((pol['objectType'], {
+									"type": "string",
+									"format": "dn",
+									"description": pol['label'],
+								}) for pol in module.policies),
+								"type": "object"
+							},
+						},
+						"type": "object"
+					}
+				]
+			}
+			if module.superordinate_names:
+				definitions[tag]['allOf'].append({'$ref$': '#/definitions/superordinate'})
+			properties = {}
+			for prop in module.properties(None):
+				name = prop['id']
+				if name.startswith('$'):
+					continue
+				properties[name] = {
+					"type": "string",
+					"description": prop['label'],
+				}
+				ptype = widget_type_map.get(prop['type'], str)
+				if isinstance(ptype, tuple):
+					ptype, properties[name]['format'] = ptype
+				properties[name]['type'] = typemap[ptype]
+				# Swagger is not capable of having array containig different types... OpenAPI 3 might do it
+				#for subtype in prop.get("subtypes_", []):
+				#	item = {}
+				#	ptype = widget_type_map.get(prop['type'], str)
+				#	if isinstance(ptype, tuple):
+				#		ptype, item['format'] = ptype
+				#	item['type'] = typemap[ptype]
+				#	properties[name].setdefault('items', []).append(item)
+				if ptype is list:
+					properties[name].setdefault('items', {'type': 'string', 'description': 'subtype'})
+
+			definitions['%s_properties' % (tag,)] = {
+				"type": "object",
+				"description": "Properties of the %s" % (module.title,),
+				"properties": properties,
+			}
+
+		definitions["base"] = {
+			"properties": {
+				"dn": {
+					"description": "DN of this object (read only)",
+					"type": "string",
+					"format": "dn",
+				},
+				"position": {
+					"description": "DN of LDAP node below which the object is located.",
+					"type": "string",
+					"format": "dn",
+				},
+				#"id": {
+				#	"description": "ID of this object.",
+				#	"type": "string"
+				#},
+			},
+			"type": "object"
+		}
+		definitions["superordinate"] = {
+			"properties": {
+				"superordinate": {
+					"type": "string",
+					"format": "dn",
+				}
+			},
+			"type": "object"
+		}
+		specs = {
+			'swagger': '2.0',
+			'basePath': self.abspath(''),
+			'paths': paths,
+			'info': {
+				'description': 'Schema definition for the Univention Directory Manager JSON-HTTP interface',
+				'title': 'Univention Directory Manager JSON-HTTP interface',
+				'version': '1.0',
+			},
+			'produces': ['application/json', 'text/html'],
+			'consumes': ['application/json', 'application/x-www-form-urlencoded', 'multipart/form-data'],
+			'securityDefinitions': {"basic": {"type": "basic"}},
+			'security': [{"basic": []}],
+			'tags': tags,
+			'definitions': definitions,
+			'parameters': parameters,
+			'responses': responses or None,
+			'host': '%s.%s' % (ucr['hostname'], ucr['domainname']),
+		}
+		self.content_negotiation(specs)
 
 
 class Modules(Ressource):
@@ -2083,6 +2450,7 @@ class Application(tornado.web.Application):
 		super(Application, self).__init__([
 			(r"/(?:udm/)?(favicon).ico", Favicon, {"path": "/var/www/favicon.ico"}),
 			(r"/udm/(?:index.html)?", Modules),
+			(r"/udm/swagger.json", Swagger),
 			(r"/udm/relation/(.*)", Relations),
 			(r"/udm/license/", License),
 			(r"/udm/license/import", LicenseImport),
