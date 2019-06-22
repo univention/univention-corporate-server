@@ -3,22 +3,25 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- debhelper (>> 7),
+ debhelper (>> 9),
+ devscripts,
  dh-python,
  python3-all,
+ python3-apt,
 Standards-Version: 3.6.1
 
 Package: ucslint
 Architecture: all
 Depends:
- ${python3:Depends},
- ${misc:Depends},
  devscripts,
  python-flake8,
- python3-flake8,
  python3-apt,
  python3-debian,
-Conflicts: ucs-tools (<< 1.2.5)
+ python3-flake8,
+ ${misc:Depends},
+ ${python3:Depends},
+Conflicts:
+ ucs-tools (<< 1.2.5),
 Description: Check packaging for UCS
  This package contains the Univention tool ucslint that
  is able to check debian source packages against common
