@@ -46,6 +46,7 @@ import uuid
 import zlib
 import urllib
 import base64
+import inspect
 import httplib
 import binascii
 import tempfile
@@ -82,6 +83,7 @@ from univention.management.console.error import UMC_Error, LDAP_ServerDown, LDAP
 import univention.directory.reports as udr
 import univention.admin.uexceptions as udm_errors
 import univention.admin.modules as udm_modules
+import univention.admin.syntax as udm_syntax
 from univention.config_registry import handler_set
 
 import univention.udm
@@ -1342,6 +1344,16 @@ class Object(Ressource):
 					if key not in properties:
 						values.pop(key)
 			values = dict(decode_properties(module.name, values, ldap_connection))
+
+		for key, value in list(values.items()):
+			syntax = module.get_property(key).syntax
+			if inspect.isclass(syntax):
+				syntax = syntax()
+			if isinstance(syntax, (udm_syntax.OkOrNot, udm_syntax.TrueFalseUp, udm_syntax.boolean)):
+				if syntax.parse(True) == value:
+					values[key] = True
+				elif syntax.parse(False) == value:
+					values[key] = False
 
 		props = {}
 		props['dn'] = obj.dn
