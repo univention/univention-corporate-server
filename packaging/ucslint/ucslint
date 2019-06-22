@@ -34,20 +34,13 @@
 from __future__ import print_function
 from fnmatch import fnmatch
 import os
-from os.path import abspath, dirname, expanduser, join, normpath, pardir
+from os.path import abspath, dirname, expanduser, join, normpath
 import sys
 from importlib.util import spec_from_file_location, module_from_spec
 from optparse import OptionParser
 import re
 from errno import ENOENT
-try:
-	import univention.ucslint.base as uub
-except ImportError:
-	try:
-		import ucslint.base as uub
-	except ImportError:
-		sys.path.insert(0, join(dirname(sys.argv[0]), pardir))
-		import ucslint.base as uub
+import univention.ucslint.base as uub
 try:
 	from typing import Any, Container, Dict, List, Optional, Sequence, Set, Tuple  # noqa F401
 	from types import ModuleType  # noqa F401
@@ -139,7 +132,7 @@ class DebianPackageCheck(object):
 			  RESULT_WARN: ['0004-1', '0019-17', ...],
 			  RESULT_ERROR: ['0004-2'],
 			}
-		"""  # noqa: E101
+		"""
 		for level, idlist in newmap.items():
 			for curid in idlist:
 				if curid in self.msgidlist:

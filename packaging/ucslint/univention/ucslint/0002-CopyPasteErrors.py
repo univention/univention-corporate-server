@@ -27,10 +27,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-try:
-	import univention.ucslint.base as uub
-except ImportError:
-	import ucslint.base as uub
+from __future__ import absolute_import
+import univention.ucslint.base as uub
 import os
 
 # 1) check if strings like "dc=univention,dc=qa" appear in debian/* and conffiles/*

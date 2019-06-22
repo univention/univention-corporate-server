@@ -29,10 +29,8 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-try:
-	import univention.ucslint.base as uub
-except ImportError:
-	import ucslint.base as uub
+from __future__ import absolute_import
+import univention.ucslint.base as uub
 import re
 import os
 import sys

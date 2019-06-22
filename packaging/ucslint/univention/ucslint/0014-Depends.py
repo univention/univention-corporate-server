@@ -30,14 +30,12 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
+from __future__ import absolute_import
+import univention.ucslint.base as uub
 from os import listdir
 from os.path import join, exists, curdir, splitext
 import re
 from glob import glob
-try:
-	import univention.ucslint.base as uub
-except ImportError:
-	import ucslint.base as uub
 from apt import Cache
 
 

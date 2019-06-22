@@ -26,44 +26,4 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-
-try:
-	import univention.ucslint.base as uub
-except ImportError:
-	import ucslint.base as uub
-import re
-import os
-
-REticket = re.compile(r'''
-	(Bug:?[ ]\#[0-9]{1,6} # Bugzilla
-	|Issue:?[ ]\#[0-9]{1,6} # Redmine
-	|Ticket(\#:[ ]|:?[ ]\#)2[0-9]{3}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(?:1[0-9]{7}|21[0-9]{6})) # OTRS
-	(?![0-9]) # not followed by additional digits
-	''', re.VERBOSE)
-
-
-class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
-
-	def getMsgIds(self):
-		return {
-			'0007-1': [uub.RESULT_WARN, 'failed to open file'],
-			'0007-2': [uub.RESULT_WARN, 'changelog does not contain ticket/bug/issue number'],
-		}
-
-	def check(self, path):
-		""" the real check """
-		super(UniventionPackageCheck, self).check(path)
-
-		fn = os.path.join(path, 'debian', 'changelog')
-		try:
-			content = open(fn, 'r').read()
-		except EnvironmentError:
-			self.addmsg('0007-1', 'failed to open and read file', fn)
-			return
-
-		REchangelog = re.compile('^ -- [^<]+ <[^>]+>', re.M)
-
-		firstEntry = REchangelog.split(content)[0]
-		match = REticket.search(firstEntry)
-		if not match:
-			self.addmsg('0007-2', 'latest changelog entry does not contain bug/ticket/issue number', fn)
+__path__ = __import__('pkgutil').extend_path(__path__, __name__)
