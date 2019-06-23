@@ -1,1 +1,2 @@
 0004-10: debian/univention-quota.univention-config-registry
+0010-2: conffiles/etc/init.d/quotarpc
