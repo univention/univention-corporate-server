@@ -38,10 +38,12 @@ from __future__ import unicode_literals
 
 import os
 import re
+import io
 import json
 import time
 import copy
 import uuid
+import zlib
 import urllib
 import base64
 import httplib
@@ -1862,7 +1864,10 @@ class LicenseRequest(Ressource):
 			'licence': dump_license(),
 		}
 		if not data['licence']:
-			raise HTTPError(400, _('Cannot parse License from LDAP'))
+			raise HTTPError(500, _('Cannot parse License from LDAP'))
+
+		# TODO: we should also send a link (self.request.full_url()) to the license server, so that the email can link to a url which automatically inserts the license:
+		# self.request.urljoin('import', license=urllib.quote(zlib.compress(''.join(_[17:] for _ in open('license.ldif', 'rb').readlines() if _.startswith('univentionLicense')), 6)[2:-4].encode('base64').rstrip()))
 
 		data = urllib.urlencode(data)
 		url = 'https://license.univention.de/keyid/conversion/submit'
@@ -1877,12 +1882,12 @@ class LicenseRequest(Ressource):
 			if match:
 				error = match.group(1).replace('\n', '')
 			# FIXME: use original error handling
-			raise HTTPError(400, _('Requesting license failed: %s') % (error,))
+			raise HTTPError(400, _('Could not request a license from Univention: %s') % (error,))
 
 		# creating a new ucr variable to prevent duplicated registration (Bug #35711)
 		handler_set(['ucs/web/license/requested=true'])
 		self.add_caching(public=False, no_store=True, no_cache=True, must_revalidate=True)
-		self.content_negotiation({'message': _('A new license has been requested.')})
+		self.content_negotiation({'message': _('A new license has been requested and sent to your email address.')})
 
 
 class LicenseCheck(Ressource):
@@ -1909,7 +1914,7 @@ class License(Ressource):
 		self.add_form_element(form, 'email', '', type='email', label=_('E-Mail address'))
 		self.add_form_element(form, '', _('Request new license'), type='submit')
 
-		form = self.add_form(license_data, '', 'POST', rel='udm/relation/license-import', enctype='multipart/form-data')
+		form = self.add_form(license_data, self.urljoin('import'), 'POST', rel='udm/relation/license-import', enctype='multipart/form-data')
 		self.add_form_element(form, 'license', '', type='file', label=_('License file (ldif format)'))
 		self.add_form_element(form, '', _('Import license'), type='submit')
 
@@ -1964,15 +1969,29 @@ class License(Ressource):
 		self.add_caching(public=False, max_age=120)
 		self.content_negotiation(license_data)
 
+
+class LicenseImport(Ressource):
+
+	def get(self):
+		text = '''dn: cn=admin,cn=license,cn=univention,%(ldap/base)s
+cn: admin
+objectClass: top
+objectClass: univentionLicense
+objectClass: univentionObject
+univentionObjectType: settings/license
+''' % ucr
+		for line in zlib.decompress(unquote(license).decode('base64'), -15).splitlines():
+			text += 'univentionLicense%s\n' % (line.strip(),)
+
+		self.import_license(io.BytesIO(text))
+
 	def post(self):
-		lic_file = tempfile.NamedTemporaryFile(delete=False)
-		lic_file.write(self.request.files['license'][0]['body'])
-		lic_file.close()
-		filename = lic_file.name
+		return self.import_license(io.BytesIO(self.request.files['license'][0]['body']))
+
+	def import_license(self, fd):
 		try:
-			with open(filename, 'rb') as fd:
 				# check license and write it to LDAP
-				importer = LicenseImport(fd)
+				importer = LicenseImporter(fd)
 				importer.check(ucr.get('ldap/base', ''))
 				importer.write(self.ldap_connection)
 		except ldap.LDAPError as exc:
@@ -1984,8 +2003,6 @@ class License(Ressource):
 			raise HTTPError(400, _('Importing the license failed: %s.') % (exc,))
 		except LicenseError as exc:
 			raise HTTPError(400, str(exc))
-		finally:
-			os.unlink(filename)
 		self.content_negotiation({'message': _('The license was imported successfully.')})
 
 
@@ -2056,6 +2073,7 @@ class Application(tornado.web.Application):
 			(r"/udm/(?:index.html)?", Modules),
 			(r"/udm/relation/(.*)", Relations),
 			(r"/udm/license/", License),
+			(r"/udm/license/import", LicenseImport),
 			(r"/udm/license/check", LicenseCheck),
 			(r"/udm/license/request", LicenseRequest),
 			(r"/udm/ldap/base/", LdapBase),
