@@ -30,6 +30,19 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+"""
+
+>>> username = 'Administrator'
+>>> password = 'univention'
+>>> uri = 'http://10.200.27.100/univention/udm/'
+>>> module = 'mail/domain'
+>>> udm = UDM.http(uri, username, password).version(1)
+>>> module = udm.get(module)
+>>> print('Found {}'.format(module))
+>>> print('Now performing {}'.format(action))
+>>> for entry in module.search():
+>>> 	print(entry)
+"""
 
 from __future__ import absolute_import
 from __future__ import division
@@ -38,7 +51,6 @@ from __future__ import unicode_literals
 
 import sys
 import requests
-from getpass import getpass
 
 if sys.version_info.major > 2:
 	import http.client
@@ -309,7 +321,7 @@ class Object(Client):
 		}
 		headers = dict((key, value) for key, value in {
 			'If-Unmodified-Since': self.last_modified,
-			'If-None-Match': self.etag,
+			'If-Match': self.etag,
 		}.items() if value)
 		resp = self.client.make_request('PUT', self.uri, data=data, **headers)
 		entry = self.client.eval_response(resp)
@@ -346,27 +358,3 @@ class Object(Client):
 			self._copy_from_obj(obj)
 		else:
 			self.client.eval_response(resp)
-
-
-if __name__ == '__main__':
-	if sys.argv[1:]:
-		username = input('Username: ')
-		password = getpass()
-		uri = sys.argv[1]
-		module = sys.argv[2]
-		action = sys.argv[3]
-	else:
-		username = 'Administrator'
-		password = 'univention'
-		uri = 'http://10.200.27.100/univention/udm/'
-		module = 'mail/domain'
-		action = 'search'
-	udm = UDM.http(uri, username, password).version(1)
-	module = udm.get(module)
-	print('Found {}'.format(module))
-	print('Now performing {}'.format(action))
-	if action == 'search':
-		for entry in module.search():
-			print(entry)
-	else:
-		print('Not supported...')

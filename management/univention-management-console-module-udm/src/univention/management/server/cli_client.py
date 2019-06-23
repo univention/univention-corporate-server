@@ -36,10 +36,11 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import json
 import argparse
 
 import univention.config_registry
-from univention.management.server.client import UDM, NotFound
+from univention.management.server.client import UDM, NotFound, HTTPError
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -56,15 +57,16 @@ class CLIClient(object):
 		if args.position:
 			obj.position = args.position
 		self.set_properties(obj, args)
-		obj.save()
-		print('Object created:', obj.dn)
+		self.save_object(obj)
+		self.print_line('Object created', obj.dn)
 
 	def modify_object(self, args):
 		module = self.udm.get(args.object_type)
+		# TODO: re-execute if changed in between
 		obj = module.get(args.dn)
 		self.set_properties(obj, args)
-		obj.save()
-		print('Object modified:', obj.dn)
+		self.save_object(obj)
+		self.print_line('Object modified', obj.dn)
 
 	def remove_object(self, args):
 		module = self.udm.get(args.object_type)
@@ -72,21 +74,30 @@ class CLIClient(object):
 			obj = module.get(args.dn)
 		except NotFound:
 			if self.args.ignore_not_exists:
-				print('Object not found:', args.dn)
+				self.print_line('Object not found', args.dn)
 			else:
 				raise
 		obj.delete(args.remove_referring)
-		print('Object removed:', obj.dn)
+		self.print_line('Object removed', obj.dn)
 
 	def move_object(self, args):
 		module = self.udm.get(args.object_type)
 		obj = module.get(args.dn)
 		obj.position = args.position
-		obj.save()
-		print('Object modified:', obj.dn)
+		self.save_object(obj)
+		self.print_line('Object modified', obj.dn)
 
 	def copy_object(self, args):
 		pass
+
+	def save_object(self, obj):
+		try:
+			obj.save()
+		except HTTPError as exc:
+			if exc.code != 422:
+				raise
+			self.print_error(str(exc))
+			raise SystemExit(2)
 
 	def set_properties(self, obj, args):
 		for key, value in obj.options.items():
@@ -130,25 +141,48 @@ class CLIClient(object):
 		module = self.udm.get(args.object_type)
 		filter = None if '=' not in args.filter else dict([args.filter.split('=', 1)])
 		for entry in module.search(filter, args.position):
-			print()
-			print('DN:', entry.dn)
+			self.print_line('')
+			self.print_line('DN', entry.dn)
 			entry = entry.open()
-			for key, value in entry.props.items():
+			for key, value in sorted(entry.props.items()):
 				if isinstance(value, list):
 					for item in value:
-						if isinstance(item, (basestring, int)):
-							print('  %s: %s' % (key, item))
+						if isinstance(item, (basestring, int, float)):
+							self.print_line(key, item, '  ')
 						else:
-							print('  %s: %r' % (key, item))
-				elif isinstance(value, (basestring, int)):
-					print('  %s: %s' % (key, value))
+							self.print_line(key, json.dumps(item, ensure_ascii=False), '  ')
+				elif value is None:
+					self.print_line(key, '', '  ')
+				elif isinstance(value, (bool, int, float)):
+					self.print_line(key, str(value), '  ')
+				elif isinstance(value, (basestring, int, float)):
+					if set(value) & set('\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0b\x0c\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\x7f'):
+						key = key + ':'
+						value = value.encode('base64').rstrip()
+					self.print_line(key, value, '  ')
+				elif isinstance(value, dict):
+					self.print_line(key, json.dumps(value, ensure_ascii=False, indent=4), '  ')
 				else:
-					print('  %s: %r' % (key, value))
+					self.print_line(key, repr(value), '  ')
 			if args.policies:  # FIXME: do a policy result
-				print('  Policy-based Settings:')
+				self.print_line('Policy-based Settings:', '', '  ')
 				for key, values in entry.policies.items():
 					for value in values:
-						print('    %s: %s' % (key, value))
+						self.print_line(key, value, '   ')
+
+	def print_line(self, key, value='', prefix=''):
+		# prints and makes sure that no ANSI escape sequences or binary data is printed
+		if key:
+			key = '%s: ' % (key,)
+		value = '%s%s%s' % (prefix, key, value)
+		value = value.replace('\n', '\n%s' % (prefix,))
+		print(''.join(v for v in value if v not in '\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\x7f'))
+
+	def print_warning(self, value='', prefix='Warning'):
+		self.print_line('', value, prefix)
+
+	def print_error(self, value='', prefix='Error'):
+		self.print_line(prefix, value, '')
 
 	def get_info(self, args):
 		module = self.udm.get(args.object_type)
@@ -255,6 +289,9 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 
 	license = subparsers.add_parser('license', description='View or modify license information')
 	license.set_defaults(func=client.license)
+	license.add_argument('--request', action='store_true')
+	license.add_argument('--check', action='store_true')
+	license.add_argument('--import')
 
 	reports = subparsers.add_parser('report', description='Create report for selected objects')
 	reports.add_argument('report_type')
