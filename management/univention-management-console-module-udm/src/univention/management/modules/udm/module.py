@@ -48,18 +48,21 @@ import urllib
 import base64
 import inspect
 import httplib
+import hashlib
 import binascii
-import tempfile
-from urlparse import urljoin, urlparse, urlunparse, parse_qs
-from urllib import quote
+import datetime
 import traceback
+from email.utils import parsedate
+from urlparse import urljoin, urlparse, urlunparse, parse_qs
+from urllib import quote, unquote
 
 import tornado.web
 import tornado.gen
 import tornado.log
 import tornado.ioloop
 import tornado.httpclient
-from tornado.web import RequestHandler, HTTPError
+import tornado.httputil
+from tornado.web import RequestHandler, HTTPError, Finish
 from tornado.concurrent import run_on_executor
 from concurrent.futures import ThreadPoolExecutor
 
@@ -1946,11 +1949,25 @@ class Object(Ressource):
 		if obj.has_property('jpegPhoto'):
 			self.add_link(props, 'udm/relation/user-photo', self.urljoin(quote_dn(obj.dn), 'properties/photo.jpg'), type='image/jpeg', title=_('User photo'))
 
-		meta = dict((key, [val.decode('utf-8', 'replace') for val in value]) for key, value in self.ldap_connection.get(obj.dn, attr=[b'+']).items())
-		props['meta'] = meta
-		self.add_header('Last-Modified', last_modified(time.strptime(meta['modifyTimestamp'][0], '%Y%m%d%H%M%SZ')))
-		self.add_caching(public=False)
-		self.content_negotiation(props)
+	def set_metadata(self, obj):  # FIXME: move into UDM core!
+		obj.oldattr.update(self.ldap_connection.get(obj.dn, attr=[b'+']))
+
+	def set_entity_tags(self, obj):
+		self.set_header('Etag', self.get_etag(obj))
+		self.set_header('Last-Modified', last_modified(time.strptime(obj.oldattr['modifyTimestamp'][0].decode('utf-8', 'replace'), '%Y%m%d%H%M%SZ')))
+		self.check_conditional_requests()
+
+	def get_etag(self, obj):
+		# generate as early as possible, to not cause side effects e.g. default values in obj.info. It must be the same value for GET and PUT
+		if not obj._open:
+			raise RuntimeError('Object was not opened!')
+		etag = hashlib.sha1()
+		etag.update(obj.dn.encode('utf-8', 'replace'))
+		etag.update(obj.module.encode('utf-8', 'replace'))
+		etag.update(b''.join(obj.oldattr.get('entryCSN', [])))
+		etag.update(b''.join(obj.oldattr.get('entryUUID', [])))
+		etag.update(json.dumps(obj.info, sort_keys=True).encode('utf-8'))
+		return u'"%s"' % etag.hexdigest()
 
 	@classmethod
 	def get_representation(cls, module, obj, properties, ldap_connection, copy=False):
@@ -2127,53 +2144,39 @@ class Object(Ressource):
 		self.add_caching(public=False)
 		self.content_negotiation({})
 
-	def options(self, object_type, dn):
-		dn = unquote_dn(dn)
-		self.set_header('Allow', 'GET, PUT, DELETE, OPTIONS')
+	def check_conditional_requests(self):
+		last_modified = parsedate(self._headers.get('Last-Modified', ''))
+		if last_modified is not None:
+			last_modified = datetime.datetime(*last_modified[:6])
+			date = parsedate(self.request.headers.get('If-Modified-Since', ''))
+			if date is not None:
+				if_since = datetime.datetime(*date[:6])
+				if if_since >= last_modified:
+					self.set_status(304)
+					raise Finish()
 
-	@tornado.gen.coroutine
-	def _validate(self, module, properties):  # (thread)
-		"""Validates the correctness of values for properties of the
-		given object type. Therefor the syntax definition of the properties is used.
+			date = parsedate(self.request.headers.get('If-Unmodified-Since', ''))
+			if date is not None:
+				if_not_since = datetime.datetime(*date[:6])
+				if last_modified > if_not_since:
+					raise HTTPError(412, _('If-Unmodified-Since does not match Last-Modified.'))
 
-		return: [ { 'property' : <name>, 'valid' : (True|False), 'details' : <message> }, ... ]
-		"""
+		etag = self._headers.get("Etag", "")
+		if not etag:
+			return
 
-		result = []
-		for property_name, value in properties.items():
-			# ignore special properties named like $.*$, e.g. $options$
-			if property_name.startswith('$') and property_name.endswith('$'):
-				continue
-			property_obj = module.get_property(property_name)
-
-			if property_obj is None:
-				raise HTTPError(400, None, _('Property %s not found') % property_name)
-
-			# FIXME: the following seems to be obsolete since encode_properties() is called?!
-			#if not property_obj.multivalue:
-			#	value = value[0]
-
-			# check each element if 'value' is a list
-			if isinstance(value, (tuple, list)) and property_obj.multivalue:
-				subResults = []
-				subDetails = []
-				for ival in value:
-					try:
-						property_obj.syntax.parse(ival)
-						subResults.append(True)
-						subDetails.append('')
-					except (udm_errors.valueInvalidSyntax, udm_errors.valueError, TypeError) as exc:
-						subResults.append(False)
-						subDetails.append(str(exc))
-				result.append({'property': property_name, 'valid': subResults, 'details': subDetails})
-			# otherwise we have a single value
-			else:
-				try:
-					property_obj.syntax.parse(value)
-					result.append({'property': property_name, 'valid': True})
-				except (udm_errors.valueInvalidSyntax, udm_errors.valueError) as exc:
-					result.append({'property': property_name, 'valid': False, 'details': str(exc)})
-		raise tornado.gen.Return(result)
+		def wheak(x):
+			return x[2:] if x.startswith(b'W/') else x
+		etag_matches = re.compile(r'\*|(?:W/)?"[^"]*"')
+		etags = etag_matches.findall(self.request.headers.get("If-None-Match", ""))
+		if not etags:
+			return
+		if '*' in etags or wheak(etag) in map(wheak, etags):
+			self.set_status(304)  # Not modified
+			raise Finish()
+		etags = etag_matches.findall(self.request.headers.get("If-Match", ""))
+		if wheak(etag) not in map(wheak, etags):
+			raise HTTPError(412, _('If-Match %s does not match entity tag(s) %s.') % (etag, ', '.join(etags)))  # precondition failed
 
 
 class UserPhoto(Ressource):
