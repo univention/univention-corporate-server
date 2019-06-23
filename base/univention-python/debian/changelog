@@ -1,3 +1,9 @@
+univention-python (13.0.2-13) unstable; urgency=medium
+
+  * Bug #49666: evaluate "response" controls in a LDAP search
+
+ -- Florian Best <best@univention.de>  Thu, 15 Dec 2022 15:54:51 +0100
+
 univention-python (13.0.2-12) unstable; urgency=medium
 
   * Bug #54555: Fix build dependencies

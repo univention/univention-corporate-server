@@ -509,7 +509,7 @@ class access(object):
 
 		if scope == 'base+one':
 			res = self.lo.search_ext_s(base, ldap.SCOPE_BASE, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit) + \
-				self.lo.search_ext_s(base, ldap.SCOPE_ONELEVEL, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit)
+				self.__search(base, ldap.SCOPE_ONELEVEL, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit, response=response)
 		else:
 			if scope == 'sub' or scope == 'domain':
 				ldap_scope = ldap.SCOPE_SUBTREE
@@ -517,13 +517,22 @@ class access(object):
 				ldap_scope = ldap.SCOPE_ONELEVEL
 			else:
 				ldap_scope = ldap.SCOPE_BASE
-			res = self.lo.search_ext_s(base, ldap_scope, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit)
+			res = self.__search(base, ldap_scope, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit, response=response)
 
 		if unique and len(res) > 1:
 			raise ldap.INAPPROPRIATE_MATCHING({'desc': 'more than one object'})
 		if required and len(res) < 1:
 			raise ldap.NO_SUCH_OBJECT({'desc': 'no object'})
 		return res
+
+	def __search(self, *args, **kwargs):
+		response = kwargs.pop('response', None)
+		if isinstance(response, dict) and kwargs.get('serverctrls'):
+			rtype, res, rmsgid, resp_ctrls = self.lo.result3(self.lo.search_ext(*args, **kwargs))
+			response['ctrls'] = resp_ctrls
+			return res
+		else:
+			return self.lo.search_ext_s(*args, **kwargs)
 
 	def searchDn(self, filter='(objectClass=*)', base='', scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
 		# type: (str, str, str, bool, bool, int, int, Optional[List[ldap.controls.LDAPControl]], Optional[Dict[str, ldap.controls.LDAPControl]]) -> List[str]

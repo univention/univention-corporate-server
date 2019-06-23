@@ -596,8 +596,6 @@ def test_secretary_reference_update(udm):
 
 def test_lookup_with_pagination(udm):
 	"""Test serverctrls of ldap server"""
-	pytest.skip('FIXME???  Bug #49638: git:63ba30a2040')
-
 	from ldap.controls import SimplePagedResultsControl
 	from ldap.controls.sss import SSSRequestControl
 	name = uts.random_username()
@@ -606,22 +604,24 @@ def test_lookup_with_pagination(udm):
 
 	univention.admin.modules.update()
 
-	lo = univention.uldap.getMachineConnection()
+	# FIXME: with machine connection I get: ldap.BUSY: {'desc': 'Server is busy', 'info': 'Other sort requests already in progress'}
+	# lo = univention.uldap.getMachineConnection()
+	lo = univention.uldap.getAdminConnection()
 	res = {}
 	page_size = 2
-	pctrl = SimplePagedResultsControl(True, size=page_size, cookie='')
-	sctrl = SSSRequestControl(ordering_rules=['uid:caseIgnoreOrderingMatch'])
-	users = univention.admin.modules.get('users/user')
-	ctrls = [sctrl, pctrl]
+	cookie = ''
 	entries = []
 
 	while True:
-		entries.append([x.dn for x in users.lookup(None, lo, 'username=%s*' % (name,), serverctrls=ctrls, response=res)])
+		pctrl = SimplePagedResultsControl(True, size=page_size, cookie=cookie)
+		sctrl = SSSRequestControl(ordering_rules=['uid:caseIgnoreOrderingMatch'])
+		users = univention.admin.modules.get('users/user')
+		entries.append([x.dn for x in users.lookup(None, lo, 'username=%s*' % (name,), serverctrls=[sctrl, pctrl], response=res)])
 		print(('Found', entries[-1]))
 		for control in res['ctrls']:
 			if control.controlType == SimplePagedResultsControl.controlType:
-				pctrl.cookie = control.cookie
-		if not pctrl.cookie:
+				cookie = control.cookie
+		if not cookie:
 			break
 
 		assert len(entries[-1]) == page_size
