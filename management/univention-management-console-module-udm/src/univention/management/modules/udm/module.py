@@ -466,13 +466,19 @@ class RessourceBase(object):
 
 	def content_negotiation_html(self, response):
 		self.set_header('Content-Type', 'text/html; charset=UTF-8')
+		ajax = self.request.headers.get('X-Requested-With', '').lower() == 'xmlhttprequest'
 
 		root = ET.Element("html")
 		head = ET.SubElement(root, "head")
 		titleelement = ET.SubElement(head, "title")
 		titleelement.text = 'FIXME: fallback title'  # FIXME: set title
 		ET.SubElement(head, 'meta', content='text/html; charset=utf-8', **{'http-equiv': 'content-type'})
-		body = ET.SubElement(root, "body")
+		if not ajax:
+			ET.SubElement(head, 'script', type='text/javascript', src=self.abspath('../js/config.js'))
+			ET.SubElement(head, 'script', type='text/javascript', src=self.abspath('js/udm.js'))
+			ET.SubElement(head, 'script', type='text/javascript', async='', src=self.abspath('../js/dojo/dojo.js'))
+
+		body = ET.SubElement(root, "body", dir='ltr')
 		header = ET.SubElement(body, 'header')
 		topnav = ET.SubElement(header, 'nav')
 		h1 = ET.SubElement(topnav, 'h1', id='logo')
@@ -520,14 +526,12 @@ class RessourceBase(object):
 		elif response is not None:
 			main.append(response)
 
-		ajax = self.request.headers.get('X-Requested-With', '').lower() == 'xmlhttprequest'
 		if not ajax:
 			stream = XML(xml.dom.minidom.parseString(ET.tostring(root, encoding='utf-8', method='xml')).toprettyxml())
-			#stream = XML(ET.tostring(root, encoding='utf-8', method='html'))
 			self.write(''.join((HTMLSerializer('html5')(stream))))
 		else:
 			self.write('<!DOCTYPE html>\n')
-			tree = ET.ElementTree(body if ajax else root)
+			tree = ET.ElementTree(main if ajax else root)
 			tree.write(self)
 
 	def get_json(self, response):
@@ -751,7 +755,88 @@ class RessourceBase(object):
 
 
 class Ressource(RessourceBase, RequestHandler):
-	pass
+
+	def options(self, *args, **kwargs):
+		"""Display API descriptions."""
+		result = self._options(*args, **kwargs)
+
+		def docstring(obj, *args, **kwargs):
+			return '\n'.join(x.strip() for x in (obj.__doc__ or '').split('\n')).format(*args, **kwargs)
+
+		def inspect_sanitizers(sans):
+			props = {}
+			for key, san in sans.items():
+				description = ''
+				type_ = ''
+				kwargs = {}
+				if isinstance(san, DictSanitizer):
+					type_ = 'dict'
+				elif isinstance(san, ListSanitizer):
+					type_ = 'list'
+				elif isinstance(san, DNSanitizer):
+					type_ = 'string'
+					description = 'LDAP DN'
+				elif isinstance(san, BooleanSanitizer):
+					type_ = 'bool'
+				elif isinstance(san, BoolSanitizer):
+					type_ = 'str'
+				elif isinstance(san, ChoicesSanitizer):
+					type_ = 'str'
+					kwargs['choices'] = san.choices
+				elif isinstance(san, IntegerSanitizer):
+					type_ = 'number'
+				props[key] = dict({
+					'type': type_,
+					'description': description,
+					'required': san.required,
+					'default': san.default,
+				}, **kwargs)
+			return props
+		result['methods'] = methods = {}
+		result['description'] = docstring(self)
+		for method in self._headers.get('Allow', '').split(', '):
+			func = getattr(self, method.lower())
+			sanitizers = getattr(func, 'sanitizers', {})
+			methods[method] = {
+				'summary': docstring(func, *args, **kwargs),
+				'query': inspect_sanitizers(sanitizers.get('query', {})),
+				'payload': inspect_sanitizers(sanitizers.get('body', {})),
+				'headers': {
+					'Accept': ['application/json', 'text/html'],
+					'Accept-Language': ['en-US', 'en', 'de-DE', 'de'],
+					'If-None-Match': ['etag'],
+					'If-Match': ['etag'],
+					'If-Unmodified-Since': ['last_modified'],
+					'If-Modified-Since': ['last_modified'],
+					'Content-Type': ['application/json', 'application/x-www-form-urlencoded', 'multipart/form-data'],
+					'Authorization': ['basic'],
+				},
+				'responses': {
+					200: {
+						'description': 'Everything OK'
+					},
+					400: {
+						'description': 'Bad request syntax (e.g. wrong content type)'
+					},
+					401: {
+						'description': 'Unauthorized. No Authorization provided or wrong credentials'
+					},
+					404: {
+						'description': 'Object not found'
+					},
+					422: {
+						'description': 'Validation of input parameters failed'
+					},
+					500: {
+						'description': 'Internal server errror'
+					},
+					599: {
+						'description': 'Error in Tornado web server'
+					}
+				},
+			}
+		self.add_caching(public=False)
+		self.content_negotiation(result)
 
 
 class Favicon(RessourceBase, tornado.web.StaticFileHandler):
@@ -772,6 +857,7 @@ class Relations(Ressource):
 		iana_relations = {
 			'search': 'Refers to a resource that can be used to search through the link\'s context and related resources.',
 			'create-form': 'The target IRI points to a resource where a submission form can be obtained.',
+			'describedby': "Refers to a resource providing information about the link's context.",
 			'edit': 'Refers to a resource that can be used to edit the link\'s context.',
 			'edit-form': 'The target IRI points to a resource where a submission form for editing associated resource can be obtained.',
 			'first': 'An IRI that refers to the furthest preceding resource in a series of resources.',
@@ -1607,7 +1693,7 @@ class Objects(ReportingBase):
 
 	@tornado.gen.coroutine
 	def get(self, object_type):
-		"""GET udm/users/user/ (nach Benutzern suchen)"""
+		"""Search for {} objects."""
 		module = self.get_module(object_type)
 		result = self._options(object_type)
 
@@ -1849,6 +1935,7 @@ class Objects(ReportingBase):
 		self.add_link(result, 'udm/relation/object-modules', self.urljoin('../../'), title=_('All modules'))
 		self.add_link(result, 'up', self.urljoin('../'), title=parent.object_name_plural)
 		self.add_link(result, 'self', self.urljoin(''), title=module.object_name_plural)
+		self.add_link(result, 'describedby', self.urljoin(''), method='OPTIONS')
 		if 'search' in module.operations:
 			self.add_link(result, 'search', self.urljoin(''), title=_('Search for %s') % (module.object_name_plural,))
 		if 'add' in module.operations:
@@ -1862,6 +1949,12 @@ class Objects(ReportingBase):
 #		self.add_link(result, '', self.urljoin(''))
 		self.set_header('Allow', ', '.join(methods))
 		return result
+
+	def options_html(self, response):
+		#root = self.get_html(response)
+		root = ET.Element('pre')
+		root.text = json.dumps(response, indent=4)
+		return root
 
 
 class ObjectsMove(Ressource):
@@ -1905,7 +1998,9 @@ class Object(Ressource):
 
 	@tornado.gen.coroutine
 	def get(self, object_type, dn):
-		"""GET udm/users/user/$DN (get all properties/values of the user)"""
+		"""Get a representation of the {} object {} with all its properties, policies, options, metadata and references.
+		Includes also instructions how to modify, remove or move the object.
+		"""
 		dn = unquote_dn(dn)
 		props = {}
 		copy = bool(self.get_query_argument('copy', None))  # TODO: move into own ressource: ./copy
@@ -1927,7 +2022,8 @@ class Object(Ressource):
 		self.add_link(props, 'udm/relation/object-module', self.urljoin('../'), title=self.get_parent_object_type(module).object_name_plural)
 		#self.add_link(props, 'udm/relation/object-types', self.urljoin('../'))
 		self.add_link(props, 'up', self.urljoin('x/../'), name=module.name, title=module.object_name)
-		self.add_link(props, 'self', self.urljoin(''), title=obj.dn)
+		self.add_link(props, 'self', self.urljoin(''), title=dn)
+		self.add_link(props, 'describedby', self.urljoin(''), method='OPTIONS')
 		self.add_link(props, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
 		self.add_link(props, 'udm/relation/object/remove', self.urljoin(''), method='DELETE')
 		self.add_link(props, 'udm/relation/object/edit', self.urljoin(''), method='PUT')
@@ -1935,19 +2031,22 @@ class Object(Ressource):
 #			mod = self.get_module(mod['id'])
 #			if mod and set(mod.superordinate_names) & {module.name, }:
 #				self.add_link(props, 'udm/relation/children-types', self.urljoin('../../%s/?superordinate=%s' % (quote(mod.name), quote(obj.dn))), name=mod.name, title=mod.object_name_plural)
+
+		methods = ['GET', 'OPTIONS']
 		if module.childs:
-			self.add_link(props, 'udm/relation/children-types', self.urljoin(quote(obj.dn), 'children-types/'), name=module.name, title=_('Sub object types of %s') % (module.object_name,))
+			self.add_link(props, 'udm/relation/children-types', self.urljoin(quote_dn(dn), 'children-types/'), name=module.name, title=_('Sub object types of %s') % (module.object_name,))
 
-		props['uri'] = self.urljoin(quote_dn(obj.dn))
-		props.update(self.get_representation(module, obj, ['*'], self.ldap_connection, copy))
-		if set(module.operations) & {'edit', 'move', 'remove', 'subtree_move'}:
-			self.add_link(props, 'edit-form', self.urljoin(quote_dn(obj.dn), 'edit'), title=_('Modify, move or remove this %s' % (module.object_name,)))
+		can_modify = set(module.operations) & {'edit', 'move', 'subtree_move'}
+		can_remove = 'remove' in module.operations
+		if can_modify or can_remove:
+			if can_modify:
+				methods.extend(['PUT', 'PATCH'])
+			if can_remove:
+				methods.append('DELETE')
+			self.add_link(props, 'edit-form', self.urljoin(quote_dn(dn), 'edit'), title=_('Modify, move or remove this %s' % (module.object_name,)))
 
-		if module.name == 'networks/network':
-			self.add_link(props, 'udm/relation/next-free-ip', self.urljoin(quote_dn(obj.dn), 'next-free-ip-address'), title=_('Next free IP address'))
-
-		if obj.has_property('jpegPhoto'):
-			self.add_link(props, 'udm/relation/user-photo', self.urljoin(quote_dn(obj.dn), 'properties/photo.jpg'), type='image/jpeg', title=_('User photo'))
+		self.set_header('Allow', ', '.join(methods))
+		return props
 
 	def set_metadata(self, obj):  # FIXME: move into UDM core!
 		obj.oldattr.update(self.ldap_connection.get(obj.dn, attr=[b'+']))
@@ -2038,7 +2137,7 @@ class Object(Ressource):
 	)
 	@tornado.gen.coroutine
 	def put(self, object_type, dn):
-		"""PUT udm/users/user/$DN (Benutzer hinzufügen / modifizieren)"""
+		"""Modify or move the {} object {}."""
 		dn = unquote_dn(dn)
 		module = get_module(object_type, dn, self.ldap_connection)
 		if not module:
@@ -2065,6 +2164,7 @@ class Object(Ressource):
 	)
 	@tornado.gen.coroutine
 	def patch(self, object_type, dn):
+		"""Modify partial properties of the {} object {}."""
 		dn = unquote_dn(dn)
 		module = get_module(object_type, dn, self.ldap_connection)
 		if not module:
@@ -2132,7 +2232,7 @@ class Object(Ressource):
 	)
 	@tornado.gen.coroutine
 	def delete(self, object_type, dn):
-		"""DELETE udm/users/user/$DN (Benutzer löschen)"""
+		"""Remove the {} object {}."""
 		dn = unquote_dn(dn)
 		module = get_module(object_type, dn, self.ldap_connection)
 		if not module:
