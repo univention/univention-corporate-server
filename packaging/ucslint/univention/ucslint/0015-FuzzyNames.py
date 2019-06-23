@@ -54,11 +54,11 @@ def levenshtein(word, distance=1, subst='.'):
 	if distance == 0:
 		return
 
-	l = len(word)
-	m_sub = ('%s%s%s' % (word[0:i], subst, word[i + 1:]) for i in range(l))
-	m_ins = ('%s%s%s' % (word[0:i], subst, word[i:]) for i in range(l + 1))
-	m_del = ('%s%s' % (word[0:i], word[1 + i:]) for i in range(l))
-	m_swp = ('%s%s%s%s%s' % (word[0:i], word[j], word[i + 1:j], word[i], word[j + 1:]) for j in range(l) for i in range(j))
+	n = len(word)
+	m_sub = ('%s%s%s' % (word[0:i], subst, word[i + 1:]) for i in range(n))
+	m_ins = ('%s%s%s' % (word[0:i], subst, word[i:]) for i in range(n + 1))
+	m_del = ('%s%s' % (word[0:i], word[1 + i:]) for i in range(n))
+	m_swp = ('%s%s%s%s%s' % (word[0:i], word[j], word[i + 1:j], word[i], word[j + 1:]) for j in range(n) for i in range(j))
 	for modified in chain(m_sub, m_ins, m_del, m_swp):
 		for result in levenshtein(modified, distance - 1):
 			yield result

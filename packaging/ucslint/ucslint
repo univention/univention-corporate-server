@@ -129,8 +129,8 @@ class DebianPackageCheck(object):
 		:param newmap: Mapping from severity level to list of checks::
 
 			newmap = {
-			  RESULT_WARN: ['0004-1', '0019-17', ...],
-			  RESULT_ERROR: ['0004-2'],
+				RESULT_WARN: ['0004-1', '0019-17', ...],
+				RESULT_ERROR: ['0004-2'],
 			}
 		"""
 		for level, idlist in newmap.items():

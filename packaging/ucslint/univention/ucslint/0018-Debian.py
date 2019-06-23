@@ -48,7 +48,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				package, suffix = splitext(filename)
 				suffix = suffix.lstrip('.')
 			else:
-				package, suffix = None, filename
+				suffix = filename
 
 			if suffix not in SCRIPTS:
 				continue
