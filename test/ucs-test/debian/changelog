@@ -1,3 +1,9 @@
+ucs-test (9.0.2-104) unstable; urgency=medium
+
+  * Bug #47306: skip producttest
+
+ -- Florian Best <best@univention.de>  Sun, 23 Jun 2019 23:07:49 +0200
+
 ucs-test (9.0.2-103) unstable; urgency=medium
 
   * Bug #49415: 86_selenium/10_product_test_password_change
