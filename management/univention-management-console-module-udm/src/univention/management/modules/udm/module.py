@@ -2702,8 +2702,10 @@ def decode_properties(object_type, properties, lo, version=1):
 			mod_obj._lo = lo
 			codec = mod_obj._init_encoder(codecs[key], property_name=key)
 			value = codec.decode(value)
-			if key == 'jpegPhoto':
-				value = value.raw.decode('latin-1')
+			if isinstance(codec, univention.udm.encoders.Base64BinaryPropertyEncoder):  # jpegPhoto
+				value = value.encoded
+			elif isinstance(value, datetime.date):  # birthday, userexpiry
+				value = value.isoformat()
 		yield key, value
 
 
@@ -2717,6 +2719,10 @@ def encode_properties(object_type, properties, lo, version=1):
 			mod_obj._udm_module = mod
 			mod_obj._lo = lo
 			codec = mod_obj._init_encoder(codecs[key], property_name=key)
+			if isinstance(codec, univention.udm.encoders.Base64BinaryPropertyEncoder):  # jpegPhoto
+				value = codec.decode(value)
+			if inspect.isclass(codec) and issubclass(codec, univention.udm.encoders.DatePropertyEncoder):  # birthday, userexpiry
+				value = codec.decode(value)
 			value = codec.encode(value)
 		yield key, value
 
