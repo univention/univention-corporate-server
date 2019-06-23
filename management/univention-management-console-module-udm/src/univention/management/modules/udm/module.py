@@ -337,6 +337,7 @@ class RessourceBase(object):
 		self.set_header('Server', 'Univention/1.0')  # TODO:
 
 	def prepare(self):
+		self.request.content_negotiation_lang = 'html'
 		self.request.path_decoded = urllib.unquote(self.request.path)
 		authorization = self.request.headers.get('Authorization')
 		if not authorization:
@@ -347,7 +348,6 @@ class RessourceBase(object):
 			if authorization:
 				self.parse_authorization(authorization)
 		finally:
-			self.request.content_negotiation_lang = 'html'
 			self.request.content_negotiation_lang = self.check_acceptable()
 			self.decode_request_arguments()
 			self.sanitize_arguments(RequestSanitizer(self), self)
@@ -419,6 +419,8 @@ class RessourceBase(object):
 
 	def decode_request_arguments(self):
 		content_type = self.request.headers.get('Content-Type', '')
+		if self.request.method in ('HEAD', 'GET', 'OPTIONS') and content_type:
+			raise HTTPError(400, 'safe HTTP method should not contain request body/content-type')
 		if content_type.startswith('application/json'):
 			try:
 				self.request.body_arguments = json.loads(self.request.body)
@@ -573,6 +575,8 @@ class RessourceBase(object):
 		for sec in layout:
 			section = ET.SubElement(root, 'section')
 			ET.SubElement(section, 'h1').text = sec['label']
+			if sec.get('help'):
+				ET.SubElement(section, 'span').text = sec['help']
 			fieldset = ET.SubElement(section, 'fieldset')
 			ET.SubElement(fieldset, 'legend').text = sec['description']
 			self.render_layout(sec['layout'], fieldset, properties)
@@ -581,27 +585,24 @@ class RessourceBase(object):
 	def render_layout(self, layout, fieldset, properties):
 		for elem in layout:
 			if isinstance(elem, dict):
-				sub_fieldset = ET.SubElement(fieldset, 'fieldset')
-				ET.SubElement(sub_fieldset, 'legend').text = elem['label']
+				sub_fieldset = ET.SubElement(fieldset, 'details', open='open')
+				ET.SubElement(sub_fieldset, 'summary').text = elem['label']
 				if elem['description']:
 					ET.SubElement(sub_fieldset, 'h2').text = elem['description']
 				self.render_layout(elem['layout'], sub_fieldset, properties)
 				continue
 			elements = [elem] if isinstance(elem, basestring) else elem
 			for elem in elements:
-				try:
-					field = [x for x in properties if x['name'] in (elem, 'properties[%s]' % elem)][0]
-				except IndexError:
-					print('ELEM', elem)
-				else:
-					self.render_form_field(fieldset, field)
+				for field in properties:
+					if field['name'] in (elem, 'properties.%s' % elem):
+						self.render_form_field(fieldset, field)
 			if elements:
 				ET.SubElement(fieldset, 'br')
 
 	def get_html_form(self, _form, response):
-		form = ET.Element('form', **dict((p, _form[p]) for p in ('id', 'name', 'method', 'action', 'rel', 'enctype') if _form.get(p)))
+		form = ET.Element('form', **dict((p, _form[p]) for p in ('id', 'class', 'name', 'method', 'action', 'rel', 'enctype', 'accept-charset', 'novalidate') if _form.get(p)))
 		if _form.get('layout'):
-			self.get_html_layout(form, response['layout'], _form.get('fields'))
+			self.get_html_layout(form, response[_form['layout']], _form.get('fields'))
 			return form
 		for field in _form.get('fields', []):
 			self.render_form_field(form, field)
@@ -610,23 +611,55 @@ class RessourceBase(object):
 		return form
 
 	def render_form_field(self, form, field):
+		datalist = None
 		name = field['name']
+
+		if field.get('type') == 'submit' and field.get('add_noscript_warning'):
+			ET.SubElement(ET.SubElement(form, 'noscript'), 'p').text = _('This form requires JavaScript enabled!')
+
 		label = ET.Element('label', **{'for': name})
 		label.text = field.get('label', name)
-		form.append(label)
-		elemattrs = dict((p, field[p]) for p in ('disabled', 'form', 'multiple', 'required', 'size', 'type', 'placeholder', 'accept', 'alt', 'autocomplete', 'checked', 'max', 'min', 'minlength', 'pattern', 'readonly', 'src', 'step') if field.get(p))
-		elemattrs.setdefault('type', 'text')
-		elemattrs.setdefault('placeholder', name)
-		if field.get('type') == 'checkbox' and field.get('checked'):
-			elemattrs['checked'] = 'checked'
-		element = ET.Element(field.get('element', 'input'), name=name, value=str(field['value']), **elemattrs)
-		form.append(element)
-		if field['element'] == 'select':
-			for option in field.get('options', []):
-				kwargs = {}
-				if field['value'] == option['value'] or (isinstance(field['value'], list) and option['value'] in field['value']):
-					kwargs['selected'] = 'selected'
-				ET.SubElement(element, 'option', value=option['value'], **kwargs).text = option.get('label', option['value'])
+
+		multivalue = field.get('data-multivalue') == '1'
+		values = field['value'] or [''] if multivalue else [field['value']]
+		for value in values:
+			elemattrs = dict((p, field[p]) for p in ('id', 'disabled', 'form', 'multiple', 'required', 'size', 'type', 'placeholder', 'accept', 'alt', 'autocomplete', 'checked', 'max', 'min', 'minlength', 'pattern', 'readonly', 'src', 'step', 'style', 'alt', 'autofocus', 'class', 'cols', 'href', 'rel', 'title', 'list') if field.get(p))
+			elemattrs.setdefault('type', 'text')
+			elemattrs.setdefault('placeholder', name)
+			if field.get('type') == 'checkbox' and field.get('checked'):
+				elemattrs['checked'] = 'checked'
+			element = ET.Element(field.get('element', 'input'), name=name, value=str(value), **elemattrs)
+
+			if field['element'] == 'select':
+				for option in field.get('options', []):
+					kwargs = {}
+					if field['value'] == option['value'] or (isinstance(field['value'], list) and option['value'] in field['value']):
+						kwargs['selected'] = 'selected'
+					ET.SubElement(element, 'option', value=option['value'], **kwargs).text = option.get('label', option['value'])
+			elif field.get('element') == 'a':
+				element.text = field['label']
+				label = None
+			elif field.get('list') and field.get('datalist'):
+				datalist = ET.Element('datalist', id=field['list'])
+				for option in field.get('datalist', []):
+					kwargs = {}
+					if field['value'] == option['value'] or (isinstance(field['value'], list) and option['value'] in field['value']):
+						kwargs['selected'] = 'selected'
+					ET.SubElement(datalist, 'option', value=option['value'], **kwargs).text = option.get('label', option['value'])
+			if label is not None:
+				form.append(label)
+				label = None
+			if datalist is not None:
+				form.append(datalist)
+			form.append(element)
+			if multivalue:
+				btn = ET.Element('button')
+				btn.text = '-'
+				form.append(btn)
+		if multivalue:
+			btn = ET.Element('button')
+			btn.text = '+'
+			form.append(btn)
 
 	def urljoin(self, *args, **query):
 		base = urlparse(self.request.full_url())
@@ -645,7 +678,13 @@ class RessourceBase(object):
 			return s.replace('\\', '\\\\').replace('"', '\\"')
 		links = obj.setdefault('_links', {})
 		links.setdefault(relation, []).append(dict(kwargs, href=href))
-		self.add_header('Link', '<%s>; rel="%s"; name="%s"; title="%s"' % (href, quote_param(relation), quote_param(kwargs.get('name', '')), quote_param(kwargs.get('title', ''))))
+		kwargs['rel'] = relation
+		params = []
+		for param in ('rel', 'name', 'title', 'media'):
+			if param in kwargs:
+				params.append('%s="%s"' % (param, quote_param(kwargs.get(param, ''))))
+		del kwargs['rel']
+		self.add_header('Link', '<%s>; %s' % (href, '; '.join(params)))
 
 	def add_form(self, obj, action, method, **kwargs):
 		form = {
@@ -666,6 +705,8 @@ class RessourceBase(object):
 		}
 		field.update(kwargs)
 		form.setdefault('fields', []).append(field)
+		if field['type'] == 'submit':
+			field['add_noscript_warning'] = form.get('method') not in ('GET', 'POST', None)
 		return field
 
 	def log_exception(self, typ, value, tb):
@@ -1689,8 +1730,128 @@ class DefaultValue(Ressource):
 		self.content_negotiation(result)
 
 
-class Objects(ReportingBase):
+class FormBase(object):
 
+	def properties(self, properties):
+		for prop in properties:
+			prop.setdefault('readonly', False)
+			prop.setdefault('readonly_when_synced', False)
+			prop.setdefault('disabled', False)
+			prop.setdefault('required', False)
+			prop.setdefault('syntax', '')
+			prop.setdefault('identifies', False)
+			prop.setdefault('searchable', False)
+			prop.setdefault('description', False)
+			prop.setdefault('multivalue', False)
+
+	def layout(self, layout):
+		# TODO: insert module.help_text into first layout element
+		layout.insert(0, {'layout': [], 'advanced': False, 'description': _('Meta information'), 'label': _('Meta information'), 'is_app_tab': False})
+		apps = self.get_apps_layout(layout)
+		if apps:
+			apps['layout'].append('options')
+		else:
+			layout.append({'layout': ['options'], 'advanced': False, 'description': _('Here you can activate the user for one of the installed apps. The user can then log on to the app and use it.'), 'label': _('Apps & Options'), 'is_app_tab': False})
+		advanced = {'layout': [], 'advanced': False, 'description': _('Advanced settings'), 'label': _('Advanced settings')}
+		for x in layout[:]:
+			if x['advanced']:
+				advanced['layout'].append(x)
+				layout.remove(x)
+		if advanced['layout']:
+			layout.append(advanced)
+		layout.append({'layout': [], 'advanced': False, 'description': _('Properties inherited from policies'), 'label': _('Policies'), 'is_app_tab': False, 'help': _('List of all object properties that are inherited by policies. The values cannot be edited directly. By clicking on "Create new policy", a new tab with a new policy will be opened. If an attribute is already set, the corresponding policy can be edited in a new tab by clicking on the "edit" link.')})
+
+	def get_apps_layout(self, layout):
+		for x in layout:
+			if x.get('label') == 'Apps':
+				return x
+
+	def get_reference_layout(self, layout):
+		for x in layout:
+			if x.get('label', '').lower().startswith('referen'):
+				return x
+
+	def add_property_form_elements(self, module, form, properties, values):
+		password_properties = module.password_properties
+		for prop in properties[:]:
+			key = prop['id']
+			if key == '$options$':
+				for opt in prop['widgets']:
+					self.add_form_element(form, 'options', opt['id'], type='checkbox', checked=opt['value'], label=opt['label'])
+			if key.startswith('$'):
+				continue
+
+			value = values[key]
+			if value is None:
+				value = ''
+			kwargs = {'type': 'input'}
+			if key == 'jpegPhoto':
+				kwargs['type'] = 'file'
+				kwargs['accept'] = 'image/jpg image/jpeg image/png'
+				value = ''
+			if key in password_properties:
+				value = ''
+				kwargs['type'] = 'password'
+			if prop['type'] == 'ComboBox' and prop.get('staticValues'):
+				kwargs['type']
+				kwargs['list'] = 'list-%s' % (key,)
+				kwargs['datalist'] = [{'value': s['id'], 'label': s['label']} for s in prop['staticValues']]
+			elif prop['type'] == 'DateBox':
+				kwargs['type'] = 'date'
+			if prop['readonly']:
+				kwargs['readonly'] = 'readonly'
+			if prop['disabled']:
+				kwargs['disabled'] = 'disabled'
+			if prop['required']:
+				kwargs['required'] = 'required'
+			if prop['syntax'] == 'boolean':
+				kwargs['type'] = 'checkbox'
+				if value:
+					kwargs['checked'] = 'checked'
+			elif prop['syntax'] == 'integer':
+				kwargs['type'] = 'number'
+			kwargs['data-identifies'] = '1' if prop['identifies'] else '0'
+			kwargs['data-searchable'] = '1' if prop['searchable'] else '0'
+			kwargs['data-multivalue'] = '1' if prop['multivalue'] or prop['type'] == 'umc/modules/udm/MultiObjectSelect' else '0'
+			kwargs['data-syntax'] = prop['syntax']
+			kwargs['title'] = prop['description']
+			# TODO: size, type, options, treshold, staticValues, editable, nonempty_is_default
+			self.add_form_element(form, 'properties.%s' % (key,), value, label=prop['label'], placeholder=prop['label'], **kwargs)
+
+	def decode_form_arguments(self):
+		# TODO: add files
+		# TODO: respect single-value
+		# TODO: the types should be converted, e.g. type=checkbox to boolean, number to int
+		for key in self.request.body_arguments.keys()[:]:
+			for name in ('properties', 'policies'):
+				if key.startswith('%s.' % (name,)):
+					properties = self.request.body_arguments.setdefault(name, {})
+					prop = key[len('%s.' % (name,)):]
+					properties[prop] = self.request.body_arguments.pop(key)
+				elif key.startswith('%s[' % (name,)) and key.endswith(']'):
+					properties = self.request.body_arguments.setdefault(name, {})
+					prop = key[len('%s[' % (name,)):-1]
+					properties[prop] = self.request.body_arguments.pop(key)
+
+
+class Objects(FormBase, ReportingBase):
+
+	search_sessions = {}
+
+	@sanitize_query_string(
+		position=DNSanitizer(required=False, default=None),
+		property=ObjectPropertySanitizer(required=False, default=None),
+		propertyvalue=LDAPSearchSanitizer(required=False, default='*', add_asterisks=False, use_asterisks=True),
+		scope=ChoicesSanitizer(choices=['sub', 'one', 'base', 'base+one'], default='sub'),
+		hidden=BoolSanitizer(default=False),
+		fields=ListSanitizer(required=False, default=[]),
+		properties=ListSanitizer(required=False, default=[]),
+		superordinate=DNSanitizer(required=False, default=None, allow_none=True),
+		dir=ChoicesSanitizer(choices=['ASC', 'DESC'], default='ASC'),
+		by=StringSanitizer(required=False),
+		page=IntegerSanitizer(required=False, default=1, minimum=1),
+		pagesize=IntegerSanitizer(required=False, default=None, minimum=0),
+	)
 	@tornado.gen.coroutine
 	def get(self, object_type):
 		"""Search for {} objects."""
@@ -1714,7 +1875,7 @@ class Objects(ReportingBase):
 		reverse = direction == 'DESC'
 		by = self.request.query_arguments['by']
 		page = self.request.query_arguments['page']
-		items_per_page = self.request.query_arguments['pagesize']  # TODO: rename: items-per-page, pagelength, pagecount, pagesize
+		items_per_page = self.request.query_arguments['pagesize']  # TODO: rename: items-per-page, pagelength, pagecount, pagesize, limit/offset
 
 		# TODO: replace the superordinate concept with container
 		superordinate = None
@@ -1746,7 +1907,7 @@ class Objects(ReportingBase):
 				#'$childs$': module.childs,
 				'name': module.obj_description(obj),
 				'path': ldap_dn2path(obj.dn, include_rdn=False),
-				'uri': self.urljoin(quote_dn(obj.dn)),
+				'uri': self.abspath(obj.module, quote_dn(obj.dn)),
 				'fields': {},  # TODO: wrap via encode_properties() instead of module.property_description() ?!
 			})
 			if '$value$' in fields:
@@ -1771,26 +1932,36 @@ class Objects(ReportingBase):
 			form = self.add_form(result, self.urljoin('report', quote(report_type)), 'POST', rel='udm/relation/report', name=report_type, id='report%d' % (i,))
 			self.add_form_element(form, '', _('Create %s report') % _(report_type), type='submit')
 
-		form = self.add_form(result, self.urljoin('multi-edit'), 'POST', name='multi-edit', rel='edit-form')
+		form = self.add_form(result, self.urljoin('multi-edit'), 'POST', name='multi-edit', id='multi-edit', rel='edit-form')
 		self.add_form_element(form, '', _('Modify %s (multi edit)') % (module.object_name_plural,), type='submit')
 
-		form = self.add_form(result, self.urljoin('move'), 'POST', name='move', rel='udm/relation/object/move')
+		form = self.add_form(result, self.urljoin('move'), 'POST', name='move', id='move', rel='udm/relation/object/move')
 		self.add_form_element(form, 'position', '')
 		self.add_form_element(form, '', _('Move %s') % (module.object_name_plural,), type='submit')
 
-		form = self.add_form(result, self.urljoin(''), 'GET', rel='search')
-		self.add_form_element(form, 'position', container or '')
+		result['layout_search'] = [{'description': _('Search for %s') % (module.object_name_plural,), 'label': _('Search'), 'layout': []}]
+		search_layout = result['layout_search'][0]['layout']
+		form = self.add_form(result, self.urljoin(''), 'GET', rel='search', id='search', layout='layout_search')
+		self.add_form_element(form, 'position', container or '', label=_('Search in'))
+		search_layout.append(['position', 'hidden'])
 		if module.superordinate_names:
-			self.add_form_element(form, 'superordinate', superordinate or '')
-		self.add_form_element(form, 'property', objectProperty or '', element='select', options=[{'value': '', 'label': _('Defaults')}] + [{'value': prop['id'], 'label': prop['label']} for prop in module.properties(None) if prop.get('searchable')])
-		self.add_form_element(form, 'propertyvalue', objectPropertyValue or (module.get_default_values(objectProperty) if objectProperty else '*'))
-		self.add_form_element(form, 'scope', scope, element='select', options=[{'value': 'sub'}, {'value': 'one'}, {'value': 'base'}, {'value': 'base+one'}])
-		self.add_form_element(form, 'hidden', '1', type='checkbox', checked=bool(hidden))
+			self.add_form_element(form, 'superordinate', superordinate or '', label=_('Superordinate'))
+			search_layout.append(['superordinate'])
+		searchable_properties = [{'value': '', 'label': _('Defaults')}] + [{'value': prop['id'], 'label': prop['label']} for prop in module.properties(None) if prop.get('searchable')]
+		self.add_form_element(form, 'property', objectProperty or '', element='select', options=searchable_properties, label=_('Property'))
+		self.add_form_element(form, 'propertyvalue', objectPropertyValue or (module.get_default_values(objectProperty) if objectProperty else '*'), label=' ')
+		self.add_form_element(form, 'scope', scope, element='select', options=[{'value': 'sub'}, {'value': 'one'}, {'value': 'base'}, {'value': 'base+one'}], label=_('Search scope'))
+		self.add_form_element(form, 'hidden', '1', type='checkbox', checked=bool(hidden), label=_('Include hidden objects'))
+		search_layout.append(['property', 'propertyvalue'])
 		#self.add_form_element(form, 'fields', list(fields))
-		self.add_form_element(form, 'page', str(page or '1'), type='number')
-		self.add_form_element(form, 'pagesize', str(items_per_page or '0'), type='number')
-		self.add_form_element(form, 'by', by or '')
-		self.add_form_element(form, 'dir', direction if direction in ('ASC', 'DESC') else 'ASC', element='select', options=[{'value': 'ASC', 'label': _('Ascending')}, {'value': 'DESC', 'label': _('Descending')}])
+		if module.supports_pagination:
+			self.add_form_element(form, 'pagesize', str(items_per_page or '0'), type='number', label=_('Limit'))
+			self.add_form_element(form, 'page', str(page or '1'), type='number', label=_('Selected page'))
+			self.add_form_element(form, 'by', by or '', element='select', options=searchable_properties, label=_('Sort by'))
+			self.add_form_element(form, 'dir', direction if direction in ('ASC', 'DESC') else 'ASC', element='select', options=[{'value': 'ASC', 'label': _('Ascending')}, {'value': 'DESC', 'label': _('Descending')}], label=_('Direction'))
+			search_layout.append(['page', 'pagesize'])
+			search_layout.append(['by', 'dir'])
+		search_layout.append('')
 		self.add_form_element(form, '', _('Search'), type='submit')
 
 		result['entries'] = entries  # TODO: is "entries" a good name? items, objects
@@ -1868,64 +2039,10 @@ class Objects(ReportingBase):
 	)
 	@tornado.gen.coroutine
 	def post(self, object_type):
-		"""POST udm/users/user/ (Benutzer hinzufügen)"""
-		module = self.get_module(object_type)
-		container = self.get_body_argument('position')
-		superordinate = self.get_body_argument('superordinate')
-		options = self.get_body_arguments('options')
-		policies = self.get_body_arguments('policies')
-		properties = self.get_body_arguments('properties')
-
-		ldap_position = univention.admin.uldap.position(self.ldap_position.getBase())
-		if container:
-			ldap_position.setDn(container)
-		elif superordinate:
-			ldap_position.setDn(superordinate)
-		else:
-			if hasattr(module.module, 'policy_position_dn_prefix'):
-				container = '%s,cn=policies,%s' % (self.module.policy_position_dn_prefix, ldap_position.getBase())
-			else:
-				defaults = module.get_default_containers()
-				container = defaults[0] if defaults else ldap_position.getBase()
-
-			ldap_position.setDn(container)
-
-		#if superordinate:
-		#	mod = get_module(module.name, superordinate, ldap_connection)
-		#	if not mod:
-		#		MODULE.error('Superordinate module not found: %s' % (superordinate,))
-		#		raise SuperordinateDoesNotExist(superordinate)
-		#	MODULE.info('Found UDM module for superordinate')
-		#	superordinate = mod.get(superordinate)
-
-		obj = module.module.object(None, self.ldap_connection, ldap_position, superordinate=superordinate)
-		obj.open()
-		obj.options = [opt for opt, enabled in dict(options).items() if enabled]  # TODO: AppAttributes.data_for_module(self.name).iteritems() ?
-		obj.policies = reduce(lambda x, y: x + y, policies, [])
-		properties = dict((prop, properties[prop]) for prop in dict(obj.items()) if obj.has_property(prop) and prop in properties)  # FIXME: remove prop in properties?!
-		properties = dict(encode_properties(module.name, properties, self.ldap_connection))
-
-		try:
-			for key, value in dict(properties.items()).items():  # UDM_Error: Value may not change. key=gidNumber old=5086 new=5086
-				if not obj.descriptions[key].may_change:
-					if obj[key] == value:
-						properties.pop(key)
-
-			module._map_properties(obj, properties)
-			dn = yield self.pool.submit(obj.create)
-		except udm_errors.objectExists:
-			raise
-		except udm_errors.base as exc:
-			UDM_Error(exc).reraise()
-		self.set_header('Location', self.urljoin(quote_dn(dn)))
-		self.set_status(201)
-		self.add_caching(public=False)
-		self.content_negotiation({})
-
-	def options(self, object_type):
-		result = self._options(object_type)
-		self.add_caching(public=False)
-		self.content_negotiation(result)
+		"""Create a {} object."""
+		obj = Object(self.application, self.request)
+		obj.prepare()
+		yield obj.create(object_type)
 
 	def _options(self, object_type):
 		result = {}
@@ -1983,7 +2100,9 @@ class ObjectsMove(Ressource):
 				module = get_module(object_type, dn, self.ldap_connection)
 				dn = yield self.pool.submit(module.move, dn, position)
 				status['moved'].append(dn)
-				status['progress'] = _('Moved %d of %d objects. Last object was: %s.') % (i, len(dns), dn)
+				status['description'] = _('Moved %d of %d objects. Last object was: %s.') % (i, len(dns), dn)
+				status['max'] = len(dns)
+				status['value'] = i
 		except:
 			status['errors'] = True
 			status['traceback'] = traceback.format_exc()  # FIXME: error handling
@@ -1994,7 +2113,7 @@ class ObjectsMove(Ressource):
 			status['finished'] = True
 
 
-class Object(Ressource):
+class Object(FormBase, Ressource):
 
 	@tornado.gen.coroutine
 	def get(self, object_type, dn):
@@ -2002,8 +2121,7 @@ class Object(Ressource):
 		Includes also instructions how to modify, remove or move the object.
 		"""
 		dn = unquote_dn(dn)
-		props = {}
-		copy = bool(self.get_query_argument('copy', None))  # TODO: move into own ressource: ./copy
+		copy = bool(self.get_query_argument('copy', None))  # TODO: move into own resource: ./copy
 
 		if object_type == 'users/self' and not self.ldap_connection.compare_dn(dn, self.request.user_dn):
 			raise HTTPError(403)
@@ -2018,6 +2136,27 @@ class Object(Ressource):
 		if object_type not in ('users/self', 'users/passwd') and not univention.admin.modules.recognize(object_type, obj.dn, obj.oldattr):
 			raise NotFound(object_type, dn)
 
+		self.set_metadata(obj)
+		self.set_entity_tags(obj)
+
+		props = {}
+		props.update(self._options(object_type, obj.dn))
+		props['uri'] = self.urljoin(quote_dn(obj.dn))
+		props.update(self.get_representation(module, obj, ['*'], self.ldap_connection, copy))
+
+		if module.name == 'networks/network':
+			self.add_link(props, 'udm/relation/next-free-ip', self.urljoin(quote_dn(obj.dn), 'next-free-ip-address'), title=_('Next free IP address'))
+
+		if obj.has_property('jpegPhoto'):
+			self.add_link(props, 'udm/relation/user-photo', self.urljoin(quote_dn(obj.dn), 'properties/photo.jpg'), type='image/jpeg', title=_('User photo'))
+
+		self.add_caching(public=False)
+		self.content_negotiation(props)
+
+	def _options(self, object_type, dn):
+		dn = unquote_dn(dn)
+		module = self.get_module(object_type)
+		props = {}
 		self.add_link(props, 'udm/relation/object-modules', self.urljoin('../../'), title=_('All modules'))
 		self.add_link(props, 'udm/relation/object-module', self.urljoin('../'), title=self.get_parent_object_type(module).object_name_plural)
 		#self.add_link(props, 'udm/relation/object-types', self.urljoin('../'))
@@ -2027,6 +2166,7 @@ class Object(Ressource):
 		self.add_link(props, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
 		self.add_link(props, 'udm/relation/object/remove', self.urljoin(''), method='DELETE')
 		self.add_link(props, 'udm/relation/object/edit', self.urljoin(''), method='PUT')
+		# self.add_link(props, '', self.urljoin('report/PDF Document?dn=%s' % (quote(obj.dn),))) # rel=alternate media=print?
 #		for mod in module.child_modules:
 #			mod = self.get_module(mod['id'])
 #			if mod and set(mod.superordinate_names) & {module.name, }:
@@ -2117,7 +2257,7 @@ class Object(Ressource):
 			for policy in obj.policies:
 				pol_mod = get_module(None, policy, ldap_connection)
 				if pol_mod and pol_mod.name:
-					props['policies'].setdefault(pol_mod.name, []).append(policy)
+					props['policies'][pol_mod.name] = policy
 			props['references'] = module.get_references(obj.dn)
 		#props['$labelObjectType$'] = module.title
 		#props['$labelObjectTypeSingular$'] = module.object_name
@@ -2141,14 +2281,22 @@ class Object(Ressource):
 		dn = unquote_dn(dn)
 		module = get_module(object_type, dn, self.ldap_connection)
 		if not module:
-			raise NotFound(object_type)  # FIXME: create
+			raise NotFound(object_type)
 
-		position = self.get_body_arguments('position')
+		obj = yield self.pool.submit(module.get, dn)
+		if not obj:
+			yield self.create(object_type, dn)
+			return
+
+		self.set_metadata(obj)
+		self.set_entity_tags(obj)
+
+		position = self.request.body_arguments['position']
 		if position and not self.ldap_connection.compare_dn(self.ldap_connection.parentDn(dn), position):
 			yield self.move(module, dn, position)
 			return
 		else:
-			obj = yield self.modify(module, None, dn)
+			obj = yield self.modify(module, obj)
 			self.set_status(302)
 			self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
 
@@ -2169,38 +2317,83 @@ class Object(Ressource):
 		module = get_module(object_type, dn, self.ldap_connection)
 		if not module:
 			raise NotFound(object_type)
-		yield self.modify(module, self.request.body_arguments, dn)
+
+		obj = yield self.pool.submit(module.get, dn)
+		if not obj:
+			raise NotFound(object_type, dn)
+
+		self.set_metadata(obj)
+		self.set_entity_tags(obj)
+
+		yield self.modify(module, obj)
 		self.add_caching(public=False)
 		self.content_negotiation({})
 
 	@tornado.gen.coroutine
-	def modify(self, module, properties, dn):
-		obj = module.module.object(None, self.ldap_connection, self.ldap_position, dn)
+	def create(self, object_type, dn=None):
+		module = self.get_module(object_type)
+		container = self.request.body_arguments['position']
+		superordinate = self.request.body_arguments['superordinate']
+		if dn:
+			container = self.ldap_connection.parentDn(dn)
+			# TODO: validate that properties are equal to rdn
+
+		ldap_position = univention.admin.uldap.position(self.ldap_position.getBase())
+		if container:
+			ldap_position.setDn(container)
+		elif superordinate:
+			ldap_position.setDn(superordinate)
+		else:
+			if hasattr(module.module, 'policy_position_dn_prefix'):
+				container = '%s,cn=policies,%s' % (self.module.policy_position_dn_prefix, ldap_position.getBase())
+			else:
+				defaults = module.get_default_containers()
+				container = defaults[0] if defaults else ldap_position.getBase()
+
+			ldap_position.setDn(container)
+
+		#if superordinate:
+		#	mod = get_module(module.name, superordinate, ldap_connection)
+		#	if not mod:
+		#		MODULE.error('Superordinate module not found: %s' % (superordinate,))
+		#		raise SuperordinateDoesNotExist(superordinate)
+		#	MODULE.info('Found UDM module for superordinate')
+		#	superordinate = mod.get(superordinate)
+
+		obj = module.module.object(None, self.ldap_connection, ldap_position, superordinate=superordinate)
 		obj.open()
-		obj.options = [opt for opt, enabled in dict(self.get_body_arguments('options')).items() if enabled]
-		obj.policies = reduce(lambda x, y: x + y, self.get_body_arguments('policies'), [])
-		if properties is None:
-			properties = self.get_body_arguments('properties')
-			properties = dict((prop, properties[prop]) for prop in dict(obj.items()) if obj.has_property(prop) and prop in properties)  # FIXME: remove prop in properties?!
+		self.set_properties(module, obj)
 
-		properties = dict(encode_properties(module.name, properties, self.ldap_connection))
-
-		validation = yield self._validate(module, properties)
-		if not all(x['valid'] if isinstance(x['valid'], bool) else all(x['valid']) for x in validation):
-			raise HTTPError(422)
+		if dn and not self.ldap_connection.compare_dn(dn, obj._ldap_dn()):
+			raise HTTPError(403, 'Trying to create a object with wrong RDN.')
 
 		try:
-			for key, value in dict(properties.items()).items():  # UDM_Error: Value may not change. key=gidNumber old=5086 new=5086
-				if not obj.descriptions[key].may_change:
-					if obj[key] == value:
-						properties.pop(key)
+			dn = yield self.pool.submit(obj.create)
+		except udm_errors.objectExists:
+			raise
+		except udm_errors.base as exc:
+			UDM_Error(exc).reraise()
+		self.set_header('Location', self.urljoin(quote_dn(dn)))
+		self.set_status(201)
+		self.add_caching(public=False)
+		self.content_negotiation({})
 
-			module._map_properties(obj, properties)
+	@tornado.gen.coroutine
+	def modify(self, module, obj):
+		assert obj._open
+		self.set_properties(module, obj)
+
+		try:
 			yield self.pool.submit(obj.modify)
 		except udm_errors.base as exc:
 			UDM_Error(exc).reraise()
 		else:
 			raise tornado.gen.Return(obj)
+
+	def set_properties(self, module, obj):
+		obj.options = [opt for opt, enabled in self.request.body_arguments['options'].items() if enabled]  # TODO: AppAttributes.data_for_module(self.name).iteritems() ?
+		obj.policies = self.request.body_arguments['policies'].values()
+		self.sanitize_arguments(PropertiesSanitizer(), self, module=module, obj=obj)
 
 	@tornado.gen.coroutine
 	def move(self, module, dn, position):
@@ -2325,71 +2518,118 @@ class UserPhoto(Ressource):
 		self.content_negotiation({})
 
 
-class ObjectAdd(Ressource):
+class ObjectAdd(FormBase, Ressource):
 	"""GET a form containing information about all properties, methods, URLs to create a specific object"""
 
+	@sanitize_query_string(
+		position=DNSanitizer(required=False),
+		template=DNSanitizer(required=False),
+	)
 	@tornado.gen.coroutine
 	def get(self, object_type):
-		result = {}
 		module = self.get_module(object_type)
 		if 'add' not in module.operations:
 			raise NotFound(object_type)
 
+		module.load(force_reload=True)  # reload for instant extended attributes
+
+		result = {}
+
+		self.add_link(result, 'self', self.urljoin(''), title=_('Add %s') % (module.object_name,))
+		template = None
+		if module.template:
+			template = self.request.query_arguments.get('template')
+		result.update(self.get_create_form(module, template=template, position=self.request.query_arguments.get('position')))
+
+		if module.template:
+			template = UDM_Module(module.template, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
+			templates = template.search(ucr.get('ldap/base'))
+			if templates:
+				form = self.add_form(result, action='', method='GET', id='template', layout='template_layout')  # FIXME: preserve query string
+				self.add_form_element(form, 'template', '', element='select', options=[{'value': _obj.dn, 'label': _obj[template.identifies]} for _obj in templates])
+				self.add_form_element(form, '', _('Fill template values'), type='submit')
+				result['template_layout'] = [{'label': _('Template'), 'description': 'A template defines rules for default object properties.', 'layout': ['template', '']}]
+
+		self.add_caching(public=True)
+		self.content_negotiation(result)
+
+	def get_create_form(self, module, dn=None, copy=False, template=None, position=None):
+		result = {}
 		self.add_link(result, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
 		self.add_link(result, 'udm/relation/object-modules', self.urljoin('../../'), title=_('All modules'))
 		self.add_link(result, 'udm/relation/object-module', self.urljoin('../'), title=self.get_parent_object_type(module).object_name_plural)
 		self.add_link(result, 'udm/relation/object-type', self.urljoin('.'), title=module.object_name)
-		self.add_link(result, 'self', self.urljoin(''), title=_('Add'))
 
-		module.load(force_reload=True)  # reload for instant extended attributes
 		result['layout'] = module.get_layout()
 		result['properties'] = module.get_properties()
-		meta_layout = {'layout': ['position', 'template', 'options'], 'advanced': False, 'description': _('Meta information'), 'label': _('Meta information'), 'is_app_tab': False}
-		result['layout'].insert(0, meta_layout)
+		self.layout(result['layout'])
+		self.properties(result['properties'])
+		meta_layout = result['layout'][0]
+		meta_layout['layout'].extend(['position'])
+		# TODO: wizard: first select position & template
 
 		for policy in module.policies:
 			form = self.add_form(result, action=self.urljoin(policy['objectType']) + '/', method='GET', name=policy['objectType'], rel='udm/relation/policy-result')
-			self.add_form_element(form, 'position', '', label=_('The container where the object is going to be created in'))
-			self.add_form_element(form, 'policy', '', label=policy['label'], title=policy['description'])  # TODO: value should be the currently set policy!
+			self.add_form_element(form, 'position', position or '', label=_('The container where the object is going to be created in'))
+			self.add_form_element(form, 'policy', '', label=policy['label'], title=policy['description'])
 			self.add_form_element(form, '', _('Policy result'), type='submit')
 
-		obj = module.module.object(None, self.ldap_connection, self.ldap_position)
+		obj = module.module.object(dn, self.ldap_connection, self.ldap_position)
 		obj.open()
-		result['entry'] = Object.get_representation(module, obj, ['*'], self.ldap_connection)
+		result['entry'] = Object.get_representation(module, obj, ['*'], self.ldap_connection, copy)
 
-		form = self.add_form(result, action=self.urljoin('.'), method='POST', layout=True)
-		self.add_form_element(form, 'position', '', element='select', options=sorted(({'value': x, 'label': ldap_dn2path(x)} for x in module.get_default_containers()), key=lambda x: x['label'].lower()))
-		if module.template:
-			template = UDM_Module(module.template, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
-			templates = template.search(ucr.get('ldap/base'))
-			self.add_form_element(form, 'template', '', element='select', options=[{'value': _obj.dn, 'label': _obj[template.identifies]} for _obj in templates])
+		form = self.add_form(result, action=self.urljoin(''), method='POST', id='add', layout='layout')
+		self.add_form_element(form, 'position', position or '')
 		if module.superordinate_names:
 			meta_layout['layout'].append('superordinate')
 			self.add_form_element(form, 'superordinate', '')  # TODO: replace with <select>
 
-		# FIXME: respect layout
-		for prop in result['properties']:
-			if prop['id'] in ('$dn$',):
-				continue
-			elif prop['id'] == '$options$':
-				self.add_form_element(form, 'options', [opt['id'] for opt in prop['widgets'] if opt['value']], element='select', multiple='multiple', options=[{'value': opt['id'], 'label': opt['label']} for opt in prop['widgets']])
-				continue
-			self.add_form_element(form, 'properties[%s]' % prop['id'], '', label=prop.get('label', prop['id']), placeholder=prop.get('label', prop['id']), title=prop.get('description', ''))
+		if template:
+			self.add_form_element(form, 'template', template, readonly='readonly')
+			meta_layout['layout'].append('template')
 
-		result['layout'].append({'layout': [], 'advanced': False, 'description': _('Policies'), 'label': _('Policies'), 'is_app_tab': False})
+		values = {}
+		for prop in result['properties']:
+			key = prop['id']
+			if key.startswith('$'):
+				continue
+			values[key] = obj[key]
+		values = dict(encode_properties(obj.module, values, self.ldap_connection))
+		self.add_property_form_elements(module, form, result['properties'], values)
+
 		for policy in module.policies:
 			result['layout'][-1]['layout'].append('policies[%s]' % (policy['objectType'],))
-			self.add_form_element(form, 'policies[%s]' % (policy['objectType']), 'FIXME', label=policy['label'])  # FIXME: value should be the currently set policy
+			self.add_form_element(form, 'policies[%s]' % (policy['objectType']), '', label=policy['label'])
 
 		meta_layout['layout'].append('')
 		self.add_form_element(form, '', _('Create %s') % (module.object_name,), type='submit')
 
-		# TODO: wizard: first select position & template
+		form = self.add_form(result, action=self.request.full_url(), method='GET', id='position', layout='position_layout')  # FIXME: preserve query string
+		self.add_form_element(form, 'position', position or '', element='select', options=sorted(({'value': x, 'label': ldap_dn2path(x)} for x in module.get_default_containers()), key=lambda x: x['label'].lower()))
+		self.add_form_element(form, '', _('Select position'), type='submit')
+		result['position_layout'] = [{'label': _('Container'), 'description': "The container in which the LDAP object shall be created.", 'layout': ['position', '']}]
+		return result
+
+
+class ObjectCopy(ObjectAdd):
+
+	@sanitize_query_string(
+		dn=DNSanitizer(required=True)
+	)
+	@tornado.gen.coroutine
+	def get(self, object_type):
+		module = self.get_module(object_type)
+		if 'copy' not in module.operations:
+			raise NotFound(object_type)
+
+		result = {}
+		self.add_link(result, 'self', self.urljoin(''), title=_('Copy %s') % (module.object_name,))
+		result.update(self.get_create_form(module, dn=self.request.query_arguments['dn'], copy=True))
 		self.add_caching(public=True)
 		self.content_negotiation(result)
 
 
-class ObjectEdit(Ressource):
+class ObjectEdit(FormBase, Ressource):
 	"""GET a form containing ways to modify, remove, move a specific object"""
 
 	@tornado.gen.coroutine
@@ -2422,22 +2662,30 @@ class ObjectEdit(Ressource):
 
 		if 'remove' in module.operations:
 			# TODO: add referring objects
-			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='DELETE')
+			form = self.add_form(result, id='remove', action=self.urljoin('.').rstrip('/'), method='DELETE')
 			self.add_form_element(form, 'cleanup', '1', type='checkbox', checked=True)
 			self.add_form_element(form, 'recursive', '1', type='checkbox', checked=True)
 			self.add_form_element(form, '', _('Remove'), type='submit')
 
 		if set(module.operations) & {'move', 'subtree_move'}:
-			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='PUT')
+			form = self.add_form(result, id='move', action=self.urljoin('.').rstrip('/'), method='PUT')
 			self.add_form_element(form, 'position', self.ldap_connection.parentDn(obj.dn))  # TODO: replace with <select>
 			self.add_form_element(form, '', _('Move'), type='submit')
 
 		if 'edit' in module.operations:
+			representation = Object.get_representation(module, obj, ['*'], self.ldap_connection)
+			for policy in module.policies:
+				ptype = policy['objectType']
+				form = self.add_form(result, action=self.urljoin(ptype) + '/', method='GET', name=ptype, rel='udm/relation/policy-result')
+				self.add_form_element(form, 'policy', representation['policies'].get(ptype, ''), label=policy['label'], title=policy['description'], placeholder=_('Policy DN'))
+				self.add_form_element(form, '', _('Policy result'), type='submit')
+
 			obj.open()
 			result['layout'] = module.get_layout(dn if object_type != 'users/self' else None)
-			meta_layout = {'layout': ['options', ''], 'advanced': False, 'description': _('Meta information'), 'label': _('Meta information'), 'is_app_tab': False}
-			result['layout'].insert(0, meta_layout)
+			self.layout(result['layout'])
+			result['layout'][0]['layout'].extend(['dn', 'jpegPhoto-preview', ''])
 			result['properties'] = module.get_properties(dn)
+			self.properties(result['properties'])
 			result['options'] = module.options.keys()
 			result['synced'] = ucr.is_true('ad/member') and 'synced' in obj.oldattr.get('univentionObjectFlag', [])
 			if result['synced']:
@@ -2446,45 +2694,53 @@ class ObjectEdit(Ressource):
 					if prop['readonly_when_synced']:
 						prop['disabled'] = True
 
-			for policy in module.policies:
-				form = self.add_form(result, action=self.urljoin(policy['objectType']) + '/', method='GET', name=policy['objectType'], rel='udm/relation/policy-result')
-				self.add_form_element(form, 'policy', '', label=policy['label'], title=policy['description'])  # TODO: value should be the currently set policy!
-				self.add_form_element(form, '', _('Policy result'), type='submit')
-
+			enctype = 'application/x-www-form-urlencoded'
 			if obj.has_property('jpegPhoto'):
+				enctype = 'multipart/form-data'
 				form = self.add_form(result, action=self.urljoin('properties/photo.jpg'), method='POST', enctype='multipart/form-data')
-				self.add_form_element(form, 'jpegPhoto', '', type='file', accept='image/jpg')
+				self.add_form_element(form, 'jpegPhoto', '', type='file', accept='image/jpg image/jpeg image/png')
 				self.add_form_element(form, '', _('Upload user photo'), type='submit')
 
-			# FIXME: respect layout
-			form = self.add_form(result, action=self.urljoin('.').rstrip('/'), method='PUT', layout=True)
-			for prop in result['properties']:
-				if prop['id'] == '$options$':
-					self.add_form_element(form, 'options', [opt['id'] for opt in prop['widgets'] if opt['value']], element='select', multiple='multiple', options=[{'value': opt['id'], 'label': opt['label']} for opt in prop['widgets']])
+			form = self.add_form(result, id='edit', action=self.urljoin('.').rstrip('/'), method='PUT', enctype=enctype, layout='layout')
+			self.add_form_element(form, 'dn', obj.dn, readonly='readonly', disabled='disabled')
 
-			# TODO: iterate over all properties instead of obj.info, add better labels, etc.
-			password_properties = module.password_properties
+			values = {}
 			for prop in result['properties']:
 				key = prop['id']
 				if key.startswith('$'):
 					continue
-				value = dict(encode_properties(obj.module, {key: obj[key]}, self.ldap_connection))[key]
-				input_type = 'input'
-				if key in password_properties:
-					value = ''
-					input_type = 'password'
-				self.add_form_element(form, 'properties[%s]' % (key,), value, label=key, placeholder=key, type=input_type)
+				values[key] = obj[key]
+				if obj.module == 'users/user' and key == 'password':
+					prop['required'] = False
+				if prop['readonly_when_synced'] and result['synced']:
+					prop['disabled'] = True
+			values = dict(encode_properties(obj.module, values, self.ldap_connection))
+			self.add_property_form_elements(module, form, result['properties'], values)
+			if any(prop['id'] == 'jpegPhoto' for prop in result['properties']):
+				result['properties'].append({'name': 'jpegPhoto-preview', 'label': ' '})
+				self.add_form_element(form, 'jpegPhoto-preview', '', type='image', label=' ', src=self.urljoin('properties/photo.jpg'), alt=_('No photo set'))
 
-			result['layout'].append({'layout': [], 'advanced': False, 'description': _('Policies'), 'label': _('Policies'), 'is_app_tab': False})
 			for policy in module.policies:
-				result['layout'][-1]['layout'].append('policies[%s]' % (policy['objectType'],))
-				self.add_form_element(form, 'policies[%s]' % (policy['objectType']), 'FIXME', label=policy['label'])  # FIXME: value should be the currently set policy
-			# TODO: add references
+				ptype = policy['objectType']
+				result['layout'][-1]['layout'].append('policies[%s]' % (ptype,))
+				self.add_form_element(form, 'policies[%s]' % (ptype), representation['policies'].get(ptype, ''), label=policy['label'], placeholder=_('Policy DN'))
+
+			references = self.get_reference_layout(result['layout'])
+			if references:
+				for reference in module.get_references(obj.dn):
+					if reference['module'] != 'udm':
+						continue
+					self.add_form_element(form, 'references', '', href=self.abspath(reference['objectType'], quote_dn(reference['id'])), label=reference['label'], element='a')
+				references['layout'].append('references')
 
 			self.add_form_element(form, '', _('Modify %s') % (module.object_name,), type='submit')
 
 		self.add_caching(public=False)
 		self.content_negotiation(result)
+
+
+class ObjectMultiEdit(ObjectEdit):
+	pass
 
 
 class PropertyChoices(Ressource):
@@ -2877,7 +3133,9 @@ class Application(tornado.web.Application):
 			(r"/udm/navigation/children-types/", SubObjectTypes),
 			(r"/udm/%s/" % (object_type,), Objects),
 			(r"/udm/%s/add" % (object_type,), ObjectAdd),
+			(r"/udm/%s/copy" % (object_type,), ObjectCopy),
 			(r"/udm/%s/move" % (object_type,), ObjectsMove),
+			(r"/udm/%s/multi-edit" % (object_type,), ObjectMultiEdit),
 			(r"/udm/%s/tree" % (object_type,), Tree),
 			(r"/udm/%s/properties" % (object_type,), Properties),
 			(r"/udm/%s/favicon.ico" % (object_type,), Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
