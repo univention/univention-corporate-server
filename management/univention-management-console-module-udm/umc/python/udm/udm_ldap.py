@@ -778,6 +778,14 @@ class UDM_Module(object):
 		return None
 
 	@property
+	def virtual(self):
+		return bool(getattr(self.module, 'virtual', False))
+
+	@property
+	def supports_pagination(self):
+		return not self.virtual
+
+	@property
 	def childs(self):
 		return bool(getattr(self.module, 'childs', False))
 
