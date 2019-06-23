@@ -1,9 +1,7 @@
-#!/usr/bin/make -f
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 #
-# Univention ucslint
-#  rules file for the debian package
-#
-# Copyright 2008-2020 Univention GmbH
+# Copyright 2019-2020 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -29,10 +27,12 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-export LC_ALL=C.UTF-8
+from setuptools import setup
+from debian.changelog import Changelog
 
-%:
-	dh $@ --with python3 --buildsystem=pybuild
+dch = Changelog(open('debian/changelog', 'r'))
 
-override_dh_auto_test:
-	./testucslint.sh
+setup(
+	package_dir={'': '.'},
+	version=dch.version.full_version,
+)
