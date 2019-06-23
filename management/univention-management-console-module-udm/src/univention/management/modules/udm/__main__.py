@@ -65,7 +65,7 @@ class Server(object):
 
 	def run(self, args):
 		# locale must be set before importing UDM!
-		log_init('/dev/stdout', ucr.get('umc/modules/udm/debug/level', 4))
+		log_init('/dev/stdout', int(ucr.get('umc/modules/udm/debug/level', 2)))
 		language = str(Locale(args.language))
 		locale.setlocale(locale.LC_MESSAGES, language)
 		os.umask(0o077)  # FIXME: should probably be changed, this is what UMC sets
