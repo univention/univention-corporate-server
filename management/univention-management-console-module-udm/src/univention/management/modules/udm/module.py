@@ -74,11 +74,13 @@ from genshi import XML
 from genshi.output import HTMLSerializer
 
 from univention.management.console.config import ucr
+from univention.management.console.log import MODULE
 from univention.management.console.ldap import get_user_connection, get_machine_connection
 from univention.management.console.modules.udm.udm_ldap import get_module, UDM_Module, ldap_dn2path, read_syntax_choices, _get_syntax, container_modules, UDM_Error
-from univention.management.console.modules.udm.udm_ldap import SuperordinateDoesNotExist, NoIpLeft, SearchLimitReached
-from univention.management.console.modules.udm.tools import check_license, LicenseError, LicenseImport, dump_license
-from univention.management.console.error import UMC_Error, LDAP_ServerDown, LDAP_ConnectionFailed
+from univention.management.console.modules.udm.udm_ldap import SuperordinateDoesNotExist, NoIpLeft
+from univention.management.console.modules.udm.tools import check_license, LicenseError, LicenseImport as LicenseImporter, dump_license
+from univention.management.console.modules.sanitizers import MultiValidationError, ValidationError, DictSanitizer, StringSanitizer, ListSanitizer, IntegerSanitizer, ChoicesSanitizer, DNSanitizer, EmailSanitizer, LDAPSearchSanitizer, Sanitizer, BooleanSanitizer
+from univention.management.console.error import UMC_Error, LDAP_ServerDown, LDAP_ConnectionFailed, UnprocessableEntity
 
 import univention.directory.reports as udr
 import univention.admin.uexceptions as udm_errors
@@ -89,18 +91,225 @@ from univention.config_registry import handler_set
 import univention.udm
 
 from univention.lib.i18n import Translation
-# TODO: PAM authentication ?
-# FIXME: add_asterisks sanitizer
 # FIXME: prevent in the javascript UMC module that navigation container query is called with container=='None'
 # FIXME: it seems request.path contains the un-urlencoded path, could be security issue!
 # TODO: 0f77c317e03844e8a16c484dde69abbcd2d2c7e3 is not integrated
 # TODO: replace etree with genshi, etc.
-# TODO: consider Bug #38674
 # TODO: modify layout and properties for app-tabs
+# TODO: loading the policies probably unnecessarily slows down things
+# TODO: create a own translation domain for this file
 
 _ = Translation('univention-management-console-module-udm').translate
 
 MAX_WORKERS = 35
+
+if 422 not in tornado.httputil.responses:
+	tornado.httputil.responses[422] = 'Unprocessable Entity'  # Python 2 is missing this status code
+
+
+def add_sanitizers(type_, sanitizers):
+	def _decorator(method):
+		setattr(method, 'sanitizers', getattr(method, 'sanitizers', {}))
+		method.sanitizers[type_] = sanitizers
+		return method
+	return _decorator
+
+
+def sanitize_body_arguments(**sanitizers):
+	return add_sanitizers('body', sanitizers)
+
+
+def sanitize_query_string(**sanitizers):
+	return add_sanitizers('query', sanitizers)
+
+
+class RequestSanitizer(DictSanitizer):
+
+	def __init__(self, resource):
+		sanitizers = getattr(getattr(resource, resource.request.method.lower()), 'sanitizers', {})
+		super(RequestSanitizer, self).__init__({
+			'query_string': QueryStringSanitizer(sanitizers.get('query', {}), required=True, further_arguments=['resource'], _copy_value=False),
+			'body_arguments': DictSanitizer(sanitizers.get('body', {}), required=True, further_arguments=['resource'], _copy_value=False)
+		}, further_arguments=['resource'], _copy_value=False)
+
+	def sanitize(self, resource, *args, **kwargs):
+		payload = {
+			'query_string': resource.request.query_arguments or {},
+			'body_arguments': resource.request.body_arguments or {},
+			'__resource': resource,
+			'__args': args,
+			'__kwargs': kwargs,
+		}
+		if isinstance(payload['query_string'], dict):
+			payload['query_string']['__resource'] = resource
+		if isinstance(payload['body_arguments'], dict):
+			payload['body_arguments']['__resource'] = resource
+		value = super(RequestSanitizer, self).sanitize('request.arguments', {'request.arguments': payload, 'resource': resource})
+		resource.request.query_arguments = value['query_string']
+		resource.request.body_arguments = value['body_arguments']
+		return value
+
+	def _sanitize(self, value, name, further_arguments):
+		return super(RequestSanitizer, self)._sanitize(value, name, further_arguments)
+
+
+class QueryStringSanitizer(DictSanitizer):
+
+	def _sanitize(self, value, name, further_arguments):
+		if isinstance(value, dict):
+			for key, sanitizer in self.sanitizers.items():
+				if len(value.get(key, [])) == 1 and not isinstance(sanitizer, ListSanitizer):
+					value[key] = value[key][0]
+
+		return super(QueryStringSanitizer, self)._sanitize(value, name, further_arguments)
+
+
+class DefaultDictSanitizer(DictSanitizer):
+
+	def __init__(self, sanitizers, allow_other_keys=True, **kwargs):
+		self.default_sanitizer = kwargs.pop('default_sanitizer', None)
+		super(DefaultDictSanitizer, self).__init__(sanitizers, allow_other_keys=allow_other_keys, **kwargs)
+
+	def _sanitize(self, value, name, further_arguments):
+		if not isinstance(value, dict):
+			self.raise_formatted_validation_error(_('Not a "dict"'), name, type(value).__name__)
+
+		if not self.allow_other_keys and any(key not in self.sanitizers for key in value):
+			self.raise_validation_error(_('Has more than the allowed keys'))
+
+		altered_value = copy.deepcopy(value) if self._copy_value else value
+
+		multi_error = MultiValidationError()
+		for attr in value:
+			sanitizer = self.sanitizers.get(attr, self.default_sanitizer)
+			try:
+				if sanitizer:
+					altered_value[attr] = sanitizer.sanitize(attr, value)
+			except ValidationError as e:
+				multi_error.add_error(e, attr)
+
+		if multi_error.has_errors():
+			raise multi_error
+
+		return altered_value
+
+
+class ObjectPropertySanitizer(StringSanitizer):
+
+	def __init__(self, **kwargs):
+		"""A LDAP attribute name.
+			must at least be 1 character long.
+
+			This sanitizer prevents LDAP search filter injections in the attribute name.
+
+			TODO: in theory we should only allow existing searchable properties for the requested object type
+		"""
+		args = dict(
+			minimum=0,
+			regex_pattern=r'^[\w\d\-;]*$',
+		)
+		args.update(kwargs)
+		StringSanitizer.__init__(self, **args)
+
+
+class PropertiesSanitizer(DefaultDictSanitizer):
+
+	def __init__(self, *args, **kwargs):
+		super(PropertiesSanitizer, self).__init__({}, *args, default_sanitizer=PropertySanitizer(), **kwargs)
+
+	def sanitize(self, resource, module, obj):
+		# FIXME: for the automatic IP address assignment, we need to make sure that
+		# the network is set before the IP address (see Bug #24077, comment 6)
+		# The following code is a workaround to make sure that this is the
+		# case, however, this should be fixed correctly.
+		# This workaround has been documented as Bug #25163.
+		def _tmp_cmp(i, j):
+			if i[0] == 'network':
+				return -1
+			return 0
+		properties = resource.request.body_arguments['properties']
+		# TODO: add sanitizer for e.g. required properties (respect options!)
+
+		properties = dict(encode_properties(module.name, properties, resource.ldap_connection))
+
+		self.default_sanitizer._module = module
+		self.default_sanitizer._obj = obj
+		try:
+			properties = super(PropertiesSanitizer, self).sanitize('properties', {'properties': properties})
+		finally:
+			self.default_sanitizer._module = None
+			self.default_sanitizer._obj = None
+
+		password_properties = module.password_properties
+		for property_name, value in sorted(properties.items(), _tmp_cmp):
+			if property_name in password_properties:
+				MODULE.info('Setting password property %s' % (property_name,))
+			else:
+				MODULE.info('Setting property %s to %r' % (property_name, value))
+
+			try:
+				try:
+					obj[property_name] = value
+				except udm_errors.valueMayNotChange:
+					if obj[property_name] == value:  # UDM does not check equality before raising the exception
+						continue
+					raise
+			except (udm_errors.valueInvalidSyntax, udm_errors.valueError, udm_errors.valueMayNotChange, udm_errors.valueRequired, udm_errors.noProperty) as exc:
+				multi_error = MultiValidationError()
+				try:
+					self.raise_formatted_validation_error(_('The property %(name)s has an invalid value: %(details)s'), property_name, value, details=str(exc))
+				except ValidationError as exc:
+					multi_error.add_error(exc, property_name)
+					raise multi_error
+
+		resource.request.body_arguments['properties'] = properties
+		return properties
+
+
+class PropertySanitizer(Sanitizer):
+
+	def __init__(self, *args, **kwargs):
+		self._module = None
+		self._obj = None
+		super(PropertySanitizer, self).__init__(*args, **kwargs)
+
+	def _sanitize(self, value, name, further_arguments):
+		property_obj = self._module.get_property(name)
+
+		if property_obj is None:
+			self.raise_validation_error(_('The %(module)s module has no property %(name)s.'), module=self._module.title)
+
+		if not self._obj.has_property(name):
+			return value  # value will not be set, so no validation is required
+
+		# check each element if 'value' is a list
+		if isinstance(value, (tuple, list)) and property_obj.multivalue:
+			errors = []
+			new_value = []
+			for val in value:
+				try:
+					new_value.append(property_obj.syntax.parse(val))
+				except (udm_errors.valueInvalidSyntax, udm_errors.valueError, TypeError) as exc:
+					errors.append(str(exc))
+			if errors:
+				self.raise_validation_error(_('The property %(property)s has an invalid value: %(details)s'), property=property_obj.short_description, details='\n'.join(errors))
+			value = new_value
+		else:  # otherwise we have a single value
+			try:
+				value = property_obj.syntax.parse(value)
+			except (udm_errors.valueInvalidSyntax, udm_errors.valueError) as exc:
+				self.raise_validation_error(_('The property %(property)s has an invalid value: %(details)s'), property=property_obj.short_description, details=str(exc))
+
+		return value
+
+
+class BoolSanitizer(ChoicesSanitizer):
+
+	def __init__(self, **kwargs):
+		super(BoolSanitizer, self).__init__(choices=['1', 'on', 'true', 'false', '0', 'off', '', None], **kwargs)
+
+	def _sanitize(self, value, name, further_arguments):
+		return super(BoolSanitizer, self)._sanitize(value, name, further_arguments) in ('1', 'on', 'true')
 
 
 class NotFound(HTTPError):
@@ -121,8 +330,10 @@ class RessourceBase(object):
 		self.set_status(401)
 		self.finish()
 
-	def prepare(self):
+	def set_default_headers(self):
 		self.set_header('Server', 'Univention/1.0')  # TODO:
+
+	def prepare(self):
 		self.request.path_decoded = urllib.unquote(self.request.path)
 		authorization = self.request.headers.get('Authorization')
 		if not authorization:
@@ -136,6 +347,7 @@ class RessourceBase(object):
 			self.request.content_negotiation_lang = 'html'
 			self.request.content_negotiation_lang = self.check_acceptable()
 			self.decode_request_arguments()
+			self.sanitize_arguments(RequestSanitizer(self), self)
 
 	def parse_authorization(self, authorization):
 		if authorization in self.authenticated:
@@ -155,7 +367,7 @@ class RessourceBase(object):
 			self.ldap_connection, self.ldap_position = get_user_connection(bind=lambda lo: lo.bind(userdn, password), write=True)
 			self.request.user_dn = userdn
 			self.request.username = username
-		except:
+		except Exception:
 			return self.force_authorization()
 		else:
 			self.authenticated[authorization] = (userdn, username, self.ldap_connection, self.ldap_position)
@@ -203,11 +415,17 @@ class RessourceBase(object):
 		return lang
 
 	def decode_request_arguments(self):
-		if self.request.headers.get('Content-Type', '').startswith('application/json'):
+		content_type = self.request.headers.get('Content-Type', '')
+		if content_type.startswith('application/json'):
 			try:
 				self.request.body_arguments = json.loads(self.request.body)
 			except ValueError as exc:
 				raise HTTPError(400, _('Invalid JSON document: %r') % (exc,))
+		elif content_type.startswith('application/x-www-form-urlencoded') or content_type.startswith('multipart/form-data'):
+			self.decode_form_arguments()
+
+	def decode_form_arguments(self):
+		pass
 
 	def get_body_argument(self, name, *args):
 		if self.request.headers.get('Content-Type', '').startswith('application/json'):
@@ -218,6 +436,19 @@ class RessourceBase(object):
 		if self.request.headers.get('Content-Type', '').startswith('application/json'):
 			return self.request.body_arguments.get(name)
 		return super(RessourceBase, self).get_body_arguments(name, *args)
+
+	def sanitize_arguments(self, sanitizer, *args, **kwargs):
+		try:
+			try:
+				return sanitizer.sanitize(*args, **kwargs)
+			except MultiValidationError:
+				raise
+			except ValidationError as exc:
+				multi_error = MultiValidationError()
+				multi_error.add_error(exc, 'request.arguments')
+				raise multi_error
+		except MultiValidationError as e:
+			raise UnprocessableEntity(str(e), result=e.result())
 
 	def content_negotiation(self, response):
 		self.add_header('Vary', ', '.join(self.vary()))
@@ -430,6 +661,11 @@ class RessourceBase(object):
 		form.setdefault('fields', []).append(field)
 		return field
 
+	def log_exception(self, typ, value, tb):
+		if isinstance(value, UMC_Error):
+			return
+		super(RessourceBase, self).log_exception(typ, value, tb)
+
 	def write_error(self, status_code, exc_info=None, **kwargs):
 		if not exc_info:  # or isinstance(exc_info[1], HTTPError):
 			return super(RessourceBase, self).write_error(status_code, exc_info=exc_info, **kwargs)
@@ -444,6 +680,7 @@ class RessourceBase(object):
 		_traceback = None
 		message = str(exc)
 		title = ''
+		result = {}
 		if isinstance(exc, UMC_Error):
 			status_code = exc.status
 			title = exc.msg
@@ -451,6 +688,20 @@ class RessourceBase(object):
 				self.add_header('Retry-After', '15')
 			if title == message:
 				title = httplib.responses.get(status_code)
+			if isinstance(exc.result, dict):
+				result = exc.result
+		if isinstance(exc, UnprocessableEntity):
+			error = ''
+			for key, value in exc.result.items():
+				formatter = _('Request argument "%s" %s\n')
+				if key == 'query_string':
+					formatter = _('Query string "%s": %s\n')
+				if isinstance(value, dict):
+					for k, v in value.items():
+						error += formatter % (k, v)
+				else:
+					error += formatter % (key, value)
+			message = '%s:\n%s' % (message, error)
 
 		if not isinstance(exc, (UDM_Error, UMC_Error)) and status_code >= 500:
 			_traceback = ''.join(traceback.format_exception(etype, exc, etraceback))
@@ -462,6 +713,7 @@ class RessourceBase(object):
 				'code': status_code,
 				'message': message,
 				'traceback': _traceback if self.application.settings.get("serve_traceback", True) else None,
+				'error': result,
 			},
 		})
 
@@ -540,9 +792,9 @@ class Relations(Ressource):
 			'': 'description of all relations',
 			'object': '',
 			'object-modules': 'list of available module categories',
-			'object-module': 'the module belonging to the current selected ressource',
+			'object-module': 'the module belonging to the current selected resource',
 			'object-types': 'list of object types matching the given flavor or container',
-			'object-type': 'the object type belonging to the current selected ressource',
+			'object-type': 'the object type belonging to the current selected resource',
 			'children-types': 'list of object types which can be created underneath of the container or superordinate',
 			'properties': 'properties of the given object type',
 			'tree': 'list of tree content for providing a hierarchical navigation',
@@ -987,6 +1239,9 @@ class Modules(Ressource):
 class ObjectTypes(Ressource):
 	"""get the object types of a specific flavor"""
 
+	@sanitize_query_string(
+		superordinate=DNSanitizer(required=False, allow_none=True)
+	)
 	def get(self, module_type):
 		object_type = Modules.mapping.get(module_type)
 		if not object_type:
@@ -996,7 +1251,7 @@ class ObjectTypes(Ressource):
 		module = None
 		if '/' in object_type:
 			# FIXME: what was/is the superordinate for?
-			superordinate = self.get_query_argument('superordinate', None)
+			superordinate = self.request.query_arguments['superordinate']
 			module = UDM_Module(object_type, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 			if superordinate:
 				module = get_module(object_type, superordinate, self.ldap_connection) or module  # FIXME: the object_type param is wrong?!
@@ -1194,10 +1449,13 @@ class ContainerQueryBase(Ressource):
 class Tree(ContainerQueryBase):
 	"""GET udm/(dns/dns|dhcp/dhcp|)/tree/ (the tree content of navigation/DNS/DHCP)"""
 
+	@sanitize_query_string(
+		container=DNSanitizer(default=None)
+	)
 	@tornado.gen.coroutine
 	def get(self, object_type):
 		ldap_base = ucr['ldap/base']
-		container = self.get_query_argument('container', None)
+		container = self.request.query_arguments['container']
 
 		modules = container_modules()
 		scope = 'one'
@@ -1216,11 +1474,14 @@ class Tree(ContainerQueryBase):
 
 class MoveDestinations(ContainerQueryBase):
 
+	@sanitize_query_string(
+		container=DNSanitizer(default=None)
+	)
 	@tornado.gen.coroutine
 	def get(self, object_type):
 		scope = 'one'
 		modules = container_modules()
-		container = self.get_query_argument('container', None)
+		container = self.request.query_arguments['container']
 		if not container:
 			scope = 'base'
 
@@ -1259,15 +1520,17 @@ class ReportingBase(Ressource):
 class Report(ReportingBase):
 	"""GET udm/users/user/report/$report_type?dn=...&dn=... (create a report of users)"""
 
+	# i18n: translation for univention-directory-reports
+	_('PDF Document')
+	_('CSV Report')
+
 	@tornado.gen.coroutine
 	def get(self, object_type, report_type):
-		# TODO: better use only POST because GET is limited in argument length sometimes?
 		dns = self.get_query_arguments('dn')
 		yield self.create_report(object_type, report_type, dns)
 
 	@tornado.gen.coroutine
 	def post(self, object_type, report_type):
-		# TODO: 202 accepted with progress?
 		dns = self.get_body_arguments('dn')
 		yield self.create_report(object_type, report_type, dns)
 
@@ -1350,30 +1613,24 @@ class Objects(ReportingBase):
 		# TODO: rename fields in the response into "printable"?
 
 		search = bool(self.request.query)
-		container = self.get_query_argument('position', None)
-		objectProperty = self.get_query_argument('property', None)
-		objectPropertyValue = self.get_query_argument('propertyvalue', '*')
-		scope = self.get_query_argument('scope', 'sub')
-		hidden = self.get_query_argument('hidden', False)
-		fields = self.get_query_arguments('fields', [])
+		container = self.request.query_arguments['position']
+		objectProperty = self.request.query_arguments['property']
+		objectPropertyValue = self.request.query_arguments['propertyvalue']
+		scope = self.request.query_arguments['scope']
+		hidden = self.request.query_arguments['hidden']
+		fields = self.request.query_arguments['fields']
 		fields = (set(fields) | set([objectProperty])) - set(['name', 'None', None, ''])
-		properties = self.get_query_arguments('properties', [])
-		direction = self.get_query_argument('dir', 'ASC')
+		properties = self.request.query_arguments['properties'][:]
+		direction = self.request.query_arguments['dir']
 		reverse = direction == 'DESC'
-		by = self.get_query_argument('by', None)
-		try:
-			page = int(self.get_query_argument('page', 1))
-			items_per_page = int(self.get_query_argument('pagesize', None))  # TODO: rename: items-per-page, pagelength, pagecount, pagesize
-			if items_per_page <= 0:
-				raise ValueError()
-		except (TypeError, ValueError):
-			items_per_page = None
-			page = None
+		by = self.request.query_arguments['by']
+		page = self.request.query_arguments['page']
+		items_per_page = self.request.query_arguments['pagesize']  # TODO: rename: items-per-page, pagelength, pagecount, pagesize
 
 		# TODO: replace the superordinate concept with container
 		superordinate = None
 		if module.superordinate_names:
-			superordinate = self.get_query_argument('superordinate', None)
+			superordinate = self.request.query_arguments['superordinate']
 		if superordinate:
 			mod = get_module(superordinate, superordinate, self.ldap_connection)
 			if not mod:
@@ -1421,9 +1678,6 @@ class Objects(ReportingBase):
 			else:
 				self.add_link(result, 'last', self.urljoin('', page=str(last_page)), title=_('Last page'))
 
-		# i18n: translation for univention-directory-reports
-		_('PDF Document')
-		_('CSV Report')
 		for i, report_type in enumerate(sorted(self.reports_cfg.get_report_names(object_type)), 1):
 			form = self.add_form(result, self.urljoin('report', quote(report_type)), 'POST', rel='udm/relation/report', name=report_type, id='report%d' % (i,))
 			self.add_form_element(form, '', _('Create %s report') % _(report_type), type='submit')
@@ -1516,6 +1770,13 @@ class Objects(ReportingBase):
 					root.append(ET.Element("br"))
 		return root
 
+	@sanitize_body_arguments(
+		position=DNSanitizer(required=True),
+		superordinate=DNSanitizer(required=False, allow_none=True),
+		options=DefaultDictSanitizer({}, default_sanitizer=StringSanitizer()),
+		policies=DefaultDictSanitizer({}, default_sanitizer=DNSanitizer()),
+		properties=DictSanitizer({}),
+	)
 	@tornado.gen.coroutine
 	def post(self, object_type):
 		"""POST udm/users/user/ (Benutzer hinzufügen)"""
@@ -1602,10 +1863,14 @@ class Objects(ReportingBase):
 
 class ObjectsMove(Ressource):
 
+	@sanitize_body_arguments(
+		position=DNSanitizer(required=True),
+		dn=ListSanitizer(DNSanitizer(required=True)),
+	)
 	def post(self, object_type):
 		# FIXME: this can only move objects of the same object_type but should move everything
-		position = self.get_body_argument('position')
-		dns = self.get_body_arguments('dn')  # TODO: validate: remove duplicates, dn-syntax, moveable, etc.
+		position = self.request.body_arguments['position']
+		dns = self.request.body_arguments['dn']  # TODO: validate: moveable, etc.
 		queue = Operations.queue.setdefault(self.request.user_dn, {})
 		status = {
 			'id': str(uuid.uuid4()),
@@ -1747,6 +2012,13 @@ class Object(Ressource):
 			props.pop('dn')
 		return props
 
+	@sanitize_body_arguments(
+		position=DNSanitizer(required=True),
+		superordinate=DNSanitizer(required=False, allow_none=True),
+		options=DefaultDictSanitizer({}, default_sanitizer=BooleanSanitizer()),
+		policies=DefaultDictSanitizer({}, default_sanitizer=DNSanitizer()),
+		properties=DictSanitizer({}),
+	)
 	@tornado.gen.coroutine
 	def put(self, object_type, dn):
 		"""PUT udm/users/user/$DN (Benutzer hinzufügen / modifizieren)"""
@@ -1767,6 +2039,13 @@ class Object(Ressource):
 		self.add_caching(public=False)
 		self.content_negotiation({})
 
+	@sanitize_body_arguments(
+		position=DNSanitizer(required=True),
+		superordinate=DNSanitizer(required=False, allow_none=True),
+		options=DefaultDictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=True),
+		policies=DefaultDictSanitizer({}, default_sanitizer=DNSanitizer(), required=True),
+		properties=DictSanitizer({}),
+	)
 	@tornado.gen.coroutine
 	def patch(self, object_type, dn):
 		dn = unquote_dn(dn)
@@ -1830,6 +2109,10 @@ class Object(Ressource):
 		finally:
 			status['finished'] = True
 
+	@sanitize_query_string(
+		cleanup=BoolSanitizer(default=False),
+		recursive=BoolSanitizer(default=False),
+	)
 	@tornado.gen.coroutine
 	def delete(self, object_type, dn):
 		"""DELETE udm/users/user/$DN (Benutzer löschen)"""
@@ -1838,8 +2121,8 @@ class Object(Ressource):
 		if not module:
 			raise NotFound(object_type)
 
-		cleanup = bool(self.get_query_argument('cleanup', False))
-		recursive = bool(self.get_query_argument('recursive', False))
+		cleanup = bool(self.request.query_arguments['cleanup'])
+		recursive = bool(self.request.query_arguments['recursive'])
 		yield self.pool.submit(module.remove, dn, cleanup, recursive)
 		self.add_caching(public=False)
 		self.content_negotiation({})
@@ -2126,7 +2409,7 @@ class PolicyResultBase(Ressource):
 		"""Returns a virtual policy object containing the values that
 		the given object or container inherits"""
 
-		policy_dn = self.get_query_argument('policy', None)
+		policy_dn = self.request.query_arguments['policy']
 
 		if is_container:
 			# editing a new (i.e. non existing) object -> use the parent container
@@ -2190,6 +2473,9 @@ class PolicyResult(PolicyResultBase):
 	GET udm/users/user/$userdn/policies/$policy_type/?policy=$dn (for a existing object)
 	"""
 
+	@sanitize_query_string(
+		policy=DNSanitizer(required=False, default=None)
+	)
 	@tornado.gen.coroutine
 	def get(self, object_type, dn, policy_type):
 		dn = unquote_dn(dn)
@@ -2203,9 +2489,13 @@ class PolicyResultContainer(PolicyResultBase):
 	GET udm/users/user/policies/$policy_type/?policy=$dn&position=$dn (for a container, where a object should be created in)
 	"""
 
+	@sanitize_query_string(
+		policy=DNSanitizer(required=False, default=None),
+		position=DNSanitizer(required=True)
+	)
 	@tornado.gen.coroutine
 	def get(self, object_type, policy_type):
-		container = self.get_query_argument('position')
+		container = self.request.query_arguments['position']
 		infos = yield self._get(object_type, policy_type, container, is_container=True)
 		self.add_caching(public=False, no_cache=True, must_revalidate=True, no_store=True)
 		self.content_negotiation(infos)
@@ -2233,13 +2523,26 @@ class Operations(Ressource):
 		self.add_caching(public=False, no_store=True, no_cache=True, must_revalidate=True)
 		self.content_negotiation(result)
 
+	def get_html(self, response):
+		root = super(Operations, self).get_html(response)
+		if isinstance(response, dict):
+			if 'value' in response and 'max' in response:
+				h1 = ET.Element('h1')
+				h1.text = response.get('description', '')
+				root.append(h1)
+				root.append(ET.Element('progress', value=str(response['value']), max=str(response['max'])))
+		return root
+
 
 class LicenseRequest(Ressource):
 
+	@sanitize_query_string(
+		email=EmailSanitizer(required=True),
+	)
 	@tornado.gen.coroutine
 	def get(self):
 		data = {
-			'email': self.get_query_argument('email'),
+			'email': self.request.query_arguments['email'],
 			'licence': dump_license(),
 		}
 		if not data['licence']:
