@@ -28,11 +28,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 from setuptools import setup
-from debian.changelog import Changelog
 
-dch = Changelog(open('debian/changelog', 'r'))
+VER = open('debian/changelog', 'r').readline().split()[1][1:-1]
 
 setup(
 	package_dir={'': '.'},
-	version=dch.version.full_version,
+	version=VER,
 )
