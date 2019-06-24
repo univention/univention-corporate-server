@@ -223,7 +223,7 @@ class UCSInstallation(object):
 		self.client.keyPress('enter')
 
 	def setup(self):
-		self.client.waitForText(self._['domain_setup'], timeout=self.timeout)
+		self.client.waitForText(self._['domain_setup'], timeout=self.timeout + 300)
 		if self.args.role == 'master':
 			self.click(self._['new_domain'])
 			self.click(self._['next'])
