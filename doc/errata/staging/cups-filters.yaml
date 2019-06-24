@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: cups-filters
+fix: 1.11.6-3+deb9u1
+desc: |
+ This update addresses the following issue:
+ * Fix regression caused by erratum 94 in ghostscript
+bug: [49721]
