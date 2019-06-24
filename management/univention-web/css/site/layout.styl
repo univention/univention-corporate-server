@@ -143,6 +143,18 @@ generic-layout-udm-detailpage()
 		.umcPageMain
 			overflow-y: auto
 
+generic-layout-udm-detailpage-like(nLayersFrom__umcModuleContentChildWrapper__till__umcPage)
+	@media (min-height: 750px) and (min-width: $md-min)
+		flex-page()
+		$s = ''
+		for _ in 1..nLayersFrom__umcModuleContentChildWrapper__till__umcPage
+			$s += ' > *'
+			.umcModuleContentChildWrapper {$s}
+				height: 100%
+
+		.umcPageMain
+			overflow-y: auto
+
 generic-layout-uvmm-detailpage()
 	@media (min-height: 750px) and (min-width: $md-min)
 		flex-page()
@@ -155,11 +167,15 @@ generic-layout-uvmm-detailpage()
 		.umcPageMain
 			overflow-y: auto
 
+
 .umcTopContainer--layout-top,
 .umcTopContainer--layout-services,
 .umcTopContainer--layout-ucr,
 .umcTopContainer--layout-appcenter-packages
 	generic-layout-searchpage-grid()
+
+.umcTopContainer--layout-appcenter-selfservice-apppage
+	generic-layout-udm-detailpage-like(5)
 
 
 .umcTopContainer--generic-layout-searchpage-grid
@@ -173,4 +189,3 @@ generic-layout-uvmm-detailpage()
 
 .umcTopContainer--generic-layout-uvmm-detailpage
 	generic-layout-uvmm-detailpage()
-
