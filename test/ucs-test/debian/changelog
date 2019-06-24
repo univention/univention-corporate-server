@@ -1,3 +1,9 @@
+ucs-test (9.0.2-107) unstable; urgency=medium
+
+  * Bug #47722: skip 61_udm-users.100_test_users on samba
+
+ -- Felix Botner <botner@univention.de>  Mon, 24 Jun 2019 17:46:48 +0200
+
 ucs-test (9.0.2-106) unstable; urgency=medium
 
   * Bug #49723: skip 10_ldap/41listener_module_api_test on samba

@@ -396,9 +396,10 @@ class CheckPackages(Check):
 	Check for required packages.
 	"""
 
-	def __init__(self, packages):
+	def __init__(self, packages, packages_not):
 		super(CheckPackages, self).__init__()
 		self.packages = packages
+		self.packages_not = packages_not
 
 	def check(self, environment):
 		"""Check environment for required / prohibited packages."""
@@ -433,6 +434,14 @@ class CheckPackages(Check):
 					for condition in conditions:
 						yield condition
 
+		for pkg in self.packages_not:
+			try:
+				p = environment.apt[pkg]
+			except KeyError:
+				continue
+			if p.installed:
+				yield Verdict(Verdict.ERROR, 'Package %s is installed, but should not be' % (pkg,), TestCodes.REASON_INSTALLED)
+				break
 
 class CheckExposure(Check):
 
@@ -540,7 +549,7 @@ class TestCase(object):
 				header.get('roles-not', []))
 			self.join = CheckJoin(header.get('join', None))
 			self.components = CheckComponents(header.get('components', {}))
-			self.packages = CheckPackages(header.get('packages', []))
+			self.packages = CheckPackages(header.get('packages', []), header.get('packages-not', []))
 			self.exposure = CheckExposure(
 				header.get('exposure', 'dangerous'),
 				digest)
