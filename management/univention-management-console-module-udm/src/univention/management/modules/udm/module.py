@@ -1314,9 +1314,10 @@ class Swagger(Ressource):
 			},
 			"type": "object"
 		}
+		url = urlparse(self.abspath(''))
 		specs = {
 			'swagger': '2.0',
-			'basePath': self.abspath(''),
+			'basePath': url.path,
 			'paths': paths,
 			'info': {
 				'description': 'Schema definition for the Univention Directory Manager JSON-HTTP interface',
@@ -1331,7 +1332,8 @@ class Swagger(Ressource):
 			'definitions': definitions,
 			'parameters': parameters,
 			'responses': responses or None,
-			'host': '%s.%s' % (ucr['hostname'], ucr['domainname']),
+			'host': url.netloc,
+			#'host': '%s.%s' % (ucr['hostname'], ucr['domainname']),
 		}
 		self.content_negotiation(specs)
 
