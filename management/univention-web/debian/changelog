@@ -1,3 +1,9 @@
+univention-web (3.0.5-18) unstable; urgency=medium
+
+  * Bug #49707: changes needed for appcenter-selfservice
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 24 Jun 2019 13:27:45 +0200
+
 univention-web (3.0.5-17) unstable; urgency=medium
 
   * Bug #47306: fix typo
