@@ -1,3 +1,9 @@
+ucs-test (9.0.2-105) unstable; urgency=medium
+
+  * Bug #49415: 10_ldap/69resync_object wait for drs
+
+ -- Felix Botner <botner@univention.de>  Mon, 24 Jun 2019 14:04:56 +0200
+
 ucs-test (9.0.2-104) unstable; urgency=medium
 
   * Bug #47306: skip producttest
