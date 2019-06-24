@@ -192,8 +192,22 @@ class CLIClient(object):
 		properties = dict((prop['id'], prop) for prop in mod['properties'])
 		layout = mod['layout']
 
+		args.parser.print_help()
+		for sub in args.subparsers.choices.values():
+			sub.print_help()
+
+		for layout in layout:
+			print('  %s - %s:' % (layout['label'], layout['description']))
+			for sub in layout['layout']:
+				self.print_layout(sub, properties)
+			print()
+
+	def print_layout(self, sub, properties, indent=1):
 		def _print_prop(prop):
 			def _print(prop):
+				if isinstance(prop, dict):
+					print(repr(prop))
+					return
 				print('\t\t%s%s' % (prop.ljust(41), properties.get(prop, {}).get('label')))
 
 			if isinstance(prop, list):
@@ -202,20 +216,18 @@ class CLIClient(object):
 			else:
 				_print(prop)
 
-		args.parser.print_help()
-		for sub in args.subparsers.choices.values():
-			sub.print_help()
-
-		for layout in layout:
-			print('  %s - %s:' % (layout['label'], layout['description']))
-			for sub in layout['layout']:
-				if isinstance(sub, dict):
-					print('\t%s %s' % (sub['label'], sub['description']))
-					for prop in sub['layout']:
-						_print_prop(prop)
+		if isinstance(sub, dict):
+			print('\t%s %s' % (sub['label'], sub['description']))
+			for prop in sub['layout']:
+				if isinstance(prop, dict):
+					self.print_layout(prop, properties, indent + 1)
 				else:
-					_print_prop(sub)
-			print()
+					_print_prop(prop)
+		else:
+			if isinstance(sub, dict):
+				self.print_layout(prop, properties, indent + 1)
+			else:
+				_print_prop(sub)
 
 	def license(self, args):
 		pass
@@ -239,7 +251,7 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 	parser.add_argument('--tls', choices=['0', '1', '2'], default='2', help='0 (no); 1 (try); 2 (must)')
 	parser.add_argument('object_type')
 
-	subparsers = parser.add_subparsers(title='actions', description='All available actions')
+	subparsers = parser.add_subparsers(dest='action', title='actions', description='All available actions')
 	parser.set_defaults(subparsers=subparsers)
 	create = subparsers.add_parser('create', description='Create a new object')
 	create.set_defaults(func=client.create_object)
