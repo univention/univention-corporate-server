@@ -1,3 +1,9 @@
+univention-samba4 (8.0.0-25) unstable; urgency=medium
+
+  * Bug #49399: If samba-backup fails, cron will send system e-mails to admins etc.
+
+ -- Fathan Vidjaja <fvidjaja@lauvik.knut.univention.de>  Mon, 24 Jun 2019 13:58:15 +0200
+
 univention-samba4 (8.0.0-24) unstable; urgency=medium
 
   * Bug #44054: do not quote already quoted
