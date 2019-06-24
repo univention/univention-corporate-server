@@ -53,6 +53,15 @@ var umcConfig = {
 		});
 	}
 };
+function help() {
+	require(['dojo/query'], function(query) {
+		var schema = query('link[rel=describedby]');
+		if (schema && schema[0]) {
+			getHelp(schema[0].href, 'OPTIONS');
+		}
+
+	});
+};
 
 function getHelp(url, method) {
 	require(['dojo/_base/lang', 'dojo/dom', 'dojo/query', 'dojo/dom-construct', 'dojo/request/xhr', 'dojox/xml/parser'], function(lang, dom, query, domConst, xhr, parser) {
@@ -70,8 +79,8 @@ function getHelp(url, method) {
 				withCredentials: true
 		}).then(function(xmldoc) {
 //			console.log(query('nav', parser.parse(xmldoc)));
-			umc.dialog.alert(domConst.toDom(xmldoc));
-//			domConst.place(xmldoc, query('body')[0], 'replace')
+//			umc.dialog.alert(domConst.toDom(xmldoc));
+			domConst.place(xmldoc, query('body')[0], 'replace')
 		});
 	});
 

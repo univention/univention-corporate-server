@@ -256,6 +256,11 @@ class PropertiesSanitizer(DefaultDictSanitizer):
 				except udm_errors.valueMayNotChange:
 					if obj[property_name] == value:  # UDM does not check equality before raising the exception
 						continue
+					raise udm_errors.valueMayNotChange(udm_errors.valueMayNotChange.message)
+				except udm_errors.valueRequired:
+					if value is None and property_name in password_properties:
+						MODULE.info('Ignore unsetting password property %s' % (property_name,))
+						continue
 					raise
 			except (udm_errors.valueInvalidSyntax, udm_errors.valueError, udm_errors.valueMayNotChange, udm_errors.valueRequired, udm_errors.noProperty) as exc:
 				multi_error = MultiValidationError()
@@ -291,14 +296,9 @@ class PropertySanitizer(Sanitizer):
 			new_value = []
 			for val in value:
 				try:
-					try:
-						new_value.append(property_obj.syntax.parse(val))
-					except TypeError:
-						if val is None:
-							MODULE.warn('Syntax class %r cannot handle None' % (property_obj.syntax,))
-							new_value.append(val)  # will later be unset in handlers/__init__.py
-							continue
-						raise
+					if val is not None:
+						val = property_obj.syntax.parse(val)
+					new_value.append(val)
 				except (udm_errors.valueInvalidSyntax, udm_errors.valueError, TypeError) as exc:
 					errors.append(str(exc))
 			if errors:
@@ -306,12 +306,8 @@ class PropertySanitizer(Sanitizer):
 			value = new_value
 		else:  # otherwise we have a single value
 			try:
-				try:
+				if value is not None:
 					value = property_obj.syntax.parse(value)
-				except TypeError:
-					if value is not None:
-						raise
-					MODULE.warn('Syntax class %r cannot handle None' % (property_obj.syntax,))
 			except (udm_errors.valueInvalidSyntax, udm_errors.valueError, TypeError) as exc:
 				self.raise_validation_error(_('The property %(property)s has an invalid value: %(details)s'), property=property_obj.short_description, details=str(exc))
 
@@ -549,6 +545,9 @@ class RessourceBase(object):
 			tree.write(self)
 
 	def get_json(self, response):
+		response.pop('position_layout', None)
+		response.pop('template_layout', None)
+		response.pop('layout_search', None)
 		return response
 
 	def get_html(self, response):
@@ -577,6 +576,9 @@ class RessourceBase(object):
 			r = response.copy()
 			r.pop('_forms', None)
 			r.pop('_links', None)
+			r.pop('position_layout', None)
+			r.pop('template_layout', None)
+			r.pop('layout_search', None)
 			if r:
 				pre = ET.Element("pre")
 				pre.text = json.dumps(r, indent=4)
@@ -825,18 +827,20 @@ class Ressource(RessourceBase, RequestHandler):
 				type_ = ''
 				kwargs = {}
 				if isinstance(san, DictSanitizer):
-					type_ = 'dict'
+					type_ = 'object'
 				elif isinstance(san, ListSanitizer):
-					type_ = 'list'
+					type_ = 'array'
 				elif isinstance(san, DNSanitizer):
 					type_ = 'string'
 					description = 'LDAP DN'
 				elif isinstance(san, BooleanSanitizer):
-					type_ = 'bool'
+					type_ = 'boolean'
 				elif isinstance(san, BoolSanitizer):
-					type_ = 'str'
+					description = 'boolean value'
+					type_ = 'string'
+					kwargs['choices'] = san.choices
 				elif isinstance(san, ChoicesSanitizer):
-					type_ = 'str'
+					type_ = 'string'
 					kwargs['choices'] = san.choices
 				elif isinstance(san, IntegerSanitizer):
 					type_ = 'number'
@@ -885,9 +889,12 @@ class Ressource(RessourceBase, RequestHandler):
 					500: {
 						'description': 'Internal server errror'
 					},
+					502: {
+						'description': '(LDAP) Server not available'
+					},
 					599: {
-						'description': 'Error in Tornado web server'
-					}
+						'description': 'Error in Tornado web server'  # proxy server not reachable
+					},
 				},
 			}
 		self.add_caching(public=False)
@@ -1944,16 +1951,17 @@ class Objects(FormBase, ReportingBase):
 			else:
 				self.add_link(result, 'last', self.urljoin('', page=str(last_page)), title=_('Last page'))
 
-		for i, report_type in enumerate(sorted(self.reports_cfg.get_report_names(object_type)), 1):
-			form = self.add_form(result, self.urljoin('report', quote(report_type)), 'POST', rel='udm/relation/report', name=report_type, id='report%d' % (i,))
-			self.add_form_element(form, '', _('Create %s report') % _(report_type), type='submit')
+		if search:
+			for i, report_type in enumerate(sorted(self.reports_cfg.get_report_names(object_type)), 1):
+				form = self.add_form(result, self.urljoin('report', quote(report_type)), 'POST', rel='udm/relation/report', name=report_type, id='report%d' % (i,))
+				self.add_form_element(form, '', _('Create %s report') % _(report_type), type='submit')
 
-		form = self.add_form(result, self.urljoin('multi-edit'), 'POST', name='multi-edit', id='multi-edit', rel='edit-form')
-		self.add_form_element(form, '', _('Modify %s (multi edit)') % (module.object_name_plural,), type='submit')
+			form = self.add_form(result, self.urljoin('multi-edit'), 'POST', name='multi-edit', id='multi-edit', rel='edit-form')
+			self.add_form_element(form, '', _('Modify %s (multi edit)') % (module.object_name_plural,), type='submit')
 
-		form = self.add_form(result, self.urljoin('move'), 'POST', name='move', id='move', rel='udm/relation/object/move')
-		self.add_form_element(form, 'position', '')
-		self.add_form_element(form, '', _('Move %s') % (module.object_name_plural,), type='submit')
+			form = self.add_form(result, self.urljoin('move'), 'POST', name='move', id='move', rel='udm/relation/object/move')
+			self.add_form_element(form, 'position', '')
+			self.add_form_element(form, '', _('Move %s') % (module.object_name_plural,), type='submit')
 
 		result['layout_search'] = [{'description': _('Search for %s') % (module.object_name_plural,), 'label': _('Search'), 'layout': []}]
 		search_layout = result['layout_search'][0]['layout']
@@ -2098,7 +2106,7 @@ class ObjectsMove(Ressource):
 
 	@sanitize_body_arguments(
 		position=DNSanitizer(required=True),
-		dn=ListSanitizer(DNSanitizer(required=True)),
+		dn=ListSanitizer(DNSanitizer(required=True), min_elements=1),
 	)
 	def post(self, object_type):
 		# FIXME: this can only move objects of the same object_type but should move everything
@@ -2168,7 +2176,7 @@ class Object(FormBase, Ressource):
 			self.add_link(props, 'udm/relation/next-free-ip', self.urljoin(quote_dn(obj.dn), 'next-free-ip-address'), title=_('Next free IP address'))
 
 		if obj.has_property('jpegPhoto'):
-			self.add_link(props, 'udm/relation/user-photo', self.urljoin(quote_dn(obj.dn), 'properties/photo.jpg'), type='image/jpeg', title=_('User photo'))
+			self.add_link(props, 'udm/relation/user-photo', self.urljoin(quote_dn(obj.dn), 'properties/jpegPhoto.jpg'), type='image/jpeg', title=_('User photo'))
 
 		self.add_caching(public=False)
 		self.content_negotiation(props)
@@ -2245,12 +2253,14 @@ class Object(FormBase, Ressource):
 		values = {}
 		if properties:
 			values = obj.info.copy()
-			for passwd in module.password_properties:
-				values.pop(passwd, None)
 			if '*' not in properties:
 				for key in list(values.keys()):
 					if key not in properties:
 						values.pop(key)
+			else:
+				values = dict((key, obj[key]) for key in obj.descriptions if obj.has_property(key))
+			for passwd in module.password_properties:
+				values[passwd] = None
 			values = dict(decode_properties(module.name, values, ldap_connection))
 
 		for key, value in list(values.items()):
@@ -2262,6 +2272,11 @@ class Object(FormBase, Ressource):
 					values[key] = True
 				elif syntax.parse(False) == value:
 					values[key] = False
+			elif isinstance(syntax, (udm_syntax.integer,)):
+				try:
+					values[key] = int(value)
+				except (ValueError, TypeError):
+					pass
 
 		props = {}
 		props['dn'] = obj.dn
@@ -2269,6 +2284,8 @@ class Object(FormBase, Ressource):
 		props['id'] = '+'.join(explode_rdn(obj.dn, True))
 		if module.superordinate_names:
 			props['superordinate'] = obj.superordinate and obj.superordinate.dn
+		if obj.oldattr.get('entryUUID'):
+			props['entry_uuid'] = obj.oldattr['entryUUID'][0].decode('utf-8', 'replace')
 		props['position'] = ldap_connection.parentDn(obj.dn)
 		props['properties'] = values
 		props['options'] = dict((opt['id'], opt['value']) for opt in module.get_options(udm_object=obj))
@@ -2683,11 +2700,12 @@ class ObjectEdit(FormBase, Ressource):
 		self.add_link(result, 'self', self.urljoin(''), title=_('Modify'))
 
 		if 'remove' in module.operations:
-			# TODO: add referring objects
-			form = self.add_form(result, id='remove', action=self.urljoin('.').rstrip('/'), method='DELETE')
-			self.add_form_element(form, 'cleanup', '1', type='checkbox', checked=True)
-			self.add_form_element(form, 'recursive', '1', type='checkbox', checked=True)
+			# TODO: add list of referring objects
+			form = self.add_form(result, id='remove', action=self.urljoin('.').rstrip('/'), method='DELETE', layout='remove_layout')
+			self.add_form_element(form, 'cleanup', '1', type='checkbox', checked=True, label=_('Perform a cleanup'), title=_('e.g. temporary objects, locks, etc.'))
+			self.add_form_element(form, 'recursive', '1', type='checkbox', checked=True, label=_('Remove referring objects'), title=_('e.g. DNS or DHCP references of a computer'))
 			self.add_form_element(form, '', _('Remove'), type='submit')
+			result['remove_layout'] = [{'label': _('Remove'), 'description': _("Remove the object"), 'layout': ['cleanup', 'recursive', '']}]
 
 		if set(module.operations) & {'move', 'subtree_move'}:
 			form = self.add_form(result, id='move', action=self.urljoin('.').rstrip('/'), method='PUT')
@@ -2719,7 +2737,7 @@ class ObjectEdit(FormBase, Ressource):
 			enctype = 'application/x-www-form-urlencoded'
 			if obj.has_property('jpegPhoto'):
 				enctype = 'multipart/form-data'
-				form = self.add_form(result, action=self.urljoin('properties/photo.jpg'), method='POST', enctype='multipart/form-data')
+				form = self.add_form(result, action=self.urljoin('properties/jpegPhoto.jpg'), method='POST', enctype='multipart/form-data')
 				self.add_form_element(form, 'jpegPhoto', '', type='file', accept='image/jpg image/jpeg image/png')
 				self.add_form_element(form, '', _('Upload user photo'), type='submit')
 
@@ -2740,7 +2758,7 @@ class ObjectEdit(FormBase, Ressource):
 			self.add_property_form_elements(module, form, result['properties'], values)
 			if any(prop['id'] == 'jpegPhoto' for prop in result['properties']):
 				result['properties'].append({'name': 'jpegPhoto-preview', 'label': ' '})
-				self.add_form_element(form, 'jpegPhoto-preview', '', type='image', label=' ', src=self.urljoin('properties/photo.jpg'), alt=_('No photo set'))
+				self.add_form_element(form, 'jpegPhoto-preview', '', type='image', label=' ', src=self.urljoin('properties/jpegPhoto.jpg'), alt=_('No photo set'))
 
 			for policy in module.policies:
 				ptype = policy['objectType']
@@ -3080,10 +3098,11 @@ def decode_properties(object_type, properties, lo, version=1):
 			mod_obj._lo = lo
 			codec = mod_obj._init_encoder(codecs[key], property_name=key)
 			value = codec.decode(value)
-			if isinstance(codec, univention.udm.encoders.Base64BinaryPropertyEncoder):  # jpegPhoto
-				value = value.encoded
-			elif isinstance(value, datetime.date):  # birthday, userexpiry
-				value = value.isoformat()
+			if value is not None:
+				if isinstance(codec, univention.udm.encoders.Base64BinaryPropertyEncoder):  # jpegPhoto
+					value = value.encoded
+				elif isinstance(value, datetime.date):  # birthday, userexpiry
+					value = value.isoformat()
 		yield key, value
 
 
@@ -3169,7 +3188,7 @@ class Application(tornado.web.Application):
 			(r"/udm/%s/%s/" % (object_type, policies_object_type), PolicyResultContainer),
 			(r"/udm/%s/%s/properties/choices" % (object_type, dn), Properties),
 			(r"/udm/%s/%s/properties/%s/choices" % (object_type, dn, property_), PropertyChoices),
-			(r"/udm/%s/%s/properties/photo.jpg" % (object_type, dn), UserPhoto),
+			(r"/udm/%s/%s/properties/jpegPhoto.jpg" % (object_type, dn), UserPhoto),
 			(r"/udm/%s/properties/%s/default" % (object_type, property_), DefaultValue),
 			(r"/udm/networks/network/%s/next-free-ip-address" % (dn,), NextFreeIpAddress),
 			(r"/udm/progress/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", Operations),
