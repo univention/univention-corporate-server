@@ -59,7 +59,10 @@ define([
 
 		// buttonLabel: String
 		//		The label that is displayed on the upload button.
-		buttonLabel: 'Upload',
+		buttonLabel: _('Upload'),
+
+		// removeButtonLabel: String
+		removeButtonLabel: _('Remove'),
 
 		// value: String[]
 		//		'value' contains an array of the uploaded file names.
@@ -107,7 +110,6 @@ define([
 		_uploadingFiles: [],
 
 		constructor: function() {
-			this.buttonLabel = _('Upload');
 			this._uploadingFiles = [];
 			this.value = [];
 
@@ -132,7 +134,7 @@ define([
 			// prepare remove button and container for upload/remove buttons
 			this._container = new ContainerWidget({});
 			this._container.addChild(new Button({
-				label: _('Remove'),
+				label: this.removeButtonLabel,
 				onClick: lang.hitch(this, '_removeFiles'),
 				style: 'float: right;'
 			}));

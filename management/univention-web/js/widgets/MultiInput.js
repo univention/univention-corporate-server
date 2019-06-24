@@ -73,6 +73,10 @@ define([
 
 		displayLabel: false,
 
+		newEntryButtonLabel: _('New entry'),
+
+		newEntryButtonIconClass: 'dijitNoIcon',
+
 		_widgets: null,
 
 		_nRenderedElements: 0,
@@ -444,7 +448,8 @@ define([
 
 		_renderNewEntryButton: function() {
 			this._newEntryButton = new Button({
-				label: _('New entry'),
+				label: this.newEntryButtonLabel,
+				iconClass: this.newEntryButtonIconClass,
 				disabled: this.disabled,
 				visible: !this.disabled,
 				onClick: lang.hitch(this, '_appendRows', 1),
@@ -599,7 +604,7 @@ define([
 			var button = new Button({
 				disabled: this.disabled,
 				visible: !this.disabled,
-				iconClass: 'multiInputTrashCanIcon',
+				iconClass: 'umcTrashIcon',
 				showLabel: false,
 				onClick: lang.hitch(this, function() {
 					this._removeElement(rowContainer.irow);
