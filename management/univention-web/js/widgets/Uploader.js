@@ -63,13 +63,21 @@ define([
 		//		The label that is displayed on the upload button.
 		buttonLabel: 'Upload',
 
+		// buttonIconClass: String
+		// 		The class for the icon of the upload button.
+		buttonIconClass: 'dijitNoIcon',
+
 		// showClearButton: Boolean
 		//		The clear button is shown only if this attribute is set to true.
 		showClearButton: true,
 
 		// clearButtonLabel: String
-		//		The label that is displayed on the upload button.
+		//		The label that is displayed on the clear button.
 		clearButtonLabel: 'Clear data',
+
+		// clearButtonIconClass: String
+		// 		The class for the icon of the clear button.
+		clearButtonIconClass: 'dijitNoIcon',
 
 		// displayErrorMessage: Boolean
 		//		Show message if error occurred when uploading file.
@@ -148,6 +156,7 @@ define([
 				label: this.buttonLabel,
 				multiple: this.multiFile,
 				uploadOnSelect: false,
+				iconClass: this.buttonIconClass,
 				getForm: function() {
 					// make sure that the Uploader does not find any of our encapsulating forms
 					return null;
@@ -157,9 +166,10 @@ define([
 			style.set(this._uploader.domNode, 'display', 'inline-block');
 			this.addChild(this._uploader);
 
-			if ( this.showClearButton ) {
+			if (this.showClearButton) {
 				this._clearButton = new Button({
 					label: this.clearButtonLabel,
+					iconClass: this.clearButtonIconClass,
 					callback: lang.hitch(this, function() {
 						this.set('data', null);
 					})
