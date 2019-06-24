@@ -729,6 +729,8 @@ class RessourceBase(object):
 		message = str(exc)
 		title = ''
 		result = {}
+		if isinstance(exc, UDM_Error):
+			status_code = 400
 		if isinstance(exc, UMC_Error):
 			status_code = exc.status
 			title = exc.msg
@@ -2033,7 +2035,7 @@ class Objects(FormBase, ReportingBase):
 	@sanitize_body_arguments(
 		position=DNSanitizer(required=True),
 		superordinate=DNSanitizer(required=False, allow_none=True),
-		options=DefaultDictSanitizer({}, default_sanitizer=StringSanitizer()),
+		options=DefaultDictSanitizer({}, default_sanitizer=BooleanSanitizer()),
 		policies=DefaultDictSanitizer({}, default_sanitizer=DNSanitizer()),
 		properties=DictSanitizer({}),
 	)
@@ -2042,7 +2044,11 @@ class Objects(FormBase, ReportingBase):
 		"""Create a {} object."""
 		obj = Object(self.application, self.request)
 		obj.prepare()
-		yield obj.create(object_type)
+		obj = yield obj.create(object_type)
+		self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
+		self.set_status(201)
+		self.add_caching(public=False)
+		self.content_negotiation({})
 
 	def _options(self, object_type):
 		result = {}
@@ -2285,7 +2291,11 @@ class Object(FormBase, Ressource):
 
 		obj = yield self.pool.submit(module.get, dn)
 		if not obj:
-			yield self.create(object_type, dn)
+			obj = yield self.create(object_type, dn)
+			self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
+			self.set_status(201)
+			self.add_caching(public=False)
+			self.content_negotiation({})
 			return
 
 		self.set_metadata(obj)
@@ -2370,13 +2380,11 @@ class Object(FormBase, Ressource):
 		try:
 			dn = yield self.pool.submit(obj.create)
 		except udm_errors.objectExists:
-			raise
+			raise  # FIXME: create sanitizer error format
 		except udm_errors.base as exc:
 			UDM_Error(exc).reraise()
-		self.set_header('Location', self.urljoin(quote_dn(dn)))
-		self.set_status(201)
-		self.add_caching(public=False)
-		self.content_negotiation({})
+
+		raise tornado.gen.Return(obj)
 
 	@tornado.gen.coroutine
 	def modify(self, module, obj):

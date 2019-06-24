@@ -234,7 +234,7 @@ class Module(Client):
 		entries = self.client.eval_response(resp)['entries']
 		for entry in entries:
 			if opened:
-				yield Object(self, entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry['superordinate'], entry['uri'])  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
+				yield Object(self, entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), entry['uri'])  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
 			else:
 				yield ShallowObject(self, entry['dn'], entry['uri'])
 
@@ -252,7 +252,7 @@ class Module(Client):
 		self.load_relations()
 		resp = self.client.make_request('GET', self.relations['create-form'][0]['href'])
 		entry = self.client.eval_response(resp)['entry']
-		return Object(self, None, entry['properties'], entry['options'], entry['policies'], entry['position'], entry['superordinate'], self.uri)
+		return Object(self, None, entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), self.uri)
 
 
 class ShallowObject(Client):
@@ -266,7 +266,7 @@ class ShallowObject(Client):
 	def open(self):
 		resp = self.client.make_request('GET', self.uri)
 		entry = self.client.eval_response(resp)
-		return Object(self.module, entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry['superordinate'], entry['uri'], etag=resp.headers.get('Etag'), last_modified=resp.headers.get('Last-Modified'))
+		return Object(self.module, entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), entry['uri'], etag=resp.headers.get('Etag'), last_modified=resp.headers.get('Last-Modified'))
 
 	def __repr__(self):
 		return 'ShallowObject(module={}, dn={})'.format(self.module.name, self.dn)
