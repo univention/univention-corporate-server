@@ -291,7 +291,14 @@ class PropertySanitizer(Sanitizer):
 			new_value = []
 			for val in value:
 				try:
-					new_value.append(property_obj.syntax.parse(val))
+					try:
+						new_value.append(property_obj.syntax.parse(val))
+					except TypeError:
+						if val is None:
+							MODULE.warn('Syntax class %r cannot handle None' % (property_obj.syntax,))
+							new_value.append(val)  # will later be unset in handlers/__init__.py
+							continue
+						raise
 				except (udm_errors.valueInvalidSyntax, udm_errors.valueError, TypeError) as exc:
 					errors.append(str(exc))
 			if errors:
@@ -299,8 +306,13 @@ class PropertySanitizer(Sanitizer):
 			value = new_value
 		else:  # otherwise we have a single value
 			try:
-				value = property_obj.syntax.parse(value)
-			except (udm_errors.valueInvalidSyntax, udm_errors.valueError) as exc:
+				try:
+					value = property_obj.syntax.parse(value)
+				except TypeError:
+					if value is not None:
+						raise
+					MODULE.warn('Syntax class %r cannot handle None' % (property_obj.syntax,))
+			except (udm_errors.valueInvalidSyntax, udm_errors.valueError, TypeError) as exc:
 				self.raise_validation_error(_('The property %(property)s has an invalid value: %(details)s'), property=property_obj.short_description, details=str(exc))
 
 		return value

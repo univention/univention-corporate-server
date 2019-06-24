@@ -270,7 +270,7 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 	remove.add_argument('--dn', help='Remove object with DN')
 	# remove.add_argument('--superordinate', help='Use superordinate module')  # not required
 	remove.add_argument('--filter', help='Lookup filter e.g. foo=bar')
-	remove.add_argument('--remove_referring', action='store_true', help='remove referring objects', default=False)
+	remove.add_argument('--remove-referring', action='store_true', help='remove referring objects', default=False)
 	remove.add_argument('--ignore-not-exists', action='store_true', help='ignore if object does not exists')
 
 	list_ = subparsers.add_parser('list', description='List objects')
