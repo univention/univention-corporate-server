@@ -3,9 +3,10 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-lib
-fix: 8.0.1-22A~4.4.0.201906191558
+fix: 8.0.1-23A~4.4.0.201906241115
 desc: |
  This update addresses the following issue:
  * Fix usage of Univention Configuration Registry Python module.
- * More debug during LDAP schema activation.
+ * Use slaptest for LDAP schema checking in the ldap_extension
+   module.
 bug: [49129, 49596]
