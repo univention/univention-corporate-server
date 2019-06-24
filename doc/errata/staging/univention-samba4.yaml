@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-samba4 
+fix: 8.0.0-25A~4.4.0.201906241403
+desc: |
+ This update addresses the following issue(s):
+ * When univention-samba4-backup fails, cron will automatically send system-mails to admins
+bug: [49399]
