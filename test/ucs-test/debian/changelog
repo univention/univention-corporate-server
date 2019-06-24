@@ -1,3 +1,9 @@
+ucs-test (9.0.2-106) unstable; urgency=medium
+
+  * Bug #49723: skip 10_ldap/41listener_module_api_test on samba
+
+ -- Felix Botner <botner@univention.de>  Mon, 24 Jun 2019 15:49:26 +0200
+
 ucs-test (9.0.2-105) unstable; urgency=medium
 
   * Bug #49415: 10_ldap/69resync_object wait for drs
