@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.12-14) unstable; urgency=medium
+
+  * Bug #27816: add swagger ui at /univention/udm/schema/
+
+ -- Florian Best <best@univention.de>  Mon, 24 Jun 2019 16:38:43 +0200
+
 univention-management-console-module-udm (9.0.12-13) unstable; urgency=medium
 
   * Bug #27816: allow syntax classes to raise TypeError if None is set
