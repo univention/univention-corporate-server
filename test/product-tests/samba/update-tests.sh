@@ -91,6 +91,9 @@ test_before_update () {
 	udm groups/group modify --dn "cn=testgruppe4,cn=groups,$ldap_base" --append users="uid=testuser04,cn=users,$ldap_base"
 	udm groups/group modify --dn "cn=testgruppe5,cn=groups,$ldap_base" --append users="uid=testuser05,cn=users,$ldap_base"
 
+	udm shares/printer create --position "cn=printers,$ldap_base" --set name="Memberprinter" --set spoolHost="ucs-member.sambatest.local" --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
+	udm shares/printer create --position "cn=printers,$ldap_base" --set name="Masterprinter" --set spoolHost="ucs-master.sambatest.local" --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
+	udm shares/printer create --position "cn=printers,$ldap_base" --set name="Slaveprinter" --set spoolHost="ucs-slave.sambatest.local" --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
 	# Per UDM eine Dateifreigabe auf Slave anlegen, schreibbar für eine Gruppe in der Testuser1 Mitglied ist.
 	udm shares/share create --position "cn=shares,$ldap_base" --set name="testshareSlave" --set host="ucs-slave.sambatest.local" --set path="/home/testshare"
 	udm shares/share modify --dn "cn=testshareSlave,cn=shares,dc=sambatest,dc=local" --set group=5074 --set directorymode=0770 --set sambaDirectoryMode=0770
