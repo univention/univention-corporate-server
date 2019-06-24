@@ -1,0 +1,21 @@
+product: ucs
+release: "4.3"
+version: [4]
+scope: ucs_4.3-0-errata4.3-4
+src: qemu
+fix: 1:2.8+dfsg-6+deb9u7A~4.3.0.201906241258
+desc: |
+ This update fixes a regression from erratum 525 addressing the following
+ issues:
+ * Microarchitectural Store Buffer Data Sampling (MSBDS) (CVE-2018-12126)
+ * Micro-architectural Load Port Data Sampling - Information Leak (MLPDS)
+   (CVE-2018-12127)
+ * Microarchitectural Fill Buffer Data Sampling (MFBDS) (CVE-2018-12130)
+ * Microarchitectural Data Sampling Uncacheable Memory (MDSUM)
+   (CVE-2019-11091)
+bug: [49713]
+cve:
+- CVE-2018-12126
+- CVE-2018-12127
+- CVE-2018-12130
+- CVE-2019-11091
