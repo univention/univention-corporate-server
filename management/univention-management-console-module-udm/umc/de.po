@@ -158,3 +158,9 @@ msgstr "Benutzer,Passwort"
 
 msgid "users"
 msgstr "Benutzer"
+
+msgid "UCS license request"
+msgstr "UCS-Lizenz-Anfrage"
+
+msgid "Request new license"
+msgstr "Neue Lizenz anfordern"

@@ -261,6 +261,15 @@
 				<requiredCommand name="udm/license/import"/>
 			</requiredCommands>
 		</flavor>
+		<flavor priority="50" id="license-request">
+			<name>UCS license request</name>
+			<description>Request new license</description>
+			<keywords></keywords>
+			<categories/>
+			<requiredCommands>
+				<requiredCommand name="udm/request_new_license"/>
+			</requiredCommands>
+		</flavor>
 		<flavor priority="50" id="settings/portal_all">
 			<name>Portal settings</name>
 			<description>Management of portals and their entries</description>
