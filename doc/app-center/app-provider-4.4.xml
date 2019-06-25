@@ -878,12 +878,15 @@ univention-app dev-use-test-appcenter
 
             <para>
                 When installing the App, also mind README information that may
-                have been defined on the <guimenu>README files</guimenu> in
-                the app in the App Provider Portal. An Administrator expects
-                an app to be fully configured after the installation. If
-                something is needed in order to use the app (e.g., activating
-                users for the service), it should be described in the
-                appropriate README section (see <xref linkend="readme" />).
+                have been defined on the <guimenu>Additional texts</guimenu>
+                tab in the app in the App Provider Portal after activating it
+                with the option <guimenu>Additional texts with information for
+                    UCS system administrators</guimenu> on the
+                <guimenu>Overview</guimenu> tab. An Administrator expects an
+                app to be fully configured after the installation. If something
+                is needed in order to use the app (e.g., activating users for
+                the service), it should be described in the appropriate README
+                section (see <xref linkend="readme" />).
             </para>
         </section>
 
@@ -948,23 +951,50 @@ univention-app dev-use-test-appcenter
                 tests.
             </para>
             <para>
-                The App Provider Portal offers an example for how the test
-                script should look like and an example for how the test script
-                can be tested on a UCS system. On successful tests, the script
-                has to end with exit code 0.
+                On successful tests, the script has to end with exit code 0.
+                <userinput>--binddn</userinput> and
+                <userinput>--bindpwdfile</userinput> are passed, so that the
+                command line interface of UDM can be used easily.  Here is an
+                example:
+                <programlisting>
+#!/bin/bash
+set -e
+udm users/user create "$@" \  # passes --binddn etc
+  --set username=myapp-test-user \
+  --set password=s3cr3t-pwd \
+  --set lastname=Test \
+  --set myappActivated=TRUE
+sleep 10
+curl http://localhost/myapp/login ...                    
+                </programlisting>
             </para>
             <para>
                 For certain tests user credentials for access to the directory
                 service are needed. They are passed with the parameters
                 <option>binddn</option> and <option>bindpwd</option>. In many
-                cases the user <systemitem class="username">Administrator</systemitem> is used.
+                cases the user <systemitem class="username">Administrator</systemitem> is used. The
+                Administrator credentials are only important for UDM calls on
+                UCS systems that are not the DC Master.
+            </para>
+            <para>
+                The test script can be manually tested.
+                <programlisting>
+univention-install univention-appcenter-dev
+univention-app dev-use-test-appcenter
+univention-app install my-app
+univention-app dev-test \
+  --appcenter-server http://appcenter-test.software-univention.de\
+  my-app \  # every additional parameter is passed to the script
+  --binddn $DN \
+  --bindpwd $BINDPWD \                    
+                </programlisting>
             </para>
         </section>
 
         <section id="testing:debugging">
             <title>Debugging</title>
             <para>
-                During app development or for problem analysis it is necessary
+                During app development or for problem analysis it may be necessary
                 to debug an app. If an app installation fails, the App Center
                 removes the Docker container and thus prevents the developer to
                 have a deeper look into what happened. With the following
@@ -989,11 +1019,11 @@ docker exec "$CONTAINER" ...
                 </programlisting>
             </para>
             <para>
-                To view the docker logfiles for the app, please use the following command:
+                To view the Docker logfiles for the app, please use the following command:
                 <programlisting language="sh">
 univention-app logs $appid  # equivalent to docker logs $CONTAINER
                 </programlisting>
-                For multi container apps using Docker Compose, those logging information can be viewed with:
+                For multi container apps using Docker compose, those logging information can be viewed with:
                 <programlisting language="sh">
 cd /var/lib/univention-appcenter/apps/$appid/compose
 docker-compose -p $appid logs
@@ -1023,7 +1053,7 @@ docker-compose -p $appid logs
 
         <para>
             The app provider's approval is given by clicking on
-            <guimenu>Publish App</guimenu> in the App Provider Portal. The
+            <guimenu>Approve for release</guimenu> in the App Provider Portal. The
             Univention App Center team is notified and they will start the
             automated tests. As soon as the automated tests are successful, the
             second approval is available and the app is ready to be released.
@@ -1054,8 +1084,8 @@ docker-compose -p $appid logs
             image is copied to that registry and the reference to the Docker
             image is updated accordingly in the app definition. The app will
             be visible in the App Center UMC module immediately for all UCS
-            users. The app catalog is updated automatically and shows the new
-            app.
+            users after release. The app catalog is updated automatically and
+            shows the new app.
         </para>
     </section>
 
@@ -1115,7 +1145,7 @@ docker-compose -p $appid logs
         <para>
             If the app provider decides to discontinue an app and stop
             maintenance, the app can be terminated by setting it <userinput>end
-                of life</userinput>.  As soon as an app is published in status
+                of life</userinput>. As soon as an app is published in status
             end of life, UCS system administrators won't be able to install it
             anymore. UCS systems that already have the app installed, will show
             a notification in the App Center that informs the UCS system
@@ -1130,11 +1160,11 @@ docker-compose -p $appid logs
             The app can be terminated by going to the app's configuration in
             the App Provider Portal. Please go to the
             <guimenu>Advanced</guimenu> tab to the section <guimenu>Custom
-                entries</guimenu>. Create a new custom entry with the
+                configuration</guimenu>. Create a new custom configuration with the
             <option>Custom key</option> <userinput>EndOfLife</userinput> and
             the <option>Custom value</option> <userinput>True</userinput>.
-            Afterwards press <guimenu>Sync to Test App Center</guimenu> and
-            <guimenu>Publish App</guimenu>. Please provide a custom message in
+            Afterwards press <guimenu>Save</guimenu> and
+            <guimenu>Approve for release</guimenu>. Please provide a custom message in
             the publish dialog and let the App Center team know about the
             reasons for the termination.
         </para>
