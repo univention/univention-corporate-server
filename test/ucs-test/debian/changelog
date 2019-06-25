@@ -1,3 +1,9 @@
+ucs-test (9.0.2-108) unstable; urgency=medium
+
+  * Bug #47018: wait before changing password in 86_selenium.10_product_test_password_change
+
+ -- Felix Botner <botner@univention.de>  Tue, 25 Jun 2019 17:02:12 +0200
+
 ucs-test (9.0.2-107) unstable; urgency=medium
 
   * Bug #47722: skip 61_udm-users.100_test_users on samba
