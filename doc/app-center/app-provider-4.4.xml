@@ -1244,10 +1244,10 @@ docker-compose -p $appid logs
     </para>
     <para>
         All changes are made in the App Provider portal. They need to be saved
-        by pressing the button <guimenu>Sync to Test App Center</guimenu>. Then
-        a release can be requested via the button <guimenu>Publish
-            App</guimenu>. The items mentioned in this chapter can be changed
-        and published any time and do not require a new version of the app.
+        by pressing the button <guimenu>Save</guimenu>. Then a release can be
+        requested via the button <guimenu>Approve for release</guimenu>. The
+        items mentioned in this chapter can be changed and published any time
+        and do not require a new version of the app.
     </para>
 
     <section id="logos">
@@ -1272,7 +1272,7 @@ docker-compose -p $appid logs
         </important>
 
         <para>
-            The logos can be uploaded on the <guimenu>General</guimenu> tab in
+            The logos can be uploaded on the <guimenu>Presentation</guimenu> tab in
             the <guimenu>Logos</guimenu> section. Two icons are needed: One for
             the app tile on the overview page and a more detailed logo for the
             app page. The tile has only limited space in square format. Please
@@ -1289,16 +1289,15 @@ docker-compose -p $appid logs
         <para>
             Screenshots and videos are a good way to introduce the solution to
             the user. To add screenshots please go to the <guimenu>Screenshots
-                and videos</guimenu> tab for upload. Screenshots can be in PNG
-            or JPG format. Videos have to be published on YouTube and the full
-            YouTube link has to be provided in the App Provider Portal. Please
-            keep in mind that the screenshots and videos in this tab must be
-            for an English speaking audience.
+                and YouTube videos</guimenu> tab for upload. Screenshots can be
+            in PNG or JPG format. Videos have to be published on YouTube and
+            the full YouTube link has to be provided in the App Provider
+            Portal. Please keep in mind to provide the material for English and
+            German speaking audience.
         </para>
         <para>
              If the same screenshots exist in German, it is recommended that
-             they are added, as well, in the <guimenu>Translations</guimenu> tab
-             in the <guimenu>Screenshots and videos</guimenu> section.
+             they are added, as well.
         </para>
         <para>
             Comprehensive visualizations can be added optionally which make it
@@ -1312,7 +1311,7 @@ docker-compose -p $appid logs
     <section id="description">
         <title>Description</title>
         <para>
-            The description is the text introducing the solution to the
+            The full description is the text introducing the solution to the
             user and thus is very important for getting their attention. Here are
             some tips intended to help to present the app in a
             user-friendly, customer-oriented, and search-engine-optimized
@@ -1375,7 +1374,7 @@ docker-compose -p $appid logs
         <para>
             The description is provided in HTML format. If more control
             on the HTML is needed, switch to HTML source mode and edit the HTML
-            directly.
+            directly. Here sections and headings can be added.
         </para>
         <note>
             <para>
@@ -1387,7 +1386,7 @@ docker-compose -p $appid logs
         <para>
             The length of the description depends on how much there is to say
             and how much explanation the app requires. Ideally the description
-            should be at least 300 words long.  The text should be structured
+            should be at least 300 words long. The text should be structured
             and paragraphs should be used to make it easier to read. The target group are
             potential customers. Subheadings (HTML: <wordasword>h2,
                 h3</wordasword>) should be used to divide the text into logical
@@ -1409,8 +1408,9 @@ docker-compose -p $appid logs
     <section id="category">
         <title>Categories</title>
         <para>
-            On the <guimenu>General</guimenu> tab the app can be given one or
-            more categories from a given set. Users can filter the app overview
+            On the <guimenu>Presentation</guimenu> tab the app can be given one
+            or more categories from a given set in the <guimenu>App
+                categories</guimenu> section. Users can filter the app overview
             in the App Center and in the App Catalog accordingly. App
             categories help to group apps together by topic and give a better
             overview for the various apps available.
@@ -1421,27 +1421,29 @@ docker-compose -p $appid logs
         <title>Contact</title>
         <para>
             For the users it is important to know who is the producer of the
-            app. For this purpose there is the <guimenu>Contact</guimenu> tab
-            in the App Provider Portal. Please provide <guilabel>Gerneal product
-                contact information</guilabel> like an email address and a
-            website to the solution.  Please also link to a website, where the
-            app provider's support options and pricing is explained to
-            potential customers and place the link in the field <guilabel>Website
-                with information regarding support options</guilabel>.
+            app. For this purpose there is the <guimenu>Responsibility: Contact
+                information</guimenu> section on the
+            <guimenu>Presentation</guimenu> tab in the App Provider Portal.
+            Please provide product contact information like an email address
+            and a website to the solution. Please also link to a website, where
+            the app provider's support options and pricing is explained to
+            potential customers and place the link in the field <guilabel>Link
+                to website with support options</guilabel>.
         </para>
     </section>
 
     <section id="license">
         <title>License</title>
         <para>
-            On the <guimenu>License</guimenu> tab license information can be defined; for
-            example, a license agreement. This should be read by a
-            UCS system administrator and has to be accepted before the
-            app is installed. If the text is not accepted, the installation
-            process is aborted and no app is installed. The license agreement
-            is mostly used by app providers for legal information that needs
-            confirmation by the administrator before anything is installed. If
-            such a text is not needed, leave it empty.
+            In the <guimenu>License</guimenu> section on the
+            <guimenu>Presentation</guimenu> tab license information can be
+            defined; for example, a license agreement. This should be read by a
+            UCS system administrator and has to be accepted before the app is
+            installed. If the text is not accepted, the installation process is
+            aborted and no app is installed. The license agreement is mostly
+            used by app providers for legal information that needs confirmation
+            by the administrator before anything is installed. If such a text
+            is not needed, leave it empty.
         </para>
         <para>
             UCS system administrators have to register with a valid email
@@ -1493,9 +1495,9 @@ docker-compose -p $appid logs
     <section id="readme">
         <title>README for the administrator</title>
         <para>
-            In the tab <guimenu>README files</guimenu> additional information
+            In the tab <guimenu>Additional texts</guimenu> further information
             for an app can be provided that show up at certain stages of the
-            app life cycle. README files are also in HTML like the description
+            app life cycle. Those README files are also in HTML like the description
             and content can be provided the same way (see <xref
                 linkend="description" />).  The App Provider Portal describes
             when each README file shows up.
