@@ -221,7 +221,10 @@ print "	'showerrors'            =>	%s," % ('TRUE' if configRegistry.is_true('sam
 	 * This value is the duration of the session in seconds. Make sure that the time duration of
 	 * cookies both at the SP and the IdP exceeds this duration.
 	 */
-	'session.duration'		=>  8 * (60*60), // 8 hours.
+	//'session.duration'		=>  8 * (60*60), // 8 hours.
+@!@
+print "	'session.duration'            =>	%s," % configRegistry.get('saml/idp/session-duration', '43200')
+@!@
 
 	/*
 	 * Sets the duration, in seconds, data should be stored in the datastore. As the datastore is used for

@@ -26,13 +26,14 @@ Variables: saml/idp/timezone
 Variables: saml/idp/log/debug/enabled
 Variables: saml/idp/log/level
 Variables: saml/idp/show-errors
-Variables: locale/default
 Variables: saml/idp/lookandfeel/theme
 Variables: saml/idp/technicalcontactname
 Variables: saml/idp/technicalcontactemail
+Variables: saml/idp/session-type
+Variables: saml/idp/session-duration
+Variables: locale/default
 Variables: hostname
 Variables: domainname
-Variables: saml/idp/session-type
 Variables: ucs/server/saml-idp-server/.*
 
 Type: multifile

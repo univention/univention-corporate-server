@@ -43,6 +43,7 @@ configure)
 		saml/idp/lookandfeel/theme?"univentiontheme:univention" \
 		saml/idp/https?"true" \
 		saml/idp/show-errors?"true" \
+		saml/idp/session-duration?43200 \
 		ucs/server/sso/virtualhost?"true" \
 		saml/idp/negotiate?"true" \
 		kerberos/defaults/ignore_acceptor_hostname=true \

@@ -1,3 +1,10 @@
+univention-saml (6.0.2-3) unstable; urgency=medium
+
+  * Bug #49503 Make IdP session duration configurable with UCR
+    saml/idp/session-duration. The default value is raised from 8 to 12 hours
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 25 Jun 2019 14:19:50 +0200
+
 univention-saml (6.0.2-2) unstable; urgency=medium
 
   * Bug #49436: Add custom css from login to saml login

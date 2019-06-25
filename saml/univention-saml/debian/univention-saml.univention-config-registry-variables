@@ -171,3 +171,9 @@ Description[de]=Der Pfad zu einer Datei mit den CA-Zerifikaten. Diese werden dem
 Description[en]=The path to a file containing CA certificates. They are sent to the client browser of a user, so that a certificate for authentication the user can be selected, which is issued by one of the CAs.
 Type=str
 Categories=saml
+
+[saml/idp/session-duration]
+Description[de]=Konfiguriert die vom SAML Identity Provider definierte Dauer einer Login Session, in Sekunden. Nach Ablauf dieser Zeit müssen sich Benutzer neu am UCS SAML Identity Provider authentifizieren. (Standard: '43200', das entspricht 12 Stunden)
+Description[en]=Configures the duration of a login session defined by the SAML Identity Provider, in seconds. After this time has elapsed, users must re-authenticate to the UCS SAML Identity Provider. (Default: '43200', this corresponds to 12 hours)
+Type=str
+Categories=saml
