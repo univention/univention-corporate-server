@@ -2123,31 +2123,33 @@ docker-compose -p $appid logs
         <itemizedlist spacing="compact">
             <listitem>
                 <simpara>
-                    <guilabel>Docker</guilabel> &ar; <guilabel>Join/Unjoin script</guilabel>
+                    <guilabel>Scripts</guilabel> &ar; <guilabel>Join and unjoin script</guilabel>
                 </simpara>
             </listitem>
             <listitem>
                 <simpara>
-                    <guilabel>Docker</guilabel> &ar; <guilabel>preinst/prerm script</guilabel>
+                    <guilabel>Scripts</guilabel> &ar; <guilabel>Scripts called before App Center action on apps</guilabel>
                 </simpara>
             </listitem>
             <listitem>
                 <simpara>
-                    <guilabel>Docker</guilabel> &ar; <guilabel>Life cycle scripts</guilabel> &ar; <guilabel>Docker script</guilabel>
-                    <filename>setup</filename>,
+                    <guilabel>Scripts</guilabel> &ar; <guilabel>Scripts for data store and restore</guilabel>
                     <filename>store_data</filename>,
                     <filename>restore_data_before_setup</filename>,
                     <filename>restore_data_after_setup</filename>
                 </simpara>
             </listitem>
             <listitem>
+                <simpara><guilabel>Scripts</guilabel> &ar; <guilabel>Setup script</guilabel>
+            </listitem>
+            <listitem>
                 <simpara>
-                    <guilabel>Settings</guilabel> &ar; <guilabel>Configuration script run in the Docker Container</guilabel>. (<filename>configure</filename>)
+                    <guilabel>Scripts</guilabel> &ar; <guilabel>Configuration scripts</guilabel>. (<filename>configure</filename>)
                 </simpara>
             </listitem>
             <listitem>
                 <simpara>
-                    <guilabel>Settings</guilabel> &ar; <guilabel>Configuration script run on the Docker Host</guilabel>. (<filename>configure_host</filename>)
+                    <guilabel>Scripts</guilabel> &ar; <guilabel>Configuration scripts</guilabel>. (<filename>configure_host</filename>)
                 </simpara>
             </listitem>
         </itemizedlist>
@@ -2180,7 +2182,10 @@ docker-compose -p $appid logs
                 The script receives the LDAP bind DN of the Administrator
                 account and its password, the version of the app that should be
                 installed, the locale and an error log file for log output as
-                parameters.
+                parameters. Error messages in the passed error log file will be
+                passed to the UCS management system and thus to the
+                administrator performing the installation. Proper error
+                messages can thus be passed to the administrator.
             </para>
         </section>
         <section id="installation:restore-data-before-setup">
@@ -2379,8 +2384,7 @@ FILENAME="$(joinscript_container_file "/opt/$APP/my.cnf")"
                    schema file alone is not enough. It has to be registered with
                    the mentioned function in the join script. The schema file
                    content can be provided in the App Provider portal on the
-                   <guimenu>Docker</guimenu> tab, in the <guimenu>Configuration
-                       files</guimenu> section in the field for <guimenu>Schema
+                   <guimenu>Identity management</guimenu> tab, in the field for <guimenu>Schema
                        extension for LDAP</guimenu>.
                    <programlisting language="sh">
 joinscript_register_schema "$@"
@@ -2436,7 +2440,10 @@ exit 0
                 uninstallation process. The given parameters are the LDAP bind
                 DN of the Administrator account and its password, the version
                 of the app that should be uninstalled/removed, the locale and
-                an error log file for log output.
+                an error log file for log output. Error messages in the passed
+                error log file will be passed to the UCS management system and
+                thus to the administrator performing the installation. Proper
+                error messages can thus be passed to the administrator.
 			</para>
         </section>
 
@@ -2532,7 +2539,10 @@ exit 0
                 The script receives the LDAP bind DN of the Administrator
                 account and its password, the old version of the app and the
                 new version, the locale and an error log file for log output as
-                parameters.
+                parameters. Error messages in the passed error log file will be
+                passed to the UCS management system and thus to the
+                administrator performing the installation. Proper error
+                messages can thus be passed to the administrator.
             </para>
         </section>
 
@@ -2657,8 +2667,9 @@ exit 0
 			</figure>
 		</para>
 		<para>
-			The App settings can be defined on the tab
-			<guimenu>Settings</guimenu> in the App Provider Portal.
+            The App settings can be defined on the tab
+            <guimenu>Advanced</guimenu> in the section <guimenu>App
+                settings</guimenu> in the App Provider Portal.
 		</para>
 		<section id="app-settings:scripts">
 			<title>React on App settings</title>
@@ -2672,8 +2683,7 @@ exit 0
 				Second, the script <filename>configure</filename> is
 				executed. It is executed inside the Docker container. In the
 				App Provider Portal, the path of the script can be given
-				(<guimenu>Configuration script run in the Docker
-				Container</guimenu>) or the script code can be uploaded
+				(<guimenu>Configure scripts</guimenu>) or the script code can be uploaded
 				(<guimenu>Path to script inside the container
 				(absolute)</guimenu>).
 			</para>
@@ -2692,7 +2702,7 @@ exit 0
 				<programlisting language="ini">
 [myapp/mysetting]
 				</programlisting>
-				It is recommended to use the app ID as a prefix. This prevents
+				It is recommended to use the app ID as a prefix to prevent
 				collisions.
 			</para>
 			<para>
@@ -2925,7 +2935,7 @@ Group[de] = Lizenz und Liste
             Apps may need access to the UCS certificate infrastructure or need
             to be aware of changes to the certificates. Starting with <u:erratum release="4.3">91</u:erratum>
             the Univention App Center provides a
-            simple way to manage certificates inside an app.  This is simply a
+            simple way to manage certificates inside an app. This is simply a
             new action named <guimenu>update-certificates</guimenu> in the app
             Center which is called automatically during the installation and
             upgrade of apps (but can also be executed manually) and provides apps
@@ -2967,10 +2977,9 @@ univention-app update-certificates my-app
         </para>
         <para>
             Every app can define a <guimenu>update_certificates</guimenu>
-            script.
-            <!--
-            TODO: @Felix: Where can the app developer place this script in the portal?
-            -->
+            script. In the app provider portal it can be added on the tab
+            <guimenu>Advanced</guimenu> in the section
+            <guimenu>Certificates</guimenu>.
         </para>
         <para>
             Example:
