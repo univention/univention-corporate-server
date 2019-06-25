@@ -1515,13 +1515,10 @@ docker-compose -p $appid logs
         <title>Translations</title>
         <para>
             All texts, screenshots and videos should be entered in English.
-            Translations to German should be only made on the
-            <guimenu>Translations</guimenu> tab. It should be made sure that
-            translations for the texts that have an English version are
-            provided. Otherwise, English text will show up for a user with
-            German language settings. Each translation consists of a set of two
-            texts, the English version first and second a text field for the
-            German translation.
+            Translations to German should be only made in the appropriate field
+            next to the English text. It should be made sure that translations
+            for the texts that have an English version are provided. Otherwise,
+            English text will show up for a user with German language settings.
         </para>
     </section>
 
@@ -1624,13 +1621,13 @@ docker-compose -p $appid logs
 
     <para>
         If the app should benefit from the identity management, the flag
-        <guimenu>Add activation checkbox for App in UCS user
-            management</guimenu> should be activated in the App Provider Portal
-        on the <guimenu>Advanced</guimenu>. This extends the IDM by a checkbox
-        and an administrator of the UCS system can activate or deactivate each
-        user individually for the app. The setting can then be found in the
-        Users UMC module and is called <guimenu>Apps</guimenu>. It is also
-        possible to make significantly more complex settings. See <xref
+        <guimenu>The administrator needs to enable users for the app</guimenu>
+        should be activated in the App Provider Portal on the <guimenu>Identity
+            management</guimenu> tab. This extends the IDM by a checkbox and an
+        administrator of the UCS system can activate or deactivate each user
+        individually for the app. The setting can then be found in the Users
+        UMC module and is called <guimenu>Apps</guimenu>. It is also possible
+        to make significantly more complex settings. See <xref
             linkend="user-rights-management" /> for more details.
     </para>
 
@@ -1656,12 +1653,12 @@ docker-compose -p $appid logs
 				can be used.
             </para>
             <para>
-				If the user activation is used (<guimenu>Add activation
-				checkbox for App in UCS user management</guimenu>), the
-				following LDAP filter can be used:
-				<wordasword>(&amp;(univentionObjectType=users/user)(myappActivated=TRUE))</wordasword>.
-				The string <wordasword>myapp</wordasword> has to be replaced
-				with the <wordasword>appid</wordasword>.
+                If the user activation is used (<guimenu>The administrator
+                    needs to enable users for the app</guimenu>), the following
+                LDAP filter can be used:
+                <wordasword>(&amp;(univentionObjectType=users/user)(myappActivated=TRUE))</wordasword>.
+                The string <wordasword>myapp</wordasword> has to be replaced
+                with the <wordasword>appid</wordasword>.
             </para>
             <para>
 				The parameters for the LDAP server can be read from the environment variables:
@@ -1744,21 +1741,24 @@ docker-compose -p $appid logs
 				is created.
             </para>
             <para>
-                <u:erratum release="4.3">211</u:erratum> is required on the user's system for this feature.
+                <u:erratum release="4.3">211</u:erratum> is required on the
+                user's system for this feature.
             </para>
 			<section id="provision:push:setup">
 				<title>Setup in App configuration</title>
 				<para>
-					The configuration for these IDM notifications can be done on
-					the <guimenu>LDAP Listener</guimenu> tab in the App Provider
-					Portal. It can be configured which object types are watched.
-					Currently, users and groups are supported.
+                    The configuration for these IDM notifications can be done
+                    on the <guimenu>Identity management</guimenu> tab in the
+                    <guimenu>Provisioning</guimenu> section in the App Provider
+                    Portal. It can be configured which object types are
+                    watched. Currently, users and groups are supported.
 				</para>
 				<para>
-					A script should be specified in the App Provider Portal. The
-					script is copied from the App Center into the container and
-					called there. If a script is already part of the container,
-					this script can be called accordingly, e.g.
+                    A script should be specified in the App Provider Portal.
+                    The script is copied from the App Center into the Docker
+                    container and executed in the context of the container
+                    there. If a script is already part of the container, this
+                    script can be called accordingly, e.g.
 <programlisting language="sh">
 #/bin/sh
 /usr/sbin/app-connector
@@ -1834,11 +1834,11 @@ docker-compose -p $appid logs
 						</listitem>
 						<listitem>
 							<simpara>
-                                UCS can re-synchronize a
-                                listener. In this case, each and every object
-                                appears once again as a JSON file. The script
-                                needs to cover the case where no real
-                                modification to the object has been made.
+                                UCS can re-synchronize a listener. In this
+                                case, each and every object appears once again
+                                as a JSON file. The script needs to cover the
+                                case where no real modification to the object
+                                has been made.
 							</simpara>
 						</listitem>
 						<listitem>
@@ -1964,12 +1964,12 @@ docker-compose -p $appid logs
 				can be used.
             </para>
             <para>
-				If the user activation is used (<guimenu>Add activation
-				checkbox for App in UCS user management</guimenu>),
-				the following LDAP filter can be used:
-				"<wordasword>(&amp;(univentionObjectType=users/user)(myappActivated=TRUE))</wordasword>".
-				The string <wordasword>myapp</wordasword> has to be replaced
-				with the <wordasword>appid</wordasword>.
+                If the user activation is used (<guimenu>The administrator
+                    needs to enable users for the app</guimenu>), the following
+                LDAP filter can be used:
+                "<wordasword>(&amp;(univentionObjectType=users/user)(myappActivated=TRUE))</wordasword>".
+                The string <wordasword>myapp</wordasword> has to be replaced
+                with the <wordasword>appid</wordasword>.
             </para>
             <para>
 				The parameters for the LDAP server can be read from the
@@ -2087,13 +2087,13 @@ docker-compose -p $appid logs
     <section id="user-rights-management">
         <title>User rights management</title>
         <para>
-            The flag <guimenu>Add activation checkbox for App in UCS user
-                management</guimenu> can be activated in the App Provider
-            Portal on the <guimenu>Advanced</guimenu>. This adds a checkbox to
-            the user administration and a schema
-			extension for the IDM is created, so that the status of the
-			checkbox is stored in an attribute in the IDM. This allows each
-			user to be activated or deactivated separately.
+            The flag <guimenu>The administrator needs to enable users for the
+                app</guimenu> can be activated in the App Provider Portal on
+            the <guimenu>Identity management</guimenu> tab. This adds a
+            checkbox to the user administration and a schema extension for the
+            IDM is created, so that the status of the checkbox is stored in an
+            attribute in the IDM. This allows each user to be activated or
+            deactivated separately.
         </para>
         <para>
 			If the app requires more settings in the IDM, an own LDAP schema
