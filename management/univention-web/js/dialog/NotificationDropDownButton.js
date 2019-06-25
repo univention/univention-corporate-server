@@ -80,17 +80,26 @@ define([
 
 		baseClass: 'umcDropDownNotification',
 
+		// Only has one time effect when creating an instance
+		truncate: true, // @postMixInProperties
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this.title = this.title || _('Notification');
 			this.message = this.message || _('No message');
-			this.isWarning = this.isWarning || false;
+			this.isWarning = (this.isWarning === undefined || this.isWarning === null) ? false : this.isWarning;
+			this.truncate = (this.truncate === undefined || this.truncate === null) ? true : this.truncate;
 		},
 
-		title: _('Notification'),
+		buildRendering: function() {
+			this.inherited(arguments);
+			domClass.toggle(this.messageContainerNode, 'umcNotificationMessageContainer--truncated', this.truncate);
+		},
+
+		title: _('Notification'), // @postMixInProperties
 		_setTitleAttr: { node: 'titleNode', type: 'innerHTML' },
 
-		message: _('No message'),
+		message: _('No message'), // @postMixInProperties
 		_setMessageAttr: function(message) {
 			this.messageNode.innerHTML = message;
 			this.messageCloneNode.innerHTML = message;
@@ -99,7 +108,7 @@ define([
 
 		// changing isWarning after the notification has been added
 		// destroys the correct position for new notifications
-		isWarning: false,
+		isWarning: false, // @postMixInProperties
 		_setIsWarningAttr: function(isWarning) {
 			domClass.toggle(this.domNode, 'umcDropDownNotificationWarning', isWarning);
 			this._set('isWarning', isWarning);
@@ -199,11 +208,12 @@ define([
 
 		_firstNonWarningIndex: 0,
 
-		addNotification: function(message, title, isWarning, playWipeInAnimation) {
+		addNotification: function(message, title, isWarning, truncate, playWipeInAnimation) {
 			var notification = new _Notification({
 				message: message,
 				title: title,
-				isWarning: isWarning
+				isWarning: isWarning,
+				truncate: truncate
 			});
 
 			if (isWarning) {
@@ -391,18 +401,18 @@ define([
 			notificationDropDownButtonDeferred.resolve(this);
 		},
 
-		addWarning: function(message, title) {
-			return this._addNotification(message, title, true);
+		addWarning: function(message, title, truncate) {
+			return this._addNotification(message, title, true, truncate);
 		},
 
-		addNotification: function(message, title) {
-			return this._addNotification(message, title, false);
+		addNotification: function(message, title, truncate) {
+			return this._addNotification(message, title, false, truncate);
 		},
 
-		_addNotification: function(message, title, isWarning) {
+		_addNotification: function(message, title, isWarning, truncate) {
 			this._updateNotificationCount(1);
 
-			var notification = this.dropDown.addNotification(message, title, isWarning, this._opened);
+			var notification = this.dropDown.addNotification(message, title, isWarning, truncate, this._opened);
 			if (!this._opened) {
 				var dropDownData = this.openDropDown();
 				dropDownData.openDeferred.then(lang.hitch(this.dropDown, '_scrollToFirstNotification'));

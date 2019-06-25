@@ -638,7 +638,7 @@ define([
 					break;
 			}
 
-			dialog.notify(message, title).then(function(notification) {
+			dialog.notify(message, title, false).then(function(notification) {
 				on(notification, 'remove', function() {
 					// make sure that the cookie does not expire too early
 					var expires = new Date(endOfAmbassadorProgram);
