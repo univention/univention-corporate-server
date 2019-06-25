@@ -6,7 +6,7 @@ src: univention-saml
 fix: 6.0.2-3A~4.4.0.201906251425
 desc: |
  This update addresses the following issue:
- * Make IdP session duration configurable with the new
-   UCR variable saml/idp/session-duration. With this update, the default 
-   value for a SAML session is raised from 8 to 12 hours.
+ * The session duration of the identity provider is now configurable with
+   the new UCR variable saml/idp/session-duration. With this update, the
+   default value for a SAML session is raised from 8 to 12 hours.
 bug: [49503]
