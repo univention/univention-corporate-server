@@ -352,18 +352,6 @@
            </para>
         </section>
 
-        <section id="create-app-with-docker:defaults">
-            <title>Change defaults</title>
-            <para>
-                In order to get the usual Docker images working, some settings in
-                the App Provider Portal have to be changed. In the
-                <guimenu>Life cycle scripts</guimenu> section on the
-                <guimenu>Docker</guimenu> tab all Docker script drop-downs need
-                to be changed to <userinput>Disabled</userinput>, unless a
-                <userinput>Custom script</userinput> shall be provided.
-            </para>
-        </section>
-
         <section id="create-app-with-docker:volumes">
             <title>Persistent data with volumes</title>
             <para>
