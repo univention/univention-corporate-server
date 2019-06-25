@@ -263,15 +263,21 @@
                                 linkend="create-app-with-docker:supported-ucs-version"
                                 />.
                         </simpara>
-
-
                     </listitem>
                     <listitem>
                         <simpara>
-                            <emphasis>File under</emphasis> refers to the
+                            <emphasis>Provider / Maintainer</emphasis> refers to the
                             organization that the app belongs to. Please select
-                            the organization here or otherwise the app will not
+                            your organization here or otherwise the app will not
                             show up in the listing.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            Select <emphasis>Docker app or based on
+                                AppBox</emphasis> for the recommended Docker
+                            based app. This documentation only covers single
+                            and multi container apps.
                         </simpara>
                     </listitem>
                     </itemizedlist>
@@ -284,12 +290,14 @@
             <orderedlist>
                 <listitem>
                     <simpara>
-                        In the app go to the tab <guimenu>Docker</guimenu>.
+                        In the app go to the tab <guimenu>Configuration</guimenu>.
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        Activate the checkbox <guimenu>Use Docker container technology</guimenu>.
+                        Select the type of Docker app. This chapter discusses
+                        the <guimenu>Single container app</guimenu>, therefore
+                        please select it.
                     </simpara>
                 </listitem>
                 <listitem>
@@ -316,31 +324,32 @@
             <para>
                 Upon app creation the <option>UCS Version</option> has been
                 specified. Please define the supported UCS version explicitly
-                on the <guimenu>Software</guimenu> tab in the <guimenu>Advanced
-                    software settings</guimenu> section.
+                on the <guimenu>Version</guimenu> tab in the <guimenu>Supported
+                    UCS versions</guimenu> section.
             </para>
             <para>
                 Example: The app has been created for <option>UCS
-                    Version</option> <userinput>4.2</userinput>. The two
+                    Version</option> <userinput>4.3</userinput>. The two
                 entries for <guimenu>Supported UCS versions for App</guimenu>
-                can be made: <userinput>4.2-3</userinput> and
-                <userinput>4.3-0</userinput>. This means that for the
-                installation of the app UCS 4.2-3 or UCS 4.3-0 are required.
+                can be made: <userinput>4.3-4</userinput> and
+                <userinput>4.4-0</userinput>. This means that for the
+                installation of the app UCS 4.3-4 or UCS 4.4-0 are required.
             </para>
         </section>
 
         <section id="create-app-with-docker:description">
             <title>Logo and description</title>
             <para>
-                On the app's <guimenu>General</guimenu> tab please provide a
-                description in English and logos for the software. Start with
-                a short and a long description. It gives an impression on how
-                it will look like during later testing.
+                On the app's <guimenu>Presentation</guimenu> tab please provide
+                the display name and a description in English and German and
+                logos for the software. Start with a short and a full
+                description. It gives an impression on how it will look like
+                during later testing.
             </para>
             <para>
                On the same tab two logos can be uploaded: A default icon that is
                shown on the app tile in the overview. For optimal
-               presentation it should be more of a square ratio. The second can
+               presentation it should be more of a 1:1 ratio. The second can
                be more detailed and can for example include the software name.
                Please provide the logos in SVG format.
            </para>
@@ -365,12 +374,13 @@
                 mounted inside the Docker container.
             </para>
             <para>
-                To define volumes for the app, please go to the
-                <guimenu>Mounted volumes</guimenu> section on the
-                <guimenu>Docker</guimenu> tab. Add an entry for each volume
-                and define the directory or file path on the host in the
-                first field and the destination in the container in the second
-                field. Leave the second field empty for the same path.
+                To define volumes for the app, please activate them on the
+                <guimenu>Overview</guimenu> tab with the option <guimenu>Docker
+                    app defines volumes</guimenu>. Then go to the
+                <guimenu>Volumes</guimenu> tab. Add an entry for each volume
+                and define the directory or file path on the host in the first
+                field and the destination in the container in the second field.
+                Leave the second field empty for the same path.
             </para>
             <para>
                 For example:
@@ -409,8 +419,7 @@
                 configuration.
             </para>
             <para>
-                In the <guimenu>Web interface</guimenu> section on the
-                <guimenu>General</guimenu> tab in the app, enter the relative
+                On the <guimenu>Webinterface</guimenu> tab, enter the relative
                 path and which ports should be proxied. For example, to map
                 the container's ports 80 and 443 to
                 <userinput>/myapp</userinput>, the following settings have to
@@ -453,11 +462,8 @@
                     </term>
                     <listitem>
                         <simpara>
-                            On the tab
-                            <guimenu>Docker</guimenu> in the section
-                            <guimenu>Advanced Docker settings</guimenu>, select
-                            <userinput>HTTP and HTTPS</userinput>, if both
-                            protocol schemes should be covered.
+                            Select <userinput>HTTP and HTTPS</userinput>, if
+                            both protocol schemes should be covered.
                         </simpara>
                     </listitem>
                 </varlistentry>
@@ -469,21 +475,22 @@
             <para>
                 If the app needs to occupy ports on the host that need to be
                 passed along to the container in order to work properly, they can
-                be defined in the <guimenu>Port redirection</guimenu> section
-                on the <guimenu>Docker</guimenu> tab. A list of ports can be
+                be defined in the <guimenu>Ports</guimenu> section
+                on the <guimenu>Webinterface</guimenu> tab. A list of ports can be
                 defined that the Docker host shall exclusively acquire for the
                 Docker container. Ports defined here cannot be used by other
                 services or other Docker containers on the UCS host.
             </para>
             <para>
-                For example, the solution exposes API under the dedicated port
+                For example, the solution exposes the API under the dedicated port
                 <userinput>5555</userinput>. This port would be predestined to
                 be defined here.
             </para>
             <para>
                 With the port definition the App Center also takes care to open
-                them in the UCS firewall. If additional ports are needed, the
-                can be defined in the app join script. Please the <ulink
+                them in the UCS firewall. If additional firewall rules for
+                ports are needed, they can be defined in the app join script.
+                Please the <ulink
                     url="https://docs.software-univention.de/developer-reference.html#misc:nacl">Network
                     Packet Filter section in the UCS Development
                     Reference</ulink>.
@@ -494,32 +501,32 @@
             <title>Database</title>
             <para>
                 Many applications need a relational database management system
-                (RDMS) somewhere in the environment to
-                function properly. If the app needs such a database the App
-                Center takes care of providing one directly to the Docker host.
-                In two sections on the <guimenu>Docker</guimenu> tab the
-                appropriate settings can
-                be made.
+                (RDMS) somewhere in the environment to function properly. If
+                the app needs such a database the App Center takes care of
+                providing one directly to the Docker host. Activate
+                <guimenu>Docker app needs database</guimenu> on the
+                <guimenu>Overview</guimenu> tab and then go to the
+                <guimenu>Database</guimenu> tab, where the appropriate settings
+                can be made.
             </para>
             <para>
-                In the <guimenu>Database settings for the Docker
-                    container</guimenu> section the settings for the database are
-                defined. MySQL and PostgreSQL are supported. Database user,
-                database name and the path to the password file can be
-                specified. Upon installation of the app, the App Center
+                In the <guimenu>Database</guimenu> section the settings for the
+                database are defined. MySQL and PostgreSQL are supported.
+                Database user, database name and the path to the password file
+                can be specified. Upon installation of the app, the App Center
                 installs the defined database on the Docker host, creates a
                 database with the defined settings and saves the password in a
                 file for later use.
             </para>
             <para>
-                In the <guimenu>Environment database variables</guimenu> for the
-                mapping of the database settings to the environment variables
-                in the container are defined. For example, if the container
-                expects the database hostname in <envar>DATABASE_HOST</envar>,
-                it has to be entered into the field <guimenu>Variable containing
-                    the server providing the database</guimenu>. There are also
-                fields for the database port, user, password, database name and
-                the password file.
+                In the <guimenu>Environment database variables</guimenu>
+                section, the mapping of the database settings to the
+                environment variables in the container are defined. For
+                example, if the container expects the database hostname in
+                <envar>DATABASE_HOST</envar>, it has to be entered into the
+                field <guimenu>Variable name for the database host</guimenu>.
+                There are also fields for the database port, user, password,
+                database name and the password file.
             </para>
         </section>
 
@@ -539,10 +546,9 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
             </para>
             <para>
                 The content of the environment file can be entered in the App
-                Provider portal on the <guimenu>Docker</guimenu> tab, in the
-                <guimenu>Configuration files</guimenu> section in the field for
-                <guimenu>Environment file used during the Docker Container
-                    creation</guimenu>.
+                Provider portal on the <guimenu>Configuration</guimenu> tab in
+                the field for <guimenu>Environment file used during the Docker
+                    Container creation</guimenu>.
             </para>
         </section>
     </section>
@@ -562,12 +568,14 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
             <title>Multi container setup</title>
             <para>
                 In order to create a Multi Container App, go to the
-                <guimenu>Docker</guimenu> tab in the App Provider Portal, scroll
-                down to the <guimenu>Docker Compose</guimenu> section and enter the
-                content of your <option>docker-compose.yml</option> file. A
-                "flat" YAML file must be used, because the implementation does
-                currently not support references to other files like for
-                example files that should be mounted inside a container.
+                <guimenu>Configuration</guimenu> tab in the App Provider
+                Portal, select <guimenu>Multi container app with Docker
+                    compose</guimenu> and enter the content of your
+                <option>docker-compose.yml</option> file. A "flat" YAML file
+                must be used, because the implementation does currently not
+                support references to other files like for example files that
+                should be mounted inside a container or files listing
+                environment variables.
             </para>
             <para>
                   You also need to define the <guimenu>Name of the "main" service
@@ -635,7 +643,7 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                         <simpara>
                             If ports are defined in the App Provider Portal,
                             they are also added to
-                            <filename>docker-compose.yml</filename>.  Ports that
+                            <filename>docker-compose.yml</filename>. Ports that
                             have already been defined continue to exist. If the
                             same port is defined in the portal and in
                             <filename>docker-compose.yml</filename>, the
@@ -655,11 +663,11 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                             and the App Configuration specifies that these
                             ports should be used by the App Center for the web
                             interface, the App Center will define a port on the
-                            fly define it in
-                            <filename>docker-compose.yml</filename>. This is
-                            because UCS hosts usually occupy ports 80 and 443
-                            with a web server. The App Center creates an Apache
-                            Reverse Proxy configuration. See section <xref
+                            fly in <filename>docker-compose.yml</filename>.
+                            This is because UCS hosts usually occupy ports 80
+                            and 443 with a web server. The App Center creates
+                            an Apache Reverse Proxy configuration. See section
+                            <xref
                                 linkend="create-app-with-docker:web-interface"
                                 /> for details.
                         </simpara>
