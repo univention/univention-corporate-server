@@ -10,3 +10,5 @@ desc: |
    in some UDM handlers lookup() method.
  * Clean code by shortening univention.debug usage.
 bug: [49638, 49422]
+erratum: 164
+announced: 2019-06-26
