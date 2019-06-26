@@ -29,7 +29,7 @@ Description: UMC module for UCS Directory Manager
 Package: univention-management-module-udm
 Architecture: all
 Depends: ${misc:Depends},
- univention-management-console-module-udm,
+ univention-management-console-module-udm (= ${binary:Version}),
  python-tornado,
  python-mimeparse,
  python-concurrent.futures,
