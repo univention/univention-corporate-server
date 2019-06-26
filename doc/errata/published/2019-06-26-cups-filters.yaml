@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Fix regression caused by erratum 94 in ghostscript
 bug: [49721]
+erratum: 156
+announced: 2019-06-26
