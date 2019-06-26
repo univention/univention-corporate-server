@@ -67,6 +67,7 @@ def handler(config_registry, changes):
 			'--append', 'displayName="fr_FR" "Univention Blog"',
 			'--set', 'category=admin',
 			'--set', 'authRestriction=anonymous',
+			'--set', 'linkTarget=newwindow',
 			'--set', 'portal=cn=domain,cn=portal,cn=univention,%s' % (ldap_base,)
 		])
 	else:
