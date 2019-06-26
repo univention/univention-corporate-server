@@ -58,8 +58,8 @@ from .version import VERSION
 from .definitions import status_description, SERVER_ERR_MODULE_FAILED, SERVER_ERR_MODULE_DIED
 
 from ..resources import moduleManager, categoryManager
-from ..auth import AuthHandler, AuthenticationResult
-from ..pam import PamAuth, PasswordChangeFailed, AuthenticationFailed
+from ..auth import AuthHandler
+from ..pam import PamAuth, PasswordChangeFailed
 from ..acl import LDAP_ACLs, ACLs
 from ..log import CORE
 from ..config import MODULE_INACTIVITY_TIMER, MODULE_DEBUG_LEVEL, MODULE_COMMAND, ucr
@@ -71,8 +71,6 @@ from ..modules.sanitizers import StringSanitizer, DictSanitizer
 from ..modules.decorators import sanitize, simple_response, allow_get_request
 
 TEMPUPLOADDIR = '/var/tmp/univention-management-console-frontend'
-
-AUTH_MAX_PASSWORD_LENGTH = 1000
 
 
 class ModuleProcess(Client):
@@ -978,10 +976,6 @@ class SessionHandler(ProcessorBase):
 		elif request.command == 'AUTH':
 			from univention.management.console.protocol.server import Server
 			Server.reload()
-			if 'auth_type' not in request.body and len(request.body['password']) > AUTH_MAX_PASSWORD_LENGTH:
-				request.authentication_result = AuthenticationResult(AuthenticationFailed(self._('The maximum password length has been reached.')))
-				self.handle_request_auth(request)
-				return
 			try:
 				request.body['locale'] = str(self.i18n.locale)
 				self.__auth.authenticate(request)
