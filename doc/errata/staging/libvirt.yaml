@@ -6,9 +6,9 @@ src: libvirt
 fix: 3.0.0-4+deb9u4A~4.3.4.201906241341
 desc: |
  This update addresses the following issues:
- * arbitrary file read/exec via virDomainSaveImageGetXMLDesc API
+ * Arbitrary file read/exec via virDomainSaveImageGetXMLDesc API
    (CVE-2019-10161)
- * arbitrary command execution via virConnectGetDomainCapabilities API
+ * Arbitrary command execution via virConnectGetDomainCapabilities API
    (CVE-2019-10167)
 bug: [49717]
 cve:
