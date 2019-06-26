@@ -1,3 +1,9 @@
+univention-portal (3.0.1-26) unstable; urgency=medium
+
+  * Bug #48793: fix robustness of portal entries
+
+ -- Florian Best <best@univention.de>  Wed, 26 Jun 2019 18:11:34 +0200
+
 univention-portal (3.0.1-25) unstable; urgency=medium
 
   * Bug #45318: use same tab as default
