@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-web
-fix: 3.0.5-18A~4.4.0.201906241330
+fix: 3.0.5-19A~4.4.0.201906261204
 desc: |
  This update addresses the following issue(s):
  * The label and icon of some widgets are now configurable.
