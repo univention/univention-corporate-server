@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.12-42) unstable; urgency=medium
+
+  * Bug #48793: fix robustness of portal entries
+
+ -- Florian Best <best@univention.de>  Wed, 26 Jun 2019 18:12:01 +0200
+
 univention-directory-manager-modules (14.0.12-41) unstable; urgency=medium
 
   * Bug #49422: fixup shortening univention.debug usage

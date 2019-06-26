@@ -26,6 +26,7 @@
             },
             "dn": "cn=umc-domain,cn=portal,cn=univention,%@%ldap/base%@%",
             "favorite": false,
+            "linkTarget": null,
             "links": [
                 "/univention/management/"
             ],
@@ -46,6 +47,7 @@
             },
             "dn": "cn=univentionblog,cn=portal,cn=univention,%@%ldap/base%@%",
             "favorite": false,
+            "linkTarget": "newwindow",
             "links": [
                 "https://www.univention.com/news/blog-en/"
             ],
@@ -70,6 +72,7 @@
                 ]
             ]
         ],
+        "defaultLinkTarget": null,
         "dn": "cn=domain,cn=portal,cn=univention,%@%ldap/base%@%",
         "ensureLogin": false,
         "fontColor": "black",

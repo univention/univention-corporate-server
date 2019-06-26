@@ -1052,7 +1052,7 @@ class CPAuth(CPgeneric):
 		password = req.body.get('password')
 		body = response.body
 		if response.mimetype == 'application/json':
-			username = body.get('username', username)  # FIXME: body.get('result').get('username') ?
+			username = body.get('result', {}).get('username', username)
 			body = json.dumps(response.body)
 		self.set_session(sessionid, username, password=password)
 		return body

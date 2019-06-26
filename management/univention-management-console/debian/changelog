@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-23) unstable; urgency=medium
+
+  * Bug #48793: fix robustness of portal entries
+
+ -- Florian Best <best@univention.de>  Wed, 26 Jun 2019 18:11:39 +0200
+
 univention-management-console (11.0.4-22) unstable; urgency=medium
 
   * Bug #49731: show UCS Ambassador Program notification

@@ -40,10 +40,13 @@ from StringIO import StringIO
 from copy import deepcopy
 import tempfile
 import logging
+import signal
+from urllib import quote
 
 import requests
 import tornado.ioloop
 import tornado.web
+from ldap.filter import filter_format
 
 from univention.udm import UDM
 from univention.config_registry import ConfigRegistry
@@ -57,6 +60,7 @@ _umc_interface = ucr.get('umc/http/interface', '127.0.0.1')
 _umc_port = int(ucr.get('umc/http/port', 8090))
 UMC_SESSION_URL = 'http://%s:%s/get/session-info' % (_umc_interface, _umc_port)
 
+
 class ShortNameFormatter(logging.Formatter):
 	shorten = 'univention.portal'
 
@@ -65,6 +69,7 @@ class ShortNameFormatter(logging.Formatter):
 		if record.short_name.startswith('%s.' % self.shorten):
 			record.short_name = record.short_name[len(self.shorten) + 1:]
 		return super(ShortNameFormatter, self).format(record)
+
 
 def setup_logger():
 	logger = logging.getLogger('univention.portal')
@@ -79,10 +84,12 @@ def setup_logger():
 	logger.addHandler(handler)
 	logger.setLevel(logging.DEBUG)
 
+
 def get_logger(name):
 	logger = logging.getLogger('univention.portal')
 	logger = logger.getChild(name)
 	return logger
+
 
 def flatten(list_of_lists):
 	# return [item for sublist in list_of_lists for item in sublist]
@@ -94,6 +101,7 @@ def flatten(list_of_lists):
 		else:
 			ret.append(sublist)
 	return ret
+
 
 class LDAPCache(object):
 	PORTAL_CACHE = '/var/cache/univention-portal/portal.json'
@@ -221,12 +229,12 @@ class LDAPCache(object):
 			ret[category.dn] = {
 				'dn': category.dn,
 				'display_name': category.props.displayName,  # TODO: UDM encoder
-				}
+			}
 		return ret
 
 	def _extract_entries(self, portal):
 		ret = {}
-		for entry in self.udm.get('settings/portal_entry').search('portal=%s' % portal.dn):
+		for entry in self.udm.get('settings/portal_entry').search(filter_format('portal=%s', [portal.dn])):
 			ret[entry.dn] = {
 				'dn': entry.dn,
 				'name': entry.props.displayName,
@@ -237,7 +245,7 @@ class LDAPCache(object):
 				'allowedGroups': entry.props.allowedGroups,
 				'links': entry.props.link,
 				'linkTarget': entry.props.linkTarget,
-				}
+			}
 		return ret
 
 	def _write_css(self, portal):
@@ -295,6 +303,7 @@ class LDAPCache(object):
 
 	def _write_image(self, name, img, dirname):
 		try:
+			name = name.replace('/', '-')  # name must not contain / and must be a path which can be accessed via the web!
 			string_buffer = StringIO(img)
 			suffix = what(string_buffer) or 'svg'
 			fname = '/usr/share/univention-portal/icons/%s/%s.%s' % (dirname, name, suffix)
@@ -303,7 +312,7 @@ class LDAPCache(object):
 		except (EnvironmentError, TypeError, IOError) as err:
 			get_logger('css').error(err)
 		else:
-			return '/univention/portal/icons/%s/%s.%s' % (dirname, name, suffix)
+			return '/univention/portal/icons/%s/%s.%s' % (quote(dirname), quote(name), quote(suffix))
 
 	def _save_image(self, portal, entry):
 		img = entry.props.icon
@@ -428,12 +437,19 @@ class JsonHandler(tornado.web.RequestHandler):
 		answer['filtered'] = not admin_mode
 		self.write(answer)
 
+
 cache = LDAPCache()
+
+
+def signal_handler_reload(signo, frame):
+	cache.refresh()
+
 
 def make_app():
 	return tornado.web.Application([
 		(r'/', JsonHandler),
 	])
+
 
 if __name__ == "__main__":
 	setup_logger()
@@ -441,4 +457,5 @@ if __name__ == "__main__":
 	port = int(ucr.get('portal/port', 8095))
 	get_logger('server').info('firing up portal server at port %s' % port)
 	app.listen(port)
+	signal.signal(signal.SIGHUP, signal_handler_reload)
 	tornado.ioloop.IOLoop.current().start()

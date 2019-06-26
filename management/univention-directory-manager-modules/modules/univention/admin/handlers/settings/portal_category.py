@@ -31,7 +31,6 @@
 # <http://www.gnu.org/licenses/>.
 
 from univention.admin.layout import Tab, Group
-import univention.admin.filter
 import univention.admin.localization
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
@@ -100,17 +99,16 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_post_modify(self):
 		if self.hasChanged('name'):
-			newdn = 'cn=%s,%s' % (self['name'], self.lo.parentDn(self.dn),)
-			self.__update_property__content__of__portal(self.dn, newdn)
+			self.__update_property__content__of__portal()
 
 	def _ldap_post_move(self, olddn):
-		self.__update_property__content__of__portal(olddn, self.dn)
+		self.__update_property__content__of__portal()
 
-	def __update_property__content__of__portal(self, olddn, newdn):
+	def __update_property__content__of__portal(self):
 		for portal_obj in univention.admin.modules.lookup('settings/portal', None, self.lo, scope='sub'):
 			portal_obj.open()
 			old_content = portal_obj.info.get('content', [])
-			new_content = [[newdn if self.lo.compare_dn(category, olddn) else category, entries] for category, entries in old_content]
+			new_content = [[self.dn if self.lo.compare_dn(category, self.old_dn) else category, entries] for category, entries in old_content]
 			if new_content != old_content:
 				portal_obj['content'] = new_content
 				portal_obj.modify()

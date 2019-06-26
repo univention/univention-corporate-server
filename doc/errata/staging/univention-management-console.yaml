@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * The UMC for UCS Core Editions shows a notification that informs about the
    UCS Ambassador Program.
-bug: [49731]
+ * Portal enties which are limited to users are now shown when the user is
+   logged in via email address.
+bug: [49731, 49619]

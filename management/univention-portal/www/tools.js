@@ -47,7 +47,7 @@ define([
 				return '';
 			}
 
-			var name = logoUrl.replace(/\.\w*$/, '').replace(/.*\//, '');
+			var name = logoUrl.replace(/\.\w*$/, '').replace(/.*\//, '').replace(/[^a-zA-Z0-9]/g, '__');
 			var iconClass = lang.replace('umcPortal-{0}', [name]);
 
 			// insert a css style for the logo if none exists yet

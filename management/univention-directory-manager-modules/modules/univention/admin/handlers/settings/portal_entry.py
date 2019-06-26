@@ -30,8 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from ldap.dn import escape_dn_chars
+
 from univention.admin.layout import Tab, Group
-import univention.admin.filter
 import univention.admin.localization
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
@@ -191,13 +192,12 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_post_modify(self):
 		if self.hasChanged('name'):
-			newdn = 'cn=%s,%s' % (self['name'], self.lo.parentDn(self.dn),)
-			self._update_portals_after_name_change(self.dn, newdn)
+			self._update_portals_after_name_change()
 		if self.hasChanged('portal'):
 			self._update_portals_after_portal_change()
 
 	def _ldap_post_move(self, olddn):
-		self._update_portals_after_name_change(olddn, self.dn)
+		self._update_portals_after_name_change()
 
 	def _ldap_post_remove(self):
 		for portal_obj in univention.admin.modules.lookup('settings/portal', None, self.lo, scope='sub'):
@@ -249,10 +249,10 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.dn in [entry for category, entries in old_content for entry in entries]:
 			return
 		new_content = None
-		portal_category_dn = 'cn=%s,cn=categories,cn=portal,cn=univention,%s' % (self['category'], self.lo.base,)
-		category_already_in_old_content = portal_category_dn in [category for category, entries in old_content]
+		portal_category_dn = 'cn=%s,cn=categories,cn=portal,cn=univention,%s' % (escape_dn_chars(self['category']), self.lo.base,)
+		category_already_in_old_content = any(self.lo.compare_dn(portal_category_dn, category) for category, entries in old_content)
 		if category_already_in_old_content:
-			new_content = [[category, entries + ([self.dn] if category == portal_category_dn else [])] for category, entries in old_content]
+			new_content = [[category, entries + ([self.dn] if self.lo.compare_dn(category, portal_category_dn) else [])] for category, entries in old_content]
 		else:
 			new_content = [[portal_category_dn, [self.dn]]] + old_content
 		if new_content != old_content:
@@ -278,11 +278,11 @@ class object(univention.admin.handlers.simpleLdap):
 			portal_obj['content'] = new_content
 			portal_obj.modify()
 
-	def _update_portals_after_name_change(self, olddn, newdn):
+	def _update_portals_after_name_change(self):
 		for portal_obj in univention.admin.modules.lookup('settings/portal', None, self.lo, scope='sub'):
 			portal_obj.open()
 			old_content = portal_obj.info.get('content', [])
-			new_content = [[category, [newdn if self.lo.compare_dn(entry, olddn) else entry for entry in entries]] for category, entries in old_content]
+			new_content = [[category, [self.dn if self.lo.compare_dn(entry, self.old_dn) else entry for entry in entries]] for category, entries in old_content]
 			if new_content != old_content:
 				portal_obj['content'] = new_content
 				portal_obj.modify()
