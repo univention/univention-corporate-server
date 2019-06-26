@@ -6,5 +6,5 @@ src: univention-web
 fix: 3.0.5-18A~4.4.0.201906241330
 desc: |
  This update addresses the following issue(s):
- * The label and icon if some widgets are now configurable.
-bug: [49707]
+ * The label and icon of some widgets are now configurable.
+bug: [49730]
