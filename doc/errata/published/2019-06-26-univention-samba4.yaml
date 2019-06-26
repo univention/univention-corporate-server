@@ -9,3 +9,5 @@ desc: |
  * When univention-samba4-backup fails, cron will automatically
    send system-mails to root.
 bug: [49399]
+erratum: 162
+announced: 2019-06-26
