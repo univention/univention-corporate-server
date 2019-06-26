@@ -9,3 +9,5 @@ desc: |
  * It is now possible to specify ldap server controls
    in the univention.uldap.access.search() methods.
 bug: [49638]
+erratum: 165
+announced: 2019-06-26
