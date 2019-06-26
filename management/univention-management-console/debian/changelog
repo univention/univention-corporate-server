@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-22) unstable; urgency=medium
+
+  * Bug #49731: show UCS Ambassador Program notification
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 26 Jun 2019 11:50:16 +0200
+
 univention-management-console (11.0.4-21) unstable; urgency=medium
 
   * Bug #44602: revert
