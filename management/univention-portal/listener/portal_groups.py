@@ -30,6 +30,7 @@
 
 from __future__ import absolute_import
 
+import subprocess
 import json
 
 from ldap.dn import explode_dn
@@ -40,7 +41,9 @@ name = 'portal_groups'
 
 GROUP_CACHE = '/var/cache/univention-portal/groups.json'
 
+
 class PortalGroups(ListenerModuleHandler):
+
 	def initialize(self):
 		self._save({})
 
@@ -69,6 +72,10 @@ class PortalGroups(ListenerModuleHandler):
 		self._save(groups)
 		self._refresh_cache()
 
+	def post_run(self):
+		with self.as_root():
+			subprocess.call(['service', 'univention-portal-server', 'reload'])
+
 	def _load(self):
 		with self.as_root():
 			with open(GROUP_CACHE) as fd:
@@ -81,9 +88,10 @@ class PortalGroups(ListenerModuleHandler):
 
 	def _refresh_cache(self):
 		with self.as_root():
-			open('/var/cache/univention-portal/refresh_groups', 'w')
+			with open('/var/cache/univention-portal/refresh_groups', 'w'):
+				pass
 
 	class Configuration(ListenerModuleConfiguration):
 		name = name
-                description = 'Maintain groups cache for Univention Portal'
-                ldap_filter = '(univentionObjectType=groups/group)'
+		description = 'Maintain groups cache for Univention Portal'
+		ldap_filter = '(univentionObjectType=groups/group)'
