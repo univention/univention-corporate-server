@@ -9,3 +9,5 @@ desc: |
  * A new package has been added which contains a prototype of a HTTP
    service for the Univention Directory Manager.
 bug: [49667]
+erratum: 161
+announced: 2019-06-26
