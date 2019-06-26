@@ -6,6 +6,6 @@ src: univention-python
 fix: 12.0.0-13A~4.4.0.201906171211
 desc: |
  This update addresses the following issue(s):
- * It is now possible to specifiy ldap server controls
+ * It is now possible to specify ldap server controls
    in the univention.uldap.access.search() methods.
 bug: [49638]

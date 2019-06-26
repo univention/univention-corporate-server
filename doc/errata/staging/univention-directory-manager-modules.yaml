@@ -6,7 +6,7 @@ src: univention-directory-manager-modules
 fix: 14.0.12-41A~4.4.0.201906131812
 desc: |
  This update addresses the following issues:
- * It is now possible to specifiy ldap server controls
+ * It is now possible to specify ldap server controls
    in some UDM handlers lookup() method.
-  * Clean code by shortening univention.debug usage.
+ * Clean code by shortening univention.debug usage.
 bug: [49638, 49422]
