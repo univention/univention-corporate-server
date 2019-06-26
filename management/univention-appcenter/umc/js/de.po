@@ -333,7 +333,7 @@ msgstr "Zurück zur Übersicht"
 
 #: umc/js/appcenter/AppDetailsPage.js:1182
 msgid "Backup all data and configs of the app"
-msgstr "Backupen Sie alle Daten und Konfigurationen der App"
+msgstr "Sichern Sie alle Daten und Konfigurationen der App"
 
 #: umc/js/appcenter/DetailsPage.js:129
 msgid "Basic settings"
@@ -1266,11 +1266,11 @@ msgstr ""
 
 #: umc/js/appcenter/AppDetailsPage.js:1184
 msgid "Try to install the app again"
-msgstr "Versuchen Sie die App wieder zu installieren"
+msgstr "Versuchen Sie, die App wieder zu installieren"
 
 #: umc/js/appcenter/AppDetailsPage.js:1183
 msgid "Try to uninstall the app"
-msgstr "Versuchen Sie die App zu deinstallieren"
+msgstr "Versuchen Sie, die App zu deinstallieren"
 
 #: umc/js/appcenter/AppDetailsPage.js:316
 #: umc/js/appcenter/AppDetailsPage.js:764
