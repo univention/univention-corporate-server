@@ -85,7 +85,7 @@ define([
 			});
 		},
 
-		notify: function(/*String*/ message, /*String?*/ component) {
+		notify: function(/*String*/ message, /*String?*/ component, /*Boolean?*/ truncate) {
 			// summary:
 			//		Add a notification to the notifications drop down menu.
 			// message:
@@ -95,13 +95,13 @@ define([
 
 			var notificationDeferred = new Deferred();
 			NotificationDropDownButton.getInstance().then(function(dropDownButton) {
-				var notification = dropDownButton.addNotification(message, component || _('Notification'));
+				var notification = dropDownButton.addNotification(message, component || _('Notification'), truncate);
 				notificationDeferred.resolve(notification);
 			});
 			return notificationDeferred;
 		},
 
-		warn: function(/*String*/ message, /*String?*/ component) {
+		warn: function(/*String*/ message, /*String?*/ component, /*Boolean?*/ truncate) {
 			// summary:
 			//		Add a warning notification to the notifications drop down menu.
 			// message:
@@ -111,7 +111,7 @@ define([
 
 			var notificationDeferred = new Deferred();
 			NotificationDropDownButton.getInstance().then(function(dropDownButton) {
-				var notification = dropDownButton.addWarning(message, component || _('Warning'));
+				var notification = dropDownButton.addWarning(message, component || _('Warning'), truncate);
 				notificationDeferred.resolve(notification);
 			});
 			return notificationDeferred;

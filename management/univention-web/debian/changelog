@@ -1,3 +1,9 @@
+univention-web (3.0.5-19) unstable; urgency=medium
+
+  * Bug #49731: bell notifications can now be shown non-truncated
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 26 Jun 2019 11:34:57 +0200
+
 univention-web (3.0.5-18) unstable; urgency=medium
 
   * Bug #49707: changes needed for appcenter-selfservice

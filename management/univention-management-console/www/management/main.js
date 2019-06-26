@@ -86,13 +86,14 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/Text",
 	"umc/widgets/ConfirmDialog",
+	"umc/i18n/tools",
 	"umc/i18n!management",
 	"dojo/sniff" // has("ie"), has("ff")
 ], function(declare, lang, kernel, array, baseWin, win, on, mouse, touch, tap, aspect, has,
 		Evented, Deferred, all, cookie, topic, ioQuery, Memory, Observable,
 		dom, domAttr, domClass, domGeometry, domConstruct, style, put, hash, styles, entities, gfx, registry, tools, login, dialog, NotificationDropDownButton, NotificationSnackbar, store,
 		_WidgetBase, Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer, menu, MenuButton,
-		TabController, LiveSearch, GalleryPane, ContainerWidget, Page, Form, Button, Text, ConfirmDialog, _
+		TabController, LiveSearch, GalleryPane, ContainerWidget, Page, Form, Button, Text, ConfirmDialog, i18nTools, _
 ) {
 	// cache UCR variables
 	var _favoritesDisabled = false;
@@ -611,11 +612,48 @@ define([
 			});
 		};
 
+		var showAmbassadorNotification = function() {
+			if (startupDialogWasShown) {
+				return;
+			}
+
+			var endOfAmbassadorProgram = new Date(2019, 7, 7, 0, 0, 0);
+			var ambassadorProgramHasPassed = endOfAmbassadorProgram < new Date();
+			var isUserAdmin = app.getModule('updater') || app.getModule('schoolrooms');
+			var dontShowNotification = !tools.status('has_free_license') || ambassadorProgramHasPassed || !isUserAdmin || cookie('hideAmbassadorNotification');
+			if (dontShowNotification) {
+				return;
+			}
+
+			var message = 'Write a comment, a short review, or a tutorial about UCS and collect valuable bonus points as a UCS Ambassador. More information: <a href="http://bit.ly/UCS_Ambassador_Program" target="_blank" rel="noopener">UCS Ambassador Program</a>';
+			var title = 'UCS Ambassador Program';
+			switch (i18nTools.defaultLang().substring(0, 2)) {
+				case 'de':
+					message = 'Jetzt Kommentar, kurzes Review oder Tutorial zu UCS schreiben und als UCS Ambassador wertvolle Bonuspunkte sammeln! Mehr Infos: <a href="http://bit.ly/UCS_Ambassador" target="_blank" rel="noopener">UCS Ambassador Programm</a>'; 
+					title = 'UCS Ambassador Programm';
+					break;
+				case 'fr':
+					message = 'Écrivez un commentaire, une courte critique ou un tutoriel sur UCS et accumulez de précieux points en prime en tant qu\'ambassadeur de UCS! Plus d\'info: <a href="http://bit.ly/UCS_Ambassador_Program_France" target="_blank" rel="noopener">Programme des ambassadeurs de UCS</a>';
+					title = 'Programme des ambassadeurs de UCS';
+					break;
+			}
+
+			dialog.notify(message, title, false).then(function(notification) {
+				on(notification, 'remove', function() {
+					// make sure that the cookie does not expire too early
+					var expires = new Date(endOfAmbassadorProgram);
+					expires.setDate(expires.getDate() + 7);
+					cookie('hideAmbassadorNotification', 'true', {expires: expires.toUTCString()});
+				});
+			});
+		};
+
 		// run several checks
 		checkCertificateValidity();
 		checkShowStartupDialog();
-		showSummit2019Dialog();
-		showSummit2019Notification();
+		// showSummit2019Dialog();
+		// showSummit2019Notification();
+		showAmbassadorNotification();
 	});
 
 	var UmcHeader = declare([ContainerWidget], {

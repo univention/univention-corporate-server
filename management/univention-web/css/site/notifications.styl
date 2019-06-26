@@ -134,10 +134,12 @@ $umcNotification-width = 300px
 		.umcNotificationMessageContainer
 			margin-top: 8px
 			position: relative
-			max-height: 2.8em
 			overflow: hidden
 			transition: max-height $transition-duration
 			color: $text-color-lightest
+
+			&--truncated
+				max-height: 2.8em
 
 			.umcNotificationMessage
 				position: absolute
