@@ -10,3 +10,5 @@ desc: |
    the new UCR variable saml/idp/session-duration. With this update, the
    default value for a SAML session is raised from 8 to 12 hours.
 bug: [49503]
+erratum: 163
+announced: 2019-06-26
