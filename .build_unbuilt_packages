@@ -1,17 +1,19 @@
 #!/usr/bin/env python2.7
 
-from sys import argv
 from univention.repong.repo_lib_pg import postgres
 import os
 import subprocess
+import re
+
+RE_BRANCH = re.compile(r'^(?P<major>[1-9][0-9]*)[.](?P<minor>[0-9]+)[-.](?P<subminor>[0-9]+)$')
 
 
 def build_unbuilt_packages():
 	db = postgres()
 
 	changelog_filenames = subprocess.check_output(
-			['find', '.', '-mindepth', '4', '-maxdepth', '4', '-type', 'f', '-name', 'changelog']
-		).strip('\n').split('\n')
+		['find', '.', '-mindepth', '4', '-maxdepth', '4', '-type', 'f', '-name', 'changelog', '-path', '*/debian/changelog']
+	).strip('\n').split('\n')
 
 	for changelog_filename in changelog_filenames:
 		with open(changelog_filename) as changelog_file:
@@ -22,20 +24,21 @@ def build_unbuilt_packages():
 				changelog_filename.strip('./').split('/')[0:2]
 			)
 			package_version = changelog_fields[1][1:-1]
+
 		try:
-			build_id = db.get_srcrev(package_name, package_version)
+			db.get_srcrev(package_name, package_version)
 		except LookupError:
 			build_package(package_name, package_name_long)
 
 
 def build_package(package_name, package_name_long):
 	branch = os.environ['CI_COMMIT_REF_NAME']
+	match = RE_BRANCH.match(branch)
+	if not match:
+		return
+
 	ucs_version_string = branch
-	ucs_version = {
-		'major': int(ucs_version_string[0]),
-		'minor': int(ucs_version_string[2]),
-		'subminor': int(ucs_version_string[4])
-	}
+	ucs_version = match.groupdict()
 	release_yaml_filename = (
 		"/var/univention/buildsystem2/mirror/ftp/download/ucs-maintenance/{}.yaml"
 	).format(ucs_version_string)
