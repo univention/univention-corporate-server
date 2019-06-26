@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Fix usage of Univention Configuration Registry Python module.
 bug: [49129]
+erratum: 166
+announced: 2019-06-26
