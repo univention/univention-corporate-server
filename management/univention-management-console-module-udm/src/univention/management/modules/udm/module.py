@@ -897,7 +897,7 @@ class Ressource(RessourceBase, RequestHandler):
 					},
 				},
 			}
-		self.add_caching(public=False)
+		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation(result)
 
 
@@ -963,7 +963,7 @@ class Relations(Ressource):
 			'license-check': 'Check if the license limits are reached',
 			'license-import': 'Import a new license in LDIF format',
 		}
-		self.add_caching(public=True)
+		self.add_caching(public=True, must_revalidate=True)
 		result = {}
 		self.add_link(result, 'self', self.urljoin(''), title=_('Link relations'))
 		self.add_link(result, 'up', self.urljoin('../'), title=_('All modules'))
@@ -1444,7 +1444,7 @@ class ObjectTypes(Ressource):
 			})
 			self.add_link(result, 'udm/relation/object-types', self.urljoin('../%s' % quote(_module.name)) + '/', name=_module.name, title=_module.title)
 
-		self.add_caching(public=True)
+		self.add_caching(public=True, must_revalidate=True)
 		self.content_negotiation(result)
 
 
@@ -1498,7 +1498,7 @@ class SubObjectTypes(Ressource):
 				#'has_tree': _module.has_tree,
 			})
 			self.add_link(result, 'udm/relation/object-types', self.abspath(_module.name) + '/', name=_module.name, title=_module.title)
-		self.add_caching(public=True)
+		self.add_caching(public=True, must_revalidate=True)
 		self.content_negotiation(result)
 
 
@@ -1510,7 +1510,7 @@ class LdapBase(Ressource):
 		self.add_link(result, '', url)
 		self.set_header('Location', url)
 		self.set_status(301)
-		self.add_caching(public=True)
+		self.add_caching(public=True, must_revalidate=True)
 		self.content_negotiation(result)
 
 
@@ -1530,7 +1530,7 @@ class ObjectLink(Ressource):
 		url = self.abspath(module.name, quote_dn(dn))
 		self.set_header('Location', url)
 		self.set_status(301)
-		self.add_caching(public=True)
+		self.add_caching(public=True, must_revalidate=True)
 		self.content_negotiation({})
 
 
@@ -1621,7 +1621,7 @@ class Tree(ContainerQueryBase):
 			modules = [object_type]
 
 		containers = yield self._container_query(object_type, container, modules, scope)
-		self.add_caching(public=False)
+		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation(containers)
 
 
@@ -1639,7 +1639,7 @@ class MoveDestinations(ContainerQueryBase):
 			scope = 'base'
 
 		containers = yield self._container_query(object_type, container, modules, scope)
-		self.add_caching(public=False)
+		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation(containers)
 
 
@@ -1660,7 +1660,7 @@ class Properties(Ressource):
 			properties = [prop for prop in properties if prop.get('searchable', False)]
 		result['properties'] = properties
 
-		self.add_caching(public=True)
+		self.add_caching(public=True, must_revalidate=True)
 		self.content_negotiation(result)
 
 
@@ -1733,7 +1733,7 @@ class NextFreeIpAddress(Ressource):
 			'dnsEntryZoneReverse': obj['dnsEntryZoneReverse']
 		}
 
-		self.add_caching(public=False)
+		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation(result)
 
 		if self.get_query_argument('increaseCounter', False):
@@ -1749,7 +1749,7 @@ class DefaultValue(Ressource):
 	def get(self, object_type, property_):
 		module = self.get_module(object_type)
 		result = module.get_default_values(property_)
-		self.add_caching(public=False)
+		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation(result)
 
 
@@ -1989,7 +1989,7 @@ class Objects(FormBase, ReportingBase):
 		self.add_form_element(form, '', _('Search'), type='submit')
 
 		result['entries'] = entries  # TODO: is "entries" a good name? items, objects
-		self.add_caching(public=False)
+		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation(result)
 
 	@tornado.gen.coroutine
@@ -2069,7 +2069,7 @@ class Objects(FormBase, ReportingBase):
 		obj = yield obj.create(object_type)
 		self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
 		self.set_status(201)
-		self.add_caching(public=False)
+		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation({})
 
 	def _options(self, object_type):
@@ -2178,7 +2178,7 @@ class Object(FormBase, Ressource):
 		if obj.has_property('jpegPhoto'):
 			self.add_link(props, 'udm/relation/user-photo', self.urljoin(quote_dn(obj.dn), 'properties/jpegPhoto.jpg'), type='image/jpeg', title=_('User photo'))
 
-		self.add_caching(public=False)
+		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation(props)
 
 	def _options(self, object_type, dn):
@@ -2325,7 +2325,7 @@ class Object(FormBase, Ressource):
 			obj = yield self.create(object_type, dn)
 			self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
 			self.set_status(201)
-			self.add_caching(public=False)
+			self.add_caching(public=False, must_revalidate=True)
 			self.content_negotiation({})
 			return
 
@@ -2341,7 +2341,7 @@ class Object(FormBase, Ressource):
 			self.set_status(302)
 			self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
 
-		self.add_caching(public=False)
+		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation({})
 
 	@sanitize_body_arguments(
@@ -2367,7 +2367,7 @@ class Object(FormBase, Ressource):
 		self.set_entity_tags(obj)
 
 		yield self.modify(module, obj)
-		self.add_caching(public=False)
+		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation({})
 
 	@tornado.gen.coroutine
@@ -2445,7 +2445,7 @@ class Object(FormBase, Ressource):
 		queue[status['id']] = status
 		self.set_status(201)
 		self.set_header('Location', self.abspath('progress', status['id']))
-		self.add_caching(public=False)
+		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation(status)
 		try:
 			dn = yield self.pool.submit(module.move, dn, position)
@@ -2473,7 +2473,7 @@ class Object(FormBase, Ressource):
 		cleanup = bool(self.request.query_arguments['cleanup'])
 		recursive = bool(self.request.query_arguments['recursive'])
 		yield self.pool.submit(module.remove, dn, cleanup, recursive)
-		self.add_caching(public=False)
+		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation({})
 
 	def check_conditional_requests(self):
@@ -2530,7 +2530,7 @@ class UserPhoto(Ressource):
 		data = obj.info.get('jpegPhoto', '').decode('base64')
 		self.add_header('Last-Modified', last_modified(time.strptime(self.ldap_connection.getAttr(obj.dn, b'modifyTimestamp')[0].decode('utf-8'), '%Y%m%d%H%M%SZ')))
 		self.set_header('Content-Type', 'image/jpeg')
-		self.add_caching(public=False, max_age=2592000)
+		self.add_caching(public=False, max_age=2592000, must_revalidate=True)
 		self.finish(data)
 
 	@tornado.gen.coroutine
@@ -2589,7 +2589,7 @@ class ObjectAdd(FormBase, Ressource):
 				self.add_form_element(form, '', _('Fill template values'), type='submit')
 				result['template_layout'] = [{'label': _('Template'), 'description': 'A template defines rules for default object properties.', 'layout': ['template', '']}]
 
-		self.add_caching(public=True)
+		self.add_caching(public=True, must_revalidate=True)
 		self.content_negotiation(result)
 
 	def get_create_form(self, module, dn=None, copy=False, template=None, position=None):
@@ -2664,7 +2664,7 @@ class ObjectCopy(ObjectAdd):
 		result = {}
 		self.add_link(result, 'self', self.urljoin(''), title=_('Copy %s') % (module.object_name,))
 		result.update(self.get_create_form(module, dn=self.request.query_arguments['dn'], copy=True))
-		self.add_caching(public=True)
+		self.add_caching(public=True, must_revalidate=True)
 		self.content_negotiation(result)
 
 
@@ -2775,7 +2775,7 @@ class ObjectEdit(FormBase, Ressource):
 
 			self.add_form_element(form, '', _('Modify %s') % (module.object_name,), type='submit')
 
-		self.add_caching(public=False)
+		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation(result)
 
 
@@ -2796,7 +2796,7 @@ class PropertyChoices(Ressource):
 			raise NotFound(object_type, dn)
 		request_body = {'syntax': syntax.name}  # FIXME
 		choices = yield self.pool.submit(read_syntax_choices, _get_syntax(syntax.name), request_body, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
-		self.add_caching(public=False)
+		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation(choices)
 
 
@@ -2979,7 +2979,7 @@ class LicenseCheck(Ressource):
 			check_license(self.ldap_connection)
 		except LicenseError as exc:
 			message = str(exc)
-		self.add_caching(public=False, max_age=120)
+		self.add_caching(public=False, max_age=120, must_revalidate=True)
 		self.content_negotiation(message)
 
 
@@ -3047,7 +3047,7 @@ class License(Ressource):
 				license_data['baseDN'] = ucr.get('ldap/base', '')
 			license_data['freeLicense'] = free_license
 			license_data['sysAccountsFound'] = udm_license._license.sysAccountsFound
-		self.add_caching(public=False, max_age=120)
+		self.add_caching(public=False, max_age=120, must_revalidate=True)
 		self.content_negotiation(license_data)
 
 
