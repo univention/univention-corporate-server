@@ -34,6 +34,7 @@
 import univention.admin.handlers
 import univention.admin.handlers.settings.portal
 import univention.admin.handlers.settings.portal_entry
+import univention.admin.handlers.settings.portal_category
 from univention.admin.layout import Tab
 
 
@@ -41,6 +42,8 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 module = 'settings/portal_all'
+short_description = _('Portal: Settings')
+long_description = _('Management of portals and their entries')
 
 operations = ['search']
 childmodules = ['settings/portal', 'settings/portal_entry', 'settings/portal_category']
