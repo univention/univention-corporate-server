@@ -10,3 +10,5 @@ desc: |
  * Use slaptest for LDAP schema checking in the ldap_extension
    module.
 bug: [49129, 49596]
+erratum: 168
+announced: 2019-06-26
