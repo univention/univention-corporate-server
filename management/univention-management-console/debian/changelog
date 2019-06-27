@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-25) unstable; urgency=medium
+
+  * Bug #49731: change end date of ambassador notification
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 27 Jun 2019 11:49:29 +0200
+
 univention-management-console (11.0.4-24) unstable; urgency=medium
 
   * Bug #27816: revert 6abfd3b2b48e3d46ec4c2bc7a59cfe82692034e1
