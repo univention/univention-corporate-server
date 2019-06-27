@@ -689,7 +689,11 @@ class RessourceBase(object):
 			qs = parse_qs(base.query)
 			qs.update(dict((key, val if isinstance(val, (list, tuple)) else [val]) for key, val in query.items()))
 			query_string = '?%s' % (urllib.urlencode(qs, True),)
-		return urljoin(urljoin(urlunparse((base.scheme, base.netloc, 'univention/' if self.request.headers.get('X-Forwarded-Host') else '/', '', '', '')), self.request.path_decoded.lstrip('/')), '/'.join(args)) + query_string
+		scheme = base.scheme
+		# FIXME: X-Forwarded-* can contain multiple entries: "https, http"?
+		if self.request.headers.get('X-Forwarded-Proto') in ('http', 'https'):
+			scheme = self.request.headers.get('X-Forwarded-Proto', base.scheme)
+		return urljoin(urljoin(urlunparse((scheme, base.netloc, 'univention/' if self.request.headers.get('X-Forwarded-Host') else '/', '', '', '')), self.request.path_decoded.lstrip('/')), '/'.join(args)) + query_string
 
 	def abspath(self, *args):
 		return urljoin(self.urljoin('/univention/udm/' if self.request.headers.get('X-Forwarded-Host') else '/udm/'), '/'.join(args))
