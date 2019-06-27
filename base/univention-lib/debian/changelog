@@ -1,3 +1,9 @@
+univention-lib (8.0.1-24) unstable; urgency=medium
+
+  * Bug #46323: fix escaping of ldap DN, filters and shell arguments
+
+ -- Fathan Vidjaja <fvidjaja@lauvik.knut.univention.de>  Thu, 27 Jun 2019 12:13:42 +0200
+
 univention-lib (8.0.1-23) unstable; urgency=medium
 
   * Bug #49596: use slaptest for schema checking
