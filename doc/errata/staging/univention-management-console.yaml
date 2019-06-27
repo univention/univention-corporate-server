@@ -3,11 +3,12 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-management-console
-fix: 11.0.4-22A~4.4.0.201906261207
+fix: 11.0.4-24A~4.4.0.201906270956
 desc: |
  This update addresses the following issue(s):
  * The UMC for UCS Core Editions shows a notification that informs about the
    UCS Ambassador Program.
  * Portal enties which are limited to users are now shown when the user is
    logged in via email address.
-bug: [49731, 49619]
+ * TODO
+bug: [49731, 49619, 27816]
