@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-lib 
+fix: 8.0.1-24A~4.4.0.201906271220
+desc: |
+ This update addresses the following issue(s):
+ * Fix escaping of ldap DN, filters and shell arguments
+bug: [46323]
