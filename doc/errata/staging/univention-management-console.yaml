@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-management-console
-fix: 11.0.4-24A~4.4.0.201906270956
+fix: 11.0.4-25A~4.4.0.201906271151
 desc: |
  This update addresses the following issue(s):
  * The UMC for UCS Core Editions shows a notification that informs about the
