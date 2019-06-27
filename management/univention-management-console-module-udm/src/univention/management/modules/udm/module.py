@@ -167,11 +167,11 @@ class QueryStringSanitizer(DictSanitizer):
 		return super(QueryStringSanitizer, self)._sanitize(value, name, further_arguments)
 
 
-class DefaultDictSanitizer(DictSanitizer):
+class DictSanitizer(DictSanitizer):
 
 	def __init__(self, sanitizers, allow_other_keys=True, **kwargs):
 		self.default_sanitizer = kwargs.pop('default_sanitizer', None)
-		super(DefaultDictSanitizer, self).__init__(sanitizers, allow_other_keys=allow_other_keys, **kwargs)
+		super(DictSanitizer, self).__init__(sanitizers, allow_other_keys=allow_other_keys, **kwargs)
 
 	def _sanitize(self, value, name, further_arguments):
 		if not isinstance(value, dict):
@@ -215,7 +215,7 @@ class ObjectPropertySanitizer(StringSanitizer):
 		StringSanitizer.__init__(self, **args)
 
 
-class PropertiesSanitizer(DefaultDictSanitizer):
+class PropertiesSanitizer(DictSanitizer):
 
 	def __init__(self, *args, **kwargs):
 		super(PropertiesSanitizer, self).__init__({}, *args, default_sanitizer=PropertySanitizer(), **kwargs)
@@ -2064,8 +2064,8 @@ class Objects(FormBase, ReportingBase):
 	@sanitize_body_arguments(
 		position=DNSanitizer(required=True),
 		superordinate=DNSanitizer(required=False, allow_none=True),
-		options=DefaultDictSanitizer({}, default_sanitizer=BooleanSanitizer()),
-		policies=DefaultDictSanitizer({}, default_sanitizer=DNSanitizer()),
+		options=DictSanitizer({}, default_sanitizer=BooleanSanitizer()),
+		policies=DictSanitizer({}, default_sanitizer=DNSanitizer()),
 		properties=DictSanitizer({}),
 	)
 	@tornado.gen.coroutine
@@ -2315,8 +2315,8 @@ class Object(FormBase, Ressource):
 	@sanitize_body_arguments(
 		position=DNSanitizer(required=True),
 		superordinate=DNSanitizer(required=False, allow_none=True),
-		options=DefaultDictSanitizer({}, default_sanitizer=BooleanSanitizer()),
-		policies=DefaultDictSanitizer({}, default_sanitizer=DNSanitizer()),
+		options=DictSanitizer({}, default_sanitizer=BooleanSanitizer()),
+		policies=DictSanitizer({}, default_sanitizer=DNSanitizer()),
 		properties=DictSanitizer({}),
 	)
 	@tornado.gen.coroutine
@@ -2354,8 +2354,8 @@ class Object(FormBase, Ressource):
 	@sanitize_body_arguments(
 		position=DNSanitizer(required=True),
 		superordinate=DNSanitizer(required=False, allow_none=True),
-		options=DefaultDictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=True),
-		policies=DefaultDictSanitizer({}, default_sanitizer=DNSanitizer(), required=True),
+		options=DictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=True),
+		policies=DictSanitizer({}, default_sanitizer=DNSanitizer(), required=True),
 		properties=DictSanitizer({}),
 	)
 	@tornado.gen.coroutine
