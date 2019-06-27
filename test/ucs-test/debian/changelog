@@ -1,3 +1,9 @@
+ucs-test (9.0.2-109) unstable; urgency=medium
+
+  * Bug #49679: temporarily always append a dot to nSRecord entries
+
+ -- Florian Best <best@univention.de>  Thu, 27 Jun 2019 11:49:52 +0200
+
 ucs-test (9.0.2-108) unstable; urgency=medium
 
   * Bug #47018: wait before changing password in 86_selenium.10_product_test_password_change

@@ -16,7 +16,7 @@ import univention.testing.strings as uts
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		ns_records = [uts.random_string(), uts.random_string(), uts.random_string(), uts.random_string()]
+		ns_records = [uts.random_nameserver(), uts.random_nameserver(), uts.random_nameserver(), uts.random_nameserver()]
 		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), append={'nameserver': ns_records})
 
 		udm.modify_object('dns/forward_zone', dn=forward_zone, remove={'nameserver': ns_records[2:]})

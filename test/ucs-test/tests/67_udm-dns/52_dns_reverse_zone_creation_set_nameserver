@@ -16,7 +16,7 @@ import univention.testing.strings as uts
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		ns_record = uts.random_string()
+		ns_record = uts.random_nameserver()
 
 		# IPv4 case:
 		reverse_zone = udm.create_object('dns/reverse_zone', subnet='10.20.30', nameserver=ns_record)

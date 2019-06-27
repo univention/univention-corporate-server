@@ -143,3 +143,8 @@ class IP_Iter(object):
 
 def random_ip(ip_iter=IP_Iter()):
 	return ip_iter.next()
+
+
+def random_nameserver():
+	# Bug #49679: the S4-Connector always appends a dot to nSRecord without dot
+	return '%s.' % (random_string(),)
