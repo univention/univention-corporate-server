@@ -140,10 +140,10 @@ class CLIClient(object):
 	def list_objects(self, args):
 		module = self.udm.get(args.object_type)
 		filter = None if '=' not in args.filter else dict([args.filter.split('=', 1)])
-		for entry in module.search(filter, args.position):
+		for entry in module.search(filter, args.position, opened=True):
 			self.print_line('')
 			self.print_line('DN', entry.dn)
-			entry = entry.open()
+			#entry = entry.open()
 			for key, value in sorted(entry.props.items()):
 				if isinstance(value, list):
 					for item in value:
