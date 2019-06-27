@@ -2140,7 +2140,7 @@ docker-compose -p $appid logs
                 </simpara>
             </listitem>
             <listitem>
-                <simpara><guilabel>Scripts</guilabel> &ar; <guilabel>Setup script</guilabel>
+                <simpara><guilabel>Scripts</guilabel> &ar; <guilabel>Setup script</guilabel></simpara>
             </listitem>
             <listitem>
                 <simpara>
