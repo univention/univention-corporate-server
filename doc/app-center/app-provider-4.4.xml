@@ -556,7 +556,7 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
     <section id="create-app-with-docker:compose">
         <title>Create a Multi Container App</title>
         <para>
-            Starting with <u:erratum release="4.3-2">345</u:erratum> Univention App Center supports
+            Starting with UCS 4.3-2 errata345 Univention App Center supports
             apps that consist of multiple Docker images. It uses <ulink
                 url="https://docs.docker.com/compose/overview/">Docker
                 Compose</ulink>, a tool for defining and running
@@ -1741,8 +1741,8 @@ docker-compose -p $appid logs
 				is created.
             </para>
             <para>
-                <u:erratum release="4.3">211</u:erratum> is required on the
-                user's system for this feature.
+                UCS 4.3 errata 211 is required on the user's system for this
+                feature.
             </para>
 			<section id="provision:push:setup">
 				<title>Setup in App configuration</title>
@@ -2933,14 +2933,14 @@ Group[de] = Lizenz und Liste
         </para>
         <para>
             Apps may need access to the UCS certificate infrastructure or need
-            to be aware of changes to the certificates. Starting with <u:erratum release="4.3">91</u:erratum>
-            the Univention App Center provides a
-            simple way to manage certificates inside an app. This is simply a
-            new action named <guimenu>update-certificates</guimenu> in the app
-            Center which is called automatically during the installation and
-            upgrade of apps (but can also be executed manually) and provides apps
-            a simple way to gain access to certificates and to react to
-            changes to certificates.
+            to be aware of changes to the certificates. Starting with UCS 4.3
+            errata91 the Univention App Center provides a simple way to manage
+            certificates inside an app. This is simply a new action named
+            <guimenu>update-certificates</guimenu> in the app Center which is
+            called automatically during the installation and upgrade of apps
+            (but can also be executed manually) and provides apps a simple way
+            to gain access to certificates and to react to changes to
+            certificates.
         </para>
 <programlisting language="sh">
 # update all apps
