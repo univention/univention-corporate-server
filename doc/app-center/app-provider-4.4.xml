@@ -275,7 +275,7 @@
                     <listitem>
                         <simpara>
                             Select <emphasis>Docker app or based on
-                                AppBox</emphasis> for the recommended Docker
+                                <wordasword>AppBox</wordasword></emphasis> for the recommended Docker
                             based app. This documentation only covers single
                             and multi container apps.
                         </simpara>
@@ -501,10 +501,10 @@
             <title>Database</title>
             <para>
                 Many applications need a relational database management system
-                (RDMS) somewhere in the environment to function properly. If
-                the app needs such a database the App Center takes care of
-                providing one directly to the Docker host. Activate
-                <guimenu>Docker app needs database</guimenu> on the
+                (<wordasword>RDMS</wordasword>) somewhere in the environment to
+                function properly. If the app needs such a database the App
+                Center takes care of providing one directly to the Docker host.
+                Activate <guimenu>Docker app needs database</guimenu> on the
                 <guimenu>Overview</guimenu> tab and then go to the
                 <guimenu>Database</guimenu> tab, where the appropriate settings
                 can be made.
@@ -556,7 +556,7 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
     <section id="create-app-with-docker:compose">
         <title>Create a Multi Container App</title>
         <para>
-            Starting with UCS 4.3-2 errata345 Univention App Center supports
+            Starting with UCS 4.3-2 errata 345 Univention App Center supports
             apps that consist of multiple Docker images. It uses <ulink
                 url="https://docs.docker.com/compose/overview/">Docker
                 Compose</ulink>, a tool for defining and running
@@ -2197,7 +2197,8 @@ docker-compose -p $appid logs
                 <filename>setup</filename> script is run. Its purpose is to
                 restore the data which has been stored by the
                 <filename>store_data</filename> script. The parameters are the
-                appid, the app version and a filename for error logging.
+                <wordasword>appid</wordasword>, the app version and a filename
+                for error logging.
             </para>
         </section>
 		<section id="installation:setup">
@@ -2211,9 +2212,10 @@ docker-compose -p $appid logs
                 fails (exit code != 0) the installation is aborted.
             </para>
             <para>
-                The parameters given to the script are the appid, the app
-                version, a filename for error logging and the username and
-                credentials for the Administrator user.
+                The parameters given to the script are the
+                <wordasword>appid</wordasword>, the app version, a filename for
+                error logging and the username and credentials for the
+                Administrator user.
             </para>
         </section>
 
@@ -2226,7 +2228,8 @@ docker-compose -p $appid logs
                 <filename>setup</filename> script is run. Its purpose is to
                 restore the data which has been stored by the
                 <filename>store_data</filename> script. The parameters are the
-                appid, the app version and a filename for error logging.
+                <wordasword>appid</wordasword>, the app version and a filename
+                for error logging.
 			</para>
         </section>
 
@@ -2251,7 +2254,8 @@ docker-compose -p $appid logs
                 <filename>configure_host</filename> script. Its purpose is to
                 make environment specific settings in the app container. The
                 parameters are the app action <userinput>install</userinput>,
-                the appid, the app version and a filename for error logging.
+                the <wordasword>appid</wordasword>, the app version and a
+                filename for error logging.
             </para>
         </section>
 
@@ -2469,8 +2473,9 @@ exit 0
                 <filename>configure_host</filename> script. Its purpose is to
                 make environment specific settings in the app container before
                 it is removed. The parameters are the app action
-                <userinput>remove</userinput>, the appid, the app version and a
-                filename for error logging.
+                <userinput>remove</userinput>, the
+                <wordasword>appid</wordasword>, the app version and a filename
+                for error logging.
             </para>
         </section>
 
@@ -2488,7 +2493,8 @@ exit 0
                 <filename>/var/lib/univention-appcenter/apps/<replaceable>$APPID</replaceable>/data/</filename>.
                 Afterwards, the data can be restored by one of the
                 <filename>restore_data*</filename> scripts. The parameters are
-                the appid, the app version and a filename for error logging.
+                the <wordasword>appid</wordasword>, the app version and a
+                filename for error logging.
 			</para>
         </section>
 
@@ -2585,9 +2591,10 @@ exit 0
                 (exit code != 0) the upgrade is aborted.
             </para>
             <para>
-                The parameters given to the script are the appid, the app
-                version, a filename for error logging and the username and
-                credentials for the Administrator user.
+                The parameters given to the script are the
+                <wordasword>appid</wordasword>, the app version, a filename for
+                error logging and the username and credentials for the
+                Administrator user.
             </para>
         </section>
 
@@ -2624,8 +2631,9 @@ exit 0
                 <filename>configure_host</filename> script is run. Its purpose
                 is to make environment specific settings in the app container
                 during the upgrade. The parameters are the app action
-                <userinput>upgrade</userinput>, the appid, the app version and
-                a filename for error logging.
+                <userinput>upgrade</userinput>, the
+                <wordasword>appid</wordasword>, the app version and a filename
+                for error logging.
             </para>
         </section>
 
@@ -2934,7 +2942,7 @@ Group[de] = Lizenz und Liste
         <para>
             Apps may need access to the UCS certificate infrastructure or need
             to be aware of changes to the certificates. Starting with UCS 4.3
-            errata91 the Univention App Center provides a simple way to manage
+            errata 91 the Univention App Center provides a simple way to manage
             certificates inside an app. This is simply a new action named
             <guimenu>update-certificates</guimenu> in the app Center which is
             called automatically during the installation and upgrade of apps
@@ -3013,15 +3021,17 @@ service my-app-daemon restart
             with the <guimenu>Mailstack</guimenu> app in the App Center. It
             includes Postfix as <wordasword>MTA</wordasword> for SMTP and
             Dovecot for IMAP. If the app relies on an existing mail
-            infrastructure, it is one option to use
-            the mailstack app and require its installation in the UCS domain.
-            This can be configured for the in the App Provider portal at the
+            infrastructure, it is one option to use the mailstack app and
+            require its installation in the UCS domain.  This can be configured
+            for the in the App Provider portal at the
             <guimenu>Version</guimenu> tab in the section <guimenu>Required
-                apps</guimenu> by adding the <userinput>Mailserver</userinput>
-            app and setting <userinput>Installed in domain</userinput>. With
-            this configuration the App Center on the system administrator's UCS
-            system will check, if the Mailserver app is installed somewhere in
-            the domain and asks the administrator to install it accordingly.
+                apps</guimenu> by adding the
+            <userinput><wordasword>Mailserver</wordasword></userinput> app and
+            setting <userinput>Installed in domain</userinput>. With this
+            configuration the App Center on the system administrator's UCS
+            system will check, if the <wordasword>Mailserver</wordasword> app
+            is installed somewhere in the domain and asks the administrator to
+            install it accordingly.
         </para>
         <para>
             Next the app needs to be configured to use the UCS SMTP and IMAP
