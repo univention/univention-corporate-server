@@ -1170,20 +1170,13 @@ define([
 				} else {
 					error = entities.encode(error);
 					if (! logHintGiven) {
-						if (action == 'update') {
+						if (action == 'update' && this.app.isDocker) {
+							var sdbLink = '<a target="_blank" href="https://help.univention.com/t/12430">help.univention.com</a>';
 							var error_msg = '<p><b>' + _('The App update has failed!') + '</b></p>';
 							error_msg += '<p>' + _('We are sorry for the inconvenience.');
 							error_msg += _('The error message was:') + '<pre>' + error + '</pre>';
 							error_msg +=  _('Further information can be found in the following log file on each of the involved systems: %s', '<br /><em>/var/log/univention/appcenter.log</em>') + '</p>';
-							error_msg += '<p>' + _('The next steps could be:');
-							error_msg += '<ul>'
-							error_msg += '<li>' + _('Check log files') + '</li>'
-							error_msg += '<li>' + _('Consult the forum or contact the Univention support') + '</li>'
-							error_msg += '<li>' + _('Backup all data and configs of the app') + '</li>'
-							error_msg += '<li>' + _('Try to uninstall the app') + '</li>'
-							error_msg += '<li>' + _('Try to install the app again') + '</li>'
-							error_msg += '</ul>'
-							error_msg += '</p>'
+							error_msg += '<p>' + _('Please also have a look at %s for more App upgrade troubleshooting information.', sdbLink) + '</p>';
 							error = error_msg;
 						}
 						else {
