@@ -617,7 +617,7 @@ define([
 				return;
 			}
 
-			var endOfAmbassadorProgram = new Date(2019, 7, 7, 0, 0, 0);
+			var endOfAmbassadorProgram = new Date(2019, 7, 14, 0, 0, 0);
 			var ambassadorProgramHasPassed = endOfAmbassadorProgram < new Date();
 			var isUserAdmin = app.getModule('updater') || app.getModule('schoolrooms');
 			var dontShowNotification = !tools.status('has_free_license') || ambassadorProgramHasPassed || !isUserAdmin || cookie('hideAmbassadorNotification');
