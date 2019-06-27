@@ -249,16 +249,13 @@ class DictSanitizer(Sanitizer):
 	:param sanitizers: will be applied to the content of the sanitized dict
 	:param bool allow_other_keys: if other keys than those in
 		:attr:`~DictSanitizer.sanitizers` are allowed.
-	:param default_sanitizer: will be applied to the content if no sanitizer is defined
 	:type sanitizers: {string : :class:`~Sanitizer`}
-	:type default_sanitizer: :class:`~Sanitizer`
 	'''
 
-	def __init__(self, sanitizers, allow_other_keys=True, default_sanitizer=None, **kwargs):
+	def __init__(self, sanitizers, allow_other_keys=True, **kwargs):
 		self._copy_value = kwargs.pop('_copy_value', True)
 		super(DictSanitizer, self).__init__(**kwargs)
 		self.sanitizers = sanitizers
-		self.default_sanitizer = default_sanitizer
 		self.allow_other_keys = allow_other_keys
 
 	def _sanitize(self, value, name, further_arguments):
@@ -271,14 +268,11 @@ class DictSanitizer(Sanitizer):
 		altered_value = copy.deepcopy(value) if self._copy_value else value
 
 		multi_error = MultiValidationError()
-		for attr in value:
-			sanitizer = self.sanitizers.get(attr, self.default_sanitizer)
+		for attr, sanitizer in self.sanitizers.iteritems():
 			try:
-				if sanitizer:
-					altered_value[attr] = sanitizer.sanitize(attr, value)
+				altered_value[attr] = sanitizer.sanitize(attr, value)
 			except ValidationError as e:
 				multi_error.add_error(e, attr)
-
 		if multi_error.has_errors():
 			raise multi_error
 
