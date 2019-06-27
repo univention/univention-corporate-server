@@ -3010,18 +3010,17 @@ service my-app-daemon restart
         <title>Mail integration</title>
         <para>
             Univention Corporate Server (UCS) provides a complete mailstack
-            with the <guimenu>Mailstack</guimenu> in the App Center. It
+            with the <guimenu>Mailstack</guimenu> app in the App Center. It
             includes Postfix as MTA for SMTP and Dovecot for IMAP. If the app
-            relies on an existing mail infrastructure, it is best practice to
-            use the mailstack app and require its installation in the UCS
-            domain. This can be configured in the App Provider portal for the
-            app under <guimenu>Software</guimenu> in the section
-            <guimenu>Required Apps</guimenu> by selecting the
-            <userinput>Mailserver</userinput> and setting <userinput>Installed
-                in domain</userinput>. With this configuration the App Center
-            on the system administrator's UCS system will check, if the
-            Mailserver app is installed somewhere in the domain and asks the
-            administrator to install it accordingly.
+            relies on an existing mail infrastructure, it is one option to use
+            the mailstack app and require its installation in the UCS domain.
+            This can be configured for the in the App Provider portal at the
+            <guimenu>Version</guimenu> tab in the section <guimenu>Required
+                apps</guimenu> by adding the <userinput>Mailserver</userinput>
+            app and setting <userinput>Installed in domain</userinput>. With
+            this configuration the App Center on the system administrator's UCS
+            system will check, if the Mailserver app is installed somewhere in
+            the domain and asks the administrator to install it accordingly.
         </para>
         <para>
             Next the app needs to be configured to use the UCS SMTP and IMAP
@@ -3106,8 +3105,8 @@ fi
             <para>
                 For the intended app it may be necessary to provide SMTP and
                 IMAP with a custom setup for the app. To provide SMTP and/or
-                IMAP services in a Docker App, these services have to be
-                stopped on the Docker host. This can be done in the App's
+                IMAP services in a Docker app, these services have to be
+                stopped on the Docker host. This can be done in the app's
                 preinst Docker script, see <xref linkend="installation:preinst"
                     />. Example:
                 <programlisting language="sh"><![CDATA[
