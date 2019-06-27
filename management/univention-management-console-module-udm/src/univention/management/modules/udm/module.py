@@ -2433,7 +2433,7 @@ class Object(FormBase, Ressource):
 			except udm_errors.noLock as exc:
 				exists_msg = '(nolock)'
 			if exists_msg and exc:
-				self.raise_sanitization_error('dn', _('Object exists: %s: %s' % (exists_msg, str(UDM_Error(exc)))))
+				self.raise_sanitization_error('dn', _('Object exists: %s: %s') % (exists_msg, str(UDM_Error(exc))))
 		except (udm_errors.pwQuality, udm_errors.pwToShort) as exc:
 			self.raise_sanitization_error('password', str(UDM_Error(exc)))
 		except udm_errors.invalidOptions as exc:
