@@ -452,16 +452,23 @@ class RessourceBase(object):
 
 	def sanitize_arguments(self, sanitizer, *args, **kwargs):
 		try:
+			field = kwargs.pop('_fieldname', 'request.arguments')
 			try:
 				return sanitizer.sanitize(*args, **kwargs)
 			except MultiValidationError:
 				raise
 			except ValidationError as exc:
 				multi_error = MultiValidationError()
-				multi_error.add_error(exc, 'request.arguments')
+				multi_error.add_error(exc, field)
 				raise multi_error
 		except MultiValidationError as e:
 			raise UnprocessableEntity(str(e), result=e.result())
+
+	def raise_sanitization_error(self, field, message):
+		class FalseSanitizer(Sanitizer):
+			def sanitize(self):
+				self.raise_formatted_validation_error(message, field, None)
+		self.sanitize_arguments(FalseSanitizer(), _fieldname=field)
 
 	def content_negotiation(self, response):
 		self.add_header('Vary', ', '.join(self.vary()))
@@ -2409,9 +2416,34 @@ class Object(FormBase, Ressource):
 			raise HTTPError(403, 'Trying to create a object with wrong RDN.')
 
 		try:
-			dn = yield self.pool.submit(obj.create)
-		except udm_errors.objectExists:
-			raise  # FIXME: create sanitizer error format
+			exists_msg = None
+			exc = None
+			try:
+				dn = yield self.pool.submit(obj.create)
+			except udm_errors.objectExists as exc:
+				exists_msg = 'dn: %s' % (exc.args[0],)
+			except udm_errors.uidAlreadyUsed as exc:
+				exists_msg = '(uid)'
+			except udm_errors.groupNameAlreadyUsed as exc:
+				exists_msg = '(group)'
+			except udm_errors.dhcpServerAlreadyUsed as exc:
+				exists_msg = '(dhcpserver)'
+			except udm_errors.macAlreadyUsed as exc:
+				exists_msg = '(mac)'
+			except udm_errors.noLock as exc:
+				exists_msg = '(nolock)'
+			if exists_msg and exc:
+				self.raise_sanitization_error('dn', _('Object exists: %s: %s' % (exists_msg, str(UDM_Error(exc)))))
+		except (udm_errors.pwQuality, udm_errors.pwToShort) as exc:
+			self.raise_sanitization_error('password', str(UDM_Error(exc)))
+		except udm_errors.invalidOptions as exc:
+			self.raise_sanitization_error('options', str(UDM_Error(exc)))
+#		except udm_errors.insufficientInformation as exc:
+#			out.append('E: Insufficient information: %s' % (exc,))
+#		except udm_errors.invalidDhcpEntry:
+#			out.append('E: The DHCP entry for this host should contain the zone dn, the ip address and the mac address.')
+#		except udm_errors.circularGroupDependency as e:
+#			out.append('E: circular group dependency detected: %s' % e)
 		except udm_errors.base as exc:
 			UDM_Error(exc).reraise()
 
@@ -2424,6 +2456,12 @@ class Object(FormBase, Ressource):
 
 		try:
 			yield self.pool.submit(obj.modify)
+		except (udm_errors.pwQuality, udm_errors.pwToShort) as exc:
+			self.raise_sanitization_error('password', str(UDM_Error(exc)))
+#		except udm_errors.invalidDhcpEntry:
+#			out.append('E: The DHCP entry for this host should contain the zone dn, the ip address and the mac address.')
+#		except udm_errors.circularGroupDependency as e:
+#			out.append('E: circular group dependency detected: %s' % e)
 		except udm_errors.base as exc:
 			UDM_Error(exc).reraise()
 		else:
@@ -2472,7 +2510,10 @@ class Object(FormBase, Ressource):
 
 		cleanup = bool(self.request.query_arguments['cleanup'])
 		recursive = bool(self.request.query_arguments['recursive'])
-		yield self.pool.submit(module.remove, dn, cleanup, recursive)
+		try:
+			yield self.pool.submit(module.remove, dn, cleanup, recursive)
+		except udm_errors.primaryGroupUsed:
+			raise
 		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation({})
 
