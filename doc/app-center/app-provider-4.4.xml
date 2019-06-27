@@ -134,7 +134,7 @@
                 access to the image. Please then grant access to the Docker Hub
                 user <userinput>univention</userinput>. The image then has to
                 be copied manually by the App Center team to the Univention
-                Docker registry, which is not browsable.
+                Docker registry, which cannot be browsed.
                 It needs credentials to be accessed. The Docker image should be
                 considered public by the time the app is published in
                 Univention App Center.
@@ -3011,8 +3011,9 @@ service my-app-daemon restart
         <para>
             Univention Corporate Server (UCS) provides a complete mailstack
             with the <guimenu>Mailstack</guimenu> app in the App Center. It
-            includes Postfix as MTA for SMTP and Dovecot for IMAP. If the app
-            relies on an existing mail infrastructure, it is one option to use
+            includes Postfix as <wordasword>MTA</wordasword> for SMTP and
+            Dovecot for IMAP. If the app relies on an existing mail
+            infrastructure, it is one option to use
             the mailstack app and require its installation in the UCS domain.
             This can be configured for the in the App Provider portal at the
             <guimenu>Version</guimenu> tab in the section <guimenu>Required
@@ -3146,8 +3147,12 @@ ucr set dovecot/autostart='no'
             </para>
 
             <para>
-                Install the <phrase>extremely simple MTA</phrase> <package>ssmtp</package> and configure this MTA
-                to use the <systemitem class="systemname">localhost</systemitem> (our Docker container is listening on
+                Install the <phrase>extremely simple
+                    <wordasword>MTA</wordasword></phrase>
+                <package>ssmtp</package> and configure this
+                <wordasword>MTA</wordasword> to use the <systemitem
+                    class="systemname">localhost</systemitem> (our Docker
+                container is listening on
                 localhost:25).
                 <programlisting language="sh">
 univention-install --yes ssmtp
