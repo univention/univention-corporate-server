@@ -8,4 +8,7 @@ desc: |
  This update addresses the following issue(s):
  * Requesting a Univention license activation during the initial system
    configuration has been repaired.
-bug: [49384]
+ * For UCS@school: The setup process now asks for confirmation that a new 
+   server in an UCS@school is going to be set up with the required role
+   (educational, administrative or central).
+bug: [49384, 49271]
