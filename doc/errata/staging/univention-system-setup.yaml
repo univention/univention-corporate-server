@@ -3,12 +3,12 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-system-setup
-fix: 12.0.2-9A~4.4.0.201906271406
+fix: 2.0.2-10A~4.4.0.201906281518
 desc: |
  This update addresses the following issue(s):
  * Requesting a Univention license activation during the initial system
    configuration has been repaired.
  * For UCS@school: The setup process now asks for confirmation that a new 
-   server in an UCS@school is going to be set up with the required role
+   server in a UCS@school is going to be set up with the required role
    (educational, administrative or central).
 bug: [49384, 49271]
