@@ -184,6 +184,12 @@ class CLIClient(object):
 	def print_error(self, value='', prefix='Error'):
 		self.print_line(prefix, value, '')
 
+	def infos(self, args):
+		args.parser.print_help()
+		for sub in args.subparsers.choices.values():
+			sub.print_help()
+		self.get_info(args)
+
 	def get_info(self, args):
 		module = self.udm.get(args.object_type)
 		module.load_relations()
@@ -191,10 +197,6 @@ class CLIClient(object):
 		mod = module.client.eval_response(resp)
 		properties = dict((prop['id'], prop) for prop in mod['properties'])
 		layout = mod['layout']
-
-		args.parser.print_help()
-		for sub in args.subparsers.choices.values():
-			sub.print_help()
 
 		for layout in layout:
 			print('  %s - %s:' % (layout['label'], layout['description']))
@@ -250,6 +252,16 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 	parser.add_argument('--logfile', help='path and name of the logfile to be used')
 	parser.add_argument('--tls', choices=['0', '1', '2'], default='2', help='0 (no); 1 (try); 2 (must)')
 	parser.add_argument('object_type')
+
+	try:
+		class Format(argparse.ArgumentDefaultsHelpFormatter):
+			def format_help(self):
+				return ''
+
+		parser.formatter_class = Format
+		preargs = parser.parse_known_args()[0]
+	except SystemExit:
+		preargs = None
 
 	subparsers = parser.add_subparsers(dest='action', title='actions', description='All available actions')
 	parser.set_defaults(subparsers=subparsers)
@@ -310,9 +322,21 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 	reports.add_argument('dns', nargs='*')
 
 	info = subparsers.add_parser('info', description='ot info')
-	info.set_defaults(func=client.get_info)
+	info.set_defaults(func=client.infos)
 
 	parser.add_argument('--version', action='version', version='%(prog)s VERSION TODO', help='print version information')
+
+	class FormatModule(argparse.ArgumentDefaultsHelpFormatter):
+		def format_help(self):
+			if preargs:
+				print(preargs)
+				preargs.subparsers = subparsers
+				client.init(preargs)
+				client.get_info(preargs)
+			return super(FormatModule, self).format_help()
+
+	parser.formatter_class = FormatModule
+
 	args = parser.parse_args()
 	client.init(args)
 	args.func(args)
