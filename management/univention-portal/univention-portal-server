@@ -46,6 +46,7 @@ from urllib import quote
 import requests
 import tornado.ioloop
 import tornado.web
+import ldap
 from ldap.filter import filter_format
 
 from univention.udm import UDM
@@ -175,23 +176,32 @@ class LDAPCache(object):
 	def refresh(self):
 		ucr.load()
 		get_logger('cache').info('refreshing cache')
-		ldap_hostdn = ucr.get('ldap/hostdn')
 		try:
-			localhost = self.udm.obj_by_dn(ldap_hostdn)
-			portal_dn = localhost.props.portal
-			portal = self.udm.get('settings/portal').get(portal_dn)
-			content = {}
-			content['portal'] = self._extract_portal(portal)
-			content['links'] = self._extract_links(portal)
-			content['categories'] = self._extract_categories()
-			content['entries'] = self._extract_entries(portal)
-			with tempfile.NamedTemporaryFile(delete=False) as fd:
-				json.dump(content, fd, sort_keys=True, indent=4)
+			try:
+				fd = self._refresh()
+			except ldap.INSUFFICIENT_ACCESS:
+				get_logger('server').info('Reconnecting ldap connection')
+				self._lo = None
+				fd = self._refresh()
 		except Exception:
 			get_logger('cache').exception('Error during refresh')
 			# hopefully, we can still work with an older cache?
 		else:
 			shutil.move(fd.name, self.PORTAL_CACHE)
+
+	def _refresh(self):
+		ldap_hostdn = ucr.get('ldap/hostdn')
+		localhost = self.udm.obj_by_dn(ldap_hostdn)
+		portal_dn = localhost.props.portal
+		portal = self.udm.get('settings/portal').get(portal_dn)
+		content = {}
+		content['portal'] = self._extract_portal(portal)
+		content['links'] = self._extract_links(portal)
+		content['categories'] = self._extract_categories()
+		content['entries'] = self._extract_entries(portal)
+		with tempfile.NamedTemporaryFile(delete=False) as fd:
+			json.dump(content, fd, sort_keys=True, indent=4)
+		return fd
 
 	def _extract_portal(self, portal):
 		self._write_css(portal)
@@ -415,6 +425,12 @@ class JsonHandler(tornado.web.RequestHandler):
 		if 'exc_info' in kwargs:
 			get_logger('server').exception('Error during service')
 		return super(JsonHandler, self).write_error(status_code, **kwargs)
+
+	def log_exception(self, typ, value, tb):
+		if isinstance(value, ldap.INSUFFICIENT_ACCESS):
+			get_logger('server').info('Reconnecting ldap connection')
+			cache._lo = None
+		return super(JsonHandler, self).log_exception(typ, value, tb)
 
 	def get(self):
 		session = self.get_cookie('UMCSessionId')

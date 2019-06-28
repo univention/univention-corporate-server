@@ -4,3 +4,4 @@ listener/*.py usr/lib/univention-directory-listener/system
 univention-blog.png usr/share/univention-portal/
 univention-portal-server usr/bin/
 univention-portal-server.service /lib/systemd/system
+portal-server-password-rotate usr/lib/univention-server/server_password_change.d/
