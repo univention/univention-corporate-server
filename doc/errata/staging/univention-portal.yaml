@@ -3,8 +3,9 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-portal
-fix: 
+fix: 3.0.1-27A~4.4.0.201906281356
 desc: |
  This update addresses the following issue(s):
  * The robustness of the univention-portal-server has been increased.
-bug: [49526]
+ * The univention-portal-server is reloaded after a server password rotation.
+bug: [49526, 49746]
