@@ -125,18 +125,18 @@ def check_memberof_overlay_is_installed(address, username, password):
 
 
 def check_for_school_domain(hostname, address, username, password):
-	MODULE.process('univention-join:school: check_for_school_domain(%r, %r, %r, %r)', hostname, address, username, password)
+	MODULE.process('univention-join:school: check_for_school_domain(%r, %r, %r, %r)' % (hostname, address, username, '$PASSWORD', ))
 	is_school_multiserver_domain = check_is_school_multiserver_domain(address, username, password)
 	if is_school_multiserver_domain:
 		server_school_roles = get_server_school_roles(hostname, address, username, password)
 	else:
 		server_school_roles = []
-	MODULE.process('univention-join:school: check_for_school_domain = %r', {'server_school_roles': server_school_roles, 'is_school_multiserver_domain': is_school_multiserver_domain})
+	MODULE.process('univention-join:school: check_for_school_domain = %r' % ({'server_school_roles': server_school_roles, 'is_school_multiserver_domain': is_school_multiserver_domain}, ))
 	return {'server_school_roles': server_school_roles, 'is_school_multiserver_domain': is_school_multiserver_domain}
 
 
 def check_is_school_multiserver_domain(address, username, password):
-	MODULE.process('univention-join:school: check_is_school_multiserver_domain(%r, %r, %r)', address, username, password)
+	MODULE.process('univention-join:school: check_is_school_multiserver_domain(%r, %r, %r)' % (address, username, '$PASSWORD', ))
 	is_school_multiserver_domain = False
 	with _temporary_password_file(password) as password_file:
 		try:
@@ -176,12 +176,12 @@ def check_is_school_multiserver_domain(address, username, password):
 			]).strip().splitlines()
 		except subprocess.CalledProcessError as exc:
 			MODULE.error('univention-join:school: Could not query DC Master if the domain is a multiserver school domain: %s' % (exc,))
-	MODULE.process('univention-join:school: check_is_school_multiserver_domain = %r', is_school_multiserver_domain)
+	MODULE.process('univention-join:school: check_is_school_multiserver_domain = %r' % (is_school_multiserver_domain, ))
 	return is_school_multiserver_domain
 
 
 def get_server_school_roles(hostname, address, username, password):
-	MODULE.process('univention-join:school: get_server_school_roles(%r, %r, %r, %r)', hostname, address, username, password)
+	MODULE.process('univention-join:school: get_server_school_roles(%r, %r, %r, %r)' % (hostname, address, username, '$PASSWORD', ))
 	school_roles = []
 	with _temporary_password_file(password) as password_file:
 		try:
@@ -213,5 +213,5 @@ def get_server_school_roles(hostname, address, username, password):
 			school_roles = [role.split()[-1] for role in school_roles]
 		except (subprocess.CalledProcessError, IndexError) as exc:
 			MODULE.error('univention-join:school: Could not query DC Master for ucsschoolRole: %s' % (exc,))
-	MODULE.process('univention-join:school: get_server_school_roles = %r', school_roles)
+	MODULE.process('univention-join:school: get_server_school_roles = %r' % (school_roles, ))
 	return school_roles
