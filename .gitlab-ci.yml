@@ -6,9 +6,9 @@ build:
     tags:
         - ucs-build
     only:
-        - refs:
+        refs:
             - /^[1-9][0-9]*\.[0-9]+-[0-9]+$/    # Only build packages automatically for the main UCS branches
-        - changes:
-            - */*/debian/changelog
+        changes:
+            - "*/*/debian/changelog"
     script:
         - ./.build_unbuilt_packages
