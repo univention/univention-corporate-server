@@ -18,7 +18,7 @@ if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		forward_zone_properties = {
 			'zone': '%s.%s' % (uts.random_name(), uts.random_name()),
-			'nameserver': uts.random_string(),
+			'nameserver': uts.random_nameserver(),
 			'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
 			'serial': '1',
 			'zonettl': '128',
