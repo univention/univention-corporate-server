@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-ldap
-fix: 
+fix: 15.0.0-21A~4.4.0.201907011317
 desc: |
  This update addresses the following issue(s):
  * The LDAP-ACLs for read access to cn=monitor can now be extended via UCR
