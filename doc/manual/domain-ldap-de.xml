@@ -1500,6 +1500,103 @@ univention-directory-listener-ctrl resync cups-printers
 	</section>
 </section>
 
+<section id="domain:oidc">
+  <title><application>OpenID Connect Provider</application></title>
+  <para>
+	UCS bietet die Möglichkeit, einen <application>OpenID Connect Provider</application> zu installieren, mit dessen Hilfe externe Web-Dienste die Benutzeranmeldung über das <application>OpenID Connect</application> (OIDC) Protokoll an das UCS Identity Management delegieren können.
+	Die <application>OpenID Connect Provider</application> App kann über das App Center installiert werden.
+	Der Dienst wird von der Software <application>Kopano Konnect</application> bereitgestellt.
+  </para>
+  <para>
+	Die App kann grundsätzlich auf allen Systemrollen installiert werden.
+	Bei einer Installation auf einem UCS System der Rolle &ucsMaster; oder &ucsBackup; wird der <application>OpenID Connect Provider</application> unter dem DNS Eintrag für den <foreignphrase>Single Sign-On</foreignphrase> verfügbar gemacht, im Normalfall ist dies <uri>ucs-sso.<replaceable>domain.name</replaceable></uri>.
+	Wird die App auf einer anderen Systemrolle installiert, kann der Provider statt dessen direkt über den Hostnamen erreicht werden.
+  </para>
+  <para>
+	Externe Web-Dienste können per <application>OpenID Connect</application> an UCS angebunden werden, indem Sie für diesen Dienst ein bestimmtes Objekt des Typs <classname>oidc/rpservice</classname> im UCS Verzeichnisdienst anlegen.
+	Dies kann in der Univention Management Console im LDAP Browser im Container <uri>cn=oidc</uri> angelegt werden, der sich unterhalb des Containers <uri>cn=univention</uri> befindet.
+	Hier können Sie über den Punkt Hinzufügen und die Auswahl <guimenu>OpenID Connect Relying Party Service</guimenu> den neuen Dienst registrieren.
+  </para>
+  <para
+	>Das gleiche ist auch über die Kommandozeile möglich:
+  </para>
+  <programlisting>
+udm oidc/rpservice create --set name=&lt;UCS_interner_Bezeichner&gt; \
+  --position="cn=oidc,cn=univention,$(ucr get ldap/base)" \
+  --set clientid=&lt;ClientID&gt; \
+  --set clientsecret=&lt;Ein_langes_Passwort&gt; \
+  --set trusted=yes \
+  --set applicationtype=web \
+  --set redirectURI=&lt;URL_aus_Dokumentation_des_Dienstes&gt;
+  </programlisting>
+  <variablelist>
+	<varlistentry>
+	  <term><varname>name</varname></term>
+	  <listitem>
+		<simpara>
+		  der beim Login im Webinterface angezeigte Dienstname.
+		</simpara>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><varname>clientid</varname></term>
+	  <term><varname>secret</varname></term>
+	  <listitem>
+		<simpara>
+		  müssen hier und beim angebundenen Dienst identisch sein (<foreignphrase>shared secret</foreignphrase>).
+		</simpara>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><varname>trusted</varname></term>
+	  <listitem>
+		<simpara>
+		  sollte standardmäßig auf <literal>yes</literal> gesetzt werden.
+		  Andernfalls wird dem Benutzer eine Bitte um Bestätigung zur Übertragung seiner Benutzerattribute an den Dienst angezeigt.
+		</simpara>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><varname>applicationtype</varname></term>
+	  <listitem>
+		<simpara>
+		  sollte für Internetdienste auf den Wert <literal>web</literal> gesetzt werden.
+		</simpara>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><varname>redirectURI</varname></term>
+	  <listitem>
+		<simpara>
+		  URL des Login-Endpunkts, die in der Dokumentation des jeweiligen angebundenen Dienstes zu finden ist.
+		  Ist ein Dienst über mehrere URLs erreichbar oder soll er auch per IP Adresse aufrufbar sein, müssen alle möglichen Adressen zum Attribut <varname>redirectURI</varname> hinzugefügt werden.
+		  Das Feld kann daher mehrfach definiert werden, wobei jeder einzelne Wert eine gültige URL enthalten muss.
+		</simpara>
+	  </listitem>
+	</varlistentry>
+  </variablelist>
+  <para>
+	Der angebundene Web-Dienst braucht für seine Konfiguration noch Informationen über die <application>OpenID Connect</application> Endpunkte der Provider-App.
+	Diese sind bei installierter Provider-App unter der URL <uri>https://ucs-sso.<replaceable>domain.name</replaceable>/.well-known/openid-configuration</uri> abrufbar.
+	Wurde die Provider-App auf einem anderen System als &ucsMaster; oder &ucsBackup; installiert, ist wie oben beschrieben statt <uri>ucs-sso.domain.name</uri> der FQDN des jeweiligen Servers zu verwenden.
+  </para>
+  <para>
+	Bei der Verwendung von <application>OpenID Connect</application> ist auf korrekte, auflösbare DNS Namen und verifizierbare Zertifikate zu achten.
+	Zu beachten ist dies bei Client-Rechnern von Endbenutzern, die sowohl auf die per DNS auflösbaren Hostnamen des Web-Dienst als auch auf den <application>OpenID Connect Provider</application> zugreifen müssen.
+	Außerdem müssen die extern angebundenen Web-Dienste eine Verbindung zum <application>OpenID Connect Provider</application> herstellen können, um darüber die Benutzerattribute abrufen zu können.
+  </para>
+  <para>
+	Im speziellen Fall, wo der DNS Namen des OIDC-Providers geändert werden soll, muss zunächst der entsprechende Wert in den App Einstellungen der <application>OpenID Connect Provider</application> App angepasst werden.
+	Da es unzählige Szenarien für die Erreichbarkeit des Providers nach der Änderung des DNS Namens gibt, kann keine automatische Änderung der Webserverkonfiguration vorgenommen werden.
+	Es muss so zum Beispiel je nach konfiguriertem DNS Namen noch die Apache Konfiguration unter UCS angepasst werden.
+	Die Konfigurationsdatei <filename>/etc/apache2/conf-available/openid-connect-provider.conf</filename> muss unter dem gesetzten DNS Namen in einem Virtual Host verfügbar gemacht werden, beispielsweise durch eine Verlinkung nach <filename class="directory">/etc/apache2/ucs-sites.conf.d/</filename>.
+  </para>
+  <para>
+	Der <application>OpenID Connect Provider</application> loggt Aktionen über den Docker Daemon.
+	Die Ausgaben können beispielsweise über das Kommando <command>univention-app logs openid-connect-provider</command> eingesehen werden.
+  </para>
+</section>
+
 <section id="domain:backup2master">
 	<title>Umwandlung eines &ucsBackup; zum neuen &ucsMaster;</title>
 	<para>
