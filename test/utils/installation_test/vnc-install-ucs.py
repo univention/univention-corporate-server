@@ -25,6 +25,7 @@ def main():
 	parser.add_argument('--dns')
 	parser.add_argument('--join-user')
 	parser.add_argument('--join-password')
+	parser.add_argument('--school-dep', default=[], choices=['central', 'edu', 'adm'])
 	parser.add_argument('--language', default='deu', choices=['deu', 'eng', 'fra'])
 	parser.add_argument('--role', default='master', choices=['master', 'slave', 'member', 'backup', 'admember', 'basesystem', 'applianceEC2', 'applianceLVM'])
 	parser.add_argument('--components', default=[], choices=components.keys() + ['all'], action='append')

@@ -357,6 +357,20 @@ class UCSInstallation(object):
 						time.sleep(0.2)
 					self.click(self._[name])
 
+	def ucsschool(self):
+		# ucs@school role
+		if self.args.school_dep:
+			self.client.waitForText(self._['school_role'], timeout=self.timeout)
+			if self.args.school_dep == 'adm':
+				self.click(self._['school_adm'])
+			elif self.args.school_dep == 'edu':
+				self.click(self._['school_edu'])
+			elif self.args.school_dep == 'central':
+				self.click(self._['school_central'])
+			else:
+				raise NotImplemented()
+			self.click(self._['next'])
+
 	def bootmenu(self):
 		if self.text_is_visible('Univention Corporate Server Installer', timeout=120):
 			self.client.keyPress('enter')
@@ -374,6 +388,7 @@ class UCSInstallation(object):
 			self.installer()
 			self.setup()
 			self.hostname()
+			self.ucsschool()
 			self.software_configuration()
 			self.finish()
 			# TODO activate ens6 so that ucs-kvm-create can connect to instance

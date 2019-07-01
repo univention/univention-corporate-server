@@ -55,6 +55,11 @@ strings = {
 	'setup_successful': 'UCS-Einrichtung erfolgreich',
 	'finish': 'Fertigstellen',
 
+	'school_role': 'Serverrolle in der UCS@school',
+	'school_edu': 'Schulserver im Edukativnetz',
+	'school_adm': 'Schulserver im Verwaltungsnetz',
+	'school_central': 'Zentraler Schulserver',
+
 	'samba4': 'Active Directory-kompatibler',
 	'samba': 'Memberserver',
 	'adconnector': 'Active Directory-Verbindung',
