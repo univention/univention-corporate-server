@@ -6,7 +6,7 @@ src: expat
 fix: 2.2.0-2+deb9u2
 desc: |
  This update addresses the following issue:
- * large number of colons in input makes parser consume high amount of
+ * Large number of colons in input makes parser consume high amount of
    resources, leading to DoS (CVE-2018-20843)
 bug: [49761]
 cve:
