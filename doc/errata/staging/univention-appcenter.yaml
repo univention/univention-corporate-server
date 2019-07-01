@@ -3,8 +3,10 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-appcenter
-fix: 8.0.11-40A~4.4.0.201906271716
-desc: |
- This update addresses the following issue(s):
- * The docker App upgrade message has been changed.
-bug: [49742]
+fix: 8.0.11-41A~4.4.0.201907011529
+desc: |-
+  This update addresses the following issue(s):
+  * The docker App upgrade message has been changed.
+  * Suggestions based on currently installed Apps are now dynamically loaded
+    from the App Center server.
+bug: [49742, 49770]
