@@ -71,6 +71,8 @@ define([
 
 		metaCategoryClass: AppCenterMetaCategory,
 
+		appSuggestions: null,
+
 		buildRendering: function() {
 			this.inherited(arguments);
 
@@ -277,110 +279,25 @@ define([
 		},
 
 		_markAppsAsSuggested: function(applications) {
-			let suggestions = this._getAppSuggestions();
-			let installedApps = applications.filter(app => app.is_installed_anywhere);
+			return when(this._getAppSuggestions(), suggestions => {
+				let installedApps = applications.filter(app => app.is_installed_anywhere);
 
-			this._getSuggestedAppIds(suggestions, installedApps).forEach(id => {
-				let app = applications.find(app => app.id === id);
-				if (app) {
-					app.$isSuggested = true;
-				}
+				this._getSuggestedAppIds(suggestions, installedApps).forEach(id => {
+					let app = applications.find(app => app.id === id);
+					if (app) {
+						app.$isSuggested = true;
+					}
+				});
 			});
 		},
 
 		_getAppSuggestions: function() {
-			return [{
-				condition: ['owncloud', 'adconnector', 'letsencrypt'],
-				candidates: [
-					{ id: 'onlyoffice-ds', mayNotBeInstalled: ['collabora', 'collabora-online'] },
-					{ id: 'collabora', mayNotBeInstalled: ['onlyoffice-ds', 'collabora-online'] },
-					{ id: 'kopano-core', mayNotBeInstalled: ['oxseforucs', 'egroupware', 'tine20', 'zimbra', 'horde'] },
-				]
-			}, {
-				condition: ['owncloud', 'adconnector'],
-				candidates: [
-					{ id: 'letsencrypt', mayNotBeInstalled: [] },
-					{ id: 'onlyoffice-ds', mayNotBeInstalled: ['collabora', 'collabora-online'] },
-				]
-			}, {
-				condition: ['nextcloud', 'kopano-core'],
-				candidates: [
-					{ id: 'letsencrypt', mayNotBeInstalled: [] },
-					{ id: 'fetchmail', mayNotBeInstalled: ['oxseforucs'] },
-					{ id: 'samba4', mayNotBeInstalled: ['samba-memberserver'] },
-					{ id: 'onlyoffice-ds', mayNotBeInstalled: ['collabora', 'collabora-online'] },
-				]
-			}, {
-				condition: ['nextcloud', 'letsencrypt'],
-				candidates: [
-					{ id: 'kopano-core', mayNotBeInstalled: ['oxseforucs', 'egroupware', 'tine20', 'zimbra', 'horde'] },
-					{ id: 'samba4', mayNotBeInstalled: ['samba-memberserver'] },
-					{ id: 'onlyoffice-ds', mayNotBeInstalled: ['collabora', 'collabora-online'] },
-					{ id: 'self-service', mayNotBeInstalled: [] },
-				]
-			}, {
-				condition: ['kopano-core', 'samba4'],
-				candidates: [
-					{ id: 'fetchmail', mayNotBeInstalled: ['oxseforucs'] },
-					{ id: 'letsencrypt', mayNotBeInstalled: [] },
-					{ id: 'self-service', mayNotBeInstalled: [] },
-					{ id: 'nextcloud', mayNotBeInstalled: ['owncloud'] },
-				]
-			}, {
-				condition: ['kopano-core', 'letsencrypt'],
-				candidates: [
-					{ id: 'fetchmail', mayNotBeInstalled: ['oxseforucs'] },
-					{ id: 'samba4', mayNotBeInstalled: ['samba-memberserver'] },
-					{ id: 'nextcloud', mayNotBeInstalled: ['owncloud'] },
-					{ id: 'self-service', mayNotBeInstalled: [] },
-				]
-			}, {
-				condition: ['samba4', 'letsencrypt'],
-				candidates: [
-					{ id: 'self-service', mayNotBeInstalled: [] },
-					{ id: 'kopano-core', mayNotBeInstalled: ['oxseforucs', 'egroupware', 'tine20', 'zimbra', 'horde'] },
-					{ id: 'nextcloud', mayNotBeInstalled: ['owncloud'] },
-					{ id: 'cups', mayNotBeInstalled: [] },
-				]
-			}, {
-				condition: ['owncloud'],
-				candidates: [
-					{ id: 'letsencrypt', mayNotBeInstalled: [] },
-					{ id: 'samba4', mayNotBeInstalled: ['samba-memberserver'] },
-				]
-			}, {
-				condition: ['nextcloud'],
-				candidates: [
-					{ id: 'samba4', mayNotBeInstalled: ['samba-memberserver'] },
-					{ id: 'letsencrypt', mayNotBeInstalled: [] },
-					{ id: 'onlyoffice-ds', mayNotBeInstalled: ['collabora', 'collabora-online'] },
-					{ id: 'kopano-core', mayNotBeInstalled: ['oxseforucs', 'egroupware', 'tine20', 'zimbra', 'horde'] },
-				]
-			}, {
-				condition: ['kopano-core'],
-				candidates: [
-					{ id: 'samba4', mayNotBeInstalled: ['samba-memberserver'] },
-					{ id: 'fetchmail', mayNotBeInstalled: ['oxseforucs'] },
-					{ id: 'letsencrypt', mayNotBeInstalled: [] },
-					{ id: 'nextcloud', mayNotBeInstalled: ['owncloud'] },
-				]
-			}, {
-				condition: ['samba4'],
-				candidates: [
-					{ id: 'dhcp-server', mayNotBeInstalled: [] },
-					{ id: 'cups', mayNotBeInstalled: [] },
-					{ id: 'self-service', mayNotBeInstalled: [] },
-					{ id: 'pkgdb', mayNotBeInstalled: [] },
-				]
-			}, {
-				condition: ['letsencrypt'],
-				candidates: [
-					{ id: 'samba4', mayNotBeInstalled: ['samba-memberserver'] },
-					{ id: 'kopano-core', mayNotBeInstalled: ['oxseforucs', 'egroupware', 'tine20', 'zimbra', 'horde'] },
-					{ id: 'nextcloud', mayNotBeInstalled: ['owncloud'] },
-					{ id: 'owncloud', mayNotBeInstalled: ['nextcloud'] },
-				]
-			}];
+			return tools.umcpCommand('appcenter/recommendations', {version: 'v1'}, false).then(function(data) {
+				return data.result;
+			}, function() {
+				console.warn('Could not load appcenter/recommendations');
+				return [];
+			});
 		},
 
 		_getSuggestedAppIds: function(suggestions, installedApps) {
@@ -408,57 +325,58 @@ define([
 			quick = quick !== false;
 			this._applications = null;
 			var updating = when(this.getApplications(quick)).then(lang.hitch(this, function(applications) {
-				this._markAppsAsSuggested(applications);
-				var metaLabels = [];
-				array.forEach(this.metaCategories, function(metaObj) {
-					metaObj.set('store', applications);
-					metaLabels.push(metaObj.label);
-				});
-
-				if (quick && this.liveSearch) {
-					var badges = [];
-					var categories = [];
-					var licenses = [];
-					var voteForApps = false;
-					array.forEach(applications, function(application) {
-						array.forEach(application.app_categories, function(category) {
-							if (array.indexOf(categories.map(x => x.id), category) < 0) {
-								categories.push({
-									id: category,
-									description: category
-								});
-							}
-						});
-						array.forEach(application.rating, function(rating) {
-							if (rating.name == 'VendorSupported') {
-								return;
-							}
-							if (array.indexOf(badges, rating.name) < 0) {
-								badges.push({
-									id: rating.name,
-									description: rating.label
-								});
-							}
-						});
-						if (array.indexOf(licenses.map(x => x.id), application.license) < 0) {
-							licenses.push({
-								id: application.license,
-								description: application.license_description
-							});
-						}
-						if (application.vote_for_app) {
-							voteForApps = true;
-						}
+				this._markAppsAsSuggested(applications).then(lang.hitch(this, function() {
+					var metaLabels = [];
+					array.forEach(this.metaCategories, function(metaObj) {
+						metaObj.set('store', applications);
+						metaLabels.push(metaObj.label);
 					});
-					badges.sort((a, b) => a.description > b.description ? 1 : -1);
-					categories.sort((a, b) => a.description > b.description ? 1 : -1);
-					this._sortLicenses(licenses);
-					this._searchSidebar.set('badges', badges);
-					this._searchSidebar.set('voteForApps', voteForApps);
-					this._searchSidebar.set('categories', categories);
-					this._searchSidebar.set('licenses', licenses);
-					this._searchSidebar.onSearch();
-				}
+
+					if (quick && this.liveSearch) {
+						var badges = [];
+						var categories = [];
+						var licenses = [];
+						var voteForApps = false;
+						array.forEach(applications, function(application) {
+							array.forEach(application.app_categories, function(category) {
+								if (array.indexOf(categories.map(x => x.id), category) < 0) {
+									categories.push({
+										id: category,
+										description: category
+									});
+								}
+							});
+							array.forEach(application.rating, function(rating) {
+								if (rating.name == 'VendorSupported') {
+									return;
+								}
+								if (array.indexOf(badges, rating.name) < 0) {
+									badges.push({
+										id: rating.name,
+										description: rating.label
+									});
+								}
+							});
+							if (array.indexOf(licenses.map(x => x.id), application.license) < 0) {
+								licenses.push({
+									id: application.license,
+									description: application.license_description
+								});
+							}
+							if (application.vote_for_app) {
+								voteForApps = true;
+							}
+						});
+						badges.sort((a, b) => a.description > b.description ? 1 : -1);
+						categories.sort((a, b) => a.description > b.description ? 1 : -1);
+						this._sortLicenses(licenses);
+						this._searchSidebar.set('badges', badges);
+						this._searchSidebar.set('voteForApps', voteForApps);
+						this._searchSidebar.set('categories', categories);
+						this._searchSidebar.set('licenses', licenses);
+						this._searchSidebar.onSearch();
+					}
+				}));
 			}));
 			return updating;
 		},

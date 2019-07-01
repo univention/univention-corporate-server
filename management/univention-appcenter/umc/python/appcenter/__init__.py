@@ -39,6 +39,7 @@ from contextlib import contextmanager
 import logging
 from base64 import encodestring
 from threading import Thread
+from json import load
 
 # related third party
 import notifier
@@ -59,7 +60,7 @@ import univention.management.console.modules as umcm
 from univention.appcenter.actions import get_action
 from univention.appcenter.exceptions import Abort, NetworkError, AppCenterError
 from univention.appcenter.packages import reload_package_manager, get_package_manager, package_lock, LOCK_FILE
-from univention.appcenter.app_cache import Apps
+from univention.appcenter.app_cache import Apps, AppCenterCache, default_server
 from univention.appcenter.udm import _update_modules
 from univention.appcenter.utils import docker_is_running, call_process, docker_bridge_network_conflict, send_information, app_is_running, find_hosts_for_master_packages, get_local_fqdn
 from univention.appcenter.log import get_base_logger, log_to_logfile
@@ -248,6 +249,21 @@ class Instance(umcm.Base, ProgressMixin):
 			if not docker_is_running():
 				return False
 		return True
+
+	@simple_response
+	def recommendations(self, version):
+		try:
+			cache = AppCenterCache.build(server=default_server())
+			cache_file = cache.get_cache_file('.recommendations.json')
+			with open(cache_file) as fd:
+				json = load(fd)
+		except (EnvironmentError, ValueError):
+			raise umcm.UMC_Error(_('Could not load recommendations.'))
+		else:
+			try:
+				return json[version]
+			except (KeyError, AttributeError):
+				raise umcm.UMC_Error(_('Unexpected recommendations data.'))
 
 	@simple_response
 	def enable_docker(self):
