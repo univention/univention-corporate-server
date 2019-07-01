@@ -11,6 +11,9 @@ import os
 import univention.testing.utils as utils
 import univention.config_registry as configRegistry
 
+import defusedxml.ElementTree as ET
+import xml.etree.ElementTree
+
 from HTMLParser import HTMLParser
 html = HTMLParser()
 
@@ -99,6 +102,7 @@ class SamlTest(object):
 		if use_kerberos:
 			self.session.auth = HTTPKerberosAuth(mutual_authentication=OPTIONAL)
 		self.page = None
+		self.parsed_page = None
 		self.position = 'Init...'
 
 	def _check_status_code(self, status_code):
@@ -125,6 +129,11 @@ class SamlTest(object):
 			raise SamlError("Problem while %s\nSSL error: %s" % (self.position, 'Some ssl error'))
 		except requests.ConnectionError as E:
 			raise SamlError("Problem while %s\nNo connection to server: %s" % (self.position, E.message))
+		try:
+			self.parsed_page = ET.fromstring(bytes(self.page.text))
+		except xml.etree.ElementTree.ParseError as exc:
+			print('WARN: could not parse XML/HTML: %s' % (exc,))
+			self.parsed_page = xml.etree.ElementTree.Element('html')
 		self._check_status_code(status_code)
 
 	def _login_at_idp_with_credentials(self):
@@ -135,48 +144,51 @@ class SamlTest(object):
 		data = {'username': self.username, 'password': self.password, 'AuthState': auth_state}
 		self._request('POST', self.page.url, 200, data=data)
 
+	def xpath(self, xpath):
+		elem = self.parsed_page.find(xpath)
+		if elem is None:
+			elem = {}
+		return elem
+
 	def _extract_relay_state(self):
 		print("Extract relay state from SAML response")
-		try:
-			relay_state = re.search('name="RelayState" value="([^"]+)"', bytes(self.page.text)).group(1)
-			relay_state = html.unescape(relay_state)
-			print("The relay state is:\n%s" % relay_state)
-			return relay_state
-		except AttributeError:
+		relay_state = self.xpath('.//{http://www.w3.org/1999/xhtml}input[@name="RelayState"]').get('value', '')
+		if relay_state is None:
 			print("No relay state found")
 			raise SamlLoginError(self.page)
+		print("The relay state is:\n%s" % relay_state)
+		return relay_state
 
 	def _extract_saml_msg(self):
 		print("Extract SAML message from SAML response")
-		try:
-			saml_message = re.search('name="SAMLResponse" value="([^"]+)"', bytes(self.page.text)).group(1)
-			saml_message = html.unescape(saml_message)
-			print("The SAML message is:\n%s" % saml_message)
-			return saml_message
-		except AttributeError:
-			print("No SAML message found")
+		saml_message = self.xpath('.//{http://www.w3.org/1999/xhtml}input[@name="SAMLResponse"]').get('value')
+		if saml_message is None:
 			raise SamlLoginError(self.page)
+		print("The SAML message is:\n%s" % saml_message)
+		return saml_message
 
 	def _extract_sp_url(self):
 		print("Extract url to post SAML message to")
-		try:
-			url = re.search('method="post" action="([^"]+)"', bytes(self.page.text)).group(1)
-			url = html.unescape(url)
-			print("The url to post SAML message to is: %s" % url)
-			return url
-		except AttributeError:
+		url = self.xpath('.//{http://www.w3.org/1999/xhtml}form[@method="post"]').get('action')
+		if url is None:
 			print("No url to post SAML message to found")
 			raise SamlLoginError(self.page)
+		print("The url to post SAML message to is: %s" % url)
+		return url
 
 	def _extract_auth_state(self):
 		print("Extract AuthState")
-		try:
-			auth_state = re.search('name="AuthState" value="([^"]+)"', bytes(self.page.text)).group(1)
-			auth_state = html.unescape(auth_state)
-			print("The SAML AuthState is:\n%s" % auth_state)
-			return auth_state
-		except AttributeError:
+		auth_state = self.xpath('.//{http://www.w3.org/1999/xhtml}input[@name="AuthState"]').get('value')
+		if auth_state is None:
+			try:
+				auth_state = re.search('name="AuthState" value="([^"]+)"', bytes(self.page.text)).group(1)
+				auth_state = html.unescape(auth_state)
+			except AttributeError:
+				pass
+		if not auth_state:
 			raise SamlError("No AuthState field found.\nSAML response:\n%s" % self.page.text)
+		print("The SAML AuthState is:\n%s" % auth_state)
+		return auth_state
 
 	def _send_saml_response_to_sp(self, url, saml_msg, relay_state):
 		# POST the SAML message to SP, thus logging in.
@@ -252,8 +264,8 @@ class SamlTest(object):
 				self._request('GET', url, 200)
 			except SamlError as E:
 				# The kerberos backend adds a manual redirect
-				if not self.page.status_code == 401:
-					raise E
+				if self.page.status_code != 401:
+					raise
 				login_link = re.search('<a href="([^"]+)">', bytes(self.page.text)).group(1)
 				self._request('GET', login_link, 200)
 			self._login_at_idp_with_credentials()
