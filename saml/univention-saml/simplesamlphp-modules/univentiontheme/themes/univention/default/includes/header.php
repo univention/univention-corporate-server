@@ -53,15 +53,17 @@ if ($json != NULL) {
 	if (!$en_us_found) {
 		$json[] = array ('id' => 'en-US', 'label' => 'English');
 	}
+	$langlinkarray = array();
 	// sort entries and prepare html code
 	usort($json, "sort_by_label");
+	$langparam = $this->getTranslator()->getLanguage()->getLanguageParameterName();
 	foreach ($json as $entry) {
 		$splitarray = explode('-', $entry['id']);
 		$langstring = $splitarray[0];
 		$langlinkarray[] = array(
 			"id" => $entry['id'],
 			"label" => $entry['label'],
-			"href" => SimpleSAML_Utilities::addURLparameter(SimpleSAML_Utilities::selfURL(), array($this->languageParameterName => $langstring))
+			"href" => SimpleSAML_Utilities::addURLparameter(SimpleSAML_Utilities::selfURL(), array($langparam => $langstring))
 		);
 	}
 }

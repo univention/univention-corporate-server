@@ -1,3 +1,9 @@
+univention-saml (6.0.2-4) unstable; urgency=medium
+
+  * Bug #48961: update for changes in upstream simplesamlphp
+
+ -- Florian Best <best@univention.de>  Tue, 16 Jul 2019 20:08:59 +0200
+
 univention-saml (6.0.2-3) unstable; urgency=medium
 
   * Bug #49503 Make IdP session duration configurable with UCR
