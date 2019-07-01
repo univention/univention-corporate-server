@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: rdesktop
+fix: 1.8.6-2~deb9u1
+desc: |
+ This update addresses the following issue:
+ * Fix multiple unnamed security issues which could result in denial of
+   service and the execution of arbitrary code.
+bug: [49772]
+cve:
+ - CVE-TMP49772
+ignore:
+ - cve.CVE-TMP49772
