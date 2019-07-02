@@ -30,6 +30,22 @@
 
 import os
 try:
+	from junit_xml import TestCase  # type: ignore
+	JUNIT = True
+except ImportError:
+	JUNIT = False
+
+	class TestCase(object):  # type: ignore
+		def __init__(self, name, stdout=None, file=None, line=None):
+			pass
+
+		def add_error_info(self, message=None, output=None, error_type=None):
+			pass
+
+		def add_skipped_info(self, message=None, output=None):
+			pass
+
+try:
 	from typing import Any, Dict, Iterable, Iterator, List, Pattern, Optional, Tuple  # noqa F401
 except ImportError:
 	pass
@@ -90,6 +106,16 @@ class UPCMessage(object):
 		Return unique message identifier.
 		"""
 		return self.id
+
+	def junit(self):
+		# type: () -> TestCase
+		"""
+		Return JUnit XML test case.
+
+		:returns: test case.
+		"""
+		tc = TestCase(self.id, stdout=self.msg, file=self.filename, line=self.line)
+		return tc
 
 
 class UniventionPackageCheckBase(object):

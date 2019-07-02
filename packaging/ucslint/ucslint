@@ -42,6 +42,10 @@ import re
 from errno import ENOENT
 import univention.ucslint.base as uub
 try:
+	from junit_xml import TestSuite
+except ImportError:
+	pass
+try:
 	from typing import Any, Container, Dict, List, Optional, Sequence, Set, Tuple  # noqa F401
 	from types import ModuleType  # noqa F401
 	from optparse import Values  # noqa F401
@@ -183,8 +187,8 @@ class DebianPackageCheck(object):
 			return True
 		return False
 
-	def printResult(self, ignore_IDs, display_only_IDs, display_only_categories, exitcode_categories):
-		# type: (Container[str], Container[str], str, str) -> Tuple[int, int]
+	def printResult(self, ignore_IDs, display_only_IDs, display_only_categories, exitcode_categories, junit=''):
+		# type: (Container[str], Container[str], str, str, str) -> Tuple[int, int]
 		"""
 		Print result of checks.
 
@@ -192,20 +196,28 @@ class DebianPackageCheck(object):
 		:param display_only_IDs: List of message identifiers to display.
 		:param display_only_categories: List of message categories to display.
 		:param exitcode_categories: List of message categories to signal as fatal.
+		:param junit: Generate JUnit XML output to given file.
 		:returns: 2-tuple (incident-count, exitcode-count)
 		"""
 		incident_cnt = 0
 		exitcode_cnt = 0
 
 		self.loadOverrides()
+		test_cases = []  # type: List[uub.TestCase]
 
 		for msg in self.msglist:
+			tc = msg.junit()
+			test_cases.append(tc)
+
 			if msg.getId() in ignore_IDs:
+				tc.add_skipped_info('ignored')
 				continue
 			if display_only_IDs and not msg.getId() in display_only_IDs:
+				tc.add_skipped_info('hidden')
 				continue
 			if self.in_overrides(msg):
 				# ignore msg if mentioned in overrides files
+				tc.add_skipped_info('overridden')
 				continue
 			category = uub.RESULT_INT2STR.get(self.msgidlist.get(msg.getId(), ['FIXME'])[0], 'FIXME')
 			if category in display_only_categories or display_only_categories == '':
@@ -214,6 +226,11 @@ class DebianPackageCheck(object):
 
 				if category in exitcode_categories or exitcode_categories == '':
 					exitcode_cnt += 1
+
+		if junit:
+			ts = TestSuite("ucslint", test_cases)
+			with open(junit, 'w') as stream:
+				TestSuite.to_file(stream, [ts], prettyprint=False)
 
 		return incident_cnt, exitcode_cnt
 
@@ -321,6 +338,10 @@ def parse_args():
 		default='E',
 		help='categories that cause an exitcode != 0 (e.g. -e EWIS)'
 	)
+	parser.add_option(
+		'--junit-xml', '-j', metavar='FILE',
+		help='generate JUnit-XML output'
+	)
 
 	(options, args) = parser.parse_args()
 
@@ -336,6 +357,9 @@ def parse_args():
 
 	if not os.path.isdir(os.path.join(pkgpath, 'debian')):
 		parser.error("%s/debian does not exist or is not a directory!" % pkgpath)
+
+	if options.junit_xml and not uub.JUNIT:
+		parser.error("Missing Python support for JUNIT_XML")
 
 	return options, pkgpath
 
@@ -361,7 +385,8 @@ def main():
 		chk.check()
 	except uub.UCSLintException as ex:
 		print(ex, file=sys.stderr)
-	incident_cnt, exitcode_cnt = chk.printResult(ignore_IDs, display_only_IDs, options.display_only_categories, options.exitcode_categories)
+
+	incident_cnt, exitcode_cnt = chk.printResult(ignore_IDs, display_only_IDs, options.display_only_categories, options.exitcode_categories, options.junit_xml)
 
 	if exitcode_cnt:
 		sys.exit(2)
