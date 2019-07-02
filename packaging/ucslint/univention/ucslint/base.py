@@ -32,8 +32,9 @@ import os
 from typing import Dict, Iterable, Iterator, List, Pattern, Optional, Tuple  # noqa F401
 try:
 	from junit_xml import TestCase  # type: ignore
+	TestCase('test', file=__file__, line=1)
 	JUNIT = True
-except ImportError:
+except (ImportError, TypeError):
 	JUNIT = False
 
 	class TestCase(object):  # type: ignore
