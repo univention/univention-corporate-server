@@ -42,12 +42,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	def getMsgIds(self):  # pylint: disable-msg=R0201
 		"""Return severity and description for message identifiers."""
 		return {
-			'0016-1': [uub.RESULT_WARN, 'failed to open file'],
-			'0016-2': [uub.RESULT_WARN, 'Deprecated use of "univention-admin"'],
-			'0016-3': [uub.RESULT_WARN, 'Use of deprecated "univention-baseconfig"'],
-			'0016-4': [uub.RESULT_WARN, 'Use of deprecated "univention_baseconfig"'],
-			'0016-5': [uub.RESULT_WARN, 'Use of deprecated "@%@BCWARNING=@%@"'],
-			'0016-6': [uub.RESULT_WARN, 'Use of deprecated "debian/*.univention-baseconfig"'],
+			'0016-1': (uub.RESULT_WARN, 'failed to open file'),
+			'0016-2': (uub.RESULT_WARN, 'Deprecated use of "univention-admin"'),
+			'0016-3': (uub.RESULT_WARN, 'Use of deprecated "univention-baseconfig"'),
+			'0016-4': (uub.RESULT_WARN, 'Use of deprecated "univention_baseconfig"'),
+			'0016-5': (uub.RESULT_WARN, 'Use of deprecated "@%@BCWARNING=@%@"'),
+			'0016-6': (uub.RESULT_WARN, 'Use of deprecated "debian/*.univention-baseconfig"'),
 		}
 
 	def check(self, path):

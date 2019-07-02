@@ -149,8 +149,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	def getMsgIds(self):
 		return {
-			'0015-1': [uub.RESULT_WARN, 'failed to open file'],
-			'0015-2': [uub.RESULT_WARN, 'file contains "univention" incorrectly written'],
+			'0015-1': (uub.RESULT_WARN, 'failed to open file'),
+			'0015-2': (uub.RESULT_WARN, 'file contains "univention" incorrectly written'),
 		}
 
 	RE_WHITEWORD = re.compile('|'.join("""

@@ -46,7 +46,7 @@ except ImportError:
 			pass
 
 try:
-	from typing import Any, Dict, Iterable, Iterator, List, Pattern, Optional, Tuple  # noqa F401
+	from typing import Dict, Iterable, Iterator, List, Pattern, Optional, Tuple  # noqa F401
 except ImportError:
 	pass
 
@@ -144,8 +144,7 @@ class UniventionPackageCheckBase(object):
 		self.msg.append(message)
 
 	def getMsgIds(self):  # pylint: disable-msg=R0201
-		# type: () -> Dict[str, List[Any]]
-		# BUG: Actually it is a Tuple[int, str], but level gets assigned!
+		# type: () -> Dict[str, Tuple[int, str]]
 		"""
 		Return mapping from message-identifiert to 2-tuple (severity, message-text).
 		"""

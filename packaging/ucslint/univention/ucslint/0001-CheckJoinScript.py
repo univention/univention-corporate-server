@@ -38,22 +38,22 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	def getMsgIds(self):
 		return {
-			'0001-1': [uub.RESULT_STYLE, 'the old command "univention-admin" is used'],
-			'0001-2': [uub.RESULT_ERROR, '"$@" for passing credentials to univention-directory-manager is missing'],
-			'0001-3': [uub.RESULT_WARN, 'join scripts are now versioned - the variable VERSION is not set'],
-			'0001-4': [uub.RESULT_WARN, 'join scripts are now versioned - the string " v${VERSION} " within grep/echo is missing'],
-			'0001-5': [uub.RESULT_ERROR, 'debian/rules is missing'],
-			'0001-6': [uub.RESULT_WARN, 'join script seems not to be installed via debian/rules'],
-			'0001-7': [uub.RESULT_WARN, 'join script seems not to be called in any postinst file'],
-			'0001-8': [uub.RESULT_WARN, 'join scripts should be called with "|| true" do avoid failing postinst scripts if "set -e" is used'],
-			'0001-9': [uub.RESULT_WARN, 'cannot open specified file'],
-			'0001-10': [uub.RESULT_ERROR, 'join script contains "eval $(ucr shell)" without proper quoting'],  # unused, moved to 0017
-			'0001-11': [uub.RESULT_ERROR, 'join script contains lines with unquoted $@'],
-			'0001-12': [uub.RESULT_ERROR, 'join script contains more than one line with VERSION=  statement'],
-			'0001-13': [uub.RESULT_ERROR, 'join script does not include "joinscripthelper.lib"'],
-			'0001-14': [uub.RESULT_ERROR, 'join script does not call "joinscript_init"'],
-			'0001-15': [uub.RESULT_ERROR, 'join script does not call "joinscript_save_current_version"'],
-			'0001-16': [uub.RESULT_ERROR, 'join script does not use joinscript api (possible clear text passwords)'],
+			'0001-1': (uub.RESULT_STYLE, 'the old command "univention-admin" is used'),
+			'0001-2': (uub.RESULT_ERROR, '"$@" for passing credentials to univention-directory-manager is missing'),
+			'0001-3': (uub.RESULT_WARN, 'join scripts are now versioned - the variable VERSION is not set'),
+			'0001-4': (uub.RESULT_WARN, 'join scripts are now versioned - the string " v${VERSION} " within grep/echo is missing'),
+			'0001-5': (uub.RESULT_ERROR, 'debian/rules is missing'),
+			'0001-6': (uub.RESULT_WARN, 'join script seems not to be installed via debian/rules'),
+			'0001-7': (uub.RESULT_WARN, 'join script seems not to be called in any postinst file'),
+			'0001-8': (uub.RESULT_WARN, 'join scripts should be called with "|| true" do avoid failing postinst scripts if "set -e" is used'),
+			'0001-9': (uub.RESULT_WARN, 'cannot open specified file'),
+			'0001-10': (uub.RESULT_ERROR, 'join script contains "eval $(ucr shell)" without proper quoting'),  # unused, moved to 0017
+			'0001-11': (uub.RESULT_ERROR, 'join script contains lines with unquoted $@'),
+			'0001-12': (uub.RESULT_ERROR, 'join script contains more than one line with VERSION=  statement'),
+			'0001-13': (uub.RESULT_ERROR, 'join script does not include "joinscripthelper.lib"'),
+			'0001-14': (uub.RESULT_ERROR, 'join script does not call "joinscript_init"'),
+			'0001-15': (uub.RESULT_ERROR, 'join script does not call "joinscript_save_current_version"'),
+			'0001-16': (uub.RESULT_ERROR, 'join script does not use joinscript api (possible clear text passwords)'),
 		}
 
 	RE_LINE_ENDS_WITH_TRUE = re.compile('\|\|[ \t]+true[ \t]*$')

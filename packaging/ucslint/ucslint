@@ -46,7 +46,7 @@ try:
 except ImportError:
 	pass
 try:
-	from typing import Any, Container, Dict, List, Optional, Sequence, Set, Tuple  # noqa F401
+	from typing import Container, Dict, List, Optional, Sequence, Set, Tuple  # noqa F401
 	from types import ModuleType  # noqa F401
 	from optparse import Values  # noqa F401
 except ImportError:
@@ -73,8 +73,7 @@ class DebianPackageCheck(object):
 		self.enabled_modules = enabled_modules or ()  # type: Container[str]
 		self.disabled_modules = disabled_modules or ()  # type: Container[str]
 		self.debuglevel = debuglevel
-		self.msgidlist = {}  # type: Dict[str, List[Any]]
-		# BUG: Actually it is a Tuple[int, str], but level gets assigned!
+		self.msgidlist = {}  # type: Dict[str, Tuple[int, str]]
 		self.overrides = set()  # type: Set[Tuple[str, Optional[str], Optional[int]]]
 		self.loadplugins()
 
@@ -124,23 +123,6 @@ class DebianPackageCheck(object):
 			except uub.UCSLintException as ex:
 				print(ex, file=sys.stderr)
 			self.msglist.extend(obj.result())
-
-	def modifyMsgIdList(self, newmap):
-		# type: (Dict[int, Sequence[str]]) -> None
-		"""
-		Set severity level of messages.
-
-		:param newmap: Mapping from severity level to list of checks::
-
-			newmap = {
-				RESULT_WARN: ['0004-1', '0019-17', ...],
-				RESULT_ERROR: ['0004-2'],
-			}
-		"""
-		for level, idlist in newmap.items():
-			for curid in idlist:
-				if curid in self.msgidlist:
-					self.msgidlist[curid][0] = level
 
 	def loadOverrides(self):
 		# type: () -> None

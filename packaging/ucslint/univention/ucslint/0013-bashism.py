@@ -53,10 +53,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	def getMsgIds(self):
 		return {
-			'0013-1': [uub.RESULT_WARN, 'failed to open file'],
-			'0013-2': [uub.RESULT_ERROR, 'possible bashism found'],
-			'0013-3': [uub.RESULT_WARN, 'cannot parse output of "checkbashism"'],
-			'0013-4': [uub.RESULT_WARN, 'unquoted local variable'],
+			'0013-1': (uub.RESULT_WARN, 'failed to open file'),
+			'0013-2': (uub.RESULT_ERROR, 'possible bashism found'),
+			'0013-3': (uub.RESULT_WARN, 'cannot parse output of "checkbashism"'),
+			'0013-4': (uub.RESULT_WARN, 'unquoted local variable'),
 		}
 
 	def check(self, path):

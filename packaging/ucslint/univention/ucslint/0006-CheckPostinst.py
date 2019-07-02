@@ -36,14 +36,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	def getMsgIds(self):
 		return {
-			'0006-1': [uub.RESULT_WARN, 'postinst script does not contain string "#DEBHELPER#"'],
-			'0006-2': [uub.RESULT_ERROR, 'script contains univention-directory-manager or univention-admin at beginning of a line - please use a join script'],
-			'0006-3': [uub.RESULT_WARN, 'script contains univention-directory-manager or univention-admin - please use a join script'],
-			'0006-4': [uub.RESULT_WARN, 'script contains "sh -e" in hashbang'],
-			'0006-5': [uub.RESULT_WARN, 'script contains "set -e"'],
-			'0006-6': [uub.RESULT_ERROR, 'script contains no "exit 0" at end of file'],
-			'0006-7': [uub.RESULT_WARN, 'script uses broken remove_ucr_template'],
-			'0006-8': [uub.RESULT_WARN, 'script uses broken remove_ucr_info_file'],
+			'0006-1': (uub.RESULT_WARN, 'postinst script does not contain string "#DEBHELPER#"'),
+			'0006-2': (uub.RESULT_ERROR, 'script contains univention-directory-manager or univention-admin at beginning of a line - please use a join script'),
+			'0006-3': (uub.RESULT_WARN, 'script contains univention-directory-manager or univention-admin - please use a join script'),
+			'0006-4': (uub.RESULT_WARN, 'script contains "sh -e" in hashbang'),
+			'0006-5': (uub.RESULT_WARN, 'script contains "set -e"'),
+			'0006-6': (uub.RESULT_ERROR, 'script contains no "exit 0" at end of file'),
+			'0006-7': (uub.RESULT_WARN, 'script uses broken remove_ucr_template'),
+			'0006-8': (uub.RESULT_WARN, 'script uses broken remove_ucr_info_file'),
 		}
 
 	def check(self, path):

@@ -39,12 +39,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	def getMsgIds(self):
 		return {
-			'0008-1': [uub.RESULT_ERROR, 'substitutes before translation'],
-			'0008-2': [uub.RESULT_WARN, 'failed to open file'],
-			'0008-3': [uub.RESULT_ERROR, 'po-file contains "fuzzy" string'],
-			'0008-4': [uub.RESULT_WARN, 'po-file contains empty msg string'],
-			'0008-5': [uub.RESULT_ERROR, 'po-file contains no character set definition'],
-			'0008-6': [uub.RESULT_ERROR, 'po-file contains invalid character set definition'],
+			'0008-1': (uub.RESULT_ERROR, 'substitutes before translation'),
+			'0008-2': (uub.RESULT_WARN, 'failed to open file'),
+			'0008-3': (uub.RESULT_ERROR, 'po-file contains "fuzzy" string'),
+			'0008-4': (uub.RESULT_WARN, 'po-file contains empty msg string'),
+			'0008-5': (uub.RESULT_ERROR, 'po-file contains no character set definition'),
+			'0008-6': (uub.RESULT_ERROR, 'po-file contains invalid character set definition'),
 		}
 
 	def check(self, path):

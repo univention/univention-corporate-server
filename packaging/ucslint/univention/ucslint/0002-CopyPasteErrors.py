@@ -39,9 +39,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	def getMsgIds(self):
 		return {
-			'0002-1': [uub.RESULT_WARN, 'cannot open file'],
-			'0002-2': [uub.RESULT_ERROR, 'found basedn used in QA'],
-			'0002-3': [uub.RESULT_ERROR, 'found domainname used in QA'],
+			'0002-1': (uub.RESULT_WARN, 'cannot open file'),
+			'0002-2': (uub.RESULT_ERROR, 'found basedn used in QA'),
+			'0002-3': (uub.RESULT_ERROR, 'found domainname used in QA'),
 		}
 
 	def check(self, path):

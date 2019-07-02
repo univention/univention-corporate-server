@@ -56,16 +56,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	def getMsgIds(self):
 		return {
-			'0014-0': [uub.RESULT_WARN, 'failed to open/read file'],
-			'0014-1': [uub.RESULT_ERROR, 'parsing error in debian/control'],
-			'0014-2': [uub.RESULT_ERROR, 'univention-install-... is used in debian/rules, but debian/control lacks a build-dependency on univention-config-dev.'],
-			'0014-3': [uub.RESULT_ERROR, 'dh-umc-module-build is used in debian/rules, but debian/control lacks a build-dependency on univention-management-console-dev.'],
-			'0014-4': [uub.RESULT_ERROR, 'univention-config-registry is used in a .preinst script, but the package lacks a pre-dependency on univention-config.'],
-			'0014-5': [uub.RESULT_ERROR, 'univention-config-registry is used in a maintainer script, but the package lacks a dependency on univention-config.'],
-			'0014-6': [uub.RESULT_WARN, 'init-autostart.lib is sourced by a script, but the package lacks an explicit dependency on univention-base-files.'],
-			'0014-7': [uub.RESULT_WARN, 'The source package contains debian/*.univention- files, but the package is not found in debian/control.'],
-			'0014-8': [uub.RESULT_WARN, 'unexpected UCR file'],
-			'0014-9': [uub.RESULT_WARN, 'depends on transitional package'],
+			'0014-0': (uub.RESULT_WARN, 'failed to open/read file'),
+			'0014-1': (uub.RESULT_ERROR, 'parsing error in debian/control'),
+			'0014-2': (uub.RESULT_ERROR, 'univention-install-... is used in debian/rules, but debian/control lacks a build-dependency on univention-config-dev.'),
+			'0014-3': (uub.RESULT_ERROR, 'dh-umc-module-build is used in debian/rules, but debian/control lacks a build-dependency on univention-management-console-dev.'),
+			'0014-4': (uub.RESULT_ERROR, 'univention-config-registry is used in a .preinst script, but the package lacks a pre-dependency on univention-config.'),
+			'0014-5': (uub.RESULT_ERROR, 'univention-config-registry is used in a maintainer script, but the package lacks a dependency on univention-config.'),
+			'0014-6': (uub.RESULT_WARN, 'init-autostart.lib is sourced by a script, but the package lacks an explicit dependency on univention-base-files.'),
+			'0014-7': (uub.RESULT_WARN, 'The source package contains debian/*.univention- files, but the package is not found in debian/control.'),
+			'0014-8': (uub.RESULT_WARN, 'unexpected UCR file'),
+			'0014-9': (uub.RESULT_WARN, 'depends on transitional package'),
 		}
 
 	def postinit(self, path):

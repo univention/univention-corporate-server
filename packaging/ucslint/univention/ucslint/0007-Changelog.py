@@ -43,8 +43,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	def getMsgIds(self):
 		return {
-			'0007-1': [uub.RESULT_WARN, 'failed to open file'],
-			'0007-2': [uub.RESULT_WARN, 'changelog does not contain ticket/bug/issue number'],
+			'0007-1': (uub.RESULT_WARN, 'failed to open file'),
+			'0007-2': (uub.RESULT_WARN, 'changelog does not contain ticket/bug/issue number'),
 		}
 
 	def check(self, path):

@@ -38,7 +38,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	def getMsgIds(self):
 		return {
-			'0018-1': [uub.RESULT_STYLE, 'wrong script name in comment'],
+			'0018-1': (uub.RESULT_STYLE, 'wrong script name in comment'),
 		}
 
 	def check(self, path):
