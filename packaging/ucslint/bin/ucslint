@@ -283,43 +283,43 @@ def parse_args():
 	usage = "usage: %prog [options] [<path>]"
 	parser = OptionParser(usage=usage)
 	parser.add_option(
-		'-d', '--debug', action='store', type='int',
-		dest='debug', default=0,
+		'-d', '--debug', metavar='LEVEL',
+		type='int', default=0,
 		help='if set, debugging is activated and set to the specified level'
 	)
 	parser.add_option(
-		'-m', '--modules', action='store', type='string',
-		dest='enabled_modules', default='',
+		'-m', '--modules', metavar='MODULES',
+		dest='enabled_modules',
 		help='list of modules to be loaded (e.g. -m 0009,27)'
 	)
 	parser.add_option(
-		'-x', '--exclude-modules', action='store', type='string',
-		dest='disabled_modules', default='',
+		'-x', '--exclude-modules', metavar='MODULES',
+		dest='disabled_modules',
 		help='list of modules to be disabled (e.g. -x 9,027)'
 	)
 	parser.add_option(
-		'-o', '--display-only', action='store', type='string',
-		dest='display_only_IDs', default='',
+		'-o', '--display-only', metavar='MODULES',
+		dest='display_only_IDs',
 		help='list of IDs to be displayed (e.g. -o 9-1,0027-12)'
 	)
 	parser.add_option(
-		'-i', '--ignore', action='store', type='string',
-		dest='ignore_IDs', default='',
+		'-i', '--ignore', metavar='MODULES',
+		dest='ignore_IDs',
 		help='list of IDs to be ignored (e.g. -i 0003-4,19-27)'
 	)
 	parser.add_option(
-		'-p', '--plugindir', action='append', type='string',
-		dest='plugindir', default=[],
+		'-p', '--plugindir', metavar='DIRECTORY', action='append',
+		default=[],
 		help='override plugin directory with <plugindir>'
 	)
 	parser.add_option(
-		'-c', '--display-categories', action='store', type='string',
+		'-c', '--display-categories', metavar='CATEGORIES',
 		dest='display_only_categories', default='',
 		help='categories to be displayed (e.g. -c EWIS)'
 	)
 	parser.add_option(
-		'-e', '--exitcode-categories', action='store', type='string',
-		dest='exitcode_categories', default='E',
+		'-e', '--exitcode-categories', metavar='CATEGORIES',
+		default='E',
 		help='categories that cause an exitcode != 0 (e.g. -e EWIS)'
 	)
 
