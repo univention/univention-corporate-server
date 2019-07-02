@@ -184,6 +184,7 @@ class DebianPackageCheck(object):
 		return False
 
 	def printResult(self, ignore_IDs, display_only_IDs, display_only_categories, exitcode_categories):
+		# type: (Container[str], Container[str], str, str) -> Tuple[int, int]
 		"""
 		Print result of checks.
 
