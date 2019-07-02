@@ -10,5 +10,4 @@ desc: |
    UCS Ambassador Program.
  * Portal enties which are limited to users are now shown when the user is
    logged in via email address.
- * TODO
-bug: [49731, 49619, 27816]
+bug: [49731, 49619]
