@@ -219,13 +219,20 @@ class DebianPackageCheck(object):
 				# ignore msg if mentioned in overrides files
 				tc.add_skipped_info('overridden')
 				continue
-			category = uub.RESULT_INT2STR.get(self.msgidlist.get(msg.getId(), ['FIXME'])[0], 'FIXME')
+
+			msgid = msg.getId()
+			try:
+				lvl, msgstr = self.msgidlist[msgid]
+				category = uub.RESULT_INT2STR[lvl]
+			except LookupError:
+				category = 'FIXME'
+
 			if category in display_only_categories or display_only_categories == '':
-				print('%s:%s' % (category, str(msg)))
+				print('%s:%s' % (category, msg))
 				incident_cnt += 1
 
-				if category in exitcode_categories or exitcode_categories == '':
-					exitcode_cnt += 1
+			if category in exitcode_categories or exitcode_categories == '':
+				exitcode_cnt += 1
 
 		if junit:
 			ts = TestSuite("ucslint", test_cases)
