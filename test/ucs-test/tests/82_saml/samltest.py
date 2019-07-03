@@ -262,9 +262,9 @@ class SamlTest(object):
 		else:
 			try:
 				self._request('GET', url, 200)
-			except SamlError as E:
+			except SamlError:
 				# The kerberos backend adds a manual redirect
-				if self.page.status_code != 401:
+				if not self.page or self.page.status_code != 401:
 					raise
 				login_link = re.search('<a href="([^"]+)">', bytes(self.page.text)).group(1)
 				self._request('GET', login_link, 200)
