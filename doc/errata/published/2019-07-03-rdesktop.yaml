@@ -13,3 +13,5 @@ cve:
  - CVE-TMP49772
 ignore:
  - cve.CVE-TMP49772
+erratum: 171
+announced: 2019-07-03
