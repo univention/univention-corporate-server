@@ -11,3 +11,5 @@ desc: |
  * The creation of a default ldap server policy is now configurable via the
    UCR variable ldap/create-ldap-server-policy.
 bug: [49387, 49386]
+erratum: 172
+announced: 2019-07-03
