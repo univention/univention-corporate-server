@@ -476,7 +476,8 @@ cache = LDAPCache()
 
 
 def signal_handler_reload(signo, frame):
-	cache.refresh()
+	io_loop = tornado.ioloop.IOLoop.instance()
+	io_loop.add_callback_from_signal(cache.refresh)
 
 
 def make_app():

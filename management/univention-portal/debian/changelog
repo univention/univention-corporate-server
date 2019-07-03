@@ -1,3 +1,9 @@
+univention-portal (3.0.1-29) unstable; urgency=medium
+
+  * Bug #49746: make reload in tornado queue
+
+ -- Florian Best <best@univention.de>  Wed, 03 Jul 2019 12:54:08 +0200
+
 univention-portal (3.0.1-28) unstable; urgency=medium
 
   * Bug #49746: fix reloading of extended attributes
