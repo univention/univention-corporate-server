@@ -1261,8 +1261,11 @@ class Swagger(Ressource):
 							"policies": {
 								"description": "Policies which apply for this object.",
 								"properties": dict((pol['objectType'], {
-									"type": "string",
-									"format": "dn",
+									"type": "array",
+									"items": {
+										"type": "string",
+										"format": "dn",
+									},
 									"description": pol['label'],
 								}) for pol in module.policies),
 								"type": "object"
@@ -1861,11 +1864,11 @@ class FormBase(object):
 				if key.startswith('%s.' % (name,)):
 					properties = self.request.body_arguments.setdefault(name, {})
 					prop = key[len('%s.' % (name,)):]
-					properties[prop] = self.request.body_arguments.pop(key)
+					properties.setdefault(prop, []).append(self.request.body_arguments.pop(key))
 				elif key.startswith('%s[' % (name,)) and key.endswith(']'):
 					properties = self.request.body_arguments.setdefault(name, {})
 					prop = key[len('%s[' % (name,)):-1]
-					properties[prop] = self.request.body_arguments.pop(key)
+					properties.setdefault(prop, []).append(self.request.body_arguments.pop(key))
 
 
 class Objects(FormBase, ReportingBase):
@@ -2069,7 +2072,7 @@ class Objects(FormBase, ReportingBase):
 		position=DNSanitizer(required=True),
 		superordinate=DNSanitizer(required=False, allow_none=True),
 		options=DictSanitizer({}, default_sanitizer=BooleanSanitizer()),
-		policies=DictSanitizer({}, default_sanitizer=DNSanitizer()),
+		policies=DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer())),
 		properties=DictSanitizer({}),
 	)
 	@tornado.gen.coroutine
@@ -2305,7 +2308,7 @@ class Object(FormBase, Ressource):
 			for policy in obj.policies:
 				pol_mod = get_module(None, policy, ldap_connection)
 				if pol_mod and pol_mod.name:
-					props['policies'][pol_mod.name] = policy
+					props['policies'].setdefault(pol_mod.name, []).append(policy)
 			props['references'] = module.get_references(obj.dn)
 		#props['$labelObjectType$'] = module.title
 		#props['$labelObjectTypeSingular$'] = module.object_name
@@ -2320,7 +2323,7 @@ class Object(FormBase, Ressource):
 		position=DNSanitizer(required=True),
 		superordinate=DNSanitizer(required=False, allow_none=True),
 		options=DictSanitizer({}, default_sanitizer=BooleanSanitizer()),
-		policies=DictSanitizer({}, default_sanitizer=DNSanitizer()),
+		policies=DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer())),
 		properties=DictSanitizer({}),
 	)
 	@tornado.gen.coroutine
@@ -2359,7 +2362,7 @@ class Object(FormBase, Ressource):
 		position=DNSanitizer(required=True),
 		superordinate=DNSanitizer(required=False, allow_none=True),
 		options=DictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=True),
-		policies=DictSanitizer({}, default_sanitizer=DNSanitizer(), required=True),
+		policies=DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()), required=True),
 		properties=DictSanitizer({}),
 	)
 	@tornado.gen.coroutine
@@ -2473,7 +2476,8 @@ class Object(FormBase, Ressource):
 
 	def set_properties(self, module, obj):
 		obj.options = [opt for opt, enabled in self.request.body_arguments['options'].items() if enabled]  # TODO: AppAttributes.data_for_module(self.name).iteritems() ?
-		obj.policies = self.request.body_arguments['policies'].values()
+		if self.request.body_arguments['policies']:
+			obj.policies = reduce(lambda x, y: x + y, self.request.body_arguments['policies'].values())
 		self.sanitize_arguments(PropertiesSanitizer(), self, module=module, obj=obj)
 
 	@tornado.gen.coroutine
@@ -2762,7 +2766,7 @@ class ObjectEdit(FormBase, Ressource):
 			for policy in module.policies:
 				ptype = policy['objectType']
 				form = self.add_form(result, action=self.urljoin(ptype) + '/', method='GET', name=ptype, rel='udm/relation/policy-result')
-				self.add_form_element(form, 'policy', representation['policies'].get(ptype, ''), label=policy['label'], title=policy['description'], placeholder=_('Policy DN'))
+				self.add_form_element(form, 'policy', representation['policies'].get(ptype, [''])[0], label=policy['label'], title=policy['description'], placeholder=_('Policy DN'))
 				self.add_form_element(form, '', _('Policy result'), type='submit')
 
 			obj.open()
@@ -2808,7 +2812,7 @@ class ObjectEdit(FormBase, Ressource):
 			for policy in module.policies:
 				ptype = policy['objectType']
 				result['layout'][-1]['layout'].append('policies[%s]' % (ptype,))
-				self.add_form_element(form, 'policies[%s]' % (ptype), representation['policies'].get(ptype, ''), label=policy['label'], placeholder=_('Policy DN'))
+				self.add_form_element(form, 'policies[%s]' % (ptype), representation['policies'].get(ptype, [''])[0], label=policy['label'], placeholder=_('Policy DN'))
 
 			references = self.get_reference_layout(result['layout'])
 			if references:
