@@ -24,7 +24,7 @@ if __name__ == '__main__':
 		# IPv4 case:
 		reverse_zone_properties = {
 			'subnet': '10.20.20',
-			'nameserver': uts.random_nameserver(),
+			'nameserver': uts.random_string(),
 			'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
 			'serial': '1',
 			'zonettl': '128',
@@ -51,7 +51,7 @@ if __name__ == '__main__':
 		# IPv6 case:
 		reverse_zone_properties.update({
 			'subnet': '2011:06f8:13dc:0002:19b7:d592:09dd',
-			'nameserver': uts.random_nameserver(),
+			'nameserver': uts.random_string(),
 			'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
 			'ttl': '16',
 		})

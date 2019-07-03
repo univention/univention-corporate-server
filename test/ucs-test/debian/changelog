@@ -1,3 +1,10 @@
+ucs-test (9.0.2-113) unstable; urgency=medium
+
+  * Bug #49679: fix 67_udm-
+    dns/50_dns_reverse_zone_check_soa_record_serial_incrementation
+
+ -- Florian Best <best@univention.de>  Wed, 03 Jul 2019 09:04:15 +0200
+
 ucs-test (9.0.2-112) unstable; urgency=medium
 
   * Bug #48961: adjust test to be compatible with simplesamlphp 1.17
