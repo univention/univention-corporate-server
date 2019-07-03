@@ -11,3 +11,5 @@ desc: |
  * Portal enties which are limited to users are now shown when the user is
    logged in via email address.
 bug: [49731, 49619]
+erratum: 175
+announced: 2019-07-03
