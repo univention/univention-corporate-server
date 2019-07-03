@@ -1173,7 +1173,7 @@ define([
 						if (action == 'update' && this.app.isDocker) {
 							var sdbLink = '<a target="_blank" href="https://help.univention.com/t/12430">help.univention.com</a>';
 							var error_msg = '<p><b>' + _('The App update has failed!') + '</b></p>';
-							error_msg += '<p>' + _('We are sorry for the inconvenience.');
+							error_msg += '<p>' + _('We are sorry for the inconvenience.') + ' ';
 							error_msg += _('The error message was:') + '<pre>' + error + '</pre>';
 							error_msg +=  _('Further information can be found in the following log file on each of the involved systems: %s', '<br /><em>/var/log/univention/appcenter.log</em>') + '</p>';
 							error_msg += '<p>' + _('Please also have a look at %s for more App upgrade troubleshooting information.', sdbLink) + '</p>';

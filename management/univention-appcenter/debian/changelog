@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-42) unstable; urgency=medium
+
+  * Bug #49742: translation
+
+ -- Felix Botner <botner@univention.de>  Wed, 03 Jul 2019 10:57:37 +0200
+
 univention-appcenter (8.0.11-41) unstable; urgency=medium
 
   * Bug #49770: Dynamic App Suggestions from App Center server
