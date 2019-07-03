@@ -50,6 +50,7 @@ import ldap
 from ldap.filter import filter_format
 
 from univention.udm import UDM
+from univention.udm.connections import LDAP_connection
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.handler import run_filter
 
@@ -124,6 +125,7 @@ class LDAPCache(object):
 	def udm(self):
 		if self._udm is None:
 			UDM._module_object_cache.clear()
+			LDAP_connection._clear()
 			self._udm = UDM.machine().version(2)
 		return self._udm
 
@@ -185,7 +187,7 @@ class LDAPCache(object):
 		try:
 			try:
 				fd = self._refresh()
-			except ldap.INSUFFICIENT_ACCESS:
+			except (ldap.SERVER_DOWN, ldap.INSUFFICIENT_ACCESS):
 				get_logger('server').info('Reconnecting ldap connection')
 				self._udm = None
 				fd = self._refresh()
@@ -445,7 +447,7 @@ class JsonHandler(tornado.web.RequestHandler):
 		return super(JsonHandler, self).write_error(status_code, **kwargs)
 
 	def log_exception(self, typ, value, tb):
-		if isinstance(value, ldap.INSUFFICIENT_ACCESS):
+		if isinstance(value, (ldap.SERVER_DOWN, ldap.INSUFFICIENT_ACCESS)):
 			get_logger('server').info('Reconnecting ldap connection')
 			cache._udm = None
 		return super(JsonHandler, self).log_exception(typ, value, tb)
