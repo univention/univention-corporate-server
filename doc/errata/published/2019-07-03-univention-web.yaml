@@ -9,3 +9,5 @@ desc: |
  * The label and icon of some widgets are now configurable.
  * Notifications can now be shown non-truncated.
 bug: [49730, 49731]
+erratum: 174
+announced: 2019-07-03
