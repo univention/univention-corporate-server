@@ -104,6 +104,10 @@ def flatten(list_of_lists):
 	return ret
 
 
+class ReloadExtendedAttributes(Exception):
+	pass
+
+
 class LDAPCache(object):
 	PORTAL_CACHE = '/var/cache/univention-portal/portal.json'
 	FALLBACK_PORTAL_CACHE = '/usr/share/univention-portal/portal-unjoined.json'
@@ -119,6 +123,7 @@ class LDAPCache(object):
 	@property
 	def udm(self):
 		if self._udm is None:
+			UDM._module_object_cache.clear()
 			self._udm = UDM.machine().version(2)
 		return self._udm
 
@@ -176,23 +181,36 @@ class LDAPCache(object):
 	def refresh(self):
 		ucr.load()
 		get_logger('cache').info('refreshing cache')
+		fd = None
 		try:
 			try:
 				fd = self._refresh()
 			except ldap.INSUFFICIENT_ACCESS:
 				get_logger('server').info('Reconnecting ldap connection')
-				self._lo = None
+				self._udm = None
 				fd = self._refresh()
+			except ReloadExtendedAttributes:
+				get_logger('server').info('Portal extended attribute not found. Trying to reload.')
+				self._udm = None
+				try:
+					fd = self._refresh()
+				except ReloadExtendedAttributes:
+					get_logger('server').warn('Portal extended attribute does not exists.')
 		except Exception:
 			get_logger('cache').exception('Error during refresh')
 			# hopefully, we can still work with an older cache?
 		else:
-			shutil.move(fd.name, self.PORTAL_CACHE)
+			if fd:
+				shutil.move(fd.name, self.PORTAL_CACHE)
 
 	def _refresh(self):
 		ldap_hostdn = ucr.get('ldap/hostdn')
 		localhost = self.udm.obj_by_dn(ldap_hostdn)
-		portal_dn = localhost.props.portal
+		try:
+			portal_dn = localhost.props.portal
+		except AttributeError:
+			localhost._udm_module._udm_module_cache.clear()
+			raise ReloadExtendedAttributes()
 		portal = self.udm.get('settings/portal').get(portal_dn)
 		content = {}
 		content['portal'] = self._extract_portal(portal)
@@ -429,7 +447,7 @@ class JsonHandler(tornado.web.RequestHandler):
 	def log_exception(self, typ, value, tb):
 		if isinstance(value, ldap.INSUFFICIENT_ACCESS):
 			get_logger('server').info('Reconnecting ldap connection')
-			cache._lo = None
+			cache._udm = None
 		return super(JsonHandler, self).log_exception(typ, value, tb)
 
 	def get(self):
