@@ -13,3 +13,5 @@ cve:
  - CVE-TMP49773
 ignore:
  - cve.CVE-TMP49773
+erratum: 542
+announced: 2019-07-03
