@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: openssl1.0
+fix: 1.0.2s-1~deb9u1
+desc: |
+ This update addresses the following issue:
+ * 0-byte record padding oracle (CVE-2019-1559)
+bug: [49795]
+cve:
+- CVE-2019-1559
