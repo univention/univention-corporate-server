@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: firefox-esr
+fix: 60.7.2esr-1~deb9u1
+desc: |
+ This update addresses the following issue:
+ * Sandbox escape using Prompt:Open (CVE-2019-11708)
+bug: [49797]
+cve:
+- CVE-2019-11708
