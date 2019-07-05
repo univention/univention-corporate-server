@@ -43,7 +43,6 @@ class LDAP_connection(object):
 
 	_ucr = None
 	_connection_admin = None
-	_connection_machine = None
 	_connection_account = {}
 
 	@classmethod
@@ -51,7 +50,6 @@ class LDAP_connection(object):
 		# used in tests
 		cls._ucr = None
 		cls._connection_admin = None
-		cls._connection_machine = None
 		cls._connection_account.clear()
 
 	@classmethod
@@ -77,9 +75,9 @@ class LDAP_connection(object):
 
 	@classmethod
 	def get_machine_connection(cls):
-		if not cls._connection_machine:
-			cls._connection_machine, po = cls._wrap_connection(univention.admin.uldap.getMachineConnection)
-		return cls._connection_machine
+		# do not cache the machine connection as this breaks on server-password-change
+		co, po = cls._wrap_connection(univention.admin.uldap.getMachineConnection)
+		return co
 
 	@classmethod
 	def get_credentials_connection(

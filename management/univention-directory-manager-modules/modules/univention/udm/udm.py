@@ -201,7 +201,7 @@ class UDM(object):
 		:raises univention.udm.exceptions.ApiVersionNotSupported: if the Python module for `name` could not be loaded
 		:raises univention.udm.exceptions.NoApiVersionSet: if the API version has not been set
 		"""
-		key = (name, self._api_version, self.connection.binddn)
+		key = (name, self._api_version, id(self.connection))
 		if key not in self._module_object_cache:
 			suitable_modules = []
 			plugins = Plugins(_MODULES_PATH)

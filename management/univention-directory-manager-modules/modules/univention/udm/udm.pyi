@@ -33,7 +33,7 @@ from typing import Any, Dict, List, Optional, Text, Tuple, Type
 
 
 class UDM(object):
-	_module_object_cache = {}  # type: Dict[Tuple[int, Text, Text, Text, Text, Text], BaseModuleTV]
+	_module_object_cache = {}  # type: Dict[Tuple[Text, int, int], BaseModuleTV]
 	_imported = False
 	_modules = []  # type: List[BaseModuleTV]
 

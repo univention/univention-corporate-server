@@ -35,7 +35,6 @@ from typing import Dict, Optional, Text, Tuple
 class LDAP_connection(object):
 	_ucr = None  # type: univention.config_registry.ConfigRegistry
 	_connection_admin = None  # type: OriUdmHandlerTV
-	_connection_machine = None  # type: OriUdmHandlerTV
 	_connection_account = {}  # type: Dict[Tuple[Text, Text, Text, int, Text], OriUdmHandlerTV]
 
 	@classmethod
