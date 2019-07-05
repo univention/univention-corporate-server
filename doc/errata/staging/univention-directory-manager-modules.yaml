@@ -5,7 +5,8 @@ scope: ucs_4.4-0-errata4.4-0
 src: univention-directory-manager-modules
 fix: 14.0.12-42A~4.4.0.201906261823
 desc: |
- This update addresses the following issue(s):
- * Referenced portal entries and categories are now correctly updated
-   when renaming or moving portal settings.
-bug: [49526]
+ This update addresses the following issues:
+ * Referenced portal entries and categories are now correctly updated when
+   renaming or moving portal settings.
+ * Stop caching machine connection in new UDM API for long running services.
+bug: [49526, 49746]
