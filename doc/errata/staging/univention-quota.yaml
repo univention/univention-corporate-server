@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-quota
-fix: 
+fix: 13.0.1-5A~4.4.0.201907081649
 desc: |
  This update addresses the following issue(s):
  * Previously, when quota policies were set on multiple shares that are located
