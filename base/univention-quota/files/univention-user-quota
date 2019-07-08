@@ -101,19 +101,16 @@ def quota_enabled(mtab_line):
 	return False
 
 
-class Mountpoints:
-	mountpoints_with_quota = {}
+class Mountpoints(object):
 
 	def __init__(self, user, shares):
+		self.mountpoints_with_quota = {}
 		self.user = user
 		self.shares = shares
 		# Create dict of all mountpoints who have usrquota activated.
 		# Set updatequota flag to True if setquota has to be called.
 		# check what the current userquota is (0 0 0 0 is unlimited/undefined)
 		for mount in self.mtab():
-			if mount['mountpoint'] not in shares.values()[0]['mountpoint']:
-				# no need to include quotas not set on shares, as they can't get overwritten by policies
-				continue
 			if not mount['quotaenabled']:
 				continue
 
@@ -121,7 +118,7 @@ class Mountpoints:
 			for quota in quotas.itervalues():
 				if quota['device'] == mount['device']:
 					# If quota is unset, set flag that the quota should be set:
-					initialValue = quota['bsoft'] == 0 and quota['bhard'] == 0 and quota['fsoft'] == 0 and quota['fhard'] == 0
+					initialValue = quota['bsoft'] == '0' and quota['bhard'] == '0' and quota['fsoft'] == '0' and quota['fhard'] == '0'
 					# Now the current quota values are known
 					self.mountpoints_with_quota[mount['mountpoint']] = {
 						'spaceSoftLimit': quota['bsoft'],
@@ -139,6 +136,7 @@ class Mountpoints:
 		for mountpoint, attrs in self.mountpoints_with_quota.iteritems():
 			shares_on_mount = self.get_shares_with_mountpoint(mountpoint)
 			if not shares_on_mount:
+				self.mountpoints_with_quota[mountpoint]['reapplyQuota'] = False
 				continue
 
 			for share_on_mount in shares_on_mount:
@@ -148,9 +146,6 @@ class Mountpoints:
 			for policy_value in ['inodeSoftLimit', 'inodeHardLimit', 'spaceSoftLimit', 'spaceHardLimit']:
 				smallest_quota = self.calculate_smallest_quota(shares_on_mount, policy_value)
 				self.mountpoints_with_quota[mountpoint][policy_value] = smallest_quota
-				if smallest_quota == 0:
-					# needed to reset the quota when a policy is deleted
-					self.mountpoints_with_quota[mountpoint]['reapplyQuota'] = True
 
 	def get_shares_with_mountpoint(self, mountpoint):
 		_shares = []
@@ -182,7 +177,7 @@ class Mountpoints:
 		# /dev/mapper/vg_ucs-rootfs      24  307200  409600       0       8       0       0       0
 		# /dev/vda2       0       0       0       0       0       0       0       0
 		quota_stdout, stderr_empty = p.communicate()
-		regex = re.compile('^(?P<device>[^ ]*) *(?P<bused>[0-9]*). *(?P<bsoft>[0-9]*) *(?P<bhard>[0-9]*) *(?P<btime>[0-9]*) *(?P<fused>[0-9]*). *(?P<fsoft>[0-9]*) *(?P<fhard>[0-9]*) *(?P<ftime>[0-9]*)$')
+		regex = re.compile('^ *(?P<device>[^ ]*) *(?P<bused>[0-9]*). *(?P<bsoft>[0-9]*) *(?P<bhard>[0-9]*) *(?P<btime>[0-9]*) *(?P<fused>[0-9]*). *(?P<fsoft>[0-9]*) *(?P<fhard>[0-9]*) *(?P<ftime>[0-9]*)$')
 		for quotaline in quota_stdout.split('\n'):
 			matches = regex.match(quotaline)
 			if not matches:

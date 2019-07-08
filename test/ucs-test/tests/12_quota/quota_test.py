@@ -99,10 +99,10 @@ class QuotaCheck(object):
 				"name": uts.random_name(),
 			}
 			expected_result = {
-				'bsoft': 0,
-				'bhard': 0,
-				'fsoft': 0,
-				'fhard': 0
+				'bsoft': 1,
+				'bhard': 4,
+				'fsoft': 10,
+				'fhard': 15
 			}
 
 			self._activate_quota(tfs.loop_dev)
