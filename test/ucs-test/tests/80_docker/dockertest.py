@@ -639,17 +639,17 @@ class Appcenter(object):
 			self.add_ucs_version_to_appcenter('4.4')
 			self.versions = ['4.1', '4.2', '4.3', '4.4']
 			self._write_ucs_ini('[4.4]\nSupportedUCSVersions=4.4, 4.3, 4.2, 4.1\n[4.3]\nSupportedUCSVersions=4.3, 4.2, 4.1\n')
-			self._write_recommendations_json()
+			self._write_suggestions_json()
 		else:
 			self.add_ucs_version_to_appcenter(version)
 			self.versions = [version]
 			self._write_ucs_ini('[%s]\nSupportedUCSVersions=%s\n' % (version, version))
-			self._write_recommendations_json()
+			self._write_suggestions_json()
 
 		print repr(self)
 
-	def _write_recommendations_json(self):
-		f = open('/var/www/meta-inf/recommendations.json', 'w')
+	def _write_suggestions_json(self):
+		f = open('/var/www/meta-inf/suggestions.json', 'w')
 		f.write('{"v1": []}')
 		f.close()
 
