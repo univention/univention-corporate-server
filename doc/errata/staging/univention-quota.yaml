@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [0]
+scope: ucs_4.4-0-errata4.4-0
+src: univention-quota
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Previously, when quota policies were set on multiple shares that are located
+ on the same mountpoint, a quota policy that had a value of zero would always
+ overwrite another quota policy. This behavior has been fixed.
+bug: [48000]
