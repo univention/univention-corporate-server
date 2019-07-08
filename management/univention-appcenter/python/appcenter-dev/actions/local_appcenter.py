@@ -685,7 +685,7 @@ class DevSetupLocalAppcenter(LocalAppcenterAction):
 		else:
 			mkdir(meta_inf_dir)
 			mkdir(os.path.join(repo_dir, 'maintained', 'component'))
-			for supra_file in ['app-categories.ini', 'categories.ini', 'rating.ini', 'license_types.ini', 'ucs.ini']:
+			for supra_file in ['app-categories.ini', 'categories.ini', 'rating.ini', 'license_types.ini', 'ucs.ini', 'suggestions.json']:
 				with open(os.path.join(meta_inf_dir, '..', supra_file), 'wb') as f:
 					categories = urlopen('%s/meta-inf/%s' % (default_server(), supra_file)).read()
 					f.write(categories)

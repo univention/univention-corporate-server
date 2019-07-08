@@ -251,19 +251,19 @@ class Instance(umcm.Base, ProgressMixin):
 		return True
 
 	@simple_response
-	def recommendations(self, version):
+	def suggestions(self, version):
 		try:
 			cache = AppCenterCache.build(server=default_server())
-			cache_file = cache.get_cache_file('.recommendations.json')
+			cache_file = cache.get_cache_file('.suggestions.json')
 			with open(cache_file) as fd:
 				json = load(fd)
 		except (EnvironmentError, ValueError):
-			raise umcm.UMC_Error(_('Could not load recommendations.'))
+			raise umcm.UMC_Error(_('Could not load suggestions.'))
 		else:
 			try:
 				return json[version]
 			except (KeyError, AttributeError):
-				raise umcm.UMC_Error(_('Unexpected recommendations data.'))
+				raise umcm.UMC_Error(_('Unexpected suggestions data.'))
 
 	@simple_response
 	def enable_docker(self):

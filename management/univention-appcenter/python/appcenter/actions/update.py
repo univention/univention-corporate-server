@@ -140,7 +140,7 @@ class Update(UniventionAppAction):
 				f.write('%s\t%s\n' % (fname, etag))
 
 	def _download_supra_files(self, appcenter_cache):
-		return self._download_files(appcenter_cache, ['app-categories.ini', 'rating.ini', 'license_types.ini', 'ucs.ini', 'recommendations.json'])
+		return self._download_files(appcenter_cache, ['app-categories.ini', 'rating.ini', 'license_types.ini', 'ucs.ini', 'suggestions.json'])
 
 	def _download_files(self, cache, filenames):
 		updated = False

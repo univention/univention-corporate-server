@@ -292,10 +292,10 @@ define([
 		},
 
 		_getAppSuggestions: function() {
-			return tools.umcpCommand('appcenter/recommendations', {version: 'v1'}, false).then(function(data) {
+			return tools.umcpCommand('appcenter/suggestions', {version: 'v1'}, false).then(function(data) {
 				return data.result;
 			}, function() {
-				console.warn('Could not load appcenter/recommendations');
+				console.warn('Could not load appcenter/suggestions');
 				return [];
 			});
 		},
