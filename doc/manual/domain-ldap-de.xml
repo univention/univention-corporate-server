@@ -1513,12 +1513,12 @@ univention-directory-listener-ctrl resync cups-printers
 	Wird die App auf einer anderen Systemrolle installiert, kann der Provider statt dessen direkt über den Hostnamen erreicht werden.
   </para>
   <para>
-	Externe Web-Dienste können per <application>OpenID Connect</application> an UCS angebunden werden, indem Sie für diesen Dienst ein bestimmtes Objekt des Typs <classname>oidc/rpservice</classname> im UCS Verzeichnisdienst anlegen.
+	Um externe Web-Dienste per <application>OpenID Connect</application> an UCS anzubinden, muss für diesen Dienst ein bestimmtes Objekt des Typs <classname>oidc/rpservice</classname> im UCS Verzeichnisdienst vorhanden sein.
 	Dies kann in der Univention Management Console im LDAP Browser im Container <uri>cn=oidc</uri> angelegt werden, der sich unterhalb des Containers <uri>cn=univention</uri> befindet.
-	Hier können Sie über den Punkt Hinzufügen und die Auswahl <guimenu>OpenID Connect Relying Party Service</guimenu> den neuen Dienst registrieren.
+	Hier kann über den Punkt Hinzufügen und die Auswahl <guimenu>OpenID Connect Relying Party Service</guimenu> ein neuer Dienst registriert werden.
   </para>
-  <para
-	>Das gleiche ist auch über die Kommandozeile möglich:
+  <para>
+	Das gleiche ist auch über die Kommandozeile möglich:
   </para>
   <programlisting>
 udm oidc/rpservice create --set name=&lt;UCS_interner_Bezeichner&gt; \
@@ -1529,6 +1529,7 @@ udm oidc/rpservice create --set name=&lt;UCS_interner_Bezeichner&gt; \
   --set applicationtype=web \
   --set redirectURI=&lt;URL_aus_Dokumentation_des_Dienstes&gt;
   </programlisting>
+	Die Parameter des Aufrufs sind:
   <variablelist>
 	<varlistentry>
 	  <term><varname>name</varname></term>
@@ -1577,22 +1578,22 @@ udm oidc/rpservice create --set name=&lt;UCS_interner_Bezeichner&gt; \
   </variablelist>
   <para>
 	Der angebundene Web-Dienst braucht für seine Konfiguration noch Informationen über die <application>OpenID Connect</application> Endpunkte der Provider-App.
-	Diese sind bei installierter Provider-App unter der URL <uri>https://ucs-sso.<replaceable>domain.name</replaceable>/.well-known/openid-configuration</uri> abrufbar.
+	Diese sind bei installierter Provider-App unter der URL <uri>https://ucs-sso.<replaceable>domain.name</replaceable>/.well-known/openid-configuration</uri> einsehbar.
 	Wurde die Provider-App auf einem anderen System als &ucsMaster; oder &ucsBackup; installiert, ist wie oben beschrieben statt <uri>ucs-sso.domain.name</uri> der FQDN des jeweiligen Servers zu verwenden.
   </para>
   <para>
 	Bei der Verwendung von <application>OpenID Connect</application> ist auf korrekte, auflösbare DNS Namen und verifizierbare Zertifikate zu achten.
-	Zu beachten ist dies bei Client-Rechnern von Endbenutzern, die sowohl auf die per DNS auflösbaren Hostnamen des Web-Dienst als auch auf den <application>OpenID Connect Provider</application> zugreifen müssen.
+	Zu beachten ist dies insbesondere bei Client-Rechnern von Endbenutzern, die sowohl auf die per DNS auflösbaren Hostnamen des Web-Dienst als auch auf den <application>OpenID Connect Provider</application> zugreifen müssen.
 	Außerdem müssen die extern angebundenen Web-Dienste eine Verbindung zum <application>OpenID Connect Provider</application> herstellen können, um darüber die Benutzerattribute abrufen zu können.
   </para>
   <para>
 	Im speziellen Fall, wo der DNS Namen des OIDC-Providers geändert werden soll, muss zunächst der entsprechende Wert in den App Einstellungen der <application>OpenID Connect Provider</application> App angepasst werden.
-	Da es unzählige Szenarien für die Erreichbarkeit des Providers nach der Änderung des DNS Namens gibt, kann keine automatische Änderung der Webserverkonfiguration vorgenommen werden.
+	Da es diverse Szenarien für die Erreichbarkeit des Providers nach der Änderung des DNS Namens gibt, kann keine automatische Änderung der Webserverkonfiguration vorgenommen werden.
 	Es muss so zum Beispiel je nach konfiguriertem DNS Namen noch die Apache Konfiguration unter UCS angepasst werden.
-	Die Konfigurationsdatei <filename>/etc/apache2/conf-available/openid-connect-provider.conf</filename> muss unter dem gesetzten DNS Namen in einem Virtual Host verfügbar gemacht werden, beispielsweise durch eine Verlinkung nach <filename class="directory">/etc/apache2/ucs-sites.conf.d/</filename>.
+	Die Konfigurationsdatei <filename>/etc/apache2/conf-available/openid-connect-provider.conf</filename> muss unter dem gesetzten DNS Namen in einem Virtual Host verfügbar gemacht werden.
   </para>
   <para>
-	Der <application>OpenID Connect Provider</application> loggt Aktionen über den Docker Daemon.
+	Der <application>OpenID Connect Provider</application> protokolliert Aktionen über den Docker Daemon.
 	Die Ausgaben können beispielsweise über das Kommando <command>univention-app logs openid-connect-provider</command> eingesehen werden.
   </para>
 </section>

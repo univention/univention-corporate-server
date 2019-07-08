@@ -1485,7 +1485,7 @@ univention-directory-listener-ctrl resync cups-printers
   <para>
 	External Web services can be connected to UCS via <application>OpenID Connect</application> by creating a specific object of type <classname>oidc/rpservice</classname> for this service in the UCS directory service.
 	These can be created in the Univention Management Console in the LDAP browser in the container <uri>cn=oidc</uri>, which is located below the container <uri>cn=univention</uri>.
-	Here you can register the new service via the item Add and the selection <guimenu>OpenID Connect Relying Party Service</guimenu>.
+	Here the new service can be registered via the item Add and the selection <guimenu>OpenID Connect Relying Party Service</guimenu>.
   </para>
   <para>
 	The same is also possible from the command line:
@@ -1499,12 +1499,13 @@ udm oidc/rpservice create --set name=&lt;UCS_internal_identifier&gt; \
   --set applicationtype=web \
   --set redirectURI=&lt;URL_from_service_documentation&gt;
   </programlisting>
+	The command parameters are:
   <variablelist>
 	<varlistentry>
 	  <term><varname>name</varname></term>
 	  <listitem>
 		<simpara>
-			the service name displayed in the web interface during login
+			the service name displayed in the web interface during login.
 		</simpara>
 	  </listitem>
 	</varlistentry>
@@ -1551,15 +1552,15 @@ udm oidc/rpservice create --set name=&lt;UCS_internal_identifier&gt; \
 	If the provider app was installed on a system other than &ucsMaster; or &ucsBackup;, use the FQDN of the respective server instead of <uri>ucs-sso.domain.name</uri> as described above.
   </para>
   <para>
-	When using <application>OpenID Connect</application> you have to pay attention to correct, resolvable DNS names and verifiable certificates.
-	This should be noted for client computers of end users who need to access both the DNS-resolvable host names of the Web service and the <application>OpenID Connect Provider</application>.
+	When using <application>OpenID Connect</application>, resolvable DNS names and verifiable certificates are a prerequisite.
+	This is especially true for client computers of end users who need to access both the DNS-resolvable host names of the Web service and the <application>OpenID Connect Provider</application>.
 	In addition, the externally connected Web services must be able to establish a connection to the <application>OpenID Connect Provider</application> in order to be able to retrieve the user attributes.
   </para>
   <para>
 	In the special case where the DNS name of the OIDC provider is to be changed, the corresponding value must first be adjusted in the app settings of the <application>OpenID Connect Provider</application> App.
-	Since there are countless scenarios for the availability of the provider after changing the DNS name, the web server configuration cannot be changed automatically.
+	Since there are diverse scenarios for the availability of the provider after changing the DNS name, the web server configuration cannot be changed automatically.
 	For example, depending on the configured DNS name, the UCS Apache configuration has to be adapted.
-	The configuration file <filename>/etc/apache2/conf-available/openid-connect-provider.conf</filename> must be made available under the set DNS name in a virtual host, for example by linking to <filename class="directory">/etc/apache2/ucs-sites.conf.d/</filename>.
+	The configuration file <filename>/etc/apache2/conf-available/openid-connect-provider.conf</filename> must be made available under the set DNS name in a virtual host.
   </para>
   <para>
 	The <application>OpenID Connect Provider</application> logs actions via the Docker Daemon.
