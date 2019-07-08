@@ -41,3 +41,15 @@ revert_to_samba47 () {
 	ucr set dns/backend='samba4'
 	/etc/init.d/bind9 restart
 }
+
+set_MaxConnIdleTime () {
+
+	echo "dn: CN=Default Query Policy,CN=Query-Policies,CN=Directory Service,CN=Windows NT,CN=Services,CN=Configuration,DC=bigenv,DC=local
+changetype: modify
+delete: lDAPAdminLimits
+lDAPAdminLimits: MaxConnIdleTime=900
+-
+add: lDAPAdminLimits
+lDAPAdminLimits: MaxConnIdleTime=9000" | ldbmodify -H /var/lib/samba/private/sam.ldb --cross-ncs
+	/etc/init.d/samba restart
+}
