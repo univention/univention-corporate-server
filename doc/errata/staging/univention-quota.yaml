@@ -6,7 +6,8 @@ src: univention-quota
 fix: 13.0.1-5A~4.4.0.201907081649
 desc: |
  This update addresses the following issue(s):
- * Previously, when quota policies were set on multiple shares that are located
- on the same mountpoint, a quota policy that had a value of zero would always
- overwrite another quota policy. This behavior has been fixed.
+ * Previously, when quota policies were set on multiple shares that are
+   located on the same mountpoint, a quota policy that had a value of zero
+   (meaning no quota is enforced) would overwrite smaller quota policies.
+   This behaviour has been changed to always choose the smallest value.
 bug: [48000]
