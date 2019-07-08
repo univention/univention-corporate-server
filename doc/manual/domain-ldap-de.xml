@@ -1529,7 +1529,9 @@ udm oidc/rpservice create --set name=&lt;UCS_interner_Bezeichner&gt; \
   --set applicationtype=web \
   --set redirectURI=&lt;URL_aus_Dokumentation_des_Dienstes&gt;
   </programlisting>
+  <para>
 	Die Parameter des Aufrufs sind:
+  </para>
   <variablelist>
 	<varlistentry>
 	  <term><varname>name</varname></term>

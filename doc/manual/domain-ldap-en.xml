@@ -1499,7 +1499,9 @@ udm oidc/rpservice create --set name=&lt;UCS_internal_identifier&gt; \
   --set applicationtype=web \
   --set redirectURI=&lt;URL_from_service_documentation&gt;
   </programlisting>
+  <para>
 	The command parameters are:
+  </para>
   <variablelist>
 	<varlistentry>
 	  <term><varname>name</varname></term>
