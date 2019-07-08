@@ -1,3 +1,9 @@
+ucs-test (9.0.2-116) unstable; urgency=medium
+
+  * Bug #49770: Rename recommendations.json to suggestions.json
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 08 Jul 2019 11:00:54 +0200
+
 ucs-test (9.0.2-115) unstable; urgency=medium
 
   * Bug #49770: Add new file to local App Center during testing
