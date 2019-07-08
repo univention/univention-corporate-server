@@ -1,3 +1,9 @@
+ucs-test (9.0.2-117) unstable; urgency=medium
+
+  * Bug #48000: fix typo
+
+ -- Jannik Ahlers <ahlers@univention.de>  Mon, 20 May 2019 16:43:43 +0200
+
 ucs-test (9.0.2-116) unstable; urgency=medium
 
   * Bug #49770: Rename recommendations.json to suggestions.json
