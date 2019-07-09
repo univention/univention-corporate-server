@@ -1,3 +1,9 @@
+univention-portal (3.0.1-32) unstable; urgency=medium
+
+  * Bug #49746: catch more exceptions
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 09 Jul 2019 20:21:15 +0200
+
 univention-portal (3.0.1-31) unstable; urgency=medium
 
   * Bug #49746: remove access on UDM internal variables
