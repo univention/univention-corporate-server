@@ -16,11 +16,11 @@ export CURRENT_AMI=ami-04e4ed4e7bb6e8610
 # AMI: Univention Corporate Server (UCS) 4.3 (official image) rev. 5 - ami-08b2615e56edd43fa
 export OLD_AMI=ami-08b2615e56edd43fa
 
-export KVM_TEMPLATE=branchtest
-export KVM_UCSVERSION='4.4-0'
-
-export RELEASE_UPDATE="${release_update:-public}"
-export ERRATA_UPDATE="${errata_update:-testing}"
+export KVM_TEMPLATE="${KVM_TEMPLATE:=generic-unsafe}"
+export KVM_UCSVERSION="${KVM_UCSVERSION:=4.4-0}"
+export KVM_OLDUCSVERSION="${KVM_OLDUCSVERSION:=4.3-4}"
+export RELEASE_UPDATE="${release_update:=public}"
+export ERRATA_UPDATE="${errata_update:=testing}"
 export TARGET_VERSION="${TARGET_VERSION:=$release}"
 export UCS_VERSION="${UCS_VERSION:=$release}"
 export UCSSCHOOL_RELEASE=${UCSSCHOOL_RELEASE:=scope}
