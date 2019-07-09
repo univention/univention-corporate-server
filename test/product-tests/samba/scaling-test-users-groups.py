@@ -34,6 +34,7 @@ for i in range(0, cusers):
 		user["lastname"] = name
 		user["password"] = "univention"
 		user["username"] = name
+		user.create()
 
 for i in range(0, cgroups):
 	name = "%s%s" % (groupname, i)
@@ -43,6 +44,7 @@ for i in range(0, cgroups):
 		group["name"] = name
 		for u in random.sample(range(cusers), cuseringroups):
 			group["users"].append("uid=%s%s,%s" % (username, u, base))
+		group.create()
 
 testuser = users.lookup(co, lo, "uid=%s%s" % (username, cusers - 1))
 if testuser:
