@@ -444,7 +444,7 @@ class JsonHandler(tornado.web.RequestHandler):
 		return super(JsonHandler, self).write_error(status_code, **kwargs)
 
 	def log_exception(self, typ, value, tb):
-		if isinstance(value, (ldap.SERVER_DOWN, ldap.INSUFFICIENT_ACCESS)):
+		if isinstance(value, (ldap.SERVER_DOWN, ldap.INSUFFICIENT_ACCESS, ldap.INVALID_CREDENTIALS)):
 			get_logger('server').info('Reconnecting ldap connection')
 			cache._udm = None
 		return super(JsonHandler, self).log_exception(typ, value, tb)
