@@ -83,7 +83,7 @@ define([
 				var node = put(this._container.domNode, 'article.admindiary');
 				put(node, 'blockquote.' + item.icon, item.message || 'null');
 				put(node, 'address', _('%(username)s on %(hostname)s', item));
-				put(node, 'time', locale.format(new Date(item.date)));
+				put(node, 'span', locale.format(new Date(item.date)));
 			}));
 			this._commentForm = new Form({
 				widgets: [{

@@ -51,6 +51,7 @@ from univention.admindiary.events import DiaryEvent
 
 _ = umc.Translation('univention-management-console-module-admindiary').translate
 
+
 class Instance(Base):
 	def _format_entry(self, entry, client):
 		message = entry['message']
@@ -67,9 +68,13 @@ class Instance(Base):
 			icon = event.icon or icon
 		if entry['event_name'] == 'COMMENT':
 			icon = 'comment'
+		try:
+			date = datetime.strptime(entry['date'], '%Y-%m-%d %H:%M:%S').isoformat()
+		except (TypeError, ValueError):
+			date = entry['date']
 		res_entry = {
 			'id': entry['id'],
-			'date': entry['date'],
+			'date': date,
 			'event': entry['event_name'],
 			'hostname': entry['hostname'],
 			'username': entry['username'],
