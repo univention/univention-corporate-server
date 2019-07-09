@@ -7,6 +7,9 @@ import univention.admin.config as config
 import univention.config_registry
 
 import random
+import time
+import subprocess
+import sys
 
 lo, position = uldap.getAdminConnection()
 co = config.config()
@@ -55,3 +58,13 @@ if testuser:
 		if dn not in t["groups"]:
 			t["groups"].append(dn)
 	t.modify()
+
+# wait for connector replication
+for i in range(0, 1080):
+	out = subprocess.check_output(['univention-s4search', 'cn=testgroup49'])
+	if 'dn: cn=testgroup49,' in out.lower():
+		print('s4 sync finished')
+		sys.exit(0)
+	time.sleep(10)
+print('s4 sync timed out')
+sys.exit(1)
