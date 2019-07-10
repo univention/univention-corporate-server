@@ -10,3 +10,5 @@ desc: |
    renaming or moving portal settings.
  * Stop caching machine connection in new UDM API for long running services.
 bug: [49526, 49746]
+erratum: 182
+announced: 2019-07-10
