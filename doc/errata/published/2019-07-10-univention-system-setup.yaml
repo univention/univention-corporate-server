@@ -13,3 +13,5 @@ desc: |
    should be set up with the correct UCS@school role (educational,
    administrative or central).
 bug: [49384, 49271]
+erratum: 183
+announced: 2019-07-10
