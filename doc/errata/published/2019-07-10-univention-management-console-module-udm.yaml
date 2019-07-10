@@ -9,3 +9,5 @@ desc: |
  * Requesting a Univention license activation during the initial system
    configuration has been repaired.
 bug: [49384]
+erratum: 184
+announced: 2019-07-10
