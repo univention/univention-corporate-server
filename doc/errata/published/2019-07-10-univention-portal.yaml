@@ -9,3 +9,5 @@ desc: |
  * The robustness of the univention-portal-server has been increased.
  * The univention-portal-server is reloaded after a server password rotation.
 bug: [49526, 49746]
+erratum: 181
+announced: 2019-07-10
