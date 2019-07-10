@@ -1,3 +1,9 @@
+univention-net-installer (12.0.1-2) unstable; urgency=medium
+
+  * Bug #49803: Adapt to UCS-4.4-1
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 10 Jul 2019 18:01:33 +0200
+
 univention-net-installer (12.0.1-1) unstable; urgency=medium
 
   * Bug #46969: bindpwdfile support

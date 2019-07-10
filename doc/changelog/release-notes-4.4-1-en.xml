@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="releasenotes-en-4.4-0">
+<book lang="en" id="releasenotes-en-4.4-1">
 	<bookinfo>
 		<title>UCS 4.4 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.4-0</subtitle>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.4-1</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,7 +44,7 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With &ucsUCS; 4.4-0, the fourth minor release of &ucsUCS; (UCS) 4 is now
+			With &ucsUCS; 4.4-1, the fourth minor release of &ucsUCS; (UCS) 4 is now
 			available. It provides several feature improvements and extensions, new properties as well as
 			various improvements and bugfixes. Here is an overview of the most important changes:
 		</para>
@@ -106,7 +106,7 @@
 					The App Center thus better supports corresponding business models of the app providers and users can better recognize which versions of an app are available.
 			</para></listitem>
 			<listitem><para>
-					UCS <productnumber>4.4-0</productnumber> is based on the Debian release <productnumber>9.8</productnumber> released in February.
+					UCS <productnumber>4.4-1</productnumber> is based on the Debian release <productnumber>9.8</productnumber> released in February.
 					A complete list of security and package updates is available in <xref linkend="relnotes:changelog"/>.
 			</para></listitem>
 		</itemizedlist>
@@ -291,7 +291,7 @@ Checking ldap_schema ...                          OK
 			Listed are the changes since UCS <wordasword>4.3-3</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-0.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-1.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->
