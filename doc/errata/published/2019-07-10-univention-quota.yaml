@@ -11,3 +11,5 @@ desc: |
    (meaning no quota is enforced) would overwrite smaller quota policies.
    This behaviour has been changed to always choose the smallest value.
 bug: [48000]
+erratum: 180
+announced: 2019-07-10
