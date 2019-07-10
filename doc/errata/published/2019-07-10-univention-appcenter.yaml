@@ -10,3 +10,5 @@ desc: |-
   * Suggestions based on currently installed Apps are now dynamically loaded
     from the App Center server.
 bug: [49742, 49770]
+erratum: 179
+announced: 2019-07-10
