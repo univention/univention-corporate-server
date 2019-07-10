@@ -1210,7 +1210,7 @@ class ucs:
 			else:
 
 				# prevent value resets of mandatory attributes
-				mandatory_attrs = ['lastname']
+				mandatory_attrs = ['lastname', 'unixhome','gidNumber','uidNumber']
 
 				ucs_key = attributes.ucs_attribute
 				if ucs_object.has_key(ucs_key):

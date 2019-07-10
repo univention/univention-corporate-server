@@ -96,6 +96,13 @@ property_descriptions = {
 		readonly_when_synced=True,
 		copyable=True,
 	),
+	'initials': univention.admin.property(
+		short_description=_('Initials'),
+		long_description='',
+		syntax=univention.admin.syntax.OneThirdString,
+		readonly_when_synced=True,
+		copyable=True,
+	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
 		long_description='',
@@ -170,12 +177,14 @@ property_descriptions = {
 		short_description=_('Room number'),
 		long_description='',
 		syntax=univention.admin.syntax.OneThirdString,
+		multivalue=True,
 		copyable=True,
 	),
 	'departmentNumber': univention.admin.property(
 		short_description=_('Department number'),
 		long_description='',
 		syntax=univention.admin.syntax.OneThirdString,
+		multivalue=True,
 		copyable=True,
 	),
 	'street': univention.admin.property(
@@ -190,6 +199,19 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.OneThirdString,
 		readonly_when_synced=True,
+		copyable=True,
+	),
+	'postOfficeBox': univention.admin.property(
+		short_description=_('Post Office Box'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		copyable=True,
+	),
+	'preferredLanguage': univention.admin.property(
+		short_description=_('preferredLanguage'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
 		copyable=True,
 	),
 	'city': univention.admin.property(
@@ -235,6 +257,12 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.postalAddress,
 		multivalue=True,
+		copyable=True,
+	),
+	'physicalDeliveryOfficeName': univention.admin.property(
+		short_description=_('Delivery Office Name'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
 		copyable=True,
 	),
 }
@@ -286,11 +314,14 @@ mapping.register('employeeNumber', 'employeeNumber', None, univention.admin.mapp
 mapping.register('employeeType', 'employeeType', None, univention.admin.mapping.ListToString)
 mapping.register('secretary', 'secretary')
 mapping.register('e-mail', 'mail')
+mapping.register('preferredLanguage', 'preferredLanguage', None, univention.admin.mapping.ListToString)
 mapping.register('phone', 'telephoneNumber')
-mapping.register('roomNumber', 'roomNumber', None, univention.admin.mapping.ListToString)
-mapping.register('departmentNumber', 'departmentNumber', None, univention.admin.mapping.ListToString)
+mapping.register('roomNumber', 'roomNumber')
+mapping.register('departmentNumber', 'departmentNumber')
+mapping.register('physicalDeliveryOfficeName', 'physicalDeliveryOfficeName', None, univention.admin.mapping.ListToString)
 mapping.register('street', 'street', None, univention.admin.mapping.ListToString)
 mapping.register('postcode', 'postalCode', None, univention.admin.mapping.ListToString)
+mapping.register('postOfficeBox', 'postOfficeBox')
 mapping.register('city', 'l', None, univention.admin.mapping.ListToString)
 mapping.register('country', 'st', None, univention.admin.mapping.ListToString)
 mapping.register('homeTelephoneNumber', 'homePhone')
