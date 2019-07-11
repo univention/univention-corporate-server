@@ -3,7 +3,7 @@ release: "4.4"
 version: [0]
 scope: ucs_4.4-0-errata4.4-0
 src: univention-management-console
-fix: 11.0.4-26A~4.4.0.201907111341
+fix: 11.0.4-27A~4.4.0.201907111455
 desc: |
  This update addresses the following issue(s):
  * Corrupt translation files cannot cause the UMC-Server to crash anymore.
