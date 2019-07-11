@@ -41,8 +41,11 @@ import re
 import subprocess
 import pickle
 import errno
+
+import six
 from pwd import getpwnam
 from grp import getgrnam
+
 from univention.config_registry.misc import replace_umlaut, directory_files
 from univention.debhelper import parseRfc822  # pylint: disable-msg=W0403
 try:
@@ -124,7 +127,7 @@ def run_filter(template, directory, srcfiles=set(), opts=dict()):
 			proc = subprocess.Popen(
 				(sys.executable,),
 				stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-				close_fds=True, universal_newlines=True)
+				close_fds=True, universal_newlines=six.PY3)
 			value = proc.communicate('''\
 # -*- coding: utf-8 -*-
 import univention.config_registry
