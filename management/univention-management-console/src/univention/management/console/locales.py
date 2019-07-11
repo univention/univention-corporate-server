@@ -48,6 +48,7 @@ translations. Components that provide their own translation files:
 from locale import getdefaultlocale
 from struct import error as StructError
 import os
+import traceback
 
 import polib
 
@@ -105,12 +106,17 @@ class I18N(object):
 				self.mofile = None
 				return
 
-		LOCALE.info('Found translation file %s' % filename)
+		LOCALE.info('Found translation file %s' % (filename,))
+		self.mofile = None
 		try:
 			self.mofile = polib.mofile(filename)
-		except ValueError as exc:
+		except (ValueError, MemoryError) as exc:
 			LOCALE.error('Corrupt translation file %r: %s' % (filename, exc))
-			self.mofile = None
+		except (KeyboardInterrupt, SystemExit, SyntaxError) as exc:
+			raise
+		except Exception as exc:
+			LOCALE.error('Corrupt translation file %r: %s' % (filename, exc))
+			LOCALE.error(traceback.format_exc())
 
 	def exists(self, message):
 		"""

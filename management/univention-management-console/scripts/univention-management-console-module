@@ -112,7 +112,7 @@ if __name__ == '__main__':
 	session_timeout = 300
 	try:
 		session_timeout = int(ucr.get('umc/module/timeout', 300))
-	except TypeError as ValueError:
+	except (TypeError, ValueError):
 		MODULE.warn('Failed to read module timeout from UCR variable umc/module/timeout. Using default of 300 seconds')
 
 	try:
