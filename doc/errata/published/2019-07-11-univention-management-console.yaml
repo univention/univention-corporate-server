@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Corrupt translation files cannot cause the UMC-Server to crash anymore.
 bug: [49775]
+erratum: 185
+announced: 2019-07-11
