@@ -106,7 +106,11 @@ class I18N(object):
 				return
 
 		LOCALE.info('Found translation file %s' % filename)
-		self.mofile = polib.mofile(filename)
+		try:
+			self.mofile = polib.mofile(filename)
+		except ValueError as exc:
+			LOCALE.error('Corrupt translation file %r: %s' % (filename, exc))
+			self.mofile = None
 
 	def exists(self, message):
 		"""
