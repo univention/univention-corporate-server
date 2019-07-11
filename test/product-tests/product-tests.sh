@@ -11,6 +11,9 @@ then
 fi
 [ -n "${release:-}" ] || release='4.4-0'
 
+# FIXME
+release='4.4-1'
+
 # AMI: Univention Corporate Server (UCS) 4.4 (official image) rev. 1 - ami-04e4ed4e7bb6e8610
 export CURRENT_AMI=ami-04e4ed4e7bb6e8610
 # AMI: Univention Corporate Server (UCS) 4.3 (official image) rev. 5 - ami-08b2615e56edd43fa
