@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-27) unstable; urgency=medium
+
+  * Bug #49775: fine tuning of error handling
+
+ -- Florian Best <best@univention.de>  Thu, 11 Jul 2019 14:52:21 +0200
+
 univention-management-console (11.0.4-26) unstable; urgency=medium
 
   * Bug #49775: error handling when loading translation files has been
