@@ -1,3 +1,9 @@
+univention-updater (14.0.0-21) unstable; urgency=medium
+
+  * Bug #49836: Add dependency to python-univention-debug
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 11 Jul 2019 12:18:35 +0200
+
 univention-updater (14.0.0-20) unstable; urgency=medium
 
   * Bug #49804: Adapt links and components to UCS 4.4-1

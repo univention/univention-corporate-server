@@ -11,6 +11,7 @@ Build-Depends: debhelper (>> 7),
  python-apt,
  ucslint-univention,
  univention-management-console-dev,
+ python-univention-debug,
 
 Package: univention-updater
 Architecture: all
