@@ -1,3 +1,10 @@
+univention-management-console (11.0.4-26) unstable; urgency=medium
+
+  * Bug #49775: error handling when loading translation files has been
+  	improoved
+
+ -- Florian Best <best@univention.de>  Thu, 11 Jul 2019 13:26:47 +0200
+
 univention-management-console (11.0.4-25) unstable; urgency=medium
 
   * Bug #49731: change end date of ambassador notification
