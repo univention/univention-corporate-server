@@ -11,3 +11,5 @@ desc: |
    of the UMC-Server due to corruptly generated translation
    files.
 bug: [49775]
+erratum: 186
+announced: 2019-07-11
