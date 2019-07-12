@@ -31,7 +31,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import univention.uldap
 import optparse
 import ldap
 import shutil
@@ -40,6 +39,9 @@ import sys
 import os
 import tempfile
 import subprocess
+
+import univention.uldap
+import univention.lib.locking
 
 
 def _get_members(lo, g, recursion_list, check_member=False):
@@ -76,7 +78,7 @@ def _get_members(lo, g, recursion_list, check_member=False):
 			if 'univentionGroup' in member[1].get('objectClass', []):
 				if member[0] not in recursion_list:
 					recursion_list.append(g[0])
-					result += _get_members(lo, member, recursion_list, options.check_member)
+					result += _get_members(lo, member, recursion_list, check_member)
 				else:
 					# Recursion !!!
 					pass
@@ -96,10 +98,10 @@ def _run_hooks(options):
 				p = subprocess.Popen(cmd, stdin=null, stdout=null, stderr=null, shell=False)
 		_stdout, _stderr = p.communicate()
 	elif options.verbose:
-		print '%s does not exist' % HOOK_DIR
+		print('%s does not exist' % HOOK_DIR)
 
 
-if __name__ == '__main__':
+def main():
 	parser = optparse.OptionParser()
 	parser.add_option("--file", dest="file", default='/var/lib/extrausers/group', action="store", help="write result to the given file, default is /var/lib/extrausers/group")
 	parser.add_option("--verbose", dest="verbose", default=False, action="store_true", help="verbose output")
@@ -109,16 +111,27 @@ if __name__ == '__main__':
 	try:
 		lo = univention.uldap.getMachineConnection(ldap_master=False)
 	except ldap.SERVER_DOWN:
-		print "Abort: Can't contact LDAP server."
+		print("Abort: Can't contact LDAP server.")
 		sys.exit(1)
 
-	result = []
+	lock = univention.lib.locking.get_lock('ldap-group-to-file', nonblocking=True)
+	try:
+		if not lock:
+			print('Abort: Process is locked, another instance is already running.')
+			sys.exit(2)
+		return doit(options, lo)
+	finally:
+		if lock:
+			univention.lib.locking.release_lock(lock)
+
+
+def doit(options, lo):
 	groups = lo.search('objectClass=univentionGroup', attr=['uniqueMember', 'cn', 'gidNumber'])
 	if options.verbose:
-		print 'Found %d ldap groups' % len(groups)
+		print('Found %d ldap groups' % len(groups))
 
 	if len(groups) < 1:
-		print 'Abort: Did not found any LDAP group.'
+		print('Abort: Did not found any LDAP group.')
 		sys.exit(1)
 
 	# Write to a temporary file
@@ -138,8 +151,12 @@ if __name__ == '__main__':
 	# Move the file
 	shutil.move(fdname, options.file)
 	if options.verbose:
-		print 'The file %s was created.' % options.file
+		print('The file %s was created.' % options.file)
 
 	_run_hooks(options)
 
 	sys.exit(0)
+
+
+if __name__ == '__main__':
+	main()
