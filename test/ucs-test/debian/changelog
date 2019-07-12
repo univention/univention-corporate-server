@@ -1,3 +1,11 @@
+ucs-test (9.0.3-1) unstable; urgency=low
+
+  * Bug #47345: retry_on_error():
+    - also print exception data
+    - show delay as float instead of int
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 12 Jul 2019 10:19:57 +0200
+
 ucs-test (9.0.2-118) unstable; urgency=medium
 
   * Bug #49808: version bump for UCS 4.4-1
