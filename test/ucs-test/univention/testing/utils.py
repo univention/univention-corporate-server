@@ -164,9 +164,11 @@ def retry_on_error(func, exceptions=(Exception,), retry_count=20, delay=10):
 			return func()
 		except exceptions:
 			exc_info = sys.exc_info()
-			print('Exception occurred: %s. Retrying in %d seconds (loop %d/%d).' % (exc_info[0], delay, i, retry_count))
 			if i != retry_count:
+				print('Exception occurred: %s (%s). Retrying in %.2f seconds (retry %d/%d).' % (exc_info[0], exc_info[1], delay, i, retry_count))
 				time.sleep(delay)
+			else:
+				print('Exception occurred: %s (%s). This was the last retry (retry %d/%d).' % (exc_info[0], exc_info[1], i, retry_count))
 		else:
 			break
 	else:
