@@ -1,3 +1,9 @@
+univention-admin-diary (1.0.0-46) unstable; urgency=medium
+
+  * Bug #49579: fix date not being shown correctly in IE and Safari
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 12 Jul 2019 12:17:21 +0200
+
 univention-admin-diary (1.0.0-45) unstable; urgency=medium
 
   * Bug #49056: Improve robustness and traceback logging
