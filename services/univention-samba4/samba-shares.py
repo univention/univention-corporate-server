@@ -228,7 +228,7 @@ def handler(dn, new, old, command):
 				vfs_objects.extend(additional_vfs_objects)
 
 			if vfs_objects:
-				print >>fp, 'vfs objects = %s' % (' '.join(_map_quote(vfs_objects)), )
+				print >>fp, 'vfs objects = %s' % (' '.join(vfs_objects), )
 
 			for attr, var in mapping:
 				if not new.get(attr):
