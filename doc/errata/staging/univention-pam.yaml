@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [1]
+scope: ucs_4.4-0-errata4.4-1
+src: univention-pam
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * A locking mechanism for ldap-group-to-file.py has been implemented
+   so that it is ensured the process only runs once at a time.
+bug: [35173]
