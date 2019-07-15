@@ -19,6 +19,8 @@ import ldap.filter
 if __name__ == '__main__':
 	ucr = configRegistry.ConfigRegistry()
 	ucr.load()
+	lo = utils.get_ldap_connection()
+	existing_temporary_ous = lo.searchDn(filter='ou=temporary_move_container_*')
 
 	with udm_test.UCSTestUDM() as udm:
 		def test_organizational_unit(parent, add_user):
@@ -31,18 +33,18 @@ if __name__ == '__main__':
 
 			ou = udm.create_object('container/ou', position=parent, name=ou_name, check_for_drs_replication=True)
 			if add_user:
-				user = udm.create_user(position=ou, username=user_name)
+				udm.create_user(position=ou, username=user_name)
 
 			try:
 				udm.modify_object('container/ou', dn=ou, name=ou_name_new, check_for_drs_replication='(&(ou=%s)(name=%s))' % (ou_name, ou_name_new))
 			except AssertionError:
 				pass
-			lo = utils.get_ldap_connection()
 			fail = False
 			for dn, entry in lo.search(filter='ou=temporary_move_container_*'):
-				to_be_removed = udm._cleanup.setdefault('container/ou', [])
-				to_be_removed.append(dn)
-				fail = True
+				if dn not in existing_temporary_ous:
+					to_be_removed = udm._cleanup.setdefault('container/ou', [])
+					to_be_removed.append(dn)
+					fail = True
 			if fail:
 				utils.fail('ou = %s remained' % dn)
 
