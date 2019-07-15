@@ -31,12 +31,12 @@ if __name__ == '__main__':
 			ou_name = uts.random_string()
 			ou_name_new = ou_name.upper()
 
-			ou = udm.create_object('container/ou', position=parent, name=ou_name, check_for_drs_replication=True)
+			ou = udm.create_object('container/ou', position=parent, name=ou_name, wait_for=True)
 			if add_user:
 				udm.create_user(position=ou, username=user_name)
 
 			try:
-				udm.modify_object('container/ou', dn=ou, name=ou_name_new, check_for_drs_replication='(&(ou=%s)(name=%s))' % (ou_name, ou_name_new))
+				udm.modify_object('container/ou', dn=ou, name=ou_name_new, wait_for=True)
 			except AssertionError:
 				pass
 			fail = False
