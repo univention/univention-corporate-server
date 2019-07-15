@@ -51,7 +51,7 @@
 
 		<itemizedlist>
 			<listitem><para>
-					By configuring stylesheets, the look and feel of the login and self-service websites can be customized.
+					By configuring <wordasword>stylesheets</wordasword>, the look and feel of the login and self-service websites can be customized.
 			</para></listitem>
 			<listitem><para>
 					There are significant performance improvements of the Directory Manager in environments with extensive LDAP structures.
