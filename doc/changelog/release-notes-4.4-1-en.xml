@@ -44,69 +44,29 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With &ucsUCS; 4.4-1, the fourth minor release of &ucsUCS; (UCS) 4 is now
+			With &ucsUCS; 4.4-1, the first point release of &ucsUCS; (UCS) 4.4 is now
 			available. It provides several feature improvements and extensions, new properties as well as
 			various improvements and bugfixes. Here is an overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-					With this release the new app <phrase>Admin Diary</phrase> is available, with which administrative events of all UCS instances of a domain can be viewed and evaluated centrally.
-					Changes to users, groups or other objects in the directory service can be tracked just as easily as updates to servers or (de-)installations of apps.
-				</para>
-				<para>
-					The <phrase>Admin Diary</phrase> is delivered as two components:
-					a backend for data storage in an SQL database and a frontend for integration into the UMC.
-					Recording of events is part of UCS <productnumber>4.4</productnumber> and is automatically activated when the backend is installed.
+					By configuring stylesheets, the look and feel of the login and self-service websites can be customized.
 			</para></listitem>
 			<listitem><para>
-					The self-service app has been enhanced in two areas:
-				</para>
-				<itemizedlist>
-					<listitem><simpara>
-							End users can now use the self-service web interface not only for changing passwords, but also for editing their own contact information.
-					</simpara></listitem>
-					<listitem><simpara>
-							Administrators can now use the self-service to invite new users by mail.
-							In this process, new users are send a self-service token that they can use to add their password and contact information to the prepared account in the UCS domain.
-					</simpara></listitem>
-				</itemizedlist>
-			</listitem>
-			<listitem><para>
-					The portal has been extended to forward users directly to the login page and to display information texts if the portal is empty.
-					The rendering has been optimized and is now customizable via CSS.
-					Furthermore, the portal now has an improved permission management, which allows more access protection on the server side, which forms the basis for future enhancements.
+					There are significant performance improvements of the Directory Manager in environments with extensive LDAP structures.
 			</para></listitem>
 			<listitem><para>
-					The RADIUS app has been unified by merging the implementations from &ucsUAS; and the UCS app.
-					As part of the implementation, the exchange of <phrase>Shared Secrets</phrase>, e.g. with WiFi access points, has been simplified:
-					The access point configuration can now be done using the UMC computer module.
+					A suggestion system in the App Center provides information on additional apps.
 			</para></listitem>
 			<listitem><para>
-					Samba has been updated to version <productnumber>4.10 RC2</productnumber>, which includes numerous improvements.
-				</para>
-				<para>
-					With this version, trust settings between UCS and Microsoft Active Directory domains can be configured.
-					This makes it possible, for example, for users administered in UCS to gain access to services operated in Microsoft domains.
-				</para>
-				<para>
-					Furthermore Samba now supports <phrase>Fine Grained Password Policies</phrase>, with which it is possible to define different and detailed password policies within the Microsoft Active Directory or Kerberos domain.
+					A beta version of the new UDM Rest API has been released.
 			</para></listitem>
 			<listitem><para>
-					The user experience in the &ucsUMC; has been improved in many ways.
-					These include a clearer display of input elements, better handling of long result lists and a more efficient display on small displays.
+					The source code of some UCS packages has been adapted for future migration to Python 3.
 			</para></listitem>
 			<listitem><para>
-					The settings for a user's access to installed apps can now be managed on a central tab on the user object.
-					This simplifies both the administration of UCS and the integration by App Providers.
-			</para></listitem>
-			<listitem><para>
-					For App Providers <phrase>Install Permissions</phrase> are a new feature in the App Center:
-					They allow to specify for each version whether the App requires a contractual relationship between user and provider for installation.
-					The App Center thus better supports corresponding business models of the app providers and users can better recognize which versions of an app are available.
-			</para></listitem>
-			<listitem><para>
-					UCS <productnumber>4.4-1</productnumber> is based on the Debian release <productnumber>9.8</productnumber> released in February.
+					Various security updates have been integrated into UCS 4.4-1, e.g. Samba4, the Linux kernel and Dovecot.
 					A complete list of security and package updates is available in <xref linkend="relnotes:changelog"/>.
 			</para></listitem>
 		</itemizedlist>
