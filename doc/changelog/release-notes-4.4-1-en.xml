@@ -57,7 +57,7 @@
 					There are significant performance improvements of the Directory Manager in environments with extensive LDAP structures.
 			</para></listitem>
 			<listitem><para>
-					A suggestion system in the App Center provides information on additional apps.
+					A new feature in the App Center gives hints for additional apps, based on the apps already installed in the environment.
 			</para></listitem>
 			<listitem><para>
 					A beta version of the new UDM Rest API has been released.
@@ -66,7 +66,7 @@
 					The source code of some UCS packages has been adapted for future migration to Python 3.
 			</para></listitem>
 			<listitem><para>
-					Various security updates have been integrated into UCS 4.4-1, e.g. Samba4, the Linux kernel and Dovecot.
+					Various security updates have been integrated into UCS 4.4-1, e.g. Samba, the Linux kernel and Dovecot.
 					A complete list of security and package updates is available in <xref linkend="relnotes:changelog"/>.
 			</para></listitem>
 		</itemizedlist>
