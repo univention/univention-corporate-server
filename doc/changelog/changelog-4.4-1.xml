@@ -13,21 +13,13 @@
 		<itemizedlist>
 			<listitem>
 				<para>
-					All security updates issued since UCS 4.3-3 are included:
+					All security updates issued since UCS 4.4-0 are included:
 				</para>
 				<itemizedlist id="_security">
 					<listitem><simpara>
 						<package>apt</package> (<u:cve>2019-3462</u:cve>) (<u:bug>48513</u:bug>)
 					</simpara></listitem>
 				</itemizedlist>
-			</listitem>
-			<listitem>
-				<para>
-					The following updated packages from Debian 9.8 are included (<u:bug>48332</u:bug>):
-					<simplelist type="inline" id="_debian">
-						<member><package>ansible</package></member>
-					</simplelist>
-				</para>
 			</listitem>
 			<listitem>
 				<para>
@@ -965,7 +957,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-								<package>univention-bootsplash</package>Fix usage of Univention Configuration Registry Python module. (<u:bug>49129</u:bug>)
+								<package>univention-bootsplash</package>: Fix usage of Univention Configuration Registry Python module. (<u:bug>49129</u:bug>)
 						</simpara></listitem>
 
 
