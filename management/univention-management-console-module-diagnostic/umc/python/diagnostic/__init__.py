@@ -49,6 +49,8 @@ from univention.management.console.log import MODULE
 from univention.management.console.modules.diagnostic import plugins
 from collections import OrderedDict
 from univention.lib.i18n import Translation
+
+_strptime
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 
@@ -95,7 +97,7 @@ class Instance(Base, ProgressMixin):
 		plugin=StringSanitizer(required=True),
 		args=DictSanitizer({})
 	)
-	@simple_response
+	@simple_response(with_progress=True)
 	def run(self, plugin, args=None):
 		plugin = self.get(plugin)
 		MODULE.process('Running %s' % (plugin,))
@@ -103,9 +105,7 @@ class Instance(Base, ProgressMixin):
 			MODULE.process(line)
 		args = args or {}
 
-		def thread(self, request):
-			return plugin.execute(self, **args)
-		return thread
+		return plugin.execute(self, **args)
 
 	@sanitize(pattern=PatternSanitizer(default='.*'))
 	@simple_response

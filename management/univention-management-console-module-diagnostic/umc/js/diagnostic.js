@@ -293,9 +293,9 @@ define([
 		},
 
 		_runDiagnose: function(plugin, opts) {
-			var run = this.umcpCommand('diagnostic/run', lang.mixin({plugin: plugin.id}, opts));
-			run.then(lang.hitch(this, function(data) {
-				this._grid.store.put(lang.mixin(plugin, data.result));
+			var run = this.umcpProgressCommand(new ProgressBar(), 'diagnostic/run', lang.mixin({plugin: plugin.id}, opts));
+			run.then(lang.hitch(this, function(result) {
+				this._grid.store.put(lang.mixin(plugin, result));
 				this.refreshGrid();
 			}));
 			return run;

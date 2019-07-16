@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (5.0.1-10) unstable; urgency=medium
+
+  * Bug #48002: execute plugins asynchronously
+
+ -- Florian Best <best@univention.de>  Tue, 16 Jul 2019 15:02:44 +0200
+
 univention-management-console-module-diagnostic (5.0.1-9) unstable; urgency=medium
 
   * Bug #49335: Remove 42_samba_tool_sysvolcheck.py

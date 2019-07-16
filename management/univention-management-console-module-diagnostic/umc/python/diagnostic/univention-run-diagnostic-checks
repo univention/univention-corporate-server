@@ -1,131 +1,131 @@
 #!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+#
+# Univention Management Console module:
+#  System Diagnosis UMC module
+#
+# Copyright 2014-2019 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, seGe
+# <http://www.gnu.org/licenses/>.
 
 import sys
+import time
 import argparse
-from univention.config_registry import ConfigRegistry
-from univention.lib.umc import Client as _Client
-from univention.management.console.modules.diagnostic import MODULE
+import traceback
 from getpass import getpass
 
+from univention.lib.umc import Client, Unauthorized
 
-class Client(_Client):
 
-	print_response = True
-	print_request_data = True
+class CLIClient(object):
 
 	@classmethod
-	def get_test_connection(cls, username, password, hostname=None, *args, **kwargs):
-		try:
-			return cls(hostname, username, password, *args, **kwargs)
-		except Exception:
-			sys.exit(1)
+	def main(cls):
+		parser = argparse.ArgumentParser(description='Executes the diagnostic module checks', add_help=False)
+		parser.add_argument('-h', '--help', action='store_true', help='show this help message and exit')
+		parser.add_argument("--bindpwdfile", help='Path to a file that contains your password')
+		parser.add_argument("--username", help='Domain Admin username for Authentication')
+		args = parser.parse_known_args()[0]
 
-	def umc_command(self, *args, **kwargs):
-		self.print_request_data = kwargs.pop('print_request_data', True)
-		self.print_response = kwargs.pop('print_response', True)
-		try:
-			return super(Client, self).umc_command(*args, **kwargs)
-		finally:
-			self.print_request_data = True
-			self.print_response = True
+		if args.help:
+			parser.add_argument("-t", dest='tests', nargs='+', help='Choose tests to run by using "{-t <testname>}" or "-t all" to execute all diagnostic checks', required=True)
+			parser.print_help()
+			sys.exit(0)
 
-	def request(self, method, path, data=None, headers=None):
+		if not args.username:
+			args.username = raw_input('Domain Admin Login: ')
+		args.password = None
+		if args.bindpwdfile:
+			with open(args.bindpwdfile) as fd:
+				args.password = fd.read().strip()
+		if not args.password:
+			args.password = getpass('Password: ')
+
 		try:
-			response = super(Client, self).request(method, path, data, headers)
-		except Exception:
-			MODULE.error('UMC request failed: %s\n' % (sys.exc_info()[1],))
-			raise
+			client = Client(None, args.username, args.password)
+		except Unauthorized as exc:
+			parser.error('Login failed: %s' % (exc.message,))
+
+		plugins = [plugin['id'] for plugin in client.umc_command('diagnostic/query').result]
+		parser.add_argument("-t", dest='tests', nargs='+', choices=['all'] + plugins, help='Choose tests to run by using "{-t <testname>}" or "-t all" to execute all diagnostic checks', required=True)
+		args = parser.parse_args()
+
+		if 'all' in args.tests:
+			args.tests = plugins
+
+		return cls(client, args).run()
+
+	def __init__(self, client, args):
+		self.client = client
+		self.args = args
+
+	def run(self):
+		responses = self.run_diagnostic_checks(self.args.tests)
+
+		exit_code = 0
+		print('\nYou can find the logging messages of the diagnostic modules at /var/log/univention/management-console-module-diagnostic.log\n')
+		for plugin, result in sorted(responses.items()):
+			if result['type'] == 'success':
+				print('ran %s successfully.\n' % (plugin,))
+			else:
+				exit_code = 2
+				title = '## Check failed: %s - %s ##' % (plugin, result['title'])
+				print '\n'.join([
+					(' Start %s ' % (plugin,)).center(len(title), '#'),
+					title,
+					result['description'].strip(),
+					(' End %s ' % (plugin,)).center(len(title), '#'),
+					'',
+				])
+		return exit_code
+
+	def run_diagnostic_checks(self, plugins):
+		execution = {}
+		response = {}
+		for plugin in plugins:
+			execution[plugin] = self.client.umc_command('diagnostic/run', {'plugin': plugin}).result
+
+		while len(execution) > len(response):
+			for plugin, progress in execution.items():
+				if plugin in response:
+					continue
+				try:
+					result = self.client.umc_command('diagnostic/progress', {'progress_id': progress['id']}).result
+				except Exception:
+					result = {'finished': True, 'result': {'type': 'traceback', 'title': plugin, 'description': traceback.format_exc()}}
+
+				if result['finished']:
+					response[plugin] = {
+						'type': result['result']['type'],
+						'title': result['result']['title'],
+						'description': result['result']['description'],
+					}
+			time.sleep(0.25)
 		return response
 
 
-def test_run_diagnostic_checks(client, plugins, failures):
-	for plugin in plugins:
-		result = client.umc_command('diagnostic/run', {'plugin': plugin['id']}).result
-		if result['type'] == 'success':
-			print 'ran %s successfully' % plugin['id']
-		if result['type'] != 'success':
-			failures.extend([
-				'############################',
-				'## Check failed: %s - %s' % (plugin['id'], result['title']),
-				result['description'],
-				'########### End #############\n',
-			])
-	return failures
-
-
-#returns a list of the plugins whose names did not match any plugin
-#returns a list of the plugins that should be run
-def choose_tests(tests, plugins):
-	chosen_tests = []
-	unused_tests = []
-	for plugin in plugins:
-		for x in range(len(tests)):
-			if plugin['id'] == tests[x]:
-				chosen_tests.append(plugin)
-				tests[x] = ''
-	for x in tests:
-		if x != '':
-			unused_tests.append(x)
-	if unused_tests:
-		tests_not_found = ', '.join(unused_tests)
-		print('Could not find tests with the name %s\nPlease check for spelling mistakes' % tests_not_found)
-	return chosen_tests
-
-
-def parsing():
-	parser = argparse.ArgumentParser(description='Executes the diagnostic module checks')
-	parser.add_argument("-t", nargs='*', type=str, help='Choose tests to run by using "{-t <testname>}" or "-t all" to execute all diagnostic checks')
-	parser.add_argument("--bindpwdfile", type=str, help='Path to a file that contains your password')
-	parser.add_argument("--username", type=str, help='Domain Admin username for Authentication')
-	args = parser.parse_args()
-	return args.t, args.bindpwdfile, args.username
-
-
-def login(args_username, args_bindpwdfile):
-	if args_username:
-		username = args_username
-	else:
-		username = raw_input('Domain Admin Login:')
-	if args_bindpwdfile:
-		with open(args_bindpwdfile, 'rb') as fd:
-			password = fd.read().strip()
-	else:
-		password = getpass()
-	return username, password
-
-
-def main():
-	ucr = ConfigRegistry()
-	ucr.load()
-	failures = []
-	try:
-		argst, args_bindpwdfile, args_username = parsing()
-		valid_input = True
-		if argst is None:
-			print('You have to choose tests to run by using "{-t <testname>}" or write "-t all" to execute all tests')
-			sys.exit(2)
-		else:
-			for x in argst:
-				if x.find(".") != -1:
-					print 'Please enter the test name %s again, but without file ending.' % x
-					valid_input = False
-
-		if valid_input:
-			username, password = login(args_username, args_bindpwdfile)
-			client = Client.get_test_connection(username, password)
-			plugins = client.umc_command('diagnostic/query').result
-			if 'all' in argst:
-				failures = test_run_diagnostic_checks(client, plugins, failures)
-			else:
-				chosen_tests = choose_tests(argst, plugins)
-				failures = test_run_diagnostic_checks(client, chosen_tests, failures)
-	except Exception as exc:
-		print exc
-
-	print '\nYou can find the logging messages of the diagnostic modules at /var/log/univention/management-console-module-diagnostic.log\n'
-	if failures:
-		print('\n%s' % ('\n'.join(failures)))
-
-
 if __name__ == '__main__':
-	main()
+	sys.exit(CLIClient.main())
