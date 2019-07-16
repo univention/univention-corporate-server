@@ -1,3 +1,9 @@
+univention-java (11.0.1-1) unstable; urgency=medium
+
+  * Bug #49856: Remove icedtea-plugin dependency. It is no longer installable
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Jul 2019 17:53:57 +0200
+
 univention-java (11.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump
