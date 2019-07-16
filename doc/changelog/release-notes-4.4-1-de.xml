@@ -57,7 +57,7 @@
 					Es gibt deutliche Performance-Verbesserungen des Directory Managers in Umgebungen mit umfangreichen LDAP-Strukturen.
 			</para></listitem>
 			<listitem><para>
-					Im App Center gibt ein neues Feature: Hinweise auf ergänzende Apps, basierend auf den in der Umgebung bereits installierten Apps.
+					Im App Center gibt ein neues Feature Hinweise auf ergänzende Apps, basierend auf den in der Umgebung bereits installierten Apps.
 			</para></listitem>
 			<listitem><para>
 					Eine Betaversion der neuen UDM Rest API wurde veröffentlicht.
