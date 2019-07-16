@@ -19,111 +19,6 @@
 					<listitem><simpara>
 						<package>apt</package> (<u:cve>2019-3462</u:cve>) (<u:bug>48513</u:bug>)
 					</simpara></listitem>
-					<listitem><simpara>
-						<package>cups</package> (<u:cve>2017-18248</u:cve>, <u:cve>2018-4700</u:cve>) (<u:bug>48772</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>curl</package> (<u:cve>2018-16890</u:cve>, <u:cve>2019-3822</u:cve>, <u:cve>2019-3823</u:cve>) (<u:bug>48786</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>dovecot</package> (<u:cve>2019-3814</u:cve>) (<u:bug>48774</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>firefox-esr</package> (<u:cve>2018-12405</u:cve>, <u:cve>2018-17466</u:cve>, <u:cve>2018-18356</u:cve>, <u:cve>2018-18492</u:cve>, <u:cve>2018-18493</u:cve>, <u:cve>2018-18494</u:cve>, <u:cve>2018-18498</u:cve>, <u:cve>2018-18500</u:cve>, <u:cve>2018-18501</u:cve>, <u:cve>2018-18505</u:cve>, <u:cve>2019-5785</u:cve>) (<u:bug>48319</u:bug>, <u:bug>48589</u:bug>, <u:bug>48779</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>freerdp</package> (<u:cve>2018-8786</u:cve>, <u:cve>2018-8787</u:cve>, <u:cve>2018-8788</u:cve>, <u:cve>2018-8789</u:cve>) (<u:bug>48775</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>ghostscript</package> (<u:bug>48415</u:bug>, <u:bug>48537</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>glibc</package> (<u:cve>2017-15670</u:cve>, <u:cve>2017-15671</u:cve>, <u:cve>2017-15804</u:cve>, <u:cve>2017-16997</u:cve>, <u:cve>2017-18269</u:cve>, <u:cve>2017-1000408</u:cve>, <u:cve>2017-1000409</u:cve>, <u:cve>2018-11236</u:cve>, <u:cve>2018-11237</u:cve>) (<u:bug>48778</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>intel-microcode</package> (<u:cve>2018-3639</u:cve>, <u:cve>2018-3640</u:cve>) (<u:bug>48781</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>libapache2-mod-perl2</package> (<u:cve>2011-2767</u:cve>) (<u:bug>48785</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>libarchive</package> (<u:cve>2016-10209</u:cve>, <u:cve>2016-10349</u:cve>, <u:cve>2016-10350</u:cve>, <u:cve>2017-14166</u:cve>, <u:cve>2017-14501</u:cve>, <u:cve>2017-14502</u:cve>, <u:cve>2017-14503</u:cve>, <u:cve>2018-1000877</u:cve>, <u:cve>2018-1000878</u:cve>, <u:cve>2018-1000880</u:cve>) (<u:bug>48408</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>libemail-address-perl</package> (<u:cve>2015-7686</u:cve>, <u:cve>2018-12558</u:cve>) (<u:bug>48777</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>libgd2</package> (<u:cve>2019-6977</u:cve>, <u:cve>2019-6978</u:cve>) (<u:bug>48614</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>libphp-phpmailer</package> (<u:cve>2018-19296</u:cve>) (<u:bug>48306</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>libreoffice</package> (<u:cve>2018-16858</u:cve>) (<u:bug>48592</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>libvirt</package> (<u:bug>47617</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>libvirt-python</package> (<u:bug>47617</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>libvncserver</package> (<u:cve>2018-6307</u:cve>, <u:cve>2018-15126</u:cve>, <u:cve>2018-15127</u:cve>, <u:cve>2018-20019</u:cve>, <u:cve>2018-20020</u:cve>, <u:cve>2018-20021</u:cve>, <u:cve>2018-20022</u:cve>, <u:cve>2018-20023</u:cve>, <u:cve>2018-20024</u:cve>) (<u:bug>48591</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>linux</package>, <package>univention-kernel-image-signed</package> (<u:cve>2017-18249</u:cve>, <u:cve>2018-1128</u:cve>, <u:cve>2018-1129</u:cve>, <u:cve>2018-5848</u:cve>, <u:cve>2018-12896</u:cve>, <u:cve>2018-13053</u:cve>, <u:cve>2018-13096</u:cve>, <u:cve>2018-13097</u:cve>, <u:cve>2018-13100</u:cve>, <u:cve>2018-14610</u:cve>, <u:cve>2018-14611</u:cve>, <u:cve>2018-14612</u:cve>, <u:cve>2018-14613</u:cve>, <u:cve>2018-14614</u:cve>, <u:cve>2018-14616</u:cve>, <u:cve>2018-16862</u:cve>, <u:cve>2018-17972</u:cve>, <u:cve>2018-18281</u:cve>, <u:cve>2018-18690</u:cve>, <u:cve>2018-18710</u:cve>, <u:cve>2018-19407</u:cve>) (<u:bug>48782</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>openssh</package> (<u:cve>2018-20685</u:cve>, <u:cve>2019-6109</u:cve>, <u:cve>2019-6111</u:cve>) (<u:bug>48780</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>openssl1.0</package> (<u:cve>2018-0732</u:cve>, <u:cve>2018-0734</u:cve>, <u:cve>2018-0737</u:cve>, <u:cve>2018-5407</u:cve>) (<u:bug>48388</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>php-pear</package> (<u:cve>2018-1000888</u:cve>) (<u:bug>48590</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>php7.0</package> (<u:cve>2018-14851</u:cve>, <u:cve>2018-14883</u:cve>, <u:cve>2018-17082</u:cve>, <u:cve>2018-19518</u:cve>, <u:cve>2018-19935</u:cve>, <u:cve>2019-9020</u:cve>, <u:cve>2019-9021</u:cve>, <u:cve>2019-9022</u:cve>, <u:cve>2019-9023</u:cve>, <u:cve>2019-9024</u:cve>) (<u:bug>48309</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>policykit-1</package> (<u:cve>2018-19788</u:cve>) (<u:bug>48307</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>python-django</package> (<u:cve>2019-3498</u:cve>) (<u:bug>48464</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>qemu</package> (<u:bug>47617</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>qtbase-opensource-src</package> (<u:cve>2018-15518</u:cve>, <u:cve>2018-19870</u:cve>, <u:cve>2018-19873</u:cve>) (<u:bug>48593</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>rdesktop</package> (<u:cve>2018-8791</u:cve>, <u:cve>2018-8792</u:cve>, <u:cve>2018-8793</u:cve>, <u:cve>2018-8794</u:cve>, <u:cve>2018-8795</u:cve>, <u:cve>2018-8796</u:cve>, <u:cve>2018-8797</u:cve>, <u:cve>2018-8798</u:cve>, <u:cve>2018-8799</u:cve>, <u:cve>2018-8800</u:cve>, <u:cve>2018-20174</u:cve>, <u:cve>2018-20175</u:cve>, <u:cve>2018-20176</u:cve>, <u:cve>2018-20177</u:cve>, <u:cve>2018-20178</u:cve>, <u:cve>2018-20179</u:cve>, <u:cve>2018-20180</u:cve>, <u:cve>2018-20181</u:cve>, <u:cve>2018-20182</u:cve>) (<u:bug>48776</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>sox</package> (<u:cve>2014-8145</u:cve>) (<u:bug>48783</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>spice</package> (<u:cve>2019-3813</u:cve>) (<u:bug>48594</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>systemd</package> (<u:cve>2018-16864</u:cve>, <u:cve>2018-16865</u:cve>, <u:cve>2018-16866</u:cve>, <u:cve>2019-3815</u:cve>, <u:cve>2019-6454</u:cve>) (<u:bug>48463</u:bug>, <u:bug>48499</u:bug>, <u:bug>48759</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>uriparser</package> (<u:cve>2018-19198</u:cve>, <u:cve>2018-19199</u:cve>, <u:cve>2018-19200</u:cve>) (<u:bug>48784</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>vlc</package> (<u:bug>48462</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>wayland</package> (<u:cve>2017-16612</u:cve>) (<u:bug>48773</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>wireshark</package> (<u:cve>2018-12086</u:cve>, <u:cve>2018-18225</u:cve>, <u:cve>2018-18226</u:cve>, <u:cve>2018-18227</u:cve>, <u:cve>2018-19622</u:cve>, <u:cve>2018-19623</u:cve>, <u:cve>2018-19624</u:cve>, <u:cve>2018-19625</u:cve>, <u:cve>2018-19626</u:cve>, <u:cve>2018-19627</u:cve>, <u:cve>2018-19628</u:cve>) (<u:bug>48409</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>zeromq3</package> (<u:cve>2019-6250</u:cve>) (<u:bug>48500</u:bug>)
-					</simpara></listitem>
 				</itemizedlist>
 			</listitem>
 			<listitem>
@@ -131,104 +26,6 @@
 					The following updated packages from Debian 9.8 are included (<u:bug>48332</u:bug>):
 					<simplelist type="inline" id="_debian">
 						<member><package>ansible</package></member>
-						<member><package>arc</package></member>
-						<member><package>astroml-addons</package></member>
-						<member><package>base-files</package></member>
-						<member><package>c3p0</package></member>
-						<member><package>ca-certificates-java</package></member>
-						<member><package>chkrootkit</package></member>
-						<member><package>chromium</package></member>
-						<member><package>compactheader</package></member>
-						<member><package>coturn</package></member>
-						<member><package>courier</package></member>
-						<member><package>debian-edu-config</package></member>
-						<member><package>debian-installer-netboot-images</package></member>
-						<member><package>debian-installer</package></member>
-						<member><package>debian-security-support</package></member>
-						<member><package>dnspython</package></member>
-						<member><package>drupal7</package></member>
-						<member><package>egg</package></member>
-						<member><package>erlang</package></member>
-						<member><package>espeakup</package></member>
-						<member><package>flatpak</package></member>
-						<member><package>ganeti-os-noop</package></member>
-						<member><package>glx-alternatives</package></member>
-						<member><package>gnulib</package></member>
-						<member><package>gnupg2</package></member>
-						<member><package>golang-1.7</package></member>
-						<member><package>golang-1.8</package></member>
-						<member><package>graphite-api</package></member>
-						<member><package>grokmirror</package></member>
-						<member><package>ibus</package></member>
-						<member><package>icinga2</package></member>
-						<member><package>ikiwiki</package></member>
-						<member><package>isort</package></member>
-						<member><package>jdupes</package></member>
-						<member><package>kmodpy</package></member>
-						<member><package>libapache-mod-jk</package></member>
-						<member><package>libb2</package></member>
-						<member><package>libdatetime-timezone-perl</package></member>
-						<member><package>libemail-address-list-perl</package></member>
-						<member><package>libextractor</package></member>
-						<member><package>libgpod</package></member>
-						<member><package>libssh</package></member>
-						<member><package>libu2f-host</package></member>
-						<member><package>linux-igd</package></member>
-						<member><package>lttng-modules</package></member>
-						<member><package>mistral</package></member>
-						<member><package>monkeysign</package></member>
-						<member><package>mosquitto</package></member>
-						<member><package>mpqc</package></member>
-						<member><package>netatalk</package></member>
-						<member><package>nvidia-graphics-drivers</package></member>
-						<member><package>nvidia-modprobe</package></member>
-						<member><package>nvidia-persistenced</package></member>
-						<member><package>nvidia-settings</package></member>
-						<member><package>nvidia-xconfig</package></member>
-						<member><package>openni2</package></member>
-						<member><package>openvpn</package></member>
-						<member><package>parsedatetime</package></member>
-						<member><package>pdns</package></member>
-						<member><package>pdns-recursor</package></member>
-						<member><package>photocollage</package></member>
-						<member><package>postfix</package></member>
-						<member><package>postgresql-9.6</package></member>
-						<member><package>postgrey</package></member>
-						<member><package>pylint-django</package></member>
-						<member><package>python-acme</package></member>
-						<member><package>python-arpy</package></member>
-						<member><package>python-certbot-apache</package></member>
-						<member><package>python-certbot-nginx</package></member>
-						<member><package>python-certbot</package></member>
-						<member><package>python-hypothesis</package></member>
-						<member><package>python-josepy</package></member>
-						<member><package>pyzo</package></member>
-						<member><package>r-cran-readxl</package></member>
-						<member><package>rssh</package></member>
-						<member><package>rtkit</package></member>
-						<member><package>ruby-loofah</package></member>
-						<member><package>ruby-rack</package></member>
-						<member><package>ruby-sanitize</package></member>
-						<member><package>sl-modem</package></member>
-						<member><package>sogo-connector</package></member>
-						<member><package>ssh-agent-filter</package></member>
-						<member><package>supercollider</package></member>
-						<member><package>sympa</package></member>
-						<member><package>thunderbird</package></member>
-						<member><package>tmpreaper</package></member>
-						<member><package>twitter-bootstrap3</package></member>
-						<member><package>tzdata</package></member>
-						<member><package>uglifyjs</package></member>
-						<member><package>vm</package></member>
-						<member><package>vulture</package></member>
-						<member><package>wicd</package></member>
-						<member><package>wordpress</package></member>
-						<member><package>wvstreams</package></member>
-						<member><package>xapian-core</package></member>
-						<member><package>xen</package></member>
-						<member><package>xkeycaps</package></member>
-						<member><package>yosys</package></member>
-						<member><package>z3</package></member>
 					</simplelist>
 				</para>
 			</listitem>
@@ -236,15 +33,12 @@
 				<para>
 					The following packages have been moved to the maintained repository of UCS:
 					<simplelist type="inline" id="_maintained">
-						<member><package>fail2ban</package> (<u:bug>47566</u:bug>)</member>
-						<member><package>libmaxminddb</package> (<u:bug>48409</u:bug>)</member>
+						<member><package>numad</package> (<u:bug>47574</u:bug>)</member>
+						<member><package>python-setproctitle</package> (<u:bug>49176</u:bug>)</member>
+						<member><package>configparser</package> (<u:bug>49588</u:bug>)</member>
 					</simplelist>
 				</para>
 			</listitem>
-			<listitem><simpara>
-				All <filename>debian/changelog</filename> files have been updated to the machine-readable <ulink url="https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/" lang="">DEP-5</ulink> format.
-				The copyright of all packages has been extended to 2019 (<u:bug>28499</u:bug>):
-			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
@@ -254,9 +48,6 @@
 		<section id="changelog:basic:kernel">
 			<title>Linux kernel and firmware packages</title>
 			<itemizedlist>
-				<listitem><simpara>
-					Always set UCR variable <envar>update/reboot/required</envar> when a new kernel is installed (<u:bug>48349</u:bug>).
-				</simpara></listitem>
 			</itemizedlist>
 		</section>
 	</section>
@@ -269,12 +60,28 @@
 			<section id="changelog:domain:openldap:replication">
 				<title>Listener/Notifier domain replication</title>
 				<itemizedlist>
-					<listitem><simpara>
-						Implement new &ucsUDN; Protocol Version 3, which does not transmit Distinguished Names over an unencrypted and unauthenticated channel (<u:bug>48427</u:bug>).
-					</simpara></listitem>
-					<listitem><simpara>
-						The new script <command>univention-replicate-many</command> can be used to re-replicate multiple objects at once (<u:bug>41262</u:bug>).
-					</simpara></listitem>
+						<listitem><simpara>
+							The <command>resync_objects.py</command> helper script now respects the configured local ldap port. (<u:bug>49228</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Fix regression from UCS-4.3-3 erratum 426 in <filename>cn=translog</filename> setup, which reset the LDAP indices. (<u:bug>48971</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Since UCS-4.3-3 erratum 427 the Univention Directory Notifier (UDN) writes transactions both to the file <filename>/var/lib/univention-ldap/notify/transaction</filename> and the <filename>cn=translog</filename> database in OpenLDAP. A failed write to the later can make UDN abort, in which case UDN is restarted automatically and writes the pending transactions to said file again. This leads to inconsistency. The order has been swapped to prevent this issue from happening again. The transaction file might require manual corrections if UDN fails to start up properly. (<u:bug>49198</u:bug>)
+						</simpara></listitem>
+						<listitem><simpara>
+							Deprecated and unused code has been removed. (<u:bug>49277</u:bug>)
+						</simpara></listitem>
+						<listitem><simpara>
+								Add <command>univention-translog check --fix</command> command to check (and fix) inconsisteny between the files <filename>/var/lib/univention-ldap/notify/transaction</filename>, <filename>/var/lib/univention-ldap/notify/transaction.index</filename>, <filename>/var/lib/univention-ldap/listener/listener</filename>, and <filename>/var/lib/univention-ldap/last_id</filename>. (<u:bug>49201</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+								Implement command <command>univention-translog prune</command> to prune old transactions from the <filename>transaction</filename> file and database. This can be used to save space. Warning: This procedure is dangerous and should ONLY be executed if ALL Univention Directory Listeners (UDL) in the domain have processed all previous transactions. Otherwise the UDLs will no longer be able to process transactions and affected systems must be re-joined! Systems, which have not been running for some time or are restored from backup, must also be re-joined if their last processed transaction is no longer part contained in the purged translog. (<u:bug>48729</u:bug>)
+						</simpara></listitem>
+
 				</itemizedlist>
 			</section>
 		</section>
@@ -286,156 +93,434 @@
 		<section id="changelog:umc:web">
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
-				<listitem><simpara>
-					The recommended browser versions have been updated (<u:bug>47829</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The Univention logo has been updated (<u:bug>48700</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The feature of modern browsers to automatically fill out HTML form fields has been improved (<u:bug>46198</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The design of the web interface has been improved (<u:bug>48471</u:bug>, <u:bug>48723</u:bug>).
-				</simpara></listitem>
+						<listitem><simpara>
+							Change dependency of package <package>univention-dojo-dev</package> from <package>openjdk-7</package> to <package>default-jre-headless</package> as the former is deprecated and no longer maintained. (<u:bug>49508</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							The legacy path <literal>/umcp/</literal> to access the UMC-Server backend has been removed. (<u:bug>49639</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+								The design of the UMC login page can now be adjusted via <filename>/usr/share/univention-management-console-login/css/custom.css</filename>. (<u:bug>49436</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							The UMC-Server does not respond with an error anymore if no English locale is configured. (<u:bug>47602</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							The UMC for UCS Core Editions shows a notification that informs about the UCS Ambassador Program. (<u:bug>49731</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Error messages during login or password changing are translated again. (<u:bug>49029</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+								The SAML identity provider is not configured in the UMC-WebServer anymore if it is disabled via the UCR variable <envar>umc/web/sso/enabled</envar>. (<u:bug>48224</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							The label and icon of some widgets are now configurable. (<u:bug>49730</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Notifications can now be shown non-truncated. (<u:bug>49731</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+								A cross site scripting vulnerability in <code>umc.widgets.Editor</code> has been fixed. This affected portal entries. (<u:bug>48812</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Preparations for better browser cache-control have been implemented. (<u:bug>48995</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							It is possible to define standby animations for form dependencies now. (<u:bug>46919</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Password input fields can now have a button to show the password in clear text. (<u:bug>49099</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Grids can now automatically encode HTML entities (<u:bug>48972</u:bug>)
+						</simpara></listitem>
+
 			</itemizedlist>
 		</section>
 
 		<section id="changelog:umc:portal">
 			<title>Univention Portal</title>
 			<itemizedlist>
-				<listitem><simpara>
-					The portal now has its own service.
-					<package>univention-portal-server</package> filters entries that shall only be seen by users of certain groups in the backend, instead of serving all and the frontend hides them.
-					Permissions on nested groups are now evaluated correctly (<u:bug>48358</u:bug>, <u:bug>48595</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The portal can now be customized via a custom CSS file (<u:bug>48506</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The user guidance in the portal has been improved.
-					It is now possible to define whether users have to be logged in to visit the portal.
-					Furthermore a custom message can be configured to show to users that are not logged in and would be presented with an empty portal otherwise (<u:bug>48546</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The portal now depends on <package>netcat-openbsd</package> to ensure that it's join script is IPv6 compatible (<u:bug>46556</u:bug>).
-				</simpara></listitem>
+						<listitem><simpara>
+							Portal entries which are limited to users are now shown when the user is logged in via email address. (<u:bug>49619</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Whether portal entries are opened in the same tab or a new tab is now configurable. (<u:bug>45318</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Debug statements where added to the portal server listener. (<u:bug>49113</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							The file permissions for the cache directory of the Portal is now stricter. This prevents warnings in the System diagnostic UMC module. (<u:bug>48814</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Obsolete code has been removed. (<u:bug>48943</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+								The robustness of the <command>univention-portal-server</command> has been increased. (<u:bug>49526</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+								The <command>univention-portal-server</command> is reloaded after a server password rotation. (<u:bug>49746</u:bug>)
+						</simpara></listitem>
+
 			</itemizedlist>
 		</section>
 
 		<section id="changelog:umc:server">
 			<title>Univention Management Console server</title>
 			<itemizedlist>
-				<listitem><simpara>
-					The errors from <package>pam_cracklib</package> are evaluated again when changing the password via &ucsUMC; (<u:bug>48684</u:bug>).
-				</simpara></listitem>
+						<listitem><simpara>
+							The error message for a failed password change has been improved. (<u:bug>48897</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							The UCS identity provider configuration is always fetched when executing the joinscript <filename>92univention-management-console-web-server.inst</filename> (<u:bug>48198</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Obsolete code has been removed. (<u:bug>48943</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							The UMC now uses <package>json</package> instead of <package>simplejson</package>. (<u:bug>47377</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Corrupt translation files cannot cause the UMC-Server to crash anymore. (<u:bug>49775</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+								LDAP connection problems could result in an error loop, with the following error <literal>ldapError: Insufficient access</literal>. This has been fixed by ensuring a new connection is used after LDAP connection problems. (<u:bug>46089</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							A crash of the UMC-Server in rare situations has been corrected. (<u:bug>48157</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+								The <package>pam_cracklib</package> behavior prior to UCS 4.3 errata 450 has been restored. Therefore password changes do not require strong passwords anymore if no passord policy is defined in the domain. (<u:bug>49239</u:bug>)
+						</simpara></listitem>
+
+
 			</itemizedlist>
 		</section>
 
 		<section id="changelog:umc:appcenter">
 			<title>Univention App Center</title>
 			<itemizedlist>
-				<listitem><simpara>
-						The UMC module obtained a graphical overhaul and new filters (<u:bug>48449</u:bug>, <u:bug>48483</u:bug>, <u:bug>48846</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						It is now possible to show a preview of certain Apps that are not (yet) installable.
-						These Apps can be voted for to get more insights whether users would want this App in the App Center (<u:bug>48472</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						The App Center is now able to handle Apps with install permissions.
-						This describes App versions that can only be installed when the App has been bought from the Univention App Center store (<u:bug>48624</u:bug>, <u:bug>48544</u:bug>, <u:bug>48127</u:bug>, <u:bug>48753</u:bug>).
-				</simpara></listitem>
+						<listitem><simpara>
+								Log rotation for container logs has been enabled in the docker daemon, and can be configured via the UCR variables <envar>docker/daemon/default/opts/log-driver</envar> (default <literal>json-file</literal>) and <envar>docker/daemon/default/map/log-opt</envar> (default <literal>max-file=4,max-size=10m</literal>). (<u:bug>47416</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Added a new listener to save a mapping for App Attributes that the UDM UMC module may read (<u:bug>48895</u:bug>)
+						</simpara></listitem>
+						<listitem><simpara>
+							Extended Attributes are only searched for in the correct LDAP container (<u:bug>48982</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							A crash when registering attributes is prevented during the activation of new schema extensions. (<u:bug>45513</u:bug>)
+						</simpara></listitem>
+						<listitem><simpara>
+							Docker image verification was removed from the App Center code. Instead, we rely on the functions of Docker itself. (<u:bug>48670</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							The App Center waits for a dpkg lock before attempting to install database software packages. If starting the database service fails anyway, we now send more verbose information. (<u:bug>48669</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							The package <package>univention-appcenter</package> is now built with <package>dh_python2</package>. (<u:bug>49145</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							A visual flickering in the App Center overview has been removed. (<u:bug>49089</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Create app password file on host before starting container. (<u:bug>49491</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							The App Center now shows app suggestions based on already installed apps. (<u:bug>49510</u:bug>)
+						</simpara></listitem>
+						<listitem><simpara>
+							Handling of the docker-compose UCR template file has been fixed. (<u:bug>49517</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Abort installation if machine.secret could not be copied into container. (<u:bug>49543</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Improve error handling during container start. (<u:bug>48881</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							More debug messages during <code>SetupFailed</code>. (<u:bug>49625</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Do not revert (remove, reinstall old) after failed App update. (<u:bug>49645</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							The docker App upgrade message has been changed. (<u:bug>49742</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Suggestions based on currently installed Apps are now dynamically loaded from the App Center server. (<u:bug>49770</u:bug>)
+						</simpara></listitem>
+
+
 			</itemizedlist>
 		</section>
 
 		<section id="changelog:umc:admindiary">
 			<title>Univention Admin Diary</title>
 			<itemizedlist>
-				<listitem><simpara>
-						There are two new UCS apps, the <package>Admin Diary Frontend</package> and the <package>Admin Diary Backend</package> (<u:bug>48675</u:bug>, <u:bug>48341</u:bug>, <u:bug>48717</u:bug>, <u:bug>48342</u:bug>, <u:bug>48343</u:bug>, <u:bug>48476</u:bug>).
-				</simpara></listitem>
+						<listitem><simpara>
+							 The Admin Diary now displays dates correctly in Safari (<u:bug>49579</u:bug>)
+						</simpara></listitem>
+						<listitem><simpara>
+							HTML entities in the Diary overview are now properly encoded (<u:bug>48972</u:bug>)
+						</simpara></listitem>
+						<listitem><simpara>
+							Improve robustness and traceback logging. (<u:bug>49056</u:bug>)
+						</simpara></listitem>
 			</itemizedlist>
 		</section>
 
 		<section id="changelog:umc:udmcli">
 			<title>&ucsUDM; UMC modules and command line interface</title>
 			<itemizedlist>
-				<listitem><simpara>
-					A singular and plural object name have been added for every module (<u:bug>48738</u:bug>).
-				</simpara></listitem>
+						<listitem><simpara>
+							A new package has been added which contains a prototype of a HTTP service for the Univention Directory Manager. (<u:bug>49667</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Creating reports of objects which reference not existing objects is possible again. This was the case for secretary of user objects and networks of computer objects. (<u:bug>47922</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Rely on the App Center listener to create the App Attributes mapping rather than doing it in the UMC module (<u:bug>48895</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Preparations for better browser cache-control have been implemented. (<u:bug>48995</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Requesting a Univention license activation during the initial system configuration has been repaired. (<u:bug>49384</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+								The <code>computers/*</code> UDM handlers now share a common base class. Code redundancy has therefore been reduced. (<u:bug>41659</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Searching for IP addresses of DNS host records is now possible. The Zone Time-to-Live and Mail Exchanger properties of DNS objects aren't shown in the search field list anymore in UMC. (<u:bug>40668</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							A crash of UDM is prevented which was caused by an extended attribute that overwrites a not existing layout group. (<u:bug>48551</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							The object class <code>univentionPolicyReference</code> is now removed from objects when the last policy is dereferenced. (<u:bug>46466</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							The search filter <code>dnsAlias</code> in the computer modules has been repaired. (<u:bug>31494</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Referenced portal entries and categories are now correctly updated when renaming or moving portal settings. (<u:bug>49526</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Stop caching machine connection in new UDM API for long running services. (<u:bug>49746</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							It is now possible to specify ldap server controls in some UDM handlers <code>lookup()</code> method. (<u:bug>49638</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Clean code by shortening <package>univention.debug</package> usage. (<u:bug>49422</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Explicit initialization of the default values of UDM properties has been removed from the code of all UDM modules. (<u:bug>49235</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							The <literal>users/user</literal> UDM module now uses the ldap filter "univentionObjectType=users/user" when searching for objects to increase performance. (<u:bug>48390</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							When opening container objects, a lookup is performed to check whether this container is the default container for certain UDM objects. This lookup is now cached which makes opening many objects at once considerably faster. (<u:bug>49408</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							After renaming an object the internal DN (<code>self.dn</code>) is updated correctly. The old DN can now be obtained via <code>self.old_dn</code>. This fixes the concurrent renaming and update of group membership for e.g. computer objects. (<u:bug>41694</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Several german translations have been updated. (<u:bug>49359</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							UDM handlers now share a common base class. Code redundancy has therefore been reduced. (<u:bug>35687</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Default containers for domain controller computer objects can now be configured. (<u:bug>46919</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							It is now possible again to modify the LDAP base, for example reference policies.  This was broken since UCS 4.3-0. (<u:bug>46919</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+								<command>udm users/user create</command> without <command>--set username</command> does not cause a exception anymore. (<u:bug>48441</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Various LDAP filters are now escaped. (<u:bug>42791</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							The use of obsolete <package>univention.admin.config</package> has been removed. (<u:bug>27804</u:bug>)
+						</simpara></listitem>
+
+
 			</itemizedlist>
 		</section>
 
 		<section id="changelog:umc:setup">
 			<title>Modules for system settings / setup wizard</title>
 			<itemizedlist>
-				<listitem><simpara>
-					Make the software components for UCS available during installation when it is run in French (<u:bug>44162</u:bug>).
-				</simpara></listitem>
+						<listitem><simpara>
+							A message is shown to warn about the inability to install Samba4 or UCS@school if a host name with more than 13 characters is chosen. (<u:bug>43326</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Fixed a special case for the initial domain join, the DC master hostname may now differ from the value read from the DNS server. (<u:bug>48134</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							The unused dependency to <package>python-simplejson</package> has been removed. (<u:bug>35687</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Requesting a Univention license activation during the initial system configuration has been repaired. (<u:bug>49384</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							For UCS@school: The setup process now includes a new confirmation prompt in UCS@school environments to make sure that the server should be set up with the correct UCS@school role (educational, administrative or central). (<u:bug>49271</u:bug>)
+						</simpara></listitem>
+
 			</itemizedlist>
 		</section>
 
 		<section id="changelog:umc:join">
 			<title>Domain join module</title>
 			<itemizedlist>
-				<listitem><simpara>
-					Having multiple (virtual) network interfaces with the same MAC address caused the domain join to fail (<u:bug>48475</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Copy <uri>cn=translog</uri> database for transaction log to &ucsBackup; while joining (<u:bug>48427</u:bug>).
-				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
 		<section id="changelog:umc:user">
 			<title>Users module</title>
 			<itemizedlist>
-				<listitem><simpara>
-						A new tab <guimenu>Apps</guimenu> has been added to users, which allows to enable and disable apps (<u:bug>48621</u:bug>, <u:bug>48839</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						The wizard for creating new users now allows to use an e-mail invitation for that user instead of setting an initial password (Requires the App <package>Self Service</package>) (<u:bug>48660</u:bug>).
-				</simpara></listitem>
+						<listitem><simpara>
+							Prevent high CPU usage in the <literal>Users</literal> module. (<u:bug>47985</u:bug>)
+						</simpara></listitem>
+
 			</itemizedlist>
 		</section>
 
 		<section id="changelog:umc:diagnostic">
 			<title>System diagnostic module</title>
 			<itemizedlist>
-				<listitem><simpara>
-					Use new &ucsUDN; Protocol Version 3 for check (<u:bug>48427</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Fixed error in <guilabel>Check well known SIDs</guilabel> system diagnostic test (<u:bug>48477</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Added command line tool <command>univention-run-diagnostic-checks</command> which can be used to execute the diagnostic checks (<u:bug>47650</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					A typo has been fixed in the error output of the Kerberos DDNS update check (<u:bug>48385</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The proxy server test has been fixed (<u:bug>48385</u:bug>).
-				</simpara></listitem>
+						<listitem><simpara>
+							Updated sysvolcheck check (<u:bug>46643</u:bug>)
+						</simpara></listitem>
+						<listitem><simpara>
+							Remove the sysvolcheck as it reports irritating false positives for GPOs created via GPMC. (<u:bug>49335</u:bug>)
+						</simpara></listitem>
 			</itemizedlist>
 		</section>
 
 		<section id="changelog:umc:quota">
 			<title>Filesystem quota module</title>
 			<itemizedlist>
-				<listitem><simpara>
-					Quotas on <systemitem class="filesystem">XFS</systemitem> file systems are shown again on the &ucsUMC; (<u:bug>48315</u:bug>).
-				</simpara></listitem>
+						<listitem><simpara>
+							Previously, when quota policies were set on multiple shares that are located on the same mountpoint, a quota policy that had a value of zero (meaning no quota is enforced) would overwrite smaller quota policies. This behaviour has been changed to always choose the smallest value. (<u:bug>48000</u:bug>)
+						</simpara></listitem>
+
 			</itemizedlist>
 		</section>
 
 		<section id="changelog:umc:other">
 			<title>Other modules</title>
 			<itemizedlist>
-				<listitem><simpara>
-					A crash in the &ucsUMS; module is prevented if widget definitions are configured via &ucsUCRV;s (<u:bug>48494</u:bug>).
-				</simpara></listitem>
 			</itemizedlist>
 		</section>
 	</section>
@@ -443,132 +528,181 @@
 	<section id="changelog:lib">
 		<title>Univention base libraries</title>
 		<itemizedlist>
-			<listitem><simpara>
-				Support activation of the <uri>cn=monitor</uri> backend for statistical information.
-				To activate this, set &ucsUCRV; <envar>ldap/monitor</envar> to <literal>true</literal> and restart the LDAP server service (<systemitem class="service">slapd</systemitem>) (<u:bug>41213</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				Add <uri>cn=translog</uri> database for transaction log (<u:bug>48427</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				During the update, a resynchronization of the listener module <filename>ldap_extension</filename> is performed on &ucsBackup; and &ucsSlave; systems to correct possible inconsistencies in LDAP ACLs (<u:bug>48530</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				Enabled <uri>cn=config</uri> backend, accessible via <uri>ldapi:///</uri> only (<u:bug>43515</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				Add <package>univention-lib</package> implementation of <function>die()</function> function to <filename>ldap.sh</filename> (<u:bug>47424</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				Due to a logic error it could happen that not all LDAP ACL registered in LDAP were active on newly installed &ucsMaster; systems.
-				This could lead to information disclosure or replication errors.
-				The error is now fixed and when updating the <package>univention-ldap-server</package> package, missing LDAP ACLs are automatically activated (<u:bug>48530</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				Do not send cron mails for a successful <filename>ldap-backup</filename> cron job (<u:bug>48014</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				The syntax class <classname>mailinglist_name</classname> was integrated into <filename>syntax.py</filename> (<u:bug>48383</u:bug>).
-			</simpara></listitem>
+						<listitem><simpara>
+							Split low-level C implementation from Python binding to simplify transition to using <package>dh_python2</package> and adding Python 3 support. (<u:bug>49130</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Unify pure-python version <filename>debug2.py</filename> again with C-version <filename>debug.py</filename>. (<u:bug>46100</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Deprecate <code>function</code> class in favor of <code>trace</code> decorator. (<u:bug>43422</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Preparations for better browser cache-control have been implemented. (<u:bug>48995</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+								The <package>python3-univention</package> package dependencies have been adjusted. (<u:bug>49136</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+								The package dependency loop for <package>python-univention-debug</package> has been broken by introducing a new binary package <package>python-univention-namespace</package>. (<u:bug>49506</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+								It is now possible to specify ldap server controls in the <code>univention.uldap.access.search()</code> methods. (<u:bug>49638</u:bug>)
+						</simpara></listitem>
+
 		</itemizedlist>
 	</section>
 
 	<section id="changelog:deployment">
 		<title>Software deployment</title>
 		<itemizedlist>
-			<listitem><simpara>
-				The repository tools <command>univention-repository-addpackage</command>, <command>univention-repository-delpackage</command> and <command>univention-repository-merge</command> are deprecated and are removed with UCS-4.4 (<u:bug>29505</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				The packages index files under <filename class="directory">dists/</filename> are now also mirrored.
-				This is required for the PXE network installer (<u:bug>46600</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				Added the &ucsUCRV; <envar>update/debug/level</envar> for changing the debug level of the UCS updater (<u:bug>47913</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				The error message complaining about the missing <filename>postmirror.sh</filename> file is no longer displayed (<u:bug>27761</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				When mirroring distributions the default architecture was not detected correctly and URLs were scheduled for download multiple times (<u:bug>48424</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				The updater scripts <filename>preup.sh</filename> and <filename>postup.sh</filename>
-				have been adapted to the needs of UCS 4.4 (<u:bug>48808</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				The updater has been fixed to work with a local repository only initialized by <command>univention-repository-create</command> from DVD (<u:bug>48910</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				<command>univention-repository-create</command> now checks if <package>univention-debmirror</package> is installed before installing it (<u:bug>48151</u:bug>).
-			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
 	<section id="changelog:service">
 		<title>System services</title>
 
+		<section id="changelog:service:dhcp">
+			<title>DHCP</title>
+			<itemizedlist>
+						<listitem><simpara>
+								The setting for <literal>unknownClients</literal> from the UMC policy <literal>DHCP Scope</literal> is no longer applied to a DHCP pool statement. This is not allowed by the syntax of the DHCP daemon. (<u:bug>20222</u:bug>)
+						</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:dns">
+			<title>DNS</title>
+			<itemizedlist>
+						<listitem><simpara>
+							Fix dependency header of legacy SysV init script to work in environments installed with UCS-4.2 or older and without Samba4. (<u:bug>49441</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							The robustness of the listener for DNS zones has been improved. Certain LDAP DNS objects could cause path injection vulnerabilies causing arbitrary file reading and modifications as well as crashes of the bind service. (<u:bug>41005</u:bug>)
+						</simpara></listitem>
+
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:mail">
+			<title>Mail</title>
+			<itemizedlist>
+						<listitem><simpara>
+							LDAP ACL ordering on DC slaves allowed regular users access to private information. Reordering of ACLs fixes this issue. (<u:bug>48608</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+								Prevent creation of empty mailboxes in <filename>/var/spool/dovecot/private</filename> by unsuccessful login attempts of users without a primary mail address. (<u:bug>49038</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+								Add SNI Support to <package>univention-mail-dovecot</package>. Additional fqdns and certificates can be configured with UCRvs <envar>mail/dovecot/ssl/sni/$fqdn/certificate=$path_to_certificate</envar> and <envar>mail/dovecot/ssl/sni/$fqdn/key=$path_to_certificate_key</envar> (<u:bug>48485</u:bug>)
+						</simpara></listitem>
+
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:pam">
+			<title>PAM</title>
+			<itemizedlist>
+						<listitem><simpara>
+							An open SSH connection will now properly get closed when shutting down a system. (<u:bug>47233</u:bug>)
+						</simpara></listitem>
+			</itemizedlist>
+		</section>
+
 		<section id="changelog:service:saml">
 			<title>SAML</title>
 			<itemizedlist>
-				<listitem><simpara>
-					The <package>univention-saml</package> Apache <property>VirtualHost</property> configuration can now be extended by placing <filename class="extension">.conf</filename> files in the directory <filename class="directory">/etc/apache2/sso-vhost.conf.d/</filename> (<u:bug>48348</u:bug>).
-				</simpara></listitem>
+						<listitem><simpara>
+								The session duration of the identity provider is now configurable with the new UCR variable <envar>saml/idp/session-duration</envar>. With this update, the default value for a SAML session is raised from 8 to 12 hours. (<u:bug>49503</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+								The design of the UMC single sign-on page can now be adjusted via <filename>/usr/share/univention-management-console-login/css/custom.css</filename>. (<u:bug>49436</u:bug>)
+						</simpara></listitem>
+
 			</itemizedlist>
 		</section>
 
 		<section id="changelog:service:selfservice">
 			<title>Univention self service</title>
 			<itemizedlist>
-				<listitem><simpara>
-						If the self service is installed, a daemon on the &ucsMaster; now sends an invitation email to users that were created with respective settings in the UMC (<u:bug>48446</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						It is now possible to define attributes a self service user can modify with the &ucsUCRV;s <envar>self-service/ldap_attributes</envar>
-						and <envar>self-service/udm_attributes</envar> (<u:bug>48447</u:bug>, <u:bug>48710</u:bug>)
-				</simpara></listitem>
+						<listitem><simpara>
+								Fixed links to the Self Service-App not working when the UCR variable <envar>umc/self-service/profiledata/enabled</envar> is set to <literal>false</literal>. (<u:bug>45041</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+								The Self Service-App can now be styled via the <filename>/var/www/univention/self-service/css/custom.css</filename> CSS file. (<u:bug>49343</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Fix German translation. (<u:bug>49380</u:bug>)
+						</simpara></listitem>
+
 			</itemizedlist>
 		</section>
 
 		<section id="changelog:service:print">
 			<title>Printing services</title>
 			<itemizedlist>
-				<listitem><simpara>
-					Allow switching to <literal>None</literal>, <literal>smb</literal> (raw) printer model (<u:bug>47843</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Ensure <filename class="symlink">/usr/share/cups/model</filename> is a link to <filename class="directory">/usr/share/ppd/</filename> (<u:bug>47435</u:bug>).
-				</simpara></listitem>
+						<listitem><simpara>
+							It is now possible to use space characters in samba printer names. (<u:bug>48947</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							A security vulnerability in the listener has been fixed which caused overwriting or removal of arbitrary files. (<u:bug>49296</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							The package description has been fixed. (<u:bug>28681</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Fix regression caused by erratum 94 in <package>ghostscript</package> (<u:bug>49721</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+								The cups configuration in <filename>/etc/cups/cupsd.local.conf</filename> is applied again. Since UCS 4.3 erratum 149 the cups Include directive has been removed. Changes in the <filename>/etc/cups/cupsd.local.conf</filename> configuration require a <command>ucr commit /etc/cups/cupsd.conf</command> now. (<u:bug>48437</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							The listener now handles DN syntax correctly. (<u:bug>43430</u:bug>)
+						</simpara></listitem>
+
 			</itemizedlist>
 		</section>
 
 		<section id="changelog:service:nagios">
 			<title>Nagios</title>
 			<itemizedlist>
-				<listitem><simpara>
-					Fixed a local root exploit in the SUID wrapper for the Nagios check <filename>univention_ldap</filename> (<u:bug>48616</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Fixed an uncaught type error in the <package>nagios-server</package> listener (<u:bug>43426</u:bug>).
-				</simpara></listitem>
+						<listitem><simpara>
+							A nagios check for the translog mdb database maxsize has been added. (<u:bug>48422</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+								A nagios check for the univention-directory-listener mdb database maxsize has been added. To apply it on a DC Slave, DC Backup or Memberserver execute: <command>univention-run-join-scripts --force --run-scripts 30univention-nagios-client.inst</command> (<u:bug>48617</u:bug>)
+						</simpara></listitem>
+
 			</itemizedlist>
 		</section>
 
-		<section id="changelog:service:radius">
-			<title>RADIUS</title>
-			<itemizedlist>
-				<listitem><simpara>
-					Network access servers for example wireless access points can now be configured with &ucsUDM;.
-					Any existing <filename>clients.conf</filename> is not converted and can still be used to configure clients manually (<u:bug>25935</u:bug>).
-					Switch to Python <classname>passlib</classname> for DES encryption (<u:bug>48460</u:bug>).
-					Move <filename>clients.conf.example</filename> into the right folder (<u:bug>46561</u:bug>).
-					Improved logging for <package>univention-radius-ntlm-auth</package> which is used by FreeRADIUS to authenticate users.
-					Log entries are written to <filename>radius_ntlm_auth.log</filename>.
-					The log level can be adjusted with the &ucsUCRV; <envar>freeradius/auth/helper/ntlm/debug</envar>.
-					Internal changes to enable the &ucsUAS; RADIUS implementation to build upon the <package>univention-radius</package> package (<u:bug>46018</u:bug>).
-				</simpara></listitem>
-			</itemizedlist>
-		</section>
 	</section>
 
 	<section id="changelog:virt">
@@ -577,36 +711,30 @@
 		<section id="changelog:virt:uvmm">
 			<title>UCS Virtual Machine Manager (UVMM)</title>
 			<itemizedlist>
-				<listitem><simpara>
-					Normalize CPU utilization of host and update error and migration status atomically (<u:bug>48340</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Show CPU usage in tree of virtualization hosts (<u:bug>35196</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Fix tooltips preventing button clicks (<u:bug>45498</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Add <phrase>Hyper-V Enlightment</phrase> for Windows VMs (<u:bug>48024</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The target hosts for live migration can now be configured even when the virtual machine is running (<u:bug>48199</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Fix parsing memory and disk capacity (<u:bug>36661</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Fix file permissions of backup directory (<u:bug>47741</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Add support for post-copy migration (<u:bug>47617</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Small layout adjustments for the updated UMC design (<u:bug>48859</u:bug>, <u:bug>46198</u:bug>, <u:bug>48471</u:bug>)
-				</simpara></listitem>
-				<listitem><simpara>
-					Add RAM overcommitment protection through &ucsUCRV; <envar>uvmm/overcommit/reserved</envar> (<u:bug>48901</u:bug>).
-				</simpara></listitem>
+						<listitem><simpara>
+							Re-connect VMs to bridges on network restart. (<u:bug>47701</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Use interleaved memory policy on NUMA architectures by default. (<u:bug>49574</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Fix Python traceback while handling <code>select()</code> exception. (<u:bug>49403</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Preparations for better browser cache-control have been implemented. (<u:bug>48995</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Re-compile libvirt with NUMA support enabled. (<u:bug>49574</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Since UCS-4.3 erratum 269 UVMM can be configured to check the CPU model before performing a live migration. Due to a bug in <package>libvirt</package> the use of <varname>host-model</varname> does not survive the creation of snapshots or suspend to disk and gets rewritten to the concrete CPU model of the host system. This has been fixed. Old snapshots created and domains suspended before this erratum might fail to start, in which case the <cpu/> configuration must be manually removed from the XML description using <command>virsh snapshot-edit</command> or <command>virsh save-image-edit</command> respectively. (<u:bug>49425</u:bug>)
+						</simpara></listitem>
+
 			</itemizedlist>
 		</section>
 	</section>
@@ -617,30 +745,108 @@
 		<section id="changelog:win:samba">
 			<title>Samba</title>
 			<itemizedlist>
-				<listitem><simpara>
-					The <command>samba-tool ntacl sysvolcheck</command> didn't map owner <acronym>LA</acronym> to <acronym>DA</acronym> properly while checking, leading to irritating, unnecessary error messages (<u:bug>44282</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The package <package>samba</package> has be updated to version <literal>4.10.0~rc2</literal> (<u:bug>48084</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Accounts for service principals are now created with UDM (<u:bug>47955</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Activation of &ucsUAS; specific LDB modules has been moved from <filename>97libunivention-ldb-modules.inst</filename> to <filename>96univention-samba4.inst</filename> to simplify package structure (<u:bug>47955</u:bug>).
-				</simpara></listitem>
+						<listitem><simpara>
+							The folder windows-profiles in the home share is now hidden. (<u:bug>48541</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Several vulnerabilities in the listener for shares have been fixed: The name of shares are validated. The blacklist for share paths is now evaluated correctly. Configuration values are now correctly quoted to prevent injecting multiple further share entries. (<u:bug>44054</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Re-add "auth methods" option removed from upstream Samba sources (<u:bug>49426</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							If samba fails to set the new password in a server password change, the changes will be reverted. (<u:bug>48541</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							UCS will now use password generation from samba for administrator accounts (<u:bug>49193</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Set correct permissions for lock file on upstream server during sysvol syncronisation. (<u:bug>48917</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Fix permissions of template files <filename>dns_update_list</filename> and <filename>spn_update_list</filename>. (<u:bug>49025</u:bug>)
+						</simpara></listitem>
+						<listitem><simpara>
+							Update to Samba 4.10.1 (<u:bug>49034</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Internal improvement: fixed quoting of shell variables. (<u:bug>48989</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							When <command>univention-samba4-backup</command> fails, cron will automatically send system-mails to root. (<u:bug>49399</u:bug>)
+						</simpara></listitem>
 			</itemizedlist>
 		</section>
 
 		<section id="changelog:win:s4c">
 			<title>Univention S4 Connector</title>
 			<itemizedlist>
-				<listitem><simpara>
-					Moving objects in UCS with a LDAP base different in UCS and Samba has been fixed (<u:bug>48362</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Password synchronization has been adjusted to Samba 4.10 (<u:bug>48142</u:bug>).
-				</simpara></listitem>
+						<listitem><simpara>
+							A trivial ucr syntax error has been fixed in the joinscript (<u:bug>35237</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Remove lockingdb and s4cache during re-join (<u:bug>40773</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							When the S4-Connector starts, it logged the group cache initialization at level INFO. In debugging situations that can lead to a lot of output in connector-s4.log which is hard to scroll. The log volume of the group cache init has been lowered to log level ALL. (<u:bug>48364</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							The scripts <filename>remove_ucs_rejected.py</filename> and <filename>remove_s4_rejected.py</filename> now escapes SQL syntax. (<u:bug>49445</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Avoid rejects when DNS records have an uppercase DC attribute. (<u:bug>49643</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Fix traceback password <command>sync_to_ucs</command> for machine accounts. (<u:bug>49649</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+								The package now uses <package>dh_python2</package> instead of <package>python-support</package>. Therefore python modules are installed into <filename>/usr/lib/python2.7/dist-packages/univention/s4connector/</filename>. (<u:bug>49176</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+								The detection of a running <command>univention-s4-connector</command> has been enhanced. (<u:bug>49176</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Duplicated code for the detection of superordinates has been removed. (<u:bug>45068</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Dead code for obsolete custom attributes from UCS 2 has been removed. (<u:bug>41554</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+								Excluding subtrees from synchronization by S4-Connector is now possible by configuring UCR variables matching the pattern <envar>connector/s4/mapping/ignoresubtree/</envar>. (<u:bug>47008</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							The use of obsolete <package>univention.admin.config</package> has been removed. (<u:bug>27804</u:bug>)
+						</simpara></listitem>
+
 			</itemizedlist>
 		</section>
 	</section>
@@ -651,16 +857,146 @@
 			<listitem><simpara>
 				The package <package>univention-errata-level</package> has been updated to reset the &ucsUCRV; <envar>version/erratalevel</envar> to <literal>0</literal> (<u:bug>48654</u:bug>).
 			</simpara></listitem>
-			<listitem><simpara>
-				For security reasons all join scripts now use a password file (<u:bug>46969</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				Hooks have been added to the join process (<u:bug>47940</u:bug>, <u:bug>48801</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				The join status file is now reset a second time right after the join hooks of type <literal>join/pre-joinscripts</literal> have been called.
-				This prevents join problems on &ucsBackup; system in case the join hook installed additional software (<u:bug>48751</u:bug>).
-			</simpara></listitem>
+						<listitem><simpara>
+								The path to <command>/usr/sbin/univention-admin-diary-entry-create</command> is now explicit in <package>univention-join</package> (<u:bug>48972</u:bug>)
+						</simpara></listitem>
+						<listitem><simpara>
+							If samba fails to set the new password in a server password change, the changes will be reverted. (<u:bug>49193</u:bug>)
+						</simpara></listitem>
+						<listitem><simpara>
+							The function <code>getRootDnConnection()</code> has been fixed. (<u:bug>49024</u:bug>)
+						</simpara></listitem>
+						<listitem><simpara>
+							The LDAP-ACLs for read access to cn=monitor can now be extended via UCR variables. (<u:bug>49387</u:bug>)
+						</simpara></listitem>
+						<listitem><simpara>
+							Fix escaping of ldap DN, filters and shell arguments (<u:bug>46323</u:bug>)
+						</simpara></listitem>
+
+
+
+						<listitem><simpara>
+								The creation of a default ldap server policy is now configurable via the UCR variable <envar>ldap/create-ldap-server-policy</envar>. (<u:bug>49386</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Log stderr if LDAP schema validation fails. (<u:bug>49500</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+								A symlink and code execution vulnerabiliy has been fixed in <package>univention.lib.listenerSharePath</package>. (<u:bug>44054</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Python3 compatibility for <package>univention.lib.admember</package> has been enhanced. (<u:bug>49176</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							A path traversal vulnerability in the <filename>ldap_extension.py</filename> listener utilities has been fixed. (<u:bug>41780</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							The detection of running services has been enhanced. (<u:bug>49176</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							The script <command>univention-policy-update-config-registry</command> now has a new option to specify the LDAP server from which to get the policies. (<u:bug>35208</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Multiple rsyslog remote servers can now be specified in the UCR variable <envar>syslog/remote</envar>. (<u:bug>48508</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+								By default <command>univention-ldapsearch</command> appends the argument <literal>-o ldif-wrap=no</literal> now. (<u:bug>48683</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							UCR templates which generate binary data have been fixed. This was broken since errata 167 and could cause crashes of the UMC-Server due to corruptly generated translation files. (<u:bug>49775</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Make the systemd service timeout for <command>mysqld</command> configurable via the ucr variable <envar>mariadb/startup/timeout</envar>. (<u:bug>46901</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							If a <filename>failed.ldif</filename> file exists at the start of a join, it will be removed. (<u:bug>47603</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Fixed joining host into an UCS domain when using bonded network interfaces. (<u:bug>49298</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							The escaping of LDAP filters and distinguished names has been corrected. (<u:bug>40055</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+								<package>univention-ad-connector</package>Dead code for obsolete custom attributes from UCS 2 has been removed. (<u:bug>41553</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							Reconnect to DRS service in case the DRS replication for the password synchronization fails. (<u:bug>45127</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+								Increase the length of the ldap root password (<filename>/etc/ldap/rootpw.conf</filename>) used for LDAP replication to improve security against brute force attacks. (<u:bug>48606</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							<package>univention-python-heimdal</package>: The build system for the package has been changed to <package>dh_python2</package>. (<u:bug>49139</u:bug>)
+						</simpara></listitem>
+
+
+						<listitem><simpara>
+							<package>univention-ad-connector</package>: References to the obsolete password service have been removed. (<u:bug>49111</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+								<package>univention-python</package>: The package now uses <package>dh_python2</package> instead of <package>python-support</package>. Therefore python modules are installed into <filename>/usr/lib/python2.7/dist-packages/univention/</filename>. (<u:bug>49140</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Default containers for domain controller computer objects can now be configured. During the upgrade every default container for computer objects are set as default container for domaincontroller objects except cn=computers and cn=memberservers,cn=computer. (<u:bug>46919</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							<package>insserv</package>: Re-add accidentally dropped patch to ignore files ending on `.debian`. (<u:bug>49441</u:bug>)
+						</simpara></listitem>
+						<listitem><simpara>
+								<package>univention-updater</package>: Fix traceback in <code>admindiary.client.write_event()</code> occurring in Docker containers during docker build. (<u:bug>49056</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							<package>ucs-lint</package>: Also ignore temporary directory used by <package>dh_python2</package>. (<u:bug>42480</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+								<package>ucs-lint</package>: Fixed applying <filename>debian/ucslint.overrides</filename> when used with paths. (<u:bug>49520</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							<package>univention-nfs</package>: A newline injection vulnerability has been fixed which allowed to add further entries to /etc/exports. (<u:bug>44054</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+								OpenLDAP restricts the number of returned entries when searching. This can be configured using the UCR variable <envar>ldap/sizelimit</envar>, which defaults to <literal>400k</literal>. This is not enough for <command>univention-translog prune</command>. Remove the limit for searches connecting via <literal>ldapi://</literal>. (<u:bug>49505</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Use slaptest for LDAP schema checking in the <filename>ldap_extension</filename> module. (<u:bug>49596</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+								<package>univention-bootsplash</package>Fix usage of Univention Configuration Registry Python module. (<u:bug>49129</u:bug>)
+						</simpara></listitem>
+
+
 		</itemizedlist>
 	</section>
 </chapter>
