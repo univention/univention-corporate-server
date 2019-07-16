@@ -69,7 +69,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-								Implement command <command>univention-translog prune</command> to prune old transactions from the <filename>transaction</filename> file and database. This can be used to save space. Warning: This procedure is dangerous and should ONLY be executed if ALL Univention Directory Listeners (UDL) in the domain have processed all previous transactions. Otherwise the <wordasword>UDLs</wordasword> will no longer be able to process transactions and affected systems must be re-joined! Systems, which have not been running for some time or are restored from backup, must also be re-joined if their last processed transaction is no longer part contained in the purged translog. (<u:bug>48729</u:bug>)
+								Implement command <command>univention-translog prune</command> to prune old transactions from the <filename>transaction</filename> file and database. This can be used to save space. Warning: This procedure is dangerous and should ONLY be executed if ALL Univention Directory Listeners (UDL) in the domain have processed all previous transactions. Otherwise the <wordasword>UDLs</wordasword> will no longer be able to process transactions and affected systems must be re-joined! Systems, which have not been running for some time or are restored from backup, must also be re-joined if their last processed transaction is no longer part contained in the purged <literal>translog</literal>. (<u:bug>48729</u:bug>)
 						</simpara></listitem>
 
 				</itemizedlist>
@@ -88,7 +88,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-							The legacy path <literal>/umcp/</literal> to access the UMC-Server backend has been removed. (<u:bug>49639</u:bug>)
+							The legacy path <literal>/umcp/</literal> to access UMC backend has been removed. (<u:bug>49639</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
@@ -97,7 +97,7 @@
 
 
 						<listitem><simpara>
-							The UMC-Server does not respond with an error anymore if no English locale is configured. (<u:bug>47602</u:bug>)
+							UMC does not respond with an error anymore if no English locale is configured. (<u:bug>47602</u:bug>)
 						</simpara></listitem>
 
 
@@ -111,7 +111,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-								The SAML identity provider is not configured in the UMC-WebServer anymore if it is disabled via the UCR variable <envar>umc/web/sso/enabled</envar>. (<u:bug>48224</u:bug>)
+								The SAML identity provider is not configured in UMC anymore if it is disabled via the UCR variable <envar>umc/web/sso/enabled</envar>. (<u:bug>48224</u:bug>)
 						</simpara></listitem>
 
 
@@ -206,7 +206,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-							Corrupt translation files cannot cause the UMC-Server to crash anymore. (<u:bug>49775</u:bug>)
+							Corrupt translation files cannot cause UMC to crash anymore. (<u:bug>49775</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
@@ -214,11 +214,11 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-							A crash of the UMC-Server in rare situations has been corrected. (<u:bug>48157</u:bug>)
+							A crash of UMC in rare situations has been corrected. (<u:bug>48157</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
-								The <package>pam_cracklib</package> behavior prior to UCS 4.3 errata 450 has been restored. Therefore password changes do not require strong passwords anymore if no passord policy is defined in the domain. (<u:bug>49239</u:bug>)
+								The <package>pam_cracklib</package> behavior prior to UCS 4.3 errata 450 has been restored. Therefore password changes do not require strong passwords anymore if no password policy is defined in the domain. (<u:bug>49239</u:bug>)
 						</simpara></listitem>
 
 
@@ -249,7 +249,7 @@
 
 
 						<listitem><simpara>
-							The App Center waits for a dpkg lock before attempting to install database software packages. If starting the database service fails anyway, we now send more verbose information. (<u:bug>48669</u:bug>)
+							The App Center waits for a <command>dpkg</command> lock before attempting to install database software packages. If starting the database service fails anyway, we now send more verbose information. (<u:bug>48669</u:bug>)
 						</simpara></listitem>
 
 
@@ -612,12 +612,12 @@
 			<title>Univention self service</title>
 			<itemizedlist>
 						<listitem><simpara>
-								Fixed links to the Self Service-App not working when the UCR variable <envar>umc/self-service/profiledata/enabled</envar> is set to <literal>false</literal>. (<u:bug>45041</u:bug>)
+								Fixed links to the <literal>Self Service-App</literal> not working when the UCR variable <envar>umc/self-service/profiledata/enabled</envar> is set to <literal>false</literal>. (<u:bug>45041</u:bug>)
 						</simpara></listitem>
 
 
 						<listitem><simpara>
-								The Self Service-App can now be styled via the <filename>/var/www/univention/self-service/css/custom.css</filename> CSS file. (<u:bug>49343</u:bug>)
+								The <literal>Self Service-App</literal> can now be styled via the <filename>/var/www/univention/self-service/css/custom.css</filename> CSS file. (<u:bug>49343</u:bug>)
 						</simpara></listitem>
 
 
@@ -664,7 +664,7 @@
 			<title>Nagios</title>
 			<itemizedlist>
 						<listitem><simpara>
-							A <package>nagios</package> check for the translog <literal>mdb</literal> database <literal>maxsize</literal> has been added. (<u:bug>48422</u:bug>)
+							A <package>nagios</package> check for the <literal>translog</literal> <literal>mdb</literal> database <literal>maxsize</literal> has been added. (<u:bug>48422</u:bug>)
 						</simpara></listitem>
 
 
@@ -726,7 +726,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-							Re-add "auth methods" option removed from upstream Samba sources (<u:bug>49426</u:bug>)
+							Re-add <property>auth methods</property> option removed from upstream Samba sources (<u:bug>49426</u:bug>)
 						</simpara></listitem>
 
 
@@ -857,7 +857,7 @@
 
 
 						<listitem><simpara>
-								A symlink and code execution vulnerability has been fixed in <package>univention.lib.listenerSharePath</package>. (<u:bug>44054</u:bug>)
+								A <wordasword>symlink</wordasword> and code execution vulnerability has been fixed in <package>univention.lib.listenerSharePath</package>. (<u:bug>44054</u:bug>)
 						</simpara></listitem>
 
 
@@ -887,7 +887,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-							UCR templates which generate binary data have been fixed. This was broken since errata 167 and could cause crashes of the UMC-Server due to corruptly generated translation files. (<u:bug>49775</u:bug>)
+							UCR templates which generate binary data have been fixed. This was broken since errata 167 and could cause crashes of UMC due to corruptly generated translation files. (<u:bug>49775</u:bug>)
 						</simpara></listitem>
 
 
@@ -917,7 +917,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-								Increase the length of the ldap root password (<filename>/etc/ldap/rootpw.conf</filename>) used for LDAP replication to improve security against brute force attacks. (<u:bug>48606</u:bug>)
+								Increase the length of the LDAP root password (<filename>/etc/ldap/rootpw.conf</filename>) used for LDAP replication to improve security against brute force attacks. (<u:bug>48606</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
@@ -934,7 +934,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-								Default containers for domain controller computer objects can now be configured. During the upgrade every default container for computer objects are set as default container for domaincontroller objects except <uri>cn=computers</uri> and <uri>cn=memberservers,cn=computer</uri>. (<u:bug>46919</u:bug>)
+								Default containers for <function>computers/domaincontroller_master</function> objects can now be configured. During the upgrade every default container for computer objects are set as default container for domaincontroller objects except <uri>cn=computers</uri> and <uri>cn=memberservers,cn=computer</uri>. (<u:bug>46919</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
