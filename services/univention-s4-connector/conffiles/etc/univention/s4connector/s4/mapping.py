@@ -121,37 +121,37 @@ if ignore_filter:
 # aus UCS Modul
 @!@
 attributes= {
-					'samAccountName': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='username',\n"
-"							ldap_attribute='uid',\n"
-"							con_attribute='sAMAccountName',\n"
-"							required=1,\n"
-"							compare_function=univention.s4connector.compare_lowercase,\n"
-"							single_value=True,\n"
-"						),"),
-					'givenName' : ("univention.s4connector.attribute (\n"
-"							ucs_attribute='firstname',\n"
-"							ldap_attribute='givenName',\n"
-"							con_attribute='givenName',\n"
-"							single_value=True,\n"
-"						),"),
-					'displayName': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='displayName',\n"
-"							ldap_attribute='displayName',\n"
-"							con_attribute='displayName',\n"
-"							single_value=True,\n"
-"						),"),
-					'sn': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='lastname',\n"
-"							ldap_attribute='sn',\n"
-"							con_attribute='sn',\n"
-"							single_value=True,\n"
-"						),"),
+					'samAccountName': '''univention.s4connector.attribute (
+							ucs_attribute='username',
+							ldap_attribute='uid',
+							con_attribute='sAMAccountName',
+							required=1,
+							compare_function=univention.s4connector.compare_lowercase,
+							single_value=True,
+						),''',
+					'givenName' : '''univention.s4connector.attribute (
+							ucs_attribute='firstname',
+							ldap_attribute='givenName',
+							con_attribute='givenName',
+							single_value=True,
+						),''',
+					'displayName': '''univention.s4connector.attribute (
+							ucs_attribute='displayName',
+							ldap_attribute='displayName',
+							con_attribute='displayName',
+							single_value=True,
+						),''',
+					'sn': '''univention.s4connector.attribute (
+							ucs_attribute='lastname',
+							ldap_attribute='sn',
+							con_attribute='sn',
+							single_value=True,
+						),''',
 }
 print ("\t\t\tattributes={")
 ignore_list = configRegistry.get('connector/s4/mapping/user/attributes/ignorelist',[])
 if ignore_list:
-	ignore_list = ignore_list.split(',')
+	ignore_list = [x.strip(' ') for x in ignore_list.split(',')]
 for key in attributes:
 	if key not in ignore_list:
 		print ("\t\t\t\t\t'%s': %s" %(key, attributes[key]))
@@ -208,194 +208,194 @@ if configRegistry.get('connector/s4/mapping/group/syncmode') != 'write':
 							],
 @!@
 post_attributes={
-					'organisation': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='organisation',\n"
-"							ldap_attribute='o',\n"
-"							con_attribute='company',\n"
-"							single_value=True,\n"
-"						),"),
-					'description': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='description',\n"
-"							ldap_attribute='description',\n"
-"							con_attribute='description',\n"
-"							single_value=True,\n"
-"						),"),
-					'mailPrimaryAddress': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='mailPrimaryAddress',\n"
-"							ldap_attribute='mailPrimaryAddress',\n"
-"							con_attribute='mail',\n"
-"							reverse_attribute_check = True,\n"
-"							single_value=True,\n"
-"						),"),
-					'street': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='street',\n"
-"							ldap_attribute='street',\n"
-"							con_attribute='streetAddress',\n"
-"							single_value=True,\n"
-"						),"),
-					'city': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='city',\n"
-"							ldap_attribute='l',\n"
-"							con_attribute='l',\n"
-"							single_value=True,\n"
-"						),"),
-					'postcode': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='postcode',\n"
-"							ldap_attribute='postalCode',\n"
-"							con_attribute='postalCode',\n"
-"							single_value=True,\n"
-"						),"),
-					'sambaWorkstations': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='sambaUserWorkstations',\n"
-"							ldap_attribute='sambaUserWorkstations',\n"
-"							con_attribute='userWorkstations',\n"
-"							single_value=True,\n"
-"						),"),
-#"					#'sambaLogonHours': univention.s4connector.attribute (
-#"					#		ucs_attribute='sambaLogonHours',
-#"					#		ldap_attribute='sambaLogonHours',
-#"					#		con_attribute='logonHours',
-#"					#	),
-					'profilepath': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='profilepath',\n"
-"							ldap_attribute='sambaProfilePath',\n"
-"							con_attribute='profilePath',\n"
-"							single_value=True,\n"
-"						),"),
-					'scriptpath': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='scriptpath',\n"
-"							ldap_attribute='sambaLogonScript',\n"
-"							con_attribute='scriptPath',\n"
-"							single_value=True,\n"
-"						),"),
-					'homeDrive': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='homedrive',\n"
-"							ldap_attribute='sambaHomeDrive',\n"
-"							con_attribute='homeDrive',\n"
-"							single_value=True,\n"
-"						),"),
-					'homeDirectory': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='sambahome',\n"
-"							ldap_attribute='sambaHomePath',\n"
-"							con_attribute='homeDirectory',\n"
-"							reverse_attribute_check = True,\n"
-"							single_value=True,\n"
-"						),"),
-					'telephoneNumber': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='phone',\n"
-"							ldap_attribute='telephoneNumber',\n"
-"							con_attribute='telephoneNumber',\n"
-"							con_other_attribute='otherTelephone',\n"
-"						),"),
-					'homePhone': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='homeTelephoneNumber',\n"
-"							ldap_attribute='homePhone',\n"
-"							con_attribute='homePhone',\n"
-"							con_other_attribute='otherHomePhone',\n"
-"						),"),
-					'mobilePhone': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='mobileTelephoneNumber',\n"
-"							ldap_attribute='mobile',\n"
-"							con_attribute='mobile',\n"
-"							con_other_attribute='otherMobile',\n"
-"						),"),
-					'pager': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='pagerTelephoneNumber',\n"
-"							ldap_attribute='pager',\n"
-"							con_attribute='pager',\n"
-"							con_other_attribute='otherPager',\n"
-"						),"),
-					'employeeType': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='employeeType',\n"
-"							ldap_attribute='employeeType',\n"
-"							con_attribute='employeeType',\n"
-"							single_value=True,\n"
-"						),"),
-					'employeeNumber': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='employeeNumber',\n"
-"							ldap_attribute='employeeNumber',\n"
-"							con_attribute='employeeNumber',\n"
-"							single_value=True,\n"
-"						),"),
-					'country': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='country',\n"
-"							ldap_attribute='st',\n"
-"							con_attribute='c',\n"
-"							single_value=True,\n"
-"						),"),
-					'loginShell': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='shell', \n"
-"							ldap_attribute='loginShell',\n"
-"							con_attribute='loginShell',\n"
-"							single_value=True,\n"
-"						),"),
-					'unixHomeDirectory': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='unixhome',\n"
-"							ldap_attribute='homeDirectory',\n"
-"							con_attribute='unixHomeDirectory',\n"
-"							single_value=True,\n"
-"						),"),
-					'personalTitle': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='title',\n"
-"							ldap_attribute='title',\n"
-"							con_attribute='personalTitle',\n"
-"							single_value=True,\n"
-"						),"),
-					'gidNumber': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='gidNumber',\n"
-"							ldap_attribute='gidNumber',\n"
-"							con_attribute='gidNumber',\n"
-"							single_value=True,\n"
-"						),"),
-					'uidNumber': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='uidNumber',\n"
-"							ldap_attribute='uidNumber',\n"
-"							con_attribute='uidNumber',\n"
-"							single_value=True,\n"
-"						),"),
-					'departmentNumber': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='departmentNumber',\n"
-"							ldap_attribute='departmentNumber',\n"
-"							con_attribute='departmentNumber',\n"
-"						),"),
-					'secretary': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='secretary',\n"
-"							ldap_attribute='secretary',\n"
-"							con_attribute='secretary',\n"
-"						),"),
-					'roomNumber': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='roomNumber',\n"
-"							ldap_attribute='roomNumber',\n"
-"							con_attribute='roomNumber',\n"
-"						),"),
-					'initials': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='initials',\n"
-"							ldap_attribute='initials',\n"
-"							con_attribute='initials',\n"
-"							single_value=True,\n"
-"						),"),
-					'physicalDeliveryOfficeName': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='physicalDeliveryOfficeName',\n"
-"							ldap_attribute='physicalDeliveryOfficeName',\n"
-"							con_attribute='physicalDeliveryOfficeName',\n"
-"							single_value=True,\n"
-"						),"),
-					'postOfficeBox': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='postOfficeBox',\n"
-"							ldap_attribute='postOfficeBox',\n"
-"							con_attribute='postOfficeBox',\n"
-"						),"),
-					'preferredLanguage': ("univention.s4connector.attribute (\n"
-"							ucs_attribute='preferredLanguage',\n"
-"							ldap_attribute='preferredLanguage',\n"
-"							con_attribute='preferredLanguage',\n"
-"							single_value=True,\n"
-"						),"),
+					'organisation': '''univention.s4connector.attribute (
+							ucs_attribute='organisation',
+							ldap_attribute='o',
+							con_attribute='company',
+							single_value=True,
+						),''',
+					'description': '''univention.s4connector.attribute (
+							ucs_attribute='description',
+							ldap_attribute='description',
+							con_attribute='description',
+							single_value=True,
+						),''',
+					'mailPrimaryAddress': '''univention.s4connector.attribute (
+							ucs_attribute='mailPrimaryAddress',
+							ldap_attribute='mailPrimaryAddress',
+							con_attribute='mail',
+							reverse_attribute_check = True,
+							single_value=True,
+						),''',
+					'street': '''univention.s4connector.attribute (
+							ucs_attribute='street',
+							ldap_attribute='street',
+							con_attribute='streetAddress',
+							single_value=True,
+						),''',
+					'city': '''univention.s4connector.attribute (
+							ucs_attribute='city',
+							ldap_attribute='l',
+							con_attribute='l',
+							single_value=True,
+						),''',
+					'postcode': '''univention.s4connector.attribute (
+							ucs_attribute='postcode',
+							ldap_attribute='postalCode',
+							con_attribute='postalCode',
+							single_value=True,
+						),''',
+					'sambaWorkstations': '''univention.s4connector.attribute (
+							ucs_attribute='sambaUserWorkstations',
+							ldap_attribute='sambaUserWorkstations',
+							con_attribute='userWorkstations',
+							single_value=True,
+						),''',
+#					'sambaLogonHours': '''univention.s4connector.attribute (
+#							ucs_attribute='sambaLogonHours',
+#							ldap_attribute='sambaLogonHours',
+#							con_attribute='logonHours',
+#						),'''
+					'profilepath': '''univention.s4connector.attribute (
+							ucs_attribute='profilepath',
+							ldap_attribute='sambaProfilePath',
+							con_attribute='profilePath',
+							single_value=True,
+						),''',
+					'scriptpath': '''univention.s4connector.attribute (
+							ucs_attribute='scriptpath',
+							ldap_attribute='sambaLogonScript',
+							con_attribute='scriptPath',
+							single_value=True,
+						),''',
+					'homeDrive': '''univention.s4connector.attribute (
+							ucs_attribute='homedrive',
+							ldap_attribute='sambaHomeDrive',
+							con_attribute='homeDrive',
+							single_value=True,
+						),''',
+					'homeDirectory': '''univention.s4connector.attribute (
+							ucs_attribute='sambahome',
+							ldap_attribute='sambaHomePath',
+							con_attribute='homeDirectory',
+							reverse_attribute_check = True,
+							single_value=True,
+						),''',
+					'telephoneNumber': '''univention.s4connector.attribute (
+							ucs_attribute='phone',
+							ldap_attribute='telephoneNumber',
+							con_attribute='telephoneNumber',
+							con_other_attribute='otherTelephone',
+						),''',
+					'homePhone': '''univention.s4connector.attribute (
+							ucs_attribute='homeTelephoneNumber',
+							ldap_attribute='homePhone',
+							con_attribute='homePhone',
+							con_other_attribute='otherHomePhone',
+						),''',
+					'mobilePhone': '''univention.s4connector.attribute (
+							ucs_attribute='mobileTelephoneNumber',
+							ldap_attribute='mobile',
+							con_attribute='mobile',
+							con_other_attribute='otherMobile',
+						),''',
+					'pager': '''univention.s4connector.attribute (
+							ucs_attribute='pagerTelephoneNumber',
+							ldap_attribute='pager',
+							con_attribute='pager',
+							con_other_attribute='otherPager',
+						),''',
+					'employeeType': '''univention.s4connector.attribute (
+							ucs_attribute='employeeType',
+							ldap_attribute='employeeType',
+							con_attribute='employeeType',
+							single_value=True,
+						),''',
+					'employeeNumber': '''univention.s4connector.attribute (
+							ucs_attribute='employeeNumber',
+							ldap_attribute='employeeNumber',
+							con_attribute='employeeNumber',
+							single_value=True,
+						),''',
+					'country': '''univention.s4connector.attribute (
+							ucs_attribute='country',
+							ldap_attribute='st',
+							con_attribute='c',
+							single_value=True,
+						),''',
+					'loginShell': '''univention.s4connector.attribute (
+							ucs_attribute='shell',
+							ldap_attribute='loginShell',
+							con_attribute='loginShell',
+							single_value=True,
+						),''',
+					'unixhome': '''univention.s4connector.attribute (
+							ucs_attribute='unixhome',
+							ldap_attribute='homeDirectory',
+							con_attribute='unixHomeDirectory',
+							single_value=True,
+						),''',
+					'title': '''univention.s4connector.attribute (
+							ucs_attribute='title',
+							ldap_attribute='title',
+							con_attribute='personalTitle',
+							single_value=True,
+						),''',
+					'gidNumber': '''univention.s4connector.attribute (
+							ucs_attribute='gidNumber',
+							ldap_attribute='gidNumber',
+							con_attribute='gidNumber',
+							single_value=True,
+						),''',
+					'uidNumber': '''univention.s4connector.attribute (
+							ucs_attribute='uidNumber',
+							ldap_attribute='uidNumber',
+							con_attribute='uidNumber',
+							single_value=True,
+						),''',
+					'departmentNumber': '''univention.s4connector.attribute (
+							ucs_attribute='departmentNumber',
+							ldap_attribute='departmentNumber',
+							con_attribute='departmentNumber',
+						),''',
+					'secretary': '''univention.s4connector.attribute (
+							ucs_attribute='secretary',
+							ldap_attribute='secretary',
+							con_attribute='secretary',
+						),''',
+					'roomNumber': '''univention.s4connector.attribute (
+							ucs_attribute='roomNumber',
+							ldap_attribute='roomNumber',
+							con_attribute='roomNumber',
+						),''',
+					'initials': '''univention.s4connector.attribute (
+							ucs_attribute='initials',
+							ldap_attribute='initials',
+							con_attribute='initials',
+							single_value=True,
+						),''',
+					'physicalDeliveryOfficeName': '''univention.s4connector.attribute (
+							ucs_attribute='physicalDeliveryOfficeName',
+							ldap_attribute='physicalDeliveryOfficeName',
+							con_attribute='physicalDeliveryOfficeName',
+							single_value=True,
+						),''',
+					'postOfficeBox': '''univention.s4connector.attribute (
+							ucs_attribute='postOfficeBox',
+							ldap_attribute='postOfficeBox',
+							con_attribute='postOfficeBox',
+						),''',
+					'preferredLanguage': '''univention.s4connector.attribute (
+							ucs_attribute='preferredLanguage',
+							ldap_attribute='preferredLanguage',
+							con_attribute='preferredLanguage',
+							single_value=True,
+						),''',
 }
 print ("\t\t\tpost_attributes={")
 ignore_list = configRegistry.get('connector/s4/mapping/user/attributes/ignorelist',[])
 if ignore_list:
-	ignore_list = ignore_list.split(',')
+	ignore_list = [x.strip(' ') for x in ignore_list.split(',')]
 for key in post_attributes:
 		if key not in ignore_list:
 			print ("\t\t\t\t\t'%s': %s" %(key, post_attributes[key]))

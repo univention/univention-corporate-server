@@ -209,7 +209,7 @@ property_descriptions = {
 		copyable=True,
 	),
 	'preferredLanguage': univention.admin.property(
-		short_description=_('preferredLanguage'),
+		short_description=_('preferred Language'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		copyable=True,
@@ -260,7 +260,7 @@ property_descriptions = {
 		copyable=True,
 	),
 	'physicalDeliveryOfficeName': univention.admin.property(
-		short_description=_('Delivery Office Name'),
+		short_description=_('Delivery office name'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		copyable=True,

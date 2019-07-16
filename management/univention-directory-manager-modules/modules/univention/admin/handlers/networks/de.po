@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-02-22 13:37+0100\n"
+"POT-Creation-Date: 2019-07-16 10:25+0200\n"
 "PO-Revision-Date: 2006-01-12 13:25+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -38,39 +38,39 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: modules/univention/admin/handlers/networks/network.py:151
+#: modules/univention/admin/handlers/networks/network.py:124
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: modules/univention/admin/handlers/networks/network.py:161
+#: modules/univention/admin/handlers/networks/network.py:134
 msgid "DHCP preferences"
 msgstr "DHCP-Einstellungen"
 
-#: modules/univention/admin/handlers/networks/network.py:138
+#: modules/univention/admin/handlers/networks/network.py:116
 msgid "DHCP service"
 msgstr "DHCP-Einträge"
 
-#: modules/univention/admin/handlers/networks/network.py:116
+#: modules/univention/admin/handlers/networks/network.py:104
 msgid "DNS forward lookup zone"
 msgstr "Forward Lookup Zone für DNS-Einträge"
 
-#: modules/univention/admin/handlers/networks/network.py:157
+#: modules/univention/admin/handlers/networks/network.py:130
 msgid "DNS preferences"
 msgstr "DNS-Einstellungen"
 
-#: modules/univention/admin/handlers/networks/network.py:127
+#: modules/univention/admin/handlers/networks/network.py:110
 msgid "DNS reverse lookup zone"
 msgstr "Reverse Lookup Zone für DNS-Einträge"
 
-#: modules/univention/admin/handlers/networks/network.py:151
+#: modules/univention/admin/handlers/networks/network.py:124
 msgid "General"
 msgstr "Allgemein"
 
-#: modules/univention/admin/handlers/networks/network.py:152
+#: modules/univention/admin/handlers/networks/network.py:125
 msgid "General network settings"
 msgstr "Grundeinstellungen - Netzwerk"
 
-#: modules/univention/admin/handlers/networks/network.py:106
+#: modules/univention/admin/handlers/networks/network.py:97
 msgid "IP address range"
 msgstr "IP-Adressbereich"
 
@@ -78,7 +78,7 @@ msgstr "IP-Adressbereich"
 msgid "Name"
 msgstr "Name"
 
-#: modules/univention/admin/handlers/networks/network.py:86
+#: modules/univention/admin/handlers/networks/network.py:83
 msgid "Netmask"
 msgstr "Netzmaske"
 
@@ -87,7 +87,7 @@ msgid "Network"
 msgstr "Netzwerk"
 
 #: modules/univention/admin/handlers/networks/network.py:55
-#: modules/univention/admin/handlers/networks/network.py:76
+#: modules/univention/admin/handlers/networks/network.py:75
 msgid "Networks"
 msgstr "Netzwerk"
 
@@ -95,7 +95,7 @@ msgstr "Netzwerk"
 msgid "Networks: Network"
 msgstr "Netze: Netz"
 
-#: modules/univention/admin/handlers/networks/network.py:96
+#: modules/univention/admin/handlers/networks/network.py:91
 msgid "Next IP address"
 msgstr "Nächste IP-Adresse"
 

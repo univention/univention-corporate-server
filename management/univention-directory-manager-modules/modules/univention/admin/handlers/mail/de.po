@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-02-22 13:37+0100\n"
+"POT-Creation-Date: 2019-07-16 10:25+0200\n"
 "PO-Revision-Date: 2008-07-09 14:20+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -38,63 +38,63 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: modules/univention/admin/handlers/mail/folder.py:151
-#: modules/univention/admin/handlers/mail/folder.py:152
+#: modules/univention/admin/handlers/mail/folder.py:131
+#: modules/univention/admin/handlers/mail/folder.py:132
 msgid "Access Rights"
 msgstr "Zugriffsrechte"
 
-#: modules/univention/admin/handlers/mail/folder.py:151
+#: modules/univention/admin/handlers/mail/folder.py:131
 msgid "Access rights for shared folder"
 msgstr "Zugriffsrechte für gemeinsamen Ordner"
 
-#: modules/univention/admin/handlers/mail/lists.py:133
+#: modules/univention/admin/handlers/mail/lists.py:113
 msgid "Authorized groups"
 msgstr "Autorisierte Gruppen"
 
-#: modules/univention/admin/handlers/mail/lists.py:130
+#: modules/univention/admin/handlers/mail/lists.py:110
 msgid "Authorized users"
 msgstr "Autorisierte Benutzer"
 
-#: modules/univention/admin/handlers/mail/domain.py:77
-#: modules/univention/admin/handlers/mail/folder.py:143
-#: modules/univention/admin/handlers/mail/lists.py:123
-#: modules/univention/admin/handlers/mail/mail.py:71
+#: modules/univention/admin/handlers/mail/domain.py:75
+#: modules/univention/admin/handlers/mail/folder.py:123
+#: modules/univention/admin/handlers/mail/lists.py:103
+#: modules/univention/admin/handlers/mail/mail.py:68
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: modules/univention/admin/handlers/mail/lists.py:70
+#: modules/univention/admin/handlers/mail/lists.py:68
 msgid "Description"
 msgstr "Beschreibung"
 
-#: modules/univention/admin/handlers/mail/folder.py:130
+#: modules/univention/admin/handlers/mail/folder.py:115
 msgid "E-Mail address"
 msgstr "E-Mail-Adresse"
 
-#: modules/univention/admin/handlers/mail/domain.py:77
-#: modules/univention/admin/handlers/mail/folder.py:143
-#: modules/univention/admin/handlers/mail/lists.py:123
-#: modules/univention/admin/handlers/mail/mail.py:71
+#: modules/univention/admin/handlers/mail/domain.py:75
+#: modules/univention/admin/handlers/mail/folder.py:123
+#: modules/univention/admin/handlers/mail/lists.py:103
+#: modules/univention/admin/handlers/mail/mail.py:68
 msgid "General"
 msgstr "Allgemein"
 
-#: modules/univention/admin/handlers/mail/folder.py:144
+#: modules/univention/admin/handlers/mail/folder.py:124
 msgid "General IMAP mail folder settings"
 msgstr "Grundeinstellungen - IMAP-Mail-Ordner"
 
-#: modules/univention/admin/handlers/mail/lists.py:124
+#: modules/univention/admin/handlers/mail/lists.py:104
 msgid "General mailing list settings"
 msgstr "Grundeinstellungen - Mailingliste"
 
-#: modules/univention/admin/handlers/mail/folder.py:102
+#: modules/univention/admin/handlers/mail/folder.py:97
 msgid "Group ACL"
 msgstr "Gruppen ACL"
 
-#: modules/univention/admin/handlers/mail/lists.py:111
-#: modules/univention/admin/handlers/mail/lists.py:133
+#: modules/univention/admin/handlers/mail/lists.py:94
+#: modules/univention/admin/handlers/mail/lists.py:113
 msgid "Groups that are allowed to send e-mails to the list"
 msgstr "Gruppen, die berechtigt sind, E-Mails an diese Liste zu versenden"
 
-#: modules/univention/admin/handlers/mail/folder.py:112
+#: modules/univention/admin/handlers/mail/folder.py:104
 msgid ""
 "How many MB of emails can be stored in the shared folder (independent of the "
 "users that stored them)."
@@ -114,17 +114,17 @@ msgstr "IMAP-Mail-Ordner"
 msgid "Mail"
 msgstr "Mail"
 
-#: modules/univention/admin/handlers/mail/lists.py:90
+#: modules/univention/admin/handlers/mail/lists.py:81
 msgid "Mail address"
 msgstr "Mail-Adresse"
 
 #: modules/univention/admin/handlers/mail/domain.py:48
 #: modules/univention/admin/handlers/mail/domain.py:49
-#: modules/univention/admin/handlers/mail/folder.py:83
+#: modules/univention/admin/handlers/mail/folder.py:82
 msgid "Mail domain"
 msgstr "Mail-Domäne"
 
-#: modules/univention/admin/handlers/mail/domain.py:78
+#: modules/univention/admin/handlers/mail/domain.py:76
 msgid "Mail domain description"
 msgstr "Bezeichnung - Mail-Domäne"
 
@@ -140,7 +140,7 @@ msgstr "Mail-Domänen"
 msgid "Mail folder (IMAP)"
 msgstr "Mail-Ordner (IMAP)"
 
-#: modules/univention/admin/handlers/mail/folder.py:120
+#: modules/univention/admin/handlers/mail/folder.py:108
 msgid "Mail home server"
 msgstr "Mail-Home-Server"
 
@@ -161,7 +161,7 @@ msgstr "Mailingliste"
 msgid "Mailing lists"
 msgstr "Mailinglisten"
 
-#: modules/univention/admin/handlers/mail/lists.py:80
+#: modules/univention/admin/handlers/mail/lists.py:74
 msgid "Members"
 msgstr "Mitglieder"
 
@@ -171,15 +171,15 @@ msgstr "Mitglieder"
 msgid "Name"
 msgstr "Name"
 
-#: modules/univention/admin/handlers/mail/folder.py:111
+#: modules/univention/admin/handlers/mail/folder.py:103
 msgid "Quota in MB"
 msgstr "Maximale Quota in MB"
 
-#: modules/univention/admin/handlers/mail/folder.py:93
+#: modules/univention/admin/handlers/mail/folder.py:91
 msgid "User ACL"
 msgstr "Benutzer ACL"
 
-#: modules/univention/admin/handlers/mail/lists.py:101
-#: modules/univention/admin/handlers/mail/lists.py:130
+#: modules/univention/admin/handlers/mail/lists.py:87
+#: modules/univention/admin/handlers/mail/lists.py:110
 msgid "Users that are allowed to send e-mails to the list"
 msgstr "Benutzer, die berechtigt sind, E-Mails an diese Liste zu versenden"
