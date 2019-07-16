@@ -42,16 +42,6 @@
 		</itemizedlist>
 	</section>
 
-	<section id="changelog:basic">
-		<title>Basic system services</title>
-
-		<section id="changelog:basic:kernel">
-			<title>Linux kernel and firmware packages</title>
-			<itemizedlist>
-			</itemizedlist>
-		</section>
-	</section>
-
 	<section id="changelog:domain">
 		<title>Domain services</title>
 
@@ -480,12 +470,6 @@
 			</itemizedlist>
 		</section>
 
-		<section id="changelog:umc:join">
-			<title>Domain join module</title>
-			<itemizedlist>
-			</itemizedlist>
-		</section>
-
 		<section id="changelog:umc:user">
 			<title>Users module</title>
 			<itemizedlist>
@@ -517,13 +501,6 @@
 
 			</itemizedlist>
 		</section>
-
-		<section id="changelog:umc:other">
-			<title>Other modules</title>
-			<itemizedlist>
-			</itemizedlist>
-		</section>
-	</section>
 
 	<section id="changelog:lib">
 		<title>Univention base libraries</title>
@@ -559,12 +536,6 @@
 								It is now possible to specify ldap server controls in the <code>univention.uldap.access.search()</code> methods. (<u:bug>49638</u:bug>)
 						</simpara></listitem>
 
-		</itemizedlist>
-	</section>
-
-	<section id="changelog:deployment">
-		<title>Software deployment</title>
-		<itemizedlist>
 		</itemizedlist>
 	</section>
 
@@ -732,7 +703,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-							Since UCS-4.3 erratum 269 UVMM can be configured to check the CPU model before performing a live migration. Due to a bug in <package>libvirt</package> the use of <varname>host-model</varname> does not survive the creation of snapshots or suspend to disk and gets rewritten to the concrete CPU model of the host system. This has been fixed. Old snapshots created and domains suspended before this erratum might fail to start, in which case the <cpu/> configuration must be manually removed from the XML description using <command>virsh snapshot-edit</command> or <command>virsh save-image-edit</command> respectively. (<u:bug>49425</u:bug>)
+							Since UCS-4.3 erratum 269 UVMM can be configured to check the CPU model before performing a live migration. Due to a bug in <package>libvirt</package> the use of <varname>host-model</varname> does not survive the creation of snapshots or suspend to disk and gets rewritten to the concrete CPU model of the host system. This has been fixed. Old snapshots created and domains suspended before this erratum might fail to start, in which case the CPU configuration must be manually removed from the XML description using <command>virsh snapshot-edit</command> or <command>virsh save-image-edit</command> respectively. (<u:bug>49425</u:bug>)
 						</simpara></listitem>
 
 			</itemizedlist>
