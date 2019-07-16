@@ -54,16 +54,16 @@
 					Durch die Konfiguration von eigenen <wordasword>Stylesheets</wordasword> kann das Aussehen der Login- und <guimenu>Self Service</guimenu> Webseiten individuell angepasst werden.
 			</para></listitem>
 			<listitem><para>
-					Es gibt deutliche Performance Verbesserungen des Directory Managers in Umgebungen mit umfangreichen LDAP-Strukturen.
+					Es gibt deutliche Performance-Verbesserungen des Directory Managers in Umgebungen mit umfangreichen LDAP-Strukturen.
 			</para></listitem>
 			<listitem><para>
-					Im App Center gibt ein neues Feature Hinweise auf ergänzende Apps, basierend auf den in der Umgebung bereits installierten Apps.
+					Im App Center gibt ein neues Feature: Hinweise auf ergänzende Apps, basierend auf den in der Umgebung bereits installierten Apps.
 			</para></listitem>
 			<listitem><para>
 					Eine Betaversion der neuen UDM Rest API wurde veröffentlicht.
 			</para></listitem>
 			<listitem><para>
-					Einige UCS Pakete wurde für die zukünftige Migration zu Python 3 angepasst. 
+					Einige UCS-Pakete wurden für die zukünftige Migration zu Python 3 angepasst.
 			</para></listitem>
 			<listitem><para>
 					Diverse Security Updates wurden in UCS 4.4-1 integriert, bspw. für Samba, den Linux Kernel und Dovecot.
