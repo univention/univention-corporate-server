@@ -73,6 +73,8 @@
 						<package>firefox-esr</package> (<u:cve>CVE-2019-11708</u:cve>) (<u:bug>49797</u:bug>)
 						<package>openssl1.0</package> (<u:cve>CVE-2019-1559</u:cve>) (<u:bug>49795</u:bug>)
 						<package>openssl</package> (<u:cve>CVE-2019-1543</u:cve>) (<u:bug>49793</u:bug>)
+						<package>samba</package> (<u:cve>CVE-2019-3870, CVE-2019-3880</u:cve>) (<u:bug>49034</u:bug>, <u:bug>49025</u:bug>)
+						<package>univention-directory-notifier</package> (<u:bug>48466</u:bug>)
 					</simpara></listitem>
 				</itemizedlist>
 			</listitem>
@@ -99,6 +101,10 @@
 				<itemizedlist>
 						<listitem><simpara>
 							The <command>resync_objects.py</command> helper script now respects the configured local LDAP port. (<u:bug>49228</u:bug>)
+						</simpara></listitem>
+
+						<listitem><simpara>
+							Check available file system space before writing transactions. (<u:bug>28233</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
@@ -764,6 +770,11 @@
 		<section id="changelog:win:samba">
 			<title>Samba</title>
 			<itemizedlist>
+
+						<listitem><simpara>
+								Improve <command>samba-tool ntacl sysvolcheck</command> to reduce reporting false positives. This can be run by using new option <property>--mask-msad-differences</property>. Without the new option the reporting is unchanged. This is another step in the ongoing quest of improving the quality this tool for NTACL inheritance. (<u:bug>46643</u:bug>)
+						</simpara></listitem>
+
 						<listitem><simpara>
 							The folder windows-profiles in the home share is now hidden. (<u:bug>48541</u:bug>)
 						</simpara></listitem>
