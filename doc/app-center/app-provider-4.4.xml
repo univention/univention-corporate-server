@@ -220,7 +220,7 @@
             </listitem>
             <listitem>
                 <simpara>
-                    Click on <guimenu>Add a new App</guimenu> and provide the following settings.
+                    Click on <guimenu>Add new app</guimenu> and provide the following settings.
                 </simpara>
                     <itemizedlist>
                     <listitem>
@@ -234,14 +234,14 @@
                     </listitem>
                     <listitem>
                         <simpara>
-                            <emphasis>App Name</emphasis> is the name of the
+                            <emphasis>App name</emphasis> is the name of the
                             app. It is used to display the app on the overview
                             pages. This attribute can be changed any time.
                         </simpara>
                     </listitem>
                     <listitem>
                         <simpara>
-                            <emphasis>App Version</emphasis> is the version of
+                            <emphasis>App version</emphasis> is the version of
                             the app. The App Center distinguishes versions and
                             uses them to handle app updates. Once the app is
                             released, this attribute cannot be changed.
@@ -249,7 +249,7 @@
                     </listitem>
                     <listitem>
                         <simpara>
-                            <emphasis>UCS Version</emphasis> is the UCS version
+                            <emphasis>UCS version</emphasis> is the UCS version
                             the app should start to be available on. Simply
                             start with the latest available UCS version. It can
                             also be started with the oldest maintained UCS
@@ -274,10 +274,12 @@
                     </listitem>
                     <listitem>
                         <simpara>
-                            Select <emphasis>Docker app or based on
-                                <wordasword>AppBox</wordasword></emphasis> for the recommended Docker
-                            based app. This documentation only covers single
-                            and multi container apps.
+                            Select <emphasis>Docker app</emphasis> or
+                            <emphasis>Docker app based on UCS
+                                <wordasword>AppBox</wordasword></emphasis> for
+                            the recommended Docker based app. This
+                            documentation only covers single and multi
+                            container apps.
                         </simpara>
                     </listitem>
                     </itemizedlist>
@@ -329,9 +331,9 @@
             </para>
             <para>
                 Example: The app has been created for <option>UCS
-                    Version</option> <userinput>4.3</userinput>. The two
+                    Version</option> <userinput>4.3</userinput>. Two
                 entries for <guimenu>Supported UCS versions for App</guimenu>
-                can be made: <userinput>4.3-4</userinput> and
+                could be made: <userinput>4.3-4</userinput> and
                 <userinput>4.4-0</userinput>. This means that for the
                 installation of the app UCS 4.3-4 or UCS 4.4-0 are required.
             </para>
@@ -375,8 +377,9 @@
             </para>
             <para>
                 To define volumes for the app, please activate them on the
-                <guimenu>Overview</guimenu> tab with the option <guimenu>Docker
-                    app defines volumes</guimenu>. Then go to the
+                <guimenu>Overview</guimenu> tab in the
+                <guimenu>Modules</guimenu> section with the option
+                <guimenu>Docker app defines volumes</guimenu>. Then go to the
                 <guimenu>Volumes</guimenu> tab. Add an entry for each volume
                 and define the directory or file path on the host in the first
                 field and the destination in the container in the second field.
@@ -419,7 +422,7 @@
                 configuration.
             </para>
             <para>
-                On the <guimenu>Webinterface</guimenu> tab, enter the relative
+                On the <guimenu>Web interface</guimenu> tab, enter the relative
                 path and which ports should be proxied. For example, to map
                 the container's ports 80 and 443 to
                 <userinput>/myapp</userinput>, the following settings have to
@@ -476,7 +479,7 @@
                 If the app needs to occupy ports on the host that need to be
                 passed along to the container in order to work properly, they can
                 be defined in the <guimenu>Ports</guimenu> section
-                on the <guimenu>Webinterface</guimenu> tab. A list of ports can be
+                on the <guimenu>Web interface</guimenu> tab. A list of ports can be
                 defined that the Docker host shall exclusively acquire for the
                 Docker container. Ports defined here cannot be used by other
                 services or other Docker containers on the UCS host.
@@ -490,7 +493,7 @@
                 With the port definition the App Center also takes care to open
                 them in the UCS firewall. If additional firewall rules for
                 ports are needed, they can be defined in the app join script.
-                Please the <ulink
+                Please refer to the <ulink
                     url="https://docs.software-univention.de/developer-reference.html#misc:nacl">Network
                     Packet Filter section in the UCS Development
                     Reference</ulink>.
@@ -505,7 +508,8 @@
                 function properly. If the app needs such a database the App
                 Center takes care of providing one directly to the Docker host.
                 Activate <guimenu>Docker app needs database</guimenu> on the
-                <guimenu>Overview</guimenu> tab and then go to the
+                <guimenu>Overview</guimenu> tab in the
+                <guimenu>Modules</guimenu> section and then go to the
                 <guimenu>Database</guimenu> tab, where the appropriate settings
                 can be made.
             </para>
@@ -519,7 +523,7 @@
                 file for later use.
             </para>
             <para>
-                In the <guimenu>Environment database variables</guimenu>
+                In the <guimenu>Database environment variables</guimenu>
                 section, the mapping of the database settings to the
                 environment variables in the container are defined. For
                 example, if the container expects the database hostname in
@@ -547,8 +551,8 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
             <para>
                 The content of the environment file can be entered in the App
                 Provider portal on the <guimenu>Configuration</guimenu> tab in
-                the field for <guimenu>Environment file used during the Docker
-                    Container creation</guimenu>.
+                the field for <guimenu>Environment file for Docker container
+                    creation</guimenu>.
             </para>
         </section>
     </section>
@@ -579,7 +583,7 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
             </para>
             <para>
                   You also need to define the <guimenu>Name of the "main" service
-                  within the compose.yml</guimenu> below the <guimenu>Contents
+                  within the docker-compose.yml</guimenu> below the <guimenu>Contents
                   of the docker-compose.yml file</guimenu>.
             </para>
             <para>
@@ -882,7 +886,8 @@ univention-app dev-use-test-appcenter
                 tab in the app in the App Provider Portal after activating it
                 with the option <guimenu>Additional texts with information for
                     UCS system administrators</guimenu> on the
-                <guimenu>Overview</guimenu> tab. An Administrator expects an
+                <guimenu>Overview</guimenu> tab in the
+                <guimenu>Modules</guimenu> section. An Administrator expects an
                 app to be fully configured after the installation. If something
                 is needed in order to use the app (e.g., activating users for
                 the service), it should be described in the appropriate README
@@ -1289,11 +1294,12 @@ docker-compose -p $appid logs
         <para>
             Screenshots and videos are a good way to introduce the solution to
             the user. To add screenshots please go to the <guimenu>Screenshots
-                and YouTube videos</guimenu> tab for upload. Screenshots can be
-            in PNG or JPG format. Videos have to be published on YouTube and
-            the full YouTube link has to be provided in the App Provider
-            Portal. Please keep in mind to provide the material for English and
-            German speaking audience.
+                &amp; YouTube videos</guimenu> section on the
+            <guimenu>Presentation</guimenu> tab. Screenshots can be in PNG or
+            JPG format. Videos have to be published on YouTube and the full
+            YouTube link has to be provided in the App Provider Portal. Please
+            keep in mind to provide the material for English and German
+            speaking audience.
         </para>
         <para>
              If the same screenshots exist in German, it is recommended that
@@ -1428,7 +1434,7 @@ docker-compose -p $appid logs
             and a website to the solution. Please also link to a website, where
             the app provider's support options and pricing is explained to
             potential customers and place the link in the field <guilabel>Link
-                to website with support options</guilabel>.
+                to website with product support options</guilabel>.
         </para>
     </section>
 
@@ -1437,13 +1443,13 @@ docker-compose -p $appid logs
         <para>
             In the <guimenu>License</guimenu> section on the
             <guimenu>Presentation</guimenu> tab license information can be
-            defined; for example, a license agreement. This should be read by a
-            UCS system administrator and has to be accepted before the app is
-            installed. If the text is not accepted, the installation process is
-            aborted and no app is installed. The license agreement is mostly
-            used by app providers for legal information that needs confirmation
-            by the administrator before anything is installed. If such a text
-            is not needed, leave it empty.
+            defined; for example, a license agreement. This has to be read and
+            accepted by a UCS system administrator before the app is installed.
+            If the text is not accepted, the installation process is aborted
+            and no app is installed. The license agreement is mostly used by
+            app providers for legal information that needs confirmation by the
+            administrator before anything is installed. If such a text is not
+            needed, leave it empty.
         </para>
         <para>
             UCS system administrators have to register with a valid email
@@ -1623,11 +1629,12 @@ docker-compose -p $appid logs
         If the app should benefit from the identity management, the flag
         <guimenu>The administrator needs to enable users for the app</guimenu>
         should be activated in the App Provider Portal on the <guimenu>Identity
-            management</guimenu> tab. This extends the IDM by a checkbox and an
-        administrator of the UCS system can activate or deactivate each user
-        individually for the app. The setting can then be found in the Users
-        UMC module and is called <guimenu>Apps</guimenu>. It is also possible
-        to make significantly more complex settings. See <xref
+            management</guimenu> tab under the <guimenu>User rights
+            management</guimenu> section. This extends the IDM by a checkbox
+        and an administrator of the UCS system can activate or deactivate each
+        user individually for the app. The setting can then be found in the
+        Users UMC module and is called <guimenu>Apps</guimenu>. It is also
+        possible to make significantly more complex settings. See <xref
             linkend="user-rights-management" /> for more details.
     </para>
 
@@ -2089,16 +2096,19 @@ docker-compose -p $appid logs
         <para>
             The flag <guimenu>The administrator needs to enable users for the
                 app</guimenu> can be activated in the App Provider Portal on
-            the <guimenu>Identity management</guimenu> tab. This adds a
-            checkbox to the user administration and a schema extension for the
-            IDM is created, so that the status of the checkbox is stored in an
+            the <guimenu>Identity management</guimenu> tab in the <guimenu>User
+                rights management</guimenu> section. This adds a checkbox to
+            the user administration and a schema extension for the IDM is
+            created, so that the status of the checkbox is stored in an
             attribute in the IDM. This allows each user to be activated or
             deactivated separately.
         </para>
         <para>
-			If the app requires more settings in the IDM, an own LDAP schema
-			can be uploaded into the App Provider Portal <guimenu>Docker /
-			Configuration files / Schema extension for LDAP</guimenu>.
+            If the app requires more settings in the IDM, an own LDAP schema
+            can be uploaded into the App Provider Portal on the
+            <guimenu>Identity management</guimenu> tab in the <guimenu>User
+                rights management </guimenu> section in the field
+            <guimenu>Schema extension for LDAP</guimenu>.
         </para>
         <para>
 			In this case, it is also possible to create individual extended
@@ -2123,7 +2133,7 @@ docker-compose -p $appid logs
         <itemizedlist spacing="compact">
             <listitem>
                 <simpara>
-                    <guilabel>Scripts</guilabel> &ar; <guilabel>Join and unjoin script</guilabel>
+                    <guilabel>Scripts</guilabel> &ar; <guilabel>Join &amp; unjoin script</guilabel>
                 </simpara>
             </listitem>
             <listitem>
@@ -2144,12 +2154,12 @@ docker-compose -p $appid logs
             </listitem>
             <listitem>
                 <simpara>
-                    <guilabel>Scripts</guilabel> &ar; <guilabel>Configuration scripts</guilabel>. (<filename>configure</filename>)
+                    <guilabel>Scripts</guilabel> &ar; <guilabel>Configure scripts</guilabel>. (<filename>configure</filename>)
                 </simpara>
             </listitem>
             <listitem>
                 <simpara>
-                    <guilabel>Scripts</guilabel> &ar; <guilabel>Configuration scripts</guilabel>. (<filename>configure_host</filename>)
+                    <guilabel>Scripts</guilabel> &ar; <guilabel>Configure scripts</guilabel>. (<filename>configure_host</filename>)
                 </simpara>
             </listitem>
         </itemizedlist>
@@ -2388,8 +2398,9 @@ FILENAME="$(joinscript_container_file "/opt/$APP/my.cnf")"
                    schema file alone is not enough. It has to be registered with
                    the mentioned function in the join script. The schema file
                    content can be provided in the App Provider portal on the
-                   <guimenu>Identity management</guimenu> tab, in the field for <guimenu>Schema
-                       extension for LDAP</guimenu>.
+                   <guimenu>Identity management</guimenu> tab in the
+                   <guimenu>User rights management</guimenu> section, in the
+                   field for <guimenu>Schema extension for LDAP</guimenu>.
                    <programlisting language="sh">
 joinscript_register_schema "$@"
                    </programlisting>
@@ -3022,8 +3033,8 @@ service my-app-daemon restart
             includes Postfix as <wordasword>MTA</wordasword> for SMTP and
             Dovecot for IMAP. If the app relies on an existing mail
             infrastructure, it is one option to use the mailstack app and
-            require its installation in the UCS domain.  This can be configured
-            for the in the App Provider portal at the
+            require its installation in the UCS domain. This can be configured
+            for the app in the App Provider portal on the
             <guimenu>Version</guimenu> tab in the section <guimenu>Required
                 apps</guimenu> by adding the
             <userinput><wordasword>Mailserver</wordasword></userinput> app and
@@ -3321,7 +3332,7 @@ ucr set mail/postfix/mydestination="\$myhostname, localhost.\$mydomain, localhos
             <title>Boot splash</title>
             <para>
                 The boot splash can have a custom background and a logo. The
-                logo is defined in <guimenu>Logo for the bootsplash durch
+                logo is defined in <guimenu>Logo for the bootsplash during
                     system boot</guimenu>.  Please provide a SVG file and mind
                 the recommendations in <xref linkend="logos" />.
             </para>
