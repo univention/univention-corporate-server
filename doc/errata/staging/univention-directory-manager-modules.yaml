@@ -7,4 +7,5 @@ fix:
 desc: |
  This update addresses the following issue(s):
  * Searching for users in a certain group is now possible.
-bug: [42607]
+ * Nagios objects are created again in their default containers.
+bug: [42607, 49594]

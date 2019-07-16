@@ -45,6 +45,7 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 module = 'nagios/timeperiod'
+default_containers = ['cn=nagios']
 
 childs = 0
 short_description = _('Nagios time period')
