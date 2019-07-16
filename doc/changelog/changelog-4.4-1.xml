@@ -55,11 +55,11 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-							Fix regression from UCS-4.3-3 erratum 426 in <filename>cn=translog</filename> setup, which reset the LDAP indices. (<u:bug>48971</u:bug>)
+							Fix regression from UCS-4.3-3 erratum 426 in <uri>cn=translog</uri> setup, which reset the LDAP indices. (<u:bug>48971</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
-							Since UCS-4.3-3 erratum 427 the Univention Directory Notifier (UDN) writes transactions both to the file <filename>/var/lib/univention-ldap/notify/transaction</filename> and the <filename>cn=translog</filename> database in OpenLDAP. A failed write to the later can make UDN abort, in which case UDN is restarted automatically and writes the pending transactions to said file again. This leads to inconsistency. The order has been swapped to prevent this issue from happening again. The transaction file might require manual corrections if UDN fails to start up properly. (<u:bug>49198</u:bug>)
+							Since UCS-4.3-3 erratum 427 the Univention Directory Notifier (UDN) writes transactions both to the file <filename>/var/lib/univention-ldap/notify/transaction</filename> and the <uri>cn=translog</uri> database in OpenLDAP. A failed write to the later can make UDN abort, in which case UDN is restarted automatically and writes the pending transactions to said file again. This leads to inconsistency. The order has been swapped to prevent this issue from happening again. The transaction file might require manual corrections if UDN fails to start up properly. (<u:bug>49198</u:bug>)
 						</simpara></listitem>
 						<listitem><simpara>
 							Deprecated and unused code has been removed. (<u:bug>49277</u:bug>)
@@ -125,7 +125,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-								A cross site scripting vulnerability in <code>umc.widgets.Editor</code> has been fixed. This affected portal entries. (<u:bug>48812</u:bug>)
+								A cross site scripting vulnerability in <property>umc.widgets.Editor</property> has been fixed. This affected portal entries. (<u:bug>48812</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
@@ -276,7 +276,7 @@
 
 
 						<listitem><simpara>
-							Abort installation if machine.secret could not be copied into container. (<u:bug>49543</u:bug>)
+							Abort installation if <filename>machine.secret</filename> could not be copied into container. (<u:bug>49543</u:bug>)
 						</simpara></listitem>
 
 
@@ -285,7 +285,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-							More debug messages during <code>SetupFailed</code>. (<u:bug>49625</u:bug>)
+							More debug messages during <property>SetupFailed</property>. (<u:bug>49625</u:bug>)
 						</simpara></listitem>
 
 
@@ -347,7 +347,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-								The <code>computers/*</code> UDM handlers now share a common base class. Code redundancy has therefore been reduced. (<u:bug>41659</u:bug>)
+								The <function>computers/*</function> UDM handlers now share a common base class. Code redundancy has therefore been reduced. (<u:bug>41659</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
@@ -361,12 +361,12 @@
 
 
 						<listitem><simpara>
-							The object class <code>univentionPolicyReference</code> is now removed from objects when the last policy is dereferenced. (<u:bug>46466</u:bug>)
+							The object class <property>univentionPolicyReference</property> is now removed from objects when the last policy is dereferenced. (<u:bug>46466</u:bug>)
 						</simpara></listitem>
 
 
 						<listitem><simpara>
-							The search filter <code>dnsAlias</code> in the computer modules has been repaired. (<u:bug>31494</u:bug>)
+							The search filter <property>dnsAlias</property> in the computer modules has been repaired. (<u:bug>31494</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
@@ -379,7 +379,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-							It is now possible to specify LDAP server controls in some UDM handlers <code>lookup()</code> method. (<u:bug>49638</u:bug>)
+							It is now possible to specify LDAP server controls in some UDM handlers <function>lookup()</function> method. (<u:bug>49638</u:bug>)
 						</simpara></listitem>
 
 
@@ -393,7 +393,7 @@
 
 
 						<listitem><simpara>
-							The <literal>users/user</literal> UDM module now uses the LDAP filter "univentionObjectType=users/user" when searching for objects to increase performance. (<u:bug>48390</u:bug>)
+							The <literal>users/user</literal> UDM module now uses the LDAP filter <literal>univentionObjectType=users/user</literal> when searching for objects to increase performance. (<u:bug>48390</u:bug>)
 						</simpara></listitem>
 
 
@@ -403,7 +403,7 @@
 
 
 						<listitem><simpara>
-							After renaming an object the internal DN (<code>self.dn</code>) is updated correctly. The old DN can now be obtained via <code>self.old_dn</code>. This fixes the concurrent renaming and update of group membership for e.g. computer objects. (<u:bug>41694</u:bug>)
+							After renaming an object the internal DN (<property>self.dn</property>) is updated correctly. The old DN can now be obtained via <property>self.old_dn</property>. This fixes the concurrent renaming and update of group membership for e.g. computer objects. (<u:bug>41694</u:bug>)
 						</simpara></listitem>
 
 
@@ -496,7 +496,7 @@
 			<title>Filesystem quota module</title>
 			<itemizedlist>
 						<listitem><simpara>
-							Previously, when quota policies were set on multiple shares that are located on the same mountpoint, a quota policy that had a value of zero (meaning no quota is enforced) would overwrite smaller quota policies. This behavior has been changed to always choose the smallest value. (<u:bug>48000</u:bug>)
+							Previously, when quota policies were set on multiple shares that are located on the same <literal>mountpoint</literal>, a quota policy that had a value of zero (meaning no quota is enforced) would overwrite smaller quota policies. This behavior has been changed to always choose the smallest value. (<u:bug>48000</u:bug>)
 						</simpara></listitem>
 
 			</itemizedlist>
@@ -517,7 +517,7 @@
 
 
 						<listitem><simpara>
-							Deprecate <code>function</code> class in favor of <code>trace</code> decorator. (<u:bug>43422</u:bug>)
+							Deprecate <function>function</function> class in favor of <function>trace</function> decorator. (<u:bug>43422</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
@@ -534,7 +534,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-								It is now possible to specify LDAP server controls in the <code>univention.uldap.access.search()</code> methods. (<u:bug>49638</u:bug>)
+								It is now possible to specify LDAP server controls in the <function>univention.uldap.access.search()</function> methods. (<u:bug>49638</u:bug>)
 						</simpara></listitem>
 
 		</itemizedlist>
@@ -692,7 +692,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-							Fix Python traceback while handling <code>select()</code> exception. (<u:bug>49403</u:bug>)
+							Fix Python traceback while handling <function>select()</function> exception. (<u:bug>49403</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
@@ -740,7 +740,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-							Set correct permissions for lock file on upstream server during sysvol synchronization. (<u:bug>48917</u:bug>)
+							Set correct permissions for lock file on upstream server during <command>sysvol</command> synchronization. (<u:bug>48917</u:bug>)
 						</simpara></listitem>
 
 
@@ -802,7 +802,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-							Duplicated code for the detection of superordinates has been removed. (<u:bug>45068</u:bug>)
+							Duplicated code for the detection of <wordasword>superordinates</wordasword> has been removed. (<u:bug>45068</u:bug>)
 						</simpara></listitem>
 
 
@@ -836,10 +836,10 @@
 							If samba fails to set the new password in a server password change, the changes will be reverted. (<u:bug>49193</u:bug>)
 						</simpara></listitem>
 						<listitem><simpara>
-							The function <code>getRootDnConnection()</code> has been fixed. (<u:bug>49024</u:bug>)
+							The function <function>getRootDnConnection()</function> has been fixed. (<u:bug>49024</u:bug>)
 						</simpara></listitem>
 						<listitem><simpara>
-							The LDAP-ACLs for read access to <literal>cn=monitor</literal> can now be extended via UCR variables. (<u:bug>49387</u:bug>)
+							The LDAP ACLs for read access to <uri>cn=monitor</uri> can now be extended via UCR variables. (<u:bug>49387</u:bug>)
 						</simpara></listitem>
 						<listitem><simpara>
 							Fix escaping of LDAP DN, filters and shell arguments (<u:bug>46323</u:bug>)
@@ -852,7 +852,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-							Log stderr if LDAP schema validation fails. (<u:bug>49500</u:bug>)
+							Log <filename>stderr</filename> if LDAP schema validation fails. (<u:bug>49500</u:bug>)
 						</simpara></listitem>
 
 
@@ -934,14 +934,14 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-								Default containers for domain controller computer objects can now be configured. During the upgrade every default container for computer objects are set as default container for domaincontroller objects except <literal>cn=computers</literal> and <literal>cn=memberservers,cn=computer</literal>. (<u:bug>46919</u:bug>)
+								Default containers for domain controller computer objects can now be configured. During the upgrade every default container for computer objects are set as default container for domaincontroller objects except <uri>cn=computers</uri> and <uri>cn=memberservers,cn=computer</uri>. (<u:bug>46919</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
 							<package>insserv</package>: Re-add accidentally dropped patch to ignore files ending on `.debian`. (<u:bug>49441</u:bug>)
 						</simpara></listitem>
 						<listitem><simpara>
-								<package>univention-updater</package>: Fix traceback in <code>admindiary.client.write_event()</code> occurring in Docker containers during docker build. (<u:bug>49056</u:bug>)
+								<package>univention-updater</package>: Fix traceback in <function>admindiary.client.write_event()</function> occurring in Docker containers during docker build. (<u:bug>49056</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
@@ -957,11 +957,11 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-								OpenLDAP restricts the number of returned entries when searching. This can be configured using the UCR variable <envar>ldap/sizelimit</envar>, which defaults to <literal>400k</literal>. This is not enough for <command>univention-translog prune</command>. Remove the limit for searches connecting via <literal>ldapi://</literal>. (<u:bug>49505</u:bug>)
+								OpenLDAP restricts the number of returned entries when searching. This can be configured using the UCR variable <envar>ldap/sizelimit</envar>, which defaults to <literal>400k</literal>. This is not enough for <command>univention-translog prune</command>. Remove the limit for searches connecting via <literal>ldapi:///</literal>. (<u:bug>49505</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
-							Use slaptest for LDAP schema checking in the <filename>ldap_extension</filename> module. (<u:bug>49596</u:bug>)
+							Use <command>slaptest</command> for LDAP schema checking in the <filename>ldap_extension</filename> module. (<u:bug>49596</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
