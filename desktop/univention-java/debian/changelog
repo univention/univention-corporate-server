@@ -1,3 +1,9 @@
+univention-java (10.0.0-5) unstable; urgency=low
+
+  * Bug #49856: Remove icedtea-plugin dependency.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 08 Oct 2019 12:36:11 +0200
+
 univention-java (10.0.0-4) unstable; urgency=low
 
   * Bug #45959: Switch to Architecture: all
