@@ -934,7 +934,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-								Default containers for <function>computers/domaincontroller_master</function> objects can now be configured. During the upgrade every default container for computer objects are set as default container for domaincontroller objects except <uri>cn=computers</uri> and <uri>cn=memberservers,cn=computer</uri>. (<u:bug>46919</u:bug>)
+								Default containers for <function>computers/domaincontroller_master</function> objects can now be configured. During the upgrade every default container for computer objects are set as default container for <function>computers/domaincontroller_master</function> except <uri>cn=computers</uri> and <uri>cn=memberservers,cn=computer</uri>. (<u:bug>46919</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
