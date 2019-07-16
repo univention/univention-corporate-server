@@ -51,7 +51,7 @@
 				<title>Listener/Notifier domain replication</title>
 				<itemizedlist>
 						<listitem><simpara>
-							The <command>resync_objects.py</command> helper script now respects the configured local ldap port. (<u:bug>49228</u:bug>)
+							The <command>resync_objects.py</command> helper script now respects the configured local LDAP port. (<u:bug>49228</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
@@ -65,11 +65,11 @@
 							Deprecated and unused code has been removed. (<u:bug>49277</u:bug>)
 						</simpara></listitem>
 						<listitem><simpara>
-								Add <command>univention-translog check --fix</command> command to check (and fix) inconsisteny between the files <filename>/var/lib/univention-ldap/notify/transaction</filename>, <filename>/var/lib/univention-ldap/notify/transaction.index</filename>, <filename>/var/lib/univention-ldap/listener/listener</filename>, and <filename>/var/lib/univention-ldap/last_id</filename>. (<u:bug>49201</u:bug>)
+								Add <command>univention-translog check --fix</command> command to check (and fix) inconsistency between the files <filename>/var/lib/univention-ldap/notify/transaction</filename>, <filename>/var/lib/univention-ldap/notify/transaction.index</filename>, <filename>/var/lib/univention-ldap/listener/listener</filename>, and <filename>/var/lib/univention-ldap/last_id</filename>. (<u:bug>49201</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
-								Implement command <command>univention-translog prune</command> to prune old transactions from the <filename>transaction</filename> file and database. This can be used to save space. Warning: This procedure is dangerous and should ONLY be executed if ALL Univention Directory Listeners (UDL) in the domain have processed all previous transactions. Otherwise the UDLs will no longer be able to process transactions and affected systems must be re-joined! Systems, which have not been running for some time or are restored from backup, must also be re-joined if their last processed transaction is no longer part contained in the purged translog. (<u:bug>48729</u:bug>)
+								Implement command <command>univention-translog prune</command> to prune old transactions from the <filename>transaction</filename> file and database. This can be used to save space. Warning: This procedure is dangerous and should ONLY be executed if ALL Univention Directory Listeners (UDL) in the domain have processed all previous transactions. Otherwise the <wordasword>UDLs</wordasword> will no longer be able to process transactions and affected systems must be re-joined! Systems, which have not been running for some time or are restored from backup, must also be re-joined if their last processed transaction is no longer part contained in the purged translog. (<u:bug>48729</u:bug>)
 						</simpara></listitem>
 
 				</itemizedlist>
@@ -379,7 +379,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-							It is now possible to specify ldap server controls in some UDM handlers <code>lookup()</code> method. (<u:bug>49638</u:bug>)
+							It is now possible to specify LDAP server controls in some UDM handlers <code>lookup()</code> method. (<u:bug>49638</u:bug>)
 						</simpara></listitem>
 
 
@@ -393,7 +393,7 @@
 
 
 						<listitem><simpara>
-							The <literal>users/user</literal> UDM module now uses the ldap filter "univentionObjectType=users/user" when searching for objects to increase performance. (<u:bug>48390</u:bug>)
+							The <literal>users/user</literal> UDM module now uses the LDAP filter "univentionObjectType=users/user" when searching for objects to increase performance. (<u:bug>48390</u:bug>)
 						</simpara></listitem>
 
 
@@ -408,7 +408,7 @@
 
 
 						<listitem><simpara>
-							Several german translations have been updated. (<u:bug>49359</u:bug>)
+							Several German translations have been updated. (<u:bug>49359</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
@@ -484,10 +484,10 @@
 			<title>System diagnostic module</title>
 			<itemizedlist>
 						<listitem><simpara>
-							Updated sysvolcheck check (<u:bug>46643</u:bug>)
+								Updated <command>sysvolcheck</command> check (<u:bug>46643</u:bug>)
 						</simpara></listitem>
 						<listitem><simpara>
-							Remove the sysvolcheck as it reports irritating false positives for GPOs created via GPMC. (<u:bug>49335</u:bug>)
+							Remove the <command>sysvolcheck</command> as it reports irritating false positives for GPOs created via GPMC. (<u:bug>49335</u:bug>)
 						</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -496,7 +496,7 @@
 			<title>Filesystem quota module</title>
 			<itemizedlist>
 						<listitem><simpara>
-							Previously, when quota policies were set on multiple shares that are located on the same mountpoint, a quota policy that had a value of zero (meaning no quota is enforced) would overwrite smaller quota policies. This behaviour has been changed to always choose the smallest value. (<u:bug>48000</u:bug>)
+							Previously, when quota policies were set on multiple shares that are located on the same mountpoint, a quota policy that had a value of zero (meaning no quota is enforced) would overwrite smaller quota policies. This behavior has been changed to always choose the smallest value. (<u:bug>48000</u:bug>)
 						</simpara></listitem>
 
 			</itemizedlist>
@@ -534,7 +534,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-								It is now possible to specify ldap server controls in the <code>univention.uldap.access.search()</code> methods. (<u:bug>49638</u:bug>)
+								It is now possible to specify LDAP server controls in the <code>univention.uldap.access.search()</code> methods. (<u:bug>49638</u:bug>)
 						</simpara></listitem>
 
 		</itemizedlist>
@@ -560,7 +560,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-							The robustness of the listener for DNS zones has been improved. Certain LDAP DNS objects could cause path injection vulnerabilies causing arbitrary file reading and modifications as well as crashes of the bind service. (<u:bug>41005</u:bug>)
+							The robustness of the listener for DNS zones has been improved. Certain LDAP DNS objects could cause path injection vulnerabilities causing arbitrary file reading and modifications as well as crashes of the bind service. (<u:bug>41005</u:bug>)
 						</simpara></listitem>
 
 			</itemizedlist>
@@ -579,7 +579,7 @@
 
 
 						<listitem><simpara>
-								Add SNI Support to <package>univention-mail-dovecot</package>. Additional fqdns and certificates can be configured with UCRvs <envar>mail/dovecot/ssl/sni/$fqdn/certificate=$path_to_certificate</envar> and <envar>mail/dovecot/ssl/sni/$fqdn/key=$path_to_certificate_key</envar> (<u:bug>48485</u:bug>)
+								Add SNI Support to <package>univention-mail-dovecot</package>. Additional FQDNs and certificates can be configured with &ucsUCRV; <envar>mail/dovecot/ssl/sni/$fqdn/certificate=$path_to_certificate</envar> and <envar>mail/dovecot/ssl/sni/$fqdn/key=$path_to_certificate_key</envar> (<u:bug>48485</u:bug>)
 						</simpara></listitem>
 
 			</itemizedlist>
@@ -664,12 +664,12 @@
 			<title>Nagios</title>
 			<itemizedlist>
 						<listitem><simpara>
-							A nagios check for the translog mdb database maxsize has been added. (<u:bug>48422</u:bug>)
+							A <package>nagios</package> check for the translog <literal>mdb</literal> database <literal>maxsize</literal> has been added. (<u:bug>48422</u:bug>)
 						</simpara></listitem>
 
 
 						<listitem><simpara>
-								A nagios check for the univention-directory-listener mdb database maxsize has been added. To apply it on a DC Slave, DC Backup or Memberserver execute: <command>univention-run-join-scripts --force --run-scripts 30univention-nagios-client.inst</command> (<u:bug>48617</u:bug>)
+								A <package>nagios</package> check for the <command>univention-directory-listener</command> <literal>mdb</literal> database <literal>maxsize</literal> has been added. To apply it on a DC Slave, DC Backup or Memberserver execute: <command>univention-run-join-scripts --force --run-scripts 30univention-nagios-client.inst</command> (<u:bug>48617</u:bug>)
 						</simpara></listitem>
 
 			</itemizedlist>
@@ -740,7 +740,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-							Set correct permissions for lock file on upstream server during sysvol syncronisation. (<u:bug>48917</u:bug>)
+							Set correct permissions for lock file on upstream server during sysvol synchronization. (<u:bug>48917</u:bug>)
 						</simpara></listitem>
 
 
@@ -770,12 +770,12 @@
 
 
 						<listitem><simpara>
-							Remove lockingdb and s4cache during re-join (<u:bug>40773</u:bug>)
+							Remove <literal>lockingdb</literal> and <literal>s4cache</literal> during re-join (<u:bug>40773</u:bug>)
 						</simpara></listitem>
 
 
 						<listitem><simpara>
-							When the S4-Connector starts, it logged the group cache initialization at level INFO. In debugging situations that can lead to a lot of output in connector-s4.log which is hard to scroll. The log volume of the group cache init has been lowered to log level ALL. (<u:bug>48364</u:bug>)
+							When the S4-Connector starts, it logged the group cache initialization at level INFO. In debugging situations that can lead to a lot of output in <filename>connector-s4.log</filename> which is hard to scroll. The log volume of the group cache init has been lowered to log level ALL. (<u:bug>48364</u:bug>)
 						</simpara></listitem>
 
 
@@ -839,16 +839,16 @@
 							The function <code>getRootDnConnection()</code> has been fixed. (<u:bug>49024</u:bug>)
 						</simpara></listitem>
 						<listitem><simpara>
-							The LDAP-ACLs for read access to cn=monitor can now be extended via UCR variables. (<u:bug>49387</u:bug>)
+							The LDAP-ACLs for read access to <literal>cn=monitor</literal> can now be extended via UCR variables. (<u:bug>49387</u:bug>)
 						</simpara></listitem>
 						<listitem><simpara>
-							Fix escaping of ldap DN, filters and shell arguments (<u:bug>46323</u:bug>)
+							Fix escaping of LDAP DN, filters and shell arguments (<u:bug>46323</u:bug>)
 						</simpara></listitem>
 
 
 
 						<listitem><simpara>
-								The creation of a default ldap server policy is now configurable via the UCR variable <envar>ldap/create-ldap-server-policy</envar>. (<u:bug>49386</u:bug>)
+								The creation of a default LDAP server policy is now configurable via the UCR variable <envar>ldap/create-ldap-server-policy</envar>. (<u:bug>49386</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
@@ -857,12 +857,12 @@
 
 
 						<listitem><simpara>
-								A symlink and code execution vulnerabiliy has been fixed in <package>univention.lib.listenerSharePath</package>. (<u:bug>44054</u:bug>)
+								A symlink and code execution vulnerability has been fixed in <package>univention.lib.listenerSharePath</package>. (<u:bug>44054</u:bug>)
 						</simpara></listitem>
 
 
 						<listitem><simpara>
-							Python3 compatibility for <package>univention.lib.admember</package> has been enhanced. (<u:bug>49176</u:bug>)
+							<literal>Python3</literal> compatibility for <package>univention.lib.admember</package> has been enhanced. (<u:bug>49176</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
@@ -879,7 +879,7 @@
 
 
 						<listitem><simpara>
-							Multiple rsyslog remote servers can now be specified in the UCR variable <envar>syslog/remote</envar>. (<u:bug>48508</u:bug>)
+							Multiple <command>rsyslog</command> remote servers can now be specified in the UCR variable <envar>syslog/remote</envar>. (<u:bug>48508</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
@@ -892,7 +892,7 @@
 
 
 						<listitem><simpara>
-							Make the systemd service timeout for <command>mysqld</command> configurable via the ucr variable <envar>mariadb/startup/timeout</envar>. (<u:bug>46901</u:bug>)
+							Make the <command>systemd</command> service timeout for <command>mysqld</command> configurable via the ucr variable <envar>mariadb/startup/timeout</envar>. (<u:bug>46901</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
@@ -934,7 +934,7 @@
 						</simpara></listitem>
 
 						<listitem><simpara>
-							Default containers for domain controller computer objects can now be configured. During the upgrade every default container for computer objects are set as default container for domaincontroller objects except cn=computers and cn=memberservers,cn=computer. (<u:bug>46919</u:bug>)
+								Default containers for domain controller computer objects can now be configured. During the upgrade every default container for computer objects are set as default container for domaincontroller objects except <literal>cn=computers</literal> and <literal>cn=memberservers,cn=computer</literal>. (<u:bug>46919</u:bug>)
 						</simpara></listitem>
 
 						<listitem><simpara>
