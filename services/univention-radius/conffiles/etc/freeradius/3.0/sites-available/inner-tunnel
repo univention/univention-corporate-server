@@ -33,7 +33,9 @@ server inner-tunnel {
 #
 listen {
        ipaddr = 127.0.0.1
-       port = 18120
+@!@
+print('\tport = %s' % (configRegistry.get('freeradius/conf/inner-tunnel-port', '18120'), ))
+@!@
        type = auth
 }
 

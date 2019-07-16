@@ -22,6 +22,12 @@ Description[en]=The accounting port the server listens on, e.g. 1813. If 0 the p
 Type=str
 Categories=service-radius
 
+[freeradius/conf/inner-tunnel-port]
+Description[de]=Der Port für den inneren RADIUS-Tunnel, nur auf localhost. (Standard: 18120)
+Description[en]=The port for the inner RADIUS tunnel, only on localhost. (Default: 18120)
+Type=str
+Categories=service-radius
+
 [radius/mac/whitelisting]
 Description[de]=Ob die Station ID (MAC Adresse) von RADIUS-Clients auch auf Zugriffserlaubnis geprüft werden soll.
 Description[en]=Whether to check the station ID (MAC address) of RADIUS clients for access too.

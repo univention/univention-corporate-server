@@ -220,7 +220,9 @@ print '\tport = %s' % (configRegistry.get('freeradius/conf/accountingport', '0')
 listen {
 	type = auth
 	ipv6addr = ::	# any.  ::1 == localhost
-	port = 0
+@!@
+print('\tport = %s' % (configRegistry.get('freeradius/conf/port', '0'), ))
+@!@
 #	interface = eth0
 #	clients = per_socket_clients
 	limit {
@@ -232,7 +234,9 @@ listen {
 
 listen {
 	ipv6addr = ::
-	port = 0
+@!@
+print('\tport = %s' % (configRegistry.get('freeradius/conf/accountingport', '0'), ))
+@!@
 	type = acct
 #	interface = eth0
 #	clients = per_socket_clients
