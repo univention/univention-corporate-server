@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [0, 1]
+scope: ucs_4.4-0-errata4.4-1
+src: pam
+fix: 1.1.8-3.6A~4.4.0.201907171120
+desc: |
+ This update addresses the following issue(s):
+ * pam_unix now strips passwords at 512 characters. This prevents
+   denial of service attacks when authenticating with very long passwords
+   when pam_unix would hang in the hashsum generation of the password.
+   https://github.com/linux-pam/linux-pam/issues/118
+bug: [49740]
