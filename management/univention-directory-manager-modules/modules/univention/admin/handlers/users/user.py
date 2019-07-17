@@ -90,6 +90,12 @@ options = {
 		editable=True,
 		objectClasses=['pkiUser'],
 	),
+	'retricted-password': univention.admin.option(
+		short_description=_('Do not write unsafe password hashes'),
+		default=False,
+		editable=True,
+		objectClasses=[],
+	),
 }
 property_descriptions = {
 	'username': univention.admin.property(
@@ -1791,6 +1797,8 @@ class object(univention.admin.handlers.simpleLdap):
 				raise univention.admin.uexceptions.pwQuality(str(e).replace('W?rterbucheintrag', 'Wörterbucheintrag').replace('enth?lt', 'enthält'))
 
 	def _modlist_samba_password(self, ml, pwhistoryPolicy):
+		if 'retricted-password' in self.options:
+			return ml
 		if self.exists() and not self.hasChanged('password'):
 			return ml
 
@@ -1808,7 +1816,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.exists() and not self.hasChanged('password'):
 			return ml
 
-		krb_keys = univention.admin.password.krb5_asn1(self.krb5_principal(), self['password'])
+		krb_keys = univention.admin.password.krb5_asn1(self.krb5_principal(), self['password'], restrict_hashes='retricted-password' in self.options)
 		krb_key_version = str(int(self.oldattr.get('krb5KeyVersionNumber', ['0'])[0]) + 1)
 		ml.append(('krb5Key', self.oldattr.get('krb5Key', []), krb_keys))
 		ml.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version))
