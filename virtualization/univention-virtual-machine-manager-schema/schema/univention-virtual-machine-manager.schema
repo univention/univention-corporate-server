@@ -187,6 +187,13 @@ attributetype ( uvmmProfileAttributetype:20 NAME 'univentionVirtualMachineProfil
 	SUBSTR caseIgnoreIA5SubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
 
+attributetype ( uvmmProfileAttributetype:21 NAME 'univentionVirtualMachineProfileCPUModel'
+	DESC 'CPU model for the virtual machine'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
+
 objectclass ( uvmmProfileObjectClass:1 NAME 'univentionVirtualMachineProfile'
 	DESC 'UCS Virtual Machine profile objectclass'
 	STRUCTURAL
@@ -194,6 +201,7 @@ objectclass ( uvmmProfileObjectClass:1 NAME 'univentionVirtualMachineProfile'
 	MAY ( univentionVirtualMachineProfileNamePrefix
 		$ univentionVirtualMachineProfileArch
 		$ univentionVirtualMachineProfileCPUs
+		$ univentionVirtualMachineProfileCPUModel
 		$ univentionVirtualMachineProfileVirtTech
 		$ univentionVirtualMachineProfileRAM
 		$ univentionVirtualMachineProfileVNC

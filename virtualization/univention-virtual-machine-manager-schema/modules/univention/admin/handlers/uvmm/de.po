@@ -37,6 +37,14 @@ msgstr "Festplatte"
 msgid "CDROM drive"
 msgstr "CDROM-Laufwerk"
 
+#: modules/univention/admin/handlers/uvmm/profile.py:169
+msgid "CPU model"
+msgstr "CPU Modell"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:170
+msgid "CPU model name from e.g. `virsh cpu-models x86_64`"
+msgstr "CPU Modellname z.B. von `virsh cpu-models x86_64`"
+
 #: modules/univention/admin/handlers/uvmm/profile.py:62
 msgid "Network"
 msgstr "Netzwerk"

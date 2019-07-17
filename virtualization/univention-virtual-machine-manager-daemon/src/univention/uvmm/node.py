@@ -546,6 +546,7 @@ class Domain(PersistentCached):
 		self.pd.hyperv = domain_tree.find('features/hyperv/relaxed') is not None
 		self.xml2obj_boot(domain_tree)
 		self.xml2obj_clock(domain_tree)
+		self.pd.cpu_model = domain_tree.findtext('cpu/model', namespaces=XMLNS)
 
 		devices = domain_tree.find('devices', namespaces=XMLNS)
 		self.xml2obj_disks(devices)
@@ -1523,6 +1524,14 @@ def _domain_edit(node, dom_stat, xml):
 		_update_xml(domain, 'currentMemory', '%d' % (dom_stat.maxMem >> 10))  # KiB
 	# /domain/vcpu
 	_update_xml(domain, 'vcpu', '%d' % dom_stat.vcpus)
+	# /domain/cpu/model
+	if dom_stat.cpu_model:
+		cpu = domain.find('cpu', namespaces=XMLNS)
+		if cpu is None:
+			cpu = ET.SubElement(domain, 'cpu', mode='custom', match='exact')
+		_update_xml(cpu, 'model', dom_stat.cpu_model, fallback='allow')
+	elif configRegistry.get('uvmm/vm/cpu/host-model') != 'missing':
+		_update_xml(domain, 'cpu', None)
 
 	# /domain/features
 	domain_features = _update_xml(domain, 'features', '')

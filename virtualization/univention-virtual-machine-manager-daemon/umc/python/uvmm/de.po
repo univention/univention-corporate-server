@@ -32,10 +32,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: univention-management-console-module-uvmm 8.0.1-5\n"
+"Project-Id-Version: univention-management-console-module-uvmm 8.0.1-7\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-02-02 13:33+0100\n"
-"PO-Revision-Date: 2019-03-07 15:53+0100\n"
+"POT-Creation-Date: 2019-07-23 08:32+0200\n"
+"PO-Revision-Date: 2019-07-23 08:44+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "Language: de\n"
@@ -43,99 +43,100 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/uvmm/cloud.py:84
+#: umc/python/uvmm/cloud.py:74
 msgid "Cloud connection"
 msgstr "Cloud-Verbindung"
 
-#: umc/python/uvmm/domains.py:404
+#: umc/python/uvmm/domains.py:371
 msgid "Could not determine architecture for domain"
 msgstr "Die Architektur der Instanz konnte nicht ermittelt werden"
 
-#: umc/python/uvmm/domains.py:461
+#: umc/python/uvmm/domains.py:422
 msgid "Could not determine the keyboard layout for the VNC access"
 msgstr ""
 "Das Tastaturlayout für den VNC Direktzugriff konnte nicht ermittelt werden"
 
-#: umc/python/uvmm/domains.py:445
+#: umc/python/uvmm/domains.py:408
 msgid "Could not determine the list of boot devices for domain"
 msgstr "Die Liste der Boot-Devices der Instanz konnte nicht ermittelt werden"
 
-#: umc/python/uvmm/storages.py:256
+#: umc/python/uvmm/storages.py:235
 #, python-format
 msgid "Could not retrieve details for domain %s"
 msgstr "Die Details zur virtuellen Instanz %s konnten nicht abgerufen werden"
 
-#: umc/python/uvmm/storages.py:238
+#: umc/python/uvmm/storages.py:217
 msgid "Failed to check if the drive is used by any other virtual instance"
 msgstr ""
 "Die Prüfung ob das Laufwerk von einer anderen virtuellen Instanz verwendet "
 "wird ist fehlgeschlagen."
 
-#: umc/python/uvmm/domains.py:416
+#: umc/python/uvmm/domains.py:381
 #, python-format
 msgid "Failed to retrieve details for the server %(nodeURI)s"
 msgstr ""
 "Das Abrufen der Details zum physikalischen Server %(nodeURI)s ist "
 "fehlgeschlagen"
 
-#: umc/python/uvmm/profiles.py:72
+#: umc/python/uvmm/profiles.py:55
 msgid "Full virtualization (KVM)"
 msgstr "Voll-Virtualisierung (KVM)"
 
-#: umc/python/uvmm/domains.py:543
+#: umc/python/uvmm/domains.py:487
 #, python-format
 msgid "Invalid domain state: %s"
 msgstr "Ungültiger Domain Status: %s"
 
-#: umc/python/uvmm/uvmmd.py:59
+#: umc/python/uvmm/uvmmd.py:61
 msgid "More detailed information can be found in the following logfiles:"
 msgstr ""
 "Weitere Informationen können in den folgenden Protokolldateien gefunden "
 "werden:"
 
-#: umc/python/uvmm/nodes.py:98 umc/python/uvmm/__init__.py:144
+#: umc/python/uvmm/nodes.py:80 umc/python/uvmm/__init__.py:119
 msgid "Physical servers"
 msgstr "Physikalische Server"
 
-#: umc/python/uvmm/uvmmd.py:57
+#: umc/python/uvmm/uvmmd.py:59
 msgid ""
 "The connection to the univention-virtual-machine-manager-daemon service "
 "failed."
-msgstr "Die Verbindung zum univention-virtual-machine-manager-daemon-Dienst ist fehlgeschlagen."
+msgstr ""
+"Die Verbindung zum univention-virtual-machine-manager-daemon-Dienst ist "
+"fehlgeschlagen."
 
-#: umc/python/uvmm/uvmmd.py:66
+#: umc/python/uvmm/uvmmd.py:68
 #, python-format
 msgid ""
 "The connection to the univention-virtual-machine-manager-daemon service "
 "failed: %s"
-msgstr "Die Verbindung zum univention-virtual-machine-manager-daemon-Dienst ist fehlgeschlagen: %s"
+msgstr ""
+"Die Verbindung zum univention-virtual-machine-manager-daemon-Dienst ist "
+"fehlgeschlagen: %s"
 
-#: umc/python/uvmm/uvmmd.py:85
+#: umc/python/uvmm/uvmmd.py:89
 msgid "The given UVMM command is not known"
 msgstr "Der gegebene UVMM Befehl ist unbekannt"
 
-#: umc/python/uvmm/uvmmd.py:58
+#: umc/python/uvmm/uvmmd.py:60
 msgid ""
 "This might be a temporary problem. Please wait some minutes for the "
 "connection to reestablish or restart the UVMM service."
-msgstr "Dies kann ein temporäres Problem sein. Bitte warten Sie einige Minuten damit die Verbindung wiederhergestellt wird oder starten Sie den UVMM-Dienst neu."
+msgstr ""
+"Dies kann ein temporäres Problem sein. Bitte warten Sie einige Minuten damit "
+"die Verbindung wiederhergestellt wird oder starten Sie den UVMM-Dienst neu."
 
-#: umc/python/uvmm/domains.py:420
+#: umc/python/uvmm/domains.py:383
 #, python-format
 msgid "Unknown physical server %(nodeURI)s"
 msgstr "Unbekannter physikalischer Server %(nodeURI)s"
 
-#: umc/python/uvmm/profiles.py:163
-#: umc/python/uvmm/domains.py:388
+#: umc/python/uvmm/domains.py:356 umc/python/uvmm/profiles.py:120
 #, python-format
 msgid "Unknown profile %s"
 msgstr "Unbekanntes Profil %s"
 
-#: umc/python/uvmm/__init__.py:149
-msgid "Unknown query type"
-msgstr "Unbekannter Anfragetyp"
-
-#: umc/python/uvmm/domains.py:436
+#: umc/python/uvmm/domains.py:398
 msgid "vcpus must be a number"
 msgstr "vcpus muß numerisch sein"
 
@@ -153,3 +154,6 @@ msgstr "vcpus muß numerisch sein"
 #~ msgstr ""
 #~ "Der angegebene Speicherbereich konnte nicht gefunden werden oder ist kein "
 #~ "Verzeichnis"
+
+#~ msgid "Unknown query type"
+#~ msgstr "Unbekannter Anfragetyp"

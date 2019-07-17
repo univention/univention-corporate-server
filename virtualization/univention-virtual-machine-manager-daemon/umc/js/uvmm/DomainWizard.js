@@ -71,6 +71,7 @@ define([
 			this.getWidget('maxMem').set('value', types.parseCapacity(this._profile.ram || '4 MiB'));
 			this.getWidget('vcpus').set('value', this._profile.cpus);
 			this.getWidget('vnc').set('value', this._profile.vnc);
+			this.getWidget('cpu_model').set('value', this._profile.cpu_model);
 
 			// update page header
 			this._pages.general.set('headerText', _('Create a virtual machine (profile: %s)', this._profile.name));
@@ -151,6 +152,10 @@ define([
 						name: 'vcpus',
 						type: ComboBox,
 						label: _('Number of CPUs')
+					}, {
+						name: 'cpu_model',
+						type: TextBox,
+						label: _('CPU model')
 					}, {
 						name: 'vnc',
 						type: CheckBox,

@@ -586,6 +586,7 @@ class Data_Domain(object):
 		self.maxMem = 0L
 		self.curMem = 0L
 		self.vcpus = 1
+		self.cpu_model = None
 		self.cputime = [0.0, 0.0, 0.0]  # percentage in last 10s 60s 5m
 		self.interfaces = []  # node.Interface
 		self.disks = []  # node.Disk

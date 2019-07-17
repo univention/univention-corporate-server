@@ -142,6 +142,11 @@ property_descriptions = {
 		long_description=_('Number of virtual CPUs'),
 		syntax=udm_syntax.integer,
 	),
+	'cpu_model': univention.admin.property(
+		short_description=_('CPU model'),
+		long_description=_('CPU model name from e.g. `virsh cpu-models x86_64`'),
+		syntax=udm_syntax.string,
+	),
 	'ram': univention.admin.property(
 		short_description=_('Memory'),
 		long_description=_('Amount of memory'),
@@ -235,6 +240,7 @@ layout = [
 		Group(_('Virtual hardware'), layout=[
 			"arch",
 			"cpus",
+			"cpu_model",
 			"ram",
 			"diskspace",
 			"drivercache",
@@ -277,6 +283,7 @@ mapping.register('name', 'cn', None, udm_mapping.ListToString)
 mapping.register('name_prefix', 'univentionVirtualMachineProfileNamePrefix', None, udm_mapping.ListToString)
 mapping.register('arch', 'univentionVirtualMachineProfileArch', None, udm_mapping.ListToString)
 mapping.register('cpus', 'univentionVirtualMachineProfileCPUs', None, udm_mapping.ListToString)
+mapping.register('cpu_model', 'univentionVirtualMachineProfileCPUModel', None, udm_mapping.ListToString)
 mapping.register('virttech', 'univentionVirtualMachineProfileVirtTech', None, udm_mapping.ListToString)
 mapping.register('ram', 'univentionVirtualMachineProfileRAM', None, udm_mapping.ListToString)
 mapping.register('diskspace', 'univentionVirtualMachineProfileDiskspace', None, udm_mapping.ListToString)

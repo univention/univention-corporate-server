@@ -194,6 +194,10 @@ define([
 					type: ComboBox,
 					label: _('Number of CPUs')
 				}, {
+					name: 'cpu_model',
+					type: TextBox,
+					label: _('CPU model')
+				}, {
 					name: 'maxMem',
 					type: MemoryTextBox,
 					required: true,
@@ -248,6 +252,7 @@ define([
 					layout: [
 						'arch',
 						'vcpus',
+						'cpu_model',
 						'maxMem',
 						'rtc_offset',
 						'boot_hvm',

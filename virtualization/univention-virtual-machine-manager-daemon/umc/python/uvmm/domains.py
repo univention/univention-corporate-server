@@ -397,6 +397,7 @@ class Domains(object):
 		except ValueError:
 			raise UMC_Error(_('vcpus must be a number'))
 		domain_info.hyperv = domain.get('hyperv', True)
+		domain_info.cpu_model = domain.get('cpu_model')
 
 		# boot devices
 		if 'boot' in domain:
