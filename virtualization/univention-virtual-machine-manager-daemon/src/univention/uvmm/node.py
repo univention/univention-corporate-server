@@ -335,6 +335,8 @@ class Domain(PersistentCached):
 		if self.pd.name is None:
 			self.pd.name = domain.name()
 
+		self.pd.autostart = bool(domain.autostart())
+
 		info = domain.info()
 		self.pd.state, maxMem, curMem, self.pd.vcpus, runtime = info
 		self.pd.maxMem = long(maxMem) << 10  # KiB
@@ -1841,6 +1843,8 @@ def domain_define(uri, domain):
 		logger.debug('XML DUMP: %s' % new_xml.replace('\n', ' '))
 		dom2 = conn.defineXML(new_xml)
 		domain.uuid = dom2.UUIDString()
+		if domain.autostart is not None:
+			dom2.setAutostart(domain.autostart)
 		_domain_backup(dom2, save=False)
 	except libvirt.libvirtError as ex:
 		logger.error(ex)

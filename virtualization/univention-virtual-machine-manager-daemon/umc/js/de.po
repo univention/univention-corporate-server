@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machine-manager-daemon 8.0.1-7\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-07-23 08:46+0200\n"
+"POT-Creation-Date: 2019-07-26 15:58+0200\n"
 "PO-Revision-Date: 2019-07-23 08:40+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -259,6 +259,10 @@ msgstr ""
 "Jedes Festplatten-Image liegt einem so genannten Speicherbereich. Dies kann "
 "ein lokales Verzeichnis, eine Festplatte, eine LVM-Partition oder eine "
 "Freigabe (beispielsweise eingebunden über iSCSI, NFS oder CIFS) sein. "
+
+#: umc/js/uvmm/DomainPage.js:224 umc/js/uvmm/DomainWizard.js:164
+msgid "Always start VM with host"
+msgstr "VM immer mit Host starten"
 
 #: umc/js/uvmm/TargetHostGrid.js:104 umc/js/uvmm/TargetHostGrid.js:205
 #: umc/js/uvmm/SnapshotGrid.js:181

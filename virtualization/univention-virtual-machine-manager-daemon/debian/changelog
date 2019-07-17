@@ -1,6 +1,7 @@
 univention-virtual-machine-manager-daemon (8.0.1-8) unstable; urgency=low
 
   * Bug #49695: make CPU model configurable
+  * Bug #28771: Add configuration for domain autostart
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 23 Jul 2019 17:24:23 +0200
 

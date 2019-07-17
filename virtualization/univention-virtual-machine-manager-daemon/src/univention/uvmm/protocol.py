@@ -599,6 +599,7 @@ class Data_Domain(object):
 		self.error = {}
 		self.migration = {'msg': ''}
 		self.hyperv = True  # True|False
+		self.autostart = None
 
 
 class Data_Node(object):

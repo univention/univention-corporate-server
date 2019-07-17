@@ -391,6 +391,8 @@ class Domains(object):
 		domain_info.os_type = 'hvm'
 		domain_info.maxMem = domain['maxMem']
 
+		domain_info.autostart = domain['autostart']
+
 		# CPUs
 		try:
 			domain_info.vcpus = int(domain['vcpus'])

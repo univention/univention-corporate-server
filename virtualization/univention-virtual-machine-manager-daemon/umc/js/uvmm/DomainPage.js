@@ -218,6 +218,10 @@ define([
 					label: _('RTC reference'),
 					staticValues: types.rtcOffset
 				}, {
+					name: 'autostart',
+					label: _('Always start VM with host'),
+					type: CheckBox
+				}, {
 					name: 'vnc',
 					type: CheckBox,
 					label: _('Direct access (VNC)')
@@ -256,7 +260,8 @@ define([
 						'maxMem',
 						'rtc_offset',
 						'boot_hvm',
-						'hyperv'
+						'hyperv',
+						'autostart'
 					]
 				}, {
 					label: _('Remote access'),

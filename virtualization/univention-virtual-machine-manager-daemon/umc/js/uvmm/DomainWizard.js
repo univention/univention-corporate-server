@@ -157,6 +157,10 @@ define([
 						type: TextBox,
 						label: _('CPU model')
 					}, {
+						name: 'autostart',
+						type: CheckBox,
+						label: _('Always start VM with host')
+					}, {
 						name: 'vnc',
 						type: CheckBox,
 						label: _('Direct access (VNC)')
