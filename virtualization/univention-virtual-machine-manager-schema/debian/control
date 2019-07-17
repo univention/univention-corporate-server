@@ -3,9 +3,8 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.6.2
-Build-Depends: debhelper (>= 7.0.50~),
+Build-Depends: debhelper (>= 9),
  univention-config-dev,
- python-all-dev,
  python-support,
  ucslint-univention
 
@@ -32,7 +31,6 @@ Depends: ${python:Depends}, ${misc:Depends},
  python-univention
 Suggests: univention-virtual-machine-manager-schema
 Provides: ${python:Provides},
- python2.4-univention-directory-manager-opendvdi
 Description: UCS Virtual Machine Manager UDM extensions
  This package contains the UCS Directory Manager (UDM) extensions for UVMM (UCS
  Virtual Machine Manager).
