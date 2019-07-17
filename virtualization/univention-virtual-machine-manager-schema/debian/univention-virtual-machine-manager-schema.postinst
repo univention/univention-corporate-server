@@ -1,8 +1,5 @@
 #!/bin/sh
 #
-# Univention OpenDVDI schema
-#  postinst script
-#
 # Copyright 2009-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -32,14 +29,7 @@
 
 #DEBHELPER#
 
-eval "$(univention-config-registry shell)"
-
-if [ -x /etc/init.d/slapd ]; then
-	invoke-rc.d slapd crestart
-fi
-
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+[ -r /etc/ldap.secret ] &&
 	/usr/lib/univention-install/40univention-virtual-machine-manager-schema.inst || true
-fi
 
 exit 0

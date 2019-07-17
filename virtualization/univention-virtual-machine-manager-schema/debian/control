@@ -11,7 +11,7 @@ Build-Depends: debhelper (>= 9),
 Package: univention-virtual-machine-manager-schema
 Architecture: all
 Depends: ${python:Depends}, ${misc:Depends},
- shell-univention-lib (>= 1.0.39),
+ shell-univention-lib (>= 3.0.12),
  univention-directory-manager-tools (>> 7.0.147),
  python-univention-directory-manager-uvmm (= ${source:Version})
 Enhances: univention-ldap-config
