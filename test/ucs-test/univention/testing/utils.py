@@ -48,7 +48,7 @@ try:
 except ImportError:
 	access = None
 try:
-	from typing import Any, Callable, Tuple, Dict, Type, Union  # noqa F401
+	from typing import Any, Callable, Tuple, Dict, List, Type, Union  # noqa F401
 except ImportError:
 	pass
 
@@ -176,7 +176,32 @@ def retry_on_error(func, exceptions=(Exception,), retry_count=20, delay=10):
 
 
 def verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=True, retry_count=20, delay=10):
-	# type: (str, Dict[str, str], bool, bool, int, float) -> None
+	# type: (str, Dict[str, List[str]], bool, bool, int, float) -> None
+	"""
+	Check (non-)existence of LDAP object at `baseDn` and its attributes.
+
+	:param str baseDn: DN of LDAP object
+	:param expected_attr: dict with attribute name -> value lists
+	:type expected_attr: dict(str, list(str))
+	:param bool strict: raise :py:exc:`LDAPObjectUnexpectedValue` if LDAP
+		object has values that are not in `expected_attr`
+	:param bool should_exist: if `True` and there is no object in LDAP at
+		`baseDn`, raise :py:exc:`LDAPObjectNotFound`
+	:param int retry_count: number of times check is rerun if one of
+		:py:exc:`LDAPUnexpectedObjectFound`, :py:exc:`LDAPObjectNotFound`,
+		:py:exc:`LDAPObjectValueMissing` happend
+	:param int delay: time in seconds to wait before retrying
+	:return: None
+	:rtype: None
+	:raises LDAPObjectNotFound: if `should_exist`=True and no object is found
+		in LDAP at `baseDn`
+	:raises LDAPUnexpectedObjectFound: if `should_exist`=False and an object
+		is found in LDAP at `baseDn`
+	:raises LDAPObjectValueMissing: if not all attributes (keys) in
+		`expected_attr` exist (or are empty) in found LDAP object
+	:raises LDAPObjectUnexpectedValue: if `strict`=True and LDAP object has
+		values that are not in `expected_attr`
+	"""
 	return retry_on_error(
 		functools.partial(__verify_ldap_object, baseDn, expected_attr, strict, should_exist),
 		(LDAPUnexpectedObjectFound, LDAPObjectNotFound, LDAPObjectValueMissing),
