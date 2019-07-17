@@ -10,4 +10,4 @@ desc: |
    denial of service attacks when authenticating with very long passwords
    when pam_unix would hang in the hashsum generation of the password.
    https://github.com/linux-pam/linux-pam/issues/118
-bug: [49740]
+bug: [49741]
