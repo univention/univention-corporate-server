@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [1]
+scope: ucs_4.4-0-errata4.4-1
+src: univention-directory-listener
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * An errata update caused the App Tab in the Users UMC module to not be
+   visible. This update resyncs the listener so that the App Tab is visible
+   again.
+bug: [49832]
