@@ -3,7 +3,7 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-directory-listener
-fix: 
+fix: 13.0.2-6A~4.4.0.201907181703
 desc: |
  This update addresses the following issue(s):
  * An errata update caused the App Tab in the Users UMC module to not be
