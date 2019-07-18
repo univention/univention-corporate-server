@@ -1,3 +1,10 @@
+univention-directory-listener (13.0.2-6) unstable; urgency=medium
+
+  * Bug #49832: resync the listener in postinst so the app tab gets shown
+    again
+
+ -- Jannik Ahlers <ahlers@univention.de>  Thu, 18 Jul 2019 15:42:16 +0200
+
 univention-directory-listener (13.0.2-5) unstable; urgency=medium
 
   * Bug #49228: only update object if attributes differ
