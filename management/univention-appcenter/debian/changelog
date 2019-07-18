@@ -1,3 +1,10 @@
+univention-appcenter (8.0.11-44) unstable; urgency=medium
+
+  * Bug #49284: Replace old app badges icons in the App Center with new
+    versions
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 18 Jul 2019 10:29:02 +0200
+
 univention-appcenter (8.0.11-43) unstable; urgency=medium
 
   * Bug #49770: Rename recommendations.json to suggestions.json
