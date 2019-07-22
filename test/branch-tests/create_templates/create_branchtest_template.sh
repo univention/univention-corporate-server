@@ -101,7 +101,7 @@ version=\${src_file%%_*}
 
 # extract the harddrive from the base appliance and copy
 cd $TEMPLATE_BASE_BRANCH
-tar --get -f \$src \${version}_generic-unsafe-0.qcow2
+tar --extract --wildcards --file=\$src '*_generic-unsafe-0.qcow2'
 mv \${version}_generic-unsafe-0.qcow2 \${version}_branchtest-0.qcow2
 
 # create xml  definition for template
