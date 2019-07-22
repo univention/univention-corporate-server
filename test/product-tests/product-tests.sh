@@ -9,18 +9,16 @@ if command -v git >/dev/null 2>&1
 then
 	head="$(git describe --tags --match 'release-[1-9].[0-9]-[0-9]')" && release="${head:8:5}"
 fi
-[ -n "${release:-}" ] || release='4.4-0'
+[ -n "${release:-}" ] || release='4.4-1'
 
-# FIXME
-release='4.4-1'
+# AMI: Univention Corporate Server (UCS) 4.4 (official image) rev. 2 - ami-00667047af9f980da
+export CURRENT_AMI=ami-00667047af9f980da
 
-# AMI: Univention Corporate Server (UCS) 4.4 (official image) rev. 1 - ami-04e4ed4e7bb6e8610
-export CURRENT_AMI=ami-04e4ed4e7bb6e8610
 # AMI: Univention Corporate Server (UCS) 4.3 (official image) rev. 5 - ami-08b2615e56edd43fa
 export OLD_AMI=ami-08b2615e56edd43fa
 
 export KVM_TEMPLATE="${KVM_TEMPLATE:=generic-unsafe}"
-export KVM_UCSVERSION="${KVM_UCSVERSION:=4.4-0}"
+export KVM_UCSVERSION="${KVM_UCSVERSION:=$release}"
 export KVM_OLDUCSVERSION="${KVM_OLDUCSVERSION:=4.3-4}"
 export RELEASE_UPDATE="${release_update:=public}"
 export ERRATA_UPDATE="${errata_update:=testing}"
