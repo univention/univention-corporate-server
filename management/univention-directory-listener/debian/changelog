@@ -1,3 +1,9 @@
+univention-directory-listener (13.0.2-7) unstable; urgency=medium
+
+  * Bug #49832: added python-support to build deps
+
+ -- Felix Botner <botner@univention.de>  Mon, 22 Jul 2019 13:47:44 +0200
+
 univention-directory-listener (13.0.2-6) unstable; urgency=medium
 
   * Bug #49832: resync the listener in postinst so the app tab gets shown
