@@ -1151,9 +1151,8 @@ ucr unset umc/modules/setup/network/disabled/by
 	<section id="computers:hardware:sysinfo">
 		<title>Collection of list of supported hardware</title>
 		<para>
-			Univention maintains a list of the hardware <biblioref linkend="hardwarelist"/>
-			which is compatible with UCS and in use by customers. The information processed
-			for this are gathered by the UMC module <guimenu>System information</guimenu>.
+			Univention collects information about hardware which is compatible with UCS and in use by customers.
+			The information processed for this is gathered by the UMC module <guimenu>System information</guimenu>.
 		</para>
 		<para>
 			All files are forwarded to Univention anonymously and only transferred once

@@ -1132,10 +1132,8 @@ ucr unset umc/modules/setup/network/disabled/by
 
         <section id="computers:hardware:sysinfo"><title>Erfassung von unterstützter Hardware</title>
             <para>
-                Univention pflegt eine Übersicht von Hardware <biblioref linkend="hardwarelist"/>, die
-                mit UCS kompatibel ist und bei Kunden im Einsatz ist. Die hierbei
-                verarbeiteten Informationen werden über das UMC-Modul
-                <guimenu>Systeminformationen</guimenu> erfasst.
+                Univention erfasst Informationen über Hardware, die mit UCS kompatibel und bei Kunden im Einsatz ist.
+                Die hierbei verarbeiteten Informationen werden über das UMC-Modul <guimenu>Systeminformationen</guimenu> erfasst.
             </para>
             <para>
                 Alle Daten werden dabei anonymisiert an Univention weitergeleitet und erst nach
