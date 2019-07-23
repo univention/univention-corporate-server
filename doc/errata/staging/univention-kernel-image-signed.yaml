@@ -3,7 +3,7 @@ release: "4.4"
 version: [0, 1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-kernel-image-signed
-fix: 5.0.0-5A~4.4.0.2019072310033
+fix: 5.0.0-5A~4.4.0.201907231003
 desc: |
  This update addresses the following issue:
  * Broken permission and object lifetime handling for PTRACE_TRACEME
