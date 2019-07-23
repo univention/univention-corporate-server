@@ -68,9 +68,11 @@ ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "jenkins@${BUILD
 # replace non deb lines
 sed -i '/^deb /!d' utils/apt-get-branch-repo.list
 
+release=4.4-1
 
-export KVM_TEMPLATE="${KVM_TEMPLATE:=generic-unsafe}"
-export UCS_VERSION="${UCS_VERSION:=4.4-1}"
+export TEMPLATE_VERSION="${TEMPLATE_VERSION:=$release}"
+export TEMPLATE_NAME="${TEMPLATE_NAME:=generic-unsafe}"
+export UCS_VERSION="${UCS_VERSION:=$release}"
 export TARGET_VERSION="${UCS_VERSION}"
 export RELEASE_UPDATE="${release_update:=public}"
 export ERRATA_UPDATE="${errata_update:=testing}"
