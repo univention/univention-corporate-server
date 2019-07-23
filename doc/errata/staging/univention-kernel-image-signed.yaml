@@ -2,13 +2,13 @@ product: ucs
 release: "4.3"
 version: [4]
 scope: ucs_4.3-0-errata4.3-4
-src: linux
-fix: 4.9.168-1+deb9u4
+src: univention-kernel-image-signed
+fix: 4.0.0-15A~4.3.0.201907230943
 desc: |
  This update addresses the following issue:
  * Broken permission and object lifetime handling for PTRACE_TRACEME
    (CVE-2019-13272)
-note: This is the 1st of two related updates.
+note: This is the 2nd of two related updates.
 bug: [49892]
 cve:
 - CVE-2019-13272
