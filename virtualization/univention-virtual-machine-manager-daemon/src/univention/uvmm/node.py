@@ -75,40 +75,40 @@ STATES = ('NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHE
 
 
 class Description(object):
-    __slots__ = ('desc', 'args')
+	__slots__ = ('desc', 'args')
 
-    def __init__(self, *args, **kwargs):
-        self.desc = kwargs.get('desc')
-        self.args = args
+	def __init__(self, *args, **kwargs):
+		self.desc = kwargs.get('desc')
+		self.args = args
 
-    def __str__(self):  # type: () -> str
-        return self.desc
+	def __str__(self):  # type: () -> str
+		return self.desc
 
-    def __getitem__(self, item):  # type: (int) -> Union[str, Description]
-        try:
-            data = self.args[item]
-        except IndexError:
-            return self.__class__(desc=str(item))
+	def __getitem__(self, item):  # type: (int) -> Union[str, Description]
+		try:
+			data = self.args[item]
+		except IndexError:
+			return self.__class__(desc=str(item))
 
-        if isinstance(data, str):
-            return self.__class__(desc=data)
-        elif isinstance(data, (list, tuple)):
-            desc, args = data
-            return self.__class__(*args, desc=desc)
+		if isinstance(data, str):
+			return self.__class__(desc=data)
+		elif isinstance(data, (list, tuple)):
+			desc, args = data
+			return self.__class__(*args, desc=desc)
 
-        raise TypeError(args)
+		raise TypeError(args)
 
 
 DOM_EVENTS = Description(
-    ("Defined", ("Added", "Updated", "Renamed", "Snapshot")),
-    ("Undefined", ("Removed", "Renamed")),
-    ("Started", ("Booted", "Migrated", "Restored", "Snapshot", "Wakeup")),
-    ("Suspended", ("Paused", "Migrated", "IOError", "Watchdog", "Restored", "Snapshot", "API error", "Postcopy", "Postcopy failed")),
-    ("Resumed", ("Unpaused", "Migrated", "Snapshot", "Postcopy")),
-    ("Stopped", ("Shutdown", "Destroyed", "Crashed", "Migrated", "Saved", "Failed", "Snapshot", "Daemon")),
-    ("Shutdown", ("Finished", "On guest request", "On host request")),
-    ("PMSuspended", ("Memory", "Disk")),
-    ("Crashed", ("Panicked",)),
+	("Defined", ("Added", "Updated", "Renamed", "Snapshot")),
+	("Undefined", ("Removed", "Renamed")),
+	("Started", ("Booted", "Migrated", "Restored", "Snapshot", "Wakeup")),
+	("Suspended", ("Paused", "Migrated", "IOError", "Watchdog", "Restored", "Snapshot", "API error", "Postcopy", "Postcopy failed")),
+	("Resumed", ("Unpaused", "Migrated", "Snapshot", "Postcopy")),
+	("Stopped", ("Shutdown", "Destroyed", "Crashed", "Migrated", "Saved", "Failed", "Snapshot", "Daemon")),
+	("Shutdown", ("Finished", "On guest request", "On host request")),
+	("PMSuspended", ("Memory", "Disk")),
+	("Crashed", ("Panicked",)),
 )
 ERROR_EVENTS = Description("None", "Pause", "Report")
 CONNECTION_EVENTS = Description("Error", "End-of-file", "Keepalive", "Client")
