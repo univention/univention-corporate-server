@@ -3,9 +3,10 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-pam
-fix: 12.0.2-2A~4.4.0.201907171221
+fix: 12.0.2-3A~4.4.0.201907231200
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * A locking mechanism for ldap-group-to-file.py has been implemented
    so that it is ensured the process only runs once at a time.
-bug: [35173]
+ * Disable PAM module 'systemd' by default.
+bug: [35173, 49910]
