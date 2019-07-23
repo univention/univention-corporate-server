@@ -6,10 +6,21 @@ src: libreoffice
 fix: 1:5.2.7-1+deb9u9
 desc: |
  This update addresses the following issues:
- * Arbitrary code execution due to incorrectly handled LibreLogo scripts (CVE
-   (CVE-2019-9848)
- * Bullet graphics could be retrieved from remote locations due to incorrectly
-   handled stealth mode (CVE-2019-9849)
+ * LibreOffice has a feature where documents can specify that pre-installed
+   scripts can be executed on various document events such as mouse-over, etc.
+   LibreOffice is typically also bundled with LibreLogo, a programmable turtle
+   vector graphics script, which can be manipulated into executing arbitrary
+   Python commands. By using the document event feature to trigger LibreLogo
+   to execute Python contained within a document a malicious document could be
+   constructed which would execute arbitrary Python commands silently without
+   warning. In the fixed versions, LibreLogo cannot be called from a document
+   event handler. (CVE-2019-9848)
+ * LibreOffice has a 'stealth mode' in which only documents from locations
+   deemed 'trusted' are allowed to retrieve remote resources. This mode is not
+   the default mode, but can be enabled by users who want to disable
+   LibreOffice's ability to include remote resources within a document. A flaw
+   existed where bullet graphics were omitted from this protection.
+   (CVE-2019-9849)
 bug: [49890]
 cve:
 - CVE-2019-9848
