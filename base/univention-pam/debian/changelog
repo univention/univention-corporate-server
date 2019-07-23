@@ -1,3 +1,9 @@
+univention-pam (11.0.1-6) unstable; urgency=low
+
+  * Bug #49941: Disable pam_systemd by default
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 31 Jul 2019 09:35:18 +0200
+
 univention-pam (11.0.1-5) unstable; urgency=medium
 
   * Bug #47233: close ssh connection properly when shutting down

@@ -86,6 +86,7 @@ Variables: homedir/mount/required
 Variables: auth/kdeprofile
 Variables: auth/methods
 Variables: pam/krb5/minimum_uid
+Variables: pam/session/systemd
 
 Type: file
 File: etc/pam.d/common-account

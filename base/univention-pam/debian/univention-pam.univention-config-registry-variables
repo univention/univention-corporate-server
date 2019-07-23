@@ -178,6 +178,12 @@ Description[en]=This option causes some PAM modules to ignore the user if the us
 Type=int
 Categories=system-base
 
+[pam/session/systemd]
+Description[de]=Aktiviert die Verwendung des PAM Modules 'systemd'. Standardmäßig deaktiviert.
+Description[en]=Enables using the PAM mdoule 'systemd'. Disabled by default.
+Type=bool
+Categories=system-base
+
 [security/limits/user/.*/hard/.*]
 Description[de]=Erlaubt die Konfiguration von Systemlimits für Benutzer (z.B. die maximale Anzahl offener Dateien). Der erste Platzhalter ist ein Benutzername, der zweite der Name des Systemlimits. Eine Übersicht der konfigurierbaren Limits kann mit 'man limits.conf' abgerufen werden. Das Hard-Limit definiert die Obergrenze, die ein Benutzer maximal einem Prozess zuweisen kann.
 Description[en]=Allow the configuration of system limits for users (e.g. the maximum number of open files). The first placeholder is a user name, the second the name of a system limit. An overview of configurable limits can be retrieved with 'man limits.conf'. The hard limit defines the upper limit a user can assign to a process.
