@@ -10,19 +10,17 @@ desc: |
    scripts can be executed on various document events such as mouse-over, etc.
    LibreOffice is typically also bundled with LibreLogo, a programmable turtle
    vector graphics script, which can be manipulated into executing arbitrary
-   python commands. By using the document event feature to trigger LibreLogo
-   to execute python contained within a document a malicious document could be
-   constructed which would execute arbitrary python commands silently without
+   Python commands. By using the document event feature to trigger LibreLogo
+   to execute Python contained within a document a malicious document could be
+   constructed which would execute arbitrary Python commands silently without
    warning. In the fixed versions, LibreLogo cannot be called from a document
-   event handler. This issue affects: Document Foundation LibreOffice versions
-   prior to 6.2.5. (CVE-2019-9848)
+   event handler. (CVE-2019-9848)
  * LibreOffice has a 'stealth mode' in which only documents from locations
    deemed 'trusted' are allowed to retrieve remote resources. This mode is not
    the default mode, but can be enabled by users who want to disable
    LibreOffice's ability to include remote resources within a document. A flaw
-   existed where bullet graphics were omitted from this protection prior to
-   version 6.2.5. This issue affects: Document Foundation LibreOffice versions
-   prior to 6.2.5. (CVE-2019-9849)
+   existed where bullet graphics were omitted from this protection.
+   (CVE-2019-9849)
 bug: [49894]
 cve:
 - CVE-2019-9848
