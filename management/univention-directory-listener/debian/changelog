@@ -1,3 +1,9 @@
+univention-directory-listener (13.0.2-9) unstable; urgency=medium
+
+  * Bug #49832: fix typo
+
+ -- Jannik Ahlers <ahlers@univention.de>  Tue, 23 Jul 2019 17:24:08 +0200
+
 univention-directory-listener (13.0.2-8) unstable; urgency=medium
 
   * Bug #49832: Made changes according to QA Feedback
