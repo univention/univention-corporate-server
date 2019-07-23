@@ -1,3 +1,9 @@
+univention-pam (12.0.2-3) unstable; urgency=low
+
+  * Bug #49910: Disable pam_systemd by default
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 23 Jul 2019 11:43:55 +0200
+
 univention-pam (12.0.2-2) unstable; urgency=medium
 
   * Bug #35173: add locking for ldap-group-to-file

@@ -1,8 +1,8 @@
 @%@UCRWARNING=# @%@
 
 session    required   pam_unix.so
-session    optional   pam_systemd.so
 @!@
+print '%ssession    optional   pam_systemd.so' % ('' if configRegistry.is_true('pam/session/systemd') else '#',)
 minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
 methods=filter(lambda(x): x in ['krb5', 'ldap', 'winbind'], configRegistry['auth/methods'].split(' '))
 if 'winbind' in methods:
