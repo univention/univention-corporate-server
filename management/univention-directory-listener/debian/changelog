@@ -1,3 +1,9 @@
+univention-directory-listener (13.0.2-8) unstable; urgency=medium
+
+  * Bug #49832: Made changes according to QA Feedback
+
+ -- Jannik Ahlers <ahlers@univention.de>  Tue, 23 Jul 2019 16:40:48 +0200
+
 univention-directory-listener (13.0.2-7) unstable; urgency=medium
 
   * Bug #49832: added python-support to build deps
