@@ -119,208 +119,106 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description=_('Name'),
 		syntax=udm_syntax.string,
-		multivalue=False,
-		options=[],
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'name_prefix': univention.admin.property(
 		short_description=_('Name prefix'),
 		long_description=_('Prefix for the name of virtual machines'),
 		syntax=udm_syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'arch': univention.admin.property(
 		short_description=_('Architecture'),
 		long_description=_('Architecture of the virtual machine'),
 		syntax=Architecture,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'virttech': univention.admin.property(
 		short_description=_('Virtualisation Technology'),
 		long_description=_('Virtualisation Technology'),
 		syntax=VirtTech,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'cpus': univention.admin.property(
 		short_description=_('CPUs'),
 		long_description=_('Number of virtual CPUs'),
 		syntax=udm_syntax.integer,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'ram': univention.admin.property(
 		short_description=_('Memory'),
 		long_description=_('Amount of memory'),
 		syntax=udm_syntax.UvmmCapacity,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'diskspace': univention.admin.property(
 		short_description=_('Disk space'),
 		long_description=_('Amount of disk space'),
 		syntax=udm_syntax.UvmmCapacity,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'drivercache': univention.admin.property(
 		short_description=_('Disk cache'),
 		long_description=_('Disk cache handling on host'),
 		syntax=DriverCache,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'interface': univention.admin.property(
 		short_description=_('Network interface'),
 		long_description=_('Bridging interface'),
 		syntax=udm_syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'vnc': univention.admin.property(
 		short_description=_('Remote access'),
 		long_description=_('Active VNC remote access'),
 		syntax=udm_syntax.boolean,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'kblayout': univention.admin.property(
 		short_description=_('Keyboard layout'),
 		long_description=_('Keyboard layout'),
 		syntax=udm_syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'kernel': univention.admin.property(
 		short_description=_('Kernel'),
 		long_description=_('Kernel'),
 		syntax=udm_syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'kernel_parameter': univention.admin.property(
 		short_description=_('Kernel parameter'),
 		long_description=_('Kernel parameter'),
 		syntax=udm_syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'initramfs': univention.admin.property(
 		short_description=_('Initramfs disk'),
 		long_description=_('Initramfs disk'),
 		syntax=udm_syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'advkernelconf': univention.admin.property(
 		short_description=_('Use advanced kernel configuration'),
 		long_description=_('Manually specify the kernel configuration for paravirtualized machines or use pyGrub as bootloader'),
 		syntax=udm_syntax.TrueFalseUp,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'bootdev': univention.admin.property(
 		short_description=_('Boot devices'),
 		long_description=_('Order of boot devices'),
 		syntax=BootDevice,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'os': univention.admin.property(
 		short_description=_('Operating system'),
 		long_description=_('Operating system'),
 		syntax=udm_syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'pvdisk': univention.admin.property(
 		short_description=_('Use para-virtual driver for hard drives'),
 		syntax=udm_syntax.boolean,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'pvinterface': univention.admin.property(
 		short_description=_('Use para-virtual driver for network interface'),
 		syntax=udm_syntax.boolean,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'pvcdrom': univention.admin.property(
 		short_description=_('Use para-virtual driver for CDROM drives'),
 		syntax=udm_syntax.boolean,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'rtcoffset': univention.admin.property(
 		short_description=_('Real Time Clock offset'),
 		long_description=_('Offset of instances Real Time Clock to host computers clock'),
 		syntax=ClockOffset,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 }
 

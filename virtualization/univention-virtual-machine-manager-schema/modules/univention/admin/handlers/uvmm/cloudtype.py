@@ -64,10 +64,7 @@ property_descriptions = {
 		short_description=_('Name'),
 		long_description=_('Name'),
 		syntax=udm_syntax.string,
-		multivalue=False,
-		options=[],
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 }

@@ -64,51 +64,28 @@ property_descriptions = {
 		short_description=_('UUID'),
 		long_description=_('The unique identifier used by libvirt to identify the VM'),
 		syntax=udm_syntax.string,
-		multivalue=False,
-		options=[],
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
 		long_description=_('Description of virtual machine'),
 		syntax=udm_syntax.TextArea,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'os': univention.admin.property(
 		short_description=_('Operating system'),
 		long_description=_('Name of the operation system'),
 		syntax=udm_syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'contact': univention.admin.property(
 		short_description=_('Contact'),
 		long_description=_('Name and/or email address of a contact person'),
 		syntax=udm_syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'profile': univention.admin.property(
 		short_description=_('Profile'),
 		long_description=_('Reference to the profile used for defining this VM'),
 		syntax=udm_syntax.UvmmProfiles,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 }
 
