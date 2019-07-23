@@ -177,7 +177,7 @@ def _sanitize_list(function, sanitizer, sanitizer_parameters):
 
 def _sanitize(function, sanitizer):
 	def _response(self, request):
-		request.options = sanitize_args('request.options', {'request.options': request.options})
+		request.options = sanitize_args(sanitizer, 'request.options', {'request.options': request.options})
 		return function(self, request)
 	copy_function_meta_data(function, _response)
 	return _response
