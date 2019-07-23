@@ -31,7 +31,6 @@
 # <http://www.gnu.org/licenses/>.
 
 import univention.admin
-import univention.admin.filter as udm_filter
 import univention.admin.mapping as udm_mapping
 from univention.admin.handlers import simpleLdap
 import univention.admin.syntax as udm_syntax
@@ -44,12 +43,19 @@ _ = translation('univention.admin.handlers.uvmm').translate
 module = 'uvmm/cloudtype'
 default_containers = ['cn=CloudType,cn=Virtual Machine Manager']
 
-childs = 0
+childs = False
 short_description = _('UVMM: Cloud Type')
 object_name = _('Cloud Type')
 object_name_plural = _('Cloud Types')
 long_description = ''
 operations = ['search', 'edit', 'add', 'remove']
+
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionVirtualMachineCloudType']
+	)
+}
 
 
 # UDM properties
@@ -81,52 +87,10 @@ mapping.register('name', 'cn', None, udm_mapping.ListToString)
 
 
 class object(simpleLdap):
-
 	"""UVMM Cloud Type."""
 	module = module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
-		global mapping
-		global property_descriptions
 
-		self.mapping = mapping
-		self.descriptions = property_descriptions
-
-		simpleLdap.__init__(self, co, lo, position, dn, superordinate)
-
-	def _ldap_pre_create(self):
-		"""Create DN for new UVMM Cloud Type."""
-		self.dn = '%s=%s,%s' % (
-			mapping.mapName('name'),
-			mapping.mapValue('name', self.info['name']),
-			self.position.getDn()
-		)
-
-	def _ldap_addlist(self):
-		"""Add LDAP objectClass for UVMM Cloud Type."""
-		return [
-			('objectClass', ['univentionVirtualMachineCloudType'])
-		]
-
-
-def lookup_filter(filter_s=None, lo=None):
-	"""
-	Return LDAP search filter for UVMM Cloud Type entries.
-	"""
-	ldap_filter = udm_filter.conjunction('&', [
-		udm_filter.expression('objectClass', 'univentionVirtualMachineCloudType'),
-	])
-	ldap_filter.append_unmapped_filter_string(filter_s, udm_mapping.mapRewrite, mapping)
-	return unicode(ldap_filter)
-
-
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-	"""Search for UVMM Cloud Type objects."""
-	ldap_filter = lookup_filter(filter_s)
-	return [object(co, lo, None, dn)
-			for dn in lo.searchDn(ldap_filter, base, scope, unique, required, timeout, sizelimit)]
-
-
-def identify(dn, attr, canonical=0):
-	"""Return True if LDAP object is a UVMM Cloud Type."""
-	return 'univentionVirtualMachineCloudType' in attr.get('objectClass', [])
+lookup = object.lookup
+lookup_filter = object.lookup_filter
+identify = object.identify
