@@ -7,4 +7,7 @@ fix: 8.0.11-44A~4.4.0.201907181053
 desc: |
  This update addresses the following issue(s):
  * The app badges icons in the App Center are replaced with new versions.
-bug: [49284]
+ * A new App Setting "DockerUcrStyleEnv" was added to be able to deactivate
+   passing environment variables into docker containers that are not in the 
+   format of capital letters and underscores.
+bug: [49284, 49647]
