@@ -6,7 +6,7 @@ src: zeromq3
 fix: 4.2.1-4+deb9u2
 desc: |
  This update addresses the following issue:
- * stack-overflow on any server protected by encryption/authentication
+ * Stack-overflow on any server protected by encryption/authentication
    (CVE-2019-13132)
 bug: [49893]
 cve:
