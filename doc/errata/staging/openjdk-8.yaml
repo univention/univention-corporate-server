@@ -6,17 +6,15 @@ src: openjdk-8
 fix: 8u222-b10-1~deb9u1
 desc: |
  This update addresses the following issues:
- * Side-channel attack risks in Elliptic Curve (EC) cryptography (Security,
-   8208698) (CVE-2019-2745)
- * Insufficient checks of suppressed exceptions in deserialization (Utilities,
-   8212328) (CVE-2019-2762)
+ * Side-channel attack risks in Elliptic Curve (EC) cryptography
+   (CVE-2019-2745)
+ * Insufficient checks of suppressed exceptions in deserialization
+   (CVE-2019-2762)
  * Unbounded memory allocation during deserialization in Collections
-   (Utilities, 8213432) (CVE-2019-2769)
- * Insufficient restriction of privileges in AccessController (Security,
-   8216381) (CVE-2019-2786)
- * Missing URL format validation (Networking, 8221518) (CVE-2019-2816)
- * Missing array bounds check in crypto providers (JCE, 8223511)
-   (CVE-2019-2842)
+   (CVE-2019-2769)
+ * Insufficient restriction of privileges in AccessController (CVE-2019-2786)
+ * Missing URL format validation (CVE-2019-2816)
+ * Missing array bounds check in crypto providers (CVE-2019-2842)
 bug: [49897]
 cve:
 - CVE-2019-2745
