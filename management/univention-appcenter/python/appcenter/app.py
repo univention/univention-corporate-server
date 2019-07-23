@@ -797,6 +797,8 @@ class App(object):
 		docker_script_configure: Like *docker_script_setup*,
 			but for a script that is run after settings inside the
 			container were applied.
+		docker_ucr_style_env: Disable the passing of ucr style ("foo/bar")
+			environment variables into the container.
 		host_certificate_access: Docker Apps only. The App gets access
 			to the host certificate.
 		listener_udm_modules: List of UDM modules that a listener
@@ -930,6 +932,7 @@ class App(object):
 	docker_script_update_release = AppDockerScriptAttribute()
 	docker_script_update_app_version = AppDockerScriptAttribute()
 	docker_script_configure = AppAttribute()
+	docker_ucr_style_env = AppBooleanAttribute(default=True)
 
 	host_certificate_access = AppBooleanAttribute()
 

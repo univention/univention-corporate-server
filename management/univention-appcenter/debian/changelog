@@ -1,3 +1,11 @@
+univention-appcenter (8.0.11-45) unstable; urgency=medium
+
+  * Bug #49647: Added new App Setting "DockerUcrStyleEnv" to disable passing
+    env variables into docker containers that are not in the format of capital
+    letters and underscores
+
+ -- Jannik Ahlers <ahlers@univention.de>  Tue, 23 Jul 2019 15:44:55 +0200
+
 univention-appcenter (8.0.11-44) unstable; urgency=medium
 
   * Bug #49284: Replace old app badges icons in the App Center with new

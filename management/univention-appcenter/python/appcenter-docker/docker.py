@@ -320,7 +320,8 @@ class Docker(object):
 					outfile.write('\n')
 			# env variables from appcenter
 			for key, value in env.iteritems():
-				outfile.write('%s=%s\n' % (shell_safe(key), value))
+				if self.app.docker_ucr_style_env:
+					outfile.write('%s=%s\n' % (shell_safe(key), value))
 				outfile.write('%s=%s\n' % (shell_safe(key).upper(), value))
 		return env_file
 
@@ -477,7 +478,10 @@ class MultiDocker(Docker):
 
 	def create(self, hostname, env):
 		env = {k: yaml.scalarstring.DoubleQuotedScalarString(v) for k, v in env.iteritems()}
-		env.update({shell_safe(k).upper(): v for k, v in env.iteritems()})
+		if self.app.docker_ucr_style_env:
+			env.update({shell_safe(k).upper(): v for k, v in env.iteritems()})
+		else:
+			env = {shell_safe(k).upper(): v for k, v in env.iteritems()}
 		self._setup_yml(recreate=True, env=env)
 		ret, out_up = call_process2(['docker-compose', '-p', self.app.id, 'up', '-d', '--no-build', '--no-recreate'], cwd=self.app.get_compose_dir())
 		if ret != 0:
