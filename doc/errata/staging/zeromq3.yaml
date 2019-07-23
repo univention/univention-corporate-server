@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [0, 1]
+scope: ucs_4.4-0-errata4.4-1
+src: zeromq3
+fix: 4.2.1-4+deb9u2
+desc: |
+ This update addresses the following issue:
+ * Stack-overflow on any server protected by encryption/authentication
+   (CVE-2019-13132)
+bug: [49885]
+cve:
+- CVE-2019-13132

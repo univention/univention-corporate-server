@@ -1,0 +1,34 @@
+product: ucs
+release: "4.4"
+version: [0, 1]
+scope: ucs_4.4-0-errata4.4-1
+src: firefox-esr
+fix: 60.8.0esr-1~deb9u1
+desc: |
+ This update addresses the following issues:
+ * Sandbox escape via installation of malicious language pack (CVE-2019-9811)
+ * Memory safety bugs fixed in Firefox 68 and Firefox ESR 60.8
+   (CVE-2019-11709)
+ * Script injection within domain through inner window reuse (CVE-2019-11711)
+ * Cross-origin POST requests can be made with NPAPI plugins by following 308
+   redirects (CVE-2019-11712)
+ * Use-after-free with HTTP/2 cached stream (CVE-2019-11713)
+ * HTML parsing error can contribute to content XSS (CVE-2019-11715)
+ * Caret character improperly escaped in origins (CVE-2019-11717)
+ * Out-of-bounds read when importing curve25519 private key (CVE-2019-11719)
+ * Empty or malformed p256-ECDH public keys may trigger a segmentation fault
+   (CVE-2019-11729)
+ * Same-origin policy treats all files in a directory as having the
+   same-origin (CVE-2019-11730)
+bug: [49886]
+cve:
+- CVE-2019-9811
+- CVE-2019-11709
+- CVE-2019-11711
+- CVE-2019-11712
+- CVE-2019-11713
+- CVE-2019-11715
+- CVE-2019-11717
+- CVE-2019-11719
+- CVE-2019-11729
+- CVE-2019-11730

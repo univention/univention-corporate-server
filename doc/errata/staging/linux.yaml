@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [0, 1]
+scope: ucs_4.4-0-errata4.4-1
+src: linux
+fix: 4.9.168-1+deb9u4
+desc: |
+ This update addresses the following issue:
+ * Broken permission and object lifetime handling for PTRACE_TRACEME
+   (CVE-2019-13272)
+bug: [49888]
+cve:
+- CVE-2019-13272
