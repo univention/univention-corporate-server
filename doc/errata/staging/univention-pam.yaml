@@ -8,5 +8,6 @@ desc: |
  This update addresses the following issues:
  * A locking mechanism for ldap-group-to-file.py has been implemented
    so that it is ensured the process only runs once at a time.
- * Disable PAM module 'systemd' by default.
+ * Disable PAM module 'systemd' by default. It can be re-enabled by setting
+   the UCR variable `pam/session/systemd` to `1`.
 bug: [35173, 49910]
