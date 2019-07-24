@@ -3,7 +3,7 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-appcenter
-fix: 8.0.11-45A~4.4.0.201907231554
+fix: 8.0.11-46A~4.4.0.201907241126
 desc: |
  This update addresses the following issue(s):
  * The app badges icons in the App Center are replaced with new versions.
