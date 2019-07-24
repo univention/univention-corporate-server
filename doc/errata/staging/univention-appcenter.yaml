@@ -10,4 +10,7 @@ desc: |
  * A new App Setting "DockerUcrStyleEnv" was added to be able to deactivate
    passing environment variables into docker containers that are not in the 
    format of capital letters and underscores.
-bug: [49284, 49647]
+ * An errata update caused the App Tab in the Users UMC module to not be
+   visible. This update resyncs the listener so that the App Tab is visible
+   again.
+bug: [49284,49647,49832]
