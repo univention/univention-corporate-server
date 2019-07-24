@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-1
 src: simplesamlphp
 fix: 1.16.3-1A~4.4.0.201907162025
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * SimpleSAMLphp has been updated to version 1.16.3.
  * HTTPRedirect.php in the saml2 library in SimpleSAMLphp before 1.15.4 has
    an incorrect check of return values in the signature validation utilities,

@@ -5,6 +5,6 @@ scope: ucs_4.4-0-errata4.4-1
 src: univention-saml
 fix: 6.0.2-4A~4.4.0.201907162032
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The package has been adjusted for the update to simplesamlphp 1.16.3.
 bug: [48961]
