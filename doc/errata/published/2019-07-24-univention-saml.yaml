@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The package has been adjusted for the update to simplesamlphp 1.16.3.
 bug: [48961]
+erratum: 196
+announced: 2019-07-24
