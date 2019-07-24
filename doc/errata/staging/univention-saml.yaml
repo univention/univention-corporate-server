@@ -1,6 +1,6 @@
 product: ucs
 release: "4.4"
-version: [1]
+version: [0, 1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-saml
 fix: 6.0.2-4A~4.4.0.201907162032
