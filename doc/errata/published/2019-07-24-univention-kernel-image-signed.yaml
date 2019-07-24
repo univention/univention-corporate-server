@@ -12,3 +12,5 @@ note: This is the 2nd of two related updates.
 bug: [49892]
 cve:
 - CVE-2019-13272
+erratum: 551
+announced: 2019-07-24
