@@ -1,3 +1,10 @@
+univention-directory-listener (13.0.2-10) unstable; urgency=medium
+
+  * Bug #49832: reverted the changes in this package and moved them to the
+    univention-management-console-module-appcenter package
+
+ -- Jannik Ahlers <ahlers@univention.de>  Wed, 24 Jul 2019 10:56:07 +0200
+
 univention-directory-listener (13.0.2-9) unstable; urgency=medium
 
   * Bug #49832: fix typo

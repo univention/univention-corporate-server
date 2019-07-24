@@ -53,4 +53,9 @@ if dpkg --compare-versions "$2" lt 8.0.11-4; then
 	systemctl restart univention-directory-listener
 fi
 
+if dpkg --compare-versions "$2" lt 8.0.11-46; then
+	# Bug #49832
+	univention-directory-listener-ctrl resync app_attributes
+fi
+
 exit 0

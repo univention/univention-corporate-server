@@ -124,11 +124,6 @@ if [ "$1" = "configure" -a -n "$2" ]; then
 	else
 		/etc/init.d/univention-directory-listener crestart
 	fi
-
-	if dpkg --compare-versions "$2" lt 13.0.2-6; then
-		# Bug #49832
-		univention-directory-listener-ctrl resync app_attributes
-	fi
 fi
 
 exit 0
