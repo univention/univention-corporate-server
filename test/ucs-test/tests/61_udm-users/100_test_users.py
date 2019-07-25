@@ -4,7 +4,6 @@
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
 ## packages: [python-univention-directory-manager]
-## packages-not: [univention-samba4]
 
 import pytest
 import time

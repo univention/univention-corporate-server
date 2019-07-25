@@ -1,3 +1,9 @@
+ucs-test (9.0.3-5) unstable; urgency=medium
+
+  * Bug #47722: fix broken output (hex) if test case doesn't return UTF-8
+
+ -- Florian Best <best@univention.de>  Thu, 25 Jul 2019 14:16:59 +0200
+
 ucs-test (9.0.3-4) unstable; urgency=medium
 
   * Bug #49337: Revert workaround

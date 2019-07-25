@@ -680,11 +680,8 @@ class TestCase(object):
 	def _attach(result, part, content):
 		"""Attach content."""
 		text = ''.join(content)
-		try:
-			dirty = text.decode(sys.getfilesystemencoding())
-			clean = RE_ILLEGAL_XML.sub(u'\uFFFD', dirty)
-		except UnicodeError:
-			clean = text.encode('hex')
+		dirty = text.decode(sys.getfilesystemencoding(), 'replace')
+		clean = RE_ILLEGAL_XML.sub(u'\uFFFD', dirty)
 		result.attach(part, 'text/plain', clean)
 
 	def _translate_result(self, result):
