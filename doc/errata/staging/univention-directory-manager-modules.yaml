@@ -12,4 +12,6 @@ desc: |
    revert the changes in case the moving fails.
  * An error in the creation of container/ou objects has been fixed.
  * The combobox syntax class has been added.
-bug: [42607, 49594, 49234, 49478, 48811]
+ * The printer objects are now created again in the printer default
+   containers instead of the shares default container.
+bug: [42607, 49594, 49234, 49478, 48811, 49826]

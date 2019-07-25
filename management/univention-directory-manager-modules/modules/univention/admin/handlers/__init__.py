@@ -1688,7 +1688,7 @@ class simpleLdap(object):
 			return containers
 
 		base = cls.module.split('/', 1)[0]
-		if base == 'shares/print':
+		if cls.module in ('shares/print', 'shares/printer', 'shares/printergroup'):
 			base = 'printers'
 		elif cls.module in ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/windows_domaincontroller'):
 			base = 'domaincontroller'
