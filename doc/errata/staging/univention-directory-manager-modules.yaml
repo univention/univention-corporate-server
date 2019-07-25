@@ -3,7 +3,7 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-directory-manager-modules
-fix: 14.0.13-1A~4.4.0.201907162025
+fix: 14.0.13-3A~4.4.0.201907251720
 desc: |
  This update addresses the following issue(s):
  * Searching for users in a certain group is now possible.
