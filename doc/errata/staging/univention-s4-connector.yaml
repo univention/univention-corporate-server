@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [1]
+scope: ucs_4.4-0-errata4.4-1
+src: univention-s4-connector
+fix: 13.0.2-20A~4.4.0.201907251408
+desc: |
+ This update addresses the following issue(s):
+ * Fix typo in "remove_ucs_rejected.py"
+bug: [49865]
