@@ -812,6 +812,9 @@ def _doit(arglist):
 			except univention.admin.uexceptions.circularGroupDependency as e:
 				out.append('E: circular group dependency detected: %s' % e)
 				return out + ["OPERATION FAILED"]
+			except univention.admin.uexceptions.invalidChild as e:
+				out.append('E: %s' % e)
+				return out + ["OPERATION FAILED"]
 
 			if exists == 1:
 				if exists_msg:

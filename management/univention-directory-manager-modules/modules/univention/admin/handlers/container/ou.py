@@ -207,8 +207,7 @@ class object(univention.admin.handlers.simpleLdap):
 				# it is possible to have a basedn with cn=foo
 				# in this case it is allowed to create a ou
 				# under a cn.
-				m = univention.admin.modules.identifyOne(self.position.getDn(), self.lo.get(self.position.getDn()))
-				if m.module == 'container/cn':
+				if any(m and m.module == 'container/cn' for m in univention.admin.modules.identify(self.position.getDn(), self.lo.get(self.position.getDn()))):
 					raise univention.admin.uexceptions.invalidChild(_('It is not allowed to create a container/ou as child object of a container/cn.'))
 
 	def _ldap_post_create(self):

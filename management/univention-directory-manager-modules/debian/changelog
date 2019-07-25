@@ -1,6 +1,8 @@
 univention-directory-manager-modules (14.0.13-2) unstable; urgency=medium
 
   * Bug #49234: check if container content is moveable
+  * Bug #49478: prevent crashing container/ou creation if parent object cannot
+  	be identified
 
  -- Florian Best <best@univention.de>  Thu, 25 Jul 2019 12:18:14 +0200
 

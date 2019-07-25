@@ -10,4 +10,5 @@ desc: |
  * Nagios objects are created again in their default containers.
  * It is checked if containers are moveable before moving them and trying to
    revert the changes in case the moving fails.
-bug: [42607, 49594, 49234]
+ * An error in the creation of container/ou objects has been fixed.
+bug: [42607, 49594, 49234, 49478]
