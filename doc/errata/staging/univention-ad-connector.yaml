@@ -7,5 +7,5 @@ fix: 13.0.0-10A~4.4.0.201907251417
 desc: |
  This update addresses the following issue(s):
  * The scripts remove_ucs_rejected.py and remove_ad_rejected.py now
-   escapes SQL syntax.
+   escape SQL syntax.
 bug: [49640]

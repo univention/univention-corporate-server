@@ -6,5 +6,6 @@ src: univention-s4-connector
 fix: 13.0.2-20A~4.4.0.201907251408
 desc: |
  This update addresses the following issue(s):
- * Fix typo in "remove_ucs_rejected.py"
+ * The script "remove_ucs_rejected.py" has been repaired.
+   It has been broken via UCS 4.4 erratum 155.
 bug: [49865]
