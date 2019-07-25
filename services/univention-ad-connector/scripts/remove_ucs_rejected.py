@@ -44,7 +44,7 @@ class ObjectNotFound(BaseException):
 def remove_ucs_rejected(ucs_dn):
 	cache_db = sqlite3.connect('/etc/univention/%s/internal.sqlite' % CONFIGBASENAME)
 	c = cache_db.cursor()
-	c.execute("SELECT key FROM 'UCS rejected' WHERE value='%s'" % ucs_dn)
+	c.execute("SELECT key FROM 'UCS rejected' WHERE value=?" , [unicode(ucs_dn)])
 	filenames = c.fetchall()
 	if not filenames:
 		raise ObjectNotFound
@@ -52,7 +52,7 @@ def remove_ucs_rejected(ucs_dn):
 		if filename:
 			if os.path.exists(filename[0]):
 				os.remove(filename[0])
-	c.execute("DELETE FROM 'UCS rejected' WHERE value='%s'" % ucs_dn)
+	c.execute("DELETE FROM 'UCS rejected' WHERE value=?" , [unicode(ucs_dn)])
 	cache_db.commit()
 	cache_db.close()
 
