@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [1]
+scope: ucs_4.4-0-errata4.4-1
+src: univention-ad-connector
+fix: 13.0.0-10A~4.4.0.201907251417
+desc: |
+ This update addresses the following issue(s):
+ * The scripts remove_ucs_rejected.py and remove_ad_rejected.py now
+   escapes SQL syntax.
+bug: [49640]
