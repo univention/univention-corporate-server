@@ -60,9 +60,9 @@ _ = translator.translate
 
 class UMCSeleniumTest(ChecksAndWaits, Interactions):
 	"""
-	This class provides selenium test for web ui tests.
+	This class provides selenium test for web UI tests.
 	Default browser is Firefox. Set local variable UCSTEST_SELENIUM_BROWSER to 'chrome' or 'ie' to switch browser.
-	Tests run on selenium grid server. To run tests locally use lacal varibable UCSTEST_SELENIUM=local.
+	Tests run on selenium grid server. To run tests locally use local variable UCSTEST_SELENIUM=local.
 	Root privileges are required, also root needs the privilege to display the browser.
 	"""
 
