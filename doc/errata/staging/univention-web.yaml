@@ -7,4 +7,5 @@ fix: 3.0.5-20A~4.4.0.201907162017
 desc: |
  This update addresses the following issue(s):
  * Searching for users in a certain group is now possible.
-bug: [42607]
+ * Added SuggestionBox widget.
+bug: [42607, 48811]
