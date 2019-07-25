@@ -91,24 +91,25 @@ def import_syntax_files():
 					_ = gettext
 
 
-choice_update_functions = []  # type: List[Callable]
+__choice_update_functions = []  # type: List[Tuple[Callable, bool]]
 
 
-def __register_choice_update_function(func):
+def __register_choice_update_function(func, expensive=False):
 	# type: (Callable[[], None]) -> None
 	"""
 	Register a function to be called when the syntax classes are to be re-loaded.
 	"""
-	choice_update_functions.append(func)
+	__choice_update_functions.append((func, expensive))
 
 
-def update_choices():
+def update_choices(expensive=False):
 	# type: () -> None
 	"""
 	Update choices which are defined in LDAP
 	"""
-	for func in choice_update_functions:
-		func()
+	for func, is_expensive in __choice_update_functions:
+		if is_expensive and expensive or not is_expensive:
+			func()
 
 
 def is_syntax(syntax_obj, syntax_type):
@@ -2425,7 +2426,7 @@ def _update_schema():
 			pass
 
 
-__register_choice_update_function(_update_schema)
+__register_choice_update_function(_update_schema, True)
 
 
 class ldapFilter(simple):
