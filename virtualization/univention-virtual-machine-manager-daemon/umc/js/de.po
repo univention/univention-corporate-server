@@ -504,6 +504,10 @@ msgstr "Dänisch"
 msgid "Date"
 msgstr "Datum"
 
+#: umc/js/uvmm/types.js:205
+msgid "Default"
+msgstr "Standard"
+
 #: umc/js/uvmm/types.js:180
 msgid "Default (RealTek RTL-8139)"
 msgstr "Voreinstellung (RealTek RTL-8139)"

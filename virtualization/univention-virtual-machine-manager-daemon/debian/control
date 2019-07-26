@@ -50,6 +50,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  univention-management-console-server,
  python-univention-virtual-machine-manager (= ${source:Version}),
  univention-novnc,
+ univention-web-js (>= 3.0.5-21),
 Description: UCS Virtual Machine Manager UMC module
  This package contains the UCS Virtual Machine Manager Daemon
  UMC module.

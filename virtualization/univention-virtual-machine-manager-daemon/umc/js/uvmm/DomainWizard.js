@@ -44,11 +44,12 @@ define([
 	"umc/widgets/HiddenInput",
 	"umc/widgets/Wizard",
 	"umc/widgets/ContainerWidget",
+	"umc/widgets/SuggestionBox",
 	"umc/modules/uvmm/DriveGrid",
 	"umc/modules/uvmm/MemoryTextBox",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, aspect, Memory, Observable, tools, TitlePane, TextArea, TextBox, ComboBox, CheckBox, HiddenInput, Wizard, ContainerWidget, DriveGrid, MemoryTextBox, types, _) {
+], function(declare, lang, array, aspect, Memory, Observable, tools, TitlePane, TextArea, TextBox, ComboBox, CheckBox, HiddenInput, Wizard, ContainerWidget, SuggestionBox, DriveGrid, MemoryTextBox, types, _) {
 
 	return declare("umc.modules.uvmm.DomainWizard", [ Wizard ], {
 		_profile: null,
@@ -154,8 +155,9 @@ define([
 						label: _('Number of CPUs')
 					}, {
 						name: 'cpu_model',
-						type: TextBox,
-						label: _('CPU model')
+						type: SuggestionBox,
+						label: _('CPU model'),
+						staticValues: types.cpuModels
 					}, {
 						name: 'autostart',
 						type: CheckBox,
