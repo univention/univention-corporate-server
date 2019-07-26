@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [1]
+scope: ucs_4.4-0-errata4.4-1
+src: univention-virtual-machine-manager-schema
+fix: 9.0.2-2A~4.4.0.201907261701
+desc: |
+ This update addresses the following issue(s):
+ * The LDAP attribute univentionVirtualMachineProfileCPUModel has been added
+   to the schema and uvmm/profile UDM module. The LDAP schema and ACLs are
+   now registered in the whole UCS domain.
+bug: [49695]

@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [1]
+scope: ucs_4.4-0-errata4.4-1
+src: univention-virtual-machine-manager-daemon
+fix: 8.0.1-8A~4.4.0.201907261702
+desc: |
+ This update addresses the following issue(s):
+ * It is now possible to enable autostart for Virtual Machines via
+   the UMC module.
+ * The CPU model can now be configured for each Virtual Machine.
+ * The error handling in case of connection loss has been enhanced.
+   The amount of log messages has been reduced to decrease log size.
+bug: [28771, 49695, 49737]
