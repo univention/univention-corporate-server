@@ -990,7 +990,7 @@ class SessionHandler(ProcessorBase):
 			username=StringSanitizer(required=True),
 			password=StringSanitizer(required=True),
 			auth_type=StringSanitizer(allow_none=True),
-			new_password=StringSanitizer(required=False),
+			new_password=StringSanitizer(required=False, allow_none=True),
 		)), 'request', {'request': request.body})
 		from univention.management.console.protocol.server import Server
 		Server.reload()

@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-30) unstable; urgency=medium
+
+  * Bug #44602: add allow_none for new_password
+
+ -- Florian Best <best@univention.de>  Fri, 26 Jul 2019 15:54:57 +0200
+
 univention-management-console (11.0.4-29) unstable; urgency=medium
 
   * Bug #44602: fix typo
