@@ -8,8 +8,8 @@ desc: |
  This update addresses the following issue(s):
  * Searching for users in a certain group is now possible.
  * Nagios objects are created again in their default containers.
- * It is checked if containers are moveable before moving them and trying to
-   revert the changes in case the moving fails.
+ * It is now checked if containers are moveable before moving them to avoid
+   having to revert the changes in case the move failed.
  * An error in the creation of container/ou objects has been fixed.
  * The combobox syntax class has been added.
  * The printer objects are now created again in the printer default
