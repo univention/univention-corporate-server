@@ -848,7 +848,7 @@ class Node(PersistentCached):
 			self.pd.last_try = time.time()
 			# double timer interval until maximum
 			hz = min(self.current_frequency * 2, Nodes.BEBO_FREQUENCY)
-			logger.warning("'%s' broken? next check in %s. %s", self.pd.uri, ms(hz), ex, exc_info=True)
+			logger.warning("'%s' broken? next check in %s. %s", self.pd.uri, ms(hz), ex, exc_info=self.current_frequency == self.config_frequency)
 			if hz > self.current_frequency:
 				self.current_frequency = hz
 			self._unregister()
@@ -1079,8 +1079,7 @@ class Node(PersistentCached):
 		# type: (bool) -> None
 		"""Unregister callbacks doing updates."""
 		if self.timer is not None:
-			timer = self.timer
-			self.timer = None
+			timer, self.timer = self.timer, None
 			self.timerEvent.set()
 			while wait:
 				timer.join(1.0)  # wait for up to 1 second until Thread terminates
@@ -1094,18 +1093,18 @@ class Node(PersistentCached):
 	def _unregister(self):
 		# type: () -> None
 		"""Unregister callback and close connection."""
-		if self.conn is not None:
+		conn, self.conn = self.conn, None
+		if conn is not None:
 			while self.domainCB:
 				try:
-					self.conn.domainEventDeregisterAny(self.domainCB.pop())
-				except Exception:
-					logger.error("%s: Exception in domainEventDeregisterAny", self.pd.uri, exc_info=True)
+					conn.domainEventDeregisterAny(self.domainCB.pop())
+				except Exception as ex:
+					logger.warning("%s: Exception in domainEventDeregisterAny: %s", self.pd.uri, ex)
 
 			try:
-				self.conn.close()
-			except Exception:
-				logger.error('%s: Exception in conn.close', self.pd.uri, exc_info=True)
-			self.conn = None
+				conn.close()
+			except Exception as ex:
+				logger.warning('%s: Exception in conn.close: %s', self.pd.uri, ex)
 
 	def set_frequency(self, hz):
 		# type: (int) -> None
