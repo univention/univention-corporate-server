@@ -391,12 +391,15 @@ class Domains(object):
 		domain_info.os_type = 'hvm'
 		domain_info.maxMem = domain['maxMem']
 
+		domain_info.autostart = domain['autostart']
+
 		# CPUs
 		try:
 			domain_info.vcpus = int(domain['vcpus'])
 		except ValueError:
 			raise UMC_Error(_('vcpus must be a number'))
 		domain_info.hyperv = domain.get('hyperv', True)
+		domain_info.cpu_model = domain.get('cpu_model')
 
 		# boot devices
 		if 'boot' in domain:

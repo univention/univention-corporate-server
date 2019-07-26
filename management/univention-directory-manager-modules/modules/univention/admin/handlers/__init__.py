@@ -75,13 +75,17 @@ try:
 except ImportError:
 	ud.debug(ud.ADMIN, ud.WARN, "Failed to import univention.lib.admember")
 	_prevent_to_change_ad_properties = False
+try:
+	from typing import Any, Dict, List, Optional, Set, Tuple, Union  # noqa F401
+except ImportError:
+	pass
 
 translation = univention.admin.localization.translation('univention/admin/handlers')
 _ = translation.translate
 
 # global caching variable
 if configRegistry.is_true('directory/manager/samba3/legacy', False):
-	s4connector_present = False
+	s4connector_present = False  # type: Optional[bool]
 elif configRegistry.is_false('directory/manager/samba3/legacy', False):
 	s4connector_present = True
 else:
@@ -259,7 +263,7 @@ class simpleLdap(object):
 		if self.exists():
 			self.old_options = copy.deepcopy(self.options)
 
-	def diff(self):  # type: () -> list[tuple[str, Any, Any]]
+	def diff(self):  # type: () -> List[Tuple[str, Any, Any]]
 		"""
 		Returns the difference between old and current state as a UDM modlist.
 
@@ -269,7 +273,7 @@ class simpleLdap(object):
 		changes = []
 
 		for key, prop in self.descriptions.items():
-			null = [] if prop.multivalue else None  # type: Union[list, None]
+			null = [] if prop.multivalue else None  # type: Union[List, None]
 			# remove properties which are disabled by options
 			if prop.options and not set(prop.options) & set(self.options):
 				if self.oldinfo.get(key, null) not in (null, None):
@@ -281,7 +285,7 @@ class simpleLdap(object):
 
 		return changes
 
-	def hasChanged(self, key):  # type: (Union[str, list[str], tuple[str]]) -> bool
+	def hasChanged(self, key):  # type: (Union[str, List[str], Tuple[str]]) -> bool
 		"""
 		Checks if the given attribute(s) was (were) changed.
 
@@ -498,7 +502,7 @@ class simpleLdap(object):
 		"""
 		return key in self.descriptions
 
-	def keys(self):  # type: () -> list[str]
+	def keys(self):  # type: () -> List[str]
 		"""
 		Returns the names of all properties this module has.
 
@@ -507,7 +511,7 @@ class simpleLdap(object):
 		"""
 		return self.descriptions.keys()
 
-	def items(self):  # type: () -> list[tuple[str, Any]]
+	def items(self):  # type: () -> List[Tuple[str, Any]]
 		"""
 		Return all items which belong to the current options - even if they are empty.
 
@@ -809,7 +813,7 @@ class simpleLdap(object):
 			self._delete_temporary_ou_if_empty(temporary_ou)
 			return res
 
-	def move_subelements(self, olddn, newdn, subelements, ignore_license=False):  # type: (str, str, list[tuple[str, dict]], bool) -> list[tuple[str, str]]
+	def move_subelements(self, olddn, newdn, subelements, ignore_license=False):  # type: (str, str, List[Tuple[str, Dict]], bool) -> List[Tuple[str, str]]
 		"""
 		Internal function to move all children of a container.
 
@@ -1359,8 +1363,8 @@ class simpleLdap(object):
 			return set(x.lower() for x in vals)
 
 		ocs = lowerset(_MergedAttributes(self, ml).get_attribute('objectClass'))
-		unneeded_ocs = set()  # type: set[str]
-		required_ocs = set()  # type: set[str]
+		unneeded_ocs = set()  # type: Set[str]
+		required_ocs = set()  # type: Set[str]
 
 		# evaluate (extended) options
 		module_options = univention.admin.modules.options(self.module)
@@ -1498,7 +1502,7 @@ class simpleLdap(object):
 		self.call_udm_property_hook('hook_ldap_pre_remove', self)
 
 		if remove_childs:
-			subelements = []  # type: list[tuple[str, dict[str, list[str]]]]
+			subelements = []  # type: List[Tuple[str, Dict[str, List[str]]]]
 			if 'FALSE' not in self.lo.getAttr(self.dn, 'hasSubordinates'):
 				ud.debug(ud.ADMIN, ud.INFO, 'handlers/__init__._remove() children of base dn %s' % (self.dn,))
 				subelements = self.lo.search(base=self.dn, scope='one', attr=[])
@@ -1594,7 +1598,7 @@ class simpleLdap(object):
 		return self.policyObjects[policy_type]
 
 	def _init_ldap_search(self, policy):  # type: ("simplePolicy") -> None
-		properties = {}  # type: dict[str, univention.admin.property]
+		properties = {}  # type: Dict[str, univention.admin.property]
 		if hasattr(policy, 'property_descriptions'):
 			properties = policy.property_descriptions
 		elif hasattr(policy, 'descriptions'):
@@ -1649,7 +1653,7 @@ class simpleLdap(object):
 		"""Calls checkLdap() method on every property if present.
 			checkLdap() may raise an exception if the value does not match the constraints of the underlying syntax.
 		"""
-		properties = {}  # type: dict[str, univention.admin.property]
+		properties = {}  # type: Dict[str, univention.admin.property]
 		if hasattr(self, 'descriptions'):
 			properties = self.descriptions
 		for pname, prop in properties.items():
@@ -1697,7 +1701,7 @@ class simpleLdap(object):
 		return containers
 
 	@classmethod
-	def lookup(cls, co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):  # type: (univention.admin.uldap.config, univention.admin.uldap.access, str, str, Optional[str], str, bool, bool, int, int, Optional[list], Optional[Dict]) -> list[simpleLdap]
+	def lookup(cls, co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):  # type: (univention.admin.uldap.config, univention.admin.uldap.access, str, str, Optional[str], str, bool, bool, int, int, Optional[List], Optional[Dict]) -> List[simpleLdap]
 		"""
 		Perform a LDAP search and return a list of instances.
 

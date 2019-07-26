@@ -44,11 +44,12 @@ define([
 	"umc/widgets/HiddenInput",
 	"umc/widgets/Wizard",
 	"umc/widgets/ContainerWidget",
+	"umc/widgets/SuggestionBox",
 	"umc/modules/uvmm/DriveGrid",
 	"umc/modules/uvmm/MemoryTextBox",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, aspect, Memory, Observable, tools, TitlePane, TextArea, TextBox, ComboBox, CheckBox, HiddenInput, Wizard, ContainerWidget, DriveGrid, MemoryTextBox, types, _) {
+], function(declare, lang, array, aspect, Memory, Observable, tools, TitlePane, TextArea, TextBox, ComboBox, CheckBox, HiddenInput, Wizard, ContainerWidget, SuggestionBox, DriveGrid, MemoryTextBox, types, _) {
 
 	return declare("umc.modules.uvmm.DomainWizard", [ Wizard ], {
 		_profile: null,
@@ -71,6 +72,7 @@ define([
 			this.getWidget('maxMem').set('value', types.parseCapacity(this._profile.ram || '4 MiB'));
 			this.getWidget('vcpus').set('value', this._profile.cpus);
 			this.getWidget('vnc').set('value', this._profile.vnc);
+			this.getWidget('cpu_model').set('value', this._profile.cpu_model);
 
 			// update page header
 			this._pages.general.set('headerText', _('Create a virtual machine (profile: %s)', this._profile.name));
@@ -151,6 +153,15 @@ define([
 						name: 'vcpus',
 						type: ComboBox,
 						label: _('Number of CPUs')
+					}, {
+						name: 'cpu_model',
+						type: SuggestionBox,
+						label: _('CPU model'),
+						staticValues: types.cpuModels
+					}, {
+						name: 'autostart',
+						type: CheckBox,
+						label: _('Always start VM with host')
 					}, {
 						name: 'vnc',
 						type: CheckBox,

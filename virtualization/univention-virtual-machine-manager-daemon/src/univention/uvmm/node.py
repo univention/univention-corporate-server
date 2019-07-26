@@ -75,40 +75,40 @@ STATES = ('NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHE
 
 
 class Description(object):
-    __slots__ = ('desc', 'args')
+	__slots__ = ('desc', 'args')
 
-    def __init__(self, *args, **kwargs):
-        self.desc = kwargs.get('desc')
-        self.args = args
+	def __init__(self, *args, **kwargs):
+		self.desc = kwargs.get('desc')
+		self.args = args
 
-    def __str__(self):  # type: () -> str
-        return self.desc
+	def __str__(self):  # type: () -> str
+		return self.desc
 
-    def __getitem__(self, item):  # type: (int) -> Union[str, Description]
-        try:
-            data = self.args[item]
-        except IndexError:
-            return self.__class__(desc=str(item))
+	def __getitem__(self, item):  # type: (int) -> Union[str, Description]
+		try:
+			data = self.args[item]
+		except IndexError:
+			return self.__class__(desc=str(item))
 
-        if isinstance(data, str):
-            return self.__class__(desc=data)
-        elif isinstance(data, (list, tuple)):
-            desc, args = data
-            return self.__class__(*args, desc=desc)
+		if isinstance(data, str):
+			return self.__class__(desc=data)
+		elif isinstance(data, (list, tuple)):
+			desc, args = data
+			return self.__class__(*args, desc=desc)
 
-        raise TypeError(args)
+		raise TypeError(args)
 
 
 DOM_EVENTS = Description(
-    ("Defined", ("Added", "Updated", "Renamed", "Snapshot")),
-    ("Undefined", ("Removed", "Renamed")),
-    ("Started", ("Booted", "Migrated", "Restored", "Snapshot", "Wakeup")),
-    ("Suspended", ("Paused", "Migrated", "IOError", "Watchdog", "Restored", "Snapshot", "API error", "Postcopy", "Postcopy failed")),
-    ("Resumed", ("Unpaused", "Migrated", "Snapshot", "Postcopy")),
-    ("Stopped", ("Shutdown", "Destroyed", "Crashed", "Migrated", "Saved", "Failed", "Snapshot", "Daemon")),
-    ("Shutdown", ("Finished", "On guest request", "On host request")),
-    ("PMSuspended", ("Memory", "Disk")),
-    ("Crashed", ("Panicked",)),
+	("Defined", ("Added", "Updated", "Renamed", "Snapshot")),
+	("Undefined", ("Removed", "Renamed")),
+	("Started", ("Booted", "Migrated", "Restored", "Snapshot", "Wakeup")),
+	("Suspended", ("Paused", "Migrated", "IOError", "Watchdog", "Restored", "Snapshot", "API error", "Postcopy", "Postcopy failed")),
+	("Resumed", ("Unpaused", "Migrated", "Snapshot", "Postcopy")),
+	("Stopped", ("Shutdown", "Destroyed", "Crashed", "Migrated", "Saved", "Failed", "Snapshot", "Daemon")),
+	("Shutdown", ("Finished", "On guest request", "On host request")),
+	("PMSuspended", ("Memory", "Disk")),
+	("Crashed", ("Panicked",)),
 )
 ERROR_EVENTS = Description("None", "Pause", "Report")
 CONNECTION_EVENTS = Description("Error", "End-of-file", "Keepalive", "Client")
@@ -335,6 +335,8 @@ class Domain(PersistentCached):
 		if self.pd.name is None:
 			self.pd.name = domain.name()
 
+		self.pd.autostart = bool(domain.autostart())
+
 		info = domain.info()
 		self.pd.state, maxMem, curMem, self.pd.vcpus, runtime = info
 		self.pd.maxMem = long(maxMem) << 10  # KiB
@@ -546,6 +548,7 @@ class Domain(PersistentCached):
 		self.pd.hyperv = domain_tree.find('features/hyperv/relaxed') is not None
 		self.xml2obj_boot(domain_tree)
 		self.xml2obj_clock(domain_tree)
+		self.pd.cpu_model = domain_tree.findtext('cpu/model', namespaces=XMLNS)
 
 		devices = domain_tree.find('devices', namespaces=XMLNS)
 		self.xml2obj_disks(devices)
@@ -845,7 +848,7 @@ class Node(PersistentCached):
 			self.pd.last_try = time.time()
 			# double timer interval until maximum
 			hz = min(self.current_frequency * 2, Nodes.BEBO_FREQUENCY)
-			logger.warning("'%s' broken? next check in %s. %s", self.pd.uri, ms(hz), ex, exc_info=True)
+			logger.warning("'%s' broken? next check in %s. %s", self.pd.uri, ms(hz), ex, exc_info=self.current_frequency == self.config_frequency)
 			if hz > self.current_frequency:
 				self.current_frequency = hz
 			self._unregister()
@@ -1076,8 +1079,7 @@ class Node(PersistentCached):
 		# type: (bool) -> None
 		"""Unregister callbacks doing updates."""
 		if self.timer is not None:
-			timer = self.timer
-			self.timer = None
+			timer, self.timer = self.timer, None
 			self.timerEvent.set()
 			while wait:
 				timer.join(1.0)  # wait for up to 1 second until Thread terminates
@@ -1091,18 +1093,18 @@ class Node(PersistentCached):
 	def _unregister(self):
 		# type: () -> None
 		"""Unregister callback and close connection."""
-		if self.conn is not None:
+		conn, self.conn = self.conn, None
+		if conn is not None:
 			while self.domainCB:
 				try:
-					self.conn.domainEventDeregisterAny(self.domainCB.pop())
-				except Exception:
-					logger.error("%s: Exception in domainEventDeregisterAny", self.pd.uri, exc_info=True)
+					conn.domainEventDeregisterAny(self.domainCB.pop())
+				except Exception as ex:
+					logger.warning("%s: Exception in domainEventDeregisterAny: %s", self.pd.uri, ex)
 
 			try:
-				self.conn.close()
-			except Exception:
-				logger.error('%s: Exception in conn.close', self.pd.uri, exc_info=True)
-			self.conn = None
+				conn.close()
+			except Exception as ex:
+				logger.warning('%s: Exception in conn.close: %s', self.pd.uri, ex)
 
 	def set_frequency(self, hz):
 		# type: (int) -> None
@@ -1523,6 +1525,14 @@ def _domain_edit(node, dom_stat, xml):
 		_update_xml(domain, 'currentMemory', '%d' % (dom_stat.maxMem >> 10))  # KiB
 	# /domain/vcpu
 	_update_xml(domain, 'vcpu', '%d' % dom_stat.vcpus)
+	# /domain/cpu/model
+	if dom_stat.cpu_model:
+		cpu = domain.find('cpu', namespaces=XMLNS)
+		if cpu is None:
+			cpu = ET.SubElement(domain, 'cpu', mode='custom', match='exact')
+		_update_xml(cpu, 'model', dom_stat.cpu_model, fallback='allow')
+	elif configRegistry.get('uvmm/vm/cpu/host-model') != 'missing':
+		_update_xml(domain, 'cpu', None)
 
 	# /domain/features
 	domain_features = _update_xml(domain, 'features', '')
@@ -1832,6 +1842,8 @@ def domain_define(uri, domain):
 		logger.debug('XML DUMP: %s' % new_xml.replace('\n', ' '))
 		dom2 = conn.defineXML(new_xml)
 		domain.uuid = dom2.UUIDString()
+		if domain.autostart is not None:
+			dom2.setAutostart(domain.autostart)
 		_domain_backup(dom2, save=False)
 	except libvirt.libvirtError as ex:
 		logger.error(ex)

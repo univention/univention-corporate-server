@@ -53,6 +53,7 @@ define([
 	"umc/widgets/MultiInput",
 	"umc/widgets/CheckBox",
 	"umc/widgets/PasswordBox",
+	"umc/widgets/SuggestionBox",
 	"umc/modules/uvmm/SnapshotGrid",
 	"umc/modules/uvmm/TargetHostGrid",
 	"umc/modules/uvmm/InterfaceGrid",
@@ -61,7 +62,7 @@ define([
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
 ], function(declare, lang, array, topic, on, Memory, Observable, tools, dialog, store, Page, Form, ContainerWidget, TabController, StackContainer, TitlePane, StandbyMixin,
-	TextBox, TextArea, HiddenInput, ComboBox, MultiInput, CheckBox, PasswordBox, SnapshotGrid, TargetHostGrid, InterfaceGrid, DriveGrid, MemoryTextBox, types, _) {
+	TextBox, TextArea, HiddenInput, ComboBox, MultiInput, CheckBox, PasswordBox, SuggestionBox, SnapshotGrid, TargetHostGrid, InterfaceGrid, DriveGrid, MemoryTextBox, types, _) {
 
 	return declare("umc.modules.uvmm.DomainPage", [ Page, StandbyMixin ], {
 		nested: true,
@@ -194,6 +195,11 @@ define([
 					type: ComboBox,
 					label: _('Number of CPUs')
 				}, {
+					name: 'cpu_model',
+					type: SuggestionBox,
+					label: _('CPU model'),
+					staticValues: types.cpuModels
+				}, {
 					name: 'maxMem',
 					type: MemoryTextBox,
 					required: true,
@@ -213,6 +219,10 @@ define([
 					type: ComboBox,
 					label: _('RTC reference'),
 					staticValues: types.rtcOffset
+				}, {
+					name: 'autostart',
+					label: _('Always start VM with host'),
+					type: CheckBox
 				}, {
 					name: 'vnc',
 					type: CheckBox,
@@ -248,10 +258,12 @@ define([
 					layout: [
 						'arch',
 						'vcpus',
+						'cpu_model',
 						'maxMem',
 						'rtc_offset',
 						'boot_hvm',
-						'hyperv'
+						'hyperv',
+						'autostart'
 					]
 				}, {
 					label: _('Remote access'),

@@ -47,6 +47,8 @@ import logging
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
+univention.admin.modules.update()
+
 logger = logging.getLogger('uvmmd.ldap')
 
 # Mapping from service name to libvirt-uri

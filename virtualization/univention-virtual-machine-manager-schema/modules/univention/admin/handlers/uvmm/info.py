@@ -31,7 +31,6 @@
 # <http://www.gnu.org/licenses/>.
 
 import univention.admin
-import univention.admin.filter as udm_filter
 import univention.admin.mapping as udm_mapping
 from univention.admin.handlers import simpleLdap
 import univention.admin.syntax as udm_syntax
@@ -44,7 +43,7 @@ _ = translation('univention.admin.handlers.uvmm').translate
 module = 'uvmm/info'
 default_containers = ['cn=Information,cn=Virtual Machine Manager']
 
-childs = 0
+childs = False
 short_description = _('UVMM: Machine information')
 object_name = _('Machine information')
 object_name_plural = _('Machine information')
@@ -52,56 +51,41 @@ long_description = ''
 operations = ['search', 'edit', 'add', 'remove']
 
 
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionVirtualMachine']
+	)
+}
+
 # UDM properties
 property_descriptions = {
 	'uuid': univention.admin.property(
 		short_description=_('UUID'),
-		long_description=_('UUID'),
+		long_description=_('The unique identifier used by libvirt to identify the VM'),
 		syntax=udm_syntax.string,
-		multivalue=False,
-		options=[],
 		required=True,
-		may_change=True,
 		identifies=True
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
 		long_description=_('Description of virtual machine'),
 		syntax=udm_syntax.TextArea,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'os': univention.admin.property(
 		short_description=_('Operating system'),
 		long_description=_('Name of the operation system'),
 		syntax=udm_syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'contact': univention.admin.property(
 		short_description=_('Contact'),
+		long_description=_('Name and/or email address of a contact person'),
 		syntax=udm_syntax.string,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 	'profile': univention.admin.property(
 		short_description=_('Profile'),
 		long_description=_('Reference to the profile used for defining this VM'),
 		syntax=udm_syntax.UvmmProfiles,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False
 	),
 }
 
@@ -130,62 +114,12 @@ mapping.register('profile', 'univentionVirtualMachineProfileRef', None, udm_mapp
 
 
 class object(simpleLdap):
-
 	"""
 	UDM module to handle UVMM VM info objects.
 	"""
 	module = module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
-		global mapping
-		global property_descriptions
 
-		self.mapping = mapping
-		self.descriptions = property_descriptions
-
-		simpleLdap.__init__(self, co, lo, position, dn, superordinate)
-
-	def _ldap_pre_create(self):
-		"""
-		Populate object with default value before LDAP creation.
-		"""
-		self.dn = '%s=%s,%s' % (
-			mapping.mapName('uuid'),
-			mapping.mapValue('uuid', self.info['uuid']),
-			self.position.getDn()
-		)
-
-	def _ldap_addlist(self):
-		"""
-		Add additional attributes before LDAP creation.
-		"""
-		return [
-			('objectClass', ['univentionVirtualMachine'])
-		]
-
-
-def lookup_filter(filter_s=None, lo=None):
-	"""
-	Return LDAP search filter for UVMM VM info entries.
-	"""
-	ldap_filter = udm_filter.conjunction('&', [
-		udm_filter.expression('objectClass', 'univentionVirtualMachine'),
-	])
-	ldap_filter.append_unmapped_filter_string(filter_s, udm_mapping.mapRewrite, mapping)
-	return unicode(ldap_filter)
-
-
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-	"""
-	Perform an LDAP search and return all UVMM VM info entries.
-	"""
-	ldap_filter = lookup_filter(filter_s)
-	return [object(co, lo, None, dn)
-			for dn in lo.searchDn(ldap_filter, base, scope, unique, required, timeout, sizelimit)]
-
-
-def identify(dn, attr, canonical=0):
-	"""
-	Check is the LDAP object is an UVMM VM info entry handles by this module.
-	"""
-	return 'univentionVirtualMachine' in attr.get('objectClass', [])
+lookup = object.lookup
+lookup_filter = object.lookup_filter
+identify = object.identify

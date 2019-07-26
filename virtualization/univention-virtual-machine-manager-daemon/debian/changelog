@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-daemon (8.0.1-8) unstable; urgency=low
+
+  * Bug #49695: make CPU model configurable
+  * Bug #28771: Add configuration for domain autostart
+  * Bug #49737: Improve Exception handling on connection close
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 23 Jul 2019 17:24:23 +0200
+
 univention-virtual-machine-manager-daemon (8.0.1-7) unstable; urgency=low
 
   * Bug #49403: Fix traceback in select.error handling

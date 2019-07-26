@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 from univention.admin.uexceptions import base as udm_error
+import univention.admin.modules
 import univention.admin.handlers.uvmm.profile as uvmm_profile
 
 from univention.lib.i18n import Translation
@@ -41,6 +42,8 @@ from univention.management.console.error import UMC_Error
 from univention.management.console.modules.decorators import simple_response
 
 from urlparse import urlsplit
+
+univention.admin.modules.update()
 
 _ = Translation('univention-management-console-modules-uvmm').translate
 

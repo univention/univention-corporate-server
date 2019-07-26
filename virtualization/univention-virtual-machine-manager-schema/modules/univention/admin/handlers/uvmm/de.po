@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machine-manager-schema\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-02-22 15:18+0100\n"
-"PO-Revision-Date: 2012-10-25 14:59+0200\n"
+"POT-Creation-Date: 2019-07-26 16:05+0200\n"
+"PO-Revision-Date: 2019-07-23 08:53+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "Language: de\n"
@@ -36,6 +36,14 @@ msgstr "Festplatte"
 #: modules/univention/admin/handlers/uvmm/profile.py:61
 msgid "CDROM drive"
 msgstr "CDROM-Laufwerk"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:169
+msgid "CPU model"
+msgstr "CPU Modell"
+
+#: modules/univention/admin/handlers/uvmm/profile.py:170
+msgid "CPU model name from e.g. `virsh cpu-models x86_64`"
+msgstr "CPU Modellname z.B. von `virsh cpu-models x86_64`"
 
 #: modules/univention/admin/handlers/uvmm/profile.py:62
 msgid "Network"
@@ -260,10 +268,15 @@ msgstr "UVMM: Informationen zur Maschine"
 msgid "Machine information"
 msgstr "Informationen zur Maschine"
 
-#: modules/univention/admin/handlers/uvmm/info.py:58
-#: modules/univention/admin/handlers/uvmm/info.py:59
+#: modules/univention/admin/handlers/uvmm/info.py:64
 msgid "UUID"
 msgstr "UUID"
+
+#: modules/univention/admin/handlers/uvmm/info.py:65
+msgid "The unique identifier used by libvirt to identify the VM"
+msgstr ""
+"Der eindeutige Bezeicher, wie er von libvirt zu Identifikation der VM "
+"verwendet wird"
 
 #: modules/univention/admin/handlers/uvmm/info.py:68
 msgid "Description"
@@ -280,6 +293,10 @@ msgstr "Name des Betriebssystem"
 #: modules/univention/admin/handlers/uvmm/info.py:88
 msgid "Contact"
 msgstr "Kontakt"
+
+#: modules/univention/admin/handlers/uvmm/info.py:82
+msgid "Name and/or email address of a contact person"
+msgstr "Name und/oder E-Mail-Adresser einer Kontaktperson"
 
 #: modules/univention/admin/handlers/uvmm/info.py:98
 msgid "Reference to the profile used for defining this VM"
@@ -322,30 +339,35 @@ msgstr "Cloud-Verbindungen"
 msgid "Reference to the type of the cloud connection"
 msgstr "Referenz auf den Typ der Cloud-Verbindung"
 
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:78
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:77
 msgid "Pattern for filtering images"
-msgstr ""
+msgstr "Suchmuster für Abbilder"
 
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:79
 msgid ""
 "When creating new instances, this pattern is used to further filter all "
 "available Images"
 msgstr ""
+"Beim Anlegen von neuen Instanz wird dieses Suchmuster verwendet, um die "
+"Liste der verfügbaren Abbilder zu filtern"
 
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:89
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:90
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:84
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:85
 msgid "Show UCS images when creating a new instance"
-msgstr ""
+msgstr "Zeige UCS Abbilder an beim Anlegen neuer Instanzen"
 
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:100
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:91
 msgid "Add the listed images to the list of selectable images"
 msgstr ""
+"Fügt die aufgelisteten Abbilder zur Liste der auswählbaren Abbilder hinzu"
 
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:101
+#: modules/univention/admin/handlers/uvmm/cloudconnection.py:92
 msgid ""
 "The specified images are added to the list of selectable images in the "
 "instance wizard"
 msgstr ""
+"Die angegeben Abbilder werden zur Liste der auswählbaren Abbilder beim "
+"Instanz-Assistenten hinzugefügt"
 
 #: modules/univention/admin/handlers/uvmm/cloudconnection.py:110
 msgid "Cloud Connection parameters"
