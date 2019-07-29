@@ -271,6 +271,8 @@ class Client(signals.Provider, Translation):
 		else:
 			sock = self.__realsocket
 
+		if msg.command == 'AUTH':
+			self.__auth_ids.append(msg.id)
 		self.__resend_queue.setdefault(sock, []).append(str(msg))
 
 		if self._resend(sock):
@@ -362,7 +364,6 @@ class Client(signals.Provider, Translation):
 		"""Authenticate against the UMC server"""
 		if msg.command != 'AUTH':
 			raise TypeError('Must be AUTH command!')
-		self.__auth_ids.append(msg.id)
 		self.request(msg)
 
 	def __closed(self):

@@ -134,7 +134,6 @@ class SessionClient(object):
 		except NoSocketError:
 			CORE.warn('SessionClient(0x%x): connection to UMC server failed' % (id(self),))
 			raise NoSocketError('Connection failed')
-		self._auth_response = None
 		self._requestid2response_queue = {}
 		self._lock = threading.Lock()
 		self.ip = ip
@@ -142,7 +141,7 @@ class SessionClient(object):
 	def _authenticated(self, success, response):
 		"""Callback function for 'authenticated' from UMCP-Server."""
 		CORE.process('SessionClient(0x%x): _authenticated: success=%s  status=%s  message=%s result=%r' % (id(self), success, response.status, response.message, response.result))
-		self._auth_response = response
+		self.authenticated = success
 		self._response(response)
 
 	def authenticate_user(self, request, response_queue):
@@ -174,10 +173,7 @@ class SessionClient(object):
 		finally:
 			self._lock.release()
 		try:
-			if request.command == 'AUTH':
-				self.client.authenticate(request)
-			else:
-				self.client.request(request)
+			self.client.request(request)
 		except IOError:
 			CORE.error(traceback.format_exc())
 			self.client.disconnect()
@@ -196,8 +192,6 @@ class SessionClient(object):
 			response = Response(request)
 			response.status = SERVICE_UNAVAILABLE
 			response.message = message
-			if request.command == 'AUTH':
-				self._auth_response = response
 			queue.put(response)
 
 	def cleanup_request(self, request):
@@ -768,7 +762,7 @@ class CPgeneric(Ressource):
 
 		user = self.get_user()
 		client = UMCP_Dispatcher.sessions.get(sessionid)
-		if user and (user.password or user.saml) and (not client or client and (not client._auth_response or client._auth_response.status != 200)):
+		if user and (user.password or user.saml) and (not client or not client.authenticated):
 			auth = Request('AUTH')
 			auth.body = {'username': user.username, 'password': user.saml.message if user.saml else user.password, 'auth_type': "SAML" if user.saml else None}
 			try:
