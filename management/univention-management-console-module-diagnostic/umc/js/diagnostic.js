@@ -121,21 +121,23 @@ define([
 					}
 					description = description.replace(repl, link);
 				} else if (link) {
-					div.addChild(new Text({innerHTML: link}));
+					var a = new Text({innerHTML: link});
+					div.addChild(a);
 				}
 			});
 
-			array.forEach(item.links, function(link) {
+			array.forEach(item.links, lang.hitch(this, function(link) {
 				var a = domConstruct.create('div');
 				a.appendChild(domConstruct.create('a', {href: link.href, innerHTML: link.label || link.href, target: '_blank', rel: 'noopener noreferrer'}));
 				a = new Text({innerHTML: a.innerHTML});
+				this.own(a);
 				var repl = '{' + link.name  + '}';
 				if (description.indexOf(repl) !== -1) {
 					description = description.replace(repl, a.innerHTML);
 				} else {
 					div.addChild(a);
 				}
-			});
+			}));
 
 			text.set('content', description);
 
@@ -263,6 +265,7 @@ define([
 			this._progressBar = new ProgressBar({
 				region: 'nav'
 			});
+			this.own(this._progressBar);
 			this._progressBar.setInfo(_('Running full diagnosis...'), undefined, Infinity);
 
 			var deferred = new Deferred();
@@ -293,7 +296,9 @@ define([
 		},
 
 		_runDiagnose: function(plugin, opts) {
-			var run = this.umcpProgressCommand(new ProgressBar(), 'diagnostic/run', lang.mixin({plugin: plugin.id}, opts));
+			var progress = new ProgressBar();
+			this.own(progress);
+			var run = this.umcpProgressCommand(progress, 'diagnostic/run', lang.mixin({plugin: plugin.id}, opts));
 			run.then(lang.hitch(this, function(result) {
 				this._grid.store.put(lang.mixin(plugin, result));
 				this.refreshGrid();
