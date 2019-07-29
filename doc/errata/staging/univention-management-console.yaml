@@ -3,12 +3,12 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-management-console
-fix: 11.0.4-29A~4.4.0.201907231728
+fix: 11.0.4-32A~4.4.0.201907291507
 desc: |
  This update addresses the following issue(s):
  * The security for authentication requests has been improoved.
  * The progress bar interval is now configurable via the backend of modules.
  * It is now prevented that the UMC-Webserver creates multiple new connections
-   for a session after the connection to the UMC-Server was closed and multiple
-   parallel requests from the old session are requested.
+   for a session after the connection to the UMC-Server was closed and
+   multiple parallel requests from the old session are requested.
 bug: [44602, 48002, 49929]
