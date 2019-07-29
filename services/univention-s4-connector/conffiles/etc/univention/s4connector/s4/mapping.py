@@ -358,11 +358,6 @@ post_attributes={
 							ldap_attribute='departmentNumber',
 							con_attribute='departmentNumber',
 						),''',
-					'secretary': '''univention.s4connector.attribute (
-							ucs_attribute='secretary',
-							ldap_attribute='secretary',
-							con_attribute='secretary',
-						),''',
 					'roomNumber': '''univention.s4connector.attribute (
 							ucs_attribute='roomNumber',
 							ldap_attribute='roomNumber',

@@ -48,7 +48,7 @@ fi
 
 # Bug 49092, synchronize more attributes in s4-connector
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 13.0.2-20; then
-	univention-config-registry set connector/s4/mapping/user/attributes/ignorelist?"unixhome,employeeType,employeeNumber,country,loginShell,title,gidNumber,uidNumber,departmentNumber,secretary,roomNumber,initials,physicalDeliveryOfficeName,postOfficeBox,preferredLanguage"
+	univention-config-registry set connector/s4/mapping/user/attributes/ignorelist?"unixhome,employeeType,employeeNumber,country,loginShell,title,gidNumber,uidNumber,departmentNumber,roomNumber,initials,physicalDeliveryOfficeName,postOfficeBox,preferredLanguage"
 fi
 # Bug 46107, add Console Logon builtin to group ignore list
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 12.0.0-3; then
