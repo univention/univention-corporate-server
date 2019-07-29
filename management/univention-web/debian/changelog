@@ -1,3 +1,9 @@
+univention-web (3.0.5-23) unstable; urgency=medium
+
+  * Bug #48002: make progress interval configurable
+
+ -- Florian Best <best@univention.de>  Mon, 29 Jul 2019 14:03:42 +0200
+
 univention-web (3.0.5-22) unstable; urgency=medium
 
   * Bug #48811: fix filename

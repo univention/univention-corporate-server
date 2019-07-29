@@ -697,16 +697,17 @@ define([
 					var title = data.result.title;
 					progressBar.setInfo(title);
 					var allData = [];
-					var splitIdx = commandStr.lastIndexOf('/');
-					var progressCmd = commandStr.slice(0, splitIdx) + '/progress';
+					var progressCmd = data.result.location || commandStr.slice(0, commandStr.lastIndexOf('/')) + '/progress';
 					this.umcpProgressSubCommand({
 						progressCmd: progressCmd,
 						progressID: progressID,
-						flavor: flavor
+						flavor: flavor,
+						// errorHandler: errorHandler,
+						retryAfter: data.result.retry_after || 200
 					}).then(function() {
-							deferred.resolve(allData);
-					}, function() {
-						deferred.reject();
+						deferred.resolve(allData);
+					}, function(error) {
+						deferred.reject(error);
 					}, function(result) {
 						allData = allData.concat(result.intermediate);
 						if (result.percentage === 'Infinity') { // FIXME: JSON cannot handle Infinity
@@ -719,8 +720,8 @@ define([
 						}
 					});
 				}),
-				function() {
-					deferred.reject(arguments);
+				function(error) {
+					deferred.reject(tools.parseError(error));
 				}
 			);
 			return deferred;
@@ -737,11 +738,13 @@ define([
 					if (data.result.finished) {
 						deferred.resolve();
 					} else {
-						setTimeout(lang.hitch(this, 'umcpProgressSubCommand', lang.mixin({}, props, {deferred: deferred}), 200));
+						props.progressCmd = data.result.location || props.progressCmd;
+						props.retryAfter = data.result.retry_after || props.retryAfter;
+						setTimeout(lang.hitch(this, 'umcpProgressSubCommand', lang.mixin({}, props, {deferred: deferred}), props.retryAfter));
 					}
 				}),
-				function() {
-					deferred.reject();
+				function(error) {
+					deferred.reject(tools.parseError(error));
 				}
 			);
 			return deferred;

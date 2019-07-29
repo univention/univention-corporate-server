@@ -107,6 +107,11 @@ class Instance(Base, ProgressMixin):
 
 		return plugin.execute(self, **args)
 
+	def new_progress(self, *args, **kwargs):
+		progress = super(Instance, self).new_progress(*args, **kwargs)
+		progress.retry_after = 600
+		return progress
+
 	@sanitize(pattern=PatternSanitizer(default='.*'))
 	@simple_response
 	def query(self, pattern):

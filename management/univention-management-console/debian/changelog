@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-31) unstable; urgency=medium
+
+  * Bug #48002: make progress interval configurable
+
+ -- Florian Best <best@univention.de>  Mon, 29 Jul 2019 14:01:37 +0200
+
 univention-management-console (11.0.4-30) unstable; urgency=medium
 
   * Bug #44602: add allow_none for new_password

@@ -7,4 +7,5 @@ fix: 11.0.4-29A~4.4.0.201907231728
 desc: |
  This update addresses the following issue(s):
  * The security for authentication requests has been improoved.
-bug: [44602]
+ * The progress bar interval is now configurable via the backend of modules.
+bug: [44602, 48002]

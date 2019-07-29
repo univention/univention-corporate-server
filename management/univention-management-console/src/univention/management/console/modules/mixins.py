@@ -41,6 +41,8 @@ way. Just let your module derive from
 :class:`~univention.management.console.module.Base` (as before) and the mixin
 classes.
 """
+import random
+
 from univention.lib.i18n import Translation
 from univention.management.console.error import BadRequest
 from univention.management.console.modules.decorators import simple_response
@@ -64,6 +66,8 @@ class Progress(object):
 		self.intermediate = []
 		self.finished = False
 		self.exc_info = None
+		self.retry_after = 200
+		self.location = None
 		# there is another variable named
 		#   "result". it is only set if explicitly
 		#   calling finish_with_result
@@ -99,12 +103,15 @@ class Progress(object):
 			'finished': self.finished,
 			'intermediate': self.intermediate[:],
 			'message': self.message,
+			'retry_after': self.retry_after,
 		}
 		try:
 			ret['percentage'] = self.current / self.total * 100
 		except ZeroDivisionError:
 			# ret['percentage'] = float('Infinity') FIXME: JSON cannot handle Infinity
 			ret['percentage'] = 'Infinity'
+		if self.location is not None:
+			ret['location'] = self.location
 		if hasattr(self, 'result'):
 			ret['result'] = self.result
 		del self.intermediate[:]
@@ -133,7 +140,7 @@ class ProgressMixin(object):
 			self._progress_objs = {}
 		if title is None:
 			title = _('Please wait for operation to finish')
-		self._progress_id += 1
+		self._progress_id = random.randint(1, 100000)
 		self._progress_objs[self._progress_id] = progress = Progress(self._progress_id, title, total)
 		return progress
 
