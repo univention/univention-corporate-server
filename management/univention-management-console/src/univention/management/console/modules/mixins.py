@@ -140,7 +140,7 @@ class ProgressMixin(object):
 			self._progress_objs = {}
 		if title is None:
 			title = _('Please wait for operation to finish')
-		self._progress_id = random.randint(1, 100000)
+		self._progress_id += random.randint(1, 100000)
 		self._progress_objs[self._progress_id] = progress = Progress(self._progress_id, title, total)
 		return progress
 
