@@ -703,7 +703,7 @@ define([
 						progressID: progressID,
 						flavor: flavor,
 						// errorHandler: errorHandler,
-						retryAfter: data.result.retry_after || 200
+						retryAfter: data.result.retry_after === undefined ? 200 : data.result.retry_after,
 					}).then(function() {
 						deferred.resolve(allData);
 					}, function(error) {
@@ -739,7 +739,7 @@ define([
 						deferred.resolve();
 					} else {
 						props.progressCmd = data.result.location || props.progressCmd;
-						props.retryAfter = data.result.retry_after || props.retryAfter;
+						props.retryAfter = data.result.retry_after === undefined ? props.retryAfter : data.result.retry_after;
 						setTimeout(lang.hitch(this, 'umcpProgressSubCommand', lang.mixin({}, props, {deferred: deferred}), props.retryAfter));
 					}
 				}),

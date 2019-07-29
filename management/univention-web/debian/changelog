@@ -1,3 +1,9 @@
+univention-web (3.0.5-24) unstable; urgency=medium
+
+  * Bug #48002: allow retry_after == 0
+
+ -- Florian Best <best@univention.de>  Mon, 29 Jul 2019 15:40:15 +0200
+
 univention-web (3.0.5-23) unstable; urgency=medium
 
   * Bug #48002: make progress interval configurable
