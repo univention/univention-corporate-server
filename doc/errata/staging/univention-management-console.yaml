@@ -8,4 +8,7 @@ desc: |
  This update addresses the following issue(s):
  * The security for authentication requests has been improoved.
  * The progress bar interval is now configurable via the backend of modules.
-bug: [44602, 48002]
+ * It is now prevented that the UMC-Webserver creates multiple new connections
+   for a session after the connection to the UMC-Server was closed and multiple
+   parallel requests from the old session are requested.
+bug: [44602, 48002, 49929]

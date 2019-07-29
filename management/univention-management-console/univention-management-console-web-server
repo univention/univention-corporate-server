@@ -616,12 +616,22 @@ class Ressource(object):
 			# we must not change the session ID cookie as this might cause
 			# race conditions in the frontend during login, especially when logged in via SAML
 			return self.get_session_id()
+		user = self.get_user()
+		if user:
+			# If the user was already authenticated at the UMC-Server
+			# and the connection was lost (e.g. due to a module timeout)
+			# we must not change the session ID cookie, as there might be multiple concurrent
+			# requests from the same client during a new initialization of the connection to the UMC-Server.
+			# They must cause that the session has one singleton connection!
+			return user.sessionid
 		if random:
 			return str(uuid.uuid4())
 		return sessionidhash()
 
 	def get_session_id(self):
-		"""get the current session ID from cookie."""
+		"""get the current session ID from cookie (or basic auth hash)."""
+		# caution: use this function wisely: do not create a new session with this ID!
+		# because it is an arbitrary value coming from the Client!
 		return self.get_cookie('UMCSessionId') or sessionidhash()
 
 	def get_session(self):
@@ -1201,7 +1211,7 @@ class SAML(Ressource):
 
 		try:
 			is_logout_request = 'LogoutRequest' in zlib.decompress(message.decode('base64'), -15).split('>', 1)[0]
-		except:
+		except Exception:
 			CORE.error(traceback.format_exc())
 			is_logout_request = False
 
