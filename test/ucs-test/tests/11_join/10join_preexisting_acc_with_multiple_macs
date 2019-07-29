@@ -42,7 +42,7 @@ def join_member_with_preexisting_acc(memberserver, udm):
 			"-ip", memberserver["ip"],
 			"-mac", memberserver["mac"][i],
 		])
-		# Readd macs
+		# Re-add macs
 		udm.modify_object("computers/memberserver", dn=memberserver["dn"], mac=memberserver["mac"])
 		utils.verify_ldap_object(memberserver["dn"], expected_attr={"macAddress": memberserver["mac"]})
 

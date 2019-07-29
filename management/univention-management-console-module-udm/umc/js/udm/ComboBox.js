@@ -45,7 +45,7 @@ define([
 	return declare("umc.modules.udm.ComboBox", [ ComboBox ], {
 		// summary:
 		//		This class extends the normal ComboBox in order to encapsulate
-		//		some UDM specific behaviour.
+		//		some UDM specific behavior.
 
 		advancedSearchItem: null,
 
@@ -215,7 +215,7 @@ define([
 		_keyPress: function(evt) {
 			if (evt.keyCode == keys.ENTER) {
 				this._searchDisplayedValueOnServerAndOpen();
-				// dont submit form
+				// don't submit form
 				evt.preventDefault();
 			}
 		},

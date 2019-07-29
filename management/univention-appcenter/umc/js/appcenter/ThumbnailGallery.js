@@ -83,7 +83,7 @@ define([
 		defaultThumbHeight: null,
 
 		//heighestImg: {w: number, h: number}
-		//     the natural width and height of the heighest img in the contentSlider
+		//     the natural width and height of the highest img in the contentSlider
 		heighestImg: null,
 
 		//heighestImgRatio = heighestImg.w / heighestImg.h
@@ -93,7 +93,7 @@ define([
 		heighestImgRatio: null,
 
 		//used to check if the contentSliderWrapper is to small for showNextThumbs and showPrevThumbs to work correctly
-		//and change behaviour accordingly
+		//and change behavior accordingly
 		widestDefaultThumbWidth: null,
 
 		//_youtubeIframeRatio: defaults to 16/9
@@ -676,7 +676,7 @@ define([
 					var newOffsetCentered = newOffsetIgnoringNavButtons - ((this._widthForThumbs - targetThumbWidth) / 2);
 
 					//if the centered offset would show blank parts of the contentSlider revert to 0 or maxOffset
-					//if the centerd thumb would only be 50px away from 0 or maxOffset set them to 0 or maxOffset
+					//if the centered thumb would only be 50px away from 0 or maxOffset set them to 0 or maxOffset
 					if (newOffsetCentered <= (this._galleryThumbMarginExtents + 30) ) {
 						newOffsetIgnoringNavButtons = 0;
 						newOffsetWithNavButtons = newOffsetIgnoringNavButtons;

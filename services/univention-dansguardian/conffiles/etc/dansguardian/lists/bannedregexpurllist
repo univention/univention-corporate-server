@@ -38,7 +38,7 @@
 #Block websites containing proxies
 #(anonymizer|proxify|megaproxy)
 
-#AGRESSIVE blocking of all URLs containing proxy - WARNING - this may overblock!!
+#AGGRESSIVE blocking of all URLs containing proxy - WARNING - this may overblock!!
 #(proxy)
 
 @!@

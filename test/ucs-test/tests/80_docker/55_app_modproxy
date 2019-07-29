@@ -52,7 +52,7 @@ if __name__ == '__main__':
 			app.set_ini_parameter(
 				WebInterface='/%s' % app.app_name,
 				WebInterfacePortHTTP='0',  # NO HTTP!
-				WebInterfacePortHTTPS='80',  # ONLY HTTPS PUBLICALLY!
+				WebInterfacePortHTTPS='80',  # ONLY HTTPS PUBLICLY!
 				WebInterfaceProxyScheme='http',  # CONTAINER ONLY HAS HTTP (80) SUPPORT!
 				AutoModProxy='True',
 			)

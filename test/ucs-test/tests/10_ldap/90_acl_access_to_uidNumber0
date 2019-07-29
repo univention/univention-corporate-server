@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python2.7
-## desc: a framework to create arbitray objects with hacking purposes
+## desc: a framework to create arbitrary objects with hacking purposes
 ## bugs: [41799]
 ## versions:
 ##  4.1-2: skip

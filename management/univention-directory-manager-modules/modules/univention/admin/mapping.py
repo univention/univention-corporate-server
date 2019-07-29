@@ -400,7 +400,7 @@ class dontMap(object):
 
 class mapping(object):
 	"""
-	Map |LDAP| atribute names and values to |UDM| property names and values and back.
+	Map |LDAP| attribute names and values to |UDM| property names and values and back.
 	"""
 
 	def __init__(self):
@@ -541,7 +541,7 @@ class mapping(object):
 
 def mapCmp(mapping, key, old, new):
 	"""
-	Compare old and new for equality (maping back to LDAP value if possible).
+	Compare old and new for equality (mapping back to LDAP value if possible).
 
 	>>> map = mapping()
 	>>> mapCmp(map, 'unknown', 'old', 'new')
@@ -592,7 +592,7 @@ def mapDict(mapping, old):
 
 def mapList(mapping, old):  # UNUSED
 	"""
-	Convert list of LDAP attribute names to list of UDM propert names.
+	Convert list of LDAP attribute names to list of UDM property names.
 
 	>>> map = mapping()
 	>>> mapList(map, None)

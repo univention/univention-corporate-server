@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: |
 ##  Check file permissions on generated files
-##  1. explicite $mode has highest priority
+##  1. explicit $mode has highest priority
 ##  2. For single-file-templates: use permission from template file
 ##  3. For multi-file-templates:
 ##     1. Use permission from optional dummy file

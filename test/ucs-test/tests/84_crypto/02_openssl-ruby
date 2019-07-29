@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: |
-##  Check that OpenSSL is useable in Ruby
+##  Check that OpenSSL is usable in Ruby
 ## bugs: [43934]
 ## tags: [basic]
 ## packages:

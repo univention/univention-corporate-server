@@ -40,7 +40,7 @@ define([
 		// search for the substring when typing
 		queryExpr: '*${0}*',
 
-		// no auto completion, otherwise this gets weired in combination with the '*${0}*' search
+		// no auto completion, otherwise this gets weird in combination with the '*${0}*' search
 		autoComplete: false,
 
 		// autoHide: Boolean
@@ -54,7 +54,7 @@ define([
 			this.inherited(arguments);
 
 			if (this.autoHide) {
-				// autoHide ist set, by default the widget will be hidden
+				// autoHide is set, by default the widget will be hidden
 				this.visible = false;
 			}
 		},

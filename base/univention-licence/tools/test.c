@@ -5,7 +5,7 @@
 	@brief a tool to test the liblicense client functions.
 	
 	this tool try to get a license of the give licensetype, and displays
-	the recived license data.
+	the received license data.
 	
 	usage: univentionLicenseTest licensetype
 */

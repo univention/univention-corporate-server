@@ -105,7 +105,7 @@ if __name__ == '__main__':
 
 		FAILURES = [test() for test in TESTS if test()]
 
-		# now test with uniquness set to false
+		# now test with uniqueness set to false
 		univention.config_registry.handler_set(['directory/manager/uid_gid/uniqueness=no'])
 		UDM.stop_cli_server()
 

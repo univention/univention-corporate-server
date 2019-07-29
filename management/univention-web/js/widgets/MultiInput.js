@@ -484,8 +484,8 @@ define([
 						// via _pendingDeferreds we are sure that we do not register at the widget's Deferred
 						// object multiple times
 						(lang.hitch(this, function(widgetName) {
-							// encapsulate in closure, otherwise we cannot acces jwidget.name within
-							// the Deffered callback anymore (it changes with the for loop)
+							// encapsulate in closure, otherwise we cannot access jwidget.name within
+							// the deferred callback anymore (it changes with the for loop)
 							this._pendingDeferreds[widgetName] = true;
 							jreadyDeferred.then(lang.hitch(this, function() {
 								this._pendingDeferreds[widgetName] = false;
@@ -654,7 +654,7 @@ define([
 			for (var irow = this._nRenderedElements; irow < nFinal && irow < this.max; ++irow, ++this._nRenderedElements) {
 				newRows.push(irow);
 
-				// allocate indeces in 2D array _widget this allows _updateReadyDeferred()
+				// allocate indices in 2D array _widget this allows _updateReadyDeferred()
 				// to know how many entries there will be at the end
 				this._rowContainers[irow] = null;
 				this._widgets[irow] = [];
@@ -778,7 +778,7 @@ define([
 		},
 
 		// ready:
-		//		Similiar to `umc/widgets/_FormWidgetMixin:ready`.
+		//		Similar to `umc/widgets/_FormWidgetMixin:ready`.
 		ready: function() {
 			return this._readyDeferred;
 		}

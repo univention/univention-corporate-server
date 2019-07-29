@@ -72,7 +72,7 @@ def parse_args():
 
 
 def main():
-	"""Retrive current Univention Directory Notifier transaction ID."""
+	"""Retrieve current Univention Directory Notifier transaction ID."""
 	options = parse_args()
 	try:
 		sock = socket.create_connection((options.master, 6669), 60.0)

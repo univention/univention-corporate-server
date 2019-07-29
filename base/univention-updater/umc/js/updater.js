@@ -229,13 +229,13 @@ define([
 			this.selectChild(this._updates);
 		},
 
-		// Seperate function that can be called the same way as _call_installer:
+		// Separate function that can be called the same way as _call_installer:
 		// instead of presenting the usual confirm dialog it presents the list
 		// of packages for a distupgrade.
 		_confirm_distupgrade: function() {
 			try {
 				this.standbyDuring(this.umcpCommand('updater/updates/check')).then(lang.hitch(this, function(data) {
-					// FIXME Lots of manual styling to achieve resonable look
+					// FIXME Lots of manual styling to achieve reasonable look
 					var txt = "<table>\n";
 					var upd = data.result.update;
 					var ins = data.result.install;

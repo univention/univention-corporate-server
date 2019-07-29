@@ -109,7 +109,7 @@ class SourceFilesHTML(SourceFileSet):
 				po_template.save(pot_path)
 		po_template.save(pot_path)
 		for html_path in self.files:
-			# Inline JavaScript may use underscorce funtion, e.g. univention/management/index.html
+			# Inline JavaScript may use underscorce function, e.g. univention/management/index.html
 			if tree.xpath('//script'):
 				message_catalogs.join_existing('JavaScript', pot_path, html_path)
 

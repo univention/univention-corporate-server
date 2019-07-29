@@ -105,7 +105,7 @@ define([
 		},
 
 		_setTitleAttr: function(title) {
-			// dont set html attribute title
+			// don't set html attribute title
 			// (looks weird)
 			this._set('title', this.titleAllowHTML ? title : entities.encode(title));
 		},

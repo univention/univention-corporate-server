@@ -19,10 +19,10 @@ auth     [success=<succ> new_authtok_reqd=ok \
 value=configRegistry.get('auth/passwdcache/max_user', '3')
 
 pam_cache='''
-# cache password (on successful authentification)
+# cache password (on successful authentication)
 auth     [success=done new_authtok_reqd=ok \
 	ignore=ignore default=bad]         pam_passwdcache.so try_first_pass insert max_user=%s
-# remove password from cache (on failed authentification)
+# remove password from cache (on failed authentication)
 # auth     required                           pam_passwdcache.so try_first_pass delete max_user=%s
 # authenticate against cache (if a service fails)
 auth     required                         pam_passwdcache.so try_first_pass'''%(value, value)
@@ -63,15 +63,15 @@ else:
 
 # if no other authentication mechanism but unix is active it is required
 if not methods and index == -1:
-   	print '''# local unix authentification; do not cache passwords
+   	print '''# local unix authentication; do not cache passwords
 auth     required                         pam_unix.so'''
 else:
-	print '''# local unix authentification; do not cache passwords
+	print '''# local unix authentication; do not cache passwords
 auth     sufficient                           pam_unix.so'''
 
 print '''
-# remote authentification; if a service
-# - fails, we will fall back to cache authentification
+# remote authentication; if a service
+# - fails, we will fall back to cache authentication
 # - is successful, cache the password
 # - is not aware of the user, proceed with the next service'''
 

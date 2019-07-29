@@ -111,7 +111,7 @@ class GenericObject(BaseObject):
 	       obj.delete()
 
 	After saving a :py:class:`GenericObject`, it is :py:meth:`reload`\ ed
-	automtically because UDM hooks and listener modules often add, modify or
+	automatically because UDM hooks and listener modules often add, modify or
 	remove properties when saving to LDAP. As this involves LDAP, it can be
 	disabled if the object is not used afterwards and performance is an issue::
 
@@ -441,7 +441,7 @@ class GenericModuleMetadata(BaseModuleMetadata):
 
 		        myfilter_s = obj.meta.lookup_filter()
 
-		*   get the filter to find a subset of the corresponding LDAP objects (`filter_s` will be combined with `&` to the filter for alle objects)::
+		*   get the filter to find a subset of the corresponding LDAP objects (`filter_s` will be combined with `&` to the filter for all objects)::
 
 		        myfilter = obj.meta.lookup_filter('(|(givenName=A*)(givenName=B*))')
 

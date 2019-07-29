@@ -62,8 +62,8 @@ err:
 
 /******************************************************************************/
 /*!
-	@brief initialitze the ldap part of the lib, automatic called if need
-	@todo remove the debug functions, in the moment the ldap server is alway testing.
+	@brief initialize the ldap part of the lib, automatic called if need
+	@todo remove the debug functions, in the moment the ldap server is always testing.
 	
 	@retval 1 if succeed
 	@retval 0 on error
@@ -103,9 +103,9 @@ char* univention_license_ldap_get_basedn(void)
 
 /******************************************************************************/
 /*!
-	@brief	open a connection to the ldap server, with the connection data recived from UCR
-	@retval	1	if the connection was already open or was opened successfull
-	@retval	0	if an error has occured
+	@brief	open a connection to the ldap server, with the connection data received from UCR
+	@retval	1	if the connection was already open or was opened successful
+	@retval	0	if an error has occurred
 */
 int univention_license_ldap_open_connection(void)
 {
@@ -134,7 +134,7 @@ void univention_license_ldap_close_connection(void)
 	@param licensetyp	the requested license type (the ldap attribute univentionLicenseModule have this value)
 	@param num	the number of found objects to skip at first, so you can get the 2nd or 3rd one.
 	
-	@return Pointer to a lObj if found, or NULL if an error has occured.
+	@return Pointer to a lObj if found, or NULL if an error has occurred.
 */
 lObj* univention_license_ldap_search_licenseObject(const char* searchBaseDN, const char* licensetyp, int num)
 {
@@ -161,7 +161,7 @@ lObj* univention_license_ldap_search_licenseObject(const char* searchBaseDN, con
 	@brief try to get the licenseObject from the ldap object referenced by licenseDN
 	@param licenseDN the ldap Object you want to get
 	
-	@return Pointer to a lObj if found, or NULL if an error has occured.
+	@return Pointer to a lObj if found, or NULL if an error has occurred.
 */
 lObj* univention_license_ldap_get_licenseObject(const char* licenseDN)
 {
@@ -222,7 +222,7 @@ lStrings* univention_license_ldap_get_strings(const char* objectDN, const char* 
 			int count = 0;
 			for (i=0; i < license->size; i++)
 			{
-				//count entrys
+				//count entries
 				if (strcmp(license->key[i],attribute) == 0)
 					count++;
 			}
@@ -253,12 +253,12 @@ lStrings* univention_license_ldap_get_strings(const char* objectDN, const char* 
 
 /******************************************************************************/
 /*!
-	@brief make a ldap search with the given parametes and convert a possible
+	@brief make a ldap search with the given parameters and convert a possible
 	found ldap-licenseObject to a lObj.
 
 	The ldap attributes must begin with 'univentionLicense' to get converted to c.
 	The keys of the lObj will be sorted alphanumeric before return, so the
-	data of a lObj will be alway is the same order, this is nesseary for the 
+	data of a lObj will be always is the same order, this is nesseary for the 
 	signature stuff.
 	To be able to get a 2nd or 3rd Object the number of Objects to skip can be set.
 	If you want to get the first Object set num to 0.
@@ -270,7 +270,7 @@ lStrings* univention_license_ldap_get_strings(const char* objectDN, const char* 
 	@param attrFilter	filter all attributes that not begin with this
 	@param num			the number of result objects to skip
 
-	@return Pointer to a lObj if found, or NULL if an error has occured.
+	@return Pointer to a lObj if found, or NULL if an error has occurred.
 */
 lObj* univention_license_ldap_get(const char* search_base, int scope, const char* filter, char** attr, const char* attrFilter, int num)
 {
@@ -312,7 +312,7 @@ lObj* univention_license_ldap_get(const char* search_base, int scope, const char
 				
 				if (count > 1)
 				{
-					univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Found %d entrys expected only 1 use the 1st.",count);
+					univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Found %d entries expected only 1 use the 1st.",count);
 				}
 				element = ldap_first_entry(lp->ld, result);
 				
@@ -329,7 +329,7 @@ lObj* univention_license_ldap_get(const char* search_base, int scope, const char
 					}
 					else
 					{
-						element = NULL; //someone has skiped all elements
+						element = NULL; //someone has skipped all elements
 					}
 				}
 				

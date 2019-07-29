@@ -52,7 +52,7 @@ local_is_ucr_false () { # test if UCS variable is "true" or "false"
 samba4dcs=$(univention-ldapsearch -LLL "(&(univentionService=Samba 4)(objectClass=univentionDomainController))" cn | sed -ne 's|^cn: ||p')
 
 if [ -z "$samba4dcs" ] && ! local_is_ucr_false dns/register/srv_records/kerberos; then
-	# Register in DNS onyl if no S4 is configured
+	# Register in DNS only if no S4 is configured
 	# By default S4 KDCs and OpenLDAP/KDCs should not be mixed
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists $domainname add txt _kerberos $kerberos_realm || die

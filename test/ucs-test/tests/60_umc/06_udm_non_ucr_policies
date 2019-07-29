@@ -199,7 +199,7 @@ class TestUMCnonUCRpolicies(UMCBase):
 
 		# Second user (with Samba) should have an intermediate container policy
 		# (Length=4 and empty pwLength), first user (without Samba) should have
-		# own 'umc_test_user_policy' winning (Lenght=pwLength=3):
+		# own 'umc_test_user_policy' winning (Length=pwLength=3):
 		self.check_policies('4', '', self.test_user_2_dn)
 		# self.check_policies('3', '3', self.test_user_dn, self.user_policy_dn)
 
@@ -208,7 +208,7 @@ class TestUMCnonUCRpolicies(UMCBase):
 
 		# Second user (with Samba) should have an intertmediate container
 		# policy (Length=4 and an empty pwLength), first user (without Samba)
-		# should have base container policy inherited (Lenght=pwLength=5):
+		# should have base container policy inherited (Length=pwLength=5):
 		self.check_policies('4', '', self.test_user_2_dn)
 		# self.check_policies('5', '5', self.test_user_dn)
 

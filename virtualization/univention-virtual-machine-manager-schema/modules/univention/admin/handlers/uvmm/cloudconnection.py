@@ -124,7 +124,7 @@ def mapKeyAndValue(old):
 def unmapKeyAndValue(old):
 	return [entry.split('=', 1) for entry in old]
 
-# Maping between UDM properties and LDAP attributes
+# Mapping between UDM properties and LDAP attributes
 
 
 mapping = udm_mapping.mapping()

@@ -16,7 +16,7 @@ UTF8_CHARSET = tstrings.STR_UMLAUT + u"КирилицаКириллицаĆirili
 # the CON sync can't # handle them (see bug #44373)
 SPECIAL_CHARSET = "".join(set(tstrings.STR_SPECIAL_CHARACTER) - set('\\#"?'))
 # We exclude '$' as it has special meaning . A '.' (dot) may not be the last
-# character in a samAccountName, so we forbid it aswell.
+# character in a samAccountName, so we forbid it as well.
 FORBIDDEN_SAMACCOUNTNAME = "\\/[]:;|=,+*?<>@ " + '$.'
 SPECIAL_CHARSET_USERNAME = "".join(set(SPECIAL_CHARSET) - set(FORBIDDEN_SAMACCOUNTNAME))
 
@@ -188,7 +188,7 @@ def map_udm_user_to_con(user):
 	"""
 	Map a UDM user given as a dictionary of `property`:`values` mappings to a
 	dictionary of `attributes`:`values` mappings as required by the CON-LDAP.
-	Note: This expects the properties from the UDM users/user modul and not
+	Note: This expects the properties from the UDM users/user module and not
 	OpenLDAP-attributes!.
 	"""
 	mapping = {
@@ -213,7 +213,7 @@ def map_udm_group_to_con(group):
 	"""
 	Map a UDM group given as a dictionary of `property`:`values` mappings to a
 	dictionary of `attributes`:`values` mappings as required by the CON-LDAP.
-	Note: This expects the properties from the UDM groups/group modul and not
+	Note: This expects the properties from the UDM groups/group module and not
 	OpenLDAP-attributes!.
 	"""
 	mapping = {"name": "sAMAccountName", "description": "description"}

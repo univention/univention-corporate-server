@@ -54,7 +54,7 @@ define([
 ], function(lang, array, _window, xhr, basexhr, Deferred, all, json, string, topic, cookie, Dialog, TitlePane, timing, styles, entities, ContainerWidget, ConfirmDialog, Text, i18nTools, _) {
 	// in order to break circular dependencies (umc.tools needs a Widget and
 	// the Widget needs umc/tools), we define umc/dialog as an empty object and
-	// require it explicitely
+	// require it explicitly
 
 	/**
 	 * @exports umc/tools
@@ -368,7 +368,7 @@ define([
 				// to have failed
 				failureInterval: lang.getObject('failureInterval', false, opts) || 10,
 
-				// number of seconds after which an information ist displayed to the user
+				// number of seconds after which an information is displayed to the user
 				// in case the connection could not be established; if negative, no message
 				// will be shown.
 				messageInterval: lang.getObject('messageInterval', false, opts) || 120,
@@ -1551,7 +1551,7 @@ define([
 			//		is an dictionary, will set all key-value pairs as specified by
 			//		the dictionary. If two parameters are given and
 			//		the first is a String, the function will set preference for the
-			//		key (paramater 1) to the value as specified by parameter 2.
+			//		key (parameter 1) to the value as specified by parameter 2.
 
 			// make sure the user preferences are cached internally
 			var cookieStr = '';

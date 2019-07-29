@@ -99,7 +99,7 @@ define([
 	var _favoritesDisabled = false;
 	var _initialHash = decodeURIComponent(hash());
 
-	// helper function for sorting, sort indeces with priority < 0 to be at the end
+	// helper function for sorting, sort indices with priority < 0 to be at the end
 	var _cmpPriority = function(x, y) {
 		if (y.priority === x.priority) {
 			return x._orgIndex - y._orgIndex;
@@ -257,7 +257,7 @@ define([
 		},
 
 		_createModuleItem: function(_item, categoryID) {
-			// we need a uniqe ID for the store
+			// we need a unique ID for the store
 			var item = lang.mixin({
 				categories: []
 			}, _item);
@@ -909,7 +909,7 @@ define([
 
 				// create a page containing additional methods validate(),
 				// _getValueAttr(), on() and onSubmit() in order to fake Form
-				// behaviour for umc/dialog::confirmForm()
+				// behavior for umc/dialog::confirmForm()
 				var page = new Page(pageConf);
 				page = lang.delegate(page, {
 					validate: lang.hitch(form, 'validate'),
@@ -966,7 +966,7 @@ define([
 
 			// set 'overview' to true for backwards compatibility
 			tools.status('overview', true);
-			// username will be overriden by final authenticated username
+			// username will be overridden by final authenticated username
 			tools.status('username', props.username || tools.status('username'));
 			// password has been given in the query string... in this case we may cache it, as well
 			tools.status('password', props.password);

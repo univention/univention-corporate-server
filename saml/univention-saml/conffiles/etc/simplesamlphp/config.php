@@ -128,7 +128,7 @@ print "	'showerrors'            =>	%s," % ('TRUE' if configRegistry.is_true('sam
 	 *		SimpleSAML_Logger::WARNING	No statistics, only warnings/errors
 	 *		SimpleSAML_Logger::NOTICE	Statistics and errors
 	 *		SimpleSAML_Logger::INFO		Verbose logs
-	 *		SimpleSAML_Logger::DEBUG	Full debug logs - not reccomended for production
+	 *		SimpleSAML_Logger::DEBUG	Full debug logs - not recommended for production
 	 * 
 	 * Choose logging handler.
 	 * 
@@ -228,7 +228,7 @@ print "	'session.duration'            =>	%s," % configRegistry.get('saml/idp/ses
 
 	/*
 	 * Sets the duration, in seconds, data should be stored in the datastore. As the datastore is used for
-	 * login and logout requests, thid option will control the maximum time these operations can take.
+	 * login and logout requests, this option will control the maximum time these operations can take.
 	 * The default is 4 hours (4*60*60) seconds, which should be more than enough for these operations.
 	 */
 	'session.datastore.timeout' => (4*60*60), // 4 hours
@@ -396,7 +396,7 @@ print "	'session.duration'            =>	%s," % configRegistry.get('saml/idp/ses
 
 	/*
 	 * IdP Discovery service look configuration. 
-	 * Wether to display a list of idp or to display a dropdown box. For many IdP' a dropdown box  
+	 * whether to display a list of idp or to display a dropdown box. For many IdP' a dropdown box  
 	 * gives the best use experience.
 	 * 
 	 * When using dropdown box a cookie is used to highlight the previously chosen IdP in the dropdown.  

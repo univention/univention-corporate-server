@@ -240,7 +240,7 @@ class FetchProgress(apt.progress.text.AcquireProgress):
 		super(FetchProgress, self).__init__()
 		self._file = MessageWriter(outfile)
 
-	# dont use _winch
+	# don't use _winch
 	def start(self):
 		# type: () -> None
 		"""
@@ -834,13 +834,13 @@ class PackageManager(object):
 		# if more than one package is to be installed and this package
 		#   has an OR-dependency, the package will automatically choose
 		#   the first one. but if the second OR-dependency is to be
-		#   installed explicitely along with that package in the
+		#   installed explicitly along with that package in the
 		#   beginning, the first OR-dependency is obsolete (and all of
 		#   its own dependencies). Sadly we have to remove them manually.
 		# btw: this is the reason why we have to use the ProblemResolver.
 		#   If OR-dependency1 conflicts with OR-dependency2 this causes
 		#   problems when the original package used auto_fix=True but
-		#   the second OR-dependency is to be installed explicitely.
+		#   the second OR-dependency is to be installed explicitly.
 		# see https://forge.univention.org/bugzilla/show_bug.cgi?id=30279
 		package_was_garbage = True
 		while package_was_garbage:
@@ -892,12 +892,12 @@ class PackageManager(object):
 		# type: (Optional[Sequence[str]], Optional[Sequence[str]], bool, bool, str) -> bool
 		"""
 		Really commit changes (mark_install or mark_delete)
-		or pass Package-objects that shall be commited.
+		or pass Package-objects that shall be committed.
 		Never forgets to pass progress objects, may print error
 		messages, always reopens cache.
 
 		:param install: List of package names to install.
-		:param remove: List ot package names to remove.
+		:param remove: List of package names to remove.
 		:param upgrade: Perform upgrade were no new packages are installed.
 		:param dist_upgrade: Perform upgrade were new packages may be installed and old packages may be removed.
 		:param msg_if_failed: Test message to output if things go wrong.
@@ -914,7 +914,7 @@ class PackageManager(object):
 			self.cache.upgrade(dist_upgrade=False)
 
 		# only if commit does something. if it is just called
-		# to really commit changes made manually, dont dry_run
+		# to really commit changes made manually, don't dry_run
 		# as it reopens the cache
 		broken = []  # type: List[str]
 		if install or remove:
@@ -1094,7 +1094,7 @@ class PackageManager(object):
 		for pkg in self.cache:
 			if pkg.is_auto_removable:
 				self.progress_state.info(_('Deleting unneeded %s') % pkg.name)
-				# dont auto_fix. maybe some errors magically
+				# don't auto_fix. maybe some errors magically
 				# disappear if we just remove
 				# enough packages...
 				pkg.mark_delete(auto_fix=False)

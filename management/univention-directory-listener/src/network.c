@@ -1,6 +1,6 @@
 /*
  * Univention Directory Listener
- *  an asyncronous notifier client API.
+ *  an asynchronous notifier client API.
  *
  * Copyright 2004-2019 Univention GmbH
  *

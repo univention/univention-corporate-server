@@ -3,14 +3,14 @@
 	@brief general lib license functions
 */
 
-static lObj* global_license = NULL; /*!< the container for the current selecte license*/
+static lObj* global_license = NULL; /*!< the container for the current selected license*/
 static int is_init = 0;/*!< the init-state of the lib*/
 
 /*****************************************************************************/
 /*!
 	@brief	init the licenselib, is called automatic.
-	@retval 1 if all parts are initiated successfull
-	@retval 0 if an error has occured
+	@retval 1 if all parts are initiated successful
+	@retval 0 if an error has occurred
 */
 int univention_license_init(void)
 {
@@ -121,7 +121,7 @@ int univention_license_select(const char* licensetyp)
 						{
 							int valid = 1;
 							license_found = 1;
-							licenseNum++; //count the found licenses so they will be skiped the in the next request for this searchpath
+							licenseNum++; //count the found licenses so they will be skipped the in the next request for this searchpath
 							
 							ret = 0;
 							if (!univention_license_check_signature()) {
@@ -149,7 +149,7 @@ int univention_license_select(const char* licensetyp)
 					i++;
 				}
 				
-				//do we finaly found a license?
+				//do we finally found a license?
 				if (NULL == global_license)
 				{
 					univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "No license of type '%s' found at:",licensetyp);
@@ -180,7 +180,7 @@ int univention_license_select(const char* licensetyp)
 	if no license is found the global_license won't be touched
 
 	@param	licenseDN the location of the wished licnese
-	@retval	1 if nothing is found or an error has occured
+	@retval	1 if nothing is found or an error has occurred
 	@retval 0 if a valid license of this type has been found
 */
 int univention_license_selectDN(const char* licenseDN)
@@ -262,8 +262,8 @@ int univention_license_check(const char* objectDN)
 /*!
 	@brief	check the licence baseDN against the local baseDN
 
-	this funtion use the global_license Object
-	@retval 0 if an error has occured
+	this function use the global_license Object
+	@retval 0 if an error has occurred
 	@retval 1 if everything is fine
 */
 int univention_license_check_basedn()
@@ -317,8 +317,8 @@ int univention_license_check_basedn()
 /*!
 	@brief	check the licence end date against the current date
 	
-	this funtion use the global_license Object
-	@retval 0 if an error has occured
+	this function use the global_license Object
+	@retval 0 if an error has occurred
 	@retval 1 if everything is fine
 */
 int univention_license_check_enddate()
@@ -456,7 +456,7 @@ int univention_license_check_searchpath(const char* objectDN)
 				{
 					if (strlen(searchPath->line[i]) < strlen(objectDN))
 					{
-						//compare the objectDN with the searchpath,  begining at the end of the strings
+						//compare the objectDN with the searchpath,  beginning at the end of the strings
 						int x = 0;
 						int sLen = strlen(searchPath->line[i]);
 						int oLen = strlen(objectDN);
@@ -489,10 +489,10 @@ int univention_license_check_searchpath(const char* objectDN)
 
 /*****************************************************************************/
 /*!
-	@brief	the sort funtion for qsort
+	@brief	the sort function for qsort
 
 	the license is sorted primary with the key and if this makes not
-	clean awnser value is compared too.
+	clean answer value is compared too.
 
 	@param	a	the 1st sortElement
 	@param	b	the 2nd sortElement
@@ -550,7 +550,7 @@ int univention_license_compare_string(const char* a, const char* b)
 	@brief	sort the key, value pairs of a license
 
 	this is used to get the license in always the same order,
-	so the data for a signature task will be alway the same
+	so the data for a signature task will be always the same
 	there is no data move/copy inside, only pointer transfer,
 	so if you clean the unsorted license, the sorted will get invalid too.
 
@@ -688,7 +688,7 @@ void univention_licenseObject_free(lObj* license)
 /*!
 	@brief	extract the value of this attribute from the license
 	
-	this funtion use the global_license Object	
+	this function use the global_license Object	
 	@param	attribute	attributeName of the value that should be returned
 		the attributeName is the same like the ldapAttributeName
 	@retval	NULL	if attribute is not found

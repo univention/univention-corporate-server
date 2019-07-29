@@ -53,7 +53,7 @@ class TestUMCDomainRejoin(JoinModule):
             print("Clearing the status file and making a rejoin request."
                   " (This operation may take up to 20 minutes)")
             self.clear_status_file(join_status_file)
-            # check that no scripts are 'configured'==True wtih clean status
+            # check that no scripts are 'configured'==True with clean status
             for result in self.query_joinscripts():
                 if result.get('configured'):
                     utils.fail("The following join script '%s' was "

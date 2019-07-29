@@ -174,7 +174,7 @@ class DebianPackageCheck(object):
 	def in_overrides(self, msg):
 		# type: (uub.UPCMessage) -> bool
 		"""
-		Check message agains overrides.
+		Check message against overrides.
 
 		:param msg: Message to check.
 		:returns: `True` when the check should be ignored, `False` otherwise.
@@ -192,7 +192,7 @@ class DebianPackageCheck(object):
 
 	def printResult(self, ignore_IDs, display_only_IDs, display_only_categories, exitcode_categories):
 		"""
-		Print result of cheks.
+		Print result of checks.
 
 		:param ignore_IDs: List of message identifiers to ignore.
 		:param display_only_IDs: List of message identifiers to display.

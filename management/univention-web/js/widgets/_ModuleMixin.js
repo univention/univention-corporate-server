@@ -59,7 +59,7 @@ define([
 		// moduleStore: umc/store/_UmcpModuleStore
 		//		A dojo object store interface for query/get/put/remove methods for the UMC
 		//		module. Requests for operations on module items should be executed through
-		//		this store interface. In this way, changes will be immediatly reflected to
+		//		this store interface. In this way, changes will be immediately reflected to
 		//		other parts of the GUI.
 		//		(Is specified automatically.)
 		moduleStore: null,

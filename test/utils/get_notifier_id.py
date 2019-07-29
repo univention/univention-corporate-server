@@ -37,7 +37,7 @@ import sys
 
 
 def main():
-    """Retrive current Univention Directory Notifier transaction ID."""
+    """Retrieve current Univention Directory Notifier transaction ID."""
     configRegistry = ConfigRegistry()
     configRegistry.load()
 

@@ -65,7 +65,7 @@ class Progress(object):
 		self.finished = False
 		self.exc_info = None
 		# there is another variable named
-		#   "result". it is only set if explicitely
+		#   "result". it is only set if explicitly
 		#   calling finish_with_result
 
 	def progress(self, detail=None, message=None):

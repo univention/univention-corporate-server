@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner bash
-## desc: "Check if the S4 Connector reconnects propperly after a samba restart"
+## desc: "Check if the S4 Connector reconnects properly after a samba restart"
 ## exposure: dangerous
 ## packages:
 ## - univention-s4-connector

@@ -187,7 +187,7 @@ define([
 			this._oldScrollPosition = geometry.docScroll().y;
 		},
 
-		// if the old scrollbar postion isn't the new one, the user has changed it
+		// if the old scrollbar position isn't the new one, the user has changed it
 		hasUserMovedScrollbar: function(oldPos, newPos){
 			if (oldPos !== newPos){
 				this._goToBottom = false;
@@ -229,7 +229,7 @@ define([
 									// as _check_interval is not zero
 		},
 
-		// A seperate function that is called by the 'ProgressPage' when the key of the
+		// A separate function that is called by the 'ProgressPage' when the key of the
 		// current job has become known.
 		setJobKey: function(job) {
 			this._current_job = job;

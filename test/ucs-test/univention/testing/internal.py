@@ -64,7 +64,7 @@ def fail(log_message=None, returncode=1):
 
 
 def setup_environment():
-	"""Setup runtime environemnt."""
+	"""Setup runtime environment."""
 	os.environ['TESTLIBPATH'] = '/usr/share/ucs-test/lib'
 	os.environ['PYTHONUNBUFFERED'] = '1'
 

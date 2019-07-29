@@ -1399,7 +1399,7 @@ class ucs:
 				return True
 
 		if property_type == 'windowscomputer':
-			# Sepcial handling for windows computer:
+			# Special handling for windows computer:
 			#  In AD the computer is a windows computer in UCS the computer is a DC.
 			#  If Samba 4 will be installed on the Slave, Samba 4 deletes the object
 			#  and this deletion must not be synced to OpenLDAP.
@@ -1455,7 +1455,7 @@ class ucs:
 	def sync_to_ucs(self, property_type, object, pre_mapped_s4_dn, original_object):
 		# NOTE: pre_mapped_s4_dn means: original s4_dn (i.e. before _object_mapping)
 		_d = ud.function('ldap.sync_to_ucs')
-		# this function gets an object from the s4 class, which should be converted into a ucs modul
+		# this function gets an object from the s4 class, which should be converted into a ucs module
 
 		# if sync is write (sync to S4) or none, there is nothing to do
 		if self.property[property_type].sync_mode in ['write', 'none']:
@@ -1630,7 +1630,7 @@ class ucs:
 	# attributes ist ein dictionary von LDAP-Attributen und den zugeordneten Werten
 	def _filter_match(self, filter, attributes):
 		'''
-		versucht eine liste von attributen auf einen LDAP-Filter zu matchen
+		versucht eine Liste von Attributen auf einen LDAP-Filter zu matchen
 		Besonderheiten des Filters:
 		- immer case-sensitive
 		- nur * als Wildcard

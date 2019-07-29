@@ -568,7 +568,7 @@ class Instance(Base, ProgressMixin):
 
 		requests.options = {}
 			'objectType' -- the object type to search for (default: if not given the flavor is used)
-			'objectProperty' -- the object property that should be scaned
+			'objectProperty' -- the object property that should be scanned
 			'objectPropertyValue' -- the filter that should be found in the property
 			'fields' -- the properties which should be returned
 			'container' -- the base container where the search should be started (default: LDAP base)
@@ -689,7 +689,7 @@ class Instance(Base, ProgressMixin):
 		"""Returns the default search pattern/value for the given object property
 
 		requests.options = {}
-			'objectProperty' -- the object property that should be scaned
+			'objectProperty' -- the object property that should be scanned
 
 		return: <value>
 		"""
@@ -736,7 +736,7 @@ class Instance(Base, ProgressMixin):
 	@simple_response()
 	def containers(self, module):
 		"""Returns the list of default containers for the given object
-		type. Therefor the python module and the default object in the
+		type. Therefore the python module and the default object in the
 		LDAP directory are searched.
 
 		requests.options = {}
@@ -886,7 +886,7 @@ class Instance(Base, ProgressMixin):
 
 	def validate(self, request):
 		"""Validates the correctness of values for properties of the
-		given object type. Therefor the syntax definition of the properties is used.
+		given object type. Therefore the syntax definition of the properties is used.
 
 		requests.options = {}
 			'objectType' -- The UDM module name. If not available the flavor is used
@@ -1074,7 +1074,7 @@ class Instance(Base, ProgressMixin):
 		requests.options = {}
 			'container' -- the base container where the search should be started (default: LDAP base)
 			'objectType' -- the object type that should be displayed (optional)
-			'objectProperty' -- the object property that should be scaned (optional)
+			'objectProperty' -- the object property that should be scanned (optional)
 			'objectPropertyValue' -- the filter that should b found in the property (optional)
 
 		return: [ { '$dn$' : <LDAP DN>, 'objectType' : <UDM module name>, 'path' : <location of object> }, ... ]
@@ -1190,8 +1190,8 @@ class Instance(Base, ProgressMixin):
 				#   [new]  virtually edit non-existing UDM object (when a new object is being created)
 				#   -> the parent container UDM object is loaded
 				# (2)
-				#   [w/pol]   UDM object has assigend policies in LDAP directory
-				#   [w/o_pol] UDM object has no policies assigend in LDAP directory
+				#   [w/pol]   UDM object has assigned policies in LDAP directory
+				#   [w/o_pol] UDM object has no policies assigned in LDAP directory
 				# (3)
 				#   [inherit] user request to (virtually) change the policy to 'inherited'
 				#   [set_pol] user request to (virtually) assign a particular policy

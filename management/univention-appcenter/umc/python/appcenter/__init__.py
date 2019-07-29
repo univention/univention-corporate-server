@@ -482,7 +482,7 @@ class Instance(umcm.Base, ProgressMixin):
 	def invoke(self, request):
 		# ATTENTION!!!!!!!
 		# this function has to stay compatible with the very first App Center installations (Dec 2012)
-		# if you add new arguments that change the behaviour
+		# if you add new arguments that change the behavior
 		# you should add a new method (see invoke_dry_run) or add a function name (e.g. install-schema)
 		# this is necessary because newer app center may talk remotely with older one
 		#   that does not understand new arguments and behaves the old way (in case of
@@ -575,7 +575,7 @@ class Instance(umcm.Base, ProgressMixin):
 				MODULE.process('Warning trying to %s %s: %r' % (function, app_id, forbidden))
 				result['invokation_warning_details'] = warnings
 				if not force:
-					# dont stop "immediately".
+					# don't stop "immediately".
 					#   compute the package changes!
 					delayed_can_continue = False
 		result['serious_problems'] = serious_problems
@@ -1090,7 +1090,7 @@ class Instance(umcm.Base, ProgressMixin):
 		self.package_manager.update()
 
 	# do the same as components_put (update)
-	# but dont allow adding an already existing entry
+	# but don't allow adding an already existing entry
 	components_add = sanitize_list(DictSanitizer({'object': add_components_sanitizer}))(components_put)
 	components_add.__name__ = 'components_add'
 

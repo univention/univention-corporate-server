@@ -47,7 +47,7 @@ Description: Integrates simpleSAMLphp Identity Provider into UCS
   * WS-Federation as a Service Provider
  .
  It is part of Univention Corporate Server (UCS), an
- integrated Single Sign-On technology for corporate useage.
+ integrated Single Sign-On technology for corporate usage.
  For more information about UCS,
  refer to: http://www.univention.de
 

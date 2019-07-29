@@ -60,7 +60,7 @@ define([
 
 	// if we do not have any language available (we only localised
 	// english and german, maybe the system has neither of them installed)
-	// we "hack" availableLanguage because whereever we iterate over the
+	// we "hack" availableLanguage because wherever we iterate over the
 	// languages, we want to show at least one (and thus the possibility
 	// to localise UMC). WARNING: This only works because we use English
 	// strings when we translate. If English is not installed, we do not
@@ -90,7 +90,7 @@ define([
 		//		require(['i18nTools/i18nTools'], function(i18n) {
 		//			i18n.setLanguage('de-DE'); // might do a redirect
 		//			...
-		//			i18n.setLanguage('de-DE'); // wont do it again
+		//			i18n.setLanguage('de-DE'); // won't do it again
 		//		});
 
 		if (locale !== dojo.locale) {

@@ -1643,7 +1643,7 @@ class emailAddressValidDomain(emailAddress):
 
 	@classmethod
 	def checkLdap(self, lo, mailaddresses):
-		# convert mailaddresses to array if neccessary
+		# convert mailaddresses to array if necessary
 		mailaddresses = copy.deepcopy(mailaddresses)
 		if isinstance(mailaddresses, str):
 			mailaddresses = [mailaddresses]

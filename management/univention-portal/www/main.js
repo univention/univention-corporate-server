@@ -781,7 +781,7 @@ define([
 									options: options
 								});
 
-								// go against the behaviour of ConfirmDialog to focus the confirm button
+								// go against the behavior of ConfirmDialog to focus the confirm button
 								// and focus the first focusable widget in the dialog instead
 								// @FIXME cleanup (flag in ConfirmDialog or use normal Dialog instead of ConfirmDialog)
 								on(formDialog, 'focus', function() {
@@ -1134,7 +1134,7 @@ define([
 								'$dn$': wizard.dn
 							});
 							wizard.moduleStore.put(putParams).then(lang.hitch(this, function(result) {
-								// see whether creating the portal entry was succesful
+								// see whether creating the portal entry was successful
 								if (result.success) {
 									// if the icon for the entry was changed we want a new iconClass
 									// to display the new icon

@@ -368,7 +368,7 @@ define([
 				}));
 
 				//// we only want to show languages that are visible in the menu.
-				//// seperate languages that are in the menu and other lanuages and
+				//// separate languages that are in the menu and other lanuages and
 				//// merge them back when saving
 				var availableLanguageCodes = array.map(i18nTools.availableLanguages, function(ilanguage) {
 					return ilanguage.id.replace(/-/, '_');

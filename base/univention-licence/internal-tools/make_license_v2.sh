@@ -81,7 +81,7 @@ help_and_exit () {
 	exit $RC
 }
 
-# paths to the key store, relativ to the directory of the master key
+# paths to the key store, relative to the directory of the master key
 INTERNALKEYS="../eigene";
 EVALUATIONKEYS="../evaluation";
 CUSTOMERKEYS="../kunden";
@@ -286,7 +286,7 @@ fi
 # change to the master key directory
 cd "$MASTERKEYDIR" || help_and_exit "Can't change to directory $MASTERKEYDIR"
 
-# create the ldap objekt
+# create the ldap object
 (
 	echo dn: cn="$CUSTOMER","$LDAPTMP";
 	echo objectClass: top;

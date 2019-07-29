@@ -47,7 +47,7 @@
 		<!-- Get: details of one package -->
 		<command name="appcenter/packages/get" function="packages_get" />
 
-		<!-- Invoke dry run: dont do anything just show changes -->
+		<!-- Invoke dry run: don't do anything just show changes -->
 		<command name="appcenter/packages/invoke/test" function="packages_invoke_dry_run" />
 
 		<!-- Sections: fill the 'sections' combobox. -->

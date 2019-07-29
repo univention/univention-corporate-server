@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Directory Manager Hooks
-#  direcory manager module for UDM hooks
+#  directory manager module for UDM hooks
 #
 # Copyright 2013-2019 Univention GmbH
 #

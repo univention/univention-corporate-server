@@ -31,7 +31,7 @@ Repository layout
 Repository Server
 -----------------
 * [IPvX](https://updates.software-univention.de/)
-* [Lokal](http://univention-repository.$FQDN/univention-repository/)
+* [Local](http://univention-repository.$FQDN/univention-repository/)
 
 With arch/
 ----------

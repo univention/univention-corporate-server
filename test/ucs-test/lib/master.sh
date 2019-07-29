@@ -20,7 +20,7 @@ on_master_escaped () { # Execute command on ldap/master
 
 master_reachable_via_ssh () { # Checks if the Master could be reachable via port 22 (ssh)
 	# usage: master_reachable_via_ssh
-	# return valuse:
+	# return values:
 	#	1 = yes
 	#	0 = no
 	local key="${HOSTNAME}_${0}_${$}_${RANDOM}"
@@ -61,7 +61,7 @@ master_restart_service () { # restarts a service
 	on_master_escaped invoke-rc.d "$service" restart >/dev/null 2>&1
 }
 
-master_udm_version () { # gets the verion of the UDM on the master system
+master_udm_version () { # gets the version of the UDM on the master system
 	# usage: version="$(master_udm_version)"
 	# return text:
 	#	Version string of the UDM package

@@ -261,7 +261,7 @@ def main():
     with UpdaterLock():
         if command == 'net':
             local_server = '%(hostname)s.%(domainname)s' % configRegistry
-            # BUG: The localhost has many names, FQDNs and adresses ...
+            # BUG: The localhost has many names, FQDNs and addresses ...
             if configRegistry['repository/mirror/server'] == local_server:
                 print >> options.teefile, 'Error: The local server is configured as mirror source server (repository/mirror/server)'
                 sys.exit(1)

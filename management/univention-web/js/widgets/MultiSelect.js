@@ -47,7 +47,7 @@ define([
 	return declare("umc.widgets.MultiSelect", [ EnhancedGrid, _FormWidgetMixin, _SelectMixin, StandbyMixin, _RegisterOnShowMixin ], {
 		// summary:
 		//		This class represents a MultiSelect widget. Essentially, it adapts a DataGrid
-		//		to the behaviour expected from a MultiSelect widget.
+		//		to the behavior expected from a MultiSelect widget.
 
 		// size: Integer
 		//		The attribute 'size' is mapped to 'autoHeight'.
@@ -61,7 +61,7 @@ define([
 		// display the labe above the widget
 		labelPosition: 'top',
 
-		// bool wether a header to select all entries should be shown
+		// bool whether a header to select all entries should be shown
 		showHeader: false,
 		// label of select all entries header
 		headerLabel: _('Select all'),

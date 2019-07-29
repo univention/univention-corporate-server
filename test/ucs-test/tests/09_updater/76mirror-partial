@@ -116,7 +116,7 @@ ADIR+=("${DIR}")
 minor+=-1
 
 # r/m/v/end is updated by u-r-update and read for/etc/apt/mirror.list
-# r/m/v/end does NOT controll u-r-update, --updateto must be used!
+# r/m/v/end does NOT control u-r-update, --updateto must be used!
 # r/m/v/start on the other hand is user-controlled.
 config_mirror \
 	version/version="${major}.${minor}" \

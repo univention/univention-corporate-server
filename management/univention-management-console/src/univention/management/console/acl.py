@@ -52,7 +52,7 @@ pattern *nagios/\**.
 
 Patterns for commands and options may just use the asterik and know no
 other wildcards. For options there is one additional format allowed to
-specify that the option may not exist. Therefor the following format is
+specify that the option may not exist. Therefore the following format is
 used ::
 
 	udm/* !objectType
@@ -118,7 +118,7 @@ class ACLs(object):
 
 	"""Provides methods to determine the access rights of users to
 	specific UMC commands. It defines a cache for ACLs, a parser for
-	command definitions of ACLs and functions for comparsion.
+	command definitions of ACLs and functions for comparison.
 	"""
 
 	# constants

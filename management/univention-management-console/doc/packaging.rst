@@ -4,7 +4,7 @@
 Packaging
 ---------
 
-A UMC module consists of serveral files that must be installed at a
+A UMC module consists of several files that must be installed at a
 specific location. As this mechanism is always the same there are
 debhelper tools making package creation for UMC modules very easy.
 

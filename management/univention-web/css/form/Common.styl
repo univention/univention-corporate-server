@@ -21,7 +21,7 @@
 .umc .dijitTextBox,
 .umc .dijitSelect
 	border: none
-	border-color: $border-color // the border-color is not used here directly but now we can inherit it on all childs
+	border-color: $border-color // the border-color is not used here directly but now we can inherit it on all children
 	position: relative
 	height: $material-textfield-height
 	color: $material-text-dark-high
@@ -62,7 +62,7 @@
 		.dijitPlaceHolder
 			height: 100%
 			text-overflow: ellipsis
-			padding: 11px ($material-textfield-text-padding + 1px) 10px !important // add 1px to $material-textfield-text-padding since the border is overlayed with position absolute
+			padding: 11px ($material-textfield-text-padding + 1px) 10px !important // add 1px to $material-textfield-text-padding since the border is overlaid with position absolute
 			line-height: 1.2em
 
 		.umcInlineLabel,
@@ -127,7 +127,7 @@
 	.dijitSelectDisabled,
 	.dijitTextBoxDisabled
 		background-color: $textbox-disabled-background-color
-		color: $material-text-dark-medium // $material-text-dark-disabled is not readeable
+		color: $material-text-dark-medium // $material-text-dark-disabled is not readable
 		border-color: $disabled-border-color
 
 		.dijitArrowButtonInner
@@ -218,7 +218,7 @@ label
 	.umcLabelPane.umcSearchFormElementBeforeSubmitButton
 		$layoutrow--make-space-for-buttons(1)
 
-	// the :not(.dijitDisplayNone) is for the LDAP directoy module with 'All types' selected
+	// the :not(.dijitDisplayNone) is for the LDAP directory module with 'All types' selected
 	.umcLabelPane-dijitCheckBox.umcSearchFormElementBeforeSubmitButton:not(.dijitDisplayNone) + .umcSearchFormSubmitButton
 		margin-top: -8px
 

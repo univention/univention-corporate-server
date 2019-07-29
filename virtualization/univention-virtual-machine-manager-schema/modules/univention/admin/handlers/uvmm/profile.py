@@ -277,7 +277,7 @@ def str2list(value):
 	return []
 
 
-# Maping between UDM properties and LDAP attributes
+# Mapping between UDM properties and LDAP attributes
 mapping = udm_mapping.mapping()
 mapping.register('name', 'cn', None, udm_mapping.ListToString)
 mapping.register('name_prefix', 'univentionVirtualMachineProfileNamePrefix', None, udm_mapping.ListToString)

@@ -46,7 +46,7 @@ class Abort(Exception):
 	a clue what went wrong.
 	You should only use one class in different
 	places in the code if you are confident that sending this error from
-	two places does not lead to irritation. (This explicitely holds for
+	two places does not lead to irritation. (This explicitly holds for
 	Abort itself, you better subclass it)
 	If you give a "default_error_msg" variable, you may also use %(var)s
 	for formatting in this string. In this case, the __init__ method will
@@ -308,7 +308,7 @@ class InstallWithoutPermissionError(Abort):
 class AppCenterError(Exception):
 	'''A "real" exception that developers cannot handle very well.
 	The difference between AppCenterError and Abort is that Abort is a
-	somewhat defined behaviour, i.e. App installation has to fail if the
+	somewhat defined behavior, i.e. App installation has to fail if the
 	setup script fails. AppCenterError happens where it was not supposed
 	to.
 	The difference between AppCenterError and Exception is that

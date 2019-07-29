@@ -97,7 +97,7 @@ def verify_script(script, signature):
 
         verify_script(open("script.sh", "r").read(), open("script.sh.gpg", "r").read())
 
-    :param str script: The scipt text to verify.
+    :param str script: The script text to verify.
     :param str signature: The detached signature.
     :return: None or the error output.
     :rtype: None or str
@@ -455,7 +455,7 @@ class _UCSServer(object):
 
         :param _UCSRepo repo: the URI to access as an instance of :py:class:`_UCSRepo`.
         :param str filename: An optional relative path.
-        :param bool get: Fetch data if True - otheriwse check only.
+        :param bool get: Fetch data if True - otherwise check only.
         :return: a 3-tuple (code, size, content) or None on errors.
         :rtype: tuple(int, int, str)
         :raises DownloadError: if the server is unreachable.
@@ -607,7 +607,7 @@ class UCSHttpServer(_UCSServer):
 
         :param _UCSRepo repo: the URI to access as an instance of :py:class:`_UCSRepo`.
         :param str filename: An optional relative path.
-        :param bool get: Fetch data if True - otheriwse check only.
+        :param bool get: Fetch data if True - otherwise check only.
         :return: a 3-tuple (code, size, content)
         :rtype: tuple(int, int, str)
         :raises DownloadError: if the server is unreachable.
@@ -1395,7 +1395,7 @@ class UniventionUpdater:
         :param archs: List of architectures.
         :type archs: list[str]
         :param UCSHttpServer server: The UCS repository server to use.
-        :returns: A iterator throug all UCS releases between `start` and `end` returning `ver`.
+        :returns: A iterator through all UCS releases between `start` and `end` returning `ver`.
         :raises ProxyError: if the repository server is blocked by the proxy.
         """
         self.log.info('Searching %s:%r [%s..%s) in %s and %s', server, ver, start, end, parts, archs)
@@ -1628,7 +1628,7 @@ class UniventionUpdater:
         :param bool for_mirror_list: component entries for `mirror.list` will be returned, otherwise component entries for local `sources.list`.
         :returns: The repository server for the component.
         :rtype: UCSHttpServer
-        :raises ConfigurationError: if the configured server is not useable.
+        :raises ConfigurationError: if the configured server is not usable.
         """
         c_url = copy.copy(self._get_component_baseurl(component, for_mirror_list))
         c_url.path = ''
@@ -1738,7 +1738,7 @@ class UniventionUpdater:
                 version = copy.copy(version)
             else:
                 raise TypeError('Not a UCS Version', version)
-            version.patchlevel = 0  # component dont use the patchlevel
+            version.patchlevel = 0  # component don't use the patchlevel
             versions_mmp.add(version)
 
         for version in versions_mmp:
@@ -1838,8 +1838,8 @@ class UniventionUpdater:
         :rtype: str
         """
         # USER_AGENT='updater/identify - version/version-version/patchlevel errata version/erratalevel - uuid/system - uuid/license'
-        # USER_AGENT='UCS upater - 3.1-0 errata28 - 77e6406d-7a3e-40b3-a398-81cf119c9ef7 - 4c52d2da-d04d-4b05-a593-1974ee851fc8'
-        # USER_AGENT='UCS upater - 3.1-0 errata28 - 77e6406d-7a3e-40b3-a398-81cf119c9ef7 - 00000000-0000-0000-0000-000000000000'
+        # USER_AGENT='UCS updater - 3.1-0 errata28 - 77e6406d-7a3e-40b3-a398-81cf119c9ef7 - 4c52d2da-d04d-4b05-a593-1974ee851fc8'
+        # USER_AGENT='UCS updater - 3.1-0 errata28 - 77e6406d-7a3e-40b3-a398-81cf119c9ef7 - 00000000-0000-0000-0000-000000000000'
         return '%s - %s-%s errata%s - %s - %s - %s - %s' % (
             self.configRegistry.get('updater/identify', 'UCS'),
             self.configRegistry.get('version/version'), self.configRegistry.get('version/patchlevel'),
@@ -1866,7 +1866,7 @@ class UniventionUpdater:
               if (phase, order) == ('update', 'main'):
                 pass
 
-        :param scripts: A generator returing the script to call, e.g. :py:meth:`get_sh_files`
+        :param scripts: A generator returning the script to call, e.g. :py:meth:`get_sh_files`
         :param str logname: The file name of the log file.
         :param args: Additional arguments to pass through to the scripts.
         :returns: A generator returning 2-tuples (phase, part)

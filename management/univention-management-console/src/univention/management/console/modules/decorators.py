@@ -36,7 +36,7 @@ Convenience decorators for developers of UMC modules
 ====================================================
 
 Functions exposed by UMC modules often share some logic. They check the
-existance and formatting of variables or check permissions. If anything
+existence and formatting of variables or check permissions. If anything
 fails, they react in a similar way. If everything is correct, the real
 logic is often as simple as returning one single value.
 
@@ -45,7 +45,7 @@ tasks from the actual business logic. This means:
 
 * less time to code
 * fewer bugs
-* consistent behaviour throughout the UMC in standard cases
+* consistent behavior throughout the UMC in standard cases
 
 Note that the functions defined herein do not cover every corner case during
 UMC module development. You are not bound to use them if you need more
@@ -146,7 +146,7 @@ def sanitize(*args, **kwargs):
 		def add(self, var1, var2):
 			return var1 + var2
 
-	Note that you lose the capability of specifiying defaults in
+	Note that you lose the capability of specifying defaults in
 	*@simple_response*. You need to do it in *@sanitize* now.
 	"""
 	if args:
@@ -297,7 +297,7 @@ def simple_response(function=None, with_flavor=None, with_progress=False):
 	_multi_response = _eval_simple_decorated_function(_fake_func, with_flavor)
 
 	def _response(self, request, *args, **kwargs):
-		# other arguments than request wont be propagated
+		# other arguments than request won't be propagated
 		# needed for @LDAP_Connection
 
 		# fake a multi_request

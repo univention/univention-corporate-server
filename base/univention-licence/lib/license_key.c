@@ -29,7 +29,7 @@ static RSA* rsa_private = NULL;
 	with `\n\` at every line end. every!\n\
 	");
 
-	@retval 1 if successfull
+	@retval 1 if successful
 	@retval 0 on error
 */
 int univention_license_key_init(void)
@@ -90,7 +90,7 @@ mTp+dauS/6Iy0plubIIljUiN8qsPdRSywmvzQvPNAhXYaRDVTVb6Lp9Gw0whMpN6\n\
 
 /******************************************************************************/
 /*!
-	@brief	cleanup all public and posible private keys
+	@brief	cleanup all public and possible private keys
 */
 void univention_license_key_free(void)
 {
@@ -270,7 +270,7 @@ int univention_license_key_private_key_load_file(const char* filename, const cha
 
 	@param	data		the data to verify
 	@param	signature	the base64 encoded signature for this data
-	@retval	1 if successfull verified the data
+	@retval	1 if successful verified the data
 	@retval	0 on error
 */
 int univention_license_verify (const char* data, const char* signature)
@@ -309,7 +309,7 @@ int univention_license_verify (const char* data, const char* signature)
 /*!
 	@brief	sign data with the current installed privateKey 
 	@param	data the data that should be signed
-	@retval	char the base64 encoded signatur
+	@retval	char the base64 encoded signature
 	@retval	NULL on error
 */
 char* univention_license_sign(const char* data)

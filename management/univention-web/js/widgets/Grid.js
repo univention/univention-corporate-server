@@ -69,7 +69,7 @@ define([
 
 	var _Grid = declare([OnDemandGrid, Selection, Selector, DijitRegistry, Destroyable], {
 		getItem: function(item) {
-			// For legacy dojox grid compability
+			// For legacy dojox grid compatibility
 			// e.g. formaters that expect to be working with a dojox grid
 			return item;
 		},
@@ -99,7 +99,7 @@ define([
 
 	var _DropDownButton = declare([DropDownButton], {
 		_onClick: function(evt) {
-			// dont propagate any event here - otherwise dropDown gets closed.
+			// don't propagate any event here - otherwise dropDown gets closed.
 			// this has something to do with the dropdown losing focus in favor
 			// of the underlying td-node. it triggers _HasDropDown's _onBlur
 			this.inherited(arguments);
@@ -115,7 +115,7 @@ define([
 		// actions: Object[]
 		//		Array of config objects that specify the actions that are going to
 		//		be used in the grid.
-		//		'canExecute': function that specifies whether an action can be excuted for
+		//		'canExecute': function that specifies whether an action can be executed for
 		//		              a particular item; the function receives a dict of all item
 		//		              properties as parameter
 		//		'tooltipClass': specifies a different tooltip class than umc/widgets/Tooltip

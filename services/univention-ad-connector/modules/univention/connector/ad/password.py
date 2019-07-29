@@ -259,8 +259,8 @@ def password_sync_ucs(connector, key, object):
 	if connector.baseConfig.is_true('%s/ad/password/timestamp/check' % connector.CONFIGBASENAME, False):
 		ad_password_last_set = 0
 		# If sambaPwdLast was set to 1 the password must be changed on next login. In this
-		# case the timestamp is ignored and the password will be synced. This behaviour can
-		# be disbled by setting connector/ad/password/timestamp/syncreset/ucs to false. This
+		# case the timestamp is ignored and the password will be synced. This behavior can
+		# be disabled by setting connector/ad/password/timestamp/syncreset/ucs to false. This
 		# might be necessary if the connector is configured in read mode and the password will be
 		# synced in two ways: Bug #22653
 		if sambaPwdLastSet > 1 or (sambaPwdLastSet <= 2 and connector.baseConfig.is_false('%s/ad/password/timestamp/syncreset/ucs' % connector.CONFIGBASENAME, False)):
@@ -366,7 +366,7 @@ def password_sync(connector, key, ucs_object):
 		ad_password_last_set = 0
 
 		# If pwdLastSet was set to 0 the password must be changed on next login. In this
-		# case the timestamp is ignored and the password will be synced. This behaviour can
+		# case the timestamp is ignored and the password will be synced. This behavior can
 		# be disabled by setting connector/ad/password/timestamp/syncreset/ad to false. This
 		# might be necessary if the connector is configured in read mode and the password will be
 		# synced in two ways: Bug #22653

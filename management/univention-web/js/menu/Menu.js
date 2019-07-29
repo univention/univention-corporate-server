@@ -227,7 +227,7 @@ define([
 			// adds a menu entry that when clicked opens a submenu.
 			// Menu entries or other sub-menus can be added to this sub-menu.
 			//
-			// takes an object as paramter with the following properties:
+			// takes an object as parameter with the following properties:
 			//	Required:
 			//		label: String
 			//  Optional:
@@ -334,7 +334,7 @@ define([
 			var parentMenuItem = this._menuMap[parentMenuId];
 			var menuEntry = _createMenuEntry();
 
-			// add listeners if entry is not a seperator
+			// add listeners if entry is not a separator
 			if (typeof menuEntry.onClick === 'function') {
 				menuEntry.on(tap, function() {
 					menuEntry.onClick();

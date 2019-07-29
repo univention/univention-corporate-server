@@ -1,9 +1,9 @@
 """
 A jenkins build represents a single execution of a Jenkins Job.
 
-Builds can be thought of as the second level of the jenkins heirarchy
+Builds can be thought of as the second level of the jenkins hierarchy
 beneath Jobs. Builds can have state, such as whether they are running or
-not. They can also have outcomes, such as wether they passed or failed.
+not. They can also have outcomes, such as whether they passed or failed.
 
 Build objects can be associated with Results and Artifacts.g
 """
@@ -427,7 +427,7 @@ class Build(JenkinsBase):
         '''
         Returns build timestamp in UTC
         '''
-        # Java timestamps are given in miliseconds since the epoch start!
+        # Java timestamps are given in milliseconds since the epoch start!
         naive_timestamp = datetime.datetime(
             *time.gmtime(self._data['timestamp'] / 1000.0)[:6])
         return pytz.utc.localize(naive_timestamp)
@@ -451,7 +451,7 @@ class Build(JenkinsBase):
     def stop(self):
         """
         Stops the build execution if it's running
-        :return boolean True if succeded False otherwise or the build
+        :return boolean True if succeeded False otherwise or the build
             is not running
         """
         if self.is_running():

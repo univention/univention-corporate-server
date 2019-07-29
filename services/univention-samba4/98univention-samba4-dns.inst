@@ -41,7 +41,7 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
-# samba4 allowd on this system?
+# samba4 allowed on this system?
 if is_ucr_true samba4/disabled; then
 	echo "WARNING: samba4 on this system is not allowed."
 	echo "         The samba4 join stops here. To rerun the"
@@ -133,7 +133,7 @@ if [ -n "$samba4_join_site" ]; then
 fi
 
 if [ $JS_LAST_EXECUTED_VERSION -le 1 ]; then
-## Set DNS records again in case Bug #26285 occured in UCS 3.0-0. 
+## Set DNS records again in case Bug #26285 occurred in UCS 3.0-0. 
 ## Flow control copied from 96univention-samba4.inst
 
 	if [ "$samba4_role" = 'DC' ]; then

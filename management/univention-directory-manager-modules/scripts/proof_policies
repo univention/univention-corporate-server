@@ -70,11 +70,11 @@ if len(sys.argv) > 1:
 		print_usage()
 		sys.exit()
 
-# What we gonna do:
+# What we going to do:
 # 1. list all objectClass=univentionPolicy
 # 2. iterate all objectClass=univentionPolicyReference
 # 3. therefore iterate all Attributes univentionPolicyReference
-#      if found reference points to a exisiting reference mark it as used, if not query for deleting
+#      if found reference points to a existing reference mark it as used, if not query for deleting
 # 4. query all unmarked Policies for deleting
 
 count_references = 0

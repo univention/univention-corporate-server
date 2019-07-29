@@ -4,7 +4,7 @@
 SHARE_HOST="$hostname.$domainname"
 SHARE_POSITION="cn=$hostname.$domainname,cn=shares,$ldap_base"
 SHARE_UNIX_OWNER=0 #must be number
-SHARE_UNIX_GROUP=0 #must be numer
+SHARE_UNIX_GROUP=0 #must be number
 SHARE_UNIX_DIRECTORYMODE=0755
 SHARE_NFS_WRITEABLE=1
 SHARE_SAMBA_WRITEABLE=1

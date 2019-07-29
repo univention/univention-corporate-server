@@ -71,7 +71,7 @@ class UMCTester(object):
 		self.reset()
 
 	#
-	# Code for chaning start type
+	# Code for changing start type
 	#
 	def test_chaning_start_type(self):
 		ignore_these = [
@@ -87,7 +87,7 @@ class UMCTester(object):
 		]
 		services = [key for key in self.srvs.services.iterkeys() if key not in ignore_these]
 		if len(services) < 3:
-			pass  # TODO can't test all start types at onces
+			pass  # TODO can't test all start types at once
 		count_per_start_type = len(services) / 3
 		d = {}
 		for idx, start_type in enumerate(('automatically', 'manually', 'never')):

@@ -126,7 +126,7 @@ define([
 		// newObjectOptions:
 		// 		Dict containing options for creating a new LDAP object (chosen by the user
 		// 		in the 'add object' dialog). This includes properties such as superordinate,
-		//		the container in wich the object is to be created, the object type etc.
+		//		the container in which the object is to be created, the object type etc.
 		newObjectOptions: null,
 
 		// isCloseable: Boolean?
@@ -190,7 +190,7 @@ define([
 
 		isSyncedObject: null, // object which is modified (or one of multiedited) has univentionObjectFlag == synced
 
-		standbyOpacity: 0,  // the standby animation should be transparent to improove visiblity when loading the object
+		standbyOpacity: 0,  // the standby animation should be transparent to improove visibility when loading the object
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
@@ -1391,7 +1391,7 @@ define([
 			var vals = this._form.get('value');
 
 			// get also policy values... can not be handled as standard form entry
-			// explicitely exclude users/self. FIXME: find a way
+			// explicitly exclude users/self. FIXME: find a way
 			// to receive some udm-module-configuration for that
 			var policiesLoaded = this._policyDeferred.isFulfilled();
 			var isUsersSelf = this.objectType == 'users/self';
@@ -1594,7 +1594,7 @@ define([
 					note: _('You are currently editing a policy. Changing its properties affects all referenced objects and may affect your system globally.')
 				};
 			} else {
-				// if no DN is given, we are creating a new oject
+				// if no DN is given, we are creating a new object
 				props.newObject = {
 					objectType: policyType
 				};
@@ -2044,7 +2044,7 @@ define([
 			} else {
 				// existing object .. get only the values that changed
 				if (this._receivedObjFormData === null) {
-					// error happend while loading the object
+					// error happened while loading the object
 					setTimeout(lang.hitch(this, 'onCloseTab'), 50); // prevent dom-removal exception with setTimeout
 					console.error(_consoleErrorText());
 					return {};

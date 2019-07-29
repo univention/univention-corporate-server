@@ -81,7 +81,7 @@ section :ref:`chapter-packaging`.
 
 This example defines a so called flavor. A flavor defines a new name,
 description and icon for the same UMC module. This can be used to show
-several"virtual" modules in the overview of the web frontend. Additionally the flavor is passed to the UMC server with each request i.e. the UMC modul has the possibility to act differently for a specific flavor.
+several"virtual" modules in the overview of the web frontend. Additionally the flavor is passed to the UMC server with each request i.e. the UMC module has the possibility to act differently for a specific flavor.
 
 As the next element *categories* is defined in the example. The child
 elements *category* set the categories wthin the overview where the
@@ -151,7 +151,7 @@ class Command(JSON_Object):
 class Flavor(JSON_Object):
 
 	'''Defines a flavor of a module. This provides another name and icon
-	in the overview and may influence the behaviour of the module.'''
+	in the overview and may influence the behavior of the module.'''
 
 	def __init__(self, id='', icon='', name='', description='', overwrites=None, deactivated=False, priority=-1, translationId=None, keywords=None, categories=None, required_commands=None, version=None, hidden=False):
 		self.id = id

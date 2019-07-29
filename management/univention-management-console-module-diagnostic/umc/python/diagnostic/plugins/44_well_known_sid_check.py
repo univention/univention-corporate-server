@@ -159,7 +159,7 @@ def check_existence_and_consistency():
 				pass
 			else:
 				# We don't need an explicit `sid != actual_sid` here, as no
-				# object with `sid` exists and we therefor have a mismatch in
+				# object with `sid` exists and we therefore have a mismatch in
 				# every case.
 				yield SIDMismatch(sid, actual_sid, mapped_name)
 		else:

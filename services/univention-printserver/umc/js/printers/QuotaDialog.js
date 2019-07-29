@@ -50,7 +50,7 @@ define([
 					name:			'cancel',
 					label:			_("Cancel"),
 					// no special meaning of the button name 'cancel', so we
-					// have to make a seperate callback for this button.
+					// have to make a separate callback for this button.
 					callback: lang.hitch(this, function() {
 						this.onCancel();
 					})

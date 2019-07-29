@@ -165,7 +165,7 @@ def acquireUnique(lo, position, type, value, attr, scope='base'):
 	else:
 		searchBase = position.getBase()
 
-	if type == "aRecord":  # uniqueness is only relevant among hosts (one or more dns entrys having the same aRecord as a host are allowed)
+	if type == "aRecord":  # uniqueness is only relevant among hosts (one or more dns entries having the same aRecord as a host are allowed)
 		univention.admin.locking.lock(lo, position, type, value, scope=scope)
 		if not lo.searchDn(base=searchBase, filter=filter_format('(&(objectClass=univentionHost)(%s=%s))', (attr, value))):
 			return value

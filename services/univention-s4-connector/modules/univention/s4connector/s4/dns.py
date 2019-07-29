@@ -104,7 +104,7 @@ class MXRecord(dnsp.DnssrvRpcRecord):
 		self.data.wPriority = priority
 		self.data.nameTarget = name
 
-# mapping funtions
+# mapping functions
 
 
 def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):

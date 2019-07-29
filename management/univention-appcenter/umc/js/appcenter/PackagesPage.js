@@ -366,7 +366,7 @@ define([
 		},
 		_breaks_anything: function(values) { return values.breaks !== undefined && values.breaks.length; },
 
-		// prepares all data for the acutal execution of the installer.
+		// prepares all data for the actual execution of the installer.
 		_call_installer: function(func, ids, aptGetUpdate) {
 			aptGetUpdate = aptGetUpdate || false;
 			var verb = '';
@@ -458,7 +458,7 @@ define([
 			// module might be killed if user logs out
 			// during installation: dpkg will be in a
 			// broken state, Bug #30611.
-			// dont handle any errors. a timeout is not
+			// don't handle any errors. a timeout is not
 			// important. this command is just for the module
 			// to stay alive
 			this.moduleStore.umcpCommand('appcenter/keep_alive', {}, false);

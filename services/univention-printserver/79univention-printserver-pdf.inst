@@ -38,7 +38,7 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
-# install new printer protocoll
+# install new printer protocol
 univention-directory-manager settings/printeruri modify "$@" \
 	--dn="cn=printeruris,cn=cups,cn=univention,$ldap_base" \
 	--append printeruri="cups-pdf:/" || die

@@ -248,7 +248,7 @@ class simpleLdap(object):
 		self._validate_superordinate()
 
 	def save(self):  # type: () -> None
-		"""Saves the current internal object state as old state for later comparision when e.g. modifying this object.
+		"""Saves the current internal object state as old state for later comparison when e.g. modifying this object.
 
 		.. seealso:: This method should be called by :func:`univention.admin.handlers.simpleLdap.open` and after further modifications in modify() / create().
 
@@ -525,7 +525,7 @@ class simpleLdap(object):
 	def create(self, serverctrls=None, response=None):
 		"""
 			Creates the LDAP object if it does not exists by building the list of attributes (addlist) and write it to LDAP.
-			If this call raises an exception it is necessary to instanciate a new object before trying to create it again.
+			If this call raises an exception it is necessary to instantiate a new object before trying to create it again.
 
 			:raises: :class:`univention.admin.uexceptions.invalidOperation` if objects of this type do not support to be created.
 			:raises: :class:`univention.admin.uexceptions.objectExists` if the object already exists.
@@ -1197,7 +1197,7 @@ class simpleLdap(object):
 
 			.. seealso:: :mod:`univention.uldap` for further information about the format of the modlist.
 
-			This method can be overriden in a subclass to add special behavior, e.g. for properties which have no mapping defined.
+			This method can be overridden in a subclass to add special behavior, e.g. for properties which have no mapping defined.
 
 			.. caution:: The final modlist used for creation of objects is mixed with the :func:`univention.admin.handlers.simpleLdap._ldap_addlist`.
 					Make sure this method don't add attributes which are already set.
@@ -2548,7 +2548,7 @@ class simpleComputer(simpleLdap):
 				zone.open()
 				zone.modify()
 			else:
-				# thow exeption, cNAMERecord is single value
+				# throw exception, cNAMERecord is single value
 				raise univention.admin.uexceptions.dnsAliasAlreadyUsed, _('DNS alias is already in use.')
 
 	def __remove_dns_alias_object(self, name, dnsForwardZone, dnsAliasZoneContainer, alias=None):
@@ -2575,7 +2575,7 @@ class simpleComputer(simpleLdap):
 							zone.open()
 							zone.modify()
 					else:
-						# could thow some exeption
+						# could throw some exception
 						pass
 			else:
 				if dnsForwardZone:
@@ -2671,7 +2671,7 @@ class simpleComputer(simpleLdap):
 		for entry in self.__changes['dnsEntryZoneAlias']['remove']:
 			dnsForwardZone, dnsAliasZoneContainer, alias = entry
 			if not alias:
-				# nonfunctional code since self[ 'alias' ] should be self[ 'dnsAlias' ], but ths case does not seem to occur
+				# nonfunctional code since self[ 'alias' ] should be self[ 'dnsAlias' ], but this case does not seem to occur
 				self.__remove_dns_alias_object(self['name'], dnsForwardZone, dnsAliasZoneContainer, self['alias'][0])
 			else:
 				self.__remove_dns_alias_object(self['name'], dnsForwardZone, dnsAliasZoneContainer, alias)
@@ -3221,7 +3221,7 @@ class simpleComputer(simpleLdap):
 		ud.debug(ud.ADMIN, ud.INFO, '_ldap_post_remove: clean up service records, host records, and IP address saved at the forward zone')
 		ips = set(self['ip'] or [])
 		fqdn = self['fqdn']
-		fqdnDot = '%s.' % fqdn  # we might have entires w/ or w/out trailing '.'
+		fqdnDot = '%s.' % fqdn  # we might have entries w/ or w/out trailing '.'
 
 		# iterate over all reverse zones
 		for zone in self['dnsEntryZoneReverse'] or []:

@@ -202,7 +202,7 @@ define([
 							var putCombinator = query(lang.replace('#{0} ~ #{1}', [this.dndSource.anchor.id, target.id]), this.dndSource.parent).length ? '+' : '-';
 							put(target, putCombinator, this.dndPlaceholder);
 						} else {
-							// this case is when the drag event ist started.
+							// this case is when the drag event is started.
 							// Put the placeholder in the place of the dragged tile
 							put(target, '-', this.dndPlaceholder);
 						}

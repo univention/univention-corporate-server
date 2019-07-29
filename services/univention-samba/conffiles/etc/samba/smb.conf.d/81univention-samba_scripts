@@ -7,7 +7,7 @@ if configRegistry.get('samba/role') == 'memberserver':
 	pass
 elif configRegistry['server/role'] == 'domaincontroller_master' or configRegistry.get('samba/domainmaster') == 'yes':
 	def add_script(key, option, default):
-		if configRegistry.is_false(key, False): # if the value is set to false, the script will be diabled
+		if configRegistry.is_false(key, False): # if the value is set to false, the script will be disabled
 			pass
 		elif configRegistry.is_true(key, False): # if the value is set to true, the default script will be added
 			print '	%s = %s' % (option, default)

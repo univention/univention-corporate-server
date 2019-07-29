@@ -210,7 +210,7 @@ class BaseMailClient(object):
 		:expected_result: dict{mailbox : bool}
 		"""
 		for mailbox, retcode in expected_result.items():
-			# Actuall Permissions are given to shared/owner/INBOX
+			# actual Permissions are given to shared/owner/INBOX
 			# This is different than listing
 			if mailbox_owner != self.owner and mailbox == 'INBOX':
 				mailbox = 'shared/%s/INBOX' % (mailbox_owner,)

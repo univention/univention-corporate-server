@@ -716,7 +716,7 @@ define([
 			array.forEach(this.app.rating, function(rating) {
 				domConstruct.create('div', {
 						'class': 'umcAppRatingHelp umcAppRatingIcon umcAppRating' + rating.name,
-						'style': 'background-size: contain;',  // FIXME: Not sure why this wont work in appcenter.styl
+						'style': 'background-size: contain;',  // FIXME: Not sure why this won't work in appcenter.styl
 						onmouseenter: function(evt) {
 							var node = evt.target;
 							Tooltip.show(rating.description, node);  // TODO: html encode?
@@ -1128,7 +1128,7 @@ define([
 			// module might be killed if user logs out
 			// during installation: dpkg will be in a
 			// broken state, Bug #30611.
-			// dont handle any errors. a timeout is not
+			// don't handle any errors. a timeout is not
 			// important. this command is just for the module
 			// to stay alive
 			if (keepAlive !== false) {

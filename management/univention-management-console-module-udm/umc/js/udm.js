@@ -141,7 +141,7 @@ define([
 		//		This class is meant to be used (a) either to interface a particular UDM type
 		//		(users, groups, computers, ...) or (b) to display a navigation interface which
 		//		shows the container hierarchy on the left side and existing LDAP objects of
-		//		any type on the search list. The behaviour of the class is controlled by the
+		//		any type on the search list. The behavior of the class is controlled by the
 		//		moduleFlavor property (which is set automatically when available modules are
 		//		queried during the initialization).
 
@@ -1101,7 +1101,7 @@ define([
 			});
 			domClass.toggle(this._searchForm.domNode, 'umcUDMSearchFormSimpleTextBox', (!this._isAdvancedSearch && this._searchForm._widgets.objectPropertyValue._widget instanceof TextBox));
 			// only allow _updateVisibility calls on ComboBoxes if search is advanced.
-			// prevents ComboBoxes from beeing shown when the values are loaded and then
+			// prevents ComboBoxes from being shown when the values are loaded and then
 			// immediately hidden again because the search form is in simple mode.
 			var comboBoxWidgets = ['container', 'objectProperty'];
 			if ('navigation' != this.moduleFlavor) {

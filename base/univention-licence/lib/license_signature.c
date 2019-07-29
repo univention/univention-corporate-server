@@ -18,7 +18,7 @@ char* univention_license_build_data(lObj* license)
 	int i;
 	char* data = NULL;
 	
-	//sort entrys
+	//sort entries
 	license = univention_license_sort(license);
 	
 	for (i=0; i < license->size; i++)
@@ -60,7 +60,7 @@ char* univention_license_build_data(lObj* license)
 	signature is taken from this license.
 	for the real signature check univention_license_verify() is called
 	
-	@retval	0 if license is not valid, or a error has occured
+	@retval	0 if license is not valid, or a error has occurred
 	@retval 1 if license signature is valid
 */
 int univention_license_check_signature()
@@ -97,9 +97,9 @@ int univention_license_check_signature()
 
 /******************************************************************************/
 /*!
-	@brief	A ADMIN funtion! Try to generate the signature for the LDAP object at licenseDN
+	@brief	A ADMIN function! Try to generate the signature for the LDAP object at licenseDN
 	@param	licenseDN	the path of the ldapLicenseObject that should be signed
-	@retval	NULL if an error has occured
+	@retval	NULL if an error has occurred
 	@retval char the base64 encoded signature
 */
 char* univention_license_sign_license(const char* licenseDN)
@@ -128,7 +128,7 @@ char* univention_license_sign_license(const char* licenseDN)
 	@brief	convert a base64 encoded string back to rawdata
 	@param	base64data the string that should be converted
 	@param	rawdata	the address to where the begin of the converted rawdata begins
-	@retval	0	if an error has occured
+	@retval	0	if an error has occurred
 	@retval len	the amount of chars in returned rawdata
 */
 unsigned int univention_license_base64_to_raw(const char* base64data, unsigned char** rawdata)
@@ -197,7 +197,7 @@ char* univention_license_raw_to_base64(const unsigned char* data, unsigned int d
 	BIO_write(b64, (void*)data, datalen);
 	BIO_flush(b64);
 	
-	//calculate base64 data lenght, and allocate
+	//calculate base64 data length, and allocate
 	retlen = BIO_get_mem_data(mem, &ret);
 	ret = malloc(sizeof(char)*(retlen+1));
 	

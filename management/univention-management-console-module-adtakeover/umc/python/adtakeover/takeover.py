@@ -885,7 +885,7 @@ class AD_Takeover():
 	def join_AD(self, progress):
 		log.info("Starting phase I of the takeover process.")
 
-		# OK, we are quite shure that we have the basics right, note the AD server IP and FQDN in UCR for phase II
+		# OK, we are quite sure that we have the basics right, note the AD server IP and FQDN in UCR for phase II
 		run_and_output_to_log(["univention-config-registry", "set", "hosts/static/%s=%s %s" % (self.ad_server_ip, self.ad_server_fqdn, self.ad_server_name)], log.debug)
 
 		run_and_output_to_log(["/etc/init.d/univention-s4-connector", "stop"], log.debug)
@@ -1601,7 +1601,7 @@ class AD_Takeover_Finalize():
 		## Let samba_dnsupdate check DNS records
 		#run_and_output_to_log(["/usr/sbin/samba_dnsupdate", ], log.info)
 
-		# remove local enty for AD DC from /etc/hosts
+		# remove local entry for AD DC from /etc/hosts
 		run_and_output_to_log(["univention-config-registry", "unset", "hosts/static/%s" % self.ad_server_ip], log.debug)
 
 		# Replace DNS host record for AD Server name by DNS Alias
@@ -1841,7 +1841,7 @@ class AD_Takeover_Finalize():
 		# Let things settle
 		time.sleep(3)
 
-		# Restart Samba and make shure the rapid restart did not leave the main process blocking
+		# Restart Samba and make sure the rapid restart did not leave the main process blocking
 		run_and_output_to_log(["/etc/init.d/samba-ad-dc", "restart"], log.debug)
 		check_samba4_started()
 
@@ -2060,7 +2060,7 @@ def lookup_adds_dc(hostname_or_ip=None, realm=None, ucr=None):
 	}
 
 	if not domain_info["ad_server_site"]:
-		raise TakeoverError(_("Faild to detect the Active Directory site of the server."))
+		raise TakeoverError(_("Failed to detect the Active Directory site of the server."))
 
 	return domain_info
 
@@ -2387,7 +2387,7 @@ def operatingSystem_attribute(ucr, samdb):
 
 
 def takeover_DC_Behavior_Version(ucr, remote_samdb, samdb, ad_server_name, sitename):
-	# DC Behaviour Version
+	# DC Behavior Version
 	msg = remote_samdb.search(
 		base="CN=NTDS Settings,CN=%s,CN=Servers,CN=%s,CN=Sites,CN=Configuration,%s" % (escape_dn_chars(ad_server_name), escape_dn_chars(sitename), samdb.domain_dn()),
 		scope=samba.ldb.SCOPE_BASE,
@@ -2572,7 +2572,7 @@ def run_phaseI(ucr, lp, opts, args, parser, creds, always_answer_with=None):
 	# Restart Univention Directory Listener for S4 Connector
 	# Reset S4 Connector and handler state
 	# rotate S4 connector log and start the S4 Connector
-	# Ok, just in case, start the Connector explicitely
+	# Ok, just in case, start the Connector explicitly
 	# Reset normal relication intervals
 	# rebuild idmap
 	# Start NSCD again
@@ -2582,14 +2582,14 @@ def run_phaseI(ucr, lp, opts, args, parser, creds, always_answer_with=None):
 def run_phaseIII(ucr, lp, ad_server_ip, ad_server_fqdn, ad_server_name):
 
 	# Phase III: Promote to FSMO master and DNS server
-	# Restart Samba and make shure the rapid restart did not leave the main process blocking
+	# Restart Samba and make sure the rapid restart did not leave the main process blocking
 	# 1. Determine Site of local server, important for locale-dependend names like "Standardname-des-ersten-Standorts"
 	# properly register partitions
 	# Backup current NTACLs on sysvol
 	# Re-Set NTACLs from nTSecurityDescriptor on sysvol policy directories
 	# Re-set default fACLs so sysvol-sync can read files and directories (See Bug#29065)
 	# Add DNS records to UDM:
-	# remove local enty for AD DC from /etc/hosts
+	# remove local entry for AD DC from /etc/hosts
 	# Replace DNS host record for AD Server name by DNS Alias
 	# Cleanup necessary to use NETBIOS Alias
 	# Now delete the AD DC account and sub-objects
@@ -2602,7 +2602,7 @@ def run_phaseIII(ucr, lp, ad_server_ip, ad_server_fqdn, ad_server_name):
 	# Claim FSMO roles
 	# Let things settle
 	time.sleep(3)
-	# Restart Samba and make shure the rapid restart did not leave the main process blocking
+	# Restart Samba and make sure the rapid restart did not leave the main process blocking
 	# Create new DNS SPN account in Samba4
 	# Restart bind9 to use the OpenLDAP backend, just to be sure
 	# re-create /etc/krb5.keytab

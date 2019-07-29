@@ -399,7 +399,7 @@ _module_cache = UDM_ModuleCache()
 
 class UDM_Module(object):
 
-	"""Wraps UDM modules to provie a simple access to the properties and functions"""
+	"""Wraps UDM modules to provide a simple access to the properties and functions"""
 
 	def __init__(self, module, force_reload=False, ldap_connection=None, ldap_position=None):
 		"""Initializes the object"""
@@ -907,7 +907,7 @@ class UDM_Module(object):
 
 	def get_properties(self, ldap_dn=None):
 		# scan the layout to only find elements which are displayed
-		# special case: options and the dn: They are not explicitely specified in the module layout
+		# special case: options and the dn: They are not explicitly specified in the module layout
 		inLayout = set(('$options$', '$dn$'))
 
 		def _scanLayout(_layout):
@@ -974,7 +974,7 @@ class UDM_Module(object):
 					item['default'] = str(prop.base_default)
 			elif key == 'primaryGroup':  # set default for primaryGroup
 				if position_dn:
-					# settings/usertemplate requires a superordinate to be given. The superordinate is automatically searched for if ommited. We need to set the position here.
+					# settings/usertemplate requires a superordinate to be given. The superordinate is automatically searched for if omitted. We need to set the position here.
 					# better would be to use the default position, but settings/usertemplate doesn't set one: Bug #43427
 					ldap_position.setDn(position_dn)
 				obj = self.module.object(None, ldap_connection, ldap_position, None)

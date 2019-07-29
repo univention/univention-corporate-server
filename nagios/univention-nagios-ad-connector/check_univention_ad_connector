@@ -86,7 +86,7 @@ if [ "$#" -gt 0 -a -n "$1" ]; then
 	MSG_CONNECTOR=" [$1]"
 fi
 
-# check wether the AD connector is running; for this, get the exact command
+# check whether the AD connector is running; for this, get the exact command
 # that was used to launch the process; remove multiple whitespaces and quotes
 # in order to match the command via check_procs
 cmd=$(grep /usr/bin/python /usr/sbin/univention-ad-${CONNECTOR} | sed 's/\s\{1,\}/ /g; s/["'"'"']//g')

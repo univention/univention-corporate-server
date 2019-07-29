@@ -52,7 +52,7 @@ define([
 			this.inherited(arguments);
 
 			this._yearInput = new NumberSpinner({
-				// overwrite formatter; we do not want thousands seperator (2000 instead of 2.000)
+				// overwrite formatter; we do not want thousands separator (2000 instead of 2.000)
 				_formatter: function(value) {
 					return value;
 				},
@@ -63,14 +63,14 @@ define([
 
 			var yearInputKeyDownHandler = on(this._yearInput, 'keyDown', lang.hitch(this, function(evt) {
 				if (evt.key === 'Enter') {
-					// focus the Calender when Enter key is pressed in _yearInput to
+					// focus the Calendar when Enter key is pressed in _yearInput to
 					// activate the Calendar keyboard navigation
 					this.focus();
 				}
 
 				var isLeftOrRightKey = (evt.key === 'ArrowLeft' || evt.key === 'Left' || evt.key === 'ArrowRight' || evt.key === 'Right');
 				if (isLeftOrRightKey) {
-					// we do not want the calender to pick up the keyevents
+					// we do not want the calendar to pick up the keyevents
 					// for the right and left arrow key while typing in the input
 					// so we can move the cursor left and right instead of focusing the
 					// previous/next date cell
@@ -78,7 +78,7 @@ define([
 				}
 
 				if (evt.key === 'Tab') {
-					// prevent native tab behaviour for _yearInput
+					// prevent native tab behavior for _yearInput
 					evt.preventDefault();
 				}
 			}));

@@ -435,7 +435,7 @@ def verifyNtlmTypeThree(data, challenge):
 		# NTLM2
 		if len(ntResp) == 24:
 			# if last 16 byte are NULL, then we have NTLM2
-			# othewise still NTLM
+			# otherwise still NTLM
 			if lmResp[8:24] == "\x00" * 16:
 				myResp = verifyNtlm2(ntHash, challenge, lmResp[0:8])
 				mode = "NTLM2"

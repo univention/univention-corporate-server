@@ -217,7 +217,7 @@ class TestUMCServiceProcessHandling(ServiceModule):
     def main(self):
         """
         Method to test the UMC globally defined 'service_name' service process
-        start/stop/restart behaviour.
+        start/stop/restart behavior.
         """
         self.create_connection_authenticate()
 

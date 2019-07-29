@@ -41,7 +41,7 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			// trigger a reload of initial values on every module opening, even if the modul process already exists
+			// trigger a reload of initial values on every module opening, even if the module process already exists
 			this.umcpCommand('pkgdb/reinit');
 
 			var syspage = new Page({

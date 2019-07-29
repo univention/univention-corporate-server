@@ -238,7 +238,7 @@ def s42samba_time(l):
 	d = 116444736000000000  # difference between 1601 and 1970
 	return int(((l - d)) / 10000000)
 
-# mapping funtions
+# mapping functions
 
 
 def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucsobject, propertyname, propertyattrib, ocucs, ucsattrib, ocs4, dn_attr=None):
@@ -834,7 +834,7 @@ class LDAPEscapeFormatter(string.Formatter):
 
 def format_escaped(format_string, *args, **kwargs):
 	"""
-	Convenience-wrapper arround `LDAPEscapeFormatter`.
+	Convenience-wrapper around `LDAPEscapeFormatter`.
 
 	Use `!e` do denote format-field that should be escaped using
 	`ldap.filter.escape_filter_chars()`'
@@ -1311,7 +1311,7 @@ class s4(univention.s4connector.ucs):
 			res = self.__search_s4_partitions(filter=usnFilter, show_deleted=show_deleted)
 			return sorted(res, key=lambda element: element[1][attribute][0])
 
-		# search fpr objects with uSNCreated and uSNChanged in the known range
+		# search for objects with uSNCreated and uSNChanged in the known range
 		returnObjects = []
 		try:
 			if lastUSN > 0:
@@ -1327,7 +1327,7 @@ class s4(univention.s4connector.ucs):
 		except (ldap.SERVER_DOWN, SystemExit):
 			raise
 		except ldap.SIZELIMIT_EXCEEDED:
-			# The LDAP control page results was not sucessful. Without this control
+			# The LDAP control page results was not successful. Without this control
 			# S4 does not return more than 1000 results. We are going to split the
 			# search.
 			highestCommittedUSN = self.__get_highestCommittedUSN()
@@ -1513,7 +1513,7 @@ class s4(univention.s4connector.ucs):
 			ud.debug(ud.LDAP, ud.PROCESS, 'primary_group_sync_from_ucs: The S4 object (%s) was not found. The object was removed.' % object['dn'])
 			return
 
-		ucs_group_id = ldap_object_ucs['gidNumber'][0]  # FIXME: fails if group does not exsist
+		ucs_group_id = ldap_object_ucs['gidNumber'][0]  # FIXME: fails if group does not exists
 		ucs_group_filter = format_escaped('(&(objectClass=univentionGroup)(gidNumber={0!e}))', ucs_group_id)
 		ucs_group_ldap = self.search_ucs(filter=ucs_group_filter)  # is empty !?
 
@@ -1533,7 +1533,7 @@ class s4(univention.s4connector.ucs):
 
 		# to set a valid primary group we need to:
 		# - check if either the primaryGroupID is already set to rid or
-		# - proove that the user is member of this group, so: at first we need the s4_object for this element
+		# - prove that the user is member of this group, so: at first we need the s4_object for this element
 		# this means we need to map the user to get it's S4-DN which would call this function recursively
 
 		if "primaryGroupID" in ldap_object_s4 and ldap_object_s4["primaryGroupID"][0] == rid:
@@ -1903,7 +1903,7 @@ class s4(univention.s4connector.ucs):
 				self.lo.lo.modify_s(ucs_group_object['dn'], compatible_modlist(ml))
 			except ldap.ALREADY_EXISTS:
 				# The user is already member in this group or it is his primary group
-				# This might happen, if we synchronize a rejected file with old informations
+				# This might happen, if we synchronize a rejected file with old information
 				# See Bug #25709 Comment #17: https://forge.univention.org/bugzilla/show_bug.cgi?id=25709#c17
 				ud.debug(ud.LDAP, ud.INFO, "one_group_member_sync_to_ucs: User is already member of the group: %s modlist: %s" % (ucs_group_object['dn'], ml))
 
@@ -1921,7 +1921,7 @@ class s4(univention.s4connector.ucs):
 				self.lo_s4.lo.modify_s(s4_group_object['dn'], compatible_modlist(ml))
 			except ldap.ALREADY_EXISTS:
 				# The user is already member in this group or it is his primary group
-				# This might happen, if we synchronize a rejected file with old informations
+				# This might happen, if we synchronize a rejected file with old information
 				# See Bug #25709 Comment #17: https://forge.univention.org/bugzilla/show_bug.cgi?id=25709#c17
 				ud.debug(ud.LDAP, ud.INFO, "one_group_member_sync_from_ucs: User is already member of the group: %s modlist: %s" % (s4_group_object['dn'], ml))
 

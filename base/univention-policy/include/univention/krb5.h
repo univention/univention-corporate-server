@@ -1,6 +1,6 @@
 /*
  * Univention Policy
- *  C source of the univention policy libary
+ *  C source of the univention policy library
  *
  * Copyright 2003-2019 Univention GmbH
  *

@@ -85,7 +85,7 @@ an object has the following properties:
 The *query* method in the example above shows how to retrieve the
 command parameters and what to do to send the result back to the
 client. Important is that returning a value in a command function does
-not send anything back to the client. Therefor the function *finished*
+not send anything back to the client. Therefore the function *finished*
 must be invoked. The first parameter is the identifier of the request
 that will be answered and the second parameter the data structure
 containing the result. As the result is converted to JSON it must just
@@ -331,7 +331,7 @@ class Base(signals.Provider, Translation):
 		Handle UMC exception.
 
 		As requests are processes by python-notifier in a separate thread, any exception only contains the traceback relative to the notifier thread.
-		To make them more useable we want to combine them with the calling part to get a complete stack trace.
+		To make them more usable we want to combine them with the calling part to get a complete stack trace.
 		This is complicated by the fact that python-notifier no longer stores the original traceback, as this creates a memory leak.
 		Instead only the rendered traceback is stored.
 

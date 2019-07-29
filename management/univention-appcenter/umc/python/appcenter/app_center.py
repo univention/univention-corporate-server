@@ -768,8 +768,8 @@ class Application(object):
 	@classmethod
 	def _download_directly(cls, files_to_download):
 		for filename_url, filename, remote_md5sum in files_to_download:
-			# dont forget to quote: 'foo & bar.ini' -> 'foo%20%26%20bar.ini'
-			# but dont quote https:// -> https%3A//
+			# don't forget to quote: 'foo & bar.ini' -> 'foo%20%26%20bar.ini'
+			# but don't quote https:// -> https%3A//
 			path = urllib2.quote(urlsplit(filename_url).path)
 			filename_url = '%s%s' % (cls.get_server(with_scheme=True), path)
 
@@ -1215,7 +1215,7 @@ class Application(object):
 		if function == 'update':
 			# is already installed, just a minor version update
 			#   RAM "used" by this installed app should count
-			#   as free. best approach: substract it
+			#   as free. best approach: subtract it
 			installed_app = self.find(self.id)
 			old_required_ram = installed_app.get('minphysicalram')
 			required_ram = required_ram - old_required_ram
@@ -1278,7 +1278,7 @@ class Application(object):
 			# app.is_installed(package_manager, strict=True) uses
 			# apt_pkg.CURSTATE. Not desired when called during
 			# installation of umc-module-appcenter together with
-			# serveral other (app relevant) packages; for example
+			# several other (app relevant) packages; for example
 			# in postinst or joinscript (on master).
 			# see Bug #33535 and Bug #31261
 			for package_name in default_packages:
@@ -1531,7 +1531,7 @@ class Application(object):
 				#   walk in reversed order so that
 				#   previously_registered will be the latest if
 				#   there are multiple already registered
-				if app is not to_be_registered:  # dont remove the one we want to register (may be already added)
+				if app is not to_be_registered:  # don't remove the one we want to register (may be already added)
 					app.set_ucs_overview_ucr_variables(super_ucr, unset=True)
 					if app.unregister(component_manager, super_ucr):
 						# this app actually was registered!
@@ -1755,7 +1755,7 @@ class Application(object):
 			# install (+ dist_upgrade if update)
 			package_manager.commit(install=to_install, dist_upgrade=not is_install)
 
-			# from now on better dont remove component
+			# from now on better don't remove component
 			raised_before_installed = False
 
 			if only_master_packages:

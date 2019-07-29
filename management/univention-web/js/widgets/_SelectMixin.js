@@ -207,14 +207,14 @@ define([
 		_setValueAttr: function(newVal) {
 			this.inherited(arguments);
 
-			// store the value as intial value after the widget has been intialized
+			// store the value as initial value after the widget has been initialized
 			//if (this._isInitialized) {
 			//	this._saveInitialValue();
 			//}
 		},
 
 		_saveInitialValue: function() {
-			// remember the intial value since it will be overridden by the dojo
+			// remember the initial value since it will be overridden by the dojo
 			// methods since at initialization time the store is empty
 			this._initialValue = this.value; // fallback
 			if (this.domNode) {
@@ -409,7 +409,7 @@ define([
 				});
 			}
 
-			// only load dynamic values in case all dependencies are fullfilled
+			// only load dynamic values in case all dependencies are fulfilled
 			if (dependList.length != nDepValues) {
 				//console.log('### _SelectMixin ['+this.name+']: return');
 				return;

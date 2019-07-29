@@ -50,7 +50,7 @@ def log(level, string):
 
 # the following functions are modified versions of the ones in univention.s4connector.s4
 # the only difference is that they use a non-matching objectClass (None)
-# to trick samaccountname_dn_mapping into retriving the DN
+# to trick samaccountname_dn_mapping into retrieving the DN
 # where the S4 Connector would create an object if it wasn't there already..
 
 
