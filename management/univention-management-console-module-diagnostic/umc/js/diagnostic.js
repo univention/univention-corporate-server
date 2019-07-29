@@ -37,6 +37,7 @@ define([
 	"dojo/Deferred",
 	"dojox/html/styles",
 	"dijit/Destroyable",
+	"dijit/registry",
 	'umc/tools',
 	'umc/render',
 	'umc/widgets/Page',
@@ -52,7 +53,7 @@ define([
 	"dgrid/extensions/DijitRegistry",
 	'umc/i18n!umc/modules/diagnostic',
 	"xstyle/css!./diagnostic.css"
-], function(declare, lang, array, all, domConstruct, Deferred, styles, Destroyable, tools, render, Page, Module,
+], function(declare, lang, array, all, domConstruct, Deferred, styles, Destroyable, registry, tools, render, Page, Module,
 	ContainerWidget, TitlePane, Memory, Observable, ProgressBar, Text, Selection, List, DijitRegistry, _) {
 
 	tools.forIn({
@@ -102,13 +103,22 @@ define([
 			this.domNode.setAttribute("widgetId", this.id);
 		},
 
+		removeRow: function (rowElement) {
+			// destroy our widget during the row removal operation
+			var widget = registry.byNode(rowElement);
+			if (widget) {
+				widget.destroyRecursive();
+			}
+			this.inherited(arguments);
+		},
+
 		renderRow: function(item) {
 			var div = new ContainerWidget({});
 
 			var text = new Text({
 				'class': 'umc-diagnostic-description'
 			});
-			this.own(text);
+			div.own(text);
 			div.addChild(text);
 
 			var description = item.description;
@@ -130,7 +140,7 @@ define([
 				var a = domConstruct.create('div');
 				a.appendChild(domConstruct.create('a', {href: link.href, innerHTML: link.label || link.href, target: '_blank', rel: 'noopener noreferrer'}));
 				a = new Text({innerHTML: a.innerHTML});
-				this.own(a);
+				div.own(a);
 				var repl = '{' + link.name  + '}';
 				if (description.indexOf(repl) !== -1) {
 					description = description.replace(repl, a.innerHTML);
@@ -149,7 +159,7 @@ define([
 
 			var buttonctn = new ContainerWidget();
 			div.addChild(buttonctn);
-			this.own(buttonctn);
+			div.own(buttonctn);
 			array.forEach(buttons.$order$, function(button) {
 				buttonctn.addChild(button);
 			});
@@ -161,6 +171,7 @@ define([
 				toggleable: item.plugin !== '_success_',
 				content: div
 			});
+			titlePane.own(div);
 			this.own(titlePane);
 			return titlePane.domNode;
 		}
@@ -262,6 +273,9 @@ define([
 			var plugins = this._grid.store.query();
 			this._stepInc = 100 / plugins.length;
 
+			if (this._progressBar) {
+				this._progressBar.destroyRecursive();
+			}
 			this._progressBar = new ProgressBar({
 				region: 'nav'
 			});
@@ -302,6 +316,7 @@ define([
 			run.then(lang.hitch(this, function(result) {
 				this._grid.store.put(lang.mixin(plugin, result));
 				this.refreshGrid();
+				progress.destroyRecursive();
 			}));
 			return run;
 		},
@@ -315,6 +330,8 @@ define([
 					title: _('No problems could be detected.'),
 					description: ''
 				});
+				this.refreshGrid();
+			} else if(this._store.remove('_success_')) {
 				this.refreshGrid();
 			}
 		}
