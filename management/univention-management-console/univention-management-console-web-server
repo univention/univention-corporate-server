@@ -135,7 +135,6 @@ class SessionClient(object):
 			CORE.warn('SessionClient(0x%x): connection to UMC server failed' % (id(self),))
 			raise NoSocketError('Connection failed')
 		self._auth_response = None
-		self._auth_response_queue = None
 		self._requestid2response_queue = {}
 		self._lock = threading.Lock()
 		self.ip = ip
@@ -143,20 +142,13 @@ class SessionClient(object):
 	def _authenticated(self, success, response):
 		"""Callback function for 'authenticated' from UMCP-Server."""
 		CORE.process('SessionClient(0x%x): _authenticated: success=%s  status=%s  message=%s result=%r' % (id(self), success, response.status, response.message, response.result))
-		self._auth_response = self._auth_response_in
-		self._auth_response.status = response.status
-		self._auth_response.result = response.result
-		self._auth_response.message = response.message
-		self._auth_response_queue.put(self._auth_response)
-		# release queue object
-		self._auth_response_queue = None
+		self._auth_response = response
+		self._response(response)
 
 	def authenticate_user(self, request, response_queue):
 		"""Send authentication request to UMC server."""
 		CORE.info('SessionClient(0x%x): authenticate_user: sending authentication request for user %r' % (id(self), request.body.get('username')))
-		self._auth_response_in = Response(request)
-		self._auth_response_queue = response_queue
-		self.client.authenticate(request)
+		self.send_request(request, response_queue)
 
 	def _response(self, response):
 		"""Queue response from UMC server."""
@@ -182,7 +174,10 @@ class SessionClient(object):
 		finally:
 			self._lock.release()
 		try:
-			self.client.request(request)
+			if request.command == 'AUTH':
+				self.client.authenticate(request)
+			else:
+				self.client.request(request)
 		except IOError:
 			CORE.error(traceback.format_exc())
 			self.client.disconnect()
@@ -196,16 +191,13 @@ class SessionClient(object):
 			' * service univention-management-console-web-server restart',
 			'Otherwise please contact an administrator or try again later.'
 		))
-		if self._auth_response_queue is not None:
-			self._auth_response.status = SERVICE_UNAVAILABLE
-			self._auth_response.message = message
-			self._auth_response_queue.put(self._auth_response)
-			self._auth_response_queue = None
 		for id, (queue, request) in self._requestid2response_queue.items():
 			self._requestid2response_queue.pop(id)
 			response = Response(request)
 			response.status = SERVICE_UNAVAILABLE
 			response.message = message
+			if request.command == 'AUTH':
+				self._auth_response = response
 			queue.put(response)
 
 	def cleanup_request(self, request):
