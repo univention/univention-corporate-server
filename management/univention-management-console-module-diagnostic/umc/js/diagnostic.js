@@ -176,6 +176,16 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
+			this._openProgressBars = [];
+		},
+
+		destroy: function() {
+			this.inherited(arguments);
+			array.forEach(this._openProgressBars, lang.hitch(this, function(deferred) {
+				if (!deferred.isFulfilled()) {
+					deferred.cancel();
+				}
+			}));
 		},
 
 		buildRendering: function() {
@@ -299,6 +309,7 @@ define([
 			var progress = new ProgressBar();
 			this.own(progress);
 			var run = this.umcpProgressCommand(progress, 'diagnostic/run', lang.mixin({plugin: plugin.id}, opts));
+			this._openProgressBars.push(run);
 			run.then(lang.hitch(this, function(result) {
 				this._grid.store.put(lang.mixin(plugin, result));
 				this.refreshGrid();
