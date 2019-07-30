@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [4]
+scope: ucs_4.3-0-errata4.3-4
+src: exim4
+fix: 4.89-2+deb9u5A~4.3.4.201907290935
+desc: |
+ This update addresses the following issue:
+ * ${sort} in configuration leads to privilege escalation (CVE-2019-13917)
+bug: [49928]
+cve:
+- CVE-2019-13917
