@@ -2142,6 +2142,7 @@ def domain_migrate(source_uri, domain, target_uri, mode=0):
 		assert target_conn is not None
 
 		target_node._check_ram_overcommit(domStat)
+		autostart = source_dom.autostart()
 		_domain_backup(source_dom)
 
 		def _migrate(errors):
@@ -2162,6 +2163,8 @@ def domain_migrate(source_uri, domain, target_uri, mode=0):
 				for snap_xml in snapshots:
 					snapshot = dest_dom.snapshotCreateXML(snap_xml, libvirt.VIR_DOMAIN_SNAPSHOT_CREATE_REDEFINE)
 					logger.info('Added snapshot "%s" of domain "%s"', snapshot.getName(), domain)
+
+				dest_dom.setAutostart(autostart)
 			except libvirt.libvirtError as ex:
 				logger.error(ex, exc_info=True)
 
