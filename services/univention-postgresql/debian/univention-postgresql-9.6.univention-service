@@ -1,0 +1,7 @@
+[postgresql9.6]
+Description[de]=PostgreSQL 9.6 Server
+Description[en]=PostgreSQL 9.6 Server
+icon=service/postgres
+programs=/usr/lib/postgresql/9.6/bin/postgres
+start_type=postgres9.6/autostart
+systemd=postgresql@9.6-main

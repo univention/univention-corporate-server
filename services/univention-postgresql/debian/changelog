@@ -1,3 +1,9 @@
+univention-postgresql (11.0.1-2) unstable; urgency=medium
+
+  * Bug #42241: fix univention service definition
+
+ -- Florian Best <best@univention.de>  Tue, 30 Jul 2019 14:38:17 +0200
+
 univention-postgresql (11.0.1-1) unstable; urgency=medium
 
   * Bug #46969: bindpwdfile support
