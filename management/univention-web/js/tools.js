@@ -741,7 +741,7 @@ define([
 					} else if (!props.abort.isCanceled()) {
 						props.progressCmd = data.result.location || props.progressCmd;
 						props.retryAfter = data.result.retry_after === undefined ? props.retryAfter : data.result.retry_after;
-						setTimeout(lang.hitch(this, 'umcpProgressSubCommand', lang.mixin({}, props, {deferred: deferred}), props.retryAfter));
+						setTimeout(lang.hitch(this, 'umcpProgressSubCommand', lang.mixin({}, props, {deferred: deferred})), props.retryAfter);
 					}
 				}),
 				function(error) {
