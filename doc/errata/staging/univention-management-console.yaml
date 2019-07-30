@@ -6,7 +6,7 @@ src: univention-management-console
 fix: 11.0.4-32A~4.4.0.201907291507
 desc: |
  This update addresses the following issue(s):
- * The security for authentication requests has been improoved.
+ * The security for authentication requests has been improved.
  * The progress bar interval is now configurable via the backend of modules.
  * It is now prevented that the UMC-Webserver creates multiple new connections
    for a session after the connection to the UMC-Server was closed and
