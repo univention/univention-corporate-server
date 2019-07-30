@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-schema (9.0.2-3) unstable; urgency=low
+
+  * Bug #49695: Register UVMM schema in LDAP
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 30 Jul 2019 11:28:18 +0200
+
 univention-virtual-machine-manager-schema (9.0.2-2) unstable; urgency=low
 
   * Bug #49695: make CPU model configurable

@@ -29,7 +29,18 @@
 
 #DEBHELPER#
 
-[ -r /etc/ldap.secret ] &&
+if [ -r /etc/ldap.secret ]  # joined
+then
+	case "$(ucr get server/role)" in
+		domaincontroller_master|domaincontroller_backup)
+			. /usr/share/univention-lib/ldap.sh
+			ucs_registerLDAPExtension \
+				--schema /usr/share/univention-ldap/schema/univention-virtual-machine-manager.schema \
+				--acl /usr/share/univention-ldap/acl/66univention-ldap-server_acl-master-uvmm
+			;;
+	esac
+
 	/usr/lib/univention-install/40univention-virtual-machine-manager-schema.inst || true
+fi
 
 exit 0
