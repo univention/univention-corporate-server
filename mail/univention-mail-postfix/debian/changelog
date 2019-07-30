@@ -1,3 +1,9 @@
+univention-mail-postfix (13.0.1-2) unstable; urgency=medium
+
+  * Bug #42241: fix service definition of postfix
+
+ -- Florian Best <best@univention.de>  Tue, 30 Jul 2019 15:32:05 +0200
+
 univention-mail-postfix (13.0.1-1) unstable; urgency=medium
 
   * Bug #46969: bindpwdfile support
