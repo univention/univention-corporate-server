@@ -3,7 +3,7 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-mail-postfix
-fix: 
+fix: 13.0.1-2A~4.4.0.201907301535
 desc: |
  This update addresses the following issue(s):
  * The postfix service can be managed via the System Services UMC module

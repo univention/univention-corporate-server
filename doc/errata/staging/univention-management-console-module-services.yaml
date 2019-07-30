@@ -3,7 +3,7 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-management-console-module-services
-fix: 
+fix: 8.0.1-3A~4.4.0.201907301531
 desc: |
  This update addresses the following issue(s):
  * Restarting, Starting and Stopping of services whichs service name is
