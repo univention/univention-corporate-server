@@ -100,6 +100,8 @@ class Instance(Base):
 		srvs = ServiceInfo()
 		for srv in services:
 			service_name = srvs.get_service(srv).get('systemd', srv)
+			if service_name.endswith('.service'):
+				service_name = service_name.rsplit('.', 1)[0]
 			process = subprocess.Popen(('/usr/sbin/service', service_name, action), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 			output = process.communicate()[0]
 			if process.returncode:
