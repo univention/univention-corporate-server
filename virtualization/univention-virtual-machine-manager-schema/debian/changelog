@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-schema (9.0.2-4) unstable; urgency=medium
+
+  * Bug #49695: Error Handling during registering UVMM schema in LDAP
+
+ -- Florian Best <best@univention.de>  Tue, 30 Jul 2019 14:30:58 +0200
+
 univention-virtual-machine-manager-schema (9.0.2-3) unstable; urgency=low
 
   * Bug #49695: Register UVMM schema in LDAP

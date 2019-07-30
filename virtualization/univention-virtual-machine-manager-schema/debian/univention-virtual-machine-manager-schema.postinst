@@ -29,16 +29,23 @@
 
 #DEBHELPER#
 
-if [ -r /etc/ldap.secret ]  # joined
+if [ "$1" = "configure" ]
 then
-	case "$(ucr get server/role)" in
-		domaincontroller_master|domaincontroller_backup)
-			. /usr/share/univention-lib/ldap.sh
-			ucs_registerLDAPExtension \
-				--schema /usr/share/univention-ldap/schema/univention-virtual-machine-manager.schema \
-				--acl /usr/share/univention-ldap/acl/66univention-ldap-server_acl-master-uvmm
-			;;
-	esac
+	if dpkg --compare-versions "$2" lt-nl 9.0.2-4
+	then
+		ucr commit /etc/ldap/slapd.conf  # remove the ACL's from the current slapd.conf to ensure a restart is possible in case of failures
+
+		[ -r /etc/ldap.secret ] &&
+		case "$(ucr get server/role)" in
+			domaincontroller_master|domaincontroller_backup)
+				. /usr/share/univention-lib/ldap.sh
+				ucs_registerLDAPExtension \
+					--schema /usr/share/univention-ldap/schema/univention-virtual-machine-manager.schema \
+					--acl /usr/share/univention-ldap/acl/66univention-ldap-server_acl-master-uvmm ||
+					printf '\e[31mActivating the UVMM schema and ACLs failed.\e[0m\nPlease execute:\n\tunivention-run-join-scripts --force --run-scripts 40univention-virtual-machine-manager-schema.inst\n'
+				;;
+		esac
+	fi
 
 	/usr/lib/univention-install/40univention-virtual-machine-manager-schema.inst || true
 fi
