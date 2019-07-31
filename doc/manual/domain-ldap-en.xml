@@ -1555,7 +1555,7 @@ udm oidc/rpservice create --set name=&lt;UCS_internal_identifier&gt; \
   </para>
   <para>
 	When using <application>OpenID Connect</application>, resolvable DNS names and verifiable certificates are a prerequisite.
-	This is especially true for client computers of end users who need to access both the DNS-resolvable host names of the Web service and the <application>OpenID Connect Provider</application>.
+	This is especially true for client computers of end users who need to access both the DNS resolvable host names of the Web service and the <application>OpenID Connect Provider</application>.
 	In addition, the externally connected Web services must be able to establish a connection to the <application>OpenID Connect Provider</application> in order to be able to retrieve the user attributes.
   </para>
   <para>

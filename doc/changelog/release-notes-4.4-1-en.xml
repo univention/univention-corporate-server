@@ -174,7 +174,7 @@ Checking ldap_schema ...                          OK
 			<title>&ucsUDN;</title>
 			<para>
 				Due to a design flaw in the &ucsUDN; network protocol version 2 any user can retrieve information about changes to the LDAP directory.
-				A new protocol version 3 was implemented with <ulink url="http://errata.software-univention.de/ucs/4.3/427.html">UCS-4.3-3 erratum 427</ulink>.
+				A new protocol version 3 was implemented with <u:erratum release='4.3-3'>427</u:erratum>.
 				For backward compatibility with old UCS systems the &ucsUDN; still provided version 2 by default.
 				For new installations starting with UCS-4.4 only version 3 is enabled by default.
 				Protocol version 2 can be re-enabled by changing the &ucsUCRV; <envar>notifier/protocol/version</envar> to <literal>2</literal> and restarting the &ucsUDN;.

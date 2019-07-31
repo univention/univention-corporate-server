@@ -250,7 +250,7 @@
 							Check available file system space before writing transactions. (<u:bug>28233</u:bug>)
 						</simpara></listitem>
 						<listitem><simpara>
-							Fix regression from <u:erratum release='4.3-3'>426</u:erratum> in <uri>cn=translog</uri> setup, which reset the LDAP indices. (<u:bug>48971</u:bug>)
+							Fix regression from <u:erratum release='4.3-3'>426</u:erratum> in <uri>cn=translog</uri> setup, which reset the LDAP indexes. (<u:bug>48971</u:bug>)
 						</simpara></listitem>
 						<listitem><simpara>
 							Since <u:erratum release='4.3-3'>427</u:erratum> the &ucsUDN; (UDN) writes transactions both to the file <filename>/var/lib/univention-ldap/notify/transaction</filename> and the <uri>cn=translog</uri> database in OpenLDAP.
