@@ -15,3 +15,5 @@ desc: |
  * The printer objects are now created again in the printer default
    containers instead of the shares default container.
 bug: [42607, 49594, 49234, 49478, 48811, 49826]
+erratum: 205
+announced: 2019-07-31
