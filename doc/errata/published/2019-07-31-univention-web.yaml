@@ -11,3 +11,5 @@ desc: |
  * The progress bar interval is now configurable via the backend of modules.
    Error handling of progress bars has been enhanced.
 bug: [42607, 48811, 48002]
+erratum: 202
+announced: 2019-07-31
