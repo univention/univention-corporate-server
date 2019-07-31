@@ -5,14 +5,16 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python2.7 -m univention.management.server
+# ugly hack until StandardOutput or StandardError to file:YOUR_ABSPATH_FILENAME is supported
+ExecStart=/bin/bash -ce "exec /usr/bin/python2.7 -m univention.management.server >> /var/log/univention/management-module-udm.log 2>&1"
+#ExecStart=/usr/bin/python2.7 -m univention.management.server
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
 User=root
 Group=root
 #WorkingDirectory=/var/www
-StandardOutput=/var/log/univention/udm-http.log
-StandardError=/var/log/univention/udm-http.log
+StandardOutput=/var/log/univention/management-module-udm.log
+StandardError=/var/log/univention/management-module-udm.log
 #SystemCallFilter=@basic-io @io-event @network-io
 
 [Install]
