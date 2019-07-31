@@ -623,8 +623,8 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                             changed to point to the Docker Images in the
                             Univention Docker Registry.  All Docker Images from
                             published apps are copied to the Univention Docker
-                            Registry to be independent of Docker's own
-                            infrastructure. This is the only server-side change
+                            Registry to be independent of <uri>hub.docker.com</uri>.
+                            This is the only server-side change
                             to the Docker Compose file.
                         </simpara>
                     </listitem>
@@ -3037,7 +3037,7 @@ service my-app-daemon restart
             for the app in the App Provider portal on the
             <guimenu>Version</guimenu> tab in the section <guimenu>Required
                 apps</guimenu> by adding the
-            <userinput><wordasword>Mailserver</wordasword></userinput> app and
+            <application>Mailserver</application> app and
             setting <userinput>Installed in domain</userinput>. With this
             configuration the App Center on the system administrator's UCS
             system will check, if the <wordasword>Mailserver</wordasword> app
@@ -3162,16 +3162,15 @@ ucr set dovecot/autostart='no'
         <section id="mail-integration:local-mail-docker-host">
             <title>Use local mail on Docker host</title>
             <para>
-                With a stopped postfix on the Docker host, mail can no longer
+                With a stopped Postfix on the Docker host, mail can no longer
                 be delivered locally. If that is a problem, the following setup
                 can help.
             </para>
 
             <para>
-                Install the <phrase>extremely simple
-                    <wordasword>MTA</wordasword></phrase>
+                Install the <phrase>extremely simple MTA</phrase>
                 <package>ssmtp</package> and configure this
-                <wordasword>MTA</wordasword> to use the <systemitem
+                MTA to use the <systemitem
                     class="systemname">localhost</systemitem> (our Docker
                 container is listening on
                 localhost:25).
@@ -3181,7 +3180,7 @@ univention-install --yes ssmtp
                 </programlisting>
             </para>
             <para>
-                Now configure postfix in the Docker container to deliver mails
+                Now configure Postfix in the Docker container to deliver mails
                 from the Docker host locally by adding the FQDN of the Docker
                 host to <envar>mydestination</envar>:
                 <programlisting language="sh">
