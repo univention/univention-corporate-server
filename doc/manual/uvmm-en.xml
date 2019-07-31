@@ -405,7 +405,6 @@ update-ca-certificates
 			<para>
 				The following operations are available for virtual machines operated in
 				cloud-based environments.
-
 			</para>
 			<variablelist>
 				<varlistentry>
@@ -590,6 +589,9 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 			<title>Modifying the settings of a DVD drive</title>
 			<graphic scalefit="1" width="70%" align="center" fileref="illustrations44/uvmm_dvd_en.png"/>
 		</figure>
+		<para>
+		  Most settings of a virtual machine can only be changed if it is turned off.
+		</para>
 			<table>
 				<title>'General' tab</title>
 				<tgroup cols="2">
@@ -651,7 +653,6 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 			<para>
 				<guimenu>Paravirtual drive</guimenu> allows specification of whether the access to the drive should be paravirtualized.
 				Where possible, this setting should not be changed for a virtual machine which already has an operating system installed, as this may disrupt the access of partitions.
-
 			</para>
 			<para>
 				If drives or network interfaces are subsequently added to a virtual instance, the utilization of paravirtualization is determined by heuristics or its profile.
@@ -688,7 +689,8 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 			</para>
 
 			<para>
-			  The settings of a virtual machine can only be changed if it is turned off.
+				The tab <guimenu>Migration targethosts</guimenu> can be used to configure the host systems, to which the virtual machine can be migrated to.
+				Further information on migration can be found in <xref linkend="uvmm:migration"/>.
 			</para>
 
 			<table>
@@ -719,6 +721,15 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 							</entry>
 						</row>
 						<row>
+							<entry>CPU model</entry>
+							<entry>
+								The CPU model for the virtual machine.
+								The list of usable models depends on the concrete host system.
+								A complete list of available models is available on the command line running <command>virsh domcapabilities</command>.
+								Further information - especially on live migration - see <xref linkend="uvmm:migration"/>.
+							</entry>
+						</row>
+						<row>
 							<entry>Memory</entry>
 							<entry>
 								Specifies the size of the assigned system memory.
@@ -746,6 +757,18 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 								Specifies the order in which the emulated BIOS of the virtual machine searches the drives for bootable media.
 								This setting is only available for fully-virtualized instances.
 								On paravirtualized machines it is only possible to select one hard drive from which the kernel should be used.
+							</entry>
+						</row>
+						<row>
+							<entry>Enable Hyper-V Enlightenment</entry>
+							<entry>
+								Allow guest systems like <systemitem class="osname">Microsoft Windows</systemitem> to run more efficient as virtual machines.
+							</entry>
+						</row>
+						<row>
+							<entry>Always start VM with host</entry>
+							<entry>
+								Defines whether the virtual machine is automatically started when the host systems itself starts up.
 							</entry>
 						</row>
 						<row>
@@ -1222,6 +1245,9 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 					The virtual machine must be turned off if necessary and must be started again.
 				</para>
 				<para>
+					On the <guimenu>Advanced</guimenu> tab of the virtual machine the CPU model can be configured explicitly.
+				</para>
+				<para>
 					Using &ucsUCRV; <envar>uvmm/vm/cpu/host-model</envar> the required customization of virtual machines can be automated.
 					The following values can be used:
 				</para>
@@ -1279,6 +1305,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 		<itemizedlist>
 			<listitem><simpara>name prefix for new virtual machines</simpara></listitem>
 			<listitem><simpara>number of virtual <acronym>CPU</acronym>s</simpara></listitem>
+			<listitem><simpara><acronym>CPU</acronym> model</simpara></listitem>
 			<listitem><simpara>default RAM size</simpara></listitem>
 			<listitem><simpara>default size for new disk images</simpara></listitem>
 			<listitem><simpara>default boot order for fully-virtualized virtual machines</simpara></listitem>
