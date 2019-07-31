@@ -14,3 +14,5 @@ desc: |
  * Multiple parallel authentication requests are now correctly handled by the
    UMC-Webserver.
 bug: [44602, 48002, 49929, 47106]
+erratum: 203
+announced: 2019-07-31
