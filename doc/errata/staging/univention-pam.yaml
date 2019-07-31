@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [4]
+scope: ucs_4.3-0-errata4.3-4
+src: univention-pam
+fix: 11.0.1-6A~4.3.0.201907310938
+desc: |
+ This update addresses the following issue:
+ * Disable PAM module 'systemd' by default. It can be re-enabled by setting
+   the UCR variable `pam/session/systemd` to `true`.
+bug: [49941]
