@@ -79,7 +79,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set valueRequired="0" \
 	--set CLIName="ManageableBy" \
 	--set shortDescription="Manageable by" \
-	--set longDescription="Server ist manageable by the following Systems" \
+	--set longDescription="Server is manageable by the following Systems" \
 	--set 'translationShortDescription="de_DE" "Verwaltbar durch"' \
 	--set 'translationLongDescription="de_DE" "Server ist verwaltbar durch die folgenden Systeme"' \
 	--set doNotSearch="0" \
