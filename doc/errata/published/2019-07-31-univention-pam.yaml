@@ -9,3 +9,5 @@ desc: |
  * Disable PAM module 'systemd' by default. It can be re-enabled by setting
    the UCR variable `pam/session/systemd` to `true`.
 bug: [49941]
+erratum: 555
+announced: 2019-07-31
