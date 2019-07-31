@@ -10,3 +10,5 @@ desc: |
    denial of service attacks when authenticating with very long passwords
    when pam_krb5 would hang in the hashsum generation of the password.
 bug: [49740]
+erratum: 204
+announced: 2019-07-31
