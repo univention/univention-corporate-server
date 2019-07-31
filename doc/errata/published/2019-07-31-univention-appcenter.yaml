@@ -14,3 +14,5 @@ desc: |
    visible. This update resyncs the listener so that the App Tab is visible
    again.
 bug: [49284,49647,49832]
+erratum: 200
+announced: 2019-07-31
