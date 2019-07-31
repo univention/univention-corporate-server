@@ -9,3 +9,5 @@ desc: |
  * It's now possible to search for users based on group membership.
  * SuggestionBox has been added to the mapping of syntax classes.
 bug: [42607, 48811]
+erratum: 201
+announced: 2019-07-31
