@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Plugins taking longer than 10 minutes do not cause timeout errors anymore.
 bug: [48002]
+erratum: 207
+announced: 2019-07-31
