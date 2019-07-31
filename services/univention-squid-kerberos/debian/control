@@ -16,7 +16,7 @@ Depends: ${misc:Depends},
  univention-join (>= 10.0.0-12A)
 Suggests: univention-firewall
 Description: Kerberos authentication for UCS Squid web proxy
- This package provides the kerberos (negotiate) authentification
+ This package provides the kerberos (negotiate) authentication
  on the squid web proxy with samba4 as backend.
  .
  It is part of Univention Corporate Server (UCS), an

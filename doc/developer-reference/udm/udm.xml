@@ -261,7 +261,7 @@ udm container/ou delete --dn "cn=xxx,$ldap_base"
 			<varlistentry><term><literal>multivalue</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						Controls if only a singe value or multiple values can be entered.
+						Controls if only a single value or multiple values can be entered.
 						This must be in sync with the <literal>SINGLE-VALUE</literal> setting of the attribute in the <acronym>LDAP</acronym> schema.
 					</simpara>
 				</listitem>

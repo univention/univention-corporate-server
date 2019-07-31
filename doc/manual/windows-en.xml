@@ -612,7 +612,7 @@ CLASS MACHINE
 CATEGORY "Univention"
 POLICY "RDP client"
 KEYNAME "Univention\RDP\StorageRedirect"
-EXPLAIN "If this opion it activated, sound output is enabled in the RDP client"
+EXPLAIN "If this option it activated, sound output is enabled in the RDP client"
 VALUENAME "Sound redirection"
 VALUEON "Activated"
 VALUEOFF "Deactivated"

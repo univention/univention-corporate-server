@@ -944,7 +944,7 @@ univention-app dev-use-test-appcenter
         * What are the requirements?
 
         https://wiki.univention.de/index.php/Ucs-test is probably not the right
-        ressource for the topic, because it requires a debian package.
+        resource for the topic, because it requires a debian package.
         -->
             <para>
                 A test script for the app can be provided in the

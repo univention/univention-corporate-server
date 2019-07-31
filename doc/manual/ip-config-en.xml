@@ -246,7 +246,7 @@
 		<para>
 		  A <emphasis>SRV record</emphasis> (called a service record in UCS) can be
 		  used to save information about available system services in the
-		  DNS. In UCS, service records are used amongst other things to make
+		  DNS. In UCS, service records are used among other things to make
 		  LDAP servers or the &ucsMaster; known domain-wide.
 		</para>
 	  </listitem>

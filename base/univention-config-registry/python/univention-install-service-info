@@ -67,7 +67,7 @@ def install_services(info, package):
 def main():
 	"""Install service files."""
 	usage = "%prog"
-	epilog = '''univention-install-service-info is a debhelper like programm
+	epilog = '''univention-install-service-info is a debhelper like program
 to install service related description files into the package build directories.
 
 The service descriptions debian/*.univention-service go to

@@ -14,7 +14,7 @@ Depends: ${misc:Depends}
 Recommends: univention-ifplugd
 Description: UCS - transitional package for the Network Manager
  This is an empty package which cleans up any left overs from previous versions
- of this package. It can be savely removed after upgrade.
+ of this package. It can be safely removed after upgrade.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

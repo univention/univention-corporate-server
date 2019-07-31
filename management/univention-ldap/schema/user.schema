@@ -51,7 +51,7 @@ attributetype ( 1.3.6.1.4.1.10176.10 NAME 'groupDirectory'
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
 attributetype ( 1.3.6.1.4.1.10176.11 NAME 'virtual'
-	DESC 'Is this account a vitual one'
+	DESC 'Is this account a virtual one'
 	EQUALITY booleanMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE )
 

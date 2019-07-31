@@ -1701,7 +1701,7 @@ apt-get dselect-upgrade
 		<listitem>
 			<simpara>
 				If present, all entries of the old &ucsMaster; will be removed from the local Samba directory service.
-				Additionally, the FSMO roles will be transfered to the new &ucsMaster;.
+				Additionally, the FSMO roles will be transferred to the new &ucsMaster;.
 			</simpara>
 		</listitem>
 		<listitem>

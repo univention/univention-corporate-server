@@ -511,7 +511,7 @@ POST http://192.0.2.31/univention/command/udm/query HTTP/1.1
 					<title>Module definition</title>
 					<para>
 						The UMC server does not load the Python modules to get the details about the modules name, description and functionality.
-						Therefor each UMC module must provide an XML file containing this kind of information.
+						Therefore each UMC module must provide an XML file containing this kind of information.
 						The following example defines a module with the id <literal>udm</literal>:
 					</para>
 					<programlisting language="xml"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="udm.xml" parse="text"/></programlisting>
