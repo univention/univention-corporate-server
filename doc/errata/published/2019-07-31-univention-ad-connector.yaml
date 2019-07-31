@@ -9,3 +9,5 @@ desc: |
  * The scripts remove_ucs_rejected.py and remove_ad_rejected.py now
    escape SQL syntax.
 bug: [49640]
+erratum: 199
+announced: 2019-07-31
