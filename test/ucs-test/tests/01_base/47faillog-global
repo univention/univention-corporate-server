@@ -101,7 +101,7 @@ wait_for_replication_and_postrun
 
 ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
 if [ "$ssh_hostname" != "$hostname" ]; then
-	fail_test 110 "E: The login wasn't successful, but the fail counter should be resetted"
+	fail_test 110 "E: The login wasn't successful, but the fail counter should be reset"
 	faillog -u "$NAME"
 	exit $RETVAL
 fi

@@ -242,7 +242,7 @@ class SamlTest(object):
 		print("GET SAML login form at: %s" % url)
 		self.position = "requesting SAML message"
 		self._request('GET', url, 200)
-		print('SAML message recieved from %s' % self.page.url)
+		print('SAML message received from %s' % self.page.url)
 		url = self._extract_sp_url()
 		saml_msg = self._extract_saml_msg()
 		relay_state = self._extract_relay_state()
@@ -270,7 +270,7 @@ class SamlTest(object):
 				self._request('GET', login_link, 200)
 			self._login_at_idp_with_credentials()
 
-		print('SAML message recieved from %s' % self.page.url)
+		print('SAML message received from %s' % self.page.url)
 		url = self._extract_sp_url()
 		saml_msg = self._extract_saml_msg()
 		relay_state = self._extract_relay_state()
@@ -279,6 +279,6 @@ class SamlTest(object):
 	def logout_at_IdP(self):
 		"""Logout from session"""
 		url = "https://%s/univention/logout" % self.target_sp_hostname
-		print("Loging out at url: %s" % url)
+		print("Logging out at url: %s" % url)
 		self.position = "trying to logout"
 		self._request('GET', url, 200)

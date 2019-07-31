@@ -337,7 +337,7 @@ class TestUMCExtendedAttributes(UDMModule):
                                                  "A modified short desc")
 
             with udm_test.UCSTestUDM() as UDM:
-                print("\nCreating a test user '%s', modifing its custom "
+                print("\nCreating a test user '%s', modifying its custom "
                       "attribute '%s' value, checking the value before "
                       "and after the modification"
                       % (test_username, test_attribute_name + '_cust'))

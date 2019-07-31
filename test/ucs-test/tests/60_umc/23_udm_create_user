@@ -130,7 +130,7 @@ class TestUMCUserCreation(UDMModule):
                 utils.fail("Cannot query an advanced test user '%s' that "
                            "was just created" % test_username_admin)
 
-            print "Modifing simple user '%s' groups" % test_username
+            print "Modifying simple user '%s' groups" % test_username
             test_groupnames = ["cn=" + domain_users + ",cn=groups," + self.ldap_base, "cn=" + print_admins + ",cn=groups," + self.ldap_base]
             self.modify_user_groups(test_username, test_groupnames)
 
@@ -144,7 +144,7 @@ class TestUMCUserCreation(UDMModule):
                            "while should be only in '%s'"
                            % (test_username, user_groups, test_groupnames))
 
-            print "Modifing advanced user '%s' groups" % test_username_admin
+            print "Modifying advanced user '%s' groups" % test_username_admin
             test_groupnames = ["cn=" + domain_admins + ",cn=groups," + self.ldap_base, "cn=" + print_admins + ",cn=groups," + self.ldap_base]
             self.modify_user_groups(test_username_admin, test_groupnames)
 

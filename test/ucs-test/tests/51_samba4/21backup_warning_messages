@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash 
 # -*- coding: utf-8 -*.
-## desc: Check univention-samba4-backup warnings are supressed.
+## desc: Check univention-samba4-backup warnings are suppressed.
 ## exposure: dangerous
 ## bugs: [35907]
 ## packages:
@@ -29,7 +29,7 @@ function test_backup {
 
     if [ -n "$errors" ]; then
         echo -e "$errors"
-        fail_test 1 "univention-samba4-backup produced one of the messages that should be supressed."
+        fail_test 1 "univention-samba4-backup produced one of the messages that should be suppressed."
     fi
 }
 

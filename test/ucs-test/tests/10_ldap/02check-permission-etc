@@ -49,7 +49,7 @@ def main():
 			if not return_code:
 				exit_code = RETURN_FAIL_CODE
 	except OSError, error:
-		print >> sys.stderr, "An error occured with: %s" % (error, )
+		print >> sys.stderr, "An error occurred with: %s" % (error, )
 		sys.exit(RETURN_FAIL_CODE)
 
 	sys.exit(exit_code)

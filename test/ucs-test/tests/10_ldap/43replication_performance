@@ -90,7 +90,7 @@ wait_for_replication ||
 	fail_test 1 "Replication timed out"
 
 stopptime=$(date +%s%N)
-info "Stopp: $(printf "%'d" $stopptime) ns"
+info "Stop: $(printf "%'d" $stopptime) ns"
 
 delta=$((stopptime - starttime))
 info "Delta: $(printf "%'d" $delta) ns"

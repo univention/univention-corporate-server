@@ -74,7 +74,7 @@ try:
                 print 'The schema entry was found: %s' % attribute_entry
                 break
         else:
-            fail('The attribue was not found: univentionFreeAttribute%(attribute_id)s' % {'attribute_id': attribute_id})
+            fail('The attribute was not found: univentionFreeAttribute%(attribute_id)s' % {'attribute_id': attribute_id})
     finally:
         call_unjoin_script(unjoin_script_name)
         # The postrun needs a few seconds
@@ -86,7 +86,7 @@ try:
     for attribute_entry in schema[1].ldap_entry().get('attributeTypes'):
         if attribute_entry.startswith(attribute_identifier):
             print 'The schema entry was found: %s' % attribute_entry
-            fail('The attribue was found: univentionFreeAttribute%(attribute_id)s' % {'attribute_id': attribute_id})
+            fail('The attribute was found: univentionFreeAttribute%(attribute_id)s' % {'attribute_id': attribute_id})
 finally:
     package.remove()
     package.uninstall()

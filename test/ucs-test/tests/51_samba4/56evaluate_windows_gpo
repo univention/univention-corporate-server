@@ -67,7 +67,7 @@ def samba_create_test_user():
 
 	stdout, stderr = run_samba_tool(cmd)
 	if stderr:
-		print("An error/warning occured while trying to create a "
+		print("An error/warning occurred while trying to create a "
 			"user with a username '%s' via command: '%s' \nSTDERR: %s"
 			% (test_username, " ".join(cmd), stderr))
 	if stdout:
@@ -89,7 +89,7 @@ def windows_create_gpo(gpo_name, gpo_comment, server=""):
 				"code '%s' when 0 is expected. STDOUT: %s STDERR: "
 				"%s" % (ret_code, stdout, stderr))
 	except univention.winexe.WinExeFailed as exc:
-		utils.fail("An Error occured while creating GPO remotely: %r" % exc)
+		utils.fail("An Error occurred while creating GPO remotely: %r" % exc)
 
 
 def windows_link_gpo(gpo_name, container, server=""):
@@ -106,7 +106,7 @@ def windows_link_gpo(gpo_name, container, server=""):
 				"returned code '%s' when 0 is expected. "
 				"STDOUT: %s STDERR: %s" % (ret_code, stdout, stderr))
 	except univention.winexe.WinExeFailed as exc:
-		utils.fail("An Error occured while linking a GPO remotely: %r" % exc)
+		utils.fail("An Error occurred while linking a GPO remotely: %r" % exc)
 
 
 def windows_force_gpo_update():
@@ -118,7 +118,7 @@ def windows_force_gpo_update():
 		if stderr:
 			print stderr
 	except univention.winexe.WinExeFailed as exc:
-		utils.fail("An Error occured while linking a GPO remotely: %r" % exc)
+		utils.fail("An Error occurred while linking a GPO remotely: %r" % exc)
 
 
 def windows_set_gpo_security_filter(gpo_name, permission_level, target_name, target_type, replace="False", server=""):
@@ -186,7 +186,7 @@ def windows_set_gpo_registry_value(gpo_name, reg_key, value_name, value, value_t
 				"returned code '%s' when 0 is expected. "
 				"STDOUT: %s STDERR: %s" % (ret_code, stdout, stderr))
 	except univention.winexe.WinExeFailed as exc:
-		utils.fail("An Error occured while modifying GPO remotely: %r" % exc)
+		utils.fail("An Error occurred while modifying GPO remotely: %r" % exc)
 
 
 def samba_get_gpo_uid_by_name(gpo_name):
@@ -224,7 +224,7 @@ def windows_check_gpo_report(gpo_name, identity_name, server=""):
 		if stderr:
 			print "\nGET-GPOreport STDERR:", stderr
 	except univention.winexe.WinExeFailed as exc:
-		utils.fail("An Error occured while collecting GPO report remotely: %r"
+		utils.fail("An Error occurred while collecting GPO report remotely: %r"
 			% exc)
 
 	# Recode to match encoding specified in XML header
@@ -265,7 +265,7 @@ def sysvol_sync():
 	stdout, stderr = run_cmd(("/usr/share/univention-samba4/scripts/sysvol-sync.sh"))
 	print stdout
 	if stderr:
-		print "\nAn Error occured during sysvol sync:", stderr
+		print "\nAn Error occurred during sysvol sync:", stderr
 
 
 def sysvol_check_gpo_registry_value(gpo_name, reg_key, value_name, value):
@@ -305,7 +305,7 @@ def sysvol_check_gpo_registry_value(gpo_name, reg_key, value_name, value):
 		reg_policy_text = reg_policy.read()[8:].decode(encoding='utf-16')
 		reg_policy.close()
 	except (IOError, OSError) as exc:
-		utils.fail("An Error occured while opening '%s' file: %r"
+		utils.fail("An Error occurred while opening '%s' file: %r"
 			% (reg_pol_file, exc))
 
 	reg_key = reg_key[5:]  # the 'HKCU\' or 'HKLM\' are not included:
@@ -386,7 +386,7 @@ def udm_get_windows_computer():
 	"""
 	stdout, stderr = run_cmd(("udm", "computers/windows", "list"))
 	if stderr:
-		print "\nAn Error occured while looking for Windows Server hostname:", stderr
+		print "\nAn Error occurred while looking for Windows Server hostname:", stderr
 
 	sed_stdout, stderr = run_cmd(("sed", "-n", "s/^DN: //p"), stdin=PIPE, std_in=stdout)
 	if not sed_stdout:
@@ -433,7 +433,7 @@ def windows_remove_test_gpo(gpo_name, server=""):
 				"code '%s' when 0 is expected. STDOUT: %s STDERR: "
 				"%s" % (ret_code, stdout, stderr))
 	except (univention.winexe.WinExeFailed, NameError) as exc:
-		print ("An Error occured while removing GPO remotely: %r" % exc)
+		print ("An Error occurred while removing GPO remotely: %r" % exc)
 
 
 if __name__ == '__main__':

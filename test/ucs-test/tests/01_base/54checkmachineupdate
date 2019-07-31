@@ -29,7 +29,7 @@ then
 	echo "***machine.secret was not written, everything is fine"
 	exit 100
 else
-	echo "***An Error occured."
+	echo "***An Error occurred."
 	exit 110
 fi
 # vim: set ft=sh :

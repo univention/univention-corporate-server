@@ -66,7 +66,7 @@ wait_for_drs_replication () {
 		echo -n "Waiting for DRS replication for $ldap_filter: "
 		while [ -z "$value" ]; do
 			if [ "$(($t-$t0))" -gt $DRS_REPLICATION_TIMEOUT ]; then
-				fail_fast 1 "TIMEOUT: Replication timout to local sam.ldb after $(($t-$t0)) seconds"
+				fail_fast 1 "TIMEOUT: Replication timeout to local sam.ldb after $(($t-$t0)) seconds"
 			fi
 			sleep 1
 			echo -n "."

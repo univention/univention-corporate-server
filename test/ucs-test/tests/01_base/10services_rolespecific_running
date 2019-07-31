@@ -28,7 +28,7 @@ basesystem)
 	exit 0
 	;;
 *)
-	echo "Unknwon server role "
+	echo "Unknown server role "
 	exit 134
 	;;
 esac

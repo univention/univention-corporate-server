@@ -345,7 +345,7 @@ class FollowLogfile(object):
 
 	"""
 	Prints the contents of the listed files on exit of the with block if
-	an exception occured.
+	an exception occurred.
 	Set always=True to also print them without exception.
 	You may wish to make the server flush its logs before existing the
 	with block. Use AutoCallCommand inside the block for that.

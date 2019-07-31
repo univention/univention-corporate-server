@@ -71,13 +71,13 @@ def set_permissions(tmp1, directory, filename):
 	global uidNumber
 	global gidNumber
 
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % (directory, gidNumber, uidNumber))
+	univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (directory, gidNumber, uidNumber))
 	os.chown(directory, uidNumber, gidNumber)
 	os.chmod(directory, 0750)
 
 	for f in filename:
 		file=os.path.join(directory,f)
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % (file, gidNumber, uidNumber))
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (file, gidNumber, uidNumber))
 		os.chown(file, uidNumber, gidNumber)
 		os.chmod(file, 0750)
 

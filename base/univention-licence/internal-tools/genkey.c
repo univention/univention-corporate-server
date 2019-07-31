@@ -88,7 +88,7 @@ int main(int argc, char** argv)
 	-r, --private   the filename to store the private key\n\
 	\n\
 	OPTIONS\n\
-	-k, --keylenght the bit lenght of the key\n\
+	-k, --keylenght the bit length of the key\n\
 	-p, --password  the password to encrypt the private key\n\
 	-h, --help      displays this page\n",argv[0]);
 		return -1;

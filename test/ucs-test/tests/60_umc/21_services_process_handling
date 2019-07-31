@@ -75,10 +75,10 @@ class TestUMCServiceProcessHandling(ServiceModule):
             if not stderr:
                 return stdout.rstrip()
             else:
-                utils.fail("Error occured while pgrep'ing the '%s' service:"
+                utils.fail("Error occurred while pgrep'ing the '%s' service:"
                            " '%s'" % (self.service_name, stderr))
         except OSError as exc:
-            utils.fail("Error occured while getting output from process "
+            utils.fail("Error occurred while getting output from process "
                        " pgrep'ing '%s': '%s' " % (self.service_name, exc))
 
     def do_service_action(self, service_names, action):

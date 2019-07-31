@@ -90,7 +90,7 @@ def set_reset_lockout_settings(lock_duration, lock_threshold):
 
 	stdout, stderr = create_and_run_process(cmd)
 	if stderr:
-		utils.fail("An error/warning occured while trying to set/reset "
+		utils.fail("An error/warning occurred while trying to set/reset "
 			"account lockout settings via samba-tool command '%s':\n%r"
 			% (" ".join(cmd), stderr))
 	if stdout:
@@ -117,7 +117,7 @@ def create_delete_test_user(should_exist):
 
 	stdout, stderr = create_and_run_process(cmd)
 	if stderr:
-		utils.fail("An error/warning occured while trying to create or remove "
+		utils.fail("An error/warning occurred while trying to create or remove "
 			"a user with a username '%s' via command: %s'."
 			"\nSTDERR: '%s'." % (test_username, " ".join(cmd), stderr))
 	if stdout:
@@ -148,7 +148,7 @@ def check_no_errors_present_in_output(stdout, stderr):
 
 	elif 'NT_STATUS_' in complete_output:
 		# all the rest status options are signs of errors
-		utils.fail("\nAn error occured. \nSTDOUT: '%s'. STDERR: '%s'" % (stdout, stderr))
+		utils.fail("\nAn error occurred. \nSTDOUT: '%s'. STDERR: '%s'" % (stdout, stderr))
 
 
 def check_error_present_in_output(stdout, stderr):

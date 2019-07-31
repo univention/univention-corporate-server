@@ -20,4 +20,4 @@ if __name__ == '__main__':
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			sys.exit(0)
 
-		utils.fail('UDM did not report an error during creationg a group with umlaut in name')
+		utils.fail('UDM did not report an error during creation a group with umlaut in name')

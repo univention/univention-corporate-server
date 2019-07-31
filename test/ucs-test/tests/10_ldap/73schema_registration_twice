@@ -76,7 +76,7 @@ try:
             print 'The schema entry was found: %s' % attribute_entry
             break
     else:
-        fail('The attribue was not found: univentionFreeAttribute%(attribute_id)s' % {'attribute_id': attribute_id})
+        fail('The attribute was not found: univentionFreeAttribute%(attribute_id)s' % {'attribute_id': attribute_id})
 finally:
     call_unjoin_script(unjoin_script_name)
     package.remove()

@@ -50,7 +50,7 @@ if is_apache2_running
 then
 	echo "Apache2 has been started - OK"
 else
-	echo "Apache2 could NOT be startet - ERROR"
+	echo "Apache2 could NOT be started - ERROR"
 	exit $RETURN_ERROR
 fi
 echo ""

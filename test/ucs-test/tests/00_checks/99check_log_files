@@ -207,7 +207,7 @@ class CheckLogFiles(object):
                       "patterns to ignore respective 'join' messages.")
                 self.extend_log_ignore_definitions()
         except (IOError, IndexError) as exc:
-            print("\nAn error occured while trying to check the installation "
+            print("\nAn error occurred while trying to check the installation "
                   "profile for 'call_master_joinscripts' setting: %r "
                   "Adjusting patterns to ignore respective 'join' messages."
                   % exc)
