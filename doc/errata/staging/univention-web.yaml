@@ -3,7 +3,7 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-web
-fix: 3.0.5-23A~4.4.0.201907291437
+fix: 3.0.5-26A~4.4.0.201907302318
 desc: |
  This update addresses the following issue(s):
  * Searching for users in a certain group is now possible.
