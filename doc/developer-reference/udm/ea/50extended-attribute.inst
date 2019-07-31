@@ -8,7 +8,8 @@ VERSION=1
 joinscript_init
 
 # register LDAP schema for new extended attribute
-ucs_registerLDAPExtension "$@" --schema /usr/share/extended-attribute/extended-attribute.schema
+ucs_registerLDAPExtension "$@" \
+	--schema /usr/share/extended-attribute/extended-attribute.schema
 
 # Register new service entry for this host
 eval "$(ucr shell)"
