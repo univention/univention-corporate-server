@@ -6,6 +6,6 @@ src: univention-management-console-module-udm
 fix: 9.0.12-19A~4.4.0.201907251722
 desc: |
  This update addresses the following issue(s):
- * Searching for users in a certain group is now possible.
+ * It's now possible to search for users based on group membership.
  * SuggestionBox has been added to the mapping of syntax classes.
 bug: [42607, 48811]
