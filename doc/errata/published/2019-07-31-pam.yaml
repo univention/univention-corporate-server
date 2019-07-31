@@ -11,3 +11,5 @@ desc: |
    when pam_unix would hang in the hashsum generation of the password.
    https://github.com/linux-pam/linux-pam/issues/118
 bug: [49741]
+erratum: 206
+announced: 2019-07-31
