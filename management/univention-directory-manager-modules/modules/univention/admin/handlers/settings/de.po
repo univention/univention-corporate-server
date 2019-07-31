@@ -389,7 +389,7 @@ msgstr ""
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:232
 msgid "Delivery office name"
-msgstr "Name des Lieferbüros"
+msgstr "Name der Poststelle"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:196
 msgid "Department number"
@@ -1417,7 +1417,7 @@ msgid "Portals"
 msgstr "Portale"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:237
-msgid "Post Office Box"
+msgid "Post office box"
 msgstr "Postfach"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:159
@@ -1446,7 +1446,7 @@ msgid "Preferences: X Configuration Choices"
 msgstr "Einstellungen: X-Konfigurationsauswahl"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:244
-msgid "Preferred Language"
+msgid "Preferred language"
 msgstr "Bevorzugte Sprache"
 
 #: modules/univention/admin/handlers/settings/license.py:179

@@ -218,12 +218,9 @@ msgid "Deactivation"
 msgstr "Deaktivierung"
 
 #: modules/univention/admin/handlers/users/contact.py:263
-msgid "Delivery office name"
-msgstr "Name des Lieferbüros"
-
 #: modules/univention/admin/handlers/users/user.py:360
 msgid "Delivery office name"
-msgstr "Name des Lieferbüros"
+msgstr "Name des Poststelle"
 
 #: modules/univention/admin/handlers/users/contact.py:184
 #: modules/univention/admin/handlers/users/user.py:340
@@ -531,7 +528,7 @@ msgstr "Bild des Benutzers (JPEG-Format)"
 
 #: modules/univention/admin/handlers/users/contact.py:205
 #: modules/univention/admin/handlers/users/user.py:290
-msgid "Post Office Box"
+msgid "Post office box"
 msgstr "Postfach"
 
 #: modules/univention/admin/handlers/users/contact.py:198
@@ -874,12 +871,9 @@ msgid "Windows profile directory"
 msgstr "Profilverzeichnis"
 
 #: modules/univention/admin/handlers/users/user.py:214
-msgid "preferred Language"
-msgstr "bevorzugte Sprache"
-
 #: modules/univention/admin/handlers/users/contact.py:212
-msgid "preferred Language"
-msgstr "bevorzugte Sprache"
+msgid "Preferred language"
+msgstr "Bevorzugte Sprache"
 
 #: modules/univention/admin/handlers/users/user.py:1421
 msgid "unlimited"

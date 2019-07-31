@@ -211,7 +211,7 @@ property_descriptions = {
 		size='Two',
 	),
 	'preferredLanguage': univention.admin.property(
-		short_description=_('preferred Language'),
+		short_description=_('Preferred language'),
 		long_description=_(''),
 		syntax=univention.admin.syntax.string,
 		copyable=True,
@@ -287,7 +287,7 @@ property_descriptions = {
 		copyable=True,
 	),
 	'postOfficeBox': univention.admin.property(
-		short_description=_('Post Office Box'),
+		short_description=_('Post office box'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,

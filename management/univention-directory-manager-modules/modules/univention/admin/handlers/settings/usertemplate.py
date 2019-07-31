@@ -234,14 +234,14 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 	),
 	'postOfficeBox': univention.admin.property(
-		short_description=_('Post Office Box'),
+		short_description=_('Post office box'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		copyable=True,
 	),
 	'preferredLanguage': univention.admin.property(
-		short_description=_('Preferred Language'),
+		short_description=_('Preferred language'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		copyable=True,
