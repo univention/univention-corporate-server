@@ -145,7 +145,7 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 			if required not in attrs:
 				raise AttributeError('UMC module definition incomplete. key {} missing.'.format(required))
 			if required not in attrs:
-				raise AttributeError('UMC module defintion incomplete. key {} is missing a value.'.format(required))
+				raise AttributeError('UMC module definition incomplete. key {} is missing a value.'.format(required))
 		attrs['module_name'] = module.get('module_name')
 		attrs['abs_path_to_src_pkg'] = module.get('abs_path_to_src_pkg')
 		attrs['relative_path_src_pkg'] = module.get('relative_path_src_pkg')
