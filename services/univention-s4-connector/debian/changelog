@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-25) unstable; urgency=medium
+
+  * Bug #2651: fix typo
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 01 Aug 2019 17:32:31 +0200
+
 univention-s4-connector (13.0.2-24) unstable; urgency=medium
 
   * Bug #2651: fix_dn_in_search could not handle Nonetype dn
