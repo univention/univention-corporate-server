@@ -73,7 +73,7 @@ define([
 			}));
 
 			this.__container.watch('selectedChildWidget', lang.hitch(this, '__refreshButtonVisibility'));
-			this.own(aspect.after(this.__container, 'addChild', lang.hitch(this, function(child) {
+			this.own(aspect.before(this.__container, 'addChild', lang.hitch(this, function(child) {
 				this._addHeaderButtonsToChild(child);
 				child.own(child.watch('headerButtons', lang.hitch(this, function() {
 					this._addHeaderButtonsToChild(child);

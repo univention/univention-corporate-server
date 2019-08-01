@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [1]
+scope: ucs_4.4-0-errata4.4-1
+src: univention-web
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The detail page of UDM objects failed to open sometimes. This issue has been
+   resolved.
+bug: [49768]
