@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [0, 1]
+scope: ucs_4.4-0-errata4.4-1
+src: subversion
+fix: 1.9.5-1+deb9u4
+desc: |
+ This update addresses the following issues:
+ * subversion (CVE-2018-11782)
+ * subversion (CVE-2019-0203)
+bug: [49948]
+cve:
+- CVE-2018-11782
+- CVE-2019-0203
