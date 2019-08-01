@@ -198,6 +198,7 @@ define([
 			this._multiEdit = this.ldapName instanceof Array;
 			this._tabControllers = [];
 			this._pageRenderedDeferred = new Deferred();
+			this.headerButtons = this.getButtonDefinitions();
 		},
 
 		buildRendering: function() {
@@ -208,8 +209,6 @@ define([
 
 			domClass.add(this.domNode, 'umcUDMDetailPage');
 			domClass.toggle(this.domNode, 'umcUDMUsersModule', this.moduleFlavor === 'users/user');
-
-			this.set('headerButtons', this.getButtonDefinitions());
 
 			// remember the objectType of the object we are going to edit
 			this._editedObjType = this.objectType;

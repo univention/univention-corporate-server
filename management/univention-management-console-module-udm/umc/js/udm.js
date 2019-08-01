@@ -1936,6 +1936,9 @@ define([
 		},
 
 		_preloadDetailPage: function() {
+			if (this._detailPage) {
+				return;
+			}
 			this._ldapNameDeferred = new Deferred();
 			if (this.moduleFlavor != this._preloadedObjectType || this.openObject) {
 				// make sure that only users/user is preloaded
