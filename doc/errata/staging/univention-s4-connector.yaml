@@ -3,7 +3,7 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-s4-connector
-fix: 13.0.2-22A~4.4.0.201908010920
+fix: 13.0.2-23A~4.4.0.201908011326
 desc: |
  This update addresses the following issue(s):
  * The script "remove_ucs_rejected.py" has been repaired.
@@ -21,4 +21,6 @@ desc: |
    For updates, the synchonization of these attributes is switched off.
    For new installations, the synchonization of these attributes
    is switched on.
-bug: [26501, 49865, 49092]
+ * Samba 4.9 no longer allows the removal of the dBCSPwd (LM hash) attribute.
+   The S4 connector now respects this.
+bug: [26501, 49865, 49092, 49905]
