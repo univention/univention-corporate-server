@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-22) unstable; urgency=medium
+
+  * Bug #49092: Extend mapping of the s4connector
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 01 Aug 2019 09:11:11 +0200
+
 univention-s4-connector (13.0.2-21) unstable; urgency=medium
 
   * Bug #26501: Fix Decoding error if container contains of the character '?'
