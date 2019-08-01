@@ -6,8 +6,9 @@ src: subversion
 fix: 1.9.5-1+deb9u4
 desc: |
  This update addresses the following issues:
- * subversion (CVE-2018-11782)
- * subversion (CVE-2019-0203)
+ * Remotely triggerable DoS vulnerability in svnserve 'get-deleted-rev'
+   (CVE-2018-11782)
+ * Remote unauthenticated denial-of-service in svnserve (CVE-2019-0203)
 bug: [49948]
 cve:
 - CVE-2018-11782
