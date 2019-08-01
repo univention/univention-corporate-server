@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [1]
+scope: ucs_4.4-0-errata4.4-1
+src: univention-directory-manager-modules
+fix: 14.0.13-5A~4.4.0.201908010926
+desc: |
+ This update addresses the following issue(s):
+ * WIP new attributes for mapping in s4-connector
+
+bug: [49092]
