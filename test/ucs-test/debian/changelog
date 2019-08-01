@@ -1,3 +1,9 @@
+ucs-test (9.0.3-6) unstable; urgency=medium
+
+  * Bug #49092: Extend s4connector tests 120, 121 to check new mapped attributes
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 01 Aug 2019 09:16:28 +0200
+
 ucs-test (9.0.3-5) unstable; urgency=medium
 
   * Bug #47722: fix broken output (hex) if test case doesn't return UTF-8
