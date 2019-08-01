@@ -6,9 +6,7 @@ src: univention-directory-manager-modules
 fix: 14.0.13-5A~4.4.0.201908010926
 desc: |
  This update addresses the following issue(s):
- * The new user attributes
-   initials, postOfficeBox,
-   preferredLanguage and physicalDeliveryOfficeName
-   have been added
-
+ * The UDM module users/user now offers the following four new properties:
+   initials, postOfficeBox, preferredLanguage and physicalDeliveryOfficeName.
+   They are available via CLI tool and python API but not shown in the UMC.
 bug: [49092]

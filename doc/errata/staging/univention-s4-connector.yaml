@@ -9,15 +9,15 @@ desc: |
  * The script "remove_ucs_rejected.py" has been repaired.
    It has been broken via UCS 4.4 erratum 155.
  * Fixed decoding error if a container contains the character '?'
- * These additional Attributes are now synchronized
+ * These additional attributes are now synchronized
    between UDM/OpenLDAP and Samba/AD
    unixhome, employeeType, employeeNumber, country,
    loginShell, title, gidNumber, uidNumber, departmentNumber,
    roomNumber, initials, physicalDeliveryOfficeName, postOfficeBox,
    preferredLanguage.
-   The synchronization of user-attributes can now be switched on
+   The synchronization of user attributes can now be switched on
    and off via new ucr-variable
-   connector/s4/mapping/user/attributes/ignorelist
+   connector/s4/mapping/user/attributes/ignorelist.
    For updates, the synchonization of these attributes is switched off.
    For new installations, the synchonization of these attributes
    is switched on.
