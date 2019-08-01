@@ -176,7 +176,13 @@ def encode_attrib(attrib):
 
 def fix_dn_in_search(result):
 	# Samba LDAP returns broken DN, which cannot be parsed: ldap.dn.str2dn('cn=foo\\?,dc=base')
-	return [(dn.replace('\\?', '?'), attrs) for dn, attrs in result]
+	dn_fixed = []
+	for dn, attrs in result:
+		if dn is None:
+			dn_fixed.append((dn,attrs))
+		else:
+			dn_fixed.append((dn.replace('\\?', '?'), attrs))
+	return dn_fixed
 
 
 def encode_attriblist(attriblist):
@@ -1779,7 +1785,7 @@ class s4(univention.s4connector.ucs):
 
 		# need to remove users from s4_members_from_ucs which have this group as primary group. may failed earlier if groupnames are mapped
 		try:
-			group_rid = decode_sid(fix_dn_in_search(self.lo_s4.lo.search_s(compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)', ['objectSid'])[0][1]['objectSid'][0])).split('-')[-1]
+			group_rid = decode_sid(self.lo_s4.lo.search_s(compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)', ['objectSid'])[0][1]['objectSid'][0]).split('-')[-1]
 		except ldap.NO_SUCH_OBJECT:
 			group_rid = None
 

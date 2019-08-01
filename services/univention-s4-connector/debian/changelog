@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-24) unstable; urgency=medium
+
+  * Bug #2651: fix_dn_in_search could not handle Nonetype dn
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 01 Aug 2019 16:03:46 +0200
+
 univention-s4-connector (13.0.2-23) unstable; urgency=medium
 
   * Bug #49905: Samba 4.9 no longer allows the removal of the dBCSPwd (LM
