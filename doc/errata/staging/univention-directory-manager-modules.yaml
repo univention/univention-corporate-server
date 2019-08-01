@@ -9,4 +9,7 @@ desc: |
  * The UDM module users/user now offers the following four new properties:
    initials, postOfficeBox, preferredLanguage and physicalDeliveryOfficeName.
    They are available via CLI tool and python API but not shown in the UMC.
+ * The UDM module users/user properties departmentNumber and roomNumber
+   have been changed to be multivalue, as allowed in the LDAP schema. This
+   change has been made to support synchronization with Samba/AD.
 bug: [49092]
