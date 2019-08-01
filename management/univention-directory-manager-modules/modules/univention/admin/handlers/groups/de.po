@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-02-22 13:37+0100\n"
+"POT-Creation-Date: 2019-07-16 10:25+0200\n"
 "PO-Revision-Date: 2011-10-09 19:21+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -38,23 +38,23 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: modules/univention/admin/handlers/groups/group.py:138
+#: modules/univention/admin/handlers/groups/group.py:121
 msgid "AD group type"
 msgstr "AD Gruppentyp"
 
-#: modules/univention/admin/handlers/groups/group.py:139
+#: modules/univention/admin/handlers/groups/group.py:122
 msgid "Active Directory group type"
 msgstr "Active Directory Gruppentyp"
 
-#: modules/univention/admin/handlers/groups/group.py:258
+#: modules/univention/admin/handlers/groups/group.py:209
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: modules/univention/admin/handlers/groups/group.py:152
+#: modules/univention/admin/handlers/groups/group.py:131
 msgid "Description"
 msgstr "Beschreibung"
 
-#: modules/univention/admin/handlers/groups/group.py:258
+#: modules/univention/admin/handlers/groups/group.py:209
 msgid "General"
 msgstr "Allgemein"
 
@@ -63,71 +63,71 @@ msgstr "Allgemein"
 msgid "Group"
 msgstr "Gruppe"
 
-#: modules/univention/admin/handlers/groups/group.py:93
-#: modules/univention/admin/handlers/groups/group.py:278
+#: modules/univention/admin/handlers/groups/group.py:91
+#: modules/univention/admin/handlers/groups/group.py:229
 msgid "Group ID"
 msgstr "Gruppen-ID"
 
-#: modules/univention/admin/handlers/groups/group.py:259
+#: modules/univention/admin/handlers/groups/group.py:210
 msgid "Group account"
 msgstr "Gruppen-Konto"
 
 #: modules/univention/admin/handlers/groups/group.py:57
-#: modules/univention/admin/handlers/groups/group.py:219
+#: modules/univention/admin/handlers/groups/group.py:179
 msgid "Groups"
 msgstr "Gruppen"
 
-#: modules/univention/admin/handlers/groups/group.py:244
+#: modules/univention/admin/handlers/groups/group.py:198
 msgid "Groups that are allowed to send e-mails to the group"
 msgstr "Gruppen, die berechtigt sind, E-Mails an diese Gruppe zu versenden"
 
-#: modules/univention/admin/handlers/groups/group.py:272
+#: modules/univention/admin/handlers/groups/group.py:223
 msgid "Host members"
 msgstr "enthaltene Rechner"
 
-#: modules/univention/admin/handlers/groups/group.py:272
+#: modules/univention/admin/handlers/groups/group.py:223
 msgid "Host members of this group"
 msgstr "in dieser Gruppe enthaltene Rechner"
 
-#: modules/univention/admin/handlers/groups/group.py:178
+#: modules/univention/admin/handlers/groups/group.py:150
 msgid "Hosts"
 msgstr "enthaltene Rechner"
 
-#: modules/univention/admin/handlers/groups/group.py:278
+#: modules/univention/admin/handlers/groups/group.py:229
 msgid "ID of this group"
 msgstr "ID dieser Gruppe"
 
-#: modules/univention/admin/handlers/groups/group.py:715
+#: modules/univention/admin/handlers/groups/group.py:666
 #, python-format
 msgid "It is used as %s."
 msgstr "Sie wird als %s genutzt."
 
-#: modules/univention/admin/handlers/groups/group.py:267
+#: modules/univention/admin/handlers/groups/group.py:218
 msgid "Mail"
 msgstr "Mail"
 
-#: modules/univention/admin/handlers/groups/group.py:192
+#: modules/univention/admin/handlers/groups/group.py:161
 msgid "Mail address"
 msgstr "Mail-Adresse"
 
-#: modules/univention/admin/handlers/groups/group.py:267
+#: modules/univention/admin/handlers/groups/group.py:218
 msgid "Mail settings of this group"
 msgstr "Mail-Einstellungen dieser Gruppe"
 
-#: modules/univention/admin/handlers/groups/group.py:127
+#: modules/univention/admin/handlers/groups/group.py:114
 msgid "Manage samba privileges"
 msgstr "Samba-Privilegien verwalten"
 
-#: modules/univention/admin/handlers/groups/group.py:206
-#: modules/univention/admin/handlers/groups/group.py:275
+#: modules/univention/admin/handlers/groups/group.py:169
+#: modules/univention/admin/handlers/groups/group.py:226
 msgid "Member of"
 msgstr "Mitglied von"
 
-#: modules/univention/admin/handlers/groups/group.py:262
+#: modules/univention/admin/handlers/groups/group.py:213
 msgid "Members of this group"
 msgstr "Mitglieder dieser Gruppe"
 
-#: modules/univention/admin/handlers/groups/group.py:275
+#: modules/univention/admin/handlers/groups/group.py:226
 msgid "Membership in other groups"
 msgstr "Mitgliedschaft in weiteren Gruppen"
 
@@ -139,7 +139,7 @@ msgstr "Name"
 msgid "Posix group"
 msgstr "Posix-Gruppe"
 
-#: modules/univention/admin/handlers/groups/group.py:103
+#: modules/univention/admin/handlers/groups/group.py:98
 msgid "Relative ID"
 msgstr "Relative ID"
 
@@ -147,26 +147,26 @@ msgstr "Relative ID"
 msgid "Samba group"
 msgstr "Samba-Gruppe"
 
-#: modules/univention/admin/handlers/groups/group.py:126
+#: modules/univention/admin/handlers/groups/group.py:113
 msgid "Samba privilege"
 msgstr "Samba-Privileg"
 
-#: modules/univention/admin/handlers/groups/group.py:165
+#: modules/univention/admin/handlers/groups/group.py:140
 msgid "Users"
 msgstr "Benutzer"
 
-#: modules/univention/admin/handlers/groups/group.py:232
+#: modules/univention/admin/handlers/groups/group.py:189
 msgid "Users that are allowed to send e-mails to the group"
 msgstr "Benutzer, die berechtigt sind, E-Mails an diese Gruppe zu versenden"
 
-#: modules/univention/admin/handlers/groups/group.py:281
+#: modules/univention/admin/handlers/groups/group.py:232
 msgid "Windows"
 msgstr "Windows"
 
-#: modules/univention/admin/handlers/groups/group.py:281
+#: modules/univention/admin/handlers/groups/group.py:232
 msgid "Windows account settings"
 msgstr "Windows-Kontoeinstellungen"
 
-#: modules/univention/admin/handlers/groups/group.py:114
+#: modules/univention/admin/handlers/groups/group.py:105
 msgid "Windows group type"
 msgstr "Windows Gruppentyp"
