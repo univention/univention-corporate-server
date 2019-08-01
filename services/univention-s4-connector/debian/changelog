@@ -1,3 +1,10 @@
+univention-s4-connector (13.0.2-23) unstable; urgency=medium
+
+  * Bug #49905: Samba 4.9 no longer allows the removal of the dBCSPwd (LM
+    hash) attribute. The S4 connector now respects this.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 01 Aug 2019 13:26:00 +0200
+
 univention-s4-connector (13.0.2-22) unstable; urgency=medium
 
   * Bug #49092: Extend mapping of the s4connector
