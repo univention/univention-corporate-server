@@ -38,7 +38,7 @@ import univention.s4connector.s4
 import univention.admin.uldap
 from univention.s4connector.s4.dc import _unixTimeInverval2seconds
 from univention.s4connector.s4 import compatible_modstring, unicode_to_utf8
-from univention.s4connector.s4 import format_escaped
+from univention.s4connector.s4 import format_escaped, str2dn
 from univention.admin.mapping import unmapUNIX_TimeInterval
 
 from samba.dcerpc import dnsp
@@ -164,7 +164,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 			if dn is None:
 				break
 
-			exploded_dn = ldap.dn.str2dn(unicode_to_utf8(dn))
+			exploded_dn = str2dn(unicode_to_utf8(dn))
 			(fst_rdn_attribute_utf8, fst_rdn_value_utf8, _flags) = exploded_dn[0][0]
 
 			if isUCSobject:
@@ -219,7 +219,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 						if result:
 							# We only need the SOA dn here
 							s4dn_utf16_le_rdn = [('DC', '@', ldap.AVA_STRING)]
-							s4dn_utf16_le = unicode(ldap.dn.dn2str([s4dn_utf16_le_rdn] + ldap.dn.str2dn(unicode_to_utf8(result[0][0]))), 'utf8')
+							s4dn_utf16_le = unicode(ldap.dn.dn2str([s4dn_utf16_le_rdn] + str2dn(unicode_to_utf8(result[0][0]))), 'utf8')
 							break
 				else:
 					# identify position by parent zone name
@@ -272,7 +272,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 						newdn = s4dn
 					else:
 						# Case: "moved" (?)
-						exploded_s4_dn = ldap.dn.str2dn(unicode_to_utf8(s4dn))
+						exploded_s4_dn = str2dn(unicode_to_utf8(s4dn))
 						raw_new_dn = unicode(ldap.dn.dn2str([exploded_s4_dn[0]] + exploded_dn[1:]), 'utf8')
 						# The next line looks wrong to me: the source DN is a UCS dn here..
 						# But this is just like samaccountname_dn_mapping does it:
@@ -288,10 +288,10 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 						# Ok, it's a new object without existing parent zone in S4 (probably this object itself is a soa/zone), so propose an S4 DN for it:
 						default_dn = s4connector.property['dns'].con_default_dn
 						zone_rdn = [('DC', unicode_to_utf8(ol_zone_name), ldap.AVA_STRING)]
-						zone_dn = unicode(ldap.dn.dn2str([zone_rdn] + ldap.dn.str2dn(default_dn)), 'utf8')
+						zone_dn = unicode(ldap.dn.dn2str([zone_rdn] + str2dn(default_dn)), 'utf8')
 
 					new_rdn = [('DC', unicode_to_utf8(relativeDomainName), ldap.AVA_STRING)]
-					newdn = unicode(ldap.dn.dn2str([new_rdn] + ldap.dn.str2dn(unicode_to_utf8(zone_dn))), 'utf8')
+					newdn = unicode(ldap.dn.dn2str([new_rdn] + str2dn(unicode_to_utf8(zone_dn))), 'utf8')
 
 			else:
 				# get the object to read the s4_RR_attr in S4 and use it as name
@@ -405,7 +405,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 						newdn = zone_dn
 					else:
 						new_rdn = [('relativeDomainName', unicode_to_utf8(s4_RR_val), ldap.AVA_STRING)]
-						newdn = unicode(ldap.dn.dn2str([new_rdn] + ldap.dn.str2dn(unicode_to_utf8(zone_dn))), 'utf8')
+						newdn = unicode(ldap.dn.dn2str([new_rdn] + str2dn(unicode_to_utf8(zone_dn))), 'utf8')
 
 					if not (dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in obj)):
 						# Case: "moved" (?)
@@ -429,7 +429,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 def __get_zone_dn(s4connector, zone_name):
 	default_dn = s4connector.property['dns'].ucs_default_dn
 	zone_rdn = [('zoneName', unicode_to_utf8(zone_name), ldap.AVA_STRING)]
-	return unicode(ldap.dn.dn2str([zone_rdn] + ldap.dn.str2dn(unicode_to_utf8(default_dn))), 'utf8')
+	return unicode(ldap.dn.dn2str([zone_rdn] + str2dn(unicode_to_utf8(default_dn))), 'utf8')
 
 
 def __append_dot(str):
@@ -446,7 +446,7 @@ def __remove_dot(str):
 
 
 def __split_s4_dnsNode_dn(dn):
-	exploded_dn = ldap.dn.str2dn(dn)  # TODO: fix encoding
+	exploded_dn = str2dn(dn)  # TODO: fix encoding
 
 	# split the DC= from the zoneName
 	(_, zoneName, _) = exploded_dn[1][0]
@@ -455,7 +455,7 @@ def __split_s4_dnsNode_dn(dn):
 
 
 def __split_ol_dNSZone_dn(dn, objectclasses):
-	exploded_dn = ldap.dn.str2dn(dn)  # TODO: fix encoding
+	exploded_dn = str2dn(dn)  # TODO: fix encoding
 	(fst_rdn_attribute_utf8, fst_rdn_value_utf8, _flags) = exploded_dn[0][0]
 	(snd_rdn_attribute_utf8, snd_rdn_value_utf8, _flags) = exploded_dn[1][0]
 
@@ -728,7 +728,7 @@ def __get_s4_msdcs_soa(s4connector, zoneName):
 
 	# We need the SOA here
 	msdcs_soa_rdn = [('DC', '@', ldap.AVA_STRING)]
-	msdcs_soa_dn = unicode(ldap.dn.dn2str([msdcs_soa_rdn] + ldap.dn.str2dn(resultlist[0][0])), 'utf8')
+	msdcs_soa_dn = unicode(ldap.dn.dn2str([msdcs_soa_rdn] + str2dn(resultlist[0][0])), 'utf8')
 	ud.debug(ud.LDAP, ud.INFO, "%s: search DC=@ for _msdcs in S4" % (func_name,))
 	resultlist = s4connector._s4__search_s4(
 		msdcs_soa_dn,
@@ -1570,7 +1570,7 @@ def _identify_dns_con_object(s4connector, object):
 		if oc and 'dnsNode' in oc:
 			if dc and dc[0] == '@':
 				zone_type = 'forward_zone'
-				exploded_dn = ldap.dn.str2dn(unicode_to_utf8(object['dn']))
+				exploded_dn = str2dn(unicode_to_utf8(object['dn']))
 				for multi_rdn in exploded_dn:
 					(attribute, value, _flags) = multi_rdn[0]
 					if attribute.lower() == 'zonename' and value.lower().endswith('in-addr.arpa'):

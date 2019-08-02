@@ -175,14 +175,19 @@ def encode_attrib(attrib):
 
 
 def fix_dn_in_search(result):
+	return [(fix_dn(dn), attrs) for dn, attrs in result]
+
+
+def fix_dn(dn):
 	# Samba LDAP returns broken DN, which cannot be parsed: ldap.dn.str2dn('cn=foo\\?,dc=base')
-	dn_fixed = []
-	for dn, attrs in result:
-		if dn is None:
-			dn_fixed.append((dn,attrs))
-		else:
-			dn_fixed.append((dn.replace('\\?', '?'), attrs))
-	return dn_fixed
+	return dn.replace('\\?', '?') if dn is not None else dn
+
+
+def str2dn(dn):
+	try:
+		return ldap.dn.str2dn(dn)
+	except ldap.DECODING_ERROR:
+		return ldap.dn.str2dn(fix_dn(dn))
 
 
 def encode_attriblist(attriblist):
@@ -287,7 +292,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 			#	272read_ad_change_username
 			t_dn = object.get('dn')
 			if t_dn:
-				(_rdn_attribute, rdn_value_utf8, _flags) = ldap.dn.str2dn(unicode_to_utf8(t_dn))[0][0]
+				(_rdn_attribute, rdn_value_utf8, _flags) = str2dn(unicode_to_utf8(t_dn))[0][0]
 				rdn_value = unicode(rdn_value_utf8, 'utf8')
 				t_samaccount = u''
 				if object.get('attributes'):
@@ -321,7 +326,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 			if dn is None:
 				break
 
-			exploded_dn = ldap.dn.str2dn(unicode_to_utf8(dn))
+			exploded_dn = str2dn(unicode_to_utf8(dn))
 			(_fst_rdn_attribute_utf8, fst_rdn_value_utf8, _flags) = exploded_dn[0][0]
 
 			if ucsobject and object.get('attributes') and object['attributes'].get(ucsattrib):
@@ -368,7 +373,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 						# move
 						# return a kind of frankenstein DN here, sync_from_ucs replaces the UCS LDAP base
 						# with the samba LDAP base at a later stage, see Bug #48440
-						s4_rdn = ldap.dn.str2dn(result[0][0])[0]
+						s4_rdn = str2dn(result[0][0])[0]
 						newdn = unicode(ldap.dn.dn2str([s4_rdn] + exploded_dn[1:]), 'utf8')
 				else:
 					newdn_rdn = [('cn', fst_rdn_value_utf8, ldap.AVA_STRING)]
@@ -1382,16 +1387,14 @@ class s4(univention.s4connector.ucs):
 		'''
 		_d = ud.function('ldap.__dn_from_deleted_object')
 
-		# FIXME: should be called recursively, if containers are deleted subobjects have lastKnowParent in deletedObjects
-		rdn = object['dn'][:string.find(object['dn'], 'DEL:') - 3]
-		if 'lastKnownParent' in object['attributes']:
-			try:
-				ud.debug(ud.LDAP, ud.INFO, "__dn_from_deleted_object: get DN from lastKnownParent (%s) and rdn (%s)" % (object['attributes']['lastKnownParent'][0], rdn))
-			except:  # FIXME: which exception is to be caught?
-				ud.debug(ud.LDAP, ud.INFO, "__dn_from_deleted_object: get DN from lastKnownParent")
+		# FIXME: should be called recursively, if containers are deleted subobjects have lastKnownParent in deletedObjects
+		rdn = object['dn'].split('\\0ADEL:')[0]
+		last_known_parent = object['attributes'].get('lastKnownParent', [None])[0]
+		if last_known_parent:
+			ud.debug(ud.LDAP, ud.INFO, "__dn_from_deleted_object: get DN from lastKnownParent (%r) and rdn (%r)" % (last_known_parent, rdn))
 
-			rdn_exploded = ldap.dn.str2dn(unicode_to_utf8(rdn))
-			parent_exploded = ldap.dn.str2dn(unicode_to_utf8(object['attributes']['lastKnownParent'][0]))
+			rdn_exploded = str2dn(unicode_to_utf8(rdn))
+			parent_exploded = str2dn(unicode_to_utf8(last_known_parent))
 			return unicode(ldap.dn.dn2str(rdn_exploded + parent_exploded), 'utf8')
 		else:
 			ud.debug(ud.LDAP, ud.WARN, 'lastKnownParent attribute for deleted object rdn="%s" was not set, so we must ignore the object' % rdn)
@@ -2112,7 +2115,7 @@ class s4(univention.s4connector.ucs):
 			memberUid_add = []
 			memberUid_del = []
 			for member in add_members['user']:
-				(_rdn_attribute, uid, _flags) = ldap.dn.str2dn(unicode_to_utf8(member))[0][0]
+				(_rdn_attribute, uid, _flags) = str2dn(unicode_to_utf8(member))[0][0]
 				memberUid_add.append(unicode(uid, 'utf8'))
 			for member in add_members['unknown']:  # user or group?
 				ucs_object_attr = self.lo.get(member)
@@ -2120,7 +2123,7 @@ class s4(univention.s4connector.ucs):
 				if uid:
 					memberUid_add.append(uid[0])
 			for member in del_members['user']:
-				(_rdn_attribute, uid, _flags) = ldap.dn.str2dn(unicode_to_utf8(member))[0][0]
+				(_rdn_attribute, uid, _flags) = str2dn(unicode_to_utf8(member))[0][0]
 				memberUid_del.append(unicode(uid, 'utf8'))
 			if uniqueMember_del or memberUid_del:
 				ucs_admin_object.fast_member_remove(uniqueMember_del, memberUid_del, ignore_license=1)
