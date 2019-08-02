@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-47) unstable; urgency=medium
+
+  * Bug #49955: the 'search' action does not send uuid and system-uuid anymore
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 02 Aug 2019 13:23:30 +0200
+
 univention-appcenter (8.0.11-46) unstable; urgency=medium
 
   * Bug #49832: resync the listener in postinst so the app tab gets shown
