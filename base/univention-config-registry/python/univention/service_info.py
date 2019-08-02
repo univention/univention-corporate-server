@@ -33,9 +33,14 @@
 
 import os
 import shlex
+import subprocess
 from logging import getLogger
 
 import univention.info_tools as uit
+
+
+class ServiceError(Exception):
+	"""Error when starting, stopping or restarting a service."""
 
 
 class Service(uit.LocalizedDictionary):
@@ -71,6 +76,50 @@ class Service(uit.LocalizedDictionary):
 				break
 		else:
 			self.running = True
+
+	def start(self):
+		"""Start the service."""
+		return self._change_state('start')
+
+	def stop(self):
+		"""Stop the service."""
+		return self._change_state('stop')
+
+	def restart(self):
+		"""Restart the service."""
+		return self._change_state('restart')
+
+	def status(self):
+		"""Get status of the service."""
+		try:
+			return self.__change_state('status')[1]
+		except EnvironmentError:
+			return u''
+
+	def _change_state(self, action):
+		rc, output = self.__change_state(action)
+		if rc:
+			raise ServiceError(self.status() or output)
+		return True
+
+	def __change_state(self, action):
+		if self.get('init_script'):
+			# samba currently must not be started via systemd
+			return self._exec(('/etc/init.d/%s' % (self['init_script'],), action))
+
+		service_name = self._service_name()
+		return self._exec(('/usr/sbin/service', service_name, action))
+
+	def _service_name(self):
+		service_name = self.get('systemd', self.get('name'))
+		if service_name.endswith('.service'):
+			service_name = service_name.rsplit('.', 1)[0]
+		return service_name
+
+	def _exec(self, args):
+		process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+		output = process.communicate()[0]
+		return process.returncode, output.decode('utf-8', 'replace').strip()
 
 
 def pidof(name, docker='/var/run/docker.pid'):
@@ -213,6 +262,7 @@ class ServiceInfo(object):
 			if not override and sec in self.services:
 				continue
 			srv = Service()
+			srv['name'] = sec
 			for name, value in cfg.items(sec):
 				srv[name] = value
 			for path in srv.get('programs', '').split(','):

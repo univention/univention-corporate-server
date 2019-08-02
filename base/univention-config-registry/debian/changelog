@@ -1,3 +1,9 @@
+univention-config-registry (14.0.0-11) unstable; urgency=medium
+
+  * Bug #42241: move start/stop/restart logic into service_info.py
+
+ -- Florian Best <best@univention.de>  Fri, 02 Aug 2019 15:30:06 +0200
+
 univention-config-registry (14.0.0-10) unstable; urgency=medium
 
   * Bug #49775: fix UCR templates printing binary data
