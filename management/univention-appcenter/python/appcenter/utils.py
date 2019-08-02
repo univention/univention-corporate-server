@@ -458,12 +458,14 @@ def send_information(action, app=None, status=200, value=None):
 	if not app or app.notify_vendor:
 		uuid = ucr_get('uuid/license', uuid)
 		system_uuid = ucr_get('uuid/system', system_uuid)
+	if action == 'search':
+		uuid = '00000000-0000-0000-0000-000000000000'
+		system_uuid = None
 
 	values = {
 		'action': action,
 		'status': status,
 		'uuid': uuid,
-		'system-uuid': system_uuid,
 		'role': ucr_get('server/role'),
 	}
 	if app:
@@ -471,6 +473,8 @@ def send_information(action, app=None, status=200, value=None):
 		values['version'] = app.version
 	if value:
 		values['value'] = value
+	if system_uuid:
+		values['system-uuid'] = system_uuid
 	utils_logger.debug('tracking information: %s' % str(values))
 	try:
 		request_data = urllib.urlencode(values)
