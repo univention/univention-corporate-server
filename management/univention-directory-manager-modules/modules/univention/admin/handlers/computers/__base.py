@@ -313,7 +313,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 	@classmethod
 	def unmapped_lookup_filter(cls):  # type: () -> univention.admin.filter.conjunction
 		filter_p = super(ComputerObject, cls).unmapped_lookup_filter()
-		if cls.SERVER_ROLE and cls.SERVER_ROLE != 'member':
+		if cls.SERVER_ROLE and cls.SERVER_ROLE not in ('member', 'windows_client', 'windows_domaincontroller'):
 			filter_p.expressions.append(univention.admin.filter.expression('univentionServerRole', cls.SERVER_ROLE, escape=True))
 		return filter_p
 
@@ -343,6 +343,6 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 
 	@classmethod
 	def identify(cls, dn, attr, canonical=False):
-		if cls.SERVER_ROLE and cls.SERVER_ROLE != 'member' and cls.SERVER_ROLE not in attr.get('univentionServerRole', []):
+		if cls.SERVER_ROLE and cls.SERVER_ROLE not in ('member', 'windows_client', 'windows_domaincontroller') and cls.SERVER_ROLE not in attr.get('univentionServerRole', []):
 			return False
 		return super(ComputerObject, cls).identify(dn, attr, canonical)
