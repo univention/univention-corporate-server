@@ -1,8 +1,14 @@
+univention-samba4 (8.0.0-26) unstable; urgency=medium
+
+  * Bug #42241: fix service definition of samba
+
+ -- Florian Best <best@univention.de>  Fri, 02 Aug 2019 15:26:00 +0200
+
 univention-samba4 (8.0.0-25) unstable; urgency=medium
 
   * Bug #49399: If samba-backup fails, cron will send system e-mails to admins etc.
 
- -- Fathan Vidjaja <fvidjaja@lauvik.knut.univention.de>  Mon, 24 Jun 2019 13:58:15 +0200
+ -- Fathan Vidjaja <vidjaja@univention.de>  Mon, 24 Jun 2019 13:58:15 +0200
 
 univention-samba4 (8.0.0-24) unstable; urgency=medium
 
@@ -31,7 +37,7 @@ univention-samba4 (8.0.0-21) unstable; urgency=medium
 
   * Bug #34848: using samba password generator for administrator
 
- -- Fathan Vidjaja <fvidjaja@alvine.knut.univention.de>  Tue, 07 May 2019 12:03:47 +0200
+ -- Fathan Vidjaja <vidjaja@univention.de>  Tue, 07 May 2019 12:03:47 +0200
 
 univention-samba4 (8.0.0-20) unstable; urgency=medium
 

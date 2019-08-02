@@ -4,4 +4,4 @@ description[en]=Provides Services for Windows
 icon=service/samba
 programs=/usr/sbin/samba
 start_type=samba4/autostart
-systemd=samba-ad-dc.service
+init_script=samba
