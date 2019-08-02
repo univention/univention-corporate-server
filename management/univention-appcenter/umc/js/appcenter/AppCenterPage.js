@@ -32,6 +32,8 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/on",
+	"dojo/on/debounce",
 	"dojo/when",
 	"dojo/dom-construct",
 	"dojo/Deferred",
@@ -43,7 +45,7 @@ define([
 	"umc/modules/appcenter/AppLiveSearchSidebar",
 	"umc/modules/appcenter/AppCenterMetaCategory",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, when, domConstruct, Deferred, dialog, tools, Page, Text, CheckBox, AppLiveSearchSidebar, AppCenterMetaCategory, _) {
+], function(declare, lang, array, on, onDebounce, when, domConstruct, Deferred, dialog, tools, Page, Text, CheckBox, AppLiveSearchSidebar, AppCenterMetaCategory, _) {
 
 	return declare("umc.modules.appcenter.AppCenterPage", [ Page ], {
 
@@ -83,8 +85,8 @@ define([
 					searchableAttributes: ['name', 'description', 'long_description', 'categories', 'vendor', 'maintainer']
 				});
 				this.addChild(this._searchSidebar);
-				this._searchSidebar.on('search', lang.hitch(this, 'filterApplications'));
-				this._searchSidebar.on('search', lang.hitch(this, 'trackSearchString'));
+				this.own(on(this._searchSidebar, 'search', lang.hitch(this, 'filterApplications')));
+				this.own(on(this._searchSidebar, onDebounce('search', 1000), lang.hitch(this, 'trackSearchString')));
 			}
 
 			if (this.addMissingAppButton) {
@@ -164,10 +166,9 @@ define([
 				metaCategory.set('visible', false);
 				this.metaCategories.push(metaCategory);
 				this.addChild(metaCategory);
-				this.own(metaCategory);
-				this.watch('appQuery', function(attr, oldval, newval) {
+				this.own(this.watch('appQuery', function(attr, oldval, newval) {
 					metaCategory.set('filterQuery', newval);
-				});
+				}));
 			}));
 		},
 
@@ -393,20 +394,10 @@ define([
 		},
 
 		trackSearchString: function() {
-			// is called upon each key press... identify the whole words
-
-			var _sendSearchString = function(searchString) {
-				tools.umcpCommand('appcenter/track', {action: 'search', value: searchString});
-			};
-
-			if (this._sendSearchStringDeferred && !this._sendSearchStringDeferred.isFulfilled()) {
-				// cancel Deferred as a new keypress event has been send before the timeout
-				this._sendSearchStringDeferred.cancel();
-			}
-
-			// start new timeout after which the search string is send to the backend
-			var searchPattern = lang.trim(this._searchSidebar.get('value'));
-			this._sendSearchStringDeferred = tools.defer(lang.hitch(this, _sendSearchString, searchPattern), 1000).then(null, function() {});
+			tools.umcpCommand('appcenter/track', {
+				action: 'search',
+				value: lang.trim(this._searchSidebar.get('value'))
+			});
 		},
 
 		filterApplications: function() {

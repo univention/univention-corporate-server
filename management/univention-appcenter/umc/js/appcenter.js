@@ -250,11 +250,8 @@ define([
 			}));
 
 			this.set('title', entities.encode(app.name) || 'App Center');
-			this._appDetailsPage.on('back', lang.hitch(this, function(category) {
+			this._appDetailsPage.on('back', lang.hitch(this, function() {
 				this.set('title', 'App Center');
-				if (category && category.length) {
-					this._appCenterPage._searchSidebar.set('category', category);
-				}
 				this.selectChild(this._appCenterPage);
 				tools.forIn(this._appCenterPage.metaCategories, function(metaKey, metaObj) {
 					metaObj._centerApps();

@@ -46,7 +46,7 @@ define([
 		// summary:
 		//		Offers a side bar for live searching, a set of categories can be defined.
 
-		searchLabel: null,
+		searchLabel: _('Search term'),
 
 		baseClass: 'umcLiveSearchSidebar',
 
@@ -57,35 +57,33 @@ define([
 
 		_lastValue: '',
 
+		constructor: function() {
+			this.inherited(arguments);
+
+			this.searchableAttributes = ['name', 'description', 'categories', 'keywords'];
+			this._selected = {};
+			this._filterForms = {};
+		},
+
 		buildRendering: function() {
 			this.inherited(arguments);
-			if (this.searchableAttributes === null) {
-				this.searchableAttributes = ['name', 'description', 'categories', 'keywords'];
-			}
 
-			this.searchTextBox = new ContainerWidget({ 'class': 'umcSize-FourThirds searchField'});
 			this._searchTextBox = new SearchBox({
-				inlineLabel: this.searchLabel || _('Search term')
+				inlineLabel: this.searchLabel
 			});
-			this.searchTextBox.addChild(this._searchTextBox);
-			this.addChild(this.searchTextBox);
-
+			this.addChild(this._searchTextBox);
 		},
 
 		postCreate: function() {
 			this.inherited(arguments);
 
-			// Reset filters, when opening the App Center:
-			this._selected = {};
-			this._filterForms = {};
-
-			this._searchTextBox.on('keyup', lang.hitch(this, function() {
+			this.own(this._searchTextBox.on('keyup', lang.hitch(this, function() {
+				// ignore empty search strings
 				if (this.get('value') || this._lastValue) {
-					// ignore empty search strings
 					this._lastValue = this.get('value');
 					this.onSearch();
 				}
-			}));
+			})));
 		},
 
 		_isInSearchMode: function() {
@@ -134,7 +132,7 @@ define([
 				formContainer.destroyRecursive();
 			}
 			this._selected[id] = [];
-			if (! choices.length) {
+			if (!choices.length) {
 				return;
 			}
 			formContainer = this._filterForms[id] = new ContainerWidget({'class': 'appLiveSearchSidebarElement'});

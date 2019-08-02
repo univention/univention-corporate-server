@@ -1361,33 +1361,6 @@ define([
 			}
 		},
 
-		_detailFieldCustomCategories: function() {
-			if (this.app.categories) {
-				var categoriesContainerNode = domConstruct.create('div', {
-					'class': 'categoryContainer'
-				});
-				if (this.moduleID === 'appcenter') {
-					this.app.categories.forEach(lang.hitch(this, function(category) {
-						var categoryButton = domConstruct.create('button', {
-							textContent: _(category),
-							onclick: lang.hitch(this, function() { this.onBack(category); }),
-							'class': 'categoryButton'
-						});
-						domConstruct.place(categoryButton, categoriesContainerNode);
-					}));
-				} else {
-					this.app.categories.forEach(lang.hitch(this, function(category) {
-						var categoryButton = domConstruct.create('span', {
-							textContent: _(category),
-							'class': 'categorySpan'
-						});
-						domConstruct.place(categoryButton, categoriesContainerNode);
-					}));
-				}
-				return categoriesContainerNode;
-			}
-		},
-
 		addToDetails: function(label, attribute) {
 			var value;
 			var detailFunc = this['_detailFieldCustom' + attribute];
