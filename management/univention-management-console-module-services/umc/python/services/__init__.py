@@ -31,7 +31,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import subprocess
 import notifier
 import notifier.threads
 
@@ -42,7 +41,7 @@ from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import simple_response, sanitize
 from univention.management.console.modules.sanitizers import PatternSanitizer, StringSanitizer
 
-from univention.service_info import ServiceInfo
+from univention.service_info import ServiceInfo, ServiceError
 import univention.config_registry
 
 _ = Translation('univention-management-console-module-services').translate
@@ -99,23 +98,17 @@ class Instance(Base):
 		error_messages = []
 		srvs = ServiceInfo()
 		for srv in services:
-			service_name = srvs.get_service(srv).get('systemd', srv)
-			if service_name.endswith('.service'):
-				service_name = service_name.rsplit('.', 1)[0]
-			process = subprocess.Popen(('/usr/sbin/service', service_name, action), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-			output = process.communicate()[0]
-			if process.returncode:
-				try:
-					MODULE.warn('Error during %s of %s: %s' % (action, service_name, output.strip()))
-					process = subprocess.Popen(('/bin/systemctl', 'status', service_name), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-					output = process.communicate()[0]
-				except EnvironmentError:
-					pass
+			service = srvs.get_service(srv)
+			try:
+				getattr(service, action)()
+			except ServiceError as exc:
+				MODULE.warn('Error during %s of %s: %s' % (action, srv, exc))
 				error_messages.append('%s\n%s' % ({
 					'start': _('Starting the service %s failed:'),
 					'stop': _('Stopping the service %s failed:'),
 					'restart': _('Restarting the service %s failed:'),
-				}[action] % srv, output.strip()))
+				}[action] % srv, exc))
+
 		if error_messages:
 			raise UMC_Error('\n\n'.join(error_messages))
 		return {'success': True}
