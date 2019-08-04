@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-schema (9.0.2-5) unstable; urgency=medium
+
+  * Bug #49695: try to fix unknown attr "@univentionVirtualMachine" error
+
+ -- Florian Best <best@univention.de>  Sun, 04 Aug 2019 10:56:52 +0200
+
 univention-virtual-machine-manager-schema (9.0.2-4) unstable; urgency=medium
 
   * Bug #49695: Error Handling during registering UVMM schema in LDAP
