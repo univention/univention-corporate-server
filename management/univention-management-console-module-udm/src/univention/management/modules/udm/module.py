@@ -170,7 +170,7 @@ class QueryStringSanitizer(DictSanitizer):
 class DictSanitizer(DictSanitizer):
 
 	def __init__(self, sanitizers, allow_other_keys=True, **kwargs):
-		self.default_sanitizer = kwargs.pop('default_sanitizer', None)
+		self.default_sanitizer = kwargs.get('default_sanitizer', None)
 		super(DictSanitizer, self).__init__(sanitizers, allow_other_keys=allow_other_keys, **kwargs)
 
 	def _sanitize(self, value, name, further_arguments):
@@ -183,7 +183,7 @@ class DictSanitizer(DictSanitizer):
 		altered_value = copy.deepcopy(value) if self._copy_value else value
 
 		multi_error = MultiValidationError()
-		for attr in value:
+		for attr in set(value.keys() + self.sanitizers.keys()):
 			sanitizer = self.sanitizers.get(attr, self.default_sanitizer)
 			try:
 				if sanitizer:
