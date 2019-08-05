@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [1]
+scope: ucs_4.4-0-errata4.4-1
+src: samba
+fix: 2:4.10.1-1A~4.4.0.201908051414
+desc: |
+ This update addresses the following issues:
+ * This update fixes an issue in the samba-tool ntacl sysvolcheck command
+   where it complains about a difference in the "P", "PAR" or "PAI"
+   NTACL flags when comparing LDAP directory ACLs to the sysvol.
+bug: [49293]
