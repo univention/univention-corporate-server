@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-schema (9.0.2-6) unstable; urgency=medium
+
+  * Bug #49695: revert registering schema via ucs_registerLDAPextension
+
+ -- Florian Best <best@univention.de>  Mon, 05 Aug 2019 18:52:35 +0200
+
 univention-virtual-machine-manager-schema (9.0.2-5) unstable; urgency=medium
 
   * Bug #49695: try to fix unknown attr "@univentionVirtualMachine" error
