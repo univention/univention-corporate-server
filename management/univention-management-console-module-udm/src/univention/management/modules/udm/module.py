@@ -2397,7 +2397,7 @@ class Object(FormBase, Ressource):
 			ldap_position.setDn(superordinate)
 		else:
 			if hasattr(module.module, 'policy_position_dn_prefix'):
-				container = '%s,cn=policies,%s' % (self.module.policy_position_dn_prefix, ldap_position.getBase())
+				container = '%s,cn=policies,%s' % (module.module.policy_position_dn_prefix, ldap_position.getBase())
 			else:
 				defaults = module.get_default_containers()
 				container = defaults[0] if defaults else ldap_position.getBase()
