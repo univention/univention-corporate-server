@@ -393,10 +393,10 @@ class simpleLdap(object):
 			return
 		# attribute may not be changed
 		elif not all(_changeable()):
-			raise univention.admin.uexceptions.valueMayNotChange(_('key=%(key)s old=%(old)s new=%(new)s') % {'key': key, 'old': self[key], 'new': value})
+			raise univention.admin.uexceptions.valueMayNotChange(_('key=%(key)s old=%(old)s new=%(new)s') % {'key': key, 'old': self[key], 'new': value}, property=key)
 		# required attribute may not be removed
 		elif self.descriptions[key].required and not value:
-			raise univention.admin.uexceptions.valueRequired, _('The property %s is required') % self.descriptions[key].short_description
+			raise univention.admin.uexceptions.valueRequired(_('The property %s is required') % self.descriptions[key].short_description, property=key)
 		# do nothing
 		if self.info.get(key, None) == value:
 			ud.debug(ud.ADMIN, ud.INFO, 'values are identical: %s:%s' % (key, value))
@@ -411,7 +411,7 @@ class simpleLdap(object):
 			if isinstance(value, basestring):
 				value = [value]
 			elif not isinstance(value, list):
-				raise univention.admin.uexceptions.valueInvalidSyntax(key)
+				raise univention.admin.uexceptions.valueInvalidSyntax(_('The property %s must be a list') % (self.descriptions[key].short_description,), property=key)
 
 			self.info[key] = []
 			for v in value:
@@ -429,9 +429,9 @@ class simpleLdap(object):
 					if not err:
 						err = ""
 					try:
-						raise univention.admin.uexceptions.valueInvalidSyntax, "%s: %s" % (key, err)
-					except UnicodeEncodeError, e:  # raise fails if err contains umlauts or other non-ASCII-characters
-						raise univention.admin.uexceptions.valueInvalidSyntax(self.descriptions[key].short_description)
+						raise univention.admin.uexceptions.valueInvalidSyntax("%s: %s" % (key, err), property=key)
+					except UnicodeEncodeError:  # raise fails if err contains umlauts or other non-ASCII-characters
+						raise univention.admin.uexceptions.valueInvalidSyntax(self.descriptions[key].short_description, property=key)
 				self.info[key].append(p)
 
 		elif not value and key in self.info:
@@ -449,9 +449,9 @@ class simpleLdap(object):
 				if not err:
 					err = ""
 				try:
-					raise univention.admin.uexceptions.valueInvalidSyntax, "%s: %s" % (self.descriptions[key].short_description, err)
-				except UnicodeEncodeError, e:  # raise fails if err contains umlauts or other non-ASCII-characters
-					raise univention.admin.uexceptions.valueInvalidSyntax, "%s" % self.descriptions[key].short_description
+					raise univention.admin.uexceptions.valueInvalidSyntax("%s: %s" % (self.descriptions[key].short_description, err), property=key)
+				except UnicodeEncodeError:  # raise fails if err contains umlauts or other non-ASCII-characters
+					raise univention.admin.uexceptions.valueInvalidSyntax("%s" % self.descriptions[key].short_description, property=key)
 			self.info[key] = p
 
 	def __getitem__(self, key):  # type: (str) -> Any
@@ -470,6 +470,7 @@ class simpleLdap(object):
 		if key in self.info:
 			if self.descriptions[key].multivalue and not isinstance(self.info[key], list):
 				# why isn't this correct in the first place?
+				ud.debug(ud.ADMIN, ud.WARN, 'The mapping for %s in %s is broken!' % (key, self.module))
 				self.info[key] = [self.info[key]]
 			return self.info[key]
 		elif key not in self.__no_default and self.descriptions[key].editable:
@@ -1670,7 +1671,7 @@ class simpleLdap(object):
 				value = self.info.get(key)
 				oldval = self.oldinfo.get(key)
 				if oldval != value:
-					raise univention.admin.uexceptions.valueMayNotChange(_('key=%(key)s old=%(old)s new=%(new)s') % {'key': key, 'old': oldval, 'new': value})
+					raise univention.admin.uexceptions.valueMayNotChange(_('key=%(key)s old=%(old)s new=%(new)s') % {'key': key, 'old': oldval, 'new': value}, property=key)
 
 	def _is_synced_object(self):  # type: () -> bool
 		"""Checks whether this object was synchronized from Active Directory to UCS."""

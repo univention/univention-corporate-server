@@ -139,7 +139,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if not self.hasChanged('package'):
 			old_version = self.oldinfo.get('packageversion', '0')
 			if not apt.apt_pkg.version_compare(self['packageversion'], old_version) > -1:
-				raise univention.admin.uexceptions.valueInvalidSyntax(_('packageversion: Version must not be lower than the current one.'))
+				raise univention.admin.uexceptions.valueInvalidSyntax(_('packageversion: Version must not be lower than the current one.'), property='packageversion')
 
 
 lookup = object.lookup

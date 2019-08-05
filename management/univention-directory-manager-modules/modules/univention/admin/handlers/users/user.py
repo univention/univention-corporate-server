@@ -1944,7 +1944,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 			if self.hasChanged('password') and univention.admin.password.RE_PASSWORD_SCHEME.match(password):
 				# hacking attempt. user tries to change the password to e.g. {KINIT} or {crypt}$6$...
-				raise univention.admin.uexceptions.valueError(_('Invalid password.'))
+				raise univention.admin.uexceptions.valueError(_('Invalid password.'), property='password')
 
 			if univention.admin.password.password_is_auth_saslpassthrough(old_password):
 				# do not change {SASL} password, but lock it if necessary
@@ -2070,7 +2070,7 @@ class object(univention.admin.handlers.simpleLdap):
 					else:
 						am_path = os.path.abspath(os.path.join(share['path'], self['homeSharePath']))
 						if not am_path.startswith(share['path']):
-							raise univention.admin.uexceptions.valueError(_('%s: Invalid path') % _('Home share path'))
+							raise univention.admin.uexceptions.valueError(_('%s: Invalid path') % _('Home share path'), property='homeShare')
 
 					am_old = self.oldattr.get('automountInformation', [''])[0]
 					am_new = '-rw %s:%s' % (am_host, am_path)

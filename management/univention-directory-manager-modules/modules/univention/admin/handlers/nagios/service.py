@@ -293,9 +293,9 @@ class object(univention.admin.handlers.simpleLdap):
 					host = self.lo.get(hostdn, ['associatedDomain', 'cn'], required=True)
 					cn = host['cn']
 				except (univention.admin.uexceptions.noObject, ldap.NO_SUCH_OBJECT):
-					raise univention.admin.uexceptions.valueError(_('The host "%s" does not exists.') % (hostdn,))
+					raise univention.admin.uexceptions.valueError(_('The host "%s" does not exists.') % (hostdn,), property='assignedHosts')
 				except KeyError:
-					raise univention.admin.uexceptions.valueError(_('The host "%s" is invalid, it has no "cn" attribute.') % (hostdn,))
+					raise univention.admin.uexceptions.valueError(_('The host "%s" is invalid, it has no "cn" attribute.') % (hostdn,), property='assignedHosts')
 
 				domain = host.get('associatedDomain', [configRegistry.get("domainname")])
 				hostlist.append("%s.%s" % (cn[0], domain[0]))

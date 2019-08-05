@@ -134,7 +134,7 @@ class object(univention.admin.handlers.simplePolicy):
 				keys = [x[0] for x in new]
 				duplicated = set([x for x in keys if keys.count(x) > 1])
 				if duplicated:
-					raise univention.admin.uexceptions.valueInvalidSyntax(_('Duplicated variables not allowed: %s') % (', '.join(map(repr, duplicated))))
+					raise univention.admin.uexceptions.valueInvalidSyntax(_('Duplicated variables not allowed: %s') % (', '.join(map(repr, duplicated))), property='registry')
 
 				old_dict = dict(old)
 				new_dict = dict([k.strip(), v] for k, v in new)  # strip leading and trailing whitespace in variable names

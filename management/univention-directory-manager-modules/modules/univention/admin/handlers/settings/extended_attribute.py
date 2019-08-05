@@ -331,7 +331,7 @@ class object(univention.admin.handlers.simpleLdap):
 		super(object, self)._ldap_pre_create()
 
 		if 'users/user' in self['module'] and self['valueRequired'] == '1' and not self.info.get('default'):
-			raise univention.admin.uexceptions.valueRequired(_('Extending the users module is only possible if a default value for a required value is given.'))
+			raise univention.admin.uexceptions.valueRequired(_('Extending the users module is only possible if a default value for a required value is given.'), property='default')
 
 	def open(self):
 		# univentionUDMPropertyTranslation;entry-de-de: Meine Kurzbeschreibung 9

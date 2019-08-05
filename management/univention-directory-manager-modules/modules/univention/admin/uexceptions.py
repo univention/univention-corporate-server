@@ -77,7 +77,10 @@ class noProperty(base):
 
 
 class valueError(base):
-	pass
+
+	def __init__(self, *args, **kwargs):
+		self.property = kwargs.pop('property')
+		super(valueError, self).__init__(*args, **kwargs)
 
 
 class valueMayNotChange(valueError):

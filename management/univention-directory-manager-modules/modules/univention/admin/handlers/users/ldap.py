@@ -232,7 +232,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 			if self.hasChanged('password') and univention.admin.password.RE_PASSWORD_SCHEME.match(password):
 				# hacking attempt. user tries to change the password to e.g. {KINIT} or {crypt}$6$...
-				raise univention.admin.uexceptions.valueError(_('Invalid password.'))
+				raise univention.admin.uexceptions.valueError(_('Invalid password.'), property='password')
 
 			if univention.admin.password.password_is_auth_saslpassthrough(old_password):
 				# do not change {SASL} password, but lock it if necessary
