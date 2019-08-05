@@ -2442,13 +2442,24 @@ class Object(FormBase, Ressource):
 		self.set_properties(module, obj)
 
 		if dn and not self.ldap_connection.compare_dn(dn, obj._ldap_dn()):
-			raise HTTPError(403, 'Trying to create a object with wrong RDN.')
+			self.raise_sanitization_error('dn', _('Trying to create an object with wrong RDN.'))
 
+		dn = yield self.pool.submit(self.handle_udm_errors, obj.create)
+		raise tornado.gen.Return(obj)
+
+	@tornado.gen.coroutine
+	def modify(self, module, obj):
+		assert obj._open
+		self.set_properties(module, obj)
+		yield self.pool.submit(self.handle_udm_errors, obj.modify)
+		raise tornado.gen.Return(obj)
+
+	def handle_udm_errors(self, action):
 		try:
 			exists_msg = None
 			exc = None
 			try:
-				dn = yield self.pool.submit(obj.create)
+				return action()
 			except udm_errors.objectExists as exc:
 				exists_msg = 'dn: %s' % (exc.args[0],)
 			except udm_errors.uidAlreadyUsed as exc:
@@ -2463,38 +2474,30 @@ class Object(FormBase, Ressource):
 				exists_msg = '(nolock)'
 			if exists_msg and exc:
 				self.raise_sanitization_error('dn', _('Object exists: %s: %s') % (exists_msg, str(UDM_Error(exc))))
-		except (udm_errors.pwQuality, udm_errors.pwToShort) as exc:
+		except (udm_errors.pwQuality, udm_errors.pwToShort, udm_errors.pwalreadyused) as exc:
 			self.raise_sanitization_error('password', str(UDM_Error(exc)))
 		except udm_errors.invalidOptions as exc:
 			self.raise_sanitization_error('options', str(UDM_Error(exc)))
-#		except udm_errors.insufficientInformation as exc:
-#			out.append('E: Insufficient information: %s' % (exc,))
-#		except udm_errors.invalidDhcpEntry:
-#			out.append('E: The DHCP entry for this host should contain the zone dn, the ip address and the mac address.')
-#		except udm_errors.circularGroupDependency as e:
-#			out.append('E: circular group dependency detected: %s' % e)
+		except (udm_errors.invalidOperation, udm_errors.insufficientInformation) as exc:
+			self.raise_sanitization_error('dn', str(UDM_Error(exc)))
+		except udm_errors.invalidDhcpEntry as exc:
+			self.raise_sanitization_error('dhcpEntryZone', str(UDM_Error(exc)))
+		except udm_errors.circularGroupDependency as exc:
+			self.raise_sanitization_error('memberOf', str(UDM_Error(exc)))  # or "nestedGroup"
+		except (udm_errors.valueError) as exc:  # valueInvalidSyntax, valueRequired, etc.
+			self.raise_sanitization_error(getattr(exc, 'property', 'properties'), str(UDM_Error(exc)))
+		except udm_errors.prohibitedUsername as exc:
+			self.raise_sanitization_error('username', str(UDM_Error(exc)))
+		except udm_errors.uidNumberAlreadyUsedAsGidNumber as exc:
+			self.raise_sanitization_error('uidNumber', str(UDM_Error(exc)))
+		except udm_errors.gidNumberAlreadyUsedAsUidNumber as exc:
+			self.raise_sanitization_error('gidNumber', str(UDM_Error(exc)))
+		except udm_errors.mailAddressUsed as exc:
+			self.raise_sanitization_error('mailPrimaryAddress', str(UDM_Error(exc)))
+		except (udm_errors.adGroupTypeChangeLocalToAny, udm_errors.adGroupTypeChangeDomainLocalToUniversal, udm_errors.adGroupTypeChangeToLocal) as exc:
+			self.raise_sanitization_error('adGroupType', str(UDM_Error(exc)))
 		except udm_errors.base as exc:
 			UDM_Error(exc).reraise()
-
-		raise tornado.gen.Return(obj)
-
-	@tornado.gen.coroutine
-	def modify(self, module, obj):
-		assert obj._open
-		self.set_properties(module, obj)
-
-		try:
-			yield self.pool.submit(obj.modify)
-		except (udm_errors.pwQuality, udm_errors.pwToShort) as exc:
-			self.raise_sanitization_error('password', str(UDM_Error(exc)))
-#		except udm_errors.invalidDhcpEntry:
-#			out.append('E: The DHCP entry for this host should contain the zone dn, the ip address and the mac address.')
-#		except udm_errors.circularGroupDependency as e:
-#			out.append('E: circular group dependency detected: %s' % e)
-		except udm_errors.base as exc:
-			UDM_Error(exc).reraise()
-		else:
-			raise tornado.gen.Return(obj)
 
 	def set_properties(self, module, obj):
 		obj.options = [opt for opt, enabled in self.request.body_arguments['options'].items() if enabled]  # TODO: AppAttributes.data_for_module(self.name).iteritems() ?
