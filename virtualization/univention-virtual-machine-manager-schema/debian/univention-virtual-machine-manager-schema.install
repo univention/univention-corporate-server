@@ -1,3 +1,2 @@
-ldap/univention-virtual-machine-manager.schema	usr/share/univention-ldap/schema/
-ldap/66univention-ldap-server_acl-master-uvmm	usr/share/univention-ldap/acl/
+ldap/univention-virtual-machine-manager.schema usr/share/univention-ldap/schema/
 40univention-virtual-machine-manager-schema.inst usr/lib/univention-install/

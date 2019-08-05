@@ -1,0 +1,6 @@
+@!@
+import os.path
+schema = '/usr/share/univention-ldap/schema/univention-virtual-machine-manager.schema'
+if configRegistry['ldap/server/type'] == 'master' and os.path.exists(schema):
+	print 'include     %s' % schema
+@!@

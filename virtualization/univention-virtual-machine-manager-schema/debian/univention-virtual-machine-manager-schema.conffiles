@@ -1,0 +1,2 @@
+/etc/univention/templates/files/etc/ldap/slapd.conf.d/13univention-virtual-machine-manager_schema
+/etc/univention/templates/files/etc/ldap/slapd.conf.d/66univention-ldap-server_acl-master-uvmm
