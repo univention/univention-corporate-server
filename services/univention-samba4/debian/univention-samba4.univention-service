@@ -5,3 +5,4 @@ icon=service/samba
 programs=/usr/sbin/samba
 start_type=samba4/autostart
 init_script=samba
+systemd=samba-ad-dc.service
