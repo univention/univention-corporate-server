@@ -613,13 +613,25 @@ class UDM_Module(object):
 		try:
 			obj.open()
 			if '$options$' in ldap_object:
-				options = filter(lambda option: ldap_object['$options$'][option] is True, ldap_object['$options$'].keys())
-				for option_name, option_def in AppAttributes.data_for_module(self.name).iteritems():
-					if option_name in options:
-						options.remove(option_name)
-						ldap_object[option_def['attribute_name']] = option_def['boolean_values'][0]
+				options = obj.options[:]
+				app_data = AppAttributes.data_for_module(self.name)
+				for option_name, enabled in ldap_object['$options$'].items():
+					if enabled is None:
+						continue
+					# handle AppAttributes
+					if option_name in app_data:
+						option_def = app_data[option_name]
+						# use 'not enabled' since a truthy value as integer is 1 but 'boolean_values' stores the truthy value at index 0
+						ldap_object[option_def['attribute_name']] = option_def['boolean_values'][int(not enabled)]
+						continue
+					# handle normal options
+					if enabled:
+						options.append(option_name)
 					else:
-						ldap_object[option_def['attribute_name']] = option_def['boolean_values'][1]
+						try:
+							options.remove(option_name)
+						except ValueError:
+							pass
 				obj.options = options
 				MODULE.info('Setting new options to %s' % str(obj.options))
 				del ldap_object['$options$']
