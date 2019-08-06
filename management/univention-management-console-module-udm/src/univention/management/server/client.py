@@ -320,7 +320,7 @@ class Object(Client):
 			'superordinate': self.superordinate,
 		}
 		headers = dict((key, value) for key, value in {
-			'If-Unmodified-Since': self.last_modified,
+			# 'If-Unmodified-Since': self.last_modified,  # FIXME: only if one second passed
 			'If-Match': self.etag,
 		}.items() if value)
 		resp = self.client.make_request('PUT', self.uri, data=data, **headers)
