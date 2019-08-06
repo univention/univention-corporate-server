@@ -151,7 +151,7 @@ class SenderCheckSmtpMilter(SenderCheckMilterBase):
 					addresses.extend(_res)
 					# the entry could be from cache, in which case we "inherit" its (lower) expiration date
 					expiration = min(expiration, _exp)
-		addresses = sorted(set(addresses))
+		addresses = sorted([a.lower() for a in set(addresses)])
 		cls.legitimate_address_cache[sasl_login_name] = expiration, addresses
 		return expiration, addresses
 
@@ -191,7 +191,7 @@ class SenderCheckSmtpMilter(SenderCheckMilterBase):
 			# authenticated session
 			if not self.legitimate_addresses:
 				_exp, self.legitimate_addresses = self.get_legitimate_addresses_for_username(self.sasl_login_name)
-			if self.envelope_from in self.legitimate_addresses:
+			if self.envelope_from.lower() in self.legitimate_addresses:
 				self.envelope_from_ok = True
 			else:
 				self.log('REJECT: Envelope_from ({}) not in legitimate addresses ({}) of {!r}.'.format(
@@ -219,7 +219,7 @@ class SenderCheckSmtpMilter(SenderCheckMilterBase):
 				# authenticated session
 				if not self.legitimate_addresses:
 					_exp, self.legitimate_addresses = self.get_legitimate_addresses_for_username(self.sasl_login_name)
-				if self.header_data['from'] in self.legitimate_addresses:
+				if self.header_data['from'].lower() in self.legitimate_addresses:
 					self.header_from_ok = True
 					return lm.CONTINUE
 				else:
@@ -280,7 +280,7 @@ class SenderCheckSmtpMilter(SenderCheckMilterBase):
 				self.log('REJECT: Message{} has no valid signature!'.format(msg_user), self.queue_id, 'ERROR')
 				self.log(self.reject_msg, self.queue_id)
 				return lm.REJECT
-		elif self.header_data['from'] in self.legitimate_addresses or self.envelope_from in self.legitimate_addresses:
+		elif self.header_data['from'].lower() in self.legitimate_addresses or self.envelope_from.lower() in self.legitimate_addresses:
 			# this shouldn't happen, better safe than sorry -> reject
 			self.log('From not OK, but no reject message!', self.queue_id, 'ERROR')
 			return lm.REJECT
