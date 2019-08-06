@@ -6,6 +6,6 @@ src: univention-web
 fix: 3.0.5-27A~4.4.0.201908011121
 desc: |
  This update addresses the following issue(s):
- * The detail page of UDM objects failed to open sometimes. This issue has been
-   resolved.
+ * The detail page of UDM objects failed to open sometimes. This issue has
+   been resolved.
 bug: [49768]
