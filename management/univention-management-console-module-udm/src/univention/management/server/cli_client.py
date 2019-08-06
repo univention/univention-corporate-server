@@ -130,7 +130,8 @@ class CLIClient(object):
 					obj.properties[key].remove(value)
 
 		for policy_dn in args.policy_reference:
-			pass  # FIXME: we need to know the type
+			# FIXME: we need to know the type, use policies/policy so far
+			obj.policies.setdefault('policies/policy', []).append(policy_dn)
 
 		for policy_dn in getattr(args, 'policy_dereference', []):
 			for key, values in list(obj.policies.items()):
