@@ -890,7 +890,7 @@ define([
 				}
 				if (option.is_app_option) {
 					option.labelConf = {
-						'class': 'udmAppLable ' + tools.getIconClass(option.icon, 'scalable'),
+						'class': 'udmAppLabel'
 					};
 				}
 				option_widgets.push(lang.mixin({
@@ -1135,6 +1135,22 @@ define([
 			this.own(page);
 		},
 
+		_renderAppTabIcons: function(widgets) {
+			if (!widgets.hasOwnProperty('$options$')) {
+				return;
+			}
+
+			var appWidgets = tools.values(widgets.$options$._widgets).filter(function(w) {
+				return w.is_app_option;
+			});
+
+			appWidgets.forEach(function(w) {
+				construct.create('div', {
+					'class': 'udmAppIcon ' + tools.getIconClass(w.icon, 'scalable')
+				}, w.$refLabel$.domNode);
+			});
+		},
+
 		_renderMultiEditCheckBoxes: function(widgets) {
 			if (!this._multiEdit) {
 				return;
@@ -1235,6 +1251,7 @@ define([
 				this._indentAppTabs(properties);
 				this._renderPolicyTab(policies);
 				this._renderForm(widgets);
+				this._renderAppTabIcons(widgets);
 				this._renderMultiEditCheckBoxes(widgets);
 				this._registerOptionWatchHandler();
 				this._formBuiltDeferred.resolve();

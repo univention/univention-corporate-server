@@ -30,15 +30,14 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/dom-class",
 	"umc/widgets/LabelPane",
 	"umc/widgets/CheckBox",
 	"umc/i18n!umc/modules/udm"
-], function(declare, LabelPane, CheckBox, _) {
+], function(declare, domClass, LabelPane, CheckBox, _) {
 	return declare('umc.modules.udm.OverwriteLabel', [ LabelPane ], {
 		// summary:
 		//		Class that provides a widget in the form "[ ] overwrite" for multi-edit mode.
-
-		style: 'width: 100%; margin-top: -3px; font-style: italic;',
 
 		postMixInProperties: function() {
 			// force label and content
@@ -48,6 +47,11 @@ define([
 			});
 
 			this.inherited(arguments);
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+			domClass.add(this.domNode, 'udmOverwriteLabel');
 		},
 
 		_setValueAttr: function(newVal) {
