@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.12-22) unstable; urgency=medium
+
+  * Bug #49829: adjust position of overwrite checkbox for app attributes
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 06 Aug 2019 15:26:23 +0200
+
 univention-management-console-module-udm (9.0.12-21) unstable; urgency=medium
 
   * Bug #49829: options in multi-edit can now be overwritten independently
