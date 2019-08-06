@@ -48,7 +48,8 @@ ucr.load()
 
 class CLIClient(object):
 
-	def init(self, args):
+	def init(self, parser, args):
+		self.parser = parser
 		self.udm = UDM('https://%(hostname)s.%(domainname)s/univention/udm/' % ucr, args.binddn, args.bindpwd)
 
 	def create_object(self, args):
@@ -141,7 +142,7 @@ class CLIClient(object):
 	def list_objects(self, args):
 		module = self.udm.get(args.object_type)
 		filter = None if '=' not in args.filter else dict([args.filter.split('=', 1)])
-		for entry in module.search(filter, args.position, opened=True):
+		for entry in module.search(filter, args.position, opened=True, superordinate=args.superordinate):
 			self.print_line('')
 			self.print_line('DN', entry.dn)
 			#entry = entry.open()
@@ -302,6 +303,7 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 	list_.set_defaults(func=client.list_objects)
 	list_.add_argument('--filter', help='Lookup filter e.g. foo=bar', default='')
 	list_.add_argument('--position', help='Search underneath of position in tree')
+	list_.add_argument('--superordinate', help='Use superordinate module')
 	list_.add_argument('--policies', help='List policy-based settings: 0:short, 1:long (with policy-DN)')
 
 	move = subparsers.add_parser('move', description='Move object in directory tree')
@@ -339,7 +341,7 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 	parser.formatter_class = FormatModule
 
 	args = parser.parse_args()
-	client.init(args)
+	client.init(parser, args)
 	args.func(args)
 
 

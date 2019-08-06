@@ -218,12 +218,14 @@ class Module(Client):
 		# TODO: Needed?
 		raise NotImplementedError()
 
-	def search(self, filter=None, position=None, scope='sub', hidden=False, opened=False):
+	def search(self, filter=None, position=None, scope='sub', hidden=False, superordinate=None, opened=False):
 		data = {}
 		if filter:
 			for prop, val in filter.items():
 				data['property'] = prop
 				data['propertyvalue'] = val
+		if superordinate:
+			data['superordinate'] = superordinate
 		data['position'] = position
 		data['scope'] = scope
 		data['hidden'] = '1' if hidden else ''

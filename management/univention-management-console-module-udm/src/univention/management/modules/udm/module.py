@@ -1983,7 +1983,7 @@ class Objects(FormBase, ReportingBase):
 		self.add_form_element(form, 'position', container or '', label=_('Search in'))
 		search_layout.append(['position', 'hidden'])
 		if module.superordinate_names:
-			self.add_form_element(form, 'superordinate', superordinate or '', label=_('Superordinate'))
+			self.add_form_element(form, 'superordinate', superordinate.dn if superordinate else '', label=_('Superordinate'))
 			search_layout.append(['superordinate'])
 		searchable_properties = [{'value': '', 'label': _('Defaults')}] + [{'value': prop['id'], 'label': prop['label']} for prop in module.properties(None) if prop.get('searchable')]
 		self.add_form_element(form, 'property', objectProperty or '', element='select', options=searchable_properties, label=_('Property'))
