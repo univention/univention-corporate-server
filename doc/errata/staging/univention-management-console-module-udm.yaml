@@ -6,6 +6,6 @@ src: univention-management-console-module-udm
 fix: 9.0.12-20A~4.4.0.201908011118
 desc: |
  This update addresses the following issue(s):
- * The detail page of UDM objects failed to open sometimes. This issue has been
-   resolved.
+ * The detail page of UDM objects failed to open sometimes. This issue has
+   been resolved.
 bug: [49768]
