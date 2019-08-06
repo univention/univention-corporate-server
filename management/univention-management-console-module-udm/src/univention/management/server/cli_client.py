@@ -54,7 +54,7 @@ class CLIClient(object):
 
 	def create_object(self, args):
 		module = self.udm.get(args.object_type)
-		obj = module.create_template()
+		obj = module.create_template(position=args.position, superordinate=args.superordinate)
 		if args.position:
 			obj.position = args.position
 		self.set_properties(obj, args)
@@ -101,6 +101,7 @@ class CLIClient(object):
 			raise SystemExit(2)
 
 	def set_properties(self, obj, args):
+		obj.superordinate = args.superordinate
 		for key, value in obj.options.items():
 			if key in args.option or key in args.append_option:
 				obj.options[key] = True

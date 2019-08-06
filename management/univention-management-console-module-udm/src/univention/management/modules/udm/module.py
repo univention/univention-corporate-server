@@ -1870,6 +1870,18 @@ class FormBase(object):
 					prop = key[len('%s[' % (name,)):-1]
 					properties.setdefault(prop, []).append(self.request.body_arguments.pop(key))
 
+	def superordinate_dn_to_object(self, module, superordinate):
+		if not module.superordinate_names:
+			return
+		if superordinate:
+			mod = get_module(module.name, superordinate, self.ldap_connection)
+			if not mod:
+				MODULE.error('Superordinate module not found: %s' % (superordinate,))
+				raise SuperordinateDoesNotExist(superordinate)
+			MODULE.info('Found UDM module for superordinate')
+			superordinate = mod.get(superordinate)
+		return superordinate
+
 
 class Objects(FormBase, ReportingBase):
 
@@ -1915,14 +1927,8 @@ class Objects(FormBase, ReportingBase):
 		items_per_page = self.request.query_arguments['pagesize']  # TODO: rename: items-per-page, pagelength, pagecount, pagesize, limit/offset
 
 		# TODO: replace the superordinate concept with container
-		superordinate = None
-		if module.superordinate_names:
-			superordinate = self.request.query_arguments['superordinate']
+		superordinate = self.superordinate_dn_to_object(module, self.request.query_arguments['superordinate'])
 		if superordinate:
-			mod = get_module(superordinate, superordinate, self.ldap_connection)
-			if not mod:
-				raise SuperordinateDoesNotExist(superordinate)
-			superordinate = mod.get(superordinate)
 			container = container or superordinate.dn
 
 		entries = []
@@ -2407,13 +2413,7 @@ class Object(FormBase, Ressource):
 
 			ldap_position.setDn(container)
 
-		#if superordinate:
-		#	mod = get_module(module.name, superordinate, ldap_connection)
-		#	if not mod:
-		#		MODULE.error('Superordinate module not found: %s' % (superordinate,))
-		#		raise SuperordinateDoesNotExist(superordinate)
-		#	MODULE.info('Found UDM module for superordinate')
-		#	superordinate = mod.get(superordinate)
+		superordinate = self.superordinate_dn_to_object(module, superordinate)
 
 		obj = module.module.object(None, self.ldap_connection, ldap_position, superordinate=superordinate)
 		obj.open()
@@ -2611,6 +2611,7 @@ class ObjectAdd(FormBase, Ressource):
 
 	@sanitize_query_string(
 		position=DNSanitizer(required=False),
+		superordinate=DNSanitizer(required=False),
 		template=DNSanitizer(required=False),
 	)
 	@tornado.gen.coroutine
@@ -2627,7 +2628,7 @@ class ObjectAdd(FormBase, Ressource):
 		template = None
 		if module.template:
 			template = self.request.query_arguments.get('template')
-		result.update(self.get_create_form(module, template=template, position=self.request.query_arguments.get('position')))
+		result.update(self.get_create_form(module, template=template, position=self.request.query_arguments.get('position'), superordinate=self.request.query_arguments.get('superordinate')))
 
 		if module.template:
 			template = UDM_Module(module.template, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
@@ -2641,7 +2642,7 @@ class ObjectAdd(FormBase, Ressource):
 		self.add_caching(public=True, must_revalidate=True)
 		self.content_negotiation(result)
 
-	def get_create_form(self, module, dn=None, copy=False, template=None, position=None):
+	def get_create_form(self, module, dn=None, copy=False, template=None, position=None, superordinate=None):
 		result = {}
 		self.add_link(result, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
 		self.add_link(result, 'udm/relation/object-modules', self.urljoin('../../'), title=_('All modules'))
@@ -2662,7 +2663,12 @@ class ObjectAdd(FormBase, Ressource):
 			self.add_form_element(form, 'policy', '', label=policy['label'], title=policy['description'])
 			self.add_form_element(form, '', _('Policy result'), type='submit')
 
-		obj = module.module.object(dn, self.ldap_connection, self.ldap_position)
+		ldap_position = univention.admin.uldap.position(self.ldap_position.getBase())
+		if position:
+			ldap_position.setDn(position)
+		superordinate = self.superordinate_dn_to_object(module, superordinate)
+
+		obj = module.module.object(dn, self.ldap_connection, ldap_position, superordinate=superordinate)
 		obj.open()
 		result['entry'] = Object.get_representation(module, obj, ['*'], self.ldap_connection, copy)
 

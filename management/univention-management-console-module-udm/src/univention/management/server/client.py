@@ -241,7 +241,7 @@ class Module(Client):
 				yield ShallowObject(self, entry['dn'], entry['uri'])
 
 	def create(self, properties, options, policies, position, superordinate=None):
-		obj = self.create_template()
+		obj = self.create_template(position=position, superordinate=superordinate)
 		obj.options = options
 		obj.properties = properties
 		obj.policies = policies
@@ -250,9 +250,10 @@ class Module(Client):
 		obj.save()
 		return obj
 
-	def create_template(self):
+	def create_template(self, position=None, superordinate=None):
 		self.load_relations()
-		resp = self.client.make_request('GET', self.relations['create-form'][0]['href'])
+		data = {'position': position, 'superordinate': superordinate}
+		resp = self.client.make_request('GET', self.relations['create-form'][0]['href'], data=data)
 		entry = self.client.eval_response(resp)['entry']
 		return Object(self, None, entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), self.uri)
 
