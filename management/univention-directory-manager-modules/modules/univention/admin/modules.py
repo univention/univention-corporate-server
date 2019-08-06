@@ -489,7 +489,14 @@ def update_extended_attributes(lo, module, position):
 
         # add LDAP mapping
         if ldap_attribute_name.lower() != 'objectclass':
-            module.mapping.register(pname, ldap_attribute_name, unmap_method, map_method)
+            already_existing_map_name = module.mapping.mapName(pname)
+            already_existing_unmap_name = module.mapping.unmapName(ldap_attribute_name)
+            if already_existing_map_name and already_existing_map_name != ldap_attribute_name:
+                pass
+            elif already_existing_unmap_name and already_existing_unmap_name != pname:
+                pass
+            else:
+                module.mapping.register(pname, ldap_attribute_name, unmap_method, map_method)
         else:
             module.mapping.register(pname, ldap_attribute_name, univention.admin.mapping.nothing, univention.admin.mapping.nothing)
 

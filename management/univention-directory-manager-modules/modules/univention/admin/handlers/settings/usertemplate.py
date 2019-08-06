@@ -211,7 +211,6 @@ property_descriptions = {
         short_description=_('Department number'),
         long_description='',
         syntax=univention.admin.syntax.OneThirdString,
-        multivalue=True,
     ),
     'employeeType': univention.admin.property(
         short_description=_('Employee type'),
