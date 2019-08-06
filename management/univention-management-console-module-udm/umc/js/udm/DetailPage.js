@@ -871,7 +871,7 @@ define([
 
 			var option_prop = _getOptionProperty(properties);
 			option_prop.labelConf = {'style': 'display: block;'};
-			if (/*this._multiEdit || */!option_prop || !option_prop.widgets.length) {
+			if (!option_prop || !option_prop.widgets.length) {
 				properties = array.filter(properties, function(item) {
 					return item.id !== '$options$';
 				});
@@ -1140,14 +1140,24 @@ define([
 				return;
 			}
 
-			// in multi-edit mode, hook a 'overwrite?' checkbox after each widget
-			tools.forIn(widgets, function(iname, iwidget) {
+			var addCheckbox = lang.hitch(this, function(iwidget) {
 				if (iwidget.$refLabel$ && !iwidget.disabled) {
 					iwidget.$refLabel$.set('style', 'flex-wrap: wrap;');
 					iwidget.$refOverwrite$ = this.own(new OverwriteLabel({}))[0];
 					construct.place(iwidget.$refOverwrite$.domNode, iwidget.$refLabel$.domNode);
 				}
-			}, this);
+			});
+
+			// in multi-edit mode, hook a 'overwrite?' checkbox after each widget
+			tools.forIn(widgets, function(iname, iwidget) {
+				if (iname === '$options$') {
+					tools.values(iwidget._widgets).forEach(function(iiwidget) {
+						addCheckbox(iiwidget);
+					});
+				} else {
+					addCheckbox(iwidget);
+				}
+			});
 		},
 
 		_renderForm: function(widgets) {
@@ -1192,6 +1202,13 @@ define([
 			loadedDeferred.then(lang.hitch(this, 'addActiveDirectoryWarning'));
 			loadedDeferred.then(lang.hitch(this, 'set', 'helpLink', metaInfo.help_link));
 			all([loadedDeferred, this._formBuiltDeferred]).then(lang.hitch(this, '_notifyAboutAutomaticChanges'));
+			all([loadedDeferred, this._formBuiltDeferred]).then(lang.hitch(this, function() {
+				// In multi-edit, onOptionsChanged() does not trigger when opening the detailpage
+				// since no form values are getting set. So call it once manually.
+				if (this._multiEdit) {
+					this.onOptionsChanged();
+				}
+			}));
 
 			if (template && template.length > 0) {
 				template = template[0];
@@ -2029,8 +2046,25 @@ define([
 			if (this._multiEdit) {
 				// in multi-edit mode, get all marked entries
 				tools.forIn(this._form._widgets, lang.hitch(this, function(iname, iwidget) {
-					if (iwidget.$refOverwrite$ && iwidget.$refOverwrite$.get('value')) {
-						newVals[iname] = iwidget.get('value');
+					if (iname === '$options$') {
+						var optionVals = {};
+						tools.forIn(iwidget._widgets, function(iiname, iiwidget) {
+							if (iiwidget.$refOverwrite$ && iiwidget.$refOverwrite$.get('value')) {
+								optionVals[iiname] = iiwidget.get('value');
+							} else {
+								optionVals[iiname] = null;
+							}
+						});
+						var optionsChanged = tools.values(optionVals).some(function(val) {
+							return val !== null;
+						});
+						if (optionsChanged) {
+							newVals[iname] = optionVals;
+						}
+					} else {
+						if (iwidget.$refOverwrite$ && iwidget.$refOverwrite$.get('value')) {
+							newVals[iname] = iwidget.get('value');
+						}
 					}
 				}));
 			} else if (this.operation === 'add' || this.operation === 'copy') {
