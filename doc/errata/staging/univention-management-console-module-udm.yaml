@@ -3,7 +3,7 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-management-console-module-udm
-fix: 9.0.12-21A~4.4.0.201908061227
+fix: 9.0.12-22A~4.4.0.201908061527
 desc: |
  This update addresses the following issue(s):
  * The detail page of UDM objects failed to open sometimes. This issue has
