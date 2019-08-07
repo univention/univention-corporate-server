@@ -9,3 +9,5 @@ desc: |
  * The detail page of UDM objects failed to open sometimes. This issue has
    been resolved.
 bug: [49768]
+erratum: 215
+announced: 2019-08-07
