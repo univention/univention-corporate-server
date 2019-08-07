@@ -381,6 +381,10 @@ class RessourceBase(object):
 		except Exception:
 			return self.force_authorization()
 		else:
+			allowed_groups = [value for key, value in ucr.items() if key.startswith('directory/manager/rest/authorized-groups/')]
+			memberof = self.ldap_connection.getAttr(self.request.user_dn, b'memberOf')
+			if not set(_map_normalized_dn(memberof)) & set(_map_normalized_dn(allowed_groups)):
+				raise HTTPError(403, 'Not in allowed groups.')
 			self.authenticated[authorization] = (userdn, username, self.ldap_connection, self.ldap_position)
 
 	def get_module(self, object_type):
@@ -3210,6 +3214,23 @@ def last_modified(date):
 		('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')[date.tm_mon - 1],
 		date.tm_year, date.tm_hour, date.tm_min, date.tm_sec
 	)
+
+
+def _try(func, exceptions):
+	def deco(*args, **kwargs):
+		try:
+			return func(*args, **kwargs)
+		except exceptions:
+			pass
+	return deco
+
+
+def _map_try(values, func, exceptions):
+	return filter(None, map(_try(func, exceptions), values))
+
+
+def _map_normalized_dn(dns):
+	return _map_try(dns, lambda dn: ldap.dn.dn2str(ldap.dn.str2dn(dn)), Exception)
 
 
 class Application(tornado.web.Application):

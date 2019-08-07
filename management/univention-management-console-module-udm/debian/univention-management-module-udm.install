@@ -1,2 +1,3 @@
 src/univention/management/* usr/share/pyshared/univention/management/
 var
+22univention-management-module-udm.inst usr/lib/univention-install/

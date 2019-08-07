@@ -1,0 +1,4 @@
+[service-udm]
+name[de]=Dienst: Univention Directory Manager
+name[en]=Service: Univention Directory Manager
+icon=service-udm.gif

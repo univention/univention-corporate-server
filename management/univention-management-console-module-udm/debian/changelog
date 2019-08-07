@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.12-25) unstable; urgency=medium
+
+  * Bug #27816: Allow access only for certain groups
+
+ -- Florian Best <best@univention.de>  Mon, 19 Aug 2019 20:20:42 +0200
+
 univention-management-console-module-udm (9.0.12-24) unstable; urgency=medium
 
   * Bug #48698: Fix GUI visible spelling errors

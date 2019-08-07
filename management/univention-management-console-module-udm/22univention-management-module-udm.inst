@@ -1,7 +1,7 @@
 #!/bin/sh
 #
-# Univention Directory Manager UMC service
-#  postinst file
+# Univention Directory Manager HTTP
+#  join script
 #
 # Copyright 2019 Univention GmbH
 #
@@ -30,16 +30,26 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-#DEBHELPER#
+## joinscript api: bindpwdfile
 
-a2ensite univention-management.conf
-service apache2 reload
+VERSION=1
 
-# new installations
-if [ "$1" = "configure" -a -z "$2" ]; then
-	service univention-management-module-udm restart
-fi
+. /usr/share/univention-join/joinscripthelper.lib
 
-call_joinscript 22univention-management-module-udm.inst
+joinscript_init
+
+. /usr/share/univention-lib/all.sh
+
+eval "$(ucr shell ldap/base)"
+
+domain_admins_dn="$(umc_udm groups/group list --filter name="$(custom_groupname "Domain Admins")" | sed -ne 's/^DN: //p')"
+ucr set \
+	directory/manager/rest/authorized-groups/domain-admins?"$domain_admins_dn" \
+	directory/manager/rest/authorized-groups/dc-backup?"cn=DC Backup Hosts,cn=groups,$ldap_base" \
+	directory/manager/rest/authorized-groups/dc-slaves?"cn=DC Slave Hosts,cn=groups,$ldap_base" || die
+
+ucs_addServiceToLocalhost 'Univention Directory Manager HTTP' "$@" || die
+
+joinscript_save_current_version
 
 exit 0
