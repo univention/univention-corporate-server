@@ -6,10 +6,9 @@ src: proftpd-dfsg
 fix: 1.3.5b-4+deb9u1
 desc: |
  This update addresses the following issues:
- * An arbitrary file copy vulnerability in mod_copy in ProFTPD up to 1.3.5b
-   allows for remote code execution and information disclosure without
-   authentication, a related issue to CVE-2015-3306. (CVE-2019-12815)
+ * An arbitrary file copy vulnerability in mod_copy in ProFTPD allows for
+   remote code execution and information disclosure without authentication, a
+   related issue to CVE-2015-3306. (CVE-2019-12815)
 bug: [49969]
 cve:
 - CVE-2019-12815
-- CVE-2015-3306
