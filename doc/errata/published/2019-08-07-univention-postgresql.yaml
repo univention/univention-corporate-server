@@ -9,3 +9,5 @@ desc: |
  * The univention-service definition has been corrected and split into
    two services for postgresql 9.4 and postgresql 9.6.
 bug: [42241]
+erratum: 223
+announced: 2019-08-07
