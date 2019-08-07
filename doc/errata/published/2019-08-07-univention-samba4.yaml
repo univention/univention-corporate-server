@@ -9,3 +9,5 @@ desc: |
  * The Samba 4 service can now be managed via the System Services UMC
    module.
 bug: [42241]
+erratum: 220
+announced: 2019-08-07
