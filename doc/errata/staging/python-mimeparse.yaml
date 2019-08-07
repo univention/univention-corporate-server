@@ -1,7 +1,7 @@
 product: ucs
 release: "4.4"
 version: [1]
-scope: ucs_4.3-0_ucs4.3-1
+scope: ucs_4.3-0-ucs4.3-1
 src: python-mimeparse
 fix: 0.1.4-3.1~deb9u1
 desc: |
