@@ -12,3 +12,5 @@ maintained: true
 ignore:
  - release+scope.consistent
  - version.scope
+erratum: 214
+announced: 2019-08-07
