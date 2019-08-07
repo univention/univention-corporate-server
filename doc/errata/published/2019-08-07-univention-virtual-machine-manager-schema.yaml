@@ -9,3 +9,5 @@ desc: |
  * The LDAP attribute `univentionVirtualMachineProfileCPUModel` has been added
    to the schema and the UDM module `uvmm/profile`.
 bug: [49695]
+erratum: 217
+announced: 2019-08-07
