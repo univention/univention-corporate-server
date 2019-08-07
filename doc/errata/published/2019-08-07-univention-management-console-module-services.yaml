@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Restarting, Starting and Stopping of various services has been fixed.
 bug: [42241]
+erratum: 219
+announced: 2019-08-07
