@@ -3,7 +3,7 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-samba4
-fix: 8.0.0-26A~4.4.0.201908021609
+fix: 8.0.0-27A~4.4.0.201908051359
 desc: |
  This update addresses the following issue(s):
  * The Samba 4 service can now be managed via the System Services UMC
