@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [1]
+scope: ucs_4.4-0-errata4.4-1
+src: univention-system-setup
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Make the local appliance package cache readable for the _apt user to fix
+   an error with the "Acquire::GzipIndexes=true" option set for apt.
+bug: [49799]

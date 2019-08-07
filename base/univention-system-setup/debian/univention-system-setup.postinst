@@ -37,6 +37,9 @@ create_logfile /var/log/univention/setup.log "root:adm" 640
 
 chmod -R 700 /var/cache/univention-system-setup
 
+# apt needs to access /var/cache/univention-system-setup/packages/ with user _apt
+chmod a+x /var/cache/univention-system-setup
+
 if dpkg --compare-versions "$2" lt-nl 8.1.63-2~
 then
 	ucr search --brief --non-empty '^interfaces/.*/options/' |
