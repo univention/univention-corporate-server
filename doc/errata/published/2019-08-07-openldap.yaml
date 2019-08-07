@@ -9,3 +9,5 @@ desc: |
  * An Error in the syntax-evaluation of the attribute preferredDeliveryMethod
    has been fixed
 bug: [49930]
+erratum: 208
+announced: 2019-08-07
