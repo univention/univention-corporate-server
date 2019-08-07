@@ -3,7 +3,7 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-virtual-machine-manager-schema
-fix: 9.0.2-4A~4.4.0.201907301451
+fix: 9.0.2-6A~4.4.0.201908051853
 desc: |
  This update addresses the following issue:
  * The LDAP attribute `univentionVirtualMachineProfileCPUModel` has been added
