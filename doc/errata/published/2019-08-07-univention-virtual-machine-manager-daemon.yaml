@@ -12,3 +12,5 @@ desc: |
  * The error handling in case of connection loss has been enhanced. The amount
    of log messages has been reduced to decrease log size.
 bug: [28771, 49695, 49737]
+erratum: 218
+announced: 2019-08-07
