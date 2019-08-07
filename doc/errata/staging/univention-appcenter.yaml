@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-1
 src: univention-appcenter
 fix: 8.0.11-47A~4.4.0.201908021331
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * Due to privacy concerns, the App Center does not send the domain uuid and
    system uuid in the tracking information of 'search' actions anymore.
 bug: [49955]

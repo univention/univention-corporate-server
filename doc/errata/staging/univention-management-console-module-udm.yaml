@@ -5,9 +5,9 @@ scope: ucs_4.4-0-errata4.4-1
 src: univention-management-console-module-udm
 fix: 9.0.12-23A~4.4.0.201908061552
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The detail page of UDM objects failed to open sometimes. This issue has
    been resolved.
- * In the multi edit mode it is now possible to enable or disable, apps and
+ * In multi edit mode it is now possible to enable or disable apps and
    options individually.
 bug: [49768, 49829]
