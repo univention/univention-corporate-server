@@ -189,12 +189,12 @@ class SpecialCase():
 		# FIXME: this would circumvent custom getters and setter?
 		self.__dict__.update(special_case_definition)
 		def_relative = os.path.relpath(path_to_definition, start=source_dir)
-		matches = re.match(r'(.*)/debian/(.*).univention-l10n', def_relative)
-		if matches:
-			self.package_dir, self.binary_package_name = matches.groups()
-		else:
-			self.binary_package_name = re.match(r'debian/(.*).univention-l10n', def_relative).groups()[0]
-			self.package_dir = os.getcwd()
+		matches = re.match(r'(.+/)?debian/([^/]+).univention-l10n$', def_relative)
+		if not matches:
+			raise ValueError(def_relative)
+
+		pdir, self.binary_package_name = matches.groups()
+		self.package_dir = os.getcwd() if pdir is None else pdir.rstrip('/')  # type: str
 
 		self.source_dir = source_dir
 		if hasattr(self, 'po_path'):
