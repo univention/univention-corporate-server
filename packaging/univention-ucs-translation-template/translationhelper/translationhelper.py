@@ -153,9 +153,15 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 
 
 class SpecialCase():
+	"""
+	Consumes special case definition and determines matching sets of source
+	files.
 
-	"""Consumes special case definition and determines matching sets of source
-	files"""
+	:param special_case_definition: Mapping with special case definitions.
+	:param source_dir: Base directory.
+	:param path_to_definition: Path to definition file.
+	:param target_language: 2-letter language code.
+	"""
 
 	def __init__(self, special_case_definition, source_dir, path_to_definition, target_language):
 		# FIXME: this would circumvent custom getters and setter?
@@ -348,10 +354,10 @@ def get_special_cases_from_srcpkg(source_tree_path, target_language):
 
 
 def get_special_cases_from_checkout(source_tree_path, target_language):
-	"""Process *.univention-l10n files in the whole SVN branch. Currently they
-	lay 3 (UCS@school) or 4(UCS) directory levels deep in the SVN repository.
 	"""
-	# FIXME: This should check for SVN metadata or the like to be more robust.
+	Process *.univention-l10n files in the whole branch. Currently they
+	lay 3 (UCS@school) or 4(UCS) directory levels deep in the repository.
+	"""
 	special_cases = []
 	sc_files = glob(os.path.join(source_tree_path, '*/*/debian/*.univention-l10n')) or glob(os.path.join(source_tree_path, '*/debian/*.univention-l10n'))
 	if not sc_files:

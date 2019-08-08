@@ -70,10 +70,14 @@ def binary_packages():
 
 def parseRfc822(f):
 	r"""
-	Parses string 'f' as a RFC822 conforming file and returns list of sections, each a dict mapping keys to lists of values.
+	Parses string `f` as a :rfc:`822` conforming file and returns list of sections, each a dict mapping keys to lists of values.
 	Splits file into multiple sections separated by blank line.
 
-	Node: For real Debian files, use the 'debian.deb822' module from the 'python-debian' package.
+	:param f: The messate to parse.
+	:returns: A list of dictionaries.
+
+	.. note::
+		For real Debian files, use the :py:mod:`debian.deb822` module from the `python-debian` package.
 
 	>>> res = parseRfc822('Type: file\nFile: /etc/fstab\n\nType: Script\nScript: /bin/false\n')
 	>>> res == [{'Type': ['file'], 'File': ['/etc/fstab']}, {'Type': ['Script'], 'Script': ['/bin/false']}]

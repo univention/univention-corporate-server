@@ -4,18 +4,17 @@
 # Univention Management Console
 """Each module definition contains the following entries:
 
-	Module: The internal name of the module
-	Python: A directory containing the python module. There must be a subdirectory named like the internal name of the module.
-	Definition: The XML definition of the module
-	Javascript: The directory of the javascript code. In this directory must be a a file called <Module>.js
-	Category: The XML definition of additional categories
-	Icons: A directory containing the icons used by the module. The
-		directory structure must follow the following pattern
-		<weight>x<height>/<icon>.(png|svg)
+* Module: The internal name of the module
+* Python: A directory containing the Python module. There must be a subdirectory named like the internal name of the module.
+* Definition: The |XML| definition of the module
+* Javascript: The directory of the javascript code. In this directory must be a a file called :file:`<Module>.js`
+* Category: The |XML| definition of additional categories
+* Icons: A directory containing the icons used by the module. The directory structure must follow the following pattern :file:`<weight>x<height>/<icon>.(png|svg)`.
 
 The entries Module and Definition are required.
 
-Example:
+Example::
+
 	Module: ucr
 	Python: umc/module
 	Definition: umc/ucr.xml
@@ -212,7 +211,13 @@ class UMC_Module(dict):
 
 
 def read_modules(package, core=False):
-	"""Read UMC module definition from debian/<package>.umc-modules."""
+	"""
+	Read |UMC| module definition from :file:`debian/<package>.umc-modules`.
+
+	:param package: Name of the package.
+	:param core: Import as core-module, e.g. the ones shipped with |UDM| itself.
+	:returns: List of |UMC| module definitions.
+	"""
 	modules = []
 
 	file_umc_module = os.path.join('debian/', package + '.umc-modules')
@@ -240,7 +245,13 @@ def read_modules(package, core=False):
 
 
 def module_xml2po(module, po_file, language):
-	"""Create a PO file the XML definition of an UMC module"""
+	"""
+	Create a PO file the |XML| definition of an |UMC| module.
+
+	:param module: |UMC| module.
+	:param po_file: File name of the textual message catalog.
+	:param language: 2-letter language code.
+	"""
 	message_po = '%s/messages.po' % (os.path.dirname(po_file) or '.')
 
 	po = polib.POFile(check_for_duplicates=True)
@@ -291,7 +302,14 @@ def module_xml2po(module, po_file, language):
 
 
 def create_po_file(po_file, package, files, language='python'):
-	"""Create a PO file for a defined set of files"""
+	"""
+	Create a PO file for a defined set of files.
+
+	:param po_file: File name of the textual message catalog.
+	:param package: Name of the package.
+	:param files: A single file name or a list of file names.
+	:param language: Programming language name.
+	"""
 	message_po = '%s/messages.pot' % (os.path.dirname(po_file) or '.')
 
 	if os.path.isfile(message_po):
@@ -336,13 +354,21 @@ def create_po_file(po_file, package, files, language='python'):
 
 
 def create_mo_file(po_file):
-	"""Compile textual message catalog to binary message catalog."""
+	"""
+	Compile textual message catalog (`.po`) to binary message catalog (`.mo`).
+
+	:param po_file: File name of the textual message catalog.
+	"""
 	if dh_ucs.doIt('msgfmt', '--check', '--output-file', po_file.replace('.po', '.mo'), po_file):
 		raise Error('Failed to compile translation file from %s.' % (po_file,))
 
 
 def create_json_file(po_file):
-	"""Compile textual message catalog to JSON message catalog."""
+	"""
+	Compile textual message catalog (`.po`) to |JSON| message catalog.
+
+	:param po_file: File name of the textual message catalog.
+	"""
 	json_file = po_file.replace('.po', '.json')
 	pofile = polib.pofile(po_file)
 	data = {}

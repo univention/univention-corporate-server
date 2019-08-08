@@ -1,17 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""This script reads debian/*univention-l10n files inside the current working
+"""
+This script reads :file:`debian/*univention-l10n` files inside the current working
 directory. It builds the message catalogs and installs them to the path defined
 within.
 
-The intended usage is to add it to the install target inside debian/rules to
+The intended usage is to add it to the install target inside :file:`debian/rules` to
 automate in-package translations.
 
-Example debian/rules override:
+Example file:`debian/rules` override::
 
-override_dh_auto_install:
-	univention-l10n-install fr
-	dh_auto_install
+	override_dh_auto_install:
+		univention-l10n-install fr
+		dh_auto_install
 
 """
 #

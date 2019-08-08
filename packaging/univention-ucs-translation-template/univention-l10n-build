@@ -1,18 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""This script reads debian/*.univention-l10n files inside the current working
+"""
+This script reads :file:`debian/*.univention-l10n` files inside the current working
 directory and creates gettext Portable Objects defined within. It intends to
 facilitate and homogenize the translation build process.
 
-Add it to the build target inside debian/rules to build the POs for a certain
+Add it to the build target inside :file:`debian/rules` to build the POs for a certain
 language or use it manually inside source packages to update the translation
 catalog.
 
-Example debian/rules override:
+Example :file:`debian/rules` override::
 
-override_dh_auto_build:
-	univention-l10n-build fr
-	dh_auto_build
+	override_dh_auto_build:
+		univention-l10n-build fr
+		dh_auto_build
 
 """
 #
