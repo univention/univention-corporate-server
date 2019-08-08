@@ -39,7 +39,6 @@ import univention.debug2 as ud
 import univention.s4connector.s4.password
 from optparse import OptionParser
 import sys
-import binascii
 
 
 class S4:
@@ -145,12 +144,6 @@ class S4:
 		modlist = []
 		unicodePwd_attr = res_s4[0][1].get('unicodePwd', [None])[0]
 		if unicodePwd_attr:
-			binascii.b2a_hex(unicodePwd_attr).upper()  # nt hash
-
-			dBCSPwd = res_s4[0][1].get('dBCSPwd', [None])[0]
-			if dBCSPwd:
-				binascii.b2a_hex(dBCSPwd).upper()  # lm hash
-
 			supplementalCredentials = res_s4[0][1].get('supplementalCredentials', [None])[0]
 			msDS_KeyVersionNumber = res_s4[0][1].get('msDS-KeyVersionNumber', [0])[0]
 
