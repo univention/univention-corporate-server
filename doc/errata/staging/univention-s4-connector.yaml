@@ -31,4 +31,21 @@ desc: |
    mapping.py to support adjusting the mapping dynamically. It may contain a
    python function mapping_hook(s4_mapping) which can return a modified
    mapping.
-bug: [26501, 49865, 49092, 49905, 49850, 36633, 43068, 48410]
+ * Stop adding an unlimited number of lock entries for the same object.
+ * Avoid a traceback in case GPO deletes get synchronized to Samba/AD and
+   the entryUUID of a subobject is unknown.
+ * Fix a traceback observed in CI tests, where a computer object had already
+   been purged in OpenLDAP and the connector tried to apply the echo operation
+   for a prior modification in OpenLDAP.
+bug:
+ - 26501
+ - 49865
+ - 49092
+ - 49905
+ - 49850
+ - 36633
+ - 43068
+ - 48410
+ - 49459
+ - 49956
+ - 49959
