@@ -122,7 +122,7 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 			# read package content with dh_umc
 			module = UMCModuleTranslation._get_module_from_source_package(module_in_source_tree, target_language)
 		except AttributeError as e:
-			print("%s AttributeError in module, trying to load as core module" % str(e))
+			print("%s AttributeError in module, trying to load as core module" % (e,))
 		else:
 			module['core'] = False
 			return module
@@ -130,7 +130,7 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 		try:
 			module = UMCModuleTranslation._get_core_module_from_source_package(module_in_source_tree, target_language)
 		except AttributeError as e:
-			print("%s core module load failed" % str(e))
+			print("%s core module load failed" % (e,))
 		else:
 			print("Successfully loaded as core module: {}".format(module_in_source_tree.get('abs_path_to_src_pkg')))
 			module['core'] = True
@@ -315,7 +315,7 @@ def update_package_translation_files(module, output_dir):
 					try:
 						dh_umc.create_po_file(po_path, module['module_name'], src_files, language)
 					except dh_umc.Error as exc:
-						print(str(exc))
+						print(exc)
 
 			# build python po files
 			_create_po_files(module.python_po_files, module.python_files, 'Python')
@@ -328,7 +328,7 @@ def update_package_translation_files(module, output_dir):
 			try:
 				dh_umc.module_xml2po(module, po_path, lang)
 			except dh_umc.Error as exc:
-				print(str(exc))
+				print(exc)
 
 	except OSError as exc:
 		print(traceback.format_exc())
