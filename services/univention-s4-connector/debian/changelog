@@ -1,3 +1,11 @@
+univention-s4-connector (13.0.2-33) unstable; urgency=medium
+
+  * Bug #49959: Fix traceback in sync_to_ucs in case a computer
+    object has already been deleted in OpenLDAP when the modify
+    echo operation comes back. This occurred in the CI tests.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 Aug 2019 16:02:42 +0200
+
 univention-s4-connector (13.0.2-32) unstable; urgency=medium
 
   * Bug #48410: Include /etc/univention/connector/s4/localmapping.py in

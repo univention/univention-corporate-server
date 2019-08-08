@@ -107,6 +107,9 @@ def windowscomputer_sync_s4_to_ucs_check_rename(s4connector, key, sync_object):
 		sAMAccountName = sAMAccountName_vals[0]
 
 	ucs_object = s4connector.get_ucs_ldap_object(sync_object['dn'])
+	if not ucs_object:
+		ud.debug(ud.LDAP, ud.WARN, "con_check_rename: ucs object not found: %s (maybe already deleted)" % sync_object['dn'])
+		return
 	ud.debug(ud.LDAP, ud.INFO, "con_check_rename: ucs object: %s" % ucs_object)
 	ucs_uid = ucs_object.get('uid', [None])[0]
 	if not ucs_uid:
