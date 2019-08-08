@@ -104,17 +104,17 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 	def python_mo_destinations(self):
 		# type: () -> Iterator[Tuple[str, str]]
 		for po_file in self.python_po_files:
-			yield os.path.join(self.get('target_language'), self.get('relative_path_src_pkg'), po_file), 'usr/share/locale/{target_language}/LC_MESSAGES/{module_name}.mo'.format(**self)
+			yield os.path.join(self.get('target_language'), self['relative_path_src_pkg'], po_file), 'usr/share/locale/{target_language}/LC_MESSAGES/{module_name}.mo'.format(**self)
 
 	def json_targets(self):
 		# type: () -> Iterator[Tuple[str, str]]
 		for js_po in self.js_po_files:
-			yield os.path.join(self.get('target_language'), self.get('relative_path_src_pkg'), js_po), 'usr/share/univention-management-console-frontend/js/umc/modules/i18n/{target_language}/{Module}.json'.format(**self)
+			yield os.path.join(self.get('target_language'), self['relative_path_src_pkg'], js_po), 'usr/share/univention-management-console-frontend/js/umc/modules/i18n/{target_language}/{Module}.json'.format(**self)
 
 	def xml_mo_destinations(self):
 		# type: () -> Iterator[Tuple[str, str]]
 		for _, xml_po in self.xml_po_files:
-			yield os.path.join(self.get('target_language'), self.get('relative_path_src_pkg'), xml_po), 'usr/share/univention-management-console/i18n/{target_language}/{Module}.mo'.format(**self)
+			yield os.path.join(self.get('target_language'), self['relative_path_src_pkg'], xml_po), 'usr/share/univention-management-console/i18n/{target_language}/{Module}.mo'.format(**self)
 
 	@classmethod
 	def from_source_package(cls, module_in_source_tree, target_language):
@@ -133,14 +133,14 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 		except AttributeError as e:
 			print("%s core module load failed" % (e,))
 		else:
-			print("Successfully loaded as core module: {}".format(module_in_source_tree.get('abs_path_to_src_pkg')))
+			print("Successfully loaded as core module: {}".format(module_in_source_tree['abs_path_to_src_pkg']))
 			module['core'] = True
 			return module
 
 	@staticmethod
 	def _read_module_attributes_from_source_package(module):
 		# type: (BaseModule) -> dh_umc.UMC_Module
-		umc_module_definition_file = os.path.join(module.get('abs_path_to_src_pkg'), 'debian/', '{}.umc-modules'.format(module.get('module_name')))
+		umc_module_definition_file = os.path.join(module['abs_path_to_src_pkg'], 'debian/', '{}.umc-modules'.format(module['module_name']))
 		with open(umc_module_definition_file, 'r') as fd:
 			def_file = fd.read()
 
@@ -150,9 +150,9 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 	def _get_core_module_from_source_package(cls, module, target_language):
 		# type: (BaseModule, str) -> UMCModuleTranslation
 		attrs = cls._read_module_attributes_from_source_package(module)
-		attrs['module_name'] = module.get('module_name')
-		attrs['abs_path_to_src_pkg'] = module.get('abs_path_to_src_pkg')
-		attrs['relative_path_src_pkg'] = module.get('relative_path_src_pkg')
+		attrs['module_name'] = module['module_name']
+		attrs['abs_path_to_src_pkg'] = module['abs_path_to_src_pkg']
+		attrs['relative_path_src_pkg'] = module['relative_path_src_pkg']
 		umc_module = cls(attrs, target_language)
 		if umc_module.module_name != 'umc-core' or not umc_module.xml_categories:
 			raise ValueError('Module definition does not match core module')
@@ -167,9 +167,9 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 				raise AttributeError('UMC module definition incomplete. key {} missing.'.format(required))
 			if required not in attrs:
 				raise AttributeError('UMC module definition incomplete. key {} is missing a value.'.format(required))
-		attrs['module_name'] = module.get('module_name')
-		attrs['abs_path_to_src_pkg'] = module.get('abs_path_to_src_pkg')
-		attrs['relative_path_src_pkg'] = module.get('relative_path_src_pkg')
+		attrs['module_name'] = module['module_name']
+		attrs['abs_path_to_src_pkg'] = module['abs_path_to_src_pkg']
+		attrs['relative_path_src_pkg'] = module['relative_path_src_pkg']
 		return cls(attrs, target_language)
 
 
@@ -305,7 +305,7 @@ def update_package_translation_files(module, output_dir):
 	print("Creating directories and PO files for {module_name} in translation source package".format(**module))
 	start_dir = os.getcwd()
 	try:
-		os.chdir(module.get('abs_path_to_src_pkg'))
+		os.chdir(module['abs_path_to_src_pkg'])
 		if not module.get('core'):
 
 			def _create_po_files(po_files, src_files, language):
