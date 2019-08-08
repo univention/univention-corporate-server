@@ -53,7 +53,7 @@ def main():
 	ucrvs_translated = {}
 	for ucrv, value in overview_ucrvs.items():
 		translation = _(value)
-		if not translation == value:
+		if translation != value:
 			ucrvs_translated['{}/{}'.format(ucrv, args.language_code)] = translation
 	ucr.update(ucrvs_translated)
 	ucr.save()
