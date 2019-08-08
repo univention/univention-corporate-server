@@ -3,9 +3,9 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-management-console
-fix: 
+fix: 11.0.4-36A~4.4.0.201908081448
 desc: |
  This update addresses the following issue(s):
  * The error message when connecting to a module process fails
-   is not mentioning the acutal module name.
+   is now mentioning the actual module name.
 bug: [43225]
