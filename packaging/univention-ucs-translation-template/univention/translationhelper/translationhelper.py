@@ -47,6 +47,7 @@ import univention.debhelper as dh_ucs
 import univention.dh_umc as dh_umc
 from . import sourcefileprocessing
 from . import message_catalogs
+from .helper import make_parent_dir
 try:
 	from typing import Any, Dict, Iterable, Iterator, List, Optional, Pattern, Tuple, Type  # noqa F401
 	from types import TracebackType  # noqa
@@ -457,17 +458,6 @@ def find_base_translation_modules(startdir, source_dir, module_basefile_name):
 
 	os.chdir(startdir)
 	return base_translation_modules
-
-
-def make_parent_dir(path):
-	# type: (str) -> None
-	"""If path is a directory path the directory and its parents will be created, if path is a file create its parents will be created."""
-	dir_path = os.path.dirname(path)
-	try:
-		os.makedirs(dir_path)
-	except OSError:
-		if not os.path.isdir(dir_path):
-			raise
 
 
 def write_debian_rules(debian_dir_path):

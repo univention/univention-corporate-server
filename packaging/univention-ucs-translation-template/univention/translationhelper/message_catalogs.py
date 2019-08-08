@@ -39,6 +39,7 @@ import os
 import subprocess
 
 import univention.dh_umc as dh_umc
+from .helper import make_parent_dir
 try:
 	from typing import Any, List, Union  # noqa F401
 except ImportError:
@@ -149,13 +150,3 @@ def univention_location_lines(pot_path, abs_path_source_pkg):
 			modified_occ.append((os.path.relpath(path, start=abs_path_source_pkg), linenum))
 		entry.occurrences = modified_occ
 	po_file.save(pot_path)
-
-
-def make_parent_dir(file_path):
-	# type: (str) -> None
-	dir_path = os.path.dirname(file_path)
-	try:
-		os.makedirs(dir_path)
-	except OSError:
-		if not os.path.isdir(dir_path):
-			raise
