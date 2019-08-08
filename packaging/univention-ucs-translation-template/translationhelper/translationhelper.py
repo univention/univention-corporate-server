@@ -415,7 +415,7 @@ def find_base_translation_modules(startdir, source_dir, module_basefile_name):
 
 	base_translation_modules = []  # type: List[BaseModule]
 
-	regex = re.compile(".*/(.*)/debian/.*%s$" % re.escape(module_basefile_name))
+	regex = re.compile(r".*/(.*)/debian/.*%s$" % re.escape(module_basefile_name))
 	for match in matches:
 		print(match)
 		packagenameresult = regex.search(match)

@@ -38,7 +38,7 @@ try:
 except ImportError:
 	pass
 
-UCR_ASSIGNMENT = re.compile(r'(ucs\/web\/overview\/entries.*(?:link|description|label))(?:=|\?)(.*)')
+UCR_ASSIGNMENT = re.compile(r'(ucs/web/overview/entries.*(?:link|description|label))[=?](.*)')
 # directory names to ignore
 DIR_BLACKLIST = set(['.git', '.svn', 'doc', 'test'])
 
@@ -79,7 +79,7 @@ if __name__ == '__main__':
 		'grep',
 		'--recursive',
 		'--no-filename',
-		'overview/.*\(link\|description\|label\)\(=\|\?\)',
+		r'overview/.*\(link\|description\|label\)[=?]',
 		args.source]
 	cmd.extend(['--exclude-dir={}'.format(dname) for dname in DIR_BLACKLIST])
 	try:
