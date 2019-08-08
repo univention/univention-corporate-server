@@ -116,12 +116,12 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 		for _, xml_po in self.xml_po_files:
 			yield os.path.join(self.get('target_language'), self.get('relative_path_src_pkg'), xml_po), 'usr/share/univention-management-console/i18n/{target_language}/{Module}.mo'.format(**self)
 
-	@staticmethod
-	def from_source_package(module_in_source_tree, target_language):
+	@classmethod
+	def from_source_package(cls, module_in_source_tree, target_language):
 		# type: (BaseModule, str) -> UMCModuleTranslation
 		try:
 			# read package content with dh_umc
-			module = UMCModuleTranslation._get_module_from_source_package(module_in_source_tree, target_language)
+			module = cls._get_module_from_source_package(module_in_source_tree, target_language)
 		except AttributeError as e:
 			print("%s AttributeError in module, trying to load as core module" % (e,))
 		else:
@@ -129,7 +129,7 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 			return module
 
 		try:
-			module = UMCModuleTranslation._get_core_module_from_source_package(module_in_source_tree, target_language)
+			module = cls._get_core_module_from_source_package(module_in_source_tree, target_language)
 		except AttributeError as e:
 			print("%s core module load failed" % (e,))
 		else:
@@ -146,22 +146,22 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 
 		return dh_ucs.parseRfc822(def_file)[0]
 
-	@staticmethod
-	def _get_core_module_from_source_package(module, target_language):
+	@classmethod
+	def _get_core_module_from_source_package(cls, module, target_language):
 		# type: (BaseModule, str) -> UMCModuleTranslation
-		attrs = UMCModuleTranslation._read_module_attributes_from_source_package(module)
+		attrs = cls._read_module_attributes_from_source_package(module)
 		attrs['module_name'] = module.get('module_name')
 		attrs['abs_path_to_src_pkg'] = module.get('abs_path_to_src_pkg')
 		attrs['relative_path_src_pkg'] = module.get('relative_path_src_pkg')
-		module = UMCModuleTranslation(attrs, target_language)
+		module = cls(attrs, target_language)
 		if module.module_name != 'umc-core' or not module.xml_categories:
 			raise ValueError('Module definition does not match core module')
 		return module
 
-	@staticmethod
-	def _get_module_from_source_package(module, target_language):
+	@classmethod
+	def _get_module_from_source_package(cls, module, target_language):
 		# type: (BaseModule, str) -> UMCModuleTranslation
-		attrs = UMCModuleTranslation._read_module_attributes_from_source_package(module)
+		attrs = cls._read_module_attributes_from_source_package(module)
 		for required in (dh_umc.MODULE, dh_umc.PYTHON, dh_umc.DEFINITION, dh_umc.JAVASCRIPT):
 			if required not in attrs:
 				raise AttributeError('UMC module definition incomplete. key {} missing.'.format(required))
@@ -170,7 +170,7 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 		attrs['module_name'] = module.get('module_name')
 		attrs['abs_path_to_src_pkg'] = module.get('abs_path_to_src_pkg')
 		attrs['relative_path_src_pkg'] = module.get('relative_path_src_pkg')
-		return UMCModuleTranslation(attrs, target_language)
+		return cls(attrs, target_language)
 
 
 class SpecialCase():
