@@ -138,7 +138,7 @@ def _call_gettext(*args, **kwargs):
 	except subprocess.CalledProcessError as exc:
 		raise GettextError("Error: A gettext tool exited unsuccessfully. Attempted command:\n{}".format(exc.cmd))
 	except AttributeError as exc:
-		raise GettextError("Operating System error during call to a gettext tool:\n{}".format(exc.strerror))
+		raise GettextError("Operating System error during call to a gettext tool:\n{}".format(exc))
 
 
 def univention_location_lines(pot_path, abs_path_source_pkg):
