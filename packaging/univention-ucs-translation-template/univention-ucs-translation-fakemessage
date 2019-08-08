@@ -35,7 +35,6 @@ generation.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 import os
-import fnmatch
 import polib
 import argparse
 
@@ -51,7 +50,9 @@ def parse_args():
 def process(po_dir):
 	# type: (str) -> None
 	for _dir, dns, fns in os.walk(os.path.abspath(po_dir)):
-		for po_file in fnmatch.filter(fns, '*.po'):
+		for po_file in fns:
+			if not po_file.endswith('.po'):
+				continue
 			po = polib.pofile(os.path.join(_dir, po_file))
 			for entry in po:
 				if entry.msgid == '':

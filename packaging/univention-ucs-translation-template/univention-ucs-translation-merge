@@ -29,7 +29,6 @@
 # <http://www.gnu.org/licenses/>.
 from __future__ import print_function
 import argparse
-import fnmatch
 import os
 import re
 import sys
@@ -47,7 +46,10 @@ def _get_po_files_from_dir(directory, return_relative_path=False):
 	# type: (str, bool) -> List[str]
 	po_files = []  # type: List[str]
 	for parent, dirs, files in os.walk(directory):
-		for po_file in fnmatch.filter([os.path.join(parent, fn) for fn in files], '*.po'):
+		for po_file in files:
+			if not po_file.endswith('.po'):
+				continue
+			po_file = os.path.join(parent, po_file)
 			if return_relative_path:
 				po_files.append(os.path.relpath(po_file, start=directory))
 			else:

@@ -31,7 +31,6 @@ from __future__ import print_function
 from email.Utils import formatdate
 from datetime import date
 from glob import glob
-import fnmatch
 import getpass
 import json
 import magic
@@ -427,8 +426,7 @@ def find_base_translation_modules(startdir, source_dir, module_basefile_name):
 	matches = []  # type: List[str]
 	for root, dirnames, filenames in os.walk('.'):
 		dirnames[:] = [d for d in dirnames if os.path.join(root, d) not in DIR_BLACKLIST]
-		for filename in fnmatch.filter(filenames, "*" + module_basefile_name):
-			matches.append(os.path.join(root, filename))
+		matches.extend(os.path.join(root, fn) for fn in filenames if fn.endswith(module_basefile_name))
 
 	base_translation_modules = []  # type: List[BaseModule]
 
