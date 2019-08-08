@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.12-24) unstable; urgency=medium
+
+  * Bug #48698: Fix GUI visible spelling errors
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 08 Aug 2019 07:10:47 +0200
+
 univention-management-console-module-udm (9.0.12-23) unstable; urgency=medium
 
   * Bug #49829: minor css adjustment
