@@ -13,8 +13,15 @@ Standards-Version: 3.8.2
 Package: univention-ucs-translation-template
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends}, ${python3:Depends},
- univention-management-console,
- univention-management-console-dev
+ univention-management-console-dev,
+ python-magic,
+ python3-magic,
+ python-polib,
+ python3-polib,
+ python-lxml,
+ python3-lxml,
+ python-univention-config-registry,
+ python3-univention-config-registry
 Description: UCS Management Console translation files
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
