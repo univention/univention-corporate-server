@@ -65,10 +65,18 @@ class SourceFileSet(object):
 		output_path = os.path.join(os.getcwd(), 'debian', self.binary_pkg_name, output_path)
 		self._compile(po_path, output_path)
 
+	def _create_po_template(self, pot_path):
+		# type: (str) -> None
+		raise NotImplementedError()
+
+	def _compile(self, po_path, output_path):
+		# type: (str, str) -> None
+		raise NotImplementedError()
+
 
 class SourceFilesXgettext(SourceFileSet):
 
-	def _create_po_template(self, gettext_lang, pot_path):
+	def _create_po_file(self, gettext_lang, pot_path):
 		# type: (str, str) -> None
 		dh_umc.create_po_file(pot_path, self.binary_pkg_name, self.files, language=gettext_lang)
 
@@ -81,21 +89,21 @@ class SourceFilesShell(SourceFilesXgettext):
 
 	def _create_po_template(self, pot_path):
 		# type: (str) -> None
-		super(SourceFilesShell, self)._create_po_template('Shell', pot_path)
+		super(SourceFilesShell, self)._create_po_file('Shell', pot_path)
 
 
 class SourceFilesPython(SourceFilesXgettext):
 
 	def _create_po_template(self, pot_path):
 		# type: (str) -> None
-		super(SourceFilesPython, self)._create_po_template('Python', pot_path)
+		super(SourceFilesPython, self)._create_po_file('Python', pot_path)
 
 
 class SourceFilesJavaScript(SourceFilesXgettext):
 
 	def _create_po_template(self, pot_path):
 		# type: (str) -> None
-		super(SourceFilesJavaScript, self)._create_po_template('JavaScript', pot_path)
+		super(SourceFilesJavaScript, self)._create_po_file('JavaScript', pot_path)
 
 	def _compile(self, po_path, json_output_path):
 		# type: (str, str) -> None
