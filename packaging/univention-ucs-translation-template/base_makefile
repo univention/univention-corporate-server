@@ -39,10 +39,10 @@ include all_targets.mk
 install: $(ALL_TARGETS)
 
 %.mo:
-	mkdir -p $(@D)
+	install -d $(@D)
 	msgfmt --check --output-file="$@" "$<"
 
 %.json:
 	dh-umc-po2json "$<"  # creates .json file in the same directory as the .po file
-	mkdir -p $(@D)
+	install -d $(@D)
 	mv "$(patsubst %.po,%.json,$<)" "$@"
