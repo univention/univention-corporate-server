@@ -1688,12 +1688,12 @@ class s4(univention.s4connector.ucs):
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: type of object_ucs['dn']: %s" % type(object_ucs_dn))
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: dn is: %s" % object_ucs_dn)
 		ldap_object_ucs = self.get_ucs_ldap_object(object_ucs_dn)
-		ldap_object_ucs_gidNumber = ldap_object_ucs['gidNumber'][0]
 
 		if not ldap_object_ucs:
 			ud.debug(ud.LDAP, ud.PROCESS, 'group_members_sync_from_ucs:: The UCS object (%s) was not found. The object was removed.' % object_ucs_dn)
 			return
 
+		ldap_object_ucs_gidNumber = ldap_object_ucs['gidNumber'][0]
 		ucs_members = set(ldap_object_ucs.get('uniqueMember', []))
 		ud.debug(ud.LDAP, ud.INFO, "ucs_members: %s" % ucs_members)
 		if ucs_members:

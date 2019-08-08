@@ -23,4 +23,6 @@ desc: |
    is switched on.
  * Samba 4.9 no longer allows the removal of the dBCSPwd (LM hash) attribute.
    The S4 connector now respects this.
-bug: [26501, 49865, 49092, 49905]
+ * A reject is prevented when trying to add a group which is already
+   removed in UCS.
+bug: [26501, 49865, 49092, 49905, 49850]
