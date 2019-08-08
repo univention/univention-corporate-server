@@ -1,6 +1,7 @@
 univention-s4-connector (13.0.2-28) unstable; urgency=medium
 
   * Bug #49850: fix error when accesing removed ldap object
+  * Bug #36633: fix some reference errors
 
  -- Florian Best <best@univention.de>  Thu, 08 Aug 2019 12:57:32 +0200
 

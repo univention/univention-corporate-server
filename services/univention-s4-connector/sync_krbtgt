@@ -37,7 +37,6 @@ import univention.admin.uldap
 import ldap
 import univention.debug2 as ud
 import univention.s4connector.s4.password
-from ldap.controls import LDAPControl
 from optparse import OptionParser
 import sys
 import binascii
@@ -139,27 +138,23 @@ class S4:
 			print "Can't initialize Samba4 LDAP connection"
 			raise ldap.SERVER_DOWN
 		if not res_s4:
-			ud.debug(ud.LDAP, ud.PROCESS, " The Samba4 user (krbtgt) was not found." % username)
-			print "\nThe Samba4 user (krbtgt) was not found." % username
+			ud.debug(ud.LDAP, ud.PROCESS, " The Samba4 user (krbtgt) was not found.")
+			print "\nThe Samba4 user (krbtgt) was not found."
 			return
 
 		modlist = []
 		unicodePwd_attr = res_s4[0][1].get('unicodePwd', [None])[0]
 		if unicodePwd_attr:
-			ntPwd = binascii.b2a_hex(unicodePwd_attr).upper()
+			binascii.b2a_hex(unicodePwd_attr).upper()  # nt hash
 
-			lmPwd = ''
 			dBCSPwd = res_s4[0][1].get('dBCSPwd', [None])[0]
 			if dBCSPwd:
-				lmPwd = binascii.b2a_hex(dBCSPwd).upper()
+				binascii.b2a_hex(dBCSPwd).upper()  # lm hash
 
 			supplementalCredentials = res_s4[0][1].get('supplementalCredentials', [None])[0]
 			msDS_KeyVersionNumber = res_s4[0][1].get('msDS-KeyVersionNumber', [0])[0]
 
-			ntPwd_ucs = ''
-			lmPwd_ucs = ''
 			krb5Principal = ''
-			userPassword = ''
 
 			if 'krb5PrincipalName' in res_ucs[0][1]:
 				krb5Principal = res_ucs[0][1]['krb5PrincipalName'][0]
