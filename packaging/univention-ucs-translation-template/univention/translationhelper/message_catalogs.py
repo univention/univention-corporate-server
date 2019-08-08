@@ -132,9 +132,8 @@ def po_to_json(po_path, json_output_path):
 
 def _call_gettext(*args, **kwargs):
 	# type: (*str, **Any) -> None
-	call = [arg for arg in args]
 	try:
-		subprocess.check_call(call, **kwargs)
+		subprocess.check_call(args, **kwargs)
 	except subprocess.CalledProcessError as exc:
 		raise GettextError("Error: A gettext tool exited unsuccessfully. Attempted command:\n{}".format(exc.cmd))
 	except AttributeError as exc:
