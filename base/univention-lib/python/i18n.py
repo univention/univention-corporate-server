@@ -215,7 +215,7 @@ class Translation(NullTranslation):
 					language = lang[0]
 				Translation.locale.parse(language)
 			except Error as e:
-				raise I18N_Error('The given locale is not vaild: %s' % str(e))
+				raise I18N_Error('The given locale is not valid: %s' % str(e))
 
 		if not self._domain:
 			return

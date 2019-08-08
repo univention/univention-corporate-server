@@ -265,7 +265,7 @@ def handler(dn, new, old, command):
 			if not os.path.exists('/etc/samba/shares.conf'):
 				run_ucs_commit = True
 			fp = open('/etc/samba/shares.conf.temp', 'w')
-			print >>fp, '# Warning: This file is auto-generated and will be overwritten by \n#          univention-directory-listener module. \n#          Please edit the following file instead: \n#          /etc/samba/local.conf \n  \n# Warnung: Diese Datei wurde automatisch generiert und wird durch ein \n#          univention-directory-listener Modul überschrieben werden. \n#          Ergänzungen können an folgender Datei vorgenommen werden: \n# \n#          /etc/samba/local.conf \n#'
+			print >>fp, '# Warning: This file is auto-generated and will be overwritten by \n#          univention-directory-listener module. \n#          Please edit the following file instead: \n#          /etc/samba/local.conf \n  \n# Warnung: Diese Datei wurde automatisch generiert und wird durch ein \n#          univention-directory-listener Module überschrieben werden. \n#          Ergänzungen können an folgender Datei vorgenommen werden: \n# \n#          /etc/samba/local.conf \n#'
 
 			for f in os.listdir('/etc/samba/shares.conf.d'):
 				print >>fp, 'include = %s' % _quote(os.path.join('/etc/samba/shares.conf.d', f))

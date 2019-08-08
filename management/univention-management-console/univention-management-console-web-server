@@ -1508,7 +1508,7 @@ class UMC_HTTP_Daemon(DaemonRunner):
 					return
 				raise
 		else:
-			CORE.process('Reload failed: webserver ist not running')
+			CORE.process('Reload failed: webserver is not running')
 
 	DaemonRunner.action_funcs['restart'] = _restart
 	DaemonRunner.action_funcs['crestart'] = _crestart

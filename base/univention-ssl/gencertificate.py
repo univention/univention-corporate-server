@@ -119,13 +119,13 @@ def set_permissions(arg, directory, fnames):
 		ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Failed to get groupID for "%s"' % dn)
 		gidNumber = 0
 
-	ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % (directory, uidNumber, gidNumber))
+	ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (directory, uidNumber, gidNumber))
 	os.chown(directory, uidNumber, gidNumber)
 	os.chmod(directory, 0o750)
 
 	for fname in fnames:
 		filename = os.path.join(directory, fname)
-		ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % (filename, uidNumber, gidNumber))
+		ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (filename, uidNumber, gidNumber))
 		os.chown(filename, uidNumber, gidNumber)
 		os.chmod(filename, 0o640)
 

@@ -47,7 +47,7 @@ cmd = sys.argv[0]
 # check if we are called directly
 if cmd[-len("univention-cupsadmin"):] == "univention-cupsadmin":
 	print("univention-cupsadmin is not to be called directly, but rather by")
-	print("links from one of univention-cups-{accept,reject,enable,disalbe}.")
+	print("links from one of univention-cups-{accept,reject,enable,disable}.")
 	print("See man accept, man reject, man enable, and man disable for")
 	print("calling conventions")
 	sys.exit(1)

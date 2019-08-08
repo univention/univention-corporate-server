@@ -856,7 +856,7 @@ def _doit(arglist):
 				try:  # check if destination exists
 					lo.get(position_dn, required=True)
 				except (univention.admin.uexceptions.noObject, ldap.INVALID_DN_SYNTAX):
-					out.append("position does not exsist: %s" % position_dn)
+					out.append("position does not exists: %s" % position_dn)
 					return out + ["OPERATION FAILED"]
 				rdn = ldap.dn.dn2str([ldap.dn.str2dn(dn)[0]])
 				newdn = "%s,%s" % (rdn, position_dn)

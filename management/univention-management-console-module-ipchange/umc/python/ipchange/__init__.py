@@ -61,7 +61,7 @@ class Instance(Base):
 		# ignore link local addresses (no DHCP address received)
 		network = ipaddr.IPv4Network('%s/%s' % (ip, netmask))
 		if network.IsLinkLocal():
-			MODULE.error('Ignore link local adress change.')
+			MODULE.error('Ignore link local address change.')
 			return
 
 		lo, position = univention.admin.uldap.getAdminConnection()

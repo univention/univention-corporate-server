@@ -84,7 +84,7 @@ def parse():
 			help='Modify revers zone instead of forward zone')
 	parser.add_option('--overwrite',
 			action='store_true', dest='overwrite',
-			help='Overwrite exising record')
+			help='Overwrite existing record')
 	parser.add_option('--stoptls',
 			action='store_true', dest='stoptls',
 			help='Disable TLS')

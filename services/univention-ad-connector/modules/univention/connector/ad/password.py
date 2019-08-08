@@ -409,7 +409,7 @@ def password_sync(connector, key, ucs_object):
 
 		if ntPwd.upper() != ntPwd_ucs.upper():
 			if ntPwd in ['00000000000000000000000000000000', 'NO PASSWORD*********************']:
-				ud.debug(ud.LDAP, ud.WARN, "password_sync: AD connector password daemon retured 0 for the nt hash. Please check the AD settings.")
+				ud.debug(ud.LDAP, ud.WARN, "password_sync: AD connector password daemon returned 0 for the nt hash. Please check the AD settings.")
 			else:
 				pwd_changed = True
 				modlist.append(('sambaNTPassword', ntPwd_ucs, str(ntPwd.upper())))

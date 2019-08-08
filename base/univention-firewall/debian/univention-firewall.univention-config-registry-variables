@@ -37,6 +37,6 @@ Categories=service-security
 
 [security/packetfilter/defaultpolicy]
 Description[de]=Diese Variable konfiguriert das Standardverhalten von Univention Firewall für eingehende Pakete. Mögliche Werte: 'ACCEPT' = Zulassen, 'REJECT' = Zurückweisen und 'DROP' = Verwerfen des Pakets ohne Rückmeldung an den Sender.
-Description[en]=This variable configures the standard behaviour of Univention Firewall for incoming packets. Possible values: 'ACCEPT', 'REJECT' and 'DROP' (rejecting without notifying the sender).
+Description[en]=This variable configures the standard behavior of Univention Firewall for incoming packets. Possible values: 'ACCEPT', 'REJECT' and 'DROP' (rejecting without notifying the sender).
 Type=str
 Categories=service-security

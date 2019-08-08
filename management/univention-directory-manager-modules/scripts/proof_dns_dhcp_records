@@ -87,7 +87,7 @@ print
 
 computers = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=dNSZone', ['pTRRecord'])
 
-print "Found no computer objects for theses dns reverse lookup records:\n"
+print "Found no computer objects for these dns reverse lookup records:\n"
 
 for comp in computers:
 	if 'pTRRecord' in comp[1]:

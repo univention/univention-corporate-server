@@ -65,7 +65,7 @@ def main():
 	parser.add_argument('-t', '--tag', action='append', help='Tags added to the diary entry')
 	parser.add_argument('-a', '--arg', action='append', help='Argument used in message')
 	parser.add_argument('--event', required=True, help='Choose one event name. If unknown to the diary backend, the event will be created with MESSAGE. Otherwise, the existing message will be used. Special case: COMMENT')
-	parser.add_argument('--context-id', help='May be given to ammend an existing diary entry, effectively grouping those together. The CONTEXT_ID is also returned by this program')
+	parser.add_argument('--context-id', help='May be given to amend an existing diary entry, effectively grouping those together. The CONTEXT_ID is also returned by this program')
 	parser.add_argument('--message', '-m', action=StoreMessageAction, nargs='*', help='The message. Give one for every required locale. Use format strings if you wish to use ARGs.')
 	args = parser.parse_args()
 	event = DiaryEvent.get(args.event)

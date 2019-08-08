@@ -2446,7 +2446,7 @@ def takeover_hasMasterNCs(ucr, samdb, sitename, partitions):
 					log.debug("Current NTDS object: %s" % obj)
 
 			if "msDS-hasMasterNCs" in obj and partition in obj["msDS-hasMasterNCs"]:
-				log.debug("Naming context %s already registed in msDS-hasMasterNCs for %s" % (partition, ucr["hostname"]))
+				log.debug("Naming context %s already registered in msDS-hasMasterNCs for %s" % (partition, ucr["hostname"]))
 			else:
 				delta = ldb.Message()
 				delta.dn = obj.dn

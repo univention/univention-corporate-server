@@ -2384,7 +2384,7 @@ class s4(univention.s4connector.ucs):
 						self._debug_traceback(ud.WARN, "Exception during poll/sync_to_ucs")
 
 					if not sync_successfull:
-						ud.debug(ud.LDAP, ud.WARN, "sync to ucs was not successfull, save rejected")
+						ud.debug(ud.LDAP, ud.WARN, "sync to ucs was not successful, save rejected")
 						ud.debug(ud.LDAP, ud.WARN, "object was: %s" % object['dn'])
 
 					if sync_successfull:
@@ -2647,7 +2647,7 @@ class s4(univention.s4connector.ucs):
 								if attribute_type[attribute].ldap_attribute != attr:
 									continue
 
-								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Found a corresponding mapping defintion: %s" % attribute)
+								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Found a corresponding mapping definition: %s" % attribute)
 								s4_attribute = attribute_type[attribute].con_attribute
 								s4_other_attribute = attribute_type[attribute].con_other_attribute
 

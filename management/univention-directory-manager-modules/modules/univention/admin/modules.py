@@ -395,7 +395,7 @@ def update_extended_attributes(lo, module, position):
 		try:
 			mayChange = int(attrs.get('univentionUDMPropertyValueMayChange', ['0'])[0])
 		except:
-			ud.debug(ud.ADMIN, ud.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyValueMayChange throwed exception - assuming mayChange=0')
+			ud.debug(ud.ADMIN, ud.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyValueMayChange threw exception - assuming mayChange=0')
 			mayChange = 0
 
 		# value is editable (only via hooks or direkt module.info[] access)
@@ -410,7 +410,7 @@ def update_extended_attributes(lo, module, position):
 		try:
 			doNotSearch = int(attrs.get('univentionUDMPropertyDoNotSearch', ['0'])[0])
 		except:
-			ud.debug(ud.ADMIN, ud.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyDoNotSearch throwed exception - assuming doNotSearch=0')
+			ud.debug(ud.ADMIN, ud.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyDoNotSearch threw exception - assuming doNotSearch=0')
 			doNotSearch = 0
 
 		# check if CA is multivalue property
@@ -774,7 +774,7 @@ def layout(module_name, object=None):
 	module = get(module_name)
 	defining_layout = None
 	if object:
-		ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout:: got an definied object')
+		ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout:: got an defined object')
 
 	if object and hasattr(object, 'layout'):  # for dynamic modules like users/self
 		ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout:: layout is defined by the object')
