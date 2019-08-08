@@ -32,9 +32,14 @@
 from __future__ import print_function
 import os
 import subprocess
+try:
+	from typing import Dict, List  # noqa F401
+except ImportError:
+	pass
 
 
 def doIt(*argv):
+	# type: (*str) -> int
 	"""
 	Execute argv and wait.
 
@@ -49,6 +54,7 @@ def doIt(*argv):
 
 
 def binary_packages():
+	# type: () -> List[str]
 	"""
 	Get list of binary packages from debian/control file.
 
@@ -69,6 +75,7 @@ def binary_packages():
 
 
 def parseRfc822(f):
+	# type: (str) -> List[Dict[str, List[str]]]
 	r"""
 	Parses string `f` as a :rfc:`822` conforming file and returns list of sections, each a dict mapping keys to lists of values.
 	Splits file into multiple sections separated by blank line.
@@ -89,8 +96,8 @@ def parseRfc822(f):
 	>>> parseRfc822('\n\n')
 	[]
 	"""
-	res = []
-	ent = {}
+	res = []  # type: List[Dict[str, List[str]]]
+	ent = {}  # type: Dict[str, List[str]]
 	for line in f.splitlines():
 		if line:
 			try:

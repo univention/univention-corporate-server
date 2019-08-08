@@ -61,6 +61,10 @@ import polib
 import xml.etree.ElementTree as ET
 
 import univention.debhelper as dh_ucs
+try:
+	from typing import Iterable, Iterator, List, Optional, Tuple, Union  # noqa F401
+except ImportError:
+	pass
 
 MODULE = 'Module'
 PYTHON = 'Python'
@@ -100,11 +104,13 @@ class UMC_Module(dict):
 
 	@property
 	def package(self):
+		# type: () -> str
 		"""Return the name of the Debian binary package."""
 		return self.get('package')
 
 	@property
 	def python_path(self):
+		# type: () -> Optional[str]
 		"""Return path to Python UMC directory."""
 		try:
 			return '%(Python)s/%(Module)s/' % self
@@ -113,6 +119,7 @@ class UMC_Module(dict):
 
 	@property
 	def js_path(self):
+		# type: () -> Optional[str]
 		"""Return path to JavaScript UMC directory."""
 		try:
 			return '%(Javascript)s/' % self
@@ -121,6 +128,7 @@ class UMC_Module(dict):
 
 	@property
 	def js_module_file(self):
+		# type: () -> Optional[str]
 		"""Return path to main JavaScript file."""
 		try:
 			return '%(Javascript)s/%(Module)s.js' % self
@@ -128,6 +136,7 @@ class UMC_Module(dict):
 			pass
 
 	def _iter_files(self, base, suffix):
+		# type: (Optional[str], str) -> Iterator[str]
 		"""Iterate over all files below base ending with suffix."""
 		if base is None:
 			return
@@ -142,41 +151,49 @@ class UMC_Module(dict):
 
 	@property
 	def js_files(self):
+		# type: () -> Iterator[str]
 		"""Iterate over all JavaScript UMC files."""
 		return self._iter_files(self.js_path, '.js')
 
 	@property
 	def html_files(self):
+		# type: () -> Iterator[str]
 		"""Iterate over all JavaScript HTML files."""
 		return self._iter_files(self.js_path, '.html')
 
 	@property
 	def css_files(self):
+		# type: () -> Iterator[str]
 		"""Iterate over all Javascript CSS files."""
 		return self._iter_files(self.js_path, '.css')
 
 	@property
 	def module_name(self):
+		# type: () -> Optional[str]
 		"""Return the name of the UMC module."""
 		return self.__getitem__(MODULE)
 
 	@property
 	def xml_definition(self):
+		# type: () -> Optional[str]
 		"""Return the path to the XML UMC definition."""
 		return self.get(DEFINITION)
 
 	@property
 	def xml_categories(self):
+		# type: () -> Optional[str]
 		"""Return the path to the XML file defining categories."""
 		return self.get(CATEGORY)
 
 	@property
 	def python_files(self):
+		# type: () -> Iterator[str]
 		"""Iterate over all Python UMC files."""
 		return self._iter_files(self.python_path, '.py')
 
 	@property
 	def python_po_files(self):
+		# type: () -> Iterator[str]
 		"""Iterate over all Python UMC message catalogs."""
 		try:
 			path = '%(Python)s/%(Module)s/' % self
@@ -187,6 +204,7 @@ class UMC_Module(dict):
 
 	@property
 	def js_po_files(self):
+		# type: () -> Iterator[str]
 		"""Iterate over all JavaScript UMC message catalogs."""
 		path = self.get(JAVASCRIPT)
 		if not path:  # might be an empty string
@@ -196,6 +214,7 @@ class UMC_Module(dict):
 
 	@property
 	def xml_po_files(self):
+		# type: () -> Iterator[Tuple[str, str]]
 		"""Iterate over all XML UMC message catalogs."""
 		if self.xml_definition is None:
 			return
@@ -206,11 +225,13 @@ class UMC_Module(dict):
 
 	@property
 	def icons(self):
+		# type: () -> Optional[str]
 		"""Return path to UMC icon directory."""
 		return self.get(ICONS)
 
 
 def read_modules(package, core=False):
+	# type: (str, bool) -> List[UMC_Module]
 	"""
 	Read |UMC| module definition from :file:`debian/<package>.umc-modules`.
 
@@ -218,7 +239,7 @@ def read_modules(package, core=False):
 	:param core: Import as core-module, e.g. the ones shipped with |UDM| itself.
 	:returns: List of |UMC| module definitions.
 	"""
-	modules = []
+	modules = []  # type: List[UMC_Module]
 
 	file_umc_module = os.path.join('debian/', package + '.umc-modules')
 
@@ -245,6 +266,7 @@ def read_modules(package, core=False):
 
 
 def module_xml2po(module, po_file, language):
+	# type: (UMC_Module, str, str) -> None
 	"""
 	Create a PO file the |XML| definition of an |UMC| module.
 
@@ -302,6 +324,7 @@ def module_xml2po(module, po_file, language):
 
 
 def create_po_file(po_file, package, files, language='python'):
+	# type: (str, str, Union[str, Iterable[str]], str) -> None
 	"""
 	Create a PO file for a defined set of files.
 
@@ -354,6 +377,7 @@ def create_po_file(po_file, package, files, language='python'):
 
 
 def create_mo_file(po_file):
+	# type: (str) -> None
 	"""
 	Compile textual message catalog (`.po`) to binary message catalog (`.mo`).
 
@@ -364,6 +388,7 @@ def create_mo_file(po_file):
 
 
 def create_json_file(po_file):
+	# type: (str) -> None
 	"""
 	Compile textual message catalog (`.po`) to |JSON| message catalog.
 

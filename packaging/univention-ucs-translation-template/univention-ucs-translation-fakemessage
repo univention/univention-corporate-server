@@ -45,6 +45,7 @@ generation.
 
 
 def main(po_dir):
+	# type: (str) -> None
 	for _dir, dns, fns in os.walk(os.path.abspath(po_dir)):
 		for po_file in fnmatch.filter(fns, '*.po'):
 			po = polib.pofile(os.path.join(_dir, po_file))

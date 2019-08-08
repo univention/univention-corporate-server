@@ -31,6 +31,11 @@ from optparse import OptionParser
 import os
 import univention.dh_umc as dh_umc
 import univention.translationhelper as tlh
+try:
+	from typing import List, Set, Tuple  # noqa F401
+	from optparse import Values  # noqa F401
+except ImportError:
+	pass
 
 
 NO_SC_WARNING = '''WARNING: The given directory doesn't seem to be the checkout
@@ -68,14 +73,14 @@ e.g.: -s /path/to/ucs-repository/ -c de -l de_DE.UTF-8:UTF-8 -n Deutsch'''
 	startdir = os.getcwd()
 	base_translation_modules = tlh.find_base_translation_modules(startdir, options.source_dir, options.basefiles)
 	dh_umc.LANGUAGES = (options.target_language, )
-	all_modules = list()
+	all_modules = []  # type: List[tlh.UMCModuleTranslation]
 	output_dir = os.path.join(os.getcwd(), options.target_language)
 	for module_attrs in base_translation_modules:
 		module = tlh.UMCModuleTranslation.from_source_package(module_attrs, options.target_language)
 		all_modules.append(module)
 		tlh.update_package_translation_files(module, output_dir)
 
-	special_cases = []
+	special_cases = []  # type: List[tlh.SpecialCase]
 	try:
 		special_cases = tlh.get_special_cases_from_checkout(options.source_dir, options.target_language)
 	except tlh.NoSpecialCaseDefintionsFound:

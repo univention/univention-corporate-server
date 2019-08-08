@@ -46,6 +46,14 @@ import univention.debhelper as dh_ucs
 import univention.dh_umc as dh_umc
 import sourcefileprocessing
 import message_catalogs
+try:
+	from typing import Any, Dict, Iterable, Iterator, List, Optional, Pattern, Tuple, Type  # noqa F401
+	from types import TracebackType  # noqa
+	from mypy_extensions import TypedDict
+	BaseModule = TypedDict('BaseModule', {'module_name': str, 'binary_package_name': str, 'abs_path_to_src_pkg': str, 'relative_path_src_pkg': str})
+except ImportError:
+	pass
+
 
 REFERENCE_LANG = 'de'
 # Use this set to ignore whole sub trees of a given source tree
@@ -67,41 +75,49 @@ class NoSpecialCaseDefintionsFound(Exception):
 class UMCModuleTranslation(dh_umc.UMC_Module):
 
 	def __init__(self, attrs, target_language):
+		# type: (Dict[str, Any], str) -> None
 		attrs['target_language'] = target_language
 		return super(UMCModuleTranslation, self).__init__(attrs)
 
 	@property
 	def python_po_files(self):
+		# type: () -> Iterator[str]
 		for path in super(UMCModuleTranslation, self).python_po_files:
 			if os.path.isfile(os.path.join(self['abs_path_to_src_pkg'], os.path.dirname(path), '{}.po'.format(REFERENCE_LANG))):
 				yield path
 
 	@property
 	def js_po_files(self):
+		# type: () -> Iterator[str]
 		for path in super(UMCModuleTranslation, self).js_po_files:
 			if os.path.isfile(os.path.join(self['abs_path_to_src_pkg'], os.path.dirname(path), '{}.po'.format(REFERENCE_LANG))):
 				yield path
 
 	@property
 	def xml_po_files(self):
+		# type: () -> Iterator[Tuple[str, str]]
 		for lang, path in super(UMCModuleTranslation, self).xml_po_files:
 			if os.path.isfile(os.path.join(self['abs_path_to_src_pkg'], os.path.dirname(path), '{}.po'.format(REFERENCE_LANG))):
 				yield lang, path
 
 	def python_mo_destinations(self):
+		# type: () -> Iterator[Tuple[str, str]]
 		for po_file in self.python_po_files:
 			yield os.path.join(self.get('target_language'), self.get('relative_path_src_pkg'), po_file), 'usr/share/locale/{target_language}/LC_MESSAGES/{module_name}.mo'.format(**self)
 
 	def json_targets(self):
+		# type: () -> Iterator[Tuple[str, str]]
 		for js_po in self.js_po_files:
 			yield os.path.join(self.get('target_language'), self.get('relative_path_src_pkg'), js_po), 'usr/share/univention-management-console-frontend/js/umc/modules/i18n/{target_language}/{Module}.json'.format(**self)
 
 	def xml_mo_destinations(self):
+		# type: () -> Iterator[Tuple[str, str]]
 		for _, xml_po in self.xml_po_files:
 			yield os.path.join(self.get('target_language'), self.get('relative_path_src_pkg'), xml_po), 'usr/share/univention-management-console/i18n/{target_language}/{Module}.mo'.format(**self)
 
 	@staticmethod
 	def from_source_package(module_in_source_tree, target_language):
+		# type: (BaseModule, str) -> UMCModuleTranslation
 		try:
 			# read package content with dh_umc
 			module = UMCModuleTranslation._get_module_from_source_package(module_in_source_tree, target_language)
@@ -122,6 +138,7 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 
 	@staticmethod
 	def _read_module_attributes_from_source_package(module):
+		# type: (BaseModule) -> dh_umc.UMC_Module
 		umc_module_definition_file = os.path.join(module.get('abs_path_to_src_pkg'), 'debian/', '{}.umc-modules'.format(module.get('module_name')))
 		with open(umc_module_definition_file, 'r') as fd:
 			def_file = fd.read()
@@ -129,6 +146,7 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 
 	@staticmethod
 	def _get_core_module_from_source_package(module, target_language):
+		# type: (BaseModule, str) -> UMCModuleTranslation
 		attrs = UMCModuleTranslation._read_module_attributes_from_source_package(module)
 		attrs['module_name'] = module.get('module_name')
 		attrs['abs_path_to_src_pkg'] = module.get('abs_path_to_src_pkg')
@@ -140,6 +158,7 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 
 	@staticmethod
 	def _get_module_from_source_package(module, target_language):
+		# type: (BaseModule, str) -> UMCModuleTranslation
 		attrs = UMCModuleTranslation._read_module_attributes_from_source_package(module)
 		for required in (dh_umc.MODULE, dh_umc.PYTHON, dh_umc.DEFINITION, dh_umc.JAVASCRIPT):
 			if required not in attrs:
@@ -164,6 +183,7 @@ class SpecialCase():
 	"""
 
 	def __init__(self, special_case_definition, source_dir, path_to_definition, target_language):
+		# type: (Dict[str, str], str, str, str) -> None
 		# FIXME: this would circumvent custom getters and setter?
 		self.__dict__.update(special_case_definition)
 		def_relative = os.path.relpath(path_to_definition, start=source_dir)
@@ -177,19 +197,20 @@ class SpecialCase():
 		if hasattr(self, 'po_path'):
 			self.new_po_path = self.po_path.format(lang=target_language)
 		else:
-			self.po_subdir = self.po_subdir.format(lang=target_language)
+			self.po_subdir = self.po_subdir.format(lang=target_language)  # type: str
 			self.new_po_path = os.path.join(self.po_subdir, '{}.po'.format(target_language))
-		self.destination = self.destination.format(lang=target_language)
+		self.destination = self.destination.format(lang=target_language)  # type: str
 		self.path_to_definition = path_to_definition
 
 	def _get_files_matching_patterns(self):
+		# type: () -> List[str]
 		try:
 			src_pkg_path = os.path.join(self.source_dir, self.package_dir)
 		except AttributeError:
 			src_pkg_path = os.path.join(os.getcwd())
 			pass
-		matched = list()
-		regexs = list()
+		matched = []  # type: List[str]
+		regexs = []  # type: List[Pattern[str]]
 		for pattern in [os.path.join(src_pkg_path, pattern) for pattern in self.input_files]:
 			try:
 				regexs.append(re.compile(r'{}$'.format(pattern)))
@@ -202,11 +223,12 @@ class SpecialCase():
 		return matched
 
 	def get_source_file_sets(self):
-		files_by_mime = dict()
+		# type: () -> List[sourcefileprocessing.SourceFileSet]
+		files_by_mime = {}  # type: Dict[str, List[str]]
 		with MIMEChecker() as mime:
 			for file_path in self._get_files_matching_patterns():
 				files_by_mime.setdefault(mime.get(file_path), []).append(file_path)
-		source_file_sets = list()
+		source_file_sets = []  # type: List[sourcefileprocessing.SourceFileSet]
 		for mime, file_set in files_by_mime.iteritems():
 			try:
 				source_file_sets.append(sourcefileprocessing.from_mimetype(os.path.join(self.source_dir, self.package_dir), self.binary_package_name, mime, file_set))
@@ -215,6 +237,7 @@ class SpecialCase():
 		return source_file_sets
 
 	def create_po_template(self, output_path=os.path.curdir):
+		# type: (str) -> str
 		base, ext = os.path.splitext(os.path.join(output_path, self.new_po_path))
 		pot_path = '{}.pot'.format(base)
 		message_catalogs.create_empty_po(self.binary_package_name, pot_path)
@@ -239,13 +262,16 @@ class MIMEChecker():
 	}
 
 	def __init__(self):
+		# type: () -> None
 		self._ms = magic.open(magic.MIME_TYPE)
 		self._ms.load()
 
 	def __enter__(self):
+		# type: () -> MIMEChecker
 		return self
 
 	def __exit__(self, exc_type, exc_value, traceback):
+		# type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
 		self._ms.close()
 
 	def get(self, file_path):
@@ -264,12 +290,14 @@ class MIMEChecker():
 
 
 def update_package_translation_files(module, output_dir):
+	# type: (UMCModuleTranslation, str) -> None
 	print("Creating directories and PO files for {module_name} in translation source package".format(**module))
 	start_dir = os.getcwd()
 	try:
 		os.chdir(module.get('abs_path_to_src_pkg'))
 		if not module.get('core'):
 			def _create_po_files(po_files, src_files, language):
+				# type: (Iterable[str], Iterable[str], str) -> None
 				for po_file in po_files:
 					po_path = os.path.join(output_dir, module['relative_path_src_pkg'], po_file)
 					make_parent_dir(po_path)
@@ -299,12 +327,15 @@ def update_package_translation_files(module, output_dir):
 
 
 def write_makefile(all_modules, special_cases, new_package_dir, target_language):
+	# type: (List[UMCModuleTranslation], List[SpecialCase], str, str) -> None
+	mo_targets_list = []  # type: List[str]
+	target_prerequisite = []  # type: List[str]
+
 	def _append_to_target_lists(mo_destination, po_file):
+		# type: (str, str) -> None
 		mo_targets_list.append('$(DESTDIR)/{}'.format(mo_destination))
 		target_prerequisite.append('$(DESTDIR)/{}: {}'.format(mo_destination, po_file))
 
-	mo_targets_list = list()
-	target_prerequisite = list()
 	for module in all_modules:
 		if not module.get('core'):
 			for file_paths in (module.python_mo_destinations, module.json_targets):
@@ -323,6 +354,7 @@ def write_makefile(all_modules, special_cases, new_package_dir, target_language)
 
 
 def translate_special_case(special_case, source_dir, output_dir):
+	# type: (SpecialCase, str, str) -> None
 	path_src_pkg = os.path.join(source_dir, special_case.package_dir)
 	if not os.path.isdir(path_src_pkg):
 		print("Warning: Path defined under 'package_dir' not found. Please check the definitions in the *.univention-l10n file in {}".format(special_case.package_dir))
@@ -335,6 +367,7 @@ def translate_special_case(special_case, source_dir, output_dir):
 
 
 def read_special_case_definition(definition_path, source_tree_path, target_language):
+	# type: (str, str, str) -> Iterator[SpecialCase]
 	with open(definition_path) as fd:
 		try:
 			sc_definitions = json.load(fd)
@@ -345,8 +378,9 @@ def read_special_case_definition(definition_path, source_tree_path, target_langu
 
 
 def get_special_cases_from_srcpkg(source_tree_path, target_language):
+	# type: (str, str) -> List[SpecialCase]
 	special_case_files = glob('debian/*.univention-l10n')
-	special_cases = []
+	special_cases = []  # type: List[SpecialCase]
 	for sc_definitions in special_case_files:
 		for sc in read_special_case_definition(sc_definitions, os.getcwd(), target_language):
 			special_cases.append(sc)
@@ -354,11 +388,12 @@ def get_special_cases_from_srcpkg(source_tree_path, target_language):
 
 
 def get_special_cases_from_checkout(source_tree_path, target_language):
+	# type: (str, str) -> List[SpecialCase]
 	"""
 	Process *.univention-l10n files in the whole branch. Currently they
 	lay 3 (UCS@school) or 4(UCS) directory levels deep in the repository.
 	"""
-	special_cases = []
+	special_cases = []  # type: List[SpecialCase]
 	sc_files = glob(os.path.join(source_tree_path, '*/*/debian/*.univention-l10n')) or glob(os.path.join(source_tree_path, '*/debian/*.univention-l10n'))
 	if not sc_files:
 		raise NoSpecialCaseDefintionsFound()
@@ -368,16 +403,17 @@ def get_special_cases_from_checkout(source_tree_path, target_language):
 
 
 def find_base_translation_modules(startdir, source_dir, module_basefile_name):
+	# type: (str, str, str) -> List[BaseModule]
 	print('looking in %s' % source_dir)
 	print('looking for files matching %s' % module_basefile_name)
 	os.chdir(source_dir)
-	matches = []
+	matches = []  # type: List[str]
 	for root, dirnames, filenames in os.walk('.'):
 		dirnames[:] = [d for d in dirnames if os.path.join(root, d) not in DIR_BLACKLIST]
 		for filename in fnmatch.filter(filenames, "*" + module_basefile_name):
 			matches.append(os.path.join(root, filename))
 
-	base_translation_modules = []
+	base_translation_modules = []  # type: List[BaseModule]
 
 	regex = re.compile(".*/(.*)/debian/.*%s$" % re.escape(module_basefile_name))
 	for match in matches:
@@ -407,6 +443,7 @@ def find_base_translation_modules(startdir, source_dir, module_basefile_name):
 
 
 def make_parent_dir(path):
+	# type: (str) -> None
 	"""If path is a directory path the directory and its parents will be created, if path is a file create its parents will be created."""
 	dir_path = os.path.dirname(path)
 	try:
@@ -417,6 +454,7 @@ def make_parent_dir(path):
 
 
 def write_debian_rules(debian_dir_path):
+	# type: (str) -> None
 	with open(os.path.join(debian_dir_path, 'rules'), 'w') as f:
 		f.write("""#!/usr/bin/make -f
 #
@@ -456,6 +494,7 @@ override_dh_auto_test:
 
 
 def create_new_package(new_package_dir, target_language, target_locale, language_name, startdir):
+	# type: (str, str, str, str, str) -> None
 	new_package_dir_debian = os.path.join(new_package_dir, 'debian')
 	if not os.path.exists(new_package_dir_debian):
 		print("creating directory: %s" % new_package_dir_debian)

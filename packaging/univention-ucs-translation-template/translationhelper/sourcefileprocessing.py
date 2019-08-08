@@ -36,6 +36,10 @@ import message_catalogs
 import polib
 
 import univention.dh_umc as dh_umc
+try:
+	from typing import Iterable  # noqa F401
+except ImportError:
+	pass
 
 
 class UnsupportedSourceType(Exception):
@@ -45,14 +49,17 @@ class UnsupportedSourceType(Exception):
 class SourceFileSet(object):
 
 	def __init__(self, src_pkg_path, binary_pkg_name, files):
+		# type: (str, str, Iterable[str]) -> None
 		self.files = files
 		self.src_pkg_path = src_pkg_path
 		self.binary_pkg_name = binary_pkg_name
 
 	def process_po(self, pot_path):
+		# type: (str) -> None
 		self._create_po_template(pot_path)
 
 	def process_target(self, po_path, output_path):
+		# type: (str, str) -> None
 		if os.path.isabs(output_path):
 			output_path = os.path.relpath(output_path, '/')
 		output_path = os.path.join(os.getcwd(), 'debian', self.binary_pkg_name, output_path)
@@ -62,30 +69,36 @@ class SourceFileSet(object):
 class SourceFilesXgettext(SourceFileSet):
 
 	def _create_po_template(self, gettext_lang, pot_path):
+		# type: (str, str) -> None
 		dh_umc.create_po_file(pot_path, self.binary_pkg_name, self.files, language=gettext_lang)
 
 	def _compile(self, po_path, mo_output_path):
+		# type: (str, str) -> None
 		message_catalogs.compile_mo(po_path, mo_output_path)
 
 
 class SourceFilesShell(SourceFilesXgettext):
 
 	def _create_po_template(self, pot_path):
+		# type: (str) -> None
 		super(SourceFilesShell, self)._create_po_template('Shell', pot_path)
 
 
 class SourceFilesPython(SourceFilesXgettext):
 
 	def _create_po_template(self, pot_path):
+		# type: (str) -> None
 		super(SourceFilesPython, self)._create_po_template('Python', pot_path)
 
 
 class SourceFilesJavaScript(SourceFilesXgettext):
 
 	def _create_po_template(self, pot_path):
+		# type: (str) -> None
 		super(SourceFilesJavaScript, self)._create_po_template('JavaScript', pot_path)
 
 	def _compile(self, po_path, json_output_path):
+		# type: (str, str) -> None
 		"""With UMC and univention-web based applications a custom, JSON-based
 		message format is used."""
 		message_catalogs.po_to_json(po_path, json_output_path)
@@ -94,6 +107,7 @@ class SourceFilesJavaScript(SourceFilesXgettext):
 class SourceFilesHTML(SourceFileSet):
 
 	def _create_po_template(self, pot_path):
+		# type: (str) -> None
 		po_template = polib.POFile()
 		html_parser = etree.HTMLParser()
 		for html_path in self.files:
@@ -114,6 +128,7 @@ class SourceFilesHTML(SourceFileSet):
 				message_catalogs.join_existing('JavaScript', pot_path, html_path)
 
 	def _compile(self, po_path, json_output_path):
+		# type: (str, str) -> None
 		message_catalogs.po_to_json(po_path, json_output_path)
 
 
@@ -127,6 +142,7 @@ class SourceFileSetCreator(object):
 
 	@classmethod
 	def from_mimetype(cls, src_pkg_path, binary_pkg_name, mimetype, files):
+		# type: (str, str, str, Iterable[str]) -> SourceFileSet
 		try:
 			obj = cls.process_by_type[mimetype](src_pkg_path, binary_pkg_name, files)
 		except KeyError:
@@ -136,4 +152,5 @@ class SourceFileSetCreator(object):
 
 
 def from_mimetype(src_pkg_path, binary_pkg_name, mimetype, files):
+	# type: (str, str, str, Iterable[str]) -> SourceFileSet
 	return SourceFileSetCreator.from_mimetype(src_pkg_path, binary_pkg_name, mimetype, files)

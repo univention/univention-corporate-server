@@ -39,6 +39,10 @@ import os
 import subprocess
 
 import univention.dh_umc as dh_umc
+try:
+	from typing import Any, List, Union  # noqa F401
+except ImportError:
+	pass
 
 
 class GettextError(Exception):
@@ -46,6 +50,7 @@ class GettextError(Exception):
 
 
 def _clean_header(po_path):
+	# type: (str) -> None
 	pof = polib.pofile(po_path)
 	pof.header = ""
 	pof.metadata.update({
@@ -56,6 +61,7 @@ def _clean_header(po_path):
 
 
 def concatenate_po(src_po_path, dest_po_path):
+	# type: (str, str) -> None
 	_call_gettext('msgcat',
 		'--unique',
 		src_po_path,
@@ -68,6 +74,7 @@ def concatenate_po(src_po_path, dest_po_path):
 
 
 def create_empty_po(binary_pkg_name, new_po_path):
+	# type: (str, str) -> None
 	make_parent_dir(new_po_path)
 	_call_gettext('xgettext',
 		'--from-code=UTF-8',
@@ -84,11 +91,13 @@ def create_empty_po(binary_pkg_name, new_po_path):
 
 
 def compile_mo(path_to_po, mo_output_path):
+	# type: (str, str) -> None
 	make_parent_dir(mo_output_path)
 	_call_gettext('msgfmt', '--check', '--output={}'.format(mo_output_path), path_to_po)
 
 
 def merge_po(source_po_path, dest_po_path):
+	# type: (str, str) -> None
 	_call_gettext('msgmerge',
 		'--update',
 		'--sort-output',
@@ -100,6 +109,7 @@ def merge_po(source_po_path, dest_po_path):
 
 
 def join_existing(language, output_file, input_files, cwd=os.getcwd()):
+	# type: (str, str, Union[str, List[str]], str) -> None
 	if not os.path.isfile(output_file):
 		raise GettextError("Can't join input files into {}. File does not exist.".format(output_file))
 	if not isinstance(input_files, list):
@@ -111,12 +121,14 @@ def join_existing(language, output_file, input_files, cwd=os.getcwd()):
 
 
 def po_to_json(po_path, json_output_path):
+	# type: (str, str) -> None
 	dh_umc.create_json_file(po_path)
 	make_parent_dir(json_output_path)
 	os.rename(po_path.replace('.po', '.json'), json_output_path)
 
 
 def _call_gettext(*args, **kwargs):
+	# type: (*str, **Any) -> None
 	call = [arg for arg in args]
 	try:
 		subprocess.check_call(call, **kwargs)
@@ -127,6 +139,7 @@ def _call_gettext(*args, **kwargs):
 
 
 def univention_location_lines(pot_path, abs_path_source_pkg):
+	# type: (str, str) -> None
 	po_file = polib.pofile(pot_path)
 	for entry in po_file:
 		modified_occ = []
@@ -137,6 +150,7 @@ def univention_location_lines(pot_path, abs_path_source_pkg):
 
 
 def make_parent_dir(file_path):
+	# type: (str) -> None
 	dir_path = os.path.dirname(file_path)
 	try:
 		os.makedirs(dir_path)
