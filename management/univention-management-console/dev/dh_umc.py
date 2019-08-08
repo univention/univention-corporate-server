@@ -106,7 +106,7 @@ class UMC_Module(dict):
 	def package(self):
 		# type: () -> str
 		"""Return the name of the Debian binary package."""
-		return self.get('package')
+		return self['package']
 
 	@property
 	def python_path(self):
