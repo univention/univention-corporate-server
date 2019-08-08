@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+Build UCS package containing translations for a new language.
+"""
 #
 # Copyright 2013-2019 Univention GmbH
 #
@@ -45,15 +48,16 @@ The translation will be incomplete.'''
 
 
 def parse_args():
+	# type: () -> Values
 	usage = '''%prog [options] -s source_dir -c language_code -l locale -n language_name
 e.g.: -s /path/to/ucs-repository/ -c de -l de_DE.UTF-8:UTF-8 -n Deutsch'''
-	parser = OptionParser(usage=usage)
-	parser.add_option('-s', '--source', action='store', dest='source_dir', help='UCS source dir from which translation files are gathered, e.g. an UCS svn base dir')
-	parser.add_option('-c', '--languagecode', action='store', dest='target_language', help='Target language code (e.g. de)')
-	parser.add_option('-b', '--basefiles', action='store', dest='basefiles', default='.umc-modules', help='xml file basename (default: .umc-modules)')
-	parser.add_option('-l', '--locale', action='store', dest='target_locale', help='Target locale (e.g. de_DE.UTF-8:UTF-8)')
-	parser.add_option('-n', '--language-name', action='store', dest='target_name', help='Language name that is shown in the UMC (e.g. Deutsch)')
-	parser.add_option('-o', '--package-name', action='store', dest='src_pkg_name', help='Determines the name of the generated source package. Default: univention-l10n-{language code}')
+	parser = OptionParser(usage=usage, description=__doc__)
+	parser.add_option('-s', '--source', dest='source_dir', help='UCS source dir from which translation files are gathered, e.g. an UCS svn base dir')
+	parser.add_option('-c', '--languagecode', dest='target_language', help='Target language code (e.g. de)')
+	parser.add_option('-b', '--basefiles', dest='basefiles', default='.umc-modules', help='xml file basename (default: .umc-modules)')
+	parser.add_option('-l', '--locale', dest='target_locale', help='Target locale (e.g. de_DE.UTF-8:UTF-8)')
+	parser.add_option('-n', '--language-name', dest='target_name', help='Language name that is shown in the UMC (e.g. Deutsch)')
+	parser.add_option('-o', '--package-name', dest='src_pkg_name', help='Determines the name of the generated source package. Default: univention-l10n-{language code}')
 
 	(options, args) = parser.parse_args()
 	help_message = 'Use --help to show additional help.'
@@ -75,6 +79,7 @@ e.g.: -s /path/to/ucs-repository/ -c de -l de_DE.UTF-8:UTF-8 -n Deutsch'''
 
 
 def main():
+	# type: () -> None
 	options = parse_args()
 
 	# find all module files and move them to a language specific directory

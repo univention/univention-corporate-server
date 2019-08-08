@@ -50,6 +50,7 @@ from univention import translationhelper as tlh
 
 
 def parse_args():
+	# type: () -> argparse.Namespace
 	parser = argparse.ArgumentParser(description="Generate GNU gettext Portable Objects (PO files) from debian/*.univention-l10n files")
 	parser.add_argument('language_code', help="ISO language code.")
 	args = parser.parse_args()
@@ -57,6 +58,7 @@ def parse_args():
 
 
 def main():
+	# type: () -> None
 	args = parse_args()
 
 	for scase in tlh.get_special_cases_from_srcpkg(os.getcwd(), args.language_code):

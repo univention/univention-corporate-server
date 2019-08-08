@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+Extract UCS overview translations.
+"""
 #
 # Copyright 2016-2019 Univention GmbH
 #
@@ -61,17 +64,14 @@ def write_po_file(ucrv_assingments, file_name):
 
 
 def parse_args():
-	parser = argparse.ArgumentParser()
+	# type: () -> argparse.Namespace
+	parser = argparse.ArgumentParser(description=__doc__)
 	parser.add_argument(
-		'-s',
-		'--source',
-		type=str,
-		help="SVN checkout to search for overview page translations",
+		'--source', '-s',
+		help="UCS source code checkout to search for overview page translations",
 		required=True)
 	parser.add_argument(
-		'-l',
-		'--language_code',
-		type=str,
+		'--language_code', '-l',
 		help="two char language code, e.g. 'fr'",
 		required=True)
 	args = parser.parse_args()
@@ -79,6 +79,7 @@ def parse_args():
 
 
 def main():
+	# type: () -> None
 	args = parse_args()
 
 	cmd = [

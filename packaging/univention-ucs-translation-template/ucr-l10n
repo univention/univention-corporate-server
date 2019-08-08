@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+Load UCS overview translations into UCR.
+"""
 #
 # Copyright 2016-2019 Univention GmbH
 #
@@ -35,15 +38,17 @@ from univention.config_registry import ConfigRegistry
 
 
 def parse_args():
-	parser = argparse.ArgumentParser()
-	parser.add_argument('language_code',
-						type=str,
-						help="two char language code, e.g. 'fr'")
+	# type: () -> argparse.Namespace
+	parser = argparse.ArgumentParser(description=__doc__)
+	parser.add_argument(
+		'language_code',
+		help="two char language code, e.g. 'fr'")
 	args = parser.parse_args()
 	return args
 
 
 def main():
+	# type: () -> None
 	args = parse_args()
 
 	gettext.translation('ucr-variables', languages=[args.language_code]).install()
