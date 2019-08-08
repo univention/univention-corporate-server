@@ -1,3 +1,16 @@
+univention-s4-connector (13.0.2-31) unstable; urgency=medium
+
+  * Bug #49956: In case sync_from_ucs() receives a delete for a container
+    object that has sub-objects in Samba/AD (e.g. a GPO), it tries
+    to recurse though the leaf objects that it finds in Samba/AD and
+    calls delete_in_s4() for each of the leaf objects. In this case
+    the OpenLDAP entryUUID is unknown, either becasue it has already
+    been deleted in OpenLDAP or becasue it naver has been synchronized to
+    OpenLDAP anyway. This change attempts to fix this, by checking if the
+    entryUUID is non-empty, before attempting to use it for locking.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 Aug 2019 15:01:00 +0200
+
 univention-s4-connector (13.0.2-30) unstable; urgency=medium
 
   * Bug #43068: remove dead code

@@ -2351,7 +2351,7 @@ class s4(univention.s4connector.ucs):
 				ud.debug(ud.LDAP, ud.PROCESS, "Unable to sync %s (GUID: %s). The object is currently locked." % (object['dn'], objectGUID))
 				return False
 
-		entryUUID = object['attributes'].get('entryUUID')[0]
+		entryUUID = object['attributes'].get('entryUUID', [None])[0]  # may be empty for back_mapped_subobject for leaf object delete_in_s4
 
 		#
 		# ADD
@@ -2360,7 +2360,7 @@ class s4(univention.s4connector.ucs):
 			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: add object: %s" % object['dn'])
 
 			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: lock UCS entryUUID: %s" % entryUUID)
-			if not self.lockingdb.is_ucs_locked(entryUUID):
+			if entryUUID and not self.lockingdb.is_ucs_locked(entryUUID):
 				self.lockingdb.lock_ucs(entryUUID)
 
 			self.addToCreationList(object['dn'])
@@ -2616,7 +2616,8 @@ class s4(univention.s4connector.ucs):
 			return False
 
 		ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: unlock UCS entryUUID: %s" % entryUUID)
-		self.lockingdb.unlock_ucs(entryUUID)
+		if entryUUID:
+			self.lockingdb.unlock_ucs(entryUUID)
 
 		self._check_dn_mapping(pre_mapped_ucs_dn, object['dn'])
 
@@ -2639,7 +2640,6 @@ class s4(univention.s4connector.ucs):
 		try:
 			objectGUID = self._get_objectGUID(object['dn'])
 			self.lo_s4.lo.delete_s(compatible_modstring(object['dn']))
-			self.update_deleted_cache_after_removal(object.get('attributes').get('entryUUID')[0], objectGUID)
 		except ldap.NO_SUCH_OBJECT:
 			pass  # object already deleted
 		except ldap.NOT_ALLOWED_ON_NONLEAF:
@@ -2659,11 +2659,7 @@ class s4(univention.s4connector.ucs):
 					continue
 				ud.debug(ud.LDAP, ud.INFO, "delete: %s" % result[0])
 				subobject_s4 = {'dn': result[0], 'modtype': 'delete', 'attributes': result[1]}
-				key = None
-				for k in self.property.keys():
-					if self.modules[k].identify(result[0], result[1]):
-						key = k
-						break
+				key = self.__identify(subobject_s4)
 				back_mapped_subobject = self._object_mapping(key, subobject_s4)
 				ud.debug(ud.LDAP, ud.WARN, "delete subobject: %s" % back_mapped_subobject['dn'])
 				if not self._ignore_object(key, back_mapped_subobject):
@@ -2677,3 +2673,8 @@ class s4(univention.s4connector.ucs):
 						return False
 
 			return self.delete_in_s4(object, property_type)
+		entryUUID = object.get('attributes').get('entryUUID', [None])[0]
+		if entryUUID:
+			self.update_deleted_cache_after_removal(entryUUID, objectGUID)
+		else:
+			ud.debug(ud.LDAP, ud.INFO, "delete_in_s4: Object without entryUUID: %s" % (object['dn'],))
