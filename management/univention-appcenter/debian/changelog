@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-48) unstable; urgency=medium
+
+  * Bug #48698: Fix user visible spelling errors
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 08 Aug 2019 05:46:38 +0200
+
 univention-appcenter (8.0.11-47) unstable; urgency=medium
 
   * Bug #49955: the 'search' action does not send uuid and system-uuid anymore

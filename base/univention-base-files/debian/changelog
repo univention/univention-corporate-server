@@ -1,3 +1,9 @@
+univention-base-files (8.0.0-5) unstable; urgency=medium
+
+  * Bug #48698: Fix user visible spelling errors
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 08 Aug 2019 05:46:37 +0200
+
 univention-base-files (8.0.0-4) unstable; urgency=medium
 
   * Bug #48508: allow multiple syslog remotes

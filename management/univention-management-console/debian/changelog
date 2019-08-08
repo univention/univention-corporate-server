@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-34) unstable; urgency=medium
+
+  * Bug #48698: Fix user visible spelling errors
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 08 Aug 2019 05:46:39 +0200
+
 univention-management-console (11.0.4-33) unstable; urgency=medium
 
   * Bug #47106: fix multiple parallel authentication requests in umcp.Client

@@ -1,3 +1,9 @@
+univention-ldap (15.0.0-22) unstable; urgency=medium
+
+  * Bug #48698: Fix user visible spelling errors
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 08 Aug 2019 05:46:39 +0200
+
 univention-ldap (15.0.0-21) unstable; urgency=medium
 
   * Bug #49387: allow further groups via UCR to acceess the cn=monitor

@@ -1,3 +1,9 @@
+univention-printserver (12.0.1-13) unstable; urgency=medium
+
+  * Bug #48698: Fix user visible spelling errors
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 08 Aug 2019 05:46:40 +0200
+
 univention-printserver (12.0.1-12) unstable; urgency=medium
 
   * Bug #48947: fix typo in last commit

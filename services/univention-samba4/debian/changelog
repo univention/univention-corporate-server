@@ -1,3 +1,9 @@
+univention-samba4 (8.0.0-28) unstable; urgency=medium
+
+  * Bug #48698: Fix user visible spelling errors
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 08 Aug 2019 05:46:40 +0200
+
 univention-samba4 (8.0.0-27) unstable; urgency=medium
 
   * Bug #42241: re add systemd definition otherwise the systemd service is not

@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (5.0.1-14) unstable; urgency=medium
+
+  * Bug #48698: Fix user visible spelling errors
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 08 Aug 2019 05:46:39 +0200
+
 univention-management-console-module-diagnostic (5.0.1-13) unstable; urgency=medium
 
   * Bug #48002: abort progress bars on module closing

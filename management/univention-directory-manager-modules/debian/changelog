@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.13-6) unstable; urgency=medium
+
+  * Bug #48698: Fix user visible spelling errors
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 08 Aug 2019 05:46:38 +0200
+
 univention-directory-manager-modules (14.0.13-5) unstable; urgency=medium
 
   * Bug #49092: Add new attributes for s4connector mapping
