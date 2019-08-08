@@ -49,10 +49,16 @@ import os
 from univention import translationhelper as tlh
 
 
-if __name__ == '__main__':
+def parse_args():
 	parser = argparse.ArgumentParser(description="Generate GNU gettext Portable Objects (PO files) from debian/*.univention-l10n files")
 	parser.add_argument('language_code', help="ISO language code.")
 	args = parser.parse_args()
+	return args
+
+
+def main():
+	args = parse_args()
+
 	for scase in tlh.get_special_cases_from_srcpkg(os.getcwd(), args.language_code):
 		pot_path = scase.create_po_template()
 		if os.path.isfile(scase.new_po_path):
@@ -61,3 +67,7 @@ if __name__ == '__main__':
 		else:
 			os.rename(pot_path, scase.new_po_path)
 		tlh.message_catalogs.univention_location_lines(scase.new_po_path, scase.package_dir)
+
+
+if __name__ == '__main__':
+	main()

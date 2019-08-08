@@ -93,7 +93,7 @@ def merge_po_file_trees(source_tree, target_tree):
 	return pos_delete_upstream, new_pos
 
 
-if __name__ == '__main__':
+def parse_args():
 	parser = argparse.ArgumentParser(description="Merge upstream changes in translation files to existing translation source package.")
 	parser.add_argument('upstream', type=str, help="Source from upstream containing changes")
 	parser.add_argument('translation', type=str, help="Translation source package as merge target.")
@@ -104,6 +104,13 @@ if __name__ == '__main__':
 	for dir in (args.translation, args.upstream):
 		if not os.path.isdir(dir):
 			sys.exit("Error: {} is not a directory or doesn't exist. Exiting.".format(dir))
+
+
+	return args
+
+
+def main():
+	args = parse_args()
 
 	match = re.match(r'.*-([a-zA-Z]{2})', os.path.basename(args.translation))
 	if not match:
@@ -151,3 +158,7 @@ Exiting.''')
 		print('\n'.join(new))
 	shutil.rmtree(output_dir)
 	tlh.write_makefile(modules, special_cases, args.translation, lang_code)
+
+
+if __name__ == '__main__':
+	main()

@@ -33,12 +33,19 @@ import gettext
 
 from univention.config_registry import ConfigRegistry
 
-if __name__ == '__main__':
+
+def parse_args():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('language_code',
 						type=str,
 						help="two char language code, e.g. 'fr'")
 	args = parser.parse_args()
+	return args
+
+
+def main():
+	args = parse_args()
+
 	gettext.translation('ucr-variables', languages=[args.language_code]).install()
 	ucr = ConfigRegistry()
 	ucr.load()
@@ -50,3 +57,7 @@ if __name__ == '__main__':
 			ucrvs_translated['{}/{}'.format(ucrv, args.language_code)] = translation
 	ucr.update(ucrvs_translated)
 	ucr.save()
+
+
+if __name__ == '__main__':
+	main()
