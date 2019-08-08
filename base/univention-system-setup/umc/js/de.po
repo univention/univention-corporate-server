@@ -181,7 +181,7 @@ msgid "Configuration finished"
 msgstr "Konfiguration abgeschlossen"
 
 #: umc/js/setup/InterfaceWizard.js:253
-msgid "Configuration of IPv4 and IPv6 adresses"
+msgid "Configuration of IPv4 and IPv6 addresses"
 msgstr "Konfiguration der IPv4 und IPv6 Adressen"
 
 #: umc/js/setup/CertificatePage.js:79
@@ -1401,12 +1401,12 @@ msgstr "setzen"
 #~ msgstr ""
 #~ "Dieses System wird Teil einer existierenden Active-Directory-Domäne."
 
-#~ msgid "This sytem will join an existing AD domain with the role <i>%s</i>."
+#~ msgid "This system will join an existing AD domain with the role <i>%s</i>."
 #~ msgstr ""
 #~ "Das System tritt einer existierenden AD-Domäne mit der Rolle <i>%s</i> "
 #~ "bei."
 
-#~ msgid "This sytem will join an existing UCS domain with the role <i>%s</i>."
+#~ msgid "This system will join an existing UCS domain with the role <i>%s</i>."
 #~ msgstr ""
 #~ "Das System tritt einer existierenden UCS-Domäne mit der Rolle <i>%s</i> "
 #~ "bei."

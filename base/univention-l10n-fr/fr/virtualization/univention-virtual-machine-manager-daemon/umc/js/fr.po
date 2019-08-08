@@ -214,7 +214,7 @@ msgstr ""
 "partition LVM ou un partage (par exemple utilisant iSCSI, NFS ou CIFS)."
 
 #: umc/js/uvmm/SnapshotGrid.js:141 umc/js/uvmm/SnapshotGrid.js:256
-msgid "An error ocurred during processing your request."
+msgid "An error occurred during processing your request."
 msgstr "Une erreur est apparue lors du traitement de votre requête."
 
 #: umc/js/uvmm/types.js:138
@@ -330,7 +330,7 @@ msgid "Configure Subnet"
 msgstr "Configurer le sous-réseau"
 
 #: umc/js/uvmm/DriveGrid.js:294
-msgid "Configure cache behaviour of host."
+msgid "Configure cache behavior of host."
 msgstr "Configurer le comportement du cache de l'hôte."
 
 #: umc/js/uvmm.js:1672
@@ -1331,7 +1331,7 @@ msgstr ""
 #: umc/js/uvmm/DriveGrid.js:361
 msgid ""
 "The selected drive seems to be attached to other virtual machines and "
-"therefor should not be deleted."
+"therefore should not be deleted."
 msgstr ""
 "Le disque sélectionné semble être attaché à d'autres machines virtuelles et "
 "ne peut, par conséquent, pas être supprimé."
@@ -1346,7 +1346,7 @@ msgstr ""
 
 #: umc/js/uvmm/InterfaceWizard.js:84
 msgid ""
-"The source is the name of the network interface on the phyiscal server that "
+"The source is the name of the network interface on the physical server that "
 "is configured for bridging. By default it is br0."
 msgstr ""
 "La source est le nom de l'interface réseau configurée sur le serveur "

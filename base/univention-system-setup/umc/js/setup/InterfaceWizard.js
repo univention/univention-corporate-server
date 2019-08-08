@@ -250,7 +250,7 @@ define([
 				}, {
 					name: 'network',
 					headerText: _('Network interface configuration'),
-					helpText: _('Configuration of IPv4 and IPv6 adresses'),
+					helpText: _('Configuration of IPv4 and IPv6 addresses'),
 					widgets: [{
 						type: MultiInput,
 						name: 'ip4',

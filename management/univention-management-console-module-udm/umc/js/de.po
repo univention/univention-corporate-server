@@ -39,7 +39,7 @@ msgstr "<b>Warnung!</b>"
 #: umc/js/udm/UsernameMaxLengthChecker.js:45
 msgid ""
 "<b>Warning:</b> The user name is longer than {length} characters which makes "
-"a login on Windows clients imposible. Please consider shortening the user "
+"a login on Windows clients impossible. Please consider shortening the user "
 "name."
 msgstr ""
 "<b>Warnung:</b> Der Benutzername hat mehr als {length} Zeichen. Das Anmelden "

@@ -1194,7 +1194,7 @@ define([
 				if (this._isRoleMaster()) {
 					msg = _('Install the latest patch level, errata and app updates after the setup.');
 				} else if (this._isRoleNonMaster()) {
-					msg = _('Update system to the UCS release version of the master domain conroller and install all available errata and app updates after the setup.');
+					msg = _('Update system to the UCS release version of the master domain controller and install all available errata and app updates after the setup.');
 				}
 			}
 			if (msg) {
@@ -1837,9 +1837,9 @@ define([
 					if (!this._domainHasMaster) {
 						roleLabel = _('DC Master');
 					}
-					msg += _('This sytem will join an existing AD domain with the role <i>%s</i>.', roleLabel);
+					msg += _('This system will join an existing AD domain with the role <i>%s</i>.', roleLabel);
 				} else {
-					msg += _('This sytem will join an existing UCS domain with the role <i>%s</i>.', roleLabel);
+					msg += _('This system will join an existing UCS domain with the role <i>%s</i>.', roleLabel);
 				}
 			}
 			msg += '</p>';

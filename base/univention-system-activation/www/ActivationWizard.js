@@ -89,7 +89,7 @@ define([
 					headerText: _('Activation of %(appliance_name)s Appliance', this.entries),
 					widgets: [{
 						type: Text,
-						content: _('A license file has been sent to <strong class="email-address">%s</strong>. This file is necessary to activate the system. For this, please carry out the following steps: <ol><li>Open the email.</li><li>Save the attachement (ucs.license) on your computer.</li><li>Click the button \'Upload license file\'.</li><li>Select the file (ucs.license) you just saved.</li><li>Confirm the selection.</li></ol>Once the activation has been finished your email address will be sent to the app provider. The app provider may contact you.', [this.entries.email || _('your email address')]),
+						content: _('A license file has been sent to <strong class="email-address">%s</strong>. This file is necessary to activate the system. For this, please carry out the following steps: <ol><li>Open the email.</li><li>Save the attachment (ucs.license) on your computer.</li><li>Click the button \'Upload license file\'.</li><li>Select the file (ucs.license) you just saved.</li><li>Confirm the selection.</li></ol>Once the activation has been finished your email address will be sent to the app provider. The app provider may contact you.', [this.entries.email || _('your email address')]),
 						name: 'helpText'
 					}, {
 						type: Text,
@@ -255,7 +255,7 @@ define([
 				error_details.innerHTML = err.response.data;
 				error_details = error_details.getElementsByTagName('span')[0].innerText;
 			} else {
-				error_details = _('An unknown error occured. It is possible that a browser addon blocks sending the request to "license.univention.de". More information how to avoid this error can be found <a href="https://help.univention.com/t/7698" target="_blank" rel="noreferrer noopener">in our support database</a>.');
+				error_details = _('An unknown error occurred. It is possible that a browser addon blocks sending the request to "license.univention.de". More information how to avoid this error can be found <a href="https://help.univention.com/t/7698" target="_blank" rel="noreferrer noopener">in our support database</a>.');
 			}
 			var error_msg = _('Error ') + status_code + ': ' + error_details;
 			this._showError(error_msg);

@@ -245,7 +245,7 @@ class Instance(Base):
 			try:
 				self.connect()
 			except UMC_Error:
-				raise UMC_Error(_('Connection to the dabase lost.\n\n%s') % (_server_not_running_msg(),))
+				raise UMC_Error(_('Connection to the database lost.\n\n%s') % (_server_not_running_msg(),))
 
 	@simple_response
 	def reinit(self):

@@ -50,7 +50,7 @@ msgstr ""
 
 #: umc/js/sysinfo.js:169
 msgid ""
-"<p>The collected information can be transfered to Univention by uploading "
+"<p>The collected information can be transferred to Univention by uploading "
 "the data or by sending it via mail. Please select the corresponding option.</"
 "p>"
 msgstr ""
@@ -59,7 +59,7 @@ msgstr ""
 
 #: umc/js/sysinfo.js:115
 msgid ""
-"<p>The following information has been collected and will be transfered to "
+"<p>The following information has been collected and will be transferred to "
 "Univention with your acceptance.</p>"
 msgstr ""
 "<p>Die folgenden Informationen wurden ermittelt und werden mit Ihrer "
@@ -67,7 +67,7 @@ msgstr ""
 
 #: umc/js/sysinfo.js:265
 msgid ""
-"<p>The information could not be transfered to Univention.</p><p>You can send "
+"<p>The information could not be transferred to Univention.</p><p>You can send "
 "them as email!</p>"
 msgstr ""
 "<p>Die Informationen konnten nicht an Univention übertragen werden.</"
@@ -75,7 +75,7 @@ msgstr ""
 
 #: umc/js/sysinfo.js:189
 msgid ""
-"<p>The information were transfered to Univention successfully.</p><p>Thank "
+"<p>The information were transferred to Univention successfully.</p><p>Thank "
 "you very much for your support!</p>"
 msgstr ""
 "<p>Die Informationen wurden erfolgreich an Univention übertragen.</"
@@ -206,7 +206,7 @@ msgid "Transfer via mail"
 msgstr "Übertragung via Mail"
 
 #: umc/js/sysinfo.js:184
-msgid "Transfered successfully"
+msgid "Transferred successfully"
 msgstr "Übertragung erfolgreich"
 
 #: umc/js/sysinfo.js:176

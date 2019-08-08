@@ -1181,13 +1181,13 @@ msgstr ""
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1801
 #, javascript-format
-msgid "This sytem will join an existing AD domain with the role <i>%s</i>."
+msgid "This system will join an existing AD domain with the role <i>%s</i>."
 msgstr ""
 "Das System tritt einer existierenden AD-Domäne mit der Rolle <i>%s</i> bei."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1803
 #, javascript-format
-msgid "This sytem will join an existing UCS domain with the role <i>%s</i>."
+msgid "This system will join an existing UCS domain with the role <i>%s</i>."
 msgstr ""
 "Das System tritt einer existierenden UCS-Domäne mit der Rolle <i>%s</i> bei."
 
@@ -1225,7 +1225,7 @@ msgstr "System nach der Einrichtung aktualisieren"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1158
 msgid ""
-"Update system to the UCS release version of the master domain conroller and "
+"Update system to the UCS release version of the master domain controller and "
 "install all available errata and app updates after the setup."
 msgstr ""
 "System nach der Einrichtung auf die Release Version des Domänencontroller "
