@@ -236,9 +236,9 @@ class SpecialCase():
 				files_by_mime.setdefault(mime.get(file_path), []).append(file_path)
 
 		source_file_sets = []  # type: List[sourcefileprocessing.SourceFileSet]
-		for mime, file_set in files_by_mime.iteritems():
+		for mime_type, file_set in files_by_mime.iteritems():
 			try:
-				source_file_sets.append(sourcefileprocessing.from_mimetype(os.path.join(self.source_dir, self.package_dir), self.binary_package_name, mime, file_set))
+				source_file_sets.append(sourcefileprocessing.from_mimetype(os.path.join(self.source_dir, self.package_dir), self.binary_package_name, mime_type, file_set))
 			except sourcefileprocessing.UnsupportedSourceType:
 				continue
 
