@@ -62,7 +62,8 @@ def _clean_header(po_path):
 
 def concatenate_po(src_po_path, dest_po_path):
 	# type: (str, str) -> None
-	_call_gettext('msgcat',
+	_call_gettext(
+		'msgcat',
 		'--unique',
 		src_po_path,
 		dest_po_path,
@@ -76,7 +77,8 @@ def concatenate_po(src_po_path, dest_po_path):
 def create_empty_po(binary_pkg_name, new_po_path):
 	# type: (str, str) -> None
 	make_parent_dir(new_po_path)
-	_call_gettext('xgettext',
+	_call_gettext(
+		'xgettext',
 		'--from-code=UTF-8',
 		'--force-po',
 		'--sort-output',
@@ -98,7 +100,8 @@ def compile_mo(path_to_po, mo_output_path):
 
 def merge_po(source_po_path, dest_po_path):
 	# type: (str, str) -> None
-	_call_gettext('msgmerge',
+	_call_gettext(
+		'msgmerge',
 		'--update',
 		'--sort-output',
 		dest_po_path,

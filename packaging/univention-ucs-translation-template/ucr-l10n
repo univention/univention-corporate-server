@@ -52,14 +52,17 @@ def main():
 	args = parse_args()
 
 	_ = gettext.translation('ucr-variables', languages=[args.language_code]).gettext
+
 	ucr = ConfigRegistry()
 	ucr.load()
 	overview_ucrvs = {k: v for k, v in ucr.items() if 'ucs/web/overview/entries' in k}
+
 	ucrvs_translated = {}
 	for ucrv, value in overview_ucrvs.items():
 		translation = _(value)
 		if translation != value:
 			ucrvs_translated['{}/{}'.format(ucrv, args.language_code)] = translation
+
 	ucr.update(ucrvs_translated)
 	ucr.save()
 

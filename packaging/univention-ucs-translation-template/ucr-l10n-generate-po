@@ -50,8 +50,7 @@ def write_po_file(ucrv_assingments, file_name):
 	# type: (List[Tuple[str, str]], str) -> None
 	pof = polib.POFile(check_for_duplicates=True)
 	for ucrv, value in ucrv_assingments:
-		po_ent = polib.POEntry(occurrences=[(ucrv, None)],
-			msgid=value)
+		po_ent = polib.POEntry(occurrences=[(ucrv, None)], msgid=value)
 		try:
 			pof.append(po_ent)
 		except ValueError:
@@ -89,10 +88,12 @@ def main():
 		r'overview/.*\(link\|description\|label\)[=?]',
 		args.source]
 	cmd.extend(['--exclude-dir={}'.format(dname) for dname in DIR_BLACKLIST])
+
 	try:
 		out = subprocess.check_output(cmd)
 	except subprocess.CalledProcessError as exc:
 		raise SystemExit('Failed to execute grep')
+
 	out = [line.strip() for line in out.split('\n') if line]
 	ucrv_assingments = []  # type: List[Tuple[str, str]]
 	for line in out:
@@ -101,6 +102,7 @@ def main():
 		matches = UCR_ASSIGNMENT.match(line)
 		if not matches:
 			sys.exit('Error: Received unexpected input from grep:\n{}\n'.format(line))
+
 		ucrv_assingments.append(matches.groups())  # type: ignore
 
 	write_po_file(ucrv_assingments, 'ucr-l10n.po')

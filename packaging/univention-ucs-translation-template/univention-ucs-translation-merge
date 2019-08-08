@@ -90,6 +90,7 @@ def merge_po_file_trees(source_tree, target_tree):
 	# merge upstream changes...
 	for po_file in upstream_pos:
 		_msgmerge(os.path.join(source_tree, po_file), os.path.join(target_tree, po_file))
+
 	return pos_delete_upstream, new_pos
 
 
@@ -105,7 +106,6 @@ def parse_args():
 	for dir in (args.translation, args.upstream):
 		if not os.path.isdir(dir):
 			sys.exit("Error: {} is not a directory or doesn't exist. Exiting.".format(dir))
-
 
 	return args
 
@@ -138,6 +138,7 @@ end with two character language code, e.g. univention-l10n-fr. Exiting.""")
 		module = tlh.UMCModuleTranslation.from_source_package(module_attrs, lang_code)
 		modules.append(module)
 		tlh.update_package_translation_files(module, output_dir)
+
 	# special cases, e.g. univention-management-console-frontend
 	special_cases = []  # type: List[tlh.SpecialCase]
 	try:
