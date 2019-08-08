@@ -444,11 +444,12 @@ def find_base_translation_modules(startdir, source_dir, module_basefile_name):
 
 			package_dir = os.path.dirname(os.path.dirname(match))
 			print("Found package: %s" % package_dir)
-			module = {}
-			module['module_name'] = modulename
-			module['binary_package_name'] = packagename
-			module['abs_path_to_src_pkg'] = os.path.abspath(package_dir)
-			module['relative_path_src_pkg'] = os.path.relpath(package_dir)
+			module = {
+				'module_name': modulename,
+				'binary_package_name': packagename,
+				'abs_path_to_src_pkg': os.path.abspath(package_dir),
+				'relative_path_src_pkg': os.path.relpath(package_dir),
+			}  # type: BaseModule
 			base_translation_modules.append(module)
 		else:
 			print("could not obtain packagename from directory %s" % match)
