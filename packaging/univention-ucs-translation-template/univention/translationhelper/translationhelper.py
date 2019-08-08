@@ -44,8 +44,8 @@ import traceback
 
 import univention.debhelper as dh_ucs
 import univention.dh_umc as dh_umc
-import sourcefileprocessing
-import message_catalogs
+from . import sourcefileprocessing
+from . import message_catalogs
 try:
 	from typing import Any, Dict, Iterable, Iterator, List, Optional, Pattern, Tuple, Type  # noqa F401
 	from types import TracebackType  # noqa
