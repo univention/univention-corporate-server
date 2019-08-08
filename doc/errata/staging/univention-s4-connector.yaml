@@ -26,4 +26,5 @@ desc: |
  * A reject is prevented when trying to add a group which is already
    removed in UCS.
  * Fixed access to undefined variable in the sync_krbgt script.
-bug: [26501, 49865, 49092, 49905, 49850, 36633]
+ * Unused code has been removed.
+bug: [26501, 49865, 49092, 49905, 49850, 36633, 43068]
