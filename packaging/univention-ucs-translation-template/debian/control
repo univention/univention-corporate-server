@@ -23,6 +23,8 @@ Depends: ${misc:Depends}, ${python:Depends}, ${python3:Depends},
  python-univention-config-registry,
  python3-univention-config-registry
 Description: UCS Management Console translation files
+ This package contains tools to build localization data.
+ .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
@@ -32,6 +34,8 @@ Package: univention-l10n-tools
 Architecture: all
 Depends: ${misc:Depends}
 Description: Helper tools for localization of UCS
+ This package contains tools to register a new localization of UCS.
+ .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
