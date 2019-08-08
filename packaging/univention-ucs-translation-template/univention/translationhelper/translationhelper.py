@@ -154,10 +154,10 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 		attrs['module_name'] = module.get('module_name')
 		attrs['abs_path_to_src_pkg'] = module.get('abs_path_to_src_pkg')
 		attrs['relative_path_src_pkg'] = module.get('relative_path_src_pkg')
-		module = cls(attrs, target_language)
-		if module.module_name != 'umc-core' or not module.xml_categories:
+		umc_module = cls(attrs, target_language)
+		if umc_module.module_name != 'umc-core' or not umc_module.xml_categories:
 			raise ValueError('Module definition does not match core module')
-		return module
+		return umc_module
 
 	@classmethod
 	def _get_module_from_source_package(cls, module, target_language):
