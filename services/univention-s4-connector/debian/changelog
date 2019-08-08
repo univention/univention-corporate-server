@@ -1,6 +1,6 @@
 univention-s4-connector (13.0.2-34) unstable; urgency=medium
 
-  * Bug #49918: Fix format string error in log mail
+  * Bug #49918: Fix format string error in log message
 
  -- Arvid Requate <requate@univention.de>  Thu, 08 Aug 2019 17:36:33 +0200
 
