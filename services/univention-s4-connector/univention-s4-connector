@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Univention S4 Connector
-#  Start script for the AD Conenctor
+#  Start script for the S4 Conenctor
 #
 # Copyright 2004-2019 Univention GmbH
 #
@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 
-# before starting the ad connector, generate the mapping file
+# before starting the s4 connector, generate the mapping file
 cat /etc/univention/connector/s4/mapping | univention-config-registry filter --encode-utf8 >/etc/univention/connector/s4/mapping.py
 
 /usr/bin/python2.7 -W ignore -m univention.s4connector.s4.main
