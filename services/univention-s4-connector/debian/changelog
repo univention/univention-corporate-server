@@ -1,3 +1,11 @@
+univention-s4-connector (13.0.2-32) unstable; urgency=medium
+
+  * Bug #48410: Include /etc/univention/connector/s4/localmapping.py in
+  	mapping.py to support extensibility of the mapping without overwriting
+  	mapping.py itself
+
+ -- Florian Best <best@univention.de>  Thu, 08 Aug 2019 15:21:23 +0200
+
 univention-s4-connector (13.0.2-31) unstable; urgency=medium
 
   * Bug #49956: In case sync_from_ucs() receives a delete for a container

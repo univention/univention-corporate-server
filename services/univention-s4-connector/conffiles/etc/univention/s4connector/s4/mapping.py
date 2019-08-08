@@ -30,6 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import os
+import imp
+
 import univention.s4connector.s4
 import univention.s4connector.s4.mapping
 import univention.s4connector.s4.password
@@ -1207,5 +1210,9 @@ if ignore_filter:
 		),
 }
 
-
-
+try:
+	mapping_hook = imp.load_source('localmapping', os.path.join(os.path.dirname(__file__), 'localmapping.py')).mapping_hook
+except (IOError, AttributeError):
+	pass
+else:
+	s4_mapping = mapping_hook(s4_mapping)

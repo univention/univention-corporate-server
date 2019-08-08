@@ -27,4 +27,8 @@ desc: |
    removed in UCS.
  * Fixed access to undefined variable in the sync_krbgt script.
  * Unused code has been removed.
-bug: [26501, 49865, 49092, 49905, 49850, 36633, 43068]
+ * The file /etc/univention/connector/s4/localmapping.py is now included in
+   mapping.py to support adjusting the mapping dynamically. It may contain a
+   python function mapping_hook(s4_mapping) which can return a modified
+   mapping.
+bug: [26501, 49865, 49092, 49905, 49850, 36633, 43068, 48410]
