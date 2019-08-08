@@ -2525,7 +2525,8 @@ class s4(univention.s4connector.ucs):
 			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: add object: %s" % object['dn'])
 
 			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: lock UCS entryUUID: %s" % entryUUID)
-			self.lockingdb.lock_ucs(entryUUID)
+			if not self.lockingdb.is_ucs_locked(entryUUID):
+				self.lockingdb.lock_ucs(entryUUID)
 
 			self.addToCreationList(object['dn'])
 

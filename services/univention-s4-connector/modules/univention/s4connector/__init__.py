@@ -1534,7 +1534,8 @@ class ucs:
 			result = False
 			if object['modtype'] == 'add':
 				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: lock S4 guid: %s" % guid)
-				self.lockingdb.lock_s4(guid)
+				if not self.lockingdb.is_s4_locked(guid):
+					self.lockingdb.lock_s4(guid)
 
 			if hasattr(self.property[property_type], "ucs_sync_function"):
 				result = self.property[property_type].ucs_sync_function(self, property_type, object)
