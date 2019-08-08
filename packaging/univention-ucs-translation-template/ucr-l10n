@@ -51,7 +51,7 @@ def main():
 	# type: () -> None
 	args = parse_args()
 
-	gettext.translation('ucr-variables', languages=[args.language_code]).install()
+	_ = gettext.translation('ucr-variables', languages=[args.language_code]).gettext
 	ucr = ConfigRegistry()
 	ucr.load()
 	overview_ucrvs = {k: v for k, v in ucr.items() if 'ucs/web/overview/entries' in k}
