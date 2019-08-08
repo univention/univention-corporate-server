@@ -34,6 +34,7 @@
 from optparse import OptionParser
 import os
 import ldap
+import time
 import sqlite3
 import sys
 
@@ -43,8 +44,10 @@ from samba.ndr import ndr_unpack
 import univention.connector.ad
 from univention.config_registry import ConfigRegistry
 
+
 class GUIDNotFound(BaseException):
 	pass
+
 
 class DNNotFound(BaseException):
 	pass
@@ -122,7 +125,7 @@ class ad(univention.connector.ad.ad):
 					res = self.__search_ad(base=targetdn, scope=ldap.SCOPE_BASE, filter=ldapfilter, attrlist=["objectGUID", "uSNChanged"])
 
 					for msg in res:
-						if not msg[0]:  ## Referral
+						if not msg[0]:  # Referral
 							continue
 						guid_blob = msg[1]["objectGUID"][0]
 						guid = ndr_unpack(misc.GUID, guid_blob)
@@ -150,7 +153,7 @@ class ad(univention.connector.ad.ad):
 				res = self.__search_ad(base=ldapbase, scope=ldap.SCOPE_SUBTREE, filter=ldapfilter, attrlist=["objectGUID", "uSNChanged"])
 
 				for msg in res:
-					if not msg[0]:  ## Referral
+					if not msg[0]:  # Referral
 						continue
 					guid_blob = msg[1]["objectGUID"][0]
 					guid = ndr_unpack(misc.GUID, guid_blob)
@@ -170,8 +173,7 @@ if __name__ == '__main__':
 	parser = OptionParser(usage='resync_object_from_ad.py [--filter <LDAP search filter>] [--base  <LDAP search base>] [dn]')
 	parser.add_option("-f", "--filter", dest="ldapfilter", help="LDAP search filter")
 	parser.add_option("-b", "--base", dest="ldapbase", help="LDAP search base")
-	parser.add_option("-c", "--configbasename", dest="configbasename", help="",
-	                  metavar="CONFIGBASENAME", default="connector")
+	parser.add_option("-c", "--configbasename", dest="configbasename", help="", metavar="CONFIGBASENAME", default="connector")
 	(options, args) = parser.parse_args()
 
 	CONFIGBASENAME = options.configbasename
@@ -210,17 +212,12 @@ if __name__ == '__main__':
 			# see Bug #17768 for details
 			#  https://forge.univention.org/bugzilla/show_bug.cgi?id=17768
 			new_ca_filename = '/var/cache/univention-ad-connector/CAcert-%s.pem' % CONFIGBASENAME
-			new_ca = open(new_ca_filename, 'w')
+			with open(new_ca_filename, 'w') as new_ca:
+				with open('/etc/univention/ssl/ucsCA/CAcert.pem', 'r') as ca:
+					new_ca.write(ca.read())
 
-			ca = open('/etc/univention/ssl/ucsCA/CAcert.pem', 'r')
-			new_ca.write(string.join(ca.readlines(), ''))
-			ca.close()
-
-			ca = open(baseConfig['%s/ad/ldap/certificate' % CONFIGBASENAME])
-			new_ca.write(string.join(ca.readlines(), ''))
-			ca.close()
-
-			new_ca.close()
+				with open(baseConfig['%s/ad/ldap/certificate' % CONFIGBASENAME]) as ca:
+					new_ca.write(ca.read())
 
 			ldap.set_option(ldap.OPT_X_TLS_CACERTFILE, new_ca_filename)
 		else:
