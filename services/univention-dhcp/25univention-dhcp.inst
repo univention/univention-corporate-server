@@ -32,11 +32,14 @@
 
 ## joinscript api: bindpwdfile
 
+# shellcheck disable=SC2034
 VERSION=2
 
+# shellcheck source=/dev/null
 . /usr/share/univention-join/joinscripthelper.lib || exit 1
 joinscript_init
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
 log () {
@@ -57,12 +60,12 @@ then
 fi
 
 univention-directory-manager dhcp/service create "$@" --ignore_exists \
-	--position "cn=dhcp,$ldap_base" \
-	--set service="$domainname" || die
+	--position "cn=dhcp,${ldap_base:-}" \
+	--set service="${domainname:-}" || die
 SERVICE="cn=$domainname,cn=dhcp,$ldap_base"
 univention-directory-manager dhcp/server create "$@" --ignore_exists \
 	--superordinate "$SERVICE" \
-	--set server="$hostname" || die
+	--set server="${hostname:-}" || die
 
 # Reference policies only for the first DHCP subnet created ever
 declare -a policies=()
@@ -70,7 +73,7 @@ prepare_policies () {
 	local count cn data
 	count="$(univention-ldapsearch -LLL -b "$ldap_base" "(objectClass=univentionDhcpSubnet)" dn | grep -c ^dn)"
 	log "Number of existing DHCP (Shared) Sub-Networks: $count"
-	[ $count -ge 1 ] && return
+	[ "$count" -ge 1 ] && return
 
 	for cn in boot dns routing # 'routing' must be last for the following code
 	do
@@ -80,7 +83,7 @@ prepare_policies () {
 		policies+=(--policy-reference "$dn")
 	done
 
-	[ -n "$gateway" ] || return
+	[ -n "${gateway:-}" ] || return
 	[ -n "$data" ] || return
 	[[ "$data" = *"univentionDhcpRouters:"* ]] && return
 
