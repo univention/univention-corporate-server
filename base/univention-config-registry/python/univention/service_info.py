@@ -49,7 +49,7 @@ class Service(uit.LocalizedDictionary):
 	"""
 
 	REQUIRED = frozenset(('description', 'programs'))
-	OPTIONAL = frozenset(('start_type', 'systemd', 'icon'))
+	OPTIONAL = frozenset(('start_type', 'systemd', 'icon', 'name', 'init_script'))
 	KNOWN = REQUIRED | OPTIONAL
 
 	def __init__(self, *args, **kwargs):

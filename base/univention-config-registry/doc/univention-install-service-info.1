@@ -42,10 +42,18 @@ Name for an icon relative to \fI???\fP.
 .B Unused!
 .IP \fBprograms=\fP\fIname\fP[\fI,...\fP]
 Names of the executables, which must be running to flag this service as running.
+.IP \fBname=\fP\fIservice_name\fP
+The name of the service.
+Defaults to \fIservice_name\fP as used in the section header of the entry.
+.IP \fBsystemd=\fP\fIunit\fP[\fB.service\fP]
+Name of the systemd unit used to start, stop, and restart the service.
+Defaults to \fIname\fP.
+.IP \fBinit_script=\fP\fIname\fP
+Name of the SystemV init script \fB/etc/init.d/\fP\fIname\fP to use instead of the systemd unit.
 
 .SH ENVIRONMENT
 .IP "\s-1DH_VERBOSE\s0" 4
-Set to 1 to enable verbose mode.
+Set to \fB1\fP to enable verbose mode.
 Debhelper will output every command it runs that modifies files on the build system.
 
 .SH SEE ALSO

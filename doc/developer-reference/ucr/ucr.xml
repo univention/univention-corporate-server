@@ -748,14 +748,18 @@ description[<language>]=<description>
 start_type=<service-name>/autostart
 systemd=<service-name>.service
 icon=<service/icon_name>
-programs=<executable>]]></programlisting>
+programs=<executable>
+name=<service-name>
+init_scipt=<init.name>]]></programlisting>
 			<variablelist>
 				<varlistentry>
 					<term><literal>[</literal><replaceable>service-name</replaceable><literal>]</literal></term>
+					<term><literal>name=</literal><replaceable>service-name</replaceable> (optional)</term>
 					<listitem>
 						<simpara>
 							For each daemon one section needs to be created.
 							The service-name should match the name of the init-script in <filename class="directory">/etc/init.d/</filename>.
+							If the name differs, it can be overwritten by the <literal>name=</literal> property.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -785,6 +789,16 @@ programs=<executable>]]></programlisting>
 						<simpara>
 							A comma separated list of <package>systemd</package> service names, which are enabled/disabled/masked when <literal>start_type</literal> is used.
 							This defaults to the name of the service plus the suffix <literal>.service</literal>.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><literal>init_script</literal> (optional)</term>
+					<listitem>
+						<simpara>
+							The name of the legacy init script below <filename class="directory">/etc/init.d/</filename>.
+							This defaults to the name of the service.
+							This option should not be used any more in favor of <application>systemd</application>.
 						</simpara>
 					</listitem>
 				</varlistentry>
