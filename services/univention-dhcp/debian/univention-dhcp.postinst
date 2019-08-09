@@ -34,6 +34,7 @@ set -e
 
 #DEBHELPER#
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/base.sh
 create_logfile_if_missing /var/log/univention/dhcp.log root:adm 640
 
