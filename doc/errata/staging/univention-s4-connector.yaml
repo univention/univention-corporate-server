@@ -28,7 +28,7 @@ desc: |
  * Fixed access to undefined variable in the sync_krbgt script.
  * Unused code has been removed.
  * The file /etc/univention/connector/s4/localmapping.py is now included in
-   mapping.py to support adjusting the mapping dynamically. It may contain a
+   mapping.py to allow adjusting the mapping dynamically. It may contain a
    python function mapping_hook(s4_mapping) which can return a modified
    mapping.
  * Stop adding an unlimited number of lock entries for the same object.
