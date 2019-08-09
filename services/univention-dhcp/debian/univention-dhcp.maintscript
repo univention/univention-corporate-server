@@ -1,0 +1,8 @@
+mv_conffile /etc/dhcp3/local.conf /etc/dhcp/local.conf 6.0.0~
+mv_conffile /etc/dhcp3/univention.conf /etc/dhcp/univention.conf 6.0.0~
+rm_conffile /etc/univention/templates/files/etc/dhcp3/dhcpd.conf 6.0.0~
+rm_conffile /etc/univention/templates/files/etc/init.d/dhcp3-server 6.0.0~
+rm_conffile /etc/init.d/univention-dhcp 13.0.0-2~
+rm_conffile /etc/runit/univention-dhcp/run 13.0.0-2~
+rm_conffile /etc/runit/univention-dhcp/down 13.0.0-2~
+rm_conffile /etc/univention/templates/files/etc/init.d/isc-dhcp-server 13.0.0-2~

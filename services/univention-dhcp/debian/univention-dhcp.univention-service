@@ -4,4 +4,4 @@ description[en]=DHCP Server
 icon=service/dhcpd
 programs=/usr/sbin/dhcpd
 start_type=dhcpd/autostart
-systemd=univention-dhcp.service
+systemd=isc-dhcp-server.service

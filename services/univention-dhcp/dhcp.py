@@ -67,9 +67,9 @@ def postrun():
 		if ucr.is_true('dhcpd/restart/listener', False):
 			ud.debug(ud.LISTENER, ud.INFO, 'DHCP: Restarting server')
 			try:
-				listener.run('/etc/init.d/univention-dhcp', ['univention-dhcp', 'restart'], uid=0)
-			except Exception as e:
-				ud.debug(ud.ADMIN, ud.WARN, 'The restart of the DHCP server failed: %s' % str(e))
+				listener.run('/bin/systemctl', ['try-reload-or-restart', '--', 'isc-dhcp-server.service'], uid=0)
+			except Exception as ex:
+				ud.debug(ud.ADMIN, ud.WARN, 'The restart of the DHCP server failed: %s' % (ex,))
 		else:
 			ud.debug(ud.ADMIN, ud.INFO, 'DHCP: the automatic restart of the dhcp server by the listener is disabled. Set dhcpd/restart/listener to true to enable this option.')
 	else:

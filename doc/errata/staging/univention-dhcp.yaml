@@ -9,4 +9,5 @@ desc: |
  * The new UCR variable `dhcpd/ldap/debug` has been added for debugging the
    configuration from LDAP. If activated, it creates a log file named
    `/var/log/dhcp-ldap-startup.log`.
-bug: [49281]
+ * Switch init system from runit to systemd.
+bug: [49281, 43688]

@@ -33,7 +33,6 @@
 D=$(CURDIR)/debian/univention-dhcp
 override_dh_auto_install:
 	dh_auto_install
-	touch ${D}/etc/runit/univention-dhcp/down
 	univention-install-config-registry
 
 override_dh_clean:

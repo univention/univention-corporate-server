@@ -2,5 +2,5 @@ dhcp.py usr/lib/univention-directory-listener/system
 25univention-dhcp.inst usr/lib/univention-install
 etc/dhcp/univention.conf etc/dhcp
 etc/dhcp/local.conf etc/dhcp
-etc/runit/univention-dhcp/run etc/runit/univention-dhcp
 usr/lib/univention-server/server_password_change.d/univention-dhcp usr/lib/univention-server/server_password_change.d/
+univention-dhcp.conf	/lib/systemd/system/isc-dhcp-server.service.d/

@@ -168,8 +168,6 @@ for name, iface in ifaces.ipv4_interfaces:
 		print(ex, file=stderr)
 ' --service "$SERVICE" "$@" "${policies[@]}" || die
 
-ln -s /etc/runit/univention-dhcp /etc/runit/univention/univention-dhcp >/dev/null 2>&1
-
 ucs_addServiceToLocalhost 'DHCP' "$@"
 
 joinscript_save_current_version

@@ -1,6 +1,7 @@
 univention-dhcp (13.0.0-6) unstable; urgency=medium
 
   * Bug #49281: Debug log configuration option for dhcp
+  * Bug #43688: Convert from runit to systemd
 
  -- Max Christian Pohle <pohle@univention.de>  Thu, 16 Jan 2020 11:13:18 +0100
 
