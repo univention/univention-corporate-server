@@ -3,7 +3,7 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-s4-connector
-fix: 13.0.2-34A~4.4.0.201908081738
+fix: 13.0.2-35A~4.4.0.201908082318
 desc: |
  This update addresses the following issue(s):
  * The script "remove_ucs_rejected.py" has been repaired.
