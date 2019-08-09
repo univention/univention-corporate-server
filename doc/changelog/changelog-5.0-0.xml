@@ -369,6 +369,11 @@
 			<title>DHCP module</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The process supervision for the DHCP services has been changed from <package>runit</package> to <package>systemd</package>.
+					The service has been renamed from <systemitem class="service">univention-dhcp</systemitem> to <systemitem class="service">isc-dhcp-server</systemitem> as used by upstream.
+					Any direct calls to the <command>init</command> script or <command>runsv</command> must to be replaced with <command>systemctl</command>, for example <command>systemctl start isc-dhcp-server</command> (<u:bug>43688</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
 					Fix the day of week in leases when fallback to link-local addresses is enabled (<u:bug>44427</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>

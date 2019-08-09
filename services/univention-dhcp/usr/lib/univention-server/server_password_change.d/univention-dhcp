@@ -42,10 +42,5 @@ if [ "$1" = "nochange" ] ; then
 fi
 
 if [ "$1" = "postchange" ] ; then
-	if [ -x "/etc/init.d/univention-dhcp" ]; then
-		# Restart dhcp so that daemon can login into ldap server again.
-		invoke-rc.d univention-dhcp restart
-	else
-		echo "missing /etc/init.d/univention-dhcp"
-	fi
+	systemctl try-reload-or-restart -- isc-dhcp-server.service
 fi

@@ -32,47 +32,73 @@
 
 set -e
 
+# If for some reason we lost the original init script, try to recover it BEFORE undoing the UCR template divert
+undo_divert () {
+	local init='/etc/init.d/isc-dhcp-server' fallback
+	[ "$1" = configure ] || return 0
+	dpkg --compare-versions "${2:-}" lt-nl 14.0.2-1 || return 0
+	[ "$(dpkg-divert --truename "$init")" = "$init.debian" ] || return 0
+	[ -f "$init.debian" ] && return 0
+	for fallback in "$init.dpkg-remove" "$init.dpkg-backup" "$init.dpkg-bak" "$init"*
+	do
+		[ -f "$fallback" ] || continue
+		cp "$fallback" "$init.debian" && return 0
+	done
+	echo "ABORT: The init script will be gone" >&2
+	ls -gGd "$init"* >&2
+	exit 1
+}
+undo_divert "$@"
+
 #DEBHELPER#
 
 # shellcheck source=/dev/null
 . /usr/share/univention-lib/base.sh
 create_logfile_if_missing /var/log/univention/dhcp.log root:adm 640
 
-eval "$(univention-config-registry shell)"
-
-if [ -n "$dhcpd_enable" ]; then
-	if [ "$dhcpd_enable" = "yes" -o "$dhcpd_enable" = "true" -o "$dhcpd_eanble" = "1" ]; then
-		univention-config-registry set dhcpd/autostart?"yes"
-	else
-		univention-config-registry set dhcpd/autostart?"no"
-	fi
-	univention-config-registry unset dhcpd/enable
-else
-	univention-config-registry set dhcpd/autostart?"yes"
-fi
-
-univention-config-registry set dhcpd/restart/listener?yes
-
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-	/usr/lib/univention-install/25univention-dhcp.inst || true
-fi
-
-if [ "$1" = "configure" -a -n "$2" ]
+if [ "$1" = configure ]
 then
-	invoke-rc.d univention-dhcp crestart || true
-else
-	invoke-rc.d univention-dhcp start || true
-fi
+	eval "$(univention-config-registry shell)"
 
-if [ "$1" = "configure" ]; then
-	systemctl try-restart univention-directory-listener || true
-fi
+	case "${dhcpd_enable:-}" in
+	'')
+		univention-config-registry set dhcpd/autostart?"yes"
+		;;
+	yes|true|1)
+		univention-config-registry set dhcpd/autostart?"yes"
+		ucr unset dhcpd/enable
+		;;
+	*)
+		univention-config-registry set dhcpd/autostart?"no"
+		ucr unset dhcpd/enable
+		;;
+	esac
 
-# configure firewall
-ucr set security/packetfilter/package/univention-dhcp/udp/67/all=ACCEPT \
+	univention-config-registry set \
+		security/packetfilter/package/univention-dhcp/udp/67/all=ACCEPT \
 		security/packetfilter/package/univention-dhcp/udp/67/all/en="DHCP" \
-        security/packetfilter/package/univention-dhcp/udp/68/all=ACCEPT \
-		security/packetfilter/package/univention-dhcp/udp/68/all/en="DHCP"
-[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart || true
+		security/packetfilter/package/univention-dhcp/udp/68/all=ACCEPT \
+		security/packetfilter/package/univention-dhcp/udp/68/all/en="DHCP" \
+		dhcpd/restart/listener?yes
+
+	case "${server_role:-}" in
+	domaincontroller_master|domaincontroller_backup)
+		/usr/lib/univention-install/25univention-dhcp.inst || true
+		;;
+	esac
+
+	if [ -d /etc/runit/univention/univention-dhcp ] && dpkg --compare-versions "${2:-}" lt-nl 13.0.0-2
+	then
+		sv force-shutdown univention-dhcp
+		rm -rf /etc/runit/univention-dhcp /etc/runit/univention/univention-dhcp
+		univention-config-registry update
+	fi
+
+	if [ -d /run/systemd/system ]
+	then
+		systemctl --system daemon-reload >/dev/null || true
+		deb-systemd-invoke restart isc-dhcp-server.service univention-directory-listener.service univention-firewall.service
+	fi
+fi
 
 exit 0

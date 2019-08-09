@@ -13,6 +13,6 @@ for setting in sorted(settings):
 @!@
 
 	lastaction
-		test -x /usr/bin/sv && test -e /etc/runit/univention/univention-dhcp && sv term univention-dhcp || true
+		systemctl try-reload-or-restart -- isc-dhcp-server.service
 	endscript
 }
