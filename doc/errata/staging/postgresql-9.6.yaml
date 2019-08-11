@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [0, 1]
+scope: ucs_4.4-0-errata4.4-1
+src: postgresql-9.6
+fix: 9.6.15-0+deb9u1
+desc: |
+ This update addresses the following issue:
+ * TYPE in pg_temp executes arbitrary SQL during SECURITY DEFINER execution
+   (CVE-2019-10208)
+bug: [49991]
+cve:
+- CVE-2019-10208
