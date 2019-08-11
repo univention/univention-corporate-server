@@ -1,3 +1,9 @@
+ucs-test (9.0.3-7) unstable; urgency=medium
+
+  * Bug #49415: prevent traceback
+
+ -- Florian Best <best@univention.de>  Sun, 11 Aug 2019 20:22:26 +0200
+
 ucs-test (9.0.3-6) unstable; urgency=medium
 
   * Bug #49092: Extend s4connector tests 120, 121 to check new mapped attributes
