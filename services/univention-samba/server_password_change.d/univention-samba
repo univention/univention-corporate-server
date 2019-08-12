@@ -152,14 +152,8 @@ def run_postchange():
 
 
 def run_prechange():
-
 	windows_domain = ucr.get('windows/domain', '').upper()
-	machine_password = open('/etc/machine.secret', 'r').read().strip()
-	ldap_hostdn = ucr.get('ldap/hostdn')
-	samba_user = ucr.get('samba/user')
 	samba_role = ucr.get('samba/role')
-	server_role = ucr.get('server/role')
-	ldap_base = ucr.get('ldap/base')
 
 	if not windows_domain:
 		sys.stdout.write("ERROR: windows/domain is not set!\n")
