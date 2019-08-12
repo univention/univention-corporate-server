@@ -1,4 +1,5 @@
 #!/bin/sh
+@%@UCRWARNING=# @%@
 ### BEGIN INIT INFO
 # Provides:          slapd
 # Required-Start:    $remote_fs $network $syslog
@@ -12,6 +13,135 @@
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 
 . /lib/lsb/init-functions
+
+bdbrecover ()
+{
+	local back_bdb_version
+	local DBRECOVER
+	local DBSTAT
+	local dbstat_output
+	local dbstat_rc
+	local bdb_version
+	local stale_locks
+	local logger_tag
+	local line
+
+	log_action_begin_msg "Check database: "
+	# determine libdb version that back-bdb.so was linked against
+	back_bdb_version="$(/usr/bin/ldd /usr/lib/ldap/back_bdb.so | sed -n 's|.*/usr/lib/.*/libdb-\([0-9.]*\).so.*|\1|p')"
+	DBRECOVER="/usr/bin/db${back_bdb_version}_recover"
+	DBSTAT="/usr/bin/db${back_bdb_version}_stat"
+	if [ -e "${DBRECOVER}" ]; then
+		# check if the db_stat version works on the database environment
+		dbstat_output=$("${DBSTAT}" -h /var/lib/univention-ldap/ldap -Ne 2>&1)
+		dbstat_rc=$?
+		if [ "$dbstat_rc" = 0 ]; then
+			bdb_version=$(echo "$dbstat_output" | sed -rn 's/^([^\s]+)\s+Environment version$/\1/p')
+			if [ -n "$bdb_version" ]; then
+				# check for stale locks or stale futexes
+				stale_locks=$("${DBSTAT}" -h /var/lib/univention-ldap/ldap -Nc 2>&1 | sed -rn 's/([0-9]*)\t*Number of current locks/\1/p')
+				if [ "$stale_locks" != 0 ]; then
+					exit_if_start_is_running
+					log_action_msg "WARNING"
+					log_action_msg "WARNING: There are $stale_locks stale locks in LDAP backend Berkeley DB (version $bdb_version)"
+					log_action_msg "WARNING: If slapd does not respond, manual LDAP dump/restore may be necessary"
+					log_action_begin_msg "Continuing BDB database check: "
+				fi
+				logger_tag="slapd db${back_bdb_version}_recover"
+				dbrecover_output=$("${DBRECOVER}" -h /var/lib/univention-ldap/ldap -e 2>&1)
+				if [ "$?" != 0 ]; then
+					exit_if_start_is_running
+				else
+					echo "$dbrecover_output" | while read line; do logger -t "$logger_tag" "$line"; done
+				fi
+				log_action_end_msg 0
+			else
+				log_action_msg "/var/lib/univention-ldap/ldap BDB Version does not seem to match the one back-bdb uses"
+				log_action_msg "Skipping ${DBRECOVER} to avoid damage"
+
+				logger_tag="slapd db${back_bdb_version}_stat"
+				logger -t "$logger_tag" "BDB file version detection failed:"
+				echo "$dbstat_output" | while read line; do logger -t "$logger_tag" "$line"; done
+			fi
+		else
+			log_action_msg "Could not determine BDB version of /var/lib/univention-ldap/ldap"
+			exit_if_start_is_running
+			log_action_msg "Skipping ${DBRECOVER} to avoid damage"
+
+			logger_tag="slapd db${back_bdb_version}_stat"
+			logger -t "$logger_tag" "command failed ($dbstat_rc):"
+			echo "$dbstat_output" | while read line; do logger -t "$logger_tag" "$line"; done
+		fi
+	else
+		log_action_msg "back-bdb was linked against ${back_bdb_version}, but db${back_bdb_version}-util package does not seem to be installed"
+		log_action_msg "Skipping ${DBRECOVER}"
+	fi
+}
+
+check_subschema ()
+{
+	tmpfile=`mktemp`
+	res=1
+	count=0
+	while [ $res != 0 ] ; do
+		ldapsearch -x -H ldapi:/// -s base -b cn=Subschema 'objectClass=subschema' objectClasses attributeTypes matchingRules matchingRuleUse dITStructureRules dITContentRules nameForms ldapSyntaxes >$tmpfile
+		res=$?
+		if [ $res != 0 ]; then
+			count=$((count+1))
+			if [ $count -ge 5 ]; then
+				echo "Failed to search schema"
+				exit 1
+			fi
+			sleep 2
+		fi
+	done
+@!@
+if configRegistry.is_true('ldap/schema/export'):
+		print '\tcp $tmpfile /var/www/ldap-schema.txt'
+		print '\tchmod a+r /var/www/ldap-schema.txt'
+@!@
+	md5=`md5sum $tmpfile | awk '{print $1}'`
+	rm -f "$tmpfile"
+
+	if [ ! -d /var/lib/univention-ldap/schema ]; then
+		mkdir /var/lib/univention-ldap/schema
+	fi
+	if [ ! -e /var/lib/univention-ldap/schema/md5 ]; then
+		touch /var/lib/univention-ldap/schema/md5
+	fi
+	md5_old=`cat /var/lib/univention-ldap/schema/md5`
+	if [ "$md5" != "$md5_old" ]; then
+		if [ ! -d /var/lib/univention-ldap/schema/id ]; then
+			mkdir /var/lib/univention-ldap/schema/id
+		fi
+		if [ ! -e /var/lib/univention-ldap/schema/id/id ]; then
+			touch /var/lib/univention-ldap/schema/id/id
+		fi
+		id=`cat /var/lib/univention-ldap/schema/id/id`
+		if [ -z "$id" ]; then
+			id=0
+		fi
+		id=$((id+1))
+		echo "$md5" >/var/lib/univention-ldap/schema/md5
+		echo "$id" >/var/lib/univention-ldap/schema/id/id
+		chown listener /var/lib/univention-ldap/schema/id/id
+	else
+		id=`cat /var/lib/univention-ldap/schema/id/id`
+		if [ -z "$id" ]; then
+			echo "1" >/var/lib/univention-ldap/schema/id/id
+			chown listener /var/lib/univention-ldap/schema/id/id
+		fi
+	fi
+}
+
+check_replog_file ()
+{
+	test -f /var/lib/univention-ldap/replog/replog || \
+		touch /var/lib/univention-ldap/replog/replog
+	chmod 0600 /var/lib/univention-ldap/replog/replog
+	test -f /var/lib/univention-ldap/replog/replog.lock || \
+		touch /var/lib/univention-ldap/replog/replog.lock
+}
 
 # Kill me on all errors
 set -e
@@ -35,11 +165,12 @@ fi
 
 # Load the default location of the slapd config file
 if [ -z "$SLAPD_CONF" ]; then
-	if [ -e /etc/ldap/slapd.d ]; then
-		SLAPD_CONF=/etc/ldap/slapd.d
-	else
+	# UCS: We use slapd.d but not cn=config as configuration format
+	#if [ -e /etc/ldap/slapd.d ]; then
+	#	SLAPD_CONF=/etc/ldap/slapd.d
+	#else
 		SLAPD_CONF=/etc/ldap/slapd.conf
-	fi
+	#fi
 fi
 
 # Stop processing if the config file is not there
@@ -139,14 +270,58 @@ start_slapd() {
 		[ -z "$SLAPD_GROUP" ] || chgrp -R "$SLAPD_GROUP" "$piddir"
 	fi
 
+	# check ucr autostart setting
+	if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+		. "/usr/share/univention-config-registry/init-autostart.lib"
+		check_autostart ldap ldap/autostart
+	fi
+
+	# check that no slapd is running
+	#if ! start-stop-daemon --start --quiet --exec $DAEMON --test > /dev/null; then
+	#	log_action_msg "LDAP server already running"
+	#	exit 0
+	#fi
+@!@
+if configRegistry['ldap/database/type'] == 'bdb':
+        print '\t# check backend database'
+        print '\tbdbrecover'
+if configRegistry.get('ldap/replog', '').lower() in ('true', 'yes'):
+        print '\tcheck_replog_file'
+@!@
+	# UCS: SLAPD_SERVICE is always defined via UCR variables
+	# slapd/port and slapd/port/ldaps hence 'else' always applies.
 	if [ -z "$SLAPD_SERVICES" ]; then
 		reason="`start-stop-daemon --start --quiet --oknodo \
 			--pidfile "$SLAPD_PIDFILE" \
 			--exec $SLAPD -- $SLAPD_OPTIONS 2>&1`"
 	else
-		reason="`start-stop-daemon --start --quiet --oknodo \
+		# TODO: Maybe solve this differently today? See:
+		# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=660917
+		# https://ral-arturo.org/2017/02/14/about-process-limits.html
+@!@
+if configRegistry.get('ldap/maxopenfiles'):
+        print '\t\tulimit -n %s' % configRegistry['ldap/maxopenfiles']
+@!@		reason="`start-stop-daemon --start --quiet --oknodo \
 			--pidfile "$SLAPD_PIDFILE" \
 			--exec $SLAPD -- -h "$SLAPD_SERVICES" $SLAPD_OPTIONS 2>&1`"
+	fi
+
+@!@
+if configRegistry['ldap/server/type']=="master":
+	print '\tlog_action_begin_msg "Checking Schema ID: "'
+	print '\tcheck_subschema 2>&1'
+	print '\tlog_action_end_msg 0'
+@!@
+	if [ -e /var/lib/univention-directory-replication/failed.ldif ]; then
+		log_action_begin_msg "Found failed.ldif. Importing "
+		test -x /usr/sbin/univention-directory-replication-resync && /usr/sbin/univention-directory-replication-resync /var/lib/univention-directory-replication/failed.ldif >>/var/log/univention/listener.log 2>&1
+		if [ $? = 0 ]; then
+			log_action_end_msg 0
+		else
+			log_action_end_msg 1
+			log_action_msg "Please check /var/log/univention/listener.log"
+			exit 1
+		fi
 	fi
 
 	# Backward compatibility with OpenLDAP 2.1 client libraries.
@@ -192,11 +367,22 @@ case "$1" in
   	stop_ldap
 	start_ldap
 	;;
+  graceful-stop)
+        $0 stop
+        # UCS: In previous versions of this init script all graceful-stop did, was calling stop,
+	# nothing special otherwise. Possibly other code relies on graceful-stop to be available.
+        ;;
+  graceful-restart)
+        $0 restart
+        # UCS: In previous versions of this init script all graceful-restart did, was calling restart,
+	# nothing special otherwise. Possibly other code relies on graceful-restart to be available.
+        ;;
+
   status)
 	status_of_proc -p $SLAPD_PIDFILE $SLAPD slapd
 	;;
   *)
-  	echo "Usage: $0 {start|stop|restart|force-reload|status}"
+	echo "Usage: $0 {start|stop|restart|force-reload|status|graceful-stop|graceful-restart}"
 	exit 1
 	;;
 esac

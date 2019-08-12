@@ -1,8 +1,11 @@
 Type: file
-File: etc/init.d/slapd
-Variables: ldap/server/type
+File: etc/default/slapd
 Variables: slapd/port
 Variables: slapd/port/ldaps
+
+Type: file
+File: etc/init.d/slapd
+Variables: ldap/server/type
 Variables: ldap/database/type
 Variables: ldap/schema/export
 Variables: ldap/replog
