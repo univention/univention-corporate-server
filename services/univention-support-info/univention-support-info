@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 REPOSITORY_COMPONENT = 'support'
-ONLINE_REPOSITORY_URL = 'http://apt.software-univention.de/'
+ONLINE_REPOSITORY_URL = 'https://updates.software-univention.de/'
 WARN_DAYS = 30
 LOGFILE_NAME = '/var/log/univention/univention-support-info.log'
 
