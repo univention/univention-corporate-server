@@ -1,3 +1,9 @@
+univention-samba (13.0.0-7) unstable; urgency=medium
+
+  * Bug #49177: migrate to dh-python2
+
+ -- Florian Best <best@univention.de>  Mon, 12 Aug 2019 17:26:54 +0200
+
 univention-samba (13.0.0-6) unstable; urgency=medium
 
   * Bug #48698: Fix user visible spelling errors

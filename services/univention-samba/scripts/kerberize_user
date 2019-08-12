@@ -31,18 +31,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import ldap
 import sys
 import getopt
 import subprocess
 import string
 import hashlib
 import struct
+from datetime import datetime
+
+import ldap
+
 import univention.config_registry
 import univention.debug
-univention.debug.init('/dev/null', 1, 1)
 import univention.uldap
-from datetime import datetime
+
+univention.debug.init('/dev/null', 1, 1)
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
