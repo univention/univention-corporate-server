@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+from __future__ import print_function
 import listener
 import os
 import univention.debug
@@ -176,9 +177,9 @@ def handler(dn, new, old, command):
 		try:
 			fp = open(filename, 'w')
 
-			print >>fp, '[%s]' % (share_name,)
+			print('[%s]' % (share_name,), file=fp)
 			if share_name != 'homes':
-				print >>fp, 'path = %s' % _quote(new['univentionSharePath'][0])
+				print('path = %s' % _quote(new['univentionSharePath'][0]), file=fp)
 			mapping = [
 				('description', 'comment'),
 				('univentionShareSambaMSDFS', 'msdfs root'),
@@ -221,7 +222,7 @@ def handler(dn, new, old, command):
 			if samba4_ntacl_backend == 'native':
 				vfs_objects.append('acl_xattr')
 				if listener.configRegistry.is_true('samba/vfs/acl_xattr/ignore_system_acls', False):
-					print 'acl_xattr:ignore system acls = yes'
+					print('acl_xattr:ignore system acls = yes')
 			elif samba4_ntacl_backend == 'tdb':
 				vfs_objects.append('acl_tdb')
 
@@ -230,7 +231,7 @@ def handler(dn, new, old, command):
 				vfs_objects.extend(additional_vfs_objects)
 
 			if vfs_objects:
-				print >>fp, 'vfs objects = %s' % (' '.join(_map_quote(vfs_objects)), )
+				print('vfs objects = %s' % (' '.join(_map_quote(vfs_objects)), ), file=fp)
 
 			for attr, var in mapping:
 				if not new.get(attr):
@@ -240,20 +241,20 @@ def handler(dn, new, old, command):
 				if attr == 'univentionShareSambaDirectoryMode' and new['univentionSharePath'] in ('/tmp', '/tmp/'):
 					continue
 				if attr in ('univentionShareSambaHostsAllow', 'univentionShareSambaHostsDeny'):
-					print >>fp, '%s = %s' % (var, (', '.join(_map_quote(new[attr]))))
+					print('%s = %s' % (var, (', '.join(_map_quote(new[attr])))), file=fp)
 				elif attr in ('univentionShareSambaValidUsers', 'univentionShareSambaInvalidUsers'):
-					print >>fp, '%s = %s' % (var, _simple_quote(new[attr][0]))
+					print('%s = %s' % (var, _simple_quote(new[attr][0])), file=fp)
 				else:
-					print >>fp, '%s = %s' % (var, _quote(new[attr][0]))
+					print('%s = %s' % (var, _quote(new[attr][0])), file=fp)
 
 			for setting in new.get('univentionShareSambaCustomSetting', []):  # FIXME: vulnerable to injection of further paths and entries
-				print >>fp, setting.replace('\n', '')
+				print(setting.replace('\n', ''), file=fp)
 
 			# implicit settings
 
 			# acl and inherit -> map acl inherit (Bug #47850)
 			if '1' in new.get('univentionShareSambaNtAclSupport', []) and '1' in new.get('univentionShareSambaInheritAcls', []):
-				print >>fp, 'map acl inherit = yes'
+				print('map acl inherit = yes', file=fp)
 		finally:
 			listener.unsetuid()
 
@@ -265,10 +266,10 @@ def handler(dn, new, old, command):
 			if not os.path.exists('/etc/samba/shares.conf'):
 				run_ucs_commit = True
 			fp = open('/etc/samba/shares.conf.temp', 'w')
-			print >>fp, '# Warning: This file is auto-generated and will be overwritten by \n#          univention-directory-listener module. \n#          Please edit the following file instead: \n#          /etc/samba/local.conf \n  \n# Warnung: Diese Datei wurde automatisch generiert und wird durch ein \n#          univention-directory-listener Module überschrieben werden. \n#          Ergänzungen können an folgender Datei vorgenommen werden: \n# \n#          /etc/samba/local.conf \n#'
+			print('# Warning: This file is auto-generated and will be overwritten by \n#          univention-directory-listener module. \n#          Please edit the following file instead: \n#          /etc/samba/local.conf \n  \n# Warnung: Diese Datei wurde automatisch generiert und wird durch ein \n#          univention-directory-listener Module überschrieben werden. \n#          Ergänzungen können an folgender Datei vorgenommen werden: \n# \n#          /etc/samba/local.conf \n#', file=fp)
 
 			for f in os.listdir('/etc/samba/shares.conf.d'):
-				print >>fp, 'include = %s' % _quote(os.path.join('/etc/samba/shares.conf.d', f))
+				print('include = %s' % _quote(os.path.join('/etc/samba/shares.conf.d', f)), file=fp)
 			fp.close()
 			os.rename('/etc/samba/shares.conf.temp', '/etc/samba/shares.conf')
 			if run_ucs_commit:

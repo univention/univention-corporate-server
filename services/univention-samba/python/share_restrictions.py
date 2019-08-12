@@ -33,6 +33,7 @@
 
 # This file is part of univention-lib and have to contain python2.4 valid code
 
+from __future__ import print_function
 from univention.config_registry import ConfigRegistry
 
 from ConfigParser import ConfigParser
@@ -187,7 +188,7 @@ class ShareConfiguration(object):
 		if os.path.isfile(ShareConfiguration.CUPS_CONF):
 			reg_cups = re.compile('\s*<Printer\s+([^>]+)>')
 
-			fd = file("/etc/cups/printers.conf")
+			fd = open("/etc/cups/printers.conf")
 			try:
 				for line in fd.readlines():
 					m_cups = reg_cups.match(line)
@@ -286,7 +287,6 @@ class ShareConfiguration(object):
 		if not value:
 			return
 
-		hosts = value.split(' ')
 		for share in self._shares.values():
 			if share.name in ('marktplatz', 'homes'):
 				continue
@@ -344,7 +344,7 @@ class ShareConfiguration(object):
 
 		# write conf file with global options
 		if len(self.globals):
-			fd = file(ShareConfiguration.GLOBAL_CONF, 'w')
+			fd = open(ShareConfiguration.GLOBAL_CONF, 'w')
 			try:
 				fd.write("[global]\n")
 				fd.write(''.join(map(lambda item: '%s = %s\n' % item, self.globals.items())))
@@ -360,7 +360,7 @@ class ShareConfiguration(object):
 				continue
 
 			share_filename = os.path.join(ShareConfiguration.SHARES_DIR, share.name + ShareConfiguration.POSTFIX)
-			fd = file(share_filename, "w")
+			fd = open(share_filename, "w")
 			try:
 				fd.write("[" + share.name + "]\n")
 				for option in share:
@@ -382,7 +382,7 @@ class ShareConfiguration(object):
 			filename = os.path.join(ShareConfiguration.SHARES_DIR, ShareConfiguration.PREFIX + prt.name + ShareConfiguration.POSTFIX)
 			includes.add('include = %s' % filename)
 
-			fd = file(filename, 'w')
+			fd = open(filename, 'w')
 			try:
 				if not prt.smbname:
 					fd.write('[%s]\n' % prt.name)
@@ -402,7 +402,7 @@ class ShareConfiguration(object):
 				fd.close()
 
 		# all include statements go to this file (create file een if there is no include
-		f = file(ShareConfiguration.INCLUDE_CONF, 'w')
+		f = open(ShareConfiguration.INCLUDE_CONF, 'w')
 		try:
 			f.write('\n'.join(includes) + '\n')
 		finally:
@@ -424,7 +424,7 @@ class ShareConfiguration(object):
 if __name__ == '__main__':
 	cfg = ShareConfiguration()
 	cfg.read()
-	print cfg.globals
-	print cfg.shares
-	print cfg.printers
+	print(cfg.globals)
+	print(cfg.shares)
+	print(cfg.printers)
 	cfg.write()

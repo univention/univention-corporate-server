@@ -31,18 +31,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import ldap
+from __future__ import print_function
 import sys
 import getopt
 import subprocess
-import string
 import hashlib
 import struct
+from datetime import datetime
+
+import ldap
+
 import univention.config_registry
 import univention.debug
-univention.debug.init('/dev/null', 1, 1)
 import univention.uldap
-from datetime import datetime
+
+univention.debug.init('/dev/null', 1, 1)
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
@@ -56,8 +59,8 @@ UNIXDAY = 3600 * 24
 
 def __getsmbPWHistory(newpassword, smbpwhistory, smbpwhlen):
 	# split the history
-	if len(string.strip(smbpwhistory)):
-		pwlist = string.split(smbpwhistory, ' ')
+	if smbpwhistory.strip():
+		pwlist = smbpwhistory.split(' ')
 	else:
 		pwlist = []
 		# calculate the password hash & salt
@@ -97,13 +100,13 @@ def __getsmbPWHistory(newpassword, smbpwhistory, smbpwhlen):
 			else:
 				pwlist.append(smbpwhash)
 	# and build the new history
-	res = string.join(pwlist, '')
+	res = ''.join(pwlist)
 	return res
 
 
 def getbytes(string):
 	# return byte values of a string (for smbPWHistory)
-	bytes = [int(string[i:i + 2], 16) for i in xrange(0, len(string), 2)]
+	bytes = [int(string[i:i + 2], 16) for i in range(0, len(string), 2)]
 	return struct.pack("%iB" % len(bytes), *bytes)
 
 
@@ -115,8 +118,8 @@ def getPolicyResult(dn, attr):
 	result = p2.communicate()[0]
 	# if univention-policy-result fails then quit and do not parse output
 	if p1.wait() != 0:
-		print 'ERROR: univention-policy-result failed - LDAP server may be down'
-		print 'ERROR: no password set'
+		print('ERROR: univention-policy-result failed - LDAP server may be down')
+		print('ERROR: no password set')
 		sys.exit(0)
 
 	result = result.strip('\n')
@@ -126,20 +129,20 @@ def getPolicyResult(dn, attr):
 
 			lines = record.splitlines()
 			if len(lines) != 2:
-				print "WARN: cannot parse following lines:"
-				print "==> %s" % '\n==> '.join(lines)
+				print("WARN: cannot parse following lines:")
+				print("==> %s" % '\n==> '.join(lines))
 			else:
 				key = None
 				value = None
 				if lines[0].startswith('Attribute: ' + attr):
 					key = lines[0][len('Attribute: '):]
 				else:
-					print 'WARN: cannot parse key line:', lines[0]
+					print('WARN: cannot parse key line:', lines[0])
 
 				if lines[1].startswith('Value: '):
 					value = lines[1][len('Value: '):]
 				else:
-					print 'WARN: cannot parse value line:', lines[1]
+					print('WARN: cannot parse value line:', lines[1])
 
 				policy[key] = value
 	return policy
@@ -188,7 +191,7 @@ if __name__ == '__main__':
 		if not attrs['sambaNTPassword'][0] == "NO PASSWORDXXXXXXXXXXXXXXXXXXXXX":
 
 			if attrs['uid'][0] == 'root':
-				print 'Skipping user root '
+				print('Skipping user root ')
 				continue
 
 			# check if the user was disabled
@@ -271,7 +274,7 @@ if __name__ == '__main__':
 					('shadowLastChange', oldshadowLastChangeValue, shadowLastChangeValue)
 				])
 			else:
-				print 'Could not find attribute "sambaPwdLastSet". Skipping generating of "krb5PasswordEnd".'
+				print('Could not find attribute "sambaPwdLastSet". Skipping generating of "krb5PasswordEnd".')
 
 			if 'krb5KDCEntry' not in attrs['objectClass']:
 				ocs.append('krb5KDCEntry')
@@ -301,16 +304,16 @@ if __name__ == '__main__':
 					])
 
 			if ocs:
-				print 'Adding Kerberos key for %s...' % repr(dn),
+				print('Adding Kerberos key for %s...' % repr(dn), end=' ')
 				ml.insert(0, ('objectClass', None, ocs))
 
 			try:
 				lo.modify(dn, ml)
 			except ldap.ALREADY_EXISTS:
-				print 'already exists'
+				print('already exists')
 			else:
-				print 'done'
+				print('done')
 
 		else:
-			print 'Can not add Kerberos key for %s...' % repr(dn),
-			print 'no password set'
+			print('Can not add Kerberos key for %s...' % repr(dn), end=' ')
+			print('no password set')

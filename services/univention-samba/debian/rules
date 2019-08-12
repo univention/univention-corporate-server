@@ -35,10 +35,6 @@ override_dh_auto_install:
 	dh_auto_install
 
 override_dh_pysupport:
-	dh_pysupport
-ifneq (,$(findstring univention-samba-local-config, $(shell dh_listpackages)))
-	echo update-python-modules --post-install >> debian/univention-samba-local-config.postinst.debhelper
-endif
 	univention-install-config-registry
 
 override_dh_fixperms:
@@ -53,4 +49,4 @@ override_dh_auto_test:
 	dh_auto_test
 
 %:
-	dh $@ --with python_support
+	dh $@ --with python2
