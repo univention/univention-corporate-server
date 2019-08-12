@@ -6,11 +6,10 @@ src: kconfig
 fix: 5.28.0-2+deb9u1
 desc: |
  This update addresses the following issue:
- * In KDE Frameworks KConfig before 5.61.0, malicious desktop files and
-   configuration files lead to code execution with minimal user interaction.
-   This relates to libKF5ConfigCore.so, and the mishandling of .desktop and
-   .directory files, as demonstrated by a shell command on an Icon line in a
-   .desktop file. (CVE-2019-14744)
+ * In KDE Frameworks KConfig malicious desktop files and configuration files
+   lead to code execution with minimal user interaction. This relates to
+   libKF5ConfigCore.so, and the mishandling of .desktop and .directory files.
+   (CVE-2019-14744)
 bug: [49993]
 cve:
 - CVE-2019-14744
