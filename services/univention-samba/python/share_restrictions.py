@@ -33,6 +33,7 @@
 
 # This file is part of univention-lib and have to contain python2.4 valid code
 
+from __future__ import print_function
 from univention.config_registry import ConfigRegistry
 
 from ConfigParser import ConfigParser
@@ -423,7 +424,7 @@ class ShareConfiguration(object):
 if __name__ == '__main__':
 	cfg = ShareConfiguration()
 	cfg.read()
-	print cfg.globals
-	print cfg.shares
-	print cfg.printers
+	print(cfg.globals)
+	print(cfg.shares)
+	print(cfg.printers)
 	cfg.write()

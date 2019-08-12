@@ -29,6 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import tdb
 import struct
 import sys
@@ -198,7 +199,7 @@ if __name__ == '__main__':
 	ucr.load()
 
 	if len(sys.argv) != 2:
-		print "%s [prechange|nochange|postchange]" % sys.argv[0]
+		print("%s [prechange|nochange|postchange]" % sys.argv[0])
 	else:
 		if sys.argv[1] == "postchange":
 			rc = run_postchange()

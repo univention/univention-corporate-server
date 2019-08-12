@@ -46,6 +46,7 @@
 #
 
 """Set user_xattr option on ext3/ext4 filesystems, remount if necessary"""
+from __future__ import print_function
 
 from univention.lib import fstab
 import subprocess
@@ -79,7 +80,7 @@ def _modify_extfs_option(options=[], activate=True, devices=[]):
 			if fstab_partition and fstab_partition.type in ('ext3', 'ext4'):
 				target_partitions.append(fstab_partition)
 			else:
-				print _('Device could not be found: %s') % device
+				print(_('Device could not be found: %s') % device)
 	else:
 		for fstype in ('ext3', 'ext4'):
 			for fstab_partition in fs.get(fstype, ignore_root=False):
@@ -89,7 +90,7 @@ def _modify_extfs_option(options=[], activate=True, devices=[]):
 		if _do_modify_extfs_option(fstab_partition, options, activate):
 			fs.save()
 			if subprocess.call(('mount', '-o', 'remount', fstab_partition.spec)):
-				print _('Remounting partition failed: %s') % fstab_partition.spec
+				print(_('Remounting partition failed: %s') % fstab_partition.spec)
 
 
 if __name__ == '__main__':
