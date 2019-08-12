@@ -735,7 +735,7 @@ class UDM_Module(object):
 		if isinstance(help_link, dict):
 			defaults = {'lang': _('manual'), 'version': ucr.get('version/version', ''), 'section': ''}
 			defaults.update(help_link)
-			help_link = 'https://docs.univention.de/%(lang)s-%(version)s.html#%(section)s' % defaults
+			help_link = 'https://docs.software-univention.de/%(lang)s-%(version)s.html#%(section)s' % defaults
 		return help_link
 
 	@property

@@ -108,11 +108,11 @@ msgstr "Anforderung einer Lizenz für %(appliance_name)s Appliance"
 #: www/ActivationWizard.js:74
 msgid ""
 "More details about the activation can be found in the <a "
-"href=\"https://docs.univention.de/manual.html#central:license\" "
+"href=\"https://docs.software-univention.de/manual.html#central:license\" "
 "target=\"_blank\">UCS manual</a>."
 msgstr ""
 "Weitere Informationen zu der Aktivierung können im <a "
-"href=\"https://docs.univention.de/handbuch.html#central:license\" "
+"href=\"https://docs.software-univention.de/handbuch.html#central:license\" "
 "target=\"_blank\">UCS-Handbuch</a> gefunden werden."
 
 #: www/ActivationWizard.js:69

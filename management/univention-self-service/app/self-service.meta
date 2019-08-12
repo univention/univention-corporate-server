@@ -22,7 +22,7 @@ UniventionApp=False
 
 # Further Information (DE und EN)
 FurtherInformationHeadline=<strong>Further information and feedback</strong>
-FurtherInformationText=Our <a href="https://docs.univention.de/en/ucs.html" target="_blank">documentation</a> offers detailed information on the operation of UCS. If you have any remarks or suggestions regarding UCS we are always glad to receive your <a href="https://www.univention.com/feedback/">feedback</a>.
+FurtherInformationText=Our <a href="https://docs.software-univention.de/en/ucs.html" target="_blank">documentation</a> offers detailed information on the operation of UCS. If you have any remarks or suggestions regarding UCS we are always glad to receive your <a href="https://www.univention.com/feedback/">feedback</a>.
 
 CloudLogo1=
 CloudLink1=
@@ -43,4 +43,4 @@ ApplianceCreate=False
 
 [de]
 FurtherInformationHeadline=<strong>Weitere Informationen und Feedback</strong>
-FurtherInformationText=Die ausführliche <a href="https://docs.univention.de/de/ucs.html" target="_blank">Dokumentation</a> bietet detaillierte Informationen zum Betrieb von UCS. Wenn Sie Anmerkungen oder Vorschläge bezüglich UCS haben, freuen wir uns jederzeit über <a title="Feedback" href="https://www.univention.de/produkt-feedback/">Feedback</a>.
+FurtherInformationText=Die ausführliche <a href="https://docs.software-univention.de/de/ucs.html" target="_blank">Dokumentation</a> bietet detaillierte Informationen zum Betrieb von UCS. Wenn Sie Anmerkungen oder Vorschläge bezüglich UCS haben, freuen wir uns jederzeit über <a title="Feedback" href="https://www.univention.de/produkt-feedback/">Feedback</a>.

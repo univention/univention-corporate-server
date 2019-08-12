@@ -263,11 +263,11 @@ msgstr "Forwarding-Verzögerung"
 #: umc/js/setup/InterfaceWizard.js:95
 #, javascript-format
 msgid ""
-"Further information can be found in the <a href=\"https://docs.univention.de/"
+"Further information can be found in the <a href=\"https://docs.software-univention.de/"
 "manual-%s.html#computers:networkcomplex\" target=\"_blank\">UCS "
 "documentation</a>."
 msgstr ""
-"Weitere Informationen können in der <a href=\"https://docs.univention.de/"
+"Weitere Informationen können in der <a href=\"https://docs.software-univention.de/"
 "handbuch-%s.html#computers:networkcomplex\" target=\"_blank\">UCS "
 "Dokumentation</a> gefunden werden."
 
@@ -579,9 +579,9 @@ msgstr "nicht setzen"
 
 #: umc/js/setup.js:188
 #, javascript-format
-msgid "https://docs.univention.de/manual-%s.html#computers:networkcomplex:uvmm"
+msgid "https://docs.software-univention.de/manual-%s.html#computers:networkcomplex:uvmm"
 msgstr ""
-"https://docs.univention.de/handbuch-%s.html#computers:networkcomplex:uvmm"
+"https://docs.software-univention.de/handbuch-%s.html#computers:networkcomplex:uvmm"
 
 #: umc/js/setup/InterfaceWizard.js:634
 msgid "set"

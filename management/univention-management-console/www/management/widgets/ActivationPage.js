@@ -62,7 +62,7 @@ define([
 		}, {
 			type: Text,
 			name: 'text3',
-			content: _('<p>Details about the activation of a UCS license can be found in the <a href="https://docs.univention.de/manual-%(version)s.html#central:license" target="_blank">UCS manual</a>.</p>', {
+			content: _('<p>Details about the activation of a UCS license can be found in the <a href="https://docs.software-univention.de/manual-%(version)s.html#central:license" target="_blank">UCS manual</a>.</p>', {
 				version: tools.status('ucsVersion').split('-')[0]
 			})
 		}]
