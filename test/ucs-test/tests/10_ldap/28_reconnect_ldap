@@ -1,0 +1,33 @@
+#!/usr/share/ucs-test/runner python
+## -*- coding: utf-8 -*-
+## desc: test automatic reconnect of uldap.py
+## tags: [skip_admember,reconnect]
+## roles: [domaincontroller_master]
+## exposure: dangerous
+## packages:
+##   - python-univention-directory-manager
+##   - python-univention
+
+import subprocess
+import univention.uldap
+import ldap
+
+lo = univention.uldap.getMachineConnection()
+dn = lo.lo.whoami_s()[3:]
+attrs = lo.get(dn)
+print('Attrs=', attrs)
+subprocess.call(['service', 'slapd', 'stop'])
+try:
+	try:
+		lo.get(dn)
+	except ldap.SERVER_DOWN:
+		print('LDAP server is down!')
+	else:
+		raise ValueError('did not raise SERVER_DOWN')
+
+	subprocess.call(['service', 'slapd', 'start'])
+	new_attrs = lo.get(dn)
+	print('New Attrs=', new_attrs)
+	assert attrs == new_attrs
+finally:
+	subprocess.call(['service', 'slapd', 'restart'])
