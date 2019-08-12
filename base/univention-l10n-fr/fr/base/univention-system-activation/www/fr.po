@@ -105,11 +105,11 @@ msgstr "Demande de licence."
 #: www/ActivationWizard.js:77
 msgid ""
 "More details about the activation can be found in the <a "
-"href=\"http://docs.univention.de/manual.html#central:license\" "
+"href=\"https://docs.univention.de/manual.html#central:license\" "
 "target=\"_blank\">UCS manual</a>."
 msgstr ""
 "Vous pouvez trouver davantage d'informations sur l'activation dans le "
-"<a href=\"http://docs.univention.de/manual.html#central:license\" "
+"<a href=\"https://docs.univention.de/manual.html#central:license\" "
 "target=\"_blank\">Manuel UCS</a>."
 
 #: www/ActivationWizard.js:72

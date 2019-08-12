@@ -1,6 +1,6 @@
 # Copyright 2003-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
@@ -294,8 +294,8 @@ msgstr "Angabe von Zeiträumen (z.B. 00:00-07.15,23:12-24:00)"
 
 #: modules/univention/admin/handlers/nagios/nagios.py:45
 msgid ""
-"http://docs.univention.de/manual.html#nagios:"
+"https://docs.univention.de/manual.html#nagios:"
 "Configuration_of_the_Nagios_monitoring"
 msgstr ""
-"http://docs.univention.de/handbuch.html#nagios:Konfiguration_der_Nagios-"
+"https://docs.univention.de/handbuch.html#nagios:Konfiguration_der_Nagios-"
 "Überwachung"

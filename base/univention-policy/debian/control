@@ -24,7 +24,7 @@ Description: UCS - group policy library
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: libunivention-policy-dev
 Architecture: any
@@ -40,7 +40,7 @@ Description: UCS - group policy library (development files)
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-policy-tools
 Architecture: any
@@ -54,4 +54,4 @@ Description: UCS - tool to view group policies
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/

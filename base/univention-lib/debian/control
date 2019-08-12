@@ -36,7 +36,7 @@ Description: UCS - common scripting functions for Python 2 scripts
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: python3-univention-lib
 Architecture: all
@@ -64,7 +64,7 @@ Description: UCS - common scripting functions for Python 3 scripts
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: shell-univention-lib
 Architecture: all
@@ -79,4 +79,4 @@ Description: UCS - common scripting functions for shell scripts
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/

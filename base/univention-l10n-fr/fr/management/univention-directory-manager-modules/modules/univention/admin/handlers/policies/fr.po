@@ -1,6 +1,6 @@
 # Copyright 2010-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
@@ -54,7 +54,7 @@ msgid ""
 "directory tree. Connected policies allow to define object properties in a "
 "unified manner. Policies that are connected with containers or "
 "organizational units are inherited by all objects located below.</p><p>More "
-"information can be found in the <a href=\"http://docs.univention.de/manual."
+"information can be found in the <a href=\"https://docs.univention.de/manual."
 "html#central:policies\" target=\"_blank\">online documentation for UCS</a>.</"
 "p>"
 msgstr ""
@@ -1153,6 +1153,6 @@ msgid "Without specifying the most recent version will be used"
 msgstr "Si rien n'est indiqué, la version la plus récente sera utilisée"
 
 #: modules/univention/admin/handlers/policies/policy.py:49
-msgid "http://docs.univention.de/manual.html#central:policies"
-msgstr "http://docs.univention.de/manual.html#central:policies"
+msgid "https://docs.univention.de/manual.html#central:policies"
+msgstr "https://docs.univention.de/manual.html#central:policies"
 

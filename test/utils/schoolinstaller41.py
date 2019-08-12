@@ -3,7 +3,7 @@
 #
 # Copyright 2013-2015 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #

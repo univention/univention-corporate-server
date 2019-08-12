@@ -2,7 +2,7 @@
 #
 # Copyright 2010-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
@@ -104,7 +104,7 @@ msgid ""
 "You can either connect to a public or private cloud. Alternatively you can "
 "install a hypervisor on this or on any other UCS server in this domain. "
 "Further details about the virtualization can be found in <a target=\"_blank"
-"\" href=\"http://docs.univention.de/manual-4.2.html#uvmm:chapter\">the "
+"\" href=\"https://docs.univention.de/manual-4.2.html#uvmm:chapter\">the "
 "manual</a>."
 msgstr ""
 "Impossible d'établir une connexion à l'infrastructure de virtualisation. "
@@ -882,7 +882,7 @@ msgid ""
 "virtualized operating system is adapted to the underlying virtualization "
 "technology. This improves the performance. Linux systems usually support "
 "paravirtualization out of the box. For Windows systems additional support "
-"drivers need to be installed, see the <a href=\"http://wiki.univention.de/"
+"drivers need to be installed, see the <a href=\"https://wiki.univention.de/"
 "index.php?title=UVMM_Technische_Details\">Univention wiki</a> for details "
 "(currently only available in German)."
 msgstr ""
@@ -891,7 +891,7 @@ msgstr ""
 "virtualisation sous-jacente. Elle améliore les performances. Les systèmes "
 "Linux gèrent la paravirtualisation par défaut. Les systèmes Windows ont "
 "besoin de l'installation de pilotes de prise en charge supplémentaires, "
-"veuillez consulter le <a href=\"http://wiki.univention.de/index.php?"
+"veuillez consulter le <a href=\"https://wiki.univention.de/index.php?"
 "title=UVMM_Technische_Details\">wiki Univention</a> pour plus de détails "
 "(uniquement en allemand pour le moment)."
 
@@ -1402,7 +1402,7 @@ msgid ""
 "interface the network configuration of the UVMM node needs to be modified. "
 "This is done automatically by the UVMM service when starting the virtual "
 "machine. Further details about the network configuration can be found in <a "
-"target=\"_blank\" href=\"http://docs.univention.de/manual-4.2.html#uvmm:"
+"target=\"_blank\" href=\"https://docs.univention.de/manual-4.2.html#uvmm:"
 "networkinterfaces\">the manual</a>."
 msgstr ""
 "Deux types d'interfaces réseaux sont pris en charge. Le premier est le "
@@ -1419,7 +1419,7 @@ msgstr ""
 "la configuration du réseau du nœud UVMM doit être modifiée. Ceci est fait "
 "automatiquement par le service UVMM au démarrage de la machine virtuelle. "
 "Des informations supplémentaires sur la configuration du réseau peuvent être "
-"trouvées dans <a target=\"_blank\" href=\"http://docs.univention.de/"
+"trouvées dans <a target=\"_blank\" href=\"https://docs.univention.de/"
 "manual-4.2.html#uvmm:networkinterfaces\">le manuel</a>."
 
 #: umc/js/uvmm/InterfaceWizard.js:62 umc/js/uvmm/InterfaceGrid.js:59

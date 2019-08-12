@@ -967,22 +967,22 @@ msgstr "`samba-tool drs showrepl` gibt ein Problem mit der Replikation zurück."
 
 #: umc/python/diagnostic/plugins/21_check_join_status.py:44
 msgid ""
-"http://docs.software-univention.de/manual.html#domain:listenernotifier:"
+"https://docs.software-univention.de/manual.html#domain:listenernotifier:"
 "erroranalysis"
 msgstr ""
-"http://docs.software-univention.de/handbuch.html#domain:listenernotifier:"
+"https://docs.software-univention.de/handbuch.html#domain:listenernotifier:"
 "erroranalysis"
 
 #: umc/python/diagnostic/plugins/02_certificate_check.py:55
-msgid "http://sdb.univention.de/1183"
-msgstr "http://sdb.univention.de/1000"
+msgid "https://sdb.univention.de/1183"
+msgstr "https://sdb.univention.de/1000"
 
 #: umc/python/diagnostic/plugins/20_check_nameservers.py:53
-msgid "http://sdb.univention.de/1273"
+msgid "https://sdb.univention.de/1273"
 msgstr "https://help.univention.com/t/bind-zone-transfer-failed/6573"
 
 #: umc/python/diagnostic/plugins/23_check_update_sites.py:46
-msgid "http://sdb.univention.de/1298"
+msgid "https://sdb.univention.de/1298"
 msgstr "https://help.univention.com/t/dns-server-on-dc-does-not-resolve-external-name/6568"
 
 #: umc/python/diagnostic/plugins/51_hostname_check.py:46

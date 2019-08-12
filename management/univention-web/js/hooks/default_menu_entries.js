@@ -1,7 +1,7 @@
 /*
  * Copyright 2014-2019 Univention GmbH
  *
- * http://www.univention.de/
+ * https://www.univention.de/
  *
  * All rights reserved.
  *
@@ -169,13 +169,13 @@ define([
 			parentMenuId: 'umcMenuHelp',
 			label: _('Univention Website'),
 			priority: 120,
-			onClick: lang.hitch(this, _openPage, _('http://www.univention.com'), 'website')
+			onClick: lang.hitch(this, _openPage, _('https://www.univention.com'), 'website')
 		});
 		menu.addEntry({
 			parentMenuId: 'umcMenuHelp',
 			label: _('Univention Forum "Help"'),
 			priority: 110,
-			onClick: lang.hitch(this, _openPage, _('http://help.univention.com'), 'discourse')
+			onClick: lang.hitch(this, _openPage, _('https://help.univention.com'), 'discourse')
 		});
 		menu.addEntry({
 			parentMenuId: 'umcMenuHelp',

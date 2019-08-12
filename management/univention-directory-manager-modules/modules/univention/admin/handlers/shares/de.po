@@ -975,8 +975,8 @@ msgid "documents"
 msgstr "Dokumente"
 
 #: modules/univention/admin/handlers/shares/printer.py:61
-msgid "http://docs.univention.de/manual.html#print::shares"
-msgstr "http://docs.univention.de/handbuch.html#print::shares"
+msgid "https://docs.univention.de/manual.html#print::shares"
+msgstr "https://docs.univention.de/handbuch.html#print::shares"
 
 #: modules/univention/admin/handlers/shares/share.py:49
 msgid "manual"

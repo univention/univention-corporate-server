@@ -5,7 +5,7 @@
 #
 # Copyright 2004-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
@@ -58,7 +58,7 @@ class printerACLTypes(univention.admin.syntax.select):
 	]
 
 
-help_link = _('http://docs.univention.de/manual.html#print::shares')
+help_link = _('https://docs.univention.de/manual.html#print::shares')
 
 module = 'shares/printer'
 operations = ['add', 'edit', 'remove', 'search', 'move']

@@ -1,7 +1,7 @@
 /*
  * Copyright 2011-2019 Univention GmbH
  *
- * http://www.univention.de/
+ * https://www.univention.de/
  *
  * All rights reserved.
  *
@@ -341,10 +341,10 @@ define([
 				msg += '<li>' + _('The update should occur in a <b>maintenance window</b> as some services in the domain may not be available during the update.') + '</li>';
 				msg += '<li>' + _('It is recommended to <b>test the update</b> in a separate test environment prior to the actual update.') + '</li>';
 				if (args.detail) {
-					msg += '<li>' + _('Consider <a href="https://docs.software-univention.de/release-notes-%s-en.html" target="_blank">release notes and changelogs</a> as well as references posted in the <a href="http://forum.univention.de/viewforum.php?f=54" target="_blank">Univention Forum</a>.', args.detail) + '</li>';
+					msg += '<li>' + _('Consider <a href="https://docs.software-univention.de/release-notes-%s-en.html" target="_blank">release notes and changelogs</a> as well as references posted in the <a href="https://forum.univention.de/viewforum.php?f=54" target="_blank">Univention Forum</a>.', args.detail) + '</li>';
 				}
 				else {
-					msg += '<li>' + _('Consider <a href="https://docs.software-univention.de/" target="_blank">release notes and changelogs</a> as well as references posted in the <a href="http://forum.univention.de/viewforum.php?f=54" target="_blank">Univention Forum</a>.') + '</li>';
+					msg += '<li>' + _('Consider <a href="https://docs.software-univention.de/" target="_blank">release notes and changelogs</a> as well as references posted in the <a href="https://forum.univention.de/viewforum.php?f=54" target="_blank">Univention Forum</a>.') + '</li>';
 				}
 				msg += '</ul>';
 				msg += '<p>' + _('Depending on the system performance, network connection and the installed software the update may take from 30 minutes up to several hours.') + '</p>';

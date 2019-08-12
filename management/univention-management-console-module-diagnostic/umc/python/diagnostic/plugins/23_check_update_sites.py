@@ -6,7 +6,7 @@
 #
 # Copyright 2016-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
@@ -43,7 +43,7 @@ title = _('Check resolving repository servers')
 description = _('No problems were found while resolving update repositories.')
 links = [{
 	'name': 'sdb',
-	'href': _('http://sdb.univention.de/1298'),
+	'href': _('https://sdb.univention.de/1298'),
 	'label': _('Univention Support Database - DNS Server on DC does not resolve external names')
 }]
 run_descr = ['Checks resolving repository servers']

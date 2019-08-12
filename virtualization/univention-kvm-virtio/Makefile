@@ -4,7 +4,7 @@
 #
 # Copyright 2011-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
@@ -47,6 +47,6 @@ install: $(SOURCE)
 .PHONY: get-orig-source
 get-orig-source: $(SOURCE)
 virtio-win-%.iso:
-	wget -O "$@" "http://updates.software-univention.de/download/large-build-files/virtio/$@"
+	wget -O "$@" "https://updates.software-univention.de/download/large-build-files/virtio/$@"
 	echo "909f4437b69cba1edfa857326986eb8c4b58835169d70117a5ff57bfa4ebc48f74d6ffa05de50732fb60551166544160fa3b4ec5c59cfb98daeb789902a9b119  $@" | sha512sum -c
 	#wget -O "$@" "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-$*-1/$@"

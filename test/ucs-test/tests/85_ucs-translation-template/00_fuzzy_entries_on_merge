@@ -32,7 +32,7 @@ def fixture():
 		tools.call(
 			'svn',
 			'checkout',
-			'http://forge.univention.org/svn/dev/branches/ucs-4.1/ucs-4.1-4/management')
+			'https://forge.univention.org/svn/dev/branches/ucs-4.1/ucs-4.1-4/management')
 		tools.call(
 			'univention-ucs-translation-build-package',
 			'--source={}'.format('.'),

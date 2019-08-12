@@ -473,7 +473,7 @@ see <xref linkend="installation-overview"/>.
 <title>Troubleshooting for installation problems</title>
 	<para>
 		Information on possible installation problems can be found in the Univention
-		Support database at <ulink url="http://sdb.univention.de"/> in the
+		Support database at <ulink url="https://sdb.univention.de"/> in the
 		subitem <emphasis>Installation</emphasis>.
 	</para>
 </section>

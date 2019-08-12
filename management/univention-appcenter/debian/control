@@ -37,7 +37,7 @@ Description: UMC module for software management
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-management-console-module-packages
 Architecture: all
@@ -60,7 +60,7 @@ Description: Tools for Univention App Center
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: python-univention-appcenter
 Architecture: all
@@ -83,7 +83,7 @@ Description: Library for Univention App Center
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-appcenter-dev
 Architecture: all
@@ -100,7 +100,7 @@ Description: Development tools for Univention App Center
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-appcenter-docker
 Architecture: all
@@ -119,7 +119,7 @@ Description: Docker integration for Univention App Center
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-management-console-module-apps
 Architecture: all
@@ -135,4 +135,4 @@ Description: UMC module for application overview
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/

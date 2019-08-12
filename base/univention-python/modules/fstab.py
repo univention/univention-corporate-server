@@ -9,7 +9,7 @@ See <http://linux.die.net/include/mntent.h>.
 #
 # Copyright 2002-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #

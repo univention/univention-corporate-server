@@ -42,7 +42,7 @@ Description: UCS Management Console - Web based computer administration tool
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-management-console-server
 Architecture: all
@@ -65,7 +65,7 @@ Description: UCS Management Console - server
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: python-univention-management-console
 Architecture: all
@@ -91,7 +91,7 @@ Description: UCS Management Console - Python Modules
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-management-console-dev
 Architecture: all
@@ -110,7 +110,7 @@ Description: UCS Management Console - development files
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-management-console-doc
 Architecture: all
@@ -125,7 +125,7 @@ Description: UCS Management Console - documentation
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-management-console-frontend
 Architecture: all
@@ -146,7 +146,7 @@ Description: UCS Management Console - Web based computer administration tool
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-management-console-web-server
 Architecture: all
@@ -173,7 +173,7 @@ Description: UCS Management Console - Web server
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-management-console-login
 Architecture: all
@@ -189,5 +189,5 @@ Description: UCS Management Console - Login page
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 

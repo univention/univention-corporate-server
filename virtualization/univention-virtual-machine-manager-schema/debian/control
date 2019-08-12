@@ -22,7 +22,7 @@ Description: UCS Virtual Machine Manager schema definitions
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: python-univention-directory-manager-uvmm
 Architecture: all
@@ -38,4 +38,4 @@ Description: UCS Virtual Machine Manager UDM extensions
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/

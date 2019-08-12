@@ -4,7 +4,7 @@
 #
 # Copyright 2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #

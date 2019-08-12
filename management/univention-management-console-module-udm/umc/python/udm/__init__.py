@@ -6,7 +6,7 @@
 #
 # Copyright 2011-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
@@ -1286,10 +1286,10 @@ class Instance(Base, ProgressMixin):
 					errno = exc.errno
 					strerror += getattr(exc, 'strerror', '') or ''
 					if errno == 1:  # gaierror(1, something like 'SSL Unknown protocol')
-						link_to_doc = _('http://docs.univention.de/manual-%s.html#ip-config:Web_proxy_for_caching_and_policy_management__virus_scan') % version
+						link_to_doc = _('https://docs.univention.de/manual-%s.html#ip-config:Web_proxy_for_caching_and_policy_management__virus_scan') % version
 						strerror += '. ' + _('This may be a problem with the proxy of your system. You may find help at %s.') % link_to_doc
 					if errno == -2:  # gaierror(-2, 'Name or service not known')
-						link_to_doc = _('http://docs.univention.de/manual-%s.html#networks:dns') % version
+						link_to_doc = _('https://docs.univention.de/manual-%s.html#networks:dns') % version
 						strerror += '. ' + _('This is probably due to the DNS settings of your server. You may find help at %s.') % link_to_doc
 			if not strerror.strip():
 				strerror = str(exc)

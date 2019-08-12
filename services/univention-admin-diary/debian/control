@@ -26,7 +26,7 @@ Description: Univention Admin Diary backend
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: python-univention-admin-diary-backend
 Architecture: all
@@ -40,7 +40,7 @@ Description: Univention Admin Diary backend library
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-management-console-module-admindiary
 Architecture: all
@@ -53,7 +53,7 @@ Description: UMC module for the Admin Diary
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-admin-diary-client
 Architecture: all
@@ -65,7 +65,7 @@ Description: Univention Admin Diary client
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: python-univention-admin-diary
 Architecture: all
@@ -77,4 +77,4 @@ Description: Univention Admin Diary lib
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/

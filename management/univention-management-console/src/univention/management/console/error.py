@@ -6,7 +6,7 @@
 #
 # Copyright 2017-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
@@ -149,7 +149,7 @@ class LDAP_ConnectionFailed(LDAP_ServerDown):
 		if not self._is_master:
 			yield ' * ' + _('Make sure the domain controller master is running and reachable from %s') % (self._fqdn,)
 		yield ' * ' + _('Check the SSL certificates, proxy and firewall settings')
-		yield ' * ' + _('In case the SSL certificates are expired or a recent renewal of the root SSL CA has been done, please consider http://sdb.univention.de/1183')
+		yield ' * ' + _('In case the SSL certificates are expired or a recent renewal of the root SSL CA has been done, please consider https://sdb.univention.de/1183')
 		yield ' * ' + _('Restart the LDAP service on the domain controller master either via "service slapd restart" on command line or with the UMC module "System services"')
 		if self._updates_available:
 			yield ' * ' + _('Install the latest software updates')

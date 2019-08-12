@@ -1,7 +1,7 @@
 /*
  * Copyright 2012-2019 Univention GmbH
  *
- * http://www.univention.de/
+ * https://www.univention.de/
  *
  * All rights reserved.
  *
@@ -92,7 +92,7 @@ define([
 						'</li><li>' +  _('<i>VLAN</i> interfaces can be used to separate network traffic logically while using only one or more physical network interfaces.') +
 						'</li><li>' + _('<i>Bridge</i> interfaces allows a physical network interface to be shared to connect one or more network segments.') +
 						'</li><li>' + _('<i>Bond</i> interfaces allows two or more physical network interfaces to be coupled.') + '</li></ul>' +
-						_('Further information can be found in the <a href="http://docs.univention.de/manual-%s.html#computers:networkcomplex" target="_blank">UCS documentation</a>.', this.ucsversion),
+						_('Further information can be found in the <a href="https://docs.univention.de/manual-%s.html#computers:networkcomplex" target="_blank">UCS documentation</a>.', this.ucsversion),
 					widgets: [{
 						// required to rename
 						name: 'original_name',

@@ -341,7 +341,7 @@ if __name__ == '__main__':
     repositories_to_check = ('http://updates-test.software-univention.de/',
                              'http://software-univention.de/',
                              'http://download.univention.de/',
-                             'http://updates.software-univention.de/')
+                             'https://updates.software-univention.de/')
 
     try:
         for repo_url in repositories_to_check:

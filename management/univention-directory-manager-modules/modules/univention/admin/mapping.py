@@ -4,7 +4,7 @@ Functions to map between |UDM| properties and |LDAP| attributes.
 """
 # Copyright 2004-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #

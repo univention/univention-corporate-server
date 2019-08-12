@@ -6,7 +6,7 @@
 #
 # Copyright 2017-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
@@ -52,7 +52,7 @@ title = _('Check validity of SSL certificates')
 description = _('All SSL certificates valid.')
 links = [{
 	'name': 'sdb',
-	'href': _('http://sdb.univention.de/1183'),
+	'href': _('https://sdb.univention.de/1183'),
 	'label': _('Univention Support Database - Renewing the TLS/SSL certificates')
 }]
 

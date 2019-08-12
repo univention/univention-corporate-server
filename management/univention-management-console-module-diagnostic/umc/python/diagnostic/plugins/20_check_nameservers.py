@@ -6,7 +6,7 @@
 #
 # Copyright 2017-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
@@ -50,7 +50,7 @@ title = _('Check nameserver entries on DNS zones')
 description = ['All nameserver entries are ok.']
 links = [{
 	'name': 'sdb',
-	'href': _('http://sdb.univention.de/1273'),
+	'href': _('https://sdb.univention.de/1273'),
 	'label': _('Univention Support Database - Bind: zone transfer failed')
 }]
 run_descr = ['Checks nameserver entries on DNS zones']

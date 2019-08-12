@@ -6,7 +6,7 @@
 #
 # Copyright 2016-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
@@ -41,7 +41,7 @@ title = _('Check join status')
 description = _('The check for the join status was succsesful.')
 links = [{
 	'name': 'erroranalysis',
-	'href': _('http://docs.software-univention.de/manual.html#domain:listenernotifier:erroranalysis'),
+	'href': _('https://docs.software-univention.de/manual.html#domain:listenernotifier:erroranalysis'),
 	'label': _('Manual: Analysis of listener/notifier problems')
 }]
 umc_modules = [{'module': 'join'}]

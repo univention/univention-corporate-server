@@ -150,10 +150,10 @@ msgstr "Für den Fall, dass es hilft, hier die originale Fehlernachricht"
 #: univention/management/console/error.py:152
 msgid ""
 "In case the SSL certificates are expired or a recent renewal of the root SSL "
-"CA has been done, please consider http://sdb.univention.de/1183"
+"CA has been done, please consider https://sdb.univention.de/1183"
 msgstr ""
 "Falls die SSL Zertifikate abgelaufen sind oder das Wurzelzertifikat kürzlich "
-"erneuert worden ist, bitte ziehen Sie http://sdb.univention.de/1000 zu rat."
+"erneuert worden ist, bitte ziehen Sie https://sdb.univention.de/1000 zu rat."
 
 #: univention/management/console/error.py:131
 #: univention/management/console/error.py:155

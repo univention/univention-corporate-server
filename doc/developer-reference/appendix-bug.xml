@@ -18,15 +18,15 @@
 	<para>Search for existing entries before opening new reports.</para>
 	<para>Include the version info: <command>ucr search --brief ^version/</command>.</para>
 	<para>Provide enough information to help us reproduce the bug.</para>
-	<para>Search <ulink url="http://sdb.univention.de/"/></para>
-	<para>Search <ulink url="http://wiki.univention.de/"/></para>
-	<para>Search <ulink url="http://forum.univention.de/"/> and ask for help. In addition to our support team many of our partners are also present there. Your questions might also help other users while you may profit from issues already solved for other users.</para>
+	<para>Search <ulink url="https://sdb.univention.de/"/></para>
+	<para>Search <ulink url="https://wiki.univention.de/"/></para>
+	<para>Search <ulink url="https://forum.univention.de/"/> and ask for help. In addition to our support team many of our partners are also present there. Your questions might also help other users while you may profit from issues already solved for other users.</para>
 
 	<!-- <section id="bug:contributing"> -->
 	<!-- 	<title>Contributing back</title> -->
 	<!-- 	<para> -->
 	<!-- 		Send patches. -->
-	<!-- 		FIXME: http://wiki.univention.de/index.php?title=Development → Contribution to UCS -->
+	<!-- 		FIXME: https://wiki.univention.de/index.php?title=Development → Contribution to UCS -->
 	<!-- 	</para> -->
 	<!-- </section> -->
 

@@ -1,7 +1,7 @@
 /*
  * Copyright 2011-2019 Univention GmbH
  *
- * http://www.univention.de/
+ * https://www.univention.de/
  *
  * All rights reserved.
  *
@@ -185,7 +185,7 @@ define([
 
 		_displayNetworkPageWarning: function(networkDisabledBy) {
 			var version = tools.status('ucsVersion').split('-')[0];
-			var link = '<a href="' + _('http://docs.univention.de/manual-%s.html#computers:networkcomplex:uvmm', version) + '">"' + _('Setup for UCS Virtual Machine Manager') + '"</a>';
+			var link = '<a href="' + _('https://docs.univention.de/manual-%s.html#computers:networkcomplex:uvmm', version) + '">"' + _('Setup for UCS Virtual Machine Manager') + '"</a>';
 			var uvmmWarning = _('Changing network settings is disabled due to specific UVMM settings. See %s for further information.', link);
 			var warning = {
 				xen: uvmmWarning,

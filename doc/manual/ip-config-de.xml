@@ -2053,7 +2053,7 @@ univention-config-registry set squid/webports="80 443"
 
 	  <para>
 		Bei Verwendung von NTLM-Authentifizierung wird standardmäßig für jede HTTP-Anfrage eine NTLM-Authentifizierung durchgeführt. Wird beispielsweise die
-		Webseite <uri>http://www.univention.de</uri> aufgerufen, werden neben der eigentlichen
+		Webseite <uri>https://www.univention.de</uri> aufgerufen, werden neben der eigentlichen
 		HTML-Seite auch weitere Unterseiten und Bilder nachgeladen. Die NTLM-Authentifizierung kann
 		domänenbezogenen zwischengespeichert werden: Wird die &ucsUCRV;
 		<envar>squid/ntlmauth/keepalive</envar> auf <literal>yes</literal> gesetzt, wird für

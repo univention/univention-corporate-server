@@ -1,6 +1,6 @@
 # Copyright 2003-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
@@ -1025,8 +1025,8 @@ msgid "documents"
 msgstr "documents"
 
 #: modules/univention/admin/handlers/shares/printer.py:61
-msgid "http://docs.univention.de/manual.html#print::shares"
-msgstr "http://docs.univention.de/manual.html#print::shares"
+msgid "https://docs.univention.de/manual.html#print::shares"
+msgstr "https://docs.univention.de/manual.html#print::shares"
 
 #: modules/univention/admin/handlers/shares/share.py:50
 msgid "manual"

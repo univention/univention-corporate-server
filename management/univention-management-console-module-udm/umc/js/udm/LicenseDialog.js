@@ -1,7 +1,7 @@
 /*
  * Copyright 2011-2019 Univention GmbH
  *
- * http://www.univention.de/
+ * https://www.univention.de/
  *
  * All rights reserved.
  *
@@ -125,7 +125,7 @@ define([
 				}
 
 				var additionalInfo = {
-					'ffpu': _('The license type "Free for personal use" can be upgraded to the latest <a href="https://www.univention.com/downloads/license-models/ucs-core-edition" target="_blank">UCS Core Edition license</a> allowing an unlimited amount of user and computer accounts. To upgrade, follow the instructions in the <a href="http://sdb.univention.de/1324" target="_blank">Univention Support Database</a>.'),
+					'ffpu': _('The license type "Free for personal use" can be upgraded to the latest <a href="https://www.univention.com/downloads/license-models/ucs-core-edition" target="_blank">UCS Core Edition license</a> allowing an unlimited amount of user and computer accounts. To upgrade, follow the instructions in the <a href="https://sdb.univention.de/1324" target="_blank">Univention Support Database</a>.'),
 					'core': _('Information about the <a href="https://www.univention.com/downloads/license-models/ucs-core-edition" target="_blank">terms of use</a> for this free license can be found on the Univention website. Information about the <a href="https://www.univention.com/enterprise-subscriptions" target="_blank">UCS Enterprise Subscriptions</a> can also be found there.'),
 					'': ''
 				}[this.licenseInfo.freeLicense];

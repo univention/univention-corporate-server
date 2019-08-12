@@ -6,7 +6,7 @@
 	"maintainers": [{
 		"name": "Univention GmbH",
 		"email": "packages@univention.de",
-		"web": "http://www.univention.com"
+		"web": "https://www.univention.com"
 	}],
 	"contributors": [{
 		"name": "Univention GmbH"
@@ -24,7 +24,7 @@
 	"bugs": "https://forge.univention.org/bugzilla/",
 	"repositories": [{
 		"type": "svn",
-		"url": "http://forge.univention.org/svn/dev",
+		"url": "https://forge.univention.org/svn/dev",
 		"path": "branches/ucs-4.2/ucs4.2-0/management/univention-web-js"
 	}],
 	"dependencies": {

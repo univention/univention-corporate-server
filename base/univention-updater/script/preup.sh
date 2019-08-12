@@ -2,7 +2,7 @@
 #
 # Copyright (C) 2010-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
@@ -241,7 +241,7 @@ then
 	echo "         As such the content of /usr/ must be moved to the root file system before"
 	echo "         the system can be upgraded to UCS-4.2. This procedure should be performed"
 	echo "         manually and might require resizing the file systems. It is described at"
-	echo "         <http://sdb.univention.de/1386>."
+	echo "         <https://sdb.univention.de/1386>."
 	echo ""
 	exit 1
 fi
@@ -301,7 +301,7 @@ fail_if_role_package_will_be_removed () {
 		# to the old value which can be get from /var/log/univention/config-registry.replog
 		echo "       Please contact the Univention Support in case you have an Enterprise"
 		echo "       Subscription. Otherwise please try the Univention Forum"
-		echo "       http://forum.univention.de/"
+		echo "       https://forum.univention.de/"
 		exit 1
 	fi
 }

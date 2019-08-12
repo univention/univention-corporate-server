@@ -40,7 +40,7 @@ Die für den Versand per E-Mail, SMS oder beliebiger anderer Methoden nötige Ko
 
 === E-Mail ===
 
-Für den Versand per E-Mail muss ein Mail-Server konfiguriert werden. Dessen Name oder IP-Adresse wird in der UCR-Variablen umc/self-service/passwordreset/email/server gespeichert. Der Mail-Server muss die E-Mails ohne Passwort annehmen und weiterleiten. Standardmäßig geht das nur auf "localhost". Das Mailsystem muss ausgehende E-Mails direkt oder über ein Mail-Relay zustellen. Nähere Hinweise zur <a href="http://docs.software-univention.de/handbuch.html#mail::serverconfig::relay">Konfiguration eines Mail-Relays</a> finden sich im UCS-Handbuch.
+Für den Versand per E-Mail muss ein Mail-Server konfiguriert werden. Dessen Name oder IP-Adresse wird in der UCR-Variablen umc/self-service/passwordreset/email/server gespeichert. Der Mail-Server muss die E-Mails ohne Passwort annehmen und weiterleiten. Standardmäßig geht das nur auf "localhost". Das Mailsystem muss ausgehende E-Mails direkt oder über ein Mail-Relay zustellen. Nähere Hinweise zur <a href="https://docs.software-univention.de/handbuch.html#mail::serverconfig::relay">Konfiguration eines Mail-Relays</a> finden sich im UCS-Handbuch.
 
 Die zu versendende Nachricht wird aus einer Textdatei erzeugt. Mit der UCR-Variablen umc/self-service/passwordreset/email/text_file kann bestimmt werden welche dafür verwendet wird. Um den Text anzupassen sollte die Datei mit dem Standardtext von /usr/share/pyshared/univention/management/console/modules/passwordreset/sending/email_body.txt irgendwo hinkompiert und editiert werden. Der Pfad zur neuen Datei wird dann in der UCR-Variablen gesetzt.
 

@@ -21,7 +21,7 @@ actions = {}
 run_descr = ['Checks if the proxy server runs correctly']
 
 
-def run(_umc_instance, url='http://www.univention.de/', connecttimeout=30, timeout=30):
+def run(_umc_instance, url='https://www.univention.de/', connecttimeout=30, timeout=30):
 	ucr.load()
 
 	proxy = ucr.get('proxy/http')

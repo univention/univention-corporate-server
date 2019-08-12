@@ -35,7 +35,7 @@ Description: UCS - master domain controller
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-server-backup
 Architecture: all
@@ -69,7 +69,7 @@ Description: UCS - backup domain controller
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-server-slave
 Architecture: all
@@ -94,7 +94,7 @@ Description: UCS - slave domain controller
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-server-member
 Architecture: all
@@ -112,7 +112,7 @@ Description: UCS - member server
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-role-server-common
 Architecture: all
@@ -139,7 +139,7 @@ Description: UCS system server role common dependencies and files
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-container-role-server-common
 Architecture: all
@@ -157,7 +157,7 @@ Description: UCS system server role common dependencies and files
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-role-common
 Architecture: all
@@ -193,7 +193,7 @@ Description: UCS system role common dependencies and files
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-container-role-common
 Architecture: all
@@ -215,7 +215,7 @@ Description: UCS system role common dependencies and files
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-basesystem
 Architecture: all
@@ -234,4 +234,4 @@ Description: UCS - Basesystem
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/

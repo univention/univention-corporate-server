@@ -6,7 +6,7 @@
 #
 # Copyright 2014-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
@@ -38,7 +38,7 @@ import traceback
 # strptime import is not threadsafe
 # Workaround: import early
 # Upstream bug: https://bugs.python.org/issue7980
-# UCS bug: http://forge.univention.org/bugzilla/show_bug.cgi?id=45585
+# UCS bug: https://forge.univention.org/bugzilla/show_bug.cgi?id=45585
 import _strptime
 
 from univention.management.console.modules import Base

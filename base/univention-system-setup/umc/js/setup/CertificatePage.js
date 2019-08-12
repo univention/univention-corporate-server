@@ -1,7 +1,7 @@
 /*
  * Copyright 2011-2019 Univention GmbH
  *
- * http://www.univention.de/
+ * https://www.univention.de/
  *
  * All rights reserved.
  *
@@ -142,7 +142,7 @@ define([
 		_showNote: function() {
 			if (!this._noteShowed) {
 				this._noteShowed = true;
-				this.addWarning(_('Changes in the SSL certificate settings will result in generating new root SSL certificates. Note that this will require an update of all host certificates in the domain as the old root certificate is no longer valid. Additional information can be found in the <a href="http://sdb.univention.de/1183" target="_blank">Univention Support Database</a>.'));
+				this.addWarning(_('Changes in the SSL certificate settings will result in generating new root SSL certificates. Note that this will require an update of all host certificates in the domain as the old root certificate is no longer valid. Additional information can be found in the <a href="https://sdb.univention.de/1183" target="_blank">Univention Support Database</a>.'));
 			}
 		},
 

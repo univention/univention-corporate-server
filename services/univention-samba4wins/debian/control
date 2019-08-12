@@ -20,7 +20,7 @@ Description: UCS - samba4wins configuration
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-samba4wins-schema
 Architecture: all
@@ -34,4 +34,4 @@ Description: UCS - samba4wins ldap schema file
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/

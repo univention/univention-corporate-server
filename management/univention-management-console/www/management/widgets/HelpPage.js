@@ -1,7 +1,7 @@
 /*
  * Copyright 2014-2019 Univention GmbH
  *
- * http://www.univention.de/
+ * https://www.univention.de/
  *
  * All rights reserved.
  *
@@ -45,7 +45,7 @@ define([
 		}, {
 			type: Text,
 			name: 'links',
-			content: _('<ul><li><a href="http://docs.univention.de/en/ucs.html" target="_blank">Online documentation</a></li><li><a href="http://wiki.univention.de/index.php?title=Hauptseite" target="_blank">Univention Wiki</a></li><li><a href="https://www.univention.com/products/support/community-support/" target="_blank">Community and support</a></li></ul>')
+			content: _('<ul><li><a href="https://docs.univention.de/en/ucs.html" target="_blank">Online documentation</a></li><li><a href="https://wiki.univention.de/index.php?title=Hauptseite" target="_blank">Univention Wiki</a></li><li><a href="https://www.univention.com/products/support/community-support/" target="_blank">Community and support</a></li></ul>')
 		}]
 	};
 });

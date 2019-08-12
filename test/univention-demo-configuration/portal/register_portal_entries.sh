@@ -2,7 +2,7 @@
 #
 # Copyright 2017-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
@@ -133,7 +133,7 @@ create_admin_entry \
 	"Univention SDB" \
 	"The Univention support database" \
 	"Die Univention-Support-Datenbank" \
-	"http://sdb.univention.de"
+	"https://sdb.univention.de"
 
 function has_portal_background {
 	univention-ldapsearch -LLL -b "cn=portal,cn=univention,$ldap_base" cn=domain | grep -q univentionPortalBackground:

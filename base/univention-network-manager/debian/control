@@ -19,7 +19,7 @@ Description: UCS - transitional package for the Network Manager
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-ifplugd
 Architecture: all
@@ -37,7 +37,7 @@ Description: UCS - Support for ifplugd
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-network-common
 Architecture: all
@@ -60,4 +60,4 @@ Description: UCS - Network tools for ifplugd and network-manager (common)
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/

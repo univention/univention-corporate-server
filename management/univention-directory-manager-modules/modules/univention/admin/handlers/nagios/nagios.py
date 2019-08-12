@@ -6,7 +6,7 @@
 #
 # Copyright 2004-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
@@ -42,7 +42,7 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 module = 'nagios/nagios'
-help_link = _('http://docs.univention.de/manual.html#nagios:Configuration_of_the_Nagios_monitoring')
+help_link = _('https://docs.univention.de/manual.html#nagios:Configuration_of_the_Nagios_monitoring')
 default_containers = ['cn=nagios']
 
 childmodules = ['nagios/service', 'nagios/timeperiod']

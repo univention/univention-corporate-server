@@ -2381,7 +2381,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 
 	  <para>
 		If NTLM is used an NTLM authentication is performed for every HTTP query as standard. If for example the
-		website <uri>http://www.univention.de</uri> is opened, the subpages and images are loaded in
+		website <uri>https://www.univention.de</uri> is opened, the subpages and images are loaded in
 		addition to the actual HTML page. The NTLM authentication can be cached per domain: If the
 		&ucsUCRV; <envar>squid/ntlmauth/keepalive</envar> is set to <literal>yes</literal>, no
 		further NTLM authentication is performed for subsequent HTML queries in the same

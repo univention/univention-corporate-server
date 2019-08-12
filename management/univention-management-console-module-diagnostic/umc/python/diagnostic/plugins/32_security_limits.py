@@ -23,7 +23,7 @@ description = '\n'.join([
 # SDB article not published yet, Bug #35868
 # links = [{
 #	'name': 'sdb',
-#	'href': _('http://forum.univention.de/viewtopic.php?f=48&t=2100'),
+#	'href': _('https://forum.univention.de/viewtopic.php?f=48&t=2100'),
 #	'label': _('Samba4 max open files - Univention Forum')
 #}]
 buttons = [{

@@ -1,7 +1,7 @@
 /*
  * Copyright 2017-2019 Univention GmbH
  *
- * http://www.univention.de/
+ * https://www.univention.de/
  *
  * All rights reserved.
  *
@@ -70,7 +70,7 @@ define([
 						name: 'email'
 					}, {
 						type: Text,
-						content: _('More details about the activation can be found in the <a href="http://docs.univention.de/manual.html#central:license" target="_blank">UCS manual</a>.'),
+						content: _('More details about the activation can be found in the <a href="https://docs.univention.de/manual.html#central:license" target="_blank">UCS manual</a>.'),
 						name: 'moreDetails'
 					}, {
 						type: Text,

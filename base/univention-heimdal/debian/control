@@ -31,7 +31,7 @@ Description: UCS - Kerberos KDC
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-heimdal-member
 Architecture: all
@@ -51,7 +51,7 @@ Description: UCS - Kerberos member server
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-heimdal-common
 Architecture: all
@@ -67,4 +67,4 @@ Description: UCS - Kerberos common package
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/

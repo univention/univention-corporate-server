@@ -135,7 +135,7 @@ msgstr ""
 "de nouveaux certificats SSL racines. Notez que cela nécessitera de mettre à "
 "jour tous les certificats des hôtes du domaine, du fait que l'ancien "
 "certificat racine ne sera plus valide. Vous pouvez trouver davantage "
-"d'informations à ce sujet dans la <a href=\"http://sdb.univention.de/1183\" "
+"d'informations à ce sujet dans la <a href=\"https://sdb.univention.de/1183\" "
 "target=\"_blank\">Base de données d'assistance Univention</a>."
 
 #: umc/js/setup/NetworkPage.js:232
@@ -264,7 +264,7 @@ msgstr "Délai de transmission"
 #: umc/js/setup/InterfaceWizard.js:95
 #, javascript-format
 msgid ""
-"Further information can be found in the <a href=\"http://docs.univention.de/"
+"Further information can be found in the <a href=\"https://docs.univention.de/"
 "manual-%s.html#computers:networkcomplex\" target=\"_blank\">UCS "
 "documentation</a>."
 msgstr ""
@@ -584,8 +584,8 @@ msgstr "ne pas définir"
 
 #: umc/js/setup.js:188
 #, javascript-format
-msgid "http://docs.univention.de/manual-%s.html#computers:networkcomplex:uvmm"
-msgstr "http://docs.univention.de/manual-%s.html#computers:networkcomplex:uvmm"
+msgid "https://docs.univention.de/manual-%s.html#computers:networkcomplex:uvmm"
+msgstr "https://docs.univention.de/manual-%s.html#computers:networkcomplex:uvmm"
 
 #: umc/js/setup/InterfaceWizard.js:630
 msgid "set"

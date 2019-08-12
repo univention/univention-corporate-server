@@ -5,7 +5,7 @@
 #
 # Copyright 2011-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
@@ -40,7 +40,7 @@ then
 	*) lang='en-US' tld='com' ;;
 	esac
 	case "${firefox_prefs_homepage:-}" in
-	http://www.univention.de/) firefox_prefs_homepage="https://www.univention.$tld/" ;;
+	https://www.univention.de/) firefox_prefs_homepage="https://www.univention.$tld/" ;;
 	esac
 
 	update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/firefox 101

@@ -1,7 +1,7 @@
 /*
  * Copyright 2014-2019 Univention GmbH
  *
- * http://www.univention.de/
+ * https://www.univention.de/
  *
  * All rights reserved.
  *
@@ -62,7 +62,7 @@ define([
 		}, {
 			type: Text,
 			name: 'text3',
-			content: _('<p>Details about the activation of a UCS license can be found in the <a href="http://docs.univention.de/manual-%(version)s.html#central:license" target="_blank">UCS manual</a>.</p>', {
+			content: _('<p>Details about the activation of a UCS license can be found in the <a href="https://docs.univention.de/manual-%(version)s.html#central:license" target="_blank">UCS manual</a>.</p>', {
 				version: tools.status('ucsVersion').split('-')[0]
 			})
 		}]

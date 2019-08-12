@@ -23,7 +23,7 @@ Type=str
 Categories=service-ln
 
 [ldap/replication/fallback]
-Description[de]=Diese variable konfiguriert das Verhalten des UCS Listeners im Fall, dass das lokale LDAP nicht aktualisiert werden kann. Standard ist 'ldif', was dafür sorgt, dass das Replikationsmodul alle Änderungen in die Datei '/var/lib/univention-directory-replication/failed.ldif' schreibt. Mit 'restart' wird statt dessen der UCS Listener neu gestartet. Siehe <http://sdb.univention.de/1300>.
-Description[en]=This variable configures the behavior of the UCS Listener in the case, where updating the local LDAP fails. Default is 'ldif', which switches the replication module to write all changes into the file '/var/lib/univention-directory-replication/failed.ldif'. With 'restart' the UCS Listener will be restarted instead. See <http://sdb.univention.de/1300>.
+Description[de]=Diese variable konfiguriert das Verhalten des UCS Listeners im Fall, dass das lokale LDAP nicht aktualisiert werden kann. Standard ist 'ldif', was dafür sorgt, dass das Replikationsmodul alle Änderungen in die Datei '/var/lib/univention-directory-replication/failed.ldif' schreibt. Mit 'restart' wird statt dessen der UCS Listener neu gestartet. Siehe <https://sdb.univention.de/1300>.
+Description[en]=This variable configures the behavior of the UCS Listener in the case, where updating the local LDAP fails. Default is 'ldif', which switches the replication module to write all changes into the file '/var/lib/univention-directory-replication/failed.ldif'. With 'restart' the UCS Listener will be restarted instead. See <https://sdb.univention.de/1300>.
 Type=str
 Categories=service-ln

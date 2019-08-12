@@ -6,7 +6,7 @@
 #
 # Copyright 2004-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
@@ -42,6 +42,6 @@ setup(name='univention-license',
 		libraries=['univentionlicense'])],
 	author='Univention GmbH',
 	author_email='packages@univention.de',
-	url='http://www.univention.de/',
+	url='https://www.univention.de/',
 	description='Univention license validation library',
 )

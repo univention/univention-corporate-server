@@ -10,7 +10,7 @@
 ## tags:
 ##  - skip_admember
 
-# skip test, see http://forge.univention.org/bugzilla/show_bug.cgi?id=18501#c21
+# skip test, see https://forge.univention.org/bugzilla/show_bug.cgi?id=18501#c21
 exit 131
 
 . "$TESTLIBPATH/base.sh" || exit 137

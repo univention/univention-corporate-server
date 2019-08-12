@@ -27,7 +27,7 @@ def get_base64_encoded_creds(username, password, encoding):
 def check_proxy(user, encoding):
 	print('Now checking encoding: {}'.format(encoding))
 	print('Username: {}, Password: {}'.format(user['username'], user['password']))
-	url = 'http://www.univention.de'
+	url = 'https://www.univention.de'
 	try:
 		credentials = get_base64_encoded_creds(user['username'], user['password'], encoding)
 	except UnicodeEncodeError:

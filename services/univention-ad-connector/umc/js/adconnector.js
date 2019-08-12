@@ -1,7 +1,7 @@
 /*
  * Copyright 2014-2019 Univention GmbH
  *
- * http://www.univention.de/
+ * https://www.univention.de/
  *
  * All rights reserved.
  *
@@ -43,7 +43,7 @@ define([
 	app.registerOnStartup(function() {
 		tools.umcpCommand('adconnector/admember/check_dcmaster_srv_rec').then(function(response) {
 			if (!response.result.success) {
-				dialog.notify(_('<p><b>Caution!</b> The DNS service record for the UCS Master was not found in the DNS server.</p>') + ' ' +  _('<p>Details are explained in the <a href="http://sdb.univention.de/1299">Support Database</a>.</p>'), _('DNS Check'));
+				dialog.notify(_('<p><b>Caution!</b> The DNS service record for the UCS Master was not found in the DNS server.</p>') + ' ' +  _('<p>Details are explained in the <a href="https://sdb.univention.de/1299">Support Database</a>.</p>'), _('DNS Check'));
 			}
 		});
 	});

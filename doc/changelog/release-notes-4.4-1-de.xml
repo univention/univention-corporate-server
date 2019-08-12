@@ -129,7 +129,7 @@
 			Dieses Skript kann vor dem Update manuell auf das System geladen und ausgeführt werden:
 			<screen><![CDATA[
 # download
-curl -OOs http://updates.software-univention.de/download/univention-update-checks/pre-update-checks-4.4{,.gpg}
+curl -OOs https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-4.4{,.gpg}
 
 # run script
 gpgv --keyring /usr/share/keyrings/univention-archive-key-ucs-4x.gpg pre-update-checks-4.4.gpg \

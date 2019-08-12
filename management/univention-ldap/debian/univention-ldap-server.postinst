@@ -5,7 +5,7 @@
 #
 # Copyright 2001-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
@@ -179,13 +179,13 @@ upgrade_license () {
 		return 0
 	elif grep -q '^univentionLicenseKeyID: ' "$tmp"
 	then
-		echo "Activated 'Free for personal use edition' found: see <http://sdb.univention.de/1324>."
+		echo "Activated 'Free for personal use edition' found: see <https://sdb.univention.de/1324>."
 		return 1
 	else
 		echo "Old 'Free for personal use edition' found: performing upgrade..."
 		univention-config-registry filter </usr/share/univention-ldap/core-edition.ldif >"$tmp" &&
 		univention-license-import "$tmp" ||
-		echo "Failed to import new license: see <http://sdb.univention.de/1324>."
+		echo "Failed to import new license: see <https://sdb.univention.de/1324>."
 		return 1
 	fi
 }

@@ -22,7 +22,7 @@ Description: UCS - automatic profile-based installation services
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-net-installer-daemon
 Architecture: all
@@ -37,7 +37,7 @@ Description: UCS - automatic profile server installation
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: di-univention-net-installer
 Package-Type: udeb
@@ -60,4 +60,4 @@ Description: UCS - automatic profile-based installation services
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/

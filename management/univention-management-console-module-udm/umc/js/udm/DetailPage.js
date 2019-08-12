@@ -1,7 +1,7 @@
 /*
  * Copyright 2011-2019 Univention GmbH
  *
- * http://www.univention.de/
+ * https://www.univention.de/
  *
  * All rights reserved.
  *
@@ -1410,7 +1410,7 @@ define([
 					iconClass: 'umcExtendedAttrIconWhite',
 					label: _('Customize this page'),
 					callback: lang.hitch(this, function() {
-						var link = lang.replace('http://docs.software-univention.de/{0}-4.2.html#central:extendedattrs', [_('manual')]); 
+						var link = lang.replace('https://docs.software-univention.de/{0}-4.2.html#central:extendedattrs', [_('manual')]); 
 						window.open(link);
 					})
 				});

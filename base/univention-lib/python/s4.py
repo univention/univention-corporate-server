@@ -6,7 +6,7 @@ common |AD| constants.
 """
 # Copyright 2012-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #

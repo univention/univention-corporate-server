@@ -25,7 +25,7 @@ Description: UCS - Python 2 namespace module
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: python-univention
 Architecture: all
@@ -45,7 +45,7 @@ Description: UCS - common Python 2 modules
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: python3-univention
 Architecture: all
@@ -64,4 +64,4 @@ Description: UCS - common Python 3 modules
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
