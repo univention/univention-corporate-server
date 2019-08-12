@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## -*- coding: utf-8 -*-
 ## desc: test automatic reconnect of uldap.py
-## tags: [skip_admember]
+## tags: [skip_admember,reconnect]
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
 ## packages:
@@ -105,7 +105,7 @@ def main():
 						res = lo.modify(user_dn, [['description', old_description, new_description]])
 						assert res == user_dn
 						old_description = new_description
-						count +=1
+						count += 1
 					except UNAVAILABLE as exc:
 						# ignore ldap.UNAVAILABLE, slapd is started but database backend not yet available
 						# python-ldap reconnect does not handle this situation

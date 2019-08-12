@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python2.7
 ## desc: Test reconnect mechanism of uldap
-## tags: []
+## tags: [reconnect]
 ## roles-not:
 ##  - basesystem
 ##  - memberserver

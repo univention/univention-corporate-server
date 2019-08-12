@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test the reconnect mechanism of univention-ldapsearch
-## tags: [apptest]
+## tags: [apptest,reconnect]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave]
 ## packages: [python-psutil]
 ## bugs: [34293, 37299]

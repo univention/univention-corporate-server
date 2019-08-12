@@ -31,13 +31,16 @@
 # <http://www.gnu.org/licenses/>.
 
 import re
+from functools import wraps
+
 import ldap
 import ldap.schema
 import ldap.sasl
-import univention.debug
-from univention.config_registry import ConfigRegistry
 from ldapurl import LDAPUrl
 from ldapurl import isLDAPUrl
+
+import univention.debug
+from univention.config_registry import ConfigRegistry
 try:
 	from typing import Any, Dict, List, Optional, Set, Tuple, Union  # noqa
 except ImportError:
@@ -184,6 +187,28 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, se
 			raise exc
 
 
+def _fix_reconnect_handling(func):
+	# Bug #47926: python ldap does not reconnect on ldap.UNAVAILABLE
+	# We need this until https://github.com/python-ldap/python-ldap/pull/267 is fixed
+	@wraps(func)
+	def _decorated(self, *args, **kwargs):
+		if not self.reconnect:
+			return func(self, *args, **kwargs)
+
+		try:
+			return func(self, *args, **kwargs)
+		except ldap.INSUFFICIENT_ACCESS:
+			if self.whoami():  # the connection is still bound and valid
+				raise
+			self._reconnect()
+			return func(self, *args, **kwargs)
+		except (ldap.UNAVAILABLE, ldap.CONNECT_ERROR, ldap.TIMEOUT):  # ldap.TIMELIMIT_EXCEEDED ?
+			self._reconnect()
+			return func(self, *args, **kwargs)
+
+	return _decorated
+
+
 class access(object):
 	"""
 	The low-level class to access a LDAP server.
@@ -255,6 +280,7 @@ class access(object):
 		else:
 			return pwd
 
+	@_fix_reconnect_handling
 	def bind(self, binddn, bindpw):
 		# type: (str, str) -> None
 		"""
@@ -268,6 +294,7 @@ class access(object):
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'bind binddn=%s' % self.binddn)
 		self.lo.simple_bind_s(self.binddn, self.__encode_pwd(self.bindpw))
 
+	@_fix_reconnect_handling
 	def bind_saml(self, bindpw):
 		# type: (str) -> None
 		"""
@@ -282,7 +309,7 @@ class access(object):
 			ldap.sasl.CB_PASS: bindpw,
 		}, 'SAML')
 		self.lo.sasl_interactive_bind_s('', saml)
-		self.binddn = re.sub('^dn:', '', self.lo.whoami_s())
+		self.binddn = self.whoami()
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'SAML bind binddn=%s' % self.binddn)
 
 	def unbind(self):
@@ -291,6 +318,22 @@ class access(object):
 		Unauthenticate.
 		"""
 		self.lo.unbind_s()
+
+	def whoami(self):
+		# type: () -> str
+		"""
+		Return the distinguished name of the authenticated user.
+
+		:returns: The distinguished name.
+		:rtype: str
+		"""
+		dn = self.lo.whoami_s()
+		return re.sub('^dn:', '', dn)
+
+	def _reconnect(self):
+		# type: () -> None
+		"""Reconnect."""
+		self.lo.reconnect(self.lo._uri, retry_max=self.lo._retry_max, retry_delay=self.lo._retry_delay)
 
 	def __open(self, ca_certfile):
 		# type: (Optional[str]) -> None
@@ -309,15 +352,14 @@ class access(object):
 		if self.protocol.lower() != 'ldaps':
 			if self.start_tls == 1:
 				try:
-					self.lo.start_tls_s()
+					self.__starttls()
 				except:
 					univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'Could not start TLS')
 			elif self.start_tls == 2:
-				self.lo.start_tls_s()
+				self.__starttls()
 
 		if self.binddn and not self.uri.startswith('ldapi://'):
-			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'bind binddn=%s' % self.binddn)
-			self.lo.simple_bind_s(self.binddn, self.__encode_pwd(self.bindpw))
+			self.bind(self.binddn, self.bindpw)
 
 		# Override referral handling
 		if self.follow_referral:
@@ -325,6 +367,10 @@ class access(object):
 
 		self.__schema = None
 		self.__reconnects_done = 0
+
+	@_fix_reconnect_handling
+	def __starttls(self):
+		self.lo.start_tls_s()
 
 	def __encode(self, value):
 		if value is None:
@@ -365,6 +411,7 @@ class access(object):
 	def __decode_attribute(self, attr, val):
 		return self.__recode_attribute(attr, val)
 
+	@_fix_reconnect_handling
 	def get(self, dn, attr=[], required=False):
 		# type: (str, List[str], bool) -> Dict[str, List[str]]
 		"""
@@ -389,6 +436,7 @@ class access(object):
 			raise ldap.NO_SUCH_OBJECT({'desc': 'no object'})
 		return {}
 
+	@_fix_reconnect_handling
 	def getAttr(self, dn, attr, required=False):
 		# type: (str, str, bool) -> List[str]
 		"""
@@ -417,6 +465,7 @@ class access(object):
 			raise ldap.NO_SUCH_OBJECT({'desc': 'no object'})
 		return []
 
+	@_fix_reconnect_handling
 	def search(self, filter='(objectClass=*)', base='', scope='sub', attr=[], unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
 		# type: (str, str, str, List[str], bool, bool, int, int, Optional[List[ldap.controls.LDAPControl]], Optional[Dict]) -> List[Tuple[str, Dict[str, List[str]]]]
 		"""
@@ -486,6 +535,7 @@ class access(object):
 		_d = univention.debug.function('uldap.searchDn filter=%s base=%s scope=%s unique=%d required=%d' % (filter, base, scope, unique, required))  # noqa F841
 		return [x[0] for x in self.search(filter, base, scope, ['dn'], unique, required, timeout, sizelimit, serverctrls, response)]
 
+	@_fix_reconnect_handling
 	def getPolicies(self, dn, policies=None, attrs=None, result=None, fixedattrs=None):
 		# type: (str, List[str], Dict[str, List[Any]], Any, Any) -> Dict[str, Dict[str, Any]]
 		"""
@@ -588,6 +638,7 @@ class access(object):
 					'fixed': 1 if key in fixed else 0,
 				}
 
+	@_fix_reconnect_handling
 	def get_schema(self):
 		# type: () -> ldap.schema.subentry.SubSchema
 		"""
@@ -604,6 +655,7 @@ class access(object):
 			self.__schema = ldap.schema.SubSchema(self.lo.read_subschemasubentry_s(self.lo.search_subschemasubentry_s()), 0)
 		return self.__schema
 
+	@_fix_reconnect_handling
 	def add(self, dn, al, serverctrls=None, response=None):
 		# type: (str, List[Tuple], Optional[List[ldap.controls.LDAPControl]], Optional[dict]) -> None
 		"""
@@ -642,6 +694,7 @@ class access(object):
 		if serverctrls and isinstance(response, dict):
 			response['ctrls'] = resp_ctrls
 
+	@_fix_reconnect_handling
 	def modify(self, dn, changes, serverctrls=None, response=None):
 		# type: (str, List[Tuple[str, Any, Any]], Optional[List[ldap.controls.LDAPControl]], Optional[dict]) -> str
 		"""
@@ -716,6 +769,7 @@ class access(object):
 			return ldap.dn.dn2str([ldap.dn.str2dn(new_rdn)[0]] + ldap.dn.str2dn(dn)[1:]), new_rdn
 		return dn, rdn
 
+	@_fix_reconnect_handling
 	def modify_s(self, dn, ml):
 		# type: (str, List[Tuple[str, Optional[List[str]], List[str]]]) -> None
 		"""
@@ -732,6 +786,7 @@ class access(object):
 			lo_ref = self._handle_referral(exc)
 			lo_ref.modify_ext_s(dn, ml)
 
+	@_fix_reconnect_handling
 	def modify_ext_s(self, dn, ml, serverctrls=None, response=None):
 		# type: (str, List[Tuple[str, Any, Any]], Optional[List[ldap.controls.LDAPControl]], Optional[dict]) -> None
 		"""
@@ -783,6 +838,7 @@ class access(object):
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename: modrdn %s to %s' % (dn, newrdn))
 			self.rename_ext_s(dn, newrdn, serverctrls=serverctrls, response=response)
 
+	@_fix_reconnect_handling
 	def rename_ext_s(self, dn, newrdn, newsuperior=None, serverctrls=None, response=None):
 		# type: (str, str, Optional[str], Optional[List[ldap.controls.LDAPControl]], Optional[dict]) -> None
 		"""
@@ -809,6 +865,7 @@ class access(object):
 		if serverctrls and isinstance(response, dict):
 			response['ctrls'] = resp_ctrls
 
+	@_fix_reconnect_handling
 	def delete(self, dn):
 		# type: (str) -> None
 		"""
@@ -917,6 +974,7 @@ class access(object):
 		if isLDAPUrl(ldap_url):
 			conn_str = LDAPUrl(ldap_url).initializeUrl()
 
+			# FIXME?: this upgrades a access(reconnect=False) connection to a reconnect=True connection
 			lo_ref = ldap.ldapobject.ReconnectLDAPObject(conn_str, trace_stack_limit=None)
 
 			if self.ca_certfile:
