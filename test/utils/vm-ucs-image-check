@@ -51,9 +51,9 @@ parse_args () {
 		shift
 		case "$arg" in
 		-h|--help) echo "$exe [-h|--help] [-c|--clean] [-n|--dry-run]" ; exit 0 ;;
-		-c|--clean) report_only=false ;;
-		-n|--dry-run) dryrun=echo ;;
-		-v|--verbose) verbose=printf ;;
+		-c|--clean) report_only='false' ;;
+		-n|--dry-run) dryrun='echo' ;;
+		-v|--verbose) verbose='printf' ;;
 		--) break ;;
 		*) die "Unknown argument '$arg'" ;;
 		esac
@@ -241,7 +241,7 @@ check_dpkg () {
 check_kernel () {  # Bug #37144
 	local arch current desired status error pkg
 	arch="$(dpkg --print-architecture)"
-	current="$(dpkg-query -s univention-kernel-image | sed -rne "/^Depends:/s/.*(linux-image-.*-${arch})(-signed)?(,.*)?\$/\1/p")"
+	current="$(dpkg-query -s univention-kernel-image | sed -rne "/^Depends:/s/.*(linux-image-.*-${arch})(-signed)?(,.*)?\$/\\1/p")"
 	dpkg-query -f '${Status} ${Package}\n' -W "linux-image-*-${arch}" >"$tmp"
 	while read -r desired status error pkg
 	do
@@ -282,6 +282,13 @@ check_journal () {
 		issue "Old journald boot exists" journalctl --rotate
 	[ -s "$tmp" ] &&
 		issue "Old journald files exists" journalctl --vacuum-files=1
+}
+
+check_machina_ide () {
+	[ -s /var/lib/dbus/machine-id ] &&
+		issue "/var/lib/dbus/machine-id exists" rm -f /var/lib/dbus/machine-id
+	[ -s /etc/machine-id  ] &&
+		issue "/etc/machine-id exists" truncate -s 0 /etc/machine-id
 }
 
 main "$@"
