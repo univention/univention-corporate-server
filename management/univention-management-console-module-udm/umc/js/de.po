@@ -1821,7 +1821,7 @@ msgstr ""
 "www.univention.de/download/lizenzmodelle/ucs-core-edition\" target=\"_blank"
 "\">UCS Core Edition Lizenz</a> aktualisiert werden, welche eine unlimitierte "
 "Anzahl von Benutzer- und Rechnerkonten ermöglicht. Für die Aktualisierung "
-"reicht es, den aufgezeigten Schritten in der <a href=\"http://sdb.univention."
+"reicht es, den aufgezeigten Schritten in der <a href=\"https://sdb.univention."
 "de/1324\" target=\"_blank\">Univention Support Database</a> zu folgen."
 
 #: umc/js/udm/DetailPage.js:858

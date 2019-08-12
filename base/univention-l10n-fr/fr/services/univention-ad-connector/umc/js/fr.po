@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: univention-management-console-module-adconnector\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2016-07-06 09:40+0100\n"
+"PO-Revision-Date: 2019-08-12 10:25+0200\n"
 "Last-Translator: Éric Bischoff <ebischoff@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
@@ -35,10 +35,10 @@ msgstr ""
 
 #: umc/js/adconnector.js:46
 msgid ""
-"<p>Details are explained in the <a href=\"http://sdb.univention."
+"<p>Details are explained in the <a href=\"https://sdb.univention."
 "de/1299\">Support Database</a>.</p>"
 msgstr ""
-"<p>Les informations sont détaillées dans la <a href=\"http://sdb.univention."
+"<p>Les informations sont détaillées dans la <a href=\"https://sdb.univention."
 "de/1299\">Base de données d'assistance</a>.</p>"
 
 #: umc/js/adconnector/SetupWizard.js:89
