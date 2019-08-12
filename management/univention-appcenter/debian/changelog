@@ -1,3 +1,10 @@
+univention-appcenter (8.0.11-49) unstable; urgency=medium
+
+  * Bug #49055: Multi Container Apps now use a explicitely assigned subnet
+    below appcenter/docker/compose/network
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Aug 2019 09:06:23 +0200
+
 univention-appcenter (8.0.11-48) unstable; urgency=medium
 
   * Bug #48698: Fix user visible spelling errors
