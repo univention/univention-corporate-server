@@ -65,10 +65,9 @@ class Remove(Remove, DockerActionMixin):
 			if self._backup_container(app, remove=True) is False:
 				raise RemoveBackupFailed()
 		docker = self._get_docker(app)
-		if docker.container:
-			Stop.call(app=app)
-			docker.stop()
-			docker.rm()
+		Stop.call(app=app)
+		docker.stop()
+		docker.rm()
 		return True
 
 	def dry_run(self, app, args):

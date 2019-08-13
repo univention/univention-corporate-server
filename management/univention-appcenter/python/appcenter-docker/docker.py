@@ -51,6 +51,7 @@ from ipaddr import IPv4Network, IPv4Address
 import ruamel.yaml as yaml
 
 from univention.appcenter.utils import app_ports_with_protocol, app_ports, call_process, call_process2, shell_safe, mkdir, unique, urlopen
+from univention.appcenter.app_cache import Apps
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.exceptions import DockerImagePullFailed, DockerCouldNotStartContainer
 from univention.appcenter.ucr import ucr_save, ucr_get, ucr_run_filter, ucr_is_true
@@ -368,10 +369,12 @@ class Docker(object):
 		return commit(self.container, new_image_name)
 
 	def stop(self):
-		return stop(self.container)
+		if self.container:
+			return stop(self.container)
 
 	def rm(self):
-		return rm(self.container)
+		if self.container:
+			return rm(self.container)
 
 	def logs(self):
 		return docker_logs(self.container, logger=self.logger)
@@ -399,10 +402,10 @@ class Docker(object):
 				return None
 			else:
 				return network
-		docker0_net = IPv4Network(ucr_get('appcenter/docker/compose/network', '172.16.0.0/16'))
-		gateway, netmask = docker0_net.exploded.split('/', 1)  # '172.16.0.0', '16'
+		docker0_net = IPv4Network(ucr_get('appcenter/docker/compose/network', '172.16.1.1/16'))
+		gateway, netmask = docker0_net.exploded.split('/', 1)  # '172.16.1.1', '16'
 		used_docker_networks = []
-		for _app in self.app.get_app_cache_obj().get_all_apps():  # TODO: find container not managed by the App Center?
+		for _app in Apps().get_all_apps():  # TODO: find container not managed by the App Center?
 			if _app.id == self.app.id:
 				continue
 			ip = ucr_get(_app.ucr_ip_key)
@@ -416,7 +419,7 @@ class Docker(object):
 		if prefixlen_diff <= 0:
 			_logger.warn('Cannot get a subnet big enough')  # maybe I could... but currently, I only work with 24-netmasks
 			return None
-		for network in docker0_net.iter_subnets(prefixlen_diff):  # 172.16.0.1/24, 172.16.1.1/24, ..., 172.16.255.1/24
+		for network in docker0_net.iter_subnets(prefixlen_diff):  # 172.16.1.1/24, 172.16.2.1/24, ..., 172.16.255.1/24
 			_logger.debug('Testing %s' % network)
 			if IPv4Address(gateway) in network:
 				_logger.debug('Refusing due to "main subnet"')
@@ -491,6 +494,7 @@ class MultiDocker(Docker):
 				}
 				ucr_save({self.app.ucr_ip_key: str(network)})
 				ip_addresses = network.iterhosts()  # iterator!
+				ip_addresses.next()  # first one for docker gateway
 		for service_name, service in content['services'].iteritems():
 			exposed_ports[service_name] = (int(port) for port in service.get('expose', []))
 			used_ports[service_name] = {}
@@ -576,5 +580,5 @@ class MultiDocker(Docker):
 
 	def rm(self):
 		ret = self.stop()
-		ret = ret and call_process(['docker-compose', '-p', self.app.id, 'rm', '--force'], logger=self.logger, cwd=self.app.get_compose_dir()).returncode == 0
+		ret = ret and call_process(['docker-compose', '-p', self.app.id, 'down', '--remove-orphans'], logger=self.logger, cwd=self.app.get_compose_dir()).returncode == 0
 		return ret
