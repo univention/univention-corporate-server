@@ -1,0 +1,21 @@
+product: ucs
+release: "4.3"
+version: [4]
+scope: ucs_4.3-0-errata4.3-4
+src: python-django
+fix: 1:1.10.7-2+deb9u6
+desc: |
+ This update addresses the following issues:
+ * backtracking in a regular expression in django.utils.text.Truncator leads
+   to DoS (CVE-2019-14232)
+ * the behavior of the underlying HTMLParser leading to DoS (CVE-2019-14233)
+ * SQL injection possibility in key and index lookups for
+   JSONField/HStoreField (CVE-2019-14234)
+ * Potential memory exhaustion in django.utils.encoding.uri_to_iri()
+   (CVE-2019-14235)
+bug: [50001]
+cve:
+- CVE-2019-14232
+- CVE-2019-14233
+- CVE-2019-14234
+- CVE-2019-14235
