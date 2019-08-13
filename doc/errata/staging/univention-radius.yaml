@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [1]
+scope: ucs_4.4-0-errata4.4-1
+src: univention-radius
+fix: 6.0.2-10A~4.4.0.201908131800
+desc: |
+ This update addresses the following issue(s):
+ * The radius authentication performance has been improved. This should be
+   especially noticeable in large environments.
+bug: [50006]
