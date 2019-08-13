@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [4]
+scope: ucs_4.3-0-errata4.3-4
+src: ghostscript
+fix: 9.26a~dfsg-0+deb9u4
+desc: |
+ This update addresses the following issue:
+ * -dSAFER escape via .buildfont1 (701394) (CVE-2019-10216)
+bug: [50002]
+cve:
+- CVE-2019-10216
