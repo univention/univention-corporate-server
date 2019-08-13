@@ -132,6 +132,14 @@ ucr set \
 	ldap/shadowbind/ignorefilter?"(|(objectClass=univentionDomainController)(userPassword={KINIT}))" \
 	ldap/maxopenfiles?8192 # Bug #17705
 
+# #18500
+# Add ssl-cert group if it doesn't exist yet.
+# add user openldap to the group ssl-cert
+if [ -z "`getent group ssl-cert`" ]; then
+	addgroup --quiet --system ssl-cert
+fi
+usermod -a -G ssl-cert openldap
+
 if [ "$1" = "configure" -a -z "$2" ]; then
 	# disable anonymous bind by default
 	univention-config-registry set ldap/acl/read/anonymous?no
