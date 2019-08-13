@@ -1,3 +1,9 @@
+univention-radius (6.0.2-10) unstable; urgency=medium
+
+  * Bug #50006: Improve performance in large environments
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 13 Aug 2019 17:39:21 +0200
+
 univention-radius (6.0.2-9) unstable; urgency=medium
 
   * Bug #46018: improve log messages

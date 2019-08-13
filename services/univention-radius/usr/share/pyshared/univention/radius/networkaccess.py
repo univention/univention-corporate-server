@@ -34,7 +34,7 @@
 import os
 import logging
 
-import univention.admin.filter
+from ldap.filter import filter_format
 import univention.uldap
 from ldap import SERVER_DOWN
 import univention.config_registry
@@ -150,15 +150,15 @@ class NetworkAccess(object):
 		return access_dict
 
 	def get_user_network_access(self, uid):
-		users = self.ldapConnection.search(filter=str(univention.admin.filter.expression('uid', uid)), attr=['univentionNetworkAccess'])
+		users = self.ldapConnection.search(filter=filter_format('(uid=%s)', (uid, )), attr=['univentionNetworkAccess'])
 		return self.build_access_dict(users)
 
 	def get_station_network_access(self, mac_address):
-		stations = self.ldapConnection.search(filter=str(univention.admin.filter.expression('macAddress', mac_address)), attr=['univentionNetworkAccess'])
+		stations = self.ldapConnection.search(filter=filter_format('(macAddress=%s)', (mac_address, )), attr=['univentionNetworkAccess'])
 		return self.build_access_dict(stations)
 
 	def get_groups_network_access(self, dn):
-		groups = self.ldapConnection.search(filter=str(univention.admin.filter.expression('uniqueMember', dn)), attr=['univentionNetworkAccess'])
+		groups = self.ldapConnection.search(filter=filter_format('(uniqueMember=%s)', (dn, )), attr=['univentionNetworkAccess'])
 		return self.build_access_dict(groups)
 
 	def evaluate_ldap_network_access(self, access, level=''):
@@ -226,7 +226,7 @@ class NetworkAccess(object):
 			raise MacNotAllowedError('stationId is denied, because it is not whitelisted')
 		# user is authorized to authenticate via RADIUS, retrieve NT-password-hash from LDAP and return it
 		self.logger.info('User is allowed to use RADIUS')
-		result = self.ldapConnection.search(filter=str(univention.admin.filter.expression('uid', self.username)), attr=['sambaNTPassword', 'sambaAcctFlags'])
+		result = self.ldapConnection.search(filter=filter_format('(uid=%s)', (self.username, )), attr=['sambaNTPassword', 'sambaAcctFlags'])
 		if not result:
 			raise NoHashError('No NT-password-hash found')
 		sambaAccountFlags = frozenset(result[0][1]['sambaAcctFlags'][0])
