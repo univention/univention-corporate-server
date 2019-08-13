@@ -2,8 +2,8 @@ product: ucs
 release: "4.3"
 version: [4]
 scope: ucs_4.3-0-errata4.3-4
-src: linux
-fix: 4.9.168-1+deb9u5
+src: univention-kernel-image-signed
+fix: 4.0.0-16A~4.3.0.201908130952
 desc: |
  This update addresses the following issues:
  * Non-maskable interrupts triggerable by guests (xsa120) (CVE-2015-8553)
@@ -29,7 +29,7 @@ desc: |
  * Integer overflow and OOB read in drivers/block/floppy.c (CVE-2019-14283)
  * Denial of service in drivers/block/floppy.c by setup_format_params
    division-by-zero (CVE-2019-14284)
-note: This is the 1st of two related updates.
+note: This is the 2nd of two related updates.
 bug: [50004]
 cve:
 - CVE-2015-8553
