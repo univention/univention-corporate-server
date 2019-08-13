@@ -1,0 +1,91 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Create an UCS-User with LM-hash and check sync of LM-hash"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+ucr set password/samba/lmhash=yes
+udm_kill_univention_cli_server
+
+UDM_users_user_username="$(random_chars)"
+UDM_users_user_lastname="$(random_chars)"
+# If the password doesn't adhere the configured Windows-Password-Guidelines
+# weird things might happen when the user is synced to AD.
+UDM_users_user_password="U$(random_chars)123"
+UDM_users_user_firstname="$(random_chars)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+
+ad_set_sync_mode "sync"
+
+udm_create "users/user" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+section "Trying authentication"
+
+HOST="$(ucr get connector/s4/ldap/host)"
+
+smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%${UDM_users_user_password}" ; fail_bool 0 100
+
+lm_hash1=$(ldbsearch -H /var/lib/samba/private/sam.ldb samaccountname="${UDM_users_user_username}" dBCSPwd | sed -n 's/^dBCSPwd:: //p')
+
+section "Change password"
+
+UDM_users_user_password="A$(random_chars)22"
+udm_modify "users/user" "" "" "" "" \
+	--set password="$UDM_users_user_password" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+section "Trying authentication second time"
+
+smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%${UDM_users_user_password}" ; fail_bool 0 100
+
+lm_hash2=$(ldbsearch -H /var/lib/samba/private/sam.ldb samaccountname="${UDM_users_user_username}" dBCSPwd | sed -n 's/^dBCSPwd:: //p')
+
+if [ "$lm_hash1" = "$lm_hash2" ]; then
+	fail_fast "LM Hash change not synchronized to Samba/AD"
+fi
+
+section "Remove LM Hash"
+
+user_dn=$(univention-ldapsearch uid="${UDM_users_user_username}" 1.1 | sed -n 's/^dn: //p')
+
+eval "$(ucr shell tests/domainadmin/account tests/domainadmin/pwdfile)"
+
+ldapmodify -x -D "$tests_domainadmin_account" -y "$tests_domainadmin_pwdfile" <<%EOF
+dn: $user_dn
+changetype: modify
+delete: sambaLMPassword
+%EOF
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+lm_hash3=$(ldbsearch -H /var/lib/samba/private/sam.ldb samaccountname="${UDM_users_user_username}" dBCSPwd | sed -n 's/^dBCSPwd:: //p')
+
+if [ -n "$lm_hash3" ]; then
+	fail_fast "LM Hash (dBCSPwd) not deleted in Samba/AD"
+fi
+
+
+udm_remove "users/user" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_exists "users/user"; fail_bool 1 110
+
+AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
+ad_exists "$AD_DN"; fail_bool 1 110
+
+ucr unset password/samba/lmhash
+udm_kill_univention_cli_server
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"
