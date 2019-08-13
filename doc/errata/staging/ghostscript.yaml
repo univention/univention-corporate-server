@@ -6,7 +6,7 @@ src: ghostscript
 fix: 9.26a~dfsg-0+deb9u4
 desc: |
  This update addresses the following issue:
- * -dSAFER escape via .buildfont1 (701394) (CVE-2019-10216)
+ * Escape -dSAFER via .buildfont1 (CVE-2019-10216)
 bug: [50002]
 cve:
 - CVE-2019-10216
