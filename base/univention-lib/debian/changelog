@@ -1,3 +1,9 @@
+univention-lib (8.0.1-27) unstable; urgency=low
+
+  * Bug #48698: Fix user visible spelling errors
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 13 Aug 2019 11:55:09 +0200
+
 univention-lib (8.0.1-26) unstable; urgency=medium
 
   * Bug #48698: Fix user visible spelling errors

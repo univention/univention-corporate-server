@@ -172,9 +172,9 @@ def createOrRename(old, new, cr):
 
 		# check blacklist
 		if is_blacklisted(newPath, cr):
-			return "%r as destination for renaming not allowed! WARNING: the path %r for the share %r matches a blacklisted path. The whitelist can be extended via the URC variables listener/shares/whitelist/. After changing the variables univention-directory-listener needs to be restartet." % (newPath, newPath, share_name)
+			return "%r as destination for renaming not allowed! WARNING: the path %r for the share %r matches a blacklisted path. The whitelist can be extended via the UCR variables listener/shares/whitelist/. After changing the variables univention-directory-listener needs to be restartet." % (newPath, newPath, share_name)
 		if is_blacklisted(oldPath, cr):
-			return "%r as source for renaming not allowed! WARNING: the path %r for the share %r matches a blacklisted path. The whitelist can be extended via the URC variables listener/shares/whitelist/. After changing the variables univention-directory-listener needs to be restartet." % (oldPath, newPath, share_name)
+			return "%r as source for renaming not allowed! WARNING: the path %r for the share %r matches a blacklisted path. The whitelist can be extended via the UCR variables listener/shares/whitelist/. After changing the variables univention-directory-listener needs to be restartet." % (oldPath, newPath, share_name)
 
 		# check mount point
 		for i in [oldPath, newPath]:
@@ -250,7 +250,7 @@ def createOrRename(old, new, cr):
 
 	# check blacklist
 	if is_blacklisted(newPath, cr):
-		return "WARNING: the path %r for the share %r matches a blacklisted path. The whitelist can be extended via the URC variables listener/shares/whitelist/." % (newPath, share_name)
+		return "WARNING: the path %r for the share %r matches a blacklisted path. The whitelist can be extended via the UCR variables listener/shares/whitelist/." % (newPath, share_name)
 
 	# set permissions, only modify them if a change has occurred
 	try:
