@@ -1,0 +1,47 @@
+product: ucs
+release: "4.4"
+version: [0, 1]
+scope: ucs_4.4-0-errata4.4-1
+src: linux
+fix: 4.9.168-1+deb9u5
+desc: |
+ This update addresses the following issues:
+ * non-maskable interrupts triggerable by guests (xsa120) (CVE-2015-8553)
+ * Information Exposure through dmesg data from a "pages/cpu" printk call
+   (CVE-2018-5995)
+ * race condition in smp_task_timedout() and smp_task_done() in
+   drivers/scsi/libsas/sas_expander.c leads to use-after-free (CVE-2018-20836)
+ * Use-after-free in __blk_drain_queue() function in block/blk-core.c
+   (CVE-2018-20856)
+ * hw: Spectre SWAPGS gadget vulnerability (CVE-2019-1125)
+ * denial of service vector through vfio DMA mappings (CVE-2019-3882)
+ * vhost_net: infinite loop while receiving packets leads to DoS
+   (CVE-2019-3900)
+ * null-pointer dereference in hci_uart_set_flow_control (CVE-2019-10207)
+ * net: weak IP ID generation leads to remote device tracking (CVE-2019-10638)
+ * net: using kernel space address bits to derive IP ID may potentially break
+   KASLR (CVE-2019-10639)
+ * OOB writes in parse_hid_report_descriptor in drivers/input/tablet/gtco.c
+   (CVE-2019-13631)
+ * denial of service in arch/powerpc/kernel/signal_32.c and
+   arch/powerpc/kernel/signal_64.c via sigreturn() system call
+   (CVE-2019-13648)
+ * integer overflow and OOB read in drivers/block/floppy.c (CVE-2019-14283)
+ * denial of service in drivers/block/floppy.c by setup_format_params
+   division-by-zero (CVE-2019-14284)
+bug: [50003]
+cve:
+- CVE-2015-8553
+- CVE-2018-5995
+- CVE-2018-20836
+- CVE-2018-20856
+- CVE-2019-1125
+- CVE-2019-3882
+- CVE-2019-3900
+- CVE-2019-10207
+- CVE-2019-10638
+- CVE-2019-10639
+- CVE-2019-13631
+- CVE-2019-13648
+- CVE-2019-14283
+- CVE-2019-14284
