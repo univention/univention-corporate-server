@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [1]
+scope: ucs_4.4-0-errata4.4-1
+src: univention-appcenter
+fix: 8.0.11-49A~4.4.0.201908131007
+desc: |-
+  This update addresses the following issue(s):
+  * Multicontainer apps now use a subnet managed by the App Center instead of
+    creating arbitrary networks. This caused problems with firewalls and
+    existing networks. The network can be configured by the UCR variable
+    appcenter/docker/compose/network, which defaults to 172.16.1.1/16. This
+    change takes effect with new App installations.
+bug: [49055]
