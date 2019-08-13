@@ -313,7 +313,7 @@ if configRegistry['ldap/server/type']=="master":
 	print '\tlog_action_end_msg 0'
 @!@
 	if [ -e /var/lib/univention-directory-replication/failed.ldif ]; then
-		log_action_begin_msg "Found failed.ldif. Importing "
+		log_action_begin_msg "Found /var/lib/univention-directory-replication/failed.ldif. Importing "
 		test -x /usr/sbin/univention-directory-replication-resync && /usr/sbin/univention-directory-replication-resync /var/lib/univention-directory-replication/failed.ldif >>/var/log/univention/listener.log 2>&1
 		if [ $? = 0 ]; then
 			log_action_end_msg 0
