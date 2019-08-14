@@ -1,3 +1,9 @@
+univention-system-setup (12.0.2-20) unstable; urgency=low
+
+  * Bug #43688: Convert DHCPd from runit to systemd
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 09 Aug 2019 10:36:29 +0200
+
 univention-system-setup (12.0.2-19) unstable; urgency=low
 
   * Bug #49036: Fix file permission when creating new host certificates
