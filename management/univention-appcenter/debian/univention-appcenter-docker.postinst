@@ -33,7 +33,7 @@
 #DEBHELPER#
 
 ucr set appcenter/docker?enabled
-ucr set appcenter/docker/compose/network?172.16.0.0/16
+ucr set appcenter/docker/compose/network?172.16.1.1/16
 
 if dpkg --compare-versions "$2" lt-nl 5.0.22-7; then
 	test -x /etc/init.d/postgresl && service postgresql restart
