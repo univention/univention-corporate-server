@@ -10,3 +10,5 @@ desc: |-
    the firewall rules; MySQL connections are allowed from this subnet. It is
    used by the App Center when installing certain Apps.
 bug: [49055]
+erratum: 234
+announced: 2019-08-14
