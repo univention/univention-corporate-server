@@ -9,3 +9,5 @@ desc: |
  * The error message when connecting to a module process fails
    is now mentioning the actual module name.
 bug: [43225]
+erratum: 230
+announced: 2019-08-14
