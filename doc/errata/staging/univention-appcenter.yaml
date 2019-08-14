@@ -3,7 +3,7 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-appcenter
-fix: 8.0.11-49A~4.4.0.201908131007
+fix: 8.0.11-50A~4.4.0.201908140928
 desc: |-
   This update addresses the following issue(s):
   * Multicontainer apps now use a subnet managed by the App Center instead of
