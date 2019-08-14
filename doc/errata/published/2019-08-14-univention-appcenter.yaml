@@ -12,3 +12,5 @@ desc: |-
    appcenter/docker/compose/network, which defaults to 172.16.1.1/16. This
    change takes effect with new App installations.
 bug: [49055]
+erratum: 233
+announced: 2019-08-14
