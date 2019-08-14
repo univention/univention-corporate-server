@@ -3,12 +3,14 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-directory-manager-modules
-fix: 14.0.13-8A~4.4.0.201908081721
+fix: 14.0.13-9A~4.4.0.201908141533
 desc: |
  This update addresses the following issue(s):
- * The UDM module users/user now offers the following four new properties:
+ * The UDM module users/user has been prepaired for adding the following
+   four new properties:
    initials, postOfficeBox, preferredLanguage and physicalDeliveryOfficeName.
-   They are available via CLI tool and python API but not shown in the UMC.
+   Any extended attribute for those properties should be changed to use the
+   same property name as CLIName.
  * The UDM module users/user properties departmentNumber and roomNumber
    have been changed to be multivalue, as allowed in the LDAP schema. This
    change has been made to support synchronization with Samba/AD.
