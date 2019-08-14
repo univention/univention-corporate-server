@@ -1,3 +1,9 @@
+univention-system-setup (13.0.2-3) unstable; urgency=medium
+
+  * Bug #43688: Convert DHCPd from runit to systemd
+
+ -- Sebastian Lobinger <lobinger@univention.de>  Wed, 25 Nov 2020 13:53:06 +0100
+
 univention-system-setup (13.0.2-2) unstable; urgency=medium
 
   * Bug #43687: Convert init.d to systemctl commands for UDN
