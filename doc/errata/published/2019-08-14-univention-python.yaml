@@ -9,3 +9,5 @@ desc: |
  * Situations where operations are performed during a restart of the
    OpenLDAP server will trigger a reconnection in the uldap.py utilities.
 bug: [47926]
+erratum: 231
+announced: 2019-08-14
