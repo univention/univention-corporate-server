@@ -1,3 +1,9 @@
+univention-firewall (11.0.1-4) unstable; urgency=medium
+
+  * Bug #49055: Change UCRV default
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 14 Aug 2019 09:33:33 +0200
+
 univention-firewall (11.0.1-3) unstable; urgency=medium
 
   * Bug #49055: Allow MySQL access for Docker Compose Apps (with App Center
