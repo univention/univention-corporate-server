@@ -553,7 +553,7 @@ def show_stat(opt):
         print("Index.file: %s" % index.filename)
         print("Index.size: %d" % index.size)
         print("Index.count: %d" % index.count)
-        print("Index.okay: %s" % ('yes' if index.count == translog.count else 'no',))
+        print("Index.okay: %s" % ('yes' if index.count == translog.last else 'no',))
         print("Translog.file: %s" % translog.filename)
         print("Translog.size: %d" % translog.size)
         print("Translog.first: %d" % translog.first)

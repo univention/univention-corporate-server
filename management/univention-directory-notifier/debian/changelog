@@ -1,3 +1,9 @@
+univention-directory-notifier (13.0.1-18) unstable; urgency=medium
+
+  * Bug #49872: Fix `univention-translog stat` check for index
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 14 Aug 2019 14:43:50 +0200
+
 univention-directory-notifier (13.0.1-17) unstable; urgency=medium
 
   * Bug #48698: Fix user visible spelling errors
