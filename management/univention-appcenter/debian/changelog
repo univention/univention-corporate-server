@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-50) unstable; urgency=medium
+
+  * Bug #49055: Fix UCRV default
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 14 Aug 2019 09:27:42 +0200
+
 univention-appcenter (8.0.11-49) unstable; urgency=medium
 
   * Bug #49055: Multi Container Apps now use a explicitely assigned subnet
