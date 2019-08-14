@@ -584,8 +584,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 			dBCSPwd_new = binascii.a2b_hex(ucsLMhash)
 			modlist.append((ldap.MOD_REPLACE, 'dBCSPwd', dBCSPwd_new))
 		else:
-			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: dBCSPwd should be removed in Samba 4 which is no longer possible, see Bug https://forge.univention.org/bugzilla/show_bug.cgi?id=49905")
-			# modlist.append((ldap.MOD_DELETE, 'dBCSPwd', dBCSPwd_attr))
+			modlist.append((ldap.MOD_DELETE, 'dBCSPwd', None))
 
 	if pwd_set or not supplementalCredentials:
 		if krb5Principal:
