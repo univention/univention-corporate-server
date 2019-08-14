@@ -1,6 +1,12 @@
+univention-ad-connector (13.0.0-15) unstable; urgency=medium
+
+  * Bug #48027: Fix links to https
+
+ -- Fathan Vidjaja <vidjaja@univention.de>  Wed, 14 Aug 2019 14:41:01 +0200
+
 univention-ad-connector (13.0.0-14) unstable; urgency=medium
 
-  * Bug #48207: Fix links in UMC to UCS 4.4 documentation
+  * Bug #48027: Fix links in UMC to UCS 4.4 documentation
 
  -- Fathan Vidjaja <vidjaja@univention.de>  Wed, 14 Aug 2019 14:14:41 +0200
 
