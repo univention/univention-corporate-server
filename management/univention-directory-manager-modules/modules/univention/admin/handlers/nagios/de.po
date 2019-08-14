@@ -30,7 +30,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-admin-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-07-16 10:25+0200\n"
+"POT-Creation-Date: 2019-08-14 14:58+0200\n"
 "PO-Revision-Date: 2005-10-18 13:52+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -39,103 +39,103 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: modules/univention/admin/handlers/nagios/service.py:96
+#: modules/univention/admin/handlers/nagios/service.py:97
 msgid "Arguments of used Nagios plugin"
 msgstr "Parameter für das verwendete Plugin-Kommando"
 
-#: modules/univention/admin/handlers/nagios/service.py:173
-#: modules/univention/admin/handlers/nagios/service.py:200
+#: modules/univention/admin/handlers/nagios/service.py:174
 #: modules/univention/admin/handlers/nagios/service.py:201
+#: modules/univention/admin/handlers/nagios/service.py:202
 msgid "Assigned hosts"
 msgstr "Zugeordnete Rechner"
 
-#: modules/univention/admin/handlers/nagios/service.py:182
+#: modules/univention/admin/handlers/nagios/service.py:183
 msgid "Basic settings"
 msgstr "Allgemein"
 
-#: modules/univention/admin/handlers/nagios/service.py:119
+#: modules/univention/admin/handlers/nagios/service.py:120
 msgid "Check interval"
 msgstr "Prüfintervall"
 
-#: modules/univention/admin/handlers/nagios/service.py:105
+#: modules/univention/admin/handlers/nagios/service.py:106
 msgid "Check period"
 msgstr "Prüfzeitraum"
 
-#: modules/univention/admin/handlers/nagios/service.py:174
+#: modules/univention/admin/handlers/nagios/service.py:175
 msgid "Check services on these hosts"
 msgstr "Rechner, auf denen der Dienst überprüft werden soll"
 
-#: modules/univention/admin/handlers/nagios/service.py:106
+#: modules/univention/admin/handlers/nagios/service.py:107
 msgid "Check services within check period"
 msgstr "Dienste werden in diesem Zeitraum überwacht"
 
-#: modules/univention/admin/handlers/nagios/service.py:189
+#: modules/univention/admin/handlers/nagios/service.py:190
 msgid "Check settings"
 msgstr "Intervalle"
 
-#: modules/univention/admin/handlers/nagios/service.py:90
+#: modules/univention/admin/handlers/nagios/service.py:91
 msgid "Command name of Nagios plugin"
 msgstr "Zu verwendendes Nagios-Plugin"
 
-#: modules/univention/admin/handlers/nagios/service.py:83
-#: modules/univention/admin/handlers/nagios/timeperiod.py:98
+#: modules/univention/admin/handlers/nagios/timeperiod.py:99
+#: modules/univention/admin/handlers/nagios/service.py:84
 msgid "Description"
 msgstr "Beschreibung"
 
-#: modules/univention/admin/handlers/nagios/timeperiod.py:99
+#: modules/univention/admin/handlers/nagios/timeperiod.py:100
 msgid "Description of time period (eg. non-workhours)"
 msgstr "Beschreibung des Zeitraums (z.B. Wochenende)"
 
-#: modules/univention/admin/handlers/nagios/timeperiod.py:125
+#: modules/univention/admin/handlers/nagios/timeperiod.py:126
 msgid "Friday"
 msgstr "Freitag"
 
-#: modules/univention/admin/handlers/nagios/service.py:182
-#: modules/univention/admin/handlers/nagios/timeperiod.py:143
+#: modules/univention/admin/handlers/nagios/timeperiod.py:144
+#: modules/univention/admin/handlers/nagios/service.py:183
 msgid "General"
 msgstr "Allgemein"
 
-#: modules/univention/admin/handlers/nagios/service.py:183
+#: modules/univention/admin/handlers/nagios/service.py:184
 msgid "General Nagios service settings"
 msgstr "Grundeinstellungen - Nagios-Dienst"
 
-#: modules/univention/admin/handlers/nagios/timeperiod.py:144
+#: modules/univention/admin/handlers/nagios/timeperiod.py:145
 msgid "General Nagios time period settings"
 msgstr "Grundeinstellungen - Nagios-Zeitraum"
 
-#: modules/univention/admin/handlers/nagios/service.py:200
+#: modules/univention/admin/handlers/nagios/service.py:201
 msgid "Hosts"
 msgstr "Rechner"
 
-#: modules/univention/admin/handlers/nagios/service.py:189
+#: modules/univention/admin/handlers/nagios/service.py:190
 msgid "Interval"
 msgstr "Intervall"
 
-#: modules/univention/admin/handlers/nagios/service.py:120
+#: modules/univention/admin/handlers/nagios/service.py:121
 msgid "Interval between checks"
 msgstr "Zeit zwischen zwei Überprüfungen"
 
-#: modules/univention/admin/handlers/nagios/service.py:136
+#: modules/univention/admin/handlers/nagios/service.py:137
 msgid "Interval between notifications"
 msgstr "Zeit zwischen zwei Benachrichtigungen für das gleiche Problem"
 
-#: modules/univention/admin/handlers/nagios/service.py:128
+#: modules/univention/admin/handlers/nagios/service.py:129
 msgid "Interval between re-checks if service is in non-OK-state"
 msgstr "Zeit zwischen zwei Überprüfungen, wenn Dienst im Nicht-OK-Zustand ist"
 
-#: modules/univention/admin/handlers/nagios/service.py:111
+#: modules/univention/admin/handlers/nagios/service.py:112
 msgid "Maximum number of check attempts"
 msgstr "Maximale Anzahl der Überprüfungen"
 
-#: modules/univention/admin/handlers/nagios/service.py:112
+#: modules/univention/admin/handlers/nagios/service.py:113
 msgid ""
 "Maximum number of check attempts with non-OK-result until contact will be "
 "notified"
 msgstr ""
-"Maximale Anzahl an Prüfungswiederholungen, bis ein Nicht-OK-Zustand gemeldet "
-"wird"
+"Maximale Anzahl an Prüfungswiederholungen, bis ein Nicht-OK-Zustand gemeldet"
+" wird"
 
-#: modules/univention/admin/handlers/nagios/timeperiod.py:105
+#: modules/univention/admin/handlers/nagios/timeperiod.py:106
 msgid "Monday"
 msgstr "Montag"
 
@@ -152,150 +152,149 @@ msgstr "Nagios-Objekt Name"
 msgid "Nagios objects"
 msgstr "Nagios-Objekte"
 
-#: modules/univention/admin/handlers/nagios/service.py:54
 #: modules/univention/admin/handlers/nagios/service.py:55
+#: modules/univention/admin/handlers/nagios/service.py:56
 msgid "Nagios service"
 msgstr "Nagios-Dienst"
 
-#: modules/univention/admin/handlers/nagios/service.py:56
+#: modules/univention/admin/handlers/nagios/service.py:57
 msgid "Nagios services"
 msgstr "Nagios-Dienste"
 
-#: modules/univention/admin/handlers/nagios/timeperiod.py:50
 #: modules/univention/admin/handlers/nagios/timeperiod.py:51
+#: modules/univention/admin/handlers/nagios/timeperiod.py:52
 msgid "Nagios time period"
 msgstr "Nagios-Zeitraum"
 
-#: modules/univention/admin/handlers/nagios/timeperiod.py:52
+#: modules/univention/admin/handlers/nagios/timeperiod.py:53
 msgid "Nagios time periods"
 msgstr "Nagios-Zeiträume"
 
 #: modules/univention/admin/handlers/nagios/nagios.py:61
-#: modules/univention/admin/handlers/nagios/service.py:74
-#: modules/univention/admin/handlers/nagios/timeperiod.py:89
 #: modules/univention/admin/handlers/nagios/timeperiod.py:90
+#: modules/univention/admin/handlers/nagios/timeperiod.py:91
+#: modules/univention/admin/handlers/nagios/service.py:75
 msgid "Name"
 msgstr "Name"
 
-#: modules/univention/admin/handlers/nagios/timeperiod.py:69
-#: modules/univention/admin/handlers/nagios/timeperiod.py:71
-#: modules/univention/admin/handlers/nagios/timeperiod.py:75
-#: modules/univention/admin/handlers/nagios/timeperiod.py:77
+#: modules/univention/admin/handlers/nagios/timeperiod.py:70
+#: modules/univention/admin/handlers/nagios/timeperiod.py:72
+#: modules/univention/admin/handlers/nagios/timeperiod.py:76
+#: modules/univention/admin/handlers/nagios/timeperiod.py:78
 msgid "No valid timeperiod list!"
 msgstr "Keine gültige Zeitraum-Liste!"
 
-#: modules/univention/admin/handlers/nagios/service.py:193
+#: modules/univention/admin/handlers/nagios/service.py:194
 msgid "Notification"
 msgstr "Benachrichtigungen"
 
-#: modules/univention/admin/handlers/nagios/service.py:135
+#: modules/univention/admin/handlers/nagios/service.py:136
 msgid "Notification interval"
 msgstr "Benachrichtigungsintervall"
 
-#: modules/univention/admin/handlers/nagios/service.py:143
+#: modules/univention/admin/handlers/nagios/service.py:144
 msgid "Notification period"
 msgstr "Benachrichtigungszeitraum"
 
-#: modules/univention/admin/handlers/nagios/service.py:193
+#: modules/univention/admin/handlers/nagios/service.py:194
 msgid "Notification settings"
 msgstr "Benachrichtigungseinstellungen"
 
-#: modules/univention/admin/handlers/nagios/service.py:155
+#: modules/univention/admin/handlers/nagios/service.py:156
 msgid "Notify if service state changes to CRITICAL"
 msgstr "Benachrichtigen, wenn Zustand CRITICAL erreicht wird"
 
-#: modules/univention/admin/handlers/nagios/service.py:167
+#: modules/univention/admin/handlers/nagios/service.py:168
 msgid "Notify if service state changes to RECOVERED"
 msgstr "Benachrichtigen, wenn Zustand RECOVERED erreicht wird"
 
-#: modules/univention/admin/handlers/nagios/service.py:161
+#: modules/univention/admin/handlers/nagios/service.py:162
 msgid "Notify if service state changes to UNREACHABLE"
 msgstr "Benachrichtigen, wenn Zustand UNREACHABLE erreicht wird"
 
-#: modules/univention/admin/handlers/nagios/service.py:149
+#: modules/univention/admin/handlers/nagios/service.py:150
 msgid "Notify if service state changes to WARNING"
 msgstr "Benachrichtigen, wenn Zustand WARNING erreicht wird"
 
-#: modules/univention/admin/handlers/nagios/service.py:89
+#: modules/univention/admin/handlers/nagios/service.py:90
 msgid "Plugin command"
 msgstr "Plugin-Kommando"
 
-#: modules/univention/admin/handlers/nagios/service.py:95
+#: modules/univention/admin/handlers/nagios/service.py:96
 msgid "Plugin command arguments"
 msgstr "Plugin-Kommando-Parameter"
 
-#: modules/univention/admin/handlers/nagios/service.py:127
+#: modules/univention/admin/handlers/nagios/service.py:128
 msgid "Retry check interval"
 msgstr "Prüfintervall im Fehlerfall"
 
-#: modules/univention/admin/handlers/nagios/timeperiod.py:130
+#: modules/univention/admin/handlers/nagios/timeperiod.py:131
 msgid "Saturday"
 msgstr "Samstag"
 
-#: modules/univention/admin/handlers/nagios/service.py:144
+#: modules/univention/admin/handlers/nagios/service.py:145
 msgid "Send notifications during this period"
 msgstr "Benachrichtigungen werden in diesem Zeitraum versendet"
 
-#: modules/univention/admin/handlers/nagios/service.py:84
+#: modules/univention/admin/handlers/nagios/service.py:85
 msgid "Service description"
 msgstr "Dienst-Beschreibung"
 
-#: modules/univention/admin/handlers/nagios/service.py:75
+#: modules/univention/admin/handlers/nagios/service.py:76
 msgid "Service name"
 msgstr "Name des Dienstes"
 
-#: modules/univention/admin/handlers/nagios/timeperiod.py:135
+#: modules/univention/admin/handlers/nagios/timeperiod.py:136
 msgid "Sunday"
 msgstr "Sonntag"
 
-#: modules/univention/admin/handlers/nagios/service.py:295
+#: modules/univention/admin/handlers/nagios/service.py:296
 #, python-format
 msgid "The host \"%s\" does not exists."
 msgstr "Der Rechner \"%s\" existiert nicht."
 
-#: modules/univention/admin/handlers/nagios/service.py:297
+#: modules/univention/admin/handlers/nagios/service.py:298
 #, python-format
 msgid "The host \"%s\" is invalid, it has no \"cn\" attribute."
 msgstr "Der Rechner \"%s\" ist ungültig, der er kein \"cn\"-Attribut besitzt."
 
-#: modules/univention/admin/handlers/nagios/timeperiod.py:120
+#: modules/univention/admin/handlers/nagios/timeperiod.py:121
 msgid "Thursday"
 msgstr "Donnerstag"
 
-#: modules/univention/admin/handlers/nagios/timeperiod.py:143
+#: modules/univention/admin/handlers/nagios/timeperiod.py:144
 msgid "Time Period Settings"
 msgstr "Zeitraum-Einstellungen"
 
-#: modules/univention/admin/handlers/nagios/timeperiod.py:110
+#: modules/univention/admin/handlers/nagios/timeperiod.py:111
 msgid "Tuesday"
 msgstr "Dienstag"
 
-#: modules/univention/admin/handlers/nagios/service.py:100
+#: modules/univention/admin/handlers/nagios/service.py:101
 msgid "Use NRPE"
 msgstr "NRPE benutzen"
 
-#: modules/univention/admin/handlers/nagios/service.py:101
+#: modules/univention/admin/handlers/nagios/service.py:102
 msgid "Use NRPE to check remote services"
 msgstr "NRPE benutzen, um entfernte Dienste zu überprüfen"
 
-#: modules/univention/admin/handlers/nagios/timeperiod.py:115
+#: modules/univention/admin/handlers/nagios/timeperiod.py:116
 msgid "Wednesday"
 msgstr "Mittwoch"
 
-#: modules/univention/admin/handlers/nagios/timeperiod.py:106
-#: modules/univention/admin/handlers/nagios/timeperiod.py:111
-#: modules/univention/admin/handlers/nagios/timeperiod.py:116
-#: modules/univention/admin/handlers/nagios/timeperiod.py:121
-#: modules/univention/admin/handlers/nagios/timeperiod.py:126
-#: modules/univention/admin/handlers/nagios/timeperiod.py:131
-#: modules/univention/admin/handlers/nagios/timeperiod.py:136
+#: modules/univention/admin/handlers/nagios/timeperiod.py:107
+#: modules/univention/admin/handlers/nagios/timeperiod.py:112
+#: modules/univention/admin/handlers/nagios/timeperiod.py:117
+#: modules/univention/admin/handlers/nagios/timeperiod.py:122
+#: modules/univention/admin/handlers/nagios/timeperiod.py:127
+#: modules/univention/admin/handlers/nagios/timeperiod.py:132
+#: modules/univention/admin/handlers/nagios/timeperiod.py:137
 msgid "enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)"
 msgstr "Angabe von Zeiträumen (z.B. 00:00-07.15,23:12-24:00)"
 
 #: modules/univention/admin/handlers/nagios/nagios.py:45
 msgid ""
-"http://docs.univention.de/manual.html#nagios:"
-"Configuration_of_the_Nagios_monitoring"
+"http://docs.univention.de/manual.html#nagios:Configuration_of_the_Nagios_monitoring"
 msgstr ""
 "http://docs.univention.de/handbuch.html#nagios:Konfiguration_der_Nagios-"
 "Überwachung"

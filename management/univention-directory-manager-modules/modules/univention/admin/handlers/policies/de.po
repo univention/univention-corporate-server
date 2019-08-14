@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-07-16 10:25+0200\n"
+"POT-Creation-Date: 2019-08-14 14:58+0200\n"
 "PO-Revision-Date: 2011-10-29 22:19+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -50,17 +50,18 @@ msgid ""
 "directory tree. Connected policies allow to define object properties in a "
 "unified manner. Policies that are connected with containers or "
 "organizational units are inherited by all objects located below.</p><p>More "
-"information can be found in the <a href=\"http://docs.univention.de/manual."
-"html#central:policies\" target=\"_blank\">online documentation for UCS</a>.</"
-"p>"
+"information can be found in the <a "
+"href=\"http://docs.univention.de/manual.html#central:policies\" "
+"target=\"_blank\">online documentation for UCS</a>.</p>"
 msgstr ""
 "<p>Richtlinien sind Objekte, die mit anderen Objekten im Verzeichnisbaum "
 "verbunden werden können, um die Eigenschaften dieser Objekte auf "
 "einheitliche Weise zu definieren. Wenn Sie an Containern oder "
 "organisatorische Einheiten gebunden sind, vererben Sie sich auf alle "
 "darunter liegenden Objekte.<p></p>Mehr Informationen zu Richtlinien finden "
-"Sie in der <a href=\"http://docs.univention.de/handbuch.html#central:policies"
-"\" target=\"_blank\">Online-Dokumentation zu UCS</a>.</p>"
+"Sie in der <a "
+"href=\"http://docs.univention.de/handbuch.html#central:policies\" "
+"target=\"_blank\">Online-Dokumentation zu UCS</a>.</p>"
 
 #: modules/univention/admin/handlers/policies/release.py:87
 msgid "Activate release updates (Errata updates are activated by default)."
@@ -95,8 +96,8 @@ msgid ""
 "Attempt to update a DHCP client's A record when the client acquires or "
 "renews a lease"
 msgstr ""
-"Versuche den zum Rechner gehörenden A-Record im DNS-Server zu aktualisieren, "
-"wenn eine IP-Adresse vergeben oder erneuert wird"
+"Versuche den zum Rechner gehörenden A-Record im DNS-Server zu aktualisieren,"
+" wenn eine IP-Adresse vergeben oder erneuert wird"
 
 #: modules/univention/admin/handlers/policies/dhcp_statements.py:53
 #: modules/univention/admin/handlers/policies/dhcp_statements.py:92
@@ -147,9 +148,9 @@ msgstr "BOOTP"
 msgid "Basic DNS settings"
 msgstr "Allgemeine DNS-Einstellungen"
 
+#: modules/univention/admin/handlers/policies/policy.py:69
 #: modules/univention/admin/handlers/policies/ldapserver.py:103
 #: modules/univention/admin/handlers/policies/nfsmounts.py:103
-#: modules/univention/admin/handlers/policies/policy.py:69
 #: modules/univention/admin/handlers/policies/printserver.py:102
 #: modules/univention/admin/handlers/policies/umc.py:103
 msgid "Basic settings"
@@ -397,8 +398,8 @@ msgstr ""
 
 #: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:106
 msgid ""
-"Domain name that will be appended to the client's hostname to produce a name "
-"for use in the client's PTR record"
+"Domain name that will be appended to the client's hostname to produce a name"
+" for use in the client's PTR record"
 msgstr ""
 "Domänenname, der für den PTR-Record an den Rechnernamen des Clients "
 "angehängt wird"
@@ -439,41 +440,42 @@ msgstr ""
 "Berücksichtigung der Einstellungen zum DHCP-Pool)."
 
 #: modules/univention/admin/handlers/policies/pwhistory.py:104
-msgid "Enables/disables password quality checks for example dictionary entries"
+msgid ""
+"Enables/disables password quality checks for example dictionary entries"
 msgstr ""
 "(De-)Aktiviert die Passwort-Qualitätsprüfung wie z.B. Wörterbuch-Prüfungen."
 
 #: modules/univention/admin/handlers/policies/dhcp_statements.py:103
 msgid ""
 "First send an ICMP Echo request (a ping) when considering dynamically "
-"allocating an IP address. Should only be disabled if the delay of one second "
-"introduced by this is a problem for a client."
+"allocating an IP address. Should only be disabled if the delay of one second"
+" introduced by this is a problem for a client."
 msgstr ""
-"Versenden eines Ping (ICMP Echo request) an den Client bei der Vergabe einer "
-"dynamischen Adresse. Sollte nur bei Problemen seitens des Clients mit der "
+"Versenden eines Ping (ICMP Echo request) an den Client bei der Vergabe einer"
+" dynamischen Adresse. Sollte nur bei Problemen seitens des Clients mit der "
 "Verzögerung von einer Sekunde deaktiviert werden."
 
-#: modules/univention/admin/handlers/policies/admin_container.py:101
-#: modules/univention/admin/handlers/policies/autostart.py:100
-#: modules/univention/admin/handlers/policies/desktop.py:121
-#: modules/univention/admin/handlers/policies/dhcp_dns.py:109
-#: modules/univention/admin/handlers/policies/dhcp_routing.py:102
-#: modules/univention/admin/handlers/policies/ldapserver.py:103
-#: modules/univention/admin/handlers/policies/maintenance.py:150
-#: modules/univention/admin/handlers/policies/masterpackages.py:110
-#: modules/univention/admin/handlers/policies/memberpackages.py:110
-#: modules/univention/admin/handlers/policies/nfsmounts.py:103
-#: modules/univention/admin/handlers/policies/policy.py:69
-#: modules/univention/admin/handlers/policies/print_quota.py:123
-#: modules/univention/admin/handlers/policies/printserver.py:102
-#: modules/univention/admin/handlers/policies/pwhistory.py:118
-#: modules/univention/admin/handlers/policies/registry.py:103
-#: modules/univention/admin/handlers/policies/release.py:107
 #: modules/univention/admin/handlers/policies/repositoryserver.py:103
-#: modules/univention/admin/handlers/policies/repositorysync.py:130
-#: modules/univention/admin/handlers/policies/share_userquota.py:127
+#: modules/univention/admin/handlers/policies/policy.py:69
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:102
+#: modules/univention/admin/handlers/policies/autostart.py:100
+#: modules/univention/admin/handlers/policies/ldapserver.py:103
 #: modules/univention/admin/handlers/policies/slavepackages.py:110
+#: modules/univention/admin/handlers/policies/nfsmounts.py:103
+#: modules/univention/admin/handlers/policies/printserver.py:102
+#: modules/univention/admin/handlers/policies/maintenance.py:150
+#: modules/univention/admin/handlers/policies/memberpackages.py:110
+#: modules/univention/admin/handlers/policies/pwhistory.py:118
 #: modules/univention/admin/handlers/policies/umc.py:103
+#: modules/univention/admin/handlers/policies/share_userquota.py:127
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:109
+#: modules/univention/admin/handlers/policies/print_quota.py:123
+#: modules/univention/admin/handlers/policies/release.py:107
+#: modules/univention/admin/handlers/policies/registry.py:103
+#: modules/univention/admin/handlers/policies/admin_container.py:101
+#: modules/univention/admin/handlers/policies/repositorysync.py:130
+#: modules/univention/admin/handlers/policies/desktop.py:121
+#: modules/univention/admin/handlers/policies/masterpackages.py:110
 msgid "General"
 msgstr "Allgemein"
 
@@ -601,8 +603,8 @@ msgid ""
 "Hard limit. Can not be exceeded. Values may be entered with one of the "
 "following units as postfix: B (default), kB, MB, GB"
 msgstr ""
-"Das Hardlimit kann vom Benutzer nicht überschritten werden. Dem anzugebenden "
-"Wert kann eine der folgenden Einheiten folgen: B (Vorgabe), KB, MB, GB"
+"Das Hardlimit kann vom Benutzer nicht überschritten werden. Dem anzugebenden"
+" Wert kann eine der folgenden Einheiten folgen: B (Vorgabe), KB, MB, GB"
 
 #: modules/univention/admin/handlers/policies/pwhistory.py:53
 #: modules/univention/admin/handlers/policies/pwhistory.py:88
@@ -615,8 +617,8 @@ msgid ""
 "clients from completely exhausting the DHCP server's allocation pool."
 msgstr ""
 "Berücksichtigung von DHCP-Ablehnungen, Voreinstellung ist 'Erlauben'. "
-"'Verbieten/Ignorieren' bewahrt den DHCP-Server vor Vergabe aller IP-Adressen "
-"an böswillige oder fehlerhafte Clients."
+"'Verbieten/Ignorieren' bewahrt den DHCP-Server vor Vergabe aller IP-Adressen"
+" an böswillige oder fehlerhafte Clients."
 
 #: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:131
 msgid "Honor the client's intention to do its own update of its A record"
@@ -635,14 +637,14 @@ msgstr "Stunde"
 msgid ""
 "If a request is received from a client that matches the MAC address of a "
 "host declaration, any other leases matching that MAC address will be "
-"discarded by the server, if this is set to deny. Allowed by default. Setting "
-"this to deny violates the DHCP protocol."
+"discarded by the server, if this is set to deny. Allowed by default. Setting"
+" this to deny violates the DHCP protocol."
 msgstr ""
-"Wird diese Eigenschaft auf 'Verbieten' gesetzt, dann werden auf eine Anfrage "
-"von einer MAC-Adresse, die zu einem Rechner Eintrag gehört alle anderen "
+"Wird diese Eigenschaft auf 'Verbieten' gesetzt, dann werden auf eine Anfrage"
+" von einer MAC-Adresse, die zu einem Rechner Eintrag gehört alle anderen "
 "Leases die zu dieser MAC-Adresse gespeichert sind vom Server vergessen. Die "
-"Voreinstellung ist 'Erlauben'. Die Einstellung 'Verbieten' verletzt das DHCP-"
-"Protokoll."
+"Voreinstellung ist 'Erlauben'. Die Einstellung 'Verbieten' verletzt das "
+"DHCP-Protokoll."
 
 #: modules/univention/admin/handlers/policies/dhcp_boot.py:95
 msgid "Initial boot file to be loaded by a client"
@@ -806,33 +808,33 @@ msgstr "NFS-Freigaben-Richtlinie"
 msgid "NFS shares to mount"
 msgstr "NFS-Freigaben einbinden"
 
-#: modules/univention/admin/handlers/policies/admin_container.py:77
-#: modules/univention/admin/handlers/policies/autostart.py:77
-#: modules/univention/admin/handlers/policies/desktop.py:78
-#: modules/univention/admin/handlers/policies/dhcp_boot.py:79
-#: modules/univention/admin/handlers/policies/dhcp_dns.py:79
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:85
-#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:80
-#: modules/univention/admin/handlers/policies/dhcp_netbios.py:80
-#: modules/univention/admin/handlers/policies/dhcp_routing.py:78
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:82
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:83
-#: modules/univention/admin/handlers/policies/ldapserver.py:78
-#: modules/univention/admin/handlers/policies/maintenance.py:81
-#: modules/univention/admin/handlers/policies/masterpackages.py:79
-#: modules/univention/admin/handlers/policies/memberpackages.py:79
-#: modules/univention/admin/handlers/policies/nfsmounts.py:78
-#: modules/univention/admin/handlers/policies/policy.py:61
-#: modules/univention/admin/handlers/policies/print_quota.py:86
-#: modules/univention/admin/handlers/policies/printserver.py:77
-#: modules/univention/admin/handlers/policies/pwhistory.py:79
-#: modules/univention/admin/handlers/policies/registry.py:78
-#: modules/univention/admin/handlers/policies/release.py:78
 #: modules/univention/admin/handlers/policies/repositoryserver.py:78
-#: modules/univention/admin/handlers/policies/repositorysync.py:81
-#: modules/univention/admin/handlers/policies/share_userquota.py:82
+#: modules/univention/admin/handlers/policies/policy.py:61
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:85
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:78
+#: modules/univention/admin/handlers/policies/autostart.py:77
+#: modules/univention/admin/handlers/policies/ldapserver.py:78
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:79
 #: modules/univention/admin/handlers/policies/slavepackages.py:79
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:80
+#: modules/univention/admin/handlers/policies/nfsmounts.py:78
+#: modules/univention/admin/handlers/policies/printserver.py:77
+#: modules/univention/admin/handlers/policies/maintenance.py:81
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:82
+#: modules/univention/admin/handlers/policies/memberpackages.py:79
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:80
+#: modules/univention/admin/handlers/policies/pwhistory.py:79
 #: modules/univention/admin/handlers/policies/umc.py:79
+#: modules/univention/admin/handlers/policies/share_userquota.py:82
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:79
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:83
+#: modules/univention/admin/handlers/policies/print_quota.py:86
+#: modules/univention/admin/handlers/policies/release.py:78
+#: modules/univention/admin/handlers/policies/registry.py:78
+#: modules/univention/admin/handlers/policies/admin_container.py:77
+#: modules/univention/admin/handlers/policies/repositorysync.py:81
+#: modules/univention/admin/handlers/policies/desktop.py:78
+#: modules/univention/admin/handlers/policies/masterpackages.py:79
 msgid "Name"
 msgstr "Name"
 
@@ -869,26 +871,26 @@ msgstr "Anzahl an Tagen, nach der das Passwort geändert werden muss"
 
 #: modules/univention/admin/handlers/policies/dhcp_boot.py:89
 msgid ""
-"Numeric IP address or name of the server from which the initial boot file is "
-"retrieved."
+"Numeric IP address or name of the server from which the initial boot file is"
+" retrieved."
 msgstr ""
 "IP-Adresse oder Name des Servers, von dem die Boot-Datei geladen werden soll"
 
-#: modules/univention/admin/handlers/policies/masterpackages.py:53
-#: modules/univention/admin/handlers/policies/masterpackages.py:88
-#: modules/univention/admin/handlers/policies/memberpackages.py:53
-#: modules/univention/admin/handlers/policies/memberpackages.py:88
 #: modules/univention/admin/handlers/policies/slavepackages.py:53
 #: modules/univention/admin/handlers/policies/slavepackages.py:88
+#: modules/univention/admin/handlers/policies/memberpackages.py:53
+#: modules/univention/admin/handlers/policies/memberpackages.py:88
+#: modules/univention/admin/handlers/policies/masterpackages.py:53
+#: modules/univention/admin/handlers/policies/masterpackages.py:88
 msgid "Package installation list"
 msgstr "Paket Installationsliste"
 
-#: modules/univention/admin/handlers/policies/masterpackages.py:54
-#: modules/univention/admin/handlers/policies/masterpackages.py:94
-#: modules/univention/admin/handlers/policies/memberpackages.py:54
-#: modules/univention/admin/handlers/policies/memberpackages.py:94
 #: modules/univention/admin/handlers/policies/slavepackages.py:54
 #: modules/univention/admin/handlers/policies/slavepackages.py:94
+#: modules/univention/admin/handlers/policies/memberpackages.py:54
+#: modules/univention/admin/handlers/policies/memberpackages.py:94
+#: modules/univention/admin/handlers/policies/masterpackages.py:54
+#: modules/univention/admin/handlers/policies/masterpackages.py:94
 msgid "Package removal list"
 msgstr "Paket Deinstallationsliste"
 

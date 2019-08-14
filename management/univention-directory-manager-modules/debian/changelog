@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.13-9) unstable; urgency=medium
+
+  * Bug #49092: revert adding properties
+
+ -- Florian Best <best@univention.de>  Wed, 14 Aug 2019 15:02:22 +0200
+
 univention-directory-manager-modules (14.0.13-8) unstable; urgency=medium
 
   * Bug #47961: fix translation of de-AT extended attributes
