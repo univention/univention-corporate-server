@@ -203,7 +203,7 @@ define([
 					type: Text,
 					'class': 'umcPageHelpText',
 					name: 'info',
-					content: _('<p>To achieve a higher level of security, the Active Directory root certificate should be exported and uploaded here. The Active Directory certificate service creates that certificate. The necessary steps depend on the actual Microsoft Windows version and are described in the <a href="http://docs.univention.de/manual-4.4.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>. Alternatively, you may proceed without this configuration.</p>')
+					content: _('<p>To achieve a higher level of security, the Active Directory root certificate should be exported and uploaded here. The Active Directory certificate service creates that certificate. The necessary steps depend on the actual Microsoft Windows version and are described in the <a href="https://docs.univention.de/manual-4.4.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>. Alternatively, you may proceed without this configuration.</p>')
 
 				}, {
 					name: 'certificateUpload',
