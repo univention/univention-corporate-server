@@ -366,29 +366,30 @@ post_attributes={
 							ldap_attribute='roomNumber',
 							con_attribute='roomNumber',
 						),''',
-					'initials': '''univention.s4connector.attribute (
-							ucs_attribute='initials',
-							ldap_attribute='initials',
-							con_attribute='initials',
-							single_value=True,
-						),''',
-					'physicalDeliveryOfficeName': '''univention.s4connector.attribute (
-							ucs_attribute='physicalDeliveryOfficeName',
-							ldap_attribute='physicalDeliveryOfficeName',
-							con_attribute='physicalDeliveryOfficeName',
-							single_value=True,
-						),''',
-					'postOfficeBox': '''univention.s4connector.attribute (
-							ucs_attribute='postOfficeBox',
-							ldap_attribute='postOfficeBox',
-							con_attribute='postOfficeBox',
-						),''',
-					'preferredLanguage': '''univention.s4connector.attribute (
-							ucs_attribute='preferredLanguage',
-							ldap_attribute='preferredLanguage',
-							con_attribute='preferredLanguage',
-							single_value=True,
-						),''',
+					# TODO: activate in UCS 4.4-2
+					#'initials': '''univention.s4connector.attribute (
+					#		ucs_attribute='initials',
+					#		ldap_attribute='initials',
+					#		con_attribute='initials',
+					#		single_value=True,
+					#	),''',
+					#'physicalDeliveryOfficeName': '''univention.s4connector.attribute (
+					#		ucs_attribute='physicalDeliveryOfficeName',
+					#		ldap_attribute='physicalDeliveryOfficeName',
+					#		con_attribute='physicalDeliveryOfficeName',
+					#		single_value=True,
+					#	),''',
+					#'postOfficeBox': '''univention.s4connector.attribute (
+					#		ucs_attribute='postOfficeBox',
+					#		ldap_attribute='postOfficeBox',
+					#		con_attribute='postOfficeBox',
+					#	),''',
+					#'preferredLanguage': '''univention.s4connector.attribute (
+					#		ucs_attribute='preferredLanguage',
+					#		ldap_attribute='preferredLanguage',
+					#		con_attribute='preferredLanguage',
+					#		single_value=True,
+					#	),''',
 }
 print ("\t\t\tpost_attributes={")
 ignore_list = configRegistry.get('connector/s4/mapping/user/attributes/ignorelist',[])

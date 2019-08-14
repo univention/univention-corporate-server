@@ -66,11 +66,11 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 	),
-	'initials': univention.admin.property(
-		short_description=_('Initials'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
+	#'initials': univention.admin.property(
+	#	short_description=_('Initials'),
+	#	long_description='',
+	#	syntax=univention.admin.syntax.string,
+	#),
 	'description': univention.admin.property(
 		short_description=_('Description'),
 		long_description='',
@@ -228,24 +228,24 @@ property_descriptions = {
 		syntax=univention.admin.syntax.emailAddressTemplate,
 		multivalue=True,
 	),
-	'physicalDeliveryOfficeName': univention.admin.property(
-		short_description=_('Delivery office name'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-	),
-	'postOfficeBox': univention.admin.property(
-		short_description=_('Post office box'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		multivalue=True,
-		copyable=True,
-	),
-	'preferredLanguage': univention.admin.property(
-		short_description=_('Preferred language'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		copyable=True,
-	),
+	#'physicalDeliveryOfficeName': univention.admin.property(
+	#	short_description=_('Delivery office name'),
+	#	long_description='',
+	#	syntax=univention.admin.syntax.string,
+	#),
+	#'postOfficeBox': univention.admin.property(
+	#	short_description=_('Post office box'),
+	#	long_description='',
+	#	syntax=univention.admin.syntax.string,
+	#	multivalue=True,
+	#	copyable=True,
+	#),
+	#'preferredLanguage': univention.admin.property(
+	#	short_description=_('Preferred language'),
+	#	long_description='',
+	#	syntax=univention.admin.syntax.string,
+	#	copyable=True,
+	#),
 	'_options': univention.admin.property(
 		short_description=_('Options'),
 		long_description='',
@@ -307,6 +307,7 @@ layout = [
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('title', 'title', None, univention.admin.mapping.ListToString)
+mapping.register('initials', 'initials', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('organisation', 'o', None, univention.admin.mapping.ListToString)
 mapping.register('displayName', 'displayName', None, univention.admin.mapping.ListToString)
@@ -336,9 +337,9 @@ mapping.register('homeSharePath', 'userHomeSharePathPreset', None, univention.ad
 mapping.register('primaryGroup', 'userPrimaryGroupPreset', None, univention.admin.mapping.ListToString)
 mapping.register('groups', 'userGroupsPreset')
 mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToLowerString)
-mapping.register('physicalDeliveryOfficeName', 'physicalDeliveryOfficeName', None, univention.admin.mapping.ListToString)
-mapping.register('preferredLanguage', 'preferredLanguage', None, univention.admin.mapping.ListToString)
-mapping.register('postOfficeBox', 'postOfficeBox')
+#mapping.register('physicalDeliveryOfficeName', 'physicalDeliveryOfficeName', None, univention.admin.mapping.ListToString)
+#mapping.register('preferredLanguage', 'preferredLanguage', None, univention.admin.mapping.ListToString)
+#mapping.register('postOfficeBox', 'postOfficeBox')
 mapping.register('mailAlternativeAddress', 'mailAlternativeAddress')
 mapping.register('_options', 'userOptionsPreset')
 

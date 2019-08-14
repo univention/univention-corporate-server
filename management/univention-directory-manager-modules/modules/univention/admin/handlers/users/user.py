@@ -157,12 +157,12 @@ property_descriptions = {
 		readonly_when_synced=True,
 		copyable=True,
 	),
-	'initials': univention.admin.property(
-		short_description=_('Initials'),
-		long_description='',
-		syntax=univention.admin.syntax.OneThirdString,
-		copyable=True,
-	),
+	#'initials': univention.admin.property(
+	#	short_description=_('Initials'),
+	#	long_description='',
+	#	syntax=univention.admin.syntax.OneThirdString,
+	#	copyable=True,
+	#),
 	'sambaPrivileges': univention.admin.property(
 		short_description=_('Samba privilege'),
 		long_description=_('Manage Samba privileges'),
@@ -286,13 +286,13 @@ property_descriptions = {
 		readonly_when_synced=True,
 		copyable=True,
 	),
-	'postOfficeBox': univention.admin.property(
-		short_description=_('Post office box'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		multivalue=True,
-		copyable=True,
-	),
+	#'postOfficeBox': univention.admin.property(
+	#	short_description=_('Post office box'),
+	#	long_description='',
+	#	syntax=univention.admin.syntax.string,
+	#	multivalue=True,
+	#	copyable=True,
+	#),
 	'city': univention.admin.property(
 		short_description=_('City'),
 		long_description='',
@@ -356,12 +356,12 @@ property_descriptions = {
 		multivalue=True,
 		copyable=True,
 	),
-	'physicalDeliveryOfficeName': univention.admin.property(
-		short_description=_('Delivery office name'),
-		long_description='',
-		syntax=univention.admin.syntax.string,
-		copyable=True,
-	),
+	#'physicalDeliveryOfficeName': univention.admin.property(
+	#	short_description=_('Delivery office name'),
+	#	long_description='',
+	#	syntax=univention.admin.syntax.string,
+	#	copyable=True,
+	#),
 	'homeTelephoneNumber': univention.admin.property(
 		short_description=_('Private telephone number'),
 		long_description='',
@@ -1196,11 +1196,11 @@ mapping.register('mailHomeServer', 'univentionMailHomeServer', None, univention.
 mapping.register('mailForwardAddress', 'mailForwardAddress')
 mapping.register('mailForwardCopyToSelf', 'mailForwardCopyToSelf', None, univention.admin.mapping.ListToString)
 
-mapping.register('preferredLanguage', 'preferredLanguage', None, univention.admin.mapping.ListToString)
+#mapping.register('preferredLanguage', 'preferredLanguage', None, univention.admin.mapping.ListToString)
 mapping.register('street', 'street', None, univention.admin.mapping.ListToString)
 mapping.register('e-mail', 'mail')
 mapping.register('postcode', 'postalCode', None, univention.admin.mapping.ListToString)
-mapping.register('postOfficeBox', 'postOfficeBox')
+#mapping.register('postOfficeBox', 'postOfficeBox')
 mapping.register('city', 'l', None, univention.admin.mapping.ListToString)
 mapping.register('country', 'st', None, univention.admin.mapping.ListToString)
 mapping.register('phone', 'telephoneNumber')
@@ -1213,7 +1213,7 @@ mapping.register('mobileTelephoneNumber', 'mobile')
 mapping.register('pagerTelephoneNumber', 'pager')
 mapping.register('homeTelephoneNumber', 'homePhone')
 mapping.register('homePostalAddress', 'homePostalAddress', mapHomePostalAddress, unmapHomePostalAddress)
-mapping.register('physicalDeliveryOfficeName', 'physicalDeliveryOfficeName', None, univention.admin.mapping.ListToString)
+#mapping.register('physicalDeliveryOfficeName', 'physicalDeliveryOfficeName', None, univention.admin.mapping.ListToString)
 mapping.register('unixhome', 'homeDirectory', None, univention.admin.mapping.ListToString)
 mapping.register('shell', 'loginShell', None, univention.admin.mapping.ListToString)
 mapping.register('sambahome', 'sambaHomePath', None, univention.admin.mapping.ListToString)
