@@ -22,5 +22,6 @@ cve:
  - CVE-2014-0064
  - CVE-2014-0065
  - CVE-2014-0066
+bug: [34191]
 erratum: 66
 announced: 2014-02-27
