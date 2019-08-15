@@ -19,3 +19,5 @@ cve:
  - CVE-2016-2123
  - CVE-2016-2125
  - CVE-2016-2126
+erratum: 28
+announced: 2016-12-19
