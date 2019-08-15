@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-ucr\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-07-11 15:59+0200\n"
+"POT-Creation-Date: 2020-09-21 13:45+0200\n"
 "PO-Revision-Date: 2011-10-29 15:00+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -21,8 +21,9 @@ msgid ""
 "A valid UCR variable name must contain at least one character and can only "
 "contain letters, numerals, \"/\", \".\", \":\", \"_\" and \"-\"."
 msgstr ""
-"Ein gültiger UCR-Variablenname muss mindestens ein Zeichen lang sein und kann nur "
-"Buchstaben, Zahlen und die Zeichen \"/\", \".\", \":\", \"_\" und \"-\" enthalten."
+"Ein gültiger UCR-Variablenname muss mindestens ein Zeichen lang sein und "
+"kann nur Buchstaben, Zahlen und die Zeichen \"/\", \".\", \":\", \"_\" und "
+"\"-\" enthalten."
 
 #: umc/python/ucr/__init__.py:170
 #, python-format
@@ -30,6 +31,7 @@ msgid "The UCR variable %(key)s could not be found"
 msgstr "Die UCR-Variable %(key)s konnte nicht gefunden werden"
 
 #: umc/python/ucr/__init__.py:116
+#, python-format
 msgid "The UCR variable %s is already set."
 msgstr "Die UCR-Variable %s ist bereits gesetzt."
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-ucr\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: Fri, 17 Jun 2011 12:57:45 +0200\n"
+"POT-Creation-Date: Mon, 21 Sep 2020 13:45:27 +0200\n"
 "PO-Revision-Date: 2011-06-03 10:19+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -16,6 +16,9 @@ msgstr "Verwaltung von UCR-Variablen des lokalen Systems"
 
 msgid "Univention Configuration Registry"
 msgstr "Univention Configuration Registry"
+
+msgid "ucr,config,registry,univention config registry,configuration"
+msgstr ""
 
 #~ msgid "Managing additional parameters of UCR variables"
 #~ msgstr "Erweiterte Einstellungen von UCR Variablen verwalten"

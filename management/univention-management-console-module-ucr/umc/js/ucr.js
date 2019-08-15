@@ -99,6 +99,12 @@ define([
 	//			description: _( 'Categories that the UCR variable is associated with' ),
 	//			label: _( 'Categories' ),
 	//			dynamicValues: 'ucr/categories'
+			}, {
+				type: TextBox,
+				name: 'default',
+				description: _('The default value of the UCR variable which is applied if the variable is not set. This might be a UCR pattern.'),
+				readonly: true,
+				label: _('Default value (pattern)')
 			}];
 
 			var buttons = [{
@@ -116,7 +122,7 @@ define([
 				})
 			}];
 
-			var layout = ['key', 'value', 'description'];//, ['categories']];
+			var layout = ['key', 'value', 'description', 'default'];//, ['categories']];
 
 			this._form = this.own(new Form({
 				widgets: widgets,
@@ -173,6 +179,7 @@ define([
 		newVariable: function() {
 			this.set('title', _('Add UCR variable'));
 			this._form._widgets.key.set('disabled', false);
+			this._form._widgets.default.set('visible', false);
 			this.clearForm();
 			this.standby(false);
 			this.show();
@@ -181,6 +188,7 @@ define([
 		loadVariable: function(ucrVariable) {
 			this.set('title', _('Edit UCR variable'));
 			this._form._widgets.key.set('disabled', true);
+			this._form._widgets.default.set('visible', true);
 
 			this.standby(true);
 			this.show();
