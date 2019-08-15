@@ -1945,6 +1945,9 @@ class Objects(FormBase, ReportingBase):
 				# MODULE.warn('LDAP object does not exists %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
 				continue
 
+			if '*' in fields or '*' in properties:
+				obj.open()
+
 			entry = Object.get_representation(module, obj, properties, self.ldap_connection)
 			entry.update({
 				#'$childs$': module.childs,
@@ -1956,7 +1959,6 @@ class Objects(FormBase, ReportingBase):
 			if '$value$' in fields:
 				entry['$value$'] = [module.property_description(obj, column['name']) for column in module.columns]
 			if '*' in fields or '*' in properties:
-				obj.open()
 				fields = set(obj.info.keys())
 			for field in fields - set(module.password_properties) - set(entry.keys()):
 				entry['fields'][field] = module.property_description(obj, field)
