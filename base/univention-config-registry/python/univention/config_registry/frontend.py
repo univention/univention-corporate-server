@@ -37,7 +37,7 @@ import os
 import sys
 import re
 import time
-from univention.config_registry.backend import exception_occured, SCOPE, ConfigRegistry
+from univention.config_registry.backend import exception_occured, SCOPE, ConfigRegistry, _DefaultConfigRegistry
 from univention.config_registry.handler import run_filter, ConfigHandlers
 from univention.config_registry.misc import validate_key, escape_value
 from univention.config_registry.filters import filter_shell, filter_keys_only, filter_sort
@@ -306,6 +306,7 @@ def handler_register(args, opts=dict()):
 	# diversion is (re-)done when >= 1.
 	handlers.register(args[0], ucr)
 	# handlers.commit((ucr, {}))
+	_register_variable_default_values(ucr)
 
 
 def handler_unregister(args, opts=dict()):
@@ -323,6 +324,7 @@ def handler_unregister(args, opts=dict()):
 	cur = handlers.update()  # cache must be current
 	obsolete = handlers.unregister(args[0], ucr)
 	handlers.update_divert(cur - obsolete)
+	_register_variable_default_values(ucr)
 
 
 def handler_filter(args, opts=dict()):
@@ -362,11 +364,7 @@ def handler_search(args, opts=dict()):
 			print('E: invalid regular expression: %s' % (ex,), file=sys.stderr)
 			sys.exit(1)
 
-	# Import located here, because on module level, a circular import would be
-	# created
-	import univention.config_registry_info as cri  # pylint: disable-msg=W0403
-	cri.set_language('en')
-	info = cri.ConfigRegistryInfo(install_mode=False)
+	info = _get_config_registry_info()
 
 	category = opts.get('category', None)
 	if category and not info.get_category(category):
@@ -492,11 +490,7 @@ def handler_info(args, opts=dict()):
 	"""
 	ucr = ConfigRegistry()
 	ucr.load()
-	# Import located here, because on module level, a circular import would be
-	# created
-	import univention.config_registry_info as cri  # pylint: disable-msg=W0403
-	cri.set_language('en')
-	info = cri.ConfigRegistryInfo(install_mode=False)
+	info = _get_config_registry_info()
 
 	for arg in args:
 		try:
@@ -608,6 +602,25 @@ def missing_parameter(action):
 	print('E: too few arguments for command [%s]' % (action,), file=sys.stderr)
 	print('try `univention-config-registry --help` for more information', file=sys.stderr)
 	sys.exit(1)
+
+
+def _get_config_registry_info():
+	# Import located here, because on module level, a circular import would be
+	# created
+	import univention.config_registry_info as cri  # pylint: disable-msg=W0403
+	cri.set_language('en')
+	return cri.ConfigRegistryInfo(install_mode=False)
+
+
+def _register_variable_default_values(ucr):
+	"""Create base-default.conf layer containig all default values"""
+	info = _get_config_registry_info()
+	defaults = _DefaultConfigRegistry(ucr, '/etc/univention/base-defaults.conf')
+	for key, variable in info.get_variables().items():
+		value = variable.get('Default')
+		if value:
+			defaults[key] = value
+	defaults.save()
 
 
 HANDLERS = {
