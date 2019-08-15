@@ -67,7 +67,7 @@ __all__ = [
 
 REPLOG_FILE = '/var/log/univention/config-registry.replog'
 
-_SHOW_EMPTY, _SHOW_DESCRIPTION, _SHOW_SCOPE, _SHOW_CATEGORIES = (1 << _ for _ in range(4))
+_SHOW_EMPTY, _SHOW_DESCRIPTION, _SHOW_SCOPE, _SHOW_CATEGORIES, _SHOW_DEFAULT = (1 << _ for _ in range(5))
 
 
 class UnknownKeyException(Exception):
@@ -433,7 +433,7 @@ def handler_get(args, opts=dict()):
 def variable_info_string(key, value, variable_info, scope=None, details=_SHOW_DESCRIPTION):
 	# type: (str, Optional[str], Any, int, int) -> str
 	"""
-	Format UCR variable key, value, description, scope and categories.
+	Format UCR variable key, value, description, scope, categories and default value.
 
 	:param key: UCR variable name.
 	:param value: UCR variable value.
@@ -474,6 +474,9 @@ def variable_info_string(key, value, variable_info, scope=None, details=_SHOW_DE
 	if variable_info and _SHOW_CATEGORIES & details:
 		info.append(' Categories: ' + variable_info.get('categories', 'none'))
 
+	if variable_info and _SHOW_DEFAULT & details:
+		info.append(' Default: ' + variable_info.get('default', '(not set)'))
+
 	if (_SHOW_CATEGORIES | _SHOW_DESCRIPTION) & details:
 		info.append('')
 
@@ -497,7 +500,7 @@ def handler_info(args, opts=dict()):
 			yield variable_info_string(
 				arg, ucr.get(arg, None),
 				info.get_variable(arg),
-				details=_SHOW_EMPTY | _SHOW_DESCRIPTION | _SHOW_CATEGORIES)
+				details=_SHOW_EMPTY | _SHOW_DESCRIPTION | _SHOW_CATEGORIES | _SHOW_DEFAULT)
 		except UnknownKeyException as ex:
 			print(ex, file=sys.stderr)
 
