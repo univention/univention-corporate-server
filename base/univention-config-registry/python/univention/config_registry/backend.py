@@ -70,7 +70,7 @@ def exception_occured(out=sys.stderr):
 	sys.exit(1)
 
 
-SCOPE = ['normal', 'ldap', 'schedule', 'forced', 'custom']
+SCOPE = ['normal', 'ldap', 'schedule', 'forced', 'custom', 'default']
 
 
 if MYPY:
@@ -87,14 +87,15 @@ class ConfigRegistry(MM):
 	:param filename: File name for text database file.
 	:param write_registry: The UCR level used for writing.
 	"""
-	NORMAL, LDAP, SCHEDULE, FORCED, CUSTOM = range(5)
-	LAYER_PRIORITIES = (FORCED, SCHEDULE, LDAP, NORMAL, CUSTOM)
+	NORMAL, LDAP, SCHEDULE, FORCED, CUSTOM, DEFAULTS = range(6)
+	LAYER_PRIORITIES = (FORCED, SCHEDULE, LDAP, NORMAL, CUSTOM, DEFAULTS)
 	PREFIX = '/etc/univention'
 	BASES = {
 		NORMAL: 'base.conf',
 		LDAP: 'base-ldap.conf',
 		SCHEDULE: 'base-schedule.conf',
 		FORCED: 'base-forced.conf',
+		DEFAULTS: 'base-defaults.conf',
 	}
 
 	def __init__(self, filename=None, write_registry=NORMAL):
@@ -127,6 +128,8 @@ class ConfigRegistry(MM):
 			filename = self.file
 		else:
 			filename = os.path.join(ConfigRegistry.PREFIX, ConfigRegistry.BASES[reg])
+		if reg == ConfigRegistry.DEFAULTS:
+			return _DefaultConfigRegistry(self, filename=filename)
 		return _ConfigRegistry(filename=filename)
 
 	def load(self):
@@ -675,5 +678,12 @@ class _ConfigRegistry(dict):
 		if isinstance(data, bytes):
 			data = data.decode('UTF-8')
 		return data
+
+
+class _DefaultConfigRegistry(_ConfigRegistry):
+
+	def __init__(self, parent, filename=None):
+		super(_DefaultConfigRegistry, self).__init__(filename)
+		self.parent = parent
 
 # vim:set sw=4 ts=4 noet:
