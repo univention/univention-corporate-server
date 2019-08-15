@@ -41,6 +41,9 @@ try:
 except ImportError:
 	from collections import MutableMapping
 import six
+
+from univention.config_registry.handler import run_filter
+
 try:
 	from typing import overload, Any, Dict, IO, Iterator, List, NoReturn, Optional, Set, Tuple, Type, TypeVar, Union  # noqa F401
 	from types import TracebackType  # noqa
@@ -685,5 +688,32 @@ class _DefaultConfigRegistry(_ConfigRegistry):
 	def __init__(self, parent, filename=None):
 		super(_DefaultConfigRegistry, self).__init__(filename)
 		self.parent = parent
+
+	def __getitem__(self, key):  # type: ignore
+		value = super(_DefaultConfigRegistry, self).__getitem__(key)
+		try:
+			return run_filter(value, self.parent, opts={'disallow-execution': True})
+		except RuntimeError:  # maximum recursion depth exceeded
+			return ''
+
+	def get(self, key, default=None):
+		try:
+			return self[key]
+		except KeyError:
+			return default
+
+	def items(self):
+		return dict((key, self[key]) for key in self).items()
+
+	def values(self):
+		return dict((key, self[key]) for key in self).values()
+
+	if six.PY2:
+		def iteritems(self):
+			return dict((key, self[key]) for key in self).iteritems()
+
+		def itervalues(self):
+			return dict((key, self[key]) for key in self).itervalues()
+
 
 # vim:set sw=4 ts=4 noet:

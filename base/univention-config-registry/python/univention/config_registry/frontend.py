@@ -197,7 +197,7 @@ def ucr_update(ucr, changes):
 	Set or unset the given config registry variables.
 
 	:param args: Command line arguments.
-	:param opts: Command line options.
+	:param changes: Changed UCR variables.
 	"""
 	with ucr:
 		changed = ucr.update(changes)
@@ -677,6 +677,7 @@ OPT_COMMANDS = {
 	},
 	'filter': {
 		'encode-utf8': [BOOL, False],
+		'disallow-execution': [BOOL, False],
 	}
 }  # type: Dict[str, Dict[str, List]]
 

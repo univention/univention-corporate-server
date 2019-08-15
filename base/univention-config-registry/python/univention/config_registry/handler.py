@@ -89,7 +89,7 @@ def run_filter(template, directory, srcfiles=set(), opts=dict()):
 	:param template: Text string of template.
 	:param directory: UCR instance.
 	:param srcfiles: File names of source template.
-	:param opts: UNUSED.
+	:param opts: Command line options.
 	:returns: The modified template with all UCR variables and sections replaced.
 	"""
 	while True:
@@ -120,6 +120,9 @@ def run_filter(template, directory, srcfiles=set(), opts=dict()):
 			template = template[:start.start()] + value + template[end.end():]
 		except StopIteration:
 			break
+
+	if opts.get('disallow-execution', False):
+		return template
 
 	while True:
 		i = EXECUTE_TOKEN.finditer(template)
