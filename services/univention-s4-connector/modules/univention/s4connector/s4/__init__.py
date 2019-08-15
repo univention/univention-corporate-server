@@ -33,22 +33,26 @@
 
 
 from __future__ import print_function
+
 import copy
-import ldap
 import string
 import re
 import sys
 import time
 import types
-import univention.uldap
-import univention.s4connector
-import univention.debug2 as ud
+import pprint
+
+import ldap
 from ldap.controls import LDAPControl
 from ldap.controls import SimplePagedResultsControl
 from ldap.filter import escape_filter_chars
 from samba.dcerpc import security
 from samba.ndr import ndr_pack, ndr_unpack
 from samba.dcerpc import misc
+
+import univention.uldap
+import univention.s4connector
+import univention.debug2 as ud
 
 DECODE_IGNORELIST = ['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord']
 
@@ -709,7 +713,6 @@ class s4(univention.s4connector.ucs):
 	RANGE_RETRIEVAL_PATTERN = re.compile("^([^;]+);range=(\d+)-(\d+|\*)$")
 
 	def __init__(self, CONFIGBASENAME, property, baseConfig, s4_ldap_host, s4_ldap_port, s4_ldap_base, s4_ldap_binddn, s4_ldap_bindpw, s4_ldap_certificate, listener_dir, init_group_cache=True):
-
 		univention.s4connector.ucs.__init__(self, CONFIGBASENAME, property, baseConfig, listener_dir)
 
 		self.CONFIGBASENAME = CONFIGBASENAME
@@ -723,6 +726,7 @@ class s4(univention.s4connector.ucs):
 		self.baseConfig = self.configRegistry = baseConfig
 
 		self.open_s4()
+		ud.debug(ud.LDAP, ud.ALL, 'Mapping is: %s' % (pprint.pformat(property, indent=4, width=250)))
 
 		for key in self.property.keys():
 			if hasattr(self.property[key], 'con_default_dn'):

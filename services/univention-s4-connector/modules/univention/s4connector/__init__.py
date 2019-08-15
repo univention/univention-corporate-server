@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 from __future__ import print_function
+
 import cPickle
 import copy
 import os
@@ -42,20 +43,23 @@ import sys
 import time
 import traceback
 import types
+import pprint
+from signal import signal, SIGTERM, SIG_DFL
+
 import ldap
+from ldap.controls.readentry import PostReadControl
+from samba.ndr import ndr_unpack
+from samba.dcerpc import misc
+import sqlite3 as lite
+
 import univention.uldap
 import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.objects
 import univention.debug2 as ud
-from samba.ndr import ndr_unpack
-from samba.dcerpc import misc
-from signal import signal, SIGTERM, SIG_DFL
-from ldap.controls.readentry import PostReadControl
 
 from univention.s4connector.s4cache import S4Cache
 from univention.s4connector.lockingdb import LockingDB
-import sqlite3 as lite
 
 term_signal_caught = False
 
@@ -375,6 +379,9 @@ class attribute:
 		self.sync_mode = sync_mode
 		self.single_value = single_value
 
+	def __repr__(self):
+		return 'univention.s4connector.attribute(**%s)' % (pprint.pformat(dict(self.__dict__), indent=4, width=250),)
+
 
 class property:
 
@@ -455,6 +462,9 @@ class property:
 			self.identify = identify
 
 		self.disable_delete_in_ucs = disable_delete_in_ucs
+
+	def __repr__(self):
+		return 'univention.s4connector.property(**%s)' % (pprint.pformat(dict(self.__dict__), indent=4, width=250),)
 
 
 class ucs:

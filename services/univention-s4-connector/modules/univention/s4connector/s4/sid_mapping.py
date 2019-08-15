@@ -45,6 +45,10 @@ from samba.ndr import ndr_pack, ndr_unpack
 
 
 def print_sid_mapping(configRegistry):
+	"""
+		.. deprecated:: UCS 4.4
+	"""
+	# TODO: remove this function, it's not used anymore (but maybe by customers?)
 	sync_mode = 'sync'
 	if configRegistry.is_true('connector/s4/mapping/sid', True):
 		if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False):

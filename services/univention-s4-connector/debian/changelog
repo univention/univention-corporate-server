@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-38) unstable; urgency=medium
+
+  * Big #48410: make mapping.py a more pythonic file
+
+ -- Florian Best <best@univention.de>  Thu, 15 Aug 2019 14:51:43 +0200
+
 univention-s4-connector (13.0.2-37) unstable; urgency=medium
 
   * Bug #49092: revert adding properties
