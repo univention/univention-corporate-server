@@ -9,4 +9,6 @@ desc: |
  * This update fixes an issue in the samba-tool ntacl sysvolcheck command
    where it complains about a difference in the "P", "PAR" or "PAI"
    NTACL flags when comparing LDAP directory ACLs to the sysvol.
-bug: [49293]
+ * Fix for Samba4.10 Regression: idmap uid to sid failed for accounts with
+   uid in range 300000-400000
+bug: [49293,49935]
