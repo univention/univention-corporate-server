@@ -420,16 +420,16 @@ s4_mapping = {
 		con_create_extenstions=[
 			univention.s4connector.s4.check_for_local_group_and_extend_serverctrls_and_sid,
 		],
-		post_con_modify_functions=[
+		post_con_modify_functions=filter(None, [
 			univention.s4connector.s4.sid_mapping.sid_to_s4 if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False) and not configRegistry.is_true('connector/s4/mapping/sid', True) else None,
 			univention.s4connector.s4.group_members_sync_from_ucs,
 			univention.s4connector.s4.object_memberships_sync_from_ucs
-		],
-		post_ucs_modify_functions=[
+		]),
+		post_ucs_modify_functions=filter(None, [
 			univention.s4connector.s4.sid_mapping.sid_to_ucs if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not configRegistry.is_true('connector/s4/mapping/sid', True) else None,
 			univention.s4connector.s4.group_members_sync_to_ucs,
 			univention.s4connector.s4.object_memberships_sync_to_ucs
-		],
+		]),
 		dn_mapping_function=[univention.s4connector.s4.group_dn_mapping],
 		attributes={
 			'cn': univention.s4connector.attribute(
@@ -489,11 +489,11 @@ s4_mapping = {
 			univention.s4connector.s4.sid_mapping.sid_to_s4 if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False) and not configRegistry.is_true('connector/s4/mapping/sid', True) else None,
 			univention.s4connector.s4.password.password_sync_ucs_to_s4,
 		]),
-		post_ucs_modify_functions=[
+		post_ucs_modify_functions=filter(None, [
 			univention.s4connector.s4.sid_mapping.sid_to_ucs if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not configRegistry.is_true('connector/s4/mapping/sid', True) else None,
 			univention.s4connector.s4.password.password_sync_s4_to_ucs_no_userpassword,
 			univention.s4connector.s4.computer.checkAndConvertToMacOSX,
-		],
+		]),
 		attributes={
 			'cn': univention.s4connector.attribute(
 				ucs_attribute='name',

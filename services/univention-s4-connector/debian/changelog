@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-39) unstable; urgency=medium
+
+  * Bug #48410: fix filtering None from lists
+
+ -- Florian Best <best@univention.de>  Fri, 16 Aug 2019 09:43:58 +0200
+
 univention-s4-connector (13.0.2-38) unstable; urgency=medium
 
   * Big #48410: make mapping.py a more pythonic file
