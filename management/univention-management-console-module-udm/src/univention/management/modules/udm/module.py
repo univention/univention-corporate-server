@@ -80,7 +80,7 @@ from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
 from univention.management.console.ldap import get_user_connection, get_machine_connection
 from univention.management.console.modules.udm.udm_ldap import get_module, UDM_Module, ldap_dn2path, read_syntax_choices, _get_syntax, container_modules, UDM_Error
-from univention.management.console.modules.udm.udm_ldap import SuperordinateDoesNotExist, NoIpLeft
+from univention.management.console.modules.udm.udm_ldap import SuperordinateDoesNotExist, ObjectDoesNotExist, NoIpLeft
 from univention.management.console.modules.udm.tools import check_license, LicenseError, LicenseImport as LicenseImporter, dump_license
 from univention.management.console.modules.sanitizers import MultiValidationError, ValidationError, DictSanitizer, StringSanitizer, ListSanitizer, IntegerSanitizer, ChoicesSanitizer, DNSanitizer, EmailSanitizer, LDAPSearchSanitizer, Sanitizer, BooleanSanitizer
 from univention.management.console.error import UMC_Error, LDAP_ServerDown, LDAP_ConnectionFailed, UnprocessableEntity
@@ -1938,7 +1938,12 @@ class Objects(FormBase, ReportingBase):
 		entries = []
 		objects = []
 		if search:
-			objects, last_page = yield self.search(module, container, objectProperty, objectPropertyValue, superordinate, scope, hidden, items_per_page, page, by, reverse)
+			try:
+				objects, last_page = yield self.search(module, container, objectProperty, objectPropertyValue, superordinate, scope, hidden, items_per_page, page, by, reverse)
+			except ObjectDoesNotExist as exc:
+				self.raise_sanitization_error('position', str(exc))
+			except SuperordinateDoesNotExist as exc:
+				self.raise_sanitization_error('superordinate', str(exc))
 
 		for obj in objects or []:
 			if obj is None:
