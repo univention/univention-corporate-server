@@ -132,12 +132,12 @@ if $ext_mapping; then
 			   --append departmentNumber="$UDM_users_user_departmentNumber1" \
 			   --append departmentNumber="$UDM_users_user_departmentNumber2" \
 			   --append roomNumber="$UDM_users_user_roomNumber1" \
-			   --append roomNumber="$UDM_users_user_roomNumber2" \
-			   --set initials="$UDM_users_user_initials" \
-			   --set physicalDeliveryOfficeName="$UDM_users_user_physicalDeliveryOfficeName" \
-			   --append postOfficeBox="$UDM_users_user_postOfficeBox1" \
-			   --append postOfficeBox="$UDM_users_user_postOfficeBox2" \
-			   --set preferredLanguage="$UDM_users_user_preferredLanguage" || fail_test 110
+			   --append roomNumber="$UDM_users_user_roomNumber2" || fail_test 110
+#			   --set initials="$UDM_users_user_initials" \
+#			   --set physicalDeliveryOfficeName="$UDM_users_user_physicalDeliveryOfficeName" \
+#			   --append postOfficeBox="$UDM_users_user_postOfficeBox1" \
+#			   --append postOfficeBox="$UDM_users_user_postOfficeBox2" \
+#			   --set preferredLanguage="$UDM_users_user_preferredLanguage" || fail_test 110
 	ad_wait_for_synchronization ; fail_bool 0 110
 fi
 
@@ -164,7 +164,7 @@ ad_verify_attribute "$AD_DN" "otherMobile" ""; fail_bool 0 121 "See #18501"
 ad_verify_attribute "$AD_DN" "pager" "$UDM_users_user_pager1"; fail_bool 0 121 "See #18501"
 ad_verify_multi_value_attribute_contains "$AD_DN" "otherPager" "$UDM_users_user_pager2"; fail_bool 0 121 "See #18501"
 ad_verify_multi_value_attribute_contains "$AD_DN" "otherPager" "$UDM_users_user_pager3"; fail_bool 0 121 "See #18501"
-if $ext_mapping;then
+if $ext_mapping; then
 	ad_verify_attribute "$AD_DN" "employeeNumber" "$UDM_users_user_employeeNumber"; fail_bool 0 121
 	ad_verify_attribute "$AD_DN" "employeeType" "$UDM_users_user_employeeType"; fail_bool 0 121
 	ad_verify_attribute "$AD_DN" "c" "$UDM_users_user_country"; fail_bool 0 121
@@ -177,6 +177,8 @@ if $ext_mapping;then
 	ad_verify_multi_value_attribute_contains "$AD_DN" "departmentNumber" "$UDM_users_user_departmentNumber2"; fail_bool 0 121 "See #18501"
 	ad_verify_multi_value_attribute_contains "$AD_DN" "roomNumber" "$UDM_users_user_roomNumber1"; fail_bool 0 121
 	ad_verify_multi_value_attribute_contains "$AD_DN" "roomNumber" "$UDM_users_user_roomNumber2"; fail_bool 0 121
+fi
+if false; then
 	ad_verify_attribute "$AD_DN" "initials" "$UDM_users_user_initials"; fail_bool 0 121
 	ad_verify_attribute "$AD_DN" "physicalDeliveryOfficeName" "$UDM_users_user_physicalDeliveryOfficeName"; fail_bool 0 121
 	ad_verify_multi_value_attribute_contains "$AD_DN" "postOfficeBox" "$UDM_users_user_postOfficeBox1"; fail_bool 0 121 "See #18501"
@@ -214,6 +216,8 @@ if $ext_mapping; then
 	udm_verify_multi_value_udm_attribute_contains "departmentNumber" "$UDM_users_user_departmentNumber2" "users/user"; fail_bool 0 110
 	udm_verify_multi_value_udm_attribute_contains "roomNumber" "$UDM_users_user_roomNumber1" "users/user"; fail_bool 0 110
 	udm_verify_multi_value_udm_attribute_contains "roomNumber" "$UDM_users_user_roomNumber2" "users/user"; fail_bool 0 110
+fi
+if false; then
 	udm_verify_udm_attribute "initials" "$UDM_users_user_initials" "users/user" ; fail_bool 0 110
 	udm_verify_udm_attribute "physicalDeliveryOfficeName" "$UDM_users_user_physicalDeliveryOfficeName" "users/user" ; fail_bool 0 110
 	udm_verify_multi_value_udm_attribute_contains "postOfficeBox" "$UDM_users_user_postOfficeBox1" "users/user"; fail_bool 0 110
@@ -252,11 +256,11 @@ if $ext_mapping;then
 			   --set unixhome="$UDM_users_user_unixhome2"\
 			   --set title=""\
 			   --set departmentNumber=""\
-			   --set roomNumber="" \
-			   --set initials="" \
-			   --set physicalDeliveryOfficeName="" \
-			   --set postOfficeBox="" \
-			   --set preferredLanguage=""|| fail_test 110
+			   --set roomNumber="" || fail_test 110
+#			   --set initials="" \
+#			   --set physicalDeliveryOfficeName="" \
+#			   --set postOfficeBox="" \
+#			   --set preferredLanguage=""|| fail_test 110
 	ad_wait_for_synchronization; fail_bool 0 110
 fi
 
@@ -289,6 +293,8 @@ if $ext_mapping; then
 	ad_verify_attribute "$AD_DN" "personalTitle" "" ; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
 	ad_verify_attribute "$AD_DN" "departmentNumber" "" ; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
 	ad_verify_attribute "$AD_DN" "roomNumber" "" ; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
+fi
+if false; then
 	ad_verify_attribute "$AD_DN" "initials" "" ; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
 	ad_verify_attribute "$AD_DN" "physicalDeliveryOfficeName" ""; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
 	ad_verify_attribute "$AD_DN" "postOfficeBox" "" ; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
@@ -317,6 +323,8 @@ if $ext_mapping; then
 	udm_verify_udm_attribute "title" None "users/user" ; fail_bool 0 110
 	udm_verify_udm_attribute "departmentNumber" "" "users/user" ; fail_bool 0 110
 	udm_verify_udm_attribute "roomNumber" "" "users/user" ; fail_bool 0 110
+fi
+if false; then
 	udm_verify_udm_attribute "initials" None "users/user" ; fail_bool 0 110
 	udm_verify_udm_attribute "physicalDeliveryOfficeName" None "users/user" ; fail_bool 0 110
 	udm_verify_udm_attribute "postOfficeBox" "" "users/user" ; fail_bool 0 110
