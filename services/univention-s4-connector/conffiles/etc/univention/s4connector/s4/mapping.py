@@ -136,16 +136,7 @@ def get_sid_mapping():
 
 sync_mode_ou = configRegistry.get('connector/s4/mapping/ou/syncmode', configRegistry.get('connector/s4/mapping/syncmode'))
 sync_mode_gpo = configRegistry.get('connector/s4/mapping/gpo/syncmode', sync_mode_ou)
-
-gpo_ucs_create_functions = None
-gpo_post_ucs_modify_functions = None
-gpo_post_con_create_functions = None
-gpo_post_con_modify_functions = None
-if configRegistry.is_true('connector/s4/mapping/gpo/ntsd', False):
-	gpo_ucs_create_functions = [univention.s4connector.s4.ntsecurity_descriptor.ntsd_to_ucs]
-	gpo_post_ucs_modify_functions = [univention.s4connector.s4.ntsecurity_descriptor.ntsd_to_ucs]
-	gpo_post_con_create_functions = [univention.s4connector.s4.ntsecurity_descriptor.ntsd_to_s4]
-	gpo_post_con_modify_functions = [univention.s4connector.s4.ntsecurity_descriptor.ntsd_to_s4]
+gpo_ntsd = configRegistry.is_true('connector/s4/mapping/gpo/ntsd', False)
 
 
 s4_mapping = {
@@ -685,10 +676,10 @@ s4_mapping = {
 				single_value=True,
 			),
 		},
-		ucs_create_functions=gpo_ucs_create_functions,
-		post_ucs_modify_functions=gpo_post_ucs_modify_functions,
-		post_con_create_functions=gpo_post_con_create_functions,
-		post_con_modify_functions=gpo_post_con_modify_functions,
+		ucs_create_functions=[univention.s4connector.s4.ntsecurity_descriptor.ntsd_to_ucs] if gpo_ntsd else [],
+		post_ucs_modify_functions=[univention.s4connector.s4.ntsecurity_descriptor.ntsd_to_ucs] if gpo_ntsd else [],
+		post_con_create_functions=[univention.s4connector.s4.ntsecurity_descriptor.ntsd_to_s4] if gpo_ntsd else [],
+		post_con_modify_functions=[univention.s4connector.s4.ntsecurity_descriptor.ntsd_to_s4] if gpo_ntsd else [],
 	),
 	'msWMIFilter': univention.s4connector.property(
 		ucs_module='settings/mswmifilter',
