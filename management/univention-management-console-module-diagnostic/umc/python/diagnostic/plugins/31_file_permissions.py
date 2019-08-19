@@ -151,6 +151,7 @@ def file_and_permission_checks():
 		cf_type('/var/cache/univention-appcenter', 'root', 'root', 0o755, False),
 		cf_type('/var/cache/univention-bind-proxy', 'root', 'root', 0o755, False),
 		cf_type('/var/cache/univention-config', 'root', 'root', 0o755, False),
+		cf_type('/var/cache/univention-system-setup', 'root', 'root', 0o711, False),
 		cf_type('/var/cache/univention-directory-listener', 'root', 'root', 0o755, False),
 		cf_type('/var/cache/univention-directory-reports', 'root', 'root', 0o755, False),
 		cf_type('/var/cache/univention-management-console', 'root', 'root', 0o755, False),

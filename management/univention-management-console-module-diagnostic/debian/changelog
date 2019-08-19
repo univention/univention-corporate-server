@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (5.0.1-16) unstable; urgency=medium
+
+  * Bug #49799: Fix file permission test for /var/cache/univention-system-setup
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 19 Aug 2019 13:59:19 +0200
+
 univention-management-console-module-diagnostic (5.0.1-15) unstable; urgency=medium
 
   * Bug #48698: Fix GUI visible spelling errors
