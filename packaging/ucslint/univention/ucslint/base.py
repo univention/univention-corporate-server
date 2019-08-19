@@ -455,10 +455,12 @@ class UPCFileTester(object):
 class FilteredDirWalkGenerator(object):
 
 	IGNORE_DIRS = {
-		'.git',
-		'.pybuild',
-		'.svn',
 		'CVS',
+		'.git',
+		'.mypy_cache',
+		'.pybuild',
+		'__pycache__',
+		'.svn',
 	}
 	IGNORE_SUFFIXES = {
 		'~',

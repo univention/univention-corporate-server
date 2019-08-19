@@ -193,6 +193,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		'rules',
 		'source.lintian-overrides',  # dh_lintian
 		'ucslint.overrides',
+		'watch',  # uscan
 	))
 
 	KNOWN_DH_FILES = set((
@@ -277,6 +278,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		'if-pre-up',  # dh_installifupdown
 		'if-up',  # dh_installifupdown
 		'init',  # dh_installinit
+		'init.d',  # dh_installinit
+		'isinstallable',  # Debian Installer
 		'logcheck.cracking',  # dh_installlogcheck
 		'logcheck.ignore.paranoid',  # dh_installlogcheck
 		'logcheck.ignore.server',  # dh_installlogcheck
