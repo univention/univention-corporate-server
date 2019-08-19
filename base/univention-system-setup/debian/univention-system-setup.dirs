@@ -1,6 +1,3 @@
-usr/lib/univention-system-setup/appliance-hooks.d
-usr/lib/univention-system-setup/cleanup-post.d
-usr/lib/univention-system-setup/cleanup-pre.d
 var/cache/univention-system-setup
 var/lib/univention-system-setup/hostname.pre
 var/lib/univention-system-setup/hostname.post

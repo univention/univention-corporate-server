@@ -1,5 +1,1 @@
-usr/sbin
-usr/lib/univention-directory-listener/system
-usr/lib/univention-pam
-usr/lib/univention-server/server_password_change.d
 var/cache/univention-directory-listener
