@@ -42,18 +42,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		}
 
 	def check(self, path):
+		self.check_scripts(path)
+
+	def check_scripts(self, path):
 		SCRIPTS = frozenset(('preinst', 'postinst', 'prerm', 'postrm'))
-		for filename in listdir(join(path, 'debian')):
-			if '.' in filename:
-				package, suffix = splitext(filename)
-				suffix = suffix.lstrip('.')
-			else:
-				suffix = filename
+		debianpath = join(path, 'debian')
+		for script_path in uub.FilteredDirWalkGenerator(debianpath, suffixes=SCRIPTS):
+			package, suffix = self.split_pkg(script_path)
 
-			if suffix not in SCRIPTS:
-				continue
-
-			script_path = join(path, 'debian', filename)
 			with open(script_path, 'r') as script_file:
 				for nr, line in enumerate(script_file, start=1):
 					if not line.startswith('#'):
@@ -65,3 +61,15 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 								'wrong script name: %r' % (line.strip(),),
 								filename=script_path,
 								line=nr)
+
+	@staticmethod
+	def split_pkg(name):
+		filename = basename(name)
+		if '.' in filename:
+			package, suffix = splitext(filename)
+			suffix = suffix.lstrip('.')
+		else:
+			package = ''
+			suffix = filename
+
+		return (package, suffix)
