@@ -72,15 +72,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		cnt = {
 			'version': 0,
 			'vversion': 0,
-			'credential_arg_missing': 0,
-			'unquoted_credential_arg': 0,
-			'old_cmd_name': 0,
 			'joinscripthelper.lib': 0,
 			'joinscript_init': 0,
 			'joinscript_save_current_version': 0,
 			'joinscript_api': False,
 		}
-		for line in lines:
+		for lnr, line in enumerate(lines, start=1):
 			line = line.strip()
 
 			# check joinscript api
@@ -93,6 +90,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			# check for old style joinscript
 			if line.startswith('VERSION='):
 				cnt['version'] += 1
+				if cnt['version'] > 1:
+					self.addmsg('0001-12', 'join script does set VERSION more than once', filename, lnr)
 			if line.find(' v${VERSION} ') >= 0:
 				cnt['vversion'] += 1
 
@@ -107,27 +106,19 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			# check udm calls
 			if 'univention-admin ' in line or 'univention-directory-manager ' in line or 'udm ' in line:
 				if 'univention-admin ' in line:
-					cnt['old_cmd_name'] += 1
+					self.addmsg('0001-1', 'join script still uses "univention-admin"', filename, lnr)
+
 				if ' $@ ' not in line and ' "$@" ' not in line and ' "${@}" ' not in line:
-					cnt['credential_arg_missing'] += 1
-					self.debug('line contains no $@:\n%s' % line)
+					self.addmsg('0001-2', 'join script is missing "$@"', filename, lnr)
+
 			if ' $@ ' in line or ' ${@} ' in line:
-				cnt['unquoted_credential_arg'] += 1
-				self.debug('line contains unquoted $@:\n%s' % line)
+				self.addmsg('0001-11', 'join script contains unquoted $@', filename, lnr)
 
 		if not cnt['joinscript_api']:
 			self.addmsg('0001-16', 'join script does not use joinscript api (possible clear text passwords)', filename)
-		if cnt['old_cmd_name'] > 0:
-			self.addmsg('0001-1', 'join script contains %d lines using "univention-admin"' % (cnt['old_cmd_name']), filename)
-		if cnt['credential_arg_missing'] > 0:
-			self.addmsg('0001-2', 'join script contains %s lines with missing "$@"' % (cnt['credential_arg_missing']), filename)
-		if cnt['unquoted_credential_arg'] > 0:
-			self.addmsg('0001-11', 'join script contains %d lines with unquoted $@' % (cnt['unquoted_credential_arg']), filename)
 
 		if cnt['version'] == 0:
 			self.addmsg('0001-3', 'join script does not set VERSION', filename)
-		if cnt['version'] > 1:
-			self.addmsg('0001-12', 'join script does set VERSION more than once', filename)
 
 		if not cnt['joinscripthelper.lib']:
 			# no usage of joinscripthelper.lib
@@ -245,11 +236,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						match = UniventionPackageCheck.RE_LINE_CONTAINS_SET_E.search(content)
 						if match:
 							self.debug('found "set -e" in %s' % fn)
-							for line in content.splitlines():
+							for lnr, line in enumerate(content.splitlines(), start=1):
 								if name in line:
 									match = UniventionPackageCheck.RE_LINE_ENDS_WITH_TRUE.search(line)
 									if not match:
-										self.addmsg('0001-8', 'the join script %s is not called with "|| true" but "set -e" is set' % (name,), fn)
+										self.addmsg('0001-8', 'the join script %s is not called with "|| true" but "set -e" is set' % (name,), fn, lnr)
 
 		for js, found in fnlist_joinscripts.items():
 			if not found:

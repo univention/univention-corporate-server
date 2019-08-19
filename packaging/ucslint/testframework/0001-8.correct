@@ -1,1 +1,1 @@
-W:0001-8: debian/postinst: the join script 34univention-management-console-server.inst is not called with "|| true" but "set -e" is set
+W:0001-8: debian/postinst:7: the join script 34univention-management-console-server.inst is not called with "|| true" but "set -e" is set
