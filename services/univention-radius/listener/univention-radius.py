@@ -37,6 +37,11 @@ __package__ = ''  # workaround for PEP 366
 import subprocess
 from univention.listener.handler import ListenerModuleHandler
 
+
+# Bug #48886: udl-ctrl parses this name with sed
+name = 'univention-radius'
+
+
 class AppListener(ListenerModuleHandler):
 	run_update = False
 
