@@ -2308,7 +2308,7 @@ class Object(FormBase, Ressource):
 			props['superordinate'] = obj.superordinate and obj.superordinate.dn
 		if obj.oldattr.get('entryUUID'):
 			props['entry_uuid'] = obj.oldattr['entryUUID'][0].decode('utf-8', 'replace')
-		props['position'] = ldap_connection.parentDn(obj.dn)
+		props['position'] = ldap_connection.parentDn(obj.dn) if obj.dn else obj.position.getDn()
 		props['properties'] = values
 		props['options'] = dict((opt['id'], opt['value']) for opt in module.get_options(udm_object=obj))
 		props['policies'] = {}
