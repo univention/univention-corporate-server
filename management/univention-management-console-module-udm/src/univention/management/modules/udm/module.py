@@ -2397,8 +2397,10 @@ class Object(FormBase, Ressource):
 			self.request.body_arguments['properties'] = {}
 		if self.request.body_arguments['position'] is None:
 			self.request.body_arguments['position'] = entry['position']
-		yield self.modify(module, obj)
+		obj = yield self.modify(module, obj)
 		self.add_caching(public=False, must_revalidate=True)
+		self.set_status(302)
+		self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
 		self.content_negotiation({})
 
 	@tornado.gen.coroutine
