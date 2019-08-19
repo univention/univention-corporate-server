@@ -227,9 +227,11 @@ class NetworkAccess(object):
 		# user is authorized to authenticate via RADIUS, retrieve NT-password-hash from LDAP and return it
 		self.logger.info('User is allowed to use RADIUS')
 		result = self.ldapConnection.search(filter=filter_format('(uid=%s)', (self.username, )), attr=['sambaNTPassword', 'sambaAcctFlags'])
-		if not result:
-			raise NoHashError('No NT-password-hash found')
+		try:
+			nt_password_hash = result[0][1]['sambaNTPassword'][0].decode('hex')
+		except (IndexError, KeyError, TypeError):
+			raise NoHashError('No valid NT-password-hash found. Check the "sambaNTPassword" attribute of the user.')
 		sambaAccountFlags = frozenset(result[0][1]['sambaAcctFlags'][0])
 		if sambaAccountFlags & DISALLOWED_SAMBA_ACCOUNT_FLAGS:
 			raise UserDeactivatedError('Account is deactivated')
-		return result[0][1]['sambaNTPassword'][0].decode('hex')
+		return nt_password_hash
