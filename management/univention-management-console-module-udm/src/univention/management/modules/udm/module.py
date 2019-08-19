@@ -2367,10 +2367,10 @@ class Object(FormBase, Ressource):
 		self.content_negotiation({})
 
 	@sanitize_body_arguments(
-		position=DNSanitizer(required=True),
+		position=DNSanitizer(required=False, default=''),
 		superordinate=DNSanitizer(required=False, allow_none=True),
-		options=DictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=True),
-		policies=DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()), required=True),
+		options=DictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=False),
+		policies=DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()), required=False),
 		properties=DictSanitizer({}),
 	)
 	@tornado.gen.coroutine
@@ -2388,6 +2388,15 @@ class Object(FormBase, Ressource):
 		self.set_metadata(obj)
 		self.set_entity_tags(obj)
 
+		entry = Object.get_representation(module, obj, ['*'], self.ldap_connection, False)
+		if self.request.body_arguments['options'] is None:
+			self.request.body_arguments['options'] = entry['options']
+		if self.request.body_arguments['policies'] is None:
+			self.request.body_arguments['policies'] = entry['policies']
+		if self.request.body_arguments['properties'] is None:
+			self.request.body_arguments['properties'] = {}
+		if self.request.body_arguments['position'] is None:
+			self.request.body_arguments['position'] = entry['position']
 		yield self.modify(module, obj)
 		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation({})
