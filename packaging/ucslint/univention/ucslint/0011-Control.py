@@ -245,23 +245,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		'prerm',  # dh_installdeb
 		'prerm.debhelper',  # dh_installdeb
 		'README.Debian',  # dh_installdocs
-		'mount',  # dh_systemd_enable
-		'path',  # dh_systemd_enable
 		'pydist',  # dh_python2 dh_python3
 		'pyinstall',  # dh_python2 dh_python3
 		'pyremove',  # dh_python2 dh_python3
-		'service',  # dh_systemd_enable
 		'sgmlcatalogs',  # dh_installcatalogs
 		'sharedmimeinfo',  # dh_installmime
 		'shlibs',  # dh_installdeb
-		'socket',  # dh_systemd_enable
 		'substvars',  # dh_gencontrol
 		'symbols',  # dh_makeshlibs
 		'symbols.i386',  # dh_makeshlibs
-		'target',  # dh_systemd_enable
 		'templates',  # dh_installdebconf
-		'timer',  # dh_systemd_enable
-		'tmpfile',  # dh_systemd_enable
 		'TODO',  # dh_installdocs
 		'triggers',  # dh_installdeb
 		'umc-modules',  # dh-umc-modules-install
@@ -297,9 +290,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		'logrotate',  # dh_installlogrotate
 		'modprobe',  # dh_installmodules
 		'modules',  # dh_installmodules
+		'mount',  # dh_systemd_enable
 		'pam',  # dh_installpam
+		'path',  # dh_systemd_enable
 		'ppp.ip-down',  # dh_installppp
 		'ppp.ip-up',  # dh_installppp
+		'service',  # dh_systemd_enable
+		'socket',  # dh_systemd_enable
+		'target',  # dh_systemd_enable
+		'timer',  # dh_systemd_enable
+		'tmpfile',  # dh_systemd_enable
 		'udev',  # dh_installudev
 		'upstart',  # dh_installinit
 	}
