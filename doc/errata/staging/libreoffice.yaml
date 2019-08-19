@@ -6,9 +6,11 @@ src: libreoffice
 fix: 1:5.2.7-1+deb9u10
 desc: |
  This update addresses the following issues:
- * libreoffice (CVE-2019-9850)
- * libreoffice (CVE-2019-9851)
- * libreoffice (CVE-2019-9852)
+ * Insufficient url validation allowing LibreLogo script execution
+   (CVE-2019-9850)
+ * LibreLogo global-event script execution (CVE-2019-9851)
+ * Insufficient URL encoding flaw in allowed script location check
+   (CVE-2019-9852)
 bug: [50019]
 cve:
 - CVE-2019-9850
