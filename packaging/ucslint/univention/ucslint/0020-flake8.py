@@ -387,22 +387,23 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		parser = ArgumentParser()
 		parser.add_argument('-d', '--debug', default=0, type=int, help='debuglevel (to show also source lines)')
 		parser.add_argument('--statistics', default=False, action='store_true', help='Show a summary at the end.')
-		parser.add_argument('--fix', default=False, action='store_true')
-		parser.add_argument('--check', default=False, action='store_true')
-		parser.add_argument('--path', default='.')
-		parser.add_argument('--select', default=cls.DEFAULT_SELECT, help='default: %(default)s')
-		parser.add_argument('--ignore', default=cls.DEFAULT_IGNORE, help='default: %(default)s')
-		parser.add_argument('--max-line-length', default=cls.MAX_LINE_LENGTH, help='default: %(default)s')
+		parser.add_argument('--fix', default=False, action='store_true', help="Run autopep8 to automatically fix issues")
+		parser.add_argument('--check', default=False, action='store_true', help="Check files - explicitly required with --fix")
+		parser.add_argument('--path', default='.', help="Base path [%(default)s]")
+		parser.add_argument('--select', default=cls.DEFAULT_SELECT, help='Comma-separated list of errors and warnings to enable [%(default)s]')
+		parser.add_argument('--ignore', default=cls.DEFAULT_IGNORE, help='Comma-separated list of errors and warnings to ignore (or skip) [%(default)s]')
+		parser.add_argument('--max-line-length', default=cls.MAX_LINE_LENGTH, help='Maximum line length [%(default)s]')
 		parser.add_argument('--graceful', action='store_true', default=False, help='behave like calling ucslint would do: do not fail on certain errors')
-		parser.add_argument('--versions', default='2.7,3.5', help='Which python versions to run (e.g. 2.7,3.5)')
+		parser.add_argument('--versions', default='2,3', help='Which python versions to run [%(default)s]')
 		args, args.arguments = parser.parse_known_args()
+
 		cls.DEFAULT_IGNORE = args.ignore
 		cls.DEFAULT_SELECT = args.select
 		cls.MAX_LINE_LENGTH = args.max_line_length
 		cls.GRACEFUL = args.graceful
 		self = cls(show_statistics=args.statistics)
 		if args.versions:
-			self.python_versions = ['python%s' % (float(x),) for x in args.versions.split(',')]
+			self.python_versions = ['python%s' % (x,) for x in args.versions.split(',')]
 		self.setdebug(args.debug)
 		self.postinit(args.path)
 		if args.fix:
