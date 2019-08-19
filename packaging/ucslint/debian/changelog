@@ -1,3 +1,9 @@
+ucslint (9.0.2-4) unstable; urgency=low
+
+  * Bug #51246: Fix 0011 dh_systemd-enable --name
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 02 Nov 2021 21:10:48 +0100
+
 ucslint (9.0.2-3) unstable; urgency=low
 
   * Bug #52211: Strip newline after comment
