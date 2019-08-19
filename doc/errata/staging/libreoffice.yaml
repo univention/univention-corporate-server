@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [0, 1]
+scope: ucs_4.4-0-errata4.4-1
+src: libreoffice
+fix: 1:5.2.7-1+deb9u10
+desc: |
+ This update addresses the following issues:
+ * libreoffice (CVE-2019-9850)
+ * libreoffice (CVE-2019-9851)
+ * libreoffice (CVE-2019-9852)
+bug: [50018]
+cve:
+- CVE-2019-9850
+- CVE-2019-9851
+- CVE-2019-9852
