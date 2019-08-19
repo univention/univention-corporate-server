@@ -1,3 +1,12 @@
+univention-radius (6.0.2-11) unstable; urgency=medium
+
+  * Bug #50006: Switch to dh_python
+  * Bug #49858: respect UCR port configuration also for IPv6
+  * Bug #49499: Improve warning for missing sambaNTpassword
+  * Bug #48886: add name to listener module
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 16 Aug 2019 12:32:03 +0200
+
 univention-radius (6.0.2-10) unstable; urgency=medium
 
   * Bug #50006: Improve performance in large environments
