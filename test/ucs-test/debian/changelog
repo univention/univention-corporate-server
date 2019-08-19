@@ -1,3 +1,9 @@
+ucs-test (9.0.3-11) unstable; urgency=medium
+
+  * Bug #49055: Simple test for Docker compose networks
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 19 Aug 2019 09:15:27 +0200
+
 ucs-test (9.0.3-10) unstable; urgency=medium
 
   * Bug #49092: adapt tests to reverted attributes

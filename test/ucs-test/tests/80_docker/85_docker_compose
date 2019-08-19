@@ -10,6 +10,7 @@ from univention.testing.utils import is_port_open
 import pytest
 import os
 import subprocess
+import ruamel.yaml as yaml
 
 DOCKER_COMPOSE = '''
 version: '2.0'
@@ -69,6 +70,16 @@ if __name__ == '__main__':
 			app.execute_command_in_container('ls /var/lib/univention-appcenter/apps/%s/data/test1.txt' % name)
 			image = subprocess.check_output(['docker', 'inspect', app.container_id, '--format={{.Config.Image}}']).strip()
 			assert image == 'docker-test.software-univention.de/alpine:3.7'
+			from univention.config_registry import ConfigRegistry
+			ucr = ConfigRegistry()
+			ucr.load()
+			network = ucr.get('appcenter/apps/' + name + '/ip')
+			assert network == '172.16.1.0/24', network
+			yml_file = '/var/lib/univention-appcenter/apps/' + name + '/compose/docker-compose.yml'
+			content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
+			assert content['networks']['appcenter_net']['ipam']['config'][0]['subnet'] == '172.16.1.0/24'
+			content['services']['test1']['networks']['appcenter_net']['ipv4_address'] == '172.16.1.2'
+			content['services']['test2']['networks']['appcenter_net']['ipv4_address'] == '172.16.1.3'
 		finally:
 			app.uninstall()
 			app.remove()
