@@ -1,3 +1,10 @@
+univention-radius (6.0.2-12) unstable; urgency=medium
+
+  * Bug #50006: Move python-univention-radius.links
+    into univention-radius.links
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 19 Aug 2019 17:33:13 +0200
+
 univention-radius (6.0.2-11) unstable; urgency=medium
 
   * Bug #50006: Switch to dh_python
