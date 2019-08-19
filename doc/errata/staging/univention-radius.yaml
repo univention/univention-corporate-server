@@ -3,9 +3,12 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-radius
-fix: 6.0.2-10A~4.4.0.201908131800
+fix: 
 desc: |
  This update addresses the following issue(s):
  * The radius authentication performance has been improved. This should be
    especially noticeable in large environments.
-bug: [50006]
+ * Use UCR port configuration for IPv6 RADIUS-server.
+ * Improve warning for missing sambaNTPassword attribute.
+ * Fix that the listener module wasn't shown as initialized.
+bug: [50006, 49858, 49499, 48886]
