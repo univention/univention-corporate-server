@@ -32,6 +32,8 @@
 
 #DEBHELPER#
 
+. /usr/share/univention-lib/all.sh
+
 a2ensite univention-management.conf
 service apache2 reload
 
