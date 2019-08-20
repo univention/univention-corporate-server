@@ -30,17 +30,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+if command -v update-python-modules >/dev/null 2>&1; then
+	update-python-modules --post-install univention-management-module-udm.public
+fi
+
 #DEBHELPER#
 
 . /usr/share/univention-lib/all.sh
 
 a2ensite univention-management.conf
 service apache2 reload
-
-# new installations
-if [ "$1" = "configure" -a -z "$2" ]; then
-	service univention-management-module-udm restart
-fi
 
 call_joinscript 22univention-management-module-udm.inst
 
