@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-41) unstable; urgency=medium
+
+  * Bug #49092: do not set not existing attributes in ignorelist
+
+ -- Florian Best <best@univention.de>  Tue, 20 Aug 2019 20:13:11 +0200
+
 univention-s4-connector (13.0.2-40) unstable; urgency=medium
 
   * Bug #48410: fix ucs_create_functions must be a list, not None
