@@ -307,7 +307,7 @@ layout = [
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('title', 'title', None, univention.admin.mapping.ListToString)
-mapping.register('initials', 'initials', None, univention.admin.mapping.ListToString)
+#mapping.register('initials', 'initials', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('organisation', 'o', None, univention.admin.mapping.ListToString)
 mapping.register('displayName', 'displayName', None, univention.admin.mapping.ListToString)
