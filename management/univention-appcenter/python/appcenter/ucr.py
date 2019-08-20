@@ -35,6 +35,7 @@
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
 from univention.config_registry.handler import run_filter
+from copy import deepcopy
 
 _UCR = ConfigRegistry()
 _UCR.load()
@@ -81,8 +82,15 @@ def ucr_evaluated_as_true(value):
 	return _UCR.is_true(value=value)
 
 
-def ucr_run_filter(string):
-	return run_filter(string, _UCR)
+def ucr_run_filter(string, additional=None):
+	ucr = _UCR
+	if additional:
+		# memory only ucr. not saved.
+		# if we would... NEVER __setitem__ on ucr!
+		ucr = deepcopy(ucr)
+		for k, v in additional.iteritems():
+			ucr[k] = v
+	return run_filter(string, ucr)
 
 
 def ucr_instance():

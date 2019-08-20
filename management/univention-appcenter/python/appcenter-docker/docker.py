@@ -468,7 +468,7 @@ class MultiDocker(Docker):
 		shutil.copy2(self.app.get_cache_file('compose'), template_file)
 		with open(template_file) as fd:
 			template = fd.read()
-			content = ucr_run_filter(template)
+			content = ucr_run_filter(template, env)
 		with open(yml_file, 'wb') as fd:
 			os.chmod(yml_file, 0600)
 			fd.write(content)
