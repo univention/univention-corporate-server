@@ -1013,6 +1013,7 @@ add_branch_repository () {
 	local extra_list="/root/apt-get-branch-repo.list"
 	if [ -s "$extra_list" ]; then
 		cp "$extra_list" /etc/apt/sources.list.d/
+		chmod a+r "/etc/apt/sources.list.d/$extra_list"
 		apt-get update
 		return $?
 	fi
