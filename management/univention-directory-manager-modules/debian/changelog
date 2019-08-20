@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.13-11) unstable; urgency=medium
+
+  * Bug #49092: remove initials from mapping
+
+ -- Florian Best <best@univention.de>  Tue, 20 Aug 2019 12:40:48 +0200
+
 univention-directory-manager-modules (14.0.13-10) unstable; urgency=medium
 
   * Bug #49092: remove initials from mapping

@@ -1186,7 +1186,7 @@ mapping.register('username', 'uid', None, univention.admin.mapping.ListToString)
 mapping.register('uidNumber', 'uidNumber', None, univention.admin.mapping.ListToString)
 mapping.register('gidNumber', 'gidNumber', None, univention.admin.mapping.ListToString)
 mapping.register('title', 'title', None, univention.admin.mapping.ListToString)
-mapping.register('initials', 'initials', None, univention.admin.mapping.ListToString)
+#mapping.register('initials', 'initials', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('organisation', 'o', None, univention.admin.mapping.ListToString)
 
