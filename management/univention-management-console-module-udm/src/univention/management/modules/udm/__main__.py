@@ -126,7 +126,7 @@ class Server(object):
 		server = cls()
 
 		parser = argparse.ArgumentParser()
-		parser.add_argument('-d', '--debug', type=int, default=int(ucr.get('umc/modules/udm/debug/level', 2)), help='debug level')
+		parser.add_argument('-d', '--debug', type=int, default=int(ucr.get('directory/manager/rest/debug/level', 2)), help='debug level')
 		parser.add_argument('-l', '--language', default='C', help='The process locale')
 		parser.add_argument('-s', '--unix-socket', help='Bind to a UNIX socket')
 		parser.add_argument('-p', '--port', help='Bind to a TCP port')

@@ -83,7 +83,7 @@ class Server(tornado.web.RequestHandler):
 			allow_nonstandard_methods=True,
 			follow_redirects=False,
 			connect_timeout=20.0,  # TODO: raise value?
-			request_timeout=int(ucr.get('umc/http/response-timeout', '310')) + 1,
+			request_timeout=int(ucr.get('directory/manager/rest/response-timeout', '310')) + 1,
 			prepare_curl_callback=lambda curl: curl.setopt(pycurl.UNIX_SOCKET_PATH, socket),
 		)
 		client = tornado.httpclient.AsyncHTTPClient()
@@ -133,7 +133,7 @@ class Server(tornado.web.RequestHandler):
 			(r'.*', cls),
 		], debug=False, serve_traceback=True,
 		)
-		app.listen(int(ucr.get('umc/server/port', 8888)))
+		app.listen(int(ucr.get('directory/manager/rest/server/port', 8888)))
 		ioloop = tornado.ioloop.IOLoop.instance()
 		ioloop.start()
 
