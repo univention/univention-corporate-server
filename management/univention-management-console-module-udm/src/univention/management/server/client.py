@@ -68,7 +68,31 @@ class HTTPError(Exception):
 		super(HTTPError, self).__init__(message)
 
 
+class BadRequest(HTTPError):
+	pass
+
+
+class Unauthorized(HTTPError):
+	pass
+
+
+class Forbidden(HTTPError):
+	pass
+
+
 class NotFound(HTTPError):
+	pass
+
+
+class PreconditionFailed(HTTPError):
+	pass
+
+
+class UnprocessableEntity(HTTPError):
+	pass
+
+
+class ServerError(HTTPError):
 	pass
 
 
@@ -107,7 +131,6 @@ class Session(object):
 		}.get(method.upper(), sess.get)
 
 	def make_request(self, method, uri, data=None, **headers):
-		#print('{} {}'.format(method, uri))
 		if method in ('GET', 'HEAD'):
 			params = data
 			json = None
@@ -130,9 +153,9 @@ class Session(object):
 						# traceback = json['error'].get('traceback')
 						if server_message:
 							msg += '\n{}'.format(server_message)
+			errors = {400: BadRequest, 404: NotFound, 403: Forbidden, 401: Unauthorized, 412: PreconditionFailed, 422: UnprocessableEntity, 500: ServerError}
 			cls = HTTPError
-			if response.status_code == 404:
-				cls = NotFound
+			cls = errors.get(response.status_code, cls)
 			raise cls(response.status_code, msg, response)
 		return response.json()
 
