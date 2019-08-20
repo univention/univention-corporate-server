@@ -2500,7 +2500,10 @@ class Object(FormBase, Ressource):
 			UDM_Error(exc).reraise()
 
 	def set_properties(self, module, obj):
-		obj.options = [opt for opt, enabled in self.request.body_arguments['options'].items() if enabled]  # TODO: AppAttributes.data_for_module(self.name).iteritems() ?
+		options = self.request.body_arguments['options']  # TODO: AppAttributes.data_for_module(self.name).iteritems() ?
+		options_enable = set(opt for opt, enabled in options.items() if enabled)
+		options_disable = set(opt for opt, enabled in options.items() if enabled is False)  # ignore None!
+		obj.options = list(set(obj.options) - options_disable | options_enable)
 		if self.request.body_arguments['policies']:
 			obj.policies = reduce(lambda x, y: x + y, self.request.body_arguments['policies'].values())
 		self.sanitize_arguments(PropertiesSanitizer(), self, module=module, obj=obj)
