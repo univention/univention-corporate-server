@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (6.0.1-9) unstable; urgency=medium
+
+  * Bug #44278: Fixed GPO Links overwrite
+
+ -- Fathan Vidjaja <vidjaja@univention.de>  Tue, 20 Aug 2019 14:03:11 +0200
+
 univention-management-console-module-adtakeover (6.0.1-8) unstable; urgency=medium
 
   * Bug #48698: Fix user visible spelling errors
