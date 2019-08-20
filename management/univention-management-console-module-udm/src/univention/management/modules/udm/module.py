@@ -816,6 +816,12 @@ class RessourceBase(object):
 	def vary(self):
 		return ['Accept', 'Accept-Language', 'Accept-Encoding', 'Authorization']
 
+	def modified_from_timestamp(self, timestamp):
+		modified = time.strptime(timestamp, '%Y%m%d%H%M%SZ')
+		# make sure Last-Modified is only send if it is not now
+		if modified < time.gmtime(time.time() - 1):
+			return modified
+
 	def get_parent_object_type(self, module):
 		flavor = module.flavor
 		if '/' not in flavor:
@@ -2252,7 +2258,9 @@ class Object(FormBase, Ressource):
 
 	def set_entity_tags(self, obj):
 		self.set_header('Etag', self.get_etag(obj))
-		self.set_header('Last-Modified', last_modified(time.strptime(obj.oldattr['modifyTimestamp'][0].decode('utf-8', 'replace'), '%Y%m%d%H%M%SZ')))
+		modified = self.modified_from_timestamp(obj.oldattr['modifyTimestamp'][0].decode('utf-8', 'replace'))
+		if modified:
+			self.set_header('Last-Modified', last_modified(modified))
 		self.check_conditional_requests()
 
 	def get_etag(self, obj):
@@ -2605,7 +2613,9 @@ class UserPhoto(Ressource):
 			raise NotFound(object_type, dn)
 
 		data = obj.info.get('jpegPhoto', '').decode('base64')
-		self.add_header('Last-Modified', last_modified(time.strptime(self.ldap_connection.getAttr(obj.dn, b'modifyTimestamp')[0].decode('utf-8'), '%Y%m%d%H%M%SZ')))
+		modified = self.modified_from_timestamp(self.ldap_connection.getAttr(obj.dn, b'modifyTimestamp')[0].decode('utf-8'))
+		if modified:
+			self.add_header('Last-Modified', last_modified(modified))
 		self.set_header('Content-Type', 'image/jpeg')
 		self.add_caching(public=False, max_age=2592000, must_revalidate=True)
 		self.finish(data)
