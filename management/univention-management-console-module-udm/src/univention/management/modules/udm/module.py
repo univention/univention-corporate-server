@@ -323,6 +323,16 @@ class BoolSanitizer(ChoicesSanitizer):
 		return super(BoolSanitizer, self)._sanitize(value, name, further_arguments) in ('1', 'on', 'true')
 
 
+class LDAPFilterSanitizer(StringSanitizer):
+
+	def _sanitize(self, value, name, further_arguments):
+		value = super(LDAPFilterSanitizer, self)._sanitize(value, name, further_arguments)
+		try:
+			return udm_syntax.ldapFilter.parse(value)
+		except udm_errors.valueError as exc:
+			self.raise_validation_error(str(exc))
+
+
 class NotFound(HTTPError):
 
 	def __init__(self, object_type, dn=None):
@@ -1899,6 +1909,7 @@ class Objects(FormBase, ReportingBase):
 
 	@sanitize_query_string(
 		position=DNSanitizer(required=False, default=None),
+		filter=LDAPFilterSanitizer(required=False, default=None, allow_none=True),
 		property=ObjectPropertySanitizer(required=False, default=None),
 		propertyvalue=LDAPSearchSanitizer(required=False, default='*', add_asterisks=False, use_asterisks=True),
 		scope=ChoicesSanitizer(choices=['sub', 'one', 'base', 'base+one'], default='sub'),
@@ -1923,6 +1934,7 @@ class Objects(FormBase, ReportingBase):
 
 		search = bool(self.request.query)
 		container = self.request.query_arguments['position']
+		filter = self.request.query_arguments['filter']
 		objectProperty = self.request.query_arguments['property']
 		objectPropertyValue = self.request.query_arguments['propertyvalue']
 		scope = self.request.query_arguments['scope']
@@ -1945,7 +1957,7 @@ class Objects(FormBase, ReportingBase):
 		objects = []
 		if search:
 			try:
-				objects, last_page = yield self.search(module, container, objectProperty, objectPropertyValue, superordinate, scope, hidden, items_per_page, page, by, reverse)
+				objects, last_page = yield self.search(module, container, objectProperty, objectPropertyValue, filter, superordinate, scope, hidden, items_per_page, page, by, reverse)
 			except ObjectDoesNotExist as exc:
 				self.raise_sanitization_error('position', str(exc))
 			except SuperordinateDoesNotExist as exc:
@@ -2030,7 +2042,7 @@ class Objects(FormBase, ReportingBase):
 		self.content_negotiation(result)
 
 	@tornado.gen.coroutine
-	def search(self, module, container, prop, value, superordinate, scope, hidden, items_per_page, page, by, reverse):
+	def search(self, module, container, prop, value, filter, superordinate, scope, hidden, items_per_page, page, by, reverse):
 		ctrls = {}
 		serverctrls = []
 		hashed = (self.request.user_dn, module.name, container or None, prop or None, value or None, superordinate or None, scope or None, hidden or None, items_per_page or None, by or None, reverse or None)
@@ -2050,7 +2062,7 @@ class Objects(FormBase, ReportingBase):
 		ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000')
 		last_page = page
 		for i in range(current_page, page or 1):
-			objects = yield self.pool.submit(module.search, container, prop or None, value, superordinate, scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls)
+			objects = yield self.pool.submit(module.search, container, prop or None, value, superordinate, filter=filter, scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls)
 			for control in ctrls.get('ctrls', []):
 				if control.controlType == SimplePagedResultsControl.controlType:
 					page_ctrl.cookie = control.cookie
