@@ -387,7 +387,7 @@ class TestUsers(object):
 		cn = udm.create_object('container/cn', name='testusers', policy_reference=pwhistory)
 		expiry = long(time.time())
 		password_end = time.strftime("%Y%m%d000000Z", time.gmtime(expiry))
-		password_end_policy = time.strftime("%Y%m%d000000Z", time.gmtime(expiry + expiry_interval * 3600 * 24))
+		#password_end_policy = time.strftime("%Y%m%d000000Z", time.gmtime(expiry + expiry_interval * 3600 * 24))
 		self._test_modlist(udm, {'pwdChangeNextLogin': '1'}, {'krb5PasswordEnd': [password_end]})
 		self._test_modlist(udm, {'pwdChangeNextLogin': '0', 'password': 'univention2'}, {'krb5PasswordEnd': []})
 		self._test_modlist(udm, {'pwdChangeNextLogin': '1', 'position': cn}, {'krb5PasswordEnd': [password_end]})
@@ -410,18 +410,11 @@ class TestUsers(object):
 		subprocess.call(['python', '-m', 'univention.lib.account', 'lock', '--dn', user, '--lock-time', locktime])
 		lo.modify(user, [('sambaBadPasswordCount', '0', '20')])
 		new = lo.get(user)
-		print locktime
-		for i in old:
-			if not i in new:
-				print i
-				print old[i], None
-			elif not old[i] == new[i]:
-				print i
-				print old[i], new[i]
+		print(locktime, old, new)
 		udm.modify_object('users/user', dn=user, locked='0')
 		try:
 			udm.modify_object('users/user', dn=user, locked='0')
-		except UCSTestUDM_NoModification as e:
+		except UCSTestUDM_NoModification:
 			# ignore this, maybe the connector already unlocked the user
 			# in this case sambaBadPasswordCount should be correctly
 			# set to 0 by the connector
