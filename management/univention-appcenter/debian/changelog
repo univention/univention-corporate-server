@@ -1,3 +1,10 @@
+univention-appcenter (8.0.11-51) unstable; urgency=medium
+
+  * Bug #50030: Make App Settings accessible in docker-compose.yml for Multi
+    COntainer Apps
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 20 Aug 2019 09:32:51 +0200
+
 univention-appcenter (8.0.11-50) unstable; urgency=medium
 
   * Bug #49055: Fix UCRV default
