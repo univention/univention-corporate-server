@@ -2498,8 +2498,8 @@ class Object(FormBase, Ressource):
 			self.raise_sanitization_error('password', str(UDM_Error(exc)))
 		except udm_errors.invalidOptions as exc:
 			self.raise_sanitization_error('options', str(UDM_Error(exc)))
-		except (udm_errors.invalidOperation, udm_errors.insufficientInformation) as exc:
-			self.raise_sanitization_error('dn', str(UDM_Error(exc)))
+		except (udm_errors.invalidOperation, udm_errors.invalidChild, udm_errors.insufficientInformation) as exc:
+			self.raise_sanitization_error('dn', str(UDM_Error(exc)))  # TODO: invalidOperation and invalidChild should be 403 Forbidden
 		except udm_errors.invalidDhcpEntry as exc:
 			self.raise_sanitization_error('dhcpEntryZone', str(UDM_Error(exc)))
 		except udm_errors.circularGroupDependency as exc:
