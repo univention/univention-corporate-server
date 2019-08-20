@@ -225,7 +225,7 @@ if false; then
 	udm_verify_udm_attribute "preferredLanguage" "$UDM_users_user_preferredLanguage" "users/user" ; fail_bool 0 110
 fi
 ### Test if mapping of user-attributes is configurable via ucr variable 'connector/s4/mapping/user/attributes/ignorelist'
-ucr set 'connector/s4/mapping/user/attributes/ignorelist'='employeeNumber,employeeType,country,departmentNumber,loginShell,unixhome,title,uidNumber,gidNumber,roomNumber,initials,physicalDeliveryOfficeName,postOfficeBox,preferredLanguage'
+ucr set 'connector/s4/mapping/user/attributes/ignorelist'='employeeNumber,employeeType,country,departmentNumber,loginShell,unixhome,title,uidNumber,gidNumber,roomNumber'  # ,initials,physicalDeliveryOfficeName,postOfficeBox,preferredLanguage'
 
 ad_connector_restart
 test -n "$connector_s4_ldap_host" || exit 137

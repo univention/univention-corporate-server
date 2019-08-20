@@ -1,3 +1,9 @@
+ucs-test (9.0.3-12) unstable; urgency=medium
+
+  * Bug #49092: don't set non available attributes in the mapping
+
+ -- Florian Best <best@univention.de>  Tue, 20 Aug 2019 19:58:18 +0200
+
 ucs-test (9.0.3-11) unstable; urgency=medium
 
   * Bug #49055: Simple test for Docker compose networks
