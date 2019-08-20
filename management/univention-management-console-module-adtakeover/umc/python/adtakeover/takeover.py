@@ -1097,7 +1097,7 @@ class AD_Takeover():
 
 			run_and_output_to_log(["univention-config-registry", "set",
 				"windows/domain=%s" % self.ad_netbios_domain,
-                          ], log.debug)
+				], log.debug)
 
 		if sambadomain_object_dn:
 			log.debug("Replacing old UCS sambaSID (%s) by AD domain SID (%s)." % (self.old_domainsid, self.ad_domainsid))
@@ -1166,6 +1166,7 @@ class AD_Takeover():
 			if os.path.exists(gpo_path):
 				log.info("Removing associated conflicting GPO directory %s." % (gpo_path,))
 				shutil.rmtree(gpo_path, ignore_errors=True)
+		run_and_output_to_log(["/usr/share/univention-s4-connector/msgpo.py", "--write2ucs"], log.debug)
 
 	def rewrite_sambaSIDs_in_OpenLDAP(self):
 		# Phase I.b: Pre-Map SIDs (locale adjustment etc.)
@@ -1358,8 +1359,8 @@ class AD_Takeover():
 				self.samdb.modify(delta)
 
 	def resync_s4connector_listener(self, progress):
-		log.info("Waiting for listener to finish (max. 10 minutes)")
-		if not wait_for_listener_replication(progress, 600):
+		log.info("Waiting for listener to finish (max. 30 minutes)")
+		if not wait_for_listener_replication(progress, 1800):
 			log.warn("Warning: Stopping Listener now anyway.")
 
 		# Restart Univention Directory Listener for S4 Connector
@@ -1406,8 +1407,6 @@ class AD_Takeover():
 		# turn off the legacy position_mapping:
 		run_and_output_to_log(["univention-config-registry", "unset", "connector/s4/mapping/dns/position"], log.debug)
 
-		run_and_output_to_log(["/usr/share/univention-s4-connector/msgpo.py", "--write2ucs"], log.debug)
-
 		# rotate S4 connector log and start the S4 Connector
 		# careful: the postrotate task used to "restart" the connector!
 		run_and_output_to_log(["logrotate", "-f", "/etc/logrotate.d/univention-s4-connector"], log.debug)
@@ -1420,7 +1419,6 @@ class AD_Takeover():
 
 		log.info("Waiting for S4 Connector sync")
 		wait_for_s4_connector_replication(self.ucr, self.lp, progress)
-
 		# Reset normal relication intervals
 		run_and_output_to_log(["univention-config-registry", "set", "connector/s4/poll/sleep=%s" % old_sleep, "connector/s4/retryrejected=%s" % old_retry], log.debug)
 		returncode = run_and_output_to_log(["/etc/init.d/univention-s4-connector", "restart"], log.debug)
