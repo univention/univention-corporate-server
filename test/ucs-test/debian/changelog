@@ -1,3 +1,10 @@
+ucs-test (9.0.3-13) unstable; urgency=medium
+
+  * Bug #47722: do not stop test after 1 hour. lets see how long it
+    really takes
+
+ -- Florian Best <best@univention.de>  Tue, 20 Aug 2019 21:14:35 +0200
+
 ucs-test (9.0.3-12) unstable; urgency=medium
 
   * Bug #49092: don't set non available attributes in the mapping

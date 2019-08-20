@@ -4,6 +4,7 @@
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
 ## packages: [python-univention-directory-manager]
+## timeout: 0
 
 import pytest
 import time
