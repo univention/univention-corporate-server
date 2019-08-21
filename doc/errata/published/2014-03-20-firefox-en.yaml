@@ -1,8 +1,8 @@
 product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
-src: firefox-de
-fix: 1:24.4.0esr-6.41.201403191156
+src: firefox-en
+fix: 1:24.4.0esr-6.34.201403191202
 version: [0, 1]
 desc: |
  This update consists of two updates for firefox-en and firefox-de.
@@ -28,5 +28,6 @@ cve:
  - CVE-2014-1512
  - CVE-2014-1513
  - CVE-2014-1514
-erratum: 76
+bug: [34366]
+erratum: 77
 announced: 2014-03-20
