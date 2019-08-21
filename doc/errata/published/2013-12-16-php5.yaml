@@ -7,8 +7,9 @@ version: [0]
 desc: |
  Two security issues have been discovered in the PHP scripting language:
  * Denial of service when processing DateInterval objects (CVE-2013-6712)
- * Memory corruption when parsing X509 certificates
+ * Memory corruption when parsing X509 certificates (CVE-2013-6420)
 note: This update fixes these vulnerabilities.
+bug: [33625]
 cve:
  - CVE-2013-6712
  - CVE-2013-6420
