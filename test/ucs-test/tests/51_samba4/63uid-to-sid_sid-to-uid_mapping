@@ -1,0 +1,43 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "test uid-to-sid and sid-to-uid mapping"
+## exposure: dangerous
+## packages:
+##  - univention-samba4
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+## tags: [SKIP-UCSSCHOOL,basic,apptest]
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/ldap.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "$TESTLIBPATH/samba.sh" || exit 137
+
+# make sure no previous mapping to/from sid exists in a cache
+net cache flush
+#----create User
+SAMBA="true"
+username="$(user_randomname)"
+USER_UID=300005
+
+user_create "$username" --set uidNumber=$USER_UID || fail_fast 1 "User could not be created"
+
+trap 'user_remove "$username"; wait_for_replication_and_postrun; net cache flush' INT TERM EXIT
+
+wait_for_replication
+wait_for_LDAP_replication_of_domain_sambaSid "$username"
+
+set -x
+SID_FROM_LDAP="$(ldap_get_attribute uid=$username,cn=users,$ldap_base sambaSID)"
+SID="$(wbinfo --uid-to-sid=$USER_UID)"
+
+if [ "$SID_FROM_LDAP" != "$SID" ]; then
+	fail_test 2 "wbinfo uidNumber to sid usermapping failed"
+fi
+
+WBINFO_UID="$(wbinfo --sid-to-uid=$SID)"
+
+if [ "$USER_UID" != "$WBINFO_UID" ]; then
+	fail_test 3 "wbinfo sid to uidNumber usermapping failed"
+fi
+set +x

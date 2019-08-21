@@ -1,3 +1,9 @@
+ucs-test (9.0.3-15) unstable; urgency=medium
+
+  * Bug #49935: Add testcase for uid to sid mapping (and back)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 21 Aug 2019 17:27:41 +0200
+
 ucs-test (9.0.3-14) unstable; urgency=medium
 
   * Bug #50021: do not skip any diagnostic checks
