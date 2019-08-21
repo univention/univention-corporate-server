@@ -1,3 +1,9 @@
+ucs-test (9.0.3-14) unstable; urgency=medium
+
+  * Bug #50021: do not skip any diagnostic checks
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 21 Aug 2019 11:59:18 +0200
+
 ucs-test (9.0.3-13) unstable; urgency=medium
 
   * Bug #47722: do not stop test after 1 hour. lets see how long it

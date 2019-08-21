@@ -8,7 +8,8 @@ import tempfile
 from univention.testing.umc import Client
 from univention.testing import utils
 
-SKIPPED_TESTS = ['11_nameserver', '31_file_permissions', '40_samba_tool_dbcheck']
+# One would neeed a strong argument to skip any tests here, as it masks reals problems (See bug #50021)
+SKIPPED_TESTS = []
 
 
 def test_run_diagnostic_checks():
