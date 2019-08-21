@@ -8,7 +8,7 @@ version: [1]
 desc: |
  Several vulnerabilities have been fixed with the update to
  Iceweasel ESR 31.6:
- * 4-byte buffer overflow in libx11 macro SetReqLen
+ * 4-byte buffer overflow in libx11 macro SetReqLen (CVE-2013-7439)
  * Same-origin bypass through anchor navigation (CVE-2015-0801)
  * Potential XSRF affecting sendBeacon() requests (CORS requests should not
    follow 30x redirections after prefligh) (CVE-2015-0807)
