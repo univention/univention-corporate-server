@@ -6,17 +6,17 @@ fix: 7u75-2.5.4-1.13.201502021133
 version: [0]
 desc: |
  Multiple security issues have been fixed in OpenJDK:
-  Sandbox bypass in the Hotspot JVM
-  Sandbox bypass in JAX-WS
-  Sandbox bypass in RMI
-  Insecure temporary files in Hostspot performance logging
-  Information leak in the file chooser dialogue in Swing
-  Denial of service in processing DER data
-  Sandbox bypass in multicast socket handling
-  Disable SSLv3 to address protocol flaws like POODLE
-  Incorrect cipher negotiation in JSSE
-  Information disclosure in ICU
-  Sandbox bypass in ICU
+ * Sandbox bypass in the Hotspot JVM
+ * Sandbox bypass in JAX-WS
+ * Sandbox bypass in RMI
+ * Insecure temporary files in Hostspot performance logging
+ * Information leak in the file chooser dialogue in Swing
+ * Denial of service in processing DER data
+ * Sandbox bypass in multicast socket handling
+ * Disable SSLv3 to address protocol flaws like POODLE
+ * Incorrect cipher negotiation in JSSE
+ * Information disclosure in ICU
+ * Sandbox bypass in ICU
 bug:
  - 37577
 cve:
