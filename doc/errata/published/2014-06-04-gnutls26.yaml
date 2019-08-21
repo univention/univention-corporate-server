@@ -9,6 +9,7 @@ desc: |
  validation of session IDs during TLS/SSL handshakes. A malicious
  server could use this to execute arbitrary code or perform denial
  of service.
+bug: [35015]
 cve:
  - CVE-2014-3466
 erratum: 118
