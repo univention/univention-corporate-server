@@ -30,7 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
+
 import listener
 import univention.debug as ud
 import os
@@ -100,7 +101,6 @@ def handler(dn, new, old):
 		target_subdir = 'univention/admin/syntax.d'
 	else:
 		ud.debug(ud.LISTENER, ud.ERROR, '%s: Undetermined error: unknown objectclass: %s.' % (name, ocs))
-
 
 	old_relative_filename = None
 	if old:

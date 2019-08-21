@@ -39,6 +39,7 @@ from .generic import GenericModule, GenericObject, GenericObjectProperties
 class UsersLdapObjectProperties(GenericObjectProperties):
 	"""users/ldap UDM properties."""
 
+
 class UsersLdapObject(GenericObject):
 	"""Better representation of users/ldap properties."""
 	udm_prop_class = UsersLdapObjectProperties

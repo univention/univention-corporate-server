@@ -222,7 +222,7 @@ class select(ISyntax):
 	"""
 	Select item from list of choices::
 
-	    self.choices = [(id, _("Display text"), ...]
+		self.choices = [(id, _("Display text"), ...]
 	"""
 	empty_value = False
 	"""Allow the empty value."""
@@ -250,7 +250,7 @@ class combobox(select):
 	"""
 	Select item from list of choices but accept all kind of values::
 
-	    self.choices = [(id, _("Display text"), ...]
+		self.choices = [(id, _("Display text"), ...]
 	"""
 
 	@classmethod
@@ -363,7 +363,7 @@ class complex(ISyntax):
 
 class UDM_Objects(ISyntax):
 	"""
-	Base class to lookup selectable items from |LDAP| enties using their |DN|.
+	Base class to lookup selectable items from |LDAP| entries using their |DN|.
 
 	See :py:class:`UDM_Attribute` for an alternative to use values from one |LDAP| entry..
 	"""
@@ -382,7 +382,7 @@ class UDM_Objects(ISyntax):
 	empty_value = False
 	"""Allow to select no entry."""
 	depends = None  # type: Optional[str]
-	"""The name of another |UDM| property this syntax sepends on."""
+	"""The name of another |UDM| property this syntax depends on."""
 	error_message = _("Not a valid LDAP DN")
 	"""Error message when an invalid item is selected."""
 	simple = False  # by default a MultiObjectSelect widget is used; if simple == True a ComboBox is used
@@ -401,7 +401,7 @@ class UDM_Objects(ISyntax):
 
 class UDM_Attribute(ISyntax):
 	"""
-	Base class to lookup selectable items from |LDAP| enties using attribute values.
+	Base class to lookup selectable items from |LDAP| entries using attribute values.
 
 	See :py:class:`UDM_Objects` for an alternative to use multiple |LDAP| entries.
 	"""
@@ -1275,7 +1275,7 @@ class hostName(simple):
 	"""
 	hostname based upon :rfc:`1123`::
 
-	    <let-or-digit>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
+		<let-or-digit>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
 
 	also allow `_` for Microsoft.
 
@@ -1700,8 +1700,8 @@ class date(simple):
 	Also accepts the ISO format (YYYY-MM-DD).
 
 	.. warning::
-	   Centuries are *always* stripped!
-	   See :py:class:`date2`.
+		Centuries are *always* stripped!
+		See :py:class:`date2`.
 
 	>>> date.parse('21.12.03')
 	'21.12.03'
@@ -1974,7 +1974,7 @@ class dnsSRVName(complex):
 	['ldap', 'tcp']
 
 	.. seealso::
-	   * :py:class:`dnsSRVLocation`
+		* :py:class:`dnsSRVLocation`
 	"""
 	min_elements = 2
 	all_required = False
@@ -2080,7 +2080,7 @@ class UNIX_TimeInterval(complex):
 	['5', 'days']
 
 	.. seealso::
-	   * :py:class:`UNIX_BoundedTimeInterval`
+		* :py:class:`UNIX_BoundedTimeInterval`
 	"""
 	min_elements = 1
 	subsyntaxes = (('', integerOrEmpty), ('', TimeUnits))
@@ -2225,7 +2225,7 @@ class userAttributeList(string):
 
 	.. note::
 
-	   unused
+		unused
 	"""
 	@classmethod
 	def parse(self, text):
@@ -2240,7 +2240,7 @@ class ldapDn(simple):
 	'dc=foo,dc=bar,dc=test'
 
 	.. deprecated:: 3.1-0
-	   Use :py:class:`UDM_Objects`.
+		Use :py:class:`UDM_Objects`.
 	"""
 	regex = re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')
 	error_message = _("Not a valid LDAP DN")
@@ -2370,7 +2370,7 @@ class ldapDnOrNone(simple):
 	'None'
 
 	.. deprecated:: 3.1-0
-	   Use :py:class:`UDM_Objects`.
+		Use :py:class:`UDM_Objects`.
 	"""
 	_re = re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')
 
@@ -2782,8 +2782,8 @@ class GroupDN(UDM_Objects):
 	Syntax to select a group from |LDAP| by |DN|.
 
 	.. seealso::
-	   * :py:class:`GroupID`
-	   * :py:class:`GroupDNOrEmpty`
+		* :py:class:`GroupID`
+		* :py:class:`GroupDNOrEmpty`
 	"""
 	udm_modules = ('groups/group', )
 	use_objects = False
@@ -2794,8 +2794,8 @@ class GroupDNOrEmpty(GroupDN):
 	Syntax to select a group from |LDAP| by |DN| or none.
 
 	.. seealso::
-	   * :py:class:`GroupID`
-	   * :py:class:`GroupDN`
+		* :py:class:`GroupID`
+		* :py:class:`GroupDN`
 	"""
 	empty_value = True
 
@@ -2805,7 +2805,7 @@ class UserDN(UDM_Objects):
 	Syntax to select an user from |LDAP| by |DN|.
 
 	.. seealso::
-	   * :py:class:`UserID`
+		* :py:class:`UserID`
 	"""
 	udm_modules = ('users/user', )
 	use_objects = False
@@ -2816,7 +2816,7 @@ class HostDN(UDM_Objects):
 	Syntax to select a host from |LDAP| by |DN|.
 
 	.. seealso::
-	   * :py:class:`IComputer_FQDN`
+		* :py:class:`IComputer_FQDN`
 	"""
 	udm_modules = ('computers/computer', )
 	udm_filter = '!(univentionObjectFlag=docker)'
@@ -2827,7 +2827,7 @@ class UserID(UDM_Objects):
 	Syntax to select an user from |LDAP| by numeric user identifier.
 
 	.. seealso::
-	   * :py:class:`UserDN`.
+		* :py:class:`UserDN`.
 	"""
 	udm_modules = ('users/user', )
 	key = '%(uidNumber)s'
@@ -2842,8 +2842,8 @@ class GroupID(UDM_Objects):
 	Syntax to select a group from |LDAP| by numeric user identifier.
 
 	.. seealso::
-	   * :py:class:`GroupDN`
-	   * :py:class:`GroupDNOrEmpty`
+		* :py:class:`GroupDN`
+		* :py:class:`GroupDNOrEmpty`
 	"""
 	udm_modules = ('groups/group', )
 	key = '%(gidNumber)s'
@@ -2867,7 +2867,7 @@ class IComputer_FQDN(UDM_Objects):
 	Syntax to select a host from |LDAP| by |FQDN|.
 
 	.. seealso::
-	   * :py:class:`HostDN`
+		* :py:class:`HostDN`
 	"""
 	udm_modules = ()
 	key = '%(name)s.%(domain)s'  # '%(fqdn)s' optimized for LDAP lookup. Has to be in sync with the computer handlers' info['fqdn']
@@ -2906,7 +2906,7 @@ class ServicePrint_FQDN(IComputer_FQDN):
 	Syntax to select a |UCS| host from |LDAP| by |FQDN| offering print services.
 
 	.. seealso::
-	   * :py:class:`ServicePrint`
+		* :py:class:`ServicePrint`
 	"""
 	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')
 	udm_filter = '(&(!(univentionObjectFlag=docker))(service=Print))'
@@ -2917,7 +2917,7 @@ class MailHomeServer(IComputer_FQDN):
 	Syntax to select a |UCS| host from |LDAP| by |FQDN| offering |IMAP| services.
 
 	.. seealso::
-	   * :py:class:`ServiceMail`
+		* :py:class:`ServiceMail`
 	"""
 	udm_modules = ('computers/computer', )
 	udm_filter = '(&(!(univentionObjectFlag=docker))(objectClass=univentionHost)(service=IMAP))'
@@ -2937,7 +2937,7 @@ class primaryGroup(ldapDn):
 	Syntax to select a group from |LDAP|.
 
 	.. deprecated:: 3.1-0
-	   Use :py:class:`GroupDN`.
+		Use :py:class:`GroupDN`.
 	"""
 	searchFilter = 'objectClass=posixGroup'
 	description = _('Primary Group')
@@ -2948,7 +2948,7 @@ class primaryGroup2(ldapDn):
 	Syntax to select a group from |LDAP|.
 
 	.. deprecated:: 3.1-0
-	   Use :py:class:`GroupDN`.
+		Use :py:class:`GroupDN`.
 	"""
 	searchFilter = 'objectClass=posixGroup'
 	description = _('Primary Group')
@@ -2997,8 +2997,8 @@ class DNS_ForwardZone(UDM_Objects):
 	Syntax to select no or one |DNS| forward zone from |LDAP| using :py:class:`univention.admin.handlers.dns.forward_zone`.
 
 	.. seealso::
-	   * :py:class:`DNS_ReverseZone`
-	   * :py:class:`DNS_ForwardZoneNonempty`
+		* :py:class:`DNS_ReverseZone`
+		* :py:class:`DNS_ForwardZoneNonempty`
 	"""
 	description = _('DNS forward zone')
 	udm_modules = ('dns/forward_zone', )
@@ -3011,8 +3011,8 @@ class DNS_ReverseZone(UDM_Objects):
 	Syntax to select no or one |DNS| reverse zone from |LDAP| using :py:class:`univention.admin.handlers.dns.reverse_zone`.
 
 	.. seealso::
-	   * :py:class:`DNS_ForwardZone`
-	   * :py:class:`DNS_ReverseZoneNonempty`
+		* :py:class:`DNS_ForwardZone`
+		* :py:class:`DNS_ReverseZoneNonempty`
 	"""
 	description = _('DNS reverse zone')
 	udm_modules = ('dns/reverse_zone', )
@@ -3026,8 +3026,8 @@ class DNS_ReverseZoneNonempty(DNS_ReverseZone):
 	Syntax to select one |DNS| reverse zone from |LDAP| using :py:class:`univention.admin.handlers.dns.reverse_zone`.
 
 	.. seealso::
-	   * :py:class:`DNS_ForwardZoneNonempty`
-	   * :py:class:`DNS_ReverseZone`
+		* :py:class:`DNS_ForwardZoneNonempty`
+		* :py:class:`DNS_ReverseZone`
 	"""
 	empty_value = False
 
@@ -3037,8 +3037,8 @@ class DNS_ForwardZoneNonempty(DNS_ForwardZone):
 	Syntax to select one |DNS| forward zone from |LDAP| using :py:class:`univention.admin.handlers.dns.forward_zone`.
 
 	.. seealso::
-	   * :py:class:`DNS_ReverseZoneNonempty`
-	   * :py:class:`DNS_ForwardZone`
+		* :py:class:`DNS_ReverseZoneNonempty`
+		* :py:class:`DNS_ForwardZone`
 	"""
 	empty_value = False
 
@@ -3128,7 +3128,7 @@ class WritableShare(UDM_Objects):
 	Syntax for selecting defined writeable |NFS| shares.
 
 	.. seealso::
-	   * :py:class:`nfsShare`
+		* :py:class:`nfsShare`
 	"""
 	udm_modules = ('shares/share', )
 	udm_filter = 'writeable=1'
@@ -3819,7 +3819,7 @@ class UNIX_AccessRight(simple):
 	Syntax to configure UNIX file permissions.
 
 	.. seealso::
-	   * :py:class:`UNIX_AccessRight_extended`
+		* :py:class:`UNIX_AccessRight_extended`
 	"""
 
 
@@ -3828,7 +3828,7 @@ class UNIX_AccessRight_extended(simple):
 	Syntax to configure UNIX file permissions including set\ |UID|, set\ |GID| and sticky bits.
 
 	.. seealso::
-	   * :py:class:`UNIX_AccessRight`
+		* :py:class:`UNIX_AccessRight`
 	"""
 	pass
 
@@ -3912,7 +3912,7 @@ class ServiceMail(UDM_Objects):
 	Syntax to select a |UCS| host from |LDAP| by |DN| offering |SMTP| services.
 
 	.. seealso::
-	   * :py:class:`MailHomeServer`
+		* :py:class:`MailHomeServer`
 	"""
 	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')
 	udm_filter = '(&(!(univentionObjectFlag=docker))(service=SMTP))'
@@ -3923,7 +3923,7 @@ class ServicePrint(UDM_Objects):
 	Syntax to select a |UCS| host from |LDAP| by |DN| offering print services.
 
 	.. seealso::
-	   * :py:class:`ServicePrint_FQDN`
+		* :py:class:`ServicePrint_FQDN`
 	"""
 	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')
 	udm_filter = '(&(!(univentionObjectFlag=docker))(service=Print))'
@@ -4083,8 +4083,8 @@ class listAttributes(string):
 	Syntax to enter |UDM| property name.
 
 	.. deprecated::
-	   Old syntax required by :py:class:`univention.admin.handler.settings.syntax`.
-	   Should be removed after migrating to :py:class:`UDM_PropertySelect`.
+		Old syntax required by :py:class:`univention.admin.handler.settings.syntax`.
+		Should be removed after migrating to :py:class:`UDM_PropertySelect`.
 	"""
 
 	@classmethod
@@ -4254,7 +4254,7 @@ class nfsShare(UDM_Objects):
 	Syntax for selecting defined |NFS| shares.
 
 	.. seealso::
-	   * :py:class:`WritableShare`
+		* :py:class:`WritableShare`
 	"""
 	udm_modules = ('shares/share', )
 	label = '%(name)s (%(host)s)'  # '%(printablename)s' optimized for performance...
@@ -4357,7 +4357,7 @@ class Printers(UDM_Objects):
 	Syntax to select a printers from |LDAP| using :py:class:`univention.admin.handlers.shares.printer`.
 
 	.. seealso::
-	   * :py:class:`PrinterNames`
+		* :py:class:`PrinterNames`
 	"""
 	udm_modules = ('shares/printer', )
 	depends = 'spoolHost'
@@ -4374,7 +4374,7 @@ class PrinterNames(UDM_Objects):
 	Syntax to select a printers from |LDAP| using :py:class:`univention.admin.handlers.shares.printer`.
 
 	.. seealso::
-	   * :py:class:`Printers`
+		* :py:class:`Printers`
 	"""
 	udm_modules = ('shares/printer', )
 	depends = 'spoolHost'
@@ -4392,8 +4392,8 @@ class PrintQuotaGroup(complex):
 	Syntax to configure a page quota for all users of a group together.
 
 	.. seealso::
-	   * :py:class:`PrintQuotaGroupPerUser`
-	   * :py:class:`PrintQuotaUser`
+		* :py:class:`PrintQuotaGroupPerUser`
+		* :py:class:`PrintQuotaUser`
 	"""
 	subsyntaxes = ((_('Soft limit (pages)'), integer), (_('Hard limit (pages)'), integer), (_('Group'), GroupName))
 
@@ -4403,8 +4403,8 @@ class PrintQuotaGroupPerUser(complex):
 	Syntax to configure a page quota for all individual users of a group.
 
 	.. seealso::
-	   * :py:class:`PrintQuotaUser`
-	   * :py:class:`PrintQuotaGroup`
+		* :py:class:`PrintQuotaUser`
+		* :py:class:`PrintQuotaGroup`
 	"""
 	subsyntaxes = ((_('Soft limit (pages)'), integer), (_('Hard limit (pages)'), integer), (_('Group'), GroupName))
 
@@ -4414,8 +4414,8 @@ class PrintQuotaUser(complex):
 	Syntax to configure a page quota for an individual user.
 
 	.. seealso::
-	   * :py:class:`PrintQuotaGroupPerUser`
-	   * :py:class:`PrintQuotaGroup`
+		* :py:class:`PrintQuotaGroupPerUser`
+		* :py:class:`PrintQuotaGroup`
 	"""
 	subsyntaxes = ((_('Soft limit (pages)'), integer), (_('Hard limit (pages)'), integer), (_('User'), UserName))
 
@@ -4566,7 +4566,7 @@ class PortalCategory(select):
 	Syntax to select a portal category version 1 from a static list with just 2 categories.
 
 	.. seealso::
-	   * :py:class:`PortalCategoryV2`
+		* :py:class:`PortalCategoryV2`
 	"""
 	choices = [
 		('admin', _('Shown in category "Administration"')),
@@ -4579,7 +4579,7 @@ class PortalCategoryV2(UDM_Objects):
 	Syntax to select a portal category version 2 from |LDAP| using :py:class:`univention.admin.handlers.settings.portal_category`.
 
 	.. seealso::
-	   * :py:class:`PortalCategory`
+		* :py:class:`PortalCategory`
 	"""
 	udm_modules = ('settings/portal_category', )
 	label = '%(name)s'
@@ -4692,7 +4692,7 @@ class mailHomeServer(LDAP_Search):
 	Syntax to select UCS servers providing the |IMAP| service.
 
 	.. deprecated:: 3.2-1
-	   Use :py:class:`MailHomeServer`.
+		Use :py:class:`MailHomeServer`.
 	"""
 	def __init__(self):
 		LDAP_Search.__init__(

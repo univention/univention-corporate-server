@@ -34,8 +34,6 @@ import os
 import traceback
 
 import univention.debug as ud
-import univention.admin.modules
-import univention.admin.uexceptions
 from univention.admin import localization
 
 translation = localization.translation('univention/admin')

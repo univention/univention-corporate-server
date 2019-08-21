@@ -34,6 +34,7 @@ from __future__ import absolute_import, unicode_literals
 from ..encoders import ListOfListOflTextToDictPropertyEncoder
 from .generic import GenericModule, GenericObject, GenericObjectProperties
 
+
 class PoliciesRegistryObjectProperties(GenericObjectProperties):
 	"""policies/registry UDM properties."""
 

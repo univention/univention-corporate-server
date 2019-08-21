@@ -155,10 +155,12 @@ layout = [
 	]),
 ]
 
+
 def unmapLocked(oldattr):
 	if isLDAPLocked(oldattr):
 		return '1'
 	return '0'
+
 
 def isLDAPLocked(oldattr):
 	return bool(oldattr.get('pwdAccountLockedTime', [''])[0])
@@ -172,6 +174,7 @@ mapping.register('description', 'description', None, univention.admin.mapping.Li
 mapping.register('password', 'userPassword', univention.admin.mapping.dontMap(), univention.admin.mapping.ListToString)
 
 mapping.registerUnmapping('locked', unmapLocked)
+
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
@@ -221,7 +224,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		return ml
 
-	## If you change anything here, please also check users/user.py
+	# If you change anything here, please also check users/user.py
 	def _modlist_posix_password(self, ml):
 		if not self.exists() or self.hasChanged(['disabled', 'password']):
 			old_password = self.oldattr.get('userPassword', [''])[0]
@@ -263,7 +266,7 @@ class object(univention.admin.handlers.simpleLdap):
 				ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, ''))
 		return ml
 
-	## If you change anything here, please also check users/user.py
+	# If you change anything here, please also check users/user.py
 	def _check_password_history(self, ml, pwhistoryPolicy):
 		if not self.hasChanged('password'):
 			return ml
@@ -281,9 +284,9 @@ class object(univention.admin.handlers.simpleLdap):
 
 		return ml
 
-	## If you change anything here, please also check users/user.py
+	# If you change anything here, please also check users/user.py
 	def _check_password_complexity(self, pwhistoryPolicy):
-		if  not self.hasChanged('password'):
+		if not self.hasChanged('password'):
 			return
 		if self['overridePWLength'] == '1':
 			return
@@ -299,7 +302,6 @@ class object(univention.admin.handlers.simpleLdap):
 				pwdCheck.check(self['password'])
 			except ValueError as e:
 				raise univention.admin.uexceptions.pwQuality(str(e).replace('W?rterbucheintrag', 'Wörterbucheintrag').replace('enth?lt', 'enthält'))
-
 
 	def _ldap_post_remove(self):
 		univention.admin.allocators.release(self.lo, self.position, 'uid', self['username'])

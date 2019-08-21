@@ -34,6 +34,7 @@ from __future__ import absolute_import, unicode_literals
 from ..encoders import StringCaseInsensitiveResultUpperBooleanPropertyEncoder
 from .generic import GenericModule, GenericObject, GenericObjectProperties
 
+
 class PoliciesShareUserquotaObjectProperties(GenericObjectProperties):
 	"""policies/share_userquota UDM properties."""
 

@@ -212,7 +212,7 @@ class SambaLogonHoursPropertyEncoder(BaseEncoder):
 	@classmethod
 	def decode(cls, value=None):
 		if value:
-			return ['{} {}-{}'.format(cls._weekdays[v/24], v % 24, v % 24 + 1) for v in value]
+			return ['{} {}-{}'.format(cls._weekdays[v / 24], v % 24, v % 24 + 1) for v in value]
 		else:
 			return value
 

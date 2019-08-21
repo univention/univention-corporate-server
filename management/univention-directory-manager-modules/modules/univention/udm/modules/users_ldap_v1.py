@@ -44,6 +44,7 @@ class UsersLdapObjectProperties(GenericObjectProperties):
 		'disabled': DisabledPropertyEncoder,
 	}
 
+
 class UsersLdapObject(GenericObject):
 	"""Better representation of users/ldap properties."""
 	udm_prop_class = UsersLdapObjectProperties
