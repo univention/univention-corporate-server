@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.12-26) unstable; urgency=medium
+
+  * Bug #27816: fix apache configuration
+
+ -- Florian Best <best@univention.de>  Wed, 21 Aug 2019 09:49:35 +0200
+
 univention-management-console-module-udm (9.0.12-25) unstable; urgency=medium
 
   * Bug #27816: Allow access only for certain groups
