@@ -39,8 +39,11 @@ from __future__ import unicode_literals
 import json
 import argparse
 
+import ldap
+import ldap.dn
+
 import univention.config_registry
-from univention.management.server.client import UDM, NotFound, HTTPError
+from univention.management.server.client import UDM, NotFound, UnprocessableEntity
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -50,7 +53,12 @@ class CLIClient(object):
 
 	def init(self, parser, args):
 		self.parser = parser
-		self.udm = UDM('https://%(hostname)s.%(domainname)s/univention/udm/' % ucr, args.binddn, args.bindpwd)
+		username = args.binddn
+		try:
+			username = ldap.dn.str2dn(username)[0][0][1]
+		except (ldap.DECODING_ERROR, IndexError):
+			pass
+		self.udm = UDM('https://%(hostname)s.%(domainname)s/univention/udm/' % ucr, username, args.bindpwd)
 
 	def create_object(self, args):
 		module = self.udm.get(args.object_type)
@@ -94,14 +102,12 @@ class CLIClient(object):
 	def save_object(self, obj):
 		try:
 			obj.save()
-		except HTTPError as exc:
-			if exc.code != 422:
-				raise
+		except UnprocessableEntity as exc:
 			self.print_error(str(exc))
 			raise SystemExit(2)
 
 	def set_properties(self, obj, args):
-		obj.superordinate = args.superordinate
+		obj.superordinate = getattr(args, 'superordinate', None)
 		for key, value in obj.options.items():
 			if key in args.option or key in args.append_option:
 				obj.options[key] = True
@@ -142,10 +148,10 @@ class CLIClient(object):
 
 	def list_objects(self, args):
 		module = self.udm.get(args.object_type)
-		filter = None if '=' not in args.filter else dict([args.filter.split('=', 1)])
-		for entry in module.search(filter, args.position, opened=True, superordinate=args.superordinate):
+		for entry in module.search(args.filter, args.position, opened=True, superordinate=args.superordinate):
 			self.print_line('')
 			self.print_line('DN', entry.dn)
+			self.print_line('URL', entry.uri)
 			#entry = entry.open()
 			for key, value in sorted(entry.props.items()):
 				if isinstance(value, list):
@@ -195,6 +201,11 @@ class CLIClient(object):
 
 	def get_info(self, args):
 		module = self.udm.get(args.object_type)
+		if module is None:
+			self.print_error('The given module is unknown')
+			for mod, modtitle in sorted(set((x.name, x.title) for x in self.udm.modules())):
+				self.print_line(mod, modtitle, prefix='  ')
+			return
 		module.load_relations()
 		resp = module.client.make_request('GET', module.relations['create-form'][0]['href'])  # TODO: integrate in client.py?
 		mod = module.client.eval_response(resp)
@@ -271,9 +282,12 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 	create = subparsers.add_parser('create', description='Create a new object')
 	create.set_defaults(func=client.create_object)
 	create.add_argument('--position', help='Set position in tree')
-	create.add_argument('--set', action='append', help='Set variable to value, e.g. foo=bar', default=[])
-	create.add_argument('--append', action='append', help='Append value to variable, e.g. foo=bar', default=[])
-	create.add_argument('--superordinate', help='Use superordinate module')
+	# create.add_argument('--default-position', action='store_true', help='Create in the default position')  # TODO: probably better make this the default?
+	# create.add_argument('--template', help='Use template for creation')
+	create.add_argument('--set', action='append', help='Set property to value, e.g. foo=bar', default=[])
+	create.add_argument('--append', action='append', help='Append value to property, e.g. foo=bar', default=[])
+	create.add_argument('--remove', action='append', help='Remove value from property, e.g. foo=bar', default=[])
+	create.add_argument('--superordinate', help='Use superordinate')
 	create.add_argument('--option', action='append', help='Use only given module options', default=[])
 	create.add_argument('--append-option', action='append', help='Append the module options', default=[])
 	create.add_argument('--remove-option', action='append', help='Remove the module options', default=[])
@@ -283,9 +297,9 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 	modify = subparsers.add_parser('modify', description='Modify an existing object')
 	modify.set_defaults(func=client.modify_object)
 	modify.add_argument('--dn', help='Edit object with DN')
-	modify.add_argument('--set', action='append', help='Set variable to value, e.g. foo=bar', default=[])
-	modify.add_argument('--append', action='append', help='Append value to variable, e.g. foo=bar', default=[])
-	modify.add_argument('--remove', action='append', help='Remove value from variable, e.g. foo=bar', default=[])
+	modify.add_argument('--set', action='append', help='Set property to value, e.g. foo=bar', default=[])
+	modify.add_argument('--append', action='append', help='Append value to property, e.g. foo=bar', default=[])
+	modify.add_argument('--remove', action='append', help='Remove value from property, e.g. foo=bar', default=[])
 	modify.add_argument('--option', action='append', help='Use only given module options', default=[])
 	modify.add_argument('--append-option', action='append', help='Append the module options', default=[])
 	modify.add_argument('--remove-option', action='append', help='Remove the module options', default=[])
@@ -295,7 +309,7 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 	remove = subparsers.add_parser('remove', description='Remove an existing object')
 	remove.set_defaults(func=client.remove_object)
 	remove.add_argument('--dn', help='Remove object with DN')
-	# remove.add_argument('--superordinate', help='Use superordinate module')  # not required
+	# remove.add_argument('--superordinate', help='Use superordinate')  # not required
 	remove.add_argument('--filter', help='Lookup filter e.g. foo=bar')
 	remove.add_argument('--remove-referring', action='store_true', help='remove referring objects', default=False)
 	remove.add_argument('--ignore-not-exists', action='store_true', help='ignore if object does not exists')
@@ -304,7 +318,7 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 	list_.set_defaults(func=client.list_objects)
 	list_.add_argument('--filter', help='Lookup filter e.g. foo=bar', default='')
 	list_.add_argument('--position', help='Search underneath of position in tree')
-	list_.add_argument('--superordinate', help='Use superordinate module')
+	list_.add_argument('--superordinate', help='Use superordinate')
 	list_.add_argument('--policies', help='List policy-based settings: 0:short, 1:long (with policy-DN)')
 
 	move = subparsers.add_parser('move', description='Move object in directory tree')
@@ -325,7 +339,7 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 	reports.add_argument('report_type')
 	reports.add_argument('dns', nargs='*')
 
-	info = subparsers.add_parser('info', description='ot info')
+	info = subparsers.add_parser('info', description='module info')
 	info.set_defaults(func=client.infos)
 
 	parser.add_argument('--version', action='version', version='%(prog)s VERSION TODO', help='print version information')
@@ -333,9 +347,8 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 	class FormatModule(argparse.ArgumentDefaultsHelpFormatter):
 		def format_help(self):
 			if preargs:
-				print(preargs)
 				preargs.subparsers = subparsers
-				client.init(preargs)
+				client.init(parser, preargs)
 				client.get_info(preargs)
 			return super(FormatModule, self).format_help()
 

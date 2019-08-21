@@ -243,10 +243,12 @@ class Module(Client):
 
 	def search(self, filter=None, position=None, scope='sub', hidden=False, superordinate=None, opened=False):
 		data = {}
-		if filter:
+		if isinstance(filter, dict):
 			for prop, val in filter.items():
 				data['property'] = prop
 				data['propertyvalue'] = val
+		elif isinstance(filter, basestring):
+			data['filter'] = filter
 		if superordinate:
 			data['superordinate'] = superordinate
 		data['position'] = position
@@ -346,7 +348,7 @@ class Object(Client):
 			'superordinate': self.superordinate,
 		}
 		headers = dict((key, value) for key, value in {
-			# 'If-Unmodified-Since': self.last_modified,  # FIXME: only if one second passed
+			'If-Unmodified-Since': self.last_modified,
 			'If-Match': self.etag,
 		}.items() if value)
 		resp = self.client.make_request('PUT', self.uri, data=data, **headers)
