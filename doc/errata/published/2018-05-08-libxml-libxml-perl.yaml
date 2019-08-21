@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issue:
  * CVE-2017-10672: Use-after-free by controlling the arguments to a
    replaceChild call
-bug: [44776, 45754]
+bug: [45754]
 cve:
 - CVE-2017-10672
 erratum: 362
