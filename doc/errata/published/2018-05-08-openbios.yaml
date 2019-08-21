@@ -9,3 +9,5 @@ desc: |
  This update provides an updated version of OpenBIOS, which is required
  for the new version of Qemu only for emulating the SPARC architecture.
 bug: [46217]
+erratum: 395
+announced: 2018-05-08
