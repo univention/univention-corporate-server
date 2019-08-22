@@ -323,12 +323,18 @@ s4_mapping = {
 				con_attribute='employeeNumber',
 				single_value=True,
 			),
-			'country': univention.s4connector.attribute(
-				ucs_attribute='country',
-				ldap_attribute='st',
-				con_attribute='c',
-				single_value=True,
-			),
+			#'state': univention.s4connector.attribute(
+			#	ucs_attribute='state',
+			#	ldap_attribute='st',
+			#	con_attribute='st',
+			#	single_value=True,
+			#),
+			#'country': univention.s4connector.attribute(
+			#	ucs_attribute='country',
+			#	ldap_attribute='c',
+			#	con_attribute='c',
+			#	single_value=True,
+			#),
 			'loginShell': univention.s4connector.attribute(
 				ucs_attribute='shell',
 				ldap_attribute='loginShell',

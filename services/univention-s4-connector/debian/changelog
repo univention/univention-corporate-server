@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-42) unstable; urgency=medium
+
+  * Bug #49092: do not sync country / state
+
+ -- Florian Best <best@univention.de>  Thu, 22 Aug 2019 13:24:10 +0200
+
 univention-s4-connector (13.0.2-41) unstable; urgency=medium
 
   * Bug #49092: do not set not existing attributes in ignorelist
