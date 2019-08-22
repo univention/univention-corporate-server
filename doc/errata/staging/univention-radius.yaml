@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-1
 src: univention-radius
 fix: 6.0.2-14A~4.4.0.201908201322
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The radius authentication performance has been improved. This should be
    especially noticeable in large environments.
  * Use UCR port configuration for IPv6 RADIUS-server.
