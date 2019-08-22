@@ -302,6 +302,10 @@ class complex(ISyntax):
 	all_required = True
 	"""All sub-values must contain a value."""
 
+	subsyntaxes = []
+	subsyntax_names = ()
+	subsyntax_key_value = False
+
 	@classmethod
 	def parse(self, texts, minn=None):
 		# type: (Sequence[Any], int) -> List[str]
@@ -309,6 +313,7 @@ class complex(ISyntax):
 			minn = self.min_elements
 		if minn is None:
 			minn = len(self.subsyntaxes)
+
 		if len(texts) < minn:
 			raise univention.admin.uexceptions.valueInvalidSyntax(_("not enough arguments"))
 		elif len(texts) > len(self.subsyntaxes):
@@ -323,6 +328,28 @@ class complex(ISyntax):
 			p = s.parse(text)
 			parsed.append(p)
 		return parsed
+
+	@classmethod
+	def fromdict(self, value):
+		if self.subsyntax_key_value:
+			return [self.parse(item) for item in value.items()]
+		elif self.subsyntax_names:
+			try:
+				return [value[key] for key in self.subsyntax_names]
+			except KeyError as exc:
+				raise univention.admin.uexceptions.valueInvalidSyntax(_('missing argument %s') % (exc,))
+		else:
+			raise TypeError('Syntax class is not a dict.')
+
+	@classmethod
+	def todict(self, value):
+		if self.subsyntax_key_value:
+			return dict(value)
+		if not self.subsyntax_names:
+			raise TypeError('Syntax class is not a dict.')
+		values = dict(zip(self.subsyntax_names, [None] * len(self.subsyntax_names)))
+		values.update(dict(zip(self.subsyntax_names, value)))
+		return values
 
 	@classmethod
 	def tostring(self, texts):
@@ -759,6 +786,7 @@ class Localesubdirname_and_GNUMessageCatalog(complex):
 	"""
 	delimiter = ': '
 	subsyntaxes = [(_('Locale subdir name'), Localesubdirname), (_('GNU message catalog'), GNUMessageCatalog)]
+	subsyntax_key_value = True
 	all_required = True
 
 
@@ -1528,6 +1556,7 @@ class IP_AddressRange(complex):
 		(_('First address'), ipAddress),
 		(_('Last address'), ipAddress),
 	)
+	subsyntax_names = ('first', 'last')
 
 	@classmethod
 	def parse(self, texts):
@@ -1567,6 +1596,7 @@ class IPv4_AddressRange(IP_AddressRange):
 		(_('First address'), ipv4Address),
 		(_('Last address'), ipv4Address),
 	)
+	subsyntax_names = ('first', 'last')
 
 
 class ipProtocol(select):
@@ -1949,6 +1979,7 @@ class keyAndValue(complex):
 	"""
 	delimiter = ' = '
 	subsyntaxes = [(_('Key'), string), (_('Value'), string)]
+	subsyntax_key_value = True
 	all_required = 1
 
 
@@ -1960,6 +1991,7 @@ class dnsMX(complex):
 	['10', 'mail.my.domain']
 	"""
 	subsyntaxes = [(_('Priority'), integer), (_('Mail server'), dnsHostname)]
+	subsyntax_names = ('priority', 'mailserver',)
 	all_required = True
 
 
@@ -1978,6 +2010,7 @@ class dnsSRVName(complex):
 	min_elements = 2
 	all_required = False
 	subsyntaxes = ((_('Service'), string), (_('Protocol'), ipProtocolSRV), (_('Extension'), string))
+	subsyntax_names = ('service', 'protocol', 'extension')
 	size = ('Half', 'Half', 'One')
 
 
@@ -2014,6 +2047,7 @@ class postalAddress(complex):
 	"""
 	delimiter = ', '
 	subsyntaxes = [(_('Street'), string), (_('Postal code'), OneThirdString), (_('City'), TwoThirdsString)]
+	subsyntax_names = ('street', 'zipcode', 'city')
 	all_required = True
 
 
@@ -2025,6 +2059,7 @@ class dnsSRVLocation(complex):
 	['10', '100', '389', 'server.my.domain']
 	"""
 	subsyntaxes = [(_('Priority'), integer), (_('Weighting'), integer), (_('Port'), integer), (_('Server'), dnsHostname)]
+	subsyntax_names = ('priority', 'weigtht', 'port', 'server',)
 	size = ('OneThird', 'OneThird', 'OneThird', 'One')
 	all_required = True
 
@@ -2083,6 +2118,7 @@ class UNIX_TimeInterval(complex):
 	"""
 	min_elements = 1
 	subsyntaxes = (('', integerOrEmpty), ('', TimeUnits))
+	subsyntax_names = ('amount', 'unit')
 	size = ('Half', 'Half')
 
 	@classmethod
@@ -2191,6 +2227,7 @@ class DHCP_HardwareAddress(complex):
 	Syntax to enter DHCP hardware address consisting of network technology type and MAC address.
 	"""
 	subsyntaxes = ((_('Type'), NetworkType), (_('Address'), MAC_Address))
+	subsyntax_names = ('type', 'address')
 	size = ('One', 'One')
 	all_required = True
 
@@ -2259,6 +2296,7 @@ class UMC_CommandPattern(complex):
 	Syntax to enter a |UMC| command pattern.
 	"""
 	subsyntaxes = ((_('Command pattern'), string), (_('Option Pattern'), string))
+	subsyntax_names = ('command', 'option')
 	min_elements = 1
 	all_required = False  # empty values are allowed
 	size = ('One', 'One')
@@ -2307,6 +2345,7 @@ class UserMailAddress(UDM_Objects):
 	key = '%(mailPrimaryAddress)s'
 	static_values = (('anyone', _('Anyone')), )
 	regex = re.compile('^([^\s]+@[^\s]+|anyone)$')
+	error_message = _('Not a valid e-mail address')
 
 
 class GroupName(UDM_Objects):
@@ -2336,6 +2375,8 @@ class SharedFolderUserACL(complex):
 	Syntax to assign an |IMAP| access control permission for an user from |LDAP|.
 	"""
 	subsyntaxes = ((_('User'), UserMailAddress), (_('Access right'), IMAP_Right))
+	#subsyntax_names = ('user', 'access-right')
+	subsyntax_key_value = True
 
 
 class SharedFolderGroupACL(complex):
@@ -2343,6 +2384,8 @@ class SharedFolderGroupACL(complex):
 	Syntax to assign an |IMAP| access control permission for a group from |LDAP|.
 	"""
 	subsyntaxes = ((_('Group'), GroupName), (_('Access right'), IMAP_Right))
+	#subsyntax_names = ('group', 'access-right')
+	subsyntax_key_value = True
 
 
 class SharedFolderSimpleUserACL(complex):
@@ -2350,6 +2393,8 @@ class SharedFolderSimpleUserACL(complex):
 	Syntax to assign an |IMAP| access control permission for any user.
 	"""
 	subsyntaxes = ((_('User'), string), (_('Access right'), IMAP_Right))
+	#subsyntax_names = ('user', 'access-right')
+	subsyntax_key_value = True
 
 
 class SharedFolderSimpleGroupACL(complex):
@@ -2357,6 +2402,8 @@ class SharedFolderSimpleGroupACL(complex):
 	Syntax to assign an |IMAP| access control permission for any group.
 	"""
 	subsyntaxes = ((_('Group'), string), (_('Access right'), IMAP_Right))
+	#subsyntax_names = ('group', 'access-right')
+	subsyntax_key_value = True
 
 
 class ldapDnOrNone(simple):
@@ -3048,6 +3095,7 @@ class dnsEntry(complex):
 	"""
 	description = _('DNS Entry')
 	subsyntaxes = ((_('DNS forward zone'), DNS_ForwardZoneNonempty), (_('IP address'), IP_AddressList))
+	subsyntax_names = ('forward-zone', 'ip')
 	size = ('One', 'One')
 	min_elements = 1
 
@@ -3058,6 +3106,7 @@ class dnsEntryReverse(complex):
 	"""
 	description = _('DNS Entry Reverse')
 	subsyntaxes = ((_('DNS reverse zone'), DNS_ReverseZoneNonempty), (_('IP address'), IP_AddressList))
+	subsyntax_names = ('reverse-zone', 'ip')
 	size = ('One', 'One')
 	min_elements = 1
 
@@ -3075,6 +3124,7 @@ class dnsEntryAlias(complex):
 	"""
 	description = _('DNS Entry Alias')
 	subsyntaxes = ((_('Zone of existing host record'), DNS_ForwardZoneList), (_('DNS forward zone'), DNS_ForwardZone), (_('Alias'), DNS_Name))
+	subsyntax_names = ('zone', 'forward-zone', 'alias')
 	size = ('TwoThirds', 'TwoThirds', 'TwoThirds')
 
 
@@ -3099,6 +3149,7 @@ class dhcpEntry(complex):
 		(_('IP address'), IP_AddressListEmpty),
 		(_('MAC address'), MAC_AddressList),
 	)
+	subsyntax_names = ('service', 'ip', 'mac')
 	description = _('DHCP Entry')
 	size = ('TwoThirds', 'TwoThirds', 'TwoThirds')
 
@@ -3118,6 +3169,8 @@ class DHCP_Option(complex):
 	Syntax to enter free-form |DHCP| options.
 	"""
 	subsyntaxes = ((_('Name'), string), (_('Value'), string))
+	#subsyntax_names = ('name', 'value')
+	subsyntax_key_value = True
 	description = _('DHCP option')
 	size = ('One', 'One')
 
@@ -4075,6 +4128,7 @@ class UDM_PropertySelect(complex):
 	Syntax to enter |UDM| module and property name.
 	"""
 	subsyntaxes = ((_('UDM module'), string), (_('property'), string))
+	subsyntax_names = ('module', 'property')
 
 
 class listAttributes(string):
@@ -4142,6 +4196,8 @@ class UCR_Variable(complex):
 	Syntax to enter |UCR| variable name and value.
 	"""
 	subsyntaxes = ((_('Variable'), string), (_('Value'), string))
+	subsyntax_names = ('variable', 'value')
+	subsyntax_key_value = True
 
 
 class LDAP_Search(select):
@@ -4266,6 +4322,7 @@ class nfsMounts(complex):
 	Syntax to define a |NFS| mount point.
 	"""
 	subsyntaxes = [(_('NFS share'), nfsShare), ('Mount point', string)]
+	subsyntax_names = ('nfs-share', 'mount-point')
 	all_required = True
 
 
@@ -4291,6 +4348,7 @@ class translationTuple(complex):
 	"""
 	delimiter = ': '
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Text'), string)]
+	subsyntax_key_value = True
 	all_required = 1
 
 
@@ -4395,6 +4453,7 @@ class PrintQuotaGroup(complex):
 		* :py:class:`PrintQuotaUser`
 	"""
 	subsyntaxes = ((_('Soft limit (pages)'), integer), (_('Hard limit (pages)'), integer), (_('Group'), GroupName))
+	subsyntax_names = ('soft-limit', 'hard-limit', 'group')
 
 
 class PrintQuotaGroupPerUser(complex):
@@ -4406,6 +4465,7 @@ class PrintQuotaGroupPerUser(complex):
 		* :py:class:`PrintQuotaGroup`
 	"""
 	subsyntaxes = ((_('Soft limit (pages)'), integer), (_('Hard limit (pages)'), integer), (_('Group'), GroupName))
+	subsyntax_names = ('soft-limit', 'hard-limit', 'group')
 
 
 class PrintQuotaUser(complex):
@@ -4417,6 +4477,7 @@ class PrintQuotaUser(complex):
 		* :py:class:`PrintQuotaGroup`
 	"""
 	subsyntaxes = ((_('Soft limit (pages)'), integer), (_('Hard limit (pages)'), integer), (_('User'), UserName))
+	subsyntax_names = ('soft-limit', 'hard-limit', 'group')
 
 
 class printerName(simple):
@@ -4440,6 +4501,7 @@ class printerModel(complex):
 	Syntax to enter a printer model description.
 	"""
 	subsyntaxes = [(_('Driver'), string), (_('Description'), string)]
+	subsyntax_names = ('driver', 'description')
 	all_required = True
 
 
@@ -4478,6 +4540,7 @@ class PrinterURI(complex):
 	Syntax to configure printer.
 	"""
 	subsyntaxes = ((_('Protocol'), PrinterProtocol), (_('Destination'), string))
+	subsyntax_names = ('protocol', 'destination')
 
 	@classmethod
 	def parse(self, texts):
@@ -4557,6 +4620,7 @@ class PortalLinks(complex):
 	"""
 	delimiter = '$$'
 	subsyntaxes = [(_('Position'), PortalLinksPosition), (_('Link'), string), (_('Locale'), languageCode), (_('Name'), string)]
+	subsyntax_names = ('position', 'link', 'locale', 'name')
 	all_required = True
 
 
@@ -4590,6 +4654,7 @@ class PortalEntrySelection(complex):
 	Syntax to select a portal entry.
 	"""
 	subsyntaxes = [(_('Portal Entry'), PortalEntries)]
+	subsyntax_names = ('portal-entry',)
 
 
 class PortalCategorySelection(simple):
@@ -4597,6 +4662,7 @@ class PortalCategorySelection(simple):
 	Syntax to select a portal category.
 	"""
 	subsyntaxes = [(_('Portal Category'), PortalCategoryV2), (_('Portal Entry'), PortalEntrySelection)]
+	subsyntax_names = ('portal-category', 'portal-entry',)
 
 	@classmethod
 	def parse(self, texts, minn=None):
