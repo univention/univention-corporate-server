@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Adapt file permission check for /var/cache/univention-system-setup.
 bug: [49799]
+erratum: 241
+announced: 2019-08-22
