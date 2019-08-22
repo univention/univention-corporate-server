@@ -15,5 +15,6 @@ note: This update fixes these vulnerabilities.
 cve:
  - CVE-2014-2532
  - CVE-2014-2653
+bug: [34402]
 erratum: 93
 announced: 2014-04-16
