@@ -12,3 +12,5 @@ desc: |
  * Improve warning for missing sambaNTPassword attribute.
  * Fix that the listener module wasn't shown as initialized.
 bug: [50006, 49858, 49499, 48886]
+erratum: 237
+announced: 2019-08-22
