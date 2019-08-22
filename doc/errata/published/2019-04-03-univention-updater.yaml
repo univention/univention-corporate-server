@@ -6,7 +6,7 @@ src: univention-updater
 fix: 12.0.11-22A~4.2.0.201904011105
 desc: |
  This update addresses the following issue:
- *  UCS 4.2 is out of maintenance. With this update a
+ * UCS 4.2 is out of maintenance. With this update a
    warning is shown on all UCS systems.
 bug: [49105]
 erratum: 631
