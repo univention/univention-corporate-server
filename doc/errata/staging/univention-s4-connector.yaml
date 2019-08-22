@@ -3,7 +3,7 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-s4-connector
-fix: 13.0.2-37A~4.4.0.201908141517
+fix: 13.0.2-42A~4.4.0.201908221334
 desc: |
  This update addresses the following issue(s):
  * The script "remove_ucs_rejected.py" has been repaired.
@@ -12,7 +12,7 @@ desc: |
    due to an decoding error. The synchronization works now.
  * These additional attributes are now synchronized
    between UDM/OpenLDAP and Samba/AD
-   unixhome, employeeType, employeeNumber, country,
+   unixhome, employeeType, employeeNumber,
    loginShell, title, gidNumber, uidNumber, departmentNumber,
    roomNumber.
    The synchronization of user attributes can now be switched on

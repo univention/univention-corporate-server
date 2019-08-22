@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issue(s):
  * The UDM module users/user has been prepaired for adding the following
    four new properties:
-   initials, postOfficeBox, preferredLanguage and physicalDeliveryOfficeName.
+   initials, postOfficeBox, preferredLanguage, physicalDeliveryOfficeName, st (state), c (country).
    Any extended attribute for those properties should be changed to use the
    same property name as CLIName.
  * The UDM module users/user properties departmentNumber and roomNumber
