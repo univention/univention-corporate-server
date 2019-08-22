@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issues:
  * A stack-based buffer overflow in the cmd_submitf function in cgi/cmd.c
    in Nagios allows remote attackers to cause a denial of service
-   (segmentation fault) via a long message to cmd.cgi(CVE-2014-1878)
+   (segmentation fault) via a long message to cmd.cgi (CVE-2014-1878)
  * MagpieRSS, as used in the front-end component in Nagios Core might allow
    remote attackers to read or write to arbitrary files by spoofing a crafted
    response from the Nagios RSS feed server.  NOTE: this vulnerability
