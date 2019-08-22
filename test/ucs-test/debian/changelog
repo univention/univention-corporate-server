@@ -1,3 +1,10 @@
+ucs-test (9.0.3-16) unstable; urgency=medium
+
+  * Bug #50030: App Settings: Make Settings available for docker-compose.yml
+    template
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 22 Aug 2019 11:29:07 +0200
+
 ucs-test (9.0.3-15) unstable; urgency=medium
 
   * Bug #49935: Add testcase for uid to sid mapping (and back)
