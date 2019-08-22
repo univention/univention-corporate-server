@@ -7,14 +7,14 @@ version: [0]
 desc: |
   This update addresses the following issues:
   * Errors when checking restrictions of mailing lists and mail groups are
-    now written to the system mail log (Bug 40376).
+    now written to the system mail log (Bug #40376).
   * The user that wants to send to a restricted mailinglist or group mail is
     now determined using the SASL login. This requires, that the sender logs
     into the server to deliver the email. To enable the previous behavior
     (to use the email address declared by the sender), set the UCR variable
-    'mail/postfix/policy/listfilter/use_sasl_username' to "no" (Bug 29615).
+    'mail/postfix/policy/listfilter/use_sasl_username' to "no" (Bug #29615).
   * The policy server checking restrictions of mailing lists now exits
-    without error, when told to by Postfix (Bug 40569).
+    without error, when told to by Postfix (Bug #40569).
 bug: [29615,40376,40569]
 erratum: 87
 announced: 2016-02-04
