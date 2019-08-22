@@ -7,7 +7,7 @@ fix: 8.0.0-2.48.201602051409
 desc: |
  This update addresses the following issue:
  * A file for the process of handling user renames has been moved to a
-   secure location (Bug 40584).
+   secure location (Bug #40584).
 bug: [40584]
 erratum: 401
 announced: 2016-02-24
