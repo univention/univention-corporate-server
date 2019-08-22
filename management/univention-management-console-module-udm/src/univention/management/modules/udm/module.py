@@ -2577,38 +2577,62 @@ class Object(FormBase, Ressource):
 		self.content_negotiation({})
 
 	def check_conditional_requests(self):
+		etag = self._headers.get("Etag", "")
+		if etag:
+			self.check_conditional_request_etag(etag)
+
 		last_modified = parsedate(self._headers.get('Last-Modified', ''))
 		if last_modified is not None:
 			last_modified = datetime.datetime(*last_modified[:6])
-			date = parsedate(self.request.headers.get('If-Modified-Since', ''))
-			if date is not None:
-				if_since = datetime.datetime(*date[:6])
-				if if_since >= last_modified:
-					self.set_status(304)
-					raise Finish()
+			self.check_conditional_request_modified_since(last_modified)
+			self.check_conditional_request_unmodified_since(last_modified)
 
-			date = parsedate(self.request.headers.get('If-Unmodified-Since', ''))
-			if date is not None:
-				if_not_since = datetime.datetime(*date[:6])
-				if last_modified > if_not_since:
-					raise HTTPError(412, _('If-Unmodified-Since does not match Last-Modified.'))
+	def check_conditional_request_modified_since(self, last_modified):
+		date = parsedate(self.request.headers.get('If-Modified-Since', ''))
+		if date is not None:
+			if_since = datetime.datetime(*date[:6])
+			if if_since >= last_modified:
+				self.set_status(304)
+				raise Finish()
 
-		etag = self._headers.get("Etag", "")
-		if not etag:
-			return
+	def check_conditional_request_unmodified_since(self, last_modified):
+		date = parsedate(self.request.headers.get('If-Unmodified-Since', ''))
+		if date is not None:
+			if_not_since = datetime.datetime(*date[:6])
+			if last_modified > if_not_since:
+				raise HTTPError(412, _('If-Unmodified-Since does not match Last-Modified.'))
+
+	def check_conditional_request_etag(self, etag):
+		safe_request = self.request.method in ('GET', 'HEAD', 'OPTIONS')
 
 		def wheak(x):
 			return x[2:] if x.startswith(b'W/') else x
 		etag_matches = re.compile(r'\*|(?:W/)?"[^"]*"')
-		etags = etag_matches.findall(self.request.headers.get("If-None-Match", ""))
-		if not etags:
-			return
-		if '*' in etags or wheak(etag) in map(wheak, etags):
-			self.set_status(304)  # Not modified
-			raise Finish()
-		etags = etag_matches.findall(self.request.headers.get("If-Match", ""))
-		if wheak(etag) not in map(wheak, etags):
-			raise HTTPError(412, _('If-Match %s does not match entity tag(s) %s.') % (etag, ', '.join(etags)))  # precondition failed
+
+		def check_conditional_request_if_none_match():
+			etags = etag_matches.findall(self.request.headers.get("If-None-Match", ""))
+			if not etags:
+				return
+
+			if '*' in etags or wheak(etag) in map(wheak, etags):
+				if safe_request:
+					self.set_status(304)  # Not modified
+					raise Finish()
+				else:
+					message = _('If-None-Match %s does not match entity tag(s) %s.') % (etag, ', '.join(etags))
+					raise HTTPError(412, message)  # Precondition Failed
+
+		def check_conditional_request_if_match():
+			etags = etag_matches.findall(self.request.headers.get("If-Match", ""))
+			if wheak(etag) not in map(wheak, etags):
+				message = _('If-Match %s does not match entity tag(s) %s.') % (etag, ', '.join(etags))
+				if not safe_request:
+					raise HTTPError(412, message)  # Precondition Failed
+				elif self.request.headers.get('Range'):
+					raise HTTPError(416, message)  # Range Not Satisfiable
+
+		check_conditional_request_if_none_match()
+		check_conditional_request_if_match()
 
 
 class UserPhoto(Ressource):
