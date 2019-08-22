@@ -2209,6 +2209,9 @@ class Object(FormBase, Ressource):
 
 		obj = yield self.pool.submit(module.get, dn)
 		if not obj:
+			# FIXME: return HTTP 410 Gone for removed objects
+			# if self.ldap_connection.searchDn(filter_format('(&(reqDN=%s)(reqType=d))', [dn]), base='cn=translog'):
+			# 	raise Gone(object_type, dn)
 			raise NotFound(object_type, dn)
 		if object_type not in ('users/self', 'users/passwd') and not univention.admin.modules.recognize(object_type, obj.dn, obj.oldattr):
 			raise NotFound(object_type, dn)
