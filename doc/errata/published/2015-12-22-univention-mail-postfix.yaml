@@ -7,7 +7,7 @@ version: [0]
 desc: |
   This update addresses the following issue:
   * A premature scheduling of the DH parameter generation caused an atd
-    process to hang in Docker containers. (Bug 40134).
+    process to hang in Docker containers. (Bug #40134).
 bug: [40134]
 erratum: 43
 announced: 2015-12-22
