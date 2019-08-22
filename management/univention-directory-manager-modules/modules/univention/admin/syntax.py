@@ -800,6 +800,8 @@ class integer(simple):
 	'1'
 	>>> integer.parse('0')
 	'0'
+	>>> integer.parse(2)
+	'2'
 	>>> integer.parse('-1') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
@@ -824,6 +826,8 @@ class integer(simple):
 
 	@classmethod
 	def parse(self, text):
+		if isinstance(text, int):
+			text = str(text)
 		if self._re.match(text) is not None:
 			return text
 		else:
@@ -833,10 +837,16 @@ class integer(simple):
 class integerOrEmpty(integer):
 	"""
 	Syntax for positive numeric values or the empty value.
+	>>> integerOrEmpty.parse(None)
+	>>> integerOrEmpty.parse("")
+	>>> integerOrEmpty.parse(0)
+	'0'
+	>>> integer.parse("0")
+	'0'
 	"""
 	@classmethod
 	def parse(self, text):
-		if not text:
+		if not text and text != 0:
 			return
 		return super(integerOrEmpty, self).parse(text)
 
