@@ -380,8 +380,14 @@ class References(object):
 	def __getitem__(self, item):
 		return [
 			ShallowObject(self.obj.udm, x['name'], x['href'])
-			for x in self.udm.get_relations(self.obj.links, 'udm:object-reference/%s' % (item,))
+			for x in self.udm.get_relations(self.obj.links, 'udm:object/property/reference/%s' % (item,))
 		]
+
+	def __getattribute__(self, key):
+		try:
+			return super(References, self).__getattribute__(key)
+		except AttributeError:
+			return self[key]
 
 	def __get__(self, obj, cls=None):
 		return type(self)(obj)

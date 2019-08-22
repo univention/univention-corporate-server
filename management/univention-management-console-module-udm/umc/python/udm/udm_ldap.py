@@ -1105,12 +1105,28 @@ class UDM_Module(object):
 
 		return policies
 
-	def get_references(self, dn):
+	def get_policy_references(self, dn):
 		ldap_connection, ldap_position = self.get_ldap_connection()
 		if self.is_policy_module():  # TODO: move into the handlers/policies/*.py
 			search_filter = filter_format("(&(objectClass=univentionPolicyReference)(univentionPolicyReference=%s))", (dn,))
 			return read_syntax_choices(udm_syntax.LDAP_Search(filter=search_filter, viewonly=True), ldap_connection=ldap_connection, ldap_position=ldap_position)
 		return []
+
+	def get_references(self, obj):
+		references = []
+		for key, prop in getattr(self.module, 'property_descriptions', {}).items():
+			if not obj.has_property(key):
+				continue
+			prop = self.get_property(key)
+			syntax = prop.syntax() if inspect.isclass(prop.syntax) else prop.syntax
+			if isinstance(syntax, (udm_syntax.UDM_Objects,)) and syntax.key == 'dn' and len(syntax.udm_modules) == 1:
+				object_type = syntax.udm_modules[0]
+				dns = obj[key]
+				if not isinstance(dns, (list, tuple)):
+					dns = [dns]
+				for dn in dns:
+					references.append({'module': 'udm', 'property': key, 'flavor': 'navigation', 'objectType': object_type, 'id': dn, 'label': '%s: %s: %s' % (key, object_type, dn,), 'icon': 'udm-%s' % object_type.replace('/', '-')})
+		return references + [dict(ref, property='__policies') for ref in self.get_policy_references(obj.dn)]
 
 	@property
 	def flavor(self):

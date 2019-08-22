@@ -347,7 +347,7 @@ class DNSanitizer(DNSanitizer):
 
 class NotFound(HTTPError):
 
-	def __init__(self, object_type, dn=None):
+	def __init__(self, object_type=None, dn=None):
 		super(NotFound, self).__init__(404, None, '%r %r' % (object_type, dn or ''))  # FIXME: create error message
 
 
@@ -738,9 +738,10 @@ class RessourceBase(object):
 		return urljoin(self.urljoin('/univention/udm/' if self.request.headers.get('X-Forwarded-Host') else '/udm/'), '/'.join(args))
 
 	def add_link(self, obj, relation, href, **kwargs):
+		dont_set_http_header = kwargs.pop('dont_set_http_header', False)
 		links = obj.setdefault('_links', {})
 		links.setdefault(relation, []).append(dict(kwargs, href=href))
-		if kwargs.get('templated'):
+		if kwargs.get('templated') or dont_set_http_header:
 			return
 
 		def quote_param(s):
@@ -1006,6 +1007,7 @@ class Relations(Ressource):
 			'object/remove': 'remove this object, edit-form is preferable',
 			'object/move': 'move objects to a certain position',
 			'object/edit': 'modify this object, edit-form is preferable',
+			'object/property/reference/*': 'objects which are referencing or referenced by this object',
 			'object-modules': 'list of available module categories',
 			'object-module': 'the module belonging to the current selected resource',
 			'object-types': 'list of object types matching the given flavor or container',
@@ -1029,6 +1031,8 @@ class Relations(Ressource):
 		result = {}
 		self.add_link(result, 'self', self.urljoin(''), title=_('Link relations'))
 		self.add_link(result, 'up', self.urljoin('../'), title=_('All modules'))
+		if relation and relation.startswith('object/property/reference/'):
+			relation = 'object/property/reference/*'
 		if relation:
 			result['relation'] = univention_relations.get(relation, iana_relations.get(relation))
 			if not result['relation']:
@@ -1128,7 +1132,6 @@ class Swagger(Ressource):
 			'ImageUploader': (str, 'binary'),
 			'TextArea': str,
 			'Editor': (str, 'html'),
-			'TextBox': str,
 			'MultiInput': list,
 			'ComplexInput': str,
 		}
@@ -2313,6 +2316,13 @@ class Object(FormBase, Ressource):
 		props.update(self._options(object_type, obj.dn))
 		props['uri'] = self.urljoin(quote_dn(obj.dn))
 		props.update(self.get_representation(module, obj, ['*'], self.ldap_connection, copy))
+		for reference in module.get_references(obj):
+			# TODO: add a reference for the "position" object?!
+			if reference['module'] != 'udm':
+				continue  # can not happen currently
+			for dn in set(_map_normalized_dn(filter(None, [reference['id']]))):
+				rel = {'__policies': 'udm:object/policy/reference'}.get(reference['property'], 'udm:object/property/reference/%s' % (reference['property'],))
+				self.add_link(props, rel, self.abspath(reference['objectType'], quote_dn(dn)), name=dn, title=reference['label'], dont_set_http_header=True)
 
 		if module.name == 'networks/network':
 			self.add_link(props, 'udm:next-free-ip', self.urljoin(quote_dn(obj.dn), 'next-free-ip-address'), title=_('Next free IP address'))
@@ -2442,7 +2452,6 @@ class Object(FormBase, Ressource):
 				pol_mod = get_module(None, policy, ldap_connection)
 				if pol_mod and pol_mod.name:
 					props['policies'].setdefault(pol_mod.name, []).append(policy)
-			props['references'] = module.get_references(obj.dn)  # TODO: this is expensive, remove? at least transform into _links
 		if module.superordinate_names:
 			props['superordinate'] = obj.superordinate and obj.superordinate.dn
 		if obj.oldattr.get('entryUUID'):
@@ -2452,7 +2461,6 @@ class Object(FormBase, Ressource):
 		props['properties'].setdefault('objectFlag', [x.decode('utf-8', 'replace') for x in obj.oldattr.get('univentionObjectFlag', [])])
 		if copy or add:
 			props.pop('dn', None)
-			props.pop('references', None)
 			props.pop('id', None)
 		return props
 
@@ -2995,7 +3003,7 @@ class ObjectEdit(FormBase, Ressource):
 
 			references = self.get_reference_layout(result['layout'])
 			if references:
-				for reference in module.get_references(obj.dn):
+				for reference in module.get_policy_references(obj.dn):
 					if reference['module'] != 'udm':
 						continue
 					self.add_form_element(form, 'references', '', href=self.abspath(reference['objectType'], quote_dn(reference['id'])), label=reference['label'], element='a')
@@ -3295,7 +3303,7 @@ objectClass: univentionLicense
 objectClass: univentionObject
 univentionObjectType: settings/license
 ''' % ucr
-		for line in zlib.decompress(unquote(license).decode('base64'), -15).splitlines():
+		for line in zlib.decompress(unquote(text).decode('base64'), -15).splitlines():
 			text += 'univentionLicense%s\n' % (line.strip(),)
 
 		self.import_license(io.BytesIO(text))
