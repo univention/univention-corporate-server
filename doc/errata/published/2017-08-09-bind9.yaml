@@ -9,7 +9,7 @@ desc: |
  * denial of service (assertion failure and daemon exit) via a crafted query
    (CVE-2016-2776)
  * denial of service (daemon crash) via a long request that uses the
-   lightweight resolver protocol (not active in UCS, CVE-2016-2775)
+   lightweight resolver protocol [not active in UCS] (CVE-2016-2775)
  * denial of service (assertion failure and daemon exit) via a DNAME record
    in the answer section of a response to a recursive query, related to
    db.c and resolver.c (CVE-2016-8864)
