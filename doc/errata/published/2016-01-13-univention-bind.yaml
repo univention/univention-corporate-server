@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issues:
  * Add UCR variables dns/nameserver/registration/forward_zone and
    dns/nameserver/registration/reverse_zone that allow to disable
-   the automatic registration as additional nameserver (Bug 40139).
+   the automatic registration as additional nameserver (Bug #40139).
  * Some shell quoting errors were fixed.
 bug: [40139,40031]
 erratum: 49
