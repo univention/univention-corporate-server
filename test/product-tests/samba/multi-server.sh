@@ -28,13 +28,13 @@ test_printers () {
 	#  Verbinden zum Drucker als unpriviligierter Benutzer vom Windowsclient aus
 	#  Testdruck von wordpad aus auf den verbundenen Drucker
 	python shared-utils/ucs-winrm.py setup-printer --printername Memberprinter --server "$MEMBER"
-	python shared-utils/ucs-winrm.py setup-printer --printername Memberprinter --server "ucs-member.sambatest.local" --client $WIN2016
+	python shared-utils/ucs-winrm.py setup-printer --printername Memberprinter --server "$MEMBER" --client $WIN2016
 	sleep 20
 	python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server $MEMBER \
 		--impersonate --run-as-user Administrator
 	python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server "$MEMBER" \
 		--impersonate --run-as-user newuser02 --run-as-password "Univention.99"
-	python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server "ucs-member.sambatest.local" \
+	python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server "$MEMBER" \
 		--impersonate --run-as-user newuser02 --run-as-password "Univention.99" --client $WIN2016
 	sleep 60
 	run_on_ucs_hosts $MEMBER 'stat /var/spool/cups-pdf/administrator/job_1-document.pdf'
