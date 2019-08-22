@@ -7,9 +7,9 @@ version: [3]
 desc: |
  This update addresses the following issues:
  * The Dovecot server did not close its standard error file descriptor
-   (Bug 39148).
- * Fix logrotate configuration (Bug 39130).
- * Dovecot now works internally with lowercase email addresses (Bug 39346).
+   (Bug #39148).
+ * Fix logrotate configuration (Bug #39130).
+ * Dovecot now works internally with lowercase email addresses (Bug #39346).
 bug: [39148,39130,39346]
 erratum: 333
 announced: 2015-09-24
