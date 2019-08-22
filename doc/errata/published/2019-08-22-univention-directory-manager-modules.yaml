@@ -19,3 +19,5 @@ desc: |
    on the primary language of the locale. Austrian German will then be
    translated in German instead of English.
 bug: [49092, 47961]
+erratum: 238
+announced: 2019-08-22
