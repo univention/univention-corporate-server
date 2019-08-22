@@ -20,7 +20,7 @@ desc: |
  * Buffer overflow in the xmlrpc date_from_ISO8601() function
    (CVE-2014-8626)
  * Out of bounds reads when parsing ELF section headers in the file extension
-  (CVE-2014-3710)
+   (CVE-2014-3710)
 cve:
  - CVE-2014-1943
  - CVE-2014-2270
