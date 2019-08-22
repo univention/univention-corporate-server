@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test docker compose
-## tags: [docker]
+## tags: [docker, xxx]
 ## exposure: dangerous
 ## packages:
 ##   - docker.io
@@ -31,8 +31,17 @@ services:
     image: {image}
     volumes:
       - /var/lib/univention-appcenter/apps/ethercalc/redis:/data
+    environment:
+      TEST_KEY: "@%@85_docker_compose/test_key@%@"
     command: /sbin/init
     restart: always
+'''
+
+SETTINGS = '''
+[85_docker_compose/test_key]
+Type = String
+Description = Just a test
+InitialValue = This is a test
 '''
 
 if __name__ == '__main__':
@@ -48,6 +57,7 @@ if __name__ == '__main__':
 				DockerMainService='test1'
 			)
 			app.add_script(compose=DOCKER_COMPOSE.format(image='docker-test.software-univention.de/alpine:3.6'))
+			app.add_script(settings=SETTINGS)
 			app.add_script(setup=setup)
 			app.add_script(store_data=store_data)
 			app.add_to_local_appcenter()
@@ -74,12 +84,13 @@ if __name__ == '__main__':
 			ucr = ConfigRegistry()
 			ucr.load()
 			network = ucr.get('appcenter/apps/' + name + '/ip')
-			assert network == '172.16.1.0/24', network
+			assert network == '172.16.0.0/24', network
 			yml_file = '/var/lib/univention-appcenter/apps/' + name + '/compose/docker-compose.yml'
 			content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
-			assert content['networks']['appcenter_net']['ipam']['config'][0]['subnet'] == '172.16.1.0/24'
-			content['services']['test1']['networks']['appcenter_net']['ipv4_address'] == '172.16.1.2'
-			content['services']['test2']['networks']['appcenter_net']['ipv4_address'] == '172.16.1.3'
+			assert content['networks']['appcenter_net']['ipam']['config'][0]['subnet'] == '172.16.0.0/24'
+			assert content['services']['test1']['networks']['appcenter_net']['ipv4_address'] == '172.16.0.2'
+			assert content['services']['test2']['networks']['appcenter_net']['ipv4_address'] == '172.16.0.3'
+			assert content['services']['test2']['environment']['TEST_KEY'] == 'This is a test'
 		finally:
 			app.uninstall()
 			app.remove()
