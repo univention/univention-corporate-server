@@ -17,7 +17,7 @@ desc: |
    keys (CVE-2014-9529)
  * Insufficient randomisation of the vdso segment (CVE-2014-9585)
  * Crypto userspace API allows loading of arbitrary kernel modules
-  (CVE-2013-7421, CVE-2014-9644)
+   (CVE-2013-7421, CVE-2014-9644)
  * Denial of service in the VMX handling in KVM (CVE-2014-3690)
  * Denial of service in VMX handling in KVM (CVE-2014-3646)
  * Use-after-free in SCTP (CVE-2015-1421)
