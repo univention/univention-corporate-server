@@ -10,7 +10,7 @@ desc: |
     rewrite helper processes via the new UCR variable
     squid/rewrite/children.
   * When basic auth is enabled, disabled user accounts cannot use the
-    proxy anymore (Bug 39901).
+    proxy anymore (Bug #39901).
 bug: [39901,40095]
 erratum: 25
 announced: 2015-12-09
