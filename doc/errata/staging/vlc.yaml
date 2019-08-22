@@ -6,23 +6,17 @@ src: vlc
 fix: 3.0.8-0+deb9u1
 desc: |
  This update addresses the following issues:
- * An Integer Underflow in MP4_EIA608_Convert() in modules/demux/mp4/mp4.c in
-   VideoLAN VLC media player through 3.0.7.1 allows remote attackers to cause
-   a denial of service (heap-based buffer overflow and crash) or possibly have
-   unspecified other impact via a crafted .mp4 file. (CVE-2019-13602)
- * lavc_CopyPicture in modules/codec/avcodec/video.c in VideoLAN VLC media
-   player through 3.0.7 has a heap-based buffer over-read because it does not
-   properly validate the width and height. (CVE-2019-13962)
- * vlc (CVE-2019-14437)
- * vlc (CVE-2019-14438)
- * vlc (CVE-2019-14498)
- * vlc (CVE-2019-14533)
- * vlc (CVE-2019-14534)
- * vlc (CVE-2019-14535)
- * vlc (CVE-2019-14776)
- * vlc (CVE-2019-14777)
- * vlc (CVE-2019-14778)
- * vlc (CVE-2019-14970)
+ * Fix a buffer overflow in the MKV demuxer (CVE-2019-14970)
+ * Fix a read buffer overflow in the avcodec decoder (CVE-2019-13962)
+ * Fix a read buffer overflow in the OGG demuxer (CVE-2019-14437,
+   CVE-2019-14438)
+ * Fix a read buffer overflow in the ASF demuxer (CVE-2019-14776)
+ * Fix a use after free in the MKV demuxer (CVE-2019-14777, CVE-2019-14778)
+ * Fix a use after free in the ASF demuxer (CVE-2019-14533)
+ * Fix a couple of integer underflows in the MP4 demuxer (CVE-2019-13602)
+ * Fix a null dereference in the ASF demuxer (CVE-2019-14534)
+ * Fix a division by zero in the CAF demuxer (CVE-2019-14498)
+ * Fix a division by zero in the ASF demuxer (CVE-2019-14535)
 bug: [50040]
 cve:
 - CVE-2019-13602
