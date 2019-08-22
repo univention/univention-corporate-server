@@ -1,7 +1,6 @@
 [Unit]
 Description=Univention Directory Manager HTTP service
 After=network.target
-#ConditionPathExists=/var/www
 
 [Service]
 Type=simple
@@ -12,10 +11,8 @@ ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
 User=root
 Group=root
-#WorkingDirectory=/var/www
-StandardOutput=/var/log/univention/management-module-udm.log
-StandardError=/var/log/univention/management-module-udm.log
-#SystemCallFilter=@basic-io @io-event @network-io
+#StandardOutput=/var/log/univention/management-module-udm.log
+#StandardError=/var/log/univention/management-module-udm.log
 
 [Install]
 WantedBy=multi-user.target
