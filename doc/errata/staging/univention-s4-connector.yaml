@@ -5,11 +5,11 @@ scope: ucs_4.4-0-errata4.4-1
 src: univention-s4-connector
 fix: 13.0.2-42A~4.4.0.201908221334
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The script "remove_ucs_rejected.py" has been repaired.
    It has been broken via UCS 4.4 erratum 155.
  * Objects containing a "?" character in their DN could not be synchronized
-   due to an decoding error. The synchronization works now.
+   due to a decoding error. The synchronization works now.
  * These additional attributes are now synchronized
    between UDM/OpenLDAP and Samba/AD
    unixhome, employeeType, employeeNumber,
