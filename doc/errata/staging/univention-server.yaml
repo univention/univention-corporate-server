@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issue(s):
  * The Univention Directory Manager HTTP service is now installed on every
    DC Master and DC Backup system.
-bug: [50034]
+bug: [50034,27816]
