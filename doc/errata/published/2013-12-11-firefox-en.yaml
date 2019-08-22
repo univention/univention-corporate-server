@@ -26,5 +26,6 @@ cve:
  - CVE-2013-6673
  - CVE-2013-6629
  - CVE-2013-6630
+bug: [33715]
 erratum: 16
 announced: 2013-12-13
