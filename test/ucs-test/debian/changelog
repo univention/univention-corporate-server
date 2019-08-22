@@ -1,3 +1,9 @@
+ucs-test (9.0.3-17) unstable; urgency=medium
+
+  * Bug #49092: adjust tests for non syncing st / c
+
+ -- Florian Best <best@univention.de>  Thu, 22 Aug 2019 13:32:53 +0200
+
 ucs-test (9.0.3-16) unstable; urgency=medium
 
   * Bug #50030: App Settings: Make Settings available for docker-compose.yml
