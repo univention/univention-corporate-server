@@ -10,5 +10,6 @@ desc: |
    (CVE-2013-4576)
 cve:
  - CVE-2013-4576
+bug: [33778]
 erratum: 19
 announced: 2014-01-10
