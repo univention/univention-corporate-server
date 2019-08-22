@@ -2,8 +2,8 @@ product: ucs
 release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
-src: univention-server
-fix: 14.0.0-8A~4.4.0.201908220920
+src: univention-management-console-module-udm
+fix: 9.0.12-26A~4.4.0.201908210950
 desc: |
  This update addresses the following issue(s):
  * The Univention Directory Manager HTTP service is now installed on every
