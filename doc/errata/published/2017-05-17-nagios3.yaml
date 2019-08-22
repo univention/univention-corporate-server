@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issues:
  * A stack-based buffer overflow in the cmd_submitf function in cgi/cmd.c
    in Nagios allows remote attackers to cause a denial of service
-   (segmentation fault) via a long message to cmd.cgi(CVE-2014-1878)
+   (segmentation fault) via a long message to cmd.cgi (CVE-2014-1878)
  * The update check has been removed (related to CVE-2016-9565)
  * base/logging.c in Nagios Core before 4.2.4 allows local users with access
    to an account in the nagios group to gain root privileges via a symlink
