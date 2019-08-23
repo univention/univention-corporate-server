@@ -301,7 +301,22 @@ class ShallowObject(Client):
 		return 'ShallowObject(dn={})'.format(self.dn)
 
 
+class References(object):
+
+	def __init__(self, obj=None):
+		self.obj = obj
+
+	def __getitem__(self, item):
+		links = [ShallowObject(self.obj.udm, x['name'], x['href']) for x in self.obj.links['udm/relation/object-reference/%s' % (item,)]]
+		return links
+
+	def __get__(self, obj, cls=None):
+		return type(self)(obj)
+
+
 class Object(Client):
+
+	objects = References()
 
 	@property
 	def props(self):
