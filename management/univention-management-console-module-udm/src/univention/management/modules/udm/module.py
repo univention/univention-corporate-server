@@ -3342,7 +3342,7 @@ class Application(tornado.web.Application):
 			(r"/udm/networks/network/%s/next-free-ip-address" % (dn,), NextFreeIpAddress),
 			(r"/udm/progress/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", Operations),
 			# TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
-		])
+		], **kwargs)
 
 	def multi_regex(self, chars):
 		# Bug in tornado: requests go against the raw url; https://github.com/tornadoweb/tornado/issues/2548, therefore we must match =, %3d, %3D

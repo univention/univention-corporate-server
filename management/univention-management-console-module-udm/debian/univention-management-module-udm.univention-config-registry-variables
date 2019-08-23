@@ -9,3 +9,9 @@ Description[de]=Spezifiziert die LDAP-DNs der Gruppen, denen Zugriff auf die Uni
 Description[en]=Specifies the LDAP DNs of the groups, which are allowed to access the Univention Directory Manager REST HTTP interface.
 Type=str
 Categories=service-udm
+
+[directory/manager/rest/show-tracebacks]
+Description[de]=Definiert, ob Tracebacks in Fehlerfällen dem Benutzer angezeigt werden.
+Description[en]=Defines whether tracebacks are shown to the user in error cases.
+Type=bool
+Categories=management-umc

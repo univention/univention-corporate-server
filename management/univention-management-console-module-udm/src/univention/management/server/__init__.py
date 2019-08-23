@@ -78,7 +78,7 @@ class Server(tornado.web.RequestHandler):
 	@tornado.gen.coroutine
 	def get(self):
 		accepted_language = self.get_browser_locale().code
-		socket = self.LANGUAGE_SERVICE_MAPPING.get(accepted_language, self.LANGUAGE_SERVICE_MAPPING['en'])
+		socket = self.LANGUAGE_SERVICE_MAPPING.get(accepted_language, self.LANGUAGE_SERVICE_MAPPING['en'])  # TODO: de_AT
 		request = tornado.httpclient.HTTPRequest(
 			self.request.full_url(),
 			method=self.request.method,
@@ -147,7 +147,7 @@ class Server(tornado.web.RequestHandler):
 		cls.register_signal_handlers()
 		app = tornado.web.Application([
 			(r'.*', cls),
-		], debug=False, serve_traceback=True,
+		], serve_traceback=ucr.is_true('directory/manager/rest/show-tracebacks', True),
 		)
 		app.listen(int(ucr.get('directory/manager/rest/server/port', 8888)))
 		ioloop = tornado.ioloop.IOLoop.instance()
