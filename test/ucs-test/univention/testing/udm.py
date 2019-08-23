@@ -680,6 +680,9 @@ class UDM(UCSTestUDM):
 		subprocess.call(['systemctl', 'reload', 'univention-directory-manager-rest.service'])
 
 
+UCSTestUDM = UDM  # replace for branch tests
+
+
 def verify_udm_object(module, dn, expected_properties):
 	"""
 	Verify an object exists with the given `dn` in the given UDM `module` with

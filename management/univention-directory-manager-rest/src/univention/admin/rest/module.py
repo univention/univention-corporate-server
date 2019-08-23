@@ -3092,7 +3092,8 @@ class ObjectAdd(FormBase, Resource):
 		if 'add' not in module.operations:
 			raise NotFound(object_type)
 
-		module.load(force_reload=True)  # reload for instant extended attributes
+		# temporary deactivate for performance reasons
+		# module.load(force_reload=True)  # reload for instant extended attributes
 
 		result = {}
 
