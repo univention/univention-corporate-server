@@ -31,17 +31,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 """
+Sample Client for the UDM REST API.
 
->>> username = 'Administrator'
->>> password = 'univention'
->>> uri = 'http://10.200.27.100/univention/udm/'
->>> module = 'mail/domain'
->>> udm = UDM.http(uri, username, password).version(1)
->>> module = udm.get(module)
+>>> from univention.management.server.client import UDM
+>>> uri = 'http://localhost/univention/udm/'
+>>> udm = UDM.http(uri, 'Administrator', 'univention')
+>>> module = udm.get('users/user')
 >>> print('Found {}'.format(module))
->>> print('Now performing {}'.format(action))
->>> for entry in module.search():
->>> 	print(entry)
+>>> obj = next(module.search())
+>>> if obj:
+>>> 	obj = obj.open()
+>>> print('Object {}'.format(obj))
 """
 
 from __future__ import absolute_import
@@ -210,6 +210,7 @@ class Module(Client):
 
 	def __init__(self, udm, uri, name, title, *args, **kwargs):
 		super(Module, self).__init__(udm.client, *args, **kwargs)
+		self.udm = udm
 		self.uri = uri
 		self.username = udm.username
 		self.password = udm.password
@@ -227,7 +228,7 @@ class Module(Client):
 		return 'Module(uri={}, name={})'.format(self.uri, self.name)
 
 	def new(self, superordinate=None):
-		return Object(self, None, None, {}, [], {}, None, superordinate, None)
+		return Object(self.udm, None, None, {}, [], {}, None, superordinate, None)
 
 	def get(self, dn):
 		for obj in self.search(position=dn, scope='base'):
@@ -261,9 +262,9 @@ class Module(Client):
 		entries = self.client.eval_response(resp)['entries']
 		for entry in entries:
 			if opened:
-				yield Object(self, entry['objectType'], entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), entry['uri'])  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
+				yield Object(self.udm, entry['objectType'], entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), entry['uri'], links=entry.get('_links', {}))  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
 			else:
-				yield ShallowObject(self, entry['dn'], entry['uri'])
+				yield ShallowObject(self.udm, entry['dn'], entry['uri'])
 
 	def create(self, properties, options, policies, position, superordinate=None):
 		obj = self.create_template(position=position, superordinate=superordinate)
@@ -280,24 +281,24 @@ class Module(Client):
 		data = {'position': position, 'superordinate': superordinate}
 		resp = self.client.make_request('GET', self.relations['create-form'][0]['href'], data=data)
 		entry = self.client.eval_response(resp)['entry']
-		return Object(self, None, None, entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), self.uri)
+		return Object(self.udm, None, None, entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), self.uri, links=entry.get('_links', {}))
 
 
 class ShallowObject(Client):
 
-	def __init__(self, module, dn, uri, *args, **kwargs):
-		super(ShallowObject, self).__init__(module.client, *args, **kwargs)
-		self.module = module
+	def __init__(self, udm, dn, uri, *args, **kwargs):
+		super(ShallowObject, self).__init__(udm.client, *args, **kwargs)
 		self.dn = dn
+		self.udm = udm
 		self.uri = uri
 
 	def open(self):
 		resp = self.client.make_request('GET', self.uri)
 		entry = self.client.eval_response(resp)
-		return Object(self.module, entry['objectType'], entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), entry['uri'], etag=resp.headers.get('Etag'), last_modified=resp.headers.get('Last-Modified'))
+		return Object(self.udm, entry['objectType'], entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), entry['uri'], links=entry.get('_links', {}), etag=resp.headers.get('Etag'), last_modified=resp.headers.get('Last-Modified'))
 
 	def __repr__(self):
-		return 'ShallowObject(module={}, dn={})'.format(self.module.name, self.dn)
+		return 'ShallowObject(dn={})'.format(self.dn)
 
 
 class Object(Client):
@@ -310,8 +311,13 @@ class Object(Client):
 	def props(self, props):
 		self.properties = props
 
-	def __init__(self, module, object_type, dn, properties, options, policies, position, superordinate, uri, etag=None, last_modified=None, *args, **kwargs):
-		super(Object, self).__init__(module.client, *args, **kwargs)
+	@property
+	def module(self):
+		return self.udm.get(self.object_type)
+
+	def __init__(self, udm, object_type, dn, properties, options, policies, position, superordinate, uri, links=None, etag=None, last_modified=None, *args, **kwargs):
+		super(Object, self).__init__(udm.client, *args, **kwargs)
+		self.udm = udm
 		self.object_type = object_type
 		self.dn = dn
 		self.properties = properties
@@ -319,13 +325,13 @@ class Object(Client):
 		self.policies = policies
 		self.position = position
 		self.superordinate = superordinate
-		self.module = module
 		self.uri = uri
+		self.links = links or {}
 		self.etag = etag
 		self.last_modified = last_modified
 
 	def __repr__(self):
-		return 'Object(module={}, dn={}, uri={})'.format(self.module.name, self.dn, self.uri)
+		return 'Object(module={}, dn={}, uri={})'.format(self.object_type, self.dn, self.uri)
 
 	def reload(self):
 		obj = self.module.get(self.dn)
@@ -367,8 +373,9 @@ class Object(Client):
 		self.policies = obj.policies
 		self.position = obj.position
 		self.superordinate = obj.superordinate
-		self.module = obj.module
+		self.udm = obj.udm
 		self.uri = obj.uri
+		self.links = obj.links
 		self.etag = obj.etag
 		self.last_modified = obj.last_modified
 
@@ -383,7 +390,7 @@ class Object(Client):
 		resp = self.client.make_request('POST', self.module.uri, data=data)
 		if resp.status_code in (200, 201):
 			uri = resp.headers['Location']
-			obj = ShallowObject(self.module, None, uri).open()
+			obj = ShallowObject(self.udm, None, uri).open()
 			self._copy_from_obj(obj)
 		else:
 			self.client.eval_response(resp)
