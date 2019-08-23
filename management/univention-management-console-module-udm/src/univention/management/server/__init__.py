@@ -38,6 +38,7 @@ from __future__ import unicode_literals
 
 import os
 import sys
+import json
 import signal
 import argparse
 
@@ -71,6 +72,9 @@ class Server(tornado.web.RequestHandler):
 	}
 	PROCESSES = {}
 
+	def set_default_headers(self):
+		self.set_header('Server', 'Univention/1.0')  # TODO:
+
 	@tornado.gen.coroutine
 	def get(self):
 		accepted_language = self.get_browser_locale().code
@@ -87,7 +91,19 @@ class Server(tornado.web.RequestHandler):
 			prepare_curl_callback=lambda curl: curl.setopt(pycurl.UNIX_SOCKET_PATH, socket),
 		)
 		client = tornado.httpclient.AsyncHTTPClient()
-		response = yield client.fetch(request, raise_error=False)
+		try:
+			response = yield client.fetch(request, raise_error=True)
+		except tornado.curl_httpclient.CurlError as exc:
+			# happens during starting the service and subprocesses when the UNIX sockets aren't available yet
+			self.set_status(503)
+			self.add_header('Retry-After', '3')  # Tell clients, we are ready in 3 seconds
+			self.add_header('Content-Type', 'application/json')
+			self.write(json.dumps('The service could not be reached. Please retry in a few seconds or contact an Administrator to restart the service.'))
+			self.finish()
+			return
+		except tornado.httpclient.HTTPError as exc:
+			response = exc.response
+
 		self.set_status(response.code, response.reason)
 		self._headers = tornado.httputil.HTTPHeaders()
 
