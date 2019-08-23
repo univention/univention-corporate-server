@@ -152,6 +152,7 @@ class CLIClient(object):
 			self.print_line('')
 			self.print_line('DN', entry.dn)
 			self.print_line('URL', entry.uri)
+			self.print_line('Object-Type', entry.object_type)
 			#entry = entry.open()
 			for key, value in sorted(entry.props.items()):
 				if isinstance(value, list):

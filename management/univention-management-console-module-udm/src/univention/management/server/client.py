@@ -227,7 +227,7 @@ class Module(Client):
 		return 'Module(uri={}, name={})'.format(self.uri, self.name)
 
 	def new(self, superordinate=None):
-		return Object(self, None, {}, [], {}, None, superordinate, None)
+		return Object(self, None, None, {}, [], {}, None, superordinate, None)
 
 	def get(self, dn):
 		for obj in self.search(position=dn, scope='base'):
@@ -261,7 +261,7 @@ class Module(Client):
 		entries = self.client.eval_response(resp)['entries']
 		for entry in entries:
 			if opened:
-				yield Object(self, entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), entry['uri'])  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
+				yield Object(self, entry['objectType'], entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), entry['uri'])  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
 			else:
 				yield ShallowObject(self, entry['dn'], entry['uri'])
 
@@ -280,7 +280,7 @@ class Module(Client):
 		data = {'position': position, 'superordinate': superordinate}
 		resp = self.client.make_request('GET', self.relations['create-form'][0]['href'], data=data)
 		entry = self.client.eval_response(resp)['entry']
-		return Object(self, None, entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), self.uri)
+		return Object(self, None, None, entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), self.uri)
 
 
 class ShallowObject(Client):
@@ -294,7 +294,7 @@ class ShallowObject(Client):
 	def open(self):
 		resp = self.client.make_request('GET', self.uri)
 		entry = self.client.eval_response(resp)
-		return Object(self.module, entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), entry['uri'], etag=resp.headers.get('Etag'), last_modified=resp.headers.get('Last-Modified'))
+		return Object(self.module, entry['objectType'], entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), entry['uri'], etag=resp.headers.get('Etag'), last_modified=resp.headers.get('Last-Modified'))
 
 	def __repr__(self):
 		return 'ShallowObject(module={}, dn={})'.format(self.module.name, self.dn)
@@ -310,8 +310,9 @@ class Object(Client):
 	def props(self, props):
 		self.properties = props
 
-	def __init__(self, module, dn, properties, options, policies, position, superordinate, uri, etag=None, last_modified=None, *args, **kwargs):
+	def __init__(self, module, object_type, dn, properties, options, policies, position, superordinate, uri, etag=None, last_modified=None, *args, **kwargs):
 		super(Object, self).__init__(module.client, *args, **kwargs)
+		self.object_type = object_type
 		self.dn = dn
 		self.properties = properties
 		self.options = options
