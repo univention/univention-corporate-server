@@ -2106,15 +2106,15 @@ class Objects(FormBase, ReportingBase):
 	@sanitize_body_arguments(
 		position=DNSanitizer(required=True),
 		superordinate=DNSanitizer(required=False, allow_none=True),
-		options=DictSanitizer({}, default_sanitizer=BooleanSanitizer()),
-		policies=DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer())),
-		properties=DictSanitizer({}),
+		options=DictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=True),
+		policies=DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()), required=True),
+		properties=DictSanitizer({}, required=True),
 	)
 	@tornado.gen.coroutine
 	def post(self, object_type):
 		"""Create a {} object."""
 		obj = Object(self.application, self.request)
-		obj.prepare()
+		obj.ldap_connection, obj.ldap_position = self.ldap_connection, self.ldap_position
 		obj = yield obj.create(object_type)
 		self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
 		self.set_status(201)
@@ -2364,7 +2364,7 @@ class Object(FormBase, Ressource):
 		superordinate=DNSanitizer(required=False, allow_none=True),
 		options=DictSanitizer({}, default_sanitizer=BooleanSanitizer()),
 		policies=DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer())),
-		properties=DictSanitizer({}),
+		properties=DictSanitizer({}, required=True),
 	)
 	@tornado.gen.coroutine
 	def put(self, object_type, dn):
@@ -2523,7 +2523,7 @@ class Object(FormBase, Ressource):
 			UDM_Error(exc).reraise()
 
 	def set_properties(self, module, obj):
-		options = self.request.body_arguments['options']  # TODO: AppAttributes.data_for_module(self.name).iteritems() ?
+		options = self.request.body_arguments['options'] or {}  # TODO: AppAttributes.data_for_module(self.name).iteritems() ?
 		options_enable = set(opt for opt, enabled in options.items() if enabled)
 		options_disable = set(opt for opt, enabled in options.items() if enabled is False)  # ignore None!
 		obj.options = list(set(obj.options) - options_disable | options_enable)
