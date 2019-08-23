@@ -333,6 +333,18 @@ class LDAPFilterSanitizer(StringSanitizer):
 			self.raise_validation_error(str(exc))
 
 
+class DNSanitizer(DNSanitizer):
+
+	base = ldap.dn.str2dn(ucr['ldap/base'].lower())
+	baselen = len(base)
+
+	def _sanitize(self, value, name, further_arguments):
+		value = super(DNSanitizer, self)._sanitize(value, name, further_arguments)
+		if value and ldap.dn.str2dn(value.lower())[-self.baselen:] != self.base:
+			self.raise_validation_error(_('The ldap base is invalid. Use %(details)s.'), details=ldap.dn.dn2str(self.base))
+		return value
+
+
 class NotFound(HTTPError):
 
 	def __init__(self, object_type, dn=None):
