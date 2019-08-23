@@ -60,8 +60,18 @@ class CLIClient(object):
 			pass
 		self.udm = UDM('https://%(hostname)s.%(domainname)s/univention/udm/' % ucr, username, args.bindpwd)
 
+	def get_module(self, object_type):
+		module = self.udm.get(object_type)
+		if module is None:
+			self.print_line('All modules')
+			for mod, modtitle in sorted(set((x.name, x.title) for x in self.udm.modules())):
+				self.print_line(mod, modtitle, prefix='  ')
+			self.print_error('The given module is not known. Choose one of the above.')
+			raise SystemExit(1)
+		return module
+
 	def create_object(self, args):
-		module = self.udm.get(args.object_type)
+		module = self.get_module(args.object_type)
 		obj = module.create_template(position=args.position, superordinate=args.superordinate)
 		if args.position:
 			obj.position = args.position
@@ -70,7 +80,7 @@ class CLIClient(object):
 		self.print_line('Object created', obj.dn)
 
 	def modify_object(self, args):
-		module = self.udm.get(args.object_type)
+		module = self.get_module(args.object_type)
 		# TODO: re-execute if changed in between
 		obj = module.get(args.dn)
 		self.set_properties(obj, args)
@@ -78,7 +88,7 @@ class CLIClient(object):
 		self.print_line('Object modified', obj.dn)
 
 	def remove_object(self, args):
-		module = self.udm.get(args.object_type)
+		module = self.get_module(args.object_type)
 		try:
 			obj = module.get(args.dn)
 		except NotFound:
@@ -90,7 +100,7 @@ class CLIClient(object):
 		self.print_line('Object removed', obj.dn)
 
 	def move_object(self, args):
-		module = self.udm.get(args.object_type)
+		module = self.get_module(args.object_type)
 		obj = module.get(args.dn)
 		obj.position = args.position
 		self.save_object(obj)
@@ -147,7 +157,7 @@ class CLIClient(object):
 					values.remove(policy_dn)
 
 	def list_objects(self, args):
-		module = self.udm.get(args.object_type)
+		module = self.get_module(args.object_type)
 		for entry in module.search(args.filter, args.position, opened=True, superordinate=args.superordinate):
 			self.print_line('')
 			self.print_line('DN', entry.dn)
@@ -201,12 +211,7 @@ class CLIClient(object):
 		self.get_info(args)
 
 	def get_info(self, args):
-		module = self.udm.get(args.object_type)
-		if module is None:
-			self.print_error('The given module is unknown')
-			for mod, modtitle in sorted(set((x.name, x.title) for x in self.udm.modules())):
-				self.print_line(mod, modtitle, prefix='  ')
-			return
+		module = self.get_module(args.object_type)
 		module.load_relations()
 		resp = module.client.make_request('GET', module.relations['create-form'][0]['href'])  # TODO: integrate in client.py?
 		mod = module.client.eval_response(resp)
