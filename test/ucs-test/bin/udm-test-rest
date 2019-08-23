@@ -1,0 +1,25 @@
+#!/usr/bin/python2.7
+
+import sys
+import univention.config_registry
+from univention.management.server.cli_client import main
+
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
+
+replacements = {
+	'--ignore_exists': '--ignore-exists',
+	'--ignore_not_exists': '--ignore-not-exists',
+	'--remove_referring': '--remove-referring',
+}
+
+sys.argv = [replacements.get(x, x) for x in sys.argv]
+
+if ucr['server/role'] not in ('domaincontroller_master', 'domaincontroller_backup'):
+	import ldap.dn
+	sys.argv.insert(0, '--binddn')
+	sys.argv.insert(1, ldap.dn.explode_rdn(ucr['tests/domainadmin/pwd'], True)[0])
+	sys.argv.insert(2, '--bindpwd')
+	sys.argv.insert(3, ucr['tests/domainadmin/pwd'])
+
+main()

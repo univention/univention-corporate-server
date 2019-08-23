@@ -238,8 +238,8 @@ class UCSTestUDM(object):
 		self._cleanup = {}
 		self._cleanupLocks = {}
 
-	@staticmethod
-	def _build_udm_cmdline(modulename, action, kwargs):
+	@classmethod
+	def _build_udm_cmdline(cls, modulename, action, kwargs):
 		"""
 		Pass modulename, action (create, modify, delete) and a bunch of keyword arguments
 		to _build_udm_cmdline to build a command for UDM CLI.
@@ -268,7 +268,7 @@ class UCSTestUDM(object):
 		>>> UCSTestUDM._build_udm_cmdline('users/user', 'create', {'username': 'foobar'})
 		['/usr/sbin/udm-test', 'users/user', 'create', '--set', 'username=foobar']
 		"""
-		cmd = [UCSTestUDM.PATH_UDM_CLI_CLIENT_WRAPPED, modulename, action]
+		cmd = [cls.PATH_UDM_CLI_CLIENT_WRAPPED, modulename, action]
 		args = copy.deepcopy(kwargs)
 
 		for arg in ('binddn', 'bindpwd', 'bindpwdfile', 'dn', 'position', 'superordinate', 'policy_reference', 'policy_dereference', 'append_option'):
@@ -668,6 +668,16 @@ class UCSTestUDM(object):
 		if exc_type:
 			print('Cleanup after exception: %s %s' % (exc_type, exc_value))
 		self.cleanup()
+
+
+class UDM(UCSTestUDM):
+	"""UDM interface using the REST API"""
+
+	PATH_UDM_CLI_CLIENT_WRAPPED = '/usr/sbin/udm-test-rest'
+
+	def stop_cli_server(self):
+		super(UDM, self).stop_cli_server()
+		subprocess.call(['systemctl', 'reload', 'univention-management-module-udm.service'])
 
 
 def verify_udm_object(module, dn, expected_properties):
