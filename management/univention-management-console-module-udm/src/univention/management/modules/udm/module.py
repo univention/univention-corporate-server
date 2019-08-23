@@ -1978,29 +1978,27 @@ class Objects(FormBase, ReportingBase):
 		for obj in objects or []:
 			if obj is None:
 				continue
-			module = get_module(object_type, obj.dn, self.ldap_connection)
-			if module is None:
-				# This happens when concurrent a object is removed between the module.search() and get_module() call
-				# MODULE.warn('LDAP object does not exists %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
-				continue
+			objmodule = UDM_Module(obj.module, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 
 			if '*' in fields or '*' in properties:
+				# TODO: i think we need error handling here, because between receiving the object and opening it, it or refernced objects might be removed.
+				# best would be if lookup() would support opening because that already does error handling.
 				obj.open()
 
-			entry = Object.get_representation(module, obj, properties, self.ldap_connection)
+			entry = Object.get_representation(objmodule, obj, properties, self.ldap_connection)
 			entry.update({
 				#'$childs$': module.childs,
-				'name': module.obj_description(obj),
+				'name': objmodule.obj_description(obj),
 				'path': ldap_dn2path(obj.dn, include_rdn=False),
 				'uri': self.abspath(obj.module, quote_dn(obj.dn)),
 				'fields': {},  # TODO: wrap via encode_properties() instead of module.property_description() ?!
 			})
 			if '$value$' in fields:
-				entry['$value$'] = [module.property_description(obj, column['name']) for column in module.columns]
+				entry['$value$'] = [objmodule.property_description(obj, column['name']) for column in module.columns]
 			if '*' in fields or '*' in properties:
 				fields = set(obj.info.keys())
-			for field in fields - set(module.password_properties) - set(entry.keys()):
-				entry['fields'][field] = module.property_description(obj, field)
+			for field in fields - set(objmodule.password_properties) - set(entry.keys()):
+				entry['fields'][field] = objmodule.property_description(obj, field)
 			entries.append(entry)
 
 		if items_per_page:
