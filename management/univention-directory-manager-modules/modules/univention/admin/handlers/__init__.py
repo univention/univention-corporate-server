@@ -1111,7 +1111,7 @@ class simpleLdap(object):
 		Checks if an UDM option was changed.
 
 		:param str option: The name of the option to check.
-		:returns: True if the option was changes, False otherwise.
+		:returns: True if the option was changed, False otherwise.
 		:rtype: bool
 
 		.. warning::

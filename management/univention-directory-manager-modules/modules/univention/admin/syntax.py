@@ -294,7 +294,7 @@ class complex(ISyntax):
 	"""
 	Delimiter to separate the sub-items. Two possibilities:
 
-	1.  Either a single string like `=`, which is used to to concatenate all subitems.
+	1.  Either a single string like `=`, which is used to concatenate all subitems.
 	2.  A sequence of `n+1` strings like `['', ': ', '=', '']` to concatenate `n` sub-items. The first and last value is used as a prefix/suffix.
 	"""
 	min_elements = None  # type: Optional[int]
@@ -426,7 +426,7 @@ class UDM_Attribute(ISyntax):
 	empty_value = False
 	"""Allow to select no entry."""
 	depends = None  # type: Optional[str]
-	"""The name of another |UDM| property this syntax sepends on."""
+	"""The name of another |UDM| property this syntax depends on."""
 	error_message = _('Invalid value')
 	"""Error message when an invalid item is selected."""
 
@@ -726,7 +726,7 @@ class Base64UMCIcon(TextArea):
 
 class GNUMessageCatalog(TextArea):
 	"""
-	Syntax fore a `base64` encoded binary message catalog `.mo`.
+	Syntax for a `base64` encoded binary message catalog `.mo`.
 	"""
 	@classmethod
 	def parse(self, text):
