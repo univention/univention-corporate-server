@@ -221,8 +221,7 @@ class CLIClient(object):
 	def get_info(self, args):
 		module = self.get_module(args.object_type)
 		module.load_relations()
-		resp = module.client.make_request('GET', module.relations['create-form'][0]['href'])  # TODO: integrate in client.py?
-		mod = module.client.eval_response(resp)
+		mod = module.client.request('GET', module.relations['create-form'][0]['href'])  # TODO: integrate in client.py?
 		properties = dict((prop['id'], prop) for prop in mod['properties'])
 		layout = mod['layout']
 

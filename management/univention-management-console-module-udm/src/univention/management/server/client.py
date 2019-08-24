@@ -50,6 +50,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import sys
+import time
 import requests
 
 if sys.version_info.major > 2:
@@ -96,12 +97,17 @@ class ServerError(HTTPError):
 	pass
 
 
+class ServiceUnavailable(HTTPError):
+	pass
+
+
 class Session(object):
 
-	def __init__(self, credentials, language='en-US'):
+	def __init__(self, credentials, language='en-US', reconnect=True):
 		self.language = language
 		self.credentials = credentials
 		self.session = self.create_session()
+		self.reconnect = reconnect
 		self.default_headers = {
 			'Accept': 'application/json; q=1; text/html; q=0.2, */*; q=0.1',
 			'Accept-Language': self.language,
@@ -130,6 +136,9 @@ class Session(object):
 			'OPTIONS': sess.options,
 		}.get(method.upper(), sess.get)
 
+	def request(self, method, uri, data=None, **headers):
+		return self.make_request(method, uri, data, **headers)[1]
+
 	def make_request(self, method, uri, data=None, **headers):
 		if method in ('GET', 'HEAD'):
 			params = data
@@ -137,7 +146,23 @@ class Session(object):
 		else:
 			params = None
 			json = data
-		return self.get_method(method)(uri, params=params, json=json, headers=dict(self.default_headers, **headers))
+
+		def doit():
+			response = self.get_method(method)(uri, params=params, json=json, headers=dict(self.default_headers, **headers))
+			data = self.eval_response(response)
+			return response, data
+		for i in range(5):
+			try:
+				return doit()
+			except ServiceUnavailable as exc:
+				if not self.reconnect:
+					raise
+				try:
+					retry_after = min(5, int(exc.response.headers.get('Retry-After', 1)))
+				except ValueError:
+					retry_after = 1
+				time.sleep(retry_after)
+				return doit()
 
 	def eval_response(self, response):
 		if response.status_code >= 299:
@@ -153,7 +178,7 @@ class Session(object):
 						# traceback = json['error'].get('traceback')
 						if server_message:
 							msg += '\n{}'.format(server_message)
-			errors = {400: BadRequest, 404: NotFound, 403: Forbidden, 401: Unauthorized, 412: PreconditionFailed, 422: UnprocessableEntity, 500: ServerError}
+			errors = {400: BadRequest, 404: NotFound, 403: Forbidden, 401: Unauthorized, 412: PreconditionFailed, 422: UnprocessableEntity, 500: ServerError, 503: ServiceUnavailable}
 			cls = HTTPError
 			cls = errors.get(response.status_code, cls)
 			raise cls(response.status_code, msg, response)
@@ -181,11 +206,11 @@ class UDM(Client):
 
 	def modules(self):
 		# TODO: cache - needs server side support
-		resp = self.client.make_request('GET', self.uri)
-		prefix_modules = self.client.eval_response(resp)['_links']['udm/relation/object-modules']
+		entry = self.client.request('GET', self.uri)
+		prefix_modules = entry['_links']['udm/relation/object-modules']
 		for prefix_module in prefix_modules:
-			resp = self.client.make_request('GET', prefix_module['href'])
-			module_infos = self.client.eval_response(resp).get('_links', {}).get('udm/relation/object-types', [])
+			entry = self.client.request('GET', prefix_module['href'])
+			module_infos = entry.get('_links', {}).get('udm/relation/object-types', [])
 			for module_info in module_infos:
 				yield Module(self, module_info['href'], module_info['name'], module_info['title'])
 
@@ -221,8 +246,8 @@ class Module(Client):
 	def load_relations(self):
 		if self.relations:
 			return
-		resp = self.client.make_request('GET', self.uri)
-		self.relations = self.client.eval_response(resp).get('_links', {})
+		entry = self.client.request('GET', self.uri)
+		self.relations = entry.get('_links', {})
 
 	def __repr__(self):
 		return 'Module(uri={}, name={})'.format(self.uri, self.name)
@@ -258,9 +283,8 @@ class Module(Client):
 		if opened:
 			data['properties'] = '*'
 		self.load_relations()
-		resp = self.client.make_request('GET', self.relations['search'][0]['href'], data=data)
-		entries = self.client.eval_response(resp)['entries']
-		for entry in entries:
+		entries = self.client.request('GET', self.relations['search'][0]['href'], data=data)
+		for entry in entries['entries']:
 			if opened:
 				yield Object(self.udm, entry['objectType'], entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), entry['uri'], links=entry.get('_links', {}))  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
 			else:
@@ -279,9 +303,8 @@ class Module(Client):
 	def create_template(self, position=None, superordinate=None):
 		self.load_relations()
 		data = {'position': position, 'superordinate': superordinate}
-		resp = self.client.make_request('GET', self.relations['create-form'][0]['href'], data=data)
-		entry = self.client.eval_response(resp)['entry']
-		return Object(self.udm, None, None, entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), self.uri, links=entry.get('_links', {}))
+		entry = self.client.request('GET', self.relations['create-form'][0]['href'], data=data)['entry']
+		return Object(self.udm, self.name, None, entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), self.uri, links=entry.get('_links', {}))
 
 
 class ShallowObject(Client):
@@ -293,8 +316,7 @@ class ShallowObject(Client):
 		self.uri = uri
 
 	def open(self):
-		resp = self.client.make_request('GET', self.uri)
-		entry = self.client.eval_response(resp)
+		resp, entry = self.client.make_request('GET', self.uri)
 		return Object(self.udm, entry['objectType'], entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), entry['uri'], links=entry.get('_links', {}), etag=resp.headers.get('Etag'), last_modified=resp.headers.get('Last-Modified'))
 
 	def __repr__(self):
@@ -359,7 +381,7 @@ class Object(Client):
 			return self._create()
 
 	def delete(self, remove_referring=False):
-		return self.client.make_request('DELETE', self.uri)
+		return self.client.request('DELETE', self.uri)
 
 	def _modify(self):
 		data = {
@@ -373,11 +395,9 @@ class Object(Client):
 			'If-Unmodified-Since': self.last_modified,
 			'If-Match': self.etag,
 		}.items() if value)
-		resp = self.client.make_request('PUT', self.uri, data=data, **headers)
-		entry = self.client.eval_response(resp)
-		if resp.status_code == 201:  # move()
-			resp = self.client.make_request('GET', resp.headers['Location'])
-			entry = self.client.eval_response(resp)
+		resp, entry = self.client.make_request('PUT', self.uri, data=data, **headers)
+		if resp.status_code == 201 and 'Location' in resp.headers:  # move()
+			resp, entry = self.client.make_request('GET', resp.headers['Location'])
 		self.dn = entry['dn']
 		self.reload()
 
@@ -402,10 +422,9 @@ class Object(Client):
 			'position': self.position,
 			'superordinate': self.superordinate,
 		}
-		resp = self.client.make_request('POST', self.module.uri, data=data)
-		if resp.status_code in (200, 201):
+		resp, entry = self.client.make_request('POST', self.module.uri, data=data)
+		if resp.status_code in (200, 201) and 'Location' in resp.headers:
 			uri = resp.headers['Location']
 			obj = ShallowObject(self.udm, None, uri).open()
 			self._copy_from_obj(obj)
-		else:
-			self.client.eval_response(resp)
+		return entry
