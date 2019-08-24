@@ -1141,18 +1141,21 @@ class Swagger(Ressource):
 			dict: 'object',
 			list: 'array',
 		}
+		# TODO: response headers: Cache-Control, Expires, Vary, E-Tag, Last-Modified, Allow, Content-Language, Retry-After, Accept-Patch
+		# TODO: request header: Accept-Language, Accept, User-Agent
 		for name, mod in sorted(udm_modules.modules.items()):
 			module = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 			tag = name
-			tag_escaped = name.replace('/', '~1')
+			tag_escaped = name.replace('~', '~0').replace('/', '~1')
 			tags.append({
 				'description': '%s objects' % (module.title,),
 				'name': tag,
 			})
 			objects_pathes = {}
+			object_template_pathes = {}
 			if 'search' in module.operations:
 				objects_pathes['get'] = {
-					"operationId": "list",
+					"operationId": "udm:%s/object/search" % (name,),
 					"parameters": parameters['search'],
 					#[
 					#	{
@@ -1160,7 +1163,7 @@ class Swagger(Ressource):
 					#	}
 					#],
 					"responses": {
-						201: {
+						200: {
 							"description": "Success",
 							"schema": {
 								"type": "object",
@@ -1179,8 +1182,22 @@ class Swagger(Ressource):
 					"tags": [tag],
 				}
 			if 'add' in module.operations:
+				object_template_pathes['get'] = {
+					"operationId": "udm:%s/object/template" % (name,),
+					"summary": "Get a template for creating an object. Contains all properties and their default values.",
+					"parameters": [],
+					"responses": {
+						201: {
+							"description": "Success",
+							"schema": {
+								"$ref": "#/definitions/%s" % (tag_escaped,)
+							}
+						}
+					},
+					"tags": [tag],
+				}
 				objects_pathes['post'] = {
-					"operationId": "create",
+					"operationId": "udm:%s/object/create" % (name,),
 					"parameters": [{
 						"in": "body",
 						"name": "payload",
@@ -1212,7 +1229,7 @@ class Swagger(Ressource):
 					}
 				],
 				"get": {
-					"operationId": "get",
+					"operationId": "udm:%s/object" % (name,),
 					"responses": {
 						"200": {
 							"description": "Success",
@@ -1230,7 +1247,7 @@ class Swagger(Ressource):
 			}
 			if 'remove' in module.operations:
 				object_pathes["delete"] = {
-					"operationId": "delete",
+					"operationId": "udm:%s/object/remove" % (name,),
 					"parameters": [
 						{
 							"in": "query",
@@ -1258,7 +1275,7 @@ class Swagger(Ressource):
 				}
 			if set(module.operations) & {'edit', 'move', 'move_subtree'}:
 				object_pathes["put"] = {
-					"operationId": "modify",
+					"operationId": "udm:%s/object/modify" % (name,),
 					"parameters": [
 						{
 							"in": "body",
@@ -1267,6 +1284,16 @@ class Swagger(Ressource):
 							"schema": {
 								"$ref": "#/definitions/%s" % (tag_escaped,)
 							}
+						}, {
+							"in": "header",
+							"name": "If-None-Match",
+							"description": "provide entity tag to make a condition request to not overwrite any values in a race condition",
+							"type": "string",
+						}, {
+							"in": "header",
+							"name": "If-Unmodified-Since",
+							"description": "provide last modified time to make a condition request to not overwrite any values in a race condition",
+							"type": "string",
 						},
 					],
 					"responses": {
@@ -1284,8 +1311,9 @@ class Swagger(Ressource):
 					"tags": [tag],
 				}
 				object_pathes['patch'] = object_pathes['put'].copy()
-				object_pathes['patch']['operationId'] = 'patch'
+				object_pathes['patch']['operationId'] = 'udm:%s/object/update' % (name,)
 			paths['/%s/' % (name,)] = objects_pathes
+			paths['/%s/add' % (name,)] = object_template_pathes
 			paths['/%s/{dn}' % (name,)] = object_pathes
 			definitions[tag] = {
 				"allOf": [
@@ -1299,13 +1327,16 @@ class Swagger(Ressource):
 							},
 							"uri": {
 								"type": "string",
-								"format": "uri"
+								"format": "uri",
+								"example": self.abspath(module.name),
 							},
 							"options": {
 								"description": "Object type specific options.",
 								"properties": dict((oname, {
 									"description": opt.short_description,
 									"type": "boolean",
+									"default": bool(opt.default),
+									"example": bool(opt.default),
 								}) for oname, opt in module.options.items()),
 								"type": "object"
 							},
@@ -1316,6 +1347,7 @@ class Swagger(Ressource):
 									"items": {
 										"type": "string",
 										"format": "dn",
+										"example": ucr['ldap/base'],
 									},
 									"description": pol['label'],
 								}) for pol in module.policies),
@@ -1327,7 +1359,11 @@ class Swagger(Ressource):
 				]
 			}
 			if module.superordinate_names:
-				definitions[tag]['allOf'].append({'$ref$': '#/definitions/superordinate'})
+				definitions[tag]['allOf'][1]['properties']['superordinate'] = {
+					"type": "string",
+					"format": "dn",
+					"example": ucr['ldap/base'],
+				}
 			properties = {}
 			for prop in module.properties(None):
 				name = prop['id']
@@ -1337,10 +1373,15 @@ class Swagger(Ressource):
 					"type": "string",
 					"description": prop['label'],
 				}
+				if prop['required']:
+					properties[name]['required'] = [name]  # WTF: needs to be an array of strings
 				ptype = widget_type_map.get(prop['type'], str)
 				if isinstance(ptype, tuple):
 					ptype, properties[name]['format'] = ptype
 				properties[name]['type'] = typemap[ptype]
+				if prop.get('default') is not None:
+					properties[name]['default'] = prop['default']
+					properties[name]['example'] = prop['default']
 				# Swagger is not capable of having array containig different types... OpenAPI 3 might do it
 				#for subtype in prop.get("subtypes_", []):
 				#	item = {}
@@ -1364,29 +1405,19 @@ class Swagger(Ressource):
 					"description": "DN of this object (read only)",
 					"type": "string",
 					"format": "dn",
+					"example": ucr['ldap/base'],
 				},
 				"position": {
 					"description": "DN of LDAP node below which the object is located.",
 					"type": "string",
 					"format": "dn",
+					"example": ucr['ldap/base'],
 				},
-				#"id": {
-				#	"description": "ID of this object.",
-				#	"type": "string"
-				#},
-			},
-			"type": "object"
-		}
-		definitions["superordinate"] = {
-			"properties": {
-				"superordinate": {
-					"type": "string",
-					"format": "dn",
-				}
 			},
 			"type": "object"
 		}
 		url = urlparse(self.abspath(''))
+		parameters.pop('search')  # WTF: needs to be "object"
 		specs = {
 			'swagger': '2.0',
 			'basePath': url.path,
@@ -1396,18 +1427,23 @@ class Swagger(Ressource):
 				'title': 'Univention Directory Manager JSON-HTTP interface',
 				'version': '1.0',
 			},
-			'produces': ['application/json', 'text/html'],
+			'produces': ['application/hal+json', 'application/json', 'text/html'],
 			'consumes': ['application/json', 'application/x-www-form-urlencoded', 'multipart/form-data'],
 			'securityDefinitions': {"basic": {"type": "basic"}},
 			'security': [{"basic": []}],
 			'tags': tags,
 			'definitions': definitions,
 			'parameters': parameters,
-			'responses': responses or None,
+			'responses': responses,
 			'host': url.netloc,
 			#'host': '%s.%s' % (ucr['hostname'], ucr['domainname']),
 		}
 		self.content_negotiation(specs)
+
+	def get_json(self, response):
+		response = super(Swagger, self).get_json(response)
+		response.pop('_links')
+		return response
 
 
 class Modules(Ressource):

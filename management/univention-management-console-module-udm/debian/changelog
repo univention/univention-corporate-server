@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.12-29) unstable; urgency=medium
+
+  * Bug #27816: Bug #50049: fix/improove swagger definition
+
+ -- Florian Best <best@univention.de>  Mon, 26 Aug 2019 21:11:29 +0200
+
 univention-management-console-module-udm (9.0.12-28) unstable; urgency=medium
 
   * Bug #27816: make use of HAL relations in _embedded objects
