@@ -36,6 +36,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import sys
 import json
 import argparse
 
@@ -262,6 +263,13 @@ class CLIClient(object):
 		pass
 
 
+def Unicode(bytestring):
+	try:
+		return bytestring.decode(sys.getfilesystemencoding())
+	except UnicodeDecodeError:
+		raise
+
+
 def main():
 	client = CLIClient()
 	parser = argparse.ArgumentParser(
@@ -273,10 +281,10 @@ univention-directory-manager is a tool to handle the configuration for UCS on co
 Use "univention-directory-manager modules" for a list of available modules.''',
 	)
 	parser.set_defaults(parser=parser)
-	parser.add_argument('--binddn', help='bind DN', default='Administrator')
-	parser.add_argument('--bindpwd', help='bind password', default='univention')
-	parser.add_argument('--bindpwdfile', help='file containing bind password')
-	parser.add_argument('--logfile', help='path and name of the logfile to be used')
+	parser.add_argument('--binddn', help='bind DN', default='Administrator', type=Unicode)
+	parser.add_argument('--bindpwd', help='bind password', default='univention', type=Unicode)
+	parser.add_argument('--bindpwdfile', help='file containing bind password', type=Unicode)
+	parser.add_argument('--logfile', help='path and name of the logfile to be used', type=Unicode)
 	parser.add_argument('--tls', choices=['0', '1', '2'], default='2', help='0 (no); 1 (try); 2 (must)')
 	parser.add_argument('object_type')
 
@@ -294,50 +302,50 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 	parser.set_defaults(subparsers=subparsers)
 	create = subparsers.add_parser('create', description='Create a new object')
 	create.set_defaults(func=client.create_object)
-	create.add_argument('--position', help='Set position in tree')
+	create.add_argument('--position', help='Set position in tree', type=Unicode)
 	# create.add_argument('--default-position', action='store_true', help='Create in the default position')  # TODO: probably better make this the default?
-	# create.add_argument('--template', help='Use template for creation')
-	create.add_argument('--set', action='append', help='Set property to value, e.g. foo=bar', default=[])
-	create.add_argument('--append', action='append', help='Append value to property, e.g. foo=bar', default=[])
-	create.add_argument('--remove', action='append', help='Remove value from property, e.g. foo=bar', default=[])
-	create.add_argument('--superordinate', help='Use superordinate')
-	create.add_argument('--option', action='append', help='Use only given module options', default=[])
-	create.add_argument('--append-option', action='append', help='Append the module options', default=[])
-	create.add_argument('--remove-option', action='append', help='Remove the module options', default=[])
-	create.add_argument('--policy-reference', action='append', help='Reference to policy given by DN', default=[])
+	# create.add_argument('--template', help='Use template for creation', type=Unicode)
+	create.add_argument('--set', action='append', help='Set property to value, e.g. foo=bar', default=[], type=Unicode)
+	create.add_argument('--append', action='append', help='Append value to property, e.g. foo=bar', default=[], type=Unicode)
+	create.add_argument('--remove', action='append', help='Remove value from property, e.g. foo=bar', default=[], type=Unicode)
+	create.add_argument('--superordinate', help='Use superordinate', type=Unicode)
+	create.add_argument('--option', action='append', help='Use only given module options', default=[], type=Unicode)
+	create.add_argument('--append-option', action='append', help='Append the module options', default=[], type=Unicode)
+	create.add_argument('--remove-option', action='append', help='Remove the module options', default=[], type=Unicode)
+	create.add_argument('--policy-reference', action='append', help='Reference to policy given by DN', default=[], type=Unicode)
 	create.add_argument('--ignore-exists', action='store_true', help='ignore if object already exists')
 
 	modify = subparsers.add_parser('modify', description='Modify an existing object')
 	modify.set_defaults(func=client.modify_object)
-	modify.add_argument('--dn', help='Edit object with DN')
-	modify.add_argument('--set', action='append', help='Set property to value, e.g. foo=bar', default=[])
-	modify.add_argument('--append', action='append', help='Append value to property, e.g. foo=bar', default=[])
-	modify.add_argument('--remove', action='append', help='Remove value from property, e.g. foo=bar', default=[])
-	modify.add_argument('--option', action='append', help='Use only given module options', default=[])
-	modify.add_argument('--append-option', action='append', help='Append the module options', default=[])
-	modify.add_argument('--remove-option', action='append', help='Remove the module options', default=[])
-	modify.add_argument('--policy-reference', action='append', help='Reference to policy given by DN', default=[])
-	modify.add_argument('--policy-dereference', action='append', help='Remove reference to policy given by DN', default=[])
+	modify.add_argument('--dn', help='Edit object with DN', type=Unicode)
+	modify.add_argument('--set', action='append', help='Set property to value, e.g. foo=bar', default=[], type=Unicode)
+	modify.add_argument('--append', action='append', help='Append value to property, e.g. foo=bar', default=[], type=Unicode)
+	modify.add_argument('--remove', action='append', help='Remove value from property, e.g. foo=bar', default=[], type=Unicode)
+	modify.add_argument('--option', action='append', help='Use only given module options', default=[], type=Unicode)
+	modify.add_argument('--append-option', action='append', help='Append the module options', default=[], type=Unicode)
+	modify.add_argument('--remove-option', action='append', help='Remove the module options', default=[], type=Unicode)
+	modify.add_argument('--policy-reference', action='append', help='Reference to policy given by DN', default=[], type=Unicode)
+	modify.add_argument('--policy-dereference', action='append', help='Remove reference to policy given by DN', default=[], type=Unicode)
 
 	remove = subparsers.add_parser('remove', description='Remove an existing object')
 	remove.set_defaults(func=client.remove_object)
-	remove.add_argument('--dn', help='Remove object with DN')
-	# remove.add_argument('--superordinate', help='Use superordinate')  # not required
-	remove.add_argument('--filter', help='Lookup filter e.g. foo=bar')
+	remove.add_argument('--dn', help='Remove object with DN', type=Unicode)
+	# remove.add_argument('--superordinate', help='Use superordinate', type=Unicode)  # not required
+	remove.add_argument('--filter', help='Lookup filter e.g. foo=bar', type=Unicode)
 	remove.add_argument('--remove-referring', action='store_true', help='remove referring objects', default=False)
 	remove.add_argument('--ignore-not-exists', action='store_true', help='ignore if object does not exists')
 
 	list_ = subparsers.add_parser('list', description='List objects')
 	list_.set_defaults(func=client.list_objects)
-	list_.add_argument('--filter', help='Lookup filter e.g. foo=bar', default='')
-	list_.add_argument('--position', help='Search underneath of position in tree')
-	list_.add_argument('--superordinate', help='Use superordinate')
-	list_.add_argument('--policies', help='List policy-based settings: 0:short, 1:long (with policy-DN)')
+	list_.add_argument('--filter', help='Lookup filter e.g. foo=bar', default='', type=Unicode)
+	list_.add_argument('--position', help='Search underneath of position in tree', type=Unicode)
+	list_.add_argument('--superordinate', help='Use superordinate', type=Unicode)
+	list_.add_argument('--policies', help='List policy-based settings: 0:short, 1:long (with policy-DN)', type=Unicode)
 
 	move = subparsers.add_parser('move', description='Move object in directory tree')
 	move.set_defaults(func=client.move_object)
-	move.add_argument('--dn', help='Move object with DN')
-	move.add_argument('--position', help='Move to position in tree')
+	move.add_argument('--dn', help='Move object with DN', type=Unicode)
+	move.add_argument('--position', help='Move to position in tree', type=Unicode)
 
 	copy = subparsers.add_parser('copy', description='Copy object in directory tree')
 	copy.set_defaults(func=client.copy_object)
