@@ -44,7 +44,7 @@ import ldap
 import ldap.dn
 
 import univention.config_registry
-from univention.management.server.client import UDM, NotFound, UnprocessableEntity
+from univention.management.server.client import UDM, ConnectionError, HTTPError, Unauthorized, NotFound, UnprocessableEntity
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -368,15 +368,23 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 		def format_help(self):
 			if preargs:
 				preargs.subparsers = subparsers
-				client.init(parser, preargs)
-				client.get_info(preargs)
+				try:
+					client.init(parser, preargs)
+					client.get_info(preargs)
+				except (HTTPError, ConnectionError):
+					pass
 			return super(FormatModule, self).format_help()
 
 	parser.formatter_class = FormatModule
 
 	args = parser.parse_args()
-	client.init(parser, args)
-	args.func(args)
+	try:
+		client.init(parser, args)
+		args.func(args)
+	except ConnectionError:
+		parser.error('Connection failed')
+	except Unauthorized:
+		parser.error('Authentication failed')
 
 
 if __name__ == '__main__':

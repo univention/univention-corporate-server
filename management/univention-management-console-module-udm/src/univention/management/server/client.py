@@ -101,6 +101,10 @@ class ServiceUnavailable(HTTPError):
 	pass
 
 
+class ConnectionError(Exception):
+	pass
+
+
 class Session(object):
 
 	def __init__(self, credentials, language='en-US', reconnect=True):
@@ -148,13 +152,16 @@ class Session(object):
 			json = data
 
 		def doit():
-			response = self.get_method(method)(uri, params=params, json=json, headers=dict(self.default_headers, **headers))
+			try:
+				response = self.get_method(method)(uri, params=params, json=json, headers=dict(self.default_headers, **headers))
+			except requests.exceptions.ConnectionError as exc:
+				raise ConnectionError(exc)
 			data = self.eval_response(response)
 			return response, data
 		for i in range(5):
 			try:
 				return doit()
-			except ServiceUnavailable as exc:
+			except ServiceUnavailable as exc:   # TODO: same for ConnectionError? python-request does it itself.
 				if not self.reconnect:
 					raise
 				try:
