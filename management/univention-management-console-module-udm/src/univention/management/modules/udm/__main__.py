@@ -82,6 +82,8 @@ class Server(object):
 		application = Application(serve_traceback=ucr.is_true('directory/manager/rest/show-tracebacks', True))
 
 		server = HTTPServer(application)
+		server.start(args.cpus)
+
 		if args.port:
 			server.listen(args.port)
 		if args.unix_socket:
@@ -130,6 +132,8 @@ class Server(object):
 		parser.add_argument('-l', '--language', default='C', help='The process locale')
 		parser.add_argument('-s', '--unix-socket', help='Bind to a UNIX socket')
 		parser.add_argument('-p', '--port', help='Bind to a TCP port')
+		parser.add_argument('-c', '--cpus', type=int, default=int(ucr.get('directory/manager/rest/cpus', 1)), help='How many processes should be forked')
+
 		subparsers = parser.add_subparsers(title='actions', description='All available actions')
 
 		start_parser = subparsers.add_parser('start', description='Start the service')
