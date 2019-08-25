@@ -123,25 +123,20 @@ class CLIClient(object):
 				obj.options[key] = True
 			if key in args.remove_option:
 				obj.options[key] = False
+
 		for key_val in args.set:
-			key, value = key_val.split('=', 1)
-			if value.startswith('{') or value.startswith('[') or value.startswith('"') or value.startswith("'"):
-				value = eval(value)
+			key, value = self.parse_input(key_val)
 			obj.properties[key] = value
 
 		for key_val in args.append:
-			key, value = key_val.split('=', 1)
-			if value.startswith('{') or value.startswith('[') or value.startswith('"') or value.startswith("'"):
-				value = eval(value)
+			key, value = self.parse_input(key_val)
 			obj.properties[key].append(value)
 
 		for key_val in getattr(args, 'remove', []):
 			if '=' not in key_val:
 				obj.properties[key_val] = None
 			else:
-				key, value = key_val.split('=', 1)
-				if value.startswith('{') or value.startswith('[') or value.startswith('"') or value.startswith("'"):
-					value = eval(value)
+				key, value = self.parse_input(key_val)
 				if obj.properties[key] == value:
 					obj.properties[key] = None
 				elif isinstance(obj.properties[key], list) and value in obj.properties[key]:
@@ -155,6 +150,18 @@ class CLIClient(object):
 			for key, values in list(obj.policies.items()):
 				if policy_dn in values:
 					values.remove(policy_dn)
+
+	def parse_input(self, key_val):
+		key, _, value = key_val.partition('=')
+		if value.startswith('@'):
+			try:
+				value = open(value[1:], 'rb').read().decode('UTF-8')
+			except (IOError, ValueError) as exc:
+				self.print_error('%s: %s' % (key, exc))
+				raise SystemExit(2)
+		if value.startswith('{') or value.startswith('[') or value.startswith('"') or value.startswith("'"):
+			value = eval(value)
+		return key, value
 
 	def list_objects(self, args):
 		module = self.get_module(args.object_type)
