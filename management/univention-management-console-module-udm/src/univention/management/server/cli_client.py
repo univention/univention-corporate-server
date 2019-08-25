@@ -36,6 +36,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import io
 import sys
 import json
 import argparse
@@ -61,12 +62,18 @@ class CLIClient(object):
 			pass
 		self.udm = UDM('https://%(hostname)s.%(domainname)s/univention/udm/' % ucr, username, args.bindpwd)
 
+	def get_modules(self):
+		return self.udm.modules()
+
+	def show_modules(self, args):
+		self.print_line('All modules')
+		for mod, modtitle in sorted(set((x.name, x.title) for x in self.get_modules())):
+			self.print_line(mod, modtitle, prefix='  ')
+
 	def get_module(self, object_type):
 		module = self.udm.get(object_type)
 		if module is None:
-			self.print_line('All modules')
-			for mod, modtitle in sorted(set((x.name, x.title) for x in self.udm.modules())):
-				self.print_line(mod, modtitle, prefix='  ')
+			self.show_modules(None)
 			self.print_error('The given module is not known. Choose one of the above.')
 			raise SystemExit(1)
 		return module
@@ -212,13 +219,7 @@ class CLIClient(object):
 	def print_error(self, value='', prefix='Error'):
 		self.print_line(prefix, value, '')
 
-	def infos(self, args):
-		args.parser.print_help()
-		for sub in args.subparsers.choices.values():
-			sub.print_help()
-		self.get_info(args)
-
-	def get_info(self, args):
+	def get_info(self, args, file=sys.stdout):
 		module = self.get_module(args.object_type)
 		module.load_relations()
 		mod = module.client.request('GET', module.relations['create-form'][0]['href'])  # TODO: integrate in client.py?
@@ -226,18 +227,18 @@ class CLIClient(object):
 		layout = mod['layout']
 
 		for layout in layout:
-			print('  %s - %s:' % (layout['label'], layout['description']))
+			print('  %s - %s:' % (layout['label'], layout['description']), file=file)
 			for sub in layout['layout']:
-				self.print_layout(sub, properties)
-			print()
+				self.print_layout(sub, properties, file=file)
+			print('', file=file)
 
-	def print_layout(self, sub, properties, indent=1):
+	def print_layout(self, sub, properties, indent=1, file=file):
 		def _print_prop(prop):
 			def _print(prop):
 				if isinstance(prop, dict):
-					print(repr(prop))
+					print(repr(prop), file=file)
 					return
-				print('\t\t%s%s' % (prop.ljust(41), properties.get(prop, {}).get('label')))
+				print('\t\t%s%s' % (prop.ljust(41), properties.get(prop, {}).get('label')), file=file)
 
 			if isinstance(prop, list):
 				for prop in prop:
@@ -246,15 +247,15 @@ class CLIClient(object):
 				_print(prop)
 
 		if isinstance(sub, dict):
-			print('\t%s %s' % (sub['label'], sub['description']))
+			print('\t%s %s' % (sub['label'], sub['description']), file=file)
 			for prop in sub['layout']:
 				if isinstance(prop, dict):
-					self.print_layout(prop, properties, indent + 1)
+					self.print_layout(prop, properties, indent + 1, file=file)
 				else:
 					_print_prop(prop)
 		else:
 			if isinstance(sub, dict):
-				self.print_layout(prop, properties, indent + 1)
+				self.print_layout(prop, properties, indent + 1, file=file)
 			else:
 				_print_prop(sub)
 
@@ -269,12 +270,66 @@ def Unicode(bytestring):
 		raise
 
 
+def parse_known_args(parser, client, known_args=None, subparsers=None):
+	class Format(argparse.ArgumentDefaultsHelpFormatter):
+		def format_help(self):
+			raise SystemExit(0)
+
+	def supress_errors(message):
+		raise SystemExit(1)
+	formatter = parser.formatter_class
+	error = parser.error
+	try:
+		parser.formatter_class = Format
+		parser.error = supress_errors
+		args, opts = parser.parse_known_args()
+		args.options = opts
+		return args
+	except SystemExit:
+		if subparsers:
+			parser.formatter_class = argparse_module_help(client, parser, known_args, subparsers)
+			parser.print_help()
+			raise
+	finally:
+		parser.error = error
+		parser.formatter_class = formatter
+
+
+def argparse_module_help(client, parser, known_args, subparsers):
+	#class FormatModule(argparse.ArgumentDefaultsHelpFormatter):
+	class FormatModule(argparse.RawTextHelpFormatter):
+
+		def format_help(self):
+			help_string = super(FormatModule, self).format_help()
+			if known_args:
+				known_args.subparsers = subparsers
+				try:
+					client.init(parser, known_args)
+					x = io.StringIO()
+					client.get_info(known_args, file=x)
+					help_string += '\n' + x.getvalue()
+				except (HTTPError, ConnectionError):
+					pass
+			return help_string
+
+		def start_section(self, section):
+			super(FormatModule, self).start_section(section)
+			if section == 'actions':
+				for sub in subparsers.choices.values():
+					self.add_text(sub.format_help())
+
+	return FormatModule
+
+
 def main():
 	client = CLIClient()
+	description = '%(prog)s command line interface for managing UCS\ncopyright (c) 2001-2019 Univention GmbH, Germany\n\nUsage:\n %(prog)s module action [options]\n %(prog)s [--help] [--version]\n'
 	parser = argparse.ArgumentParser(
 		prog='univention-directory-manager',
-		description='copyright (c) 2001-2019 Univention GmbH, Germany',
-		usage='%(prog)s command line interface for managing UCS',
+		#usage=argparse.SUPPRESS,
+		usage=description,
+		#description='\n'.join(x.ljust(64, 'x') for x in description.splitlines()),
+		#add_help=False,
 		epilog='''Description:
 univention-directory-manager is a tool to handle the configuration for UCS on command line level.
 Use "univention-directory-manager modules" for a list of available modules.''',
@@ -285,21 +340,45 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 	parser.add_argument('--bindpwdfile', help='file containing bind password', type=Unicode)
 	parser.add_argument('--logfile', help='path and name of the logfile to be used', type=Unicode)
 	parser.add_argument('--tls', choices=['0', '1', '2'], default='2', help='0 (no); 1 (try); 2 (must)')
+	parser.add_argument('--version', action='version', version='%(prog)s VERSION TODO', help='print version information')  # FIXME: version number
+
 	parser.add_argument('object_type')
+	known_args = parse_known_args(parser, client)
 
+#	if known_args and known_args.object_type in ('license', 'modules'):
+#		mods = object_type.add_parser(str('modules'), description='Show all available modules')
+#		mods.set_defaults(func=client.show_modules)
+#
+#		license = object_type.add_parser(str('license'), description='View or modify license information')
+#		license.set_defaults(func=client.license)
+#		license.add_argument('--request', action='store_true')
+#		license.add_argument('--check', action='store_true')
+#		license.add_argument('--import')
+
+	subparsers = add_object_action_arguments(parser, client)
+	parser.formatter_class = argparse_module_help(client, parser, known_args, subparsers)
+	parse_known_args(parser, client, known_args, subparsers)
+
+	args = parser.parse_args()
 	try:
-		class Format(argparse.ArgumentDefaultsHelpFormatter):
-			def format_help(self):
-				return ''
+		client.init(parser, args)
+		args.func(args)
+	except ConnectionError:
+		parser.error('Connection failed')
+	except Unauthorized:
+		parser.error('Authentication failed')
 
-		parser.formatter_class = Format
-		preargs = parser.parse_known_args()[0]
-	except SystemExit:
-		preargs = None
 
+def add_object_action_arguments(parser, client):
 	subparsers = parser.add_subparsers(dest='action', title='actions', description='All available actions')
 	parser.set_defaults(subparsers=subparsers)
-	create = subparsers.add_parser('create', description='Create a new object')
+
+	def add_subparser(name, *args, **kwargs):
+		kwargs.setdefault('description', '%s: %s' % (name, kwargs.get('help', '')))
+		kwargs.setdefault('add_help', False)
+		return subparsers.add_parser(name, *args, **kwargs)
+
+	create = add_subparser(str('create'), help='Create a new object', usage=argparse.SUPPRESS)
 	create.set_defaults(func=client.create_object)
 	create.add_argument('--position', help='Set position in tree', type=Unicode)
 	# create.add_argument('--default-position', action='store_true', help='Create in the default position')  # TODO: probably better make this the default?
@@ -314,7 +393,7 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 	create.add_argument('--policy-reference', action='append', help='Reference to policy given by DN', default=[], type=Unicode)
 	create.add_argument('--ignore-exists', action='store_true', help='ignore if object already exists')
 
-	modify = subparsers.add_parser('modify', description='Modify an existing object')
+	modify = add_subparser(str('modify'), help='Modify an existing object', usage=argparse.SUPPRESS)
 	modify.set_defaults(func=client.modify_object)
 	modify.add_argument('--dn', help='Edit object with DN', type=Unicode)
 	modify.add_argument('--set', action='append', help='Set property to value, e.g. foo=bar', default=[], type=Unicode)
@@ -326,7 +405,7 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 	modify.add_argument('--policy-reference', action='append', help='Reference to policy given by DN', default=[], type=Unicode)
 	modify.add_argument('--policy-dereference', action='append', help='Remove reference to policy given by DN', default=[], type=Unicode)
 
-	remove = subparsers.add_parser('remove', description='Remove an existing object')
+	remove = add_subparser(str('remove'), help='Remove an existing object', usage=argparse.SUPPRESS)
 	remove.set_defaults(func=client.remove_object)
 	remove.add_argument('--dn', help='Remove object with DN', type=Unicode)
 	# remove.add_argument('--superordinate', help='Use superordinate', type=Unicode)  # not required
@@ -334,57 +413,28 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 	remove.add_argument('--remove-referring', action='store_true', help='remove referring objects', default=False)
 	remove.add_argument('--ignore-not-exists', action='store_true', help='ignore if object does not exists')
 
-	list_ = subparsers.add_parser('list', description='List objects')
+	list_ = add_subparser(str('list'), help='List objects', usage=argparse.SUPPRESS)
 	list_.set_defaults(func=client.list_objects)
 	list_.add_argument('--filter', help='Lookup filter e.g. foo=bar', default='', type=Unicode)
 	list_.add_argument('--position', help='Search underneath of position in tree', type=Unicode)
 	list_.add_argument('--superordinate', help='Use superordinate', type=Unicode)
 	list_.add_argument('--policies', help='List policy-based settings: 0:short, 1:long (with policy-DN)', type=Unicode)
 
-	move = subparsers.add_parser('move', description='Move object in directory tree')
+	move = add_subparser(str('move'), help='Move object in directory tree', usage=argparse.SUPPRESS)
 	move.set_defaults(func=client.move_object)
 	move.add_argument('--dn', help='Move object with DN', type=Unicode)
 	move.add_argument('--position', help='Move to position in tree', type=Unicode)
 
-	copy = subparsers.add_parser('copy', description='Copy object in directory tree')
+	copy = add_subparser(str('copy'), help='Copy object in directory tree', usage=argparse.SUPPRESS)
 	copy.set_defaults(func=client.copy_object)
 
-	license = subparsers.add_parser('license', description='View or modify license information')
-	license.set_defaults(func=client.license)
-	license.add_argument('--request', action='store_true')
-	license.add_argument('--check', action='store_true')
-	license.add_argument('--import')
-
-	reports = subparsers.add_parser('report', description='Create report for selected objects')
+	reports = add_subparser(str('report'), help='Create report for selected objects', usage=argparse.SUPPRESS)
 	reports.add_argument('report_type')
 	reports.add_argument('dns', nargs='*')
 
-	info = subparsers.add_parser('info', description='module info')
-	info.set_defaults(func=client.infos)
-
-	parser.add_argument('--version', action='version', version='%(prog)s VERSION TODO', help='print version information')
-
-	class FormatModule(argparse.ArgumentDefaultsHelpFormatter):
-		def format_help(self):
-			if preargs:
-				preargs.subparsers = subparsers
-				try:
-					client.init(parser, preargs)
-					client.get_info(preargs)
-				except (HTTPError, ConnectionError):
-					pass
-			return super(FormatModule, self).format_help()
-
-	parser.formatter_class = FormatModule
-
-	args = parser.parse_args()
-	try:
-		client.init(parser, args)
-		args.func(args)
-	except ConnectionError:
-		parser.error('Connection failed')
-	except Unauthorized:
-		parser.error('Authentication failed')
+	info = add_subparser(str('info'), help='Print information about the object type', usage=argparse.SUPPRESS)
+	info.set_defaults(func=client.get_info)
+	return subparsers
 
 
 if __name__ == '__main__':
