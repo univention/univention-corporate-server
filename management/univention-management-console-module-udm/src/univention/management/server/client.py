@@ -53,6 +53,8 @@ import sys
 import time
 import requests
 
+import uritemplate
+
 if sys.version_info.major > 2:
 	import http.client
 	http.client._MAXHEADERS = 1000
@@ -113,7 +115,7 @@ class Session(object):
 		self.session = self.create_session()
 		self.reconnect = reconnect
 		self.default_headers = {
-			'Accept': 'application/json; q=1; text/html; q=0.2, */*; q=0.1',
+			'Accept': 'application/hal+json; q=1, application/json; q=0.9; text/html; q=0.2, */*; q=0.1',
 			'Accept-Language': self.language,
 		}
 
@@ -191,6 +193,30 @@ class Session(object):
 			raise cls(response.status_code, msg, response)
 		return response.json()
 
+	def get_relations(self, entry, relation, name=None, template=None):
+		links = entry.get('_links', {})
+		link = links.get(relation, [None])
+		link = link if link and isinstance(link, list) else [link]
+		for link in link:
+			if isinstance(link, dict) and (not name or link.get('name') == name):
+				if link.get('deprecation'):
+					pass
+				if link.get('templated'):
+					link['href'] = uritemplate.expand(link['href'], template)
+				yield link
+
+	def resolve_relations(self, entry, relation, name=None, template=None):
+		embedded = entry.get('_embedded', {})
+		if isinstance(embedded, dict) and relation in embedded:
+			yield embedded[relation]
+			return
+
+		for relation in self.get_relations(entry, relation, name, template):
+			yield self.request('GET', relation['href'])
+
+	def resolve_relation(self, entry, relation, name=None, template=None):
+		return next(self.resolve_relations(entry, relation, name, template))
+
 
 class Client(object):
 
@@ -211,14 +237,11 @@ class UDM(Client):
 		self._api_version = None
 		super(UDM, self).__init__(Session(self), *args, **kwargs)
 
-	def modules(self):
+	def modules(self, name=None):
 		# TODO: cache - needs server side support
 		entry = self.client.request('GET', self.uri)
-		prefix_modules = entry['_links']['udm:object-modules']
-		for prefix_module in prefix_modules:
-			entry = self.client.request('GET', prefix_module['href'])
-			module_infos = entry.get('_links', {}).get('udm:object-types', [])
-			for module_info in module_infos:
+		for module in self.client.resolve_relations(entry, 'udm:object-modules'):
+			for module_info in self.client.get_relations(module, 'udm:object-types', name):
 				yield Module(self, module_info['href'], module_info['name'], module_info['title'])
 
 	def version(self, api_version):
@@ -230,9 +253,8 @@ class UDM(Client):
 		raise NotImplementedError()
 
 	def get(self, name):
-		for module in self.modules():
-			if module.name == name:
-				return module
+		for module in self.modules(name):
+			return module
 
 	def __repr__(self):
 		return 'UDM(uri={}, username={}, password=****, version={})'.format(self.uri, self.username, self._api_version)
@@ -253,8 +275,7 @@ class Module(Client):
 	def load_relations(self):
 		if self.relations:
 			return
-		entry = self.client.request('GET', self.uri)
-		self.relations = entry.get('_links', {})
+		self.relations = self.client.request('GET', self.uri)
 
 	def __repr__(self):
 		return 'Module(uri={}, name={})'.format(self.uri, self.name)
@@ -287,10 +308,11 @@ class Module(Client):
 		data['position'] = position
 		data['scope'] = scope
 		data['hidden'] = '1' if hidden else ''
+		data['properties'] = ''
 		if opened:
 			data['properties'] = '*'
 		self.load_relations()
-		entries = self.client.request('GET', self.relations['search'][0]['href'], data=data)
+		entries = self.client.resolve_relation(self.relations, 'search', template=data)
 		for entry in entries['entries']:
 			if opened:
 				yield Object(self.udm, entry['objectType'], entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), entry['uri'], links=entry.get('_links', {}))  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
@@ -310,7 +332,7 @@ class Module(Client):
 	def create_template(self, position=None, superordinate=None):
 		self.load_relations()
 		data = {'position': position, 'superordinate': superordinate}
-		entry = self.client.request('GET', self.relations['create-form'][0]['href'], data=data)['entry']
+		entry = self.client.resolve_relation(self.relations, 'create-form', template=data)['entry']
 		return Object(self.udm, self.name, None, entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), self.uri, links=entry.get('_links', {}))
 
 

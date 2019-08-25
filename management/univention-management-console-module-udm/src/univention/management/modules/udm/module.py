@@ -736,10 +736,13 @@ class RessourceBase(object):
 		return urljoin(self.urljoin('/univention/udm/' if self.request.headers.get('X-Forwarded-Host') else '/udm/'), '/'.join(args))
 
 	def add_link(self, obj, relation, href, **kwargs):
-		def quote_param(s):
-			return s.replace('\\', '\\\\').replace('"', '\\"')
 		links = obj.setdefault('_links', {})
 		links.setdefault(relation, []).append(dict(kwargs, href=href))
+		if kwargs.get('templated'):
+			return
+
+		def quote_param(s):
+			return s.replace('\\', '\\\\').replace('"', '\\"')
 		kwargs['rel'] = relation
 		params = []
 		for param in ('rel', 'name', 'title', 'media'):
@@ -1470,7 +1473,7 @@ class ObjectTypes(Ressource):
 		result = {'entries': [], }
 
 		self.add_link(result, 'up', self.urljoin('../'), title=_('All modules'))
-		self.add_link(result, 'self', self.urljoin(''), title=title)
+		self.add_link(result, 'self', self.urljoin(''), name=module_type, title=title)
 		if module_type == 'navigation':
 			self.add_link(result, 'udm:tree', self.abspath('container/dc/tree'))
 		elif module and module.has_tree:
@@ -2149,13 +2152,18 @@ class Objects(FormBase, ReportingBase):
 		methods = ['GET', 'OPTIONS']
 		self.add_link(result, 'udm:object-modules', self.urljoin('../../'), title=_('All modules'))
 		self.add_link(result, 'up', self.urljoin('../'), title=parent.object_name_plural)
-		self.add_link(result, 'self', self.urljoin(''), title=module.object_name_plural)
+		self.add_link(result, 'self', self.urljoin(''), name=module.name, title=module.object_name_plural)
 		self.add_link(result, 'describedby', self.urljoin(''), method='OPTIONS')
 		if 'search' in module.operations:
-			self.add_link(result, 'search', self.urljoin(''), title=_('Search for %s') % (module.object_name_plural,))
+			searchfields = ['position', 'property', 'propertyvalue', 'filter', 'scope', 'hidden', 'properties']
+			if module.superordinate_names:
+				searchfields.append('superordinate')
+			if module.supports_pagination:
+				searchfields.extend(['pagesize', 'page', 'by', 'dir'])
+			self.add_link(result, 'search', self.urljoin('') + '{?%s}' % ','.join(searchfields), templated=True, title=_('Search for %s') % (module.object_name_plural,))
 		if 'add' in module.operations:
 			methods.append('POST')
-			self.add_link(result, 'create-form', self.urljoin('add'), title=_('Create a %s') % (module.object_name,))
+			self.add_link(result, 'create-form', self.urljoin('add') + '{?position,superordinate}', templated=True, title=_('Create a %s') % (module.object_name,))
 		if module.help_link or module.help_text:
 			self.add_link(result, 'help', module.help_link or '', title=module.help_text or module.help_link)
 		self.add_link(result, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')

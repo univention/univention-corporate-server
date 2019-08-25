@@ -45,7 +45,7 @@ import ldap
 import ldap.dn
 
 import univention.config_registry
-from univention.management.server.client import UDM, ConnectionError, HTTPError, Unauthorized, NotFound, UnprocessableEntity
+from univention.management.server.client import UDM, ConnectionError, HTTPError, Unauthorized, NotFound, UnprocessableEntity, ServiceUnavailable
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -222,7 +222,7 @@ class CLIClient(object):
 	def get_info(self, args, file=sys.stdout):
 		module = self.get_module(args.object_type)
 		module.load_relations()
-		mod = module.client.request('GET', module.relations['create-form'][0]['href'])  # TODO: integrate in client.py?
+		mod = module.resolve_relation(module.relations, 'create-form', {})  # TODO: integrate in client.py?
 		properties = dict((prop['id'], prop) for prop in mod['properties'])
 		layout = mod['layout']
 
@@ -364,9 +364,11 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 		client.init(parser, args)
 		args.func(args)
 	except ConnectionError:
-		parser.error('Connection failed')
+		parser.error('The connection to the service failed. Retry again later.')
 	except Unauthorized:
-		parser.error('Authentication failed')
+		parser.error('The authentication has failed.')
+	except ServiceUnavailable:
+		parser.error('The service is currently unavailable. Retry again later.')
 
 
 def add_object_action_arguments(parser, client):
