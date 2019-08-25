@@ -444,7 +444,10 @@ class RessourceBase(object):
 			if name in ('text/html', 'text/xml', 'application/xml', 'text/*', '*/*'):
 				lang = 'html'
 				break
-			elif name in ('application/json', 'application/*'):
+			elif name in ('application/hal+json', 'application/*'):
+				lang = 'hal_json'
+				break
+			elif name in ('application/json',):
 				lang = 'json'
 				break
 		if not lang:
@@ -507,6 +510,10 @@ class RessourceBase(object):
 		self.set_header('Content-Type', 'application/json')
 		return json.dumps(response)
 
+	def content_negotiation_hal_json(self, response):
+		self.set_header('Content-Type', 'application/hal+json')
+		return json.dumps(response)
+
 	def content_negotiation_html(self, response):
 		self.set_header('Content-Type', 'text/html; charset=UTF-8')
 		ajax = self.request.headers.get('X-Requested-With', '').lower() == 'xmlhttprequest'
@@ -542,17 +549,17 @@ class RessourceBase(object):
 			_links[params.get('rel')] = dict(params, href=link)
 			if params.get('rel') == 'self':
 				titleelement.text = params.get('title') or link or 'FIXME:notitle'
-			if params.get('rel') in ('stylesheet', 'icon', 'self', 'up', 'udm/relation/object/remove', 'udm/relation/object/edit'):
+			if params.get('rel') in ('stylesheet', 'icon', 'self', 'up', 'udm:object/remove', 'udm:object/edit'):
 				continue
 			if params.get('rel') in navigation_relations:
 				continue
-			if params.get('rel') in ('udm/relation/user-photo',):
+			if params.get('rel') in ('udm:user-photo',):
 				ET.SubElement(nav, 'img', src=link, style='max-width: 200px')
 				continue
 			elif params.get('rel') in ('create-form', 'edit-form'):
 				ET.SubElement(ET.SubElement(nav, 'form'), 'button', formaction=link, **params).text = params.get('title', link)
 				continue
-			#if params.get('rel') in ('udm/relation/tree',):
+			#if params.get('rel') in ('udm:tree',):
 			#	self.set_header('X-Frame-Options', 'SAMEORIGIN')
 			#	body.insert(1, ET.Element('iframe', src=link, name='tree'))
 			#	continue
@@ -577,10 +584,14 @@ class RessourceBase(object):
 			tree = ET.ElementTree(main if ajax else root)
 			tree.write(self)
 
+	def get_hal_json(self, response):
+		return self.get_json(response)
+
 	def get_json(self, response):
 		response.pop('position_layout', None)
 		response.pop('template_layout', None)
 		response.pop('layout_search', None)
+		response.setdefault('_links', {}).setdefault('curies', []).append({'name': 'udm', 'href': self.abspath('relation/') + '{rel}', 'templated': True})
 		return response
 
 	def get_html(self, response):
@@ -851,7 +862,7 @@ class RessourceBase(object):
 		return UDM_Module(flavor, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 
 	def navigation(self):
-		return ('udm/relation/object-modules', 'udm/relation/object-module', 'udm/relation/object-type', 'up', 'self')
+		return ('udm:object-modules', 'udm:object-module', 'udm:object-type', 'up', 'self')
 
 
 class Ressource(RessourceBase, RequestHandler):
@@ -983,7 +994,7 @@ class Relations(Ressource):
 			'icon': 'Refers to an icon representing the link\'s context.',
 		}
 		univention_relations = {
-			'': 'description of all relations',
+			'relations': 'description of all relations',
 			'object': '',
 			'object-modules': 'list of available module categories',
 			'object-module': 'the module belonging to the current selected resource',
@@ -1016,9 +1027,9 @@ class Relations(Ressource):
 				raise NotFound()
 		else:
 			for relation in iana_relations:
-				self.add_link(result, 'udm/relation/', self.urljoin(relation), name=relation, title=relation)
+				self.add_link(result, 'udm:relations', self.urljoin(relation), name=relation, title=relation)
 			for relation in univention_relations:
-				self.add_link(result, 'udm/relation/', self.urljoin(relation), name='udm/relation/%s' % relation, title='udm/relation/%s' % relation)
+				self.add_link(result, 'udm:relations', self.urljoin(relation), name='udm:%s' % relation, title='udm:%s' % relation)
 		self.content_negotiation(result)
 
 
@@ -1424,10 +1435,10 @@ class Modules(Ressource):
 			if '/' in name:
 				title = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).object_name_plural
 
-			self.add_link(result, 'udm/relation/object-modules', self.urljoin(quote(main_type)) + '/', name='all' if main_type == 'navigation' else main_type, title=title)
-		self.add_link(result, 'udm/relation/license', self.urljoin('license') + '/', name='license', title=_('UCS license'))
-		self.add_link(result, 'udm/relation/ldap-base', self.urljoin('ldap/base') + '/', title=_('LDAP base'))
-		self.add_link(result, 'udm/relation/', self.urljoin('relation') + '/', name='relation', title=_('All link relations'))
+			self.add_link(result, 'udm:object-modules', self.urljoin(quote(main_type)) + '/', name='all' if main_type == 'navigation' else main_type, title=title)
+		self.add_link(result, 'udm:license', self.urljoin('license') + '/', name='license', title=_('UCS license'))
+		self.add_link(result, 'udm:ldap-base', self.urljoin('ldap/base') + '/', title=_('LDAP base'))
+		self.add_link(result, 'udm:relations', self.urljoin('relation') + '/', name='relation', title=_('All link relations'))
 		self.add_caching(public=True)
 		self.content_negotiation(result)
 
@@ -1461,9 +1472,9 @@ class ObjectTypes(Ressource):
 		self.add_link(result, 'up', self.urljoin('../'), title=_('All modules'))
 		self.add_link(result, 'self', self.urljoin(''), title=title)
 		if module_type == 'navigation':
-			self.add_link(result, 'udm/relation/tree', self.abspath('container/dc/tree'))
+			self.add_link(result, 'udm:tree', self.abspath('container/dc/tree'))
 		elif module and module.has_tree:
-			self.add_link(result, 'udm/relation/tree', self.urljoin('../', object_type, 'tree'))
+			self.add_link(result, 'udm:tree', self.urljoin('../', object_type, 'tree'))
 
 		if module and (module.help_link or module.help_text):
 			self.add_link(result, 'help', module.help_link or '', title=module.help_text or module.help_link)
@@ -1488,7 +1499,7 @@ class ObjectTypes(Ressource):
 				'columns': _module.columns,  # FIXME: move to Objects?
 				#'has_tree': _module.has_tree,
 			})
-			self.add_link(result, 'udm/relation/object-types', self.urljoin('../%s' % quote(_module.name)) + '/', name=_module.name, title=_module.title)
+			self.add_link(result, 'udm:object-types', self.urljoin('../%s' % quote(_module.name)) + '/', name=_module.name, title=_module.title)
 
 		self.add_caching(public=True, must_revalidate=True)
 		self.content_negotiation(result)
@@ -1543,7 +1554,7 @@ class SubObjectTypes(Ressource):
 				#'columns': _module.columns,
 				#'has_tree': _module.has_tree,
 			})
-			self.add_link(result, 'udm/relation/object-types', self.abspath(_module.name) + '/', name=_module.name, title=_module.title)
+			self.add_link(result, 'udm:object-types', self.abspath(_module.name) + '/', name=_module.name, title=_module.title)
 		self.add_caching(public=True, must_revalidate=True)
 		self.content_negotiation(result)
 
@@ -2012,13 +2023,13 @@ class Objects(FormBase, ReportingBase):
 
 		if search:
 			for i, report_type in enumerate(sorted(self.reports_cfg.get_report_names(object_type)), 1):
-				form = self.add_form(result, self.urljoin('report', quote(report_type)), 'POST', rel='udm/relation/report', name=report_type, id='report%d' % (i,))
+				form = self.add_form(result, self.urljoin('report', quote(report_type)), 'POST', rel='udm:report', name=report_type, id='report%d' % (i,))
 				self.add_form_element(form, '', _('Create %s report') % _(report_type), type='submit')
 
 			form = self.add_form(result, self.urljoin('multi-edit'), 'POST', name='multi-edit', id='multi-edit', rel='edit-form')
 			self.add_form_element(form, '', _('Modify %s (multi edit)') % (module.object_name_plural,), type='submit')
 
-			form = self.add_form(result, self.urljoin('move'), 'POST', name='move', id='move', rel='udm/relation/object/move')
+			form = self.add_form(result, self.urljoin('move'), 'POST', name='move', id='move', rel='udm:object/move')
 			self.add_form_element(form, 'position', '')
 			self.add_form_element(form, '', _('Move %s') % (module.object_name_plural,), type='submit')
 
@@ -2096,13 +2107,13 @@ class Objects(FormBase, ReportingBase):
 			for thing in response.get('errors', response.get('entries', [])):
 				if isinstance(thing, dict) and thing.get('uri'):
 					x = thing.copy()
-					a = ET.Element("a", href=x.pop('uri'), rel="udm/relation/object item")
+					a = ET.Element("a", href=x.pop('uri'), rel="udm:object item")
 					a.text = x.get('dn')
 					pre = ET.Element("pre")
 					pre.text = json.dumps(x, indent=4)
 					root.append(ET.Element("br"))
 					# There is a bug in chrome, so we cannot have form='report1 report2'. so, only 1 report is possible :-/
-					root.append(ET.Element('input', type='checkbox', name='dn', value=x['dn'], form=' '.join([report['id'] for report in response['_forms'] if report['rel'] == 'udm/relation/report'][-1:])))
+					root.append(ET.Element('input', type='checkbox', name='dn', value=x['dn'], form=' '.join([report['id'] for report in response['_forms'] if report['rel'] == 'udm:report'][-1:])))
 					root.append(a)
 					root.append(pre)
 					root.append(ET.Element("br"))
@@ -2136,7 +2147,7 @@ class Objects(FormBase, ReportingBase):
 		module = self.get_module(object_type)
 		parent = self.get_parent_object_type(module)
 		methods = ['GET', 'OPTIONS']
-		self.add_link(result, 'udm/relation/object-modules', self.urljoin('../../'), title=_('All modules'))
+		self.add_link(result, 'udm:object-modules', self.urljoin('../../'), title=_('All modules'))
 		self.add_link(result, 'up', self.urljoin('../'), title=parent.object_name_plural)
 		self.add_link(result, 'self', self.urljoin(''), title=module.object_name_plural)
 		self.add_link(result, 'describedby', self.urljoin(''), method='OPTIONS')
@@ -2149,7 +2160,7 @@ class Objects(FormBase, ReportingBase):
 			self.add_link(result, 'help', module.help_link or '', title=module.help_text or module.help_link)
 		self.add_link(result, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
 		if module.has_tree:
-			self.add_link(result, 'udm/relation/tree', self.urljoin('tree'), title=_('Object type tree'))
+			self.add_link(result, 'udm:tree', self.urljoin('tree'), title=_('Object type tree'))
 #		self.add_link(result, '', self.urljoin(''))
 		self.set_header('Allow', ', '.join(methods))
 		return result
@@ -2235,10 +2246,10 @@ class Object(FormBase, Ressource):
 		props.update(self.get_representation(module, obj, ['*'], self.ldap_connection, copy))
 
 		if module.name == 'networks/network':
-			self.add_link(props, 'udm/relation/next-free-ip', self.urljoin(quote_dn(obj.dn), 'next-free-ip-address'), title=_('Next free IP address'))
+			self.add_link(props, 'udm:next-free-ip', self.urljoin(quote_dn(obj.dn), 'next-free-ip-address'), title=_('Next free IP address'))
 
 		if obj.has_property('jpegPhoto'):
-			self.add_link(props, 'udm/relation/user-photo', self.urljoin(quote_dn(obj.dn), 'properties/jpegPhoto.jpg'), type='image/jpeg', title=_('User photo'))
+			self.add_link(props, 'udm:user-photo', self.urljoin(quote_dn(obj.dn), 'properties/jpegPhoto.jpg'), type='image/jpeg', title=_('User photo'))
 
 		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation(props)
@@ -2247,24 +2258,25 @@ class Object(FormBase, Ressource):
 		dn = unquote_dn(dn)
 		module = self.get_module(object_type)
 		props = {}
-		self.add_link(props, 'udm/relation/object-modules', self.urljoin('../../'), title=_('All modules'))
-		self.add_link(props, 'udm/relation/object-module', self.urljoin('../'), title=self.get_parent_object_type(module).object_name_plural)
-		#self.add_link(props, 'udm/relation/object-types', self.urljoin('../'))
+		parent_module = self.get_parent_object_type(module)
+		self.add_link(props, 'udm:object-modules', self.urljoin('../../'), title=_('All modules'))
+		self.add_link(props, 'udm:object-module', self.urljoin('../'), name=parent_module.name, title=parent_module.object_name_plural)
+		#self.add_link(props, 'udm:object-types', self.urljoin('../'))
 		self.add_link(props, 'up', self.urljoin('x/../'), name=module.name, title=module.object_name)
 		self.add_link(props, 'self', self.urljoin(''), title=dn)
 		self.add_link(props, 'describedby', self.urljoin(''), method='OPTIONS')
 		self.add_link(props, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
-		self.add_link(props, 'udm/relation/object/remove', self.urljoin(''), method='DELETE')
-		self.add_link(props, 'udm/relation/object/edit', self.urljoin(''), method='PUT')
+		self.add_link(props, 'udm:object/remove', self.urljoin(''), method='DELETE')
+		self.add_link(props, 'udm:object/edit', self.urljoin(''), method='PUT')
 		# self.add_link(props, '', self.urljoin('report/PDF Document?dn=%s' % (quote(obj.dn),))) # rel=alternate media=print?
 #		for mod in module.child_modules:
 #			mod = self.get_module(mod['id'])
 #			if mod and set(mod.superordinate_names) & {module.name, }:
-#				self.add_link(props, 'udm/relation/children-types', self.urljoin('../../%s/?superordinate=%s' % (quote(mod.name), quote(obj.dn))), name=mod.name, title=mod.object_name_plural)
+#				self.add_link(props, 'udm:children-types', self.urljoin('../../%s/?superordinate=%s' % (quote(mod.name), quote(obj.dn))), name=mod.name, title=mod.object_name_plural)
 
 		methods = ['GET', 'OPTIONS']
 		if module.childs:
-			self.add_link(props, 'udm/relation/children-types', self.urljoin(quote_dn(dn), 'children-types/'), name=module.name, title=_('Sub object types of %s') % (module.object_name,))
+			self.add_link(props, 'udm:children-types', self.urljoin(quote_dn(dn), 'children-types/'), name=module.name, title=_('Sub object types of %s') % (module.object_name,))
 
 		can_modify = set(module.operations) & {'edit', 'move', 'subtree_move'}
 		can_remove = 'remove' in module.operations
@@ -2732,9 +2744,9 @@ class ObjectAdd(FormBase, Ressource):
 	def get_create_form(self, module, dn=None, copy=False, template=None, position=None, superordinate=None):
 		result = {}
 		self.add_link(result, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
-		self.add_link(result, 'udm/relation/object-modules', self.urljoin('../../'), title=_('All modules'))
-		self.add_link(result, 'udm/relation/object-module', self.urljoin('../'), title=self.get_parent_object_type(module).object_name_plural)
-		self.add_link(result, 'udm/relation/object-type', self.urljoin('.'), title=module.object_name)
+		self.add_link(result, 'udm:object-modules', self.urljoin('../../'), title=_('All modules'))
+		self.add_link(result, 'udm:object-module', self.urljoin('../'), title=self.get_parent_object_type(module).object_name_plural)
+		self.add_link(result, 'udm:object-type', self.urljoin('.'), title=module.object_name)
 
 		result['layout'] = module.get_layout()
 		result['properties'] = module.get_properties()
@@ -2745,7 +2757,7 @@ class ObjectAdd(FormBase, Ressource):
 		# TODO: wizard: first select position & template
 
 		for policy in module.policies:
-			form = self.add_form(result, action=self.urljoin(policy['objectType']) + '/', method='GET', name=policy['objectType'], rel='udm/relation/policy-result')
+			form = self.add_form(result, action=self.urljoin(policy['objectType']) + '/', method='GET', name=policy['objectType'], rel='udm:policy-result')
 			self.add_form_element(form, 'position', position or '', label=_('The container where the object is going to be created in'))
 			self.add_form_element(form, 'policy', '', label=policy['label'], title=policy['description'])
 			self.add_form_element(form, '', _('Policy result'), type='submit')
@@ -2835,9 +2847,9 @@ class ObjectEdit(FormBase, Ressource):
 			raise NotFound(object_type, dn)
 
 		self.add_link(result, 'icon', self.urljoin('../favicon.ico'), type='image/x-icon')
-		self.add_link(result, 'udm/relation/object-modules', self.urljoin('../../../'), title=_('All modules'))
-		self.add_link(result, 'udm/relation/object-module', self.urljoin('../../'), title=self.get_parent_object_type(module).object_name_plural)
-		self.add_link(result, 'udm/relation/object-type', self.urljoin('../'), title=module.object_name)
+		self.add_link(result, 'udm:object-modules', self.urljoin('../../../'), title=_('All modules'))
+		self.add_link(result, 'udm:object-module', self.urljoin('../../'), title=self.get_parent_object_type(module).object_name_plural)
+		self.add_link(result, 'udm:object-type', self.urljoin('../'), title=module.object_name)
 		self.add_link(result, 'up', self.urljoin('..', quote_dn(obj.dn)), title=obj.dn)
 		self.add_link(result, 'self', self.urljoin(''), title=_('Modify'))
 
@@ -2858,7 +2870,7 @@ class ObjectEdit(FormBase, Ressource):
 			representation = Object.get_representation(module, obj, ['*'], self.ldap_connection)
 			for policy in module.policies:
 				ptype = policy['objectType']
-				form = self.add_form(result, action=self.urljoin(ptype) + '/', method='GET', name=ptype, rel='udm/relation/policy-result')
+				form = self.add_form(result, action=self.urljoin(ptype) + '/', method='GET', name=ptype, rel='udm:policy-result')
 				self.add_form_element(form, 'policy', representation['policies'].get(ptype, [''])[0], label=policy['label'], title=policy['description'], placeholder=_('Policy DN'))
 				self.add_form_element(form, '', _('Policy result'), type='submit')
 
@@ -3005,7 +3017,7 @@ class PolicyResultBase(Ressource):
 					continue
 				infos[key]['value'] = policy_obj.polinfo[key]
 		if policy_dn:
-			self.add_link(infos, 'udm/relation/policy-edit', self.abspath(policy_obj.module, policy_dn), title=_('Click to edit the inherited properties of the policy'))
+			self.add_link(infos, 'udm:policy-edit', self.abspath(policy_obj.module, policy_dn), title=_('Click to edit the inherited properties of the policy'))
 		return infos
 
 
@@ -3129,15 +3141,15 @@ class License(Ressource):
 
 	def get(self):
 		license_data = {}
-		self.add_link(license_data, 'udm/relation/license-check', self.urljoin('check'), title=_('Check license status'))
-		self.add_link(license_data, 'udm/relation/license-request', self.urljoin('request'))
-		self.add_link(license_data, 'udm/relation/license-import', self.urljoin(''))
+		self.add_link(license_data, 'udm:license-check', self.urljoin('check'), title=_('Check license status'))
+		self.add_link(license_data, 'udm:license-request', self.urljoin('request'))
+		self.add_link(license_data, 'udm:license-import', self.urljoin(''))
 
-		form = self.add_form(license_data, self.urljoin('request'), 'GET', rel='udm/relation/license-request')
+		form = self.add_form(license_data, self.urljoin('request'), 'GET', rel='udm:license-request')
 		self.add_form_element(form, 'email', '', type='email', label=_('E-Mail address'))
 		self.add_form_element(form, '', _('Request new license'), type='submit')
 
-		form = self.add_form(license_data, self.urljoin('import'), 'POST', rel='udm/relation/license-import', enctype='multipart/form-data')
+		form = self.add_form(license_data, self.urljoin('import'), 'POST', rel='udm:license-import', enctype='multipart/form-data')
 		self.add_form_element(form, 'license', '', type='file', label=_('License file (ldif format)'))
 		self.add_form_element(form, '', _('Import license'), type='submit')
 

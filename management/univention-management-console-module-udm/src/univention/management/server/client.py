@@ -214,10 +214,10 @@ class UDM(Client):
 	def modules(self):
 		# TODO: cache - needs server side support
 		entry = self.client.request('GET', self.uri)
-		prefix_modules = entry['_links']['udm/relation/object-modules']
+		prefix_modules = entry['_links']['udm:object-modules']
 		for prefix_module in prefix_modules:
 			entry = self.client.request('GET', prefix_module['href'])
-			module_infos = entry.get('_links', {}).get('udm/relation/object-types', [])
+			module_infos = entry.get('_links', {}).get('udm:object-types', [])
 			for module_info in module_infos:
 				yield Module(self, module_info['href'], module_info['name'], module_info['title'])
 
@@ -336,7 +336,7 @@ class References(object):
 		self.obj = obj
 
 	def __getitem__(self, item):
-		links = [ShallowObject(self.obj.udm, x['name'], x['href']) for x in self.obj.links['udm/relation/object-reference/%s' % (item,)]]
+		links = [ShallowObject(self.obj.udm, x['name'], x['href']) for x in self.obj.links['udm:object-reference/%s' % (item,)]]
 		return links
 
 	def __get__(self, obj, cls=None):
