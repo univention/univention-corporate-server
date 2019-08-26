@@ -217,6 +217,9 @@ class Session(object):
 					link['href'] = uritemplate.expand(link['href'], template)
 				yield link
 
+	def get_relation(self, entry, relation, name=None, template=None):
+		return next(self.get_relations(entry, relation, name, template))
+
 	def resolve_relations(self, entry, relation, name=None, template=None):
 		embedded = entry.get('_embedded', {})
 		if isinstance(embedded, dict) and relation in embedded:
@@ -336,11 +339,14 @@ class Module(Client):
 			data['properties'] = '*'
 		self.load_relations()
 		entries = self.client.resolve_relation(self.relations, 'search', template=data)
-		for entry in entries.data['entries']:
+		for obj in self.client.resolve_relation(entries.data, 'udm:object'):
+			objself = self.client.get_relation(obj, 'self')
+			uri = objself['href']
+			dn = objself['name']
 			if opened:
-				yield Object.from_response(self.udm, Response(entries.response, entry, entry['uri']))  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
+				yield Object.from_response(self.udm, Response(entries.response, obj, uri))  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
 			else:
-				yield ShallowObject(self.udm, entry['dn'], entry['uri'])
+				yield ShallowObject(self.udm, dn, uri)
 
 
 class ShallowObject(Client):

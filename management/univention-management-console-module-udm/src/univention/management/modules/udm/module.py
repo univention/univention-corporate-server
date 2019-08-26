@@ -1000,7 +1000,12 @@ class Relations(Ressource):
 		}
 		univention_relations = {
 			'relations': 'description of all relations',
-			'object': '',
+			'object': 'represents an object',
+			'object/get-by-dn': 'get an object from its DN',
+			'object/get-by-uuid': 'get an object from its entry UUID',
+			'object/remove': 'remove this object, edit-form is preferable',
+			'object/move': 'move objects to a certain position',
+			'object/edit': 'modify this object, edit-form is preferable',
 			'object-modules': 'list of available module categories',
 			'object-module': 'the module belonging to the current selected resource',
 			'object-types': 'list of object types matching the given flavor or container',
@@ -1014,11 +1019,6 @@ class Relations(Ressource):
 			'default-search': 'default search pattern/value for the given object property',
 			'next-free-ip': 'next IP configuration based on the given network object',
 			'property-choices': 'determine valid values for a given syntax class',
-			'object/get-by-dn': 'get an object from its DN',
-			'object/get-by-uuid': 'get an object from its entry UUID',
-			'object/remove': 'remove this object, edit-form is preferable',
-			'object/move': 'move objects to a certain position',
-			'object/edit': 'modify this object, edit-form is preferable',
 			'user-photo': 'photo of the object',
 			'license': 'information about UCS license',
 			'license-request': 'Request a new UCS Core Edition license',
@@ -2077,9 +2077,18 @@ class Objects(FormBase, ReportingBase):
 		self.add_form_element(form, '', _('Search'), type='submit')
 
 		if search:
+			result['results'] = len(entries)
 			result['entries'] = entries  # TODO: is "entries" a good name? items, objects
 		self.add_caching(public=False, no_cache=True, no_store=True, max_age=1, must_revalidate=True)
 		self.content_negotiation(result)
+
+	def get_hal_json(self, response):
+		if 'entries' in response:
+			objects = response.setdefault('_embedded', {}).setdefault('udm:object', [])
+			for object in response.pop('entries'):
+				objects.append(object)
+				object.setdefault('_links', {}).setdefault('self', {'href': object['uri'], 'name': object['dn'], 'title': object['id']})
+		return super(Objects, self).get_hal_json(response)
 
 	@tornado.gen.coroutine
 	def search(self, module, container, prop, value, filter, superordinate, scope, hidden, items_per_page, page, by, reverse):
