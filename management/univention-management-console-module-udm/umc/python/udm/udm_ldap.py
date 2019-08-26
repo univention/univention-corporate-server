@@ -1095,6 +1095,7 @@ class UDM_Module(object):
 		policyTypes = udm_modules.policyTypes(self.name)
 		if not policyTypes and self.childs:
 			# allow all policies for containers
+			# TODO: is using self.child correct here? shouldn't it better be container_modules()?
 			policyTypes = filter(lambda x: x.startswith('policies/') and x != 'policies/policy', udm_modules.modules)
 
 		policies = []

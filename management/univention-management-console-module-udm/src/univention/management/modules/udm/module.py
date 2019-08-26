@@ -1444,6 +1444,12 @@ class Modules(Ressource):
 				title = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).object_name_plural
 
 			self.add_link(result, 'udm:object-modules', self.urljoin(quote(main_type)) + '/', name='all' if main_type == 'navigation' else main_type, title=title)
+
+		modules = udm_modules.modules.keys()
+		for name in sorted(modules):
+			_module = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
+			self.add_link(result, 'udm:object-types', self.urljoin(quote(_module.name)) + '/', name=_module.name, title=_module.title, dont_set_http_header=True)
+
 		self.add_link(result, 'udm:object/get-by-dn', self.urljoin('object') + '/{dn}', templated=True)
 		self.add_link(result, 'udm:object/get-by-uuid', self.urljoin('object') + '/{uuid}', templated=True)
 		self.add_link(result, 'udm:license', self.urljoin('license') + '/', name='license', title=_('UCS license'))
@@ -1477,7 +1483,7 @@ class ObjectTypes(Ressource):
 				module = get_module(object_type, superordinate, self.ldap_connection) or module  # FIXME: the object_type param is wrong?!
 			title = module.object_name_plural
 
-		result = {'entries': [], }
+		result = {}
 
 		self.add_link(result, 'up', self.urljoin('../'), title=_('All modules'))
 		self.add_link(result, 'self', self.urljoin(''), name=module_type, title=title)
@@ -1498,8 +1504,10 @@ class ObjectTypes(Ressource):
 
 		for name in sorted(modules):
 			_module = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
+			self.add_link(result, 'udm:object-types', self.urljoin('../%s' % quote(_module.name)) + '/', name=_module.name, title=_module.title)
+			continue
 			# TODO: get rid of entries. all of it can be put into the link!?
-			result['entries'].append({
+			result.setdefault('entries', []).append({
 				'id': _module.name,
 				'label': _module.title,
 				'object_name': _module.object_name,
@@ -1509,7 +1517,6 @@ class ObjectTypes(Ressource):
 				'columns': _module.columns,  # FIXME: move to Objects?
 				#'has_tree': _module.has_tree,
 			})
-			self.add_link(result, 'udm:object-types', self.urljoin('../%s' % quote(_module.name)) + '/', name=_module.name, title=_module.title)
 
 		self.add_caching(public=True, must_revalidate=True)
 		self.content_negotiation(result)
@@ -1947,7 +1954,7 @@ class Objects(FormBase, ReportingBase):
 		propertyvalue=LDAPSearchSanitizer(required=False, default='*', add_asterisks=False, use_asterisks=True),
 		scope=ChoicesSanitizer(choices=['sub', 'one', 'base', 'base+one'], default='sub'),
 		hidden=BoolSanitizer(default=False),
-		fields=ListSanitizer(required=False, default=[]),
+		#fields=ListSanitizer(required=False, default=[]),
 		properties=ListSanitizer(required=False, default=[]),
 		superordinate=DNSanitizer(required=False, default=None, allow_none=True),
 		dir=ChoicesSanitizer(choices=['ASC', 'DESC'], default='ASC'),
@@ -1972,8 +1979,8 @@ class Objects(FormBase, ReportingBase):
 		objectPropertyValue = self.request.query_arguments['propertyvalue']
 		scope = self.request.query_arguments['scope']
 		hidden = self.request.query_arguments['hidden']
-		fields = self.request.query_arguments['fields']
-		fields = (set(fields) | set([objectProperty])) - set(['name', 'None', None, ''])
+		#fields = self.request.query_arguments['fields']
+		#fields = (set(fields) | set([objectProperty])) - set(['name', 'None', None, ''])
 		properties = self.request.query_arguments['properties'][:]
 		direction = self.request.query_arguments['dir']
 		reverse = direction == 'DESC'
@@ -2001,7 +2008,8 @@ class Objects(FormBase, ReportingBase):
 				continue
 			objmodule = UDM_Module(obj.module, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 
-			if '*' in fields or '*' in properties:
+			#if '*' in fields or '*' in properties:
+			if '*' in properties:
 				# TODO: i think we need error handling here, because between receiving the object and opening it, it or refernced objects might be removed.
 				# best would be if lookup() would support opening because that already does error handling.
 				obj.open()
@@ -2012,14 +2020,14 @@ class Objects(FormBase, ReportingBase):
 				'name': objmodule.obj_description(obj),
 				'path': ldap_dn2path(obj.dn, include_rdn=False),
 				'uri': self.abspath(obj.module, quote_dn(obj.dn)),
-				'fields': {},  # TODO: wrap via encode_properties() instead of module.property_description() ?!
+				#'fields': {},  # TODO: wrap via encode_properties() instead of module.property_description() ?!
 			})
-			if '$value$' in fields:
-				entry['$value$'] = [objmodule.property_description(obj, column['name']) for column in module.columns]
-			if '*' in fields or '*' in properties:
-				fields = set(obj.info.keys())
-			for field in fields - set(objmodule.password_properties) - set(entry.keys()):
-				entry['fields'][field] = objmodule.property_description(obj, field)
+			#if '$value$' in fields:
+			#	entry['$value$'] = [objmodule.property_description(obj, column['name']) for column in module.columns]
+			#if '*' in fields or '*' in properties:
+			#	fields = set(obj.info.keys())
+			#for field in fields - set(objmodule.password_properties) - set(entry.keys()):
+			#	entry['fields'][field] = objmodule.property_description(obj, field)
 			entries.append(entry)
 
 		if items_per_page:
@@ -2068,7 +2076,8 @@ class Objects(FormBase, ReportingBase):
 		search_layout.append('')
 		self.add_form_element(form, '', _('Search'), type='submit')
 
-		result['entries'] = entries  # TODO: is "entries" a good name? items, objects
+		if search:
+			result['entries'] = entries  # TODO: is "entries" a good name? items, objects
 		self.add_caching(public=False, no_cache=True, no_store=True, max_age=1, must_revalidate=True)
 		self.content_negotiation(result)
 
@@ -2303,6 +2312,8 @@ class Object(FormBase, Ressource):
 			self.add_link(props, 'edit-form', self.urljoin(quote_dn(dn), 'edit'), title=_('Modify, move or remove this %s' % (module.object_name,)))
 
 		self.set_header('Allow', ', '.join(methods))
+		if 'PATCH' in methods:
+			self.set_header('Accept-Patch', 'application/json-patch+json, application/hal+json, application/json')
 		return props
 
 	def set_metadata(self, obj):  # FIXME: move into UDM core!
@@ -2328,7 +2339,7 @@ class Object(FormBase, Ressource):
 		return u'"%s"' % etag.hexdigest()
 
 	@classmethod
-	def get_representation(cls, module, obj, properties, ldap_connection, copy=False):
+	def get_representation(cls, module, obj, properties, ldap_connection, copy=False, add=False):
 		def _remove_uncopyable_properties(obj):
 			if not copy:
 				return
@@ -2341,6 +2352,7 @@ class Object(FormBase, Ressource):
 		obj.set_defaults = True
 		obj.set_default_values()
 		_remove_uncopyable_properties(obj)
+
 		values = {}
 		if properties:
 			values = obj.info.copy()
@@ -2349,7 +2361,7 @@ class Object(FormBase, Ressource):
 					if key not in properties:
 						values.pop(key)
 			else:
-				values = dict((key, obj[key]) for key in obj.descriptions if obj.has_property(key))
+				values = dict((key, obj[key]) for key in obj.descriptions if add or obj.has_property(key))
 			for passwd in module.password_properties:
 				values[passwd] = None
 			values = dict(decode_properties(module.name, values, ldap_connection))
@@ -2373,27 +2385,29 @@ class Object(FormBase, Ressource):
 		props['dn'] = obj.dn
 		props['objectType'] = module.name
 		props['id'] = '+'.join(explode_rdn(obj.dn, True))
-		if module.superordinate_names:
-			props['superordinate'] = obj.superordinate and obj.superordinate.dn
-		if obj.oldattr.get('entryUUID'):
-			props['entry_uuid'] = obj.oldattr['entryUUID'][0].decode('utf-8', 'replace')
 		props['position'] = ldap_connection.parentDn(obj.dn) if obj.dn else obj.position.getDn()
 		props['properties'] = values
 		props['options'] = dict((opt['id'], opt['value']) for opt in module.get_options(udm_object=obj))
 		props['policies'] = {}
-		if '*' in properties:
+		if '*' in properties or add:
+			for policy in module.policies:
+				props['policies'].setdefault(policy['objectType'], [])
 			for policy in obj.policies:
 				pol_mod = get_module(None, policy, ldap_connection)
 				if pol_mod and pol_mod.name:
 					props['policies'].setdefault(pol_mod.name, []).append(policy)
-			props['references'] = module.get_references(obj.dn)
-		#props['$labelObjectType$'] = module.title
-		#props['$labelObjectTypeSingular$'] = module.object_name
-		#props['$labelObjectTypePlural$'] = module.object_name_plural
-		props['flags'] = obj.oldattr.get('univentionObjectFlag', [])
-		#props['$operations$'] = module.operations
-		if copy:
-			props.pop('dn')
+			props['references'] = module.get_references(obj.dn)  # TODO: this is expensive, remove? at least transform into _links
+		if module.superordinate_names:
+			props['superordinate'] = obj.superordinate and obj.superordinate.dn
+		if obj.oldattr.get('entryUUID'):
+			props['entry_uuid'] = obj.oldattr['entryUUID'][0].decode('utf-8', 'replace')
+		# TODO: objectFlag is available for every module. remove the extended attribute and always map it.
+		# alternative: add some other meta information to this object, e.g. is_hidden_object: True, is_synced_from_active_directory: True, ...
+		props['properties'].setdefault('objectFlag', [x.decode('utf-8', 'replace') for x in obj.oldattr.get('univentionObjectFlag', [])])
+		if copy or add:
+			props.pop('dn', None)
+			props.pop('references', None)
+			props.pop('id', None)
 		return props
 
 	@sanitize_body_arguments(
@@ -2756,6 +2770,7 @@ class ObjectAdd(FormBase, Ressource):
 		self.add_link(result, 'udm:object-modules', self.urljoin('../../'), title=_('All modules'))
 		self.add_link(result, 'udm:object-module', self.urljoin('../'), title=self.get_parent_object_type(module).object_name_plural)
 		self.add_link(result, 'udm:object-type', self.urljoin('.'), title=module.object_name)
+		self.add_link(result, 'create', self.urljoin('.'), title=module.object_name, method='POST')
 
 		result.setdefault('_embedded', {})
 		result['_embedded']['udm:layout'] = module.get_layout()
@@ -2781,7 +2796,7 @@ class ObjectAdd(FormBase, Ressource):
 
 		obj = module.module.object(dn, self.ldap_connection, ldap_position, superordinate=superordinate)
 		obj.open()
-		result.update(Object.get_representation(module, obj, ['*'], self.ldap_connection, copy))
+		result.update(Object.get_representation(module, obj, ['*'], self.ldap_connection, copy, True))
 
 		form = self.add_form(result, action=self.urljoin(''), method='POST', id='add', layout='udm:layout')
 		self.add_form_element(form, 'position', position or '')
