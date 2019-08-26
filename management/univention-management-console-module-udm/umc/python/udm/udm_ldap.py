@@ -1068,6 +1068,15 @@ class UDM_Module(object):
 		"""List of UDM module names of templates"""
 		return getattr(self.module, 'template', None)
 
+	def get_default_container(self):
+		ldap_connection, ldap_position = self.get_ldap_connection()
+		# TODO: move code below into UDM!
+		if hasattr(self.module, 'policy_position_dn_prefix'):
+			return '%s,cn=policies,%s' % (self.module.policy_position_dn_prefix, ldap_position.getBase())
+
+		defaults = self.get_default_containers()
+		return defaults[0] if defaults else ldap_position.getBase()
+
 	def get_default_containers(self):
 		"""List of LDAP DNs of default containers"""
 		ldap_connection, ldap_position = self.get_ldap_connection()

@@ -2487,13 +2487,7 @@ class Object(FormBase, Ressource):
 		elif superordinate:
 			ldap_position.setDn(superordinate)
 		else:
-			if hasattr(module.module, 'policy_position_dn_prefix'):
-				container = '%s,cn=policies,%s' % (module.module.policy_position_dn_prefix, ldap_position.getBase())
-			else:
-				defaults = module.get_default_containers()
-				container = defaults[0] if defaults else ldap_position.getBase()
-
-			ldap_position.setDn(container)
+			ldap_position.setDn(module.get_default_container())
 
 		superordinate = self.superordinate_dn_to_object(module, superordinate)
 
@@ -2781,6 +2775,8 @@ class ObjectAdd(FormBase, Ressource):
 		ldap_position = univention.admin.uldap.position(self.ldap_position.getBase())
 		if position:
 			ldap_position.setDn(position)
+		else:
+			ldap_position.setDn(module.get_default_container())
 		superordinate = self.superordinate_dn_to_object(module, superordinate)
 
 		obj = module.module.object(dn, self.ldap_connection, ldap_position, superordinate=superordinate)
