@@ -436,10 +436,11 @@ class Object(Client):
 			'If-Unmodified-Since': self.last_modified,
 			'If-Match': self.etag,
 		}.items() if value)
-		resp, entry = self.client.make_request('PUT', self.uri, data=data, **headers)
+		response = self.client.make_request('PUT', self.uri, data=data, **headers)
+		resp = response.response
 		if resp.status_code == 201 and 'Location' in resp.headers:  # move()
-			resp, entry = self.client.make_request('GET', resp.headers['Location'])
-		self.dn = entry['dn']
+			response = self.client.make_request('GET', resp.headers['Location'])
+		self.dn = response.data['dn']
 		self.reload()
 
 	def _copy_from_obj(self, obj):
