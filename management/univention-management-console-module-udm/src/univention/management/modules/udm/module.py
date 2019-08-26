@@ -867,7 +867,7 @@ class RessourceBase(object):
 		return UDM_Module(flavor, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 
 	def navigation(self):
-		return ('udm:object-modules', 'udm:object-module', 'udm:object-type', 'up', 'self')
+		return ('udm:object-modules', 'udm:object-module', 'type', 'up', 'self')
 
 
 class Ressource(RessourceBase, RequestHandler):
@@ -2331,6 +2331,7 @@ class Object(FormBase, Ressource):
 		self.add_link(props, 'udm:object-modules', self.urljoin('../../'), title=_('All modules'))
 		self.add_link(props, 'udm:object-module', self.urljoin('../'), name=parent_module.name, title=parent_module.object_name_plural)
 		#self.add_link(props, 'udm:object-types', self.urljoin('../'))
+		self.add_link(props, 'type', self.urljoin('x/../'), name=module.name, title=module.object_name)
 		self.add_link(props, 'up', self.urljoin('x/../'), name=module.name, title=module.object_name)
 		self.add_link(props, 'self', self.urljoin(''), title=dn)
 		self.add_link(props, 'describedby', self.urljoin(''), method='OPTIONS')
@@ -2358,7 +2359,7 @@ class Object(FormBase, Ressource):
 
 		self.set_header('Allow', ', '.join(methods))
 		if 'PATCH' in methods:
-			self.set_header('Accept-Patch', 'application/json-patch+json, application/hal+json, application/json')
+			self.set_header('Accept-Patch', 'application/json-patch+json, application/json')
 		return props
 
 	def set_metadata(self, obj):  # FIXME: move into UDM core!
@@ -2814,7 +2815,7 @@ class ObjectAdd(FormBase, Ressource):
 		self.add_link(result, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
 		self.add_link(result, 'udm:object-modules', self.urljoin('../../'), title=_('All modules'))
 		self.add_link(result, 'udm:object-module', self.urljoin('../'), title=self.get_parent_object_type(module).object_name_plural)
-		self.add_link(result, 'udm:object-type', self.urljoin('.'), title=module.object_name)
+		self.add_link(result, 'type', self.urljoin('.'), title=module.object_name)
 		self.add_link(result, 'create', self.urljoin('.'), title=module.object_name, method='POST')
 
 		result.setdefault('_embedded', {})
@@ -2921,7 +2922,7 @@ class ObjectEdit(FormBase, Ressource):
 		self.add_link(result, 'icon', self.urljoin('../favicon.ico'), type='image/x-icon')
 		self.add_link(result, 'udm:object-modules', self.urljoin('../../../'), title=_('All modules'))
 		self.add_link(result, 'udm:object-module', self.urljoin('../../'), title=self.get_parent_object_type(module).object_name_plural)
-		self.add_link(result, 'udm:object-type', self.urljoin('../'), title=module.object_name)
+		self.add_link(result, 'type', self.urljoin('../'), title=module.object_name)
 		self.add_link(result, 'up', self.urljoin('..', quote_dn(obj.dn)), title=obj.dn)
 		self.add_link(result, 'self', self.urljoin(''), title=_('Modify'))
 
@@ -2943,7 +2944,8 @@ class ObjectEdit(FormBase, Ressource):
 			for policy in module.policies:
 				ptype = policy['objectType']
 				form = self.add_form(result, action=self.urljoin(ptype) + '/', method='GET', name=ptype, rel='udm:policy-result')
-				self.add_form_element(form, 'policy', representation['policies'].get(ptype, [''])[0], label=policy['label'], title=policy['description'], placeholder=_('Policy DN'))
+				pol = (representation['policies'].get(ptype, ['']) or [''])[0]
+				self.add_form_element(form, 'policy', pol, label=policy['label'], title=policy['description'], placeholder=_('Policy DN'))
 				self.add_form_element(form, '', _('Policy result'), type='submit')
 
 			obj.open()

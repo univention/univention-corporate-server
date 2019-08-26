@@ -212,7 +212,7 @@ class Session(object):
 		for link in link:
 			if isinstance(link, dict) and (not name or link.get('name') == name):
 				if link.get('deprecation'):
-					pass
+					pass  # TODO: log warning
 				if link.get('templated'):
 					link['href'] = uritemplate.expand(link['href'], template)
 				yield link
@@ -253,12 +253,16 @@ class UDM(Client):
 		self.entry = None
 		super(UDM, self).__init__(Session(self, *args, **kwargs))
 
+	def load(self):
+		# FIXME: use HTTP caching instead of memory caching
+		if self.entry is None:
+			self.reload()
+
 	def reload(self):
 		self.entry = self.client.request('GET', self.uri)
 
 	def modules(self, name=None):
-		# TODO: cache - needs server side support
-		self.reload()
+		self.load()
 		for module in self.client.resolve_relations(self.entry, 'udm:object-modules'):
 			for module_info in self.client.get_relations(module.data, 'udm:object-types', name):
 				yield Module(self, module_info['href'], module_info['name'], module_info['title'])
@@ -268,11 +272,11 @@ class UDM(Client):
 		return self
 
 	def obj_by_dn(self, dn):
-		self.reload()
+		self.load()
 		return Object.from_response(self.udm, self.client.resolve_relation(self.entry, 'udm:object/get-by-dn', template={'dn': dn}))
 
 	def obj_by_uuid(self, uuid):
-		self.reload()
+		self.load()
 		return Object.from_response(self.udm, self.client.resolve_relation(self.entry, 'udm:object/get-by-uuid', template={'uuid': uuid}))
 
 	def get(self, name):
@@ -310,10 +314,13 @@ class Module(Client):
 		return Object.from_response(self.udm, resp)
 
 	def get(self, dn):
+		# TODO: use a link relation instead of a search
 		for obj in self.search(position=dn, scope='base'):
 			return obj.open()
 
 	def get_by_entry_uuid(self, uuid):
+		# TODO: use a link relation instead of a search
+		#return self.udm.get_by_uuid(uuid)
 		for obj in self.search(filter={'entryUUID': uuid}, scope='base'):
 			return obj.open()
 
@@ -368,10 +375,13 @@ class References(object):
 
 	def __init__(self, obj=None):
 		self.obj = obj
+		self.udm = self.obj.udm if self.obj is not None else None
 
 	def __getitem__(self, item):
-		links = [ShallowObject(self.obj.udm, x['name'], x['href']) for x in self.obj.links['udm:object-reference/%s' % (item,)]]
-		return links
+		return [
+			ShallowObject(self.obj.udm, x['name'], x['href'])
+			for x in self.udm.get_relations(self.obj.links, 'udm:object-reference/%s' % (item,))
+		]
 
 	def __get__(self, obj, cls=None):
 		return type(self)(obj)
@@ -382,22 +392,16 @@ class Object(Client):
 	objects = References()
 
 	@property
-	def props(self):
-		return self.properties
-
-	@props.setter
-	def props(self, props):
-		self.properties = props
-
-	@property
 	def module(self):
+		# FIXME: use "type" relation link
+		#object_type = self.udm.get_relation(self.links, 'type')
 		return self.udm.get(self.object_type)
 
 	@classmethod
 	def from_response(cls, udm, response):
 		entry = response.data
 		resp = response.response
-		return cls(udm, entry['objectType'], entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), entry.get('uri'), links=entry.get('_links', {}), etag=resp.headers.get('Etag'), last_modified=resp.headers.get('Last-Modified'))
+		return cls(udm, entry['objectType'], entry.get('dn'), entry['properties'], entry['options'], entry['policies'], entry.get('position'), entry.get('superordinate'), entry.get('uri'), links=entry, etag=resp.headers.get('Etag'), last_modified=resp.headers.get('Last-Modified'))
 
 	def __init__(self, udm, object_type, dn, properties, options, policies, position, superordinate, uri, links=None, etag=None, last_modified=None, *args, **kwargs):
 		super(Object, self).__init__(udm.client, *args, **kwargs)
@@ -413,11 +417,14 @@ class Object(Client):
 		self.links = links or {}
 		self.etag = etag
 		self.last_modified = last_modified
+		self.links.setdefault('_links', {})
+		self.links.setdefault('_embedded', {})
 
 	def __repr__(self):
 		return 'Object(module={}, dn={}, uri={})'.format(self.object_type, self.dn, self.uri)
 
 	def reload(self):
+		# FIXME: use "self" relation link
 		obj = self.module.get(self.dn)
 		self._copy_from_obj(obj)
 
@@ -430,9 +437,13 @@ class Object(Client):
 	def delete(self, remove_referring=False):
 		return self.client.request('DELETE', self.uri)
 
+	def move(self, position):
+		self.position = position
+		self.save()
+
 	def _modify(self):
 		data = {
-			'properties': self.props,
+			'properties': self.properties,
 			'options': self.options,
 			'policies': self.policies,
 			'position': self.position,
@@ -444,14 +455,16 @@ class Object(Client):
 		}.items() if value)
 		response = self.client.make_request('PUT', self.uri, data=data, **headers)
 		resp = response.response
+		# TODO: outsource redirection handling into self.client
 		if resp.status_code == 201 and 'Location' in resp.headers:  # move()
 			response = self.client.make_request('GET', resp.headers['Location'])
+		self.links = response.data
 		self.dn = response.data['dn']
 		self.reload()
 
 	def _copy_from_obj(self, obj):
 		self.dn = obj.dn
-		self.props = obj.props
+		self.properties = obj.properties
 		self.options = obj.options
 		self.policies = obj.policies
 		self.position = obj.position
@@ -464,7 +477,7 @@ class Object(Client):
 
 	def _create(self):
 		data = {
-			'properties': self.props,
+			'properties': self.properties,
 			'options': self.options,
 			'policies': self.policies,
 			'position': self.position,
@@ -472,6 +485,7 @@ class Object(Client):
 		}
 		response = self.client.make_request('POST', self.module.uri, data=data)
 		resp = response.response
+		# TODO: outsource redirection handling into self.client
 		if resp.status_code in (200, 201) and 'Location' in resp.headers:
 			uri = resp.headers['Location']
 			obj = ShallowObject(self.udm, None, uri).open()

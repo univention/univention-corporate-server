@@ -179,7 +179,7 @@ class CLIClient(object):
 			self.print_line('URL', entry.uri)
 			self.print_line('Object-Type', entry.object_type)
 			#entry = entry.open()
-			for key, value in sorted(entry.props.items()):
+			for key, value in sorted(entry.properties.items()):
 				if isinstance(value, list):
 					for item in value:
 						if isinstance(item, (basestring, int, float)):

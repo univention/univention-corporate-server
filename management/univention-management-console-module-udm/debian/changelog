@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.12-30) unstable; urgency=medium
+
+  * Bug #27816: enhance CLI Client
+
+ -- Florian Best <best@univention.de>  Thu, 29 Aug 2019 16:40:38 +0200
+
 univention-management-console-module-udm (9.0.12-29) unstable; urgency=medium
 
   * Bug #27816: Bug #50049: fix/improove swagger definition
