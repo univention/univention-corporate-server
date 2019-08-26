@@ -40,6 +40,7 @@ services:
 SETTINGS = '''
 [85_docker_compose/test_key]
 Type = String
+Show = Install
 Description = Just a test
 InitialValue = This is a test
 '''
@@ -90,7 +91,7 @@ if __name__ == '__main__':
 			assert content['networks']['appcenter_net']['ipam']['config'][0]['subnet'] == '172.16.0.0/24'
 			assert content['services']['test1']['networks']['appcenter_net']['ipv4_address'] == '172.16.0.2'
 			assert content['services']['test2']['networks']['appcenter_net']['ipv4_address'] == '172.16.0.3'
-			assert content['services']['test2']['environment']['TEST_KEY'] == 'This is a test'
+			assert content['services']['test2']['environment']['TEST_KEY'] == 'This is a test', content['services']['test2']['environment']
 		finally:
 			app.uninstall()
 			app.remove()
