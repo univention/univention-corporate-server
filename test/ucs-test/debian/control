@@ -657,3 +657,14 @@ Provides: ucs-test-module
 Description: Test the univention-ucs-translation-template
  This package includes test to verify the functionality of utilities
  from the univention-ucs-translation-template package.
+
+Package: ucs-test-udm-rest
+Architecture: all
+Depends: ucs-test-libs (= ${source:Version}),
+ python-pytest,
+ ${misc:Depends}
+Recommends: ucs-test-framework
+Provides: ucs-test-module
+Description: Test the UDM HTTP API
+ This package includes test to verify the functionality of utilities
+ from the UDM HTTP API.

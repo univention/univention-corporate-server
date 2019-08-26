@@ -1,3 +1,9 @@
+ucs-test (9.0.3-18) unstable; urgency=medium
+
+  * Bug #50048: Add 73_udm-rest section
+
+ -- Florian Best <best@univention.de>  Mon, 26 Aug 2019 12:56:34 +0200
+
 ucs-test (9.0.3-17) unstable; urgency=medium
 
   * Bug #49092: adjust tests for non syncing st / c

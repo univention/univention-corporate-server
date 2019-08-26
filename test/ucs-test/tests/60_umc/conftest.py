@@ -45,6 +45,11 @@ def verify_ldap_object():
 	return utils.verify_ldap_object
 
 
+@pytest.fixture(scope="module")
+def verify_udm_object():
+	return _udm.verify_udm_object
+
+
 @pytest.fixture()
 def ServiceUnavailable():
 	return univention.lib.umc.ServiceUnavailable
