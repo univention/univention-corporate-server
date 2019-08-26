@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-53) unstable; urgency=medium
+
+  * Bug #50057: Limit to Docker Apps
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 26 Aug 2019 14:32:04 +0200
+
 univention-appcenter (8.0.11-52) unstable; urgency=medium
 
   * Bug #50057: Reinitialize Docker App
