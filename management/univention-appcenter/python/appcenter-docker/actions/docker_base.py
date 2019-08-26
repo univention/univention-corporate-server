@@ -73,9 +73,6 @@ class DockerActionMixin(object):
 	def _backup_container(self, app, remove=False):
 		docker = self._get_docker(app)
 		if docker.exists():
-			# New backup
-			image_repo = 'appcenter-backup-%s' % app.id
-			image_name = '%s:%d' % (image_repo, time.time())
 			if not Start.call(app=app):
 				self.fatal('Starting the container for %s failed' % app)
 				return False
@@ -86,6 +83,9 @@ class DockerActionMixin(object):
 				self.fatal('Stopping the container for %s failed' % app)
 				return False
 			if remove:
+				# New backup
+				image_repo = 'appcenter-backup-%s' % app.id
+				image_name = '%s:%d' % (image_repo, time.time())
 				shutil.move(app.get_conf_dir(), os.path.join(BACKUP_DIR, image_name, 'conf'))
 		else:
 			self.fatal('No container found. Unable to run store_data!')

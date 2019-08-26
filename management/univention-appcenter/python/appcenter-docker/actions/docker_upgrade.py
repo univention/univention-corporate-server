@@ -43,8 +43,6 @@ from univention.appcenter.actions.service import Start
 from univention.appcenter.ucr import ucr_save, ucr_get
 from univention.appcenter.packages import update_packages
 
-import os
-
 
 class Upgrade(Upgrade, Install, DockerActionMixin):
 
