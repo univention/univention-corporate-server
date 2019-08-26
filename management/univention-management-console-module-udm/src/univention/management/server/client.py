@@ -107,25 +107,37 @@ class ConnectionError(Exception):
 	pass
 
 
+class Response(object):
+
+	def __init__(self, response, data, uri):
+		self.response = response
+		self.data = data
+		self.uri = uri
+
+
 class Session(object):
 
-	def __init__(self, credentials, language='en-US', reconnect=True):
+	def __init__(self, credentials, language='en-US', reconnect=True, user_agent='univention.lib/1.0', enable_caching=False):
 		self.language = language
 		self.credentials = credentials
-		self.session = self.create_session()
 		self.reconnect = reconnect
+		self.user_agent = user_agent
+		self.enable_caching = enable_caching
 		self.default_headers = {
 			'Accept': 'application/hal+json; q=1, application/json; q=0.9; text/html; q=0.2, */*; q=0.1',
 			'Accept-Language': self.language,
+			'User-Agent': self.user_agent,
 		}
+		self.session = self.create_session()
 
 	def create_session(self):
 		sess = requests.session()
 		sess.auth = (self.credentials.username, self.credentials.password)
+		if not self.enable_caching:
+			return sess
 		try:
 			from cachecontrol import CacheControl
 		except ImportError:
-			#print('Cannot cache!')
 			pass
 		else:
 			sess = CacheControl(sess)
@@ -143,7 +155,7 @@ class Session(object):
 		}.get(method.upper(), sess.get)
 
 	def request(self, method, uri, data=None, **headers):
-		return self.make_request(method, uri, data, **headers)[1]
+		return self.make_request(method, uri, data, **headers).data
 
 	def make_request(self, method, uri, data=None, **headers):
 		if method in ('GET', 'HEAD'):
@@ -159,7 +171,7 @@ class Session(object):
 			except requests.exceptions.ConnectionError as exc:
 				raise ConnectionError(exc)
 			data = self.eval_response(response)
-			return response, data
+			return Response(response, data, uri)
 		for i in range(5):
 			try:
 				return doit()
@@ -212,7 +224,7 @@ class Session(object):
 			return
 
 		for relation in self.get_relations(entry, relation, name, template):
-			yield self.request('GET', relation['href'])
+			yield self.make_request('GET', relation['href'])
 
 	def resolve_relation(self, entry, relation, name=None, template=None):
 		return next(self.resolve_relations(entry, relation, name, template))
@@ -235,13 +247,17 @@ class UDM(Client):
 		self.username = username
 		self.password = password
 		self._api_version = None
-		super(UDM, self).__init__(Session(self), *args, **kwargs)
+		self.entry = None
+		super(UDM, self).__init__(Session(self, *args, **kwargs))
+
+	def reload(self):
+		self.entry = self.client.request('GET', self.uri)
 
 	def modules(self, name=None):
 		# TODO: cache - needs server side support
-		entry = self.client.request('GET', self.uri)
-		for module in self.client.resolve_relations(entry, 'udm:object-modules'):
-			for module_info in self.client.get_relations(module, 'udm:object-types', name):
+		self.reload()
+		for module in self.client.resolve_relations(self.entry, 'udm:object-modules'):
+			for module_info in self.client.get_relations(module.data, 'udm:object-types', name):
 				yield Module(self, module_info['href'], module_info['name'], module_info['title'])
 
 	def version(self, api_version):
@@ -249,8 +265,12 @@ class UDM(Client):
 		return self
 
 	def obj_by_dn(self, dn):
-		# TODO: Needed?
-		raise NotImplementedError()
+		self.reload()
+		return Object.from_response(self.udm, self.client.resolve_relation(self.entry, 'udm:object/get-by-dn', template={'dn': dn}))
+
+	def obj_by_uuid(self, uuid):
+		self.reload()
+		return Object.from_response(self.udm, self.client.resolve_relation(self.entry, 'udm:object/get-by-uuid', template={'uuid': uuid}))
 
 	def get(self, name):
 		for module in self.modules(name):
@@ -280,8 +300,11 @@ class Module(Client):
 	def __repr__(self):
 		return 'Module(uri={}, name={})'.format(self.uri, self.name)
 
-	def new(self, superordinate=None):
-		return Object(self.udm, None, None, {}, [], {}, None, superordinate, None)
+	def new(self, position=None, superordinate=None):
+		self.load_relations()
+		data = {'position': position, 'superordinate': superordinate}
+		resp = self.client.resolve_relation(self.relations, 'create-form', template=data)
+		return Object.from_response(self.udm, resp)
 
 	def get(self, dn):
 		for obj in self.search(position=dn, scope='base'):
@@ -313,27 +336,11 @@ class Module(Client):
 			data['properties'] = '*'
 		self.load_relations()
 		entries = self.client.resolve_relation(self.relations, 'search', template=data)
-		for entry in entries['entries']:
+		for entry in entries.data['entries']:
 			if opened:
-				yield Object(self.udm, entry['objectType'], entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), entry['uri'], links=entry.get('_links', {}))  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
+				yield Object.from_response(self.udm, Response(entries.response, entry, entry['uri']))  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
 			else:
 				yield ShallowObject(self.udm, entry['dn'], entry['uri'])
-
-	def create(self, properties, options, policies, position, superordinate=None):
-		obj = self.create_template(position=position, superordinate=superordinate)
-		obj.options = options
-		obj.properties = properties
-		obj.policies = policies
-		obj.position = position
-		obj.superordinate = superordinate
-		obj.save()
-		return obj
-
-	def create_template(self, position=None, superordinate=None):
-		self.load_relations()
-		data = {'position': position, 'superordinate': superordinate}
-		entry = self.client.resolve_relation(self.relations, 'create-form', template=data)['entry']
-		return Object(self.udm, self.name, None, entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), self.uri, links=entry.get('_links', {}))
 
 
 class ShallowObject(Client):
@@ -345,8 +352,7 @@ class ShallowObject(Client):
 		self.uri = uri
 
 	def open(self):
-		resp, entry = self.client.make_request('GET', self.uri)
-		return Object(self.udm, entry['objectType'], entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), entry['uri'], links=entry.get('_links', {}), etag=resp.headers.get('Etag'), last_modified=resp.headers.get('Last-Modified'))
+		return Object.from_response(self.udm, self.client.make_request('GET', self.uri))
 
 	def __repr__(self):
 		return 'ShallowObject(dn={})'.format(self.dn)
@@ -380,6 +386,12 @@ class Object(Client):
 	@property
 	def module(self):
 		return self.udm.get(self.object_type)
+
+	@classmethod
+	def from_response(cls, udm, response):
+		entry = response.data
+		resp = response.response
+		return cls(udm, entry['objectType'], entry['dn'], entry['properties'], entry['options'], entry['policies'], entry['position'], entry.get('superordinate'), entry.get('uri'), links=entry.get('_links', {}), etag=resp.headers.get('Etag'), last_modified=resp.headers.get('Last-Modified'))
 
 	def __init__(self, udm, object_type, dn, properties, options, policies, position, superordinate, uri, links=None, etag=None, last_modified=None, *args, **kwargs):
 		super(Object, self).__init__(udm.client, *args, **kwargs)
@@ -451,9 +463,10 @@ class Object(Client):
 			'position': self.position,
 			'superordinate': self.superordinate,
 		}
-		resp, entry = self.client.make_request('POST', self.module.uri, data=data)
+		response = self.client.make_request('POST', self.module.uri, data=data)
+		resp = response.response
 		if resp.status_code in (200, 201) and 'Location' in resp.headers:
 			uri = resp.headers['Location']
 			obj = ShallowObject(self.udm, None, uri).open()
 			self._copy_from_obj(obj)
-		return entry
+		return response.data

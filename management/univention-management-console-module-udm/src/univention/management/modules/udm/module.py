@@ -585,13 +585,15 @@ class RessourceBase(object):
 			tree.write(self)
 
 	def get_hal_json(self, response):
+		response.setdefault('_embedded', {})
 		return self.get_json(response)
 
 	def get_json(self, response):
+		response.pop('_forms', None)
 		response.pop('position_layout', None)
 		response.pop('template_layout', None)
 		response.pop('layout_search', None)
-		response.setdefault('_links', {}).setdefault('curies', []).append({'name': 'udm', 'href': self.abspath('relation/') + '{rel}', 'templated': True})
+		self.add_link(response, 'curies', self.abspath('relation/') + '{rel}', name='udm', templated=True)
 		return response
 
 	def get_html(self, response):
@@ -660,7 +662,7 @@ class RessourceBase(object):
 	def get_html_form(self, _form, response):
 		form = ET.Element('form', **dict((p, _form[p]) for p in ('id', 'class', 'name', 'method', 'action', 'rel', 'enctype', 'accept-charset', 'novalidate') if _form.get(p)))
 		if _form.get('layout'):
-			self.get_html_layout(form, response[_form['layout']], _form.get('fields'))
+			self.get_html_layout(form, response.get(_form['layout']) or response.get('_embedded', {}).get(_form['layout']), _form.get('fields'))
 			return form
 		for field in _form.get('fields', []):
 			self.render_form_field(form, field)
@@ -1005,12 +1007,15 @@ class Relations(Ressource):
 			'object-type': 'the object type belonging to the current selected resource',
 			'children-types': 'list of object types which can be created underneath of the container or superordinate',
 			'properties': 'properties of the given object type',
+			'layout': 'layout information for the given object type',
 			'tree': 'list of tree content for providing a hierarchical navigation',
 			'policy-result': 'policy result by virtual policy object containing the values that the given object or container inherits',
 			'report': 'create a report',
 			'default-search': 'default search pattern/value for the given object property',
 			'next-free-ip': 'next IP configuration based on the given network object',
 			'property-choices': 'determine valid values for a given syntax class',
+			'object/get-by-dn': 'get an object from its DN',
+			'object/get-by-uuid': 'get an object from its entry UUID',
 			'object/remove': 'remove this object, edit-form is preferable',
 			'object/move': 'move objects to a certain position',
 			'object/edit': 'modify this object, edit-form is preferable',
@@ -1439,6 +1444,8 @@ class Modules(Ressource):
 				title = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).object_name_plural
 
 			self.add_link(result, 'udm:object-modules', self.urljoin(quote(main_type)) + '/', name='all' if main_type == 'navigation' else main_type, title=title)
+		self.add_link(result, 'udm:object/get-by-dn', self.urljoin('object') + '/{dn}', templated=True)
+		self.add_link(result, 'udm:object/get-by-uuid', self.urljoin('object') + '/{uuid}', templated=True)
 		self.add_link(result, 'udm:license', self.urljoin('license') + '/', name='license', title=_('UCS license'))
 		self.add_link(result, 'udm:ldap-base', self.urljoin('ldap/base') + '/', title=_('LDAP base'))
 		self.add_link(result, 'udm:relations', self.urljoin('relation') + '/', name='relation', title=_('All link relations'))
@@ -2062,7 +2069,7 @@ class Objects(FormBase, ReportingBase):
 		self.add_form_element(form, '', _('Search'), type='submit')
 
 		result['entries'] = entries  # TODO: is "entries" a good name? items, objects
-		self.add_caching(public=False, must_revalidate=True)
+		self.add_caching(public=False, no_cache=True, no_store=True, max_age=1, must_revalidate=True)
 		self.content_negotiation(result)
 
 	@tornado.gen.coroutine
@@ -2756,11 +2763,12 @@ class ObjectAdd(FormBase, Ressource):
 		self.add_link(result, 'udm:object-module', self.urljoin('../'), title=self.get_parent_object_type(module).object_name_plural)
 		self.add_link(result, 'udm:object-type', self.urljoin('.'), title=module.object_name)
 
-		result['layout'] = module.get_layout()
-		result['properties'] = module.get_properties()
-		self.layout(result['layout'])
-		self.properties(result['properties'])
-		meta_layout = result['layout'][0]
+		result.setdefault('_embedded', {})
+		result['_embedded']['udm:layout'] = module.get_layout()
+		result['_embedded']['udm:properties'] = module.get_properties()
+		self.layout(result['_embedded']['udm:layout'])
+		self.properties(result['_embedded']['udm:properties'])
+		meta_layout = result['_embedded']['udm:layout'][0]
 		meta_layout['layout'].extend(['position'])
 		# TODO: wizard: first select position & template
 
@@ -2777,9 +2785,9 @@ class ObjectAdd(FormBase, Ressource):
 
 		obj = module.module.object(dn, self.ldap_connection, ldap_position, superordinate=superordinate)
 		obj.open()
-		result['entry'] = Object.get_representation(module, obj, ['*'], self.ldap_connection, copy)
+		result.update(Object.get_representation(module, obj, ['*'], self.ldap_connection, copy))
 
-		form = self.add_form(result, action=self.urljoin(''), method='POST', id='add', layout='layout')
+		form = self.add_form(result, action=self.urljoin(''), method='POST', id='add', layout='udm:layout')
 		self.add_form_element(form, 'position', position or '')
 		if module.superordinate_names:
 			meta_layout['layout'].append('superordinate')
@@ -2790,16 +2798,16 @@ class ObjectAdd(FormBase, Ressource):
 			meta_layout['layout'].append('template')
 
 		values = {}
-		for prop in result['properties']:
+		for prop in result['_embedded']['udm:properties']:
 			key = prop['id']
 			if key.startswith('$'):
 				continue
 			values[key] = obj[key]
 		values = dict(encode_properties(obj.module, values, self.ldap_connection))
-		self.add_property_form_elements(module, form, result['properties'], values)
+		self.add_property_form_elements(module, form, result['_embedded']['udm:properties'], values)
 
 		for policy in module.policies:
-			result['layout'][-1]['layout'].append('policies[%s]' % (policy['objectType'],))
+			result['_embedded']['udm:layout'][-1]['layout'].append('policies[%s]' % (policy['objectType'],))
 			self.add_form_element(form, 'policies[%s]' % (policy['objectType']), '', label=policy['label'])
 
 		meta_layout['layout'].append('')
@@ -2939,6 +2947,12 @@ class ObjectEdit(FormBase, Ressource):
 
 		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation(result)
+
+	def get_hal_json(self, response):
+		response.setdefault('_embedded', {})
+		response['_embedded']['udm:layout'] = response.pop('layout')
+		response['_embedded']['udm:properties'] = response.pop('properties')
+		return super(ObjectEdit, self).get_hal_json(response)
 
 
 class ObjectMultiEdit(ObjectEdit):

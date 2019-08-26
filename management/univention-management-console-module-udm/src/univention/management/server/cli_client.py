@@ -60,7 +60,7 @@ class CLIClient(object):
 			username = ldap.dn.str2dn(username)[0][0][1]
 		except (ldap.DECODING_ERROR, IndexError):
 			pass
-		self.udm = UDM('https://%(hostname)s.%(domainname)s/univention/udm/' % ucr, username, args.bindpwd)
+		self.udm = UDM('https://%(hostname)s.%(domainname)s/univention/udm/' % ucr, username, args.bindpwd, user_agent='univention.cli/%(version/version)s-%(version/patchlevel)s-errata%(version/erratalevel)s' % ucr)
 
 	def get_modules(self):
 		return self.udm.modules()
@@ -80,7 +80,7 @@ class CLIClient(object):
 
 	def create_object(self, args):
 		module = self.get_module(args.object_type)
-		obj = module.create_template(position=args.position, superordinate=args.superordinate)
+		obj = module.new(position=args.position, superordinate=args.superordinate)
 		if args.position:
 			obj.position = args.position
 		self.set_properties(obj, args)
@@ -222,9 +222,10 @@ class CLIClient(object):
 	def get_info(self, args, file=sys.stdout):
 		module = self.get_module(args.object_type)
 		module.load_relations()
-		mod = module.resolve_relation(module.relations, 'create-form', {})  # TODO: integrate in client.py?
-		properties = dict((prop['id'], prop) for prop in mod['properties'])
-		layout = mod['layout']
+		mod = self.udm.client.resolve_relation(module.relations, 'create-form', template={'position': '', 'superordinate': ''}).data  # TODO: integrate in client.py?
+		properties = self.udm.client.resolve_relation(mod, 'udm:properties')
+		properties = dict((prop['id'], prop) for prop in properties)
+		layout = self.udm.client.resolve_relation(mod, 'udm:layout')
 
 		for layout in layout:
 			print('  %s - %s:' % (layout['label'], layout['description']), file=file)
