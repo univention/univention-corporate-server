@@ -1,0 +1,15 @@
+#!/usr/share/ucs-test/runner python
+## desc: |
+##  Test appcenter/suggestions call
+## roles-not: [basesystem]
+## packages:
+##   - univention-management-console-module-appcenter
+## tags: [appcenter]
+## exposure: safe
+
+from univention.testing.umc import Client
+
+
+if __name__ == '__main__':
+	client = Client.get_test_connection()
+	client.umc_command('appcenter/suggestions', {'version': 'v1'})
