@@ -3,9 +3,12 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-appcenter
-fix: 8.0.11-51A~4.4.0.201908200941
+fix: 8.0.11-53A~4.4.0.201908261432
 desc: |-
   This update addresses the following issue(s):
   * Multi Container Apps may now use the App Settings to control their
     docker-compose file.
-bug: [50030]
+  * Docker App can now be reinitialized when necessary. This copies the
+    current settings into a new container. To be used internally by App
+    Providers.
+bug: [50030, 50057]
