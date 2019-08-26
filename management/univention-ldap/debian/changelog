@@ -1,3 +1,9 @@
+univention-ldap (15.0.0-23) unstable; urgency=medium
+
+  * Bug #49734: split ACL's of DC Slave into 60- and 70- UCR template
+
+ -- Florian Best <best@univention.de>  Mon, 26 Aug 2019 11:48:08 +0200
+
 univention-ldap (15.0.0-22) unstable; urgency=medium
 
   * Bug #48698: Fix user visible spelling errors

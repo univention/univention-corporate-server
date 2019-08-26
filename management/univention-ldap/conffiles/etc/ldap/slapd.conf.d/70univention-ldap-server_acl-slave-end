@@ -1,0 +1,24 @@
+@!@
+if configRegistry.is_false('ldap/acl/read/anonymous'):
+	print('access to dn.subtree="%s" attrs=entry,uid' % (configRegistry['ldap/base'],))
+	ldap_acl_read_anonymous_ips = configRegistry.get('ldap/acl/read/ips')
+	if ldap_acl_read_anonymous_ips:
+		for ip in ldap_acl_read_anonymous_ips.split(','):
+			print('   by peername.ip=%s read' % ip)
+	print('   by anonymous auth')
+	print('   by * +0 break')
+	print('')
+print('access to *')
+if configRegistry.is_false('ldap/acl/read/anonymous'):
+	print('   by users read')
+	ldap_acl_read_anonymous_ips = configRegistry.get('ldap/acl/read/ips')
+	if ldap_acl_read_anonymous_ips:
+		for ip in ldap_acl_read_anonymous_ips.split(','):
+			print('   by peername.ip=%s read' % ip)
+else:
+	print('   by * read')
+print('')
+
+if configRegistry.get('ldap/replog', '').lower() in ('true', 'yes'):
+	print("replogfile /var/lib/univention-ldap/replog/replog")
+@!@
