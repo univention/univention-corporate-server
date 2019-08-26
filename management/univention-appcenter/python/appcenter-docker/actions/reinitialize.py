@@ -49,6 +49,9 @@ class Reinitialize(Upgrade):
 
 	def main(self, args):
 		app = args.app
+		if not app.docker:
+			self.warn('Only works for Docker Apps')
+			return
 		self.old_app = app
 		if os.path.exists(app.docker_script_setup):
 			self.warn('Cannot reinitialize an App with a setup script: Credentials are not passed')
