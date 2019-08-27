@@ -8,12 +8,13 @@ def ucr():
 	with _ucr.UCSTestConfigRegistry() as ucr:
 		yield ucr
 
+
 @pytest.yield_fixture()
-def s4connector_restart():
-	yield None
+def restart_s4connector_if_present():
 	if utils.s4connector_present():
-		print ('restarting s4 connector')
+		print('restarting s4 connector')
 		utils.restart_s4connector()
+
 
 @pytest.fixture(scope="module")
 def server_role(ucr):

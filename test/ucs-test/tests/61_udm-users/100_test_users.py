@@ -14,7 +14,7 @@ import subprocess
 
 from univention.config_registry import handler_set
 from univention.testing.strings import random_username
-from univention.testing.utils import wait_for_connector_replication, restart_s4connector, s4connector_present
+from univention.testing.utils import wait_for_connector_replication
 from univention.testing.udm import UCSTestUDM_NoModification
 
 
@@ -218,12 +218,11 @@ class TestUsers(object):
 		('<firstname> <lastname>', {'firstname': 'X', 'lastname': 'Y'}, 'X Y'),
 		('<username> <firstname> <lastname>', {'username': _modlist_cn_username, 'firstname': 'X', 'lastname': 'Y'}, '%s X Y' % (_modlist_cn_username,)),
 	])
-	def test_modlist_cn(self, s4connector_restart, udm, ucr, form, props, cn):
+	def test_modlist_cn(self, restart_s4connector_if_present, udm, ucr, form, props, cn):
 		handler_set(['directory/manager/usercn/attributes=%s' % (form,)])
 		# restart udm cli and connector to apply new setting
 		udm.stop_cli_server()
-		if s4connector_present():
-			restart_s4connector()
+		restart_s4connector_if_present()
 		self._test_modlist(udm, props, {'cn': [cn]})
 
 	def _test_modlist(self, udm, props, attrs, **kwargs):
