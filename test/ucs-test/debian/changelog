@@ -1,3 +1,10 @@
+ucs-test (9.0.3-25) unstable; urgency=low
+
+  * Bug #50066: make verify_ldap_object() retry_count and delay
+    UCR-configurable
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 27 Aug 2019 18:16:18 +0200
+
 ucs-test (9.0.3-24) unstable; urgency=medium
 
   * Bug #47722: and again...

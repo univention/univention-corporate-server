@@ -57,6 +57,8 @@ LISTENER_INIT_SCRIPT = '/etc/init.d/univention-directory-listener'
 FIREWALL_INIT_SCRIPT = '/etc/init.d/univention-firewall'
 SLAPD_INIT_SCRIPT = '/etc/init.d/slapd'
 
+ucr = None
+
 
 class LDAPError(Exception):
 	pass
@@ -177,6 +179,13 @@ def retry_on_error(func, exceptions=(Exception,), retry_count=20, delay=10):
 
 def verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=True, retry_count=20, delay=10):
 	# type: (str, Dict[str, str], bool, bool, int, float) -> None
+	global ucr
+	if not ucr:
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
+	retry_count = int(ucr.get("tests/verify_ldap_object/retry_count", retry_count))
+	delay = int(ucr.get("tests/verify_ldap_object/delay", delay))
+
 	return retry_on_error(
 		functools.partial(__verify_ldap_object, baseDn, expected_attr, strict, should_exist),
 		(LDAPUnexpectedObjectFound, LDAPObjectNotFound, LDAPObjectValueMissing),
