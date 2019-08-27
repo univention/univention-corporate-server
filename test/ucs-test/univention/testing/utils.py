@@ -252,9 +252,11 @@ def stop_s4connector():
 def start_s4connector():
 	subprocess.call((S4CONNECTOR_INIT_SCRIPT, 'start'))
 
+
 def restart_s4connector():
 	stop_s4connector()
 	start_s4connector()
+
 
 def stop_slapd():
 	subprocess.call((SLAPD_INIT_SCRIPT, 'stop'))
