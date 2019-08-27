@@ -3,7 +3,7 @@ release: "4.3"
 version: [4]
 scope: ucs_4.3-0-errata4.3-4
 src: qemu
-fix: 1:2.8+dfsg-6+deb9u8A~4.3.1.201908270838
+fix: 1:2.8+dfsg-6+deb9u8A~4.3.4.20190827083
 desc: |
  This update addresses the following issues:
  * device_tree: heap buffer overflow while loading device tree blob
