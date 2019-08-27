@@ -143,7 +143,7 @@ test_master () {
 	sleep 360 # wait for sysvol sync
 	# reboot system to apply gpo's
 	python shared-utils/ucs-winrm.py reboot --client $WIN2016
-	sleep 30
+	sleep 120
 	python shared-utils/ucs-winrm.py run-ps --cmd 'gpupdate /force' --client $WIN2016  --credssp
 	python shared-utils/ucs-winrm.py check-applied-gpos --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --client $WIN2012 \
 		--usergpo 'GPO5' --usergpo 'GPO3' --usergpo 'Default Domain Policy' \
@@ -189,8 +189,9 @@ test_master () {
 	run_on_ucs_hosts $MEMBER "stat /home/testshare/test-admin01.txt"
 	run_on_ucs_hosts $SLAVE "stat /home/testshare/test-admin01.txt"
 	run_on_ucs_hosts $SLAVE "stat /home/testshare/test-newuser01.txt"
-	python shared-utils/ucs-winrm.py create-share-file --server ucs-slave --filename newuser03-test.txt \
-		--username 'newuser03' --userpwd "Univention.99" --share testshareSlave --debug 2>&1 | grep -i PermissionDenied
+	# check invalid write access
+	! python shared-utils/ucs-winrm.py create-share-file --server ucs-slave --filename newuser03-test.txt --username 'newuser03' --userpwd "Univention.99" --share testshareSlave --debug
+	! run_on_ucs_hosts $SLAVE "stat /home/testshare/newuser03-test.txt"
 	python shared-utils/ucs-winrm.py create-share-file --server $MASTER --share "testshare" --filename "testfile.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
 	python shared-utils/ucs-winrm.py create-share-file --server $MASTER --filename test-admin.txt --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --share Administrator
 	stat /home/Administrator/test-admin.txt
