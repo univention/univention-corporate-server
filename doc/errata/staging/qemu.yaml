@@ -1,0 +1,18 @@
+product: ucs
+release: "4.4"
+version: [0, 1]
+scope: ucs_4.4-0-errata4.4-1
+src: qemu
+fix: 1:2.8+dfsg-6+deb9u8A~4.4.1.201908270838
+desc: |
+ This update addresses the following issues:
+ * device_tree: heap buffer overflow while loading device tree blob
+   (CVE-2018-20815)
+ * qemu-bridge-helper ACL can be bypassed when names are too long
+   (CVE-2019-13164)
+ * slirp: heap buffer overflow during packet reassembly (CVE-2019-14378)
+bug: [50059]
+cve:
+- CVE-2018-20815
+- CVE-2019-13164
+- CVE-2019-14378
