@@ -316,9 +316,7 @@ class complex(ISyntax):
 
 		parsed = []
 		for i, (text, (desc, syn)) in enumerate(zip(texts, self.subsyntaxes)):
-			ud.debug(
-				ud.ADMIN, ud.INFO,
-				'syntax.py: subsyntax[%s]=%s, texts=%s' % (i, syn, text))
+			ud.debug(ud.ADMIN, ud.INFO, 'syntax.py: subsyntax[%s]=%s, texts=%s' % (i, syn, text))
 			if text is None and i + 1 < minn:
 				raise univention.admin.uexceptions.valueInvalidSyntax(_("Missing argument"))
 			s = syn() if inspect.isclass(syn) else syn
@@ -414,9 +412,9 @@ class UDM_Attribute(ISyntax):
 	is_complex = False
 	"""True for a complex item consisting of multiple sub-items."""
 	key_index = 0
-	"""When the UDM property is complex: The number of the sub-item, which is uses as the value for this syntax class."""
+	"""When the UDM property is complex: The number of the sub-item, which is used as the value for this syntax class."""
 	label_index = 0
-	"""When the UDM property is complex: The number of the sub-item, which is uses as the didsplay value."""
+	"""When the UDM property is complex: The number of the sub-item, which is used as the display value."""
 	label_format = None
 	"""Python format string used to convert the |UDM| properties to the displayed value."""
 	regex = None  # type: Optional[Pattern]
@@ -712,8 +710,9 @@ class Base64Bzip2XML(TextArea):
 
 class Base64UMCIcon(TextArea):
 	"""
-	Syntax fore a `base64` encoded icon (|SVG|, |PNG|, |JPEG|).
+	Syntax for a `base64` encoded icon (|SVG|, |PNG|, |JPEG|).
 	"""
+
 	@classmethod
 	def parse(self, text):
 		try:

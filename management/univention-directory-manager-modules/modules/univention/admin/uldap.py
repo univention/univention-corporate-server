@@ -413,7 +413,7 @@ class position:
 		:rtype: str
 
 		.. deprecated:: 4.3
-		   Unused.
+			Unused.
 		"""
 		domaincomponents = explodeDn(self.getDomain(), 1)
 		domain = string.join(domaincomponents, '.')
@@ -447,7 +447,7 @@ class position:
 		:rtype: tuple[str, int]
 
 		.. deprecated:: 4.3
-		   Unused.
+			Unused.
 		"""
 		domaincomponents = explodeDn(self.getDomain(), 1)
 		domain = string.join(domaincomponents, '.')

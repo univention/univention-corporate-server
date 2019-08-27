@@ -766,7 +766,7 @@ def layout(module_name, object=None):
 	module = get(module_name)
 	defining_layout = None
 	if object:
-		ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout:: got an defined object')
+		ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout: got a defined object')
 
 	if object and hasattr(object, 'layout'):  # for dynamic modules like users/self
 		ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout:: layout is defined by the object')
