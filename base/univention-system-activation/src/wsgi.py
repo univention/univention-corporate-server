@@ -2,6 +2,7 @@
 
 import cgi
 import subprocess
+import traceback
 import json
 import re
 from ldif import LDIFParser
@@ -69,7 +70,13 @@ def clean_license_output(out):
 
 
 def application(environ, start_response):
-	"""WSGI entry point"""
+	def _error(message, trace=None):
+		return {
+			'status': 500,
+			'message': message,
+			'traceback': trace,
+			'location': '',
+		}
 
 	def _log(msg):
 		print >> environ['wsgi.errors'], msg
@@ -91,7 +98,9 @@ def application(environ, start_response):
 			return _finish(data=out)
 		except subprocess.CalledProcessError as exc:
 			_log('Failed to read license data from LDAP:\n%s' % exc)
-			return _finish('400 Bad Request', 'Failed to read license data from LDAP:\n%s' % exc)
+			return _finish('500 Internal Server Error', _error('Failed to read license data from LDAP:\n%s' % exc))
+		except Exception as exc:
+			return _finish(data=_error(str(exc), traceback.format_exc()))
 
 	# block uploads that are larger than 1MB
 	try:

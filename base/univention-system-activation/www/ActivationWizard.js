@@ -44,9 +44,8 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/TextBox",
 	"put-selector/put",
-	"umc/json!/license",
 	"umc/i18n!systemactivation"
-], function(declare, lang, array, Deferred, ioQuery, domQuery, request, xhr, script, Uploader, dialog, Wizard, Text, TextBox, put, license, _) {
+], function(declare, lang, array, Deferred, ioQuery, domQuery, request, xhr, script, Uploader, dialog, Wizard, Text, TextBox, put, _) {
 	return declare("ActivationWizard", [ Wizard ], {
 		autoFocus: true,
 		entries: null,
@@ -201,16 +200,20 @@ define([
 			emailNode.innerHTML = email_address;
 
 			// send the email
-			var data = {
-				email: email_address,
-				licence: license
-			};
-			return xhr.post('https://license.univention.de/keyid/conversion/submit', {
-				data: data,
-				handleAs: 'text',
-				headers: {
-					'X-Requested-With': null
-				}
+			xhr.get('/license', { handleAs: 'json' }).then(function(license) {
+				var data = {
+					email: email_address,
+					licence: license
+				};
+				return xhr.post('https://license.univention.de/keyid/conversion/submit', {
+					data: data,
+					handleAs: 'text',
+					headers: {
+						'X-Requested-With': null
+					}
+				});
+			}, function(error) {
+				tools.handleErrorStatus(error);
 			});
 		},
 
