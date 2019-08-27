@@ -3,7 +3,7 @@ release: "4.3"
 version: [4]
 scope: ucs_4.3-0-errata4.3-4
 src: apache2
-fix: 2.4.25-3+deb9u8A~4.3.1.201908270838
+fix: 2.4.25-3+deb9u8A~4.3.4.201908270838
 desc: |
  This update addresses the following issues:
  * request for large response leads to denial of service (CVE-2019-9517)
