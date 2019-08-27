@@ -1,3 +1,9 @@
+ucs-test (9.0.3-20) unstable; urgency=medium
+
+  * Bug #47722: fixed 61_udm-users/100_test_users.py test_modlist_cn
+
+ -- Felix Botner <botner@univention.de>  Tue, 27 Aug 2019 14:15:13 +0200
+
 ucs-test (9.0.3-19) unstable; urgency=medium
 
   * Bug #50030: App Settings: Fix settings file in test
