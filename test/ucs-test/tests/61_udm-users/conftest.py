@@ -11,9 +11,11 @@ def ucr():
 
 @pytest.yield_fixture()
 def restart_s4connector_if_present():
-	if utils.s4connector_present():
-		print('restarting s4 connector')
-		utils.restart_s4connector()
+	def restart():
+		if utils.s4connector_present():
+			print('restarting s4 connector')
+			utils.restart_s4connector()
+	return restart
 
 
 @pytest.fixture(scope="module")
