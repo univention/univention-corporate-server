@@ -1,3 +1,9 @@
+ucs-test (9.0.3-28) unstable; urgency=medium
+
+  * Bug #50057: Test reinitializing Docker App
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 28 Aug 2019 12:25:33 +0200
+
 ucs-test (9.0.3-27) unstable; urgency=medium
 
   * Bug# 50065: fix 86_selenium/191_app_suggestions_category
