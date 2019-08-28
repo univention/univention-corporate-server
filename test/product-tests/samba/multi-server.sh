@@ -104,7 +104,7 @@ test_master () {
 	sleep 360 # wait for sysvol sync
 	# reboot system to apply gpo's
 	python shared-utils/ucs-winrm.py reboot --client $WIN2016
-	sleep 30
+	sleep 120
 	python shared-utils/ucs-winrm.py run-ps --cmd 'gpupdate /force' --client $WIN2016  --credssp
 	python shared-utils/ucs-winrm.py check-applied-gpos --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --client $WIN2012 \
 		--usergpo 'GPO5' --usergpo 'GPO3' --usergpo 'Default Domain Policy' \
