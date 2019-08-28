@@ -3,7 +3,7 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: samba
-fix: 2:4.10.1-1A~4.4.0.201908261103
+fix: 2:4.10.1-1A~4.4.0.201908281210
 desc: |
  This update addresses the following issues:
  * This update fixes an issue in the samba-tool ntacl sysvolcheck command
