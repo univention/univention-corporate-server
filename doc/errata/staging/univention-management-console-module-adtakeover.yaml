@@ -6,5 +6,5 @@ src: univention-management-console-module-adtakeover
 fix: 6.0.1-9A~4.4.0.201908211607
 desc: |
  This update addresses the following issue(s):
- * Fixes GPO overwrite after an AD-Takeover
+ * Fixes GPO link synchronisation during AD-Takeover
 bug: [44278]
