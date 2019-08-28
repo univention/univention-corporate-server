@@ -8,7 +8,7 @@ desc: |-
   This update addresses the following issue(s):
   * Multi Container Apps may now use the App Settings to control their
     docker-compose file.
-  * Docker App can now be reinitialized when necessary. This copies the
+  * Docker Apps can now be reinitialized when necessary. This copies the
     current settings into a new container. To be used internally by App
     Providers.
 bug: [50030, 50057]
