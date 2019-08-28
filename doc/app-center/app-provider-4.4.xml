@@ -630,6 +630,14 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                     </listitem>
                     <listitem>
                         <simpara>
+														The <filename>docker-compose.yml</filename> is
+														itself a UCR template. As such, it will be
+														interpreted by the App Center before being used.
+														See <xref linkend="ucr-template" /> for details.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
                             The App Center adds two standard volumes for the
                             main service, as they are also included in Single
                             Container Apps. These are the
@@ -704,6 +712,55 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                     <filename>docker-compose.yml</filename> can be found at
                     <filename>/var/lib/univention-appcenter/apps/<replaceable>$appid</replaceable>/compose/docker-compose.yml</filename>.
                 </para>
+            <para id="ucr-template">
+							As stated above, the <filename>docker-compose.yml</filename> is a
+							UCR template. This means that you are able to match the file to
+							the environment of the Docker host. The <ulink
+                url="https://docs.software-univention.de/developer-reference.html">Univention
+                Developer Reference</ulink> knows
+							more about UCR templates, but the core mechanics are:
+            </para>
+                <orderedlist>
+                    <listitem>
+                        <simpara>
+													Although every
+													<filename>docker-compose.yml</filename> is a UCR
+													template, you may not notice it: Where no specific
+													tags are used, the very content is used. So if your
+													file does not need any of the features mentioned
+													below, just use your plain
+													<filename>docker-compose.yml</filename>.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+													You can add specific values of the Config Registry
+													into your file. More importantly, this includes <xref
+														linkend="app-settings">App Settings</xref> defined
+													by the App itself:
+													<programlisting>
+environment:
+	MY_KEY: @%@myapp/mysetting@%@
+</programlisting>
+													Note that App Settings are always added to the main
+													service automatically. But this allows adding them to
+													other containers and using them as part of a
+													composite value.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+													You can do Python scripting within the template, e.g.
+													to read (and write) the content of specific files.
+													<programlisting>
+environment:
+	MY_SECRET: @!@import uuid; print(uuid.uuid4())@!@
+</programlisting>
+													Note that currently, you cannot access App Settings
+													within the Python script.
+                        </simpara>
+                    </listitem>
+									</orderedlist>
         </section>
         <section id="create-app-with-docker:finish">
             <title>Finish multi container setup</title>
