@@ -38,7 +38,7 @@ determine_neighbour_s4host() {
 	do
 		# ignore hosts without a dns service principal account, they are RODC's
 		# TODO Is there a better way to check for RODC's?
-		if ! id "dns-$candidate"; then
+		if ! id "dns-$candidate" 1>/dev/null; then
 			continue
 		fi
 
