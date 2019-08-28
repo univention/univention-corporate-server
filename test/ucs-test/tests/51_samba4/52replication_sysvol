@@ -36,6 +36,12 @@ determine_neighbour_s4host() {
 	s4hosts=( $(univention-ldapsearch -LLL "(univentionService=Samba 4)" cn | sed -ne 's/^cn: //p') )
 	for candidate in "${s4hosts[@]}"
 	do
+		# ignore hosts without a dns service principal account, they are RODC's
+		# TODO Is there a better way to check for RODC's?
+		if ! id "dns-$candidate"; then
+			continue
+		fi
+
 		if [ "$candidate" != "$hostname" ] && ping -c 1 "$candidate.$domainname" > /dev/null; then
 			s4host_fqdn="$candidate.$domainname"
 			break

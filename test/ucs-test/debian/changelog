@@ -1,3 +1,9 @@
+ucs-test (9.0.3-26) unstable; urgency=medium
+
+  * Bug #50070: ignore RODC's in 51_samba4.52replication_sysvol
+
+ -- Felix Botner <botner@univention.de>  Wed, 28 Aug 2019 09:22:16 +0200
+
 ucs-test (9.0.3-25) unstable; urgency=low
 
   * Bug #50066: make verify_ldap_object() retry_count and delay
