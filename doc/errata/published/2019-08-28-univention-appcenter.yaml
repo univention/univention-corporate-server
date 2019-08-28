@@ -12,3 +12,5 @@ desc: |-
     current settings into a new container. To be used internally by App
     Providers.
 bug: [50030, 50057]
+erratum: 244
+announced: 2019-08-28
