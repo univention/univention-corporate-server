@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test docker compose
-## tags: [docker, xxx]
+## tags: [docker]
 ## exposure: dangerous
 ## packages:
 ##   - docker.io
