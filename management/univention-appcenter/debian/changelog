@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-55) unstable; urgency=medium
+
+  * Bug #49486: Remove old docker image after upgrade
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 29 Aug 2019 15:46:29 +0200
+
 univention-appcenter (8.0.11-54) unstable; urgency=medium
 
   * Bug #50082: Fix reinitialize on non-DC Master
