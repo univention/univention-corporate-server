@@ -245,7 +245,7 @@ class simpleLdap(object):
 		self.__set_options()
 		self.save()
 
-		self._validate_superordinate()
+		self._validate_superordinate(False)
 
 	def save(self):  # type: () -> None
 		"""Saves the current internal object state as old state for later comparison when e.g. modifying this object.
@@ -330,7 +330,7 @@ class simpleLdap(object):
 			if not self._ensure_dn_in_subtree(self.superordinate.dn, self.position.getDn()):
 				raise univention.admin.uexceptions.insufficientInformation(_('The position must be in the subtree of the superordinate.'))
 
-		self._validate_superordinate()
+		self._validate_superordinate(True)
 
 		return True
 
@@ -985,7 +985,7 @@ class simpleLdap(object):
 		"""
 		return self._exists
 
-	def _validate_superordinate(self):
+	def _validate_superordinate(self, must_exists=True):
 		"""Checks if the superordinate is set to a valid :class:`univention.admin.handlers.simpleLdap` object if this module requires a superordinate.
 			It is ensured that the object type of the superordinate is correct.
 			It is ensured that the object lies underneath of the superordinate position.
@@ -1007,6 +1007,8 @@ class simpleLdap(object):
 			if superordinate_names == set(['settings/cn']):
 				ud.debug(ud.ADMIN, ud.WARN, 'No settings/cn superordinate was given.')
 				return   # settings/cn might be misued as superordinate, don't risk currently
+			if not must_exists:
+				return
 			raise univention.admin.uexceptions.insufficientInformation(_('No superordinate object given'))
 
 		# check if the superordinate is of the correct object type

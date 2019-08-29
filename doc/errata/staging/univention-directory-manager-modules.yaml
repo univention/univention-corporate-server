@@ -6,5 +6,6 @@ src: univention-directory-manager-modules
 fix: 
 desc: |
  This update addresses the following issue(s):
- * 
-bug: [27816]
+ * The validation of superordinate objects has been delayed to the creation
+   or modification of objects instead of at object instantiation.
+bug: [27816, 50025]

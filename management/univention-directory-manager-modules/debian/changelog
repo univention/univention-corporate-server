@@ -1,3 +1,10 @@
+univention-directory-manager-modules (14.0.13-12) unstable; urgency=medium
+
+  * Bug #50025: the check for a valid superordinate is now delayed to the
+  	creation or modification of objects.
+
+ -- Florian Best <best@univention.de>  Fri, 06 Sep 2019 17:30:31 +0200
+
 univention-directory-manager-modules (14.0.13-11) unstable; urgency=medium
 
   * Bug #49092: remove initials from mapping
