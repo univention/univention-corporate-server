@@ -159,6 +159,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		self.log('Verifying Docker registry manifest for app image %s' % docker.image)
 		docker.verify()
 		self.log('Pulling Docker image %s' % docker.image)
+		docker.backup_run_file()
 		docker.pull()
 		self.log('Saving data from old container (%s)' % self.old_app)
 		Start.call(app=self.old_app)
@@ -172,6 +173,9 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		self.log('Removing old container')
 		if old_docker.container:
 			old_docker.rm()
+			self.log('Trying to remove old image')
+			if old_docker.rmi() != 0:
+				self.log('Failed to remove old image. Continuing anyway...')
 		self._had_image_upgrade = True
 		self.log('Setting up new container (%s)' % app)
 		ucr_save({app.ucr_image_key: None})

@@ -162,8 +162,8 @@ def create(image, command, hostname=None, ports=None, volumes=None, env_file=Non
 	return call_process2(args)
 
 
-def rmi(image):
-	return call(['docker', 'rmi', image])
+def rmi(*images):
+	return call(['docker', 'rmi'] + list(images))
 
 
 def rm(container):
@@ -376,6 +376,10 @@ class Docker(object):
 		if self.container:
 			return rm(self.container)
 
+	def rmi(self):
+		image = ucr_get(self.app.ucr_image_key)
+		return rmi(image)
+
 	def logs(self):
 		return docker_logs(self.container, logger=self.logger)
 
@@ -429,6 +433,9 @@ class Docker(object):
 				continue
 			return network
 		_logger.warn('Cannot find any viable subnet')
+
+	def backup_run_file(self):
+		pass
 
 class MultiDocker(Docker):
 	def verify(self):
@@ -582,3 +589,24 @@ class MultiDocker(Docker):
 		ret = self.stop()
 		ret = ret and call_process(['docker-compose', '-p', self.app.id, 'down', '--remove-orphans'], logger=self.logger, cwd=self.app.get_compose_dir()).returncode == 0
 		return ret
+
+	def rmi(self):
+		images = []
+		yml_file = self.app.get_compose_file('docker-compose.yml.bak')
+		try:
+			content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
+			services = content.get('services', {})
+			for service in services.itervalues():
+				image = service.get('image')
+				if image not in images:
+					images.append(image)
+			if images:
+				return rmi(*images)
+		except Exception as exc:
+			_logger.warn('Could not read docker-compose file: %s' % exc)
+			return 1
+
+	def backup_run_file(self):
+		yml_file = self.app.get_compose_file('docker-compose.yml')
+		yml_bak_file = '%s.bak' % yml_file
+		shutil.copy2(yml_file, yml_bak_file)
