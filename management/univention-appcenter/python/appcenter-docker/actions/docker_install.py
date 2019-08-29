@@ -35,8 +35,8 @@
 
 from univention.appcenter.actions.install import Install
 from univention.appcenter.actions.docker_base import DockerActionMixin
-from univention.appcenter.ucr import ucr_save
-from univention.appcenter.exceptions import InstallSetupFailed
+from univention.appcenter.ucr import ucr_save, ucr_get
+from univention.appcenter.exceptions import InstallSetupFailed, ReinitializeError
 from univention.appcenter.log import LogCatcher
 
 
@@ -52,7 +52,15 @@ class Install(Install, DockerActionMixin):
 		else:
 			if app.plugin_of:
 				return self._install_app_in_existing_container(app, args)
-			hostdn, password = self._register_host(app, args)
+			if not hasattr(args, 'register_host') or args.register_host:
+				hostdn, password = self._register_host(app, args)
+			else:
+				hostdn = ucr_get(app.ucr_hostdn_key)
+				try:
+					with open(app.secret_on_host) as fd:
+						password = fd.read()
+				except EnvironmentError:
+					raise ReinitializeError('Reinitialize failed: Could not read machine secret file.')
 			self.percentage = 30
 			self._start_docker_image(app, hostdn, password, args)
 			self.percentage = 50

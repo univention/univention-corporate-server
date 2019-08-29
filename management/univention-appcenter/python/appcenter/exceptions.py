@@ -305,6 +305,11 @@ class InstallWithoutPermissionError(Abort):
 	default_error_msg = 'The App requires install permissions which are missing. Please contact the App Provider.'
 
 
+class ReinitializeError(Abort):
+	code = 439
+	default_error_msg = 'Reinitializing the App failed.'
+
+
 class AppCenterError(Exception):
 	'''A "real" exception that developers cannot handle very well.
 	The difference between AppCenterError and Abort is that Abort is a

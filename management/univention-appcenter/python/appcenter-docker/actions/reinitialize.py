@@ -32,8 +32,6 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-import os.path
-
 from univention.appcenter.actions import StoreAppAction
 from univention.appcenter.actions.docker_upgrade import Upgrade
 
@@ -52,8 +50,11 @@ class Reinitialize(Upgrade):
 		if not app.docker:
 			self.warn('Only works for Docker Apps')
 			return
+		if not app.is_installed():
+			self.warn('Only works for installed Apps')
+			return
 		self.old_app = app
-		if os.path.exists(app.docker_script_setup):
+		if app.docker_script_setup:
 			self.warn('Cannot reinitialize an App with a setup script: Credentials are not passed')
 			return
 		_args = self._build_namespace(
@@ -71,6 +72,7 @@ class Reinitialize(Upgrade):
 			password=None,
 			set_vars={},
 			register_attributes=False,
+			register_host=False,
 			pull_image=True,
 			backup=True,
 			noninteractive=True)
