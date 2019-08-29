@@ -5,6 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.6.2
 Build-Depends: debhelper (>= 9),
  univention-config-dev,
+ univention-ucs-translation-template,
  dh-python,
  python-all,
  python3-all,

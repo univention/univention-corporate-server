@@ -33,8 +33,13 @@
 %:
 	dh $@ --with 'python2,python3'
 
+override_dh_auto_build:
+	univention-l10n-build de
+	dh_auto_build
+
 override_dh_auto_install:
 	univention-install-config-registry
+	univention-l10n-install de
 	dh_auto_install
 
 override_dh_auto_clean:
