@@ -5,7 +5,7 @@
 ## packages:
 ##   - docker.io
 
-from dockertest import Appcenter, get_app_version, App, UCSTest_DockerApp_InstallationFailed, get_docker_appbox_image, get_app_name
+from dockertest import Appcenter, get_app_version, App, UCSTest_DockerApp_InstallationFailed, get_app_name
 from univention.testing.utils import is_port_open
 import pytest
 import os
@@ -78,6 +78,8 @@ if __name__ == '__main__':
 			appcenter.update()
 			app.upgrade()
 			app.verify(joined=False)
+			images = subprocess.check_output(['docker', 'images'])
+			assert '94627dfbdf19' not in images, images
 			app.execute_command_in_container('ls /var/lib/univention-appcenter/apps/%s/data/test1.txt' % name)
 			image = subprocess.check_output(['docker', 'inspect', app.container_id, '--format={{.Config.Image}}']).strip()
 			assert image == 'docker-test.software-univention.de/alpine:3.7'
