@@ -49,6 +49,7 @@ class UMCTester(object):
 		self.selenium.do_login()
 		self.appcenter.open(do_reload=False)
 		self.selenium.wait_for_text('Suggestions based on installed apps')
+		self.selenium.save_screenshot(name=__file__)
 
 
 if __name__ == '__main__':
