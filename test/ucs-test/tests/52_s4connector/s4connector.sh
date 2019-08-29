@@ -242,13 +242,19 @@ function ad_set_attribute () {
 	local name="$2"
 	local value="$3"
 	local configbase="${4:-connector}"
+	local treat_value_as_base64="${5:-False}"
 
 	python2.7 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import s4connector
 adconnection = s4connector.S4Connection ('$configbase')
-adconnection.set_attribute ('$dn', '$name', '$value')
+if $treat_value_as_base64:
+	import base64
+	value = base64.decodestring('$value')
+else:
+	value = '$value'
+adconnection.set_attribute ('$dn', '$name', value)
 sys.exit (42)
 "
 	local retval="$?"
@@ -491,6 +497,7 @@ function ad_verify_attribute () {
 	local attribute="$2"
 	local expected_value="$3"
 	local configbase="${4:-connector}"
+	local case_sensitive="${5:-false}"
 
 	info "${dn}: \"$attribute\" == \"$expected_value\" ??"
 
@@ -501,11 +508,20 @@ function ad_verify_attribute () {
 		info "Unexpected return value ($retval) of ad_get_attribute in ad_verify_attribute"
 		return 2
 	fi
-	if verify_value "$attribute" "$value" "$expected_value"; then
-		info "Yes"
-		return 0
+	if $case_sensitive; then
+		if verify_value_ignore_case "$attribute" "$value" "$expected_value"; then
+			info "Yes"
+			return 0
+		else
+			return 1
+		fi
 	else
-		return 1
+		if verify_value "$attribute" "$value" "$expected_value"; then
+			info "Yes"
+			return 0
+		else
+			return 1
+		fi
 	fi
 }
 

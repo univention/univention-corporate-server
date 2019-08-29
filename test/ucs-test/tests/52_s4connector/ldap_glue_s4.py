@@ -137,8 +137,10 @@ class LDAPConnection:
 				s4.compatible_modstring(unicode(newrdn)))
 
 	def set_attribute(self, dn, key, value):
+		if key not in s4.DECODE_IGNORELIST:
+			value = s4.compatible_modstring(unicode(value))
 		self.lo.modify_ext_s(s4.compatible_modstring(unicode(dn)),
-			[(ldap.MOD_REPLACE, key, s4.compatible_modstring(unicode(value)))], serverctrls=self.serverctrls_for_add_and_modify)
+		[(ldap.MOD_REPLACE, key, value)], serverctrls=self.serverctrls_for_add_and_modify)
 
 	def set_attributes(self, dn, **attributes):
 		old_attributes = self.get(dn, attr=attributes.keys())

@@ -386,6 +386,7 @@ class simpleLdap(object):
 		# property does not exist
 		if not self.has_property(key):
 			# don't set value if the option is not enabled
+			ud.debug(ud.ADMIN, ud.WARN, '__setitem__: Ignoring property %s' % key)
 			try:
 				self.descriptions[key]
 			except KeyError:

@@ -41,6 +41,7 @@ import univention.s4connector.s4.ntsecurity_descriptor
 import univention.s4connector.s4.dns
 import univention.s4connector.s4.dc
 import univention.s4connector.s4.computer
+import univention.s4connector.s4.user
 
 from univention.s4connector.s4.mapping import ignore_filter_from_tmpl, ignore_filter_from_attr, configRegistry
 
@@ -375,30 +376,58 @@ s4_mapping = {
 				ldap_attribute='roomNumber',
 				con_attribute='roomNumber',
 			),
-			# TODO: activate in UCS 4.4-2
-			#'initials': univention.s4connector.attribute(
-			#	ucs_attribute='initials',
-			#	ldap_attribute='initials',
-			#	con_attribute='initials',
-			#	single_value=True,
+			'userCertificate': univention.s4connector.attribute(
+				mapping=(univention.s4connector.s4.user.userCertificate_sync_ucs_to_s4, univention.s4connector.s4.user.userCertificate_sync_s4_to_ucs),
+				ucs_attribute='userCertificate',
+				ldap_attribute='userCertificate;binary',
+				con_attribute='userCertificate',
+				udm_option='pki',
+				single_value=True,
+			),
+			# Do not sync secretary, because we currently have no way to verify the existence of the DN which would cause rejects
+			#'secretary': univention.s4connector.attribute(
+			#	mapping=(univention.s4connector.s4.user.secretary_sync_ucs_to_s4, univention.s4connector.s4.user.secretary_sync_s4_to_ucs),
+			#	ucs_attribute='secretary',
+			#	ldap_attribute='secretary',
+			#	con_attribute='secretary',
 			#),
-			#'physicalDeliveryOfficeName': univention.s4connector.attribute(
-			#	ucs_attribute='physicalDeliveryOfficeName',
-			#	ldap_attribute='physicalDeliveryOfficeName',
-			#	con_attribute='physicalDeliveryOfficeName',
-			#	single_value=True,
-			#),
-			#'postOfficeBox': univention.s4connector.attribute(
-			#	ucs_attribute='postOfficeBox',
-			#	ldap_attribute='postOfficeBox',
-			#	con_attribute='postOfficeBox',
-			#),
-			#'preferredLanguage': univention.s4connector.attribute(
-			#	ucs_attribute='preferredLanguage',
-			#	ldap_attribute='preferredLanguage',
-			#	con_attribute='preferredLanguage',
-			#	single_value=True,
-			#),
+			'jpegPhoto': univention.s4connector.attribute(
+				mapping=(univention.s4connector.s4.user.jpegPhoto_sync_ucs_to_s4, univention.s4connector.s4.user.jpegPhoto_sync_s4_to_ucs),
+				ucs_attribute='jpegPhoto',
+				ldap_attribute='jpegPhoto',
+				con_attribute='jpegPhoto',
+				single_value=True,
+			),
+			'preferredDeliveryMethod': univention.s4connector.attribute(
+				mapping=(univention.s4connector.s4.user.prefdev_sync_ucs_to_s4, univention.s4connector.s4.user.prefdev_sync_s4_to_ucs),
+				ucs_attribute='preferredDeliveryMethod',
+				ldap_attribute='preferredDeliveryMethod',
+				con_attribute='preferredDeliveryMethod',
+				single_value=True,
+			),
+			'initials': univention.s4connector.attribute(
+				ucs_attribute='initials',
+				ldap_attribute='initials',
+				con_attribute='initials',
+				single_value=True,
+			),
+			'physicalDeliveryOfficeName': univention.s4connector.attribute(
+				ucs_attribute='physicalDeliveryOfficeName',
+				ldap_attribute='physicalDeliveryOfficeName',
+				con_attribute='physicalDeliveryOfficeName',
+				single_value=True,
+			),
+			'postOfficeBox': univention.s4connector.attribute(
+				ucs_attribute='postOfficeBox',
+				ldap_attribute='postOfficeBox',
+				con_attribute='postOfficeBox',
+			),
+			'preferredLanguage': univention.s4connector.attribute(
+				ucs_attribute='preferredLanguage',
+				ldap_attribute='preferredLanguage',
+				con_attribute='preferredLanguage',
+				single_value=True,
+			),
 		}.items() if key not in user_ignore_list),
 	),
 	'group': univention.s4connector.property(

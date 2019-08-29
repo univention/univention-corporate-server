@@ -81,6 +81,19 @@ verify_value () {
 		return 1
 	fi
 }
+verify_value_ignore_case () {
+	local name=$1
+	local actual_value=$2
+	local expected_value=$3
+
+	if [ "${actual_value^^}" = "${expected_value^^}" ]
+	then
+		return 0
+	else
+		info "Value of \"$name\" is \"$actual_value\", expected \"$expected_value\""
+		return 1
+	fi
+}
 verify_value_contains_line_ignore_case () {
 	local name=$1
 	local actual_value=$2

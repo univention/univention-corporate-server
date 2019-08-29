@@ -66,11 +66,16 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 	),
-	#'initials': univention.admin.property(
-	#	short_description=_('Initials'),
-	#	long_description='',
-	#	syntax=univention.admin.syntax.string,
-	#),
+	'initials': univention.admin.property(
+		short_description=_('Initials'),
+		long_description='',
+		syntax=univention.admin.syntax.string6,
+	),
+	'preferredDeliveryMethod': univention.admin.property(
+		short_description=_('Preferred delivery method'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
 		long_description='',
@@ -228,24 +233,24 @@ property_descriptions = {
 		syntax=univention.admin.syntax.emailAddressTemplate,
 		multivalue=True,
 	),
-	#'physicalDeliveryOfficeName': univention.admin.property(
-	#	short_description=_('Delivery office name'),
-	#	long_description='',
-	#	syntax=univention.admin.syntax.string,
-	#),
-	#'postOfficeBox': univention.admin.property(
-	#	short_description=_('Post office box'),
-	#	long_description='',
-	#	syntax=univention.admin.syntax.string,
-	#	multivalue=True,
-	#	copyable=True,
-	#),
-	#'preferredLanguage': univention.admin.property(
-	#	short_description=_('Preferred language'),
-	#	long_description='',
-	#	syntax=univention.admin.syntax.string,
-	#	copyable=True,
-	#),
+	'physicalDeliveryOfficeName': univention.admin.property(
+		short_description=_('Delivery office name'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+	),
+	'postOfficeBox': univention.admin.property(
+		short_description=_('Post office box'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		copyable=True,
+	),
+	'preferredLanguage': univention.admin.property(
+		short_description=_('Preferred language'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		copyable=True,
+	),
 	'_options': univention.admin.property(
 		short_description=_('Options'),
 		long_description='',

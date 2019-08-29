@@ -99,7 +99,7 @@ property_descriptions = {
 	'initials': univention.admin.property(
 		short_description=_('Initials'),
 		long_description='',
-		syntax=univention.admin.syntax.OneThirdString,
+		syntax=univention.admin.syntax.string6,
 		readonly_when_synced=True,
 		copyable=True,
 	),
@@ -259,6 +259,11 @@ property_descriptions = {
 		multivalue=True,
 		copyable=True,
 	),
+	'preferredDeliveryMethod': univention.admin.property(
+		short_description=_('Preferred delivery method'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+	),
 	'physicalDeliveryOfficeName': univention.admin.property(
 		short_description=_('Delivery office name'),
 		long_description='',
@@ -315,6 +320,7 @@ mapping.register('employeeType', 'employeeType', None, univention.admin.mapping.
 mapping.register('secretary', 'secretary')
 mapping.register('e-mail', 'mail')
 mapping.register('preferredLanguage', 'preferredLanguage', None, univention.admin.mapping.ListToString)
+mapping.register('preferredDeliveryMethod', 'preferredDeliveryMethod', None, univention.admin.mapping.ListToString)
 mapping.register('phone', 'telephoneNumber')
 mapping.register('roomNumber', 'roomNumber')
 mapping.register('departmentNumber', 'departmentNumber')

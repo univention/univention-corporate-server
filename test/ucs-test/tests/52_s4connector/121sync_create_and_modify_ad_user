@@ -50,6 +50,8 @@ UDM_users_user_title="a$(random_chars)"
 UDM_users_user_departmentNumber="a$(random_chars)"
 UDM_users_user_roomNumber="a$(random_chars)"
 UDM_users_user_initials="a$(random_chars 1)"
+UDM_users_user_prefdev="any"
+AD_users_user_prefdev="0"
 UDM_users_user_physicalDeliveryOfficeName="a$(random_chars)"
 UDM_users_user_postOfficeBox="a$(random_chars)"
 UDM_users_user_preferredLanguage="a$(random_chars)"
@@ -78,6 +80,8 @@ ad_wait_for_synchronization; fail_bool 0 110
 ad_set_attribute "$AD_DN" "scriptPath" "$UDM_users_user_scriptpath" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
 if $ext_mapping; then
+	ad_set_attribute "$AD_DN" "preferredDeliveryMethod" "$AD_users_user_prefdev" || fail_test 110
+	ad_wait_for_synchronization; fail_bool 0 110
 	ad_set_attribute "$AD_DN" "employeeNumber" "$UDM_users_user_employeeNumber" || fail_test 110
 	ad_wait_for_synchronization; fail_bool 0 110
 	ad_set_attribute "$AD_DN" "employeeType" "$UDM_users_user_employeeType" || fail_test 110
@@ -90,8 +94,6 @@ if $ext_mapping; then
 	ad_wait_for_synchronization; fail_bool 0 110
 	ad_set_attribute "$AD_DN" "roomNumber" "$UDM_users_user_roomNumber" || fail_test 110
 	ad_wait_for_synchronization; fail_bool 0 110
-fi
-if false; then
 	ad_set_attribute "$AD_DN" "initials" "$UDM_users_user_initials" || fail_test 110
 	ad_wait_for_synchronization; fail_bool 0 110
 	ad_set_attribute "$AD_DN" "postOfficeBox" "$UDM_users_user_postOfficeBox" || fail_test 110
@@ -121,10 +123,7 @@ if $ext_mapping; then
 	udm_verify_udm_attribute "shell" "$UDM_users_user_loginShell" "users/user"; fail_bool 0 121 "See #18501"
 	udm_verify_udm_attribute "title" "$UDM_users_user_title" "users/user"; fail_bool 0 121 "See #18501"
 	udm_verify_udm_attribute "roomNumber" "$UDM_users_user_roomNumber" "users/user"; fail_bool 0 121 "See #18501"
-fi
-if false; then
-	udm_verify_udm_attribute "country" "$UDM_users_user_country" "users/user"; fail_bool 0 121 "See #18501"
-	udm_verify_udm_attribute "state" "$UDM_users_user_state" "users/user"; fail_bool 0 121 "See #18501"
+	udm_verify_udm_attribute "preferredDeliveryMethod" "$UDM_users_user_prefdev" "users/user"; fail_bool 0 121 "See #18501"
 	udm_verify_udm_attribute "postOfficeBox" "$UDM_users_user_postOfficeBox" "users/user"; fail_bool 0 121 "See #18501"
 	udm_verify_udm_attribute "physicalDeliveryOfficeName" "$UDM_users_user_physicalDeliveryOfficeName" "users/user"; fail_bool 0 121 "See #18501"
 	udm_verify_udm_attribute "preferredLanguage" "$UDM_users_user_preferredLanguage" "users/user"; fail_bool 0 121 "See #18501"
@@ -140,21 +139,18 @@ ad_verify_attribute "$AD_DN" "profilePath" "$UDM_users_user_profilepath"; fail_b
 ad_verify_attribute "$AD_DN" "scriptPath" "$UDM_users_user_scriptpath"; fail_bool 0 110
 ad_verify_attribute "$AD_DN" "streetAddress" "$UDM_users_user_street"; fail_bool 0 110
 if $ext_mapping; then
+	ad_verify_attribute "$AD_DN" "preferredDeliveryMethod" "$AD_users_user_prefdev"; fail_bool 0 110
 	ad_verify_attribute "$AD_DN" "employeeNumber" "$UDM_users_user_employeeNumber"; fail_bool 0 110
 	ad_verify_attribute "$AD_DN" "employeeType" "$UDM_users_user_employeeType"; fail_bool 0 110
 	ad_verify_attribute "$AD_DN" "loginShell" "$UDM_users_user_loginShell"; fail_bool 0 110
 	ad_verify_attribute "$AD_DN" "personalTitle" "$UDM_users_user_title"; fail_bool 0 110
 	ad_verify_attribute "$AD_DN" "roomNumber" "$UDM_users_user_roomNumber"; fail_bool 0 110
-fi
-if false; then
-	ad_verify_attribute "$AD_DN" "st" "$UDM_users_user_state"; fail_bool 0 110
-	ad_verify_attribute "$AD_DN" "c" "$UDM_users_user_country"; fail_bool 0 110
 	ad_verify_attribute "$AD_DN" "postOfficeBox" "$UDM_users_user_postOfficeBox"; fail_bool 0 110
 	ad_verify_attribute "$AD_DN" "physicalDeliveryOfficeName" "$UDM_users_user_physicalDeliveryOfficeName"; fail_bool 0 110
 	ad_verify_attribute "$AD_DN" "preferredLanguage" "$UDM_users_user_preferredLanguage"; fail_bool 0 110
 fi
 ### Test if mapping of user-attributes is configurable via ucr variable 'connector/s4/mapping/user/attributes/ignorelist'
-ucr set 'connector/s4/mapping/user/attributes/ignorelist'='employeeNumber,employeeType,departmentNumber,loginShell,unixhome,title,uidNumber,gidNumber,roomNumber'  # state,country,initials,physicalDeliveryOfficeName,postOfficeBox,preferredLanguage'
+ucr set 'connector/s4/mapping/user/attributes/ignorelist'='preferredDeliveryMethod, employeeNumber,employeeType,departmentNumber,loginShell,unixhome,title,uidNumber,gidNumber,roomNumber,initials,physicalDeliveryOfficeName,postOfficeBox,preferredLanguage'
 
 ad_connector_restart || exit 137
 test -n "$connector_s4_ldap_host" || exit 137
@@ -184,40 +180,33 @@ if $ext_mapping; then
 	ad_wait_for_synchronization; fail_bool 0 110
 	ad_set_attribute "$AD_DN" "roomNumber" "$UDM_users_user_roomNumber" || fail_test 110
 	ad_wait_for_synchronization; fail_bool 0 110
-#	ad_set_attribute "$AD_DN" "c" "$UDM_users_user_country" || fail_test 110
-#	ad_wait_for_synchronization; fail_bool 0 110
-#	ad_set_attribute "$AD_DN" "st" "$UDM_users_user_state" || fail_test 110
-#	ad_wait_for_synchronization; fail_bool 0 110
-#	ad_set_attribute "$AD_DN" "initials" "$UDM_users_user_initials" || fail_test 110
-#	ad_wait_for_synchronization; fail_bool 0 110
-#	ad_set_attribute "$AD_DN" "postOfficeBox" "$UDM_users_user_postOfficeBox" || fail_test 110
-#	ad_wait_for_synchronization; fail_bool 0 110
-#	ad_set_attribute "$AD_DN" "physicalDeliveryOfficeName" "$UDM_users_user_physicalDeliveryOfficeName" || fail_test 110
-#	ad_wait_for_synchronization; fail_bool 0 110
-#	ad_set_attribute "$AD_DN" "preferredLanguage" "$UDM_users_user_preferredLanguage" || fail_test 110
-#	ad_wait_for_synchronization; fail_bool 0 110
+	ad_wait_for_synchronization; fail_bool 0 110
+	ad_set_attribute "$AD_DN" "initials" "$UDM_users_user_initials" || fail_test 110
+	ad_wait_for_synchronization; fail_bool 0 110
+	ad_set_attribute "$AD_DN" "postOfficeBox" "$UDM_users_user_postOfficeBox" || fail_test 110
+	ad_wait_for_synchronization; fail_bool 0 110
+	ad_set_attribute "$AD_DN" "physicalDeliveryOfficeName" "$UDM_users_user_physicalDeliveryOfficeName" || fail_test 110
+	ad_wait_for_synchronization; fail_bool 0 110
+	ad_set_attribute "$AD_DN" "preferredLanguage" "$UDM_users_user_preferredLanguage" || fail_test 110
+	ad_wait_for_synchronization; fail_bool 0 110
 
 	ad_verify_attribute "$AD_DN" "employeeNumber" "$UDM_users_user_employeeNumber"; fail_bool 0 110
 	ad_verify_attribute "$AD_DN" "employeeType" "$UDM_users_user_employeeType"; fail_bool 0 110
 	ad_verify_attribute "$AD_DN" "loginShell" "$UDM_users_user_loginShell"; fail_bool 0 110
 	ad_verify_attribute "$AD_DN" "personalTitle" "$UDM_users_user_title"; fail_bool 0 110
 	ad_verify_attribute "$AD_DN" "roomNumber" "$UDM_users_user_roomNumber"; fail_bool 0 110
-#	ad_verify_attribute "$AD_DN" "st" "$UDM_users_user_state"; fail_bool 0 110
-#	ad_verify_attribute "$AD_DN" "c" "$UDM_users_user_country"; fail_bool 0 110
-#	ad_verify_attribute "$AD_DN" "postOfficeBox" "$UDM_users_user_postOfficeBox"; fail_bool 0 110
-#	ad_verify_attribute "$AD_DN" "physicalDeliveryOfficeName" "$UDM_users_user_physicalDeliveryOfficeName"; fail_bool 0 110
-#	ad_verify_attribute "$AD_DN" "preferredLanguage" "$UDM_users_user_preferredLanguage"; fail_bool 0 110
+	ad_verify_attribute "$AD_DN" "postOfficeBox" "$UDM_users_user_postOfficeBox"; fail_bool 0 110
+	ad_verify_attribute "$AD_DN" "physicalDeliveryOfficeName" "$UDM_users_user_physicalDeliveryOfficeName"; fail_bool 0 110
+	ad_verify_attribute "$AD_DN" "preferredLanguage" "$UDM_users_user_preferredLanguage"; fail_bool 0 110
 
 	udm_verify_udm_attribute "employeeNumber" "$UDM_users_user_employeeNumber" "users/user"; fail_bool 1 121 "connector/s4/mapping/user/attributes/ignorelist does not apply"
 	udm_verify_udm_attribute "employeeType" "$UDM_users_user_employeeType" "users/user"; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
 	udm_verify_udm_attribute "shell" "$UDM_users_user_loginShell" "users/user"; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
 	udm_verify_udm_attribute "title" "$UDM_users_user_title" "users/user"; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
 	udm_verify_udm_attribute "roomNumber" "$UDM_users_user_roomNumber" "users/user"; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
-#	udm_verify_udm_attribute "country" "$UDM_users_user_country" "users/user"; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist'
-#	udm_verify_udm_attribute "state" "$UDM_users_user_state" "users/user"; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist'
-#	udm_verify_udm_attribute "postOfficeBox" "$UDM_users_user_postOfficeBox" "users/user"; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
-#	udm_verify_udm_attribute "physicalDeliveryOfficeName" "$UDM_users_user_physicalDeliveryOfficeName" "users/user"; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
-#	udm_verify_udm_attribute "preferredLanguage" "$UDM_users_user_preferredLanguage" "users/user"; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
+	udm_verify_udm_attribute "postOfficeBox" "$UDM_users_user_postOfficeBox" "users/user"; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
+	udm_verify_udm_attribute "physicalDeliveryOfficeName" "$UDM_users_user_physicalDeliveryOfficeName" "users/user"; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
+	udm_verify_udm_attribute "preferredLanguage" "$UDM_users_user_preferredLanguage" "users/user"; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
 fi
 
 ucr set 'connector/s4/mapping/user/attributes/ignorelist'="$ignore_list_original"
