@@ -1,3 +1,9 @@
+ucs-test (9.0.3-31) unstable; urgency=medium
+
+  * Bug #50082: Fix test
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 29 Aug 2019 12:26:06 +0200
+
 ucs-test (9.0.3-30) unstable; urgency=medium
 
   * Bug #50057: fixed perm for tests/80_docker/86_docker_reinitialize
