@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [1]
+scope: ucs_4.4-0-errata4.4-1
+src: dovecot
+fix: 1:2.2.27-3+deb9u5
+desc: |
+ This update addresses the following issue:
+ * dovecot (CVE-2019-11500)
+bug: [50089]
+cve:
+- CVE-2019-11500
