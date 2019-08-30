@@ -46,7 +46,6 @@ import uuid
 import zlib
 import urllib
 import base64
-import inspect
 import httplib
 import hashlib
 import binascii
@@ -89,6 +88,7 @@ import univention.directory.reports as udr
 import univention.admin.uexceptions as udm_errors
 import univention.admin.modules as udm_modules
 import univention.admin.syntax as udm_syntax
+import univention.admin.types as udm_types
 from univention.config_registry import handler_set
 
 import univention.udm
@@ -233,7 +233,7 @@ class PropertiesSanitizer(DictSanitizer):
 		properties = resource.request.body_arguments['properties']
 		# TODO: add sanitizer for e.g. required properties (respect options!)
 
-		properties = dict(encode_properties(module.name, properties, resource.ldap_connection))
+		# properties = dict(encode_properties(module, obj, properties))
 
 		self.default_sanitizer._module = module
 		self.default_sanitizer._obj = obj
@@ -289,6 +289,12 @@ class PropertySanitizer(Sanitizer):
 
 		if not self._obj.has_property(name):
 			return value  # value will not be set, so no validation is required
+
+		codec = udm_types.TypeHint.detect(property_obj, name)
+		try:
+			return codec.encode_json(value)
+		except udm_errors.valueError as exc:
+			self.raise_validation_error(_('The property %(name)s has an invalid value: %(details)s'), details=str(exc))
 
 		# check each element if 'value' is a list
 		if isinstance(value, (tuple, list)) and property_obj.multivalue:
@@ -2680,22 +2686,7 @@ class Object(FormBase, Ressource):
 				values = dict((key, obj[key]) for key in obj.descriptions if add or obj.has_property(key))
 			for passwd in module.password_properties:
 				values[passwd] = None
-			values = dict(decode_properties(module.name, values, ldap_connection))
-
-		for key, value in list(values.items()):
-			syntax = module.get_property(key).syntax
-			if inspect.isclass(syntax):
-				syntax = syntax()
-			if isinstance(syntax, (udm_syntax.OkOrNot, udm_syntax.TrueFalseUp, udm_syntax.boolean)):
-				if syntax.parse(True) == value:
-					values[key] = True
-				elif syntax.parse(False) == value:
-					values[key] = False
-			elif isinstance(syntax, (udm_syntax.integer,)):
-				try:
-					values[key] = int(value)
-				except (ValueError, TypeError):
-					pass
+			values = dict(decode_properties(module, obj, values))
 
 		props = {}
 		props['dn'] = obj.dn
@@ -3137,7 +3128,7 @@ class ObjectAdd(FormBase, Ressource):
 				continue
 			values[key] = obj[key]
 
-		values = dict(encode_properties(obj.module, values, self.ldap_connection))
+		values = dict(decode_properties(module, obj, values))
 		self.add_property_form_elements(module, form, properties, values)
 
 		for policy in module.policies:
@@ -3267,7 +3258,7 @@ class ObjectEdit(FormBase, Ressource):
 				if prop['readonly_when_synced'] and is_ad_synced_object:
 					prop['disabled'] = True
 
-			values = dict(decode_properties(obj.module, values, self.ldap_connection))
+			values = dict(decode_properties(module, obj, values))
 			self.add_property_form_elements(module, form, properties, values)
 			if any(prop['id'] == 'jpegPhoto' for prop in properties):
 				properties.append({'id': 'jpegPhoto-preview', 'label': ' '})
@@ -3601,41 +3592,18 @@ univentionObjectType: settings/license
 		self.content_negotiation({'message': _('The license was imported successfully.')})
 
 
-def decode_properties(object_type, properties, lo, version=1):
-	mod = univention.udm.UDM(lo, version).get(object_type)
-	mod.connection = lo
-	codecs = mod._udm_object_class.udm_prop_class._encoders
+def decode_properties(module, obj, properties):
 	for key, value in properties.items():
-		if key in codecs:
-			mod_obj = mod._udm_object_class()
-			mod_obj._udm_module = mod
-			mod_obj._lo = lo
-			codec = mod_obj._init_encoder(codecs[key], property_name=key)
-			value = codec.decode(value)
-			if value is not None:
-				if isinstance(codec, univention.udm.encoders.Base64BinaryPropertyEncoder):  # jpegPhoto
-					value = value.encoded
-				elif isinstance(value, datetime.date):  # birthday, userexpiry
-					value = value.isoformat()
-		yield key, value
+		prop = module.get_property(key)
+		codec = udm_types.TypeHint.detect(prop, key)
+		yield key, codec.decode_json(value)
 
 
-def encode_properties(object_type, properties, lo, version=1):
-	mod = univention.udm.UDM(lo, version).get(object_type)
-	mod.connection = lo
-	codecs = mod._udm_object_class.udm_prop_class._encoders
+def encode_properties(module, obj, properties):
 	for key, value in properties.items():
-		if key in codecs:
-			mod_obj = mod._udm_object_class()
-			mod_obj._udm_module = mod
-			mod_obj._lo = lo
-			codec = mod_obj._init_encoder(codecs[key], property_name=key)
-			if isinstance(codec, univention.udm.encoders.Base64BinaryPropertyEncoder):  # jpegPhoto
-				value = codec.decode(value)
-			if inspect.isclass(codec) and issubclass(codec, univention.udm.encoders.DatePropertyEncoder):  # birthday, userexpiry
-				value = codec.decode(value)
-			value = codec.encode(value)
-		yield key, value
+		prop = module.get_property(key)
+		codec = udm_types.TypeHint.detect(prop, key)
+		yield key, codec.encode_json(value)
 
 
 def quote_dn(dn):
