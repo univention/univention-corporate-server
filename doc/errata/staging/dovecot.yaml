@@ -6,7 +6,8 @@ src: dovecot
 fix: 1:2.2.27-3+deb9u5
 desc: |
  This update addresses the following issue:
- * dovecot (CVE-2019-11500)
+ * Improper NULL byte handling in IMAP and ManageSieve protocol parsers leads
+   to out of bounds writes (CVE-2019-11500)
 bug: [50090]
 cve:
 - CVE-2019-11500
