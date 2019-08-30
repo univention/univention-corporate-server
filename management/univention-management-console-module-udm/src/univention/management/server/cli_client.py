@@ -171,6 +171,10 @@ class CLIClient(object):
 			value = eval(value)
 		return key, value
 
+	def get_object(self, args):
+		args.superordinate = None
+		self.list_objects(args)
+
 	def list_objects(self, args):
 		module = self.get_module(args.object_type)
 		for entry in module.search(args.filter, args.position, opened=True, superordinate=args.superordinate):
@@ -178,7 +182,11 @@ class CLIClient(object):
 			self.print_line('DN', entry.dn)
 			self.print_line('URL', entry.uri)
 			self.print_line('Object-Type', entry.object_type)
-			#entry = entry.open()
+			if args.as_json:
+				print(json.dumps(entry.options, indent=4, ensure_ascii=False))
+				print(json.dumps(entry.properties, indent=4, ensure_ascii=False))
+				print(json.dumps(entry.policies, indent=4, ensure_ascii=False))
+				continue
 			for key, value in sorted(entry.properties.items()):
 				if isinstance(value, list):
 					for item in value:
@@ -422,6 +430,14 @@ def add_object_action_arguments(parser, client):
 	list_.add_argument('--position', help='Search underneath of position in tree', type=Unicode)
 	list_.add_argument('--superordinate', help='Use superordinate', type=Unicode)
 	list_.add_argument('--policies', help='List policy-based settings: 0:short, 1:long (with policy-DN)', type=Unicode)
+	list_.add_argument('--as-json', help='Print JSON (developer mode)', action='store_true')
+
+	get = add_subparser(str('get'), help='Get object', usage=argparse.SUPPRESS)
+	get.set_defaults(func=client.get_object)
+	get.add_argument('position', metavar='dn', help='The object LDAP DN', type=Unicode)
+	get.add_argument('--filter', help='Lookup filter e.g. foo=bar', default='', type=Unicode)
+	get.add_argument('--policies', help='List policy-based settings: 0:short, 1:long (with policy-DN)', type=Unicode)
+	get.add_argument('--as-json', help='Print JSON (developer mode)', action='store_true')
 
 	move = add_subparser(str('move'), help='Move object in directory tree', usage=argparse.SUPPRESS)
 	move.set_defaults(func=client.move_object)
