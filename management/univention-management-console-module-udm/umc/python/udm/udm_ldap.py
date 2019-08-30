@@ -912,7 +912,7 @@ class UDM_Module(object):
 		"""All properties with the syntax class passwd or userPasswd"""
 		passwords = []
 		for key, prop in getattr(self.module, 'property_descriptions', {}).items():
-			if prop.syntax in (udm_syntax.passwd, udm_syntax.userPasswd):
+			if udm_syntax.is_syntax(prop.syntax, udm_syntax.passwd) or udm_syntax.is_syntax(prop.syntax, udm_syntax.userPasswd):
 				passwords.append(key)
 
 		return passwords
