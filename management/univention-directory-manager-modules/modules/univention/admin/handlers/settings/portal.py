@@ -212,7 +212,7 @@ layout = [
 		Group(_('Message when the portal is empty'), layout=[
 			['anonymousEmpty'],
 		]),
- 	]),
+	]),
 ]
 
 
