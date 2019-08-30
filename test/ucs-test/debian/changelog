@@ -1,3 +1,10 @@
+ucs-test (9.0.3-34) unstable; urgency=medium
+
+  * Bug #49679: fix 61_dns_ptr_modification_append_records and
+  	63_dns_ptr_modification_remove_records in S4-Connector environments
+
+ -- Florian Best <best@univention.de>  Fri, 30 Aug 2019 10:05:48 +0200
+
 ucs-test (9.0.3-33) unstable; urgency=medium
 
   * Bug #49486: Test docker rmi during upgrade

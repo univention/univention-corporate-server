@@ -25,7 +25,7 @@ if __name__ == '__main__':
 		# IPv6 case:
 		reverse_zone = udm.create_object('dns/reverse_zone', subnet='2011:06f8:13dc:0002:19b7:d592:09dd', nameserver=uts.random_nameserver())
 
-		ptr_records = [uts.random_name(), uts.random_name(), uts.random_name(), uts.random_name()]
+		ptr_records = [uts.random_name() + '.', uts.random_name() + '.', uts.random_name() + '.', uts.random_name() + '.']
 		ptr = udm.create_object('dns/ptr_record', address='2', superordinate=reverse_zone, append={'ptr_record': ptr_records})
 
 		udm.modify_object('dns/ptr_record', dn=ptr, superordinate=reverse_zone, remove={'ptr_record': ptr_records[:2]})
