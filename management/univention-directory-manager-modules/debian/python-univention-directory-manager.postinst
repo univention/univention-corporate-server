@@ -38,7 +38,7 @@ eval "$(univention-config-registry shell)"
 
 if [ "$1" = "configure" ]; then
 	if which update-python-modules >/dev/null 2>&1; then
-		update-python-modules --post-install
+		update-python-modules --post-install python-univention-directory-manager.public
 	fi
 
 	if [ -z "$2" ]; then
