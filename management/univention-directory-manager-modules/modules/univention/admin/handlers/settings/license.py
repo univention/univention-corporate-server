@@ -281,14 +281,12 @@ mapping.register('version', 'univentionLicenseVersion', None, univention.admin.m
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
-	def open(self):
-		univention.admin.handlers.simpleLdap.open(self)
-
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
+		super(object, self).__init__(co, lo, position, dn, superordinate, attributes)
 		if self.oldattr.get('univentionLicenseVersion', []) == ['2']:
-			self.options = ['Version 2']
+			self.options.append('Version 2')
 		else:
-			self.options = ['Version 1']
-
+			self.options.append('Version 1')
 		self.save()
 
 
