@@ -75,6 +75,7 @@ property_descriptions = {
         multivalue=True,
         include_in_default_search=True,
         required=True,
+        type_class=univention.admin.types.AppcenterTranslation,
     ),
     'version': univention.admin.property(
         short_description=_('Version'),
@@ -87,12 +88,14 @@ property_descriptions = {
         long_description='',
         syntax=univention.admin.syntax.TextArea,
         multivalue=True,
+        type_class=univention.admin.types.AppcenterTranslation,
     ),
     'longDescription': univention.admin.property(
         short_description=_('Long description'),
         long_description='',
         syntax=univention.admin.syntax.TextArea,
         multivalue=True,
+        type_class=univention.admin.types.AppcenterTranslation,
     ),
     'vendor': univention.admin.property(
         short_description=_('Vendor'),
@@ -114,12 +117,14 @@ property_descriptions = {
         long_description='',
         syntax=univention.admin.syntax.string,
         multivalue=True,
+        type_class=univention.admin.types.AppcenterTranslation,
     ),
     'websiteVendor': univention.admin.property(
         short_description=_('Website Vendor'),
         long_description='',
         syntax=univention.admin.syntax.string,
         multivalue=True,
+        type_class=univention.admin.types.AppcenterTranslation,
     ),
     'websiteMaintainer': univention.admin.property(
         short_description=_('Website Maintainer'),
