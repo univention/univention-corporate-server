@@ -36,12 +36,9 @@ import ldap
 import operator
 import ipaddr
 import inspect
-import univention.debug as ud
-import univention.admin.modules
-import univention.admin.uexceptions
-from univention.admin import localization
-from univention.lib.ucs import UCS_Version
-from univention.lib.umc_module import get_mime_type, get_mime_description, image_mime_type_of_buffer
+import time
+import datetime
+import dateutil
 import base64
 import zlib
 import bz2
@@ -56,6 +53,15 @@ import traceback
 from io import BytesIO
 import locale
 from operator import itemgetter
+
+import univention.debug as ud
+import univention.admin.modules
+import univention.admin.uexceptions
+import univention.admin.types
+from univention.admin import localization
+from univention.lib.ucs import UCS_Version
+from univention.lib.umc_module import get_mime_type, get_mime_description, image_mime_type_of_buffer
+
 from ldap.filter import filter_format, escape_filter_chars
 try:
 	from typing import Any, Callable, List, Optional, Pattern, Sequence, Tuple, Type, Union  # noqa F401
@@ -1734,6 +1740,26 @@ class iso8601Date(simple):
 	regex = re.compile('^(\d{4}(?:(?:(?:\-)?(?:00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?|(?:(?:\-)?(?:1[0-2]|0[1-9]))?|(?:(?:\-)?(?:1[0-2]|0[1-9])(?:\-)?(?:0[1-9]|[12][0-9]|3[01]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3])(?:\-)?[1-7])?)?)$')
 	error_message = _("The given date does not conform to iso8601, example: \"2009-01-01\".")
 
+	@classmethod
+	def to_datetime(cls, value):
+		value = cls.parse(value)
+		if value:
+			try:
+				return dateutil.parser.parse(value).date()
+			except Exception:
+				pass
+			if re.match(r"\d+-\d+$", value):
+				return datetime.datetime.strptime(value, "%Y-%j").date()
+			elif re.match(r"\d+-W\d+-\d+$", value):
+				return datetime.datetime.strptime(value, "%Y-W%U-%w").date()
+			elif re.match(r"\d+-W\d+$", value):
+				return datetime.datetime.strptime(value, "%Y-W%U").date()
+			return datetime.date(*time.strptime(value, '%Y-%m-%d')[0:3])
+
+	@classmethod
+	def from_datetime(cls, value):
+		return value.isoformat()
+
 
 class date(simple):
 	"""
@@ -1789,6 +1815,16 @@ class date(simple):
 			raise univention.admin.uexceptions.valueError(_("Not a valid Date"))
 		return ''
 
+	@classmethod
+	def to_datetime(cls, value):
+		value = cls.parse(value)
+		if value:
+			return datetime.date(*time.strptime(value, '%d.%m.%y')[0:3])
+
+	@classmethod
+	def from_datetime(cls, value):
+		return value.isoformat()
+
 
 class date2(date):  # fixes the century
 	"""
@@ -1822,6 +1858,12 @@ class date2(date):  # fixes the century
 					return '19%02d-%02d-%02d' % (year, month, day)
 				return '20%02d-%02d-%02d' % (year, month, day)
 		raise univention.admin.uexceptions.valueError(_("Not a valid Date"))
+
+	@classmethod
+	def to_datetime(cls, value):
+		value = cls.parse(value)
+		if value:
+			return datetime.date(*time.strptime(value, '%Y-%m-%d')[0:3])
 
 
 class reverseLookupSubnet(simple):
@@ -4162,9 +4204,9 @@ class timeSpec(select):
 	Time format used by :program:`at`.
 	"""
 	_times = [
-		(time, time) for hour in range(0, 24)
+		(_time, _time) for hour in range(0, 24)
 		for minute in range(0, 60, 15)
-		for time in ('%02d:%02d' % (hour, minute),)
+		for _time in ('%02d:%02d' % (hour, minute),)
 	]
 	choices = [
 		('', _('No Reboot')),
