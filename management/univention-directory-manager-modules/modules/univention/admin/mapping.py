@@ -29,8 +29,9 @@ Functions to map between |UDM| properties and |LDAP| attributes.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
+
 import univention.debug as ud
-import types
 import base64
 try:
 	from typing import List, Text, Tuple, TypeVar, Union  # noqa F401
@@ -341,7 +342,7 @@ def mapBase64(value):
 	if value == '*':
 		# special case for filter pattern '*'
 		return value
-	if isinstance(value, types.ListType):
+	if isinstance(value, list):
 		try:
 			return map(base64.b64decode, value)
 		except Exception, e:

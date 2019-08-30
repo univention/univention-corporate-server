@@ -41,8 +41,9 @@ A UDM handler represents an abstraction of an LDAP object.
 .. seealso:: :mod:`univention.admin.uexceptions`
 """
 
+from __future__ import absolute_import
+
 import copy
-import types
 import re
 import time
 import sys
@@ -3503,7 +3504,7 @@ class simplePolicy(simpleLdap):
 		self.policy_result()
 
 		if (key in self.polinfo and not (key in self.info or key in self.oldinfo)) or (key in self.polinfo_more and 'fixed' in self.polinfo_more[key] and self.polinfo_more[key]['fixed']):
-			if self.descriptions[key].multivalue and not isinstance(self.polinfo[key], types.ListType):
+			if self.descriptions[key].multivalue and not isinstance(self.polinfo[key], list):
 				# why isn't this correct in the first place?
 				self.polinfo[key] = [self.polinfo[key]]
 			ud.debug(ud.ADMIN, ud.INFO, 'simplePolicy.__getitem__: presult: %s=%s' % (key, self.polinfo[key]))

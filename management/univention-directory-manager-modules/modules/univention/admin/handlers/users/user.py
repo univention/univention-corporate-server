@@ -38,12 +38,13 @@ import string
 import re
 import copy
 import time
-import types
 import struct
 import calendar
+import base64
+
 from M2Crypto import X509
 import ldap
-import base64
+import six
 from ldap.filter import filter_format
 
 import univention.admin
@@ -2065,7 +2066,7 @@ class object(univention.admin.handlers.simpleLdap):
 						ml.append(('objectClass', '', 'automount'))
 
 					am_host = share['host']
-					if not self['homeSharePath'] or type(self['homeSharePath']) not in [types.StringType, types.UnicodeType]:
+					if not self['homeSharePath'] or not isinstance(self['homeSharePath'], six.string_types):
 						raise univention.admin.uexceptions.missingInformation(_('%(homeSharePath)s must be given if %(homeShare)s is given.') % {'homeSharePath': _('Home share path'), 'homeShare': _('Home share')})
 					else:
 						am_path = os.path.abspath(os.path.join(share['path'], self['homeSharePath']))

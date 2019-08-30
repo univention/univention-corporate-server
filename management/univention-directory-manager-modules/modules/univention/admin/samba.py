@@ -30,7 +30,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import string
-import types
+import six
 
 
 class acctFlags:
@@ -39,7 +39,7 @@ class acctFlags:
 		if flags is not None:
 			self.__flags = flags
 			return
-		if not flagstring or not isinstance(flagstring, types.StringTypes) or len(flagstring) != 13:
+		if not flagstring or not isinstance(flagstring, six.string_types) or len(flagstring) != 13:
 			if fallbackflags is not None:
 				self.__flags = fallbackflags
 				return

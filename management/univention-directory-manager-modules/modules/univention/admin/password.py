@@ -29,10 +29,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
+
 import re
 import hashlib
 import heimdal
-import types
 import smbpasswd
 import string
 import univention.config_registry
@@ -119,10 +120,10 @@ def krb5_asn1(principal, password, krb5_context=None):
 	:returns: list of ASN1 encoded Kerberos hashes.
 	"""
 	list = []
-	if isinstance(principal, types.UnicodeType):
-		principal = str(principal)
-	if isinstance(password, types.UnicodeType):
-		password = str(password)
+	if isinstance(principal, unicode):
+		principal = principal.encode('utf-8')
+	if isinstance(password, unicode):
+		password = password.encode('utf-8')
 	if not krb5_context:
 		krb5_context = heimdal.context()
 	for krb5_etype in krb5_context.get_permitted_enctypes():

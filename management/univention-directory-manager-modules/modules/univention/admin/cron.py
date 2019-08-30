@@ -28,6 +28,9 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+
+from __future__ import absolute_import
+
 try:
 	from typing import Mapping, Sequence, Union  # noqa F401
 except ImportError:

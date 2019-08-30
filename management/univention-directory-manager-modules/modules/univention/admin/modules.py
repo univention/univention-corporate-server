@@ -30,12 +30,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
+
 import os
 import sys
-import types
 import copy
 import locale
 import imp
+import six
 import ldap
 from ldap.filter import filter_format
 
@@ -138,7 +140,7 @@ def get(module):
 	global modules
 	if not module:
 		return None
-	if isinstance(module, types.StringTypes):
+	if isinstance(module, six.string_types):
 		return modules.get(module)
 	return module
 

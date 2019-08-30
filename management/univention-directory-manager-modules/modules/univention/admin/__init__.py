@@ -29,11 +29,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import types
+from __future__ import absolute_import
+
 import copy
 import sys
 import re
 import unicodedata
+
 from ldap.filter import filter_format
 
 import univention.config_registry
@@ -308,7 +310,7 @@ class property:
 		"""
 		self.short_description = short_description
 		self.long_description = long_description
-		if isinstance(syntax, types.ClassType):
+		if isinstance(syntax, type):
 			self.syntax = syntax()
 		else:
 			self.syntax = syntax
