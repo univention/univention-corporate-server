@@ -277,7 +277,8 @@ class property:
 		nonempty_is_default=False,  # type: bool
 		readonly_when_synced=False,  # type: bool
 		size=None,  # type: str
-		copyable=False  # type: bool
+		copyable=False,  # type: bool
+		type_class=None,  # type: type  # univention.admin.types.TypeHint
 	):  # type: (...) -> None
 		"""
 		|UDM| property.
@@ -307,6 +308,7 @@ class property:
 		:param readonly_when_synced: `True` only shows the value as read-only when synchronized from some upstream database.
 		:param size: The |UMC| widget size; one of :py:data:`univention.admin.syntax.SIZES`.
 		:param copyable: With `True` the property is copied when the object is cloned; with `False` the new object will use the default value.
+		:param type_class: An optional Typing class which overwrites the syntax class specific type.
 		"""
 		self.short_description = short_description
 		self.long_description = long_description
@@ -338,6 +340,7 @@ class property:
 		self.readonly_when_synced = readonly_when_synced
 		self.size = size
 		self.copyable = copyable
+		self.type_class = type_class
 
 	def new(self):
 		return [] if self.multivalue else None

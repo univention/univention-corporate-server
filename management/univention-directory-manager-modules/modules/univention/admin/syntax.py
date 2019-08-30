@@ -153,6 +153,9 @@ class ISyntax(object):
 	size = 'One'
 	"""Widget size. See :py:data:`SIZES`."""
 
+	type_class = None
+	type_class_multivalue = None
+
 	@ClassProperty
 	def name(cls):
 		return cls.__name__
@@ -171,6 +174,9 @@ class ISyntax(object):
 		:returns: textual representation.
 		"""
 		return text
+
+	def parse_command_line(self, value):
+		return self.parse(value)
 
 
 class simple(ISyntax):
@@ -2174,10 +2180,24 @@ class UNIX_TimeInterval(complex):
 	subsyntaxes = (('', integerOrEmpty), ('', TimeUnits))
 	subsyntax_names = ('amount', 'unit')
 	size = ('Half', 'Half')
+	type_class = univention.admin.types.UnixTimeinterval
 
 	@classmethod
 	def parse(cls, texts):
 		return super(UNIX_TimeInterval, cls).parse(texts)
+
+	@classmethod
+	def from_integer(cls, value):
+		return [str(value), 'seconds']
+
+	@classmethod
+	def to_integer(cls, value):
+		return {
+			'seconds': lambda x: x,
+			'minutes': lambda x: x * 60,
+			'hours': lambda x: x * 60 * 60,
+			'days': lambda x: x * 24 * 60 * 60,
+		}[value[1]](int(value[0]))
 
 
 class UNIX_BoundedTimeInterval(UNIX_TimeInterval):
@@ -2196,12 +2216,7 @@ class UNIX_BoundedTimeInterval(UNIX_TimeInterval):
 
 		in_seconds = int(parsed[0])
 		if len(parsed) > 1:
-			in_seconds = {
-				'seconds': lambda x: x,
-				'minutes': lambda x: x * 60,
-				'hours': lambda x: x * 60 * 60,
-				'days': lambda x: x * 24 * 60 * 60,
-			}[parsed[1]](in_seconds)
+			in_seconds = cls.to_integer(parsed)
 
 		msg = cls.error_message % (cls.lower_bound, cls.upper_bound)
 		if cls.lower_bound != -1 and in_seconds < cls.lower_bound:
