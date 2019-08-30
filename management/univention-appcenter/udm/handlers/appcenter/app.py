@@ -73,7 +73,8 @@ property_descriptions = {
 		options=[],
 		required=True,
 		may_change=True,
-		identifies=False
+		identifies=False,
+		type_class=univention.admin.types.AppcenterTranslation,
 	),
 	'version': univention.admin.property(
 		short_description=_('Version'),
@@ -93,7 +94,8 @@ property_descriptions = {
 		options=[],
 		required=False,
 		may_change=True,
-		identifies=False
+		identifies=False,
+		type_class=univention.admin.types.AppcenterTranslation,
 	),
 	'longDescription': univention.admin.property(
 		short_description=_('Long description'),
@@ -103,7 +105,8 @@ property_descriptions = {
 		options=[],
 		required=False,
 		may_change=True,
-		identifies=False
+		identifies=False,
+		type_class=univention.admin.types.AppcenterTranslation,
 	),
 	'vendor': univention.admin.property(
 		short_description=_('Vendor'),
@@ -113,7 +116,7 @@ property_descriptions = {
 		options=[],
 		required=False,
 		may_change=True,
-		identifies=False
+		identifies=False,
 	),
 	'contact': univention.admin.property(
 		short_description=_('Contact'),
@@ -143,7 +146,8 @@ property_descriptions = {
 		options=[],
 		required=False,
 		may_change=True,
-		identifies=False
+		identifies=False,
+		type_class=univention.admin.types.AppcenterTranslation,
 	),
 	'websiteVendor': univention.admin.property(
 		short_description=_('Website Vendor'),
@@ -153,7 +157,8 @@ property_descriptions = {
 		options=[],
 		required=False,
 		may_change=True,
-		identifies=False
+		identifies=False,
+		type_class=univention.admin.types.AppcenterTranslation,
 	),
 	'websiteMaintainer': univention.admin.property(
 		short_description=_('Website Maintainer'),
