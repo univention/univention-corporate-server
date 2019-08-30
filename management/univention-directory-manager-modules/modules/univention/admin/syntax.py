@@ -188,6 +188,8 @@ class simple(ISyntax):
 	error_message = _('Invalid value')
 	"""Error message when an invalid item is selected."""
 
+	type_class = univention.admin.types.StringType
+
 	@classmethod
 	def parse(self, text):
 		# type: (Any) -> str
@@ -241,6 +243,8 @@ class select(ISyntax):
 	empty_value = False
 	"""Allow the empty value."""
 
+	type_class = univention.admin.types.StringType
+
 	@classmethod
 	def parse(self, text):
 		# type: (Any) -> Optional[str]
@@ -283,6 +287,8 @@ class MultiSelect(ISyntax):
 	error_message = _('Invalid value')
 	"""Error message when an invalid item is selected."""
 
+	# FIXME: type_class
+
 	@classmethod
 	def parse(self, value):
 		# type: (Any) -> List[str]
@@ -304,6 +310,7 @@ class complex(ISyntax):
 	"""
 	Base class for complex syntax classes consisting of multiple sub-items.
 	"""
+
 	delimiter = ' '  # type: Union[str, Sequence[str]]
 	"""
 	Delimiter to separate the sub-items. Two possibilities:
@@ -364,6 +371,32 @@ class complex(ISyntax):
 		values = dict(zip(self.subsyntax_names, [None] * len(self.subsyntax_names)))
 		values.update(dict(zip(self.subsyntax_names, value)))
 		return values
+
+	@property
+	def type_class(cls):
+		def _type_class(syn):
+			syn = syn() if inspect.isclass(syn) else syn
+			return syn.type_class
+		if cls.subsyntax_key_value:
+			class ComplexMultiValueKeyValueDictType(univention.admin.types.KeyValueDictionaryType):
+				key_type = _type_class(cls.subsyntaxes[0][1])
+				value_type = _type_class(cls.subsyntaxes[1][1])
+			return ComplexMultiValueKeyValueDictType
+		elif cls.subsyntax_names:
+			class ComplexMultiValueDictType(univention.admin.types.DictionaryType):
+				properties = dict()
+				for key, (desc, syn) in zip(cls.subsyntax_names, cls.subsyntaxes):
+					properties[key] = _type_class(syn)
+			return ComplexMultiValueDictType
+		else:
+			class ComplexListType(univention.admin.types.ListOfItems):
+				items = [_type_class(sub[1]) for sub in cls.subsyntaxes]
+			return ComplexListType
+
+	@property
+	def type_class_multivalue(cls):
+		if cls.subsyntax_key_value:
+			return cls.type_class
 
 	@classmethod
 	def tostring(self, texts):
@@ -429,6 +462,12 @@ class UDM_Objects(ISyntax):
 	use_objects = True
 	"""By default with `True` create Python UDM instance for each LDAP entry. With `False` only work with the LDAP attribute data."""
 
+	@property
+	def type_class(self):
+		if self.key == 'dn':
+			return univention.admin.types.DistinguishedNameType
+		return super(UDM_Objects, self).type_class
+
 	@classmethod
 	def parse(self, text):
 		if not self.empty_value and not text:
@@ -488,6 +527,8 @@ class string(simple):
 	"""
 	min_length = 0
 	max_length = 0
+
+	type_class = univention.admin.types.StringType
 
 	@classmethod
 	def parse(self, text):
@@ -608,6 +649,7 @@ class BaseFilename(string):
 	"""
 	Syntax for a file name. Sub- and parent directories are not allowed.
 	"""
+
 	@classmethod
 	def parse(self, value):
 		if '/' in value:
@@ -622,6 +664,9 @@ class Upload(ISyntax):
 	"""
 	Syntax to allow uploading a binary file.
 	"""
+
+	type_class = univention.admin.types.BinaryType
+
 	@classmethod
 	def parse(self, value):
 		return value
@@ -631,6 +676,9 @@ class Base64GzipText(TextArea):
 	"""
 	Syntax for some `gzip`-compressed and `base64`-encoded data.
 	"""
+
+	type_class = univention.admin.types.Base64Type
+
 	@classmethod
 	def parse(self, text):
 		try:
@@ -648,6 +696,9 @@ class Base64Bzip2Text(TextArea):
 	"""
 	Syntax for some `bzip2`-compressed and `base64`-encoded data.
 	"""
+
+	type_class = univention.admin.types.Base64Type
+
 	@classmethod
 	def parse(self, text):
 		try:
@@ -665,6 +716,9 @@ class Base64Upload(Upload):
 	"""
 	Syntax to allow uploading a `base64` encoded file.
 	"""
+
+	type_class = univention.admin.types.Base64Type
+
 	@classmethod
 	def parse(self, text):
 		try:
@@ -693,6 +747,9 @@ class jpegPhoto(Upload):
 	"""
 	Syntax to allow uploading a `JPEG` or `PNG` photo.
 	"""
+
+	type_class = univention.admin.types.Base64Type
+
 	@classmethod
 	def tostring(self, value):
 		# type: (Any) -> str
@@ -734,6 +791,9 @@ class Base64Bzip2XML(TextArea):
 	"""
 	Syntax for some `bzip2`-compressed |XML| data.
 	"""
+
+	type_class = univention.admin.types.Base64Type
+
 	@classmethod
 	def parse(self, text):
 		try:
@@ -754,6 +814,8 @@ class Base64UMCIcon(TextArea):
 	Syntax for a `base64` encoded icon (|SVG|, |PNG|, |JPEG|).
 	"""
 
+	type_class = univention.admin.types.Base64Type
+
 	@classmethod
 	def parse(self, text):
 		try:
@@ -768,6 +830,9 @@ class GNUMessageCatalog(TextArea):
 	"""
 	Syntax for a `base64` encoded binary message catalog `.mo`.
 	"""
+
+	type_class = univention.admin.types.Base64Type
+
 	@classmethod
 	def parse(self, text):
 		try:
@@ -785,6 +850,7 @@ class Localesubdirname(string):
 
 	Must match a directory in :file:`/usr/share/locale/`.
 	"""
+
 	@classmethod
 	def parse(self, text):
 		if text not in os.listdir('/usr/share/locale'):
@@ -838,6 +904,8 @@ class integer(simple):
 	_re = re.compile('^[0-9]+$')
 	size = 'Half'
 
+	type_class = univention.admin.types.IntegerType
+
 	@classmethod
 	def parse(self, text):
 		if isinstance(text, int):
@@ -858,6 +926,7 @@ class integerOrEmpty(integer):
 	>>> integer.parse("0")
 	'0'
 	"""
+
 	@classmethod
 	def parse(self, text):
 		if not text and text != 0:
@@ -896,6 +965,8 @@ class boolean(simple):
 	max_length = 1
 	regex = re.compile('^[01]?$')
 	error_message = _("Value must be 0 or 1")
+
+	type_class = univention.admin.types.BooleanType
 
 	@classmethod
 	def parse(self, text):
@@ -1302,6 +1373,8 @@ class passwd(simple):
 	_re2 = re.compile(r"[a-z]")
 	_re3 = re.compile(r"[0-9]")
 
+	type_class = univention.admin.types.PasswordType
+
 	@classmethod
 	def parse(self, text):
 		if len(text) >= self.min_length:
@@ -1314,6 +1387,9 @@ class userPasswd(simple):
 	"""
 	Syntax for user account passwords.
 	"""
+
+	type_class = univention.admin.types.PasswordType
+
 	@classmethod
 	def parse(self, text):
 		if text and len(text) > 0:
@@ -1370,6 +1446,7 @@ class ipv4Address(simple):
 	>>> ipv4Address.parse('0.0.0.0')
 	'0.0.0.0'
 	"""
+
 	@classmethod
 	def parse(self, text):
 		try:
@@ -1388,6 +1465,7 @@ class ipAddress(simple):
 	>>> ipAddress.parse('::1')
 	'::1'
 	"""
+
 	@classmethod
 	def parse(self, text):
 		try:
@@ -1671,6 +1749,8 @@ class emailAddress(simple):
 	min_length = 3
 	max_length = 0
 
+	type_class = univention.admin.types.EMailAddressType
+
 	@classmethod
 	def parse(self, text):
 		if not text.startswith('@') and \
@@ -1710,7 +1790,7 @@ class emailAddressValidDomain(emailAddress):
 			if mailaddress:
 				domain = mailaddress.rsplit('@', 1)[-1]
 				if domain not in domainCache:
-					ldapfilter = '(&(objectClass=univentionMailDomainname)(cn=%s))' % domain
+					ldapfilter = ldap.filter.filter_format('(&(objectClass=univentionMailDomainname)(cn=%s))', [domain])
 					result = lo.searchDn(filter=ldapfilter)
 					domainCache[domain] = bool(result)
 					ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.%s: address=%r   domain=%r   result=%r' % (self.name, mailaddress, domain, result))
@@ -1745,6 +1825,8 @@ class iso8601Date(simple):
 	# regexp-source: http://regexlib.com/REDetails.aspx?regexp_id=2092
 	regex = re.compile('^(\d{4}(?:(?:(?:\-)?(?:00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?|(?:(?:\-)?(?:1[0-2]|0[1-9]))?|(?:(?:\-)?(?:1[0-2]|0[1-9])(?:\-)?(?:0[1-9]|[12][0-9]|3[01]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3])(?:\-)?[1-7])?)?)$')
 	error_message = _("The given date does not conform to iso8601, example: \"2009-01-01\".")
+
+	type_class = univention.admin.types.DateType
 
 	@classmethod
 	def to_datetime(cls, value):
@@ -1806,6 +1888,8 @@ class date(simple):
 	max_length = 0
 	_re_iso = re.compile('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
 	_re_de = re.compile('^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]+$')
+
+	type_class = univention.admin.types.DateType
 
 	@classmethod
 	def parse(self, text):
@@ -2131,6 +2215,8 @@ class unixTime(simple):
 	regex = re.compile('^[0-9]+$')
 	error_message = _("Not a valid time format")
 
+	type_class = univention.admin.types.DateTimeType
+
 
 class TimeUnits(select):
 	"""
@@ -2156,6 +2242,8 @@ class TimeString(simple):
 	"""
 	error_message = _("Not a valid time format")
 	regex = re.compile('^(?:[01][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?$')
+
+	type_class = univention.admin.types.TimeType
 
 
 class UNIX_TimeInterval(complex):
@@ -2350,6 +2438,8 @@ class ldapDn(simple):
 	regex = re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')
 	error_message = _("Not a valid LDAP DN")
 
+	type_class = univention.admin.types.DistinguishedNameType
+
 
 class UMC_OperationSet(UDM_Objects):
 	"""
@@ -2504,7 +2594,7 @@ class ldapObjectClass(simple):
 	"""
 	@classmethod
 	def parse(self, text):
-		return text
+		return text  # FIXME: allows anything
 
 
 class ldapAttribute(simple):
@@ -2513,13 +2603,15 @@ class ldapAttribute(simple):
 	"""
 	@classmethod
 	def parse(self, text):
-		return text
+		return text  # FIXME: allows anything
 
 
 class ldapFilter(simple):
 	"""
 	Syntax to enter a |LDAP| search filter.
 	"""
+
+	type_class = univention.admin.types.LDAPFilterType
 
 	@classmethod
 	def parse(cls, text):
@@ -2951,6 +3043,8 @@ class UserID(UDM_Objects):
 	static_values = (('0', 'root'), )
 	use_objects = False
 
+	type_class = univention.admin.types.IntegerType
+
 
 class GroupID(UDM_Objects):
 	"""
@@ -2966,6 +3060,8 @@ class GroupID(UDM_Objects):
 	regex = re.compile('^[0-9]+$')
 	static_values = (('0', 'root'), )
 	use_objects = False
+
+	type_class = univention.admin.types.IntegerType
 
 
 class PortalComputer(UDM_Objects):
@@ -3336,6 +3432,7 @@ class AllowDeny(IStates):
 		(True, ('allow', _('allow'))),
 		(False, ('deny', _('deny')))
 	)
+	type_class = univention.admin.types.TriBooleanType
 
 
 class booleanNone(IStates):
@@ -3347,6 +3444,7 @@ class booleanNone(IStates):
 		(True, ('yes', _('Yes'))),
 		(False, ('no', _('No')))
 	)
+	type_class = univention.admin.types.TriBooleanType
 
 
 class auto_one_zero(select):
@@ -3358,6 +3456,7 @@ class auto_one_zero(select):
 		('1', _('Yes')),
 		('0', _('No'))
 	]
+	# type_class = univention.admin.types.TriBooleanType
 
 
 class TrueFalse(IStates):
@@ -3369,6 +3468,7 @@ class TrueFalse(IStates):
 		(True, ('true', _('True'))),
 		(False, ('false', _('False')))
 	)
+	type_class = univention.admin.types.TriBooleanType
 
 
 class TrueFalseUpper(IStates):
@@ -3380,6 +3480,7 @@ class TrueFalseUpper(IStates):
 		(True, ('TRUE', _('True'))),
 		(False, ('FALSE', _('False')))
 	)
+	type_class = univention.admin.types.TriBooleanType
 
 
 class TrueFalseUp(IStates):
@@ -3390,6 +3491,7 @@ class TrueFalseUp(IStates):
 		(True, ('TRUE', _('True'))),
 		(False, ('FALSE', _('False')))
 	)
+	type_class = univention.admin.types.BooleanType
 
 
 class AppActivatedTrue(TrueFalseUp):
@@ -3404,6 +3506,7 @@ class OkOrNot(IStates):
 		(True, ('OK', _('OK'))),
 		(False, ('Not', _('Not OK')))
 	)
+	type_class = univention.admin.types.BooleanType
 
 
 class AppActivatedOK(OkOrNot):
@@ -3431,6 +3534,7 @@ class ddnsUpdates(IStates):
 		(True, ('on', _('on'))),
 		(False, ('off', _('off')))
 	)
+	type_class = univention.admin.types.TriBooleanType
 
 
 class netbiosNodeType(select):
@@ -3987,6 +4091,8 @@ class SambaLogonHours(MultiSelect):
 	Syntax to select hour slots per day for Samba login.
 	"""
 	choices = [(idx * 24 + hour, '%s %d-%d' % (day, hour, hour + 1)) for idx, day in ((0, _('Sun')), (1, _('Mon')), (2, _('Tue')), (3, _('Wed')), (4, _('Thu')), (5, _('Fri')), (6, _('Sat'))) for hour in range(24)]
+
+	type_class = univention.admin.types.SambaLogonHours
 
 	@classmethod
 	def parse(self, value):
