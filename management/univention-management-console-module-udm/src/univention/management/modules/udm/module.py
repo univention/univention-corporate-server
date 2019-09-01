@@ -1056,11 +1056,38 @@ class Swagger(Ressource):
 
 	def get(self):
 		responses = {}
-		paths = {}
-		tags = []
-		definitions = {}
-		parameters = {}
-		parameters['search'] = [{
+		paths = {}  # defines all resources and methods they have
+		tags = []  # defines the basic structure, a group of pathes builds a tag, the pathes must include a reference to the tag name
+		definitions = {}  # defines "models" (and can be referenced)
+		parameters = {}  # global parameters, e.g. HTTP request header
+
+		base_object_definition = {
+			"dn": {
+				"description": "DN of this object (read only)",
+				"type": "string",
+				"format": "dn",
+				"example": ucr['ldap/base'],
+			},
+			# "entry_uuid": {},
+			# "id": {},
+			# "objectType": {},
+			"_links": {
+				"type": "object",
+				"properties": {},
+			},
+			"_embedded": {
+				"type": "object",
+				"properties": {},
+			},
+			"position": {
+				"description": "DN of LDAP node below which the object is located.",
+				"type": "string",
+				"format": "dn",
+				"example": ucr['ldap/base'],
+			},
+		}
+
+		search_parameters = [{
 			"in": "query",
 			"name": "position",
 			"type": "string",
@@ -1148,18 +1175,39 @@ class Swagger(Ressource):
 		# TODO: request header: Accept-Language, Accept, User-Agent
 		for name, mod in sorted(udm_modules.modules.items()):
 			module = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
-			tag = name
-			tag_escaped = name.replace('~', '~0').replace('/', '~1')
+			tag = name  # a name for the model
+			tag_escaped = tag.replace('~', '~0').replace('/', '~1')
 			tags.append({
 				'description': '%s objects' % (module.title,),
 				'name': tag,
+				#'externalDocs': {  # TODO: module.help_link
+				#	'description': '',
+				#	'url': '',
+				#}
 			})
-			objects_pathes = {}
-			object_template_pathes = {}
+			definitions[tag] = {
+				"type": "object",
+				"properties": {},
+			}
+			model = definitions[tag]['properties']
+			paths['/%s/' % (name,)] = objects_pathes = {}
+			paths['/%s/add' % (name,)] = object_template_pathes = {}
+			paths['/%s/{dn}' % (name,)] = object_pathes = {}
+			object_pathes["parameters"] = [
+				{
+					"description": "The objects DN (urlencoded)",
+					"in": "path",
+					"name": "dn",
+					"required": True,
+					"type": "string",
+					"format": "dn",
+				}
+			]
+
 			if 'search' in module.operations:
 				objects_pathes['get'] = {
 					"operationId": "udm:%s/object/search" % (name,),
-					"parameters": parameters['search'],
+					"parameters": search_parameters,
 					#[
 					#	{
 					#		"$ref": "#/parameters/search"
@@ -1220,33 +1268,21 @@ class Swagger(Ressource):
 					"summary": "Create a new %s object" % (module.object_name,),
 					"tags": [tag],
 				}
-			object_pathes = {
-				"parameters": [
-					{
-						"description": "The objects DN (urlencoded)",
-						"in": "path",
-						"name": "dn",
-						"required": True,
-						"type": "string",
-						"format": "dn",
-					}
-				],
-				"get": {
-					"operationId": "udm:%s/object" % (name,),
-					"responses": {
-						"200": {
-							"description": "Success",
-							"schema": {
-								"$ref": "#/definitions/%s" % (tag_escaped,)
-							}
-						},
-						"404": {
-							"description": "Object not found"
+			object_pathes["get"] = {
+				"operationId": "udm:%s/object" % (name,),
+				"responses": {
+					"200": {
+						"description": "Success",
+						"schema": {
+							"$ref": "#/definitions/%s" % (tag_escaped,)
 						}
 					},
-					"summary": "Get a representation of the %s object" % (module.object_name,),
-					"tags": [tag]
+					"404": {
+						"description": "Object not found"
+					}
 				},
+				"summary": "Get a representation of the %s object" % (module.object_name,),
+				"tags": [tag]
 			}
 			if 'remove' in module.operations:
 				object_pathes["delete"] = {
@@ -1315,76 +1351,69 @@ class Swagger(Ressource):
 				}
 				object_pathes['patch'] = object_pathes['put'].copy()
 				object_pathes['patch']['operationId'] = 'udm:%s/object/update' % (name,)
-			paths['/%s/' % (name,)] = objects_pathes
-			paths['/%s/add' % (name,)] = object_template_pathes
-			paths['/%s/{dn}' % (name,)] = object_pathes
-			definitions[tag] = {
-				"allOf": [
-					{
-						"$ref": "#/definitions/base"
-					},
-					{
-						"properties": {
-							"properties": {
-								"$ref": "#/definitions/%s_properties" % (tag_escaped,)
-							},
-							"uri": {
-								"type": "string",
-								"format": "uri",
-								"example": self.abspath(module.name),
-							},
-							"options": {
-								"description": "Object type specific options.",
-								"properties": dict((oname, {
-									"description": opt.short_description,
-									"type": "boolean",
-									"default": bool(opt.default),
-									"example": bool(opt.default),
-								}) for oname, opt in module.options.items()),
-								"type": "object"
-							},
-							"policies": {
-								"description": "Policies which apply for this object.",
-								"properties": dict((pol['objectType'], {
-									"type": "array",
-									"items": {
-										"type": "string",
-										"format": "dn",
-										"example": ucr['ldap/base'],
-									},
-									"description": pol['label'],
-								}) for pol in module.policies),
-								"type": "object"
-							},
+
+			model.update(dict(base_object_definition, **{
+				"properties": {
+					"type": "object",
+					"properties": {},
+				},
+				"uri": {
+					"type": "string",
+					"format": "uri",
+					"example": self.abspath(module.name),
+				},
+				"options": {
+					"description": "Object type specific options.",
+					"properties": dict((oname, {
+						"description": opt.short_description,
+						"type": "boolean",
+						"default": bool(opt.default),
+						"example": bool(opt.default),
+					}) for oname, opt in module.options.items()),
+					"type": "object"
+				},
+				"policies": {
+					"description": "Policies which apply for this object.",
+					"properties": dict((pol['objectType'], {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"format": "dn",
+							"example": ucr['ldap/base'],
 						},
-						"type": "object"
-					}
-				]
-			}
+						"description": pol['label'],
+					}) for pol in module.policies),
+					"type": "object"
+				},
+			}))
+			model_properties = model['properties']['properties']
 			if module.superordinate_names:
-				definitions[tag]['allOf'][1]['properties']['superordinate'] = {
+				model['superordinate'] = {
 					"type": "string",
 					"format": "dn",
-					"example": ucr['ldap/base'],
+					"example": "dc=example.dc=net",
 				}
-			properties = {}
 			for prop in module.properties(None):
 				name = prop['id']
 				if name.startswith('$'):
 					continue
-				properties[name] = {
+				#property = module.get_property(name)
+				#codec = udm_types.TypeHint.detect(property, name)
+				#model_properties[name] = codec.get_swagger_definition()
+				#continue
+				model_properties[name] = {
 					"type": "string",
 					"description": prop['label'],
 				}
 				if prop['required']:
-					properties[name]['required'] = [name]  # WTF: needs to be an array of strings
+					model_properties[name]['required'] = [name]  # WTF: needs to be an array of strings
 				ptype = widget_type_map.get(prop['type'], str)
 				if isinstance(ptype, tuple):
-					ptype, properties[name]['format'] = ptype
-				properties[name]['type'] = typemap[ptype]
+					ptype, model_properties[name]['format'] = ptype
+				model_properties[name]['type'] = typemap[ptype]
 				if prop.get('default') is not None:
-					properties[name]['default'] = prop['default']
-					properties[name]['example'] = prop['default']
+					model_properties[name]['default'] = prop['default']
+					model_properties[name]['example'] = prop['default']
 				# Swagger is not capable of having array containig different types... OpenAPI 3 might do it
 				#for subtype in prop.get("subtypes_", []):
 				#	item = {}
@@ -1392,60 +1421,41 @@ class Swagger(Ressource):
 				#	if isinstance(ptype, tuple):
 				#		ptype, item['format'] = ptype
 				#	item['type'] = typemap[ptype]
-				#	properties[name].setdefault('items', []).append(item)
+				#	model_properties[name].setdefault('items', []).append(item)
 				if ptype is list:
-					properties[name].setdefault('items', {'type': 'string', 'description': 'subtype'})
+					model_properties[name].setdefault('items', {'type': 'string', 'description': 'subtype'})
 
-			definitions['%s_properties' % (tag,)] = {
-				"type": "object",
-				"description": "Properties of the %s" % (module.title,),
-				"properties": properties,
-			}
-
-		definitions["base"] = {
-			"properties": {
-				"dn": {
-					"description": "DN of this object (read only)",
-					"type": "string",
-					"format": "dn",
-					"example": ucr['ldap/base'],
-				},
-				"position": {
-					"description": "DN of LDAP node below which the object is located.",
-					"type": "string",
-					"format": "dn",
-					"example": ucr['ldap/base'],
-				},
-			},
-			"type": "object"
-		}
 		url = urlparse(self.abspath(''))
-		parameters.pop('search')  # WTF: needs to be "object"
 		specs = {
 			'swagger': '2.0',
 			'basePath': url.path,
 			'paths': paths,
 			'info': {
-				'description': 'Schema definition for the Univention Directory Manager JSON-HTTP interface',
-				'title': 'Univention Directory Manager JSON-HTTP interface',
+				'description': 'Schema definition for the objects in the Univention Directory Manager REST interface',
+				'title': 'Univention Directory Manager REST interface',
 				'version': '1.0',
 			},
 			'produces': ['application/hal+json', 'application/json', 'text/html'],
 			'consumes': ['application/json', 'application/x-www-form-urlencoded', 'multipart/form-data'],
-			'securityDefinitions': {"basic": {"type": "basic"}},
-			'security': [{"basic": []}],
+			'securityDefinitions': {
+				"basic": {"type": "basic"}
+			},
+			'security': [{
+				"basic": []
+			}],
 			'tags': tags,
+			'schemes': ['https', 'http'],
 			'definitions': definitions,
 			'parameters': parameters,
 			'responses': responses,
 			'host': url.netloc,
-			#'host': '%s.%s' % (ucr['hostname'], ucr['domainname']),
 		}
 		self.content_negotiation(specs)
 
 	def get_json(self, response):
 		response = super(Swagger, self).get_json(response)
-		response.pop('_links')
+		response.pop('_links', None)
+		response.pop('_embedded', None)
 		return response
 
 
