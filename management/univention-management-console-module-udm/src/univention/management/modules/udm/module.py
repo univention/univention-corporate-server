@@ -1157,37 +1157,6 @@ class OpenAPI(Ressource):
 			},
 		}
 
-		widget_type_map = {
-			'umc/modules/udm/LockedCheckBox': bool,
-			'umc/modules/udm/MultiObjectSelect': list,
-			'umc/modules/udm/PortalContent': str,
-			'CheckBox': bool,
-			'PasswordInputBox': (str, 'password'),
-			'DateBox': (str, 'date'),
-			'TimeBox': (str, 'time'),
-			'umc/modules/udm/LinkList': str,
-			'ComboBox': str,
-			'TextBox': str,
-			'umc/modules/udm/ComboBox': str,
-			'UnixAccessRights': str,
-			'UnixAccessRightsExtended': str,
-			'MultiSelect': list,
-			'umc/modules/udm/CertificateUploader': (str, 'byte'),
-			'ImageUploader': (str, 'binary'),
-			'TextArea': str,
-			'Editor': (str, 'html'),
-			'MultiInput': list,
-			'ComplexInput': str,
-		}
-		typemap = {
-			int: 'integer',
-			float: 'number',
-			str: 'string',
-			bool: 'boolean',
-			None: 'void',
-			dict: 'object',
-			list: 'array',
-		}
 		for name, mod in sorted(udm_modules.modules.items()):
 			if object_type and name != object_type:
 				continue
@@ -1440,33 +1409,9 @@ class OpenAPI(Ressource):
 				name = prop['id']
 				if name.startswith('$'):
 					continue
-				#property = module.get_property(name)
-				#codec = udm_types.TypeHint.detect(property, name)
-				#model_properties[name] = codec.get_swagger_definition()
-				#continue
-				model_properties[name] = {
-					"type": "string",
-					"description": prop['label'],
-				}
-				if prop['required']:
-					model_properties[name]['required'] = [name]  # WTF: needs to be an array of strings
-				ptype = widget_type_map.get(prop['type'], str)
-				if isinstance(ptype, tuple):
-					ptype, model_properties[name]['format'] = ptype
-				model_properties[name]['type'] = typemap[ptype]
-				if prop.get('default') is not None:
-					model_properties[name]['default'] = prop['default']
-					model_properties[name]['example'] = prop['default']
-				# Swagger is not capable of having array containig different types... OpenAPI 3 might do it
-				#for subtype in prop.get("subtypes_", []):
-				#	item = {}
-				#	ptype = widget_type_map.get(prop['type'], str)
-				#	if isinstance(ptype, tuple):
-				#		ptype, item['format'] = ptype
-				#	item['type'] = typemap[ptype]
-				#	model_properties[name].setdefault('items', []).append(item)
-				if ptype is list:
-					model_properties[name].setdefault('items', {'type': 'string', 'description': 'subtype'})
+				property = module.get_property(name)
+				codec = udm_types.TypeHint.detect(property, name)
+				model_properties[name] = codec.get_openapi_definition()
 
 		url = list(urlparse(self.abspath('')))
 		fqdn = '%(hostname)s.%(domainname)s' % ucr
