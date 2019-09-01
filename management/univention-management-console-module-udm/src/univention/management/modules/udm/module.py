@@ -2683,6 +2683,7 @@ class Object(FormBase, Ressource):
 		except udm_errors.primaryGroupUsed:
 			raise
 		self.add_caching(public=False, must_revalidate=True)
+		self.set_status(204)
 		self.content_negotiation({})
 
 	def check_conditional_requests(self):
@@ -2784,11 +2785,12 @@ class UserPhoto(Ressource):
 
 		photo = self.request.files['jpegPhoto'][0]['body']
 		if len(photo) > 262144:
-			raise HTTPError('too large: maximum: 262144 bytes')
+			raise HTTPError(413, 'too large: maximum: 262144 bytes')
 		obj['jpegPhoto'] = photo.encode('base64')
 
 		yield self.pool.submit(obj.modify)
 
+		self.set_status(204)
 		self.content_negotiation({})
 
 
