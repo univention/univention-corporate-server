@@ -47,7 +47,6 @@ test_before_update () {
 	python shared-utils/ucs-winrm.py domain-join --client $WIN1 --dnsserver "$MASTER" --domainuser "$ADMIN" --domainpassword "$ADMIN_PASSWORD"
 	python shared-utils/ucs-winrm.py domain-user-validate-password --client $WIN1 --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
 	python shared-utils/ucs-winrm.py domain-user-validate-password --client $WIN1 --domainuser "testuser01" --domainpassword "Univention.99"
-	python shared-utils/ucs-winrm.py domain-user-validate-password --client $WIN1 --domainuser "testuser02" --domainpassword "Univention.99"
 	for ucs in ucs-master ucs-backup ucs-slave ucs-member; do
 		python shared-utils/ucs-winrm.py run-ps --client $WIN1 --cmd "nbtstat -a $ucs" # does not work with $WIN2016
 	done
