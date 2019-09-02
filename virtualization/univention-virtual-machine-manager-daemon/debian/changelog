@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (8.0.1-11) unstable; urgency=low
+
+  * Bug #50092: Handle failed migration
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 02 Sep 2019 08:36:11 +0200
+
 univention-virtual-machine-manager-daemon (8.0.1-10) unstable; urgency=medium
 
   * Bug #50205: Update links from UCS 4.x-y to UCS 4.4-2
