@@ -1,12 +1,40 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
+#
+# Univention Management Console module:
+#  System Diagnosis UMC module
+#
+# Copyright 2019-2020 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
 
 from univention.management.console.config import ucr
 from univention.management.console.modules.diagnostic import Warning, ProblemFixed
 
 from univention.admin.uldap import getAdminConnection
-from univention.admin.modules import update
-from univention.admin.samba import acctFlags
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -17,38 +45,26 @@ description = '\n'.join([
 	_('Objects that implicitly satisfy the criteria of a Univention Object but lack this attribute should be migrated.'),
 ])
 
-_UPDATED = False
-
 _WINDOWS_SERVER_ROLES = {
-	'windows_domaincontroller': ('computers/windows_domaincontroller', 'S'),
-	'windows_client': ('computers/windows', 'W'),
+        'computers/windows_domaincontroller': 'windows_domaincontroller',
+        'computers/windows': 'windows_client',
 	}
 
-def sambaAcctFlags_to_univentionServerRole(sambaAcctFlags):
-	flags = acctFlags(sambaAcctFlags)
-	for server_role, (udm_module, account_flag) in _WINDOWS_SERVER_ROLES.items():
-		try:
-			if flags[account_flag]:
-				return server_role
-		except KeyError:
-			pass
-
-
 def udm_objects_without_ServerRole(lo):
-	global _UPDATED
-	if not _UPDATED:
-		update()
-		_UPDATED = True
 	objs = {}
-	result = lo.search('(&(objectClass=univentionWindows)(!(univentionServerRole=*)))', attr=['sambaAcctFlags'])
+        result = lo.search('(&(objectClass=univentionWindows)(!(univentionServerRole=*)))', attr=['univentionObjectType'])
 	if result:
 		ldap_base = ucr.get('ldap/base')
 		for dn, attrs in result:
 			if dn.endswith(',cn=temporary,cn=univention,%s' % ldap_base):
 				continue
 			try:
-				sambaAcctFlags = attrs['sambaAcctFlags'][0]
-				server_role = sambaAcctFlags_to_univentionServerRole(sambaAcctFlags)
+				univentionObjectType = attrs['univentionObjectType'][0]
+			except KeyError:
+				univentionObjectType = None
+
+			try:
+				server_role = _WINDOWS_SERVER_ROLES[univentionObjectType]
 			except KeyError:
 				server_role = None
 
@@ -69,16 +85,15 @@ def run(_umc_instance):
 
 	total_objs = 0
 	show_fix_button = False
-	for server_role in sorted(objs.iterkeys()):
+	for server_role in sorted(objs):
 		num_objs = len(objs[server_role])
 		if num_objs:
 			total_objs += num_objs
 			if server_role:
 				show_fix_button = True
-				udm_module = _WINDOWS_SERVER_ROLES[server_role][0]
-				details += '\n· ' + _('Number of %s objects that should be marked as "%s": %d') % (udm_module, server_role, num_objs,)
+				details += '\n· ' + _('Number of objects that should be marked as "%s": %d') % (server_role, num_objs,)
 			else:
-				details += '\n· ' + _('Number of unspecific Windows computer objects with missing sambaAcctFlags attribute: %d (Can\'t fix this automatically)') % (num_objs,)
+				details += '\n· ' + _('Number of unspecific Windows computer objects with inconsistent univentionObjectType: %d (Can\'t fix this automatically)') % (num_objs,)
 	if total_objs:
 		if show_fix_button:
 			raise Warning(description + details, buttons=[{
@@ -92,7 +107,9 @@ def run(_umc_instance):
 def migrate_objects(_umc_instance):
 	lo, pos = getAdminConnection()
 	objs = udm_objects_without_ServerRole(lo)
-	for server_role in sorted(objs.iterkeys()):
+	for server_role in sorted(objs):
+		if not server_role:
+			continue
 		for dn in objs[server_role]:
 			changes = [('univentionServerRole', None, server_role)]
 			lo.modify(dn, changes)
