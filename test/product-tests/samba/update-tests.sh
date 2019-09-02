@@ -41,7 +41,8 @@ test_before_update () {
 
 	# Per UDM eine Dateifreigabe auf Slave anlegen, schreibbar für eine Gruppe in der Testuser1 Mitglied ist.
 	udm shares/share create --position "cn=shares,$ldap_base" --set name="testshareSlave" --set host="ucs-slave.sambatest.local" --set path="/home/testshare"
-	udm shares/share modify --dn "cn=testshareSlave,cn=shares,dc=sambatest,dc=local" --set group=5074 --set directorymode=0770 --set sambaDirectoryMode=0770
+	gid="$(id -g testuser01)"
+	udm shares/share modify --dn "cn=testshareSlave,cn=shares,dc=sambatest,dc=local" --set group=$gid --set directorymode=0770 --set sambaDirectoryMode=0770
 
 	# Windows 7 oder Windows 8 Client in die Domäne joinen
 	python shared-utils/ucs-winrm.py domain-join --client $WIN1 --dnsserver "$MASTER" --domainuser "$ADMIN" --domainpassword "$ADMIN_PASSWORD"
