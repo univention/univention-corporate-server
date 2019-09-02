@@ -6,8 +6,8 @@ src: nghttp2
 fix: 1.18.1-1+deb9u1
 desc: |
  This update addresses the following issues:
- * large amount of data request leads to denial of service (CVE-2019-9511)
- * flood using PRIORITY frames resulting in excessive resource consumption
+ * Large amount of data request leads to denial of service (CVE-2019-9511)
+ * Flood using PRIORITY frames resulting in excessive resource consumption
    (CVE-2019-9513)
 bug: [50094]
 cve:
