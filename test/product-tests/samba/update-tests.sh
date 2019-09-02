@@ -112,8 +112,8 @@ test_after_update () {
 	# Anmeldung als Testuser1 am Windows-Client
 	python shared-utils/ucs-winrm.py logon-as --username testuser01 --userpwd 'Univention.99' --client $WIN1
 	#   Ist das Homeverzeichnis automatisch eingebunden?
-	run_on_ucs_hosts $SLAVE "touch /home/testuser01/test.txt"
-	python shared-utils/ucs-winrm.py check-share --server ucs-slave --sharename "testuser01" --driveletter G --filename "test.txt" --username 'testuser01' --userpwd "Univention.99" --client $WIN1
+	run_on_ucs_hosts $MEMBER "touch /home/testuser01/test2.txt"
+	python shared-utils/ucs-winrm.py check-share --server ucs-member --sharename "testuser01" --driveletter G --filename "test.txt" --username 'testuser01' --userpwd "Univention.99" --client $WIN1
 	#   Kann eine Datei dort angelegt werden?
 	python shared-utils/ucs-winrm.py create-share-file --server ucs-slave --filename test-user01.txt --username 'testuser01' --userpwd "Univention.99" --share testuser01 --client $WIN1
 	#   Wurden die GPOs ausgewertet?
