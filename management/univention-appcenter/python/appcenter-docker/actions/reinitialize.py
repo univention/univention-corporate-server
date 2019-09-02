@@ -74,6 +74,7 @@ class Reinitialize(Upgrade):
 			register_attributes=False,
 			register_host=False,
 			pull_image=True,
+			remove_image=False,
 			backup=True,
 			noninteractive=True)
 		self._upgrade_image(app, _args)

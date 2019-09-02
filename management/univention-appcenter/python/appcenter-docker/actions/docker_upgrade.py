@@ -50,6 +50,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		super(Upgrade, self).setup_parser(parser)
 		parser.add_argument('--do-not-pull-image', action='store_false', dest='pull_image', help='Do not pull the image of a Docker App. Instead, the image is assumed to be already in place')
 		parser.add_argument('--do-not-backup', action='store_false', dest='backup', help='For docker apps, do not save a backup container')
+		parser.add_argument('--do-not-remove-image', action='store_false', dest='remove_image', help='For docker apps, do not remove the leftover image after the upgrade')
 
 	def __init__(self):
 		super(Upgrade, self).__init__()
@@ -173,9 +174,10 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		self.log('Removing old container')
 		if old_docker.container:
 			old_docker.rm()
-			self.log('Trying to remove old image')
-			if old_docker.rmi() != 0:
-				self.log('Failed to remove old image. Continuing anyway...')
+			if args.remove_image:
+				self.log('Trying to remove old image')
+				if old_docker.rmi() != 0:
+					self.log('Failed to remove old image. Continuing anyway...')
 		self._had_image_upgrade = True
 		self.log('Setting up new container (%s)' % app)
 		ucr_save({app.ucr_image_key: None})
