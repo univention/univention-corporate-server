@@ -1,0 +1,15 @@
+product: ucs
+release: "4.3"
+version: [4]
+scope: ucs_4.3-0-errata4.3-4
+src: nghttp2
+fix: 1.18.1-1+deb9u1
+desc: |
+ This update addresses the following issues:
+ * large amount of data request leads to denial of service (CVE-2019-9511)
+ * flood using PRIORITY frames resulting in excessive resource consumption
+   (CVE-2019-9513)
+bug: [50095]
+cve:
+- CVE-2019-9511
+- CVE-2019-9513
