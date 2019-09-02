@@ -1045,21 +1045,20 @@ class Relations(Ressource):
 		self.content_negotiation(result)
 
 
-class Swagger(Ressource):
+class OpenAPI(Ressource):
 
 	requires_authentication = False
 
 	def prepare(self):
-		super(Swagger, self).prepare()
+		super(OpenAPI, self).prepare()
 		self.request.content_negotiation_lang = 'json'
 		self.ldap_connection, self.ldap_position = get_machine_connection(write=False)
 
 	def get(self):
-		responses = {}
 		paths = {}  # defines all resources and methods they have
 		tags = []  # defines the basic structure, a group of pathes builds a tag, the pathes must include a reference to the tag name
-		definitions = {}  # defines "models" (and can be referenced)
-		parameters = {}  # global parameters, e.g. HTTP request header
+		models = {}  # defines "models" (and can be referenced)
+		request_bodies = {}
 
 		base_object_definition = {
 			"dn": {
@@ -1090,54 +1089,58 @@ class Swagger(Ressource):
 		search_parameters = [{
 			"in": "query",
 			"name": "position",
-			"type": "string",
-			"format": "dn",
+			"schema": {
+				"type": "string",
+				"format": "dn",
+			},
 			"description": "Position which is used as search base",
 		}, {
 			"in": "query",
 			"name": "scope",
-			"type": "string",
+			"schema": {"type": "string"},
 			"description": "The LDAP search scope (sub, base, one)",
 		}, {
 			"in": "query",
 			"name": "property",
-			"type": "string",
+			"schema": {"type": "string"},
 			"description": "A property name to filter for",
 		}, {
 			"in": "query",
 			"name": "propertyvalue",
-			"type": "string",
+			"schema": {"type": "string"},
 			"description": "The value to search for",
 		}, {
 			"in": "query",
 			"name": "hidden",
-			"type": "boolean",
+			"schema": {"type": "boolean"},
 			"description": "Include hidden/system objects in the response",
 		}, {
 			"in": "query",
 			"name": "superordinate",
-			"type": "string",
-			"format": "dn",
+			"schema": {
+				"type": "string",
+				"format": "dn",
+			},
 			"description": "The superordinate DN of the objects to find",
 		}, {
 			"in": "query",
 			"name": "pagesize",
-			"type": "integer",
+			"schema": {"type": "integer"},
 			"description": "How many results should be shown per page",
 		}, {
 			"in": "query",
 			"name": "page",
-			"type": "integer",
+			"schema": {"type": "integer"},
 			"description": "Which search page",
 		}, {
 			"in": "query",
 			"name": "dir",
-			"type": "string",
+			"schema": {"type": "string"},
 			"description": "Sort direction (ASC or DESC)",
 		}, {
 			"in": "query",
 			"name": "by",
-			"type": "string",
+			"schema": {"type": "string"},
 			"description": "Sort result by property",
 		}]
 		widget_type_map = {
@@ -1180,16 +1183,16 @@ class Swagger(Ressource):
 			tags.append({
 				'description': '%s objects' % (module.title,),
 				'name': tag,
-				#'externalDocs': {  # TODO: module.help_link
-				#	'description': '',
-				#	'url': '',
-				#}
+				'externalDocs': {
+					'description': module.help_text,
+					'url': module.help_link,
+				}
 			})
-			definitions[tag] = {
+			models[tag] = {
 				"type": "object",
 				"properties": {},
 			}
-			model = definitions[tag]['properties']
+			model = models[tag]['properties']
 			paths['/%s/' % (name,)] = objects_pathes = {}
 			paths['/%s/add' % (name,)] = object_template_pathes = {}
 			paths['/%s/{dn}' % (name,)] = object_pathes = {}
@@ -1199,34 +1202,35 @@ class Swagger(Ressource):
 					"in": "path",
 					"name": "dn",
 					"required": True,
-					"type": "string",
-					"format": "dn",
+					"schema": {
+						"type": "string",
+						"format": "dn",
+					},
 				}
 			]
-
+			schema_definition = "#/components/schemas/%s" % (tag_escaped,)
+			request_bodies[tag] = {
+				'content': {
+					'application/json': {'schema': {'$ref': schema_definition}},
+					'application/x-www-form-urlencoded': {'schema': {'$ref': schema_definition}},
+					'multipart/form-data': {'schema': {'$ref': schema_definition}},
+				},
+				'required': True,
+			}
+			content_schema = {
+				'application/json': {'schema': {'$ref': schema_definition}},
+				'application/hal+json': {'schema': {'$ref': schema_definition}},
+				'text/html': {'schema': {'$ref': schema_definition}},
+			}
+			schema_request_body = "#/components/requestBodies/%s" % (tag_escaped,)
 			if 'search' in module.operations:
 				objects_pathes['get'] = {
 					"operationId": "udm:%s/object/search" % (name,),
 					"parameters": search_parameters,
-					#[
-					#	{
-					#		"$ref": "#/parameters/search"
-					#	}
-					#],
 					"responses": {
 						200: {
 							"description": "Success",
-							"schema": {
-								"type": "object",
-								"properties": {
-									"entries": {
-										"items": {
-											"$ref": "#/definitions/%s" % (tag_escaped,)
-										},
-										"type": "array"
-									}
-								}
-							}
+							"content": content_schema,
 						}
 					},
 					"summary": "List all %s" % (module.object_name_plural,),
@@ -1240,29 +1244,20 @@ class Swagger(Ressource):
 					"responses": {
 						201: {
 							"description": "Success",
-							"schema": {
-								"$ref": "#/definitions/%s" % (tag_escaped,)
-							}
+							"content": content_schema,
 						}
 					},
 					"tags": [tag],
 				}
 				objects_pathes['post'] = {
 					"operationId": "udm:%s/object/create" % (name,),
-					"parameters": [{
-						"in": "body",
-						"name": "payload",
-						"required": True,
-						"schema": {
-							"$ref": "#/definitions/%s" % (tag_escaped,)
-						}
-					}],
+					"requestBody": {
+						"$ref": schema_request_body,
+					},
 					"responses": {
 						201: {
 							"description": "Success",
-							"schema": {
-								"$ref": "#/definitions/%s" % (tag_escaped,)
-							}
+							"content": content_schema,
 						}
 					},
 					"summary": "Create a new %s object" % (module.object_name,),
@@ -1273,9 +1268,7 @@ class Swagger(Ressource):
 				"responses": {
 					"200": {
 						"description": "Success",
-						"schema": {
-							"$ref": "#/definitions/%s" % (tag_escaped,)
-						}
+						"content": content_schema,
 					},
 					"404": {
 						"description": "Object not found"
@@ -1291,13 +1284,13 @@ class Swagger(Ressource):
 						{
 							"in": "query",
 							"name": "cleanup",
-							"type": "boolean",
+							"schema": {"type": "boolean"},
 							"description": "Whether to perform a cleanup (e.g. of temporary objects, locks, etc).",
 						},
 						{
 							"in": "query",
 							"name": "recursive",
-							"type": "boolean",
+							"schema": {"type": "boolean"},
 							"description": "Whether to remove referring objects (e.g. DNS or DHCP references).",
 						}
 					],
@@ -1315,32 +1308,26 @@ class Swagger(Ressource):
 			if set(module.operations) & {'edit', 'move', 'move_subtree'}:
 				object_pathes["put"] = {
 					"operationId": "udm:%s/object/modify" % (name,),
+					"requestBody": {
+						"$ref": schema_request_body,
+					},
 					"parameters": [
 						{
-							"in": "body",
-							"name": "payload",
-							"required": True,
-							"schema": {
-								"$ref": "#/definitions/%s" % (tag_escaped,)
-							}
-						}, {
 							"in": "header",
 							"name": "If-None-Match",
 							"description": "provide entity tag to make a condition request to not overwrite any values in a race condition",
-							"type": "string",
+							"schema": {"type": "string", "format": "etag"},
 						}, {
 							"in": "header",
 							"name": "If-Unmodified-Since",
 							"description": "provide last modified time to make a condition request to not overwrite any values in a race condition",
-							"type": "string",
+							"schema": {"type": "string", "format": "last-modified-date"},
 						},
 					],
 					"responses": {
 						"200": {
 							"description": "Success",
-							"schema": {
-								"$ref": "#/definitions/%s" % (tag_escaped,)
-							}
+							"content": content_schema,
 						},
 						"404": {
 							"description": "Object not found"
@@ -1425,35 +1412,48 @@ class Swagger(Ressource):
 				if ptype is list:
 					model_properties[name].setdefault('items', {'type': 'string', 'description': 'subtype'})
 
-		url = urlparse(self.abspath(''))
+		url = list(urlparse(self.abspath('')))
+		fqdn = '%(hostname)s.%(domainname)s' % ucr
+		urls = [
+			urlunparse([_scheme, _host] + url[2:])
+			for _host in (fqdn, url[1])
+			for _scheme in ('https', 'http')
+		]
 		specs = {
-			'swagger': '2.0',
-			'basePath': url.path,
+			'openapi': '3.0.0',
 			'paths': paths,
 			'info': {
 				'description': 'Schema definition for the objects in the Univention Directory Manager REST interface',
 				'title': 'Univention Directory Manager REST interface',
 				'version': '1.0',
 			},
-			'produces': ['application/hal+json', 'application/json', 'text/html'],
-			'consumes': ['application/json', 'application/x-www-form-urlencoded', 'multipart/form-data'],
-			'securityDefinitions': {
-				"basic": {"type": "basic"}
-			},
 			'security': [{
 				"basic": []
 			}],
 			'tags': tags,
-			'schemes': ['https', 'http'],
-			'definitions': definitions,
-			'parameters': parameters,
-			'responses': responses,
-			'host': url.netloc,
+			'components': {
+				'schemas': models,  # Reusable schemas (data models)
+				'requestBodies': request_bodies,  # Reusable request bodies
+				'securitySchemes': {  # Security scheme definitions (see Authentication)
+					'basic': {
+						'scheme': 'basic',
+						'type': 'http',
+					}
+				},
+				'parameters': {},  # Reusable path, query, header and cookie parameters
+				'responses': {},  # Reusable responses, such as 401 Unauthorized or 400 Bad Request
+				'headers': {},  # Reusable response headers
+				'examples': {},  # Reusable examples
+				'links': {},  # Reusable links
+				'callbacks': {},  # Reusable callbacks
+
+			},
+			'servers': [{'url': _url} for _url in urls],
 		}
 		self.content_negotiation(specs)
 
 	def get_json(self, response):
-		response = super(Swagger, self).get_json(response)
+		response = super(OpenAPI, self).get_json(response)
 		response.pop('_links', None)
 		response.pop('_embedded', None)
 		return response
@@ -3428,7 +3428,7 @@ class Application(tornado.web.Application):
 		super(Application, self).__init__([
 			(r"/(?:udm/)?(favicon).ico", Favicon, {"path": "/var/www/favicon.ico"}),
 			(r"/udm/(?:index.html)?", Modules),
-			(r"/udm/swagger.json", Swagger),
+			(r"/udm/openapi.json", OpenAPI),
 			(r"/udm/relation/(.*)", Relations),
 			(r"/udm/license/", License),
 			(r"/udm/license/import", LicenseImport),
