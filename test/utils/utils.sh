@@ -542,6 +542,11 @@ run_windows_native_client_tests () {
 }
 
 run_samba_dc_tests () {
+	assert_join || return 1
+	# just a test to make 81_diagnostic_checks.test happy
+	samba-tool ntacl sysvolreset || true
+	# Bug 48426
+	/etc/init.d/samba restart
 	local password="${1:-univention}"
 	set_administrator_dn_for_ucs_test || return 1
 	set_administrator_password_for_ucs_test "$password" || return 1
