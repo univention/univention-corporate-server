@@ -353,11 +353,6 @@ msgstr ""
 msgid "Manual: Analysis of listener/notifier problems"
 msgstr "Handbuch: Analyse von Listener/Notifier-Problemen"
 
-#: umc/python/diagnostic/plugins/56_univention_types.py:60
-#, python-format
-msgid "Migrate %d LDAP objects"
-msgstr "Migriere %d LDAP-Objekte"
-
 #: umc/python/diagnostic/plugins/55_user_migration.py:29
 msgid "Migrate user objects"
 msgstr "Migriere Nutzer Objekte"
@@ -747,6 +742,7 @@ msgstr ""
 "kann zur Veränderung der Proxy-Konfiguration genutzt werden.\n"
 
 #: umc/python/diagnostic/plugins/56_univention_types.py:50
+#: umc/python/diagnostic/plugins/57_univention_serer_role_windows.py:68
 msgid "These objects were found:"
 msgstr "Diese Objekte wurden gefunden:"
 
@@ -1005,6 +1001,45 @@ msgstr "samba/interfaces enthält weder lo noch 127.0.0.1 noch 0.0.0.0."
 #: umc/python/diagnostic/plugins/53_package_status.py:30
 msgid "some"
 msgstr "einigen"
+
+#: plugins/57_univention_serer_role_windows.py:14
+msgid "Server Role Windows"
+msgstr "Server Role Windows"
+
+#: plugins/57_univention_serer_role_windows.py:16
+msgid ""
+"Several services rely on the attribute \"univentionServerRole\" to search "
+"and identify objects in OpenLDAP."
+msgstr ""
+"Verschiedene Dienste vertrauen auf das Attribut \"univentionServerRole\", um "
+"nach Objekten in OpenLDAP zu suchen oder diese zu identifizieren."
+
+#: plugins/57_univention_serer_role_windows.py:17
+msgid ""
+"Objects that implicitly satisfy the criteria of a Univention Object but lack "
+"this attribute should be migrated."
+msgstr ""
+"Objekte, die die Anforderungen eines Univention-Objekts implizit erfüllen, "
+"aber dieses Attribut nicht gesetzt haben, sollten migriert werden."
+
+#: plugins/57_univention_serer_role_windows.py:79
+#, python-format
+msgid "Number of %s objects that should be marked as \"%s\": %d"
+msgstr "Anzahl an %s Objekten die als \"%s\" markiert sein sollten: %d"
+
+#: plugins/57_univention_serer_role_windows.py:81
+#, python-format
+msgid ""
+"Number of unspecific Windows computer objects with missing sambaAcctFlags "
+"attribute: %d (Can't fix this automatically)"
+msgstr "Anzahl unspezifischer Windows-Computer-Objekte mit fehlendem "
+"sambaAcctFlags Attribut: %s (Lässt sich nicht automatisiert korrigieren)"
+
+#: umc/python/diagnostic/plugins/56_univention_types.py:60
+#: umc/python/diagnostic/plugins/57_univention_serer_role_windows.py:86
+#, python-format
+msgid "Migrate %d LDAP objects"
+msgstr "Migriere %d LDAP-Objekte"
 
 #~ msgid "All nameserver entries are ok."
 #~ msgstr "Alle Nameserver Einträge sind in Ordnung."
