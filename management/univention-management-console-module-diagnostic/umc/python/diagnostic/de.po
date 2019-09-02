@@ -1033,7 +1033,7 @@ msgid ""
 "Number of unspecific Windows computer objects with missing sambaAcctFlags "
 "attribute: %d (Can't fix this automatically)"
 msgstr "Anzahl unspezifischer Windows-Computer-Objekte mit fehlendem "
-"sambaAcctFlags Attribut: %s (Lässt sich nicht automatisiert korrigieren)"
+"sambaAcctFlags Attribut: %d (Lässt sich nicht automatisiert korrigieren)"
 
 #: umc/python/diagnostic/plugins/56_univention_types.py:60
 #: umc/python/diagnostic/plugins/57_univention_serer_role_windows.py:86
