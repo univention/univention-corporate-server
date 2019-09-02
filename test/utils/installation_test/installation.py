@@ -317,7 +317,8 @@ class UCSInstallation(object):
 
 	def finish(self):
 		self.client.waitForText(self._['setup_successful'], timeout=2400)
-		self.click(self._['finish'])
+		#self.click(self._['finish'])
+		self.client.keyPress('enter')
 		time.sleep(200)
 
 	def software_configuration(self):
