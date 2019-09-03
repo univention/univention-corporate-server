@@ -6,5 +6,11 @@ src: samba
 fix: 2:4.10.1-1A~4.3.0.201908281815
 desc: |
  This update addresses the following issue:
- * TODO for Bug #50055
+ * Under certain parameter configurations, when an SMB client accesses a
+   network share and the user does not have permission to access the share
+   root directory, it is possible for the user to escape from the share
+   to see the complete '/' filesystem. Unix permission checks in the kernel
+   are still enforced.
 bug: [50055]
+cve:
+ - CVE-2019-10197
