@@ -7,9 +7,11 @@ version: [2,3]
 desc: |
  This update addresses the following issues:
  * A configuration error in the PAM stack "dovecot" has been fixed that
- lead to higher than usual time to authenticate against postfix smtpd.
- In some cases postfix' authentication timeout has been reached and
- resulted in authentication failure.
-bug: [39267]
+   lead to higher than usual time to authenticate against postfix smtpd.
+   In some cases postfix' authentication timeout has been reached and
+   resulted in authentication failure.
+ * The long waiting for the DH parameter generation on the first install was
+   removed.
+bug: [39267, 38990]
 erratum: 291
 announced: 2015-08-27
