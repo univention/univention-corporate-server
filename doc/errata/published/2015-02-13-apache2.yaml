@@ -11,7 +11,7 @@ desc: |
      crashes the apache process
   For UCS 4.0-0 it includes also the following issues:
    * Fix handling of chunk trailers to avoid bypass of intended
-     mod_headers restrictions [CVE-2013-5704]
+     mod_headers restrictions (CVE-2013-5704)
    * Fix hostname comparison with SNI to be case insensitive
 bug: [37792]
 erratum: 84
