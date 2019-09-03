@@ -378,7 +378,8 @@ class Docker(object):
 
 	def rmi(self):
 		image = ucr_get(self.app.ucr_image_key)
-		return rmi(image)
+		if image:
+			return rmi(image)
 
 	def logs(self):
 		return docker_logs(self.container, logger=self.logger)
