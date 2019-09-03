@@ -11,7 +11,7 @@ desc: |
    cause a denial of service (memory corruption) via a crafted XML document
    (CVE-2016-4658)
  * legacy xmlXPtrRangeToFunction could be abused to trigger use-after-free
- error with the potential for remote code execution (CVE-2016-5131)
+   error with the potential for remote code execution (CVE-2016-5131)
 bug: [42892]
 cve:
  - CVE-2016-4658
