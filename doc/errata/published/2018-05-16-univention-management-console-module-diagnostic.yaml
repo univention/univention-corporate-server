@@ -7,7 +7,7 @@ fix: 4.0.0-28A~4.3.0.201804301034
 desc: |
  This update addresses the following issue(s):
  * The ssh test does not fail anymore for computer objects that are not
- joined
+   joined
 bug: [43403]
 erratum: 39
 announced: 2018-05-16
