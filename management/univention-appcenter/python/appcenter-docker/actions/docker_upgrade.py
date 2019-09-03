@@ -174,10 +174,6 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		self.log('Removing old container')
 		if old_docker.container:
 			old_docker.rm()
-			if args.remove_image:
-				self.log('Trying to remove old image')
-				if old_docker.rmi() != 0:
-					self.log('Failed to remove old image. Continuing anyway...')
 		self._had_image_upgrade = True
 		self.log('Setting up new container (%s)' % app)
 		ucr_save({app.ucr_image_key: None})
@@ -190,6 +186,10 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		self._configure(app, args)
 		self._register_app(app, args)
 		self._call_join_script(app, args)
+		if args.remove_image:
+			self.log('Trying to remove old image')
+			if old_docker.rmi() != 0:
+				self.log('Failed to remove old image. Continuing anyway...')
 		self.old_app = app
 
 	def _upgrade_docker(self, app, args):

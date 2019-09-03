@@ -591,9 +591,9 @@ class MultiDocker(Docker):
 		return ret
 
 	def rmi(self):
-		images = []
-		yml_file = self.app.get_compose_file('docker-compose.yml.bak')
 		try:
+			images = []
+			yml_file = self.app.get_compose_file('docker-compose.yml.bak')
 			content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
 			services = content.get('services', {})
 			for service in services.itervalues():
