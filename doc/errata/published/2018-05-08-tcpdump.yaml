@@ -8,7 +8,6 @@ desc: |
  This update addresses the following issues:
  * The NFS parser has a buffer over-read in print-nfs.c:nfs_printfh().
    (CVE-2017-13001)
- CVE_2017-16808 is open
  * The ICMPv6 parser has a buffer over-read in print-icmp6.c:icmp6_print().
    (CVE-2017-13021)
  * The LLDP parser could enter an infinite loop due to a bug in
