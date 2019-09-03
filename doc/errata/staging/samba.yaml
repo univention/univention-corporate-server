@@ -15,7 +15,7 @@ desc: |
    network share and the user does not have permission to access the share
    root directory, it is possible for the user to escape from the share
    to see the complete '/' filesystem. Unix permission checks in the kernel
-   are still enforced.
+   are still enforced (CVE-2019-10197)
 bug: [49293,49935,50054]
 cve:
  - CVE-2019-10197
