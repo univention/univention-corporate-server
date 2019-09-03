@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (5.0.1-20) unstable; urgency=medium
+
+  * Bug #49958: More qa feedback
+
+ -- Arvid Requate <requate@univention.de>  Tue, 03 Sep 2019 15:39:32 +0200
+
 univention-management-console-module-diagnostic (5.0.1-19) unstable; urgency=medium
 
   * Bug #49958: Fixes in response to code review feedback

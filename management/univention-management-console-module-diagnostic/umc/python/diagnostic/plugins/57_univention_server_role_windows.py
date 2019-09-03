@@ -46,13 +46,14 @@ description = '\n'.join([
 ])
 
 _WINDOWS_SERVER_ROLES = {
-        'computers/windows_domaincontroller': 'windows_domaincontroller',
-        'computers/windows': 'windows_client',
-	}
+	'computers/windows_domaincontroller': 'windows_domaincontroller',
+	'computers/windows': 'windows_client',
+}
+
 
 def udm_objects_without_ServerRole(lo):
 	objs = {}
-        result = lo.search('(&(objectClass=univentionWindows)(!(univentionServerRole=*)))', attr=['univentionObjectType'])
+	result = lo.search('(&(objectClass=univentionWindows)(!(univentionServerRole=*)))', attr=['univentionObjectType'])
 	if result:
 		ldap_base = ucr.get('ldap/base')
 		for dn, attrs in result:
@@ -84,21 +85,21 @@ def run(_umc_instance):
 	details = '\n\n' + _('These objects were found:')
 
 	total_objs = 0
-	show_fix_button = False
+	fixable_objs = 0
 	for server_role in sorted(objs):
 		num_objs = len(objs[server_role])
 		if num_objs:
 			total_objs += num_objs
 			if server_role:
-				show_fix_button = True
+				fixable_objs += num_objs
 				details += '\n· ' + _('Number of objects that should be marked as "%s": %d') % (server_role, num_objs,)
 			else:
 				details += '\n· ' + _('Number of unspecific Windows computer objects with inconsistent univentionObjectType: %d (Can\'t fix this automatically)') % (num_objs,)
 	if total_objs:
-		if show_fix_button:
+		if fixable_objs:
 			raise Warning(description + details, buttons=[{
 				'action': 'migrate_objects',
-				'label': _('Migrate %d LDAP objects') % total_objs,
+				'label': _('Migrate %d LDAP objects') % fixable_objs,
 			}])
 		else:
 			raise Warning(description + details, buttons=[])
