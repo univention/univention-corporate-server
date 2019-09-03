@@ -11,5 +11,11 @@ desc: |
    NTACL flags when comparing LDAP directory ACLs to the sysvol.
  * Fix for Samba4.10 Regression: idmap uid to sid failed for accounts with
    uid in range 300000-400000
- * TODO for Bug #50054
+ * Under certain parameter configurations, when an SMB client accesses a
+   network share and the user does not have permission to access the share
+   root directory, it is possible for the user to escape from the share
+   to see the complete '/' filesystem. Unix permission checks in the kernel
+   are still enforced.
 bug: [49293,49935,50054]
+cve:
+ - CVE-2019-10197
