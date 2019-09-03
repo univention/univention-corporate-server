@@ -44,7 +44,9 @@ if __name__ == '__main__':
 		name = get_app_name()
 		store_data = '#!/bin/sh'
 		configure_host = '''#!/bin/sh
+if [ "$1" = "settings" ]; then
 univention-app reinitialize %s
+fi
 ''' % name
 
 		app = App(name=name, version='1', build_package=False, call_join_scripts=False)
