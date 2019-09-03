@@ -65,6 +65,7 @@ if __name__ == '__main__':
 			appcenter.update()
 			app.install()
 			app.verify(joined=False)
+			assert '94627dfbdf19' in images, images
 			app.execute_command_in_container('touch /var/lib/univention-appcenter/apps/%s/data/test1.txt' % name)
 
 			app = App(name=name, version='2', build_package=False, call_join_scripts=False)
