@@ -42,6 +42,11 @@ case "$1" in
 
 		OPTS="-c /etc/bind/named.conf -p $port -u bind -f -d $debug_level"
 
+		max_socks="$(ucr get dns/max-socks)"
+		if [ -n "$max_socks" ]; then
+			OPTS="$OPTS -S $max_socks"
+		fi
+
 		exec /usr/sbin/named $OPTS
 		;;
 	reload)

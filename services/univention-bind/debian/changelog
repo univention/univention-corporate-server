@@ -1,3 +1,9 @@
+univention-bind (13.0.1-7) unstable; urgency=low
+
+  * Bug #49493: allow setting the maximum number of open sockets via UCR
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 03 Sep 2019 09:18:06 +0200
+
 univention-bind (13.0.1-6) unstable; urgency=low
 
   * Bug #49441: Fix init script header

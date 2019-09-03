@@ -82,6 +82,12 @@ Description[en]=When using the OpenLDAP backend (see 'dns/backend'), the DNS ser
 Type=int
 Categories=service-bind
 
+[dns/max-socks]
+Description[de]=Anzahl Sockets die der DNS-Dienst öffnen darf. Der in den DNS-Dienst eingebaute Standard ist 4096. Der Standard für diese UCR Variable ist nicht gesetzt zu sein.
+Description[en]=Number of sockets the nameserver to allowed to open. The default value built into named is 4096. The default for this UCR variable is to be unset.
+Type=int
+Categories=service-bind
+
 [dns/nameserver/registration/forward_zone]
 Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, wird eine automatische Registrierung als zusätzlicher authoritativer Nameserver der lokal verwendeten "DNS forward zone" durchgeführt.
 Description[en]=If this option is activated or the variable is unset, an automatic registration as additional authoritative nameserver for the locally used DNS forward zone is performed.
