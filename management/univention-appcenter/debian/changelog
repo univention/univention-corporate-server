@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-59) unstable; urgency=medium
+
+  * Bug #49486: New error handling
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 03 Sep 2019 16:39:38 +0200
+
 univention-appcenter (8.0.11-58) unstable; urgency=medium
 
   * Bug #49486: Be more cautious with single container removal
