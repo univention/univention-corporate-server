@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-57) unstable; urgency=medium
+
+  * Bug #49486: Remove only after successful image upgrade
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 03 Sep 2019 16:00:51 +0200
+
 univention-appcenter (8.0.11-56) unstable; urgency=medium
 
   * Bug #49486: Make removal optional; do not remove in reinitialize
