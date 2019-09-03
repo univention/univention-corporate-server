@@ -3,7 +3,7 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-management-console-module-diagnostic
-fix: 5.0.1-19A~4.4.0.201909022150
+fix: 5.0.1-20A~4.4.0.201909031540
 desc: |
  This update addresses the following issue:
  * New plugin to check univentionServerRole for Windows computer objects
