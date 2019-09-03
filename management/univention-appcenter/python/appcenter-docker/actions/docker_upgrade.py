@@ -192,7 +192,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 				if old_docker.rmi() != 0:
 					self.log('Failed to remove old image. Continuing anyway...')
 			except Exception as exc:
-				self.error('Error while removing old image: %s' % exc)
+				self.warn('Error while removing old image: %s' % exc)
 		self.old_app = app
 
 	def _upgrade_docker(self, app, args):

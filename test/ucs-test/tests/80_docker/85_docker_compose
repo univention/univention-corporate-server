@@ -65,6 +65,7 @@ if __name__ == '__main__':
 			appcenter.update()
 			app.install()
 			app.verify(joined=False)
+			images = subprocess.check_output(['docker', 'images'])
 			assert '94627dfbdf19' in images, images
 			app.execute_command_in_container('touch /var/lib/univention-appcenter/apps/%s/data/test1.txt' % name)
 
