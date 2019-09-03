@@ -20,8 +20,8 @@ test_before_update () {
 
 	# get hostname for check in dns of server from client
 	# Auf UCS-Seite "host windowsclient" testen: Funktioniert der DNS-Lookup?
-	local win2012_name="$(python shared-utils/ucs-winrm.py run-ps --client $WIN1 --cmd '$env:computername' --loglevel error | head -1 | tr -d '\r')"
-	test -n "$win2012_name"
+	local win1_name="$(python shared-utils/ucs-winrm.py run-ps --client $WIN1 --cmd '$env:computername' --loglevel error | head -1 | tr -d '\r')"
+	test -n "$win1_name"
 
 	# Per UDM ein paar Benutzer und/in Gruppen anlegen (lieber nicht nur einen, falls man später einen Bug frisch testen muss..) OK
 	for i in $(seq 1 10); do
@@ -61,6 +61,9 @@ test_before_update () {
 	python shared-utils/ucs-winrm.py reboot --client $WIN1
 	sleep 120
 
+	# Auf UCS-Seite "host windowsclient" testen: Funktioniert der DNS-Lookup?
+	host $win1_name
+
 	# Als Testuser1 anmelden
 	python shared-utils/ucs-winrm.py logon-as --username testuser01 --userpwd 'Univention.99' --client $WIN1
 	#   Ist das Homeverzeichnis automatisch eingebunden?
@@ -71,11 +74,8 @@ test_before_update () {
 	#    GPO's
 	python shared-utils/ucs-winrm.py check-applied-gpos --username 'testuser01' --userpwd "Univention.99" --client $WIN1 \
 		--usergpo 'GPO1' --usergpo 'Default Domain Policy' --computergpo 'GPO2' --computergpo 'Default Domain Policy'
-
-	# Drucker verbinden (Druckertests wird erstaml ausgelassen, da auch im multi server test Drucker nicht stabil ist)
-	# die Testseite drucken kommt eine PS-Datei raus? (z.B. per ssh wegkopieren und mit okular ansehen, falls der "Text-only" Treiber ausgewählt wurde, ist der Text abgeschnitten ).
-	# ein Dokument aus wordpad heraus drucken: Es ist zu erwarten, dass keine PS-Datei angelegt wird. (Bug in UCS3.0-2)
-	# TODO
+	#   Ein Dokument aus wordpad heraus drucken: kommt eine (andere) PS-Datei raus? TODO
+	#   die Testseite drucken kommt eine PS-Datei raus? TODO
 
 }
 
@@ -111,10 +111,9 @@ test_after_update () {
 	python shared-utils/ucs-winrm.py check-share --server ucs-slave --sharename "testshareSlave" --driveletter Q --filename "testuser01.txt" --username 'testuser01' --userpwd "Univention.99" --client $WIN1
 	python shared-utils/ucs-winrm.py create-share-file --server ucs-slave --filename testuser02.txt --username 'testuser01' --userpwd "Univention.99" --share testshareSlave --client $WIN1
 	python shared-utils/ucs-winrm.py check-share --server ucs-slave --sharename "testshareSlave" --driveletter Q --filename "testuser02.txt" --username 'testuser01' --userpwd "Univention.99" --client $WIN1
-
-	#   Passwort ändern am Windows-Client (per Alt-Ctrl-Del) TODO
-	#   Danach neues Passwort unter UCS mit "kinit testuser1" testen. TODO
-	#   Abmeldung des Testuser1 vom Windows-Client. TODO
+	#  Ein Dokument aus wordpad heraus drucken: kommt eine (andere) PS-Datei raus? TODO
+	#  Passwort ändern am Windows-Client (per Alt-Ctrl-Del) TODO
+	#  Danach neues Passwort unter UCS mit "kinit testuser1" testen. TODO
 
 	# Anmeldung als Administrator am Windows-Client
 	#   Eine sichtbare Einstellung an den GPOs ändern TODO
@@ -157,6 +156,7 @@ test_after_update () {
 	#   Windows Kommando ausfüren: echo %LOGONSERVER% TODO
 
 	# Samba4 auf dem Logonserver anhalten TODO
+
 	# Anmeldung von Testuser2 am Windows-Client
 	python shared-utils/ucs-winrm.py logon-as --username testuser02 --userpwd 'Univention123!' --client $WIN2
 	#   Ist das Homeverzeichnis am Windows-Client automatisch eingebunden?
