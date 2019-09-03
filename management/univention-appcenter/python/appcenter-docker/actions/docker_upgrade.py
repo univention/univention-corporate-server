@@ -188,8 +188,11 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		self._call_join_script(app, args)
 		if args.remove_image:
 			self.log('Trying to remove old image')
-			if old_docker.rmi() != 0:
-				self.log('Failed to remove old image. Continuing anyway...')
+			try:
+				if old_docker.rmi() != 0:
+					self.log('Failed to remove old image. Continuing anyway...')
+			except Exception as exc:
+				self.error('Error while removing old image: %s' % exc)
 		self.old_app = app
 
 	def _upgrade_docker(self, app, args):

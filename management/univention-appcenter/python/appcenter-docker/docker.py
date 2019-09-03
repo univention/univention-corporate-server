@@ -592,20 +592,16 @@ class MultiDocker(Docker):
 		return ret
 
 	def rmi(self):
-		try:
-			images = []
-			yml_file = self.app.get_compose_file('docker-compose.yml.bak')
-			content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
-			services = content.get('services', {})
-			for service in services.itervalues():
-				image = service.get('image')
-				if image not in images:
-					images.append(image)
-			if images:
-				return rmi(*images)
-		except Exception as exc:
-			_logger.warn('Could not read docker-compose file: %s' % exc)
-			return 1
+		images = []
+		yml_file = self.app.get_compose_file('docker-compose.yml.bak')
+		content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
+		services = content.get('services', {})
+		for service in services.itervalues():
+			image = service.get('image')
+			if image not in images:
+				images.append(image)
+		if images:
+			return rmi(*images)
 
 	def backup_run_file(self):
 		yml_file = self.app.get_compose_file('docker-compose.yml')
