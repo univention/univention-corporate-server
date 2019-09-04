@@ -163,6 +163,7 @@ def create(image, command, hostname=None, ports=None, volumes=None, env_file=Non
 
 
 def rmi(*images):
+	_logger.debug('Removing image: %s')
 	return call(['docker', 'rmi'] + list(images))
 
 
@@ -377,7 +378,7 @@ class Docker(object):
 			return rm(self.container)
 
 	def rmi(self):
-		image = ucr_get(self.app.ucr_image_key)
+		image = self.image
 		if image:
 			return rmi(image)
 
