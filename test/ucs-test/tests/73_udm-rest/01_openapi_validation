@@ -1,0 +1,20 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Validate the OpenAPI schema
+## tags: [udm,apptest,openapi]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-management-module-udm
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+set -x
+
+pip install openapi-spec-validator
+
+cleanup() {
+	pip uninstall -y openapi-spec-validator
+}
+trap cleanup INT TERM EXIT
+
+curl http://localhost/univention/udm/openapi.json | python -m openapi_spec_validator - || fail_fast 1
