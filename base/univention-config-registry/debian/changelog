@@ -1,3 +1,9 @@
+univention-config-registry (14.0.0-12) unstable; urgency=low
+
+  * Bug #50098: Install debian/*.univention-service files again
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 04 Sep 2019 16:57:35 +0200
+
 univention-config-registry (14.0.0-11) unstable; urgency=medium
 
   * Bug #42241: move start/stop/restart logic into service_info.py
