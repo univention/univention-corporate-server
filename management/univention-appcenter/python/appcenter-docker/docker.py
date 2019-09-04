@@ -163,7 +163,7 @@ def create(image, command, hostname=None, ports=None, volumes=None, env_file=Non
 
 
 def rmi(*images):
-	_logger.debug('Removing image: %s')
+	_logger.debug('Removing image: %s' % ', '.join(images))
 	return call(['docker', 'rmi'] + list(images))
 
 
