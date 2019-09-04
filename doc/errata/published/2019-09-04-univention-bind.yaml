@@ -9,3 +9,5 @@ desc: |
  * The maximum number of open sockets can now be set using the UCR
  variable dns/max-socks (Bug #49493).
 bug: [49493]
+erratum: 249
+announced: 2019-09-04
