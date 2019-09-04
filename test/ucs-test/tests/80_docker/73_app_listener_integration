@@ -199,7 +199,7 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
 		appcenter.apps.append(app)
 		app.verify(joined=False)
 		images = subprocess.check_output(['docker', 'images'])
-		assert 'stable' not in images, images
+		assert 'stable' in images, images
 		time.sleep(10)
 		with open('/var/lib/univention-directory-listener/handlers/%s' % name, 'r') as f:
 			status = f.readline()
