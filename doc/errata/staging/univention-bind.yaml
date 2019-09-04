@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-1
 src: univention-bind
 fix: 13.0.1-7A~4.4.0.201909030925
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The maximum number of open sockets can now be set using the UCR
  variable dns/max-socks (Bug #49493).
 bug: [49493]
