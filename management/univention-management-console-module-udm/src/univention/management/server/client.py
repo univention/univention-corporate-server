@@ -203,7 +203,9 @@ class Session(object):
 			cls = HTTPError
 			cls = errors.get(response.status_code, cls)
 			raise cls(response.status_code, msg, response)
-		return response.json()
+		if response.headers.get('Content-Type') in ('application/json', 'application/hal+json'):
+			return response.json()
+		return response.text
 
 	def get_relations(self, entry, relation, name=None, template=None):
 		links = entry.get('_links', {})

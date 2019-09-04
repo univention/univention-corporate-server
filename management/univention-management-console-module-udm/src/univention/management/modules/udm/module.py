@@ -2684,7 +2684,7 @@ class Object(FormBase, Ressource):
 			raise
 		self.add_caching(public=False, must_revalidate=True)
 		self.set_status(204)
-		self.content_negotiation({})
+		raise Finish()
 
 	def check_conditional_requests(self):
 		etag = self._headers.get("Etag", "")
@@ -2791,7 +2791,7 @@ class UserPhoto(Ressource):
 		yield self.pool.submit(obj.modify)
 
 		self.set_status(204)
-		self.content_negotiation({})
+		raise Finish()
 
 
 class ObjectAdd(FormBase, Ressource):
