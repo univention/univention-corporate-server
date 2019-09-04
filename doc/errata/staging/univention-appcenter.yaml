@@ -3,7 +3,7 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-appcenter
-fix: 8.0.11-60A~4.4.0.201909040927
+fix: 8.0.11-61A~4.4.0.201909041157
 desc: |-
   This update addresses the following issue(s):
   * Fixed the reinitialize command on non-Master roles.
