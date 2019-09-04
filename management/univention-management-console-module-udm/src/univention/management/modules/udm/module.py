@@ -3246,7 +3246,8 @@ class ObjectEdit(FormBase, Ressource):
 			for policy in module.policies:
 				ptype = policy['objectType']
 				result['layout'][-1]['layout'].append('policies[%s]' % (ptype,))
-				self.add_form_element(form, 'policies[%s]' % (ptype), representation['policies'].get(ptype, [''])[0], label=policy['label'], placeholder=_('Policy DN'))
+				pol = (representation['policies'].get(ptype, ['']) or [''])[0]
+				self.add_form_element(form, 'policies[%s]' % (ptype), pol, label=policy['label'], placeholder=_('Policy DN'))
 
 			references = self.get_reference_layout(result['layout'])
 			if references:
