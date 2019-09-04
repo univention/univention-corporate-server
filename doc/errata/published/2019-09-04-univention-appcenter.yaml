@@ -9,3 +9,5 @@ desc: |-
   * Fixed the reinitialize command on non-Master roles.
   * Old docker images are now removed after an App upgrade.
 bug: [50082, 49486]
+erratum: 248
+announced: 2019-09-04
