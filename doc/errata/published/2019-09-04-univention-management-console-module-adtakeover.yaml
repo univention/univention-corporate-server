@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Fixes GPO link synchronisation during AD-Takeover
 bug: [44278]
+erratum: 250
+announced: 2019-09-04
