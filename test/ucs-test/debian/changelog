@@ -1,3 +1,9 @@
+ucs-test (9.0.3-39) unstable; urgency=medium
+
+  * Bug #49486: add assertion
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 04 Sep 2019 12:35:36 +0200
+
 ucs-test (9.0.3-38) unstable; urgency=medium
 
   * Bug #49486: fix missing variable
