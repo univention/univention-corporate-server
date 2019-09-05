@@ -605,6 +605,9 @@ class MultiDocker(Docker):
 			return rmi(*images)
 
 	def backup_run_file(self):
-		yml_file = self.app.get_compose_file('docker-compose.yml')
-		yml_bak_file = '%s.bak' % yml_file
-		shutil.copy2(yml_file, yml_bak_file)
+		try:
+			yml_file = self.app.get_compose_file('docker-compose.yml')
+			yml_bak_file = '%s.bak' % yml_file
+			shutil.copy2(yml_file, yml_bak_file)
+		except EnvironmentError as exc:
+			_logger.warn('Could not backup docker-compose.yml: %s' % exc)
