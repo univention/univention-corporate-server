@@ -297,7 +297,7 @@ handler_unset(['foo', 'bar'])
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term><filename>debian/<replaceable>package</replaceable>.univention-config-registry-services</filename></term>
+				<term><filename>debian/<replaceable>package</replaceable>.univention-service</filename></term>
 				<listitem>
 					<simpara>
 						This optional file is used to define long running services.
@@ -727,7 +727,7 @@ icon=<file-name>]]></programlisting>
 		</section>
 
 		<section id="ucr:services">
-			<title><filename>debian/<replaceable>package</replaceable>.univention-config-registry-services</filename>
+			<title><filename>debian/<replaceable>package</replaceable>.univention-service</filename>
 				<indexterm><primary>Config Registry</primary><secondary>Services</secondary></indexterm>
 			</title>
 			<para>
