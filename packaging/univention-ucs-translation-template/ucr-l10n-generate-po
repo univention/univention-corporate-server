@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+Extract UCS overview translations.
+"""
 #
 # Copyright 2016-2019 Univention GmbH
 #
@@ -38,7 +41,7 @@ try:
 except ImportError:
 	pass
 
-UCR_ASSIGNMENT = re.compile(r'(ucs\/web\/overview\/entries.*(?:link|description|label))(?:=|\?)(.*)')
+UCR_ASSIGNMENT = re.compile(r'(ucs/web/overview/entries.*(?:link|description|label))[=?](.*)')
 # directory names to ignore
 DIR_BLACKLIST = set(['.git', '.svn', 'doc', 'test'])
 
@@ -47,8 +50,7 @@ def write_po_file(ucrv_assingments, file_name):
 	# type: (List[Tuple[str, str]], str) -> None
 	pof = polib.POFile(check_for_duplicates=True)
 	for ucrv, value in ucrv_assingments:
-		po_ent = polib.POEntry(occurrences=[(ucrv, None)],
-			msgid=value)
+		po_ent = polib.POEntry(occurrences=[(ucrv, None)], msgid=value)
 		try:
 			pof.append(po_ent)
 		except ValueError:
@@ -60,40 +62,54 @@ def write_po_file(ucrv_assingments, file_name):
 	pof.save(file_name)
 
 
-if __name__ == '__main__':
-	parser = argparse.ArgumentParser()
+def parse_args():
+	# type: () -> argparse.Namespace
+	parser = argparse.ArgumentParser(description=__doc__)
 	parser.add_argument(
-		'-s',
-		'--source',
-		type=str,
-		help="SVN checkout to search for overview page translations",
+		'--source', '-s',
+		help="UCS source code checkout to search for overview page translations",
 		required=True)
 	parser.add_argument(
-		'-l',
-		'--language_code',
-		type=str,
+		'--language_code', '-l',
 		help="two char language code, e.g. 'fr'",
 		required=True)
 	args = parser.parse_args()
+	return args
+
+
+def main():
+	# type: () -> None
+	args = parse_args()
+
 	cmd = [
 		'grep',
 		'--recursive',
 		'--no-filename',
-		'overview/.*\(link\|description\|label\)\(=\|\?\)',
+		r'overview/.*\(link\|description\|label\)[=?]',
 		args.source]
 	cmd.extend(['--exclude-dir={}'.format(dname) for dname in DIR_BLACKLIST])
+
 	try:
-		out = subprocess.check_output(cmd)
-	except subprocess.CalledProcessError as exc:
-		raise SystemExit('Failed to execute grep')
-	out = [line.strip() for line in out.split('\n') if line]
+		out = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+	except EnvironmentError as exc:
+		exit('Failed to execute grep: %s' % (exc,))
+
+	assert out.stdout
 	ucrv_assingments = []  # type: List[Tuple[str, str]]
-	for line in out:
+	for line in out.stdout:
+		line = line.strip()
+		if not line:
+			continue
 		line = line.replace('ucr set ', '').replace('"', '').replace('\'', '')
 		line = line.strip(' \\')
 		matches = UCR_ASSIGNMENT.match(line)
 		if not matches:
 			sys.exit('Error: Received unexpected input from grep:\n{}\n'.format(line))
+
 		ucrv_assingments.append(matches.groups())  # type: ignore
 
 	write_po_file(ucrv_assingments, 'ucr-l10n.po')
+
+
+if __name__ == '__main__':
+	main()

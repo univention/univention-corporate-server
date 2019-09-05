@@ -1,5 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+This script walks over all po files in a given directory and its subfolders.
+It fills all msgid strings with the same content as the corresponding msgid,
+prepeding it with the character sequence '!TR!'.
+It is useful for visual quick testing of translation coverage and po file
+generation.
+"""
 #
 # Copyright 2013-2019 Univention GmbH
 #
@@ -28,26 +35,24 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 import os
-import sys
-import getopt
-import fnmatch
 import polib
-
-USAGE = """
-Usage: univention-ucs-translation-fakemessage [directory]
-
-This script walks over all po files in a given directory and its subfolders.
-It fills all msgid strings with the same content as the corresponding msgid,
-prepeding it with the character sequence '!TR!'.
-It is useful for visual quick testing of translation coverage and po file
-generation.
-"""
+import argparse
 
 
-def main(po_dir):
+def parse_args():
+	# type: () -> argparse.Namespace
+	parser = argparse.ArgumentParser(description=__doc__, usage='%(prog)s [directory]')
+	parser.add_argument('directory', help="Base directory for recursive search")
+	args = parser.parse_args()
+	return args
+
+
+def process(po_dir):
 	# type: (str) -> None
 	for _dir, dns, fns in os.walk(os.path.abspath(po_dir)):
-		for po_file in fnmatch.filter(fns, '*.po'):
+		for po_file in fns:
+			if not po_file.endswith('.po'):
+				continue
 			po = polib.pofile(os.path.join(_dir, po_file))
 			for entry in po:
 				if entry.msgid == '':
@@ -56,21 +61,11 @@ def main(po_dir):
 			po.save(os.path.join(_dir, po_file))
 
 
+def main():
+	# type: () -> None
+	args = parse_args()
+	process(args.directory)
+
+
 if __name__ == '__main__':
-	try:
-		opts, args = getopt.getopt(sys.argv[1:], ":h", ["--help"])
-	except getopt.GetoptError as err:
-		print(USAGE)
-		sys.exit(2)
-
-	for opt, val in opts:
-		if opt in ("-h", "--help"):
-			print(USAGE)
-			sys.exit(0)
-
-	if not args or len(args) > 1:
-		print("Error: Invalid number of arguments. Provide a single directory.")
-		print(USAGE)
-		sys.exit(1)
-	else:
-		main(args[0])
+	main()

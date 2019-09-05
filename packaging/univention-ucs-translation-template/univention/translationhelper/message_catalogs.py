@@ -39,6 +39,7 @@ import os
 import subprocess
 
 import univention.dh_umc as dh_umc
+from .helper import make_parent_dir
 try:
 	from typing import Any, List, Union  # noqa F401
 except ImportError:
@@ -62,7 +63,8 @@ def _clean_header(po_path):
 
 def concatenate_po(src_po_path, dest_po_path):
 	# type: (str, str) -> None
-	_call_gettext('msgcat',
+	_call_gettext(
+		'msgcat',
 		'--unique',
 		src_po_path,
 		dest_po_path,
@@ -76,7 +78,8 @@ def concatenate_po(src_po_path, dest_po_path):
 def create_empty_po(binary_pkg_name, new_po_path):
 	# type: (str, str) -> None
 	make_parent_dir(new_po_path)
-	_call_gettext('xgettext',
+	_call_gettext(
+		'xgettext',
 		'--from-code=UTF-8',
 		'--force-po',
 		'--sort-output',
@@ -98,7 +101,8 @@ def compile_mo(path_to_po, mo_output_path):
 
 def merge_po(source_po_path, dest_po_path):
 	# type: (str, str) -> None
-	_call_gettext('msgmerge',
+	_call_gettext(
+		'msgmerge',
 		'--update',
 		'--sort-output',
 		dest_po_path,
@@ -129,13 +133,12 @@ def po_to_json(po_path, json_output_path):
 
 def _call_gettext(*args, **kwargs):
 	# type: (*str, **Any) -> None
-	call = [arg for arg in args]
 	try:
-		subprocess.check_call(call, **kwargs)
+		subprocess.check_call(args, **kwargs)
 	except subprocess.CalledProcessError as exc:
 		raise GettextError("Error: A gettext tool exited unsuccessfully. Attempted command:\n{}".format(exc.cmd))
 	except AttributeError as exc:
-		raise GettextError("Operating System error during call to a gettext tool:\n{}".format(exc.strerror))
+		raise GettextError("Operating System error during call to a gettext tool:\n{}".format(exc))
 
 
 def univention_location_lines(pot_path, abs_path_source_pkg):
@@ -147,13 +150,3 @@ def univention_location_lines(pot_path, abs_path_source_pkg):
 			modified_occ.append((os.path.relpath(path, start=abs_path_source_pkg), linenum))
 		entry.occurrences = modified_occ
 	po_file.save(pot_path)
-
-
-def make_parent_dir(file_path):
-	# type: (str) -> None
-	dir_path = os.path.dirname(file_path)
-	try:
-		os.makedirs(dir_path)
-	except OSError:
-		if not os.path.isdir(dir_path):
-			raise

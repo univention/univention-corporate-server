@@ -1,5 +1,5 @@
-translationhelper usr/lib/python2.7/dist-packages/univention
-translationhelper usr/lib/python3/dist-packages/univention
+univention/translationhelper	usr/lib/python2.7/dist-packages/univention/
+univention/translationhelper	usr/lib/python3/dist-packages/univention/
 base_makefile usr/share/univention-ucs-translation-template
 univention-ucs-translation-merge usr/bin
 univention-ucs-translation-build-package usr/bin

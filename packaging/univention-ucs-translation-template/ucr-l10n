@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+Load UCS overview translations into UCR.
+"""
 #
 # Copyright 2016-2019 Univention GmbH
 #
@@ -33,20 +36,36 @@ import gettext
 
 from univention.config_registry import ConfigRegistry
 
-if __name__ == '__main__':
-	parser = argparse.ArgumentParser()
-	parser.add_argument('language_code',
-						type=str,
-						help="two char language code, e.g. 'fr'")
+
+def parse_args():
+	# type: () -> argparse.Namespace
+	parser = argparse.ArgumentParser(description=__doc__)
+	parser.add_argument(
+		'language_code',
+		help="two char language code, e.g. 'fr'")
 	args = parser.parse_args()
-	gettext.translation('ucr-variables', languages=[args.language_code]).install()
+	return args
+
+
+def main():
+	# type: () -> None
+	args = parse_args()
+
+	_ = gettext.translation('ucr-variables', languages=[args.language_code]).gettext
+
 	ucr = ConfigRegistry()
 	ucr.load()
 	overview_ucrvs = {k: v for k, v in ucr.items() if 'ucs/web/overview/entries' in k}
+
 	ucrvs_translated = {}
 	for ucrv, value in overview_ucrvs.items():
 		translation = _(value)
-		if not translation == value:
+		if translation != value:
 			ucrvs_translated['{}/{}'.format(ucrv, args.language_code)] = translation
+
 	ucr.update(ucrvs_translated)
 	ucr.save()
+
+
+if __name__ == '__main__':
+	main()

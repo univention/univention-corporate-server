@@ -27,8 +27,8 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+from __future__ import print_function
 import argparse
-import fnmatch
 import os
 import re
 import sys
@@ -46,7 +46,10 @@ def _get_po_files_from_dir(directory, return_relative_path=False):
 	# type: (str, bool) -> List[str]
 	po_files = []  # type: List[str]
 	for parent, dirs, files in os.walk(directory):
-		for po_file in fnmatch.filter([os.path.join(parent, fn) for fn in files], '*.po'):
+		for po_file in files:
+			if not po_file.endswith('.po'):
+				continue
+			po_file = os.path.join(parent, po_file)
 			if return_relative_path:
 				po_files.append(os.path.relpath(po_file, start=directory))
 			else:
@@ -90,10 +93,12 @@ def merge_po_file_trees(source_tree, target_tree):
 	# merge upstream changes...
 	for po_file in upstream_pos:
 		_msgmerge(os.path.join(source_tree, po_file), os.path.join(target_tree, po_file))
+
 	return pos_delete_upstream, new_pos
 
 
-if __name__ == '__main__':
+def parse_args():
+	# type: () -> argparse.Namespace
 	parser = argparse.ArgumentParser(description="Merge upstream changes in translation files to existing translation source package.")
 	parser.add_argument('upstream', type=str, help="Source from upstream containing changes")
 	parser.add_argument('translation', type=str, help="Translation source package as merge target.")
@@ -104,6 +109,13 @@ if __name__ == '__main__':
 	for dir in (args.translation, args.upstream):
 		if not os.path.isdir(dir):
 			sys.exit("Error: {} is not a directory or doesn't exist. Exiting.".format(dir))
+
+	return args
+
+
+def main():
+	# type: () -> None
+	args = parse_args()
 
 	match = re.match(r'.*-([a-zA-Z]{2})', os.path.basename(args.translation))
 	if not match:
@@ -117,7 +129,7 @@ end with two character language code, e.g. univention-l10n-fr. Exiting.""")
 			os.remove(os.path.join(args.translation, 'debian', 'univention-ucs-translation-{}.install'.format(lang_code)))
 			tlh.write_debian_rules(os.path.join(args.translation, 'debian'))
 			shutil.copy('/usr/share/univention-ucs-translation-template/base_makefile', os.path.join(args.translation, 'Makefile'))
-		except Exception() as exc:
+		except Exception:
 			sys.exit("Error during handling of legacy translation package. Exiting.")
 
 	# generate {lang}_tomerge
@@ -129,6 +141,7 @@ end with two character language code, e.g. univention-l10n-fr. Exiting.""")
 		module = tlh.UMCModuleTranslation.from_source_package(module_attrs, lang_code)
 		modules.append(module)
 		tlh.update_package_translation_files(module, output_dir)
+
 	# special cases, e.g. univention-management-console-frontend
 	special_cases = []  # type: List[tlh.SpecialCase]
 	try:
@@ -151,3 +164,7 @@ Exiting.''')
 		print('\n'.join(new))
 	shutil.rmtree(output_dir)
 	tlh.write_makefile(modules, special_cases, args.translation, lang_code)
+
+
+if __name__ == '__main__':
+	main()

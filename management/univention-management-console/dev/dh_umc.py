@@ -106,7 +106,7 @@ class UMC_Module(dict):
 	def package(self):
 		# type: () -> str
 		"""Return the name of the Debian binary package."""
-		return self.get('package')
+		return self['package']
 
 	@property
 	def python_path(self):
@@ -408,14 +408,14 @@ def create_json_file(po_file):
 	# The rules get parsed from the pofile and put into the json file as
 	# entries, if there are any. Parsing happens with regular expressions.
 	if has_plurals:
-		nplurals_start = re.search("nplurals\s*=\s*", plural_rules)
-		nplurals_end = re.search("nplurals\s*=\s*[\d]+", plural_rules)
+		nplurals_start = re.search(r"nplurals\s*=\s*", plural_rules)
+		nplurals_end = re.search(r"nplurals\s*=\s*[\d]+", plural_rules)
 
 		# The $plural$ string contains everything from "plural=" to the last
 		# ';'. This is a useful, since it would include illegal code, which
 		# can then be found later and generate an error.
-		plural_start = re.search("plural\s*=\s*", plural_rules)
-		plural_end = re.search('plural\s*=.*;', plural_rules)
+		plural_start = re.search(r"plural\s*=\s*", plural_rules)
+		plural_end = re.search(r'plural\s*=.*;', plural_rules)
 
 		if nplurals_start is None or nplurals_end is None or plural_start is None or plural_end is None:
 			raise Error('The plural rules in %s\'s header entry "Plural-Forms" seem to be incorrect.' % (po_file))
@@ -426,7 +426,7 @@ def create_json_file(po_file):
 		# The expression in data["$plural$"] will be evaluated via eval() in
 		# javascript. To avoid malicious code injection a simple check is
 		# performed here.
-		if not re.match("^[\s\dn=?!&|%:()<>]+$", data["$plural$"]):
+		if not re.match(r"^[\s\dn=?!&|%:()<>]+$", data["$plural$"]):
 			raise Error(('There are illegal characters in the "plural" expression in %s\'s header entry "Plural-Forms".' % (po_file)))
 
 	for entry in pofile:
