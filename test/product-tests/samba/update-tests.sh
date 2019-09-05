@@ -100,6 +100,7 @@ test_after_update () {
 	# Anmeldung als Testuser1 am Windows-Client
 	python shared-utils/ucs-winrm.py logon-as --username testuser01 --userpwd 'Univention.99' --client $WIN1
 	#   Ist das Homeverzeichnis automatisch eingebunden?
+	run_on_ucs_hosts $MEMBER "/etc/init.d/samba restart"
 	run_on_ucs_hosts $MEMBER "touch /home/testuser01/test2.txt"
 	python shared-utils/ucs-winrm.py check-share --server ucs-member --sharename "testuser01" --driveletter G --filename "test2.txt" --username 'testuser01' --userpwd "Univention.99" --client $WIN1
 	#   Kann eine Datei dort angelegt werden?
@@ -144,7 +145,7 @@ test_after_update () {
 	python shared-utils/ucs-winrm.py run-ps --impersonate --run-as-user testuser02 --run-as-password 'Univention123!' --client $WIN2 \
 		--cmd 'gwmi win32_mappedlogicaldisk -ComputerName localhost | select ProviderName, Name'
 	python shared-utils/ucs-winrm.py run-ps --impersonate --run-as-user testuser02 --run-as-password 'Univention123!' --client $WIN2 \
-		--cmd 'gwmi win32_mappedlogicaldisk -ComputerName localhost | select ProviderName, Name' | grep 'ucs-member.*Y:'
+		--cmd 'gwmi win32_mappedlogicaldisk -ComputerName localhost | select ProviderName, Name' | grep '\\\\ucs-member\\testuser02'
 	#   Kann eine Datei dort angelegt werden?
 	python shared-utils/ucs-winrm.py create-share-file --server ucs-member --filename test1.txt --username 'testuser02' --userpwd "Univention123!" --share testuser02 --client $WIN2
 	run_on_ucs_hosts $MEMBER "stat /home/testuser02/test1.txt"
@@ -158,19 +159,19 @@ test_after_update () {
 	# Samba4 auf dem Logonserver anhalten TODO
 
 	# Anmeldung von Testuser2 am Windows-Client
-	python shared-utils/ucs-winrm.py logon-as --username testuser02 --userpwd 'Univention123!' --client $WIN2
+	python shared-utils/ucs-winrm.py logon-as --username testuser02 --userpwd 'Univention123!' --client $WIN1
 	#   Ist das Homeverzeichnis am Windows-Client automatisch eingebunden?
 	python shared-utils/ucs-winrm.py run-ps --impersonate --run-as-user testuser02 --run-as-password 'Univention123!' --client $WIN1 \
 		--cmd 'gwmi win32_mappedlogicaldisk -ComputerName localhost | select ProviderName, Name'
 	python shared-utils/ucs-winrm.py run-ps --impersonate --run-as-user testuser02 --run-as-password 'Univention123!' --client $WIN1 \
-		--cmd 'gwmi win32_mappedlogicaldisk -ComputerName localhost | select ProviderName, Name' | grep 'ucs-member.*Y:'
+		--cmd 'gwmi win32_mappedlogicaldisk -ComputerName localhost | select ProviderName, Name' | grep '\\\\ucs-member\\testuser02'
 	#   Wurden die GPOs ausgewertet?
 	python shared-utils/ucs-winrm.py check-applied-gpos --username 'testuser02' --userpwd "Univention123!" --client $WIN1 \
 		--usergpo 'GPO1' --usergpo 'GPO3' --usergpo 'Default Domain Policy' \
 		--computergpo 'GPO2' --computergpo 'GPO4' --computergpo 'Default Domain Policy'
 	#   Passwort ändern am Windows-Client (per Alt-Ctrl-Del)
 	python shared-utils/ucs-winrm.py change-user-password --client $WIN1 --domainuser testuser02 --userpassword "newPassW0rd-"
-	python shared-utils/ucs-winrm.py domain-user-validate-password --client $WIN2 --domainuser "testuser02" --domainpassword "newPassW0rd-"
+	python shared-utils/ucs-winrm.py domain-user-validate-password --client $WIN1 --domainuser "testuser02" --domainpassword "newPassW0rd-"
 	sleep 30
 	check_user_in_ucs testuser02 "newPassW0rd-"
 
