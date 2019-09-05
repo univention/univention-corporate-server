@@ -3,8 +3,10 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-management-console
-fix: 
+fix: 11.0.4-36A~4.4.0.201909050927
 desc: |
- This update addresses the following issue(s):
- * 
-bug: [27816]
+ This update addresses the following issues:
+ * A new Univention Directory Manager HTTP service is now provided.
+ * Fix regression in Erratum 230 which caused the `univention-service` file
+   to be not installed any more.
+bug: [27816,50098]
