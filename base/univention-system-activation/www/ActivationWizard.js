@@ -40,13 +40,13 @@ define([
 	"dojo/request/script",
 	"dojox/form/Uploader",
 	"umc/dialog",
+	"umc/tools",
 	"umc/widgets/Wizard",
 	"umc/widgets/Text",
 	"umc/widgets/TextBox",
 	"put-selector/put",
-	"umc/json!/license",
 	"umc/i18n!systemactivation"
-], function(declare, lang, array, Deferred, ioQuery, domQuery, request, xhr, script, Uploader, dialog, Wizard, Text, TextBox, put, license, _) {
+], function(declare, lang, array, Deferred, ioQuery, domQuery, request, xhr, script, Uploader, dialog, tools, Wizard, Text, TextBox, put, _) {
 	return declare("ActivationWizard", [ Wizard ], {
 		autoFocus: true,
 		entries: null,
@@ -201,16 +201,18 @@ define([
 			emailNode.innerHTML = email_address;
 
 			// send the email
-			var data = {
-				email: email_address,
-				licence: license
-			};
-			return xhr.post('https://license.univention.de/keyid/conversion/submit', {
-				data: data,
-				handleAs: 'text',
-				headers: {
-					'X-Requested-With': null
-				}
+			return xhr.get('/license', { handleAs: 'json' }).then(function(license) {
+				var data = {
+					email: email_address,
+					licence: license
+				};
+				return xhr.post('https://license.univention.de/keyid/conversion/submit', {
+					data: data,
+					handleAs: 'text',
+					headers: {
+						'X-Requested-With': null
+					}
+				});
 			});
 		},
 
@@ -250,7 +252,13 @@ define([
 		_showEmailError: function(err) {
 			var status_code = err.response.status;
 			var error_details = null;
-			if (status_code >= 400) {
+			if (err.response.data) {
+				// error from local server (univention-system-activation)
+				tools.status('feedbackSubject', _('[%(appliance_name)s Appliance] Activation Error', this.entries));
+				tools.handleErrorStatus(err, {hideInformVendor: true});
+				return;
+			} else if (status_code >= 400) {
+				// error from license server
 				error_details = put('html');
 				error_details.innerHTML = err.response.data;
 				error_details = error_details.getElementsByTagName('span')[0].innerText;
