@@ -1,3 +1,9 @@
+univention-ucs-translation-template (6.0.0-3) unstable; urgency=low
+
+  * Bug #49978: Update package dependencies
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 05 Sep 2019 15:44:47 +0200
+
 univention-ucs-translation-template (6.0.0-2) unstable; urgency=medium
 
   * Bug #28497: migrate to dh_python2
