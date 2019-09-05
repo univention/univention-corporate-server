@@ -672,7 +672,7 @@ define([
 
 				displayTraceback: function(info) {
 					topic.publish('/umc/actions', 'error', 'traceback');
-					tools.showTracebackDialog(info.traceback, info.title + '\n\n' + info.message);
+					tools.showTracebackDialog(info.traceback, info.title + '\n\n' + info.message, null, custom.hideInformVendor);
 				}
 			}, custom);
 			return errorHandler;
@@ -870,7 +870,7 @@ define([
 			this.__getErrorHandler(handleErrors ? handleErrors : {}).error(info);
 		},
 
-		showTracebackDialog: function(message, statusMessage, title) {
+		showTracebackDialog: function(message, statusMessage, title, hideInformVendor) {
 			var readableMessage = message.split('\n');
 			// reverse it. web or mail client could truncate long tracebacks. last calls are important.
 			// See Bug #33798
@@ -922,22 +922,27 @@ define([
 			}, {
 				name: 'as_email',
 				label: feedbackLabel,
+				'default': true,
 				callback: function() {
 					deferred.resolve();
 					window.open(feedbackMailto, '_blank');
 				}
-			}, {
-				name: 'send',
-				'default': true,
-				label: _('Inform vendor'),
-				callback: lang.hitch(this, function() {
-					tools.sendTraceback(message, feedbackLink).then(function() {
-						deferred.resolve();
-					}, function() {
-						deferred.reject();
-					});
-				})
 			}];
+			if (! hideInformVendor) {
+				options[1]['default'] = false;
+				options.push({
+					name: 'send',
+					'default': true,
+					label: _('Inform vendor'),
+					callback: lang.hitch(this, function() {
+						tools.sendTraceback(message, feedbackLink).then(function() {
+							deferred.resolve();
+						}, function() {
+							deferred.reject();
+						});
+					})
+				});
+			}
 			return dialog.confirm(container, options, title || _('An error occurred')).then(function() {
 				return deferred;
 			});
