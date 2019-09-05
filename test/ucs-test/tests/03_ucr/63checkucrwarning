@@ -6,28 +6,39 @@
 ## exposure: safe
 
 import os
-import subprocess
-import sys
+import re
 from univention.debhelper import parseRfc822
 
 BASE = '/etc/univention/templates/info'
-WHITELIST = set([
+WHITELIST = {
 	'/etc/default/capi4hylafax',
 	'/etc/default/hylafax',
-	'/etc/hylafax/FaxDispatch',
+	'/etc/docker/seccomp-systemd.json',
+	'/etc/hostname',
 	'/etc/hylafax/cid',
 	'/etc/hylafax/config',
+	'/etc/hylafax/FaxDispatch',
 	'/etc/hylafax/hosts.hfaxd',
 	'/etc/hylafax/setup.cache',
 	'/etc/hylafax/setup.modem',
 	'/etc/hylafax/tsi',
 	'/etc/isdn/capi.conf',
-	'/var/lib/univention-windows-installer/install/bin/mapznrun.bat',
-	'/etc/mailname',
 	'/etc/issue',
 	'/etc/issue.net',
+	'/etc/listfilter.secret',
+	'/etc/mailname',
+	'/etc/univention/directory/reports/default/de_DE/footer.rml',
+	'/etc/univention/directory/reports/default/de_DE/header.rml',
+	'/etc/univention/directory/reports/default/en_US/footer.rml',
+	'/etc/univention/directory/reports/default/en_US/header.rml',
+	'/etc/welcome.msg',
 	'/usr/share/apps/ksmserver/pics/shutdownkonq.png',
-	'/etc/hostname',
+	'/usr/share/univention-management-console/i18n/de/apps.mo',
+	'/usr/share/univention-management-console/meta.json',
+	'/usr/share/univention-portal/apps.json',
+	'/usr/share/univention-web/js/umc/hooks.json',
+	'/var/lib/univention-windows-installer/install/bin/mapznrun.bat',
+	'/var/www/univention/languages.json',
 	'/usr/lib/openoffice/basis3.0/share/registry/data/org/openoffice/Office/DataAccess.xcu',
 	'/usr/lib/openoffice/basis3.0/share/registry/modules/org/openoffice/Office/Common/Common-base.xcu',
 	'/usr/lib/openoffice/basis3.0/share/registry/modules/org/openoffice/Office/Common/Common-UseOOoFileDialogs.xcu',
@@ -35,41 +46,48 @@ WHITELIST = set([
 	'/usr/lib/openoffice/basis-link/share/registry/data/org/openoffice/Office/DataAccess.xcu',
 	'/usr/lib/openoffice/basis-link/share/registry/modules/org/openoffice/Office/Common/Common-base.xcu',
 	'/usr/lib/openoffice/basis-link/share/registry/modules/org/openoffice/Office/Common/Common-UseOOoFileDialogs.xcu',
-	'/usr/lib/openoffice/basis-link/share/registry/schema/org/openoffice/Office/Common.xcs'
-])
+	'/usr/lib/openoffice/basis-link/share/registry/schema/org/openoffice/Office/Common.xcs',
+	# Bugs: remove the following lines as soon as the bug is fixed:
+	'/etc/runit/univention-directory-listener/run',
+	'/etc/apache2/ucs-sites.conf.d/ucs-sites.conf',
+	'/etc/nagios-plugins/config/univention-samba.cfg',
+	'/etc/nagios-plugins/config/univention-s4-connector.cfg',
+}
 
-message_line = "Warning: This\|but can be overridden via univention-config-registry."
+RE_LINE = re.compile(r"Warning: This|but can be overridden via univention-config-registry.")
 
 files = set()
 for info in os.listdir(BASE):
 	if not info.endswith('.info'):
 		continue
 	fn = os.path.join(BASE, info)
-	f = open(fn, 'r')
-	try:
+	with open(fn, 'r') as f:
 		data = f.read()
-	finally:
-		f.close()
+
 	for section in parseRfc822(data):
-		if section['Type'] == 'file':
-			fn = '/%{File}s' % section
-		elif section['Type'] == 'multifile':
-			fn = '/%{Multiile}s' % section
+		if section['Type'][0] == 'file':
+			fn = '/' + section['File'][0]
+		elif section['Type'][0] == 'multifile':
+			fn = '/' + section['Multifile'][0]
 		else:
 			continue
 		files.add(fn)
+
 files -= set(WHITELIST)
 
 missing_header_files = False
 for fn in files:
-	p1 = subprocess.Popen(('/bin/grep', '-q', message_line, fn))
-	if p1.wait() != 0:
-		print 'Error: Missing UCR header for %s' % fn
-		missing_header_files = True
+	with open(fn, 'r') as f:
+		for line in f:
+			if RE_LINE.search(line):
+				break
+		else:
+			print 'Error: Missing UCR header for %s' % fn
+			missing_header_files = True
 
 if missing_header_files:
-	sys.exit(110)
+	exit(110)
 else:
 	print "Info: All UCR files contain a warning."
-	sys.exit(100)
+	exit(100)
 # vim: set filetype=python :
