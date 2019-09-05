@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-64) unstable; urgency=medium
+
+  * Bug #50113: Suppress errors when trying to remove old docker image
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 05 Sep 2019 15:06:32 +0200
+
 univention-appcenter (8.0.11-63) unstable; urgency=medium
 
   * Bug #50106: Simplify Maintainer and Vendor presentation in UMC
