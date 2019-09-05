@@ -88,6 +88,7 @@ Recommends: ucs-test-framework
 Depends: lsb-release,
  ucs-test-libs (= ${source:Version}),
  python-pexpect,
+ python-pytest,
  univention-ssh,
  python,
  ${misc:Depends}
