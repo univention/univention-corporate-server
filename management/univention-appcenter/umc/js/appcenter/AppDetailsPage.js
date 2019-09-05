@@ -678,11 +678,8 @@ define([
 			this._detailsTable = domConstruct.create('table', {
 				style: {borderSpacing: '1em 0.1em'}
 			});
-			if (this.app.hasMaintainer()) {
-				this.addToDetails(_('Provider'), 'Maintainer');
-			} else {
-				this.addToDetails(_('Provider'), 'Vendor');
-			}
+			this.addToDetails(_('Vendor'), 'Vendor');
+			this.addToDetails(_('Provider'), 'Maintainer');
 			this.addToDetails(_('Contact'), 'Contact');
 			this.addToDetails(_('License'), 'License');
 			if (this.app.isInstalled) {
@@ -1307,7 +1304,7 @@ define([
 		},
 
 		_detailFieldCustomVendor: function() {
-			var vendor = this.app.vendor || this.app.maintainer;
+			var vendor = this.app.vendor;
 			var website = this.app.websiteVendor;
 			if (vendor && website) {
 				return '<div><a href="' + entities.encode(website) + '" target="_blank">' + entities.encode(vendor) + '</a></div>';
@@ -1317,15 +1314,12 @@ define([
 		},
 
 		_detailFieldCustomMaintainer: function() {
-			if (!this.app.hasMaintainer()) {
-				return null;
-			}
 			var maintainer = this.app.maintainer;
 			var website = this.app.websiteMaintainer;
 			if (maintainer && website) {
 				return '<a href="' + entities.encode(website) + '" target="_blank">' + entities.encode(maintainer) + '</a>';
 			} else if (maintainer) {
-				return maintainer;
+				return '<div>' + entities.encode(maintainer) + '</div>';
 			}
 		},
 

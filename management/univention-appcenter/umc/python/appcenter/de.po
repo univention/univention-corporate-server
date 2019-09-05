@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-03 10:24+0200\n"
+"POT-Creation-Date: 2019-09-05 09:29+0200\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -55,8 +55,8 @@ msgid "Could not find an application for %s"
 msgstr "Konnte keine Applikation für %s finden"
 
 #: umc/python/appcenter/__init__.py:261
-msgid "Could not load recommendations."
-msgstr ""
+msgid "Could not load suggestions."
+msgstr "Konnte App-Vorschläge nicht laden."
 
 #: umc/python/appcenter/app_center.py:130
 #, python-format
@@ -68,7 +68,7 @@ msgstr "Fehler bei der Kontaktaufnahme mit dem App Center-Server. %s"
 msgid "Installing %s"
 msgstr "Installiere %s"
 
-#: umc/python/appcenter/app_center.py:1676 umc/python/appcenter/__init__.py:641
+#: umc/python/appcenter/__init__.py:641 umc/python/appcenter/app_center.py:1676
 #, python-format
 msgid "Installing LDAP packages on %s"
 msgstr "Installiere LDAP Pakete auf %s"
@@ -186,8 +186,8 @@ msgid "Unable to start the docker service!"
 msgstr "Der Docker-Dienst konnte nicht gestartet werden!"
 
 #: umc/python/appcenter/__init__.py:266
-msgid "Unexpected recommendations data."
-msgstr ""
+msgid "Unexpected suggestions data."
+msgstr "Unerwartete Daten für App-Vorschläge."
 
 #: umc/python/appcenter/__init__.py:444
 #, python-format
