@@ -735,13 +735,14 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                     <listitem>
                         <simpara>
 													You can add specific values of the Config Registry
-													into your file. More importantly, this includes <xref
-														linkend="app-settings">App Settings</xref> defined
+													into your file. More importantly, this includes <xref linkend="app-settings"/> defined
 													by the App itself:
+                        </simpara>
 													<programlisting>
 environment:
 	MY_KEY: @%@myapp/mysetting@%@
 </programlisting>
+                        <simpara>
 													Note that App Settings are always added to the main
 													service automatically. But this allows adding them to
 													other containers and using them as part of a
@@ -752,10 +753,12 @@ environment:
                         <simpara>
 													You can do Python scripting within the template, e.g.
 													to read (and write) the content of specific files.
+                        </simpara>
 													<programlisting>
 environment:
 	MY_SECRET: @!@import uuid; print(uuid.uuid4())@!@
 </programlisting>
+                        <simpara>
 													Note that currently, you cannot access App Settings
 													within the Python script.
                         </simpara>
