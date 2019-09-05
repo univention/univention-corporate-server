@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-apache\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-08-08 16:50+0200\n"
+"POT-Creation-Date: 2019-09-05 00:20+0200\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: www/ActivationWizard.js:120
+#: www/ActivationWizard.js:119
 msgid ""
 "%(appliance_name)s Appliance is now activated. Click \"Finish\" to access "
 "the management interface (which may take a while)."
@@ -21,7 +21,7 @@ msgstr ""
 "um auf die Verwaltungsoberfläche zuzugreifen. (Das kann einige Zeit "
 "benötigen.)"
 
-#: www/ActivationWizard.js:93
+#: www/ActivationWizard.js:92
 #, javascript-format
 msgid ""
 "A license file has been sent to <strong class=\"email-address\">%s</strong>."
@@ -42,19 +42,19 @@ msgstr ""
 "-Mail-Adresse an den App-Anbieter weitergeleitet. Der App-Anbieter wird Sie "
 "ggf. kontaktieren."
 
-#: www/ActivationWizard.js:90
+#: www/ActivationWizard.js:89
 msgid "Activation of %(appliance_name)s Appliance"
 msgstr "Aktivierung von %(appliance_name)s Appliance"
 
-#: www/ActivationWizard.js:119
+#: www/ActivationWizard.js:118
 msgid "Activation successful!"
 msgstr "Aktivierung erfolgreich!"
 
-#: www/ActivationWizard.js:164 www/ActivationWizard.js:168
+#: www/ActivationWizard.js:163 www/ActivationWizard.js:167
 msgid "An unknown error has occurred."
 msgstr "Ein unbekannter Fehler trat auf."
 
-#: www/ActivationWizard.js:259
+#: www/ActivationWizard.js:266
 msgid ""
 "An unknown error occurred. It is possible that a browser addon blocks "
 "sending the request to \"license.univention.de\". More information how to "
@@ -71,11 +71,11 @@ msgstr ""
 msgid "E-mail address"
 msgstr "E-Mail-Adresse"
 
-#: www/ActivationWizard.js:261
+#: www/ActivationWizard.js:268
 msgid "Error "
 msgstr "Fehler "
 
-#: www/ActivationWizard.js:78
+#: www/ActivationWizard.js:77
 msgid ""
 "If you already have a license file you can <a href=\"#upload\">skip this "
 "step and upload the license</a>."
@@ -83,7 +83,7 @@ msgstr ""
 "Wenn Sie bereits über eine Lizenzdatei verfügen, dann können Sie diesen <a "
 "href=\"#upload\">Schritt überspringen und die Lizenz einspielen</a>."
 
-#: www/ActivationWizard.js:97
+#: www/ActivationWizard.js:96
 msgid ""
 "If you did not receive an email, please check your SPAM directory or <a "
 "href=\"#register\"> request the email again</a>."
@@ -91,7 +91,7 @@ msgstr ""
 "Sollten Sie keine E-Mail erhalten haben, prüfen Sie Ihr SPAM-Verzeichnis "
 "oder <a href=\"#register\">fordern Sie die Lizenzdatei noch einmal an</a>."
 
-#: www/ActivationWizard.js:268
+#: www/ActivationWizard.js:275
 msgid ""
 "If you encounter problems during the activation, please send an email to: "
 "<strong><a href=\"mailto:feedback@univention.de\" "
@@ -105,7 +105,7 @@ msgstr ""
 msgid "License request for %(appliance_name)s Appliance"
 msgstr "Anforderung einer Lizenz für %(appliance_name)s Appliance"
 
-#: www/ActivationWizard.js:74
+#: www/ActivationWizard.js:73
 msgid ""
 "More details about the activation can be found in the <a "
 "href=\"http://docs.univention.de/manual.html#central:license\" "
@@ -115,7 +115,7 @@ msgstr ""
 "href=\"http://docs.univention.de/handbuch.html#central:license\" "
 "target=\"_blank\">UCS-Handbuch</a> gefunden werden."
 
-#: www/ActivationWizard.js:69
+#: www/ActivationWizard.js:68
 msgid "No valid email address."
 msgstr "Keine gültige E-Mail-Adresse."
 
@@ -131,7 +131,7 @@ msgstr ""
 " Gebrauch zu nehmen. Im nächsten Schritt können sie die Lizenzdatei "
 "hochladen, die an Ihre E-Mail-Adresse gesendet wurde."
 
-#: www/ActivationWizard.js:134
+#: www/ActivationWizard.js:133
 msgid "Request activation"
 msgstr "Aktivierung anfordern"
 
@@ -139,19 +139,23 @@ msgstr "Aktivierung anfordern"
 msgid "Switch language"
 msgstr "Sprache ändern"
 
-#: www/ActivationWizard.js:267
+#: www/ActivationWizard.js:274
 msgid "The following error occurred:"
 msgstr "Der folgende Fehler trat auf:"
 
-#: www/ActivationWizard.js:294
+#: www/ActivationWizard.js:301
 msgid "The server is not responding. Please restart the system."
 msgstr "Der Webserver antwortet nicht. Bitte starten Sie das System neu."
 
-#: www/ActivationWizard.js:103
+#: www/ActivationWizard.js:102
 msgid "Upload license file"
 msgstr "Lizenzdatei hochladen"
 
-#: www/ActivationWizard.js:93
+#: www/ActivationWizard.js:257
+msgid "[%(appliance_name)s Appliance] Activation Error"
+msgstr "[%(appliance_name)s Appliance] Fehler bei Aktivierung"
+
+#: www/ActivationWizard.js:92
 msgid "your email address"
 msgstr "Ihre E-Mail-Adresse"
 
