@@ -1,3 +1,9 @@
+univention-web (3.0.5-29) unstable; urgency=medium
+
+  * Bug #46790: Make inform vendor on traceback popups hideable
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 05 Sep 2019 09:09:21 +0200
+
 univention-web (3.0.5-28) unstable; urgency=medium
 
   * Bug #48698: Fix GUI visible spelling errors
