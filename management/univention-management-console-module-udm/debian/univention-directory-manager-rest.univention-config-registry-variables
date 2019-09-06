@@ -1,6 +1,6 @@
 [directory/manager/rest/debug/level]
-Description[de]=Der Detailgrad der Logmeldungen in /var/log/univention/management-module-udm.log. Mögliche Werte: 0-4/99 (0: nur Fehlermeldungen bis 4: alle Debugausgaben, mit 99 werden auch sensible Daten wie Klartext-Passwörter protokolliert).
-Description[en]=The verbosity of log messages in /var/log/univention/management-module-udm.log. Possible values: 0-4/99 (0: only error messages to 4: all debug statements, with = 99 sensitive data like cleartext passwords is logged as well).
+Description[de]=Der Detailgrad der Logmeldungen in /var/log/univention/directory-manager-rest.log. Mögliche Werte: 0-4/99 (0: nur Fehlermeldungen bis 4: alle Debugausgaben, mit 99 werden auch sensible Daten wie Klartext-Passwörter protokolliert).
+Description[en]=The verbosity of log messages in /var/log/univention/directory-manager-rest.log. Possible values: 0-4/99 (0: only error messages to 4: all debug statements, with = 99 sensitive data like cleartext passwords is logged as well).
 Type=int
 Categories=service-udm
 

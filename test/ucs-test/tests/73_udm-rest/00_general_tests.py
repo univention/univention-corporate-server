@@ -5,7 +5,7 @@
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:
-##   - univention-management-module-udm
+##   - univention-directory-manager-rest
 
 import pytest
 import time

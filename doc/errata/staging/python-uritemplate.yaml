@@ -6,6 +6,6 @@ src: python-uritemplate
 fix: 0.6-1A~4.4.0.201908261116
 desc: |
  This update addresses the following issue(s):
- * Move to maintained as a dependency of univention-management-module-udm.
+ * Move to maintained as a dependency of univention-directory-manager-rest.
 maintained: true
 bug: [50034]

@@ -65,10 +65,10 @@ class Server(tornado.web.RequestHandler):
 	"""
 
 	LANGUAGE_SERVICE_MAPPING = {
-		'de': '/var/run/univention-management-module-udm-de-de.socket',
-		'de_DE': '/var/run/univention-management-module-udm-de-de.socket',
-		'en': '/var/run/univention-management-module-udm-en-us.socket',
-		'en_US': '/var/run/univention-management-module-udm-en-us.socket',
+		'de': '/var/run/univention-directory-manager-rest-de-de.socket',
+		'de_DE': '/var/run/univention-directory-manager-rest-de-de.socket',
+		'en': '/var/run/univention-directory-manager-rest-en-us.socket',
+		'en_US': '/var/run/univention-directory-manager-rest-en-us.socket',
 	}
 	PROCESSES = {}
 

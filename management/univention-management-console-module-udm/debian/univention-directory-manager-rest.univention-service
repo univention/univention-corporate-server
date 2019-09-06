@@ -1,7 +1,7 @@
-[univention-management-module-udm]
+[univention-directory-manager-rest]
 Description[de]=Univention Directory Manager HTTP service
 Description[en]=Univention Directory Manager HTTP service
 programs=/usr/bin/python2.7 -m univention.management.server
 icon=service/udm-server
 start_type=univention-management-server/autostart
-systemd=univention-management-module-udm.service
+systemd=univention-directory-manager-rest.service

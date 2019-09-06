@@ -1,3 +1,9 @@
+univention-server (14.0.0-9) unstable; urgency=medium
+
+  * Bug #50034: rename package
+
+ -- Florian Best <best@univention.de>  Tue, 10 Sep 2019 16:47:19 +0200
+
 univention-server (14.0.0-8) unstable; urgency=medium
 
   * Bug #50034: make dependency more explicit

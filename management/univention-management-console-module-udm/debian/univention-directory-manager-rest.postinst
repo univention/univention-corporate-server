@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 if command -v update-python-modules >/dev/null 2>&1; then
-	update-python-modules --post-install univention-management-module-udm.public
+	update-python-modules --post-install univention-directory-manager-rest.public
 fi
 
 #DEBHELPER#
@@ -41,6 +41,6 @@ fi
 a2ensite univention-management.conf
 service apache2 reload
 
-call_joinscript 22univention-management-module-udm.inst
+call_joinscript 22univention-directory-manager-rest.inst
 
 exit 0

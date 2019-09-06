@@ -26,7 +26,7 @@ Description: UMC module for UCS Directory Manager
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-management-module-udm
+Package: univention-directory-manager-rest
 Architecture: all
 Depends: ${misc:Depends},
  univention-management-console-module-udm (= ${binary:Version}),
@@ -39,6 +39,17 @@ Depends: ${misc:Depends},
  systemd,
 Description: HTTP service for UCS Directory Manager
  This package contains the HTTP service for UCS Directory Manager.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-management-module-udm
+Architecture: all
+Depends: ${misc:Depends},
+ univention-directory-manager-rest
+Description: Transitional package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

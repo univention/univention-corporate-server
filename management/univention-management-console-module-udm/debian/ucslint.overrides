@@ -1,4 +1,4 @@
 0010-2: update_udm_tab_translations.sh
 0015-2: umc/js/udm/Template.js
-0001-2: 22univention-management-module-udm.inst
-0013-2: debian/univention-management-module-udm.postinst
+0001-2: 22univention-directory-manager-rest.inst
+0013-2: debian/univention-directory-manager-rest.postinst
