@@ -1,3 +1,9 @@
+ucs-test (9.0.3-43) unstable; urgency=low
+
+  * Bug #50098: Fix 03_ucr/68check_univention-service.py
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 06 Sep 2019 09:53:32 +0200
+
 ucs-test (9.0.3-42) unstable; urgency=medium
 
   * Bug #50098: Add 03_ucr/68check_univention-service.py

@@ -5,6 +5,7 @@
 ##  - apptest
 ## exposure: safe
 
+from __future__ import print_function
 import os
 import re
 from univention.debhelper import parseRfc822
@@ -77,17 +78,20 @@ files -= set(WHITELIST)
 
 missing_header_files = False
 for fn in files:
+	if not os.path.exists(fn):
+		print('Warning: Files does not exist: %s' % fn)
+		continue
 	with open(fn, 'r') as f:
 		for line in f:
 			if RE_LINE.search(line):
 				break
 		else:
-			print 'Error: Missing UCR header for %s' % fn
+			print('Error: Missing UCR header for %s' % fn)
 			missing_header_files = True
 
 if missing_header_files:
 	exit(110)
 else:
-	print "Info: All UCR files contain a warning."
+	print("Info: All UCR files contain a warning.")
 	exit(100)
 # vim: set filetype=python :
