@@ -29,13 +29,17 @@
 from __future__ import absolute_import, unicode_literals
 import univention.config_registry
 from .modules.generic import OriUdmHandlerTV
-from typing import Dict, Optional, Text, Tuple
+from typing import Any, Callable, Dict, Optional, Text, Tuple
 
 
 class LDAP_connection(object):
 	_ucr = None  # type: univention.config_registry.ConfigRegistry
 	_connection_admin = None  # type: OriUdmHandlerTV
 	_connection_account = {}  # type: Dict[Tuple[Text, Text, Text, int, Text], OriUdmHandlerTV]
+
+	@classmethod
+	def _wrap_connection(cls, func, **kwargs):  # type: (Callable[[Any], Any], **Any) -> Any
+		...
 
 	@classmethod
 	def get_admin_connection(cls):  # type: () -> OriUdmHandlerTV
