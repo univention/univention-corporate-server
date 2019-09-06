@@ -1146,6 +1146,12 @@ class UDM_Module(object):
 				return mod.name
 		return self.name
 
+	@property
+	def mapping(self):
+		if hasattr(self.module, 'mapping'):
+			return self.module.mapping
+		return udm_mapping.mapping()
+
 
 def container_modules():
 	containers = []

@@ -1231,7 +1231,7 @@ class OpenAPI(Ressource):
 				return {
 					'application/json': {'schema': {'$ref': schema_definition}},
 					'application/hal+json': {'schema': {'$ref': schema_definition}},
-					'text/html': {'schema': {'$ref': schema_definition}},
+					'text/html': {'schema': {'$ref': schema_definition}},  # TODO: describe as NON-API
 				}
 
 			request_bodies[model_name] = {
@@ -1384,7 +1384,7 @@ class OpenAPI(Ressource):
 				"uri": {
 					"type": "string",
 					"format": "uri",
-					"example": self.abspath(module.name) + '/%s=foo,dc=example,dc=net' % (module.module.mapping.mapName(module.identifies) or 'cn',),
+					"example": self.abspath(module.name) + '/%s=foo,dc=example,dc=net' % (module.mapping.mapName(module.identifies) or 'cn',),
 				},
 				"options": {
 					"description": "Object type specific options.",
