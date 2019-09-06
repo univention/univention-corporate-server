@@ -232,8 +232,8 @@ class CLIClient(object):
 		module.load_relations()
 		mod = self.udm.client.resolve_relation(module.relations, 'create-form', template={'position': '', 'superordinate': ''}).data  # TODO: integrate in client.py?
 		properties = self.udm.client.resolve_relation(mod, 'udm:properties')
-		properties = dict((prop['id'], prop) for prop in properties)
-		layout = self.udm.client.resolve_relation(mod, 'udm:layout')
+		properties = dict((prop['id'], prop) for prop in properties['properties'])
+		layout = self.udm.client.resolve_relation(mod, 'udm:layout', 'create-form')['layout']
 
 		for layout in layout:
 			print('  %s - %s:' % (layout['label'], layout['description']), file=file)

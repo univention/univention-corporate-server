@@ -225,7 +225,8 @@ class Session(object):
 	def resolve_relations(self, entry, relation, name=None, template=None):
 		embedded = entry.get('_embedded', {})
 		if isinstance(embedded, dict) and relation in embedded:
-			yield embedded[relation]
+			for x in embedded[relation]:
+				yield x
 			return
 
 		for relation in self.get_relations(entry, relation, name, template):

@@ -585,14 +585,12 @@ class RessourceBase(object):
 			tree.write(self)
 
 	def get_hal_json(self, response):
+		response.setdefault('_links', {})
 		response.setdefault('_embedded', {})
+		response['_embedded'].pop('udm:form', None)  # no public API, just to render html
 		return self.get_json(response)
 
 	def get_json(self, response):
-		response.pop('_forms', None)
-		response.pop('position_layout', None)
-		response.pop('template_layout', None)
-		response.pop('layout_search', None)
 		self.add_link(response, 'curies', self.abspath('relation/') + '{rel}', name='udm', templated=True)
 		return response
 
@@ -600,8 +598,10 @@ class RessourceBase(object):
 		root = []
 		if isinstance(response, dict):
 			self.add_link(response, 'stylesheet', self.abspath('css/style.css'))
-			for _form in response.get('_forms', []):
+
+			for _form in response.get('_embedded', {}).get('udm:form', []):
 				root.insert(0, self.get_html_form(_form, response))
+
 			if isinstance(response.get('error'), dict) and response['error'].get('code', 0) >= 400:
 				error = ET.Element('div')
 				root.append(error)
@@ -620,11 +620,8 @@ class RessourceBase(object):
 				root.append(ET.Element("br"))
 		elif isinstance(response, dict):
 			r = response.copy()
-			r.pop('_forms', None)
 			r.pop('_links', None)
-			r.pop('position_layout', None)
-			r.pop('template_layout', None)
-			r.pop('layout_search', None)
+			r.pop('_embedded', None)
 			if r:
 				pre = ET.Element("pre")
 				pre.text = json.dumps(r, indent=4)
@@ -662,8 +659,10 @@ class RessourceBase(object):
 	def get_html_form(self, _form, response):
 		form = ET.Element('form', **dict((p, _form[p]) for p in ('id', 'class', 'name', 'method', 'action', 'rel', 'enctype', 'accept-charset', 'novalidate') if _form.get(p)))
 		if _form.get('layout'):
-			self.get_html_layout(form, response.get(_form['layout']) or response.get('_embedded', {}).get(_form['layout']), _form.get('fields'))
+			layout = self.get_resource(response, 'udm:layout', name=_form['layout'])
+			self.get_html_layout(form, layout['layout'], _form.get('fields'))
 			return form
+
 		for field in _form.get('fields', []):
 			self.render_form_field(form, field)
 			form.append(ET.Element('br'))
@@ -741,7 +740,7 @@ class RessourceBase(object):
 		dont_set_http_header = kwargs.pop('dont_set_http_header', False)
 		links = obj.setdefault('_links', {})
 		links.setdefault(relation, []).append(dict(kwargs, href=href))
-		if kwargs.get('templated') or dont_set_http_header:
+		if dont_set_http_header:
 			return
 
 		def quote_param(s):
@@ -752,7 +751,18 @@ class RessourceBase(object):
 			if param in kwargs:
 				params.append('%s="%s"' % (param, quote_param(kwargs.get(param, ''))))
 		del kwargs['rel']
-		self.add_header('Link', '<%s>; %s' % (href, '; '.join(params)))
+		header_name = 'Link-Template' if kwargs.get('templated') else 'Link'
+		self.add_header(header_name, '<%s>; %s' % (href, '; '.join(params)))
+
+	def add_resource(self, obj, relation, ressource):
+		obj.setdefault('_embedded', {}).setdefault(relation, []).append(ressource)
+
+	def get_resource(self, obj, relation, name=None):
+		for resource in obj.get('_embedded', {}).get(relation, []):
+			if not name:
+				return resource
+			if resource.get('_links', {}).get('self', [{}])[0].get('name') == name:
+				return resource
 
 	def add_form(self, obj, action, method, **kwargs):
 		form = {
@@ -761,7 +771,7 @@ class RessourceBase(object):
 		}
 		form.setdefault('enctype', 'application/x-www-form-urlencoded')
 		form.update(kwargs)
-		obj.setdefault('_forms', []).append(form)
+		self.add_resource(obj, 'udm:form', form)
 		return form
 
 	def add_form_element(self, form, name, value, type='text', element='input', **kwargs):
@@ -776,6 +786,9 @@ class RessourceBase(object):
 		if field['type'] == 'submit':
 			field['add_noscript_warning'] = form.get('method') not in ('GET', 'POST', None)
 		return field
+
+	def add_layout(self, obj, layout, name=None):
+		self.add_resource(obj, 'udm:layout', {'_links': {'self': [{'name': name}]}, 'layout': layout})
 
 	def log_exception(self, typ, value, tb):
 		if isinstance(value, UMC_Error):
@@ -2335,9 +2348,10 @@ class Objects(FormBase, ReportingBase):
 			self.add_form_element(form, 'position', '')
 			self.add_form_element(form, '', _('Move %s') % (module.object_name_plural,), type='submit')
 
-		result['layout_search'] = [{'description': _('Search for %s') % (module.object_name_plural,), 'label': _('Search'), 'layout': []}]
-		search_layout = result['layout_search'][0]['layout']
-		form = self.add_form(result, self.urljoin(''), 'GET', rel='search', id='search', layout='layout_search')
+		search_layout_base = [{'description': _('Search for %s') % (module.object_name_plural,), 'label': _('Search'), 'layout': []}]
+		search_layout = search_layout_base[0]['layout']
+		self.add_layout(result, search_layout_base, 'search')
+		form = self.add_form(result, self.urljoin(''), 'GET', rel='search', id='search', layout='search')
 		self.add_form_element(form, 'position', container or '', label=_('Search in'))
 		search_layout.append(['position', 'hidden'])
 		if module.superordinate_names:
@@ -2425,7 +2439,7 @@ class Objects(FormBase, ReportingBase):
 					pre.text = json.dumps(x, indent=4)
 					root.append(ET.Element("br"))
 					# There is a bug in chrome, so we cannot have form='report1 report2'. so, only 1 report is possible :-/
-					root.append(ET.Element('input', type='checkbox', name='dn', value=x['dn'], form=' '.join([report['id'] for report in response['_forms'] if report['rel'] == 'udm:report'][-1:])))
+					root.append(ET.Element('input', type='checkbox', name='dn', value=x['dn'], form=' '.join([report['id'] for report in response['_embedded']['udm:form'] if report['rel'] == 'udm:report'][-1:])))
 					root.append(a)
 					root.append(pre)
 					root.append(ET.Element("br"))
@@ -3057,10 +3071,11 @@ class ObjectAdd(FormBase, Ressource):
 			template = UDM_Module(module.template, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 			templates = template.search(ucr.get('ldap/base'))
 			if templates:
-				form = self.add_form(result, action='', method='GET', id='template', layout='template_layout')  # FIXME: preserve query string
+				form = self.add_form(result, action='', method='GET', id='template', layout='template')  # FIXME: preserve query string
+				template_layout = [{'label': _('Template'), 'description': 'A template defines rules for default object properties.', 'layout': ['template', '']}]
+				self.add_layout(result, template_layout, 'template')
 				self.add_form_element(form, 'template', '', element='select', options=[{'value': _obj.dn, 'label': _obj[template.identifies]} for _obj in templates])
 				self.add_form_element(form, '', _('Fill template values'), type='submit')
-				result['template_layout'] = [{'label': _('Template'), 'description': 'A template defines rules for default object properties.', 'layout': ['template', '']}]
 
 		self.add_caching(public=True, must_revalidate=True)
 		self.content_negotiation(result)
@@ -3073,12 +3088,15 @@ class ObjectAdd(FormBase, Ressource):
 		self.add_link(result, 'type', self.urljoin('.'), title=module.object_name)
 		self.add_link(result, 'create', self.urljoin('.'), title=module.object_name, method='POST')
 
-		result.setdefault('_embedded', {})
-		result['_embedded']['udm:layout'] = module.get_layout()
-		result['_embedded']['udm:properties'] = module.get_properties()
-		self.layout(result['_embedded']['udm:layout'])
-		self.properties(result['_embedded']['udm:properties'])
-		meta_layout = result['_embedded']['udm:layout'][0]
+		layout = module.get_layout()
+		self.layout(layout)
+		self.add_layout(result, layout, 'create-form')
+
+		properties = module.get_properties()
+		self.properties(properties)
+		self.add_resource(result, 'udm:properties', {'properties': properties})
+
+		meta_layout = layout[0]
 		meta_layout['layout'].extend(['position'])
 		# TODO: wizard: first select position & template
 
@@ -3099,7 +3117,7 @@ class ObjectAdd(FormBase, Ressource):
 		obj.open()
 		result.update(Object.get_representation(module, obj, ['*'], self.ldap_connection, copy, True))
 
-		form = self.add_form(result, action=self.urljoin(''), method='POST', id='add', layout='udm:layout')
+		form = self.add_form(result, action=self.urljoin(''), method='POST', id='add', layout='create-form')
 		self.add_form_element(form, 'position', position or '')
 		if module.superordinate_names:
 			meta_layout['layout'].append('superordinate')
@@ -3110,25 +3128,27 @@ class ObjectAdd(FormBase, Ressource):
 			meta_layout['layout'].append('template')
 
 		values = {}
-		for prop in result['_embedded']['udm:properties']:
+		for prop in properties:
 			key = prop['id']
 			if key.startswith('$'):
 				continue
 			values[key] = obj[key]
+
 		values = dict(encode_properties(obj.module, values, self.ldap_connection))
-		self.add_property_form_elements(module, form, result['_embedded']['udm:properties'], values)
+		self.add_property_form_elements(module, form, properties, values)
 
 		for policy in module.policies:
-			result['_embedded']['udm:layout'][-1]['layout'].append('policies[%s]' % (policy['objectType'],))
+			layout[-1]['layout'].append('policies[%s]' % (policy['objectType'],))
 			self.add_form_element(form, 'policies[%s]' % (policy['objectType']), '', label=policy['label'])
 
 		meta_layout['layout'].append('')
 		self.add_form_element(form, '', _('Create %s') % (module.object_name,), type='submit')
 
-		form = self.add_form(result, action=self.request.full_url(), method='GET', id='position', layout='position_layout')  # FIXME: preserve query string
+		form = self.add_form(result, action=self.request.full_url(), method='GET', id='position', layout='position')  # FIXME: preserve query string
 		self.add_form_element(form, 'position', position or '', element='select', options=sorted(({'value': x, 'label': ldap_dn2path(x)} for x in module.get_default_containers()), key=lambda x: x['label'].lower()))
 		self.add_form_element(form, '', _('Select position'), type='submit')
-		result['position_layout'] = [{'label': _('Container'), 'description': "The container in which the LDAP object shall be created.", 'layout': ['position', '']}]
+		position_layout = [{'label': _('Container'), 'description': "The container in which the LDAP object shall be created.", 'layout': ['position', '']}]
+		self.add_layout(result, position_layout, 'position')
 		return result
 
 
@@ -3183,11 +3203,12 @@ class ObjectEdit(FormBase, Ressource):
 
 		if 'remove' in module.operations:
 			# TODO: add list of referring objects
-			form = self.add_form(result, id='remove', action=self.urljoin('.').rstrip('/'), method='DELETE', layout='remove_layout')
+			form = self.add_form(result, id='remove', action=self.urljoin('.').rstrip('/'), method='DELETE', layout='remove')
+			remove_layout = [{'label': _('Remove'), 'description': _("Remove the object"), 'layout': ['cleanup', 'recursive', '']}]
+			self.add_layout(result, remove_layout, 'remove')
 			self.add_form_element(form, 'cleanup', '1', type='checkbox', checked=True, label=_('Perform a cleanup'), title=_('e.g. temporary objects, locks, etc.'))
 			self.add_form_element(form, 'recursive', '1', type='checkbox', checked=True, label=_('Remove referring objects'), title=_('e.g. DNS or DHCP references of a computer'))
 			self.add_form_element(form, '', _('Remove'), type='submit')
-			result['remove_layout'] = [{'label': _('Remove'), 'description': _("Remove the object"), 'layout': ['cleanup', 'recursive', '']}]
 
 		if set(module.operations) & {'move', 'subtree_move'}:
 			form = self.add_form(result, id='move', action=self.urljoin('.').rstrip('/'), method='PUT')
@@ -3196,6 +3217,7 @@ class ObjectEdit(FormBase, Ressource):
 
 		if 'edit' in module.operations:
 			representation = Object.get_representation(module, obj, ['*'], self.ldap_connection)
+			result.update(representation)
 			for policy in module.policies:
 				ptype = policy['objectType']
 				form = self.add_form(result, action=self.urljoin(ptype) + '/', method='GET', name=ptype, rel='udm:policy-result')
@@ -3204,17 +3226,20 @@ class ObjectEdit(FormBase, Ressource):
 				self.add_form_element(form, '', _('Policy result'), type='submit')
 
 			obj.open()
-			result['layout'] = module.get_layout(dn if object_type != 'users/self' else None)
-			self.layout(result['layout'])
-			result['layout'][0]['layout'].extend(['dn', 'jpegPhoto-preview', ''])
-			result['properties'] = module.get_properties(dn)
-			self.properties(result['properties'])
-			result['options'] = module.options.keys()
-			result['synced'] = ucr.is_true('ad/member') and 'synced' in obj.oldattr.get('univentionObjectFlag', [])
-			if result['synced']:
-				result['active_directory_warning'] = _('The %s "%s" is part of the Active Directory domain.') % (module.object_name, obj[module.identifies])
-				for prop in result['properties'].values():
-					if prop['readonly_when_synced']:
+			layout = module.get_layout(dn if object_type != 'users/self' else None)
+			self.layout(layout)
+			layout[0]['layout'].extend(['dn', 'jpegPhoto-preview', ''])
+			properties = module.get_properties(dn)
+			self.add_resource(result, 'udm:properties', {'properties': properties})
+			self.properties(properties)
+			is_ad_synced_object = ucr.is_true('ad/member') and 'synced' in obj.oldattr.get('univentionObjectFlag', [])
+			is_ad_synced_object = 'synced' in obj.oldattr.get('univentionObjectFlag', [])
+			if is_ad_synced_object:
+				layout[0]['layout'].insert(0, '$active_directory_warning$')
+				properties.append({'id': '$active_directory_warning$', 'label': _('The %s "%s" is part of the Active Directory domain.') % (module.object_name, obj[module.identifies])})
+				self.add_form_element(form, '$active_directory_warning$', '1', type='checkbox', checked=True, label=_('The %s "%s" is part of the Active Directory domain.') % (module.object_name, obj[module.identifies]))
+				for prop in properties[:]:
+					if prop.get('readonly_when_synced'):
 						prop['disabled'] = True
 
 			enctype = 'application/x-www-form-urlencoded'
@@ -3224,32 +3249,34 @@ class ObjectEdit(FormBase, Ressource):
 				self.add_form_element(form, 'jpegPhoto', '', type='file', accept='image/jpg image/jpeg image/png')
 				self.add_form_element(form, '', _('Upload user photo'), type='submit')
 
-			form = self.add_form(result, id='edit', action=self.urljoin('.').rstrip('/'), method='PUT', enctype=enctype, layout='layout')
+			form = self.add_form(result, id='edit', action=self.urljoin('.').rstrip('/'), method='PUT', enctype=enctype, layout='edit-form')
+			self.add_layout(result, layout, 'edit-form')
 			self.add_form_element(form, 'dn', obj.dn, readonly='readonly', disabled='disabled')
 
 			values = {}
-			for prop in result['properties']:
+			for prop in properties:
 				key = prop['id']
 				if key.startswith('$'):
 					continue
 				values[key] = obj[key]
 				if obj.module == 'users/user' and key == 'password':
 					prop['required'] = False
-				if prop['readonly_when_synced'] and result['synced']:
+				if prop['readonly_when_synced'] and is_ad_synced_object:
 					prop['disabled'] = True
-			values = dict(encode_properties(obj.module, values, self.ldap_connection))
-			self.add_property_form_elements(module, form, result['properties'], values)
-			if any(prop['id'] == 'jpegPhoto' for prop in result['properties']):
-				result['properties'].append({'name': 'jpegPhoto-preview', 'label': ' '})
+
+			values = dict(decode_properties(obj.module, values, self.ldap_connection))
+			self.add_property_form_elements(module, form, properties, values)
+			if any(prop['id'] == 'jpegPhoto' for prop in properties):
+				properties.append({'id': 'jpegPhoto-preview', 'label': ' '})
 				self.add_form_element(form, 'jpegPhoto-preview', '', type='image', label=' ', src=self.urljoin('properties/jpegPhoto.jpg'), alt=_('No photo set'))
 
 			for policy in module.policies:
 				ptype = policy['objectType']
-				result['layout'][-1]['layout'].append('policies[%s]' % (ptype,))
+				layout[-1]['layout'].append('policies[%s]' % (ptype,))
 				pol = (representation['policies'].get(ptype, ['']) or [''])[0]
 				self.add_form_element(form, 'policies[%s]' % (ptype), pol, label=policy['label'], placeholder=_('Policy DN'))
 
-			references = self.get_reference_layout(result['layout'])
+			references = self.get_reference_layout(layout)
 			if references:
 				for reference in module.get_policy_references(obj.dn):
 					if reference['module'] != 'udm':
@@ -3261,12 +3288,6 @@ class ObjectEdit(FormBase, Ressource):
 
 		self.add_caching(public=False, must_revalidate=True)
 		self.content_negotiation(result)
-
-	def get_hal_json(self, response):
-		response.setdefault('_embedded', {})
-		response['_embedded']['udm:layout'] = response.pop('layout')
-		response['_embedded']['udm:properties'] = response.pop('properties')
-		return super(ObjectEdit, self).get_hal_json(response)
 
 
 class ObjectMultiEdit(ObjectEdit):
