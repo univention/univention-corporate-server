@@ -80,7 +80,7 @@ class CLIClient(object):
 
 	def create_object(self, args):
 		module = self.get_module(args.object_type)
-		obj = module.new(position=args.position, superordinate=args.superordinate)
+		obj = module.new(position=args.position, superordinate=args.superordinate, template=args.template)
 		if args.position:
 			obj.position = args.position
 		self.set_properties(obj, args)
@@ -393,7 +393,7 @@ def add_object_action_arguments(parser, client):
 	create.set_defaults(func=client.create_object)
 	create.add_argument('--position', help='Set position in tree', type=Unicode)
 	# create.add_argument('--default-position', action='store_true', help='Create in the default position')  # TODO: probably better make this the default?
-	# create.add_argument('--template', help='Use template for creation', type=Unicode)
+	create.add_argument('--template', help='Use template for creation', type=Unicode)
 	create.add_argument('--set', action='append', help='Set property to value, e.g. foo=bar', default=[], type=Unicode)
 	create.add_argument('--append', action='append', help='Append value to property, e.g. foo=bar', default=[], type=Unicode)
 	create.add_argument('--remove', action='append', help='Remove value from property, e.g. foo=bar', default=[], type=Unicode)

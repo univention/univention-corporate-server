@@ -2486,7 +2486,8 @@ class Objects(FormBase, ReportingBase):
 			self.add_link(result, 'search', self.urljoin('') + '{?%s}' % ','.join(searchfields), templated=True, title=_('Search for %s') % (module.object_name_plural,))
 		if 'add' in module.operations:
 			methods.append('POST')
-			self.add_link(result, 'create-form', self.urljoin('add') + '{?position,superordinate}', templated=True, title=_('Create a %s') % (module.object_name,))
+			self.add_link(result, 'create-form', self.urljoin('add'), title=_('Create a %s') % (module.object_name,))
+			self.add_link(result, 'create-form', self.urljoin('add') + '{?position,superordinate%s}' % (',template' if module.template else ''), templated=True, title=_('Create a %s') % (module.object_name,))
 		if module.help_link or module.help_text:
 			self.add_link(result, 'help', module.help_link or '', title=module.help_text or module.help_link)
 		self.add_link(result, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')

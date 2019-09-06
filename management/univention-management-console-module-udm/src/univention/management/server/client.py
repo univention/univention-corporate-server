@@ -209,15 +209,15 @@ class Session(object):
 
 	def get_relations(self, entry, relation, name=None, template=None):
 		links = entry.get('_links', {})
-		link = links.get(relation, [None])
-		link = link if link and isinstance(link, list) else [link]
-		for link in link:
-			if isinstance(link, dict) and (not name or link.get('name') == name):
-				if link.get('deprecation'):
-					pass  # TODO: log warning
-				if link.get('templated'):
-					link['href'] = uritemplate.expand(link['href'], template)
-				yield link
+		links = links.get(relation, [None])
+		links = links if links and isinstance(links, list) else [links]
+		links = [link for link in links if isinstance(link, dict) and (not name or link.get('name') == name)]
+		for link in sorted(links, key=lambda x: not x.get('templated', False) if template else x.get('templated', False)):
+			if link.get('deprecation'):
+				pass  # TODO: log warning
+			if link.get('templated'):
+				link['href'] = uritemplate.expand(link['href'], template)
+			yield link
 
 	def get_relation(self, entry, relation, name=None, template=None):
 		return next(self.get_relations(entry, relation, name, template))
@@ -310,9 +310,9 @@ class Module(Client):
 	def __repr__(self):
 		return 'Module(uri={}, name={})'.format(self.uri, self.name)
 
-	def new(self, position=None, superordinate=None):
+	def new(self, position=None, superordinate=None, template=None):
 		self.load_relations()
-		data = {'position': position, 'superordinate': superordinate}
+		data = {'position': position, 'superordinate': superordinate, 'template': template}
 		resp = self.client.resolve_relation(self.relations, 'create-form', template=data)
 		return Object.from_response(self.udm, resp)
 
@@ -349,7 +349,7 @@ class Module(Client):
 			data['properties'] = '*'
 		self.load_relations()
 		entries = self.client.resolve_relation(self.relations, 'search', template=data)
-		for obj in self.client.resolve_relation(entries.data, 'udm:object'):
+		for obj in self.client.resolve_relations(entries.data, 'udm:object'):
 			objself = self.client.get_relation(obj, 'self')
 			uri = objself['href']
 			dn = objself['name']
