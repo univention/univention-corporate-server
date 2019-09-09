@@ -3,10 +3,11 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-appcenter
-fix: 8.0.11-64A~4.4.0.201909051511
+fix: 8.0.11-65A~4.4.0.201909091109
 desc: |-
   This update addresses the following issue(s):
   * Removing old docker images may have caused a traceback.
   * Simplified the way the App Provider and the App Vendor are presented in
     the UMC module.
-bug: [50113, 50106]
+  * Login to registry before pulling an image with docker-compose.
+bug: [50113, 50106, 50129]
