@@ -2,8 +2,8 @@ product: ucs
 release: "4.3"
 version: [4]
 scope: ucs_4.3-0-errata4.3-4
-src: linux
-fix: 4.9.189-3
+src: univention-kernel-image-signed
+fix: 4.0.0-17A~4.3.0.201909091632
 desc: |
  This update addresses the following issues:
  * The print_binder_ref_olocked function in drivers/android/binder.c allows
@@ -69,7 +69,7 @@ desc: |
  * Out of bounds access exists in the functions
    ath6kl_wmi_pstream_timeout_event_rx and ath6kl_wmi_cac_event_rx in the file
    drivers/net/wireless/ath/ath6kl/wmi.c. (CVE-2019-15926)
-note: This is the 1st of two related updates.
+note: This is the 2nd of two related updates.
 bug: [50160]
 cve:
 - CVE-2018-20509
