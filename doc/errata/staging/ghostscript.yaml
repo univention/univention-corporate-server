@@ -6,24 +6,26 @@ src: ghostscript
 fix: 9.26a~dfsg-0+deb9u5
 desc: |
  This update addresses the following issues:
- * A flaw was found in, ghostscript versions prior to 9.28, in the
-   .pdf_hook_DSC_Creator procedure where it did not properly secure its
-   privileged calls, enabling scripts to bypass `-dSAFER` restrictions. A
-   specially crafted PostScript file could disable security protection and
-   then have access to the file system, or execute arbitrary commands.
-   (CVE-2019-14811)
- * ghostscript (CVE-2019-14812)
- * A flaw was found in ghostscript, versions 9.x before 9.28, in the
-   setsystemparams procedure where it did not properly secure its privileged
-   calls, enabling scripts to bypass `-dSAFER` restrictions. A specially
-   crafted PostScript file could disable security protection and then have
-   access to the file system, or execute arbitrary commands. (CVE-2019-14813)
- * A flaw was found in, ghostscript versions prior to 9.28, in the
-   .pdfexectoken and other procedures where it did not properly secure its
-   privileged calls, enabling scripts to bypass `-dSAFER` restrictions. A
-   specially crafted PostScript file could disable security protection and
-   then have access to the file system, or execute arbitrary commands.
-   (CVE-2019-14817)
+ * A flaw was found in in the .pdf_hook_DSC_Creator procedure where it did not
+   properly secure its privileged calls, enabling scripts to bypass `-dSAFER`
+   restrictions. A specially crafted PostScript file could disable security
+   protection and then have access to the file system, or execute arbitrary
+   commands. (CVE-2019-14811)
+ * A flaw was found in the .setuserparams2 procedure where it did not properly
+   secure its privileged calls, enabling scripts to bypass `-dSAFER`
+   restrictions. A specially crafted PostScript file could disable security
+   protection and then have access to the file system, or execute arbitrary
+   commands. (CVE-2019-14812)
+ * A flaw was found in the setsystemparams procedure where it did not properly
+   secure its privileged calls, enabling scripts to bypass `-dSAFER`
+   restrictions. A specially crafted PostScript file could disable security
+   protection and then have access to the file system, or execute arbitrary
+   commands. (CVE-2019-14813)
+ * A flaw was found in the .pdfexectoken and other procedures where it did not
+   properly secure its privileged calls, enabling scripts to bypass `-dSAFER`
+   restrictions. A specially crafted PostScript file could disable security
+   protection and then have access to the file system, or execute arbitrary
+   commands. (CVE-2019-14817)
 bug: [50154]
 cve:
 - CVE-2019-14811
