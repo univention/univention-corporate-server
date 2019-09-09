@@ -3,11 +3,13 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: cups
-fix: 2.2.1-8+deb9u4A~4.4.1.20190909113
+fix: 2.2.1-8+deb9u4A~4.4.1.201909091134
 desc: |
  This update addresses the following issues:
- * cups (CVE-2019-8675)
- * cups (CVE-2019-8696)
+ * A buffer overflow issue was addressed with improved memory handling
+   (CVE-2019-8675)
+ * A buffer overflow issue was addressed with improved memory handling
+   (CVE-2019-8696)
 bug: [50133]
 cve:
 - CVE-2019-8675
