@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [4]
+scope: ucs_4.3-0-errata4.3-4
+src: exim4
+fix: 4.89-2+deb9u6A~4.3.0.201909091541
+desc: |
+ This update addresses the following issue:
+ * Exim allows remote attackers to execute arbitrary code as root via a
+   trailing backslash (CVE-2019-15846)
+bug: [50155]
+cve:
+- CVE-2019-15846
