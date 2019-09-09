@@ -6,13 +6,9 @@ src: unzip
 fix: 6.0-21+deb9u2
 desc: |
  This update addresses the following issue:
-
- * 6.0-21+deb9u2 (Mon, 05 Aug 2019 18:10:06 +0200) * Fix incorrect parsing of
-   64-bit values in fileio.c.. * Apply three patches by Mark Adler to fix
-   CVE-2019-13232. - Fix bug in undefer_input() that misplaced the input
-   state. - Detect and reject a zip bomb using overlapped entries. Bug
-   discovered by David Fifield.. - Do not raise a zip bomb alert for a
-   misplaced central directory. Reported by Peter Green..
+ * Unzip mishandles the overlapping of files inside a ZIP container, leading
+   to denial of service (resource consumption), aka a "better zip bomb" issue.
+   (CVE-2019-13232)
 bug: [50151]
 cve:
 - CVE-2019-13232
