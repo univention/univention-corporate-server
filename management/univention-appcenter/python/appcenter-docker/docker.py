@@ -446,8 +446,6 @@ class MultiDocker(Docker):
 		return
 
 	def pull(self):
-		login('docker.software-univention.de', with_license=self.app.install_permissions)
-		login('docker-test.software-univention.de', with_license=self.app.install_permissions)
 		self._setup_yml(recreate=True)
 		self.logger.info('Downloading app images')
 		ret, out = call_process2(['docker-compose', '-p', self.app.id, 'pull'], cwd=self.app.get_compose_dir(), logger=_logger)

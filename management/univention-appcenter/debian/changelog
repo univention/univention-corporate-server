@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-66) unstable; urgency=medium
+
+  * Bug #50129: revert
+
+ -- Felix Botner <botner@univention.de>  Mon, 09 Sep 2019 11:44:24 +0200
+
 univention-appcenter (8.0.11-65) unstable; urgency=medium
 
   * Bug #50129: login before docker-compose pull
