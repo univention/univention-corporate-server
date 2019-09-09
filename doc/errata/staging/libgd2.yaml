@@ -6,7 +6,7 @@ src: libgd2
 fix: 2.2.4-2+deb9u5
 desc: |
  This update addresses the following issue:
- * information disclosure in function gdImageCreateFromXbm() (CVE-2019-11038)
+ * Information disclosure in function gdImageCreateFromXbm() (CVE-2019-11038)
 bug: [50138]
 cve:
 - CVE-2019-11038
