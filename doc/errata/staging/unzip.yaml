@@ -1,0 +1,18 @@
+product: ucs
+release: "4.4"
+version: [1]
+scope: ucs_4.4-0-errata4.4-1
+src: unzip
+fix: 6.0-21+deb9u2
+desc: |
+ This update addresses the following issue:
+
+ * 6.0-21+deb9u2 (Mon, 05 Aug 2019 18:10:06 +0200) * Fix incorrect parsing of
+   64-bit values in fileio.c.. * Apply three patches by Mark Adler to fix
+   CVE-2019-13232. - Fix bug in undefer_input() that misplaced the input
+   state. - Detect and reject a zip bomb using overlapped entries. Bug
+   discovered by David Fifield.. - Do not raise a zip bomb alert for a
+   misplaced central directory. Reported by Peter Green..
+bug: [50146]
+cve:
+- CVE-2019-13232
