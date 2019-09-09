@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [1]
+scope: ucs_4.4-0-errata4.4-1
+src: exim4
+fix: 4.89-2+deb9u6A~4.4.1.201909091134
+desc: |
+ This update addresses the following issue:
+ * exim4 (CVE-2019-15846)
+bug: [50132]
+cve:
+- CVE-2019-15846
