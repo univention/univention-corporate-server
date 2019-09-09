@@ -1,0 +1,72 @@
+product: ucs
+release: "4.3"
+version: [4]
+scope: ucs_4.3-0-errata4.3-4
+src: mariadb-10.1
+fix: 10.1.41-0+deb9u1
+desc: |
+ This update addresses the following issues:
+ * Vulnerability in the MySQL Server component of Oracle MySQL (subcomponent:
+   Server: Replication). Supported versions that are affected are 5.6.43 and
+   prior, 5.7.25 and prior and 8.0.15 and prior. Difficult to exploit
+   vulnerability allows high privileged attacker with network access via
+   multiple protocols to compromise MySQL Server. Successful attacks of this
+   vulnerability can result in unauthorized ability to cause a hang or
+   frequently repeatable crash (complete DOS) of MySQL Server. CVSS 3.0 Base
+   Score 4.4 (Availability impacts). CVSS Vector:
+   (CVSS:3.0/AV:N/AC:H/PR:H/UI:N/S:U/C:N/I:N/A:H). (CVE-2019-2614)
+ * Vulnerability in the MySQL Server component of Oracle MySQL (subcomponent:
+   Server: Security: Privileges). Supported versions that are affected are
+   5.6.43 and prior, 5.7.25 and prior and 8.0.15 and prior. Easily exploitable
+   vulnerability allows high privileged attacker with network access via
+   multiple protocols to compromise MySQL Server. Successful attacks of this
+   vulnerability can result in unauthorized ability to cause a hang or
+   frequently repeatable crash (complete DOS) of MySQL Server. CVSS 3.0 Base
+   Score 4.9 (Availability impacts). CVSS Vector:
+   (CVSS:3.0/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:N/A:H). (CVE-2019-2627)
+ * Vulnerability in the MySQL Server component of Oracle MySQL (subcomponent:
+   Server : Pluggable Auth). Supported versions that are affected are 5.6.44
+   and prior, 5.7.26 and prior and 8.0.16 and prior. Easily exploitable
+   vulnerability allows high privileged attacker with network access via
+   multiple protocols to compromise MySQL Server. Successful attacks of this
+   vulnerability can result in unauthorized ability to cause a hang or
+   frequently repeatable crash (complete DOS) of MySQL Server. CVSS 3.0 Base
+   Score 4.9 (Availability impacts). CVSS Vector:
+   (CVSS:3.0/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:N/A:H). (CVE-2019-2737)
+ * Vulnerability in the MySQL Server component of Oracle MySQL (subcomponent:
+   Server: Security: Privileges). Supported versions that are affected are
+   5.6.44 and prior, 5.7.26 and prior and 8.0.16 and prior. Easily exploitable
+   vulnerability allows high privileged attacker with logon to the
+   infrastructure where MySQL Server executes to compromise MySQL Server.
+   Successful attacks of this vulnerability can result in unauthorized ability
+   to cause a hang or frequently repeatable crash (complete DOS) of MySQL
+   Server as well as unauthorized update, insert or delete access to some of
+   MySQL Server accessible data. CVSS 3.0 Base Score 5.1 (Integrity and
+   Availability impacts). CVSS Vector:
+   (CVSS:3.0/AV:L/AC:L/PR:H/UI:N/S:U/C:N/I:L/A:H). (CVE-2019-2739)
+ * Vulnerability in the MySQL Server component of Oracle MySQL (subcomponent:
+   Server: XML). Supported versions that are affected are 5.6.44 and prior,
+   5.7.26 and prior and 8.0.16 and prior. Easily exploitable vulnerability
+   allows low privileged attacker with network access via multiple protocols
+   to compromise MySQL Server. Successful attacks of this vulnerability can
+   result in unauthorized ability to cause a hang or frequently repeatable
+   crash (complete DOS) of MySQL Server. CVSS 3.0 Base Score 6.5 (Availability
+   impacts). CVSS Vector: (CVSS:3.0/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2019-2740)
+ * Vulnerability in the MySQL Server component of Oracle MySQL (subcomponent:
+   Server: Parser). Supported versions that are affected are 5.6.44 and prior,
+   5.7.26 and prior and 8.0.16 and prior. Easily exploitable vulnerability
+   allows low privileged attacker with network access via multiple protocols
+   to compromise MySQL Server. Successful attacks of this vulnerability can
+   result in unauthorized ability to cause a hang or frequently repeatable
+   crash (complete DOS) of MySQL Server. CVSS 3.0 Base Score 6.5 (Availability
+   impacts). CVSS Vector: (CVSS:3.0/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2019-2805)
+bug: [50156]
+cve:
+- CVE-2019-2614
+- CVE-2019-2627
+- CVE-2019-2737
+- CVE-2019-2739
+- CVE-2019-2740
+- CVE-2019-2805
