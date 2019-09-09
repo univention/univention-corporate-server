@@ -1,0 +1,19 @@
+product: ucs
+release: "4.3"
+version: [4]
+scope: ucs_4.3-0-errata4.3-4
+src: libxslt
+fix: 1.1.29-2.1+deb9u1
+desc: |
+ This update addresses the following issues:
+ * xsltCheckRead and xsltCheckWrite routines security bypass by crafted URL
+   (CVE-2019-11068)
+ * an xsl number with certain format strings could lead to a uninitialized
+   read in xsltNumberFormatInsertNumbers (CVE-2019-13117)
+ * read of uninitialized stack data due to too narrow xsl:number instruction
+   and an invalid character (CVE-2019-13118)
+bug: [50157]
+cve:
+- CVE-2019-11068
+- CVE-2019-13117
+- CVE-2019-13118
