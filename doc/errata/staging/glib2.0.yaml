@@ -1,0 +1,18 @@
+product: ucs
+release: "4.3"
+version: [4]
+scope: ucs_4.3-0-errata4.3-4
+src: glib2.0
+fix: 2.50.3-2+deb9u1
+desc: |
+ This update addresses the following issues:
+ * Out-of-bounds read in g_markup_parse_context_parse() in gmarkup.c
+   (CVE-2018-16429)
+ * file_copy_fallback in gio/gfile.c in GNOME GLib does not properly restrict
+   file permissions while a copy operation is in progress (CVE-2019-12450)
+ * insecure permissions for files and directories (CVE-2019-13012)
+bug: [50164]
+cve:
+- CVE-2018-16429
+- CVE-2019-12450
+- CVE-2019-13012
