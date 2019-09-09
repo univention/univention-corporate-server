@@ -7,8 +7,7 @@ fix: 60.9.0esr-1~deb9u1
 desc: |
  This update addresses the following issues:
  * Sandbox escape through Firefox Sync (CVE-2019-9812)
- * Memory safety bugs fixed in Firefox 69, Firefox ESR 68.1, and Firefox ESR
-   60.9 (CVE-2019-11740)
+ * Memory safety bugs fixed (CVE-2019-11740)
  * Same-origin policy violation with SVG filters and canvas to steal
    cross-origin images (CVE-2019-11742)
  * Cross-origin access to unload event attributes (CVE-2019-11743)
