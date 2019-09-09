@@ -6,85 +6,69 @@ src: linux
 fix: 4.9.189-3
 desc: |
  This update addresses the following issues:
- * The print_binder_ref_olocked function in drivers/android/binder.c in the
-   Linux kernel 4.14.90 allows local users to obtain sensitive address
-   information by reading " ref *desc *node" lines in a debugfs file.
-   (CVE-2018-20509)
+ * The print_binder_ref_olocked function in drivers/android/binder.c allows
+   local users to obtain sensitive address information by reading " ref *desc
+   *node" lines in a debugfs file. (CVE-2018-20509)
  * The print_binder_transaction_ilocked function in drivers/android/binder.c
-   in the Linux kernel 4.14.90 allows local users to obtain sensitive address
-   information by reading "*from *code *flags" lines in a debugfs file.
-   (CVE-2018-20510)
+   allows local users to obtain sensitive address information by reading
+   "*from *code *flags" lines in a debugfs file. (CVE-2018-20510)
  * Insufficient access control in the Intel(R) PROSet/Wireless WiFi Software
-   driver before version 21.10 may allow an unauthenticated user to
-   potentially enable denial of service via adjacent access. (CVE-2019-0136)
+   driver may allow an unauthenticated user to potentially enable denial of
+   service via adjacent access. (CVE-2019-0136)
  * The Bluetooth BR/EDR specification up to and including version 5.1 permits
    sufficiently low encryption key length and does not prevent an attacker
    from influencing the key length negotiation. This allows practical
    brute-force attacks (aka "KNOB") that can decrypt traffic and inject
    arbitrary ciphertext without the victim noticing. (CVE-2019-9506)
  * A flaw was found in the Linux kernel's freescale hypervisor manager
-   implementation, kernel versions 5.0.x up to, excluding 5.0.17. A parameter
-   passed to an ioctl was incorrectly validated and used in size calculations
-   for the page size calculation. An attacker can use this flaw to crash the
-   system, corrupt memory, or create other adverse security affects.
-   (CVE-2019-10142)
- * The Linux kernel before 5.1-rc5 allows page->_refcount reference count
-   overflow, with resultant use-after-free issues, if about 140 GiB of RAM
-   exists. This is related to fs/fuse/dev.c, fs/pipe.c, fs/splice.c,
-   include/linux/mm.h, include/linux/pipe_fs_i.h, kernel/trace/trace.c,
-   mm/gup.c, and mm/hugetlb.c. It can occur with FUSE requests.
-   (CVE-2019-11487)
- * An issue was discovered in the Linux kernel before 5.2.6. There is a
-   use-after-free caused by a malicious USB device in the
+   implementation. A parameter passed to an ioctl was incorrectly validated
+   and used in size calculations for the page size calculation. An attacker
+   can use this flaw to crash the system, corrupt memory, or create other
+   adverse security affects. (CVE-2019-10142)
+ * The Linux kernel allows page->_refcount reference count overflow, with
+   resultant use-after-free issues, if about 140 GiB of RAM exists. This is
+   related to fs/fuse/dev.c, fs/pipe.c, fs/splice.c, include/linux/mm.h,
+   include/linux/pipe_fs_i.h, kernel/trace/trace.c, mm/gup.c, and
+   mm/hugetlb.c. It can occur with FUSE requests. (CVE-2019-11487)
+ * There is a use-after-free caused by a malicious USB device in the
    drivers/media/v4l2-core/v4l2-dev.c driver because
    drivers/media/radio/radio-raremono.c does not properly allocate memory.
    (CVE-2019-15211)
- * An issue was discovered in the Linux kernel before 5.1.8. There is a
-   double-free caused by a malicious USB device in the
+ * There is a double-free caused by a malicious USB device in the
    drivers/usb/misc/rio500.c driver. (CVE-2019-15212)
- * An issue was discovered in the Linux kernel before 5.2.6. There is a
-   use-after-free caused by a malicious USB device in the
+ * There is a use-after-free caused by a malicious USB device in the
    drivers/media/usb/cpia2/cpia2_usb.c driver. (CVE-2019-15215)
- * An issue was discovered in the Linux kernel before 5.0.14. There is a NULL
-   pointer dereference caused by a malicious USB device in the
+ * There is a NULL pointer dereference caused by a malicious USB device in the
    drivers/usb/misc/yurex.c driver. (CVE-2019-15216)
- * An issue was discovered in the Linux kernel before 5.1.8. There is a NULL
-   pointer dereference caused by a malicious USB device in the
+ * There is a NULL pointer dereference caused by a malicious USB device in the
    drivers/media/usb/siano/smsusb.c driver. (CVE-2019-15218)
- * An issue was discovered in the Linux kernel before 5.1.8. There is a NULL
-   pointer dereference caused by a malicious USB device in the
+ * There is a NULL pointer dereference caused by a malicious USB device in the
    drivers/usb/misc/sisusbvga/sisusb.c driver. (CVE-2019-15219)
- * An issue was discovered in the Linux kernel before 5.2.1. There is a
-   use-after-free caused by a malicious USB device in the
+ * There is a use-after-free caused by a malicious USB device in the
    drivers/net/wireless/intersil/p54/p54usb.c driver. (CVE-2019-15220)
- * An issue was discovered in the Linux kernel before 5.1.17. There is a NULL
-   pointer dereference caused by a malicious USB device in the
+ * There is a NULL pointer dereference caused by a malicious USB device in the
    sound/usb/line6/pcm.c driver. (CVE-2019-15221)
- * An issue was discovered in the Linux kernel before 5.0.9. There is a
-   use-after-free in atalk_proc_exit, related to net/appletalk/atalk_proc.c,
-   net/appletalk/ddp.c, and net/appletalk/sysctl_net_atalk.c. (CVE-2019-15292)
+ * There is a use-after-free in atalk_proc_exit, related to
+   net/appletalk/atalk_proc.c, net/appletalk/ddp.c, and
+   net/appletalk/sysctl_net_atalk.c. (CVE-2019-15292)
  * An issue was discovered in xfs_setattr_nonsize in fs/xfs/xfs_iops.c in the
-   Linux kernel through 5.2.9. XFS partially wedges when a chgrp fails on
-   account of being out of disk quota. xfs_setattr_nonsize is failing to
-   unlock the ILOCK after the xfs_qm_vop_chown_reserve call fails. This is
-   primarily a local DoS attack vector, but it might result as well in remote
-   DoS if the XFS filesystem is exported for instance via NFS.
-   (CVE-2019-15538)
- * An issue was discovered in the Linux kernel before 5.0.19. There is an
-   out-of-bounds array access in __xfrm_policy_unlink, which will cause denial
-   of service, because verify_newpolicy_info in net/xfrm/xfrm_user.c
-   mishandles directory validation. (CVE-2019-15666)
- * In the Linux kernel before 5.1.13, there is a memory leak in
+   Linux kernel. XFS partially wedges when a chgrp fails on account of being
+   out of disk quota. xfs_setattr_nonsize is failing to unlock the ILOCK after
+   the xfs_qm_vop_chown_reserve call fails. This is primarily a local DoS
+   attack vector, but it might result as well in remote DoS if the XFS
+   filesystem is exported for instance via NFS. (CVE-2019-15538)
+ * There is an out-of-bounds array access in __xfrm_policy_unlink, which will
+   cause denial of service, because verify_newpolicy_info in
+   net/xfrm/xfrm_user.c mishandles directory validation. (CVE-2019-15666)
+ * In the Linux kernel there is a memory leak in
    drivers/scsi/libsas/sas_expander.c when SAS expander discovery fails. This
    will cause a BUG and denial of service. (CVE-2019-15807)
- * An issue was discovered in the Linux kernel before 5.0.11.
-   fm10k_init_module in drivers/net/ethernet/intel/fm10k/fm10k_main.c has a
+ * fm10k_init_module in drivers/net/ethernet/intel/fm10k/fm10k_main.c has a
    NULL pointer dereference because there is no -ENOMEM upon an
    alloc_workqueue failure. (CVE-2019-15924)
- * An issue was discovered in the Linux kernel before 5.2.3. Out of bounds
-   access exists in the functions ath6kl_wmi_pstream_timeout_event_rx and
-   ath6kl_wmi_cac_event_rx in the file drivers/net/wireless/ath/ath6kl/wmi.c.
-   (CVE-2019-15926)
+ * Out of bounds access exists in the functions
+   ath6kl_wmi_pstream_timeout_event_rx and ath6kl_wmi_cac_event_rx in the file
+   drivers/net/wireless/ath/ath6kl/wmi.c. (CVE-2019-15926)
 bug: [50140]
 cve:
 - CVE-2018-20509
