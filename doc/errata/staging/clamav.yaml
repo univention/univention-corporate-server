@@ -3,11 +3,11 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: clamav
-fix: 0.101.4+dfsg-0+deb9u1A~4.4.1.201909091134
+fix: 0.101.4+dfsg-0+deb9u1A~4.4.0.201909091505
 desc: |
  This update addresses the following issues:
- * clamav (CVE-2019-12625)
- * out-of-bounds write in function BZ2_decompress (CVE-2019-12900)
+ * Zip bomb vulnerability mitigated (CVE-2019-12625)
+ * Out-of-bounds write in function BZ2_decompress (CVE-2019-12900)
 bug: [50131]
 cve:
 - CVE-2019-12625
