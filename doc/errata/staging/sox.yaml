@@ -1,0 +1,52 @@
+product: ucs
+release: "4.3"
+version: [4]
+scope: ucs_4.3-0-errata4.3-4
+src: sox
+fix: 14.4.1-5+deb9u2
+desc: |
+ This update addresses the following issues:
+ * Divide by zero in startread function in wav.c (CVE-2017-11332)
+ * Invalid memory read in read_samples function in hcom.c (CVE-2017-11358)
+ * Devide by zero in wavwritehdr function in wav.c (CVE-2017-11359)
+ * There is a heap-based buffer overflow in the ImaExpandS function of
+   ima_rw.c in Sound eXchange (SoX) 14.4.2. A Crafted input will lead to a
+   denial of service attack during conversion of an audio file.
+   (CVE-2017-15370)
+ * Reachable assertion abort in the function sox_append_comment()
+   (CVE-2017-15371)
+ * There is a stack-based buffer overflow in the lsx_ms_adpcm_block_expand_i
+   function of adpcm.c in Sound eXchange (SoX) 14.4.2. A Crafted input will
+   lead to a denial of service attack during conversion of an audio file.
+   (CVE-2017-15372)
+ * In lsx_aiffstartread in aiff.c in Sound eXchange (SoX) 14.4.2, there is a
+   Use-After-Free vulnerability triggered by supplying a malformed AIFF file.
+   (CVE-2017-15642)
+ * In the startread function in xa.c in Sound eXchange (SoX) through 14.4.2, a
+   corrupt header specifying zero channels triggers an infinite loop with a
+   resultant NULL pointer dereference, which may allow a remote attacker to
+   cause a denial-of-service. (CVE-2017-18189)
+ * integer overflow in function lsx_make_lpf in effect_i_dsp.c (CVE-2019-8354)
+ * integer overflow in xmalloc.h (CVE-2019-8355)
+ * stack-based buffer overflow in bitrv2 in fft4g.c (CVE-2019-8356)
+ * null pointer dereference in function lsx_make_lpf in effect_i_dsp.c
+   (CVE-2019-8357)
+ * SoX - Sound eXchange 14.4.2 and earlier is affected by: Out-of-bounds Read.
+   The impact is: Denial of Service. The component is: read_samples function
+   at xa.c:219. The attack vector is: Victim must open specially crafted .xa
+   file. NOTE: this may overlap CVE-2017-18189. (CVE-2019-1010004)
+bug: [50162]
+cve:
+- CVE-2017-11332
+- CVE-2017-11358
+- CVE-2017-11359
+- CVE-2017-15370
+- CVE-2017-15371
+- CVE-2017-15372
+- CVE-2017-15642
+- CVE-2017-18189
+- CVE-2019-8354
+- CVE-2019-8355
+- CVE-2019-8356
+- CVE-2019-8357
+- CVE-2019-1010004
