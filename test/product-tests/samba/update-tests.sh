@@ -172,6 +172,7 @@ test_after_update () {
 		--computergpo 'GPO2' --computergpo 'GPO4' --computergpo 'Default Domain Policy'
 	#   Passwort ändern am Windows-Client (per Alt-Ctrl-Del)
 	python shared-utils/ucs-winrm.py change-user-password --client $WIN1 --domainuser testuser02 --userpassword "newPassW0rd-"
+	sleep 30
 	python shared-utils/ucs-winrm.py domain-user-validate-password --client $WIN1 --domainuser "testuser02" --domainpassword "newPassW0rd-"
 	sleep 30
 	check_user_in_ucs testuser02 "newPassW0rd-"
