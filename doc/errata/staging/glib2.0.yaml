@@ -10,7 +10,7 @@ desc: |
    (CVE-2018-16429)
  * file_copy_fallback in gio/gfile.c in GNOME GLib does not properly restrict
    file permissions while a copy operation is in progress (CVE-2019-12450)
- * insecure permissions for files and directories (CVE-2019-13012)
+ * Insecure permissions for files and directories (CVE-2019-13012)
 bug: [50147]
 cve:
 - CVE-2018-16429
