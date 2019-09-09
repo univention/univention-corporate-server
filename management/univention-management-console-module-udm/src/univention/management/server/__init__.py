@@ -149,7 +149,7 @@ class Server(tornado.web.RequestHandler):
 			(r'.*', cls),
 		], serve_traceback=ucr.is_true('directory/manager/rest/show-tracebacks', True),
 		)
-		app.listen(int(ucr.get('directory/manager/rest/server/port', 8888)))
+		app.listen(int(ucr.get('directory/manager/rest/server/port', 9979)), ucr.get('directory/manager/rest/server/address', '127.0.0.1'))
 		ioloop = tornado.ioloop.IOLoop.instance()
 		ioloop.start()
 
