@@ -131,11 +131,12 @@ test_after_update () {
 	# gleiche Gruppe wie Testuser1. "Passwort bei nächster Anmeldung ändern" auswählen.
 	udm users/user create --position "cn=users,$ldap_base" --set username="testuser02" --set firstname="Random" --set pwdChangeNextLogin=1 \
 		--set lastname="User" --set password="Univention.99" --set sambahome='\\ucs-member\testuser02' --set homedrive='Y:'
-
+	sleep 30
 	# Anmeldung am neuen Windows-Client als Testuser2.
 	! python shared-utils/ucs-winrm.py domain-user-validate-password --client $WIN2 --domainuser "testuser02" --domainpassword "Univention.99"
 	#   Passwortänderung verlangt? Funktioniert?
 	python shared-utils/ucs-winrm.py change-user-password --client $WIN2 --domainuser testuser02 --userpassword "Univention123!"
+	sleep 30
 	python shared-utils/ucs-winrm.py domain-user-validate-password --client $WIN2 --domainuser "testuser02" --domainpassword "Univention123!"
 	sleep 30
 	#   "kinit testuser2" auf UDM geht mit neuem Passwort?
