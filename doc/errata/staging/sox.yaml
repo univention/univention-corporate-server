@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issues:
  * Divide by zero in startread function in wav.c (CVE-2017-11332)
  * Invalid memory read in read_samples function in hcom.c (CVE-2017-11358)
- * Devide by zero in wavwritehdr function in wav.c (CVE-2017-11359)
+ * Divide by zero in wavwritehdr function in wav.c (CVE-2017-11359)
  * There is a heap-based buffer overflow in the ImaExpandS function of
    ima_rw.c. A Crafted input will lead to a denial of service attack during
    conversion of an audio file. (CVE-2017-15370)
