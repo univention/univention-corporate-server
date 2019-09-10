@@ -1,7 +1,7 @@
 product: ucs
-release: "4.4"
-version: [1]
-scope: ucs_4.4-0-errata4.4-1
+release: "4.3"
+version: [4]
+scope: ucs_4.3-0-errata4.3-4
 src: libgd2
 fix: 2.2.4-2+deb9u5
 desc: |
