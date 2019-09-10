@@ -1,0 +1,18 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check registry access - Anonymous pull shall succeed, push not
+## tags: [docker]
+## exposure: dangerous
+## packages:
+##   - docker.io
+
+rm ~/.docker/config.json
+
+image="docker.software-univention.de/ucs-appbox-amd64:4.3-3"
+docker pull "$image" || exit 1
+docker push "$image" && exit 2
+
+image="docker-test.software-univention.de/ucs-appbox-amd64:4.3-3"
+docker pull "$image" || exit 3
+docker push "$image" && exit 4
+
+exit 0

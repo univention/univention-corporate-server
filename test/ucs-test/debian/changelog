@@ -1,3 +1,9 @@
+ucs-test (9.0.3-44) unstable; urgency=medium
+
+  * Bug #50168: Check docker registry access
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 10 Sep 2019 12:41:29 +0200
+
 ucs-test (9.0.3-43) unstable; urgency=low
 
   * Bug #50098: Fix 03_ucr/68check_univention-service.py
