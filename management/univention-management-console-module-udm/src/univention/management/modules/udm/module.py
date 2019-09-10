@@ -2984,6 +2984,8 @@ class Object(FormBase, Ressource):
 
 		def check_conditional_request_if_match():
 			etags = etag_matches.findall(self.request.headers.get("If-Match", ""))
+			if not etags:
+				return
 			if wheak(etag) not in map(wheak, etags):
 				message = _('If-Match %s does not match entity tag(s) %s.') % (etag, ', '.join(etags))
 				if not safe_request:
