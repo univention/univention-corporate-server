@@ -9,4 +9,4 @@ desc: |
  * A new Univention Directory Manager HTTP service is now provided.
  * Fix regression in Erratum 230 which caused the `univention-service` file
    to be not installed any more.
-bug: [27816,50098]
+bug: [27816,50169]

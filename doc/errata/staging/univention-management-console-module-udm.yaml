@@ -11,4 +11,4 @@ desc: |
    DC Master and DC Backup system.
  * Fix regression in Erratum 216 which caused the `univention-service` file
    to be not installed any more.
-bug: [27816,50034,50098]
+bug: [27816,50034,50169]
