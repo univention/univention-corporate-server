@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issue:
  * Fix regression in Erratum 239 which caused the `univention-service` file
    to be not installed any more.
-bug: [50170]
+bug: [50098]
