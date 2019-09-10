@@ -2,9 +2,9 @@ product: ucs
 release: "4.3"
 version: [4]
 scope: ucs_4.3-0-errata4.3-4
-src: univention-kernel-image-signed
-fix: 4.0.0-17A~4.3.0.201909091632
-desc: |
+src: univention-kernel-image
+fix: 11.0.1-13A~4.3.0.201909101001
+desc: |-
  This updates the Linux kernel to version 4.9.189, which addresses (among
  others) the following security issues:
  * The print_binder_ref_olocked function in drivers/android/binder.c allows
@@ -70,26 +70,5 @@ desc: |
  * Out of bounds access exists in the functions
    ath6kl_wmi_pstream_timeout_event_rx and ath6kl_wmi_cac_event_rx in the file
    drivers/net/wireless/ath/ath6kl/wmi.c. (CVE-2019-15926)
-note: This is the 2nd of three related updates.
+note: This is the 3rd of three related updates.
 bug: [50160]
-cve:
-- CVE-2018-20509
-- CVE-2018-20510
-- CVE-2019-0136
-- CVE-2019-9506
-- CVE-2019-10142
-- CVE-2019-11487
-- CVE-2019-15211
-- CVE-2019-15212
-- CVE-2019-15215
-- CVE-2019-15216
-- CVE-2019-15218
-- CVE-2019-15219
-- CVE-2019-15220
-- CVE-2019-15221
-- CVE-2019-15292
-- CVE-2019-15538
-- CVE-2019-15666
-- CVE-2019-15807
-- CVE-2019-15924
-- CVE-2019-15926
