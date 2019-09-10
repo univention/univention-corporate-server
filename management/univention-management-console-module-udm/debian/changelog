@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.12-37) unstable; urgency=medium
+
+  * Bug #50034: add versioned dependency
+
+ -- Florian Best <best@univention.de>  Tue, 10 Sep 2019 17:40:44 +0200
+
 univention-management-console-module-udm (9.0.12-36) unstable; urgency=medium
 
   * Bug #50034: rename package

@@ -30,6 +30,7 @@ Package: univention-directory-manager-rest
 Architecture: all
 Depends: ${misc:Depends},
  univention-management-console-module-udm (= ${binary:Version}),
+ python-univention-directory-manager (>= 14.0.13-14),
  python-tornado,
  python-mimeparse,
  python-concurrent.futures,
