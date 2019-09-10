@@ -5,7 +5,8 @@ scope: ucs_4.4-0-errata4.4-1
 src: linux
 fix: 4.9.189-3
 desc: |
- This update addresses the following issues:
+ This updates the Linux kernel to version 4.9.189, which addresses (among
+ others) the following security issues:
  * The print_binder_ref_olocked function in drivers/android/binder.c allows
    local users to obtain sensitive address information by reading " ref *desc
    *node" lines in a debugfs file. (CVE-2018-20509)
@@ -69,7 +70,7 @@ desc: |
  * Out of bounds access exists in the functions
    ath6kl_wmi_pstream_timeout_event_rx and ath6kl_wmi_cac_event_rx in the file
    drivers/net/wireless/ath/ath6kl/wmi.c. (CVE-2019-15926)
-note: This is the 1st of two related updates.
+note: This is the 1st of three related updates.
 bug: [50140]
 cve:
 - CVE-2018-20509
