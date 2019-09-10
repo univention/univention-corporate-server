@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Univention Directory Manager HTTP
+# Univention Directory Manager REST
 #  join script
 #
 # Copyright 2019 Univention GmbH
@@ -48,7 +48,11 @@ ucr set \
 	directory/manager/rest/authorized-groups/dc-backup?"cn=DC Backup Hosts,cn=groups,$ldap_base" \
 	directory/manager/rest/authorized-groups/dc-slaves?"cn=DC Slave Hosts,cn=groups,$ldap_base" || die
 
-ucs_addServiceToLocalhost 'Univention Directory Manager HTTP' "$@" || die
+if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
+	service univention-directory-manager-rest restart
+fi
+
+ucs_addServiceToLocalhost 'Univention Directory Manager REST' "$@" || die
 
 joinscript_save_current_version
 
