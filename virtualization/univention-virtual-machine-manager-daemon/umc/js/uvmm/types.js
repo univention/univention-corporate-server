@@ -221,10 +221,10 @@ define([
 			{ id: "Conroe", label: "Intel Conroe" },
 			{ id: "Penryn", label: "Intel Penryn" },
 
-			{ id: "Westmere", label: "Intel Westmere" },
-			{ id: "Westmere-IBRS", label: "Intel Westmere [IBRS]" },
 			{ id: "Nehalem", label: "Intel Nehalem" },
 			{ id: "Nehalem-IBRS", label: "Intel Nehalem [IBRS]" },
+			{ id: "Westmere", label: "Intel Westmere" },
+			{ id: "Westmere-IBRS", label: "Intel Westmere [IBRS]" },
 			{ id: "SandyBridge", label: "Intel Sandy Bridge" },
 			{ id: "SandyBridge-IBRS", label: "Intel Sandy Bridge [IBRS]" },
 			{ id: "IvyBridge", label: "Intel Ivy Bridge" },
