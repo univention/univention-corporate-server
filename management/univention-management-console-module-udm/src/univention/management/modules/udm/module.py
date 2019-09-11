@@ -980,6 +980,12 @@ class Ressource(RessourceBase, RequestHandler):
 		self.content_negotiation(result)
 
 
+class Nothing(Ressource):
+
+	def get(self, *args, **kwargs):
+		raise NotFound(*args)
+
+
 class Favicon(RessourceBase, tornado.web.StaticFileHandler):
 
 	@classmethod
@@ -1849,6 +1855,8 @@ class ObjectLink(Ressource):
 			module = UDM_Module(module, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 			if module.module:
 				break
+		else:
+			raise NotFound(None, dn)
 		url = self.abspath(module.name, quote_dn(dn))
 		self.set_header('Location', url)
 		self.set_status(301)
@@ -3637,6 +3645,7 @@ class Application(tornado.web.Application):
 			(r"/udm/%s/properties/%s/default" % (object_type, property_), DefaultValue),
 			(r"/udm/networks/network/%s/next-free-ip-address" % (dn,), NextFreeIpAddress),
 			(r"/udm/progress/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", Operations),
+			(r"(.*)", Nothing),
 			# TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
 		], **kwargs)
 

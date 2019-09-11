@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.13-1) unstable; urgency=medium
+
+  * Bug #50173: improove robustness
+
+ -- Florian Best <best@univention.de>  Wed, 11 Sep 2019 09:22:41 +0200
+
 univention-management-console-module-udm (9.0.12-38) unstable; urgency=medium
 
   * Bug #50034: restart service in joinscript
