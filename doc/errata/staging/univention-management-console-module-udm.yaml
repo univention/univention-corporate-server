@@ -3,11 +3,12 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-management-console-module-udm
-fix: 9.0.12-38A~4.4.0.201909101803
+fix: 9.0.13-1A~4.4.0.201909110933
 desc: |
  This update addresses the following issues:
  * The new binary package univention-directory-manager-rest
    provides a Univention Directory Manager REST HTTP service.
  * Fix regression in Erratum 216 which caused the `univention-service` file
    to be not installed any more.
-bug: [50034,50169]
+ * The new type interface of UDM is used in the UDM REST API.
+bug: [50034,50169,50047]
