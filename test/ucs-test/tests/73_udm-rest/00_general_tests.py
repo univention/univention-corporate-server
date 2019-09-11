@@ -99,3 +99,17 @@ def test_create_modify_move_remove(random_string):
 
 		udm.remove_object('users/user', dn=userdn)
 		udm.verify_ldap_object(userdn, should_exist=False)
+
+
+@pytest.mark.parametrize('name', [
+	'''a !"#$%&'"()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~z''',
+	'foo//bar',
+])
+def test_special_characters_in_dn(name):
+	with UDM() as udm:
+		container = udm.create_object('container/cn', name=name)
+
+		udm_client = UDMClient.test_connection()
+		obj = udm_client.get('container/cn').get(container)
+		print(obj)
+		assert obj

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.14-1) unstable; urgency=medium
+
+  * Bug #27816: Bug #50175: fix accessing objects with // in its DN
+
+ -- Florian Best <best@univention.de>  Wed, 11 Sep 2019 16:00:42 +0200
+
 univention-management-console-module-udm (9.0.13-1) unstable; urgency=medium
 
   * Bug #50173: improove robustness

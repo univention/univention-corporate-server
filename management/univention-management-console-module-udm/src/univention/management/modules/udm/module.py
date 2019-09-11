@@ -3568,12 +3568,13 @@ def encode_properties(module, obj, properties):
 def quote_dn(dn):
 	if isinstance(dn, unicode):
 		dn = dn.encode('utf-8')
-	return quote(dn)  # .replace('/', quote('/', safe=''))
+	# duplicated slashes in URI path's can be normalized to one slash. Therefore we need to escape the slashes.
+	return quote(dn.replace('//', '%/'))  # .replace('/', quote('/', safe=''))
 
 
 def unquote_dn(dn):
 	# tornado already decoded it (UTF-8)
-	return dn
+	return dn.replace('%/', '//')
 
 
 def last_modified(date):
