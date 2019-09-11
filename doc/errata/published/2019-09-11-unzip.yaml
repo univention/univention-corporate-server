@@ -12,3 +12,5 @@ desc: |
 bug: [50146]
 cve:
 - CVE-2019-13232
+erratum: 266
+announced: 2019-09-11
