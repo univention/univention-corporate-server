@@ -982,8 +982,9 @@ class Ressource(RessourceBase, RequestHandler):
 
 class Nothing(Ressource):
 
-	def get(self, *args, **kwargs):
-		raise NotFound(*args)
+	def prepare(self, *args, **kwargs):
+		super(Nothing, self).prepare(*args, **kwargs)
+		raise NotFound()
 
 
 class Favicon(RessourceBase, tornado.web.StaticFileHandler):
@@ -3645,9 +3646,8 @@ class Application(tornado.web.Application):
 			(r"/udm/%s/properties/%s/default" % (object_type, property_), DefaultValue),
 			(r"/udm/networks/network/%s/next-free-ip-address" % (dn,), NextFreeIpAddress),
 			(r"/udm/progress/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", Operations),
-			(r"(.*)", Nothing),
 			# TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
-		], **kwargs)
+		], default_handler_class=Nothing, **kwargs)
 
 	def multi_regex(self, chars):
 		# Bug in tornado: requests go against the raw url; https://github.com/tornadoweb/tornado/issues/2548, therefore we must match =, %3d, %3D
