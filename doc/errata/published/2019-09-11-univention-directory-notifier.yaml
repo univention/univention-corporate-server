@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Fix `univention-translog stat` check for index.
 bug: [49872]
+erratum: 265
+announced: 2019-09-11
