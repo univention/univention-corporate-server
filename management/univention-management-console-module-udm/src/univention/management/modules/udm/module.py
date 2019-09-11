@@ -362,7 +362,7 @@ class NotFound(HTTPError):
 		super(NotFound, self).__init__(404, None, '%r %r' % (object_type, dn or ''))  # FIXME: create error message
 
 
-class RessourceBase(object):
+class ResourceBase(object):
 
 	pool = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
@@ -483,12 +483,12 @@ class RessourceBase(object):
 	def get_body_argument(self, name, *args):
 		if self.request.headers.get('Content-Type', '').startswith('application/json'):
 			return self.request.body_arguments.get(name)
-		return super(RessourceBase, self).get_body_argument(name, *args)
+		return super(ResourceBase, self).get_body_argument(name, *args)
 
 	def get_body_arguments(self, name, *args):
 		if self.request.headers.get('Content-Type', '').startswith('application/json'):
 			return self.request.body_arguments.get(name)
-		return super(RessourceBase, self).get_body_arguments(name, *args)
+		return super(ResourceBase, self).get_body_arguments(name, *args)
 
 	def sanitize_arguments(self, sanitizer, *args, **kwargs):
 		try:
@@ -804,11 +804,11 @@ class RessourceBase(object):
 	def log_exception(self, typ, value, tb):
 		if isinstance(value, UMC_Error):
 			return
-		super(RessourceBase, self).log_exception(typ, value, tb)
+		super(ResourceBase, self).log_exception(typ, value, tb)
 
 	def write_error(self, status_code, exc_info=None, **kwargs):
 		if not exc_info:  # or isinstance(exc_info[1], HTTPError):
-			return super(RessourceBase, self).write_error(status_code, exc_info=exc_info, **kwargs)
+			return super(ResourceBase, self).write_error(status_code, exc_info=exc_info, **kwargs)
 
 		etype, exc, etraceback = exc_info
 		if isinstance(exc, udm_errors.ldapError) and isinstance(getattr(exc, 'original_exception', None), (ldap.SERVER_DOWN, ldap.CONNECT_ERROR, ldap.INVALID_CREDENTIALS)):
@@ -895,7 +895,7 @@ class RessourceBase(object):
 		return ('udm:object-modules', 'udm:object-module', 'type', 'up', 'self')
 
 
-class Ressource(RessourceBase, RequestHandler):
+class Resource(ResourceBase, RequestHandler):
 
 	def options(self, *args, **kwargs):
 		"""Display API descriptions."""
@@ -985,14 +985,14 @@ class Ressource(RessourceBase, RequestHandler):
 		self.content_negotiation(result)
 
 
-class Nothing(Ressource):
+class Nothing(Resource):
 
 	def prepare(self, *args, **kwargs):
 		super(Nothing, self).prepare(*args, **kwargs)
 		raise NotFound()
 
 
-class Favicon(RessourceBase, tornado.web.StaticFileHandler):
+class Favicon(ResourceBase, tornado.web.StaticFileHandler):
 
 	@classmethod
 	def get_absolute_path(cls, root, object_type=''):
@@ -1004,7 +1004,7 @@ class Favicon(RessourceBase, tornado.web.StaticFileHandler):
 		return os.path.join(root, 'udm-%s.png' % (value,))
 
 
-class Relations(Ressource):
+class Relations(Resource):
 
 	def get(self, relation):
 		iana_relations = {
@@ -1076,7 +1076,7 @@ class Relations(Ressource):
 		self.content_negotiation(result)
 
 
-class OpenAPI(Ressource):
+class OpenAPI(Resource):
 
 	requires_authentication = False
 
@@ -1670,7 +1670,7 @@ class OpenAPI(Ressource):
 		return response
 
 
-class Modules(Ressource):
+class Modules(Resource):
 
 	mapping = {
 		'users': 'users/user',
@@ -1722,7 +1722,7 @@ class Modules(Ressource):
 		return ['self']
 
 
-class ObjectTypes(Ressource):
+class ObjectTypes(Resource):
 	"""get the object types of a specific flavor"""
 
 	@sanitize_query_string(
@@ -1782,7 +1782,7 @@ class ObjectTypes(Ressource):
 		self.content_negotiation(result)
 
 
-class SubObjectTypes(Ressource):
+class SubObjectTypes(Resource):
 	"""A list of possible sub-object-types which can be created underneath of the specified container or superordinate."""
 
 	def get(self, object_type=None, position=None):
@@ -1836,7 +1836,7 @@ class SubObjectTypes(Ressource):
 		self.content_negotiation(result)
 
 
-class LdapBase(Ressource):
+class LdapBase(Resource):
 
 	def get(self):
 		result = {}
@@ -1848,7 +1848,7 @@ class LdapBase(Ressource):
 		self.content_negotiation(result)
 
 
-class ObjectLink(Ressource):
+class ObjectLink(Resource):
 	"""If the object-type is not known but only the DN, this resource redirects to the correct object."""
 
 	def get(self, dn):
@@ -1880,7 +1880,7 @@ class ObjectByUiid(ObjectLink):
 		return super(ObjectByUiid, self).get(dn)
 
 
-class ContainerQueryBase(Ressource):
+class ContainerQueryBase(Resource):
 
 	@tornado.gen.coroutine
 	def _container_query(self, object_type, container, modules, scope):
@@ -1979,7 +1979,7 @@ class MoveDestinations(ContainerQueryBase):
 		self.content_negotiation(containers)
 
 
-class Properties(Ressource):
+class Properties(Resource):
 	"""GET udm/users/user/properties (get properties of users/user object type)"""
 
 	def get(self, object_type, dn=None):  # TODO: add link to DefaultValue
@@ -2000,7 +2000,7 @@ class Properties(Ressource):
 		self.content_negotiation(result)
 
 
-class ReportingBase(Ressource):
+class ReportingBase(Resource):
 
 	def initialize(self):
 		self.reports_cfg = udr.Config()
@@ -2043,7 +2043,7 @@ class Report(ReportingBase):
 		os.remove(report_file)
 
 
-class NextFreeIpAddress(Ressource):
+class NextFreeIpAddress(Resource):
 	"""GET udm/networks/network/$DN/next-free-ip-address (get the next free IP in this network)"""
 
 	def get(self, dn):  # TODO: threaded?! (might have caused something in the past in system setup?!)
@@ -2078,7 +2078,7 @@ class NextFreeIpAddress(Ressource):
 			obj.modify()
 
 
-class DefaultValue(Ressource):
+class DefaultValue(Resource):
 	"""GET udm/users/user/properties/$property/default (get the default value for the specified property)
 	Returns the default search pattern/value for the given object property"""
 
@@ -2469,7 +2469,7 @@ class Objects(FormBase, ReportingBase):
 		return root
 
 
-class ObjectsMove(Ressource):
+class ObjectsMove(Resource):
 
 	@sanitize_body_arguments(
 		position=DNSanitizer(required=True),
@@ -2508,7 +2508,7 @@ class ObjectsMove(Ressource):
 			status['finished'] = True
 
 
-class Object(FormBase, Ressource):
+class Object(FormBase, Resource):
 
 	@tornado.gen.coroutine
 	def get(self, object_type, dn):
@@ -2947,7 +2947,7 @@ class Object(FormBase, Ressource):
 		check_conditional_request_if_match()
 
 
-class UserPhoto(Ressource):
+class UserPhoto(Resource):
 
 	@tornado.gen.coroutine
 	def get(self, object_type, dn):
@@ -2996,7 +2996,7 @@ class UserPhoto(Ressource):
 		raise Finish()
 
 
-class ObjectAdd(FormBase, Ressource):
+class ObjectAdd(FormBase, Resource):
 	"""GET a form containing information about all properties, methods, URLs to create a specific object"""
 
 	@sanitize_query_string(
@@ -3123,7 +3123,7 @@ class ObjectCopy(ObjectAdd):
 		self.content_negotiation(result)
 
 
-class ObjectEdit(FormBase, Ressource):
+class ObjectEdit(FormBase, Resource):
 	"""GET a form containing ways to modify, remove, move a specific object"""
 
 	@tornado.gen.coroutine
@@ -3247,7 +3247,7 @@ class ObjectMultiEdit(ObjectEdit):
 	pass
 
 
-class PropertyChoices(Ressource):
+class PropertyChoices(Resource):
 	"""GET udm/users/user/$DN/property/$name/choices (get possible values/choices for that property)"""
 
 	@tornado.gen.coroutine
@@ -3264,7 +3264,7 @@ class PropertyChoices(Ressource):
 		self.content_negotiation(choices)
 
 
-class PolicyResultBase(Ressource):
+class PolicyResultBase(Resource):
 	"""get the possible policies of the policy-type for user objects located at the containter"""
 
 	@run_on_executor(executor='pool')
@@ -3364,7 +3364,7 @@ class PolicyResultContainer(PolicyResultBase):
 		self.content_negotiation(infos)
 
 
-class Operations(Ressource):
+class Operations(Resource):
 	"""GET /udm/progress/$progress-id (get the progress of a started operation like move, report, maybe add/put?, ...)"""
 
 	queue = {}
@@ -3397,7 +3397,7 @@ class Operations(Ressource):
 		return root
 
 
-class LicenseRequest(Ressource):
+class LicenseRequest(Resource):
 
 	@sanitize_query_string(
 		email=EmailSanitizer(required=True),
@@ -3435,7 +3435,7 @@ class LicenseRequest(Ressource):
 		self.content_negotiation({'message': _('A new license has been requested and sent to your email address.')})
 
 
-class LicenseCheck(Ressource):
+class LicenseCheck(Resource):
 
 	def get(self):
 		message = _('The license is valid.')
@@ -3447,7 +3447,7 @@ class LicenseCheck(Ressource):
 		self.content_negotiation(message)
 
 
-class License(Ressource):
+class License(Resource):
 
 	def get(self):
 		license_data = {}
@@ -3515,7 +3515,7 @@ class License(Ressource):
 		self.content_negotiation(license_data)
 
 
-class LicenseImport(Ressource):
+class LicenseImport(Resource):
 
 	def get(self):
 		text = '''dn: cn=admin,cn=license,cn=univention,%(ldap/base)s
