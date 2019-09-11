@@ -1,3 +1,10 @@
+ucs-test (9.0.3-47) unstable; urgency=medium
+
+  * Bug #48749: Remove -e in docker login - it is unsupported in the latest
+    version
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 11 Sep 2019 14:57:47 +0200
+
 ucs-test (9.0.3-46) unstable; urgency=low
 
   * Bug #50098: Extend 03_ucr/68check_univention-service.py

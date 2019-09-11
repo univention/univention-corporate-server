@@ -160,7 +160,7 @@ def get_latest_docker_appbox_image():
 
 
 def docker_login(server='docker.software-univention.de'):
-	ret = subprocess.call(['docker', 'login', '-e', 'foo@bar', '-u', 'ucs', '-p', 'readonly', server])
+	ret = subprocess.call(['docker', 'login', '-u', 'ucs', '-p', 'readonly', server])
 	if ret != 0:
 		raise UCSTest_Docker_LoginFailed()
 
