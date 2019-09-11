@@ -49,10 +49,11 @@ WHITELIST = {
 	'/usr/lib/openoffice/basis-link/share/registry/modules/org/openoffice/Office/Common/Common-UseOOoFileDialogs.xcu',
 	'/usr/lib/openoffice/basis-link/share/registry/schema/org/openoffice/Office/Common.xcs',
 	# Bugs: remove the following lines as soon as the bug is fixed:
-	'/etc/runit/univention-directory-listener/run',
-	'/etc/apache2/ucs-sites.conf.d/ucs-sites.conf',
-	'/etc/nagios-plugins/config/univention-samba.cfg',
-	'/etc/nagios-plugins/config/univention-s4-connector.cfg',
+	'/etc/runit/univention-directory-listener/run',  # Bug #50110
+	'/etc/apache2/ucs-sites.conf.d/ucs-sites.conf',  # Bug #50111
+	'/etc/nagios-plugins/config/univention-samba.cfg',  # Bug #50112
+	'/etc/nagios-plugins/config/univention-s4-connector.cfg',  # Bug #50112
+	'/etc/nagios-plugins/config/univention-ad-connector.cfg/etc/nagios-plugins/config/univention-ad-connector.cfg',  # Bug #50176
 }
 
 RE_LINE = re.compile(r"Warning: This|but can be overridden via univention-config-registry.")

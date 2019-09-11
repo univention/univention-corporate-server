@@ -1,3 +1,9 @@
+ucs-test (9.0.3-46) unstable; urgency=low
+
+  * Bug #50098: Extend 03_ucr/68check_univention-service.py
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 11 Sep 2019 08:24:46 +0200
+
 ucs-test (9.0.3-45) unstable; urgency=medium
 
   * Bug #50034: rename package
