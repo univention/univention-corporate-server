@@ -10,3 +10,5 @@ desc: |-
  * Simplified the way the App Provider and the App Vendor are presented in
    the UMC module.
 bug: [50113, 50106]
+erratum: 264
+announced: 2019-09-11
