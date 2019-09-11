@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-1
 src: univention-system-activation
 fix: 4.0.0-5A~4.4.0.201909051142
 desc: |-
-  This update addresses the following issue(s):
-  * Errors that happen in the appliance wizard are now shown. The user may
-    send a mail with the traceback to Univention.
+ This update addresses the following issue:
+ * Errors that happen in the appliance wizard are now shown. The user may
+   send a mail with the traceback to Univention.
 bug: [46790]
