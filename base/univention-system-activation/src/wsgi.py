@@ -26,6 +26,10 @@ class LicenseLDIF(LDIFParser):
 				self.uuid = entry['univentionLicenseKeyID'][0]
 
 
+class LdapLicenseFetchError(Exception):
+	pass
+
+
 ucr = ConfigRegistry()
 ucr.load()
 
@@ -92,8 +96,12 @@ def application(environ, start_response):
 
 	# output the license upon GET request
 	if environ.get('REQUEST_METHOD') == 'GET':
+		cmd = ['usr/bin/sudo', '/usr/bin/univention-ldapsearch', '-LLL', 'objectClass=univentionLicense']
+		proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 		try:
-			out = subprocess.check_output(['/usr/bin/sudo', '/usr/bin/univention-ldapsearch', '-LLL', 'objectClass=univentionLicense'])
+			out, _err = proc.communicate()
+			if proc.returncode:
+				raise LdapLicenseFetchError('{} exited with {}:\n{}'.format(' '.join(cmd), proc.returncode, out))
 			out = clean_license_output(out)
 			return _finish(data=out)
 		except subprocess.CalledProcessError as exc:
