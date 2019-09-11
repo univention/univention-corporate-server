@@ -253,6 +253,9 @@ class PropertiesSanitizer(DictSanitizer):
 			try:
 				try:
 					obj[property_name] = value
+				except KeyError:
+					if property_name != 'objectFlag':
+						raise
 				except udm_errors.valueMayNotChange:
 					if obj[property_name] == value:  # UDM does not check equality before raising the exception
 						continue
@@ -285,6 +288,8 @@ class PropertySanitizer(Sanitizer):
 		property_obj = self._module.get_property(name)
 
 		if property_obj is None:
+			if name == 'objectFlag':
+				return value  # not every object type has the extended attribute for objectFlag
 			self.raise_validation_error(_('The %(module)s module has no property %(name)s.'), module=self._module.title)
 
 		if not self._obj.has_property(name):
@@ -502,7 +507,7 @@ class RessourceBase(object):
 	def raise_sanitization_error(self, field, message):
 		class FalseSanitizer(Sanitizer):
 			def sanitize(self):
-				self.raise_formatted_validation_error(message, field, None)
+				self.raise_formatted_validation_error('%(message)s', field, None, message=message)
 		self.sanitize_arguments(FalseSanitizer(), _fieldname=field)
 
 	def content_negotiation(self, response):
