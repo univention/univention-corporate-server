@@ -3,9 +3,12 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-directory-manager-modules
-fix: 14.0.13-14A~4.4.0.201909101651
+fix: 14.0.13-15
 desc: |
  This update addresses the following issue(s):
  * A new type interface has been introduced. Every syntax class and property
    may now specify a data type, which is used in the UDM REST API.
-bug: [50047]
+ * The syntax classes IStates, AllowDeny, AppActivatedOK, AppActivatedTrue,
+   OkOrNot, TrueFalse, TrueFalseUp, TrueFalseUpper, booleanNone and
+   ddnsUpdates now correctly validate inpput values.
+bug: [50047, 40731]

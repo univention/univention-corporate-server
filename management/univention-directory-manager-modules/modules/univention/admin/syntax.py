@@ -3384,12 +3384,10 @@ class IStates(select):
 
 	@classmethod
 	def parse(cls, text):
-		if isinstance(text, basestring):
-			return text
-		for value, choice in cls.values:
-			if text == value:
-				return choice[0]
-		return text
+		for value, (choice, label) in cls.values:
+			if text == value or text == choice:
+				return choice
+		raise univention.admin.uexceptions.valueInvalidSyntax(_('Invalid choice.'))
 
 	@classmethod
 	def get_object_property_filter(cls, object_property, object_property_value):

@@ -1791,6 +1791,10 @@ msgstr "nicht definiert"
 msgid "usrhiper"
 msgstr ""
 
+#: modules/univention/admin/syntax.py:4910
+msgid "Invalid choice."
+msgstr "Ungültige Auswahl."
+
 #~ msgid "All Clients"
 #~ msgstr "Von jedem Client"
 
