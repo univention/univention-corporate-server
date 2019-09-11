@@ -3,7 +3,7 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-system-activation
-fix: 4.0.0-5A~4.4.0.201909051142
+fix: 4.0.0-6A~4.4.0.201909112329
 desc: |-
  This update addresses the following issue:
  * Errors that happen in the appliance wizard are now shown. The user may
