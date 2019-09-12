@@ -1,3 +1,9 @@
+univention-saml (6.0.2-5) unstable; urgency=medium
+
+  * Bug #50177: fix invalid true/false values for TrueFalseUp syntax
+
+ -- Florian Best <best@univention.de>  Wed, 11 Sep 2019 15:22:52 +0200
+
 univention-saml (6.0.2-4) unstable; urgency=medium
 
   * Bug #48961: update for changes in upstream simplesamlphp

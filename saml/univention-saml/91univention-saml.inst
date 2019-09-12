@@ -32,7 +32,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION="7"
+VERSION="8"
 
 . /usr/share/univention-lib/all.sh
 . /usr/share/univention-join/joinscripthelper.lib
@@ -268,7 +268,7 @@ udm saml/serviceprovider create "$@" \
 	--set isActivated=FALSE \
 	--set Identifier=google.com \
 	--set NameIDFormat="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" \
-	--set simplesamlAttributes="false" \
+	--set simplesamlAttributes="FALSE" \
 	--set AssertionConsumerService="https://www.google.com/a/univention-test.mygbiz.com/acs" \
 	--set simplesamlNameIDAttribute="uid" \
 	--set privacypolicyURL="http://support.google.com/a/bin/answer.py?hl=en&answer=60762" \
@@ -280,7 +280,7 @@ udm saml/serviceprovider create "$@" \
 	--set isActivated=FALSE \
 	--set Identifier="https://sp.testshib.org/shibboleth-sp" \
 	--set NameIDFormat="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" \
-	--set simplesamlAttributes="false" \
+	--set simplesamlAttributes="FALSE" \
 	--set AssertionConsumerService="https://sp.testshib.org/Shibboleth.sso/SAML2/POST" \
 	--set simplesamlNameIDAttribute="uid" \
 	--set privacypolicyURL="https://www.testshib.org/policy.html" \
@@ -293,7 +293,7 @@ udm saml/serviceprovider create "$@" \
 	--set isActivated=FALSE \
 	--set Identifier="https://saml.salesforce.com" \
 	--set NameIDFormat="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" \
-	--set simplesamlAttributes="false" \
+	--set simplesamlAttributes="FALSE" \
 	--set AssertionConsumerService="https://sp.testshib.org/Shibboleth.sso/SAML2/POST" \
 	--set simplesamlNameIDAttribute="mailPrimaryAddress" \
 	--set privacypolicyURL="https://trust.salesforce.com/trust/privacy/" \
@@ -304,6 +304,22 @@ if joinscript_check_version_in_range_executed 1 3; then
 	udm saml/serviceprovider list "$@" --filter NameIDFormat="urn:oasis:names:tc:SAML:2.0:nameid-format:email" | grep "^DN: " | sed -e 's|DN: ||' | while read dn; do
 		udm saml/serviceprovider modify "$@" --dn "$dn" --set NameIDFormat="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" || die
 	done
+fi
+
+# Change broken TRUE/FALSE value
+if joinscript_check_version_in_range_executed 1 7; then
+	if udm saml/serviceprovider list --filter "(&(SAMLServiceProviderIdentifier=google.com)(isActivated=false))" | grep -q DN; then
+		udm saml/serviceprovider modify "$@" --dn "SAMLServiceProviderIdentifier=google.com,cn=saml-serviceprovider,cn=univention,$ldap_base" \
+			--set simplesamlAttributes="FALSE"
+	fi
+	if udm saml/serviceprovider list --filter "(&(SAMLServiceProviderIdentifier=https://sp.testshib.org/shibboleth-sp,cn=saml-serviceprovider)(isActivated=false))" | grep -q DN; then
+		udm saml/serviceprovider modify "$@" --dn "SAMLServiceProviderIdentifier=https://sp.testshib.org/shibboleth-sp,cn=saml-serviceprovider,cn=univention,$ldap_base" \
+			--set simplesamlAttributes="FALSE"
+	fi
+	if udm saml/serviceprovider list --filter "(&(SAMLServiceProviderIdentifier=https://saml.salesforce.com,cn=saml-serviceprovider)(isActivated=false))" | grep -q DN; then
+		udm saml/serviceprovider modify "$@" --dn "SAMLServiceProviderIdentifier=https://saml.salesforce.com,cn=saml-serviceprovider,cn=univention,$ldap_base" \
+			--set simplesamlAttributes="FALSE"
+	fi
 fi
 
 # Create IdP config object
