@@ -8,6 +8,8 @@
 ##   - univention-directory-manager-tools
 ## versions:
 ##   3.2-0: skip
+##   4.4-1: fixed
+## bugs: [40731]
 
 
 import univention.testing.udm as udm_test
