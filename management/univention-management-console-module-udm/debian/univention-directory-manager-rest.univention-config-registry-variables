@@ -5,8 +5,8 @@ Type=int
 Categories=service-udm
 
 [directory/manager/rest/authorized-groups/.*]
-Description[de]=Spezifiziert die LDAP-DNs der Gruppen, denen Zugriff auf die Univention Directory Manager REST HTTP Schnittstelle erlaubt ist.
-Description[en]=Specifies the LDAP DNs of the groups, which are allowed to access the Univention Directory Manager REST HTTP interface.
+Description[de]=Spezifiziert die LDAP-DNs der Gruppen, denen Zugriff auf die Univention Directory Manager REST Schnittstelle erlaubt ist.
+Description[en]=Specifies the LDAP DNs of the groups, which are allowed to access the Univention Directory Manager REST interface.
 Type=str
 Categories=service-udm
 
@@ -14,4 +14,10 @@ Categories=service-udm
 Description[de]=Definiert, ob Tracebacks in Fehlerfällen dem Benutzer angezeigt werden.
 Description[en]=Defines whether tracebacks are shown to the user in error cases.
 Type=bool
-Categories=management-umc
+Categories=service-udm
+
+[directory/manager/rest/autostart]
+Description[de]=Definiert, den Autostart der Univention Directory Manager REST Schnittstelle.
+Description[en]=Defines the autostart of the Univention Directory Manager REST interface
+Type=str
+Categories=service-udm

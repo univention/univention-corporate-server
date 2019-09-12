@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.14-2) unstable; urgency=medium
+
+  * Bug #50034: rename autostart variable
+
+ -- Florian Best <best@univention.de>  Thu, 12 Sep 2019 11:30:07 +0200
+
 univention-management-console-module-udm (9.0.14-1) unstable; urgency=medium
 
   * Bug #27816: Bug #50175: fix accessing objects with // in its DN
