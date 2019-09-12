@@ -1,3 +1,9 @@
+univention-saml (6.0.2-8) unstable; urgency=medium
+
+  * Bug #50177: fix invalid true/false values for TrueFalseUp syntax
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 12 Sep 2019 18:12:27 +0200
+
 univention-saml (6.0.2-7) unstable; urgency=medium
 
   * Bug #50177: fix invalid true/false values for TrueFalseUp syntax
