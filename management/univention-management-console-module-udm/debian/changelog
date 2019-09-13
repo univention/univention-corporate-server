@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.14-3) unstable; urgency=medium
+
+  * Bug #27816: split REST API into another source package
+
+ -- Florian Best <best@univention.de>  Fri, 13 Sep 2019 16:03:01 +0200
+
 univention-management-console-module-udm (9.0.14-2) unstable; urgency=medium
 
   * Bug #50034: rename autostart variable

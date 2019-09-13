@@ -4,7 +4,7 @@ Upstream-Contact: <package@univention.de>
 Source: https://updates.software-univention.de/
 
 Files: *
-Copyright: 2002-2019 Univention GmbH
+Copyright: 2019 Univention GmbH
 License: AGPL-3.0-only
  The source code of the software contained in this package
  as well as the source package itself are made available
@@ -27,3 +27,6 @@ License: AGPL-3.0-only
  License with the Debian GNU/Linux or Univention distribution in file
  /usr/share/common-licenses/AGPL-3; if not, see
  <http://www.gnu.org/licenses/>.
+
+ Files: var/www/univention/udm/swaggerui/*
+ License: MIT License (MIT)

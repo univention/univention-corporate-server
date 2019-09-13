@@ -1,0 +1,5 @@
+univention-directory-manager-rest (9.0.15-1) unstable; urgency=medium
+
+  * Bug #27816: initial release
+
+ -- Florian Best <best@univention.de>  Wed, 11 Sep 2019 16:00:42 +0200

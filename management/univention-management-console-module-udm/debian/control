@@ -26,26 +26,6 @@ Description: UMC module for UCS Directory Manager
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-directory-manager-rest
-Architecture: all
-Depends: ${misc:Depends},
- univention-management-console-module-udm (= ${binary:Version}),
- python-univention-directory-manager (>= 14.0.13-14),
- python-tornado,
- python-mimeparse,
- python-concurrent.futures,
- python-pycurl,
- python-genshi,
- python-uritemplate,
- systemd,
-Description: REST service for UCS Directory Manager
- This package contains the REST service for UCS Directory Manager.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
 Package: univention-management-module-udm
 Architecture: all
 Depends: ${misc:Depends},
