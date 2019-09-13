@@ -41,19 +41,15 @@ def test_nfsmount(udm, ucr, lo, backup_fstab):
 
         # create shares in udm
         share_name = "share_" + uts.random_name()
-        fqhn = '%(hostname)s.%(domainname)s' % ucr
         share = udm.create_object(
             'shares/share',
             name=share_name,
             path=shared_path,
-            host="localhost.test",
+            host='%(hostname)s.%(domainname)s' % ucr,
             directorymode="0770",
             position='cn=shares,%(ldap/base)s' % ucr,
         )
         utils.verify_ldap_object(share, {'cn': [share_name]})
-
-        # Bug#50193: Trick /usr/lib/univention-directory-policy/nfsmounts into mounting from SELF
-        lo.modify(share, [('univentionShareHost', None, fqhn.encode("utf-8"))])
         utils.wait_for_listener_replication_and_postrun()
 
         # touch a file in source

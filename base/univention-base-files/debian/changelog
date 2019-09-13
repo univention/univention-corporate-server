@@ -1,3 +1,9 @@
+univention-base-files (9.0.5-2) unstable; urgency=low
+
+  * Bug #50193: Allow to mount NFS share from self
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 22 Feb 2023 07:53:29 +0100
+
 univention-base-files (9.0.5-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces

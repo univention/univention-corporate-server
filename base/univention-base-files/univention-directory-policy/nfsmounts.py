@@ -167,16 +167,16 @@ def get_nfs_data(nfs_mount, entries):
         debug('not found, skipping\n')
         return
 
-    # skip share if from self
-    if share_host == fqdn:
-        debug('is self, skipping\n')
-        return
-
     mp = fields[-1] or share_path
     # skip share if target already in fstab
     mount_points = [entry.mount_point for entry in entries]
     if mp in mount_points:
         debug('already mounted on %s, skipping\n' % mp)
+        return
+
+    # skip share if to self
+    if share_host == fqdn and share_path == mp:
+        debug('is self, skipping\n')
         return
 
     nfs_path_fqdn = "%s:%s" % (share_host, share_path)
