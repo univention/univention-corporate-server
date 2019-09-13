@@ -436,9 +436,9 @@ class Object(Client):
 		obj = self.module.get(self.dn)
 		self._copy_from_obj(obj)
 
-	def save(self):
+	def save(self, reload=True):
 		if self.dn:
-			return self._modify()
+			return self._modify(reload)
 		else:
 			return self._create()
 
@@ -449,7 +449,7 @@ class Object(Client):
 		self.position = position
 		self.save()
 
-	def _modify(self):
+	def _modify(self, reload=True):
 		data = {
 			'properties': self.properties,
 			'options': self.options,
@@ -462,13 +462,16 @@ class Object(Client):
 			'If-Match': self.etag,
 		}.items() if value)
 		response = self.client.make_request('PUT', self.uri, data=data, **headers)
-		resp = response.response
+		if 200 <= response.response.status_code <= 399 and 'Location' in response.response.headers:
+			response = self.client.make_request('GET', response.response.headers['Location'])
 		# TODO: outsource redirection handling into self.client
-		if resp.status_code == 201 and 'Location' in resp.headers:  # move()
-			response = self.client.make_request('GET', resp.headers['Location'])
+		while 300 <= response.response.status_code <= 399 and 'Location' in response.response.headers:  # move()
+			response = self.client.make_request('GET', response.response.headers['Location'])
+
 		self.links = response.data
 		self.dn = response.data['dn']
-		self.reload()
+		if reload:
+			self.reload()
 
 	def _copy_from_obj(self, obj):
 		self.dn = obj.dn

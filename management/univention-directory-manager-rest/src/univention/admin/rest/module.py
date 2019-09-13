@@ -2724,11 +2724,10 @@ class Object(FormBase, Resource):
 			return
 		else:
 			obj = yield self.modify(module, obj)
-			self.set_status(302)
 			self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
-
-		self.add_caching(public=False, must_revalidate=True)
-		self.content_negotiation({})
+			self.add_caching(public=False, must_revalidate=True, no_cache=True, no_store=True)
+			self.set_status(204)
+			raise Finish()
 
 	@sanitize_body_arguments(
 		position=DNSanitizer(required=False, default=''),
@@ -2762,10 +2761,10 @@ class Object(FormBase, Resource):
 		if self.request.body_arguments['position'] is None:
 			self.request.body_arguments['position'] = entry['position']
 		obj = yield self.modify(module, obj)
-		self.add_caching(public=False, must_revalidate=True)
-		self.set_status(302)
+		self.add_caching(public=False, must_revalidate=True, no_cache=True, no_store=True)
 		self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
-		self.content_negotiation({})
+		self.set_status(204)
+		raise Finish()
 
 	@tornado.gen.coroutine
 	def create(self, object_type, dn=None):
