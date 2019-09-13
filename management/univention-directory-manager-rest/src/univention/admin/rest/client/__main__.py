@@ -41,6 +41,7 @@ import sys
 import json
 import argparse
 
+import six
 import ldap
 import ldap.dn
 
@@ -190,7 +191,7 @@ class CLIClient(object):
 			for key, value in sorted(entry.properties.items()):
 				if isinstance(value, list):
 					for item in value:
-						if isinstance(item, (basestring, int, float)):
+						if isinstance(item, (six.text_type, six.binary_type, int, float)):
 							self.print_line(key, item, '  ')
 						else:
 							self.print_line(key, json.dumps(item, ensure_ascii=False), '  ')
@@ -198,7 +199,7 @@ class CLIClient(object):
 					self.print_line(key, '', '  ')
 				elif isinstance(value, (bool, int, float)):
 					self.print_line(key, str(value), '  ')
-				elif isinstance(value, (basestring, int, float)):
+				elif isinstance(value, (six.text_type, six.binary_type, int, float)):
 					if set(value) & set('\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0b\x0c\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\x7f'):
 						key = key + ':'
 						value = value.encode('base64').rstrip()

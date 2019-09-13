@@ -35,6 +35,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-pycurl,
  python-genshi,
  python-uritemplate,
+ python-six,
 Description: REST service for UCS Directory Manager
  This package contains the REST service for UCS Directory Manager.
  .
@@ -55,6 +56,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  python3-pycurl,
  python3-genshi,
  python3-uritemplate,
+ python3-six,
 Description: REST service for UCS Directory Manager
  This package contains the REST service for UCS Directory Manager.
  .

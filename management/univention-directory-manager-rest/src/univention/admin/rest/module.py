@@ -51,9 +51,12 @@ import hashlib
 import binascii
 import datetime
 import traceback
+import functools
 from email.utils import parsedate
 from urlparse import urljoin, urlparse, urlunparse, parse_qs
 from urllib import quote, unquote
+
+import six
 
 import tornado.web
 import tornado.gen
@@ -659,7 +662,7 @@ class ResourceBase(object):
 					ET.SubElement(sub_fieldset, 'h2').text = elem['description']
 				self.render_layout(elem['layout'], sub_fieldset, properties)
 				continue
-			elements = [elem] if isinstance(elem, basestring) else elem
+			elements = [elem] if isinstance(elem, six.string_types) else elem
 			for elem in elements:
 				for field in properties:
 					if field['name'] in (elem, 'properties.%s' % elem):
@@ -2837,7 +2840,7 @@ class Object(FormBase, Resource):
 		options_disable = set(opt for opt, enabled in options.items() if enabled is False)  # ignore None!
 		obj.options = list(set(obj.options) - options_disable | options_enable)
 		if self.request.body_arguments['policies']:
-			obj.policies = reduce(lambda x, y: x + y, self.request.body_arguments['policies'].values())
+			obj.policies = functools.reduce(lambda x, y: x + y, self.request.body_arguments['policies'].values())
 		self.sanitize_arguments(PropertiesSanitizer(), self, module=module, obj=obj)
 
 	@tornado.gen.coroutine
@@ -3474,7 +3477,7 @@ class License(Resource):
 					license_data[item] = {}
 					for lic_type in ('CLIENT', 'ACCOUNT', 'DESKTOP', 'GROUPWARE'):
 						count = getattr(udm_license._license, item)[udm_license._license.version][getattr(udm_license.License, lic_type)]
-						if isinstance(count, basestring):
+						if isinstance(count, six.string_types):
 							try:
 								count = int(count)
 							except:
@@ -3488,7 +3491,7 @@ class License(Resource):
 					license_data[item] = {}
 					for lic_type in ('SERVERS', 'USERS', 'MANAGEDCLIENTS', 'CORPORATECLIENTS'):
 						count = getattr(udm_license._license, item)[udm_license._license.version][getattr(udm_license.License, lic_type)]
-						if isinstance(count, basestring):
+						if isinstance(count, six.string_types):
 							try:
 								count = int(count)
 							except:

@@ -53,6 +53,7 @@ import sys
 import time
 import requests
 
+import six
 import uritemplate
 
 if sys.version_info.major > 2:
@@ -337,7 +338,7 @@ class Module(Client):
 			for prop, val in filter.items():
 				data['property'] = prop
 				data['propertyvalue'] = val
-		elif isinstance(filter, basestring):
+		elif isinstance(filter, six.string_types):
 			data['filter'] = filter
 		if superordinate:
 			data['superordinate'] = superordinate
