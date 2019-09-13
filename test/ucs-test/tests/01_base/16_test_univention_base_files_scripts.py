@@ -69,14 +69,12 @@ def test_nfsmount(udm, ucr, lo, backup_fstab):
 
         # create shares in udm
         share_name = "share_" + uts.random_name()
+        fqhn = '%(hostname)s.%(domainname)s' % ucr
         share = udm.create_object(
-            'shares/share', name=share_name, path=shared_path, host='localhost', directorymode="0077",
+            'shares/share', name=share_name, path=shared_path, host=fqhn, directorymode="0077",
             position='cn=shares,%s' % (ucr['ldap/base'],),
         )
         utils.verify_ldap_object(share, {'cn': [share_name]})
-
-        # muha! best trick ever. univentionShareHost is single value in UDM but not in LDAP. setting localhost + FQDN causes listener and nfsmounts script to be tricked
-        lo.modify(share, [('univentionShareHost', None, ('%(hostname)s.%(domainname)s' % ucr).encode())])
         utils.wait_for_listener_replication_and_postrun()
 
         # touch a file in source
