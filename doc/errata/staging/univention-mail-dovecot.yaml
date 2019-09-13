@@ -3,7 +3,7 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-mail-dovecot
-fix:
+fix: 5.0.1-9A~4.4.0.201909131023
 desc: |
  This update addresses the following issue(s):
  * Fix broken UCR template for ca (Bug #50105).
