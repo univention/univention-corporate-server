@@ -336,18 +336,16 @@ class Module(Client):
 		data = {}
 		if isinstance(filter, dict):
 			for prop, val in filter.items():
-				data['property'] = prop
-				data['propertyvalue'] = val
+				data['query[%s]' % (prop,)] = val
 		elif isinstance(filter, six.string_types):
 			data['filter'] = filter
 		if superordinate:
 			data['superordinate'] = superordinate
 		data['position'] = position
 		data['scope'] = scope
-		data['hidden'] = '1' if hidden else ''
-		data['properties'] = ''
-		if opened:
-			data['properties'] = '*'
+		data['hidden'] = '1' if hidden else '0'
+		if not opened:
+			data['properties'] = 'dn'
 		self.load_relations()
 		entries = self.client.resolve_relation(self.relations, 'search', template=data)
 		for obj in self.client.resolve_relations(entries.data, 'udm:object'):

@@ -82,7 +82,7 @@ from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
 from univention.management.console.ldap import get_user_connection, get_machine_connection
 from univention.management.console.modules.udm.udm_ldap import get_module, UDM_Module, ldap_dn2path, read_syntax_choices, _get_syntax, container_modules, UDM_Error
-from univention.management.console.modules.udm.udm_ldap import SuperordinateDoesNotExist, ObjectDoesNotExist, NoIpLeft
+from univention.management.console.modules.udm.udm_ldap import SuperordinateDoesNotExist, ObjectDoesNotExist, NoIpLeft, _object_property_filter
 from univention.management.console.modules.udm.tools import check_license, LicenseError, LicenseImport as LicenseImporter, dump_license
 from univention.management.console.modules.sanitizers import MultiValidationError, ValidationError, DictSanitizer, StringSanitizer, ListSanitizer, IntegerSanitizer, ChoicesSanitizer, DNSanitizer, EmailSanitizer, LDAPSearchSanitizer, Sanitizer, BooleanSanitizer
 from univention.management.console.error import UMC_Error, LDAP_ServerDown, LDAP_ConnectionFailed, UnprocessableEntity
@@ -159,21 +159,11 @@ class RequestSanitizer(DictSanitizer):
 		return super(RequestSanitizer, self)._sanitize(value, name, further_arguments)
 
 
-class QueryStringSanitizer(DictSanitizer):
-
-	def _sanitize(self, value, name, further_arguments):
-		if isinstance(value, dict):
-			for key, sanitizer in self.sanitizers.items():
-				if len(value.get(key, [])) == 1 and not isinstance(sanitizer, ListSanitizer):
-					value[key] = value[key][0]
-
-		return super(QueryStringSanitizer, self)._sanitize(value, name, further_arguments)
-
-
 class DictSanitizer(DictSanitizer):
 
 	def __init__(self, sanitizers, allow_other_keys=True, **kwargs):
 		self.default_sanitizer = kwargs.get('default_sanitizer', None)
+		self.key_sanitizer = kwargs.get('key_sanitizer', None)
 		super(DictSanitizer, self).__init__(sanitizers, allow_other_keys=allow_other_keys, **kwargs)
 
 	def _sanitize(self, value, name, further_arguments):
@@ -189,6 +179,8 @@ class DictSanitizer(DictSanitizer):
 		for attr in set(value.keys() + self.sanitizers.keys()):
 			sanitizer = self.sanitizers.get(attr, self.default_sanitizer)
 			try:
+				if self.key_sanitizer:
+					attr = self.key_sanitizer.sanitize(attr, {attr: attr})
 				if sanitizer:
 					altered_value[attr] = sanitizer.sanitize(attr, value)
 			except ValidationError as e:
@@ -198,6 +190,20 @@ class DictSanitizer(DictSanitizer):
 			raise multi_error
 
 		return altered_value
+
+
+class QueryStringSanitizer(DictSanitizer):
+
+	def _sanitize(self, value, name, further_arguments):
+		if isinstance(value, dict):
+			for key, sanitizer in self.sanitizers.items():
+				if len(value.get(key, [])) == 1 and not isinstance(sanitizer, ListSanitizer):
+					value[key] = value[key][0]
+				elif isinstance(sanitizer, DictSanitizer):
+					value[key] = dict((k[len(key) + 1:-1], v[0]) for k, v in value.items() if k.startswith(key + '[') and k.endswith(']'))
+					#value[key] = QueryStringSanitizer(sanitizer.sanitizers).sanitize(key, {key: value[key]})
+
+		return super(QueryStringSanitizer, self)._sanitize(value, name, further_arguments)
 
 
 class ObjectPropertySanitizer(StringSanitizer):
@@ -537,10 +543,10 @@ class ResourceBase(object):
 		titleelement = ET.SubElement(head, "title")
 		titleelement.text = 'FIXME: fallback title'  # FIXME: set title
 		ET.SubElement(head, 'meta', content='text/html; charset=utf-8', **{'http-equiv': 'content-type'})
-		if not ajax:
-			ET.SubElement(head, 'script', type='text/javascript', src=self.abspath('../js/config.js'))
-			ET.SubElement(head, 'script', type='text/javascript', src=self.abspath('js/udm.js'))
-			ET.SubElement(head, 'script', type='text/javascript', async='', src=self.abspath('../js/dojo/dojo.js'))
+		#if not ajax:
+		#	ET.SubElement(head, 'script', type='text/javascript', src=self.abspath('../js/config.js'))
+		#	ET.SubElement(head, 'script', type='text/javascript', src=self.abspath('js/udm.js'))
+		#	ET.SubElement(head, 'script', type='text/javascript', async='', src=self.abspath('../js/dojo/dojo.js'))
 
 		body = ET.SubElement(root, "body", dir='ltr')
 		header = ET.SubElement(body, 'header')
@@ -1250,8 +1256,7 @@ class OpenAPI(Resource):
 					"parameters": [
 						{'$ref': '#/components/parameters/search.position'},
 						{'$ref': '#/components/parameters/search.scope'},
-						{'$ref': '#/components/parameters/search.property'},
-						{'$ref': '#/components/parameters/search.propertyvalue'},
+						{'$ref': '#/components/parameters/search.query'},
 						{'$ref': '#/components/parameters/search.hidden'},
 						{'$ref': '#/components/parameters/search.page'},
 						{'$ref': '#/components/parameters/search.pagesize'},
@@ -1482,10 +1487,11 @@ class OpenAPI(Resource):
 						"description": "A property name to filter for",
 						"example": "username",
 					},
-					'search.propertyvalue': {
+					'search.query': {
 						"in": "query",
-						"name": "propertyvalue",
-						"schema": {"type": "string"},
+						"name": "query",
+						"style": "deepObject",
+						"schema": {"type": "object"},
 						"description": "The value to search for",
 						"example": "*",
 					},
@@ -2215,12 +2221,11 @@ class Objects(FormBase, ReportingBase):
 	@sanitize_query_string(
 		position=DNSanitizer(required=False, default=None),
 		filter=LDAPFilterSanitizer(required=False, default=None, allow_none=True),
-		property=ObjectPropertySanitizer(required=False, default=None),
-		propertyvalue=LDAPSearchSanitizer(required=False, default='*', add_asterisks=False, use_asterisks=True),
+		query=DictSanitizer({}, default_sanitizer=LDAPSearchSanitizer(required=False, default='*', add_asterisks=False, use_asterisks=True), key_sanitizer=ObjectPropertySanitizer()),
 		scope=ChoicesSanitizer(choices=['sub', 'one', 'base', 'base+one'], default='sub'),
-		hidden=BoolSanitizer(default=False),
+		hidden=BoolSanitizer(default=True),
 		#fields=ListSanitizer(required=False, default=[]),
-		properties=ListSanitizer(required=False, default=[]),
+		properties=ListSanitizer(required=False, default=['*']),
 		superordinate=DNSanitizer(required=False, default=None, allow_none=True),
 		dir=ChoicesSanitizer(choices=['ASC', 'DESC'], default='ASC'),
 		by=StringSanitizer(required=False),
@@ -2233,17 +2238,13 @@ class Objects(FormBase, ReportingBase):
 		module = self.get_module(object_type)
 		result = self._options(object_type)
 
-		# TODO: allow to specify an own ldap filter?
-		# TODO: add "opened" instead of giving property names?
 		# TODO: rename fields in the response into "printable"?
 
 		search = bool(self.request.query)
 		container = self.request.query_arguments['position']
-		filter = self.request.query_arguments['filter']
-		objectProperty = self.request.query_arguments['property']
-		objectPropertyValue = self.request.query_arguments['propertyvalue']
-		scope = self.request.query_arguments['scope']
 		hidden = self.request.query_arguments['hidden']
+		ldap_filter = self.request.query_arguments['filter']
+		scope = self.request.query_arguments['scope']
 		#fields = self.request.query_arguments['fields']
 		#fields = (set(fields) | set([objectProperty])) - set(['name', 'None', None, ''])
 		properties = self.request.query_arguments['properties'][:]
@@ -2252,6 +2253,11 @@ class Objects(FormBase, ReportingBase):
 		by = self.request.query_arguments['by']
 		page = self.request.query_arguments['page']
 		items_per_page = self.request.query_arguments['pagesize']  # TODO: rename: items-per-page, pagelength, pagecount, pagesize, limit/offset
+
+		if not ldap_filter:
+			filters = filter(None, [(_object_property_filter(module, attribute or None, value, hidden)) for attribute, value in self.request.query_arguments['query'].items()])
+			if filters:
+				ldap_filter = unicode(univention.admin.filter.conjunction('&', [univention.admin.filter.parse(fil) for fil in filters]))
 
 		# TODO: replace the superordinate concept with container
 		superordinate = self.superordinate_dn_to_object(module, self.request.query_arguments['superordinate'])
@@ -2262,7 +2268,7 @@ class Objects(FormBase, ReportingBase):
 		objects = []
 		if search:
 			try:
-				objects, last_page = yield self.search(module, container, objectProperty, objectPropertyValue, filter, superordinate, scope, hidden, items_per_page, page, by, reverse)
+				objects, last_page = yield self.search(module, container, ldap_filter, superordinate, scope, hidden, items_per_page, page, by, reverse)
 			except ObjectDoesNotExist as exc:
 				self.raise_sanitization_error('position', str(exc))
 			except SuperordinateDoesNotExist as exc:
@@ -2326,11 +2332,13 @@ class Objects(FormBase, ReportingBase):
 			self.add_form_element(form, 'superordinate', superordinate.dn if superordinate else '', label=_('Superordinate'))
 			search_layout.append(['superordinate'])
 		searchable_properties = [{'value': '', 'label': _('Defaults')}] + [{'value': prop['id'], 'label': prop['label']} for prop in module.properties(None) if prop.get('searchable')]
-		self.add_form_element(form, 'property', objectProperty or '', element='select', options=searchable_properties, label=_('Property'))
-		self.add_form_element(form, 'propertyvalue', objectPropertyValue or (module.get_default_values(objectProperty) if objectProperty else '*'), label=' ')
+		self.add_form_element(form, 'query[]', self.request.query_arguments['query'].get('', '*'), label=_('Search for'), placeholder=_('Search value (e.g. *)'))
+		#self.add_form_element(form, 'property', objectProperty or '', element='select', options=searchable_properties, label=_('Property'))
+		#self.add_form_element(form, 'propertyvalue', objectPropertyValue or (module.get_default_values(objectProperty) if objectProperty else '*'), label=' ')
 		self.add_form_element(form, 'scope', scope, element='select', options=[{'value': 'sub'}, {'value': 'one'}, {'value': 'base'}, {'value': 'base+one'}], label=_('Search scope'))
 		self.add_form_element(form, 'hidden', '1', type='checkbox', checked=bool(hidden), label=_('Include hidden objects'))
-		search_layout.append(['property', 'propertyvalue'])
+		#search_layout.append(['property', 'propertyvalue'])
+		search_layout.append(['query[]'])
 		#self.add_form_element(form, 'fields', list(fields))
 		if module.supports_pagination:
 			self.add_form_element(form, 'pagesize', str(items_per_page or '0'), type='number', label=_('Limit'))
@@ -2357,10 +2365,10 @@ class Objects(FormBase, ReportingBase):
 		return super(Objects, self).get_hal_json(response)
 
 	@tornado.gen.coroutine
-	def search(self, module, container, prop, value, filter, superordinate, scope, hidden, items_per_page, page, by, reverse):
+	def search(self, module, container, ldap_filter, superordinate, scope, hidden, items_per_page, page, by, reverse):
 		ctrls = {}
 		serverctrls = []
-		hashed = (self.request.user_dn, module.name, container or None, prop or None, value or None, superordinate or None, scope or None, hidden or None, items_per_page or None, by or None, reverse or None)
+		hashed = (self.request.user_dn, module.name, container or None, ldap_filter or None, superordinate or None, scope or None, hidden or None, items_per_page or None, by or None, reverse or None)
 		session = self.search_sessions.get(hashed, {})
 		last_cookie = session.get('last_cookie', '')
 		current_page = session.get('page', 0)
@@ -2377,7 +2385,7 @@ class Objects(FormBase, ReportingBase):
 		ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000')
 		last_page = page
 		for i in range(current_page, page or 1):
-			objects = yield self.pool.submit(module.search, container, prop or None, value, superordinate, filter=filter, scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls)
+			objects = yield self.pool.submit(module.search, container, superordinate, filter=ldap_filter, scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls)
 			for control in ctrls.get('ctrls', []):
 				if control.controlType == SimplePagedResultsControl.controlType:
 					page_ctrl.cookie = control.cookie
@@ -2446,7 +2454,7 @@ class Objects(FormBase, ReportingBase):
 		self.add_link(result, 'self', self.urljoin(''), name=module.name, title=module.object_name_plural)
 		self.add_link(result, 'describedby', self.urljoin(''), method='OPTIONS')
 		if 'search' in module.operations:
-			searchfields = ['position', 'property', 'propertyvalue', 'filter', 'scope', 'hidden', 'properties']
+			searchfields = ['position', 'query[]', 'filter', 'scope', 'hidden', 'properties']
 			if module.superordinate_names:
 				searchfields.append('superordinate')
 			if module.supports_pagination:
