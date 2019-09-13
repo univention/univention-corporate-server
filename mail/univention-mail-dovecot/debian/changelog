@@ -1,3 +1,9 @@
+univention-mail-dovecot (5.0.1-9) unstable; urgency=low
+
+  * Bug #50105: Fix UCR template for ca
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Fri, 13 Sep 2019 09:48:32 +0200
+
 univention-mail-dovecot (5.0.1-8) unstable; urgency=low
 
   * Bug #49038: escape LDAP filter
