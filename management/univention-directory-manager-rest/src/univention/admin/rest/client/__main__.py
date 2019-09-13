@@ -242,7 +242,7 @@ class CLIClient(object):
 				self.print_layout(sub, properties, file=file)
 			print('', file=file)
 
-	def print_layout(self, sub, properties, indent=1, file=file):
+	def print_layout(self, sub, properties, indent=1, file=None):
 		def _print_prop(prop):
 			def _print(prop):
 				if isinstance(prop, dict):

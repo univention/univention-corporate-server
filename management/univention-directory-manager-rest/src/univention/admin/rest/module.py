@@ -3569,7 +3569,7 @@ def encode_properties(module, obj, properties):
 
 
 def quote_dn(dn):
-	if isinstance(dn, unicode):
+	if isinstance(dn, six.text_type):
 		dn = dn.encode('utf-8')
 	# duplicated slashes in URI path's can be normalized to one slash. Therefore we need to escape the slashes.
 	return quote(dn.replace('//', '%/'))  # .replace('/', quote('/', safe=''))

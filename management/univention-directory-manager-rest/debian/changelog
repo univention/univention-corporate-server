@@ -1,3 +1,9 @@
+univention-directory-manager-rest (9.0.15-2) unstable; urgency=medium
+
+  * Bug #27816: add missing file
+
+ -- Florian Best <best@univention.de>  Fri, 13 Sep 2019 16:17:03 +0200
+
 univention-directory-manager-rest (9.0.15-1) unstable; urgency=medium
 
   * Bug #27816: initial release
