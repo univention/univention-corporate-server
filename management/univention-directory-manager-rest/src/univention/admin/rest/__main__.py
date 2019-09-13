@@ -78,7 +78,7 @@ class Server(object):
 		import univention.admin.modules as udm_modules
 		udm_modules.update()
 
-		from univention.management.modules.udm.module import Application
+		from univention.admin.rest.module import Application
 		application = Application(serve_traceback=ucr.is_true('directory/manager/rest/show-tracebacks', True))
 
 		server = HTTPServer(application)

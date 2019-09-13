@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 %:
-	dh $@ --with 'python_support' --with systemd
+	dh $@ --with 'python2,python3' --with systemd
 
 override_dh_auto_test:
 	ucslint

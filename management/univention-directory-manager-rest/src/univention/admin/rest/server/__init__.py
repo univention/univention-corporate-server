@@ -139,7 +139,7 @@ class Server(tornado.web.RequestHandler):
 
 	@classmethod
 	def main(cls):
-		parser = argparse.ArgumentParser(prog='python -m univention.management.server')
+		parser = argparse.ArgumentParser(prog='python -m univention.admin.rest.server')
 		parser.parse_args()
 		tornado.httpclient.AsyncHTTPClient.configure('tornado.curl_httpclient.CurlAsyncHTTPClient')
 		tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-management-console-module-udm')
@@ -157,7 +157,7 @@ class Server(tornado.web.RequestHandler):
 	def start_processes(cls):
 		for language in ('de_DE', 'en_US'):
 			socket = cls.LANGUAGE_SERVICE_MAPPING[language]
-			cls.PROCESSES[language] = tornado.process.Subprocess(['/usr/bin/python2.7', '-m', 'univention.management.modules.udm', '-s', socket, '-l', language, 'run'], stdout=sys.stdout, stderr=sys.stderr)
+			cls.PROCESSES[language] = tornado.process.Subprocess(['/usr/bin/python2.7', '-m', 'univention.admin.rest', '-s', socket, '-l', language, 'run'], stdout=sys.stdout, stderr=sys.stderr)
 
 	@classmethod
 	def register_signal_handlers(cls):

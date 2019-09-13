@@ -1,3 +1,2 @@
-src/univention/management/* usr/share/pyshared/univention/management/
 var
 22univention-directory-manager-rest.inst usr/lib/univention-install/

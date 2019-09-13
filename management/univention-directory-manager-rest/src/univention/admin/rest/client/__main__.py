@@ -45,7 +45,7 @@ import ldap
 import ldap.dn
 
 import univention.config_registry
-from univention.management.server.client import UDM, ConnectionError, HTTPError, Unauthorized, NotFound, UnprocessableEntity, ServiceUnavailable
+from univention.admin.rest.client import UDM, ConnectionError, HTTPError, Unauthorized, NotFound, UnprocessableEntity, ServiceUnavailable
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()

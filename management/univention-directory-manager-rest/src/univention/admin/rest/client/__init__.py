@@ -33,7 +33,7 @@
 """
 Sample Client for the UDM REST API.
 
->>> from univention.management.server.client import UDM
+>>> from univention.admin.rest.client import UDM
 >>> uri = 'http://localhost/univention/udm/'
 >>> udm = UDM.http(uri, 'Administrator', 'univention')
 >>> module = udm.get('users/user')
