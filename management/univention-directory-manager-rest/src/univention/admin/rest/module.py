@@ -1263,6 +1263,7 @@ class OpenAPI(Resource):
 						{'$ref': '#/components/parameters/search.position'},
 						{'$ref': '#/components/parameters/search.scope'},
 						{'$ref': '#/components/parameters/search.query'},
+						{'$ref': '#/components/parameters/search.filter'},
 						{'$ref': '#/components/parameters/search.hidden'},
 						{'$ref': '#/components/parameters/search.page'},
 						{'$ref': '#/components/parameters/search.pagesize'},
@@ -1492,6 +1493,13 @@ class OpenAPI(Resource):
 						"schema": {"type": "string"},
 						"description": "A property name to filter for",
 						"example": "username",
+					},
+					'search.filter': {
+						"in": "query",
+						"name": "filter",
+						"schema": {"type": "string"},
+						"description": "The ldap or UDM filter",
+						"example": "(|(username=Administrator)(username=Admin))",
 					},
 					'search.query': {
 						"in": "query",
