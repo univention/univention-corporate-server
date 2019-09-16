@@ -54,6 +54,8 @@ WHITELIST = {
 	'/etc/nagios-plugins/config/univention-samba.cfg',  # Bug #50112
 	'/etc/nagios-plugins/config/univention-s4-connector.cfg',  # Bug #50112
 	'/etc/nagios-plugins/config/univention-ad-connector.cfg/etc/nagios-plugins/config/univention-ad-connector.cfg',  # Bug #50176
+	'/usr/share/dovecot/protocols.d/pop3d.protocol',  # Bug #50198
+	'/usr/share/dovecot/protocols.d/imapd.protocol',  # Bug #50198
 }
 
 RE_LINE = re.compile(r"Warning: This|but can be overridden via univention-config-registry.")
