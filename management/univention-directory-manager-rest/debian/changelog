@@ -1,3 +1,10 @@
+univention-directory-manager-rest (9.0.15-4) unstable; urgency=medium
+
+  * Bug #50034: added Replace and Breaks as mentioned in
+    https://wiki.debian.org/RenamingPackages
+
+ -- Felix Botner <botner@univention.de>  Mon, 16 Sep 2019 13:09:28 +0200
+
 univention-directory-manager-rest (9.0.15-3) unstable; urgency=medium
 
   * Bug #27816: various enhancements
