@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [1]
+scope: ucs_4.4-0-errata4.4-1
+src: univention-directory-manager-rest
+fix: 9.0.15-5A~4.4.0.201909161320
+desc: |
+ This update addresses the following issue(s):
+ * The new binary package univention-directory-manager-rest
+   provides a Univention Directory Manager REST HTTP service.
+ * The new type interface of UDM is used in the UDM REST API.
+bug: [50034, 50047]
