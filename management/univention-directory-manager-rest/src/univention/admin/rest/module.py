@@ -476,7 +476,7 @@ class ResourceBase(object):
 
 	def decode_request_arguments(self):
 		content_type = self.request.headers.get('Content-Type', '')
-		if self.request.method in ('HEAD', 'GET', 'OPTIONS'):
+		if self.request.method in ('HEAD', 'GET', 'OPTIONS', 'DELETE'):
 			if self.request.body:
 				raise HTTPError(400, 'Safe HTTP method should not contain request body/Content-Type header.')
 			return
