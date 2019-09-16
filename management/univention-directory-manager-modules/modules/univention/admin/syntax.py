@@ -3045,6 +3045,12 @@ class UserID(UDM_Objects):
 
 	type_class = univention.admin.types.IntegerType
 
+	@classmethod
+	def parse(cls, text):
+		if isinstance(text, int):
+			text = str(text)
+		return super(cls, cls).parse(text)
+
 
 class GroupID(UDM_Objects):
 	"""
@@ -3062,6 +3068,12 @@ class GroupID(UDM_Objects):
 	use_objects = False
 
 	type_class = univention.admin.types.IntegerType
+
+	@classmethod
+	def parse(cls, text):
+		if isinstance(text, int):
+			text = str(text)
+		return super(cls, cls).parse(text)
 
 
 class PortalComputer(UDM_Objects):

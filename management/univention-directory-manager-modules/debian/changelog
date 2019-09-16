@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.13-16) unstable; urgency=medium
+
+  * Bug #50047: parse integer values in UserID and GroupID syntax class
+
+ -- Florian Best <best@univention.de>  Mon, 16 Sep 2019 16:12:40 +0200
+
 univention-directory-manager-modules (14.0.13-15) unstable; urgency=medium
 
   * Bug #40731: fix parsing of IStates and inheriting syntax classes
