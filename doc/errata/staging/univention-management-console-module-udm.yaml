@@ -10,4 +10,4 @@ desc: |
    to be not installed any more.
  * The binary package univention-management-module-udm has been moved into
    the source package univention-directory-manager-rest.
-bug: [50169, 50169]
+bug: [50169, 50034]
