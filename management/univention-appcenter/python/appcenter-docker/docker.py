@@ -399,7 +399,7 @@ class Docker(object):
 	def _get_app_network(self):
 		_logger.debug('Getting network for %s' % self.app)
 		network = ucr_get(self.app.ucr_ip_key)
-		if network:
+		if network and '/' in network:
 			_logger.debug('Found %s' % network)
 			try:
 				network = IPv4Network(network)

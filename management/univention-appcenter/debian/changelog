@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-67) unstable; urgency=medium
+
+  * Bug #50196: ignore ip address in Docker._get_app_network()
+
+ -- Felix Botner <botner@univention.de>  Mon, 16 Sep 2019 15:04:43 +0200
+
 univention-appcenter (8.0.11-66) unstable; urgency=medium
 
   * Bug #50129: revert
