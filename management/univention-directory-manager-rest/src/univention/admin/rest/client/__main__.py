@@ -237,9 +237,8 @@ class CLIClient(object):
 	def get_info(self, args, file=sys.stdout):
 		module = self.get_module(args.object_type)
 		module.load_relations()
-		mod = self.udm.client.resolve_relation(module.relations, 'create-form', template={'position': '', 'superordinate': ''}).data  # TODO: integrate in client.py?
-		properties = self.udm.client.resolve_relation(mod, 'udm:properties')
-		properties = dict((prop['id'], prop) for prop in properties['properties'])
+		mod = self.udm.client.resolve_relation(module.relations, 'create-form', template={'position': '', 'superordinate': ''})  # TODO: integrate in client.py?
+		properties = self.udm.client.resolve_relation(mod, 'udm:properties')['properties']
 		layout = self.udm.client.resolve_relation(mod, 'udm:layout', 'create-form')['layout']
 
 		for layout in layout:

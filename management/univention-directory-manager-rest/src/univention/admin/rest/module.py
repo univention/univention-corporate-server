@@ -610,11 +610,13 @@ class ResourceBase(object):
 	def get_hal_json(self, response):
 		response.setdefault('_links', {})
 		response.setdefault('_embedded', {})
-		response['_embedded'].pop('udm:form', None)  # no public API, just to render html
 		return self.get_json(response)
 
 	def get_json(self, response):
 		self.add_link(response, 'curies', self.abspath('relation/') + '{rel}', name='udm', templated=True)
+		response.get('_embedded', {}).pop('udm:form', None)  # no public API, just to render html
+		response.get('_embedded', {}).pop('udm:layout', None)  # save traffic, just to render html
+		response.get('_embedded', {}).pop('udm:properties', None)  # save traffic, just to render html
 		return response
 
 	def get_html(self, response):
@@ -813,8 +815,10 @@ class ResourceBase(object):
 			field['add_noscript_warning'] = form.get('method') not in ('GET', 'POST', None)
 		return field
 
-	def add_layout(self, obj, layout, name=None):
+	def add_layout(self, obj, layout, name=None, href=None):
 		self.add_resource(obj, 'udm:layout', {'_links': {'self': [{'name': name}]}, 'layout': layout})
+		if href:
+			self.add_link(obj, 'udm:layout', href=href, name=name)
 
 	def log_exception(self, typ, value, tb):
 		if isinstance(value, UMC_Error):
@@ -2013,14 +2017,97 @@ class Properties(Resource):
 		module.load(force_reload=True)  # reload for instant extended attributes
 
 		self.add_link(result, 'up', self.urljoin('.'))
-		properties = module.get_properties(dn)
+		properties = self.get_properties(module, dn)
 		searchable = self.get_query_argument('searchable', False)
 		if searchable:
-			properties = [prop for prop in properties if prop.get('searchable', False)]
+			properties = dict((name, prop) for name, prop in properties.items() if prop.get('searchable', False))
 		result['properties'] = properties
 
 		self.add_caching(public=True, must_revalidate=True)
 		self.content_negotiation(result)
+
+	@classmethod
+	def get_properties(cls, module, dn=None):
+		properties = module.get_properties(dn)
+		for policy in module.policies:
+			properties.append({
+				'id': 'policies[%s]' % (policy['objectType'],),
+				'label': policy['label'],
+				'description': policy['description'],
+			})
+		for prop in properties[:]:
+			if prop['id'] == '$options$':
+				for option in prop['widgets']:
+					option['id'] = 'options[%s]' % (option['id'],)
+					properties.append(option)
+		for prop in properties:
+			prop.setdefault('label', '')
+			prop.setdefault('description', '')
+			prop.setdefault('readonly', False)
+			prop.setdefault('readonly_when_synced', False)
+			prop.setdefault('disabled', False)
+			prop.setdefault('required', False)
+			prop.setdefault('syntax', '')
+			prop.setdefault('identifies', False)
+			prop.setdefault('searchable', False)
+			prop.setdefault('multivalue', False)
+		return dict((prop['id'], prop) for prop in properties if not prop['id'].startswith('$'))
+
+
+class Layout(Resource):
+
+	def get(self, object_type, dn=None):
+		result = {}
+		if dn:
+			dn = unquote_dn(dn)
+		module = self.get_module(object_type)
+		module.load(force_reload=True)  # reload for instant extended attributes
+
+		result['layout'] = self.get_layout(module)
+
+		self.add_caching(public=True, must_revalidate=True)
+		self.content_negotiation(result)
+
+	@classmethod
+	def get_layout(cls, module, dn=None):
+		layout = module.get_layout(dn)
+
+		# TODO: insert module.help_text into first layout element
+		layout.insert(0, {'layout': [], 'advanced': False, 'description': _('Meta information'), 'label': _('Meta information'), 'is_app_tab': False})
+		apps = cls.get_apps_layout(layout)
+		if apps:
+			apps['layout'].append('options')
+		else:
+			layout.append({'layout': ['options'], 'advanced': False, 'description': _('Here you can activate the user for one of the installed apps. The user can then log on to the app and use it.'), 'label': _('Apps & Options'), 'is_app_tab': False})
+		advanced = {'layout': [], 'advanced': False, 'description': _('Advanced settings'), 'label': _('Advanced settings')}
+		for x in layout[:]:
+			if x['advanced']:
+				advanced['layout'].append(x)
+				layout.remove(x)
+		if advanced['layout']:
+			layout.append(advanced)
+		layout.append({
+			'layout': ['policies[%s]' % (policy['objectType'],) for policy in module.policies],
+			'advanced': False,
+			'description': _('Properties inherited from policies'),
+			'label': _('Policies'),
+			'is_app_tab': False,
+			'help': _('List of all object properties that are inherited by policies. The values cannot be edited directly. By clicking on "Create new policy", a new tab with a new policy will be opened. If an attribute is already set, the corresponding policy can be edited in a new tab by clicking on the "edit" link.')
+		})
+
+		return layout
+
+	@classmethod
+	def get_apps_layout(cls, layout):
+		for x in layout:
+			if x.get('label') == 'Apps':
+				return x
+
+	@classmethod
+	def get_reference_layout(cls, layout):
+		for x in layout:
+			if x.get('label', '').lower().startswith('referen'):
+				return x
 
 
 class ReportingBase(Resource):
@@ -2114,53 +2201,12 @@ class DefaultValue(Resource):
 
 class FormBase(object):
 
-	def properties(self, properties):
-		for prop in properties:
-			prop.setdefault('readonly', False)
-			prop.setdefault('readonly_when_synced', False)
-			prop.setdefault('disabled', False)
-			prop.setdefault('required', False)
-			prop.setdefault('syntax', '')
-			prop.setdefault('identifies', False)
-			prop.setdefault('searchable', False)
-			prop.setdefault('description', False)
-			prop.setdefault('multivalue', False)
-
-	def layout(self, layout):
-		# TODO: insert module.help_text into first layout element
-		layout.insert(0, {'layout': [], 'advanced': False, 'description': _('Meta information'), 'label': _('Meta information'), 'is_app_tab': False})
-		apps = self.get_apps_layout(layout)
-		if apps:
-			apps['layout'].append('options')
-		else:
-			layout.append({'layout': ['options'], 'advanced': False, 'description': _('Here you can activate the user for one of the installed apps. The user can then log on to the app and use it.'), 'label': _('Apps & Options'), 'is_app_tab': False})
-		advanced = {'layout': [], 'advanced': False, 'description': _('Advanced settings'), 'label': _('Advanced settings')}
-		for x in layout[:]:
-			if x['advanced']:
-				advanced['layout'].append(x)
-				layout.remove(x)
-		if advanced['layout']:
-			layout.append(advanced)
-		layout.append({'layout': [], 'advanced': False, 'description': _('Properties inherited from policies'), 'label': _('Policies'), 'is_app_tab': False, 'help': _('List of all object properties that are inherited by policies. The values cannot be edited directly. By clicking on "Create new policy", a new tab with a new policy will be opened. If an attribute is already set, the corresponding policy can be edited in a new tab by clicking on the "edit" link.')})
-
-	def get_apps_layout(self, layout):
-		for x in layout:
-			if x.get('label') == 'Apps':
-				return x
-
-	def get_reference_layout(self, layout):
-		for x in layout:
-			if x.get('label', '').lower().startswith('referen'):
-				return x
-
 	def add_property_form_elements(self, module, form, properties, values):
 		password_properties = module.password_properties
-		for prop in properties[:]:
-			key = prop['id']
-			if key == '$options$':
-				for opt in prop['widgets']:
-					self.add_form_element(form, 'options', opt['id'], type='checkbox', checked=opt['value'], label=opt['label'])
-			if key.startswith('$'):
+		for key, prop in properties.items():
+			if key.startswith('options[') and key.endswith(']'):
+				self.add_form_element(form, 'options', prop['id'].split('[', 1)[1].split(']')[0], type='checkbox', checked=prop['value'], label=prop['label'])
+			if key not in values:
 				continue
 
 			value = values[key]
@@ -3075,13 +3121,12 @@ class ObjectAdd(FormBase, Resource):
 		self.add_link(result, 'type', self.urljoin('.'), title=module.object_name)
 		self.add_link(result, 'create', self.urljoin('.'), title=module.object_name, method='POST')
 
-		layout = module.get_layout()
-		self.layout(layout)
-		self.add_layout(result, layout, 'create-form')
+		layout = Layout.get_layout(module)
+		self.add_layout(result, layout, 'create-form', href=self.urljoin('layout'))
 
-		properties = module.get_properties()
-		self.properties(properties)
+		properties = Properties.get_properties(module)
 		self.add_resource(result, 'udm:properties', {'properties': properties})
+		self.add_link(result, 'udm:properties', href=self.urljoin('properties'))
 
 		meta_layout = layout[0]
 		meta_layout['layout'].extend(['position'])
@@ -3116,16 +3161,15 @@ class ObjectAdd(FormBase, Resource):
 
 		values = {}
 		for prop in properties:
-			key = prop['id']
-			if key.startswith('$'):
-				continue
-			values[key] = obj[key]
+			try:
+				values[prop] = obj[prop]  # don't use .get()!
+			except KeyError:
+				pass
 
 		values = dict(decode_properties(module, obj, values))
 		self.add_property_form_elements(module, form, properties, values)
 
 		for policy in module.policies:
-			layout[-1]['layout'].append('policies[%s]' % (policy['objectType'],))
 			self.add_form_element(form, 'policies[%s]' % (policy['objectType']), '', label=policy['label'])
 
 		meta_layout['layout'].append('')
@@ -3213,19 +3257,18 @@ class ObjectEdit(FormBase, Resource):
 				self.add_form_element(form, '', _('Policy result'), type='submit')
 
 			obj.open()
-			layout = module.get_layout(dn if object_type != 'users/self' else None)
-			self.layout(layout)
+			layout = Layout.get_layout(module, dn if object_type != 'users/self' else None)
 			layout[0]['layout'].extend(['dn', 'jpegPhoto-preview', ''])
-			properties = module.get_properties(dn)
+			properties = Properties.get_properties(module, dn)
 			self.add_resource(result, 'udm:properties', {'properties': properties})
-			self.properties(properties)
+			self.add_link(result, 'udm:properties', href=self.urljoin('properties'))
 			is_ad_synced_object = ucr.is_true('ad/member') and 'synced' in obj.oldattr.get('univentionObjectFlag', [])
 			is_ad_synced_object = 'synced' in obj.oldattr.get('univentionObjectFlag', [])
 			if is_ad_synced_object:
 				layout[0]['layout'].insert(0, '$active_directory_warning$')
-				properties.append({'id': '$active_directory_warning$', 'label': _('The %s "%s" is part of the Active Directory domain.') % (module.object_name, obj[module.identifies])})
+				properties['$active_directory_warning$'] = {'id': '$active_directory_warning$', 'label': _('The %s "%s" is part of the Active Directory domain.') % (module.object_name, obj[module.identifies])}
 				self.add_form_element(form, '$active_directory_warning$', '1', type='checkbox', checked=True, label=_('The %s "%s" is part of the Active Directory domain.') % (module.object_name, obj[module.identifies]))
-				for prop in properties[:]:
+				for prop in properties.values():
 					if prop.get('readonly_when_synced'):
 						prop['disabled'] = True
 
@@ -3241,29 +3284,28 @@ class ObjectEdit(FormBase, Resource):
 			self.add_form_element(form, 'dn', obj.dn, readonly='readonly', disabled='disabled')
 
 			values = {}
-			for prop in properties:
-				key = prop['id']
-				if key.startswith('$'):
-					continue
-				values[key] = obj[key]
+			for key in properties:
 				if obj.module == 'users/user' and key == 'password':
 					prop['required'] = False
 				if prop['readonly_when_synced'] and is_ad_synced_object:
 					prop['disabled'] = True
+				try:
+					values[key] = obj[key]  # don't use .get() !
+				except KeyError:
+					continue
 
 			values = dict(decode_properties(module, obj, values))
 			self.add_property_form_elements(module, form, properties, values)
-			if any(prop['id'] == 'jpegPhoto' for prop in properties):
-				properties.append({'id': 'jpegPhoto-preview', 'label': ' '})
+			if 'jpegPhoto' in properties:
+				properties['jpegPhoto-preview'] = {'id': 'jpegPhoto-preview', 'label': ' '}
 				self.add_form_element(form, 'jpegPhoto-preview', '', type='image', label=' ', src=self.urljoin('properties/jpegPhoto.jpg'), alt=_('No photo set'))
 
 			for policy in module.policies:
 				ptype = policy['objectType']
-				layout[-1]['layout'].append('policies[%s]' % (ptype,))
 				pol = (representation['policies'].get(ptype, ['']) or [''])[0]
 				self.add_form_element(form, 'policies[%s]' % (ptype), pol, label=policy['label'], placeholder=_('Policy DN'))
 
-			references = self.get_reference_layout(layout)
+			references = Layout.get_reference_layout(layout)
 			if references:
 				for reference in module.get_policy_references(obj.dn):
 					if reference['module'] != 'udm':
@@ -3673,6 +3715,7 @@ class Application(tornado.web.Application):
 			(r"/udm/%s/multi-edit" % (object_type,), ObjectMultiEdit),
 			(r"/udm/%s/tree" % (object_type,), Tree),
 			(r"/udm/%s/properties" % (object_type,), Properties),
+			(r"/udm/%s/layout" % (object_type,), Layout),
 			(r"/udm/%s/favicon.ico" % (object_type,), Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
 			(r"/udm/%s/%s" % (object_type, dn), Object),
 			(r"/udm/%s/%s/edit" % (object_type, dn), ObjectEdit),
@@ -3680,6 +3723,8 @@ class Application(tornado.web.Application):
 			(r"/udm/%s/report/([^/]+)" % (object_type,), Report),
 			(r"/udm/%s/%s/%s/" % (object_type, dn, policies_object_type), PolicyResult),
 			(r"/udm/%s/%s/" % (object_type, policies_object_type), PolicyResultContainer),
+			(r"/udm/%s/%s/layout" % (object_type, dn), Layout),
+			(r"/udm/%s/%s/properties" % (object_type, dn), Properties),
 			(r"/udm/%s/%s/properties/choices" % (object_type, dn), Properties),
 			(r"/udm/%s/%s/properties/%s/choices" % (object_type, dn, property_), PropertyChoices),
 			(r"/udm/%s/%s/properties/jpegPhoto.jpg" % (object_type, dn), UserPhoto),

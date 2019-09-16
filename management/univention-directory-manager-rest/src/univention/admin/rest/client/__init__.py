@@ -231,7 +231,7 @@ class Session(object):
 			return
 
 		for relation in self.get_relations(entry, relation, name, template):
-			yield self.make_request('GET', relation['href'])
+			yield self.make_request('GET', relation['href']).data
 
 	def resolve_relation(self, entry, relation, name=None, template=None):
 		return next(self.resolve_relations(entry, relation, name, template))
@@ -268,7 +268,7 @@ class UDM(Client):
 	def modules(self, name=None):
 		self.load()
 		for module in self.client.resolve_relations(self.entry, 'udm:object-modules'):
-			for module_info in self.client.get_relations(module.data, 'udm:object-types', name):
+			for module_info in self.client.get_relations(module, 'udm:object-types', name):
 				yield Module(self, module_info['href'], module_info['name'], module_info['title'])
 
 	def version(self, api_version):
@@ -348,7 +348,7 @@ class Module(Client):
 			data['properties'] = 'dn'
 		self.load_relations()
 		entries = self.client.resolve_relation(self.relations, 'search', template=data)
-		for obj in self.client.resolve_relations(entries.data, 'udm:object'):
+		for obj in self.client.resolve_relations(entries, 'udm:object'):
 			objself = self.client.get_relation(obj, 'self')
 			uri = objself['href']
 			dn = objself['name']
