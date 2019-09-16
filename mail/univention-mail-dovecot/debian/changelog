@@ -1,3 +1,9 @@
+univention-mail-dovecot (5.0.1-10) unstable; urgency=low
+
+  * Bug #50105: Fix UCR template for unset ca
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Mon, 16 Sep 2019 09:26:01 +0200
+
 univention-mail-dovecot (5.0.1-9) unstable; urgency=low
 
   * Bug #50105: Fix UCR template for ca
