@@ -162,7 +162,7 @@ class CLIClient(object):
 
 	def parse_input(self, key_val):
 		key, _, value = key_val.partition('=')
-		key, convert, type_ = key.rpartition(':')
+		key, convert, type_ = key.partition(':')
 		if value.startswith('@'):
 			try:
 				value = open(value[1:], 'rb').read().decode('UTF-8')
