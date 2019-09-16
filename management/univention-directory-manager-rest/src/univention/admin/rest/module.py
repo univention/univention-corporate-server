@@ -2672,6 +2672,16 @@ class Object(FormBase, Resource):
 				values[passwd] = None
 			values = dict(decode_properties(module, obj, values))
 
+		if add:
+			# we need to remove dynamic default values as they reference other currently not set variables
+			# (e.g. shares/share sets sambaName='' or users/user sets unixhome=/home/)
+			for name, p in obj.descriptions.items():
+				regex = re.compile(r'<(?P<key>[^>]+)>(?P<ext>\[[\d:]+\])?')  # from univention.admin.pattern_replace()
+				if name not in obj.info or name not in values:
+					continue
+				if isinstance(p.base_default, six.string_types) and regex.search(p.base_default):
+					values[name] = None
+
 		props = {}
 		props['dn'] = obj.dn
 		props['objectType'] = module.name
