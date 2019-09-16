@@ -7,5 +7,5 @@ fix: 8.0.11-67A~4.4.0.201909161511
 desc: |
  This update addresses the following issue(s):
  * A problem in the update from docker to
-   docker-compose Apps has been fixed. 
+   docker-compose Apps has been fixed.
 bug: [50196]
