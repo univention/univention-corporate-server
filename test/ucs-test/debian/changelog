@@ -1,3 +1,9 @@
+ucs-test (9.0.3-51) unstable; urgency=medium
+
+  * Bug #50198: Ignore dovecot protocol files in ucr test for now
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 16 Sep 2019 15:52:55 +0200
+
 ucs-test (9.0.3-50) unstable; urgency=medium
 
   * Bug #50168: Check docker registry access with alpine
