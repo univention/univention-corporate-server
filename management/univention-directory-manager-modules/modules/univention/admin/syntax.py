@@ -466,7 +466,7 @@ class UDM_Objects(ISyntax):
 	def type_class(self):
 		if self.key == 'dn':
 			return univention.admin.types.DistinguishedNameType
-		return super(UDM_Objects, self).type_class
+		return univention.admin.types.StringType
 
 	@classmethod
 	def parse(self, text):
