@@ -162,14 +162,20 @@ class CLIClient(object):
 
 	def parse_input(self, key_val):
 		key, _, value = key_val.partition('=')
+		key, convert, type_ = key.rpartition(':')
 		if value.startswith('@'):
 			try:
 				value = open(value[1:], 'rb').read().decode('UTF-8')
 			except (IOError, ValueError) as exc:
 				self.print_error('%s: %s' % (key, exc))
 				raise SystemExit(2)
-		if value.startswith('{') or value.startswith('[') or value.startswith('"') or value.startswith("'"):
-			value = eval(value)
+		if convert:
+			if type_ in ('array', 'object', 'list', 'string', 'str'):
+				value = json.loads(value)
+			elif type_ == 'int':
+				value = int(value)
+			elif type_ == 'null':
+				value = None
 		return key, value
 
 	def get_object(self, args):
