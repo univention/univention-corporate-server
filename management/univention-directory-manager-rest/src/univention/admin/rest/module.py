@@ -1270,7 +1270,7 @@ class OpenAPI(Resource):
 						{'$ref': '#/components/parameters/search.filter'},
 						{'$ref': '#/components/parameters/search.hidden'},
 						{'$ref': '#/components/parameters/search.page'},
-						{'$ref': '#/components/parameters/search.pagesize'},
+						{'$ref': '#/components/parameters/search.limit'},
 						{'$ref': '#/components/parameters/search.dir'},
 						{'$ref': '#/components/parameters/search.by'},
 					] + global_parameters,
@@ -1490,20 +1490,22 @@ class OpenAPI(Resource):
 						},
 						"example": "sub",
 						"description": "The LDAP search scope (sub, base, one)",
-					},
-					'search.property': {
-						"in": "query",
-						"name": "property",
-						"schema": {"type": "string"},
-						"description": "A property name to filter for",
-						"example": "username",
+						"examples": {
+							"sub": {"value": "sub", "summary": "sub-scope"},
+							"base": {"value": "base", "summary": "base-scope"},
+							"one": {"value": "one", "summary": "one-scope"},
+						}
 					},
 					'search.filter': {
 						"in": "query",
 						"name": "filter",
 						"schema": {"type": "string"},
 						"description": "The ldap or UDM filter",
-						"example": "(|(username=Administrator)(username=Admin))",
+						"examples": {
+							"users/user": {
+								"value": "(|(username=Administrator)(username=Admin))",
+							}
+						},
 					},
 					'search.query': {
 						"in": "query",
@@ -1511,14 +1513,15 @@ class OpenAPI(Resource):
 						"style": "deepObject",
 						"schema": {"type": "object"},
 						"description": "The value to search for",
-						"example": "*",
+						"example": {'': '*'},
 					},
 					'search.hidden': {
 						"in": "query",
 						"name": "hidden",
 						"schema": {"type": "boolean"},
 						"description": "Include hidden/system objects in the response",
-						"example": "1",
+						"default": True,
+						"example": True,
 					},
 					'search.superordinate': {
 						"in": "query",
@@ -1530,9 +1533,9 @@ class OpenAPI(Resource):
 						"description": "The superordinate DN of the objects to find",
 						"example": "cn=superordinate,dc=example,dc=net",
 					},
-					'search.pagesize': {
+					'search.limit': {
 						"in": "query",
-						"name": "pagesize",
+						"name": "limit",
 						"schema": {"type": "integer"},
 						"description": "How many results should be shown per page",
 						"example": 50,
@@ -2282,6 +2285,7 @@ class Objects(FormBase, ReportingBase):
 		position=DNSanitizer(required=False, default=None),
 		filter=LDAPFilterSanitizer(required=False, default=None, allow_none=True),
 		query=DictSanitizer({}, default_sanitizer=LDAPSearchSanitizer(required=False, default='*', add_asterisks=False, use_asterisks=True), key_sanitizer=ObjectPropertySanitizer()),
+		property=ObjectPropertySanitizer(required=False, default=None),
 		scope=ChoicesSanitizer(choices=['sub', 'one', 'base', 'base+one'], default='sub'),
 		hidden=BoolSanitizer(default=True),
 		#fields=ListSanitizer(required=False, default=[]),
@@ -2290,7 +2294,7 @@ class Objects(FormBase, ReportingBase):
 		dir=ChoicesSanitizer(choices=['ASC', 'DESC'], default='ASC'),
 		by=StringSanitizer(required=False),
 		page=IntegerSanitizer(required=False, default=1, minimum=1),
-		pagesize=IntegerSanitizer(required=False, default=None, minimum=0),
+		limit=IntegerSanitizer(required=False, default=None, minimum=0),
 	)
 	@tornado.gen.coroutine
 	def get(self, object_type):
@@ -2309,13 +2313,14 @@ class Objects(FormBase, ReportingBase):
 		#fields = (set(fields) | set([objectProperty])) - set(['name', 'None', None, ''])
 		properties = self.request.query_arguments['properties'][:]
 		direction = self.request.query_arguments['dir']
+		property_ = self.request.query_arguments['property']
 		reverse = direction == 'DESC'
 		by = self.request.query_arguments['by']
 		page = self.request.query_arguments['page']
-		items_per_page = self.request.query_arguments['pagesize']  # TODO: rename: items-per-page, pagelength, pagecount, pagesize, limit/offset
+		items_per_page = self.request.query_arguments['limit']
 
 		if not ldap_filter:
-			filters = filter(None, [(_object_property_filter(module, attribute or None, value, hidden)) for attribute, value in self.request.query_arguments['query'].items()])
+			filters = filter(None, [(_object_property_filter(module, attribute or property_ or None, value, hidden)) for attribute, value in self.request.query_arguments['query'].items()])
 			if filters:
 				ldap_filter = unicode(univention.admin.filter.conjunction('&', [univention.admin.filter.parse(fil) for fil in filters]))
 
@@ -2392,20 +2397,18 @@ class Objects(FormBase, ReportingBase):
 			self.add_form_element(form, 'superordinate', superordinate.dn if superordinate else '', label=_('Superordinate'))
 			search_layout.append(['superordinate'])
 		searchable_properties = [{'value': '', 'label': _('Defaults')}] + [{'value': prop['id'], 'label': prop['label']} for prop in module.properties(None) if prop.get('searchable')]
+		self.add_form_element(form, 'property', property_ or '', element='select', options=searchable_properties, label=_('Property'))
 		self.add_form_element(form, 'query[]', self.request.query_arguments['query'].get('', '*'), label=_('Search for'), placeholder=_('Search value (e.g. *)'))
-		#self.add_form_element(form, 'property', objectProperty or '', element='select', options=searchable_properties, label=_('Property'))
-		#self.add_form_element(form, 'propertyvalue', objectPropertyValue or (module.get_default_values(objectProperty) if objectProperty else '*'), label=' ')
 		self.add_form_element(form, 'scope', scope, element='select', options=[{'value': 'sub'}, {'value': 'one'}, {'value': 'base'}, {'value': 'base+one'}], label=_('Search scope'))
 		self.add_form_element(form, 'hidden', '1', type='checkbox', checked=bool(hidden), label=_('Include hidden objects'))
-		#search_layout.append(['property', 'propertyvalue'])
-		search_layout.append(['query[]'])
+		search_layout.append(['property', 'query[]'])
 		#self.add_form_element(form, 'fields', list(fields))
 		if module.supports_pagination:
-			self.add_form_element(form, 'pagesize', str(items_per_page or '0'), type='number', label=_('Limit'))
+			self.add_form_element(form, 'limit', str(items_per_page or '0'), type='number', label=_('Limit'))
 			self.add_form_element(form, 'page', str(page or '1'), type='number', label=_('Selected page'))
 			self.add_form_element(form, 'by', by or '', element='select', options=searchable_properties, label=_('Sort by'))
 			self.add_form_element(form, 'dir', direction if direction in ('ASC', 'DESC') else 'ASC', element='select', options=[{'value': 'ASC', 'label': _('Ascending')}, {'value': 'DESC', 'label': _('Descending')}], label=_('Direction'))
-			search_layout.append(['page', 'pagesize'])
+			search_layout.append(['page', 'limit'])
 			search_layout.append(['by', 'dir'])
 		search_layout.append('')
 		self.add_form_element(form, '', _('Search'), type='submit')
@@ -2518,7 +2521,7 @@ class Objects(FormBase, ReportingBase):
 			if module.superordinate_names:
 				searchfields.append('superordinate')
 			if module.supports_pagination:
-				searchfields.extend(['pagesize', 'page', 'by', 'dir'])
+				searchfields.extend(['limit', 'page', 'by', 'dir'])
 			self.add_link(result, 'search', self.urljoin('') + '{?%s}' % ','.join(searchfields), templated=True, title=_('Search for %s') % (module.object_name_plural,))
 		if 'add' in module.operations:
 			methods.append('POST')
