@@ -1,3 +1,10 @@
+ucs-test (9.0.3-50) unstable; urgency=medium
+
+  * Bug #50168: Check docker registry access with alpine
+  * Bug #50168: Check docker upload registry
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 16 Sep 2019 13:11:23 +0200
+
 ucs-test (9.0.3-49) unstable; urgency=medium
 
   * Bug #40731 test: Re-enable tests for TrueFalse[Upper]
