@@ -6,7 +6,6 @@ src: univention-management-console
 fix: 11.0.4-36A~4.4.0.201909050927
 desc: |
  This update addresses the following issues:
- * A new Univention Directory Manager HTTP service is now provided.
  * Fix regression in Erratum 230 which caused the `univention-service` file
    to be not installed any more.
-bug: [27816,50169]
+bug: [50169]
