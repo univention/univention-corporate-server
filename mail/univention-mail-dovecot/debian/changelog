@@ -1,3 +1,9 @@
+univention-mail-dovecot (5.0.1-11) unstable; urgency=low
+
+  * Bug #50105: add python-support to build dependencies
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 17 Sep 2019 13:52:07 +0200
+
 univention-mail-dovecot (5.0.1-10) unstable; urgency=low
 
   * Bug #50105: Fix UCR template for unset ca

@@ -4,7 +4,8 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>> 7),
  univention-config-dev,
- ucslint-univention
+ ucslint-univention,
+ python-support,
 Standards-Version: 3.8.2
 
 Package: univention-mail-dovecot
