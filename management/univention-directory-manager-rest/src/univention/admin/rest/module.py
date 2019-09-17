@@ -1501,9 +1501,10 @@ class OpenAPI(Resource):
 						"name": "filter",
 						"schema": {"type": "string"},
 						"description": "The ldap or UDM filter",
+						"example": "(objectClass=*)",
 						"examples": {
-							"users/user": {
-								"value": "(|(username=Administrator)(username=Admin))",
+							"users-user": {
+								"value": "(|(username=Administrator)(username=Admin*))",
 							}
 						},
 					},
@@ -1518,9 +1519,8 @@ class OpenAPI(Resource):
 					'search.hidden': {
 						"in": "query",
 						"name": "hidden",
-						"schema": {"type": "boolean"},
+						"schema": {"type": "boolean", "default": True, },
 						"description": "Include hidden/system objects in the response",
-						"default": True,
 						"example": True,
 					},
 					'search.superordinate': {
