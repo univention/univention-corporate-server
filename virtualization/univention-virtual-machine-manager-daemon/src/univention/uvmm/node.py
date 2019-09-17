@@ -2108,7 +2108,7 @@ def domain_migrate(source_uri, domain, target_uri, mode=0):
 		if source_state in (libvirt.VIR_DOMAIN_RUNNING, libvirt.VIR_DOMAIN_BLOCKED, libvirt.VIR_DOMAIN_PAUSED):
 			# running domains are live migrated
 			stats = source_dom.jobStats()
-			if stats['type'] != libvirt.VIR_DOMAIN_JOB_NONE:
+			if stats['type'] in (libvirt.VIR_DOMAIN_JOB_BOUNDED, libvirt.VIR_DOMAIN_JOB_UNBOUNDED):
 				if mode < 0:
 					logger.info('Domain "%(domain)s" aborting migration: %(stats)r', dict(domain=domain, stats=stats))
 					domStat.pd.migration['msg'] = _('Migration aborted')
