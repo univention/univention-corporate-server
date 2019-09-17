@@ -75,7 +75,11 @@ class Setting(TypedIniSectionObject):
 		# only for Docker Apps (and called from the Docker Host). And not only 'outside' is specified
 		return app.docker and not container_mode() and ('inside' in self.scope or self.scope == [])
 
-	def get_initial_value(self):
+	def get_initial_value(self, app):
+		if self.is_outside(app):
+			value = ucr_get(self.name)
+			if value is not None:
+				return self.sanitize_value(app, value)
 		if isinstance(self.initial_value, basestring):
 			return ucr_run_filter(self.initial_value)
 		return self.initial_value
@@ -100,7 +104,7 @@ class Setting(TypedIniSectionObject):
 			value = None
 		if value is None and phase == 'Install':
 			settings_logger.info('Falling back to initial value for %s' % self.name)
-			value = self.get_initial_value()
+			value = self.get_initial_value(app)
 		return value
 
 	def _log_set_value(self, app, value):
@@ -226,7 +230,7 @@ class FileSetting(Setting):
 				value = None
 		if value is None and phase == 'Install':
 			settings_logger.info('Falling back to initial value for %s' % self.name)
-			value = self.get_initial_value()
+			value = self.get_initial_value(app)
 		return value
 
 	def set_value(self, app, value, together_config_settings, part):

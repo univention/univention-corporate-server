@@ -163,12 +163,12 @@ class DockerActionMixin(object):
 		for setting in app.get_settings():
 			if setting.should_go_into_image_configuration(app):
 				if setting.name not in set_vars:
-					set_vars[setting.name] = setting.get_initial_value()
+					set_vars[setting.name] = setting.get_initial_value(app)
 			else:
 				try:
 					after_image_configuration[setting.name] = set_vars.pop(setting.name)
 				except KeyError:
-					pass
+					after_image_configuration[setting.name] = setting.get_initial_value(app)
 		set_vars['docker/host/name'] = '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
 		set_vars['ldap/hostdn'] = hostdn
 		if app.docker_env_ldap_user:

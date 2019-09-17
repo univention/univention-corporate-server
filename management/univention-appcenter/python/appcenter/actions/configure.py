@@ -84,7 +84,7 @@ class Configure(UniventionAppAction):
 			try:
 				variable['value'] = setting.get_value(app)
 			except SettingValueError:
-				variable['value'] = setting.get_initial_value()
+				variable['value'] = setting.get_initial_value(app)
 			variable['advanced'] = False
 			variables.append(variable)
 		return variables

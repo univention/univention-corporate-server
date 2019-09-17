@@ -329,7 +329,7 @@ class InstallRemoveUpgrade(Register):
 			try:
 				value = setting.get_value(app)
 			except SettingValueError:
-				value = setting.get_initial_value()
+				value = setting.get_initial_value(app)
 			set_vars[setting.name] = value
 		return set_vars
 
