@@ -1,3 +1,9 @@
+univention-directory-manager-rest (9.0.15-7) unstable; urgency=medium
+
+  * Bug #27816: Bug #50049: enhance OpenAPI schema
+
+ -- Florian Best <best@univention.de>  Tue, 17 Sep 2019 13:52:48 +0200
+
 univention-directory-manager-rest (9.0.15-6) unstable; urgency=medium
 
   * Bug #27816: Bug #50026: fix default values of properties with replacements

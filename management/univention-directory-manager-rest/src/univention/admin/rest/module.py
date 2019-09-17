@@ -792,6 +792,9 @@ class ResourceBase(object):
 			if resource.get('_links', {}).get('self', [{}])[0].get('name') == name:
 				return resource
 
+	def get_resources(self, obj, relation):
+		return obj.get('_embedded', {}).get(relation, [])
+
 	def add_form(self, obj, action, method, **kwargs):
 		form = {
 			'action': action,
@@ -1261,18 +1264,18 @@ class OpenAPI(Resource):
 			if 'search' in module.operations:
 				objects_pathes['get'] = {
 					"summary": "Search for %s" % (module.object_name_plural,),
-					"description": "Information about the object type and links to search for objects. The found objects are either referenced as HAL links or embedded via HAL embeded resources.",
+					"description": "Information about the object type and links to search for objects. The found objects are either referenced as HAL links or embedded via HAL embedded resources.",
 					"operationId": "udm:%s/object/search" % (name,),
 					"parameters": [
+						{'$ref': '#/components/parameters/search.filter'},
 						{'$ref': '#/components/parameters/search.position'},
 						{'$ref': '#/components/parameters/search.scope'},
 						{'$ref': '#/components/parameters/search.query'},
-						{'$ref': '#/components/parameters/search.filter'},
 						{'$ref': '#/components/parameters/search.hidden'},
-						{'$ref': '#/components/parameters/search.page'},
-						{'$ref': '#/components/parameters/search.limit'},
-						{'$ref': '#/components/parameters/search.dir'},
-						{'$ref': '#/components/parameters/search.by'},
+						#{'$ref': '#/components/parameters/search.limit'},  # currently not supported by all modules
+						#{'$ref': '#/components/parameters/search.page'},
+						#{'$ref': '#/components/parameters/search.dir'},
+						#{'$ref': '#/components/parameters/search.by'},
 					] + global_parameters,
 					"responses": global_responses({
 						200: {
@@ -1479,17 +1482,20 @@ class OpenAPI(Resource):
 						"schema": {
 							"type": "string",
 							"format": "dn",
+							"nullable": True,
+							"default": None,
 						},
-						"description": "Position which is used as search base",
+						"description": "Position which is used as search base.",
 					},
 					'search.scope': {
 						"in": "query",
 						"name": "scope",
 						"schema": {
 							"type": "string",
+							"default": "sub",
 						},
 						"example": "sub",
-						"description": "The LDAP search scope (sub, base, one)",
+						"description": "The `LDAP` search scope (sub, base, one).",
 						"examples": {
 							"sub": {"value": "sub", "summary": "sub-scope"},
 							"base": {"value": "base", "summary": "base-scope"},
@@ -1499,8 +1505,8 @@ class OpenAPI(Resource):
 					'search.filter': {
 						"in": "query",
 						"name": "filter",
-						"schema": {"type": "string"},
-						"description": "The ldap or UDM filter",
+						"schema": {"type": "string", "default": ""},
+						"description": "A ldap filter which may contain `UDM` property names instead of `LDAP` attribute names.",
 						"example": "(objectClass=*)",
 						"examples": {
 							"users-user": {
@@ -1513,14 +1519,17 @@ class OpenAPI(Resource):
 						"name": "query",
 						"style": "deepObject",
 						"schema": {"type": "object"},
-						"description": "The value to search for",
+						"description": "The values to search for (propertyname and search filter value). Alternatively with `filter` a raw ldap filter can be given.",
 						"example": {'': '*'},
 					},
 					'search.hidden': {
 						"in": "query",
 						"name": "hidden",
-						"schema": {"type": "boolean", "default": True, },
-						"description": "Include hidden/system objects in the response",
+						"schema": {
+							"type": "boolean",
+							"default": True,
+						},
+						"description": "Include hidden/system objects in the response.",
 						"example": True,
 					},
 					'search.superordinate': {
@@ -1529,49 +1538,69 @@ class OpenAPI(Resource):
 						"schema": {
 							"type": "string",
 							"format": "dn",
+							"nullable": True,
+							"default": None,
 						},
-						"description": "The superordinate DN of the objects to find",
+						"description": "The superordinate DN of the objects to find. `position` is sufficient.",
 						"example": "cn=superordinate,dc=example,dc=net",
 					},
 					'search.limit': {
 						"in": "query",
 						"name": "limit",
-						"schema": {"type": "integer"},
-						"description": "How many results should be shown per page",
+						"schema": {
+							"type": "integer",
+							"nullable": True,
+							"default": None,
+						},
+						"description": "How many results should be shown per page.",
 						"example": 50,
 					},
 					'search.page': {
 						"in": "query",
 						"name": "page",
-						"schema": {"type": "integer"},
-						"description": "Which search page",
+						"schema": {
+							"type": "integer",
+							"default": 1,
+						},
+						"description": "The search page, starting at one.",
 						"example": 1,
 					},
 					'search.dir': {
 						"in": "query",
 						"name": "dir",
-						"schema": {"type": "string"},
-						"description": "Sort direction (ASC or DESC)",
+						"schema": {
+							"type": "string",
+							"default": "ASC",
+						},
+						"description": "The Sort direction (ASC or DESC).",
 						"example": "ASC",
 					},
 					'search.by': {
 						"in": "query",
 						"name": "by",
 						"schema": {"type": "string"},
-						"description": "Sort result by property",
-						"example": "username",
+						"description": "Sort the search result by the specified property.",
+						#"example": "username",
 					},
 					'remove.cleanup': {
 						"in": "query",
 						"name": "cleanup",
-						"schema": {"type": "boolean"},
+						"schema": {
+							"type": "boolean",
+							"default": False,
+						},
 						"description": "Whether to perform a cleanup (e.g. of temporary objects, locks, etc).",
+						"example": True,
 					},
 					'remove.recursive': {
 						"in": "query",
 						"name": "recursive",
-						"schema": {"type": "boolean"},
+						"schema": {
+							"type": "boolean",
+							"default": False,
+						},
 						"description": "Whether to remove referring objects (e.g. DNS or DHCP references).",
+						"example": True,
 					},
 					'user-agent': {
 						"in": "header",
@@ -2288,7 +2317,6 @@ class Objects(FormBase, ReportingBase):
 		property=ObjectPropertySanitizer(required=False, default=None),
 		scope=ChoicesSanitizer(choices=['sub', 'one', 'base', 'base+one'], default='sub'),
 		hidden=BoolSanitizer(default=True),
-		#fields=ListSanitizer(required=False, default=[]),
 		properties=ListSanitizer(required=False, default=['*']),
 		superordinate=DNSanitizer(required=False, default=None, allow_none=True),
 		dir=ChoicesSanitizer(choices=['ASC', 'DESC'], default='ASC'),
@@ -2302,15 +2330,11 @@ class Objects(FormBase, ReportingBase):
 		module = self.get_module(object_type)
 		result = self._options(object_type)
 
-		# TODO: rename fields in the response into "printable"?
-
 		search = bool(self.request.query)
 		container = self.request.query_arguments['position']
 		hidden = self.request.query_arguments['hidden']
 		ldap_filter = self.request.query_arguments['filter']
 		scope = self.request.query_arguments['scope']
-		#fields = self.request.query_arguments['fields']
-		#fields = (set(fields) | set([objectProperty])) - set(['name', 'None', None, ''])
 		properties = self.request.query_arguments['properties'][:]
 		direction = self.request.query_arguments['dir']
 		property_ = self.request.query_arguments['property']
@@ -2329,7 +2353,6 @@ class Objects(FormBase, ReportingBase):
 		if superordinate:
 			container = container or superordinate.dn
 
-		entries = []
 		objects = []
 		if search:
 			try:
@@ -2344,27 +2367,15 @@ class Objects(FormBase, ReportingBase):
 				continue
 			objmodule = UDM_Module(obj.module, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 
-			#if '*' in fields or '*' in properties:
 			if '*' in properties:
 				# TODO: i think we need error handling here, because between receiving the object and opening it, it or refernced objects might be removed.
 				# best would be if lookup() would support opening because that already does error handling.
 				obj.open()
 
 			entry = Object.get_representation(objmodule, obj, properties, self.ldap_connection)
-			entry.update({
-				#'$childs$': module.childs,
-				'name': objmodule.obj_description(obj),
-				'path': ldap_dn2path(obj.dn, include_rdn=False),
-				'uri': self.abspath(obj.module, quote_dn(obj.dn)),
-				#'fields': {},  # TODO: wrap via encode_properties() instead of module.property_description() ?!
-			})
-			#if '$value$' in fields:
-			#	entry['$value$'] = [objmodule.property_description(obj, column['name']) for column in module.columns]
-			#if '*' in fields or '*' in properties:
-			#	fields = set(obj.info.keys())
-			#for field in fields - set(objmodule.password_properties) - set(entry.keys()):
-			#	entry['fields'][field] = objmodule.property_description(obj, field)
-			entries.append(entry)
+			entry['uri'] = self.abspath(obj.module, quote_dn(obj.dn))
+			self.add_link(entry, 'self', entry['uri'], name=entry['dn'], title=entry['id'], dont_set_http_header=True)
+			self.add_resource(result, 'udm:object', entry)
 
 		if items_per_page:
 			self.add_link(result, 'first', self.urljoin('', page='1'), title=_('First page'))
@@ -2414,18 +2425,10 @@ class Objects(FormBase, ReportingBase):
 		self.add_form_element(form, '', _('Search'), type='submit')
 
 		if search:
-			result['results'] = len(entries)
-			result['entries'] = entries  # TODO: is "entries" a good name? items, objects
+			result['results'] = len(self.get_resources(result, 'udm:object'))
+
 		self.add_caching(public=False, no_cache=True, no_store=True, max_age=1, must_revalidate=True)
 		self.content_negotiation(result)
-
-	def get_hal_json(self, response):
-		if 'entries' in response:
-			objects = response.setdefault('_embedded', {}).setdefault('udm:object', [])
-			for object in response.pop('entries'):
-				objects.append(object)
-				object.setdefault('_links', {}).setdefault('self', {'href': object['uri'], 'name': object['dn'], 'title': object['id']})
-		return super(Objects, self).get_hal_json(response)
 
 	@tornado.gen.coroutine
 	def search(self, module, container, ldap_filter, superordinate, scope, hidden, items_per_page, page, by, reverse):
@@ -2734,7 +2737,10 @@ class Object(FormBase, Resource):
 		props = {}
 		props['dn'] = obj.dn
 		props['objectType'] = module.name
-		props['id'] = '+'.join(explode_rdn(obj.dn, True))
+		props['id'] = module.obj_description(obj)
+		if not props['id']:
+			props['id'] = '+'.join(explode_rdn(obj.dn, True))
+		#props['path'] = ldap_dn2path(obj.dn, include_rdn=False)
 		props['position'] = ldap_connection.parentDn(obj.dn) if obj.dn else obj.position.getDn()
 		props['properties'] = values
 		props['options'] = dict((opt['id'], opt['value']) for opt in module.get_options(udm_object=obj))
