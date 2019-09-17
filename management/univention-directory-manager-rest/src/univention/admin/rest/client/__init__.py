@@ -349,12 +349,12 @@ class Module(Client):
 		self.load_relations()
 		entries = self.client.resolve_relation(self.relations, 'search', template=data)
 		for obj in self.client.resolve_relations(entries, 'udm:object'):
-			objself = self.client.get_relation(obj, 'self')
-			uri = objself['href']
-			dn = objself['name']
 			if opened:
-				yield Object.from_response(self.udm, Response(entries.response, obj, uri))  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
+				yield Object.from_data(self.udm, obj)  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
 			else:
+				objself = self.client.get_relation(obj, 'self')
+				uri = objself['href']
+				dn = objself['name']
 				yield ShallowObject(self.udm, dn, uri)
 
 
@@ -410,6 +410,9 @@ class Object(Client):
 		entry = response.data
 		resp = response.response
 		return cls(udm, entry['objectType'], entry.get('dn'), entry['properties'], entry['options'], entry['policies'], entry.get('position'), entry.get('superordinate'), entry.get('uri'), links=entry, etag=resp.headers.get('Etag'), last_modified=resp.headers.get('Last-Modified'))
+	@classmethod
+	def from_data(cls, udm, entry):
+		return cls(udm, entry['objectType'], entry.get('dn'), entry['properties'], entry['options'], entry['policies'], entry.get('position'), entry.get('superordinate'), entry.get('uri'), links=entry)
 
 	def __init__(self, udm, object_type, dn, properties, options, policies, position, superordinate, uri, links=None, etag=None, last_modified=None, *args, **kwargs):
 		super(Object, self).__init__(udm.client, *args, **kwargs)
