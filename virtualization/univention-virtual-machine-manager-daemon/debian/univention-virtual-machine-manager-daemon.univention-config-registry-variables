@@ -51,3 +51,9 @@ Description[de]=Menge des reservierten RAM des Wirt-Systems in Bytes. Dies Verhi
 Description[en]=Reserved amount of RAM for the host system in bytes. This also prevents that too many VMs are defined, started or migrated. Default: 0 (no limit)
 Type=int
 Categories=uvmm
+
+[uvmm/umc/autosearch]
+Description[de]=Beim Öffnen von UVMM werden standardmäßig alle VMs angezeigt. Durch setzten auf 'no' kann dies deaktiviert werden.
+Description[en]=When opining UVMM all VMs are listed by default. This can be disabled by setting this variable to 'no'.
+Type=bool
+Categories=uvmm
