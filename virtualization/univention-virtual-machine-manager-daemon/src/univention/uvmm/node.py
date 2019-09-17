@@ -842,6 +842,7 @@ class Node(PersistentCached):
 				self._register_default_pool()
 				# reset timer after successful re-connect
 				self.current_frequency = self.config_frequency
+
 			self.update()
 			self.pd.last_try = self.pd.last_update = time.time()
 		except libvirt.libvirtError as ex:
@@ -851,6 +852,12 @@ class Node(PersistentCached):
 			logger.warning("'%s' broken? next check in %s. %s", self.pd.uri, ms(hz), ex, exc_info=self.current_frequency == self.config_frequency)
 			if hz > self.current_frequency:
 				self.current_frequency = hz
+
+				if ex.get_error_code() == libvirt.VIR_ERR_NO_DOMAIN:
+					return
+				elif ex.get_error_domain() != libvirt.VIR_FROM_RPC:
+					return
+
 			self._unregister()
 
 	def __eq__(self, other):
@@ -1126,19 +1133,24 @@ class Node(PersistentCached):
 
 		assert self.conn is not None
 		for dom in self.conn.listAllDomains():
-			uuid = dom.UUIDString()
-			if uuid in self.domains:
-				# Update existing domains
-				domStat = self.domains[uuid]
-				domStat.update(dom)
-				try:
-					cached_domains.remove(uuid)
-				except ValueError:
-					pass
-			else:
-				# Add new domains
-				domStat = Domain(dom, node=self)
-				self.domains[uuid] = domStat
+			try:
+				uuid = dom.UUIDString()
+				if uuid in self.domains:
+					# Update existing domains
+					domStat = self.domains[uuid]
+					domStat.update(dom)
+					try:
+						cached_domains.remove(uuid)
+					except ValueError:
+						pass
+				else:
+					# Add new domains
+					domStat = Domain(dom, node=self)
+					self.domains[uuid] = domStat
+			except libvirt.libvirtError as ex:
+				if ex.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
+					raise
+
 			curMem += domStat.pd.curMem
 			maxMem += domStat.pd.maxMem
 			cpu_usage += domStat._cpu_usage * domStat.pd.vcpus
