@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Update links in the UMC to UCS 4.4 documentation.
 bug: [48027]
+erratum: 275
+announced: 2019-09-18
