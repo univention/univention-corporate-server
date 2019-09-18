@@ -9,3 +9,5 @@ desc: |
  * Move to maintained as a dependency of univention-directory-manager-rest.
 maintained: true
 bug: [50034]
+erratum: 283
+announced: 2019-09-18
