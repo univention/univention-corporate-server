@@ -963,10 +963,10 @@ msgstr "`samba-tool drs showrepl` gibt ein Problem mit der Replikation zurück."
 
 #: umc/python/diagnostic/plugins/21_check_join_status.py:44
 msgid ""
-"http://docs.software-univention.de/manual.html#domain:listenernotifier:"
+"https://docs.software-univention.de/manual-4.4.html#domain:listenernotifier:"
 "erroranalysis"
 msgstr ""
-"http://docs.software-univention.de/handbuch.html#domain:listenernotifier:"
+"https://docs.software-univention.de/handbuch-4.4.html#domain:listenernotifier:"
 "erroranalysis"
 
 #: umc/python/diagnostic/plugins/02_certificate_check.py:55

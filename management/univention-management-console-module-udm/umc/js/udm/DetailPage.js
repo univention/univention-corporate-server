@@ -1410,7 +1410,7 @@ define([
 					iconClass: 'umcExtendedAttrIconWhite',
 					label: _('Customize this page'),
 					callback: lang.hitch(this, function() {
-						var link = lang.replace('http://docs.software-univention.de/{0}-4.2.html#central:extendedattrs', [_('manual')]); 
+						var link = lang.replace('https://docs.software-univention.de/{0}-4.2.html#central:extendedattrs', [_('manual')]); 
 						window.open(link);
 					})
 				});

@@ -58,7 +58,7 @@ class printerACLTypes(univention.admin.syntax.select):
 	]
 
 
-help_link = _('http://docs.univention.de/manual.html#print::shares')
+help_link = _('https://docs.software-univention.de/manual-4.4.html#print::shares')
 
 module = 'shares/printer'
 operations = ['add', 'edit', 'remove', 'search', 'move']
