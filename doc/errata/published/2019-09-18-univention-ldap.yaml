@@ -14,3 +14,5 @@ desc: |
    This increases security for templates which are installed on the DC Master
    and DC Slaves where the same behavior is now present.
 bug: [49734]
+erratum: 277
+announced: 2019-09-18
