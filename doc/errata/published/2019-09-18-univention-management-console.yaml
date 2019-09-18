@@ -9,3 +9,5 @@ desc: |
  * Fix regression in Erratum 230 which caused the `univention-service` file
    to be not installed any more.
 bug: [50169]
+erratum: 287
+announced: 2019-09-18
