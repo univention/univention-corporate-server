@@ -10,3 +10,5 @@ desc: |
    provides a Univention Directory Manager REST HTTP service.
  * The new type interface of UDM is used in the UDM REST API.
 bug: [50034, 50047]
+erratum: 282
+announced: 2019-09-18
