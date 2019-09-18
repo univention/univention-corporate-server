@@ -9,3 +9,5 @@ desc: |
  * Invalid default values for the pre existing service provider
    LDAP entries have been repaired.
 bug: [50177]
+erratum: 285
+announced: 2019-09-18
