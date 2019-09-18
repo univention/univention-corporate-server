@@ -215,7 +215,7 @@ pruneOldKernel () {
 	kernel_version="$1"
 	echo "Pruning old kernels $kernel_version" >&3
 	list_passive_kernels "$kernel_version" |
-		fgrep -v "$(get_latest_kernel_pkg "$kernel_version")" |
+		grep -Fv "$(get_latest_kernel_pkg "$kernel_version")" |
 		DEBIAN_FRONTEND=noninteractive xargs -r apt-get -o DPkg::Options::=--force-confold -y --force-yes purge
 }
 
@@ -308,7 +308,8 @@ fail_if_role_package_will_be_removed () {
 
 # begin bug 46562
 block_update_if_system_date_is_too_old() {
-	let system_year=$(date +%Y)
+	local system_year
+	system_year=$(date +%Y)
 	if [ "$system_year" -lt 2018 ] ; then
 		echo "WARNING: The system date ($(date +%Y-%m-%d)) does not seem to be correct."
 		echo "         Please set a current system time before the update, otherwise the"

@@ -32,32 +32,27 @@ export DEBIAN_FRONTEND=noninteractive
 UPDATER_LOG="/var/log/univention/updater.log"
 UPDATE_NEXT_VERSION="$1"
 
-install ()
-{
+install () {
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install "$@" >>"$UPDATER_LOG" 2>&1
 }
-reinstall ()
-{
+reinstall () {
 	install --reinstall "$@"
 }
-check_and_install ()
-{
+check_and_install () {
 	local state
 	state="$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
 	if [ "$state" = "install" ]; then
 		install "$1"
 	fi
 }
-check_and_reinstall ()
-{
+check_and_reinstall () {
 	local state
 	state="$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
 	if [ "$state" = "install" ]; then
 		reinstall "$1"
 	fi
 }
-is_installed ()
-{
+is_installed () {
 	local state
 	state="$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
 	test "$state" = "install"
@@ -85,21 +80,15 @@ is_ucr_true () {
     esac
 }
 
-if [ -z "$server_role" ] || [ "$server_role" = "basesystem" ] || [ "$server_role" = "basissystem" ]; then
-	install univention-basesystem
-elif [ "$server_role" = "domaincontroller_master" ]; then
-	install univention-server-master
-elif [ "$server_role" = "domaincontroller_backup" ]; then
-	install univention-server-backup
-elif [ "$server_role" = "domaincontroller_slave" ]; then
-	install univention-server-slave
-elif [ "$server_role" = "memberserver" ]; then
-	install univention-server-member
-elif [ "$server_role" = "mobileclient" ]; then
-	install univention-mobile-client
-elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; then
-	install univention-managed-client
-fi
+case "${server_role:-}" in
+''|basesystem|basissystem) install univention-basesystem ;;
+domaincontroller_master) install univention-server-master ;;
+domaincontroller_backup) install univention-server-backup ;;
+domaincontroller_slave) install univention-server-slave ;;
+memberserver) install univention-server-member ;;
+mobileclient) install univention-mobile-client ;;
+fatclient|managedclient) install univention-managed-client ;;
+esac
 
 if ! is_ucr_true update44/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
