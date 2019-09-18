@@ -9,3 +9,5 @@ desc: |
  * Fix UCR template for SSL certificate 
    UCR variable mail/dovecot/ssl/cafile
 bug: [50105]
+erratum: 278
+announced: 2019-09-18
