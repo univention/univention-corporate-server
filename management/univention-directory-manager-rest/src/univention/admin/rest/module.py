@@ -355,6 +355,13 @@ class NotFound(HTTPError):
 		super(NotFound, self).__init__(404, None, '%r %r' % (object_type, dn or ''))  # FIXME: create error message
 
 
+def superordinate_names(module):
+	superordinates = module.superordinate_names
+	if set(superordinates) == {'settings/cn', }:
+		return []
+	return superordinates
+
+
 class ResourceBase(object):
 
 	pool = ThreadPoolExecutor(max_workers=MAX_WORKERS)
@@ -1280,7 +1287,7 @@ class OpenAPI(Resource):
 					}),
 					"tags": [tag],
 				}
-				if module.superordinate_names:
+				if superordinate_names(module):
 					objects_pathes['get']['parameters'].append({'$ref': '#/components/parameters/search.superordinate'})
 			if 'add' in module.operations:
 				object_template_pathes['get'] = {
@@ -1417,7 +1424,7 @@ class OpenAPI(Resource):
 				},
 			}))
 			model_properties = model['properties']['properties']
-			if module.superordinate_names:
+			if superordinate_names(module):
 				model['superordinate'] = {
 					"type": "string",
 					"format": "dn",
@@ -1526,7 +1533,7 @@ class OpenAPI(Resource):
 							"default": None,
 						},
 						"description": "The superordinate DN of the objects to find. `position` is sufficient.",
-						"example": "cn=superordinate,dc=example,dc=net",
+						# "example": "cn=superordinate,dc=example,dc=net",
 					},
 					'search.limit': {
 						"in": "query",
@@ -1619,7 +1626,7 @@ class OpenAPI(Resource):
 						"name": "If-Unmodified-Since",
 						"schema": {"type": "string", "format": "last-modified-date"},
 						"description": "provide last modified time to make a condition request to not overwrite any values in a race condition",
-						"example": "Wed, 21 Oct 2015 07:28:00 GMT",
+						# "example": "Wed, 21 Oct 2015 07:28:00 GMT",
 					},
 					"if-modified-since": {
 						"in": "header",
@@ -2278,7 +2285,7 @@ class FormBase(object):
 					properties.setdefault(prop, []).append(self.request.body_arguments.pop(key))
 
 	def superordinate_dn_to_object(self, module, superordinate):
-		if not module.superordinate_names:
+		if not superordinate_names(module):
 			return
 		if superordinate:
 			mod = get_module(module.name, superordinate, self.ldap_connection)
@@ -2388,7 +2395,7 @@ class Objects(FormBase, ReportingBase):
 		form = self.add_form(result, self.urljoin(''), 'GET', rel='search', id='search', layout='search')
 		self.add_form_element(form, 'position', container or '', label=_('Search in'))
 		search_layout.append(['position', 'hidden'])
-		if module.superordinate_names:
+		if superordinate_names(module):
 			self.add_form_element(form, 'superordinate', superordinate.dn if superordinate else '', label=_('Superordinate'))
 			search_layout.append(['superordinate'])
 		searchable_properties = [{'value': '', 'label': _('Defaults')}] + [{'value': prop['id'], 'label': prop['label']} for prop in module.properties(None) if prop.get('searchable')]
@@ -2505,7 +2512,7 @@ class Objects(FormBase, ReportingBase):
 		self.add_link(result, 'describedby', self.urljoin(''), method='OPTIONS')
 		if 'search' in module.operations:
 			searchfields = ['position', 'query[]', 'filter', 'scope', 'hidden', 'properties']
-			if module.superordinate_names:
+			if superordinate_names(module):
 				searchfields.append('superordinate')
 			if module.supports_pagination:
 				searchfields.extend(['limit', 'page', 'by', 'dir'])
@@ -2637,7 +2644,7 @@ class Object(FormBase, Resource):
 		# self.add_link(props, '', self.urljoin('report/PDF Document?dn=%s' % (quote(obj.dn),))) # rel=alternate media=print?
 #		for mod in module.child_modules:
 #			mod = self.get_module(mod['id'])
-#			if mod and set(mod.superordinate_names) & {module.name, }:
+#			if mod and set(superordinate_names(mod)) & {module.name, }:
 #				self.add_link(props, 'udm:children-types', self.urljoin('../../%s/?superordinate=%s' % (quote(mod.name), quote(obj.dn))), name=mod.name, title=mod.object_name_plural)
 
 		methods = ['GET', 'OPTIONS']
@@ -2736,7 +2743,7 @@ class Object(FormBase, Resource):
 				pol_mod = get_module(None, policy, ldap_connection)
 				if pol_mod and pol_mod.name:
 					props['policies'].setdefault(pol_mod.name, []).append(policy)
-		if module.superordinate_names:
+		if superordinate_names(module):
 			props['superordinate'] = obj.superordinate and obj.superordinate.dn
 		if obj.oldattr.get('entryUUID'):
 			props['uuid'] = obj.oldattr['entryUUID'][0].decode('utf-8', 'replace')
@@ -3144,7 +3151,7 @@ class ObjectAdd(FormBase, Resource):
 
 		form = self.add_form(result, action=self.urljoin(''), method='POST', id='add', layout='create-form')
 		self.add_form_element(form, 'position', position or '')
-		if module.superordinate_names:
+		if superordinate_names(module):
 			meta_layout['layout'].append('superordinate')
 			self.add_form_element(form, 'superordinate', '')  # TODO: replace with <select>
 
