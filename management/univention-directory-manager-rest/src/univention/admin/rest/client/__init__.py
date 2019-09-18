@@ -51,6 +51,7 @@ from __future__ import unicode_literals
 
 import sys
 import time
+import copy
 import requests
 
 import six
@@ -315,7 +316,7 @@ class Module(Client):
 		self.load_relations()
 		data = {'position': position, 'superordinate': superordinate, 'template': template}
 		resp = self.client.resolve_relation(self.relations, 'create-form', template=data)
-		return Object.from_response(self.udm, resp)
+		return Object.from_data(self.udm, resp)
 
 	def get(self, dn):
 		# TODO: use a link relation instead of a search
@@ -382,7 +383,7 @@ class References(object):
 	def __getitem__(self, item):
 		return [
 			ShallowObject(self.obj.udm, x['name'], x['href'])
-			for x in self.udm.get_relations(self.obj.links, 'udm:object/property/reference/%s' % (item,))
+			for x in self.udm.get_relations(self.obj.hal, 'udm:object/property/reference/%s' % (item,))
 		]
 
 	def __getattribute__(self, key):
@@ -402,48 +403,87 @@ class Object(Client):
 	@property
 	def module(self):
 		# FIXME: use "type" relation link
-		#object_type = self.udm.get_relation(self.links, 'type')
+		#object_type = self.udm.get_relation(self.hal, 'type')['href']
 		return self.udm.get(self.object_type)
+
+	@property
+	def object_type(self):
+		return self.representation['objectType']
+
+	@property
+	def dn(self):
+		return self.representation.get('dn')
+
+	@property
+	def properties(self):
+		return self.representation['properties']
+
+	@property
+	def options(self):
+		return self.representation.get('options', {})
+
+	@property
+	def policies(self):
+		return self.representation.get('policies', {})
+
+	@property
+	def superordinate(self):
+		return self.representation.get('superordinate')
+
+	@superordinate.setter
+	def superordinate(self, superordinate):
+		self.representation['superordinate'] = superordinate
+
+	@property
+	def position(self):
+		return self.representation.get('position')
+
+	@position.setter
+	def position(self, position):
+		self.representation['position'] = position
+
+	@property
+	def uri(self):
+		uri = self.client.get_relation(self.hal, 'self')
+		if uri:
+			return uri['href']
+		return self.representation.get('uri')
 
 	@classmethod
 	def from_response(cls, udm, response):
-		entry = response.data
-		resp = response.response
-		return cls(udm, entry['objectType'], entry.get('dn'), entry['properties'], entry['options'], entry['policies'], entry.get('position'), entry.get('superordinate'), entry.get('uri'), links=entry, etag=resp.headers.get('Etag'), last_modified=resp.headers.get('Last-Modified'))
-	@classmethod
-	def from_data(cls, udm, entry):
-		return cls(udm, entry['objectType'], entry.get('dn'), entry['properties'], entry['options'], entry['policies'], entry.get('position'), entry.get('superordinate'), entry.get('uri'), links=entry)
+		return cls.from_data(udm, response.data, response.response.headers)
 
-	def __init__(self, udm, object_type, dn, properties, options, policies, position, superordinate, uri, links=None, etag=None, last_modified=None, *args, **kwargs):
+	@classmethod
+	def from_data(cls, udm, entry, headers=None):
+		headers = headers or {}
+		return cls(udm, entry, etag=headers.get('Etag'), last_modified=headers.get('Last-Modified'))
+
+	def __init__(self, udm, representation, etag=None, last_modified=None, *args, **kwargs):
 		super(Object, self).__init__(udm.client, *args, **kwargs)
 		self.udm = udm
-		self.object_type = object_type
-		self.dn = dn
-		self.properties = properties
-		self.options = options
-		self.policies = policies
-		self.position = position
-		self.superordinate = superordinate
-		self.uri = uri
-		self.links = links or {}
+		self.representation = representation
+		self.hal = {}
+		self.hal['_links'] = representation.pop('_links', {})
+		self.hal['_embedded'] = representation.pop('_embedded', {})
 		self.etag = etag
 		self.last_modified = last_modified
-		self.links.setdefault('_links', {})
-		self.links.setdefault('_embedded', {})
 
 	def __repr__(self):
 		return 'Object(module={}, dn={}, uri={})'.format(self.object_type, self.dn, self.uri)
 
 	def reload(self):
-		# FIXME: use "self" relation link
-		obj = self.module.get(self.dn)
+		uri = self.client.get_relation(self.hal, 'self')
+		if uri:
+			obj = ShallowObject(self.udm, self.dn, uri['href']).open()
+		else:
+			obj = self.module.get(self.dn)
 		self._copy_from_obj(obj)
 
 	def save(self, reload=True):
 		if self.dn:
 			return self._modify(reload)
 		else:
-			return self._create()
+			return self._create(reload)
 
 	def delete(self, remove_referring=False):
 		return self.client.request('DELETE', self.uri)
@@ -453,55 +493,42 @@ class Object(Client):
 		self.save()
 
 	def _modify(self, reload=True):
-		data = {
-			'properties': self.properties,
-			'options': self.options,
-			'policies': self.policies,
-			'position': self.position,
-			'superordinate': self.superordinate,
-		}
 		headers = dict((key, value) for key, value in {
 			'If-Unmodified-Since': self.last_modified,
 			'If-Match': self.etag,
 		}.items() if value)
-		response = self.client.make_request('PUT', self.uri, data=data, **headers)
-		if 200 <= response.response.status_code <= 399 and 'Location' in response.response.headers:
-			response = self.client.make_request('GET', response.response.headers['Location'])
-		# TODO: outsource redirection handling into self.client
-		while 300 <= response.response.status_code <= 399 and 'Location' in response.response.headers:  # move()
-			response = self.client.make_request('GET', response.response.headers['Location'])
 
-		self.links = response.data
-		self.dn = response.data['dn']
-		if reload:
+		response = self.client.make_request('PUT', self.uri, data=self.representation, **headers)
+		response = self._follow_redirection(response)  # move() causes multiple redirections!
+		self._reload_from_response(response)
+		return response
+
+	def _create(self, reload=True):
+		uri = self.client.get_relation(self.hal, 'create')
+		response = self.client.make_request('POST', uri['href'], data=self.representation)
+		response = self._follow_redirection(response)
+		self._reload_from_response(response)
+		return response
+
+	def _reload_from_response(self, response):
+		if 200 <= response.response.status_code <= 299 and 'Location' in response.response.headers:
+			uri = response.response.headers['Location']
+			obj = ShallowObject(self.udm, None, uri)
+			if reload:
+				self._copy_from_obj(obj.open())
+		elif reload:
 			self.reload()
 
+	def _follow_redirection(self, response):
+		while 300 <= response.response.status_code <= 399 and 'Location' in response.response.headers:
+			if response.response.headers.get('Retry-After', '').isdigit():
+				time.sleep(min(30, max(0, int(response.response.headers['Retry-After']) - 1)))
+			response = self.client.make_request('GET', response.response.headers['Location'])
+		return response
+
 	def _copy_from_obj(self, obj):
-		self.dn = obj.dn
-		self.properties = obj.properties
-		self.options = obj.options
-		self.policies = obj.policies
-		self.position = obj.position
-		self.superordinate = obj.superordinate
 		self.udm = obj.udm
-		self.uri = obj.uri
-		self.links = obj.links
+		self.representation = copy.deepcopy(obj.representation)
+		self.hal = copy.deepcopy(obj.hal)
 		self.etag = obj.etag
 		self.last_modified = obj.last_modified
-
-	def _create(self):
-		data = {
-			'properties': self.properties,
-			'options': self.options,
-			'policies': self.policies,
-			'position': self.position,
-			'superordinate': self.superordinate,
-		}
-		response = self.client.make_request('POST', self.module.uri, data=data)
-		resp = response.response
-		# TODO: outsource redirection handling into self.client
-		if resp.status_code in (200, 201) and 'Location' in resp.headers:
-			uri = resp.headers['Location']
-			obj = ShallowObject(self.udm, None, uri).open()
-			self._copy_from_obj(obj)
-		return response.data
