@@ -8,3 +8,5 @@ desc: |-
  This update addresses the following issue:
  * Update package dependencies
 bug: [49978]
+erratum: 279
+announced: 2019-09-18
