@@ -9,3 +9,5 @@ desc: |-
  * Errors that happen in the appliance wizard are now shown. The user may
    send a mail with the traceback to Univention.
 bug: [46790]
+erratum: 280
+announced: 2019-09-18
