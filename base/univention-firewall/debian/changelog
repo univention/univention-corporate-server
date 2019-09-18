@@ -1,3 +1,10 @@
+univention-firewall (11.0.1-5) unstable; urgency=medium
+
+  * Bug #50088: Expanded iptables settings to correctly work with docker
+    compose
+
+ -- Jannik Ahlers <ahlers@univention.de>  Wed, 18 Sep 2019 16:55:16 +0200
+
 univention-firewall (11.0.1-4) unstable; urgency=medium
 
   * Bug #49055: Change UCRV default
