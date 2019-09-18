@@ -9,3 +9,5 @@ desc: |
  * A problem in the update from docker to
    docker-compose Apps has been fixed.
 bug: [50196]
+erratum: 276
+announced: 2019-09-18
