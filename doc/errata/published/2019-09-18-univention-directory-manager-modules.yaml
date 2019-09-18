@@ -12,3 +12,5 @@ desc: |
    OkOrNot, TrueFalse, TrueFalseUp, TrueFalseUpper, booleanNone and
    ddnsUpdates now correctly validate input values.
 bug: [50047, 40731]
+erratum: 286
+announced: 2019-09-18
