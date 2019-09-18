@@ -3,8 +3,9 @@ release: "4.4"
 version: [1]
 scope: ucs_4.4-0-errata4.4-1
 src: univention-mail-dovecot
-fix: 5.0.1-10A~4.4.0.201909160928
+fix: 5.0.1-11A~4.4.0.201909171353
 desc: |
- This update addresses the following issue(s):
- * Fix broken UCR template for ca (Bug #50105).
+ This update addresses the following issue:
+ * Fix UCR template for SSL certificate 
+   UCR variable mail/dovecot/ssl/cafile (Bug #50105).
 bug: [50105]
