@@ -1,3 +1,9 @@
+univention-updater (14.0.0-22) unstable; urgency=medium
+
+  * Bug #50206: Adapt links and components for 4.4-2
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 18 Sep 2019 17:05:09 +0200
+
 univention-updater (14.0.0-21) unstable; urgency=medium
 
   * Bug #49836: Add dependency to python-univention-debug
