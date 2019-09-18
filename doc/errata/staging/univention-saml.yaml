@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-1
 src: univention-saml
 fix: 6.0.2-8A~4.4.0.201909121814
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * Invalid default values for the pre existing service provider
    LDAP entries have been repaired.
 bug: [50177]

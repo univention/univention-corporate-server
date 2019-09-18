@@ -5,6 +5,6 @@ scope: ucs_4.4-0-errata4.4-1
 src: univention-ad-connector 
 fix: 13.0.0-15A~4.4.0.201908191612
 desc: |
- This update addresses the following issues:
+ This update addresses the following issue:
  * Update links in the UMC to UCS 4.4 documentation.
 bug: [48027]

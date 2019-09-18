@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-1
 src: univention-management-console
 fix: 11.0.4-36A~4.4.0.201909050927
 desc: |
- This update addresses the following issues:
+ This update addresses the following issue:
  * Fix regression in Erratum 230 which caused the `univention-service` file
    to be not installed any more.
 bug: [50169]
