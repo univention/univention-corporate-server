@@ -11,3 +11,5 @@ desc: |
  * The binary package univention-management-module-udm has been moved into
    the source package univention-directory-manager-rest.
 bug: [50169, 50034]
+erratum: 284
+announced: 2019-09-18
