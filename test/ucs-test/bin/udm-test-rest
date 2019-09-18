@@ -2,7 +2,7 @@
 
 import sys
 import univention.config_registry
-from univention.management.server.cli_client import main
+from univention.admin.rest.client.__main__ import main
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()

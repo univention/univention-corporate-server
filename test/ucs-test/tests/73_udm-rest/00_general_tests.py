@@ -10,7 +10,7 @@
 import pytest
 import time
 
-from univention.management.server.client import UDM as UDMClient, Forbidden, Unauthorized, PreconditionFailed
+from univention.admin.rest.client import UDM as UDMClient, Forbidden, Unauthorized, PreconditionFailed
 from univention.config_registry import ConfigRegistry
 from univention.testing.utils import UCSTestDomainAdminCredentials
 from univention.testing.udm import UDM
