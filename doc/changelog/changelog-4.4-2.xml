@@ -296,6 +296,10 @@
 			<title>&ucsUDM; UMC modules and command line interface</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The new binary package <package>univention-directory-manager-rest</package> provides a &ucsUDM; REST HTTP service and is installed on Domaincontroller Master and Domaincontroller Backup Systems by default
+					(<u:bug>50171</u:bug>, <u:bug>27816</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					The syntax classes <classname>IStates</classname>, <classname>AllowDeny</classname>, <classname>AppActivatedOK</classname>, <classname>AppActivatedTrue</classname>, <classname>OkOrNot</classname>, <classname>TrueFalse</classname>, <classname>TrueFalseUp</classname>, <classname>TrueFalseUpper</classname>, <classname>booleanNone</classname> and <classname>ddnsUpdates</classname> now correctly validate input values (<u:bug>40731</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
