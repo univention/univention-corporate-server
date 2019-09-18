@@ -9,3 +9,5 @@ desc: |-
  * Traceback dialogs may now hide the button to directly send the traceback
    to the vendor. Instead, only the mail button is shown.
 bug: [46790]
+erratum: 281
+announced: 2019-09-18
