@@ -1035,11 +1035,10 @@ class Node(PersistentCached):
 		"""
 		log = logger.getChild('migration')
 		try:
-			domain = dom.name()
 			log.debug(
 				"Node %s Domain %s(%s) iter=%d",
 				self.pd.name,
-				domain,
+				dom.name(),
 				dom.ID(),
 				iteration,
 			)
@@ -1048,14 +1047,12 @@ class Node(PersistentCached):
 				domStat = self.domains[uuid]
 			except LookupError:
 				return
-			stats = dom.jobStats()
-			domStat.migration_status(stats)
+			domStat.migration_status(dom.jobStats())
 			try:
 				switch = int(configRegistry['uvmm/migrate/postcopy'])
 			except (LookupError, TypeError, ValueError):
 				return
 			if iteration == switch:
-				log.info('Domain "%(domain)s" switching to post-copy: %(stats)r', dict(domain=domain, stats=stats))
 				dom.migrateStartPostCopy()
 		except Exception:
 			log.error('%s: Exception handling callback', self.pd.uri, exc_info=True)
