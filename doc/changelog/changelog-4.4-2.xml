@@ -315,7 +315,8 @@
 					This change has been made to support synchronization with Samba/AD (<u:bug>49092</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The UDM module <classname>users/user</classname> has been prepared for adding the following properties: <property>initials,</property> <property>postOfficeBox,</property> <property>preferredLanguage,</property> <property>physicalDeliveryOfficeName,</property> <property>st</property> (state) and <property>c</property> (country).
+					The following properties have been added to the UDM module <classname>users/user</classname>: <property>initials,</property> <property>postOfficeBox,</property> <property>preferredLanguage,</property> <property>physicalDeliveryOfficeName,</property> <property>preferredDeliveryMethod</property>.
+					The UDM module <classname>users/user</classname> has been prepared for adding the following properties: <property>st</property> (state) and <property>c</property> (country)
 					Any extended attribute for those properties should be changed to use the same property name as <property>CLIName</property> (<u:bug>49092</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -605,7 +606,7 @@
 					The S4 connector now respects this (<u:bug>49905</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					These additional attributes are now synchronized between UDM/OpenLDAP and Samba/AD: <property>unixhome</property>, <property>employeeType</property>, <property>employeeNumber</property>, <property>loginShell</property>, <property>title</property>, <property>gidNumber</property>, <property>uidNumber</property>, <property>departmentNumber</property>, <property>roomNumber</property>.
+					These additional attributes are now synchronized between UDM/OpenLDAP and Samba/AD: <property>unixhome</property>, <property>employeeType</property>, <property>employeeNumber</property>, <property>loginShell</property>, <property>title</property>, <property>gidNumber</property>, <property>uidNumber</property>, <property>departmentNumber</property>, <property>roomNumber</property>, <property>jpegPhoto</property>, <property>userCertificate</property>, <property>initials</property>, <property>physicalDeliveryOfficeName</property>, <property>postOfficeBox</property>, <property>preferredLanguage</property>.
 					The synchronization of user attributes can now be switched on and off via the new &ucsUCRV; <envar>connector/s4/mapping/user/attributes/ignorelist</envar>.
 					For updates, the synchronization of these attributes is switched off.
 					For new installations, the synchronization of these attributes is switched on (<u:bug>49092</u:bug>).
