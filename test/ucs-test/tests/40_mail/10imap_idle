@@ -21,7 +21,7 @@ import signal
 def main():
 	with ucr_test.UCSTestConfigRegistry() as ucr:
 
-		timeout = 5
+		timeout = 30
 		password = uts.random_string()
 		udm = udm_test.UCSTestUDM()
 		mailPrimaryAddress = '%s@%s' % (uts.random_name(), ucr.get('domainname'))
