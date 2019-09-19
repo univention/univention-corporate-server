@@ -1,3 +1,9 @@
+univention-updater (14.0.0-23) unstable; urgency=medium
+
+  * Bug #50200: Change group for prometheus
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 19 Sep 2019 17:52:10 +0200
+
 univention-updater (14.0.0-22) unstable; urgency=medium
 
   * Bug #50206: Adapt links and components for 4.4-2
