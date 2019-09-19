@@ -42,13 +42,11 @@ map_prefdev = ['any', 'mhs', 'physical', 'telex', 'teletex', 'g3fax', 'g4fax', '
 
 def prefdev_sync_s4_to_ucs(s4connector, key, s4_object):
 	attr = 'preferredDeliveryMethod'
-	try:
-		s4_prefdev = s4_object['attributes'][attr]
-	except Exception:
+	s4_prefdev = s4_object['attributes'].get(attr)
+
+	if s4_prefdev is None:
 		return
-	else:
-		if s4_prefdev is None:
-			return
+
 	ucs_pref = ''
 	for pref in s4_prefdev:
 		try:
@@ -61,13 +59,10 @@ def prefdev_sync_s4_to_ucs(s4connector, key, s4_object):
 
 def prefdev_sync_ucs_to_s4(s4connector, key, ucs_object):
 	attr = 'preferredDeliveryMethod'
-	try:
-		ucs_prefdev = ucs_object['attributes'][attr]
-	except Exception:
+
+	ucs_prefdev = ucs_object['attributes'].get(attr)
+	if ucs_prefdev is None:
 		return
-	else:
-		if ucs_prefdev is None:
-			return
 
 	s4_prefdev = []
 	try:
@@ -86,9 +81,8 @@ def prefdev_sync_ucs_to_s4(s4connector, key, ucs_object):
 
 def userCertificate_sync_s4_to_ucs(s4connector, key, s4_object):
 	attr = 'userCertificate'
-	try:
-		s4_cert = s4_object['attributes'][attr]
-	except Exception:
+	s4_cert = s4_object['attributes'].get(attr)
+	if s4_cert is None:
 		return
 	ucs_cert = base64.b64encode(s4_cert[0])
 	return [ucs_cert]
@@ -106,10 +100,10 @@ def userCertificate_sync_ucs_to_s4(s4connector, key, ucs_object):
 def jpegPhoto_sync_s4_to_ucs(s4connector, key, s4_object):
 	attr = 'jpegPhoto'
 
-	try:
-		s4_photo = s4_object['attributes'][attr]
-	except Exception:
+	s4_photo = s4_object['attributes'].get(attr)
+	if s4_photo is None:
 		return
+
 	ucs_photo = []
 	for photo in s4_photo:
 		ucs_photo.append(base64.b64encode(photo))
@@ -118,9 +112,9 @@ def jpegPhoto_sync_s4_to_ucs(s4connector, key, s4_object):
 
 def jpegPhoto_sync_ucs_to_s4(s4connector, key, ucs_object):
 	attr = 'jpegPhoto'
-	try:
-		ucs_photo = ucs_object['attributes'][attr]
-	except Exception:
+
+	ucs_photo = ucs_object['attributes'].get(attr)
+	if ucs_photo is None:
 		return
 	s4_photo = []
 	for photo in ucs_photo:
@@ -130,9 +124,9 @@ def jpegPhoto_sync_ucs_to_s4(s4connector, key, ucs_object):
 
 def secretary_sync_s4_to_ucs(s4connector, key, s4_object):
 	attr = 'secretary'
-	try:
-		s4_secretary = s4_object['attributes'][attr]
-	except Exception:
+
+	s4_secretary = s4_object['attributes'].get(attr)
+	if s4_secretary is None:
 		return
 	else:
 		ucs_secretary = []
@@ -155,9 +149,9 @@ def secretary_sync_s4_to_ucs(s4connector, key, s4_object):
 
 def secretary_sync_ucs_to_s4(s4connector, key, ucs_object):
 	attr = 'secretary'
-	try:
-		ucs_secretary = ucs_object['attributes'][attr]
-	except Exception:
+
+	ucs_secretary = ucs_object['attributes'][attr]
+	if ucs_secretary is None:
 		return
 	else:
 		s4_secretary = []

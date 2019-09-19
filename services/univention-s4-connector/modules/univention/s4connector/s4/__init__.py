@@ -1275,13 +1275,9 @@ class s4(univention.s4connector.ucs):
 
 		object['attributes'] = element[1]
 		for key in object['attributes'].keys():
-			vals = []
-			if key in DECODE_IGNORELIST:
-				for value in object['attributes'][key]:
-					vals.append(value)
-			else:
-				for value in object['attributes'][key]:
-					vals.append(self.encode(value))
+			vals = object['attributes'][key][:]
+			if key not in DECODE_IGNORELIST:
+				vals = [self.encode(value) for value in vals]
 			object['attributes'][key] = vals
 
 		if deleted_object:  # dn is in deleted-objects-container, need to parse to original dn
