@@ -54,7 +54,7 @@ import univention.uldap
 import univention.s4connector
 import univention.debug2 as ud
 
-DECODE_IGNORELIST = ['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord']
+DECODE_IGNORELIST = ['dNSProperty', 'securityIdentifier', 'jpegPhoto', 'mSMQDigests', 'msExchMailboxSecurityDescriptor', 'userCertificate', 'logonHours', 'mSMQSites', 'objectSid', 'ipsecData', 'dnsRecord', 'mSMQSignKey', 'dSASignature', 'may', 'objectGUID', 'linkTrackSecret', 'mSMQEncryptKey', 'currentLocation', 'repsFrom', 'mS-DS-CreatorSID', 'replUpToDateVector', 'mSMQSignCertificates', 'msExchMailboxGuid', 'sIDHistory']
 
 LDAP_SERVER_SHOW_DELETED_OID = "1.2.840.113556.1.4.417"
 LDB_CONTROL_DOMAIN_SCOPE_OID = "1.2.840.113556.1.4.1339"
@@ -208,7 +208,7 @@ def encode_s4_object(s4_object):
 		for key in s4_object.keys():
 			if key == 'objectSid':
 				s4_object[key] = [decode_sid(s4_object[key][0])]
-			elif key in ['objectGUID', 'ipsecData', 'repsFrom', 'replUpToDateVector', 'userCertificate', 'dNSProperty', 'dnsRecord', 'securityIdentifier', 'mS-DS-CreatorSID', 'logonHours', 'mSMQSites', 'mSMQSignKey', 'currentLocation', 'dSASignature', 'linkTrackSecret', 'mSMQDigests', 'mSMQEncryptKey', 'mSMQSignCertificates', 'may', 'sIDHistory', 'msExchMailboxSecurityDescriptor', 'msExchMailboxGuid']:
+			elif key in DECODE_IGNORELIST:
 				ud.debug(ud.LDAP, ud.INFO, "encode_s4_object: attrib %s ignored during encoding" % key)  # don't recode
 			else:
 				try:
@@ -604,20 +604,20 @@ def decode_addlist(list, encoding):
 
 
 def compatible_list(list):
-	return encode_list(decode_list(list, 'latin'), 'utf8')
+	return encode_list(decode_list(list, 'latin1'), 'utf8')
 
 
 def compatible_modlist(list):
-	return encode_modlist(decode_modlist(list, 'latin'), 'utf8')
+	return encode_modlist(decode_modlist(list, 'latin1'), 'utf8')
 
 
 def compatible_addlist(list):
-	return encode_addlist(decode_addlist(list, 'latin'), 'utf8')
+	return encode_addlist(decode_addlist(list, 'latin1'), 'utf8')
 
 
 def compatible_modstring(string):
 	if hasattr(string, 'decode') and not isinstance(string, types.UnicodeType):
-		string = string.decode('latin')
+		string = string.decode('latin1')
 	if hasattr(string, 'encode'):
 		string = string.encode('utf8')
 	return string
@@ -874,7 +874,7 @@ class s4(univention.s4connector.ucs):
 		except Exception:
 			ud.debug(ud.LDAP, ud.ERROR, 'Failed to lookup S4 LDAP base, using UCR value.')
 
-		self.lo_s4 = univention.uldap.access(host=self.s4_ldap_host, port=int(self.s4_ldap_port), base=self.s4_ldap_base, binddn=self.s4_ldap_binddn, bindpw=self.s4_ldap_bindpw, start_tls=tls_mode, ca_certfile=self.s4_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'], uri=ldapuri, reconnect=False)
+		self.lo_s4 = univention.uldap.access(host=self.s4_ldap_host, port=int(self.s4_ldap_port), base=self.s4_ldap_base, binddn=self.s4_ldap_binddn, bindpw=self.s4_ldap_bindpw, start_tls=tls_mode, ca_certfile=self.s4_ldap_certificate, decode_ignorelist=DECODE_IGNORELIST, uri=ldapuri, reconnect=False)
 
 		self.lo_s4.lo.set_option(ldap.OPT_REFERRALS, 0)
 
@@ -888,7 +888,7 @@ class s4(univention.s4connector.ucs):
 		try:
 			return unicode(string)
 		except:  # FIXME: which exception is to be caught?
-			return unicode(string, 'Latin-1')
+			return unicode(string, 'latin1')
 
 	def _get_lastUSN(self):
 		_d = ud.function('ldap._get_lastUSN')
@@ -909,9 +909,9 @@ class s4(univention.s4connector.ucs):
 	def __encode_GUID(self, GUID):
 		# GUID may be unicode
 		if isinstance(GUID, type(u'')):
-			return GUID.encode('ISO-8859-1').encode('base64')
+			return GUID.encode('latin1').encode('base64')
 		else:
-			return unicode(GUID, 'latin').encode('ISO-8859-1').encode('base64')
+			return GUID.encode('base64')
 
 	def _get_DN_for_GUID(self, GUID):
 		_d = ud.function('ldap._get_DN_for_GUID')
@@ -1276,8 +1276,12 @@ class s4(univention.s4connector.ucs):
 		object['attributes'] = element[1]
 		for key in object['attributes'].keys():
 			vals = []
-			for value in object['attributes'][key]:
-				vals.append(self.encode(value))
+			if key in DECODE_IGNORELIST:
+				for value in object['attributes'][key]:
+					vals.append(value)
+			else:
+				for value in object['attributes'][key]:
+					vals.append(self.encode(value))
 			object['attributes'][key] = vals
 
 		if deleted_object:  # dn is in deleted-objects-container, need to parse to original dn
@@ -2570,12 +2574,14 @@ class s4(univention.s4connector.ucs):
 
 									ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current S4 values: %s" % current_s4_values)
 
-									if (to_add or to_remove) and attribute_type[attribute].single_value:
+									has_mapping_function = hasattr(attribute_type[attribute], 'mapping') and len(attribute_type[attribute].mapping) > 0 and attribute_type[attribute].mapping[0]
+
+									if (to_add or to_remove) and (attribute_type[attribute].single_value or has_mapping_function):
 										modified = (not current_s4_values or not value) or \
 											not attribute_type[attribute].compare_function(list(current_s4_values), list(value))
 										if modified:
-											if hasattr(attribute_type[attribute], 'mapping') and len(attribute_type[attribute].mapping) > 0 and attribute_type[attribute].mapping[0]:
-												ud.debug(ud.LDAP, ud.PROCESS, "Calling single value mapping function")
+											if has_mapping_function:
+												ud.debug(ud.LDAP, ud.PROCESS, "Calling value mapping function for attribute %s" % attribute)
 												value = attribute_type[attribute].mapping[0](self, None, object)
 											modlist.append((ldap.MOD_REPLACE, s4_attribute, value))
 									else:

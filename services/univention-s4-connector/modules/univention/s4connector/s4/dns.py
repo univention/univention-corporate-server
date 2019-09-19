@@ -532,7 +532,6 @@ def __unpack_aRecord(object):
 	a = []
 	dnsRecords = object['attributes'].get('dnsRecord', [])
 	for dnsRecord in dnsRecords:
-		dnsRecord = dnsRecord.encode('latin1')
 		ndrRecord = ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
 		if ndrRecord.wType == dnsp.DNS_TYPE_A or ndrRecord.wType == dnsp.DNS_TYPE_AAAA:
 			a.append(ndrRecord.data)
@@ -560,7 +559,6 @@ def __unpack_soaRecord(object):
 	soa = {}
 	dnsRecords = object['attributes'].get('dnsRecord', [])
 	for dnsRecord in dnsRecords:
-		dnsRecord = dnsRecord.encode('latin1')
 		ndrRecord = ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
 		if ndrRecord.wType == dnsp.DNS_TYPE_SOA:
 			soa['mname'] = ndrRecord.data.mname
@@ -585,7 +583,6 @@ def __unpack_nsRecord(object):
 	ns = []
 	dnsRecords = object['attributes'].get('dnsRecord', [])
 	for dnsRecord in dnsRecords:
-		dnsRecord = dnsRecord.encode('latin1')
 		ndrRecord = ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
 		if ndrRecord.wType == dnsp.DNS_TYPE_NS:
 			ns.append(__append_dot(ndrRecord.data))
@@ -609,7 +606,6 @@ def __unpack_mxRecord(object):
 	mx = []
 	dnsRecords = object['attributes'].get('dnsRecord', [])
 	for dnsRecord in dnsRecords:
-		dnsRecord = dnsRecord.encode('latin1')
 		ndrRecord = ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
 		if ndrRecord.wType == dnsp.DNS_TYPE_MX:
 			mx.append([str(ndrRecord.data.wPriority), __append_dot(ndrRecord.data.nameTarget)])
@@ -632,7 +628,6 @@ def __unpack_txtRecord(object):
 	txt = []
 	dnsRecords = object['attributes'].get('dnsRecord', [])
 	for dnsRecord in dnsRecords:
-		dnsRecord = dnsRecord.encode('latin1')
 		ndrRecord = ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
 		if ndrRecord.wType == dnsp.DNS_TYPE_TXT:
 			txt.append(str(TXT(rdataclass.IN, rdatatype.TXT, ndrRecord.data.str)))
@@ -651,7 +646,6 @@ def __unpack_cName(object):
 	c = []
 	dnsRecords = object['attributes'].get('dnsRecord', [])
 	for dnsRecord in dnsRecords:
-		dnsRecord = dnsRecord.encode('latin1')
 		ndrRecord = ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
 		if ndrRecord.wType == dnsp.DNS_TYPE_CNAME:
 			if "." in ndrRecord.data:
@@ -677,7 +671,6 @@ def __unpack_sRVrecord(object):
 	srv = []
 	dnsRecords = object['attributes'].get('dnsRecord', [])
 	for dnsRecord in dnsRecords:
-		dnsRecord = dnsRecord.encode('latin1')
 		ndrRecord = ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
 		if ndrRecord.wType == dnsp.DNS_TYPE_SRV:
 			srv.append([str(ndrRecord.data.wPriority), str(ndrRecord.data.wWeight), str(ndrRecord.data.wPort), __append_dot(ndrRecord.data.nameTarget)])
@@ -695,7 +688,6 @@ def __unpack_ptrRecord(object):
 	ptr = []
 	dnsRecords = object['attributes'].get('dnsRecord', [])
 	for dnsRecord in dnsRecords:
-		dnsRecord = dnsRecord.encode('latin1')
 		ndrRecord = ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
 		if ndrRecord.wType == dnsp.DNS_TYPE_PTR:
 			ptr.append(__append_dot(ndrRecord.data))
@@ -828,7 +820,6 @@ def s4_zone_msdcs_sync(s4connector, object):
 	old_dnsRecords = msdcs_soa_obj['attributes'].get('dnsRecord', [])
 	found = False
 	for dnsRecord in old_dnsRecords:
-		dnsRecord = dnsRecord.encode('latin1')
 		ndrRecord = ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
 		if ndrRecord.wType == dnsp.DNS_TYPE_SOA:
 			if ndrRecord.data.serial >= serial:
@@ -1585,7 +1576,6 @@ def _identify_dns_con_object(s4connector, object):
 
 				dns_types = set()
 				for dnsRecord in dnsRecords:
-					dnsRecord = dnsRecord.encode('latin1')
 					dnsRecord_DnssrvRpcRecord = ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
 					dns_types.add(dnsRecord_DnssrvRpcRecord.wType)
 

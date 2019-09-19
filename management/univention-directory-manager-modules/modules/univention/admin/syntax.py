@@ -556,6 +556,20 @@ class OneThirdString(string):
 	size = 'OneThird'
 
 
+class string6(OneThirdString):
+	"""
+	Syntax for a string with up to 6 characters.
+	"""
+	@classmethod
+	def parse(self, text):
+		self.min_length = 0
+		self.max_length = 6
+
+		if len(text) > self.max_length:
+			raise univention.admin.uexceptions.valueError(_('The value must not be longer than %d characters.') % self.max_length)
+		return text
+
+
 class HalfString(string):
 	"""
 	Syntax for a string with an input field spanning 1/2 of the width.
@@ -754,7 +768,7 @@ class jpegPhoto(Upload):
 	def tostring(self, value):
 		# type: (Any) -> str
 		if value:
-			return base64.b64encode(value)
+			return value
 		else:
 			return ''
 

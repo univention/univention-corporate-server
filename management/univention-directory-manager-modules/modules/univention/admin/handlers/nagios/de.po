@@ -30,7 +30,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-admin-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-08-14 14:58+0200\n"
+"POT-Creation-Date: 2019-09-10 17:45+0200\n"
 "PO-Revision-Date: 2005-10-18 13:52+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -77,8 +77,8 @@ msgstr "Intervalle"
 msgid "Command name of Nagios plugin"
 msgstr "Zu verwendendes Nagios-Plugin"
 
-#: modules/univention/admin/handlers/nagios/timeperiod.py:99
 #: modules/univention/admin/handlers/nagios/service.py:84
+#: modules/univention/admin/handlers/nagios/timeperiod.py:99
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -90,8 +90,8 @@ msgstr "Beschreibung des Zeitraums (z.B. Wochenende)"
 msgid "Friday"
 msgstr "Freitag"
 
-#: modules/univention/admin/handlers/nagios/timeperiod.py:144
 #: modules/univention/admin/handlers/nagios/service.py:183
+#: modules/univention/admin/handlers/nagios/timeperiod.py:144
 msgid "General"
 msgstr "Allgemein"
 
@@ -132,8 +132,8 @@ msgid ""
 "Maximum number of check attempts with non-OK-result until contact will be "
 "notified"
 msgstr ""
-"Maximale Anzahl an Prüfungswiederholungen, bis ein Nicht-OK-Zustand gemeldet"
-" wird"
+"Maximale Anzahl an Prüfungswiederholungen, bis ein Nicht-OK-Zustand gemeldet "
+"wird"
 
 #: modules/univention/admin/handlers/nagios/timeperiod.py:106
 msgid "Monday"
@@ -171,9 +171,9 @@ msgid "Nagios time periods"
 msgstr "Nagios-Zeiträume"
 
 #: modules/univention/admin/handlers/nagios/nagios.py:61
+#: modules/univention/admin/handlers/nagios/service.py:75
 #: modules/univention/admin/handlers/nagios/timeperiod.py:90
 #: modules/univention/admin/handlers/nagios/timeperiod.py:91
-#: modules/univention/admin/handlers/nagios/service.py:75
 msgid "Name"
 msgstr "Name"
 
@@ -295,6 +295,7 @@ msgstr "Angabe von Zeiträumen (z.B. 00:00-07.15,23:12-24:00)"
 #: modules/univention/admin/handlers/nagios/nagios.py:45
 msgid ""
 "https://docs.software-univention.de/manual-4.4.html#nagios:Configuration_of_the_Nagios_monitoring"
+"Configuration_of_the_Nagios_monitoring"
 msgstr ""
 "https://docs.software-univention.de/handbuch-4.4.html#nagios:Konfiguration_der_Nagios-"
 "Überwachung"
