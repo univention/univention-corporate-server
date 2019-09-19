@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-43) unstable; urgency=medium
+
+  * Bug #50033: Sync more attributes in s4connector
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 19 Sep 2019 09:23:16 +0200
+
 univention-s4-connector (13.0.2-42) unstable; urgency=medium
 
   * Bug #49092: do not sync country / state

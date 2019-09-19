@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.13-17) unstable; urgency=medium
+
+  * Bug #50033: Sync more attributes in s4-connector
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 19 Sep 2019 09:25:09 +0200
+
 univention-directory-manager-modules (14.0.13-16) unstable; urgency=medium
 
   * Bug #50047: parse integer values in UserID and GroupID syntax class
