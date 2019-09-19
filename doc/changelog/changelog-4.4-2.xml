@@ -328,6 +328,9 @@
 					Simplified the way the App Provider and the App Vendor are presented in the UMC module (<u:bug>50106</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
+					The data directory of the Prometheus App had a change in its group ownership due to the new docker version, which handles things differently (<u:bug>50113</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					Removing old docker images may have caused a traceback (<u:bug>50113</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
