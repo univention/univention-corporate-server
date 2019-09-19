@@ -1,3 +1,10 @@
+univention-appcenter (8.0.11-68) unstable; urgency=medium
+
+  * Bug #50166: added pass as dependency, needed for docker
+    login (when docker-compose is installed)
+
+ -- Felix Botner <botner@univention.de>  Thu, 19 Sep 2019 12:22:12 +0200
+
 univention-appcenter (8.0.11-67) unstable; urgency=medium
 
   * Bug #50196: ignore ip address in Docker._get_app_network()
