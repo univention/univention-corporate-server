@@ -478,6 +478,10 @@ apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade >&3 2>&3
 
 fail_if_role_package_will_be_removed
 
+# Bug #50200: New docker version needs other dir permissions for App "prometheus"
+[-e /var/lib/univention-appcenter/apps/prometheus/data/ ] && chgrp 0 /var/lib/univention-appcenter/apps/prometheus/data/
+[-e /var/lib/univention-appcenter/apps/prometheus/conf/ ] && chgrp 0 /var/lib/univention-appcenter/apps/prometheus/conf/
+
 echo ""
 echo "Starting update process, this may take a while."
 echo "Check /var/log/univention/updater.log for more information."
