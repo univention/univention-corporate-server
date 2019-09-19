@@ -386,6 +386,9 @@
 				<listitem><simpara>
 					The app badges icons in the App Center are replaced with new versions (<u:bug>49284</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Docker has been updated to version 18.09 and docker compose to version 1.24 (to allow compose format version 3.7, <u:bug>50166</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
