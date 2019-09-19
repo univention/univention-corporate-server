@@ -6,7 +6,7 @@ src: ibus
 fix: 1.5.14-3+deb9u2
 desc: |
  This update addresses the following issue:
- * missing authorization allows local attacker to access the input bus of
+ * Missing authorization allows local attacker to access the input bus of
    another user (CVE-2019-14822)
 bug: [50227]
 cve:
