@@ -1,3 +1,9 @@
+ucs-test (9.0.3-54) unstable; urgency=medium
+
+  * Bug #50033: Test sync of new attributes
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 19 Sep 2019 10:39:15 +0200
+
 ucs-test (9.0.3-53) unstable; urgency=low
 
   * Bug #36907: increase timeout to increase reliability of 10imap_idle
