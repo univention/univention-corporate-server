@@ -44,6 +44,9 @@
 						<package>glib2.0</package> (<u:cve>2018-16429</u:cve> <u:cve>2019-12450</u:cve> <u:cve>2019-13012</u:cve>) (<u:bug>50147</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
+						<package>ibus</package> (<u:cve>2019-14822</u:cve> (<u:bug>50228</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
 						<package>kconfig</package> (<u:cve>2019-14744</u:cve>) (<u:bug>49992</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
