@@ -1030,7 +1030,7 @@ udm users/user create "$@" \  # passes --binddn etc
   --set lastname=Test \
   --set myappActivated=TRUE
 sleep 10
-curl http://localhost/myapp/login ...                    
+curl http://localhost/myapp/login ...
                 </programlisting>
             </para>
             <para>
@@ -1051,7 +1051,7 @@ univention-app dev-test \
   --appcenter-server http://appcenter-test.software-univention.de\
   my-app \  # every additional parameter is passed to the script
   --binddn $DN \
-  --bindpwd $BINDPWD \                    
+  --bindpwd $BINDPWD
                 </programlisting>
             </para>
         </section>
