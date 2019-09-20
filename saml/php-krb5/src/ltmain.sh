@@ -26,7 +26,7 @@
 # General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
 PROGRAM=libtool
@@ -89,7 +89,7 @@ scriptversion=2015-01-20.17; # UTC
 # General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with this program. If not, see <http://www.gnu.org/licenses/>.
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 # Please report bugs or propose patches to gary@gnu.org.
 
@@ -1390,7 +1390,7 @@ scriptversion=2014-01-07.03; # UTC
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Please report bugs or propose patches to gary@gnu.org.
 

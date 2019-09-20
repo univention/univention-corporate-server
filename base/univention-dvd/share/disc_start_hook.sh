@@ -27,6 +27,6 @@
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
-# <http://www.gnu.org/licenses/>.
+# <https://www.gnu.org/licenses/>.
 
 exec run-parts -a "$1" -a "$2" -a "$3" -a "$4" -a "$5" /usr/share/univention-dvd/disc_start_hook.d/

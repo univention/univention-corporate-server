@@ -49,7 +49,7 @@ def write_build_options_header(fp):
     fp.write("   GNU General Public License for more details.\n")
     fp.write("\n")
     fp.write("   You should have received a copy of the GNU General Public License\n")
-    fp.write("   along with this program; if not, see <http://www.gnu.org/licenses/>.\n")
+    fp.write("   along with this program; if not, see <https://www.gnu.org/licenses/>.\n")
     fp.write("*/\n")
     fp.write("\n")
     fp.write("#include \"includes.h\"\n")

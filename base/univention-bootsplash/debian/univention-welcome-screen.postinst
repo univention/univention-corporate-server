@@ -28,7 +28,7 @@
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
-# <http://www.gnu.org/licenses/>.
+# <https://www.gnu.org/licenses/>.
 
 if dpkg --compare-versions "$2" lt-nl 8.0.0-5; then
 	update-rc.d -f univention-welcome-screen remove

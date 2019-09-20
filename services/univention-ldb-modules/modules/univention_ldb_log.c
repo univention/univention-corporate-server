@@ -27,7 +27,7 @@
  * You should have received a copy of the GNU Affero General Public
  * License with the Debian GNU/Linux or Univention distribution in file
  * /usr/share/common-licenses/AGPL-3; if not, see
- * <http://www.gnu.org/licenses/>.
+ * <https://www.gnu.org/licenses/>.
  */
 
 /* univention_ldb_log was derived from the tests/sample_module
@@ -51,7 +51,7 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with this library; if not, see <http://www.gnu.org/licenses/>.
+   License along with this library; if not, see <https://www.gnu.org/licenses/>.
 */
 
 #include "ldb_module.h"

@@ -28,7 +28,7 @@ Univention Updater: UCR Repository Server URL
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
-# <http://www.gnu.org/licenses/>.
+# <https://www.gnu.org/licenses/>.
 
 from urlparse import urlsplit
 from urllib import quote

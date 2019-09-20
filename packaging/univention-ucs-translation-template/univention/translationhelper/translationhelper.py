@@ -26,7 +26,7 @@
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
-# <http://www.gnu.org/licenses/>.
+# <https://www.gnu.org/licenses/>.
 from __future__ import print_function
 from email.Utils import formatdate
 from datetime import date
@@ -488,7 +488,7 @@ def write_debian_rules(debian_dir_path):
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
-# <http://www.gnu.org/licenses/>.
+# <https://www.gnu.org/licenses/>.
 
 override_dh_auto_test:
 	ucslint -m 0008
@@ -538,7 +538,7 @@ License: AGPL-3.0-only
  You should have received a copy of the GNU Affero General Public
  License with the Debian GNU/Linux or Univention distribution in file
  /usr/share/common-licenses/AGPL-3; if not, see
- <http://www.gnu.org/licenses/>.""".format(years=date.today().year))
+ <https://www.gnu.org/licenses/>.""".format(years=date.today().year))
 
 	with open(os.path.join(new_package_dir_debian, 'changelog'), 'w') as f:
 		f.write("""%s (1.0.0-1) unstable; urgency=low

@@ -28,7 +28,7 @@
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
-# <http://www.gnu.org/licenses/>.
+# <https://www.gnu.org/licenses/>.
 #
 # Copyright (C) Matthieu Patou <mat@matws.net> 2010-2011
 #
@@ -43,7 +43,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 # Revised 2013-09-25, Brian Martin, as follows:
 #    - Allow retention period ("DAYS") to be specified as a parameter.

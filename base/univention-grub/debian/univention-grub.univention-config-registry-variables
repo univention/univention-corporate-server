@@ -59,38 +59,38 @@ Type=str
 Categories=system-base
 
 [grub/color/normal]
-Description[de]=Das Farbschema im Grub-Terminal. Eine Übersicht der möglichen Werte findet sich unter <http://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html>.
-Description[en]=The colour scheme in the Grub terminal. An overview of available values can be found at <http://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html>.
+Description[de]=Das Farbschema im Grub-Terminal. Eine Übersicht der möglichen Werte findet sich unter <https://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html>.
+Description[en]=The colour scheme in the Grub terminal. An overview of available values can be found at <https://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html>.
 Type=str
 Categories=system-base
 
 [grub/color/highlight]
-Description[de]=Das Farbschema für hervorgehobene Einträge im Grub-Terminal. Eine Übersicht der möglichen Werte findet sich unter <http://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html>.
-Description[en]=The colour scheme for emphasised entries in the Grub terminal. An overview of available values can be found at <http://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html>.
+Description[de]=Das Farbschema für hervorgehobene Einträge im Grub-Terminal. Eine Übersicht der möglichen Werte findet sich unter <https://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html>.
+Description[en]=The colour scheme for emphasised entries in the Grub terminal. An overview of available values can be found at <https://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html>.
 Type=str
 Categories=system-base
 
 [grub/menu/color/normal]
-Description[de]=Das Farbschema für Grub-Menüeinträge. Eine Übersicht der möglichen Werte findet sich unter <http://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html>.
-Description[en]=The colour scheme in the Grub menu. An overview of available values can be found at <http://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html>.
+Description[de]=Das Farbschema für Grub-Menüeinträge. Eine Übersicht der möglichen Werte findet sich unter <https://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html>.
+Description[en]=The colour scheme in the Grub menu. An overview of available values can be found at <https://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html>.
 Type=str
 Categories=system-base
 
 [grub/menu/color/highlight]
-Description[de]=Das Farbschema für ausgewählte Grub-Menüeinträge. Eine Übersicht der möglichen Werte findet sich unter <http://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html>.
-Description[en]=The colour scheme for selected entries in the Grub menu. An overview of available values can be found at <http://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html>.
+Description[de]=Das Farbschema für ausgewählte Grub-Menüeinträge. Eine Übersicht der möglichen Werte findet sich unter <https://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html>.
+Description[en]=The colour scheme for selected entries in the Grub menu. An overview of available values can be found at <https://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html>.
 Type=str
 Categories=system-base
 
 [grub/terminal]
-Description[de]=Konfiguration des Terminalgerätes. Default: <empty> (Erlaubt grafische Ausgabe). Setzen der Variable auf "console" um grafische Ausgabe abzuschalten, "console serial" um gleichzeitig auch die serielle Ausgabe zu erlauben. Dokumentation: <http://www.gnu.org/software/grub/manual/grub.html>
-Description[en]=Select the terminal device. Default: <empty> (graphical terminal is allowed). Set to "console" to disable graphical terminal. Set to "console serial" to also enable serial output. Documentation: <http://www.gnu.org/software/grub/manual/grub.html>
+Description[de]=Konfiguration des Terminalgerätes. Default: <empty> (Erlaubt grafische Ausgabe). Setzen der Variable auf "console" um grafische Ausgabe abzuschalten, "console serial" um gleichzeitig auch die serielle Ausgabe zu erlauben. Dokumentation: <https://www.gnu.org/software/grub/manual/grub.html>
+Description[en]=Select the terminal device. Default: <empty> (graphical terminal is allowed). Set to "console" to disable graphical terminal. Set to "console serial" to also enable serial output. Documentation: <https://www.gnu.org/software/grub/manual/grub.html>
 Type=str
 Categories=system-base
 
 [grub/serialcommand]
-Description[de]=Konfiguriert den seriellen Port wenn eine serielle Konsole benutzt wird. Standard: <empty>. Beispieleintrag: "serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1". Hinweis: Der serielle Port wird nicht genutzt wenn keine serielle Konsole konfiguriert ist, siehe auch "grub/terminal". Dokumentation: <http://www.gnu.org/software/grub/manual/grub.html>
-Description[en]=Configures the serial port when using the serial console. Default: <empty>. Example: "serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1". Note: The serial port is not used as a communication channel unless the terminal is configured (see "grub/terminal"). Documentation: <http://www.gnu.org/software/grub/manual/grub.html>
+Description[de]=Konfiguriert den seriellen Port wenn eine serielle Konsole benutzt wird. Standard: <empty>. Beispieleintrag: "serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1". Hinweis: Der serielle Port wird nicht genutzt wenn keine serielle Konsole konfiguriert ist, siehe auch "grub/terminal". Dokumentation: <https://www.gnu.org/software/grub/manual/grub.html>
+Description[en]=Configures the serial port when using the serial console. Default: <empty>. Example: "serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1". Note: The serial port is not used as a communication channel unless the terminal is configured (see "grub/terminal"). Documentation: <https://www.gnu.org/software/grub/manual/grub.html>
 Type=str
 Categories=system-base
 

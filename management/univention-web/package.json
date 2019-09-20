@@ -13,7 +13,7 @@
 	}],
 	"licenses": [{
 		"type": "AGPLv3",
-		"url": "http://www.gnu.org/licenses/agpl.txt"
+		"url": "https://www.gnu.org/licenses/agpl.txt"
 	},{
 		"type": "AFLv2.1",
 		"url": "http://bugs.dojotoolkit.org/browser/dojox/trunk/LICENSE#L43"

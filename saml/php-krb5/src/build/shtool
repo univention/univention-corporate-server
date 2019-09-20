@@ -3,7 +3,7 @@
 ##  GNU shtool -- The GNU Portable Shell Tool
 ##  Copyright (c) 1994-2008 Ralf S. Engelschall <rse@engelschall.com>
 ##
-##  See http://www.gnu.org/software/shtool/ for more information.
+##  See https://www.gnu.org/software/shtool/ for more information.
 ##  See ftp://ftp.gnu.org/gnu/shtool/ for latest version.
 ##
 ##  Version:  2.0.8 (18-Jul-2008)
@@ -22,7 +22,7 @@
 ##  General Public License for more details.
 ##
 ##  You should have received a copy of the GNU General Public License
-##  along with this program; if not, see <http://www.gnu.org/licenses/>.
+##  along with this program; if not, see <https://www.gnu.org/licenses/>.
 ##
 ##  NOTICE: Given that you include this file verbatim into your own
 ##  source tree, you are justified in saying that it remains separate

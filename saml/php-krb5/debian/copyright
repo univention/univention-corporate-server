@@ -49,7 +49,7 @@ License: AGPL-3.0-only
  You should have received a copy of the GNU Affero General Public
  License with the Debian GNU/Linux or Univention distribution in file
  /usr/share/common-licenses/AGPL-3; if not, see
- <http://www.gnu.org/licenses/>.
+ <https://www.gnu.org/licenses/>.
 
 Files: debian/rules
 Copyright: 2005 Uwe Steinmann.
@@ -137,7 +137,7 @@ License: GPL-3+
  GNU General Public License for more details.
  .
  You should have received a copy of the GNU General Public License
- along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ along with this program.  If not, see <https://www.gnu.org/licenses/>.
  .
  On Debian systems, the full text of the
  GNU General Public License version 3 can be found in the file
