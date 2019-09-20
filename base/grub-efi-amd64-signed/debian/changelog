@@ -1,3 +1,9 @@
+grub-efi-amd64-signed (2.0.0-3) unstable; urgency=low
+
+  * Bug #50211: Rebuild signed GRUB 2.02~beta3-5+deb9u2A~4.4.2.201909181816
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 20 Sep 2019 16:39:23 +0200
+
 grub-efi-amd64-signed (2.0.0-2) unstable; urgency=low
 
   * Bug #48278: Rebuild signed GRUB 2.02~beta3-5+deb9u1A~4.3.3.201812061306
