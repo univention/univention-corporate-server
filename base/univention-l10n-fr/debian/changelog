@@ -1,3 +1,9 @@
+univention-l10n-fr (3.0.0-3) unstable; urgency=medium
+
+  * Bug #50205: Update links from UCS 4.x-y to UCS 4.4-2
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 20 Sep 2019 14:32:29 +0200
+
 univention-l10n-fr (3.0.0-2) unstable; urgency=medium
 
   * Bug #48698: Fix GUI visible spelling errors

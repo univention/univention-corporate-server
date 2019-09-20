@@ -184,18 +184,19 @@ define([
 				var certMsg = '';
 				var showEnableSSL = false;
 				if (!state.certificate) {
+					var version = tools.status('ucsVersion').split('-')[0];
 					if (!state.ssl_enabled) {
 						showEnableSSL = state.mode_adconnector;
 						certMsg = makeParagraphs([
 							_('Currently, an unencrypted connection to the Active Directory domain is used.'),
 							_('To achieve a higher level of security, the Active Directory root certificate should be exported and uploaded here. The Active Directory certificate service creates that certificate.'),
-							_('The necessary steps depend on the actual Microsoft Windows version and are described in the <a href="https://docs.software-univention.de/manual-4.4.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.')
+							_('The necessary steps depend on the actual Microsoft Windows version and are described in the <a href="https://docs.software-univention.de/manual-%s.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.', version)
 						]);
 					} else {
 						certMsg = makeParagraphs([
 							_('Currently, an encrypted connection between UCS and the Active Directory domain is used.'),
 							_('To achieve a higher level of security, the Active Directory root certificate should be exported and uploaded here. The Active Directory certificate service creates that certificate.'),
-							_('The necessary steps depend on the actual Microsoft Windows version and are described in the <a href="https://docs.software-univention.de/manual-4.4.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.')
+							_('The necessary steps depend on the actual Microsoft Windows version and are described in the <a href="https://docs.software-univention.de/manual-%s.html#ad-connector:ad-zertifikat" target="_blank">UCS manual</a>.', version)
 						]);
 					}
 				} else {

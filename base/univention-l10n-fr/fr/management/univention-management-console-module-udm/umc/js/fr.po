@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2017-05-23 22:13+0100\n"
+"PO-Revision-Date: 2019-09-20 13:53+0200\n"
 "Last-Translator: Nicolas Ternisien <nicolas@workshop-chapina.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
@@ -1966,8 +1966,9 @@ msgid "mail objects"
 msgstr "objets courrier électronique"
 
 #: umc/js/udm/DetailPage.js:1261
-msgid "manual"
-msgstr "manuel"
+#, javascript-format
+msgid "https://docs.software-univention.de/manual-%s.html#central:extendedattrs"
+msgstr "https://docs.software-univention.de/manual-%s.html#central:extendedattrs"
 
 #: umc/js/udm/wizards/FirstPageWizard.js:453
 msgid "network object"

@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (8.0.1-10) unstable; urgency=medium
+
+  * Bug #50205: Update links from UCS 4.x-y to UCS 4.4-2
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 20 Sep 2019 14:32:30 +0200
+
 univention-virtual-machine-manager-daemon (8.0.1-9) unstable; urgency=medium
 
   * Bug #28771: Set autostart flag when migrating domain

@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-/*global define require*/
+/*global define*/
 
 define([
 	"dojo/_base/declare",
@@ -53,6 +53,7 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
+			var version = tools.status('ucsVersion').split('-')[0];
 			lang.mixin(this, {
 				pages: [{
 					name: 'register',
@@ -70,7 +71,7 @@ define([
 						name: 'email'
 					}, {
 						type: Text,
-						content: _('More details about the activation can be found in the <a href="https://docs.software-univention.de/manual-4.4.html#central:license" target="_blank">UCS manual</a>.'),
+						content: _('More details about the activation can be found in the <a href="https://docs.software-univention.de/manual-%s.html#central:license" target="_blank">UCS manual</a>.', version),
 						name: 'moreDetails'
 					}, {
 						type: Text,

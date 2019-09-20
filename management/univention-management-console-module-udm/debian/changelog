@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.14-4) unstable; urgency=medium
+
+  * Bug #50205: Update links from UCS 4.x-y to UCS 4.4-2
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 20 Sep 2019 14:32:30 +0200
+
 univention-management-console-module-udm (9.0.14-3) unstable; urgency=medium
 
   * Bug #27816: split REST API into another source package

@@ -1,3 +1,9 @@
+univention-ldap (15.0.0-24) unstable; urgency=medium
+
+  * Bug #50205: Update links from UCS 4.x-y to UCS 4.4-2
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 20 Sep 2019 14:32:29 +0200
+
 univention-ldap (15.0.0-23) unstable; urgency=medium
 
   * Bug #49734: split ACL's of DC Slave into 60- and 70- UCR template

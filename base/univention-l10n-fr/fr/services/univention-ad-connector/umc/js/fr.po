@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: univention-management-console-module-adconnector\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2016-07-06 09:40+0100\n"
+"PO-Revision-Date: 2019-09-20 14:13+0200\n"
 "Last-Translator: Éric Bischoff <ebischoff@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
@@ -51,12 +51,13 @@ msgstr ""
 "mutuellement exclusives :</p>"
 
 #: umc/js/adconnector/SetupWizard.js:210
+#, javascript-format
 msgid ""
 "<p>To achieve a higher level of security, the Active Directory root "
 "certificate should be exported and uploaded here. The Active Directory "
 "certificate service creates that certificate. The necessary steps depend on "
 "the actual Microsoft Windows version and are described in the <a href="
-"\"https://docs.software-univention.de/manual-4.4.html#ad-connector:ad-zertifikat\" "
+"\"https://docs.software-univention.de/manual-%s.html#ad-connector:ad-zertifikat\" "
 "target=\"_blank\">UCS manual</a>. Alternatively, you may proceed without "
 "this configuration.</p>"
 msgstr ""
@@ -64,7 +65,7 @@ msgstr ""
 "l'Active Directory doit être exporté et envoyé ici. Le service de certificat "
 "d'Active Directory crée ce certificat. Les étapes nécessaires dépendent de "
 "la version effective de Microsoft Windows, et sont décrites dans le <a href="
-"\"https://docs.software-univention.de/manual-4.4.html#ad-connector:ad-zertifikat\" "
+"\"https://docs.software-univention.de/manual-%s.html#ad-connector:ad-zertifikat\" "
 "target=\"_blank\">manuel d'UCS</a>. Il est également possible de continuer "
 "sans cette configuration.</p>"
 
@@ -354,13 +355,14 @@ msgid ""
 msgstr "La connexion au domaine Active Directory a été configurée avec succès."
 
 #: umc/js/adconnector/ConfigPage.js:192 umc/js/adconnector/ConfigPage.js:198
+#, javascript-format
 msgid ""
 "The necessary steps depend on the actual Microsoft Windows version and are "
-"described in the <a href=\"https://docs.software-univention.de/manual-4.4.html#ad-"
+"described in the <a href=\"https://docs.software-univention.de/manual-%s.html#ad-"
 "connector:ad-zertifikat\" target=\"_blank\">UCS manual</a>."
 msgstr ""
 "Les étapes nécessaires dépendent de la version actuelle de Microsoft Windows "
-"et sont décrites dans le <a href=\"https://docs.software-univention.de/manual-4.0."
+"et sont décrites dans le <a href=\"https://docs.software-univention.de/manual-%s."
 "html#ad-connector:ad-zertifikat\" target=\"_blank\">manuel d'UCS</a>."
 
 #: umc/js/adconnector/SetupWizard.js:328
@@ -402,15 +404,16 @@ msgstr ""
 "certificats d'Active Directory crée ce certificat."
 
 #: umc/js/adconnector/SetupWizard.js:197
+#, javascript-format
 msgid ""
 "To enable an encrypted connection, a certification authority needs to be "
 "configured on the Active Directory server. All steps necessary are described "
-"in the <a href=\"https://docs.software-univention.de/manual-4.4.html#ad-connector:ad-"
+"in the <a href=\"https://docs.software-univention.de/manual-%s.html#ad-connector:ad-"
 "zertifikat\" target=\"_blank\">UCS manual</a>."
 msgstr ""
 "Pour activer une connexion chiffrée, une autorité de certification doit être "
 "configurée sur le serveur Active Directory. Toutes les étapes nécessaires "
-"sont décrites dans le <a href=\"https://docs.software-univention.de/manual-4.4.html#ad-"
+"sont décrites dans le <a href=\"https://docs.software-univention.de/manual-%s.html#ad-"
 "connector:ad-zertifikat\" target=\"_blank\">manuel d'UCS</a>."
 
 #: umc/js/adconnector/SetupWizard.js:251

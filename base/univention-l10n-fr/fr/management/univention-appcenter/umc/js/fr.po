@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2017-05-28 19:27+0900\n"
+"PO-Revision-Date: 2019-09-20 14:16+0200\n"
 "Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
 "Language-Team: French <fr@workshop-chapina.com>\n"
 "Language: fr\n"
@@ -1366,8 +1366,9 @@ msgid "an unknown amount of"
 msgstr "un nombre inconnu de"
 
 #: umc/js/appcenter/requirements.js:286
-msgid "https://docs.software-univention.de/manual-4.4.html#ad-connector:password-dienst"
-msgstr "https://docs.software-univention.de/manual-4.4.html#ad-connector:password-dienst"
+#, javascript-format
+msgid "https://docs.software-univention.de/manual-%s.html#ad-connector:password-dienst"
+msgstr "https://docs.software-univention.de/manual-%s.html#ad-connector:password-dienst"
 
 #: umc/js/appcenter/AppCenterPage.js:92
 msgid "https://www.univention.com/products/univention-app-center/vote-for-app/"

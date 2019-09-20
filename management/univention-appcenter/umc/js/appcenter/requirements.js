@@ -78,6 +78,7 @@ define([
 		}
 	});
 
+	var version = tools.status('ucsVersion').split('-')[0];
 	return {
 		Requirement: Requirement,
 		must_not_have_concurrent_operation: new Requirement({
@@ -298,7 +299,7 @@ define([
 				return _('Open the documentation');
 			},
 			solution: function() {
-				window.open(_('https://docs.software-univention.de/manual-4.4.html#ad-connector:password-dienst'));
+				window.open(_('https://docs.software-univention.de/manual-%s.html#ad-connector:password-dienst', version));
 			}
 		}),
 		shall_not_be_docker_if_discouraged: new Requirement({

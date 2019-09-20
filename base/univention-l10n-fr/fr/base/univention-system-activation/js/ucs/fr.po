@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: univention-apache\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
 "POT-Creation-Date: 2017-03-21 20:54+0100\n"
-"PO-Revision-Date: 2016-07-06 22:04+0100\n"
+"PO-Revision-Date: 2019-09-20 14:25+0200\n"
 "Last-Translator: Éric Bischoff <ebischoff@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
@@ -110,13 +110,14 @@ msgid "License request."
 msgstr "Demande de licence."
 
 #: js/ucs/app.js:209
+#, javascript-format
 msgid ""
 "More details about the activation can be found in the <a "
-"href=\"https://docs.software-univention.de/manual-4.4.html#central:license\" "
+"href=\"https://docs.software-univention.de/manual-%s.html#central:license\" "
 "target=\"_blank\">UCS manual</a>."
 msgstr ""
 "Vous pouvez trouver davantage d'informations sur l'activation dans le <a "
-"href=\"https://docs.software-univention.de/manual-4.4.html#central:license\" "
+"href=\"https://docs.software-univention.de/manual-%s.html#central:license\" "
 "target=\"_blank\">Manuel UCS</a>."
 
 #: js/ucs/app.js:197

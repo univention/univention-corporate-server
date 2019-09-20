@@ -2012,8 +2012,9 @@ msgid "mail objects"
 msgstr "Mail-Objekte"
 
 #: umc/js/udm/DetailPage.js:1409
-msgid "manual"
-msgstr "handbuch"
+#, javascript-format
+msgid "https://docs.software-univention.de/manual-%s.html#central:extendedattrs"
+msgstr "https://docs.software-univention.de/handbuch-%s.html#central:extendedattrs"
 
 #: umc/js/udm/wizards/FirstPageWizard.js:474
 msgid "network object"

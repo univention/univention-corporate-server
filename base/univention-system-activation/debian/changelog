@@ -1,3 +1,9 @@
+univention-system-activation (4.0.0-7) unstable; urgency=medium
+
+  * Bug #50205: Update links from UCS 4.x-y to UCS 4.4-2
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 20 Sep 2019 14:32:29 +0200
+
 univention-system-activation (4.0.0-6) unstable; urgency=medium
 
   * Bug #46790: Show traceback if univention-ldapsearch fails
