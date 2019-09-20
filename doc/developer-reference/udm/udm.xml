@@ -684,7 +684,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 				<indexterm><primary>Extended Attributes</primary><secondary>Hooks</secondary></indexterm>
 			</title>
 			<remark>PMH: Bug #25053</remark>
-			<!-- http://wiki.univention.de/index.php?title=Erstellen_eines_erweiterten_Attributs_mit_Hook -->
+			<!-- https://wiki.univention.de/index.php?title=Erstellen_eines_erweiterten_Attributs_mit_Hook -->
 			<para>
 				Hooks provide a mechanism to pre- and post-process the values of Extended Attributes.
 				Normally <acronym>UDM</acronym> properties are stored as-is in <acronym>LDAP</acronym> attributes.
@@ -702,7 +702,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 				By default they don't modify any request but do log all calls.
 				This class should be used as a base class for inheritance.
 			</para>
-			<!-- http://wiki.univention.de/index.php?title=Entwicklung_und_Integration_eigener_Module_in_Univention_Directory_Manager -->
+			<!-- https://wiki.univention.de/index.php?title=Entwicklung_und_Integration_eigener_Module_in_Univention_Directory_Manager -->
 			<variablelist>
 				<varlistentry>
 					<term>
@@ -882,7 +882,7 @@ udm settings/extended_attribute modify \
 		<para>
 		  The development of Univention Directory Manager modules is currently only documented in
 		  Univention Wiki (currently only available in German):
-		  <ulink url="http://wiki.univention.de/index.php?title=Entwicklung_und_Integration_eigener_Module_in_Univention_Directory_Manager"/>
+		  <ulink url="https://wiki.univention.de/index.php?title=Entwicklung_und_Integration_eigener_Module_in_Univention_Directory_Manager"/>
 		</para>
 	</section>
 

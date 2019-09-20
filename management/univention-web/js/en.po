@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-18 15:37+0200\n"
-"PO-Revision-Date: 2019-09-20 15:09+0200\n"
+"PO-Revision-Date: 2019-09-20 15:40+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "Language: en\n"
@@ -514,11 +514,11 @@ msgid "expected result"
 msgstr ""
 
 #: js/hooks/default_menu_entries.js:171
-msgid "http://help.univention.com"
+msgid "https://help.univention.com/"
 msgstr ""
 
 #: js/hooks/default_menu_entries.js:165
-msgid "http://www.univention.com"
+msgid "https://www.univention.com/"
 msgstr ""
 
 #: js/hooks/default_menu_entries.js:185

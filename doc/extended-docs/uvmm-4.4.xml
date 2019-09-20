@@ -248,7 +248,7 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 						<step>
 							<para>
 								For Windows the <emphasis>GPLPV drivers for Xen</emphasis> must be removed completely, otherwise Windows will crash.
-								The procedure is described in the <ulink url="http://wiki.univention.de/index.php?title=Installing-signed-GPLPV-drivers">Univention Wiki: Installing signed GPLPV drivers</ulink>.
+								The procedure is described in the <ulink url="https://wiki.univention.de/index.php?title=Installing-signed-GPLPV-drivers">Univention Wiki: Installing signed GPLPV drivers</ulink>.
 							</para>
 							<para>
 								After a reboot the new <emphasis>VirtIO drivers for QEMU/KVM</emphasis> can be installed.

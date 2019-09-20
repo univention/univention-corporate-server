@@ -35,4 +35,4 @@ even if it is a whitelisted user or in a whitelisted group.
 A user must be in a whitelist to use the service.
 
 == Reference ==
-[1] http://wiki.univention.com/index.php?title=UCS_3.0_UMC_API_for_Modules
+[1] https://wiki.univention.com/index.php?title=UCS_3.0_UMC_API_for_Modules
