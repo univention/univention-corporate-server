@@ -46,7 +46,7 @@ Description: UCS - Linux kernel (standard)
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-kernel-headers
 Architecture: any
@@ -57,7 +57,7 @@ Description: UCS - Linux kernel headers (standard)
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-kernel-source
 Architecture: all
@@ -68,4 +68,4 @@ Description: UCS - Linux kernel source (standard)
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/

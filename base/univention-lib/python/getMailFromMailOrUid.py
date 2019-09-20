@@ -7,7 +7,7 @@ get primaryMailAddress and uid from primaryMailAddress or uid
 from __future__ import print_function
 # Copyright 2011-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #

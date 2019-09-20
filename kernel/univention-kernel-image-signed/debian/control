@@ -21,7 +21,7 @@ Description: UCS - Linux kernel (standard)
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: linux-image-4.9.0-11-amd64-signed
 Architecture: amd64
@@ -38,7 +38,7 @@ Description: UCS - Linux kernel (standard)
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: linux-image-4.9.0-11-686-pae-signed
 Architecture: i386
@@ -60,4 +60,4 @@ Description: UCS - Linux kernel (standard)
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/

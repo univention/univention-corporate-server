@@ -7,7 +7,7 @@ Build-Depends: debhelper (>= 9),
  ucslint-univention,
  univention-config-dev
 Standards-Version: 3.7.3
-Homepage: http://www.univention.de/
+Homepage: https://www.univention.de/
 
 Package: univention-virtual-machine-manager-node-common
 Architecture: all

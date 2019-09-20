@@ -27,7 +27,7 @@ Description: UCS - Modules for connector sychronisation
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: python-univention-connector-ad
 Architecture: all
@@ -45,7 +45,7 @@ Description: UCS - Modules for connector sychronisation
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-ad-connector
 Architecture: all
@@ -71,7 +71,7 @@ Description: UCS - Modules for sync UCS and Active Directory
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-ad-connector-exchange
 Architecture: all
@@ -87,7 +87,7 @@ Description: UCS - AD-connector Exchange configuration
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-management-console-module-adconnector
 Architecture: all
@@ -102,5 +102,5 @@ Description: UMC module for Univention AD Connector
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 

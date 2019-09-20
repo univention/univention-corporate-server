@@ -65,7 +65,7 @@ def main():
 	with ucr_test.UCSTestConfigRegistry() as ucr:
 		handler_unset(['squid/krb5auth'])
 		# url = ucr.get('proxy/filter/redirecttarget')
-		url = 'http://www.univention.de'
+		url = 'http://www.univention.de/'
 		host = '%(hostname)s.%(domainname)s' % ucr
 
 		# list of tuples (passwd, expect_wrong_password) used in the test

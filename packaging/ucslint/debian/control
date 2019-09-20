@@ -29,7 +29,7 @@ Description: Check packaging for UCS
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: ucslint-univention
 Architecture: all
@@ -48,4 +48,4 @@ Description: Univention-specific ucslint tests
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/

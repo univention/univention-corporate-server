@@ -3,7 +3,7 @@
   <general>
     <author value="Univention GmbH" />
     <email value="packages@univention.de" />
-    <homepage value="http://www.univention.de" />
+    <homepage value="https://www.univention.de/" />
     <comment value="Plastik theme with green decorations and background image, supplemented with a few Univention-icons." />
     <version value="0.1" />
   </general>

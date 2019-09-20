@@ -31,7 +31,7 @@ Description: UCS transitional package - base configuration
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-config
 Architecture: all
@@ -50,7 +50,7 @@ Description: UCS - configuration manager
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-config-dev
 Architecture: all
@@ -63,7 +63,7 @@ Description: UCS - configuration manager (development files)
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: libunivention-config0
 Architecture: any
@@ -75,7 +75,7 @@ Description: UCS - C library to configuration manager
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: libunivention-config-dev
 Architecture: any
@@ -89,7 +89,7 @@ Description: UCS - C interface to configuration manager (development files)
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: python-univention-config-registry
 Architecture: all
@@ -106,7 +106,7 @@ Description: UCS - Python 2 interface to configuration registry
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 
 Package: python3-univention-config-registry
@@ -122,4 +122,4 @@ Description: UCS - Python 3 interface to configuration registry
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/

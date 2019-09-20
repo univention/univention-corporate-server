@@ -6,7 +6,7 @@
 # in the local filesystem. With parameter --move the GPOs can be moved
 # to a given backup directory.
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #

@@ -28,7 +28,7 @@ Description: UCS - Modules for connector synchronisation
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: python3-univention-connector-s4
 Architecture: all
@@ -47,7 +47,7 @@ Description: UCS - Modules for connector synchronisation
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-s4-connector
 Architecture: all
@@ -71,4 +71,4 @@ Description: UCS - Modules for sync UCS and Samba4 LDB directory
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/

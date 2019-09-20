@@ -45,7 +45,7 @@ Description: UCS System Setup tools
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-system-setup-boot
 Architecture: all
@@ -79,7 +79,7 @@ Description: Starting univention-system-setup on next boot
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: di-univention-system-setup
 Package-Type: udeb
@@ -103,7 +103,7 @@ Description: Start Univention System Setup
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-management-console-module-setup
 Architecture: all
@@ -133,4 +133,4 @@ Description: UMC module for Univention System Setup
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/

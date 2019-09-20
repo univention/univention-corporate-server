@@ -3,7 +3,7 @@
 #
 # Copyright 2013-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
@@ -175,7 +175,7 @@ Description: UCS - Test package
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 ''' % {'package_name': self._package_name}
 
 		self.create_debian_file_from_buffer('control', control)

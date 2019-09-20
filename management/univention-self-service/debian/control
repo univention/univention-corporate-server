@@ -29,7 +29,7 @@ Description: Univention Self Service
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-self-service-master
 Architecture: all
@@ -45,7 +45,7 @@ Description: Univention Self Service
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-self-service-passwordreset-umc
 Architecture: all
@@ -64,7 +64,7 @@ Description: Password reset module for Univention Self Service.
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/
 
 Package: univention-self-service-invitation
 Architecture: all
@@ -76,4 +76,4 @@ Description: Invitation module for Univention Self Service.
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+ refer to: https://www.univention.de/

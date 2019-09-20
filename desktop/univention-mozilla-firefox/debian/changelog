@@ -208,7 +208,7 @@ univention-mozilla-firefox (4.0.1-2) unstable; urgency=low
 
 univention-mozilla-firefox (4.0.1-1) unstable; urgency=low
 
-  * switch the firefox startsite to http://www.univention.de/ucd-
+  * switch the firefox startsite to https://www.univention.de/ucd-
     welcome-2_3-0.html. Bug #16057
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 22 Oct 2009 11:45:13 +0200
@@ -246,7 +246,7 @@ univention-mozilla-firefox (3.0.2-2) unstable; urgency=low
 
 univention-mozilla-firefox (3.0.2-1) unstable; urgency=low
 
-  * switch the firefox startsite to http://www.univention.de/ucd-
+  * switch the firefox startsite to https://www.univention.de/ucd-
     welcome-2_2-0.html. Bug #13644
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Mar 2009 14:43:59 +0100

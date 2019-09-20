@@ -55,7 +55,7 @@ def main():
 	squid = SimpleSquid()
 	try:
 		with ucr_test.UCSTestConfigRegistry() as ucr:
-			url = 'http://www.univention.de'
+			url = 'http://www.univention.de/'
 			host = '%(hostname)s.%(domainname)s' % ucr
 			hostname = '%(hostname)s' % ucr
 

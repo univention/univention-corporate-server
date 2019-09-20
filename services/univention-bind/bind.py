@@ -11,7 +11,7 @@ configuration directory (should-state) and reload/restart as appropriate.
 """
 # Copyright 2001-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #

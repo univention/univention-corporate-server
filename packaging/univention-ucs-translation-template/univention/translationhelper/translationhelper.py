@@ -3,7 +3,7 @@
 #
 # Copyright 2013-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
@@ -465,7 +465,7 @@ def write_debian_rules(debian_dir_path):
 #
 # Copyright 2016-{year} Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
@@ -568,7 +568,7 @@ Description: UCS Management Console translation files
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: http://www.univention.de/""" % (translation_package_name, translation_creator, translation_creator, socket.getfqdn(), translation_package_name))
+ refer to: https://www.univention.de/""" % (translation_package_name, translation_creator, translation_creator, socket.getfqdn(), translation_package_name))
 	# compat
 	with open(os.path.join(new_package_dir_debian, 'compat'), 'w') as f:
 		f.write("7")

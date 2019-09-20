@@ -8,7 +8,7 @@ Univention fork of :py:mod:`urllib2` supporting verified |SSL| connections.
 """
 # Copyright 2012-2019 Univention GmbH
 #
-# http://www.univention.de/
+# https://www.univention.de/
 #
 # All rights reserved.
 #
