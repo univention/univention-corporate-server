@@ -241,7 +241,7 @@ class Instance(Base):
 			return {'show_warning': False}
 		version = self.uu.get_ucs_version()
 		try:
-			url = 'http://updates.software-univention.de/download/ucs-maintenance/{}.yaml'.format(version)
+			url = 'https://updates.software-univention.de/download/ucs-maintenance/{}.yaml'.format(version)
 			response = requests.get(url, timeout=10)
 			if not response.ok:
 				response.raise_for_status()

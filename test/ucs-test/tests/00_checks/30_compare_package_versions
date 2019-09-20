@@ -338,10 +338,10 @@ if __name__ == '__main__':
     check_versions = parse_arguments()
     apt_init()  # init the apt
 
-    repositories_to_check = ('http://updates-test.software-univention.de/',
-                             'http://software-univention.de/',
-                             'http://download.univention.de/',
-                             'http://updates.software-univention.de/')
+    repositories_to_check = (
+        'https://updates-test.software-univention.de/',
+        'https://updates.software-univention.de/',
+    )
 
     try:
         for repo_url in repositories_to_check:
