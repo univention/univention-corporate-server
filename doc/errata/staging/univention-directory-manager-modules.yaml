@@ -10,4 +10,6 @@ desc: |
    has been improved.
  * The DHCP assignment for computers with mutliple MAC addresses has been
    repaired.
-bug: [50288, 44937]
+ * Some code cleanup in the UDM users/user filter for disabled and locked
+   properties has been done.
+bug: [50288, 44937, 50236]

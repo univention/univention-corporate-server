@@ -2304,61 +2304,45 @@ class object(univention.admin.handlers.simpleLdap):
 		elif filter.variable == 'disabled':
 			# substring match for userPassword is not possible
 			if filter.value == '1':
-				filter.variable = '&(shadowExpire=1)(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
-				filter.value = '[ULD       ]))'
+				filter.transform_to_conjunction(univention.admin.filter.parse('(&(shadowExpire=1)(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))'))
 			elif filter.value == '0':
-				filter.variable = '&(!(shadowExpire=1))(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))(!(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
-				filter.value = '[ULD       ])))'
-			if filter.value == 'none':
-				filter.variable = '&(!(shadowExpire=1))(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))(!(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
-				filter.value = '[ULD       ])))'
+				filter.transform_to_conjunction(univention.admin.filter.parse('(&(!(shadowExpire=1))(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))(!(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ]))))'))
+			elif filter.value == 'none':
+				filter.transform_to_conjunction(univention.admin.filter.parse('(&(!(shadowExpire=1))(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))(!(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ]))))'))
 			elif filter.value == 'all':
-				filter.variable = '&(shadowExpire=1)(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
-				filter.value = '[ULD       ]))'
+				filter.transform_to_conjunction(univention.admin.filter.parse('(&(shadowExpire=1)(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))'))
 			elif filter.value == 'posix':
 				filter.variable = 'shadowExpire'
 				filter.value = '1'
 			elif filter.value == 'kerberos':
-				filter.variable = 'krb5KDCFlags:1.2.840.113556.1.4.803:'
-				filter.value = '128'
+				filter.transform_to_conjunction(univention.admin.filter.parse('(&(krb5KDCFlags:1.2.840.113556.1.4.803:=128))'))
 			elif filter.value == 'windows':
-				filter.variable = '|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
-				filter.value = '=[ULD       ])'
+				filter.transform_to_conjunction(univention.admin.filter.parse('(|(sambaAcctFlags=[UD       ])(sambaAcctFlags==[ULD       ]))'))
 			elif filter.value == 'windows_kerberos':
-				filter.variable = '&(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
-				filter.value = '=[ULD       ]))'
+				filter.transform_to_conjunction(univention.admin.filter.parse('(&(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags==[ULD       ])))'))
 			elif filter.value == 'windows_posix':
-				filter.variable = '&(shadowExpire=1)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
-				filter.value = '=[ULD       ]))'
+				filter.transform_to_conjunction(univention.admin.filter.parse('(&(shadowExpire=1)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags==[ULD       ])))'))
 			elif filter.value == 'posix_kerberos':
-				filter.variable = '&(shadowExpire=1)(krb5KDCFlags'
-				filter.value = '254)'
+				filter.transform_to_conjunction(univention.admin.filter.parse('(&(shadowExpire=1)(krb5KDCFlags=254))'))
 			elif filter.value == '*':
 				filter.variable = 'uid'
 		elif filter.variable == 'locked':
 			if filter.value == '1':
-				filter.variable = '|(krb5KDCFlags:1.2.840.113556.1.4.803:=131072)(sambaAcctFlags=[UL       ])(sambaAcctFlags'
-				filter.value = '[ULD       ])'
+				filter.transform_to_conjunction(univention.admin.filter.parse('(|(krb5KDCFlags:1.2.840.113556.1.4.803:=131072)(sambaAcctFlags=[UL       ])(sambaAcctFlags=[ULD       ]))'))
 			elif filter.value == '0':
-				filter.variable = '&(!(krb5KDCFlags:1.2.840.113556.1.4.803:=131072))(!(sambaAcctFlags=[UL       ]))(!(sambaAcctFlags'
-				filter.value = '[ULD       ]))'
-			if filter.value in ['posix', 'windows', 'all', 'none']:
+				filter.transform_to_conjunction(univention.admin.filter.parse('(&(!(krb5KDCFlags:1.2.840.113556.1.4.803:=131072))(!(sambaAcctFlags=[UL       ]))(!(sambaAcctFlags=[ULD       ])))'))
+			elif filter.value in ['posix', 'windows', 'all', 'none']:
 				if filter.value == 'all':
-					filter.variable = '|(sambaAcctFlags=[UL       ])(sambaAcctFlags'
-					filter.value = '[ULD       ])'
-					# filter.variable='|(sambaAcctFlags=[UL       ])(sambaAcctFlags=[ULD       ])(userPassword'
-					# filter.value = '{crypt}!*)'
-				if filter.value == 'windows':
-					filter.variable = '|(sambaAcctFlags=[UL       ])(sambaAcctFlags'
-					filter.value = '[ULD       ])'
-				# if filter.value == 'posix':
+					filter.transform_to_conjunction(univention.admin.filter.parse('(|(sambaAcctFlags=[UL       ])(sambaAcctFlags=[ULD       ]))'))
+					# filter.transform_to_conjunction(univention.admin.filter.parse('(|(sambaAcctFlags=[UL       ])(sambaAcctFlags=[ULD       ])(userPassword={crypt}!*))'))
+				elif filter.value == 'windows':
+					filter.transform_to_conjunction(univention.admin.filter.parse('(|(sambaAcctFlags=[UL       ])(sambaAcctFlags=[ULD       ]))'))
+				# elif filter.value == 'posix':
 				#	filter.variable='userPassword'
 				#	filter.value = '{crypt}!*'
-				if filter.value == 'none':
-					# filter.variable='&(!(sambaAcctFlags=[UL       ]))(!(sambaAcctFlags=[ULD       ]))(!(userPassword'
-					# filter.value = '{crypt}!*))'
-					filter.variable = '&(!(sambaAcctFlags=[UL       ]))(!(sambaAcctFlags'
-					filter.value = '[ULD       ]))'
+				elif filter.value == 'none':
+					# filter.transform_to_conjunction(univention.admin.filter.parse('(&(!(sambaAcctFlags=[UL       ]))(!(sambaAcctFlags=[ULD       ]))(!(userPassword={crypt}!*)))'))
+					filter.transform_to_conjunction(univention.admin.filter.parse('(&(!(sambaAcctFlags=[UL       ]))(!(sambaAcctFlags=[ULD       ])))'))
 			elif filter.value == '*':
 				filter.variable = 'uid'
 		else:
