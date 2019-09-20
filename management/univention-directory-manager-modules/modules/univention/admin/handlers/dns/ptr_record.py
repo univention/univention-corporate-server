@@ -218,8 +218,8 @@ class object(univention.admin.handlers.simpleLdap):
 			univention.admin.filter.expression('objectClass', 'dNSZone'),
 			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
 			univention.admin.filter.conjunction('|', [
-				univention.admin.filter.expression('zoneName', '*.in-addr.arpa'),
-				univention.admin.filter.expression('zoneName', '*.ip6.arpa'),
+				univention.admin.filter.expression('zoneName', '*.in-addr.arpa', escape=False),
+				univention.admin.filter.expression('zoneName', '*.ip6.arpa', escape=False),
 			]),
 		])
 
@@ -229,21 +229,21 @@ def rewrite_rev(filter, subnet):
 
 	>>> rewrite_rev(expression('ip', '1.2.3.4'), subnet='1.2')
 	conjunction('&', [expression('zoneName', '2.1.in-addr.arpa', '='), expression('relativeDomainName', '4.3', '=')])
-	>>> rewrite_rev(expression('ip', '1.2.3.*'), subnet='1.2')
+	>>> rewrite_rev(expression('ip', '1.2.3.*', escape=False), subnet='1.2')
 	conjunction('&', [expression('zoneName', '2.1.in-addr.arpa', '='), expression('relativeDomainName', '*.3', '=')])
-	>>> rewrite_rev(expression('ip', '1.2.*.*'), subnet='1.2')
+	>>> rewrite_rev(expression('ip', '1.2.*.*', escape=False), subnet='1.2')
 	conjunction('&', [expression('zoneName', '2.1.in-addr.arpa', '='), expression('relativeDomainName', '*.*', '=')])
-	>>> rewrite_rev(expression('ip', '1.2.*.4'), subnet='1.2')
+	>>> rewrite_rev(expression('ip', '1.2.*.4', escape=False), subnet='1.2')
 	conjunction('&', [expression('zoneName', '2.1.in-addr.arpa', '='), expression('relativeDomainName', '4.*', '=')])
-	>>> rewrite_rev(expression('ip', '1.2.*'), subnet='1.2')
+	>>> rewrite_rev(expression('ip', '1.2.*', escape=False), subnet='1.2')
 	conjunction('&', [expression('zoneName', '2.1.in-addr.arpa', '='), expression('relativeDomainName', '*', '=')])
 	>>> rewrite_rev(expression('ip', '1:2:3:4:5:6:7:8'), subnet='0001:0002')
 	conjunction('&', [expression('zoneName', '2.0.0.0.1.0.0.0.ip6.arpa', '='), expression('relativeDomainName', '8.0.0.0.7.0.0.0.6.0.0.0.5.0.0.0.4.0.0.0.3.0.0.0', '=')])
-	>>> rewrite_rev(expression('ip', '1:2:3:4:5:6:7:*'), subnet='0001:0002')
+	>>> rewrite_rev(expression('ip', '1:2:3:4:5:6:7:*', escape=False), subnet='0001:0002')
 	conjunction('&', [expression('zoneName', '2.0.0.0.1.0.0.0.ip6.arpa', '='), expression('relativeDomainName', '*.7.0.0.0.6.0.0.0.5.0.0.0.4.0.0.0.3.0.0.0', '=')])
-	>>> rewrite_rev(expression('ip', '1:2:3:4:5:6:*:8'), subnet='0001:0002')
+	>>> rewrite_rev(expression('ip', '1:2:3:4:5:6:*:8', escape=False), subnet='0001:0002')
 	conjunction('&', [expression('zoneName', '2.0.0.0.1.0.0.0.ip6.arpa', '='), expression('relativeDomainName', '8.0.0.0.*.6.0.0.0.5.0.0.0.4.0.0.0.3.0.0.0', '=')])
-	>>> rewrite_rev(expression('ip', '1:2:3:*'), subnet='0001:0002')
+	>>> rewrite_rev(expression('ip', '1:2:3:*', escape=False), subnet='0001:0002')
 	conjunction('&', [expression('zoneName', '2.0.0.0.1.0.0.0.ip6.arpa', '='), expression('relativeDomainName', '*.3.0.0.0', '=')])
 	"""
 	if isinstance(filter, conjunction):
@@ -267,7 +267,7 @@ def rewrite_rev(filter, subnet):
 		addr_net, addr_host = ['.'.join(reversed(_)) for _ in addr[:prefix], addr[prefix:]]
 		filter = conjunction('&', [
 			expression('zoneName', addr_net + suffix),
-			expression('relativeDomainName', addr_host or '*'),
+			expression('relativeDomainName', addr_host or '*', escape=False),
 		])
 	return filter
 

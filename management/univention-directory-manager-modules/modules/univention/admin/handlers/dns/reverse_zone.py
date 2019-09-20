@@ -260,8 +260,8 @@ class object(univention.admin.handlers.simpleLdap):
 			univention.admin.filter.expression('objectClass', 'dNSZone'),
 			univention.admin.filter.expression('relativeDomainName', '@'),
 			univention.admin.filter.conjunction('|', [
-				univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP4),
-				univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP6)
+				univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP4, escape=False),
+				univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP6, escape=False)
 			]),
 		])
 

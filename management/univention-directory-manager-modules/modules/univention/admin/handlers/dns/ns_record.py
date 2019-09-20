@@ -127,11 +127,11 @@ def lookup_filter(filter_s=None, superordinate=None):
 	lookup_filter_obj = \
 		univention.admin.filter.conjunction('&', [
 			univention.admin.filter.expression('objectClass', 'dNSZone'),
-			univention.admin.filter.expression('nSRecord', '*'),
+			univention.admin.filter.expression('nSRecord', '*', escape=False),
 			univention.admin.filter.conjunction('!', [
 				univention.admin.filter.conjunction('|', [
 					univention.admin.filter.expression('relativeDomainName', '@'),
-					univention.admin.filter.expression('zoneName', '*.in-addr.arpa'),
+					univention.admin.filter.expression('zoneName', '*.in-addr.arpa', escape=False),
 				])
 			])
 		])

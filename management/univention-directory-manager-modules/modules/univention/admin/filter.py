@@ -96,8 +96,8 @@ class expression(object):
 		"""
 		Create LDAP filter expression.
 
-		>>> e = expression('objectClass', '*')
-		>>> e = expression('objectClass', '*', '!=')
+		>>> e = expression('objectClass', '*', escape=False)
+		>>> e = expression('objectClass', '*', '!=', escape=False)
 		>>> e = expression('uidNumber', '10', '<') # < <= > >=
 		"""
 		self.variable = variable
@@ -109,9 +109,9 @@ class expression(object):
 		"""
 		Return string representation.
 
-		>>> str(expression('objectClass', '*'))
+		>>> str(expression('objectClass', '*', escape=False))
 		'(objectClass=*)'
-		>>> str(expression('objectClass', '*', '!='))
+		>>> str(expression('objectClass', '*', '!=', escape=False))
 		'(!(objectClass=*))'
 		>>> str(expression('uidNumber', '10', '<'))
 		'(!(uidNumber>=10))'
@@ -148,9 +148,9 @@ class expression(object):
 		"""
 		Return canonical representation.
 
-		>>> expression('objectClass', '*')
+		>>> expression('objectClass', '*', escape=False)
 		expression('objectClass', '*', '=')
-		>>> expression('objectClass', '*', '!=')
+		>>> expression('objectClass', '*', '!=', escape=False)
 		expression('objectClass', '*', '!=')
 		"""
 		return '%s(%r, %r, %r)' % (self.__class__._type_, self.variable, self.value, self.operator)

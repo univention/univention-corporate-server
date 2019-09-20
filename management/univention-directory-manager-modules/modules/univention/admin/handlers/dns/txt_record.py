@@ -128,13 +128,13 @@ class object(univention.admin.handlers.simpleLdap):
 		return univention.admin.filter.conjunction('&', [
 			univention.admin.filter.expression('objectClass', 'dNSZone'),
 			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
-			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.in-addr.arpa')]),
-			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('cNAMERecord', '*')]),
-			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('sRVRecord', '*')]),
-			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('aRecord', '*')]),
-			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('aAAARecord', '*')]),
-			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('mXRecord', '*')]),
-			univention.admin.filter.expression('tXTRecord', '*')
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.in-addr.arpa', escape=False)]),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('cNAMERecord', '*', escape=False)]),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('sRVRecord', '*', escape=False)]),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('aRecord', '*', escape=False)]),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('aAAARecord', '*', escape=False)]),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('mXRecord', '*', escape=False)]),
+			univention.admin.filter.expression('tXTRecord', '*', escape=False)
 		])
 
 	@classmethod
