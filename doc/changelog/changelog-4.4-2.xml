@@ -80,6 +80,9 @@
 						<package>patch</package> (<u:cve>2018-1000156</u:cve> <u:cve>2019-13636</u:cve> <u:cve>2019-13638</u:cve>) (<u:bug>49926</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
+						<package>php7.0</package> (<u:cve>2019-11034</u:cve> <u:cve>2019-11035</u:cve> <u:cve>2019-11036</u:cve> <u:cve>2019-11038</u:cve> <u:cve>2019-11039</u:cve> <u:cve>2019-11040</u:cve> <u:cve>2019-11041</u:cve> <u:cve>2019-11042</u:cve>) (<u:bug>50238</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
 						<package>postgresql-9.6</package> (<u:cve>2019-10208</u:cve>) (<u:bug>49991</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
@@ -130,6 +133,7 @@
 						<member><package>base-files</package></member>
 						<member><package>basez</package></member>
 						<member><package>biomaj-watcher</package></member>
+						<member><package>bird</package></member>
 						<member><package>bogl</package></member>
 						<member><package>chaosreader</package></member>
 						<member><package>c-icap-modules</package></member>
@@ -176,6 +180,7 @@
 						<member><package>nginx</package></member>
 						<member><package>node-growl</package></member>
 						<member><package>node-ws</package></member>
+						<member><package>opendmarc</package></member>
 						<member><package>openssh</package></member>
 						<member><package>open-vm-tools</package></member>
 						<member><package>passwordsafe</package></member>
