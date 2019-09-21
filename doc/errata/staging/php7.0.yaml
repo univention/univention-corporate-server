@@ -1,0 +1,29 @@
+product: ucs
+release: "4.4"
+version: [1]
+scope: ucs_4.4-0-errata4.4-1
+src: php7.0
+fix: 7.0.33-0+deb9u5
+desc: |
+ This update addresses the following issues:
+ * Heap buffer overflow in function xif_process_IFD_TAG (CVE-2019-11034)
+ * Heap buffer overflow in function exif_iif_add_value (CVE-2019-11035)
+ * Buffer over-read in exif_process_IFD_TAG function leading to information
+   disclosure (CVE-2019-11036)
+ * Information disclosure in function gdImageCreateFromXbm() (CVE-2019-11038)
+ * Out-of-bounds read due to integer overflow in function
+   iconv_mime_decode_headers() (CVE-2019-11039)
+ * Information disclosure in function exif_read_data() leads to denial of
+   service (CVE-2019-11040)
+ * Heap buffer over-read in exif_scan_thumbnail() (CVE-2019-11041)
+ * Heap buffer over-read in exif_process_user_comment() (CVE-2019-11042)
+bug: [50238]
+cve:
+- CVE-2019-11034
+- CVE-2019-11035
+- CVE-2019-11036
+- CVE-2019-11038
+- CVE-2019-11039
+- CVE-2019-11040
+- CVE-2019-11041
+- CVE-2019-11042
