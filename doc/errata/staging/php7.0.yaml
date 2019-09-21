@@ -6,17 +6,17 @@ src: php7.0
 fix: 7.0.33-0+deb9u5
 desc: |
  This update addresses the following issues:
- * heap buffer overflow in function xif_process_IFD_TAG (CVE-2019-11034)
- * heap buffer overflow in function exif_iif_add_value (CVE-2019-11035)
- * buffer over-read in exif_process_IFD_TAG function leading to information
+ * Heap buffer overflow in function xif_process_IFD_TAG (CVE-2019-11034)
+ * Heap buffer overflow in function exif_iif_add_value (CVE-2019-11035)
+ * Buffer over-read in exif_process_IFD_TAG function leading to information
    disclosure (CVE-2019-11036)
- * information disclosure in function gdImageCreateFromXbm() (CVE-2019-11038)
- * out-of-bounds read due to integer overflow in function
+ * Information disclosure in function gdImageCreateFromXbm() (CVE-2019-11038)
+ * Out-of-bounds read due to integer overflow in function
    iconv_mime_decode_headers() (CVE-2019-11039)
- * information disclosue in function exif_read_data() leads to denial of
+ * Information disclosure in function exif_read_data() leads to denial of
    service (CVE-2019-11040)
- * heap buffer over-read in exif_scan_thumbnail() (CVE-2019-11041)
- * heap buffer over-read in exif_process_user_comment() (CVE-2019-11042)
+ * Heap buffer over-read in exif_scan_thumbnail() (CVE-2019-11041)
+ * Heap buffer over-read in exif_process_user_comment() (CVE-2019-11042)
 bug: [50237]
 cve:
 - CVE-2019-11034
