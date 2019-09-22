@@ -4,7 +4,7 @@
 """
 # Copyright 2019 Univention GmbH
 #
-# https://www.univention.de/
+# http://www.univention.de/
 #
 # All rights reserved.
 #
@@ -27,7 +27,7 @@
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
-# <https://www.gnu.org/licenses/>.
+# <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
 
@@ -285,12 +285,15 @@ class BooleanType(TypeHint):
 	_openapi_type = 'boolean'
 
 	def decode_value(self, value):
-		if self.syntax.parse(True) == value:
-			return True
-		elif self.syntax.parse(False) == value:
-			return False
-		elif self.syntax.parse(None) == value:
-			return None
+		try:
+			if self.syntax.parse(True) == value:
+				return True
+			elif self.syntax.parse(False) == value:
+				return False
+			elif self.syntax.parse(None) == value:
+				return None
+		except univention.admin.uexceptions.valueError:
+			pass
 		ud.debug(ud.ADMIN, ud.WARN, '%s: %s: not a boolean: %r' % (self.property_name, self.syntax.name, value,))
 		return value
 
