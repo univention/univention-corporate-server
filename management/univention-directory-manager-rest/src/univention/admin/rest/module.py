@@ -2484,10 +2484,10 @@ class Objects(FormBase, ReportingBase):
 		return root
 
 	@sanitize_body_arguments(
-		position=DNSanitizer(required=True),
+		position=DNSanitizer(required=False, allow_none=True),
 		superordinate=DNSanitizer(required=False, allow_none=True),
-		options=DictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=True),
-		policies=DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()), required=True),
+		options=DictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=False),
+		policies=DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()), required=False),
 		properties=DictSanitizer({}, required=True),
 	)
 	@tornado.gen.coroutine
