@@ -43,6 +43,7 @@ import signal
 from functools import partial
 import argparse
 import traceback
+import logging
 
 import tornado.log
 import tornado.ioloop
@@ -82,17 +83,22 @@ class Server(object):
 		application = Application(serve_traceback=ucr.is_true('directory/manager/rest/show-tracebacks', True))
 
 		server = HTTPServer(application)
+		if args.port:
+			server.bind(args.port)
 		server.start(args.cpus)
 
-		if args.port:
-			server.listen(args.port)
 		if args.unix_socket:
 			socket = bind_unix_socket(args.unix_socket)
 			server.add_socket(socket)
 		signal.signal(signal.SIGTERM, partial(self.signal_handler_stop, server))
 		signal.signal(signal.SIGINT, partial(self.signal_handler_stop, server))
 		signal.signal(signal.SIGHUP, self.signal_handler_reload)
-		tornado.log.enable_pretty_logging()
+
+		channel = logging.StreamHandler()
+		channel.setFormatter(tornado.log.LogFormatter(fmt='%(color)s%(asctime)s  %(levelname)10s      (%(process)9d) :%(end_color)s %(message)s', datefmt='%d.%m.%y %H:%M:%S'))
+		logger = logging.getLogger()
+		logger.setLevel(logging.INFO)
+		logger.addHandler(channel)
 
 		try:
 			tornado.ioloop.IOLoop.current().start()
