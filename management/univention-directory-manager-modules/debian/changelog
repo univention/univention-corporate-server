@@ -1,3 +1,10 @@
+univention-directory-manager-modules (14.0.14-1) unstable; urgency=medium
+
+  * Bug #27816: Bug #50047: do not set sambaRID to invalid empty string
+    for not existing objects
+
+ -- Florian Best <best@univention.de>  Sun, 22 Sep 2019 13:09:22 +0200
+
 univention-directory-manager-modules (14.0.13-17) unstable; urgency=medium
 
   * Bug #50033: Sync more attributes in s4-connector

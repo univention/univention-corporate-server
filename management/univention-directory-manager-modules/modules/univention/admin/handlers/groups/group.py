@@ -328,13 +328,14 @@ class object(univention.admin.handlers.simpleLdap):
 		try:
 			caching_timeout = int(configRegistry.get('directory/manager/web/modules/groups/group/caching/uniqueMember/timeout', '300'))
 			self.cache_uniqueMember.set_timeout(caching_timeout)
-		except:
+		except Exception:
 			pass
 
 		if 'samba' in self.options:
 			sid = self.oldattr.get('sambaSID', [''])[0]
-			pos = sid.rfind('-')
-			self.info['sambaRID'] = sid[pos + 1:]
+			sid, has_rid, rid = sid.rpartition('-')
+			if has_rid and rid.isdigit():
+				self.info['sambaRID'] = rid
 
 		if self.exists():
 			self['memberOf'] = self.lo.searchDn(filter=filter_format('(&(objectClass=posixGroup)(uniqueMember=%s))', [self.dn]))
