@@ -3645,12 +3645,12 @@ def quote_dn(dn):
 	if isinstance(dn, six.text_type):
 		dn = dn.encode('utf-8')
 	# duplicated slashes in URI path's can be normalized to one slash. Therefore we need to escape the slashes.
-	return quote(dn.replace('//', '%/'))  # .replace('/', quote('/', safe=''))
+	return quote(dn.replace('//', ',/=/,'))  # .replace('/', quote('/', safe=''))
 
 
 def unquote_dn(dn):
 	# tornado already decoded it (UTF-8)
-	return dn.replace('%/', '//')
+	return dn.replace(',/=/,', '//')
 
 
 def last_modified(date):
