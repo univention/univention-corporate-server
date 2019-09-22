@@ -52,7 +52,7 @@
 		<itemizedlist>
 			<listitem><para>
 					Die UDM REST API ist erstmals als stabiles Release enthalten und wird auf allen DC Master und DC Backup Instanzen aktiviert.
-					Weitere Informationen sind in einem <ulink url="https://www.univention.de/blog-de/2019/07/udm-rest-api-betaversion-veroeffentlicht/">Blogartikel zur API</ulink> und den <ulink url="https://docs.software-univention.de/release-notes-4.4-1-de.html">UCS 4.4-1 Release Notes</ulink> zu finden.
+					Weitere Informationen sind in einem <ulink url="https://www.univention.de/blog-de/2019/07/udm-rest-api-betaversion-veroeffentlicht/">Artikel zur API</ulink> und den <ulink url="https://docs.software-univention.de/release-notes-4.4-1-de.html">UCS 4.4-1 Release Notes</ulink> zu finden.
 			</para></listitem>
 			<listitem><para>
 					Verbesserungen bei der Fehlerbehandlung für die Generierung von Lizenzen während der initialen Konfiguration.
@@ -61,10 +61,10 @@
 					In &ucsUVMM; (UVMM) lässt sich der Autostart für Instanzen und der virtualisierte CPU-Typ konfigurieren.
 			</para></listitem>
 			<listitem><para>
-					Durch das Update der Docker Engine erhalten ISVs mehr Möglichkeiten unter anderem durch Unterstützung von zusätzlichen Features in den Docker Compose Files.
+					Durch das Update der <phrase>Docker Engine</phrase> erhalten App Anbieter mehr Möglichkeiten unter anderem durch Unterstützung von zusätzlichen Features in den <phrase>Docker Compose</phrase> Dateien.
 			</para></listitem>
 			<listitem><para>
-					Mit 4.4-2 wird die Aktualisierung auf den Stand von Debian point release 9.11 abgeschlossen.
+					Mit 4.4-2 wird die Aktualisierung auf den Stand des Debian Release 9.11 abgeschlossen.
 			</para></listitem>
 			<listitem><para>
 					Diverse Security Updates wurden in UCS 4.4-2 integriert, bspw. für Samba, den Linux Kernel und Dovecot.
