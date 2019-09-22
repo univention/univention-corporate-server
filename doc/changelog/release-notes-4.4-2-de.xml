@@ -44,26 +44,27 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Mit &ucsUCS; 4.4-2 steht das erste Point-Release für &ucsUCS; (UCS) 4.4 zur
+			Mit &ucsUCS; 4.4-2 steht das zweite Point-Release für &ucsUCS; (UCS) 4.4 zur
 			Verfügung. Es umfasst Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie
 			diverse Detailverbesserungen und Fehlerkorrekturen. Die wichtigsten Änderungen im Überblick:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-					Durch die Konfiguration von eigenen <wordasword>Stylesheets</wordasword> kann das Aussehen der Login- und <guimenu>Self Service</guimenu> Webseiten individuell angepasst werden.
+					Die UDM REST API ist erstmals als stabiles Release enthalten und wird auf allen DC Master und DC Backup Instanzen aktiviert.
+					Weitere Informationen sind in einem <ulink url="https://www.univention.de/blog-de/2019/07/udm-rest-api-betaversion-veroeffentlicht/">Blogartikel zur API</ulink> und den <ulink url="https://docs.software-univention.de/release-notes-4.4-1-de.html">UCS 4.4-1 Release Notes</ulink> zu finden.
 			</para></listitem>
 			<listitem><para>
-					Es gibt deutliche Performance-Verbesserungen des Directory Managers in Umgebungen mit umfangreichen LDAP-Strukturen.
+					Verbesserungen bei der Fehlerbehandlung für die Generierung von Lizenzen während der initialen Konfiguration.
 			</para></listitem>
 			<listitem><para>
-					Im App Center gibt ein neues Feature Hinweise auf ergänzende Apps, basierend auf den in der Umgebung bereits installierten Apps.
+					In &ucsUVMM; (UVMM) lässt sich der Autostart für Instanzen und der virtualisierte CPU-Typ konfigurieren.
 			</para></listitem>
 			<listitem><para>
-					Eine Betaversion der neuen UDM Rest API wurde veröffentlicht.
+					Durch das Update der Docker Engine erhalten ISVs mehr Möglichkeiten unter anderem durch Unterstützung von zusätzlichen Features in den Docker Compose Files.
 			</para></listitem>
 			<listitem><para>
-					Einige UCS-Pakete wurden für die zukünftige Migration zu Python 3 angepasst.
+					Mit 4.4-2 wird die Aktualisierung auf den Stand von Debian point release 9.11 abgeschlossen.
 			</para></listitem>
 			<listitem><para>
 					Diverse Security Updates wurden in UCS 4.4-2 integriert, bspw. für Samba, den Linux Kernel und Dovecot.
@@ -249,7 +250,7 @@ Checking ldap_schema ...                          OK
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS <wordasword>4.4-0</wordasword>:
+			Aufgeführt sind die Änderungen seit UCS <wordasword>4.4-1</wordasword>:
 		</para>
 
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-2.xml" xpointer="xpointer(/chapter/section)"/>

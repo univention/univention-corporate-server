@@ -44,26 +44,27 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With &ucsUCS; 4.4-2, the first point release of &ucsUCS; (UCS) 4.4 is now
+			With &ucsUCS; 4.4-2, the second point release of &ucsUCS; (UCS) 4.4 is now
 			available. It provides several feature improvements and extensions, new properties as well as
 			various improvements and bugfixes. Here is an overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-					By configuring <wordasword>stylesheets</wordasword>, the look and feel of the login and self-service websites can be customized.
+					The UDM REST API is included for the first time as a stable release and is activated on all DC Master and DC Backup instances.
+					More information can be found in a <ulink url="https://www.univention.com/blog-en/2019/07/udm-rest-api-beta-version-released/">blog article about the API</ulink> and the <ulink url="https://docs.software-univention.de/release-notes-4.4-1-en.html">UCS 4.4-1 release notes</ulink>.
 			</para></listitem>
 			<listitem><para>
-					There are significant performance improvements of the Directory Manager in environments with extensive LDAP structures.
+					Improvements in error handling for license generation during initial configuration.
 			</para></listitem>
 			<listitem><para>
-					A new feature in the App Center gives hints for additional apps, based on the apps already installed in the environment.
+					In &ucsUVMM; (UVMM) the autostart for instances and the virtualized CPU type can be configured.
 			</para></listitem>
 			<listitem><para>
-					A beta version of the new UDM Rest API has been released.
+					With the update of the Docker Engine ISVs get more possibilities by supporting additional features in the Docker Compose Files.
 			</para></listitem>
 			<listitem><para>
-					The source code of some UCS packages has been adapted for future migration to Python 3.
+					With 4.4-2 the update to Debian point release 9.11 is completed.
 			</para></listitem>
 			<listitem><para>
 					Various security updates have been integrated into UCS 4.4-2, e.g. Samba, the Linux kernel and Dovecot.
@@ -248,7 +249,7 @@ Checking ldap_schema ...                          OK
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS <wordasword>4.4-0</wordasword>:
+			Listed are the changes since UCS <wordasword>4.4-1</wordasword>:
 		</para>
 
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-2.xml" xpointer="xpointer(/chapter/section)"/>
