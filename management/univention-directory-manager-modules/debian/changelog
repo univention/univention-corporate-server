@@ -2,6 +2,7 @@ univention-directory-manager-modules (14.0.14-4) unstable; urgency=medium
 
   * Bug #50236: fix users/user filter rewrite to not create invalid
     filter.expression instances
+  * Bug #50239: fix mapping of allowedEmailUsers, allowedEmailGroups
 
  -- Florian Best <best@univention.de>  Thu, 10 Oct 2019 11:34:49 +0200
 

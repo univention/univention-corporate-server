@@ -120,18 +120,12 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('members', 'univentionMailMember')
 mapping.register('mailAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToString)
+mapping.register('allowedEmailUsers', 'univentionAllowedEmailUsers')
+mapping.register('allowedEmailGroups', 'univentionAllowedEmailGroups')
 
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
-
-	def open(self):
-		univention.admin.handlers.simpleLdap.open(self)
-
-		self['allowedEmailUsers'] = self.oldattr.get('univentionAllowedEmailUsers', [])
-		self['allowedEmailGroups'] = self.oldattr.get('univentionAllowedEmailGroups', [])
-
-		self.save()
 
 	def _ldap_post_create(self):
 		if self['mailAddress']:
@@ -167,17 +161,6 @@ class object(univention.admin.handlers.simpleLdap):
 					raise univention.admin.uexceptions.mailAddressUsed
 
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
-
-		oldEmailUsers = self.oldinfo.get('allowedEmailUsers', [])
-		newEmailUsers = self.info.get('allowedEmailUsers', [])
-		if oldEmailUsers != newEmailUsers:
-			ml.append(('univentionAllowedEmailUsers', oldEmailUsers, newEmailUsers))
-
-		oldEmailGroups = self.oldinfo.get('allowedEmailGroups', [])
-		newEmailGroups = self.info.get('allowedEmailGroups', [])
-		if oldEmailGroups != newEmailGroups:
-			ml.append(('univentionAllowedEmailGroups', oldEmailGroups, newEmailGroups))
-
 		return ml
 
 

@@ -12,4 +12,6 @@ desc: |
    repaired.
  * Some code cleanup in the UDM users/user filter for disabled and locked
    properties has been done.
-bug: [50288, 44937, 50236]
+ * The properties allowedEmailUsers and allowedEmailGroups of groups/group
+   and mail/lists have been added to the UDM module mapping.
+bug: [50288, 44937, 50236, 50239]

@@ -246,6 +246,8 @@ mapping.register('sambaGroupType', 'sambaGroupType', None, univention.admin.mapp
 mapping.register('mailAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToString)
 mapping.register('adGroupType', 'univentionGroupType', None, univention.admin.mapping.ListToString)
 mapping.register('sambaPrivileges', 'univentionSambaPrivilegeList')
+mapping.register('allowedEmailUsers', 'univentionAllowedEmailUsers')
+mapping.register('allowedEmailGroups', 'univentionAllowedEmailGroups')
 
 
 def _case_insensitive_in_list(dn, list):
@@ -374,9 +376,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 			time_end = time.time()
 			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: open(): member check duration: %1.2fs' % (time_end - time_start))
-
-			self['allowedEmailUsers'] = self.oldattr.get('univentionAllowedEmailUsers', [])
-			self['allowedEmailGroups'] = self.oldattr.get('univentionAllowedEmailGroups', [])
 
 			self.save()
 
@@ -617,16 +616,6 @@ class object(univention.admin.handlers.simpleLdap):
 			memberUidAdd = list(set(memberUidAdd) - set(oldMemberUids))
 			if memberUidAdd:
 				ml.append(('memberUid', '', memberUidAdd))
-
-		oldEmailUsers = self.oldinfo.get('allowedEmailUsers', [])
-		newEmailUsers = self.info.get('allowedEmailUsers', [])
-		if set(oldEmailUsers) != set(newEmailUsers):  # compare sets since the order of values does not matter
-			ml.append(('univentionAllowedEmailUsers', oldEmailUsers, newEmailUsers))
-
-		oldEmailGroups = self.oldinfo.get('allowedEmailGroups', [])
-		newEmailGroups = self.info.get('allowedEmailGroups', [])
-		if set(oldEmailGroups) != set(newEmailGroups):  # compare sets since the order of values does not matter
-			ml.append(('univentionAllowedEmailGroups', oldEmailGroups, newEmailGroups))
 
 		return ml
 
