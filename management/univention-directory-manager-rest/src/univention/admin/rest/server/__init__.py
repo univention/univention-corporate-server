@@ -53,6 +53,7 @@ import tornado.process
 import pycurl
 
 from univention.management.console.config import ucr
+import univention.debug as ud
 
 
 class Server(tornado.web.RequestHandler):
@@ -94,6 +95,7 @@ class Server(tornado.web.RequestHandler):
 		try:
 			response = yield client.fetch(request, raise_error=True)
 		except tornado.curl_httpclient.CurlError as exc:
+			ud.debug(ud.MAIN, ud.WARN, 'Reaching service failed: %s' % (exc,))
 			# happens during starting the service and subprocesses when the UNIX sockets aren't available yet
 			self.set_status(503)
 			self.add_header('Retry-After', '3')  # Tell clients, we are ready in 3 seconds
@@ -140,7 +142,10 @@ class Server(tornado.web.RequestHandler):
 	@classmethod
 	def main(cls):
 		parser = argparse.ArgumentParser(prog='python -m univention.admin.rest.server')
-		parser.parse_args()
+		parser.add_argument('-d', '--debug', type=int, default=2)
+		args = parser.parse_args()
+		ud.init('stdout', ud.FLUSH, ud.NO_FUNCTION)
+		ud.set_level(ud.MAIN, args.debug)
 		tornado.httpclient.AsyncHTTPClient.configure('tornado.curl_httpclient.CurlAsyncHTTPClient')
 		tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-management-console-module-udm')
 		cls.start_processes()
