@@ -299,6 +299,15 @@
 			</itemizedlist>
 		</section>
 
+		<section id="changelog:umc:portal">
+			<title>Univention Portal</title>
+			<itemizedlist>
+						<listitem><simpara>
+							The portal server is restarted after the initial system setup. (<u:bug>50235</u:bug>)
+						</simpara></listitem>
+			</itemizedlist>
+		</section>
+
 		<section id="changelog:umc:server">
 			<title>Univention Management Console server</title>
 			<itemizedlist>
