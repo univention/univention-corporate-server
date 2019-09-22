@@ -1,3 +1,9 @@
+univention-portal (3.0.2-2) unstable; urgency=medium
+
+  * Bug #50235: Restart portal server after system setup
+
+ -- Erik Damrose <damrose@univention.de>  Sun, 22 Sep 2019 20:22:06 +0200
+
 univention-portal (3.0.2-1) unstable; urgency=medium
 
   * Bug #50235: Make restart script executable

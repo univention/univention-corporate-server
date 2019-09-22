@@ -38,6 +38,6 @@ if is_ucr_true system/setup/boot/installer; then
 fi
 
 # Bug #50235
-service univention-portal restart
+service univention-portal-server restart
 
 exit 0
