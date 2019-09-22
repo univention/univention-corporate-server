@@ -268,16 +268,23 @@ class PropertiesSanitizer(DictSanitizer):
 				except udm_errors.valueMayNotChange:
 					if obj[property_name] == value:  # UDM does not check equality before raising the exception
 						continue
-					raise udm_errors.valueMayNotChange(udm_errors.valueMayNotChange.message)
+					raise udm_errors.valueMayNotChange()  # the original exception is ugly!
 				except udm_errors.valueRequired:
-					if value is None and property_name in password_properties:
-						MODULE.info('Ignore unsetting password property %s' % (property_name,))
+					if value is None:
+						# examples where this happens:
+						# "password" of users/user: because password is required but on modify() None is send, which must not alter the current password
+						# "unixhome" of users/user: is required, set to None in the request, the default value is set afterwards in create(). Bug #50053
+						if property_name in password_properties:
+							MODULE.info('Ignore unsetting password property %s' % (property_name,))
+						else:
+							current_value = obj.info.pop(property_name, None)
+							MODULE.info('Unsetting property %s value %r' % (property_name, current_value))
 						continue
 					raise
 			except (udm_errors.valueInvalidSyntax, udm_errors.valueError, udm_errors.valueMayNotChange, udm_errors.valueRequired, udm_errors.noProperty) as exc:
 				multi_error = MultiValidationError()
 				try:
-					self.raise_formatted_validation_error(_('The property %(name)s has an invalid value: %(details)s'), property_name, value, details=str(exc))
+					self.raise_formatted_validation_error(_('The property %(name)s has an invalid value: %(details)s'), property_name, value, details=str(UDM_Error(exc)))
 				except ValidationError as exc:
 					multi_error.add_error(exc, property_name)
 					raise multi_error
@@ -309,29 +316,6 @@ class PropertySanitizer(Sanitizer):
 			return codec.encode_json(value)
 		except udm_errors.valueError as exc:
 			self.raise_validation_error(_('The property %(name)s has an invalid value: %(details)s'), details=str(exc))
-
-		# check each element if 'value' is a list
-		if isinstance(value, (tuple, list)) and property_obj.multivalue:
-			errors = []
-			new_value = []
-			for val in value:
-				try:
-					if val is not None:
-						val = property_obj.syntax.parse(val)
-					new_value.append(val)
-				except (udm_errors.valueInvalidSyntax, udm_errors.valueError, TypeError) as exc:
-					errors.append(str(exc))
-			if errors:
-				self.raise_validation_error(_('The property %(property)s has an invalid value: %(details)s'), property=property_obj.short_description, details='\n'.join(errors))
-			value = new_value
-		else:  # otherwise we have a single value
-			try:
-				if value is not None:
-					value = property_obj.syntax.parse(value)
-			except (udm_errors.valueInvalidSyntax, udm_errors.valueError, TypeError) as exc:
-				self.raise_validation_error(_('The property %(property)s has an invalid value: %(details)s'), property=property_obj.short_description, details=str(exc))
-
-		return value
 
 
 class BoolSanitizer(ChoicesSanitizer):
