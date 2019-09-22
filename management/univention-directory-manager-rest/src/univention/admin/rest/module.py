@@ -2607,7 +2607,7 @@ class Object(FormBase, Resource):
 
 		props = {}
 		props.update(self._options(object_type, obj.dn))
-		props['uri'] = self.urljoin(quote_dn(obj.dn))
+		props['uri'] = self.abspath(obj.module, quote_dn(obj.dn))
 		props.update(self.get_representation(module, obj, ['*'], self.ldap_connection, copy))
 		for reference in module.get_references(obj):
 			# TODO: add a reference for the "position" object?!

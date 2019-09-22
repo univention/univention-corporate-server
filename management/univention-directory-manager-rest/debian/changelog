@@ -1,3 +1,9 @@
+univention-directory-manager-rest (9.0.16-2) unstable; urgency=medium
+
+  * Bug #50175: fix URI in object representation
+
+ -- Florian Best <best@univention.de>  Sun, 22 Sep 2019 15:43:02 +0200
+
 univention-directory-manager-rest (9.0.16-1) unstable; urgency=medium
 
   * Bug #27816: further enhancements for the release
