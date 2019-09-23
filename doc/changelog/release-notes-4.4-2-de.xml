@@ -61,7 +61,7 @@
 					In &ucsUVMM; (UVMM) lässt sich der automatische Start für Instanzen und der virtuellen CPU-Typ konfigurieren.
 			</para></listitem>
 			<listitem><para>
-					Durch das Update der <phrase>Docker Engine</phrase> erhalten App Anbieter mehr Möglichkeiten unter anderem durch Unterstützung von zusätzlichen Features in den <phrase>Docker Compose</phrase> Dateien. Durch das Update sind einige Docker-basierte Apps nicht mehr voll funktionsfähig; der Neustart des Servers ist zeitnah erforderlich.
+					Durch das Update der <phrase>Docker Engine</phrase> erhalten App Anbieter mehr Möglichkeiten unter anderem durch Unterstützung von zusätzlichen Features in den <phrase>Docker Compose</phrase> Dateien. Das Update erfordert einen Neustart des Servers.
 			</para></listitem>
 			<listitem><para>
 					Mit 4.4-2 wird die Aktualisierung auf den Stand des Debian Release 9.11 abgeschlossen.
@@ -71,7 +71,7 @@
 					Eine vollständige Liste von Security- und Paketupdates ist in <xref linkend="relnotes:changelog"/> zu finden.
 			</para></listitem>
 			<listitem><para>
-					Eine Reihe zusätzlicher Attribute wird bei der Synchronisation zw. UDM/OpenLDAP und Samba/AD Benutzerobjeckten berücksichtigt
+					Eine Reihe zusätzlicher Attribute wird bei der Synchronisation zwischen UDM/OpenLDAP und Samba/AD Benutzerobjekten berücksichtigt
 					(<property>unixhome</property>, <property>employeeType</property>, <property>employeeNumber</property>,
 					<property>loginShell</property>, <property>title</property>, <property>gidNumber</property>, <property>uidNumber</property>,
 					<property>departmentNumber</property>, <property>roomNumber</property>, <property>jpegPhoto</property>,
@@ -184,7 +184,7 @@ Checking ldap_schema ...                          OK
 			<para>
 				Folgende Attribute wurde am UDM Modul <classname>users/user</classname> hinzugefügt: <property>initials</property>,
 				<property>postOfficeBox</property>, <property>preferredLanguage</property>, <property>physicalDeliveryOfficeName</property>,
-				<property>preferredDeliveryMethod</property>. Jedes Extended Attribute für diese Eigenschaften sollte dahingehende geändert werden,
+				<property>preferredDeliveryMethod</property>. Jedes erweiterte Attribut für diese Eigenschaften sollte dahingehende geändert werden,
 				dass es den Namen des UDM Attributes verwendet.
 			</para>
 		</section>
