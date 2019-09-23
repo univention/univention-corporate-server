@@ -70,6 +70,14 @@
 					Diverse Security Updates wurden in UCS 4.4-2 integriert, bspw. für Samba, den Linux Kernel und Dovecot.
 					Eine vollständige Liste von Security- und Paketupdates ist in <xref linkend="relnotes:changelog"/> zu finden.
 			</para></listitem>
+			<listitem><para>
+					Eine Reihe zusätzlicher Attribute wird bei der Synchronisation zw. UDM/OpenLDAP und Samba/AD Benutzerobjeckten berücksichtigt
+					(<property>unixhome</property>, <property>employeeType</property>, <property>employeeNumber</property>,
+					<property>loginShell</property>, <property>title</property>, <property>gidNumber</property>, <property>uidNumber</property>,
+					<property>departmentNumber</property>, <property>roomNumber</property>, <property>jpegPhoto</property>,
+					<property>userCertificate</property>, <property>initials</property>, <property>physicalDeliveryOfficeName</property>,
+					<property>postOfficeBox</property>, <property>preferredLanguage</property>).
+			</para></listitem>
 		</itemizedlist>
 	</chapter>
 
@@ -171,6 +179,16 @@ Checking ldap_schema ...                          OK
 
 	<chapter id="relnotes:packages">
 		<title>Hinweise zum Einsatz einzelner Pakete</title>
+		<section id="relnotes:udm">
+			<title>&ucsUDM;</title>
+			<para>
+				Folgende Attribute wurde am UDM Modul <classname>users/user</classname> hinzugefügt: <property>initials</property>,
+				<property>postOfficeBox</property>, <property>preferredLanguage</property>, <property>physicalDeliveryOfficeName</property>,
+				<property>preferredDeliveryMethod</property>. Jedes Extended Attribute für diese Eigenschaften sollte dahingehende geändert werden,
+				dass es den Namen des UDM Attributes verwendet.
+			</para>
+		</section>
+
 		<section id="relnotes:notifier">
 			<title>&ucsUDN;</title>
 			<para>
