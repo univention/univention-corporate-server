@@ -1,3 +1,9 @@
+univention-updater (14.0.2-3) unstable; urgency=medium
+
+  * Bug #50166: Stop Docker Apps during 4.2-2 update
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 23 Sep 2019 16:53:43 +0200
+
 univention-updater (14.0.2-2) unstable; urgency=medium
 
   * Bug #50166: Explicitely set reboot/required to yes because of the docker
