@@ -146,6 +146,9 @@ fi
 # Bug #44188: recreate and reload packetfilter rules to make sure the system is accessible
 service univention-firewall restart >>"$UPDATER_LOG" 2>&1
 
+# Bug #50166: Docker update better works with a subsequent reboot
+ucr set update/reboot/required=true
+
 echo "
 
 
