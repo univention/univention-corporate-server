@@ -182,9 +182,9 @@ Checking ldap_schema ...                          OK
 		<section id="relnotes:udm">
 			<title>&ucsUDM;</title>
 			<para>
-				Folgende Attribute wurde am UDM Modul <classname>users/user</classname> hinzugefügt: <property>initials</property>,
+				Folgende Attribute wurden dem UDM Modul <classname>users/user</classname> hinzugefügt: <property>initials</property>,
 				<property>postOfficeBox</property>, <property>preferredLanguage</property>, <property>physicalDeliveryOfficeName</property>,
-				<property>preferredDeliveryMethod</property>. Jedes erweiterte Attribut für diese Eigenschaften sollte dahingehende geändert werden,
+				<property>preferredDeliveryMethod</property>. Jedes erweiterte Attribut für diese Eigenschaften sollte dahingehend geändert werden,
 				dass es den Namen des UDM Attributes verwendet.
 			</para>
 		</section>
