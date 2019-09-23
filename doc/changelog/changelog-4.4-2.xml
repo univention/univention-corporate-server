@@ -339,6 +339,9 @@
 			<title>Univention App Center</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The Docker Engine has been updated to 18.09.7 (<u:bug>50166</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					A problem in the update from <package>docker</package> to <package>docker-compose</package> Apps has been fixed (<u:bug>50196</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
