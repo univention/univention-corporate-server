@@ -32,6 +32,9 @@
 						<package>exim4</package> (<u:cve>2019-13917</u:cve> <u:cve>2019-15846</u:cve>) (<u:bug>49925</u:bug> <u:bug>50132</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
+						<package>expat</package> (<u:cve>2019-15903</u:cve>) (<u:bug>50242</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
 						<package>faad2</package> (<u:cve>2018-19502</u:cve> <u:cve>2018-19503</u:cve> <u:cve>2018-19504</u:cve> <u:cve>2018-20194</u:cve> <u:cve>2018-20195</u:cve> <u:cve>2018-20197</u:cve> <u:cve>2018-20198</u:cve> <u:cve>2018-20357</u:cve> <u:cve>2018-20358</u:cve> <u:cve>2018-20359</u:cve> <u:cve>2018-20361</u:cve> <u:cve>2018-20362</u:cve> <u:cve>2019-15296</u:cve>) (<u:bug>50194</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
