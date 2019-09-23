@@ -1,3 +1,10 @@
+univention-updater (14.0.2-2) unstable; urgency=medium
+
+  * Bug #50166: Explicitely set reboot/required to yes because of the docker
+    update
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 23 Sep 2019 12:02:59 +0200
+
 univention-updater (14.0.2-1) unstable; urgency=medium
 
   * Bug #50200: Change group for prometheus
