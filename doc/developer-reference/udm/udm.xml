@@ -1700,6 +1700,445 @@ udm settings/syntax create "$@" --ignore_exists \
 		</variablelist>
 	</section>
 
+	<section id="udm:rest_api">
+		<title>UDM REST API</title>
+		<para>
+			The package <package>univention-directory-manager-rest</package> provides a REST API
+			which allows you to inspect, modify, create and delete UDM objects via HTTP requests.
+		</para>
+
+		<para>
+			The API is accessible from https://&lt;SERVERNAME-OR-IP&gt;/univention/udm/.
+		</para>
+
+		<section id="udm:rest_api:authentication">
+			<title>Authentication</title>
+			<para>
+				To be able to use the API you have to authenticate with a
+				user account which is a member of an authorized group.
+				The group authorization is managed via the 
+				<envar>directory/manager/rest/authorized-groups/&lt;group-name&gt;</envar> UCR variables.
+				The API comes predefined with the UCR variables
+				<envar>directory/manager/rest/authorized-groups/domain-admins</envar>,
+				<envar>directory/manager/rest/authorized-groups/dc-backup</envar> and
+				<envar>directory/manager/rest/authorized-groups/dc-slaves</envar>
+				which authorizes the groups
+				<systemitem class="groupname">Domain Admins</systemitem>,
+				<systemitem class="groupname">DC Backup Hosts</systemitem> and
+				<systemitem class="groupname">DC Slave Hosts</systemitem> respectively.
+			</para>
+			<para>
+				To authorize additional groups you just have to create a new UCR variable.
+				If you haven't already, create the group you want to authorize:
+				<programlisting language="sh">
+udm groups/group create --position="cn=groups,$(ucr get ldap/base)" --set name="UDM API Users"
+				</programlisting>
+				Now set the UCR variable to allow the group members to use the API.
+				<programlisting language="sh">
+ucr set directory/manager/rest/authorized-groups/udm-api-users="cn=UDM API Users,cn=groups,$(ucr get ldap/base)"
+				</programlisting>
+				<note>
+					<para>
+						The authorization of a group only allows the group members to access the API in the first place.
+						After that, which actions the user can perform with the API is regulated via ACLs.
+						For example a normal <systemitem class="groupname">Domain Users</systemitem> user
+						can't create or delete objects.
+					</para>
+				</note>
+			</para>
+			<para>
+				After you add or modify a <envar>directory/manager/rest/authorized-groups/&lt;group-name&gt;</envar>
+				UCR variable you have to restart the API service for the changes to take effect.
+				<programlisting language="sh">
+service univention-directory-manager-rest restart
+				</programlisting>
+			</para>
+		</section>
+		<section id="udm:rest_api:overview">
+			<title>API overview</title>
+			<para>
+				You can interact with the API by sending HTTP requests to resources
+				and by using different HTTP verbs you can achieve different results.
+			</para>
+			<table>
+	  		<title>HTTP verbs</title>
+				<tgroup cols="2">
+		  		<colspec colnum="1" colname="col1" colwidth="1*"/>
+		  		<colspec colnum="2" colname="col2" colwidth="2*"/>
+		  		<thead>
+						<row>
+			  			<entry>Verb</entry>
+			  			<entry>Description</entry>
+						</row>
+		  		</thead>
+		  		<tbody>
+						<row>
+			  			<entry>GET</entry>
+			  			<entry>Retrieve a resource</entry>
+						</row>
+
+						<row>
+			  			<entry>POST</entry>
+			  			<entry>Create a resource</entry>
+						</row>
+
+						<row>
+			  			<entry>PUT</entry>
+			  			<entry>Replace or move a resource</entry>
+						</row>
+
+						<row>
+			  			<entry>PATCH</entry>
+			  			<entry>Modify or move a resource</entry>
+						</row>
+
+						<row>
+			  			<entry>DELETE</entry>
+			  			<entry>Delete a resource</entry>
+						</row>
+		  		</tbody>
+				</tgroup>
+			</table>
+			<para>
+				For an in depth overview over which resources are available, which HTTP methods are allowed on them
+				and which query parameters are available for a given HTTP method visit
+				https://&lt;SERVERNAME-OR-IP&gt;/univention/udm/schema/ with a browser.
+			</para>
+			<para>
+				By visiting https://&lt;SERVERNAME-OR-IP&gt;/univention/udm/ with a browser you can navigate and use
+				the API interactively.
+			</para>
+		</section>
+		<section id="udm:rest_api:usage_examples">
+			<title>API usage examples</title>
+			<para>
+				In the following section you will learn how to create, modify, search and delete a user via the API.
+			</para>
+			<para>
+				While you try out these examples you will often see the <wordasword>"_links"</wordasword>
+				and "_embedded" properties in the repsonses.
+				These properties are defined by <wordasword>HAL</wordasword>, the Hypertext Application Language,
+				which is used in the API.
+				These properties contain links which can be used to traverse the API.
+				For example the <wordasword>"_links"</wordasword> property of the response to a paginated query
+				could contain the <wordasword>"next"</wordasword> property which points to the next page.
+			</para>
+			<para>
+				For more information on <wordasword>HAL</wordasword> please refer to the
+				<ulink url="https://tools.ietf.org/html/draft-kelly-json-hal-08">Internet Draft for HAL</ulink>.
+			</para>
+			<section id="udm:rest_api:usage_examples:post">
+				<title>Create a user via a POST request</title>
+				<para>
+					To create a new user your first want to get a template that describes a valid user
+					and has all attributes filled out with default values.
+				</para>
+				<para>
+					You can get the template for an UDM module with:
+					<programlisting language="sh">
+curl -X GET -H "Accept: application/json" \
+  https://api-user:password@&lt;SERVERNAME-OR-IP&gt;/univention/udm/&lt;module&gt;/add 
+					</programlisting>
+				</para>
+				<para>
+					So for the users/user module you get the template with:
+					<programlisting language="sh">
+curl -X GET -H "Accept: application/json" \
+  https://api-user:password@&lt;SERVERNAME-OR-IP&gt;/univention/udm/users/user/add 
+					</programlisting>
+				</para>
+				<para>
+					To work with the template you can save it into a file and to make it more readable
+					you can use something like pythons <wordasword>json.tool</wordasword>.
+					<programlisting language="sh">
+curl -X GET -H "Accept: application/json" \
+  https://api-user:password@&lt;SERVERNAME-OR-IP&gt;/univention/udm/users/user/add \
+  | python -m json.tool > user_template.json
+					</programlisting>
+				</para>
+				<para>
+					The JSON file contains meta information (keys that start with underscore '_') that
+					are not necessary to create a user. These can be filtered out to make it easier
+					to work with the template file.
+					The following example produces such a condensed template:
+					<programlisting language="sh">
+curl -X GET -H "Accept: application/json" \
+  https://api-user:password@&lt;SERVERNAME-OR-IP&gt;/univention/udm/users/user/add \
+  | python -c 'import sys, json; \
+    template = json.load(sys.stdin); \
+    template = {key:value for key, value in template.items() if not key.startswith("_")}; \
+    json.dump(template, sys.stdout, indent=4)' > user_template.json
+					</programlisting>
+				</para>
+				<para>
+					The content of <filename>user_template.json</filename> should look something like this.
+					<programlisting language="js">
+{
+    "position": "cn=users,dc=mydomain,dc=intranet", 
+    "objectType": "users/user", 
+    "options": {
+        "pki": false
+    }, 
+    "policies": {
+        "policies/pwhistory": [], 
+        "policies/umc": [], 
+        "policies/desktop": []
+    }, 
+    "properties": {
+        "mobileTelephoneNumber": [], 
+        "certificateSubjectOrganisationalUnit": null, 
+        "groups": [], 
+        "sambahome": null, 
+        "departmentNumber": [], 
+        "certificateSerial": null, 
+        "certificateSubjectCommonName": null, 
+        "primaryGroup": "cn=Domain Users,cn=groups,dc=mydomain,dc=intranet", 
+        "uidNumber": null, 
+        "disabled": false, 
+        "unlock": false, 
+        "street": null, 
+        "postcode": null, 
+        "scriptpath": null, 
+        "sambaPrivileges": [], 
+        "description": null, 
+        "certificateIssuerCommonName": null, 
+        "mailForwardCopyToSelf": false, 
+        "employeeType": null, 
+        "homedrive": null, 
+        "overridePWLength": null, 
+        "title": null, 
+        "mailAlternativeAddress": [], 
+        "userCertificate": null, 
+        "organisation": null, 
+        "homeSharePath": "", 
+        "certificateIssuerOrganisationalUnit": null, 
+        "e-mail": [], 
+        "userexpiry": null, 
+        "pwdChangeNextLogin": null, 
+        "mailHomeServer": null, 
+        "unixhome": "/home/", 
+        "gecos": "", 
+        "sambaUserWorkstations": [], 
+        "preferredLanguage": null, 
+        "certificateIssuerState": null, 
+        "pagerTelephoneNumber": [], 
+        "username": null, 
+        "umcProperty": [], 
+        "certificateIssuerCountry": null, 
+        "homeTelephoneNumber": [], 
+        "shell": "/bin/bash", 
+        "homePostalAddress": [], 
+        "firstname": null, 
+        "certificateIssuerOrganisation": null, 
+        "lastname": null, 
+        "city": null, 
+        "certificateSubjectMail": null, 
+        "mailForwardAddress": [], 
+        "phone": [], 
+        "gidNumber": null, 
+        "birthday": null, 
+        "employeeNumber": null, 
+        "objectFlag": [], 
+        "sambaLogonHours": null, 
+        "certificateSubjectLocation": null, 
+        "displayName": "", 
+        "password": null, 
+        "lockedTime": null, 
+        "sambaRID": null, 
+        "secretary": [], 
+        "certificateSubjectOrganisation": null, 
+        "overridePWHistory": null, 
+        "mailPrimaryAddress": null, 
+        "country": null, 
+        "roomNumber": [], 
+        "certificateSubjectCountry": null, 
+        "locked": false, 
+        "certificateDateNotBefore": null, 
+        "passwordexpiry": null, 
+        "certificateVersion": null, 
+        "homeShare": null, 
+        "certificateIssuerMail": null, 
+        "unlockTime": null, 
+        "serviceprovider": [], 
+        "profilepath": null, 
+        "certificateIssuerLocation": null, 
+        "jpegPhoto": null, 
+        "certificateDateNotAfter": null, 
+        "certificateSubjectState": null
+    }
+}
+					</programlisting>
+				</para>
+				<para>
+					Now you can modify the attributes the new user should have
+					and send the modified template, via a POST request, to create a new user.
+					<programlisting language="sh">
+curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" \
+  https://api-user:password@&lt;SERVERNAME-OR-IP&gt;/univention/udm/users/user/ --data @user_template.json
+					</programlisting>
+				</para>
+			</section>
+			<section id="udm:rest_api:usage_examples:get">
+				<title>Search for users via a GET request</title>
+				<para>
+					In this example we search for a users/user object where the "firstname" property
+					starts with <wordasword>"Ale"</wordasword> and the "lastname" property ends with
+					<wordasword>"er"</wordasword>.
+					<programlisting language="sh">
+curl -X GET -H "Accept: application/json" \
+  "http://api-user:password@&lt;SERVERNAME-OR-IP&gt;/univention/udm/users/user/?query\[firstname\]=Al%2A&amp;query\[lastname\]=%2Aer"
+					</programlisting>
+				</para>
+				<para>
+					The response should look something like this
+					(some fields where omitted for clarity):
+					<programlisting language="js">
+{
+    "_embedded": {
+        "udm:object": [
+            {
+                "dn": "uid=alexpower,cn=users,dc=mydomain,dc=intranet",
+                "id": "alexpower",
+                "objectType": "users/user",
+                "options": {
+                    "pki": false
+                },
+                "policies": {
+                    "policies/desktop": [],
+                    "policies/pwhistory": [],
+                    "policies/umc": []
+                },
+                "position": "cn=users,dc=mydomain,dc=intranet",
+                "properties": {
+                    "birthday": null,
+                    "city": null,
+                    "country": null,
+                    "departmentNumber": [],
+                    "description": null,
+                    "disabled": false,
+                    "displayName": "Alex Power",
+                    "e-mail": [],
+                    "employeeNumber": null,
+                    "employeeType": null,
+                    "firstname": "Alex",
+                    "gecos": "Alex Power",
+                    "gidNumber": 5001,
+                    "groups": [
+                        "cn=Domain Users,cn=groups,dc=mydomain,dc=intranet"
+                    ],
+                    "homePostalAddress": [],
+                    "homeShare": null,
+                    "homeSharePath": "alexpower",
+                    "homeTelephoneNumber": [],
+                    "homedrive": null,
+                    "jpegPhoto": null,
+                    "lastname": "Power",
+                    "locked": false,
+                    "lockedTime": "0",
+                    "mailAlternativeAddress": [],
+                    "mailForwardAddress": [],
+                    "mailForwardCopyToSelf": "0",
+                    "mailHomeServer": null,
+                    "mailPrimaryAddress": null,
+                    "mobileTelephoneNumber": [],
+                    "objectFlag": [],
+                    "organisation": null,
+                    "overridePWHistory": null,
+                    "overridePWLength": null,
+                    "pagerTelephoneNumber": [],
+                    "password": null,
+                    "passwordexpiry": null,
+                    "phone": [],
+                    "postcode": null,
+                    "preferredLanguage": null,
+                    "primaryGroup": "cn=Domain Users,cn=groups,dc=mydomain,dc=intranet",
+                    "profilepath": null,
+                    "pwdChangeNextLogin": null,
+                    "roomNumber": [],
+                    "sambaLogonHours": null,
+                    "sambaPrivileges": [],
+                    "sambaRID": 5018,
+                    "sambaUserWorkstations": [],
+                    "sambahome": null,
+                    "scriptpath": null,
+                    "secretary": [],
+                    "serviceprovider": [],
+                    "shell": "/bin/bash",
+                    "street": null,
+                    "title": null,
+                    "uidNumber": 2009,
+                    "umcProperty": {},
+                    "unixhome": "/home/alexpower",
+                    "unlock": false,
+                    "unlockTime": "",
+                    "userexpiry": null,
+                    "username": "alexpower"
+                },
+                "uri": "http://10.200.28.110/univention/udm/users/user/uid%3Dalexpower%2Ccn%3Dusers%2Cdc%3Dmydomain%2Cdc%3Dintranet"
+            }
+        ]
+    },
+    "results": 1
+}
+					</programlisting>
+				</para>
+			</section>
+			<section id="udm:rest_api:usage_examples:put">
+				<title>Modify a user via a PUT request</title>
+				<para>
+					To modify a user you first get the current state of the user.
+					To prevent modification conflicts you also have to get the <wordasword>Etag</wordasword>
+					of the user resource. The <wordasword>Etag</wordasword> can be found in the response
+					headers; it is used to identify a specific version of a resource.
+					<programlisting language="sh">
+curl -X GET -H "Accept: application/json" --dump-header user.headers \
+  https://api-user:univention@&lt;SERVERNAME-OR-IP&gt;/univention/udm/users/user/&lt;dn&gt; \
+  | python -m json.tool > user.json
+					</programlisting>
+					<note>
+						<para>
+							&lt;dn&gt; should be URL encoded.
+						</para>
+					</note>
+				</para>
+				<para>
+					Now you can edit the user in the <filename>user.json</filename> file to your liking.
+					After you are done, send the changed <filename>user.json</filename> via a
+					PUT request to modify the user.
+					To avoid modification conflicts it is required to send the value of the
+					<wordasword>Etag</wordasword> header, which you saved earlier in the
+					<filename>user.headers</filename> file, as the value for the "If-Match" header.
+					<programlisting language="sh">
+curl -X PUT -H "Accept: application/json" -H "Content-Type: application/json" -H 'If-Match: "&lt;Etag&gt;"' \
+  "https://api-user:password@Glt;SERVERNAME-OR-IP&gt;/univention/udm/users/user/&lt;dn&gt;" --data @user.json
+					</programlisting>
+					<note>
+						<para>
+							&lt;dn&gt; should be URL encoded.
+						</para>
+						<para>
+							The quotes around the <wordasword>Etag</wordasword> are required.
+						</para>
+					</note>
+				</para>
+			</section>
+			<section id="udm:rest_api:usage_examples:delete">
+				<title>Delete a user via a DELETE request</title>
+				<para>
+					To delete a user you just have to send a DELETE request to <uri>/univention/udm/users/user/&lt;dn&gt;</uri>
+					<programlisting language="sh">
+curl -X DELETE http://api-user:password@&lt;SERVERNAME-OR-IP&gt;/univention/udm/users/user/&lt;dn&gt;
+					</programlisting>
+					<note>
+						<para>
+							&lt;dn&gt; should be URL encoded.
+						</para>
+					</note>
+				</para>
+			</section>
+		</section>
+	</section>
+
 	<!-- <section id="udm:acl"> -->
 	<!-- 	<title>LDAP Access Control Lists -->
 	<!-- 		<indexterm><primary>LDAP</primary><secondary>ACL</secondary></indexterm> -->
