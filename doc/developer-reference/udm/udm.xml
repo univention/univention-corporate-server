@@ -1703,8 +1703,8 @@ udm settings/syntax create "$@" --ignore_exists \
 	<section id="udm:rest_api">
 		<title>UDM REST API</title>
 		<para>
-			The package <package>univention-directory-manager-rest</package> provides a REST API
-			which allows you to inspect, modify, create and delete UDM objects via HTTP requests.
+			UCS provides a REST API
+			which can be used to inspect, modify, create and delete UDM objects via HTTP requests.
 		</para>
 
 		<para>
@@ -1758,10 +1758,10 @@ service univention-directory-manager-rest restart
 			<title>API overview</title>
 			<para>
 				You can interact with the API by sending HTTP requests to resources
-				and by using different HTTP verbs you can achieve different results.
+				and by using different HTTP methods you can achieve different results.
 			</para>
 			<table>
-	  		<title>HTTP verbs</title>
+	  		<title>HTTP methods</title>
 				<tgroup cols="2">
 		  		<colspec colnum="1" colname="col1" colwidth="1*"/>
 		  		<colspec colnum="2" colname="col2" colwidth="2*"/>
@@ -2087,7 +2087,7 @@ curl -X GET -H "Accept: application/json" \
 				<title>Modify a user via a PUT request</title>
 				<para>
 					To modify a user you first get the current state of the user.
-					To prevent modification conflicts you also have to get the <wordasword>Etag</wordasword>
+					To prevent modification conflicts you also have to get the entity tag (<wordasword>Etag</wordasword>)
 					of the user resource. The <wordasword>Etag</wordasword> can be found in the response
 					headers; it is used to identify a specific version of a resource.
 					<programlisting language="sh">
