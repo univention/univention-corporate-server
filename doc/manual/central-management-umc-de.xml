@@ -1830,6 +1830,17 @@ univention-directory-manager settings/extended_attribute create \
 	</section>
 </section>
 
+<section id="central:udm_rest_api">
+	<title>HTTP API der Domänenverwaltung</title>
+	<para>
+		UCS stellt eine HTTP API für UDM zur Verfügung, mit der UDM-Objekte
+		über HTTP-Requests überprüft, geändert, erstellt und gelöscht werden können.
+	</para>
+	<para>
+		Weitere Informationen zur API finden Sie unter <xref linkend="developer-reference"/>.
+	</para>
+</section>
+
 <section id="central:reports">
 	<title>Auswertung von Daten aus dem LDAP-Verzeichnis mit Univention Directory Reports</title>
 	<para>
