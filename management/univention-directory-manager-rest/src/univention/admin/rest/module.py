@@ -405,20 +405,29 @@ class ResourceBase(object):
 		except (ValueError, IndexError, binascii.Error):
 			raise HTTPError(400)
 
-		lo, po = get_machine_connection(write=False)
+		self.request.username = username
 		try:
-			userdn = lo.searchDn(filter_format('(&(objectClass=person)(uid=%s))', [username]), unique=True)[0]
-			self.ldap_connection, self.ldap_position = get_user_connection(bind=lambda lo: lo.bind(userdn, password), write=True)
-			self.request.user_dn = userdn
-			self.request.username = username
+			self.request.user_dn = self._auth_get_userdn(username)
+			self.ldap_connection, self.ldap_position = get_user_connection(bind=lambda lo: lo.bind(self.request.user_dn, password), write=True)
 		except Exception:
 			return self.force_authorization()
-		else:
-			allowed_groups = [value for key, value in ucr.items() if key.startswith('directory/manager/rest/authorized-groups/')]
-			memberof = self.ldap_connection.getAttr(self.request.user_dn, b'memberOf')
-			if not set(_map_normalized_dn(memberof)) & set(_map_normalized_dn(allowed_groups)):
-				raise HTTPError(403, 'Not in allowed groups.')
-			self.authenticated[authorization] = (userdn, username, self.ldap_connection, self.ldap_position)
+
+		if username not in ('cn=admin',):
+			self._auth_check_allowed_groups()
+
+		self.authenticated[authorization] = (self.request.user_dn, self.request.username, self.ldap_connection, self.ldap_position)
+
+	def _auth_check_allowed_groups(self):
+		allowed_groups = [value for key, value in ucr.items() if key.startswith('directory/manager/rest/authorized-groups/')]
+		memberof = self.ldap_connection.getAttr(self.request.user_dn, b'memberOf')
+		if not set(_map_normalized_dn(memberof)) & set(_map_normalized_dn(allowed_groups)):
+			raise HTTPError(403, 'Not in allowed groups.')
+
+	def _auth_get_userdn(self, username):
+		if username in ('cn=admin',):
+			return 'cn=admin,%(ldap/base)s' % ucr
+		lo, po = get_machine_connection(write=False)
+		return lo.searchDn(filter_format('(&(objectClass=person)(uid=%s))', [username]), unique=True)[0]
 
 	def get_module(self, object_type):
 		module = UDM_Module(object_type, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
