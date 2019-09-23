@@ -759,7 +759,7 @@ class ResourceBase(object):
 				break
 			if _scheme == 'http':
 				scheme = 'http'
-		return urljoin(urljoin(urlunparse((scheme, base.netloc, 'univention/' if self.request.headers.get('X-Forwarded-Host') else '/', '', '', '')), self.request.path_decoded.lstrip('/')), '/'.join(args)) + query_string
+		return urljoin(urljoin(urlunparse((scheme, base.netloc, 'univention/' if self.request.headers.get('X-Forwarded-Host') else '/', '', '', '')), quote(self.request.path_decoded.lstrip('/'))), '/'.join(args)) + query_string
 
 	def abspath(self, *args):
 		return urljoin(self.urljoin('/univention/udm/' if self.request.headers.get('X-Forwarded-Host') else '/udm/'), '/'.join(args))
@@ -772,6 +772,8 @@ class ResourceBase(object):
 			return
 
 		def quote_param(s):
+			for i in range(32):  # remove non printable characters
+				s = s.replace(unichr(i), '')
 			return s.replace('\\', '\\\\').replace('"', '\\"')
 		kwargs['rel'] = relation
 		params = []
@@ -3656,12 +3658,12 @@ def quote_dn(dn):
 	if isinstance(dn, six.text_type):
 		dn = dn.encode('utf-8')
 	# duplicated slashes in URI path's can be normalized to one slash. Therefore we need to escape the slashes.
-	return quote(dn.replace('//', ',/=/,'))  # .replace('/', quote('/', safe=''))
+	return quote(dn.replace(b'//', b',/=/,'))  # .replace('/', quote('/', safe=''))
 
 
 def unquote_dn(dn):
 	# tornado already decoded it (UTF-8)
-	return dn.replace(',/=/,', '//')
+	return dn.replace(u',/=/,', u'//')
 
 
 def last_modified(date):

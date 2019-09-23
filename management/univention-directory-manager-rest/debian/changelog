@@ -1,3 +1,9 @@
+univention-directory-manager-rest (9.0.16-4) unstable; urgency=medium
+
+  * Bug #27816: fix byte encoding of URL's
+
+ -- Florian Best <best@univention.de>  Mon, 23 Sep 2019 15:58:16 +0200
+
 univention-directory-manager-rest (9.0.16-3) unstable; urgency=medium
 
   * Bug #50245: fix searching for dhcp/host objects
