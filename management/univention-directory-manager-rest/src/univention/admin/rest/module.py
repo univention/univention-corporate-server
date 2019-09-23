@@ -1581,7 +1581,7 @@ class OpenAPI(Resource):
 						"name": "cleanup",
 						"schema": {
 							"type": "boolean",
-							"default": False,
+							"default": True,
 						},
 						"description": "Whether to perform a cleanup (e.g. of temporary objects, locks, etc).",
 						"example": True,
@@ -1591,7 +1591,7 @@ class OpenAPI(Resource):
 						"name": "recursive",
 						"schema": {
 							"type": "boolean",
-							"default": False,
+							"default": True,
 						},
 						"description": "Whether to remove referring objects (e.g. DNS or DHCP references).",
 						"example": True,
@@ -2947,8 +2947,8 @@ class Object(FormBase, Resource):
 			status['finished'] = True
 
 	@sanitize_query_string(
-		cleanup=BoolSanitizer(default=False),
-		recursive=BoolSanitizer(default=False),
+		cleanup=BoolSanitizer(default=True),
+		recursive=BoolSanitizer(default=True),
 	)
 	@tornado.gen.coroutine
 	def delete(self, object_type, dn):
