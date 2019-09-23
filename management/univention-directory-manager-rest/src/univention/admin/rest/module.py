@@ -861,8 +861,7 @@ class ResourceBase(object):
 		if not isinstance(exc, (UDM_Error, UMC_Error)) and status_code >= 500:
 			_traceback = ''.join(traceback.format_exception(etype, exc, etraceback))
 
-		self.set_status(status_code)
-		self.content_negotiation({
+		response = {
 			'error': {
 				'title': title,
 				'code': status_code,
@@ -870,7 +869,11 @@ class ResourceBase(object):
 				'traceback': _traceback if self.application.settings.get("serve_traceback", True) else None,
 				'error': result,
 			},
-		})
+		}
+		self.add_link(response, 'self', self.urljoin(''), title=_('HTTP-Error %d: %s') % (status_code, title))
+		self.set_status(status_code)
+		self.add_caching(public=False, no_store=True, no_cache=True, must_revalidate=True)
+		self.content_negotiation(response)
 
 	def add_caching(self, expires=None, public=False, must_revalidate=False, no_cache=False, no_store=False, no_transform=False, max_age=None, shared_max_age=None, proxy_revalidate=False):
 		control = [
@@ -885,9 +888,9 @@ class ResourceBase(object):
 		]
 		cache_control = ', '.join(x for x in control if x)
 		if cache_control:
-			self.add_header('Cache-Control', cache_control)
+			self.set_header('Cache-Control', cache_control)
 		if expires:
-			self.add_header('Expires', expires)
+			self.set_header('Expires', expires)
 
 	def vary(self):
 		return ['Accept', 'Accept-Language', 'Accept-Encoding', 'Authorization']
