@@ -61,7 +61,7 @@
 					In &ucsUVMM; (UVMM) the automatic start for instances and the virtual CPU type can be configured.
 			</para></listitem>
 			<listitem><para>
-					With the update of the Docker Engine App maintainers get more possibilities by supporting additional features in the Docker Compose files. The update requires a server reboot.
+					With the update of the Docker Engine App maintainers get more possibilities by supporting additional features in the Docker Compose files.
 			</para></listitem>
 			<listitem><para>
 					With 4.4-2 the update to Debian point release 9.11 is completed.

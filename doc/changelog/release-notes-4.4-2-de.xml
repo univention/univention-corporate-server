@@ -61,7 +61,7 @@
 					In &ucsUVMM; (UVMM) lässt sich der automatische Start für Instanzen und der virtuellen CPU-Typ konfigurieren.
 			</para></listitem>
 			<listitem><para>
-					Durch das Update der <phrase>Docker Engine</phrase> erhalten App Anbieter mehr Möglichkeiten unter anderem durch Unterstützung von zusätzlichen Features in den <phrase>Docker Compose</phrase> Dateien. Das Update erfordert einen Neustart des Servers.
+					Durch das Update der <phrase>Docker Engine</phrase> erhalten App Anbieter mehr Möglichkeiten unter anderem durch Unterstützung von zusätzlichen Features in den <phrase>Docker Compose</phrase> Dateien.
 			</para></listitem>
 			<listitem><para>
 					Mit 4.4-2 wird die Aktualisierung auf den Stand des Debian Release 9.11 abgeschlossen.
