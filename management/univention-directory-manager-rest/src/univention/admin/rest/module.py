@@ -2445,7 +2445,7 @@ class Objects(FormBase, ReportingBase):
 		ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000')
 		last_page = page
 		for i in range(current_page, page or 1):
-			objects = yield self.pool.submit(module.search, container, superordinate, filter=ldap_filter, scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls)
+			objects = yield self.pool.submit(module.search, container, superordinate=superordinate, filter=ldap_filter or '(objectClass=*)', scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls)
 			for control in ctrls.get('ctrls', []):
 				if control.controlType == SimplePagedResultsControl.controlType:
 					page_ctrl.cookie = control.cookie

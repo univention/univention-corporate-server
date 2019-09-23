@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.15-1) unstable; urgency=medium
+
+  * Bug #27816: Bug #50245: generate filter only when necessary
+
+ -- Florian Best <best@univention.de>  Mon, 23 Sep 2019 14:28:00 +0200
+
 univention-management-console-module-udm (9.0.14-4) unstable; urgency=medium
 
   * Bug #50205: Update links from UCS 4.x-y to UCS 4.4-2

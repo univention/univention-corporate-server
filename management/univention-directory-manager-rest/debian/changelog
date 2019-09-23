@@ -1,3 +1,9 @@
+univention-directory-manager-rest (9.0.16-3) unstable; urgency=medium
+
+  * Bug #50245: fix searching for dhcp/host objects
+
+ -- Florian Best <best@univention.de>  Mon, 23 Sep 2019 14:32:12 +0200
+
 univention-directory-manager-rest (9.0.16-2) unstable; urgency=medium
 
   * Bug #50175: fix URI in object representation

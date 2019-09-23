@@ -654,9 +654,10 @@ class UDM_Module(object):
 			container = ldap_position.getBase()
 		elif container is None:
 			container = ''
-		filter_s = _object_property_filter(self, attribute, value, hidden)
 		if attribute in [None, 'None'] and filter:
 			filter_s = str(filter)
+		else:
+			filter_s = _object_property_filter(self, attribute, value, hidden)
 
 		MODULE.info('Searching for LDAP objects: container = %s, filter = %s, superordinate = %s' % (container, filter_s, superordinate))
 		result = None
