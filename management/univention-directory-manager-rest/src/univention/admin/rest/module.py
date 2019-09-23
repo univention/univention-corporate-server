@@ -615,7 +615,7 @@ class ResourceBase(object):
 		if isinstance(response, dict):
 			self.add_link(response, 'stylesheet', self.abspath('css/style.css'))
 
-			for _form in response.get('_embedded', {}).get('udm:form', []):
+			for _form in self.get_resources(response, 'udm:form'):
 				root.insert(0, self.get_html_form(_form, response))
 
 			if isinstance(response.get('error'), dict) and response['error'].get('code', 0) >= 400:
@@ -2445,7 +2445,7 @@ class Objects(FormBase, ReportingBase):
 		ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000')
 		last_page = page
 		for i in range(current_page, page or 1):
-			objects = yield self.pool.submit(module.search, container, superordinate=superordinate, filter=ldap_filter or '(objectClass=*)', scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls)
+			objects = yield self.pool.submit(module.search, container, superordinate=superordinate, filter=ldap_filter, scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls)
 			for control in ctrls.get('ctrls', []):
 				if control.controlType == SimplePagedResultsControl.controlType:
 					page_ctrl.cookie = control.cookie
@@ -2460,13 +2460,12 @@ class Objects(FormBase, ReportingBase):
 	def get_html(self, response):
 		if self.request.method in ('GET', 'HEAD'):
 			r = response.copy()
-			r.pop('errors', None)
 			r.pop('entries', None)
 			root = super(Objects, self).get_html(r)
 		else:
 			root = super(Objects, self).get_html(response)
 		if self.request.method in ('GET', 'HEAD'):
-			for thing in response.get('errors', response.get('entries', [])):
+			for thing in response.get('entries', self.get_resources(response, 'udm:object')):
 				if isinstance(thing, dict) and thing.get('uri'):
 					x = thing.copy()
 					a = ET.Element("a", href=x.pop('uri'), rel="udm:object item")
@@ -2475,7 +2474,7 @@ class Objects(FormBase, ReportingBase):
 					pre.text = json.dumps(x, indent=4)
 					root.append(ET.Element("br"))
 					# There is a bug in chrome, so we cannot have form='report1 report2'. so, only 1 report is possible :-/
-					root.append(ET.Element('input', type='checkbox', name='dn', value=x['dn'], form=' '.join([report['id'] for report in response['_embedded']['udm:form'] if report['rel'] == 'udm:report'][-1:])))
+					root.append(ET.Element('input', type='checkbox', name='dn', value=x['dn'], form=' '.join([report['id'] for report in self.get_resources(response, 'udm:form') if report['rel'] == 'udm:report'][-1:])))
 					root.append(a)
 					root.append(pre)
 					root.append(ET.Element("br"))
@@ -3287,7 +3286,7 @@ class ObjectEdit(FormBase, Resource):
 			self.add_form_element(form, 'dn', obj.dn, readonly='readonly', disabled='disabled')
 
 			values = {}
-			for key in properties:
+			for key, prop in properties.items():
 				if obj.module == 'users/user' and key == 'password':
 					prop['required'] = False
 				if prop['readonly_when_synced'] and is_ad_synced_object:
