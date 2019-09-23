@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [4]
+scope: ucs_4.3-0-errata4.3-4
+src: expat
+fix: 2.2.0-2+deb9u3
+desc: |
+ This update addresses the following issue:
+ * heap-based buffer over-read via crafted XML input (CVE-2019-15903)
+bug: [50241]
+cve:
+- CVE-2019-15903
