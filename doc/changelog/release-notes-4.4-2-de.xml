@@ -52,13 +52,13 @@
 		<itemizedlist>
 			<listitem><para>
 					Die UDM REST API ist erstmals als stabiles Release enthalten und wird auf allen DC Master und DC Backup Instanzen aktiviert.
-					Weitere Informationen sind in einem <ulink url="https://www.univention.de/blog-de/2019/07/udm-rest-api-betaversion-veroeffentlicht/">Artikel zur API</ulink> und den <ulink url="https://docs.software-univention.de/release-notes-4.4-1-de.html">UCS 4.4-1 Release Notes</ulink> zu finden.
+					Weitere Informationen sind in einem <ulink url="https://www.univention.de/blog-de/2019/07/udm-rest-api-betaversion-veroeffentlicht/">Artikel zur API</ulink> und den <ulink url="release-notes-4.4-1-de.html">UCS 4.4-1 Release Notes</ulink> zu finden.
 			</para></listitem>
 			<listitem><para>
 					Verbesserungen bei der Fehlerbehandlung für die Generierung von Lizenzen während der initialen Konfiguration.
 			</para></listitem>
 			<listitem><para>
-					In &ucsUVMM; (UVMM) lässt sich der Autostart für Instanzen und der virtualisierte CPU-Typ konfigurieren.
+					In &ucsUVMM; (UVMM) lässt sich der automatische Start für Instanzen und der virtuellen CPU-Typ konfigurieren.
 			</para></listitem>
 			<listitem><para>
 					Durch das Update der <phrase>Docker Engine</phrase> erhalten App Anbieter mehr Möglichkeiten unter anderem durch Unterstützung von zusätzlichen Features in den <phrase>Docker Compose</phrase> Dateien.

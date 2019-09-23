@@ -52,16 +52,16 @@
 		<itemizedlist>
 			<listitem><para>
 					The UDM REST API is included for the first time as a stable release and is activated on all DC Master and DC Backup instances.
-					More information can be found in an <ulink url="https://www.univention.com/blog-en/2019/07/udm-rest-api-beta-version-released/">article about the API</ulink> and the <ulink url="https://docs.software-univention.de/release-notes-4.4-1-en.html">UCS 4.4-1 release notes</ulink>.
+					More information can be found in an <ulink url="https://www.univention.com/blog-en/2019/07/udm-rest-api-beta-version-released/">article about the API</ulink> and the <ulink url="release-notes-4.4-1-en.html">UCS 4.4-1 release notes</ulink>.
 			</para></listitem>
 			<listitem><para>
 					Improvements in error handling for license generation during initial configuration.
 			</para></listitem>
 			<listitem><para>
-					In &ucsUVMM; (UVMM) the autostart for instances and the virtualized CPU type can be configured.
+					In &ucsUVMM; (UVMM) the automatic start for instances and the virtual CPU type can be configured.
 			</para></listitem>
 			<listitem><para>
-					With the update of the Docker Engine App maintainers get more possibilities by supporting additional features in the Docker Compose Files.
+					With the update of the Docker Engine App maintainers get more possibilities by supporting additional features in the Docker Compose files.
 			</para></listitem>
 			<listitem><para>
 					With 4.4-2 the update to Debian point release 9.11 is completed.
