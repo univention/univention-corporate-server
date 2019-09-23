@@ -1042,7 +1042,7 @@ setup_ec2 ()
 -mount \${roflag} \${FSTYPE:+-t \${FSTYPE} }\${ROOTFLAGS} \${ROOT} \${rootmnt} ||
 -	fail "failed to re-mount \${ROOT}. this is bad!"
 -
--# write to /etc/grownroot-grown. most likely this won't work (readonly)
+-# write to /etc/grownroot-grown. most likely this wont work (readonly)
 -{ date --utc > "\${rootmnt}/etc/growroot-grown" ; } >/dev/null 2>&1 || :
 -
  # vi: ts=4 noexpandtab
