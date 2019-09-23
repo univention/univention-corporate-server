@@ -1816,7 +1816,7 @@ service univention-directory-manager-rest restart
 			</para>
 			<para>
 				While you try out these examples you will often see the <wordasword>"_links"</wordasword>
-				and "_embedded" properties in the repsonses.
+				and <wordasword>"_embedded"</wordasword> properties in the responses.
 				These properties are defined by <wordasword>HAL</wordasword>, the Hypertext Application Language,
 				which is used in the API.
 				These properties contain links which can be used to traverse the API.
