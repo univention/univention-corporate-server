@@ -2110,7 +2110,7 @@ curl -X GET -H "Accept: application/json" --dump-header user.headers \
 					<filename>user.headers</filename> file, as the value for the "If-Match" header.
 					<programlisting language="sh">
 curl -X PUT -H "Accept: application/json" -H "Content-Type: application/json" -H 'If-Match: "&lt;Etag&gt;"' \
-  "https://api-user:password@Glt;SERVERNAME-OR-IP&gt;/univention/udm/users/user/&lt;dn&gt;" --data @user.json
+  "https://api-user:password@&lt;SERVERNAME-OR-IP&gt;/univention/udm/users/user/&lt;dn&gt;" --data @user.json
 					</programlisting>
 					<note>
 						<para>
