@@ -486,14 +486,14 @@ fail_if_role_package_will_be_removed
 if [ -f /var/univention-join/joined ]; then
 	echo "Stopping all Docker Apps and Docker itself in preparation for the Docker engine update..."
 	python -c "
-	from univention.appcenter.log import log_to_stream
-	from univention.appcenter.app_cache import Apps
-	from univention.appcenter.actions import get_action
-	log_to_stream()
-	apps = [app for app in Apps().get_all_locally_installed_apps() if app.docker]  # single container apps and multi container apps alike
-	stop = get_action('stop')
-	for app in apps:
-		stop.call(app=app)"
+from univention.appcenter.log import log_to_stream
+from univention.appcenter.app_cache import Apps
+from univention.appcenter.actions import get_action
+log_to_stream()
+apps = [app for app in Apps().get_all_locally_installed_apps() if app.docker]  # single container apps and multi container apps alike
+stop = get_action('stop')
+for app in apps:
+	stop.call(app=app)"
 	service docker stop
 	echo "... Docker stopped. Apps will be started after the successful update"
 	echo "If stopping / starting of the Apps fails, one may see issues with the Apps. In this case, a reboot should help"
