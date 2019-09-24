@@ -99,6 +99,7 @@ class UCSSetup(UCSInstallation):
 		self.client.mouseClickOnText(text, timeout=self.timeout)
 		self.screenshot('domain-setup.png')
 		self.next()
+		time.sleep(10)
 		if role == 'slave':
 			self.client.keyPress('down')
 			self.next()
