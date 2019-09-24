@@ -1,3 +1,9 @@
+ucs-test (9.0.3-56) unstable; urgency=medium
+
+  * Bug #50088: added test for docker iptables rules
+
+ -- Jannik Ahlers <ahlers@univention.de>  Tue, 24 Sep 2019 16:03:26 +0200
+
 ucs-test (9.0.3-55) unstable; urgency=medium
 
   * Bug #50033: Fix type in 52_s4connector/120sync_create_and_modify_ucs_user
