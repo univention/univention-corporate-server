@@ -805,6 +805,26 @@ set_windows_domain () {
 	univention-config-registry set windows/domain="$windom" >>/var/log/univention/join.log 2>&1
 }
 
+set_mdb_ldap_listener_size () {
+
+	local dcpwd="$1"
+	local dcaccount="$2"
+	local dcname="$3"
+	local size=""
+
+	# ldap mdb size
+	size="$(univention-ssh "$dcpwd" "${dcaccount}@${dcname}" '/usr/sbin/univention-config-registry get ldap/database/mdb/maxsize')" >>/var/log/univention/join.log 2>&1
+	if [ $? -eq 0 -a -n "$size" ]; then
+		univention-config-registry set ldap/database/mdb/maxsize="$size" >>/var/log/univention/join.log 2>&1
+	fi
+
+	# listener cache size
+	size="$(univention-ssh "$dcpwd" "${dcaccount}@${dcname}" '/usr/sbin/univention-config-registry get listener/cache/mdb/maxsize')" >>/var/log/univention/join.log 2>&1
+	if [ $? -eq 0 -a -n "$size" ]; then
+		univention-config-registry set listener/cache/mdb/maxsize="$size" >>/var/log/univention/join.log 2>&1
+	fi
+}
+
 # get forwarder from master
 set_dns_forwarder () {
 
@@ -902,6 +922,7 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	set_kerberos_realm "$DCPWD" "$DCACCOUNT" "$DCNAME" "$REALM"
 	set_windows_domain "$DCPWD" "$DCACCOUNT" "$DCNAME" "$WINDOM"
 	set_dns_forwarder "$DCPWD" "$DCACCOUNT" "$DCNAME"
+	set_mdb_ldap_listener_size "$DCPWD" "$DCACCOUNT" "$DCNAME"
 	eval "$(univention-config-registry shell)"
 
 	mkdir -p /var/lib/univention-ldap/notify/
@@ -969,6 +990,7 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 	set_kerberos_realm "$DCPWD" "$DCACCOUNT" "$DCNAME" "$REALM"
 	set_windows_domain "$DCPWD" "$DCACCOUNT" "$DCNAME" "$WINDOM"
 	set_dns_forwarder "$DCPWD" "$DCACCOUNT" "$DCNAME"
+	set_mdb_ldap_listener_size "$DCPWD" "$DCACCOUNT" "$DCNAME"
 	eval "$(univention-config-registry shell)"
 
 	echo -n "0" >/var/lib/univention-ldap/schema/id/id

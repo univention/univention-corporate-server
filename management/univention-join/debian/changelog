@@ -1,3 +1,9 @@
+univention-join (11.0.1-19) unstable; urgency=medium
+
+  * Bug #50114: apply master settings for LDAP and UDL mdb maxsize
+
+ -- Felix Botner <botner@univention.de>  Tue, 24 Sep 2019 16:39:05 +0200
+
 univention-join (11.0.1-18) unstable; urgency=medium
 
   * Bug #48698: Fix GUI visible spelling errors
