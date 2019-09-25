@@ -2145,7 +2145,7 @@ class s4(univention.s4connector.ucs):
 		print("done:", end=' ')
 		sys.stdout.flush()
 		done_counter = 0
-		object = None
+		samba_object = None
 		lastUSN = self._get_lastUSN()
 		newUSN = lastUSN
 
@@ -2161,42 +2161,42 @@ class s4(univention.s4connector.ucs):
 				if element[0] == 'None':  # referrals
 					continue
 				old_element = copy.deepcopy(element)
-				object = self.__object_from_element(element)
+				samba_object = self.__object_from_element(element)
 			except:  # FIXME: which exception is to be caught?
 				# ud.debug(ud.LDAP, ud.ERROR, "Exception during poll/object-mapping, tried to map element: %s" % old_element[0])
 				# ud.debug(ud.LDAP, ud.ERROR, "This object will not be synced again!")
 				# debug-trace may lead to a segfault here :(
 				self._debug_traceback(ud.ERROR, "Exception during poll/object-mapping, object will not be synced again!")
 
-			if object:
-				property_key = self.__identify(object)
+			if samba_object:
+				property_key = self.__identify(samba_object)
 				if property_key:
 
-					if self._ignore_object(property_key, object):
-						if object['modtype'] == 'move':
-							ud.debug(ud.LDAP, ud.INFO, "object_from_element: Detected a move of an S4 object into a ignored tree: dn: %s" % object['dn'])
-							object['deleted_dn'] = object['olddn']
-							object['dn'] = object['olddn']
-							object['modtype'] = 'delete'
+					if self._ignore_object(property_key, samba_object):
+						if samba_object['modtype'] == 'move':
+							ud.debug(ud.LDAP, ud.INFO, "object_from_element: Detected a move of an S4 object into a ignored tree: dn: %s" % samba_object['dn'])
+							samba_object['deleted_dn'] = samba_object['olddn']
+							samba_object['dn'] = samba_object['olddn']
+							samba_object['modtype'] = 'delete'
 							# check the move target
 						else:
-							self.__update_lastUSN(object)
+							self.__update_lastUSN(samba_object)
 							done_counter += 1
 							print("%s" % done_counter, end=' ')
 							continue
 
-					if object['dn'].find('\\0ACNF:') > 0:
-						ud.debug(ud.LDAP, ud.PROCESS, 'Ignore conflicted object: %s' % object['dn'])
-						self.__update_lastUSN(object)
+					if samba_object['dn'].find('\\0ACNF:') > 0:
+						ud.debug(ud.LDAP, ud.PROCESS, 'Ignore conflicted object: %s' % samba_object['dn'])
+						self.__update_lastUSN(samba_object)
 						done_counter += 1
 						print("%s" % done_counter, end=' ')
 						continue
 
 					sync_successfull = False
 					try:
-						mapped_object = self._object_mapping(property_key, object)
+						mapped_object = self._object_mapping(property_key, samba_object)
 						if not self._ignore_object(property_key, mapped_object):
-							sync_successfull = self.sync_to_ucs(property_key, mapped_object, object['dn'], object)
+							sync_successfull = self.sync_to_ucs(property_key, mapped_object, samba_object['dn'], samba_object)
 						else:
 							sync_successfull = True
 					except ldap.SERVER_DOWN:
@@ -2217,11 +2217,11 @@ class s4(univention.s4connector.ucs):
 
 					if not sync_successfull:
 						ud.debug(ud.LDAP, ud.WARN, "sync to ucs was not successful, save rejected")
-						ud.debug(ud.LDAP, ud.WARN, "object was: %s" % object['dn'])
+						ud.debug(ud.LDAP, ud.WARN, "object was: %s" % samba_object['dn'])
 
 					if sync_successfull:
 						change_count += 1
-						newUSN = max(self.__get_change_usn(object), newUSN)
+						newUSN = max(self.__get_change_usn(samba_object), newUSN)
 						try:
 							GUID = old_element[1]['objectGUID'][0]
 							self._set_DN_for_GUID(GUID, old_element[0])
@@ -2231,10 +2231,10 @@ class s4(univention.s4connector.ucs):
 							self._debug_traceback(ud.WARN, "Exception during set_DN_for_GUID")
 
 					else:
-						self.save_rejected(object)
-						self.__update_lastUSN(object)
+						self.save_rejected(samba_object)
+						self.__update_lastUSN(samba_object)
 				else:
-					newUSN = max(self.__get_change_usn(object), newUSN)
+					newUSN = max(self.__get_change_usn(samba_object), newUSN)
 
 				done_counter += 1
 				print("%s" % done_counter, end=' ')
