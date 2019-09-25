@@ -5,7 +5,7 @@ src: samba
 fix: 2:4.1.0-1.641.201404031605
 version: [1]
 desc: |
- This updates fixes the following issues in the samba package:
+ This update fixes the following issues in the samba package:
  * Versions in the package dependencies have been updated.
  * Domain account lockout support for Samba AD DCs has been implemented.
  * The domain services database module was affected by a segmentation fault
