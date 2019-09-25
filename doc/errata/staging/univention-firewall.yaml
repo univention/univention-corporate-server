@@ -3,7 +3,7 @@ release: "4.4"
 version: [2]
 scope: ucs_4.4-0-errata4.4-2
 src: univention-firewall
-fix: 
+fix: 11.0.1-5A~4.4.0.201909251451
 desc: |
  This update addresses the following issue(s):
  *  Repaired firewall rules regarding docker networks getting broken after a
