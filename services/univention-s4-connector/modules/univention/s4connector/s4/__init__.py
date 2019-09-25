@@ -213,9 +213,7 @@ def encode_s4_object(s4_object):
 			else:
 				try:
 					s4_object[key] = encode_attriblist(s4_object[key])
-				except (ldap.SERVER_DOWN, SystemExit):
-					raise
-				except:  # FIXME: which exception is to be caught?
+				except Exception:  # FIXME: which exception is to be caught?
 					ud.debug(ud.LDAP, ud.WARN, "encode_s4_object: encode attrib %s failed, ignored!" % key)
 		return s4_object
 
@@ -430,12 +428,10 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 						newdn_rdn = [(ucsattrib, unicode_to_utf8(samaccountname), ldap.AVA_STRING)]
 
 					newdn = unicode(ldap.dn.dn2str([newdn_rdn] + exploded_dn[1:]), 'utf8')  # guess the old dn
-			try:
-				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn for key %s:" % dn_key)
-				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: olddn: %s" % dn)
-				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn: %s" % newdn)
-			except:  # FIXME: which exception is to be caught?
-				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: dn-print failed")
+
+			ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn for key %r:" % (dn_key,))
+			ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: olddn: %r" % (dn,))
+			ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn: %r" % (newdn,))
 
 			object[dn_key] = newdn
 	return object
@@ -887,7 +883,7 @@ class s4(univention.s4connector.ucs):
 	def encode(self, string):
 		try:
 			return unicode(string)
-		except:  # FIXME: which exception is to be caught?
+		except Exception:  # FIXME: which exception is to be caught?
 			return unicode(string, 'latin1')
 
 	def _get_lastUSN(self):
@@ -982,17 +978,14 @@ class s4(univention.s4connector.ucs):
 		for i in [0, 1]:  # do it twice if the LDAP connection was closed
 			try:
 				dn, s4_object = self.s4_search_ext_s(compatible_modstring(dn), ldap.SCOPE_BASE, '(objectClass=*)', ('dn',))[0]
-				try:
-					ud.debug(ud.LDAP, ud.INFO, "get_object: got object: %s" % dn)
-				except:  # FIXME: which exception is to be caught?
-					ud.debug(ud.LDAP, ud.INFO, "get_object: got object: <print failed>")
+				ud.debug(ud.LDAP, ud.INFO, "get_object: got object: %r" % (dn,))
 				return dn
 			except (ldap.SERVER_DOWN, SystemExit):
 				if i == 0:
 					self.open_s4()
 					continue
 				raise
-			except:  # FIXME: which exception is to be caught?
+			except Exception:  # FIXME: which exception is to be caught?
 				pass
 
 	def parse_range_retrieval_attrs(self, s4_attrs, attr):
@@ -1051,17 +1044,14 @@ class s4(univention.s4connector.ucs):
 		for i in [0, 1]:  # do it twice if the LDAP connection was closed
 			try:
 				dn, s4_object = self.s4_search_ext_s(compatible_modstring(dn), ldap.SCOPE_BASE, '(objectClass=*)', attrlist=attrlist)[0]
-				try:
-					ud.debug(ud.LDAP, ud.INFO, "get_object: got object: %s" % dn)
-				except:  # FIXME: which exception is to be caught?
-					ud.debug(ud.LDAP, ud.INFO, "get_object: got object: <print failed>")
+				ud.debug(ud.LDAP, ud.INFO, "get_object: got object: %r" % (dn,))
 				return encode_s4_object(s4_object)
 			except (ldap.SERVER_DOWN, SystemExit):
 				if i == 0:
 					self.open_s4()
 					continue
 				raise
-			except:  # FIXME: which exception is to be caught?
+			except Exception:  # FIXME: which exception is to be caught?
 				pass
 
 	def __get_change_usn(self, object):
@@ -1599,9 +1589,9 @@ class s4(univention.s4connector.ucs):
 						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: Adding %s to UCS group member cache, value: %s" % (member_dn.lower(), s4_dn))
 						self.group_member_mapping_cache_ucs[member_dn.lower()] = s4_dn
 						self.__group_cache_ucs_append_member(object_ucs_dn, member_dn)
-				except (ldap.SERVER_DOWN, SystemExit):
+				except ldap.SERVER_DOWN:
 					raise
-				except:  # FIXME: which exception is to be caught?
+				except Exception:  # FIXME: which exception is to be caught?
 					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: failed to get S4 dn for UCS group member %s, assume object doesn't exist" % member_dn)
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: UCS-members in s4_members_from_ucs %s" % s4_members_from_ucs)
@@ -1623,9 +1613,9 @@ class s4(univention.s4connector.ucs):
 						# Keep the member in Samba/AD if it's also present in OpenLDAP but ignored in synchronization?
 						s4_members_from_ucs.add(member_dn.lower())
 						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: Object ignored in S4 [%s], key = [%s]" % (ucs_dn, mo_key))
-				except (ldap.SERVER_DOWN, SystemExit):
+				except ldap.SERVER_DOWN:
 					raise
-				except:  # FIXME: which exception is to be caught?
+				except Exception:  # FIXME: which exception is to be caught?
 					self._debug_traceback(ud.INFO, "group_members_sync_from_ucs: failed to get UCS dn for S4 group member %s" % member_dn)
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: UCS-and S4-members in s4_members_from_ucs %s" % s4_members_from_ucs)
@@ -1690,9 +1680,9 @@ class s4(univention.s4connector.ucs):
 			ud.debug(ud.LDAP, ud.ALL, "group_members_sync_from_ucs: modlist: %s" % modlist_members)
 			try:
 				self.lo_s4.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'member', modlist_members)])
-			except (ldap.SERVER_DOWN, SystemExit):
+			except ldap.SERVER_DOWN:
 				raise
-			except:  # FIXME: which exception is to be caught?
+			except Exception:  # FIXME: which exception is to be caught?
 				ud.debug(ud.LDAP, ud.WARN, "group_members_sync_from_ucs: failed to sync members: (%s,%s)" % (object['dn'], [(ldap.MOD_REPLACE, 'member', modlist_members)]))
 				raise
 
@@ -1874,9 +1864,9 @@ class s4(univention.s4connector.ucs):
 							self.__group_cache_con_append_member(s4_object_dn, member_dn)
 						else:
 							ud.debug(ud.LDAP, ud.INFO, "Failed to find %s via self.lo.get" % ucs_dn)
-					except (ldap.SERVER_DOWN, SystemExit):
+					except ldap.SERVER_DOWN:
 						raise
-					except:  # FIXME: which exception is to be caught?
+					except Exception:  # FIXME: which exception is to be caught?
 						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: failed to get UCS dn for S4 group member %s, assume object doesn't exist" % member_dn)
 
 		# build an internal cache
@@ -1907,10 +1897,9 @@ class s4(univention.s4connector.ucs):
 								# stay a member in UCS
 								ucs_members_from_s4[k].append(member_dn_lower)
 							break
-
-				except (ldap.SERVER_DOWN, SystemExit):
+				except ldap.SERVER_DOWN:
 					raise
-				except:  # FIXME: which exception is to be caught?
+				except Exception:  # FIXME: which exception is to be caught?
 					self._debug_traceback(ud.INFO, "group_members_sync_to_ucs: failed to get S4 dn for UCS group member %s" % member_dn)
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: dn_mapping_ucs_member_to_s4=%s" % (dn_mapping_ucs_member_to_s4))
@@ -2113,9 +2102,9 @@ class s4(univention.s4connector.ucs):
 							sync_successfull = self.sync_to_ucs(property_key, mapped_object, dn, samba_object)
 						else:
 							sync_successfull = True
-					except (ldap.SERVER_DOWN, SystemExit):
+					except ldap.SERVER_DOWN:
 						raise
-					except:  # FIXME: which exception is to be caught?
+					except Exception:  # FIXME: which exception is to be caught?
 						self._debug_traceback(ud.ERROR, "sync of rejected object failed \n\t%s" % (samba_object['dn']))
 						sync_successfull = False
 					if sync_successfull:
@@ -2123,7 +2112,7 @@ class s4(univention.s4connector.ucs):
 						self._remove_rejected(change_usn)
 						self.__update_lastUSN(samba_object)
 						self._set_DN_for_GUID(elements[0][1]['objectGUID'][0], elements[0][0])
-			except (ldap.SERVER_DOWN, SystemExit):
+			except ldap.SERVER_DOWN:
 				raise
 			except Exception:
 				self._debug_traceback(ud.ERROR, "unexpected Error during s4.resync_rejected")
@@ -2141,9 +2130,9 @@ class s4(univention.s4connector.ucs):
 		changes = []
 		try:
 			changes = self.__search_s4_changes(show_deleted=show_deleted)
-		except (ldap.SERVER_DOWN, SystemExit):
+		except ldap.SERVER_DOWN:
 			raise
-		except:  # FIXME: which exception is to be caught?
+		except Exception:  # FIXME: which exception is to be caught?
 			self._debug_traceback(ud.WARN, "Exception during search_s4_changes")
 
 		print("--------------------------------------")
@@ -2168,7 +2157,7 @@ class s4(univention.s4connector.ucs):
 					continue
 				old_element = copy.deepcopy(element)
 				samba_object = self.__object_from_element(element)
-			except:  # FIXME: which exception is to be caught?
+			except Exception:  # FIXME: which exception is to be caught?
 				# ud.debug(ud.LDAP, ud.ERROR, "Exception during poll/object-mapping, tried to map element: %s" % old_element[0])
 				# ud.debug(ud.LDAP, ud.ERROR, "This object will not be synced again!")
 				# debug-trace may lead to a segfault here :(
@@ -2210,15 +2199,13 @@ class s4(univention.s4connector.ucs):
 						time.sleep(1)
 						self.open_ucs()
 						self.open_s4()
-					except SystemExit:
-						raise
 					except univention.admin.uexceptions.ldapError as msg:
 						ud.debug(ud.LDAP, ud.INFO, "Exception during poll with message (1) %s" % msg)
 						if msg == "Can't contact LDAP server":
 							raise ldap.SERVER_DOWN
 						else:
 							self._debug_traceback(ud.WARN, "Exception during poll/sync_to_ucs")
-					except:  # FIXME: which exception is to be caught?
+					except Exception:  # FIXME: which exception is to be caught?
 						self._debug_traceback(ud.WARN, "Exception during poll/sync_to_ucs")
 
 					if not sync_successfull:
@@ -2231,9 +2218,9 @@ class s4(univention.s4connector.ucs):
 						try:
 							GUID = old_element[1]['objectGUID'][0]
 							self._set_DN_for_GUID(GUID, old_element[0])
-						except (ldap.SERVER_DOWN, SystemExit):
+						except ldap.SERVER_DOWN:
 							raise
-						except:  # FIXME: which exception is to be caught?
+						except Exception:  # FIXME: which exception is to be caught?
 							self._debug_traceback(ud.WARN, "Exception during set_DN_for_GUID")
 
 					else:
@@ -2313,10 +2300,11 @@ class s4(univention.s4connector.ucs):
 			# the old object was moved in UCS, but does this object exist in S4?
 			try:
 				old_object = self.s4_search_ext_s(compatible_modstring(old_dn), ldap.SCOPE_BASE, 'objectClass=*')
-			except (ldap.SERVER_DOWN, SystemExit):
+			except ldap.SERVER_DOWN:
 				raise
-			except:
+			except Exception:
 				old_object = None
+
 			if old_object:
 				ud.debug(ud.LDAP, ud.INFO, "move %s from [%s] to [%s]" % (property_type, old_dn, object['dn']))
 				try:
@@ -2634,7 +2622,7 @@ class s4(univention.s4connector.ucs):
 		try:
 			s4_object = self.get_object(dn)
 			objectGUID = s4_object.get('objectGUID')[0]
-		except:
+		except Exception:
 			ud.debug(ud.LDAP, ud.WARN, "Failed to search objectGUID for %s" % dn)
 		return objectGUID
 
@@ -2669,12 +2657,7 @@ class s4(univention.s4connector.ucs):
 				ud.debug(ud.LDAP, ud.WARN, "delete subobject: %s" % back_mapped_subobject['dn'])
 				if not self._ignore_object(key, back_mapped_subobject):
 					if not self.sync_from_ucs(key, subobject_s4, back_mapped_subobject['dn']):
-						try:
-							ud.debug(ud.LDAP, ud.WARN, "delete of subobject failed: %s" % result[0])
-						except (ldap.SERVER_DOWN, SystemExit):
-							raise
-						except:  # FIXME: which exception is to be caught?
-							ud.debug(ud.LDAP, ud.WARN, "delete of subobject failed")
+						ud.debug(ud.LDAP, ud.WARN, "delete of subobject failed: %r" % (result[0],))
 						return False
 
 			return self.delete_in_s4(object, property_type)
