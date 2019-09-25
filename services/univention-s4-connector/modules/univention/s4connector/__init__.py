@@ -110,7 +110,7 @@ def check_ucs_lastname_user(s4connector, key, ucs_object):
 	'''
 	check if required values for lastname are set
 	'''
-	if not ucs_object.has_key('lastname') or not ucs_object['lastname']:
+	if not ucs_object.has_property('lastname') or not ucs_object['lastname']:
 		ucs_object['lastname'] = 'none'
 
 
@@ -181,7 +181,7 @@ class configdb:
 				if rows:
 					return rows[0][0]
 				return ''
-			except lite.Error as e:
+			except lite.Error:
 				if self._dbcon:
 					self._dbcon.close()
 				self._dbcon = lite.connect(self.filename)
@@ -196,7 +196,7 @@ class configdb:
 				if rows:
 					return rows[0][0]
 				return ''
-			except lite.Error as e:
+			except lite.Error:
 				if self._dbcon:
 					self._dbcon.close()
 				self._dbcon = lite.connect(self.filename)
@@ -525,7 +525,7 @@ class ucs:
 		"""Introduced for Bug #33110: Fix case of base part of DN"""
 		if dn.endswith(base):
 			return dn
-		elif dn.lower().endswith(base.lower()):
+		elif dn.lower().endswith(base.lower()):  # FIXME
 			return ''.join((dn[:-len(base)], base))
 		else:
 			return dn
@@ -541,7 +541,7 @@ class ucs:
 
 		try:
 			port = int(self.baseConfig.get('%s/ldap/port' % self.CONFIGBASENAME, self.baseConfig.get('ldap/master/port')))
-		except:
+		except ValueError:
 			port = 7389
 
 		self.lo = univention.admin.uldap.access(host=host, port=port, base=self.baseConfig['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=2, follow_referral=True)
@@ -556,7 +556,7 @@ class ucs:
 				self.open_ucs()
 				result = self.lo.search(filter=filter, base=base, scope=scope, attr=attr, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit)
 				return result
-			except ldap.SERVER_DOWN as e:
+			except ldap.SERVER_DOWN:
 				ud.debug(ud.LDAP, ud.INFO, 'LDAP-Server seems to be down')
 				raise search_exception
 
@@ -603,8 +603,7 @@ class ucs:
 		if not resync:
 			# Note that unescaped <> are invalid in DNs. See also:
 			# `_list_rejected_ucs()`.
-			dn = '<NORESYNC{}:{}>;{}'.format('=' + reason if reason else '',
-				os.path.basename(filename), dn)
+			dn = '<NORESYNC{}:{}>;{}'.format('=' + reason if reason else '', os.path.basename(filename), dn)
 		unicode_dn = univention.s4connector.s4.encode_attrib(dn)
 		self._set_config_option('UCS rejected', filename, unicode_dn)
 
@@ -620,8 +619,7 @@ class ucs:
 		rejected = self._get_config_items('UCS rejected')
 		if filter_noresync:
 			no_resync = re.compile('^<NORESYNC(=.*?)?>;')
-			return [(fn, dn) for (fn, dn) in rejected if
-				no_resync.match(dn) is None]
+			return [(fn, dn) for (fn, dn) in rejected if no_resync.match(dn) is None]
 		return rejected
 
 	def _list_rejected_ucs(self):
@@ -681,7 +679,7 @@ class ucs:
 			return False
 
 		entryCSN_set = set(value.split(','))
-		if not entryCSN in entryCSN_set:
+		if entryCSN not in entryCSN_set:
 			return False
 
 		entryCSN_set.remove(entryCSN)
@@ -726,8 +724,6 @@ class ucs:
 		print traceback with ud.debug, level is i.e. ud.INFO
 		'''
 		_d = ud.function('ldap._debug_traceback')
-		exc_info = sys.exc_info()
-
 		ud.debug(ud.LDAP, level, text)
 		ud.debug(ud.LDAP, level, traceback.format_exc())
 
@@ -736,14 +732,14 @@ class ucs:
 		'''
 		return rdn from dn
 		'''
-		return dn.split(',', 1)[0]
+		return dn.split(',', 1)[0]  # FIXME
 
 	def _get_subtree(self, dn):
 		_d = ud.function('ldap._get_subtree')
 		'''
 		return subtree from dn
 		'''
-		return dn.split(',', 1)[1]
+		return dn.split(',', 1)[1]  # FIXME
 
 	def __sync_file_from_ucs(self, filename, append_error='', traceback_level=ud.WARN):
 		_d = ud.function('ldap._sync_file_from_ucs')
@@ -758,8 +754,7 @@ class ucs:
 			return True  # file not found so there's nothing to sync
 		except (cPickle.UnpicklingError, EOFError) as e:
 			message = 'file emtpy' if isinstance(e, EOFError) else e.message
-			ud.debug(ud.LDAP, ud.ERROR,
-				'__sync_file_from_ucs: invalid pickle file {}: {}'.format(filename, message))
+			ud.debug(ud.LDAP, ud.ERROR, '__sync_file_from_ucs: invalid pickle file {}: {}'.format(filename, message))
 			# ignore corrupted pickle file, but save as rejected to not try again
 			self._save_rejected_ucs(filename, 'unknown', resync=False, reason='broken file')
 			return False
@@ -1109,8 +1104,7 @@ class ucs:
 						continue  # file not found so there's nothing to sync
 					except (cPickle.UnpicklingError, EOFError) as e:
 						message = 'file emtpy' if isinstance(e, EOFError) else e.message
-						ud.debug(ud.LDAP, ud.ERROR,
-							'poll_ucs: invalid pickle file {}: {}'.format(filename, message))
+						ud.debug(ud.LDAP, ud.ERROR, 'poll_ucs: invalid pickle file {}: {}'.format(filename, message))
 						# ignore corrupted pickle file, but save as rejected to not try again
 						self._save_rejected_ucs(filename, 'unknown', resync=False, reason='broken file')
 						continue
@@ -1190,7 +1184,7 @@ class ucs:
 						# See the MODIFY-case in `sync_from_ucs()` for more.
 						ud.debug(ud.LDAP, ud.INFO, "set key in ucs-object %s to value: %r" % (ucs_key, value))
 						try:
-							if not attributes.udm_option in ucs_object.options:
+							if attributes.udm_option not in ucs_object.options:
 								ud.debug(ud.LDAP, ud.INFO, "set option in ucs-object %s to value: %r" % (ucs_key, attributes.udm_option))
 								ucs_object.options.append(attributes.udm_option)
 						except AttributeError:
@@ -1203,12 +1197,11 @@ class ucs:
 				else:
 					ud.debug(ud.LDAP, ud.INFO, '__set_values: no ucs_attribute found in %s' % attributes)
 			else:
-
 				# prevent value resets of mandatory attributes
-				mandatory_attrs = ['lastname', 'unixhome','gidNumber','uidNumber']
+				mandatory_attrs = ['lastname', 'unixhome', 'gidNumber', 'uidNumber']
 
 				ucs_key = attributes.ucs_attribute
-				if ucs_object.has_key(ucs_key):
+				if ucs_object.has_property(ucs_key):
 					ucs_module = self.modules[property_type]
 					position = univention.admin.uldap.position(self.lo.base)
 					position.setDn(object['dn'])
@@ -1593,7 +1586,7 @@ class ucs:
 			return False
 
 	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, old_ucs_object=None, new_ucs_object=None):
-		# dummy
+		# dummy: implemented in s4/__init__.py
 		return False
 
 	# internal functions
@@ -1602,7 +1595,7 @@ class ucs:
 		_d = ud.function('ldap._subtree_match')
 		if len(subtree) > len(dn):
 			return False
-		if subtree.lower() == dn[-len(subtree):].lower():
+		if subtree.lower() == dn[-len(subtree):].lower():  # FIXME
 			return True
 		return False
 
@@ -1610,7 +1603,7 @@ class ucs:
 		_d = ud.function('ldap._subtree_replace')
 		if len(subtree) > len(dn):
 			return dn
-		if subtree.lower() == dn[-len(subtree):].lower():
+		if subtree.lower() == dn[-len(subtree):].lower():  # FIXME
 			return dn[:-len(subtree)] + subtreereplace
 		return dn
 
@@ -1828,7 +1821,7 @@ class ucs:
 					for dntype in ['dn', 'olddn']:
 						if dntype in object and dntype not in dn_mapping_stored:
 							dn_mapped = object[dntype]
-							## note: position_mapping == [] by default
+							# note: position_mapping == [] by default
 							for mapping in self.property[key].position_mapping:
 								dn_mapped = self._subtree_replace(dn_mapped, mapping[0], mapping[1])
 							if dn_mapped == object[dntype]:
@@ -1843,7 +1836,7 @@ class ucs:
 					for dntype in ['dn', 'olddn']:
 						if dntype in object and dntype not in dn_mapping_stored:
 							dn_mapped = object[dntype]
-							## note: position_mapping == [] by default
+							# note: position_mapping == [] by default
 							for mapping in self.property[key].position_mapping:
 								dn_mapped = self._subtree_replace(dn_mapped, mapping[1], mapping[0])
 							if dn_mapped == object[dntype]:

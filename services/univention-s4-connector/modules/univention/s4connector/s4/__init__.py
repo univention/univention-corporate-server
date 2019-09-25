@@ -1259,7 +1259,6 @@ class s4(univention.s4connector.ucs):
 		if 'isDeleted' in element[1] and element[1]['isDeleted'][0] == 'TRUE':
 			object['modtype'] = 'delete'
 			deleted_object = True
-
 		else:
 			# check if is moved
 			olddn = self.encode(self._get_DN_for_GUID(GUID))
@@ -2201,7 +2200,7 @@ class s4(univention.s4connector.ucs):
 						else:
 							sync_successfull = True
 					except ldap.SERVER_DOWN:
-						ud.debug(ud.LDAP, ud.ERROR, "Got server downn during sync, re-open ucs and s4 the connection")
+						ud.debug(ud.LDAP, ud.ERROR, "Got server down during sync, re-open the connection to UCS and S4")
 						time.sleep(1)
 						self.open_ucs()
 						self.open_s4()
@@ -2213,12 +2212,6 @@ class s4(univention.s4connector.ucs):
 							raise ldap.SERVER_DOWN
 						else:
 							self._debug_traceback(ud.WARN, "Exception during poll/sync_to_ucs")
-					except univention.admin.uexceptions.ldapError as msg:
-						ud.debug(ud.LDAP, ud.INFO, "Exception during poll with message (2) %s" % msg)
-						if msg == "Can't contact LDAP server":
-							raise ldap.SERVER_DOWN
-						else:
-							self._debug_traceback(ud.WARN, "Exception during poll")
 					except:  # FIXME: which exception is to be caught?
 						self._debug_traceback(ud.WARN, "Exception during poll/sync_to_ucs")
 
