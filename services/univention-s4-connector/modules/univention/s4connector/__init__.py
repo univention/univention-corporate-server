@@ -781,17 +781,7 @@ class ucs:
 		ignore_subtree_match = False
 
 		_attr = new or old
-		for k in self.property.keys():
-			if self.modules[k].identify(unicode(dn, 'utf8'), _attr):
-				key = k
-				break
-			elif self.modules_others[k]:
-				for m in self.modules_others[k]:
-					if m and m.identify(unicode(dn, 'utf8'), _attr):
-						key = k
-						break
-			if key:
-				break
+		key = self.identify_udm_object(dn, _attr)
 
 		if not new:
 			change_type = "delete"
@@ -1958,11 +1948,11 @@ class ucs:
 		return object_out
 
 	def identify_udm_object(self, dn, attrs):
+		"""Get the type of the specified UCS object"""
+		dn = unicode(dn, 'utf-8')
 		for k in self.property.keys():
-			if self.modules[k].identify(unicode(dn, 'utf8'), attrs):
+			if self.modules[k].identify(dn, attrs):
 				return k
-			elif self.modules_others[k]:
-				for m in self.modules_others[k]:
-					if m and m.identify(unicode(dn, 'utf8'), attrs):
-						return m
-		return None
+			for m in self.modules_others.get(k, []):
+				if m and m.identify(dn, attrs):
+					return k
