@@ -1289,9 +1289,9 @@ class s4(univention.s4connector.ucs):
 				return None
 		return object
 
-	def __identify(self, object):
-		"""Identify the type of an S4 object"""
-		_d = ud.function('ldap.__identify')
+	def __identify_s4_type(self, object):
+		"""Identify the type of the specified S4 object"""
+		_d = ud.function('ldap.__identify_s4_type')
 		if not object or 'attributes' not in object:
 			return None
 		for key in self.property.keys():
@@ -1606,7 +1606,7 @@ class s4(univention.s4connector.ucs):
 				try:
 					s4_object = self.get_object(member_dn)
 
-					mo_key = self.__identify({'dn': member_dn, 'attributes': s4_object})
+					mo_key = self.__identify_s4_type({'dn': member_dn, 'attributes': s4_object})
 					ucs_dn = self._object_mapping(mo_key, {'dn': member_dn, 'attributes': s4_object})['dn']
 					if not self.lo.get(ucs_dn, attr=['cn']):
 						# Leave the following line commented out, as we don't want to keep the member in Samba/AD if it's not present in OpenLDAP
@@ -1848,7 +1848,7 @@ class s4(univention.s4connector.ucs):
 				ud.debug(ud.LDAP, ud.INFO, "Did not find %s in S4 group member cache" % member_dn)
 				member_object = self.get_object(member_dn)
 				if member_object:
-					mo_key = self.__identify({'dn': member_dn, 'attributes': member_object})
+					mo_key = self.__identify_s4_type({'dn': member_dn, 'attributes': member_object})
 					if not mo_key:
 						ud.debug(ud.LDAP, ud.WARN, "group_members_sync_to_ucs: failed to identify object type of S4 group member, ignore membership: %s" % member_dn)
 						continue  # member is an object which will not be synced
@@ -2099,7 +2099,7 @@ class s4(univention.s4connector.ucs):
 					ud.debug(ud.LDAP, ud.WARN, "more than one rejected object with id %s found, can't proceed" % change_usn)
 				else:
 					samba_object = self.__object_from_element(elements[0])
-					property_key = self.__identify(samba_object)
+					property_key = self.__identify_s4_type(samba_object)
 					mapped_object = self._object_mapping(property_key, samba_object)
 					try:
 						if not self._ignore_object(property_key, mapped_object) and not self._ignore_object(property_key, samba_object):
@@ -2168,7 +2168,7 @@ class s4(univention.s4connector.ucs):
 				self._debug_traceback(ud.ERROR, "Exception during poll/object-mapping, object will not be synced again!")
 
 			if samba_object:
-				property_key = self.__identify(samba_object)
+				property_key = self.__identify_s4_type(samba_object)
 				if property_key:
 
 					if self._ignore_object(property_key, samba_object):
@@ -2656,7 +2656,7 @@ class s4(univention.s4connector.ucs):
 					continue
 				ud.debug(ud.LDAP, ud.INFO, "delete: %s" % result[0])
 				subobject_s4 = {'dn': result[0], 'modtype': 'delete', 'attributes': result[1]}
-				key = self.__identify(subobject_s4)
+				key = self.__identify_s4_type(subobject_s4)
 				back_mapped_subobject = self._object_mapping(key, subobject_s4)
 				ud.debug(ud.LDAP, ud.WARN, "delete subobject: %s" % back_mapped_subobject['dn'])
 				if not self._ignore_object(key, back_mapped_subobject):
@@ -2665,6 +2665,7 @@ class s4(univention.s4connector.ucs):
 						return False
 
 			return self.delete_in_s4(object, property_type)
+
 		entryUUID = object.get('attributes').get('entryUUID', [None])[0]
 		if entryUUID:
 			self.update_deleted_cache_after_removal(entryUUID, objectGUID)
