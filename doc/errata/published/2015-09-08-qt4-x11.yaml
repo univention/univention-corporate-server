@@ -5,7 +5,7 @@ src: qt4-x11
 fix: 4:4.6.3-4.48.201509081017
 version: [6,7]
 desc: |
- Multiple security vulnerabilitues have been fixed in qt4-x11:
+ Multiple security vulnerabilities have been fixed in qt4-x11:
  * Buffer overflow in Harfbuzz extension (CVE-2011-3193).
  * Buffer overflow in processing greyscale images (CVE-2011-3194).
  * Access to shared memory segments was insufficiently restricted, allowing
