@@ -867,8 +867,8 @@ class s4(univention.s4connector.ucs):
 		try:
 			self.lo_s4 = univention.uldap.access(host=self.s4_ldap_host, port=int(self.s4_ldap_port), base='', binddn=None, bindpw=None, start_tls=tls_mode, ca_certfile=self.s4_ldap_certificate, uri=ldapuri, reconnect=False)
 			self.s4_ldap_base = self.s4_search_ext_s('', ldap.SCOPE_BASE, 'objectclass=*', ['defaultNamingContext'])[0][1]['defaultNamingContext'][0]
-		except Exception:
-			ud.debug(ud.LDAP, ud.ERROR, 'Failed to lookup S4 LDAP base, using UCR value.')
+		except Exception:  # FIXME: which exception is to be caught
+			self._debug_traceback(ud.ERROR, 'Failed to lookup S4 LDAP base, using UCR value.')
 
 		self.lo_s4 = univention.uldap.access(host=self.s4_ldap_host, port=int(self.s4_ldap_port), base=self.s4_ldap_base, binddn=self.s4_ldap_binddn, bindpw=self.s4_ldap_bindpw, start_tls=tls_mode, ca_certfile=self.s4_ldap_certificate, decode_ignorelist=DECODE_IGNORELIST, uri=ldapuri, reconnect=False)
 
@@ -980,13 +980,15 @@ class s4(univention.s4connector.ucs):
 				dn, s4_object = self.s4_search_ext_s(compatible_modstring(dn), ldap.SCOPE_BASE, '(objectClass=*)', ('dn',))[0]
 				ud.debug(ud.LDAP, ud.INFO, "get_object: got object: %r" % (dn,))
 				return dn
+			except (IndexError, univention.admin.uexceptions.noObject):
+				pass
 			except (ldap.SERVER_DOWN, SystemExit):
 				if i == 0:
 					self.open_s4()
 					continue
 				raise
 			except Exception:  # FIXME: which exception is to be caught?
-				pass
+				self._debug_traceback(ud.ERROR, 'Could not get object DN')  # TODO: remove except block
 
 	def parse_range_retrieval_attrs(self, s4_attrs, attr):
 		for k in s4_attrs:
@@ -1046,13 +1048,15 @@ class s4(univention.s4connector.ucs):
 				dn, s4_object = self.s4_search_ext_s(compatible_modstring(dn), ldap.SCOPE_BASE, '(objectClass=*)', attrlist=attrlist)[0]
 				ud.debug(ud.LDAP, ud.INFO, "get_object: got object: %r" % (dn,))
 				return encode_s4_object(s4_object)
+			except (IndexError, univention.admin.uexceptions.noObject):
+				pass
 			except (ldap.SERVER_DOWN, SystemExit):
 				if i == 0:
 					self.open_s4()
 					continue
 				raise
 			except Exception:  # FIXME: which exception is to be caught?
-				pass
+				self._debug_traceback(ud.ERROR, 'Could not get object')  # TODO: remove except block?
 
 	def __get_change_usn(self, object):
 		'''
@@ -1592,7 +1596,7 @@ class s4(univention.s4connector.ucs):
 				except ldap.SERVER_DOWN:
 					raise
 				except Exception:  # FIXME: which exception is to be caught?
-					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: failed to get S4 dn for UCS group member %s, assume object doesn't exist" % member_dn)
+					self._debug_traceback(ud.PROCESS, "group_members_sync_from_ucs: failed to get S4 dn for UCS group member %s, assume object doesn't exist" % member_dn)
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: UCS-members in s4_members_from_ucs %s" % s4_members_from_ucs)
 
@@ -1616,7 +1620,7 @@ class s4(univention.s4connector.ucs):
 				except ldap.SERVER_DOWN:
 					raise
 				except Exception:  # FIXME: which exception is to be caught?
-					self._debug_traceback(ud.INFO, "group_members_sync_from_ucs: failed to get UCS dn for S4 group member %s" % member_dn)
+					self._debug_traceback(ud.PROCESS, "group_members_sync_from_ucs: failed to get UCS dn for S4 group member %s" % member_dn)
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: UCS-and S4-members in s4_members_from_ucs %s" % s4_members_from_ucs)
 
@@ -1867,7 +1871,7 @@ class s4(univention.s4connector.ucs):
 					except ldap.SERVER_DOWN:
 						raise
 					except Exception:  # FIXME: which exception is to be caught?
-						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: failed to get UCS dn for S4 group member %s, assume object doesn't exist" % member_dn)
+						self._debug_traceback(ud.PROCESS, "group_members_sync_to_ucs: failed to get UCS dn for S4 group member %s, assume object doesn't exist" % member_dn)
 
 		# build an internal cache
 		cache = {}
@@ -1900,7 +1904,7 @@ class s4(univention.s4connector.ucs):
 				except ldap.SERVER_DOWN:
 					raise
 				except Exception:  # FIXME: which exception is to be caught?
-					self._debug_traceback(ud.INFO, "group_members_sync_to_ucs: failed to get S4 dn for UCS group member %s" % member_dn)
+					self._debug_traceback(ud.PROCESS, "group_members_sync_to_ucs: failed to get S4 dn for UCS group member %s" % member_dn)
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: dn_mapping_ucs_member_to_s4=%s" % (dn_mapping_ucs_member_to_s4))
 		add_members = copy.deepcopy(ucs_members_from_s4)
