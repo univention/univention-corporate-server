@@ -5,7 +5,7 @@ src: clamav
 fix: 0.98.1+dfsg-2~really0.98.7+dfsg-0.151.201506081022
 version: [6]
 desc: |
- These vulernabilities have been fixed:
+ These vulnerabilities have been fixed:
  - Buffer overflow when parsing crafted y0da Crypter PE files (CVE-2014-9050)
  - Segmentation fault when parsing malformed Javascript files (CVE-2013-6497)
  - Memory corruption in processing upack archives (CVE-2014-9328)
