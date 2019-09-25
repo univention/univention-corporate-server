@@ -1085,6 +1085,9 @@ class s4(univention.s4connector.ucs):
 
 		return res
 
+	def __get_s4_deleted(self, dn):
+		return self.__search_s4(dn, scope=ldap.SCOPE_BASE, filter='(objectClass=*)', show_deleted=True)[0]
+
 	def __search_s4(self, base=None, scope=ldap.SCOPE_SUBTREE, filter='', attrlist=[], show_deleted=False):
 		'''
 		search s4
@@ -1225,9 +1228,12 @@ class s4(univention.s4connector.ucs):
 		'''
 		_d = ud.function('ldap.__dn_from_deleted_object')
 
-		# FIXME: should be called recursively, if containers are deleted subobjects have lastKnownParent in deletedObjects
 		rdn = object['dn'].split('\\0ADEL:')[0]
 		last_known_parent = object['attributes'].get('lastKnownParent', [None])[0]
+		if last_known_parent and '\\0ADEL:' in last_known_parent:
+			dn, attr = self.__get_s4_deleted(last_known_parent)
+			last_known_parent = self.__dn_from_deleted_object({'dn': dn, 'attributes': attr}, GUID)
+
 		if last_known_parent:
 			ud.debug(ud.LDAP, ud.INFO, "__dn_from_deleted_object: get DN from lastKnownParent (%r) and rdn (%r)" % (last_known_parent, rdn))
 
@@ -1282,7 +1288,7 @@ class s4(univention.s4connector.ucs):
 		if deleted_object:  # dn is in deleted-objects-container, need to parse to original dn
 			object['deleted_dn'] = object['dn']
 			object['dn'] = self.__dn_from_deleted_object(object, GUID)
-			ud.debug(ud.LDAP, ud.INFO, "object_from_element: DN of removed object: %s" % object['dn'])
+			ud.debug(ud.LDAP, ud.PROCESS, "object_from_element: DN of removed object: %r" % (object['dn'],))
 			# self._remove_GUID(GUID) # cache is not needed anymore?
 
 			if not object['dn']:
