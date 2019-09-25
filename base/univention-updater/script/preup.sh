@@ -306,6 +306,21 @@ fail_if_role_package_will_be_removed () {
 	fi
 }
 
+block_update_with_docker() {
+	if [ -e /var/lib/docker/aufs ]; then
+		echo "ERROR: The update to UCS 4.4-2 is currently blocked because"
+		echo "       of a known issue with docker packages (Bug #50259)."
+		echo ""
+		if is_ucr_true update44/ignore_docker_issue; then
+			echo "WARNING: update44/ignore_docker_issue is set to true. Skipped as requested."
+		else
+			exit 1
+		fi
+	fi
+}
+block_update_with_docker
+
+
 # begin bug 46562
 block_update_if_system_date_is_too_old() {
 	local system_year
