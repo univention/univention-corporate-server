@@ -1451,12 +1451,7 @@ class ucs:
 		if not old_object and object['modtype'] == 'move':
 			object['modtype'] = 'add'
 
-		try:
-			ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs:   [%14s] [%10s] %s' % (property_type, object['modtype'], object['dn']))
-		except (ldap.SERVER_DOWN, SystemExit):
-			raise
-		except:  # FIXME: which exception is to be caught?
-			ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs...')
+		ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs:   [%14s] [%10s] %r' % (property_type, object['modtype'], object['dn']))
 
 		if object['modtype'] in ('delete', 'move'):
 			try:
