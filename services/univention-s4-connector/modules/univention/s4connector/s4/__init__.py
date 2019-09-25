@@ -2094,40 +2094,39 @@ class s4(univention.s4connector.ucs):
 		rejected = self._list_rejected()
 		print("Sync %s rejected changes from S4 to UCS" % len(rejected))
 		sys.stdout.flush()
-		if rejected:
-			for id, dn in rejected:
-				ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs: Resync rejected dn: %s' % (dn))
-				try:
-					sync_successfull = False
-					elements = self.__search_s4_changeUSN(id, show_deleted=True)
-					if not elements or len(elements) < 1 or not elements[0][0]:
-						ud.debug(ud.LDAP, ud.INFO, "rejected change with id %s not found, don't need to sync" % id)
-						self._remove_rejected(id)
-					elif len(elements) > 1 and not (elements[1][0] == 'None' or elements[1][0] is None):  # all except the first should be referrals
-						ud.debug(ud.LDAP, ud.WARN, "more than one rejected object with id %s found, can't proceed" % id)
-					else:
-						object = self.__object_from_element(elements[0])
-						property_key = self.__identify(object)
-						mapped_object = self._object_mapping(property_key, object)
-						try:
-							if not self._ignore_object(property_key, mapped_object) and not self._ignore_object(property_key, object):
-								sync_successfull = self.sync_to_ucs(property_key, mapped_object, dn, object)
-							else:
-								sync_successfull = True
-						except (ldap.SERVER_DOWN, SystemExit):
-							raise
-						except:  # FIXME: which exception is to be caught?
-							self._debug_traceback(ud.ERROR, "sync of rejected object failed \n\t%s" % (object['dn']))
-							sync_successfull = False
-						if sync_successfull:
-							change_count += 1
-							self._remove_rejected(id)
-							self.__update_lastUSN(object)
-							self._set_DN_for_GUID(elements[0][1]['objectGUID'][0], elements[0][0])
-				except (ldap.SERVER_DOWN, SystemExit):
-					raise
-				except Exception:
-					self._debug_traceback(ud.ERROR, "unexpected Error during s4.resync_rejected")
+		for change_usn, dn in rejected:
+			ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs: Resync rejected dn: %s' % (dn))
+			try:
+				sync_successfull = False
+				elements = self.__search_s4_changeUSN(change_usn, show_deleted=True)
+				if not elements or len(elements) < 1 or not elements[0][0]:
+					ud.debug(ud.LDAP, ud.INFO, "rejected change with id %s not found, don't need to sync" % change_usn)
+					self._remove_rejected(change_usn)
+				elif len(elements) > 1 and not (elements[1][0] == 'None' or elements[1][0] is None):  # all except the first should be referrals
+					ud.debug(ud.LDAP, ud.WARN, "more than one rejected object with id %s found, can't proceed" % change_usn)
+				else:
+					samba_object = self.__object_from_element(elements[0])
+					property_key = self.__identify(samba_object)
+					mapped_object = self._object_mapping(property_key, samba_object)
+					try:
+						if not self._ignore_object(property_key, mapped_object) and not self._ignore_object(property_key, samba_object):
+							sync_successfull = self.sync_to_ucs(property_key, mapped_object, dn, samba_object)
+						else:
+							sync_successfull = True
+					except (ldap.SERVER_DOWN, SystemExit):
+						raise
+					except:  # FIXME: which exception is to be caught?
+						self._debug_traceback(ud.ERROR, "sync of rejected object failed \n\t%s" % (samba_object['dn']))
+						sync_successfull = False
+					if sync_successfull:
+						change_count += 1
+						self._remove_rejected(change_usn)
+						self.__update_lastUSN(samba_object)
+						self._set_DN_for_GUID(elements[0][1]['objectGUID'][0], elements[0][0])
+			except (ldap.SERVER_DOWN, SystemExit):
+				raise
+			except Exception:
+				self._debug_traceback(ud.ERROR, "unexpected Error during s4.resync_rejected")
 		print("restored %s rejected changes" % change_count)
 		print("--------------------------------------")
 		sys.stdout.flush()
