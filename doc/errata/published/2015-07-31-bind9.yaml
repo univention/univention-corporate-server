@@ -8,7 +8,7 @@ desc: |
  The DNS server bind9 has been updated to the new release 9.8.4-P1 which
  is covered by security maintenance in Debian wheezy. It replaces the
  bind9 version 9.8.0-P4 distributed with previous releases of UCS 3.2.
- These vulernabilities have been fixed in bind9:
+ These vulnerabilities have been fixed in bind9:
  * Missing error handling in delegation handling could lead to denial
    of service against named (CVE-2014-8500).
  * Denial of service when DNSSEC validation and the managed-keys feature
