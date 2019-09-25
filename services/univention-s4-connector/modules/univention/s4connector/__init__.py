@@ -1364,6 +1364,7 @@ class ucs:
 		return False
 
 	def delete_in_ucs(self, property_type, object, module, position):
+		"""Removes an Samba-4 object in UCS-LDAP"""
 		_d = ud.function('ldap.delete_in_ucs')
 
 		if self.property[property_type].disable_delete_in_ucs:
@@ -1433,6 +1434,22 @@ class ucs:
 				raise
 
 	def sync_to_ucs(self, property_type, object, pre_mapped_s4_dn, original_object):
+		"""
+		Synchronize an object from Samba4-LDAP to UCS Open-LDAP.
+
+		:param property_type:
+			the type of the object to be synced, must be part of the mapping. (e.g. "user", "group", "dc", "windowscomputer", etc.)
+		:param object:
+			A dictionary describing the Samba object.
+			modtype: A modification type ("add", "modify", "move", "delete")
+			dn: The DN of the object in the UCS-LDAP
+			olddn: The olddn of the object object in UCS-LDAP (e.g. on "move" operation)
+		:ptype object: dict
+		:param pre_mapped_s4_dn:
+			pass
+		:param original_object:
+			pass
+		"""
 		# NOTE: pre_mapped_s4_dn means: original s4_dn (i.e. before _object_mapping)
 		_d = ud.function('ldap.sync_to_ucs')
 		# this function gets an object from the s4 class, which should be converted into a ucs module
@@ -1737,6 +1754,9 @@ class ucs:
 	def _ignore_object(self, key, object):
 		'''
 		parse if object should be ignored because of ignore_subtree or ignore_filter
+
+		:param key: the property_type from the mapping
+		:param object: a mapped or unmapped S4 or UCS object
 		'''
 		_d = ud.function('ldap._ignore_object')
 		if 'dn' not in object:
@@ -1762,6 +1782,18 @@ class ucs:
 		return False
 
 	def _object_mapping(self, key, old_object, object_type='con'):
+		"""Create a mapped object from Samba or UCS object definition.
+
+		:param key:
+			the mapping key
+		:param old_object:
+			the object definition in univention directory listener style
+		:ptype old_object: dict
+		:param object_type:
+			"con" if `old_object` is a S4 object.
+			"ucs" if `old_object` is a UCS object.
+		:ptype object_type: str
+		"""
 		_d = ud.function('ldap._object_mapping')
 		ud.debug(ud.LDAP, ud.INFO, "_object_mapping: map with key %s and type %s" % (key, object_type))
 		object = copy.deepcopy(old_object)

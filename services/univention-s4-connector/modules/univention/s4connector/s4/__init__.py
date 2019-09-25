@@ -943,6 +943,7 @@ class s4(univention.s4connector.ucs):
 		self._remove_config_option('S4 rejected', str(id))
 
 	def _list_rejected(self):
+		"""Returns rejected Samba4-objects"""
 		_d = ud.function('ldap._list_rejected')
 		result = []
 		for i in self._get_config_items('S4 rejected'):
@@ -1045,6 +1046,7 @@ class s4(univention.s4connector.ucs):
 		return s4_members
 
 	def get_object(self, dn, attrlist=None):
+		"""Get an object from S4-LDAP"""
 		_d = ud.function('ldap.get_object')
 		for i in [0, 1]:  # do it twice if the LDAP connection was closed
 			try:
@@ -1244,12 +1246,16 @@ class s4(univention.s4connector.ucs):
 
 	def __object_from_element(self, element):
 		"""
-		gets an object from an LDAP-element, implements necessary mapping
+		gets an object from an S4 LDAP-element, implements necessary mapping
 
+		:param element:
+			(dn, attributes) tuple from a search in S4-LDAP
+		:ptype element: tuple
 		"""
 		_d = ud.function('ldap.__object_from_element')
 		if element[0] == 'None' or element[0] is None:
 			return None  # referrals
+
 		object = {}
 		object['dn'] = self.encode(element[0])
 		deleted_object = False
@@ -1290,6 +1296,7 @@ class s4(univention.s4connector.ucs):
 		return object
 
 	def __identify(self, object):
+		"""Identify the type of an S4 object"""
 		_d = ud.function('ldap.__identify')
 		if not object or 'attributes' not in object:
 			return None
