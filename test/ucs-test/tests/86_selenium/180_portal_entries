@@ -6,7 +6,6 @@
 ##  - domaincontroller_backup
 ## tags:
 ##  - skip_admember
-##  - SKIP
 ## join: true
 ## exposure: dangerous
 
@@ -45,7 +44,6 @@ class UMCTester(object):
 		}
 		return expected_entries_map[server_role]
 
-
 	def check_if_expected_entries_are_shown(self, expected_entries):
 		for entry in expected_entries:
 			self.selenium.wait_for_text(entry[1])
@@ -54,11 +52,9 @@ class UMCTester(object):
 			print("Looking under category '%s' for entry with description '%s'" % (entry[0], entry[2]))
 			self.selenium.driver.find_element_by_xpath('//*[@class = "portalCategory"]/h2[text() = "%s"]/..//*[@class = "appHover"]//*[text() = "%s"]' % (entry[0], entry[2]))
 
-
 	def go_to_portal(self, url):
 		print("Going to portal of: %s" % (url))
 		self.selenium.driver.get(url)
-
 
 	def test_umc(self):
 		server_role = ucr.get('server/role')
