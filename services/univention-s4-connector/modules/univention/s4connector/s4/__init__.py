@@ -1981,7 +1981,11 @@ class s4(univention.s4connector.ucs):
 		object_ucs = self._object_mapping(object_key, object)
 		ldap_object_s4 = self.get_object(object['dn'])
 
-		ucs_admin_object = univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object_ucs['dn'])
+		try:
+			ucs_admin_object = univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object_ucs['dn'])
+		except univention.admin.uexceptions.noObject as exc:
+			ud.debug(ud.LDAP, ud.WARN, "Ignore already removed object %s." % (exc,))
+			return
 		ucs_admin_object.open()
 
 		modlist = []
