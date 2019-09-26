@@ -1,3 +1,11 @@
+ucs-test (9.0.3-59) unstable; urgency=low
+
+  * Bug #50229: expose get_lid()
+  * Bug #50229: make enter_input() of u.t.selenium more robust against
+    sudden focus changes
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 26 Sep 2019 16:44:58 +0200
+
 ucs-test (9.0.3-58) unstable; urgency=medium
 
   * Bug #50088: ucslint exception
