@@ -53,7 +53,7 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
-			var version = tools.status('ucsVersion').split('-')[0];
+			var version = '4.4';
 			lang.mixin(this, {
 				pages: [{
 					name: 'register',
