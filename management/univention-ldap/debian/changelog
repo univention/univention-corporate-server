@@ -1,3 +1,9 @@
+univention-ldap (15.0.0-25) unstable; urgency=low
+
+  * Bug #46649: add objectClass "top" to container cn=dns,$LDAP_BASE
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 26 Sep 2019 10:52:46 +0200
+
 univention-ldap (15.0.0-24) unstable; urgency=medium
 
   * Bug #50205: Update links from UCS 4.x-y to UCS 4.4-2

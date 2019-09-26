@@ -569,6 +569,7 @@ univentionObjectType: container/cn
 cn: mailinglists
 
 dn: cn=dns,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
