@@ -14,6 +14,7 @@ from univention.admin.rest.client import UDM as UDMClient, Forbidden, Unauthoriz
 from univention.config_registry import ConfigRegistry
 from univention.testing.utils import UCSTestDomainAdminCredentials
 from univention.testing.udm import UDM
+from univention.lib.misc import custom_groupname
 
 
 ucr = ConfigRegistry()
@@ -45,7 +46,7 @@ def test_authentication(udm):
 		udm_client = UDMClient.master_connection(user, 'univention')
 		udm_client.get('users/user')
 
-	udm.modify_object('users/user', dn=userdn, groups='cn=Domain Admins,cn=groups,%s' % (ucr['ldap/base'],))
+	udm.modify_object('users/user', dn=userdn, groups='cn=%s,cn=groups,%s' % (custom_groupname('Domain Admins', ucr), ucr['ldap/base'],))
 	print('3. domain admin must be able to access the API')
 	udm_client = UDMClient.master_connection(user, 'univention')
 	udm_client.get('users/user')
