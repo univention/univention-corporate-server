@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [2]
+scope: ucs_4.4-0-errata4.4-2
+src: univention-system-activation
+fix: 4.0.0-8A~4.4.0.201909261151
+desc: |-
+  This update addresses the following issue(s):
+  * Fixed an error while loading the System Activation Wizard.
+bug: [50267]
