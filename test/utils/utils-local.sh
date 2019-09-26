@@ -57,6 +57,7 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 		'/usr/share/ucs-test/*/selenium'
 		'/var/log/apache2/error.log'='apache2-error.log'
 		'/var/log/auth.log*'=
+		'/var/log/apt/term.log'
 		'/var/log/daemon.log*'=
 		'/var/log/dpkg.log'
 		'/var/log/dovecot.log*'=
