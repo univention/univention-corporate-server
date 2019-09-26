@@ -5,7 +5,7 @@ src: univention-management-console
 fix: 6.0.24-1.774.201401140936
 version: [0]
 desc: |
- This updates improves the error handling of UMC modules. A feedback is sent to
+ This update improves the error handling of UMC modules. A feedback is sent to
  the client when the initializing of a module failed.
 bug: [33673]
 erratum: 40
