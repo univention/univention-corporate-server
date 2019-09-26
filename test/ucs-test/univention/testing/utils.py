@@ -493,11 +493,16 @@ def wait_for_listener_replication(verbose=True):
 	raise LDAPReplicationFailed()
 
 
+def get_lid():  # type: () -> int
+	"""
+	get_lid() returns the last processed notifier ID of univention-directory-listener.
+	"""
+	with open("/var/lib/univention-directory-listener/notifier_id", "r") as notifier_id:
+		return int(notifier_id.readline())
+
+
 def wait_for_listener_replication_and_postrun(verbose=True):
 	# Postrun function in listener modules are called after 15 seconds without any events
-	def get_lid():
-		with open("/var/lib/univention-directory-listener/notifier_id", "r") as notifier_id:
-			return int(notifier_id.readline())
 
 	wait_for_listener_replication(verbose=verbose)
 	if verbose:
