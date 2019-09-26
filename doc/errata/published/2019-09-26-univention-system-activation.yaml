@@ -8,3 +8,5 @@ desc: |-
  This update addresses the following issue:
  * Fixed an error while loading the System Activation Wizard.
 bug: [50267]
+erratum: 291
+announced: 2019-09-26
