@@ -167,8 +167,11 @@ def force_drs_replication(source_dc=None, destination_dc=None, partition_dn=None
 	return subprocess.call(cmd)
 
 
-def _ldap_replication_complete():
-	return subprocess.call('/usr/lib/nagios/plugins/check_univention_replication') == 0
+def _ldap_replication_complete(verbose=True):
+	kwargs = {}
+	if not verbose:
+		kwargs = {'stdout': open('/dev/null', 'w'), 'stderr': subprocess.STDOUT}
+	return subprocess.call('/usr/lib/nagios/plugins/check_univention_replication', **kwargs) == 0
 
 
 def wait_for_s4connector(timeout=360, delta_t=1, s4cooldown_t=10):
@@ -186,14 +189,19 @@ def wait_for_s4connector(timeout=360, delta_t=1, s4cooldown_t=10):
 
 	static_count = 0
 
+	replication_complete = False
 	highestCommittedUSN = -1
 	lastUSN = -1
 	t = t0 = time.time()
 	while t < t0 + timeout:
 		time.sleep(delta_t)
 
-		if not _ldap_replication_complete():
+		if not _ldap_replication_complete(verbose=False):
 			continue
+		else:
+			if not replication_complete:
+				print('Start waiting for S4-Connector replication')
+			replication_complete = True
 
 		previous_highestCommittedUSN = highestCommittedUSN
 
@@ -217,15 +225,15 @@ def wait_for_s4connector(timeout=360, delta_t=1, s4cooldown_t=10):
 		c.execute('select value from S4 where key=="lastUSN"')
 
 		lastUSN = c.fetchone()[0]
-		print('highestCommittedUSN: {}'.format(highestCommittedUSN))
-		print('lastUSN: {}'.format(lastUSN))
 
 		if not (lastUSN == highestCommittedUSN and lastUSN == previous_lastUSN and highestCommittedUSN == previous_highestCommittedUSN):
 			static_count = 0
 			print('Reset counter')
 		else:
 			static_count = static_count + 1
-		print('Counter: %d' % static_count)
+
+		print('Counter: {}; highestCommittedUSN: {}; lastUSN: {}'.format(static_count, highestCommittedUSN, lastUSN))
+
 		if static_count * delta_t >= s4cooldown_t:
 			return 0
 		t = time.time()
