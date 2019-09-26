@@ -16,3 +16,5 @@
 0008-4: umc/de.po
 # Spelling
 0015-2: tests/43_proxy/07_basic_auth_encoding
+# "iptables" in comment does not need --wait
+0017-4: tests/80_docker/87_docker_iptables
