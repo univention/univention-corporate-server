@@ -20,7 +20,7 @@ if __name__ == '__main__':
 		ptr = udm.create_object('dns/ptr_record', address='2', superordinate=reverse_zone, ptr_record=ptr_record)
 
 		ptr_record = uts.random_name()
-		udm.modify_object('dns/ptr_record', dn=ptr, superordinate=reverse_zone, ptr_record=ptr_record)
+		udm.modify_object('dns/ptr_record', dn=ptr, superordinate=reverse_zone, ptr_record=ptr_record, wait_for=True)
 		utils.verify_ldap_object(ptr, {'pTRRecord': [ptr_record]})
 
 		# IPv6 case:
@@ -30,5 +30,5 @@ if __name__ == '__main__':
 		ptr = udm.create_object('dns/ptr_record', address='2', superordinate=reverse_zone, ptr_record=ptr_record)
 
 		ptr_record = uts.random_name()
-		udm.modify_object('dns/ptr_record', dn=ptr, superordinate=reverse_zone, ptr_record=ptr_record)
+		udm.modify_object('dns/ptr_record', dn=ptr, superordinate=reverse_zone, ptr_record=ptr_record, wait_for=True)
 		utils.verify_ldap_object(ptr, {'pTRRecord': [ptr_record]})
