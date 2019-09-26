@@ -1,5 +1,5 @@
 [Global]
-jenkins_description: Various UCS installation tests (fail immediately if one setup step fails, only basic tests): <ul> <li>All roles, german, with samba4 (samba-env)</li> <li>Master, german, all components (master-all-components)</li> <li>Master, english, static IP address (master-english-static-ip)</li> <li>Master, french, static IP address (master-french-static-ip)</li> <li>AD member setup, german, w2k12 + ucs ad member mode (ad-member)</li> <li>PXE Installation</li> <li>Base system</li> </ul>
+jenkins_ddescription: Various UCS installation tests (fail immediately if one setup step fails, only basic tests): <ul> <li>All roles, german, with samba4 (samba-env)</li> <li>Master, german, all components (master-all-components)</li> <li>Master, english, static IP address (master-english-static-ip)</li> <li>Master, french, static IP address (master-french-static-ip)</li> <li>AD member setup, german, w2k12 + ucs ad member mode (ad-member)</li> <li>PXE Installation</li> <li>Base system</li> </ul>
 jenkins_run_sequentially: true
 jenkins_default_kvm_server: utby.knut.univention.de
 jenkins_recipients: botner@univention.de,damrose@univention.de
