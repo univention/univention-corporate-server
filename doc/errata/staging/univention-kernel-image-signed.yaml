@@ -2,8 +2,8 @@ product: ucs
 release: "4.4"
 version: [1, 2]
 scope: ucs_4.4-0-errata4.4-2
-src: linux
-fix: 4.9.189-3+deb9u1
+src: univention-kernel-image-signed
+fix: 5.0.0-8A~4.4.0.201909260927
 desc: |-
  This update addresses the following issues:
  * KVM: OOB memory access via mmio ring buffer (CVE-2019-14821)
@@ -13,7 +13,7 @@ desc: |-
  * Mishandling recursion in sound/usb/mixer.c leading to kernel stack
    exhaustion and crash (CVE-2019-15118)
  * Backporting error in ptrace_get_debugreg() (CVE-2019-15902)
-note: This is the 1st of two related updates.
+note: This is the 2nd of two related updates.
 bug: [50263]
 cve:
 - CVE-2019-14821
