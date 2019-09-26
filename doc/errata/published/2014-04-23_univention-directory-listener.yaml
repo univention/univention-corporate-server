@@ -5,7 +5,7 @@ src: univention-directory-listener
 fix: 8.0.0-10.221.201405061116
 version: [1]
 desc: |
-  This update fixes the following issues in the Univention Directory Listener
+  This update fixes the following issues in the Univention Directory Listener:
   * The shutdown message has been adjusted.
   * Moved objects are now tracked by their unique 'entryUUID'. This fixes an
     issue, when objects in LDAP are modified and moved in short order, or while
