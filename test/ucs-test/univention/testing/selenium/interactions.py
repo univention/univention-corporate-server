@@ -189,7 +189,7 @@ class Interactions(object):
 		else:
 			raise ValueError('value of input {!r} does not contain previously entered value ({!r} != {!r})'.format(inputname, inputvalue, elem.get_property('value')))
 
-	def enter_input_combobox(self, inputname, inputvalue):  # type: (str, str) -> void
+	def enter_input_combobox(self, inputname, inputvalue):  # type: (str, str) -> None
 		xpath = "//*[@role='combobox' and .//input[@name='{}']]//input[@role='textbox']".format(inputname)
 		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
 			self.get_all_enabled_elements
