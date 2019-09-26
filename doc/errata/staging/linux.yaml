@@ -13,6 +13,7 @@ desc: |
  * Mishandling recursion in sound/usb/mixer.c leading to kernel stack
    exhaustion and crash (CVE-2019-15118)
  * Backporting error in ptrace_get_debugreg() (CVE-2019-15902)
+note: This is the 1st of two related updates.
 bug: [50264]
 cve:
 - CVE-2019-14821
