@@ -178,8 +178,16 @@ class Interactions(object):
 		"""
 		logger.info('Entering %r into the input-field %r.', inputvalue, inputname)
 		elem = self.get_input(inputname)
-		elem.clear()
-		elem.send_keys(inputvalue)
+		# Retry up to 30 times if expected value does not match actual input field value.
+		# This problem may arise, if the focus changes suddenly during send_keys()
+		# (e.g. due to the autofocus feature of Dojo).
+		for i in range(30):
+			elem.clear()
+			elem.send_keys(inputvalue)
+			if elem.get_property('value') == inputvalue:
+				break
+		else:
+			raise ValueError('value of input {!r} does not contain previously entered value ({!r} != {!r})'.format(inputname, inputvalue, elem.get_property('value')))
 
 	def enter_input_combobox(self, inputname, inputvalue):  # type: (str, str) -> void
 		xpath = "//*[@role='combobox' and .//input[@name='{}']]//input[@role='textbox']".format(inputname)
