@@ -8,11 +8,11 @@ desc: |
  This update addresses the following issues:
  * KVM: OOB memory access via mmio ring buffer (CVE-2019-14821)
  * vhost-net: guest to host kernel escape during migration (CVE-2019-14835)
- * out of bounds memory access in parse_audio_mixer_unit in sound/usb/mixer.c
+ * Out of bounds memory access in parse_audio_mixer_unit in sound/usb/mixer.c
    (CVE-2019-15117)
- * mishandling recursion in sound/usb/mixer.c leading to kernel stack
+ * Mishandling recursion in sound/usb/mixer.c leading to kernel stack
    exhaustion and crash (CVE-2019-15118)
- * backporting error in ptrace_get_debugreg() (CVE-2019-15902)
+ * Backporting error in ptrace_get_debugreg() (CVE-2019-15902)
 bug: [50264]
 cve:
 - CVE-2019-14821
