@@ -1,3 +1,9 @@
+univention-system-activation (4.0.0-8) unstable; urgency=medium
+
+  * Bug #50267: Fix UCS Version for links
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 26 Sep 2019 11:50:12 +0200
+
 univention-system-activation (4.0.0-7) unstable; urgency=medium
 
   * Bug #50205: Update links from UCS 4.x-y to UCS 4.4-2
