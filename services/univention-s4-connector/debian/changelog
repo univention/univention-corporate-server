@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-46) unstable; urgency=medium
+
+  * Bug #49324: fix removal of S4-objects if parent is already removed
+
+ -- Florian Best <best@univention.de>  Thu, 26 Sep 2019 18:55:15 +0200
+
 univention-s4-connector (13.0.2-45) unstable; urgency=medium
 
   * Bug #50033: Coding improvements

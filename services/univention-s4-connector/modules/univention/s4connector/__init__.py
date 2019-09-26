@@ -110,7 +110,7 @@ def check_ucs_lastname_user(s4connector, key, ucs_object):
 	'''
 	check if required values for lastname are set
 	'''
-	if not ucs_object.has_key('lastname') or not ucs_object['lastname']:
+	if not ucs_object.has_property('lastname') or not ucs_object['lastname']:
 		ucs_object['lastname'] = 'none'
 
 
@@ -141,9 +141,7 @@ def dictonary_lowercase(dict):
 	else:
 		try:  # should be string
 			return dict.lower()
-		except (ldap.SERVER_DOWN, SystemExit):
-			raise
-		except:  # FIXME: which exception is to be caught?
+		except Exception:  # FIXME: which exception is to be caught?
 			pass
 
 
@@ -157,9 +155,7 @@ def compare_lowercase(val1, val2):
 			return True
 		else:
 			return False
-	except (ldap.SERVER_DOWN, SystemExit):
-		raise
-	except:  # FIXME: which exception is to be caught?
+	except Exception:  # FIXME: which exception is to be caught?
 		return False
 
 # helper classes
@@ -181,7 +177,7 @@ class configdb:
 				if rows:
 					return rows[0][0]
 				return ''
-			except lite.Error as e:
+			except lite.Error:
 				if self._dbcon:
 					self._dbcon.close()
 				self._dbcon = lite.connect(self.filename)
@@ -196,7 +192,7 @@ class configdb:
 				if rows:
 					return rows[0][0]
 				return ''
-			except lite.Error as e:
+			except lite.Error:
 				if self._dbcon:
 					self._dbcon.close()
 				self._dbcon = lite.connect(self.filename)
@@ -478,7 +474,7 @@ class ucs:
 		self.ucs_no_recode = ['krb5Key', 'userPassword', 'pwhistory', 'sambaNTPassword', 'sambaLMPassword', 'userCertificate']
 
 		self.baseConfig = baseConfig
-		self.property = _property
+		self.property = _property  # this is the mapping!
 
 		self.init_debug()
 
@@ -525,7 +521,7 @@ class ucs:
 		"""Introduced for Bug #33110: Fix case of base part of DN"""
 		if dn.endswith(base):
 			return dn
-		elif dn.lower().endswith(base.lower()):
+		elif dn.lower().endswith(base.lower()):  # FIXME
 			return ''.join((dn[:-len(base)], base))
 		else:
 			return dn
@@ -541,7 +537,7 @@ class ucs:
 
 		try:
 			port = int(self.baseConfig.get('%s/ldap/port' % self.CONFIGBASENAME, self.baseConfig.get('ldap/master/port')))
-		except:
+		except ValueError:
 			port = 7389
 
 		self.lo = univention.admin.uldap.access(host=host, port=port, base=self.baseConfig['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=2, follow_referral=True)
@@ -556,7 +552,7 @@ class ucs:
 				self.open_ucs()
 				result = self.lo.search(filter=filter, base=base, scope=scope, attr=attr, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit)
 				return result
-			except ldap.SERVER_DOWN as e:
+			except ldap.SERVER_DOWN:
 				ud.debug(ud.LDAP, ud.INFO, 'LDAP-Server seems to be down')
 				raise search_exception
 
@@ -565,9 +561,7 @@ class ucs:
 		if '%s/debug/function' % self.CONFIGBASENAME in self.baseConfig:
 			try:
 				function_level = int(self.baseConfig['%s/debug/function' % self.CONFIGBASENAME])
-			except (ldap.SERVER_DOWN, SystemExit):
-				raise
-			except:  # FIXME: which exception is to be caught?
+			except ValueError:
 				function_level = 0
 		else:
 			function_level = 0
@@ -603,8 +597,7 @@ class ucs:
 		if not resync:
 			# Note that unescaped <> are invalid in DNs. See also:
 			# `_list_rejected_ucs()`.
-			dn = '<NORESYNC{}:{}>;{}'.format('=' + reason if reason else '',
-				os.path.basename(filename), dn)
+			dn = '<NORESYNC{}:{}>;{}'.format('=' + reason if reason else '', os.path.basename(filename), dn)
 		unicode_dn = univention.s4connector.s4.encode_attrib(dn)
 		self._set_config_option('UCS rejected', filename, unicode_dn)
 
@@ -620,8 +613,7 @@ class ucs:
 		rejected = self._get_config_items('UCS rejected')
 		if filter_noresync:
 			no_resync = re.compile('^<NORESYNC(=.*?)?>;')
-			return [(fn, dn) for (fn, dn) in rejected if
-				no_resync.match(dn) is None]
+			return [(fn, dn) for (fn, dn) in rejected if no_resync.match(dn) is None]
 		return rejected
 
 	def _list_rejected_ucs(self):
@@ -681,7 +673,7 @@ class ucs:
 			return False
 
 		entryCSN_set = set(value.split(','))
-		if not entryCSN in entryCSN_set:
+		if entryCSN not in entryCSN_set:
 			return False
 
 		entryCSN_set.remove(entryCSN)
@@ -726,8 +718,6 @@ class ucs:
 		print traceback with ud.debug, level is i.e. ud.INFO
 		'''
 		_d = ud.function('ldap._debug_traceback')
-		exc_info = sys.exc_info()
-
 		ud.debug(ud.LDAP, level, text)
 		ud.debug(ud.LDAP, level, traceback.format_exc())
 
@@ -736,14 +726,14 @@ class ucs:
 		'''
 		return rdn from dn
 		'''
-		return dn.split(',', 1)[0]
+		return dn.split(',', 1)[0]  # FIXME
 
 	def _get_subtree(self, dn):
 		_d = ud.function('ldap._get_subtree')
 		'''
 		return subtree from dn
 		'''
-		return dn.split(',', 1)[1]
+		return dn.split(',', 1)[1]  # FIXME
 
 	def __sync_file_from_ucs(self, filename, append_error='', traceback_level=ud.WARN):
 		_d = ud.function('ldap._sync_file_from_ucs')
@@ -758,8 +748,7 @@ class ucs:
 			return True  # file not found so there's nothing to sync
 		except (cPickle.UnpicklingError, EOFError) as e:
 			message = 'file emtpy' if isinstance(e, EOFError) else e.message
-			ud.debug(ud.LDAP, ud.ERROR,
-				'__sync_file_from_ucs: invalid pickle file {}: {}'.format(filename, message))
+			ud.debug(ud.LDAP, ud.ERROR, '__sync_file_from_ucs: invalid pickle file {}: {}'.format(filename, message))
 			# ignore corrupted pickle file, but save as rejected to not try again
 			self._save_rejected_ucs(filename, 'unknown', resync=False, reason='broken file')
 			return False
@@ -792,17 +781,7 @@ class ucs:
 		ignore_subtree_match = False
 
 		_attr = new or old
-		for k in self.property.keys():
-			if self.modules[k].identify(unicode(dn, 'utf8'), _attr):
-				key = k
-				break
-			elif self.modules_others[k]:
-				for m in self.modules_others[k]:
-					if m and m.identify(unicode(dn, 'utf8'), _attr):
-						key = k
-						break
-			if key:
-				break
+		key = self.identify_udm_object(dn, _attr)
 
 		if not new:
 			change_type = "delete"
@@ -870,7 +849,7 @@ class ucs:
 							ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was added: %s" % dn)
 				except (ldap.SERVER_DOWN, SystemExit):
 					raise
-				except:
+				except Exception:  # FIXME: which exception is to be caught?
 					# the ignore_object method might throw an exception if the subschema will be synced
 					change_type = "add"
 					old_dn = ''  # there may be an old_dn if object was moved from ignored container
@@ -900,7 +879,7 @@ class ucs:
 							return False
 						else:
 							return True
-					except (ldap.SERVER_DOWN, SystemExit):
+					except ldap.SERVER_DOWN:
 						raise
 					except ldap.NO_SUCH_OBJECT:
 						self._save_rejected_ucs(filename, dn)
@@ -909,7 +888,7 @@ class ucs:
 						else:
 							self._debug_traceback(traceback_level, "sync failed, saved as rejected\n\t%s" % (filename,))
 						return False
-					except:
+					except Exception:
 						self._save_rejected_ucs(filename, dn)
 						self._debug_traceback(traceback_level, "sync failed, saved as rejected\n\t%s" % (filename,))
 						return False
@@ -986,9 +965,9 @@ class ucs:
 
 			ucs_object = univention.admin.objects.get(module, co=None, lo=self.lo, position='', dn=searchdn)
 			ud.debug(ud.LDAP, ud.INFO, "get_ucs_object: object found: %s" % searchdn)
-		except (ldap.SERVER_DOWN, SystemExit):
+		except ldap.SERVER_DOWN:
 			raise
-		except:  # FIXME: which exception is to be caught?
+		except Exception:  # FIXME: which exception is to be caught?
 			ud.debug(ud.LDAP, ud.INFO, "get_ucs_object: object search failed: %s" % searchdn)
 			self._debug_traceback(ud.WARN, "get_ucs_object: failure was: \n\t")
 			return None
@@ -1005,19 +984,20 @@ class ucs:
 		self.modules = {}
 		self.modules_others = {}
 		position = univention.admin.uldap.position(self.lo.base)
-		for key in self.property.keys():
-			if self.property[key].ucs_module:
-				self.modules[key] = univention.admin.modules.get(self.property[key].ucs_module)
-				if hasattr(self.property[key], 'identify'):
+
+		for key, mapping in self.property.items():
+			if mapping.ucs_module:
+				self.modules[key] = univention.admin.modules.get(mapping.ucs_module)
+				if hasattr(mapping, 'identify'):
 					ud.debug(ud.LDAP, ud.INFO, "Override identify function for %s" % key)
-					self.modules[key].identify = self.property[key].identify
+					self.modules[key].identify = mapping.identify
 			else:
 				self.modules[key] = None
 			univention.admin.modules.init(self.lo, position, self.modules[key])
 
 			self.modules_others[key] = []
-			if self.property[key].ucs_module_others:
-				for m in self.property[key].ucs_module_others:
+			if mapping.ucs_module_others:
+				for m in mapping.ucs_module_others:
 					if m:
 						self.modules_others[key].append(univention.admin.modules.get(m))
 				for m in self.modules_others[key]:
@@ -1057,9 +1037,9 @@ class ucs:
 							pass
 						self._remove_rejected_ucs(filename)
 						change_counter += 1
-				except (ldap.SERVER_DOWN, SystemExit):
+				except ldap.SERVER_DOWN:
 					raise
-				except:  # FIXME: which exception is to be caught?
+				except Exception:  # FIXME: which exception is to be caught?
 					self._save_rejected_ucs(filename, dn)
 					self._debug_traceback(ud.WARN, "sync failed, saved as rejected \n\t%s" % filename)
 
@@ -1109,8 +1089,7 @@ class ucs:
 						continue  # file not found so there's nothing to sync
 					except (cPickle.UnpicklingError, EOFError) as e:
 						message = 'file emtpy' if isinstance(e, EOFError) else e.message
-						ud.debug(ud.LDAP, ud.ERROR,
-							'poll_ucs: invalid pickle file {}: {}'.format(filename, message))
+						ud.debug(ud.LDAP, ud.ERROR, 'poll_ucs: invalid pickle file {}: {}'.format(filename, message))
 						# ignore corrupted pickle file, but save as rejected to not try again
 						self._save_rejected_ucs(filename, 'unknown', resync=False, reason='broken file')
 						continue
@@ -1124,7 +1103,7 @@ class ucs:
 								self.open_ucs()
 								continue
 							raise
-						except:
+						except Exception:
 							self._save_rejected_ucs(filename, dn)
 							# We may dropped the parent object, so don't show this warning
 							self._debug_traceback(traceback_level, "sync failed, saved as rejected \n\t%s" % filename)
@@ -1190,7 +1169,7 @@ class ucs:
 						# See the MODIFY-case in `sync_from_ucs()` for more.
 						ud.debug(ud.LDAP, ud.INFO, "set key in ucs-object %s to value: %r" % (ucs_key, value))
 						try:
-							if not attributes.udm_option in ucs_object.options:
+							if attributes.udm_option not in ucs_object.options:
 								ud.debug(ud.LDAP, ud.INFO, "set option in ucs-object %s to value: %r" % (ucs_key, attributes.udm_option))
 								ucs_object.options.append(attributes.udm_option)
 						except AttributeError:
@@ -1203,12 +1182,11 @@ class ucs:
 				else:
 					ud.debug(ud.LDAP, ud.INFO, '__set_values: no ucs_attribute found in %s' % attributes)
 			else:
-
 				# prevent value resets of mandatory attributes
-				mandatory_attrs = ['lastname', 'unixhome','gidNumber','uidNumber']
+				mandatory_attrs = ['lastname', 'unixhome', 'gidNumber', 'uidNumber']
 
 				ucs_key = attributes.ucs_attribute
-				if ucs_object.has_key(ucs_key):
+				if ucs_object.has_property(ucs_key):
 					ucs_module = self.modules[property_type]
 					position = univention.admin.uldap.position(self.lo.base)
 					position.setDn(object['dn'])
@@ -1322,9 +1300,7 @@ class ucs:
 				return True
 			else:
 				ud.debug(ud.LDAP, ud.INFO, "move_in_ucs: move object from %s to %s" % (object['olddn'], object['dn']))
-		except (ldap.SERVER_DOWN, SystemExit):
-			raise
-		except:  # FIXME: which exception is to be caught?
+		except Exception:  # FIXME: which exception is to be caught?
 			ud.debug(ud.LDAP, ud.INFO, "move_in_ucs: move object in UCS")
 
 		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['olddn'], position='')
@@ -1371,6 +1347,7 @@ class ucs:
 		return False
 
 	def delete_in_ucs(self, property_type, object, module, position):
+		"""Removes an Samba-4 object in UCS-LDAP"""
 		_d = ud.function('ldap.delete_in_ucs')
 
 		if self.property[property_type].disable_delete_in_ucs:
@@ -1396,50 +1373,67 @@ class ucs:
 			except univention.admin.uexceptions.noObject:
 				ud.debug(ud.LDAP, ud.PROCESS, "The object was not found in UCS: %s" % object['dn'])
 				return True
+
 			if 'univentionDomainController' in result[0][1].get('objectClass'):
 				ud.debug(ud.LDAP, ud.PROCESS, "The windows computer %s is a Domain Controller in OpenLDAP. The deletion will be skipped." % object['dn'])
 				return True
 
-		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['dn'], position='')
+		try:
+			ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['dn'], position='')
+		except univention.admin.uexceptions.noObject:
+			raise  # object is already removed... TODO: enable if wanted!
+			return True
+
+		ucs_object.open()
 
 		try:
-			ucs_object.open()
-			ucs_object.remove()
-			self.update_deleted_cache_after_removal(entryUUID, objectGUID)
-			return True
-		except Exception as e:
-			ud.debug(ud.LDAP, ud.INFO, "delete object exception: %s" % e)
-			if str(e).startswith("Operation not allowed on non-leaf"):  # need to delete subtree
-				ud.debug(ud.LDAP, ud.INFO, "remove object from UCS failed, need to delete subtree")
-				for result in self.search_ucs(base=object['dn'], attr=['*', '+']):
-					if compare_lowercase(result[0], object['dn']):
-						continue
-					ud.debug(ud.LDAP, ud.INFO, "delete: %s" % result[0])
-					subobject_ucs = {'dn': result[0], 'modtype': 'delete', 'attributes': result[1]}
-					key = None
-					for k in self.property.keys():
-						if self.modules[k].identify(result[0], result[1]):
-							key = k
-							break
-					back_mapped_subobject = self._object_mapping(key, subobject_ucs, 'ucs')
-					ud.debug(ud.LDAP, ud.WARN, "delete subobject: %s" % back_mapped_subobject['dn'])
-					if not self._ignore_object(key, back_mapped_subobject):
-						if not self.sync_to_ucs(key, subobject_ucs, back_mapped_subobject['dn'], object):
-							try:
-								ud.debug(ud.LDAP, ud.WARN, "delete of subobject failed: %s" % result[0])
-							except (ldap.SERVER_DOWN, SystemExit):
-								raise
-							except:  # FIXME: which exception is to be caught?
-								ud.debug(ud.LDAP, ud.WARN, "delete of subobject failed")
-							return False
-
-				return self.delete_in_ucs(property_type, object, module, position)
-			elif str(e) == "noObject":  # already deleted #TODO: check if it's really match
+			try:
+				ucs_object.remove()
+				self.update_deleted_cache_after_removal(entryUUID, objectGUID)
 				return True
-			else:
+			except univention.admin.uexceptions.ldapError as exc:
+				if isinstance(exc.original_exception, ldap.NOT_ALLOWED_ON_NONLEAF):
+					raise exc.original_exception
 				raise
+		except ldap.NOT_ALLOWED_ON_NONLEAF:
+			ud.debug(ud.LDAP, ud.INFO, "remove object from UCS failed, need to delete subtree")
+			for subdn, subattr in self.search_ucs(base=object['dn'], attr=['*', '+']):
+				if unicode(subdn).lower() == unicode(object['dn']).lower():  # TODO: search with scope=children and remove this check
+					continue
+
+				ud.debug(ud.LDAP, ud.INFO, "delete: %r" % (subdn,))
+
+				key = self.identify_udm_object(subdn, subattr)
+				subobject_ucs = {'dn': result[0], 'modtype': 'delete', 'attributes': result[1]}
+				back_mapped_subobject = self._object_mapping(key, subobject_ucs, 'ucs')
+				ud.debug(ud.LDAP, ud.WARN, "delete subobject: %r" % (back_mapped_subobject['dn'],))
+
+				if not self._ignore_object(key, back_mapped_subobject):
+					# FIXME: this call is wrong!: sync_to_ucs() must be called with a samba_object not with a ucs_object!
+					if not self.sync_to_ucs(key, subobject_ucs, back_mapped_subobject['dn'], object):
+						ud.debug(ud.LDAP, ud.WARN, "delete of subobject failed: %r" % (subdn,))
+						return False
+
+			# FIXME: endless recursion if there is one subtree-object which is ignored, not identifyable or can't be removed.
+			return self.delete_in_ucs(property_type, object, module, position)
 
 	def sync_to_ucs(self, property_type, object, pre_mapped_s4_dn, original_object):
+		"""
+		Synchronize an object from Samba4-LDAP to UCS Open-LDAP.
+
+		:param property_type:
+			the type of the object to be synced, must be part of the mapping. (e.g. "user", "group", "dc", "windowscomputer", etc.)
+		:param object:
+			A dictionary describing the Samba object.
+			modtype: A modification type ("add", "modify", "move", "delete")
+			dn: The DN of the object in the UCS-LDAP
+			olddn: The olddn of the object object in UCS-LDAP (e.g. on "move" operation)
+		:ptype object: dict
+		:param pre_mapped_s4_dn:
+			pass
+		:param original_object:
+			pass
+		"""
 		# NOTE: pre_mapped_s4_dn means: original s4_dn (i.e. before _object_mapping)
 		_d = ud.function('ldap.sync_to_ucs')
 		# this function gets an object from the s4 class, which should be converted into a ucs module
@@ -1458,12 +1452,7 @@ class ucs:
 		if not old_object and object['modtype'] == 'move':
 			object['modtype'] = 'add'
 
-		try:
-			ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs:   [%14s] [%10s] %s' % (property_type, object['modtype'], object['dn']))
-		except (ldap.SERVER_DOWN, SystemExit):
-			raise
-		except:  # FIXME: which exception is to be caught?
-			ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs...')
+		ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs:   [%14s] [%10s] %r' % (property_type, object['modtype'], object['dn']))
 
 		if object['modtype'] in ('delete', 'move'):
 			try:
@@ -1536,7 +1525,7 @@ class ucs:
 					self.s4cache.add_entry(guid, original_object.get('attributes'))
 				if object['modtype'] == 'delete':
 					if not old_object:
-						ud.debug(ud.LDAP, ud.WARN, "Object to delete doesn't exists, ignore (%s)" % object['dn'])
+						ud.debug(ud.LDAP, ud.WARN, "Object to delete doesn't exists, ignore (%r)" % object['dn'])
 						result = True
 					else:
 						result = self.delete_in_ucs(property_type, object, module, position)
@@ -1554,7 +1543,7 @@ class ucs:
 					self.s4cache.add_entry(guid, original_object.get('attributes'))
 
 			if not result:
-				ud.debug(ud.LDAP, ud.WARN, "Failed to get Result for DN (%s)" % object['dn'])
+				ud.debug(ud.LDAP, ud.WARN, "Failed to get Result for DN (%r)" % (object['dn'],))
 				return False
 
 			try:
@@ -1563,9 +1552,9 @@ class ucs:
 						ud.debug(ud.LDAP, ud.INFO, "Call post_ucs_modify_functions: %s" % f)
 						f(self, property_type, object)
 						ud.debug(ud.LDAP, ud.INFO, "Call post_ucs_modify_functions: %s (done)" % f)
-			except (ldap.SERVER_DOWN, SystemExit):
+			except ldap.SERVER_DOWN:
 				raise
-			except:  # FIXME: which exception is to be caught?
+			except Exception:  # FIXME: which exception is to be caught?
 				self._debug_traceback(ud.ERROR, "failed in post_con_modify_functions")
 				result = False
 
@@ -1578,22 +1567,19 @@ class ucs:
 			return result
 
 		except univention.admin.uexceptions.valueInvalidSyntax as msg:
-			try:
-				ud.debug(ud.LDAP, ud.ERROR, "InvalidSyntax: %s (%s)" % (msg, object['dn']))
-			except:  # FIXME: which exception is to be caught?
-				ud.debug(ud.LDAP, ud.ERROR, "InvalidSyntax: %s" % msg)
+			ud.debug(ud.LDAP, ud.ERROR, "InvalidSyntax: %s (%r)" % (msg, object['dn']))
 			return False
 		except univention.admin.uexceptions.valueMayNotChange as msg:
-			ud.debug(ud.LDAP, ud.ERROR, "Value may not change: %s (%s)" % (msg, object['dn']))
+			ud.debug(ud.LDAP, ud.ERROR, "Value may not change: %s (%r)" % (msg, object['dn']))
 			return False
-		except (ldap.SERVER_DOWN, SystemExit):
+		except ldap.SERVER_DOWN:
 			raise
-		except:  # FIXME: which exception is to be caught?
+		except Exception:  # FIXME: which exception is to be caught?
 			self._debug_traceback(ud.ERROR, "Unknown Exception during sync_to_ucs")
 			return False
 
 	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, old_ucs_object=None, new_ucs_object=None):
-		# dummy
+		# dummy: implemented in s4/__init__.py
 		return False
 
 	# internal functions
@@ -1602,7 +1588,7 @@ class ucs:
 		_d = ud.function('ldap._subtree_match')
 		if len(subtree) > len(dn):
 			return False
-		if subtree.lower() == dn[-len(subtree):].lower():
+		if subtree.lower() == dn[-len(subtree):].lower():  # FIXME
 			return True
 		return False
 
@@ -1610,7 +1596,7 @@ class ucs:
 		_d = ud.function('ldap._subtree_replace')
 		if len(subtree) > len(dn):
 			return dn
-		if subtree.lower() == dn[-len(subtree):].lower():
+		if subtree.lower() == dn[-len(subtree):].lower():  # FIXME
 			return dn[:-len(subtree)] + subtreereplace
 		return dn
 
@@ -1669,9 +1655,9 @@ class ucs:
 							return True
 						else:
 							return False
-					except (ldap.SERVER_DOWN, SystemExit):
+					except ldap.SERVER_DOWN:
 						raise
-					except:
+					except Exception:
 						ud.debug(ud.LDAP, ud.WARN, "attribute_filter: Failed to convert attributes for bitwise filter")
 						return False
 
@@ -1749,6 +1735,9 @@ class ucs:
 	def _ignore_object(self, key, object):
 		'''
 		parse if object should be ignored because of ignore_subtree or ignore_filter
+
+		:param key: the property_type from the mapping
+		:param object: a mapped or unmapped S4 or UCS object
 		'''
 		_d = ud.function('ldap._ignore_object')
 		if 'dn' not in object:
@@ -1774,6 +1763,18 @@ class ucs:
 		return False
 
 	def _object_mapping(self, key, old_object, object_type='con'):
+		"""Create a mapped object from Samba or UCS object definition.
+
+		:param key:
+			the mapping key
+		:param old_object:
+			the object definition in univention directory listener style
+		:ptype old_object: dict
+		:param object_type:
+			"con" if `old_object` is a S4 object.
+			"ucs" if `old_object` is a UCS object.
+		:ptype object_type: str
+		"""
 		_d = ud.function('ldap._object_mapping')
 		ud.debug(ud.LDAP, ud.INFO, "_object_mapping: map with key %s and type %s" % (key, object_type))
 		object = copy.deepcopy(old_object)
@@ -1828,7 +1829,7 @@ class ucs:
 					for dntype in ['dn', 'olddn']:
 						if dntype in object and dntype not in dn_mapping_stored:
 							dn_mapped = object[dntype]
-							## note: position_mapping == [] by default
+							# note: position_mapping == [] by default
 							for mapping in self.property[key].position_mapping:
 								dn_mapped = self._subtree_replace(dn_mapped, mapping[0], mapping[1])
 							if dn_mapped == object[dntype]:
@@ -1843,7 +1844,7 @@ class ucs:
 					for dntype in ['dn', 'olddn']:
 						if dntype in object and dntype not in dn_mapping_stored:
 							dn_mapped = object[dntype]
-							## note: position_mapping == [] by default
+							# note: position_mapping == [] by default
 							for mapping in self.property[key].position_mapping:
 								dn_mapped = self._subtree_replace(dn_mapped, mapping[1], mapping[0])
 							if dn_mapped == object[dntype]:
@@ -1949,11 +1950,11 @@ class ucs:
 		return object_out
 
 	def identify_udm_object(self, dn, attrs):
+		"""Get the type of the specified UCS object"""
+		dn = unicode(dn, 'utf-8')
 		for k in self.property.keys():
-			if self.modules[k].identify(unicode(dn, 'utf8'), attrs):
+			if self.modules[k].identify(dn, attrs):
 				return k
-			elif self.modules_others[k]:
-				for m in self.modules_others[k]:
-					if m and m.identify(unicode(dn, 'utf8'), attrs):
-						return m
-		return None
+			for m in self.modules_others.get(k, []):
+				if m and m.identify(dn, attrs):
+					return k

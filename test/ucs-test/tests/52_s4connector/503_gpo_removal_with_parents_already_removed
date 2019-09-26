@@ -1,0 +1,116 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Remove a msGPO object while parents are already removed"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## bugs:
+##  - 49324
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "s4connector.sh" || exit 137
+
+RETVAL=100
+
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+eval "$(ucr shell hostname domainname)"
+
+printer_name="$(random_chars)"
+policy_name="{9AD0EADA-B0FF-DEAD-BEEF-$(random_chars 12 "ABCDEF0123456789")}"
+policy_base="CN=$policy_name,CN=Policies,CN=System,$samba4_ldap_base"
+policy_base_ucs="CN=$policy_name,CN=Policies,CN=System,$ldap_base"
+
+echo -e "dn: $policy_base
+objectClass: top
+objectClass: container
+objectClass: groupPolicyContainer
+cn: $policy_name
+instanceType: 4
+showInAdvancedViewOnly: TRUE
+name: $policy_name
+objectCategory: CN=Group-Policy-Container,CN=Schema,CN=Configuration,$samba4_ldap_base
+gPCFileSysPath: \\\\$domainname\\SysVol\\$domainname\\Policies\\$policy_name
+gPCFunctionalityVersion: 2
+flags: 0
+displayName: $printer_name
+versionNumber: 1
+gPCMachineExtensionNames: [{8A28E2C5-8D06-49A4-A08C-632DAA493E17}{CC13E3F3-D6D7-4A7C-A806-085502AA8281}]
+
+dn: CN=Machine,$policy_base
+objectClass: top
+objectClass: container
+cn: Machine
+instanceType: 4
+showInAdvancedViewOnly: TRUE
+name: Machine
+objectCategory: CN=Container,CN=Schema,CN=Configuration,$samba4_ldap_base
+
+dn: CN=PushedPrinterConnections,CN=Machine,$policy_base
+objectClass: top
+objectClass: container
+cn: PushedPrinterConnections
+instanceType: 4
+showInAdvancedViewOnly: TRUE
+name: PushedPrinterConnections
+objectCategory: CN=Container,CN=Schema,CN=Configuration,$samba4_ldap_base
+
+dn: CN={7C18D2B5-7A83-4FB8-B28E-965D9B54C518},CN=PushedPrinterConnections,CN=Machine,$policy_base
+objectClass: top
+objectClass: msPrint-ConnectionPolicy
+cn: {7C18D2B5-7A83-4FB8-B28E-965D9B54C518}
+instanceType: 4
+showInAdvancedViewOnly: TRUE
+name: {7C18D2B5-7A83-4FB8-B28E-965D9B54C518}
+objectCategory: CN=ms-Print-ConnectionPolicy,CN=Schema,CN=Configuration,$samba4_ldap_base
+uNCName: \\\\$hostname.$domainname\\printer1
+serverName: \\\\$hostname.$domainname
+printerName: printer1
+printAttributes: 0
+
+dn: CN=User,$policy_base
+objectClass: top
+objectClass: container
+cn: User
+instanceType: 4
+showInAdvancedViewOnly: TRUE
+name: User
+objectCategory: CN=Container,CN=Schema,CN=Configuration,$samba4_ldap_base
+" | ldbadd --verbose -H /var/lib/samba/private/sam.ldb || fail_test 110
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+# FIXME: function is broken, maybe due to the { brackets?
+## udm_verify_ldap_attribute "cn" "$policy_name" "container/msgpo" || fail_test 110
+univention-ldapsearch -b "$policy_base_ucs" -s base dn -LLL  || fail_test 110
+univention-ldapsearch -b "CN=User,$policy_base_ucs" -s base dn -LLL || fail_test 110
+univention-ldapsearch -b "CN=Machine,$policy_base_ucs" -s base dn -LLL || fail_test 110
+univention-ldapsearch -b "CN=PushedPrinterConnections,CN=Machine,$policy_base_ucs" -s base dn -LLL || fail_test 110
+
+# This object is not synced between UCS and Samba4, therefore the bug arised, that it was not removed and removal of the parent failed
+# univention-ldapsearch -b "CN={7C18D2B5-7A83-4FB8-B28E-965D9B54C518},CN=PushedPrinterConnections,CN=Machine,$policy_base" -s base dn -LLL || fail_test 110
+
+# This is the order of the removal which is done in Windows when a GPO gets removed:
+ldbdel -H /var/lib/samba/private/sam.ldb "CN={7C18D2B5-7A83-4FB8-B28E-965D9B54C518},CN=PushedPrinterConnections,CN=Machine,$policy_base" || fail_test 110
+ldbdel -H /var/lib/samba/private/sam.ldb "CN=PushedPrinterConnections,CN=Machine,$policy_base" || fail_test 110
+ldbdel -H /var/lib/samba/private/sam.ldb "CN=Machine,$policy_base" || fail_test 110
+ldbdel -H /var/lib/samba/private/sam.ldb "CN=User,$policy_base" || fail_test 110
+ldbdel -H /var/lib/samba/private/sam.ldb "$policy_base" || fail_test 110
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+univention-ldapsearch -b "CN=PushedPrinterConnections,CN=Machine,$policy_base_ucs" -s base dn -LLL && fail_test 110
+univention-ldapsearch -b "CN=Machine,$policy_base_ucs" -s base dn -LLL && fail_test 110
+univention-ldapsearch -b "CN=User,$policy_base_ucs" -s base dn -LLL && fail_test 110
+univention-ldapsearch -b "$policy_base_ucs" -s base dn -LLL  && fail_test 110
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"
