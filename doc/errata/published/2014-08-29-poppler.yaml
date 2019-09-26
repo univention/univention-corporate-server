@@ -5,7 +5,7 @@ src: poppler
 fix: 0.12.4-1.2.44.201408291719
 version: [1,2,3]
 desc: |
- A security vulnerability has been fixed in the PDF rendering library poppler
+ A security vulnerability has been fixed in the PDF rendering library poppler:
  * Memory corruption in JPEG error handler (CVE-2010-5110)
 bug: [33265]
 cve:
