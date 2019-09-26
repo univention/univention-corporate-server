@@ -1011,6 +1011,7 @@ add_hostname_to_juint_results ()
 }
 
 prepare_results () {
+	add_tech_key_authorized_keys
 	dump_systemd_journal
 }
 
