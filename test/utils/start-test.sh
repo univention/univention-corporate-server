@@ -48,6 +48,25 @@ else
 	test -e ./ucs-ec2-tools/ucs-kvm-create && exe="./ucs-ec2-tools/ucs-kvm-create"
 fi
 
+# if the default branch of UCS@school is given, then build UCS else build UCS@school
+if [ -n "$UCSSCHOOL_BRANCH" -o -n "$UCS_BRANCH" ]; then
+	if echo "$UCSSCHOOL_BRANCH" | egrep -q "^[0-9].[0-9]$" ; then
+		BUILD_BRANCH="$UCS_BRANCH"
+		BUILD_REPO="$REPO_UCS"
+	else
+		BUILD_BRANCH="$UCSSCHOOL_BRANCH"
+		BUILD_REPO="$REPO_UCSSCHOOL"
+	fi
+	# check branch test
+	ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "jenkins@${BUILD_HOST}" python3 \
+		/home/jenkins/build -r "${BUILD_REPO}" -b "${BUILD_BRANCH}" \
+		> utils/apt-get-branch-repo.list || exit 1
+
+	# replace non deb lines
+	sed -i '/^deb /!d' utils/apt-get-branch-repo.list
+fi
+
+
 declare -a cmd=("$exe" -c "$CFG")
 "$HALT" && cmd+=("-t")
 # shellcheck disable=SC2123
