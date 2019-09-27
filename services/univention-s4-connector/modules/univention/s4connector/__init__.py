@@ -1404,7 +1404,7 @@ class ucs:
 				ud.debug(ud.LDAP, ud.INFO, "delete: %r" % (subdn,))
 
 				key = self.identify_udm_object(subdn, subattr)
-				subobject_ucs = {'dn': result[0], 'modtype': 'delete', 'attributes': result[1]}
+				subobject_ucs = {'dn': subdn, 'modtype': 'delete', 'attributes': subattr}
 				back_mapped_subobject = self._object_mapping(key, subobject_ucs, 'ucs')
 				ud.debug(ud.LDAP, ud.WARN, "delete subobject: %r" % (back_mapped_subobject['dn'],))
 

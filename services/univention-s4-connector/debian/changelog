@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-47) unstable; urgency=medium
+
+  * Bug #49324: fix typo
+
+ -- Florian Best <best@univention.de>  Fri, 27 Sep 2019 10:28:40 +0200
+
 univention-s4-connector (13.0.2-46) unstable; urgency=medium
 
   * Bug #49324: fix removal of S4-objects if parent is already removed
