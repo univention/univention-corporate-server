@@ -492,9 +492,6 @@ install_selenium () {
 	local chromium_version="71.0.3578.80-1~deb9u1"
 	install_with_unmaintained python-pip xvfb chromium="$chromium_version" chromium-driver="$chromium_version"
 	pip install selenium==3.6.0
-	echo "PATH=\$PATH:/usr/lib/chromium" >> /root/.profile
-	echo "UCSTEST_SELENIUM=local" >> /root/.profile
-	echo "UCSTEST_SELENIUM_BROWSER=chrome" >> /root/.profile
 }
 
 run_apptests () {
