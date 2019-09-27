@@ -1511,16 +1511,19 @@ class simpleLdap(object):
 			if 'FALSE' not in self.lo.getAttr(self.dn, 'hasSubordinates'):
 				ud.debug(ud.ADMIN, ud.INFO, 'handlers/__init__._remove() children of base dn %s' % (self.dn,))
 				subelements = self.lo.search(base=self.dn, scope='one', attr=[])
-			if subelements:
-				try:
-					for subolddn, suboldattrs in subelements:
-						ud.debug(ud.ADMIN, ud.INFO, 'remove: subelement %s' % subolddn)
-						submodule = univention.admin.modules.identifyOne(subolddn, suboldattrs)
-						submodule = univention.admin.modules.get(submodule)
-						subobject = univention.admin.objects.get(submodule, None, self.lo, position='', dn=subolddn)
+
+			for subolddn, suboldattrs in subelements:
+				ud.debug(ud.ADMIN, ud.INFO, 'remove: subelement %s' % (subolddn,))
+				for submodule in univention.admin.modules.identify(subolddn, suboldattrs):
+					subobject = submodule.object(None, self.lo, None, dn=subolddn, attributes=suboldattrs)
+					subobject.open()
+					try:
 						subobject.remove(remove_childs)
-				except:
-					ud.debug(ud.ADMIN, ud.INFO, 'remove: could not remove subelements')
+					except univention.admin.uexceptions.base as exc:
+						ud.debug(ud.ADMIN, ud.ERROR, 'remove: could not remove %r: %s' % (subolddn, exc))
+					break
+				else:
+					ud.debug(ud.ADMIN, ud.WARN, 'remove: could not identify UDM module of %r' % (subolddn,))
 
 		self.lo.delete(self.dn)
 		self._exists = False
