@@ -1,6 +1,7 @@
 univention-s4-connector (13.0.2-49) unstable; urgency=medium
 
   * Bug #49876: ignore removed objects in disable_user_from_ucs()
+  * Bug #49976: fix comparing of DN before moving objects
 
  -- Florian Best <best@univention.de>  Thu, 10 Oct 2019 13:06:11 +0200
 

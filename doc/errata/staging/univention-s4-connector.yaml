@@ -7,4 +7,5 @@ fix:
 desc: |
  This update addresses the following issue(s):
  * The error handling for already removed objects has been improoved.
-bug: [49876]
+ * The detection of equal DN's when moving objects has been enhanced.
+bug: [49876, 49976]
