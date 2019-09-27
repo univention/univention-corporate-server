@@ -11,6 +11,7 @@ import atexit
 import subprocess
 from optparse import OptionGroup
 import distutils.spawn
+from distutils.version import LooseVersion
 
 
 class Coverage(object):
@@ -19,8 +20,7 @@ class Coverage(object):
 	COVERAGE_PTH_CONTENT = '''import univention.testing.coverage; univention.testing.coverage.Coverage.startup()'''
 	COVERAGE_DEBUG_PATH = '/tmp/ucs-test-coverage'
 	COVERAGE_DEBUG = os.path.exists(COVERAGE_DEBUG_PATH)
-
-	coverage = None
+	COVERAGE_MIN_VERSION = '4.3'
 
 	def __init__(self, options):
 		self.coverage_config = options.coverage_config
@@ -58,10 +58,14 @@ class Coverage(object):
 
 		if self.coverage:
 			try:
-				import coverage
+				import coverage  # noqa: F401
+				if LooseVersion(coverage.__version__) < LooseVersion(self.COVERAGE_MIN_VERSION):
+					raise ImportError('Version {!r} of coverage to low, at least {!r} required.'.format(coverage.__version__, self.COVERAGE_MIN_VERSION))
 			except ImportError as exc:
 				print('Could not load coverage: %s' % (exc,), file=sys.stderr)
-				print("use: ucr set repository/online/unmaintained='yes'; univention-install -y python-coverage", file=sys.stderr)
+				print("Use: ucr set repository/online/unmaintained='yes'; univention-install -y --force-yes python-pip; pip install coverage", file=sys.stderr)
+				print("Or download a 'python-coverage' package with version >= {} from 'packages.debian.org'".format(self.COVERAGE_MIN_VERSION), file=sys.stderr)
+				print("and install with 'dpkg -i python-coverage_*.deb'.", file=sys.stderr)
 				sys.exit(1)
 
 		if self.coverage and options.coverage_debug:
@@ -131,7 +135,7 @@ class Coverage(object):
 		coverage_group.add_option('--coverage-restart-service', dest='coverage_restart_services', action='append', default=[])
 		return coverage_group
 
-	@classmethod
+	@classmethod  # noqa: C901
 	def startup(cls):
 		"""Startup function which is invoked by every(!) python process during coverage measurement. If the process is relevant we start measuring coverage."""
 		argv = open('/proc/%s/cmdline' % os.getpid()).read().split('\x00')

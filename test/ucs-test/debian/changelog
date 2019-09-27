@@ -1,3 +1,9 @@
+ucs-test (9.0.3-66) unstable; urgency=low
+
+  * Bug #50285: require coverage version >=4.3
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 27 Sep 2019 14:47:37 +0200
+
 ucs-test (9.0.3-65) unstable; urgency=medium
 
   * Bug #50088: make docker database test cleanup opened ports
@@ -9,7 +15,6 @@ ucs-test (9.0.3-64) unstable; urgency=low
   * Bug #50289: restart UMC server when entering SeleniumTest environment
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 27 Sep 2019 14:43:53 +0200
-
 ucs-test (9.0.3-63) unstable; urgency=low
 
   * Bug #50285: update services coverage restarts, auto support ucsschool
