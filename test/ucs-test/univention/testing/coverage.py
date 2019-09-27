@@ -37,6 +37,8 @@ class Coverage(object):
 			'univention-portal-server',
 			'univention-directory-manager-rest',
 		]
+		self.show_missing = options.coverage_show_missing
+		self.output_directory = options.coverage_output_directory
 
 		try:
 			subprocess.check_call(
@@ -88,10 +90,25 @@ class Coverage(object):
 			fd.write(self.COVERAGE_PTH_CONTENT)
 
 		with open(self.coverage_config, 'wb') as fd:
-			fd.write('[run]\ndata_file = %s\nbranch = %s\nparallel = True\nsource = %s\n' % (
-				os.path.join(os.path.dirname(self.coverage_config), '.coverage'),
-				repr(self.branch_coverage),
-				'\n\t'.join(self.coverage_sources)
+			fd.write('''[run]
+data_file = {data_file}
+branch = {branch}
+parallel = True
+source = {source}
+[report]
+ignore_errors = True
+show_missing = {show_missing}
+omit = handlers/ucstest
+	syntax.d/*
+	hooks.d/*
+[html]
+directory = {directory}
+'''.format(
+				data_file=os.path.join(os.path.dirname(self.coverage_config), '.coverage'),
+				branch=repr(self.branch_coverage),
+				source='\n\t'.join(self.coverage_sources),
+				show_missing=self.show_missing,
+				directory=self.output_directory,
 			))
 
 	def restart_python_services(self):
@@ -118,8 +135,9 @@ class Coverage(object):
 			coverage_bin = distutils.spawn.find_executable("python-coverage")
 		subprocess.call([coverage_bin, '--version'])
 		subprocess.call([coverage_bin, 'combine'])
-		subprocess.call([coverage_bin, 'html', '-i', '--omit=handlers/ucstest,syntax.d/*,hooks.d/*'])
+		subprocess.call([coverage_bin, 'html'])
 		subprocess.call([coverage_bin, 'report'])
+		subprocess.call([coverage_bin, 'erase'])
 		if os.path.exists(self.COVERAGE_PTH):
 			os.remove(self.COVERAGE_PTH)
 		if os.path.exists(self.coverage_config):
@@ -135,6 +153,8 @@ class Coverage(object):
 		coverage_group.add_option('--coverage-sources', dest='coverage_sources', action='append', default=[])
 		coverage_group.add_option("--coverage-debug", dest="coverage_debug", action='store_true', default=False)
 		coverage_group.add_option('--coverage-restart-service', dest='coverage_restart_services', action='append', default=[])
+		coverage_group.add_option('--coverage-show-missing', dest='coverage_show_missing', action='store_true', default=False)
+		coverage_group.add_option("--coverage-output-directory", dest="coverage_output_directory", default=os.path.abspath(os.path.expanduser('~/htmlcov')))
 		return coverage_group
 
 	@classmethod  # noqa: C901

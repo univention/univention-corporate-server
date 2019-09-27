@@ -25,7 +25,7 @@ issue () {
 find -type f -exec grep -P '^## (?!desc|bugs|otrs|versions|tags|roles|roles-not|join|components|packages|exposure|timeout)[a-z-]+:' {} + >"$tmp"
 issue "Unknown ucs-test tag"
 
-find -type f -exec grep '^source\>' {} + >"$tmp"
+find -type f ! -name '*.py' -exec grep '^source\>' {} + >"$tmp"
 issue "BASHism 'source'"
 
 find tests -name .svn -prune -o -type f \( \
