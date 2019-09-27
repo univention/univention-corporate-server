@@ -10,6 +10,7 @@ import signal
 import atexit
 import subprocess
 from optparse import OptionGroup
+import distutils.spawn
 
 
 class Coverage(object):
@@ -31,16 +32,37 @@ class Coverage(object):
 			'univention-management-console-web-server',
 			'univention-s4-connector',
 			'univention-directory-listener',
+			'univention-portal-server',
+			'univention-directory-manager-rest',
 		]
+
+		try:
+			subprocess.check_call(
+				["dpkg", "-l", "python-ucs-school"],
+				stderr=open("/dev/null", "a"),
+				stdout=open("/dev/null", "a")
+			)
+			self.coverage_sources.append('ucsschool')
+
+			subprocess.check_call(
+				["dpkg", "-l", "ucs-school-import-http-api"],
+				stderr=open("/dev/null", "a"),
+				stdout=open("/dev/null", "a")
+			)
+			self.services.extend([
+				'celery-worker-ucsschool-import',
+				'ucs-school-import-http-api',
+			])
+		except subprocess.CalledProcessError:
+			pass
 
 		if self.coverage:
 			try:
-				__import__('coverage')
+				import coverage
 			except ImportError as exc:
 				print('Could not load coverage: %s' % (exc,), file=sys.stderr)
-				print("use: ucr set repository/online/unmaintained='yes'; univention-install -y --force-yes python-pip; pip install coverage", file=sys.stderr)
-				self.coverage = False
-				return
+				print("use: ucr set repository/online/unmaintained='yes'; univention-install -y python-coverage", file=sys.stderr)
+				sys.exit(1)
 
 		if self.coverage and options.coverage_debug:
 			with open(self.COVERAGE_DEBUG_PATH, 'w'):
@@ -85,11 +107,13 @@ class Coverage(object):
 
 		# stop all services, so that their atexit-handler/signal handler stores the result before evaluating the result
 		self.restart_python_services()
-
-		subprocess.call(['coverage', '--version'])
-		subprocess.call(['coverage', 'combine'])
-		subprocess.call(['coverage', 'html', '-i', '--omit=handlers/ucstest,syntax.d/*,hooks.d/*'])
-		subprocess.call(['coverage', 'report'])
+		coverage_bin = distutils.spawn.find_executable("coverage")
+		if not coverage_bin:
+			coverage_bin = distutils.spawn.find_executable("python-coverage")
+		subprocess.call([coverage_bin, '--version'])
+		subprocess.call([coverage_bin, 'combine'])
+		subprocess.call([coverage_bin, 'html', '-i', '--omit=handlers/ucstest,syntax.d/*,hooks.d/*'])
+		subprocess.call([coverage_bin, 'report'])
 		if os.path.exists(self.COVERAGE_PTH):
 			os.remove(self.COVERAGE_PTH)
 		if os.path.exists(self.coverage_config):

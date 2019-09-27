@@ -1,3 +1,9 @@
+ucs-test (9.0.3-63) unstable; urgency=low
+
+  * Bug #50285: update services coverage restarts, auto support ucsschool
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 27 Sep 2019 12:44:55 +0200
+
 ucs-test (9.0.3-62) unstable; urgency=medium
 
   * Bug #50088: make docker iptables test more stable
