@@ -37,6 +37,7 @@ import time
 import datetime
 import logging
 import json
+import subprocess
 
 from PIL import Image
 from selenium import webdriver
@@ -88,6 +89,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		logging.basicConfig(level=logging.INFO)
 
 	def __enter__(self):
+		subprocess.call(['service', 'univention-management-console-server', 'restart'])
 		self._ucr.__enter__()
 		if self.selenium_grid:
 			self.driver = webdriver.Remote(
