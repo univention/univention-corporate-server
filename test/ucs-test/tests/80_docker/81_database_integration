@@ -11,6 +11,7 @@ from textwrap import dedent
 
 from dockertest import Appcenter, get_app_name, get_app_version, App, get_docker_appbox_image, tiny_app
 from univention.config_registry import ConfigRegistry
+from univention.testing.utils import restart_firewall
 
 
 if __name__ == '__main__':
@@ -43,6 +44,8 @@ if __name__ == '__main__':
 					assert app_name in output, 'No %s database named %s found in run #%d' % (database, app_name, i)
 					app.uninstall()
 				app.remove()
+	# make sure that all ports used by mysql and postgres are properly closed
+	restart_firewall()
 		except:
 			app.uninstall()
 			app.remove()
