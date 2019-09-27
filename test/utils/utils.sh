@@ -443,14 +443,13 @@ activate_ucsschool_devel_scope () {
 }
 
 ucsschool_scope_enabled () {
-	[ "${ucsschool_release:-scope}" = "scope" ]
+	[ "${UCSSCHOOL_RELEASE:-scope}" = "scope" ]
 }
 
 install_ucsschool () {
 	local rv=0
-	test -n "$UCSSCHOOL_RELEASE" && ucsschool_release="$UCSSCHOOL_RELEASE"
 
-	case "${ucsschool_release:-scope}" in
+	case "${UCSSCHOOL_RELEASE:-scope}" in
 		appcenter.test)
 			switch_to_test_app_center || rv=$?
 			install_apps ucsschool || rv=$?
