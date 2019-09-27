@@ -2647,37 +2647,41 @@ class s4(univention.s4connector.ucs):
 			pass  # object already deleted
 		except ldap.NOT_ALLOWED_ON_NONLEAF:
 			ud.debug(ud.LDAP, ud.INFO, "remove object from S4 failed, need to delete subtree")
-
-			if self.property[property_type].con_subtree_delete_objects:
-				_l = ["(%s)" % x for x in self.property[property_type].con_subtree_delete_objects]
-				allow_delete_filter = "(|%s)" % ''.join(_l)
-				for result in self.s4_search_ext_s(compatible_modstring(object['dn']), ldap.SCOPE_SUBTREE, allow_delete_filter):
-					if univention.s4connector.compare_lowercase(result[0], object['dn']):
-						continue
-					ud.debug(ud.LDAP, ud.INFO, "delete: %s" % result[0])
-					self.lo_s4.lo.delete_s(compatible_modstring(result[0]))
-
-			for subdn, subattr in self.s4_search_ext_s(compatible_modstring(object['dn']), ldap.SCOPE_SUBTREE, 'objectClass=*'):
-				if unicode(subdn).lower() == unicode(object['dn']).lower():  # FIXME: remove and search with scope=children instead
-					continue
-				ud.debug(ud.LDAP, ud.INFO, "delete: %r" % (subdn,))
-
-				subobject_s4 = {'dn': subdn, 'modtype': 'delete', 'attributes': subattr}
-				key = self.__identify_s4_type(subobject_s4)
-				back_mapped_subobject = self._object_mapping(key, subobject_s4)
-				ud.debug(ud.LDAP, ud.WARN, "delete subobject: %r" % (back_mapped_subobject['dn'],))
-
-				if not self._ignore_object(key, back_mapped_subobject):
-					# FIXME: this call is wrong!: sync_from_ucs() must be called with a ucs_object not with a samba_object!
-					if not self.sync_from_ucs(key, subobject_s4, back_mapped_subobject['dn']):
-						ud.debug(ud.LDAP, ud.WARN, "delete of subobject failed: %r" % (subdn,))
-						return False
-
-			# FIXME: endless recursion if there is one subtree-object which is ignored, not identifyable or can't be removed.
-			return self.delete_in_s4(object, property_type)
+			if self._remove_subtree_in_s4(object, property_type):
+				# FIXME: endless recursion if there is one subtree-object which is ignored, not identifyable or can't be removed.
+				return self.delete_in_s4(object, property_type)
+			return False
 
 		entryUUID = object.get('attributes').get('entryUUID', [None])[0]
 		if entryUUID:
 			self.update_deleted_cache_after_removal(entryUUID, objectGUID)
 		else:
 			ud.debug(ud.LDAP, ud.INFO, "delete_in_s4: Object without entryUUID: %s" % (object['dn'],))
+
+	def _remove_subtree_in_s4(self, parent_s4_object, property_type):
+		if self.property[property_type].con_subtree_delete_objects:
+			_l = ["(%s)" % x for x in self.property[property_type].con_subtree_delete_objects]
+			allow_delete_filter = "(|%s)" % ''.join(_l)
+			for sub_dn, _ in self.s4_search_ext_s(compatible_modstring(parent_s4_object['dn']), ldap.SCOPE_SUBTREE, allow_delete_filter):
+				if self.lo.compare_dn(unicode(sub_dn).lower(), unicode(parent_s4_object['dn']).lower()):  # FIXME: remove and search with scope=children instead
+					continue
+				ud.debug(ud.LDAP, ud.INFO, "delete: %r" % (sub_dn,))
+				self.lo_s4.lo.delete_s(compatible_modstring(sub_dn))
+
+		for subdn, subattr in self.s4_search_ext_s(compatible_modstring(parent_s4_object['dn']), ldap.SCOPE_SUBTREE, 'objectClass=*'):
+			if self.lo.compare_dn(unicode(subdn).lower(), unicode(parent_s4_object['dn']).lower()):  # FIXME: remove and search with scope=children instead
+				continue
+			ud.debug(ud.LDAP, ud.INFO, "delete: %r" % (subdn,))
+
+			subobject_s4 = {'dn': subdn, 'modtype': 'delete', 'attributes': subattr}
+			key = self.__identify_s4_type(subobject_s4)
+			back_mapped_subobject = self._object_mapping(key, subobject_s4)
+			ud.debug(ud.LDAP, ud.WARN, "delete subobject: %r" % (back_mapped_subobject['dn'],))
+
+			if not self._ignore_object(key, back_mapped_subobject):
+				# FIXME: this call is wrong!: sync_from_ucs() must be called with a ucs_object not with a samba_object!
+				if not self.sync_from_ucs(key, subobject_s4, back_mapped_subobject['dn']):
+					ud.debug(ud.LDAP, ud.WARN, "delete of subobject failed: %r" % (subdn,))
+					return False
+
+		return True
