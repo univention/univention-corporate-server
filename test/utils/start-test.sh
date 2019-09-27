@@ -29,6 +29,7 @@ export RELEASE_UPDATE="${release_update:=public}"
 export ERRATA_UPDATE="${errata_update:=testing}"
 export UCSSCHOOL_RELEASE=${UCSSCHOOL_RELEASE:=scope}
 export HALT="${HALT:=true}"
+export REPLACE="${REPLACE:=false}"
 export CFG="$1"
 
 test "$KVM_USER" = "jenkins" && KVM_USER="build"
@@ -66,6 +67,7 @@ fi
 # start the test
 declare -a cmd=("$exe" -c "$CFG")
 "$HALT" && cmd+=("-t")
+"$REPLACE" && cmd+=("--replace")
 PATH="${PATH:+$PATH:}./ucs-ec2-tools"
 "${cmd[@]}" &&
 [ -e "./COMMAND_SUCCESS" ]
