@@ -91,7 +91,7 @@ class UMCTester(object):
 	def search(self, search_value, category=None):
 		if category:
 			self.choose_category(category)
-		self.selenium.enter_input('pattern', search_value)
+		self.selenium.enter_input('pattern', str(search_value))
 		self.selenium.submit_input('pattern')
 		self.selenium.wait_until_all_standby_animations_disappeared()
 
