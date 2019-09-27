@@ -1,3 +1,9 @@
+ucs-test (9.0.3-68) unstable; urgency=low
+
+  * Bug #50285: fix accidental deletes
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 27 Sep 2019 15:04:21 +0200
+
 ucs-test (9.0.3-67) unstable; urgency=medium
 
   * Bug #50088: remove swap file
@@ -21,6 +27,7 @@ ucs-test (9.0.3-64) unstable; urgency=low
   * Bug #50289: restart UMC server when entering SeleniumTest environment
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 27 Sep 2019 14:43:53 +0200
+
 ucs-test (9.0.3-63) unstable; urgency=low
 
   * Bug #50285: update services coverage restarts, auto support ucsschool

@@ -22,6 +22,8 @@ class Coverage(object):
 	COVERAGE_DEBUG = os.path.exists(COVERAGE_DEBUG_PATH)
 	COVERAGE_MIN_VERSION = '4.3'
 
+	coverage = None
+
 	def __init__(self, options):
 		self.coverage_config = options.coverage_config
 		self.branch_coverage = options.branch_coverage
@@ -58,7 +60,7 @@ class Coverage(object):
 
 		if self.coverage:
 			try:
-				import coverage  # noqa: F401
+				import coverage
 				if LooseVersion(coverage.__version__) < LooseVersion(self.COVERAGE_MIN_VERSION):
 					raise ImportError('Version {!r} of coverage to low, at least {!r} required.'.format(coverage.__version__, self.COVERAGE_MIN_VERSION))
 			except ImportError as exc:
