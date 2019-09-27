@@ -1,3 +1,9 @@
+ucs-test (9.0.3-67) unstable; urgency=medium
+
+  * Bug #50088: remove swap file
+
+ -- Jannik Ahlers <ahlers@univention.de>  Fri, 27 Sep 2019 14:55:18 +0200
+
 ucs-test (9.0.3-66) unstable; urgency=low
 
   * Bug #50285: require coverage version >=4.3
@@ -8,7 +14,7 @@ ucs-test (9.0.3-65) unstable; urgency=medium
 
   * Bug #50088: make docker database test cleanup opened ports
 
--- Jannik Ahlers <ahlers@univention.de>  Fri, 27 Sep 2019 14:46:27 +0200
+ -- Jannik Ahlers <ahlers@univention.de>  Fri, 27 Sep 2019 14:46:27 +0200
 
 ucs-test (9.0.3-64) unstable; urgency=low
 
