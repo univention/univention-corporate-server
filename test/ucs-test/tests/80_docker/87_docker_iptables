@@ -28,6 +28,8 @@ services:
 '''
 
 if __name__ == '__main__':
+	# cleanup remnants from previous tests
+	restart_firewall()
 	with Appcenter() as appcenter:
 
 		name = get_app_name()
