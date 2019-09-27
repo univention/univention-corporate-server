@@ -70,6 +70,7 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 		'/var/log/univention/appcenter.log'
 		'/var/log/univention/config-registry.replog'='config-registry.replog.log'
 		'/var/log/univention/connector*'=
+		'/var/log/univention/coverage'
 		'/var/log/univention/directory-manager-cmd.log'
 		'/var/log/univention/join.log'
 		'/var/log/univention/listener.log'
