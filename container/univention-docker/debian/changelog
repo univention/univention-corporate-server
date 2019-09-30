@@ -1,3 +1,9 @@
+univention-docker (4.0.0-6) unstable; urgency=medium
+
+  * Bug #50295: and restart
+
+ -- Felix Botner <botner@univention.de>  Mon, 30 Sep 2019 16:52:02 +0200
+
 univention-docker (4.0.0-5) unstable; urgency=medium
 
   * Bug #50295: added daemon.json
