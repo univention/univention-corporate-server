@@ -573,12 +573,13 @@ run_tests () {
 		return 1
 	fi
 	if [ -n "$COVERAGE_REPORT" ]; then
-	  GENERATE_COVERAGE_REPORT="--with-coverage --coverage-show-missing --coverage-output-directory=/var/log/univention/coverage"
+		GENERATE_COVERAGE_REPORT="--with-coverage --coverage-show-missing --coverage-output-directory=/var/log/univention/coverage"
 	else
-	  GENERATE_COVERAGE_REPORT=""
-  fi
+		GENERATE_COVERAGE_REPORT=""
+	fi
 	dpkg-query -W -f '${Status}\t${binary:Package}\t${Version}\n' > "packages-under-test.log"
-	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest "$GENERATE_COVERAGE_REPORT" "$@"
+	#LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest "$GENERATE_COVERAGE_REPORT" "$@"
+	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest "$@"
 }
 
 run_tests_with_parameters () {
