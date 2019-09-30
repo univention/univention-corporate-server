@@ -1,5 +1,4 @@
-#!/usr/bin/env bash
-#
+#!/bin/sh
 #
 # Univention Nagios Plugin
 #  check_univention_nscd: check if nscd is bound to its socket.
@@ -30,27 +29,26 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-#
-#
 
 VERSION="1.00"
-PROGNAME=`/usr/bin/basename $0`
+PROGNAME="${0##*/}"
 
 STATE_OK=0
 STATE_WARNING=1
 STATE_CRITICAL=2
 STATE_UNKNOWN=3
 
-get_state_string() {
-	if [ "$1" = "$STATE_OK" ] ; then
-		STATE_STRING="OK"
-	elif [ "$1" = "$STATE_WARNING" ] ; then
-		STATE_STRING="WARNING"
-	elif [ "$1" = "$STATE_CRITICAL" ] ; then
-		STATE_STRING="CRITICAL"
-	else
-		STATE_STRING="UNKNOWN"
-    fi
+state () {
+    local STATE="$1"
+    case "$STATE" in
+        "$STATE_OK") STATE_STRING="OK" ;;
+        "$STATE_WARNING") STATE_STRING="WARNING" ;;
+        "$STATE_CRITICAL") STATE_STRING="CRITICAL" ;;
+        *) STATE_STRING="UNKNOWN" ;;
+    esac
+    shift
+    echo "${STATE_STRING}: $*"
+    exit "$STATE"
 }
 
 print_revision() {
@@ -69,23 +67,16 @@ print_help() {
     print_usage
 }
 
-while test -n "$1"; do
+while [ $# -ge 1 ]
+do
     case "$1" in
-        --help)
+        --help|-h)
             print_help
-            exit $STATE_OK
+            exit "$STATE_OK"
             ;;
-        -h)
-            print_help
-            exit $STATE_OK
-            ;;
-        --version)
+        --version|-V)
             print_revision
-            exit $STATE_OK
-            ;;
-        -V)
-            print_revision
-            exit $STATE_OK
+            exit "$STATE_OK"
             ;;
     esac
     shift
@@ -93,61 +84,10 @@ done
 
 nscd_socket="/var/run/nscd/socket"
 
-if [ ! -S $nscd_socket ]; then
-	state=$STATE_CRITICAL
-	get_state_string $state
-	echo "${STATE_STRING}: no nscd socket found! nscd not running?"
-	exit $state
-fi
+[ -S $nscd_socket ] ||
+    state "$STATE_CRITICAL" "no nscd socket found! nscd not running?"
 
-pids_on_nscd_socket=$(fuser "$nscd_socket" 2>/dev/zero)
-RET=$?
-if (( $RET != 0 )); then
-	fuser_error=$(fuser "$nscd_socket" 2>&1)
-	if [[ "$fuser_error" != "" ]]; then
-		state=$STATE_UNKNOWN
-		get_state_string $state
-		echo "${STATE_STRING}: fuser command failed"
-		exit $state
-	fi
-fi
+timeout 3 nscd -g >/dev/null 2>/dev/null ||
+    state "$STATE_CRITICAL" "nscd not responding!"
 
-nscd_processes_on_nscd_socket=0
-for pid in $pids_on_nscd_socket; do
-	process_path=$(readlink /proc/"$pid"/exe)
-	if (( $? != 0 )); then
-		#Process died?
-		continue
-	fi
-	process_name=$(basename "$process_path")
-	if [[ "$process_name" == "nscd" ]]; then
-		let nscd_processes_on_nscd_socket++
-	else
-		state=$STATE_CRITICAL
-		get_state_string $state
-		echo "${STATE_STRING}: Unknown program: \""$process_name"\" bound to nscd socket."
-		exit $state
-	fi
-done
-
-if (( $nscd_processes_on_nscd_socket == 1 )); then
-	state=$STATE_OK
-	get_state_string $state
-	echo "${STATE_STRING}: only one instance of nscd running."
-	exit $state
-elif (( $nscd_processes_on_nscd_socket > 1 )); then 
-	state=$STATE_WARNING
-	get_state_string $state
-	echo "${STATE_STRING}: more than one instance of nscd bound to nscd socket."
-	exit $state
-elif (( $nscd_processes_on_nscd_socket == 0 )); then
-	state=$STATE_CRITICAL
-	get_state_string $state
-	echo "${STATE_STRING}: no instance of nscd bound to nscd socket. nscd might have crashed."
-	exit $state
-fi
-
-state=$STATE_CRITICAL
-get_state_string $state
-echo "${STATE_STRING}: PLUGIN FAILED"
-exit $state
+state "$STATE_OK" "nscd is running."
