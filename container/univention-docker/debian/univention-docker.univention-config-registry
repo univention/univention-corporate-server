@@ -5,6 +5,12 @@ Variables: docker/daemon/default/opts/.*
 Variables: docker/daemon/default/parameter/.*
 
 Type: file
+File: etc/docker/daemon.json
+Variables: proxy/http
+Variables: docker/daemon/default/opts/.*
+Variables: docker/daemon/default/parameter/.*
+
+Type: file
 File: etc/docker/seccomp-systemd.json
 
 Type: file
