@@ -1,5 +1,3 @@
-@%@UCRWARNING=// @%@
-
 {
 	"storage-driver": "@%@docker/daemon/default/opts/storage-driver@%@",
 	"log-opts": {
