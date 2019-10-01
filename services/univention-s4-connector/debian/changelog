@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-48) unstable; urgency=medium
+
+  * Bug #49324: fix error handling
+
+ -- Florian Best <best@univention.de>  Tue, 01 Oct 2019 16:36:40 +0200
+
 univention-s4-connector (13.0.2-47) unstable; urgency=medium
 
   * Bug #49324: fix typo

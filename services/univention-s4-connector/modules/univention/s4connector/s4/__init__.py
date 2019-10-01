@@ -980,8 +980,8 @@ class s4(univention.s4connector.ucs):
 				dn, s4_object = self.s4_search_ext_s(compatible_modstring(dn), ldap.SCOPE_BASE, '(objectClass=*)', ('dn',))[0]
 				ud.debug(ud.LDAP, ud.INFO, "get_object: got object: %r" % (dn,))
 				return dn
-			except (IndexError, univention.admin.uexceptions.noObject):
-				pass
+			except (IndexError, ldap.NO_SUCH_OBJECT):
+				return
 			except (ldap.SERVER_DOWN, SystemExit):
 				if i == 0:
 					self.open_s4()
@@ -1048,8 +1048,8 @@ class s4(univention.s4connector.ucs):
 				dn, s4_object = self.s4_search_ext_s(compatible_modstring(dn), ldap.SCOPE_BASE, '(objectClass=*)', attrlist=attrlist)[0]
 				ud.debug(ud.LDAP, ud.INFO, "get_object: got object: %r" % (dn,))
 				return encode_s4_object(s4_object)
-			except (IndexError, univention.admin.uexceptions.noObject):
-				pass
+			except (IndexError, ldap.NO_SUCH_OBJECT):
+				return
 			except (ldap.SERVER_DOWN, SystemExit):
 				if i == 0:
 					self.open_s4()
