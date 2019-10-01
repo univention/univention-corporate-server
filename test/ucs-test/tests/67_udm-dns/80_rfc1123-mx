@@ -16,7 +16,7 @@ if __name__ == '__main__':
 			forward_zone = udm.create_object(
 				'dns/forward_zone',
 				zone='365.ucs',
-				nameserver=uts.random_nameserver(),
+				nameserver=uts.random_dns_record(),
 				mx='127.0.0.1')
 			utils.fail('Mail server must be a FQHN!')
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
