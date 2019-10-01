@@ -1,3 +1,9 @@
+univention-docker (4.0.1-1) unstable; urgency=medium
+
+  * Bug #50295: no explicit storage driver. leave as is
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 01 Oct 2019 09:55:40 +0200
+
 univention-docker (4.0.0-7) unstable; urgency=medium
 
   * Bug #50295: no comments

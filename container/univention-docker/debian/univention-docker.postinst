@@ -32,10 +32,10 @@
 
 #DEBHELPER#
 
+# existed in ucs < 4.4-2: docker/daemon/default/opts/storage-driver?"overlay"
 univention-config-registry set \
 	docker/autostart?"yes" \
 	docker/daemon/default/opts/bip?"172.17.42.1/16" \
-	docker/daemon/default/opts/storage-driver?"overlay" \
 	docker/daemon/default/parameter/live-restore?"yes" \
 	docker/daemon/default/opts/log-driver?'json-file' \
 	docker/daemon/default/opts/max-file?'4' \

@@ -1,5 +1,4 @@
 {
-	"storage-driver": "@%@docker/daemon/default/opts/storage-driver@%@",
 	"log-opts": {
 		"max-file": "@%@docker/daemon/default/opts/max-file@%@",
 		"max-size": "@%@docker/daemon/default/opts/max-size@%@"
@@ -9,7 +8,7 @@
 if configRegistry.is_true('docker/daemon/default/parameter/live-restore'):
 	print '\t"live-restore": true,'
 else:
-	print 'false,'
+	print '\t"live-restore": false,'
 @!@
 	"bip": "@%@docker/daemon/default/opts/bip@%@"
 }
