@@ -391,6 +391,13 @@ install_ucs_test_checks_from_errata_test () {
 	return $rv
 }
 
+install_from_errata_test () {
+	local rv=0
+	bash /root/activate-errata-test-scope.sh || rv=$?
+	install_with_unmaintained "$@" || rv=$?
+	return $rv
+}
+
 install_additional_packages () {
 	[ $# -ge 1 ] || return 0
 	install_with_unmaintained "$@"
