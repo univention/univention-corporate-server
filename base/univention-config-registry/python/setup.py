@@ -18,14 +18,20 @@ except ImportError:
     from urllib.request import urlretrieve
 import setuptools
 
-changelog_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "debian", "changelog")
+# when installing using "setup.py install ." the directory is not changed,
+# but when using pip, work is done in /tmp/.../ and only python files are copied.
+# UCS@school Kelvin-API Docker build script will have copied the package to
+# /tmp/univention-config-registry. If not fall back to download.
+changelog_path = "/tmp/univention-config-registry/debian/changelog"
 chlog_regex = re.compile(r"^(?P<package>.+?) \((?P<version>.+?)\) \w+;")
 UCS_RELEASE = "4.4-2"
 REPO_RAW_URL = "https://git.knut.univention.de/univention/ucs/raw/{}".format(UCS_RELEASE)
 PIP_FALLBACK_URL = "{}/base/univention-config-registry/debian/changelog".format(REPO_RAW_URL)
 
-# when installing using "setup.py install ." the directory is not changed, when using pip, work is done in /tmp
 if not os.path.exists(changelog_path):
+    # disable SSL certificate verification
+    import ssl
+    ssl._create_default_https_context = ssl._create_unverified_context
     _fp, changelog_path = tempfile.mkstemp()
     urlretrieve(PIP_FALLBACK_URL, changelog_path)
 
