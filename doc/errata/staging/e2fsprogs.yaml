@@ -1,0 +1,15 @@
+product: ucs
+release: "4.3"
+version: [4]
+scope: ucs_4.3-0-errata4.3-4
+src: e2fsprogs
+fix: 1.43.4-2+deb9u1A~4.3.4.201910010703
+desc: |
+ This update addresses the following issue:
+ * An exploitable code execution vulnerability exists in the quota file
+   functionality of E2fsprogs. A specially crafted ext4 partition can cause an
+   out-of-bounds write on the heap, resulting in code execution. An attacker
+   can corrupt a partition to trigger this vulnerability. (CVE-2019-5094)
+bug: [50299]
+cve:
+- CVE-2019-5094
