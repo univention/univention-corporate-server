@@ -13,3 +13,13 @@ else
 	ps afwx
 	fail_fast 110 "Could not find the 'docker' process."
 fi
+
+ucr get docker/daemon/default/opts/bip
+ip addr show docker0
+
+[ "$(ucr get docker/daemon/default/opts/bip | sed 's|/.*||')" = "$(ip addr show docker0 | grep -Po 'inet \K[\d.]+')" ] || fail_fast 110 "Wrong IP for docker0 interface"
+
+docker info --format "{{json .Driver}}"
+storage_driver="$(docker info --format '{{json .Driver}}')"
+
+[ "$storage_driver" = '"overlay"' ] || [ "$storage_driver" = '"overlay2"' ] || fail_fast 110 "Wrong storage driver"
