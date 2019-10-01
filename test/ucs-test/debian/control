@@ -67,6 +67,17 @@ Provides: ucs-test-module
 Description: Basic checks
  This package includes checks that do not modify the system.
 
+Package: ucs-test-end
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ python,
+ python-pytest,
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: Basic end scripts
+ This package includes end scripts after the test-run that do not modify the system.
+
 Package: ucs-test-base
 Architecture: all
 Recommends: ucs-test-framework
