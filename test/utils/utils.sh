@@ -954,6 +954,18 @@ run_app_appliance_tests () {
 	return $rv
 }
 
+run_app_specific_test () {
+	local app=${1:?missing app} password=${2:?missing password} rv=0
+	set_administrator_dn_for_ucs_test
+	set_administrator_password_for_ucs_test "$password"
+	univention-app dev-test \
+		--appcenter-server http://appcenter-test.software-univention.de \
+		"$app" \
+		--binddn "$(ucr get tests/domainadmin/account)" \
+		--bindpwdfile "$(ucr get tests/domainadmin/pwdfile)" || rv=$?
+	return $rv
+}
+
 add_tech_key_authorized_keys() {
 	install -m0755 -o0 -g0 -d /root/.ssh
 	echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKxi4dwmF9K7gV4JbQUmQ4ufRHcxYOYUHWoIRuj8jLmP1hMOqEmZ43rSRoe2E3xTNg+RAjwkX1GQmWQzzjRIYRpUfwLo+yEXtER1DCDTupLPAT5ulL6uPd5mK965vbE46g50LHRyTGZTbsh1A/NPD7+LNBvgm5dTo/KtMlvJHWDN0u4Fwix2uQfvCSOpF1n0tDh0b+rr01orITJcjuezIbZsArTszA+VVJpoMyvu/I3VQVDSoHB+7bKTPwPQz6OehBrFNZIp4zl18eAXafDoutTXSOUyiXcrViuKukRmvPAaO8u3+r+OAO82xUSQZgIWQgtsja8vsiQHtN+EtR8mIn tech' >>/root/.ssh/authorized_keys
