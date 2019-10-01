@@ -53,7 +53,7 @@ if [ "$1" = "configure" ]; then
 		systemctl restart docker.service
 	else
 		# Update installation
-		if dpkg --compare-versions "$2" lt 4.0.0-5; then
+		if dpkg --compare-versions "$2" lt 4.0.0-3; then
 			systemctl daemon-reload
 			systemctl restart docker.service
 		fi
