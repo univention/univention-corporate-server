@@ -51,18 +51,14 @@ if [ "$1" = "configure" ]; then
 		systemctl enable docker.service
 		systemctl daemon-reload
 		systemctl restart docker.service
-	else
-		# Update installation
-		if dpkg --compare-versions "$2" lt 4.0.0-3; then
-			systemctl daemon-reload
-			systemctl restart docker.service
-		fi
 	fi
 fi
 
 # Bug #50295: Try to get the containers in a state in which they were before we changed the docker0 interface
 if [ -z "$(ucr get repository/online/component/4.4-1-errata)" ]; then  # only if new installation
 	if dpkg --compare-versions "$2" lt-nl 4.0.1-1; then  # only if not installed from fixed dvd images. last broken version was 4.0.0-1
+		systemctl daemon-reload
+		systemctl restart docker.service
 		for cid in $(docker ps -a -f "exited=137" --format "{{json .ID}}"); do
 			# cid still has surrounding "
 			docker restart $(echo $cid | sed -e 's/"//g')
