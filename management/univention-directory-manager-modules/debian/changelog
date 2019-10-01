@@ -1,3 +1,10 @@
+univention-directory-manager-modules (14.0.14-6) unstable; urgency=medium
+
+  * Bug #50161: set gidNumber and sambaPrimaryGroupSID in modlist
+    instead of after creation, modification and remove it from open()
+
+ -- Florian Best <best@univention.de>  Thu, 10 Oct 2019 18:43:10 +0200
+
 univention-directory-manager-modules (14.0.14-5) unstable; urgency=medium
 
   * Bug #49313: fix searching for IPv6 addresses

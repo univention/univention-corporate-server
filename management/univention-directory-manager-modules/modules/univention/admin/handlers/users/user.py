@@ -1573,23 +1573,12 @@ class object(univention.admin.handlers.simpleLdap):
 		if not self.hasChanged('primaryGroup'):
 			return
 
-		primaryGroupNumber = self.get_gid_for_primary_group()
-		ud.debug(ud.ADMIN, ud.INFO, 'users/user: set gidNumber')
-		self.lo.modify(self.dn, [('gidNumber', 'None', primaryGroupNumber)])
-
-		# Samba
-		primaryGroupSambaNumber = self.get_sid_for_primary_group()
-		ud.debug(ud.ADMIN, ud.INFO, 'users/user: set sambaPrimaryGroupSID')
-		self.lo.modify(self.dn, [('sambaPrimaryGroupSID', 'None', primaryGroupSambaNumber)])
-
 		if univention.admin.configRegistry.is_true("directory/manager/user/primarygroup/update", True):
 			new_uid = self.info.get('username')
 			group_mod = univention.admin.modules.get('groups/group')
 			grpobj = group_mod.object(None, self.lo, self.position, self['primaryGroup'])
 			grpobj.fast_member_add([self.dn], [new_uid])
 			ud.debug(ud.ADMIN, ud.INFO, 'users/user: adding to new primaryGroup %s (uid=%s)' % (self['primaryGroup'], new_uid))
-
-		self.save()
 
 	def krb5_principal(self):
 		domain = univention.admin.uldap.domain(self.lo, self.position)
@@ -1622,8 +1611,6 @@ class object(univention.admin.handlers.simpleLdap):
 		else:
 			self['uidNumber'] = univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
 			self.alloc.append(('uidNumber', self['uidNumber']))
-
-		self.info['gidNumber'] = self.get_gid_for_primary_group()
 
 		self._check_uid_gid_uniqueness()
 
@@ -1743,6 +1730,7 @@ class object(univention.admin.handlers.simpleLdap):
 		ml = self._modlist_univention_person(ml)
 		ml = self._modlist_home_share(ml)
 		ml = self._modlist_samba_sid(ml)
+		ml = self._modlist_primary_group(ml)
 
 		return ml
 
@@ -2097,6 +2085,14 @@ class object(univention.admin.handlers.simpleLdap):
 		if not self.exists() or self.hasChanged('sambaRID'):
 			sid = self.__generate_user_sid(self['uidNumber'])
 			ml.append(('sambaSID', self.oldattr.get('sambaSID', ['']), [sid]))
+		return ml
+
+	def _modlist_primary_group(self, ml):
+		if not self.exists() or self.hasChanged('primaryGroup'):
+			# Posix
+			ml.append(('gidNumber', self.oldattr.get('gidNumber', ['']), [self.get_gid_for_primary_group()]))
+			# Samba
+			ml.append(('sambaPrimaryGroupSID', self.oldattr.get('sambaPrimaryGroupSID', ['']), [self.get_sid_for_primary_group()]))
 		return ml
 
 	def _modlist_sambaAcctFlags(self, ml):
