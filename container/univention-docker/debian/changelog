@@ -1,3 +1,9 @@
+univention-docker (4.0.1-2) unstable; urgency=medium
+
+  * Bug #50295: restart docker container after restarting with new config
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 01 Oct 2019 11:05:57 +0200
+
 univention-docker (4.0.1-1) unstable; urgency=medium
 
   * Bug #50295: no explicit storage driver. leave as is
