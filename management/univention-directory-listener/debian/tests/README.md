@@ -9,14 +9,14 @@ changes:
 
 Create LXC
 ----------
-See /`usr/share/lxc/templates/lxc-debian`
+See `/usr/share/lxc/templates/lxc-debian`
 
 	sudo lxc-create \
 	    -B dir \
-	    -n autopkgtest-ucs432-amd64 \
+	    -n autopkgtest-ucs442-amd64 \
 	    -t ./lxc-ucs \
 	    -- \
-	    --mirror http://univention-repository.knut.univention.de/4.3/maintained/4.3-2
+	    --mirror http://univention-repository.knut.univention.de/4.4/maintained/4.4-2
 
 Run LXC
 -------
@@ -32,4 +32,4 @@ Run LXC
 	    autopkgtest-virt-lxc \
 	    --ephemeral \
 	    --sudo \
-	    autopkgtest-ucs432-amd64
+	    autopkgtest-ucs442-amd64
