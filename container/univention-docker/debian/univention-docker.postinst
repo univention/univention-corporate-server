@@ -59,10 +59,15 @@ if [ -z "$(ucr get repository/online/component/4.4-1-errata)" ]; then  # only if
 	if dpkg --compare-versions "$2" lt-nl 4.0.1-1; then  # only if not installed from fixed dvd images. last broken version was 4.0.0-1
 		systemctl daemon-reload
 		systemctl restart docker.service
-		for cid in $(docker ps -a -f "exited=137" --format "{{json .ID}}"); do
-			# cid still has surrounding "
-			docker restart $(echo $cid | sed -e 's/"//g')
-		done
+		python -c "
+from univention.appcenter.log import log_to_stream
+from univention.appcenter.app_cache import Apps
+from univention.appcenter.actions import get_action
+log_to_stream()
+apps = [app for app in Apps().get_all_locally_installed_apps() if app.docker_image]  # single container apps
+restart = get_action('restart')
+for app in apps:
+	restart.call(app=app)"
 	fi
 fi
 
