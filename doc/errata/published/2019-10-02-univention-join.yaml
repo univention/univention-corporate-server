@@ -10,3 +10,5 @@ desc: |
    ldap/database/mdb/maxsize and listener/cache/mdb/maxsize UCR variables
    on backup and slave systems during the join.
 bug: [50114]
+erratum: 296
+announced: 2019-10-02
