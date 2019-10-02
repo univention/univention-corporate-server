@@ -44,9 +44,9 @@ if __name__ == '__main__':
 					assert app_name in output, 'No %s database named %s found in run #%d' % (database, app_name, i)
 					app.uninstall()
 				app.remove()
-	# make sure that all ports used by mysql and postgres are properly closed
-	restart_firewall()
 		except:
 			app.uninstall()
 			app.remove()
 			raise
+	# make sure that all ports used by mysql and postgres are properly closed
+	restart_firewall()

@@ -1,3 +1,9 @@
+ucs-test (9.0.3-73) unstable; urgency=medium
+
+  * Bug #50088: fix indentation error
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 02 Oct 2019 09:03:39 +0200
+
 ucs-test (9.0.3-72) unstable; urgency=medium
 
   * Bug #50300: Add ucs-test-end
