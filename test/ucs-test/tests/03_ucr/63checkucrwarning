@@ -48,6 +48,7 @@ WHITELIST = {
 	'/usr/lib/openoffice/basis-link/share/registry/modules/org/openoffice/Office/Common/Common-base.xcu',
 	'/usr/lib/openoffice/basis-link/share/registry/modules/org/openoffice/Office/Common/Common-UseOOoFileDialogs.xcu',
 	'/usr/lib/openoffice/basis-link/share/registry/schema/org/openoffice/Office/Common.xcs',
+	'/etc/docker/daemon.json',
 	# Bugs: remove the following lines as soon as the bug is fixed:
 	'/etc/runit/univention-directory-listener/run',  # Bug #50110
 	'/etc/apache2/ucs-sites.conf.d/ucs-sites.conf',  # Bug #50111
