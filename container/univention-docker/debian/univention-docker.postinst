@@ -64,7 +64,7 @@ from univention.appcenter.log import log_to_stream
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions import get_action
 log_to_stream()
-apps = [app for app in Apps().get_all_locally_installed_apps() if app.docker_image]  # single container apps
+apps = [app for app in Apps().get_all_locally_installed_apps() if app.docker]  # single container apps and multi container apps alike
 restart = get_action('restart')
 for app in apps:
 	restart.call(app=app)"

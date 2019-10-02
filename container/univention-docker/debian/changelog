@@ -1,3 +1,10 @@
+univention-docker (4.0.1-5) unstable; urgency=medium
+
+  * Bug #50295: restart containers with univention-app (multi container apps
+    too)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 02 Oct 2019 15:34:53 +0200
+
 univention-docker (4.0.1-4) unstable; urgency=medium
 
   * Bug #50295: restart containers with univention-app
