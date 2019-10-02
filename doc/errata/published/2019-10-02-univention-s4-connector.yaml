@@ -10,3 +10,5 @@ desc: |
    When objects are removed where the parent object is already removed
    the removal now succeeds.
 bug: [49324]
+erratum: 298
+announced: 2019-10-02
