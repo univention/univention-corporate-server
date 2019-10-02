@@ -2,7 +2,7 @@ Source: univention-nagios
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0.50~),
+Build-Depends: debhelper (>= 9),
  univention-config-dev,
  python-all,
  python-support,
@@ -30,7 +30,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  univention-nagios-dansguardian,
  python-univention-lib (>= 3.0.26-14),
  shell-univention-lib,
-Provides: ${python:Provides},
+Provides:
  univention-nagios-group-access
 Conflicts: nagios2 (<< 3.0),
  univention-nagios-group-access
@@ -47,6 +47,7 @@ Description: UCS: nagios server support
 Package: univention-nagios-client
 Architecture: any
 Depends: ${misc:Depends}, ${python:Depends},
+ ${shlibs:Depends},
  univention-nagios-common (= ${binary:Version}),
  univention-directory-manager-tools (>> 7.0.147),
  monitoring-plugins,
@@ -72,7 +73,7 @@ Description: UCS: nagios client support
 
 Package: univention-nagios-common
 Architecture: any
-Depends: ${misc:Depends}, ${python:Depends},
+Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  univention-config,
  univention-directory-listener,

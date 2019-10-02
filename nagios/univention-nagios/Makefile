@@ -1,8 +1,5 @@
 #!/usr/bin/make -f
 #
-# Univention Print Server
-#  rules file for the debian package
-#
 # Copyright 2004-2019 Univention GmbH
 #
 # https://www.univention.de/
@@ -29,30 +26,11 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-#
-DPKG_EXPORT_BUILDFLAGS = 1
-include /usr/share/dpkg/buildflags.mk
 
-DS=$(CURDIR)/debian/univention-nagios-server
-DC=$(CURDIR)/debian/univention-nagios-client
+SRC := $(wildcard usr/lib/nagios/plugins/check_univention_*_suidwrapper.c)
+BIN := $(patsubst %.c,%,$(SRC))
 
-override_dh_fixperms:
-	dh_fixperms
-	chmod u+s ${DC}/usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper
-	chmod u+s ${DC}/usr/lib/nagios/plugins/check_univention_ldap_suidwrapper
-	chmod u+s ${DC}/usr/lib/nagios/plugins/check_univention_winbind_suidwrapper
-	chmod u+s ${DC}/usr/lib/nagios/plugins/check_univention_nscd_suidwrapper
-	chmod u+s ${DC}/usr/lib/nagios/plugins/check_univention_slapd_mdb_maxsize_suidwrapper
+all: $(BIN)
 
-override_dh_auto_install:
-	univention-install-config-registry
-	univention-install-config-registry-info
-	univention-install-service-info
-	dh_auto_install
-
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
-
-%:
-	dh $@ --with python_support
+clean:
+	$(RM) $(BIN)
