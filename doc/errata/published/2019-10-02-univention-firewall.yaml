@@ -9,3 +9,5 @@ desc: |
  * Repaired firewall rules regarding docker networks getting broken after a
    restart of the firewall.
 bug: [50088]
+erratum: 295
+announced: 2019-10-02
