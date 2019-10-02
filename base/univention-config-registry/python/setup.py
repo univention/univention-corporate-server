@@ -8,6 +8,7 @@
 # Install: pip3 install .
 #
 
+import atexit
 import os
 import re
 import sys
@@ -17,6 +18,8 @@ try:
 except ImportError:
     from urllib.request import urlretrieve
 import setuptools
+from setuptools.command.install import install
+
 
 # when installing using "setup.py install ." the directory is not changed,
 # but when using pip, work is done in /tmp/.../ and only python files are copied.
@@ -27,6 +30,24 @@ chlog_regex = re.compile(r"^(?P<package>.+?) \((?P<version>.+?)\) \w+;")
 UCS_RELEASE = "4.4-2"
 REPO_RAW_URL = "https://git.knut.univention.de/univention/ucs/raw/{}".format(UCS_RELEASE)
 PIP_FALLBACK_URL = "{}/base/univention-config-registry/debian/changelog".format(REPO_RAW_URL)
+
+
+class CustomInstall(install):
+    """create required directories after installation"""
+    def run(self):
+        def _post_install():
+            try:
+                os.mkdir("/etc/univention")
+            except OSError:
+                pass
+            try:
+                os.mkdir("/var/cache/univention-config")
+            except OSError:
+                pass
+
+        atexit.register(_post_install)
+        install.run(self)
+
 
 if not os.path.exists(changelog_path):
     # disable SSL certificate verification
@@ -62,4 +83,8 @@ setuptools.setup(
         "License :: OSI Approved :: GNU Affero General Public License v3",
         "Operating System :: OS Independent",
     ],
+    cmdclass={
+        "develop": CustomInstall,
+        "install": CustomInstall,
+    },
 )
