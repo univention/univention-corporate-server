@@ -41,6 +41,7 @@ import sys
 import time
 import types
 import pprint
+import warnings
 
 import ldap
 from ldap.controls import LDAPControl
@@ -67,6 +68,8 @@ PAGE_SIZE = 1000
 
 
 def normalise_userAccountControl(s4connector, key, object):
+	"""deprecated unused function, should be removed in the future!"""
+	warnings.warn('The function normalise_userAccountControl() is deprecated and should not be used in the mapping anymore. Use con_create_attributes instead.')
 	# set userAccountControl to 512 -- accounts synced to samba4 alpha17 had userAccountControl == 544
 	ud.debug(ud.LDAP, ud.ALL, "normalise_userAccountControl: dn: %s" % object['dn'])
 	for i in range(0, 10):

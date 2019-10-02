@@ -195,9 +195,7 @@ s4_mapping = {
 			univention.s4connector.set_primary_group_user,
 			univention.s4connector.s4.sid_mapping.sid_to_ucs if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not configRegistry.is_true('connector/s4/mapping/sid', True) else None,
 		]),
-		post_con_create_functions=[
-			univention.s4connector.s4.normalise_userAccountControl,
-		],
+		con_create_attributes=[('userAccountControl', ['512'])],  # accounts synced to samba4 alpha17 had userAccountControl == 544
 		post_con_modify_functions=filter(None, [
 			univention.s4connector.s4.sid_mapping.sid_to_s4 if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False) and not configRegistry.is_true('connector/s4/mapping/sid', True) else None,
 			univention.s4connector.s4.password.password_sync_ucs_to_s4,
