@@ -1,3 +1,9 @@
+ucs-test (9.0.3-75) unstable; urgency=low
+
+  * Bug #49967: Add minimal Nagios SUID wrapper test
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 02 Oct 2019 10:03:58 +0200
+
 ucs-test (9.0.3-74) unstable; urgency=medium
 
   * Bug #50295: accept json config file without UCR warning
