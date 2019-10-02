@@ -57,9 +57,29 @@ def remove_ucs_rejected(ucs_dn):
 	cache_db.close()
 
 
+def remove_all_ucs_rejected():
+	cache_db = sqlite3.connect('/etc/univention/connector/s4internal.sqlite')
+	c = cache_db.cursor()
+	c.execute("SELECT key FROM 'UCS rejected'")
+	filenames = c.fetchall()
+	for filename in filenames:
+		if filename:
+			if os.path.exists(filename[0]):
+				os.remove(filename[0])
+	c.execute("DELETE FROM 'UCS rejected'")
+	cache_db.commit()
+	cache_db.close()
+
+
 if __name__ == '__main__':
 	parser = OptionParser(usage='remove_ucs_rejected.py dn')
+	parser.add_option('--all', action='store_true')
 	(options, args) = parser.parse_args()
+
+	if options.all:
+		print('The rejected UCS objects have been removed.')
+		remove_all_ucs_rejected()
+		sys.exit(0)
 
 	if len(args) != 1:
 		parser.print_help()

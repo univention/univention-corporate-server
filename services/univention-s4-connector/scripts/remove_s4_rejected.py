@@ -52,9 +52,23 @@ def remove_s4_rejected(s4_dn):
 	cache_db.close()
 
 
+def remove_all_s4_rejects():
+	cache_db = sqlite3.connect('/etc/univention/connector/s4internal.sqlite')
+	c = cache_db.cursor()
+	c.execute("DELETE FROM 'S4 rejected'")
+	cache_db.commit()
+	cache_db.close()
+
+
 if __name__ == '__main__':
 	parser = OptionParser(usage='remove_s4_rejected.py dn')
+	parser.add_option('--all', action='store_true')
 	(options, args) = parser.parse_args()
+
+	if options.all:
+		remove_all_s4_rejects()
+		print('The rejected S4 objects have been removed.')
+		sys.exit(0)
 
 	if len(args) != 1:
 		parser.print_help()
