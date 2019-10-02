@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-2
 src: univention-s4-connector
 fix: 13.0.2-48A~4.4.0.201910011641
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The removal of GPO's in Samba does not cause a reject anymore.
    When objects are removed where the parent object is already removed
    the removal now succeeds.

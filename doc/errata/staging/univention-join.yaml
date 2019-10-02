@@ -5,8 +5,8 @@ scope: ucs_4.4-0-errata4.4-2
 src: univention-join
 fix: 11.0.1-19A~4.4.0.201909241719
 desc: |
- This update addresses the following issue(s):
- * Automatically apply the UCS master settings of the ldap/database/mdb/maxsize
-   and listener/cache/mdb/maxsize UCR variables on backup and slave systems
-   during the join.
+ This update addresses the following issue:
+ * Automatically apply the UCS DC master settings of the
+   ldap/database/mdb/maxsize and listener/cache/mdb/maxsize UCR variables
+   on backup and slave systems during the join.
 bug: [50114]
