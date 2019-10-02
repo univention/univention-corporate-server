@@ -1,0 +1,41 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Execute SUID wrappers
+## bugs: [49967]
+## tags: [basic, univention]
+## exposure: safe
+## packages:
+##  - univention-nagios-client
+set -e -u
+
+have () {
+	command -v "$1" >/dev/null 2>&2
+}
+
+cond_check_univention_winbind_suidwrapper () {
+	have wbinfo && have univention-s4search
+}
+cond_check_univention_ldap_suidwrapper () {
+	have slapd
+}
+eval_check_univention_s4_connector_suidwrapper () {
+	local rc=0
+	"$@" || rc="$?"
+	case "$rc" in
+	0|1|2|3) rc=0 ;;
+	esac
+	return "$rc"
+}
+
+rc=0
+for cmd in /usr/lib/nagios/plugins/check_univention_*_suidwrapper
+do
+	[ -x "$cmd" ] || continue
+	cond="cond_${cmd##*/}"
+	! have "$cond" || "$cond" || continue
+	echo "$cmd"
+	eval="eval_${cmd##*/}"
+	have "$eval" || eval=
+	${eval:+"$eval"} "$cmd" || rc="$?"
+done
+exit "$rc"
+# vim:set filetype=sh ts=4:

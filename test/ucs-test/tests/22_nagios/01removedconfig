@@ -2,7 +2,6 @@
 ## desc: Deleting a host remains an inconsistend Nagios-Config
 ## bugs: [8620]
 ## tags: [basic, univention]
-## exposure: safe
 ## packages:
 ##  - univention-directory-manager-tools
 ##  - univention-nagios-server
