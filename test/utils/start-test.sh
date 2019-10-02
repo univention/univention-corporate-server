@@ -17,6 +17,7 @@ old_release='4.3-5'
 
 export CURRENT_AMI=ami-0d4e5f8cebe541a07 # AMI: Univention Corporate Server (UCS) 4.4 (official image) rev. 3 - ami-0d4e5f8cebe541a07
 export OLD_AMI=ami-08b2615e56edd43fa # AMI: Univention Corporate Server (UCS) 4.3 (official image) rev. 5 - ami-08b2615e56edd43fa
+export UCS_MINORRELEASE="${x%%-*}"
 export TARGET_VERSION="${TARGET_VERSION:=$release}"
 export UCS_VERSION="${UCS_VERSION:=$release}"
 export OLD_VERSION="${OLD_VERSION:=$old_release}"
@@ -25,6 +26,8 @@ export KVM_UCSVERSION="${KVM_UCSVERSION:=$UCS_VERSION}"
 export KVM_OLDUCSVERSION="${KVM_OLDUCSVERSION:=$OLD_VERSION}"
 export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=lattjo.knut.univention.de}"
 export KVM_USER="${KVM_USER:=$USER}"
+export KVM_MEMORY="${KVM_MEMORY:=2048M}"
+export KVM_CPUS="${KVM_CPUS:=1}"
 export RELEASE_UPDATE="${release_update:=public}"
 export ERRATA_UPDATE="${errata_update:=testing}"
 export UCSSCHOOL_RELEASE=${UCSSCHOOL_RELEASE:=scope}
