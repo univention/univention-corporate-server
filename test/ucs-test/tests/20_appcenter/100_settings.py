@@ -167,7 +167,7 @@ InitialValue = Default: @%@ldap/base@%@
 	assert setting.is_inside(app) is False
 	assert setting.is_outside(app) is True
 
-	assert setting.get_initial_value() == 'Default: %s' % ucr_get('ldap/base')
+	assert setting.get_initial_value(app) == 'Default: %s' % ucr_get('ldap/base')
 
 	assert setting.get_value(app) is None
 
@@ -195,7 +195,7 @@ Scope = inside, outside
 	assert setting.is_inside(app) is True
 	assert setting.is_outside(app) is True
 
-	assert setting.get_initial_value() == 'Default: %s' % ucr_get('ldap/base')
+	assert setting.get_initial_value(app) == 'Default: %s' % ucr_get('ldap/base')
 
 	assert setting.get_value(app) is None
 
@@ -228,7 +228,7 @@ Required = Yes
 	assert repr(setting) == "IntSetting(name='test/setting2')"
 
 	# FIXME: This should be int(123), right?
-	assert setting.get_initial_value() == '123'
+	assert setting.get_initial_value(app) == '123'
 	assert setting.get_value(app, phase='Install') == '123'
 	assert setting.get_value(app, phase='Settings') is None
 
@@ -421,7 +421,7 @@ InitialValue = False
 	assert repr(setting) == "BoolSetting(name='test/setting7')"
 
 	# FIXME: This should be bool(False), right?
-	assert setting.get_initial_value() == 'False'
+	assert setting.get_initial_value(app) == 'False'
 	assert setting.get_value(app) is False
 
 	with Configuring(app, revert='ucr') as config:

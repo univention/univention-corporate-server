@@ -1,6 +1,7 @@
 ucs-test (9.0.3-73) unstable; urgency=medium
 
   * Bug #50088: fix indentation error
+  * Bug #50203: Changes because of API change
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 02 Oct 2019 09:03:39 +0200
 
