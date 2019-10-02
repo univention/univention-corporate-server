@@ -3,7 +3,7 @@ release: "4.4"
 version: [2]
 scope: ucs_4.4-0-errata4.4-2
 src: univention-docker
-fix: 4.0.1-4A~4.4.0.201910021015
+fix: 4.0.1-5A~4.4.0.201910021535
 desc: |
  This update addresses the following issue(s):
  * Added daemon.json for dockerd parameters.
