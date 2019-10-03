@@ -1,3 +1,9 @@
+univention-updater (13.0.1-73) unstable; urgency=medium
+
+  * Bug #50308: Adapt links and components for 4.3-5
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 03 Oct 2019 06:11:02 +0200
+
 univention-updater (13.0.1-72) unstable; urgency=medium
 
   * Bug #49247: Adapt links and components for 4.3-4
