@@ -464,7 +464,7 @@
                 With the port definition the App Center also takes care to open
                 them in the UCS firewall. If additional ports are needed, the
                 can be defined in the app join script. Please the <ulink
-                    url="https://docs.software-univention.de/developer-reference.html#misc:nacl">Network
+                    url="https://docs.software-univention.de/developer-reference-4.3.html#misc:nacl">Network
                     Packet Filter section in the UCS Development
                     Reference</ulink>.
             </para>
@@ -732,7 +732,7 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
             <title>Initial UCS setup</title>
             <para>
                 Please refer to the <ulink
-                    url="https://docs.software-univention.de/quickstart-en.html">UCS
+                    url="https://docs.software-univention.de/quickstart-en-4.3.html">UCS
                     Quickstart Guide</ulink> for the first steps about
                 installation and initial setup.
             </para>
@@ -1945,7 +1945,7 @@ docker exec "$CONTAINER" ...
             attributes during the setup process. This should be done in the
             join script.  Further information on extended attributes can be
             found in the <ulink
-                url="https://docs.software-univention.de/developer-reference.html">Univention
+                url="https://docs.software-univention.de/developer-reference-4.3.html">Univention
                 Developer Reference</ulink>.
         </para>
     </section>
@@ -1994,7 +1994,7 @@ docker exec "$CONTAINER" ...
 			<para>
                 This script is executed on the UCS host system after the Docker
                 container is configured. Please refer to the <ulink
-                    url="https://docs.software-univention.de/developer-reference.html#chap:join">Developer
+                    url="https://docs.software-univention.de/developer-reference-4.3.html#chap:join">Developer
                     Reference</ulink> about how to write a join script. In
                 principle a join script is a script that runs after the
                 installation of an app and it has write access to the LDAP
@@ -2122,7 +2122,7 @@ joinscript_register_schema "$@"
 			<para>
                 This script is executed on the UCS host system after the Docker
                 container is removed. See the <ulink
-                    url="https://docs.software-univention.de/developer-reference.html">Developer
+                    url="https://docs.software-univention.de/developer-reference-4.3.html">Developer
                     Reference</ulink> for how to write an unjoin script. It
                 should revert most (if not all) changes done in the
                 join script.  With the notable exception of schema
@@ -2414,7 +2414,7 @@ Group[de] = Lizenz und Liste
         <para>
             UCS provides a certificate infrastructure for secure communication
             protocols. See <ulink
-                url="https://docs.software-univention.de/manual.html#domain:ssl">SSL
+                url="https://docs.software-univention.de/manual-4.3.html#domain:ssl">SSL
                 certificate management</ulink> in the UCS manual.
         </para>
         <para>

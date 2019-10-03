@@ -1,0 +1,406 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	%extensions;
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%entities;
+]>
+<chapter id="relnotes:changelog" lang="en">
+	<title>Changelog</title>
+	<section id="changelog:general">
+		<title>General</title>
+		<itemizedlist>
+			<listitem>
+				<para>
+					All security updates issued for UCS 4.3-4 are included:
+				</para>
+				<itemizedlist id="_security">
+					<listitem><simpara>
+						<package>apache2</package> (<u:cve>2019-9517</u:cve> <u:cve>2019-10081</u:cve> <u:cve>2019-10082</u:cve> <u:cve>2019-10092</u:cve> <u:cve>2019-10098</u:cve>) (<u:bug>50062</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>atftp</package> (<u:cve>2019-11365</u:cve> <u:cve>2019-11366</u:cve>) (<u:bug>49457</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>bind9</package> (<u:cve>2018-5743</u:cve> <u:cve>2018-5745</u:cve> <u:cve>2019-6465</u:cve>) (<u:bug>49454</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>clamav</package> (<u:cve>2019-1787</u:cve> <u:cve>2019-1788</u:cve> <u:cve>2019-1789</u:cve> <u:cve>2019-12625</u:cve> <u:cve>2019-12900</u:cve>) (<u:bug>49360</u:bug> <u:bug>50137</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>cups</package> (<u:cve>2019-8675</u:cve> <u:cve>2019-8696</u:cve>) (<u:bug>50153</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>cups-filters</package> (<u:bug>49722</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>cyrus-imapd</package> (<u:cve>2019-11356</u:cve>) (<u:bug>49630</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>dbus</package> (<u:bug>49661</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>dovecot</package> (<u:cve>2019-11500</u:cve>) (<u:bug>50090</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>e2fsprogs</package> (<u:cve>2019-5094</u:cve>) (<u:bug>50299</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>exim4</package> (<u:cve>2019-10149</u:cve> <u:cve>2019-13917</u:cve> <u:cve>2019-15846</u:cve>) (<u:bug>49602</u:bug> <u:bug>49928</u:bug> <u:bug>50155</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>expat</package> (<u:cve>2018-20843</u:cve> <u:cve>2019-15903</u:cve>) (<u:bug>49762</u:bug> <u:bug>50241</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>faad2</package> (<u:cve>2018-19502</u:cve> <u:cve>2018-19503</u:cve> <u:cve>2018-19504</u:cve> <u:cve>2018-20194</u:cve> <u:cve>2018-20195</u:cve> <u:cve>2018-20197</u:cve> <u:cve>2018-20198</u:cve> <u:cve>2018-20357</u:cve> <u:cve>2018-20358</u:cve> <u:cve>2018-20359</u:cve> <u:cve>2018-20361</u:cve> <u:cve>2018-20362</u:cve> <u:cve>2019-15296</u:cve>) (<u:bug>50195</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>ffmpeg</package> (<u:bug>49547</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>firefox-esr</package> (<u:cve>2018-18511</u:cve> <u:cve>2019-5798</u:cve> <u:cve>2019-7317</u:cve> <u:cve>2019-9797</u:cve> <u:cve>2019-9800</u:cve> <u:cve>2019-9811</u:cve> <u:cve>2019-9812</u:cve> <u:cve>2019-9816</u:cve> <u:cve>2019-9817</u:cve> <u:cve>2019-9819</u:cve> <u:cve>2019-9820</u:cve> <u:cve>2019-11691</u:cve> <u:cve>2019-11692</u:cve> <u:cve>2019-11693</u:cve> <u:cve>2019-11698</u:cve> <u:cve>2019-11707</u:cve> <u:cve>2019-11708</u:cve> <u:cve>2019-11709</u:cve> <u:cve>2019-11711</u:cve> <u:cve>2019-11712</u:cve> <u:cve>2019-11713</u:cve> <u:cve>2019-11715</u:cve> <u:cve>2019-11717</u:cve> <u:cve>2019-11719</u:cve> <u:cve>2019-11729</u:cve> <u:cve>2019-11730</u:cve> <u:cve>2019-11740</u:cve> <u:cve>2019-11742</u:cve> <u:cve>2019-11743</u:cve> <u:cve>2019-11744</u:cve> <u:cve>2019-11746</u:cve> <u:cve>2019-11752</u:cve>) (<u:bug>49546</u:bug> <u:bug>49685</u:bug> <u:bug>49798</u:bug> <u:bug>49895</u:bug> <u:bug>50122</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>firmware-nonfree</package> (<u:cve>2018-5383</u:cve>) (<u:bug>49370</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>ghostscript</package> (<u:bug>49327</u:bug> <u:bug>49456</u:bug> <u:bug>50002</u:bug> <u:bug>50154</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>glib2.0</package> (<u:cve>2018-16429</u:cve> <u:cve>2019-12450</u:cve> <u:cve>2019-13012</u:cve>) (<u:bug>50164</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>gst-plugins-base1.0</package> (<u:cve>2019-9928</u:cve>) (<u:bug>49402</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>heimdal</package> (<u:cve>2018-16860</u:cve> <u:cve>2019-12098</u:cve>) (<u:bug>49601</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>ibus</package> (<u:cve>2019-14822</u:cve>) (<u:bug>50227</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>imagemagick</package> (<u:cve>2019-9956</u:cve> <u:cve>2019-10650</u:cve>) (<u:bug>49366</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>intel-microcode</package> (<u:cve>2018-12126</u:cve> <u:cve>2018-12127</u:cve> <u:cve>2018-12130</u:cve> <u:cve>2019-11091</u:cve>) (<u:bug>49484</u:bug> <u:bug>49719</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>jquery</package> (<u:cve>2019-11358</u:cve>) (<u:bug>49369</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>kauth</package> (<u:cve>2019-7443</u:cve>) (<u:bug>49367</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>kconfig</package> (<u:cve>2019-14744</u:cve>) (<u:bug>49993</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libcaca</package> (<u:cve>2018-20544</u:cve> <u:cve>2018-20545</u:cve> <u:cve>2018-20546</u:cve> <u:cve>2018-20547</u:cve> <u:cve>2018-20548</u:cve> <u:cve>2018-20549</u:cve>) (<u:bug>50152</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libebml</package> (<u:cve>2019-13615</u:cve>) (<u:bug>50158</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libgd2</package> (<u:cve>2019-11038</u:cve>) (<u:bug>50159</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libpng1.6</package> (<u:cve>2019-7317</u:cve>) (<u:bug>49363</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libreoffice</package> (<u:cve>2019-9848</u:cve> <u:cve>2019-9849</u:cve> <u:cve>2019-9850</u:cve> <u:cve>2019-9851</u:cve> <u:cve>2019-9852</u:cve> <u:cve>2019-9854</u:cve>) (<u:bug>49894</u:bug> <u:bug>50019</u:bug> <u:bug>50150</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libssh2</package> (<u:cve>2019-3855</u:cve> <u:cve>2019-3856</u:cve> <u:cve>2019-3857</u:cve> <u:cve>2019-3858</u:cve> <u:cve>2019-3859</u:cve> <u:cve>2019-3860</u:cve> <u:cve>2019-3861</u:cve> <u:cve>2019-3862</u:cve> <u:cve>2019-3863</u:cve>) (<u:bug>49294</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libvirt</package> (<u:bug>48536</u:bug> <u:bug>49548</u:bug> <u:bug>49717</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libxslt</package> (<u:cve>2019-11068</u:cve> <u:cve>2019-13117</u:cve> <u:cve>2019-13118</u:cve>) (<u:bug>50157</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>linux</package> (<u:cve>2015-8553</u:cve> <u:cve>2018-5953</u:cve> <u:cve>2018-5995</u:cve> <u:cve>2018-12126</u:cve> <u:cve>2018-12127</u:cve> <u:cve>2018-12130</u:cve> <u:cve>2018-14625</u:cve> <u:cve>2018-16884</u:cve> <u:cve>2018-19824</u:cve> <u:cve>2018-19985</u:cve> <u:cve>2018-20169</u:cve> <u:cve>2018-20509</u:cve> <u:cve>2018-20510</u:cve> <u:cve>2018-20836</u:cve> <u:cve>2018-20856</u:cve> <u:cve>2018-1000026</u:cve> <u:cve>2019-0136</u:cve> <u:cve>2019-1125</u:cve> <u:cve>2019-3459</u:cve> <u:cve>2019-3460</u:cve> <u:cve>2019-3701</u:cve> <u:cve>2019-3819</u:cve> <u:cve>2019-3846</u:cve> <u:cve>2019-3882</u:cve> <u:cve>2019-3900</u:cve> <u:cve>2019-5489</u:cve> <u:cve>2019-6974</u:cve> <u:cve>2019-7221</u:cve> <u:cve>2019-7222</u:cve> <u:cve>2019-8980</u:cve> <u:cve>2019-9213</u:cve> <u:cve>2019-9500</u:cve> <u:cve>2019-9503</u:cve> <u:cve>2019-9506</u:cve> <u:cve>2019-10124</u:cve> <u:cve>2019-10126</u:cve> <u:cve>2019-10142</u:cve> <u:cve>2019-10207</u:cve> <u:cve>2019-10638</u:cve> <u:cve>2019-10639</u:cve> <u:cve>2019-11091</u:cve> <u:cve>2019-11477</u:cve> <u:cve>2019-11478</u:cve> <u:cve>2019-11479</u:cve> <u:cve>2019-11486</u:cve> <u:cve>2019-11487</u:cve> <u:cve>2019-11599</u:cve> <u:cve>2019-11815</u:cve> <u:cve>2019-11833</u:cve> <u:cve>2019-11884</u:cve> <u:cve>2019-13272</u:cve> <u:cve>2019-13631</u:cve> <u:cve>2019-13648</u:cve> <u:cve>2019-14283</u:cve> <u:cve>2019-14284</u:cve> <u:cve>2019-14821</u:cve> <u:cve>2019-14835</u:cve> <u:cve>2019-15117</u:cve> <u:cve>2019-15118</u:cve> <u:cve>2019-15211</u:cve> <u:cve>2019-15212</u:cve> <u:cve>2019-15215</u:cve> <u:cve>2019-15216</u:cve> <u:cve>2019-15218</u:cve> <u:cve>2019-15219</u:cve> <u:cve>2019-15220</u:cve> <u:cve>2019-15221</u:cve> <u:cve>2019-15292</u:cve> <u:cve>2019-15538</u:cve> <u:cve>2019-15666</u:cve> <u:cve>2019-15807</u:cve> <u:cve>2019-15902</u:cve> <u:cve>2019-15924</u:cve> <u:cve>2019-15926</u:cve>) (<u:bug>49364</u:bug> <u:bug>49477</u:bug> <u:bug>49677</u:bug> <u:bug>49892</u:bug> <u:bug>50004</u:bug> <u:bug>50160</u:bug> <u:bug>50264</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>mariadb-10.1</package> (<u:cve>2019-2529</u:cve> <u:cve>2019-2537</u:cve> <u:cve>2019-2614</u:cve> <u:cve>2019-2627</u:cve> <u:cve>2019-2737</u:cve> <u:cve>2019-2739</u:cve> <u:cve>2019-2740</u:cve> <u:cve>2019-2805</u:cve>) (<u:bug>49362</u:bug> <u:bug>50156</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>nghttp2</package> (<u:cve>2019-9511</u:cve> <u:cve>2019-9513</u:cve>) (<u:bug>50095</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>openjdk-8</package> (<u:cve>2019-2602</u:cve> <u:cve>2019-2684</u:cve> <u:cve>2019-2698</u:cve> <u:cve>2019-2745</u:cve> <u:cve>2019-2762</u:cve> <u:cve>2019-2769</u:cve> <u:cve>2019-2786</u:cve> <u:cve>2019-2816</u:cve> <u:cve>2019-2842</u:cve>) (<u:bug>49585</u:bug> <u:bug>49897</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>openssl</package> (<u:cve>2019-1543</u:cve>) (<u:bug>49794</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>openssl1.0</package> (<u:cve>2018-0732</u:cve> <u:cve>2018-0734</u:cve> <u:cve>2018-0737</u:cve> <u:cve>2018-5407</u:cve> <u:cve>2019-1559</u:cve>) (<u:bug>49796</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>patch</package> (<u:cve>2018-1000156</u:cve> <u:cve>2019-13636</u:cve> <u:cve>2019-13638</u:cve>) (<u:bug>49936</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>php7.0</package> (<u:cve>2019-11034</u:cve> <u:cve>2019-11035</u:cve> <u:cve>2019-11036</u:cve> <u:cve>2019-11038</u:cve> <u:cve>2019-11039</u:cve> <u:cve>2019-11040</u:cve> <u:cve>2019-11041</u:cve> <u:cve>2019-11042</u:cve>) (<u:bug>50237</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>postgresql-9.6</package> (<u:cve>2019-10130</u:cve> <u:cve>2019-10208</u:cve>) (<u:bug>49458</u:bug> <u:bug>49994</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>proftpd-dfsg</package> (<u:cve>2015-3306</u:cve> <u:cve>2019-12815</u:cve>) (<u:bug>49969</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>python-django</package> (<u:cve>2019-6975</u:cve> <u:cve>2019-12308</u:cve> <u:cve>2019-12781</u:cve> <u:cve>2019-14232</u:cve> <u:cve>2019-14233</u:cve> <u:cve>2019-14234</u:cve> <u:cve>2019-14235</u:cve>) (<u:bug>49896</u:bug> <u:bug>50001</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>qemu</package> (<u:bug>49584</u:bug> <u:bug>49713</u:bug> <u:bug>50063</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>rdesktop</package> (<u:cve>TMP49773</u:cve>) (<u:bug>49773</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>rsync</package> (<u:cve>2016-9841</u:cve> <u:cve>2016-9842</u:cve> <u:cve>2016-9843</u:cve>) (<u:bug>49361</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>ruby2.3</package> (<u:cve>2019-8320</u:cve> <u:cve>2019-8321</u:cve> <u:cve>2019-8322</u:cve> <u:cve>2019-8323</u:cve> <u:cve>2019-8324</u:cve> <u:cve>2019-8325</u:cve>) (<u:bug>49328</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>samba</package> (<u:cve>2018-16860</u:cve> <u:cve>2019-10197</u:cve> <u:cve>2019-12435</u:cve> <u:cve>2019-12436</u:cve>) (<u:bug>49433</u:bug> <u:bug>49627</u:bug> <u:bug>50055</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>sdl-image1.2</package> (<u:cve>2018-3977</u:cve> <u:cve>2019-5051</u:cve> <u:cve>2019-5052</u:cve> <u:cve>2019-5057</u:cve> <u:cve>2019-5058</u:cve> <u:cve>2019-7635</u:cve> <u:cve>2019-12216</u:cve> <u:cve>2019-12217</u:cve> <u:cve>2019-12218</u:cve> <u:cve>2019-12219</u:cve> <u:cve>2019-12220</u:cve> <u:cve>2019-12221</u:cve> <u:cve>2019-12222</u:cve>) (<u:bug>50163</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>sox</package> (<u:cve>2017-11332</u:cve> <u:cve>2017-11358</u:cve> <u:cve>2017-11359</u:cve> <u:cve>2017-15370</u:cve> <u:cve>2017-15371</u:cve> <u:cve>2017-15372</u:cve> <u:cve>2017-15642</u:cve> <u:cve>2017-18189</u:cve> <u:cve>2019-8354</u:cve> <u:cve>2019-8355</u:cve> <u:cve>2019-8356</u:cve> <u:cve>2019-8357</u:cve> <u:cve>2019-1010004</u:cve>) (<u:bug>50162</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>subversion</package> (<u:bug>49949</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>talloc</package> (<u:bug>49479</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>univention-kernel-image</package> (<u:cve>2018-5953</u:cve> <u:cve>2018-14625</u:cve> <u:cve>2018-16884</u:cve> <u:cve>2018-19824</u:cve> <u:cve>2018-19985</u:cve> <u:cve>2018-20169</u:cve> <u:cve>2018-20509</u:cve> <u:cve>2018-20510</u:cve> <u:cve>2018-1000026</u:cve> <u:cve>2019-0136</u:cve> <u:cve>2019-3459</u:cve> <u:cve>2019-3460</u:cve> <u:cve>2019-3701</u:cve> <u:cve>2019-3819</u:cve> <u:cve>2019-6974</u:cve> <u:cve>2019-7221</u:cve> <u:cve>2019-7222</u:cve> <u:cve>2019-8980</u:cve> <u:cve>2019-9213</u:cve> <u:cve>2019-9506</u:cve> <u:cve>2019-10124</u:cve> <u:cve>2019-10142</u:cve> <u:cve>2019-11487</u:cve> <u:cve>2019-15211</u:cve> <u:cve>2019-15212</u:cve> <u:cve>2019-15215</u:cve> <u:cve>2019-15216</u:cve> <u:cve>2019-15218</u:cve> <u:cve>2019-15219</u:cve> <u:cve>2019-15220</u:cve> <u:cve>2019-15221</u:cve> <u:cve>2019-15292</u:cve> <u:cve>2019-15538</u:cve> <u:cve>2019-15666</u:cve> <u:cve>2019-15807</u:cve> <u:cve>2019-15924</u:cve> <u:cve>2019-15926</u:cve>) (<u:bug>49364</u:bug> <u:bug>50160</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>univention-kernel-image-signed</package> (<u:cve>2015-8553</u:cve> <u:cve>2018-5953</u:cve> <u:cve>2018-5995</u:cve> <u:cve>2018-12126</u:cve> <u:cve>2018-12127</u:cve> <u:cve>2018-12130</u:cve> <u:cve>2018-14625</u:cve> <u:cve>2018-16884</u:cve> <u:cve>2018-19824</u:cve> <u:cve>2018-19985</u:cve> <u:cve>2018-20169</u:cve> <u:cve>2018-20509</u:cve> <u:cve>2018-20510</u:cve> <u:cve>2018-20836</u:cve> <u:cve>2018-20856</u:cve> <u:cve>2018-1000026</u:cve> <u:cve>2019-0136</u:cve> <u:cve>2019-1125</u:cve> <u:cve>2019-3459</u:cve> <u:cve>2019-3460</u:cve> <u:cve>2019-3701</u:cve> <u:cve>2019-3819</u:cve> <u:cve>2019-3846</u:cve> <u:cve>2019-3882</u:cve> <u:cve>2019-3900</u:cve> <u:cve>2019-5489</u:cve> <u:cve>2019-6974</u:cve> <u:cve>2019-7221</u:cve> <u:cve>2019-7222</u:cve> <u:cve>2019-8980</u:cve> <u:cve>2019-9213</u:cve> <u:cve>2019-9500</u:cve> <u:cve>2019-9503</u:cve> <u:cve>2019-9506</u:cve> <u:cve>2019-10124</u:cve> <u:cve>2019-10126</u:cve> <u:cve>2019-10142</u:cve> <u:cve>2019-10207</u:cve> <u:cve>2019-10638</u:cve> <u:cve>2019-10639</u:cve> <u:cve>2019-11091</u:cve> <u:cve>2019-11477</u:cve> <u:cve>2019-11478</u:cve> <u:cve>2019-11479</u:cve> <u:cve>2019-11486</u:cve> <u:cve>2019-11487</u:cve> <u:cve>2019-11599</u:cve> <u:cve>2019-11815</u:cve> <u:cve>2019-11833</u:cve> <u:cve>2019-11884</u:cve> <u:cve>2019-13272</u:cve> <u:cve>2019-13631</u:cve> <u:cve>2019-13648</u:cve> <u:cve>2019-14283</u:cve> <u:cve>2019-14284</u:cve> <u:cve>2019-14821</u:cve> <u:cve>2019-14835</u:cve> <u:cve>2019-15117</u:cve> <u:cve>2019-15118</u:cve> <u:cve>2019-15211</u:cve> <u:cve>2019-15212</u:cve> <u:cve>2019-15215</u:cve> <u:cve>2019-15216</u:cve> <u:cve>2019-15218</u:cve> <u:cve>2019-15219</u:cve> <u:cve>2019-15220</u:cve> <u:cve>2019-15221</u:cve> <u:cve>2019-15292</u:cve> <u:cve>2019-15538</u:cve> <u:cve>2019-15666</u:cve> <u:cve>2019-15807</u:cve> <u:cve>2019-15902</u:cve> <u:cve>2019-15924</u:cve> <u:cve>2019-15926</u:cve>) (<u:bug>49364</u:bug> <u:bug>49477</u:bug> <u:bug>49677</u:bug> <u:bug>49892</u:bug> <u:bug>50004</u:bug> <u:bug>50160</u:bug> <u:bug>50264</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>unzip</package> (<u:cve>2018-1000035</u:cve> <u:cve>2019-13232</u:cve>) (<u:bug>49365</u:bug> <u:bug>50151</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>vim</package> (<u:cve>2019-12735</u:cve>) (<u:bug>49693</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>vlc</package> (<u:bug>49660</u:bug> <u:bug>50041</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>wpa</package> (<u:cve>2019-9495</u:cve> <u:cve>2019-9497</u:cve> <u:cve>2019-9498</u:cve> <u:cve>2019-9499</u:cve> <u:cve>2019-11555</u:cve>) (<u:bug>49285</u:bug> <u:bug>49553</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>zeromq3</package> (<u:cve>2019-13132</u:cve>) (<u:bug>49893</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>zziplib</package> (<u:cve>2018-6381</u:cve> <u:cve>2018-6484</u:cve> <u:cve>2018-6540</u:cve> <u:cve>2018-6541</u:cve> <u:cve>2018-6869</u:cve> <u:cve>2018-7725</u:cve> <u:cve>2018-7726</u:cve> <u:cve>2018-16548</u:cve>) (<u:bug>49368</u:bug>)
+					</simpara></listitem>
+				</itemizedlist>
+			</listitem>
+			<listitem>
+				<para>
+					The following updated packages from Debian 9.11 are included (<u:bug>50313</u:bug>):
+					<simplelist type="inline" id="_debian">
+						<member><package>base-files</package></member>
+						<member><package>basez</package></member>
+						<member><package>biomaj-watcher</package></member>
+						<member><package>bird</package></member>
+						<member><package>bogl</package></member>
+						<member><package>chaosreader</package></member>
+						<member><package>c-icap-modules</package></member>
+						<member><package>corekeeper</package></member>
+						<member><package>dansguardian</package></member>
+						<member><package>dar</package></member>
+						<member><package>debian-archive-keyring</package></member>
+						<member><package>debian-installer-netboot-images</package></member>
+						<member><package>debian-installer</package></member>
+						<member><package>dosbox</package></member>
+						<member><package>fence-agents</package></member>
+						<member><package>fig2dev</package></member>
+						<member><package>fribidi</package></member>
+						<member><package>fusiondirectory</package></member>
+						<member><package>gettext</package></member>
+						<member><package>gocode</package></member>
+						<member><package>groonga</package></member>
+						<member><package>gsoap</package></member>
+						<member><package>gthumb</package></member>
+						<member><package>havp</package></member>
+						<member><package>icu</package></member>
+						<member><package>koji</package></member>
+						<member><package>lemonldap-ng</package></member>
+						<member><package>libclamunrar</package></member>
+						<member><package>libconvert-units-perl</package></member>
+						<member><package>libdatetime-timezone-perl</package></member>
+						<member><package>libevent-rpc-perl</package></member>
+						<member><package>libgovirt</package></member>
+						<member><package>librecad</package></member>
+						<member><package>libsdl2-image</package></member>
+						<member><package>libthrift-java</package></member>
+						<member><package>libtk-img</package></member>
+						<member><package>libu2f-host</package></member>
+						<member><package>linux-latest</package></member>
+						<member><package>liquidsoap</package></member>
+						<member><package>llvm-toolchain-7</package></member>
+						<member><package>minissdpd</package></member>
+						<member><package>miniupnpd</package></member>
+						<member><package>mitmproxy</package></member>
+						<member><package>monkeysphere</package></member>
+						<member><package>nasm-mozilla</package></member>
+						<member><package>ncbi-tools6</package></member>
+						<member><package>neovim</package></member>
+						<member><package>nginx</package></member>
+						<member><package>node-growl</package></member>
+						<member><package>node-ws</package></member>
+						<member><package>opendmarc</package></member>
+						<member><package>openssh</package></member>
+						<member><package>open-vm-tools</package></member>
+						<member><package>passwordsafe</package></member>
+						<member><package>pound</package></member>
+						<member><package>prelink</package></member>
+						<member><package>python-clamav</package></member>
+						<member><package>redis</package></member>
+						<member><package>reportbug</package></member>
+						<member><package>resiprocate</package></member>
+						<member><package>ruby-mini-magick</package></member>
+						<member><package>sash</package></member>
+						<member><package>signing-party</package></member>
+						<member><package>slurm-llnl</package></member>
+						<member><package>t-digest</package></member>
+						<member><package>tenshi</package></member>
+						<member><package>thunderbird</package></member>
+						<member><package>tzdata</package></member>
+						<member><package>usbutils</package></member>
+						<member><package>xymon</package></member>
+						<member><package>yubico-piv-tool</package></member>
+						<member><package>z3</package></member>
+						<member><package>zfs-auto-snapshot</package></member>
+						<member><package>zsh</package></member>
+					</simplelist>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					The following packages have been moved to the maintained repository of UCS:
+					<simplelist type="inline" id="_maintained">
+						<member><package>exempi</package> (<u:bug>49479</u:bug>)</member>
+						<member><package>libiptcdata</package> (<u:bug>49479</u:bug>)</member>
+						<member><package>numad</package> (<u:bug>49548</u:bug>)</member>
+						<member><package>tracker</package> (<u:bug>49479</u:bug>)</member>
+					</simplelist>
+				</para>
+			</listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:basic">
+		<title>Basic system services</title>
+
+		<section id="changelog:basis:boot">
+			<title>Boot Loader</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Re-add accidentally dropped patch to ignore files ending on <filename class="extension">.debian</filename> (<u:bug>49440</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+
+	<section id="changelog:domain">
+		<title>Domain services</title>
+
+		<section id="changelog:domain:dnsserver">
+			<title>DNS server</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Fix dependency header of legacy SysV init script to work in environments installed with UCS-4.2 or older and without Samba4 (<u:bug>49440</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+
+	<section id="changelog:umc">
+		<title>Univention Management Console</title>
+
+		<section id="changelog:umc:join">
+			<title>Domain join module</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Package rebuilt for new <package>ldb</package> library version <productnumber>1.5.4</productnumber> required by Samba <productnumber>4.10</productnumber> (<u:bug>49479</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+
+	<section id="changelog:service">
+		<title>System services</title>
+
+		<section id="changelog:service:pam">
+			<title>PAM / Local group cache</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Disable PAM module <filename>systemd</filename> by default.
+					It can be re-enabled by setting the &ucsUCRV; <envar>pam/session/systemd</envar> to <literal>true</literal> (<u:bug>49910</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+
+	<section id="changelog:virt">
+		<title>Virtualization</title>
+
+		<section id="changelog:virt:uvmm">
+			<title>UCS Virtual Machine Manager (UVMM)</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Re-connect VMs to bridges on network restart (<u:bug>49604</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Use interleaved memory policy on NUMA architectures by default (<u:bug>49548</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+
+	<section id="changelog:win">
+		<title>Services for Windows</title>
+
+		<section id="changelog:win:samba">
+			<title>Samba</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Call <command>samba_dnsupdate</command> with <option>--use-samba-tool</option> instead of <option>--local</option> if &ucsUCRV; <envar>samba4/join/dnsupdate</envar> is active (for &ucsUAS; with Samba 4.10) (<u:bug>49482</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Run <command>samba-tool dbcheck --reindex</command> on update to Samba <productnumber>4.10</productnumber> (<u:bug>49479</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Re-add <property>auth methods</property> option removed from upstream Samba sources (<u:bug>47314</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Update to Samba <productnumber>4.10.3</productnumber>.
+					New packages <package>tevent</package>, <package>tdb</package>, <package>ldb</package> were updated to as well (<u:bug>49479</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:win:s4c">
+			<title>Univention S4 Connector</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Use new LDAP control <classname>DSDB_CONTROL_REPLICATED_UPDATE_OID</classname> when changing <property>objectSid</property>'s in &ucsUAS; (<u:bug>49481</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The connector now properly handles the AD password change (<u:bug>49480</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+</chapter>
+<!-- vim: set ts=4 sw=4 noet: -->

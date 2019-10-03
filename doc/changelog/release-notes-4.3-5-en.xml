@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="releasenotes-en-4.3-4">
+<book lang="en" id="releasenotes-en-4.3-5">
 	<bookinfo>
 		<title>UCS 4.3 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.3-4</subtitle>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.3-5</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,31 +44,21 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With Univention Corporate Server 4.3-4, the forth point release of Univention Corporate Server (UCS) 4.3 is now available.
+			With Univention Corporate Server 4.3-5, the fives point release of Univention Corporate Server (UCS) 4.3 is now available.
 			It provides several feature improvements and extensions, new properties as well as various improvements and bugfixes.
 			Here is an overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				A new &ucsUDN; protocol version has been added.
-				Directory replication metadata is now additionally stored in the LDAP Database <uri>cn=translog</uri>.
+				Samba was updated to version <productnumber>4.10</productnumber>.
 			</para></listitem>
 			<listitem><para>
-				Support to configure multiple certificates for Server Name Indication (SNI) has been added to the package <package>univention-mail-dovecot</package>.
+				With 4.3-5 the update to Debian point release 9.11 is completed.
 			</para></listitem>
 			<listitem><para>
-				Various improvements have been implemented for the &ucsUVMM; (UVMM):
-				CPU and RAM usage of virtualization hosts is now displayed.
-				Hyper-V Enlightenment is configured for Windows virtual machines.
-				RAM overcommitment protection can now be configured with &ucsUCRV; <envar>uvmm/overcommit/reserved</envar>.
-			</para></listitem>
-			<listitem><para>
-				It is now possible to modify the entry of the LDAP base again, for example modify references to policies.
-			</para></listitem>
-			<listitem><para>
-				Various security updates have been integrated into UCS 4.3-4, e.g. <wordasword>Apache2</wordasword>, the Linux kernel and <wordasword>Samba4</wordasword>.
-				A complete list is available in <xref linkend="relnotes:changelog"/>.
+				Various security updates have been integrated into UCS 4.3-5, e.g. Samba, the Linux kernel and Dovecot.
+				A complete list of security and package updates is available in <xref linkend="relnotes:changelog"/>.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -212,7 +202,7 @@
 			Listed are the changes since UCS <wordasword>4.3-3</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.3-4.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.3-5.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->

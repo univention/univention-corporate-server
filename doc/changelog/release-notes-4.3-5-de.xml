@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-de-4.3-4">
+<book lang="de" id="releasenotes-de-4.3-5">
 	<bookinfo>
 		<title>UCS 4.3 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.3-4</subtitle>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.3-5</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,31 +44,21 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Mit Univention Corporate Server 4.3-4 steht das vierte Point-Release für Univention Corporate Server (UCS) 4.3 zur Verfügung.
+			Mit Univention Corporate Server 4.3-5 steht das fünfte Point-Release für Univention Corporate Server (UCS) 4.3 zur Verfügung.
 			Es umfasst Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen.
 			Die wichtigsten Änderungen im Überblick:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				Der &ucsUDN; unterstützt eine neue Protokollversion.
-				Metadaten der Verzeichnisreplikation werden jetzt zusätzlich in der LDAP Datenbank <uri>cn=translog</uri> gespeichert.
+				Samba wurde auf Version <productnumber>4.10</productnumber> aktualisiert.
 			</para></listitem>
 			<listitem><para>
-					Die Unterstützung der Konfiguration mehrerer Zertifikate für Server Name <wordasword>Indication</wordasword> (SNI) wurde dem Paket <package>univention-mail-dovecot</package> hinzugefügt.
+				Mit 4.3-5 wird die Aktualisierung auf den Stand des Debian Release 9.11 abgeschlossen.
 			</para></listitem>
 			<listitem><para>
-				Der &ucsUVMM; (UVMM) wurde in mehreren Punkten verbessert:
-				Die CPU und RAM Auslastung der Virtualisierungsserver wird nun dargestellt.
-				Für virtuelle Maschinen die Windows ausführen wird jetzt <wordasword>Hyper-V Enlightenment</wordasword> konfiguriert.
-				Es ist nun möglich einen Schutz vor der Überbelegung des RAM (RAM <wordasword>overcommitment</wordasword>) mit der &ucsUCRV; <envar>uvmm/overcommit/reserved</envar> zu konfigurieren.
-			</para></listitem>
-			<listitem><para>
-				Die Eintrag der LDAP Wurzel kann nun wieder modifiziert werden, um beispielsweise Referenzen auf Richtlinien zu ändern.
-			</para></listitem>
-			<listitem><para>
-				Diverse Security Updates wurden in UCS 4.3-4 integriert, bspw. für den Linux Kernel, <wordasword>Samba</wordasword> und <wordasword>Apache2</wordasword>.
-				Eine vollständige Liste ist in <xref linkend="relnotes:changelog"/> zu finden.
+				Diverse Security Updates wurden in UCS 4.3-5 integriert, bspw. für Samba, den Linux Kernel und Dovecot.
+				Eine vollständige Liste von Security- und Paketupdates ist in <xref linkend="relnotes:changelog"/> zu finden.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -213,7 +203,7 @@
 			Aufgeführt sind die Änderungen seit UCS <wordasword>4.3-3</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.3-4.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.3-5.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->
