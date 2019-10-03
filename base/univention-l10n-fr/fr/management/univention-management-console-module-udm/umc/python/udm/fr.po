@@ -396,16 +396,16 @@ msgstr ""
 #: umc/python/udm/__init__.py:1251
 #, python-format
 msgid ""
-"http://docs.univention.de/manual-%s.html#ip-config:"
+"https://docs.software-univention.de/manual-%s.html#ip-config:"
 "Web_proxy_for_caching_and_policy_management__virus_scan"
 msgstr ""
-"http://docs.univention.de/manual-%s.html#ip-config:"
+"https://docs.software-univention.de/manual-%s.html#ip-config:"
 "Web_proxy_for_caching_and_policy_management__virus_scan"
 
 #: umc/python/udm/__init__.py:1254
 #, python-format
-msgid "http://docs.univention.de/manual-%s.html#networks:dns"
-msgstr "http://docs.univention.de/manual-%s.html#networks:dns"
+msgid "https://docs.software-univention.de/manual-%s.html#networks:dns"
+msgstr "https://docs.software-univention.de/manual-%s.html#networks:dns"
 
 #: umc/python/udm/udm_ldap.py:544
 msgid "manual"

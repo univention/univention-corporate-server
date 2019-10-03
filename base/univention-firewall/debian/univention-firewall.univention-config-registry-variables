@@ -6,14 +6,14 @@ Categories=service-security
 ReadOnly=yes
 
 [security/packetfilter/tcp/.*]
-Description[de]=Variablen nach dem Schema 'security/packetfilter/tcp/*' erlauben die Konfiguration von Paketfilter-Regeln für TCP-Ports. Eine ausführliche Beschreibung findet sich in der Univention developer reference <http://docs.univention.de/>.
-Description[en]=Variables following the scheme 'security/packetfilter/tcp/*' allow the configuration of packet filter rules for TCP ports. A verbose description can be found in the Univention developer reference <http://docs.univention.de/>.
+Description[de]=Variablen nach dem Schema 'security/packetfilter/tcp/*' erlauben die Konfiguration von Paketfilter-Regeln für TCP-Ports. Eine ausführliche Beschreibung findet sich in der Univention developer reference <https://docs.software-univention.de/>.
+Description[en]=Variables following the scheme 'security/packetfilter/tcp/*' allow the configuration of packet filter rules for TCP ports. A verbose description can be found in the Univention developer reference <https://docs.software-univention.de/>.
 Type=str
 Categories=service-security
 
 [security/packetfilter/udp/.*]
-Description[de]=Variablen nach dem Schema 'security/packetfilter/udp/*' erlauben die Konfiguration von Paketfilter-Regeln für UDP-Ports. Eine ausführliche Beschreibung findet sich in der Univention developer reference <http://docs.univention.de/>.
-Description[en]=Variables following the scheme 'security/packetfilter/udp/*' allow the configuration of packet filter rules for UDP ports. A verbose description can be found in the Univention developer reference <http://docs.univention.de/>.
+Description[de]=Variablen nach dem Schema 'security/packetfilter/udp/*' erlauben die Konfiguration von Paketfilter-Regeln für UDP-Ports. Eine ausführliche Beschreibung findet sich in der Univention developer reference <https://docs.software-univention.de/>.
+Description[en]=Variables following the scheme 'security/packetfilter/udp/*' allow the configuration of packet filter rules for UDP ports. A verbose description can be found in the Univention developer reference <https://docs.software-univention.de/>.
 Type=str
 Categories=service-security
 

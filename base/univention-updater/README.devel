@@ -25,8 +25,8 @@ modules/univention/updater/mirror.py#UniventionMiror
 
 Repository layout
 =================
-* [SDB 91](http://docs.software-univention.de/manual-4.3.html#computers::softwaremanagement::installsoftware)
-* [SDB 135](http://docs.software-univention.de/manual-4.3.html#software::configrepo)
+* [SDB 91](https://docs.software-univention.de/manual-4.3.html#computers::softwaremanagement::installsoftware)
+* [SDB 135](https://docs.software-univention.de/manual-4.3.html#software::configrepo)
 
 Repository Server
 -----------------

@@ -5,13 +5,13 @@ Type=str
 Categories=management-umc
 
 [directory/reports/templates/csv/.*]
-Description[de]=Mit einer Variable der Form directory/reports/templates/csv/.* kann ein neuer CSV-Report definiert werden. Weiterführende Hinweise finden sich in der 'Extended domain services documentation' unter <http://docs.univention.de/>.
-Description[en]=With a variable in the format directory/reports/templates/csv/.* a new CSV report can be defined. Additional information can be found in the 'Extended domain services documentation' at <http://docs.univention.de/>.
+Description[de]=Mit einer Variable der Form directory/reports/templates/csv/.* kann ein neuer CSV-Report definiert werden. Weiterführende Hinweise finden sich in der 'Extended domain services documentation' unter <https://docs.software-univention.de/>.
+Description[en]=With a variable in the format directory/reports/templates/csv/.* a new CSV report can be defined. Additional information can be found in the 'Extended domain services documentation' at <https://docs.software-univention.de/>.
 Type=str
 Categories=management-umc
 
 [directory/reports/templates/pdf/.*]
-Description[de]=Mit einer Variable der Form directory/reports/templates/pdf/.* kann ein neuer PDF-Report definiert werden. Weiterführende Hinweise finden sich in der 'Extended domain services documentation' unter <http://docs.univention.de/>.
-Description[en]=With a variable in the format directory/reports/templates/pdf/.* a new PDF report can be defined. Additional information can be found in the 'Extended domain services documentation' at <http://docs.univention.de/>.
+Description[de]=Mit einer Variable der Form directory/reports/templates/pdf/.* kann ein neuer PDF-Report definiert werden. Weiterführende Hinweise finden sich in der 'Extended domain services documentation' unter <https://docs.software-univention.de/>.
+Description[en]=With a variable in the format directory/reports/templates/pdf/.* a new PDF report can be defined. Additional information can be found in the 'Extended domain services documentation' at <https://docs.software-univention.de/>.
 Type=str
 Categories=management-umc

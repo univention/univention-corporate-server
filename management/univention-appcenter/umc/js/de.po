@@ -1382,8 +1382,8 @@ msgid "an unknown amount of"
 msgstr "eine unbekannte Anzahl"
 
 #: umc/js/appcenter/requirements.js:286
-msgid "https://docs.univention.de/manual.html#ad-connector:password-dienst"
-msgstr "https://docs.univention.de/handbuch.html#ad-connector:password-dienst"
+msgid "https://docs.software-univention.de/manual-4.3.html#ad-connector:password-dienst"
+msgstr "https://docs.software-univention.de/handbuch-4.3.html#ad-connector:password-dienst"
 
 #: umc/js/appcenter/AppCenterPage.js:92
 msgid "https://www.univention.com/products/univention-app-center/vote-for-app/"

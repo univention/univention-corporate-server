@@ -1,13 +1,13 @@
 # Univention Directory Listener
 
 ## Listener/notifier domain replication
-See http://docs.software-univention.de/manual-4.2.html#domain:listenernotifier
+See https://docs.software-univention.de/manual-4.3.html#domain:listenernotifier
 
 ## Listener module development
 
 ### Classic API
 
-See http://docs.software-univention.de/developer-reference-4.2.html#chap:listener
+See https://docs.software-univention.de/developer-reference-4.3.html#chap:listener
 
 ### New API
 

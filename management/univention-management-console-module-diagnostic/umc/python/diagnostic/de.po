@@ -409,10 +409,10 @@ msgstr "Die Überprüfung des Domänenbeitritts war erfolgreich."
 
 #: 21_check_join_status.py:44
 msgid ""
-"http://docs.software-univention.de/manual.html#domain:listenernotifier:"
+"https://docs.software-univention.de/manual-4.3.html#domain:listenernotifier:"
 "erroranalysis"
 msgstr ""
-"http://docs.software-univention.de/handbuch.html#domain:listenernotifier:"
+"https://docs.software-univention.de/handbuch-4.3.html#domain:listenernotifier:"
 "erroranalysis"
 
 #: 21_check_join_status.py:45
