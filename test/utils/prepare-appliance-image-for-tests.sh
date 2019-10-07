@@ -3,9 +3,9 @@
 set -x
 set -e
 
-export KVM_SERVER="$KVM_SERVER"
 export APP_ID="$APP_ID"
-export KVM_USER="$KVM_USER"
+export KVM_SERVER="${KVM_SERVER:=$KVM_BUILD_SERVER}"
+export KVM_USER="${KVM_USER:=jenkins}"
 export UCS_VERSION="$UCS_VERSION"
 
 _ssh () {
