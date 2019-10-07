@@ -5,7 +5,7 @@ set -e
 
 export APP_ID="$APP_ID"
 export KVM_SERVER="${KVM_SERVER:=$KVM_BUILD_SERVER}"
-export KVM_USER="${KVM_USER:=jenkins}"
+export KVM_USER="${KVM_USER:=build}"
 export UCS_VERSION="$UCS_VERSION"
 
 _ssh () {
