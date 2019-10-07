@@ -193,7 +193,6 @@ class UCSSetup(UCSInstallation):
 			except VNCDoException:
 				self.connect()
 			self.start()
-			time.sleep(900)
 			self.finish()
 		except Exception:
 			self.connect()
