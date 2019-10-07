@@ -9,7 +9,7 @@
 <book lang="en" id="releasenotes-en-4.3-5">
 	<bookinfo>
 		<title>UCS 4.3 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.3-5</subtitle>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) <productnumber>4.3-5</productnumber></subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,7 +44,7 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With Univention Corporate Server 4.3-5, the fifth point release of Univention Corporate Server (UCS) 4.3 is now available.
+			With Univention Corporate Server <productnumber>4.3-5</productnumber>, the fifth point release of Univention Corporate Server (UCS) 4.3 is now available.
 			It provides several feature improvements and extensions, new properties as well as various improvements and bugfixes.
 			Here is an overview of the most important changes:
 		</para>
@@ -54,10 +54,10 @@
 				Samba was updated to version <productnumber>4.10</productnumber>.
 			</para></listitem>
 			<listitem><para>
-				With 4.3-5 the update to Debian point release 9.11 is completed.
+				With <productnumber>4.3-5</productnumber> the update to Debian point release 9.11 is completed.
 			</para></listitem>
 			<listitem><para>
-				Various security updates have been integrated into UCS 4.3-5, e.g. Samba, the Linux kernel and Dovecot.
+				Various security updates have been integrated into UCS <productnumber>4.3-5</productnumber>, e.g. Samba, the Linux kernel and Dovecot.
 				A complete list of security and package updates is available in <xref linkend="relnotes:changelog"/>.
 			</para></listitem>
 		</itemizedlist>
@@ -199,7 +199,7 @@
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS <wordasword>4.3-4</wordasword>:
+			Listed are the changes since UCS <productnumber>4.3-4</productnumber>:
 		</para>
 
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.3-5.xml" xpointer="xpointer(/chapter/section)"/>

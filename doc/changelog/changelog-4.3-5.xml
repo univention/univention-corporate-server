@@ -13,7 +13,7 @@
 		<itemizedlist>
 			<listitem>
 				<para>
-					All security updates issued for UCS 4.3-4 are included:
+					All security updates issued for UCS <productnumber>4.3-4</productnumber> are included:
 				</para>
 				<itemizedlist id="_security">
 					<listitem><simpara>
@@ -388,7 +388,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					Update to Samba <productnumber>4.10.3</productnumber>.
-					The dependant packages <package>tevent</package>, <package>tdb</package>, <package>ldb</package> were updated to new versions as well (<u:bug>49479</u:bug>).
+					The dependent packages <package>tevent</package>, <package>tdb</package>, <package>ldb</package> were updated to new versions as well (<u:bug>49479</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>

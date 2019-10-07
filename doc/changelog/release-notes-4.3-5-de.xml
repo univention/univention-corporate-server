@@ -9,7 +9,7 @@
 <book lang="de" id="releasenotes-de-4.3-5">
 	<bookinfo>
 		<title>UCS 4.3 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.3-5</subtitle>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) <productnumber>4.3-5</productnumber></subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,7 +44,7 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Mit Univention Corporate Server 4.3-5 steht das fünfte Point-Release für Univention Corporate Server (UCS) 4.3 zur Verfügung.
+			Mit Univention Corporate Server <productnumber>4.3-5</productnumber> steht das fünfte Point-Release für Univention Corporate Server (UCS) 4.3 zur Verfügung.
 			Es umfasst Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen.
 			Die wichtigsten Änderungen im Überblick:
 		</para>
@@ -54,10 +54,10 @@
 				Samba wurde auf Version <productnumber>4.10</productnumber> aktualisiert.
 			</para></listitem>
 			<listitem><para>
-				Mit 4.3-5 wird die Aktualisierung auf den Stand des Debian Release 9.11 abgeschlossen.
+				Mit <productnumber>4.3-5</productnumber> wird die Aktualisierung auf den Stand des Debian Release 9.11 abgeschlossen.
 			</para></listitem>
 			<listitem><para>
-				Diverse Security Updates wurden in UCS 4.3-5 integriert, bspw. für Samba, den Linux Kernel und Dovecot.
+				Diverse Security Updates wurden in UCS <productnumber>4.3-5</productnumber> integriert, bspw. für Samba, den Linux Kernel und Dovecot.
 				Eine vollständige Liste von Security- und Paketupdates ist in <xref linkend="relnotes:changelog"/> zu finden.
 			</para></listitem>
 		</itemizedlist>
@@ -200,7 +200,7 @@
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS <wordasword>4.3-4</wordasword>:
+			Aufgeführt sind die Änderungen seit UCS <productnumber>4.3-4</productnumber>:
 		</para>
 
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.3-5.xml" xpointer="xpointer(/chapter/section)"/>
