@@ -579,8 +579,10 @@ run_tests () {
 		echo "-----------------------------------------------------------------------------------"
 		return 1
 	fi
-	if [ -n "$COVERAGE_REPORT" ]; then
+	if [ "$COVERAGE_REPORT" = "true" ]; then
 		GENERATE_COVERAGE_REPORT="--with-coverage --coverage-show-missing --coverage-output-directory=/var/log/univention/coverage"
+		install_with_unmaintained python-pip
+		pip install coverage
 	fi
 	dpkg-query -W -f '${Status}\t${binary:Package}\t${Version}\n' > "packages-under-test.log"
 	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest $GENERATE_COVERAGE_REPORT "$@"
