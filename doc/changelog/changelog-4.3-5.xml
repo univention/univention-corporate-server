@@ -388,7 +388,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					Update to Samba <productnumber>4.10.3</productnumber>.
-					New packages <package>tevent</package>, <package>tdb</package>, <package>ldb</package> were updated to as well (<u:bug>49479</u:bug>).
+					The dependant packages <package>tevent</package>, <package>tdb</package>, <package>ldb</package> were updated to new versions as well (<u:bug>49479</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
