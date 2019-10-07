@@ -292,7 +292,7 @@ prepare_docker_app () {
 		echo "Error: No docker component id for $app!"
 	fi
 	# generate .dockercfg as appcenter does it
-	docker login -e invalid -u ucs -p readonly docker.software-univention.de
+	docker login -u ucs -p readonly docker.software-univention.de
 	local local_app_docker_image=""
 	# compose
 	if [ -e "$dockercompose" ]; then
