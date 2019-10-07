@@ -12,7 +12,10 @@ have () {
 }
 
 cond_check_univention_winbind_suidwrapper () {
-	have wbinfo
+	have wbinfo && have univention-s4search
+}
+cond_check_univention_ldap_suidwrapper () {
+	have slapd
 }
 
 rc=0
