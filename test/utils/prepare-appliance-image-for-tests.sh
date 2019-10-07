@@ -26,18 +26,18 @@ if [ "$((${stat}>>30))" -lt 20 ]; then
 	exit 1
 fi
 
-# check if instances still running appliance-test-digitec-suitecrm
-existing_instances=$(_ssh virsh  list --all| grep appliance-test-$APP_ID || true)
-if [ -n "$existing_instances" ]; then
-	echo "ERROR: existing instances on $KVM_SERVER ($existing_instances)! Aborting ..."
-	exit 1
-fi
-
 # check if update is necessary
 appliance_md5=$(_ssh cat "$appliance_template.md5" || true)
 kvm_md5=$(_ssh cat "$kvm_template.md5" || true)
 if [ "$appliance_md5" = "$kvm_md5" ]; then
 	exit 0
+fi
+
+# check if instances still running appliance-test-digitec-suitecrm
+existing_instances=$(_ssh virsh  list --all| grep appliance-test-$APP_ID || true)
+if [ -n "$existing_instances" ]; then
+	echo "ERROR: existing instances on $KVM_SERVER ($existing_instances)! Aborting ..."
+	exit 1
 fi
 
 # copy image
