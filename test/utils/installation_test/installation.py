@@ -153,7 +153,6 @@ class UCSInstallation(object):
 			self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
 			self.client.keyPress('down')
 			self.client.keyPress('enter')
-		time.sleep(600)
 
 	def network_setup(self):
 		time.sleep(60)
@@ -223,7 +222,7 @@ class UCSInstallation(object):
 		self.client.keyPress('enter')
 
 	def setup(self):
-		self.client.waitForText(self._['domain_setup'], timeout=self.timeout + 300)
+		self.client.waitForText(self._['domain_setup'], timeout=self.timeout + 900)
 		if self.args.role == 'master':
 			self.click(self._['new_domain'])
 			self.click(self._['next'])
@@ -316,7 +315,7 @@ class UCSInstallation(object):
 		self.click(self._['next'])
 
 	def finish(self):
-		self.client.waitForText(self._['setup_successful'], timeout=2400)
+		self.client.waitForText(self._['setup_successful'], timeout=3200)
 		#self.click(self._['finish'])
 		self.client.keyPress('tab')
 		self.client.keyPress('enter')
@@ -333,7 +332,6 @@ class UCSInstallation(object):
 			self.click(self._['next'])
 		time.sleep(5)
 		self.client.keyPress('enter')
-		time.sleep(800)
 
 	def select_components(self):
 		# this is needed to make the down button work
