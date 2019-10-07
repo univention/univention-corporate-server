@@ -6,6 +6,6 @@ src: univention-directory-manager-modules
 fix: 14.0.14-2
 desc: |
  This update addresses the following issue(s):
- * The logging and error handling when removing children objects
-   has been improoved.
+ * The logging and error handling when removing child objects
+   has been improved.
 bug: [50288]
