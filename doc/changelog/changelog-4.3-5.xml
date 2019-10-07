@@ -226,6 +226,7 @@
 						<member><package>fig2dev</package></member>
 						<member><package>fribidi</package></member>
 						<member><package>fusiondirectory</package></member>
+						<member><package>geant321</package></member>
 						<member><package>gettext</package></member>
 						<member><package>gocode</package></member>
 						<member><package>groonga</package></member>
@@ -233,8 +234,10 @@
 						<member><package>gthumb</package></member>
 						<member><package>havp</package></member>
 						<member><package>icu</package></member>
+						<member><package>jackson-databind</package></member>
 						<member><package>koji</package></member>
 						<member><package>lemonldap-ng</package></member>
+						<member><package>libapreq2</package></member>
 						<member><package>libclamunrar</package></member>
 						<member><package>libconvert-units-perl</package></member>
 						<member><package>libdatetime-timezone-perl</package></member>
