@@ -27,7 +27,7 @@ export KVM_OLDUCSVERSION="${KVM_OLDUCSVERSION:=$OLD_VERSION}"
 export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=lattjo.knut.univention.de}"
 export KVM_USER="${KVM_USER:=$USER}"
 export KVM_MEMORY="${KVM_MEMORY:=2048M}"
-export KVM_CPUS="${KVM_CPUS:=1}"
+export KVM_CPUS="${KVM_CPUS:=2}"
 export RELEASE_UPDATE="${release_update:=public}"
 export ERRATA_UPDATE="${errata_update:=testing}"
 export UCSSCHOOL_RELEASE=${UCSSCHOOL_RELEASE:=scope}
