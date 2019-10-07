@@ -3,9 +3,9 @@
 set -x
 set -e
 
-export KVM_SERVER="$KVM_SERVER"
 export APP_ID="$APP_ID"
-export KVM_USER="$KVM_USER"
+export KVM_SERVER="${KVM_SERVER:=$KVM_BUILD_SERVER}"
+export KVM_USER="${KVM_USER:=build}"
 export UCS_VERSION="$UCS_VERSION"
 
 _ssh () {
@@ -22,7 +22,7 @@ xml_template="/mnt/omar/vmwares/kvm/single/Others/appliance_template.xml"
 # check disk space
 stat=$(_ssh stat -f -c '%a*%S' /var/lib/libvirt)
 if [ "$((${stat}>>30))" -lt 20 ]; then
-	echo "ERORR: Not enough Space on $KVM_SERVER! Aborting..."
+	echo "ERROR: Not enough Space on $KVM_SERVER! Aborting..."
 	exit 1
 fi
 
