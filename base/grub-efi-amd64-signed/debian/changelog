@@ -1,4 +1,4 @@
-grub-efi-amd64-signed (2.0.0-3) unstable; urgency=low
+grub-efi-amd64-signed (2.0.0-2+ucs43) unstable; urgency=low
 
   * Bug #50213: Rebuild signed GRUB 2.02~beta3-5+deb9u2A~4.3.5.201910070951
 
