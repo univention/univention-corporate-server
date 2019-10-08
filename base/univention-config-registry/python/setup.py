@@ -36,8 +36,9 @@ class CustomInstall(install):
         install.run(self)
 
 
-dch = Changelog(io.open("debian/changelog", "r", encoding="utf-8"))
-dsc = Deb822(io.open("debian/control", "r", encoding="utf-8"))
+# path /tmp/univention-config-registry created during Docker build
+dch = Changelog(io.open("/tmp/univention-config-registry/debian/changelog", "r", encoding="utf-8"))
+dsc = Deb822(io.open("/tmp/univention-config-registry/debian/control", "r", encoding="utf-8"))
 realname, email_address = parseaddr(dsc["Maintainer"])
 
 
