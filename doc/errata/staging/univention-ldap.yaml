@@ -6,5 +6,7 @@ src: univention-ldap
 fix: 15.0.0-25A~4.4.0.201909261055
 desc: |
  This update addresses the following issue(s):
- * The objectClass "top" is now automatically added to the container cn=dns,$LDAP_BASE, when the LDAP is initially provisioned. Existing systems are not modified. (Bug #46649).
+ * The objectClass "top" is now automatically added to the container
+   cn=dns,$LDAP_BASE, when the LDAP is initially provisioned. Existing
+   systems are not modified. (Bug #46649).
 bug: [46649]
