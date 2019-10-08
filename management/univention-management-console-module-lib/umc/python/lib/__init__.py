@@ -34,9 +34,9 @@ from univention.management.console.modules import Base
 
 from univention.lib.i18n import Translation
 
-_ = Translation('univention-management-console-module-lib').translate
-
 from .server import Server
+
+_ = Translation('univention-management-console-module-lib').translate
 
 
 class Instance(Base, Server):
