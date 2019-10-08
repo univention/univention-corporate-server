@@ -1,3 +1,9 @@
+univention-management-console-module-top (8.0.1-2) unstable; urgency=medium
+
+  * Bug #49158: migrate to dh_python
+
+ -- Florian Best <best@univention.de>  Tue, 08 Oct 2019 17:36:32 +0200
+
 univention-management-console-module-top (8.0.1-1) unstable; urgency=medium
 
   * Bug #46969: bindpwdfile support
