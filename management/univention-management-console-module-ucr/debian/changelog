@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (8.0.1-2) unstable; urgency=medium
+
+  * Bug #49159: migrate to dh_python
+
+ -- Florian Best <best@univention.de>  Tue, 08 Oct 2019 18:24:36 +0200
+
 univention-management-console-module-ucr (8.0.1-1) unstable; urgency=medium
 
   * Bug #46969: bindpwdfile support

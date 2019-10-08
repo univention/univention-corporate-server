@@ -139,7 +139,7 @@ class Instance(Base):
 		self.finished(request.id, True)
 
 	def remove(self, request):
-		variables = filter(lambda x: x is not None, map(lambda x: x.get('object'), request.options))
+		variables = [x for x in [x.get('object') for x in request.options] if x is not None]
 		for var in variables:
 			if self.is_readonly(var):
 				raise UMC_Error(_('The UCR variable %s is read-only and can not be removed!') % (var,))
@@ -173,7 +173,7 @@ class Instance(Base):
 	def categories(self, request):
 		ucrInfo = ConfigRegistryInfo(registered_only=False)
 		categories = []
-		for id, obj in ucrInfo.categories.iteritems():
+		for id, obj in ucrInfo.categories.items():
 			name = obj['name']
 			if ucrInfo.get_variables(id):
 				categories.append({
@@ -217,7 +217,7 @@ class Instance(Base):
 			return _match_value(name, var) or _match_description(name, var) or _match_key(name, var)
 
 		func = locals().get('_match_%s' % key)
-		for name, var in base_info.get_variables(category).iteritems():
+		for name, var in base_info.get_variables(category).items():
 			if func(name, var):
 				variables.append({
 					'key': name,
