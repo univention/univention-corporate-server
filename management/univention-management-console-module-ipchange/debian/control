@@ -4,14 +4,15 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7.0.50~),
  ucslint-univention,
- python-support,
- univention-management-console-dev,
- python-all
+ dh-python,
+ univention-management-console-dev (>= 11.0.4-37),
+ python-all,
+ python3-all,
 Standards-Version: 3.5.2
 
 Package: univention-management-console-module-ipchange
 Architecture: all
-Recommends: univention-management-console-server,
+Recommends: univention-management-console-server (>= 11.0.4-37),
 Description: UMC module for registration the IP address
  This package contains the UMC module which changes the 
  IP address in the LDAP directory for server systems
