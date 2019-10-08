@@ -299,7 +299,7 @@ prepare_docker_app () {
 		local_app_docker_image=""
 		while read image; do
 			docker pull $image
-		done < <(cat "$dockercompose" | sed -n 's/.*image: //p')
+		done < <(cat "$dockercompose" | sed -n 's/.*image: //p' | sed 's/"//g')
 	else
 		local_app_docker_image="$dockerimage"
 		docker pull "$dockerimage"
