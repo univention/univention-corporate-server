@@ -9,27 +9,14 @@
 #
 
 import atexit
+from email.utils import parseaddr
+import io
 import os
-import re
-import sys
-import tempfile
-try:
-    from urllib import urlretrieve
-except ImportError:
-    from urllib.request import urlretrieve
+
 import setuptools
+from debian.changelog import Changelog
+from debian.deb822 import Deb822
 from setuptools.command.install import install
-
-
-# when installing using "setup.py install ." the directory is not changed,
-# but when using pip, work is done in /tmp/.../ and only python files are copied.
-# UCS@school Kelvin-API Docker build script will have copied the package to
-# /tmp/univention-config-registry. If not fall back to download.
-changelog_path = "/tmp/univention-config-registry/debian/changelog"
-chlog_regex = re.compile(r"^(?P<package>.+?) \((?P<version>.+?)\) \w+;")
-UCS_RELEASE = "4.4-2"
-REPO_RAW_URL = "https://git.knut.univention.de/univention/ucs/raw/{}".format(UCS_RELEASE)
-PIP_FALLBACK_URL = "{}/base/univention-config-registry/debian/changelog".format(REPO_RAW_URL)
 
 
 class CustomInstall(install):
@@ -49,27 +36,16 @@ class CustomInstall(install):
         install.run(self)
 
 
-if not os.path.exists(changelog_path):
-    # disable SSL certificate verification
-    import ssl
-    ssl._create_default_https_context = ssl._create_unverified_context
-    _fp, changelog_path = tempfile.mkstemp()
-    urlretrieve(PIP_FALLBACK_URL, changelog_path)
+dch = Changelog(io.open("debian/changelog", "r", encoding="utf-8"))
+dsc = Deb822(io.open("debian/control", "r", encoding="utf-8"))
+realname, email_address = parseaddr(dsc["Maintainer"])
 
-with open(changelog_path) as fp:
-    for line in fp:
-        m = chlog_regex.match(line)
-        if m:
-            break
-    else:
-        print("Could not parse find package name and version in {}.".format(changelog_path))
-        sys.exit(1)
 
 setuptools.setup(
-    name=m.groupdict()["package"],
-    version=m.groupdict()["version"],
-    author="Univention GmbH",
-    author_email="packages@univention.de",
+    name=dch.package,
+    version=dch.version.full_version,
+    maintainer=realname,
+    maintainer_email=email_address,
     description="Python interface to configuration registry",
     long_description="Python interface to configuration registry",
     url="https://www.univention.de/",
