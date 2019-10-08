@@ -8,22 +8,12 @@
 
 #define COMMAND "/usr/lib/nagios/plugins/check_univention_winbind"
 
-static char *const suid_envp[] = {
-	"PATH=/usr/sbin:/usr/bin:/sbin:/bin",
-	NULL
-};
 
 int main ( int argc, char ** argv, char ** envp )
 {
-	if (setgid(getegid())) {
-		perror("setgid");
-		return EXIT_FAILURE;
-	}
-	if (setuid(geteuid())) {
-		perror("setuid");
-		return EXIT_FAILURE;
-	}
-	execle(COMMAND, COMMAND, NULL, &suid_envp);
-	perror("execle");
-	return EXIT_FAILURE;
+	uid_t uid = getuid();
+    if( setuid(geteuid()) ) perror( "setuid" );
+	execle(COMMAND, COMMAND, (char *)0, (char *)0);
+	setuid(uid);
+	exit(1);
 }

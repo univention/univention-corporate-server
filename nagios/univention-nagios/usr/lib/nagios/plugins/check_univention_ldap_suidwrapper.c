@@ -4,8 +4,7 @@
 
 static const char COMMAND[] = "/usr/lib/nagios/plugins/check_univention_ldap";
 
-static char *const suid_envp[] = {
-	"PATH=/usr/sbin:/usr/bin:/sbin:/bin",
+static char *suid_envp[] = {
 	NULL
 };
 

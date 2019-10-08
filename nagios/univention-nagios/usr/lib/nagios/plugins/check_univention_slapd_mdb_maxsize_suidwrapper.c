@@ -38,12 +38,7 @@
 
 #define COMMAND "/usr/lib/nagios/plugins/check_univention_slapd_mdb_maxsize"
 
-static char *const suid_envp[] = {
-	"PATH=/usr/sbin:/usr/bin:/sbin:/bin",
-	NULL
-};
-
-int main(int argc, char ** argv, char ** envp) {
+main(int argc, char ** argv, char ** envp) {
 	int i = 0;
 	char warning[] = "75";
 	char critical[] = "90";
@@ -59,20 +54,13 @@ int main(int argc, char ** argv, char ** envp) {
 				exit(EXIT_FAILURE);
 		}
 	}
-	if (setgid(getegid())) {
+	uid_t uid = getuid();
+	if (setgid(getegid()))
 		perror("setgid");
-		return EXIT_FAILURE;
-	}
-	if (setuid(geteuid())) {
+	if (setuid(geteuid()))
 		perror("setuid");
-		return EXIT_FAILURE;
-	}
-
-	if (listener) {
-		execle(COMMAND, COMMAND, "-l", "-w", warning, "-c", critical, NULL, &suid_envp);
-	} else {
-		execle(COMMAND, COMMAND, "-w", warning, "-c", critical, NULL, &suid_envp);
-	}
+	execle(COMMAND, COMMAND, "-w", warning, "-c", critical, (char *)0, (char *)0);
 	perror("execle");
-	return EXIT_FAILURE;
+	setuid(uid);
+	exit(0);
 }
