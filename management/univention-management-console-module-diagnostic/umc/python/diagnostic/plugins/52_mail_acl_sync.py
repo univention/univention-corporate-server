@@ -138,7 +138,7 @@ class ACL(object):
 			merged = dict()
 			for (identifier, right) in acl_list:
 				merged.setdefault(identifier, set()).add(right)
-			for (identifier, rights) in merged.iteritems():
+			for (identifier, rights) in merged.items():
 				if len(rights) > 1:
 					raise DuplicateIdentifierACLError(identifier)
 				else:
@@ -176,7 +176,7 @@ class DovecotACL(ACL):
 	def from_folder(cls, folder):
 		acl_list = cls._get_dovecot_acl(folder)
 		merged = dict()
-		for (identifier, rights) in acl_list.iteritems():
+		for (identifier, rights) in acl_list.items():
 			acl_type = 'group' if identifier.startswith('group=') else 'user'
 			udm_id = identifier.replace('user=', '', 1) if identifier.startswith('user=') \
 				else identifier.replace('group=', '', 1) if identifier.startswith('group=') \

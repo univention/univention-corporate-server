@@ -32,7 +32,7 @@ def run(_umc_instance):
 		'www.univention.de': ('dns/forwarder1', 'dns/forwarder2', 'dns/forwarder3'),
 		fqdn: ('nameserver1', 'nameserver2', 'nameserver3')
 	}
-	for hostname, nameservers in hostnames.iteritems():
+	for hostname, nameservers in hostnames.items():
 		for nameserver in nameservers:
 			if not ucr.get(nameserver):
 				continue

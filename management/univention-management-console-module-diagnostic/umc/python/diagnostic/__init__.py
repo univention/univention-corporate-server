@@ -318,4 +318,4 @@ class Plugin(object):
 
 
 def main():
-	print 'TODO: someday implement?'
+	print('TODO: someday implement?')

@@ -119,7 +119,7 @@ def solutions():
 def run(_umc_instance):
 	high = high_disk_usage()
 	tmpl = _('- Disk for mountpoint %(mp)s is %(pc)s%% full.')
-	disk_errors = [tmpl % {'mp': mp, 'pc': pc} for (mp, pc) in high.iteritems()]
+	disk_errors = [tmpl % {'mp': mp, 'pc': pc} for (mp, pc) in high.items()]
 
 	problem_on_root = '/' in high
 	problem_on_varlog = '/var/log' in high or '/var' in high or \

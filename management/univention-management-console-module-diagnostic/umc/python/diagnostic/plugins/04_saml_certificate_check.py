@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import glob
 import shutil
 import socket
@@ -98,7 +99,7 @@ def test_identity_provider_certificate():
 							raise Critical(_('The certificate of the SAML identity provider does not match.'))
 
 		except requests.exceptions.ConnectionError:
-			print 'error, connecting'
+			print('error, connecting')
 			pass
 
 

@@ -93,13 +93,13 @@ class CLIClient(object):
 			else:
 				exit_code = 2
 				title = '## Check failed: %s - %s ##' % (plugin, result['title'])
-				print '\n'.join([
+				print('\n'.join([
 					(' Start %s ' % (plugin,)).center(len(title), '#'),
 					title,
 					result['description'].strip(),
 					(' End %s ' % (plugin,)).center(len(title), '#'),
 					'',
-				])
+				]))
 		return exit_code
 
 	def run_diagnostic_checks(self, plugins):

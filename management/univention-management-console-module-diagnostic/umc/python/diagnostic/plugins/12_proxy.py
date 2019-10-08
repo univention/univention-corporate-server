@@ -5,7 +5,7 @@ from univention.management.console.config import ucr
 from univention.management.console.modules.diagnostic import Warning, Critical, MODULE
 from urlparse import urlparse
 import pycurl
-import StringIO
+import io
 import traceback
 
 from univention.lib.i18n import Translation
@@ -50,7 +50,7 @@ def run(_umc_instance, url='http://www.univention.de/', connecttimeout=30, timeo
 	curl.setopt(pycurl.URL, url)
 	# curl.setopt(pycurl.VERBOSE, bVerbose)
 
-	buf = StringIO.StringIO()
+	buf = io.StringIO()
 	curl.setopt(pycurl.WRITEFUNCTION, buf.write)
 	MODULE.process(''.join("Trying to connect to %s via HTTP proxy %s" % (url, proxy)))
 

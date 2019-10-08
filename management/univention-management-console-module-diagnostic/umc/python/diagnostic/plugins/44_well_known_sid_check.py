@@ -119,11 +119,11 @@ class LDAPConnection(object):
 
 
 def all_sids_and_names(domain_sid):
-	for (sid, name) in s4.well_known_sids.iteritems():
+	for (sid, name) in s4.well_known_sids.items():
 		if name not in NON_EXISTENT_SIDS:
 			yield (sid, name)
 
-	for (rid, name) in s4.well_known_domain_rids.iteritems():
+	for (rid, name) in s4.well_known_domain_rids.items():
 		if name not in NON_EXISTENT_SIDS:
 			yield ('{}-{}'.format(domain_sid, rid), name)
 

@@ -52,7 +52,7 @@ def run(_umc_instance):
 			for module in modules:
 				counted_objects.setdefault(module.short_description, 0)
 				counted_objects[module.short_description] += 1
-		for module_name in sorted(counted_objects.iterkeys()):
+		for module_name in sorted(counted_objects.keys()):
 			num_objs = counted_objects[module_name]
 			details += '\n· ' + _('%d objects should be "%s"') % (num_objs, module_name)
 		raise Warning(description + details, buttons=[{
