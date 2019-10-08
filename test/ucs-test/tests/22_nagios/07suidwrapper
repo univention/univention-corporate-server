@@ -17,6 +17,14 @@ cond_check_univention_winbind_suidwrapper () {
 cond_check_univention_ldap_suidwrapper () {
 	have slapd
 }
+eval_check_univention_s4_connector_suidwrapper () {
+	local rc=0
+	"$@" || rc="$?"
+	case "$rc" in
+	0|1|2|3) rc=0 ;;
+	esac
+	return "$rc"
+}
 
 rc=0
 for cmd in /usr/lib/nagios/plugins/check_univention_*_suidwrapper
@@ -25,7 +33,9 @@ do
 	cond="cond_${cmd##*/}"
 	! have "$cond" || "$cond" || continue
 	echo "$cmd"
-	"$cmd" || rc="$?"
+	eval="eval_${cmd##*/}"
+	have "$eval" || eval=
+	${eval:+"$eval"} "$cmd" || rc="$?"
 done
 exit "$rc"
 # vim:set filetype=sh ts=4:
