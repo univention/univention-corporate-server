@@ -96,7 +96,7 @@ class _UCRWidget(Widget):
 
 	def __contains__(self, syntax):
 		# in case a syntax-reload has been done we need to reuse the newly ones
-		self._syntax_classes = tuple(filter(None, (getattr(udm_syntax, s, None) for s in self._syntax_classes_names)))
+		self._syntax_classes = tuple([_f for _f in (getattr(udm_syntax, s, None) for s in self._syntax_classes_names) if _f])
 		return super(_UCRWidget, self).__contains__(syntax)
 
 	@classmethod
@@ -114,7 +114,7 @@ class _UCRWidget(Widget):
 			syntaxes.setdefault(name, {}).setdefault(key, val)
 
 		widgets = []
-		for name, props in syntaxes.iteritems():
+		for name, props in syntaxes.items():
 			try:
 				widget = props['widget']
 			except KeyError:

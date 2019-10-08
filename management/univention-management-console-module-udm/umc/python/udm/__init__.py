@@ -272,7 +272,7 @@ class Instance(Base, ProgressMixin):
 						license_data[item][lic_type.lower()] = count
 
 				if 'UGS' in udm_license._license.types:
-					udm_license._license.types = filter(lambda x: x != 'UGS', udm_license._license.types)
+					udm_license._license.types = [x for x in udm_license._license.types if x != 'UGS']
 			elif udm_license._license.version == '2':
 				for item in ('licenses', 'real'):
 					license_data[item] = {}
@@ -792,7 +792,7 @@ class Instance(Base, ProgressMixin):
 		if not container:
 			# no container is specified, return all existing object types
 			MODULE.info('no container specified, returning all object types')
-			self.finished(request.id, map(lambda module: {'id': module[0], 'label': getattr(module[1], 'short_description', module[0])}, udm_modules.modules.items()))
+			self.finished(request.id, [{'id': name, 'label': getattr(mod, 'short_description', name)} for name, mod in udm_modules.modules.items()])
 			return
 
 		if 'None' == container:
@@ -817,11 +817,11 @@ class Instance(Base, ProgressMixin):
 			allowed_modules.update(mod for mod in udm_modules.modules.values() if not udm_modules.superordinates(mod))
 
 		# make sure that the object type can be created
-		allowed_modules = filter(lambda mod: udm_modules.supports(mod, 'add'), allowed_modules)
+		allowed_modules = [mod for mod in allowed_modules if udm_modules.supports(mod, 'add')]
 		MODULE.info('all modules that are allowed: %s' % [udm_modules.name(mod) for mod in allowed_modules])
 
 		# return the final list of object types
-		self.finished(request.id, map(lambda module: {'id': udm_modules.name(module), 'label': getattr(module, 'short_description', udm_modules.name(module))}, allowed_modules))
+		self.finished(request.id, [{'id': udm_modules.name(_module), 'label': getattr(_module, 'short_description', udm_modules.name(_module))} for _module in allowed_modules])
 
 	@bundled
 	@sanitize(objectType=StringSanitizer())  # objectDN=StringSanitizer(allow_none=True),
@@ -860,7 +860,7 @@ class Instance(Base, ProgressMixin):
 		object_dn = request.options.get('objectDN')
 		properties = module.get_properties(object_dn)
 		if request.options.get('searchable', False):
-			properties = filter(lambda prop: prop.get('searchable', False), properties)
+			properties = [prop for prop in properties if prop.get('searchable', False)]
 		return properties
 
 	@module_from_request

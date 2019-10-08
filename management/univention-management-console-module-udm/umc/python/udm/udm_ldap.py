@@ -156,7 +156,7 @@ class AppAttributes(object):
 	@classmethod
 	def options_for_module(cls, module):
 		ret = {}
-		for option_name, option_def in cls.data_for_module(module).iteritems():
+		for option_name, option_def in cls.data_for_module(module).items():
 			ret[option_name] = udm.option(
 				short_description=option_def['label'],
 				long_description=option_def['description'],
@@ -172,7 +172,7 @@ class AppAttributes(object):
 	def options_for_obj(cls, obj):
 		ret = []
 		if obj:
-			for option_name, option_def in cls.data_for_module(obj.module).iteritems():
+			for option_name, option_def in cls.data_for_module(obj.module).items():
 				if obj[option_def['attribute_name']] == option_def['boolean_values'][0]:
 					ret.append(option_name)
 		return ret
@@ -180,13 +180,13 @@ class AppAttributes(object):
 	@classmethod
 	def attributes_for_module(cls, module):
 		ret = []
-		for option_name, option_def in cls.data_for_module(module).iteritems():
+		for option_name, option_def in cls.data_for_module(module).items():
 			ret.extend(option_def['attributes'])
 		return ret
 
 	@classmethod
 	def alter_item_for_prop(cls, module, key, prop, item):
-		for option_name, option_def in cls.data_for_module(module).iteritems():
+		for option_name, option_def in cls.data_for_module(module).items():
 			if key in option_def['attributes']:
 				item['options'].append(option_name)
 
@@ -233,7 +233,7 @@ class AppAttributes(object):
 				break
 			layout_index += 1
 		attrs_to_remove = []
-		for option_name, option_def in cls.data_for_module(module).iteritems():
+		for option_name, option_def in cls.data_for_module(module).items():
 			option_def = copy.deepcopy(option_def)
 			attrs_to_remove.append(option_def['attribute_name'])
 			attrs_to_remove.extend(option_def['attributes'])
@@ -550,8 +550,8 @@ class UDM_Module(object):
 			obj.open()
 			MODULE.info('Creating LDAP object')
 			if '$options$' in ldap_object:
-				options = filter(lambda option: ldap_object['$options$'][option] is True, ldap_object['$options$'].keys())
-				for option_name, option_def in AppAttributes.data_for_module(self.name).iteritems():
+				options = [option for option in ldap_object['$options$'].keys() if ldap_object['$options$'][option] is True]
+				for option_name, option_def in AppAttributes.data_for_module(self.name).items():
 					if option_name in options:
 						options.remove(option_name)
 						ldap_object[option_def['attribute_name']] = option_def['boolean_values'][0]
@@ -1097,7 +1097,7 @@ class UDM_Module(object):
 		if not policyTypes and self.childs:
 			# allow all policies for containers
 			# TODO: is using self.child correct here? shouldn't it better be container_modules()?
-			policyTypes = filter(lambda x: x.startswith('policies/') and x != 'policies/policy', udm_modules.modules)
+			policyTypes = [x for x in udm_modules.modules if x.startswith('policies/') and x != 'policies/policy']
 
 		policies = []
 		for policy in policyTypes:
@@ -1120,7 +1120,7 @@ class UDM_Module(object):
 				continue
 			prop = self.get_property(key)
 			syntax = prop.syntax() if inspect.isclass(prop.syntax) else prop.syntax
-			if isinstance(syntax, (udm_syntax.UDM_Objects,)) and syntax.key == 'dn' and len(syntax.udm_modules) == 1:
+			if isinstance(syntax, udm_syntax.UDM_Objects) and syntax.key == 'dn' and len(syntax.udm_modules) == 1:
 				object_type = syntax.udm_modules[0]
 				dns = obj[key]
 				if not isinstance(dns, (list, tuple)):
@@ -1140,7 +1140,7 @@ class UDM_Module(object):
 			return 'dns/dns'
 		ldap_connection, ldap_position = self.get_ldap_connection()
 		base, name = split_module_name(self.name)
-		for module in filter(lambda x: x.startswith(base), udm_modules.modules.keys()):
+		for module in [x for x in udm_modules.modules.keys() if x.startswith(base)]:
 			mod = UDM_Module(module, ldap_connection=ldap_connection, ldap_position=ldap_position)
 			children = getattr(mod.module, 'childmodules', [])
 			if self.name in children:

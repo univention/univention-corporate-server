@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.15-2) unstable; urgency=medium
+
+  * Bug #49160: migrate to dh_python
+
+ -- Florian Best <best@univention.de>  Tue, 08 Oct 2019 18:26:32 +0200
+
 univention-management-console-module-udm (9.0.15-1) unstable; urgency=medium
 
   * Bug #27816: Bug #50245: generate filter only when necessary
