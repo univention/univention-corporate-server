@@ -7,20 +7,28 @@
 
 #define COMMAND "/usr/lib/nagios/plugins/check_univention_joinstatus"
 
+static char *const suid_envp[] = {
+	"PATH=/usr/sbin:/usr/bin:/sbin:/bin",
+	NULL
+};
 
 main( int argc, char ** argv, char ** envp )
 {
-    int status = 0;
 	int i = 0;
-	uid_t uid = getuid();
-    if( setgid(getegid()) ) perror( "setgid" );
-    if( setuid(geteuid()) ) perror( "setuid" );
+	if (setgid(getegid())) {
+		perror("setgid");
+		return EXIT_FAILURE;
+	}
+	if (setuid(geteuid())) {
+		perror("setuid");
+		return EXIT_FAILURE;
+	}
 	for(i=0; i<argc; i++) {
 	  if (( strcmp("-L", argv[i]) == 0 ) && (i+1 < argc)) {
-		execle(COMMAND, COMMAND, "-L", argv[i+1], (char *)0, (char *)0);
+		execle(COMMAND, COMMAND, "-L", argv[i+1], NULL, &suid_envp);
 	  }
 	}
-	execle(COMMAND, COMMAND, (char *)0, (char *)0);
-	setuid(uid);
-	exit(1);
+	execle(COMMAND, COMMAND, NULL, &suid_envp);
+	perror("execle");
+	return EXIT_FAILURE;
 }
