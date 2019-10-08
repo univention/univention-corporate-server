@@ -45,10 +45,14 @@ static char *const suid_envp[] = {
 
 int main(int argc, char ** argv, char ** envp) {
 	int i = 0;
+	int listener = 0;
 	char warning[] = "75";
 	char critical[] = "90";
-	while ((i = getopt(argc, argv, "c:w:")) != -1) {
+	while ((i = getopt(argc, argv, "lc:w:")) != -1) {
 		switch (i) {
+			case 'l':
+				listener = 1;
+				break;
 			case 'w':
 				strncpy(warning, optarg, 2);
 				break;
