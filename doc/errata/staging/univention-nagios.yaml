@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-errata4.3-5
+src: univention-nagios
+fix: 11.0.1-9
+desc: |
+ This update addresses the following issue:
+ * Improve Nagios check for nscd to check for a working nscd by querying its
+   statistics data.
+bug: [50319]

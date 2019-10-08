@@ -1,3 +1,9 @@
+univention-nagios (11.0.1-9) unstable; urgency=low
+
+  * Bug #50319: Check for running nscd only
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 08 Oct 2019 11:15:57 +0200
+
 univention-nagios (11.0.1-8) unstable; urgency=low
 
   * Bug #48616: Fix local root exploit
