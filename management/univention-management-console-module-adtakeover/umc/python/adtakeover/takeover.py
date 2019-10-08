@@ -416,7 +416,7 @@ def set_status_done():
 	return state.set_done()
 
 
-class AD_Takeover_State():
+class AD_Takeover_State(object):
 
 	def __init__(self):
 		self.statefile = os.path.join(SAMBA_PRIVATE_DIR, ".adtakeover")
@@ -525,7 +525,7 @@ def sysvol_info():
 	}
 
 
-class UCS_License_detection():
+class UCS_License_detection(object):
 
 	def __init__(self, ucr):
 		self.ucr = ucr
@@ -618,7 +618,7 @@ class UCS_License_detection():
 			raise LicenseInsufficient(error_msg)
 
 
-class AD_Connection():
+class AD_Connection(object):
 
 	def __init__(self, hostname_or_ip, lp=None):
 
@@ -794,7 +794,7 @@ class AD_Connection():
 		return self.domain_info
 
 
-class AD_Takeover():
+class AD_Takeover(object):
 
 	def __init__(self, ucr, ad_connection):
 		self.ucr = ucr
@@ -1379,7 +1379,7 @@ class AD_Takeover():
 		# Reset S4 Connector and handler state
 		run_and_output_to_log(["/etc/init.d/univention-directory-listener", "stop"], log.debug)
 
-		for i in xrange(30):
+		for i in range(30):
 			time.sleep(1)
 			# progress.percentage_increment_scaled(1.0/100)
 			progress.percentage_increment_scaled(1.0 / 32)
@@ -1467,7 +1467,7 @@ class AD_Takeover():
 		subprocess.call(["samba-tool", "ntacl", "sysvolreset"], stdout=DEVNULL, stderr=DEVNULL)
 
 
-class AD_Takeover_Finalize():
+class AD_Takeover_Finalize(object):
 
 	def __init__(self, ucr):
 		self.lp = LoadParm()
@@ -1559,7 +1559,7 @@ class AD_Takeover_Finalize():
 			serverReferenceBL_RDNs.reverse()
 			config_partition_index = None
 			site_container_index = None
-			for i in xrange(len(serverReferenceBL_RDNs)):
+			for i in range(len(serverReferenceBL_RDNs)):
 				if site_container_index:
 					self.sitename = serverReferenceBL_RDNs[i].split('=', 1)[1]
 					break
@@ -1729,7 +1729,7 @@ class AD_Takeover_Finalize():
 			log.error("\n".join(msg))
 		elif ip_version == 4:
 			self.primary_interface = self._get_primary_interface(ipv4=True)
-			for j in xrange(1, 6):
+			for j in range(1, 6):
 				if not "interfaces/%s_%s/address" % (self.primary_interface, j) in self.ucr:
 					new_interface_ucr = "%s_%s" % (self.primary_interface, j)
 					new_interface = "%s:%s" % (self.primary_interface, j)
@@ -1756,7 +1756,7 @@ class AD_Takeover_Finalize():
 				log.warn("\n".join(msg))
 		elif ip_version == 6:
 			self.primary_interface = self._get_primary_interface(ipv4=False)
-			for j in xrange(1, 6):
+			for j in range(1, 6):
 				if not "interfaces/eth%s_%s/ipv6/default/address" % (self.primary_interface, j) in self.ucr:
 					new_interface_ucr = "%s_%s" % (self.primary_interface, j)
 					new_interface = "%s:%s" % (self.primary_interface, j)
@@ -1835,7 +1835,7 @@ class AD_Takeover_Finalize():
 		log.info("Claiming FSMO roles")
 		takeover_hasMasterNCs(self.ucr, self.samdb, self.sitename, self.partitions)
 		for fsmo_role in ('pdc', 'rid', 'infrastructure', 'schema', 'naming', 'domaindns', 'forestdns'):
-			for attempt in xrange(3):
+			for attempt in range(3):
 				if attempt > 0:
 					time.sleep(1)
 					log.debug("trying samba-tool fsmo seize --role=%s --force again:" % fsmo_role)
@@ -1937,7 +1937,7 @@ def check_gpo_presence():
 # HELPER FUNCTIONS: ###########################
 
 
-class Timer():
+class Timer(object):
 
 	def __init__(self):
 		self.timetable = []
@@ -2199,7 +2199,7 @@ def wait_for_s4_connector_replication(ucr, lp, progress=None, max_time=None):
 
 def check_samba4_started():
 	attempt = 1
-	for i in xrange(5):
+	for i in range(5):
 		time.sleep(1)
 		p = subprocess.Popen(["pgrep", "-cxf", "/usr/sbin/samba -D"], stdout=subprocess.PIPE)
 		(stdout, stderr) = p.communicate()
@@ -2232,7 +2232,7 @@ def check_samba4_started():
 		log.debug("Number of Samba 4 processes after %s start/restart attempts: %s" % (attempt, stdout))
 
 
-class UserRenameHandler:
+class UserRenameHandler(object):
 
 	''' Provides methods for renaming users in UDM
 	'''
@@ -2271,7 +2271,7 @@ class UserRenameHandler:
 			self.udm_rename_ucs_user(userdn, ad_object_name)
 
 
-class GroupRenameHandler:
+class GroupRenameHandler(object):
 
 	''' Provides methods for renaming groups in UDM
 	'''
