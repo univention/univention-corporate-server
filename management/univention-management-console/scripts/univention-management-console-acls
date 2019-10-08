@@ -31,7 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import cPickle
+from __future__ import print_function
+import pickle
 import os
 from optparse import OptionParser
 import sys
@@ -66,8 +67,8 @@ filename = os.path.join(_cache_dir, options.user.replace('/', ''))
 if os.path.isfile(filename) and operation in ('show', 'allow', 'remove'):
 	try:
 		fd = open(filename)
-		acls = cPickle.load(fd)
-		print 'loaded pickle file', filename
+		acls = pickle.load(fd)
+		print('loaded pickle file', filename)
 	except:
 		acls = []
 	finally:
@@ -90,23 +91,23 @@ else:  # check for duplicates
 acls = new_acls
 
 if operation == 'show':
-	print 'Username: %s' % options.user
+	print('Username: %s' % options.user)
 	for acl in acls:
-		print '     Host: %-10s Command: %-15s Flavor: %-14s Options: %s' % (acl.host, acl.command, acl.flavor, str(acl.options))
+		print('     Host: %-10s Command: %-15s Flavor: %-14s Options: %s' % (acl.host, acl.command, acl.flavor, str(acl.options)))
 	sys.exit(0)
 elif operation == 'allow':
 	for command in options.commands:
 		rule = Rule({'fromUser': False, 'host': options.host, 'command': command, 'flavor': options.flavor})
 		if rule not in acls:
 			acls.append(rule)
-			print 'info: rule %s appended' % command
+			print('info: rule %s appended' % command)
 		else:
-			print 'warning: rule %s already exists' % command
+			print('warning: rule %s already exists' % command)
 elif operation == 'remove':
 	acls = filter(lambda item: item.command not in options.commands, acls)
 elif operation == 'reset':
 	pass  # nothing todo as the acls dict is already "reset" and will be written in the next step
 
 fd = open(filename, 'w')
-fd.write(cPickle.dumps(acls))
+fd.write(pickle.dumps(acls))
 fd.close()

@@ -31,18 +31,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import univention.dh_umc as dh_umc
 import sys
 
 if 1 == len(sys.argv) or '-h' in sys.argv or '--help' in sys.argv:
-	print
-	print 'usage: dh-umc-po2json <poFile1> ...'
-	print
+	print()
+	print('usage: dh-umc-po2json <poFile1> ...')
+	print()
 	sys.exit(0)
 
 for ifile in sys.argv[1:]:
 	try:
 		dh_umc.create_json_file(ifile)
 	except dh_umc.Error as exc:
-		print >> sys.stderr, str(exc)
+		print(str(exc), file=sys.stderr)
 		sys.exit(1)

@@ -34,10 +34,11 @@
 from univention.management.console.modules import Base
 
 from univention.lib.i18n import Translation
-_ = Translation('univention.management.console').translate
 
 from univention.management.console.modules.decorators import simple_response, log, file_upload, multi_response, sanitize
 import univention.management.console.modules.sanitizers as s
+
+_ = Translation('univention.management.console').translate
 
 
 class Instance(Base):

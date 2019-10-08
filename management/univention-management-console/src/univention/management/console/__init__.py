@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
-#  UMc module init
+#  UMC module init
 #
 # Copyright 2006-2019 Univention GmbH
 #
@@ -33,4 +33,6 @@
 
 from univention.lib.i18n import Translation
 
-# don't import submodules/packages here otherwise the locale is not yet set
+__all__ = ('Translation', )
+
+# NOTE: don't import submodules/packages here otherwise the locale is not yet set!

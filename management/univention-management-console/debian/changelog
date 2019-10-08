@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-37) unstable; urgency=medium
+
+  * Bug #49161: migrate package to dh_python
+
+ -- Florian Best <best@univention.de>  Tue, 08 Oct 2019 15:57:49 +0200
+
 univention-management-console (11.0.4-36) unstable; urgency=medium
 
   * Bug #43225: enhance error message when connection to module process

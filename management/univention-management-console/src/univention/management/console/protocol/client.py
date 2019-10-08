@@ -31,6 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 """Provides a class :class:`.Client` that implements an UMCP client"""
+from __future__ import print_function
 
 import errno
 import os
@@ -384,7 +385,7 @@ if __name__ == '__main__':
 	notifier.init(notifier.GENERIC)
 
 	def auth(success, response):
-		print 'authentication', success, response.status, response.message
+		print('authentication', success, response.status, response.message)
 
 	client = Client()
 	client.signal_connect('authenticated', auth)

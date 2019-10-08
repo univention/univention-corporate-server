@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 from optparse import OptionParser, OptionGroup
 from getpass import getpass
 
@@ -67,7 +68,7 @@ class CLI_Client(Client):
 		try:
 			self.connect()
 		except umcp.NoSocketError:
-			print >> sys.stderr, "The UMC server %s could not be contacted." % options.server
+			print("The UMC server %s could not be contacted." % options.server, file=sys.stderr)
 			sys.exit(1)
 
 		self.signal_connect('response', self._response)
@@ -86,7 +87,7 @@ class CLI_Client(Client):
 				self.__wait = None
 		if options.exit:
 			if not self._options.quiet:
-				print >> sys.stderr, 'existing without waiting for response'
+				print('existing without waiting for response', file=sys.stderr)
 			sys.exit(0)
 
 	def authenticate(self, username, password, new_password=None):
@@ -132,23 +133,23 @@ class CLI_Client(Client):
 		return msg
 
 	def _error(self, error):
-		print >> sys.stderr, "Error: %s" % (error,)
+		print("Error: %s" % (error,), file=sys.stderr)
 		sys.exit(1)
 
 	def _closed(self):
-		print >> sys.stderr, "Error: The connection to UMC was closed unexpectedly. Make sure the server is running"
+		print("Error: The connection to UMC was closed unexpectedly. Make sure the server is running", file=sys.stderr)
 		sys.exit(1)
 
 	def print_timing(self, response=None):
 		if self.__started is not None and self.__finished is not None:
 			diff = self.__finished - self.__started
 			if response is not None:
-				print '>>> Timing:', response.command, ' '.join(response.arguments)
+				print('>>> Timing:', response.command, ' '.join(response.arguments))
 			else:
-				print '>>> Timing (Authentication):'
-			print ' Request send at', self.__started
-			print ' Response received at', self.__finished
-			print ' Elapsed time', diff
+				print('>>> Timing (Authentication):')
+			print(' Request send at', self.__started)
+			print(' Response received at', self.__finished)
+			print(' Elapsed time', diff)
 
 		self.__started = None
 		self.__finished = None
@@ -164,7 +165,7 @@ class CLI_Client(Client):
 				self.request(self.__wait)
 				self.__wait = None
 		else:
-			print >> sys.stderr, 'error: authentication failed'
+			print('error: authentication failed', file=sys.stderr)
 			sys.exit(1)
 
 	def _response(self, msg):
@@ -173,40 +174,40 @@ class CLI_Client(Client):
 			self.print_timing(msg)
 		if self._options.quiet:
 			raise ClientExit(msg.status - 200)
-		print 'Response: %s' % msg.command
-		print '  data length   : %4d' % len(str(msg))
-		print '  message length: %4d' % msg._length
-		print '  ---'
+		print('Response: %s' % msg.command)
+		print('  data length   : %4d' % len(str(msg)))
+		print('  message length: %4d' % msg._length)
+		print('  ---')
 		if msg.arguments:
 			if self._options.prettyprint:
-				print '  ARGUMENTS: %s' % pprint.pformat(msg.arguments)
+				print('  ARGUMENTS: %s' % pprint.pformat(msg.arguments))
 			else:
-				print '  ARGUMENTS: %s' % ' '.join(msg.arguments)
-		print 'MIMETYPE   : %s' % msg.mimetype
+				print('  ARGUMENTS: %s' % ' '.join(msg.arguments))
+		print('MIMETYPE   : %s' % msg.mimetype)
 		if msg.mimetype == umcp.MIMETYPE_JSON:
-			print '  STATUS   : %d' % msg.status
+			print('  STATUS   : %d' % msg.status)
 			if msg.options:
 				if self._options.prettyprint:
-					print '  OPTIONS  : %s' % pprint.pformat(msg.options, indent=2)
+					print('  OPTIONS  : %s' % pprint.pformat(msg.options, indent=2))
 				else:
 					if isinstance(msg.options, (list, tuple)):
-						print '  OPTIONS  : %s' % ', '.join(map(lambda x: str(x), msg.options))
+						print('  OPTIONS  : %s' % ', '.join(map(lambda x: str(x), msg.options)))
 					else:
-						print '  OPTIONS  : %s' % ' '.join(['%s=%s' % (k, v) for k, v in msg.options.items()])
-			print '  MESSAGE  : %s' % msg.message
+						print('  OPTIONS  : %s' % ' '.join(['%s=%s' % (k, v) for k, v in msg.options.items()]))
+			print('  MESSAGE  : %s' % msg.message)
 			if msg.error:
-				print '  ERROR    : %r' % (msg.error,)
+				print('  ERROR    : %r' % (msg.error,))
 			result = msg.result
 			if not result:
 				result = msg.body
 			if self._options.prettyprint:
-				print '  RESULT   : %s' % pprint.pformat(result, indent=2)
+				print('  RESULT   : %s' % pprint.pformat(result, indent=2))
 			else:
-				print '  RESULT   : %s' % result
+				print('  RESULT   : %s' % result)
 			if msg.status is not None:
 				raise ClientExit(msg.status - 200)
 		else:
-			print 'BODY    : %s' % str(msg.body)
+			print('BODY    : %s' % str(msg.body))
 		raise ClientExit()
 
 
@@ -304,7 +305,7 @@ if __name__ == '__main__':
 	try:
 		client = CLI_Client(options, arguments)
 	except Exception as exc:
-		print >> sys.stderr, 'An fatal error occurred: %s' % (exc,)
+		print('An fatal error occurred: %s' % (exc,), file=sys.stderr)
 		sys.exit(1)
 
 	try:
