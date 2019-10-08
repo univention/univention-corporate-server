@@ -543,33 +543,29 @@ class UCS_License_detection():
 		v = self._license.version
 		types = self._license.licenses[v]
 		if dn is None:
-			max = [self._license.licenses[v][type]
-				for type in types]
+			max = [self._license.licenses[v][type] for type in types]
 		else:
-			max = [lo.get(dn)[self._license.keys[v][type]][0]
-				for type in types]
+			max = [lo.get(dn)[self._license.keys[v][type]][0] for type in types]
 
-		objs = [lo.searchDn(filter=self._license.filters[v][type])
-			for type in types]
-		num = [mylen(obj)
-			for obj in objs]
-		expired = self._license.checkObjectCounts(max, num)
+		objs = [lo.searchDn(filter=self._license.filters[v][type]) for type in types]
+		num = [mylen(obj) for obj in objs]
+		self._license.checkObjectCounts(max, num)
 		result = []
 		for i in types.keys():
-			t = types[i]
+			types[i]
 			m = max[i]
 			n = num[i]
-			odn = objs[i]
+			objs[i]
 			if i == self.License.USERS or i == self.License.ACCOUNT:
 				n -= self._license.sysAccountsFound
 				if n < 0:
 					n = 0
-			l = self._license.names[v][i]
+			li = self._license.names[v][i]
 			if m:
 				if i == self.License.USERS or i == self.License.ACCOUNT:
-					log.debug("determine_license for current UCS %s: %s of %s" % (l, n, m))
+					log.debug("determine_license for current UCS %s: %s of %s" % (li, n, m))
 					log.debug("  %s Systemaccounts are ignored." % self._license.sysAccountsFound)
-					result.append((l, n, m))
+					result.append((li, n, m))
 		return result
 
 	def check_license(self, domain_info):
@@ -676,9 +672,11 @@ class AD_Connection():
 			raise TakeoverError(_("The LDAP base of this UCS domain differs from the LDAP base of the selected Active Directory domain."))
 
 		self.domain_sid = None
-		msgs = self.samdb.search(base=self.domain_dn, scope=samba.ldb.SCOPE_BASE,
+		msgs = self.samdb.search(
+			base=self.domain_dn, scope=samba.ldb.SCOPE_BASE,
 			expression="(objectClass=domain)",
-			attrs=["objectSid", "msDS-Behavior-Version"])
+			attrs=["objectSid", "msDS-Behavior-Version"]
+		)
 		if msgs:
 			obj = msgs[0]
 			self.domain_sid = str(ndr_unpack(security.dom_sid, obj["objectSid"][0]))
@@ -704,7 +702,8 @@ class AD_Connection():
 			raise AuthenticationFailed()
 
 	def operatingSystem(self, netbios_name):
-		msg = self.samdb.search(base=self.samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
+		msg = self.samdb.search(
+			base=self.samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
 			expression=filter_format("(sAMAccountName=%s$)", [netbios_name]),
 			attrs=["operatingSystem", "operatingSystemVersion", "operatingSystemServicePack"])
 		if msg:
@@ -726,7 +725,8 @@ class AD_Connection():
 		controls = ['paged_results:1:%s' % PAGE_SIZE]
 
 		# Count user objects
-		msgs = self.samdb.search(base=self.domain_dn, scope=samba.ldb.SCOPE_SUBTREE,
+		msgs = self.samdb.search(
+			base=self.domain_dn, scope=samba.ldb.SCOPE_SUBTREE,
 			expression="(&(objectCategory=user)(objectClass=user))",
 			attrs=["sAMAccountName", "objectSid"], controls=controls)
 		for obj in msgs:
@@ -749,7 +749,8 @@ class AD_Connection():
 				ad_user_objects = ad_user_objects + 1
 
 		# Count group objects
-		msgs = self.samdb.search(base=self.domain_dn, scope=samba.ldb.SCOPE_SUBTREE,
+		msgs = self.samdb.search(
+			base=self.domain_dn, scope=samba.ldb.SCOPE_SUBTREE,
 			expression="(objectCategory=group)",
 			attrs=["sAMAccountName", "objectSid"], controls=controls)
 		for obj in msgs:
@@ -767,7 +768,8 @@ class AD_Connection():
 			ad_group_objects = ad_group_objects + 1
 
 		# Count computer objects
-		msgs = self.samdb.search(base=self.domain_dn, scope=samba.ldb.SCOPE_SUBTREE,
+		msgs = self.samdb.search(
+			base=self.domain_dn, scope=samba.ldb.SCOPE_SUBTREE,
 			expression="(objectCategory=computer)",
 			attrs=["sAMAccountName", "objectSid"], controls=controls)
 		for obj in msgs:
@@ -816,8 +818,7 @@ class AD_Takeover():
 		env = os.environ.copy()
 		env["LC_ALL"] = "C"
 		try:
-			p1 = subprocess.Popen(["rdate", "-p", "-n", self.ad_server_ip],
-				close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
+			p1 = subprocess.Popen(["rdate", "-p", "-n", self.ad_server_ip], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
 			stdout, stderr = p1.communicate()
 		except OSError as ex:
 			log.error("ERROR: rdate -p -n %s: %s" % (self.ad_server_ip, ex.args[1]))
@@ -850,8 +851,7 @@ class AD_Takeover():
 				return False
 		else:
 			log.info("INFO: Synchronizing time to %s" % self.ad_server_ip)
-			p1 = subprocess.Popen(["rdate", "-s", "-n", self.ad_server_ip],
-				close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			p1 = subprocess.Popen(["rdate", "-s", "-n", self.ad_server_ip], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 			stdout, stderr = p1.communicate()
 			if p1.returncode:
 				log.error("ERROR: rdate -s -p failed (%d)" % (p1.returncode,))
@@ -863,14 +863,13 @@ class AD_Takeover():
 			univention.lib.admember.remove_admember_service_from_localhost()
 			univention.lib.admember.revert_ucr_settings()
 			univention.lib.admember.revert_connector_settings()
-			run_and_output_to_log(["univention-config-registry", "unset",
-				"connector/s4/listener/disabled",
-                          ], log.debug)
-			run_and_output_to_log(["univention-config-registry", "set",
+			run_and_output_to_log(["univention-config-registry", "unset", "connector/s4/listener/disabled", ], log.debug)
+			run_and_output_to_log([
+				"univention-config-registry", "set",
 				"connector/ad/autostart=no",
 				"connector/s4/autostart=yes",
 				"samba4/ignore/mixsetup=yes",
-                          ], log.debug)
+			], log.debug)
 			run_and_output_to_log(["/etc/init.d/univention-ad-connector", "stop"], log.debug)
 			run_and_output_to_log(["/etc/init.d/univention-directory-listener", "crestart"], log.debug)
 			# And now run 96univention-samba4.inst pre-provision setup (.adtakeover status is "start"), to disable slapd on port 389, and 97uinvention-s4-connector.inst
@@ -908,12 +907,17 @@ class AD_Takeover():
 			nameserver1_orig = self.ucr["nameserver1/local"]
 		else:
 			nameserver1_orig = self.ucr["nameserver1"]
-			run_and_output_to_log(["univention-config-registry", "set",
-				"nameserver1/local=%s" % nameserver1_orig,
-				"nameserver1=%s" % self.ad_server_ip,
-				"directory/manager/web/modules/users/user/properties/username/syntax=string",
-				"directory/manager/web/modules/groups/group/properties/name/syntax=string",
-				"dns/backend=ldap"], log.debug)
+			run_and_output_to_log(
+				[
+					"univention-config-registry", "set",
+					"nameserver1/local=%s" % nameserver1_orig,
+					"nameserver1=%s" % self.ad_server_ip,
+					"directory/manager/web/modules/users/user/properties/username/syntax=string",
+					"directory/manager/web/modules/groups/group/properties/name/syntax=string",
+					"dns/backend=ldap"
+				],
+				log.debug
+			)
 
 		self.ucr.load()
 		univention.admin.configRegistry.load()  # otherwise the modules do not use the new syntax
@@ -1029,7 +1033,8 @@ class AD_Takeover():
 		# Rewrite domain SID in OpenLDAP sambaDomain object
 		self.ad_domainsid = None
 		self.samdb = SamDB(os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), session_info=system_session(self.lp), lp=self.lp)
-		msgs = self.samdb.search(base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_BASE,
+		msgs = self.samdb.search(
+			base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_BASE,
 			expression="(objectClass=domain)",
 			attrs=["objectSid"])
 		if msgs:
@@ -1095,9 +1100,7 @@ class AD_Takeover():
 					# FIXME: in this peculiar case we should create one.
 					pass
 
-			run_and_output_to_log(["univention-config-registry", "set",
-				"windows/domain=%s" % self.ad_netbios_domain,
-				], log.debug)
+			run_and_output_to_log(["univention-config-registry", "set", "windows/domain=%s" % self.ad_netbios_domain, ], log.debug)
 
 		if sambadomain_object_dn:
 			log.debug("Replacing old UCS sambaSID (%s) by AD domain SID (%s)." % (self.old_domainsid, self.ad_domainsid))
@@ -1146,7 +1149,8 @@ class AD_Takeover():
 			if os.path.isdir(ucs_sysvol_dom_dir) and not os.path.isdir(sam_sysvol_dom_dir):
 				os.rename(ucs_sysvol_dom_dir, sam_sysvol_dom_dir)
 
-		msgs = self.samdb.search(base=self.samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
+		msgs = self.samdb.search(
+			base=self.samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
 			expression="(objectClass=groupPolicyContainer)",
 			attrs=["cn"])
 
@@ -1173,7 +1177,8 @@ class AD_Takeover():
 
 		# pre-create containers in UDM
 		container_list = []
-		msgs = self.samdb.search(base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
+		msgs = self.samdb.search(
+			base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
 			expression="(objectClass=organizationalunit)",
 			attrs=["dn"])
 		if msgs:
@@ -1209,7 +1214,8 @@ class AD_Takeover():
 
 		for (sid, canonical_name) in AD_well_known_sids.items():
 
-			msgs = self.samdb.search(base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
+			msgs = self.samdb.search(
+				base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
 				expression=filter_format("(&(objectSid=%s)(sAMAccountName=*))", (sid,)),
 				attrs=["sAMAccountName", "objectClass"])
 			if not msgs:
@@ -1263,7 +1269,8 @@ class AD_Takeover():
 			if old_sid.startswith(self.old_domainsid):
 				old_sambaSID_dict[old_sid] = ucs_name
 
-				msgs = self.samdb.search(base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
+				msgs = self.samdb.search(
+					base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
 					expression=filter_format("(sAMAccountName=%s)", (ucs_name,)),
 					attrs=["dn", "objectSid"])
 				if not msgs:
@@ -1286,7 +1293,8 @@ class AD_Takeover():
 			if old_sid.startswith(self.old_domainsid):
 				old_sambaSID_dict[old_sid] = ucs_name
 
-				msgs = self.samdb.search(base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
+				msgs = self.samdb.search(
+					base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
 					expression=filter_format("(sAMAccountName=%s)", (ucs_name,)),
 					attrs=["objectSid"])
 				if not msgs:
@@ -1316,7 +1324,8 @@ class AD_Takeover():
 						log.debug("Warning: Unknown sambaPrimaryGroupSID %s" % old_sid)
 
 		# Pre-Create mail domains for all mail and proxyAddresses:
-		msgs = self.samdb.search(base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
+		msgs = self.samdb.search(
+			base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
 			expression="(|(mail=*)(proxyAddresses=*))",
 			attrs=["mail", "proxyAddresses"])
 		maildomains = []
@@ -1346,7 +1355,8 @@ class AD_Takeover():
 			run_and_output_to_log(["univention-directory-manager", "users/user", "delete", "--dn", "uid=%s-%s,cn=users,%s" % (escape_dn_chars(service), escape_dn_chars(self.ucr["hostname"]), self.ucr["ldap/base"])], log.debug)
 
 		# Remove logonHours restrictions from Administrator account, was set in one test environment..
-		msgs = self.samdb.search(base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
+		msgs = self.samdb.search(
+			base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
 			expression="(samaccountname=Administrator)",
 			attrs=["logonHours"])
 		if msgs:
@@ -1486,7 +1496,8 @@ class AD_Takeover_Finalize():
 
 		# Check if the AD server is already in the local SAM db
 		samdb = SamDB(os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), session_info=system_session(self.lp), lp=self.lp)
-		msgs = samdb.search(base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
+		msgs = samdb.search(
+			base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
 			expression=filter_format("(sAMAccountName=%s$)", [self.ad_server_name]),
 			attrs=["objectSid"])
 		if msgs:
@@ -1537,7 +1548,8 @@ class AD_Takeover_Finalize():
 		# 1. Determine Site of local server, important for locale-dependend names like "Standardname-des-ersten-Standorts"
 		self.sitename = None
 		self.samdb = SamDB(os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), session_info=system_session(self.lp), lp=self.lp)
-		msgs = self.samdb.search(base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
+		msgs = self.samdb.search(
+			base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
 			expression=filter_format("(sAMAccountName=%s$)", (self.ucr["hostname"],)),
 			attrs=["serverReferenceBL"])
 		if msgs:
@@ -1595,8 +1607,8 @@ class AD_Takeover_Finalize():
 		run_and_output_to_log(["/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh", "--dc", "--pdc", "--gc", "--site=%s" % self.sitename], log.info)
 
 		# wait_for_s4_connector_replication hangs forever in the sqlite query
-		##wait_for_s4_connector_replication(self.ucr, self.lp)
-		## Let samba_dnsupdate check DNS records
+		# #wait_for_s4_connector_replication(self.ucr, self.lp)
+		# # Let samba_dnsupdate check DNS records
 		#run_and_output_to_log(["/usr/sbin/samba_dnsupdate", ], log.info)
 
 		# remove local entry for AD DC from /etc/hosts
@@ -1612,7 +1624,8 @@ class AD_Takeover_Finalize():
 	def remove_AD_server_account_from_samdb(self):
 		# Cleanup necessary to use NETBIOS Alias
 		backlink_attribute_list = ["serverReferenceBL", "frsComputerReferenceBL", "msDFSR-ComputerReferenceBL"]
-		msgs = self.samdb.search(base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
+		msgs = self.samdb.search(
+			base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE,
 			expression=filter_format("(sAMAccountName=%s$)", [self.ad_server_name]),
 			attrs=backlink_attribute_list)
 		if msgs:
@@ -1629,8 +1642,7 @@ class AD_Takeover_Finalize():
 
 			# Now delete the AD DC account and sub-objects
 			# Cannot use tree_delete on isCriticalSystemObject, perform recursive delete like ldbdel code does it:
-			msgs = self.samdb.search(base=obj.dn, scope=samba.ldb.SCOPE_SUBTREE,
-				attrs=["dn"])
+			msgs = self.samdb.search(base=obj.dn, scope=samba.ldb.SCOPE_SUBTREE, attrs=["dn"])
 			obj_dn_list = [o.dn for o in msgs]
 			obj_dn_list.sort(key=len)
 			obj_dn_list.reverse()
@@ -1727,7 +1739,8 @@ class AD_Takeover_Finalize():
 				guess_netmask = self.ucr["interfaces/%s/netmask" % self.primary_interface]
 				guess_broadcast = self.ucr["interfaces/%s/broadcast" % self.primary_interface]
 				run_and_output_to_log(["/usr/share/univention-updater/disable-apache2-umc"], log.debug)
-				run_and_output_to_log(["univention-config-registry", "set",
+				run_and_output_to_log([
+					"univention-config-registry", "set",
 					"interfaces/%s/address=%s" % (new_interface_ucr, self.ad_server_ip),
 					"interfaces/%s/network=%s" % (new_interface_ucr, guess_network),
 					"interfaces/%s/netmask=%s" % (new_interface_ucr, guess_netmask),
@@ -1750,9 +1763,9 @@ class AD_Takeover_Finalize():
 					break
 
 			if new_interface:
-				guess_prefix = self.ucr["interfaces/%s/ipv6/default/prefix" % self.primary_interface]
 				run_and_output_to_log(["/usr/share/univention-updater/disable-apache2-umc"], log.debug)
-				run_and_output_to_log(["univention-config-registry", "set",
+				run_and_output_to_log([
+					"univention-config-registry", "set",
 					"interfaces/%s/ipv6/default/address=%s" % (new_interface_ucr, self.ad_server_ip),
 					"interfaces/%s/ipv6/default/prefix=%s" % (new_interface_ucr, guess_broadcast),
 					"interfaces/%s/ipv6/acceptRA=false"], log.debug)
@@ -1878,9 +1891,10 @@ def check_gpo_presence():
 	samdb = SamDB(os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), session_info=system_session(lp), lp=lp)
 
 	# check versions
-	msgs = samdb.search(base=samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
-						expression="(objectClass=groupPolicyContainer)",
-						attrs=["cn", "gPCFileSysPath", "versionNumber"])
+	msgs = samdb.search(
+		base=samdb.domain_dn(), scope=samba.ldb.SCOPE_SUBTREE,
+		expression="(objectClass=groupPolicyContainer)",
+		attrs=["cn", "gPCFileSysPath", "versionNumber"])
 
 	sysvol_dir = "/var/lib/samba/sysvol"
 	default_policies_dir = os.path.join(sysvol_dir, samdb.domain_dns_name(), "Policies")
@@ -2022,16 +2036,14 @@ def lookup_adds_dc(hostname_or_ip=None, realm=None, ucr=None):
 
 		try:
 			net = Net(creds=None, lp=lp)
-			cldap_res = net.finddc(address=hostname_or_ip,
-				flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
+			cldap_res = net.finddc(address=hostname_or_ip, flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
 		except RuntimeError as ex:
 			raise ComputerUnreachable(_("Connection to Active Directory server %s failed.") % (hostname_or_ip,), ex.args[0])
 
 	elif realm:
 		try:
 			net = Net(creds=None, lp=lp)
-			cldap_res = net.finddc(domain=realm,
-				flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
+			cldap_res = net.finddc(domain=realm, flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
 			hostname_or_ip = cldap_res.pdc_dns_name
 		except RuntimeError as ex:
 			raise TakeoverError(_("The automatic search for an Active Directory server for realm %s did not yield any results.") % (realm,))
@@ -2039,8 +2051,7 @@ def lookup_adds_dc(hostname_or_ip=None, realm=None, ucr=None):
 	if not ip_address:
 		if cldap_res.pdc_dns_name:
 			try:
-				p1 = subprocess.Popen(['net', 'lookup', cldap_res.pdc_dns_name],
-					close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+				p1 = subprocess.Popen(['net', 'lookup', cldap_res.pdc_dns_name], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 				stdout, stderr = p1.communicate()
 				ip_address = stdout.strip()
 			except OSError as ex:
@@ -2135,7 +2146,6 @@ def wait_for_s4_connector_replication(ucr, lp, progress=None, max_time=None):
 	c = conn.cursor()
 
 	static_count = 0
-	cache_S4_rejects = None
 	t_last_feedback = t_1 = t_0 = time.time()
 
 	ucr.load()  # load current values
@@ -2255,11 +2265,10 @@ class UserRenameHandler:
 			base=self.lo.base)
 
 		if len(userdns) > 1:
-			log.warn("Warning: Found more than one Samba user with name '%s' in UCS LDAP." %
-				(ucsldap_object_name,))
+			log.warn("Warning: Found more than one Samba user with name '%s' in UCS LDAP." % (ucsldap_object_name,))
 
 		for userdn in userdns:
-			new_userdn = self.udm_rename_ucs_user(userdn, ad_object_name)
+			self.udm_rename_ucs_user(userdn, ad_object_name)
 
 
 class GroupRenameHandler:
@@ -2318,8 +2327,7 @@ class GroupRenameHandler:
 			for propertyname in GroupRenameHandler._SETTINGS_DEFAULT_UDM_PROPERTIES
 		])
 
-		referring_objects = udm_modules.lookup('settings/default',
-			None, self.lo, scope='sub', base=self.lo.base, filter=lookup_filter)
+		referring_objects = udm_modules.lookup('settings/default', None, self.lo, scope='sub', base=self.lo.base, filter=lookup_filter)
 		for referring_object in referring_objects:
 			changed = False
 			for propertyname in GroupRenameHandler._SETTINGS_DEFAULT_UDM_PROPERTIES:
@@ -2336,8 +2344,7 @@ class GroupRenameHandler:
 			base=self.lo.base)
 
 		if len(groupdns) > 1:
-			log.warn("Warning: Found more than one Samba group with name '%s' in UCS LDAP." %
-				(ucsldap_object_name,))
+			log.warn("Warning: Found more than one Samba group with name '%s' in UCS LDAP." % (ucsldap_object_name,))
 
 		for groupdn in groupdns:
 			new_groupdn = self.udm_rename_ucs_group(groupdn, ad_object_name)
@@ -2403,7 +2410,8 @@ def takeover_DC_Behavior_Version(ucr, remote_samdb, samdb, ad_server_name, siten
 def takeover_hasInstantiatedNCs(ucr, samdb, ad_server_name, sitename):
 	partitions = []
 	try:
-		msg = samdb.search(base="CN=NTDS Settings,CN=%s,CN=Servers,CN=%s,CN=Sites,CN=Configuration,%s" % (escape_dn_chars(ad_server_name), escape_dn_chars(sitename), samdb.domain_dn()),
+		msg = samdb.search(
+			base="CN=NTDS Settings,CN=%s,CN=Servers,CN=%s,CN=Sites,CN=Configuration,%s" % (escape_dn_chars(ad_server_name), escape_dn_chars(sitename), samdb.domain_dn()),
 			scope=samba.ldb.SCOPE_BASE,
 			attrs=["msDS-hasMasterNCs", "msDS-HasInstantiatedNCs"])
 	except ldb.LdbError as ex:

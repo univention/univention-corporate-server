@@ -7,13 +7,14 @@ Build-Depends: debhelper (>> 7),
  ucslint-univention,
  python2.6-dev,
  python2.7-dev,
- python-support,
- univention-management-console-dev,
+ dh-python,
+ univention-management-console-dev (>= 11.0.4-37),
  univention-config-dev
 
 Package: univention-management-console-module-adtakeover
 Architecture: all
-Depends: univention-management-console-server,
+Depends: ${python:Depends}, ${python3:Depends},
+ univention-management-console-server (>= 11.0.4-37),
  univention-s4-connector,
  python-univention-lib (>= 3.0.26-37),
  fping
