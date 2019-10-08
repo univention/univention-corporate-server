@@ -1,3 +1,9 @@
+univention-management-console-module-services (8.0.1-5) unstable; urgency=medium
+
+  * Bug #49157: migrate to dh_python
+
+ -- Florian Best <best@univention.de>  Tue, 08 Oct 2019 18:23:50 +0200
+
 univention-management-console-module-services (8.0.1-4) unstable; urgency=medium
 
   * Bug #42241: move start/stop/restart logic into service_info.py
