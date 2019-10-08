@@ -1,4 +1,4 @@
-univention-management-console-module-top (8.0.1-2) unstable; urgency=medium
+univention-management-console-module-top (8.0.1-3) unstable; urgency=medium
 
   * Bug #49158: migrate to dh_python
 
