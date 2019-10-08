@@ -32,17 +32,15 @@
 # <https://www.gnu.org/licenses/>.
 
 import os
+
 import univention.info_tools as uit
 from univention.management.console import Translation
 from univention.management.console.base import Base
 from univention.management.console.modules.decorators import sanitize, allow_get_request
 from univention.management.console.modules.sanitizers import ChoicesSanitizer
 from univention.management.console.modules import UMC_Error
-from univention.management.console.log import MODULE
 
 _ = Translation('univention-management-console-modules-mrtg').translate
-
-# Teststring zum Wiederfinden
 
 
 class Instance(Base):
@@ -55,7 +53,7 @@ class Instance(Base):
 		try:
 			with open(filename) as fd:
 				self.finished(request.id, fd.read(), mimetype='image/png')
-		except EnvironmentError as exc:
+		except EnvironmentError:
 			raise UMC_Error(_('The file does not exist.'), status=404)
 
 	def init(self):

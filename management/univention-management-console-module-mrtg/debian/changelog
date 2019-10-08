@@ -1,3 +1,9 @@
+univention-management-console-module-mrtg (7.0.2-1) unstable; urgency=medium
+
+  * Bug #49154: migrate to dh_python
+
+ -- Florian Best <best@univention.de>  Tue, 08 Oct 2019 18:09:11 +0200
+
 univention-management-console-module-mrtg (7.0.1-1) unstable; urgency=medium
 
   * Bug #46969: bindpwdfile support
