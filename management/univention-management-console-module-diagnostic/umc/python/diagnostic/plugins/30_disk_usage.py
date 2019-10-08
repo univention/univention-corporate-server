@@ -134,8 +134,7 @@ def run(_umc_instance):
 			error_descriptions.append('\n'.join(solutions()))
 
 		if problem_on_varlog and high_log_levels():
-			lvl_errors = (_('You have configured some high log levels.'),
-				_('You may want to reset them via {ucr}.'))
+			lvl_errors = (_('You have configured some high log levels.'), _('You may want to reset them via {ucr}.'))
 			umc_modules.append({'module': 'ucr'})
 			error_descriptions.append(' '.join(lvl_errors))
 

@@ -184,8 +184,7 @@ class CertificateVerifier(object):
 		# XXX It would be nice to do this in python. `python-openssl` has the
 		# capability to check against CRL since version 16.1.0, but
 		# unfortunately only version 0.14 is available in debian.
-		cmd = ('openssl', 'verify', '-CAfile', self.root_cert_path,
-			'-CRLfile', self.crl_path, '-crl_check', path)
+		cmd = ('openssl', 'verify', '-CAfile', self.root_cert_path, '-CRLfile', self.crl_path, '-crl_check', path)
 		verify = subprocess.Popen(cmd, stdout=subprocess.PIPE)
 		(stdout, stderr) = verify.communicate()
 		if verify.poll() != 0:
@@ -245,8 +244,7 @@ def download_tempfile(url):
 @contextlib.contextmanager
 def convert_crl_to_pem(path):
 	with tempfile.NamedTemporaryFile() as fob:
-		convert = ('openssl', 'crl', '-inform', 'DER', '-in', path, '-outform',
-			'PEM', '-out', fob.name)
+		convert = ('openssl', 'crl', '-inform', 'DER', '-in', path, '-outform', 'PEM', '-out', fob.name)
 		subprocess.check_call(convert)
 		yield fob.name
 
@@ -285,11 +283,9 @@ def run(_umc_instance):
 	if is_local_check:
 		cert_verify = list(verify_local(all_certificates))
 	else:
-		cert_verify = list(verify_from_master(configRegistry.get('ldap/master'),
-			all_certificates))
+		cert_verify = list(verify_from_master(configRegistry.get('ldap/master'), all_certificates))
 
-	error_descriptions = [str(error) for error in cert_verify if
-		isinstance(error, CertificateWarning)]
+	error_descriptions = [str(error) for error in cert_verify if isinstance(error, CertificateWarning)]
 
 	if error_descriptions:
 		error_descriptions.append(_('Please see {sdb} on how to renew certificates.'))

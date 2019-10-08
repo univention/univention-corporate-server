@@ -310,19 +310,19 @@ def run(_umc_instance, retest=False):
 		kdc_to_check = [(kdc, 88, 'tcp') for kdc in kdc_fqds]
 		kdc_to_check.extend((kdc, 88, 'udp') for kdc in kdc_fqds)
 
-	kdc_reachabe = [(probe_kdc(kdc, port, protocol, target_realm, user_name),
-		(kdc, port, protocol)) for (kdc, port, protocol) in kdc_to_check]
-	reachable_kdc = [(kdc, port, protocol) for (reachable, (kdc, port, protocol))
+	kdc_reachabe = [(probe_kdc(kdc, port, protocol, target_realm, user_name), (kdc, port, protocol)) for (kdc, port, protocol) in kdc_to_check]
+	reachable_kdc = [
+		(kdc, port, protocol) for (reachable, (kdc, port, protocol))
 		in kdc_reachabe if reachable]
-	unreachable_kdc = [(kdc, port, protocol) for (reachable, (kdc, port, protocol))
+	unreachable_kdc = [
+		(kdc, port, protocol) for (reachable, (kdc, port, protocol))
 		in kdc_reachabe if not reachable]
 
 	error_descriptions = list()
 
 	if unreachable_kdc:
 		error = _('The following KDCs were unreachable: {}')
-		unreach_string = ('{} {}:{}'.format(protocol, kdc, port)
-			for (kdc, port, protocol) in unreachable_kdc)
+		unreach_string = ('{} {}:{}'.format(protocol, kdc, port) for (kdc, port, protocol) in unreachable_kdc)
 		error_descriptions.append(error.format(', '.join(unreach_string)))
 
 	if not reachable_kdc:

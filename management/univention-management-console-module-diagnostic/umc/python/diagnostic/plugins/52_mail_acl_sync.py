@@ -181,19 +181,16 @@ class DovecotACL(ACL):
 			udm_id = identifier.replace('user=', '', 1) if identifier.startswith('user=') \
 				else identifier.replace('group=', '', 1) if identifier.startswith('group=') \
 				else identifier
-			udm_right = next(udm_right for (udm_right, dovecot_rights)
-				in cls.DOVECOT_RIGHT_TRANSLATION if rights.issuperset(dovecot_rights))
+			udm_right = next(udm_right for (udm_right, dovecot_rights) in cls.DOVECOT_RIGHT_TRANSLATION if rights.issuperset(dovecot_rights))
 			merged.setdefault(acl_type, dict())[udm_id] = udm_right
 		return cls(merged.get('user', {}), merged.get('group', {}))
 
 	@staticmethod
 	def _get_dovecot_acl(folder):
 		mailbox = 'shared/{pm}' if folder.mail_address else '{cn}/INBOX'
-		cmd = ('doveadm', 'acl', 'get', '-u', 'Administrator',
-			mailbox.format(cn=folder.common_name, pm=folder.mail_address))
+		cmd = ('doveadm', 'acl', 'get', '-u', 'Administrator', mailbox.format(cn=folder.common_name, pm=folder.mail_address))
 		output = subprocess.check_output(cmd, stderr=subprocess.PIPE).splitlines()
-		return {identifier.strip(): set(rights.strip().split()) for (identifier, rights)
-			in (line.rsplit('  ', 1) for line in output)}
+		return {identifier.strip(): set(rights.strip().split()) for (identifier, rights) in (line.rsplit('  ', 1) for line in output)}
 
 
 def all_differences(acl_class):
@@ -233,7 +230,8 @@ def run(_umc_instance):
 		return
 
 	differences = list(all_differences(acl_class))
-	ed = [_('Found differences in the ACLs for IMAP shared folders between UDM and IMAP.') + ' ' +
+	ed = [
+		_('Found differences in the ACLs for IMAP shared folders between UDM and IMAP.') + ' ' +
 		_('This is not necessarily a problem, if the the ACL got changed via IMAP.')]
 
 	modules = list()

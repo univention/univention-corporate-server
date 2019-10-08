@@ -92,13 +92,12 @@ def kinit(principal, keytab=None, password_file=None):
 
 
 def nsupdate(server, domainname):
-	process = subprocess.Popen(('nsupdate', '-g', '-t', '15'), stdin=subprocess.PIPE,
-		stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+	process = subprocess.Popen(('nsupdate', '-g', '-t', '15'), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	cmd_template = 'server {server}\nprereq yxdomain {domain}\nsend\nquit\n'
 	cmd = cmd_template.format(server=server, domain=domainname)
 	MODULE.process("Running: 'echo %s | nsupdate -g -t 15'" % (cmd,))
 
-	_ = process.communicate(cmd)
+	process.communicate(cmd)
 	if process.poll() != 0:
 		MODULE.error('NS Update Error at %s %s' % (server, domainname))
 		raise NSUpdateError(server, domainname)
@@ -114,7 +113,7 @@ def get_dns_server(config_registry, active_services):
 		if set(active_services) >= {'Samba 4', 'DNS'}:
 			server = ".".join([hostname, domainname])
 		else:
-			## TODO: Memberserver in Samba 4 domain
+			# TODO: Memberserver in Samba 4 domain
 			server = None
 	return server
 

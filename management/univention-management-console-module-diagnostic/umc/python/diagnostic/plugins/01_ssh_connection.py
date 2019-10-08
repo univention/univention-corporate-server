@@ -42,7 +42,8 @@ def run(_umc_instance):
 
 	modules.update()
 	ucs_hosts = []
-	roles = ['computers/domaincontroller_backup',
+	roles = [
+		'computers/domaincontroller_backup',
 		'computers/domaincontroller_master',
 		'computers/domaincontroller_slave',
 		'computers/memberserver']

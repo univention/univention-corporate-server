@@ -63,8 +63,7 @@ def fix_machine_password(umc_instance):
 	configRegistry.load()
 
 	role = configRegistry.get('server/role')
-	valid_roles = ('domaincontroller_master', 'domaincontroller_backup',
-		'domaincontroller_slave', 'memberserver')
+	valid_roles = ('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 	if role in valid_roles:
 		restore_machine_password(role, umc_instance.get_user_ldap_connection())
 

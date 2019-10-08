@@ -89,8 +89,7 @@ class DRSUAPI(object):
 		return (info_type, info)
 
 	def neighbours(self):
-		for replica_info_direction in (drsuapi.DRSUAPI_DS_REPLICA_INFO_NEIGHBORS,
-						drsuapi.DRSUAPI_DS_REPLICA_INFO_REPSTO):
+		for replica_info_direction in (drsuapi.DRSUAPI_DS_REPLICA_INFO_NEIGHBORS, drsuapi.DRSUAPI_DS_REPLICA_INFO_REPSTO):
 			(info_type, info) = self._replica_info(replica_info_direction)
 			for neighbour in info.array:
 				yield (replica_info_direction, neighbour)
@@ -119,8 +118,7 @@ class ReplicationProblem(Exception):
 		exploded = ldap.dn.str2dn(dn)
 		if len(exploded) >= 5:
 			(first, second, third, fourth, fifth) = exploded[:5]
-			valid_ntds_dn = all((first[0][1] == 'NTDS Settings',
-				third[0][1] == 'Servers', fifth[0][1] == 'Sites'))
+			valid_ntds_dn = all((first[0][1] == 'NTDS Settings', third[0][1] == 'Servers', fifth[0][1] == 'Sites'))
 			if valid_ntds_dn:
 				return '{}/{}'.format(fourth[0][1], second[0][1])
 		return dn
@@ -130,16 +128,14 @@ class InboundReplicationProblem(ReplicationProblem):
 	def __str__(self):
 		msg = _('Inbound {nc!r}: error during DRS replication from {source} ({estring})')
 		source = self._parse_ntds_dn(self.neighbour.source_dsa_obj_dn)
-		return msg.format(nc=self.neighbour.naming_context_dn.encode(),
-			source=source, estring=self.estring)
+		return msg.format(nc=self.neighbour.naming_context_dn.encode(), source=source, estring=self.estring)
 
 
 class OutboundReplicationProblem(ReplicationProblem):
 	def __str__(self):
 		msg = _('Outbound {nc!r}: error during DRS replication to {source} ({estring})')
 		source = self._parse_ntds_dn(self.neighbour.source_dsa_obj_dn)
-		return msg.format(nc=self.neighbour.naming_context_dn.encode(),
-			source=source, estring=self.estring)
+		return msg.format(nc=self.neighbour.naming_context_dn.encode(), source=source, estring=self.estring)
 
 
 def run(_umc_instance):

@@ -68,9 +68,7 @@ class OwnerMismatch(CheckError):
 
 	def __str__(self):
 		msg = _('File {path!r} has owner {actual!r} while {expected!r} was expected.')
-		return msg.format(path=self.filename,
-			expected=':'.join(self.expected_owner),
-			actual=':'.join(self.actual_owner))
+		return msg.format(path=self.filename, expected=':'.join(self.expected_owner), actual=':'.join(self.actual_owner))
 
 
 class PermissionMismatch(CheckError):
@@ -81,8 +79,7 @@ class PermissionMismatch(CheckError):
 
 	def __str__(self):
 		msg = _('File {path!r} has mode {actual:o}, {expected:o} was expected.')
-		return msg.format(path=self.filename, actual=self.actual_mode,
-			expected=self.expected_mode)
+		return msg.format(path=self.filename, actual=self.actual_mode, expected=self.expected_mode)
 
 
 def get_actual_owner(uid, gid):
@@ -187,8 +184,7 @@ def file_and_permission_checks():
 
 
 def run(_umc_instance):
-	error_descriptions = [str(error) for error in file_and_permission_checks()
-		if isinstance(error, CheckError)]
+	error_descriptions = [str(error) for error in file_and_permission_checks() if isinstance(error, CheckError)]
 	if error_descriptions:
 		raise Warning(description='\n'.join(error_descriptions))
 

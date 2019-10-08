@@ -3,16 +3,18 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7.0.50~),
- python-support,
- univention-management-console-dev,
+ dh-python,
+ univention-management-console-dev (>= 11.0.4-37),
  python-all,
+ python3-all,
  ucslint,
 Standards-Version: 3.7.2
 
 Package: univention-management-console-module-diagnostic
 Architecture: all
-Depends: ${misc:Depends},
- univention-management-console-server,
+Depends: ${python:Depends}, ${python3:Depends},
+ ${misc:Depends},
+ univention-management-console-server (>= 11.0.4-37),
  python-pycurl,
  python-psutil,
  python-dnspython,

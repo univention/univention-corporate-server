@@ -149,12 +149,12 @@ class NameServer(object):
 
 	def build_filter(self):
 		template = '(&(relativeDomainName=%s)(zoneName=%s))'
-		expressions = (ldap.filter.filter_format(template, (rdn, zn))
-			for (rdn, zn) in self._generate_splits(self.fqdn()))
+		expressions = (ldap.filter.filter_format(template, (rdn, zn)) for (rdn, zn) in self._generate_splits(self.fqdn()))
 		return '(|{})'.format(''.join(expressions))
 
 
 class UDM(object):
+
 	def __init__(self):
 		univention.admin.modules.update()
 		(self.ldap_connection, self.position) = univention.admin.uldap.getMachineConnection()
@@ -168,16 +168,13 @@ class UDM(object):
 			yield instance
 
 	def find(self, nameserver):
-
 		filter_expression = nameserver.build_filter()
 		MODULE.process("Trying to find nameserver %s in UDM/LDAP" % (nameserver.fqdn()))
 		MODULE.process("Similar to running: univention-ldapsearch '%s'" % (filter_expression))
 		for (dn, attr) in self.ldap_connection.search(filter_expression):
 			if dn:
 				for module in udm_modules.identify(dn, attr):
-					record = udm_objects.get(module, None,
-						self.ldap_connection, self.position, dn, attr=attr,
-						attributes=attr)
+					record = udm_objects.get(module, None, self.ldap_connection, self.position, dn, attr=attr, attributes=attr)
 					record.open()
 					return record
 		raise RecordNotFound()
@@ -218,7 +215,8 @@ def find_all_zone_problems():
 
 
 def run(_umc_instance):
-	ed = [_('Found errors in the nameserver entries of the following zones.') + ' ' +
+	ed = [
+		_('Found errors in the nameserver entries of the following zones.') + ' ' +
 		_('Please refer to {sdb} for further information.')]
 	modules = list()
 	tmpl_forward = _('In forward zone {name} (see {{{link}}}):')
