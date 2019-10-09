@@ -1349,6 +1349,322 @@ s4_mapping = {
 			),
 		},
 	),
+	'ms/gpsi-category-registration': univention.s4connector.property(
+		ucs_module='ms/gpsi-category-registration',
+		sync_mode=str(configRegistry.get('connector/s4/mapping/gpsi/syncmode', configRegistry.get('connector/s4/mapping/syncmode'))),
+		scope='sub',
+		con_search_filter='(objectClass=categoryRegistration)',
+		ignore_filter=ignore_filter_from_attr('cn', 'connector/s4/mapping/gpsi/ignorelist'),
+		ignore_subtree=global_ignore_subtree,
+		con_create_objectclass=['top', 'leaf', 'categoryRegistration'],
+		attributes={
+			'cn': univention.s4connector.attribute(
+				ucs_attribute='name',
+				ldap_attribute='cn',
+				con_attribute='cn',
+				required=True,
+				compare_function=univention.s4connector.compare_lowercase,
+				single_value=True,
+			),
+			'description': univention.s4connector.attribute(
+				ucs_attribute='description',
+				ldap_attribute='description',
+				con_attribute='description',
+				single_value=True,
+			),
+			'managedBy': univention.s4connector.attribute(
+				ucs_attribute='managedBy',
+				ldap_attribute='managedBy',
+				con_attribute='managedBy',
+				single_value=True,
+			),
+			'localizedDescription': univention.s4connector.attribute(
+				ucs_attribute='localizedDescription',
+				ldap_attribute='localizedDescription',
+				con_attribute='localizedDescription',
+				single_value=False,
+			),
+			'localeID': univention.s4connector.attribute(
+				ucs_attribute='localeID',
+				ldap_attribute='localeID',
+				con_attribute='localeID',
+				single_value=False,
+			),
+			'categoryId': univention.s4connector.attribute(
+				ucs_attribute='categoryId',
+				ldap_attribute='categoryId',
+				con_attribute='categoryId',
+				single_value=True,
+			),
+		},
+	),
+	'ms/gpsi-class-store': univention.s4connector.property(
+		ucs_module='ms/gpsi-class-store',
+		sync_mode=str(configRegistry.get('connector/s4/mapping/gpsi/syncmode', configRegistry.get('connector/s4/mapping/syncmode'))),
+		scope='sub',
+		con_search_filter='(objectClass=classStore)',
+		ignore_filter=ignore_filter_from_attr('cn', 'connector/s4/mapping/gpsi/ignorelist'),
+		ignore_subtree=global_ignore_subtree,
+		con_create_objectclass=['top', 'classStore'],
+		attributes={
+			'cn': univention.s4connector.attribute(
+				ucs_attribute='name',
+				ldap_attribute='cn',
+				con_attribute='cn',
+				required=True,
+				compare_function=univention.s4connector.compare_lowercase,
+				single_value=True,
+			),
+			'displayName': univention.s4connector.attribute(
+				ucs_attribute='displayName',
+				ldap_attribute='displayName',
+				con_attribute='displayName',
+				single_value=True,
+			),
+			'description': univention.s4connector.attribute(
+				ucs_attribute='description',
+				ldap_attribute='description',
+				con_attribute='description',
+				single_value=True,
+			),
+			'versionNumber': univention.s4connector.attribute(
+				ucs_attribute='versionNumber',
+				ldap_attribute='versionNumber',
+				con_attribute='versionNumber',
+				single_value=True,
+			),
+			'nextLevelStore': univention.s4connector.attribute(
+				ucs_attribute='nextLevelStore',
+				ldap_attribute='nextLevelStore',
+				con_attribute='nextLevelStore',
+				single_value=True,
+			),
+			'lastUpdateSequence': univention.s4connector.attribute(
+				ucs_attribute='lastUpdateSequence',
+				ldap_attribute='lastUpdateSequence',
+				con_attribute='lastUpdateSequence',
+				single_value=True,
+			),
+			'extensionName': univention.s4connector.attribute(
+				ucs_attribute='extensionName',
+				ldap_attribute='extensionName',
+				con_attribute='extensionName',
+				single_value=True,
+			),
+			'appSchemaVersion': univention.s4connector.attribute(
+				ucs_attribute='appSchemaVersion',
+				ldap_attribute='appSchemaVersion',
+				con_attribute='appSchemaVersion',
+				single_value=True,
+			),
+
+		},
+	),
+	'ms/gpsi-package-registration': univention.s4connector.property(
+		ucs_module='ms/gpsi-package-registration',
+		sync_mode=str(configRegistry.get('connector/s4/mapping/gpsi/syncmode', configRegistry.get('connector/s4/mapping/syncmode'))),
+		scope='sub',
+		con_search_filter='(objectClass=packageRegistration)',
+		ignore_filter=ignore_filter_from_attr('cn', 'connector/s4/mapping/gpsi/ignorelist'),
+		ignore_subtree=global_ignore_subtree,
+		con_create_objectclass=['top', 'packageRegistration'],
+		attributes={
+			'cn': univention.s4connector.attribute(
+				ucs_attribute='name',
+				ldap_attribute='cn',
+				con_attribute='cn',
+				required=True,
+				compare_function=univention.s4connector.compare_lowercase,
+				single_value=True,
+			),
+			'displayName': univention.s4connector.attribute(
+				ucs_attribute='displayName',
+				ldap_attribute='displayName',
+				con_attribute='displayName',
+				single_value=True,
+			),
+			'description': univention.s4connector.attribute(
+				ucs_attribute='description',
+				ldap_attribute='description',
+				con_attribute='description',
+				single_value=True,
+			),
+			'versionNumberLo': univention.s4connector.attribute(
+				ucs_attribute='versionNumberLo',
+				ldap_attribute='versionNumberLo',
+				con_attribute='versionNumberLo',
+				single_value=True,
+			),
+			'versionNumberHi': univention.s4connector.attribute(
+				ucs_attribute='versionNumberHi',
+				ldap_attribute='versionNumberHi',
+				con_attribute='versionNumberHi',
+				single_value=True,
+			),
+			'vendor': univention.s4connector.attribute(
+				ucs_attribute='vendor',
+				ldap_attribute='vendor',
+				con_attribute='vendor',
+				single_value=True,
+			),
+			'url': univention.s4connector.attribute(
+				ucs_attribute='url',
+				ldap_attribute='url',
+				con_attribute='url',
+				single_value=False,
+			),
+			'revision': univention.s4connector.attribute(
+				ucs_attribute='revision',
+				ldap_attribute='revision',
+				con_attribute='revision',
+				single_value=True,
+			),
+			'upgradeProductCode': univention.s4connector.attribute(
+				ucs_attribute='upgradeProductCode',
+				ldap_attribute='upgradeProductCode',
+				con_attribute='upgradeProductCode',
+				single_value=False,
+			),
+			'setupCommand': univention.s4connector.attribute(
+				ucs_attribute='setupCommand',
+				ldap_attribute='setupCommand',
+				con_attribute='setupCommand',
+				single_value=True,
+			),
+			'productCode': univention.s4connector.attribute(
+				ucs_attribute='productCode',
+				ldap_attribute='productCode',
+				con_attribute='productCode',
+				single_value=True,
+			),
+			'packageType': univention.s4connector.attribute(
+				ucs_attribute='packageType',
+				ldap_attribute='packageType',
+				con_attribute='packageType',
+				single_value=True,
+			),
+			'packageName': univention.s4connector.attribute(
+				ucs_attribute='packageName',
+				ldap_attribute='packageName',
+				con_attribute='packageName',
+				single_value=True,
+			),
+			'packageFlags': univention.s4connector.attribute(
+				ucs_attribute='packageFlags',
+				ldap_attribute='packageFlags',
+				con_attribute='packageFlags',
+				single_value=True,
+			),
+			'msiScriptSize': univention.s4connector.attribute(
+				ucs_attribute='msiScriptSize',
+				ldap_attribute='msiScriptSize',
+				con_attribute='msiScriptSize',
+				single_value=True,
+			),
+			'msiScriptPath': univention.s4connector.attribute(
+				ucs_attribute='msiScriptPath',
+				ldap_attribute='msiScriptPath',
+				con_attribute='msiScriptPath',
+				single_value=True,
+			),
+			'msiScriptName': univention.s4connector.attribute(
+				ucs_attribute='msiScriptName',
+				ldap_attribute='msiScriptName',
+				con_attribute='msiScriptName',
+				single_value=True,
+			),
+			'msiScript': univention.s4connector.attribute(
+				ucs_attribute='msiScript',
+				ldap_attribute='msiScript',
+				con_attribute='msiScript',
+				single_value=True,
+			),
+			'msiFileList': univention.s4connector.attribute(
+				ucs_attribute='msiFileList',
+				ldap_attribute='msiFileList',
+				con_attribute='msiFileList',
+				single_value=False,
+			),
+			'managedBy': univention.s4connector.attribute(
+				ucs_attribute='managedBy',
+				ldap_attribute='managedBy',
+				con_attribute='managedBy',
+				single_value=True,
+			),
+			'machineArchitecture': univention.s4connector.attribute(
+				ucs_attribute='machineArchitecture',
+				ldap_attribute='machineArchitecture',
+				con_attribute='machineArchitecture',
+				single_value=False,
+			),
+			'localeID': univention.s4connector.attribute(
+				ucs_attribute='localeID',
+				ldap_attribute='localeID',
+				con_attribute='localeID',
+				single_value=False,
+			),
+			'lastUpdateSequence': univention.s4connector.attribute(
+				ucs_attribute='lastUpdateSequence',
+				ldap_attribute='lastUpdateSequence',
+				con_attribute='lastUpdateSequence',
+				single_value=True,
+			),
+			'installUiLevel': univention.s4connector.attribute(
+				ucs_attribute='installUiLevel',
+				ldap_attribute='installUiLevel',
+				con_attribute='installUiLevel',
+				single_value=True,
+			),
+			'iconPath': univention.s4connector.attribute(
+				ucs_attribute='iconPath',
+				ldap_attribute='iconPath',
+				con_attribute='iconPath',
+				single_value=False,
+			),
+			'fileExtPriority': univention.s4connector.attribute(
+				ucs_attribute='fileExtPriority',
+				ldap_attribute='fileExtPriority',
+				con_attribute='fileExtPriority',
+				single_value=False,
+			),
+			'cOMTypelibId': univention.s4connector.attribute(
+				ucs_attribute='cOMTypelibId',
+				ldap_attribute='cOMTypelibId',
+				con_attribute='cOMTypelibId',
+				single_value=False,
+			),
+			'cOMProgID': univention.s4connector.attribute(
+				ucs_attribute='cOMProgID',
+				ldap_attribute='cOMProgID',
+				con_attribute='cOMProgID',
+				single_value=False,
+			),
+			'cOMInterfaceID': univention.s4connector.attribute(
+				ucs_attribute='cOMInterfaceID',
+				ldap_attribute='cOMInterfaceID',
+				con_attribute='cOMInterfaceID',
+				single_value=False,
+			),
+			'cOMClassID': univention.s4connector.attribute(
+				ucs_attribute='cOMClassID',
+				ldap_attribute='cOMClassID',
+				con_attribute='cOMClassID',
+				single_value=False,
+			),
+			'categories': univention.s4connector.attribute(
+				ucs_attribute='categories',
+				ldap_attribute='categories',
+				con_attribute='categories',
+				single_value=False,
+			),
+			'canUpgradeScript': univention.s4connector.attribute(
+				ucs_attribute='canUpgradeScript',
+				ldap_attribute='canUpgradeScript',
+				con_attribute='canUpgradeScript',
+				single_value=False,
+			),
+		},
+	),
 	'ou': univention.s4connector.property(
 		ucs_module='container/ou',
 		sync_mode=configRegistry.get('connector/s4/mapping/ou/syncmode', configRegistry.get('connector/s4/mapping/syncmode')),
@@ -1418,6 +1734,10 @@ if not configRegistry.is_true('connector/s4/mapping/msgpipsec', False):
 	s4_mapping.pop('ms/gpipsec-negotiation-policy')
 	s4_mapping.pop('ms/gpipsec-nfa')
 	s4_mapping.pop('ms/gpipsec-policy')
+if not configRegistry.is_true('connector/s4/mapping/msgpsi', False):
+	s4_mapping.pop('ms/gpsi-category-registration')
+	s4_mapping.pop('ms/gpsi-class-store')
+	s4_mapping.pop('ms/gpsi-package-registration')
 
 #print 'global_ignore_subtree = %r' % (global_ignore_subtree,)
 #print 's4_mapping = %s' % (pprint.pformat(s4_mapping, indent=4, width=250),)

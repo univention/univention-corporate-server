@@ -1,0 +1,150 @@
+objectclass ( 1.2.840.113556.1.5.20 NAME 'leaf' SUP top ABSTRACT )
+
+attributetype ( 1.2.840.113556.1.2.227 NAME 'extensionName'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributetype ( 1.2.840.113556.1.4.141 NAME 'versionNumber'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+attributetype ( 1.2.840.113556.1.4.214 NAME 'nextLevelStore'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 SINGLE-VALUE )
+attributetype ( 1.2.840.113556.1.4.330 NAME 'lastUpdateSequence'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributetype ( 1.2.840.113556.1.4.848 NAME 'appSchemaVersion'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+objectclass ( 1.2.840.113556.1.5.44 NAME 'classStore'
+	DESC ''
+	SUP top STRUCTURAL
+	MUST ( cn )
+	MAY (
+		description $
+		displayName $
+		versionNumber $
+		nextLevelStore $
+		lastUpdateSequence $
+		extensionName $
+		appSchemaVersion
+		)
+	)
+
+attributetype ( 1.2.840.113556.1.4.653 NAME 'managedBy'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 SINGLE-VALUE )
+attributetype ( 1.2.840.113556.1.4.817 NAME 'localizedDescription'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributetype ( 1.2.840.113556.1.4.58 NAME 'localeID'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 )
+attributetype ( 1.2.840.113556.1.4.322 NAME 'categoryId'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 SINGLE-VALUE )
+objectclass ( 1.2.840.113556.1.5.74 NAME 'categoryRegistration'
+	DESC ''
+	SUP leaf STRUCTURAL
+	MUST ( cn )
+	MAY (
+		description $
+		managedBy $
+		localizedDescription $
+		localeID $
+		categoryId
+		)
+	)
+
+attributetype ( 1.2.840.113556.1.4.329 NAME 'versionNumberLo'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+attributetype ( 1.2.840.113556.1.4.328 NAME 'versionNumberHi'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+attributetype ( 1.2.840.113556.1.4.255 NAME 'vendor'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributetype ( 1.2.840.113556.1.4.813 NAME 'upgradeProductCode'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 )
+attributetype ( 1.2.840.113556.1.4.325 NAME 'setupCommand'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributetype ( 1.2.840.113556.1.4.818 NAME 'productCode'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 SINGLE-VALUE )
+attributetype ( 1.2.840.113556.1.4.324 NAME 'packageType'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+attributetype ( 1.2.840.113556.1.4.326 NAME 'packageName'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributetype ( 1.2.840.113556.1.4.327 NAME 'packageFlags'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+attributetype ( 1.2.840.113556.1.4.846 NAME 'msiScriptSize'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+attributetype ( 1.2.840.113556.1.4.15 NAME 'msiScriptPath'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributetype ( 1.2.840.113556.1.4.845 NAME 'msiScriptName'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+attributetype ( 1.2.840.113556.1.4.814 NAME 'msiScript'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 SINGLE-VALUE )
+attributetype ( 1.2.840.113556.1.4.671 NAME 'msiFileList'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributetype ( 1.2.840.113556.1.4.68 NAME 'machineArchitecture'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 )
+attributetype ( 1.2.840.113556.1.4.847 NAME 'installUiLevel'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+attributetype ( 1.2.840.113556.1.4.219 NAME 'iconPath'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributetype ( 1.2.840.113556.1.4.816 NAME 'fileExtPriority'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributetype ( 1.2.840.113556.1.4.254 NAME 'cOMTypelibId'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributetype ( 1.2.840.113556.1.4.21 NAME 'cOMProgID'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributetype ( 1.2.840.113556.1.4.20 NAME 'cOMInterfaceID'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributetype ( 1.2.840.113556.1.4.19 NAME 'cOMClassID'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributetype ( 1.2.840.113556.1.4.672 NAME 'categories'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributetype ( 1.2.840.113556.1.4.815 NAME 'canUpgradeScript'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributetype ( 1.2.840.113556.1.4.145 NAME 'revision'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+attributetype ( 1.2.840.113556.1.4.749 NAME 'url'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass ( 1.2.840.113556.1.5.49 NAME 'packageRegistration'
+	DESC ''
+	SUP top STRUCTURAL
+	MUST ( cn )
+	MAY (
+		description $
+		displayName $
+		versionNumberLo $
+		versionNumberHi $
+		vendor $
+		url $
+		revision $
+		upgradeProductCode $
+		setupCommand $
+		productCode $
+		packageType $
+		packageName $
+		packageFlags $
+		msiScriptSize $
+		msiScriptPath $
+		msiScriptName $
+		msiScript $
+		msiFileList $
+		managedBy $
+		machineArchitecture $
+		localeID $
+		lastUpdateSequence $
+		installUiLevel $
+		iconPath $
+		fileExtPriority $
+		cOMTypelibId $
+		cOMProgID $
+		cOMInterfaceID $
+		cOMClassID $
+		categories $
+		canUpgradeScript
+		)
+	)
