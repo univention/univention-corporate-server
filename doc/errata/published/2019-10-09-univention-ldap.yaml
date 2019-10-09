@@ -10,3 +10,5 @@ desc: |
    cn=dns,$LDAP_BASE, when the LDAP is initially provisioned. Existing
    systems are not modified. (Bug #46649).
 bug: [46649]
+erratum: 301
+announced: 2019-10-09
