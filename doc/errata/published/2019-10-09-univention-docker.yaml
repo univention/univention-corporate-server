@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Added daemon.json for dockerd parameters.
 bug: [50295]
+erratum: 300
+announced: 2019-10-09
