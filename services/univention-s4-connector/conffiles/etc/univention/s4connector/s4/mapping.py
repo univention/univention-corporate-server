@@ -878,6 +878,135 @@ s4_mapping = {
 			),
 		},
 	),
+	'ms/gpwl-wireless': univention.s4connector.property(
+		ucs_module='ms/gpwl-wireless',
+		sync_mode=str(configRegistry.get('connector/s4/mapping/gpwl/syncmode', configRegistry.get('connector/s4/mapping/syncmode'))),
+		scope='sub',
+		con_search_filter='(objectClass=ms-net-ieee-80211-GroupPolicy)',
+		ignore_filter=ignore_filter_from_attr('cn', 'connector/s4/mapping/gpwl/ignorelist'),
+		ignore_subtree=global_ignore_subtree,
+		con_create_objectclass=['top', 'ms-net-ieee-80211-GroupPolicy'],
+		attributes={
+			'cn': univention.s4connector.attribute(
+				ucs_attribute='name',
+				ldap_attribute='cn',
+				con_attribute='cn',
+				required=1,
+				compare_function=univention.s4connector.compare_lowercase,
+				single_value=True,
+			),
+			'description': univention.s4connector.attribute(
+				ucs_attribute='description',
+				ldap_attribute='description',
+				con_attribute='description',
+				single_value=True,
+			),
+			'ms-net-ieee-80211-GP-PolicyReserved': univention.s4connector.attribute(
+				ucs_attribute='ms-net-ieee-80211-GP-PolicyReserved',
+				ldap_attribute='ms-net-ieee-80211-GP-PolicyReserved',
+				con_attribute='ms-net-ieee-80211-GP-PolicyReserved',
+				single_value=True,
+			),
+			'ms-net-ieee-80211-GP-PolicyData': univention.s4connector.attribute(
+				ucs_attribute='ms-net-ieee-80211-GP-PolicyData',
+				ldap_attribute='ms-net-ieee-80211-GP-PolicyData',
+				con_attribute='ms-net-ieee-80211-GP-PolicyData',
+				single_value=True,
+			),
+			'ms-net-ieee-80211-GP-PolicyGUID': univention.s4connector.attribute(
+				ucs_attribute='ms-net-ieee-80211-GP-PolicyGUID',
+				ldap_attribute='ms-net-ieee-80211-GP-PolicyGUID',
+				con_attribute='ms-net-ieee-80211-GP-PolicyGUID',
+				single_value=True,
+			),
+		},
+	),
+	'ms/gpwl-wired': univention.s4connector.property(
+		ucs_module='ms/gpwl-wired',
+		sync_mode=str(configRegistry.get('connector/s4/mapping/gpwl/syncmode', configRegistry.get('connector/s4/mapping/syncmode'))),
+		scope='sub',
+		con_search_filter='(objectClass=ms-net-ieee-8023-GroupPolicy)',
+		ignore_filter=ignore_filter_from_attr('cn', 'connector/s4/mapping/gpwl/ignorelist'),
+		ignore_subtree=global_ignore_subtree,
+		con_create_objectclass=['top', 'ms-net-ieee-8023-GroupPolicy'],
+		attributes={
+			'cn': univention.s4connector.attribute(
+				ucs_attribute='name',
+				ldap_attribute='cn',
+				con_attribute='cn',
+				required=1,
+				compare_function=univention.s4connector.compare_lowercase,
+				single_value=True,
+			),
+			'description': univention.s4connector.attribute(
+				ucs_attribute='description',
+				ldap_attribute='description',
+				con_attribute='description',
+				single_value=True,
+			),
+			'ms-net-ieee-8023-GP-PolicyReserved': univention.s4connector.attribute(
+				ucs_attribute='ms-net-ieee-8023-GP-PolicyReserved',
+				ldap_attribute='ms-net-ieee-8023-GP-PolicyReserved',
+				con_attribute='ms-net-ieee-8023-GP-PolicyReserved',
+				single_value=True,
+			),
+			'ms-net-ieee-8023-GP-PolicyData': univention.s4connector.attribute(
+				ucs_attribute='ms-net-ieee-8023-GP-PolicyData',
+				ldap_attribute='ms-net-ieee-8023-GP-PolicyData',
+				con_attribute='ms-net-ieee-8023-GP-PolicyData',
+				single_value=True,
+			),
+			'ms-net-ieee-8023-GP-PolicyGUID': univention.s4connector.attribute(
+				ucs_attribute='ms-net-ieee-8023-GP-PolicyGUID',
+				ldap_attribute='ms-net-ieee-8023-GP-PolicyGUID',
+				con_attribute='ms-net-ieee-8023-GP-PolicyGUID',
+				single_value=True,
+			),
+		},
+	),
+	'ms/gpwl-wireless-blob': univention.s4connector.property(
+		ucs_module='ms/gpwl-wireless-blob',
+		sync_mode=str(configRegistry.get('connector/s4/mapping/gpwl/syncmode', configRegistry.get('connector/s4/mapping/syncmode'))),
+		scope='sub',
+		con_search_filter='(objectClass=msieee80211-Policy)',
+		ignore_filter=ignore_filter_from_attr('cn', 'connector/s4/mapping/gpwl/ignorelist'),
+		ignore_subtree=global_ignore_subtree,
+		con_create_objectclass=['top', 'msieee80211-Policy'],
+		attributes={
+			'cn': univention.s4connector.attribute(
+				ucs_attribute='name',
+				ldap_attribute='cn',
+				con_attribute='cn',
+				required=1,
+				compare_function=univention.s4connector.compare_lowercase,
+				single_value=True,
+			),
+			'description': univention.s4connector.attribute(
+				ucs_attribute='description',
+				ldap_attribute='description',
+				con_attribute='description',
+				single_value=True,
+			),
+			'msieee80211-ID': univention.s4connector.attribute(
+				ucs_attribute='msieee80211-ID',
+				ldap_attribute='msieee80211-ID',
+				con_attribute='msieee80211-ID',
+				single_value=True,
+			),
+			'msieee80211-DataType': univention.s4connector.attribute(
+				ucs_attribute='msieee80211-DataType',
+				ldap_attribute='msieee80211-DataType',
+				con_attribute='msieee80211-DataType',
+				single_value=True,
+			),
+			'msieee80211-Data': univention.s4connector.attribute(
+				ucs_attribute='msieee80211-Data',
+				ldap_attribute='msieee80211-Data',
+				con_attribute='msieee80211-Data',
+				single_value=True,
+			),
+		},
+	),
 	'container': univention.s4connector.property(
 		ucs_module='container/cn',
 		sync_mode=configRegistry.get('connector/s4/mapping/container/syncmode', configRegistry.get('connector/s4/mapping/syncmode')),
@@ -968,6 +1097,10 @@ if not configRegistry.is_true('connector/s4/mapping/wmifilter', False):
 	s4_mapping.pop('msWMIFilter')
 if not configRegistry.is_true('connector/s4/mapping/msprintconnectionpolicy', False):
 	s4_mapping.pop('msPrintConnectionPolicy')
+if not configRegistry.is_true('connector/s4/mapping/msgwl', False):
+	s4_mapping.pop('ms/gpwl-wireless')
+	s4_mapping.pop('ms/gpwl-wired')
+	s4_mapping.pop('ms/gpwl-wireless-blob')
 
 #print 'global_ignore_subtree = %r' % (global_ignore_subtree,)
 #print 's4_mapping = %s' % (pprint.pformat(s4_mapping, indent=4, width=250),)

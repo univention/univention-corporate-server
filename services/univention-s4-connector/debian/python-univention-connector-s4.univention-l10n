@@ -22,5 +22,13 @@
 		"po_subdir": "modules/univention/admin/handlers/settings/msprintconnectionpolicy",
 		"target_type": "mo",
 		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-settings-msprintconnectionpolicy.mo"
+	},
+	{
+		"input_files": [
+			"modules/univention/admin/handlers/ms/.*\\.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers/ms",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-ms.mo"
 	}
 ]

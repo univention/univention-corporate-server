@@ -1,0 +1,72 @@
+attributetype ( 1.2.840.113556.1.4.1953 NAME 'ms-net-ieee-80211-GP-PolicyReserved'
+	DESC ''
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 SINGLE-VALUE )
+
+attributetype ( 1.2.840.113556.1.4.1952 NAME 'ms-net-ieee-80211-GP-PolicyData'
+	DESC ''
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+
+attributetype ( 1.2.840.113556.1.4.1951 NAME 'ms-net-ieee-80211-GP-PolicyGUID'
+	DESC ''
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+
+objectclass ( 1.2.840.113556.1.5.251 NAME 'ms-net-ieee-80211-GroupPolicy'
+	DESC 'XML-based wireless Group Policy'
+	SUP top STRUCTURAL
+	MUST ( cn )
+	MAY (
+		description $
+		ms-net-ieee-80211-GP-PolicyReserved $
+		ms-net-ieee-80211-GP-PolicyData $
+		ms-net-ieee-80211-GP-PolicyGUID
+		)
+	)
+
+attributetype ( 1.2.840.113556.1.4.1956 NAME 'ms-net-ieee-8023-GP-PolicyReserved'
+	DESC ''
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 SINGLE-VALUE )
+
+attributetype ( 1.2.840.113556.1.4.1955 NAME 'ms-net-ieee-8023-GP-PolicyData'
+	DESC ''
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+
+attributetype ( 1.2.840.113556.1.4.1954 NAME 'ms-net-ieee-8023-GP-PolicyGUID'
+	DESC ''
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+
+objectclass ( 1.2.840.113556.1.5.252 NAME 'ms-net-ieee-8023-GroupPolicy'
+	DESC 'XML-based wired Group Policy'
+	SUP top STRUCTURAL
+	MUST ( cn )
+	MAY (
+		description $
+		ms-net-ieee-8023-GP-PolicyReserved $
+		ms-net-ieee-8023-GP-PolicyData $
+		ms-net-ieee-8023-GP-PolicyGUID
+		)
+	)
+
+attributetype ( 1.2.840.113556.1.4.1823 NAME 'msieee80211-ID'
+	DESC ''
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+
+attributetype ( 1.2.840.113556.1.4.1822 NAME 'msieee80211-DataType'
+	DESC ''
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributetype ( 1.2.840.113556.1.4.1821 NAME 'msieee80211-Data'
+	DESC ''
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 SINGLE-VALUE )
+
+objectclass ( 1.2.840.113556.1.5.240 NAME 'msieee80211-Policy'
+	DESC 'BLOB-based wireless Group Policy'
+	SUP top STRUCTURAL
+	MUST ( cn )
+	MAY (
+		description $
+		msieee80211-ID $
+		msieee80211-DataType $
+		msieee80211-Data
+		)
+	)
