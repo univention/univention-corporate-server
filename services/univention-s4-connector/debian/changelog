@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-50) unstable; urgency=medium
+
+  * Bug #50342: modernize UDM modules
+
+ -- Florian Best <best@univention.de>  Thu, 10 Oct 2019 16:26:53 +0200
+
 univention-s4-connector (13.0.2-49) unstable; urgency=medium
 
   * Bug #49876: ignore removed objects in disable_user_from_ucs()
