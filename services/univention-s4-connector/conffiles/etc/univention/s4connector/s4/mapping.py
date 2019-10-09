@@ -1038,6 +1038,317 @@ s4_mapping = {
 			),
 		},
 	),
+	'ms/gpipsec-filter': univention.s4connector.property(
+		ucs_module='ms/gpipsec-filter',
+		sync_mode=str(configRegistry.get('connector/s4/mapping/gpipsec/syncmode', configRegistry.get('connector/s4/mapping/syncmode'))),
+		scope='sub',
+		con_search_filter='(objectClass=ipsecFilter)',
+		ignore_filter=ignore_filter_from_attr('cn', 'connector/s4/mapping/gpipsec/ignorelist'),
+		ignore_subtree=global_ignore_subtree,
+		con_create_objectclass=['top', 'ipsecFilter'],
+		attributes={
+			'cn': univention.s4connector.attribute(
+				ucs_attribute='name',
+				ldap_attribute='cn',
+				con_attribute='cn',
+				required=True,
+				compare_function=univention.s4connector.compare_lowercase,
+				single_value=True,
+			),
+			'description': univention.s4connector.attribute(
+				ucs_attribute='description',
+				ldap_attribute='description',
+				con_attribute='description',
+				single_value=True,
+			),
+			'ipsecOwnersReference': univention.s4connector.attribute(
+				ucs_attribute='ipsecOwnersReference',
+				ldap_attribute='ipsecOwnersReference',
+				con_attribute='ipsecOwnersReference',
+				single_value=False,
+			),
+			'ipsecName': univention.s4connector.attribute(
+				ucs_attribute='ipsecName',
+				ldap_attribute='ipsecName',
+				con_attribute='ipsecName',
+				single_value=True,
+			),
+			'ipsecID': univention.s4connector.attribute(
+				ucs_attribute='ipsecID',
+				ldap_attribute='ipsecID',
+				con_attribute='ipsecID',
+				single_value=True,
+			),
+			'ipsecDataType': univention.s4connector.attribute(
+				ucs_attribute='ipsecDataType',
+				ldap_attribute='ipsecDataType',
+				con_attribute='ipsecDataType',
+				single_value=True,
+			),
+			'ipsecData': univention.s4connector.attribute(
+				ucs_attribute='ipsecData',
+				ldap_attribute='ipsecData',
+				con_attribute='ipsecData',
+				single_value=True,
+			),
+		},
+	),
+	'ms/gpipsec-isakmp-policy': univention.s4connector.property(
+		ucs_module='ms/gpipsec-isakmp-policy',
+		sync_mode=str(configRegistry.get('connector/s4/mapping/gpipsec/syncmode', configRegistry.get('connector/s4/mapping/syncmode'))),
+		scope='sub',
+		con_search_filter='(objectClass=ipsecISAKMPPolicy)',
+		ignore_filter=ignore_filter_from_attr('cn', 'connector/s4/mapping/gpipsec/ignorelist'),
+		ignore_subtree=global_ignore_subtree,
+		con_create_objectclass=['top', 'ipsecISAKMPPolicy'],
+		attributes={
+			'cn': univention.s4connector.attribute(
+				ucs_attribute='name',
+				ldap_attribute='cn',
+				con_attribute='cn',
+				required=True,
+				compare_function=univention.s4connector.compare_lowercase,
+				single_value=True,
+			),
+			'description': univention.s4connector.attribute(
+				ucs_attribute='description',
+				ldap_attribute='description',
+				con_attribute='description',
+				single_value=True,
+			),
+			'ipsecOwnersReference': univention.s4connector.attribute(
+				ucs_attribute='ipsecOwnersReference',
+				ldap_attribute='ipsecOwnersReference',
+				con_attribute='ipsecOwnersReference',
+				single_value=False,
+			),
+			'ipsecName': univention.s4connector.attribute(
+				ucs_attribute='ipsecName',
+				ldap_attribute='ipsecName',
+				con_attribute='ipsecName',
+				single_value=True,
+			),
+			'ipsecID': univention.s4connector.attribute(
+				ucs_attribute='ipsecID',
+				ldap_attribute='ipsecID',
+				con_attribute='ipsecID',
+				single_value=True,
+			),
+			'ipsecDataType': univention.s4connector.attribute(
+				ucs_attribute='ipsecDataType',
+				ldap_attribute='ipsecDataType',
+				con_attribute='ipsecDataType',
+				single_value=True,
+			),
+			'ipsecData': univention.s4connector.attribute(
+				ucs_attribute='ipsecData',
+				ldap_attribute='ipsecData',
+				con_attribute='ipsecData',
+				single_value=True,
+			),
+		},
+	),
+	'ms/gpipsec-negotiation-policy': univention.s4connector.property(
+		ucs_module='ms/gpipsec-negotiation-policy',
+		sync_mode=str(configRegistry.get('connector/s4/mapping/gpipsec/syncmode', configRegistry.get('connector/s4/mapping/syncmode'))),
+		scope='sub',
+		con_search_filter='(objectClass=ipsecNegotiationPolicy)',
+		ignore_filter=ignore_filter_from_attr('cn', 'connector/s4/mapping/gpipsec/ignorelist'),
+		ignore_subtree=global_ignore_subtree,
+		con_create_objectclass=['top', 'ipsecNegotiationPolicy'],
+		attributes={
+			'cn': univention.s4connector.attribute(
+				ucs_attribute='name',
+				ldap_attribute='cn',
+				con_attribute='cn',
+				required=True,
+				compare_function=univention.s4connector.compare_lowercase,
+				single_value=True,
+			),
+			'description': univention.s4connector.attribute(
+				ucs_attribute='description',
+				ldap_attribute='description',
+				con_attribute='description',
+				single_value=True,
+			),
+			'ipsecOwnersReference': univention.s4connector.attribute(
+				ucs_attribute='ipsecOwnersReference',
+				ldap_attribute='ipsecOwnersReference',
+				con_attribute='ipsecOwnersReference',
+				single_value=False,
+			),
+			'ipsecName': univention.s4connector.attribute(
+				ucs_attribute='ipsecName',
+				ldap_attribute='ipsecName',
+				con_attribute='ipsecName',
+				single_value=True,
+			),
+			'ipsecID': univention.s4connector.attribute(
+				ucs_attribute='ipsecID',
+				ldap_attribute='ipsecID',
+				con_attribute='ipsecID',
+				single_value=True,
+			),
+			'ipsecDataType': univention.s4connector.attribute(
+				ucs_attribute='ipsecDataType',
+				ldap_attribute='ipsecDataType',
+				con_attribute='ipsecDataType',
+				single_value=True,
+			),
+			'ipsecData': univention.s4connector.attribute(
+				ucs_attribute='ipsecData',
+				ldap_attribute='ipsecData',
+				con_attribute='ipsecData',
+				single_value=True,
+			),
+			'iPSECNegotiationPolicyType': univention.s4connector.attribute(
+				ucs_attribute='iPSECNegotiationPolicyType',
+				ldap_attribute='iPSECNegotiationPolicyType',
+				con_attribute='iPSECNegotiationPolicyType',
+				single_value=True,
+			),
+			'iPSECNegotiationPolicyAction': univention.s4connector.attribute(
+				ucs_attribute='iPSECNegotiationPolicyAction',
+				ldap_attribute='iPSECNegotiationPolicyAction',
+				con_attribute='iPSECNegotiationPolicyAction',
+				single_value=True,
+			),
+		},
+	),
+	'ms/gpipsec-nfa': univention.s4connector.property(
+		ucs_module='ms/gpipsec-nfa',
+		sync_mode=str(configRegistry.get('connector/s4/mapping/gpipsec/syncmode', configRegistry.get('connector/s4/mapping/syncmode'))),
+		scope='sub',
+		con_search_filter='(objectClass=ipsecNFA)',
+		ignore_filter=ignore_filter_from_attr('cn', 'connector/s4/mapping/gpipsec/ignorelist'),
+		ignore_subtree=global_ignore_subtree,
+		con_create_objectclass=['top', 'ipsecNFA'],
+		attributes={
+			'cn': univention.s4connector.attribute(
+				ucs_attribute='name',
+				ldap_attribute='cn',
+				con_attribute='cn',
+				required=True,
+				compare_function=univention.s4connector.compare_lowercase,
+				single_value=True,
+			),
+			'description': univention.s4connector.attribute(
+				ucs_attribute='description',
+				ldap_attribute='description',
+				con_attribute='description',
+				single_value=True,
+			),
+			'ipsecOwnersReference': univention.s4connector.attribute(
+				ucs_attribute='ipsecOwnersReference',
+				ldap_attribute='ipsecOwnersReference',
+				con_attribute='ipsecOwnersReference',
+				single_value=False,
+			),
+			'ipsecName': univention.s4connector.attribute(
+				ucs_attribute='ipsecName',
+				ldap_attribute='ipsecName',
+				con_attribute='ipsecName',
+				single_value=True,
+			),
+			'ipsecID': univention.s4connector.attribute(
+				ucs_attribute='ipsecID',
+				ldap_attribute='ipsecID',
+				con_attribute='ipsecID',
+				single_value=True,
+			),
+			'ipsecDataType': univention.s4connector.attribute(
+				ucs_attribute='ipsecDataType',
+				ldap_attribute='ipsecDataType',
+				con_attribute='ipsecDataType',
+				single_value=True,
+			),
+			'ipsecData': univention.s4connector.attribute(
+				ucs_attribute='ipsecData',
+				ldap_attribute='ipsecData',
+				con_attribute='ipsecData',
+				single_value=True,
+			),
+			'ipsecNegotiationPolicyReference': univention.s4connector.attribute(
+				ucs_attribute='ipsecNegotiationPolicyReference',
+				ldap_attribute='ipsecNegotiationPolicyReference',
+				con_attribute='ipsecNegotiationPolicyReference',
+				single_value=True,
+			),
+			'ipsecFilterReference': univention.s4connector.attribute(
+				ucs_attribute='ipsecFilterReference',
+				ldap_attribute='ipsecFilterReference',
+				con_attribute='ipsecFilterReference',
+				single_value=True,
+			),
+		},
+	),
+	'ms/gpipsec-policy': univention.s4connector.property(
+		ucs_module='ms/gpipsec-policy',
+		sync_mode=str(configRegistry.get('connector/s4/mapping/gpipsec/syncmode', configRegistry.get('connector/s4/mapping/syncmode'))),
+		scope='sub',
+		con_search_filter='(objectClass=ipsecPolicy)',
+		ignore_filter=ignore_filter_from_attr('cn', 'connector/s4/mapping/gpipsec/ignorelist'),
+		ignore_subtree=global_ignore_subtree,
+		con_create_objectclass=['top', 'ipsecPolicy'],
+		attributes={
+			'cn': univention.s4connector.attribute(
+				ucs_attribute='name',
+				ldap_attribute='cn',
+				con_attribute='cn',
+				required=True,
+				compare_function=univention.s4connector.compare_lowercase,
+				single_value=True,
+			),
+			'description': univention.s4connector.attribute(
+				ucs_attribute='description',
+				ldap_attribute='description',
+				con_attribute='description',
+				single_value=True,
+			),
+			'ipsecOwnersReference': univention.s4connector.attribute(
+				ucs_attribute='ipsecOwnersReference',
+				ldap_attribute='ipsecOwnersReference',
+				con_attribute='ipsecOwnersReference',
+				single_value=False,
+			),
+			'ipsecName': univention.s4connector.attribute(
+				ucs_attribute='ipsecName',
+				ldap_attribute='ipsecName',
+				con_attribute='ipsecName',
+				single_value=True,
+			),
+			'ipsecID': univention.s4connector.attribute(
+				ucs_attribute='ipsecID',
+				ldap_attribute='ipsecID',
+				con_attribute='ipsecID',
+				single_value=True,
+			),
+			'ipsecDataType': univention.s4connector.attribute(
+				ucs_attribute='ipsecDataType',
+				ldap_attribute='ipsecDataType',
+				con_attribute='ipsecDataType',
+				single_value=True,
+			),
+			'ipsecData': univention.s4connector.attribute(
+				ucs_attribute='ipsecData',
+				ldap_attribute='ipsecData',
+				con_attribute='ipsecData',
+				single_value=True,
+			),
+			'ipsecNFAReference': univention.s4connector.attribute(
+				ucs_attribute='ipsecNFAReference',
+				ldap_attribute='ipsecNFAReference',
+				con_attribute='ipsecNFAReference',
+				single_value=True,
+			),
+			'ipsecISAKMPReference': univention.s4connector.attribute(
+				ucs_attribute='ipsecISAKMPReference',
+				ldap_attribute='ipsecISAKMPReference',
+				con_attribute='ipsecISAKMPReference',
+				single_value=True,
+			),
+		},
+	),
 	'ou': univention.s4connector.property(
 		ucs_module='container/ou',
 		sync_mode=configRegistry.get('connector/s4/mapping/ou/syncmode', configRegistry.get('connector/s4/mapping/syncmode')),
@@ -1101,6 +1412,12 @@ if not configRegistry.is_true('connector/s4/mapping/msgwl', False):
 	s4_mapping.pop('ms/gpwl-wireless')
 	s4_mapping.pop('ms/gpwl-wired')
 	s4_mapping.pop('ms/gpwl-wireless-blob')
+if not configRegistry.is_true('connector/s4/mapping/msgpipsec', False):
+	s4_mapping.pop('ms/gpipsec-filter')
+	s4_mapping.pop('ms/gpipsec-isakmp-policy')
+	s4_mapping.pop('ms/gpipsec-negotiation-policy')
+	s4_mapping.pop('ms/gpipsec-nfa')
+	s4_mapping.pop('ms/gpipsec-policy')
 
 #print 'global_ignore_subtree = %r' % (global_ignore_subtree,)
 #print 's4_mapping = %s' % (pprint.pformat(s4_mapping, indent=4, width=250),)

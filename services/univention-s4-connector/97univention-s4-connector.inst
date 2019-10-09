@@ -167,6 +167,13 @@ for udm_module in gpwl-wireless.py gpwl-wired.py gpwl-wireless-blob.py; do
        ucs_registerLDAPExtension "$@" --udm_module "/usr/lib/python2.7/dist-packages/univention/admin/handlers/ms/$udm_module"  --ucsversionstart "4.4-0" || die
 done
 
+ucs_registerLDAPExtension "$@" \
+	--schema /usr/share/univention-s4-connector/ldap/msgpipsec.schema || die
+
+for udm_module in gpipsec-filter.py gpipsec-isakmp-policy.py gpipsec-nfa.py gpipsec-negotiation-policy.py gpipsec-policy.py; do
+	ucs_registerLDAPExtension "$@" --udm_module "/usr/lib/python2.7/dist-packages/univention/admin/handlers/ms/$udm_module"  --ucsversionstart "4.4-0" || die
+done
+
 if ! is_ucr_true 'connector/s4/allow/secondary'; then
 	s4connector_dc=$(get_available_s4connector_dc) || exit $?
 
@@ -272,6 +279,11 @@ if [ -z "$s4connector_dc" ] \
 		if [ $JS_LAST_EXECUTED_VERSION -lt 7 ] && is_ucr_true connector/s4/mapping/msgpwl; then
 			# resync msgpwl objects from samba to ucs
 			/usr/share/univention-s4-connector/resync_object_from_s4.py --filter '(|(objectClass=ms-net-ieee-80211-GroupPolicy)(objectClass=ms-net-ieee-8023-GroupPolicy)(objectClass=msieee80211-Policy))'
+		fi
+
+		if [ $JS_LAST_EXECUTED_VERSION -lt 7 ] && is_ucr_true connector/s4/mapping/msgpipsec; then
+			# resync msgpipsec objects from samba to ucs
+			/usr/share/univention-s4-connector/resync_object_from_s4.py --filter '(|(objectClass=ipsecBase)(objectClass=ipsecPolicy)(objectClass=ipsecFilter)(objectClass=ipsecNegotiationPolicy)(objectClass=ipsecNFA)(objectClass=ipsecISAKMPPolicy))'
 		fi
 	fi
 
