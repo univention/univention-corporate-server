@@ -126,7 +126,7 @@ Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  python-univention-config-registry,
  python-polib,
- univention-ucs-translation-template,
+ univention-ucs-translation-template (>> 6.0.0-6),
  gettext,
  devscripts,
  imagemagick | inkscape
