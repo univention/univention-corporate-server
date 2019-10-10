@@ -1,4 +1,11 @@
-univention-s4-connector (14.0.0-2) unstable; urgency=medium
+univention-s4-connector (14.0.0-4) unstable; urgency=medium
+
+  * Bug #50347: do not reload extended attributes every time a attribute
+    changes
+
+ -- Florian Best <best@univention.de>  Wed, 15 Jul 2020 00:01:22 +0200
+
+univention-s4-connector (14.0.0-3) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
 
