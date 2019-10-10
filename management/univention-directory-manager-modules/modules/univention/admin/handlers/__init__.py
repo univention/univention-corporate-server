@@ -2088,7 +2088,7 @@ class simpleComputer(simpleLdap):
 				ud.debug(ud.ADMIN, ud.INFO, 'the host "%s" already has a dhcp object, so we search for the next free uv name' % (name))
 				RE = re.compile(r'cn=[^,]+_uv(\d+),')
 				taken = set(int(m.group(1)) for m in (RE.match(dn) for dn in results) if m)
-				n = min(set(range(max(taken) + 1)) - taken) if taken else 0
+				n = min(set(range(max(taken) + 2)) - taken) if taken else 0
 				name = '%s_uv%d' % (name, n)
 
 			dn = 'cn=%s,%s' % (escape_dn_chars(name), position)

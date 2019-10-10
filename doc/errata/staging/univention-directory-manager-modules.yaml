@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * The logging and error handling when removing child objects
    has been improved.
-bug: [50288]
+ * The DHCP assignment for computers with mutliple MAC addresses has been
+   repaired.
+bug: [50288, 44937]
