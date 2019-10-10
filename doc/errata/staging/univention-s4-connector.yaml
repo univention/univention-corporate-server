@@ -3,7 +3,7 @@ release: "4.4"
 version: [2]
 scope: ucs_4.4-0-errata4.4-2
 src: univention-s4-connector
-fix: 13.0.2-51A~4.4.0.201910101733
+fix: 13.0.2-52A~4.4.0.201910102331
 desc: |
  This update addresses the following issue(s):
  * The logging of UDM related debug messages has been improved. This
