@@ -1,3 +1,9 @@
+univention-ucs-translation-template (6.0.0-5) unstable; urgency=medium
+
+  * Bug #50341: Explicit python version
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 10 Oct 2019 16:26:29 +0200
+
 univention-ucs-translation-template (6.0.0-4) unstable; urgency=medium
 
   * Bug #50341: univention-l10n-build now runs without any UCS dependency
