@@ -3,7 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.9.8
-Build-Depends: debhelper (>= 7),
+Build-Depends: debhelper (>= 9),
  python-all,
  python3-all,
  dh-python,
