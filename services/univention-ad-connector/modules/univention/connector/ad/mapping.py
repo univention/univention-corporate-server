@@ -77,16 +77,16 @@ def ignore_filter_from_attr(attribute, ucr_key, default=''):
 
 
 def ucs2ad_sid(connector, key, object):
-	_d = ud.function('mapping.ucs2ad_sid -- not implemented')
+	_d = ud.function('mapping.ucs2ad_sid -- not implemented')  # noqa: F841
 
 
 def ad2ucs_sid(connector, key, object):
-	_d = ud.function('mapping.ad2ucs_sid')
+	_d = ud.function('mapping.ad2ucs_sid')  # noqa: F841
 	return univention.connector.ad.decode_sid(object['objectSid'])
 
 
 def ucs2ad_givenName(connector, key, object):
-	_d = ud.function('mapping.ucs2ad_givenName')
+	_d = ud.function('mapping.ucs2ad_givenName')  # noqa: F841
 	if 'firstname' in object and 'lastname' in object:
 		return '%s %s' % (object['firstname'], object['lastname'])
 	elif 'firstname' in object:
@@ -96,43 +96,43 @@ def ucs2ad_givenName(connector, key, object):
 
 
 def ad2ucs_givenName(connector, key, object):
-	_d = ud.function('mapping.ad2ucs_givenName -- not implemented')
+	_d = ud.function('mapping.ad2ucs_givenName -- not implemented')  # noqa: F841
 
 
 def ucs2ad_dn_string(dn):
-	_d = ud.function('mapping.ucs2ad_dn_string')
+	_d = ud.function('mapping.ucs2ad_dn_string')  # noqa: F841
 	return string.replace(dn, baseConfig['ldap/base'], baseConfig['connector/ad/ldap/base'])
 
 
 def ucs2ad_dn(connector, key, object):
-	_d = ud.function('mapping.ucs2ad_dn')
+	_d = ud.function('mapping.ucs2ad_dn')  # noqa: F841
 	return ucs2ad_dn_string(object.dn)
 
 
 def ad2ucs_dn_string(dn):
-	_d = ud.function('mapping.ad2ucs_dn_string')
+	_d = ud.function('mapping.ad2ucs_dn_string')  # noqa: F841
 	return string.replace(dn, baseConfig['connector/ad/ldap/base'], baseConfig['ldap/base'])
 
 
 def ad2ucs_dn(connector, key, object):
-	_d = ud.function('mapping.ad2ucs_dn')
+	_d = ud.function('mapping.ad2ucs_dn')  # noqa: F841
 	return ad2ucs_dn_string(object.dn)
 
 
 def ucs2ad_user_dn(connector, key, object):
-	_d = ud.function('mapping.ucs2ad_user_dn')
+	_d = ud.function('mapping.ucs2ad_user_dn')  # noqa: F841
 	return string.replace(ucs2ad_dn(connector, key, object), "uid=", "cn=")
 
 
 def ad2ucs_user_dn(connector, key, object):
-	_d = ud.function('mapping.ad2ucs_user_dn')
+	_d = ud.function('mapping.ad2ucs_user_dn')  # noqa: F841
 	return string.replace(ad2ucs_dn(connector, key, object), "cn=", "uid=")
 
 
 def ucs2ad_sambaGroupType(connector, key, object):
-	_d = ud.function('mapping.ucs2ad_sambaGroupType -- not implemented')
+	_d = ud.function('mapping.ucs2ad_sambaGroupType -- not implemented')  # noqa: F841
 	return "-2147483644"
 
 
 def ad2ucs_sambaGroupType(connector, key, object):
-	_d = ud.function('mapping.ad2ucs_sambaGroupType -- not implemented')
+	_d = ud.function('mapping.ad2ucs_sambaGroupType -- not implemented')  # noqa: F841
