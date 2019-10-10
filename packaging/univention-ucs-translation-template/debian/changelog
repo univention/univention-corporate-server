@@ -1,3 +1,9 @@
+univention-ucs-translation-template (6.0.0-7) unstable; urgency=medium
+
+  * Bug #50341: Adjust dependencies
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 10 Oct 2019 17:07:35 +0200
+
 univention-ucs-translation-template (6.0.0-6) unstable; urgency=medium
 
   * Bug #50341: Fix deb822
