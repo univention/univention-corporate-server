@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-39) unstable; urgency=medium
+
+  * Bug #47706: fix typo
+
+ -- Florian Best <best@univention.de>  Thu, 10 Oct 2019 12:06:13 +0200
+
 univention-management-console (11.0.4-38) unstable; urgency=medium
 
   * Bug #47706: slapd is not restarted anymore on every univentionService

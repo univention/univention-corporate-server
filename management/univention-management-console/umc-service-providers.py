@@ -55,7 +55,7 @@ def handler(dn, new, old):
 			fqdn = '%s.%s' % (new['cn'][0], new['associatedDomain'][0])
 		except (KeyError, IndexError):
 			return
-		umc_service_active = 'Univention Management Console' in old.get('univentionService', [])
+		umc_service_active = 'Univention Management Console' in new.get('univentionService', [])
 		umc_service_was_active = 'Univention Management Console' in old.get('univentionService', [])
 		if umc_service_active and not umc_service_was_active:
 			handler_set(['umc/saml/trusted/sp/%s=%s' % (fqdn, fqdn)])
