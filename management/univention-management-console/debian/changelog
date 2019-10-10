@@ -1,3 +1,10 @@
+univention-management-console (11.0.4-42) unstable; urgency=medium
+
+  * Bug #50341: Remove dh_umc here and use the file from
+    univention-ucs-translation-template
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 10 Oct 2019 16:52:59 +0200
+
 univention-management-console (11.0.4-41) unstable; urgency=medium
 
   * Bug #47706: safe way if associated domain is added only afterwards
