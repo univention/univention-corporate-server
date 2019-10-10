@@ -14,6 +14,8 @@ Package: univention-ucs-translation-template
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends}, ${python3:Depends},
  univention-management-console-dev,
+ python-debian,
+ python3-debian,
  python-magic,
  python3-magic,
  python-polib,
