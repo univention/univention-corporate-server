@@ -1,3 +1,9 @@
+univention-ucs-translation-template (6.0.0-10) unstable; urgency=medium
+
+  * Bug #50341: Remove debug output
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 10 Oct 2019 18:56:21 +0200
+
 univention-ucs-translation-template (6.0.0-9) unstable; urgency=medium
 
   * Bug #50341: Set package
