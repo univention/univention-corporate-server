@@ -57,12 +57,14 @@ def handler(dn, new, old):
 			return
 		umc_service_active = 'Univention Management Console' in new.get('univentionService', [])
 		umc_service_was_active = 'Univention Management Console' in old.get('univentionService', [])
-		if umc_service_active and not umc_service_was_active:
+		domain_added = 'associatedDomain' in new and 'associatedDomain' not in old and umc_service_active
+		if umc_service_active and (domain_added or not umc_service_was_active):
 			handler_set(['umc/saml/trusted/sp/%s=%s' % (fqdn, fqdn)])
 			__changed_trusted_sp = True
 		elif umc_service_was_active and not umc_service_active:
 			handler_unset(['umc/saml/trusted/sp/%s' % (fqdn,)])
 			__changed_trusted_sp = True
+
 	finally:
 		listener.unsetuid()
 
