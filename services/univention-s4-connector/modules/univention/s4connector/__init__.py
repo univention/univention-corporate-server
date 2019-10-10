@@ -1158,11 +1158,6 @@ class ucs:
 					value = object['attributes'][attributes.ldap_attribute]
 					ud.debug(ud.LDAP, ud.INFO, '__set_values: set attribute, ucs_key: %s - value: %s' % (ucs_key, value))
 
-					ucs_module = self.modules[property_type]
-					position = univention.admin.uldap.position(self.lo.base)
-					position.setDn(object['dn'])
-					univention.admin.modules.init(self.lo, position, ucs_module)
-
 					if isinstance(value, type(types.ListType())) and len(value) == 1:
 						value = value[0]
 
@@ -1200,11 +1195,6 @@ class ucs:
 
 				ucs_key = attributes.ucs_attribute
 				if ucs_object.has_property(ucs_key):
-					ucs_module = self.modules[property_type]
-					position = univention.admin.uldap.position(self.lo.base)
-					position.setDn(object['dn'])
-					univention.admin.modules.init(self.lo, position, ucs_module)
-
 					# Special handling for con other attributes, see Bug #20599
 					if attributes.con_other_attribute:
 						if object['attributes'].get(attributes.con_other_attribute):
@@ -1259,6 +1249,12 @@ class ucs:
 
 	def add_in_ucs(self, property_type, object, module, position):
 		_d = ud.function('ldap.add_in_ucs')  # noqa: F841
+
+		# reload extended attributes  # FIXME: maybe not necessary
+		ucs_module = self.modules[property_type]
+		position = univention.admin.uldap.position(self.lo.base)
+		univention.admin.modules.init(self.lo, position, ucs_module)
+
 		ucs_object = module.object(None, self.lo, position=position)
 		if property_type == 'group':
 			ucs_object.open()
@@ -1266,6 +1262,7 @@ class ucs:
 			self.group_members_cache_ucs[object['dn'].lower()] = set()
 		else:
 			ucs_object.open()
+
 		self.__set_values(property_type, object, ucs_object, modtype='add')
 		for function in self.property[property_type].ucs_create_functions:
 			function(self, property_type, ucs_object)
@@ -1286,6 +1283,11 @@ class ucs:
 
 	def modify_in_ucs(self, property_type, object, module, position):
 		_d = ud.function('ldap.modify_in_ucs')  # noqa: F841
+
+		# reload extended attributes  # FIXME: maybe not necessary
+		ucs_module = self.modules[property_type]
+		position = univention.admin.uldap.position(self.lo.base)
+		univention.admin.modules.init(self.lo, position, ucs_module)
 
 		ucs_object_dn = object.get('olddn', object['dn'])
 		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=ucs_object_dn, position='')
