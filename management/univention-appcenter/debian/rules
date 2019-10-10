@@ -35,15 +35,6 @@ export DH_VERBOSE=1
 %:
 	dh $@ --with python2
 
-UDM_PO_FILES := $(shell find udm -name '*.po')
-UDM_MO_FILES := $(UDM_PO_FILES:%.po=%.mo)
-
-APPCENTER_PKG_NAME := univention-appcenter
-APPCENTER_MO_FILE := python/de.mo
-APPCENTER_DST_DIR := debian/$(APPCENTER_PKG_NAME)
-GERMAN_LC_MSG_DIR := /usr/share/locale/de/LC_MESSAGES
-APPCENTER_LC_MSG_DIR := $(APPCENTER_DST_DIR)$(GERMAN_LC_MSG_DIR)
-
 export PYBUILD_NAME=univention-appcenter
 
 %.mo:	%.po
@@ -54,14 +45,16 @@ override_dh_auto_clean:
 	rm -rf build/
 	dh_auto_clean
 
-override_dh_auto_build: $(UDM_MO_FILES) $(APPCENTER_MO_FILE)
+override_dh_auto_build:
 	dh-umc-module-build
+	univention-l10n-build de
 	dh_auto_build --buildsystem=pybuild
 	dh_auto_build
 
 override_dh_auto_install:
 	univention-install-config-registry
 	univention-install-joinscript
+	univention-l10n-install de
 	dh-umc-module-install
 	dh_auto_install --buildsystem=pybuild
 	python setup_dev.py build --force -b build/univention-appcenter-dev install --force --root=debian/univention-appcenter-dev --install-layout=deb
@@ -71,20 +64,6 @@ override_dh_auto_install:
 
 	install -D python-legacy/univention-management-console-module-appcenter.public debian/univention-management-console-module-appcenter/usr/share/python-support/univention-management-console-module-appcenter.public
 	install -D python-legacy/univention-management-console-module-apps.public debian/univention-management-console-module-apps/usr/share/python-support/univention-management-console-module-apps.public
-
-	@set -e;\
-	for i in $(UDM_MO_FILES); do\
-		lang=`basename "$$i" .mo`;\
-		domain=`dirname "$$i" | sed 's,^udm/,univention/admin/,;s,/,-,g'`;\
-		o=debian/univention-management-console-module-appcenter/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
-		install -d "`dirname "$$o"`";\
-		install -m 644 "$$i" "$$o";\
-	done
-
-	scripts/build-appcenter-po
-	install -d $(APPCENTER_LC_MSG_DIR)
-	install -m 644 $(APPCENTER_MO_FILE) \
-		$(APPCENTER_LC_MSG_DIR)/$(APPCENTER_PKG_NAME).mo
 
 override_dh_auto_test:
 	ucslint
