@@ -38,6 +38,32 @@ if dpkg --compare-versions "$2" lt-nl 4.0.0; then
 	# On update from UCS 4.3, disable profile data management for users
 	ucr set umc/self-service/profiledata/enabled=false
 fi
+
+if dpkg --compare-versions "$2" lt-nl 4.0.3-10; then
+	# Bug 50037 mv ACL from 67selfservice_userattributes.acl to 65selfservice_userattributes.acl
+	eval "$(ucr shell ldap/base server/role self-service/ldap_attributes)"
+	if [ -e /var/univention-join/joined -a "$server_role" = "domaincontroller_master" ]; then
+		if univention-ldapsearch -LLL -b "cn=67selfservice_userattributes,cn=ldapacl,cn=univention,$ldap_base" dn | grep "dn: cn=67"; then
+			slapd=$(pidof -s slapd)
+			# unregister old
+			univention-self-service-register-acl unregister /usr/share/univention-self-service/67selfservice_userattributes.acl 1
+			# now wait for a slapd restart
+			for i in $(seq 1 100); do
+				new_slapd=$(pidof -s slapd)
+				if [ "$new_slapd" != "$slapd" ]; then
+					break
+				fi
+				echo "waiting got 67selfservice_userattributes.acl unregister slapd restart"
+				sleep 3
+			done
+			# and activate
+			ucr set self-service/ldap_attributes="$self_service_ldap_attributes"
+		else
+			echo "no selfservice ACL found, nothing todo"
+		fi
+	fi
+fi
+
 ucr set umc/self-service/profiledata/enabled?true \
         self-service/ldap_attributes?"jpegPhoto,mail,telephoneNumber,roomNumber,departmentNumber,st,homePhone,mobile,homePostalAddress"
 
