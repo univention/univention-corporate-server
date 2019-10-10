@@ -127,6 +127,7 @@ class UMCModuleTranslation(umc.UMC_Module):
 			print("%s AttributeError in module, trying to load as core module" % (e,))
 		else:
 			module['core'] = False
+			print("Check this %s" % module)
 			return module
 
 		try:
@@ -167,9 +168,8 @@ class UMCModuleTranslation(umc.UMC_Module):
 		attrs = cls._read_module_attributes_from_source_package(module)
 		for required in (umc.MODULE, umc.PYTHON, umc.DEFINITION, umc.JAVASCRIPT):
 			if required not in attrs:
-				raise AttributeError('UMC module definition incomplete. key {} missing.'.format(required))
-			if required not in attrs:
 				raise AttributeError('UMC module definition incomplete. key {} is missing a value.'.format(required))
+		attrs['package'] = module['binary_package_name']
 		attrs['module_name'] = module['module_name']
 		attrs['abs_path_to_src_pkg'] = module['abs_path_to_src_pkg']
 		attrs['relative_path_src_pkg'] = module['relative_path_src_pkg']
