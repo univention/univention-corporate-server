@@ -28,7 +28,6 @@
 # <https://www.gnu.org/licenses/>.
 
 from univention.admin.layout import Tab, Group
-import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.syntax
 
@@ -36,7 +35,7 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 module = 'saml/idpconfig'
-childs = 0
+childs = False
 short_description = _(u'SAML IdP configuration')
 object_name = _(u'SAML IdP configuration')
 object_name_plural = _(u'SAML IdP configurations')
@@ -45,15 +44,19 @@ operations = ['add', 'edit', 'remove', 'search']
 default_containers = ["cn=univention"]
 help_text = _(u'You can download the public certificate for this identity provider at %s.') % ('<a href="/simplesamlphp/saml2/idp/certificate" target="_blank">/simplesamlphp/saml2/idp/certificate</a>',)
 
-options = {}
+options = {
+	'default': univention.admin.option(
+		short_description='',
+		default=True,
+		objectClasses=['top', 'univentionSAMLIdpConfig'],
+	),
+}
 
 property_descriptions = {
 	'id': univention.admin.property(
 		short_description=_(u'Config object identifier'),
 		long_description=_(u'IdP config object identifier'),
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
-		options=[],
 		required=True,
 		may_change=False,
 		identifies=True,
@@ -63,10 +66,6 @@ property_descriptions = {
 		long_description=_(u'A list of ldap attribute names that the IdP is allowed to fetch from LDAP'),
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False,
 	),
 }
 
@@ -87,26 +86,6 @@ mapping.register('LdapGetAttributes', 'LdapGetAttributes', None, None)
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
-	def _ldap_addlist(self):
-		al = [('objectClass', ['top', 'univentionSAMLIdpConfig'])]
-		return al
 
-
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-	searchfilter = univention.admin.filter.conjunction('&', [
-		univention.admin.filter.expression('objectClass', 'univentionSAMLIdpConfig'),
-	])
-
-	if filter_s:
-		filter_p = univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-		searchfilter.expressions.append(filter_p)
-
-	res = []
-	for dn in lo.searchDn(unicode(searchfilter), base, scope, unique, required, timeout, sizelimit):
-		res.append(object(co, lo, None, dn))
-	return res
-
-
-def identify(distinguished_name, attributes, canonical=False):
-	return 'univentionSAMLIdpConfig' in attributes.get('objectClass', [])
+lookup = object.lookup
+identify = object.identify

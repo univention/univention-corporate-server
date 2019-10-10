@@ -11,4 +11,6 @@ desc: |
  * The package now uses dh_python2 instead of python-support.
    Therefore python modules are installed into
    /usr/lib/python2.7/dist-packages/univention/admin/handlers/.
-bug: [49485, 49167]
+ * The UDM modules saml/idpconfig and saml/serviceprovider have been
+   modernized.
+bug: [49485, 49167, 50345]

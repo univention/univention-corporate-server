@@ -28,7 +28,6 @@
 # <https://www.gnu.org/licenses/>.
 
 from univention.admin.layout import Tab, Group
-import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.syntax
 
@@ -36,7 +35,7 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 module = 'saml/serviceprovider'
-childs = 0
+childs = False
 short_description = _(u'SAML service provider')
 object_name = _(u'SAML service provider')
 object_name_plural = _(u'SAML service providers')
@@ -45,18 +44,19 @@ operations = ['add', 'edit', 'remove', 'search']
 default_containers = ["cn=saml-serviceprovider,cn=univention"]
 help_text = _(u'You can download the public certificate for this identity provider at %s.') % ('<a href="/simplesamlphp/saml2/idp/certificate" target="_blank">/simplesamlphp/saml2/idp/certificate</a>',)
 
-options = {}
+options = {
+	'default': univention.admin.option(
+		short_description='',
+		default=True,
+		objectClasses=['top', 'univentionSAMLServiceProvider'],
+	),
+}
 
 property_descriptions = {
 	'isActivated': univention.admin.property(
 		short_description=_(u'Service provider activation status'),
 		long_description=_(u'Defines if this service provider is activated, i.e., its configuration is loaded'),
 		syntax=univention.admin.syntax.TrueFalseUp,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False,
 		default="FALSE",
 		size='Two',
 	),
@@ -64,8 +64,6 @@ property_descriptions = {
 		short_description=_(u'Service provider identifier'),
 		long_description=_(u'Unique identifier for the service provider definition. With this string the service provider identifies itself at the identity provider'),
 		syntax=univention.admin.syntax.FiveThirdsString,
-		multivalue=False,
-		options=[],
 		required=True,
 		may_change=False,
 		identifies=True,
@@ -75,41 +73,23 @@ property_descriptions = {
 		long_description=_(u'The URL(s) of the AssertionConsumerService endpoints for this SP. Users will be redirected to the URL upon successful authentication. Example: https://sp.example.com/login'),
 		syntax=univention.admin.syntax.FiveThirdsString,
 		multivalue=True,
-		options=[],
 		required=True,
-		may_change=True,
-		identifies=False,
 	),
 	'NameIDFormat': univention.admin.property(
 		short_description=_(u'Format of NameID attribute'),
 		long_description=_(u'The NameIDFormat the service provider receives. The service provider documentation should mention expected formats. Example: urn:oasis:names:tc:SAML:2.0:nameid-format:transient'),
 		syntax=univention.admin.syntax.FiveThirdsString,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False,
 	),
 	'simplesamlNameIDAttribute': univention.admin.property(
 		short_description=_(u'Name of the attribute that is used as NameID'),
 		long_description=_(u'The name of the attribute which should be used as the value of the NameID, e.g. uid'),
 		syntax=univention.admin.syntax.FiveThirdsString,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False,
 		default="uid"
 	),
 	'simplesamlAttributes': univention.admin.property(
 		short_description=_(u'Allow transmission of ldap attributes to the service provider'),
 		long_description=_(u'Whether the service provider should receive any ldap attributes from the IdP'),
 		syntax=univention.admin.syntax.TrueFalseUp,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False,
 		default="FALSE",
 		size='Two',
 	),
@@ -118,80 +98,43 @@ property_descriptions = {
 		long_description=_(u'A list of ldap attributes that are transmitted to the service provider'),
 		syntax=univention.admin.syntax.FiveThirdsString,
 		multivalue=True,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False,
 	),
 	'serviceproviderdescription': univention.admin.property(
 		short_description=_(u'Description of this service provider'),
 		long_description=_(u'A description of this service provider that can be shown to users'),
 		syntax=univention.admin.syntax.FiveThirdsString,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False,
 	),
 	'serviceProviderOrganizationName': univention.admin.property(
 		short_description=_(u'Name of the organization for this service provider'),
 		long_description=_(u'The name of the organization responsible for the service provider that can be shown to users'),
 		syntax=univention.admin.syntax.FiveThirdsString,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False,
 	),
 	'privacypolicyURL': univention.admin.property(
 		short_description=_(u'URL to the service provider\'s privacy policy'),
 		long_description=_(u'An absolute URL for the service provider\'s privacy policy, which will be shown on the consent page'),
 		syntax=univention.admin.syntax.FiveThirdsString,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False,
 	),
 	'attributesNameFormat': univention.admin.property(
 		short_description=_(u'Value for attribute format field'),
 		long_description=_(u'Which value will be set in the format field of attribute statements. Default: urn:oasis:names:tc:SAML:2.0:attrname-format:basic'),
 		syntax=univention.admin.syntax.FiveThirdsString,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False,
 	),
 	'singleLogoutService': univention.admin.property(
 		short_description=_(u'Single logout URL for this service provider'),
 		long_description=_(u'The URL of the SingleLogoutService endpoint for this service provider'),
 		syntax=univention.admin.syntax.FiveThirdsString,
-		multivalue=False,
-		options=[],
-		required=False,
-		may_change=True,
-		identifies=False,
 	),
 	'serviceProviderMetadata': univention.admin.property(
 		short_description=_('XML metadata'),
 		long_description=_('Raw XML metadata of the service provider to extend the simplesamlphp configuration.'),
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
-		required=False,
-		may_change=True,
 		dontsearch=True,
-		identifies=False,
 	),
 	'rawsimplesamlSPconfig': univention.admin.property(
 		short_description=_('raw simplesaml SP config'),
 		long_description=_('A raw simplesamlphp service provider configuration.'),
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
-		required=False,
-		may_change=True,
 		dontsearch=True,
-		identifies=False,
 	),
 }
 
@@ -238,26 +181,6 @@ mapping.register('rawsimplesamlSPconfig', 'rawsimplesamlSPconfig', None, univent
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
-	def _ldap_addlist(self):
-		al = [('objectClass', ['top', 'univentionSAMLServiceProvider'])]
-		return al
 
-
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-	searchfilter = univention.admin.filter.conjunction('&', [
-		univention.admin.filter.expression('objectClass', 'univentionSAMLServiceProvider'),
-	])
-
-	if filter_s:
-		filter_p = univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-		searchfilter.expressions.append(filter_p)
-
-	res = []
-	for dn in lo.searchDn(unicode(searchfilter), base, scope, unique, required, timeout, sizelimit):
-		res.append(object(co, lo, None, dn))
-	return res
-
-
-def identify(distinguished_name, attributes, canonical=False):
-	return 'univentionSAMLServiceProvider' in attributes.get('objectClass', [])
+lookup = object.lookup
+identify = object.identify
