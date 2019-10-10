@@ -61,6 +61,7 @@ from email.utils import formatdate
 import polib
 import xml.etree.ElementTree as ET
 
+from debian.deb822 import Deb822
 from . import helper
 
 MODULE = 'Module'
@@ -221,7 +222,8 @@ def read_modules(package, core=False):
 		return modules
 
 	with open(file_umc_module, 'rb') as fd:
-		for item in dh_ucs.parseRfc822(fd.read()):
+		for item in Deb822.iter_paragraphs(fd):
+			item = dict((k, [v]) for k, v in item.iteritems())  # simulate dh_ucs.parseRfc822 behaviour
 			# required fields
 			if not core:
 				for required in (MODULE, PYTHON, DEFINITION, JAVASCRIPT):
