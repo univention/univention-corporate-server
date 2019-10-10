@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-40) unstable; urgency=medium
+
+  * Bug #47706: only restart on toggling of service
+
+ -- Florian Best <best@univention.de>  Thu, 10 Oct 2019 15:20:41 +0200
+
 univention-management-console (11.0.4-39) unstable; urgency=medium
 
   * Bug #47706: fix typo

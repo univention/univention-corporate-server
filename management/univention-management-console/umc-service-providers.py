@@ -60,7 +60,7 @@ def handler(dn, new, old):
 		if umc_service_active and not umc_service_was_active:
 			handler_set(['umc/saml/trusted/sp/%s=%s' % (fqdn, fqdn)])
 			__changed_trusted_sp = True
-		elif umc_service_was_active:
+		elif umc_service_was_active and not umc_service_active:
 			handler_unset(['umc/saml/trusted/sp/%s' % (fqdn,)])
 			__changed_trusted_sp = True
 	finally:
