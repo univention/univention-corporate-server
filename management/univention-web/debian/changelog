@@ -1,3 +1,10 @@
+univention-web (3.0.5-30) unstable; urgency=medium
+
+  * Bug #33590: prevent ProgressBar from jumping when text length
+    changes
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 10 Oct 2019 17:26:01 +0200
+
 univention-web (3.0.5-29) unstable; urgency=medium
 
   * Bug #46790: Make inform vendor on traceback popups hideable
