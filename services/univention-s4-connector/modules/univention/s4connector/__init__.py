@@ -583,7 +583,8 @@ class ucs:
 			udm_debug_level = int(self.baseConfig.get('%s/debug/udm/level' % self.CONFIGBASENAME, 1))
 		except ValueError:
 			udm_debug_level = 1
-		ud_c.set_level(ud.ADMIN, int(udm_debug_level))
+		for category in (ud.ADMIN, ud.LDAP):
+			ud_c.set_level(category, int(udm_debug_level))
 
 	def close_debug(self):
 		_d = ud.function('ldap.close_debug')  # noqa: F841
