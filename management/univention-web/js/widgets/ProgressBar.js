@@ -60,11 +60,17 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			this._component = new Text({content : ''});
+			this._component = new Text({
+				content : '',
+				'class': 'umcProgressBarComponent'
+			});
 			this.addChild(this._component);
 			this._progressBar = new ProgressBar({});
 			this.addChild(this._progressBar);
-			this._message = new Text({content : '&nbsp;'});
+			this._message = new Text({
+				content : '&nbsp;',
+				'class': 'umcProgressBarMessage'
+			});
 			this.addChild(this._message);
 
 			this._progressBar.set('value', 0);
