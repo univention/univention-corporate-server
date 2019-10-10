@@ -127,7 +127,6 @@ class UMCModuleTranslation(umc.UMC_Module):
 			print("%s AttributeError in module, trying to load as core module" % (e,))
 		else:
 			module['core'] = False
-			print("Check this %s" % module)
 			return module
 
 		try:
