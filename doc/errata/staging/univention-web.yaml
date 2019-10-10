@@ -3,9 +3,9 @@ release: "4.4"
 version: [2]
 scope: ucs_4.4-0-errata4.4-2
 src: univention-web
-fix: 
+fix: 3.0.5-30A~4.4.0.201910101738
 desc: |
  This update addresses the following issue(s):
- * Progress bars where jumping up and down when the info text changed and 
-   the number of lines where different. This has been fixed.
+ * Progress bars were jumping up and down when the info text changed and 
+   the number of lines were different. This has been corrected.
 bug: [33590]
