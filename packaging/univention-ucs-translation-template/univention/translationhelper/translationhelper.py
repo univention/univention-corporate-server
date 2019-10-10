@@ -42,8 +42,9 @@ import socket
 import sys
 import traceback
 
-import univention.debhelper as dh_ucs
-import univention.dh_umc as dh_umc
+from debian.deb822 import Deb822
+
+from . import umc
 from . import sourcefileprocessing
 from . import message_catalogs
 from .helper import make_parent_dir
@@ -73,7 +74,7 @@ class NoSpecialCaseDefintionsFound(Exception):
 	pass
 
 
-class UMCModuleTranslation(dh_umc.UMC_Module):
+class UMCModuleTranslation(umc.UMC_Module):
 
 	def __init__(self, attrs, target_language):
 		# type: (Dict[str, Any], str) -> None
@@ -120,7 +121,7 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 	def from_source_package(cls, module_in_source_tree, target_language):
 		# type: (BaseModule, str) -> UMCModuleTranslation
 		try:
-			# read package content with dh_umc
+			# read package content with umc
 			module = cls._get_module_from_source_package(module_in_source_tree, target_language)
 		except AttributeError as e:
 			print("%s AttributeError in module, trying to load as core module" % (e,))
@@ -139,12 +140,14 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 
 	@staticmethod
 	def _read_module_attributes_from_source_package(module):
-		# type: (BaseModule) -> dh_umc.UMC_Module
+		# type: (BaseModule) -> umc.UMC_Module
 		umc_module_definition_file = os.path.join(module['abs_path_to_src_pkg'], 'debian/', '{}.umc-modules'.format(module['module_name']))
 		with open(umc_module_definition_file, 'r') as fd:
 			def_file = fd.read()
 
-		return dh_ucs.parseRfc822(def_file)[0]
+		attributes = Deb822(def_file)
+		attributes = dict((k, [v]) for k, v in attributes.iteritems())  # simulate dh_ucs.parseRfc822 behaviour
+		return attributes
 
 	@classmethod
 	def _get_core_module_from_source_package(cls, module, target_language):
@@ -162,7 +165,7 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 	def _get_module_from_source_package(cls, module, target_language):
 		# type: (BaseModule, str) -> UMCModuleTranslation
 		attrs = cls._read_module_attributes_from_source_package(module)
-		for required in (dh_umc.MODULE, dh_umc.PYTHON, dh_umc.DEFINITION, dh_umc.JAVASCRIPT):
+		for required in (umc.MODULE, umc.PYTHON, umc.DEFINITION, umc.JAVASCRIPT):
 			if required not in attrs:
 				raise AttributeError('UMC module definition incomplete. key {} missing.'.format(required))
 			if required not in attrs:
@@ -314,8 +317,8 @@ def update_package_translation_files(module, output_dir):
 					po_path = os.path.join(output_dir, module['relative_path_src_pkg'], po_file)
 					make_parent_dir(po_path)
 					try:
-						dh_umc.create_po_file(po_path, module['module_name'], src_files, language)
-					except dh_umc.Error as exc:
+						umc.create_po_file(po_path, module['module_name'], src_files, language)
+					except umc.Error as exc:
 						print(exc)
 
 			# build python po files
@@ -327,8 +330,8 @@ def update_package_translation_files(module, output_dir):
 			po_path = os.path.join(output_dir, module['relative_path_src_pkg'], po_file)
 			make_parent_dir(po_path)
 			try:
-				dh_umc.module_xml2po(module, po_path, lang)
-			except dh_umc.Error as exc:
+				umc.module_xml2po(module, po_path, lang)
+			except umc.Error as exc:
 				print(exc)
 
 	except OSError as exc:
@@ -398,7 +401,6 @@ def get_special_cases_from_srcpkg(source_tree_path, target_language):
 	for sc_definitions in special_case_files:
 		for sc in read_special_case_definition(sc_definitions, os.getcwd(), target_language):
 			special_cases.append(sc)
-
 	return special_cases
 
 
@@ -426,7 +428,7 @@ def find_base_translation_modules(startdir, source_dir, module_basefile_name):
 	matches = []  # type: List[str]
 	for root, dirnames, filenames in os.walk('.'):
 		dirnames[:] = [d for d in dirnames if os.path.join(root, d) not in DIR_BLACKLIST]
-		matches.extend(os.path.join(root, fn) for fn in filenames if fn.endswith(module_basefile_name))
+		matches.extend(os.path.abspath(os.path.join(root, fn)) for fn in filenames if fn.endswith(module_basefile_name))
 
 	base_translation_modules = []  # type: List[BaseModule]
 

@@ -35,7 +35,7 @@ import os
 import message_catalogs
 import polib
 
-import univention.dh_umc as dh_umc
+from . import umc
 try:
 	from typing import Iterable  # noqa F401
 except ImportError:
@@ -78,7 +78,7 @@ class SourceFilesXgettext(SourceFileSet):
 
 	def _create_po_file(self, gettext_lang, pot_path):
 		# type: (str, str) -> None
-		dh_umc.create_po_file(pot_path, self.binary_pkg_name, self.files, language=gettext_lang)
+		umc.create_po_file(pot_path, self.binary_pkg_name, self.files, language=gettext_lang)
 
 	def _compile(self, po_path, mo_output_path):
 		# type: (str, str) -> None

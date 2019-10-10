@@ -28,6 +28,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 import os
+import subprocess
 
 
 def make_parent_dir(path):
@@ -43,3 +44,19 @@ def make_parent_dir(path):
 	except EnvironmentError:
 		if not os.path.isdir(dir_path):
 			raise
+
+
+def call(*argv):
+	# type: (*str) -> int
+	"""
+	Execute argv and wait.
+
+	:param args: List of command and arguments.
+
+	>>> call('true')
+	0
+	"""
+	if os.environ.get('DH_VERBOSE', False):
+		print('\t%s' % ' '.join(argv))
+	return subprocess.call(argv)
+

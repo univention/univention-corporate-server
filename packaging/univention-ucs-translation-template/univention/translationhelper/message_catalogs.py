@@ -38,7 +38,7 @@ import polib
 import os
 import subprocess
 
-import univention.dh_umc as dh_umc
+from . import umc
 from .helper import make_parent_dir
 try:
 	from typing import Any, List, Union  # noqa F401
@@ -80,8 +80,9 @@ def create_empty_po(binary_pkg_name, new_po_path):
 	make_parent_dir(new_po_path)
 	_call_gettext(
 		'xgettext',
-		'--from-code=UTF-8',
 		'--force-po',
+		'--add-comments=i18n',
+		'--from-code=UTF-8',
 		'--sort-output',
 		'--package-name={}'.format(binary_pkg_name),
 		'--msgid-bugs-address=packages@univention.de',
@@ -126,7 +127,7 @@ def join_existing(language, output_file, input_files, cwd=os.getcwd()):
 
 def po_to_json(po_path, json_output_path):
 	# type: (str, str) -> None
-	dh_umc.create_json_file(po_path)
+	umc.create_json_file(po_path)
 	make_parent_dir(json_output_path)
 	os.rename(po_path.replace('.po', '.json'), json_output_path)
 
