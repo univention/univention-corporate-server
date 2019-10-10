@@ -6,12 +6,12 @@ src: univention-s4-connector
 fix: 13.0.2-51A~4.4.0.201910101733
 desc: |
  This update addresses the following issue(s):
+ * The logging of UDM related debug messages has been improved. This
+   can be controlled by the UCR variable connector/debug/udm/level.
  * The error handling for already removed objects has been improoved.
  * The detection of equal DN's when moving objects has been enhanced.
  * The use of the function normalise_userAccountControl() has been replaced
    in mapping.py with a static mapping.
  * The UDM modules container/msgpo, settings/msprintconnectionpolicy and
    settings/mswmifilter have been modernized.
- * The possibility to log UDM debug messages has been added by setting
-   the UCR variable connector/debug/udm/level.
-bug: [49876, 49976, 50305, 50342, 43096]
+bug: [43096, 49876, 49976, 50305, 50342]
