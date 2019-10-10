@@ -36,13 +36,25 @@ Categories=service-s4con
 
 [connector/debug/function]
 Description[de]=Ist diese Variable auf '1' gesetzt, werden Funktionsaufrufe als zusätzliche Debug-Information protokolliert. Ist die Variable auf '0' gesetzt oder nicht gesetzt, werden die Aufrufe nicht protokolliert.
-Description[en]=If the variable is set to '1' function calls are logged as additional debug information. If the variable is set to '0' or unset no calls are logged.
+Description[en]=If the variable is set to '1' function calls get logged as additional debug information. If the variable is set to '0' or unset no calls are logged.
 Type=int
 Categories=service-s4con
 
 [connector/debug/level]
-Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention/connector-s4.log. Mögliche Werte sind 0-4. Ist die Variable nicht gesetzt gilt '2'.
+Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention/connector-s4.log. Mögliche Werte sind 0-4. Ist die Variable nicht gesetzt, dann gilt '2'.
 Description[en]=Specifies the amount of debug information to be written to /var/log/univention/connector-s4.log. Possible values are 0-4. If the variable is unset, '2' applies.
+Type=int
+Categories=service-s4con
+
+[connector/debug/udm/function]
+Description[de]=Ist diese Variable auf '1' gesetzt, werden UDM-interne Funktionsaufrufe als zusätzliche Debug-Information protokolliert. Ist die Variable auf '0' gesetzt oder nicht gesetzt, werden die Aufrufe nicht protokolliert.
+Description[en]=If the variable is set to '1' UDM intenral function calls get logged as additional debug information. If the variable is set to '0' or unset no calls are logged.
+Type=int
+Categories=service-s4con
+
+[connector/debug/udm/level]
+Description[de]=Debug-Level für UDM-Operationen, protokolliert in /var/log/univention/connector-s4.log. Mögliche Werte sind 0-4. Ist die Variable nicht gesetzt, dann gilt '1'.
+Description[en]=Specifies the debug level for UDM operations to be written to /var/log/univention/connector-s4.log. Possible values are 0-4. If the variable is unset, '1' applies.
 Type=int
 Categories=service-s4con
 

@@ -1,3 +1,11 @@
+univention-s4-connector (13.0.2-51) unstable; urgency=medium
+
+  * Bug #43096: Add possibility to log UDM debug messages.
+    Controlled by two new UCR variables connector/debug/udm/level
+    and connector/debug/udm/function.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 10 Oct 2019 17:27:54 +0200
+
 univention-s4-connector (13.0.2-50) unstable; urgency=medium
 
   * Bug #50342: modernize UDM modules

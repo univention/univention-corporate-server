@@ -56,6 +56,7 @@ import univention.uldap
 import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.objects
+import univention.debug as ud_c
 import univention.debug2 as ud
 
 from univention.s4connector.s4cache import S4Cache
@@ -571,6 +572,18 @@ class ucs:
 		else:
 			debug_level = 2
 		ud.set_level(ud.LDAP, int(debug_level))
+
+		try:
+			udm_function_level = int(self.baseConfig.get('%s/debug/udm/function' % self.CONFIGBASENAME, 0))
+		except ValueError:
+			udm_function_level = 0
+		ud_c.init('/var/log/univention/%s-s4.log' % self.CONFIGBASENAME, 1, udm_function_level)
+
+		try:
+			udm_debug_level = int(self.baseConfig.get('%s/debug/udm/level' % self.CONFIGBASENAME, 1))
+		except ValueError:
+			udm_debug_level = 1
+		ud_c.set_level(ud.ADMIN, int(udm_debug_level))
 
 	def close_debug(self):
 		_d = ud.function('ldap.close_debug')  # noqa: F841
