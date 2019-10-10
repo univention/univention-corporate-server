@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [2]
+scope: ucs_4.4-0-errata4.4-2
+src: univention-appcenter
+fix: 8.0.11-72A~4.4.0.201910101506
+desc: |-
+  This update addresses the following issue(s):
+  * Use univention-l10n-build to build localization files for
+    univention-appcenter.
+bug: [50340]
