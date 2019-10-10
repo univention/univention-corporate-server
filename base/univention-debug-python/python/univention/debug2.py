@@ -285,7 +285,7 @@ class function(object):
 	   Use function decorator :py:func:`trace` instead.
 
 	>>> def my_func(agr1, agr2=None):
-	...    _d = function('my_func(...)')
+	...    _d = function('my_func(...)')  # noqa: F841
 	...    return 'yes'
 	>>> my_func(42)
 	'yes'
