@@ -78,16 +78,16 @@ def ignore_filter_from_attr(attribute, ucr_key, default=''):
 
 
 def ucs2s4_sid(s4connector, key, object):
-	_d = ud.function('mapping.ucs2s4_sid -- not implemented')
+	_d = ud.function('mapping.ucs2s4_sid -- not implemented')  # noqa: F841
 
 
 def s42ucs_sid(s4connector, key, object):
-	_d = ud.function('mapping.s42ucs_sid')
+	_d = ud.function('mapping.s42ucs_sid')  # noqa: F841
 	return univention.s4connector.s4.decode_sid(object['objectSid'])
 
 
 def ucs2s4_givenName(s4connector, key, object):
-	_d = ud.function('mapping.ucs2s4_givenName')
+	_d = ud.function('mapping.ucs2s4_givenName')  # noqa: F841
 	if object.has_key('firstname') and object.has_key('lastname'):
 		return '%s %s' % (object['firstname'], object['lastname'])
 	elif object.has_key('firstname'):
@@ -97,43 +97,43 @@ def ucs2s4_givenName(s4connector, key, object):
 
 
 def s42ucs_givenName(s4connector, key, object):
-	_d = ud.function('mapping.s42ucs_givenName -- not implemented')
+	_d = ud.function('mapping.s42ucs_givenName -- not implemented')  # noqa: F841
 
 
 def ucs2s4_dn_string(dn):
-	_d = ud.function('mapping.ucs2s4_dn_string')
+	_d = ud.function('mapping.ucs2s4_dn_string')  # noqa: F841
 	return string.replace(dn, configRegistry['ldap/base'], configRegistry['connector/s4/ldap/base'])
 
 
 def ucs2s4_dn(s4connector, key, object):
-	_d = ud.function('mapping.ucs2s4_dn')
+	_d = ud.function('mapping.ucs2s4_dn')  # noqa: F841
 	return ucs2s4_dn_string(object.dn)
 
 
 def s42ucs_dn_string(dn):
-	_d = ud.function('mapping.s42ucs_dn_string')
+	_d = ud.function('mapping.s42ucs_dn_string')  # noqa: F841
 	return string.replace(dn, configRegistry['connector/s4/ldap/base'], configRegistry['ldap/base'])
 
 
 def s42ucs_dn(s4connector, key, object):
-	_d = ud.function('mapping.s42ucs_dn')
+	_d = ud.function('mapping.s42ucs_dn')  # noqa: F841
 	return s42ucs_dn_string(object.dn)
 
 
 def ucs2s4_user_dn(s4connector, key, object):
-	_d = ud.function('mapping.ucs2s4_user_dn')
+	_d = ud.function('mapping.ucs2s4_user_dn')  # noqa: F841
 	return string.replace(ucs2s4_dn(s4connector, key, object), "uid=", "cn=")
 
 
 def s42ucs_user_dn(s4connector, key, object):
-	_d = ud.function('mapping.s42ucs_user_dn')
+	_d = ud.function('mapping.s42ucs_user_dn')  # noqa: F841
 	return string.replace(s42ucs_dn(s4connector, key, object), "cn=", "uid=")
 
 
 def ucs2s4_sambaGroupType(s4connector, key, object):
-	_d = ud.function('mapping.ucs2s4_sambaGroupType -- not implemented')
+	_d = ud.function('mapping.ucs2s4_sambaGroupType -- not implemented')  # noqa: F841
 	return "-2147483644"
 
 
 def s42ucs_sambaGroupType(s4connector, key, object):
-	_d = ud.function('mapping.s42ucs_sambaGroupType -- not implemented')
+	_d = ud.function('mapping.s42ucs_sambaGroupType -- not implemented')  # noqa: F841

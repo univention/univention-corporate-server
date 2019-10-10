@@ -51,7 +51,7 @@ class LockingDB:
 	"""
 
 	def __init__(self, filename):
-		_d = ud.function('LockingDB.%s' % func_name())
+		_d = ud.function('LockingDB.%s' % func_name())  # noqa: F841
 		self.filename = filename
 		self._dbcon = sqlite3.connect(self.filename)
 		self.s4cache = {}
@@ -59,7 +59,7 @@ class LockingDB:
 		self.__create_tables()
 
 	def lock_ucs(self, uuid):
-		_d = ud.function('LockingDB.%s' % func_name())
+		_d = ud.function('LockingDB.%s' % func_name())  # noqa: F841
 
 		if not uuid:
 			return None
@@ -76,7 +76,7 @@ class LockingDB:
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
 	def unlock_ucs(self, uuid):
-		_d = ud.function('LockingDB.%s' % func_name())
+		_d = ud.function('LockingDB.%s' % func_name())  # noqa: F841
 
 		if not uuid:
 			return None
@@ -88,7 +88,7 @@ class LockingDB:
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
 	def lock_s4(self, guid):
-		_d = ud.function('LockingDB.%s' % func_name())
+		_d = ud.function('LockingDB.%s' % func_name())  # noqa: F841
 
 		if not guid:
 			return None
@@ -100,7 +100,7 @@ class LockingDB:
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
 	def unlock_s4(self, guid):
-		_d = ud.function('LockingDB.%s' % func_name())
+		_d = ud.function('LockingDB.%s' % func_name())  # noqa: F841
 
 		if not guid:
 			return None
@@ -112,7 +112,7 @@ class LockingDB:
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
 	def is_ucs_locked(self, uuid):
-		_d = ud.function('LockingDB.%s' % func_name())
+		_d = ud.function('LockingDB.%s' % func_name())  # noqa: F841
 
 		if not uuid:
 			return False
@@ -129,7 +129,7 @@ class LockingDB:
 		return False
 
 	def is_s4_locked(self, guid):
-		_d = ud.function('LockingDB.%s' % func_name())
+		_d = ud.function('LockingDB.%s' % func_name())  # noqa: F841
 
 		if not guid:
 			return False
@@ -146,7 +146,7 @@ class LockingDB:
 		return False
 
 	def __create_tables(self):
-		_d = ud.function('LockingDB.%s' % func_name())
+		_d = ud.function('LockingDB.%s' % func_name())  # noqa: F841
 
 		sql_commands = [
 			"CREATE TABLE IF NOT EXISTS S4_LOCK (id INTEGER PRIMARY KEY, guid TEXT);",

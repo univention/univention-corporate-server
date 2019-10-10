@@ -56,7 +56,7 @@ class S4:
 		self.open_ucs(binddn, bindpwd)
 
 	def init_debug(self):
-		_d = ud.function('init_debug')
+		_d = ud.function('init_debug')  # noqa: F841
 		try:
 			function_level = int(self.ucr.get('%s/debug/function' % self.ucrbase, 0))
 		except:

@@ -83,7 +83,7 @@ class S4Cache:
 	"""
 
 	def __init__(self, filename):
-		_d = ud.function('S4Cache.%s' % func_name())
+		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
 		self.filename = filename
 		self._dbcon = sqlite3.connect(self.filename)
 		self.s4cache = {}
@@ -91,7 +91,7 @@ class S4Cache:
 		self.__create_tables()
 
 	def add_entry(self, guid, entry):
-		_d = ud.function('S4Cache.%s' % func_name())
+		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
 
 		if not self._guid_exists(guid):
 			self._add_entry(guid, entry)
@@ -100,7 +100,7 @@ class S4Cache:
 		self.s4cache[guid] = entry
 
 	def diff_entry(self, old_entry, new_entry):
-		_d = ud.function('S4Cache.%s' % func_name())
+		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
 
 		result = {'added': None, 'removed': None, 'changed': None}
 
@@ -113,7 +113,7 @@ class S4Cache:
 		return result
 
 	def get_entry(self, guid):
-		_d = ud.function('S4Cache.%s' % func_name())
+		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
 
 		entry = {}
 
@@ -145,7 +145,7 @@ class S4Cache:
 		return entry
 
 	def remove_entry(self, guid):
-		_d = ud.function('S4Cache.%s' % func_name())
+		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
 
 		guid_id = self._get_guid_id(guid)
 
@@ -185,7 +185,7 @@ class S4Cache:
 				self._dbcon = sqlite3.connect(self.filename)
 
 	def __create_tables(self):
-		_d = ud.function('S4Cache.%s' % func_name())
+		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
 
 		sql_commands = [
 			"CREATE TABLE IF NOT EXISTS GUIDS (id INTEGER PRIMARY KEY, guid TEXT);",
@@ -199,12 +199,12 @@ class S4Cache:
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
 	def _guid_exists(self, guid):
-		_d = ud.function('S4Cache.%s' % func_name())
+		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
 
 		return self._get_guid_id(guid.strip()) is not None
 
 	def _get_guid_id(self, guid):
-		_d = ud.function('S4Cache.%s' % func_name())
+		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
 
 		sql_commands = [
 			("SELECT id FROM GUIDS WHERE guid=?;", (str(guid),))
@@ -218,7 +218,7 @@ class S4Cache:
 		return None
 
 	def _append_guid(self, guid):
-		_d = ud.function('S4Cache.%s' % func_name())
+		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
 
 		sql_commands = [
 			("INSERT INTO GUIDS(guid) VALUES(?);", (str(guid),))
@@ -227,7 +227,7 @@ class S4Cache:
 		rows = self.__execute_sql_commands(sql_commands, fetch_result=False)
 
 	def _get_attr_id(self, attr):
-		_d = ud.function('S4Cache.%s' % func_name())
+		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
 
 		sql_commands = [
 			("SELECT id FROM ATTRIBUTES WHERE attribute=?;", (str(attr),))
@@ -241,12 +241,12 @@ class S4Cache:
 		return None
 
 	def _attr_exists(self, guid):
-		_d = ud.function('S4Cache.%s' % func_name())
+		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
 
 		return self._get_attr_id(guid) is not None
 
 	def _create_attr(self, attr):
-		_d = ud.function('S4Cache.%s' % func_name())
+		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
 
 		sql_commands = [
 			("INSERT INTO ATTRIBUTES(attribute) VALUES(?);", (str(attr),))
@@ -255,7 +255,7 @@ class S4Cache:
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
 	def _get_attr_id_and_create_if_not_exists(self, attr):
-		_d = ud.function('S4Cache.%s' % func_name())
+		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
 		attr_id = self._get_attr_id(attr)
 		if not attr_id:
 			self._create_attr(attr)
@@ -264,7 +264,7 @@ class S4Cache:
 		return attr_id
 
 	def _add_entry(self, guid, entry):
-		_d = ud.function('S4Cache.%s' % func_name())
+		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
 
 		guid = guid.strip()
 
@@ -285,7 +285,7 @@ class S4Cache:
 			self.__execute_sql_commands(sql_commands, fetch_result=False)
 
 	def _update_entry(self, guid, entry):
-		_d = ud.function('S4Cache.%s' % func_name())
+		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
 
 		guid = guid.strip()
 		guid_id = self._get_guid_id(guid)

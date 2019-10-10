@@ -698,7 +698,7 @@ def __get_s4_msdcs_soa(s4connector, zoneName):
 	''' Required to keep the SOA serial numbers in sync
 	'''
 	func_name = sys._getframe().f_code.co_name
-	_d = ud.function(func_name)
+	_d = ud.function(func_name)  # noqa: F841
 
 	msdcs_obj = {}
 	msdcs_zonename = compatible_modstring('_msdcs.%s' % zoneName)
@@ -737,7 +737,7 @@ def __get_s4_msdcs_soa(s4connector, zoneName):
 
 
 def s4_zone_create(s4connector, object):
-	_d = ud.function('s4_zone_create')
+	_d = ud.function('s4_zone_create')  # noqa: F841
 
 	soa_dn = object['dn']
 	zone_dn = s4connector.lo.parentDn(soa_dn)
@@ -796,7 +796,7 @@ def s4_zone_create(s4connector, object):
 
 
 def s4_zone_msdcs_sync(s4connector, object):
-	_d = ud.function('s4_zone_msdcs_sync')
+	_d = ud.function('s4_zone_msdcs_sync')  # noqa: F841
 
 	# Get the current serial number of the OpenLDAP domainname zone
 	domainZoneName = object['attributes']['zoneName'][0]
@@ -861,7 +861,7 @@ def s4_zone_create_wrapper(s4connector, object):
 
 
 def s4_zone_delete(s4connector, object):
-	_d = ud.function('s4_zone_delete')
+	_d = ud.function('s4_zone_delete')  # noqa: F841
 
 	soa_dn = object['dn']
 	zone_dn = s4connector.lo.parentDn(soa_dn)
@@ -880,7 +880,7 @@ def s4_zone_delete(s4connector, object):
 
 
 def s4_dns_node_base_create(s4connector, object, dnsRecords):
-	_d = ud.function('s4_dns_node_base_create')
+	_d = ud.function('s4_dns_node_base_create')  # noqa: F841
 
 	relativeDomainNames = object['attributes'].get('relativeDomainName')
 	relativeDomainNames = univention.s4connector.s4.compatible_list(relativeDomainNames)
@@ -900,7 +900,7 @@ def s4_dns_node_base_create(s4connector, object, dnsRecords):
 
 
 def s4_dns_node_base_delete(s4connector, object):
-	_d = ud.function('s4_dns_node_base_delete')
+	_d = ud.function('s4_dns_node_base_delete')  # noqa: F841
 
 	relativeDomainNames = object['attributes'].get('relativeDomainName')
 	relativeDomainNames = univention.s4connector.s4.compatible_list(relativeDomainNames)
@@ -918,7 +918,7 @@ def s4_dns_node_base_delete(s4connector, object):
 
 
 def s4_host_record_create(s4connector, object):
-	_d = ud.function('s4_host_record_create')
+	_d = ud.function('s4_host_record_create')  # noqa: F841
 
 	dnsRecords = []
 
@@ -953,7 +953,7 @@ def s4_host_record_create(s4connector, object):
 
 
 def ucs_host_record_create(s4connector, object):
-	_d = ud.function('ucs_host_record_create')
+	_d = ud.function('ucs_host_record_create')  # noqa: F841
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_host_record_create: object: %s' % object)
 
 	zoneName = object['attributes']['zoneName'][0]
@@ -997,7 +997,7 @@ def ucs_host_record_create(s4connector, object):
 
 
 def ucs_host_record_delete(s4connector, object):
-	_d = ud.function('ucs_host_record_delete')
+	_d = ud.function('ucs_host_record_delete')  # noqa: F841
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_host_record_delete: object: %s' % object)
 
 	zoneName = object['attributes']['zoneName'][0]
@@ -1016,7 +1016,7 @@ def ucs_host_record_delete(s4connector, object):
 
 
 def s4_ptr_record_create(s4connector, object):
-	_d = ud.function('s4_ptr_record_create')
+	_d = ud.function('s4_ptr_record_create')  # noqa: F841
 
 	dnsRecords = []
 
@@ -1028,7 +1028,7 @@ def s4_ptr_record_create(s4connector, object):
 
 
 def ucs_ptr_record_create(s4connector, object):
-	_d = ud.function('ucs_ptr_record_create')
+	_d = ud.function('ucs_ptr_record_create')  # noqa: F841
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_ptr_record_create: object: %s' % object)
 
 	zoneName = object['attributes']['zoneName'][0]
@@ -1061,7 +1061,7 @@ def ucs_ptr_record_create(s4connector, object):
 
 
 def ucs_ptr_record_delete(s4connector, object):
-	_d = ud.function('ucs_ptr_record_delete')
+	_d = ud.function('ucs_ptr_record_delete')  # noqa: F841
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_ptr_record_delete: object: %s' % object)
 
 	zoneName = object['attributes']['zoneName'][0]
@@ -1080,7 +1080,7 @@ def ucs_ptr_record_delete(s4connector, object):
 
 
 def ucs_cname_create(s4connector, object):
-	_d = ud.function('ucs_cname_create')
+	_d = ud.function('ucs_cname_create')  # noqa: F841
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_cname_create: object: %s' % object)
 
 	zoneName = object['attributes']['zoneName'][0]
@@ -1113,7 +1113,7 @@ def ucs_cname_create(s4connector, object):
 
 
 def ucs_cname_delete(s4connector, object):
-	_d = ud.function('ucs_cname_delete')
+	_d = ud.function('ucs_cname_delete')  # noqa: F841
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_cname_delete: object: %s' % object)
 
 	zoneName = object['attributes']['zoneName'][0]
@@ -1132,7 +1132,7 @@ def ucs_cname_delete(s4connector, object):
 
 
 def s4_cname_create(s4connector, object):
-	_d = ud.function('s4_cname_create')
+	_d = ud.function('s4_cname_create')  # noqa: F841
 
 	dnsRecords = []
 
@@ -1142,7 +1142,7 @@ def s4_cname_create(s4connector, object):
 
 
 def ucs_srv_record_create(s4connector, object):
-	_d = ud.function('ucs_srv_record_create')
+	_d = ud.function('ucs_srv_record_create')  # noqa: F841
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: object: %s' % object)
 
 	zoneName = object['attributes']['zoneName'][0]
@@ -1199,7 +1199,7 @@ def ucs_srv_record_create(s4connector, object):
 
 
 def ucs_srv_record_delete(s4connector, object):
-	_d = ud.function('ucs_srv_record_delete')
+	_d = ud.function('ucs_srv_record_delete')  # noqa: F841
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_delete: object: %s' % object)
 
 	zoneName = object['attributes']['zoneName'][0]
@@ -1218,7 +1218,7 @@ def ucs_srv_record_delete(s4connector, object):
 
 
 def s4_srv_record_create(s4connector, object):
-	_d = ud.function('s4_srv_record_create')
+	_d = ud.function('s4_srv_record_create')  # noqa: F841
 
 	dnsRecords = []
 
@@ -1263,7 +1263,7 @@ def s4_srv_record_create(s4connector, object):
 
 
 def ucs_txt_record_create(s4connector, object):
-	_d = ud.function('ucs_txt_record_create')
+	_d = ud.function('ucs_txt_record_create')  # noqa: F841
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_txt_record_create: object: %s' % object)
 	udm_property = 'txt'
 
@@ -1304,7 +1304,7 @@ def ucs_txt_record_create(s4connector, object):
 
 
 def ucs_txt_record_delete(s4connector, object):
-	_d = ud.function('ucs_txt_record_delete')
+	_d = ud.function('ucs_txt_record_delete')  # noqa: F841
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_txt_record_delete: object: %s' % object)
 
 	zoneName = object['attributes']['zoneName'][0]
@@ -1323,7 +1323,7 @@ def ucs_txt_record_delete(s4connector, object):
 
 
 def s4_txt_record_create(s4connector, object):
-	_d = ud.function('s4_txt_record_create')
+	_d = ud.function('s4_txt_record_create')  # noqa: F841
 
 	dnsRecords = []
 
@@ -1333,7 +1333,7 @@ def s4_txt_record_create(s4connector, object):
 
 
 def ucs_ns_record_create(s4connector, object):
-	_d = ud.function('ucs_ns_record_create')
+	_d = ud.function('ucs_ns_record_create')  # noqa: F841
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_ns_record_create: object: %s' % object)
 	udm_property = 'nameserver'
 
@@ -1367,7 +1367,7 @@ def ucs_ns_record_create(s4connector, object):
 
 
 def ucs_ns_record_delete(s4connector, object):
-	_d = ud.function('ucs_ns_record_delete')
+	_d = ud.function('ucs_ns_record_delete')  # noqa: F841
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_ns_record_delete: object: %s' % object)
 
 	zoneName = object['attributes']['zoneName'][0]
@@ -1386,7 +1386,7 @@ def ucs_ns_record_delete(s4connector, object):
 
 
 def s4_ns_record_create(s4connector, object):
-	_d = ud.function('s4_ns_record_create')
+	_d = ud.function('s4_ns_record_create')  # noqa: F841
 
 	dnsRecords = []
 
@@ -1396,7 +1396,7 @@ def s4_ns_record_create(s4connector, object):
 
 
 def ucs_zone_create(s4connector, object, dns_type):
-	_d = ud.function('ucs_zone_create')
+	_d = ud.function('ucs_zone_create')  # noqa: F841
 
 	zoneName = object['attributes']['zoneName'][0]
 	relativeDomainName = object['attributes']['relativeDomainName'][0]
@@ -1499,7 +1499,7 @@ def ucs_zone_create(s4connector, object, dns_type):
 
 
 def ucs_zone_delete(s4connector, object, dns_type):
-	_d = ud.function('ucs_zone_delete')
+	_d = ud.function('ucs_zone_delete')  # noqa: F841
 
 	zoneName = object['attributes']['zoneName'][0]
 	relativeDomainName = object['attributes']['relativeDomainName'][0]
@@ -1544,7 +1544,7 @@ def _identify_dns_ucs_object(s4connector, object):
 
 
 def _identify_dns_con_object(s4connector, object):
-	_d = ud.function('_identify_dns_con_object')
+	_d = ud.function('_identify_dns_con_object')  # noqa: F841
 	# At this point dn_mapping_function already has converted object['dn'] from con to ucs
 	# But since there is no attribute mapping defined for DNS, the object attributes still
 	# are the ones from Samba.
@@ -1596,7 +1596,7 @@ def _identify_dns_con_object(s4connector, object):
 
 
 def ucs2con(s4connector, key, object):
-	_d = ud.function('dns: ucs2con')
+	_d = ud.function('dns: ucs2con')  # noqa: F841
 
 	# At this point dn_mapping_function already has converted object['dn'] from ucs to con
 	# But since there is no attribute mapping defined for DNS, the object attributes still
@@ -1671,7 +1671,7 @@ def ucs2con(s4connector, key, object):
 
 
 def con2ucs(s4connector, key, object):
-	_d = ud.function('dns: con2ucs')
+	_d = ud.function('dns: con2ucs')  # noqa: F841
 
 	ud.debug(ud.LDAP, ud.INFO, 'dns con2ucs: Object (%s): %s' % (object['dn'], object))
 
