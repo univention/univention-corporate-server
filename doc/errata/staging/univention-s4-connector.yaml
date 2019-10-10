@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issue(s):
  * The logging of UDM related debug messages has been improved. This
    can be controlled by the UCR variable connector/debug/udm/level.
- * The error handling for already removed objects has been improoved.
+ * The error handling for already removed objects has been improved.
  * The detection of equal DN's when moving objects has been enhanced.
  * The use of the function normalise_userAccountControl() has been replaced
    in mapping.py with a static mapping.
