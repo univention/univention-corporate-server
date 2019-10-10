@@ -144,7 +144,7 @@ def default(module, co, lo, position):
 	:param position: |UDM| position instance.
 	:returns: An initialized |UDM| object.
 	"""
-	_d = ud.function('admin.objects.default')
+	_d = ud.function('admin.objects.default')  # noqa: F841
 	module = univention.admin.modules.get(module)
 	object = module.object(co, lo, position)
 	for name, property in module.property_descriptions.items():
@@ -278,7 +278,7 @@ def getPolicyReference(object, policy_type):
 	:returns: The policy applying to the object or `None`.
 	"""
 	# FIXME: Move this to handlers.simpleLdap?
-	_d = ud.function('admin.objects.getPolicyReference policy_type=%s' % (policy_type))
+	_d = ud.function('admin.objects.getPolicyReference policy_type=%s' % (policy_type))  # noqa: F841
 
 	policyReference = None
 	for policy_dn in object.policies:
@@ -298,7 +298,7 @@ def removePolicyReference(object, policy_type):
 	:param policy_type: Name of the |UDM| policy to lookup.
 	"""
 	# FIXME: Move this to handlers.simpleLdap?
-	_d = ud.function('admin.objects.removePolicyReference policy_type=%s' % (policy_type))
+	_d = ud.function('admin.objects.removePolicyReference policy_type=%s' % (policy_type))  # noqa: F841
 
 	remove = None
 	for policy_dn in object.policies:
@@ -319,7 +319,7 @@ def replacePolicyReference(object, policy_type, new_reference):
 	:param policy_type: Name of the |UDM| policy to lookup.
 	"""
 	# FIXME: Move this to handlers.simpleLdap?
-	_d = ud.function('admin.objects.replacePolicyReference policy_type=%s new_reference=%s' % (policy_type, new_reference))
+	_d = ud.function('admin.objects.replacePolicyReference policy_type=%s new_reference=%s' % (policy_type, new_reference))  # noqa: F841
 
 	module = univention.admin.modules.get(policy_type)
 	if not univention.admin.modules.recognize(module, new_reference, object.lo.get(new_reference)):
@@ -341,7 +341,7 @@ def restorePolicyReference(object, policy_type):
 	:param policy_type: Name of the |UDM| policy to lookup.
 	"""
 	# FIXME: Move this to handlers.simpleLdap?
-	_d = ud.function('admin.objects.restorePolicyReference policy_type=%s' % (policy_type))
+	_d = ud.function('admin.objects.restorePolicyReference policy_type=%s' % (policy_type))  # noqa: F841
 	module = univention.admin.modules.get(policy_type)
 	if not module:
 		return
