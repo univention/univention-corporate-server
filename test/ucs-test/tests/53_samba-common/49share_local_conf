@@ -13,6 +13,7 @@
 ## bugs: [34215]
 ## versions:
 ##  4.1-0: skip
+##  4.3-2: fixed
  
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
