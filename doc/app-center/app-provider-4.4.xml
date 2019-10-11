@@ -582,6 +582,35 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                 environment variables.
             </para>
             <para>
+                Univention Configuration Registry, UCR for short, is the
+                central tool for managing the local system configuration of UCS
+                (see <ulink
+                    url="https://docs.software-univention.de/manual.html#computers:Administration_of_local_system_configuration_with_Univention_Configuration_Registry">Manual
+                    for users and administrators</ulink>). Settings from UCR can
+                be used in the Docker compose file to parameterize the Docker
+                setup. This comes in very handy when settings like for example
+                the local LDAP server should be passed to a container via its
+                environment variables.
+                <programlisting>
+[...]
+services:
+    [...]
+    environment:
+        ROOT_URL: https://@%@hostname@%@.@%@domainname@%@/$appid
+        LDAP_Host: "@%@ldap/server/name@%@"
+        LDAP_Port: "@%@ldap/server/port@%@"
+        LDAP_BaseDN: "@%@ldap/base@%@"
+        LDAP_Authentication_UserDN: "@%@appcenter/apps/$appid/hostdn@%@"
+    [...]
+                </programlisting>
+                The example above is an excerpt from a Docker compose file
+                where environment variables are defined for a service. The
+                values of the variables are set to the values of the given UCR
+                variable. <userinput>$appid</userinput> needs to be replaced
+                manually by you app id. UCR variables are enclosed by
+                <userinput>@%@</userinput>. Please mind the double quotes.
+            </para>
+            <para>
                   You also need to define the <guimenu>Name of the "main" service
                   within the docker-compose.yml</guimenu> below the <guimenu>Contents
                   of the docker-compose.yml file</guimenu>.
