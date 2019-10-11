@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [1, 2]
+scope: ucs_4.3-0-ucs4.3-5
+src: subversion
+fix: 1.9.5-1+deb9u5
+desc: |
+ This update addresses the following issue:
+ * Fix regression caused by erratum 566 for Apache2, which breaks HTTP/2.0 for
+   Subversion.
+bug: [50357]
+ignore: [version.scope, release+scope.consistent]
