@@ -421,7 +421,6 @@ class Instance(Base):
 			raise UMC_Error(_('The attributes could not be saved: %s') % (UDM_Error(exc)))
 		return _("Successfully changed your profile data.")
 
-
 	@forward_to_master
 	@prevent_denial_of_service
 	@sanitize(
@@ -559,7 +558,7 @@ class Instance(Base):
 		chars = string.ascii_letters.replace("l", "").replace("I", "").replace("O", "") + "".join(map(str, range(2, 10)))
 		rand = random.SystemRandom()
 		res = ""
-		for _ in xrange(length):
+		for _ in range(length):
 			res += rand.choice(chars)
 		return res
 

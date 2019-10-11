@@ -132,7 +132,7 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
 		#
 		#
 
-		print "Starting external program {}...".format(self.cmd)
+		print("Starting external program {}...".format(self.cmd))
 		cmd_proc = subprocess.Popen(self.cmd, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		cmd_out, cmd_err = cmd_proc.communicate()
 		cmd_exit = cmd_proc.wait()

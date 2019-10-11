@@ -6,10 +6,12 @@ Build-Depends: debhelper (>= 7.0.50~),
  dh-systemd,
  ucslint-univention,
  python2.7-dev,
- python-support,
+ dh-python,
+ python-all,
+ python3-all,
  python-polib,
  univention-config-dev,
- univention-management-console-dev,
+ univention-management-console-dev (>= 11.0.4-37),
  univention-ucs-translation-template,
  stylus,
 Standards-Version: 3.7.2
@@ -49,7 +51,8 @@ Description: Univention Self Service
 
 Package: univention-self-service-passwordreset-umc
 Architecture: all
-Depends: ${misc:Depends},
+Depends: ${python:Depends}, ${python3:Depends},
+ ${misc:Depends},
  univention-config,
  univention-join,
  shell-univention-lib,
@@ -68,7 +71,8 @@ Description: Password reset module for Univention Self Service.
 
 Package: univention-self-service-invitation
 Architecture: all
-Depends: ${misc:Depends}
+Depends: ${misc:Depends},
+ python-six
 Description: Invitation module for Univention Self Service.
  This package contains a listener and a daemon for the
  invitation functionality of the Univention Self Service.

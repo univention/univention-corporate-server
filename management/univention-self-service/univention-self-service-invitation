@@ -28,16 +28,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import univention.lib.umc
-import univention.config_registry
-import univention.uldap
-import ldap.filter
 import argparse
 import glob
 import os
 import time
 import logging
 import sys
+
+import six
+import ldap.filter
+
+import univention.lib.umc
+import univention.config_registry
+import univention.uldap
 
 TRIGGER_DIR = '/var/cache/univention-directory-listener/selfservice-invitation'
 
@@ -117,13 +120,13 @@ class Invitation(object):
 					self.logger.exception('Failed sending invitation for user {}'.format(user))
 					exc_info = sys.exc_info()
 			if exc_info:
-				raise (exc_info[0], exc_info[1], exc_info[2])
+				six.reraise(*exc_info)
 
 
 if __name__ == '__main__':
 	inv = Invitation()
 	try:
 		inv.check_trigger()
-	except Exception as e:
+	except Exception:
 		inv.logger.exception('Got exception!')
 		sys.exit(1)

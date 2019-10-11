@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import socket
 import datetime
 import re
@@ -116,4 +117,4 @@ for key in keys:
 
 	expdiff = entries[key][1] - datetime.datetime.now()
 	exp = "in {:>5} seconds (at {})".format(expdiff.seconds, entries[key][1].strftime("%d.%m.%Y %H:%M:%S"))
-	print "{:<15} {:>5} /{:>5} \t expiration {}".format(key + ":", entries[key][0], limit, exp)
+	print("{:<15} {:>5} /{:>5} \t expiration {}".format(key + ":", entries[key][0], limit, exp))
