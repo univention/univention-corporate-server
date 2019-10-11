@@ -34,9 +34,10 @@ Package: univention-management-console-module-join
 Architecture: all
 Depends: ${misc:Depends},
  ${python:Depends},
+ ${python3:Depends},
  python-dnspython,
  univention-directory-manager-tools (>> 7.0.147),
- univention-management-console-server,
+ univention-management-console-server (>= 11.0.4-37),
  univention-join (= ${source:Version}),
  univention-updater,
  univention-management-console-module-lib (>= 3.0.0-1)
