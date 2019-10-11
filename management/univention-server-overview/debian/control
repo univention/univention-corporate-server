@@ -6,15 +6,17 @@ Build-Depends: debhelper (>= 9),
  ucslint,
  stylus,
  univention-config-dev,
- univention-management-console-dev,
+ univention-management-console-dev (>= 11.0.4-37),
  univention-ucs-translation-template,
- python-all
+ python-all,
+ python3-all,
 Standards-Version: 3.9.5
 
 Package: univention-server-overview
 Architecture: all
-Depends: ${misc:Depends},
- univention-management-console-server,
+Depends: ${python:Depends}, ${python3:Depends},
+ ${misc:Depends},
+ univention-management-console-server (>= 11.0.4-37),
  univention-join,
  python-univention-directory-manager,
 Description: Univention Server Overview - Web interface for overview over all server in a UCS domain
