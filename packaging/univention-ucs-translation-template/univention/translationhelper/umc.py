@@ -119,7 +119,7 @@ class UMC_Module(dict):
 	@property
 	def python_version(self):
 		# type: () -> int
-		return 3 if self.get(PYTHON_VERSION, ['2.7'])[0].startswith('3') else 2
+		return 3 if self.get(PYTHON_VERSION, ['2.7'])[0].startswith('3') else 2.7
 
 	@property
 	def js_path(self):

@@ -1,3 +1,9 @@
+univention-ucs-translation-template (6.0.0-12) unstable; urgency=medium
+
+  * Bug #49161: fix path of python2.7 modules
+
+ -- Florian Best <best@univention.de>  Fri, 11 Oct 2019 12:56:08 +0200
+
 univention-ucs-translation-template (6.0.0-11) unstable; urgency=medium
 
   * Bug #50341: Fix building of UMC-core
