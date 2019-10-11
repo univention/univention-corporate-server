@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.13-11) unstable; urgency=medium
+
+  * Bug #42080: don't modify primary group for users/user during open()
+
+ -- Florian Best <best@univention.de>  Fri, 14 Oct 2022 15:01:26 +0200
+
 univention-directory-manager-modules (15.0.13-10) unstable; urgency=medium
 
   * Bug #20235: Make LDAP operational attributes available as extended

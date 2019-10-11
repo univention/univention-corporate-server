@@ -1167,59 +1167,41 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 			self._unmap_automount_information()
 			self._unmapUnlockTime()
 			self._load_groups(loadGroups)
-		self.save()
-		if not self.exists():  # TODO: move this block into _ldap_pre_create!
+			self._unmap_gid_number()
+		else:
 			self._set_default_group()
+		self.save()
 
 	def _load_groups(self, loadGroups):
-		if self.exists():
-			if loadGroups:  # this is optional because it can take much time on larger installations, default is true
-				self['groups'] = [x.decode('UTF-8') if six.PY2 else x for x in self.lo.searchDn(filter=filter_format(u'(&(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping))(uniqueMember=%s))', [self.dn]))]
-			else:
-				ud.debug(ud.ADMIN, ud.INFO, 'user: open with loadGroups=false for user %s' % self['username'])
-			self.groupsLoaded = loadGroups
-			primaryGroupNumber = self.oldattr.get('gidNumber', [b''])[0].decode('ASCII')
-			if primaryGroupNumber:
-				primary_group = get_primary_group_dn(self.lo, primaryGroupNumber)
-				if primary_group:
-					self['primaryGroup'] = primary_group
-				else:
-					try:
-						primaryGroup = self.lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + self.position.getDomain(), attr=['univentionDefaultGroup'])
-						try:
-							primaryGroup = primaryGroup[0][1]["univentionDefaultGroup"][0].decode('UTF-8')
-						except Exception:
-							primaryGroup = None
-					except Exception:
-						primaryGroup = None
+		if loadGroups:  # this is optional because it can take much time on larger installations, default is true
+			self['groups'] = [x.decode('UTF-8') if six.PY2 else x for x in self.lo.searchDn(filter=filter_format(u'(&(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping))(uniqueMember=%s))', [self.dn]))]
+		else:  # TODO: document where it is needed and used
+			ud.debug(ud.ADMIN, ud.INFO, 'user: open with loadGroups=false for user %s' % (self['username'],))
+		self.groupsLoaded = loadGroups
 
-					ud.debug(ud.ADMIN, ud.INFO, 'user: could not find primaryGroup, setting primaryGroup to %s' % primaryGroup)
+	def _unmap_gid_number(self):
+		primaryGroupNumber = self.oldattr.get('gidNumber', [b''])[0].decode('ASCII')
+		if not primaryGroupNumber:
+			self.info['primaryGroup'] = None
+			self.save()
+			raise univention.admin.uexceptions.primaryGroup(self.dn)
 
-					if not primaryGroup:
-						raise univention.admin.uexceptions.primaryGroup(self.dn)
-					self.info['primaryGroup'] = primaryGroup
-					self.__primary_group()
-			else:
-				self.info['primaryGroup'] = None
-				self.save()
-				raise univention.admin.uexceptions.primaryGroup(self.dn)
+		primary_group = get_primary_group_dn(self.lo, primaryGroupNumber)
+		if primary_group:
+			self['primaryGroup'] = primary_group
+
+		ud.debug(ud.ADMIN, ud.ERROR, 'No primary group was found with gidNumber=%s for %s as %s' % (primaryGroupNumber, self.dn, self.lo.binddn))
 
 	def _set_default_group(self):
-		primary_group_from_template = self['primaryGroup']
-		if not primary_group_from_template:
-			searchResult = self.lo.search(filter=u'(objectClass=univentionDefault)', base=u'cn=univention,' + self.position.getDomain(), attr=['univentionDefaultGroup'])
-			if not searchResult or not searchResult[0][1]:
-				self.info['primaryGroup'] = None
-				self.save()
-				raise univention.admin.uexceptions.primaryGroup(self.dn)
+		if not self['primaryGroup']:
+			for _dn, attrs in self.lo.search(filter='(objectClass=univentionDefault)', base=u'cn=univention,' + self.position.getDomain(), attr=['univentionDefaultGroup']):
+				primary_group = attrs['univentionDefaultGroup'][0].decode('UTF-8')
+				ud.debug(ud.ADMIN, ud.INFO, 'user: setting primaryGroup to %s' % (primary_group,))
+				if self.lo.get(primary_group):
+					self['primaryGroup'] = primary_group
 
-			for tmp, number in searchResult:
-				primaryGroupResult = self.lo.searchDn(filter=filter_format(u'(&(objectClass=posixGroup)(cn=%s))', (univention.admin.uldap.explodeDn(number['univentionDefaultGroup'][0].decode('UTF-8'), 1)[0],)), base=self.position.getDomain(), scope='domain')
-				if primaryGroupResult:
-					self['primaryGroup'] = primaryGroupResult[0]
-					# self.save() must not be called after this point in self.open()
-					# otherwise self.__primary_group doesn't add a new user to the
-					# univentionDefaultGroup because "not self.hasChanged('primaryGroup')"
+		if not self['primaryGroup']:
+			raise univention.admin.uexceptions.primaryGroup(self.dn)
 
 	def _unmap_pwd_change_next_login(self):
 		self['pwdChangeNextLogin'] = '0'
@@ -1465,6 +1447,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 			self.info['password'] = self.oldinfo['password'] = u'*'
 			self.info['disabled'] = self.oldinfo['disabled']
 
+		self._set_default_group()
 		if not self.exists() or self.hasChanged('primaryGroup'):
 			# Ensure the primary Group has the samba option enabled
 			if self['primaryGroup'] and not self.lo.getAttr(self['primaryGroup'], 'sambaSID'):
