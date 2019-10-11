@@ -1,3 +1,10 @@
+univention-saml (6.0.2-9) unstable; urgency=medium
+
+  * Bug #49485: allow to restrict negotiate authentication to certain IP
+    networks
+
+ -- Florian Best <best@univention.de>  Tue, 05 Nov 2019 13:50:52 +0100
+
 univention-saml (6.0.2-8) unstable; urgency=medium
 
   * Bug #50177: fix invalid true/false values for TrueFalseUp syntax

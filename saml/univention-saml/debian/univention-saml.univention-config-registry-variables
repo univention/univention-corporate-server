@@ -46,6 +46,12 @@ Description[en]=If this variable is set to 'true', the single sign on via kerber
 Type=bool
 Categories=saml
 
+[saml/idp/negotiate/filter-subnets]
+Description[de]=Beschränkt die Anmeldung per Kerberos / HTTP Negotiate auf Anfragen aus dem angegebenen Subnetz. Der Wert ist eine kommaseparierte Liste von Netzwerken (z.B.: 127.0.0.0/16,192.168.0.0/16).
+Description[en]=Restrict single sign on via Kerberos / HTTP negotiate only to clients requesting from the specified subnet. The value is a comma spearated list of networks (example: 127.0.0.0/16,192.168.0.0/16).
+Type=str
+Categories=saml
+
 [saml/idp/timezone]
 Description[de]=Zeitzone, in der der Identity Provider sich befindet. (default: Europe/Berlin)
 Description[en]=Timezone in which the identity provider operates. (default: Europe/Berlin)
