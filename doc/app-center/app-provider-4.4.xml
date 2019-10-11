@@ -2806,17 +2806,37 @@ exit 0
 			<para>
 				The settings are saved inside the Docker container in the file
 				<filename>/etc/univention/base.conf</filename> in the format
-				<wordasword>key: value</wordasword>.
-				After the settings are changed, two scripts are executed.
-				First, the script <filename>configure_host</filename>. This script is run on the
-				Docker host.
-				Second, the script <filename>configure</filename> is
-				executed. It is executed inside the Docker container. In the
-				App Provider Portal, the path of the script can be given
-				(<guimenu>Configure scripts</guimenu>) or the script code can be uploaded
-				(<guimenu>Path to script inside the container
-				(absolute)</guimenu>).
-			</para>
+                <wordasword>key: value</wordasword>. After the settings are
+                changed, two scripts are executed each with the parameter
+                <userinput>settings</userinput> parameter. First, the script
+                <filename>configure_host</filename>. This script is run on the
+                Docker host.  Second, the script <filename>configure</filename>
+                is executed. It is executed inside the Docker container. In the
+                App Provider Portal, the path of the script can be given
+                (<guimenu>Configure scripts</guimenu>) or the script code can
+                be uploaded (<guimenu>Path to script inside the container
+                    (absolute)</guimenu>).
+            </para>
+
+            <para>
+                It may be required that an app's Docker container(s) is/are
+                recreated after a setting has changed. For this case the App
+                Center offers the <option>reinitialize</option> command.
+                When the app should recreate its container(s) with the latest
+                app settings, please put the following lines into the
+                <filename>configure_host</filename> script:
+                <programlisting>
+if [ "$1" = "settings" ]; then
+  univention-app reinitialize $myapp
+fi
+                </programlisting>
+                The reinitialization is only executed when app settings
+                changed. If the app has a <filename>setup</filename> script,
+                reinitialize is aborted, because <filename>setup</filename> may
+                require credentials and the <filename>configure_host</filename>
+                does not have any credentials it can pass on.
+            </para>
+
 		</section>
 		<section id="app-settings:reference">
 			<title>App settings configuration</title>
