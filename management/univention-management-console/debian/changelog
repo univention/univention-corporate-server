@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-44) unstable; urgency=medium
+
+  * Bug #49161: fix path of python2.7 modules
+
+ -- Florian Best <best@univention.de>  Fri, 11 Oct 2019 12:25:14 +0200
+
 univention-management-console (11.0.4-43) unstable; urgency=medium
 
   * Bug #50341: Stricter package version
