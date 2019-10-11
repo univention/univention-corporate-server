@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-errata4.3-5
+src: univention-management-console
+fix: 10.0.6-25A~4.3.0.201910111733
+desc: |
+ This update addresses the following issue(s):
+ * LDAP connection problems could result in an error loop, with the following
+   error "ldapError: Insufficient access". This has been fixed by ensuring a
+   new connection is used after LDAP connection problems.
+bug: [50355]
