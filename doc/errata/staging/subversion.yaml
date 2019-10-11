@@ -6,7 +6,7 @@ src: subversion
 fix: 1.9.5-1+deb9u5
 desc: |
  This update addresses the following issue:
- * Fix regression caused by erratum 566 for Apache2, which breaks HTTP/2.0 for
+ * Fix regression caused by erratum 242 for Apache2, which breaks HTTP/2.0 for
    Subversion.
 bug: [50357]
 ignore: [version.scope, release+scope.consistent]
