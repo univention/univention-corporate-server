@@ -780,9 +780,13 @@ services:
                     </listitem>
                     <listitem>
                         <simpara>
-													You can add specific values of the Config Registry
-													into your file. More importantly, this includes <xref linkend="app-settings"/> defined
-													by the App itself:
+                                                    You can add specific values
+                                                    of the Config Registry into
+                                                    your file. More
+                                                    importantly, this includes
+                                                    the App settings in <xref
+                                                        linkend="app-settings"/>
+                                                    defined by the App itself:
                         </simpara>
 													<programlisting>
 environment:
@@ -2980,8 +2984,13 @@ exit 0
 				The attribute <guimenu>Scope</guimenu> is used to specify if
 				the value is set inside the Docker container
 				(<option>inside</option>), on the Docker host
-				(<option>outside</option>) or on both (<option>inside,
-				outside</option>). The default is <option>inside</option>.
+                (<option>outside</option>) or on both (<option>inside,
+                    outside</option>). The default is <option>inside</option>.
+                Values in the scope <option>inside</option> can be referenced
+                in the docker-compose.yml for multi container apps just like
+                UCR variables (see <xref
+                    linkend="create-app-with-docker:compose-postprocessing"
+                    /> for an example).
 			</para>
 			<para>
 				The attributes <guimenu>Labels</guimenu> and
