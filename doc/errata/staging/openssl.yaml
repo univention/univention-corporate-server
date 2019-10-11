@@ -6,8 +6,8 @@ src: openssl
 fix: 1.1.0l-1~deb9u1
 desc: |
  This update addresses the following issues:
- * side-channel weak encryption vulnerability (CVE-2019-1547)
- * information disclosure in PKCS7_dataDecode and CMS_decrypt_set1_pkey
+ * Side-channel weak encryption vulnerability (CVE-2019-1547)
+ * Information disclosure in PKCS7_dataDecode and CMS_decrypt_set1_pkey
    (CVE-2019-1563)
 bug: [50352]
 cve:
