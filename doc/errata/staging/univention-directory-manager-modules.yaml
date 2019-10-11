@@ -17,6 +17,5 @@ desc: |
  * Searching for the IP address property of computer objects now also searches
    for IPv6 addresses.
  * The gidNumber and sambaPrimaryGroupSID of users/user is now set during the
-   object creation instead of setting it afterwards. There is no automatic
-   adjustment of these attributes anymore when opening the object.
+   object creation instead of setting it afterwards.
 bug: [50288, 44937, 50236, 50239, 49313, 50161]
