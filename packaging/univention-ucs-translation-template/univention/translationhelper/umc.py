@@ -61,11 +61,8 @@ from email.utils import formatdate
 import polib
 import xml.etree.ElementTree as ET
 
-import univention.debhelper as dh_ucs
-try:
-	from typing import Iterable, Iterator, List, Optional, Tuple, Union  # noqa F401
-except ImportError:
-	pass
+from debian.deb822 import Deb822
+from . import helper
 
 MODULE = 'Module'
 PYTHON = 'Python'
@@ -254,7 +251,8 @@ def read_modules(package, core=False):
 		return modules
 
 	with open(file_umc_module, 'rb') as fd:
-		for item in dh_ucs.parseRfc822(fd.read()):
+		for item in Deb822.iter_paragraphs(fd):
+			item = dict((k, [v]) for k, v in item.iteritems())  # simulate dh_ucs.parseRfc822 behaviour
 			# required fields
 			if not core:
 				for required in (MODULE, PYTHON, DEFINITION, JAVASCRIPT):
@@ -321,13 +319,16 @@ def module_xml2po(module, po_file, language):
 	po.save(message_po)
 	if os.path.isfile(po_file):
 		try:
-			if dh_ucs.doIt('msgmerge', '--update', '--sort-output', po_file, message_po):
+			if helper.call('msgmerge', '--update', '--sort-output', po_file, message_po):
 				raise Error('Failed to merge module translations into %s.' % (po_file,))
+			backup_file = '{}~'.format(po_file)
+			if os.path.isfile(backup_file):
+				os.unlink(backup_file)
 		finally:
 			if os.path.isfile(message_po):
 				os.unlink(message_po)
 	else:
-		dh_ucs.doIt('mv', message_po, po_file)
+		helper.call('mv', message_po, po_file)
 
 
 def create_po_file(po_file, package, files, language='python'):
@@ -346,7 +347,7 @@ def create_po_file(po_file, package, files, language='python'):
 		os.unlink(message_po)
 	if isinstance(files, basestring):
 		files = [files]
-	xgettext = dh_ucs.doIt(
+	xgettext = helper.call(
 		'xgettext',
 		'--force-po',
 		'--add-comments=i18n',
@@ -374,13 +375,16 @@ def create_po_file(po_file, package, files, language='python'):
 
 	if os.path.isfile(po_file):
 		try:
-			if dh_ucs.doIt('msgmerge', '--update', '--sort-output', po_file, message_po):
+			if helper.call('msgmerge', '--update', '--sort-output', po_file, message_po):
 				raise Error('Failed to merge translations into %s.' % (po_file,))
+			backup_file = '{}~'.format(po_file)
+			if os.path.isfile(backup_file):
+				os.unlink(backup_file)
 		finally:
 			if os.path.isfile(message_po):
 				os.unlink(message_po)
 	else:
-		dh_ucs.doIt('mv', message_po, po_file)
+		helper.call('mv', message_po, po_file)
 
 
 def create_mo_file(po_file):
@@ -390,7 +394,7 @@ def create_mo_file(po_file):
 
 	:param po_file: File name of the textual message catalog.
 	"""
-	if dh_ucs.doIt('msgfmt', '--check', '--output-file', po_file.replace('.po', '.mo'), po_file):
+	if helper.call('msgfmt', '--check', '--output-file', po_file.replace('.po', '.mo'), po_file):
 		raise Error('Failed to compile translation file from %s.' % (po_file,))
 
 
