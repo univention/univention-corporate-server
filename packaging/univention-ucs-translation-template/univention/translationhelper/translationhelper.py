@@ -153,6 +153,7 @@ class UMCModuleTranslation(umc.UMC_Module):
 	def _get_core_module_from_source_package(cls, module, target_language):
 		# type: (BaseModule, str) -> UMCModuleTranslation
 		attrs = cls._read_module_attributes_from_source_package(module)
+		attrs['package'] = module['binary_package_name']
 		attrs['module_name'] = module['module_name']
 		attrs['abs_path_to_src_pkg'] = module['abs_path_to_src_pkg']
 		attrs['relative_path_src_pkg'] = module['relative_path_src_pkg']
