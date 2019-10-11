@@ -99,7 +99,8 @@ class Instance(umcm.Base):
 		MANUFACTURER = request.options['manufacturer'].encode('utf-8')
 		MODEL = request.options['model'].encode('utf-8')
 		COMMENT = request.options['comment'].encode('utf-8')
-		SYSTEM_INFO_CMD = ('/usr/bin/univention-system-info',
+		SYSTEM_INFO_CMD = (
+			'/usr/bin/univention-system-info',
 			'-m', MANUFACTURER,
 			'-t', MODEL,
 			'-c', COMMENT,

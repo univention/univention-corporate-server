@@ -4,9 +4,10 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7.0.50~),
  ucslint-univention,
- python-support,
- univention-management-console-dev,
- python-all
+ dh-python,
+ univention-management-console-dev (>= 11.0.4-37),
+ python-all,
+ python3-all,
 Standards-Version: 3.8.2
 
 Package: univention-system-info
@@ -26,7 +27,8 @@ Description: UCS - collect system information
 
 Package: univention-management-console-module-sysinfo
 Architecture: all
-Depends: univention-management-console-server,
+Depends: ${python:Depends}, ${python3:Depends},
+ univention-management-console-server (>= 11.0.4-37),
  univention-system-info,
  univention-directory-manager-tools (>> 7.0.147)
 Description: UMC module for system info
