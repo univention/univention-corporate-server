@@ -1,3 +1,9 @@
+grub-efi-amd64-signed (3.0.0-1) unstable; urgency=low
+
+  * Bug #50354: Bump version number for UCS-4.4-2
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 11 Oct 2019 15:55:38 +0200
+
 grub-efi-amd64-signed (2.0.0-3) unstable; urgency=low
 
   * Bug #50211: Rebuild signed GRUB 2.02~beta3-5+deb9u2A~4.4.2.201909181816
