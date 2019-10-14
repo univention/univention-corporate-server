@@ -1,3 +1,10 @@
+ucs-test (9.0.3-79) unstable; urgency=medium
+
+  * Bug #50363: and Bug #50362, skip 86_selenium/14_password_self-service
+    and 83_self_service/02_test_rate_limit
+
+ -- Felix Botner <botner@univention.de>  Mon, 14 Oct 2019 17:36:43 +0200
+
 ucs-test (9.0.3-78) unstable; urgency=medium
 
   * Bug #44937: reenable test case
