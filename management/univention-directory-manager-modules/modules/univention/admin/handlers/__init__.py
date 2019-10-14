@@ -1520,7 +1520,7 @@ class simpleLdap(object):
 					try:
 						subobject.remove(remove_childs)
 					except univention.admin.uexceptions.base as exc:
-						ud.debug(ud.ADMIN, ud.ERROR, 'remove: could not remove %r: %s' % (subolddn, exc))
+						ud.debug(ud.ADMIN, ud.ERROR, 'remove: could not remove %r: %s: %s' % (subolddn, type(exc).__name__, exc))
 					break
 				else:
 					ud.debug(ud.ADMIN, ud.WARN, 'remove: could not identify UDM module of %r' % (subolddn,))
