@@ -1,3 +1,9 @@
+univention-updater (14.0.0-20) unstable; urgency=medium
+
+  * Bug #50334: Remove settings from UCS 4.3-5 updater
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 14 Oct 2019 13:05:14 +0200
+
 univention-updater (14.0.0-19) unstable; urgency=medium
 
   * Bug #49056: Fix traceback in admindiary.client.write_event() occurring

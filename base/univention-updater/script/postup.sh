@@ -157,6 +157,12 @@ fi
 # Bug #44188: recreate and reload packetfilter rules to make sure the system is accessible
 service univention-firewall restart >>"$UPDATER_LOG" 2>&1
 
+# Bug #50334: remove possible deactivated updater warniung
+if is_ucr_true license/extended_maintenance/disable_warning/set_by_435-updater; then
+       ucr unset license/extended_maintenance/disable_warning/set_by_435-updater \
+               license/extended_maintenance/disable_warning
+fi
+
 echo "
 
 
