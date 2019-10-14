@@ -1,3 +1,9 @@
+univention-self-service (4.0.3-13) unstable; urgency=medium
+
+  * Bug #50037: install the join script
+
+ -- Felix Botner <botner@univention.de>  Mon, 14 Oct 2019 18:40:24 +0200
+
 univention-self-service (4.0.3-12) unstable; urgency=medium
 
   * Bug #50037: mv in joinscript (slapd may not running during update)
