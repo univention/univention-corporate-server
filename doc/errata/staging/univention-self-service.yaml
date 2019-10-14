@@ -3,7 +3,7 @@ release: "4.4"
 version: [2]
 scope: ucs_4.4-0-errata4.4-2
 src: univention-self-service
-fix: 4.0.3-10A~4.4.0.201910101721
+fix: 4.0.3-11A~4.4.0.201910141145
 desc: |
  This update addresses the following issue(s):
  * The LDAP ACL's have been improved to allow UCS@SCHOOL users
