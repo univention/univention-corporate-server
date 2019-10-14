@@ -1,3 +1,9 @@
+univention-self-service (4.0.3-12) unstable; urgency=medium
+
+  * Bug #50037: mv in joinscript (slapd may not running during update)
+
+ -- Felix Botner <botner@univention.de>  Mon, 14 Oct 2019 18:35:13 +0200
+
 univention-self-service (4.0.3-11) unstable; urgency=medium
 
   * Bug #50037: mv ACL from 67selfservice_userattributes.acl to 64selfservice_userattributes.acl
