@@ -15,8 +15,8 @@ test -f "$1" || die "Missing test config file!"
 release='4.4-2'
 old_release='4.3-5'
 
-export CURRENT_AMI=ami-0d4e5f8cebe541a07 # AMI: Univention Corporate Server (UCS) 4.4 (official image) rev. 3 - ami-0d4e5f8cebe541a07
-export OLD_AMI=ami-08b2615e56edd43fa # AMI: Univention Corporate Server (UCS) 4.3 (official image) rev. 5 - ami-08b2615e56edd43fa
+export CURRENT_AMI=ami-076be15cd58709a0c # AMI: Univention Corporate Server (UCS) 4.4 (official image) rev. 4 - ami-076be15cd58709a0c
+export OLD_AMI=ami-0dd235a67a0eb9bdc # AMI: Univention Corporate Server (UCS) 4.3 (official image) rev. 6 - ami-0dd235a67a0eb9bdc
 export UCS_MINORRELEASE="${release%%-*}"
 export TARGET_VERSION="${TARGET_VERSION:=$release}"
 export UCS_VERSION="${UCS_VERSION:=$release}"
