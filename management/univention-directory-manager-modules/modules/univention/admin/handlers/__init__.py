@@ -1510,6 +1510,8 @@ class simpleLdap(object):
 			# remove twice: after the first removal some objects may be left over
 			# a primary group can only be removed if all its members have been removed.
 			self._remove_subtree()
+			from univention.admin.handlers.container import default_container_for_objects
+			default_container_for_objects._cache.clear()
 			self._remove_subtree()
 
 		self.lo.delete(self.dn)
