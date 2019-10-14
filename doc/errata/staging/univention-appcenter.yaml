@@ -8,4 +8,4 @@ desc: |-
   This update addresses the following issue(s):
   * Use univention-l10n-build to build localization files for
     univention-appcenter.
-bug: [50340]
+bug: [50340, 49161]
