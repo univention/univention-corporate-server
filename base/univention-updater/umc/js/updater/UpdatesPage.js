@@ -686,20 +686,15 @@ define([
 
 				var baseMsg = lang.replace(_("<b>Warning</b>: You are currently using UCS {0}. No more security updates will be released for this version. Please update the system to a newer UCS version!"), [info.ucs_version]);
 				var enterpriseSubscriptionAd = _("<br>Enterprise subscriptions offer extended maintenance for some UCS versions. Detailed information can be found at the <a target='_blank' href='https://www.univention.com/products/prices-and-subscriptions/'>Univention Website</a>.");
-				var extendedEnterpriseMsg = lang.replace(_("<b>Warning</b>: You are currently using UCS {0}. No more regular security updates will be released for this version!<br>Update the system to a newer UCS version or, alternatively, request an extended maintenance for this version. <a target='_blank' href='https://www.univention.com/contact/'>Feel free to contact us if you want to know more</a>."), [info.ucs_version]);
+				var extendedEnterpriseMsg = lang.replace(_("<b>Warning</b>: You are currently using UCS {0}. Security updates for this version are only available for customers with an enterprise subscription. To receive security updates, update the system to the latest UCS version. Alternatively, you can upgrade to an enterprise subscription to receive extended maintenance for this UCS release. <a target='_blank' href='https://www.univention.com/contact/'>Feel free to contact us if you want to know more, or if you receive this message incorrectly</a>."), [info.ucs_version]);
+>>>>>>> 15a53206d9... Bug #45672: Maintenance warning message
 
 				// construct the correct message
 				var msg = '';
-				if (tools.isFreeLicense(info.base_dn)) {
-					// UCS core edition
-					msg = baseMsg + enterpriseSubscriptionAd;
+				if (info.maintenance_extended) {
+					msg = extendedEnterpriseMsg;
 				} else {
-					// UCS Base/Standard/Premium subscription
-					if (info.maintenance_extended) {
-						msg = extendedEnterpriseMsg;
-					} else {
-						msg = baseMsg;
-					}
+					msg = baseMsg + enterpriseSubscriptionAd;
 				}
 
 				// display out of maintenance message

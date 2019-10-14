@@ -1,3 +1,9 @@
+univention-updater (13.0.1-74) unstable; urgency=medium
+
+  * Bug #50333: Adapt updater message for 4.3-5 errata
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 14 Oct 2019 12:45:54 +0200
+
 univention-updater (13.0.1-73) unstable; urgency=medium
 
   * Bug #50308: Adapt links and components for 4.3-5
