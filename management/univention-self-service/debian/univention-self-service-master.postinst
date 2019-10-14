@@ -40,7 +40,7 @@ if dpkg --compare-versions "$2" lt-nl 4.0.0; then
 fi
 
 if dpkg --compare-versions "$2" lt-nl 4.0.3-10; then
-	# Bug 50037 mv ACL from 67selfservice_userattributes.acl to 65selfservice_userattributes.acl
+	# Bug 50037 mv ACL from 67selfservice_userattributes.acl to 64selfservice_userattributes.acl
 	eval "$(ucr shell ldap/base server/role self-service/ldap_attributes)"
 	if [ -e /var/univention-join/joined -a "$server_role" = "domaincontroller_master" ]; then
 		if univention-ldapsearch -LLL -b "cn=67selfservice_userattributes,cn=ldapacl,cn=univention,$ldap_base" dn | grep "dn: cn=67"; then

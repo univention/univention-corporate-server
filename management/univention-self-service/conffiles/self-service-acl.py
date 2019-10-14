@@ -41,7 +41,7 @@ access to filter="univentionObjectType=users/user" attrs=%(ldap_attributes)s
 
 '''
 
-ACL_FILE_PATH = os.path.join('/usr/share/univention-self-service/', '65selfservice_userattributes.acl')
+ACL_FILE_PATH = os.path.join('/usr/share/univention-self-service/', '64selfservice_userattributes.acl')
 
 
 def handler(configRegistry, changes):

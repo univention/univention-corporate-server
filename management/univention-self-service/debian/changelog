@@ -1,3 +1,9 @@
+univention-self-service (4.0.3-11) unstable; urgency=medium
+
+  * Bug #50037: mv ACL from 67selfservice_userattributes.acl to 64selfservice_userattributes.acl
+
+ -- Felix Botner <botner@univention.de>  Mon, 14 Oct 2019 11:44:00 +0200
+
 univention-self-service (4.0.3-10) unstable; urgency=medium
 
   * Bug #50037: mv ACL from 67selfservice_userattributes.acl to 65selfservice_userattributes.acl
