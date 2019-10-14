@@ -1507,23 +1507,10 @@ class simpleLdap(object):
 		self.call_udm_property_hook('hook_ldap_pre_remove', self)
 
 		if remove_childs:
-			subelements = []  # type: List[Tuple[str, Dict[str, List[str]]]]
-			if 'FALSE' not in self.lo.getAttr(self.dn, 'hasSubordinates'):
-				ud.debug(ud.ADMIN, ud.INFO, 'handlers/__init__._remove() children of base dn %s' % (self.dn,))
-				subelements = self.lo.search(base=self.dn, scope='one', attr=[])
-
-			for subolddn, suboldattrs in subelements:
-				ud.debug(ud.ADMIN, ud.INFO, 'remove: subelement %s' % (subolddn,))
-				for submodule in univention.admin.modules.identify(subolddn, suboldattrs):
-					subobject = submodule.object(None, self.lo, None, dn=subolddn, attributes=suboldattrs)
-					subobject.open()
-					try:
-						subobject.remove(remove_childs)
-					except univention.admin.uexceptions.base as exc:
-						ud.debug(ud.ADMIN, ud.ERROR, 'remove: could not remove %r: %s: %s' % (subolddn, type(exc).__name__, exc))
-					break
-				else:
-					ud.debug(ud.ADMIN, ud.WARN, 'remove: could not identify UDM module of %r' % (subolddn,))
+			# remove twice: after the first removal some objects may be left over
+			# a primary group can only be removed if all its members have been removed.
+			self._remove_subtree()
+			self._remove_subtree()
 
 		self.lo.delete(self.dn)
 		self._exists = False
@@ -1534,6 +1521,25 @@ class simpleLdap(object):
 		self.oldattr = {}
 		self._write_admin_diary_remove()
 		self.save()
+
+	def _remove_subtree(self):
+		subelements = []  # type: List[Tuple[str, Dict[str, List[str]]]]
+		if 'FALSE' not in self.lo.getAttr(self.dn, 'hasSubordinates'):
+			ud.debug(ud.ADMIN, ud.INFO, 'handlers/__init__._remove() children of base dn %s' % (self.dn,))
+			subelements = self.lo.search(base=self.dn, scope='one', attr=[])
+
+		for subolddn, suboldattrs in subelements:
+			ud.debug(ud.ADMIN, ud.INFO, 'remove: subelement %s' % (subolddn,))
+			for submodule in univention.admin.modules.identify(subolddn, suboldattrs):
+				subobject = submodule.object(None, self.lo, None, dn=subolddn, attributes=suboldattrs)
+				subobject.open()
+				try:
+					subobject.remove(remove_childs=True)
+				except univention.admin.uexceptions.base as exc:
+					ud.debug(ud.ADMIN, ud.ERROR, 'remove: could not remove %r: %s: %s' % (subolddn, type(exc).__name__, exc))
+				break
+			else:
+				ud.debug(ud.ADMIN, ud.WARN, 'remove: could not identify UDM module of %r' % (subolddn,))
 
 	def _write_admin_diary_remove(self):
 		self._write_admin_diary_event('REMOVED')
