@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash
+#!/usr/share/ucs-test/runner python
 ## desc: Self service user attributes ACL generation and enforcement
 ## tags: [apptest]
 ## roles:
@@ -7,71 +7,26 @@
 ## packages:
 ##  - univention-self-service-master
 
-. "$TESTLIBPATH/base.sh" || exit 137
-. "$TESTLIBPATH/random.sh" || exit 137
-. "$TESTLIBPATH/group.sh" || exit 137
-. "$TESTLIBPATH/ldap.sh" || exit 137
+import pytest
 
-GROUPNAME=$(group_randomname)
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.testing.ucr as ucr_test
+from univention.config_registry import handler_set
 
-ATTR_NEEDS_REMOVAL=false
-tmpfile=$(mktemp)
-username="$(random_chars)"
-UCRV_PREV="$(ucr get self-service/ldap_attributes)"
+import univention.admin.uldap
+import univention.admin.uexceptions
 
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm, ucr_test.UCSTestConfigRegistry() as ucr:
+		if 'l' not in ucr.get('self-service/ldap_attributes', '').split(','):
+			handler_set(["self-service/ldap_attributes=%s,l" % ucr.get('self-service/ldap_attributes', '')])
+		user = udm.create_user(password='univention')[0]
+		utils.verify_ldap_object(user)
 
-# grep on word boundaries \b
-if ! ucr get self-service/ldap_attributes | grep -q "\bl\b"; then
-	ATTR_NEEDS_REMOVAL=true
-	echo -e "\nAdding city as new attribute for modification (ldapattribute: l)"
-	ucr set self-service/ldap_attributes="$(ucr get self-service/ldap_attributes),l"
-else
-	echo -e "\ncity is already in the list of attributes a user may modify"
-fi
+		lo = univention.admin.uldap.access(binddn=user, bindpw='univention')
+		lo.modify(user, [('l', '', 'Bremen')])
+		utils.verify_ldap_object(user, {'l': ['Bremen']})
 
-trap "{ rm -f $tmpfile; [ '$ATTR_NEEDS_REMOVAL' = true ] &&  ucr set self-service/ldap_attributes='$UCRV_PREV'; }" EXIT
-
-udm users/user create \
-	--position="cn=users,$ldap_base" \
-	--set username="$username" \
-	--set firstname="selfservice" \
-	--set lastname="user" \
-	--set password="univention" || fail_test
-
-wait_for_replication
-
-cat >$tmpfile <<__HERE__
-dn: uid=$username,cn=users,$ldap_base
-changetype: modify
-replace: l
-l: Bremen
-
-dn: uid=$username,cn=users,$ldap_base
-changetype: modify
-replace: sn
-sn: mustfail
-__HERE__
-
-echo -e "\nUser modifies city (l) attribute in LDAP"
-ldapmodify -x -D "uid=$username,cn=users,$ldap_base" -w univention -h "$ldap_master:$ldap_master_port" -f "$tmpfile"
-
-# test if modification for city was successful
-if [ ! "$(ldap_get_attribute uid=$username,cn=users,$ldap_base l)" = "Bremen" ]; then
-	error "LDAP attribute city not at expected value after modification"
-	fail_test
-else
-	echo -e "\nLDAP attriute city was modified successfully by the user"
-fi
-
-# test if modification of unallowed attribute was not successful
-if [ "$(ldap_get_attribute uid=$username,cn=users,$ldap_base sn)" = "mustfail" ]; then
-	error "LDAP attribute sn was modified although LDAP ACLs should forbid that"
-	fail_test
-else
-	echo -e "\nLDAP attribute 'sn' could not be modified by the user"
-fi
-
-ldap_delete "uid=$username,cn=users,$ldap_base" || fail_test
-
-exit "$RETVAL"
-
+		with pytest.raises(univention.admin.uexceptions.permissionDenied):
+			lo.modify(user, [('sn', '', 'mustfail')])
