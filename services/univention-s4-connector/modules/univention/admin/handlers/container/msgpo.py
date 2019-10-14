@@ -159,5 +159,29 @@ class object(univention.admin.handlers.simpleLdap):
 			self.move(self._ldap_dn())
 
 
-identify = object.identify
-lookup = object.lookup
+try:
+	identify = object.identify
+except AttributeError:  # FIXME: remove module into UDM-core or drop backwards compatibility
+	# UCS < 4.4-0-errata102
+	def identify(dn, attr, canonical=False):
+		return 'msGPOContainer' in attr.get('objectClass', [])
+
+try:
+	lookup = object.lookup
+except AttributeError:  # FIXME: remove module into UDM-core or drop backwards compatibility
+	# UCS < 4.2-2 errata206
+	def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
+		import univention.admin.filter
+		filter = univention.admin.filter.conjunction('&', [
+			univention.admin.filter.expression('objectClass', 'msGPOContainer'),
+		])
+
+		if filter_s:
+			filter_p = univention.admin.filter.parse(filter_s)
+			univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
+			filter.expressions.append(filter_p)
+
+		return [
+			object(co, lo, None, dn, attributes=attrs)
+			for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit)
+		]
