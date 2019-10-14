@@ -32,6 +32,8 @@
 
 from univention.admin.layout import Tab, Group
 
+import ldap
+
 import univention.admin.syntax
 import univention.admin.handlers
 import univention.admin.localization
@@ -183,6 +185,11 @@ mapping.register('sourceOrganization', 'msWMISourceOrganization', None, univenti
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
+
+	def _ldap_dn(self):
+		dn = ldap.dn.str2dn(super(object, self)._ldap_dn())
+		dn[0] = [('cn', dn[0][0][1], dn[0][0][2])]
+		return ldap.dn.dn2str(dn)
 
 	def _ldap_pre_modify(self):
 		if self.hasChanged('id'):
