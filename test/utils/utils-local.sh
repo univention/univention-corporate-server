@@ -60,6 +60,7 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 		'/var/log/apt/term.log'
 		'/var/log/daemon.log*'=
 		'/var/log/dpkg.log'
+		'/var/log/kern.log'
 		'/var/log/dovecot.log*'=
 		'/var/log/journalctl.log'
 		'/var/log/mail.log*'=
