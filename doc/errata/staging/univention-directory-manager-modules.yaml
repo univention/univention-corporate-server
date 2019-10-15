@@ -3,7 +3,7 @@ release: "4.4"
 version: [2]
 scope: ucs_4.4-0-errata4.4-2
 src: univention-directory-manager-modules
-fix: 14.0.14-6A~4.4.0.201910101844
+fix: 14.0.14-7A~4.4.0.201910141405
 desc: |
  This update addresses the following issue(s):
  * The logging and error handling when removing child objects
