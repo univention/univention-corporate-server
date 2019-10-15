@@ -44,4 +44,4 @@ override_dh_auto_install:
 	dh_auto_install
 
 %:
-	dh $@ --with 'python_support'
+	dh $@
