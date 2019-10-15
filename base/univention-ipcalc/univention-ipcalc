@@ -31,6 +31,7 @@ calculates broadcast address, network address and DNS entries"""
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import optparse
 import sys
 
@@ -198,21 +199,21 @@ def main():
 		reverse = network[:]
 
 	if options.output == 'all':
-		print 'Network: %s' % format_ipv4(network)
+		print('Network: %s' % format_ipv4(network))
 		reverse.reverse()
-		print 'Reverse: %s' % format_ipv4(reverse)
-		print 'Pointer: %s' % format_ipv4(pointer)
+		print('Reverse: %s' % format_ipv4(reverse))
+		print('Pointer: %s' % format_ipv4(pointer))
 		if options.full:
-			print 'Network full: %s' % format_ipv4(network, extend=0)
-		print 'Broadcast: %s' % format_ipv4(broadcast)
+			print('Network full: %s' % format_ipv4(network, extend=0))
+		print('Broadcast: %s' % format_ipv4(broadcast))
 	elif options.output == 'network':
-		print format_ipv4(network, extend=0 if options.full else None)
+		print(format_ipv4(network, extend=0 if options.full else None))
 	elif options.output == 'reverse':
-		print format_ipv4(reverse)
+		print(format_ipv4(reverse))
 	elif options.output == 'pointer':
-		print format_ipv4(pointer)
+		print(format_ipv4(pointer))
 	elif options.output == 'broadcast':
-		print format_ipv4(broadcast)
+		print(format_ipv4(broadcast))
 
 
 def __test(_option, _opt_str, _value, _parser):

@@ -29,6 +29,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import sys
 import ipaddr
 import optparse
@@ -73,7 +75,7 @@ def main():
 		ipaddr.IPAddress(options.address)
 		network = ipaddr.IPNetwork('%s/%s' % (options.address, options.netmask))
 	except ValueError as ex:
-		print >> sys.stderr, ex
+		print(ex, file=sys.stderr)
 		sys.exit(1)
 	try:
 		if isinstance(network, ipaddr.IPv6Network):
@@ -82,10 +84,10 @@ def main():
 			family = 'ipv4'
 		func = getattr(ipcalc, 'calculate_%s_%s' % (family, options.output))
 	except (NameError, AttributeError):
-		print >> sys.stderr, "Unknown address format"
+		print("Unknown address format", file=sys.stderr)
 		sys.exit(1)
 	else:
-		print func(network)
+		print(func(network))
 
 
 if __name__ == "__main__":
