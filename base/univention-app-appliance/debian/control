@@ -14,6 +14,8 @@ Build-Depends: debhelper (>= 7.0.50~),
 
 Package: python-univention-app-appliance
 Architecture: all
+Depends: ${python:Depends}
+Provides: ${python:Provides}
 Description: UCS - python modules for app appliance configuration
  This package provides the python modules for setting up UCS App Appliances.
  .
@@ -21,7 +23,18 @@ Description: UCS - python modules for app appliance configuration
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
-Depends: ${python:Depends}
+
+Package: python3-univention-app-appliance
+Architecture: all
+Depends: ${python3:Depends}
+Provides: ${python3:Provides}
+Description: UCS - python 3 modules for app appliance configuration
+ This package provides the python modules for setting up UCS App Appliances.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
 
 Package: univention-app-appliance
 Architecture: all

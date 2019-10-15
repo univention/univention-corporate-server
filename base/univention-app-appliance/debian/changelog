@@ -1,3 +1,9 @@
+univention-app-appliance (3.0.1-5) unstable; urgency=medium
+
+  * Bug #49128: migrate to dh_python
+
+ -- Florian Best <best@univention.de>  Tue, 15 Oct 2019 09:18:58 +0200
+
 univention-app-appliance (3.0.1-4) unstable; urgency=medium
 
   * Bug #47079: added python-all build dependency

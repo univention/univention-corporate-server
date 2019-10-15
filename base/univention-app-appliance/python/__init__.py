@@ -39,7 +39,7 @@ import struct
 
 class App(app.App):
 	appliance_name = app.AppAttribute()
-	
+
 	# UMC modules to be displayed in the UMC category 'favorites'
 	appliance_favorite_modules = app.AppListAttribute()
 
