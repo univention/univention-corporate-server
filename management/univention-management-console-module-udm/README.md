@@ -1,6 +1,33 @@
 HTTP Interface for UDM in REST architectural style
 ==================================================
 
+# REFERENCES / LINKS
+
+https://t-code.pl/blog/2016/03/rest-misconceptions-6/
+https://www.infoq.com/articles/roy-fielding-on-versioning/
+https://dzone.com/articles/5-easy-to-spot-tells-that-your-rest-api-is-not-res
+https://www.slideshare.net/evolve_conference/201308-fielding-evolve/34
+https://github.com/Microsoft/api-guidelines/pull/29
+https://twitter.com/fielding/status/755551887059857408
+https://github.com/microsoft/api-guidelines/pull/29/commits/9ce094ae1c9574e595b79376537e1bb89f9e404e
+https://www.youtube.com/watch?v=QIv9YR1bMwY
+https://mnot.github.io/I-D/json-home/
+https://rwcbook.github.io/hal-forms/
+https://www.mnot.net/blog/2011/11/25/linking_in_json
+https://www.mnot.net/blog/2012/04/17/profiles
+https://www.heise.de/developer/artikel/Hoechster-Reifegrad-fuer-REST-mit-HATEOAS-3550392.html?seite=all
+https://symfonycasts.com/screencast/rest-ep2/hal-collection
+https://www.oreilly.com/library/view/restful-web-clients/9781491921890/ch04.html
+https://restfulapi.net/versioning/
+https://www.baeldung.com/rest-versioning
+https://apisyouwonthate.com/blog/api-versioning-has-no-right-way/
+https://blog.restcase.com/restful-api-versioning-insights/
+https://sookocheff.com/post/api/how-to-version-a-rest-api/
+https://medium.com/@artem_zin/lets-change-rest-api-versioning-part-1-the-problem-4c73e31f28f8
+https://www.narwhl.com/2015/03/the-ultimate-solution-to-versioning-rest-apis-content-negotiation/
+https://www.hanselman.com/blog/ASPNETCoreRESTfulWebAPIVersioningMadeEasy.aspx
+
+
 # DEPRECATED
 These information were just ideas for development.
 Use [this document](README.vergleich.md) instead!
