@@ -82,24 +82,31 @@ def parse_options():
 	usage = '%prog [options] --ip <addr> --netmask <mask> [--output <type>]'
 	epilog = 'Calculate network values from network address for DNS records.'
 	parser = optparse.OptionParser(usage=usage, epilog=epilog)
-	parser.add_option('--ip', dest='ip',
-			help='IPv4 or IPv6 address')
-	parser.add_option('--netmask', dest='netmask',
-			help='Netmask or prefix length')
-	parser.add_option('--output', dest='output', default='all',
-			choices=('network', 'reverse', 'pointer', 'all'),
+	parser.add_option(
+		'--ip', dest='ip',
+		help='IPv4 or IPv6 address')
+	parser.add_option(
+		'--netmask', dest='netmask',
+		help='Netmask or prefix length')
+	parser.add_option(
+		'--output', dest='output', default='all',
+		choices=('network', 'reverse', 'pointer', 'all'),
 		help='Specify requested output type')
-	parser.add_option('--calcdns', dest='calcdns',
-			action='store_true',
-			help='Request to calcuale DNS record entries')
-	parser.add_option('--quiet', dest='quiet',
-			action='store_true',
-			help='Supress error output')
-	parser.add_option('--full', dest='full',
-			action='store_true',
-			help='Extend network address to 4-tuple')
-	parser.add_option('--test-internal', action='callback', callback=__test,
-			help=optparse.SUPPRESS_HELP)
+	parser.add_option(
+		'--calcdns', dest='calcdns',
+		action='store_true',
+		help='Request to calcuale DNS record entries')
+	parser.add_option(
+		'--quiet', dest='quiet',
+		action='store_true',
+		help='Supress error output')
+	parser.add_option(
+		'--full', dest='full',
+		action='store_true',
+		help='Extend network address to 4-tuple')
+	parser.add_option(
+		'--test-internal', action='callback', callback=__test,
+		help=optparse.SUPPRESS_HELP)
 	(options, _args) = parser.parse_args()
 	if not options.ip or not options.netmask:
 		if not options.quiet:

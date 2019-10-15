@@ -40,16 +40,20 @@ def parse_options():
 	usage = '%prog --calcdns --ip <addr> --netmask <mask> --output <type>'
 	epilog = 'Calculate network values from network address for DNS records.'
 	parser = optparse.OptionParser(usage=usage, epilog=epilog)
-	parser.add_option('--ip', dest='address',
-			help='IPv4 or IPv6 address')
-	parser.add_option('--netmask', dest='netmask',
-			help='Netmask or prefix length')
-	parser.add_option('--output', dest='output',
-			choices=('network', 'reverse', 'pointer'),
+	parser.add_option(
+		'--ip', dest='address',
+		help='IPv4 or IPv6 address')
+	parser.add_option(
+		'--netmask', dest='netmask',
+		help='Netmask or prefix length')
+	parser.add_option(
+		'--output', dest='output',
+		choices=('network', 'reverse', 'pointer'),
 		help='Specify requested output type')
-	parser.add_option('--calcdns', dest='calcdns',
-			action='store_true', default=False,
-			help='Request to calcuale DNS record entries')
+	parser.add_option(
+		'--calcdns', dest='calcdns',
+		action='store_true', default=False,
+		help='Request to calcuale DNS record entries')
 	(options, _args) = parser.parse_args()
 	if not options.calcdns:
 		parser.error('Only --calcdns is supported')
@@ -66,7 +70,7 @@ def main():
 	"""Calculate IP address parameters-"""
 	options = parse_options()
 	try:
-		_addr = ipaddr.IPAddress(options.address)
+		ipaddr.IPAddress(options.address)
 		network = ipaddr.IPNetwork('%s/%s' % (options.address, options.netmask))
 	except ValueError as ex:
 		print >> sys.stderr, ex
