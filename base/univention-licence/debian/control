@@ -9,8 +9,11 @@ Build-Depends: debhelper,
  libtool,
  doxygen,
  libssl-dev,
+ python-all,
+ python3-all,
  python-all-dev,
- python-support,
+ python3-all-dev,
+ dh-python,
  libunivention-debug-dev,
  libunivention-config-dev,
  libunivention-policy-dev,
@@ -30,7 +33,8 @@ Description: UCS - license validation library
 
 Package: libunivention-license-dev
 Architecture: any
-Depends: libunivention-license0 (= ${binary:Version})
+Depends:
+ libunivention-license0 (= ${binary:Version}),
 Replaces: libunivention-license0 (<< 4)
 Description: UCS - license validation library (development files)
  This package includes the development files to use the
@@ -58,10 +62,25 @@ Description: UCS - license validation library (Python interface)
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
+Package: python3-univention-license
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends},${python3:Depends},
+ libunivention-license0,
+Provides: ${python3:Provides}
+Description: UCS - license validation library (Python interface)
+ This package contains a Python interface to the UCS
+ license validation library.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
 Package: univention-license-tools
 Architecture: any
-Depends: uuid,
- ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
+Depends:
+ uuid,
+ ${misc:Depends}, ${shlibs:Depends},
 Recommends: python-tk
 Description: UCS - tools to create and sign licenses
  This package contains tools to create and sign licenses
