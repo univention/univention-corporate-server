@@ -31,13 +31,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
+
 import ldap
-import listener
-import cPickle
+import pickle
 import os
+
 import univention.debug as ud
 import univention.lib.policy_result
+
+import listener
 
 name = 'quota'
 description = 'Dump quota settings into a cache directory'
@@ -60,7 +63,7 @@ def _dump_share_and_policy_result(dn, share_object, policy_result):
 
 	f = open(filename, 'w+')
 	os.chmod(filename, 0o600)
-	p = cPickle.Pickler(f)
+	p = pickle.Pickler(f)
 	p.dump((dn, share_object, policy_result))
 	p.clear_memo()
 	f.close()
@@ -73,7 +76,7 @@ def _read_share_and_policy_result(dn):
 		return (None, None)
 
 	f = open(filename, 'r')
-	(tdn, share_object, policy_result) = cPickle.load(f)
+	(tdn, share_object, policy_result) = pickle.load(f)
 	f.close()
 
 	return (share_object, policy_result)

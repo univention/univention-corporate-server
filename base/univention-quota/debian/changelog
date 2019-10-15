@@ -1,3 +1,9 @@
+univention-quota (13.0.1-6) unstable; urgency=medium
+
+  * Bug #49141: migrate to dh_python
+
+ -- Florian Best <best@univention.de>  Tue, 15 Oct 2019 10:27:24 +0200
+
 univention-quota (13.0.1-5) unstable; urgency=medium
 
   * Bug #48000: make quota behave better when two shares with quota policies
