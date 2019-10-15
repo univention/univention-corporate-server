@@ -33,7 +33,7 @@
 import codecs
 import os
 
-from tokens import TextToken, ResolveToken, QueryToken, AttributeToken, PolicyToken, DateToken
+from .tokens import TextToken, ResolveToken, QueryToken, AttributeToken, PolicyToken, DateToken
 
 
 class Output(object):

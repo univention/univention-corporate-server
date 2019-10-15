@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import os
 import sys
 import copy
@@ -121,7 +123,7 @@ class Document(object):
 			else:
 				obj = admin.cache_object(dn)
 			if obj is None:
-				print >> sys.stderr, "warning: dn '%s' not found, skipped." % dn
+				print("warning: dn '%s' not found, skipped." % dn, file=sys.stderr)
 				continue
 			tks = copy.deepcopy(tokens)
 			interpret = Interpreter(obj, tks)

@@ -75,7 +75,7 @@ def texClean(str):
 	>>> texClean('€°´')
 	'EUR$^{\\\\circ}$'
 	"""
-	esc = ''.join(map(lambda c: TEX_ESCAPE.get(c, c), str))
+	esc = ''.join([TEX_ESCAPE.get(c, c) for c in str])
 	# str is NOT unicode, so '€°´' are non-ASCII characters, which use multiple bytes. See Bug #16637
 	esc = esc.replace('€', 'EUR')
 	esc = esc.replace('°', '$^{\\circ}$')

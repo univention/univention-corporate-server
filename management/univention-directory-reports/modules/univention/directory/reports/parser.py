@@ -33,7 +33,7 @@
 import re
 import shlex
 
-from tokens import Token, TextToken, AttributeToken, PolicyToken, QueryToken, HeaderToken, FooterToken, IContextToken, ResolveToken, DateToken
+from .tokens import Token, TextToken, AttributeToken, PolicyToken, QueryToken, HeaderToken, FooterToken, IContextToken, ResolveToken, DateToken
 
 
 class Parser(object):

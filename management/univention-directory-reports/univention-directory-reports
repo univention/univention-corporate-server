@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import sys
 import locale
 from optparse import OptionParser
@@ -55,9 +56,9 @@ def dump_modules(cfg, module=None, out=sys.stdout):
 	else:
 		modules = [module]
 	for module in modules:
-		print >> out, 'Reports for module: %s' % module
+		print('Reports for module: %s' % module, file=out)
 		for name in cfg.get_report_names(module):
-			print >> out, ' - %s' % name
+			print(' - %s' % name, file=out)
 
 
 def main():
@@ -127,7 +128,7 @@ def main():
 
 	if not args:
 		parser.print_usage(sys.stderr)
-		print >> sys.stderr, _("Error: no DNs specified on command line")
+		print(_("Error: no DNs specified on command line"), file=sys.stderr)
 		sys.exit(2)
 
 	# FIXME: why is start_tls=0 used here?
@@ -140,7 +141,7 @@ def main():
 			else:
 				lo, po = univention.admin.uldap.getMachineConnection(start_tls=0)
 		except IOError:
-			print >> sys.stderr, _("Error: user and/or password not specified")
+			print(_("Error: user and/or password not specified"), file=sys.stderr)
 			parser.print_help(sys.stderr)
 			sys.exit(1)
 
@@ -148,10 +149,10 @@ def main():
 	try:
 		filename = report.create(options.module, options.report, args)
 	except ReportError as exc:
-		print >> sys.stderr, _("Error: The %s report could not be created: %s") % (options.report, exc)
+		print(_("Error: The %s report could not be created: %s") % (options.report, exc), file=sys.stderr)
 		sys.exit(1)
 
-	print _('The %s has been created: %s') % (options.report, filename)
+	print(_('The %s has been created: %s') % (options.report, filename))
 
 
 if __name__ == "__main__":

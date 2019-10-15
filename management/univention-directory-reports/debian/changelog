@@ -1,3 +1,9 @@
+univention-directory-reports (11.0.0-4) unstable; urgency=medium
+
+  * Bug #49148: migrate to dh_python
+
+ -- Florian Best <best@univention.de>  Tue, 15 Oct 2019 17:53:16 +0200
+
 univention-directory-reports (11.0.0-3) unstable; urgency=medium
 
   * Bug #47922: fix creating reports for objects having broken references

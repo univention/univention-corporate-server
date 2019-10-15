@@ -65,4 +65,4 @@ override_dh_auto_install:
 	done
 
 %:
-	dh $@ --with 'python_support'
+	dh $@ --with 'python2,python3'
