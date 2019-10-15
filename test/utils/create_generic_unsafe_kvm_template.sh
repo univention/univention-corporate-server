@@ -9,6 +9,8 @@ export UCS_VERSION="${UCS_VERSION}"
 export KVM_USER="${KVM_USER:=$USER}"
 export KVM_BUILD_SERVER="${KVM_BUILD_SERVER}"
 
+test "$KVM_USER" = "jenkins" && KVM_USER="build"
+
 if [ -z "${UCS_VERSION}" ]; then
 	echo "ERR: missing UCS_VERSION env variable!" >2
 	exit 1
