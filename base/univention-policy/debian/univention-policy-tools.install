@@ -1,2 +1,3 @@
 usr/bin
-python-lib/*.py usr/share/pyshared/univention/lib
+python-lib/*.py usr/lib/python2.7/dist-packages/univention/lib
+python-lib/*.py usr/lib/python3/dist-packages/univention/lib

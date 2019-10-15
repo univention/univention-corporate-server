@@ -59,6 +59,7 @@ def policy_result(dn, binddn="", bindpw=""):
 	results = {}  # Attribute -> [Values...]
 	policies = {}  # Attribute -> Policy-DN
 	current_attribute = None
+	policy = None
 	for line in stdout.splitlines():
 		if line.startswith('Attribute: '):
 			current_attribute = line[len('Attribute: '):]
