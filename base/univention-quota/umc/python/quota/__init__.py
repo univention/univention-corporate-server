@@ -31,11 +31,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
+
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 
-import partition
-import user
+from . import partition
+from . import user
 
 _ = umc.Translation('univention-management-console-module-quota').translate
 

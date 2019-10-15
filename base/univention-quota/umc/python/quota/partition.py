@@ -31,15 +31,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
 import notifier
 
 import univention.management.console as umc
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import MODULE_ERR, SUCCESS
 
-import df
-import mtab
-import tools
+from . import df
+from . import mtab
+from . import tools
+
 from univention.lib import fstab
 
 _ = umc.Translation('univention-management-console-module-quota').translate

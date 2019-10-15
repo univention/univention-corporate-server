@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
+
 import notifier
 import notifier.threads
 
@@ -41,8 +43,8 @@ from univention.management.console.base import UMC_Error
 from univention.management.console.modules.decorators import sanitize
 from univention.management.console.modules.sanitizers import StringSanitizer, IntegerSanitizer, PatternSanitizer
 
-import mtab
-import tools
+from . import mtab
+from . import tools
 
 _ = Translation('univention-management-console-module-quota').translate
 
