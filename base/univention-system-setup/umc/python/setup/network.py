@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import re
 
 import ipaddr
@@ -833,4 +835,4 @@ class Bridge(Device):
 
 if __name__ == '__main__':
 	import doctest
-	print doctest.testmod()
+	print(doctest.testmod())

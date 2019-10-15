@@ -27,6 +27,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import sys
 import json
 import _util
@@ -35,14 +36,14 @@ if __name__ == '__main__':
 	# check argument (action)
 	args = sys.argv[1:]
 	if len(args) != 2 or '--help' in args or '-h' in args:
-		print >>sys.stderr, 'usage: create_localized_country_labels.py <languageCode> <outfile.json>'
+		print('usage: create_localized_country_labels.py <languageCode> <outfile.json>', file=sys.stderr)
 		sys.exit(1)
 
-	print 'generating country label data...'
+	print('generating country label data...')
 	countries = _util.get_country_code_to_geonameid_map(3)
 	country_ids = set(countries.values())
 	labels = _util.get_localized_names(country_ids, args[0])
-	final_lables = dict([(icountry, labels.get(igeonameid, '')) for icountry, igeonameid in countries.iteritems()])
+	final_lables = dict([(icountry, labels.get(igeonameid, '')) for icountry, igeonameid in countries.items()])
 	with open(args[1], 'w') as outfile:
 		json.dump(final_lables, outfile)
-	print '... done :)'
+	print('... done :)')

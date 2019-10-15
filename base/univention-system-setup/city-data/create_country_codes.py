@@ -27,6 +27,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import sys
 import json
 import _util
@@ -35,11 +36,11 @@ if __name__ == '__main__':
 	# check argument (action)
 	args = sys.argv[1:]
 	if not args or '--help' in args or '-h' in args:
-		print >>sys.stderr, 'usage: create_country_codes.py <outfile.json>'
+		print('usage: create_country_codes.py <outfile.json>', file=sys.stderr)
 		sys.exit(1)
 
-	print 'generating country code data...'
+	print('generating country code data...')
 	pairs = _util.get_country_codes(3)
 	with open(args[0], 'w') as outfile:
 		json.dump(pairs, outfile)
-	print '... done :)'
+	print('... done :)')

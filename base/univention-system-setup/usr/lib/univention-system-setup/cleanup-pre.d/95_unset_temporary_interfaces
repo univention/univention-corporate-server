@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import re
 import subprocess
 import univention.config_registry
@@ -45,7 +46,7 @@ def unset_temporary_interfaces():
 	# unset the temporary interface if set
 	for var in ucr.keys():
 		if RE_IPV4_TYPE.match(var) and ucr.get(var) == 'appliance-mode-temporary':
-			print 'unset %s' % var
+			print('unset %s' % var)
 			keys = [var]
 			for k in ['netmask', 'address', 'broadcast', 'network']:
 				keys.append(var.replace('/type', '/%s' % k))

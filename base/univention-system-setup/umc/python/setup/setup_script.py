@@ -30,6 +30,9 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+from __future__ import print_function
+
 import os
 import sys
 import traceback
@@ -242,7 +245,7 @@ class SetupScript(object):
 
 		Called automatically by run(). Probably unneeded for developers
 		'''
-		print '===', self.script_name, datetime.now().strftime('(%Y-%m-%d %H:%M:%S)'), '==='
+		print('===', self.script_name, datetime.now().strftime('(%Y-%m-%d %H:%M:%S)'), '===')
 		self.inform_progress_parser('name', '%s %s' % (self.script_name, msg))
 
 	def message(self, msg):
@@ -284,8 +287,8 @@ class SetupScript(object):
 	def log(self, *msgs):
 		'''Log messages in a log file'''
 		for msg in msgs:
-			print msg,
-		print
+			print(msg, end=' ')
+		print()
 
 	def run(self):
 		'''Run the SetupScript.

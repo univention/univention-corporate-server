@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import univention.config_registry
 import psutil
 import os
@@ -55,7 +56,7 @@ def finish_system_setup_boot():
 	# stopped manually
 
 	if ucr.is_true('system/setup/boot/legacyfrontend', False):
-		print 'Appliance mode: try to shut down the browser'
+		print('Appliance mode: try to shut down the browser')
 		try:
 			fpid = open(PATH_BROWSER_PID)
 			strpid = fpid.readline().strip()
@@ -63,11 +64,11 @@ def finish_system_setup_boot():
 			p = psutil.Process(pid)
 			p.kill()
 		except IOError:
-			print 'WARN: cannot open browser PID file: %s' % PATH_BROWSER_PID
+			print('WARN: cannot open browser PID file: %s' % PATH_BROWSER_PID)
 		except ValueError:
-			print 'ERROR: browser PID is not a number: "%s"' % strpid
+			print('ERROR: browser PID is not a number: "%s"' % strpid)
 		except psutil.NoSuchProcess:
-			print 'ERROR: cannot kill process with PID: %s' % pid
+			print('ERROR: cannot kill process with PID: %s' % pid)
 
 		# support psutil 0.9 and 2.0
 		def pname(p):
