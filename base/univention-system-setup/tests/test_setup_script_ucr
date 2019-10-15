@@ -6,9 +6,10 @@ from tempfile import mkdtemp
 from shutil import rmtree
 import os
 import sys
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python/setup'))
-from setup_script import TransactionalUcr
 from univention.config_registry import ConfigRegistry
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python/setup'))
+from setup_script import TransactionalUcr  # noqa: E402
 
 
 class TestProfile(unittest.TestCase):

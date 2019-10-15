@@ -563,7 +563,7 @@ class Instance(Base, ProgressMixin):
 	def lang_keyboard_model(self):
 		'''Return a list of all available keyboard models.'''
 
-		tree = lxml.etree.parse(file('/usr/share/X11/xkb/rules/base.xml'))
+		tree = lxml.etree.parse(open('/usr/share/X11/xkb/rules/base.xml'))
 		models = tree.xpath("//model")
 
 		model_result = [{
@@ -577,7 +577,7 @@ class Instance(Base, ProgressMixin):
 	def lang_keyboard_layout(self):
 		'''Return a list of all available keyboard layouts.'''
 
-		tree = lxml.etree.parse(file('/usr/share/X11/xkb/rules/base.xml'))
+		tree = lxml.etree.parse(open('/usr/share/X11/xkb/rules/base.xml'))
 		layouts = tree.xpath("//layout")
 
 		layout_result = [{
@@ -595,7 +595,7 @@ class Instance(Base, ProgressMixin):
 		'''Return a list of all available keyboard variantes.'''
 
 		variante_result = []
-		tree = lxml.etree.parse(file('/usr/share/X11/xkb/rules/base.xml'))
+		tree = lxml.etree.parse(open('/usr/share/X11/xkb/rules/base.xml'))
 		layouts = tree.xpath("//layout")
 
 		for layout in layouts:

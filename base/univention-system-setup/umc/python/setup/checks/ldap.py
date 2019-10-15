@@ -2,6 +2,7 @@ from univention.management.console.modules.setup.util import _temporary_password
 
 import subprocess
 
+
 def check_if_uid_is_available(uid, role, address, username, password):
 	with _temporary_password_file(password) as password_file:
 		process = subprocess.Popen([

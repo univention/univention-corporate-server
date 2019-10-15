@@ -60,7 +60,7 @@ override_dh_auto_test:
 	run-parts -a -v tests
 
 %:
-	dh $@ --with 'python_support'
+	dh $@ --with 'python2,python3'
 
 
 debian/po/templates.pot: debian/po/POTFILES.in

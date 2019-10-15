@@ -283,7 +283,8 @@ class Device(object):
 
 	def _remove_old_fallback_variables(self):
 		# removes deprecated UCR variables from UCS <= 3.1-1... can be removed in future
-		self._leftover = [(leftover[0], None) if leftover[0].startswith('interfaces/%s/fallback/' % (self.name,))
+		self._leftover = [
+			(leftover[0], None) if leftover[0].startswith('interfaces/%s/fallback/' % (self.name,))
 			else leftover for leftover in self._leftover]
 
 	def validate(self):
@@ -620,7 +621,7 @@ class VLAN(Device):
 			try:
 				name, value = option.split(None, 1)
 			except ValueError:
-				name, value = option, ''
+				name, value = option, ''  # noqa: F841
 
 			if name == 'vlan-raw-device':
 				pass

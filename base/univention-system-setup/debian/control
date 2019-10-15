@@ -5,10 +5,11 @@ Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
 Build-Depends: debhelper (>= 9),
  ucslint-univention,
- python-support,
+ dh-python,
  python-all,
+ python3-all,
  univention-config-dev,
- univention-management-console-dev,
+ univention-management-console-dev (>= 11.0.4-37),
  univention-ucs-translation-template,
  python-apt,
  python-psutil,
@@ -25,7 +26,8 @@ Build-Depends: debhelper (>= 9),
 
 Package: univention-system-setup
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends},
+Depends: ${python:Depends}, ${python3:Depends},
+ ${misc:Depends},
  univention-config (>= 8.0-2),
  univention-ipcalc,
  whois,
@@ -37,7 +39,7 @@ Depends: ${misc:Depends}, ${python:Depends},
 Breaks: univention-system-setup-boot (<< 8.1.63-5)
 Recommends: univention-management-console-module-setup,
  rdate,
-Provides: ${python:Provides}
+Provides: ${python:Provides}, ${python3:Provides}
 Description: UCS System Setup tools
  This package provides the tool to configure the system, especially its name,
  domain, network configuration, and software.
@@ -56,7 +58,8 @@ Conflicts: univention-system-setup-appliance,
  univention-server-slave,
  univention-server-member,
  univention-basesystem,
-Depends: ${misc:Depends},
+Depends:
+ ${misc:Depends},
  shell-univention-lib,
  univention-system-setup (= ${source:Version}),
  univention-network-common,
@@ -88,7 +91,8 @@ Section: debian-installer
 Priority: standard
 XB-Subarchitecture: ${subarch}
 Provides: configured-ucs
-Depends: cdebconf-udeb,
+Depends:
+ cdebconf-udeb,
  kernel-installer,
  di-utils,
  installed-base,
@@ -107,9 +111,11 @@ Description: Start Univention System Setup
 
 Package: univention-management-console-module-setup
 Architecture: all
-Depends: univention-management-console-server,
+Depends:
+ univention-management-console-server (>= 11.0.4-37),
  ${misc:Depends},
- ${python:Depends},
+ ${python:Depends},,
+ ${python3:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  univention-system-setup (= ${source:Version}),
  univention-updater,

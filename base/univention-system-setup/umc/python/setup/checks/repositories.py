@@ -21,12 +21,15 @@ def get_unreachable_repository_servers():
 	log_warnings_about_unreachable_repository_servers(zip(servers, processes))
 	return [server for server, process in zip(servers, processes) if process.returncode != 0]
 
+
 def start_curl_processes(servers):
 	return [subprocess.Popen(['curl', '--max-time', '10', server]) for server in servers]
+
 
 def wait_for_processes_to_finish(processes):
 	for process in processes:
 		process.wait()
+
 
 def log_warnings_about_unreachable_repository_servers(servers_with_curl_processes):
 	for server, process in servers_with_curl_processes:

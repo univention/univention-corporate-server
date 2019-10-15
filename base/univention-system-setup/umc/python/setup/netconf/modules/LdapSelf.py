@@ -6,7 +6,6 @@ from univention.admin.uexceptions import base as UniventionBaseException
 from ldap import LDAPError
 from ldap.filter import escape_filter_chars
 import os
-from ipaddr import IPAddress
 
 
 class PhaseLdapSelf(AddressMap, LdapChange, Executable):

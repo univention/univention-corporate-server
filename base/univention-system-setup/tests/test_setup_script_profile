@@ -5,8 +5,9 @@ import unittest
 from tempfile import NamedTemporaryFile
 import os
 import sys
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python/setup'))
-from setup_script import Profile
+from setup_script import Profile  # noqa: E402
 
 
 class TestProfile(unittest.TestCase):
@@ -61,7 +62,7 @@ class TestProfile(unittest.TestCase):
 			foo="bar"
 			bar='baz'
 			baz=foo
-			 # end
+			# end
 			'''
 		)
 		self.failUnlessEqual({
