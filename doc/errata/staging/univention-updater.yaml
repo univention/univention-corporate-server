@@ -5,7 +5,7 @@ scope: ucs_4.3-0-errata4.3-5
 src: univention-updater
 fix: 13.0.1-75A~4.3.0.201910141524
 desc: |
- This update addresses the following issue(s):
- * The updater message for UCS releases that receive extended maintenance was adapted
- *  Disabled updater message in errata component
-bug: [50333, 50334]
+ This update addresses the following issue:
+ * Deactivate extended security maintenance message for the 
+   Univention updater.
+bug: [50334]
