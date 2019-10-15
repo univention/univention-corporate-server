@@ -8,6 +8,7 @@
 ##   - univention-directory-manager-rest
 
 import pytest
+import subprocess
 import time
 
 from univention.admin.rest.client import UDM as UDMClient, Forbidden, Unauthorized, PreconditionFailed
@@ -19,6 +20,11 @@ from univention.lib.misc import custom_groupname
 
 ucr = ConfigRegistry()
 ucr.load()
+
+
+if ucr.is_true('ad/member'):
+	# REST server needs to reload UCR variables for "Domain Adminis" group name
+	subprocess.call(['service', 'univention-directory-manager-rest', 'restart'])
 
 
 class UDMClient(UDMClient):

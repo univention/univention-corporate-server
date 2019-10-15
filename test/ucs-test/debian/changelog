@@ -1,3 +1,9 @@
+ucs-test (9.0.3-81) unstable; urgency=medium
+
+  * Bug #50048: try to fix test case in AD member mode
+
+ -- Florian Best <best@univention.de>  Tue, 15 Oct 2019 17:27:32 +0200
+
 ucs-test (9.0.3-80) unstable; urgency=medium
 
   * Bug #50037: migrate test case to python
