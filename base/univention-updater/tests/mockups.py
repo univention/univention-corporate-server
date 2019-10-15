@@ -2,15 +2,16 @@
 # vim:set fileencoding=utf-8 filetype=python tabstop=4 shiftwidth=4 expandtab:
 """Replacements to test updater in stable local environment."""
 # pylint: disable-msg=C0301,R0903,R0913
+
 import sys
 import os.path
 import errno
 import httplib
 import univention
 univention.__path__.insert(0, os.path.abspath('modules/univention'))
-import univention.updater.tools as U
-import univention.updater.mirror as M
-import univention.config_registry as C
+import univention.updater.tools as U  # noqa: E402
+import univention.updater.mirror as M  # noqa: E402
+import univention.config_registry as C  # noqa: E402
 
 __all__ = [
     'U', 'M', 'MAJOR', 'MINOR', 'PATCH', 'ERRAT', 'PART', 'ARCH',

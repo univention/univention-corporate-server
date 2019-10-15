@@ -31,13 +31,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
+
+import listener
+import univention.config_registry
+
 name = 'license_uuid'
 description = 'Dump key id from license to local UCR variable'
 filter = '(&(objectClass=univentionLicense)(cn=admin))'
-
-__package__ = ''  # workaround for PEP 366
-import listener
-import univention.config_registry
 
 
 def handler(dn, new, old):

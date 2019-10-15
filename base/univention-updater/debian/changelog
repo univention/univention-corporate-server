@@ -1,3 +1,9 @@
+univention-updater (14.0.2-6) unstable; urgency=medium
+
+  * Bug #49143: migrate to dh_python
+
+ -- Florian Best <best@univention.de>  Tue, 15 Oct 2019 11:00:11 +0200
+
 univention-updater (14.0.2-5) unstable; urgency=medium
 
   * Bug #50166: Stop/Start docker only on joined systems
