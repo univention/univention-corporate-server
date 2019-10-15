@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [4, 5]
+scope: ucs_4.3-0-errata4.3-5
+src: sudo
+fix: 1.8.19p1-2.1+deb9u1
+desc: |
+ This update addresses the following issue:
+ * Privilege escalation via 'Runas' specification with 'ALL' keyword
+   (CVE-2019-14287)
+bug: [50368]
+cve:
+- CVE-2019-14287
