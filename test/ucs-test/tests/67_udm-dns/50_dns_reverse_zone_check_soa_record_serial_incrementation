@@ -58,7 +58,7 @@ if __name__ == '__main__':
 		reverse_zone = udm.create_object('dns/reverse_zone', **reverse_zone_properties)
 
 		reverse_zone_properties['ttl'] = '12'
-		udm.modify_object('dns/reverse_zone', dn=reverse_zone, ttl=reverse_zone_properties['ttl'])
+		udm.modify_object('dns/reverse_zone', dn=reverse_zone, ttl=reverse_zone_properties['ttl'], wait_for=True)
 		wait_for_replication_from_master_openldap_to_local_samba(ldap_filter=ldap.filter.filter_format('DC=%s', [ldap.dn.str2dn(reverse_zone)[0][0][1]]))
 		utils.verify_ldap_object(reverse_zone, {'sOARecord': ['%s %s. %s %s %s %s %s' % (
 			reverse_zone_properties['nameserver'] + '.' if s4connector_installed else reverse_zone_properties['nameserver'],
