@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import os
 import sys
 import subprocess
@@ -43,7 +44,7 @@ def exit(result, message=None):
     """
     script = os.path.basename(sys.argv[0])
     if message:
-        print '%s: %s' % (script, message)
+        print('%s: %s' % (script, message))
     sys.exit(result)
 
 

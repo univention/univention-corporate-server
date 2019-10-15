@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import os
 import sys
 from pipes import quote
@@ -62,7 +63,7 @@ def write_cron_job(configRegistry, cron, updateto, reboot, try_release_update):
                 'rm -f /run/univention-updater-reboot;'
                 'fi' % (
                     quote(reboot),))
-        print >> file, '%s\troot\t%s' % (cron, ';'.join(cmd))
+        print('%s\troot\t%s' % (cron, ';'.join(cmd)), file=file)
 
 
 configRegistry = ConfigRegistry()
@@ -97,7 +98,7 @@ if ldap_hostdn:
             try_release_update = value == '"TRUE"'
 
     if p1.wait() != 0:
-        print 'failed to execute univention_policy_result'
+        print('failed to execute univention_policy_result')
         sys.exit(p1.returncode)
 
     if cron_active and cron_active == '1':

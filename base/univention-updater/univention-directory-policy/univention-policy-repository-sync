@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import os
 import sys
 import subprocess
@@ -52,7 +53,7 @@ if ldap_hostdn:
     result = p1.communicate()[0]
 
     if p1.returncode != 0:
-        print 'failed to execute univention_policy_result'
+        print('failed to execute univention_policy_result')
         sys.exit(result)
 
     for line in result.split('\n'):

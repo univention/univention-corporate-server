@@ -3,6 +3,7 @@
 """
 Creates a local repository.
 """
+from __future__ import print_function
 #
 # Copyright 2004-2019 Univention GmbH
 #
@@ -57,13 +58,13 @@ def check_preconditions(options):
     """ Check for already existing mirror and for debmirror package """
     # check directories
     if os.path.exists(os.path.join(_mirror_base, 'mirror')):
-        print >> sys.stderr, 'Warning: The path %s/mirror already exists.' % _mirror_base
+        print('Warning: The path %s/mirror already exists.' % _mirror_base, file=sys.stderr)
 
     if options.interactive:
-        print "Are you sure you want to create a local repository? [yN] ",
+        print("Are you sure you want to create a local repository? [yN] ", end=' ')
         sys.stdin.flush()
         if not sys.stdin.readline().startswith('y'):
-            print >> sys.stderr, 'Aborted.'
+            print('Aborted.', file=sys.stderr)
             sys.exit(1)
 
     # install univention-debmirror
@@ -71,10 +72,10 @@ def check_preconditions(options):
     if ret:
         return
 
-    print 'Installing univention-debmirror'
+    print('Installing univention-debmirror')
     ret = subprocess.call(['univention-install', '--yes', 'univention-debmirror'])
     if ret != 0:
-        print >> sys.stderr, 'Error: Failed to install univention-debmirror'
+        print('Error: Failed to install univention-debmirror', file=sys.stderr)
         sys.exit(1)
 
 
@@ -100,15 +101,15 @@ def prepare(options):
 
 def copy_repository(options):
     """ Copy version info, kernels, grub configuration, profiles, packages and dists """
-    print 'Copying data. Please be patient ...'
+    print('Copying data. Please be patient ...')
 
-    print '  copying version information ...',
+    print('  copying version information ...', end=' ')
     try:
         shutil.copy2(os.path.join(options.mount_point, '.univention_install'), _mirror_base)
     except:
-        print 'failed.'
+        print('failed.')
     else:
-        print 'done.'
+        print('done.')
 
     copy_dists(options)
     copy_packages(options)
@@ -116,17 +117,17 @@ def copy_repository(options):
 
 
 def copy_packages(options):
-    print '  copying packages ...',
+    print('  copying packages ...', end=' ')
     sys.stdout.flush()
     for subdir in urepo.ARCHITECTURES:
         if os.path.exists(os.path.join(options.mount_point, subdir)):
             urepo.copy_package_files(os.path.join(options.mount_point, subdir), _repo_base)
             sys.stdout.flush()
-    print "done."
+    print("done.")
 
 
 def copy_dists(options):
-    print '  copying dists ...',
+    print('  copying dists ...', end=' ')
     dists_dest = os.path.join(_repo_base, 'dists')
     if os.path.isdir(dists_dest):
         shutil.rmtree(dists_dest)
@@ -135,19 +136,19 @@ def copy_dists(options):
             if os.path.isdir(dists_src):
                 shutil.copytree(dists_src, dists_dest, symlinks=True)
     except shutil.Error as ex:
-        print "failed (%s)." % (ex,)
+        print("failed (%s)." % (ex,))
     else:
-        print 'done.'
+        print('done.')
 
 
 def mount(options):
     """ Mount CDROM and check for valid medium """
     if options.interactive:
         # ask user to insert cdrom
-        print '\nPlease insert a UCS installation medium and press <Enter>',
+        print('\nPlease insert a UCS installation medium and press <Enter>', end=' ')
         sys.stdin.readline()
     if options.mount:
-        print "Mounting %s ..." % options.mount_point,
+        print("Mounting %s ..." % options.mount_point, end=' ')
         if options.iso:
             cmd = ('mount', '-o', 'loop,ro', options.iso, options.mount_point)
         else:
@@ -159,23 +160,23 @@ def mount(options):
             devnull.close()
         # if exit code is 0 or 32 (already mounted)
         if ret in (0, 32):
-            print 'done.'
+            print('done.')
         else:
-            print 'failed.'
+            print('failed.')
             return False
 
-    print "Checking medium in %s ..." % options.mount_point,
+    print("Checking medium in %s ..." % options.mount_point, end=' ')
     if os.path.exists(os.path.join(options.mount_point, '.univention_install')) and \
         os.path.isdir(os.path.join(options.mount_point, 'all')) and \
         (os.path.isdir(os.path.join(options.mount_point, 'amd64')) or
          os.path.isdir(os.path.join(options.mount_point, 'i386'))):
         pass
     else:
-        print 'failed.'
-        print >> sys.stderr, 'Error: This is not an UCS installation medium.'
+        print('failed.')
+        print('Error: This is not an UCS installation medium.', file=sys.stderr)
         return False
 
-    print 'ok.'
+    print('ok.')
     return True
 
 
@@ -201,8 +202,8 @@ def setup_pxe(options):
                     os.remove(symlinkfn)
                 os.symlink(os.path.relpath(dstfn, pxedir), symlinkfn)
     else:
-        print 'WARNING: The usage of this DVD for PXE reinstallation is not possible.'
-        print '         Please use an UCS installation DVD with UCS 4.0-0 or later.'
+        print('WARNING: The usage of this DVD for PXE reinstallation is not possible.')
+        print('         Please use an UCS installation DVD with UCS 4.0-0 or later.')
 
 
 def main():
@@ -234,7 +235,7 @@ def main():
         check_preconditions(options)
 
         if not mount(options):
-            print >>sys.stderr, "Error: Failed to mount CD-ROM device at %s" % options.mount_point
+            print("Error: Failed to mount CD-ROM device at %s" % options.mount_point, file=sys.stderr)
             sys.exit(1)
 
         # define repository base path with information from image
@@ -245,13 +246,13 @@ def main():
             except ValueError:
                 continue
             if key == 'VERSION':
-                major_version, minor_version = map(int, value.split('.', 1))
+                major_version, minor_version = list(map(int, value.split('.', 1)))
             elif key == 'PATCHLEVEL':
                 patchlevel_version = int(value)
         try:
             options.version = UCS_Version((major_version, minor_version, patchlevel_version))
         except (NameError, ValueError):
-            print >> sys.stderr, "Error: Failed to parse %s" % (installfile,)
+            print("Error: Failed to parse %s" % (installfile,), file=sys.stderr)
             sys.exit(1)
 
         global _repo_base
@@ -291,7 +292,7 @@ def main():
             if ex.errno != errno.EEXIST:
                 raise
 
-        print dedent(
+        print(dedent(
             r"""
             The local repository has been created.
 
@@ -323,10 +324,10 @@ def main():
                 --dn "%(ldap/base)s" \
                 --policy-reference "cn=global settings,cn=config-registry,cn=policies,%(ldap/base)s" \
                 --policy-reference "cn=%(hostname)s repository,cn=repository,cn=update,cn=policies,%(ldap/base)s"
-            """ % configRegistry)
+            """ % configRegistry))
 
         if options.version.minor != 0 or options.version.patchlevel != 0:
-            print dedent(
+            print(dedent(
                 """
                 An UCS repository must always start with minor version 0, for example
                 with UCS %(major)s.0-0. Please synchronize the repository
@@ -334,7 +335,7 @@ def main():
                 """ % {
                     'major': options.version.major,
                     'minor': options.version.minor,
-                })
+                }))
 
 
 if __name__ == '__main__':

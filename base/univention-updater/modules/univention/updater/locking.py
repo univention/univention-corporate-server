@@ -31,6 +31,8 @@ Univention Updater locking
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+from __future__ import print_function
+
 import os
 from sys import (exit, stderr)
 from time import (time, sleep)
@@ -53,12 +55,12 @@ class UpdaterLock(object):
         try:
             self.lock = self.updater_lock_acquire()
         except LockingError as ex:
-            print >> stderr, ex
+            print(ex, file=stderr)
             exit(5)
 
     def __exit__(self, exc_type, exc_value, traceback):
         if not self.updater_lock_release():
-            print >> stderr, 'WARNING: updater-lock already released!'
+            print('WARNING: updater-lock already released!', file=stderr)
 
     def updater_lock_acquire(self):
         '''
@@ -109,10 +111,10 @@ class UpdaterLock(object):
                         raise LockingError(msg)
                     except OSError as ex:
                         if ex.errno == ESRCH:
-                            print >> stderr, 'Stale PID %s in lockfile %s, removing.' % (
+                            print('Stale PID %s in lockfile %s, removing.' % (
                                 lock_pid,
                                 self.__UPDATER_LOCK_FILE_NAME,
-                            )
+                            ), file=stderr)
                             os.remove(self.__UPDATER_LOCK_FILE_NAME)
                             continue  # redo acquire
                     # PID is valid and process is still alive...

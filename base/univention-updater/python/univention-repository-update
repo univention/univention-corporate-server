@@ -3,6 +3,7 @@
 """
 Update a local repository.
 """
+from __future__ import print_function
 # Copyright 2004-2019 Univention GmbH
 #
 # https://www.univention.de/
@@ -58,14 +59,14 @@ _repo_base = os.path.join(_mirror_base, 'mirror', configRegistry.get('version/ve
 
 def copy_repository(options, source, version):
     """ Copy packages and scripts belonging to version from source directory into local repository """
-    print >>options.teefile, 'Please be patient, copying packages ...',
+    print('Please be patient, copying packages ...', end=' ', file=options.teefile)
     sys.stdout.flush()
 
     dest_repo = os.path.join(_mirror_base, 'mirror', '%(major)s.%(minor)s/maintained/%(major)s.%(minor)s-%(patchlevel)s' % version)
 
     # check if repository already exists
     if os.path.isdir(os.path.join(dest_repo)):
-        print >> options.teefile, '\nWarning: repository for UCS version %(major)s.%(minor)s-%(patchlevel)s already exists' % version
+        print('\nWarning: repository for UCS version %(major)s.%(minor)s-%(patchlevel)s already exists' % version, file=options.teefile)
     else:
         # create directory structure
         for arch in urepo.ARCHITECTURES:
@@ -75,14 +76,14 @@ def copy_repository(options, source, version):
     urepo.copy_package_files(source, dest_repo)
 
     # create Packages files
-    print >>options.teefile, 'Packages ...',
+    print('Packages ...', end=' ', file=options.teefile)
     urepo.gen_indexes(dest_repo, version)
 
-    print >>options.teefile, 'Scripts ...',
+    print('Scripts ...', end=' ', file=options.teefile)
     for script in ('preup.sh', 'preup.sh.gpg', 'postup.sh', 'postup.sh.gpg'):
         if os.path.exists(os.path.join(source, script)):
             shutil.copy2(os.path.join(source, script), os.path.join(dest_repo, 'all', script))
-    print >>options.teefile, 'Done.'
+    print('Done.', file=options.teefile)
 
 
 def update_cdrom(options):
@@ -98,15 +99,15 @@ def update_cdrom(options):
     # 0 == success, 32 == already mounted
     if ret not in (0, 32):
         if options.iso_file:
-            print >> options.teefile, 'Error: Failed to mount ISO image %s' % options.iso_file
+            print('Error: Failed to mount ISO image %s' % options.iso_file, file=options.teefile)
         else:
-            print >> options.teefile, 'Error: Failed to mount CD-ROM device at %s' % options.mount_point
+            print('Error: Failed to mount CD-ROM device at %s' % options.mount_point, file=options.teefile)
         sys.exit(1)
 
     try:
         # check update medium
         if not os.path.exists(os.path.join(options.mount_point, 'ucs-updates')):
-            print >> options.teefile, 'Error: This is not a valid UCS update medium'
+            print('Error: This is not a valid UCS update medium', file=options.teefile)
             sys.exit(1)
 
         # find UCS version
@@ -117,17 +118,17 @@ def update_cdrom(options):
                 try:
                     version = UCS_Version(entry)
                 except (NameError, ValueError):
-                    print >> options.teefile, "Error: Failed to parse %s" % (entry,)
+                    print("Error: Failed to parse %s" % (entry,), file=options.teefile)
                     sys.exit(1)
                 try:
                     copy_repository(options, directory, version)
                 except (IOError, os.error) as why:
-                    print >> options.teefile, '\nError: while copying %s: %s' % (entry, why)
+                    print('\nError: while copying %s: %s' % (entry, why), file=options.teefile)
                     sys.exit(1)
     finally:
         ret = subprocess.call(['umount', options.mount_point], stdout=options.logfile, stderr=options.logfile)
         if ret != 0:
-            print >> options.teefile, 'Error: Failed to umount %s' % options.mount_point
+            print('Error: Failed to umount %s' % options.mount_point, file=options.teefile)
             sys.exit(ret)
 
 
@@ -139,7 +140,7 @@ def update_net(options):
     # mirror.run calls "apt-mirror", which needs /etc/apt/mirror.conf, which is
     # only generated with repository/mirror=true
     if not configRegistry.is_true('repository/mirror', False):
-        print >> options.teefile, 'Error: Mirroring for the local repository is disabled. Set the Univention Configuration Registry variable repository/mirror to yes.'
+        print('Error: Mirroring for the local repository is disabled. Set the Univention Configuration Registry variable repository/mirror to yes.', file=options.teefile)
         sys.exit(1)
 
     # create mirror_base and symbolic link "univention-repository" if missing
@@ -191,8 +192,8 @@ def update_net(options):
             return
         min_version = min(repo[1] for repo in repos)
         with open(filename, 'w') as ver:
-            print >> ver, 'VERSION=%d.%d' % (min_version.major, min_version.minor)
-            print >> ver, 'PATCHLEVEL=%d' % (min_version.patchlevel,)
+            print('VERSION=%d.%d' % (min_version.major, min_version.minor), file=ver)
+            print('PATCHLEVEL=%d' % (min_version.patchlevel,), file=ver)
 
 
 def parse_args():
@@ -254,7 +255,7 @@ def main():
     options.teefile = urepo.TeeFile((options.stdout, options.logfile))
     sys.stdout = options.logfile
 
-    print '***** Starting univention-repository-update at %s\n' % time.ctime()
+    print('***** Starting univention-repository-update at %s\n' % time.ctime())
 
     urepo.assert_local_repository(options.teefile)
 
@@ -263,22 +264,22 @@ def main():
             local_server = '%(hostname)s.%(domainname)s' % configRegistry
             # BUG: The localhost has many names, FQDNs and addresses ...
             if configRegistry['repository/mirror/server'] == local_server:
-                print >> options.teefile, 'Error: The local server is configured as mirror source server (repository/mirror/server)'
+                print('Error: The local server is configured as mirror source server (repository/mirror/server)', file=options.teefile)
                 sys.exit(1)
 
             try:
                 update_net(options)
             except VerificationError as ex:
-                print >> options.teefile, "Error: %s" % (ex,)
-                print >> options.teefile, '\n'.join(wrap(dedent(
+                print("Error: %s" % (ex,), file=options.teefile)
+                print('\n'.join(wrap(dedent(
                     """\
                     This can and should only be disabled temporarily using the UCR variable
                     'repository/mirror/verify'.
                     """
-                )))
+                ))), file=options.teefile)
                 sys.exit(1)
             except UpdaterException as e:
-                print >>options.teefile, "Error: %s" % e
+                print("Error: %s" % e, file=options.teefile)
                 sys.exit(1)
         elif command == 'cdrom':
             update_cdrom(options)

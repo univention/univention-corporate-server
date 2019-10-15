@@ -31,6 +31,8 @@ Univention Updater helper functions for managing a local repository.
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+from __future__ import print_function
+
 import os
 import shutil
 import subprocess
@@ -99,7 +101,7 @@ def copy_package_files(source_dir, dest_dir):
             try:
                 arch = filename.rsplit('_', 1)[-1].split('.', 1)[0]  # partman-btrfs_10.3.201403242318_all.udeb
             except (TypeError, ValueError):
-                print >> sys.stderr, "Warning: Could not determine architecture of package '%s'" % filename
+                print("Warning: Could not determine architecture of package '%s'" % filename, file=sys.stderr)
                 continue
             src_size = os.stat(src)[6]
             dest = os.path.join(dest_dir, arch, filename)
@@ -113,7 +115,7 @@ def copy_package_files(source_dir, dest_dir):
         try:
             shutil.copy2(src, dest)
         except shutil.Error as ex:
-            print >> sys.stderr, "Copying '%s' failed: %s" % (src, ex)
+            print("Copying '%s' failed: %s" % (src, ex), file=sys.stderr)
 
 
 def gen_indexes(base, version):  # type: (str, UCS_Version) -> None
@@ -124,7 +126,7 @@ def gen_indexes(base, version):  # type: (str, UCS_Version) -> None
     """
     A = 'Architecture: '
     F = 'Filename: '
-    print '  generating index ...',
+    print('  generating index ...', end=' ')
     for arch in ARCHITECTURES:
         if arch == 'all':
             continue
@@ -155,7 +157,7 @@ def gen_indexes(base, version):  # type: (str, UCS_Version) -> None
         for name in names:
             gzip_file(name)
 
-    print 'done'
+    print('done')
 
 
 def get_repo_basedir(packages_dir):
@@ -174,7 +176,7 @@ def get_repo_basedir(packages_dir):
     elif set(os.listdir(path)) & set(ARCHITECTURES):
         return path
 
-    print >> sys.stderr, 'Error: %s does not seem to be a repository.' % packages_dir
+    print('Error: %s does not seem to be a repository.' % packages_dir, file=sys.stderr)
     sys.exit(1)
 
 
@@ -234,5 +236,5 @@ def assert_local_repository(out=sys.stderr):
     :param file out: Override error output. Defaults to :py:obj:`sys.stderr`.
     """
     if not configRegistry.is_true('local/repository', False):
-        print >> out, 'Error: The local repository is not activated. Use "univention-repository-create" to create it or set the Univention Configuration Registry variable "local/repository" to "yes" to re-enable it.'
+        print('Error: The local repository is not activated. Use "univention-repository-create" to create it or set the Univention Configuration Registry variable "local/repository" to "yes" to re-enable it.', file=out)
         sys.exit(1)

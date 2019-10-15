@@ -3,6 +3,7 @@
 """
 Install UCS release and errata updates.
 """
+from __future__ import print_function
 # Copyright (C) 2010-2019 Univention GmbH
 #
 # https://www.univention.de/
@@ -65,15 +66,15 @@ def dprint(silent, msg, newline=True, debug=False):
         return
     if logfd:
         if newline:
-            print >>logfd, msg
+            print(msg, file=logfd)
         else:
-            print >>logfd, '%-55s' % msg,
+            print('%-55s' % msg, end=' ', file=logfd)
         logfd.flush()
     if not debug:
         if newline:
-            print msg
+            print(msg)
         else:
-            print '%-55s' % msg,
+            print('%-55s' % msg, end=' ')
         sys.stdout.flush()
 
 
@@ -112,18 +113,18 @@ def readcontinue(msg):
     """Print message and read yes/no/abort answer."""
     while True:
         try:
-            print '%s' % msg,
+            print('%s' % msg, end=' ')
             choice = raw_input().lower().strip()
             if choice == '' or choice == 'y' or choice == 'j':
-                print ''
+                print('')
                 return True
             elif choice == 'n':
-                print ''
+                print('')
                 return False
             else:
                 continue
         except KeyboardInterrupt:
-            print '\n'
+            print('\n')
             return False
 
 
@@ -402,7 +403,7 @@ def main():
         logger.addHandler(handler)
         logger.setLevel(logging.ERROR)
     except:
-        print 'Cannot open %s for writing' % LOGFN
+        print('Cannot open %s for writing' % LOGFN)
         sys.exit(1)
 
     configRegistry = ConfigRegistry()
@@ -444,13 +445,13 @@ def do_update(options):
         update_available = performUpdate(options, checkForUpdates=options.check, silent=False)
     except ConfigurationError as e:
         update_status(status='FAILED', errorsource='SETTINGS')
-        print >>sys.stderr, 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e
+        print('The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e, file=sys.stderr)
         sys.exit(3)
     except Exception as e:
         update_status(status='FAILED')
-        print 'An error occurred - see "%s" for details' % (LOGFN,)
-        print >>logfd, 'Traceback in univention-upgrade:'
-        print >>logfd, traceback.format_exc()
+        print('An error occurred - see "%s" for details' % (LOGFN,))
+        print('Traceback in univention-upgrade:', file=logfd)
+        print(traceback.format_exc(), file=logfd)
         sys.exit(2)
     update_status(status='DONE')
     if options.setucr and configRegistry.is_true(UCR_UPDATE_AVAILABLE) != update_available:
@@ -463,7 +464,7 @@ def do_update(options):
             dprint(silent, 'Please rerun command without --check argument to install.')
             sys.exit(0)
         else:
-            print 'No update available.'
+            print('No update available.')
             sys.exit(1)
 
     if update_available:
@@ -473,7 +474,7 @@ def do_update(options):
 def do_exec():
         # The updater/UCR/libs might have been replaced - re-execute!
         cmd = sys.argv + ['--setucr']
-        print >> logfd, "execv(%r)" % (cmd,)
+        print("execv(%r)" % (cmd,), file=logfd)
         os.execv(sys.argv[0], cmd)
 
 

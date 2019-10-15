@@ -11,6 +11,7 @@ usage: {prog} [-? || --help] [--dist-upgrade] [--silent] [--check]
 --silent         Don't show normal output, but error messages only
 --check          Don't do anything, just check if updates are available
 """
+from __future__ import print_function
 # Copyright 2004-2019 Univention GmbH
 #
 # https://www.univention.de/
@@ -135,7 +136,7 @@ def createLock():
 def getUpdate(configRegistry):
     # Small function waiting for apt lockfile to vanish then starts apt-get update
 
-    print "Running apt-get update"
+    print("Running apt-get update")
     waitForLock()
     createLock()
     logfile = open(LOGNAME, 'a')
@@ -144,7 +145,7 @@ def getUpdate(configRegistry):
     if os.path.exists('/var/run/apt-get.lock'):
         os.unlink('/var/run/apt-get.lock')
     if res != 0:
-        print >>sys.stderr, "E: failed to update"
+        print("E: failed to update", file=sys.stderr)
         sys.exit(res)
 
 
@@ -241,14 +242,14 @@ def getPackageList(configRegistry, job):
         elif configRegistry['server/role'] == 'domaincontroller_master' or configRegistry['server/role'] == 'domaincontroller_backup':
             packages_name = 'univentionMasterPackages='
     else:
-        print >>sys.stderr, "E: no valid job defined"
+        print("E: no valid job defined", file=sys.stderr)
         sys.exit(1)
 
     p1 = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', '/etc/machine.secret', '-s', ldap_hostdn], stdout=subprocess.PIPE)
     result = p1.communicate()[0]
 
     if p1.returncode != 0:
-        print >>sys.stderr, 'failed to execute univention_policy_result'
+        print('failed to execute univention_policy_result', file=sys.stderr)
         sys.exit(p1.returncode)
 
     for line in result.split('\n'):
@@ -321,7 +322,7 @@ def main():
                 # check if the package exists
                 res = subprocess.call(shlex.split(cmd_show) + [package], stdout=logfile, stderr=logfile)
                 if res == 0:
-                    print "Removing packages: %s" % package
+                    print("Removing packages: %s" % package)
                     createLock()
                     os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
                     res = subprocess.call(shlex.split(cmd_config), stdout=logfile, stderr=logfile)
@@ -333,7 +334,7 @@ def main():
                 if os.path.exists('/var/run/apt-get.lock'):
                     os.unlink('/var/run/apt-get.lock')
                 if res != 0:
-                    print >>sys.stderr, "E: failed to remove %s" % package
+                    print("E: failed to remove %s" % package, file=sys.stderr)
                     sys.exit(res)
 
             add_packages = getPackageList(configRegistry, 'add')
@@ -341,7 +342,7 @@ def main():
                 waitForLock()
                 res = subprocess.call(shlex.split(cmd_show) + [package], stdout=logfile, stderr=logfile)
                 if res == 0:
-                    print "Installing packages: %s" % package
+                    print("Installing packages: %s" % package)
                     createLock()
                     os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
                     res = subprocess.call(shlex.split(cmd_config), stdout=logfile, stderr=logfile)
@@ -354,7 +355,7 @@ def main():
                 if os.path.exists('/var/run/apt-get.lock'):
                     os.unlink('/var/run/apt-get.lock')
                 if res != 0:
-                    print >>sys.stderr, "E: failed to install %s" % package
+                    print("E: failed to install %s" % package, file=sys.stderr)
                     sys.exit(res)
 
             waitForLock()
@@ -362,7 +363,7 @@ def main():
         else:
             # ldap/hostdn is not set
             if configRegistry['server/role'] != 'basesystem':
-                print >>sys.stderr, "W: ldap/hostdn is not set - please run univention-join"
+                print("W: ldap/hostdn is not set - please run univention-join", file=sys.stderr)
 
         if dist_upgrade:
             msg = "Dist-upgrading system"
@@ -371,7 +372,7 @@ def main():
             msg = "Upgrading system"
             cmd = cmd_upgrade
 
-        print msg
+        print(msg)
         # TODO: use mkstemp and close directly the file descriptor
 
         createLock()
@@ -379,12 +380,12 @@ def main():
         tee = Tee([LOGNAME], stdout=not silent)
         res = tee.call(shlex.split(cmd_config))
         if res != 0:
-            print >>sys.stderr, "E: failed to configure packets, see %s for details." % LOGNAME
+            print("E: failed to configure packets, see %s for details." % LOGNAME, file=sys.stderr)
         else:
             tee = Tee([LOGNAME], stdout=not silent, filter='(^Get|^Unpacking|^Preparing|^Setting up|packages upgraded)')
             res = tee.call(cmd.split(' '))
             if res != 0:
-                print >>sys.stderr, "E: failed to upgrade, see %s for details." % LOGNAME
+                print("E: failed to upgrade, see %s for details." % LOGNAME, file=sys.stderr)
 
         if os.path.exists('/var/run/apt-get.lock'):
             os.unlink('/var/run/apt-get.lock')
@@ -423,19 +424,19 @@ if __name__ == '__main__':
         with UpdaterLock():
             failure = '/var/lib/univention-updater/update-failed'
             if os.path.exists(failure):
-                print 'univention-actualise: univention-updater failed, stopping...'
-                print '	   remove `%s\' to proceed' % failure
+                print('univention-actualise: univention-updater failed, stopping...')
+                print('	   remove `%s\' to proceed' % failure)
                 sys.exit(2)
 
             try:
                 for root, dirs, files in os.walk('/etc/apt/sources.list.d'):
                     for file in [file for file in files if file.startswith('00_ucs_temporary_')]:
                         filename = os.path.join(root, file)
-                        print 'Warning: Deleting `%s` from incomplete update.' % filename
+                        print('Warning: Deleting `%s` from incomplete update.' % filename)
                         os.remove(filename)
                     del dirs[:]
             except:
-                print 'Failed, aborting.'
+                print('Failed, aborting.')
                 sys.exit(2)
 
             res = main()

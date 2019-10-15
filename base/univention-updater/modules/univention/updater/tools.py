@@ -31,6 +31,7 @@ Univention Update tools.
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+from __future__ import print_function
 try:
     import univention.debug as ud
 except ImportError:
@@ -177,7 +178,7 @@ class _UCSRepo(UCS_Version):
                     i = 0
                 format = format[:i]
 
-    class _substitution:
+    class _substitution(object):
         """
         Helper to print dynamically substituted variable.
 
@@ -811,7 +812,7 @@ class UCSLocalServer(_UCSServer):
         raise DownloadError(uri, -1)
 
 
-class UniventionUpdater:
+class UniventionUpdater(object):
     """
     Handle UCS package repositories.
     """
@@ -983,7 +984,7 @@ class UniventionUpdater:
                     if errorsto == 'exception':
                         raise ex
                     elif errorsto == 'stderr':
-                        print >> sys.stderr, ex
+                        print(ex, file=sys.stderr)
                     return None
                 else:
                     self.log.info('Going for version %s', ver)

@@ -114,7 +114,7 @@ if __name__ == '__main__':
 			requested_app = requested_app.candidate
 	else:
 		for app in Application.all():
-			requested_apps = filter(lambda iapp: iapp.component_id == component_id, app.versions)
+			requested_apps = [iapp for iapp in app.versions if iapp.component_id == component_id]
 			if requested_apps:
 				requested_app = requested_apps[0]
 				for iapp in app.versions:

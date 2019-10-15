@@ -18,6 +18,7 @@ Options:
   --ignore-releasenotes Skip showing release notes
   --noninteractive      Do not ask interactive questions
 """
+from __future__ import print_function
 # Copyright 2004-2019 Univention GmbH
 #
 # https://www.univention.de/
@@ -94,6 +95,7 @@ nostdout = False
 
 updater_status = {}
 
+
 class UpdateError(Exception):
 
     """ Exception to signal errors on update.
@@ -114,19 +116,19 @@ class UpToDateNoError(Exception):
 
 def log(str):
     """ Log message to LOGNAME. """
-    print >>fd_log, str
+    print(str, file=fd_log)
     fd_log.flush()
 
 
 def dprint(str):
     """ Print message to stdout and LOGNAME. """
     if nostdout:
-        print >>fd_log, str
+        print(str, file=fd_log)
         fd_log.flush()
         return
 
     for fd in (stdout_orig, fd_log):
-        print >>fd, str
+        print(str, file=fd)
         fd.flush()
 
 
@@ -212,7 +214,7 @@ def add_temporary_sources_list(temporary_sources_list):
     remove_temporary_sources_list()
     with open(TMPSOURCE, 'w') as fp:
         for entry in temporary_sources_list:
-            print >> fp, entry
+            print(entry, file=fp)
 
 
 def update_available(mode, ucr, cdrom_mount_point, iso=None, updater=None):
@@ -423,7 +425,7 @@ def main():
                     sys.exit(1)
             except UpdateError as msg:
                 dprint("Error: %s" % msg)
-                print >>sys.stderr, 'Error: Please check "%s" for details.' % LOGNAME
+                print('Error: Please check "%s" for details.' % LOGNAME, file=sys.stderr)
                 # Errors are handles as "update currently no available"
             except RequiredComponentError as ex:
                 dprint("%s" % ex)
@@ -665,7 +667,7 @@ if __name__ == '__main__':
             else:
                 update_status(status='FAILED')
             dprint("Error: %s" % msg)
-            print >>sys.stderr, 'Error: Please check "%s" for details.' % LOGNAME
+            print('Error: Please check "%s" for details.' % LOGNAME, file=sys.stderr)
             subprocess.call(['touch', failure])
             # disable update of UCR variable update/available to prevent call loop of univention-updater
             # (update_ucr_updatestatus() calls indirectly univention-updater which calls update_ucr_updatestatus() .... )

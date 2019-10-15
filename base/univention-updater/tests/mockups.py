@@ -1,6 +1,7 @@
 #!/usr/bin/python2.7
 # vim:set fileencoding=utf-8 filetype=python tabstop=4 shiftwidth=4 expandtab:
 """Replacements to test updater in stable local environment."""
+from __future__ import print_function
 # pylint: disable-msg=C0301,R0903,R0913
 
 import sys
@@ -89,10 +90,10 @@ class MockUCSHttpServer(U.UCSLocalServer):
 
     def mock_dump(self, out=sys.stdout):
         """Print accessed URIs."""
-        print >> out, 'Registered URIs:'
-        print >> out, '\n'.join(sorted(MockUCSHttpServer.mock_content))
-        print >> out, 'Requested URIs:'
-        print >> out, '\n'.join(self.mock_uris)
+        print('Registered URIs:', file=out)
+        print('\n'.join(sorted(MockUCSHttpServer.mock_content)), file=out)
+        print('Requested URIs:', file=out)
+        print('\n'.join(self.mock_uris), file=out)
 
     @classmethod
     def mock_reset(cls):
