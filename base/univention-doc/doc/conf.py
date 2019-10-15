@@ -176,8 +176,7 @@ htmlhelp_basename = 'UniventionDocdoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-    ('index', 'UniventionDoc.tex', u'Univention Doc Documentation',
-   u'Univention GmbH', 'manual'),
+	('index', 'UniventionDoc.tex', u'Univention Doc Documentation', u'Univention GmbH', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -209,8 +208,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'univentiondoc', u'Univention Doc Documentation',
-     [u'Univention GmbH'], 1)
+	('index', 'univentiondoc', u'Univention Doc Documentation', [u'Univention GmbH'], 1)
 ]
 
 
