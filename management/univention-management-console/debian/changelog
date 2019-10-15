@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-46) unstable; urgency=medium
+
+  * Bug #49161: migrate template to dh_python
+
+ -- Florian Best <best@univention.de>  Tue, 15 Oct 2019 17:47:14 +0200
+
 univention-management-console (11.0.4-45) unstable; urgency=medium
 
   * Bug #49161: remove obsolete python-support call

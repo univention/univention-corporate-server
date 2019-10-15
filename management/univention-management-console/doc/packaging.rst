@@ -98,14 +98,18 @@ If such a package has been created a few things need to be adjusted
 		Priority: optional
 		Maintainer: Univention GmbH <packages@univention.de>
 		Build-Depends: debhelper (>= 7.0.50~),
-		 python-support,
+		 dh-python,
 		 univention-management-console-dev,
 		 python-all
+		 python3-all
 		Standards-Version: 3.5.2
 		XS-Python-Version: all
 		 
 		Package: univention-management-console-module-ucr
 		Architecture: all
-		Depends: univention-management-console-server
+		Depends:
+		 univention-management-console-server,
+		 ${python:Depends},
+		 ${python3:Depends},
 		Description: UMC module for UCR
 		 This package contains the UMC module for Univention Configuration Registry
