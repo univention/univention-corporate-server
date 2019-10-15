@@ -37,8 +37,6 @@ TEMPLATE_TARGET="/mnt/omar/vmwares/kvm/single/UCS/"
 
 mkdir -p "$TEMPLATE_BUILD"
 
-exit 1
-
 rm -f $TEMPLATE_BUILD/*_generic-unsafe.xml
 rm -f $TEMPLATE_BUILD/*_generic-unsafe-0.qcow2
 rm -f $TEMPLATE_BUILD/*_amd64.tar.gz
