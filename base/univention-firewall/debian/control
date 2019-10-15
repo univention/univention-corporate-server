@@ -5,14 +5,16 @@ Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
 Build-Depends: debhelper,
  python-all,
- python-support,
+ python3-all,
+ dh-python,
  univention-config-dev,
- univention-management-console-dev,
+ univention-management-console-dev (>= 11.0.4-37),
  ucslint-univention
 
 Package: univention-firewall
 Architecture: all
-Depends: ${misc:Depends},
+Depends: ${python:Depends}, ${python3:Depends},
+ ${misc:Depends},
  univention-config,
  python-ipaddr,
  iptables

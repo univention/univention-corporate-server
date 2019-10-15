@@ -1,3 +1,9 @@
+univention-firewall (11.0.1-6) unstable; urgency=medium
+
+  * Bug #49132: migrate to dh_python
+
+ -- Florian Best <best@univention.de>  Tue, 15 Oct 2019 09:43:22 +0200
+
 univention-firewall (11.0.1-5) unstable; urgency=medium
 
   * Bug #50088: Expanded iptables settings to correctly work with docker

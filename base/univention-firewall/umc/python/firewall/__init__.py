@@ -65,7 +65,7 @@ class Instance(umc.modules.Base):
 
 		requests.options = [
 			'category': 'protocol' | 'port' | 'address' | 'package' |
-            'description',
+			'description',
 			'pattern': <str>,
 		]
 		"""

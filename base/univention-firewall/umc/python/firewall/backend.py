@@ -41,14 +41,16 @@ import univention.management.console as umc
 
 _ = umc.Translation('univention-management-console-module-firewall').translate
 
-REGEX_RULE = re.compile(r'^security/packetfilter'  # prefix
-                        r'(/package/(?P<package>[^/]+))?/'  # package rule
-                        r'(?P<protocol>tcp|udp)/'  # protocol
-                        r'(?P<port>[^/]+)/'  # port
-                        r'(?P<address>[^/]+)'  # address
-                        r'(/(?P<property>[^/]+))?')  # property (e.g. 'en')
-REGEX_RULE_PORT = re.compile(r'^(?P<start>[0-9]+)'  # start port
-                             r'((:|-)(?P<end>[0-9]+))?$')  # end port
+REGEX_RULE = re.compile(
+	r'^security/packetfilter'  # prefix
+	r'(/package/(?P<package>[^/]+))?/'  # package rule
+	r'(?P<protocol>tcp|udp)/'  # protocol
+	r'(?P<port>[^/]+)/'  # port
+	r'(?P<address>[^/]+)'  # address
+	r'(/(?P<property>[^/]+))?')  # property (e.g. 'en')
+REGEX_RULE_PORT = re.compile(
+	r'^(?P<start>[0-9]+)'  # start port
+	r'((:|-)(?P<end>[0-9]+))?$')  # end port
 REGEX_RULE_ADDRESS = re.compile(r'^(all|ipv4|ipv6)$')
 
 
@@ -313,9 +315,7 @@ class DictDiffer(object):
 		return self._set_past - self._intersect
 
 	def changed(self):
-		return set(o for o in self._intersect
-		           if self._past_dict[o] != self._current_dict[o])
+		return set(o for o in self._intersect if self._past_dict[o] != self._current_dict[o])
 
 	def unchanged(self):
-		return set(o for o in self._intersect
-		           if self._past_dict[o] == self._current_dict[o])
+		return set(o for o in self._intersect if self._past_dict[o] == self._current_dict[o])
