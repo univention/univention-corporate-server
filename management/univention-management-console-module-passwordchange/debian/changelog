@@ -1,3 +1,9 @@
+univention-management-console-module-passwordchange (4.0.0-3) unstable; urgency=medium
+
+  * Bug #49155: remove python-support dependency
+
+ -- Florian Best <best@univention.de>  Tue, 15 Oct 2019 17:45:40 +0200
+
 univention-management-console-module-passwordchange (4.0.0-2) unstable; urgency=medium
 
   * Bug #49155: remove python-support dependency
