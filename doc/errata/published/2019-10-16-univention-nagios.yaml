@@ -9,3 +9,5 @@ desc: |
  * Improve Nagios check for nscd to check for a working nscd by querying its
    statistics data.
 bug: [50319]
+erratum: 601
+announced: 2019-10-16
