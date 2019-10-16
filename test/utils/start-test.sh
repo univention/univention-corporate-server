@@ -12,7 +12,7 @@ die () {
 
 test -f "$1" || die "Missing test config file!"
 
-release='4.2-4'
+release='4.3-5'
 old_release='4.2-5'
 
 export CURRENT_AMI=ami-08b2615e56edd43fa # AMI: Univention Corporate Server (UCS) 4.3 (official image) rev. 5 - ami-08b2615e56edd43fa
