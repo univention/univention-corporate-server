@@ -1,11 +1,16 @@
 #
 msgid ""
 msgstr ""
+"Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-08-14 14:58+0200\n"
+"POT-Creation-Date: 2019-10-22 22:08+0200\n"
+"PO-Revision-Date: 2015-07-17 12:46+0200\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language-Team: German <packages@univention.de>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: modules/univention/admin/handlers/shares/share.py:666
 #, python-format
@@ -221,6 +226,19 @@ msgid ""
 msgstr ""
 "Nicht lesbare Dateien und Verzeichnisse werden versteckt. Neue Dateien und "
 "Verzeichnisse erhalten die Zugriffsrechte des übergeordneten Verzeichnisses."
+
+#: modules/univention/admin/handlers/shares/printer.py:177
+msgid ""
+"For information about how to manage Windows printer drivers and "
+"troubleshooting, see <a href=\"https://help.univention.com/t/overview-"
+"windows-printer-driver-distribution-known-issues-and-workarounds/13387\" "
+"rel=\"noreferrer noopener\">here</a>."
+msgstr ""
+"Informationen über die Verwaltung von Windows-Druckertreibern und eine "
+"Anleitung zur Fehlerbehebung finden Sie <a "
+"href=\"https://help.univention.com/t/overview-windows-printer-driver-"
+"distribution-known-issues-and-workarounds/13387\" rel=\"noreferrer "
+"noopener\">hier</a>."
 
 #: modules/univention/admin/handlers/shares/printer.py:160
 msgid "For the given groups printing is explicitly allowed or denied."

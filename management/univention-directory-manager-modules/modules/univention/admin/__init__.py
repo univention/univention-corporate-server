@@ -570,11 +570,12 @@ class tab:
 	"""
 	is_app_tab = False
 
-	def __init__(self, short_description='', long_description='', fields=[], advanced=False):
+	def __init__(self, short_description='', long_description='', fields=[], advanced=False, help_text=None):
 		self.short_description = short_description
 		self.long_description = long_description
 		self.fields = fields
 		self.advanced = advanced
+		self.help_text = help_text
 
 	def set_fields(self, fields):
 		self.fields = fields

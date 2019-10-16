@@ -1003,7 +1003,8 @@ define([
 					titleAllowHTML: true,
 					noFooter: true,
 					headerText: ilayout.description || ilayout.label || ilayout.name,
-					helpText: idx === 0 && metaInfo.help_text ? metaInfo.help_text : ''
+					helpText: ilayout.help_text || (idx === 0 && metaInfo.help_text ? metaInfo.help_text : ''),
+					helpTextAllowHTML: true
 				});
 
 				// add user photo into 'nav' area and adjust some properties

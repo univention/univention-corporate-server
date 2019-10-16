@@ -151,10 +151,11 @@ class ILayoutElement(dict):
 
 class Tab(ILayoutElement):
 
-	def __init__(self, label, description='', advanced=False, layout=[], is_app_tab=False):
+	def __init__(self, label, description='', advanced=False, layout=[], is_app_tab=False, help_text=None):
 		ILayoutElement.__init__(self, label, description, layout)
 		self.__setitem__('advanced', advanced)
-		self.__setitem__('is_app_tab', advanced)
+		self.__setitem__('is_app_tab', is_app_tab)
+		self.__setitem__('help_text', help_text)
 
 	@property
 	def is_app_tab(self):

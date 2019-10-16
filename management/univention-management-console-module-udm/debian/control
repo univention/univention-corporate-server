@@ -15,7 +15,7 @@ Package: univention-management-console-module-udm
 Architecture: all
 Depends: ${python:Depends}, ${python3:Depends},
  ${misc:Depends},
- univention-directory-manager-tools (>= 9.0.16-1),
+ univention-directory-manager-tools (>= 14.0.14-10),
  univention-management-console-server (>= 11.0.4-37),
  univention-directory-reports,
 Provides: univention-directory-manager

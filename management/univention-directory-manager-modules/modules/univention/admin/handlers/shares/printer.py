@@ -174,7 +174,7 @@ layout = [
 			['setQuota', ],
 			['pagePrice', 'jobPrice'],
 		]),
-	]),
+	], help_text=_('For information about how to manage Windows printer drivers and troubleshooting, see <a href="https://help.univention.com/t/overview-windows-printer-driver-distribution-known-issues-and-workarounds/13387" rel="noreferrer noopener">here</a>.')),
 	Tab(_('Access control'), _('Access control for users and groups'), layout=[
 		Group(_('Access control'), layout=[
 			'ACLtype',

@@ -9,4 +9,5 @@ desc: |
  * The package now uses dh_python2 instead of python-support.
    Therefore python modules are installed into
    /usr/lib/python2.7/dist-packages/univention/management/console/modules/.
-bug: [49160]
+ * UDM handlers are now able to display help texts for tabs.
+bug: [49160, 50376]
