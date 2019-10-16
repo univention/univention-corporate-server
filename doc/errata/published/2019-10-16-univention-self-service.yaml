@@ -9,3 +9,5 @@ desc: |
  * The LDAP ACL's have been improved to allow UCS@school users
    to use the self service feature.
 bug: [50037]
+erratum: 308
+announced: 2019-10-16
