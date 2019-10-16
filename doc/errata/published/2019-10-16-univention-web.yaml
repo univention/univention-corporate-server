@@ -9,3 +9,5 @@ desc: |
  * Progress bars were jumping up and down when the info text changed and 
    the number of lines were different. This has been corrected.
 bug: [33590]
+erratum: 309
+announced: 2019-10-16
