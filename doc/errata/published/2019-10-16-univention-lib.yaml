@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Remove deprecated univention.lib.umc_connection module.
 bug: [47205]
+erratum: 307
+announced: 2019-10-16
