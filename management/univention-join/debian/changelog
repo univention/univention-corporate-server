@@ -1,3 +1,9 @@
+univention-join (11.0.1-21) unstable; urgency=medium
+
+  * Bug #49149: migrate to dh_python
+
+ -- Florian Best <best@univention.de>  Wed, 16 Oct 2019 13:16:27 +0200
+
 univention-join (11.0.1-20) unstable; urgency=medium
 
   * Bug #49149: migrate to dh_python
