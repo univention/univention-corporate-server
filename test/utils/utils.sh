@@ -1030,4 +1030,11 @@ sa_bug47030 () {
 	service amavis restart || true
 }
 
+install_from_errata_test () {
+    local rv=0
+    bash /root/activate-errata-test-scope.sh || rv=$?
+    install_with_unmaintained "$@" || rv=$?
+    return $rv
+}
+
 # vim:set filetype=sh ts=4:
