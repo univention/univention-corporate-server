@@ -14,3 +14,5 @@ cve:
 - CVE-2019-1547
 - CVE-2019-1563
 ignore: [version.scope]
+erratum: 597
+announced: 2019-10-16
