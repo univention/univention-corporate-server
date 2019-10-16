@@ -10,3 +10,5 @@ desc: |
    error "ldapError: Insufficient access". This has been fixed by ensuring a
    new connection is used after LDAP connection problems.
 bug: [50355]
+erratum: 600
+announced: 2019-10-16
