@@ -19,3 +19,5 @@ desc: |
  * The gidNumber and sambaPrimaryGroupSID of users/user is now set during the
    object creation instead of setting it afterwards.
 bug: [50288, 44937, 50236, 50239, 49313, 50161]
+erratum: 306
+announced: 2019-10-16
