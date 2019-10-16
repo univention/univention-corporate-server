@@ -9,3 +9,5 @@ desc: |
  * Deactivate extended security maintenance message for the 
    Univention updater.
 bug: [50334]
+erratum: 602
+announced: 2019-10-16
