@@ -9,3 +9,5 @@ desc: |-
   * univention-l10n-build now runs without any UCS dependency and recognizes
     UMC po files.
 bug: [50341]
+erratum: 317
+announced: 2019-10-16
