@@ -8,6 +8,7 @@ Build-Depends: debhelper (>= 9),
  univention-config-dev,
  univention-management-console-dev (>= 11.0.4-37),
  univention-ucs-translation-template,
+ dh-python,
  python-all,
  python3-all,
 Standards-Version: 3.9.5
