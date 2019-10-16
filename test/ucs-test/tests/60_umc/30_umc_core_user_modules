@@ -56,7 +56,9 @@ class TestUMCUserModules(UMCBase):
 
 	def list_umc_modules(self, username, password):
 		client = Client(None, username, password)
-		return client.umc_get('modules').data.get('modules')
+		modules = client.umc_get('modules').data.get('modules')
+		modules = [mod for mod in modules if mod['id'] not in ('passwordreset',)]  # self-service might be installed, which offers a anonymous module
+		return modules
 
 
 if __name__ == '__main__':
