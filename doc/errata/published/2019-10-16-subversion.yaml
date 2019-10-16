@@ -10,3 +10,5 @@ desc: |
    Subversion.
 bug: [50356]
 ignore: [version.scope]
+erratum: 598
+announced: 2019-10-16
