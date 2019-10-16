@@ -39,8 +39,7 @@ class TestUMCUserModules(UMCBase):
 			# should be available to the user:
 			print("Checking if user '%s' has no access to umc modules" % test_username)
 			user_modules = self.list_umc_modules(test_username, test_password)
-			if len(user_modules) != 0:
-				utils.fail("The newly created test user '%s' in test " "group '%s' has access to the following modules " "'%s', when should not have access to any" % (test_username, test_groupname, user_modules))
+			assert len(user_modules) == 0, "The newly created test user '%s' in test " "group '%s' has access to the following modules " "'%s', when should not have access to any" % (test_username, test_groupname, user_modules)
 
 			# case 2: create custom policy and add it to the test group,
 			# check available modules for the user:
