@@ -1,3 +1,9 @@
+univention-app-appliance (3.0.1-2) unstable; urgency=medium
+
+  * Bug #50359: fix appliance portal branding
+
+ -- Jannik Ahlers <ahlers@univention.de>  Thu, 17 Oct 2019 11:00:48 +0200
+
 univention-app-appliance (3.0.1-1) unstable; urgency=medium
 
   * Bug #46969: bindpwdfile support

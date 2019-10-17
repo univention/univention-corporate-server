@@ -84,6 +84,7 @@ def print_status(message):
 
 def configure_portal(app):
 	lo, po = udm_uldap.getMachineConnection()
+	udm_modules.update()
 	module = udm_modules.get('settings/portal')
 	result = module.lookup(None, lo, 'cn=domain', base=UCR['ldap/base'], scope='sub')
 	if not result:
