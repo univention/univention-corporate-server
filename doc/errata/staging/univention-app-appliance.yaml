@@ -9,3 +9,4 @@ desc: |
  * The appliance branding in the UCS Portal did not work correctly. This issue
    has been fixed.
 bug: [50359]
+maintained: False
