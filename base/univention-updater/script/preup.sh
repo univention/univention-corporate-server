@@ -319,6 +319,13 @@ block_update_with_docker() {
 		echo "       please change the docker storage driver to \"overlay\""
 		echo "       and try again."
 		echo ""
+		echo "       The docker storage driver can be changed to \"overlay\""
+		echo "       with \"ucr set docker/daemon/default/opts/storage-driver='overlay'\"."
+		echo "       After that a restart of the docker service is needed which can be"
+		echo "       done with \"service docker restart\""
+		echo "       You may also want to migrate your data from \"$storage_driver\""
+		echo "       to \"overlay\" before performing the upgrade."
+		echo ""
 		if is_ucr_true update44/ignore_docker_issue; then
 			echo "WARNING: update44/ignore_docker_issue is set to true. Skipped as requested."
 		else
