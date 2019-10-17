@@ -47,6 +47,7 @@ from univention.config_registry import ConfigRegistry
 UCR = ConfigRegistry()
 UCR.load()
 
+
 def _branding_resources_base_url(app_id, ucs_version):
 	protocol = 'https://'
 	if '://' in UCR.get('repository/app_center/server'):
@@ -70,11 +71,11 @@ def _download_resource(app, resource, dest_path):
 			with open(dest_path, 'wb') as handle:
 				for block in req.iter_content(8192):
 					handle.write(block)
-			print 'Successfully downloaded %s' % resource_url
+			print('Successfully downloaded %s' % resource_url)
 		else:
-			print 'WARNING: Status: %s; Failed to download %s' % (req.status_code, resource_url)
+			print('WARNING: Status: %s; Failed to download %s' % (req.status_code, resource_url))
 	except (IOError, requests.HTTPError, requests.ConnectionError, requests.Timeout):
-			print 'WARNING: Failed to download %s' % resource_url
+			print('WARNING: Failed to download %s' % resource_url)
 
 
 def print_status(message):
@@ -95,7 +96,7 @@ def configure_portal(app):
 	app_props_de = get_app_style_properties(app_de)
 
 	# portal title
-	print 'Setting portal title...'
+	print('Setting portal title...')
 	if app_props.get('portal_title'):
 		portal_obj.info['displayName'] = [
 			['en_US', app_props.get('portal_title')],
@@ -110,35 +111,35 @@ def configure_portal(app):
 
 	# portal background image
 	if app_props.get('portal_background_image'):
-		print 'Setting portal background image...'
+		print('Setting portal background image...')
 		img_name = app_props.get('portal_background_image')
 		ext = os.path.splitext(img_name)[1]
 		dest_path = '/tmp/appliance_portal_background_image_%s.%s' % (os.getpid(), ext)
-		_download_resource(app, img_name, dest_path), 
+		_download_resource(app, img_name, dest_path),
 		with open(dest_path) as fp:
 			base64_img = base64.encodestring(fp.read())
 		portal_obj.info['background'] = base64_img
 
 	# portal logo
 	if app_props.get('portal_logo'):
-		print 'Setting portal logo...'
+		print('Setting portal logo...')
 		img_name = app_props.get('portal_logo')
 		ext = os.path.splitext(img_name)[1]
 		dest_path = '/tmp/appliance_portal_logo_%s.%s' % (os.getpid(), ext)
-		_download_resource(app, img_name, dest_path), 
+		_download_resource(app, img_name, dest_path),
 		with open(dest_path) as fp:
 			base64_img = base64.encodestring(fp.read())
 		portal_obj.info['logo'] = base64_img
 
 	if app_props.get('portal_css_background'):
-		print 'Setting portal CSS background...'
+		print('Setting portal CSS background...')
 		portal_obj.info['cssBackground'] = app_props.get('css_background')
 
 	if app_props.get('portal_font_color') and 'fontColor' in module.property_descriptions:
-		print 'Setting portal font color'
+		print('Setting portal font color')
 		portal_obj.info['fontColor'] = app_props.get('portal_font_color')
 
-	print 'Saving modifications to LDAP'
+	print('Saving modifications to LDAP')
 	portal_obj.modify()
 
 
@@ -170,7 +171,6 @@ def main(app):
 			'appliance/apps/%s/notifyVendor' % app.id: str(app.notify_vendor),
 		})
 
-
 	def adjust_svg_image_colors():
 		print_status('Adjusting colors of UMC images.')
 		for src_path in glob('/usr/share/univention-app-appliance/images/*.svg'):
@@ -195,7 +195,7 @@ def main(app):
 				try:
 					os.remove(target)
 				except OSError as exc:
-					print 'WARNING: An error occurred when removing the file %s: %s' % (target, exc)
+					print('WARNING: An error occurred when removing the file %s: %s' % (target, exc))
 			print("Symlink first steps from %s to %s" % (source, target,))
 			if os.path.exists(source):
 				os.symlink(source, target)
@@ -210,7 +210,7 @@ def main(app):
 			shutil.copy('/usr/share/plymouth/themes/ucs-appliance-%s/logo_bootsplash.svg.png.fallback' % theme, '/usr/share/plymouth/themes/ucs-appliance-%s/logo_bootsplash.svg.png' % theme)
 		if not app.appliance_welcome_screen_logo:
 			shutil.copy('/usr/share/plymouth/themes/ucs-appliance-%s/logo_welcome_screen.svg.png.fallback' % theme, '/usr/share/plymouth/themes/ucs-appliance-%s/logo_welcome_screen.svg.png' % theme)
-		ucr_update(UCR, { 'bootsplash/theme': 'ucs-appliance-%s' % (theme,) })
+		ucr_update(UCR, {'bootsplash/theme': 'ucs-appliance-%s' % (theme,)})
 
 	def set_grub_theme():
 		print_status("Applying branded grub theme.")
@@ -236,10 +236,10 @@ def main(app):
 			file_in = open(os.path.join('/usr/share/univention-app-appliance/templates', isrc_file))
 			file_out = open(idest_path, 'w')
 			try:
-				print 'Creating template file %s' % (idest_path, )
+				print('Creating template file %s' % (idest_path, ))
 				call(['/usr/sbin/ucr', 'filter'], stdin=file_in, stdout=file_out)
 			except IOError as exc:
-				print 'ERROR: Could not update template file %s: %s' % (idest_path, exc)
+				print('ERROR: Could not update template file %s: %s' % (idest_path, exc))
 
 	def _svg_to_png(source, dest, params, res='800x600'):
 		css_background = 'url(file:///{source}) {params}'.format(source=source, params=params)
@@ -302,7 +302,7 @@ if __name__ == '__main__':
 		app = Apps().find(app_id)
 		if not app:
 			raise RuntimeError('Could not find corresponding app for given ID "%s"' % (app_id, ))
-		
+
 		# launch portal config functions
 		if not not_config_portal:
 			configure_portal(app)
@@ -313,5 +313,3 @@ if __name__ == '__main__':
 	except RuntimeError as err:
 		sys.stderr.write('\nERROR: %s\n' % (err, ))
 		sys.exit(1)
-
-
