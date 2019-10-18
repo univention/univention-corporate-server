@@ -64,7 +64,7 @@ class App(app.App):
 	appliance_portal_logo = app.AppAttribute()
 	appliance_portal_font_color = app.AppAttribute()
 	appliance_portal_css_background = app.AppAttribute()
-	appliance_portal_background_image = app.AppFileAttribute()
+	appliance_portal_background_image = app.AppAttribute()
 	appliance_portal_title = app.AppAttribute()
 	readme_appliance = app.AppFileAttribute()
 
