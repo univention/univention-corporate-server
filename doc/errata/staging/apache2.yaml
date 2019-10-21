@@ -5,8 +5,8 @@ scope: ucs_4.4-0-errata4.4-2
 src: apache2
 fix: 2.4.25-3+deb9u9A~4.4.2.201910210907
 desc: |
- This update addresses the following issue:
- * limited cross-site scripting in mod_proxy error page (CVE-2019-10092)
+ This update addresses a regression from erratum 242:
+ * Limited cross-site scripting in mod_proxy error page (CVE-2019-10092)
 bug: [50392]
 cve:
 - CVE-2019-10092
