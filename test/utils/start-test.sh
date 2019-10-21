@@ -25,17 +25,26 @@ export KVM_TEMPLATE="${KVM_TEMPLATE:=generic-unsafe}"
 export KVM_UCSVERSION="${KVM_UCSVERSION:=$UCS_VERSION}"
 export KVM_OLDUCSVERSION="${KVM_OLDUCSVERSION:=$OLD_VERSION}"
 export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=lattjo.knut.univention.de}"
-export KVM_USER="${KVM_USER:=$USER}"
 export KVM_MEMORY="${KVM_MEMORY:=2048M}"
 export KVM_CPUS="${KVM_CPUS:=1}"
 export RELEASE_UPDATE="${release_update:=public}"
 export ERRATA_UPDATE="${errata_update:=testing}"
 export UCSSCHOOL_RELEASE=${UCSSCHOOL_RELEASE:=scope}
-export HALT="${HALT:=true}"
 export REPLACE="${REPLACE:=false}"
 export CFG="$1"
 
-test "$KVM_USER" = "jenkins" && KVM_USER="build"
+# jenkins defaults
+if [ "$USER" = "jenkins" ]; then
+	KVM_USER="build"
+	export UCS_TEST_RUN="${UCS_TEST_RUN:=true}"
+	export HALT="${HALT:=true}"
+	export KVM_USER="build"
+else
+	export HALT="${HALT:=false}"
+	export UCS_TEST_RUN="${UCS_TEST_RUN:=false}"
+	export KVM_USER="${KVM_USER:=$USER}"
+fi
+
 
 # if the default branch of UCS@school is given, then build UCS else build UCS@school
 if [ -n "$UCSSCHOOL_BRANCH" -o -n "$UCS_BRANCH" ]; then

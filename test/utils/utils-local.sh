@@ -45,6 +45,13 @@ fetch-files () { # [<USER>@]<IP-ADDRESS> <REMOTE-FILE(S)> <DESTINATION> [SCP-ARG
 }
 
 fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
+
+	# check env
+	if [ -n "$UCS_TEST_RUN" -a "$UCS_TEST_RUN" = "false" ]; then
+		echo "ucs-test disabled by env UCS_TEST_RUN=$UCS_TEST_RUN, so no results i guess"
+		return 0
+	fi
+
 	local ADDR="$1"
 	local TARGETDIR="${2:-.}"
 	mkdir -p "$TARGETDIR"
