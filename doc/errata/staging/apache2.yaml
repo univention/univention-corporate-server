@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [4, 5]
+scope: ucs_4.3-0-errata4.3-5
+src: apache2
+fix: 2.4.25-3+deb9u9A~4.3.5.201910210703
+desc: |
+ This update addresses a regression from erratum 566:
+ * Limited cross-site scripting in mod_proxy error page (CVE-2019-10092)
+bug: [50393]
+cve:
+- CVE-2019-10092
