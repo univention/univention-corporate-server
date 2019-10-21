@@ -143,7 +143,6 @@ def file_and_permission_checks():
 		cf_type('/var/lib/univention-self-service-passwordreset-umc/memcached.socket', 'self-service-umc', 'nogroup', 0o600, False),
 		cf_type('/var/run/univention-saml/memcached.socket', 'samlcgi', 'nogroup', 0o700, False),
 		cf_type('/var/run/uvmm.socket', 'root', 'root', 0o755, False),
-		cf_type('/var/lock/sysvol-sync-dir', 'root', 'DC Slave Hosts', 0o664, False),
 		cf_type('/var/cache/univention-ad-connector', 'root', 'root', 0o755, False),
 		cf_type('/var/cache/univention-appcenter', 'root', 'root', 0o755, False),
 		cf_type('/var/cache/univention-bind-proxy', 'root', 'root', 0o755, False),

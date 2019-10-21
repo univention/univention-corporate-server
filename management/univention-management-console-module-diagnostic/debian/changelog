@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (5.0.1-22) unstable; urgency=medium
+
+  * Bug #50394: remove broken test for /var/lock/sysvol-sync-dir
+
+ -- Felix Botner <botner@univention.de>  Mon, 21 Oct 2019 11:34:10 +0200
+
 univention-management-console-module-diagnostic (5.0.1-21) unstable; urgency=medium
 
   * Bug #49151: migrate to dh_python
