@@ -7,6 +7,8 @@ Build-Depends: debhelper (>= 7.0.50~),
  ucslint-univention,
  univention-config-dev,
  stylus,
+ python-all,
+ python-support,
  univention-ucs-translation-template,
  univention-management-console-dev
 
