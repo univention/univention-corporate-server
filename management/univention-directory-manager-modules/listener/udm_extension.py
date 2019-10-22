@@ -198,7 +198,7 @@ def handler(dn, new, old):
 
 
 # helper functions #####
-# pretty much all of the functions below mimic update-python-modules, additionally creating the __init__.py module file if nexessary
+# pretty much all of the functions below mimic update-python-modules, additionally creating the __init__.py module file if necessary
 def install_python_file(objectclass, target_subdir, relative_filename, data):
 	"""Install and link a python module file"""
 

@@ -6,7 +6,9 @@ Standards-Version: 3.5.5
 Build-Depends: debhelper,
  ucslint-univention,
  python2.7-dev,
- python-support,
+ python-all,
+ python3-all,
+ dh-python,
  univention-config-dev
 
 Package: python-univention-directory-manager
@@ -22,7 +24,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-smbpasswd,
  shell-univention-lib,
  python-imaging,
- python-univention-lib (>= 7.0.0-14),
+ python-univention-lib (>= 8.0.0-6),
  python-univention-license,
  python-univention-directory-manager-cli (= ${binary:Version}),
  iso-codes,

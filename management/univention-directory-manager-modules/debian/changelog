@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.14-8) unstable; urgency=medium
+
+  * Bug #49147: migrate to dh-python
+
+ -- Florian Best <best@univention.de>  Fri, 18 Oct 2019 10:16:44 +0200
+
 univention-directory-manager-modules (14.0.14-7) unstable; urgency=medium
 
   * Bug #50288: enhance logged error message
