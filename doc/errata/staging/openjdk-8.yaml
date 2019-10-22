@@ -6,48 +6,37 @@ src: openjdk-8
 fix: 8u232-b09-1~deb9u1
 desc: |
  This update addresses the following issues:
- * Vulnerability in the Java SE, Java SE Embedded product of Oracle Java SE
-   (component: Security). Supported versions that are affected are Java SE:
-   7u231, 8u221, 11.0.4 and 13; Java SE Embedded: 8u221. Difficult to exploit
-   vulnerability allows unauthenticated attacker with network access via
-   multiple protocols to compromise Java SE, Java SE Embedded. Successful
+ * Difficult to exploit vulnerability allows unauthenticated attacker with
+   network access via multiple protocols to compromise Java. Successful
    attacks of this vulnerability can result in unauthorized read access to a
-   subset of Java SE, Java SE Embedded accessible data. Note: This
-   vulnerability applies to Java deployments, typically in clients running
-   sandboxed Java Web Start applications or sandboxed Java applets (in Java SE
-   8), that load and run untrusted code (e.g., code that comes from the
+   subset of Java. This vulnerability applies to Java deployments, typically
+   in clients running sandboxed Java Web Start applications or sandboxed Java
+   applets, that load and run untrusted code (e.g., code that comes from the
    internet) and rely on the Java sandbox for security. This vulnerability can
    also be exploited by using APIs in the specified Component, e.g., through a
-   web service which supplies data to the APIs. CVSS 3.0 Base Score 3.7
-   (Confidentiality impacts). CVSS Vector:
-   (CVSS:3.0/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N). (CVE-2019-2894)
- * Missing restrictions on use of custom SocketImpl (Networking, 8218573)
-   (CVE-2019-2945)
- * Improper handling of Kerberos proxy credentials (Kerberos, 8220302)
-   (CVE-2019-2949)
- * NULL pointer dereference in DrawGlyphList (2D, 8222690) (CVE-2019-2962)
+   web service which supplies data to the APIs. (CVE-2019-2894)
+ * Missing restrictions on use of custom SocketImpl (CVE-2019-2945)
+ * Improper handling of Kerberos proxy credentials (CVE-2019-2949)
+ * NULL pointer dereference in DrawGlyphList (CVE-2019-2962)
  * Unexpected exception thrown by Pattern processing crafted regular
-   expression (Concurrency, 8222684) (CVE-2019-2964)
+   expression (CVE-2019-2964)
  * Unexpected exception thrown by XPathParser processing crafted XPath
-   expression (JAXP, 8223505) (CVE-2019-2973)
+   expression (CVE-2019-2973)
  * Unexpected exception thrown during regular expression processing in Nashorn
-   (Scripting, 8223518) (CVE-2019-2975)
- * Incorrect handling of nested jar: URLs in Jar URL handler (Networking,
-   8223892) (CVE-2019-2978)
+   (CVE-2019-2975)
+ * Incorrect handling of nested jar: URLs in Jar URL handler (CVE-2019-2978)
  * Unexpected exception thrown by XPath processing crafted XPath expression
-   (JAXP, 8224532) (CVE-2019-2981)
+   (CVE-2019-2981)
  * Unexpected exception thrown during Font object deserialization
-   (Serialization, 8224915) (CVE-2019-2983)
- * Missing glyph bitmap image dimension check in FreetypeFontScaler (2D,
-   8225286) (CVE-2019-2987)
- * Integer overflow in bounds check in SunGraphics2D (2D, 8225292)
-   (CVE-2019-2988)
+   (CVE-2019-2983)
+ * Missing glyph bitmap image dimension check in FreetypeFontScaler
+   (CVE-2019-2987)
+ * Integer overflow in bounds check in SunGraphics2D (CVE-2019-2988)
  * Incorrect handling of HTTP proxy responses in HttpURLConnection
-   (Networking, 8225298) (CVE-2019-2989)
- * Excessive memory allocation in CMap when reading TrueType font (2D,
-   8225597) (CVE-2019-2992)
- * Insufficient filtering of HTML event attributes in Javadoc (Javadoc,
-   8226765) (CVE-2019-2999)
+   (CVE-2019-2989)
+ * Excessive memory allocation in CMap when reading TrueType font
+   (CVE-2019-2992)
+ * Insufficient filtering of HTML event attributes in Javadoc (CVE-2019-2999)
 bug: [50399]
 cve:
 - CVE-2019-2894
