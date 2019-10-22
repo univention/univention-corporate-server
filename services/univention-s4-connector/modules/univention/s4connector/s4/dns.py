@@ -171,14 +171,18 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 				ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: got an UCS-Object")
 				# lookup the relativeDomainName as DC/dnsNode in S4 to get corresponding DN, if not found create new
 
-				try:
-					relativeDomainName = obj['attributes'][ol_RR_attr][0]
-				except (KeyError, IndexError):
-					# Safety fallback for the unexpected case, where relativeDomainName would not be set
-					if 'zoneName' == fst_rdn_attribute_utf8:
-						relativeDomainName = '@'
-					else:
-						raise  # can't determine relativeDomainName
+				# Case move with rename
+				if dn_key == 'olddn' and fst_rdn_attribute_utf8 == 'relativeDomainName':
+					relativeDomainName = fst_rdn_value_utf8
+				else:
+					try:
+						relativeDomainName = obj['attributes'][ol_RR_attr][0]
+					except (KeyError, IndexError):
+						# Safety fallback for the unexpected case, where relativeDomainName would not be set
+						if 'zoneName' == fst_rdn_attribute_utf8:
+							relativeDomainName = '@'
+						else:
+							raise  # can't determine relativeDomainName
 
 				if s4connector.property[propertyname].mapping_table and propertyattrib in s4connector.property[propertyname].mapping_table.keys():
 					for ucsval, conval in s4connector.property[propertyname].mapping_table[propertyattrib]:

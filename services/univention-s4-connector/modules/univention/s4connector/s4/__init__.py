@@ -2304,16 +2304,7 @@ class s4(univention.s4connector.ucs):
 		# check for move, if old_object exists, set modtype move
 		pre_mapped_ucs_old_dn = old_dn
 		if old_dn:
-			if hasattr(self.property[property_type], 'dn_mapping_function'):
-				tmp_object = copy.deepcopy(object)
-				tmp_object['dn'] = old_dn
-				for function in self.property[property_type].dn_mapping_function:
-					tmp_object = function(self, tmp_object, [], isUCSobject=True)
-				old_dn = tmp_object['dn']
-			if hasattr(self.property[property_type], 'position_mapping'):
-				for mapping in self.property[property_type].position_mapping:
-					old_dn = self._subtree_replace(old_dn.lower(), mapping[1].lower(), mapping[0].lower())
-				old_dn = self._subtree_replace(old_dn, self.lo.base, self.lo_s4.base)
+			old_dn = object['olddn']
 			# the old object was moved in UCS, but does this object exist in S4?
 			try:
 				old_object = self.s4_search_ext_s(compatible_modstring(old_dn), ldap.SCOPE_BASE, 'objectClass=*')
