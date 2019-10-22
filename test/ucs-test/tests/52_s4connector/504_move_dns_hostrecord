@@ -1,0 +1,60 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Check renaming of dns/host_record"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## bugs:
+##  - 49728
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "s4connector.sh" || exit 137
+
+RETVAL=100
+
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+# create computer object
+UDM_dns_host_record_name="$(random_chars)"
+udm_create "dns/host_record" "" "zoneName=$(hostname -d),cn=dns,$(ucr get ldap/base)"|| fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+# rename computer object
+old_name="$UDM_dns_host_record_name"
+ucs_zone="zoneName=$(hostname -d),cn=dns"
+new_name="$(random_chars)"
+ad_zone="DC=$(hostname -d),CN=MicrosoftDNS,dc=DomainDnsZones"
+udm-test 'dns/host_record' modify \
+	--dn "relativeDomainName=$old_name,$ucs_zone,$(ucr get ldap/base)" \
+	--set name="$new_name" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+
+## check renamed object
+UDM_dns_host_record_name="$new_name,$ucs_zone"
+udm_exists  "dns/host_record" || fail_test 10
+UDM_dns_host_record_name="$old_name,$ucs_zone"
+udm_exists "dns/host_record" && fail_test 110
+ad_exists "DC=$new_name,$ad_zone,$(ad_get_base)" ; fail_bool 0 12
+ad_exists "DC=$old_name,$ad_zone,$(ad_get_base)" ; fail_bool 1 12
+
+# cleanup
+udm_remove 'dns/host_record'
+UDM_dns_host_record_name="$new_name,$ucs_zone"
+udm_remove 'dns/host_record' || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+udm_exists 'dns/host_record'; fail_bool 1 110
+UDM_dns_host_record_name="$old_name,$ucs_zone"
+udm_exists 'dns/host_record'; fail_bool 1 110
+ad_delete "DC=$new_name,$ad_zone,$(ad_get_base)"
+ad_delete "DC=$old_name,$ad_zone,$(ad_get_base)"
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"
