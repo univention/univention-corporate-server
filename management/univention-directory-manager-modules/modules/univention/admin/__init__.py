@@ -2,6 +2,7 @@
 """
 |UDM| basic functionality
 """
+from __future__ import print_function
 # Copyright 2004-2019 Univention GmbH
 #
 # https://www.univention.de/
@@ -634,5 +635,5 @@ hook.import_hook_files()
 if __name__ == '__main__':
 	prop = property('_replace')
 	for pattern in ('<firstname>', '<firstname> <lastname>', '<firstname:upper>', '<:trim,upper><firstname> <lastname>     ', '<:lower><firstname> <lastname>', '<:umlauts><firstname> <lastname>'):
-		print "pattern: '%s'" % pattern
-		print " -> '%s'" % prop._replace(pattern, {'firstname': 'Andreas', 'lastname': 'Büsching'})
+		print("pattern: '%s'" % pattern)
+		print(" -> '%s'" % prop._replace(pattern, {'firstname': 'Andreas', 'lastname': 'Büsching'}))

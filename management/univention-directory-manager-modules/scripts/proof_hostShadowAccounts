@@ -32,6 +32,8 @@
 # <https://www.gnu.org/licenses/>.
 
 
+from __future__ import print_function
+
 import ldap
 
 import univention.config_registry
@@ -51,20 +53,20 @@ count_changes = 0
 warning = 0
 
 
-print "\n  proof if computer-accounts have objectClass shadowAccount"
+print("\n  proof if computer-accounts have objectClass shadowAccount")
 
 res_pA = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, '(&(objectClass=univentionHost)(objectClass=posixAccount)(!(objectClass=shadowAccount)))', ['objectClass'])
 
-print "found %s Hosts which need to be changed:\n" % len(res_pA)
+print("found %s Hosts which need to be changed:\n" % len(res_pA))
 
 for i in range(0, len(res_pA)):
 	modlist = [(ldap.MOD_ADD, 'objectClass', 'shadowAccount')]
 	try:
 		lo.modify_s(res_pA[i][0], modlist)
 		count_changes = count_changes + 1
-		print "Modified %s" % res_pA[i][0]
+		print("Modified %s" % res_pA[i][0])
 	except:
-		print "Warning: failed to modify Host %s" % res_pA[i][0]
+		print("Warning: failed to modify Host %s" % res_pA[i][0])
 		warning = warning + 1
 
-print "changing of", len(res_pA), "Hosts finished, changed", count_changes, "of them (", warning, " warnings).\n"
+print("changing of", len(res_pA), "Hosts finished, changed", count_changes, "of them (", warning, " warnings).\n")

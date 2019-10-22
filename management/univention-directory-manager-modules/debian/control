@@ -6,7 +6,9 @@ Standards-Version: 3.5.5
 Build-Depends: debhelper,
  ucslint-univention,
  python2.7-dev,
- python-support,
+ python-all,
+ python3-all,
+ dh-python,
  univention-config-dev
 
 Package: python-univention-directory-manager
@@ -22,7 +24,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-smbpasswd,
  shell-univention-lib,
  python-imaging,
- python-univention-lib (>= 7.0.0-14),
+ python-univention-lib (>= 8.0.0-6),
  python-univention-license,
  python-univention-directory-manager-cli (= ${binary:Version}),
  iso-codes,
@@ -31,7 +33,10 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-dateutil,
  python-six,
 Provides: ${python:Provides}
-Replaces: python-univention-lib (<< 1.0.15-1)
+Breaks: python-univention-directory-manager-rest (<< 9.0.16-4)
+Replaces:
+ python-univention-directory-manager-rest (<< 9.0.16-4),
+ python-univention-lib (<< 1.0.15-1),
 Description: UCS - Modules for administration tools
  This package contains the Python modules that implement the
  features of UCS Directory Manager.
@@ -56,6 +61,53 @@ Description: UCS - Modules for administration tools
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
+
+Package: python3-univention-directory-manager
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends},
+ python3,
+ python3-pyasn1-modules,
+ python3-univention (>= 10.0.4-2),
+ python3-univention-heimdal (>= 4.0.1-1),
+ univention-admin-diary-client (>= 1.0.0-29),
+ makepasswd,
+ python3-m2crypto,
+ python3-smbpasswd,
+ shell-univention-lib,
+ python3-pil,
+ python3-univention-lib (>= 7.0.0-14),
+ python3-univention-license,
+ python3-univention-directory-manager-cli (= ${binary:Version}),
+ iso-codes,
+ python3-ipaddr,
+ python3-lazy-object-proxy,
+ python3-dateutil,
+ python3-six,
+Provides: ${python3:Provides}
+Description: UCS - Modules for administration tools
+ This package contains the Python 3 modules that implement the
+ features of UCS Directory Manager.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: python3-univention-directory-manager-cli
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends},
+ shell-univention-lib,
+ python3-univention,
+ python3-univention-lib
+Provides: ${python3:Provides}
+Description: UCS - Modules for administration tools
+ This package contains the Python 3 modules for the command line client that
+ implement the features of UCS Directory Manager.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
 
 Package: univention-directory-manager-tools
 Architecture: all

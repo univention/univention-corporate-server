@@ -4,6 +4,7 @@
 #
 # Univention Directory Manager Modules
 """Check if users are member of their primary group."""
+from __future__ import print_function
 #
 # Copyright 2004-2019 Univention GmbH
 #
@@ -41,12 +42,12 @@ from optparse import OptionParser
 
 def info(msg, *args, **kwargs):
 	"""Print info."""
-	print msg % (args or kwargs)
+	print(msg % (args or kwargs))
 
 
 def warn(msg, *args, **kwargs):
 	"""Print warning."""
-	print >> sys.stderr, 'Warning: ' + (msg % (args or kwargs))
+	print('Warning: ' + (msg % (args or kwargs)), file=sys.stderr)
 	warn.warnings += 1
 
 
@@ -55,7 +56,7 @@ warn.warnings = 0
 
 def fatal(msg, *args, **kwargs):
 	"""Print error."""
-	print >> sys.stderr, 'Error: ' + (msg % (args or kwargs))
+	print('Error: ' + (msg % (args or kwargs)), file=sys.stderr)
 	sys.exit(1)
 
 
@@ -105,8 +106,8 @@ def check_primary(conn, basedn):
 		# we change them all -- the user needs to delete all but one of them
 		for group_dn, group in group_result:
 			# look for the needed entry
-			group_member_dns = map(lambda dn: dn.lower(), group.get('uniqueMember', []))
-			group_member_uids = map(lambda uid: uid.lower(), group.get('memberUid', []))
+			group_member_dns = [dn.lower() for dn in group.get('uniqueMember', [])]
+			group_member_uids = [uid.lower() for uid in group.get('memberUid', [])]
 			modlist = []
 			if user_dn.lower() not in group_member_dns:
 				modlist.append((ldap.MOD_ADD, 'uniqueMember', user_dn))

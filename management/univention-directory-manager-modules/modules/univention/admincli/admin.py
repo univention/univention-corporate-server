@@ -32,6 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
+from __future__ import print_function
 import getopt
 import re
 import string
@@ -1123,4 +1124,4 @@ def _doit(arglist):
 
 if __name__ == '__main__':
 	import sys
-	print '\n'.join(doit(sys.argv))
+	print('\n'.join(doit(sys.argv)))

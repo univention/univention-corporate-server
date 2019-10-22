@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 """Univention Directory Manager command line server"""
+from __future__ import print_function
 #
 # Copyright 2004-2019 Univention GmbH
 #
@@ -109,7 +110,7 @@ def server_main(args):
 			os.unlink(runfilename)
 			os.rmdir(socket_dir)
 		else:
-			print >> sys.stderr, 'E: Server already running [Pid: %s]' % pid
+			print('E: Server already running [Pid: %s]' % pid, file=sys.stderr)
 			sys.exit(1)
 
 	ud.set_level(ud.ADMIN, args.debug_level)
@@ -120,10 +121,10 @@ def server_main(args):
 		os.chmod(socket_dir, 0o700)
 	except OSError as ex:
 		if ex.errno != errno.EEXIST:
-			print >> sys.stderr, 'E: %s %s' % (socket_dir, ex)
+			print('E: %s %s' % (socket_dir, ex), file=sys.stderr)
 			sys.exit(1)
 		else:
-			print >> sys.stderr, 'E: socket directory exists (%s)' % socket_dir
+			print('E: socket directory exists (%s)' % socket_dir, file=sys.stderr)
 
 	timeout = args.timeout
 	if timeout:
@@ -137,7 +138,7 @@ def server_main(args):
 		sock = ForkingTCPServer(socket_path, MyRequestHandler)
 		os.chmod(socket_path, 0o600)
 	except:
-		print >> sys.stderr, 'E: Failed creating socket (%s). Daemon stopped.' % socket_path
+		print('E: Failed creating socket (%s). Daemon stopped.' % socket_path, file=sys.stderr)
 		ud.debug(ud.ADMIN, ud.ERROR, 'daemon [%s] Failed creating socket (%s). Daemon stopped.' % (os.getpid(), socket_path))
 		sys.exit(1)
 
@@ -147,7 +148,7 @@ def server_main(args):
 		runfile.write(str(os.getpid()))
 		runfile.close()
 	except IOError:
-		print >> sys.stderr, 'E: Can`t write runfile'
+		print('E: Can`t write runfile', file=sys.stderr)
 
 	try:
 		while True:

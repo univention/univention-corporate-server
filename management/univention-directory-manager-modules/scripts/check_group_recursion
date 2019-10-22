@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import sys
 import os
 import re
@@ -104,7 +106,7 @@ def checkChilds(grp_module, dn, parents, verbose=False, exception=False):
 	new_parents = parents + [dn.lower()]
 	for childgrp in childs:
 		if verbose:
-			print '%s+--> %s' % ('|    ' * (len(parents) + 1), childgrp)
+			print('%s+--> %s' % ('|    ' * (len(parents) + 1), childgrp))
 		if childgrp.lower() in new_parents:
 			recursionlist = new_parents[new_parents.index(childgrp.lower()):] + [childgrp]
 			raise groupRecursionDetected(recursionlist)
@@ -131,14 +133,14 @@ def main():
 	recursionCnt = 0
 
 	grpobjlist = univention.admin.modules.lookup(grp_module, co, lo, scope='sub', superordinate=None, base=basedn, filter=None)
-	print 'Number of groups: %d' % len(grpobjlist)
+	print('Number of groups: %d' % len(grpobjlist))
 	ud.debug(ud.ADMIN, ud.ERROR, 'Testing %d groups...' % len(grpobjlist))
 	for i in range(len(grpobjlist)):
 		if options.verbose:
-			print
-			print '|--> %s' % grpobjlist[i].dn
+			print()
+			print('|--> %s' % grpobjlist[i].dn)
 		else:
-			print 'Testing group #%d\r' % i,
+			print('Testing group #%d\r' % i, end='')
 			sys.stdout.flush()
 
 		try:
@@ -148,16 +150,16 @@ def main():
 			for dn in e.recursionlist:
 				txtring += '--> %s\n' % dn
 			ud.debug(ud.ADMIN, ud.ERROR, 'Recursion detected: %s\n%s' % (grpobjlist[i].dn, txtring))
-			print
-			print 'Recursion detected:'
+			print()
+			print('Recursion detected:')
 			for dn in e.recursionlist:
-				print '--> %s' % dn
+				print('--> %s' % dn)
 			recursionCnt += 1
 
 	ud.debug(ud.ADMIN, ud.ERROR, 'Tests have been finished. %d group(s) with circular recursion found.' % recursionCnt)
 	if options.verbose:
-		print
-		print 'Tests have been finished. %d group(s) with circular recursion found.' % recursionCnt
+		print()
+		print('Tests have been finished. %d group(s) with circular recursion found.' % recursionCnt)
 
 
 if __name__ == '__main__':

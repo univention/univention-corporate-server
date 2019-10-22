@@ -5,6 +5,7 @@
 
 Update the UIDs in memberUid of all groups to match the uid of the objects
 referenced by uniqueMember."""
+from __future__ import print_function
 #
 # Copyright 2007-2019 Univention GmbH
 #
@@ -53,12 +54,15 @@ def main():
 	configRegistry.load()
 
 	parser = OptionParser(usage="usage: %prog [options]")
-	parser.add_option('-t', '--test', action='store_true',
-			dest='test', default=False, help='just test the modification')
-	parser.add_option('-d', action='store', default=2, type='int',
-			dest='debug', help='set debug level')
-	parser.add_option('-c', '--continue', action='store_true',
-			dest='cont', default=False, help='continue on error')
+	parser.add_option(
+		'-t', '--test', action='store_true',
+		dest='test', default=False, help='just test the modification')
+	parser.add_option(
+		'-d', action='store', default=2, type='int',
+		dest='debug', help='set debug level')
+	parser.add_option(
+		'-c', '--continue', action='store_true',
+		dest='cont', default=False, help='continue on error')
 
 	(options, _arguments) = parser.parse_args()
 
@@ -80,12 +84,10 @@ def main():
 
 
 def process_groups(lo, base_dn, test=False, cont=False):
-	groups = lo.search_s(base_dn, ldap.SCOPE_SUBTREE,
-			'(&(objectClass=posixGroup)(objectClass=univentionGroup))',
-			('uniqueMember', 'memberUid'))
+	groups = lo.search_s(base_dn, ldap.SCOPE_SUBTREE, '(&(objectClass=posixGroup)(objectClass=univentionGroup))', ('uniqueMember', 'memberUid'))
 
 	if test:
-		print 'Test Mode: The following groups have to be modified:'
+		print('Test Mode: The following groups have to be modified:')
 	for grp_dn, grp_attrs in groups:
 		old = set(grp_attrs.get('memberUid', ()))
 
@@ -94,19 +96,14 @@ def process_groups(lo, base_dn, test=False, cont=False):
 		member_dns = grp_attrs.get('uniqueMember', ())
 		for uniqueMember in member_dns:
 			try:
-				result = lo.search_s(uniqueMember, ldap.SCOPE_BASE,
-					'(objectclass=*)')
+				result = lo.search_s(uniqueMember, ldap.SCOPE_BASE, '(objectclass=*)')
 			except ldap.NO_SUCH_OBJECT as ex:
-				ud.debug(ud.ADMIN, ud.WARN,
-					'searching %s failed: %s' % (uniqueMember, ex))
-				print >> sys.stderr, 'WARNING: DN %s not found' % uniqueMember
+				ud.debug(ud.ADMIN, ud.WARN, 'searching %s failed: %s' % (uniqueMember, ex))
+				print('WARNING: DN %s not found' % uniqueMember, file=sys.stderr)
 				continue
 			if not result:
-				ud.debug(ud.ADMIN, ud.WARN,
-					'empty result for uniqueMember %s' % uniqueMember)
-				print >> sys.stderr, \
-					'WARNING: empty result for uniqueMember %s' % \
-					uniqueMember
+				ud.debug(ud.ADMIN, ud.WARN, 'empty result for uniqueMember %s' % uniqueMember)
+				print('WARNING: empty result for uniqueMember %s' % uniqueMember, file=sys.stderr)
 				continue
 			_, uniqueMemberAttrs = result[0]
 			uniqueMemberUid = uniqueMemberAttrs.get('uid')
@@ -118,25 +115,22 @@ def process_groups(lo, base_dn, test=False, cont=False):
 			ud.debug(ud.ADMIN, ud.INFO, '  old memberUid: %s' % old)
 			ud.debug(ud.ADMIN, ud.INFO, '  new memberUid: %s' % new)
 			if test:
-				print 'Group:', grp_dn
+				print('Group:', grp_dn)
 				continue
 			add = list(new - old)
 			if add:
 				try:
 					lo.modify_s(grp_dn, [(ldap.MOD_ADD, 'memberUid', add)])
 				except ldap.LDAPError as ex:
-					ud.debug(ud.ADMIN, ud.ERROR,
-						'adding memberUid entries failed: %s' % ex)
+					ud.debug(ud.ADMIN, ud.ERROR, 'adding memberUid entries failed: %s' % ex)
 					if not cont:
 						raise ConsistencyError()
 			remove = list(old - new)
 			if remove:
 				try:
-					lo.modify_s(grp_dn,
-						[(ldap.MOD_DELETE, 'memberUid', remove)])
+					lo.modify_s(grp_dn, [(ldap.MOD_DELETE, 'memberUid', remove)])
 				except ldap.LDAPError as ex:
-					ud.debug(ud.ADMIN, ud.ERROR,
-						'removing memberUid entries failed: %s' % ex)
+					ud.debug(ud.ADMIN, ud.ERROR, 'removing memberUid entries failed: %s' % ex)
 					if not cont:
 						raise ConsistencyError()
 

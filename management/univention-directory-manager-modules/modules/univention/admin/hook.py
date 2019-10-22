@@ -44,19 +44,18 @@ def import_hook_files():
 	"""
 	Load all additional hook files from :file:`.../univention/admin/hooks.d/*.py`
 	"""
-	for dir in sys.path:
-		if os.path.exists(os.path.join(dir, 'univention/admin/hook.py')):
-			if os.path.isdir(os.path.join(dir, 'univention/admin/hooks.d/')):
-				for f in os.listdir(os.path.join(dir, 'univention/admin/hooks.d/')):
-					if f.endswith('.py'):
-						fn = os.path.join(dir, 'univention/admin/hooks.d/', f)
-						try:
-							with open(fn, 'r') as fd:
-								exec fd in sys.modules[__name__].__dict__
-							ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.import_hook_files: importing "%s"' % fn)
-						except:
-							ud.debug(ud.ADMIN, ud.ERROR, 'admin.syntax.import_hook_files: loading %s failed' % fn)
-							ud.debug(ud.ADMIN, ud.ERROR, 'admin.syntax.import_hook_files: TRACEBACK:\n%s' % traceback.format_exc())
+	for dir_ in sys.path:
+		hooks_d = os.path.join(dir_, 'univention/admin/hooks.d/')
+		if os.path.isdir(hooks_d):
+			hooks_files = (os.path.join(hooks_d, f) for f in os.listdir(hooks_d) if f.endswith('.py'))
+			for fn in hooks_files:
+				try:
+					with open(fn, 'r') as fd:
+						exec(fd, sys.modules[__name__].__dict__)
+					ud.debug(ud.ADMIN, ud.INFO, 'admin.hook.import_hook_files: importing %r' % (fn,))
+				except Exception:
+					ud.debug(ud.ADMIN, ud.ERROR, 'admin.hook.import_hook_files: loading %r failed' % (fn,))
+					ud.debug(ud.ADMIN, ud.ERROR, 'admin.hook.import_hook_files: TRACEBACK:\n%s' % traceback.format_exc())
 
 
 class simpleHook(object):

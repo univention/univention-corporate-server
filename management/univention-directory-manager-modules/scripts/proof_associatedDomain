@@ -32,6 +32,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import sys
 import univention.admin.uldap as uldap
 from optparse import OptionParser
@@ -70,7 +71,7 @@ for dn, attribute in lo.search('(&(objectClass=univentionHost)(!(associatedDomai
 	computers[cn].append(dn)
 
 if len(computers) == 0:
-	print "No Hosts with missing associatedDomain found"
+	print("No Hosts with missing associatedDomain found")
 	sys.exit(0)
 
 # get dnszones for computer objects
@@ -84,7 +85,7 @@ for dn, attribute in lo.search('objectClass=dNSZone', attr=['relativeDomainName'
 		computer_zones[computer].append(attribute['zoneName'][0])
 
 if len(computer_zones) == 0:
-	print "No Hosts with associated DNSZOne found."
+	print("No Hosts with associated DNSZOne found.")
 	sys.exit(0)
 
 # add missing associatedDomain attribute if dnszone is obvious
@@ -98,19 +99,19 @@ for computer in computers:
 				lo.modify(dn, [('associatedDomain', '', computer_zones[computer])])
 				modified_objects += 1
 				if options.verbose:
-					print "Added associatedDomain %s to Host %s" % (computer_zones[computer][0], dn)
+					print("Added associatedDomain %s to Host %s" % (computer_zones[computer][0], dn))
 			else:
 				objects_to_modify += 1
-				print "Missing associatedDomain %s at Host %s" % (computer_zones[computer][0], dn)
+				print("Missing associatedDomain %s at Host %s" % (computer_zones[computer][0], dn))
 		else:
 			if options.verbose:
-				print "Multiple DNSZones for Host %s:" % dn
+				print("Multiple DNSZones for Host %s:" % dn)
 				for dns_zone in computer_zones[computer]:
-					print "DNSZone: %s" % dns_zone
+					print("DNSZone: %s" % dns_zone)
 	except:
 		pass  # no zone for host - nothing to do
 
 if options.auto_add:
-	print "%s Objects modified" % modified_objects
+	print("%s Objects modified" % modified_objects)
 else:
-	print "%s Objects could be modified" % objects_to_modify
+	print("%s Objects could be modified" % objects_to_modify)

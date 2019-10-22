@@ -1171,7 +1171,7 @@ def mapWindowsFiletime(old):
 		if old == "0":
 			return [old]
 		unixtime = time.strptime(old, '%Y%m%d%H%M%SZ')
-		d = 116444736000000000L  # difference between 1601 and 1970
+		d = long(116444736000000000)  # difference between 1601 and 1970
 		windows_filetime = long(calendar.timegm(unixtime)) * 10000000 + d
 		return [str(int(windows_filetime))]
 	return []
@@ -1181,7 +1181,7 @@ def unmapWindowsFiletime(old):
 	if old and old[0]:
 		if old[0] == "0":
 			return old[0]
-		d = 116444736000000000L  # difference between 1601 and 1970
+		d = long(116444736000000000)  # difference between 1601 and 1970
 		unixtime = (int(old[0]) - d) / 10000000
 		return time.strftime('%Y%m%d%H%M%SZ', time.gmtime(unixtime))
 	return ''

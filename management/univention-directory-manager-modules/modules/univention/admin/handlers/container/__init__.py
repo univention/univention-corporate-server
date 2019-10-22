@@ -49,3 +49,5 @@ def default_container_for_objects(lo, domain):
 
 
 default_container_for_objects._cache = {}
+
+__path__ = __import__('pkgutil').extend_path(__path__, __name__)
