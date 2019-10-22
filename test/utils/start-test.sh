@@ -67,13 +67,13 @@ if [ -n "$UCSSCHOOL_BRANCH" -o -n "$UCS_BRANCH" ]; then
 fi
 
 # create the command and run in ec2 or kvm depending on cfg
-if ! grep -Fq kvm_template "$CFG"
+if grep -q '^\w*kvm_template' "$CFG"
 then
-	exe='ucs-ec2-create'
-	test -e ./ucs-ec2-tools/ucs-ec2-create && exe="./ucs-ec2-tools/ucs-ec2-create"
-else
 	exe='ucs-kvm-create'
 	test -e ./ucs-ec2-tools/ucs-kvm-create && exe="./ucs-ec2-tools/ucs-kvm-create"
+else
+	exe='ucs-ec2-create'
+	test -e ./ucs-ec2-tools/ucs-ec2-create && exe="./ucs-ec2-tools/ucs-ec2-create"
 fi
 
 # start the test
