@@ -49,6 +49,8 @@ def import_hook_files():
 		if os.path.isdir(hooks_d):
 			hooks_files = (os.path.join(hooks_d, f) for f in os.listdir(hooks_d) if f.endswith('.py'))
 			for fn in hooks_files:
+				if fn.startswith('/usr/lib/pymodules/python2.7/'):
+					ud.debug(ud.ADMIN, ud.INFO, 'Warning: still importing code from /usr/lib/pymodules/python2.7. Migration to dh_python is necessary!')
 				try:
 					with open(fn, 'r') as fd:
 						exec(fd, sys.modules[__name__].__dict__)

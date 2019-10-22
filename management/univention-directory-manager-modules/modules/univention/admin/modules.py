@@ -103,6 +103,8 @@ def update():
 			p = os.path.join(dir, file).replace(root, '').replace('.py', '')
 			p = p[1:]
 			ud.debug(ud.ADMIN, ud.INFO, 'admin.modules.update: importing "%s"' % p)
+			if dir.startswith('/usr/lib/pymodules/python2.7/'):
+				ud.debug(ud.ADMIN, ud.INFO, 'Warning: still importing code from /usr/lib/pymodules/python2.7. Migration to dh_python is necessary!')
 			parts = p.split(os.path.sep)
 			mod, name = '.'.join(parts), '/'.join(parts)
 			m = __import__(mod, globals(), locals(), name)
