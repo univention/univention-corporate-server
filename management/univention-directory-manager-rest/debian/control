@@ -30,7 +30,7 @@ Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  univention-management-console-module-udm,
  python-univention-management-console,
- python-univention-directory-manager (>= 14.0.13-14),
+ python-univention-directory-manager (>= 14.0.14-8),
  python-tornado,
  python-mimeparse,
  python-concurrent.futures,

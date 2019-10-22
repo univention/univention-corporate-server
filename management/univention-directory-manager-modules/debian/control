@@ -33,7 +33,10 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-dateutil,
  python-six,
 Provides: ${python:Provides}
-Replaces: python-univention-lib (<< 1.0.15-1)
+Breaks: python-univention-directory-manager-rest (<< 9.0.16-4)
+Replaces:
+ python-univention-directory-manager-rest (<< 9.0.16-4),
+ python-univention-lib (<< 1.0.15-1),
 Description: UCS - Modules for administration tools
  This package contains the Python modules that implement the
  features of UCS Directory Manager.
