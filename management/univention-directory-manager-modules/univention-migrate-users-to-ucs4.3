@@ -203,7 +203,6 @@ class Migration(object):
 				if not disabled:
 					disabled = univention.admin.password.is_locked(user.get('userPassword', [''])[0])
 
-
 			shadowLastChange = user.get('shadowLastChange', [None])[0]
 			shadowMax = user.get('shadowMax', [None])[0]
 			sambaPwdLastSet = user.get('sambaPwdLastSet', [None])[0]
@@ -401,7 +400,7 @@ class Migration(object):
 		if not windows_domain:
 			return
 		for dn, attr in lo.search(filter='(&(objectClass=sambaDomain)(sambaDomainName=%s))' % windows_domain, attr=['sambaMaxPwdAge']):
-			return attr.get('sambaMaxPwdAge', [None])[0] # pick the first match
+			return attr.get('sambaMaxPwdAge', [None])[0]  # pick the first match
 
 	def get_primary_gid_number(self):
 		for dn, attr in lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + po.getDomain(), attr=['univentionDefaultGroup']):
