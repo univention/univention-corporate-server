@@ -6,12 +6,9 @@ src: tcpdump
 fix: 4.9.3-1~deb9u1
 desc: |
  This update addresses the following issues:
- * heap-based buffer over-read in aoe_print in print-aoe.c and lookup_emem in
+ * Heap-based buffer over-read in aoe_print in print-aoe.c and lookup_emem in
    addrtoname.c (CVE-2017-16808)
- * tcpdump before 4.9.3 mishandles the printing of SMB data (issue 1 of 2).
-   (CVE-2018-10103)
- * tcpdump before 4.9.3 mishandles the printing of SMB data (issue 2 of 2).
-   (CVE-2018-10105)
+ * Mishandle printing of SMB data. (CVE-2018-10103, CVE-2018-10105)
  * Buffer over-read in ldp_tlv_print() function in print-ldp.c
    (CVE-2018-14461)
  * Buffer over-read in icmp_print() function in print-icmp.c (CVE-2018-14462)
