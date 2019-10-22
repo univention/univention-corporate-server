@@ -32,6 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
+from __future__ import print_function
 import os
 import sys
 import getopt
@@ -46,7 +47,7 @@ for opt, val in opts:
 
 input, output = args
 
-print 'byte-compiling: %s' % input
+print('byte-compiling: %s' % input)
 if os.path.exists(output):
 	os.unlink(output)
 
@@ -76,7 +77,7 @@ for line in open(input).readlines():
 			hide = 0
 		depth -= 1
 	elif not hide:
-		print >>output_pp, line
+		print(line, file=output_pp)
 output_pp.close()
 
 if output.endswith('.pyo'):

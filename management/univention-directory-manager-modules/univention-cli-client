@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 """Univention Directory Manager command line client program"""
+from __future__ import print_function
 #
 # Copyright 2004-2019 Univention GmbH
 #
@@ -53,7 +54,7 @@ def get_logfile():
 			try:
 				logfile = sys.argv[pos + 1]
 			except IndexError:
-				print >> sys.stderr, "E: Option --logfile requires an argument"
+				print("E: Option --logfile requires an argument", file=sys.stderr)
 				sys.exit(1)
 	return logfile
 
@@ -84,9 +85,7 @@ def fork_server(sock, socket_path):
 	while not os.path.exists(socket_path):
 		time.sleep(0.1)
 		if time.time() > stime:
-			print >> sys.stderr, \
-				'E: Can`t find running daemon after %s seconds. (No socketfile)' % \
-				socket_timeout
+			print('E: Can`t find running daemon after %s seconds. (No socketfile)' % socket_timeout, file=sys.stderr)
 			sys.exit(1)
 
 	# this takes a long time if getfqdn(host) is used in cli-server
@@ -99,9 +98,7 @@ def fork_server(sock, socket_path):
 		except socket.error:
 			time.sleep(0.1)
 			if time.time() > stime:
-				print >> sys.stderr, \
-					'W: Can`t connect to daemon after %s seconds.' % \
-					connection_timeout
+				print('W: Can`t connect to daemon after %s seconds.' % connection_timeout, file=sys.stderr)
 				raise
 
 
@@ -112,7 +109,7 @@ def get_password():
 		pwd2 = raw_input('Re-enter new password ')
 		if pwd1 == pwd2:
 			return pwd1
-		print >> sys.stderr, 'password mismatch'
+		print('password mismatch', file=sys.stderr)
 
 
 def receive_answer(sock):
@@ -121,7 +118,7 @@ def receive_answer(sock):
 	while True:
 		buf = sock.recv(1024)
 		if len(buf) == 0:
-			print >> sys.stderr, 'E: Daemon died.'
+			print('E: Daemon died.', file=sys.stderr)
 			sys.exit(1)
 		elif buf[-1] == '\0':
 			buf = buf[0:-1]
@@ -141,7 +138,7 @@ def process_output(output, cmdfile):
 				result = 1
 			elif line.startswith('passwd error: The password is too short'):
 				result = 2
-			print line
+			print(line)
 	else:
 		if output[-1] == "OPERATION FAILED":
 			result = 3
@@ -149,7 +146,7 @@ def process_output(output, cmdfile):
 		for line in output:
 			if isinstance(line, unicode):
 				line = line.encode(locale.getpreferredencoding(), 'replace')
-			print line
+			print(line)
 	return result
 
 
@@ -170,7 +167,7 @@ def _re_create_socket():
 		socket_path = '/tmp/admincli-%s-%s-%s/socket' % (os.getpid(), os.getuid(), sum(map(ord, os.urandom(12))))
 		return _create_socket(socket_path)
 	except EnvironmentError:
-		print >> sys.stderr, 'E: Can`t connect to daemon. Giving up.'
+		print('E: Can`t connect to daemon. Giving up.', file=sys.stderr)
 		sys.exit(1)
 
 

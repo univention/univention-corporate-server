@@ -32,6 +32,8 @@
 # <https://www.gnu.org/licenses/>.
 
 
+from __future__ import print_function
+
 import ldap
 import sys
 
@@ -50,11 +52,11 @@ lo.simple_bind_s("cn=admin," + baseDN, bindpw)
 
 
 def print_usage():
-	print "\nUse: proof_sambaAccountFlags [query|update] \n"
-	print "Without options you will see a list of SambaSamAccounts with possibly wrong Flags.",
-	print "The query-option will request each time for update of such elements, the update-option will",
-	print "update every found Flag. If you use both options only the first will define",
-	print "the behavior !\n"
+	print("\nUse: proof_sambaAccountFlags [query|update] \n")
+	print("Without options you will see a list of SambaSamAccounts with possibly wrong Flags.", end=' ')
+	print("The query-option will request each time for update of such elements, the update-option will", end=' ')
+	print("update every found Flag. If you use both options only the first will define", end=' ')
+	print("the behavior !\n")
 
 # update all if command update is given
 
@@ -82,25 +84,25 @@ for i in range(0, len(res_uPR)):
 	flags = res_uPR[i][1]["sambaAcctFlags"][0]
 	for p in range(1, len(flags) - 1):
 		if flags[p:p + 1] == "M":
-			print "found Windows-Account with old (wrong) Flag M (should be W) in %s (%s,%d)" % (res_uPR[i][0], flags, p)
+			print("found Windows-Account with old (wrong) Flag M (should be W) in %s (%s,%d)" % (res_uPR[i][0], flags, p))
 			count_flags = count_flags + 1
 			inp = ""
 			if not update_all:
 				if query:
-					print "update Flag (y/N)?"
+					print("update Flag (y/N)?")
 					inp = sys.stdin.readline()
 			else:
 				inp = "y"
 			if inp[:1] == "y":
 				modlist = [(ldap.MOD_REPLACE, "sambaAcctFlags", flags[:p] + "W" + flags[p + 1:])]
 				lo.modify(res_uPR[i][0], modlist)
-				print "updated"
+				print("updated")
 				count_updated_flags = count_updated_flags + 1
 
 
-print "Found", count_flags, "flags that seemed to be wrong, updated",
-print count_updated_flags, "of them."
+print("Found", count_flags, "flags that seemed to be wrong, updated", end=' ')
+print(count_updated_flags, "of them.")
 
 if not query and not update_all:
-	print "\nRun this script with an option to change the listed flags,"
-	print "call \"proof_sambaAccountFlags help\" for details"
+	print("\nRun this script with an option to change the listed flags,")
+	print("call \"proof_sambaAccountFlags help\" for details")

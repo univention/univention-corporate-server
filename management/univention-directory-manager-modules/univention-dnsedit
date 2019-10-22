@@ -4,6 +4,7 @@
 #
 # Univention Admin Modules
 """Create and modify dns objects easily."""
+from __future__ import print_function
 #
 # Copyright 2004-2019 Univention GmbH
 #
@@ -136,7 +137,7 @@ def bind():
 		err = '%s: LDAP server %s unreachable, aborting' % \
 			(sys.argv[0], ucr['ldap/master'])
 		ud.debug(ud.ADMIN, ud.WARN, err)
-		print >> sys.stderr, err
+		print(err, file=sys.stderr)
 		sys.exit(1)
 	if options.stoptls:
 		start_tls = 0
@@ -158,13 +159,13 @@ def bind():
 	except univention.admin.uexceptions.authFail as ex:
 		msg = 'authentication error: %s' % (ex,)
 		ud.debug(ud.ADMIN, ud.WARN, msg)
-		print >> sys.stderr, msg
+		print(msg, file=sys.stderr)
 		sys.exit(1)
 	except (univention.admin.uexceptions.ldapError, uldap.ldap.LDAPError):
 		msg = '%s: timeout while trying to contact LDAP server %s' % \
 			(sys.argv[0], ucr['ldap/master'])
 		ud.debug(ud.ADMIN, ud.WARN, msg)
-		print >> sys.stderr, msg
+		print(msg, file=sys.stderr)
 		time.sleep(10)
 		return bind()  # recursion
 
@@ -179,7 +180,7 @@ def lookup_zone(zone_name):
 		if options.ignore_missing_zone:
 			sys.exit(0)
 		else:
-			print >> sys.stderr, 'E: Zone %s does not exist.' % (zone_name,)
+			print('E: Zone %s does not exist.' % (zone_name,), file=sys.stderr)
 			sys.exit(1)
 	return zones[0]
 
@@ -219,7 +220,7 @@ def remove_srv_record(service, protocol, priority, weight, port, host):
 	if records:
 		record = records[0]
 	else:
-		print >> sys.stderr, "No record found"
+		print("No record found", file=sys.stderr)
 		return
 
 	if location in record['location']:
@@ -229,7 +230,7 @@ def remove_srv_record(service, protocol, priority, weight, port, host):
 		else:
 			record.remove()
 	else:
-		print >> sys.stderr, "Does not exist"
+		print("Does not exist", file=sys.stderr)
 
 
 def add_txt_record(name, text):
@@ -290,7 +291,7 @@ def add_cname_record(name, cname):
 		record['zonettl'] = ['80600']
 
 	if record['cname'] and not (record['cname'] == cname or options.overwrite or options.ignore_exists):
-		print >> sys.stderr, 'E: Record exists and points to different address'
+		print('E: Record exists and points to different address', file=sys.stderr)
 		sys.exit(1)
 	if record['cname'] == cname:
 		return
@@ -334,7 +335,7 @@ def remove_ns_record(name, value):
 	if records:
 		record = records[0]
 	else:
-		print >> sys.stderr, "No record found"
+		print("No record found", file=sys.stderr)
 		return
 
 	if value in record[udm_property]:
@@ -344,7 +345,7 @@ def remove_ns_record(name, value):
 		else:
 			record.remove()
 	else:
-		print >> sys.stderr, "Does not exist"
+		print("Does not exist", file=sys.stderr)
 
 
 def add_ptr_record(address, ptr):
@@ -358,7 +359,7 @@ def add_ptr_record(address, ptr):
 		record['address'] = address
 
 	if record['ptr_record'] and not (record['ptr_record'] == ptr or ptr in record['ptr_record'] or options.overwrite):
-		print >> sys.stderr, 'E: Record exists and points to different address'
+		print('E: Record exists and points to different address', file=sys.stderr)
 		sys.exit(1)
 	if record['ptr_record'] == ptr:
 		return
@@ -412,8 +413,7 @@ def main():
 
 	try:
 		if command == 'add':
-			print 'Adding %s record "%s" to zone %s...' % \
-				(typ.upper(), ' '.join(args), zone_name)
+			print('Adding %s record "%s" to zone %s...' % (typ.upper(), ' '.join(args), zone_name))
 			if typ == 'srv':
 				add_srv_record(*args)
 			elif typ == 'txt':
@@ -430,7 +430,7 @@ def main():
 				add_zone(*args)
 			else:
 				parser.error('Unknown type "%s"' % (typ,))
-			print 'done'
+			print('done')
 		elif command == 'remove':
 			if typ == 'srv':
 				remove_srv_record(*args)
@@ -442,11 +442,11 @@ def main():
 			parser.error('E: No valid command "%s". See --help.' % (command,))
 	except univention.admin.uexceptions.objectExists as ex:
 		if not options.ignore_exists:
-			print >> sys.stderr, 'E: Object "%s" exists' % (ex,)
+			print('E: Object "%s" exists' % (ex,), file=sys.stderr)
 			raise
 			sys.exit(1)
 	except (ValueError, TypeError, univention.admin.uexceptions.valueInvalidSyntax, univention.admin.uexceptions.valueRequired) as ex:
-		print >> sys.stderr, 'E: failed %s' % (ex,)
+		print('E: failed %s' % (ex,), file=sys.stderr)
 		raise
 		sys.exit(1)
 

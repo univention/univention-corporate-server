@@ -32,6 +32,8 @@
 # <https://www.gnu.org/licenses/>.
 
 
+from __future__ import print_function
+
 import ldap
 from ldap.filter import filter_format
 import string
@@ -45,7 +47,7 @@ ucr.load()
 baseDN = ucr['ldap/base']
 
 if ucr['interfaces/eth0/netmask'] != "255.255.0.0":
-	print 'Only for Class B'
+	print('Only for Class B')
 	sys.exit(1)
 
 lo = ldap.open('localhost', 7389)
@@ -57,12 +59,12 @@ if bindpw[-1] == '\n':
 computers = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionHost', ['aRecord'])
 
 for i in range(0, len(computers)):
-	print 'DN: %s' % computers[i][0]
+	print('DN: %s' % computers[i][0])
 	if 'aRecord' in computers[i][1]:
 		entry = computers[i][1]['aRecord'][0].split('.')[2:4]
 		reverse = lo.search_s('cn=dns,%s' % baseDN, ldap.SCOPE_SUBTREE, filter_format('(&(relativeDomainName=%s)(pTRRecord=%s*))', ('.'.join(entry), ldap.explode_dn(computers[i][0], 1)[0])))
 		if len(reverse) != 0:
-			print 'Wrong DNS Reverse Entry for %s: %s' % (computers[i][0], reverse[0][0])
+			print('Wrong DNS Reverse Entry for %s: %s' % (computers[i][0], reverse[0][0]))
 			entry.reverse()
 			entry = string.join(entry, '.')
 			lo.modrdn_s(reverse[0][0], 'relativeDomainName=%s' % entry)

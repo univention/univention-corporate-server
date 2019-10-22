@@ -28,6 +28,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import sys
 import time
 import pprint
@@ -52,7 +54,7 @@ ucr = ConfigRegistry()
 ucr.load()
 
 if ucr.get('server/role') != 'domaincontroller_master':
-	print 'This script can only be executed on the Domaincontroller Master.'
+	print('This script can only be executed on the Domaincontroller Master.')
 	sys.exit(0)
 
 lo, po = univention.admin.uldap.getAdminConnection()
@@ -79,9 +81,9 @@ class Migration(object):
 		self.migrate_users()
 		self.migrate_templates()
 		if self.exceptions:
-			print >> sys.stderr, '%d errors occurred.' % (len(self.exceptions),)
+			print('%d errors occurred.' % (len(self.exceptions),), file=sys.stderr)
 			for dn, ml, exc in self.exceptions:
-				print >> sys.stderr, '%r: %s (modifications: %r)' % (dn, exc, ml)
+				print('%r: %s (modifications: %r)' % (dn, exc, ml), file=sys.stderr)
 			raise SystemExit(1)
 		if self.modifications and self.args.check:
 			raise SystemExit(1)
@@ -134,11 +136,11 @@ class Migration(object):
 			remove_ldap = has_ldap and not is_ldap_only
 
 			if user.get('univentionObjectType') and 'users/user' not in user['univentionObjectType']:
-				print 'Ignoring non users/user account: %s' % (dn,)
+				print('Ignoring non users/user account: %s' % (dn,))
 				continue
 
 			if 'synced' in user.get('univentionObjectFlag', []):
-				print 'Ignoring user from active directory'
+				print('Ignoring user from active directory')
 				continue
 
 			if is_ldap_only:
@@ -346,9 +348,9 @@ class Migration(object):
 
 	def modify(self, dn, ml, serverctrls=None):
 		self.modifications = True
-		print 'Modifying ', dn
+		print('Modifying ', dn)
 		pprint.pprint(ml)
-		print
+		print()
 		if not self.args.check:
 			try:
 				lo.modify(dn, ml, exceptions=True, serverctrls=serverctrls, ignore_license=True)
@@ -357,7 +359,7 @@ class Migration(object):
 
 	def rename(self, dn, newdn, serverctrls=None):
 		self.modifications = True
-		print 'Renaming', dn, 'to', newdn
+		print('Renaming', dn, 'to', newdn)
 		if not self.args.check:
 			try:
 				lo.rename(dn, newdn, serverctrls=serverctrls, ignore_license=True)

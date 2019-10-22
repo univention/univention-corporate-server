@@ -29,6 +29,7 @@
 
 '''Univention Directory Manager Tools
 convert base64 encoded jpegPhoto LDAP entries to binary entries (Bug #26872)'''
+from __future__ import print_function
 
 import binascii
 import optparse
@@ -49,14 +50,14 @@ def run(action, verbose=False):
 	lo = univention.uldap.getAdminConnection()
 
 	# find all users with a jpegPhoto attribute
-	print 'Searching for user objects with base64 encoded jpegPhoto attribute...\n'
+	print('Searching for user objects with base64 encoded jpegPhoto attribute...\n')
 	result = lo.search('jpegPhoto=*')
 
 	# iterate over user objects
 	for idn, iobj in result:
 		def log(msg, force=False):
 			if verbose or force:
-				print 'DN: %s\n%s\n' % (idn, msg)
+				print('DN: %s\n%s\n' % (idn, msg))
 
 		try:
 			b64 = iobj['jpegPhoto'][0]
@@ -101,11 +102,11 @@ if __name__ == '__main__':
 
 	# check argument (action)
 	if not args:
-		print >>sys.stderr, 'warning: no action given. default is test'
+		print('warning: no action given. default is test', file=sys.stderr)
 		args = ['test']
 
 	if args[0] not in ('test', 'convert'):
-		print >>sys.stderr, 'error: unknown action %s' % args[0]
+		print('error: unknown action %s' % args[0], file=sys.stderr)
 		parser.print_help()
 		sys.exit(3)
 
@@ -113,5 +114,5 @@ if __name__ == '__main__':
 	try:
 		run(args[0], verbose=options.verbose)
 	except ldap.SERVER_DOWN as e:
-		print >>sys.stderr, 'ERROR: could not contact LDAP server: %s' % e
+		print('ERROR: could not contact LDAP server: %s' % e, file=sys.stderr)
 		sys.exit(1)

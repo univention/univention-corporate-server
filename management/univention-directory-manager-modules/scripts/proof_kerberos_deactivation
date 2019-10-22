@@ -35,6 +35,8 @@
 # set activation state of kerberos account to same state as posix account
 # set password and account exiration date to the same value as shadowExpiry and shadowLastChange
 
+from __future__ import print_function
+
 import ldap
 import re
 import time
@@ -46,7 +48,7 @@ ucr.load()
 
 baseDN = ucr['ldap/base']
 
-print "using baseDN", baseDN
+print("using baseDN", baseDN)
 
 lo = ldap.open('localhost', 7389)
 bindpw = open('/etc/ldap.secret').read()
@@ -62,7 +64,7 @@ res_pA = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=posixAccount')
 
 for i in range(0, len(res_pA)):
 	dn_pA = res_pA[i][0]
-	print dn_pA
+	print(dn_pA)
 
 	if 'objectClass' in res_pA[i][1]:
 		if 'krb5KDCEntry' in res_pA[i][1]['objectClass']:
@@ -73,24 +75,24 @@ for i in range(0, len(res_pA)):
 					if disabled and not res_pA[i][1]['krb5KDCFlags'][0] == '254':
 						modlist = [(ldap.MOD_REPLACE, 'krb5KDCFlags', '254')]
 						lo.modify_s(dn_pA, modlist)
-						print " - kerberos disabled"
+						print(" - kerberos disabled")
 					elif not disabled and not res_pA[i][1]['krb5KDCFlags'][0] == '126':
 						modlist = [(ldap.MOD_REPLACE, 'krb5KDCFlags', '126')]
 						lo.modify_s(dn_pA, modlist)
-						print " - kerberos enabled"
+						print(" - kerberos enabled")
 					else:
-						print " - enable/disable OK"
+						print(" - enable/disable OK")
 				else:
 					if disabled:
 						modlist = [(ldap.MOD_ADD, 'krb5KDCFlags', '254')]
 						lo.modify_s(dn_pA, modlist)
-						print " - kerberos initial disabled"
+						print(" - kerberos initial disabled")
 					else:
 						modlist = [(ldap.MOD_ADD, 'krb5KDCFlags', '126')]
 						lo.modify_s(dn_pA, modlist)
-						print " - kerberos initial enabled"
+						print(" - kerberos initial enabled")
 			else:
-				print " - user password not set"
+				print(" - user password not set")
 
 			if 'shadowExpire' in res_pA[i][1] and res_pA[i][1]['shadowExpire'][0]:
 				userexpiry = time.strftime("%d.%m.%y", time.gmtime((long(res_pA[i][1]['shadowExpire'][0])) * 3600 * 24))
@@ -98,15 +100,15 @@ for i in range(0, len(res_pA)):
 				if 'krb5ValidEnd' not in res_pA[i][1]:
 					modlist = [(ldap.MOD_ADD, 'krb5ValidEnd', krb5ValidEnd)]
 					lo.modify_s(dn_pA, modlist)
-					print " - kerberos expiry initial set"
+					print(" - kerberos expiry initial set")
 				elif not res_pA[i][1]['krb5ValidEnd'][0] == krb5ValidEnd:
 					modlist = [(ldap.MOD_REPLACE, 'krb5ValidEnd', krb5ValidEnd)]
 					lo.modify_s(dn_pA, modlist)
-					print " - kerberos expiry set"
+					print(" - kerberos expiry set")
 				else:
-					print " - kerberos expiry OK"
+					print(" - kerberos expiry OK")
 			else:
-				print " - account expire not set"
+				print(" - account expire not set")
 
 			if 'shadowLastChange' in res_pA[i][1] and 'shadowMax' in res_pA[i][1]:
 				passwordexpiry = time.strftime("%d.%m.%y", time.gmtime((long(res_pA[i][1]['shadowLastChange'][0]) + long(res_pA[i][1]['shadowMax'][0])) * 3600 * 24))
@@ -114,17 +116,17 @@ for i in range(0, len(res_pA)):
 				if 'krb5PasswordEnd' not in res_pA[i][1]:
 					modlist = [(ldap.MOD_ADD, 'krb5PasswordEnd', krb5PasswordEnd)]
 					lo.modify_s(dn_pA, modlist)
-					print "kerberos password end initial set"
+					print("kerberos password end initial set")
 				elif not res_pA[i][1]['krb5PasswordEnd'][0] == krb5PasswordEnd:
 					modlist = [(ldap.MOD_REPLACE, 'krb5PasswordEnd', krb5PasswordEnd)]
 					lo.modify_s(dn_pA, modlist)
-					print " - kerberos password end set"
+					print(" - kerberos password end set")
 				else:
-					print " - kerberos password end OK"
+					print(" - kerberos password end OK")
 			else:
-				print " - Password expire not set"
+				print(" - Password expire not set")
 
 		else:
-			print " - no kerberos account"
+			print(" - no kerberos account")
 	else:
-		print " - WARNING: no key objectClass found !"
+		print(" - WARNING: no key objectClass found !")
