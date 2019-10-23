@@ -5,6 +5,7 @@ scope: ucs_4.4-0-errata4.4-2
 src: univention-directory-listener
 fix: 13.0.2-12
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * Explicitly close second database cursor when deleting cache entries.
-bug: [47587]
+ * Migrate Python code from `python-support` to `dh_python2`.
+bug: [47587, 49146]

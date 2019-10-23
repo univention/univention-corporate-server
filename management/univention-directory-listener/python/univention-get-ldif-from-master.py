@@ -46,7 +46,7 @@ import logging
 from ldap.controls import SimplePagedResultsControl
 
 sys.path.append("/usr/lib/univention-directory-listener/system/")
-import replication
+import replication  # noqa: E402
 
 LDIF = '/var/lib/univention-directory-listener/master.ldif.gz'
 SCHEMA = '/var/lib/univention-ldap/schema.conf'

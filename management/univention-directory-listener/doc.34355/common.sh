@@ -72,7 +72,7 @@ setup_ldap () {
 setup_listener () {
 	[ -f "$LMODUL/printusers.py" ] && return
 	cat >>"$LMODUL/printusers.py" <<__PY__
-__package__ = ""  # workaround for PEP 366
+from __future__ import absolute_import
 import listener
 name = 'printusers'
 description = 'print all changes into a file'

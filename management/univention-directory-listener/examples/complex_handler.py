@@ -87,7 +87,7 @@ class ComplexHandler(ListenerModuleHandler):
 		# An exception is triggered here to showcase the error_handler feature.
 		#
 		self.logger.info('ComplexHandler.remove() dn=%r', dn)
-		fail = {}['fail']  # this will raise an Exception, which will be handled by self.error_handler
+		fail = {}['fail']  # noqa: F841 # this will raise an Exception, which will be handled by self.error_handler
 		# The error handler will *not* return here. After all this is an
 		# unhandled exception.
 

@@ -7,8 +7,8 @@ python/get_notifier_id.py usr/share/univention-directory-listener/
 python/univention-get-ldif-from-master.py usr/share/univention-directory-listener/
 python/resync-objects.py usr/share/univention-directory-listener/
 python/ldap_server.py usr/lib/univention-directory-listener/system/
-python/listener.py* usr/share/pyshared/
-python/univention/listener/*.py* usr/share/pyshared/univention/listener/
+python/listener.py* usr/lib/python2.7/dist-packages/
+python/univention/listener/*.py* usr/lib/python2.7/dist-packages/univention/listener/
 03univention-directory-listener.inst usr/lib/univention-install/
 etc/network/if-post-down.d/univention-directory-listener etc/network/if-post-down.d/
 examples usr/share/doc/univention-directory-listener/

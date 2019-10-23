@@ -3,6 +3,7 @@
 #
 # Univention Directory Listener
 """Read the notifier id from the DC master"""
+from __future__ import print_function
 #
 # Copyright 2004-2019 Univention GmbH
 #
@@ -84,9 +85,9 @@ def main():
 		notifier_result = sock.recv(100)
 
 		if notifier_result:
-			print "%s" % notifier_result.splitlines()[1]
+			print("%s" % notifier_result.splitlines()[1])
 	except socket.error as ex:
-		print >> sys.stderr, 'Error: %s' % (ex,)
+		print('Error: %s' % (ex,), file=sys.stderr)
 		sys.exit(1)
 
 

@@ -32,7 +32,7 @@ from univention.listener import ListenerModuleHandler
 
 
 class ListenerModuleTemplate(ListenerModuleHandler):
-	class Configuration:
+	class Configuration(object):
 		name = 'unique_name'
 		description = 'listener module description'
 		ldap_filter = '(&(objectClass=inetOrgPerson)(uid=example))'

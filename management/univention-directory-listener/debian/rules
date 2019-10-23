@@ -53,6 +53,12 @@ override_dh_install:
 	mv debian/univention-directory-listener/usr/sbin/convert debian/univention-directory-listener/usr/sbin/univention-directory-listener-convert
 	mv debian/univention-directory-listener/usr/sbin/listener-ctrl debian/univention-directory-listener/usr/sbin/univention-directory-listener-ctrl
 
+override_dh_python2:
+	dh_python2 --skip-private
+
+override_dh_python3:
+	dh_python3 --skip-private
+
 override_dh_installinit:
 	dh_installinit -a --no-start -r -u"defaults 50"
 
@@ -72,4 +78,4 @@ override_dh_installdocs:
 	dh_installdocs --link-doc=univention-directory-listener
 
 %:
-	dh $@ --with python_support
+	dh $@ --with python2,python3
