@@ -10,4 +10,5 @@ desc: |
  * Migrate Python code from `python-support` to `dh_python2`.
  * Remove deprecated code using DB3.
  * Add missing UCR header to `run` script.
-bug: [47587, 49146, 50407, 50110]
+ * Remove unused file `memcached_univention-directory-listener.conf`.
+bug: [47587, 49146, 50407, 50110, 48139]

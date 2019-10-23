@@ -4,6 +4,7 @@ univention-directory-listener (13.0.2-12) unstable; urgency=low
   * Bug #49146: Migrate to dh_python
   * Bug #50407: Remove DB3 code
   * Bug #50110: Add missing UCR header to run script
+  * Bug #48139: Remove unused memcached_univention-directory-listener.conf
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 23 Oct 2019 14:52:45 +0200
 
