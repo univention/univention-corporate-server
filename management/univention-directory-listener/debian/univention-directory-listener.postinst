@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
 univention-config-registry set listener/autostart?yes
@@ -68,62 +69,8 @@ fi
 
 call_joinscript 03univention-directory-listener.inst
 
-cleanup_and_convert_to_lmdb () {
-	local CACHE_DIR="/var/lib/univention-directory-listener"
-	local BDB="$CACHE_DIR/cache.db"
-	local CACHE_MDB_DIR="$CACHE_DIR/cache"
-
-	[ -f "$BDB" ] || return 0
-	rm -f "$CACHE_MDB_DIR"/*
-
-	convert_to_lmdb
-}
-
-convert_to_lmdb () {
-	local rv
-	local CACHE_DIR="/var/lib/univention-directory-listener"
-	local BDB="$CACHE_DIR/cache.db"
-	local CACHE_MDB_DIR="$CACHE_DIR/cache"
-	local MDB="$CACHE_MDB_DIR/data.mdb"
-
-	[ -f "$BDB" ] || return 0
-	[ -d "$CACHE_MDB_DIR" ] || install -d -o listener -m 0700 "$CACHE_MDB_DIR"
-	[ -f "$MDB" ] && return 0
-
-	local running=1
-	/etc/init.d/univention-directory-listener status >/dev/null ||
-		running=0
-
-	if [ "$running" -eq 1 ]; then
-		/etc/init.d/univention-directory-listener stop
-	fi
-
-	chown -R listener "$CACHE_DIR"
-	su -s /bin/sh -c "/usr/sbin/univention-directory-listener-convert '$BDB'" listener
-	rv=$?
-	if [ "$rv" -eq 0 ]; then
-		mv "$BDB" /var/backups/"udl-cache-db.$(date +%s)"
-	else
-		echo "ERROR: univention-directory-listener-convert failed" >&2
-		ls -la "$CACHE_DIR"
-		lsof $CACHE_DIR/cache.*
-		rm -rf "$CACHE_MDB_DIR"
-	fi
-
-	if [ "$running" -eq 1 ]; then
-		/etc/init.d/univention-directory-listener start
-	fi
-	return $rv
-}
-
-if [ "$1" = "configure" -a -n "$2" ]; then
-	if dpkg --compare-versions "$2" lt 11.0.1-1; then
-		convert_to_lmdb || exit $?
-	elif dpkg --compare-versions "$2" lt 11.0.1-27; then
-		cleanup_and_convert_to_lmdb || exit $?
-	else
+if [ "$1" = "configure" ] && [ -n "$2" ]; then
 		/etc/init.d/univention-directory-listener crestart
-	fi
 fi
 
 exit 0

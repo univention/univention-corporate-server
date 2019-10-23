@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issues:
  * Explicitly close second database cursor when deleting cache entries.
  * Migrate Python code from `python-support` to `dh_python2`.
-bug: [47587, 49146]
+ * Remove deprecated code using DB3.
+bug: [47587, 49146, 50407]

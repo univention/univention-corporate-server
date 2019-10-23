@@ -8,9 +8,6 @@ LDAP entries are cached here.
 If a modification takes place, the new LDAP entry is compared with the cache entry, and both, old and new entries, are passed to the handler modules.
 This is the version using LMDB.
 
-## [cache_bdb.c](cache_bdb.c)
-Legacy BDB version of [cache.c](cache.c), required for convert.
-
 ## [cache_lowlevel.c](cache_lowlevel.c)
 The low-level function to serialize the C structures as used in memory into a binary representation `unparse_entry()` for the database and back `parse_entry()`.
 
@@ -54,9 +51,6 @@ Demo program for the notifier client API.
 
 ## [dump.c](dump.c)
 Tool to dump the cache.
-
-## [convert.c](convert.c)
-Tool to convert from BDB to LMDB.
 
 
 # Cache
@@ -233,17 +227,7 @@ The key is that ID and the value is the data - in our case the serialized cache 
 	*	[network.c](network.c)
 
 *	[verify.c](verify.c)
-	*	[cache_bdb.c](cache_bdb.c)
-		*	[cache_lowlevel.c](cache_lowlevel.c)
-		*	[cache_entry.c](cache_entry.c)
-	*	[dump_signals.c](dump_signals.c)
-
-*	[convert.c](convert.c)
 	*	[cache.c](cache.c)
 		*	[cache_lowlevel.c](cache_lowlevel.c)
 		*	[cache_entry.c](cache_entry.c)
-	*	[cache_bdb.c](cache_bdb.c)
-		*	[cache_lowlevel.c](cache_lowlevel.c)
-		*	[cache_entry.c](cache_entry.c)
 	*	[dump_signals.c](dump_signals.c)
-

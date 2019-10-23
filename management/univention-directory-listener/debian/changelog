@@ -2,6 +2,7 @@ univention-directory-listener (13.0.2-12) unstable; urgency=low
 
   * Bug #47587: Close LMDB cursor on success
   * Bug #49146: Migrate to dh_python
+  * Bug #50407: Remove DB3 code
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 23 Oct 2019 14:52:45 +0200
 
