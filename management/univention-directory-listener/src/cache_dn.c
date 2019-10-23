@@ -118,7 +118,7 @@ static int dntree_lookup_id4ldapdn(MDB_cursor *cur, LDAPDN dn, DNID *dnid_out, i
 			break;
 		}
 		if (rv != MDB_SUCCESS) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s: mdb_cursor_get failed: %s (%d)", __func__, ldap_err2string(rv), rv);
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s: mdb_cursor_get failed: %s (%d)", __func__, mdb_strerror(rv), rv);
 			return rv;
 		};
 
@@ -317,7 +317,7 @@ int dntree_del_id(MDB_cursor *write_cursor_p, DNID dnid) {
 	dbi = mdb_cursor_dbi(write_cursor_p);
 	rv = mdb_cursor_open(txn, dbi, &local_read_cursor_p);
 	if (rv != MDB_SUCCESS) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s: mdb_cursor_open: %s (%d)", __func__, ldap_err2string(rv), rv);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s: mdb_cursor_open: %s (%d)", __func__, mdb_strerror(rv), rv);
 		abort();
 		return rv;
 	}
