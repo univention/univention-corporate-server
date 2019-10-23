@@ -327,6 +327,7 @@ int dntree_del_id(MDB_cursor *write_cursor_p, DNID dnid) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s: delete failed:"
 		                                                    " subordinate objects must be deleted first",
 		                 __func__);
+		mdb_cursor_close(local_read_cursor_p);
 		return -1;
 	} else if (rv != MDB_NOTFOUND) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "%s: dntree_has_children failed: %s (%d)", __func__, mdb_strerror(rv), rv);

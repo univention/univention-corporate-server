@@ -1,3 +1,9 @@
+univention-directory-listener (13.0.2-12) unstable; urgency=low
+
+  * Bug #47587: Close LMDB cursor on success
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 23 Oct 2019 14:52:45 +0200
+
 univention-directory-listener (13.0.2-11) unstable; urgency=medium
 
   * Bug #48698: Fix user visible spelling errors
