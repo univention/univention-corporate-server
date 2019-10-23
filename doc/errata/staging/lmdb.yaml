@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [2]
+scope: ucs_4.4-0-errata4.4-2
+src: lmdb
+fix: 0.9.22-1
+desc: |
+ This update addresses the following issue:
+ * Update to version from Debian 10 (Buster), which fixes several internal
+   cursor handling problems.
+bug: [47587]
