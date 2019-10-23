@@ -47,6 +47,8 @@ import syslog
 import logging
 from logging.handlers import TimedRotatingFileHandler
 from collections import Mapping
+from six import string_types, text_type
+
 import listener
 import univention.debug as ud
 from univention.config_registry import ConfigRegistry
@@ -102,7 +104,7 @@ class ModuleHandler(logging.Handler):
 
 	def emit(self, record):
 		msg = self.format(record)
-		if isinstance(msg, unicode):
+		if isinstance(msg, text_type):
 			msg = msg.encode('utf-8')
 		msg = '{}: {}'.format(record.name.rsplit('.')[-1], msg)
 		udebug_level = self.LOGGING_TO_UDEBUG[record.levelname]
@@ -240,8 +242,8 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
 	:return: a python logging object
 	:rtype: logging.Logger
 	"""
-	assert isinstance(filename, basestring)
-	assert isinstance(name, basestring)
+	assert isinstance(filename, string_types)
+	assert isinstance(name, string_types)
 	if not name:
 		name = 'noname'
 	name = name.replace('.', '_')  # don't mess up logger hierarchy

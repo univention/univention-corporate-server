@@ -30,6 +30,8 @@ from __future__ import absolute_import
 import os
 import inspect
 from contextlib import contextmanager
+from six import reraise
+
 import listener
 from univention.admin.uldap import access, position
 from univention.listener.handler_logging import get_logger
@@ -260,7 +262,7 @@ class ListenerModuleHandler(object):
 		:rtype: None
 		"""
 		self.logger.exception('dn=%r command=%r\n    old=%r\n    new=%r', dn, command, old, new)
-		raise exc_type, exc_value, exc_traceback
+		reraise(exc_type, exc_value, exc_traceback)
 
 	@property
 	def lo(self):

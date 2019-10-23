@@ -32,6 +32,7 @@
 
 import os
 import pwd
+from six import string_types
 import univention.config_registry
 
 configRegistry = univention.config_registry.ConfigRegistry()
@@ -53,7 +54,7 @@ def setuid(uid):
 	:type uid: int or str
 	:return: None
 	"""
-	if isinstance(uid, basestring):
+	if isinstance(uid, string_types):
 		uid = pwd.getpwnam(uid)[2]
 	os.seteuid(uid)
 
