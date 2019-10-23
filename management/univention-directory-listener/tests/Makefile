@@ -32,6 +32,9 @@
 SOURCES := $(wildcard test__*.c)
 ALL ?= $(patsubst  %.c,%,$(SOURCES))
 
+.PHONY: all
+all: $(ALL)
+
 .PHONY: tests
 tests: $(ALL)
 	run-parts --verbose --regex='test__[^.]*$$' .

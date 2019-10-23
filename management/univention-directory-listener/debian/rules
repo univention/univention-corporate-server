@@ -36,8 +36,8 @@ override_dh_auto_clean:
 	dh_auto_clean
 
 override_dh_auto_build:
-	$(MAKE) -C src clean
-	$(MAKE) -C src
+	$(MAKE) -C src all
+	$(MAKE) -C tests all
 	dh_auto_build
 
 override_dh_auto_install:
@@ -63,7 +63,7 @@ override_dh_fixperms:
 
 override_dh_auto_test:
 	ucslint
-	make -C tests
+	make -C tests tests
 
 override_dh_strip:
 	dh_strip --dbgsym-migration='univention-directory-listener-dbg (<< 13.0.2-12~)'
