@@ -9,4 +9,5 @@ desc: |
  * Explicitly close second database cursor when deleting cache entries.
  * Migrate Python code from `python-support` to `dh_python2`.
  * Remove deprecated code using DB3.
-bug: [47587, 49146, 50407]
+ * Add missing UCR header to `run` script.
+bug: [47587, 49146, 50407, 50110]
