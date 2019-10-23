@@ -33,6 +33,7 @@ Depends:
  python2.7-univention,
  python2.7-univention-debug,
  python-univention-lib (>= 1.0.25-1),
+ python-univention-namespace,
  bash,
 Suggests: lmdb-utils
 Conflicts: univention-ldap-listener (<< 2.2.2)
