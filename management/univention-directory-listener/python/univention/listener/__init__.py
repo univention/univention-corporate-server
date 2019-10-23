@@ -31,13 +31,13 @@
 Listener module API
 
 To create a listener module (LM) with this API, create a Python file in
-/usr/lib/univention-directory-listener/system/ which includes:
+:file:`/usr/lib/univention-directory-listener/system/` which includes:
 
-1. a subclass of ListenerModuleHandler
-2. with an inner class "Configuration" that has at least the class attributes
-   "name", "description" and "ldap_filter"
+1. a subclass of :py:class:`ListenerModuleHandler`
+2. with an inner class `Configuration` that has at least the class attributes
+   `name`, `description` and `ldap_filter`
 
-See /usr/share/doc/univention-directory-listener/examples/ for examples.
+See :file:`/usr/share/doc/univention-directory-listener/examples/` for examples.
 """
 
 from __future__ import absolute_import

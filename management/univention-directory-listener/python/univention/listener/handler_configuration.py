@@ -42,18 +42,19 @@ class ListenerModuleConfiguration(object):
 	Interface class for accessing the configuration and code of a listener
 	module.
 
-	Subclass this and set the class attributes or pass them through __init__.
+	Subclass this and set the class attributes or pass them through `__init__`.
 	If more logic is needed, overwrite the corresponding
-	get_<attribute> method. Setting "name", "description", "ldap_filter" and
-	"listener_module_class" is mandatory.
+	`get_<attribute>` method. Setting `name`, `description`, `ldap_filter` and
+	`listener_module_class` is mandatory.
 
-	To extend the configuration, add key names in get_configuration_keys()
-	and create a get_<attribute> method.
+	To extend the configuration, add key names in :py:meth:`get_configuration_keys()`
+	and create a `get_<attribute>` method.
 
 	The listener server will use an object of your subclass to access your
 	listener module through:
-	1. get_configuration()
-	2. get_listener_module_instance()
+
+	1. :py:meth:`get_configuration()`
+	2. :py:meth:`get_listener_module_instance()`
 	"""
 
 	name = ''                     # (*) name of the listener module
@@ -166,9 +167,9 @@ class ListenerModuleConfiguration(object):
 		"""
 		Get an instance of the listener module.
 
-		:param tuple args: passed to __init__ of ListenerModuleHandler
-		:param dict kwargs: : passed to __init__ of ListenerModuleHandler
-		:return: instance of ListenerModuleHandler
+		:param tuple args: passed to `__init__` of :py:class:`ListenerModuleHandler`
+		:param dict kwargs: : passed to `__init__` of :py:class:`ListenerModuleHandler`
+		:return: instance of :py:class:`ListenerModuleHandler`
 		:rtype: ListenerModuleHandler
 		"""
 		return self.get_listener_module_class()(self, *args, **kwargs)
@@ -177,7 +178,7 @@ class ListenerModuleConfiguration(object):
 		"""
 		Get the class to instantiate for a listener module.
 
-		:return: subclass of univention.listener.ListenerModuleHandler
+		:return: subclass of :py:class:`univention.listener.ListenerModuleHandler`
 		:rtype: ListenerModuleHandler
 		"""
 		return self.listener_module_class
@@ -185,7 +186,7 @@ class ListenerModuleConfiguration(object):
 	def get_active(self):
 		"""
 		If this listener module should run. Determined by the value of
-		listener/module/<name>/deactivate.
+		`listener/module/<name>/deactivate`.
 
 		:return: whether the listener module should be activated
 		:rtype: bool

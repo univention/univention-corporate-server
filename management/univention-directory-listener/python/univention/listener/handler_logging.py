@@ -26,12 +26,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-#
-# Get a Python logging object below a listener module root logger.
-# The new logging object can log to a stream or a file.
-# The listener module root logger will log messages of all of its children
-# additionally to the common listener.log.
-#
+"""
+Get a Python logging object below a listener module root logger.
+The new logging object can log to a stream or a file.
+The listener module root logger will log messages of all of its children
+additionally to the common `listener.log`.
+"""
 
 #
 # Code mostly copied and adapted from
@@ -60,7 +60,7 @@ __syslog_opened = False
 class UniFileHandler(TimedRotatingFileHandler):
 	"""
 	Used by listener modules using the :py:mod:`univention.listener` API to
-	write log files below `/var/log/univention/listener_log/`.
+	write log files below :file:`/var/log/univention/listener_log/`.
 	Configuration can be done through the `handler_kwargs` argument of
 	:py:func:`get_listener_logger`.
 	"""
@@ -86,7 +86,7 @@ class ModuleHandler(logging.Handler):
 	"""
 	Used by listener modules using the :py:mod:`univention.listener` API to
 	write log messages through :py:mod:`univention.debug` to
-	`/var/log/univention/listener.log`
+	:file:`/var/log/univention/listener.log`
 	"""
 	LOGGING_TO_UDEBUG = dict(
 		CRITICAL=ud.ERROR,
@@ -163,10 +163,10 @@ def get_logger(name, path=None):
 	Get a logging instance. Caching wrapper for
 	:py:func:`get_listener_logger()`.
 
-	:param str name: name of the logger instance will be <root loggers name>.name
+	:param str name: name of the logger instance will be `<root loggers name>.name`
 	:param str path: path to log file to create. If unset will be
-	`/var/log/univention/listener_modules/<name>.log`.
-	:return: a python logging object
+		`/var/log/univention/listener_modules/<name>.log`.
+	:return: a Python logging object
 	:rtype: logging.Logger
 	"""
 	if name not in _logger_cache:
@@ -196,7 +196,7 @@ def get_logger(name, path=None):
 
 def calculate_loglevel(name):
 	"""
-	Returns the higher of listener/debug/level and listener/module/<name>/debug/level
+	Returns the higher of `listener/debug/level` and `listener/module/<name>/debug/level`
 	which is the lower log level.
 
 	:param str name: name of logger instance
@@ -211,35 +211,35 @@ def calculate_loglevel(name):
 def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatter_kwargs=None):
 	"""
 	Get a logger object below the listener module root logger. The logger
-	will additionally log to the common listener.log.
+	will additionally log to the common `listener.log`.
 
 	* The logger will use UniFileHandler(TimedRotatingFileHandler) for files if
-	not configured differently through handler_kwargs[cls].
+	  not configured differently through `handler_kwargs[cls]`.
 	* A call with the same name will return the same logging object.
 	* There is only one handler per name-target combination.
 	* If name and target are the same, and only the log level changes, it will
-	return the logging object with the same handlers and change both the log
-	level of the respective handler and of the logger object to be the lowest
-	of the previous and the new level.
-	* The loglevel will be the lowest one of "INFO" and the UCRVs
-	listener/debug/level and listener/module/<name>/debug/level.
+	  return the logging object with the same handlers and change both the log
+	  level of the respective handler and of the logger object to be the lowest
+	  of the previous and the new level.
+	* The loglevel will be the lowest one of `INFO` and the UCRVs
+	  `listener/debug/level` and `listener/module/<name>/debug/level`.
 	* Complete output customization is possible, setting kwargs for the
-	constructors of the handler and formatter.
+	  constructors of the handler and formatter.
 	* Using custom handler and formatter classes is possible by configuring
-	the 'cls' key of handler_kwargs and formatter_kwargs.
+	  the `cls` key of `handler_kwargs` and `formatter_kwargs`.
 
-	:param str name: name of the logger instance will be <root loggers name>.name
-	:param str level: loglevel (DEBUG, INFO etc) or if not set it will be chosen
-	automatically (see above)
+	:param str name: name of the logger instance will be `<root loggers name>.name`
+	:param str level: loglevel (`DEBUG`, `INFO` etc) or if not set it will be chosen
+		automatically (see above)
 	:param str target: (file path)
 	:param dict handler_kwargs: will be passed to the handlers constructor.
-	It cannot be used to modify a handler, as it is only used at creation time.
-	If it has a key 'cls' it will be used as handler instead of UniFileHandler
-	or UniStreamHandler. It should be a subclass of one of those!
+		It cannot be used to modify a handler, as it is only used at creation time.
+		If it has a key `cls` it will be used as handler instead of :py:class:`UniFileHandler`
+		or :py:class:`UniStreamHandler`. It should be a subclass of one of those!
 	:param dict formatter_kwargs: will be passed to the formatters constructor,
-	if it has a key 'cls' it will be used to create a formatter instead of
-	logging.Formatter.
-	:return: a python logging object
+		if it has a key `cls` it will be used to create a formatter instead of
+		:py:class`logging.Formatter`.
+	:return: a Python logging object
 	:rtype: logging.Logger
 	"""
 	assert isinstance(filename, string_types)

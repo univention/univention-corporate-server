@@ -63,11 +63,11 @@ class ListenerModuleHandler(object):
 	Listener module base class.
 
 	Subclass this to implement the logic of your listener module and have
-	ListenerModuleConfiguration.get_listener_module_class return the name of
+	:py:meth:`ListenerModuleConfiguration.get_listener_module_class` return the name of
 	your subclass.
 
 	This class is not intended to be used directly. It should only be
-	instantiated by ListenerModuleConfiguration.get_listener_module_instance().
+	instantiated by :py:meth:`ListenerModuleConfiguration.get_listener_module_instance()`.
 	"""
 	__metaclass__ = HandlerMetaClass
 
@@ -84,17 +84,18 @@ class ListenerModuleHandler(object):
 	class Configuration(ListenerModuleConfiguration):
 		"""
 		Overwrite this with your own class of the same name. It can be an
-		any Python class with just the require attributes (name, description,
-		ldap_filter) or a subclass of ListenerModuleConfiguration.
+		any Python class with just the require attributes (`name`, `description`,
+		`ldap_filter`) or a subclass of :py:class:`ListenerModuleConfiguration`.
 		"""
 		pass
 
 	def __init__(self, *args, **kwargs):
 		"""
 		When subclassing, in __init__() first call must be:
-		super(.., self).__init__(*args, **kwargs)
 
-		self.config will be set by the metaclass.
+			super(.., self).__init__(*args, **kwargs)
+
+		`self.config` will be set by the metaclass.
 		"""
 		if not self.config:
 			raise ListenerModuleConfigurationError('{}.config was not set by meta class.'.format(self.__class__.__name__))
@@ -119,8 +120,6 @@ class ListenerModuleHandler(object):
 
 		:param str dn: current objects DN
 		:param dict new: new LDAP objects attributes
-		:return: None
-		:rtype: None
 		"""
 		pass
 
@@ -128,7 +127,7 @@ class ListenerModuleHandler(object):
 		"""
 		Called when an existing object was modified or moved.
 
-		A move can be be detected by looking at old_dn. Attributes can be
+		A move can be be detected by looking at `old_dn`. Attributes can be
 		modified during a move.
 
 		:param str dn: current objects DN
@@ -136,8 +135,6 @@ class ListenerModuleHandler(object):
 		:param dict new: new LDAP objects attributes
 		:param old_dn: previous DN if object was moved/renamed, None otherwise
 		:type old_dn: str or None
-		:return: None
-		:rtype: None
 		"""
 		pass
 
@@ -147,8 +144,6 @@ class ListenerModuleHandler(object):
 
 		:param str dn: current objects DN
 		:param dict old: previous LDAP objects attributes
-		:return: None
-		:rtype: None
 		"""
 		pass
 
@@ -156,9 +151,6 @@ class ListenerModuleHandler(object):
 		"""
 		Called once when the Univention Directory Listener loads the module
 		for the first time or when a resync it triggered.
-
-		:return: None
-		:rtype: None
 		"""
 		pass
 
@@ -166,21 +158,15 @@ class ListenerModuleHandler(object):
 		"""
 		Called once when the Univention Directory Listener loads the module
 		for the first time or when a resync it triggered.
-
-		:return: None
-		:rtype: None
 		"""
 		pass
 
 	def pre_run(self):
 		"""
 		Called before create/modify/remove if either the Univention Directory
-		Listener has been restarted or when post_run() has run before.
+		Listener has been restarted or when :py:meth:`post_run()` has run before.
 
 		Use for example to open an LDAP connection.
-
-		:return: None
-		:rtype: None
 		"""
 		pass
 
@@ -190,9 +176,6 @@ class ListenerModuleHandler(object):
 		module.
 
 		Use for example to close an LDAP connection.
-
-		:return: None
-		:rtype: None
 		"""
 		pass
 
@@ -201,17 +184,14 @@ class ListenerModuleHandler(object):
 	def as_root():
 		"""
 		Contextmanager to temporarily change the effective UID of the current
-		process to 0.
+		process to 0:
 
-		with self.as_root():
-			do something
+			with self.as_root():
+				do something
 
 		Use :py:func:`listener.setuid()` for any other user than `root`. But be
 		aware that :py:func:`listener.unsetuid()` will not be possible
 		afterwards, as that requires root privileges.
-
-		:return: None
-		:rtype: None
 		"""
 		old_uid = os.geteuid()
 		try:
@@ -258,8 +238,6 @@ class ListenerModuleHandler(object):
 		:param Exception exc_type: exception class
 		:param Exception exc_value: exception object
 		:param traceback exc_traceback: traceback object
-		:return: None
-		:rtype: None
 		"""
 		self.logger.exception('dn=%r command=%r\n    old=%r\n    new=%r', dn, command, old, new)
 		reraise(exc_type, exc_value, exc_traceback)
@@ -304,7 +282,7 @@ class ListenerModuleHandler(object):
 
 	def _set_ldap_credentials(self, base, binddn, bindpw, host):
 		"""
-		Store LDAP connection credentials for use by self.lo. It is not
+		Store LDAP connection credentials for use by :py:attr.`self.lo`. It is not
 		necessary to manually run this method. The listener will automatically
 		run it at startup.
 
@@ -312,8 +290,6 @@ class ListenerModuleHandler(object):
 		:param str binddn: bind DB
 		:param str bindpw: bind password
 		:param str host: LDAP server
-		:return: None
-		:rtype: None
 		"""
 		old_credentials = self._ldap_credentials
 		self._ldap_credentials = dict(
@@ -330,8 +306,8 @@ class ListenerModuleHandler(object):
 	def _get_configuration(cls):
 		"""
 		Load configuration, optionally converting a plain Python class to a
-		ListenerModuleConfiguration object. Set cls._configuration_class to
-		a subclass of ListenerModuleConfiguration to change the returned
+		:py:class:`ListenerModuleConfiguration` object. Set `cls._configuration_class` to
+		a subclass of :py:class:`ListenerModuleConfiguration` to change the returned
 		object type.
 
 		:return: configuration object
@@ -376,7 +352,7 @@ class ListenerModuleHandler(object):
 		"""
 		Is this a listener module?
 
-		:return: True id the file is in /usr/lib/univention-directory-listener.
+		:return: `True` if the file is in :file:`/usr/lib/univention-directory-listener/`.
 		:rtype: bool
 		"""
 		try:

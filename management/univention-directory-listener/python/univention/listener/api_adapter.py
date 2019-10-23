@@ -32,11 +32,12 @@ import sys
 
 class ListenerModuleAdapter(object):
 	"""
-	Adapter to convert the univention.listener.listener_module interface to
+	Adapter to convert the :py:mod:`univention.listener.listener_module interface` to
 	the existing listener module interface.
 
 	Use in a classic listener module like this:
-	globals().update(ListenerModuleAdapter(MyListenerModuleConfiguration()).get_globals())
+
+		globals().update(ListenerModuleAdapter(MyListenerModuleConfiguration()).get_globals())
 	"""
 	def __init__(self, module_configuration, *args, **kwargs):
 		"""
@@ -60,8 +61,8 @@ class ListenerModuleAdapter(object):
 		make up the legacy listener module interface.
 
 		:return: a mapping with keys: `name`, `description`, `filter_s`,
-		`attributes`, `modrdn`, `handler`, `initialize`, `clean`, `prerun`,
-		`postrun`, `setdata`, ..
+			`attributes`, `modrdn`, `handler`, `initialize`, `clean`, `prerun`,
+			`postrun`, `setdata`, ..
 		:rtype: dict
 		"""
 		name = self.config.get_name()
@@ -97,8 +98,6 @@ class ListenerModuleAdapter(object):
 
 		:param str key: one of `basedn`, `basedn`, `bindpw`, `ldapserver`
 		:param str value: credentials
-		:return: None
-		:rtype: None
 		"""
 		self._ldap_cred[key] = value
 		if all(a in self._ldap_cred for a in ('basedn', 'basedn', 'bindpw', 'ldapserver')):
@@ -126,8 +125,6 @@ class ListenerModuleAdapter(object):
 		:param dict new: new LDAP objects attributes
 		:param dict old: previous LDAP objects attributes
 		:param str command: LDAP modification type
-		:return: None
-		:rtype: None
 		"""
 		if command == 'r':
 			self._saved_old = old
