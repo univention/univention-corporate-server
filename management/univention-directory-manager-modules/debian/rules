@@ -73,6 +73,10 @@ override_dh_python2:
 	install -d debian/python-univention-directory-manager/usr/lib/pymodules/python2.7/univention/admin/handlers/
 	install -d debian/python-univention-directory-manager/usr/lib/pymodules/python2.7/univention/admin/hooks.d/
 	install -d debian/python-univention-directory-manager/usr/lib/pymodules/python2.7/univention/admin/syntax.d/
+	touch debian/python-univention-directory-manager/usr/share/pyshared/univention/admin/hooks.d/__init__.py
+	touch debian/python-univention-directory-manager/usr/share/pyshared/univention/admin/syntax.d/__init__.py
+	touch debian/python-univention-directory-manager/usr/lib/pymodules/python2.7/univention/admin/hooks.d/__init__.py
+	touch debian/python-univention-directory-manager/usr/lib/pymodules/python2.7/univention/admin/syntax.d/__init__.py
 
 %:
 	dh $@ --with 'python2,python3'

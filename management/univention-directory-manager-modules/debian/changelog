@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.14-11) unstable; urgency=medium
+
+  * Bug #49147: re-add missing pyshared pathes
+
+ -- Florian Best <best@univention.de>  Thu, 24 Oct 2019 10:32:49 +0200
+
 univention-directory-manager-modules (14.0.14-10) unstable; urgency=medium
 
   * Bug #50376: add possibility for tabs to have a help text
