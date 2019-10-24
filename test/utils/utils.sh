@@ -384,6 +384,12 @@ install_ucs_test () {
 	# The AD Member Jenkins tests sometimes have network problems, so executing it twice.
 }
 
+install_ucs_test_from_errata_test () {
+	wait_for_repo_server || return 1
+	bash /root/activate-errata-test-scope.sh || return 1
+	install_ucs_test || return 1
+}
+
 install_ucs_test_checks_from_errata_test () {
 	local rv=0
 	bash /root/activate-errata-test-scope.sh || rv=$?
