@@ -497,7 +497,7 @@ install_selenium () {
 	# install old version until Bug 48856 is fixed
 	local chromium_version="71.0.3578.80-1~deb9u1"
 	install_with_unmaintained python-pip xvfb chromium="$chromium_version" chromium-driver="$chromium_version"
-	pip install selenium==3.6.0
+	pip install selenium==3.6.0 xvfbwrapper==0.2.9
 }
 
 run_apptests () {
