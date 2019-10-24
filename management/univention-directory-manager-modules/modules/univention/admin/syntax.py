@@ -443,7 +443,7 @@ class UDM_Objects(ISyntax):
 	udm_filter = ''
 	"""A |LDAP| filter string to further restrict the matching |LDAP| objects."""
 	key = 'dn'
-	"""The |LDAP| attribute name to use as the value for this syntax class."""
+	"""Either 'dn' or the |UDM| property name enclosed in %()s to use as the value for this syntax class."""
 	label = None
 	"""The |UDM| property name, which is used as the displayed value."""
 	regex = re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')
