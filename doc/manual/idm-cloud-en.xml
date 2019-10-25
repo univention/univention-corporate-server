@@ -146,6 +146,16 @@
 			</para>
 
 		</section>
+		<section id="idmcloud:o365:multi">
+			<title>Connecting multiple Azure Domains</title>
+			<para>
+				In more complex scenarios it can be necessary to connect the UCS domain with multiple Azure domains.
+				For creating and managing multiple Azure domains the tool <filename>/usr/share/univention-office365/scripts/manage_tenants</filename> can be used.
+				After an additional Azure domain has been added using the option <option>create</option>, the &ucsUMC; wizard has to be run again to configure the new domain.
+				Which domain is configured by the wizard is controlled by the &ucsUCRV; <envar>office365/tenant/wizard</envar>.
+				In case that the &ucsUCRV; is changed, a &ucsUMC; logout and login is required.
+			</para>
+		</section>
 
 		<section id="idmcloud:o365:debug">
 			<title>Troubleshooting/Debugging</title>

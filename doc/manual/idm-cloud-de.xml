@@ -147,6 +147,18 @@ Office 365 Benutzer kann mit der &ucsUCRV; <envar>office365/groups/sync</envar> 
 			Änderungen an &ucsUCRV;n werden erst nach dem Neustart des &ucsUDL; umgesetzt.
 		</para>
 
+
+	</section>
+
+	<section id="idmcloud:o365:multi">
+		<title>Anbindung mehrerer Azure Domänen</title>
+		<para>
+			In komplexeren Szenarien kann es nötig sein die UCS Domäne mit mehreren Azure Domänen zu verknüpfen.
+			Mit dem Programm <filename>/usr/share/univention-office365/scripts/manage_tenants</filename> lassen sich weitere Azure Domänen anlegen und verwalten.
+			Nachdem mit diesem Tool eine neue Azure Umgebung mit dem Schalter <option>create</option> hinzugefügt wurde, muss der &ucsUMC; Wizard erneut ausgeführt werden.
+			Die &ucsUCRV; <envar>office365/tenant/wizard</envar> legt fest, welche Azure Domäne vom Wizard konfiguriert werden soll.
+			Wird sie manuell umgestellt ist ein Ab- und erneutes Anmelden auf der &ucsUMC; erforderlich.
+		</para>
 	</section>
 
 	<section id="idmcloud:o365:debug">
