@@ -1,3 +1,9 @@
+ucs-test (9.0.3-85) unstable; urgency=low
+
+  * Bug #50110: Check UDL/run template header again
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 25 Oct 2019 19:18:29 +0200
+
 ucs-test (9.0.3-84) unstable; urgency=medium
 
   * Bug #39354: add self-service to DefaultPackagesMaster test whitelist
