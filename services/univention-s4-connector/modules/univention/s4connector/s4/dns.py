@@ -500,7 +500,8 @@ def __create_s4_dns_node(s4connector, dnsNodeDn, relativeDomainNames, dnsRecords
 
 	al.append(('objectClass', ['top', 'dnsNode']))
 	al.append(('dc', relativeDomainNames))
-	al.append(('dnsRecord', dnsRecords))
+	if dnsRecords:
+		al.append(('dnsRecord', dnsRecords))
 
 	ud.debug(ud.LDAP, ud.INFO, '__create_s4_dns_node: dn: %s' % dnsNodeDn)
 	ud.debug(ud.LDAP, ud.INFO, '__create_s4_dns_node: al: %s' % al)
