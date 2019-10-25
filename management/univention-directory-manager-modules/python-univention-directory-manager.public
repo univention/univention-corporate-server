@@ -25,7 +25,5 @@
 /usr/share/pyshared/univention/admin/handlers/shares/__init__.py
 /usr/share/pyshared/univention/admin/handlers/users
 /usr/share/pyshared/univention/admin/handlers/users/__init__.py
-/usr/share/pyshared/univention/admin/hooks.d
 /usr/share/pyshared/univention/admin/hooks.d/__init__.py
-/usr/share/pyshared/univention/admin/syntax.d
 /usr/share/pyshared/univention/admin/syntax.d/__init__.py
