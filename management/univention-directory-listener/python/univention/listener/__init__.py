@@ -35,7 +35,7 @@ To create a listener module (LM) with this API, create a Python file in
 
 1. a subclass of :py:class:`ListenerModuleHandler`
 2. with an inner class `Configuration` that has at least the class attributes
-   `name`, `description` and `ldap_filter`
+	`name`, `description` and `ldap_filter`
 
 See :file:`/usr/share/doc/univention-directory-listener/examples/` for examples.
 """

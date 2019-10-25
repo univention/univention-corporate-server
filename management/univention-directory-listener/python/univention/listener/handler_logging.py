@@ -214,19 +214,19 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
 	will additionally log to the common `listener.log`.
 
 	* The logger will use UniFileHandler(TimedRotatingFileHandler) for files if
-	  not configured differently through `handler_kwargs[cls]`.
+		not configured differently through `handler_kwargs[cls]`.
 	* A call with the same name will return the same logging object.
 	* There is only one handler per name-target combination.
 	* If name and target are the same, and only the log level changes, it will
-	  return the logging object with the same handlers and change both the log
-	  level of the respective handler and of the logger object to be the lowest
-	  of the previous and the new level.
+		return the logging object with the same handlers and change both the log
+		level of the respective handler and of the logger object to be the lowest
+		of the previous and the new level.
 	* The loglevel will be the lowest one of `INFO` and the UCRVs
-	  `listener/debug/level` and `listener/module/<name>/debug/level`.
+		`listener/debug/level` and `listener/module/<name>/debug/level`.
 	* Complete output customization is possible, setting kwargs for the
-	  constructors of the handler and formatter.
+		constructors of the handler and formatter.
 	* Using custom handler and formatter classes is possible by configuring
-	  the `cls` key of `handler_kwargs` and `formatter_kwargs`.
+		the `cls` key of `handler_kwargs` and `formatter_kwargs`.
 
 	:param str name: name of the logger instance will be `<root loggers name>.name`
 	:param str level: loglevel (`DEBUG`, `INFO` etc) or if not set it will be chosen
