@@ -1,9 +1,9 @@
 #!/bin/sh
 #
 # Univention Directory Manager Modules
-#  postinst script
+#  prerm script
 #
-# Copyright 2004-2019 Univention GmbH
+# Copyright 2019 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -30,42 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-. /usr/share/univention-lib/all.sh
-
-eval "$(univention-config-registry shell)"
-
 if which update-python-modules >/dev/null 2>&1; then
-	update-python-modules python-univention-directory-manager.public
+	update-python-modules -c python-univention-directory-manager.public
 fi
 
 #DEBHELPER#
-
-if [ "$1" = "configure" ]; then
-	if [ -z "$2" ]; then
-		# only set this for new installations
-		univention-config-registry set \
-			directory/manager/web/modules/users/user/properties/homePostalAddress/syntax=postalAddress \
-			password/hashing/method?SHA-512
-	fi
-
-	univention-config-registry set \
-		directory/manager/web/modules/groups/group/caching/uniqueMember/timeout?300 \
-		directory/manager/user_group/uniqueness=true \
-		directory/manager/templates/alphanum/whitelist?'' \
-		password/hashing/method?MD5 # for update keep old behavior
-
-	if [ -n "$2" ]; then
-		if dpkg --compare-versions "$2" lt-nl 9.0.22-10; then
-			## load the listener module
-			/etc/init.d/univention-directory-listener crestart
-		elif dpkg --compare-versions "$2" lt-nl 10.0.21-1; then
-			univention-directory-listener-ctrl resync udm_extension
-		fi
-	fi
-fi
-
-stop_udm_cli_server
-
-call_joinscript 18python-univention-directory-manager.inst
 
 exit 0

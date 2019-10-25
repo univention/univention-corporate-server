@@ -32,6 +32,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-lazy-object-proxy,
  python-dateutil,
  python-six,
+ python-support,
 Provides: ${python:Provides}
 Breaks: python-univention-directory-manager-rest (<< 9.0.16-4)
 Replaces:

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.14-12) unstable; urgency=medium
+
+  * Bug #49147: use python-support for legacy files
+
+ -- Florian Best <best@univention.de>  Fri, 25 Oct 2019 12:09:43 +0200
+
 univention-directory-manager-modules (14.0.14-11) unstable; urgency=medium
 
   * Bug #49147: re-add missing pyshared pathes
