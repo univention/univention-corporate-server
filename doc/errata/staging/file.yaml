@@ -6,8 +6,7 @@ src: file
 fix: 1:5.30-1+deb9u3
 desc: |
  This update addresses the following issue:
- * heap-based buffer overflow in cdf_read_property_info in cdf.c
-   (CVE-2019-18218)
+ * Heap-based buffer overflow in cdf_read_property_info() (CVE-2019-18218)
 bug: [50417]
 cve:
 - CVE-2019-18218
