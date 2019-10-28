@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.14-15) unstable; urgency=medium
+
+  * Bug #50376: open link in new tab
+
+ -- Florian Best <best@univention.de>  Mon, 28 Oct 2019 11:39:36 +0100
+
 univention-directory-manager-modules (14.0.14-14) unstable; urgency=medium
 
   * Bug #49147: remove directories from .public file
