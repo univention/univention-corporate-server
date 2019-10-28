@@ -6,3 +6,4 @@ univention-install-joinscript usr/bin
 check_join_status.sh usr/share/univention-join/
 20univention-join.inst usr/lib/univention-install/
 univention-join-hooks usr/share/univention-join/
+univention-fetch-certificate usr/sbin/

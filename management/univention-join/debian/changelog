@@ -1,3 +1,9 @@
+univention-join (11.0.1-22) unstable; urgency=medium
+
+  * Bug #45115: based on dwiesent/bug45115, added univention-fetch-certificate
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 Oct 2019 18:05:29 +0100
+
 univention-join (11.0.1-21) unstable; urgency=medium
 
   * Bug #49149: migrate to dh_python
