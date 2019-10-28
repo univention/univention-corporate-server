@@ -373,7 +373,7 @@ is_valid () {
 
 has_cert () {
 	local cn="${1:?Missing argument: common name}"
-
+	cn="${cn//'*'/'\*'}"
 	awk -F '\t' -v cn="$cn" '
 	BEGIN { ret=1; seq=""; }
 	$6 ~ cn {
@@ -393,7 +393,7 @@ has_cert () {
 
 has_valid_cert () {
 	local cn="${1:?Missing argument: common name}"
-
+	cn="${cn//'*'/'\*'}"
 	tac "${SSLBASE}/${CA}/index.txt" | awk -F '\t' -v cn="$cn" -v now="$(TZ=UTC date +%y%m%d%H%M%S)" '
 	BEGIN { ret=1; seq=""; }
 	$6 ~ cn {
@@ -509,8 +509,13 @@ gencert () {
 		# Add DNS alias names
 		local san
 		san="$(univention-ldapsearch -LLLo ldif-wrap=no "(cNAMERecord=${fqdn%.}.)" 1.1 | sed -rne 's/^dn: relativeDomainName=([^,]+),zoneName=([^,]+),.*/\1 \1.\2/p' | tr '\n' ' ')"
+		# generate config, ignore san for wildcard certs
+		if [ "$hostname" = '*' ]; then
+			mk_config "$name/openssl.cnf" "" "$days" "$cn" ""
+		else
+			mk_config "$name/openssl.cnf" "" "$days" "$cn" "$fqdn $hostname $san"
+		fi
 		# generate a key pair
-		mk_config "$name/openssl.cnf" "" "$days" "$cn" "$fqdn $hostname $san"
 		openssl genrsa -out "$name/private.key" "$DEFAULT_BITS"
 		openssl req -batch -config "$name/openssl.cnf" -new -key "$name/private.key" -out "$name/req.pem"
 	fi

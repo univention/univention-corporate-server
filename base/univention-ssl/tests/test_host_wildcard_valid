@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e -u
+. ${0%/*}/common.sh
+
+name="*.${R2}.${R2}"
+init
+gencert "${name}" "${name}"
+list_cert_names | grep -F -e "${name}"
+[ 01 = "$(has_valid_cert "${name}")" ]
+
+has_cert "$name"
+
+renew_cert "${name}"
+list_cert_names | grep -F -e "${name}"
+[ 02 = "$(has_valid_cert "${name}")" ]
+
+revoke_cert "${name}"
+has_valid_cert "${name}" && exit 1
+list_cert_names | grep -F -e "${name}" && exit 1
+
+:

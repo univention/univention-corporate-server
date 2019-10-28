@@ -17,6 +17,7 @@ Depends: ${misc:Depends},
  openssl,
  univention-directory-listener,
  openssl-blacklist,
+ univention-ssh,
  shell-univention-lib (>= 3.0.1-1),
  python-univention-lib (>= 3.0.1-1),
  python-m2crypto

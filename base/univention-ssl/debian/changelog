@@ -1,3 +1,10 @@
+univention-ssl (13.0.0-3) unstable; urgency=medium
+
+  * Bug #45115: based on dwiesent/bug45115, add support for
+    wildcard certificates
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 Oct 2019 16:56:07 +0100
+
 univention-ssl (13.0.0-2) unstable; urgency=medium
 
   * Bug #48698: Fix user visible spelling errors
