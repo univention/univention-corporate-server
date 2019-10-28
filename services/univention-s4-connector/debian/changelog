@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-56) unstable; urgency=medium
+
+  * Bug #49728: Fix move case with renaming for DNS host record
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 28 Oct 2019 17:33:15 +0100
+
 univention-s4-connector (13.0.2-55) unstable; urgency=medium
 
   * Bug #49874: Fix appending empty dnsRecord creates Reject
