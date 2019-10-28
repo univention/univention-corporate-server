@@ -701,11 +701,6 @@
 			</simpara></listitem>
 
 			<listitem><simpara>
-					The uploaded driver now needs to be selected from the dropdown menu under <guimenu>Drivers</guimenu> in the <guimenu>Advanced</guimenu> tab.
-					Then click on <guimenu>Apply</guimenu> (Important: Do not click on <guimenu>OK</guimenu>!).
-			</simpara></listitem>
-
-			<listitem><simpara>
 					If the printer driver in question is being assigned to a printer for the first time, a dialogue window is shown, asking whether the printer can be trusted.
 					This should be confirmed with <guimenu>Install driver</guimenu>.
 					The printer drivers saved on the server side are now downloaded to the client.
