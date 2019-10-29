@@ -93,6 +93,12 @@ def main():
 				print('*** checking /etc/freeradius/3.0/clients.univention.conf')
 				with open('/etc/freeradius/3.0/clients.univention.conf', 'r') as fd:
 					content = fd.read()
+					print((
+						'Content of /etc/freeradius/3.0/clients.univention.conf\n'
+						'##############################\n'
+						'{}\n'
+						'##############################'
+					).format(content))
 					content = re.sub(r'\s+', ' ', content)
 
 				def in_content(content, name, txt):
@@ -113,7 +119,12 @@ def main():
 						else:
 							func(content, computer.name, '# virtual_server = ...not specified...')
 
-			check_file_content(computers)
+			utils.retry_on_error(
+				lambda: check_file_content(computers),
+				exceptions=AssertionError,
+				retry_count=5,
+				delay=2,
+			)
 
 			print('*** change RADIUS values')
 			for computer in computers:
@@ -129,14 +140,24 @@ def main():
 					univentionRadiusClientVirtualServer=computer.virtual_server,
 				)
 			utils.wait_for_replication_and_postrun()
-			check_file_content(computers)
+			utils.retry_on_error(
+				lambda: check_file_content(computers),
+				exceptions=AssertionError,
+				retry_count=5,
+				delay=2,
+			)
 
 			print('*** remove a computer')
 			computer = computers[-1]
 			udm.remove_object(computer.role, dn=computer.dn)
 			computer.removed = True
 			utils.wait_for_replication_and_postrun()
-			check_file_content(computers)
+			utils.retry_on_error(
+				lambda: check_file_content(computers),
+				exceptions=AssertionError,
+				retry_count=5,
+				delay=2,
+			)
 
 			print('*** remove RADIUS settings')
 			computer = computers[-2]
@@ -150,7 +171,13 @@ def main():
 			)
 			computer.removed = True
 			utils.wait_for_replication_and_postrun()
-			check_file_content(computers)
+			utils.retry_on_error(
+				lambda: check_file_content(computers),
+				exceptions=AssertionError,
+				retry_count=5,
+				delay=2,
+			)
+
 
 if __name__ == '__main__':
 	main()

@@ -1,3 +1,9 @@
+ucs-test (9.0.3-88) unstable; urgency=medium
+
+  * Bug #50426: Wait longer for postrun 45_radius/08_clients_univention_conf
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 29 Oct 2019 12:20:19 +0100
+
 ucs-test (9.0.3-87) unstable; urgency=medium
 
   * Bug #50411: restart UMC during 20_appcenter tests
