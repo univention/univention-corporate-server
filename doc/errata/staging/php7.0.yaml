@@ -6,7 +6,10 @@ src: php7.0
 fix: 7.0.33-0+deb9u6
 desc: |
  This update addresses the following issue:
- * php7.0 (CVE-2019-11043)
+ * In certain configurations it is possible to cause the Fast-CGI Process
+   Manager (FPM) module to write past allocated buffers into the space
+   reserved for FCGI protocol data, thus opening the possibility of remote
+   code execution. (CVE-2019-11043)
 bug: [50431]
 cve:
 - CVE-2019-11043
