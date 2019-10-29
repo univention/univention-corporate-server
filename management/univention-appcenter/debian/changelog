@@ -1,3 +1,10 @@
+univention-appcenter (8.0.11-73) unstable; urgency=medium
+
+  * Bug #45115: merged from branch
+      Add script univention-add-vhost by Dirk Wiesenthal <wiesenthal@univention.de>
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Oct 2019 16:09:30 +0100
+
 univention-appcenter (8.0.11-72) unstable; urgency=medium
 
   * Bug #50340: Add missing dependency
