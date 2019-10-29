@@ -43,6 +43,8 @@ a2dismod ssl
 a2enmod ssl
 a2dissite default-ssl.conf
 a2ensite default-ssl.conf
+a2dissite include-vhosts.conf
+a2ensite include-vhosts.conf
 
 if [ -z "$UMC_MODE" ]; then
 	/etc/init.d/apache2 force-reload

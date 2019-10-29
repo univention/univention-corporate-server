@@ -73,3 +73,13 @@ Type: file
 File: var/www/robots.txt
 Variables: ucs/server/robots/allow
 Variables: ucs/server/robots/disallow
+
+Type: file
+File: etc/apache2/sites-available/include-vhosts.conf
+Variables: apache2/vhosts/.*/enabled
+Variables: apache2/vhosts/.*/files
+Variables: apache2/vhosts/.*/aliases
+Variables: apache2/vhosts/.*/ssl/certificate
+Variables: apache2/vhosts/.*/ssl/key
+Variables: apache2/vhosts/.*/ssl/ca
+Variables: apache2/vhosts/.*/ssl/certificatechain

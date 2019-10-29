@@ -58,6 +58,8 @@ if [ "$1" = configure -a -z "$2" ]; then
 	a2enmod ssl || true
 	a2dissite default-ssl.conf || true
 	a2ensite default-ssl.conf || true
+	a2dissite include-vhosts.conf || true
+	a2ensite include-vhosts.conf || true
 fi
 
 univention-config-registry set apache2/autostart?"yes"
@@ -105,8 +107,10 @@ fi
 if [ $ENABLE_SSL = yes ]; then
 	a2enmod ssl
 	a2ensite default-ssl.conf || true
+	a2ensite include-vhosts.conf || true
 else
 	a2dismod ssl
+	a2dissite include-vhosts.conf || true
 	a2dissite default-ssl.conf|| true
 fi
 
