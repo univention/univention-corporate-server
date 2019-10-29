@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-57) unstable; urgency=medium
+
+  * Bug #50202: Fix time conversion in s4-connector to prevent loops
+
+ -- Julia Bremer <bremer@knut.univention.de>  Tue, 29 Oct 2019 18:15:42 +0100
+
 univention-s4-connector (13.0.2-56) unstable; urgency=medium
 
   * Bug #49728: Fix move case with renaming for DNS host record
