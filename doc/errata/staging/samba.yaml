@@ -6,5 +6,12 @@ src: samba
 fix: 2:4.10.1-1A~4.3.0.201910221858
 desc: |
  This update addresses the following issues:
- * TODO
+ * Client code can return filenames containing path separators.
+ * Samba AD DC check password script does not receive the full password.
+ * Users with "get changes" permission can crash AD DC LDAP server via
+   dirsync.
 bug: [50402]
+cve:
+ - CVE-2019-10218
+ - CVE-2019-14833
+ - CVE-2019-14847
