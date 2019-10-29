@@ -28,14 +28,14 @@ def do_test(computer_module):
 			'dnsEntryZoneReverse': reverse,
 			'domain': domain,
 		})
-		udm.modify_object('dns/forward_zone', dn=forward, nameserver=[fqdn_dot])
+		udm.modify_object('dns/forward_zone', dn=forward, nameserver=[fqdn_dot], wait_for_replication=False)
 		udm.modify_object('dns/reverse_zone', dn=reverse, nameserver=[fqdn_dot], wait_for=True)
 		utils.wait_for_connector_replication()
 		utils.verify_ldap_object(forward, {'nSRecord': ['aaa.aa.', fqdn_dot]})
 		utils.verify_ldap_object(reverse, {'nSRecord': ['aaa.aa.', fqdn_dot]})
 
 		# delete computer and check new name in zones
-		udm.remove_object(computer_module, dn=computer)
+		udm.remove_object(computer_module, dn=computer, wait_for=True)
 		utils.wait_for_connector_replication()
 		utils.verify_ldap_object(forward, {'nSRecord': ['aaa.aa.', ]})
 		utils.verify_ldap_object(reverse, {'nSRecord': ['aaa.aa.', ]})
