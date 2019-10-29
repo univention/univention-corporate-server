@@ -31,22 +31,14 @@ def do_test(computer_module):
 		udm.modify_object('dns/forward_zone', dn=forward, nameserver=[fqdn_dot])
 		udm.modify_object('dns/reverse_zone', dn=reverse, nameserver=[fqdn_dot], wait_for=True)
 		utils.wait_for_connector_replication()
-		dn, attr = utils.get_ldap_connection().search(filter='(objectClass=*)', base=forward)[0]
-		print(dn, attr)
-		assert fqdn_dot in attr['nSRecord'], (fqdn_dot, attr['nSRecord'])
-		dn, attr = utils.get_ldap_connection().search(filter='(objectClass=*)', base=reverse)[0]
-		print(dn, attr)
-		assert fqdn_dot in attr['nSRecord'], (fqdn_dot, attr['nSRecord'])
+		utils.verify_ldap_object(forward, {'nSRecord': ['aaa.aa.', fqdn_dot]})
+		utils.verify_ldap_object(reverse, {'nSRecord': ['aaa.aa.', fqdn_dot]})
 
 		# delete computer and check new name in zones
 		udm.remove_object(computer_module, dn=computer)
 		utils.wait_for_connector_replication()
-		dn, attr = utils.get_ldap_connection().search(filter='(objectClass=*)', base=forward)[0]
-		print(dn, attr)
-		assert fqdn_dot not in attr['nSRecord'], (fqdn_dot, attr['nSRecord'])
-		dn, attr = utils.get_ldap_connection().search(filter='(objectClass=*)', base=reverse)[0]
-		print(dn, attr)
-		assert fqdn_dot not in attr['nSRecord'], (fqdn_dot, attr['nSRecord'])
+		utils.verify_ldap_object(forward, {'nSRecord': ['aaa.aa.', ]})
+		utils.verify_ldap_object(reverse, {'nSRecord': ['aaa.aa.', ]})
 
 
 def main():
