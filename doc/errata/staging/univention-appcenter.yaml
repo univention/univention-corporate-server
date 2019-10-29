@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [2]
+scope: ucs_4.4-0-errata4.4-2
+src: univention-appcenter
+fix: 8.0.11-74A~4.4.0.201910291707
+desc: |
+ This update addresses the following issue(s):
+ * The tool univention-appcenter-add-vhost to easily create vhost
+   entries for apps has been added.
+bug: [45115]

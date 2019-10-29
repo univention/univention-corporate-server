@@ -3,7 +3,7 @@ release: "4.4"
 version: [2]
 scope: ucs_4.4-0-errata4.4-2
 src: univention-apache
-fix: 11.0.1-3A~4.4.0.201910291600
+fix: 11.0.1-5A~4.4.0.201910291747
 desc: |
  This update addresses the following issue(s):
  * A new vhost UCR template has been added.
