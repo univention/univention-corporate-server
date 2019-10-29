@@ -1,3 +1,9 @@
+univention-apache (11.0.1-5) unstable; urgency=medium
+
+  * Bug #45115: fixed template
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Oct 2019 17:46:50 +0100
+
 univention-apache (11.0.1-4) unstable; urgency=medium
 
   * Bug #45115: fixed template
