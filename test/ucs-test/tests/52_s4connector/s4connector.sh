@@ -639,6 +639,18 @@ function connector_running_on_this_host ()
 	return $?
 }
 
+function ad_connector_start ()
+{
+	invoke-rc.d univention-s4-connector start
+	sleep 3 # wait a few seconds
+}
+
+function ad_connector_stop ()
+{
+	invoke-rc.d univention-s4-connector stop
+	sleep 3 # wait a few seconds
+}
+
 function ad_connector_restart ()
 {
 	invoke-rc.d univention-s4-connector restart
