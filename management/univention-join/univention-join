@@ -169,27 +169,7 @@ setup_ssl () {
 
 download_host_certificate () {
 	echo -n "Download host certificate: "
-	local HOSTPWD="/etc/machine.secret"
-	local HOSTACCOUNT="$hostname\$"
-	local counter=0
-	while true
-	do
-		((counter++))
-		univention-scp "$HOSTPWD" -q -r \
-			"$HOSTACCOUNT@$DCNAME:/etc/univention/ssl/$hostname" \
-			"$HOSTACCOUNT@$DCNAME:/etc/univention/ssl/$hostname.$domainname" \
-			/etc/univention/ssl/ >>/var/log/univention/join.log 2>&1
-		[ -d "/etc/univention/ssl/$hostname" ] && [ -d "/etc/univention/ssl/$hostname.$domainname" ] && break
-
-		if [ $counter -gt 30 ] && [ ! -d "/etc/univention/ssl/$hostname" ] &&  [ ! -d "/etc/univention/ssl/$hostname.$domainname" ]; then
-			echo "failed to get host certificate"
-			failed_message "failed to get host certificate"
-		fi
-
-		echo -n "."
-		sleep 20
-	done
-
+	/usr/sbin/univention-fetch-certificates "$hostname" "$DCNAME" >>/var/log/univention/join.log 2>&1 || failed_message "failed to get host certificate"
 	echo -e "\033[60Gdone"
 }
 
