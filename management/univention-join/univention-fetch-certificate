@@ -38,7 +38,7 @@ test ! -x /usr/sbin/univention-scp && die "Couldn't download host certificate, u
 test -z "$certname" && die "No certificate name set"
 test -z "$dcname" && die "No dc name name set"
 
-eval "$(ucr shell domainname server/role)"
+eval "$(ucr shell domainname server/role hostname)"
 
 echo -n "Download host certificate for $certname:"
 hostpwd="/etc/machine.secret"

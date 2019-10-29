@@ -1,3 +1,9 @@
+univention-join (11.0.1-25) unstable; urgency=medium
+
+  * Bug #45115: use univention-fetch-certificate in univention-join
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Oct 2019 15:29:05 +0100
+
 univention-join (11.0.1-24) unstable; urgency=medium
 
   * Bug #45115: use univention-fetch-certificate in univention-join
