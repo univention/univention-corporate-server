@@ -12,6 +12,7 @@ import os
 import sys
 from univention.appcenter.app_cache import AppCache
 from univention.testing.umc import Client
+import appcentertest as app_test
 import univention.testing.ucr as ucr_test
 import univention.testing.strings as str_test
 from univention import config_registry
@@ -185,6 +186,8 @@ if __name__ == '__main__':
 		# ... this allows us to add our test app data directly to the cache dir
 		config_registry.handler_set(['appcenter/umc/update/always=false'])
 		try:
+			app_test.restart_umc()
 			test_all()
 		finally:
+			app_test.restart_umc()
 			cleanup()

@@ -99,12 +99,14 @@ def test_uninstall_non_existent(app_center, application):
 
 
 def main():
+	app_test.restart_umc()
 	test_install_non_existent_dry_run()
 	test_install_non_existent()
 	test_update_non_existent_dry_run()
 	test_update_non_existent()
 	test_uninstall_non_existent_dry_run()
 	test_uninstall_non_existent()
+	app_test.restart_umc()
 
 
 if __name__ == '__main__':

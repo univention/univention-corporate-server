@@ -1,3 +1,9 @@
+ucs-test (9.0.3-87) unstable; urgency=medium
+
+  * Bug #50411: restart UMC during 20_appcenter tests
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Oct 2019 11:48:31 +0100
+
 ucs-test (9.0.3-86) unstable; urgency=medium
 
   * Bug #49728: Add testcase for moving and renaming dns/host_records

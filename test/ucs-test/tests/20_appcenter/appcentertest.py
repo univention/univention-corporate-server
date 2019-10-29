@@ -41,6 +41,7 @@ import threading
 import lxml.html
 import subprocess
 import contextlib
+import time
 
 from univention.appcenter.app_cache import Apps, AppCenterCache
 import univention.appcenter.log as app_logger
@@ -52,6 +53,12 @@ import univention.testing.utils as utils
 import univention.testing.debian_package as debian_package
 
 APPCENTER_FILE = "/var/cache/appcenter-installed.txt"  # installed apps
+
+
+def restart_umc():
+	print('Restarting UMC')
+	subprocess.check_call(['systemctl', 'restart', 'univention-management-console-server'])
+	time.sleep(3)
 
 
 def get_requested_apps():
@@ -603,6 +610,7 @@ class TestOperations(object):
 
 @contextlib.contextmanager
 def local_appcenter():
+	restart_umc()
 	setup_local_appcenter = get_action("dev-setup-local-appcenter")
 	ucs_versions = AppCenterCache().get_ucs_versions()
 	print("Setting up local app-center for UCS versions = %r." % (ucs_versions,))
@@ -615,6 +623,7 @@ def local_appcenter():
 	finally:
 		print("Reverting local app-center.")
 		setup_local_appcenter.call(revert=True)
+		restart_umc()
 
 
 def test_case(function):
