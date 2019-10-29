@@ -31,6 +31,7 @@ export RELEASE_UPDATE="${release_update:=public}"
 export ERRATA_UPDATE="${errata_update:=testing}"
 export UCSSCHOOL_RELEASE=${UCSSCHOOL_RELEASE:=scope}
 export REPLACE="${REPLACE:=false}"
+export FORCE_EC2="${FORCE_EC2:=false}"
 export CFG="$1"
 
 # jenkins defaults
@@ -67,8 +68,11 @@ if [ -n "$UCSSCHOOL_BRANCH" -o -n "$UCS_BRANCH" ]; then
 fi
 
 # create the command and run in ec2 or kvm depending on cfg
-if grep -q '^\w*kvm_template' "$CFG"
-then
+KVM=false
+grep -q '^\w*kvm_template' "$CFG" && KVM=true # if kvm is configure in cfg, use kvm
+$FORCE_EC2 && KVM=false # use ec2 if forced
+
+if $KVM; then
 	exe='ucs-kvm-create'
 	test -e ./ucs-ec2-tools/ucs-kvm-create && exe="./ucs-ec2-tools/ucs-kvm-create"
 else
