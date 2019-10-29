@@ -35,6 +35,7 @@ Univention App Center - manage DNS aliases and UCRVs for apps
 
 import os
 import sys
+import subprocess
 try:
 	from typing import TextIO, List, Optional, Text
 except ImportError:
@@ -60,7 +61,7 @@ def ucr():
 	return _ucr
 
 
-@click.command()
+@click.command(context_settings=dict(help_option_names=['-h', '--help']))
 @click.argument("app")
 @click.argument("fqdn")
 @click.argument("port")
@@ -111,6 +112,10 @@ def main(app, fqdn, port, aliases, binddn, bindpwdfile, remove):
 		server_port = ucr()["ldap/master/port"]
 		udm = UDM.credentials(binddn, password, server=server, port=server_port).version(1)
 
+	# do not remove wildcard certificate
+	if not remove:
+		get_wildcard_certificate(udm)
+
 	for host in [fqdn] + list(aliases):
 		if remove:
 			remove_dns_entry(udm, host)
@@ -125,6 +130,16 @@ def main(app, fqdn, port, aliases, binddn, bindpwdfile, remove):
 	click.echo(click.style("$ service apache2 reload", bold=True))
 	click.echo(click.style("$ nscd -i hosts", bold=True))
 	click.echo(click.style("$ service bind9 reload", bold=True))
+
+
+def get_wildcard_certificate(udm):  # type: (UDM) -> None
+	service = 'wildcard-certificate'
+	hostobj = udm.obj_by_dn(ucr()['ldap/hostdn'])
+	if service not in hostobj.props.service:
+		hostobj.props.service.append(service)
+		hostobj.save()
+	subprocess.check_call(['univention-fetch-certificate', '*.' + ucr()['hostname'], ucr()['ldap/master']])
+	print('')
 
 
 def forward_zones(udm):  # type: (UDM) -> List[BaseObject]
@@ -214,9 +229,6 @@ def set_ucr_vars(appid, fqdn, port, aliases=None, path=None):
 			return
 	certificate = "/etc/univention/ssl/*.{}.{}/cert.pem".format(ucr()["hostname"], ucr()["domainname"])
 	private_key = "/etc/univention/ssl/*.{}.{}/private.key".format(ucr()["hostname"], ucr()["domainname"])
-	if not os.path.exists(private_key) or not os.path.exists(certificate):
-		click.echo(click.style("Certificate files {} or {} do not exist. The certificate should have been created on a fully updated DC Master. Please run /usr/sbin/univention-fetch-certificates $(ucr get hostname) $(ucr get ldap/master)".format(private_key, certificate), fg="red"))
-		return
 	ucrvs.extend([
 		"{}/enabled=true".format(ns),
 		"{}/files={}".format(ns, path),
