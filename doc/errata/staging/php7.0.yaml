@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [4, 5]
+scope: ucs_4.3-0-errata4.3-5
+src: php7.0
+fix: 7.0.33-0+deb9u6
+desc: |
+ This update addresses the following issue:
+ * php7.0 (CVE-2019-11043)
+bug: [50431]
+cve:
+- CVE-2019-11043
