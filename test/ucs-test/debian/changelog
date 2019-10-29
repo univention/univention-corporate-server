@@ -1,3 +1,9 @@
+ucs-test (9.0.3-89) unstable; urgency=medium
+
+  * Bug #50202: Add test to check for s4connector loop which increments userexpiry on certain timezones
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 29 Oct 2019 18:25:29 +0100
+
 ucs-test (9.0.3-88) unstable; urgency=medium
 
   * Bug #50426: Wait longer for postrun 45_radius/08_clients_univention_conf
