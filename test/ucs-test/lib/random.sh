@@ -53,5 +53,8 @@ random_share () { # Generates a random string with length $STRINGLENGTH. string_
 random_ipv4 () { # Generate a random IPv4 address
 	echo -n $((RANDOM % 253 + 1)).$((RANDOM % 253 + 1)).$((RANDOM % 253 + 1)).$((RANDOM % 253 + 1))
 }
+random_date () { # Generate a random date Y-m-d between 4000 days before and after today
+	echo -n $(date +%F --date="$((RANDOM %8000 - 4000))day")
+}
 
 # vim:set filetype=sh ts=4:

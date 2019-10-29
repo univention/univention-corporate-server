@@ -1,0 +1,68 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Check if timezone changes create loop in s4connector"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## bugs:
+##  - 50202
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "s4connector.sh" || exit 137
+
+RETVAL=100
+
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+TIMEZONE="$(cat /etc/timezone)"
+UDM_users_user_username="$(random_chars)"
+UDM_users_user_lastname="$(random_chars)"
+UDM_users_user_password="U$(random_chars)123"
+UDM_users_user_firstname="$(random_chars)"
+UDM_users_user_userexpiry="$(random_date)"
+AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
+UCS_DN="uid=$UDM_users_user_username,cn=users,$(ucr get ldap/base)"
+
+function cleanup {
+	timedatectl set-timezone "$TIMEZONE"
+	udm_remove 'users/user'
+	ad_wait_for_synchronization; fail_bool 0 110
+	udm_exists 'users/user'; fail_bool 1 110
+	ad_set_sync_mode "$SYNCMODE"
+	if [ $1 == "fail" ]; then
+		fail_fast 110 "userexpiry changed with s4 sync in timezone $2"
+	else
+		fail_fast 110
+	fi
+}
+
+ad_connector_stop
+udm_create "users/user" || cleanup
+
+for timezone in "Pacific/Fiji" "Asia/Bangkok" "UTC" "America/Mexico_City" "Pacific/Niue"
+do
+	timedatectl set-timezone "$timezone"
+	echo "Setting timezone to $timezone"
+	udm_verify_udm_attribute "userexpiry" "$UDM_users_user_userexpiry" "users/user" || cleanup
+
+	ad_connector_start
+	ad_wait_for_synchronization; fail_bool 0 110
+	udm_verify_udm_attribute "userexpiry" "$UDM_users_user_userexpiry" "users/user" || cleanup "fail" "$timezone"
+	ad_connector_stop
+	UDM_users_user_userexpiry="$(random_date)"
+	echo "Setting userexpiry to $UDM_users_user_userexpiry"
+	udm-test 'users/user' modify \
+		--dn "$UCS_DN" \
+		--set userexpiry="$UDM_users_user_userexpiry" || fail_test 110
+
+done
+
+exit $RETVAL
+
