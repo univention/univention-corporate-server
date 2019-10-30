@@ -30,15 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-# Legacy code with python-support
-# Needs to be done because the source package uses dh_python2, but UMC modules
-# are still installed the old way
-# TODO: Remove once we migrated all UMC modules (namely dh-umc-module-install)
-if which update-python-modules >/dev/null 2>&1; then
-	update-python-modules univention-management-console-module-apps.public
-	update-python-modules --post-install
-fi
-
 #DEBHELPER#
 
 exit 0

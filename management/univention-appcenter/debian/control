@@ -8,7 +8,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  univention-join,
  univention-ucs-translation-template,
  univention-config-dev,
- univention-management-console-dev,
+ univention-management-console-dev (>= 11.0.4-37),
  python-debian,
  python-all,
  ucslint,
@@ -18,13 +18,12 @@ X-Python-Version: 2.7
 
 Package: univention-management-console-module-appcenter
 Architecture: all
-Depends: univention-management-console-server,
+Depends: univention-management-console-server (>= 11.0.4-37),
  python-univention-lib,
  python-univention (>= 12.0.0-5),
  shell-univention-lib (>= 3.0.12-4),
  python-univention-directory-manager (>=9.0.22-13),
  python-univention-appcenter (= ${source:Version}),
- python-support,
  univention-config,
  univention-updater,
  univention-management-console-module-lib,
@@ -127,7 +126,6 @@ Package: univention-management-console-module-apps
 Architecture: all
 Depends: univention-management-console-module-appcenter (= ${source:Version}),
  python-polib,
- python-support,
  ${misc:Depends},
  ${python:Depends},
 Description: UMC module for application overview

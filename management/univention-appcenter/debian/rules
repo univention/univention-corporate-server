@@ -62,9 +62,6 @@ override_dh_auto_install:
 	python setup_umc.py build --force -b build/univention-appcenter-umc install --force --root=debian/univention-management-console-module-appcenter --install-layout=deb
 	dh_auto_install
 
-	install -D python-legacy/univention-management-console-module-appcenter.public debian/univention-management-console-module-appcenter/usr/share/python-support/univention-management-console-module-appcenter.public
-	install -D python-legacy/univention-management-console-module-apps.public debian/univention-management-console-module-apps/usr/share/python-support/univention-management-console-module-apps.public
-
 override_dh_auto_test:
 	ucslint
 	dh_auto_test --buildsystem=pybuild
