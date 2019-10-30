@@ -245,7 +245,7 @@ def unix2s4_time(l):
 
 def s42unix_time(l):
 	d = 116444736000000000  # difference between 1601 and 1970
-	return time.strftime("%Y-%m-%d", time.gmtime((l - d) / 10000000 + 86400)) # shadowExpire treats day of expiry as exclusive
+	return time.strftime("%Y-%m-%d", time.gmtime((l - d) / 10000000 + 86400))  # shadowExpire treats day of expiry as exclusive
 
 
 def samba2s4_time(l):
