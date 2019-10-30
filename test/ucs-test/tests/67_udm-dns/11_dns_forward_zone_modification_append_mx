@@ -16,6 +16,6 @@ if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), nameserver=uts.random_dns_record())
 
-		mx_records = ['40 %s' % uts.random_name(), '50 %s' % uts.random_name()]
+		mx_records = ['40 %s' % uts.random_dns_record(), '50 %s' % uts.random_dns_record()]
 		udm.modify_object('dns/forward_zone', dn=forward_zone, append={'mx': mx_records})
 		utils.verify_ldap_object(forward_zone, {'mXRecord': mx_records})
