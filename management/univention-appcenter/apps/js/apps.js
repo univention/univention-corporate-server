@@ -37,10 +37,9 @@ define([
 	"umc/widgets/Module",
 	"umc/modules/appcenter/AppDetailsPage",
 	"umc/modules/appcenter/AppConfigDialog",
-	"umc/modules/appcenter/AppChooseHostDialog",
 	"umc/modules/appcenter/AppDetailsDialog",
 	"umc/i18n!umc/modules/apps"
-], function(declare, lang, topic, when, all, Module, AppDetailsPage, AppConfigDialog, AppChooseHostDialog, AppDetailsDialog, _) {
+], function(declare, lang, topic, when, all, Module, AppDetailsPage, AppConfigDialog, AppDetailsDialog, _) {
 	return declare("umc.modules.apps", Module, {
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -60,11 +59,6 @@ define([
 				moduleFlavor: this.moduleFlavor,
 				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
-			this._choose = new AppChooseHostDialog({
-				moduleID: this.moduleID,
-				moduleFlavor: this.moduleFlavor,
-				standbyDuring: lang.hitch(this, 'standbyDuring')
-			});
 			this._page = new AppDetailsPage({
 				app: {id: this.moduleFlavor},
 				moduleID: this.moduleID,
@@ -73,7 +67,6 @@ define([
 				getAppCommand: 'apps/get',
 				detailsDialog: this._dialog,
 				configDialog: this._configDialog,
-				hostDialog: this._choose,
 				udmAccessible: udmAccessible,
 				standby: lang.hitch(this, 'standby'),
 				standbyDuring: lang.hitch(this, 'standbyDuring')
@@ -84,7 +77,6 @@ define([
 			this.standbyDuring(this._page.appLoadingDeferred);
 			this.addChild(this._dialog);
 			this.addChild(this._configDialog);
-			this.addChild(this._choose);
 			this.addChild(this._page);
 			this.selectChild(this._page);
 			this._dialog.on('showUp', lang.hitch(this, function() {
@@ -109,12 +101,6 @@ define([
 					this._configDialog.showUp();
 				}));
 				this.standbyDuring(loadPage);
-			}));
-			this._choose.on('showUp', lang.hitch(this, function() {
-				this.selectChild(this._choose);
-			}));
-			this._choose.on('back', lang.hitch(this, function() {
-				this.selectChild(this._page);
 			}));
 			this._dialog.on('back', lang.hitch(this, function() {
 				this.selectChild(this._page);

@@ -276,6 +276,9 @@ define([
 
 		_updateButtons: function(/*String*/ pageName) {
 			var buttons = this._pages[pageName]._footerButtons;
+			if (!buttons) {
+				return;
+			}
 			if (buttons.cancel) {
 				domClass.toggle(buttons.cancel.domNode, 'dijitDisplayNone', !this.canCancel(pageName));
 			}

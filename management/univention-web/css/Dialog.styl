@@ -330,17 +330,12 @@
 
 /* App Center inline dialogs */
 .umc .umcAppCenterDialog
-	margin: 7px 15px
 	&:after
 		content: ''
 		display: block
 		clear: both
 
 	.umcPageMain
-		background-color: #fff
-		material-shadow(1)
-		padding: 24px 24px 8px
-
 		.umcPageHeader h1
 			margin: 0 0 20px
 			line-height: 28px
@@ -355,12 +350,16 @@
 				&:not(:first-child)
 					margin-left: 8px
 
-	.umcPageFooter
-		display: none
-
 	.dijitTextBox,
 	.dijitSelect
 		background-color: #fafafa
 
 	.dijitTextBoxDisabled
 		background: $textbox-disabled-background-color
+
+	&.umcAppCenterDialogTopLevel
+		margin: 7px 15px
+		.umcPageMain
+			background-color: #fff
+			material-shadow(1)
+			padding: 24px 24px 8px

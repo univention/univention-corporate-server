@@ -74,6 +74,7 @@ define([
 
 	return declare("umc.modules.appcenter.AppDetailsPage", [ Page ], {
 		appLoadingDeferred: null,
+		dependenciesLoadingDeferred: null,
 		standbyDuring: null, // parents standby method must be passed. weird IE-Bug (#29587)
 		'class': 'umcAppDetailsPage',
 		standby: null,
@@ -91,6 +92,7 @@ define([
 		backLabel: _('Back to overview'),
 		detailsDialog: null,
 		configDialog: null,
+		installDialog: null,
 
 		// For tracking of interaction with the "Suggestions based on installed apps" category
 		fromSuggestionCategory: false,
@@ -125,6 +127,8 @@ define([
 					return data.result;
 				});
 			}
+
+			this.loadDependencies();
 			when(appLoaded).then(lang.hitch(this, function(loadedApp) {
 				if (loadedApp === null) {
 					this.onBack();
@@ -146,7 +150,6 @@ define([
 		},
 
 		_configureDialogs: function(app) {
-			this.hostDialog.set('app', app);
 			this.detailsDialog.set('app', app);
 			this.configDialog.set('app', app);
 		},
@@ -769,43 +772,57 @@ define([
 			}));
 		},
 
+		getDependencies: function() {
+			if (!this.dependenciesLoadingDeferred) {
+				this.loadDependencies();
+			}
+
+			return this.dependenciesLoadingDeferred;
+		},
+
+		loadDependencies: function() {
+			if (this.dependenciesLoadingDeferred && !this.dependenciesLoadingDeferred.isFulfilled()) {
+				this.dependenciesLoadingDeferred.cancel();
+			}
+
+			var dependencies = ['adtakeover', 'owncloud', 'wekan'];
+			var loads = [];
+			array.forEach(dependencies, lang.hitch(this, function(dep) {
+				var app = tools.umcpCommand(this.getAppCommand, {'application': dep}).then(lang.hitch(this, function(data) {
+					return new App(data.result, this);
+				}));
+				loads.push(app);
+			}));
+			this.dependenciesLoadingDeferred = all(loads);
+
+			// TODO switch with backend call
+			// this.dependenciesLoadingDeferred = tools.umcpCommand('appcenter/get_dependencies', {
+				// for: [{
+					// id: this.app.id,
+					// function: 'install'
+				// }]
+			// });
+		},
 
 		installAppDialog: function() {
-			this.showReadme(this.app.licenseAgreement, _('License agreement'), _('Accept license')).then(lang.hitch(this, function() {
-				this.showReadme(this.app.readmeInstall, _('Install Information'), _('Install')).then(lang.hitch(this, function() {
-					if (this.app.installationData) {
-						var hosts = [];
-						var removedDueToInstalled = [];
-						var removedDueToRole = [];
-						array.forEach(this.app.installationData, function(item) {
-							if (item.canInstall()) {
-								if (item.isLocal()) {
-									hosts.unshift({
-										label: item.displayName,
-										id: item.hostName
-									});
-								} else {
-									hosts.push({
-										label: item.displayName,
-										id: item.hostName
-									});
-								}
-							} else {
-								if (item.isInstalled) {
-									removedDueToInstalled.push(item.displayName);
-								} else if (!item.hasFittingRole()) {
-									removedDueToRole.push(item.displayName);
-								}
-							}
-						});
-						this.hostDialog.reset(hosts, removedDueToInstalled, removedDueToRole);
-						this.hostDialog.showUp().then(lang.hitch(this, function(values) {
-							this.installApp(values.host);
-						}));
-					} else {
-						this.installApp();
-					}
-				}));
+			var dependencies = this.getDependencies();
+			var appcenterDockerSeen = this._appcenterDockerSeen();
+			var _all = all({
+				dependencies: dependencies,
+				appcenterDockerSeen: appcenterDockerSeen
+			});
+			this.standbyDuring(_all);
+			_all.then(lang.hitch(this, function(values) {
+				this.installDialog.showUp(this.app, values.dependencies, values.appcenterDockerSeen, this);
+
+				// TODO on success
+				// put dedicated module of this app into favorites
+				// UMCApplication.addFavoriteModule('apps', this.app.id);
+				// TODO on fail
+				// markupErrors('install')
+				// (also need to set this._progressBar._errors for that somewhere (?))
+				//
+				// see installApp function
 			}));
 		},
 
@@ -882,18 +899,22 @@ define([
 			return this.showReadme(this.app.licenseAgreement, _('License agreement'), _('Close'), null);
 		},
 
-		_showDockerWarning: function() {
+		_appcenterDockerSeen: function() {
 			var prefDeferred = new Deferred();
 			tools.getUserPreferences().then(
 				function(data) {
-					prefDeferred.resolve(data.appcenterDockerSeen);
+					prefDeferred.resolve(tools.isTrue(data.appcenterDockerSeen));
 				},
 				function() {
-					prefDeferred.resolve('true');
+					prefDeferred.resolve(true);
 				}
 			);
-			return when(prefDeferred).always(lang.hitch(this, function(appcenterDockerSeen) {
-				if (tools.isTrue(appcenterDockerSeen)) {
+			return prefDeferred;
+		},
+
+		_showDockerWarning: function() {
+			return when(this._appcenterDockerSeen()).always(lang.hitch(this, function(appcenterDockerSeen) {
+				if (appcenterDockerSeen) {
 					return;
 				} else {
 					return dialog.confirmForm({
@@ -1045,25 +1066,7 @@ define([
 							title = _('Error performing the action');
 							text = _('The requested action cannot be carried out. Please consider the information listed below in order to resolve the problem and try again.');
 						}
-						this.detailsDialog.reset(mayContinue, title, text, actionLabel);
-						if (mayContinue) {
-							this.detailsDialog.showConfiguration(func);
-						}
-						this.detailsDialog.showHardRequirements(result.invokation_forbidden_details, this);
-						this.detailsDialog.showSoftRequirements(result.invokation_warning_details, this);
-						if (result.software_changes_computed) {
-							if (result.unreachable.length) {
-								this.detailsDialog.showUnreachableHint(result.unreachable, result.master_unreachable);
-							}
-							var noHostInfo = tools.isEqual({}, result.hosts_info);
-							if (func == 'update') {
-								this.detailsDialog.showErrataHint();
-							}
-							this.detailsDialog.showPackageChanges(result.install, result.remove, result.broken, false, noHostInfo, host);
-							tools.forIn(result.hosts_info, lang.hitch(this, function(host, host_info) {
-								this.detailsDialog.showPackageChanges(host_info.result.install, host_info.result.remove, host_info.result.broken, !host_info.compatible_version, false, host);
-							}));
-						}
+						this.detailsDialog.reset(func, actionLabel, result, host, this, mayContinue, title, text);
 						nonInteractive.reject();
 						this.detailsDialog.showUp().then(
 							lang.hitch(this, function(values) {

@@ -162,7 +162,7 @@ define([
 				this._serviceForm = null;
 			}
 
-			var form = AppSettings.getForm(this.app, result.values, 'Settings');
+			var form = AppSettings.getForm(this.app, result.values, 'Settings', false);
 			if (form) {
 					this._settingsForm = form;
 					this._container.addChild(this._settingsForm);

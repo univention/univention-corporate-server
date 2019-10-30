@@ -567,6 +567,35 @@ $app-detailspane-background-color = #fff
 			&:hover
 				opacity: 1
 
+.umc .appInstallDialog__readmeTitle
+	font-weight: bold
+
+.umc .appInstallDialog__readme
+	max-height: 350px
+	overflow-y: auto
+	overflow-x: hidden
+	padding: 0
+
+.umc .appInstallDialog__appSettings
+	.umcLayoutContainer
+		margin-right: 0.5em // because of negative margin in inputsizes.styl -> .umc .umcLayoutRow { margin: 0 -0.5em 0 -0.5em }  ; or else the scrollbar would reach into the content (because of negative margin)
+
+.umc .appIconAndNameGridWrapper
+	padding: 0
+
+.umc .appIconAndNameGrid
+	display: grid
+	grid-template-columns: 40px 1fr
+	grid-auto-rows: 40px
+	grid-gap: 8px
+	align-items: center
+
+	.appIconAndNameGrid__icon
+		height: 100%
+		width: 100%
+		background-position: center
+		background-size: contain
+
 .umc .umcModule[id^=umc_modules_appcenter_],
 .umc .umcModule[id^=umc_modules_apps_]
 	overflow: hidden

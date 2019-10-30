@@ -46,13 +46,13 @@ define([
 	"umc/modules/appcenter/AppDetailsPage",
 	"umc/modules/appcenter/AppDetailsDialog",
 	"umc/modules/appcenter/AppConfigDialog",
-	"umc/modules/appcenter/AppChooseHostDialog",
+	"umc/modules/appcenter/AppInstallDialog",
 	"umc/modules/appcenter/PackagesPage",
 	"umc/modules/appcenter/SettingsPage",
 	"umc/modules/appcenter/DetailsPage",
 	"umc/i18n!umc/modules/appcenter", // not needed atm
 	"xstyle/css!umc/modules/appcenter.css"
-], function(declare, lang, array, when, Deferred, topic, all, entities, app, tools, dialog, store, Module, AppCenterPage, AppDetailsPage, AppDetailsDialog, AppConfigDialog, AppChooseHostDialog, PackagesPage, SettingsPage, DetailsPage, _) {
+], function(declare, lang, array, when, Deferred, topic, all, entities, app, tools, dialog, store, Module, AppCenterPage, AppDetailsPage, AppDetailsDialog, AppConfigDialog, AppInstallDialog, PackagesPage, SettingsPage, DetailsPage, _) {
 
 	topic.subscribe('/umc/license/activation', function() {
 		if (!app.getModule('udm', 'navigation'/*FIXME: 'license' Bug #36689*/)) {
@@ -209,19 +209,19 @@ define([
 			});
 			this.addChild(appDetailsDialog);
 
-			var appChooseHostDialog = new AppChooseHostDialog({
-				moduleID: this.moduleID,
-				moduleFlavor: this.moduleFlavor,
-				standbyDuring: lang.hitch(this, 'standbyDuring')
-			});
-			this.addChild(appChooseHostDialog);
-
 			var appConfigDialog = new AppConfigDialog({
 				moduleID: this.moduleID,
 				moduleFlavor: this.moduleFlavor,
 				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
 			this.addChild(appConfigDialog);
+
+			var appInstallDialog = new AppInstallDialog({
+				moduleID: this.moduleID,
+				moduleFlavor: this.moduleFlavor,
+				standbyDuring: lang.hitch(this, 'standbyDuring')
+			});
+			this.addChild(appInstallDialog);
 
 			this._appDetailsPage = new AppDetailsPage({
 				app: app,
@@ -230,16 +230,16 @@ define([
 				updateApplications: lang.hitch(this._appCenterPage, 'updateApplications'),
 				detailsDialog: appDetailsDialog,
 				configDialog: appConfigDialog,
-				hostDialog: appChooseHostDialog,
+				installDialog: appInstallDialog,
 				visibleApps: this._appCenterPage.getVisibleApps(),
 				udmAccessible: this.udmAccessible(),
 				standby: lang.hitch(this, 'standby'),
 				standbyDuring: lang.hitch(this, 'standbyDuring'),
 				fromSuggestionCategory: fromSuggestionCategory
 			});
-			this._appDetailsPage.own(appChooseHostDialog);
 			this._appDetailsPage.own(appDetailsDialog);
 			this._appDetailsPage.own(appConfigDialog);
+			this._appDetailsPage.own(appInstallDialog);
 			this._appDetailsPage.watch('moduleTitle', lang.hitch(this, function(attr, oldVal, newVal){
 				if (newVal) {
 					this.set('title', entities.encode(newVal));
@@ -257,7 +257,6 @@ define([
 					metaObj._centerApps();
 				});
 				this.removeChild(appDetailsDialog);
-				this.removeChild(appChooseHostDialog);
 				this.removeChild(this._appDetailsPage);
 				this._appDetailsPage.destroyRecursive();
 				this._scrollTo(0, this._bottomScrollYBeforeShowApp, this._tabContainerScrollYBeforeShowApp);
@@ -269,17 +268,25 @@ define([
 				this._scrollTo(0, 0, 0);
 			}));
 
-			appChooseHostDialog.on('showUp', lang.hitch(this, function() {
-				this.selectChild(appChooseHostDialog);
-			}));
 			appDetailsDialog.on('showUp', lang.hitch(this, function() {
 				this.selectChild(appDetailsDialog);
 			}));
 			appConfigDialog.on('showUp', lang.hitch(this, function() {
 				this.selectChild(appConfigDialog);
 			}));
-			appChooseHostDialog.on('back', lang.hitch(this, function() {
-				this.selectChild(this._appDetailsPage);
+			appInstallDialog.on('showUp', lang.hitch(this, function() {
+				this.selectChild(appInstallDialog);
+			}));
+			appInstallDialog.on('back', lang.hitch(this, function(continued) {
+				// TODO is this needed?
+				var loadPage = true;
+				if (!continued) {
+					loadPage = this._appDetailsPage.reloadPage();
+					this.standbyDuring(loadPage);
+				}
+				when(loadPage).then(lang.hitch(this, function() {
+					this.selectChild(this._appDetailsPage);
+				}));
 			}));
 			appDetailsDialog.on('back', lang.hitch(this, function(continued) {
 				var loadPage = true;

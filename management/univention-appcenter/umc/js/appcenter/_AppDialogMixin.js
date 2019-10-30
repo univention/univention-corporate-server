@@ -30,11 +30,11 @@
 
 define([
 	"dojo/_base/declare",
-], function(declare) {
+	"dojo/dom-class",
+], function(declare, domClass) {
 	return declare("umc.modules.appcenter._AppDialogMixin", null, {
 		app: null,
 		noFooter: true,
-		'class': 'umcAppCenterDialog',
 		_initialBootstrapClasses: 'col-xs-12 col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2',
 		headerTextAllowHTML: false,
 		helpTextAllowHTML: false,
@@ -51,6 +51,12 @@ define([
 			}
 			this[attr].destroyRecursive();
 			this[attr] = null;
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+			domClass.add(this.domNode, 'umcAppCenterDialog');
+			domClass.add(this.domNode, 'umcAppCenterDialogTopLevel');
 		},
 
 		onUpdate: function() {

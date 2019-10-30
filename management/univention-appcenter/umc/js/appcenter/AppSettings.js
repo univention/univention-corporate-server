@@ -108,10 +108,10 @@ define([
 			return ret;
 		},
 
-		getForm: function(app, values, phase) {
+		getFormConf: function(app, values, phase, smallHeader) {
 			var widgets = this.getWidgets(app, values, phase);
 			if (widgets.length === 0) {
-				return;
+				return null;
 			}
 			var groups = this.getGroups(app, widgets);
 			var layout = [];
@@ -120,18 +120,31 @@ define([
 					return;
 				}
 				var groupName = '_group' + i;
+				var content = '<h2>' + group.label + '</h2>';
+				if (smallHeader) {
+					content = '<h3>' + group.label + '</h3>';
+				}
 				widgets.push({
 					type: Text,
 					name: groupName,
-					content: '<h2>' + group.label + '</h2>'
+					content: content
 				});
 				layout.push(groupName);
 				layout = layout.concat(array.map(group.widgets, function(w) { return w.name; }));
 			});
-			return new Form({
+			return {
 				widgets: widgets,
 				layout: layout
-			});
+			};
+		},
+
+		getForm: function(app, values, phase, smallHeader) {
+			var formConf = this.getFormConf(app, values, phase, smallHeader);
+			if (formConf) {
+				return new Form(formConf);
+			} else {
+				return null;
+			}
 		},
 
 		getGroups: function(app, widgets) {

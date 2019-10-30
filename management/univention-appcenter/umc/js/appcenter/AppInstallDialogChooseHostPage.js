@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2019 Univention GmbH
+ * Copyright 2019 Univention GmbH
  *
  * https://www.univention.de/
  *
@@ -31,68 +31,42 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/_base/array",
 	"dojox/html/entities",
-	"dojo/topic",
-	"dojo/Deferred",
-	"umc/widgets/Form",
-	"umc/widgets/Page",
 	"umc/widgets/Text",
 	"umc/widgets/ComboBox",
-	"./_AppDialogMixin",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, entities, topic, Deferred, Form, Page, Text, ComboBox, _AppDialogMixin, _) {
-	return declare("umc.modules.appcenter.AppChooseHostDialog", [ Page, _AppDialogMixin ], {
-		_form: null,
-		_continueDeferred: null,
-		title: _('App management'),
-		headerTextAllowHTML: false,
-		helpTextAllowHTML: false,
-
-		postMixInProperties: function() {
-			this.inherited(arguments);
-			this.headerButtons = [{
-				name: 'close',
-				label: _('Cancel installation'),
-				align: 'left',
-				callback: lang.hitch(this, 'onBack')
-			}];
-		},
-
-		reset: function(hosts, removedDueToInstalled, removedDueToRole) {
-			this._clearWidget('_form', true);
-
-			this.set('headerText', _('Installation of %s', this.app.name));
-			this.set('helpText', _('In order to proceed with the installation of %s, please select the host on which the application is going to be installed.', this.app.name));
-
-			if (this._continueDeferred) {
-				this._continueDeferred.reject();
-			}
-			this._continueDeferred = new Deferred();
-
-			if (hosts.length === 1 && !removedDueToRole.length && !removedDueToInstalled.length) {
-				// safely resolve the deferred object of the dialog if there is
-				// only a single choice to be made
-				this._continueDeferred.resolve(hosts[0].id);
+], function(declare, lang, array, entities, Text, ComboBox, _) {
+	return {
+		getPageConf: function(app) {
+			if (!app.installationData) {
+				return null;
 			}
 
-			var buttons = [{
-				name: 'cancel',
-				'default': true,
-				label: _('Cancel'),
-				callback: lang.hitch(this, function() {
-					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, 'user-cancel');
-					this._continueDeferred.reject();
-				})
-			}, {
-				name: 'submit',
-				label: _('Next'),
-				callback: lang.hitch(this, function() {
-					if (this._form.isValid()) {
-						var values = this._form.get('value');
-						this._continueDeferred.resolve(values);
+			var hosts = [];
+			var removedDueToInstalled = [];
+			var removedDueToRole = [];
+			array.forEach(app.installationData, function(item) {
+				if (item.canInstall()) {
+					if (item.isLocal()) {
+						hosts.unshift({
+							label: item.displayName,
+							id: item.hostName
+						});
+					} else {
+						hosts.push({
+							label: item.displayName,
+							id: item.hostName
+						});
 					}
-				})
-			}];
+				} else {
+					if (item.isInstalled) {
+						removedDueToInstalled.push(item.displayName);
+					} else if (!item.hasFittingRole()) {
+						removedDueToRole.push(item.displayName);
+					}
+				}
+			});
 			var removeExplanation = '';
 			if (removedDueToInstalled.length === 1) {
 				removeExplanation += '<p>' + _('%s was removed from the list because the application is installed on this host.', entities.encode(removedDueToInstalled[0])) + '</p>';
@@ -107,28 +81,28 @@ define([
 			if (removeExplanation) {
 				removeExplanation = '<strong>' + _('Not all hosts are listed above') + '</strong>' + removeExplanation;
 			}
-			this._form = new Form({
+
+			if (hosts.length === 1 && !removedDueToRole.length && !removedDueToInstalled.length) {
+				return null;
+			}
+			return {
+				name: 'chooseHost',
+				headerText: _('Installation of %s', app.name),
+				helpText: _('In order to proceed with the installation of %s, please select the host on which the application is going to be installed.', app.name),
 				widgets: [{
 					type: ComboBox,
 					label: _('Host for installation of application'),
-					name: 'host',
+					name: 'chooseHost_host',
 					required: true,
 					size: 'Two',
 					staticValues: hosts
 				}, {
 					type: Text,
-					name: 'remove_explanation',
+					name: 'chooseHost_removeExplanation',
 					content: removeExplanation
-				}],
-				buttons: buttons
-			});
-			this.addChild(this._form);
-		},
-
-		showUp: function() {
-			this.onShowUp();
-			this._continueDeferred.then(lang.hitch(this, 'onBack'), lang.hitch(this, 'onBack'));
-			return this._continueDeferred;
+				}]
+			};
 		}
-	});
+	};
 });
+
