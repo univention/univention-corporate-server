@@ -12,3 +12,5 @@ desc: |
  * Add missing UCR header to `run` script.
  * Remove unused file `memcached_univention-directory-listener.conf`.
 bug: [47587, 49146, 50407, 50110, 48139]
+erratum: 327
+announced: 2019-10-30
