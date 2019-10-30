@@ -36,7 +36,7 @@ def main():
 			userdn, username = udm.create_user(userexpiry=expiry_time.strftime("%Y-%m-%d"), check_for_drs_replication=False, wait_for=False)
 			if locked_status == '1':
 				locktime = time.strftime("%Y%m%d%H%M%SZ", time.gmtime())
-				subprocess.call(['python', '-m', 'univention.lib.account', 'lock', '--dn', userdn, '--lock-time', locktime])
+				subprocess.check_call(['python', '-m', 'univention.lib.account', 'lock', '--dn', userdn, '--lock-time', locktime])
 			return username
 
 		userdata = {}
