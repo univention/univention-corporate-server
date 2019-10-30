@@ -238,12 +238,12 @@ def encode_s4_resultlist(s4_resultlist):
 	return s4_resultlist
 
 
-def unix2s4_time(iso_date):
+def userexpiry2accountExpires(iso_date):
 	since_epoch = calendar.timegm(time.strptime(iso_date, '%Y-%m-%d'))
 	return samba2s4_time(since_epoch)
 
 
-def s42unix_time(s4_ts):
+def accountExpires2userexpiry(s4_ts):
 	since_epoch = s42samba_time(s4_ts)
 	return time.strftime('%Y-%m-%d', time.gmtime(since_epoch))
 
@@ -2019,9 +2019,10 @@ class s4(univention.s4connector.ucs):
 				modlist.append((ldap.MOD_REPLACE, 'accountExpires', ['9223372036854775807']))
 		else:
 			# ucs account expired
-			if 'accountExpires' in ldap_object_s4 and ldap_object_s4['accountExpires'][0] != unix2s4_time(ucs_admin_object['userexpiry']):
+			accountExpires_ucs = userexpiry2accountExpires(ucs_admin_object['userexpiry'])
+			if 'accountExpires' in ldap_object_s4 and ldap_object_s4['accountExpires'][0] != accountExpires_ucs:
 				# s4 account not expired -> change
-				modlist.append((ldap.MOD_REPLACE, 'accountExpires', [str(unix2s4_time(ucs_admin_object['userexpiry']))]))
+				modlist.append((ldap.MOD_REPLACE, 'accountExpires', [str(accountExpires_ucs)]))
 
 		if modlist:
 			ud.debug(ud.LDAP, ud.ALL, "disable_user_from_ucs: modlist: %s" % modlist)
@@ -2062,9 +2063,10 @@ class s4(univention.s4connector.ucs):
 			# s4 account expired
 			ud.debug(ud.LDAP, ud.INFO, "sync account_expire:      s4time: %s    unixtime: %s" % (account_expires, ucs_admin_object['userexpiry']))
 
-			if s42unix_time(account_expires) != ucs_admin_object['userexpiry']:
+			userexpiry_s4 = accountExpires2userexpiry(account_expires)
+			if userexpiry_s4 != ucs_admin_object['userexpiry']:
 				# ucs account not expired -> change
-				ucs_admin_object['userexpiry'] = s42unix_time(account_expires)
+				ucs_admin_object['userexpiry'] = userexpiry_s4
 				modified = 1
 
 		if modified:
