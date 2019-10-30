@@ -9,3 +9,5 @@ desc: |
  * Update to version from Debian 10 (Buster), which fixes several internal
    cursor handling problems.
 bug: [47587]
+erratum: 328
+announced: 2019-10-30
