@@ -15,7 +15,8 @@ desc: |
  * The UDM modules container/msgpo, settings/msprintconnectionpolicy and
    settings/mswmifilter have been modernized.
  * DNS host records without IP addresses are now syncronized to Samba/AD.
- * Old DNS host record objects are now removed if the object is renamed.
+ * The renamed DNS records are now correctly removed from Samba/AD when the
+   object in UCS was renamed.
  * The time conversion of the attribute accountExpires/userexpiry in the connector
    has been fixed to prevent a loop in the s4connector
    which incremented userexpiry on certain timezones.
