@@ -14,6 +14,7 @@ Depends: ${misc:Depends},
  univention-config (>= 8.0.2),
  libapache2-mod-authnz-pam,
  python2.7
+Recommends: univention-apache-vhost
 Conflicts: apache
 Description: UCS - Apache2 configuration
  This packages provides the basic configuration for the

@@ -1,3 +1,9 @@
+univention-apache (11.0.1-7) unstable; urgency=medium
+
+  * Bug #45115: Make univention-apache-vhost installed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 31 Oct 2019 12:17:02 +0100
+
 univention-apache (11.0.1-6) unstable; urgency=medium
 
   * Bug #45115: Fix template; new options in add-vhost
