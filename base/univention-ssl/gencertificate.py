@@ -65,7 +65,7 @@ def domain(info):
 
 def wildcard_certificate(info):
 	if 'univentionService' in info:
-		if 'wildcard-certificate' in info['univentionService']:
+		if 'Wildcard Certificate' in info['univentionService']:
 			return True
 	return False
 

@@ -1,3 +1,9 @@
+univention-ssl (13.0.0-5) unstable; urgency=medium
+
+  * Bug #45115: move fetch-certificates to univention-ssl
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 31 Oct 2019 11:54:27 +0100
+
 univention-ssl (13.0.0-4) unstable; urgency=medium
 
   * Bug #45115: based on dwiesent/bug45115, add support for

@@ -1,3 +1,9 @@
+univention-join (11.0.1-26) unstable; urgency=medium
+
+  * Bug #45115: move univention-fetch-certificate to univention-ssl
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 31 Oct 2019 11:53:47 +0100
+
 univention-join (11.0.1-25) unstable; urgency=medium
 
   * Bug #45115: use univention-fetch-certificate in univention-join
