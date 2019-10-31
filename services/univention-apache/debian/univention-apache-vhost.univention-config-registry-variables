@@ -1,0 +1,38 @@
+[apache2/vhosts/.*/enabled]
+Type=bool
+Description[de]=Basis-Variable, die steuert, ob ein VHost für Apache angelegt wird. Der Name der Variablen steuert gleichzeitig auch einen Teil des Eintrags: apache2/vhosts/myvhost.mydomain.intranet/443/enabled legt einen VHost mit ServerName myvhost.mydomain.intranet und Port 443 an. Zusammen bilden den Schlüssel, über den der Eintrag weiter angepasst werden kann.
+Description[en]=Base variable to decide whether the VHost will be added to Apache. The name of the variable also controls a part of the entry: apache2/vhosts/myvhost.mydomain.intranet/443/enabled will add a VHost with ServerName myvhost.mydomain.intranet and port 443. Together, they form the key to further customize the entry.
+
+[apache2/vhosts/.*/files]
+Type=str
+Description[de]=Kommaseparierte Liste von Dateinamen, die im VHost eingebunden werden (falls sie existieren).
+Description[en]=Comma-seperated list of file names with apache configs that are included in this vhost (if present).
+
+[apache2/vhosts/.*/aliases]
+Type=str
+Description[de]=Kommaseparierte Liste von Servernamen, die als Aliase zum eigenlichen Servernamen dienen.
+Description[en]=Comma-seperated list of server names that act as aliases to the actual server name.
+
+[apache2/vhosts/.*/ssl/certificate]
+Description[de]=Der absolute Pfad zur SSL-Zertifikatsdatei für mod_ssl. Das Zertifikat muss PEM-codiert sein. Ist die Variable nicht gesetzt, wird das Zertifikat aus der UCS-CA verwendet (/etc/univention/ssl/FQDN/cert.pem).
+Description[en]=The absolute path to the SSL certificate file for mod_ssl. The certificate needs to be PEM-encoded. If the variable is unset, the certificate from the UCS CA is used (/etc/univention/ssl/FQDN/cert.pem).
+Type=str
+Categories=service-apache
+
+[apache2/vhosts/.*/ssl/key]
+Description[de]=Der absolute Pfad zum privaten RSA/DSA-Schlüssel der SSL-Zertifikatsdatei für mod_ssl. Der Schlüssel muss PEM-codiert sein. Ist die Variable nicht gesetzt, wird das Zertifikat aus der UCS-CA verwendet (/etc/univention/ssl/FQDN/private.key).
+Description[en]=The absolute path to the private RSA/DSA key of the SSL certificate file for mod_ssl. The key needs to be PEM-encoded. If the variable is unset, the certificate from the UCS CA is used (/etc/univention/ssl/FQDN/private.key).
+Type=str
+Categories=service-apache
+
+[apache2/vhosts/.*/ssl/ca]
+Description[de]=Der absolute Pfad zum Zertifikat der Zertifizierungsstelle (CA) für mod_ssl. Das Zertifikat muss PEM-codiert sein. Ist die Variable nicht gesetzt, wird das Zertifikat aus der UCS-CA verwendet (/etc/univention/ssl/ucsCA/CAcert.pem).
+Description[en]=The absolute path to the certificate of the certificate authority (CA) for mod_ssl. The certificate needs to be PEM-encoded. If the variable is unset, the certificate from the UCS CA is used (/etc/univention/ssl/ucsCA/CAcert.pem).
+Type=str
+Categories=service-apache
+
+[apache2/vhosts/.*/ssl/certificatechain]
+Description[de]=Der Pfad zu einer Datei mit den CA-Zerifikaten. Diese werden dem Clientbrowser eines Benutzers übermittelt, damit ein Zertifikat für die Authentifizierung des Benutzers ausgewählt werden kann, das von einer dieser CAs ausgestellt wurde.
+Description[en]=The path to a file containing CA certificates. They are sent to the client browser of a user, so that a certificate for authentication the user can be selected, which is issued by one of the CAs.
+Type=str
+Categories=service-apache
