@@ -50,8 +50,7 @@ Description: transitional dummy package
 Package: univention-appcenter
 Depends: python-univention-appcenter (= ${source:Version}),
  ${misc:Depends},
- ${python:Depends},
- python-click,
+ ${python:Depends}
 Recommends: univention-appcenter-docker
 Replaces: python-univention-appcenter (<= 8.0.11-13)
 Breaks: univention-ldap-server (<< 12.1.6-8),
