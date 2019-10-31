@@ -3,8 +3,8 @@ release: "4.4"
 version: [2]
 scope: ucs_4.4-0-errata4.4-2
 src: univention-join
-fix: 11.0.1-25A~4.4.0.201910291530
+fix: 11.0.1-26A~4.4.0.201910311226
 desc: |
  This update addresses the following issue(s):
- * The tool univention-fetch-certificate has been added.
+ * The new tool univention-fetch-certificate is used during join.
 bug: [45115]
