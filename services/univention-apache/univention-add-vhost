@@ -29,10 +29,6 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-"""
-Univention App Center - manage DNS aliases and UCRVs for apps
-"""
-
 import os
 import sys
 import subprocess
@@ -40,15 +36,15 @@ try:
 	from typing import TextIO, List, Optional, Text
 except ImportError:
 	pass
+
 import click
+
 from ldap.dn import escape_dn_chars
 from ldap.filter import filter_format
 from univention.config_registry import ConfigRegistry, handler_set, handler_unset
 from univention.udm import NoObject, UDM
 from univention.udm.base import BaseModule, BaseObject
 
-
-APPCENTER_APACHE_CONF = "/var/lib/univention-appcenter/apps/{appid}/conf/apache.conf"
 _forward_zones = None
 _ucr = None
 
@@ -62,20 +58,22 @@ def ucr():
 
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
-@click.argument("app")
 @click.argument("fqdn")
 @click.argument("port")
-@click.option("--aliases", multiple=True, help="Additional FQDNs (comma separated) for this vhost entry.")
+@click.option("--aliases", multiple=True, help="Additional FQDNs for this vhost entry.")
+@click.option("--conffile", multiple=True, help="Path to a file with additional configuration of vhost entry.")
 @click.option('--binddn', help="DN of account to use to write to LDAP (e.g. uid=Administrator,cn=users,..).")
 @click.option('--bindpwdfile', help="File containing password of user provided by --binddn.")
+@click.option('--ssl', is_flag=True, help="Whether this vhost should have SSL enabled (cert, private-key, ca will have default values; 443 is ssl by default).")
+@click.option('--cert', help="Path to SSL certificate.")
+@click.option('--private-key', help="Path to SSL private key.")
+@click.option('--ca', help="Path to SSL CA.")
 @click.option("--remove", is_flag=True, help="Remove previously created aliases and UCR variables.")
-def main(app, fqdn, port, aliases, binddn, bindpwdfile, remove):
-	# type: (str, str, int, List[str], str, str, bool) -> None
+def main(fqdn, port, aliases, conffile, binddn, bindpwdfile, ssl, cert, private_key, ca, remove):
+	# type: (str, int, List[str], List[str], str, str, bool, str, str, str, bool) -> None
 	"""
-	Create an Apache vhost entry (and DNS alias) for the app APP with hostname
+	Create an Apache vhost entry (and DNS alias) with hostname
 	FQDN on port PORT.
-
-	APP: 'appid' of the app for which to create a vhost entry.
 
 	FQDN: Fully qualified domain name the vhost should be created for.
 
@@ -112,19 +110,20 @@ def main(app, fqdn, port, aliases, binddn, bindpwdfile, remove):
 		server_port = ucr()["ldap/master/port"]
 		udm = UDM.credentials(binddn, password, server=server, port=server_port).version(1)
 
-	# do not remove wildcard certificate
-	if not remove:
-		get_wildcard_certificate(udm)
-
+	if port == "443":
+		ssl = True
+	if remove:
+		unset_ucr_vars(fqdn, port)
+	else:
+		set_ucr_vars(udm, fqdn, port, ssl, aliases, conffile, cert, private_key, ca)
+	ucr().load()
 	for host in [fqdn] + list(aliases):
 		if remove:
-			remove_dns_entry(udm, host)
+			ns = "apache2/vhosts/{}".format(fqdn)
+			if not any(key.startswith(ns) for key in ucr().keys()):
+				remove_dns_entry(udm, host)
 		else:
 			create_dns_entry(udm, host)
-	if remove:
-		unset_ucr_vars(app, fqdn, port)
-	else:
-		set_ucr_vars(app, fqdn, port, aliases)
 
 	click.echo(click.style("Please now reload the DNS and the web servers:", bold=True))
 	click.echo(click.style("$ service apache2 reload", bold=True))
@@ -133,7 +132,7 @@ def main(app, fqdn, port, aliases, binddn, bindpwdfile, remove):
 
 
 def get_wildcard_certificate(udm):  # type: (UDM) -> None
-	service = 'wildcard-certificate'
+	service = 'Wildcard Certificate'
 	hostobj = udm.obj_by_dn(ucr()['ldap/hostdn'])
 	if service not in hostobj.props.service:
 		hostobj.props.service.append(service)
@@ -171,6 +170,10 @@ def host_obj(udm, hostname, superordinate):  # type: (UDM, str, BaseObject) -> O
 
 
 def create_dns_entry(udm, fqdn, alias_target=None):  # type: (UDM, str, Optional[str]) -> Optional[BaseObject]
+	if not alias_target:
+		alias_target = "{hostname}.{domainname}".format(**ucr())
+	if fqdn == alias_target:
+		return
 	click.echo("Creating DNS alias for '{}'...".format(fqdn))
 	dns_alias_mod = udm.get("dns/alias")  # type: BaseModule
 	superordinate = superordinate_of_fqdn(udm, fqdn)
@@ -184,8 +187,6 @@ def create_dns_entry(udm, fqdn, alias_target=None):  # type: (UDM, str, Optional
 	if host_obj(udm, alias_name, superordinate):
 		click.echo(click.style("Alias/Host '{}' exists.".format(fqdn), fg="green"))
 		return
-	if not alias_target:
-		alias_target = "{hostname}.{domainname}".format(**ucr())
 	alias_obj = dns_alias_mod.new(superordinate=superordinate)  # type: BaseObject
 	alias_obj.props.name = alias_name
 	alias_obj.props.cname = "{}.".format(alias_target.rstrip("."))
@@ -195,6 +196,9 @@ def create_dns_entry(udm, fqdn, alias_target=None):  # type: (UDM, str, Optional
 
 
 def remove_dns_entry(udm, fqdn):  # type: (UDM, str) -> None
+	alias_target = "{hostname}.{domainname}".format(**ucr())
+	if fqdn == alias_target:
+		return
 	click.echo("Deleting DNS alias for '{}'...".format(fqdn))
 	superordinate = superordinate_of_fqdn(udm, fqdn)
 	if not superordinate:
@@ -216,34 +220,52 @@ def remove_dns_entry(udm, fqdn):  # type: (UDM, str) -> None
 		)
 
 
-def set_ucr_vars(appid, fqdn, port, aliases=None, path=None):
-	# type: (str, str, int, Optional[List[str]], Optional[str]) -> None
+def set_ucr_vars(udm, fqdn, port, ssl, aliases=None, path=None, cert=None, private_key=None, ca=None):
+	# type: (str, str, int, Optional[List[str]], Optional[str], Optional[str], Optional[str], Optional[str]) -> None
 	click.echo("Setting UCR variables for Apache vhost configuration...")
-	if not path:
-		path = APPCENTER_APACHE_CONF.format(appid=appid)
 	ucrvs = []
-	ns = "apache2/vhosts/{}/{}/{}".format(appid, fqdn, port)
+	ns = "apache2/vhosts/{}/{}".format(fqdn, port)
 	for key in ucr().keys():
 		if key.startswith(ns):
 			click.echo(click.style("UCR values for '{}' exist. Not setting UCR values.".format(ns), fg="yellow"))
 			return
-	certificate = "/etc/univention/ssl/*.{}.{}/cert.pem".format(ucr()["hostname"], ucr()["domainname"])
-	private_key = "/etc/univention/ssl/*.{}.{}/private.key".format(ucr()["hostname"], ucr()["domainname"])
 	ucrvs.extend([
 		"{}/enabled=true".format(ns),
-		"{}/files={}".format(ns, path),
 		"{}/aliases={}".format(ns, ",".join(aliases or [])),
-		"{}/ssl/certificate={}".format(ns, certificate),
-		"{}/ssl/key={}".format(ns, private_key),
-		"{}/ssl/ca=/etc/univention/ssl/ucsCA/CAcert.pem".format(ns),
 	])
+	if ssl:
+		alias_target = "{hostname}.{domainname}".format(**ucr())
+		if fqdn == alias_target:
+			if cert is None:
+				cert = ucr().get("apache2/ssl/certificate", "/etc/univention/ssl/{}.{}/cert.pem".format(ucr()["hostname"], ucr()["domainname"]))
+			if private_key is None:
+				private_key = ucr().get("apache2/ssl/key", "/etc/univention/ssl/{}.{}/private.key".format(ucr()["hostname"], ucr()["domainname"]))
+			if ca is None:
+				ca = ucr().get("apache2/ssl/ca", "/etc/univention/ssl/ucsCA/CAcert.pem")
+		elif fqdn.endswith(alias_target):
+			if not os.path.exists("/etc/univention/ssl/*.{}.{}/cert.pem".format(ucr()["hostname"], ucr()["domainname"])):
+				get_wildcard_certificate(udm)
+			if cert is None:
+				cert = "/etc/univention/ssl/*.{}.{}/cert.pem".format(ucr()["hostname"], ucr()["domainname"])
+			if private_key is None:
+				private_key = "/etc/univention/ssl/*.{}.{}/private.key".format(ucr()["hostname"], ucr()["domainname"])
+			if ca is None:
+				ca = ucr().get("apache2/ssl/ca", "/etc/univention/ssl/ucsCA/CAcert.pem")
+	if cert and private_key and ca:
+		ucrvs.extend([
+			"{}/ssl/certificate={}".format(ns, cert),
+			"{}/ssl/key={}".format(ns, private_key),
+			"{}/ssl/ca={}".format(ns, ca),
+		])
+	if path:
+		ucrvs.append("{}/files={}".format(ns, ','.join(path)))
 	handler_set(ucrvs)
 	click.echo(click.style("Done setting UCR variables.", fg="green"))
 
 
-def unset_ucr_vars(appid, fqdn, port):
+def unset_ucr_vars(fqdn, port):
 	click.echo("Unsetting UCR variables...")
-	ns = "apache2/vhosts/{}/{}/{}".format(appid, fqdn, port)
+	ns = "apache2/vhosts/{}/{}".format(fqdn, port)
 	ucrvs = [key for key in ucr().keys() if key.startswith(ns)]
 	handler_unset(ucrvs)
 	click.echo(click.style("Done unsetting UCR variables.", fg="green"))

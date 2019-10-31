@@ -1,3 +1,9 @@
+univention-apache (11.0.1-6) unstable; urgency=medium
+
+  * Bug #45115: Fix template; new options in add-vhost
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 31 Oct 2019 11:51:55 +0100
+
 univention-apache (11.0.1-5) unstable; urgency=medium
 
   * Bug #45115: fixed template
