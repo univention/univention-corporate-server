@@ -509,7 +509,6 @@ def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image
 	OVF = '{%s}' % (OVF_NAMESPACE, )
 	VBOX = '{%s}' % (VBOX_NAMESPACE, )
 	XML = '{%s}' % (XML_NAMESPACE, )
-	#Eovf = lxml.builder.ElementMaker(namespace=OVF_NAMESPACE)
 	Erasd = lxml.builder.ElementMaker(namespace=RASD_NAMESPACE)
 	Evbox = lxml.builder.ElementMaker(namespace=VBOX_NAMESPACE)
 	Evssd = lxml.builder.ElementMaker(namespace=VSSD_NAMESPACE)
