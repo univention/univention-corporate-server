@@ -1193,7 +1193,7 @@ class EC2(Target):
 		task = ec2.import_volume(
 			volume_size,
 			zone,
-			description=image_name,
+			description=machine_name,
 			image_size=vmdk.size(),
 			manifest_url=manifest_url
 		)
@@ -1220,7 +1220,7 @@ class EC2(Target):
 		if task.state != 'completed':
 			return  # abort
 		log('Generating snapshot ', False)
-		snapshot = ec2.create_snapshot(task.volume_id, description=image_name)
+		snapshot = ec2.create_snapshot(task.volume_id, description=machine_name)
 		# wait for snapshot
 		while True:
 			snapshot.update()
