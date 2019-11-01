@@ -439,9 +439,6 @@ class VMware(Target):
 		log('Generated "%s" appliance as\n  %s' % (self, archive_name, ))
 
 
-VMware = VMware()
-
-
 LICENSE = '''The complete source code of Univention Corporate Server is provided
 under GNU Affero General Public License (AGPL). This image contains a license key
 of the UCS Core Edition. More details can be found here:
@@ -690,9 +687,6 @@ ddb.comment=""
 		ova = Tar(files)
 		shutil.copyfile(ova.path(), archive_name)
 		log('Generated "%s" appliance as\n  %s' % (self, archive_name, ))
-
-
-Virtualbox = Virtualbox()
 
 
 def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_used_size, options):
@@ -1069,9 +1063,6 @@ ddb.virtualHWVersion = "7"
 		log('Generated "%s" appliance as\n  %s' % (self, archive_name, ))
 
 
-ESXi = ESXi()
-
-
 def create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_size, part_size, url_lifetime):
 	# <http://docs.aws.amazon.com/AWSEC2/latest/APIReference/manifest.html>
 	E = lxml.builder.ElementMaker()
@@ -1265,9 +1256,6 @@ class EC2(Target):
 				log('Could not generate image (%r, %r)' % (self, ami.id, ami.state, ))
 
 
-EC2 = EC2()
-
-
 class Docker(Target):
 
 	def __str__(self):
@@ -1303,10 +1291,7 @@ class Docker(Target):
 		log('Generated "%s" appliance as\n  %s' % (self, archive_name, ))
 
 
-Docker = Docker()
-
-
-TARGETS = (VMware, Virtualbox, ESXi, Docker, EC2)
+TARGETS = (VMware(), Virtualbox(), ESXi(), Docker(), EC2())
 assert len(frozenset(map(repr, TARGETS))) == len(TARGETS), 'target names not unique'
 
 
