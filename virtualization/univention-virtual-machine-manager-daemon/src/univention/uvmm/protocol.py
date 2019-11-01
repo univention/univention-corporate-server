@@ -809,11 +809,14 @@ class Disk(object):
 	DEVICE_FLOPPY = 'floppy'
 	DEVICE_LUN = 'lun'
 
+	# libvirt/docs/schemas/domaincommon.rng # diskSource
 	TYPE_FILE = 'file'
 	TYPE_BLOCK = 'block'
 	TYPE_DIR = 'dir'
 	TYPE_NETWORK = 'network'
+	TYPE_VOLUME = 'volume'
 
+	# libvirt/docs/schemas/domaincommon.rng # driverCache
 	CACHE_DEFAULT = 'default'
 	CACHE_NONE = 'none'  # off
 	CACHE_WT = 'writethrough'
@@ -827,7 +830,7 @@ class Disk(object):
 		self.driver = None  # disk/driver/@name
 		self.driver_type = None  # disk/driver/@type
 		self.driver_cache = Disk.CACHE_DEFAULT  # disk/driver/@cache
-		self.source = ''  # disk/source/@file | disk/source/@dev | disk/source/@dir | disk/source/@protocol
+		self.source = ''  # disk/source/@file | disk/source/@dev | disk/source/@dir | disk/source/@protocol | disk/source/@pool,@volume
 		self.readonly = False  # disk/readonly
 		self.target_dev = ''  # disk/target/@dev
 		self.target_bus = None  # disk/target/@bus

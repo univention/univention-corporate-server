@@ -471,18 +471,27 @@ class Domain(PersistentCached):
 
 	def update_volumes(self, domain):
 		# type: (libvirt.virDomain) -> None
-		"""Determine size and pool."""
+		"""
+		Determine size and pool of VM volumes.
+
+		:param domain: libvirt domain reference.
+		"""
 		for dev in self.pd.disks:
 			if not dev.source:
 				continue
 			try:
 				conn = domain.connect()
-				vol = conn.storageVolLookupByPath(dev.source)
+				if dev.pool:
+					pool = conn.storagePoolLookupByName(dev.pool)
+					vol = pool.storageVolLookupByName(dev.source)
+				else:
+					vol = conn.storageVolLookupByPath(dev.source)
+					pool = vol.storagePoolLookupByVolume()
+					dev.pool = pool.name()
+
 				dev.size = vol.info()[1]  # (type, capacity, allocation)
-				pool = vol.storagePoolLookupByVolume()
-				dev.pool = pool.name()
 			except libvirt.libvirtError as ex:
-				if ex.get_error_code() != libvirt.VIR_ERR_NO_STORAGE_VOL:
+				if ex.get_error_code() not in (libvirt.VIR_ERR_NO_STORAGE_VOL, libvirt.VIR_ERR_NO_STORAGE_POOL):
 					logger.warning('Failed to query disk %s#%s: %s', self.pd.uuid, dev.source, format_error(ex))
 
 	def update_snapshots(self, domain):
@@ -623,8 +632,12 @@ class Domain(PersistentCached):
 					dev.source = source.attrib['dir']
 				elif dev.type == Disk.TYPE_NETWORK:
 					dev.source = source.attrib['protocol']
+				elif dev.type == Disk.TYPE_VOLUME:
+					dev.pool = source.attrib['pool']
+					dev.source = source.attrib['volume']
 				else:
-					raise NodeError(_('Unknown disk type: %(type)d'), type=dev.type)
+					raise NodeError(_('Unknown disk type: %(type)s'), type=dev.type)
+
 			target = disk.find('target', namespaces=XMLNS)
 			if target is not None:
 				dev.target_dev = target.attrib['dev']

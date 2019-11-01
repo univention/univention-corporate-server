@@ -52,15 +52,20 @@ except ImportError:
 	pass
 
 POOLS_RW = set(('dir', 'disk', 'fs', 'netfs', 'logical'))
+# /libvirt/docs/schemas/storagepool.rng # pool
 POOLS_TYPE = {
 	'dir': Disk.TYPE_FILE,
-	'disk': Disk.TYPE_BLOCK,
 	'fs': Disk.TYPE_FILE,
-	'iscsi': Disk.TYPE_BLOCK,
-	'logical': Disk.TYPE_BLOCK,
-	'mpath': Disk.TYPE_BLOCK,
 	'netfs': Disk.TYPE_FILE,
+	'logical': Disk.TYPE_BLOCK,
+	'disk': Disk.TYPE_BLOCK,
+	'iscsi': Disk.TYPE_BLOCK,
 	'scsi': Disk.TYPE_BLOCK,
+	'mpath': Disk.TYPE_BLOCK,
+	'rbd': Disk.TYPE_NETWORK,
+	'sheepdog': Disk.TYPE_NETWORK,
+	'gluster': Disk.TYPE_NETWORK,
+	'zfs': Disk.TYPE_BLOCK,
 }
 RE_DISK = re.compile(r'^(?:ioemu:)?(fd|hd|sd|vd|xvd|ubd)([a-zA-Z0-9_]+)$')
 DISK_PREFIXES = {
