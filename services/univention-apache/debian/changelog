@@ -1,3 +1,9 @@
+univention-apache (11.0.1-8) unstable; urgency=medium
+
+  * Bug #45115: Rename UCR template
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 01 Nov 2019 14:07:59 +0100
+
 univention-apache (11.0.1-7) unstable; urgency=medium
 
   * Bug #45115: Make univention-apache-vhost installed

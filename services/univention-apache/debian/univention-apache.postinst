@@ -107,10 +107,8 @@ fi
 if [ $ENABLE_SSL = yes ]; then
 	a2enmod ssl
 	a2ensite default-ssl.conf || true
-	a2ensite include-vhosts.conf || true
 else
 	a2dismod ssl
-	a2dissite include-vhosts.conf || true
 	a2dissite default-ssl.conf|| true
 fi
 

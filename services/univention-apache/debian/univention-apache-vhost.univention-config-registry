@@ -1,5 +1,5 @@
 Type: file
-File: etc/apache2/sites-available/include-vhosts.conf
+File: etc/apache2/sites-available/univention-vhosts.conf
 Variables: apache2/vhosts/.*/enabled
 Variables: apache2/vhosts/.*/files
 Variables: apache2/vhosts/.*/aliases
