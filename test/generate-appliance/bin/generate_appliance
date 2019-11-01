@@ -61,8 +61,9 @@ WORKDIR = TEMPDIR = STOREDIR = None
 
 
 class File(object):
-
-	'''base class for delayed file/image actions'''
+	"""
+	base class for delayed file/image actions
+	"""
 
 	def __init__(self):
 		self._available = False
@@ -74,6 +75,7 @@ class File(object):
 				self._create()
 				self._available = True
 			return fun(self, *args, **kwargs)
+
 		return newfun
 
 	@staticmethod
@@ -81,6 +83,7 @@ class File(object):
 		def newfun(self, *args, **kwargs):
 			ret = fun(self, *args, **kwargs)
 			return hashlib.sha256(repr(ret)).hexdigest()
+
 		return newfun
 
 	@property
@@ -92,8 +95,9 @@ class File(object):
 
 
 class Raw(File):
-
-	'''represents a "RAW" disk image'''
+	"""
+	represents a "RAW" disk image
+	"""
 
 	def __init__(self, inputfile):
 		self._inputfile = inputfile
@@ -103,7 +107,7 @@ class Raw(File):
 	@property
 	@File.hashed
 	def hash(self):
-		return (Raw, self._inputfile, )
+		return (Raw, self._inputfile)
 
 	@File.lazy
 	def path(self):
@@ -124,7 +128,7 @@ class Raw(File):
 		if not os.path.exists(store):
 			log('Creating RAW')
 			os.mkdir(store)
-			cmd = ('qemu-img', 'convert', '-p', '-O', 'raw', '/dev/stdin', 'image.raw', )
+			cmd = ('qemu-img', 'convert', '-p', '-O', 'raw', '/dev/stdin', 'image.raw')
 			subprocess.check_call(cmd, cwd=TEMPDIR, stdin=self._inputfile, stdout=sys.stderr)
 			output = os.path.join(TEMPDIR, 'image.raw')
 			os.rename(output, target)
@@ -133,9 +137,8 @@ class Raw(File):
 
 
 class Vmdk(File):
-
 	def __init__(self, raw, streamOptimized=False):
-		assert isinstance(raw, (Raw, ))
+		assert isinstance(raw, Raw)
 		self._raw = raw
 		self._streamOptimized = streamOptimized
 		self._path = None
@@ -144,7 +147,7 @@ class Vmdk(File):
 	@property
 	@File.hashed
 	def hash(self):
-		return (Vmdk, VMDKstream.image_descriptor_template, self._raw.hash, self._streamOptimized, )
+		return (Vmdk, VMDKstream.image_descriptor_template, self._raw.hash, self._streamOptimized)
 
 	@File.lazy
 	def path(self):
@@ -165,13 +168,13 @@ class Vmdk(File):
 			if self._streamOptimized:
 				log('Creating VMDK (streamOptimized)')
 				# qemu-img 1.1 is broken
-				# cmd = ('qemu-img','convert','-f','raw','-O','vmdk','-o','subformat=streamOptimized', self._raw.path(), 'image.vmdk', )
+				# cmd = ('qemu-img','convert','-f','raw','-O','vmdk','-o','subformat=streamOptimized', self._raw.path(), 'image.vmdk')
 				# subprocess.check_call(cmd, cwd=TEMPDIR)
 				# use VMDKstream instead
 				VMDKstream.convert_to_stream(self._raw.path(), output)
 			else:
 				log('Creating VMDK (monolithic)')
-				cmd = ('qemu-img', 'convert', '-p', '-f', 'raw', '-O', 'vmdk', '-o', 'subformat=monolithicSparse', self._raw.path(), 'image.vmdk', )
+				cmd = ('qemu-img', 'convert', '-p', '-f', 'raw', '-O', 'vmdk', '-o', 'subformat=monolithicSparse', self._raw.path(), 'image.vmdk')
 				subprocess.check_call(cmd, cwd=TEMPDIR, stdout=sys.stderr)
 			os.rename(output, target)
 		self._path = target
@@ -179,10 +182,9 @@ class Vmdk(File):
 
 
 class Tar(File):
-
 	def __init__(self, file_list, fileformat=tarfile.USTAR_FORMAT):
 		for _, source_file in file_list:
-			assert isinstance(source_file, (File, )) or isinstance(source_file, str)
+			assert isinstance(source_file, File) or isinstance(source_file, str)
 		self._file_list = file_list
 		self._format = fileformat
 		self._path = None
@@ -195,7 +197,8 @@ class Tar(File):
 			if isinstance(thing, str):
 				return hashlib.sha256(thing).hexdigest()
 			return thing.hash
-		return (Tar, [(name, hashed(source_file)) for name, source_file in self._file_list], )
+
+		return (Tar, [(name, hashed(source_file)) for name, source_file in self._file_list])
 
 	@File.lazy
 	def path(self):
@@ -211,7 +214,7 @@ class Tar(File):
 			os.mkdir(store)
 			archive = tarfile.TarFile(name=target, mode='w', format=self._format)
 			for name, source_file in self._file_list:
-				log('  %s' % (name, ))
+				log('  %s' % (name,))
 				if isinstance(source_file, str):
 					handle = StringIO(source_file)
 				else:
@@ -229,11 +232,10 @@ class Tar(File):
 
 
 class Pkzip(File):
-
 	def __init__(self, file_list):
 		for _, source_file in file_list:
 			if source_file is not None:
-				assert isinstance(source_file, (File, )) or isinstance(source_file, str)
+				assert isinstance(source_file, File) or isinstance(source_file, str)
 		self._file_list = file_list
 		self._path = None
 		File.__init__(self)
@@ -247,7 +249,7 @@ class Pkzip(File):
 			if isinstance(thing, str):
 				return hashlib.sha256(thing).hexdigest()
 			return thing.hash
-		return (Tar, [(name, hashed(source_file)) for name, source_file in self._file_list], )
+		return (Tar, [(name, hashed(source_file)) for name, source_file in self._file_list])
 
 	@File.lazy
 	def path(self):
@@ -281,8 +283,9 @@ class Pkzip(File):
 
 
 class Target(object):
-
-	'''represents the process for creating a complete image for a platform'''
+	"""
+	represents the process for creating a complete image for a platform
+	"""
 
 	def create(self, image, options):
 		raise NotImplementedError()
@@ -318,7 +321,7 @@ def create_vmxf(machine_uuid, image_name):
 				E.HistoryEventList(),
 			),
 			E.vmxPathName(
-				'%s.vmx' % (image_name, ),
+				'%s.vmx' % (image_name,),
 				type='string',
 			),
 		),
@@ -329,7 +332,7 @@ def create_vmxf(machine_uuid, image_name):
 def encode_vmx_file(vmx):
 	output = '.encoding = "UTF-8"\n'
 	for key, value, in sorted(vmx.items()):
-		output += '%s = "%s"\n' % (key, value, )
+		output += '%s = "%s"\n' % (key, value)
 	return output.encode('UTF-8')
 
 
@@ -340,14 +343,14 @@ def create_vmx(image_name, image_uuid, options):
 	vmx = {
 		'config.version': "8",
 		'virtualHW.version': "9",
-		'numvcpus': "%d" % (options.cpu_count, ),
+		'numvcpus': "%d" % (options.cpu_count,),
 		'vcpu.hotadd': "TRUE",
 		'scsi0.present': "TRUE",
 		'scsi0.virtualDev': "lsilogic",
-		'memsize': "%d" % (options.memory_size, ),
+		'memsize': "%d" % (options.memory_size,),
 		'mem.hotadd': "TRUE",
 		'scsi0:0.present': "TRUE",
-		'scsi0:0.fileName': "%s.vmdk" % (image_name, ),
+		'scsi0:0.fileName': "%s.vmdk" % (image_name,),
 		'ide1:0.present': "FALSE",
 		'floppy0.present': "FALSE",
 		'ethernet0.present': "TRUE",
@@ -374,14 +377,14 @@ def create_vmx(image_name, image_uuid, options):
 		'usb.vbluetooth.startConnected': "TRUE",
 		'displayName': machine_name,
 		'guestOS': "other26xlinux-64",
-		'nvram': "%s.nvram" % (image_name, ),
+		'nvram': "%s.nvram" % (image_name,),
 		'virtualHW.productCompatibility': "hosted",
 		'gui.exitOnCLIHLT': "FALSE",
 		'powerType.powerOff': "hard",
 		'powerType.powerOn': "hard",
 		'powerType.suspend': "hard",
 		'powerType.reset': "hard",
-		'extendedConfigFile': "%s.vmxf" % (image_name, ),
+		'extendedConfigFile': "%s.vmxf" % (image_name,),
 		'scsi0.pciSlotNumber': "16",
 		'ethernet0.generatedAddress': "00:0C:29:DD:56:97",
 		'ethernet0.pciSlotNumber': "33",
@@ -427,33 +430,33 @@ class VMware(Target):
 		if options.no_target_specific_filename:
 			archive_name = options.filename
 		else:
-			archive_name = '%s-vmware.zip' % (options.filename, )
+			archive_name = '%s-vmware.zip' % (options.filename,)
 		machine_uuid = uuid.uuid4()
 		image_uuid = uuid.uuid4()
 		if os.path.exists(archive_name):
-			raise IOError('Output file %r exists' % (archive_name, ))
+			raise IOError('Output file %r exists' % (archive_name,))
 		files = [
-			('%s/' % (options.product, ), None, ),
-			('%s/%s.vmdk' % (options.product, options.product, ), Vmdk(image), ),
-			('%s/%s.vmxf' % (options.product, options.product, ), create_vmxf(machine_uuid, options.product), ),
-			('%s/%s.vmx' % (options.product, options.product, ), create_vmx(options.product, image_uuid, options), ),
-			('%s/%s.vmsd' % (options.product, options.product, ), str(), ),
+			('%s/' % (options.product,), None),
+			('%s/%s.vmdk' % (options.product, options.product), Vmdk(image)),
+			('%s/%s.vmxf' % (options.product, options.product), create_vmxf(machine_uuid, options.product)),
+			('%s/%s.vmx' % (options.product, options.product), create_vmx(options.product, image_uuid, options)),
+			('%s/%s.vmsd' % (options.product, options.product), ""),
 		]
 		pkzip = Pkzip(files)
 		shutil.copyfile(pkzip.path(), archive_name)
-		log('Generated "%s" appliance as\n  %s' % (self, archive_name, ))
+		log('Generated "%s" appliance as\n  %s' % (self, archive_name))
 
 
 VMware = VMware()
 
 
-LICENSE = '''The complete source code of Univention Corporate Server is provided
+LICENSE = """The complete source code of Univention Corporate Server is provided
 under GNU Affero General Public License (AGPL). This image contains a license key
 of the UCS Core Edition. More details can be found here:
 \x20
-https://www.univention.com/downloads/license-models/licensing-conditions-ucs-core-edition/'''
+https://www.univention.com/downloads/license-models/licensing-conditions-ucs-core-edition/"""
 
-ANNOTATION = '''Univention Corporate Server (UCS) is a complete solution to provide standard
+ANNOTATION = """Univention Corporate Server (UCS) is a complete solution to provide standard
 IT services (like domain management or file services for Microsoft Windows
 clients) in the cloud and to integrate them with additional systems like
 groupware, CRM or ECM.
@@ -482,7 +485,7 @@ Thus, Univention Corporate Server is the best fit to provide Microsoft Server
 like services in the cloud or on-premises, to run and operate corporate IT
 environments with Windows- and Linux-based clients and to extend those
 environments with proven enterprise software, also either in the cloud or
-on-premises.'''
+on-premises."""
 
 
 def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image_uuid, options):
@@ -506,9 +509,9 @@ def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image
 		'xsi': XSI_NAMESPACE,
 	})
 
-	OVF = '{%s}' % (OVF_NAMESPACE, )
-	VBOX = '{%s}' % (VBOX_NAMESPACE, )
-	XML = '{%s}' % (XML_NAMESPACE, )
+	OVF = '{%s}' % (OVF_NAMESPACE,)
+	VBOX = '{%s}' % (VBOX_NAMESPACE,)
+	XML = '{%s}' % (XML_NAMESPACE,)
 	Erasd = lxml.builder.ElementMaker(namespace=RASD_NAMESPACE)
 	Evbox = lxml.builder.ElementMaker(namespace=VBOX_NAMESPACE)
 	Evssd = lxml.builder.ElementMaker(namespace=VSSD_NAMESPACE)
@@ -523,7 +526,7 @@ def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image
 		E.DiskSection(
 			E.Info('List of the virtual disks used in the package'),
 			E.Disk(**{
-				OVF + 'capacity': '%d' % (image_size, ),
+				OVF + 'capacity': '%d' % (image_size,),
 				OVF + 'diskId': 'vmdisk1',
 				OVF + 'fileRef': 'file1',
 				OVF + 'format': 'http://www.vmware.com/interfaces/specifications/vmdk.html#streamOptimized',
@@ -579,21 +582,21 @@ def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image
 					Evssd.VirtualSystemType('virtualbox-2.2'),
 				),
 				E.Item(
-					Erasd.Caption('%d virtual CPU' % (options.cpu_count, )),
+					Erasd.Caption('%d virtual CPU' % (options.cpu_count,)),
 					Erasd.Description('Number of virtual CPUs'),
-					Erasd.ElementName('%d virtual CPU' % (options.cpu_count, )),
+					Erasd.ElementName('%d virtual CPU' % (options.cpu_count,)),
 					Erasd.InstanceID('1'),
 					Erasd.ResourceType('3'),
-					Erasd.VirtualQuantity('%d' % (options.cpu_count, )),
+					Erasd.VirtualQuantity('%d' % (options.cpu_count,)),
 				),
 				E.Item(
 					Erasd.AllocationUnits('MegaBytes'),
-					Erasd.Caption('%d MB of memory' % (options.memory_size, )),
+					Erasd.Caption('%d MB of memory' % (options.memory_size,)),
 					Erasd.Description('Memory Size'),
-					Erasd.ElementName('%d MB of memory' % (options.memory_size, )),
+					Erasd.ElementName('%d MB of memory' % (options.memory_size,)),
 					Erasd.InstanceID('2'),
 					Erasd.ResourceType('4'),
-					Erasd.VirtualQuantity('%d' % (options.memory_size, )),
+					Erasd.VirtualQuantity('%d' % (options.memory_size,)),
 				),
 				E.Item(
 					Erasd.Address('0'),
@@ -645,18 +648,18 @@ class Virtualbox(Target):
 		return 'ova-virtualbox'
 
 	def create(self, image, options):
-		image_name = '%s-virtualbox-disk1.vmdk' % (options.product, )
-		descriptor_name = '%s-virtualbox.ovf' % (options.product, )
+		image_name = '%s-virtualbox-disk1.vmdk' % (options.product,)
+		descriptor_name = '%s-virtualbox.ovf' % (options.product,)
 		if options.no_target_specific_filename:
 			archive_name = options.filename
 		else:
-			archive_name = '%s-virtualbox.ova' % (options.filename, )
+			archive_name = '%s-virtualbox.ova' % (options.filename,)
 		machine_uuid = uuid.uuid4()
 		image_uuid = uuid.uuid4()
 		if os.path.exists(archive_name):
-			raise IOError('Output file %r exists' % (archive_name, ))
+			raise IOError('Output file %r exists' % (archive_name,))
 		# HACK: change image descriptor to expected format
-		VMDKstream.image_descriptor_template = '''# Disk DescriptorFile
+		VMDKstream.image_descriptor_template = """# Disk DescriptorFile
 version=1
 CID=4fd3c93e
 parentCID=ffffffff
@@ -681,19 +684,19 @@ ddb.uuid.parent="00000000-0000-0000-0000-000000000000"
 ddb.uuid.modification="00000000-0000-0000-0000-000000000000"
 ddb.uuid.parentmodification="00000000-0000-0000-0000-000000000000"
 ddb.comment=""
-''' % (image_uuid, )
+""" % (image_uuid,)
 		descriptor = create_ovf_descriptor_virtualbox(
 			machine_uuid,
 			image_name, image.size(), image_uuid,
 			options,
 		)
 		files = [
-			(descriptor_name, descriptor, ),
-			(image_name, Vmdk(image, streamOptimized=True), ),
+			(descriptor_name, descriptor),
+			(image_name, Vmdk(image, streamOptimized=True)),
 		]
 		ova = Tar(files)
 		shutil.copyfile(ova.path(), archive_name)
-		log('Generated "%s" appliance as\n  %s' % (self, archive_name, ))
+		log('Generated "%s" appliance as\n  %s' % (self, archive_name))
 
 
 Virtualbox = Virtualbox()
@@ -721,8 +724,8 @@ def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_
 		'xsi': XSI_NAMESPACE,
 	})
 
-	OVF = '{%s}' % (OVF_NAMESPACE, )
-	VMW = '{%s}' % (VMW_NAMESPACE, )
+	OVF = '{%s}' % (OVF_NAMESPACE,)
+	VMW = '{%s}' % (VMW_NAMESPACE,)
 	Erasd = lxml.builder.ElementMaker(namespace=RASD_NAMESPACE)
 	Evmw = lxml.builder.ElementMaker(namespace=VMW_NAMESPACE)
 	Evssd = lxml.builder.ElementMaker(namespace=VSSD_NAMESPACE)
@@ -732,15 +735,15 @@ def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_
 			E.File(**{
 				OVF + 'href': image_name,
 				OVF + 'id': 'file1',
-				OVF + 'size': '%d' % (image_packed_size, ),
+				OVF + 'size': '%d' % (image_packed_size,),
 			}),
 		),
 		E.DiskSection(
 			E.Info('Virtual disk information'),
 			E.Disk(**{
 				OVF + 'capacityAllocationUnits': 'byte * 2^30',
-				OVF + 'capacity': '%d' % (image_size / 2**30, ),
-				OVF + 'populatedSize': '%d' % (image_used_size, ),
+				OVF + 'capacity': '%d' % (image_size / 2**30,),
+				OVF + 'populatedSize': '%d' % (image_used_size,),
 				OVF + 'diskId': 'vmdisk1',
 				OVF + 'fileRef': 'file1',
 				OVF + 'format': 'http://www.vmware.com/interfaces/specifications/vmdk.html#streamOptimized',
@@ -792,18 +795,18 @@ def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_
 				E.Item(
 					Erasd.AllocationUnits('hertz * 10^6'),
 					Erasd.Description('Number of Virtual CPUs'),
-					Erasd.ElementName('%d virtual CPU(s)' % (options.cpu_count, )),
+					Erasd.ElementName('%d virtual CPU(s)' % (options.cpu_count,)),
 					Erasd.InstanceID('1'),
 					Erasd.ResourceType('3'),
-					Erasd.VirtualQuantity('%d' % (options.cpu_count, )),
+					Erasd.VirtualQuantity('%d' % (options.cpu_count,)),
 				),
 				E.Item(
 					Erasd.AllocationUnits('byte * 2^20'),
 					Erasd.Description('Memory Size'),
-					Erasd.ElementName('%dMB of memory' % (options.memory_size, )),
+					Erasd.ElementName('%dMB of memory' % (options.memory_size,)),
 					Erasd.InstanceID('2'),
 					Erasd.ResourceType('4'),
-					Erasd.VirtualQuantity('%d' % (options.memory_size, )),
+					Erasd.VirtualQuantity('%d' % (options.memory_size,)),
 				),
 				E.Item(
 					Erasd.Address('0'),
@@ -1027,16 +1030,16 @@ class ESXi(Target):
 		return 'ova-esxi'
 
 	def create(self, image, options):
-		image_name = '%s-ESX-disk1.vmdk' % (options.product, )
-		descriptor_name = '%s-ESX.ovf' % (options.product, )
+		image_name = '%s-ESX-disk1.vmdk' % (options.product,)
+		descriptor_name = '%s-ESX.ovf' % (options.product,)
 		if options.no_target_specific_filename:
 			archive_name = options.filename
 		else:
-			archive_name = '%s-ESX.ova' % (options.filename, )
+			archive_name = '%s-ESX.ova' % (options.filename,)
 		if os.path.exists(archive_name):
-			raise IOError('Output file %r exists' % (archive_name, ))
+			raise IOError('Output file %r exists' % (archive_name,))
 		# HACK: change image descriptor to expected format
-		VMDKstream.image_descriptor_template = '''# Disk DescriptorFile
+		VMDKstream.image_descriptor_template = """# Disk DescriptorFile
 version=1\x20
 CID=b9478e33\x20
 parentCID=ffffffff\x20
@@ -1058,19 +1061,19 @@ ddb.geometry.heads="255"
 ddb.geometry.sectors="63"
 ddb.longContentID = "6c27be515acd422fbdb62c0afffffffe"
 ddb.virtualHWVersion = "7"
-'''
+"""
 		descriptor = create_ovf_descriptor_esxi(
 			image_name, image.size(), Vmdk(image, streamOptimized=True).size(),
 			image.used_size(),
 			options,
 		)
 		files = [
-			(descriptor_name, descriptor, ),
-			(image_name, Vmdk(image, streamOptimized=True), ),
+			(descriptor_name, descriptor),
+			(image_name, Vmdk(image, streamOptimized=True)),
 		]
 		ova = Tar(files)
 		shutil.copyfile(ova.path(), archive_name)
-		log('Generated "%s" appliance as\n  %s' % (self, archive_name, ))
+		log('Generated "%s" appliance as\n  %s' % (self, archive_name))
 
 
 ESXi = ESXi()
@@ -1082,16 +1085,16 @@ def create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_
 	part_count = int(math.ceil(float(vmdk.size()) / part_size))
 	parts = []
 	for index, offset in enumerate(x * part_size for x in range(part_count)):
-		key = boto.s3.key.Key(bucket, '%s/%s.part%d' % (folder_name, image_name, index, ))  # TODO: redundant code
+		key = boto.s3.key.Key(bucket, '%s/%s.part%d' % (folder_name, image_name, index))  # TODO: redundant code
 		parts.append(
 			E.part(
 				# Complex type defining the starting and ending byte count of a part.
 				E(
 					'byte-range',
 					# Offset of a part's first byte in the disk image.
-					start='%d' % (offset, ),
+					start='%d' % (offset,),
 					# Offset of a part's last byte in the disk image.
-					end='%d' % (min(offset + part_size, vmdk.size()) - 1, ),
+					end='%d' % (min(offset + part_size, vmdk.size()) - 1,),
 				),
 				# The S3 object name of the part.
 				E.key(key.name),
@@ -1102,10 +1105,10 @@ def create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_
 				# Signed URLs for issuing a DELETE request on the S3 object containing this part.
 				E('delete-url', key.generate_url(url_lifetime, 'DELETE')),
 				# Index number of this part.
-				index='%d' % (index, ),
+				index='%d' % (index,),
 			),
 		)
-	manifest_key = boto.s3.key.Key(bucket, '%s/%smanifest.xml' % (folder_name, image_name, ))  # TODO: redundant code
+	manifest_key = boto.s3.key.Key(bucket, '%s/%smanifest.xml' % (folder_name, image_name))  # TODO: redundant code
 	manifest = E.manifest(
 		# Version designator for the manifest file,
 		E.version('2010-11-15'),
@@ -1126,16 +1129,16 @@ def create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_
 		E(
 			'import',
 			# Exact size of the file to be imported (bytes on disk).
-			E.size('%d' % (vmdk.size(), )),
+			E.size('%d' % (vmdk.size(),)),
 			# Rounded size in gigabytes of volume to be imported.
 			# - assumed meaning: size of the volume in GiB, because EC2 EBS volumes are provisioned in GiB
-			E('volume-size', '%d' % (volume_size, )),
+			E('volume-size', '%d' % (volume_size,)),
 			# Complex type describing and counting the parts into which the file is split.
 			E.parts(
 				# Definition of a particular part. Any number of parts may be defined.
 				*parts,
 				# Total count of the parts.
-				count='%d' % (part_count, )
+				count='%d' % (part_count,)
 			),
 		),
 	)
@@ -1167,9 +1170,10 @@ class EC2(Target):
 		machine_name = options.product
 		if options.version is not None:
 			machine_name += ' ' + options.version
-		image_name = '%s-disk1.vmdk' % (options.product, )
+		image_name = '%s-disk1.vmdk' % (options.product,)
 		part_size = 10 * 1000 * 1000  # 10 MB
 		url_lifetime = 24 * 60 * 60  # 1 day
+
 		volume_size = int(math.ceil(float(image.size()) / 1024 / 1024 / 1024))  # GiB
 		folder_name = uuid.uuid4()
 		s3 = boto.s3.connect_to_region(boto.connect_s3().get_bucket(options.bucket).get_location())
@@ -1178,20 +1182,23 @@ class EC2(Target):
 		vmdk = Vmdk(image)
 		keys_to_delete = []
 		manifest = create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_size, part_size, url_lifetime)
+
 		log('Uploading manifest…')
-		manifest_key = boto.s3.key.Key(bucket, '%s/%smanifest.xml' % (folder_name, image_name, ))  # TODO: redundant code
+		manifest_key = boto.s3.key.Key(bucket, '%s/%smanifest.xml' % (folder_name, image_name))  # TODO: redundant code
 		manifest_key.storage_class = 'REDUCED_REDUNDANCY'
 		manifest_key.set_contents_from_string(manifest)
 		keys_to_delete.append(manifest_key)
 		log('  OK')
+
 		part_count = int(math.ceil(float(vmdk.size()) / part_size))
 		for index, part in enumerate(chunks(vmdk, part_size)):
-			log('Uploading part %d/%d…' % (index, part_count, ))
-			key = boto.s3.key.Key(bucket, '%s/%s.part%d' % (folder_name, image_name, index, ))  # TODO: redundant code
+			log('Uploading part %d/%d…' % (index, part_count))
+			key = boto.s3.key.Key(bucket, '%s/%s.part%d' % (folder_name, image_name, index))  # TODO: redundant code
 			key.storage_class = 'REDUCED_REDUNDANCY'
 			key.set_contents_from_string(part)
 			keys_to_delete.append(key)
 			log('  OK')
+
 		log('Generating volume ', False)
 		manifest_url = manifest_key.generate_url(url_lifetime, 'GET')
 		zone = ec2.get_all_zones()[0]
@@ -1213,17 +1220,19 @@ class EC2(Target):
 			# TODO: abort if no progress after some time?
 			log('.', False)
 		if task.state == 'completed':
-			log('  %s' % (task.volume_id, ))
+			log('  %s' % (task.volume_id,))
 		else:
-			log('  Failed (%r, %r, %r, %r)' % (task.id, task.bytes_converted, task.state, getattr(task, 'statusMessage', None), ))
+			log('  Failed (%r, %r, %r, %r)' % (task.id, task.bytes_converted, task.state, getattr(task, 'statusMessage', None)))
+
 		for index, key in enumerate(keys_to_delete):
-			log('Deleting part %d/%d… ' % (index, len(keys_to_delete), ), False)
+			log('Deleting part %d/%d… ' % (index, len(keys_to_delete)), False)
 			if key.delete():
 				log('OK')
 			else:
 				log('Failed')
 		if task.state != 'completed':
 			return  # abort
+
 		log('Generating snapshot ', False)
 		snapshot = ec2.create_snapshot(task.volume_id, description=image_name)
 		# wait for snapshot
@@ -1236,14 +1245,15 @@ class EC2(Target):
 			# TODO: abort if no progress after some time?
 			log('.', False)
 		if snapshot.status == 'completed':
-			log('  %s' % (snapshot.id, ))
+			log('  %s' % (snapshot.id,))
 		else:
-			log('  Failed (%r, %r, %r, %r)' % (snapshot.id, snapshot.volume_id, snapshot.status, snapshot.progress, ))
+			log('  Failed (%r, %r, %r, %r)' % (snapshot.id, snapshot.volume_id, snapshot.status, snapshot.progress))
 			return  # abort
 		if ec2.delete_volume(task.volume_id):
-			log('Deleted volume %s' % (task.volume_id, ))
+			log('Deleted volume %s' % (task.volume_id,))
 		else:
-			log('Could not delete volume %s' % (task.volume_id, ))
+			log('Could not delete volume %s' % (task.volume_id,))
+
 		log('Generating image', False)
 		ami_id = ec2.register_image(
 			name=machine_name,
@@ -1263,11 +1273,12 @@ class EC2(Target):
 			# TODO: abort if no progress after some time?
 			log('.', False)
 		log(' done')
+
 		for ami in amis:
 			if ami.state == 'available':
-				log('Generated "%s" appliance as\n  %s' % (self, ami.id, ))
+				log('Generated "%s" appliance as\n  %s' % (self, ami.id))
 			else:
-				log('Could not generate image (%r, %r, %r)' % (self, ami.id, ami.state, ))
+				log('Could not generate image (%r, %r, %r)' % (self, ami.id, ami.state))
 
 
 EC2 = EC2()
@@ -1282,12 +1293,12 @@ class Docker(Target):
 		return 'docker'
 
 	def create(self, image, options):
-		archive_name = os.path.join(os.getcwd(), '%s-docker.tar' % (options.filename, ))
-		temp_image = os.path.join(TEMPDIR, '%s-docker.raw' % (options.filename, ))
-		temp_patch_tar = os.path.join(TEMPDIR, '%s-patch.tar' % (options.filename, ))
+		archive_name = os.path.join(os.getcwd(), '%s-docker.tar' % (options.filename,))
+		temp_image = os.path.join(TEMPDIR, '%s-docker.raw' % (options.filename,))
+		temp_patch_tar = os.path.join(TEMPDIR, '%s-patch.tar' % (options.filename,))
 		for fn in (archive_name, temp_image):
 			if os.path.exists(fn):
-				raise IOError('Output file %r exists' % (fn, ))
+				raise IOError('Output file %r exists' % (fn,))
 
 		image_path = image.path()
 		log('Copying file')
@@ -1305,7 +1316,7 @@ class Docker(Target):
 			'tar-out', '/', archive_name,
 		]
 		subprocess.check_call(cmd, cwd=TEMPDIR, stdout=sys.stderr)
-		log('Generated "%s" appliance as\n  %s' % (self, archive_name, ))
+		log('Generated "%s" appliance as\n  %s' % (self, archive_name))
 
 
 Docker = Docker()
@@ -1401,7 +1412,7 @@ def main():
 		return os.EX_OK
 	finally:
 		log('Cleanup')
-		cmd = ('find', WORKDIR, '(', '-type', 'f', '-printf', '  %f\\n', '-o', '-true', ')', '-delete', )
+		cmd = ('find', WORKDIR, '(', '-type', 'f', '-printf', '  %f\\n', '-o', '-true', ')', '-delete')
 		subprocess.call(cmd, stdout=sys.stderr)
 
 
