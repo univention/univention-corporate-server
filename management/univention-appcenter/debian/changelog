@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-77) unstable; urgency=medium
+
+  * Bug #50425: remove empty postinst
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 01 Nov 2019 15:19:35 +0100
+
 univention-appcenter (8.0.11-76) unstable; urgency=medium
 
   * Bug #50425: migrate to dh_python
