@@ -1,0 +1,20 @@
+product: ucs
+release: "4.3"
+version: [4, 5]
+scope: ucs_4.3-0-errata4.3-5
+src: libarchive
+fix: 3.2.2-2+deb9u2
+desc: |
+ This update addresses the following issues:
+ * archive_read_format_rar_read_data in archive_read_support_format_rar.c in
+   libarchive before 3.4.0 has a use-after-free in a certain ARCHIVE_FAILED
+   situation, related to Ppmd7_DecodeSymbol. (CVE-2019-18408)
+ * Out of bounds read in archive_read_support_format_7zip.c resulting in a
+   denial of service (CVE-2019-1000019)
+ * Infinite recursion in archive_read_support_format_iso9660.c resulting in
+   denial of service (CVE-2019-1000020)
+bug: [50439]
+cve:
+- CVE-2019-18408
+- CVE-2019-1000019
+- CVE-2019-1000020
