@@ -1223,7 +1223,7 @@ class EC2(Target):
 		if snapshot.status == 'completed':
 			log('  %s' % (snapshot.id, ))
 		else:
-			log('  Failed (%, %r, %r, %r)' % (snapshot.id, snapshot.volume_id, snapshot.status, snapshot.progress, ))
+			log('  Failed (%s, %r, %r, %r)' % (snapshot.id, snapshot.volume_id, snapshot.status, snapshot.progress, ))
 			return  # abort
 		if ec2.delete_volume(task.volume_id):
 			log('Deleted volume %s' % (task.volume_id, ))
