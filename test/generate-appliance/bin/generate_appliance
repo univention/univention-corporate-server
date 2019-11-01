@@ -1109,7 +1109,8 @@ def create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_
 		# Signed URL used to delete the stored manifest file.
 		E('self-destruct-url', manifest_key.generate_url(url_lifetime, 'DELETE')),
 		# Complex type describing the size and chunking of the volume file.
-		E('import',
+		E(
+			'import',
 			# Exact size of the file to be imported (bytes on disk).
 			E.size('%d' % (vmdk.size(), )),
 			# Rounded size in gigabytes of volume to be imported.
@@ -1155,6 +1156,7 @@ class EC2(Target):
 		image_name = '%s-disk1.vmdk' % (options.product, )
 		part_size = 10 * 1000 * 1000  # 10 MB
 		url_lifetime = 24 * 60 * 60  # 1 day
+
 		volume_size = int(math.ceil(float(image.size()) / 1024 / 1024 / 1024))  # GiB
 		folder_name = uuid.uuid4()
 		s3 = boto.s3.connect_to_region(boto.connect_s3().get_bucket(options.bucket).get_location())
@@ -1163,12 +1165,14 @@ class EC2(Target):
 		vmdk = Vmdk(image)
 		keys_to_delete = []
 		manifest = create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_size, part_size, url_lifetime)
+
 		log('Uploading manifest…')
 		manifest_key = boto.s3.key.Key(bucket, '%s/%smanifest.xml' % (folder_name, image_name, ))  # TODO: redundant code
 		manifest_key.storage_class = 'REDUCED_REDUNDANCY'
 		manifest_key.set_contents_from_string(manifest)
 		keys_to_delete.append(manifest_key)
 		log('  OK')
+
 		part_count = int(math.ceil(float(vmdk.size()) / part_size))
 		for index, part in enumerate(chunks(vmdk, part_size)):
 			log('Uploading part %d/%d…' % (index, part_count, ))
@@ -1177,6 +1181,7 @@ class EC2(Target):
 			key.set_contents_from_string(part)
 			keys_to_delete.append(key)
 			log('  OK')
+
 		log('Generating volume ', False)
 		manifest_url = manifest_key.generate_url(url_lifetime, 'GET')
 		zone = ec2.get_all_zones()[0]
@@ -1201,6 +1206,7 @@ class EC2(Target):
 			log('  %s' % (task.volume_id, ))
 		else:
 			log('  Failed (%r, %r, %r, %r)' % (task.id, task.bytes_converted, task.state, getattr(task, 'statusMessage', None), ))
+
 		for index, key in enumerate(keys_to_delete):
 			log('Deleting part %d/%d… ' % (index, len(keys_to_delete), ), False)
 			if key.delete():
@@ -1209,6 +1215,7 @@ class EC2(Target):
 				log('Failed')
 		if task.state != 'completed':
 			return  # abort
+
 		log('Generating snapshot ', False)
 		snapshot = ec2.create_snapshot(task.volume_id, description=machine_name)
 		# wait for snapshot
@@ -1229,6 +1236,7 @@ class EC2(Target):
 			log('Deleted volume %s' % (task.volume_id, ))
 		else:
 			log('Could not delete volume %s' % (task.volume_id, ))
+
 		log('Generating image', False)
 		ami_id = ec2.register_image(
 			name=machine_name,
@@ -1248,6 +1256,7 @@ class EC2(Target):
 			# TODO: abort if no progress after some time?
 			log('.', False)
 		log(' done')
+
 		for ami in amis:
 			if ami.state == 'available':
 				log('Generated "%s" appliance as\n  %s' % (self, ami.id, ))
@@ -1295,29 +1304,43 @@ assert len(frozenset(map(repr, TARGETS))) == len(TARGETS), 'target names not uni
 
 
 def parse_options():
-	parser = optparse.OptionParser()
+	usage = '%prog [options]'
+	desc = 'create virtual appliances for various virtualization systems from a single disk image'
+	parser = optparse.OptionParser(usage=usage, description=desc)
 	defaults = [('%r' % (target, ), True, ) for target in TARGETS if target.is_default]
 	parser.set_defaults(choices=defaults)
-	parser.usage = '%prog [options]\n create virtual appliances for various virtualization systems from a single disk image'
-	parser.add_option('-s', '--source', help='source image (required)')
-	parser.add_option('-m', '--memory-size', default=1024, type='int',
+	parser.add_option(
+		'-s', '--source', help='source image (required)')
+	parser.add_option(
+		'-m', '--memory-size', default=1024, type='int',
 		help='size of virtual memory (MiB, default: %default)')
-	parser.add_option('-c', '--cpu-count', default=1, type='int',
+	parser.add_option(
+		'-c', '--cpu-count', default=1, type='int',
 		help='virtual CPU count (default: %default)')
-	parser.add_option('-f', '--filename', help='filename of appliance (default: derived from product)')
-	parser.add_option('-n', '--no-target-specific-filename', default=False, help='do not append hypervisor target to filename of appliance. This is the default if only one target is chosen.')
-	parser.add_option('-p', '--product', help='product name of appliance (default: %default)',
+	parser.add_option(
+		'-f', '--filename', help='filename of appliance (default: derived from product)')
+	parser.add_option(
+		'-n', '--no-target-specific-filename', default=False, help='do not append hypervisor target to filename of appliance. This is the default if only one target is chosen.')
+	parser.add_option(
+		'-p', '--product', help='product name of appliance (default: %default)',
 		default='Univention Corporate Server (UCS)')
-	parser.add_option('--product-url', help='product URL of appliance (default: %default)',
+	parser.add_option(
+		'--product-url', help='product URL of appliance (default: %default)',
 		default='https://www.univention.com/products/ucs/')
-	parser.add_option('-v', '--version', help='version string of appliance')
-	parser.add_option('--vendor', help='vendor string of appliance (default: %default)',
+	parser.add_option(
+		'-v', '--version', help='version string of appliance')
+	parser.add_option(
+		'--vendor', help='vendor string of appliance (default: %default)',
 		default='Univention GmbH')
-	parser.add_option('--vendor-url', help='vendor URL of appliance (default: %default)',
+	parser.add_option(
+		'--vendor-url', help='vendor URL of appliance (default: %default)',
 		default='https://www.univention.com/')
-	parser.add_option('-t', '--tempdir', help='temporary directory to use')
-	parser.add_option('--region', help='EC2 region to use (default %default)', default='eu-west-1')
-	parser.add_option('--bucket', help='S3 bucket to use (default %default)', default='generate-appliance')
+	parser.add_option(
+		'-t', '--tempdir', help='temporary directory to use')
+	parser.add_option(
+		'--region', help='EC2 region to use (default %default)', default='eu-west-1')
+	parser.add_option(
+		'--bucket', help='S3 bucket to use (default %default)', default='generate-appliance')
 	parser.add_option(
 		'-o', '--only', action='store_const', dest='choices', const=[],
 		help='ignore default selections, only create selected targets (must be the first option)',
@@ -1337,6 +1360,7 @@ def parse_options():
 			const=('%r' % (target, ), False, )
 		)
 	(options, args, ) = parser.parse_args()
+
 	reverse = dict(('%r' % (target, ), target, ) for target in TARGETS)
 	options.choices = frozenset(
 		reverse[name] for (name, wanted) in dict(options.choices).items() if wanted
@@ -1364,6 +1388,7 @@ def parse_options():
 		options.source = open(options.source, 'rb')
 	except IOError as e:
 		parser.error(e)
+
 	return options
 
 
