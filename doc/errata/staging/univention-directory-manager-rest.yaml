@@ -3,7 +3,7 @@ release: "4.4"
 version: [2]
 scope: ucs_4.4-0-errata4.4-2
 src: univention-directory-manager-rest
-fix: 
+fix: 9.0.16-5A~4.4.0.201911041221
 desc: |
  This update addresses the following issue(s):
  * The package now uses dh_python2 instead of python-support.
