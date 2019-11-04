@@ -42,7 +42,7 @@ if [ "$USER" = "jenkins" ]; then
 	# in jenkins do not terminate vms if setup is broken,
 	# so we can investigate the situation and use replace
 	# to overwrite old vms
-	export TERMINATE_ON_SUCCESS="${TERMINATE_ON_SUCCESS:=true}"
+	export TERMINATE_ON_SUCCESS="${HALT:=true}"
 	export REPLACE="${REPLACE:=true}"
 else
 	export HALT="${HALT:=false}"
