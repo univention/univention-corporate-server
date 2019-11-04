@@ -34,9 +34,9 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-six,
  python-support,
 Provides: ${python:Provides}
-Breaks: python-univention-directory-manager-rest (<< 9.0.16-4)
+Breaks: python-univention-directory-manager-rest (<< 9.0.16-5)
 Replaces:
- python-univention-directory-manager-rest (<< 9.0.16-4),
+ python-univention-directory-manager-rest (<< 9.0.16-5),
  python-univention-lib (<< 1.0.15-1),
 Description: UCS - Modules for administration tools
  This package contains the Python modules that implement the
