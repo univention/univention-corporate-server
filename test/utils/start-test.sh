@@ -30,7 +30,6 @@ export KVM_CPUS="${KVM_CPUS:=1}"
 export RELEASE_UPDATE="${release_update:=public}"
 export ERRATA_UPDATE="${errata_update:=testing}"
 export UCSSCHOOL_RELEASE=${UCSSCHOOL_RELEASE:=scope}
-export REPLACE="${REPLACE:=false}"
 export FORCE_EC2="${FORCE_EC2:=false}"
 export CFG="$1"
 
@@ -40,10 +39,17 @@ if [ "$USER" = "jenkins" ]; then
 	export UCS_TEST_RUN="${UCS_TEST_RUN:=true}"
 	export HALT="${HALT:=true}"
 	export KVM_USER="build"
+	# in jenkins do not terminate vms if setup is broken,
+	# so we can investigate the situation and use replace
+	# to overwrite old vms
+	export TERMINATE_ON_SUCCESS="${TERMINATE_ON_SUCCESS:=true}"
+	export REPLACE="${REPLACE:=true}"
 else
 	export HALT="${HALT:=false}"
 	export UCS_TEST_RUN="${UCS_TEST_RUN:=false}"
 	export KVM_USER="${KVM_USER:=$USER}"
+	export TERMINATE_ON_SUCCESS="${TERMINATE_ON_SUCCESS:=false}"
+	export REPLACE="${REPLACE:=false}"
 fi
 
 
@@ -84,6 +90,7 @@ fi
 declare -a cmd=("$exe" -c "$CFG")
 "$HALT" && cmd+=("-t")
 "$REPLACE" && cmd+=("--replace")
+"$TERMINATE_ON_SUCCESS" && cmd+=("--terminate-on-success")
 PATH="${PATH:+$PATH:}./ucs-ec2-tools"
 "${cmd[@]}" &&
 [ -e "./COMMAND_SUCCESS" ]
