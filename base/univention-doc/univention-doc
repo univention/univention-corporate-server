@@ -42,6 +42,7 @@ subdirectory with the source of the documentation. The directory should
 also contain the *conf.py* containing the sphinx configuration.
 
 """
+from __future__ import print_function
 from optparse import OptionParser
 
 import os
@@ -65,11 +66,11 @@ if __name__ == '__main__':
 	if options.list:
 		for filename in os.listdir(DOC_SOURCE_DIR):
 			if os.path.isdir(os.path.join(DOC_SOURCE_DIR, filename)):
-				print filename
+				print(filename)
 		sys.exit(0)
 
 	if not os.path.isfile(SPHINX_BUILD):
-		print >>sys.stderr, 'error: %s is required' % SPHINX_BUILD
+		print('error: %s is required' % SPHINX_BUILD, file=sys.stderr)
 		sys.exit(1)
 
 	if not arguments:
@@ -94,7 +95,7 @@ if __name__ == '__main__':
 		for doc in arguments[1:]:
 			shutil.rmtree(os.path.join(DOC_OUTPUT_DIR, doc), True)
 			if not options.quiet:
-				print 'The documentation %s has been removed' % doc
+				print('The documentation %s has been removed' % doc)
 	else:
 		output_dir = os.path.join(DOC_OUTPUT_DIR)
 		for doc in arguments[1:]:
@@ -107,7 +108,7 @@ if __name__ == '__main__':
 				os.path.join(DOC_OUTPUT_DIR, doc)
 			])
 			if ret:
-				print >>sys.stderr, 'error: failed to build documentation %s' % doc
+				print('error: failed to build documentation %s' % doc, file=sys.stderr)
 			else:
 				if not options.quiet:
-					print 'The documentation %s has been build successfully' % doc
+					print('The documentation %s has been build successfully' % doc)
