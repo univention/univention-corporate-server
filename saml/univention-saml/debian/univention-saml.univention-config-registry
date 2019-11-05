@@ -61,6 +61,7 @@ Subfile: etc/simplesamlphp/01authsources-negotiate.php
 Variables: saml/idp/ldap/enable_tls
 Variables: ldap/base
 Variables: saml/idp/negotiate
+Variables: saml/idp/negotiate/filter-subnets
 Variables: saml/idp/ldap/get_attributes
 Variables: saml/idp/ldap/user
 Variables: ldap/hostdn
