@@ -17,7 +17,7 @@ desc: |
  * DNS host records without IP addresses are now syncronized to Samba/AD.
  * The renamed DNS records are now correctly removed from Samba/AD when the
    object in UCS was renamed.
- * The time conversion of the attribute accountExpires/userexpiry in the connector
-   has been fixed to prevent a loop in the s4connector
+ * The time conversion of the attribute accountExpires/userexpiry in the
+   connector has been fixed to prevent a loop in the s4connector
    which incremented userexpiry on certain timezones.
 bug: [43096, 49876, 49976, 50305, 50342, 49874, 49728, 50202]
