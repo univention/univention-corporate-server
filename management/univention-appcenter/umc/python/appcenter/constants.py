@@ -19,3 +19,5 @@ STATUS_ICONS = {
 	'access_denied': 'updater-access-denied'
 }
 DEFAULT_ICON = 'updater-unknown'  # any states not defined above
+
+COMPATIBILITY_VERSION = '4.4-2 errata312'

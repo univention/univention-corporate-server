@@ -199,6 +199,40 @@ class Instance(umcm.Base, ProgressMixin):
 			raise umcm.UMC_Error('The App Center version of the requesting host is not compatible with the version of %s (%s)' % (get_local_fqdn(), ret))
 		return ret
 
+	@sanitize(
+		version=StringSanitizer(required=True),
+		function=StringSanitizer(required=False),
+	)
+	@simple_response
+	def get_compatibility(self, version, function=None):
+		my_version = constants.COMPATIBILITY_VERSION
+		# you can deny compatibility if version of requesting host is too old
+		return {'compatible': True, 'version': my_version}
+
+	def _remote_appcenter(self, host, username, password, function=None):
+		my_version = constants.COMPATIBILITY_VERSION
+		opts = {'version': my_version}
+		if function is not None:
+			opts['function'] = function
+		try:
+			client = Client(host, self.username, self.password)
+			response = client.umc_command('appcenter/get_compatibility', opts)
+		except (HTTPError) as exc:
+			raise umcm.UMC_Error('Problems connecting to {0} ({1}). Please update {0}!'.format(host, exc.message))
+		except (ConnectionError, Exception) as exc:
+			raise umcm.UMC_Error('Problems connecting to {} ({}).'.format(host, str(exc)))
+		err_msg = _('The App Center version of the this host ({}) is not compatible with the version of {} ({})'.format(my_version, host, response.result))
+		# i guess this is kind of bad
+		if response.status is not 200:
+			raise umcm.UMC_Error(err_msg)
+		# remote says he is not compatible
+		if response.result.get('compatible', True) is False:
+			raise umcm.UMC_Error(err_msg)
+		# i can only talk to other appcenter server that have at least my version
+		if response.result['version'] < my_version:
+			raise umcm.UMC_Error(err_msg)
+		return client
+
 	@simple_response
 	def query(self, quick=False):
 		if not quick:
@@ -614,6 +648,7 @@ class Instance(umcm.Base, ProgressMixin):
 									raise umcm.UMC_Error(str(exc), result=dict(
 										display_feedback=True,
 										title='%s %s' % (exc.title, exc.info)))
+
 					def _finished(thread, result):
 						if isinstance(result, BaseException):
 							MODULE.warn('Exception during %s %s: %s' % (function, app_id, str(result)))
