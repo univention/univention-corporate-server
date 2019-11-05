@@ -8,6 +8,7 @@ Type: subfile
 Multifile: etc/simplesamlphp/metadata/saml20-idp-hosted.php
 Subfile: etc/simplesamlphp/metadata/00_saml20-idp-hosted.php
 Variables: saml/idp/entityID
+Variables: saml/idp/entityID/supplement/.*
 Variables: saml/idp/certificate/privatekey
 Variables: saml/idp/certificate/certificate
 Variables: saml/idp/authsource
@@ -15,6 +16,7 @@ Variables: apache2/ssl/key
 Variables: apache2/ssl/certificate
 Variables: hostname
 Variables: domainname
+Variables: ucs/server/sso/fqdn
 
 Type: file
 File: etc/simplesamlphp/config.php
@@ -31,6 +33,7 @@ Variables: saml/idp/technicalcontactname
 Variables: saml/idp/technicalcontactemail
 Variables: saml/idp/session-type
 Variables: saml/idp/session-duration
+Variables: saml/idp/entityID/supplement/.*
 Variables: locale/default
 Variables: hostname
 Variables: domainname
@@ -74,6 +77,7 @@ User: root
 Group: root
 Mode: 644
 Variables: saml/idp/https
+Variables: saml/idp/entityID/supplement/.*
 Variables: domainname
 Variables: ucs/server/sso/fqdn
 Variables: saml/idp/certificate/certificate

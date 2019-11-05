@@ -34,6 +34,12 @@ Description[en]=This variable configures the entityID of the SAML 2.0 identity p
 Type=str
 Categories=saml
 
+[saml/idp/entityID/supplement/.*]
+Description[de]=Mit dieser Variablen lassen sich zusätzliche entityIDs für den saml Identity Provider festlegen (z.B.: saml/idp/entityID/supplement/o365=true).
+Description[en]=This variable can be used to define additional entityIDs for the saml identity provider (example: saml/idp/entityID/supplement/o365=true)
+Type=str
+Categories=saml
+
 [saml/idp/enableSAML20-IdP]
 Description[de]=Wenn diese Variable auf 'true' gesetzt ist, ist der saml 2.0 Identity Provider aktiviert. (default: true)
 Description[en]=If this variable is set to 'true', the saml 2.0 identity provider is activated. (default: true)
