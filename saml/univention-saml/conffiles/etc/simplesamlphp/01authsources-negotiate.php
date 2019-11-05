@@ -25,6 +25,6 @@ $config['univention-negotiate'] = array(
 	print("	'adminPassword' => '%s'," % (password,))
 	subnets = [x.strip() for x in configRegistry.get('saml/idp/negotiate/filter-subnets', '').split(',')]
 	if subnets:
-		print("	'subnet' => array('%s')" % ("', '".join(subnets).))
+		print("	'subnet' => array('%s')" % ("', '".join(subnets),))
 	print(');')
 @!@
