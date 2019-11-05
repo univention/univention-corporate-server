@@ -7,4 +7,5 @@ fix: 8.0.11-80A~4.4.0.201911051611
 desc: |
  This update addresses the following issue(s):
  * The package now uses dh_python2 instead of python-support.
-bug: [50425]
+ * Added version check for global appcenter.
+bug: [50425, 50450]
