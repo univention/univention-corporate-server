@@ -1,3 +1,9 @@
+univention-saml (6.0.2-12) unstable; urgency=medium
+
+  * Bug #49485: add missing build dependency to python-support
+
+ -- Florian Best <best@univention.de>  Wed, 06 Nov 2019 07:51:34 +0100
+
 univention-saml (6.0.2-11) unstable; urgency=medium
 
   * Bug #49485: fix typo

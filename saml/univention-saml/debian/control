@@ -5,6 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 9),
  ucslint-univention,
  univention-config-dev,
+ python-support,
  univention-management-console-dev
 Standards-Version: 3.8.4
 
