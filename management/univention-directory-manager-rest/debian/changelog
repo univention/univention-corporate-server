@@ -1,3 +1,9 @@
+univention-directory-manager-rest (9.0.16-6) unstable; urgency=medium
+
+  * Bug #49147: remove unnecessary dependency
+
+ -- Florian Best <best@univention.de>  Wed, 06 Nov 2019 17:32:02 +0100
+
 univention-directory-manager-rest (9.0.16-5) unstable; urgency=medium
 
   * Bug #49147: add dh-python integration
