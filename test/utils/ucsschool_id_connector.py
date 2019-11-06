@@ -38,12 +38,12 @@ def create_extended_attr():
 	ucr.load()
 	sea_mod = UDM.admin().version(1).get('settings/extended_attribute')
 	ldap_base = ucr.get('ldap/base')
-	id_sync_last_update = sea_mod.new(superordinate='cn=univention,{}'.format(ldap_base))
-	id_sync_last_update.position = 'cn=custom attributes,cn=univention,{}'.format(ldap_base)
+	ucsschool_id_connector_last_update = sea_mod.new(superordinate='cn=univention,{}'.format(ldap_base))
+	ucsschool_id_connector_last_update.position = 'cn=custom attributes,cn=univention,{}'.format(ldap_base)
 	props = {
-		'name': 'id_sync_last_update',
-		'CLIName': 'id_sync_last_update',
-		'shortDescription': 'Date of last update by the ID Sync app.',
+		'name': 'ucsschool_id_connector_last_update',
+		'CLIName': 'ucsschool_id_connector_last_update',
+		'shortDescription': 'Date of last update by the UCS@school ID Connector app.',
 		'module': 'users/user',
 		'tabName': 'UCS@school',
 		'tabPosition': '9',
@@ -64,19 +64,19 @@ def create_extended_attr():
 		'disableUDMWeb': '0',
 	}
 	for key, value in props.items():
-		setattr(id_sync_last_update.props, key, value)
-	id_sync_last_update.options.extend(('ucsschoolStudent', 'ucsschoolTeacher', 'ucsschoolStaff', 'ucsschoolAdministrator'))
+		setattr(ucsschool_id_connector_last_update.props, key, value)
+	ucsschool_id_connector_last_update.options.extend(('ucsschoolStudent', 'ucsschoolTeacher', 'ucsschoolStaff', 'ucsschoolAdministrator'))
 	try:
-		id_sync_last_update.save()
+		ucsschool_id_connector_last_update.save()
 	except CreateError:
-		print('Extended attr: "id_sync_last_update" already exists. Ignoring.')
+		print('Extended attr: "ucsschool_id_connector_last_update" already exists. Ignoring.')
 
-	id_sync_pw = sea_mod.new(superordinate='cn=univention,{}'.format(ldap_base))
-	id_sync_pw.position = 'cn=custom attributes,cn=univention,{}'.format(ldap_base)
+	ucsschool_id_connector_pw = sea_mod.new(superordinate='cn=univention,{}'.format(ldap_base))
+	ucsschool_id_connector_pw.position = 'cn=custom attributes,cn=univention,{}'.format(ldap_base)
 	props = {
-		'name': 'id_sync_pw',
-		'CLIName': 'id_sync_pw',
-		'shortDescription': 'ID Sync password sync.',
+		'name': 'ucsschool_id_connector_pw',
+		'CLIName': 'ucsschool_id_connector_pw',
+		'shortDescription': 'UCS@school ID Connector password sync.',
 		'module': 'users/user',
 		'syntax': 'string',
 		'default': '',
@@ -92,9 +92,9 @@ def create_extended_attr():
 		'disableUDMWeb': '1',
 	}
 	for key, value in props.items():
-		setattr(id_sync_pw.props, key, value)
-	id_sync_pw.options.extend(('ucsschoolStudent', 'ucsschoolTeacher', 'ucsschoolStaff', 'ucsschoolAdministrator'))
+		setattr(ucsschool_id_connector_pw.props, key, value)
+	ucsschool_id_connector_pw.options.extend(('ucsschoolStudent', 'ucsschoolTeacher', 'ucsschoolStaff', 'ucsschoolAdministrator'))
 	try:
-		id_sync_pw.save()
+		ucsschool_id_connector_pw.save()
 	except CreateError:
-		print('Extended attr: "id_sync_pw" already exists. Ignoring.')
+		print('Extended attr: "ucsschool_id_connector_pw" already exists. Ignoring.')
