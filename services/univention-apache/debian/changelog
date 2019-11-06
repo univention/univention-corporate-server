@@ -1,3 +1,9 @@
+univention-apache (11.0.1-9) unstable; urgency=medium
+
+  * Bug #45115: Better exception handling, removing lines in join script
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 06 Nov 2019 12:36:47 +0100
+
 univention-apache (11.0.1-8) unstable; urgency=medium
 
   * Bug #45115: Rename UCR template
