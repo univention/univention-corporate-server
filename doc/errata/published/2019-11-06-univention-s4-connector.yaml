@@ -21,3 +21,5 @@ desc: |
    connector has been fixed to prevent a loop in the s4connector
    which incremented userexpiry on certain timezones.
 bug: [43096, 49876, 49976, 50305, 50342, 49874, 49728, 50202]
+erratum: 330
+announced: 2019-11-06
