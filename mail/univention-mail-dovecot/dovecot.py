@@ -30,7 +30,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
 
 import os
 import cPickle

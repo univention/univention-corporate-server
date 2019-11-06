@@ -112,7 +112,7 @@
 #
 #
 
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
 
 import listener
 from univention.mail.dovecot_shared_folder import DovecotSharedFolderListener
@@ -140,7 +140,8 @@ def handler(dn, new, old):
 	#
 	if (new and not old) \
 		or ('univentionMailHomeServer' not in old) \
-		or ('univentionMailHomeServer' in new and 'univentionMailHomeServer' in old and
+		or (
+			'univentionMailHomeServer' in new and 'univentionMailHomeServer' in old and
 			new['univentionMailHomeServer'][0].lower() != old['univentionMailHomeServer'][0].lower() and
 			new['univentionMailHomeServer'][0].lower() in [hostname, '%s.%s' % (hostname, domainname)]):
 		dl.add_shared_folder(new)

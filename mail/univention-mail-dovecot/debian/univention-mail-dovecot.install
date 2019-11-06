@@ -4,6 +4,7 @@ dovecot-shared-folder.py usr/lib/univention-directory-listener/system/
 18univention-mail-dovecot-uninstall.uinst usr/lib/univention-uninstall/
 dovecot-postlogin.py usr/lib/dovecot
 quota-warning.sh usr/lib/dovecot
-modules/univention/mail/*.py usr/share/pyshared/univention/mail
+modules/univention/mail/*.py usr/lib/python2.7/dist-packages/univention/mail
+modules/univention/mail/*.py usr/lib/python3/dist-packages/univention/mail
 usr/lib/univention-server/server_password_change.d/univention-mail-dovecot usr/lib/univention-server/server_password_change.d/
 usr/share/univention-mail-dovecot/reapply_shared_folder_acls usr/share/univention-mail-dovecot/

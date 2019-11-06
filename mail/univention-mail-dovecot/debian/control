@@ -5,13 +5,16 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>> 7),
  univention-config-dev,
  ucslint-univention,
- python-support,
+ dh-python,
+ python-all,
 Standards-Version: 3.8.2
 
 Package: univention-mail-dovecot
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
+ ${misc:Depends},
  ${python:Depends},
+ ${python3:Depends},
  univention-base-files,
  univention-directory-manager-tools (>> 13.0.21),
  univention-directory-listener (>> 6.0.0),

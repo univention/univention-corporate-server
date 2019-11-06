@@ -1,3 +1,9 @@
+univention-mail-dovecot (5.0.1-12) unstable; urgency=medium
+
+  * Bug #49144: migrate univention-mail-dovecot to dh_python
+
+ -- Florian Best <best@univention.de>  Wed, 06 Nov 2019 08:24:52 +0100
+
 univention-mail-dovecot (5.0.1-11) unstable; urgency=low
 
   * Bug #50105: add python-support to build dependencies

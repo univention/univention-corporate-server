@@ -190,7 +190,8 @@ class DovecotListener(object):
 			ca_file = self.listener.configRegistry.get("mail/dovecot/sieve/client/cafile", "/etc/univention/ssl/ucsCA/CAcert.pem")
 			fqdn = "%s.%s" % (self.listener.configRegistry['hostname'], self.listener.configRegistry['domainname'])
 			fqdn = self.listener.configRegistry.get("mail/dovecot/sieve/client/server", fqdn)
-			_cmd = ["sieve-connect", "--user", "%s*%s" % (email, master_name),
+			_cmd = [
+				"sieve-connect", "--user", "%s*%s" % (email, master_name),
 				"--server", fqdn,
 				"--noclearauth", "--noclearchan",
 				"--tlscafile", ca_file,

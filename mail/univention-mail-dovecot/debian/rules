@@ -47,5 +47,5 @@ override_dh_fixperms:
 	chmod 2750 debian/univention-mail-dovecot/var/spool/dovecot/*
 
 %:
-	dh $@ --with 'python_support'
+	dh $@ --with 'python2,python3'
 
