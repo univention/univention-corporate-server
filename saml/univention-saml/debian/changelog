@@ -1,3 +1,9 @@
+univention-saml (6.0.2-13) unstable; urgency=medium
+
+  * Bug #49485: ignore empty subnet variable
+
+ -- Florian Best <best@univention.de>  Thu, 07 Nov 2019 08:32:55 +0100
+
 univention-saml (6.0.2-12) unstable; urgency=medium
 
   * Bug #49485: add missing build dependency to python-support

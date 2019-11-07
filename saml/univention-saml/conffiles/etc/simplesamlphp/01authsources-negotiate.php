@@ -23,7 +23,7 @@ $config['univention-negotiate'] = array(
 		import sys
 		print >> sys.stderr, '/etc/idp-ldap-user.secret could not be read!'
 	print("	'adminPassword' => '%s'," % (password,))
-	subnets = [x.strip() for x in configRegistry.get('saml/idp/negotiate/filter-subnets', '').split(',')]
+	subnets = [x.strip() for x in configRegistry.get('saml/idp/negotiate/filter-subnets', '').split(',') if x.strip()]
 	if subnets:
 		print("	'subnet' => array('%s')" % ("', '".join(subnets),))
 	print(');')
