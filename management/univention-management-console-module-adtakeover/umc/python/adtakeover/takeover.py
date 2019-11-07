@@ -2092,7 +2092,7 @@ def get_stable_last_id(progress=None, max_time=20):
 	while static_count < 3:
 		if last_id_cached_value:
 			time.sleep(0.1)
-		with file("/var/lib/univention-ldap/last_id") as f:
+		with open("/var/lib/univention-ldap/last_id") as f:
 			last_id = f.read().strip()
 		if last_id != last_id_cached_value:
 			static_count = 0
@@ -2116,7 +2116,7 @@ def wait_for_listener_replication(progress=None, max_time=None):
 		if notifier_id_cached_value:
 			time.sleep(0.7)
 		last_id = get_stable_last_id(progress)
-		with file("/var/lib/univention-directory-listener/notifier_id") as f:
+		with open("/var/lib/univention-directory-listener/notifier_id") as f:
 			notifier_id = f.read().strip()
 		if not last_id:
 			return False
