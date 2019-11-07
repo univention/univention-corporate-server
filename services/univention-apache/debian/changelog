@@ -1,3 +1,9 @@
+univention-apache (11.0.1-10) unstable; urgency=medium
+
+  * Bug #45115: Fix empty IncludeOptional
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 07 Nov 2019 08:52:15 +0100
+
 univention-apache (11.0.1-9) unstable; urgency=medium
 
   * Bug #45115: Better exception handling, removing lines in join script
