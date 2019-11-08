@@ -71,7 +71,7 @@ UPDATE_SERIAL_FILES = [
 	'/etc/apt/sources.list.d/20_ucs-online-component.list'
 ]
 
-HOOK_DIRECTORY = '/usr/share/pyshared/univention/management/console/modules/updater/hooks'
+HOOK_DIRECTORY = '/usr/lib/python2.7/dist-packages/univention/updater/hooks'
 
 INSTALLERS = {
 	'release': {
@@ -365,12 +365,12 @@ class Instance(Base):
 				else:
 					install.append([pkg, ver])
 			elif line.startswith('Remv '):
-				l = line.split(' ')
-				pkg = l[1]
+				ll = line.split(' ')
+				pkg = ll[1]
 				# i18n: The package version is unknown.
 				ver = _('unknown')
-				if len(l) > 2:
-					ver = l[2].replace('[', '').replace(']', '')
+				if len(ll) > 2:
+					ver = ll[2].replace('[', '').replace(']', '')
 				remove.append([pkg, ver])
 
 		return dict(

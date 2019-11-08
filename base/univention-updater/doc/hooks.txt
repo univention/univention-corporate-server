@@ -4,7 +4,7 @@ once at module startup:
 - updater_prohibit_update
 
 These hooks may reside within a single python file that has to be placed in the
-directory /usr/share/pyshared/univention/management/console/modules/updater/hooks/
+directory /usr/lib/python2.7/dist-packages/univention/updater/hooks/
 The content of an example hookfile is placed below.
 
 Hook "updater_show_message"
