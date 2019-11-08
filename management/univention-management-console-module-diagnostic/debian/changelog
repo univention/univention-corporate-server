@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (5.0.1-23) unstable; urgency=medium
+
+  * Bug #49151: remove pysupport directory
+
+ -- Florian Best <best@univention.de>  Fri, 08 Nov 2019 14:58:03 +0100
+
 univention-management-console-module-diagnostic (5.0.1-22) unstable; urgency=medium
 
   * Bug #50394: remove broken test for /var/lock/sysvol-sync-dir
