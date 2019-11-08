@@ -21,3 +21,9 @@ Description[de]=Aktiviert und legt den Namen des Verzeichnis fest, in das OpenLD
 Description[en]=Activates and defines the name of the directory, into which OpenLDAP writes the so called "delete log".
 Type=str
 Categories=service-ldap
+
+[ldap/logging/id-prefix]
+Description[de]=Spezifiziert, ob jeder Logeintrag mit dem identifier geprefixt werden soll.
+Description[en]=Specifies, whether to prefix every log record with the identifier.
+Type=bool
+Categories=service-ldap
