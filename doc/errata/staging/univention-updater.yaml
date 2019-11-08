@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [2]
+scope: ucs_4.4-0-errata4.4-2
+src: univention-mail-dovecot
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The package now uses dh_python2 instead of python-support.
+   Therefore python modules are installed into
+   /usr/lib/python2.7/dist-packages/univention/updater/ and
+   /usr/lib/python2.7/dist-packages/univention/management/console/modules/upd
+   ater/.
+bug: [49143]
