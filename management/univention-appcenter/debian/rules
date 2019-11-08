@@ -33,7 +33,7 @@
 export DH_VERBOSE=1
 
 %:
-	dh $@ --with python2
+	dh $@ --with python2,python3 --buildsystem=pybuild
 
 export PYBUILD_NAME=univention-appcenter
 
@@ -44,12 +44,14 @@ override_dh_auto_clean:
 	dh_auto_clean --buildsystem=pybuild
 	rm -rf build/
 	dh_auto_clean
+	make clean
 
 override_dh_auto_build:
 	dh-umc-module-build
 	univention-l10n-build de
-	dh_auto_build --buildsystem=pybuild
 	dh_auto_build
+	make
+	dh_auto_build --buildsystem=pybuild
 
 override_dh_auto_install:
 	univention-install-config-registry
@@ -57,8 +59,10 @@ override_dh_auto_install:
 	univention-l10n-install de
 	dh-umc-module-install
 	dh_auto_install --buildsystem=pybuild
-	python setup_dev.py build --force -b build/univention-appcenter-dev install --force --root=debian/univention-appcenter-dev --install-layout=deb
-	python setup_docker.py build --force -b build/univention-appcenter-docker install --force --root=debian/univention-appcenter-docker --install-layout=deb
+	python setup_dev.py build --force -b build/python-univention-appcenter-dev install --force --root=debian/python-univention-appcenter-dev --install-layout=deb
+	python3 setup_dev.py build --force -b build/python3-univention-appcenter-dev install --force --root=debian/python3-univention-appcenter-dev --install-layout=deb
+	python setup_docker.py build --force -b build/python-univention-appcenter-docker install --force --root=debian/python-univention-appcenter-docker --install-layout=deb
+	python3 setup_docker.py build --force -b build/python3-univention-appcenter-docker install --force --root=debian/python3-univention-appcenter-docker --install-layout=deb
 	python setup_umc.py build --force -b build/univention-appcenter-umc install --force --root=debian/univention-management-console-module-appcenter --install-layout=deb
 	dh_auto_install
 

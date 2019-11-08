@@ -259,7 +259,7 @@ class PasswordSetting(Setting):
 class PasswordFileSetting(FileSetting, PasswordSetting):
 	def _touch_file(self, filename):
 		super(PasswordFileSetting, self)._touch_file(filename)
-		os.chmod(filename, 0600)
+		os.chmod(filename, 0o600)
 
 
 class StatusSetting(Setting):

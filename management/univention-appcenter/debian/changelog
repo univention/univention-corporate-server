@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-81) unstable; urgency=medium
+
+  * Bug #50425: add python3 binary packages
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 11 Nov 2019 10:36:04 +0100
+
 univention-appcenter (8.0.11-80) unstable; urgency=medium
 
   * Bug #50425: migrate to dh_python

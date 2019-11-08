@@ -275,7 +275,7 @@ class Docker(object):
 			if not os.path.isdir(tmp_dir):
 				os.makedirs(tmp_dir)
 			tmp_file = NamedTemporaryFile(dir=tmp_dir)
-			os.chmod(tmp_file.name, 0622)  # world writable for containers not using root as user
+			os.chmod(tmp_file.name, 0o622)  # world writable for containers not using root as user
 			tmp_file.container_path = tmp_file.name[len(path) - 1:]
 			try:
 				yield tmp_file
@@ -314,7 +314,7 @@ class Docker(object):
 			pass
 		# create new env file
 		fd = os.open(env_file, os.O_RDWR | os.O_CREAT)
-		os.chmod(env_file, 0400)
+		os.chmod(env_file, 0o400)
 		with os.fdopen(fd, 'w') as outfile:
 			# appcenter env file
 			if os.path.exists(self.app.get_cache_file('env')):
@@ -480,7 +480,7 @@ class MultiDocker(Docker):
 			template = fd.read()
 			content = ucr_run_filter(template, env)
 		with open(yml_file, 'wb') as fd:
-			os.chmod(yml_file, 0600)
+			os.chmod(yml_file, 0o600)
 			fd.write(content)
 		content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
 		container_def = content['services'][self.app.docker_main_service]
