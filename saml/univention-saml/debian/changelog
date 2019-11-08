@@ -1,3 +1,9 @@
+univention-saml (6.0.2-14) unstable; urgency=medium
+
+  * Bug #49167: migrate to dh_python
+
+ -- Florian Best <best@univention.de>  Fri, 08 Nov 2019 16:54:34 +0100
+
 univention-saml (6.0.2-13) unstable; urgency=medium
 
   * Bug #49485: ignore empty subnet variable

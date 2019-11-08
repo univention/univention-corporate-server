@@ -51,13 +51,13 @@ extract_binddn_and_bindpwdfile_from_args() {
 	while [ $# -gt 0 ]; do
 		case "$1" in
 			"--binddn")
-							binddn="${2:?missing binddn}"
-							shift 2 || exit 2
-							;;
+				binddn="${2:?missing binddn}"
+				shift 2 || exit 2
+				;;
 			"--bindpwdfile")
-							bindpwdfile="${2:?missing bindpwdfile}"
-							shift 2 || exit 2
-							;;
+				bindpwdfile="${2:?missing bindpwdfile}"
+				shift 2 || exit 2
+				;;
 			*)
 				shift
 				;;
@@ -76,11 +76,11 @@ create_krb_apache2_user() {
 		echo -n "$spn_account_name_password" > /etc/simplesamlphp/ucs-sso-kerberos.secret
 
 		udm users/user create "$@" --ignore_exists \
-				--position "cn=users,$ldap_base" \
-				--set username="$spn_account_name" \
-				--set lastname="SSO" \
-				--set password="$spn_account_name_password" \
-				--append objectFlag=hidden || die
+			--position "cn=users,$ldap_base" \
+			--set username="$spn_account_name" \
+			--set lastname="SSO" \
+			--set password="$spn_account_name_password" \
+			--append objectFlag=hidden || die
 
 		extract_binddn_and_bindpwdfile_from_args "$@"
 		test -z "$binddn" && binddn="cn=admin,$ldap_base"
@@ -158,12 +158,12 @@ user['password'] = sys.argv[1]
 user['lastname'] = 'idp-user'
 user['name'] = 'idp-user'
 try:
-  print 'Creating SAML user'
+  print('Creating SAML user')
   dn = user.create()
 except (univention.admin.uexceptions.objectExists, univention.admin.uexceptions.uidAlreadyUsed):
-  print 'SAML user already exists'
+  print('SAML user already exists')
   sys.exit(0)
-print 'Make SAML user a system user'
+print('Make SAML user a system user')
 lo.modify(dn, [('univentionObjectFlag', None, ['functional', 'hidden'])])
 EOF
 		ucr commit /etc/simplesamlphp/authsources.php

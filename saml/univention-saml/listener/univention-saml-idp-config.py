@@ -28,7 +28,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
 import listener
 
 import univention.debug as ud
@@ -40,7 +40,7 @@ filter = '(objectClass=univentionSAMLIdpConfig)'
 
 LDAP_UCR_MAPPING = {
 	'LdapGetAttributes': 'saml/idp/ldap/get_attributes',
-	}
+}
 
 
 def handler(dn, new, old):
