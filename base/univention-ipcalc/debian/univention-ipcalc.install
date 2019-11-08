@@ -1,3 +1,2 @@
 univention-ipcalc usr/bin/
 univention-ipcalc6 usr/bin/
-univention/ipcalc.py usr/lib/python2.7/dist-packages/univention/
