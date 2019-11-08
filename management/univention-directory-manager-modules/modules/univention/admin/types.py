@@ -410,7 +410,7 @@ class DateType(StringType):
 		try:
 			return datetime.date(*time.strptime(value, '%Y-%m-%d')[0:3])
 		except ValueError:
-			ud.debug(ud.INFO, 'Wrong date format: %r' % (value,))
+			ud.debug(ud.ADMIN, ud.INFO, 'Wrong date format: %r' % (value,))
 			raise univention.admin.uexceptions.valueInvalidSyntax(_('Date does not match format "%Y-%m-%d".'))
 
 
@@ -434,7 +434,7 @@ class TimeType(StringType):
 		try:
 			return datetime.time(*time.strptime(value, '%H:%M:%S')[3:6])
 		except ValueError:
-			ud.debug(ud.INFO, 'Wrong time format: %r' % (value,))
+			ud.debug(ud.ADMIN, ud.INFO, 'Wrong time format: %r' % (value,))
 			raise univention.admin.uexceptions.valueInvalidSyntax(_('Time does not match format "%H:%M:%S".'))
 
 
@@ -461,7 +461,7 @@ class DateTimeType(StringType):
 		try:
 			return datetime.datetime(*time.strptime(value, '%Y-%m-%dT%H:%M:%S')[:6])  # FIXME: parse Z at the end
 		except ValueError:
-			ud.debug(ud.INFO, 'Wrong datetime format: %r' % (value,))
+			ud.debug(ud.ADMIN, ud.INFO, 'Wrong datetime format: %r' % (value,))
 			raise univention.admin.uexceptions.valueInvalidSyntax(_('Datetime does not match format "%Y-%m-%dT%H:%M:%S".'))
 
 

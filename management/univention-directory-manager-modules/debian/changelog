@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.14-16) unstable; urgency=medium
+
+  * Bug #50476: fix type errors during logging
+
+ -- Florian Best <best@univention.de>  Fri, 08 Nov 2019 16:04:14 +0100
+
 univention-directory-manager-modules (14.0.14-15) unstable; urgency=medium
 
   * Bug #50376: open link in new tab
