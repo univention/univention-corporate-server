@@ -8,4 +8,7 @@ desc: |
  This update addresses the following issue(s):
  * Is is now possible to restrict negotiate authentication to certain IP
    networks via the UCR variable saml/idp/negotiate/filter-subnets.
-bug: [49485]
+ * The package now uses dh_python2 instead of python-support.
+   Therefore python modules are installed into
+   /usr/lib/python2.7/dist-packages/univention/admin/handlers/.
+bug: [49485, 49167]
