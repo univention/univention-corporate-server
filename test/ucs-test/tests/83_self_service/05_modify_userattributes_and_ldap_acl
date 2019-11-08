@@ -19,6 +19,9 @@ import univention.admin.uexceptions
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm, ucr_test.UCSTestConfigRegistry() as ucr:
+
+		handler_set(['umc/self-service/profiledata/enabled=true'])
+
 		if 'l' not in ucr.get('self-service/ldap_attributes', '').split(','):
 			handler_set(["self-service/ldap_attributes=%s,l" % ucr.get('self-service/ldap_attributes', '')])
 		user = udm.create_user(password='univention')[0]
