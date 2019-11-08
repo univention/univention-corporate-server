@@ -26,8 +26,6 @@ license_uuid.py usr/lib/univention-directory-listener/system/
 script/preup.sh usr/share/univention-updater/
 script/postup.sh usr/share/univention-updater/
 
-modules/univention/updater/*.py usr/lib/python2.7/dist-packages/univention/updater/
-
 appliance-hooks.d/updater usr/lib/univention-system-setup/appliance-hooks.d/
 
 apt.conf.d/*	etc/apt/apt.conf.d/

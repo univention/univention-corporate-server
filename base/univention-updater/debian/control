@@ -33,12 +33,61 @@ Depends: ${python:Depends}, ${python3:Depends},
  univention-errata-level,
  apt-transport-https,
  ca-certificates,
+ python-univention-updater (>= 14.0.2-6),
 Recommends:
  screen,
 Suggests:
  apt-mirror,
 Description: UCS - system upgrading tool
  UCS Updater can upgrade your version of UCS.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: python-univention-updater
+Architecture: all
+Replaces: univention-updater (<< 14.0.2-6)
+Breaks: univention-updater (<< 14.0.2-6)
+Recommends: ${python:Recommends},
+Depends: ${python:Depends},
+ ${misc:Depends},
+ python-univention (>> 5.0.6),
+ shell-univention-lib,
+ python-univention-lib (>= 1.0.25-1),
+ univention-admin-diary-client (>= 1.0.0-29),
+ python-univention-config-registry,
+ python-univention-directory-manager,
+ python-debian,
+ python-apt,
+ univention-errata-level,
+ apt-transport-https,
+ ca-certificates,
+Description: UCS Updater Python modules
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: python3-univention-updater
+Architecture: all
+Recommends: ${python3:Recommends},
+Depends: ${python3:Depends},
+ ${misc:Depends},
+ python3-univention,
+ shell-univention-lib,
+ python-univention-lib,
+ univention-admin-diary-client,
+ python-univention-config-registry,
+ python-univention-directory-manager,
+ python-debian,
+ python-apt,
+ univention-errata-level,
+ apt-transport-https,
+ ca-certificates,
+Description: UCS Updater Python 3 modules
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
