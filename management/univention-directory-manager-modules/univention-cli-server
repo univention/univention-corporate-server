@@ -175,19 +175,19 @@ def doit(sarglist, conn):
 	def send_message_as_json(output):
 		"""Send answer back."""
 		back = six.ensure_binary(json.dumps(output), encoding='utf-8', errors='strict')
-		conn.send(back + '\0')
+		conn.send(back + b'\0')
 		conn.close()
 
 	def send_message_as_ast(output):
 		"""Send answer back."""
-		back = repr(output)
-		conn.send(back + '\0')
+		back = six.ensure_binary(repr(output))
+		conn.send(back + b'\0')
 		conn.close()
 
 	global logfile
 	msg_sender = send_message_as_json
 	try:
-		arglist = json.loads(sarglist)
+		arglist = json.loads(six.ensure_str(sarglist, encoding='utf-8', errors='strict'))
 	except ValueError as exp:
 		msg_sender = send_message_as_ast
 		try:
