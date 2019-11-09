@@ -192,11 +192,12 @@ def main():
 	sock.send(msg + b'\0')
 	data = receive_answer(sock)
 	sock.close()
+	data_str = six.ensure_str(data, encoding='utf-8', errors='strict')
 	try:
-		output = json.loads(data)
+		output = json.loads(data_str)
 	except ValueError as _exp:
 		try:
-			output = ast.literal_eval(data)
+			output = ast.literal_eval(data_str)
 		except Exception as _exp:
 			return
 	result = process_output(output, cmdfile)
