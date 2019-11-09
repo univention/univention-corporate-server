@@ -116,14 +116,15 @@ def get_password():
 
 def receive_answer(sock):
 	"""Receive complete answer from server."""
-	data = ''
+	buff_len = 1024
+	data = b''
 	while True:
-		buf = sock.recv(1024)
+		buf = sock.recv(buff_len)
 		if len(buf) == 0:
 			print('E: Daemon died.', file=sys.stderr)
 			sys.exit(1)
-		elif buf[-1] == '\0':
-			buf = buf[0:-1]
+		elif len(buf) < buff_len:
+			buf = buf[:-1]
 			data += buf
 			break
 		else:
