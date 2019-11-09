@@ -12,3 +12,4 @@ desc: |
    /usr/lib/python2.7/dist-packages/univention/management/console/modules/upd
    ater/.
 bug: [49143]
+maintained: true
