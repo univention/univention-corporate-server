@@ -34,6 +34,7 @@ from __future__ import absolute_import
 import re
 import ldap
 import operator
+import io
 import ipaddr
 import inspect
 import time
@@ -90,10 +91,10 @@ def import_syntax_files():
 				if fn.startswith('/usr/lib/pymodules/python2.7/'):
 					ud.debug(ud.ADMIN, ud.INFO, 'Warning: still importing code from /usr/lib/pymodules/python2.7. Migration to dh_python is necessary!')
 				try:
-					with open(fn, 'r') as fd:
-						exec(fd, sys.modules[__name__].__dict__)
+					with io.open(fn, 'rb') as fd:
+						exec(fd.read(), sys.modules[__name__].__dict__)
 					ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.import_syntax_files: importing %r' % (fn,))
-				except Exception:
+				except Exception as exp:
 					ud.debug(ud.ADMIN, ud.ERROR, 'admin.syntax.import_syntax_files: loading %r failed' % (fn,))
 					ud.debug(ud.ADMIN, ud.ERROR, 'admin.syntax.import_syntax_files: TRACEBACK:\n%s' % traceback.format_exc())
 				finally:
