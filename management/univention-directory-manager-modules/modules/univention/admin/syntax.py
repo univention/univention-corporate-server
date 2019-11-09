@@ -45,6 +45,7 @@ import zlib
 import bz2
 import copy
 import json
+import six
 import sys
 import os
 import shlex
@@ -1312,9 +1313,10 @@ class uid_umlauts(simple):
 
 	@classmethod
 	def parse(self, text):
-		if " " in text:
+		unicode_text = six.ensure_text(text, encoding='utf-8', errors='strict')
+		if " " in unicode_text:
 			raise univention.admin.uexceptions.valueError(_("Spaces are not allowed in the username!"))
-		if self._re.match(text.decode("utf-8")) is not None:
+		if self._re.match(unicode_text) is not None:
 			return text
 		else:
 			raise univention.admin.uexceptions.valueError(_("Username must only contain numbers, letters and dots!"))
