@@ -191,8 +191,9 @@ def doit(sarglist, conn):
 	except ValueError as exp:
 		msg_sender = send_message_as_ast
 		try:
-			arglist = ast.literal_eval(sarglist)
+			arglist = ast.literal_eval(six.ensure_str(sarglist))
 		except Exception as exp:
+			ud.debug(ud.ADMIN, ud.INFO, 'daemon [%s] [%s] Could not parse:%s' % (os.getppid(), os.getpid()), sarglist)
 			return
 	next_is_logfile = False
 	secret = False
