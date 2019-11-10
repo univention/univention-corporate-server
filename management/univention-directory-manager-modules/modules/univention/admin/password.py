@@ -121,10 +121,12 @@ def krb5_asn1(principal, password, krb5_context=None):
 	:returns: list of ASN1 encoded Kerberos hashes.
 	"""
 	list = []
-	if isinstance(principal, unicode):
-		principal = principal.encode('utf-8')
-	if isinstance(password, unicode):
-		password = password.encode('utf-8')
+	#if isinstance(principal, unicode):
+	#	principal = principal.encode('utf-8')
+	#if isinstance(password, unicode):
+	#	password = password.encode('utf-8')
+	principal = six.ensure_str(principal, encoding='utf-8', errors='strict')
+	password = six.ensure_str(password, encoding='utf-8', errors='strict')
 	if not krb5_context:
 		krb5_context = heimdal.context()
 	for krb5_etype in krb5_context.get_permitted_enctypes():
