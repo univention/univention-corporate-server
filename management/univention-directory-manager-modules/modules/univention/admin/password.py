@@ -34,6 +34,7 @@ from __future__ import absolute_import
 import re
 import hashlib
 import heimdal
+import six
 import smbpasswd
 import string
 import univention.config_registry
@@ -70,8 +71,8 @@ def crypt(password, method_id=None, salt=None):
 			'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
 			'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5',
 			'6', '7', '8', '9']
-		urandom = open("/dev/urandom", "r")
-		for i in xrange(0, 16):  # up to 16 bytes of salt are evaluated by crypt(3), overhead is ignored
+		urandom = open("/dev/urandom", "rb")
+		for i in range(0, 16):  # up to 16 bytes of salt are evaluated by crypt(3), overhead is ignored
 			o = ord(urandom.read(1))
 			while not o < 256 / len(valid) * len(valid):  # make sure not to skew the distribution when using modulo
 				o = ord(urandom.read(1))
@@ -88,7 +89,7 @@ def crypt(password, method_id=None, salt=None):
 		}.get(hashing_method, '6')
 
 	import crypt
-	return crypt.crypt(password.encode('utf-8'), '$%s$%s$' % (method_id, salt, ))
+	return crypt.crypt(six.ensure_str(password, encoding='utf-8', errors='strict'), '$%s$%s$' % (method_id, salt, ))
 
 
 def ntlm(password):
