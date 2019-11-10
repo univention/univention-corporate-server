@@ -2184,8 +2184,8 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def __getsmbPWHistory(self, newpassword, smbpwhistory, smbpwhlen):
 		# split the history
-		if len(string.strip(smbpwhistory)):
-			pwlist = string.split(smbpwhistory, ' ')
+		if len(smbpwhistory.strip()):
+			pwlist = smbpwhistory.split(' ')
 		else:
 			pwlist = []
 
