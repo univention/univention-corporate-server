@@ -2347,7 +2347,13 @@ class object(univention.admin.handlers.simpleLdap):
 
 	@classmethod
 	def identify(cls, dn, attr, canonical=False):
-		if b'0' in attr.get('uidNumber', []) or b'$' in attr.get('uid', [''])[0] or b'univentionHost' in attr.get('objectClass', []) or b'functional' in attr.get('univentionObjectFlag', []):
+		if u'0' in map(six.ensure_text, attr.get('uidNumber', [])):
+			return False
+		if u'$' in six.ensure_text(attr.get('uid', [''])[0],  encoding='utf-8', errors='strict'):
+			return False
+		if u'univentionHost' in map(six.ensure_text, attr.get('objectClass', [])):
+			return False
+		if u'functional' in map(six.ensure_text, attr.get('univentionObjectFlag', [])):
 			return False
 		required_ocs = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'person', 'krb5KDCEntry', 'krb5Principal'}
 		ocs = set(attr.get('objectClass', []))
