@@ -580,7 +580,7 @@ class _ConfigRegistry(dict):
 				user = 0
 				group = 0
 			# open temporary file for writing
-			reg_file = open(temp_filename, 'w')
+			reg_file = io.open(temp_filename, 'w', encoding='UTF-8')
 			# write data to file
 			reg_file.write('# univention_ base.conf\n\n')
 			reg_file.write(self.__str__())
