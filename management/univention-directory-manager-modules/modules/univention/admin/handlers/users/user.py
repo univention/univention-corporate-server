@@ -1627,16 +1627,16 @@ class object(univention.admin.handlers.simpleLdap):
 			# Ensure the primary Group has the samba option enabled
 			if self['primaryGroup'] and not self.lo.getAttr(self['primaryGroup'], 'sambaSID'):
 				raise univention.admin.uexceptions.primaryGroupWithoutSamba(self['primaryGroup'])
-
+		username = six.ensure_text(self['username'],  encoding='utf-8', errors='strict')
 		if not self.exists() or self.hasChanged('username'):
-			check_prohibited_username(self.lo, self['username'])
+			check_prohibited_username(self.lo, username)
 
 			# get lock for username
 			try:
-				if self['username']:  # might not be set when using CLI without --set username=
-					self.alloc.append(('uid', univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])))
+				if username:  # might not be set when using CLI without --set username=
+					self.alloc.append(('uid', univention.admin.allocators.request(self.lo, self.position, 'uid', value=username)))
 			except univention.admin.uexceptions.noLock:
-				raise univention.admin.uexceptions.uidAlreadyUsed(self['username'])
+				raise univention.admin.uexceptions.uidAlreadyUsed(username)
 
 		# get lock for mailPrimaryAddress
 		if not self.exists() or self.hasChanged('mailPrimaryAddress'):
