@@ -33,6 +33,7 @@
 from __future__ import absolute_import
 
 import hashlib
+import io
 import os
 import string
 import re
@@ -2183,6 +2184,28 @@ class object(univention.admin.handlers.simpleLdap):
 		return dn
 
 	def __getsmbPWHistory(self, newpassword, smbpwhistory, smbpwhlen):
+		def _get_salt_2():
+			# Get salt for python2
+			salt = ''
+			urandom = io.open('/dev/urandom', 'rb')
+			# get 16 bytes from urandom for salting our hash
+			rand = urandom.read(16)
+			for i in range(0, len(rand)):
+				salt = salt + '%.2X' % ord(rand[i])
+			return salt
+
+		def _get_salt_3():
+			# Get salt for python3
+			# get 16 bytes from urandom for salting our hash
+			rand = os.urandom(16)
+			# Encode same way as python2
+			return rand.hex().upper()
+
+		def _get_salt():
+			if six.PY2:
+				return _get_salt_2()
+			return _get_salt_3()
+
 		# split the history
 		if len(smbpwhistory.strip()):
 			pwlist = smbpwhistory.split(' ')
@@ -2190,12 +2213,7 @@ class object(univention.admin.handlers.simpleLdap):
 			pwlist = []
 
 		# calculate the password hash & salt
-		salt = ''
-		urandom = open('/dev/urandom', 'r')
-		# get 16 bytes from urandom for salting our hash
-		rand = urandom.read(16)
-		for i in range(0, len(rand)):
-			salt = salt + '%.2X' % ord(rand[i])
+		salt = _get_salt()
 		# we have to have that in hex
 		hexsalt = salt
 		# and binary for calculating the md5
