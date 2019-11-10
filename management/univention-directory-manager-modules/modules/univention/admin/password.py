@@ -236,8 +236,8 @@ def get_password_history(newpwhash, pwhistory, pwhlen):
 	:returns: modified password hash history.
 	"""
 	# split the history
-	if len(string.strip(pwhistory)):
-		pwlist = string.split(pwhistory, ' ')
+	if len(pwhistory.strip()):
+		pwlist = pwhistory.split(' ')
 	else:
 		pwlist = []
 
@@ -261,7 +261,7 @@ def get_password_history(newpwhash, pwhistory, pwhlen):
 				else:
 					pwlist.append(newpwhash)
 	# and build the new history
-	res = string.join(pwlist)
+	res = " ".join(pwlist)
 	return res
 
 
