@@ -1934,8 +1934,9 @@ class object(univention.admin.handlers.simpleLdap):
 	# If you change anything here, please also check users/ldap.py
 	def _modlist_posix_password(self, ml):
 		if not self.exists() or self.hasChanged(['disabled', 'password']):
-			old_password = self.oldattr.get('userPassword', [''])[0]
-			password = self['password']
+			old_password = six.ensure_str(self.oldattr.get('userPassword', [''])[0], encoding='utf-8', errors='strict')
+
+			password = six.ensure_str(self['password'], encoding='utf-8', errors='strict')
 
 			if self.hasChanged('password') and univention.admin.password.RE_PASSWORD_SCHEME.match(password):
 				# hacking attempt. user tries to change the password to e.g. {KINIT} or {crypt}$6$...
