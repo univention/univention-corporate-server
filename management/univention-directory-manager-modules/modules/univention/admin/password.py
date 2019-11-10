@@ -281,7 +281,7 @@ def password_already_used(password, pwhistory):
 			ud.debug(ud.ADMIN, ud.ERROR, '\n== [%s]\n== [%s]' % (password_hash, line))
 		except IndexError:  # old style password history entry, no method id/salt in there
 			hash_algorithm = hashlib.new("sha1")
-			hash_algorithm.update(password.encode("utf-8"))
+			hash_algorithm.update(six.ensure_binary(password, encoding='utf-8', errors='strict'))
 			password_hash = hash_algorithm.hexdigest().upper()
 		if password_hash == line:
 			return True
