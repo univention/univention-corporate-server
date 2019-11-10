@@ -1585,7 +1585,7 @@ class object(univention.admin.handlers.simpleLdap):
 		realm = domain.getKerberosRealm()
 		if not realm:
 			raise univention.admin.uexceptions.noKerberosRealm()
-		return self['username'] + '@' + realm
+		return six.ensure_str(self['username'], encoding='utf-8', errors='strict') + '@' + six.ensure_str(realm, encoding='utf-8', errors='strict')
 
 	def _check_uid_gid_uniqueness(self):
 		if not configRegistry.is_true("directory/manager/uid_gid/uniqueness", True):
