@@ -2294,7 +2294,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def getbytes(self, string):
 		# return byte values of a string (for smbPWHistory)
-		bytes = [int(string[i:i + 2], 16) for i in xrange(0, len(string), 2)]
+		bytes = [int(string[i:i + 2], 16) for i in range(0, len(string), 2)]
 		return struct.pack("%iB" % len(bytes), *bytes)
 
 	@classmethod
