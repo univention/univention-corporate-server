@@ -1820,7 +1820,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.exists() and not self.hasChanged('password'):
 			return ml
 
-		password_nt, password_lm = univention.admin.password.ntlm(self['password'])
+		password_nt, password_lm = univention.admin.password.ntlm(six.ensure_str(self['password'], encoding='utf-8', errors='strict'))
 		ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
 		ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
 
