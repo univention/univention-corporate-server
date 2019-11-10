@@ -623,7 +623,7 @@ class access(object):
 		fixed = set(pattrs.get('fixedAttributes', ()))
 		empty = set(pattrs.get('emptyAttributes', ()))
 		values = result.setdefault(ptype, {})
-		for key in list(empty) + pattrs.keys() + list(fixed):
+		for key in list(empty) + list(pattrs.keys()) + list(fixed):
 			if key in ('requiredObjectClasses', 'prohibitedObjectClasses', 'fixedAttributes', 'emptyAttributes', 'objectClass', 'cn', 'univentionObjectType', 'ldapFilter'):
 				continue
 
