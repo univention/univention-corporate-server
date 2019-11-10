@@ -1288,7 +1288,7 @@ class object(univention.admin.handlers.simpleLdap):
 			mail='univentionMail',
 			person='person',
 		)
-		for opt, oc in options.iteritems():
+		for opt, oc in options.items():
 			# existing object
 			if self.oldattr:
 				if oc in self.oldattr.get('objectClass', []):
