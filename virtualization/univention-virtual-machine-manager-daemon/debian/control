@@ -7,7 +7,9 @@ Uploaders: Philipp Hahn <hahn@univention.de>,
 Standards-Version: 3.7.2
 Build-Depends: debhelper (>= 9),
  ucslint-univention,
- python-support,
+ dh-python,
+ python-all,
+ python3-all,
  univention-config-dev,
  univention-management-console-dev
 
@@ -43,11 +45,24 @@ Description: UCS Virtual Machine Manager Daemon - Python bindings
  This package contains the UCS Virtual Machine Manager Daemon
  Python bindings used to communicate with the daemon.
 
+Package: python3-univention-virtual-machine-manager
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends},
+ python3-libvirt,
+ python3-openssl,
+ python3-univention-directory-manager,
+ python3-libcloud,
+ python3-lxml,
+Provides: ${python3:Provides}
+Description: UCS Virtual Machine Manager Daemon - Python 3 bindings
+ This package contains the UCS Virtual Machine Manager Daemon
+ Python 3 bindings used to communicate with the daemon.
+
 Package: univention-management-console-module-uvmm
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends},
+Depends: ${misc:Depends}, ${python:Depends}, ${python3:Depends},
  univention-directory-manager-tools (>> 7.0.147),
- univention-management-console-server,
+ univention-management-console-server (>= 11.0.4-37),
  python-univention-virtual-machine-manager (= ${source:Version}),
  univention-novnc,
  univention-web-js (>= 3.0.5-21),

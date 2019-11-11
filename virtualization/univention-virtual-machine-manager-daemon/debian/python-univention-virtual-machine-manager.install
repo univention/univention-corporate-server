@@ -1,2 +1,2 @@
-src/univention/uvmm/*.py usr/share/pyshared/univention/uvmm
+src/univention/uvmm/*.py usr/lib/python2.7/dist-packages/univention/uvmm
 src/i18n/* usr/share/locale/

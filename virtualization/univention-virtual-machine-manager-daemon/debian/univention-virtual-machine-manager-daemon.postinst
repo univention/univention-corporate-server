@@ -77,8 +77,6 @@ case "$1" in
 	;;
 esac
 
-update-python-modules -p
-
 uinst=/usr/lib/univention-install/56univention-virtual-machine-manager-daemon.uinst
 [ -e "$uinst" ] && rm "$uinst"
 
