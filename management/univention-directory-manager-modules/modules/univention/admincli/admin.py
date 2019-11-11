@@ -35,6 +35,7 @@
 from __future__ import print_function
 import getopt
 import re
+import six
 import string
 import base64
 import os
@@ -823,7 +824,7 @@ def _doit(arglist):
 				else:
 					out.append('Object exists')
 			elif created:
-				out.append('Object created: %s' % _2utf8(dn))
+				out.append('Object created: %s' % six.ensure_str(_2utf8(dn), encoding='utf-8', errors='strict'))
 
 	#+++# ACTION MODIFY #+++#
 	elif action == 'modify' or action == 'edit' or action == 'move':
