@@ -68,6 +68,7 @@ class RsyslogEmitter(object):
 		record = logging.LogRecord('diary-rsyslogger', logging.INFO, None, None, 'ADMINDIARY: ' + str(entry), (), None, None)
 		self.handler.emit(record)
 
+
 emitter = RsyslogEmitter()
 
 

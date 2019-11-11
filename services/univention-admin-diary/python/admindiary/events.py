@@ -47,6 +47,8 @@ class DiaryEvent(object):
 		self.tags = tags or []
 		self.icon = icon
 		self._all_events[self.name] = self
+
+
 APP_INSTALL_START = DiaryEvent(u'APP_INSTALL_START', {u'en': u'Installation of {name} {version} started', u'de': u'Installation von {name} {version} wurde gestartet'}, args=[u'name', u'version'], icon=u'software')
 APP_INSTALL_SUCCESS = DiaryEvent(u'APP_INSTALL_SUCCESS', {u'en': u'Installation of {name} {version} was successful', u'de': u'Die Installation von {name} {version} war erfolgreich'}, args=[u'name', u'version'], icon=u'software')
 APP_INSTALL_FAILURE = DiaryEvent(u'APP_INSTALL_FAILURE', {u'en': u'Installation of {name} {version} failed. Error {error_code}', u'de': u'Die Installation von {name} {version} schlug fehl. Fehler {error_code}'}, args=[u'name', u'version', u'error_code'], tags=[u'error'], icon=u'software')
@@ -518,4 +520,3 @@ UDM_UVMM_INFO_REMOVED = DiaryEvent(u'UDM_UVMM_INFO_REMOVED', {u'en': u'Machine i
 UDM_UVMM_PROFILE_CREATED = DiaryEvent(u'UDM_UVMM_PROFILE_CREATED', {u'en': u'Profile {name} created', u'de': u'Profile {name} angelegt'}, args=[u'name'], icon=u'domain')
 UDM_UVMM_PROFILE_MODIFIED = DiaryEvent(u'UDM_UVMM_PROFILE_MODIFIED', {u'en': u'Profile {name} modified', u'de': u'Profile {name} bearbeitet'}, args=[u'name'], icon=u'domain')
 UDM_UVMM_PROFILE_REMOVED = DiaryEvent(u'UDM_UVMM_PROFILE_REMOVED', {u'en': u'Profile {name} removed', u'de': u'Profile {name} gelöscht'}, args=[u'name'], icon=u'domain')
-

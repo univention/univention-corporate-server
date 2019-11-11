@@ -29,8 +29,8 @@
 # <https://www.gnu.org/licenses/>.
 
 """
- * Backend library classes and methods
- * Wenn called as __main__ it acts as rsyslog plugin
+* Backend library classes and methods
+* Wenn called as __main__ it acts as rsyslog plugin
 """
 
 import sys
@@ -51,8 +51,8 @@ class RsyslogTransport(object):
 		ints = Word(nums)
 		# timestamp
 		month = Word(string.ascii_uppercase, string.ascii_lowercase, exact=3)
-		day   = ints
-		hour  = Combine(ints + ":" + ints + ":" + ints)
+		day = ints
+		hour = Combine(ints + ":" + ints + ":" + ints)
 
 		timestamp = month + day + hour
 		# Convert timestamp to datetime

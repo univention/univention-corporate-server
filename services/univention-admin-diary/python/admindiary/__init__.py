@@ -74,6 +74,8 @@ def _setup_logger():
 			pass
 		_setup_logger._setup = True
 	return base_logger
+
+
 _setup_logger._setup = False
 
 
@@ -136,7 +138,7 @@ class DiaryEntry(object):
 			'context_id': self.context_id,
 			'event': self.event_name,
 			'type': 'Entry v1',
-			}
+		}
 		return json.dumps(attrs)
 
 	@classmethod

@@ -41,7 +41,7 @@ name = 'univention-admin-diary-backend'
 description = 'Manage admin/diary/backend variable'
 filter = '(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))'
 attributes = ['univentionService']
-service_name="Admin Diary Backend"
+service_name = "Admin Diary Backend"
 
 
 def handler(dn, new, old):

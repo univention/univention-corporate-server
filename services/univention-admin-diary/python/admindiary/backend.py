@@ -67,6 +67,8 @@ def make_session_class():
 		engine = get_engine()
 		make_session_class._session = sessionmaker(bind=engine)
 	return make_session_class._session
+
+
 make_session_class._session = None
 
 
@@ -88,9 +90,10 @@ class Meta(Base):
 	schema = Column(Integer, nullable=False)
 
 
-entry_tags = Table('entry_tags', Base.metadata,
-    Column('entry_id', ForeignKey('entries.id'), primary_key=True),
-    Column('tag_id', ForeignKey('tags.id'), primary_key=True)
+entry_tags = Table(
+	'entry_tags', Base.metadata,
+	Column('entry_id', ForeignKey('entries.id'), primary_key=True),
+	Column('tag_id', ForeignKey('tags.id'), primary_key=True)
 )
 
 
@@ -124,10 +127,7 @@ class Entry(Base):
 
 	event = relationship('Event')
 	args = relationship('Arg', back_populates='entry')
-	tags = relationship('Tag',
-                        secondary=entry_tags,
-                        back_populates='entries'
-                        )
+	tags = relationship('Tag', secondary=entry_tags, back_populates='entries')
 
 
 class Tag(Base):
@@ -136,10 +136,7 @@ class Tag(Base):
 	id = Column(Integer, Sequence('tag_id_seq'), primary_key=True)
 	name = Column(String(190), nullable=False, unique=True, index=True)
 
-	entries = relationship('Entry',
-                        secondary=entry_tags,
-                        back_populates='tags'
-                        )
+	entries = relationship('Entry', secondary=entry_tags, back_populates='tags')
 
 
 class Arg(Base):
@@ -276,9 +273,9 @@ class Client(object):
 			else:
 				ids.intersection_update(pattern_ids)
 		if ids is None:
-			entries = self._session.query(Entry).filter(Entry.event_id != None)
+			entries = self._session.query(Entry).filter(Entry.event_id != None)  # noqa: E711
 		else:
-			entries = self._session.query(Entry).filter(Entry.id.in_(ids), Entry.event_id != None)
+			entries = self._session.query(Entry).filter(Entry.id.in_(ids), Entry.event_id != None)  # noqa: E711
 		res = []
 		for entry in entries:
 			event = entry.event
@@ -287,7 +284,7 @@ class Client(object):
 			else:
 				event_name = 'COMMENT'
 			args = dict((arg.key, arg.value) for arg in entry.args)
-			comments = self._session.query(Entry).filter(Entry.context_id == entry.context_id, Entry.message != None).count()
+			comments = self._session.query(Entry).filter(Entry.context_id == entry.context_id, Entry.message != None).count()  # noqa: E711
 			res.append({
 				'id': entry.id,
 				'date': entry.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
