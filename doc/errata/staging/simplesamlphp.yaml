@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [1, 2]
+scope: ucs_4.4-0-errata4.4-2
+src: simplesamlphp
+fix: 1.16.3-1+deb10u1A~4.4.0.201911111614
+desc: |
+ This update addresses the following issue:
+ * It was discovered that in SimpleSAMLphp, an implementation of the SAML 2.0
+   protocol, it was possible to circumvent XML signature verification on SAML
+   messages. (CVE-2019-3465)
+bug: [50482]
+cve:
+- CVE-2019-3465
