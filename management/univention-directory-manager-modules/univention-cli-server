@@ -174,7 +174,8 @@ def doit(sarglist, conn):
 
 	def send_message_as_json(output):
 		"""Send answer back."""
-		back = six.ensure_binary(json.dumps(output), encoding='utf-8', errors='strict')
+		newline = list(map(lambda x : six.ensure_str(x, encoding='utf-8', errors='strict'), output))
+		back = six.ensure_binary(json.dumps(newline), encoding='utf-8', errors='strict')
 		conn.send(back + b'\0')
 		conn.close()
 
