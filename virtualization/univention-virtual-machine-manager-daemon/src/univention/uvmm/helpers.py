@@ -29,7 +29,9 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
 from __future__ import absolute_import
+
 import sys
 import gettext
 import socket
@@ -41,6 +43,8 @@ try:
 	from types import TracebackType  # noqa F401
 except ImportError:
 	pass
+
+import six
 
 
 __all__ = [
@@ -213,7 +217,7 @@ class timeout(object):
 		if thread.isAlive():
 			raise TimeoutError(self.target)
 		elif self.exception:
-			raise self.exception[0], self.exception[1], self.exception[2]
+			six.reraise(self.exception[0], self.exception[1], self.exception[2])
 		else:
 			return self.result
 

@@ -40,6 +40,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-univention-directory-manager (>> 6.0.103),
  python-libcloud (>= 0.15.1),
  python-lxml,
+ python-six,
 Provides: ${python:Provides}
 Description: UCS Virtual Machine Manager Daemon - Python bindings
  This package contains the UCS Virtual Machine Manager Daemon
@@ -53,6 +54,7 @@ Depends: ${misc:Depends}, ${python3:Depends},
  python3-univention-directory-manager,
  python3-libcloud,
  python3-lxml,
+ python3-six,
 Provides: ${python3:Provides}
 Description: UCS Virtual Machine Manager Daemon - Python 3 bindings
  This package contains the UCS Virtual Machine Manager Daemon

@@ -324,7 +324,7 @@ class Domain(PersistentCached):
 		# type: (Union[libvirt.virDomain, str], Node) -> None
 		self.node = node  # type: Node
 		self._time_stamp = 0.0
-		self._time_used = 0L
+		self._time_used = long(0)
 		self._cpu_usage = 0.0
 		self._cache_id = None  # type: Optional[int]
 		self._restart = 0
@@ -363,9 +363,9 @@ class Domain(PersistentCached):
 		self.pd.state, self.pd.reason = domain.state()
 
 		if self.pd.state in (libvirt.VIR_DOMAIN_SHUTOFF, libvirt.VIR_DOMAIN_CRASHED):
-			self.pd.curMem = 0L
-			delta_used = 0L
-			self._time_used = 0L
+			self.pd.curMem = long(0)
+			delta_used = long(0)
+			self._time_used = long(0)
 		else:
 			self.pd.curMem = long(curMem) << 10  # KiB
 			delta_used = runtime - self._time_used  # running [ns]
@@ -382,7 +382,7 @@ class Domain(PersistentCached):
 		# http://www.teamquest.com/resources/gunther/display/5/
 		now = time.time()
 		delta_t = now - self._time_stamp  # wall clock [s]
-		if delta_t > 0.0 and delta_used >= 0L:
+		if delta_t > 0.0 and delta_used >= long(0):
 			try:
 				self._cpu_usage = delta_used / delta_t / self.pd.vcpus / 1e9  # scale [ns] to percentage
 			except ZeroDivisionError:
@@ -519,20 +519,20 @@ class Domain(PersistentCached):
 		Convert libvirt job stats to string and dictionary for string formatting.
 		"""
 		# final_stats = {
-		#  'data_processed': 1L, 'data_remaining': 0L, 'data_total': 1L,
-		#  'disk_processed': 0L, 'disk_remaining': 0L, 'disk_total': 0L,
-		#  'downtime': 1L, 'downtime_net': 1L,
-		#  'memory_constant': 1L, 'memory_dirty_rate': 0L, 'memory_iteration': 3L, 'memory_normal': 1L, 'memory_normal_bytes': 1L, 'memory_processed': 1L, 'memory_remaining': 0L, 'memory_total': 1L,
-		#  'setup_time': 1L,
-		#  'time_elapsed': 1L, 'time_elapsed_net': 1L,
+		#  'data_processed': long(1), 'data_remaining': long(0), 'data_total': long(1),
+		#  'disk_processed': long(0), 'disk_remaining': long(0), 'disk_total': long(0),
+		#  'downtime': long(1), 'downtime_net': long(1),
+		#  'memory_constant': long(1), 'memory_dirty_rate': long(0), 'memory_iteration': long(3), 'memory_normal': long(1), 'memory_normal_bytes': long(1), 'memory_processed': long(1), 'memory_remaining': long(0), 'memory_total': long(1),
+		#  'setup_time': long(1),
+		#  'time_elapsed': long(1), 'time_elapsed_net': long(1),
 		# }
 		# process_stats = {
-		#  'data_processed': 1L, 'data_remaining': 1L, 'data_total': 1L,
-		#  'disk_processed': 0L, 'disk_remaining': 0L, 'disk_total': 0L,
-		#  'downtime': 1L,
-		#  'memory_constant': 1L, 'memory_dirty_rate': 1L, 'memory_iteration': 1L, 'memory_normal': 1L, 'memory_normal_bytes': 1L, 'memory_processed': 1L, 'memory_remaining': 1L, 'memory_total': 1L,
-		#  'setup_time': 1L,
-		#  'time_elapsed': 1L,
+		#  'data_processed': long(1), 'data_remaining': long(1), 'data_total': long(1),
+		#  'disk_processed': long(0), 'disk_remaining': long(0), 'disk_total': long(0),
+		#  'downtime': long(1),
+		#  'memory_constant': long(1), 'memory_dirty_rate': long(1), 'memory_iteration': long(1), 'memory_normal': long(1), 'memory_normal_bytes': long(1), 'memory_processed': long(1), 'memory_remaining': long(1), 'memory_total': long(1),
+		#  'setup_time': long(1),
+		#  'time_elapsed': long(1),
 		#  'type': 2,
 		# }
 		self.pd.migration = stats

@@ -583,8 +583,8 @@ class Data_Domain(object):
 
 		self.state = 0
 		self.reason = 0
-		self.maxMem = 0L
-		self.curMem = 0L
+		self.maxMem = long(0)
+		self.curMem = long(0)
 		self.vcpus = 1
 		self.cpu_model = None
 		self.cputime = [0.0, 0.0, 0.0]  # percentage in last 10s 60s 5m
@@ -628,8 +628,8 @@ class Data_Pool(object):
 	def __init__(self):
 		self.name = None
 		self.uuid = None
-		self.capacity = 0L
-		self.available = 0L
+		self.capacity = long(0)
+		self.available = long(0)
 		self.path = None  # optional
 		self.active = False
 		self.type = None
