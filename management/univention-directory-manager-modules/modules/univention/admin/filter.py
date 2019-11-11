@@ -30,6 +30,7 @@
 # <https://www.gnu.org/licenses/>.
 
 from ldap.filter import filter_format
+import six
 import re
 import univention.admin.uexceptions
 
@@ -100,8 +101,8 @@ class expression(object):
 		>>> e = expression('objectClass', '*', '!=', escape=False)
 		>>> e = expression('uidNumber', '10', '<') # < <= > >=
 		"""
-		self.variable = variable
-		self.value = value
+		self.variable = six.ensure_str(variable, encoding='utf-8', errors='strict' )
+		self.value = six.ensure_str(value, encoding='utf-8', errors='strict' )
 		self.operator = operator
 		self._escape = escape
 
