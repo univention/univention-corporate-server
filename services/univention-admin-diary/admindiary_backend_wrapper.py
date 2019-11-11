@@ -32,6 +32,7 @@
 * Backend library classes and methods
 * Wenn called as __main__ it acts as rsyslog plugin
 """
+from __future__ import print_function
 
 import sys
 from datetime import datetime
@@ -108,7 +109,7 @@ def add_entry_v1(entry):
 
 def ok():
 	# tell rsyslog that everything is ok
-	print "OK"
+	print("OK")
 	sys.stdout.flush()
 
 

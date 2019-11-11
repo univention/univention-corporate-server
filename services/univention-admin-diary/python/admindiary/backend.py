@@ -219,7 +219,7 @@ class Client(object):
 			event_id = event.id
 			get_logger().debug('Found Event ID %s' % event.id)
 			if diary_entry.message:
-				for locale, message in diary_entry.message.iteritems():
+				for locale, message in diary_entry.message.items():
 					get_logger().debug('Trying to insert message for %s' % locale)
 					if self.add_event_message(event.id, locale, message, False):
 						get_logger().debug('Found no existing one. Inserted %r' % message)
@@ -233,7 +233,7 @@ class Client(object):
 		for tag in diary_entry.tags:
 			tag = self.add_tag(tag)
 			entry.tags.append(tag)
-		for key, value in diary_entry.args.iteritems():
+		for key, value in diary_entry.args.items():
 			entry.args.append(Arg(key=key, value=value))
 		get_logger().info('Successfully added %s (%s)' % (diary_entry.context_id, diary_entry.event_name))
 

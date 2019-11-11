@@ -32,6 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+from __future__ import print_function
 from random import randint
 from argparse import ArgumentParser, RawTextHelpFormatter
 
@@ -90,7 +91,7 @@ def write_some_events(value, username, f):
 	num_runs, num_comments = value.split('+')
 	num_runs = int(num_runs)
 	num_comments = int(num_comments)
-	print f.__name__, '-', num_runs, 'runs with', num_comments, 'comments each'
+	print(f.__name__, '-', num_runs, 'runs with', num_comments, 'comments each')
 	while num_runs:
 		num_runs -= 1
 		context = f(username)

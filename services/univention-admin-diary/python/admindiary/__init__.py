@@ -108,12 +108,12 @@ class DiaryEntry(object):
 			raise TypeError('DiaryEntry() argument "username" has to be "string", but is: %s (%s)' % (type(self.username), self.username))
 		if not isinstance(self.hostname, basestring):
 			raise TypeError('DiaryEntry().hostname has to be "string", but is: %s (%s)' % (type(self.hostname), self.hostname))
-		if not isinstance(self.args, dict) or not all(isinstance(key, basestring) and isinstance(value, basestring) for key, value in self.args.iteritems()):
+		if not isinstance(self.args, dict) or not all(isinstance(key, basestring) and isinstance(value, basestring) for key, value in self.args.items()):
 			raise TypeError('DiaryEntry() argument "args" has to be "dict of string/string", but is: %s (%s)' % (type(self.args), self.args))
 		if self.message is not None:
-			if not isinstance(self.message, dict) or not all(isinstance(key, basestring) and isinstance(value, basestring) for key, value in self.message.iteritems()):
+			if not isinstance(self.message, dict) or not all(isinstance(key, basestring) and isinstance(value, basestring) for key, value in self.message.items()):
 				raise TypeError('DiaryEntry() argument "message" has to be "dict of string/string", but is: %s (%s)' % (type(self.message), self.message))
-			for locale, message in self.message.iteritems():
+			for locale, message in self.message.items():
 				try:
 					message.format(**self.args)
 				except:

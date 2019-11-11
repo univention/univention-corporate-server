@@ -36,6 +36,7 @@
 # that generates the DiaryEvent objects on a live UCS Master
 # python $0 2> errors >> /usr/share/pyshared/univention/admindiary/events.py
 
+from __future__ import print_function
 import sys
 
 from univention.lib.i18n import Translation
@@ -95,7 +96,7 @@ def print_events(m):
 	elif name == 'container/dc':
 		args = ['name']
 	else:
-		for k, v in m.property_descriptions.iteritems():
+		for k, v in m.property_descriptions.items():
 			if v.identifies or not v.may_change:
 				if v.identifies:
 					args.insert(0, k)
@@ -117,7 +118,7 @@ def print_events(m):
 		print_removed(m, english_name, german_name, args, icon)
 		any_printed = True
 	if any_printed:
-		print
+		print()
 
 
 def print_created(m, english_name, german_name, args, icon):
@@ -125,7 +126,7 @@ def print_created(m, english_name, german_name, args, icon):
 	additional_args = ''
 	if len(args) > 1:
 		additional_args = '(%s) ' % ' '.join('{%s}' % arg for arg in args[1:])
-	print name.upper() + '_CREATED', '=', "DiaryEvent('%s', {'en': '%s {%s} %screated', 'de': '%s {%s} %sangelegt'}, args=%r, icon='%s')" % (name.upper() + '_CREATED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon)
+	print(name.upper() + '_CREATED', '=', "DiaryEvent('%s', {'en': '%s {%s} %screated', 'de': '%s {%s} %sangelegt'}, args=%r, icon='%s')" % (name.upper() + '_CREATED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon))
 
 
 def print_modified(m, english_name, german_name, args, icon):
@@ -133,7 +134,7 @@ def print_modified(m, english_name, german_name, args, icon):
 	additional_args = ''
 	if len(args) > 1:
 		additional_args = '(%s) ' % ' '.join('{%s}' % arg for arg in args[1:])
-	print name.upper() + '_MODIFIED', '=', "DiaryEvent('%s', {'en': '%s {%s} %smodified', 'de': '%s {%s} %sbearbeitet'}, args=%r, icon='%s')" % (name.upper() + '_MODIFIED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon)
+	print(name.upper() + '_MODIFIED', '=', "DiaryEvent('%s', {'en': '%s {%s} %smodified', 'de': '%s {%s} %sbearbeitet'}, args=%r, icon='%s')" % (name.upper() + '_MODIFIED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon))
 
 
 def print_moved(m, english_name, german_name, args, icon):
@@ -141,7 +142,7 @@ def print_moved(m, english_name, german_name, args, icon):
 	additional_args = ''
 	if len(args) > 1:
 		additional_args = '(%s) ' % ' '.join('{%s}' % arg for arg in args[1:])
-	print name.upper() + '_MOVED', '=', "DiaryEvent('%s', {'en': '%s {%s} %smoved to {position}', 'de': '%s {%s} %sverschoben nach {position}'}, args=%r, icon='%s')" % (name.upper() + '_MOVED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon)
+	print(name.upper() + '_MOVED', '=', "DiaryEvent('%s', {'en': '%s {%s} %smoved to {position}', 'de': '%s {%s} %sverschoben nach {position}'}, args=%r, icon='%s')" % (name.upper() + '_MOVED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon))
 
 
 def print_removed(m, english_name, german_name, args, icon):
@@ -149,7 +150,7 @@ def print_removed(m, english_name, german_name, args, icon):
 	additional_args = ''
 	if len(args) > 1:
 		additional_args = '(%s) ' % ' '.join('{%s}' % arg for arg in args[1:])
-	print name.upper() + '_REMOVED', '=', "DiaryEvent('%s', {'en': '%s {%s} %sremoved', 'de': '%s {%s} %sgelöscht'}, args=%r, icon='%s')" % (name.upper() + '_REMOVED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon)
+	print(name.upper() + '_REMOVED', '=', "DiaryEvent('%s', {'en': '%s {%s} %sremoved', 'de': '%s {%s} %sgelöscht'}, args=%r, icon='%s')" % (name.upper() + '_REMOVED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon))
 
 
 for module in modules():

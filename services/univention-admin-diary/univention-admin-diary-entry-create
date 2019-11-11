@@ -32,6 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+from __future__ import print_function
 import sys
 import re
 from argparse import ArgumentParser, Action, RawTextHelpFormatter
@@ -73,7 +74,7 @@ def main():
 	event = DiaryEvent.get(args.event)
 	if not event:
 		if not args.message:
-			print >> sys.stderr, 'Unknown events need to have a message'
+			print('Unknown events need to have a message', file=sys.stderr)
 			sys.exit(2)
 		event = DiaryEvent(args.event, args.message, [], args.tag)
 	event_args = {}
@@ -82,15 +83,15 @@ def main():
 			try:
 				key, value = arg.split('=', 1)
 			except ValueError:
-				print >> sys.stderr, 'Could not parse %s. Use key=value' % arg
+				print('Could not parse %s. Use key=value' % arg, file=sys.stderr)
 				sys.exit(2)
 			else:
 				event_args[key] = value
 	context_id = write_event(event, event_args, args.username, args.context_id)
 	if context_id is not None:
-		print context_id
+		print(context_id)
 	else:
-		print >> sys.stderr, 'Could not write event'
+		print('Could not write event', file=sys.stderr)
 		sys.exit(1)
 
 

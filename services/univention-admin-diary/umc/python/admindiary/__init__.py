@@ -61,7 +61,7 @@ class Instance(Base):
 			message = message.format(**entry['args'])
 		except (AttributeError, IndexError, KeyError):
 			if entry['args']:
-				message = '%s (%s)' % (message, ', '.join(['%s=%s' % (key, arg) for (key, arg) in entry['args'].iteritems()]))
+				message = '%s (%s)' % (message, ', '.join(['%s=%s' % (key, arg) for (key, arg) in entry['args'].items()]))
 		icon = 'default'
 		event = DiaryEvent.get(entry['event_name'])
 		if event:
@@ -91,7 +91,7 @@ class Instance(Base):
 	def error_handling(self, etype, exc, etraceback):
 		ucr = ConfigRegistry()
 		ucr.load()
-		if isinstance(exc, (OperationalError,)):
+		if isinstance(exc, OperationalError):
 			MODULE.error(str(exc))
 			db_url = get_engine().url
 			hints = []

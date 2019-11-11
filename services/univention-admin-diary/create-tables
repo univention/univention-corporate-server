@@ -41,5 +41,5 @@ with get_client(version=1) as client:
 
 	for event_name in DiaryEvent.names():
 		event = client.add_event(event_name)
-		for locale, message in DiaryEvent.get(event_name).message.iteritems():
+		for locale, message in DiaryEvent.get(event_name).message.items():
 			client.add_event_message(event.id, locale, message, True)
