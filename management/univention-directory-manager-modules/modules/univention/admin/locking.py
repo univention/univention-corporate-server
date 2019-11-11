@@ -31,6 +31,7 @@
 
 import ldap
 import time
+import six
 
 import univention.debug as ud
 import univention.admin.uexceptions
@@ -52,7 +53,7 @@ def lockDn(lo, position, type, value, scope):
 	:returns: A |LDAP| |DN|.
 	"""
 	dn = [
-		[('cn', value, ldap.AVA_STRING)],
+		[('cn', six.ensure_str(value, encoding='utf-8', errors='strict'), ldap.AVA_STRING)],
 		[('cn', type, ldap.AVA_STRING)],
 		[('cn', 'temporary', ldap.AVA_STRING)],
 		[('cn', 'univention', ldap.AVA_STRING)],
