@@ -33,6 +33,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 
 import copy
+import six
 import sys
 import re
 import unicodedata
@@ -132,13 +133,10 @@ def pattern_replace(pattern, object):
 				for umlaut, code in property.UMLAUTS.items():
 					text = text.replace(umlaut, code)
 
-				text = unicodedata.normalize('NFKD', unicode(text)).encode('ascii', 'ignore')
+				text = unicodedata.normalize('NFKD', six.ensure_text(text, encoding='utf-8', errors='ignore'))
 			elif iCmd == 'alphanum':
-				whitelist = configRegistry.get('directory/manager/templates/alphanum/whitelist', '')
-				if not type(whitelist) == unicode:
-					whitelist = unicode(whitelist, 'utf-8')
-				if not type(text) == unicode:
-					text = unicode(text, 'utf-8')
+				whitelist = six.ensure_text(configRegistry.get('directory/manager/templates/alphanum/whitelist', ''), encoding='utf-8', errors='ignore')
+				text = six.ensure_text(text, encoding='utf-8', errors='strict')
 				text = u''.join([c for c in text if (c.isalnum() or c in whitelist)])
 			elif iCmd in ('trim', 'strip'):
 				text = text.strip()
