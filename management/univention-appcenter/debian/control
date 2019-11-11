@@ -98,7 +98,7 @@ Depends: univention-ssh,
  python3-mysqldb,
  gnupg,
  zsync,
- python-ipaddr,
+ python3-ipaddr,
  ${misc:Depends},
  ${python3:Depends},
 Recommends: univention-appcenter
@@ -112,7 +112,7 @@ Description: Library for Univention App Center
 
 Package: univention-appcenter-dev
 Architecture: all
-Depends: python-univention-appcenter-dev (>= 8.0.11-81)
+Depends: python-univention-appcenter-dev (>= 8.0.11-83)
  ${misc:Depends},
 Description: Development tools for Univention App Center
  .
@@ -130,8 +130,8 @@ Depends: univention-appcenter (= ${source:Version}),
  zsync,
  ${misc:Depends},
  ${python:Depends},
-Replaces: univention-appcenter-dev (<< 8.0.11-81)
-Breaks: univention-appcenter-dev (<< 8.0.11-81)
+Replaces: univention-appcenter-dev (<< 8.0.11-83)
+Breaks: univention-appcenter-dev (<< 8.0.11-83)
 Provides: ${python:Provides}
 Description: Development tools for Univention App Center
  .
@@ -159,7 +159,7 @@ Description: Development tools for Univention App Center
 
 Package: univention-appcenter-docker
 Architecture: all
-Depends: python-univention-appcenter-docker (>= 8.0.11-81),
+Depends: python-univention-appcenter-docker (>= 8.0.11-83),
  ${misc:Depends},
 Description: Docker integration for Univention App Center
  This package contains a Docker integration for certain apps
@@ -181,8 +181,8 @@ Depends: python-univention-appcenter (= ${source:Version}),
  univention-apache,
  ${misc:Depends},
  ${python:Depends},
-Replaces: univention-appcenter-docker (<< 8.0.11-81)
-Breaks: univention-appcenter-docker (<< 8.0.11-81)
+Replaces: univention-appcenter-docker (<< 8.0.11-83)
+Breaks: univention-appcenter-docker (<< 8.0.11-83)
 Provides: ${python:Provides}
 Description: Docker integration for Univention App Center
  This package contains a Docker integration for certain apps
