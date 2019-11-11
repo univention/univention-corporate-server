@@ -33,6 +33,7 @@ from __future__ import absolute_import
 
 import re
 import ldap
+import six
 import string
 import time
 
@@ -260,7 +261,7 @@ class position:
 
 		:param str base: The new base distinguished name.
 		"""
-		self.__base = base
+		self.__base = six.ensure_str(base, encoding='utf-8', errors='strict')
 
 	def setLoginDomain(self, loginDomain):
 		# type: (str) -> None
