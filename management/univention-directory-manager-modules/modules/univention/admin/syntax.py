@@ -2045,10 +2045,11 @@ class dnsName(simple):
 	def parse(self, text):
 		if not text:
 			raise univention.admin.uexceptions.valueError(_("Missing value!"))
-		assert isinstance(text, basestring)
-		if not 1 <= len(text) <= 253:
+		assert isinstance(text, (six.string_types, six.binary_type))
+		str_text = six.ensure_str(text, encoding='utf-8', errors='strict')
+		if not 1 <= len(str_text) <= 253:
 			raise univention.admin.uexceptions.valueError(_("Full domain name must be between 1 and 253 characters long!"))
-		labels = (text[:-1] if text.endswith('.') else text).split('.')
+		labels = (str_text[:-1] if str_text.endswith('.') else str_text).split('.')
 		if not all(1 <= len(label) <= 63 for label in labels):
 			raise univention.admin.uexceptions.valueError(_("Labels must be between 1 and 63 characters long!"))
 		return text
