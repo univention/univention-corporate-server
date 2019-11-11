@@ -23,7 +23,7 @@ RE = re.compile(
 	))$
 	|UNIVENTION_DEBUG_BEGIN\s{2}:\s(?P<begin>.*)$
 	|UNIVENTION_DEBUG_END\s{4}:\s(?P<end>.*)$
-	''', re.VERBOSE)
+	''', re.VERBOSE)  # noqa: E101
 LEVEL = ['ERROR', 'WARN', 'PROCESS', 'INFO', 'ALL']
 CATEGORY = [
 	'MAIN',
@@ -141,8 +141,8 @@ def test_function(function, expected, parse, tmplog):
 
 def test_level_set(tmplog):
 	ud.set_level(ud.MAIN, ud.PROCESS)
-	l = ud.get_level(ud.MAIN)
-	assert l == ud.PROCESS
+	level = ud.get_level(ud.MAIN)
+	assert level == ud.PROCESS
 
 	ud.exit()
 

@@ -139,7 +139,7 @@ class DebianPackageCheck(object):
 			  RESULT_WARN: ['0004-1', '0019-17', ...],
 			  RESULT_ERROR: ['0004-2'],
 			}
-		"""
+		"""  # noqa: E101
 		for level, idlist in newmap.items():
 			for curid in idlist:
 				if curid in self.msgidlist:

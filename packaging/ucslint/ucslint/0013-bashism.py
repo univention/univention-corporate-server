@@ -46,8 +46,8 @@ RE_LOCAL = re.compile(
            |$)
       |`
     )
-    ''',
-    re.VERBOSE
+    ''',  # noqa: E101
+	re.VERBOSE
 )
 
 

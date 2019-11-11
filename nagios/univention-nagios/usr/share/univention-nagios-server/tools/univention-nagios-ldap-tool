@@ -125,15 +125,17 @@ def usage():
 
 
 def main():
-	actions = {'check': False,
-				'modify': False,
-				'autofix': False,
-            }
-	cfg = {'oldfqdn': None,
-			'newfqdn': None,
-			'binddn': '',
-			'bindpwd': '',
-        }
+	actions = {
+		'check': False,
+		'modify': False,
+		'autofix': False,
+	}
+	cfg = {
+		'oldfqdn': None,
+		'newfqdn': None,
+		'binddn': '',
+		'bindpwd': '',
+	}
 
 	try:
 		(opts, pargs) = getopt.getopt(sys.argv[1:], 'acmo:n:D:w:', ['check', 'modify'])

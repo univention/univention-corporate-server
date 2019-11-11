@@ -46,13 +46,16 @@ import heimdal
 from ldap.controls import LDAPControl
 import traceback
 
+
 class Krb5Context(object):
 	def __init__(self):
 		self.ctx = heimdal.context()
 		self.etypes = self.ctx.get_permitted_enctypes()
 		self.etype_ids = [et.toint() for et in self.etypes]
 
+
 krb5_context = Krb5Context()
+
 
 def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 	up_blob = unicodePwd
@@ -926,7 +929,7 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
 		sambaAcctFlags = ucs_object_attributes.get('sambaAcctFlags', [''])[0]
 
 		if "L" in sambaAcctFlags:
-			## currently locked again
+			# currently locked again
 			return
 
 		sambaBadPasswordTime = ucs_object_attributes.get('sambaBadPasswordTime', [''])[0]
@@ -954,7 +957,7 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
 			return
 		sambaAcctFlags = ucs_object_attributes.get('sambaAcctFlags', [''])[0]
 		if "L" not in sambaAcctFlags:
-			## currently not locked any longer
+			# currently not locked any longer
 			return
 
 		sambaBadPasswordTime = ucs_object_attributes.get('sambaBadPasswordTime', [''])[0]
@@ -965,7 +968,7 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
 			ud.debug(ud.LDAP, ud.ERROR, "%s: The UCS object (%s) is locked, but sambaBadPasswordTime is 0." % (function_name, ucs_object['dn']))
 			return
 		if sambaBadPasswordTime == lockoutTime:
-			## already locked
+			# already locked
 			return
 
 		# Ok here we have:

@@ -540,14 +540,14 @@ License: AGPL-3.0-only
  You should have received a copy of the GNU Affero General Public
  License with the Debian GNU/Linux or Univention distribution in file
  /usr/share/common-licenses/AGPL-3; if not, see
- <https://www.gnu.org/licenses/>.""".format(years=date.today().year))
+ <https://www.gnu.org/licenses/>.""".format(years=date.today().year))  # noqa: E101
 
 	with open(os.path.join(new_package_dir_debian, 'changelog'), 'w') as f:
 		f.write("""%s (1.0.0-1) unstable; urgency=low
 
   * Initial release
 
- -- %s <%s@%s>  %s""" % (translation_package_name, translation_creator, translation_creator, translation_host, formatdate()))
+ -- %s <%s@%s>  %s""" % (translation_package_name, translation_creator, translation_creator, translation_host, formatdate()))  # noqa: E101
 
 	write_debian_rules(new_package_dir_debian)
 
@@ -570,7 +570,7 @@ Description: UCS Management Console translation files
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: https://www.univention.de/""" % (translation_package_name, translation_creator, translation_creator, socket.getfqdn(), translation_package_name))
+ refer to: https://www.univention.de/""" % (translation_package_name, translation_creator, translation_creator, socket.getfqdn(), translation_package_name))  # noqa: E101
 	# compat
 	with open(os.path.join(new_package_dir_debian, 'compat'), 'w') as f:
 		f.write("7")

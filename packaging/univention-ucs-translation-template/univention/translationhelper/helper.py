@@ -59,4 +59,3 @@ def call(*argv):
 	if os.environ.get('DH_VERBOSE', False):
 		print('\t%s' % ' '.join(argv))
 	return subprocess.call(argv)
-

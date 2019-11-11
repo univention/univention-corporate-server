@@ -293,7 +293,7 @@ class ConfigRegistry(MM):
 		Check if registry key is set.
 
 		.. deprecated:: 3.1
-		    Use `in`.
+			Use `in`.
 		"""
 		if write_registry_only:
 			registry = self._registry[self.scope]

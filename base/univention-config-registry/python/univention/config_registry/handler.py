@@ -78,7 +78,7 @@ Warnung: Diese Datei wurde automatisch generiert und kann durch
          univention-config-registry ueberschrieben werden.
          Bitte bearbeiten Sie an Stelle dessen die folgende(n) Datei(en):
 
-'''
+'''  # noqa: E101
 
 
 def run_filter(template, directory, srcfiles=set(), opts=dict()):

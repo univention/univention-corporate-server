@@ -107,7 +107,7 @@ tbody:before {
 .first_column {
   width: 20%;
 }
-'''
+'''  # noqa: E101
 
 mouseover_scripts = '''
 var lastSibling = function (node){
@@ -216,7 +216,7 @@ window.onload = function(){
 		header.setAttribute('collapsed','true')
 	}
 };
-'''
+'''  # noqa: E101
 
 doc, tag, text = Doc().tagtext()
 
@@ -225,7 +225,8 @@ def main():
 	global doc, tag, text
 	desc = "console tool for analyzing jenkins builds"
 	parser = argparse.ArgumentParser(description=desc)
-	parser.add_argument('--url', '-u',
+	parser.add_argument(
+		'--url', '-u',
 		help='the url of a jenkins matrix project. case sensitive.',
 		required=True)
 	parser.add_argument(
@@ -318,10 +319,11 @@ def single_build(job, args):
 	with tag('button', onclick='collapseall()'):
 		text('collapse all')
 	doc.asis('<br />')
-	results = {run.name:
-			run.get_resultset()
-			for run in build.get_matrix_runs()
-			if run.has_resultset()}
+	results = {
+		run.name: run.get_resultset()
+		for run in build.get_matrix_runs()
+		if run.has_resultset()
+	}
 
 	# OrderedDict for safe iteration order
 	results = OrderedDict(sorted(results.items(), key=lambda t: t[0]))
@@ -358,8 +360,7 @@ def single_build(job, args):
 								test = resultset[test_name]
 								js_mouseover = 'mk_mouseover.bind(this)( "{}");'.format(pretty_name)
 								js_mouseout = 'mk_mouseout.bind(this)() '
-								with tag('td', style='background-color: {}'.format(colors[test.status]),
-										onmouseover=js_mouseover, onmouseout=js_mouseout):
+								with tag('td', style='background-color: {}'.format(colors[test.status]), onmouseover=js_mouseover, onmouseout=js_mouseout):
 									if test.stdout or test.stderr:
 										url = '/'.join(resultset.baseurl.split('/')[:-2]) + \
 											'/' + test.identifier().replace('.', '/')
@@ -386,13 +387,12 @@ def single_test(job, args):
 	machines = set()
 	for build_id in builds:
 		build = job.get_build(build_id)
-		build_results = {strip_build_number(run.name):
-			run.get_resultset()
+		build_results = {
+			strip_build_number(run.name): run.get_resultset()
 			for run in build.get_matrix_runs()
 			if run.has_resultset()}
 		results[build_id] = build_results
-		machines |= set(strip_build_number(run.name)
-			for run in build.get_matrix_runs())
+		machines |= set(strip_build_number(run.name) for run in build.get_matrix_runs())
 	machines = sorted(list(machines))
 	pretty_names = map(pretty_machine_name, machines)
 	with tag('table', klass='table table-header-rotated'):
@@ -406,7 +406,6 @@ def single_test(job, args):
 						if machine in resultset_dict.keys() and test_name in resultset_dict[machine].keys():
 							resultset = resultset_dict[machine]
 							test = resultset[test_name]
-							status = test.status
 							if test.stdout or test.stderr:
 								url = '/'.join(resultset.baseurl.split('/')[:-2]) + '/' + test.identifier().replace('.', '/')
 							else:

@@ -63,7 +63,6 @@ from univention.config_registry.interfaces import Interfaces
 import dns.resolver
 
 
-
 # Ensure univention debug is initialized
 def initialize_debug():
 	# Use a little hack to determine if univention.debug has been initialized

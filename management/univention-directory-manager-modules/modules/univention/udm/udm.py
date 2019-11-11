@@ -142,12 +142,12 @@ class UDM(object):
 
 	@classmethod
 	def credentials(
-			cls,
-			identity,
-			password,
-			base=None,
-			server=None,
-			port=None,
+		cls,
+		identity,
+		password,
+		base=None,
+		server=None,
+		port=None,
 	):
 		"""
 		Use the provided credentials to open an LDAP connection.
@@ -174,7 +174,7 @@ class UDM(object):
 
 		Use in a chain of methods to get a UDM module::
 
-		    UDM.get_admin().version(1).get('groups/group')
+			UDM.get_admin().version(1).get('groups/group')
 
 		:param int api_version: load only UDM modules that support the
 			specified version

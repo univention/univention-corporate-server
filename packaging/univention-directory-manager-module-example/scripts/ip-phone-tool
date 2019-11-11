@@ -32,7 +32,6 @@
 
 import sys
 import univention.debug
-univention.debug.init('/var/log/univention/ip-phone-tool.log', univention.debug.FLUSH, univention.debug.NO_FUNCTION)
 
 import univention.config_registry
 import univention.admin.uldap
@@ -43,6 +42,7 @@ import univention.admin.uexceptions
 import univention.admin.localization
 from optparse import OptionParser, OptionValueError
 
+univention.debug.init('/var/log/univention/ip-phone-tool.log', univention.debug.FLUSH, univention.debug.NO_FUNCTION)
 univention.admin.localization.locale.setlocale(univention.admin.localization.locale.LC_ALL, '')
 translation = univention.admin.localization.translation('univention.admin.handlers.test')
 _ = translation.translate
@@ -185,42 +185,50 @@ class ipphonetool(object):
 if __name__ == '__main__':
 
 	usage = _("""usage: %prog [options] arguments
-   e.g. ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.local
-   or   ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.local --redirect sip:otheruser@dom.local
-   or   ip-phone-tool clear_redirect voip1
-   or   ip-phone-tool remove voip1""")
+	e.g. ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.local
+	or   ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.local --redirect sip:otheruser@dom.local
+	or   ip-phone-tool clear_redirect voip1
+	or   ip-phone-tool remove voip1""")
 
 	parser = OptionParser(usage=usage)
-	parser.add_option('-D', '--binddn',
-			action='store', dest='binddn',
-			help=_('LDAP Bind DN'))
-	parser.add_option('-w', '--bindpw',
-			action='store', dest='bindpw',
-			help=_('LDAP Bind Password'))
-	parser.add_option('-W',
-			action='store_true', dest='ask_pass', default=False,
-			help=_('Prompt for password'))
-	parser.add_option('-y', '--password-file',
-			action='store', dest='password_file',
-			help=_('Read password from file'))
-	parser.add_option('-v', '--verbose',
-			action='count', dest='verbose',
-			help=_('Print additional information'))
+	parser.add_option(
+		'-D', '--binddn',
+		action='store', dest='binddn',
+		help=_('LDAP Bind DN'))
+	parser.add_option(
+		'-w', '--bindpw',
+		action='store', dest='bindpw',
+		help=_('LDAP Bind Password'))
+	parser.add_option(
+		'-W',
+		action='store_true', dest='ask_pass', default=False,
+		help=_('Prompt for password'))
+	parser.add_option(
+		'-y', '--password-file',
+		action='store', dest='password_file',
+		help=_('Read password from file'))
+	parser.add_option(
+		'-v', '--verbose',
+		action='count', dest='verbose',
+		help=_('Print additional information'))
 
 	def check_debuglevel(option, opt_str, value, parser):
 		if value < 0 or value > 4:
 			raise OptionValueError("valid values for option %s are [0-4]" % opt_str)
 		setattr(parser.values, option.dest, value)
-	parser.add_option('-d', type='int', dest='debuglevel', default=1,
-			action='callback', callback=check_debuglevel,
-			help=_('Set debug level'))
-	parser.add_option('-U', '--user',
-			action='store', dest='username',
-			help=_('Username'))
+	parser.add_option(
+		'-d', type='int', dest='debuglevel', default=1,
+		action='callback', callback=check_debuglevel,
+		help=_('Set debug level'))
+	parser.add_option(
+		'-U', '--user',
+		action='store', dest='username',
+		help=_('Username'))
 
-	parser.add_option('--redirect',
-			action='store', dest='redirect',
-			help=_('Redirect address'))
+	parser.add_option(
+		'--redirect',
+		action='store', dest='redirect',
+		help=_('Redirect address'))
 	(options, arguments) = parser.parse_args()
 
 	if options.debuglevel:
