@@ -73,10 +73,10 @@ class Errors(LogMessage):
 		r"E: Unable to locate package could-initramfs-growroot",
 		r"'www-browser -dump http://localhost:80/server-status' failed.",  # Bug #38797
 		r'.*MODULE *\( *ERROR *\) *: *$',     # Bug 45406
-		'Further information regarding this error:',	# Bug 45406
-		'Error: Unable to correct problems, you have held broken packages.',	# Bug 45406
-		'.*MODULE      \( ERROR   \) : univention-samba: Failed to install',	# Bug 45406
-		'.*MODULE      \( PROCESS \) : Installation of univention-samba failed. Try to re-create sources.list and try again.',	# Bug 45406
+		'Further information regarding this error:',  # Bug 45406
+		'Error: Unable to correct problems, you have held broken packages.',  # Bug 45406
+		'.*MODULE      \( ERROR   \) : univention-samba: Failed to install',  # Bug 45406
+		'.*MODULE      \( PROCESS \) : Installation of univention-samba failed. Try to re-create sources.list and try again.',  # Bug 45406
 		'.*Failed to download required packages for univention-welcome-screen.*',  # Bug #37537: remove after release of univention-welcome-screen
 		'.*E: Unable to locate package univention-welcome-screen.*', '.*E: Handler silently failed.*',  # Bug #37537 ^^
 		'.*ERROR\(runtime\): uncaught exception - \(-1073741823.*', '.*open: error=2 \(No such file or directory\).*',  # Bug #39123
@@ -93,7 +93,7 @@ class Errors(LogMessage):
 		'/usr/sbin/grub-probe: error: cannot find a GRUB drive for /dev/vda.  Check your device.map.',  # Bug #38911
 		r'Checking grub-pc/install_devices for errors[.]+',  # Bug #40733
 		r'Done checking grub-pc/install_devices for errors[.]',  # Bug #40733
-		'.*well-known-sid-name-mapping.d/univention-ldap-server.py.*slapd.service.', #44904
+		'.*well-known-sid-name-mapping.d/univention-ldap-server.py.*slapd.service.',  # Bug #44904
 		'.*failed to receive current ID.*',  # Bug 40962
 		'.*error 104: Connection reset by peer while receiving from notifier.*',  # Bug 40962
 		'E: object not found',
