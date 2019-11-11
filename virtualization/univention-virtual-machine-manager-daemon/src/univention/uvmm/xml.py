@@ -37,5 +37,5 @@ from lxml import etree as ET
 XMLNS = {
 	'uvmm': 'https://univention.de/uvmm/1.0',
 }
-for prefix, uri in XMLNS.iteritems():
+for prefix, uri in XMLNS.items():
 	ET.register_namespace(prefix, uri)

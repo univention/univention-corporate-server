@@ -35,6 +35,8 @@ This module implements functions to handle nodes and domains. This is independen
 """
 
 from __future__ import absolute_import
+from __future__ import print_function
+
 import libvirt
 import time
 import logging
@@ -56,7 +58,7 @@ import re
 import random
 from xml.sax.saxutils import escape as xml_escape
 import tempfile
-import cPickle as pickle
+import pickle
 
 import univention.config_registry as ucr
 try:
@@ -72,9 +74,9 @@ logger = logging.getLogger('uvmmd.node')
 
 CACHE_STATE = '/var/run/uvmmd.cache'
 STATES = ('NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED')
-VIR_DOM = dict((v, k[9:]) for (k, v) in vars(libvirt).iteritems() if k.startswith('VIR_FROM_'))
-VIR_ERR = dict((v, k[8:]) for (k, v) in vars(libvirt).iteritems() if k.startswith('VIR_ERR_') and k not in {'VIR_ERR_NONE', 'VIR_ERR_WARNING', 'VIR_ERR_ERROR'})
-VIR_LVL = dict((v, k[8:]) for (k, v) in vars(libvirt).iteritems() if k in {'VIR_ERR_NONE', 'VIR_ERR_WARNING', 'VIR_ERR_ERROR'})
+VIR_DOM = dict((v, k[9:]) for (k, v) in vars(libvirt).items() if k.startswith('VIR_FROM_'))
+VIR_ERR = dict((v, k[8:]) for (k, v) in vars(libvirt).items() if k.startswith('VIR_ERR_') and k not in {'VIR_ERR_NONE', 'VIR_ERR_WARNING', 'VIR_ERR_ERROR'})
+VIR_LVL = dict((v, k[8:]) for (k, v) in vars(libvirt).items() if k in {'VIR_ERR_NONE', 'VIR_ERR_WARNING', 'VIR_ERR_ERROR'})
 
 
 def format_error(ex):
@@ -1199,10 +1201,10 @@ class Node(PersistentCached):
 		path = os.path.join(token_dir, uri_encode(self.pd.uri))
 		logger.debug("Writing noVNC tokens to '%s'", path)
 		with tempfile.NamedTemporaryFile(delete=False, dir=token_dir) as tmp_file:
-			for uuid, domStat in self.domains.iteritems():
+			for uuid, domStat in self.domains.items():
 				try:
 					host, port = domStat._vnc()
-					print >> tmp_file, '%s: %s:%d' % (uuid, host, port)
+					print('%s: %s:%d' % (uuid, host, port), file=tmp_file)
 				except TypeError:
 					continue
 		os.rename(tmp_file.name, path)

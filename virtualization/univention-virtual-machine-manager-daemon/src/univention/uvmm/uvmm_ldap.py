@@ -34,7 +34,7 @@
 from __future__ import absolute_import
 import os
 import errno
-import cPickle as pickle
+import pickle
 import univention.config_registry as ucr
 import univention.uldap
 from ldap import LDAPError, SERVER_DOWN

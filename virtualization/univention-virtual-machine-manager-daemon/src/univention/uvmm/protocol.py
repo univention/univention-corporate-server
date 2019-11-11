@@ -32,7 +32,7 @@
 """UVMM protocol."""
 from __future__ import absolute_import
 from cStringIO import StringIO
-import cPickle as pickle
+import pickle
 import struct
 from .helpers import TranslatableException, N_ as _
 

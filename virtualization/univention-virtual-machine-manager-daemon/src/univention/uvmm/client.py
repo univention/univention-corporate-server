@@ -32,6 +32,8 @@
 """UVMM client using a unix-socket."""
 
 from __future__ import absolute_import
+from __future__ import print_function
+
 import socket
 from . import protocol
 from .helpers import TranslatableException, FQDN, N_ as _
@@ -149,7 +151,7 @@ def __debug(msg):
 	try:
 		if int(__ucr['dvs/uvmm/debug']) > 0:
 			import sys
-			print >>sys.stderr, msg
+			print(msg, file=sys.stderr)
 	except:
 		pass
 

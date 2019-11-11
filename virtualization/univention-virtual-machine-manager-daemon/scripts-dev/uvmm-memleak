@@ -2,6 +2,7 @@
 """
 Test python-maelie
 """
+from __future__ import print_function
 # <http://jam-bazaar.blogspot.de/2009/11/memory-debugging-with-meliae.html>
 # <file:../BUG.DONE/35977_testlibcloud.py>
 
@@ -90,7 +91,7 @@ def analyze():
 		diff(prev_sum, sm.type_summaries)
 		prev_sum = sm.type_summaries
 
-		print
+		print()
 
 
 def compare(old_filename, new_filename):
@@ -100,7 +101,7 @@ def compare(old_filename, new_filename):
 
 
 def load(filename):
-	print filename
+	print(filename)
 	om = loader.load(filename, show_prog=False, collapse=True)
 	om.remove_expensive_references()
 	om.compute_parents()
@@ -125,11 +126,11 @@ def diff(old, new):
 		))
 		if any(data):
 			sign = '+' if not old else '-' if not new else '!'
-			print '{sign} {typ:_<30} {data[0]:_>+12n} {data[1]:_>+12n} {data[2]:_>+12n}'.format(**locals())
+			print('{sign} {typ:_<30} {data[0]:_>+12n} {data[1]:_>+12n} {data[2]:_>+12n}'.format(**locals()))
 
 
 def usage(ret):
-	print >> stderr, 'Usage: %s <d|f|a|c> ...' % (argv[0],)
+	print('Usage: %s <d|f|a|c> ...' % (argv[0],), file=stderr)
 	exit(ret)
 
 

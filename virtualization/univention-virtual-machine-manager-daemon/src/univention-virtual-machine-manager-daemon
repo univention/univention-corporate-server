@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 """UVMM Daemon."""
+from __future__ import print_function
 
 import sys
 import locale
@@ -115,7 +116,7 @@ def createDaemon(options):
 
 				sys.exit(0)
 			else:
-				print >>sys.stderr, _("Failed to fork daemon.")
+				print(_("Failed to fork daemon."), file=sys.stderr)
 				sys.exit(1)
 		except EnvironmentError as ex:
 			raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=ex.strerror, errno=ex.errno)
@@ -138,7 +139,7 @@ def install_signal_handlers(options):
 		logger = logging.getLogger("uvmmd")
 		logger.info('Closing logfile.')
 		# Inspired by <http://www.cherrypy.org/ticket/679>
-		for x in logger.manager.loggerDict.itervalues():
+		for x in logger.manager.loggerDict.values():
 			try:
 				for h in x.handlers:
 					if isinstance(h, logging.FileHandler):

@@ -30,11 +30,14 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+from __future__ import print_function
+
 from univention.uvmm.helpers import urlparse
 
 
 def __test():
-	URIS = filter(None, map(lambda u: u.lstrip(), """\
+	URIS = [_f for _f in [u.lstrip() for u in """\
 	lxc:///
 	openvz:///system
 	openvz+unix:///system
@@ -80,15 +83,15 @@ def __test():
 	xen://example.com/
 	xen+tcp://example.com/
 	xen+ssh://root@example.com/
-	""".splitlines()))
+	""".splitlines()] if _f]
 	for uri in URIS:
 		data = urlparse.urlsplit(uri)
 		u = urlparse.urlunsplit(data)
 		try:
 			assert uri == u
-			print data
+			print(data)
 		except:
-			print uri, data, u
+			print(uri, data, u)
 
 
 if __name__ == '__main__':

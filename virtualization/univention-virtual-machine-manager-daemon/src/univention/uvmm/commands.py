@@ -56,7 +56,7 @@ class CommandError(TranslatableException):
 		TranslatableException.__init__(self, ex, kv)
 
 
-class _Commands:
+class _Commands(object):
 
 	@staticmethod
 	def L_CLOUD_ADD(server, request):

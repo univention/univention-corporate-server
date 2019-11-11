@@ -1,5 +1,7 @@
 #!/usr/bin/python2.4
 
+from __future__ import print_function
+
 import sys
 import time
 import libvirt
@@ -17,7 +19,7 @@ c = libvirt.open(sys.argv[1])
 
 
 def cb(*a):
-	print '|'.join(map(str, a))
+	print('|'.join(map(str, a)))
 
 
 c.domainEventRegister(cb, 42)
@@ -28,7 +30,7 @@ try:
 	while True:
 		s = d.info()[0]
 		if s != state:
-			print "%s\t%s" % (time.time(), STATE[s])
+			print("%s\t%s" % (time.time(), STATE[s]))
 			state = s
 		time.sleep(1)
 except KeyboardInterrupt:

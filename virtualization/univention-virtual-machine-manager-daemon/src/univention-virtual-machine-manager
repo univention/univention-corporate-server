@@ -3,6 +3,7 @@
 """
 UCS Virtual Machine Manager Daemon command line interface
 """
+from __future__ import print_function
 # Copyright 2010-2019 Univention GmbH
 #
 # https://www.univention.de/
@@ -50,7 +51,7 @@ def create_socket(options):
 	UNIX socket only."""
 	sock = client.UVMM_ClientUnixSocket(options.socket, timeout=options.timeout)
 	if options.verbose:
-		print >> sys.stderr, "sock=%s" % (sock,)
+		print("sock=%s" % (sock,), file=sys.stderr)
 	return sock
 
 
@@ -59,33 +60,33 @@ def request(options, req):
 	sock = create_socket(options)
 	try:
 		if options.verbose:
-			print >> sys.stderr, "request=%s" % (req,)
+			print("request=%s" % (req,), file=sys.stderr)
 		res = sock.send(req)
 		if isinstance(res, protocol.Response_DUMP):
-			print "DATA:"
+			print("DATA:")
 			try:
 				pprint(dump(res.data))
 			except AttributeError:
-				print str(res)
+				print(str(res))
 			except Exception as ex:
 				import traceback
 				traceback.print_exc()
-				print 'Exception %s\n%s' % (ex, res)
+				print('Exception %s\n%s' % (ex, res))
 		elif isinstance(res, protocol.Response_ERROR):
 			raise TranslatableException(res.translatable_text, res.values)
 		else:
-			print "OK."
+			print("OK.")
 	finally:
 		sock.close()
 
 
 def dump(obj):
 	if isinstance(obj, list):
-		return map(dump, obj)
+		return list(map(dump, obj))
 	elif isinstance(obj, dict):
-		return dict(map(lambda k_v: (k_v[0], dump(k_v[1])), obj.items()))
+		return dict([(k_v[0], dump(k_v[1])) for k_v in list(obj.items())])
 	elif hasattr(obj, '__dict__'):
-		return dict(map(lambda k_v1: (k_v1[0], dump(k_v1[1])), obj.__dict__.items()))
+		return dict([(k_v1[0], dump(k_v1[1])) for k_v1 in list(obj.__dict__.items())])
 	else:
 		return obj
 
@@ -97,12 +98,12 @@ def from_ldap(options):
 		uris = ldap_uris()
 	except LdapError as ex:
 		(translatable_text, fillin) = ex
-		print >> sys.stderr, "ERROR:"
-		print >> sys.stderr, _(translatable_text) % fillin
+		print("ERROR:", file=sys.stderr)
+		print(_(translatable_text) % fillin, file=sys.stderr)
 		return False
 
 	if len(uris) == 0:
-		print >> sys.stderr, _("No nodes found.")
+		print(_("No nodes found."), file=sys.stderr)
 		return False
 
 	result = True
@@ -115,7 +116,7 @@ def from_ldap(options):
 				raise client.ClientError(res.translatable_text, res.values)
 		except client.ClientError as ex:
 			(translatable_text, fillin) = ex
-			print >> sys.stderr, _(translatable_text) % fillin
+			print(_(translatable_text) % fillin, file=sys.stderr)
 			result = False
 	sock.close()
 
@@ -174,7 +175,7 @@ class ParserGenerator(object):
 			del lines[0]
 		while lines and not lines[-1].strip():
 			del lines[-1]
-		indent = min([len(l[0:-len(l.lstrip())]) for l in filter(None, lines)])
+		indent = min([len(l[0:-len(l.lstrip())]) for l in [_f for _f in lines if _f]])
 		desc = [l[indent:] for l in lines]
 		return '\n'.join(desc)
 
@@ -1025,7 +1026,7 @@ def main():
 		func = args.func
 	except AttributeError:
 		if args.verbose:
-			print >> sys.stderr, "I: No function for mode '{0.mode}'".format(args)
+			print("I: No function for mode '{0.mode}'".format(args), file=sys.stderr)
 		func = do_request
 
 	ret = func(args)
@@ -1037,7 +1038,7 @@ def do_request(args):
 		pre = args.pre
 	except AttributeError:
 		if args.verbose:
-			print >> sys.stderr, "I: No pre-function for mode '{0.mode}'".format(args)
+			print("I: No pre-function for mode '{0.mode}'".format(args), file=sys.stderr)
 	else:
 		pre(args)
 
@@ -1051,7 +1052,7 @@ def do_request(args):
 		sys.exit(ret)
 	except TranslatableException as ex:
 		(translatable_text, fillin) = ex
-		print >> sys.stderr, _(translatable_text) % fillin
+		print(_(translatable_text) % fillin, file=sys.stderr)
 		sys.exit(1)
 
 

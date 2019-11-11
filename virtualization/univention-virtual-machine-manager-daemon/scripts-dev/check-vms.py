@@ -8,6 +8,8 @@ Check if VMs are still valid
 3. snapshot XML exists for volume snapshots
 4. unreferenced volumes
 """
+from __future__ import print_function
+
 import sys
 import os
 import re
@@ -48,11 +50,11 @@ class Dotter(object):
         if self.dot_out:
             text = fmt % (data or {})
             try:  # FIXME: Fix Unicode
-                print >> self.dot_out, ''.join(_ for _ in text if
-                        32 <= ord(_))
+                print(''.join(_ for _ in text if
+                        32 <= ord(_)), file=self.dot_out)
             except UnicodeEncodeError:
-                print >> self.dot_out, ''.join(_ for _ in text if
-                        32 <= ord(_) < 128)
+                print(''.join(_ for _ in text if
+                        32 <= ord(_) < 128), file=self.dot_out)
 
 
 class Resource(object):
@@ -736,9 +738,9 @@ def main():
             filtered.add(res)
             text = '// %s' % (res.console(),)
             try:  # FIXME: Fix Unicode
-                print ''.join(_ for _ in text if 32 <= ord(_))
+                print(''.join(_ for _ in text if 32 <= ord(_)))
             except UnicodeEncodeError:
-                print ''.join(_ for _ in text if 32 <= ord(_) < 128)
+                print(''.join(_ for _ in text if 32 <= ord(_) < 128))
 
     if options.dot:
         if not options.show_all:
