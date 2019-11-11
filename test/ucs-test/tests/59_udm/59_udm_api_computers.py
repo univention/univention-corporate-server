@@ -39,8 +39,8 @@ class TestUdmUsersBasic(TestCase):
 			ip = ubuntu.props.ip[0]
 			forward_zone = list(self.udm.get('dns/forward_zone').search())[0]
 			reverse_zone = list(self.udm.get('dns/reverse_zone').search())[0]
-			ubuntu.props.dnsEntryZoneForward = [ [forward_zone.dn, ip ] ]
-			ubuntu.props.dnsEntryZoneReverse = [ [reverse_zone.dn, ip ] ]
+			ubuntu.props.dnsEntryZoneForward = [[forward_zone.dn, ip]]
+			ubuntu.props.dnsEntryZoneReverse = [[reverse_zone.dn, ip]]
 			ubuntu.save()
 			# assert newly created ptr record
 			assert num_ptr_records + 1 == len(list(self.udm.get('dns/ptr_record').search()))
@@ -48,7 +48,6 @@ class TestUdmUsersBasic(TestCase):
 			assert num_ptr_records == len(list(self.udm.get('dns/ptr_record').search()))
 		finally:
 			ubuntu.delete()
-
 
 	def test_move_error(self):
 		ubuntu = self.udm.get('computers/ubuntu').new()
@@ -79,6 +78,7 @@ class TestUdmUsersBasic(TestCase):
 		assert backup.position == 'cn=dc,cn=computers,%s' % self.ucr_test['ldap/base']
 		master = self.udm.get('computers/domaincontroller_master').new()
 		assert master.position == 'cn=dc,cn=computers,%s' % self.ucr_test['ldap/base']
+
 
 if __name__ == '__main__':
 	main(verbosity=2)
