@@ -927,10 +927,10 @@ class integer(simple):
 	def parse(self, text):
 		if isinstance(text, int):
 			text = str(text)
-		if self._re.match(text) is not None:
-			return text
-		else:
+		unicode_text = six.ensure_text(text, encoding='utf-8', errors='strict')
+		if self._re.match(unicode_text) is None:
 			raise univention.admin.uexceptions.valueError(_("Value must be a number!"))
+		return text
 
 
 class integerOrEmpty(integer):
