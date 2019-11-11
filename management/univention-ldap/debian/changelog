@@ -1,3 +1,9 @@
+univention-ldap (15.0.0-26) unstable; urgency=medium
+
+  * Bug #50481: added univentionListenerMessage
+
+ -- Felix Botner <botner@univention.de>  Mon, 11 Nov 2019 13:05:10 +0100
+
 univention-ldap (15.0.0-25) unstable; urgency=low
 
   * Bug #46649: add objectClass "top" to container cn=dns,$LDAP_BASE

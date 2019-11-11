@@ -8,6 +8,15 @@ objectIdentifier univentionLDAPExtensionObjectClass univentionLDAPExtension:2
 
 # <http://www.openldap.org/doc/admin24/schema.html>
 
+### generic attribute for listner messages ###
+### TODO, is there a better place for this definition? ###
+
+attributetype ( 1.3.6.1.4.1.10176.5000.1
+	NAME 'univentionListenerMessage'
+	DESC 'binary attribute for various listener status messages'
+	SINGLE-VALUE
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.5 )
+
 ### Definition for univentionLDAPExtensionSchema
 
 attributetype ( univentionLDAPExtensionAttributeType:11 NAME 'univentionLDAPSchemaFilename'
@@ -35,6 +44,7 @@ objectclass ( univentionLDAPExtensionObjectClass:1 NAME 'univentionLDAPExtension
 	MAY (	univentionLDAPSchemaFilename
 		$ univentionLDAPSchemaData
 		$ univentionLDAPSchemaActive
+		$ univentionListenerMessage
 		)
 	)
 
@@ -65,5 +75,6 @@ objectclass ( univentionLDAPExtensionObjectClass:2 NAME 'univentionLDAPExtension
 	MAY (	univentionLDAPACLFilename
 		$ univentionLDAPACLData
 		$ univentionLDAPACLActive
+		$ univentionListenerMessage
 		)
 	)
