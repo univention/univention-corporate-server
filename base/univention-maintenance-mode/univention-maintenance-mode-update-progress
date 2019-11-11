@@ -39,24 +39,25 @@ from univention.updater import UniventionUpdater
 uu = UniventionUpdater(False)
 available_updates = uu.get_all_available_release_updates()[0]
 
+
 def read_progress():
 	updater_status = UpdaterStatus()
 	if updater_status.status == 'DONE':
-		return 0.0;
+		return 0.0
 	ret = 0.0
-	with open('/var/lib/univention-updater/univention-updater.status.details') as fd: 
-		for line in fd: 
+	with open('/var/lib/univention-updater/univention-updater.status.details') as fd:
+		for line in fd:
 			bits = line.split(':')
 			if len(bits) > 3:
 				try:
 					if bits[0] == 'dlstatus':
-						ret = float(bits[2]) / 2.0 
+						ret = float(bits[2]) / 2.0
 					elif bits[0] == 'pmstatus':
-						ret = 50.0 + float(bits[2]) / 2.0 
+						ret = 50.0 + float(bits[2]) / 2.0
 				except ValueError:
 					pass
 	return ret
-	
+
 
 class UpdaterStatus(object):
 	def __init__(self):
@@ -117,6 +118,7 @@ def compute():
 				write_json(percentage)
 			except EnvironmentError as exc:
 				print 'Error while writing json: %s' % exc
+
 
 def main():
 	try:
