@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [2]
+scope: ucs_4.4-0-errata4.4-2
+src: univention-virtual-machine-manager-node
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The package has been prepared for Python 3.
+bug: [49180]
