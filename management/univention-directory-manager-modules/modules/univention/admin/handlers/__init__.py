@@ -1266,7 +1266,7 @@ class simpleLdap(object):
 		for i in al:
 			key, val = i[0], i[-1]  # might be a triple
 			if val and key.lower() == 'objectclass':
-				ocs -= set([val] if isinstance(val, basestring) else val)
+				ocs -= set([val] if isinstance(val, six.string_types) else val)
 		if ocs:
 			al.append(('objectClass', list(ocs)))
 
