@@ -193,7 +193,7 @@ class object(univention.admin.handlers.simpleLdap):
 		for prop in self.PATH_KEYS:
 			self.info[prop] = '0'
 
-		for prop, attr in self.PATH_KEYS.iteritems():
+		for prop, attr in self.PATH_KEYS.items():
 			if any(x == self.dn for x in pathResult.get(attr, [])):
 				self.info[prop] = '1'
 
