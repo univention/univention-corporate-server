@@ -159,35 +159,34 @@ def acquireRange(lo, position, atype, attr, ranges, scope='base'):
 	raise univention.admin.uexceptions.noLock(_('The attribute %r could not get locked.') % (atype,))
 
 
-def acquireUnique(lo, position, type, value, attr, scope='base'):
+def acquireUnique(lo, position, attribute_type, value, attr, scope='base'):
 	ud.debug(ud.ADMIN, ud.INFO, 'LOCK acquireUnique scope = %s' % scope)
 	if scope == 'domain':
 		searchBase = position.getDomain()
 	else:
 		searchBase = position.getBase()
-
-	if type == "aRecord":  # uniqueness is only relevant among hosts (one or more dns entries having the same aRecord as a host are allowed)
-		univention.admin.locking.lock(lo, position, type, value, scope=scope)
+	if attribute_type == "aRecord":  # uniqueness is only relevant among hosts (one or more dns entries having the same aRecord as a host are allowed)
+		univention.admin.locking.lock(lo, position, attribute_type, value, scope=scope)
 		if not lo.searchDn(base=searchBase, filter=filter_format('(&(objectClass=univentionHost)(%s=%s))', (attr, value))):
 			return value
-	elif type in ['groupName', 'uid'] and configRegistry.is_true('directory/manager/user_group/uniqueness', True):
-		univention.admin.locking.lock(lo, position, type, value, scope=scope)
+	elif attribute_type in ['groupName', 'uid'] and configRegistry.is_true('directory/manager/user_group/uniqueness', True):
+		univention.admin.locking.lock(lo, position, attribute_type, value, scope=scope)
 		if not lo.searchDn(base=searchBase, filter=filter_format('(|(&(cn=%s)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping)(objectClass=posixGroup)))(uid=%s))', (value, value))):
 			ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE return %s' % value)
 			return value
-	elif type == "groupName":  # search filter is more complex then in general case
-		univention.admin.locking.lock(lo, position, type, value, scope=scope)
+	elif attribute_type == "groupName":  # search filter is more complex then in general case
+		univention.admin.locking.lock(lo, position, attribute_type, value, scope=scope)
 		if not lo.searchDn(base=searchBase, filter=filter_format('(&(%s=%s)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping)(objectClass=posixGroup)))', (attr, value))):
 			ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE return %s' % value)
 			return value
 	else:
 		ud.debug(ud.ADMIN, ud.INFO, 'LOCK univention.admin.locking.lock scope = %s' % scope)
-		univention.admin.locking.lock(lo, position, type, value, scope=scope)
+		univention.admin.locking.lock(lo, position, attribute_type, value, scope=scope)
 		if not lo.searchDn(base=searchBase, filter=filter_format('%s=%s', (attr, value))):
 			ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE return %s' % value)
 			return value
 
-	raise univention.admin.uexceptions.noLock(_('The attribute %r could not get locked.') % (type,))
+	raise univention.admin.uexceptions.noLock(_('The attribute %r could not get locked.') % (attribute_type,))
 
 
 def request(lo, position, type, value=None):
