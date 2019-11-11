@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-schema (9.0.2-7) unstable; urgency=medium
+
+  * Bug #49181: migrate to dh_python
+
+ -- Florian Best <best@univention.de>  Mon, 11 Nov 2019 09:54:22 +0100
+
 univention-virtual-machine-manager-schema (9.0.2-6) unstable; urgency=medium
 
   * Bug #49695: revert registering schema via ucs_registerLDAPextension

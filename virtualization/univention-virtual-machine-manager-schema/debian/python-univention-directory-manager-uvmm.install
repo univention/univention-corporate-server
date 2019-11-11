@@ -1,3 +1,3 @@
-modules/univention/admin/handlers/uvmm/*.py usr/share/pyshared/univention/admin/handlers/uvmm/
-modules/univention/admin/syntax.d/*.py usr/share/pyshared/univention/admin/syntax.d/
+modules/univention/admin/handlers/uvmm/*.py usr/lib/python2.7/dist-packages/univention/admin/handlers/uvmm/
+modules/univention/admin/syntax.d/*.py usr/lib/python2.7/dist-packages/univention/admin/syntax.d/
 modules/i18n/* usr/share/locale/
