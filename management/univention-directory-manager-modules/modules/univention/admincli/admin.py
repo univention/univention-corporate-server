@@ -512,7 +512,7 @@ def _doit(arglist):
 				out.append('E: could not read bindpwd from file (%s)' % str(e))
 				return out + ['OPERATION FAILED']
 		elif opt == '--dn':
-			dn = _2utf8(val)
+			dn = six.ensure_str(_2utf8(val), encoding='utf-8', errors='strict')
 		elif opt == '--tls':
 			tls = val
 		elif opt == '--ignore_exists':
