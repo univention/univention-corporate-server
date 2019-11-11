@@ -31,6 +31,7 @@
 
 import ldap
 from ldap.filter import filter_format
+import six
 
 import univention.debug as ud
 import univention.admin.locking
@@ -73,7 +74,7 @@ def requestUserSid(lo, position, uid_s):
 	rid = str(uid * 2 + algorithmical_rid_base)
 
 	searchResult = lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
-	domainsid = searchResult[0][1]['sambaSID'][0]
+	domainsid = six.ensure_str(searchResult[0][1]['sambaSID'][0], encoding='utf-8', errors='strict')
 	sid = domainsid + '-' + rid
 
 	ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE: request user sid. SID = %s-%s' % (domainsid, rid))
