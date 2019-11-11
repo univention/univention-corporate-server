@@ -925,7 +925,8 @@ class simpleLdap(object):
 		identifier = []
 		for name, prop in self.descriptions.items():
 			if prop.identifies:
-				identifier.append((self.mapping.mapName(name), self.mapping.mapValue(name, self.info[name]), 2))
+				value = six.ensure_text(self.mapping.mapValue(name, self.info[name]))
+				identifier.append((self.mapping.mapName(name), value, 2))
 		return '%s,%s' % (dn2str([identifier]), dn2str(str2dn(self.dn)[1:]) if self.exists() else self.position.getDn())
 
 	def _ldap_post_create(self):  # type: () -> None
