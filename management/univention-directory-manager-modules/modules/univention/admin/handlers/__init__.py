@@ -1734,7 +1734,7 @@ class simpleLdap(object):
 		filter_s = cls.lookup_filter(filter_s, lo)
 		if superordinate:
 			filter_s = cls.lookup_filter_superordinate(filter_s, superordinate)
-		filter_str = six.ensure_text(filter_s or '')
+		filter_str = six.ensure_text(filter_s.__str__() or '')
 		attr = cls._ldap_attributes()
 		result = []
 		for dn, attrs in lo.search(filter_str, base, scope, attr, unique, required, timeout, sizelimit, serverctrls=serverctrls, response=response):
