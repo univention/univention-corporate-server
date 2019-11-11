@@ -366,7 +366,7 @@ class property:
 		if getattr(self.syntax, 'subsyntaxes', None) is not None and isinstance(bd0, (list, tuple)) and not self.multivalue:
 			return bd0
 
-		if isinstance(bd0, basestring):
+		if isinstance(bd0, six.string_types):
 			# multivalue defaults will only be a part of templates, so not multivalue is the common way for modules
 			if not self.multivalue:  # default=(template-str, [list-of-required-properties])
 				if all(object[p] for p in base_default[1]):
@@ -375,7 +375,7 @@ class property:
 					return bd0
 				return self.new()
 			else:  # multivalue
-				if all(isinstance(bd, basestring) for bd in base_default):
+				if all(isinstance(bd, six.string_types) for bd in base_default):
 					return [self._replace(bd, object) for bd in base_default]
 				# must be a list of loaded extended attributes then, so we return it if it has content
 				# return the first element, this is only related to empty extended attributes which are loaded wrong, needs to be fixed elsewhere
