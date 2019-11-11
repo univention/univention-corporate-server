@@ -38,11 +38,14 @@ from argparse import ArgumentParser, RawTextHelpFormatter
 from univention.admindiary.events import DiaryEvent
 from univention.admindiary.client import write_event, add_comment
 
+
 def flip():
 	return randint(0, 1)
 
+
 def write_comment(context):
 	add_comment('Lorem ipsum', context, username='Administrator')
+
 
 def write_join(username):
 	hostname = 'member-%s' % randint(1000, 9999)
@@ -60,6 +63,7 @@ def write_join(username):
 		event = DiaryEvent.get('JOIN_FINISHED_FAILURE')
 		return write_event(event, {'hostname': hostname}, username, context)
 
+
 def write_updates(username):
 	hostname = 'member-%s' % randint(1000, 9999)
 	event = DiaryEvent.get('UPDATE_STARTED')
@@ -71,6 +75,7 @@ def write_updates(username):
 		event = DiaryEvent.get('UPDATE_FINISHED_FAILURE')
 		return write_event(event, {'hostname': hostname}, username, context)
 
+
 def write_password(username):
 	hostname = 'member-%s' % randint(1000, 9999)
 	if flip():
@@ -79,6 +84,7 @@ def write_password(username):
 	else:
 		event = DiaryEvent.get('SERVER_PASSWORD_CHANGED_FAILED')
 		return write_event(event, {'hostname': hostname}, username)
+
 
 def write_some_events(value, username, f):
 	num_runs, num_comments = value.split('+')
@@ -92,6 +98,7 @@ def write_some_events(value, username, f):
 		while this_num_comments:
 			this_num_comments -= 1
 			write_comment(context)
+
 
 def main():
 	usage = '%(prog)s [options]'
@@ -114,6 +121,7 @@ def main():
 	if args.password:
 		for value in args.password:
 			write_some_events(value, args.username, write_password)
+
 
 if __name__ == '__main__':
 	main()

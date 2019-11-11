@@ -61,12 +61,14 @@ def get_engine():
 		db_url = db_url + '?charset=utf8mb4'
 	return sqlalchemy.create_engine(db_url)
 
+
 def make_session_class():
 	if make_session_class._session is None:
 		engine = get_engine()
 		make_session_class._session = sessionmaker(bind=engine)
 	return make_session_class._session
 make_session_class._session = None
+
 
 @contextmanager
 def get_session():
@@ -77,6 +79,7 @@ def get_session():
 
 
 Base = declarative_base()
+
 
 class Meta(Base):
 	__tablename__ = 'meta'
@@ -90,11 +93,13 @@ entry_tags = Table('entry_tags', Base.metadata,
     Column('tag_id', ForeignKey('tags.id'), primary_key=True)
 )
 
+
 class Event(Base):
 	__tablename__ = 'events'
 
 	id = Column(Integer, Sequence('event_id_seq'), primary_key=True)
 	name = Column(String(190), nullable=False, unique=True, index=True)
+
 
 class EventMessage(Base):
 	__tablename__ = 'event_messages'
@@ -103,6 +108,7 @@ class EventMessage(Base):
 	locale = Column(String(190), nullable=False, primary_key=True)
 	message = Column(Text, nullable=False)
 	locked = Column(Boolean)
+
 
 class Entry(Base):
 	__tablename__ = 'entries'
@@ -123,6 +129,7 @@ class Entry(Base):
                         back_populates='entries'
                         )
 
+
 class Tag(Base):
 	__tablename__ = 'tags'
 
@@ -133,6 +140,7 @@ class Tag(Base):
                         secondary=entry_tags,
                         back_populates='tags'
                         )
+
 
 class Arg(Base):
 	__tablename__ = 'args'
@@ -317,6 +325,7 @@ class Client(object):
 			res.append(obj)
 		return res
 
+
 @contextmanager
 def get_client(version):
 	if version != 1:
@@ -324,6 +333,7 @@ def get_client(version):
 	with get_session() as session:
 		client = Client(version=version, session=session)
 		yield client
+
 
 class UnsupportedVersion(Exception):
 	def __str__(self):

@@ -39,6 +39,7 @@ from argparse import ArgumentParser, Action, RawTextHelpFormatter
 from univention.admindiary.client import write_event
 from univention.admindiary.events import DiaryEvent
 
+
 class StoreMessageAction(Action):
 	def __call__(self, parser, namespace, value, option_string=None):
 		ret = {}
@@ -51,6 +52,7 @@ class StoreMessageAction(Action):
 				locale, message = 'en', val
 			ret[locale] = message
 		setattr(namespace, self.dest, ret)
+
 
 def main():
 	usage = '%(prog)s --event EVENT [options]'
@@ -90,6 +92,7 @@ def main():
 	else:
 		print >> sys.stderr, 'Could not write event'
 		sys.exit(1)
+
 
 if __name__ == '__main__':
 	main()

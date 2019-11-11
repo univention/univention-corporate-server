@@ -45,6 +45,7 @@ from univention.admindiary.backend import get_client
 
 get_logger = partial(get_logger, 'backend')
 
+
 class RsyslogTransport(object):
 	def __init__(self, syslogtag):
 		ints = Word(nums)
@@ -86,6 +87,7 @@ class RsyslogTransport(object):
 			except TypeError as exc:
 				get_logger().error('Parsing failed! %r (%s)' % (rsyslog_event_dict, exc))
 
+
 def process(values):
 	json_string = json.dumps(values)
 	if values.get('type') == 'Entry v1':
@@ -93,6 +95,7 @@ def process(values):
 		add_entry_v1(entry)
 	else:
 		get_logger().error('Unsupported values: %r' % values)
+
 
 def add_entry_v1(entry):
 	blocked_events = get_events_to_reject()

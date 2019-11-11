@@ -40,12 +40,14 @@ ucr.load()
 
 LOG_FILE = '/var/log/univention/admindiary.log'
 
+
 def get_events_to_reject():
 	ucrv = 'admin/diary/reject'
 	blocked_events = ucr.get(ucrv)
 	if blocked_events:
 		return blocked_events.split()
 	return []
+
 
 class _ShortNameFormatter(logging.Formatter):
 	shorten = 'univention.admindiary'
