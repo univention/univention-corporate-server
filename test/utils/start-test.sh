@@ -30,7 +30,6 @@ export KVM_CPUS="${KVM_CPUS:=1}"
 export RELEASE_UPDATE="${release_update:=public}"
 export ERRATA_UPDATE="${errata_update:=testing}"
 export UCSSCHOOL_RELEASE=${UCSSCHOOL_RELEASE:=scope}
-export FORCE_EC2="${FORCE_EC2:=false}"
 export CFG="$1"
 
 # jenkins defaults
@@ -76,7 +75,7 @@ fi
 # create the command and run in ec2 or kvm depending on cfg
 KVM=false
 grep -q '^\w*kvm_template' "$CFG" && KVM=true # if kvm is configure in cfg, use kvm
-$FORCE_EC2 && KVM=false # use ec2 if forced
+test "$KVM_BUILD_SERVER" = "EC2" && KVM=false
 
 if $KVM; then
 	exe='ucs-kvm-create'
