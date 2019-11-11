@@ -1,3 +1,9 @@
+univention-admin-diary (1.0.0-48) unstable; urgency=medium
+
+  * Bug #49169: migrate univention-admin-diary to dh_python
+
+ -- Florian Best <best@univention.de>  Mon, 11 Nov 2019 16:17:50 +0100
+
 univention-admin-diary (1.0.0-47) unstable; urgency=medium
 
   * Bug #48698: Fix user visible spelling errors

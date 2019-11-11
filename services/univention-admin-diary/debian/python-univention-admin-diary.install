@@ -1,2 +1,2 @@
-python/admindiary/__init__.py usr/share/pyshared/univention/admindiary/
-python/admindiary/events.py usr/share/pyshared/univention/admindiary/
+python/admindiary/__init__.py usr/lib/python2.7/dist-packages/univention/admindiary/
+python/admindiary/events.py usr/lib/python2.7/dist-packages/univention/admindiary/

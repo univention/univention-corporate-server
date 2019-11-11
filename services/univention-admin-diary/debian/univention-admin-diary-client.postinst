@@ -29,9 +29,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-update-python-modules univention-admin-diary-client.public
-update-python-modules --post-install
-
 #DEBHELPER#
 
 case "$1" in

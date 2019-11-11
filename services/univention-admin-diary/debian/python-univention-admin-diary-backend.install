@@ -1,1 +1,1 @@
-python/admindiary/backend.py usr/share/pyshared/univention/admindiary/
+python/admindiary/backend.py usr/lib/python2.7/dist-packages/univention/admindiary/
