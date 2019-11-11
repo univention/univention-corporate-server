@@ -31,7 +31,7 @@ set -x
 
 . utils.sh
 
-fakepackage() { equivs-control "$1" && sed "s/^Package: .*/Package: $1/g; s/^# Version:.*/Version: ${2:1.0}/g" -i "$1" && equivs-build "$1" && dpkg -i "$1"_*.deb; }
+fakepackage() { equivs-control "$1" && sed "s/^Package: .*/Package: $1/g; s/^# Version:.*/Version: ${2:-1.0}/g" -i "$1" && equivs-build "$1" && dpkg -i "$1"_*.deb; }
 
 fake_package_install () {
 	install_with_unmaintained equivs
