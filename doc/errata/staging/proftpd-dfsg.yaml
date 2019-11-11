@@ -6,10 +6,9 @@ src: proftpd-dfsg
 fix: 1.3.5b-4+deb9u2
 desc: |
  This update addresses the following issue:
- * ProFTPD before 1.3.6b and 1.3.7rc before 1.3.7rc2 allows remote
-   unauthenticated denial-of-service due to incorrect handling of overly long
-   commands because main.c in a child process enters an infinite loop.
-   (CVE-2019-18217)
+ * ProFTPD allows remote unauthenticated denial-of-service due to incorrect
+   handling of overly long commands because main.c in a child process enters
+   an infinite loop. (CVE-2019-18217)
 bug: [50464]
 cve:
 - CVE-2019-18217
