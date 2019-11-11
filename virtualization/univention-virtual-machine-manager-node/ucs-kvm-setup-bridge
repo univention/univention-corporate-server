@@ -29,13 +29,15 @@ Rewrite existing ethenet interface into bridge setup.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import os
 import re
 import sys
 from optparse import OptionGroup, OptionParser
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
-from univention.config_registry.interfaces import Interfaces, RE_IFACE
+from univention.config_registry.interfaces import RE_IFACE
 import subprocess
 import logging
 
@@ -68,12 +70,12 @@ class Bridging(object):
 			self.setup_bridge()
 			self.setup_primary()
 		except NameError as ex:
-			print >> sys.stderr, ex
+			print(ex, file=sys.stderr)
 			sys.exit(1)
 
 		if self.opt.dry_run:
-			for key, value in sorted(self.changes.iteritems()):
-				print '%s: %r' % (key, value)
+			for key, value in sorted(self.changes.items()):
+				print('%s: %r' % (key, value))
 		else:
 			ucr_update(self.ucr, self.changes)
 
@@ -239,7 +241,7 @@ class Bridging(object):
 			if self.opt.options or not option:
 				self.changes[key] = None
 
-		for vdst, val in vlans.iteritems():
+		for vdst, val in vlans.items():
 			if not val:
 				self.add_option(vdst, VRD + dst)
 
@@ -262,7 +264,7 @@ class Bridging(object):
 			self.changes['interfaces/primary'] = self.bridge
 
 	def add_option(self, iface, value):
-		for option in xrange(1000):
+		for option in range(1000):
 			key = 'interfaces/%s/options/%d' % (iface, option)
 			val = self.changes.get(key)
 			if not val:

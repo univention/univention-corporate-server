@@ -29,6 +29,8 @@ Re-connect interfaces of running VMs to their bridges.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import os
 import sys
 import libvirt
@@ -54,7 +56,7 @@ class Repair(object):
 		Print debug message (if enabled).
 		"""
 		if self.verbose:
-			print >> sys.stderr, msg % args
+			print(msg % args, file=sys.stderr)
 
 	def process_iface(self, bridge, interface):
 		"""
@@ -74,13 +76,13 @@ class Repair(object):
 		stdout, stderr = proc.communicate()
 		result = proc.wait()
 		if result != 0:
-			print >> sys.stderr, "RETURN: %d" % (result,)
+			print("RETURN: %d" % (result,), file=sys.stderr)
 			if stdout:
-				print >> sys.stderr, "STDOUT:"
-				print >> sys.stderr, stdout
+				print("STDOUT:", file=sys.stderr)
+				print(stdout, file=sys.stderr)
 			if stderr:
-				print >> sys.stderr, "STDERR:"
-				print >> sys.stderr, stderr
+				print("STDERR:", file=sys.stderr)
+				print(stderr, file=sys.stderr)
 
 	def process_vm(self, dom):
 		"""
@@ -89,13 +91,13 @@ class Repair(object):
 		try:
 			xml = dom.XMLDesc(0)
 		except libvirt.libvirtError as ex:
-			print >> sys.stderr, ex
+			print(ex, file=sys.stderr)
 			return
 
 		try:
 			doc = libxml2.parseDoc(xml)
 		except libxml2.libxmlError as ex:
-			print >> sys.stderr, ex
+			print(ex, file=sys.stderr)
 			return
 		ctxt = doc.xpathNewContext()
 		try:
@@ -118,15 +120,18 @@ def main():
 	Re-connect interfaces of running VMs to their bridges.
 	"""
 	parser = OptionParser()
-	parser.add_option('-b', '--bridge',
-			action="append", type="str", dest="bridge", default=[],
-			help="Specify bridge")
-	parser.add_option('-c', '--connect',
-			action="store", type="str", dest="uri", default="qemu:///system",
-			help="hypervisor connection URI")
-	parser.add_option('-v', '--verbose',
-			action="store_true", dest="verbose", default=False,
-			help="Turn on verbose mode")
+	parser.add_option(
+		'-b', '--bridge',
+		action="append", type="str", dest="bridge", default=[],
+		help="Specify bridge")
+	parser.add_option(
+		'-c', '--connect',
+		action="store", type="str", dest="uri", default="qemu:///system",
+		help="hypervisor connection URI")
+	parser.add_option(
+		'-v', '--verbose',
+		action="store_true", dest="verbose", default=False,
+		help="Turn on verbose mode")
 	options, _args = parser.parse_args()
 
 	repair = Repair(options.verbose)

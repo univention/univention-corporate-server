@@ -33,17 +33,19 @@
 """Watch for addition or deletion of management stations and update
 /etc/libvirt/libvirtd.conf and the UCR variable uvmm/managers accordingly."""
 
+from __future__ import absolute_import
+
+import subprocess
+
+import listener
+import univention.debug as debug
+from univention.config_registry import ConfigRegistry, handler_set
+
 name = 'libvirtd-acl'
 description = 'Update UCS Virtual Machine Manager libvirtd permissions'
 # filter='(|(objectClass=univentionHost)(&(objectClass=univentionVirtualMachineGroupOC)(univentionVirtualMachineGroup=1)))'
 filter = '(objectClass=univentionHost)'
 attributes = ['univentionService']
-
-__package__ = ''  # workaround for PEP 366
-import listener
-from univention.config_registry import ConfigRegistry, handler_set
-import univention.debug as debug
-import subprocess
 
 service_names = set(["Virtual Machine Manager", "KVM Host"])
 need_restart = False

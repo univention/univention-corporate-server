@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (7.0.1-5) unstable; urgency=medium
+
+  * Bug #49180: remove python-support build dependency
+
+ -- Florian Best <best@univention.de>  Mon, 11 Nov 2019 11:14:47 +0100
+
 univention-virtual-machine-manager-node (7.0.1-4) unstable; urgency=low
 
   * Bug #47701: Re-connect VMs to bridges on network restart

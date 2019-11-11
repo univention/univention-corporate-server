@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 from optparse import OptionParser
 from xml.dom.minidom import parse
 
@@ -64,7 +66,7 @@ def __get_value(doc, element):
 def _parse_xml_file(filename):
 	doc = parse(filename)
 	if not doc:
-		print >>sys.stderr, 'error: failed to parse backup file %s' % filename
+		print('error: failed to parse backup file %s' % filename, file=sys.stderr)
 		return None
 	name = __get_value(doc, 'name')
 	uuid = __get_value(doc, 'uuid')
@@ -87,13 +89,13 @@ def read_backup_files():
 
 def list_instances(instances, pattern):
 	if not instances:
-		print 'no backups available'
+		print('no backups available')
 		return
-	max_length = max(map(lambda x: len(x.name), instances))
+	max_length = max([len(x.name) for x in instances])
 	format_str = '%%-%ds (%%s)' % max_length
 	for instance in instances:
 		if fnmatch.fnmatch(instance.name, pattern):
-			print format_str % (instance.name, instance.uuid)
+			print(format_str % (instance.name, instance.uuid))
 
 
 def instance_exists(instance):
@@ -108,15 +110,15 @@ def restore_instance(instances, name, force):
 		if instance.name == name or instance.uuid == name:
 			if instance_exists(instance):
 				if not force:
-					print >>sys.stderr, 'error: the virtual instance already exists. Use the option -f to overwrite it'
+					print('error: the virtual instance already exists. Use the option -f to overwrite it', file=sys.stderr)
 					sys.exit(1)
 				else:
-					print >>sys.stderr, 'warning: overwriting existing virtual instance (forced)'
+					print('warning: overwriting existing virtual instance (forced)', file=sys.stderr)
 			devnull = open(os.devnull, 'w')
 			ret = subprocess.call(['virsh', 'define', instance.filename], stdout=devnull, stderr=devnull)
 			devnull.close()
 			if ret:
-				print >>sys.stderr, 'error: failed to restore virtual instance %s' % instance.name
+				print('error: failed to restore virtual instance %s' % instance.name, file=sys.stderr)
 				return False
 			break
 	return True
