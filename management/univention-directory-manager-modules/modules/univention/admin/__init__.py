@@ -168,13 +168,12 @@ def pattern_replace(pattern, object):
 			# try to apply the indexing instructions, indicated through '[...]'
 			if ext:
 				try:
-					return eval('val%s' % (ext))
+					return six.ensure_str(eval('val%s' % (ext)))
 				except SyntaxError:
-					return val
-			return val
-
+					return six.ensure_str(val, encoding='utf-8', errors='strict')
+			return six.ensure_str(val, encoding='utf-8', errors='strict')
 		elif key == 'dn' and object.dn:
-			return object.dn
+			return six.ensure_str(object.dn, encoding='utf-8', errors='strict')
 		return ''
 
 	regex = re.compile(r'<(?P<key>[^>]+)>(?P<ext>\[[\d:]+\])?')
