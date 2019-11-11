@@ -1842,10 +1842,14 @@ class object(univention.admin.handlers.simpleLdap):
 		return ml
 
 	def _modlist_password_expiry(self, ml, pwhistoryPolicy):
+		def _time_time():
+			if six.PY2:
+				return long(time.time())
+			return int(time.time())
+
 		pwd_change_next_login = self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '1'
 		unset_pwd_change_next_login = self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '0'
-
-		now = (long(time.time()) / 3600 / 24)
+		now = (_time_time() / 3600 / 24)
 		shadowLastChange = str(int(now))
 		shadowMax = str(pwhistoryPolicy.expiryInterval or '')
 		if pwd_change_next_login:
@@ -1868,13 +1872,13 @@ class object(univention.admin.handlers.simpleLdap):
 
 		# if pwdChangeNextLogin has been set, set sambaPwdLastSet to 0 (see UCS Bug #17890)
 		# OLD behavior was: set sambaPwdLastSet to 1 (see UCS Bug #8292 and Samba Bug #4313)
-		sambaPwdLastSetValue = '0' if pwd_change_next_login else str(long(time.time()))
+		sambaPwdLastSetValue = '0' if pwd_change_next_login else str(_time_time())
 		ud.debug(ud.ADMIN, ud.INFO, 'sambaPwdLastSetValue: %s' % sambaPwdLastSetValue)
 		ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
 
 		krb5PasswordEnd = ''
 		if pwhistoryPolicy.expiryInterval or pwd_change_next_login:
-			expiry = long(time.time())
+			expiry = _time_time()
 			if not pwd_change_next_login:
 				expiry = expiry + (pwhistoryPolicy.expiryInterval * 3600 * 24)
 			krb5PasswordEnd = time.strftime("%Y%m%d000000Z", time.gmtime(expiry))
