@@ -147,7 +147,7 @@ def process_output(output, cmdfile):
 			result = 3
 			output = output[:-1]
 		for line in output:
-			if isinstance(line, unicode):
+			if isinstance(line, six.text_type):
 				line = line.encode(locale.getpreferredencoding(), 'replace')
 			print(line)
 	return result
