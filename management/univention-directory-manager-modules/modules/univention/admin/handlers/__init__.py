@@ -1095,7 +1095,7 @@ class simpleLdap(object):
 		options = univention.admin.modules.options(self.module)
 		if 'objectClass' in self.oldattr:
 			ocs = set(self.oldattr['objectClass'])
-			for opt, option in options.iteritems():
+			for opt, option in options.items():
 				if not option.disabled and option.matches(ocs) and self.__app_option_enabled(opt, option):
 					self.options.append(opt)
 		else:
