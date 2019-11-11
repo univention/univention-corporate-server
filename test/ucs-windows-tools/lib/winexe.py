@@ -1,6 +1,5 @@
 import subprocess
 import socket
-import sys
 import optparse
 import time
 import glob
@@ -14,6 +13,7 @@ else:
 	COMMAND_DIR = '/usr/share/ucs-windows-tools/windows-scripts/'
 
 LOG_FILE = '/var/log/univention/ucs-windows-tools.log'
+
 
 def default_options():
 	usage = "usage: %prog [OPTIONS]"
@@ -55,9 +55,10 @@ class WinExeFailed(Exception):
 	'''ucs_addServiceToLocalhost failed'''
 
 
-class WinExe:
+class WinExe(object):
 
-	def __init__(self,
+	def __init__(
+		self,
 		domain=None,
 		domain_admin=None,
 		domain_password=None,
