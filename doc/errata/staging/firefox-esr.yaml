@@ -1,0 +1,28 @@
+product: ucs
+release: "4.3"
+version: [4, 5]
+scope: ucs_4.3-0-errata4.3-5
+src: firefox-esr
+fix: 68.2.0esr-1~deb9u2
+desc: |
+ This update addresses the following issues:
+ * Use-after-free when creating index updates in IndexedDB (CVE-2019-11757)
+ * Stack buffer overflow in HKDF output (CVE-2019-11759)
+ * Stack buffer overflow in WebRTC networking (CVE-2019-11760)
+ * Unintended access to a privileged JSONView object (CVE-2019-11761)
+ * document.domain-based origin isolation has same-origin-property violation
+   (CVE-2019-11762)
+ * Incorrect HTML parsing results in XSS bypass technique (CVE-2019-11763)
+ * Memory safety bugs fixed in Firefox 70 and Firefox ESR 68.2
+   (CVE-2019-11764)
+ * heap-based buffer over-read via crafted XML input (CVE-2019-15903)
+bug: [50478]
+cve:
+- CVE-2019-11757
+- CVE-2019-11759
+- CVE-2019-11760
+- CVE-2019-11761
+- CVE-2019-11762
+- CVE-2019-11763
+- CVE-2019-11764
+- CVE-2019-15903
