@@ -1,16 +1,17 @@
 from distutils.core import setup as orig_setup
 
+import io
 from debian.deb822 import Deb822
 from debian.changelog import Changelog
 
 
 def _get_version():
-	changelog = Changelog(open('debian/changelog', 'r'))
+	changelog = Changelog(io.open('debian/changelog', 'r', encoding='utf-8'))
 	return changelog.full_version
 
 
 def _get_description(name):
-	for package in Deb822.iter_paragraphs(open('debian/control', 'r')):
+	for package in Deb822.iter_paragraphs(io.open('debian/control', 'r', encoding='utf-8')):
 		if package.get('Package') == name:
 			description = package['Description']
 			return description.split('\n .\n')[0]
