@@ -34,6 +34,7 @@ import copy
 import time
 import ldap
 from ldap.filter import filter_format
+import six
 
 import univention.admin
 from univention.admin.layout import Tab, Group
@@ -251,8 +252,10 @@ mapping.register('allowedEmailGroups', 'univentionAllowedEmailGroups')
 
 
 def _case_insensitive_in_list(dn, list):
+	lower_dn = six.ensure_str(dn, encoding='utf-8', errors='strict').lower()
 	for element in list:
-		if dn.decode('utf8').lower() == element.decode('utf8').lower():
+		lower_element = six.ensure_str(element, encoding='utf-8', errors='strict').lower()
+		if lower_dn == lower_element:
 			return True
 	return False
 
