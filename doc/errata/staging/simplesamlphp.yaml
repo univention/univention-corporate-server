@@ -6,7 +6,9 @@ src: simplesamlphp
 fix: 1.14.11-1+deb9u2A~4.3.5.201911071121
 desc: |
  This update addresses the following issue:
- * simplesamlphp (CVE-2019-3465)
+ * It was discovered that in SimpleSAMLphp, an implementation of the SAML 2.0
+   protocol, it was possible to circumvent XML signature verification on SAML
+   messages. (CVE-2019-3465)
 bug: [50465]
 cve:
 - CVE-2019-3465
