@@ -34,6 +34,7 @@
 # Too pedantic  :pylint: disable-msg=W0704
 # Rewrite       :pylint: disable-msg=R0912
 from __future__ import print_function
+import io
 import sys
 import os
 import random
@@ -811,7 +812,7 @@ class ConfigHandlers:
 		from_path = os.path.join(FILE_DIR, name)
 		handler = ConfigHandlerFile(from_path, name)
 		if os.path.exists(from_path):
-			handler.variables = grep_variables(open(from_path, 'r').read())
+			handler.variables = grep_variables(io.open(from_path, 'r', encoding='UTF-8').read())
 
 		self._parse_common_file_handler(handler, entry)
 
@@ -898,7 +899,7 @@ class ConfigHandlers:
 		variables = set(entry.get('Variables', set()))
 		name = os.path.join(FILE_DIR, subfile)
 		try:
-			temp_file = open(name, 'r')
+			temp_file = io.open(name, 'r', encoding='UTF-8')
 			try:
 				variables |= grep_variables(temp_file.read())
 			finally:
