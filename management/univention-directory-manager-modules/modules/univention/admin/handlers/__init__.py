@@ -445,7 +445,7 @@ class simpleLdap(object):
 			p = None
 			try:
 				s = self.descriptions[key].syntax
-				p = s.parse(value)
+				p = s.parse(six.ensure_str(value, encoding='utf-8', errors='strict'))
 			except univention.admin.uexceptions.valueError as e:
 				err = e
 			if not p:
