@@ -2246,7 +2246,7 @@ class object(univention.admin.handlers.simpleLdap):
 					pwlist.append(smbpwhash)
 
 		# and build the new history
-		res = string.join(pwlist, '')
+		res = ''.join(pwlist)
 		return res
 
 	def __allocate_rid(self, rid):
