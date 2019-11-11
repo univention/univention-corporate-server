@@ -101,7 +101,7 @@ def main(fqdn, port, aliases, conffile, binddn, bindpwdfile, ssl, cert, private_
 			with click.open_file(bindpwdfile, "r") as fp:
 				password = fp.read().strip()
 		else:
-			password  = click.prompt("Password for '{}'".format(binddn), hide_input=True).strip()
+			password = click.prompt("Password for '{}'".format(binddn), hide_input=True).strip()
 
 	if not binddn:
 		udm = UDM.admin().version(1)
