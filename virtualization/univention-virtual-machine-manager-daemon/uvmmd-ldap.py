@@ -33,14 +33,15 @@
 """Watch for changes in virtualized guests and notify UVMM daemon
 accordingly."""
 
+from __future__ import absolute_import
+
+import listener
+import univention.debug as debug
+
 name = 'uvmmd-ldap'
 description = 'UCS Virtual Machine Manager Daemon LDAP monitor'
 filter = '(objectClass=univentionVirtualMachine)'
 attributes = []
-
-__package__ = ''  # workaround for PEP 366
-import listener
-import univention.debug as debug
 
 
 def initialize():

@@ -196,39 +196,48 @@ if __name__ == '__main__':
 	parser = OptionParser(usage=_('usage: %prog [options] [uri...]'))
 
 	socket_group = OptionGroup(parser, _('Connection options'))
-	socket_group.add_option('-u', '--unix',
-				action='store', dest='socket', default="/var/run/uvmm.socket",
-				help=_('Path to the UNIX socket [%(default)s]') % {'default': '%default'})
+	socket_group.add_option(
+		'-u', '--unix',
+		action='store', dest='socket', default="/var/run/uvmm.socket",
+		help=_('Path to the UNIX socket [%(default)s]') % {'default': '%default'})
 	parser.add_option_group(socket_group)
 
 	cache_group = OptionGroup(parser, _('Cache options'))
-	cache_group.add_option('-c', '--cache',
-			action='store', dest='cache', default="/var/cache/univention-virtual-machine-manager-daemon",
-			help=_('cache directory [%(default)s]') % {'default': '%default'})
-	cache_group.add_option('-C', '--clean',
-			action='store_true', dest='clean', default=False,
-			help=_('Do not load cached state'))
+	cache_group.add_option(
+		'-c', '--cache',
+		action='store', dest='cache', default="/var/cache/univention-virtual-machine-manager-daemon",
+		help=_('cache directory [%(default)s]') % {'default': '%default'})
+	cache_group.add_option(
+		'-C', '--clean',
+		action='store_true', dest='clean', default=False,
+		help=_('Do not load cached state'))
 	parser.add_option_group(cache_group)
 
 	daemon_group = OptionGroup(parser, _('Daemon options'))
-	daemon_group.add_option('-p', '--pidfile',
-			action='store', dest='pidfile', default="/var/run/uvmmd.pid",
-			help=_('Path to the pid-file [%(default)s]') % {'default': '%default'})
-	daemon_group.add_option('-d', '--daemon',
-			action='store_true', dest='daemonize', default=False,
-			help=_('Fork into background'))
-	daemon_group.add_option('-l', '--log',
-			action='store', dest='logfile', default=None,
-			help=_('Path to the log-file'))
-	daemon_group.add_option('-v', '--verbose',
-			action='store_true', dest='verbose', default=False,
-			help=_('Print additional information'))
-	daemon_group.add_option('-i', '--config',
-			action='store', dest='conffile', default="/etc/univention/uvmmd.ini",
-			help=_('Path to the ini-file [%(default)s]') % {'default': '%default'})
-	daemon_group.add_option('-I', '--no-ini',
-			action='store_false', dest='read_ini', default=True,
-			help=_('Skip reading ini-file'))
+	daemon_group.add_option(
+		'-p', '--pidfile',
+		action='store', dest='pidfile', default="/var/run/uvmmd.pid",
+		help=_('Path to the pid-file [%(default)s]') % {'default': '%default'})
+	daemon_group.add_option(
+		'-d', '--daemon',
+		action='store_true', dest='daemonize', default=False,
+		help=_('Fork into background'))
+	daemon_group.add_option(
+		'-l', '--log',
+		action='store', dest='logfile', default=None,
+		help=_('Path to the log-file'))
+	daemon_group.add_option(
+		'-v', '--verbose',
+		action='store_true', dest='verbose', default=False,
+		help=_('Print additional information'))
+	daemon_group.add_option(
+		'-i', '--config',
+		action='store', dest='conffile', default="/etc/univention/uvmmd.ini",
+		help=_('Path to the ini-file [%(default)s]') % {'default': '%default'})
+	daemon_group.add_option(
+		'-I', '--no-ini',
+		action='store_false', dest='read_ini', default=True,
+		help=_('Skip reading ini-file'))
 	parser.add_option_group(daemon_group)
 
 	(options, arguments) = parser.parse_args()

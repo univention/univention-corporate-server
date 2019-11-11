@@ -29,13 +29,14 @@
 # <https://www.gnu.org/licenses/>.
 from os.path import dirname, join
 import univention
-univention.__path__.insert(0, join(dirname(__file__), '../src/univention'))
 from unittest import main, TestCase
-from univention.uvmm.node import _domain_edit
-from univention.uvmm.protocol import Data_Domain, Disk, Interface, Graphic
 from textwrap import dedent
 from lxml.doctestcompare import LXMLOutputChecker
 from doctest import Example
+
+univention.__path__.insert(0, join(dirname(__file__), '../src/univention'))
+from univention.uvmm.node import _domain_edit  # noqa: E402
+from univention.uvmm.protocol import Data_Domain, Disk, Interface, Graphic  # noqa: E402
 
 
 class _Template(object):

@@ -50,11 +50,9 @@ class Dotter(object):
         if self.dot_out:
             text = fmt % (data or {})
             try:  # FIXME: Fix Unicode
-                print(''.join(_ for _ in text if
-                        32 <= ord(_)), file=self.dot_out)
+                print(''.join(_ for _ in text if 32 <= ord(_)), file=self.dot_out)
             except UnicodeEncodeError:
-                print(''.join(_ for _ in text if
-                        32 <= ord(_) < 128), file=self.dot_out)
+                print(''.join(_ for _ in text if 32 <= ord(_) < 128), file=self.dot_out)
 
 
 class Resource(object):
@@ -269,8 +267,7 @@ class SnapShot(Resource):
     """
 
     def __init__(self, virtual_machine, name):
-        filename = os.path.join('/var/lib/libvirt/qemu/snapshot',
-                virtual_machine.name, '%s.xml' % (name,))
+        filename = os.path.join('/var/lib/libvirt/qemu/snapshot', virtual_machine.name, '%s.xml' % (name,))
         self.virtual_machine = virtual_machine
         self.name = name
         self.state = None
@@ -295,11 +292,9 @@ class SnapShot(Resource):
                     vol_res = StorageVolume.create(path)
                     self.depends_on(vol_res)
                 else:
-                    self.logger.debug('vm=%s state=%s disk=%s',
-                        self.virtual_machine.name, self.state, snap_type)
+                    self.logger.debug('vm=%s state=%s disk=%s', self.virtual_machine.name, self.state, snap_type)
         else:
-            self.logger.debug('vm=%s state=%s',
-                    self.virtual_machine.name, self.state)
+            self.logger.debug('vm=%s state=%s', self.virtual_machine.name, self.state)
 
     @classmethod
     def libvirt(cls, virtual_machine, snap):
@@ -320,8 +315,7 @@ class SnapShot(Resource):
         self.exists = True
         state = domainsnap.findtext('state')
         if self.state and self.state != state:
-            self.invalid('vm=%s snap=%s: Duplicate state: %s %s',
-                    virtual_machine.name, snap_name, self.state, state)
+            self.invalid('vm=%s snap=%s: Duplicate state: %s %s', virtual_machine.name, snap_name, self.state, state)
         else:
             self.state = state
         self.parse_types(domainsnap)
@@ -332,8 +326,7 @@ class SnapShot(Resource):
             pass
         else:
             if virtual_machine != vm2:
-                self.invalid('vm=%s: Domain mismatches %s',
-                    virtual_machine, vm2)
+                self.invalid('vm=%s: Domain mismatches %s', virtual_machine, vm2)
         return self
 
     def check_valid(self):
@@ -346,9 +339,7 @@ class SnapShot(Resource):
 
         if self.state in ('shutoff', 'running'):
             self.logger.info('Checking for snapshot data')
-            for disk in [_ for _ in self.dependencies if
-                    isinstance(_, StorageVolume) and
-                    _.target_format_type == 'qcow2']:
+            for disk in [_ for _ in self.dependencies if isinstance(_, StorageVolume) and _.target_format_type == 'qcow2']:
                 # FIXME: only 1st disk contains the VM state
                 try:
                     snaps = disk.read_snapshots()
@@ -359,18 +350,15 @@ class SnapShot(Resource):
                     if tag != self.name:
                         continue
                     if self.state == 'shutoff' and vm_size != '0':
-                        self.invalid('vm=%s: Shutoff but vm_size=%d',
-                                self.virtual_machine.name, vm_size)
+                        self.invalid('vm=%s: Shutoff but vm_size=%d', self.virtual_machine.name, vm_size)
                     elif self.state == 'running' and vm_size == '0':
-                        self.invalid('vm=%s: Running but vm_size=0',
-                                self.virtual_machine.name)
+                        self.invalid('vm=%s: Running but vm_size=0', self.virtual_machine.name)
                     break
                 else:
                     continue
                 break
             else:
-                self.invalid('vm=%s: Missing saved state',
-                    self.virtual_machine.name)
+                self.invalid('vm=%s: Missing saved state', self.virtual_machine.name)
 
         return self.valid
 
@@ -509,19 +497,15 @@ class StorageVolume(Resource):
                 snaps = ()
             for _num, tag, _vm_size, _date, _time, _clock in snaps:
                 self.logger.debug("Looking for snapshot '%s'", tag)
-                snaps = [_ for _ in Resource.all.values() if
-                        isinstance(_, SnapShot) and _.name == tag]
+                snaps = [_ for _ in Resource.all.values() if isinstance(_, SnapShot) and _.name == tag]
                 vms = [_.virtual_machine for _ in snaps]
                 for virtual_machine in vms:
-                    disks = [_ for _ in virtual_machine.dependencies if
-                            isinstance(_, StorageVolume)]
+                    disks = [_ for _ in virtual_machine.dependencies if isinstance(_, StorageVolume)]
                     if self in disks:
-                        self.logger.debug("Found snapshot %s in %s",
-                                tag, virtual_machine.filename)
+                        self.logger.debug("Found snapshot %s in %s", tag, virtual_machine.filename)
                         break
                 else:
-                    self.invalid('disk=%s: Unknown vm for %s',
-                            self.filename, tag)
+                    self.invalid('disk=%s: Unknown vm for %s', self.filename, tag)
                     virtual_machine = VirtualMachine.create('//DUMMY//')
                     snap = SnapShot.create(virtual_machine, tag)
                     snap.depends_on(self)
@@ -581,7 +565,7 @@ def check_storage_pools(conn):
         volume_names = pool.listVolumes()
         for volume_name in volume_names:
             volume = pool.storageVolLookupByName(volume_name)
-            _vol = StorageVolume.libvirt(volume)
+            StorageVolume.libvirt(volume)
     # TODO: conn.listDefinedStoragePools() are inactive
 
 
@@ -625,8 +609,7 @@ def check_storage_volumes(conn):
                 vol.exists = False
                 vol.invalid('vol=%s: Not found in pool', vol.filename)
             else:
-                vol.logger.info('Found in pool %s',
-                        vol.storagePoolLookupByVolume().name())
+                vol.logger.info('Found in pool %s', vol.storagePoolLookupByVolume().name())
                 vol.exists = True
                 vol2 = StorageVolume.libvirt(disk2)
                 assert vol2 == vol
@@ -661,9 +644,7 @@ def print_dot(resources, out=sys.stdout):
 
     for res in resources:
         for ref in res.dependencies:
-            Resource.dotter('%s -> %s;',
-                    (Dotter.key2dot(res.filename),
-                        Dotter.key2dot(ref.filename)))
+            Resource.dotter('%s -> %s;', (Dotter.key2dot(res.filename), Dotter.key2dot(ref.filename)))
     dot('node [shape=box, fontsize=5, height=.05];')
     dot('}')
 
@@ -682,18 +663,22 @@ def resource_closure(resources):
 def main():
     """Check if VMs are still valid."""
     parser = OptionParser(usage='Usage: %%prog [options] [uri]')
-    parser.add_option('-v', '--verbose',
-            action='count', dest='verbose', default=0,
-            help='Increase verbosity')
-    parser.add_option('-g', '--dot',
-            action='store_true', dest='dot', default=False,
-            help='Generate dot graph')
-    parser.add_option('-a', '--all',
-            action='store_true', dest='show_all', default=False,
-            help='Show all resources')
-    parser.add_option('-u', '--unused',
-            action='store_true', dest='show_unused', default=False,
-            help='Show unused resources')
+    parser.add_option(
+        '-v', '--verbose',
+        action='count', dest='verbose', default=0,
+        help='Increase verbosity')
+    parser.add_option(
+        '-g', '--dot',
+        action='store_true', dest='dot', default=False,
+        help='Generate dot graph')
+    parser.add_option(
+        '-a', '--all',
+        action='store_true', dest='show_all', default=False,
+        help='Show all resources')
+    parser.add_option(
+        '-u', '--unused',
+        action='store_true', dest='show_unused', default=False,
+        help='Show unused resources')
 
     options, arguments = parser.parse_args()
 

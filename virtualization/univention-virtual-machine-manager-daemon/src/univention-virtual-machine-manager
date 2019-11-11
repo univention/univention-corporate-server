@@ -773,7 +773,7 @@ class ParserGenerator(object):
 			 "service_region":"regionOne"
 			}
 		:param testconnection: by default, the connection is only added if an initial test connection is successful. If this parameter is 'false', the connection is added in any case.
-		"""
+		"""  # noqa: E101
 		sub_parser.add_argument(
 			'json_options',
 			help='JSON options')

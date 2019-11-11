@@ -33,15 +33,16 @@
 """Watch for addition or deletion of virtualization nodes and notify UVMM daemon
 accordingly."""
 
+from __future__ import absolute_import
+
+import listener
+import univention.debug as debug
+from univention.uvmm.uvmm_ldap import SERVICES, ldap2fqdn
+
 name = 'uvmmd-nodes'
 description = 'UCS Virtual Machine Manager Daemon Nodes'
 filter = '(objectClass=univentionHost)'
 attributes = ['univentionService']
-
-__package__ = ''  # workaround for PEP 366
-import listener
-import univention.debug as debug
-from univention.uvmm.uvmm_ldap import SERVICES, ldap2fqdn
 
 
 def uvmm(mode, uri):

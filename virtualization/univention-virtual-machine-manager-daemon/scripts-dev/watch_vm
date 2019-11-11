@@ -6,7 +6,8 @@ import sys
 import time
 import libvirt
 
-from univention.uvmm.eventloop import *
+from univention.uvmm.eventloop import virEventLoopPureStart, virEventLoopPureRegister
+
 virEventLoopPureStart()
 virEventLoopPureRegister()
 

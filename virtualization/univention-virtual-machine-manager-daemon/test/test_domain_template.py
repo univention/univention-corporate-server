@@ -27,12 +27,14 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
 from os.path import dirname, join
+from unittest import main, TestCase
+from textwrap import dedent
+
 import univention
 univention.__path__.insert(0, join(dirname(__file__), '../src/univention'))
-from unittest import main, TestCase
-from univention.uvmm.node import DomainTemplate
-from textwrap import dedent
+from univention.uvmm.node import DomainTemplate  # noqa: F402
 
 
 class _DomainTemplate(TestCase):

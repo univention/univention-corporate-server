@@ -28,12 +28,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 from os.path import dirname, join
+from unittest import main, TestCase
+from textwrap import dedent
+
 import univention
 univention.__path__.insert(0, join(dirname(__file__), '../src/univention'))
-from unittest import main, TestCase
-from univention.uvmm.node import Domain
-from univention.uvmm.protocol import Data_Domain
-from textwrap import dedent
+from univention.uvmm.node import Domain  # noqa: F402
+from univention.uvmm.protocol import Data_Domain  # noqa: F402
 
 
 class _Domain(TestCase):
