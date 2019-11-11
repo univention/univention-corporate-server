@@ -202,10 +202,12 @@ class simple(ISyntax):
 		:return: the parsed textual value.
 		:raises univention.admin.uexceptions.valueError: if the value is invalid.
 		"""
-		if text is None or self.regex is None or self.regex.match(text) is not None:
+		if text is None or self.regex is None:
 			return text
-		else:
-			raise univention.admin.uexceptions.valueError(self.error_message)
+		unicode_text = six.ensure_text(text, encoding='utf-8', errors='strict')
+		if self.regex.match(unicode_text) is not None:
+			return text
+		raise univention.admin.uexceptions.valueError(self.error_message)
 
 	@classmethod
 	def new(self):
