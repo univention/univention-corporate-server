@@ -354,7 +354,10 @@ class property:
 		if not base_default:
 			return self.new()
 
-		if isinstance(base_default, basestring):
+		if isinstance(base_default, six.binary_type):
+			base_default= six.ensure_text(base_default, encoding='utf-8', errors='strict')
+
+		if isinstance(base_default, six.text_type):
 			return self._replace(base_default, object)
 
 		bd0 = base_default[0]
