@@ -32,7 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
 
 import subprocess
 from univention.listener.handler import ListenerModuleHandler
@@ -62,7 +62,8 @@ class AppListener(ListenerModuleHandler):
 			self.run_update = True
 			self.logger.info('config update triggered (move)')
 		elif 'univentionRadiusClient' in old.get('objectClass', []) or 'univentionRadiusClient' in new.get('objectClass', []):
-			if (set(old.get('univentionRadiusClientSharedSecret', [])) != set(new.get('univentionRadiusClientSharedSecret', [])) or
+			if (
+				set(old.get('univentionRadiusClientSharedSecret', [])) != set(new.get('univentionRadiusClientSharedSecret', [])) or
 				set(old.get('univentionRadiusClientType', [])) != set(new.get('univentionRadiusClientType', [])) or
 				set(old.get('univentionRadiusClientVirtualServer', [])) != set(new.get('univentionRadiusClientVirtualServer', [])) or
 				set(old.get('aRecord', [])) != set(new.get('aRecord', [])) or

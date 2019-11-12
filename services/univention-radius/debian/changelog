@@ -1,3 +1,9 @@
+univention-radius (6.0.2-15) unstable; urgency=medium
+
+  * Bug #49175: migrate univention-radius to dh_python
+
+ -- Florian Best <best@univention.de>  Tue, 12 Nov 2019 08:42:39 +0100
+
 univention-radius (6.0.2-14) unstable; urgency=medium
 
   * Bug #50006: Add python module dirs for ucs@school

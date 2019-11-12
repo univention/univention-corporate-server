@@ -32,6 +32,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import optparse
 import sys
 
@@ -52,16 +54,16 @@ def main():
 	parser.add_option('--station-id', dest='stationId')
 	(options, args, ) = parser.parse_args()
 	if not options.requestNtKey:
-		print 'Missing required parameter --request-nt-key!'
+		print('Missing required parameter --request-nt-key!')
 		return 1
 	if not options.Username:
-		print 'Missing required parameter --username!'
+		print('Missing required parameter --username!')
 		return 1
 	if not options.Challenge:
-		print 'Missing required parameter --challenge!'
+		print('Missing required parameter --challenge!')
 		return 1
 	if not options.Response:
-		print 'Missing required parameter --nt-response!'
+		print('Missing required parameter --nt-response!')
 		return 1
 	options.Challenge = options.Challenge.decode('hex')
 	options.Response = options.Response.decode('hex')
@@ -73,10 +75,10 @@ def main():
 		PasswordHash = None
 		networkAccess.logger.warning(exc.msg)
 	if PasswordHash and pyMsChapV2.ChallengeResponse(options.Challenge, PasswordHash) == options.Response:
-		print 'NT_KEY: %s' % (pyMsChapV2.HashNtPasswordHash(PasswordHash).encode('hex').upper(), )
+		print('NT_KEY: %s' % (pyMsChapV2.HashNtPasswordHash(PasswordHash).encode('hex').upper(), ))
 		return 0
 	else:
-		print 'Logon failure (0xc000006d)'
+		print('Logon failure (0xc000006d)')
 		return 1
 
 

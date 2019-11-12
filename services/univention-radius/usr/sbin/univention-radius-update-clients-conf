@@ -32,14 +32,17 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
+
 import shutil
 import os
 import tempfile
 from optparse import OptionParser
+
 from univention.uldap import getMachineConnection
 
 BASE_DIR = '/etc/freeradius/3.0'
 BASE_NAME = 'clients.univention.conf'
+
 
 def main():  # type: () -> None
 	parser = OptionParser()
@@ -77,12 +80,13 @@ def main():  # type: () -> None
 }}
 
 '''.format(
-	hostname,
-	ipaddr,
-	shared_secret,
-	nas_type,
-	'' if virtual_server else '# ',
-	virtual_server if virtual_server else '...not specified...'))
+					hostname,
+					ipaddr,
+					shared_secret,
+					nas_type,
+					'' if virtual_server else '# ',
+					virtual_server if virtual_server else '...not specified...')
+				)
 
 	shutil.move(fd.name, os.path.join(BASE_DIR, BASE_NAME))
 

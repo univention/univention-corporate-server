@@ -7,6 +7,7 @@ Build-Depends: debhelper,
  dh-python,
  python-debian,
  python-all,
+ python3-all,
  univention-config-dev,
  ucslint
 
@@ -21,16 +22,28 @@ Depends: univention-config,
  freeradius-ldap,
  freeradius-utils,
  univention-ssl,
- python-univention-radius
+ python-univention-radius,
 Description: freeradius 802.1X integration package for Univention Corporate Server
  Sets up a freeradius RADIUS server to support 802.1X authenticators
 
 Package: python-univention-radius
 Architecture: any
-Depends: ${misc:Depends},
+Depends:
+ ${misc:Depends},
  ${python:Depends},
  python-passlib,
  python-univention (>= 12.0.0-5),
 Provides: ${python:Provides}
 Description:
  Python library for the univention radius integration.
+
+Package: python3-univention-radius
+Architecture: any
+Depends:
+ ${misc:Depends},
+ ${python3:Depends},
+ python-passlib,
+ python-univention,
+Provides: ${python3:Provides}
+Description:
+ Python 3 library for the univention radius integration.
