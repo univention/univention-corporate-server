@@ -174,7 +174,7 @@ class configdb:
 				self._dbcon.commit()
 				cur.close()
 				return
-			except lite.Error, e:
+			except lite.Error as e:
 				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
 				if self._dbcon:
 					self._dbcon.close()
@@ -189,7 +189,7 @@ class configdb:
 				rows = cur.fetchall()
 				cur.close()
 				return rows
-			except lite.Error, e:
+			except lite.Error as e:
 				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
 				if self._dbcon:
 					self._dbcon.close()
@@ -203,7 +203,7 @@ class configdb:
 				self._dbcon.commit()
 				cur.close()
 				return
-			except lite.Error, e:
+			except lite.Error as e:
 				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
 				if self._dbcon:
 					self._dbcon.close()
@@ -221,7 +221,7 @@ class configdb:
 					return True
 				else:
 					return False
-			except lite.Error, e:
+			except lite.Error as e:
 				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
 				if self._dbcon:
 					self._dbcon.close()
@@ -235,7 +235,7 @@ class configdb:
 				self._dbcon.commit()
 				cur.close()
 				return
-			except lite.Error, e:
+			except lite.Error as e:
 				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
 				if self._dbcon:
 					self._dbcon.close()
@@ -253,7 +253,7 @@ class configdb:
 					return True
 				else:
 					return False
-			except lite.Error, e:
+			except lite.Error as e:
 				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
 				if self._dbcon:
 					self._dbcon.close()
@@ -476,7 +476,7 @@ class ucs:
 		try:
 			result = self.lo.search(filter=filter, base=base, scope=scope, attr=attr, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit)
 			return result
-		except univention.admin.uexceptions.ldapError, search_exception:
+		except univention.admin.uexceptions.ldapError as search_exception:
 			ud.debug(ud.LDAP, ud.INFO, 'Lost connection to the LDAP server. Trying to reconnect ...')
 			try:
 				self.open_ucs()
@@ -1192,7 +1192,7 @@ class ucs:
 			ucs_object.remove()
 			self.update_deleted_cache_after_removal(entryUUID, objectGUID)
 			return True
-		except Exception, e:
+		except Exception as e:
 			ud.debug(ud.LDAP, ud.INFO, "delete object exception: %s" % e)
 			if str(e) == "Operation not allowed on non-leaf":  # need to delete subtree
 				ud.debug(ud.LDAP, ud.INFO, "remove object from UCS failed, need to delete subtree")
@@ -1306,13 +1306,13 @@ class ucs:
 			ud.debug(ud.LDAP, ud.INFO, "Return  result for DN (%s)" % object['dn'])
 			return result
 
-		except univention.admin.uexceptions.valueInvalidSyntax, msg:
+		except univention.admin.uexceptions.valueInvalidSyntax as msg:
 			try:
 				ud.debug(ud.LDAP, ud.ERROR, "InvalidSyntax: %s (%s)" % (msg, object['dn']))
 			except:  # FIXME: which exception is to be caught?
 				ud.debug(ud.LDAP, ud.ERROR, "InvalidSyntax: %s" % msg)
 			return False
-		except univention.admin.uexceptions.valueMayNotChange, msg:
+		except univention.admin.uexceptions.valueMayNotChange as msg:
 			ud.debug(ud.LDAP, ud.ERROR, "Value may not change: %s (%s)" % (msg, object['dn']))
 			return False
 		except (ldap.SERVER_DOWN, SystemExit):

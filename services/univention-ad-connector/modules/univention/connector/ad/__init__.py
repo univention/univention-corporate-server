@@ -922,7 +922,7 @@ class ad(univention.connector.ucs):
 			try:
 				result = self.lo_ad.search(base=self.lo_ad.binddn, scope='base')
 				self.ad_ldap_bind_username = result[0][1]['sAMAccountName'][0]
-			except Exception, msg:
+			except Exception as msg:
 				print("Failed to get SID from AD: %s" % msg)
 				sys.exit(1)
 		else:
@@ -932,7 +932,7 @@ class ad(univention.connector.ucs):
 			result = self.lo_ad.search(filter='(objectclass=domain)', base=ad_ldap_base, scope='base', attr=['objectSid'])
 			object_sid = result[0][1]['objectSid'][0]
 			self.ad_sid = univention.connector.ad.decode_sid(object_sid)
-		except Exception, msg:
+		except Exception as msg:
 			print("Failed to get SID from AD: %s" % msg)
 			sys.exit(1)
 
@@ -2355,13 +2355,13 @@ class ad(univention.connector.ucs):
 							sync_successfull = True
 					except (ldap.SERVER_DOWN, SystemExit):
 						raise
-					except univention.admin.uexceptions.ldapError, msg:
+					except univention.admin.uexceptions.ldapError as msg:
 						ud.debug(ud.LDAP, ud.INFO, "Exception during poll with message (1) %s" % msg)
 						if msg == "Can't contact LDAP server":
 							raise ldap.SERVER_DOWN
 						else:
 							self._debug_traceback(ud.WARN, "Exception during poll/sync_to_ucs")
-					except univention.admin.uexceptions.ldapError, msg:
+					except univention.admin.uexceptions.ldapError as msg:
 						ud.debug(ud.LDAP, ud.INFO, "Exception during poll with message (2) %s" % msg)
 						if msg == "Can't contact LDAP server":
 							raise ldap.SERVER_DOWN

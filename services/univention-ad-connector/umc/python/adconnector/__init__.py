@@ -236,7 +236,7 @@ class Instance(Base, ProgressMixin):
 				os.chmod(fn, 0600)
 				os.chown(fn, 0, 0)
 				univention.config_registry.handler_set([u'connector/ad/ldap/bindpw=%s' % fn])
-			except Exception, e:
+			except Exception as e:
 				MODULE.info('Saving bind password failed (filename=%(fn)s ; exception=%(exception)s)' % {'fn': fn, 'exception': str(e.__class__)})
 				self.finished(request.id, {'success': False, 'message': _('Saving bind password failed (filename=%(fn)s ; exception=%(exception)s)') % {'fn': fn, 'exception': str(e.__class__)}})
 				return
