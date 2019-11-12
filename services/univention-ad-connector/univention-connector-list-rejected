@@ -126,16 +126,9 @@ def main():
 		print '%s/ad/listener/dir not set' % CONFIGBASENAME
 		sys.exit(1)
 
-	if '%s/ad/retryrejected' % CONFIGBASENAME not in configRegistry:
-		baseconfig_retry_rejected = 10
-	else:
-		baseconfig_retry_rejected = configRegistry['%s/ad/retryrejected' % CONFIGBASENAME]
-
 	ad_ldap_bindpw = open(configRegistry['%s/ad/ldap/bindpw' % CONFIGBASENAME]).read()
 	if ad_ldap_bindpw[-1] == '\n':
 		ad_ldap_bindpw = ad_ldap_bindpw[0:-1]
-
-	poll_sleep = int(configRegistry['%s/ad/poll/sleep' % CONFIGBASENAME])
 
 	# try:
 	ad = univention.connector.ad.ad(

@@ -153,7 +153,7 @@ class AD_DSACL_modifier():
 
 		desc_sddl = None
 		if desc_ndr:
-			desc = ds_sd = ndr_unpack(security.descriptor, desc_ndr)
+			desc = ndr_unpack(security.descriptor, desc_ndr)
 			desc_sddl = desc.as_sddl()
 
 		return desc_sddl

@@ -111,7 +111,7 @@ def removeDESLayer(cryptedHash, rid):
 
 def decrypt(key, data, rid):
 	salt = data[0:16]
-	check_sum = data[16:]
+	# check_sum = data[16:]
 	md5 = hashlib.new('md5')
 	md5.update(key)
 	md5.update(salt)
@@ -251,9 +251,8 @@ def password_sync_ucs(connector, key, object):
 	if 'pwdLastSet' in res[0][1]:
 		pwdLastSet = long(res[0][1]['pwdLastSet'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: pwdLastSet from AD : %s" % pwdLastSet)
-	rid = None
 	if 'objectSid' in res[0][1]:
-		rid = str(univention.connector.ad.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
+		str(univention.connector.ad.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
 
 	# Only sync passwords from UCS to AD when the password timestamp in UCS is newer
 	if connector.baseConfig.is_true('%s/ad/password/timestamp/check' % connector.CONFIGBASENAME, False):
@@ -314,7 +313,7 @@ def password_sync_ucs(connector, key, object):
 def password_sync_kinit(connector, key, ucs_object):
 	_d = ud.function('ldap.ad.password_sync_kinit')  # noqa: F841
 
-	object = connector._object_mapping(key, ucs_object, 'ucs')
+	connector._object_mapping(key, ucs_object, 'ucs')
 
 	attr = {'userPassword': '{KINIT}', 'sambaNTPassword': 'NO PASSWORD*********************', 'sambaLMPassword': 'NO PASSWORD*********************'}
 
@@ -350,9 +349,8 @@ def password_sync(connector, key, ucs_object):
 		pwdLastSet = long(res[0][1]['pwdLastSet'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync: pwdLastSet from AD: %s (%s)" % (pwdLastSet, res))
 
-	rid = None
 	if 'objectSid' in res[0][1]:
-		rid = str(univention.connector.ad.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
+		str(univention.connector.ad.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
 
 	ucs_result = connector.lo.search(base=ucs_object['dn'], attr=['sambaPwdLastSet', 'sambaNTPassword', 'krb5PrincipalName', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd'])
 
@@ -393,7 +391,6 @@ def password_sync(connector, key, ucs_object):
 	if res:
 		ntPwd_ucs = ''
 		krb5Principal = ''
-		userPassword = ''
 
 		ntPwd = res
 		modlist = []
@@ -402,8 +399,6 @@ def password_sync(connector, key, ucs_object):
 			ntPwd_ucs = ucs_result[0][1]['sambaNTPassword'][0]
 		if 'krb5PrincipalName' in ucs_result[0][1]:
 			krb5Principal = ucs_result[0][1]['krb5PrincipalName'][0]
-		if 'userPassword' in ucs_result[0][1]:
-			userPassword = ucs_result[0][1]['userPassword'][0]
 
 		pwd_changed = False
 

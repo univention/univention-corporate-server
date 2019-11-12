@@ -252,7 +252,7 @@ class UserRenameHandler:
 			log(ud.WARN, "Found more than one Samba user with name '%s' in UCS LDAP." % (ucsldap_object_name,))
 
 		for userdn in userdns:
-			new_userdn = self.udm_rename_ucs_user(userdn, ad_object_name)
+			self.udm_rename_ucs_user(userdn, ad_object_name)
 
 
 class GroupRenameHandler:

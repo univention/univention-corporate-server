@@ -157,7 +157,7 @@ class configdb:
 				if rows:
 					return rows[0][0]
 				return ''
-			except lite.Error, e:
+			except lite.Error:
 				if self._dbcon:
 					self._dbcon.close()
 				self._dbcon = lite.connect(self.filename)
@@ -635,8 +635,6 @@ class ucs:
 		print traceback with ud.debug, level is i.e. ud.INFO
 		'''
 		_d = ud.function('ldap._debug_traceback')  # noqa: F841
-		exc_info = sys.exc_info()
-
 		ud.debug(ud.LDAP, level, text)
 		ud.debug(ud.LDAP, level, traceback.format_exc())
 

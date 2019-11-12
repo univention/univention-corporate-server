@@ -163,7 +163,7 @@ def set_univentionObjectFlag_to_synced(connector, key, ucs_object):
 	_d = ud.function('set_univentionObjectFlag_to_synced')  # noqa: F841
 
 	if connector.baseConfig.is_true('ad/member', False):
-		object = connector._object_mapping(key, ucs_object, 'ucs')
+		connector._object_mapping(key, ucs_object, 'ucs')
 
 		ucs_result = connector.lo.search(base=ucs_object['dn'], attr=['univentionObjectFlag'])
 
@@ -482,7 +482,7 @@ def old_user_dn_mapping(connector, given_object):
 				if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
 					addn = encode_attrib(result[0][0])
 					ud.debug(ud.LDAP, ud.INFO, "search in ad gave dn %s" % addn)
-					adpos2 = len(univention.connector.ad.explode_unicode_dn(addn)[0]) - 1
+					# adpos2 = len(univention.connector.ad.explode_unicode_dn(addn)[0]) - 1
 					# newdn = addn[:adpos2] + dn[pos2:]
 					newdn = addn
 				else:
@@ -955,9 +955,8 @@ class ad(univention.connector.ucs):
 		self.samr = None
 
 	def open_drs_connection(self):
-
 		lp = LoadParm()
-		net = Net(creds=None, lp=lp)
+		Net(creds=None, lp=lp)
 
 		repl_creds = Credentials()
 		repl_creds.guess(lp)
@@ -965,7 +964,7 @@ class ad(univention.connector.ucs):
 		repl_creds.set_username(self.ad_ldap_bind_username)
 		repl_creds.set_password(self.lo_ad.bindpw)
 
-		binding_options = "seal,print"
+		# binding_options = "seal,print"
 		self.drs, self.drsuapi_handle, bind_supported_extensions = drs_utils.drsuapi_connect(self.ad_ldap_host, lp, repl_creds)
 
 		dcinfo = drsuapi.DsGetDCInfoRequest1()
@@ -1101,7 +1100,7 @@ class ad(univention.connector.ucs):
 		_d = ud.function('ldap._save_rejected')  # noqa: F841
 		try:
 			self._set_config_option('AD rejected', str(id), encode_attrib(dn))
-		except UnicodeEncodeError, msg:
+		except UnicodeEncodeError:
 			self._set_config_option('AD rejected', str(id), 'unknown')
 			self._debug_traceback(ud.WARN, "failed to set dn in configfile (AD rejected)")
 
@@ -1807,7 +1806,7 @@ class ad(univention.connector.ucs):
 			for member in del_members:
 				ad_members.remove(member)
 			ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members result: %s" % ad_members)
-			group_dn_lower = object_ucs['dn'].lower()
+			object_ucs['dn'].lower()
 
 			modlist_members = []
 			for member in ad_members:
@@ -1831,7 +1830,7 @@ class ad(univention.connector.ucs):
 		# disable this debug line, see Bug #12031
 		# ud.debug(ud.LDAP, ud.INFO, "object_memberships_sync_to_ucs: object: %s" % object)
 
-		object_ad = self._object_mapping(key, object)
+		self._object_mapping(key, object)
 
 		if 'memberOf' in object['attributes']:
 			for groupDN in object['attributes']['memberOf']:
@@ -2171,7 +2170,7 @@ class ad(univention.connector.ucs):
 
 		ad_object = self._object_mapping(object_key, object, 'ucs')
 
-		ldap_object_ucs = self.get_ucs_ldap_object(object['dn'])
+		self.get_ucs_ldap_object(object['dn'])
 		ldap_object_ad = self.get_object(ad_object['dn'])
 
 		modified = 0
@@ -2218,7 +2217,7 @@ class ad(univention.connector.ucs):
 			highestCommittedUSN = self.__get_highestCommittedUSN()
 
 			# poll for all objects without deleted objects
-			polled = self.poll(show_deleted=False)
+			self.poll(show_deleted=False)
 
 			# compare highest USN from poll with highest before poll, if the last changes deletes
 			# the highest USN from poll is to low
@@ -2228,7 +2227,7 @@ class ad(univention.connector.ucs):
 			ud.debug(ud.LDAP, ud.INFO, "initialize AD: sync of all objects finished, lastUSN is %d", self.__get_highestCommittedUSN())
 		else:
 			self.resync_rejected()
-			polled = self.poll()
+			self.poll()
 			self._commit_lastUSN()
 		print "--------------------------------------"
 
@@ -2600,7 +2599,6 @@ class ad(univention.connector.ucs):
 									value = post_attribute.con_value_merge_function(value, ad_object[attr])
 								modlist.append((ldap.MOD_REPLACE, attr, value))
 
-			attrs_in_current_ucs_object = object['attributes'].keys()
 			attrs_which_should_be_mapped = []
 			attrs_to_remove_from_ad_object = []
 
@@ -2626,7 +2624,6 @@ class ad(univention.connector.ucs):
 						if not self.property[property_type].post_attributes[ac].con_other_attribute in attrs_which_should_be_mapped:
 							attrs_which_should_be_mapped.append(self.property[property_type].post_attributes[ac].con_other_attribute)
 
-			modlist_empty_attrs = []
 			for expected_attribute in attrs_which_should_be_mapped:
 				if expected_attribute not in object['attributes']:
 					attrs_to_remove_from_ad_object.append(expected_attribute)
