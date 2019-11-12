@@ -411,7 +411,7 @@ class simpleLdap(object):
 		if self.descriptions[key].multivalue:
 
 			# make sure value is list
-			if isinstance(value, basestring):
+			if isinstance(value, (six.binary_type, six.string_types)):
 				value = [value]
 			elif not isinstance(value, list):
 				raise univention.admin.uexceptions.valueInvalidSyntax(_('The property %s must be a list') % (self.descriptions[key].short_description,), property=key)
