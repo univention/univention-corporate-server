@@ -262,7 +262,7 @@ def encode_ad_resultlist(ad_resultlist):
 
 def unix2ad_time(l):
 	d = 116444736000000000L  # difference between 1601 and 1970
-	return long(time.mktime(time.gmtime(time.mktime(time.strptime(l, "%Y-%m-%d")) + 90000))) * 10000000 + d  # 90000s are one day and one hour
+	return int(time.mktime(time.gmtime(time.mktime(time.strptime(l, "%Y-%m-%d")) + 90000))) * 10000000 + d  # 90000s are one day and one hour
 
 
 def ad2unix_time(l):
@@ -274,14 +274,14 @@ def samba2ad_time(l):
 	if l in [0, 1]:
 		return l
 	d = 116444736000000000L  # difference between 1601 and 1970
-	return long(time.mktime(time.gmtime(l + 3600))) * 10000000 + d
+	return int(time.mktime(time.gmtime(l + 3600))) * 10000000 + d
 
 
 def ad2samba_time(l):
 	if l == 0:
 		return l
 	d = 116444736000000000L  # difference between 1601 and 1970
-	return long(((l - d)) / 10000000)
+	return int(((l - d)) / 10000000)
 
 # mapping funtions
 
@@ -564,10 +564,10 @@ def encode_sid(value):
 	a.append(chr(0))
 	a.append(chr(int(vlist[1])))
 	for i in range(2, len(vlist)):
-		a.append(chr((long(vlist[i]) & 0xff)))
-		a.append(chr((long(vlist[i]) & 0xff00) >> 8))
-		a.append(chr((long(vlist[i]) & 0xff0000) >> 16))
-		a.append(chr((long(vlist[i]) & 0xff000000) >> 24))
+		a.append(chr((int(vlist[i]) & 0xff)))
+		a.append(chr((int(vlist[i]) & 0xff00) >> 8))
+		a.append(chr((int(vlist[i]) & 0xff0000) >> 16))
+		a.append(chr((int(vlist[i]) & 0xff000000) >> 24))
 
 	return a
 
@@ -2154,7 +2154,7 @@ class ad(univention.connector.ucs):
 		# This value represents the number of 100 nanosecond intervals since January 1, 1601 (UTC). A value of 0 or 0x7FFFFFFFFFFFFFFF (9223372036854775807) indicates that the account never expires.
 		if not ucs_admin_object['userexpiry']:
 			# ucs account not expired
-			if 'accountExpires' in ldap_object_ad and (long(ldap_object_ad['accountExpires'][0]) != long(9223372036854775807) or ldap_object_ad['accountExpires'][0] == '0'):
+			if 'accountExpires' in ldap_object_ad and (int(ldap_object_ad['accountExpires'][0]) != int(9223372036854775807) or ldap_object_ad['accountExpires'][0] == '0'):
 				# ad account expired -> change
 				modlist.append((ldap.MOD_REPLACE, 'accountExpires', ['9223372036854775807']))
 		else:
@@ -2190,7 +2190,7 @@ class ad(univention.connector.ucs):
 				# user enabled in UCS -> change
 				ucs_admin_object['disabled'] = '1'
 				modified = 1
-		if 'accountExpires' in ldap_object_ad and (long(ldap_object_ad['accountExpires'][0]) == long(9223372036854775807) or ldap_object_ad['accountExpires'][0] == '0'):
+		if 'accountExpires' in ldap_object_ad and (int(ldap_object_ad['accountExpires'][0]) == int(9223372036854775807) or ldap_object_ad['accountExpires'][0] == '0'):
 			# ad account not expired
 			if ucs_admin_object['userexpiry']:
 				# ucs account expired -> change
@@ -2198,11 +2198,11 @@ class ad(univention.connector.ucs):
 				modified = 1
 		else:
 			# ad account expired
-			ud.debug(ud.LDAP, ud.INFO, "sync account_expire:      adtime: %s    unixtime: %s" % (long(ldap_object_ad['accountExpires'][0]), ucs_admin_object['userexpiry']))
+			ud.debug(ud.LDAP, ud.INFO, "sync account_expire:      adtime: %s    unixtime: %s" % (int(ldap_object_ad['accountExpires'][0]), ucs_admin_object['userexpiry']))
 
-			if ad2unix_time(long(ldap_object_ad['accountExpires'][0])) != ucs_admin_object['userexpiry']:
+			if ad2unix_time(int(ldap_object_ad['accountExpires'][0])) != ucs_admin_object['userexpiry']:
 				# ucs account not expired -> change
-				ucs_admin_object['userexpiry'] = ad2unix_time(long(ldap_object_ad['accountExpires'][0]))
+				ucs_admin_object['userexpiry'] = ad2unix_time(int(ldap_object_ad['accountExpires'][0]))
 				modified = 1
 
 		if modified:

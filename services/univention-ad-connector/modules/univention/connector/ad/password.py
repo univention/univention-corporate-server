@@ -233,7 +233,7 @@ def password_sync_ucs(connector, key, object):
 
 	sambaPwdLastSet = None
 	if 'sambaPwdLastSet' in res[0][1]:
-		sambaPwdLastSet = long(res[0][1]['sambaPwdLastSet'][0])
+		sambaPwdLastSet = int(res[0][1]['sambaPwdLastSet'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: sambaPwdLastSet: %s" % sambaPwdLastSet)
 
 	pwd = None
@@ -249,7 +249,7 @@ def password_sync_ucs(connector, key, object):
 	res = connector.lo_ad.lo.search_s(univention.connector.ad.compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)', ['pwdLastSet', 'objectSid'])
 	pwdLastSet = None
 	if 'pwdLastSet' in res[0][1]:
-		pwdLastSet = long(res[0][1]['pwdLastSet'][0])
+		pwdLastSet = int(res[0][1]['pwdLastSet'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: pwdLastSet from AD : %s" % pwdLastSet)
 	if 'objectSid' in res[0][1]:
 		str(univention.connector.ad.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
@@ -265,7 +265,7 @@ def password_sync_ucs(connector, key, object):
 		if sambaPwdLastSet > 1 or (sambaPwdLastSet <= 2 and connector.baseConfig.is_false('%s/ad/password/timestamp/syncreset/ucs' % connector.CONFIGBASENAME, False)):
 			ad_password_last_set = univention.connector.ad.ad2samba_time(pwdLastSet)
 			if sambaPwdLastSet:
-				if long(ad_password_last_set) >= long(sambaPwdLastSet):
+				if int(ad_password_last_set) >= int(sambaPwdLastSet):
 					# skip
 					ud.debug(ud.LDAP, ud.PROCESS, "password_sync: Don't sync the password from UCS to AD because the AD password equal or is newer.")
 					ud.debug(ud.LDAP, ud.INFO, "password_sync:  AD pwdlastset: %s (original (%s))" % (ad_password_last_set, pwdLastSet))
@@ -303,7 +303,7 @@ def password_sync_ucs(connector, key, object):
 			newpwdlastset = "0"  # User must change his password
 		elif pwdLastSet and int(pwdLastSet) > 0 and not pwd_set:
 			newpwdlastset = "1"
-		if long(newpwdlastset) != 1:
+		if int(newpwdlastset) != 1:
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: pwdlastset in modlist: %s" % newpwdlastset)
 			connector.lo_ad.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'pwdlastset', newpwdlastset)])
 		else:
@@ -346,7 +346,7 @@ def password_sync(connector, key, ucs_object):
 
 	pwdLastSet = None
 	if 'pwdLastSet' in res[0][1]:
-		pwdLastSet = long(res[0][1]['pwdLastSet'][0])
+		pwdLastSet = int(res[0][1]['pwdLastSet'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync: pwdLastSet from AD: %s (%s)" % (pwdLastSet, res))
 
 	if 'objectSid' in res[0][1]:
@@ -371,7 +371,7 @@ def password_sync(connector, key, ucs_object):
 		if (pwdLastSet > 1) or (pwdLastSet in [0, 1] and connector.baseConfig.is_false('%s/ad/password/timestamp/syncreset/ad' % connector.CONFIGBASENAME, False)):
 			ad_password_last_set = univention.connector.ad.ad2samba_time(pwdLastSet)
 			if sambaPwdLastSet:
-				if long(sambaPwdLastSet) >= long(ad_password_last_set) and long(sambaPwdLastSet) != 1:
+				if int(sambaPwdLastSet) >= int(ad_password_last_set) and int(sambaPwdLastSet) != 1:
 					# skip
 					ud.debug(ud.LDAP, ud.PROCESS, "password_sync: Don't sync the passwords from AD to UCS because the UCS password is equal or newer.")
 					ud.debug(ud.LDAP, ud.INFO, "password_sync:  AD pwdlastset: %s (original (%s))" % (ad_password_last_set, pwdLastSet))
@@ -417,7 +417,7 @@ def password_sync(connector, key, ucs_object):
 
 			# update shadowLastChange
 			old_shadowLastChange = ucs_result[0][1].get('shadowLastChange', [None])[0]
-			new_shadowLastChange = str(long(time.time()) / 3600 / 24)
+			new_shadowLastChange = str(int(time.time()) / 3600 / 24)
 			modlist.append(('shadowLastChange', old_shadowLastChange, new_shadowLastChange))
 			ud.debug(ud.LDAP, ud.INFO, "password_sync: update shadowLastChange to %s for %s" % (new_shadowLastChange, ucs_object['dn']))
 
@@ -433,7 +433,7 @@ def password_sync(connector, key, ucs_object):
 				policy_value = policy.get('value', [None])[0]
 				if policy_value:
 					new_shadowMax = policy_value
-					new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime((long(time.time()) + (int(policy_value) * 3600 * 24))))
+					new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime((int(time.time()) + (int(policy_value) * 3600 * 24))))
 
 			# update shadowMax (set to value of univentionPWExpiryInterval, otherwise delete) and
 			# krb5PasswordEnd (set to today + univentionPWExpiryInterval, otherwise delete)
