@@ -3,9 +3,8 @@ release: "4.4"
 version: [2]
 scope: ucs_4.4-0-errata4.4-2
 src: univention-ldap
-fix: 15.0.0-26A~4.4.0.201911111312
+fix: 15.0.0-27A~4.4.0.201911121709
 desc: |
  This update addresses the following issue(s):
- * Added univentionListenerMessage to objectclasses
-   univentionLDAPExtensionSchema and univentionLDAPExtensionACL.
+ * Create handler messages in ldap_extension listener handler.
 bug: [50481]
