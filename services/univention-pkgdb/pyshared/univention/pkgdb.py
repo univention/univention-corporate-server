@@ -3,6 +3,7 @@
 #
 '''Univention Package Database
 python module for the package database'''
+from __future__ import print_function
 #
 # Copyright 2004-2019 Univention GmbH
 #
@@ -178,7 +179,7 @@ def get_dbservername(domainname):
 		dbsrvname = map(lambda x: x['data'], DNS.DnsRequest('_pkgdb._tcp.' + domainname, qtype='srv').req().answers)[0][3]
 	except:
 		log('Cannot find service-record of _pkgdb._tcp.')
-		print 'Cannot find service-record of _pkgdb._tcp.'
+		print('Cannot find service-record of _pkgdb._tcp.')
 	return dbsrvname
 
 
@@ -197,7 +198,7 @@ def sql_grant_system(connection, cursor, sysname):
 	log('add (grant) user ' + sysname + ' to database')
 	# manual "quoted identifier" (no pgdb support)
 	sqlcmd = 'CREATE USER "%s" IN GROUP pkgdbg' % (sysname.replace('"', '""'), )
-	print 'SQL: %s\n' % (sqlcmd, )
+	print('SQL: %s\n' % (sqlcmd, ))
 	try:
 		cursor.execute(sqlcmd)
 		connection.commit()
@@ -207,7 +208,7 @@ def sql_grant_system(connection, cursor, sysname):
 		log('not OK. Try to alter ' + sysname)
 		# manual "quoted identifier" (no pgdb support)
 		sqlcmd = 'ALTER GROUP pkgdbg ADD USER "%s"' % (sysname.replace('"', '""'), )
-		print 'SQL: %s\n' % (sqlcmd, )
+		print('SQL: %s\n' % (sqlcmd, ))
 		try:
 			cursor.execute(sqlcmd)
 			connection.commit()
@@ -489,7 +490,7 @@ def action_fill_testdb(connection, cursor, config_registry):
 	apt_pkg.init()
 	architecture = apt_pkg.config.find("APT::Architecture")
 	log('start fill of testdb ')
-	for sysname in ['testsystem%04d' % (i, ) for i in xrange(1, 1500)]:
+	for sysname in ['testsystem%04d' % (i, ) for i in range(1, 1500)]:
 		try:
 			sql_put_sys_in_systems(cursor, sysname, sysversion, sysrole, ldaphostdn, architecture)
 			fake_null = False
@@ -565,7 +566,7 @@ def main():
 	'''main function for univention-pkgdb-scan'''
 	options = parse_options()
 	if options.action == 'version':
-		print '%s %s' % (os.path.basename(sys.argv[0]), '@%@package_version@%@', )
+		print('%s %s' % (os.path.basename(sys.argv[0]), '@%@package_version@%@', ))
 		return 0
 
 	config_registry = univention.config_registry.ConfigRegistry()
@@ -577,7 +578,7 @@ def main():
 	else:
 		connection = open_database_connection(config_registry, pkgdbu=False)
 		if connection is None:
-			print 'No DB-Server-Name found.'
+			print('No DB-Server-Name found.')
 			return 1
 	cursor = connection.cursor()
 
@@ -594,9 +595,9 @@ def main():
 			dump_packages(cursor) or \
 			dump_systems_packages(cursor)
 	elif not sql_check_privileges(cursor):
-		print 'PKGDB: no privileges to access the database'
-		print 'You must first add this system with --add-system on the db-server (or join the system)'
-		print 'This should be done automatically by the cronjob univention-pkgdb-check'
+		print('PKGDB: no privileges to access the database')
+		print('You must first add this system with --add-system on the db-server (or join the system)')
+		print('This should be done automatically by the cronjob univention-pkgdb-check')
 		return 1
 	elif options.action == 'add-system':
 		# Systembenutzer zur Datenbank hinzufügen
@@ -610,7 +611,7 @@ def main():
 		return action_remove_system(connection, cursor, options.system)
 	elif not config_registry.is_true('pkgdb/scan'):
 		log('univention-config-registry pkgdb/scan is not true')
-		print 'The Univention Configuration Registry variable pkgdb/scan is not true.'
+		print('The Univention Configuration Registry variable pkgdb/scan is not true.')
 		return 0
 	elif options.action == 'scan':
 		return action_scan(connection, cursor, config_registry)
