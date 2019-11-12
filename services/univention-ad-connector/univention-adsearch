@@ -44,7 +44,7 @@ import base64
 
 from ldap.controls import LDAPControl
 from ldap.controls import SimplePagedResultsControl
-from univention.connector.ad import encode_sid, decode_sid
+from univention.connector.ad import decode_sid
 from samba.ndr import ndr_unpack
 from samba.dcerpc import misc
 
@@ -53,6 +53,7 @@ objectsid_pattern = re.compile(r'objectsid=([^)]+(?<!\\))', flags=re.I)
 
 class kerberosAuthenticationFailed(Exception):
 	pass
+
 
 def usage():
 	print ""
@@ -89,7 +90,7 @@ if len(sys.argv) < oiterator + 1:
 filter = sys.argv[oiterator]
 
 filter_attributes = list()
-for attr in sys.argv[oiterator+1:]:
+for attr in sys.argv[oiterator + 1:]:
 	filter_attributes += attr.split(',')
 
 configRegistry = univention.config_registry.ConfigRegistry()
@@ -147,7 +148,7 @@ if start_tls > 0:
 
 
 def get_kerberos_ticket():
-	p1 = subprocess.Popen(['kdestroy',], close_fds=True)
+	p1 = subprocess.Popen(['kdestroy', ], close_fds=True)
 	p1.wait()
 	cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % configRegistry['%s/ad/ldap/bindpw' % CONFIGBASENAME], configRegistry['%s/ad/ldap/binddn' % CONFIGBASENAME]]
 	p1 = subprocess.Popen(cmd_block, close_fds=True)

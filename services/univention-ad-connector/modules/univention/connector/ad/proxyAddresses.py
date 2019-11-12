@@ -33,6 +33,7 @@
 
 import univention.debug2 as ud
 
+
 def valid_mailaddress(val):
 	# invalid is: <transport>:<address> iff <transport>.lower() != smtp
 	if not val:
@@ -44,10 +45,11 @@ def valid_mailaddress(val):
 		if val.lower().startswith('smtp:'):
 			return val
 
+
 def equal(values1, values2):
 	''' This is called in these two ways:
-	    1. in sync_from_ucs: values1 are mapped ucs and values2 are        con
-	    2. in __set_values:  values1 are        ucs and values2 are mapped con
+		1. in sync_from_ucs: values1 are mapped ucs and values2 are        con
+		2. in __set_values:  values1 are        ucs and values2 are mapped con
 	'''
 	_d = ud.function('proxyAddesses.equal')  # noqa: F841
 	ud.debug(ud.LDAP, ud.ALL, "proxyAddesses: values1: %s" % (values1,))
@@ -64,6 +66,7 @@ def equal(values1, values2):
 	else:
 		return False
 
+
 def to_proxyAddresses(s4connector, key, object):
 	_d = ud.function('proxyAddesses.ucs_to_ad_mapping')  # noqa: F841
 	new_con_values = []
@@ -79,12 +82,14 @@ def to_proxyAddresses(s4connector, key, object):
 		new_con_values.append(new_con_value)
 	return new_con_values
 
+
 def to_mailPrimaryAddress(s4connector, key, object):
 	_d = ud.function('proxyAddesses.to_mailPrimaryAddress')  # noqa: F841
 	for value in object['attributes'].get('proxyAddresses', []):
 		if value.startswith('SMTP:'):
 			return [value[5:]]
 	return []
+
 
 def to_mailAlternativeAddress(s4connector, key, object):
 	_d = ud.function('proxyAddesses.to_mailAlternativeAddress')  # noqa: F841
@@ -93,6 +98,7 @@ def to_mailAlternativeAddress(s4connector, key, object):
 		if value.startswith('smtp:'):
 			new_ucs_values.append(value[5:])
 	return new_ucs_values
+
 
 def merge_ucs2con(mapped_ucs_values, old_con_values=None):
 	_d = ud.function('proxyAddesses.merge_ucs2con')  # noqa: F841

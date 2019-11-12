@@ -124,8 +124,7 @@ if __name__ == '__main__':
 	parser = OptionParser(usage='resync_object_from_ucs.py [--filter <LDAP search filter>] [--base  <LDAP search base>] [dn]')
 	parser.add_option("-f", "--filter", dest="ldapfilter", help="LDAP search filter")
 	parser.add_option("-b", "--base", dest="ldapbase", help="LDAP search base")
-	parser.add_option("-c", "--configbasename", dest="configbasename", help="",
-	                  metavar="CONFIGBASENAME", default="connector")
+	parser.add_option("-c", "--configbasename", dest="configbasename", help="", metavar="CONFIGBASENAME", default="connector")
 	(options, args) = parser.parse_args()
 
 	CONFIGBASENAME = options.configbasename

@@ -67,6 +67,7 @@ class kerberosAuthenticationFailed(Exception):
 class netbiosDomainnameNotFound(Exception):
 	pass
 
+
 # page results
 PAGE_SIZE = 1000
 # microsoft ldap schema binary attributes
@@ -377,8 +378,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 					search_dn = compatible_modstring(search_dn)
 					search_filter = format_escaped('(objectclass={0!e})', ocad)
 					try:
-						search_result = connector.lo_ad.search(base=search_dn,
-							scope='base', filter=search_filter, attr=['sAMAccountName'])
+						search_result = connector.lo_ad.search(base=search_dn, scope='base', filter=search_filter, attr=['sAMAccountName'])
 						samaccountname = encode_attrib(search_result[0][1]['sAMAccountName'][0])
 						ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: got samaccountname from AD")
 					except ldap.NO_SUCH_OBJECT:  # AD may need time
@@ -499,7 +499,8 @@ def old_user_dn_mapping(connector, given_object):
 						search_dn = object['deleted_dn']
 					search_dn = compatible_modstring(search_dn)
 					try:
-						result = connector.lo_ad.search(base=search_dn,
+						result = connector.lo_ad.search(
+							base=search_dn,
 							scope='base', filter='(objectClass=user)',
 							attr=['sAMAccountName'], serverctrls=ctrls)
 						samaccountname = encode_attrib(result[0][1]['sAMAccountName'][0])
@@ -756,6 +757,7 @@ def format_escaped(format_string, *args, **kwargs):
 	"""
 	return LDAPEscapeFormatter().format(format_string, *args, **kwargs)
 
+
 class Simple_AD_Connection():
 
 	''' stripped down univention.connector.ad.ad class
@@ -797,7 +799,7 @@ class Simple_AD_Connection():
 			with NamedTemporaryFile('w') as tmp_file:
 				tmp_file.write(self.bindpw)
 				tmp_file.flush()
-				p1 = subprocess.Popen(['kdestroy',], close_fds=True)
+				p1 = subprocess.Popen(['kdestroy', ], close_fds=True)
 				p1.wait()
 				cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % tmp_file.name, princ]
 				p1 = subprocess.Popen(cmd_block, close_fds=True)
@@ -926,8 +928,7 @@ class ad(univention.connector.ucs):
 			self.ad_ldap_bind_username = self.baseConfig['%s/ad/ldap/binddn' % self.CONFIGBASENAME]
 
 		try:
-			result = self.lo_ad.search(filter='(objectclass=domain)',
-				base=ad_ldap_base, scope='base', attr=['objectSid'])
+			result = self.lo_ad.search(filter='(objectclass=domain)', base=ad_ldap_base, scope='base', attr=['objectSid'])
 			object_sid = result[0][1]['objectSid'][0]
 			self.ad_sid = univention.connector.ad.decode_sid(object_sid)
 		except Exception, msg:
@@ -1007,7 +1008,7 @@ class ad(univention.connector.ucs):
 		self.dom_handle = self.samr.OpenDomain(handle, security.SEC_FLAG_MAXIMUM_ALLOWED, sid)
 
 	def get_kerberos_ticket(self):
-		p1 = subprocess.Popen(['kdestroy',], close_fds=True)
+		p1 = subprocess.Popen(['kdestroy', ], close_fds=True)
 		p1.wait()
 		cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % self.baseConfig['%s/ad/ldap/bindpw' % self.CONFIGBASENAME], self.baseConfig['%s/ad/ldap/binddn' % self.CONFIGBASENAME]]
 		p1 = subprocess.Popen(cmd_block, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
@@ -1611,8 +1612,7 @@ class ad(univention.connector.ucs):
 		object_ucs = self._object_mapping(key, object)
 
 		# Exclude primary group
-		search_filter = format_escaped('(&(objectClass=univentionGroup)(uniqueMember={0!e})(!(gidNumber={1!e})))',
-			object_ucs['dn'], object_ucs['attributes'].get('gidNumber', [])[0])
+		search_filter = format_escaped('(&(objectClass=univentionGroup)(uniqueMember={0!e})(!(gidNumber={1!e})))', object_ucs['dn'], object_ucs['attributes'].get('gidNumber', [])[0])
 		ucs_groups_ldap = self.search_ucs(filter=search_filter)
 
 		if ucs_groups_ldap == []:
@@ -1953,7 +1953,7 @@ class ad(univention.connector.ucs):
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: ad_members %s" % ad_members)
 
-		ucs_members_from_ad = {'user': [], 'group': [], 'unknown': [], 'windowscomputer': [],}
+		ucs_members_from_ad = {'user': [], 'group': [], 'unknown': [], 'windowscomputer': [], }
 
 		self.group_members_cache_con[ad_object['dn'].lower()] = []
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: Reset con cache")
@@ -2032,7 +2032,7 @@ class ad(univention.connector.ucs):
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: dn_mapping_ucs_member_to_ad=%s" % (dn_mapping_ucs_member_to_ad))
 		add_members = copy.deepcopy(ucs_members_from_ad)
-		del_members = {'user': [], 'group': [], 'windowscomputer': [],}
+		del_members = {'user': [], 'group': [], 'windowscomputer': [], }
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: ucs_members: %s" % ucs_members)
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: ucs_members_from_ad: %s" % ucs_members_from_ad)
@@ -2458,8 +2458,7 @@ class ad(univention.connector.ucs):
 					if not new:
 						raise
 				# need to actualise the GUID and DN-Mapping
-				guid = self.lo_ad.getAttr(compatible_modstring(object['dn']),
-					'objectGUID')[0]
+				guid = self.lo_ad.getAttr(compatible_modstring(object['dn']), 'objectGUID')[0]
 				self._set_DN_for_GUID(guid, object['dn'])
 				self._remove_dn_mapping(pre_mapped_ucs_old_dn, unicode(old_dn))
 				self._check_dn_mapping(pre_mapped_ucs_dn, object['dn'])
@@ -2557,7 +2556,7 @@ class ad(univention.connector.ucs):
 						if attr not in (attribute.con_attribute, attribute.con_other_attribute):
 							continue
 
-						if not attribute.sync_mode in ['write', 'sync']:
+						if attribute.sync_mode not in ['write', 'sync']:
 							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: %s is in not in write or sync mode. Skipping" % attr_key)
 							continue
 
@@ -2581,7 +2580,7 @@ class ad(univention.connector.ucs):
 						if attr not in (post_attribute.con_attribute, post_attribute.con_other_attribute):
 							continue
 
-						if not post_attribute.sync_mode in ['write', 'sync']:
+						if post_attribute.sync_mode not in ['write', 'sync']:
 							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: %s is in not in write or sync mode. Skipping" % attr_key)
 							continue
 

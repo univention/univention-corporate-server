@@ -49,9 +49,10 @@ import univention.debug2 as ud
 from samba.ndr import ndr_unpack
 from samba.dcerpc import misc
 from signal import signal, SIGTERM, SIG_DFL
-term_signal_caught = False
 
 import sqlite3 as lite
+
+term_signal_caught = False
 
 univention.admin.modules.update()
 
@@ -706,17 +707,12 @@ class ucs:
 			if entryUUID:
 				if self.was_entryUUID_deleted(entryUUID):
 					if self._get_entryUUID(dn) == entryUUID:
-						ud.debug(ud.LDAP, ud.PROCESS,
-							("__sync_file_from_ucs: Object with entryUUID %s "
-							"has been removed before but became visible again.") % entryUUID)
+						ud.debug(ud.LDAP, ud.PROCESS, ("__sync_file_from_ucs: Object with entryUUID %s has been removed before but became visible again.") % entryUUID)
 					else:
-						ud.debug(ud.LDAP, ud.PROCESS,
-							("__sync_file_from_ucs: Object with entryUUID %s "
-							"has been removed before. Don't re-create.") % entryUUID)
+						ud.debug(ud.LDAP, ud.PROCESS, ("__sync_file_from_ucs: Object with entryUUID %s has been removed before. Don't re-create.") % entryUUID)
 						return True
 			else:
-				ud.debug(ud.LDAP, ud.ERROR,
-					"__sync_file_from_ucs: Object without entryUUID: %s" % dn)
+				ud.debug(ud.LDAP, ud.ERROR, "__sync_file_from_ucs: Object without entryUUID: %s" % dn)
 				return False
 
 			# ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: old: %s" % old)
@@ -1172,10 +1168,7 @@ class ucs:
 			else:
 				# use a dummy value
 				objectGUID_str = 'objectGUID'
-			ud.debug(ud.LDAP, ud.INFO,
-				("update_deleted_cache_after_removal: Save entryUUID %s "
-				"as deleted to UCS deleted cache. ObjectGUUID: %s")
-				% (entryUUID, objectGUID_str))
+			ud.debug(ud.LDAP, ud.INFO, ("update_deleted_cache_after_removal: Save entryUUID %s as deleted to UCS deleted cache. ObjectGUUID: %s") % (entryUUID, objectGUID_str))
 			self._set_config_option('UCS deleted', entryUUID, objectGUID_str)
 
 	def was_entryUUID_deleted(self, entryUUID):
