@@ -1,3 +1,9 @@
+univention-cloud-init (6.0.0-2) unstable; urgency=medium
+
+  * Bug #49171: migrate univention-cloud-init to dh_python
+
+ -- Florian Best <best@univention.de>  Tue, 12 Nov 2019 09:32:14 +0100
+
 univention-cloud-init (6.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump

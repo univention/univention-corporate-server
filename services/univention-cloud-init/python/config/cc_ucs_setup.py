@@ -39,12 +39,11 @@ def handle(name, cfg, cloud, log, args):
 	log.debug('Executing Module %s' % name)
 
 	if "ucs_setup" not in cfg:
-		log.debug(("Skipping module named %s,"
-		" ucs_setup not present in config"), name)
+		log.debug(("Skipping module named %s, ucs_setup not present in config"), name)
 		return
 
 	# read config options and write them to a profile
-	p = dict((k, v) for k, v in cfg["ucs_setup"].iteritems() if v is not None)
+	p = dict((k, v) for k, v in cfg["ucs_setup"].items() if v is not None)
 	hostname = p.get('hostname', 'ucs')
 	domainname = p.get('domainname', 'ucs.local')
 	windowsdomain = p.get('windowsdomain', 'UCS')

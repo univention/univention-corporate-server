@@ -33,7 +33,7 @@
 override_dh_auto_build:
 	dh_auto_build
 	dh-umc-po2json var/www/univention/js/ci-appliance/de.po
-					
+
 override_dh_auto_install:
 	univention-install-config-registry
 
@@ -44,4 +44,4 @@ override_dh_auto_test:
 	ucslint
 
 %:
-	dh $@ --with python_support
+	dh $@ --with python2,python3

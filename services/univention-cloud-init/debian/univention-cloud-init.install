@@ -1,4 +1,4 @@
-python/* usr/share/pyshared/cloudinit
+python/* usr/lib/python2.7/dist-packages/cloudinit
 appliance-hooks.d/10_restart_umc usr/lib/univention-system-setup/appliance-hooks.d
 var
 etc

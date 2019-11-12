@@ -5,14 +5,16 @@ Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
 Build-Depends: debhelper (>= 9),
  ucslint-univention,
- python-support,
+ dh-python,
  python-all,
+ python3-all,
  univention-config-dev,
  univention-management-console-dev
 
 Package: univention-cloud-init
 Architecture: all
-Depends: ${misc:Depends},
+Depends: ${python:Depends}, ${python3:Depends},
+ ${misc:Depends},
  univention-system-setup,
  cloud-init,
  cloud-initramfs-growroot,
