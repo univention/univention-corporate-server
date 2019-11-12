@@ -64,4 +64,4 @@ override_dh_fixperms:
 	dh_fixperms
 
 %:
-	dh $@ --with 'python_support'
+	dh $@ --with 'python2,python3'

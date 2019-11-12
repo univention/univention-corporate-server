@@ -37,8 +37,6 @@ import lxml.html
 
 from univention.lib.i18n import Translation
 
-import univention.admin.uldap
-
 from univention.udm import UDM
 from univention.config_registry import ConfigRegistry
 from univention.management.console.base import Base
@@ -61,7 +59,7 @@ class Instance(Base):
 	def list_printers(self, key, pattern):
 		""" Lists the printers for the overview grid. """
 
-		quota = self._quota_enabled()		# we need it later
+		quota = self._quota_enabled()  # we need it later
 
 		result = []
 		plist = self._list_printers()

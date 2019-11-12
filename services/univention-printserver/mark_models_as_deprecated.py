@@ -89,7 +89,6 @@ class UpdatePrinterModels(object):
 			ldap_models = attr.get('printerModel', [])
 			new_ldap_models = list()
 			ppds = dict()
-			change = False
 			for model in ldap_models:
 				ppd = model.split('"')[1]
 				if ppd in ppds:
