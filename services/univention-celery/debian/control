@@ -9,12 +9,10 @@ Standards-Version: 3.8.2
 
 Package: univention-celery
 Architecture: all
-Depends: python-univention-config-registry,
- python-univention-directory-manager,
+Depends: ${misc:Depends},
  rabbitmq-server,
  celeryd,
  python-celery,
- ${misc:Depends}
 Description: Celery integration package
  Code to administer and use Celery.
  .
