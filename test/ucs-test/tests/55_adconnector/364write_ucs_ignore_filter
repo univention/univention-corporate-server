@@ -29,9 +29,7 @@ section "Modify User-Ignore-Filter"
 
 invoke-rc.d univention-ad-connector stop
 
-MAIN_FILE="/usr/share/pyshared/univention/connector/ad/main.py"
-cp -f "$MAIN_FILE" "$MAIN_FILE".ucs-test-backup
-sed -i "s/import mapping/import mapping\nucs_test_filter = mapping.ad_mapping ['user'].ignore_filter\nucs_test_filter = ucs_test_filter[0:len(ucs_test_filter)-1]\nucs_test_filter=ucs_test_filter+'(uid=$UDM_users_user_username))'\nmapping.ad_mapping ['user'].ignore_filter = ucs_test_filter/" "$MAIN_FILE"
+connector_mapping_adjust 'user' "$UDM_users_user_username" true
 
 ad_set_sync_mode "write"
 invoke-rc.d univention-ad-connector start
@@ -53,7 +51,7 @@ ad_exists "$AD_USER_DN"; fail_bool 1 110
 udm_exists "users/user"; fail_bool 1 110
 
 invoke-rc.d univention-ad-connector stop
-mv -f "$MAIN_FILE".ucs-test-backup "$MAIN_FILE"
+connector_mapping_restore
 ad_set_sync_mode "$SYNCMODE"
 invoke-rc.d univention-ad-connector start
 

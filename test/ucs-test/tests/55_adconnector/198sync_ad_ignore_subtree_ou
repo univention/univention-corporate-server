@@ -32,9 +32,7 @@ section "Modify Container-Ignore-Subtree"
 
 invoke-rc.d univention-ad-connector stop
 
-MAIN_FILE="/usr/share/pyshared/univention/connector/ad/main.py"
-cp -f "$MAIN_FILE" "$MAIN_FILE".ucs-test-backup
-sed -i "s/import mapping/import mapping\nmapping.ad_mapping ['ou'].ignore_subtree = mapping.ad_mapping ['ou'].ignore_subtree + ['ou=$OU1,$ldap_base']/" "$MAIN_FILE"
+connector_mapping_adjust 'ou' "ou=$OU1,$ldap_base"
 
 ad_set_sync_mode "sync"
 invoke-rc.d univention-ad-connector start
@@ -58,7 +56,7 @@ ad_exists "$AD_OU_DN"; fail_bool 1 110
 udm_exists  "container/ou" "" "" "ou=$OU1,$ldap_base"; fail_bool 1 110
 
 invoke-rc.d univention-ad-connector stop
-mv -f "$MAIN_FILE".ucs-test-backup "$MAIN_FILE"
+connector_mapping_restore
 ad_set_sync_mode "sync"
 invoke-rc.d univention-ad-connector start
 

@@ -29,9 +29,7 @@ section "Modify User-Ignore-Subtree"
 
 invoke-rc.d univention-ad-connector stop
 
-MAIN_FILE="/usr/share/pyshared/univention/connector/ad/main.py"
-cp -f "$MAIN_FILE" "$MAIN_FILE".ucs-test-backup
-sed -i "s/import mapping/import mapping\nmapping.ad_mapping ['user'].ignore_subtree = mapping.ad_mapping ['user'].ignore_subtree + ['cn=users,$ldap_base']/" "$MAIN_FILE"
+connector_mapping_adjust 'user' "cn=users,$ldap_base"
 
 ad_set_sync_mode "read"
 invoke-rc.d univention-ad-connector start
@@ -53,7 +51,7 @@ ad_exists "$AD_USER_DN"; fail_bool 1 110
 udm_exists "users/user"; fail_bool 1 110
 
 invoke-rc.d univention-ad-connector stop
-mv -f "$MAIN_FILE".ucs-test-backup "$MAIN_FILE"
+connector_mapping_restore
 ad_set_sync_mode "$SYNCMODE"
 invoke-rc.d univention-ad-connector start
 

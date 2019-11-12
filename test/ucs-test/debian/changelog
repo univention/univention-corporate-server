@@ -1,3 +1,9 @@
+ucs-test (9.0.3-93) unstable; urgency=medium
+
+  * Bug #49168: make tests pass with python-support and dh-python ad-connector
+
+ -- Florian Best <best@univention.de>  Tue, 12 Nov 2019 14:14:29 +0100
+
 ucs-test (9.0.3-92) unstable; urgency=medium
 
   * Bug #50421: Add additional wait_for_synchronization, needed because of Bug #18501
