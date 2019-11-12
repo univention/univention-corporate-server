@@ -76,6 +76,9 @@ def postrun():
 		schema_handler._todo_list = []
 		acl_handler._todo_list = []
 
+	# log postrun
+	ldap_extension.set_handler_message(name, 'starting postrun')
+
 	slapd_running = not subprocess.call(['pidof', 'slapd'])
 	initscript = '/etc/init.d/slapd'
 	if os.path.exists(initscript) and slapd_running:
@@ -83,18 +86,22 @@ def postrun():
 		try:
 			if schema_handler._do_reload or acl_handler._do_reload:
 				ud.debug(ud.LISTENER, ud.PROCESS, '%s: Reloading LDAP server.' % (name,))
-				p = subprocess.Popen([initscript, 'graceful-restart'], close_fds=True)
-				p.wait()
 				for handler_object in (schema_handler, acl_handler,):
 					handler_object._do_reload = False
+				p = subprocess.Popen(
+					[initscript, 'graceful-restart'], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+				stdout, stderr = p.communicate()
 				if p.returncode != 0:
-					ud.debug(ud.LISTENER, ud.ERROR, '%s: LDAP server restart returned %s.' % (name, p.returncode))
+					ud.debug(ud.LISTENER, ud.ERROR, '{}: LDAP server restart returned {} {} ({}).'.format(name, stderr, stdout, p.returncode))
+					ldap_extension.set_handler_message(name, 'LDAP server restart returned {} {} ({}).'.format(stderr, stdout, p.returncode))
 					return
 
 			# Only set active flags on Master
 			if server_role == 'domaincontroller_master':
 				for handler_object in (schema_handler, acl_handler,):
 					handler_object.mark_active()
-
 		finally:
 			listener.unsetuid()
+
+	# log postrun
+	ldap_extension.set_handler_message(name, 'OK')
