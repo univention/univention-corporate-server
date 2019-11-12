@@ -1,2 +1,2 @@
-modules/univention/connector/*.py usr/share/pyshared/univention/connector/
+modules/univention/connector/*.py usr/lib/python2.7/dist-packages/univention/connector/
 

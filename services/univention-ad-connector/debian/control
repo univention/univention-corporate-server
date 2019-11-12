@@ -6,8 +6,9 @@ Standards-Version: 3.7.2
 Build-Depends: debhelper (>= 7.0.50~),
  ucslint-univention,
  python-all,
- python-support,
- univention-management-console-dev,
+ python3-all,
+ dh-python,
+ univention-management-console-dev (>= 11.0.4-37),
  univention-config-dev
 
 Package: python-univention-connector
@@ -29,6 +30,25 @@ Description: UCS - Modules for connector sychronisation
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
+Package: python3-univention-connector
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends},
+ python3-univention,
+ python3-univention-license,
+ python3-univention-directory-manager,
+ python3-pysqlite2
+Pre-Depends: univention-config (>= 2.6.8-5)
+Provides: ${python3:Provides}
+Conflicts: univention-server-member
+Description: UCS - Modules for connector sychronisation
+ This package contains the modules that implement the
+ features of UCS Active Directory (AD) Connector.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
 Package: python-univention-connector-ad
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
@@ -38,6 +58,24 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-pysqlite2
 Pre-Depends: univention-config,
 Provides: ${python:Provides}
+Description: UCS - Modules for connector sychronisation
+ This package contains the modules that implement the
+ features of UCS Active Directory (AD) Connector.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: python3-univention-connector-ad
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends},
+ python3-univention,
+ python3-univention-license,
+ python3-univention-connector (= ${binary:Version}),
+ python3-pysqlite2
+Pre-Depends: univention-config,
+Provides: ${python3:Provides}
 Description: UCS - Modules for connector sychronisation
  This package contains the modules that implement the
  features of UCS Active Directory (AD) Connector.
@@ -92,7 +130,7 @@ Description: UCS - AD-connector Exchange configuration
 Package: univention-management-console-module-adconnector
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
- univention-management-console-server,
+ univention-management-console-server (>= 11.0.4-37),
  python-univention-lib (>= 3.0.26-62),
  python-samba,
  samba-dsdb-modules

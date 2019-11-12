@@ -1,3 +1,9 @@
+univention-ad-connector (13.0.0-17) unstable; urgency=medium
+
+  * Bug #49168: migrate to dh_python
+
+ -- Florian Best <best@univention.de>  Tue, 12 Nov 2019 10:16:29 +0100
+
 univention-ad-connector (13.0.0-16) unstable; urgency=medium
 
   * Bug #50205: Update links from UCS 4.x-y to UCS 4.4-2
