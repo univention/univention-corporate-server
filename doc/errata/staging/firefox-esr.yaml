@@ -15,7 +15,7 @@ desc: |
  * Incorrect HTML parsing results in XSS bypass technique (CVE-2019-11763)
  * Memory safety bugs fixed in Firefox 70 and Firefox ESR 68.2
    (CVE-2019-11764)
- * heap-based buffer over-read via crafted XML input (CVE-2019-15903)
+ * Heap-based buffer over-read via crafted XML input (CVE-2019-15903)
 bug: [50478]
 cve:
 - CVE-2019-11757
