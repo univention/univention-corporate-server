@@ -1321,7 +1321,7 @@ class object(univention.admin.handlers.simpleLdap):
 			else:
 				ud.debug(ud.ADMIN, ud.INFO, 'user: open with loadGroups=false for user %s' % self['username'])
 			self.groupsLoaded = loadGroups
-			primaryGroupNumber = self.oldattr.get('gidNumber', [''])[0]
+			primaryGroupNumber =  six.ensure_str(self.oldattr.get('gidNumber', [''])[0], encoding='utf-8', errors='strict')
 			if primaryGroupNumber:
 				primaryGroupResult = self.lo.searchDn(filter=filter_format('(&(cn=*)(|(objectClass=posixGroup)(objectClass=sambaGroupMapping))(gidNumber=%s))', [primaryGroupNumber]))
 				if primaryGroupResult:
