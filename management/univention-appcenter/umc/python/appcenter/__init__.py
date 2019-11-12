@@ -208,7 +208,7 @@ class Instance(umcm.Base, ProgressMixin):
 		info = get_action('info')
 		return {'compatible': info.is_compatible(version, function=function), 'version': info.get_ucs_version()}
 
-	def _remote_appcenter(self, host, username, password, function=None):
+	def _remote_appcenter(self, host, function=None):
 		info = get_action('info')
 		opts = {'version': info.get_ucs_version()}
 		if function is not None:
@@ -217,15 +217,18 @@ class Instance(umcm.Base, ProgressMixin):
 			client = Client(host, self.username, self.password)
 			response = client.umc_command('appcenter/version2', opts)
 		except (HTTPError) as exc:
-			raise umcm.UMC_Error('Problems connecting to {0} ({1}). Please update {0}!'.format(host, exc.message))
+			raise umcm.UMC_Error(_('Problems connecting to {0} ({1}). Please update {0}!').format(host, exc.message))
 		except (ConnectionError, Exception) as exc:
-			raise umcm.UMC_Error('Problems connecting to {} ({}).'.format(host, str(exc)))
-		err_msg = _('The App Center version of the this host ({}) is not compatible with the version of {} ({})'.format(my_version, host, response.result))
+			raise umcm.UMC_Error(_('Problems connecting to {} ({}).').format(host, str(exc)))
+		err_msg = _('The App Center version of the this host ({}) is not compatible with the version of {} ({})').format(opts['version'], host, response.result.get('version'))
 		# i guess this is kind of bad
 		if response.status is not 200:
 			raise umcm.UMC_Error(err_msg)
 		# remote says he is not compatible
 		if response.result.get('compatible', True) is False:
+			raise umcm.UMC_Error(err_msg)
+		# i'm not compatible
+		if info.is_compatible(response.result.get('version')):
 			raise umcm.UMC_Error(err_msg)
 		return client
 
