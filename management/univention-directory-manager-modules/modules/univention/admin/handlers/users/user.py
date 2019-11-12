@@ -2379,7 +2379,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if u'functional' in map(six.ensure_text, attr.get('univentionObjectFlag', [])):
 			return False
 		required_ocs = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'person', 'krb5KDCEntry', 'krb5Principal'}
-		ocs = set(attr.get('objectClass', []))
+		ocs = set(map(lambda item : six.ensure_str(item, encoding='utf-8', errors='strict') , attr.get('objectClass', [])))
 		return ocs & required_ocs == required_ocs
 
 
