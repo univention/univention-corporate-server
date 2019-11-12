@@ -1,3 +1,9 @@
+univention-lib (8.0.1-29) unstable; urgency=medium
+
+  * Bug #50481: added set/get_handler_message
+
+ -- Felix Botner <botner@univention.de>  Tue, 12 Nov 2019 16:27:10 +0100
+
 univention-lib (8.0.1-28) unstable; urgency=low
 
   * Bug #47205: Remove deprecated univention.lib.umc_connection
