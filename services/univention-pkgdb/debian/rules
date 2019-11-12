@@ -58,7 +58,8 @@ override_dh_auto_install:
 
 override_dh_install:
 	dh_install
-	sed -e "s/@%@package_version@%@/${version}/" -i debian/python-univention-pkgdb/usr/share/pyshared/univention/pkgdb.py
+	sed -e "s/@%@package_version@%@/${version}/" -i debian/python-univention-pkgdb/usr/lib/python2.7/dist-packages/univention/pkgdb.py
+	sed -e "s/@%@package_version@%@/${version}/" -i debian/python3-univention-pkgdb/usr/lib/python3/dist-packages/univention/pkgdb.py
 
 override_dh_auto_test:
 	dh_auto_test
@@ -69,4 +70,4 @@ override_dh_fixperms:
 	chmod +x debian/univention-pkgdb/usr/lib/univention-directory-listener/system/pkgdb.py
 
 %:
-	dh $@ --with 'python_support'
+	dh $@ --with 'python2,python3'
