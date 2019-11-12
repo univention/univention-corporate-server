@@ -233,7 +233,7 @@ class Instance(Base, ProgressMixin):
 				fd = open(fn, 'w')
 				fd.write(request.options.get('LDAP_Password'))
 				fd.close()
-				os.chmod(fn, 0600)
+				os.chmod(fn, 0o600)
 				os.chown(fn, 0, 0)
 				univention.config_registry.handler_set([u'connector/ad/ldap/bindpw=%s' % fn])
 			except Exception as e:

@@ -60,7 +60,7 @@ class UCSResync:
 	def _dump_object_to_file(self, object_data):
 		filename = self._generate_filename()
 		f = open(filename, 'w+')
-		os.chmod(filename, 0600)
+		os.chmod(filename, 0o600)
 		p = cPickle.Pickler(f)
 		p.dump(object_data)
 		p.clear_memo()

@@ -68,7 +68,7 @@ def _save_old_object(directory, dn, old):
 	filename = os.path.join(directory, 'tmp', 'old_dn')
 
 	f = open(filename, 'w+')
-	os.chmod(filename, 0600)
+	os.chmod(filename, 0o600)
 	p = cPickle.Pickler(f)
 	p.dump((dn, old))
 	p.clear_memo()
@@ -92,7 +92,7 @@ def _dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn):
 	filepath = os.path.join(tmpdir, filename)
 
 	with open(filepath, 'w+') as fd:
-		os.chmod(filepath, 0600)
+		os.chmod(filepath, 0o600)
 		p = cPickle.Pickler(fd)
 		p.dump(ob)
 		p.clear_memo()
@@ -188,7 +188,7 @@ def postrun():
 				for directory in dirs:
 					filename = os.path.join(directory, "%f" % time.time())
 					f = open(filename, 'w+')
-					os.chmod(filename, 0600)
+					os.chmod(filename, 0o600)
 					p = cPickle.Pickler(f)
 					p.dump(ob)
 					p.clear_memo()
