@@ -35,6 +35,7 @@
 import sys
 import string
 import os
+import imp
 
 import ldap
 import univention
@@ -72,8 +73,7 @@ if len(sys.argv) > 1:
 			print "use configbase %s" % CONFIGBASENAME
 
 
-sys.path = ['/etc/univention/%s/ad/' % CONFIGBASENAME] + sys.path
-import mapping
+mapping = imp.load_source('mapping', '/etc/univention/%s/ad/mapping.py' % CONFIGBASENAME)
 
 
 def main():

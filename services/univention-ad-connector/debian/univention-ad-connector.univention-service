@@ -1,7 +1,7 @@
 [univention-ad-connector]
 Description[de]=Univention AD Connector
 Description[en]=Univention AD Connector
-programs=/usr/share/pyshared/univention/connector/ad/main.py
+programs=/usr/bin/python2.7 -W ignore -m univention.connector.ad.main
 icon=service/ad-connector
 start_type=connector/ad/autostart
 systemd=univention-ad-connector.service

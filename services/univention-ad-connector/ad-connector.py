@@ -105,7 +105,7 @@ def _dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn):
 def _restart_connector():
 	listener.setuid(0)
 	try:
-		if not subprocess.call(['pgrep', '-f', 'connector/ad/main.py']):
+		if not subprocess.call(['pgrep', '-f', 'python.*connector.ad.main']):
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "ad-connector: restarting connector ...")
 			subprocess.call(('service', 'univention-ad-connector', 'restart'))
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "ad-connector: ... done")

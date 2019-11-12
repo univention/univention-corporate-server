@@ -32,6 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
+import imp
 import sys
 import string
 import fcntl
@@ -62,10 +63,7 @@ if options.configbasename:
 	CONFIGBASENAME = options.configbasename
 STATUSLOGFILE = "/var/log/univention/%s-status.log" % CONFIGBASENAME
 
-sys.path = ['/etc/univention/%s/ad/' % CONFIGBASENAME] + sys.path
-
-
-import mapping
+mapping = imp.load_source('mapping', '/etc/univention/%s/ad/mapping.py' % CONFIGBASENAME)
 
 
 def bind_stdout():
