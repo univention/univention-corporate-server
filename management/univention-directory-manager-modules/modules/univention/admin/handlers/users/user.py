@@ -1157,7 +1157,7 @@ def isLDAPLocked(oldattr):
 
 
 def unmapSambaRid(oldattr):
-	sid = oldattr.get('sambaSID', [''])[0]
+	sid = six.ensure_str(oldattr.get('sambaSID', [''])[0], encoding='utf-8', errors='strict' )
 	pos = sid.rfind('-')
 	return sid[pos + 1:]
 
