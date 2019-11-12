@@ -32,6 +32,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import sys
 import string
 import re
@@ -88,4 +89,4 @@ while not i == 2:
 		child.sendline(machine_password)
 	elif i == 2:
 		if child.before:
-			print child.before
+			print(child.before)

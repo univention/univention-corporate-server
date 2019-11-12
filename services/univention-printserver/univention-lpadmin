@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import sys
 import re
 import pwd
@@ -75,7 +76,7 @@ def show_child_before_message(child):
 	""" Method shows only lpadmin error/info message that comes only with "lpadmin: """
 	for stdout_line in child.before.splitlines():
 		if "lpadmin: " in stdout_line:
-			print stdout_line.strip()
+			print(stdout_line.strip())
 
 
 def enableaccept(command, groupname, timeout, machine_password):
@@ -93,7 +94,7 @@ def enableaccept(command, groupname, timeout, machine_password):
 		child.close()
 
 	if child.exitstatus and child.exitstatus != 0:
-		print 'The command "%s %s" returned %d' % (command, groupname, child.exitstatus)
+		print('The command "%s %s" returned %d' % (command, groupname, child.exitstatus))
 		sys.exit(child.exitstatus)
 
 
@@ -105,9 +106,9 @@ while not i == 3:
 		attempt += 1
 
 	if attempt > 3:
-		print 'Failed to create the printer with the following command: '
-		print '  %s %s' % (lpadminexec, ' '.join(args))
-		print 'Please check the machine account or the PAM configuration.'
+		print('Failed to create the printer with the following command: ')
+		print('  %s %s' % (lpadminexec, ' '.join(args)))
+		print('Please check the machine account or the PAM configuration.')
 		sys.exit(1)
 
 
@@ -117,7 +118,7 @@ if child.isalive():
 	child.close()
 
 if child.exitstatus and child.exitstatus != 0:
-	print 'The command "%s %s" returned %d' % (lpadminexec, ' '.join(args), child.exitstatus)
+	print('The command "%s %s" returned %d' % (lpadminexec, ' '.join(args), child.exitstatus))
 	sys.exit(child.exitstatus)
 
 # check for several classes

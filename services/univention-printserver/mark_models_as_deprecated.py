@@ -28,6 +28,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import os
 import gzip
 import optparse
@@ -104,8 +106,8 @@ class UpdatePrinterModels(object):
 			model_diff = set(ldap_models).difference(new_ldap_models)
 			if model_diff:
 				if self.options.verbose:
-					print 'removing duplicate models for %s:' % dn
-					print '\t' + '\n\t'.join(model_diff)
+					print('removing duplicate models for %s:' % dn)
+					print('\t' + '\n\t'.join(model_diff))
 				if not options.dry_run:
 					changes = [('printerModel', ldap_models, new_ldap_models)]
 					self.lo.modify(dn, changes)
@@ -124,16 +126,16 @@ class UpdatePrinterModels(object):
 					changed = True
 					obj['printmodel'].remove(model_item)
 					if options.verbose:
-						print 'info: %s model "%s" removed' % (obj.dn, model_item)
+						print('info: %s model "%s" removed' % (obj.dn, model_item))
 					model_item[1] = 'deprecated (only available in %s and older) - ' % self.options.version + model_item[1]
 					obj['printmodel'].append(model_item)
 					if options.verbose:
-						print 'info: %s model "%s" added' % (obj.dn, model_item)
+						print('info: %s model "%s" added' % (obj.dn, model_item))
 			if changed:
 				if not options.dry_run:
 					obj.modify()
 				if options.verbose:
-					print 'info: %s modified' % obj.dn
+					print('info: %s modified' % obj.dn)
 
 
 if __name__ == '__main__':
@@ -156,4 +158,4 @@ if __name__ == '__main__':
 		upm.check_duplicates()
 	else:
 		if options.verbose:
-			print 'info: do nothing, no model and/or name given'
+			print('info: do nothing, no model and/or name given')

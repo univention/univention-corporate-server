@@ -32,6 +32,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import os
 import gzip
 import univention.uldap
@@ -77,7 +79,7 @@ def check_obsolete():
 	# check old models
 	lo = univention.uldap.getMachineConnection()
 	res = lo.search(filter='(objectClass=univentionPrinterModels)', attr=['printerModel', 'cn'])
-	print '# mark old ppd\'s as obsolete\n'
+	print('# mark old ppd\'s as obsolete\n')
 	for dn, attr in res:
 		cn = attr.get('cn')[0]
 		obsolete = dict()
@@ -91,15 +93,15 @@ def check_obsolete():
 					obsolete[cn] = list()
 				obsolete[cn].append(i)
 		for cn in obsolete:
-			print '/usr/lib/univention-printserver/univention-ppds/mark_models_as_deprecated.py "$@" --name "%s" \\' % cn
-			print '\t\'' + '\' \\\n\t\''.join(obsolete[cn]) + '\''
+			print('/usr/lib/univention-printserver/univention-ppds/mark_models_as_deprecated.py "$@" --name "%s" \\' % cn)
+			print('\t\'' + '\' \\\n\t\''.join(obsolete[cn]) + '\'')
 
 
 if __name__ == '__main__':
 	printers = {}
 	cmds = []
 	os.path.walk('/usr/share/ppd/', __check_dir, printers)
-	for manu, models in printers.items():
+	for manu, models in list(printers.items()):
 		cmds.append(get_udm_command(manu, models))
-	print '\n\n'.join(cmds)
+	print('\n\n'.join(cmds))
 	check_obsolete()
