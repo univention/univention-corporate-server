@@ -1128,7 +1128,7 @@ def inconsistentLockedState(oldattr):
 
 
 def isPosixLocked(oldattr):
-	userPassword = oldattr.get('userPassword', [''])[0]
+	userPassword = six.ensure_str(oldattr.get('userPassword', [''])[0], encoding='utf-8', errors='strict')
 	return userPassword and univention.admin.password.is_locked(userPassword)
 
 
