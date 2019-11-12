@@ -66,6 +66,9 @@ from univention.lib.s4 import rids_for_well_known_security_identifiers
 import univention.debug as ud
 import univention.password
 
+if not six.PY2:
+	long = int
+
 translation = univention.admin.localization.translation('univention.admin.handlers.users')
 _ = translation.translate
 
