@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-84) unstable; urgency=medium
+
+  * Bug #50450: add version check for global appcenter
+
+ -- Felix Botner <botner@univention.de>  Tue, 12 Nov 2019 10:55:23 +0100
+
 univention-appcenter (8.0.11-83) unstable; urgency=medium
 
   * Bug #50425: fix typo

@@ -70,7 +70,7 @@ class Info(UniventionAppAction):
 		return '%s-%s errata%s' % (ucr_get('version/version'), ucr_get('version/patchlevel'), ucr_get('version/erratalevel'))
 
 	@classmethod
-	def is_compatible(cls, other_version):
+	def is_compatible(cls, other_version, function=None):
 		return True
 
 	@classmethod

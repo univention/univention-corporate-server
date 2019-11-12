@@ -27,7 +27,7 @@
 		</flavor>
 		<command name="appcenter/working" function="working" />
 		<command name="appcenter/version" function="version" />
-		<command name="appcenter/get_compatibility" function="get_compatibility" />
+		<command name="appcenter/version2" function="version2" />
 		<command name="appcenter/get_by_component_id" function="get_by_component_id" />
 		<command name="appcenter/app_updates" function="app_updates" />
 		<command name="appcenter/sync_ldap" function="sync_ldap" />

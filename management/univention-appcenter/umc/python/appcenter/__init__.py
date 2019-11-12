@@ -204,19 +204,18 @@ class Instance(umcm.Base, ProgressMixin):
 		function=StringSanitizer(required=False),
 	)
 	@simple_response
-	def get_compatibility(self, version, function=None):
-		my_version = constants.COMPATIBILITY_VERSION
-		# you can deny compatibility if version of requesting host is too old
-		return {'compatible': True, 'version': my_version}
+	def version2(self, version, function=None):
+		info = get_action('info')
+		return {'compatible': info.is_compatible(version, function=function), 'version': info.get_ucs_version()}
 
 	def _remote_appcenter(self, host, username, password, function=None):
-		my_version = constants.COMPATIBILITY_VERSION
-		opts = {'version': my_version}
+		info = get_action('info')
+		opts = {'version': info.get_ucs_version()}
 		if function is not None:
 			opts['function'] = function
 		try:
 			client = Client(host, self.username, self.password)
-			response = client.umc_command('appcenter/get_compatibility', opts)
+			response = client.umc_command('appcenter/version2', opts)
 		except (HTTPError) as exc:
 			raise umcm.UMC_Error('Problems connecting to {0} ({1}). Please update {0}!'.format(host, exc.message))
 		except (ConnectionError, Exception) as exc:
@@ -227,9 +226,6 @@ class Instance(umcm.Base, ProgressMixin):
 			raise umcm.UMC_Error(err_msg)
 		# remote says he is not compatible
 		if response.result.get('compatible', True) is False:
-			raise umcm.UMC_Error(err_msg)
-		# i can only talk to other appcenter server that have at least my version
-		if response.result['version'] < my_version:
 			raise umcm.UMC_Error(err_msg)
 		return client
 
