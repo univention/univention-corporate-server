@@ -44,6 +44,7 @@ A UDM handler represents an abstraction of an LDAP object.
 from __future__ import absolute_import
 
 import copy
+import functools
 import re
 import time
 import sys
@@ -1405,8 +1406,8 @@ class simpleLdap(object):
 				ml = [x for x in ml if x[0].lower() != prop.ldapMapping.lower()]
 				ml.append((prop.ldapMapping, self.oldattr.get(prop.ldapMapping), ''))
 
-		unneeded_ocs |= reduce(set.union, (set(module_options[option].objectClasses) for option in removed_options), set())
-		required_ocs |= reduce(set.union, (set(module_options[option].objectClasses) for option in added_options), set())
+		unneeded_ocs |= functools.reduce(set.union, (set(module_options[option].objectClasses) for option in removed_options), set())
+		required_ocs |= functools.reduce(set.union, (set(module_options[option].objectClasses) for option in added_options), set())
 
 		ocs -= lowerset(unneeded_ocs)
 		ocs |= lowerset(required_ocs)
