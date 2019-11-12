@@ -1,3 +1,9 @@
+univention-ldb-modules (7.0.0-5) unstable; urgency=medium
+
+  * Bug #49172: remove python-support
+
+ -- Florian Best <best@univention.de>  Tue, 12 Nov 2019 09:26:36 +0100
+
 univention-ldb-modules (7.0.0-4) unstable; urgency=medium
 
   * Bug #47957: Removed dependency to python-ucs-school

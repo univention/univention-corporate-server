@@ -47,7 +47,7 @@ export PYTHON=$(shell which `pyversions -r`)
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
 %:
-	dh $@ --with python_support
+	dh $@
 
 override_dh_auto_configure:
 	dh_testdir
