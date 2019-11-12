@@ -32,6 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
+from __future__ import print_function
 import sys
 import string
 import time
@@ -64,7 +65,7 @@ def log(level, msg):
 	}
 	ud.debug(ud.LDAP, level, msg)
 	if level <= ud.get_level(ud.LDAP):
-		print "%s: %s" % (prefix.get(level), msg)
+		print("%s: %s" % (prefix.get(level), msg))
 
 
 class AD_DSACL_modifier():
@@ -86,13 +87,13 @@ class AD_DSACL_modifier():
 		'''
 
 		if '%s/ad/ldap/host' % CONFIGBASENAME not in self.ucr:
-			print '%s/ad/ldap/host not set' % CONFIGBASENAME
+			print('%s/ad/ldap/host not set' % CONFIGBASENAME)
 			sys.exit(1)
 		if '%s/ad/ldap/port' % CONFIGBASENAME not in self.ucr:
-			print '%s/ad/ldap/port not set' % CONFIGBASENAME
+			print('%s/ad/ldap/port not set' % CONFIGBASENAME)
 			sys.exit(1)
 		if '%s/ad/ldap/base' % CONFIGBASENAME not in self.ucr:
-			print '%s/ad/ldap/base not set' % CONFIGBASENAME
+			print('%s/ad/ldap/base not set' % CONFIGBASENAME)
 			sys.exit(1)
 
 		ca_file = self.ucr.get('%s/ad/ldap/certificate' % CONFIGBASENAME)
@@ -134,7 +135,7 @@ class AD_DSACL_modifier():
 				)
 				ad_init = True
 			except ldap.SERVER_DOWN:
-				print "Warning: Can't initialize LDAP-Connections, wait..."
+				print("Warning: Can't initialize LDAP-Connections, wait...")
 				sys.stdout.flush()
 				time.sleep(poll_sleep)
 
@@ -148,7 +149,7 @@ class AD_DSACL_modifier():
 			obj = result[0][1]
 			desc_ndr = obj.get("nTSecurityDescriptor", [None])[0]
 		else:
-			print "ERROR: CN=Deleted Objects not found in AD"
+			print("ERROR: CN=Deleted Objects not found in AD")
 			sys.exit(1)
 
 		desc_sddl = None
@@ -178,7 +179,7 @@ class AD_DSACL_modifier():
 			objectSid_ndr = obj.get("objectSid", [None])[0]
 			machine_sid = ndr_unpack(security.dom_sid, objectSid_ndr)
 		else:
-			print "ERROR: sAMAccountName %s$ not found in AD" (self.ucr["hostname"],)
+			print("ERROR: sAMAccountName %s$ not found in AD" (self.ucr["hostname"],))
 			sys.exit(1)
 
 		new_ace = '(A;;RPLC;;;%s)' % (machine_sid,)
@@ -188,11 +189,11 @@ class AD_DSACL_modifier():
 			self.initialize_nTSecurityDescriptor_of_Deleted_Objects()
 			desc_sddl = self.get_nTSecurityDescriptor_of_Deleted_Objects()
 			if not desc_sddl:
-				print "ERROR: Failed to initialize nTSecurityDescriptor for CN=Deleted Objects in AD"
+				print("ERROR: Failed to initialize nTSecurityDescriptor for CN=Deleted Objects in AD")
 				sys.exit(1)
 
 		if new_ace in desc_sddl:
-			print "INFO: DSACL of Deleted Objects is already OK."
+			print("INFO: DSACL of Deleted Objects is already OK.")
 			sys.exit(0)
 
 		if desc_sddl.find("(") >= 0:
@@ -204,7 +205,7 @@ class AD_DSACL_modifier():
 		ctrls = []
 		ctrls.append(ldap.controls.LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=0))
 		self.ad.lo.modify_ext_s(compatible_modstring(self.deleted_objects_dn), [(ldap.MOD_REPLACE, 'nTSecurityDescriptor', desc_ndr)], serverctrls=ctrls)
-		print "INFO: DSACL of Deleted Objects adjusted."
+		print("INFO: DSACL of Deleted Objects adjusted.")
 
 
 def _connect_ucs(ucr, binddn=None, bindpwd=None):
@@ -251,13 +252,13 @@ if __name__ == "__main__":
 	if not options.binddn:
 		options.binddn = ucr.get('%s/ad/ldap/binddn' % CONFIGBASENAME)
 		if not options.binddn:
-			print '--binddn not given and %s/ad/ldap/binddn not set' % CONFIGBASENAME
+			print('--binddn not given and %s/ad/ldap/binddn not set' % CONFIGBASENAME)
 			sys.exit(1)
 
 	if not options.bindpwd:
 		bindpwfile = ucr.get('%s/ad/ldap/bindpw' % CONFIGBASENAME)
 		if not bindpwfile:
-			print '--bindpwd not given and %s/ad/ldap/bindpw not set' % CONFIGBASENAME
+			print('--bindpwd not given and %s/ad/ldap/bindpw not set' % CONFIGBASENAME)
 			sys.exit(1)
 		options.bindpwd = open(ucr['%s/ad/ldap/bindpw' % CONFIGBASENAME]).read()
 		if options.bindpwd[-1] == '\n':

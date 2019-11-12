@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import os
 import sqlite3
 import sys
@@ -77,9 +78,9 @@ if __name__ == '__main__':
 	try:
 		remove_ucs_rejected(ucs_dn)
 	except ObjectNotFound:
-		print 'ERROR: The object %s was not found.' % ucs_dn
+		print('ERROR: The object %s was not found.' % ucs_dn)
 		sys.exit(1)
 
-	print 'The rejected UCS object %s has been removed.' % ucs_dn
+	print('The rejected UCS object %s has been removed.' % ucs_dn)
 
 	sys.exit(0)

@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import os
 import sqlite3
 import sys
@@ -73,9 +74,9 @@ if __name__ == '__main__':
 	try:
 		remove_ad_rejected(ad_dn)
 	except ObjectNotFound:
-		print 'ERROR: The object %s was not found.' % ad_dn
+		print('ERROR: The object %s was not found.' % ad_dn)
 		sys.exit(1)
 
-	print 'The rejected AD object %s has been removed.' % ad_dn
+	print('The rejected AD object %s has been removed.' % ad_dn)
 
 	sys.exit(0)

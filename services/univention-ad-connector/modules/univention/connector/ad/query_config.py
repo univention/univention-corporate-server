@@ -32,6 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
+from __future__ import print_function
 import os
 import ConfigParser
 
@@ -46,15 +47,15 @@ def fixup(s):
 
 configfile = '/etc/univention/connector/internal.cfg'
 if not os.path.exists(configfile):
-	print "ERROR: Config-File not found, maybe connector was never started"
+	print("ERROR: Config-File not found, maybe connector was never started")
 config = ConfigParser.ConfigParser()
 config.readfp(open(configfile))
 
 for section in config.sections():
-	print "SECTION: %s" % section
+	print("SECTION: %s" % section)
 	for name, value in config.items(section):
 		if section == "AD GUID":
-			print " --%s: %s" % (name, value)
-			print " --%s: %s" % (fixup(name).decode('base64'), fixup(value).decode('base64'))
+			print(" --%s: %s" % (name, value))
+			print(" --%s: %s" % (fixup(name).decode('base64'), fixup(value).decode('base64')))
 		else:
-			print " -- %50s : %s" % (name, value)
+			print(" -- %50s : %s" % (name, value))

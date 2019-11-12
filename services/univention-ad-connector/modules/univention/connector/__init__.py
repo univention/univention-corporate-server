@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import sys
 import string
 import os
@@ -843,8 +844,8 @@ class ucs:
 
 	def initialize_ucs(self):
 		_d = ud.function('ldap.initialize_ucs')  # noqa: F841
-		print "--------------------------------------"
-		print "Initialize sync from UCS"
+		print("--------------------------------------")
+		print("Initialize sync from UCS")
 		sys.stdout.flush()
 
 		# load UCS Modules
@@ -874,7 +875,7 @@ class ucs:
 		self.resync_rejected_ucs()
 		# call poll_ucs to sync
 		self.poll_ucs()
-		print "--------------------------------------"
+		print("--------------------------------------")
 		sys.stdout.flush()
 
 	def initialize(self):
@@ -888,8 +889,8 @@ class ucs:
 		_d = ud.function('ldap.resync_rejected_ucs')  # noqa: F841
 		rejected = self._list_rejected_ucs()
 		change_counter = 0
-		print "--------------------------------------"
-		print "Sync %s rejected changes from UCS" % len(rejected)
+		print("--------------------------------------")
+		print("Sync %s rejected changes from UCS" % len(rejected))
 		sys.stdout.flush()
 
 		if rejected:
@@ -909,8 +910,8 @@ class ucs:
 					self._save_rejected_ucs(filename, dn)
 					self._debug_traceback(ud.WARN, "sync failed, saved as rejected \n\t%s" % filename)
 
-		print "restored %s rejected changes" % change_counter
-		print "--------------------------------------"
+		print("restored %s rejected changes" % change_counter)
+		print("--------------------------------------")
 		sys.stdout.flush()
 
 	def resync_rejected(self):
@@ -952,9 +953,9 @@ class ucs:
 
 		self.rejected_files = self._list_rejected_filenames_ucs()
 
-		print "--------------------------------------"
-		print "try to sync %s changes from UCS" % (len(os.listdir(self.listener_dir)) - 1)
-		print "done:",
+		print("--------------------------------------")
+		print("try to sync %s changes from UCS" % (len(os.listdir(self.listener_dir)) - 1))
+		print("done:", end=' ')
 		sys.stdout.flush()
 		done_counter = 0
 		files = sorted(os.listdir(self.listener_dir))
@@ -1012,18 +1013,18 @@ class ucs:
 						self.dn_list[dn].remove(filename)
 
 				done_counter += 1
-				print "%s" % done_counter,
+				print("%s" % done_counter, end=' ')
 				sys.stdout.flush()
 
-		print ""
+		print("")
 
 		self.rejected_files = self._list_rejected_filenames_ucs()
 
 		if self.rejected_files:
-			print "Changes from UCS: %s (%s saved rejected)" % (change_counter, len(self.rejected_files))
+			print("Changes from UCS: %s (%s saved rejected)" % (change_counter, len(self.rejected_files)))
 		else:
-			print "Changes from UCS: %s (%s saved rejected)" % (change_counter, '0')
-		print "--------------------------------------"
+			print("Changes from UCS: %s (%s saved rejected)" % (change_counter, '0'))
+		print("--------------------------------------")
 		sys.stdout.flush()
 		return change_counter
 

@@ -32,6 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
+from __future__ import print_function
 import imp
 import sys
 import string
@@ -76,7 +77,7 @@ def daemon(lock_file):
 	try:
 		pid = os.fork()
 	except OSError, e:
-		print 'Daemon Mode Error: %s' % e.strerror
+		print('Daemon Mode Error: %s' % e.strerror)
 
 	if (pid == 0):
 		os.setsid()
@@ -84,7 +85,7 @@ def daemon(lock_file):
 		try:
 			pid = os.fork()
 		except OSError, e:
-			print 'Daemon Mode Error: %s' % e.strerror
+			print('Daemon Mode Error: %s' % e.strerror)
 		if (pid == 0):
 			os.chdir("/")
 			os.umask(0)
@@ -115,25 +116,25 @@ def daemon(lock_file):
 
 
 def connect():
-	print time.ctime()
+	print(time.ctime())
 
 	baseConfig = ConfigRegistry()
 	baseConfig.load()
 
 	if '%s/ad/ldap/host' % CONFIGBASENAME not in baseConfig:
-		print '%s/ad/ldap/host not set' % CONFIGBASENAME
+		print('%s/ad/ldap/host not set' % CONFIGBASENAME)
 		sys.exit(1)
 	if '%s/ad/ldap/port' % CONFIGBASENAME not in baseConfig:
-		print '%s/ad/ldap/port not set' % CONFIGBASENAME
+		print('%s/ad/ldap/port not set' % CONFIGBASENAME)
 		sys.exit(1)
 	if '%s/ad/ldap/base' % CONFIGBASENAME not in baseConfig:
-		print '%s/ad/ldap/base not set' % CONFIGBASENAME
+		print('%s/ad/ldap/base not set' % CONFIGBASENAME)
 		sys.exit(1)
 	if '%s/ad/ldap/binddn' % CONFIGBASENAME not in baseConfig:
-		print '%s/ad/ldap/binddn not set' % CONFIGBASENAME
+		print('%s/ad/ldap/binddn not set' % CONFIGBASENAME)
 		sys.exit(1)
 	if '%s/ad/ldap/bindpw' % CONFIGBASENAME not in baseConfig:
-		print '%s/ad/ldap/bindpw not set' % CONFIGBASENAME
+		print('%s/ad/ldap/bindpw not set' % CONFIGBASENAME)
 		sys.exit(1)
 
 	ca_file = baseConfig.get('%s/ad/ldap/certificate' % CONFIGBASENAME)
@@ -160,7 +161,7 @@ def connect():
 			ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 
 	if '%s/ad/listener/dir' % CONFIGBASENAME not in baseConfig:
-		print '%s/ad/listener/dir not set' % CONFIGBASENAME
+		print('%s/ad/listener/dir not set' % CONFIGBASENAME)
 		sys.exit(1)
 
 	if '%s/ad/retryrejected' % CONFIGBASENAME not in baseConfig:
@@ -190,7 +191,7 @@ def connect():
 			)
 			ad_init = True
 		except ldap.SERVER_DOWN:
-			print "Warning: Can't initialize LDAP-Connections, wait..."
+			print("Warning: Can't initialize LDAP-Connections, wait...")
 			sys.stdout.flush()
 			time.sleep(poll_sleep)
 
@@ -203,7 +204,7 @@ def connect():
 			ad.initialize_ucs()
 			ucs_init = True
 		except ldap.SERVER_DOWN:
-			print "Can't contact LDAP server during ucs-poll, sync not possible."
+			print("Can't contact LDAP server during ucs-poll, sync not possible.")
 			sys.stdout.flush()
 			time.sleep(poll_sleep)
 			ad.open_ad()
@@ -214,7 +215,7 @@ def connect():
 			ad.initialize()
 			ad_init = True
 		except ldap.SERVER_DOWN:
-			print "Can't contact LDAP server during ucs-poll, sync not possible."
+			print("Can't contact LDAP server during ucs-poll, sync not possible.")
 			sys.stdout.flush()
 			time.sleep(poll_sleep)
 			ad.open_ad()
@@ -223,7 +224,7 @@ def connect():
 	retry_rejected = 0
 	connected = True
 	while connected:
-		print time.ctime()
+		print(time.ctime())
 		# Aenderungen pollen
 		sys.stdout.flush()
 		while True:
@@ -238,7 +239,7 @@ def connect():
 				else:
 					break
 			except ldap.SERVER_DOWN:
-				print "Can't contact LDAP server during ucs-poll, sync not possible."
+				print("Can't contact LDAP server during ucs-poll, sync not possible.")
 				connected = False
 				sys.stdout.flush()
 				break
@@ -254,7 +255,7 @@ def connect():
 				else:
 					break
 			except ldap.SERVER_DOWN:
-				print "Can't contact LDAP server during ad-poll, sync not possible."
+				print("Can't contact LDAP server during ad-poll, sync not possible.")
 				connected = False
 				sys.stdout.flush()
 				break
@@ -267,13 +268,13 @@ def connect():
 			else:
 				retry_rejected += 1
 		except ldap.SERVER_DOWN:
-			print "Can't contact LDAP server during resync rejected, sync not possible."
+			print("Can't contact LDAP server during resync rejected, sync not possible.")
 			connected = False
 			sys.stdout.flush()
 			change_counter = 0
 			retry_rejected += 1
 
-		print '- sleep %s seconds (%s/%s until resync) -' % (poll_sleep, retry_rejected, baseconfig_retry_rejected)
+		print('- sleep %s seconds (%s/%s until resync) -' % (poll_sleep, retry_rejected, baseconfig_retry_rejected))
 		sys.stdout.flush()
 		time.sleep(poll_sleep)
 	ad.close_debug()
@@ -289,7 +290,7 @@ def main():
 	try:
 		lock_file = lock('/var/lock/univention-ad-%s' % CONFIGBASENAME)
 	except IOError:
-		print >> sys.stderr, 'Error: Another AD connector process is already running.'
+		print('Error: Another AD connector process is already running.', file=sys.stderr)
 		sys.exit(1)
 
 	if options.daemonize:
@@ -303,10 +304,10 @@ def main():
 			lock_file.close()
 			raise
 		except:
-			print time.ctime()
-			print " --- connect failed, failure was: ---"
-			print traceback.format_exc()
-			print " ---     retry in 30 seconds      ---"
+			print(time.ctime())
+			print(" --- connect failed, failure was: ---")
+			print(traceback.format_exc())
+			print(" ---     retry in 30 seconds      ---")
 			sys.stdout.flush()
 			time.sleep(30)
 	lock_file.close()

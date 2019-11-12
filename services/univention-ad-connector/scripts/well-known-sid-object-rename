@@ -32,6 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
+from __future__ import print_function
 import sys
 import string
 import time
@@ -65,7 +66,7 @@ def log(level, msg):
 	}
 	ud.debug(ud.LDAP, level, msg)
 	if level <= ud.get_level(ud.LDAP):
-		print "%s: %s" % (prefix.get(level), msg)
+		print("%s: %s" % (prefix.get(level), msg))
 
 
 class Well_Known_SID_object_renamer():
@@ -100,13 +101,13 @@ class Well_Known_SID_object_renamer():
 		'''
 
 		if '%s/ad/ldap/host' % CONFIGBASENAME not in self.ucr:
-			print '%s/ad/ldap/host not set' % CONFIGBASENAME
+			print('%s/ad/ldap/host not set' % CONFIGBASENAME)
 			sys.exit(1)
 		if '%s/ad/ldap/port' % CONFIGBASENAME not in self.ucr:
-			print '%s/ad/ldap/port not set' % CONFIGBASENAME
+			print('%s/ad/ldap/port not set' % CONFIGBASENAME)
 			sys.exit(1)
 		if '%s/ad/ldap/base' % CONFIGBASENAME not in self.ucr:
-			print '%s/ad/ldap/base not set' % CONFIGBASENAME
+			print('%s/ad/ldap/base not set' % CONFIGBASENAME)
 			sys.exit(1)
 
 		ca_file = self.ucr.get('%s/ad/ldap/certificate' % CONFIGBASENAME)
@@ -148,7 +149,7 @@ class Well_Known_SID_object_renamer():
 				)
 				ad_init = True
 			except ldap.SERVER_DOWN:
-				print "Warning: Can't initialize LDAP-Connections, wait..."
+				print("Warning: Can't initialize LDAP-Connections, wait...")
 				sys.stdout.flush()
 				time.sleep(poll_sleep)
 
@@ -382,13 +383,13 @@ if __name__ == "__main__":
 	if not options.binddn:
 		options.binddn = ucr.get('%s/ad/ldap/binddn' % CONFIGBASENAME)
 		if not options.binddn:
-			print '--binddn not given and %s/ad/ldap/binddn not set' % CONFIGBASENAME
+			print('--binddn not given and %s/ad/ldap/binddn not set' % CONFIGBASENAME)
 			sys, exit(1)
 
 	if not options.bindpwd:
 		bindpwfile = ucr.get('%s/ad/ldap/bindpw' % CONFIGBASENAME)
 		if not bindpwfile:
-			print '--bindpwd not given and %s/ad/ldap/bindpw not set' % CONFIGBASENAME
+			print('--bindpwd not given and %s/ad/ldap/bindpw not set' % CONFIGBASENAME)
 			sys, exit(1)
 		options.bindpwd = open(ucr['%s/ad/ldap/bindpw' % CONFIGBASENAME]).read()
 		if options.bindpwd[-1] == '\n':

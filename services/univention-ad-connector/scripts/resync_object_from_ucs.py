@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import cPickle
 import time
 import os
@@ -146,15 +147,15 @@ if __name__ == '__main__':
 		resync = UCSResync()
 		treated_dns = resync.resync(ucs_dns, options.ldapfilter, options.ldapbase)
 	except ldap.NO_SUCH_OBJECT as ex:
-		print 'ERROR: The LDAP object not found : %s' % str(ex)
+		print('ERROR: The LDAP object not found : %s' % str(ex))
 		if len(ex.args) == 3:
 			treated_dns = ex.args[2]
 		sys.exit(1)
 	finally:
 		for dn in treated_dns:
-			print 'resync triggered for %s' % dn
+			print('resync triggered for %s' % dn)
 
 	if not treated_dns:
-		print 'No matching objects.'
+		print('No matching objects.')
 
 	sys.exit(0)

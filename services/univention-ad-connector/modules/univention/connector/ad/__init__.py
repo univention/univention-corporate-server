@@ -32,6 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
+from __future__ import print_function
 import string
 import ldap
 import sys
@@ -922,7 +923,7 @@ class ad(univention.connector.ucs):
 				result = self.lo_ad.search(base=self.lo_ad.binddn, scope='base')
 				self.ad_ldap_bind_username = result[0][1]['sAMAccountName'][0]
 			except Exception, msg:
-				print "Failed to get SID from AD: %s" % msg
+				print("Failed to get SID from AD: %s" % msg)
 				sys.exit(1)
 		else:
 			self.ad_ldap_bind_username = self.baseConfig['%s/ad/ldap/binddn' % self.CONFIGBASENAME]
@@ -932,7 +933,7 @@ class ad(univention.connector.ucs):
 			object_sid = result[0][1]['objectSid'][0]
 			self.ad_sid = univention.connector.ad.decode_sid(object_sid)
 		except Exception, msg:
-			print "Failed to get SID from AD: %s" % msg
+			print("Failed to get SID from AD: %s" % msg)
 			sys.exit(1)
 
 		# Get NetBios Domain Name
@@ -1451,7 +1452,7 @@ class ad(univention.connector.ucs):
 			return int(usn)
 		except Exception:
 			self._debug_traceback(ud.ERROR, "search for highestCommittedUSN failed")
-			print "ERROR: initial search in AD failed, check network and configuration"
+			print("ERROR: initial search in AD failed, check network and configuration")
 			return 0
 
 	def set_primary_group_to_ucs_user(self, object_key, object_ucs):
@@ -1514,7 +1515,7 @@ class ad(univention.connector.ucs):
 			sid = ldap_object_ad_group['objectSid'][0]
 			rid = sid[string.rfind(sid, "-") + 1:]
 		else:
-			print "no SID !!!"
+			print("no SID !!!")
 
 		# to set a valid primary group we need to:
 		# - check if either the primaryGroupID is already set to rid or
@@ -2209,8 +2210,8 @@ class ad(univention.connector.ucs):
 
 	def initialize(self):
 		_d = ud.function('ldap.initialize')  # noqa: F841
-		print "--------------------------------------"
-		print "Initialize sync from AD"
+		print("--------------------------------------")
+		print("Initialize sync from AD")
 		if self._get_lastUSN() == 0:  # we startup new
 			ud.debug(ud.LDAP, ud.PROCESS, "initialize AD: last USN is 0, sync all")
 			# query highest USN in LDAP
@@ -2229,18 +2230,18 @@ class ad(univention.connector.ucs):
 			self.resync_rejected()
 			self.poll()
 			self._commit_lastUSN()
-		print "--------------------------------------"
+		print("--------------------------------------")
 
 	def resync_rejected(self):
 		'''
 		tries to resync rejected dn
 		'''
-		print "--------------------------------------"
+		print("--------------------------------------")
 
 		_d = ud.function('ldap.resync_rejected')  # noqa: F841
 		change_count = 0
 		rejected = self._list_rejected()
-		print "Sync %s rejected changes from AD to UCS" % len(rejected)
+		print("Sync %s rejected changes from AD to UCS" % len(rejected))
 		sys.stdout.flush()
 		if rejected:
 			for id, dn in rejected:
@@ -2280,8 +2281,8 @@ class ad(univention.connector.ucs):
 					raise
 				except Exception:
 					self._debug_traceback(ud.ERROR, "unexpected Error during ad.resync_rejected")
-		print "restored %s rejected changes" % change_count
-		print "--------------------------------------"
+		print("restored %s rejected changes" % change_count)
+		print("--------------------------------------")
 		sys.stdout.flush()
 
 	def poll(self, show_deleted=True):
@@ -2300,9 +2301,9 @@ class ad(univention.connector.ucs):
 		except:  # FIXME: which exception is to be caught?
 			self._debug_traceback(ud.WARN, "Exception during search_ad_changes")
 
-		print "--------------------------------------"
-		print "try to sync %s changes from AD" % len(changes)
-		print "done:",
+		print("--------------------------------------")
+		print("try to sync %s changes from AD" % len(changes))
+		print("done:", end=' ')
 		sys.stdout.flush()
 		done_counter = 0
 		object = None
@@ -2335,14 +2336,14 @@ class ad(univention.connector.ucs):
 						else:
 							self.__update_lastUSN(object)
 							done_counter += 1
-							print "%s" % done_counter,
+							print("%s" % done_counter, end=' ')
 							continue
 
 					if object['dn'].find('\\0ACNF:') > 0:
 						ud.debug(ud.LDAP, ud.PROCESS, 'Ignore conflicted object: %s' % object['dn'])
 						self.__update_lastUSN(object)
 						done_counter += 1
-						print "%s" % done_counter,
+						print("%s" % done_counter, end=' ')
 						continue
 
 					sync_successfull = False
@@ -2391,13 +2392,13 @@ class ad(univention.connector.ucs):
 					newUSN = max(self.__get_change_usn(object), newUSN)
 
 				done_counter += 1
-				print "%s" % done_counter,
+				print("%s" % done_counter, end=' ')
 			else:
 				done_counter += 1
-				print "(%s)" % done_counter,
+				print("(%s)" % done_counter, end=' ')
 			sys.stdout.flush()
 
-		print ""
+		print("")
 
 		if newUSN != lastUSN:
 			self._set_lastUSN(newUSN)
@@ -2406,10 +2407,10 @@ class ad(univention.connector.ucs):
 		# return number of synced objects
 		rejected = self._list_rejected()
 		if rejected:
-			print "Changes from AD:  %s (%s saved rejected)" % (change_count, len(rejected))
+			print("Changes from AD:  %s (%s saved rejected)" % (change_count, len(rejected)))
 		else:
-			print "Changes from AD:  %s (%s saved rejected)" % (change_count, '0')
-		print "--------------------------------------"
+			print("Changes from AD:  %s (%s saved rejected)" % (change_count, '0'))
+		print("--------------------------------------")
 		sys.stdout.flush()
 		return change_count
 

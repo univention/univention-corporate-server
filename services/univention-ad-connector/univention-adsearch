@@ -32,6 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
+from __future__ import print_function
 import sys
 import os
 import re
@@ -56,15 +57,15 @@ class kerberosAuthenticationFailed(Exception):
 
 
 def usage():
-	print ""
-	print "This is univention-adsearch"
-	print ""
-	print "Univention-adsearch uses the settings of \"univention-ad-connector\" to ldap-search an Active-Directory Server."
-	print ""
-	print "Usage:"
-	print "univention-adsearch [-c configbase] filter <attributes>"
-	print ""
-	print "The default configbase is \"connector\"."
+	print("")
+	print("This is univention-adsearch")
+	print("")
+	print("Univention-adsearch uses the settings of \"univention-ad-connector\" to ldap-search an Active-Directory Server.")
+	print("")
+	print("Usage:")
+	print("univention-adsearch [-c configbase] filter <attributes>")
+	print("")
+	print("The default configbase is \"connector\".")
 
 
 if len(sys.argv) < 2 or sys.argv[1] in ["-h", "-?", "--help"]:
@@ -75,7 +76,7 @@ CONFIGBASENAME = "connector"
 oiterator = 1
 if sys.argv[oiterator] == "-c":
 	if len(sys.argv) < oiterator + 1:
-		print "ERROR: need argument for option -c"
+		print("ERROR: need argument for option -c")
 		usage()
 		sys.exit(1)
 	else:
@@ -83,7 +84,7 @@ if sys.argv[oiterator] == "-c":
 		oiterator = oiterator + 2
 
 if len(sys.argv) < oiterator + 1:
-	print "ERROR: no filter given"
+	print("ERROR: no filter given")
 	usage()
 	sys.exit(1)
 
@@ -97,15 +98,15 @@ configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
 if not ('%s/ad/ldap/host' % CONFIGBASENAME in configRegistry and '%s/ad/ldap/port' % CONFIGBASENAME in configRegistry and '%s/ad/ldap/binddn' % CONFIGBASENAME in configRegistry and '%s/ad/ldap/bindpw' % CONFIGBASENAME in configRegistry and '%s/ad/ldap/base' % CONFIGBASENAME in configRegistry):
-	print ""
-	print "This is univention-adsearch"
-	print ""
-	print "Univention-adsearch uses the settings of \"univention-ad-connector\" to ldap-search an Active-Directory Server."
-	print ""
-	print "The Settings are not complete, please check the following univention-config-registry Values:"
-	print "%s/ad/ldap/host, %s/ad/ldap/port," % (CONFIGBASENAME, CONFIGBASENAME)
-	print "%s/ad/ldap/binddn, %s/ad/ldap/bindpw," % (CONFIGBASENAME, CONFIGBASENAME)
-	print "%s/ad/ldap/base" % (CONFIGBASENAME)
+	print("")
+	print("This is univention-adsearch")
+	print("")
+	print("Univention-adsearch uses the settings of \"univention-ad-connector\" to ldap-search an Active-Directory Server.")
+	print("")
+	print("The Settings are not complete, please check the following univention-config-registry Values:")
+	print("%s/ad/ldap/host, %s/ad/ldap/port," % (CONFIGBASENAME, CONFIGBASENAME))
+	print("%s/ad/ldap/binddn, %s/ad/ldap/bindpw," % (CONFIGBASENAME, CONFIGBASENAME))
+	print("%s/ad/ldap/base" % (CONFIGBASENAME))
 	sys.exit(1)
 
 
@@ -204,16 +205,16 @@ while True:
 n_results = len(res)
 n_referrals = 0
 
-print "#"
-print "# univention-adsearch"
-print "# filter: %s" % filter
-print "#"
+print("#")
+print("# univention-adsearch")
+print("# filter: %s" % filter)
+print("#")
 for r in res:
 	if r[0] is None or r[0] == 'None':
 		n_referrals += 1
 		continue
-	print ""
-	print "DN: %s" % r[0]
+	print("")
+	print("DN: %s" % r[0])
 	for key in r[1]:
 		for val in r[1][key]:
 			sep = ':'
@@ -231,9 +232,9 @@ for r in res:
 					val = base64.b64encode(val)
 					sep = '::'
 			print("{0}{1} {2}".format(key, sep, val))
-print ""
-print "#"
-print "# results: %s" % (n_results - n_referrals)
-print "#"
-print ""
+print("")
+print("#")
+print("# results: %s" % (n_results - n_referrals))
+print("#")
+print("")
 lo.unbind()

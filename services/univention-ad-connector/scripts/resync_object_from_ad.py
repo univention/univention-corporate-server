@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 from optparse import OptionParser
 import os
 import ldap
@@ -190,19 +191,19 @@ if __name__ == '__main__':
 	baseConfig.load()
 
 	if '%s/ad/ldap/host' % CONFIGBASENAME not in baseConfig:
-		print '%s/ad/ldap/host not set' % CONFIGBASENAME
+		print('%s/ad/ldap/host not set' % CONFIGBASENAME)
 		sys.exit(1)
 	if '%s/ad/ldap/port' % CONFIGBASENAME not in baseConfig:
-		print '%s/ad/ldap/port not set' % CONFIGBASENAME
+		print('%s/ad/ldap/port not set' % CONFIGBASENAME)
 		sys.exit(1)
 	if '%s/ad/ldap/base' % CONFIGBASENAME not in baseConfig:
-		print '%s/ad/ldap/base not set' % CONFIGBASENAME
+		print('%s/ad/ldap/base not set' % CONFIGBASENAME)
 		sys.exit(1)
 	if '%s/ad/ldap/binddn' % CONFIGBASENAME not in baseConfig:
-		print '%s/ad/ldap/binddn not set' % CONFIGBASENAME
+		print('%s/ad/ldap/binddn not set' % CONFIGBASENAME)
 		sys.exit(1)
 	if '%s/ad/ldap/bindpw' % CONFIGBASENAME not in baseConfig:
-		print '%s/ad/ldap/bindpw not set' % CONFIGBASENAME
+		print('%s/ad/ldap/bindpw not set' % CONFIGBASENAME)
 		sys.exit(1)
 
 	ca_file = baseConfig.get('%s/ad/ldap/certificate' % CONFIGBASENAME)
@@ -224,7 +225,7 @@ if __name__ == '__main__':
 			ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 
 	if '%s/ad/listener/dir' % CONFIGBASENAME not in baseConfig:
-		print '%s/ad/listener/dir not set' % CONFIGBASENAME
+		print('%s/ad/listener/dir not set' % CONFIGBASENAME)
 		sys.exit(1)
 	ad_ldap_bindpw = open(baseConfig['%s/ad/ldap/bindpw' % CONFIGBASENAME]).read()
 	if ad_ldap_bindpw[-1] == '\n':
@@ -253,22 +254,22 @@ if __name__ == '__main__':
 		)
 		treated_dns = resync.resync(ad_dns, options.ldapfilter, options.ldapbase)
 	except ldap.SERVER_DOWN:
-		print "Warning: Can't initialize LDAP-Connections, wait..."
+		print("Warning: Can't initialize LDAP-Connections, wait...")
 		sys.stdout.flush()
 		time.sleep(poll_sleep)
 	except DNNotFound as ex:
-		print 'ERROR: The AD object was not found: %s' % (ex.args[1],)
+		print('ERROR: The AD object was not found: %s' % (ex.args[1],))
 		if len(ex.args) == 3:
 			treated_dns = ex.args[2]
 		sys.exit(1)
 	except GUIDNotFound as ex:
-		print 'ERROR: The AD search for objectGUID failed: %s' % (ex.args[1],)
+		print('ERROR: The AD search for objectGUID failed: %s' % (ex.args[1],))
 		if len(ex.args) == 3:
 			treated_dns = ex.args[2]
 		sys.exit(1)
 	finally:
 		for dn in treated_dns:
-			print 'resync triggered for %s' % dn
+			print('resync triggered for %s' % dn)
 
 	if treated_dns:
 		estimated_delay = 60
@@ -277,8 +278,8 @@ if __name__ == '__main__':
 		except ValueError:
 			pass
 
-		print 'Estimated sync in %s seconds.' % (estimated_delay,)
+		print('Estimated sync in %s seconds.' % (estimated_delay,))
 	else:
-		print 'No matching objects.'
+		print('No matching objects.')
 
 	sys.exit(0)
