@@ -2,8 +2,8 @@ product: ucs
 release: "4.4"
 version: [2]
 scope: ucs_4.4-0-errata4.4-2
-src: univention-mail-dovecot
-fix: 
+src: univention-updater
+fix: 14.0.2-6A~4.4.0.201911081456
 desc: |
  This update addresses the following issue(s):
  * The package now uses dh_python2 instead of python-support.
