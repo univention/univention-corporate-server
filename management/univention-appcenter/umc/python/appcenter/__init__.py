@@ -228,7 +228,7 @@ class Instance(umcm.Base, ProgressMixin):
 		if response.result.get('compatible', True) is False:
 			raise umcm.UMC_Error(err_msg)
 		# i'm not compatible
-		if info.is_compatible(response.result.get('version')):
+		if not info.is_compatible(response.result.get('version')):
 			raise umcm.UMC_Error(err_msg)
 		return client
 
