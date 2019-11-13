@@ -8,6 +8,7 @@ desc: |
  This update addresses the following issues:
  * TSX Transaction Asynchronous Abort (TAA) (CVE-2019-11135)
  * voltage modulation technical advisory (CVE-2019-11139)
+note: This is the 3rd of three related updates.
 bug: [50489]
 cve:
 - CVE-2019-11135
