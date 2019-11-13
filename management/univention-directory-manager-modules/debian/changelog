@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.14-17) unstable; urgency=medium
+
+  * Bug #50493: Add missing extend_path in handler namespace packages
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 13 Nov 2019 18:50:46 +0100
+
 univention-directory-manager-modules (14.0.14-16) unstable; urgency=medium
 
   * Bug #50476: fix type errors during logging
