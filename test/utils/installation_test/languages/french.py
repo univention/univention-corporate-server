@@ -12,7 +12,7 @@ strings = {
 	'select_keyboard': 'Configurer le clavier',
 	'default_keyboard_layout_of_current_language': 'Français',
 	'us_keyboard_layout': 'E',
-	'configure_network': 'Configurer le réseau', # Is this right?
+	'configure_network': 'Configurer le réseau',  # Is this right?
 	'not_using_dhcp': 'Le protocole DHCP',
 	'manual_network_config': 'Configurer vous-même le réseau',
 	'ip_address': 'L\'adresse IP est propre',
