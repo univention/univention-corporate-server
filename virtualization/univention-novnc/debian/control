@@ -13,6 +13,7 @@ Architecture: all
 Depends: ${misc:Depends},
 # ${shlibs:Depends},
  novnc,
+ python3-websockify,
  univention-base-files,
  univention-config,
 Description: HTML5 VNC client
