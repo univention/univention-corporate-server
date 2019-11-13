@@ -2,8 +2,8 @@ product: ucs
 release: "4.4"
 version: [1, 2]
 scope: ucs_4.4-0-errata4.4-2
-src: linux
-fix: 4.9.189-3+deb9u2
+src: univention-kernel-image-signed
+fix: 5.0.0-9A~4.4.0.201911131005
 desc: |
  This update addresses the following issues:
  * Machine Check Error on Page Size Change (IPU) (CVE-2018-12207)
@@ -12,7 +12,7 @@ desc: |
  * Intel GPU blitter manipulation can allow for arbitrary kernel memory write
    (CVE-2019-0155)
  * TSX Transaction Asynchronous Abort (TAA) (CVE-2019-11135)
-note: This is the 1st of three related updates.
+note: This is the 2nd of three related updates.
 bug: [50486]
 cve:
 - CVE-2018-12207
