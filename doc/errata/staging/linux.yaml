@@ -1,0 +1,20 @@
+product: ucs
+release: "4.3"
+version: [4, 5]
+scope: ucs_4.3-0-errata4.3-5
+src: linux
+fix: 4.9.189-3+deb9u2
+desc: |
+ This update addresses the following issues:
+ * Machine Check Error on Page Size Change (IPU) (CVE-2018-12207)
+ * Intel GPU Denial Of Service while accessing MMIO in lower power state
+   (CVE-2019-0154)
+ * Intel GPU blitter manipulation can allow for arbitrary kernel memory write
+   (CVE-2019-0155)
+ * TSX Transaction Asynchronous Abort (TAA) (CVE-2019-11135)
+bug: [50487]
+cve:
+- CVE-2018-12207
+- CVE-2019-0154
+- CVE-2019-0155
+- CVE-2019-11135
