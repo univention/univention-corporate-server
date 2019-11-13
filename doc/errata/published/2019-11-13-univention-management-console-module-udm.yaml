@@ -11,3 +11,5 @@ desc: |
    /usr/lib/python2.7/dist-packages/univention/management/console/modules/.
  * UDM handlers are now able to display help texts in their UMC module.
 bug: [49160, 50376]
+erratum: 346
+announced: 2019-11-13
