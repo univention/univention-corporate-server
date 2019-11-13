@@ -11,6 +11,7 @@ import univention.testing.udm as udm_test
 import univention.testing.ucr as ucr_test
 import univention.testing.strings as uts
 
+
 class Bunch(object):
 	"""
 	>>> y = Bunch(foo=42, bar='TEST')
@@ -22,15 +23,19 @@ class Bunch(object):
 	>>> print x.a
 	4
 	"""
+
 	def __init__(self, **kwds):
 		self.__dict__.update(kwds)
+
 	def __str__(self):
 		result = []
 		for key, value in self.__dict__.iteritems():
 			result.append('%s=%r' % (key, value))
 		return 'Bunch(' + ', '.join(result) + ')'
+
 	def __repr__(self):
 		return str(self)
+
 
 if __name__ == '__main__':
 	with ucr_test.UCSTestConfigRegistry() as ucr:
@@ -42,7 +47,7 @@ if __name__ == '__main__':
 				background=uts.random_name().encode('base64'),
 				cssBackground=uts.random_name(),
 				fontColor='white',
-				)
+			)
 
 			kwargs = portal.__dict__.copy()
 			kwargs['portalComputers'] = [ucr.get('ldap/hostdn')]

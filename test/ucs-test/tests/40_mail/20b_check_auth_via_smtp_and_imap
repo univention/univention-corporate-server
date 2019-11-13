@@ -4,8 +4,6 @@
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
-import os
-import getpass
 import time
 import subprocess
 import imaplib
@@ -15,7 +13,7 @@ import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-import univention.config_registry
+
 
 class AuthTests(object):
 	def __init__(self, ucr, udm):
@@ -37,7 +35,7 @@ class AuthTests(object):
 
 	def test_smtp_auth(self, user):
 		try:
-			result = send_mail(
+			send_mail(
 				sender=self.email,
 				recipients=['noreply@univention.de'],
 				port=587,
@@ -87,7 +85,7 @@ class AuthTests(object):
 			'--server', '{}.{}'.format(self.ucr.get('hostname'), self.ucr.get('domainname')),
 			'--port', '4190', '-4',
 			'--passwordfd', '0',
-			'--list' ], stdin=subprocess.PIPE)
+			'--list'], stdin=subprocess.PIPE)
 		proc.communicate('%s\n' % (self.password,))
 		exitcode = proc.returncode
 		print '>>> test_sieve(%s): exitcode=%r' % (user, exitcode)
@@ -111,16 +109,16 @@ class AuthTests(object):
 	def run_tests(self):
 		result = {}
 		checks = (
-				('smtp_mailPrimaryAddress', self.email, self.test_smtp_auth),
-				('smtp_uid', self.username, self.test_smtp_auth),
-				('imap_mailPrimaryAddress', self.email, self.test_imap_auth),
-				('imap_uid', self.username, self.test_imap_auth),
-				('pop3_mailPrimaryAddress', self.email, self.test_pop3_auth),
-				('pop3_uid', self.username, self.test_pop3_auth),
-				('testsaslauthd_mailPrimaryAddress', self.email, self.test_saslauthd),
-				('testsaslauthd_uid', self.username, self.test_saslauthd),
-				('sieve_mailPrimaryAddress', self.email, self.test_sieve),
-				('sieve_uid', self.username, self.test_sieve),
+			('smtp_mailPrimaryAddress', self.email, self.test_smtp_auth),
+			('smtp_uid', self.username, self.test_smtp_auth),
+			('imap_mailPrimaryAddress', self.email, self.test_imap_auth),
+			('imap_uid', self.username, self.test_imap_auth),
+			('pop3_mailPrimaryAddress', self.email, self.test_pop3_auth),
+			('pop3_uid', self.username, self.test_pop3_auth),
+			('testsaslauthd_mailPrimaryAddress', self.email, self.test_saslauthd),
+			('testsaslauthd_uid', self.username, self.test_saslauthd),
+			('sieve_mailPrimaryAddress', self.email, self.test_sieve),
+			('sieve_uid', self.username, self.test_sieve),
 		)
 		self.restart_services()
 
@@ -135,12 +133,13 @@ class AuthTests(object):
 
 		print 'RESULT:'
 		print '=' * 55
-		results = sorted(result.items(), key=lambda x:x[0], reverse=True)
+		results = sorted(result.items(), key=lambda x: x[0], reverse=True)
 		for key, val in results:
 			print '{:<45}: {}'.format(key, {True: 'OK', False: 'FAILED', None: 'SKIPPED'}[val])
 
 		if any(x is False for x in result.values()):
 			utils.fail('Not all authentication were okay!')
+
 
 def main():
 	with udm_test.UCSTestUDM() as udm:

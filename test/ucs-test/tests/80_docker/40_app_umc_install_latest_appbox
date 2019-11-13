@@ -5,14 +5,13 @@
 ## packages:
 ##   - docker.io
 
-from dockertest import *
+from dockertest import Appcenter, App, get_app_name, UCTTest_DockerApp_UMCInstallFailed
 
 import requests
 import json
-import pytest
+
 
 if __name__ == '__main__':
-
 	# get latest app box image
 	url = 'https://docker.software-univention.de/v2/ucs-appbox-amd64/tags/list'
 	username = 'ucs'
@@ -25,7 +24,7 @@ if __name__ == '__main__':
 	with Appcenter() as appcenter:
 		app_name = get_app_name()
 		app = App(name=app_name, version='1.9', container_version=max(data['tags'])[:3], build_package=False)
-		app.set_ini_parameter( DockerImage=image, DockerScriptSetup='/usr/sbin/setup')
+		app.set_ini_parameter(DockerImage=image, DockerScriptSetup='/usr/sbin/setup')
 		app.add_script(setup='''#!/bin/bash
 echo "This message goes to stdout"
 echo "This message goes to stderr" >&2
@@ -57,8 +56,7 @@ exit 1
 echo "This message goes to stdout"
 echo "This message goes to stderr but script returns 0" >&2
 exit 0
-'''
-		)
+''')
 		app.add_to_local_appcenter()
 		try:
 			appcenter.update()

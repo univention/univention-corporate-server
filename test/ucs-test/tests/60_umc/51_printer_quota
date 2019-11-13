@@ -2,7 +2,7 @@
 ## desc: Test the UMC print quota module
 ## exposure: dangerous
 ## bugs: [44434]
-## packages: 
+## packages:
 ##   - univention-printquota
 
 import sys

@@ -8,10 +8,8 @@
 ##  - ucs-test-umc-module
 ## exposure: dangerous
 
-
 import time
 import ssl
-import time
 import psutil
 import httplib
 import subprocess

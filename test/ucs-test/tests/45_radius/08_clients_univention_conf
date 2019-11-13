@@ -14,6 +14,7 @@ import univention.testing.utils as utils
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 
+
 class Bunch(object):
 	"""
 	>>> y = Bunch(foo=42, bar='TEST')
@@ -27,13 +28,16 @@ class Bunch(object):
 	"""
 	def __init__(self, **kwds):
 		self.__dict__.update(kwds)
+
 	def __str__(self):
 		result = []
 		for key, value in self.__dict__.iteritems():
 			result.append('%s=%r' % (key, value))
 		return 'Bunch(' + ', '.join(result) + ')'
+
 	def __repr__(self):
 		return str(self)
+
 
 nas_types = [
 	'other',

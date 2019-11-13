@@ -41,7 +41,6 @@ class TestServer(object):
 		handler_unset(['hosts/static/127.0.100.100'])
 
 
-
 def startHttpServer(host='localhost', port=80):
 	"""Start a simple Http server in the working directory
 	"""
@@ -164,8 +163,10 @@ def do_test(test_case):
 
 def set_ucr_variables(name, permission, acl_type, value_type, value):
 	squid = SimpleSquid()
-	handler_set(['squid/acl/%s/%s/%s/%s=%s' % (name, permission, acl_type, value_type, value),
-				'squid/basicauth=yes'])
+	handler_set([
+		'squid/acl/%s/%s/%s/%s=%s' % (name, permission, acl_type, value_type, value),
+		'squid/basicauth=yes'
+	])
 
 	squid.reconfigure()
 
@@ -179,20 +180,23 @@ def main():
 		# Test user-agent variable with random data
 		acl_types = ['browser', 'browser-i']
 		values = [
-			"%s%s%s" % (uts.random_string(3),
+			"%s%s%s" % (
+				uts.random_string(3),
 				uts.random_string(2, numeric=False).upper(),
 				uts.random_string(3)),
-			"%s%s%s" % (uts.random_string(3),
+			"%s%s%s" % (
+				uts.random_string(3),
 				uts.random_string(2, numeric=False).upper(),
 				uts.random_string(3)),
-			"%s%s%s%s%s" % ('^', uts.random_string(3),
+			"%s%s%s%s%s" % (
+				'^', uts.random_string(3),
 				uts.random_string(2, numeric=False).upper(),
 				uts.random_string(3), '.*$')
 		]
 		itertion_length = len(permissions) * len(acl_types) * len(value_types)
 		tests = itertools.product(zip(permissions, responses), acl_types, zip(value_types, values))
 		for i in xrange(itertion_length):
-			with ucr_test.UCSTestConfigRegistry() as ucr:
+			with ucr_test.UCSTestConfigRegistry():
 				perform_test(next(tests))
 
 		# Test dstdomain variable with univention related sites
@@ -204,16 +208,16 @@ def main():
 		]
 		tests = itertools.product(zip(permissions, responses), acl_types, zip(value_types, values))
 		for i in xrange(itertion_length):
-			with ucr_test.UCSTestConfigRegistry() as ucr:
+			with ucr_test.UCSTestConfigRegistry():
 				perform_test(next(tests))
 
-		with ucr_test.UCSTestConfigRegistry() as ucr:
+		with ucr_test.UCSTestConfigRegistry():
 			do_test([('allow', 200, 'port', 'number', 21, 21)])
-		with ucr_test.UCSTestConfigRegistry() as ucr:
+		with ucr_test.UCSTestConfigRegistry():
 			do_test([('allow', 407, 'port', 'number', 443, 21)])
-		with ucr_test.UCSTestConfigRegistry() as ucr:
+		with ucr_test.UCSTestConfigRegistry():
 			do_test([('deny', 403, 'port', 'number', 21, 21)])
-		with ucr_test.UCSTestConfigRegistry() as ucr:
+		with ucr_test.UCSTestConfigRegistry():
 			do_test([('deny', 200, 'port', 'number', 443, 21)])
 
 	finally:

@@ -87,7 +87,6 @@ def main():
 	print('UID default (listener) file: {!r}'.format(uid_default_file))
 	print('UID root file: {!r}'.format(uid_root_file))
 
-
 	# create, modify, move, modify
 	with udm_test.UCSTestUDM() as udm, ucr_test.UCSTestConfigRegistry() as ucr:
 		handler_set(['listener/module/{}/debug/level=4'.format(lm_name)])
