@@ -10,3 +10,5 @@ desc: |
    Therefore python modules are installed into
    /usr/lib/python2.7/dist-packages/univention/mail/.
 bug: [49144]
+erratum: 334
+announced: 2019-11-13
