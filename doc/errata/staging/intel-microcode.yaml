@@ -1,0 +1,14 @@
+product: ucs
+release: "4.3"
+version: [4, 5]
+scope: ucs_4.3-0-errata4.3-5
+src: intel-microcode
+fix: 3.20191112.1~deb9u1
+desc: |
+ This update addresses the following issues:
+ * TSX Transaction Asynchronous Abort (TAA) (CVE-2019-11135)
+ * voltage modulation technical advisory (CVE-2019-11139)
+bug: [50489]
+cve:
+- CVE-2019-11135
+- CVE-2019-11139
