@@ -5,12 +5,12 @@ scope: ucs_4.4-0-errata4.4-2
 src: univention-directory-manager-modules
 fix: 14.0.14-16A~4.4.0.201911081606
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The package now uses dh_python2 instead of python-support.
    Therefore python modules are installed into
    /usr/lib/python2.7/dist-packages/univention/admin/
- * UDM handlers are now able to display help texts for tabs.
- * A help text for printers is now shown in the UMC module.
+ * A link to a support article for printer driver distribution is now
+   shown in the UMC printers module.
  * A TypeError is prevented during logging of invalid date values
    in the UDM REST service.
-bug: [49147, 50376, 50376, 50476]
+bug: [49147, 50376, 50476]

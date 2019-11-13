@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-2
 src: univention-appcenter
 fix: 8.0.11-87A~4.4.0.201911121605
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The package now uses dh_python2 instead of python-support.
  * Added version check for global appcenter.
 bug: [50425, 50450]
