@@ -11,3 +11,5 @@ desc: |
    /usr/lib/python2.7/dist-packages/univention/management/console/modules/.
  * A broken test for filesystem permissions has been removed.
 bug: [49151, 50394]
+erratum: 336
+announced: 2019-11-13
