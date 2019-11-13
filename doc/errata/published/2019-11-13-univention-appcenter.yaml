@@ -9,3 +9,5 @@ desc: |
  * The package now uses dh_python2 instead of python-support.
  * Added version check for global appcenter.
 bug: [50425, 50450]
+erratum: 345
+announced: 2019-11-13
