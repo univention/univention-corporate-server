@@ -109,6 +109,14 @@ class ConnectionError(Exception):
 	pass
 
 
+class UnexpectedResponse(ConnectionError):
+	pass
+
+
+class _NoRelation(Exception):
+	pass
+
+
 class Response(object):
 
 	def __init__(self, response, data, uri):
@@ -156,10 +164,10 @@ class Session(object):
 			'OPTIONS': sess.options,
 		}.get(method.upper(), sess.get)
 
-	def request(self, method, uri, data=None, **headers):
-		return self.make_request(method, uri, data, **headers).data
+	def request(self, method, uri, data=None, expect_json=False, **headers):
+		return self.make_request(method, uri, data, expect_json=expect_json, **headers).data
 
-	def make_request(self, method, uri, data=None, **headers):
+	def make_request(self, method, uri, data=None, expect_json=False, **headers):
 		if method in ('GET', 'HEAD'):
 			params = data
 			json = None
@@ -172,7 +180,7 @@ class Session(object):
 				response = self.get_method(method)(uri, params=params, json=json, headers=dict(self.default_headers, **headers))
 			except requests.exceptions.ConnectionError as exc:
 				raise ConnectionError(exc)
-			data = self.eval_response(response)
+			data = self.eval_response(response, expect_json=expect_json)
 			return Response(response, data, uri)
 		for i in range(5):
 			try:
@@ -185,9 +193,9 @@ class Session(object):
 				except ValueError:
 					retry_after = 1
 				time.sleep(retry_after)
-				return doit()
+			return doit()
 
-	def eval_response(self, response):
+	def eval_response(self, response, expect_json=False):
 		if response.status_code >= 299:
 			msg = '{} {}: {}'.format(response.request.method, response.url, response.status_code)
 			try:
@@ -207,6 +215,8 @@ class Session(object):
 			raise cls(response.status_code, msg, response)
 		if response.headers.get('Content-Type') in ('application/json', 'application/hal+json'):
 			return response.json()
+		elif expect_json:
+			raise UnexpectedResponse(response.text)
 		return response.text
 
 	def get_relations(self, entry, relation, name=None, template=None):
@@ -222,7 +232,10 @@ class Session(object):
 			yield link
 
 	def get_relation(self, entry, relation, name=None, template=None):
-		return next(self.get_relations(entry, relation, name, template))
+		try:
+			return next(self.get_relations(entry, relation, name, template))
+		except StopIteration:
+			raise _NoRelation(relation)
 
 	def resolve_relations(self, entry, relation, name=None, template=None):
 		embedded = entry.get('_embedded', {})
@@ -264,7 +277,11 @@ class UDM(Client):
 			self.reload()
 
 	def reload(self):
-		self.entry = self.client.request('GET', self.uri)
+		self.entry = self.client.request('GET', self.uri, expect_json=True)
+
+	def get_ldap_base(self):
+		self.load()
+		return Object.from_data(self, self.client.resolve_relation(self.entry, 'udm:ldap-base')).dn
 
 	def modules(self, name=None):
 		self.load()
@@ -278,11 +295,11 @@ class UDM(Client):
 
 	def obj_by_dn(self, dn):
 		self.load()
-		return Object.from_response(self.udm, self.client.resolve_relation(self.entry, 'udm:object/get-by-dn', template={'dn': dn}))
+		return Object.from_data(self, self.client.resolve_relation(self.entry, 'udm:object/get-by-dn', template={'dn': dn}))
 
 	def obj_by_uuid(self, uuid):
 		self.load()
-		return Object.from_response(self.udm, self.client.resolve_relation(self.entry, 'udm:object/get-by-uuid', template={'uuid': uuid}))
+		return Object.from_data(self, self.client.resolve_relation(self.entry, 'udm:object/get-by-uuid', template={'uuid': uuid}))
 
 	def get(self, name):
 		for module in self.modules(name):
@@ -444,7 +461,10 @@ class Object(Client):
 
 	@property
 	def uri(self):
-		uri = self.client.get_relation(self.hal, 'self')
+		try:
+			uri = self.client.get_relation(self.hal, 'self')
+		except _NoRelation:
+			uri = None
 		if uri:
 			return uri['href']
 		return self.representation.get('uri')
