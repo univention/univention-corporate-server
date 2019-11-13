@@ -2,12 +2,4 @@
 0013-2: debian/univention-novnc.init
 0013-2: debian/univention-novnc.postinst
 0013-2: debian/univention-novnc.postrm
-# not our code:
-0009-5: utils/websockify
-0009-5: utils/websockify.py
-0009-5: utils/wsproxy.py
-0009-7: utils/websocket.py
-0009-7: utils/websockify
-0009-7: utils/websockify.py
-0009-7: utils/wsproxy.py
-0010-2
+0010-2: debian/univention-novnc.init

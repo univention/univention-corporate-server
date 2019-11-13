@@ -1,3 +1,9 @@
+univention-novnc (3.0.0-2) unstable; urgency=medium
+
+  * Bug #35428: use upstream debian package from buster
+
+ -- Florian Best <best@univention.de>  Wed, 13 Nov 2019 13:41:40 +0100
+
 univention-novnc (3.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump

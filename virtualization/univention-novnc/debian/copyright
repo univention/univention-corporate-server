@@ -1,43 +1,29 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: noVNC
-Source: https://github.com/kanaka/noVNC/
+Upstream-Name: Univention GmbH
+Upstream-Contact: <package@univention.de>
+Source: https://updates.software-univention.de/
 
 Files: *
-Copyright: (c) 2011-2013 Joel Martin <github@martintribe.org>
-License: MPL-2.0
-
-Files: debian/*
-Copyright: (c) 2011-2013 Joel Martin <github@martintribe.org>
-License: GPL-2+
-
-Files: *.html include/*.css
-Copyright: Ed Schouten <ed@80386.nl>
-License: BSD-2-clause
-
-Files: include/Orbitron*
-Copyright: (c) 2009 Matt McInerney
-License: SIL Open Font License 1.1
-
-Files: images/*
-License: CC-BY-SA-3.0
-
-Files: include/base64.js
-Copyright: 2000 Digital Creations 2 Inc
-License: MPL-2.0
-
-Files: include/des.js
-Copyright: (c) 1996 Widget Workshop, Inc.
-Copyright: (c) 1996 by Jef Poskanzer <jef@acme.com>.
-License: BSD
-
-Files: include/jsunzip.js
-License: Zlib
-
-Files: include/web-socket-js/*
-License: BSD-3-clause
-
-Files: include/chrome-app/tcp-stream.js
-License: Apache-2
-
-Files: utils/websockify, utils/websocket.py
-License: LGPL-3
+Copyright: 2019 Univention GmbH
+License: AGPL-3.0-only
+ The source code of the software contained in this package
+ as well as the source package itself are made available
+ under the terms of the GNU Affero General Public License version 3
+ (GNU AGPL V3) as published by the Free Software Foundation.
+ .
+ Binary versions of this program provided by Univention to you as
+ well as other copyrighted, protected or trademarked materials like
+ Logos, graphics, fonts, specific documentations and configurations,
+ cryptographic keys etc. are subject to a license agreement between
+ you and Univention and not subject to the GNU AGPL V3.
+ .
+ In the case you use this program under the terms of the GNU AGPL V3,
+ the program is provided in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU Affero General Public License for more details.
+ .
+ You should have received a copy of the GNU Affero General Public
+ License with the Debian GNU/Linux or Univention distribution in file
+ /usr/share/common-licenses/AGPL-3; if not, see
+ <https://www.gnu.org/licenses/>.

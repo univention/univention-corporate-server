@@ -3,7 +3,6 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 9),
- lsb-base (>= 3.0-6),
  ucslint-univention,
  univention-config-dev,
 Standards-Version: 3.8.3
@@ -13,7 +12,7 @@ Package: univention-novnc
 Architecture: all
 Depends: ${misc:Depends},
 # ${shlibs:Depends},
- ${python:Depends},
+ novnc,
  univention-base-files,
  univention-config,
 Description: HTML5 VNC client
