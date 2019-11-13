@@ -1,8 +1,9 @@
-#!/usr/bin/make -f
+#!/bin/sh
 #
 # univention-novnc
+# wrapper script to execute websockify
 #
-# Copyright 2013-2019 Univention GmbH
+# Copyright 2019 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -29,13 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-override_dh_auto_install:
-	dh_auto_install
-	univention-install-config-registry
+DAEMON_ARGS=""
+HOSTNAME="$(hostname)"
+if [ -r "/etc/univention/ssl/$HOSTNAME/cert.pem" ] && [ -r "/etc/univention/ssl/$HOSTNAME/private.key" ]
+then
+	DAEMON_ARGS="$DAEMON_ARGS --cert /etc/univention/ssl/$HOSTNAME/cert.pem"
+	DAEMON_ARGS="$DAEMON_ARGS --key /etc/univention/ssl/$HOSTNAME/private.key"
+fi
 
-override_dh_auto_test:
-	dh_auto_test
-	ucslint
-
-%:
-	dh $@ --with systemd
+exec /usr/bin/python3-websockify $DAEMON_ARGS "$@"

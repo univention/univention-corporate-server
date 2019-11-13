@@ -13,6 +13,7 @@ Architecture: all
 Depends: ${misc:Depends},
 # ${shlibs:Depends},
  novnc,
+ systemd,
  python3-websockify,
  univention-base-files,
  univention-config,

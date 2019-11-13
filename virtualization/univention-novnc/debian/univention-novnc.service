@@ -1,0 +1,14 @@
+[Unit]
+Description=noVNC websockify
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/univention-novnc --target-config /var/cache/univention-virtual-machine-manager-daemon/novnc.tokens --web /usr/share/novnc 6080
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target

@@ -1,1 +1,2 @@
 univention-novnc.conf	/etc/apache2/conf-available
+univention-novnc	/usr/bin/
