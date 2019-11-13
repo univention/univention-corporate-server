@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [2]
+scope: ucs_4.4-0-errata4.4-2
+src: univention-directory-manager-modules
+fix: 14.0.14-17A~4.4.0.201911131922
+desc: |
+ This update addresses the following issue:
+ * Fix regression from Erratum 348, which could lead to a python traceback
+   during udm module import, in cases where modules had been installed
+   under the legacy path /usr/share/pyshared, like e.g. the mailquota module.
+bug: [50493]
