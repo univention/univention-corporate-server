@@ -10,3 +10,5 @@ desc: |
    during udm module import, in cases where modules had been installed
    under the legacy path /usr/share/pyshared, like e.g. the mailquota module.
 bug: [50493]
+erratum: 349
+announced: 2019-11-13
