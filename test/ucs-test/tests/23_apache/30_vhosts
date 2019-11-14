@@ -40,7 +40,7 @@ ANSWER="$(curl https://"$HOST"/)"
 CERT_IN_UDM="$(univention-ldapsearch -b "$(ucr get ldap/hostdn)" univentionService | grep "Wildcard Certificate" -c)"
 [ "$CERT_IN_UDM" = "1" ] || exit 1
 
-ls /etc/univention/ssl/\*.master190.intranet.wiesenthal.de/ || exit 1
+ls /etc/univention/ssl/\*."$HOST"/ || exit 1
 
 # now with HTTPS, but custom port and without a DNS
 univention-add-vhost "*" 20550 --ssl --conffile "$DIR/apache.conf"
