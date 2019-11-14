@@ -1,0 +1,66 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Test UCS' Apache2 VHost integration
+## bugs: [45115]
+## packages:
+##  - univention-ssl
+##  - univention-apache-vhost
+## exposure: dangerous
+set -e -x
+
+# this would be part of the app installation
+DIR="/var/lib/univention-appcenter/apps/myapp/data"
+APACHE_DIR="/var/www/html/myapp/"
+mkdir -p "$DIR"
+mkdir -p "$APACHE_DIR"
+
+echo "DocumentRoot $APACHE_DIR" > "$DIR/apache.conf"
+echo "OK" > "$APACHE_DIR/index.html"
+
+# this would be the join script
+HOST="myapp.$(ucr get hostname).$(ucr get domainname)"
+univention-add-vhost "$HOST" 80 --conffile "$DIR/apache.conf"
+sleep 5
+service apache2 reload
+nscd -i hosts
+service bind9 reload
+host "$HOST" || exit 1
+
+# and this is the actual test
+ANSWER="$(curl http://"$HOST"/)"
+[ "$ANSWER" = "OK" ] || exit 1
+
+# now with HTTPS...
+univention-add-vhost "$HOST" 443 --conffile "$DIR/apache.conf"
+service apache2 reload
+
+ANSWER="$(curl https://"$HOST"/)"
+[ "$ANSWER" = "OK" ] || exit 1
+
+# ... check certificate
+CERT_IN_UDM="$(univention-ldapsearch -b "$(ucr get ldap/hostdn)" univentionService | grep "Wildcard Certificate" -c)"
+[ "$CERT_IN_UDM" = "1" ] || exit 1
+
+ls /etc/univention/ssl/\*.master190.intranet.wiesenthal.de/ || exit 1
+
+# now with HTTPS, but custom port and without a DNS
+univention-add-vhost "*" 20550 --ssl --conffile "$DIR/apache.conf"
+service apache2 reload
+
+ANSWER="$(curl https://"$(ucr get hostname)"."$(ucr get domainname)":20550/)"
+[ "$ANSWER" = "OK" ] || exit 1
+
+# this would be part of the app UNinstallation
+# this test better succeeds, or we leave this...
+# but strangely, the test fails when used in trap EXIT
+rm -r "$DIR"
+rm -r "$APACHE_DIR"
+univention-add-vhost "$HOST" 80 --remove
+univention-add-vhost "$HOST" 443 --remove
+univention-add-vhost "*" 20550 --remove
+sleep 5
+service apache2 reload
+nscd -i hosts
+service bind9 reload
+set +e
+host "$HOST" && exit 1
+exit 0
