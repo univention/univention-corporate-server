@@ -691,8 +691,6 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 				finally:
 					listener.unsetuid()
 
-		set_handler_message(name, 'handler successful')
-
 
 class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 	target_container_name = "ldapacl"
@@ -963,8 +961,6 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 
 				finally:
 					listener.unsetuid()
-
-		set_handler_message(name, 'handler successful')
 
 
 class UniventionDataExtension(UniventionLDAPExtension):

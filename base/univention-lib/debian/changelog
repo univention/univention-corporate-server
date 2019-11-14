@@ -1,3 +1,9 @@
+univention-lib (8.0.1-30) unstable; urgency=medium
+
+  * Bug #50481: added set/get_handler_message
+
+ -- Felix Botner <botner@univention.de>  Thu, 14 Nov 2019 12:39:25 +0100
+
 univention-lib (8.0.1-29) unstable; urgency=medium
 
   * Bug #50481: added set/get_handler_message
