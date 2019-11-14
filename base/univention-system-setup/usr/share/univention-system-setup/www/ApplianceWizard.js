@@ -407,6 +407,16 @@ define([
 					})
 				}]
 			}), lang.mixin({}, pageConf, {
+				name: 'required_ram',
+				headerText: _('<b>Warning:</b> Not enough available memory'),
+				headerTextAllowHTML: true,
+				helpText: _('The available memory is not sufficient.'),
+				widgets: [{
+					type: Text,
+					name: 'required_ram',
+					content: this._getMemoryWarning(applianceName),
+				}]
+			}), lang.mixin({}, pageConf, {
 				name: 'license',
 				headerText: _('License agreement'),
 				helpText: _('Please read carefully the license agreement for %s Appliance.', applianceName || ''),
@@ -1202,7 +1212,7 @@ define([
 			}
 		},
 
-		_showMemoryWarning: function() {
+		_getMemoryWarning: function(applianceName) {
 			var memory_min = Math.max(parseInt(this.ucr['system/setup/boot/minimal_memory'], 10) || 0, 1024);
 
 			// The reported total memory is always a bit lower, than the actually installed amount:
@@ -1216,14 +1226,15 @@ define([
 					return _('%s GiB', parseInt(memory / 1024));
 				};
 				var message = lang.replace(
-					'<p class="umcSetupMemoryWarning">' + _('<b>Warning:</b> At least {memory_min} RAM is required for the installation of {product_name}.') + ' ' +
+					_('At least {memory_min} RAM is required for the installation of {product_name}.') + ' ' +
 					_('This system only has {memory_total} RAM.') + ' ' + _('Continuing the installation might lead to a not functioning or hung up system.') + ' ' +
-					_('If you want to upgrade your memory first please press the power button of your server to shutdown the system.') + '</p>', {
+					_('If you want to upgrade your memory first please press the power button of your server to shutdown the system.') + ' ' +
+					_('For further information please look at https://help.univention.com/t/13595.'), {
 					memory_min: _memString(memory_min),
 					memory_total: _memString(this.values.memory_total),
-					product_name: _('Univention Corporate Server')  // TODO: appliance name?
+					product_name: applianceName || _('Univention Corporate Server')
 				});
-				dialog.alert(message, _('Warning'));
+				return message;
 			}
 		},
 
@@ -1391,6 +1402,8 @@ define([
 			buttons = this._pages.error._footerButtons;
 			buttons.previous.set('label', _('Reconfigure'));
 			buttons.finish.set('label', _('Finish'));
+			buttons = this._pages.required_ram._footerButtons;
+			buttons.next.set('label', _('Ignore'));
 			this._pages.done._footerButtons.next.set('label', _('Finish'));
 		},
 
@@ -1930,8 +1943,6 @@ define([
 			}
 			msg += '</ul>';
 
-			this._showMemoryWarning();
-
 			this.getWidget('summary', 'info').set('content', msg);
 		},
 
@@ -2229,6 +2240,9 @@ define([
 			}
 			if (pageName == 'license') {
 				return Boolean(this.values.license_agreement);
+			}
+			if (pageName == 'required_ram') {
+				return Boolean(this._getMemoryWarning());
 			}
 
 			// support blacklisting of specific pages
