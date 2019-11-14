@@ -1,3 +1,9 @@
+ucs-test (9.0.3-94) unstable; urgency=medium
+
+  * Bug #45115: Test univention-add-vhost
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 14 Nov 2019 10:40:50 +0100
+
 ucs-test (9.0.3-93) unstable; urgency=medium
 
   * Bug #49168: make tests pass with python-support and dh-python ad-connector
