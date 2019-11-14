@@ -15,8 +15,8 @@ test -f "$1" || die "Missing test config file!"
 release='4.3-5'
 old_release='4.2-5'
 
-export CURRENT_AMI=ami-08b2615e56edd43fa # AMI: Univention Corporate Server (UCS) 4.3 (official image) rev. 5 - ami-08b2615e56edd43fa
-export OLD_AMI=ami-e9388b90 # AMI: Univention Corporate Server (UCS) 4.2 (official image) rev. 3 - ami-e9388b90
+export CURRENT_AMI=ami-0dd235a67a0eb9bdc # AMI: Univention Corporate Server (UCS) 4.3 (official image) rev. 6 - ami-0dd235a67a0eb9bdc
+export OLD_AMI=ami-0bf9b4113dc50988b # AMI: Univention Corporate Server (UCS) 4.2 (official image) rev. 5 - ami-0bf9b4113dc50988b
 export UCS_MINORRELEASE="${release%%-*}"
 export TARGET_VERSION="${TARGET_VERSION:=$release}"
 export UCS_VERSION="${UCS_VERSION:=$release}"
@@ -25,17 +25,32 @@ export KVM_TEMPLATE="${KVM_TEMPLATE:=generic-unsafe}"
 export KVM_UCSVERSION="${KVM_UCSVERSION:=$UCS_VERSION}"
 export KVM_OLDUCSVERSION="${KVM_OLDUCSVERSION:=$OLD_VERSION}"
 export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=lattjo.knut.univention.de}"
-export KVM_USER="${KVM_USER:=$USER}"
 export KVM_MEMORY="${KVM_MEMORY:=2048M}"
 export KVM_CPUS="${KVM_CPUS:=1}"
 export RELEASE_UPDATE="${release_update:=public}"
 export ERRATA_UPDATE="${errata_update:=testing}"
 export UCSSCHOOL_RELEASE=${UCSSCHOOL_RELEASE:=scope}
-export HALT="${HALT:=true}"
-export REPLACE="${REPLACE:=false}"
 export CFG="$1"
 
-test "$KVM_USER" = "jenkins" && KVM_USER="build"
+# jenkins defaults
+if [ "$USER" = "jenkins" ]; then
+	KVM_USER="build"
+	export UCS_TEST_RUN="${UCS_TEST_RUN:=true}"
+	export HALT="${HALT:=true}"
+	export KVM_USER="build"
+	# in jenkins do not terminate vms if setup is broken,
+	# so we can investigate the situation and use replace
+	# to overwrite old vms
+	export TERMINATE_ON_SUCCESS="${HALT:=true}"
+	export REPLACE="${REPLACE:=true}"
+else
+	export HALT="${HALT:=false}"
+	export UCS_TEST_RUN="${UCS_TEST_RUN:=false}"
+	export KVM_USER="${KVM_USER:=$USER}"
+	export TERMINATE_ON_SUCCESS="${TERMINATE_ON_SUCCESS:=false}"
+	export REPLACE="${REPLACE:=false}"
+fi
+
 
 # if the default branch of UCS@school is given, then build UCS else build UCS@school
 if [ -n "$UCSSCHOOL_BRANCH" -o -n "$UCS_BRANCH" ]; then
@@ -58,19 +73,23 @@ if [ -n "$UCSSCHOOL_BRANCH" -o -n "$UCS_BRANCH" ]; then
 fi
 
 # create the command and run in ec2 or kvm depending on cfg
-if ! grep -Fq kvm_template "$CFG"
-then
-	exe='ucs-ec2-create'
-	test -e ./ucs-ec2-tools/ucs-ec2-create && exe="./ucs-ec2-tools/ucs-ec2-create"
-else
+KVM=false
+grep -q '^\w*kvm_template' "$CFG" && KVM=true # if kvm is configure in cfg, use kvm
+test "$KVM_BUILD_SERVER" = "EC2" && KVM=false
+
+if $KVM; then
 	exe='ucs-kvm-create'
 	test -e ./ucs-ec2-tools/ucs-kvm-create && exe="./ucs-ec2-tools/ucs-kvm-create"
+else
+	exe='ucs-ec2-create'
+	test -e ./ucs-ec2-tools/ucs-ec2-create && exe="./ucs-ec2-tools/ucs-ec2-create"
 fi
 
 # start the test
 declare -a cmd=("$exe" -c "$CFG")
 "$HALT" && cmd+=("-t")
 "$REPLACE" && cmd+=("--replace")
+"$TERMINATE_ON_SUCCESS" && cmd+=("--terminate-on-success")
 PATH="${PATH:+$PATH:}./ucs-ec2-tools"
 "${cmd[@]}" &&
 [ -e "./COMMAND_SUCCESS" ]

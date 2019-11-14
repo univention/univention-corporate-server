@@ -1037,4 +1037,16 @@ install_from_errata_test () {
     return $rv
 }
 
+run_app_specific_test () {
+    local app=${1:?missing app} password=${2:?missing password} rv=0
+    set_administrator_dn_for_ucs_test
+    set_administrator_password_for_ucs_test "$password"
+    univention-app dev-test \
+        --appcenter-server http://appcenter-test.software-univention.de \
+        "$app" \
+        --binddn "$(ucr get tests/domainadmin/account)" \
+        --bindpwdfile "$(ucr get tests/domainadmin/pwdfile)" || rv=$?
+    return $rv
+}
+
 # vim:set filetype=sh ts=4:
