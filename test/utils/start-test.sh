@@ -38,10 +38,7 @@ if [ "$USER" = "jenkins" ]; then
 	export UCS_TEST_RUN="${UCS_TEST_RUN:=true}"
 	export HALT="${HALT:=true}"
 	export KVM_USER="build"
-	# in jenkins do not terminate vms if setup is broken,
-	# so we can investigate the situation and use replace
-	# to overwrite old vms
-	export TERMINATE_ON_SUCCESS="${HALT:=true}"
+	export TERMINATE_ON_SUCCESS="${HALT:=false}"
 	export REPLACE="${REPLACE:=true}"
 else
 	export HALT="${HALT:=false}"
