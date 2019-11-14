@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.15-5) unstable; urgency=medium
+
+  * Bug #50497: use --skip-private
+
+ -- Florian Best <best@univention.de>  Thu, 14 Nov 2019 14:36:57 +0100
+
 univention-management-console-module-udm (9.0.15-4) unstable; urgency=medium
 
   * Bug #50497: fix installation of directory

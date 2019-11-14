@@ -37,12 +37,10 @@ override_dh_auto_test:
 	ucslint
 
 override_dh_python2:
-	dh_python2
-	install -d debian/univention-management-console-module-udm/usr/share/univention-management-console-module-udm  # Bug #50497
+	dh_python2 --skip-private
 
 override_dh_python3:
-	dh_python3
-	install -d debian/univention-management-console-module-udm/usr/share/univention-management-console-module-udm  # Bug #50497
+	dh_python3 --skip-private
 
 override_dh_auto_build:
 	dh-umc-module-build
