@@ -38,7 +38,7 @@ if [ "$USER" = "jenkins" ]; then
 	export UCS_TEST_RUN="${UCS_TEST_RUN:=true}"
 	export HALT="${HALT:=true}"
 	export KVM_USER="build"
-	export TERMINATE_ON_SUCCESS="${HALT:=false}"
+	export TERMINATE_ON_SUCCESS="${TERMINATE_ON_SUCCESS:=false}"
 	export REPLACE="${REPLACE:=true}"
 else
 	export HALT="${HALT:=false}"
