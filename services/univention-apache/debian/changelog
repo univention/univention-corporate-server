@@ -1,3 +1,9 @@
+univention-apache (11.0.1-11) unstable; urgency=medium
+
+  * Bug #45115: Allow '*' as hostname, meaning no explicit ServerName
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 14 Nov 2019 10:46:28 +0100
+
 univention-apache (11.0.1-10) unstable; urgency=medium
 
   * Bug #45115: Fix empty IncludeOptional
