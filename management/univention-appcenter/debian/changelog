@@ -1,3 +1,10 @@
+univention-appcenter (8.0.11-88) unstable; urgency=medium
+
+  * Bug #50481: added get_handler_message to RegisterSchemaFailed
+    and RegisterSchemaFileFailed exception
+
+ -- Felix Botner <botner@univention.de>  Thu, 14 Nov 2019 14:19:00 +0100
+
 univention-appcenter (8.0.11-87) unstable; urgency=medium
 
   * Bug #50450: add version check for global appcenter

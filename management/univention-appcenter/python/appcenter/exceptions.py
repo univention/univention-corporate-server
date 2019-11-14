@@ -222,10 +222,16 @@ class RegisterSchemaFailed(AbortWithDetails):
 	code = 425
 	default_error_msg = 'Registration of schema extension failed (Code: %(code)s)'
 
+	def get_exc_details(self):
+		return str(self)
+
 
 class RegisterSchemaFileFailed(Abort):
 	code = 426
 	default_error_msg = 'Registering schema file %(filename)s failed'
+
+	def get_exc_details(self):
+		return str(self)
 
 
 # Not used. Here for reference (and to prevent re-using the code)

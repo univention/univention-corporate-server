@@ -19,7 +19,7 @@ Standards-Version: 3.8.2
 Package: univention-management-console-module-appcenter
 Architecture: all
 Depends: univention-management-console-server (>= 11.0.4-37),
- python-univention-lib,
+ python-univention-lib (>= 8.0.1-29),
  python-univention (>= 12.0.0-5),
  shell-univention-lib (>= 3.0.12-4),
  python-univention-directory-manager (>= 14.0.14-14),

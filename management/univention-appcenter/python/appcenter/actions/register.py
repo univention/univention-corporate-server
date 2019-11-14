@@ -41,7 +41,7 @@ from optparse import Values
 from ldap.dn import str2dn, dn2str
 from distutils.version import LooseVersion
 
-from univention.lib.ldap_extension import UniventionLDAPSchema
+from univention.lib.ldap_extension import UniventionLDAPSchema, get_handler_message
 
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.packages import reload_package_manager
@@ -231,10 +231,12 @@ class Register(CredentialsAction):
 						if exc.code == 4:
 							self.warn('A newer version of %s has already been registered. Skipping...' % schema_file)
 						else:
-							raise RegisterSchemaFailed(exc.code)
+							msg = get_handler_message('ldap_extension', userdn, self._get_password(args, ask=False))
+							raise RegisterSchemaFailed('activation failed: {} {}'.format(msg, exc.code))
 					else:
 						if not schema_obj.wait_for_activation():
-							raise RegisterSchemaFileFailed(schema_file)
+							msg = get_handler_message('ldap_extension', userdn, self._get_password(args, ask=False))
+							raise RegisterSchemaFileFailed('activation failed: {} {}'.format(msg, schema_file))
 					finally:
 						if 'UNIVENTION_APP_IDENTIFIER' in os.environ:
 							del os.environ['UNIVENTION_APP_IDENTIFIER']
