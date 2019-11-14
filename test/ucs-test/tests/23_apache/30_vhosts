@@ -17,7 +17,8 @@ echo "DocumentRoot $APACHE_DIR" > "$DIR/apache.conf"
 echo "OK" > "$APACHE_DIR/index.html"
 
 # this would be the join script
-HOST="myapp.$(ucr get hostname).$(ucr get domainname)"
+LOCAL_FQDN="$(ucr get hostname)"."$(ucr get domainname)"
+HOST="myapp.$LOCAL_FQDN"
 univention-add-vhost "$HOST" 80 --conffile "$DIR/apache.conf"
 sleep 5
 service apache2 reload
@@ -40,13 +41,13 @@ ANSWER="$(curl https://"$HOST"/)"
 CERT_IN_UDM="$(univention-ldapsearch -b "$(ucr get ldap/hostdn)" univentionService | grep "Wildcard Certificate" -c)"
 [ "$CERT_IN_UDM" = "1" ] || exit 1
 
-ls /etc/univention/ssl/\*."$HOST"/ || exit 1
+ls /etc/univention/ssl/\*."$LOCAL_FQDN"/ || exit 1
 
 # now with HTTPS, but custom port and without a DNS
 univention-add-vhost "*" 20550 --ssl --conffile "$DIR/apache.conf"
 service apache2 reload
 
-ANSWER="$(curl https://"$(ucr get hostname)"."$(ucr get domainname)":20550/)"
+ANSWER="$(curl https://"$LOCAL_FQDN":20550/)"
 [ "$ANSWER" = "OK" ] || exit 1
 
 # this would be part of the app UNinstallation
