@@ -172,7 +172,7 @@ def host_obj(udm, hostname, superordinate):  # type: (UDM, str, BaseObject) -> O
 def create_dns_entry(udm, fqdn, alias_target=None):  # type: (UDM, str, Optional[str]) -> Optional[BaseObject]
 	if not alias_target:
 		alias_target = "{hostname}.{domainname}".format(**ucr())
-	if fqdn == alias_target:
+	if fqdn in [alias_target, '*']:
 		return
 	click.echo("Creating DNS alias for '{}'...".format(fqdn))
 	dns_alias_mod = udm.get("dns/alias")  # type: BaseModule
@@ -197,7 +197,7 @@ def create_dns_entry(udm, fqdn, alias_target=None):  # type: (UDM, str, Optional
 
 def remove_dns_entry(udm, fqdn):  # type: (UDM, str) -> None
 	alias_target = "{hostname}.{domainname}".format(**ucr())
-	if fqdn == alias_target:
+	if fqdn in [alias_target, '*']:
 		return
 	click.echo("Deleting DNS alias for '{}'...".format(fqdn))
 	superordinate = superordinate_of_fqdn(udm, fqdn)
@@ -235,7 +235,7 @@ def set_ucr_vars(udm, fqdn, port, ssl, aliases=None, path=None, cert=None, priva
 	])
 	if ssl:
 		alias_target = "{hostname}.{domainname}".format(**ucr())
-		if fqdn == alias_target:
+		if fqdn in [alias_target, '*']:
 			if cert is None:
 				cert = ucr().get("apache2/ssl/certificate", "/etc/univention/ssl/{}.{}/cert.pem".format(ucr()["hostname"], ucr()["domainname"]))
 			if private_key is None:
