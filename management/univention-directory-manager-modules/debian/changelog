@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.14-18) unstable; urgency=medium
+
+  * Bug #50493: Remove wrong extend_path
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 14 Nov 2019 10:52:51 +0100
+
 univention-directory-manager-modules (14.0.14-17) unstable; urgency=medium
 
   * Bug #50493: Add missing extend_path in handler namespace packages
