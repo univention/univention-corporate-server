@@ -1,3 +1,9 @@
+univention-ldap (15.0.0-29) unstable; urgency=medium
+
+  * Bug #50481: set_handler_message in postrun
+
+ -- Felix Botner <botner@univention.de>  Thu, 14 Nov 2019 12:57:09 +0100
+
 univention-ldap (15.0.0-28) unstable; urgency=medium
 
   * Bug #50481: set_handler_message in postrun
