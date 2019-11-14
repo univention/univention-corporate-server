@@ -76,9 +76,6 @@ def postrun():
 		schema_handler._todo_list = []
 		acl_handler._todo_list = []
 
-	# log postrun
-	ldap_extension.set_handler_message(name, 'starting postrun')
-
 	slapd_running = not subprocess.call(['pidof', 'slapd'])
 	initscript = '/etc/init.d/slapd'
 	if os.path.exists(initscript) and slapd_running:
@@ -100,8 +97,6 @@ def postrun():
 			if server_role == 'domaincontroller_master':
 				for handler_object in (schema_handler, acl_handler,):
 					handler_object.mark_active()
+				ldap_extension.set_handler_message(name, 'OK')
 		finally:
 			listener.unsetuid()
-
-	# log postrun
-	ldap_extension.set_handler_message(name, 'OK')
