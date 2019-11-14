@@ -1,3 +1,9 @@
+univention-novnc (3.0.0-3) unstable; urgency=medium
+
+  * Bug #35428: don't use /usr/bin/
+
+ -- Florian Best <best@univention.de>  Thu, 14 Nov 2019 10:09:26 +0100
+
 univention-novnc (3.0.0-2) unstable; urgency=medium
 
   * Bug #35428: use upstream debian package from buster

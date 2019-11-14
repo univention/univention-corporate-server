@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/univention-novnc --target-config /var/cache/univention-virtual-machine-manager-daemon/novnc.tokens --web /usr/share/novnc 6080
+ExecStart=/usr/lib/univention-novnc/websockify --target-config /var/cache/univention-virtual-machine-manager-daemon/novnc.tokens --web /usr/share/novnc 6080
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
 User=root
