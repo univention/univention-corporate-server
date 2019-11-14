@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-2
 src: univention-directory-manager-modules
 fix: 14.0.14-18A~4.4.0.201911141055
 desc: |
- This update addresses the following issues:
+ This update addresses the following issue:
  * Fix regression from Erratum 349, which could lead to a python traceback
    during udm hook import.
 bug: [50495]
