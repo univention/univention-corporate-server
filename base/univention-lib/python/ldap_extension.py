@@ -462,7 +462,7 @@ class UniventionLDAPExtension(object):
 		(stdout, stderr) = p.communicate()
 		print(stdout)
 
-	def mark_active(self):
+	def mark_active(self, handler_name=None):
 		if self._todo_list:
 			try:
 				lo, ldap_position = udm_uldap.getAdminConnection()
@@ -482,9 +482,12 @@ class UniventionLDAPExtension(object):
 						ud.debug(ud.LISTENER, ud.ERROR, 'Error modifying %s: %s.' % (object_dn, e))
 						raise
 				self._todo_list = []
-
+				if handler_name:
+					set_handler_message(handler_name, 'active')
 			except udm_errors.ldapError as e:
 				ud.debug(ud.LISTENER, ud.ERROR, 'Error accessing UDM: %s' % (e,))
+				if handler_name:
+					set_handler_message(handler_name, 'Error accessing UDM: {}'.format(e))
 
 
 class UniventionLDAPExtensionWithListenerHandler(UniventionLDAPExtension):
