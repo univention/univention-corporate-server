@@ -1,3 +1,11 @@
+univention-management-console-module-udm (9.0.15-4) unstable; urgency=medium
+
+  * Bug #50497: fix installation of directory
+  	usr/share/univention-management-console-module-udm/ which is necessary to
+  	create reports
+
+ -- Florian Best <best@univention.de>  Thu, 14 Nov 2019 13:25:42 +0100
+
 univention-management-console-module-udm (9.0.15-3) unstable; urgency=medium
 
   * Bug #50376: add possibility for tabs to have a help text
