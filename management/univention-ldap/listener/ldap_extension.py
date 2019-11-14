@@ -96,7 +96,6 @@ def postrun():
 			# Only set active flags on Master
 			if server_role == 'domaincontroller_master':
 				for handler_object in (schema_handler, acl_handler,):
-					handler_object.mark_active()
-				ldap_extension.set_handler_message(name, 'OK')
+					handler_object.mark_active(handler_name=name)
 		finally:
 			listener.unsetuid()
