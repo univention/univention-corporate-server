@@ -1,3 +1,9 @@
+univention-apache (11.0.1-12) unstable; urgency=medium
+
+  * Bug #45115: Remove aliases, create settings/service object
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 15 Nov 2019 10:10:02 +0100
+
 univention-apache (11.0.1-11) unstable; urgency=medium
 
   * Bug #45115: Allow '*' as hostname, meaning no explicit ServerName

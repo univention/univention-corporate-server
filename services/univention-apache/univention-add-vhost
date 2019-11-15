@@ -113,6 +113,11 @@ def main(fqdn, port, aliases, conffile, binddn, bindpwdfile, ssl, cert, private_
 	if port == "443":
 		ssl = True
 	if remove:
+		aliases = ucr().get("apache2/vhosts/{}/{}/aliases".format(fqdn, port))
+		if aliases:
+			aliases = aliases.split(',')
+		else:
+			aliases = []
 		unset_ucr_vars(fqdn, port)
 	else:
 		set_ucr_vars(udm, fqdn, port, ssl, aliases, conffile, cert, private_key, ca)
@@ -134,6 +139,15 @@ def main(fqdn, port, aliases, conffile, binddn, bindpwdfile, ssl, cert, private_
 def get_wildcard_certificate(udm):  # type: (UDM) -> None
 	service = 'Wildcard Certificate'
 	hostobj = udm.obj_by_dn(ucr()['ldap/hostdn'])
+	services = udm.get('settings/service')
+	try:
+		services.get_by_id(service)
+	except NoObject:
+		position = 'cn=services,cn=univention,{}'.format(ucr()['ldap/base'])
+		service_obj = services.new(superordinate=position)
+		service_obj.props.name = service
+		service_obj.position = position
+		service_obj.save()
 	if service not in hostobj.props.service:
 		hostobj.props.service.append(service)
 		hostobj.save()
