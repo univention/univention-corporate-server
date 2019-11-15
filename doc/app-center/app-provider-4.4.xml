@@ -3275,7 +3275,7 @@ ucr set mail/postfix/mydestination="\$myhostname, localhost.\$mydomain, localhos
 								</listitem>
                 <listitem>
                     <simpara>
-											Generate a virtual host for Apache with that new FQDN. Thus, requests to that FQDN will be handled by the VHost. The skeleton configuration can be easily extended by writing a configuration file that is then included in the VHost entry.
+											Generate a virtual host for Apache with that new FQDN. Thus, requests to that FQDN will be handled by the <wordasword>VHost</wordasword>. The skeleton configuration can be easily extended by writing a configuration file that is then included in the <wordasword>VHost</wordasword> entry.
                     </simpara>
                 </listitem>
 							</itemizedlist>
