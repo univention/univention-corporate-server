@@ -3259,8 +3259,8 @@ ucr set mail/postfix/mydestination="\$myhostname, localhost.\$mydomain, localhos
 						linkend="create-app-with-docker:web-interface" />).
         </para>
         <para>
-					To avoid naming collisions, the name App's FQDN should be a found
-					below the Docker host, e.g, <literal>myapp.ucs-master.domain.tld</literal>.
+					To avoid naming collisions, the App's FQDN should reference the Docker Host's FQDN,
+					e.g, <literal>myapp.ucs-master.domain.tld</literal>.
 					UCS can do the following to allow this scenario to work as smooth as possible:
             <itemizedlist>
                 <listitem>
@@ -3275,7 +3275,7 @@ ucr set mail/postfix/mydestination="\$myhostname, localhost.\$mydomain, localhos
 								</listitem>
                 <listitem>
                     <simpara>
-											Generate a virtual host for Apache with that new FQDN. Thus, requests to that FQDN will be handled by the VHost. The skeleton configuration can be easily extended by writing a configuaration file that is then included in the in VHost entry.
+											Generate a virtual host for Apache with that new FQDN. Thus, requests to that FQDN will be handled by the VHost. The skeleton configuration can be easily extended by writing a configuaration file that is then included in the VHost entry.
                     </simpara>
                 </listitem>
 							</itemizedlist>
