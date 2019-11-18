@@ -110,7 +110,7 @@ def _get_handler_message_object(lo, position, handler_name, create=False):
 	return data_object
 
 
-def set_handler_message(name, msg):
+def set_handler_message(name, dn, msg):
 	# currently only on master
 	if listener.configRegistry.get('server/role') in ('domaincontroller_master'):
 		ud.debug(ud.LISTENER, ud.INFO, 'set_handler_message for {}'.format(name))
@@ -127,7 +127,9 @@ def set_handler_message(name, msg):
 			except ValueError:
 				pass
 			hostname = listener.configRegistry.get('hostname')
-			data[hostname] = msg
+			if not data.get(hostname):
+				data[hostname] = dict()
+			data[hostname][dn] = msg
 			json_data = json.dumps(data)
 			data_obj['data'] = base64.b64encode(bz2.compress(json_data))
 			data_obj.modify()
@@ -139,7 +141,7 @@ def set_handler_message(name, msg):
 
 
 def get_handler_message(name, binddn, bindpw):
-	msg = None
+	msg = dict()
 	try:
 		lo = udm_uldap.access(
 			host=listener.configRegistry.get('ldap/master'),
@@ -157,9 +159,9 @@ def get_handler_message(name, binddn, bindpw):
 			if data_object.get('data', False):
 				msg = json.loads(bz2.decompress(base64.b64decode(data_object['data'])))
 		except udm_errors.noObject:
-			msg = 'No object {} found'.format(data_object_dn)
+			msg = dict(err='No object {} found'.format(data_object_dn))
 	except Exception as err:
-		msg = 'Error get_handler_message for handler {}: {}'.format(name, err)
+		msg = dict(err='Error get_handler_message for handler {}: {}'.format(name, err))
 	return msg
 
 
@@ -481,13 +483,15 @@ class UniventionLDAPExtension(object):
 					except udm_errors.ldapError as e:
 						ud.debug(ud.LISTENER, ud.ERROR, 'Error modifying %s: %s.' % (object_dn, e))
 						raise
-				self._todo_list = []
 				if handler_name:
-					set_handler_message(handler_name, 'active')
+					for object_dn in self._todo_list:
+						set_handler_message(handler_name, object_dn, 'active')
+				self._todo_list = []
 			except udm_errors.ldapError as e:
 				ud.debug(ud.LISTENER, ud.ERROR, 'Error accessing UDM: %s' % (e,))
 				if handler_name:
-					set_handler_message(handler_name, 'Error accessing UDM: {}'.format(e))
+					for object_dn in self._todo_list:
+						set_handler_message(handler_name, object_dn, 'Error accessing UDM: {}'.format(e))
 
 
 class UniventionLDAPExtensionWithListenerHandler(UniventionLDAPExtension):
@@ -550,13 +554,13 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 						ud.debug(ud.LISTENER, ud.WARN, '%s: New version is lower than version of old object (%s), skipping update.' % (name, old_version))
 						return
 
-			set_handler_message(name, 'handler start')
+			set_handler_message(name, dn, 'handler start')
 
 			try:
 				new_object_data = bz2.decompress(new.get('univentionLDAPSchemaData')[0])
 			except TypeError:
 				ud.debug(ud.LISTENER, ud.ERROR, '%s: Error uncompressing data of object %s.' % (name, dn))
-				set_handler_message(name, 'Error uncompressing data of object {}.'.format(dn))
+				set_handler_message(name, dn, 'Error uncompressing data of object {}.'.format(dn))
 				return
 
 			try:
@@ -564,7 +568,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 			except BaseDirRestriction as exc:
 				if old:
 					ud.debug(ud.LISTENER, ud.ERROR, 'invalid filename detected during modification. removing file!')
-					set_handler_message(name, 'invalid filename detected during modification. removing file!')
+					set_handler_message(name, dn, 'invalid filename detected during modification. removing file!')
 					self._handler(dn, [], old, name)
 				raise exc
 
@@ -598,7 +602,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 						f.write(new_object_data)
 				except IOError:
 					ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing file %s.' % (name, new_filename))
-					set_handler_message(name, 'Error writing file {}.'.format(new_filename))
+					set_handler_message(name, dn, 'Error writing file {}.'.format(new_filename))
 					return
 
 				ucr = ConfigRegistry()
@@ -614,7 +618,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 				stdout, stderr = p.communicate()
 				if p.returncode != 0:
 					ud.debug(ud.LISTENER, ud.ERROR, '%s: validation failed (%s):\n%s\n%s.' % (name, p.returncode, stdout, stderr))
-					set_handler_message(name, 'slaptest validation failed {} {} {}'.format(stdout, stderr, p.returncode))
+					set_handler_message(name, dn, 'slaptest validation failed {} {} {}'.format(stdout, stderr, p.returncode))
 					# Revert changes
 					ud.debug(ud.LISTENER, ud.ERROR, '%s: Removing new file %s.' % (name, new_filename))
 					os.unlink(new_filename)
@@ -652,7 +656,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 						shutil.move(old_filename, backup_filename)
 					except IOError:
 						ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old file %s, leaving it untouched.' % (name, old_filename))
-						set_handler_message(name, 'Error renaming old file {}, leaving it untouched.'.format(old_filename))
+						set_handler_message(name, dn, 'Error renaming old file {}, leaving it untouched.'.format(old_filename))
 						os.close(backup_fd)
 						return
 
@@ -668,7 +672,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 					stdout, stderr = p.communicate()
 					if p.returncode != 0:
 						ud.debug(ud.LISTENER, ud.ERROR, '%s: validation failed (%s):\n%s\n%s.' % (name, p.returncode, stdout, stderr))
-						set_handler_message(name, 'slaptest validation failed {} {} {}'.format(stdout, stderr, p.returncode))
+						set_handler_message(name, dn, 'slaptest validation failed {} {} {}'.format(stdout, stderr, p.returncode))
 						ud.debug(ud.LISTENER, ud.WARN, '%s: Restoring %s.' % (name, old_filename))
 						# Revert changes
 						try:
@@ -767,13 +771,13 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 						ud.debug(ud.LISTENER, ud.WARN, '%s: New version is lower than version of old object (%s), skipping update.' % (name, old_version))
 						return
 
-			set_handler_message(name, 'handler start')
+			set_handler_message(name, dn, 'handler start')
 
 			try:
 				new_object_data = bz2.decompress(new.get('univentionLDAPACLData')[0])
 			except TypeError:
 				ud.debug(ud.LISTENER, ud.ERROR, '%s: Error uncompressing data of object %s.' % (name, dn))
-				set_handler_message(name, 'Error uncompressing data of object {}.'.format(dn))
+				set_handler_message(name, dn, 'Error uncompressing data of object {}.'.format(dn))
 				return
 
 			new_basename = new.get('univentionLDAPACLFilename')[0]
@@ -782,7 +786,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 			except BaseDirRestriction as exc:
 				if old:
 					ud.debug(ud.LISTENER, ud.ERROR, 'invalid filename detected during modification. removing file!')
-					set_handler_message(name, 'invalid filename detected during modification. removing file!')
+					set_handler_message(name, dn, 'invalid filename detected during modification. removing file!')
 					self._handler(dn, [], old, name)
 				raise exc
 			listener.setuid(0)
@@ -843,7 +847,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 						f.write(new_object_data)
 				except IOError:
 					ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing file %s.' % (name, new_filename))
-					set_handler_message(name, 'Error writing file {}.'.format(new_filename))
+					set_handler_message(name, dn, 'Error writing file {}.'.format(new_filename))
 					return
 
 				# plus backlink file
@@ -854,7 +858,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 						f.write("%s\n" % dn)
 				except IOError:
 					ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing backlink file %s.' % (name, new_backlink_filename))
-					set_handler_message(name, 'Error writing backlink file %s.'.format(new_backlink_filename))
+					set_handler_message(name, dn, 'Error writing backlink file %s.'.format(new_backlink_filename))
 					return
 
 				# and UCR registration
@@ -865,7 +869,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 						f.write("Type: multifile\nMultifile: etc/ldap/slapd.conf\n\nType: subfile\nMultifile: etc/ldap/slapd.conf\nSubfile: etc/ldap/slapd.conf.d/%s\n" % new_basename)
 				except IOError:
 					ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing UCR info file %s.' % (name, new_ucrinfo_filename))
-					set_handler_message(name, 'Error writing UCR info file {}.'.format(new_ucrinfo_filename))
+					set_handler_message(name, dn, 'Error writing UCR info file {}.'.format(new_ucrinfo_filename))
 					return
 
 				# Commit to slapd.conf
@@ -881,7 +885,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 				stdout, stderr = p.communicate()
 				if p.returncode != 0:
 					ud.debug(ud.LISTENER, ud.ERROR, '%s: slapd.conf validation failed:\n%s.' % (name, stdout))
-					set_handler_message(name, 'slaptest validation failed {} {} {}'.format(stdout, stderr, p.returncode))
+					set_handler_message(name, dn, 'slaptest validation failed {} {} {}'.format(stdout, stderr, p.returncode))
 					# Revert changes
 					ud.debug(ud.LISTENER, ud.ERROR, '%s: Removing new file %s.' % (name, new_filename))
 					os.unlink(new_filename)
