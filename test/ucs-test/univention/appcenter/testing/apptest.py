@@ -32,7 +32,7 @@ def pip_modules(modules):
 	if os.environ.get('UCS_TEST_NO_PIP') == 'TRUE':
 		yield
 	if subprocess.run(['which', 'pip3'], stdout=subprocess.DEVNULL).returncode != 0:
-		subprocess.check_call(['univention-install', '-y', 'python-pip3'], check=True)
+		raise RuntimeError('pip3 is required. Install python3-pip')
 	installed = subprocess.run(['pip3', 'list', '--format=columns'], stdout=subprocess.PIPE)
 	logger.info(modules)
 	for line in installed.stdout.splitlines()[2:]:
