@@ -1069,6 +1069,7 @@ restart_services_bug_47762 ()
 	if [ -x /etc/init.d/samba ]; then
 		/etc/init.d/samba restart
 	fi
+	sleep 15
 }
 
 # https://forge.univention.org/bugzilla/show_bug.cgi?id=48157
