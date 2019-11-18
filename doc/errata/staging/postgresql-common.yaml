@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [1, 2]
+scope: ucs_4.4-0-errata4.4-2
+src: postgresql-common
+fix: 181+deb9u3A~4.4.2.201911180758
+desc: |
+ This update addresses the following issue:
+ * postgresql-common (CVE-2019-3466)
+bug: [50506]
+cve:
+- CVE-2019-3466
