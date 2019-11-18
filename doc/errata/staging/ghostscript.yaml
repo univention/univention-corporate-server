@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [1, 2]
+scope: ucs_4.4-0-errata4.4-2
+src: ghostscript
+fix: 9.26a~dfsg-0+deb9u6
+desc: |
+ This update addresses the following issue:
+ * -dSAFER escape in .charkeys (701841) (CVE-2019-14869)
+bug: [50507]
+cve:
+- CVE-2019-14869
