@@ -18,3 +18,5 @@
 0015-2: tests/43_proxy/07_basic_auth_encoding
 # "iptables" in comment does not need --wait
 0017-4: tests/80_docker/87_docker_iptables
+# python3 only
+0009-3: univention/appcenter/testing/apptest.py
