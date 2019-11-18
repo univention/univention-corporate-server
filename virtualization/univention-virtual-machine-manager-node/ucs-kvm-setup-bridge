@@ -105,8 +105,7 @@ class Bridging(object):
 
 	def build_parser(self):
 		usage = '%prog [bridge-interface [ethernet-interface]]'
-		description = sys.modules[__name__].__doc__
-		parser = OptionParser(usage=usage, description=description)
+		parser = OptionParser(usage=usage, description=__doc__)
 		parser.add_option(
 			'--options', '-o',
 			dest='options', action='store_true',
