@@ -724,42 +724,6 @@ win.domain_join('$DNS_SERVER')
 "
 }
 
-_promote_ad () {
-	local HOST="${1:?Missing host address}"
-	local DOMAIN="${2:?Missing domain name}"
-	local MODE="${3:?Missing mode}"
-	local DOMAIN_ADMIN_ACCOUNT="${4:-administrator}"
-	local DOMAIN_ADMIN_PWD=$(ucr get tests/domainadmin/pwd)
-	local LOCAL_ADMIN_ACCOUNT="testadmin"
-	local LOCAL_ADMIN_PWD="Univention@99"
-
-	python -c "
-import univention.winexe
-win=univention.winexe.WinExe('$DOMAIN', '$DOMAIN_ADMIN_ACCOUNT', '$DOMAIN_ADMIN_PWD', '$LOCAL_ADMIN_ACCOUNT', '$LOCAL_ADMIN_PWD', 445, '$HOST')
-win.promote_ad('$MODE', '$MODE')
-"
-}
-
-promote_ad_w2k12r2 () {
-	_promote_ad "$1" "$2" "Win2012R2" "$3"
-}
-
-promote_ad_w2k12 () {
-	_promote_ad "$1" "$2" "Win2012" "$3"
-}
-
-promote_ad_w2k8r2 () {
-	_promote_ad "$1" "$2" "Win2008R2" "$3"
-}
-
-promote_ad_w2k8 () {
-	_promote_ad "$1" "$2" "Win2008" "$3"
-}
-
-promote_ad_w2k3r2 () {
-	_promote_ad "$1" "$2" "Win2003R2" "$3"
-}
-
 reboot_windows_host () {
 	local HOST="${1:?Missing host address}"
 	local DOMAIN_ADMIN_ACCOUNT="${2:-administrator}"
@@ -1101,6 +1065,29 @@ online_fsresize () {
 	part_number="${root_device#${disk}}"
 	growpart "$disk" "$part_number"
 	resize2fs "$root_device"
+}
+
+winrm_config () {
+	local domain=${1:?missing domain} password=${2:?missing password} user=${3:?missing user} client=${4:?missing client} rv=0
+	echo -e "[default]\ndomain = ${domain}\npassword = ${password}\nuser = ${user}\nclient = ${client}" > /root/.ucs-winrm.ini || rv=1
+	return $rv
+}
+
+test_windows () {
+	local rv=0
+	if ! python shared-utils/ucs-winrm.py run-ps --cmd ipconfig; then
+		sleep 60
+		python shared-utils/ucs-winrm.py run-ps --cmd ipconfig || rv=1
+	fi
+	python shared-utils/ucs-winrm.py run-ps --cmd "(gwmi win32_operatingsystem).caption" || rv=1
+	return $rv
+}
+
+promote_ad_server () {
+	local forest=${1:=missing forest mode} domain=${1:=missing domain mode} rv=0
+	python shared-utils/ucs-winrm.py promote-ad --forestmode ${forest} --domainmode ${domain} || rv=1
+	sleep 400
+	return $rv
 }
 
 # vim:set filetype=sh ts=4:
