@@ -90,7 +90,10 @@ def postrun():
 				stdout, stderr = p.communicate()
 				if p.returncode != 0:
 					ud.debug(ud.LISTENER, ud.ERROR, '{}: LDAP server restart returned {} {} ({}).'.format(name, stderr, stdout, p.returncode))
-					ldap_extension.set_handler_message(name, 'LDAP server restart returned {} {} ({}).'.format(stderr, stdout, p.returncode))
+					for handler_object in (schema_handler, acl_handler,):
+						if handler_object._todo_list:
+							for object_dn in handler_object._todo_list:
+								ldap_extension.set_handler_message(name, object_dn, 'LDAP server restart returned {} {} ({}).'.format(stderr, stdout, p.returncode))
 					return
 
 			# Only set active flags on Master
