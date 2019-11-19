@@ -39,7 +39,7 @@ import ConfigParser
 import logging
 import logging.config
 from optparse import OptionParser, OptionGroup
-from univention.uvmm.helpers import TranslatableException, _, N_
+from univention.uvmm.helpers import _
 import os
 import signal
 import libvirt
@@ -57,7 +57,7 @@ def createDaemon(options):
 		(read_end, write_end) = os.pipe()
 		pid = os.fork()
 	except EnvironmentError as ex:
-		raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=ex.strerror, errno=ex.errno)
+		raise
 	if (pid == 0):  # 1st child
 		# detach from parent environment
 		os.chdir(WORKDIR)
@@ -67,7 +67,7 @@ def createDaemon(options):
 		try:
 			pid = os.fork()
 		except EnvironmentError as ex:
-			raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=ex.strerror, errno=ex.errno)
+			raise
 		if (pid == 0):  # 2nd child
 			os.close(read_end)
 
@@ -119,7 +119,7 @@ def createDaemon(options):
 				print(_("Failed to fork daemon."), file=sys.stderr)
 				sys.exit(1)
 		except EnvironmentError as ex:
-			raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=ex.strerror, errno=ex.errno)
+			raise
 
 
 def install_signal_handlers(options):

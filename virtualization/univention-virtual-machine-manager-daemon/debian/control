@@ -2,8 +2,6 @@ Source: univention-virtual-machine-manager-daemon
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Uploaders: Philipp Hahn <hahn@univention.de>,
- Andreas Büsching <buesching@univention.de>,
 Standards-Version: 3.7.2
 Build-Depends: debhelper (>= 9),
  ucslint-univention,
