@@ -1,3 +1,9 @@
+univention-novnc (3.0.0-4) unstable; urgency=low
+
+  * Bug #35428: Fix package upgrade
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 19 Nov 2019 15:55:47 +0100
+
 univention-novnc (3.0.0-3) unstable; urgency=medium
 
   * Bug #35428: don't use /usr/bin/
