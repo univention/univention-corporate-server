@@ -164,7 +164,6 @@ class Watched_Files(object):
 	"""
 
 	def __init__(self, files, count=2):
-
 		self._count = count
 		self._files = []
 
@@ -178,7 +177,6 @@ class Watched_Files(object):
 			self._files.append(Watched_File(f, 0))
 
 	def timestamp(self):
-
 		max = 0
 		for f in self._files:
 			stamp = f.timestamp()
@@ -324,7 +322,7 @@ class Instance(Base):
 	@simple_response
 	def updates_serial(self):
 		"""
-		Watches the three sources.list snippets for changes
+		Watches the three `sources.list` snippets for changes
 		"""
 		result = self._updates_serial.timestamp()
 		MODULE.info(" -> Serial for UPDATES is '%s'" % result)
@@ -355,7 +353,7 @@ class Instance(Base):
 			#               some extra text (occasionally) after the last closing
 			#               parenthesis. Until now, I've seen only a pair of empty
 			#               brackets [], but who knows...
-			match = re.search('^Inst (\S+)\s+(.*?)\s*\((\S+)\s.*\)', line)
+			match = re.search(r'^Inst (\S+)\s+(.*?)\s*\((\S+)\s.*\)', line)
 			if match:
 				pkg = match.group(1)
 				old = match.group(2)
@@ -514,12 +512,13 @@ class Instance(Base):
 		returns the content of the log file associated with
 		the job.
 
-		Argument 'count' has the same meaning as already known:
-		<0 ...... return timestamp of file (for polling)
-		0 ....... return whole file as a string list
-		>0 ...... ignore this many lines, return the rest of the file
+		:param count: has the same meaning as already known:
+			<0 ...... return timestamp of file (for polling)
+			0 ....... return whole file as a string list
+			>0 ...... ignore this many lines, return the rest of the file
 
-		*** NOTE *** As soon as we have looked for a running job at least once,
+		.. note::
+			As soon as we have looked for a running job at least once,
 			we know the job key and can associate it here.
 
 		TODO: honor a given 'job' argument
@@ -543,10 +542,11 @@ class Instance(Base):
 	def _logview(self, fname, count):
 		"""
 		Contains all functions needed to view or 'tail' an arbitrary text file.
-		Argument 'count' can have different values:
-		< 0 ... ignore this many lines, return the rest of the file
-		0 ..... return the whole file, split into lines.
-		> 0 ... return the last 'count' lines of the file. (a.k.a. tail -n <count>)
+
+		:param count: can have different values:
+			< 0 ... ignore this many lines, return the rest of the file
+			0 ..... return the whole file, split into lines.
+			> 0 ... return the last 'count' lines of the file. (a.k.a. tail -n <count>)
 		"""
 		lines = []
 		try:

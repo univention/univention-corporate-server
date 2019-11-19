@@ -37,37 +37,39 @@ class HookManager:
 
 	"""
 	This class tries to provide a simple interface to load and call hooks within existing code.
-	Python modules are loaded from specified 'module_dir' and automatically registered.
-	These python modules have to contain at least a global method register_hooks() that returns
-	a list of tuples (hook_name, callable).
+	Python modules are loaded from specified `module_dir` and automatically registered.
+	These python modules have to contain at least a global method `register_hooks()` that returns
+	a list of tuples (`hook_name`, `callable`).
 
-	Simple hook file example:
-	------------------------------------------------------------------------------------------
-	def my_test_hook(*args, **kwargs):
-		print('TEST_HOOK:', args, kwargs)
-		return ['Mein', 'Result', 123]
+	Simple hook file example::
 
-	def other_hook(*args, **kwargs):
-		print('MY_SECOND_TEST_HOOK:', args, kwargs)
-		return ['Mein', 'Result', 123]
+		def my_test_hook(*args, **kwargs):
+			print('TEST_HOOK:', args, kwargs)
+			return ['Mein', 'Result', 123]
 
-	def register_hooks():
-		return [ ('test_hook', my_test_hook), ('pre_hook', other_hook) ]
-	------------------------------------------------------------------------------------------
+		def other_hook(*args, **kwargs):
+			print('MY_SECOND_TEST_HOOK:', args, kwargs)
+			return ['Mein', 'Result', 123]
 
-	The method call_hook(hookname, *args, **kwargs) calls all registered methods for specified
-	hookname and passes *args and **kwargs to them. The return value of each method will be
-	saved and returned by call_hook() as a list. If no method has been registered for
+		def register_hooks():
+			return [
+				('test_hook', my_test_hook),
+				('pre_hook', other_hook),
+			]
+
+	The method `call_hook(hookname, *args, **kwargs)` calls all registered methods for specified
+	hookname and passes `*args` and `**kwargs` to them. The return value of each method will be
+	saved and returned by `call_hook()` as a list. If no method has been registered for
 	specified hookname, an empty list will be returned.
 
-	If raise_exceptions has been set to False, exceptions while loading python modules will be
+	If `raise_exceptions` has been set to `False`, exceptions while loading Python modules will be
 	discarded silently. If a hook raises an exception, it will be caught and returned in
-	result list of call_hooks() instead of corresponding return value. E.g.,
-	[['Mein', 'Result', 123], <exceptions.ValueError instance at 0x7f80496f6638>]
+	result list of `call_hooks()` instead of corresponding return value. E.g.::
 
+		[['Mein', 'Result', 123], <exceptions.ValueError instance at 0x7f80496f6638>]
 
-	How to use HookManager:
-	------------------------------------------------------------------------------------------
+	How to use HookManager::
+
 	>>> import univention.hooks
 	>>> hm = univention.hooks.HookManager('./test')
 	>>> hm.get_hook_list()
@@ -79,15 +81,12 @@ class HookManager:
 	>>> hm.call_hook('unknown_hook')
 	[]
 	>>>
-	------------------------------------------------------------------------------------------
-
 	"""
 
 	def __init__(self, module_dir, raise_exceptions=True):
 		"""
-		module_dir:				path to directory that contains python modules with hook functions
-		raise_exceptions:		if False, all exceptions while loading python modules will be dropped.
-			if False, all exceptions while calling hooks will be caught and returned in result list
+		:param module_dir:				path to directory that contains python modules with hook functions
+		:param raise_exceptions:		if `False`, all exceptions while loading python modules will be dropped and all exceptions while calling hooks will be caught and returned in result list
 		"""
 		self.__loaded_modules = {}
 		self.__registered_hooks = {}
@@ -131,6 +130,11 @@ class HookManager:
 					raise
 
 	def set_raise_exceptions(self, val):
+		"""
+		Enable or disable raising exceptions.
+
+		:param val: `True` to pass exceptions through, `False` to return them instead of the return value.
+		"""
 		if val in (True, False):
 			self.__raise_exceptions = val
 		else:
@@ -145,9 +149,8 @@ class HookManager:
 	def call_hook(self, name, *args, **kwargs):
 		"""
 		All additional arguments are passed to hook methods.
-		If self.__raise_exceptions is False, all exceptions while calling hooks will be caught and returned in result list
+		If `self.__raise_exceptions` is `False`, all exceptions while calling hooks will be caught and returned in result list.
 		If return value is an empty list, no hook has been called.
-
 		"""
 		result = []
 		for func in self.__registered_hooks.get(name, []):
