@@ -32,12 +32,6 @@
 # Sample debian/rules that uses debhelper.
 # GNU copyright 1997 to 1999 by Joey Hess.
 
-PO_FILES := $(shell find modules -name '*.po')
-MO_FILES := $(PO_FILES:%.po=%.mo)
-
-%.mo:	%.po
-	msgfmt --check -o $@ $<
-
 override_dh_auto_build: $(MO_FILES)
 	dh-umc-module-build
 	dh_auto_build
@@ -45,14 +39,6 @@ override_dh_auto_build: $(MO_FILES)
 override_dh_auto_install:
 	dh-umc-module-install
 	univention-install-config-registry
-	@set -e;\
-	for i in $(MO_FILES); do\
-		lang=`basename "$$i" .mo`;\
-		domain=`dirname "$$i" | sed 's,^modules/,,;s,/,-,g'`;\
-		o=debian/univention-updater/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
-		install -d "`dirname "$$o"`";\
-		install -m 644 "$$i" "$$o";\
-	done
 	dh_auto_install
 
 override_dh_fixperms:
