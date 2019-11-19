@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-2
 src: novnc
 fix: 1:1.0.0-1A~4.4.0.201911131601
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The novnc package has been imported from Debian buster.
 bug: [35428]
 maintained: true
