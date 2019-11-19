@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-system-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-03-21 15:01+0100\n"
+"POT-Creation-Date: 2019-11-14 13:58+0100\n"
 "PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -65,7 +65,7 @@ msgstr "Erweiterte Konfiguration"
 msgid "Apply changes"
 msgstr "Änderungen übernehmen"
 
-#: umc/js/setup/InterfaceWizard.js:315 umc/js/setup/Interfaces.js:120
+#: umc/js/setup/Interfaces.js:120 umc/js/setup/InterfaceWizard.js:315
 msgid "Autoconfiguration (SLAAC)"
 msgstr "Automatische Konfiguration (SLAAC)"
 
@@ -85,7 +85,7 @@ msgstr "Bond Netzwerkkonfiguration"
 msgid "Bond primary"
 msgstr "Primäre Bond-Netzwerkschnittstellen"
 
-#: umc/js/setup/InterfaceWizard.js:394 umc/js/setup/Interfaces.js:168
+#: umc/js/setup/Interfaces.js:168 umc/js/setup/InterfaceWizard.js:394
 msgid "Bond slaves"
 msgstr "Bond Kindnetzwerkschnittstellen"
 
@@ -105,7 +105,7 @@ msgstr "Bridge-Konfiguration"
 msgid "Bridge interface configuration"
 msgstr "Bridge Netzwerkkonfiguration"
 
-#: umc/js/setup/InterfaceWizard.js:359 umc/js/setup/Interfaces.js:190
+#: umc/js/setup/Interfaces.js:190 umc/js/setup/InterfaceWizard.js:359
 msgid "Bridge ports"
 msgstr "Bridge ports"
 
@@ -113,7 +113,7 @@ msgstr "Bridge ports"
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/js/setup/InterfaceGrid.js:130 umc/js/setup.js:376
+#: umc/js/setup.js:376 umc/js/setup/InterfaceGrid.js:130
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -220,7 +220,7 @@ msgstr "Domänen-DNS-Server"
 msgid "Domain name server (max. 3)"
 msgstr "Domänen-DNS-Server (max. 3)"
 
-#: umc/js/setup/InterfaceWizard.js:283 umc/js/setup/Interfaces.js:117
+#: umc/js/setup/Interfaces.js:117 umc/js/setup/InterfaceWizard.js:283
 msgid "Dynamic (DHCP)"
 msgstr "Dynamisch (DHCP)"
 
@@ -263,13 +263,13 @@ msgstr "Forwarding-Verzögerung"
 #: umc/js/setup/InterfaceWizard.js:95
 #, javascript-format
 msgid ""
-"Further information can be found in the <a href=\"https://docs.software-univention.de/"
-"manual-%s.html#computers:networkcomplex\" target=\"_blank\">UCS "
-"documentation</a>."
+"Further information can be found in the <a href=\"https://docs.software-"
+"univention.de/manual-%s.html#computers:networkcomplex\" target=\"_blank"
+"\">UCS documentation</a>."
 msgstr ""
-"Weitere Informationen können in der <a href=\"https://docs.software-univention.de/"
-"handbuch-%s.html#computers:networkcomplex\" target=\"_blank\">UCS "
-"Dokumentation</a> gefunden werden."
+"Weitere Informationen können in der <a href=\"https://docs.software-"
+"univention.de/handbuch-%s.html#computers:networkcomplex\" target=\"_blank"
+"\">UCS Dokumentation</a> gefunden werden."
 
 #: umc/js/setup/InterfaceWizard.js:630
 msgid "Gateway"
@@ -428,7 +428,7 @@ msgstr "Netzwerkgeräte"
 msgid "No changes have been made."
 msgstr "Es wurden keine Änderungen durchgeführt."
 
-#: umc/js/setup/InterfaceWizard.js:630 umc/js/setup/NetworkPage.js:100
+#: umc/js/setup/NetworkPage.js:100 umc/js/setup/InterfaceWizard.js:630
 msgid "None"
 msgstr "Kein"
 
@@ -579,9 +579,12 @@ msgstr "nicht setzen"
 
 #: umc/js/setup.js:188
 #, javascript-format
-msgid "https://docs.software-univention.de/manual-%s.html#computers:networkcomplex:uvmm"
+msgid ""
+"https://docs.software-univention.de/manual-%s.html#computers:networkcomplex:"
+"uvmm"
 msgstr ""
-"https://docs.software-univention.de/handbuch-%s.html#computers:networkcomplex:uvmm"
+"https://docs.software-univention.de/handbuch-%s.html#computers:"
+"networkcomplex:uvmm"
 
 #: umc/js/setup/InterfaceWizard.js:634
 msgid "set"
@@ -1406,7 +1409,8 @@ msgstr "setzen"
 #~ "Das System tritt einer existierenden AD-Domäne mit der Rolle <i>%s</i> "
 #~ "bei."
 
-#~ msgid "This system will join an existing UCS domain with the role <i>%s</i>."
+#~ msgid ""
+#~ "This system will join an existing UCS domain with the role <i>%s</i>."
 #~ msgstr ""
 #~ "Das System tritt einer existierenden UCS-Domäne mit der Rolle <i>%s</i> "
 #~ "bei."

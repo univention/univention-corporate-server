@@ -1,3 +1,9 @@
+univention-system-setup (12.0.2-17) unstable; urgency=medium
+
+  * Bug #50448: display warning about RAM on first page
+
+ -- Florian Best <best@univention.de>  Thu, 14 Nov 2019 12:03:52 +0100
+
 univention-system-setup (12.0.2-16) unstable; urgency=medium
 
   * Bug #49142: fix FTBFS: absolute python import in unittest cases

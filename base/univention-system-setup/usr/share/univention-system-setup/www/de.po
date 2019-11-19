@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-system-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-06-21 19:34+0000\n"
+"POT-Creation-Date: 2019-11-14 14:50+0100\n"
 "PO-Revision-Date: 2019-06-21 17:58+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -18,53 +18,49 @@ msgstr ""
 msgid "%s Appliance"
 msgstr ""
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2045
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2095
 #, javascript-format
 msgid "%s Appliance has been successfully set up."
 msgstr "%s Appliance wurde erfolgreich eingerichtet."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1177
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1226
 #, javascript-format
 msgid "%s GiB"
 msgstr ""
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1175
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1224
 #, javascript-format
 msgid "%s MiB"
 msgstr ""
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:437
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:447
 msgid "(Request address again)"
 msgstr "(Adresse erneut anfordern)"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:545
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:555
 msgid "(configure proxy settings)"
 msgstr "(Einrichten von Proxy-Einstellungen)"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1585
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1637
 msgid "<b>Unknown</b>"
 msgstr "<b>Unbekannt</b>"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1180
-msgid ""
-"<b>Warning:</b> At least {memory_min} RAM is required for the installation "
-"of {product_name}."
-msgstr ""
-"<b>Warnung:</b> Mindestens {memory_min} Arbeitsspeicher sind notwendig für "
-"die Installation von {product_name}."
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:411
+msgid "<b>Warning:</b> Not enough available memory"
+msgstr "<b>Warnung:</b> Nicht genügend freier Arbeitsspeicher"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2061
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2111
 msgid "<p>Click on <i>Finish</i> for putting UCS into operation.</p>"
 msgstr ""
 "<p>Klicken Sie auf <i>Fertigstellen</i>, um UCS in Betrieb zu nehmen.</p>"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2052
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2102
 msgid "<p>Click on <i>Finish</i> for putting this system into operation.</p>"
 msgstr ""
 "<p>Klicken Sie auf <i>Fertigstellen</i>, um dieses System in Betrieb zu "
 "nehmen.</p>"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2050
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2100
 msgid ""
 "<p>Click on <i>Finish</i> to conclude the installation. The system will be "
 "prepared for the first boot procedure and will be rebooted afterwards.</p>"
@@ -73,7 +69,7 @@ msgstr ""
 "Anschließend wird das System auf den ersten Bootvorgang vorbereitet und neu "
 "gestartet.</p>"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:968
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1017
 msgid ""
 "<p>Enter the name of your organization and an e-mail address to activate "
 "UCS.</p>"
@@ -108,7 +104,7 @@ msgstr ""
 "Administrator-Konto als auch für den lokalen Superuser <i>root</i> "
 "verwendet.</p>"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2641
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2746
 #, javascript-format
 msgid ""
 "<p>One or more network interfaces could not obtain an IP address via DHCP. "
@@ -122,7 +118,7 @@ msgstr ""
 "ihre DHCP-Konfiguration an oder bestätigen Sie die Nutzung der privaten "
 "Adresse(n).</p>"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:843
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:892
 msgid ""
 "<p>Select UCS software components for installation on this system. This step"
 " can be skipped; the components are also available in the Univention App "
@@ -135,7 +131,7 @@ msgstr ""
 "verfügbar.</p><p>Software von Drittanbietern (bspw. Groupware) kann "
 "ebenfalls über das Univention App Center installiert werden.</p>"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2608
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:3072
 #, javascript-format
 msgid ""
 "<p>The hostname <i>%s</i> is longer than 13 characters.</p><p>It will not be"
@@ -144,12 +140,12 @@ msgid ""
 "%s. It is recommended to shorten the hostname to maximal 13 characters.</p>"
 msgstr ""
 "<p>Der Rechnername <i>%s</i> ist länger als 13 Zeichen.</p><p>Es wird nicht "
-"möglich sein, diese Domäne als Active Directory-kompatiblen Domänencontroller "
-"oder UCS@school zu betreiben. Der Rechnername kann nach der Installation %s "
-"nicht mehr geändert werden. Es wird empfohlen, den Rechnernamen auf maximal "
-"13 Zeichen zu kürzen.</p>"
+"möglich sein, diese Domäne als Active Directory-kompatiblen "
+"Domänencontroller oder UCS@school zu betreiben. Der Rechnername kann nach "
+"der Installation %s nicht mehr geändert werden. Es wird empfohlen, den "
+"Rechnernamen auf maximal 13 Zeichen zu kürzen.</p>"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2057
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2107
 msgid ""
 "<p>When accessing the system for the first time, you will be asked to "
 "request and upload a new license.</p>"
@@ -157,7 +153,7 @@ msgstr ""
 "<p>Beim initialen Zugriff auf das System, werden Sie gebeten eine "
 "Lizenzdatei anzufordern und hochzuladen.</p>"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2055
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2105
 msgid ""
 "<p>When accessing the system for the first time, you will be asked to upload"
 " a new license that has been sent to your email account.</p>"
@@ -165,7 +161,7 @@ msgstr ""
 "<p>Beim initialen Zugriff auf das System, werden Sie gebeten eine "
 "Lizenzdatei, die an Ihre E-Mail-Adresse gesendet wurde, hochzuladen.</p>"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2649
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2754
 msgid ""
 "<p>With the current settings <b> no </b> internet access is "
 "available.</p><p>Because of this some functions like the App Center or "
@@ -175,27 +171,27 @@ msgstr ""
 "möglich.</p><p>Dadurch werden einige Funktionen wie zum Beispiel das App "
 "Center oder Software-Aktualisierungen nicht zur Verfügung stehen.</p>"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1583
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1635
 #, javascript-format
 msgid "<tr><td>City:</td><td>%s</td></tr>"
 msgstr "<tr><td>Stadt:</td><td>%s</td></tr>"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1603
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1655
 #, javascript-format
 msgid "<tr><td>Default locale:</td><td>%s</td></tr>"
 msgstr "<tr><td>Standard-Systemsprache:</td><td>%s</td></tr>"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1632
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1684
 #, javascript-format
 msgid "<tr><td>Keyboard layout:</td><td>%s</td></tr>"
 msgstr "<tr><td>Tastaturlayout:</td><td>%s</td></tr>"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1586
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1638
 #, javascript-format
 msgid "<tr><td>Timezone:</td><td>%s</td></tr>"
 msgstr "<tr><td>Zeitzone:</td><td>%s</td></tr>"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:641
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:651
 msgid ""
 "A DC backup is the fallback system for the UCS DC master and can take over "
 "the role of the DC master permanently. It is recommended to use at least one"
@@ -209,7 +205,7 @@ msgstr ""
 msgid "A few questions are needed to complete the configuration process."
 msgstr "Ein paar Fragen sind notwendig, um die Einrichtung abzuschließen."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1786
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1838
 msgid "A new UCS domain will be created."
 msgstr "Eine neue UCS-Domäne wird erstellt."
 
@@ -221,11 +217,11 @@ msgstr ""
 "Ein neues Domänenverzeichnis wird auf diesem System erstellt. Benutzer- und "
 "Verwaltungsdaten werden lokal gespeichert."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1788
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1840
 msgid "A preconfigured test domain will be instantiated."
 msgstr "Eine vorkonfigurierte UCS-Test-Domäne wird instanziiert."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2822
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2927
 msgid ""
 "A previous UCS system has already joined into the Active Directory domain. "
 "Please make sure the system \"%(ucs_master_fqdn)s\" is reachable via SSH. If"
@@ -237,7 +233,7 @@ msgstr ""
 "erreichbar ist. Wenn Sie mit \"System ersetzen\" fortfahren wird die "
 "Registrierung des früheren Systems gelöscht."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1151
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1200
 msgid ""
 "A proxy address needs to be specified in the format: "
 "<i>http://proxy.mydomain.intranet:3128</i><br/>Proxy access with username "
@@ -249,7 +245,7 @@ msgstr ""
 "Benutzername und Password kann das folgenden Format verwendet werden: "
 "<i>http://benutzername:passwort@proxy.meinedomaene.intranet:3128</i>"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1144
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1193
 msgid ""
 "A valid e-mail address allows to activate the UCS system for using the "
 "Univention App Center. The address can be specified now or also at a later "
@@ -264,7 +260,7 @@ msgstr ""
 " werden. Die Lizenz kann über den Lizenzdialog der Univention Management "
 "Console eingespielt werden."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1142
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1191
 #, javascript-format
 msgid ""
 "A valid e-mail address is required to activate %s Appliance. The address can"
@@ -278,29 +274,29 @@ msgstr ""
 "personalisierter Lizenzschlüssel zugesendet. Die Lizenz kann über den "
 "Lizenzdialog der Univention Management Console eingespielt werden."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:668
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1861
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:678
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1874
 msgid "Account information"
 msgstr "Kontoinformationen"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:704
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:714
 msgid "Active Directory join information"
 msgstr "Active Directory-Kontoinformationen"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1642
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1694
 msgid "Adapt settings"
 msgstr "Einstellungen anpassen"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1853
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1905
 msgid "Address configuration"
 msgstr "Adresskonfiguration"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1862
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1914
 #, javascript-format
 msgid "Address for %s"
 msgstr "Adresse für %s"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:709
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:719
 msgid ""
 "Address of Active Directory domain controller or name of Active Directory "
 "domain"
@@ -308,22 +304,22 @@ msgstr ""
 "Adresse des Active Directory-Domänencontrollers oder Name der Active "
 "Directory-Domäne"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2610
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:3075
 msgid "Adjust hostname"
 msgstr "Rechnernamen anpassen"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1700
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2671
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2697
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2809
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1752
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2776
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2802
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2914
 msgid "Adjust settings"
 msgstr "Einstellungen anpassen"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:538
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:548
 msgid "Alternate DNS server"
 msgstr "Alternativer DNS-Server"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1975
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2025
 msgid ""
 "Alternatively, you may click on the button <i>Finish</i> to exit the wizard "
 "and resolve the described problems at a later point."
@@ -332,8 +328,8 @@ msgstr ""
 "Einrichtungsassistenten zu beenden und die beschriebenen Probleme zu einem "
 "späteren Zeitpunkt zu beheben."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1965
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1979
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2015
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2029
 msgid ""
 "Alternatively, you may click on the button <i>Finish</i> to exit the wizard "
 "and resolve the described problems via Univention Management Console."
@@ -342,21 +338,29 @@ msgstr ""
 "Einrichtungsassistenten zu beenden und die beschriebenen Probleme mittels "
 "Univention Management Console zu beheben."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2302
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2416
 msgid "At least one network device needs to be properly configured."
 msgstr "Wenigstens ein Netzwerkgerät muss konfiguriert werden."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2655
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2823
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2963
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1229
+msgid ""
+"At least {memory_min} RAM is required for the installation of "
+"{product_name}."
+msgstr ""
+"Mindestens {memory_min} Arbeitsspeicher sind notwendig für die Installation "
+"von {product_name}."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2760
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2928
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:3099
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:871
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:881
 msgid "Central server"
 msgstr "Zentraler Server"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:843
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:853
 msgid ""
 "Choose which role this server is supposed to take in your UCS@school domain."
 msgstr ""
@@ -375,7 +379,7 @@ msgstr "Wählen Sie die Systemsprache."
 msgid "Close"
 msgstr "Schließen"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1351
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1401
 msgid "Configure system"
 msgstr "System konfigurieren"
 
@@ -387,11 +391,11 @@ msgstr ""
 "Dieses System als erstes System einer neuen Domäne einrichten. Zusätzliche "
 "Systeme können der Domäne später beitreten."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:855
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:904
 msgid "Confirm configuration settings"
 msgstr "Bestätigen der Einstellungen"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1969
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2019
 msgid ""
 "Connect to Univention Management Console on this system either as user "
 "<b>Administrator</b> or as user <b>root</b> in case the system has not yet "
@@ -401,7 +405,7 @@ msgstr ""
 "entweder als Benutzer <b>Administrator</b> oder als Benutzer <b>root</b>, "
 "falls das System noch keine neue UCS-Domäne erstellt hat:"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1983
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2033
 msgid ""
 "Connect to Univention Management Console on this system either as user "
 "<b>Administrator</b> or as user <b>root</b> in case the system has not yet "
@@ -411,33 +415,33 @@ msgstr ""
 "entweder als Benutzer <b>Administrator</b> oder als Benutzer <b>root</b>, "
 "falls das System noch nicht der Domäne beigetreten ist:"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2613
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2966
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:3078
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:3102
 msgid "Continue"
 msgstr "Fortfahren"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2646
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2751
 msgid "Continue with 169.254.*.* addresse(s)"
 msgstr "Fortfahren mit 169.254.*.* Adresse(n)"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1703
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1755
 msgid "Continue with duplicate hostname"
 msgstr "Mit vergebenem Rechnernamen fortfahren"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2812
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2917
 msgid "Continue with incomplete settings"
 msgstr "Fortfahren mit unvollständigen Einstellungen"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2701
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2806
 msgid "Continue without access to the repository servers"
 msgstr "Ohne Zugriff auf die Repositories fortfahren"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2652
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2674
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2757
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2779
 msgid "Continue without internet access"
 msgstr "Ohne Internetzugriff fortfahren"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1181
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1230
 msgid ""
 "Continuing the installation might lead to a not functioning or hung up "
 "system."
@@ -449,19 +453,19 @@ msgstr ""
 msgid "Create a new UCS domain"
 msgstr "Erstellen einer neuen UCS-Domäne"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1793
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1845
 msgid "DC Backup"
 msgstr "DC Backup"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1799
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1851
 msgid "DC Master"
 msgstr "DC Master"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1794
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1846
 msgid "DC Slave"
 msgstr "DC Slave"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:652
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:662
 msgid ""
 "DC slave systems are ideal for site servers, they provide authentication "
 "services for the domain. Local services running on a DC slave can access the"
@@ -471,11 +475,11 @@ msgstr ""
 "Authentifizierungsdienste bereit. Lokale Dienste auf einem DC Slave haben "
 "Zugriff auf die lokale LDAP-Datenbank."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1114
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1163
 msgid "DHCP query failed."
 msgstr "DHCP-Anfrage schlug fehl."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1872
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1924
 msgid "DNS server"
 msgstr "DNS-Server"
 
@@ -483,35 +487,35 @@ msgstr "DNS-Server"
 msgid "Default system locale"
 msgstr "Standard-System-Sprachdefinition"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:614
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:624
 msgid "Do not use any domain"
 msgstr "Keine Domäne benutzen"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1830
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1882
 msgid "Domain and host configuration"
 msgstr "Domänen- und Rechnereinstellung"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:421
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:431
 msgid "Domain and network configuration"
 msgstr "Domänen- und Netzwerkeinstellung"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:635
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:645
 msgid "Domain controller backup"
 msgstr "Domänencontroller Backup"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:647
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:657
 msgid "Domain controller slave"
 msgstr "Domänencontroller Slave"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:725
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:735
 msgid "Domain join information"
 msgstr "Informationen zum Domänenbeitritt"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:790
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:800
 msgid "Domain name"
 msgstr "Domänenname"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:559
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:569
 msgid "Domain setup"
 msgstr "Domäneneinstellungen"
 
@@ -521,8 +525,8 @@ msgid "E-mail address to activate %s Appliance"
 msgstr "E-Mail-Adresse zur Aktivierung von %s Appliance"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:316
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1724
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1825
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1776
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1877
 msgid "E-mail address to activate UCS"
 msgstr "E-Mail-Adresse zur Aktivierung von UCS"
 
@@ -534,8 +538,8 @@ msgstr ""
 "Geben Sie eine nahegelegene Stadt zur Einrichtung von Zeitzone, "
 "Systemsprache und Tastaturlayout ein."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:705
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:726
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:715
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:736
 msgid ""
 "Enter name and password of a user account which is authorised to join a "
 "system into this domain."
@@ -543,14 +547,14 @@ msgstr ""
 "Geben Sie Namen und Passwort eines Benutzerkontos an, das für den Beitritt "
 "eines Systems in diese Domäne berechtigt ist."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1966
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2016
 msgid ""
 "Failed join scripts can be executed via the UMC module <i>Domain join</i>."
 msgstr ""
 "Fehlgeschlagene Domänenbeitritt-Skripte können mit dem UMC-Modul "
 "<i>Domänenbeitritt</i> ausgeführt werden."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1980
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2030
 msgid ""
 "Failed join scripts or a new join of the system can be executed via the UMC "
 "module <i>Domain join</i>."
@@ -558,11 +562,11 @@ msgstr ""
 "Fehlgeschlagene Domänenbeitritt-Skripte oder ein erneuter Domänenbeitritt "
 "kann mit dem UMC-Modul <i>Domänenbeitritt</i> ausgeführt werden."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:565
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:575
 msgid "Fast demo configuration"
 msgstr "Schnelle Demo-Konfiguration"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:695
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:705
 msgid ""
 "Fill in the password for the system administrator user <b>root</b> and the "
 "domain administrative user account <b>Administrator</b>."
@@ -570,12 +574,12 @@ msgstr ""
 "Füllen Sie das Passwort für den Systemadministrator-Benutzer <b>root</b> und"
 " den Domänenadministrator-Benutzeraccount <b>Administrator</b> aus."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1354
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1355
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1404
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1407
 msgid "Finish"
 msgstr "Fertigstellen"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1148
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1197
 msgid ""
 "For a specified host name, the domain name is automatically derived from the"
 " domain name server. A fully qualified domain may be necessary for mail "
@@ -588,7 +592,14 @@ msgstr ""
 "eingerichtete Domänenname kann nach dem Durchlaufen des UCS-"
 "Einrichtungsassistenten <b>nicht</b> mehr geändert werden."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2339
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1232
+msgid ""
+"For further information please look at https://help.univention.com/t/13595."
+msgstr ""
+"Für weitere Informationen schauen Sie bitte auf "
+"https://help.univention.com/t/13595."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2360
 msgid ""
 "For this system, a computer object already exists in the LDAP directory that"
 " has been configured for the role &quot;<i>school server in the "
@@ -600,7 +611,7 @@ msgstr ""
 "konfiguriert wurde, und widerspricht damit Ihrer Auswahl. Bitte prüfen und "
 "korrigieren Sie dies, bevor Sie fortfahren."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2342
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2363
 msgid ""
 "For this system, a computer object already exists in the LDAP directory that"
 " was configured for the role &quot;<i>school server in the educational "
@@ -612,84 +623,85 @@ msgstr ""
 "konfiguriert wurde, und widerspricht damit Ihrer Auswahl. Bitte prüfen und "
 "korrigieren Sie dies, bevor Sie fortfahren."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:803
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1742
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1837
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1841
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1845
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:813
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1794
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1889
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1893
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1897
 msgid "Fully qualified domain name"
 msgstr "Vollqualifizierter Domänenname"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:526
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1864
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:536
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1916
 msgid "Gateway"
 msgstr "Gateway"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:551
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1876
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:561
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1928
 msgid "HTTP proxy"
 msgstr "HTTP-Proxy"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1947
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1997
 msgid "Help us improve UCS by sending the occurred errors as feedback."
 msgstr ""
 "Helfen Sie uns UCS zu verbessern, indem Sie uns die aufgetretenen Fehler als"
 " Feedback senden."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:773
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:818
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:783
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:828
 msgid "Host settings"
 msgstr "Rechnereinstellungen"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1744
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1845
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1796
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1897
 msgid "Hostname"
 msgstr "Rechnername"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:782
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1542
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:792
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1594
 msgid "Hostname (unchangeable. Was set while creating the container)"
 msgstr ""
 "Rechnername (unveränderbar. Wurde beim Erstellen des Containers vergeben)"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:750
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:760
 msgid "Hostname of the domain controller master"
 msgstr "Rechnername des Domänencontroller Masters"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:827
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:837
 msgid "Hostname or fully qualified domain name"
 msgstr "Rechnername oder vollständiger Domänenname"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1853
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1905
 msgid "IP address is obtained dynamically via DHCP"
 msgstr "Die IP-Adresse wird dynamisch über DHCP bezogen"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:465
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:482
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:500
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:518
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:475
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:492
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:510
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:528
 msgid "IPv4 net mask/IPv6 prefix {interface}"
 msgstr "IPv4-Netzmaske/IPv6-Präfix {interface}"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:456
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:472
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:490
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:508
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:466
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:482
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:500
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:518
 msgid "IPv4/IPv6 address {interface}"
 msgstr "IPv4/IPv6-Adresse {interface}"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2348
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2369
 msgid ""
 "If this system is to become a school server in the administration network, "
 "please first check whether a corresponding school exists and whether the "
 "computer name of this system has been specified as the <i>school server for "
 "the administration network</i>."
 msgstr ""
-"Wenn dieses System ein Schulserver im Verwaltungsnetz werden soll, prüfen Sie "
-"bitte zuerst, ob eine entsprechende Schule existiert und der Rechnername "
-"dieses Systems als <i>Schulserver für das Verwaltungsnetz</i> angegeben wurde."
+"Wenn dieses System ein Schulserver im Verwaltungsnetz werden soll, prüfen "
+"Sie bitte zuerst, ob eine entsprechende Schule existiert und der Rechnername"
+" dieses Systems als <i>Schulserver für das Verwaltungsnetz</i> angegeben "
+"wurde."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2345
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2366
 msgid ""
 "If this system is to become a school server in the educational network, "
 "please first check whether a corresponding school exists and whether the "
@@ -700,12 +712,12 @@ msgstr ""
 "bitte zuerst, ob eine entsprechende Schule existiert und der Rechnername "
 "dieses Systems als <i>Schulserver für das Edukativnetz</i> angegeben wurde."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:624
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:634
 #, javascript-format
 msgid "If unsure, select <i>%s</i>."
 msgstr "Wenn unsicher, wählen Sie <i>%s</i>."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1182
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1231
 msgid ""
 "If you want to upgrade your memory first please press the power button of "
 "your server to shutdown the system."
@@ -713,28 +725,32 @@ msgstr ""
 "Wenn Sie zuerst Ihren Arbeitsspeicher aufrüsten möchten, drücken Sie bitte "
 "den Netzschalter des Servers um das System herunterzufahren."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2312
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1406
+msgid "Ignore"
+msgstr "Ignorieren"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2426
 msgid "Initialize the configuration process ..."
 msgstr "Initialisiere den Konfigurationsvorgang ..."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1154
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1203
 msgid "Install the latest errata and app updates after the setup."
 msgstr ""
 "Nach der Einrichtung alle verfügbaren Errata und App Updates installieren."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1156
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1205
 msgid ""
 "Install the latest patch level, errata and app updates after the setup."
 msgstr ""
 "Nach der Einrichtung alle verfügbaren Patch-Level, Errata und App Updates "
 "installieren."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1277
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1327
 #, javascript-format
 msgid "Installation of %d additional software components."
 msgstr "Installation von %d zusätzlichen Software-Komponenten."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1275
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1325
 msgid "Installation of one additional software component."
 msgstr "Installation einer zusätzlichen Software-Komponente."
 
@@ -791,7 +807,7 @@ msgstr ""
 "Ungültiger Rechnername oder vollständiger Domänenname!<br/>Erwartetes "
 "Format: <i>rechnername</i> oder <i>rechnername.meinedomaene.intranet</i>"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2260
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2313
 msgid ""
 "It is not possible to install KVM and XEN components on one system. Please "
 "select only one of these components."
@@ -799,7 +815,7 @@ msgstr ""
 "Es ist nicht möglich KVM- und XEN-Komponenten auf einem System zu "
 "installieren. Bitte wählen Sie nur eine dieser Komponenten aus."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2256
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2309
 msgid ""
 "It is not possible to install Samba 3 and Samba 4 on one system. Please "
 "select only one of these components."
@@ -807,7 +823,7 @@ msgstr ""
 "Es ist nicht möglich Samba 3 und Samba 4 auf einem System zu installieren. "
 "Bitte wählen Sie nur eine dieser Komponenten aus."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2845
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2950
 msgid ""
 "It seems that a UCS DC master system has already joined into the Windows AD "
 "domain. Please choose a different option as other system roles for joining "
@@ -817,11 +833,11 @@ msgstr ""
 "beigetreten ist. Bitte wählen Sie eine andere Option, da weitere "
 "Systemrollen für den Joinvorgang nicht zur Verfügung stehen."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:603
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:613
 msgid "Join into an existing Microsoft Active Directory domain"
 msgstr "Einer bestehenden Microsoft Active-Directory-Domäne beitreten"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:592
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:602
 msgid "Join into an existing UCS domain"
 msgstr "Einer bestehenden UCS-Domäne beitreten"
 
@@ -829,22 +845,22 @@ msgstr "Einer bestehenden UCS-Domäne beitreten"
 msgid "Keyboard layout"
 msgstr "Tastaturlayout"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:811
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1849
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:821
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1901
 msgid "LDAP base"
 msgstr "LDAP-Basis"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:411
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:421
 msgid "License agreement"
 msgstr "Lizenzvereinbarung"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:837
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:847
 msgid "Local root password"
 msgstr "Lokales Root-Passwort"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:373
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:379
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1810
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1862
 msgid "Localization settings"
 msgstr "Standorteinstellungen"
 
@@ -852,12 +868,12 @@ msgstr "Standorteinstellungen"
 msgid "Manage users and permissions directly on this system"
 msgstr "Verwalten von Benutzern und Rechten direkt auf diesem System"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:658
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1795
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:668
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1847
 msgid "Member server"
 msgstr "Member-Server"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:663
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:673
 msgid ""
 "Member servers should be used for services which do not need a local "
 "authentication database, for example for file or print servers."
@@ -866,19 +882,19 @@ msgstr ""
 " für die Authentifizierung benötigen, beispielsweise Datei- oder "
 "Druckserver."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1735
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1787
 msgid "Network interfaces"
 msgstr "Netzwerkgeräte"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1272
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1322
 msgid "No additional software component will be installed."
 msgstr "Keine zusätzliche Software-Komponente wird installiert."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1883
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1935
 msgid "No additional software components will be installed."
 msgstr "Keine zusätzliche Software-Komponenten werden installiert."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2808
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2913
 msgid ""
 "No domain controller was found at the address of the name server. It is "
 "recommended to verify that the network settings are correct."
@@ -886,7 +902,7 @@ msgstr ""
 "Unter der Adresse des DNS-Servers konnte kein Domänencontroller gefunden "
 "werden. Die Netzwerkeinstellungen sollten überprüft werden."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2840
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2945
 msgid ""
 "No domain controller was found at the address of the name server. Please "
 "adjust your network settings."
@@ -894,11 +910,11 @@ msgstr ""
 "Unter der Adresse des DNS-Servers konnte kein Domänencontroller gefunden "
 "werden. Bitte überprüfen Sie die Netzwerkeinstellungen."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:769
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:779
 msgid "No domain warning"
 msgstr "Warnung: Keine Domäne"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2667
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2772
 msgid ""
 "No gateway has been specified and thus no access to the internet is "
 "possible. As UCS requires internet access for its functionality, certain "
@@ -911,18 +927,18 @@ msgstr ""
 "Aktualisierungen, Installation weiterer Software-Komponenten) nicht wie "
 "erwatet funtionieren werden."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:443
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:453
 msgid "Obtain IP address automatically (DHCP)"
 msgstr "IP-Adresse automatisch beziehen (DHCP)"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:679
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1824
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:689
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1876
 msgid "Organization name"
 msgstr "Name der Organisation"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:700
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:720
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:764
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:710
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:730
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:774
 msgid "Password"
 msgstr "Passwort"
 
@@ -930,7 +946,7 @@ msgstr "Passwort"
 msgid "Please click on the required character."
 msgstr "Bitte klicken Sie auf das gewünschte Zeichen."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:856
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:905
 msgid ""
 "Please confirm the chosen configuration settings which are summarized in the"
 " following."
@@ -938,20 +954,20 @@ msgstr ""
 "Bitte bestätigen Sie die gewählten Einstellungen, die nachstehend "
 "zusammengefasst sind."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:412
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:422
 #, javascript-format
 msgid "Please read carefully the license agreement for %s Appliance."
 msgstr "Bitte lesen Sie die nachstehende Lizenzvereinbarung für %s Appliance."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:560
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:570
 msgid "Please select your domain settings."
 msgstr "Bitte wählen Sie die Domäneneinstellungen."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:532
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:542
 msgid "Preferred DNS server"
 msgstr "Bevorzugter DNS-Server"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1738
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1790
 msgid "Primary network interface"
 msgstr "Primäres Netzwerkgerät"
 
@@ -959,7 +975,7 @@ msgstr "Primäres Netzwerkgerät"
 msgid "Privacy Statement"
 msgstr "Datenschutzerklärung"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:573
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:583
 msgid ""
 "Quick setup of a system for testing purposes. Several system configurations "
 "are predefined and cannot be changed at a later point."
@@ -968,11 +984,11 @@ msgstr ""
 "Systemeinstellungen sind vorgegeben und können im Nachhinein nicht mehr "
 "geändert werden"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1353
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1403
 msgid "Reconfigure"
 msgstr "Erneut konfigurieren"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2826
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2931
 msgid "Replace system"
 msgstr "System ersetzen"
 
@@ -980,31 +996,31 @@ msgstr "System ersetzen"
 msgid "Restarting server components..."
 msgstr "Neustart der Server-Komponenten..."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2962
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:3098
 msgid "Root password empty. Continue?"
 msgstr "Root-Passwort ist leer. Möchten Sie fortfahren?"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:860
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:870
 msgid "School server of the administrative network"
 msgstr "Schulserver im Verwaltungsnetz"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:848
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:858
 msgid "School server of the educational network"
 msgstr "Schulserver im Edukativnetz"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:742
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:752
 msgid "Search Domain controller master in DNS"
 msgstr "Domänencontroller Master im DNS suchen"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1992
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2042
 msgid "Send feedback"
 msgstr "Feedback senden"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1999
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2049
 msgid "Send to vendor"
 msgstr "An den Hersteller senden"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:842
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:852
 msgid "Server role inside the UCS@school domain"
 msgstr "Serverrolle in der UCS@school-Domäne"
 
@@ -1016,51 +1032,55 @@ msgstr "Einrichtung - Ein Fehler ist aufgetreten"
 msgid "Setup successful"
 msgstr "Einrichtung erfolgreich"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1262
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1312
 msgid "Software component"
 msgstr "Softwarekomponente"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1883
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1886
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1935
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1938
 msgid "Software components"
 msgstr "Softwarekomponenten"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:842
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:891
 msgid "Software configuration"
 msgstr "Software-Konfiguration"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:774
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:819
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:784
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:829
 msgid "Specify the name of this system."
 msgstr "Eingabe des Namens dieses Systems."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:422
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:432
 msgid "Specify the network settings for this system."
 msgstr "Eingabe der Netzwerkeinstellungen dieses Systems."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:630
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:640
 msgid "Specify the type of this system."
 msgstr "Eingabe des Typs dieses Systems."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:730
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:740
 msgid "Start join at the end of the installation"
 msgstr "Domänenbeitritt am Ende der Installation starten"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:629
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:639
 msgid "System role"
 msgstr "Systemrolle"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:847
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:413
+msgid "The available memory is not sufficient."
+msgstr "Der verfügbare Arbeitsspeicher reicht nicht aus."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:896
 msgid "The following entries could not be validated:"
 msgstr "Die folgenden Einträge konnten nicht validiert werden:"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2027
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2077
 msgid "The following errors occurred while applying the settings."
 msgstr ""
 "Die folgenden Fehler sind beim Setzen der Konfigurationseinstellungen "
 "aufgetreten."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1695
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1747
 #, javascript-format
 msgid ""
 "The hostname '%s' is already used for a computer with a different role, in "
@@ -1071,7 +1091,7 @@ msgstr ""
 "verwendet. Es wird empfohlen den Rechnernamen zu ändern, damit UCS voll "
 "funktionsfähig ist."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:770
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:780
 msgid ""
 "The installed UCS system will not offer any web-based domain management "
 "functions and will not be able to be a domain member. Such an UCS system "
@@ -1081,7 +1101,7 @@ msgstr ""
 " anbieten und kein Mitglied einer Domäne werden. Solch ein UCS-System sollte"
 " nur in seltenen Fällen aufgesetzt werden, etwa als Firewall-System."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2288
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2341
 msgid ""
 "The root password is too short. For security reasons, your password must "
 "contain at least 8 characters."
@@ -1089,7 +1109,7 @@ msgstr ""
 "Das Root-Passwort ist zu kurz, aus Sicherheitsgründen muss es mindestens 8 "
 "Zeichen lang sein."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2688
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2793
 #, javascript-format
 msgid ""
 "The server <b>%s</b> cannot be reached. For UCS to work properly, please "
@@ -1108,7 +1128,7 @@ msgstr[1] ""
 "konfigurieren Sie das Netzwerk, alle Proxyserver und Firewalls so, dass "
 "diese Server erreichbar sind. Nur so kann UCS voll funktionsfähig sein."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:876
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:886
 msgid ""
 "The server will not be assigned to a specific school and will not provide "
 "UCS@school services."
@@ -1116,7 +1136,7 @@ msgstr ""
 "Der Server wird keiner speziellen Schule zugeordnet und wird keine UCS"
 "@school-Dienste bereitstellen."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:865
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:875
 msgid ""
 "The server will only provide domain services to a school's administrative "
 "network, not educational UCS@school services."
@@ -1124,7 +1144,7 @@ msgstr ""
 "Der Server wird nur Domänendienste für das Verwaltungsnetz einer Schule "
 "bereitstellen, jedoch keine edukativen UCS@school-Dienste."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:854
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:864
 msgid ""
 "The server will provide educational UCS@school services for a school, e.g. "
 "exam mode."
@@ -1132,7 +1152,7 @@ msgstr ""
 "Dieser Server wird edukative UCS@school-Dienste für eine Schule "
 "bereitstellen, z.B. den Klassenarbeitsmodus."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2061
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2076
 msgid ""
 "The system configuration could not be completed. Please choose to retry the "
 "configuration process or finish the wizard."
@@ -1141,7 +1161,7 @@ msgstr ""
 " den Konfigurationsvorgang zu wiederholen oder den Einrichtungsassistenten "
 "zu beenden."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1976
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2026
 msgid ""
 "The system is reachable at <i>%(fqdn)s</i> or via its IP address(es) "
 "<i>%(addresses)s</i>."
@@ -1153,18 +1173,18 @@ msgstr ""
 msgid "This may take a few seconds..."
 msgstr "Dies kann einige Sekunden in Anspruch nehmen..."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:619
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:629
 msgid ""
 "This should only be used in rare use cases, for example as firewall systems."
 msgstr ""
 "Diese Einstellung sollte nur in speziellen Szenarien, z.B. Firewall-"
 "Systemen, gewählt werden."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1181
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1230
 msgid "This system only has {memory_total} RAM."
 msgstr "Dieses System verfügt nur über {memory_total} Arbeitsspeicher."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1790
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1842
 msgid ""
 "This system will be a base system without domain integration and without the"
 " capabilities to join one in the future."
@@ -1172,20 +1192,20 @@ msgstr ""
 "Dieses System wird ein Basissystem ohne jegliche Domänenintegration und ohne"
 " Möglichkeit, später einer Domäne beizutreten."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:608
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:618
 msgid ""
 "This system will become part of an existing non-UCS Active Directory domain."
 msgstr ""
 "Dieses System wird Teil einer existierenden nicht-UCS Active-Directory-"
 "Domäne."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1801
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1853
 #, javascript-format
 msgid "This system will join an existing AD domain with the role <i>%s</i>."
 msgstr ""
 "Das System tritt einer existierenden AD-Domäne mit der Rolle <i>%s</i> bei."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1803
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1855
 #, javascript-format
 msgid "This system will join an existing UCS domain with the role <i>%s</i>."
 msgstr ""
@@ -1195,11 +1215,11 @@ msgstr ""
 msgid "Time zone"
 msgstr "Zeitzone"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1783
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1835
 msgid "UCS configuration"
 msgstr "UCS-Konfiguration"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2047
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2097
 msgid "UCS has been successfully set up."
 msgstr "UCS wurde erfolgreich eingerichtet."
 
@@ -1215,30 +1235,30 @@ msgstr "UCS-Einrichtung - Ein Fehler ist aufgetreten"
 msgid "UCS setup successful"
 msgstr "UCS-Einrichtung erfolgreich"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1185
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1235
 msgid "Univention Corporate Server"
 msgstr "Univention Corporate Server"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:866
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:915
 msgid "Update system after setup"
 msgstr "System nach der Einrichtung aktualisieren"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1158
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1207
 msgid ""
-"Update system to the UCS release version of the master domain controller and "
-"install all available errata and app updates after the setup."
+"Update system to the UCS release version of the master domain controller and"
+" install all available errata and app updates after the setup."
 msgstr ""
 "System nach der Einrichtung auf die Release Version des Domänencontroller "
 "Master aktualisieren und alle verfügbaren Errata und App Updates "
 "installieren."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:597
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:607
 msgid "Use this option if you already have one or more UCS systems."
 msgstr ""
 "Wählen Sie diese Option, falls bereits mindestens ein UCS-System existiert."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:714
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:758
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:724
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:768
 msgid "Username"
 msgstr "Benutzername"
 
@@ -1246,7 +1266,7 @@ msgstr "Benutzername"
 msgid "Validation error"
 msgstr "Validierungsfehler"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:846
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:895
 msgid "Validation failed"
 msgstr "Validierungsfehler"
 
@@ -1254,21 +1274,20 @@ msgstr "Validierungsfehler"
 msgid "Virtual keyboard"
 msgstr "Virtuelle Tastatur"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1492
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2433
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1544
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2547
 msgid "Waiting for restart of server components..."
 msgstr "Warten auf den Neustart der Server-Komponenten ..."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1187
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1706
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1835
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2616
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2661
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2677
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2705
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2815
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2828
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2969
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1758
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1887
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2766
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2782
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2810
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2920
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2933
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:3081
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:3105
 msgid "Warning"
 msgstr "Warnung"
 
@@ -1286,7 +1305,7 @@ msgstr "Wilkommen bei der Einrichtung von %s Appliance."
 msgid "With the activation of UCS you agree to our %s."
 msgstr "Mit der Inbetriebnahme von UCS willigen Sie in unsere %s ein."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1960
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2010
 msgid ""
 "You may restart the configuration process again with modified settings."
 msgstr ""
@@ -1297,10 +1316,10 @@ msgstr ""
 msgid "e.g., Boston..."
 msgstr "bspw. Bremen..."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:553
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:687
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:829
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:868
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:563
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:697
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:839
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:917
 msgid "more information"
 msgstr "mehr Informationen"
 
@@ -1308,12 +1327,12 @@ msgstr "mehr Informationen"
 msgid "privacy statement"
 msgstr "Datenschutzerklärung"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2606
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:3070
 #, javascript-format
 msgid "the %s Appliance"
 msgstr "der %s Appliance"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2604
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:3068
 msgid "the UCS system"
 msgstr "des UCS-Systems"
 
@@ -1559,13 +1578,13 @@ msgstr "des UCS-Systems"
 #~ msgstr "Forwarding-Verzögerung"
 
 #~ msgid ""
-#~ "Further information can be found in the <a "
-#~ "href=\"https://docs.software-univention.de/manual-%s.html#computers:networkcomplex\" "
+#~ "Further information can be found in the <a href=\"https://docs.software-"
+#~ "univention.de/manual-%s.html#computers:networkcomplex\" "
 #~ "target=\"_blank\">UCS documentation</a>."
 #~ msgstr ""
-#~ "Weitere Informationen können in der <a "
-#~ "href=\"https://docs.software-univention.de/handbuch-%s.html#computers:networkcomplex\""
-#~ " target=\"_blank\">UCS Dokumentation</a> gefunden werden."
+#~ "Weitere Informationen können in der <a href=\"https://docs.software-"
+#~ "univention.de/handbuch-%s.html#computers:networkcomplex\" "
+#~ "target=\"_blank\">UCS Dokumentation</a> gefunden werden."
 
 #~ msgid "Gateway (IPv4)"
 #~ msgstr "Gateway (IPv4)"
@@ -1807,9 +1826,12 @@ msgstr "des UCS-Systems"
 #~ msgid "don't set"
 #~ msgstr "nicht setzen"
 
-#~ msgid "https://docs.software-univention.de/manual-%s.html#computers:networkcomplex:uvmm"
+#~ msgid ""
+#~ "https://docs.software-"
+#~ "univention.de/manual-%s.html#computers:networkcomplex:uvmm"
 #~ msgstr ""
-#~ "https://docs.software-univention.de/handbuch-%s.html#computers:networkcomplex:uvmm"
+#~ "https://docs.software-"
+#~ "univention.de/handbuch-%s.html#computers:networkcomplex:uvmm"
 
 #~ msgid "set"
 #~ msgstr "setzen"
