@@ -8,7 +8,7 @@ from os.path import dirname, join
 
 import univention
 import univention.management.console.modules
-univention.__path__.insert(0, join(dirname(__file__), '../src/univention'))
+univention.__path__.append(join(dirname(__file__), '../src/univention'))  # type: ignore
 from univention.uvmm.protocol import Disk  # noqa E402
 from univention.uvmm.storage import assign_disks, DISK_PREFIXES  # noqa E402
 

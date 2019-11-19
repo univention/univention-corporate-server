@@ -36,7 +36,7 @@ import sys
 import gettext
 import socket
 import threading
-import urlparse
+from six.moves.urllib import parse as urlparse
 from functools import reduce
 try:
 	from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union  # noqa F401

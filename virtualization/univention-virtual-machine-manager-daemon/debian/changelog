@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (8.0.1-13) unstable; urgency=low
+
+  * Bug #49179: Fix first Python 3 compatribility issues
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 20 Nov 2019 10:32:47 +0100
+
 univention-virtual-machine-manager-daemon (8.0.1-12) unstable; urgency=medium
 
   * Bug #49179: migrate univention-virtual-machine-manager-daemon to dh_python

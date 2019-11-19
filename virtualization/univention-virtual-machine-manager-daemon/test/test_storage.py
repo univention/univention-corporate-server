@@ -29,11 +29,12 @@
 # <https://www.gnu.org/licenses/>.
 from os.path import dirname, join
 from textwrap import dedent
-from libvirt import libvirtError, VIR_ERR_NO_STORAGE_VOL
 from unittest import main, TestCase
 
+from libvirt import libvirtError, VIR_ERR_NO_STORAGE_VOL
+
 import univention
-univention.__path__.insert(0, join(dirname(__file__), '../src/univention'))
+univention.__path__.append(join(dirname(__file__), '../src/univention'))  # type: ignore
 from univention.uvmm.storage import create_storage_volume, get_domain_storage_volumes, get_pool_info, get_storage_volumes  # noqa: F402
 from univention.uvmm.protocol import Disk  # noqa: F402
 
@@ -88,6 +89,9 @@ class _StoragePool(_Storage):
 	def _null(self):
 		pass
 
+	def name(self):  # pool
+		return self.POOL
+
 
 class TestCreateStorageVolume(_StoragePool):
 
@@ -106,6 +110,9 @@ class TestCreateStorageVolume(_StoragePool):
 	def storagePoolLookupByName(self, name):  # conn
 		assert name == self.POOL
 		return self
+
+	def listAllStoragePools(self):  # conn
+		return []
 
 	def storageVolLookupByName(self, name):  # pool
 		assert name == self.FNAME
@@ -231,6 +238,7 @@ class TestGetStorageVolumes(_Storage):
 		pool = _StoragePool(methodName='_null')
 		pool.setUp()
 		pool.storageVolLookupByName = self.storageVolLookupByName
+		pool.listAllVolumes = self.listAllVolumes
 		return pool
 
 	def storageVolLookupByName(self, name):
@@ -240,6 +248,9 @@ class TestGetStorageVolumes(_Storage):
 	def XMLDesc(self, flags):
 		assert flags == 0
 		return self.xml
+
+	def listAllVolumes(self):  # pool
+		return [self]
 
 	def test_get_storage_volumes(self):
 		volumes = get_storage_volumes(node=self, pool_name=_StoragePool.POOL)

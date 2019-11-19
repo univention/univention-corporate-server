@@ -33,7 +33,11 @@
 
 from __future__ import print_function
 
-from univention.uvmm.helpers import urlparse
+from os.path import dirname, join
+
+import univention
+univention.__path__.append(join(dirname(__file__), '../src/univention'))  # type: ignore
+from univention.uvmm.helpers import urlparse  # noqa: F402
 
 
 def __test():
@@ -90,7 +94,7 @@ def __test():
 		try:
 			assert uri == u
 			print(data)
-		except:
+		except Exception:
 			print(uri, data, u)
 
 

@@ -34,7 +34,7 @@ from textwrap import dedent
 from lxml.doctestcompare import LXMLOutputChecker
 from doctest import Example
 
-univention.__path__.insert(0, join(dirname(__file__), '../src/univention'))
+univention.__path__.append(join(dirname(__file__), '../src/univention'))  # type: ignore
 from univention.uvmm.node import _domain_edit  # noqa: E402
 from univention.uvmm.protocol import Data_Domain, Disk, Interface, Graphic  # noqa: E402
 
@@ -82,12 +82,22 @@ class TestDomainDefault(_Domain):
 			<type arch="i686">hvm</type>
 		</os>
 		<memory>0</memory>
-		<currentMemory>0</currentMemory>
 		<vcpu>1</vcpu>
 		<features>
 			<acpi/>
 			<apic/>
+			<hyperv>
+				<relaxed state="on"></relaxed>
+				<vapic state="on"></vapic>
+				<spinlocks retries="8191" state="on"></spinlocks>
+			</hyperv>
 		</features>
+		<clock offset="utc">
+			<timer name="rtc" present="yes" tickpolicy="catchup"></timer>
+			<timer name="pit" present="yes" tickpolicy="delay"></timer>
+			<timer name="hpet" present="no"></timer>
+			<timer name="hypervclock" present="yes"></timer>
+		</clock>
 		<on_poweroff>destroy</on_poweroff>
 		<on_reboot>restart</on_reboot>
 		<on_crash>destroy</on_crash>
@@ -114,12 +124,22 @@ class TestDomainBootloader(_Domain):
 		<bootloader>/usr/bin/pygrub</bootloader>
 		<bootloader_args>-v</bootloader_args>
 		<memory>0</memory>
-		<currentMemory>0</currentMemory>
 		<vcpu>1</vcpu>
 		<features>
 			<acpi/>
 			<apic/>
+			<hyperv>
+				<relaxed state="on"></relaxed>
+				<vapic state="on"></vapic>
+				<spinlocks retries="8191" state="on"></spinlocks>
+			</hyperv>
 		</features>
+		<clock offset="utc">
+			<timer name="rtc" present="yes" tickpolicy="catchup"></timer>
+			<timer name="pit" present="yes" tickpolicy="delay"></timer>
+			<timer name="hpet" present="no"></timer>
+			<timer name="hypervclock" present="yes"></timer>
+		</clock>
 		<on_poweroff>destroy</on_poweroff>
 		<on_reboot>restart</on_reboot>
 		<on_crash>destroy</on_crash>
@@ -156,8 +176,18 @@ class TestDomainKVM(_Domain):
 		<features>
 			<acpi/>
 			<apic/>
+			<hyperv>
+				<relaxed state="on"></relaxed>
+				<vapic state="on"></vapic>
+				<spinlocks retries="8191" state="on"></spinlocks>
+			</hyperv>
 		</features>
-		<clock offset='utc'/>
+		<clock offset="utc">
+			<timer name="rtc" present="yes" tickpolicy="catchup"></timer>
+			<timer name="pit" present="yes" tickpolicy="delay"></timer>
+			<timer name="hpet" present="no"></timer>
+			<timer name="hypervclock" present="yes"></timer>
+		</clock>
 		<on_poweroff>destroy</on_poweroff>
 		<on_reboot>restart</on_reboot>
 		<on_crash>destroy</on_crash>
@@ -245,24 +275,34 @@ class TestDomainNew(_Domain):
 			<type arch='i686'>hvm</type>
 		</os>
 		<memory>0</memory>
-		<currentMemory>0</currentMemory>
 		<vcpu>1</vcpu>
 		<features>
 			<acpi/>
 			<apic/>
+			<hyperv>
+				<relaxed state="on"></relaxed>
+				<vapic state="on"></vapic>
+				<spinlocks retries="8191" state="on"></spinlocks>
+			</hyperv>
 		</features>
+		<clock offset="utc">
+			<timer name="rtc" present="yes" tickpolicy="catchup"></timer>
+			<timer name="pit" present="yes" tickpolicy="delay"></timer>
+			<timer name="hpet" present="no"></timer>
+			<timer name="hypervclock" present="yes"></timer>
+		</clock>
 		<on_poweroff>destroy</on_poweroff>
 		<on_reboot>restart</on_reboot>
 		<on_crash>destroy</on_crash>
 		<devices>
 			<emulator>/usr/bin/kvm</emulator>
 			<disk type='file' device='disk'>
-				<target/>
+				<target bus="ide" dev="hda"/>
 				<driver cache='default'/>
 				<source file='/var/lib/libvirt/images/ucs401-0.qcow2'/>
 			</disk>
 			<disk type='file' device='cdrom'>
-				<target/>
+				<target bus="ide" dev="hdb"/>
 				<driver cache='default'/>
 				<source file='/var/univention/buildsystem2/isotests/ucs_4.0-1-latest-amd64.iso'/>
 				<readonly/>

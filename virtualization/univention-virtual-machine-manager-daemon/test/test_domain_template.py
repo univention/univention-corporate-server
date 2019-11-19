@@ -33,7 +33,7 @@ from unittest import main, TestCase
 from textwrap import dedent
 
 import univention
-univention.__path__.insert(0, join(dirname(__file__), '../src/univention'))
+univention.__path__.append(join(dirname(__file__), '../src/univention'))  # type: ignore
 from univention.uvmm.node import DomainTemplate  # noqa: F402
 
 
