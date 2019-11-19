@@ -2807,10 +2807,10 @@ exit 0
 				The settings are saved inside the Docker container in the file
 				<filename>/etc/univention/base.conf</filename> in the format
                 <wordasword>key: value</wordasword>. After the settings are
-                changed, two scripts are executed each with the parameter
+                changed, two scripts are executed each with
                 <userinput>settings</userinput> parameter. First, the script
                 <filename>configure_host</filename>. This script is run on the
-                Docker host.  Second, the script <filename>configure</filename>
+                Docker host. Second, the script <filename>configure</filename>
                 is executed. It is executed inside the Docker container. In the
                 App Provider Portal, the path of the script can be given
                 (<guimenu>Configure scripts</guimenu>) or the script code can
@@ -2821,7 +2821,17 @@ exit 0
             <para>
                 It may be required that an app's Docker container(s) is/are
                 recreated after a setting has changed. For this case the App
-                Center offers the <option>reinitialize</option> command.
+                Center offers the <option>reinitialize</option> command. With
+                this command App Docker container(s) is/are stopped, removed
+                and then recreated with the new set of App settings.  This may
+                be necessary if the software reads configuration options only
+                once during Docker container creating and startup.  Docker does
+                not allow to reset environment variables in Docker containers
+                that are already created. Therefore, it may be necessary to
+                recreate them entirely. Otherwise, a restart of the containers
+                may use the old environment variables.
+            </para>
+            <para>
                 When the app should recreate its container(s) with the latest
                 app settings, please put the following lines into the
                 <filename>configure_host</filename> script:
@@ -2830,7 +2840,7 @@ if [ "$1" = "settings" ]; then
   univention-app reinitialize $myapp
 fi
                 </programlisting>
-                The reinitialization is only executed when app settings
+                The reinitialization is only executed when app settings are
                 changed. If the app has a <filename>setup</filename> script,
                 reinitialize is aborted, because <filename>setup</filename> may
                 require credentials and the <filename>configure_host</filename>
