@@ -50,7 +50,7 @@ Package: python-univention-updater
 Architecture: all
 Replaces: univention-updater (<< 14.0.2-6)
 Breaks: univention-updater (<< 14.0.2-6)
-Recommends: ${python:Recommends},
+Provides: ${python:Provides},
 Depends: ${python:Depends},
  ${misc:Depends},
  python-univention (>> 5.0.6),
@@ -73,7 +73,6 @@ Description: UCS Updater Python modules
 
 Package: python3-univention-updater
 Architecture: all
-Recommends: ${python3:Recommends},
 Depends: ${python3:Depends},
  ${misc:Depends},
  python3-univention,
