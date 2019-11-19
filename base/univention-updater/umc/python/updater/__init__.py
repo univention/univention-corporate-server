@@ -51,7 +51,7 @@ from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
 from univention.management.console.modules import Base, UMC_Error
 from univention.management.console.modules.decorators import simple_response, sanitize
-from univention.management.console.modules.sanitizers import ChoicesSanitizer, StringSanitizer, IntegerSanitizer
+from univention.management.console.modules.sanitizers import ChoicesSanitizer, StringSanitizer, IntegerSanitizer, ListSanitizer
 
 from univention.updater.tools import UniventionUpdater
 from univention.updater.errors import RequiredComponentError, UpdaterException
@@ -71,7 +71,8 @@ UPDATE_SERIAL_FILES = [
 	'/etc/apt/sources.list.d/20_ucs-online-component.list'
 ]
 
-HOOK_DIRECTORY = '/usr/lib/python2.7/dist-packages/univention/updater/hooks'
+HOOK_DIRECTORY_LEGACY = '/usr/share/pyshared/univention/management/console/modules/updater/hooks'
+HOOK_DIRECTORY = '/usr/share/univention-updater/hooks'
 
 INSTALLERS = {
 	'release': {
@@ -298,6 +299,9 @@ class Instance(Base):
 
 		return result
 
+	@sanitize(
+		hooks=ListSanitizer(StringSanitizer(minimum=1), required=True)
+	)
 	def call_hooks(self, request):
 		"""
 		Calls the specified hooks and returns data given back by each hook
@@ -305,15 +309,16 @@ class Instance(Base):
 
 		def _thread(request):
 			result = {}
+			hookmanager_legacy = univention.hooks.HookManager(HOOK_DIRECTORY_LEGACY)  # , raise_exceptions=False
 			hookmanager = univention.hooks.HookManager(HOOK_DIRECTORY)  # , raise_exceptions=False
 
 			hooknames = request.options.get('hooks')
 			MODULE.info('requested hooks: %s' % hooknames)
 			for hookname in hooknames:
 				MODULE.info('calling hook %s' % hookname)
-				result[hookname] = hookmanager.call_hook(hookname)
-			MODULE.info('result: %r' % (result,))
+				result[hookname] = hookmanager.call_hook(hookname) + hookmanager_legacy.call_hook(hookname)
 
+			MODULE.info('result: %r' % (result,))
 			return result
 
 		thread = notifier.threads.Simple('call_hooks', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))

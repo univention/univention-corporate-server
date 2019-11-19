@@ -33,7 +33,7 @@ Depends: ${python:Depends}, ${python3:Depends},
  univention-errata-level,
  apt-transport-https,
  ca-certificates,
- python-univention-updater (>= 14.0.2-6),
+ python-univention-updater (= ${source:Version}),
 Recommends:
  screen,
 Suggests:
