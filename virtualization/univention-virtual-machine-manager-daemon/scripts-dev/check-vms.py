@@ -24,10 +24,9 @@ from xml.parsers.expat import ExpatError
 try:
     import curses
     curses.setupterm()
-    NORMAL = curses.tigetstr('sgr0')
+    NORMAL = curses.tigetstr('sgr0').decode('ascii')
     SET_AF = curses.tigetstr('setaf')
-    BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE = \
-        [curses.tparm(SET_AF, i) for i in range(8)]
+    BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE = [curses.tparm(SET_AF, i).decode('ascii') for i in range(8)]
 except (ImportError, curses.error):
     NORMAL = BLACK = RED = GREEN = YELLOW = BLUE = MAGENTA = CYAN = WHITE = ''
 
@@ -49,10 +48,7 @@ class Dotter(object):
         """Print dot graph."""
         if self.dot_out:
             text = fmt % (data or {})
-            try:  # FIXME: Fix Unicode
-                print(''.join(_ for _ in text if 32 <= ord(_)), file=self.dot_out)
-            except UnicodeEncodeError:
-                print(''.join(_ for _ in text if 32 <= ord(_) < 128), file=self.dot_out)
+            print(text, file=self.dot_out)
 
 
 class Resource(object):
@@ -541,10 +537,8 @@ virsh # vol-list temp
 def check_storage_pools(conn):
     """Check active and defined storage pools."""
     logger = logging.getLogger('root')
-    pool_names = conn.listStoragePools()
-    for pool_name in pool_names:
-        logger.debug('POOL %s', pool_name)
-        pool = conn.storagePoolLookupByName(pool_name)
+    for pool in conn.listAllStoragePools():
+        logger.debug('POOL %s', pool)
         try:
             pool.refresh(0)
         except libvirt.libvirtError as ex:
@@ -562,31 +556,16 @@ def check_storage_pools(conn):
         target_path = target.findtext('path')
         StorageVolume.pools.add(target_path)
 
-        volume_names = pool.listVolumes()
-        for volume_name in volume_names:
-            volume = pool.storageVolLookupByName(volume_name)
+        for volume in pool.listAllVolumes():
             StorageVolume.libvirt(volume)
     # TODO: conn.listDefinedStoragePools() are inactive
 
 
-def check_virtual_machines_running(conn):
+def check_virtual_machines(conn):
     """Check running domains."""
     logger = logging.getLogger('root')
-    dom_ids = conn.listDomainsID()
-    for dom_id in dom_ids:
-        logger.debug('running domain %s', dom_id)
-        dom = conn.lookupByID(dom_id)
-        virtual_machine = VirtualMachine.libvirt(dom)
-        virtual_machine.mark_used()
-
-
-def check_virtual_machines_defined(conn):
-    """Check defined domain."""
-    logger = logging.getLogger('root')
-    dom_names = conn.listDefinedDomains()
-    for dom_name in dom_names:
-        logger.debug('persistent domain %s', dom_name)
-        dom = conn.lookupByName(dom_name)
+    for dom in conn.listAllDomains():
+        logger.debug('domain %s', dom)
         virtual_machine = VirtualMachine.libvirt(dom)
         virtual_machine.mark_used()
 
@@ -704,14 +683,13 @@ def main():
     try:
         # volumes first because this is more detailed
         check_storage_pools(conn)
-        check_virtual_machines_running(conn)
-        check_virtual_machines_defined(conn)
+        check_virtual_machines(conn)
         check_storage_volumes(conn)
     finally:
         conn.close()
 
     # Validate all resources
-    for res in Resource.all.values():
+    for res in list(Resource.all.values()):
         res.check_valid()
 
     # Print all resources
@@ -722,10 +700,7 @@ def main():
                 not res.valid:
             filtered.add(res)
             text = '// %s' % (res.console(),)
-            try:  # FIXME: Fix Unicode
-                print(''.join(_ for _ in text if 32 <= ord(_)))
-            except UnicodeEncodeError:
-                print(''.join(_ for _ in text if 32 <= ord(_) < 128))
+            print(text)
 
     if options.dot:
         if not options.show_all:

@@ -1,15 +1,23 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.7
 
 from __future__ import print_function
 
 import sys
 import time
 import libvirt
+from threading import Thread
 
-from univention.uvmm.eventloop import virEventLoopPureStart, virEventLoopPureRegister
 
-virEventLoopPureStart()
-virEventLoopPureRegister()
+def runEventLoop():
+	while True:
+		libvirt.virEventRunDefaultImpl()
+
+
+libvirt.virEventRegisterDefaultImpl()
+loop = Thread(target=runEventLoop, name="libvirtEventLoop")
+loop.setDaemon(True)
+loop.start()
+
 
 STATE = ['no state', 'running', 'idle', 'paused', 'shut down', 'shut off', 'crashed']
 
