@@ -56,8 +56,10 @@ install_virtualbox_packages ()
 
 install_activation_packages ()
 {
-	univention-install -y --force-yes univention-system-activation
-	ucr set --force auth/sshd/user/root=yes
+	if $1; then
+		univention-install -y --force-yes univention-system-activation
+		ucr set --force auth/sshd/user/root=yes
+	fi
 }
 
 download_packages ()
