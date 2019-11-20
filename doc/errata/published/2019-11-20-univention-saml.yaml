@@ -14,3 +14,5 @@ desc: |
  * The UDM modules saml/idpconfig and saml/serviceprovider have been
    modernized.
 bug: [49485, 49167, 50345]
+erratum: 358
+announced: 2019-11-20
