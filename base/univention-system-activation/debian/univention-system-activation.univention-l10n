@@ -1,7 +1,7 @@
 [
 	{
 		"input_files": [
-			"www/.*js"
+			"www/.*\\.js"
 		],
 		"po_subdir": "www",
 		"target_type": "json",

@@ -1,7 +1,7 @@
 [
 	{
 		"input_files": [
-			"modules/univention/admin/handlers/saml/.*py"
+			"modules/univention/admin/handlers/saml/.*\\.py"
 		],
 		"po_subdir": "modules/univention/admin/handlers/saml",
 		"target_type": "mo",

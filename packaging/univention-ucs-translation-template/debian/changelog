@@ -1,3 +1,9 @@
+univention-ucs-translation-template (6.0.0-13) unstable; urgency=low
+
+  * Bug #50521: Document .univention-l10n format
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 20 Nov 2019 13:56:18 +0100
+
 univention-ucs-translation-template (6.0.0-12) unstable; urgency=medium
 
   * Bug #49161: fix path of python2.7 modules

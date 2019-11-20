@@ -1,7 +1,7 @@
 [
 	{
 		"input_files": [
-			"univention/testing/selenium/*.py"
+			"univention/testing/selenium/.*\\.py"
 		],
 		"po_path": "univention/testing/selenium/{lang}.po",
 		"target_type": "mo",
