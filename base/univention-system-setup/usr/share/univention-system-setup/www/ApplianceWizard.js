@@ -1213,7 +1213,7 @@ define([
 		},
 
 		_getMemoryWarning: function(applianceName) {
-			var memory_min = Math.max(parseInt(this.ucr['system/setup/boot/minimal_memory'], 10) || 0, 1024);
+			var memory_min = Math.max(parseInt(this.ucr['system/setup/boot/minimal_memory'], 10) || 0, 2048);
 
 			// The reported total memory is always a bit lower, than the actually installed amount:
 			var memory_total_plus_margin = this.values.memory_total * 1.1;
@@ -1227,8 +1227,7 @@ define([
 				};
 				var message = lang.replace(
 					_('At least {memory_min} RAM is required for the installation of {product_name}.') + ' ' +
-					_('This system only has {memory_total} RAM.') + ' ' + _('Continuing the installation might lead to a not functioning or hung up system.') + ' ' +
-					_('If you want to upgrade your memory first please press the power button of your server to shutdown the system.') + ' ' +
+					_('This system only has {memory_total} RAM.') + ' ' + _('Continuing the installation might lead to a non-functional system.') + ' ' +
 					_('For further information please look at https://help.univention.com/t/13595.'), {
 					memory_min: _memString(memory_min),
 					memory_total: _memString(this.values.memory_total),
