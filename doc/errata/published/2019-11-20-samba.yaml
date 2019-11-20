@@ -11,3 +11,5 @@ desc: |
    security tab on a share or file where such SIDs are present
    in the ACLs.
 bug: [49747]
+erratum: 353
+announced: 2019-11-20
