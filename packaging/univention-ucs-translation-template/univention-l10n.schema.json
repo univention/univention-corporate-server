@@ -1,0 +1,92 @@
+{
+	"$schema": "http://json-schema.org/schema#",
+
+	"definitions": {
+		"pyregexp": {
+			"type": "string",
+			"description": "Prevent globbing wildcard expression",
+			"pattern": "^([^\\/]|\\.|/(?![*+]))*$"
+		},
+		"popath": {
+			"type": "string",
+			"description": "Match files with extension .po",
+			"pattern": ".+\\.po$"
+		},
+		"mopath": {
+			"type": "string",
+			"description": "Match files with extension .mo",
+			"pattern": ".+\\.mo$"
+		},
+		"jsonpath": {
+			"type": "string",
+			"description": "Match files with extension .json",
+			"pattern": ".+\\.json$"
+		}
+	},
+
+	"type": "array",
+	"minItems": 1,
+	"items": {
+		"type": "object",
+		"properties": {
+			"input_files": {
+				"description": "Python regular expression to match source file paths",
+				"type": "array",
+				"minItems": 1,
+				"items": {
+					"$ref": "#/definitions/pyregexp"
+				}
+			},
+			"po_subdir": {
+				"description": "Directory containing multiple .po files",
+				"type": "string"
+			},
+			"po_path": {
+				"description": "Direct path to single .po file",
+				"$ref": "#/definitions/popath"
+			},
+			"target_type": {
+				"description": "File format",
+				"type": "string",
+				"enum": ["mo", "json"]
+			},
+			"destination": {
+				"description": "Installation path",
+				"oneOf": [
+					{ "$ref": "#/definitions/mopath" },
+					{ "$ref": "#/definitions/jsonpath" }
+				]
+			}
+		},
+		"required": [
+			"input_files",
+			"target_type",
+			"destination"
+		],
+		"oneOf": [
+			{
+				"required": ["po_subdir"],
+				"not": {
+					"required": ["po_path"]
+				}
+			},
+			{
+				"required": ["po_path"],
+				"not": {
+					"required": ["po_subdir"]
+				}
+			}
+		],
+		"additionalProperties": false,
+		"if": {
+			"properties": { "target_type": { "const": "mo" } }
+		}, "then": {
+			"properties": { "destination": { "$ref": "#/definitions/mopath" } }
+		},
+		"if": {
+			"properties": { "target_type": { "const": "json" } }
+		}, "then": {
+			"properties": { "destination": { "$ref": "#/definitions/jsonpath" } }
+		}
+	}
+}
