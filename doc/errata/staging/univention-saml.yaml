@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-2
 src: univention-saml
 fix: 6.0.2-14A~4.4.0.201911081724
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * Is is now possible to restrict negotiate authentication to certain IP
    networks via the UCR variable saml/idp/negotiate/filter-subnets.
  * The package now uses dh_python2 instead of python-support.
