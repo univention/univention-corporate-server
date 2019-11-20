@@ -1,7 +1,7 @@
 [
 	{
 		"input_files": [
-			"modules/univention/admin/handlers/container/.*.py"
+			"modules/univention/admin/handlers/container/.*\\.py"
 		],
 		"po_subdir": "modules/univention/admin/handlers/container/msgpo",
 		"target_type": "mo",
@@ -9,7 +9,7 @@
 	},
 	{
 		"input_files": [
-			"modules/univention/admin/handlers/settings/mswmifilter.py"
+			"modules/univention/admin/handlers/settings/mswmifilter\\.py"
 		],
 		"po_subdir": "modules/univention/admin/handlers/settings/mswmifilter",
 		"target_type": "mo",
@@ -17,7 +17,7 @@
 	},
 	{
 		"input_files": [
-			"modules/univention/admin/handlers/settings/msprintconnectionpolicy.py"
+			"modules/univention/admin/handlers/settings/msprintconnectionpolicy\\.py"
 		],
 		"po_subdir": "modules/univention/admin/handlers/settings/msprintconnectionpolicy",
 		"target_type": "mo",

@@ -1,7 +1,7 @@
 [
 	{
 		"input_files": [
-			".*py"
+			".*\\.py"
 		],
 		"po_subdir": "python",
 		"target_type": "mo",
