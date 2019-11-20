@@ -9,3 +9,5 @@ desc: |
  * The python-oslo.config package has been added to maintained.
 bug: [35428]
 maintained: true
+erratum: 368
+announced: 2019-11-20
