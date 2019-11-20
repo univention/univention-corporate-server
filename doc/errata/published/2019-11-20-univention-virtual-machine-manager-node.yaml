@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The package has been prepared for Python 3.
 bug: [49180]
+erratum: 361
+announced: 2019-11-20
