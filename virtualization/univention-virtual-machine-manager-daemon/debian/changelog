@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (8.0.1-14) unstable; urgency=low
+
+  * Bug #49179: Re-add missing translation file
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 20 Nov 2019 10:51:06 +0100
+
 univention-virtual-machine-manager-daemon (8.0.1-13) unstable; urgency=low
 
   * Bug #49179: Fix first Python 3 compatribility issues
