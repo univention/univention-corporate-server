@@ -9,3 +9,5 @@ desc: |
  * The novnc package has been imported from Debian buster.
 bug: [35428]
 maintained: true
+erratum: 374
+announced: 2019-11-20
