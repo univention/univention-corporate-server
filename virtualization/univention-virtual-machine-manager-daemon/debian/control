@@ -3,70 +3,84 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.7.2
-Build-Depends: debhelper (>= 9),
- ucslint-univention,
+Build-Depends:
+ debhelper (>= 9),
  dh-python,
  python-all,
  python3-all,
+ ucslint-univention,
  univention-config-dev,
  univention-management-console-dev,
  univention-ucs-translation-template,
 
 Package: univention-virtual-machine-manager-daemon
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends},
+Depends:
+ python-univention (>> 5.0.10),
+ python-univention-lib (>= 1.0.25-1),
+ python-univention-virtual-machine-manager (= ${source:Version}),
+ shell-univention-lib (>= 1.0.25-1),
  univention-base-files,
  univention-directory-manager-tools (>> 7.0.147),
- univention-ssl,
- python-univention (>> 5.0.10),
- univention-virtual-machine-manager-schema (>= 5.0.3),
- python-univention-virtual-machine-manager (= ${source:Version}),
  univention-management-console-module-uvmm (= ${source:Version}),
- shell-univention-lib (>= 1.0.25-1),
- python-univention-lib (>= 1.0.25-1)
-Recommends: libvirt-clients,
- univention-nagios-uvmmd
-Suggests: python-meliae,
+ univention-ssl,
+ univention-virtual-machine-manager-schema (>= 5.0.3),
+ ${misc:Depends},
+ ${python:Depends},
+Recommends:
+ libvirt-clients,
+ univention-nagios-uvmmd,
+Suggests:
+ python-meliae,
 Description: UCS Virtual Machine Manager Daemon
  This package contains the UCS Virtual Machine Manager Daemon
  used to collect information from a farm of virtualization servers.
 
 Package: python-univention-virtual-machine-manager
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends},
- python-libvirt (>= 0.9.12),
- python-openssl,
- python-univention-directory-manager (>> 6.0.103),
+Depends:
  python-libcloud (>= 0.15.1),
+ python-libvirt (>= 0.9.12),
  python-lxml,
+ python-openssl,
  python-six,
-Provides: ${python:Provides}
+ python-univention-directory-manager (>> 6.0.103),
+ ${misc:Depends},
+ ${python:Depends},
+Provides:
+ ${python:Provides},
 Description: UCS Virtual Machine Manager Daemon - Python bindings
  This package contains the UCS Virtual Machine Manager Daemon
  Python bindings used to communicate with the daemon.
 
 Package: python3-univention-virtual-machine-manager
 Architecture: all
-Depends: ${misc:Depends}, ${python3:Depends},
- python3-libvirt,
- python3-openssl,
- python3-univention-directory-manager,
+Depends:
  python3-libcloud,
+ python3-libvirt,
  python3-lxml,
+ python3-openssl,
  python3-six,
-Provides: ${python3:Provides}
+ python3-univention-directory-manager,
+ ${misc:Depends},
+ ${python3:Depends},
+Provides:
+ ${python3:Provides},
 Description: UCS Virtual Machine Manager Daemon - Python 3 bindings
  This package contains the UCS Virtual Machine Manager Daemon
  Python 3 bindings used to communicate with the daemon.
 
 Package: univention-management-console-module-uvmm
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, ${python3:Depends},
+Depends:
+ python-univention-virtual-machine-manager (= ${source:Version}),
  univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server (>= 11.0.4-37),
- python-univention-virtual-machine-manager (= ${source:Version}),
  univention-novnc,
  univention-web-js (>= 3.0.5-21),
+ ${misc:Depends},
+ ${python3:Depends},
+ ${python:Depends},
 Description: UCS Virtual Machine Manager UMC module
  This package contains the UCS Virtual Machine Manager Daemon
  UMC module.
