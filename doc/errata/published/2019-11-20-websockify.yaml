@@ -9,3 +9,5 @@ desc: |
  * The websockify package has been added to maintained.
 bug: [35428]
 maintained: true
+erratum: 372
+announced: 2019-11-20
