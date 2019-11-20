@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The novnc package from Debian buster is now used.
 bug: [35428]
+erratum: 367
+announced: 2019-11-20
