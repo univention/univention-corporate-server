@@ -9,3 +9,5 @@ desc: |
  * The python-oslo.i18n package has been added to maintained.
 bug: [35428]
 maintained: true
+erratum: 371
+announced: 2019-11-20
