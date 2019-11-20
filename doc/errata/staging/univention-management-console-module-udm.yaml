@@ -8,5 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * The package ships the directory
   /usr/share/univention-management-console-module-udm/ again.
-  This is necessary for creation of reports and has been broken in erratum 346.
+  This is necessary for creation of reports and has been broken in
+  erratum 346.
 bug: [50497]
