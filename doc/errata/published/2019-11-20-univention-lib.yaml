@@ -9,3 +9,5 @@ desc: |
  * Added set/get_handler_message to store/get listener messages
    in the LDAP directory (as settings data object).
 bug: [50481]
+erratum: 365
+announced: 2019-11-20
