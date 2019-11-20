@@ -11,3 +11,5 @@ desc: |
    `univentionListenerMessage`. These are used
    in the Appcenter to improve error messages.
 bug: [50481]
+erratum: 364
+announced: 2019-11-20
