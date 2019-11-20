@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [2]
+scope: ucs_4.4-0-errata4.4-2
+src: univention-saml
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * It is now possible to make the saml Identity Provider accessible under
+   multiple url subpaths, each with its own entityID but with the same
+   configuration. This has been added to use the saml Identity Provider with
+   multiple Azure domains.
+bug: [50510]
