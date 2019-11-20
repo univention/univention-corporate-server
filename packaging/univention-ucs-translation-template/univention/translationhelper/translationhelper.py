@@ -105,17 +105,17 @@ class UMCModuleTranslation(umc.UMC_Module):
 	def python_mo_destinations(self):
 		# type: () -> Iterator[Tuple[str, str]]
 		for po_file in self.python_po_files:
-			yield os.path.join(self.get('target_language'), self['relative_path_src_pkg'], po_file), 'usr/share/locale/{target_language}/LC_MESSAGES/{module_name}.mo'.format(**self)
+			yield os.path.join(self['target_language'], self['relative_path_src_pkg'], po_file), 'usr/share/locale/{target_language}/LC_MESSAGES/{module_name}.mo'.format(**self)
 
 	def json_targets(self):
 		# type: () -> Iterator[Tuple[str, str]]
 		for js_po in self.js_po_files:
-			yield os.path.join(self.get('target_language'), self['relative_path_src_pkg'], js_po), 'usr/share/univention-management-console-frontend/js/umc/modules/i18n/{target_language}/{Module}.json'.format(**self)
+			yield os.path.join(self['target_language'], self['relative_path_src_pkg'], js_po), 'usr/share/univention-management-console-frontend/js/umc/modules/i18n/{target_language}/{Module}.json'.format(**self)
 
 	def xml_mo_destinations(self):
 		# type: () -> Iterator[Tuple[str, str]]
 		for _, xml_po in self.xml_po_files:
-			yield os.path.join(self.get('target_language'), self['relative_path_src_pkg'], xml_po), 'usr/share/univention-management-console/i18n/{target_language}/{Module}.mo'.format(**self)
+			yield os.path.join(self['target_language'], self['relative_path_src_pkg'], xml_po), 'usr/share/univention-management-console/i18n/{target_language}/{Module}.mo'.format(**self)
 
 	@classmethod
 	def from_source_package(cls, module_in_source_tree, target_language):

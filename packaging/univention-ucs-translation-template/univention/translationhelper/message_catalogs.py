@@ -122,7 +122,15 @@ def join_existing(language, output_file, input_files, cwd=os.getcwd()):
 	# make input_files relative so the location lines in the resulting po
 	# will be relative to cwd
 	input_files = [os.path.relpath(p, start=cwd) for p in input_files]
-	_call_gettext('xgettext', '--from-code=UTF-8', '--join-existing', '--omit-header', '--language', language, '-o', output_file, *input_files, cwd=cwd)
+	_call_gettext(
+		'xgettext',
+		'--from-code=UTF-8',
+		'--join-existing',
+		'--omit-header',
+		'--language', language,
+		'-o', output_file,
+		*input_files,
+		cwd=cwd)
 
 
 def po_to_json(po_path, json_output_path):

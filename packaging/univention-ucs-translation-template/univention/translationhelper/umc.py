@@ -63,6 +63,10 @@ import xml.etree.ElementTree as ET
 
 from debian.deb822 import Deb822
 from . import helper
+try:
+	from typing import Iterable, Iterator, List, Optional, Tuple, Union  # noqa F401
+except ImportError:
+	pass
 
 MODULE = 'Module'
 PYTHON = 'Python'
@@ -114,11 +118,11 @@ class UMC_Module(dict):
 		try:
 			return '%(Python)s/%(Module)s/' % self
 		except KeyError:
-			pass
+			return None
 
 	@property
 	def python_version(self):
-		# type: () -> int
+		# type: () -> float
 		return 3 if self.get(PYTHON_VERSION, ['2.7'])[0].startswith('3') else 2.7
 
 	@property
@@ -128,7 +132,7 @@ class UMC_Module(dict):
 		try:
 			return '%(Javascript)s/' % self
 		except KeyError:
-			pass
+			return None
 
 	@property
 	def js_module_file(self):
@@ -137,7 +141,7 @@ class UMC_Module(dict):
 		try:
 			return '%(Javascript)s/%(Module)s.js' % self
 		except KeyError:
-			pass
+			return None
 
 	def _iter_files(self, base, suffix):
 		# type: (Optional[str], str) -> Iterator[str]
