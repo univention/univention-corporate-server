@@ -9,3 +9,5 @@ desc: |
  * The python-rfc3986 package has been added to maintained.
 bug: [35428]
 maintained: true
+erratum: 370
+announced: 2019-11-20
