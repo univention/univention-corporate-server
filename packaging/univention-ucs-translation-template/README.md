@@ -73,7 +73,7 @@ UMC used its own technique, which now indirectly invokes `univention-l10n`.
 UMC also uses XML files, which need separate translation.
 
 For UMC-only modules it is sufficient to use `dh-umc-module-build` and `dh-umc-module-install`.
-If the package contains other Python of JavaScript files, `univention-l10n-build` and `univention-l10n-install` must be used in *addition*.
+If the package contains other Python or JavaScript files, `univention-l10n-build` and `univention-l10n-install` must be used in *addition*.
 
 Translation package
 -------------------
