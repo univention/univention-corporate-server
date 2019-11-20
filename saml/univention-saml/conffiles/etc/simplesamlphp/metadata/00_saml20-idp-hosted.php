@@ -6,10 +6,7 @@
  * See: https://rnd.feide.no/content/idp-hosted-metadata-reference
  */
 
-@!@
-entity_id = configRegistry.get('saml/idp/entityID', 'https://%(hostname)s.%(domainname)s/simplesamlphp/saml2/idp/metadata.php' % configRegistry)
-print "$metadata['%s'] = array(" % (entity_id,)
-@!@
+$idp_config = array(
 	/*
 	 * The hostname of the server (VHOST) that will use this SAML entity.
 	 *
@@ -41,3 +38,12 @@ print "	'auth'	=> '%s'," % configRegistry.get('saml/idp/authsource', 'univention
 	*/
 
 );
+@!@
+from univention.saml.lib import get_idps
+idps = get_idps(configRegistry)
+for idp in idps:
+	print("$metadata['{}'] = array_replace($idp_config, array('host' => '{}'));".format(
+		idp['entityID'],
+		idp['baseurl']
+	))
+@!@

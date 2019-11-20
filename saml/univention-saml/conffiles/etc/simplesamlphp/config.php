@@ -7,6 +7,15 @@
  * $Id: config.php 3246 2013-05-23 11:43:52Z olavmrk $
  */
 
+require_once('/usr/share/simplesamlphp/lib/univention/lib.php');
+
+@!@
+from univention.saml.lib import get_idps
+print('$baseurls = array (')
+print('\n'.join("\t'{}/',".format(idp['basepath']) for idp in get_idps(configRegistry)))
+print(');')
+@!@
+
 $config = array (
 @!@
 saml20_enabled = 'false'
@@ -39,7 +48,7 @@ print "	'domainname'	=> '%s'," % configRegistry.get('domainname', '')
 	 * external url, no matter where you come from (direct access or via the
 	 * reverse proxy).
 	 */
-	'baseurlpath'           => 'simplesamlphp/',
+	'baseurlpath'           => get_baseurlpath($baseurls, $_SERVER['REQUEST_URI']),
 	'certdir'               => '/etc/ssl/certs/',
 	'loggingdir'            => '/var/log/simplesamlphp/',
 	'datadir'               => '/var/lib/simplesamlphp/data/',
