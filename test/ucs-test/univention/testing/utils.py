@@ -226,8 +226,8 @@ def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=T
 			if difference:
 				unexpected_values[attribute] = difference
 
-	values_missing = '\n'.join('%s: %r, missing   : \'%s\'' % (attribute, attr.get(attribute), '\', '.join(difference)) for attribute, difference in values_missing.iteritems())
-	unexpected_values = '\n'.join('%s: %r, unexpected: \'%s\'' % (attribute, attr.get(attribute), '\', '.join(difference)) for attribute, difference in unexpected_values.iteritems())
+	values_missing = '\n'.join('%s: %r, missing   : \'%s\'' % (attribute, attr.get(attribute), '\', '.join(difference)) for attribute, difference in values_missing.items())
+	unexpected_values = '\n'.join('%s: %r, unexpected: \'%s\'' % (attribute, attr.get(attribute), '\', '.join(difference)) for attribute, difference in unexpected_values.items())
 	msg = 'DN: %s\n%s\n%s' % (baseDn, values_missing, unexpected_values)
 
 	if values_missing:
@@ -476,7 +476,7 @@ def wait_for_listener_replication(verbose=True):
 	time.sleep(1)  # Give the notifier some time to increase its transaction id
 	if verbose:
 		print('Waiting for replication...')
-	for _ in xrange(300):
+	for _ in range(300):
 		# The "-c 1" option ensures listener and notifier id are equal.
 		# Otherwise the check is successful as long as the listener id changed since the last check.
 		cmd = ('/usr/lib/nagios/plugins/check_univention_replication', '-c', '1')
@@ -509,7 +509,7 @@ def wait_for_listener_replication_and_postrun(verbose=True):
 		print("Waiting for postrun...")
 	lid = get_lid()
 	seconds_since_last_change = 0
-	for _ in xrange(300):
+	for _ in range(300):
 		time.sleep(1)
 		print('.', end=' ')
 		if lid == get_lid():

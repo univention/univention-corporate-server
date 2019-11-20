@@ -34,6 +34,7 @@ import re
 import os
 import operator
 import logging
+import six
 import subprocess
 
 __all__ = [
@@ -193,7 +194,7 @@ class UCSVersion(object):  # pylint: disable-msg=R0903
 		raise ValueError('Unknown version match: "%s"' % (ver,))
 
 	def __init__(self, ver):
-		if isinstance(ver, basestring):
+		if isinstance(ver, six.string_types):
 			self.rel, self.ver = self._parse(ver)
 		else:
 			self.rel = operator.eq

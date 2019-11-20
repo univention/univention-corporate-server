@@ -18,6 +18,7 @@ import signal
 import select
 import errno
 import re
+import six
 from hashlib import md5
 from time import time
 from functools import reduce
@@ -37,7 +38,7 @@ ILLEGAL_XML_UNICHR = (
 	(0xDFFFE, 0xDFFFF), (0xEFFFE, 0xEFFFF), (0xFFFFE, 0xFFFFF),
 	(0x10FFFE, 0x10FFFF),
 )
-RE_ILLEGAL_XML = re.compile(u'[%s]' % u''.join((u'%s-%s' % (unichr(low), unichr(high)) for (low, high) in ILLEGAL_XML_UNICHR if low < sys.maxunicode)))
+RE_ILLEGAL_XML = re.compile(u'[%s]' % u''.join((u'%s-%s' % (six.unichr(low), six.unichr(high)) for (low, high) in ILLEGAL_XML_UNICHR if low < sys.maxunicode)))
 
 
 def checked_set(values):

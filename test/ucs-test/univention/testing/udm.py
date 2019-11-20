@@ -70,7 +70,7 @@ class UCSTestUDM_Exception(Exception):
 
 	def __str__(self):
 		if self.args and len(self.args) == 1 and isinstance(self.args[0], dict):
-			return '\n'.join('%s=%s' % (key, value) for key, value in self.args[0].iteritems())
+			return '\n'.join('%s=%s' % (key, value) for key, value in self.args[0].items())
 		else:
 			return Exception.__str__(self)
 	__repr__ = __str__

@@ -49,7 +49,7 @@ def random_string(length=10, alpha=True, numeric=True, charset=None, encoding='u
 	If length is 0 or negative, an empty string is returned.
 	"""
 	result = u''
-	for _ in xrange(length):
+	for _ in range(length):
 		if charset:
 			result += random.choice(charset)
 		elif alpha and numeric:
@@ -94,7 +94,7 @@ def random_int(bottom_end=0, top_end=9):
 
 def random_version(elements=3):
 	version = []
-	for i in xrange(elements):
+	for _ in range(elements):
 		version.append(random_int(0, 9))
 	return '.'.join(version)
 
