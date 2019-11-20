@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Better error message in case the LDAP schema registration fails.
 bug: [50481]
+erratum: 363
+announced: 2019-11-20
