@@ -11,3 +11,5 @@ desc: |
    /usr/lib/python2.7/dist-packages/univention/.
 bug: [49135]
 maintained: true
+erratum: 355
+announced: 2019-11-20
