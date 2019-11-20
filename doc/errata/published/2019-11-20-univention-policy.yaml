@@ -10,3 +10,5 @@ desc: |
    Therefore python modules are installed into
    /usr/lib/python2.7/dist-packages/univention/lib/.
 bug: [49138]
+erratum: 357
+announced: 2019-11-20
