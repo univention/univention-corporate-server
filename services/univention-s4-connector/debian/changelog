@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-58) unstable; urgency=medium
+
+  * Bug #49792: Allow re-creation of deleted group object with same objectSid in Samba/AD
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 21 Nov 2019 15:53:06 +0100
+
 univention-s4-connector (13.0.2-57) unstable; urgency=medium
 
   * Bug #50202: Fix time conversion in s4-connector to prevent loops
