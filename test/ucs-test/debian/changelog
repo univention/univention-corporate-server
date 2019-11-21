@@ -1,4 +1,4 @@
-ucs-test (9.0.3-104) unstable; urgency=medium
+ucs-test (9.0.3-105) unstable; urgency=medium
 
   * Bug #50411: added debug to 54_smbtorture/01_smbtorture
 
