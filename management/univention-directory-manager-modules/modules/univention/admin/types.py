@@ -32,6 +32,7 @@
 from __future__ import absolute_import
 
 import inspect
+import sys
 import time
 import datetime
 
@@ -305,7 +306,10 @@ class TriBooleanType(BooleanType):
 
 
 class IntegerType(TypeHint):
-	_python_types = (int, long)
+	if sys.version_info >= (3,):
+		_python_types = (int)
+	else:
+		_python_types = (int, long)
 	_openapi_type = 'integer'
 	# _openapi_format: int32, int64
 
@@ -324,7 +328,10 @@ class NumberType(TypeHint):
 
 
 class StringType(TypeHint):
-	_python_types = unicode
+	if sys.version_info >= (3,):
+		_python_types = (str)
+	else:
+		_python_types = unicode
 	_encoding = 'UTF-8'
 	_openapi_type = 'string'
 
@@ -374,7 +381,10 @@ class BinaryType(TypeHint):
 	_encoding = 'ISO8859-1'
 
 	# It is not possible to transmit binary data via JSON. in JSON everything needs to be UTF-8!
-	_json_type = unicode
+	if sys.version_info >= (3,):
+		_json_type = str
+	else:
+		_json_type = unicode
 	_json_encoding = 'ISO8859-1'
 
 	_openapi_type = 'string'
@@ -392,7 +402,10 @@ class BinaryType(TypeHint):
 
 class DateType(StringType):
 	_python_types = datetime.date
-	_json_type = unicode
+	if sys.version_info >= (3,):
+		_json_type = str
+	else:
+		_json_type = unicode
 	_openapi_format = 'date'
 
 	def decode_value(self, value):
@@ -416,7 +429,10 @@ class DateType(StringType):
 
 class TimeType(StringType):
 	_python_types = datetime.time
-	_json_type = unicode
+	if sys.version_info >= (3,):
+		_json_type = str
+	else:
+		_json_type = unicode
 	_openapi_format = 'time'
 
 	def decode_value(self, value):
@@ -443,7 +459,10 @@ class DateTimeType(StringType):
 		syntax classes using this type must support the method from_datetime(), which returns something valid for syntax.parse()
 	"""
 	_python_types = datetime.datetime
-	_json_type = unicode
+	if sys.version_info >= (3,):
+		_json_type = str
+	else:
+		_json_type = unicode
 	_openapi_format = 'date-time'
 
 	def decode_value(self, value):
