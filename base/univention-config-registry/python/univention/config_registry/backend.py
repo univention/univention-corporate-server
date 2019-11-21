@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 from __future__ import print_function
+import io
 import sys
 import os
 import fcntl
@@ -510,7 +511,7 @@ class _ConfigRegistry(dict):
 		"""Load sub registry from file."""
 		import_failed = False
 		try:
-			reg_file = open(self.file, 'r')
+			reg_file = io.open(self.file, 'r', encoding='UTF-8')
 		except EnvironmentError:
 			import_failed = True
 		else:
