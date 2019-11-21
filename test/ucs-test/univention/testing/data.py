@@ -127,10 +127,8 @@ class TestEnvironment(object):
 		print('version: %s' % (self.ucs_version,), file=stream)
 		print('role: %s' % (self.role,), file=stream)
 		print('joined: %s' % (self.joined,), file=stream)
-		print('tags_required: %s' % \
-			(' '.join(self.tags_required) or '-',), file=stream)
-		print('tags_prohibited: %s' % \
-			(' '.join(self.tags_prohibited) or '-',), file=stream)
+		print('tags_required: %s' % (' '.join(self.tags_required) or '-',), file=stream)
+		print('tags_prohibited: %s' % (' '.join(self.tags_prohibited) or '-',), file=stream)
 		print('timeout: %d' % (self.timeout,), file=stream)
 
 	def tag(self, require=set(), ignore=set(), prohibit=set()):
@@ -167,10 +165,10 @@ class _TestReader(object):  # pylint: disable-msg=R0903
 		while True:
 			line = self.stream.readline(size)
 			if not line:
-				return ''  # EOF
-			if line.startswith('## '):
+				return b''  # EOF
+			if line.startswith(b'## '):
 				return line[3:]
-			if not line.startswith('#'):
+			if not line.startswith(b'#'):
 				while line:
 					self.digest.update(line)
 					line = self.stream.readline(size)
@@ -485,7 +483,7 @@ class TestCase(object):
 	"""Test case."""
 
 	logger = logging.getLogger('test.case')
-	RE_NL = re.compile(r'[\r\n]+')
+	RE_NL = re.compile(r'[\r\n]+'.encode('utf-8'))
 
 	def __init__(self):
 		self.exe = None
@@ -505,7 +503,7 @@ class TestCase(object):
 		TestCase.logger.info('Loading test %s' % (filename,))
 		digest = md5()
 		try:
-			tc_file = open(filename, 'r')
+			tc_file = open(filename, 'rb')
 		except IOError as ex:
 			TestCase.logger.critical(
 				'Failed to read "%s": %s',
@@ -514,13 +512,13 @@ class TestCase(object):
 
 		try:
 			firstline = tc_file.readline()
-			if not firstline.startswith('#!'):
+			if not firstline.startswith(b'#!'):
 				raise TestError('Missing hash-bang')
-			args = firstline.split(None)
+			args = firstline.decode('utf-8').split(None)
 			try:
 				lang = args[1]
 			except IndexError:
-				lang = ''
+				lang = u''
 			self.exe = CheckExecutable(lang)
 			self.args = args[2:]
 
@@ -587,10 +585,10 @@ class TestCase(object):
 
 	def _run_tee(self, proc, result, stdout=sys.stdout, stderr=sys.stderr):
 		"""Run test collecting and passing through stdout, stderr:"""
-		EOF = ''
+		EOF = b''
 		channels = {
-			proc.stdout.fileno(): (proc.stdout, [], 'stdout', stdout, '[]', bytearray()),
-			proc.stderr.fileno(): (proc.stderr, [], 'stderr', stderr, '()', bytearray()),
+			proc.stdout.fileno(): (proc.stdout, [], u'stdout', stdout, b'[]', bytearray()),
+			proc.stderr.fileno(): (proc.stderr, [], u'stderr', stderr, b'()', bytearray()),
 		}
 		combined = []
 		next_kill = next_read = None
@@ -627,7 +625,10 @@ class TestCase(object):
 
 				if fd in rlist:
 					data = os.read(fd, 1024)
-					out.write(data)
+					if six.PY3:
+						out.buffer.write(data)
+					else:
+						out.write(data)
 					buf += data
 				else:
 					data = EOF if shutdown else None
@@ -644,7 +645,7 @@ class TestCase(object):
 						del buf[0:match.end()]
 
 					now = datetime.now().isoformat(' ')
-					entry = '{1[0]}{0}{1[1]} {2}\n'.format(now, paren, line.rstrip('\r\n'))
+					entry = b'%s %s\n' % (u'{1[0]}{0}{1[1]}'.format(now, paren).encode('ascii'), line.rstrip(b'\r\n'))
 					log.append(entry)
 					combined.append(entry)
 
@@ -681,7 +682,7 @@ class TestCase(object):
 	@staticmethod
 	def _attach(result, part, content):
 		"""Attach content."""
-		text = ''.join(content)
+		text = b''.join(content)
 		dirty = text.decode(sys.getfilesystemencoding(), 'replace')
 		clean = RE_ILLEGAL_XML.sub(u'\uFFFD', dirty)
 		result.attach(part, 'text/plain', clean)
@@ -748,7 +749,7 @@ class TestCase(object):
 					)
 					to_stdout, to_stderr = sys.stdout, sys.stderr
 				else:
-					devnull = open(os.path.devnull, 'r')
+					devnull = open(os.path.devnull, 'rb')
 					try:
 						proc = Popen(
 							cmd, executable=self.exe.filename,

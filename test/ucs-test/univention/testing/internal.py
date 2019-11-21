@@ -221,7 +221,25 @@ class UCSVersion(object):  # pylint: disable-msg=R0903
 		return '%s(%r)' % (self.__class__.__name__, self.__str__(),)
 
 	def __cmp__(self, other):
-		return cmp(self.ver, other.ver)
+		return cmp(self.ver, other.ver)  # noqa: F821
+
+	def __eq__(self, other):
+		return self.ver == other.ver
+
+	def __ne__(self, other):
+		return self.ver != other.ver
+
+	def __lt__(self, other):
+		return self.ver < other.ver
+
+	def __le__(self, other):
+		return self.ver <= other.ver
+
+	def __gt__(self, other):
+		return self.ver > other.ver
+
+	def __ge__(self, other):
+		return self.ver >= other.ver
 
 	def match(self, other):
 		"""
