@@ -18,7 +18,7 @@ class _Term(object):  # pylint: disable-msg=R0903
 	"""Handle terminal formatting."""
 	__ANSICOLORS = "BLACK RED GREEN YELLOW BLUE MAGENTA CYAN WHITE".split()
 	# vt100.sgr0 contains a delay in the form of '$<2>'
-	__RE_DELAY = re.compile(r'\$<\d+>[/*]?')
+	__RE_DELAY = re.compile(r'\$<\d+>[/*]?'.encode('utf-8'))
 
 	def __init__(self, term_stream=sys.stdout):
 		self.COLS = 80  # pylint: disable-msg=C0103
@@ -34,7 +34,7 @@ class _Term(object):  # pylint: disable-msg=R0903
 			return
 		self.COLS = curses.tigetnum('cols') or 80
 		self.LINES = curses.tigetnum('lines') or 25
-		self.NORMAL = _Term.__RE_DELAY.sub('', curses.tigetstr('sgr0') or '')
+		self.NORMAL = _Term.__RE_DELAY.sub(b'', curses.tigetstr('sgr0') or b'')
 		set_fg_ansi = curses.tigetstr('setaf')
 		for color in self.__ANSICOLORS:
 			i = getattr(curses, 'COLOR_%s' % color)
