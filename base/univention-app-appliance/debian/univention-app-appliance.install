@@ -7,4 +7,5 @@ usr/sbin/
 usr/share/univention-system-setup/www/
 usr/share/univention-web/js/
 usr/lib/univention-system-setup/appliance-hooks.d/
+/var/cache/univention-app-appliance
 

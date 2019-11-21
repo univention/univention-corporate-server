@@ -1,3 +1,9 @@
+univention-app-appliance (3.0.1-7) unstable; urgency=medium
+
+  * Bug #50528: improvements according to qa feedback
+
+ -- Jannik Ahlers <ahlers@univention.de>  Thu, 21 Nov 2019 16:55:49 +0100
+
 univention-app-appliance (3.0.1-6) unstable; urgency=medium
 
   * Bug #50528: cache appliance branding information

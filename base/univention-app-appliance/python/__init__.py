@@ -113,14 +113,18 @@ def get_cache_dir_name(app):
 
 
 def get_app_style_properties(app):
+	local_cache_name = 'app_props' if app.get_locale() == 'en' else 'app_props_de'
 	try:
-		local_cache_name = 'app_props' if app.get_locale() == 'en' else 'app_props_de'
 		with open(os.path.join(get_cache_dir_name(app), local_cache_name)) as fd:
 			props = json.load(fd)
 			print('Properties loaded from %s cache' % local_cache_name)
 			return props
-	except:
-		pass
+	except Exception as exc:
+		if not os.path.exists(os.path.join(get_cache_dir_name(app), local_cache_name)):
+			print('Properties loaded from web for %s' % local_cache_name)
+		else:
+			print('Warning: ' + exc)
+
 	props = dict()
 	for i in (
 		'primary_color',
