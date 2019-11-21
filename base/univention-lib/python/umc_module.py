@@ -33,9 +33,10 @@ helper functions for MIME type handling.
 
 import univention.admin.uexceptions
 import bz2
+import sys
 import zlib
 from PIL import Image
-import StringIO
+import six
 import magic
 MIME_TYPE = magic.open(magic.MAGIC_MIME_TYPE)
 MIME_TYPE.load()
@@ -146,7 +147,7 @@ def imagedimensions_of_buffer(data):
 	:returns: A 2-tuple (width, height)
 	:rtype: tuple[int, int]
 	"""
-	fp = StringIO.StringIO(data)
+	fp = six.StringIO(data)
 	im = Image.open(fp)
 	return im.size
 
