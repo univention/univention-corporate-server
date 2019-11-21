@@ -641,6 +641,7 @@ Package: ucs-test-smbtorture
 Architecture: all
 Depends: ucs-test-libs (= ${source:Version}),
  samba-testsuite,
+ time,
  ${misc:Depends}
 Recommends: ucs-test-framework
 Description: Test scripts to run smbtorture

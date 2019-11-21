@@ -1,3 +1,9 @@
+ucs-test (9.0.3-104) unstable; urgency=medium
+
+  * Bug #40558: added debug to 54_smbtorture/01_smbtorture
+
+ -- Felix Botner <botner@univention.de>  Thu, 21 Nov 2019 11:15:58 +0100
+
 ucs-test (9.0.3-103) unstable; urgency=medium
 
   * Bug #50510: Add 82_saml/44_idp_eintityID_supplement
