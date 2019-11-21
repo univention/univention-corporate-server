@@ -59,6 +59,9 @@ install_activation_packages ()
 	if $1; then
 		univention-install -y --force-yes univention-system-activation
 		ucr set --force auth/sshd/user/root=yes
+		ucr set appliance/activation/enabled=true
+	else
+		ucr set appliance/activation/enabled=false
 	fi
 }
 
