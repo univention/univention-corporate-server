@@ -474,89 +474,70 @@ define([
 			}));
 		};
 
-		var summit2019DialogWasShown = true;
-		var showSummit2019Dialog = function() {
+		var summit2020DialogWasShown = true;
+		var showSummit2020Dialog = function() {
 			if (startupDialogWasShown) {
 				// we don't want to spam the user with dialogs
 				// so don't show this one if the StartupDialog was shown
-				summit2019DialogWasShown = false;
+				summit2020DialogWasShown = false;
 				return;
 			}
 
-			var endOfSummit = new Date(2019, 1, 1, 0, 0, 0);
+			var endOfSummit = new Date(2020, 1, 24, 0, 0, 0);
 			var summitHasPassed = endOfSummit < new Date();
 			var isUserAdmin = app.getModule('updater') || app.getModule('schoolrooms');
-			var dontShowDialog = !tools.status('has_free_license') || summitHasPassed || !isUserAdmin || cookie('hideSummit2019Dialog');
+			var dontShowDialog = !tools.status('has_free_license') || summitHasPassed || !isUserAdmin || cookie('hideSummit2020Dialog');
 			if (dontShowDialog) {
-				summit2019DialogWasShown = false;
+				summit2020DialogWasShown = false;
 				return;
 			}
 
-			var title_base = '' +
+			var title = '' +
 				'<div>' +
-					'<p class="umcSummit2019Dialog__header-text">' +
-						'Univention Summit 2019 - USE YOUR <b class="umcSummit2019Dialog__header-text--important">IDENTITIES' +
+					'<p class="umcSummit2020Dialog__header-text">' +
+						'Univention Summit 2020 - be open for <b class="umcSummit2020Dialog__header-text--important">Digital Sovereignity' +
 					'</p>' +
-					'<p class="umcSummit2019Dialog__subheader-text">{0}</p>' +
 				'</div>';
-			var title_de = lang.replace(title_base, [
-				'Erfahren Sie, wie Sie die Kontrolle über Ihre Digitalen Identitäten behalten und deren Potenziale für sich nutzen!'
-			]);
-			var title_en = lang.replace(title_base, [
-				'Learn how to keep control over your digital identities and use their potentials!'
-			]);
+
 			var message_base = '' +
-				'<div class="umcSummit2019Message">' +
-					'<div class="umcSummit2019Message__messageWrapper">' +
-						'<span class="umcSummit2019Message__listHeader">{0}</span>' +
+				'<div class="umcSummit2020Message">' +
+					'<div class="umcSummit2020Message__messageWrapper">' +
+						'<span class="umcSummit2020Message__listHeader">{0}</span>' +
 						'<ul>' +
 							'<li>{1}</li>' +
 							'<li>{2}</li>' +
 							'<li>{3}</li>' +
 							'<li>{4}</li>' +
 						'</ul>' +
-						'<span class="umcSummit2019Message__listHeader">{5}</span>' +
-						'<ul>' +
-							'<li>{6}</li>' +
-							'<li>{7}</li>' +
-							'<li>{8}</li>' +
-							'<li>{9}</li>' +
-						'</ul>' +
-						'<a class="umcSummit2019Message__link" href="{10}" target="_blank">{11}</a>' +
+						'<p class="umcSummit2020Message__p">{7}</p>' +
+						'<a class="umcSummit2020Message__link" href="{5}" target="_blank">{6}</a>' +
 					'</div>' +
-					'<div class="umcSummit2019Message__image">' +
+					'<div class="umcSummit2020Message__image">' +
 					'</div>' +
 				'</div>';
 			var message_de = lang.replace(message_base, [
-				'Themen:',
-				'Roadmap für UCS 4.4',
-				'Multi-Docker-Support für Apps',
-				'Zentrales IDM und Client-Administration',
-				'Single Sign-on via OpenID Connect und SAML mit Self Services',
 				'Fakten:',
-				'31. Jan. - 1. Feb. 2019 in Bremen',
-				'350 Teilnehmer',
-				'20 Aussteller',
-				'Keynotes | Workshops | Roundtables | IT-Barcamp | Praxisvorträge | abendliches Get-together',
-				'https://www.univention-summit.de/?pk_campaign=Summit19-UMC-Popup',
-				'Jetzt mehr über den Univention Summit erfahren'
+				'23. Jan. - 24. Jan. 2020 in Bremen',
+				'400 Teilnehmer',
+				'Ausstellung mit 25 Soft- und Hardware-Herstellern',
+				'Keynotes | Workshops | Round Tables | IT-Barcamp | Praxisvorträge | Get-together',
+				'https://www.univention-summit.de/?pk_campaign=Summit20-UMC-Popup',
+				'www.univention-summit.de',
+				'UCS-Anwender, Open-Source-Hersteller und Univention treffen und alles über UCS 5 und Best Practices von UCS aus erster Hand erfahren.'
 			]);
+
 			var message_en = lang.replace(message_base, [
-				'Topics:',
-				'Roadmap for UCS 4.4',
-				'Multi-Docker support for apps',
-				'Central IdM and client administration',
-				'Single sign-on via OpenID Connect and SAML with Self Services',
 				'Facts:',
-				'January 31 - February 1, 2019 in Bremen',
-				'350 Participants',
-				'20 Exhibitors',
-				'Keynotes | Workshops | Round tables | IT Barcamp | Practice lectures | Evening Get-together',
-				'https://www.univention-summit.com/?pk_campaign=Summit19-UMC-Popup',
-				'Learn more about the Univention Summit now'
+				'January 23 - 24, 2020 in Bremen | Germany',
+				'400 Attendees',
+				'Exhibition with 25 software and hardware developers',
+				'Keynotes | Workshops | Round tables | IT Barcamp | Practice lectures | Get-together',
+				'https://www.univention-summit.com/?pk_campaign=Summit20-UMC-Popup',
+				'www.univention-summit.com',
+				'Meet UCS users, open source developers and Univention and learn all about UCS 5 and UCS best practices at first hand.'
 			]);
+
 			var isDE = (kernel.locale.toLowerCase().indexOf('de') === 0);
-			var title = isDE ? title_de : title_en;
 			var message = isDE ? message_de : message_en;
 
 			var options = [{
@@ -570,7 +551,7 @@ define([
 				img = null; // garbage collect the img
 
 				var dialog = new ConfirmDialog({
-					'class': 'umcSummit2019Dialog',
+					'class': 'umcSummit2020Dialog',
 					title: title,
 					message: message,
 					options: options,
@@ -578,36 +559,36 @@ define([
 				on(dialog, 'confirm', function() {
 					var nowInTwoWeeks = new Date(Date.now() + (1000 * 60 * 60 * 24 * 14));
 					var expires = nowInTwoWeeks < endOfSummit ? nowInTwoWeeks : endOfSummit;
-					cookie('hideSummit2019Dialog', 'true', {expires: expires.toUTCString()});
+					cookie('hideSummit2020Dialog', 'true', {expires: expires.toUTCString()});
 					dialog.close();
 				});
 				dialog.show();
 			});
-			img.src = '/univention/management/univention-summit-2019.svg';
+			img.src = '/univention/management/univention-summit-2020.svg';
 		};
 
-		var showSummit2019Notification = function() {
-			if (startupDialogWasShown || summit2019DialogWasShown) {
+		var showSummit2020Notification = function() {
+			if (startupDialogWasShown || summit2020DialogWasShown) {
 				return;
 			}
 
-			var endOfSummit = new Date(2019, 1, 1, 0, 0, 0);
+			var endOfSummit = new Date(2020, 1, 24, 0, 0, 0);
 			var summitHasPassed = endOfSummit < new Date();
 			var isUserAdmin = app.getModule('updater') || app.getModule('schoolrooms');
-			var dontShowNotification = !tools.status('has_free_license') || summitHasPassed || !isUserAdmin || cookie('hideSummit2019Notification');
+			var dontShowNotification = !tools.status('has_free_license') || summitHasPassed || !isUserAdmin || cookie('hideSummit2020Notification');
 			if (dontShowNotification) {
 				return;
 			}
 
 			var isDE = (kernel.locale.toLowerCase().indexOf('de') === 0);
-			var message_de = '<a href="https://www.univention-summit.de/?pk_campaign=Summit19-UMC-Nachticht" target="_blank">Univention Summit 2019</a> - Wie Sie die Kontrolle über Ihre Digitale Identitäten behalten und deren Potenziale nutzen!';
-			var message_en = '<a href="https://www.univention-summit.com/?pk_campaign=Summit19-UMC-Nachticht" target="_blank">Univention Summit 2019</a> - How to keep control over your digital identities and use their potential!';
+			var message_de = '<a href="https://www.univention-summit.de/?pk_campaign=Summit20-UMC-Nachricht" target="_blank">Univention Summit 2020</a> - Anwender, OS-Hersteller & Univention treffen und alles zu UCS 5 & Best Practices erfahren.';
+			var message_en = '<a href="https://www.univention-summit.com/?pk_campaign=Summit20-UMC-Nachricht" target="_blank">Univention Summit 2020</a> - Meet users, OS vendors & Univention and learn all about UCS 5 & Best Practices. ';
 			var message = isDE ? message_de : message_en;
 			dialog.notify(message).then(function(notification) {
 				on(notification, 'remove', function() {
 					var nowInTwoWeeks = new Date(Date.now() + (1000 * 60 * 60 * 24 * 14));
 					var expires = nowInTwoWeeks < endOfSummit ? nowInTwoWeeks : endOfSummit;
-					cookie('hideSummit2019Notification', 'true', {expires: expires.toUTCString()});
+					cookie('hideSummit2020Notification', 'true', {expires: expires.toUTCString()});
 				});
 			});
 		};
@@ -651,8 +632,8 @@ define([
 		// run several checks
 		checkCertificateValidity();
 		checkShowStartupDialog();
-		// showSummit2019Dialog();
-		// showSummit2019Notification();
+		showSummit2020Dialog();
+		showSummit2020Notification();
 		showAmbassadorNotification();
 	});
 

@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-47) unstable; urgency=medium
+
+  * Bug #50530: Show Univention Summit 2020 pop up
+
+ -- Florian Best <best@univention.de>  Thu, 21 Nov 2019 17:00:04 +0100
+
 univention-management-console (11.0.4-46) unstable; urgency=medium
 
   * Bug #49161: migrate template to dh_python

@@ -69,42 +69,44 @@
 }
 
 /* styling for the Univention Summit 2019 popup */
-.umcSummit2019Dialog {
+.umcSummit2020Dialog {
 	max-width: 100% !important;
 	max-height: 100% !important;
 	overflow-y: auto !important;
-	background: linear-gradient(to bottom, #10191e 0%, #21161f 40%, #10191e 100%) !important;
+	background-color: black!important;
 }
-.umcSummit2019Dialog .dijitDialogTitleBar {
+.umcSummit2020Dialog .dijitDialogTitleBar {
 	background: transparent !important;
+	padding: 32px 32px 19px 32px!important;
 }
-.umcSummit2019Dialog .dijitDialogPaneContent {
+.umcSummit2020Dialog .dijitDialogPaneContent {
 	background: transparent !important;
+	padding: 1px 24px 8px 32px!important;
 }
-.umcSummit2019Dialog__header-text {
+.umcSummit2020Dialog__header-text {
 	color: #fff !important;
 	font-size: 24px !important;
 	margin-bottom: 0.2em !important;
 }
-.umcSummit2019Dialog__header-text--important {
+.umcSummit2020Dialog__header-text--important {
 	color: #00acb6 !important;
 }
-.umcSummit2019Dialog__subheader-text {
+.umcSummit2020Dialog__subheader-text {
 	color: #00acb6 !important;
 	font-size: 20px !important;
 }
 
-.umcSummit2019Message {
+.umcSummit2020Message {
 	display: flex !important;
 	color: #fff !important;
 }
 
-.umcSummit2019Message ul {
+.umcSummit2020Message ul {
 	padding-inline-start: 1em !important;
 	list-style: none !important;
 	margin-bottom: 1.5em !important;
 }
-.umcSummit2019Message li:before {
+.umcSummit2020Message li:before {
 	content: '\25CF' !important;
 	display: inline-block !important;
 	color: #6CB520 !important;
@@ -112,42 +114,48 @@
 	margin-left: -1em !important;
 }
 
-.umcSummit2019Message__messageWrapper {
+.umcSummit2020Message__messageWrapper {
 	font-size: 16px !important;
 	font-weight: 500 !important;
 	max-width: 380px !important;
 }
 
-.umcSummit2019Message__listHeader {
+.umcSummit2020Message__listHeader {
 	display: block !important;
-	margin-bottom: 0.5em !important;
+	margin-bottom: 1em !important;
+	margin-top: 2em !important;
 	color: #6CB520 !important;
-	text-transform: uppercase !important;
+	/*text-transform: uppercase !important;*/
 	font-weight: bold !important;
 }
 
-.umcSummit2019Message__link {
+.umcSummit2020Message__p {
+	margin: 2em 0;
+}
+
+.umcSummit2020Message__link {
 	color: #00acb6 !important;
 }
-.umcSummit2019Message__link:before {
+.umcSummit2020Message__link:before {
 	content: '\27A4' !important;
 	display: inline-block !important;
 	color: #00acb6 !important;
 	margin-right: 0.5em !important;
 }
 
-.umcSummit2019Message__image {
-	width: 500px !important;
-	background: url(./univention-summit-2019.svg) no-repeat center center !important;
+.umcSummit2020Message__image {
+	width: 400px !important;
+	margin-left: 2em;
+	background: url(./univention-summit-2020.svg) no-repeat center center !important;
 	flex: 1 1 auto !important;
 }
 
 @media (max-width: 767px) {
-	.umcSummit2019Message {
+	.umcSummit2020Message {
 		flex-direction: column !important;
 	}
 
-	.umcSummit2019Message__image {
+	.umcSummit2020Message__image {
 		margin-top: 2em !important;
 		width: 100% !important;
 		min-height: 200px !important;
