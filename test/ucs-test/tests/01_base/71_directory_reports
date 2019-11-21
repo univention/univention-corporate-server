@@ -1,0 +1,57 @@
+#!/usr/share/ucs-test/runner /usr/bin/python
+# -*- coding: utf-8 -*-
+## exposure: dangerous
+## desc: check if directory reports can be generated
+## packages: [univention-directory-reports, univention-management-console-module-udm]
+
+import os
+
+from subprocess import check_call
+from univention.testing.umc import Client
+from univention.config_registry import ConfigRegistry
+from urllib import splitquery, splitvalue
+
+
+def create_umc_report(client, report_type, obj, module):
+	r = client.umc_command('udm/reports/create', dict(report=report_type, objects=obj), module)
+	assert r.status == 200
+	report = splitvalue(splitquery(r.result.get('URL'))[1])[1]
+	assert os.path.isfile(os.path.join('/usr/share/univention-management-console-module-udm', report))
+	r = client.umc_command('udm/reports/get', dict(report=report), print_response=False)
+	assert r.status == 200
+	assert r.data
+	if report_type == 'PDF Document':
+		assert 'ReportLab Generated PDF document' in r.data
+		assert report.endswith('.pdf')
+	if report_type == 'CSV Report':
+		assert report.endswith('.csv')
+
+
+def test_umc(ucr):
+	client = Client.get_test_connection()
+	r = client.umc_command('udm/reports/query', dict(), 'users/user')
+	assert r.status == 200
+	for report_type in ['CSV Report', 'PDF Document']:
+		create_umc_report(client, report_type, [ucr.get('tests/domainadmin/account')], 'users/user')
+		create_umc_report(client, report_type, [ucr.get('ldap/hostdn')], 'computers/computer')
+		create_umc_report(client, report_type, ['cn=Backup Join,cn=groups,{}'.format(ucr.get('ldap/base'))], 'groups/group')
+
+
+def test_cmdline(ucr):
+	check_call(['univention-directory-reports', '-l'])
+	check_call(['univention-directory-reports-cleanup'])
+	check_call(['univention-directory-reports', '-m', 'users/user', ucr.get('tests/domainadmin/account')])
+	check_call(['univention-directory-reports', '-m', 'computers/computer', ucr.get('ldap/hostdn')])
+	check_call(['univention-directory-reports', '-m', 'groups/group', 'cn=Backup Join,cn=groups,{}'.format(ucr.get('ldap/base'))])
+
+
+def main():
+	ucr = ConfigRegistry()
+	ucr.load()
+	test_umc(ucr)
+	test_cmdline(ucr)
+
+if __name__ == '__main__':
+	main()
+
+# vim: set fileencoding=utf-8 ft=python sw=4 ts=4
