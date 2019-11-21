@@ -1,3 +1,9 @@
+univention-app-appliance (3.0.1-8) unstable; urgency=medium
+
+  * Bug #50528: fix typo
+
+ -- Jannik Ahlers <ahlers@univention.de>  Thu, 21 Nov 2019 17:28:24 +0100
+
 univention-app-appliance (3.0.1-7) unstable; urgency=medium
 
   * Bug #50528: improvements according to qa feedback
