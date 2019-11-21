@@ -31,12 +31,12 @@ helper functions for MIME type handling.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import univention.admin.uexceptions
 import bz2
 import zlib
 from PIL import Image
-import StringIO
+import io
 import magic
+
 MIME_TYPE = magic.open(magic.MAGIC_MIME_TYPE)
 MIME_TYPE.load()
 MIME_DESCRIPTION = magic.open(magic.MAGIC_NONE)
@@ -46,7 +46,9 @@ UMC_ICON_BASEDIR = "/usr/share/univention-management-console-frontend/js/dijit/t
 
 compression_mime_type_handlers = {
 	"application/x-gzip": lambda x: zlib.decompress(x, 16 + zlib.MAX_WBITS),
-	"application/x-bzip2": bz2.decompress
+	#"application/gzip": lambda x: zlib.decompress(x, 16 + zlib.MAX_WBITS),  # TODO: enable Bug #51594
+	"application/x-bzip2": bz2.decompress,
+	"application/bzip2": bz2.decompress,
 }
 
 
@@ -88,6 +90,7 @@ def compression_mime_type_of_buffer(data):
 	if mime_type in compression_mime_type_handlers:
 		return (mime_type, compression_mime_type_handlers[mime_type])
 	else:
+		import univention.admin.uexceptions
 		raise univention.admin.uexceptions.valueError("Not a supported compression format: %s" % (mime_type,))
 
 
@@ -100,6 +103,7 @@ def uncompress_buffer(data):
 	:returns: A 2-tuple (mime_type, uncompressed_data). On errors `mime_type` is `None` and `uncompressed_data` is `data`.
 	:rtype: tuple[str, bytes]
 	"""
+	import univention.admin.uexceptions
 	try:
 		(mime_type, compression_mime_type_handler) = compression_mime_type_of_buffer(data)
 		return (mime_type, compression_mime_type_handler(data))
@@ -116,7 +120,7 @@ def uncompress_file(filename):
 	:returns: A 2-tuple (mime_type, uncompressed_data). On errors `mime_type` is `None` and `uncompressed_data` is `data`.
 	:rtype: tuple[str, bytes]
 	"""
-	with open(filename, 'r') as f:
+	with open(filename, 'rb') as f:
 		return uncompress_buffer(f.read())
 
 
@@ -134,6 +138,7 @@ def image_mime_type_of_buffer(data):
 	if mime_type in ('image/jpeg', 'image/png', 'image/svg+xml', 'application/x-gzip'):
 		return mime_type
 	else:
+		import univention.admin.uexceptions
 		raise univention.admin.uexceptions.valueError("Not a supported image format: %s" % (mime_type,))
 
 
@@ -146,7 +151,7 @@ def imagedimensions_of_buffer(data):
 	:returns: A 2-tuple (width, height)
 	:rtype: tuple[int, int]
 	"""
-	fp = StringIO.StringIO(data)
+	fp = io.BytesIO(data)
 	im = Image.open(fp)
 	return im.size
 
