@@ -2406,7 +2406,7 @@ class s4(univention.s4connector.ucs):
 				ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: addlist: %s" % addlist)
 				try:
 					self.lo_s4.lo.add_ext_s(compatible_modstring(object['dn']), compatible_addlist(addlist), serverctrls=ctrls)  # FIXME encoding
-				except ldap.ALREADY_EXISTS:
+				except (ldap.ALREADY_EXISTS, ldap.CONSTRAINT_VIOLATION):
 					sAMAccountName = object['attributes'].get('sAMAccountName', [None])[0]
 					sambaSID = object['attributes'].get('sambaSID', [None])[0]
 					if not (sAMAccountName and sambaSID):
