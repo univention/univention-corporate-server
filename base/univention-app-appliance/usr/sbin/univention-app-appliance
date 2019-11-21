@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#! /usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
 # Univention App Appliance
@@ -40,9 +40,10 @@ from glob import glob
 from subprocess import call
 import univention.admin.modules as udm_modules
 import univention.admin.uldap as udm_uldap
-from univention.app_appliance import Apps, get_luminance, get_app_style_properties
+from univention.app_appliance import Apps, get_luminance, get_app_style_properties, get_cache_dir_name
 from univention.config_registry.frontend import ucr_update
 from univention.config_registry import ConfigRegistry
+import json
 
 UCR = ConfigRegistry()
 UCR.load()
@@ -61,6 +62,12 @@ def _branding_resources_base_url(app_id, ucs_version):
 
 
 def _download_resource(app, resource, dest_path):
+	app_cache_dir = get_cache_dir_name(app)
+	cached_file_name = os.path.join(app_cache_dir, resource)
+	if os.path.exists(cached_file_name):
+		shutil.copy2(cached_file_name, dest_path)
+		print('Successfully copied %s from cache' % resource)
+		return
 	resource_url = "{app_url}/{res_name}".format(
 		app_url=_branding_resources_base_url(app.id, app.ucs_version),
 		res_name=resource)
@@ -80,6 +87,31 @@ def _download_resource(app, resource, dest_path):
 
 def print_status(message):
 	print('univention-app-appliance: %s' % message)
+
+
+def cache_portal(app):
+	app_props = get_app_style_properties(app)
+	app_de = app.get_app_cache_obj().copy(locale='de').find_by_component_id(app.component_id)
+	app_props_de = get_app_style_properties(app_de)
+	app_cache_dir = get_cache_dir_name(app)
+	if not os.path.exists(app_cache_dir):
+		os.mkdir(app_cache_dir)
+	with open(os.path.join(app_cache_dir, 'app_props'), 'wb') as fd:
+		json.dump(app_props, fd)
+	with open(os.path.join(app_cache_dir, 'app_props_de'), 'wb') as fd:
+		json.dump(app_props_de, fd)
+
+	# portal background
+	if app_props.get('portal_background_image'):
+		img_name = app_props.get('portal_background_image')
+		dest_path = os.path.join(app_cache_dir, img_name)
+		_download_resource(app, img_name, dest_path),
+
+	# portal logo
+	if app_props.get('portal_logo'):
+		img_name = app_props.get('portal_logo')
+		dest_path = os.path.join(app_cache_dir, img_name)
+		_download_resource(app, img_name, dest_path),
 
 
 def configure_portal(app):
@@ -305,7 +337,9 @@ if __name__ == '__main__':
 			raise RuntimeError('Could not find corresponding app for given ID "%s"' % (app_id, ))
 
 		# launch portal config functions
-		if not not_config_portal:
+		if not_config_portal:
+			cache_portal(app)
+		else:
 			configure_portal(app)
 
 		# launch main config functions

@@ -1,3 +1,9 @@
+univention-app-appliance (3.0.1-6) unstable; urgency=medium
+
+  * Bug #50528: cache appliance branding information
+
+ -- Jannik Ahlers <ahlers@univention.de>  Thu, 21 Nov 2019 12:55:40 +0100
+
 univention-app-appliance (3.0.1-5) unstable; urgency=medium
 
   * Bug #49128: migrate to dh_python

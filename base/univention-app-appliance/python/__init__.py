@@ -35,6 +35,8 @@
 import univention.appcenter.app as app
 import univention.appcenter.app_cache as app_cache
 import struct
+import os
+import json
 
 
 class App(app.App):
@@ -104,7 +106,21 @@ def get_luminance(hexcolor):
 	return (0.299 * red + 0.587 * green + 0.114 * blue) / 255
 
 
+def get_cache_dir_name(app):
+	CACHE_DIR = '/var/cache/univention-app-appliance/'
+	app_cache_dir = os.path.join(CACHE_DIR, app.id)
+	return app_cache_dir
+
+
 def get_app_style_properties(app):
+	try:
+		local_cache_name = 'app_props' if app.get_locale() == 'en' else 'app_props_de'
+		with open(os.path.join(get_cache_dir_name(app), local_cache_name)) as fd:
+			props = json.load(fd)
+			print('Properties loaded from %s cache' % local_cache_name)
+			return props
+	except:
+		pass
 	props = dict()
 	for i in (
 		'primary_color',
