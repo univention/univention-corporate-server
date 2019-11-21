@@ -1,13 +1,12 @@
 #!/usr/bin/python
 # vim: set fileencoding=utf-8 ft=python sw=4 ts=4 noet :
-#
 """UCS Testrunner - run UCS test in sane environment."""
-#
+
 import sys
 import logging
 import operator
 from time import time
-from optparse import OptionParser, OptionGroup
+import argparse
 
 import univention.testing.format
 from univention.testing.internal import setup_environment, setup_debug, \
@@ -20,76 +19,73 @@ from functools import reduce
 
 def parse_options(sections):
 	"""Parse command line options."""
-	usage = "Usage: %prog [options]"
-	parser = OptionParser(usage=usage)
-	parser.add_option(
+	usage = "%(prog)s [options]"
+	parser = argparse.ArgumentParser(usage=usage)
+	parser.add_argument(
 		"-H", "--hold",
 		dest="hold", action="store_true", default=False,
 		help="Stop execution after the first failed test")
-	parser.add_option(
+	parser.add_argument(
 		"-t", "--timeout",
 		dest="timeout", action="store", default=3600, type=int,
-		help="Abort single test after [%default]s")
+		help="Abort single test after [%(default)s]s")
 
-	selection_group = OptionGroup(parser, 'Test selection')
-	selection_group.add_option(
+	selection_group = parser.add_argument_group('Test selection')
+	selection_group.add_argument(
 		"-s", "--section",
 		dest="sections", action="append", choices=sections,
 		help="Run tests only from this section", metavar="SECTION")
-	selection_group.add_option(
+	selection_group.add_argument(
 		"-p", "--prohibit",
 		dest="tags_prohibited", action="append", default=[],
 		help="Skip tests with this tag", metavar="TAG")
-	selection_group.add_option(
+	selection_group.add_argument(
 		"-r", "--require",
 		dest="tags_required", action="append", default=[],
 		help="Only run tests with this tag", metavar="TAG")
-	selection_group.add_option(
+	selection_group.add_argument(
 		"-g", "--ignore",
 		dest="tags_ignored", action="append", default=[],
 		help="Neither require nor prohibit this tag", metavar="TAG")
-	selection_group.add_option(
+	selection_group.add_argument(
 		"-E", "--exposure",
 		dest="exposure", action="store",
 		choices=('safe', 'careful', 'dangerous'),
 		help="Run more dangerous tests")
-	parser.add_option_group(selection_group)
 
-	output_group = OptionGroup(parser, 'Output options')
-	output_group.add_option(
+	output_group = parser.add_argument_group('Output options')
+	output_group.add_argument(
 		"-n", "--dry-run",
 		dest="dry", action="store_true",
 		help="Only show which tests would run")
-	output_group.add_option(
+	output_group.add_argument(
 		"-f", "--filtered",
 		dest="filter", action="store_true",
 		help="Hide tests with unmatched pre-conditions")
-	output_group.add_option(
+	output_group.add_argument(
 		"-F", "--format",
 		dest="format", action="store",
 		choices=univention.testing.format.FORMATS, default='text',
-		help="Select output format [%default]")
-	output_group.add_option(
+		help="Select output format [%(default)s]")
+	output_group.add_argument(
 		"-v", "--verbose",
 		dest="verbose", action="count",
 		help="Increase verbosity")
-	output_group.add_option(
+	output_group.add_argument(
 		"-i", "--interactive",
 		dest="interactive", action="store_true", default=False,
 		help="Run test connected to terminal")
-	output_group.add_option(
+	output_group.add_argument(
 		"-c", "--count",
 		dest="count", action="store_true", default=False,
 		help="Prefix tests by count")
-	output_group.add_option(
+	output_group.add_argument(
 		"-l", "--logfile",
 		dest="logfile", action="store", default=LOG_BASE % (time(),),
-		help="Path to log file [%default]")
-	parser.add_option_group(output_group)
+		help="Path to log file [%(default)s]")
 
-	parser.add_option_group(Coverage.get_option_group(parser))
-
-	return parser.parse_args()
+	Coverage.get_argument_group(parser)
+	return parser.parse_known_args()
 
 
 class TestSet(object):
