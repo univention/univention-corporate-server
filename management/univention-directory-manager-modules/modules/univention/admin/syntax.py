@@ -5155,7 +5155,7 @@ class Country(select):
 			('VI', _iso_3166(u'Virgin Islands, U.S.')), ('WF', _iso_3166(u'Wallis and Futuna')),
 			('EH', _iso_3166(u'Western Sahara')), ('YE', _iso_3166(u'Yemen')), ('ZM', _iso_3166(u'Zambia')),
 			('ZW', _iso_3166(u'Zimbabwe'))]
-		cls.choices.sort(cmp=locale.strcoll, key=itemgetter(1))
+		cls.choices.sort(key=itemgetter(1))
 
 
 class RadiusClientType(select):
