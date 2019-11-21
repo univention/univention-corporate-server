@@ -1,6 +1,8 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Test UCS' Apache2 VHost integration
 ## bugs: [45115]
+## tags: [skip_admember]
+## roles-not: [memberserver]
 ## packages:
 ##  - univention-ssl
 ##  - univention-apache-vhost

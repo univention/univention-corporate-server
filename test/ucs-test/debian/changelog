@@ -1,3 +1,9 @@
+ucs-test (9.0.3-108) unstable; urgency=medium
+
+  * Bug #45115: Remove flaky roles for now
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 21 Nov 2019 17:20:19 +0100
+
 ucs-test (9.0.3-107) unstable; urgency=medium
 
   * Bug #50521: add empty translation files
