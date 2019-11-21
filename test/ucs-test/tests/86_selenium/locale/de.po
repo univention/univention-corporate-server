@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2018-08-04 14:11+0200\n"
+"POT-Creation-Date: 2019-11-21 12:37+0100\n"
 "PO-Revision-Date: 2017-06-23 12:00+0200\n"
 "Last-Translator: <ulmer@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
@@ -12,11 +12,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: tests/86_selenium/110_product_test_do_rejoin:53
+#: tests/86_selenium/110_product_test_do_rejoin:51
 msgid "A reboot of the server is recommended"
 msgstr ""
 
-#: tests/86_selenium/10_product_test_password_change:172
+#: tests/86_selenium/10_product_test_password_change:177
 msgid "Account"
 msgstr "Konto"
 
@@ -24,19 +24,19 @@ msgstr "Konto"
 msgid "Add to favorites"
 msgstr "Zu Favoriten hinzufügen"
 
-#: tests/86_selenium/180_portal_entries:25
-#: tests/86_selenium/180_portal_entries:28
+#: tests/86_selenium/180_portal_entries:26
 #: tests/86_selenium/180_portal_entries:29
-#: tests/86_selenium/180_portal_entries:32
+#: tests/86_selenium/180_portal_entries:30
 #: tests/86_selenium/180_portal_entries:33
-#: tests/86_selenium/180_portal_entries:36
+#: tests/86_selenium/180_portal_entries:34
 #: tests/86_selenium/180_portal_entries:37
-#: tests/86_selenium/180_portal_entries:40
+#: tests/86_selenium/180_portal_entries:38
 #: tests/86_selenium/180_portal_entries:41
+#: tests/86_selenium/180_portal_entries:42
 msgid "Administration"
 msgstr "Verwaltung"
 
-#: tests/86_selenium/160_process_overview_module:45
+#: tests/86_selenium/160_process_overview_module:36
 msgid "All"
 msgstr ""
 
@@ -52,12 +52,16 @@ msgstr ""
 msgid "Base Settings"
 msgstr ""
 
-#: tests/86_selenium/160_process_overview_module:113
+#: tests/86_selenium/110_product_test_do_rejoin:52
+msgid "Cancel"
+msgstr ""
+
+#: tests/86_selenium/160_process_overview_module:99
 msgid "Category"
 msgstr ""
 
-#: tests/86_selenium/180_portal_entries:37
-#: tests/86_selenium/180_portal_entries:41
+#: tests/86_selenium/180_portal_entries:38
+#: tests/86_selenium/180_portal_entries:42
 msgid "Central portal web page for the UCS domain"
 msgstr "Zentrale Portal-Webseite für die UCS-Domäne"
 
@@ -66,21 +70,21 @@ msgstr "Zentrale Portal-Webseite für die UCS-Domäne"
 msgid "Certificate settings"
 msgstr "Benutzereinstellungen"
 
-#: tests/86_selenium/10_product_test_password_change:222
-#: tests/86_selenium/10_product_test_password_change:227
-#: tests/86_selenium/14_password_self-service:84
-#: tests/86_selenium/14_password_self-service:101
-#: tests/86_selenium/14_password_self-service:111
-#: tests/86_selenium/14_password_self-service:126
+#: tests/86_selenium/10_product_test_password_change:241
+#: tests/86_selenium/10_product_test_password_change:246
 #: tests/86_selenium/134_side_menu:24
+#: tests/86_selenium/14_password_self-service:85
+#: tests/86_selenium/14_password_self-service:102
+#: tests/86_selenium/14_password_self-service:112
+#: tests/86_selenium/14_password_self-service:127
 msgid "Change password"
 msgstr "Passwort ändern"
 
-#: tests/86_selenium/10_product_test_password_change:223
+#: tests/86_selenium/10_product_test_password_change:242
 msgid "Change the password of"
 msgstr "Passwort ändern für"
 
-#: tests/86_selenium/14_password_self-service:103
+#: tests/86_selenium/14_password_self-service:104
 msgid "Change your (expired) password."
 msgstr ""
 
@@ -88,7 +92,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: tests/86_selenium/160_process_overview_module:52
+#: tests/86_selenium/160_process_overview_module:46
 msgid "Command"
 msgstr ""
 
@@ -97,7 +101,7 @@ msgstr ""
 msgid "Computers"
 msgstr ""
 
-#: tests/86_selenium/110_product_test_do_rejoin:48
+#: tests/86_selenium/110_product_test_do_rejoin:46
 msgid "Confirmation"
 msgstr ""
 
@@ -123,8 +127,8 @@ msgstr ""
 #: tests/86_selenium/131_miscellaneous_module_availability:139
 #: tests/86_selenium/131_miscellaneous_module_availability:153
 #: tests/86_selenium/131_miscellaneous_module_availability:169
-#: tests/86_selenium/110_product_test_do_rejoin:44
-#: tests/86_selenium/111_product_test_execute_join_script:67
+#: tests/86_selenium/110_product_test_do_rejoin:42
+#: tests/86_selenium/111_product_test_execute_join_script:68
 msgid "Domain join"
 msgstr ""
 
@@ -132,11 +136,11 @@ msgstr ""
 msgid "Edit UCR variable"
 msgstr ""
 
-#: tests/86_selenium/111_product_test_execute_join_script:79
+#: tests/86_selenium/111_product_test_execute_join_script:80
 msgid "Execute"
 msgstr ""
 
-#: tests/86_selenium/10_product_test_password_change:209
+#: tests/86_selenium/10_product_test_password_change:228
 #: tests/86_selenium/15_favorite_modules:52
 #: tests/86_selenium/15_favorite_modules:94
 msgid "Favorites"
@@ -153,11 +157,11 @@ msgstr "Favoriten"
 msgid "Filesystem quotas"
 msgstr ""
 
-#: tests/86_selenium/160_process_overview_module:86
+#: tests/86_selenium/160_process_overview_module:73
 msgid "Force termination"
 msgstr ""
 
-#: tests/86_selenium/14_password_self-service:128
+#: tests/86_selenium/14_password_self-service:129
 msgid "Forgot your password"
 msgstr ""
 
@@ -178,16 +182,16 @@ msgstr ""
 msgid "Hardware information"
 msgstr ""
 
+#: tests/86_selenium/135_upload_license:82
 #: tests/86_selenium/135_upload_license:83
-#: tests/86_selenium/135_upload_license:84
 msgid "Import new license"
 msgstr ""
 
-#: tests/86_selenium/135_upload_license:75
+#: tests/86_selenium/135_upload_license:74
 msgid "Information about the current UCS license"
 msgstr ""
 
-#: tests/86_selenium/136_packages:67
+#: tests/86_selenium/136_packages:58
 msgid "Install"
 msgstr ""
 
@@ -207,15 +211,15 @@ msgstr ""
 msgid "Language settings"
 msgstr "Benutzereinstellungen"
 
+#: tests/86_selenium/135_upload_license:70
 #: tests/86_selenium/135_upload_license:71
-#: tests/86_selenium/135_upload_license:72
+#: tests/86_selenium/135_upload_license:80
 #: tests/86_selenium/135_upload_license:81
-#: tests/86_selenium/135_upload_license:82
 msgid "License"
 msgstr ""
 
+#: tests/86_selenium/135_upload_license:72
 #: tests/86_selenium/135_upload_license:73
-#: tests/86_selenium/135_upload_license:74
 msgid "License information"
 msgstr ""
 
@@ -229,7 +233,7 @@ msgstr ""
 msgid "Mail"
 msgstr ""
 
-#: tests/86_selenium/170_system_services_module:132
+#: tests/86_selenium/170_system_services_module:117
 msgid "Manually"
 msgstr ""
 
@@ -262,36 +266,32 @@ msgstr "Benutzereinstellungen"
 msgid "Networks"
 msgstr ""
 
-#: tests/86_selenium/170_system_services_module:133
+#: tests/86_selenium/170_system_services_module:118
 msgid "Never"
 msgstr ""
 
-#: tests/86_selenium/14_password_self-service:90
-#: tests/86_selenium/14_password_self-service:130
-#: tests/86_selenium/14_password_self-service:132
+#: tests/86_selenium/14_password_self-service:91
+#: tests/86_selenium/14_password_self-service:131
+#: tests/86_selenium/14_password_self-service:133
 msgid "Next"
 msgstr ""
 
-#: tests/86_selenium/133_system_diagnostics:28
-msgid "No problems could be detected."
-msgstr ""
-
-#: tests/86_selenium/160_process_overview_module:88
+#: tests/86_selenium/170_system_services_module:41
+#: tests/86_selenium/170_system_services_module:58
+#: tests/86_selenium/170_system_services_module:64
+#: tests/86_selenium/170_system_services_module:112
+#: tests/86_selenium/160_process_overview_module:75
 #: tests/86_selenium/132_miscellaneous_open_all_modules:53
-#: tests/86_selenium/170_system_services_module:51
-#: tests/86_selenium/170_system_services_module:70
-#: tests/86_selenium/170_system_services_module:76
-#: tests/86_selenium/170_system_services_module:127
 msgid "OK"
 msgstr ""
 
-#: tests/86_selenium/10_product_test_password_change:214
-#: tests/86_selenium/10_product_test_password_change:249
+#: tests/86_selenium/10_product_test_password_change:233
+#: tests/86_selenium/10_product_test_password_change:268
 msgid "Ok"
 msgstr "Ok"
 
-#: tests/86_selenium/160_process_overview_module:51
-#: tests/86_selenium/160_process_overview_module:83
+#: tests/86_selenium/160_process_overview_module:45
+#: tests/86_selenium/160_process_overview_module:70
 msgid "PID"
 msgstr ""
 
@@ -302,19 +302,23 @@ msgstr ""
 msgid "Package Management"
 msgstr ""
 
-#: tests/86_selenium/14_password_self-service:102
+#: tests/86_selenium/14_password_self-service:103
 msgid "Password change"
 msgstr ""
 
-#: tests/86_selenium/14_password_self-service:127
+#: tests/86_selenium/14_password_self-service:128
 msgid "Password forgotten"
 msgstr ""
 
-#: tests/86_selenium/14_password_self-service:131
+#: tests/86_selenium/14_password_self-service:132
 msgid "Please choose an option"
 msgstr ""
 
-#: tests/86_selenium/111_product_test_execute_join_script:82
+#: tests/86_selenium/138_reboot_server:26
+msgid "Please confirm to reboot this server."
+msgstr ""
+
+#: tests/86_selenium/111_product_test_execute_join_script:83
 msgid "Please enter credentials"
 msgstr ""
 
@@ -328,7 +332,7 @@ msgstr ""
 msgid "Printers"
 msgstr ""
 
-#: tests/86_selenium/160_process_overview_module:43
+#: tests/86_selenium/160_process_overview_module:34
 #: tests/86_selenium/131_miscellaneous_module_availability:53
 #: tests/86_selenium/131_miscellaneous_module_availability:70
 #: tests/86_selenium/131_miscellaneous_module_availability:97
@@ -342,24 +346,29 @@ msgstr ""
 msgid "Process overview"
 msgstr ""
 
-#: tests/86_selenium/14_password_self-service:85
+#: tests/86_selenium/14_password_self-service:86
 msgid "Protect account"
 msgstr ""
 
-#: tests/86_selenium/180_portal_entries:29
-#: tests/86_selenium/180_portal_entries:33
+#: tests/86_selenium/180_portal_entries:30
+#: tests/86_selenium/180_portal_entries:34
 msgid "Provide an overview of all UCS server in the domain"
 msgstr "Serübersicht über alle UCS Server in der Domäne"
 
-#: tests/86_selenium/110_product_test_do_rejoin:54
+#: tests/86_selenium/138_reboot_server:27
 msgid "Reboot"
 msgstr ""
 
-#: tests/86_selenium/110_product_test_do_rejoin:46
+#: tests/86_selenium/138_reboot_server:24
+#: tests/86_selenium/138_reboot_server:25
+msgid "Reboot server"
+msgstr ""
+
+#: tests/86_selenium/110_product_test_do_rejoin:44
 msgid "Rejoin"
 msgstr ""
 
-#: tests/86_selenium/110_product_test_do_rejoin:51
+#: tests/86_selenium/110_product_test_do_rejoin:49
 msgid "Rejoin system"
 msgstr ""
 
@@ -375,16 +384,16 @@ msgstr "Aus Favoriten entfernen"
 msgid "Repository Settings"
 msgstr "Benutzereinstellungen"
 
-#: tests/86_selenium/111_product_test_execute_join_script:92
-#: tests/86_selenium/170_system_services_module:170
+#: tests/86_selenium/170_system_services_module:151
+#: tests/86_selenium/111_product_test_execute_join_script:93
 msgid "Restart"
 msgstr ""
 
-#: tests/86_selenium/111_product_test_execute_join_script:88
+#: tests/86_selenium/111_product_test_execute_join_script:89
 msgid "Run"
 msgstr ""
 
-#: tests/86_selenium/111_product_test_execute_join_script:84
+#: tests/86_selenium/111_product_test_execute_join_script:85
 msgid "Run join scripts"
 msgstr ""
 
@@ -393,7 +402,7 @@ msgstr ""
 msgid "SAML identity provider"
 msgstr ""
 
-#: tests/86_selenium/14_password_self-service:96
+#: tests/86_selenium/14_password_self-service:97
 #: tests/86_selenium/12_product_test_ucr:131
 #: tests/86_selenium/150_udm_create_modify_delete_objects:59
 msgid "Save"
@@ -404,8 +413,12 @@ msgstr "Speichern"
 msgid "Search query"
 msgstr "Suche Benutzer..."
 
-#: tests/86_selenium/180_portal_entries:29
-#: tests/86_selenium/180_portal_entries:33
+#: tests/86_selenium/138_reboot_server:23
+msgid "Server"
+msgstr ""
+
+#: tests/86_selenium/180_portal_entries:30
+#: tests/86_selenium/180_portal_entries:34
 msgid "Server overview"
 msgstr "Serverübersicht"
 
@@ -414,7 +427,7 @@ msgstr "Serverübersicht"
 msgid "Shares"
 msgstr ""
 
-#: tests/86_selenium/160_process_overview_module:90
+#: tests/86_selenium/160_process_overview_module:77
 #, python-format
 msgid "Signal (%s) sent successfully"
 msgstr ""
@@ -430,20 +443,20 @@ msgstr ""
 msgid "Software update"
 msgstr ""
 
-#: tests/86_selenium/170_system_services_module:75
-#: tests/86_selenium/170_system_services_module:169
+#: tests/86_selenium/170_system_services_module:63
+#: tests/86_selenium/170_system_services_module:150
 msgid "Start"
 msgstr ""
 
-#: tests/86_selenium/170_system_services_module:69
+#: tests/86_selenium/170_system_services_module:57
 msgid "Start automatically"
 msgstr ""
 
-#: tests/86_selenium/170_system_services_module:124
+#: tests/86_selenium/170_system_services_module:109
 msgid "Start manually"
 msgstr ""
 
-#: tests/86_selenium/170_system_services_module:125
+#: tests/86_selenium/170_system_services_module:110
 msgid "Start never"
 msgstr ""
 
@@ -458,8 +471,8 @@ msgstr ""
 msgid "Statistics"
 msgstr ""
 
-#: tests/86_selenium/170_system_services_module:116
-#: tests/86_selenium/170_system_services_module:168
+#: tests/86_selenium/170_system_services_module:102
+#: tests/86_selenium/170_system_services_module:149
 msgid "Stop"
 msgstr ""
 
@@ -468,20 +481,21 @@ msgstr ""
 msgid "Switch language"
 msgstr "Sprache ändern"
 
-#: tests/86_selenium/180_portal_entries:25
-#: tests/86_selenium/180_portal_entries:28
-#: tests/86_selenium/180_portal_entries:32
+#: tests/86_selenium/180_portal_entries:26
+#: tests/86_selenium/180_portal_entries:29
+#: tests/86_selenium/180_portal_entries:33
 msgid "System and domain settings"
 msgstr "System- und Domäneneinstellungen"
 
+#: tests/86_selenium/133_system_diagnostics:58
 #: tests/86_selenium/131_miscellaneous_module_availability:57
 #: tests/86_selenium/131_miscellaneous_module_availability:101
 #: tests/86_selenium/131_miscellaneous_module_availability:131
 #: tests/86_selenium/131_miscellaneous_module_availability:161
-#: tests/86_selenium/133_system_diagnostics:26
 msgid "System diagnostic"
 msgstr ""
 
+#: tests/86_selenium/170_system_services_module:48
 #: tests/86_selenium/131_miscellaneous_module_availability:55
 #: tests/86_selenium/131_miscellaneous_module_availability:72
 #: tests/86_selenium/131_miscellaneous_module_availability:99
@@ -490,28 +504,27 @@ msgstr ""
 #: tests/86_selenium/131_miscellaneous_module_availability:145
 #: tests/86_selenium/131_miscellaneous_module_availability:159
 #: tests/86_selenium/131_miscellaneous_module_availability:175
-#: tests/86_selenium/170_system_services_module:59
 msgid "System services"
 msgstr ""
 
-#: tests/86_selenium/180_portal_entries:36
-#: tests/86_selenium/180_portal_entries:40
+#: tests/86_selenium/180_portal_entries:37
+#: tests/86_selenium/180_portal_entries:41
 msgid "System settings"
 msgstr "Systemeinstellungen"
 
-#: tests/86_selenium/160_process_overview_module:86
+#: tests/86_selenium/160_process_overview_module:73
 msgid "Terminate"
 msgstr ""
 
-#: tests/86_selenium/110_product_test_do_rejoin:45
+#: tests/86_selenium/110_product_test_do_rejoin:43
 msgid "This page shows the status of"
 msgstr ""
 
-#: tests/86_selenium/135_upload_license:85
+#: tests/86_selenium/135_upload_license:84
 msgid "UCS license import"
 msgstr ""
 
-#: tests/86_selenium/136_packages:67
+#: tests/86_selenium/136_packages:58
 msgid "Uninstall"
 msgstr ""
 
@@ -529,9 +542,9 @@ msgstr ""
 msgid "Univention Configuration Registry"
 msgstr ""
 
-#: tests/86_selenium/180_portal_entries:25
-#: tests/86_selenium/180_portal_entries:28
-#: tests/86_selenium/180_portal_entries:32
+#: tests/86_selenium/180_portal_entries:26
+#: tests/86_selenium/180_portal_entries:29
+#: tests/86_selenium/180_portal_entries:33
 msgid ""
 "Univention Management Console for admin­is­tra­ting the UCS domain and the "
 "local system"
@@ -539,37 +552,37 @@ msgstr ""
 "Univention Management Console zur Ver­wal­tung der UCS-Domäne und des "
 "lokalen Systems"
 
-#: tests/86_selenium/180_portal_entries:36
-#: tests/86_selenium/180_portal_entries:40
+#: tests/86_selenium/180_portal_entries:37
+#: tests/86_selenium/180_portal_entries:41
 msgid "Univention Management Console for admin­is­tra­ting the local system"
 msgstr "Univention Management Console zur Ver­wal­tung des lokalen Systems"
 
-#: tests/86_selenium/14_password_self-service:97
-#: tests/86_selenium/14_password_self-service:112
-#: tests/86_selenium/180_portal_entries:37
-#: tests/86_selenium/180_portal_entries:41
+#: tests/86_selenium/14_password_self-service:98
+#: tests/86_selenium/14_password_self-service:113
+#: tests/86_selenium/180_portal_entries:38
+#: tests/86_selenium/180_portal_entries:42
 msgid "Univention Portal"
 msgstr "Univention Portal"
 
-#: tests/86_selenium/160_process_overview_module:47
+#: tests/86_selenium/160_process_overview_module:40
 msgid "User"
 msgstr "Benutzer"
 
-#: tests/86_selenium/10_product_test_password_change:173
-#: tests/86_selenium/10_product_test_password_change:174
+#: tests/86_selenium/10_product_test_password_change:178
+#: tests/86_selenium/10_product_test_password_change:179
 msgid "User has to change password on next login"
 msgstr "Benutzer muss das Passwort bei der nächsten Anmeldung ändern"
 
-#: tests/86_selenium/10_product_test_password_change:221
+#: tests/86_selenium/10_product_test_password_change:240
 #: tests/86_selenium/134_side_menu:23 tests/86_selenium/134_side_menu:26
 msgid "User settings"
 msgstr "Benutzereinstellungen"
 
-#: tests/86_selenium/10_product_test_password_change:128
-#: tests/86_selenium/10_product_test_password_change:166
+#: tests/86_selenium/10_product_test_password_change:133
+#: tests/86_selenium/10_product_test_password_change:171
+#: tests/86_selenium/15_favorite_modules:79
 #: tests/86_selenium/131_miscellaneous_module_availability:36
 #: tests/86_selenium/131_miscellaneous_module_availability:81
-#: tests/86_selenium/15_favorite_modules:79
 msgid "Users"
 msgstr "Benutzer"
 
@@ -581,45 +594,45 @@ msgstr ""
 msgid "generates an overview"
 msgstr ""
 
-#: tests/86_selenium/136_packages:68
+#: tests/86_selenium/136_packages:59
 msgid "installed"
 msgstr ""
 
+#: tests/86_selenium/170_system_services_module:56
+#: tests/86_selenium/170_system_services_module:107
 #: tests/86_selenium/151_udm_users:126
-#: tests/86_selenium/170_system_services_module:68
-#: tests/86_selenium/170_system_services_module:122
 msgid "more"
 msgstr ""
 
-#: tests/86_selenium/10_product_test_password_change:210
-#: tests/86_selenium/10_product_test_password_change:213
+#: tests/86_selenium/10_product_test_password_change:229
+#: tests/86_selenium/10_product_test_password_change:232
 msgid "no module available"
 msgstr "kein Modul verfügbar"
 
-#: tests/86_selenium/136_packages:68
+#: tests/86_selenium/136_packages:59
 msgid "not installed"
 msgstr ""
 
-#: tests/86_selenium/10_product_test_password_change:229
+#: tests/86_selenium/10_product_test_password_change:248
 msgid "password has been changed"
 msgstr "Passwort wurde erfolgreich geändert"
 
-#: tests/86_selenium/10_product_test_password_change:179
+#: tests/86_selenium/10_product_test_password_change:187
 msgid "password has expired and must be renewed"
 msgstr "password has expired and must be renewed"
 
-#: tests/86_selenium/10_product_test_password_change:231
-#: tests/86_selenium/10_product_test_password_change:245
+#: tests/86_selenium/10_product_test_password_change:250
+#: tests/86_selenium/10_product_test_password_change:264
 msgid "password is too short"
 msgstr "Passwort ist zu kurz"
 
-#: tests/86_selenium/10_product_test_password_change:232
-#: tests/86_selenium/10_product_test_password_change:240
+#: tests/86_selenium/10_product_test_password_change:251
+#: tests/86_selenium/10_product_test_password_change:259
 msgid "password is too simple"
 msgstr ""
 
-#: tests/86_selenium/10_product_test_password_change:230
-#: tests/86_selenium/10_product_test_password_change:235
+#: tests/86_selenium/10_product_test_password_change:249
+#: tests/86_selenium/10_product_test_password_change:254
 msgid "password was already used"
 msgstr "Passwort wurde bereits genutzt"
 
@@ -627,7 +640,7 @@ msgstr "Passwort wurde bereits genutzt"
 msgid "really want to logout"
 msgstr ""
 
-#: tests/86_selenium/111_product_test_execute_join_script:91
+#: tests/86_selenium/111_product_test_execute_join_script:92
 msgid "restart of the UMC server"
 msgstr ""
 

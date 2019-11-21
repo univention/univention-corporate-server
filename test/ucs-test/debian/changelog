@@ -1,3 +1,9 @@
+ucs-test (9.0.3-107) unstable; urgency=medium
+
+  * Bug #50521: add empty translation files
+
+ -- Florian Best <best@univention.de>  Thu, 21 Nov 2019 12:38:11 +0100
+
 ucs-test (9.0.3-106) unstable; urgency=medium
 
   * Bug #40558: added debug to 54_smbtorture/01_smbtorture
