@@ -20,28 +20,33 @@ from univention.config_registry import handler_set
 def main():
 	account = utils.UCSTestDomainAdminCredentials()
 	supplement = 'second_eID'
-	with ucr_test.UCSTestConfigRegistry() as ucr:
-		handler_set(['saml/idp/entityID/supplement/{}=true'.format(supplement)])
+	try:
+		with ucr_test.UCSTestConfigRegistry() as ucr:
+			umc_saml_idpserver = ucr.get('umc/saml/idp-server')
+			handler_set(['saml/idp/entityID/supplement/{}=true'.format(supplement)])
+			subprocess.check_call(['systemctl', 'reload', 'apache2.service'])
+			saml_root = 'https://{}/simplesamlphp/{}/'.format(ucr.get('ucs/server/sso/fqdn'), supplement)
+			supplement_entityID = '{}saml2/idp/metadata.php'.format(saml_root)
+			print('supplement_entityID: "{}"'.format(supplement_entityID))
+			handler_set(['umc/saml/idp-server={}'.format(supplement_entityID)])
+			metadata_req = requests.get(supplement_entityID)
+			metadata_req.raise_for_status()
+			if 'entityID="{}"'.format(supplement_entityID) not in metadata_req.text:
+				print('IDP Metadata:\n{}'.format(metadata_req.text))
+				utils.fail('entityID not changed?')
+			SamlSession = samltest.SamlTest(account.username, account.bindpw)
+			try:
+				SamlSession.login_with_new_session_at_IdP()
+				SamlSession.test_login()
+				SamlSession.logout_at_IdP()
+				SamlSession.test_logout_at_IdP()
+				SamlSession.test_logout()
+			except samltest.SamlError as exc:
+				utils.fail(exc.message)
+	finally:
 		subprocess.check_call(['systemctl', 'reload', 'apache2.service'])
-		saml_root = 'https://{}/simplesamlphp/{}/'.format(ucr.get('ucs/server/sso/fqdn'), supplement)
-		supplement_entityID = '{}saml2/idp/metadata.php'.format(saml_root)
-		print('supplement_entityID: "{}"'.format(supplement_entityID))
-		handler_set(['umc/saml/idp-server={}'.format(supplement_entityID)])
-		metadata_req = requests.get(supplement_entityID)
-		metadata_req.raise_for_status()
-		if 'entityID="{}"'.format(supplement_entityID) not in metadata_req.text:
-			print('IDP Metadata:\n{}'.format(metadata_req.text))
-			utils.fail('entityID not changed?')
-		SamlSession = samltest.SamlTest(account.username, account.bindpw)
-		try:
-			SamlSession.login_with_new_session_at_IdP()
-			SamlSession.test_login()
-			SamlSession.logout_at_IdP()
-			SamlSession.test_logout_at_IdP()
-			SamlSession.test_logout()
-		except samltest.SamlError as exc:
-			utils.fail(exc.message)
-	subprocess.check_call(['systemctl', 'reload', 'apache2.service'])
+		if umc_saml_idpserver:
+			subprocess.check_call(['ucr', 'set', 'umc/saml/idp-server={}'.format(umc_saml_idpserver)])
 
 
 if __name__ == '__main__':
