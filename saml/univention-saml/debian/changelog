@@ -1,8 +1,8 @@
-univention-saml (6.0.2-15) unstable; urgency=medium
+univention-saml (6.0.2-16) unstable; urgency=medium
 
-  * foobar
+  * Bug #50510: Make it possible to configure multiple entity IDs for one IdP
 
- -- Jürn Brodersen <brodersen@univention.de>  Tue, 15 Nov 2019 18:54:41 +0100
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 21 Nov 2019 16:59:36 +0100
 
 univention-saml (6.0.2-14) unstable; urgency=medium
 

@@ -48,7 +48,7 @@ print "	'domainname'	=> '%s'," % configRegistry.get('domainname', '')
 	 * external url, no matter where you come from (direct access or via the
 	 * reverse proxy).
 	 */
-	'baseurlpath'           => get_baseurlpath($baseurls, $_SERVER['REQUEST_URI']),
+	'baseurlpath'           => get_baseurlpath($baseurls),
 	'certdir'               => '/etc/ssl/certs/',
 	'loggingdir'            => '/var/log/simplesamlphp/',
 	'datadir'               => '/var/lib/simplesamlphp/data/',

@@ -1,11 +1,11 @@
 <?php
 
-function get_baseurlpath($baseurls, $request_uri) {
+function get_baseurlpath($baseurls) {
 	$default_baseurlpath = 'simplesamlphp/';
-	if (!($request_uri)) {
+	if (!(array_key_exists('REQUEST_URI', $_SERVER))) {
 		return $default_baseurlpath;
 	}
-	$exploded_path = explode('/', $request_uri);
+	$exploded_path = explode('/', $_SERVER['REQUEST_URI']);
 	if (count($exploded_path) < 3) {
 		return $default_baseurlpath;
 	}
