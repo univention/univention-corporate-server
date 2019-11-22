@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-48) unstable; urgency=medium
+
+  * Bug #50530: adjust text margins
+
+ -- Florian Best <best@univention.de>  Fri, 22 Nov 2019 11:58:06 +0100
+
 univention-management-console (11.0.4-47) unstable; urgency=medium
 
   * Bug #50530: Show Univention Summit 2020 pop up
