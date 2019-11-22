@@ -1334,6 +1334,10 @@ univention-directory-listener-ctrl resync cups-printers
 			</listitem>
 		</varlistentry>
 	</variablelist>
+	<para>
+		Die Kerberos Authentifizierung kann auf bestimmte IP-Subnetzte beschränkt werden, indem die &ucsUCRV; <envar>saml/idp/negotiate/filter-subnets</envar> beispielsweise auf <literal>127.0.0.0/16,192.168.0.0/16</literal> gesetzt wird.
+		Dies ist besonders nützlich, um zu verhindern, dass für Clients, die nicht zur UCS-Domäne gehören, eine Popup-Login-Box angezeigt wird.
+	</para>
 
 	<section id="domain:saml:ssologin">
 	<title>Anmelden per <foreignphrase>Single Sign-On</foreignphrase></title>

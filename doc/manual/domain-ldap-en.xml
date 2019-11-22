@@ -1303,6 +1303,10 @@ univention-directory-listener-ctrl resync cups-printers
 			</listitem>
 		</varlistentry>
 	</variablelist>
+	<para>
+		The Kerberos authentication can be restricted to certain IP subnets by setting the &ucsUCRV; <envar>saml/idp/negotiate/filter-subnets</envar> for example to <literal>127.0.0.0/16,192.168.0.0/16</literal>.
+		This is especially useful to prevent a pop up login box being shown for clients which are not part of the UCS domain.
+	</para>
 
 	<section id="domain:saml:ssologin">
 	<title>Login via <foreignphrase>single sign-on</foreignphrase></title>
