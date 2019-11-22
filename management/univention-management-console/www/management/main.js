@@ -483,7 +483,7 @@ define([
 				return;
 			}
 
-			var endOfSummit = new Date(2020, 1, 24, 0, 0, 0);
+			var endOfSummit = new Date(2020, 0, 24, 0, 0, 0);
 			var summitHasPassed = endOfSummit < new Date();
 			var isUserAdmin = app.getModule('updater') || app.getModule('schoolrooms');
 			var dontShowDialog = !tools.status('has_free_license') || summitHasPassed || !isUserAdmin || cookie('hideSummit2020Dialog');
@@ -495,7 +495,7 @@ define([
 			var title = '' +
 				'<div>' +
 					'<p class="umcSummit2020Dialog__header-text">' +
-						'Univention Summit 2020 - be open for <b class="umcSummit2020Dialog__header-text--important">Digital Sovereignity' +
+						'Univention Summit 2020 - be open for <b class="umcSummit2020Dialog__header-text--important">Digital Sovereignty' +
 					'</p>' +
 				'</div>';
 
@@ -572,7 +572,7 @@ define([
 				return;
 			}
 
-			var endOfSummit = new Date(2020, 1, 24, 0, 0, 0);
+			var endOfSummit = new Date(2020, 0, 24, 0, 0, 0);
 			var summitHasPassed = endOfSummit < new Date();
 			var isUserAdmin = app.getModule('updater') || app.getModule('schoolrooms');
 			var dontShowNotification = !tools.status('has_free_license') || summitHasPassed || !isUserAdmin || cookie('hideSummit2020Notification');
