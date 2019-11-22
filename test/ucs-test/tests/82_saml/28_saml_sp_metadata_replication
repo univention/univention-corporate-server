@@ -23,6 +23,10 @@ ucr.load()
 udm_modules.update()
 
 
+class ListenerError(Exception):
+	pass
+
+
 def main():
 	account = utils.UCSTestDomainAdminCredentials()
 	SamlSession = samltest.SamlTest(account.username, account.bindpw)
@@ -39,9 +43,10 @@ def main():
 
 		# set udm saml/sp object to 'deactivated' so the file is removed
 		cmd_disable = ['/usr/sbin/udm', 'saml/serviceprovider', 'modify', '--dn=SAMLServiceProviderIdentifier=https://%s/univention/saml/metadata,cn=saml-serviceprovider,cn=univention,%s' % (master_hostname, ucr.get('ldap/base')), '--set', 'isActivated=FALSE']
-		subprocess.call(cmd_disable)
+		subprocess.check_call(cmd_disable)
 		utils.wait_for_replication()
-		assert not os.path.exists(metadata_filename)
+		if os.path.exists(metadata_filename):
+			raise ListenerError('Metadata was not deleted by the listener!')
 		try:
 			with samltest.GuaranteedIdP('127.0.0.1'):
 				# Use the local IdP server, that way we don't need to wait for domain wide replication.
@@ -57,9 +62,13 @@ def main():
 
 		# add new SP with raw metadata
 		with udm_test.UCSTestUDM() as udm:
-			new_service_provider = {'Identifier': 'ucs-test-sp', 'isActivated': 'TRUE', 'AssertionConsumerService': 'https://.de', 'rawsimplesamlSPconfig': metadata}
+			new_identifier = 'ucs-test-sp'
+			new_service_provider = {'Identifier': new_identifier, 'isActivated': 'TRUE', 'AssertionConsumerService': 'https://.de', 'rawsimplesamlSPconfig': metadata}
 			udm.create_object('saml/serviceprovider', **new_service_provider)
 
+			utils.wait_for_replication()
+			if not os.path.exists('/etc/simplesamlphp/metadata.d/{}.php'.format(new_identifier)):
+				raise ListenerError('Metadata was not written by the listener!')
 			# try to login
 			with samltest.GuaranteedIdP('127.0.0.1'):
 				SamlSession.target_sp_hostname = master_hostname
@@ -70,7 +79,16 @@ def main():
 	finally:
 		# enable SP config in any case to reset state
 		cmd_enable = ['/usr/sbin/udm', 'saml/serviceprovider', 'modify', '--dn=SAMLServiceProviderIdentifier=https://%s/univention/saml/metadata,cn=saml-serviceprovider,cn=univention,%s' % (master_hostname, ucr.get('ldap/base')), '--set', 'isActivated=TRUE']
-		subprocess.call(cmd_enable)
+		subprocess.check_call(cmd_enable)
+		utils.wait_for_replication()
+		if not os.path.exists(metadata_filename):
+			raise ListenerError('Metadata was not written by the listener!')
+		with open(metadata_filename, 'r') as metadata_file:
+			metadata_new = metadata_file.read()
+		if metadata_new != metadata:
+			print('old: {}'.format(metadata))
+			print('new: {}'.format(metadata_new))
+			raise ListenerError('Metadata written by the listener differs from old metadata!')
 
 
 if __name__ == '__main__':
