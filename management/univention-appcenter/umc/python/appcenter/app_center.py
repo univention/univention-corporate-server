@@ -74,7 +74,7 @@ import univention.admin.uexceptions as udm_errors
 from univention.appcenter.utils import app_ports, gpg_verify, container_mode, send_information
 from univention.management.console.modules.decorators import reloading_ucr
 from univention.management.console.ldap import machine_connection, get_machine_connection
-from univention.management.console.modules.appcenter.util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, get_all_hosts, set_save_commit_load, get_md5, verbose_http_error
+from univention.management.console.modules.appcenter.util import urlopen, get_free_disk_space, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, get_all_hosts, set_save_commit_load, get_md5, verbose_http_error
 from univention.appcenter.app_cache import AppCache, Apps
 from univention.appcenter.actions import get_action
 from univention.appcenter.ucr import ucr_instance, ucr_save
@@ -1206,6 +1206,16 @@ class Application(object):
 
 		if depending_apps:
 			return depending_apps
+		return True
+
+	@SoftRequirement('install')
+	def shall_have_enough_free_disk_space(self, function):
+		'''The application requires %(minimum)d MB of free disk space but only
+		%(current)d MB are available.'''
+		current_free_disk_space = get_free_disk_space()
+		required_free_disk_space = self.min_free_disk_space
+		if current_free_disk_space < required_free_disk_space:
+			return {'minimum': required_free_disk_space, 'current': current_free_disk_space}
 		return True
 
 	@SoftRequirement('install', 'update')
