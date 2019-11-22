@@ -331,6 +331,11 @@ define([
 			reasonDescription: function(details) {
 				return _('The application requires %(minimum)d MB of free RAM but only %(current)d MB are available.', details);
 			}
+		}),
+		shall_have_enough_free_disk_space: new Requirement({
+			reasonDescription: function(details) {
+				return _('The application requires %(minimum)d MB of free disk space but only %(current)d MB are available.', details);
+			}
 		})
 	};
 });

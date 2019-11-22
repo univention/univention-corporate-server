@@ -368,6 +368,26 @@ def get_current_ram_available():
 	return (avail_phymem + phymem_buffers + cached_phymem) / (1024 * 1024)
 
 
+def get_free_disk_space():
+	''' Returns disk space currently free in MB'''
+	docker_path = '/var/lib/docker'
+	try:
+		fd = os.open(docker_path, os.O_RDONLY)
+		stats = os.fstatvfs(fd)
+		bytes_free = stats.f_bsize * stats.f_bfree  # block size * number of free blocks
+		mb_free = bytes_free * 1e-6
+		return mb_free
+	except Exception as exc:
+		utils_logger.warn('Free disk space could not be determined.')
+	finally:
+		try:
+			os.close(fd)
+		except (NameError, OSError):
+			# file has not been opened
+			pass
+	return
+
+
 def flatten(list_of_lists):
 	# return [item for sublist in list_of_lists for item in sublist]
 	# => does not work well for strings in list
