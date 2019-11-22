@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: SSO Login at UMC as Service Provider
+## desc: Test SSO with supplement entityID
 ## tags: [saml]
 ## join: true
 ## exposure: safe
