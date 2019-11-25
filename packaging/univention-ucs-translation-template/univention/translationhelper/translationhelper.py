@@ -44,6 +44,12 @@ import traceback
 from debian.deb822 import Deb822
 from email.utils import formatdate
 
+
+if sys.version_info >= (3,):
+	from email.utils import formatdate
+else:
+	from email.Utils import formatdate
+
 from . import umc
 from . import sourcefileprocessing
 from . import message_catalogs
