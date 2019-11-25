@@ -28,7 +28,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 from __future__ import print_function
-from email.Utils import formatdate
 from datetime import date
 from glob import glob
 import getpass
@@ -43,6 +42,12 @@ import sys
 import traceback
 
 from debian.deb822 import Deb822
+
+
+if sys.version_info >= (3,):
+	from email.utils import formatdate
+else:
+	from email.Utils import formatdate
 
 from . import umc
 from . import sourcefileprocessing
