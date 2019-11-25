@@ -42,6 +42,11 @@ if sys.version_info >= (3,):
 else:
 	from commands import getstatusoutput
 
+if sys.version_info >= (3,):
+	from subprocess import getstatusoutput
+else:
+	from commands import getstatusoutput
+
 DEFAULT_FS = "ext2/ext3:ext2:ext3:ext4:xfs:btrfs"
 DIR_BLACKLIST = []
 DIR_BLACKLIST.append("/bin")
