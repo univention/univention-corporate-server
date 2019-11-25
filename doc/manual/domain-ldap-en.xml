@@ -1472,6 +1472,18 @@ univention-directory-listener-ctrl resync cups-printers
 		</tgroup>
 	</table>
 	</section>
+	<section id="domain:saml:extendedconfiguration">
+	<title>Extended Configuration</title>
+	<para>
+		Some environments may require the UCS Identity Provider to provide multiple logical Identity Provider instances.
+		Logical separation is achieved by offering different URIs as Identity Provider endpoints.
+		The default endpoint is <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/metadata.php</uri>.
+		Further entries can be created by setting &ucsUCRV;s in the form <envar>saml/idp/entityID/supplement/<replaceable>identifier</replaceable>=true</envar> on all servers which serve the UCS Identity Provider.
+		Typically that will be the DC master and all DC backup servers.
+		The <systemitem class="service">apache2</systemitem> service must then be reloaded.
+		For example, to set up another entry under the URI <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/<replaceable>secondIDP</replaceable>/saml2/idp/metadata.php</uri>, the &ucsUCRV; <envar>saml/idp/entityID/supplement/secondIDP=true</envar> must be set.
+	</para>
+	</section>
 </section>
 
 <section id="domain:oidc">

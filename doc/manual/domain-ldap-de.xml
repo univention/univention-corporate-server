@@ -1502,6 +1502,19 @@ univention-directory-listener-ctrl resync cups-printers
 		</tgroup>
 	</table>
 	</section>
+	<section id="domain:saml:extendedconfiguration">
+	<title>Erweiterte Konfiguration</title>
+	<para>
+		In manchen Umgebungen kann es erforderlich sein, dass der UCS Identity Provider mehrere logische Identity Provider Instanzen bereitstellt.
+		Die logische Trennung wird erreicht, indem der Identity Provider unterschiedliche URIs als Endpunkt anbietet.
+		Der standardmäßig eingerichtete Endpunkt ist <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/metadata.php</uri>.
+		Weitere Einträge können durch das Setzen von &ucsUCRV;n in der Form <envar>saml/idp/entityID/supplement/<replaceable>identifier</replaceable>=true</envar> erzeugt werden.
+		Diese müssen auf allen Servern, die den UCS Identity Provider zur Verfügung stellen, gesetzt werden.
+		Typischerweise sind dies der DC Master und alle DC Backup Server.
+		Anschließend muss der <systemitem class="service">apache2</systemitem> Dienst neu geladen werden.
+		Um beispielsweise einen weiteren Eintrag unter der URI <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/<replaceable>secondIDP</replaceable>/saml2/idp/metadata.php</uri> einzurichten, muss die &ucsUCRV; <envar>saml/idp/entityID/supplement/secondIDP=true</envar> gesetzt werden.
+	</para>
+	</section>
 </section>
 
 <section id="domain:oidc">
