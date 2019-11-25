@@ -2,7 +2,8 @@
 ## desc: Test SSO with supplement entityID
 ## tags: [saml]
 ## join: true
-## exposure: safe
+## exposure: dangerous
+## roles: [domaincontroller_master, domaincontroller_backup]
 ## packages:
 ##   - python-requests
 ## tags:
@@ -21,10 +22,10 @@ def main():
 	account = utils.UCSTestDomainAdminCredentials()
 	supplement = 'second_eID'
 	try:
-		with ucr_test.UCSTestConfigRegistry() as ucr:
+		with ucr_test.UCSTestConfigRegistry() as ucr, samltest.GuaranteedIdP('127.0.0.1'):
 			umc_saml_idpserver = ucr.get('umc/saml/idp-server')
 			handler_set(['saml/idp/entityID/supplement/{}=true'.format(supplement)])
-			subprocess.check_call(['systemctl', 'reload', 'apache2.service'])
+			subprocess.check_call(['systemctl', 'restart', 'apache2.service'])
 			saml_root = 'https://{}/simplesamlphp/{}/'.format(ucr.get('ucs/server/sso/fqdn'), supplement)
 			supplement_entityID = '{}saml2/idp/metadata.php'.format(saml_root)
 			print('supplement_entityID: "{}"'.format(supplement_entityID))
