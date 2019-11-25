@@ -1,6 +1,12 @@
+ucs-test (9.0.3-113) unstable; urgency=medium
+
+  * Bug #45115: Let script reload services; do not sleep
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 25 Nov 2019 16:51:37 +0100
+
 ucs-test (9.0.3-112) unstable; urgency=medium
 
-  * Bug #45115: Acticate test
+  * Bug #45115: Activate test
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 25 Nov 2019 15:47:07 +0100
 
