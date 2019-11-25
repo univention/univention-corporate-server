@@ -30,9 +30,10 @@ Univention specific JSON-based format) from multiple source files by file type.
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+from __future__ import absolute_import
 from lxml import etree
 import os
-import message_catalogs
+from . import message_catalogs
 import polib
 
 from . import umc
