@@ -32,9 +32,14 @@ Univention Helper functions for creating or rename share directories
 
 import os
 import pipes
-import commands
+import sys
 import fnmatch
 import shutil
+
+if sys.version_info >= (3,):
+	from subprocess import getstatusoutput
+else:
+	from commands import getstatusoutput
 
 DEFAULT_FS = "ext2/ext3:ext2:ext3:ext4:xfs:btrfs"
 DIR_BLACKLIST = []
@@ -100,7 +105,7 @@ def checkDirFileSystem(path, cr):
 	:rtype: str or None
 	"""
 	knownFs = cr.get("listener/shares/rename/fstypes", DEFAULT_FS).split(":")
-	ret, out = commands.getstatusoutput("LC_ALL=C stat -f %s" % pipes.quote(path))
+	ret, out = getstatusoutput("LC_ALL=C stat -f %s" % pipes.quote(path))
 	myFs = ""
 	for line in out.split("\n"):
 		tmp = line.split("Type: ")
