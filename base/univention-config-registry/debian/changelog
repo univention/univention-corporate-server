@@ -1,3 +1,9 @@
+univention-config-registry (14.0.0-13) unstable; urgency=medium
+
+  * Bug #51021: UCR interfaces: use absolute imports
+
+ -- Florian Best <best@univention.de>  Mon, 30 Mar 2020 10:44:00 +0200
+
 univention-config-registry (14.0.0-12) unstable; urgency=low
 
   * Bug #50098: Install debian/*.univention-service files again
