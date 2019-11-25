@@ -44,9 +44,10 @@ import locale
 import sys
 if sys.version_info >= (3,):
 	from http.cookies import SimpleCookie
+	from http.client import HTTPSConnection, HTTPException
 else:
 	from Cookie import SimpleCookie
-from httplib import HTTPSConnection, HTTPException
+	from httplib import HTTPSConnection, HTTPException
 
 from univention.config_registry import ConfigRegistry
 ucr = ConfigRegistry()
