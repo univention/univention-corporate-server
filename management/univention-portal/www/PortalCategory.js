@@ -95,8 +95,8 @@ define([
 			switch (this.renderMode) {
 				case portalTools.RenderMode.NORMAL:
 					this.addChild(this.grid);
-					this.own(aspect.after(this.grid, 'onOpenIframe', lang.hitch(this, function(portalEntryDN, url) {
-						this.onOpenIframe(portalEntryDN, url);
+					this.own(aspect.after(this.grid, 'onOpenIframe', lang.hitch(this, function(portalEntryDN, logoUrl, url) {
+						this.onOpenIframe(portalEntryDN, logoUrl, url);
 					}), true));
 					break;
 				case portalTools.RenderMode.EDIT:
@@ -167,7 +167,7 @@ define([
 			// event stub
 		},
 
-		onOpenIframe: function(portalEntryDN, url) {
+		onOpenIframe: function(portalEntryDN, logoUrl, url) {
 			// event stub
 		}
 	});
