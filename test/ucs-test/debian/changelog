@@ -1,3 +1,9 @@
+ucs-test (9.0.3-112) unstable; urgency=medium
+
+  * Bug #45115: Acticate test
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 25 Nov 2019 15:47:07 +0100
+
 ucs-test (9.0.3-111) unstable; urgency=medium
 
   * Bug #50510: fix 44_idp_entityID_supplement (again)
