@@ -799,17 +799,26 @@ define([
 		},
 
 		_selectIframe: function(portalEntryDN) {
-			tools.values(this._iframeMap).forEach(function(iframe) {
-				domClass.add(iframe, 'dijitDisplayNone');
-			});
-			domClass.remove(this._iframeMap[portalEntryDN], 'dijitDisplayNone');
 			domClass.remove(dom.byId('iframes'), 'dijitDisplayNone');
-			domClass.add(dojo.body(), 'iframeOpen');
+			tools.values(this._iframeMap).forEach(function(v) {
+				domClass.add(v.iframe, 'dijitDisplayNone');
+				domClass.remove(v.tab, 'sidebar__tab--selected');
+			});
+			domClass.remove(this._iframeMap[portalEntryDN].iframe, 'dijitDisplayNone');
+			domClass.add(this._iframeMap[portalEntryDN].tab, 'sidebar__tab--selected');
+
+			domClass.replace(dom.byId('portal'), 'iframeOpen', 'iframeNotOpen');
+			domClass.remove(dom.byId('sidebar__homeTab'), 'sidebar__tab--selected');
 		},
 
 		_selectHome: function() {
 			domClass.add(dom.byId('iframes'), 'dijitDisplayNone');
-			domClass.remove(dojo.body(), 'iframeOpen');
+			tools.values(this._iframeMap).forEach(function(v) {
+				domClass.remove(v.tab, 'sidebar__tab--selected');
+			});
+
+			domClass.replace(dojo.body(), 'iframeNotOpen', 'iframeOpen');
+			domClass.add(dom.byId('sidebar__homeTab'), 'sidebar__tab--selected');
 		},
 
 		_renderCategory: function(category, renderMode) {
@@ -827,10 +836,17 @@ define([
 
 			switch (renderMode) {
 				case portalTools.RenderMode.NORMAL:
-					portalCategory.own(on(portalCategory, 'openIframe', lang.hitch(this, function(portalEntryDN, url) {
+					portalCategory.own(on(portalCategory, 'openIframe', lang.hitch(this, function(portalEntryDN, logoUrl, url) {
 						if (!this._iframeMap[portalEntryDN]) {
-							this._iframeMap[portalEntryDN] = put('iframe[src=$]', url);
-							put(dom.byId('iframes'), this._iframeMap[portalEntryDN]);
+							this._iframeMap[portalEntryDN] = {
+								iframe: put('iframe[src=$]', url),
+								tab: put('div.sidebar__tab div.sidebar__tab__icon.$ <', portalTools.getIconClass(logoUrl))
+							};
+							on(this._iframeMap[portalEntryDN].tab, 'click', lang.hitch(this, function() {
+								this._selectIframe(portalEntryDN);
+							}));
+							put(dom.byId('iframes'), this._iframeMap[portalEntryDN].iframe);
+							put(dom.byId('sidebar__tabs'), this._iframeMap[portalEntryDN].tab);
 						}
 						this._selectIframe(portalEntryDN);
 					})));
@@ -1422,12 +1438,9 @@ define([
 		},
 
 		_renderSidebar: function() {
-			this._sidebar = new Button({
-				'class': 'homeButton umcFlatButton',
-				iconClass: 'homeButton__icon',
-				onClick: lang.hitch(this, '_selectHome')
-			});
-			domConstruct.place(this._sidebar.domNode, dom.byId('sidebar'), 'first');
+			var homeTab = put('div.sidebar__tab.sidebar__tab--selected#sidebar__homeTab div.sidebar__tab__icon <');
+			on(homeTab, 'click', lang.hitch(this, '_selectHome'));
+			domConstruct.place(homeTab, dom.byId('sidebar'), 'first');
 		},
 
 		_render: function(renderMode) {

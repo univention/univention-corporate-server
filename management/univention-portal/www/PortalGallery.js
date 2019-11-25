@@ -294,7 +294,7 @@ define([
 						case 'embedded':
 							link.onclick = lang.hitch(this, function(e) {
 								e.preventDefault();
-								this.onOpenIframe(item.dn, this._getWebInterfaceUrl(item));
+								this.onOpenIframe(item.dn, item.logo_name, this._getWebInterfaceUrl(item));
 							});
 							break;
 					}
@@ -356,7 +356,7 @@ define([
 			// event stub
 		},
 
-		onOpenIframe: function(portalEntryDN, url) {
+		onOpenIframe: function(portalEntryDN, logoUrl, url) {
 			// event stub
 		},
 
