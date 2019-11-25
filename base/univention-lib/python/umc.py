@@ -41,7 +41,11 @@ connections to remote |UMC| servers
 import ssl
 import json
 import locale
-from Cookie import SimpleCookie
+import sys
+if sys.version_info >= (3,):
+	from http.cookies import SimpleCookie
+else:
+	from Cookie import SimpleCookie
 from httplib import HTTPSConnection, HTTPException
 
 from univention.config_registry import ConfigRegistry
