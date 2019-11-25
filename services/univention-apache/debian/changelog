@@ -1,3 +1,9 @@
+univention-apache (11.0.1-13) unstable; urgency=medium
+
+  * Bug #45115: Reload services (and check; with timeout)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 25 Nov 2019 15:45:59 +0100
+
 univention-apache (11.0.1-12) unstable; urgency=medium
 
   * Bug #45115: Remove aliases, create settings/service object
