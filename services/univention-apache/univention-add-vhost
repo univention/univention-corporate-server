@@ -176,6 +176,10 @@ def main(fqdn, port, aliases, conffile, binddn, bindpwdfile, ssl, cert, private_
 					"DNS reconfiguration not complete.",
 					fg="red")
 				)
+				click.echo("`host {}` did not respond as expected after {} seconds.".format(fqdn, timeout))
+				click.echo(click.style("You may want to try", bold=True))
+				click.echo(click.style("$ nscd -i hosts", bold=True))
+				click.echo(click.style("$ service bind9 reload", bold=True))
 
 def resolve_host(hostname, timeout):
 	resolver = Resolver()

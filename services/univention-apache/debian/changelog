@@ -1,3 +1,9 @@
+univention-apache (11.0.1-14) unstable; urgency=medium
+
+  * Bug #45115: Wording
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 26 Nov 2019 16:32:36 +0100
+
 univention-apache (11.0.1-13) unstable; urgency=medium
 
   * Bug #45115: Reload services (and check; with timeout)
