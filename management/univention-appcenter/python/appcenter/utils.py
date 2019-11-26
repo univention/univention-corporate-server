@@ -374,7 +374,7 @@ def get_free_disk_space():
 	try:
 		fd = os.open(docker_path, os.O_RDONLY)
 		stats = os.fstatvfs(fd)
-		bytes_free = stats.f_bsize * stats.f_bfree  # block size * number of free blocks
+		bytes_free = stats.f_frsize * stats.f_bavail  # block size * number of free blocks
 		mb_free = bytes_free * 1e-6
 		return mb_free
 	except Exception as exc:
