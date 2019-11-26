@@ -3377,7 +3377,7 @@ service bind9 reload  # same here
         </para>
 				<note>
 					<para>
-						Note: Although this seems convenient for some Apps, this feature creates an <emphasis>internal</emphasis> name. It may still be inconvenient for testers that run UCS in a virtual environment where their browser is not part of UCS' DNS.
+						Although this seems convenient for some Apps, this feature creates an <emphasis>internal</emphasis> name. It may still be inconvenient for testers that run UCS in a virtual environment where their browser is not part of UCS' DNS.
 					</para>
 				</note>
         <warning>
