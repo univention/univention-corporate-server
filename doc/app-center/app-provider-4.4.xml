@@ -3375,9 +3375,16 @@ service bind9 reload  # same here
 							]]></programlisting>
 
         </para>
-        <para>
-					Note: Although this seems convenient for some Apps, this feature creates an <emphasis>internal</emphasis> name. It may still be inconvenient for testers that run UCS in a virtual environment where their browser is not part of UCS' DNS.
-        </para>
+				<note>
+					<para>
+						Note: Although this seems convenient for some Apps, this feature creates an <emphasis>internal</emphasis> name. It may still be inconvenient for testers that run UCS in a virtual environment where their browser is not part of UCS' DNS.
+					</para>
+				</note>
+        <warning>
+					<para>
+						This method may not work in the "AD member mode". There, a Windows Domaincontroller is the leading system and provides the DNS. The DNS alias has to be added by the Admin manually there as our script cannot add it for them.
+					</para>
+        </warning>
     </section>
 
     <section id="firewall">
