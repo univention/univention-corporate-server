@@ -6,7 +6,7 @@ src: php-imagick
 fix: 3.4.3~rc2-2+deb9u1
 desc: |
  This update addresses the following issue:
- * out-of-bounds write to memory in ImagickKernel::fromMatrix() leading to
+ * Out-of-bounds write to memory in ImagickKernel::fromMatrix() leading to
    possible crash and DoS (CVE-2019-11037)
 bug: [50547]
 cve:
