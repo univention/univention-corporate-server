@@ -64,7 +64,7 @@ import copy
 import socket
 from univention.config_registry import ConfigRegistry
 import subprocess
-import new
+import types
 import tempfile
 import shutil
 import logging
@@ -642,7 +642,7 @@ class UCSHttpServer(_UCSServer):
                     return UCSHttpServer.http_method
                 else:
                     return method
-            req.get_method = new.instancemethod(get_method, req, urllib_request.Request)  # type: ignore
+            req.get_method = types.MethodType(get_method, req)  # type: ignore
 
         self.log.info('Requesting %s', req.get_full_url())
         ud.debug(ud.NETWORK, ud.ALL, "updater: %s %s" % (req.get_method(), req.get_full_url()))
