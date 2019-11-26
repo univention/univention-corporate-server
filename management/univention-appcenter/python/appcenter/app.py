@@ -1574,7 +1574,7 @@ class App(object):
 		%(current)d MB are available.'''
 		current_free_disk_space = get_free_disk_space()
 		required_free_disk_space = self.min_free_disk_space
-		if current_free_disk_space < required_free_disk_space:
+		if current_free_disk_space and current_free_disk_space < required_free_disk_space:
 			return {'minimum': required_free_disk_space, 'current': current_free_disk_space}
 		return True
 
