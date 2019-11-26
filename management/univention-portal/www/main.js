@@ -1535,9 +1535,9 @@ define([
 				return;
 			}
 
-			// if (!tools.status('loggedIn')) {
-				// registry.byId('umcLoginButton').emphasise();
-			// }
+			if (!tools.status('loggedIn')) {
+				registry.byId('sidebar__loginButton').emphasise();
+			}
 
 			switch (renderMode) {
 				case portalTools.RenderMode.NORMAL:
