@@ -53,6 +53,43 @@ material-shadow(level)
 	// general styling
 	min-height: 100%
 
+
+	.portalLoginButton
+		margin: 0
+
+		.dijitButtonNode
+			width: 48px
+			height: 48px
+			padding: 0
+
+		.dijitArrowButtonInner
+			display: none
+
+		.portalLoggedOutIcon
+			background-image: url(login.png)
+			background-repeat: no-repeat
+			background-size: contain
+			width: 20px
+			height: 20px
+			margin: 0
+
+		.portalLoggedInIcon
+			background-image: url(avatar.svg)
+			background-repeat: no-repeat
+			background-size: contain
+			width: 20px
+			height: 20px
+			margin: 0
+
+	.portalAvatarMenuContainerPopup
+		margin-left: 8px
+		border-radius: 2px
+
+		.portalAvatarMenuContainer
+			border-radius: 2px
+			padding: 8px 0
+			background: #fff
+
 	#sidebar
 		overflow: hidden // needed for the hamburger menu button
 		position: fixed
@@ -167,7 +204,7 @@ material-shadow(level)
 			background-position: center
 			width: 40px
 			height: 40px
-			margin: 8px 0 8px 0
+			margin: 0 0 8px 0
 
 	#contentWrapper
 		/* Chrome,Safari4+ */
