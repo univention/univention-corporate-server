@@ -34,11 +34,18 @@ from __future__ import absolute_import, unicode_literals
 import bz2
 import base64
 import codecs
-import cStringIO
 from collections import namedtuple
 
 import magic
 from six import string_types
+import sys
+
+# we dont use six as we need cStringIo not StringIO
+if sys.version_info >= (3,):
+	from io import StringIO
+else:
+	from cStringIO import StringIO
+
 
 
 FileType = namedtuple('namedtuple', ['mime_type', 'encoding', 'text'])
@@ -122,7 +129,7 @@ class BaseBinaryProperty(object):
 
 	@property
 	def content_type(self):
-		return get_file_type(cStringIO.StringIO(self.raw))
+		return get_file_type(StringIO(self.raw))
 
 
 class Base64BinaryProperty(BaseBinaryProperty):
