@@ -3,7 +3,7 @@ release: "4.4"
 version: [2]
 scope: ucs_4.4-0-errata4.4-2
 src: univention-appcenter
-fix: 8.0.11-90A~4.4.0.201911261323
+fix: 8.0.11-89A~4.4.0.201911251117
 desc: |
  This update addresses the following issue(s):
  * Before an app installation, the App Center will now make sure that enough
