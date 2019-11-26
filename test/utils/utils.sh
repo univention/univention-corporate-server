@@ -535,7 +535,14 @@ run_appcenter_uninstall_tests () {
 }
 
 run_admember_tests () {
+	ad_member_fix_udm_rest_api
 	run_tests -p skip_admember -p docker "$@"
+}
+
+ad_member_fix_udm_rest_api () {  # workaround for Bug #50527
+	ucr unset directory/manager/rest/authorized-groups/domain-admins
+	univention-run-join-scripts --force --run-scripts 22univention-directory-manager-rest.inst
+	service univention-directory-manager-rest restart
 }
 
 run_adconnector_tests () {
