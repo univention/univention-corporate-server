@@ -1,7 +1,10 @@
 from __future__ import print_function
 import sys
 import os
-from urlparse import urlparse
+if sys.version_info >= (3,):
+	from urllib.parse import urlparse
+else:
+	from urlparse import urlparse
 
 
 def get_idps(ucr, log_fd=sys.stderr):
