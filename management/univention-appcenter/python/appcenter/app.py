@@ -907,7 +907,7 @@ class App(object):
 	server_role = AppListAttribute(default=['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'], choices=['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'])
 	supported_architectures = AppListAttribute(default=['amd64', 'i386'], choices=['amd64', 'i386'])
 	min_physical_ram = AppIntAttribute(default=0)
-	min_free_disk_space = AppIntAttribute(default=4000)
+	min_free_disk_space = AppIntAttribute(default=None)
 
 	shop_url = AppAttribute(localisable=True)
 
@@ -957,6 +957,7 @@ class App(object):
 			setattr(self, attr.name, _attrs.get(attr.name))
 		self.ucs_version = self.get_ucs_version()  # compatibility
 		if self.docker:
+			self.min_free_disk_space.default = 4000
 			self.supported_architectures = ['amd64']
 			if self.plugin_of:
 				for script in ['docker_script_restore_data_before_setup', 'docker_script_restore_data_after_setup']:
@@ -1572,10 +1573,10 @@ class App(object):
 	def shall_have_enough_free_disk_space(self, function):
 		'''The application requires %(minimum)d MB of free disk space but only
 		%(current)d MB are available.'''
-		if not self.docker:
-			return True
 		current_free_disk_space = get_free_disk_space()
 		required_free_disk_space = self.min_free_disk_space
+		if required_free_disk_space <= 0:
+			return True
 		if current_free_disk_space and current_free_disk_space < required_free_disk_space:
 			return {'minimum': required_free_disk_space, 'current': current_free_disk_space}
 		return True

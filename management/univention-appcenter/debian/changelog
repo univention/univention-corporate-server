@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-92) unstable; urgency=medium
+
+  * Bug #31796: remove unused code
+
+ -- Jannik Ahlers <ahlers@univention.de>  Tue, 26 Nov 2019 17:53:04 +0100
+
 univention-appcenter (8.0.11-91) unstable; urgency=medium
 
   * Bug #31796: don't depend on existence of /var/lib/docker in umc
