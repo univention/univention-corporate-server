@@ -61,10 +61,8 @@ import sys
 import re
 import os
 import copy
-import httplib
 import socket
 from univention.config_registry import ConfigRegistry
-import urllib2
 import subprocess
 import new
 import tempfile
@@ -75,6 +73,15 @@ try:
     from typing import Any, AnyStr, Dict, Generator, Iterable, Iterator, List, Optional, Sequence, Set, Tuple, Type, Union  # noqa F401
 except ImportError:
     pass
+
+if sys.version_info >= (3,):
+    import http.client as http_client
+    import urllib.request as urllib_request
+    import urllib.error as urllib_error
+else:
+    import httplib as http_client
+    import urllib2 as urllib_request
+    import urllib2 as urllib_error
 
 RE_ALLOWED_DEBIAN_PKGNAMES = re.compile('^[a-z0-9][a-z0-9.+-]+$')
 RE_SPLIT_MULTI = re.compile('[ ,]+')
@@ -472,13 +479,13 @@ class UCSHttpServer(_UCSServer):
     Access to UCS compatible remote update server.
     """
 
-    class HTTPHeadHandler(urllib2.BaseHandler):
+    class HTTPHeadHandler(urllib_request.BaseHandler):
         """
         Handle fallback from HEAD to GET if unimplemented.
         """
 
-        def http_error_501(self, req, fp, code, msg, headers):  # httplib.NOT_IMPLEMENTED
-            # type: (urllib2.Request, Any, int, str, Dict) -> Any
+        def http_error_501(self, req, fp, code, msg, headers):  # http_client.NOT_IMPLEMENTED
+            # type: (urllib_request.Request, Any, int, str, Dict) -> Any
             m = req.get_method()
             if m == 'HEAD' == UCSHttpServer.http_method:
                 ud.debug(ud.NETWORK, ud.INFO, "HEAD not implemented at %s, switching to GET." % req)
@@ -505,11 +512,11 @@ class UCSHttpServer(_UCSServer):
 
     http_method = 'HEAD'
     head_handler = HTTPHeadHandler()
-    password_manager = urllib2.HTTPPasswordMgrWithDefaultRealm()
-    auth_handler = urllib2.HTTPBasicAuthHandler(password_manager)
-    proxy_handler = urllib2.ProxyHandler()
+    password_manager = urllib_request.HTTPPasswordMgrWithDefaultRealm()
+    auth_handler = urllib_request.HTTPBasicAuthHandler(password_manager)
+    proxy_handler = urllib_request.ProxyHandler()
     # No need for ProxyBasicAuthHandler, since ProxyHandler parses netloc for @
-    opener = urllib2.build_opener(head_handler, auth_handler, proxy_handler)
+    opener = urllib_request.build_opener(head_handler, auth_handler, proxy_handler)
     failed_hosts = set()  # type: Set[str]
 
     @property
@@ -523,8 +530,8 @@ class UCSHttpServer(_UCSServer):
         """
         Reload proxy settings and reset failed hosts.
         """
-        self.proxy_handler = urllib2.ProxyHandler()
-        self.opener = urllib2.build_opener(self.head_handler, self.auth_handler, self.proxy_handler)
+        self.proxy_handler = urllib_request.ProxyHandler()
+        self.opener = urllib_request.build_opener(self.head_handler, self.auth_handler, self.proxy_handler)
         self.failed_hosts.clear()
 
     @classmethod
@@ -623,7 +630,7 @@ class UCSHttpServer(_UCSServer):
         uri = self.join(rel)
         if self.baseurl.username:
             UCSHttpServer.auth_handler.add_password(realm=None, uri=uri, user=self.baseurl.username, passwd=self.baseurl.password)
-        req = urllib2.Request(uri)
+        req = urllib_request.Request(uri)
         if req.get_host() in self.failed_hosts:
             self.log.error('Already failed %s', req.get_host())
             raise DownloadError(uri, -1)
@@ -635,7 +642,7 @@ class UCSHttpServer(_UCSServer):
                     return UCSHttpServer.http_method
                 else:
                     return method
-            req.get_method = new.instancemethod(get_method, req, urllib2.Request)  # type: ignore
+            req.get_method = new.instancemethod(get_method, req, urllib_request.Request)  # type: ignore
 
         self.log.info('Requesting %s', req.get_full_url())
         ud.debug(ud.NETWORK, ud.ALL, "updater: %s %s" % (req.get_method(), req.get_full_url()))
@@ -675,17 +682,17 @@ class UCSHttpServer(_UCSServer):
         # URL:110  | HTTP:404  URL:111  URL:110  GAI:-2  HTTP:407 | Port filtered
         # GAI:-2   | HTTP:502/4URL:111  URL:110  GAI:-2  HTTP:407 | Host name unknown
         # HTTP:401 | HTTP:401  URL:111  URL:110  GAI:-2  HTTP:407 | Authorization required
-        except urllib2.HTTPError as res:
+        except urllib_error.HTTPError as res:
             self.log.debug("Failed %s %s: %s", req.get_method(), req.get_full_url(), res, exc_info=True)
-            if res.code == httplib.UNAUTHORIZED:  # 401
+            if res.code == http_client.UNAUTHORIZED:  # 401
                 raise ConfigurationError(uri, 'credentials not accepted')
-            if res.code == httplib.PROXY_AUTHENTICATION_REQUIRED:  # 407
+            if res.code == http_client.PROXY_AUTHENTICATION_REQUIRED:  # 407
                 raise ProxyError(uri, 'credentials not accepted')
-            if res.code in (httplib.BAD_GATEWAY, httplib.GATEWAY_TIMEOUT):  # 502 504
+            if res.code in (http_client.BAD_GATEWAY, http_client.GATEWAY_TIMEOUT):  # 502 504
                 self.failed_hosts.add(req.get_host())
                 raise ConfigurationError(uri, 'host is unresolvable')
             raise DownloadError(uri, res.code)
-        except urllib2.URLError as e:
+        except urllib_error.URLError as e:
             self.log.debug("Failed %s %s: %s", req.get_method(), req.get_full_url(), e, exc_info=True)
             if isinstance(e.reason, basestring):
                 reason = e.reason
@@ -793,13 +800,13 @@ class UCSLocalServer(_UCSServer):
         assert rel is not None
         uri = self.join(rel)
         ud.debug(ud.NETWORK, ud.ALL, "updater: %s" % (uri,))
-        # urllib2.urlopen() doesn't work for directories
+        # urllib_request.urlopen() doesn't work for directories
         assert uri.startswith('file://')
         path = uri[len('file://'):]
         if os.path.exists(path):
             if os.path.isdir(path):
                 self.log.info("Got %s", path)
-                return (httplib.OK, 0, '')  # 200
+                return (http_client.OK, 0, '')  # 200
             elif os.path.isfile(path):
                 f = open(path, 'r')
                 try:
@@ -807,7 +814,7 @@ class UCSLocalServer(_UCSServer):
                 finally:
                     f.close()
                 self.log.info("Got %s: %d", path, len(data))
-                return (httplib.OK, len(data), data)  # 200
+                return (http_client.OK, len(data), data)  # 200
         self.log.error("Failed %s", path)
         raise DownloadError(uri, -1)
 
