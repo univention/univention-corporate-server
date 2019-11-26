@@ -378,7 +378,7 @@ def get_free_disk_space():
 		mb_free = bytes_free * 1e-6
 		return mb_free
 	except Exception as exc:
-		utils_logger.warn('Free disk space could not be determined.')
+		utils_logger.debug('Free disk space could not be determined.')
 	finally:
 		try:
 			os.close(fd)
