@@ -1,9 +1,3 @@
-univention-appcenter (8.0.11-90) unstable; urgency=medium
-
-  * Bug #31796: don't depend on existence of /var/lib/docker
-
- -- Jannik Ahlers <ahlers@univention.de>  Tue, 26 Nov 2019 12:58:54 +0100
-
 univention-appcenter (8.0.11-89) unstable; urgency=medium
 
   * Bug #31796: check for enough free disk space before app installation
