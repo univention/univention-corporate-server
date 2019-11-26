@@ -30,9 +30,15 @@ Univention Updater: UCR Repository Server URL
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from urlparse import urlsplit
-from urllib import quote
+import sys
 from copy import copy
+
+if sys.version_info >= (3,):
+    from urllib.parse import urlsplit
+    from urllib.parse import quote
+else:
+    from urlparse import urlsplit
+    from urllib import quote
 
 
 class UcsRepoUrl(object):
