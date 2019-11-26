@@ -212,6 +212,8 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		if password is None:
 			password = self.umcLoginPassword
 
+		self.driver.add_cookie({'name': 'hideSummit%sDialog' % (datetime.date.today().year,), 'value': 'true'})
+		self.driver.add_cookie({'name': 'hideSummit%sNotification' % (datetime.date.today().year,), 'value': 'true'})
 		self.driver.get(self.base_url + 'univention/login/?lang=%s' % (self.language,))
 
 		self.wait_until(
