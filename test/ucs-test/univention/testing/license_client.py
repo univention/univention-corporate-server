@@ -33,6 +33,7 @@ A tool to obtain licenses for the UCS test environments.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import sys
 from sys import modules, exit
 from os import path
 import logging
@@ -40,9 +41,22 @@ import logging
 from argparse import ArgumentParser
 from datetime import datetime
 
-from urllib import urlencode
-from httplib import HTTPSConnection, HTTPException
-from HTMLParser import HTMLParser, HTMLParseError
+if sys.version_info >= (3,):
+	from urllib.parse import urlencode
+	from http.client import HTTPSConnection
+	from http.client import HTTPException
+	from html.parser import HTMLParser
+
+	class HTMLParseError(Exception):
+		"""
+		Backwards compatability as exception removed in python 3.5
+        """
+else:
+	from urllib import urlencode
+	from httplib import HTTPSConnection
+	from httplib import HTTPException
+	from HTMLParser import HTMLParser
+	from HTMLParser import HTMLParseError
 
 
 class CredentialsMissing(Exception):
