@@ -1,3 +1,9 @@
+ucs-test (9.0.3-114) unstable; urgency=medium
+
+  * Bug #50546: fix 61_udm-users/100_test_users.py
+
+ -- Felix Botner <botner@univention.de>  Tue, 26 Nov 2019 13:57:17 +0100
+
 ucs-test (9.0.3-113) unstable; urgency=medium
 
   * Bug #45115: Let script reload services; do not sleep

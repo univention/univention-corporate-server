@@ -350,11 +350,12 @@ class TestUsers(object):
 	def test_modlist_samba_password_history(self, udm):
 		pass
 
-	@pytest.mark.parametrize('today,expiry_interval', [
-		(long(time.time()) / 3600 / 24, None),
-		(long(time.time()) / 3600 / 24, 7),
+	@pytest.mark.parametrize('expiry_interval', [
+		(None),
+		(7),
 	])
-	def test_modlist_shadow_max_and_last_change(self, today, expiry_interval, udm):
+	def test_modlist_shadow_max_and_last_change(self, expiry_interval, udm):
+		today = long(time.time()) / 3600 / 24
 		kw = dict(expiryInterval=expiry_interval) if expiry_interval is not None else {}
 		pwhistory = udm.create_object('policies/pwhistory', name='pw-test', **kw)
 		cn = udm.create_object('container/cn', name='testusers', policy_reference=pwhistory)
