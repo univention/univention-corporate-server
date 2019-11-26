@@ -33,10 +33,11 @@ Univention fork of :py:mod:`urllib2` supporting verified |SSL| connections.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 import re
-import httplib
 import socket
 import ssl
-import urllib2
+
+from six.moves.urllib_request import HTTPSHandler
+from six.moves.http_client import HTTPSConnection
 
 
 class CertificateError(ValueError):
@@ -121,12 +122,12 @@ def match_hostname(cert, hostname):
 # to verify the certificate against a CA and to verify the
 # certificate's hostname.
 #
-class VerifiedHTTPSConnection(httplib.HTTPSConnection):
+class VerifiedHTTPSConnection(HTTPSConnection):
 
 	def __init__(self, host, **kwargs):
 		self._ca_certs_file = kwargs.pop('ca_certs_file', None)
 		self._check_hostname = kwargs.pop('check_hostname', True)
-		httplib.HTTPSConnection.__init__(self, host, **kwargs)
+		HTTPSConnection.__init__(self, host, **kwargs)
 
 	def connect(self):
 		"Connect to a host on a given (SSL) port."
@@ -153,7 +154,7 @@ class VerifiedHTTPSConnection(httplib.HTTPSConnection):
 			raise
 
 
-class VerifiedHTTPSHandler(urllib2.HTTPSHandler):
+class VerifiedHTTPSHandler(HTTPSHandler):
 	"""
 	:param str cert_file:       see :py:class:`httplib.HTTPSConnection`
 	:param str key_file:        see :py:class:`httplib.HTTPSConnection`
@@ -174,7 +175,7 @@ class VerifiedHTTPSHandler(urllib2.HTTPSHandler):
 	"""
 
 	def __init__(self, **kwargs):
-		urllib2.HTTPSHandler.__init__(self, kwargs.pop('debuglevel', 0))  # always pass debuglevel to HTTPSHandler
+		HTTPSHandler.__init__(self, kwargs.pop('debuglevel', 0))  # always pass debuglevel to HTTPSHandler
 		self._httpcon_kwargs = kwargs
 
 	def https_open(self, req):
