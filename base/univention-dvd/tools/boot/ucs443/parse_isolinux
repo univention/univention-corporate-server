@@ -1,0 +1,251 @@
+#!/usr/bin/perl -w
+#
+# Helper script for debian-cd EFI CD creation
+#
+# Parse the Isolinux boot menus and create matching grub menus and submenus
+#
+# Complicated by the way grub theming works - we need to create a
+# separate grub theme per submenu simply so that we can describe the
+# current (sub)menu appropriately.
+
+use strict;
+use File::Path qw(make_path);
+
+my $isolinuxdir = shift or die "Need to know where the isolinux directory is!\n";
+my $outdir = shift or die "Need to know where to write output!\n";
+my $grub_theme = shift or die "Need input file location for base grub theme!\n";
+my $tl_distro= shift or die "Need a top-level distro name (e.g. Debian)\n";
+my $tl_kernel= shift or die "Need a top-level kernel (e.g. GNU/Linux)\n";
+my $tl_version= shift or die "Need a top-level version (e.g. 7.0)\n";
+my $theme_dir = "$outdir/boot/grub/theme";
+my @cpp_and_opts = ('cpp',
+		    '-traditional',
+		    '-undef',
+		    '-P',
+		    '-C',
+		    '-Wall',
+		    '-nostdinc');
+
+my @lines;
+my @menus;
+my $incdepth = 0;
+my @menu_number = (1,0,0,0,0);
+my @menu_title = ('', '', '', '', '');
+my $menudepth = 0;
+my $pre = "";
+my $in_ifcpu = 0;
+my $amd64_label = "";
+my %menu;
+
+sub parse_file {
+    my $file = shift;
+
+    $incdepth++;
+#    for(my $i = 0; $i < $incdepth ; $i++) {
+#	print STDERR " ";
+#    }
+#    print STDERR "parsing $isolinuxdir/$file\n";
+    open(my $fh, "< $isolinuxdir/$file") or return;
+    while (my $line = <$fh>) {
+	chomp $line;
+	if ($line =~ /^\s*include\ (.*\.cfg)/) {
+	    parse_file($1);
+	} elsif ($line =~ /label archdetect/) {
+	    # We don't have support for arch detection in Grub, so only
+	    # show the amd64 options
+	    $in_ifcpu = 1;
+	} elsif ($line =~ /kernel (.*c32)/) {
+	    # This tells us that the matching "append" data will have
+	    # the label we need to look for. Ugh!
+	    if ($1 =~ /ifcpu64/) {
+		$in_ifcpu = 2;
+	    }
+	} elsif ($line =~ /^\s*label (.*)/ && $1 =~ /$amd64_label/) {
+	    $in_ifcpu = 3;
+	} elsif ($line =~ /^\s*append\ (.*\.cfg)/) {
+	    if ($in_ifcpu == 3) {
+		parse_file($1);
+		$in_ifcpu = 1;
+	    } else {
+		push(@lines, $line);
+	    }
+	} elsif ($line =~ /append (.*)$/ && $in_ifcpu == 2) {
+	    # Parse out the first entry - that's what we want to use
+	    # as a label elsewhere. Ugh!
+	    my @list = split(/ /, $1);
+	    $amd64_label = $list[0];
+	    $in_ifcpu = 1;
+	} elsif ($line =~ /default archdetect/) {
+	    $in_ifcpu = 0;
+	} else {
+	    push(@lines, $line);
+	}
+    }
+    close $fh;
+    $incdepth--;
+}
+
+sub print_indent {
+    my $text = shift;
+    my $i = 1;
+    while ($i++ < $menudepth) {
+	print "    ";
+    }
+    print $text;
+}
+
+sub print_kernel {
+    my $t = shift;
+    my %k = %{$t};
+    my $initrd;
+    my $hotkey = "";
+
+    # Only print 64-bit kernels
+    return unless ($k{"kernel"} =~ /amd/);
+
+    if ($k{"label"} =~ m,\^(\S),) {
+	$hotkey = lc "--hotkey=$1 ";
+	$k{"label"} =~ s/\^//;
+    }
+    if ($k{"append"} =~ s? (initrd=\S+)??) {
+	$initrd = $1;
+	$initrd =~ s?^.*initrd=??;
+    }
+    print_indent "menuentry $hotkey'$pre" . $k{"label"} . "' {\n";
+    print_indent "    set background_color=white\n";
+    print_indent "    linux    " . $k{"kernel"} . " " . $k{"append"} . "\n";
+    print_indent "    initrd   $initrd\n";
+    print_indent "}\n";
+}
+
+sub debug {
+#    print_indent $menudepth . " " . $menu{"number"} . ": " . $menu{"label"} . 
+#	" '" . $menu{"title"} . "'\n";
+}
+
+sub create_theme_file {
+    my $filename = shift;
+    my @args;
+    push(@args, @cpp_and_opts);
+    push(@args, "-DTITLE=\"$tl_distro $tl_version\"");
+    for (my $i = 0; $i < $menudepth; $i++) {
+	push(@args, "-DMENU$i=\"" . $menu_title[$i] . "\"");
+    }
+    push(@args, "$grub_theme");
+    open(IN, "-|", @args) or die "Can't open cpp input: $!\n";
+    open(OUT, ">", "$theme_dir/$filename")
+	or die "Can't create theme file $theme_dir/$filename: $!\n";
+    while (<IN>) {
+	print OUT "$_";
+    }
+    close(IN);
+    close(OUT);
+}
+
+make_path($theme_dir);
+if (! -d $theme_dir) {
+    die "Can't make theme dir $theme_dir: $!\n";
+}
+parse_file("isolinux.cfg");
+
+$menu{"number"} = "1";
+$menu{"label"} = "top";
+$menu{"title"} = "$tl_distro Installer menu";
+$menu_title[$menudepth] = $menu{"title"};
+
+my %kernel;
+my $in_kernel = 0;
+my $new_menu = 0;
+
+$menudepth++;
+debug();
+print_indent "set theme=/boot/grub/theme/" . $menu{"number"} . "\n";
+create_theme_file($menu{"number"});
+
+foreach my $line(@lines) {
+    if ($line =~ /^\s*menu begin\ (\S+)/) {
+	$menu_number[$menudepth]++;
+	$new_menu = 1;
+	my $mn_string = "";
+	for(my $i = 0; $i <= $menudepth ; $i++) {
+	    $mn_string .= "$menu_number[$i]";
+	    if ($i < $menudepth) {
+		$mn_string .= "-";
+	    }
+	}
+	$menu{"number"} = $mn_string;
+	$menu{"label"} = $1;
+	if ($in_kernel) {
+	    print_kernel(\%kernel);
+	    undef %kernel;
+	    $in_kernel = 0;
+	}
+    } elsif ($line =~ /^\s*menu end/) {
+	if ($in_kernel) {
+	    print_kernel(\%kernel);
+	    undef %kernel;
+	    $in_kernel = 0;
+	}
+	$menu_number[$menudepth] = 0;
+	$menudepth--;
+	if ($menudepth) {
+	    print_indent "}\n";
+	}
+	if ($menudepth > 1) {
+	    $pre = "... ";
+	} else {
+	    $pre = "";
+	}	    
+    } elsif ($line =~ /^\s*menu title (.*$)/) {
+	if ($in_kernel) {
+	    print_kernel(\%kernel);
+	    undef %kernel;
+	    $in_kernel = 0;
+	}
+	$menu{"title"} = $1;
+	if ($new_menu) {
+	    my $hotkey = "";
+	    if ($menu{"label"} =~ m,\^(\S),) {
+		$hotkey = lc "--hotkey=$1 ";
+		$menu{"label"} =~ s/\^//;
+	    }
+	    print_indent "submenu $hotkey'$pre" . $menu{"label"} . " ...' {\n";
+	    $menu_title[$menudepth] = $menu{"title"};
+	    $menudepth++;
+	    if ($menudepth > 1) {
+		$pre = "... ";
+	    } else {
+		$pre = "";
+	    }	    
+	    debug();
+	    print_indent "set menu_color_normal=black/white\n";
+	    print_indent "set menu_color_highlight=green/white\n";
+	    print_indent "set theme=/boot/grub/theme/" . $menu{"number"} . "\n";
+	    create_theme_file($menu{"number"});
+	    $new_menu = 0;
+	}
+    } elsif ($line =~ /^[ \t]*label (\S*(rescue|install|auto|expert)\S*)/) {
+	if ($in_kernel) {
+	    print_kernel(\%kernel);
+	    undef %kernel;
+	}
+	$kernel{"ref"} = $1;
+	$in_kernel = 1;
+    } elsif ($line =~ /menu label (.*)$/ && $in_kernel) {
+	$kernel{"label"} = $1;
+    } elsif ($line =~ /menu label (.*)$/) {
+	$menu{"label"} = $1;
+    } elsif ($line =~ /menu default/ && $in_kernel) {
+	$kernel{"default"} = 1;
+    } elsif ($line =~ /kernel (.*)$/ && $in_kernel) {
+	$kernel{"kernel"} = $1;
+    } elsif ($line =~ /append (.*)$/ && $in_kernel) {
+	$kernel{"append"} = $1;
+    } else {
+	#print "$line\n";
+    }
+}
+if ($in_kernel) {
+    print_kernel(\%kernel);
+    undef %kernel;
+}
