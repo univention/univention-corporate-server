@@ -698,7 +698,7 @@ def superordinate_names(module_name):
 	"""
 	module = get(module_name)
 	names = getattr(module, 'superordinate', [])
-	if isinstance(names, basestring):
+	if isinstance(names, six.string_types):
 		names = [names]
 	return names
 
@@ -788,7 +788,7 @@ def layout(module_name, object=None):
 					for row in line:
 						single = False
 						nrow = []
-						if isinstance(row, basestring):
+						if isinstance(row, six.string_types):
 							single = True
 							row = [row]
 						for field in row:
