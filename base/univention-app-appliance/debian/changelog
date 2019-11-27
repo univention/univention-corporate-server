@@ -1,3 +1,9 @@
+univention-app-appliance (3.0.1-9) unstable; urgency=medium
+
+  * Bug #50516: enable root login if activation was disabled
+
+ -- Jannik Ahlers <ahlers@univention.de>  Wed, 27 Nov 2019 15:24:49 +0100
+
 univention-app-appliance (3.0.1-8) unstable; urgency=medium
 
   * Bug #50528: fix typo
