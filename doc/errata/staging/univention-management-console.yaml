@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-2
 src: univention-management-console
 fix: 11.0.4-49A~4.4.0.201911221507
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The UMC for UCS Core Editions shows a dialog that informs
    about the Univention Summit 2020.
 bug: [50530]
