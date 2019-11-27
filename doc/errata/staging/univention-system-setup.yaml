@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-2
 src: univention-system-setup
 fix: 12.0.2-18A~4.4.0.201911201132
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The package now uses dh_python2 instead of python-support.
    Therefore python modules are installed into
    /usr/lib/python2.7/dist-packages/univention/management/console/modules/.
