@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The new tool univention-fetch-certificate is used during join.
 bug: [45115]
+erratum: 385
+announced: 2019-11-27
