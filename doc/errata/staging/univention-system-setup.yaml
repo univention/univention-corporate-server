@@ -9,6 +9,6 @@ desc: |
  * The package now uses dh_python2 instead of python-support.
    Therefore python modules are installed into
    /usr/lib/python2.7/dist-packages/univention/management/console/modules/.
- * The minimum RAM requirements are now shown before starting the 
-   UCS installation.
+ * A warning is shown if the minimum RAM requirements to install UCS are not
+   met
 bug: [49142, 50448]
