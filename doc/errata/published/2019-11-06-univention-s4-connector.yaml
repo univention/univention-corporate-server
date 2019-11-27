@@ -14,7 +14,7 @@ desc: |
    in mapping.py with a static mapping.
  * The UDM modules container/msgpo, settings/msprintconnectionpolicy and
    settings/mswmifilter have been modernized.
- * DNS host records without IP addresses are now syncronized to Samba/AD.
+ * DNS host records without IP addresses are now synchronized to Samba/AD.
  * The renamed DNS records are now correctly removed from Samba/AD when the
    object in UCS was renamed.
  * The time conversion of the attribute accountExpires/userexpiry in the

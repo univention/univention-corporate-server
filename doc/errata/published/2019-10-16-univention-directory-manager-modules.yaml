@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issues:
  * The logging and error handling when removing child objects
    has been improved.
- * The DHCP assignment for computers with mutliple MAC addresses has been
+ * The DHCP assignment for computers with multiple MAC addresses has been
    repaired.
  * Some code cleanup in the UDM users/user filter for disabled and locked
    properties has been done.
