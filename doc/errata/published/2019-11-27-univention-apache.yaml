@@ -11,3 +11,5 @@ desc: |
    the default ones. A new tool univention-add-vhost has been added to add
    (and remove) these vhosts.
 bug: [45115]
+erratum: 383
+announced: 2019-11-27
