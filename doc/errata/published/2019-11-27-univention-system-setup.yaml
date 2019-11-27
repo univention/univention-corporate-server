@@ -12,3 +12,5 @@ desc: |
  * A warning is shown if the minimum RAM requirements to install UCS are not
    met
 bug: [49142, 50448]
+erratum: 381
+announced: 2019-11-27
