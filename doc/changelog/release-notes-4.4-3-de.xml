@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-de-4.4-2">
+<book lang="de" id="releasenotes-de-4.4-3">
 	<bookinfo>
 		<title>UCS 4.4 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.4-2</subtitle>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.4-3</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,39 +44,21 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Mit &ucsUCS; 4.4-2 steht das zweite Point-Release für &ucsUCS; (UCS) 4.4 zur
-			Verfügung. Es umfasst Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie
-			diverse Detailverbesserungen und Fehlerkorrekturen. Die wichtigsten Änderungen im Überblick:
+			Mit &ucsUCS; 4.4-3 steht das dritte Point-Release für &ucsUCS; (UCS) 4.4 zur Verfügung.
+			Es umfasst Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen.
+			Die wichtigsten Änderungen im Überblick:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-					Die UDM REST API ist erstmals als stabiles Release enthalten und wird auf allen DC Master und DC Backup Instanzen aktiviert.
-					Weitere Informationen sind in einem <ulink url="https://www.univention.de/blog-de/2019/07/udm-rest-api-betaversion-veroeffentlicht/">Artikel zur API</ulink> und den <ulink url="release-notes-4.4-1-de.html">UCS 4.4-1 Release Notes</ulink> zu finden.
+					...
 			</para></listitem>
 			<listitem><para>
-					Verbesserungen bei der Fehlerbehandlung für die Generierung von Lizenzen während der initialen Konfiguration.
+					Die meisten Pakete wurden von <package>python-support</package> auf <package>dh_python2</package> als Vorbereitung für den Wechseln von Python 2 zu Python 3 umgestellt.
 			</para></listitem>
 			<listitem><para>
-					In &ucsUVMM; (UVMM) lässt sich der automatische Start für Instanzen und der virtuellen CPU-Typ konfigurieren.
-			</para></listitem>
-			<listitem><para>
-					Durch das Update der <phrase>Docker Engine</phrase> erhalten App Anbieter mehr Möglichkeiten unter anderem durch Unterstützung von zusätzlichen Features in den <phrase>Docker Compose</phrase> Dateien.
-			</para></listitem>
-			<listitem><para>
-					Mit 4.4-2 wird die Aktualisierung auf den Stand des Debian Release 9.11 abgeschlossen.
-			</para></listitem>
-			<listitem><para>
-					Diverse Security Updates wurden in UCS 4.4-2 integriert, bspw. für Samba, den Linux Kernel und Dovecot.
+					Diverse Security Updates wurden in UCS 4.4-3 integriert, bspw. für Samba, den Linux Kernel und Dovecot.
 					Eine vollständige Liste von Security- und Paketupdates ist in <xref linkend="relnotes:changelog"/> zu finden.
-			</para></listitem>
-			<listitem><para>
-					Eine Reihe zusätzlicher Attribute wird bei der Synchronisation zwischen UDM/OpenLDAP und Samba/AD Benutzerobjekten berücksichtigt
-					(<property>unixhome</property>, <property>employeeType</property>, <property>employeeNumber</property>,
-					<property>loginShell</property>, <property>title</property>, <property>gidNumber</property>, <property>uidNumber</property>,
-					<property>departmentNumber</property>, <property>roomNumber</property>, <property>jpegPhoto</property>,
-					<property>userCertificate</property>, <property>initials</property>, <property>physicalDeliveryOfficeName</property>,
-					<property>postOfficeBox</property>, <property>preferredLanguage</property>).
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -184,8 +166,8 @@ Checking ldap_schema ...                          OK
 			<para>
 				Folgende Attribute wurden dem UDM Modul <classname>users/user</classname> hinzugefügt: <property>initials</property>,
 				<property>postOfficeBox</property>, <property>preferredLanguage</property>, <property>physicalDeliveryOfficeName</property>,
-				<property>preferredDeliveryMethod</property>. Jedes erweiterte Attribut für diese Eigenschaften sollte dahingehend geändert werden,
-				dass es den Namen des UDM Attributes verwendet.
+				<property>preferredDeliveryMethod</property>.
+				Jedes erweiterte Attribut für diese Eigenschaften sollte dahingehend geändert werden, dass es den Namen des UDM Attributes verwendet.
 			</para>
 		</section>
 
@@ -271,7 +253,7 @@ Checking ldap_schema ...                          OK
 			Aufgeführt sind die Änderungen seit UCS <wordasword>4.4-1</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-2.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-3.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->

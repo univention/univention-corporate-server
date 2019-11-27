@@ -602,7 +602,7 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                 Univention Configuration Registry, UCR for short, is the
                 central tool for managing the local system configuration of UCS
                 (see <ulink
-                    url="https://docs.software-univention.de/manual.html#computers:Administration_of_local_system_configuration_with_Univention_Configuration_Registry">Manual
+                    url="https://docs.software-univention.de/manual-4.4.html#computers:Administration_of_local_system_configuration_with_Univention_Configuration_Registry">Manual
                     for users and administrators</ulink>). Settings from UCR can
                 be used in the Docker compose file to parameterize the Docker
                 setup. This comes in very handy when settings like for example
