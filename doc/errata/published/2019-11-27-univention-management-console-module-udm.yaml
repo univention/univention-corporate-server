@@ -11,3 +11,5 @@ desc: |
    This is necessary for creation of reports and has been broken in
    erratum 346.
 bug: [50497]
+erratum: 378
+announced: 2019-11-27
