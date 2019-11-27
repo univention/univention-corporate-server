@@ -11,3 +11,5 @@ desc: |
    configuration. This has been added to use the SAML Identity Provider with
    multiple Azure domains.
 bug: [50510]
+erratum: 380
+announced: 2019-11-27
