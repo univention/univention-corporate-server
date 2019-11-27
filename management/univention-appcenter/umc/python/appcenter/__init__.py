@@ -399,6 +399,201 @@ class Instance(umcm.Base, ProgressMixin):
 		request.options['only_dry_run'] = True
 		self.invoke(request)
 
+	def check_remote(self, host, apps):
+		client = Client(host, self.username, self.password)
+		if not self._check_version(client):
+			raise umcm.UMC_Error('Incompatible!')
+		result = client.umc_command('appcenter/check', {'apps': apps})
+		return result
+
+	def check(self, apps):
+		# apps = [{'id': 'horde', 'function': 'install'}]
+		return [{'id': 'mailserver', 'function': 'install'}, {'id': 'horde', 'function': 'install'}]
+
+	#def check_version(self, client):
+	#	return False
+
+	def run_remote(self, host, dry_run, apps, progress):
+		client = Client(host, self.username, self.password)
+		if not self._check_version(client):
+			raise umcm.UMC_Error('Incompatible!')
+		result = client.umc_command('appcenter/run', {'dry_run': dry_run, 'apps': apps}).result
+		self._remote_progress[progress.id] = client, result['id']
+
+	@require_password
+	@sanitize(
+		dry_run=BooleanSanitizer(),
+		apps=ListSanitizer(DictSanitizer({
+			'id': StringSanitizer(required=True),
+			'version': StringSanitizer(),
+			'function': MappingSanitizer({
+				'install': 'install',
+				'update': 'upgrade',
+				'uninstall': 'remove',
+			}, required=True),
+			'settings': DictSanitizer({})
+		}))
+	)
+	@simple_response(with_progress=True)
+	def run(self, dry_run, apps, progress):
+		try:
+			progress.title = _('Running tests')
+			problems = {}
+			serious_problems = False
+			can_continue = not dry_run
+			app_ids = dict((_a['id'], []) for _a in apps)  # shall be used to sort at the end according to dependency
+			for _app in apps:
+				MODULE.process('Processing %r' % _app)
+				app_id = _app['id']
+				app_version = _app['version']
+				function = _app['function']
+				settings = _app['settings']
+				MODULE.process('Searching %r' % _app)
+				app = Apps().find(app_id, app_version=app_version)
+				MODULE.process('Got %s' % app)
+				if not app:
+					raise umcm.UMC_Error(_('App %s not found') % app_id)
+				if function == 'upgrade' and app_version is None:
+					app = Apps().find_candidate(app)
+				if not app:
+					# Bug #44384: Under mysterious circumstances, app may be None after the .find_candidate()
+					# This may happen in global App Center when the system the user is logged in has different ini files
+					# than the system the App shall be upgraded on. E.g., in mixed appcenter / appcenter-test environments
+					raise umcm.UMC_Error(_('App %s not found') % app_id)
+				else:
+					errors, warnings = app.check(function)
+					dependency_error = errors.get('must_have_no_unmet_dependencies')
+					if dependency_error:
+						dependencies_met = True
+						for err in dependency_error:
+							dependent_id = err['id']
+							if err.get('local_allowed', True):
+								if dependent_id not in app_ids:
+									dependencies_met = False
+								else:
+									app_ids[dependent_id].append(app.id)
+							else:
+								dependencies_met = False
+						if dependencies_met:
+							errors.pop('must_have_no_unmet_dependencies')
+				MODULE.process('Checked %s' % app)
+				if errors:
+					MODULE.process('Cannot %s %s: %r' % (function, app.id, errors))
+					serious_problems = True
+					can_continue = False
+				if warnings:
+					MODULE.process('Warning trying to %s %s: %r' % (function, app.id, warnings))
+				_app['app'] = app
+				problems[app.id] = errors, warnings
+				for setting in app.get_settings():
+					if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting):
+						if settings.get(setting.name):
+							settings[setting.name] = settings[setting.name].decode('base64')
+			def _sort_according_to_dependencies(x,y):
+				if len(y[1]) == 0: return -1
+				if len(x[1]) == 0: return 1
+				if x[0] in y[1]: return 1
+				if y[0] in x[1]: return -1
+				return 0
+			app_ids = [_app[0] for _app in sorted(app_ids.iteritems(), cmp=_sort_according_to_dependencies)]
+			apps = [next(app for app in apps if app['id'] == _app_id) for _app_id in app_ids]
+			MODULE.process('Done processing')
+			MODULE.process('Sorting: %r' % apps)
+			result = {
+				'serious_problems': serious_problems,
+				'problems': problems,
+				'can_continue': can_continue,
+				'software_changes_computed': False,
+				'success': {},
+			}
+			if can_continue:
+				if dry_run:
+					result.update(self._run_apps_dry_run(apps, progress))
+				else:
+					result['success'] = self._run_apps(apps, progress)
+			MODULE.process('Result: %r' % result)
+			return result
+		except Exception:
+			import traceback
+			exc = traceback.format_exc()
+			MODULE.error(exc)
+
+	def _run_apps_dry_run(self, apps, progress, unregister):
+		ret = {}
+		old_apps = []
+		pkgs = set()
+		compute = True
+		update = True
+		for _app in apps:
+			app = _app['app']
+			function = _app['function']
+			if not app.docker:
+				original_app = Apps().find(app.id)
+				if original_app.is_installed():
+					old_apps.append(original_app)
+				if _register_component(app):
+					update = True
+				pkgs.update(self._get_packages_for_dry_run(app, args))
+		if update:
+			update_packages()
+		if compute:
+			update = False
+			ret = install_packages_dry_run(pkgs)
+			if old_apps:
+				upgrade_ret = dist_upgrade_dry_run()
+				ret['install'] = sorted(set(ret['install']).union(set(upgrade_ret['install'])))
+				ret['remove'] = sorted(set(ret['remove']).union(set(upgrade_ret['remove'])))
+				ret['broken'] = sorted(set(ret['broken']).union(set(upgrade_ret['broken'])))
+			ret['software_changes_computed'] = True
+			if unregister or ret['broken']:
+				for old_app in old_apps:
+					if _register_component(original_app):
+						update = True
+				for app in apps:
+					if app.id not in [_app.id for _app in old_apps]:
+						if _unregister_component(app):
+							update = True
+				if update:
+					update_packages()
+		return ret
+
+	def _run_apps(self, apps, progress):
+		successes = {}
+		for _app in apps:
+			app = _app['app']
+			function = _app['function']
+			settings = _app['settings']
+			if function == 'install':
+				progress.title = _('Installing %s') % (app.name,)
+			elif function == 'uninstall':
+				progress.title = _('Uninstalling %s') % (app.name,)
+			elif function == 'upgrade':
+				progress.title = _('Upgrading %s') % (app.name,)
+			action = get_action(function)
+			handler = UMCProgressHandler(progress)
+			handler.setLevel(logging.INFO)
+			action.logger.addHandler(handler)
+			try:
+				success = action.call(
+					app=app,
+					username=self.username,
+					password=self.password,
+					noninteractive=True,
+					skip_checks=['shall_have_enough_ram', 'shall_only_be_installed_in_ad_env_with_password_service', 'must_not_have_concurrent_operation', 'must_have_no_unmet_dependencies'],
+					set_vars=settings,
+				)
+				successes[app.id] = success
+				if not success:
+					MODULE.error('Error while %s %s. Aborting all pending tasks' % (function, app.id))
+					break
+			except AppCenterError as exc:
+				raise umcm.UMC_Error(str(exc), result=dict(
+					display_feedback=True,
+					title='%s %s' % (exc.title, exc.info)))
+			finally:
+				action.logger.removeHandler(handler)
+		return successes
+
 	@require_password
 	@sanitize(
 		host=StringSanitizer(required=True),
