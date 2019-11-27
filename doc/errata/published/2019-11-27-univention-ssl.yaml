@@ -11,3 +11,5 @@ desc: |
    A new tool univention-fetch-certificate has been added to simplify
    the download of certificates from the DC Master.
 bug: [45115]
+erratum: 384
+announced: 2019-11-27
