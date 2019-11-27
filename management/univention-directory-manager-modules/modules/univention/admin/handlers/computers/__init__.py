@@ -33,16 +33,39 @@
 
 __path__ = __import__('pkgutil').extend_path(__path__, __name__)  # type: ignore
 
+import os
 import os.path
+import sys
+if sys.version_info >= (3,):
+	import importlib
+
 
 computers = []
 
 
-def __walk(root, dir, files):
-	for file_ in files:
-		if file_.endswith('.py') and not file_.startswith('__') and file_ not in ('computer.py',):
-			computers.append(__import__(file_[: -3], globals(), locals(), ['']))
+def import_py3():
+	base_name = ".".join(__name__.split(".")[:-1])
+	path = os.path.abspath(os.path.dirname(__file__))
+	for w_root, w_dirs, w_files in os.walk(path):
+		for file_ in w_files:
+			if file_.endswith('.py') and not file_.startswith('__') and file_ not in ('computer.py',):
+				file_path = os.path.join(w_root, file_)
+				module_name = base_name + "." + file_[: -3]
+				spec = importlib.util.spec_from_file_location(module_name, file_path)
+				module = importlib.util.module_from_spec(spec)
+				spec.loader.exec_module(module)
+				computers.append(module)
 
 
-path = os.path.abspath(os.path.dirname(__file__))
-os.path.walk(path, __walk, path)
+def import_py2():
+	path = os.path.abspath(os.path.dirname(__file__))
+	for w_root, w_dirs, w_files in os.walk(path):
+		for file_ in w_files:
+			if file_.endswith('.py') and not file_.startswith('__') and file_ not in ('computer.py',):
+				computers.append(__import__(file_[: -3], globals(), locals(), ['']))
+
+
+if sys.version_info >= (3,):
+	import_py3()
+else:
+	import_py2()
