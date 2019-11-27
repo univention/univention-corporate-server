@@ -95,34 +95,32 @@ def update():
 	univention.admin.syntax.import_syntax_files()
 	univention.admin.hook.import_hook_files()
 
-	def _walk(root, dir, files):
-		# type: (str, str, List[str]) -> None
-		for file in files:
-			if not file.endswith('.py') or file.startswith('__'):
-				continue
-			p = os.path.join(dir, file).replace(root, '').replace('.py', '')
-			p = p[1:]
-			ud.debug(ud.ADMIN, ud.INFO, 'admin.modules.update: importing "%s"' % p)
-			if dir.startswith('/usr/lib/pymodules/python2.7/'):
-				ud.debug(ud.ADMIN, ud.INFO, 'Warning: still importing code from /usr/lib/pymodules/python2.7. Migration to dh_python is necessary!')
-			parts = p.split(os.path.sep)
-			mod, name = '.'.join(parts), '/'.join(parts)
-			m = __import__(mod, globals(), locals(), name)
-			m.initialized = 0
-			if not hasattr(m, 'module'):
-				ud.debug(ud.ADMIN, ud.ERROR, 'admin.modules.update: attribute "module" is missing in module %r' % (mod,))
-				continue
-			_modules[m.module] = m
-			if isContainer(m):
-				containers.append(m)
-
-			superordinates.update(superordinate_names(m))
-
 	for p in sys.path:
 		dir = os.path.join(p, 'univention/admin/handlers')
 		if not os.path.isdir(dir):
 			continue
-		os.path.walk(dir, _walk, p)
+		for w_root, w_dirs, w_files in os.walk(dir):
+			for file in w_files:
+				if not file.endswith('.py') or file.startswith('__'):
+					continue
+				tmp_p = os.path.join(w_root, file).replace(p, '').replace('.py', '')
+				tmp_p = tmp_p[1:]
+				ud.debug(ud.ADMIN, ud.INFO, 'admin.modules.update: importing "%s"' % tmp_p)
+				if dir.startswith('/usr/lib/pymodules/python2.7/'):
+					ud.debug(ud.ADMIN, ud.INFO, 'Warning: still importing code from /usr/lib/pymodules/python2.7. Migration to dh_python is necessary!')
+				parts = tmp_p.split(os.path.sep)
+				mod, name = '.'.join(parts), '/'.join(parts)
+				m = __import__(mod, globals(), locals(), name)
+				m.initialized = 0
+				if not hasattr(m, 'module'):
+					ud.debug(ud.ADMIN, ud.ERROR, 'admin.modules.update: attribute "module" is missing in module %r' % (mod,))
+					continue
+				_modules[m.module] = m
+				if isContainer(m):
+					containers.append(m)
+
+				superordinates.update(superordinate_names(m))
+
 	modules = _modules
 	_superordinates = superordinates
 
