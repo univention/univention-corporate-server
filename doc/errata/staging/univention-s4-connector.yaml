@@ -6,6 +6,6 @@ src: univention-s4-connector
 fix: 13.0.2-58A~4.4.0.201911211556
 desc: |
  This update addresses the following issue(s):
- * Recreating group objects which have been deleted before
-   used to lead to rejects. This issue has been fixed.
+ * Recreating user and group objects which have been deleted before
+   used to cause rejects in UCS@school. This issue has been fixed.
 bug: [49792]
