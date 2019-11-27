@@ -8,3 +8,5 @@ desc: |-
  This update addresses the following issue:
  * Add documentation for `.univention-l10n` format
 bug: [50521]
+erratum: 382
+announced: 2019-11-27
