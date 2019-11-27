@@ -10,3 +10,5 @@ desc: |
    server process slapd failed to restart because it incurred a bus error.
    This software bug has been fixed.
 bug: [49780]
+erratum: 375
+announced: 2019-11-27
