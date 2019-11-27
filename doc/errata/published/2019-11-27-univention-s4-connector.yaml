@@ -9,3 +9,5 @@ desc: |
  * Recreating user and group objects which have been deleted before
    used to cause rejects in UCS@school. This issue has been fixed.
 bug: [49792]
+erratum: 379
+announced: 2019-11-27
