@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-10-28 10:12+0100\n"
+"POT-Creation-Date: 2019-11-28 17:23+0100\n"
 "PO-Revision-Date: 2015-11-10 16:41:22+0100\n"
 "Last-Translator: Dirk Wiesenthal <wiesenthal@univention.de>\n"
 "Language-Team: \n"
@@ -21,11 +21,11 @@ msgstr ""
 "Konnte %s nicht herunterladen. Das deutet auf ein Problem auf dem App "
 "Center-Server hin. Bitte versuchen Sie es später noch einmal."
 
-#: python/appcenter/exceptions.py:326
+#: python/appcenter/exceptions.py:332
 msgid "An error occurred!"
 msgstr "Es ist ein Fehler aufgetreten!"
 
-#: python/appcenter/exceptions.py:276
+#: python/appcenter/exceptions.py:282
 msgid ""
 "LDAP connection refused. There may be an issue with the certificate of the "
 "LDAP server. Please also check the proxy and firewall settings, if any."
@@ -38,7 +38,7 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#: python/appcenter/app.py:1397
+#: python/appcenter/app.py:1403
 #, python-format
 msgid ""
 "The application needs a %(needs)s-bit operating system. This server is "
@@ -47,7 +47,7 @@ msgstr ""
 "Die Applikation benötigt ein %(needs)s-Bit-Betriebssystem. Dieser Server "
 "läuft mit einem %(has)s-Bit-Betriebssystem."
 
-#: python/appcenter/exceptions.py:332
+#: python/appcenter/exceptions.py:338
 msgid "The docker container could not be started!"
 msgstr "Der Docker Container konnte nicht gestartet werden!"
 
@@ -88,7 +88,7 @@ msgstr ""
 "Dies kann auf ein Problem mit einer auf Ihrem System eingerichteten Firewall"
 " oder Proxy hindeuten. Sie finden Hilfe unter %s."
 
-#: python/appcenter/exceptions.py:327
+#: python/appcenter/exceptions.py:333
 msgid ""
 "We are sorry for the inconvenience. Please help us to improve the App Center"
 " and the Apps by sending us the information below."

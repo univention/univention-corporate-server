@@ -148,6 +148,7 @@ define([
 			var values = null;
 			var apps = [this.app].concat(this.dependencies);
 			var appsDone = 0;
+			// DIRK
 			apps.forEach(lang.hitch(this, function(app) {
 				var command = 'appcenter/invoke';
 				if (!force) {
@@ -176,6 +177,7 @@ define([
 					appSettings: appSettings
 				}).then(lang.hitch(this, function(r) {
 					var formConf = AppSettings.getFormConf(app, r.appSettings.result.values, 'Install', true);
+					// DIRK
 					installInfo.push({
 						app: app,
 						details: r.details.result,

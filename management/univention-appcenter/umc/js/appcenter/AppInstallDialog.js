@@ -113,6 +113,7 @@ define([
 				}
 				// TODO call backend install function
 				// maybe adjust getValues() of AppInstallWizard
+				// DIRK
 				this.showPostInstallWizard(installInfo.map(function(info) { return info.app; }));
 			}));
 			this.addChild(this._installWizard);

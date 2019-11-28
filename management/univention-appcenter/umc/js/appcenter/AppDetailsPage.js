@@ -781,6 +781,7 @@ define([
 		},
 
 		loadDependencies: function() {
+			// DIRK
 			if (this.dependenciesLoadingDeferred && !this.dependenciesLoadingDeferred.isFulfilled()) {
 				this.dependenciesLoadingDeferred.cancel();
 			}
