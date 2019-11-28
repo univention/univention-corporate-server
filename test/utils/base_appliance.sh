@@ -1106,7 +1106,7 @@ appliance_reset_servers ()
 
 disable_root_login_and_poweroff ()
 {
-	if ! $1; then
+	if ! $1 && $2; then
 		ucr set --force auth/sshd/user/root=no
 		echo "root:$appliance_default_password" | chpasswd
 	fi
