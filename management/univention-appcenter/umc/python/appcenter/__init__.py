@@ -59,7 +59,7 @@ import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.appcenter.actions import get_action
 from univention.appcenter.exceptions import Abort, NetworkError, AppCenterError
-from univention.appcenter.packages import reload_package_manager, get_package_manager, package_lock, LOCK_FILE
+from univention.appcenter.packages import reload_package_manager, get_package_manager, package_lock, update_packages, install_packages_dry_run, dist_upgrade_dry_run, LOCK_FILE
 from univention.appcenter.app_cache import Apps, AppCenterCache, default_server
 from univention.appcenter.udm import _update_modules
 from univention.appcenter.utils import docker_is_running, call_process, docker_bridge_network_conflict, send_information, app_is_running, find_hosts_for_master_packages, get_local_fqdn
@@ -399,24 +399,29 @@ class Instance(umcm.Base, ProgressMixin):
 		request.options['only_dry_run'] = True
 		self.invoke(request)
 
-	def check_remote(self, host, apps):
-		client = Client(host, self.username, self.password)
-		if not self._check_version(client):
-			raise umcm.UMC_Error('Incompatible!')
-		result = client.umc_command('appcenter/check', {'apps': apps})
-		return result
-
 	def check(self, apps):
 		# apps = [{'id': 'horde', 'function': 'install'}]
 		return [{'id': 'mailserver', 'function': 'install'}, {'id': 'horde', 'function': 'install'}]
 
-	#def check_version(self, client):
-	#	return False
-
+	@require_password
+	@sanitize(
+		host=StringSanitizer(required=True),
+		dry_run=BooleanSanitizer(),
+		apps=ListSanitizer(DictSanitizer({
+			'id': StringSanitizer(required=True),
+			'version': StringSanitizer(),
+			'only_master_packages': BooleanSanitizer(),
+			'function': MappingSanitizer({
+				'install': 'install',
+				'update': 'upgrade',
+				'uninstall': 'remove',
+			}, required=True),
+			'settings': DictSanitizer({})
+		}))
+	)
+	@simple_response(with_progress=True)
 	def run_remote(self, host, dry_run, apps, progress):
-		client = Client(host, self.username, self.password)
-		if not self._check_version(client):
-			raise umcm.UMC_Error('Incompatible!')
+		client = self._remote_appcenter(host)
 		result = client.umc_command('appcenter/run', {'dry_run': dry_run, 'apps': apps}).result
 		self._remote_progress[progress.id] = client, result['id']
 
@@ -426,6 +431,7 @@ class Instance(umcm.Base, ProgressMixin):
 		apps=ListSanitizer(DictSanitizer({
 			'id': StringSanitizer(required=True),
 			'version': StringSanitizer(),
+			'only_master_packages': BooleanSanitizer(default=False),
 			'function': MappingSanitizer({
 				'install': 'install',
 				'update': 'upgrade',
@@ -440,7 +446,7 @@ class Instance(umcm.Base, ProgressMixin):
 			progress.title = _('Running tests')
 			problems = {}
 			serious_problems = False
-			can_continue = not dry_run
+			can_continue = True
 			app_ids = dict((_a['id'], []) for _a in apps)  # shall be used to sort at the end according to dependency
 			for _app in apps:
 				MODULE.process('Processing %r' % _app)
@@ -502,59 +508,66 @@ class Instance(umcm.Base, ProgressMixin):
 			result = {
 				'serious_problems': serious_problems,
 				'problems': problems,
-				'can_continue': can_continue,
 				'software_changes_computed': False,
 				'success': {},
 			}
 			if can_continue:
 				if dry_run:
-					result.update(self._run_apps_dry_run(apps, progress))
+					result.update(self._run_apps_dry_run(apps, progress, unregister=True))
+					can_continue = False  # do not continue in dry_run
 				else:
 					result['success'] = self._run_apps(apps, progress)
+			result['can_continue'] = can_continue
 			MODULE.process('Result: %r' % result)
 			return result
 		except Exception:
+			# as this is handled in a thread, we somehow do not get the error messages...
 			import traceback
 			exc = traceback.format_exc()
 			MODULE.error(exc)
+			raise
 
 	def _run_apps_dry_run(self, apps, progress, unregister):
 		ret = {}
 		old_apps = []
 		pkgs = set()
-		compute = True
-		update = True
+		update = False
+		register = get_action('register')()
 		for _app in apps:
 			app = _app['app']
-			function = _app['function']
+			only_master_packages = _app['only_master_packages']
 			if not app.docker:
 				original_app = Apps().find(app.id)
 				if original_app.is_installed():
 					old_apps.append(original_app)
-				if _register_component(app):
+				if register._register_component(app):
 					update = True
-				pkgs.update(self._get_packages_for_dry_run(app, args))
+				# TODO: copy of actions/install.py#_get_packages_for_dry_run
+				if only_master_packages:
+					pkgs.update(app.default_packages_master)
+				else:
+					pkgs.update(app.get_packages(additional=True))
 		if update:
 			update_packages()
-		if compute:
-			update = False
-			ret = install_packages_dry_run(pkgs)
-			if old_apps:
-				upgrade_ret = dist_upgrade_dry_run()
-				ret['install'] = sorted(set(ret['install']).union(set(upgrade_ret['install'])))
-				ret['remove'] = sorted(set(ret['remove']).union(set(upgrade_ret['remove'])))
-				ret['broken'] = sorted(set(ret['broken']).union(set(upgrade_ret['broken'])))
-			ret['software_changes_computed'] = True
-			if unregister or ret['broken']:
-				for old_app in old_apps:
-					if _register_component(original_app):
+		update = False
+		ret = install_packages_dry_run(list(pkgs))
+		if old_apps:
+			upgrade_ret = dist_upgrade_dry_run()
+			ret['install'] = sorted(set(ret['install']).union(set(upgrade_ret['install'])))
+			ret['remove'] = sorted(set(ret['remove']).union(set(upgrade_ret['remove'])))
+			ret['broken'] = sorted(set(ret['broken']).union(set(upgrade_ret['broken'])))
+		ret['software_changes_computed'] = True
+		if unregister or ret['broken']:
+			for old_app in old_apps:
+				if register._register_component(old_app):
+					update = True
+			for app in apps:
+				if app['id'] not in [_app.id for _app in old_apps]:
+					app = Apps().find(app['id'])
+					if register._unregister_component(app):
 						update = True
-				for app in apps:
-					if app.id not in [_app.id for _app in old_apps]:
-						if _unregister_component(app):
-							update = True
-				if update:
-					update_packages()
+			if update:
+				update_packages()
 		return ret
 
 	def _run_apps(self, apps, progress):
@@ -563,6 +576,7 @@ class Instance(umcm.Base, ProgressMixin):
 			app = _app['app']
 			function = _app['function']
 			settings = _app['settings']
+			only_master_packages = _app['only_master_packages']
 			if function == 'install':
 				progress.title = _('Installing %s') % (app.name,)
 			elif function == 'uninstall':
@@ -570,6 +584,7 @@ class Instance(umcm.Base, ProgressMixin):
 			elif function == 'upgrade':
 				progress.title = _('Upgrading %s') % (app.name,)
 			action = get_action(function)
+			#progress_range = i * (1.0 / len(apps)), (i + 1) * (1.0 / len(apps))
 			handler = UMCProgressHandler(progress)
 			handler.setLevel(logging.INFO)
 			action.logger.addHandler(handler)
@@ -578,6 +593,9 @@ class Instance(umcm.Base, ProgressMixin):
 					app=app,
 					username=self.username,
 					password=self.password,
+					install_master_packages_remotely=False,
+					only_master_packages=only_master_packages,
+					send_info=not only_master_packages,
 					noninteractive=True,
 					skip_checks=['shall_have_enough_ram', 'shall_only_be_installed_in_ad_env_with_password_service', 'must_not_have_concurrent_operation', 'must_have_no_unmet_dependencies'],
 					set_vars=settings,
