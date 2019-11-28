@@ -1,3 +1,9 @@
+univention-app-appliance (3.0.1-10) unstable; urgency=medium
+
+  * Bug #50516: revert changes after QA feedback
+
+ -- Jannik Ahlers <ahlers@univention.de>  Thu, 28 Nov 2019 10:53:52 +0100
+
 univention-app-appliance (3.0.1-9) unstable; urgency=medium
 
   * Bug #50516: enable root login if activation was disabled
