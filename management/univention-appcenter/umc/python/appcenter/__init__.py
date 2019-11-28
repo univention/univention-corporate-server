@@ -411,11 +411,7 @@ class Instance(umcm.Base, ProgressMixin):
 			'id': StringSanitizer(required=True),
 			'version': StringSanitizer(),
 			'only_master_packages': BooleanSanitizer(),
-			'function': MappingSanitizer({
-				'install': 'install',
-				'update': 'upgrade',
-				'uninstall': 'remove',
-			}, required=True),
+			'function': ChoicesSanitizer(['install', 'upgrade', 'remove'], required=True),
 			'settings': DictSanitizer({})
 		}))
 	)
@@ -432,11 +428,7 @@ class Instance(umcm.Base, ProgressMixin):
 			'id': StringSanitizer(required=True),
 			'version': StringSanitizer(),
 			'only_master_packages': BooleanSanitizer(default=False),
-			'function': MappingSanitizer({
-				'install': 'install',
-				'update': 'upgrade',
-				'uninstall': 'remove',
-			}, required=True),
+			'function': ChoicesSanitizer(['install', 'upgrade', 'remove'], required=True),
 			'settings': DictSanitizer({})
 		}))
 	)
@@ -517,7 +509,7 @@ class Instance(umcm.Base, ProgressMixin):
 					can_continue = False  # do not continue in dry_run
 				else:
 					result['success'] = self._run_apps(apps, progress)
-			result['can_continue'] = can_continue
+			result['can_continue'] = can_continue and not result['serious_problems']
 			MODULE.process('Result: %r' % result)
 			return result
 		except Exception:
@@ -535,18 +527,16 @@ class Instance(umcm.Base, ProgressMixin):
 		register = get_action('register')()
 		for _app in apps:
 			app = _app['app']
+			function = _app['function']
 			only_master_packages = _app['only_master_packages']
 			if not app.docker:
-				original_app = Apps().find(app.id)
-				if original_app.is_installed():
+				if function == 'upgrade':
+					original_app = Apps().find(app.id)
 					old_apps.append(original_app)
 				if register._register_component(app):
 					update = True
-				# TODO: copy of actions/install.py#_get_packages_for_dry_run
-				if only_master_packages:
-					pkgs.update(app.default_packages_master)
-				else:
-					pkgs.update(app.get_packages(additional=True))
+				action = get_action(function)()
+				pkgs.update(action._get_packages_for_dry_run(app, only_master_packages))
 		if update:
 			update_packages()
 		update = False
@@ -557,6 +547,8 @@ class Instance(umcm.Base, ProgressMixin):
 			ret['remove'] = sorted(set(ret['remove']).union(set(upgrade_ret['remove'])))
 			ret['broken'] = sorted(set(ret['broken']).union(set(upgrade_ret['broken'])))
 		ret['software_changes_computed'] = True
+		if ret['broken']:
+			ret['serious_problems'] = True
 		if unregister or ret['broken']:
 			for old_app in old_apps:
 				if register._register_component(old_app):
@@ -589,17 +581,19 @@ class Instance(umcm.Base, ProgressMixin):
 			handler.setLevel(logging.INFO)
 			action.logger.addHandler(handler)
 			try:
-				success = action.call(
-					app=app,
-					username=self.username,
-					password=self.password,
-					install_master_packages_remotely=False,
-					only_master_packages=only_master_packages,
-					send_info=not only_master_packages,
-					noninteractive=True,
-					skip_checks=['shall_have_enough_ram', 'shall_only_be_installed_in_ad_env_with_password_service', 'must_not_have_concurrent_operation', 'must_have_no_unmet_dependencies'],
-					set_vars=settings,
-				)
+				success = self._install_master_packages_on_hosts2(app, function)
+				if success:
+					action.call(
+						app=app,
+						username=self.username,
+						password=self.password,
+						install_master_packages_remotely=False,
+						only_master_packages=only_master_packages,
+						send_info=not only_master_packages,
+						noninteractive=True,
+						skip_checks=['shall_have_enough_ram', 'shall_only_be_installed_in_ad_env_with_password_service', 'must_not_have_concurrent_operation', 'must_have_no_unmet_dependencies'],
+						set_vars=settings,
+					)
 				successes[app.id] = success
 				if not success:
 					MODULE.error('Error while %s %s. Aborting all pending tasks' % (function, app.id))
@@ -611,6 +605,45 @@ class Instance(umcm.Base, ProgressMixin):
 			finally:
 				action.logger.removeHandler(handler)
 		return successes
+
+
+	def _install_master_packages_on_hosts2(self, app, function):
+		if function == 'remove':
+			return True
+		master_packages = app.default_packages_master
+		if not master_packages:
+			return
+		hosts = find_hosts_for_master_packages()
+		package_manager = get_package_manager()
+		for host, host_is_master in hosts:
+			package_manager.progress_state.info(_('Installing LDAP packages on %s') % host)
+			try:
+				if not self._install_master_packages_on_host2(app, function, host):
+					error_message = 'Unable to install %r on %s. Check /var/log/univention/management-console-module-appcenter.log on the host and this server. All errata updates have been installed on %s?' % (master_packages, host, host)
+					raise Exception(error_message)
+			except Exception as e:
+				MODULE.error('%s: %s' % (host, e))
+				if host_is_master:
+					role = 'DC Master'
+				else:
+					role = 'DC Backup'
+				# ATTENTION: This message is not localised. It is parsed by the frontend to markup this message! If you change this message, be sure to do the same in AppCenterPage.js
+				package_manager.progress_state.error('Installing extension of LDAP schema for %s seems to have failed on %s %s' % (app.component_id, role, host))
+				if host_is_master:
+					raise  # only if host_is_master!
+		else:
+			return True
+
+	def _install_master_packages_on_host2(self, app, function, host):
+		client = self._remote_appcenter(host)
+		result = client.umc_command('appcenter/run', {'dry_run': False, 'apps': [{'id': app.id, 'only_master_packages': True, 'function': function}]}).result
+		if result['can_continue']:
+			all_errors = self._query_remote_progress(client)
+			return len(all_errors) == 0
+		else:
+			MODULE.warn('%r' % result)
+			return False
+
 
 	@require_password
 	@sanitize(

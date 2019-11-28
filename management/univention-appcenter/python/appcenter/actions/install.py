@@ -203,7 +203,7 @@ class Install(InstallRemoveUpgrade):
 			self.debug('Updating packages')
 			update_packages()
 		self.debug('Component %s registered' % app.component_id)
-		pkgs = self._get_packages_for_dry_run(app, args)
+		pkgs = self._get_packages_for_dry_run(app, args.only_master_packages)
 		self.debug('Dry running with %r' % pkgs)
 		ret = install_packages_dry_run(pkgs)
 		if with_dist_upgrade:
@@ -228,8 +228,8 @@ class Install(InstallRemoveUpgrade):
 				self.debug('Component %s unregistered' % app.component_id)
 		return ret
 
-	def _get_packages_for_dry_run(self, app, args):
-		if args.only_master_packages:
+	def _get_packages_for_dry_run(self, app, only_master_packages):
+		if only_master_packages:
 			return app.default_packages_master
 		else:
 			return app.get_packages(additional=True)

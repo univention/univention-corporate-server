@@ -96,4 +96,7 @@ class Remove(InstallRemoveUpgrade):
 		return remove_packages(app.get_packages(additional=False))
 
 	def _dry_run(self, app, args):
-		return remove_packages_dry_run(app.get_packages(additional=False))
+		return remove_packages_dry_run(self._get_packages_for_dry_run(app, False))
+
+	def _get_packages_for_dry_run(self, app, only_master_packages):
+		return ['%s-' % package for package in app.get_packages(additional=False)]
