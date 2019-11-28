@@ -12,7 +12,7 @@ die () {
 
 test -f "$1" || die "Missing test config file!"
 
-release='4.4-2'
+release='4.4-3'
 old_release='4.3-5'
 kvm_template_version='4.4-2'
 
