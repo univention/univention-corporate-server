@@ -1,3 +1,10 @@
+univention-updater (14.0.2-9) unstable; urgency=medium
+
+  * Bug #50554: Remove obsolete docker upgrade check from preup,
+    itwas only required for UCS 4.4-2
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 29 Nov 2019 11:36:28 +0100
+
 univention-updater (14.0.2-8) unstable; urgency=medium
 
   * Bug #50554: Adapt links and components for 4.4-3

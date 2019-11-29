@@ -306,35 +306,6 @@ fail_if_role_package_will_be_removed () {
 	fi
 }
 
-block_update_with_docker() {
-	storage_driver=$(docker info 2> /dev/null | awk -F ': ' '/Storage Driver/ {print $2}')
-	# if docker is not running fall back to ucr variable
-	if [ -z "$storage_driver" ]; then
-		storage_driver=$(/usr/sbin/univention-config-registry get docker/daemon/default/opts/storage-driver)
-	fi
-	if [ "$storage_driver" != "overlay" ]; then
-		echo "ERROR: The current docker storage driver is \"$storage_driver\"."
-		echo "       An update to UCS 4.2-2 is only possible if docker uses"
-		echo "       \"overlay\" as storage driver. To perform the update"
-		echo "       the docker storage driver has to be changed to \"overlay\"."
-		echo ""
-		echo "       Please visit https://help.univention.com/t/upgrade-to-ucs-4-4-2-only-possible-with-overlay-as-dockers-storage-driver/13368"
-		echo "       for more information."
-		echo ""
-		if is_ucr_true update44/ignore_docker_issue; then
-			echo "WARNING: update44/ignore_docker_issue is set to true. Skipped as requested."
-		else
-			exit 1
-		fi
-	fi
-
-	[ -d /var/lib/docker/aufs ] && find /var/lib/docker/aufs -type d -empty -delete
-	[ -d /var/lib/docker/aufs ] && mv /var/lib/docker/aufs /var/lib/docker/aufs.moved-by-ucs4.4-2-upgrade
-	[ -d /var/lib/docker/devicemapper ] && find /var/lib/docker/devicemapper -type d -empty -delete
-	[ -d /var/lib/docker/devicemapper ] && mv /var/lib/docker/devicemapper /var/lib/docker/devicemapper.moved-by-ucs4.4-2-upgrade
-}
-block_update_with_docker
-
 
 # begin bug 46562
 block_update_if_system_date_is_too_old() {
