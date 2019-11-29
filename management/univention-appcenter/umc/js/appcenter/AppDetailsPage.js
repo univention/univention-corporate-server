@@ -786,11 +786,10 @@ define([
 				this.dependenciesLoadingDeferred.cancel();
 			}
 
-			var dependencies = ['adtakeover', 'owncloud', 'wekan'];
 			var loads = [];
 			tools.umcpCommand('appcenter/resolve', {apps: [{id: this.app.id}]}).then(lang.hitch(this, function(data) {
 				array.forEach(data.result.apps, lang.hitch(this, function(dep) {
-					var app = tools.umcpCommand(this.getAppCommand, {'application': dep}).then(lang.hitch(this, function(data) {
+					var app = tools.umcpCommand(this.getAppCommand, {'application': dep.id}).then(lang.hitch(this, function(data) {
 						return new App(data.result, this);
 					}));
 					loads.push(app);

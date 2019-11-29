@@ -403,15 +403,22 @@ class Instance(umcm.Base, ProgressMixin):
 		# apps = [{'id': 'horde', 'function': 'install'}]
 		return [{'id': 'mailserver', 'function': 'install'}, {'id': 'horde', 'function': 'install'}]
 
+	def _is_remote_call(self, host):
+		return host != self.ucr.get('hostname') and host != '%s.%s' % (self.ucr.get('hostname'), self.ucr.get('domainname'))
+
 	@require_password
 	@sanitize(
+		host=StringSanitizer(required=True),
 		apps=ListSanitizer(DictSanitizer({
 			'id': StringSanitizer(required=True),
 			'version': StringSanitizer(),
 		}))
 	)
 	@simple_response
-	def resolve(self, apps):
+	def resolve(self, host, apps):
+		if self._is_remote_call(host):
+			client = self._remote_appcenter(host)
+			return client.umc_command('appcenter/resolve', {'host': host, 'apps': apps}).result
 		real_apps = [Apps().find(app['id'], app_version=app['version']) for app in apps]
 		real_apps = [Apps().find_candidate(app) if app.is_installed() else app for app in real_apps]
 		for i, app in enumerate(real_apps):
