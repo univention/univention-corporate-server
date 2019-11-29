@@ -134,11 +134,7 @@ define([
 
 			var installInfo = [];
 
-			var host = null;
-			var _values = this.getValues();
-			if (Object.hasOwnProperty(_values, 'chooseHost_host')) {
-				host = _values.host;
-			}
+			var host = this.host;
 			var isRemoteAction = host && tools.status('hostname') != host;
 
 			var force = false;
