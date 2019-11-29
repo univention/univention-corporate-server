@@ -11,3 +11,4 @@
 0014-3: debian/rules
 0010-2: tests/sanitizer/tests.sh
 0010-2: tests/sanitizer/install.sh
+0009-9: dev/dh-umc-module-install
