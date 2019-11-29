@@ -155,7 +155,7 @@ define([
 
 				if (response && response.success) {
 					// success case
-					this._sendNotification(response.uuid, response.apps);
+					this._sendNotification(response.uuid, response.systemUUID, response.apps);
 					this.onGoTo('finished');
 					return;
 				}
@@ -169,9 +169,10 @@ define([
 			}));
 		},
 
-		_sendNotification: function(uuid, apps) {
+		_sendNotification: function(uuid, systemUUID, apps) {
 			var data = {
 				uuid: uuid,
+				'system-uuid': systemUUID,
 				action: 'install',
 				'status': 200,
 				'role': this.entries.role

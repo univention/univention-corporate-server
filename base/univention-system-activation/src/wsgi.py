@@ -159,6 +159,8 @@ def application(environ, start_response):
 	license_ldif = LicenseLDIF(open(LICENSE_UPLOAD_PATH, 'rb'), ucr)
 	license_ldif.parse()
 
+	system_uuid = ucr.get('uuid/system')
+
 	# disable system activation service (stop is executed with a small delay)
 	# and answer request
 	apps = get_installed_apps()
@@ -166,6 +168,7 @@ def application(environ, start_response):
 	return _finish('200 OK', {
 		'success': True,
 		'uuid': license_ldif.uuid,
+		'systemUUID': system_uuid,
 		'apps': apps,
 	})
 
