@@ -36,6 +36,7 @@
 		<command name="appcenter/config" function="config" />
 		<command name="appcenter/configure" function="configure" />
 		<command name="appcenter/service" function="app_service" />
+		<command name="appcenter/resolve" function="resolve" />
 		<command name="appcenter/run" function="run" />
 		<command name="appcenter/invoke" function="invoke" />
 		<command name="appcenter/track" function="track" />

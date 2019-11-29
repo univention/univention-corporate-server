@@ -788,13 +788,15 @@ define([
 
 			var dependencies = ['adtakeover', 'owncloud', 'wekan'];
 			var loads = [];
-			array.forEach(dependencies, lang.hitch(this, function(dep) {
-				var app = tools.umcpCommand(this.getAppCommand, {'application': dep}).then(lang.hitch(this, function(data) {
-					return new App(data.result, this);
+			tools.umcpCommand('appcenter/resolve', {apps: [{id: this.app.id}]}).then(lang.hitch(this, function(data) {
+				array.forEach(data.result.apps, lang.hitch(this, function(dep) {
+					var app = tools.umcpCommand(this.getAppCommand, {'application': dep}).then(lang.hitch(this, function(data) {
+						return new App(data.result, this);
+					}));
+					loads.push(app);
 				}));
-				loads.push(app);
+				this.dependenciesLoadingDeferred = all(loads);
 			}));
-			this.dependenciesLoadingDeferred = all(loads);
 
 			// TODO switch with backend call
 			// this.dependenciesLoadingDeferred = tools.umcpCommand('appcenter/get_dependencies', {

@@ -405,6 +405,49 @@ class Instance(umcm.Base, ProgressMixin):
 
 	@require_password
 	@sanitize(
+		apps=ListSanitizer(DictSanitizer({
+			'id': StringSanitizer(required=True),
+			'version': StringSanitizer(),
+		}))
+	)
+	@simple_response
+	def resolve(self, apps):
+		real_apps = [Apps().find(app['id'], app_version=app['version']) for app in apps]
+		real_apps = [Apps().find_candidate(app) if app.is_installed() else app for app in real_apps]
+		for i, app in enumerate(real_apps):
+			if app is None:
+				app_id = apps[i]['id']
+				raise umcm.UMC_Error(_('App %s not found') % app_id)
+		apps = []
+		dependencies_met = True
+		while real_apps:
+			app = real_apps.pop()
+			if app in apps:
+				continue
+			MODULE.process('Appending %s' % app)
+			apps.append(app)
+			errors, warnings = app.check('install')
+			dependency_error = errors.get('must_have_no_unmet_dependencies')
+			if dependency_error:
+				for err in dependency_error:
+					dependent_id = err['id']
+					if err.get('local_allowed', True):
+						dependency = Apps().find(dependent_id)
+						if dependency:
+							if dependency not in apps:
+								MODULE.process('Prepending %s' % dependency)
+								apps.insert(0, dependency)
+							real_apps.append(dependency)
+						else:
+							dependencies_met = False
+					else:
+						dependencies_met = False
+				if dependencies_met:
+					errors.pop('must_have_no_unmet_dependencies')
+		return {'dependencies_met': dependencies_met, 'apps': [{'id': _app.id, 'version': _app.version} for _app in apps]}
+
+	@require_password
+	@sanitize(
 		host=StringSanitizer(required=True),
 		dry_run=BooleanSanitizer(),
 		apps=ListSanitizer(DictSanitizer({
