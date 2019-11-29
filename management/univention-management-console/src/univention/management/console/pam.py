@@ -193,7 +193,7 @@ class PamAuth(object):
 	}
 	known_errors = dict(
 		(response_message, user_friendly_response)
-		for user_friendly_response, possible_responses in known_errors.iteritems()
+		for user_friendly_response, possible_responses in known_errors.items()
 		for response_message in possible_responses
 	)
 
@@ -333,14 +333,14 @@ class PamAuth(object):
 	def _parse_password_change_fail_reason(self, prompt):
 		if prompt in self.known_errors:
 			return self._(self.known_errors[prompt])
-		for pattern, error_message in self.known_errors.iteritems():
+		for pattern, error_message in self.known_errors.items():
 			if isinstance(pattern, basestring):
 				pattern = re.compile(re.escape(pattern), re.I)
 			match = pattern.search(prompt)
 			if match:
 				match = match.groupdict()
 				additional_message = ''
-				for x, y in match.iteritems():
+				for x, y in match.items():
 					try:
 						additional_message = {
 							'minlen': ' ' + self._('The password must consist of at least %s characters.'),
