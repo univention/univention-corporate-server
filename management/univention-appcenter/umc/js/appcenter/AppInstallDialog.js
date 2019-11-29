@@ -31,6 +31,7 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/_base/array",
 	"dojo/dom-class",
 	"dojo/topic",
 	"umc/tools",
@@ -40,7 +41,7 @@ define([
 	"./AppInstallWizard",
 	"./AppPostInstallWizard",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, domClass, topic, tools, ContainerWidget, AppChooseHostWizard, AppPreinstallWizard, AppInstallWizard, AppPostInstallWizard, _) {
+], function(declare, lang, array, domClass, topic, tools, ContainerWidget, AppChooseHostWizard, AppPreinstallWizard, AppInstallWizard, AppPostInstallWizard, _) {
 	return declare("umc.modules.appcenter.AppInstallDialog", [ ContainerWidget ], {
 		_chooseHostWizard: null,
 		_preinstallWizard: null,
@@ -90,26 +91,33 @@ define([
 			});
 			this._chooseHostWizard.on('cancel', lang.hitch(this, 'cancelInstallation'));
 			this._chooseHostWizard.on('gotHostAndApps', lang.hitch(this, function(host, apps) {
-				this.showPreinstallWizard(host, apps, appcenterDockerSeen, appDetailsPage);
+				var mainAppIdx = apps.length - 1;
+				array.forEach(apps, function(_app, idx) {
+					if (_app.id === app.id) {
+						mainAppIdx = idx;
+					}
+				});
+				this.showPreinstallWizard(host, apps, mainAppIdx, appcenterDockerSeen, appDetailsPage);
 			}));
 			this.addChild(this._chooseHostWizard);
 		},
 
-		showPreinstallWizard: function(host, apps, appcenterDockerSeen, appDetailsPage) {
+		showPreinstallWizard: function(host, apps, mainAppIdx, appcenterDockerSeen, appDetailsPage) {
 			this.cleanup();
 			this._preinstallWizard = new AppPreinstallWizard({
 				apps: apps,
+				mainAppIdx: mainAppIdx,
 				host: host,
 				appcenterDockerSeen: appcenterDockerSeen
 			});
 			this._preinstallWizard.on('cancel', lang.hitch(this, 'cancelInstallation'));
 			this._preinstallWizard.on('checksDone', lang.hitch(this, function(host, installInfo) {
-				this.showInstallWizard(host, installInfo, appDetailsPage);
+				this.showInstallWizard(host, installInfo, mainAppIdx, appDetailsPage);
 			}));
 			this.addChild(this._preinstallWizard);
 		},
 
-		showInstallWizard: function(host, installInfo, appDetailsPage) {
+		showInstallWizard: function(host, installInfo, mainAppIdx, appDetailsPage) {
 			this.cleanup();
 			this._installationHasSeriousProblems = installInfo.some(function(info) {
 				return info.details && info.details.serious_problems;
@@ -119,7 +127,8 @@ define([
 			}
 			this._installWizard = new AppInstallWizard({
 				host: host,
-				installInfo: installInfo ,
+				installInfo: installInfo,
+				mainAppIdx: mainAppIdx,
 				appDetailsPage: appDetailsPage,
 				onBack: lang.hitch(this, 'onBack')
 			});

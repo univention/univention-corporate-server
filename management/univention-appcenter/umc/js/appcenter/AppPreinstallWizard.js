@@ -48,6 +48,7 @@ define([
 		autoHeight: true,
 
 		apps: null,
+		mainAppIdx: null,
 		host: null,
 		appcenterDockerSeen: null,
 		_mainApp: null,
@@ -55,8 +56,10 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
-			this._mainApp = this.apps[this.apps.length - 1];
-			this._dependencies = this.apps.slice(0, this.apps.length - 1);
+			this._mainApp = this.apps[this.mainAppIdx];
+			this._dependencies = this.apps.filter(lang.hitch(this, function(app, idx) {
+				return idx !== this.mainAppIdx;
+			}));
 			this.pages = this.getPages(this._mainApp, this._dependencies, this.appcenterDockerSeen);
 		},
 

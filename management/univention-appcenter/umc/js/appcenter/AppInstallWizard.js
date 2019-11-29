@@ -51,6 +51,7 @@ define([
 
 		appDetailsPage: null,
 		installInfo: null,
+		mainAppIdx: null,
 		host: null,
 		_mainInfo: null,
 		_dependenciesInfo: null,
@@ -63,8 +64,10 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
-			this._mainInfo = this.installInfo[this.installInfo.length - 1]; // TODO check how it comes from the backend. ATM assumes that mainapp is last
-			this._dependenciesInfo = this.installInfo.slice(0, this.installInfo.length - 1); // TODO ^
+			this._mainInfo = this.installInfo[this.mainAppIdx];
+			this._dependenciesInfo = this.installInfo.filter(lang.hitch(this, function(info, idx) {
+				return idx !== this.mainAppIdx;
+			}));
 			this.pages = this.getPages(this._mainInfo, this._dependenciesInfo, this.host, this.appDetailsPage);
 		},
 
