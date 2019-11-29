@@ -35,14 +35,17 @@ define([
 	"dojo/topic",
 	"umc/tools",
 	"umc/widgets/ContainerWidget",
+	"./AppChooseHostWizard",
 	"./AppPreinstallWizard",
 	"./AppInstallWizard",
 	"./AppPostInstallWizard",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, domClass, topic, tools, ContainerWidget, AppPreinstallWizard, AppInstallWizard, AppPostInstallWizard, _) {
+], function(declare, lang, domClass, topic, tools, ContainerWidget, AppChooseHostWizard, AppPreinstallWizard, AppInstallWizard, AppPostInstallWizard, _) {
 	return declare("umc.modules.appcenter.AppInstallDialog", [ ContainerWidget ], {
+		_chooseHostWizard: null,
 		_preinstallWizard: null,
 		_installWizard: null,
+		_postInstallWizard: null,
 
 		_mainAppId: null,
 		_installationHasSeriousProblems: false,
@@ -65,6 +68,9 @@ define([
 
 		cleanup: function() {
 			this._installationHasSeriousProblems = false;
+			if (this._chooseHostWizard) {
+				this._chooseHostWizard.destroyRecursive();
+			}
 			if (this._preinstallWizard) {
 				this._preinstallWizard.destroyRecursive();
 			}
@@ -76,11 +82,24 @@ define([
 			}
 		},
 
-		showPreinstallWizard: function(app, dependencies, appcenterDockerSeen, appDetailsPage) {
+		showChooseHostWizard: function(app, appcenterDockerSeen, appDetailsPage) {
+			this.cleanup();
+			this._chooseHostWizard = new AppChooseHostWizard({
+				app: app,
+				appDetailsPage: appDetailsPage
+			});
+			this._chooseHostWizard.on('cancel', lang.hitch(this, 'cancelInstallation'));
+			this._chooseHostWizard.on('gotHostAndApps', lang.hitch(this, function(host, apps) {
+				this.showPreinstallWizard(host, apps, appcenterDockerSeen, appDetailsPage);
+			}));
+			this.addChild(this._chooseHostWizard);
+		},
+
+		showPreinstallWizard: function(host, apps, appcenterDockerSeen, appDetailsPage) {
 			this.cleanup();
 			this._preinstallWizard = new AppPreinstallWizard({
-				app: app,
-				dependencies: dependencies,
+				apps: apps,
+				host: host,
 				appcenterDockerSeen: appcenterDockerSeen
 			});
 			this._preinstallWizard.on('cancel', lang.hitch(this, 'cancelInstallation'));
@@ -140,12 +159,10 @@ define([
 			domClass.add(this.domNode, 'col-xs-12 col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2');
 		},
 
-		showUp: function(app, dependencies, appcenterDockerSeen, appDetailsPage) {
+		showUp: function(app, appcenterDockerSeen, appDetailsPage) {
 			this._mainAppId = app.id;
-			this.showPreinstallWizard(app, dependencies, appcenterDockerSeen, appDetailsPage);
+			this.showChooseHostWizard(app, appcenterDockerSeen, appDetailsPage);
 			this.onShowUp();
-			// this._continueDeferred.then(lang.hitch(this, 'onBack'), lang.hitch(this, 'onBack'));
-			// return this._continueDeferred;
 		},
 
 		onShowUp: function() {

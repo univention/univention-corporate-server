@@ -39,34 +39,36 @@ define([
 ], function(declare, lang, array, entities, Text, ComboBox, _) {
 	return {
 		getPageConf: function(app) {
-			if (!app.installationData) {
-				return null;
-			}
-
 			var hosts = [];
 			var removedDueToInstalled = [];
 			var removedDueToRole = [];
-			array.forEach(app.installationData, function(item) {
-				if (item.canInstall()) {
-					if (item.isLocal()) {
-						hosts.unshift({
-							label: item.displayName,
-							id: item.hostName
-						});
+			if (app.installationData) {
+				array.forEach(app.installationData, function(item) {
+					if (item.canInstall()) {
+						if (item.isLocal()) {
+							hosts.unshift({
+								label: item.displayName,
+								id: item.hostName
+							});
+						} else {
+							hosts.push({
+								label: item.displayName,
+								id: item.hostName
+							});
+						}
 					} else {
-						hosts.push({
-							label: item.displayName,
-							id: item.hostName
-						});
+						if (item.isInstalled) {
+							removedDueToInstalled.push(item.displayName);
+						} else if (!item.hasFittingRole()) {
+							removedDueToRole.push(item.displayName);
+						}
 					}
-				} else {
-					if (item.isInstalled) {
-						removedDueToInstalled.push(item.displayName);
-					} else if (!item.hasFittingRole()) {
-						removedDueToRole.push(item.displayName);
-					}
-				}
-			});
+				});
+			}
+			if (!hosts.length) {
+				hosts = [tools.status('hostname')];
+			}
+
 			var removeExplanation = '';
 			if (removedDueToInstalled.length === 1) {
 				removeExplanation += '<p>' + _('%s was removed from the list because the application is installed on this host.', entities.encode(removedDueToInstalled[0])) + '</p>';
@@ -82,25 +84,25 @@ define([
 				removeExplanation = '<strong>' + _('Not all hosts are listed above') + '</strong>' + removeExplanation;
 			}
 
-			if (hosts.length === 1 && !removedDueToRole.length && !removedDueToInstalled.length) {
-				return null;
-			}
-			return {
-				name: 'chooseHost',
-				headerText: _('Installation of %s', app.name),
-				helpText: _('In order to proceed with the installation of %s, please select the host on which the application is going to be installed.', app.name),
-				widgets: [{
-					type: ComboBox,
-					label: _('Host for installation of application'),
-					name: 'chooseHost_host',
-					required: true,
-					size: 'Two',
-					staticValues: hosts
-				}, {
-					type: Text,
-					name: 'chooseHost_removeExplanation',
-					content: removeExplanation
-				}]
+			return  {
+				onlyOneHost: hosts.length === 1,
+				pageConf: {
+					name: 'chooseHost',
+					headerText: _('Installation of %s', app.name),
+					helpText: _('In order to proceed with the installation of %s, please select the host on which the application is going to be installed.', app.name),
+					widgets: [{
+						type: ComboBox,
+						label: _('Host for installation of application'),
+						name: 'chooseHost_host',
+						required: true,
+						size: 'Two',
+						staticValues: hosts
+					}, {
+						type: Text,
+						name: 'chooseHost_removeExplanation',
+						content: removeExplanation
+					}]
+				}
 			};
 		}
 	};

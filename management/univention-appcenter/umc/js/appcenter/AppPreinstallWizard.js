@@ -47,23 +47,21 @@ define([
 		pageNavBootstrapClasses: 'col-xs-12',
 		autoHeight: true,
 
-		app: null,
-		dependencies: null,
+		apps: null,
+		host: null,
 		appcenterDockerSeen: null,
-
-		constructor: function() {
-			this.inherited(arguments);
-			this.dependencies = [];
-		},
+		_mainApp: null,
+		_dependencies: null,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
-			this.pages = this.getPages(this.app, this.dependencies, this.appcenterDockerSeen);
+			this._mainApp = this.apps[this.apps.length - 1];
+			this._dependencies = this.apps.slice(0, this.apps.length - 1);
+			this.pages = this.getPages(this._mainApp, this._dependencies, this.appcenterDockerSeen);
 		},
 
 		getPages: function(app, dependencies, appcenterDockerSeen) {
 			var pages = [];
-			this.addChooseHostPage(app, pages);
 			this.addDependenciesPage(app, dependencies, pages);
 			this.addDockerWarningPage(app, dependencies, appcenterDockerSeen, pages);
 			this.addChecksPage(app, pages);
@@ -146,7 +144,7 @@ define([
 			var force = false;
 			var func = 'install';
 			var values = null;
-			var apps = [this.app].concat(this.dependencies);
+			var apps = this.apps;
 			var appsDone = 0;
 			// DIRK
 			apps.forEach(lang.hitch(this, function(app) {

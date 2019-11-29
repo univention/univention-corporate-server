@@ -128,7 +128,6 @@ define([
 				});
 			}
 
-			this.loadDependencies();
 			when(appLoaded).then(lang.hitch(this, function(loadedApp) {
 				if (loadedApp === null) {
 					this.onBack();
@@ -772,50 +771,14 @@ define([
 			}));
 		},
 
-		getDependencies: function() {
-			if (!this.dependenciesLoadingDeferred) {
-				this.loadDependencies();
-			}
-
-			return this.dependenciesLoadingDeferred;
-		},
-
-		loadDependencies: function() {
-			// DIRK
-			if (this.dependenciesLoadingDeferred && !this.dependenciesLoadingDeferred.isFulfilled()) {
-				this.dependenciesLoadingDeferred.cancel();
-			}
-
-			var loads = [];
-			tools.umcpCommand('appcenter/resolve', {apps: [{id: this.app.id}]}).then(lang.hitch(this, function(data) {
-				array.forEach(data.result.apps, lang.hitch(this, function(dep) {
-					var app = tools.umcpCommand(this.getAppCommand, {'application': dep.id}).then(lang.hitch(this, function(data) {
-						return new App(data.result, this);
-					}));
-					loads.push(app);
-				}));
-				this.dependenciesLoadingDeferred = all(loads);
-			}));
-
-			// TODO switch with backend call
-			// this.dependenciesLoadingDeferred = tools.umcpCommand('appcenter/get_dependencies', {
-				// for: [{
-					// id: this.app.id,
-					// function: 'install'
-				// }]
-			// });
-		},
-
 		installAppDialog: function() {
-			var dependencies = this.getDependencies();
 			var appcenterDockerSeen = this._appcenterDockerSeen();
 			var _all = all({
-				dependencies: dependencies,
 				appcenterDockerSeen: appcenterDockerSeen
 			});
 			this.standbyDuring(_all);
 			_all.then(lang.hitch(this, function(values) {
-				this.installDialog.showUp(this.app, values.dependencies, values.appcenterDockerSeen, this);
+				this.installDialog.showUp(this.app, values.appcenterDockerSeen, this);
 
 				// TODO on success
 				// put dedicated module of this app into favorites
