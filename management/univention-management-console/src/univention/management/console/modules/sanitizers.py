@@ -46,6 +46,7 @@ cannot do something harmful in the exposed UMC-functions. But they are also
 very helpful when one needs to just validate input.
 """
 import re
+import six
 import copy
 
 import ldap.filter
@@ -518,7 +519,7 @@ class PatternSanitizer(SearchSanitizer):
 
 	def __init__(self, ignore_case=True, multiline=True, **kwargs):
 		default = kwargs.get('default')
-		if isinstance(default, basestring):
+		if isinstance(default, six.string_types):
 			default = re.compile(default)
 		kwargs['default'] = default
 		super(PatternSanitizer, self).__init__(**kwargs)
@@ -563,12 +564,12 @@ class StringSanitizer(Sanitizer):
 		is a string
 	:param int minimum: the minimum length of the string
 	:param int maximum: the maximum length of the string
-	:type regex_pattern: basestring or re._pattern_type
+	:type regex_pattern: six.string_types or re._pattern_type
 	'''
 
 	def __init__(self, regex_pattern=None, re_flags=0, minimum=None, maximum=None, **kwargs):
 		super(StringSanitizer, self).__init__(**kwargs)
-		if isinstance(regex_pattern, basestring):
+		if isinstance(regex_pattern, six.string_types):
 			regex_pattern = re.compile(regex_pattern, flags=re_flags)
 		self.minimum = minimum
 		self.maximum = maximum
@@ -588,7 +589,7 @@ class StringSanitizer(Sanitizer):
 		return new
 
 	def _sanitize(self, value, name, further_args):
-		if not isinstance(value, basestring):
+		if not isinstance(value, six.string_types):
 			self.raise_validation_error(_('Value is not a string'))
 
 		if self.minimum and len(value) < self.minimum:
