@@ -67,6 +67,7 @@ define([
 			var name = lang.replace('appSettings_{0}', [info.app.id]);
 			return {
 				name: name,
+				'class': name,
 				headerText: headerText,
 				widgets: [{
 					type: ContentPane,

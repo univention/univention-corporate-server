@@ -55,6 +55,10 @@ define([
 				}, grid);
 			});
 
+			var helpText = _('The following app is required to install %s', app.name);
+			if (dependencies.length >= 2) {
+				helpText = _('The following apps are required to install %s:', app.name);
+			}
 			var text = _('This app will be installed automatically on the same system as %s', app.name);
 			if (dependencies.length >= 2) {
 				text = _('These apps will be installed automatically on the same system as %s', app.name);
@@ -66,7 +70,7 @@ define([
 				widgets: [{
 					type: Text,
 					name: 'dependencies_helpText',
-					content: _('The following apps are required to install %s:', app.name)
+					content: helpText
 				}, {
 					type: ContentPane,
 					'class': 'appIconAndNameGridWrapper',

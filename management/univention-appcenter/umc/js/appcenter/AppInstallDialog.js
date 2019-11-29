@@ -124,9 +124,13 @@ define([
 			this._postInstallWizard = new AppPostInstallWizard({
 				apps: apps
 			});
-			this._postInstallWizard.on('cancel', lang.hitch(this, 'onBack'));
-			this._postInstallWizard.on('finished', lang.hitch(this, 'onBack'));
-			this.addChild(this._postInstallWizard);
+			if (!this._postInstallWizard.pages.length) {
+				this.onBack();
+			} else {
+				this._postInstallWizard.on('cancel', lang.hitch(this, 'onBack'));
+				this._postInstallWizard.on('finished', lang.hitch(this, 'onBack'));
+				this.addChild(this._postInstallWizard);
+			}
 		},
 
 		buildRendering: function() {

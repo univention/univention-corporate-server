@@ -84,7 +84,7 @@ define([
 					'class': 'appIconAndNameGridWrapper',
 					name: 'dockerWarning_grid',
 					content: grid,
-					visible: dependencies.length
+					visible: !!dependencies.length
 				}, {
 					type: CheckBox,
 					name: 'dockerWarning_doNotShowAgain',

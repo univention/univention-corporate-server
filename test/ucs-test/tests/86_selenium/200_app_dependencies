@@ -1,0 +1,31 @@
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+# -*- coding: utf-8 -*-
+## desc: |
+##  Test suggestion algorithm
+## roles-not:
+##  - basesystem
+## tags:
+##  - skip_admember
+## join: true
+## exposure: dangerous
+
+from univention.admin import localization
+from univention.testing import selenium
+from univention.testing.selenium.appcenter import AppCenter
+
+translator = localization.translation('ucs-test-selenium')
+_ = translator.translate
+
+
+class UMCTester(object):
+	def test_umc(self):
+		self.selenium.do_login()
+		self.appcenter.install_app('horde')
+
+if __name__ == '__main__':
+	with selenium.UMCSeleniumTest() as s:
+		umc_tester = UMCTester()
+		umc_tester.selenium = s
+		umc_tester.appcenter = AppCenter(umc_tester.selenium)
+
+		umc_tester.test_umc()

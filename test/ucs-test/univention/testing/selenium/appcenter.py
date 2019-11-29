@@ -34,6 +34,8 @@ from __future__ import absolute_import
 from time import sleep
 
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
+from univention.appcenter.app_cache import Apps
+from univention.testing.selenium.utils import expand_path
 
 from univention.admin import localization
 
@@ -41,33 +43,226 @@ translator = localization.translation('ucs-test-framework')
 _ = translator.translate
 
 
+class InfiniteLoop(Exception):
+	pass
+
+
 class AppCenter(object):
 
 	def __init__(self, selenium):
 		self.selenium = selenium
 
-	def install_app(self, app):
+	def install_app_with_checks(self, app_id):
+		app = Apps().find(app_id)
+
+		# TODO use backend function to get dependencies
+		dependencies = set(app.required_apps).union(app.required_apps_in_domain)
+		dependencies = [Apps().find(dep) for dep in dependencies]
+
+		apps = [app]
+		apps.extend(dependencies)
+
 		# TODO: Make sure the license is activated!
-		self.open_app(app)
+		self.open_app(app_id)
 
 		self.selenium.click_button(_('Install'))
 
+		# AppPreInstallWizard
+		self.selenium.wait_for_text(_('Installation of %s') % (app.name,))
+
+		# TODO check if the ChooseHost page should be shown and then test against that instead of
+		# try: except:
 		try:
-			self.selenium.wait_for_text(_('In order to proceed with the installation'), timeout=15)
+			self.selenium.wait_for_text(_('Host for installation of application'), timeout=2)
+		except TimeoutException:
+			pass
+		else:
 			self.selenium.click_button(_('Next'))
+
+		if len(dependencies):
+			if len(dependencies) == 1:
+				self.selenium.wait_for_text(_('The following app is required to install %s') % (app.name,))
+			else:
+				self.selenium.wait_for_text(_('The following apps are required to install %s') % (app.name,))
+			for _app in dependencies:
+				self.selenium.wait_until_element_visible(expand_path('//div[@containsClass="appIconAndNameGrid"]//*[text() = "%s"]' % (_app.name)))
+			self.selenium.click_button(_('Next'))
+
+		# TODO check if docker warning should be shown
+		try:
+			self.selenium.wait_for_text(_('Do not show this message again'), timeout=2)
+		except TimeoutException:
+			pass
+		else:
+			self.selenium.click_button(_('Next'))
+
+		# TODO since we wait for ChooseHost page and docker warning page the ChecksPage might already be over
+		# if we check for ChooseHost page and docker warning explicitly we can remove the try block here
+		try:
+			self.selenium.wait_for_text(_('Performing pre-install checks'))
+			self.selenium.wait_until_standby_animation_appears_and_disappears()
 		except TimeoutException:
 			pass
 
-		self.close_info_dialog_if_visisble()
+		# AppInstallWizard
+		for _app in apps:
+			if _app.license_agreement:
+				self.selenium.wait_for_text(_('License agreement'))
+				self.selenium.click_button(_('Accept license'))
 
-		self.selenium.wait_for_text(_('Please confirm to install the application'))
-		self.selenium.wait_until_all_standby_animations_disappeared()
+			if _app.readme_install:
+				self.selenium.wait_for_text(_('Install Information'))
+				self.selenium.click_button(_('Next'))
+
+			try:
+				self.selenium.wait_until_element_visible(expand_path('//*[@containsClass="details_%s"]' % _app.id), timeout=2)
+			except TimeoutException:
+				pass
+			else:
+				self.selenium.click_button(_('Next'))
+
+			# if len(_app.get_settings()): return settings that are not shown in the AppSettings form
+				#  self.selenium.wait_until_element_visible(expand_path('//*[@containsClass="appSettings_%s"]' % _app.id))
+				#  self.selenium.click_button(_('Next'))
+			try:
+				self.selenium.wait_until_element_visible(expand_path('//*[@containsClass="appSettings_%s"]' % _app.id), timeout=2)
+			except TimeoutException:
+				pass
+			else:
+				self.selenium.click_button(_('Next'))
+
+		self.selenium.wait_for_text(_('Please confirm to install'))
+		if len(dependencies):
+			for _app in dependencies:
+				self.selenium.wait_until_element_visible(expand_path('//div[@containsClass="appIconAndNameGrid"]//*[text() = "%s"]' % (_app.name)))
+		if len(dependencies):
+			self.selenium.click_button(_('Install apps'))
+		else:
+			self.selenium.click_button(_('Install app'))
+
+		# TODO wait for installation (progressbar)
+
+		# AppPostInstallWizard
+		for _app in apps:
+			if _app.readme_post_install:
+				self.selenium.wait_for_text(_('Install information'))
+				try:
+					self.selenium.click_button(_('Next'), timeout=2)
+				except TimeoutException:
+					self.selenium.click_button(_('Finish'))
+
+	def install_app(self, app_id):
+		# TODO: Make sure the license is activated!
+		self.open_app(app_id)
+
 		self.selenium.click_button(_('Install'))
 
-		self.selenium.wait_for_text(_('Installing'))
-		self.selenium.wait_for_any_text_in_list([_('Uninstall'), _('Manage domain wide installations')], timeout=900)
+		# AppPreInstallWizard
+		self.selenium.wait_for_text(_('Installation of'))
 
-		self.selenium.wait_until_all_standby_animations_disappeared()
+		try:
+			self.selenium.wait_for_text(_('Host for installation of application'), timeout=2)
+		except TimeoutException:
+			pass
+		else:
+			self.selenium.click_button(_('Next'))
+
+		try:
+			self.selenium.wait_for_any_text_in_list([
+				_('The following app is required to install'),
+				_('The following apps are required to install')
+			])
+		except TimeoutException:
+			print('App has no dependencies. Ignoring dependencies page')
+			pass
+		else:
+			self.selenium.click_button(_('Next'))
+
+		try:
+			self.selenium.wait_for_text(_('Do not show this message again'), timeout=2)  # Docker warning
+		except TimeoutException:
+			print('App and possible dependencies do not use docker. Ignoring docker warning page')
+			pass
+		else:
+			self.selenium.click_button(_('Next'))
+
+		try:
+			self.selenium.wait_for_text(_('Performing pre-install checks'))
+			self.selenium.wait_until_standby_animation_appears_and_disappears()
+		except TimeoutException:
+			pass
+
+		# AppInstallWizard
+		def click_through_install_wizard_pages():
+			try:
+				self.selenium.wait_for_text(_('Please confirm to install'), timeout=2)
+			except TimeoutException:
+				print('Not on the last page of the AppInstallWizard yet. Going to skip pages')
+				found_page = False
+				try:
+					self.selenium.wait_for_text(_('License agreement'), timeout=2)
+				except TimeoutException:
+					print('No License agreement page found. Ignoring')
+					pass
+				else:
+					found_page = True
+					self.selenium.click_button(_('Accept license'))
+
+				try:
+					self.selenium.wait_for_text(_('Install Information'), timeout=2)
+				except TimeoutException:
+					print('No Install information page found. Ignoring')
+					pass
+				else:
+					found_page = True
+					self.selenium.click_button(_('Next'))
+
+				try:
+					self.selenium.wait_until_any_element_visible('//*[contains(@class, "details_")]', timeout=2)
+				except TimeoutException:
+					print('No details page found. Ignoring')
+					pass
+				else:
+					found_page = True
+					self.selenium.click_button(_('Next'))
+
+				try:
+					self.selenium.wait_until_any_element_visible('//*[contains(@class, "appSettings_")]', timeout=2)
+				except TimeoutException:
+					print('No App settings page found. Ignoring')
+					pass
+				else:
+					found_page = True
+					self.selenium.click_button(_('Next'))
+				if not found_page:
+					raise InfiniteLoop('Cant find an AppInstallWizard page')
+				else:
+					click_through_install_wizard_pages()
+			else:
+				try:
+					self.selenium.click_button(_('Install apps'), timeout=2)
+				except TimeoutException:
+					self.selenium.click_button(_('Install app'), timeout=2)
+		click_through_install_wizard_pages()
+
+		# TODO wait for installation (progressbar)
+
+		# AppPostInstallWizard
+		def click_through_post_install_wizard_pages():
+			try:
+				self.selenium.wait_for_text(_('Install information'), timeout=2)
+			except TimeoutException:
+				print('No readme postinstall page found. Post install wizard has finished')
+				pass
+			else:
+				try:
+					self.selenium.click_button(_('Next'), timeout=2)
+				except TimeoutException:
+					self.selenium.click_button(_('Finish'))
+				click_through_post_install_wizard_pages()
+		click_through_post_install_wizard_pages()
+
+		self.selenium.wait_for_any_text_in_list([_('Uninstall'), _('Manage domain wide installations')], timeout=900)
 
 	def uninstall_app(self, app):
 		self.open_app(app)

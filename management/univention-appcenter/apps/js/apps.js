@@ -59,6 +59,14 @@ define([
 				moduleFlavor: this.moduleFlavor,
 				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
+
+			var appInstallDialog = new AppInstallDialog({
+				moduleID: this.moduleID,
+				moduleFlavor: this.moduleFlavor,
+				standbyDuring: lang.hitch(this, 'standbyDuring')
+			});
+			this.addChild(appInstallDialog);
+
 			this._page = new AppDetailsPage({
 				app: {id: this.moduleFlavor},
 				moduleID: this.moduleID,
@@ -67,6 +75,7 @@ define([
 				getAppCommand: 'apps/get',
 				detailsDialog: this._dialog,
 				configDialog: this._configDialog,
+				installDialog: appInstallDialog,
 				udmAccessible: udmAccessible,
 				standby: lang.hitch(this, 'standby'),
 				standbyDuring: lang.hitch(this, 'standbyDuring')
@@ -81,6 +90,20 @@ define([
 			this.selectChild(this._page);
 			this._dialog.on('showUp', lang.hitch(this, function() {
 				this.selectChild(this._dialog);
+			}));
+			appInstallDialog.on('showUp', lang.hitch(this, function() {
+				this.selectChild(appInstallDialog);
+			}));
+			appInstallDialog.on('back', lang.hitch(this, function(continued) {
+				// TODO is this needed?
+				var loadPage = true;
+				if (!continued) {
+					loadPage = this._appDetailsPage.reloadPage();
+					this.standbyDuring(loadPage);
+				}
+				when(loadPage).then(lang.hitch(this, function() {
+					this.selectChild(this._appDetailsPage);
+				}));
 			}));
 			this._configDialog.on('showUp', lang.hitch(this, function() {
 				this.selectChild(this._configDialog);

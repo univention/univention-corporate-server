@@ -1,0 +1,75 @@
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+# -*- coding: utf-8 -*-
+## desc: |
+##  Test suggestion algorithm
+## roles-not:
+##  - basesystem
+## tags:
+##  - skip_admember
+## join: true
+## exposure: dangerous
+
+from univention.admin import localization
+from univention.testing import selenium
+from univention.testing.selenium.appcenter import AppCenter
+from univention.testing.selenium.utils import expand_path
+
+translator = localization.translation('ucs-test-selenium')
+_ = translator.translate
+
+
+class UMCTester(object):
+	def test_umc(self):
+		self.selenium.do_login()
+		self.appcenter.open_app('horde')
+
+		self.selenium.click_button(_('Install'))
+
+		# AppPreInstallWizard
+
+		# DependenciesPage
+		self.selenium.wait_for_text(_('Installation of Horde Groupware Webmail Edition'))
+		self.selenium.wait_for_text(_('The following app is required to install Horde Groupware Webmail Edition'))
+		self.selenium.wait_until_any_element_visible(expand_path('//div[@containsClass="appIconAndNameGrid"]//*[text() = "Mail server"]'))
+		self.selenium.wait_for_text(_('This app will be installed automatically on the same system as Horde Groupware Webmail Edition'))
+		self.selenium.click_button(_('Next'))
+
+		# DockerWarningPage
+		self.selenium.wait_for_text(_('The following Apps use a container technology. Containers have to be downloaded once. After that they can be used multiple times.'))
+		self.selenium.wait_until_any_element_visible(expand_path('//div[@containsClass="appIconAndNameGrid"]//*[text() = "Horde Groupware Webmail Edition"]'))
+		self.selenium.click_button(_('Next'))
+
+		# checks
+		self.selenium.wait_for_text(_('Performing pre-install checks'))
+		self.selenium.wait_until_standby_animation_appears_and_disappears()
+
+		# AppInstallWizard
+
+		# AppSettingsPage - horde
+		self.selenium.wait_until_element_visible(expand_path('//*[@containsClass="appSettings_horde"]'))
+		self.selenium.wait_until_any_element_visible(expand_path('//div[@containsClass="appIconAndNameGrid"]//*[text() = "Horde Groupware Webmail Edition"]'))
+		self.selenium.click_button(_('Next'))
+
+		# AppDetailsPage - mailserver
+		self.selenium.wait_for_text(_('Installation of dependency'))
+		self.selenium.wait_until_any_element_visible(expand_path('//div[@containsClass="appIconAndNameGrid"]//*[text() = "Mail server"]'))
+		self.selenium.wait_for_text(_('The following software changes'))
+		self.selenium.click_button(_('Next'))
+
+		# ConfirmPage
+		self.selenium.wait_for_text(_('Please confirm to install these applications on this host'))
+		self.selenium.wait_until_any_element_visible(expand_path('//div[@containsClass="appIconAndNameGrid"]//*[text() = "Horde Groupware Webmail Edition"]'))
+		self.selenium.wait_until_any_element_visible(expand_path('//div[@containsClass="appIconAndNameGrid"]//*[text() = "Mail server"]'))
+		self.selenium.click_button(_('Install apps'))
+
+		# TODO wait for installation (progressbar)
+
+		self.selenium.wait_for_any_text_in_list([_('Uninstall'), _('Manage domain wide installations')], timeout=900)
+
+if __name__ == '__main__':
+	with selenium.UMCSeleniumTest() as s:
+		umc_tester = UMCTester()
+		umc_tester.selenium = s
+		umc_tester.appcenter = AppCenter(umc_tester.selenium)
+
+		umc_tester.test_umc()

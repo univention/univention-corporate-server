@@ -79,7 +79,7 @@ define([
 					'class': 'appIconAndNameGridWrapper',
 					name: 'confirm_grid',
 					content: grid,
-					visible: dependenciesInfo.length
+					visible: !!dependenciesInfo.length
 				}]
 			};
 		}

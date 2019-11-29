@@ -112,6 +112,15 @@ class ChecksAndWaits(object):
 			timeout=timeout
 		)
 
+	def wait_until_any_element_visible(self, xpath, timeout=60):
+		logger.info('Waiting for any element with the xpath %r to be visible.' % (xpath,))
+		self.wait_until(
+			expected_conditions.visibility_of_any_elements_located(
+				(webdriver.common.by.By.XPATH, xpath)
+			),
+			timeout=timeout
+		)
+
 	def wait_until(self, check_function, timeout=60):
 		webdriver.support.ui.WebDriverWait(self.driver, timeout).until(
 			check_function
