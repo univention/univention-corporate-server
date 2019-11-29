@@ -1,8 +1,8 @@
 <?xml version="1.0" ?><domain type="kvm">
   <name>${NAME}</name>
   
-  <memory unit="KiB">1048576</memory>
-  <currentMemory unit="KiB">1048576</currentMemory>
+  <memory unit="KiB">2097152</memory>
+  <currentMemory unit="KiB">2097152</currentMemory>
   <vcpu placement="static">1</vcpu>
   <resource>
     <partition>/machine</partition>

@@ -204,7 +204,7 @@ create_ucs_images () {
 	TMP_DIR="/tmp/build-ucs-appliance"
 	TMP_KVM_IMAGE="$TMP_DIR/master.qcow2"
 	APPS_BASE="/var/univention/buildsystem2/temp/build/appliance/"
-	MEMORY=1536
+	MEMORY=2048
 	IMAGE_VERSION="${UCS_VERSION}"
 	VMPLAYER_IMAGE="UCS-VMware-Image.zip"
 	KVM_IMAGE="UCS-KVM-Image.qcow2"
