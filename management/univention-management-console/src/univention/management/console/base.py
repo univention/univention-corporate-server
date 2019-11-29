@@ -110,12 +110,17 @@ from __future__ import absolute_import
 import re
 import sys
 import locale
-import urlparse
 import traceback
 
 import six
 import ldap
 import ldap.sasl
+
+if sys.version_info >= (3,):
+	from urllib.parse import urlparse
+else:
+	from urlparse import urlparse
+
 from notifier import signals
 
 from univention.lib.i18n import Locale, Translation, I18N_Error
