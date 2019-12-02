@@ -111,7 +111,6 @@
 						<member><package>stevedore</package> (<u:bug>35428</u:bug>)</member>
 						<member><package>univention-ipcalc</package> (<u:bug>49135</u:bug>)</member>
 						<member><package>websockify</package> (<u:bug>35428</u:bug>)</member>
-						<member><package>FIXME</package></member>
 					</simplelist>
 				</para>
 			</listitem>
