@@ -60,7 +60,7 @@ if [ -e "$TEMPLATE_TARGET/$archive" ]; then
 	exit 1
 fi
 
-guestfish add "$TEMPLATE_BUILD/image.qcow2" : run : mount /dev/vg_ucs/root / : command "/usr/sbin/ucr set repository/online/server=univention-repository.knut.univention.de nameserver1=192.168.0.3"
+guestfish add "$TEMPLATE_BUILD/image.qcow2" : run : mount /dev/vg_ucs/root / : command "/usr/sbin/ucr set repository/online/server=updates.knut.univention.de nameserver1=192.168.0.3"
 mv "$TEMPLATE_BUILD/image.qcow2" "$TEMPLATE_BUILD/$hd"
 
 # create xml
