@@ -142,7 +142,7 @@ def get_ldap_connection(pwdfile=False, start_tls=2, decode_ignorelist=None, admi
 			if admin_uldap:
 				lo = access(lo=lo)
 			return lo
-		except ldap.SERVER_DOWN():
+		except ldap.SERVER_DOWN:
 			pass
 	raise ldap.SERVER_DOWN()
 
