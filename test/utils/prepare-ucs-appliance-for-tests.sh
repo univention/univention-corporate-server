@@ -50,6 +50,7 @@ if [ "$appliance_md5" != "$kvm_md5" ]; then
 	_ssh "chmod g+w -R $kvm_template_dir"
 	_ssh cp "$ucs_template" "$kvm_template"
 	_ssh cp "$ucs_template.md5" "$kvm_template.md5"
+	_ssh "chmod g+w -R $kvm_template_dir"
 fi
 
 # cp xml
