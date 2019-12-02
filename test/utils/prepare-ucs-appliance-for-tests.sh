@@ -32,14 +32,14 @@ if [ -n "$existing_instances" ]; then
 	exit 1
 fi
 
-# check if template is used as backing file
-_ssh "
-while read image; do
-	if qemu-img info \"\$image\" | grep -i \"backing file\" | grep \"$template_name\"; then
-		echo "ERROR: $template_name is backing file for \$image"
-		exit 1
-	fi
-done < <(ls /var/lib/libvirt/images/*)"
+## check if template is used as backing file
+#_ssh "
+#while read image; do
+#	if qemu-img info \"\$image\" | grep -i \"backing file\" | grep \"$template_name\"; then
+#		echo "ERROR: $template_name is backing file for \$image"
+#		exit 1
+#	fi
+#done < <(ls /var/lib/libvirt/images/*)"
 
 # check if update is necessary
 appliance_md5=$(_ssh cat "$ucs_template.md5" || true)
