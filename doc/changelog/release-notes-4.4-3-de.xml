@@ -51,13 +51,22 @@
 
 		<itemizedlist>
 			<listitem><para>
-					...
+					Die &ucsUMC; wurde in Details verbessert:
+					So wird nun schon während der Installation geprüft, ob genügend Arbeitsspeicher vorhanden ist.
+					Beim Einrichten von Druckertreibern unterstützt eine neue Dokumentation, die direkt verlinkt ist.
+					Die Suche nach IPv4-Adressen und die Konfiguration von E-Mail-Verteiler-Listen wurden vereinfacht.
+			</para></listitem>
+			<listitem><para>
+					Viele kleine Verbesserungen wurden im &ucsS4C; umgesetzt, u.a. beim Umbenennen von Hosts- und DNS-Einträgen, Korrektur von Konto-Ablaufdaten für einige Zeitzonen und bei Sonderfällen beim Wiederherstellen von Objekten in &ucsUAS; Umgebungen.
+			</para></listitem>
+			<listitem><para>
+					Ein Absturzprobleme in OpenLDAP und ein Problem beim Zugriff auf Freigaben mit dem Windows Explorer wurden behoben.
 			</para></listitem>
 			<listitem><para>
 					Die meisten Pakete wurden von <package>python-support</package> auf <package>dh_python2</package> als Vorbereitung für den Wechseln von Python 2 zu Python 3 umgestellt.
 			</para></listitem>
 			<listitem><para>
-					Diverse Security Updates wurden in UCS 4.4-3 integriert, bspw. für Samba, den Linux Kernel und Dovecot.
+					Diverse Security Updates wurden in UCS 4.4-3 integriert, bspw. für Samba, den Linux Kernel und OpenLDAP.
 					Eine vollständige Liste von Security- und Paketupdates ist in <xref linkend="relnotes:changelog"/> zu finden.
 			</para></listitem>
 		</itemizedlist>

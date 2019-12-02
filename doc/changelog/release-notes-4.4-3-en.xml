@@ -51,7 +51,16 @@
 
 		<itemizedlist>
 			<listitem><para>
-					...
+					Several details of the &ucsUMC; have been improved:
+					The size of the RAM is now already checked during the installation.
+					A new documents exists for setting up printer drivers, which is directly linked.
+					Searching for IPv4 addresses and the configuration of mail distribution lists has been simplified.
+			</para></listitem>
+			<listitem><para>
+					The &ucsS4C; has received many small improvements, e.g. when renaming host and DNS entries, a fix for account expiry dates in certain time zones, and for exceptional cases when objects are restored in &ucsUAS; environments.
+			</para></listitem>
+			<listitem><para>
+					A crash issue in OpenLDAP and a problem when accessing shares with Windows Explorer have been fixed.
 			</para></listitem>
 			<listitem><para>
 					Most packages have been converted from <package>python-support</package> to <package>dh_python2</package> in preparation for the switch from Python 2 to Python 3.
