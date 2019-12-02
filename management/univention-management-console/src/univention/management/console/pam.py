@@ -65,6 +65,7 @@ _('The password does not contain enough different characters.')
 _('The password has expired and must be renewed.')
 _('The minimum password age is not reached yet.')
 _('Make sure the kerberos service is functioning or inform an Administrator.')
+_('The password is too similar to the old one.')
 
 
 class AuthenticationError(Exception):  # abstract base class
@@ -146,12 +147,8 @@ class PamAuth(object):
 			': it is based on a dictionary word',
 			'Schlechtes Passwort: Es basiert auf einem (umgekehrten) W?rterbucheintrag',
 			'Schlechtes Passwort: Es basiert auf einem (umgekehrten) Wörterbucheintrag',
-			u'Schlechtes Passwort: Es basiert auf einem (umgekehrten) Wörterbucheintrag'.encode('utf-8'),
-			u'Schlechtes Passwort: Es basiert auf einem (umgekehrten) Wörterbucheintrag'.encode('latin-1'),
 			'Schlechtes Passwort: Es basiert auf einem W?rterbucheintrag',
 			'Schlechtes Passwort: Es basiert auf einem Wörterbucheintrag',
-			u'Schlechtes Passwort: Es basiert auf einem Wörterbucheintrag'.encode('utf-8'),
-			u'Schlechtes Passwort: Es basiert auf einem Wörterbucheintrag'.encode('latin-1'),
 		],
 		'The password was already used.': [
 			re.compile('Password is already in password history. New password must not match any of your (?P<history>\d+) previous passwords.', re.I),
@@ -164,8 +161,7 @@ class PamAuth(object):
 			'is the same as the old one',
 			'is rotated',
 			'password unchanged',
-			u'Passwort nicht geändert'.encode('utf-8'),
-			u'Passwort nicht geändert'.encode('latin-1'),
+			'Passwort nicht geändert',
 		],
 		'The password does not contain enough different characters.': [
 			': Es enthält nicht genug unterschiedliche Zeichen',
@@ -182,8 +178,6 @@ class PamAuth(object):
 			'Bad: new password is just a wrapped version of the old one',
 			'Schlechtes Passwort: ist dem alten zu ?hnlich',
 			'Schlechtes Passwort: ist dem alten zu ähnlich',
-			u'Schlechtes Passwort: ist dem alten zu ähnlich'.encode('utf-8'),
-			u'Schlechtes Passwort: ist dem alten zu ähnlich'.encode('latin-1'),
 		],
 		'The minimum password age is not reached yet.': [
 			'You must wait longer to change your password',
@@ -193,7 +187,7 @@ class PamAuth(object):
 	}
 	known_errors = dict(
 		(response_message, user_friendly_response)
-		for user_friendly_response, possible_responses in known_errors.iteritems()
+		for user_friendly_response, possible_responses in known_errors.items()
 		for response_message in possible_responses
 	)
 
@@ -223,14 +217,14 @@ class PamAuth(object):
 			self.pam.acct_mgmt()
 		except PAMError as pam_err:
 			AUTH.error("PAM: authentication error: %s" % (pam_err,))
-			if pam_err[1] == PAM_NEW_AUTHTOK_REQD:  # error: ('Authentication token is no longer valid; new one required', 12)
-				raise PasswordExpired(self.error_message(pam_err))
-			if pam_err[1] == PAM_ACCT_EXPIRED:  # error: ('User account has expired', 13)
-				raise AccountExpired(self.error_message(pam_err))
+			if pam_err.args[1] == PAM_NEW_AUTHTOK_REQD:  # error: ('Authentication token is no longer valid; new one required', 12)
+				raise PasswordExpired(self.error_message(pam_err.args))
+			if pam_err.args[1] == PAM_ACCT_EXPIRED:  # error: ('User account has expired', 13)
+				raise AccountExpired(self.error_message(pam_err.args))
 			if missing:
 				message = self._('Please insert your one time password (OTP).')
 				raise AuthenticationInformationMissing(message, missing)
-			raise AuthenticationFailed(self.error_message(pam_err))
+			raise AuthenticationFailed(self.error_message(pam_err.args))
 
 	def change_password(self, username, old_password, new_password):
 		answers = {
@@ -252,7 +246,7 @@ class PamAuth(object):
 			self.pam.chauthtok()
 		except PAMError as pam_err:
 			AUTH.warn('Changing password failed (%s). Prompts: %r' % (pam_err, prompts))
-			message = self._parse_error_message_from(pam_err, prompts)
+			message = self._parse_error_message_from(pam_err.args, prompts)
 			raise PasswordChangeFailed('%s %s' % (self._('Changing password failed.'), message))
 
 	def init(self):
@@ -333,14 +327,18 @@ class PamAuth(object):
 	def _parse_password_change_fail_reason(self, prompt):
 		if prompt in self.known_errors:
 			return self._(self.known_errors[prompt])
-		for pattern, error_message in self.known_errors.iteritems():
-			if isinstance(pattern, basestring):
+		for pattern, error_message in self.known_errors.items():
+			if isinstance(prompt, bytes):
+				prompt = prompt.decode('utf-8', 'ignore')
+
+			if isinstance(pattern, str):
 				pattern = re.compile(re.escape(pattern), re.I)
-			match = pattern.search(prompt)
+
+			match = pattern.search(prompt) or pattern.search(prompt.encode('UTF-8').decode('latin-1')) or pattern.search(prompt.encode('latin-1', 'ignore').decode('utf-8', 'ignore'))
 			if match:
 				match = match.groupdict()
 				additional_message = ''
-				for x, y in match.iteritems():
+				for x, y in match.items():
 					try:
 						additional_message = {
 							'minlen': ' ' + self._('The password must consist of at least %s characters.'),

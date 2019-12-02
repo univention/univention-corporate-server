@@ -36,9 +36,9 @@ import univention.translationhelper.umc as dh_umc
 import sys
 
 if 1 == len(sys.argv) or '-h' in sys.argv or '--help' in sys.argv:
-	print()
+	print('')
 	print('usage: dh-umc-po2json <poFile1> ...')
-	print()
+	print('')
 	sys.exit(0)
 
 for ifile in sys.argv[1:]:

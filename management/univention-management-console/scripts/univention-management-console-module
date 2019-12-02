@@ -87,7 +87,7 @@ if __name__ == '__main__':
 	# no notifier logging
 	nflog.instance.handlers = []
 	# to activate notifier logging
-	# nflog.set_level( nflog.DEBUG )
+	# nflog.set_level(nflog.DEBUG)
 	# nflog.open()
 
 	try:
@@ -98,7 +98,7 @@ if __name__ == '__main__':
 	except:
 		MODULE.error('The specified locale %r is not available' % (options.language,))
 
-	# this import must be after the locale is set!
+	# this import must be done after the locale is set!
 	import univention.management.console.protocol as umcp
 
 	if not options.socket:

@@ -74,10 +74,10 @@ class Module(object):
 		destination = os.path.join(target, os.path.basename(self.module.xml_definition))
 		if os.path.exists(destination):
 			# add paackage version to installed XML file
-			version = subprocess.check_output('dpkg-parsechangelog | sed -ne "s/^Version: //p"', shell=True).strip()
-			with open(destination, 'rb') as fd:
+			version = subprocess.check_output('dpkg-parsechangelog | sed -ne "s/^Version: //p"', shell=True).strip().decode('ASCII', 'replace')
+			with open(destination, 'r') as fd:
 				content = fd.read().replace('</module>', '\t<version>%s</version>\n\t</module>' % (escape(version),))
-			with open(destination, 'wb') as fd:
+			with open(destination, 'w') as fd:
 				fd.write(content)
 
 		# copy translation files (xml)

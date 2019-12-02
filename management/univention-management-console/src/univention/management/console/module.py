@@ -414,7 +414,7 @@ class Manager(dict):
 
 	def modules(self):
 		'''Returns list of module names'''
-		return self.keys()
+		return list(self.keys())
 
 	def load(self):
 		'''Loads the list of available modules. As the list is cleared

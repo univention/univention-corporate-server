@@ -120,7 +120,7 @@ class UMC_Daemon(DaemonRunner):
 			signal.SIGTERM: self.signal_terminate,
 			# signal.SIGSEGV: self.signal_segfault,
 		}
-		# set_signal_handlers( signal_map )
+		# set_signal_handlers(signal_map)
 
 		# set locale
 		try:

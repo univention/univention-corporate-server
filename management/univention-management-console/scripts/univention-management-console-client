@@ -41,6 +41,8 @@ import pprint
 import locale
 import sys
 
+import six
+from six.moves import input
 import notifier
 
 import univention.management.console.protocol as umcp
@@ -119,13 +121,13 @@ class CLI_Client(Client):
 			if not options.list_options:
 				msg.options = ast.literal_eval(options.options[0])
 			else:
-				msg.options = map(lambda x: ast.literal_eval(x), options.options)
+				msg.options = [ast.literal_eval(x) for x in options.options]
 		else:
 			for opt in options.options:
 				key, value = opt.split('=', 1)
 				if ':' in key:
 					try:
-						value = {'bool': bool, 'int': int, 'str': str, 'unicode': unicode}[key.split(':', 1)[0]](value)
+						value = {'bool': bool, 'int': int, 'str': str, 'unicode': six.text_type}[key.split(':', 1)[0]](value)
 						key = key.split(':', 1)[1]
 					except KeyError:
 						pass
@@ -191,7 +193,7 @@ class CLI_Client(Client):
 					print('  OPTIONS  : %s' % pprint.pformat(msg.options, indent=2))
 				else:
 					if isinstance(msg.options, (list, tuple)):
-						print('  OPTIONS  : %s' % ', '.join(map(lambda x: str(x), msg.options)))
+						print('  OPTIONS  : %s' % ', '.join(str(x) for x in msg.options))
 					else:
 						print('  OPTIONS  : %s' % ' '.join(['%s=%s' % (k, v) for k, v in msg.options.items()]))
 			print('  MESSAGE  : %s' % msg.message)
@@ -297,7 +299,7 @@ if __name__ == '__main__':
 		parser.error('command is missing')
 	if options.authenticate:
 		if not options.username:
-			options.username = raw_input('Username:')
+			options.username = input('Username:')
 		if options.password_file:
 			options.password = open(options.password_file).read().strip()
 		if not options.password:

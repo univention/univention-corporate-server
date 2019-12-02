@@ -100,7 +100,7 @@ class MagicBucket(object):
 	def exit(self):
 		'''Closes all open connections.'''
 		# remove all sockets
-		for sock in self.__states.keys():
+		for sock in list(self.__states.keys()):
 			CORE.info('Shutting down connection %s' % sock)
 			self.__states.pop(sock).session.shutdown()
 			notifier.socket_remove(sock)
@@ -199,7 +199,7 @@ class MagicBucket(object):
 
 		state.reset_connection_timeout()
 		try:
-			data = str(msg)
+			data = bytes(msg)
 			# there is no data from another request in the send queue
 			if not state.resend_queue:
 				ret = state.socket.send(data)
@@ -419,7 +419,7 @@ class State(object):
 	def __init__(self, client, socket):
 		self.client = client
 		self.socket = socket
-		self.buffer = ''
+		self.buffer = b''
 		self.requests = {}
 		self.resend_queue = []
 		self.session = SessionHandler()

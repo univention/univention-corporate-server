@@ -79,14 +79,14 @@ class ModuleServer(Server):
 		self.__commands = Module()
 		self.__comm = None
 		self.__client = None
-		self.__buffer = ''
+		self.__buffer = b''
 		self.__acls = None
 		self.__timeout = timeout
 		self.__time_remaining = timeout
 		self.__active_requests = 0
 		self._timer()
 		self.__check_acls = check_acls
-		self.__queue = ''
+		self.__queue = b''
 		self.__username = None
 		self.__user_dn = None
 		self.__password = None
@@ -214,7 +214,6 @@ class ModuleServer(Server):
 		return True
 
 	def error_handling(self, request, method, etype, exc, etraceback):
-		#PY3# <https://portingguide.readthedocs.io/en/latest/exceptions.html#removed-sys-exc-type-sys-exc-value-sys-exc-traceback>
 		if self.__handler:
 			self.__handler._Base__requests[request.id] = (request, method)
 			self.__handler._Base__error_handling(request, method, etype, exc, etraceback)
@@ -364,7 +363,7 @@ class ModuleServer(Server):
 				self.__queue = self.__queue[ret:]
 				return True
 			else:
-				self.__queue = ''
+				self.__queue = b''
 				return False
 		else:
 			return False
@@ -372,7 +371,7 @@ class ModuleServer(Server):
 	def response(self, msg):
 		"""Sends an UMCP response to the client"""
 		PROTOCOL.info('Sending UMCP RESPONSE %s' % msg.id)
-		self.__queue += str(msg)
+		self.__queue += bytes(msg)
 
 		if self._do_send(self.__comm):
 			notifier.socket_add(self.__comm, self._do_send, notifier.IO_WRITE)

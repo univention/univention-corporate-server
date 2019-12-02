@@ -44,6 +44,7 @@ import gzip
 import re
 import errno
 
+import six
 import ldap.filter
 
 import notifier
@@ -83,7 +84,7 @@ class ModuleProcess(Client):
 	"""
 
 	def __init__(self, module, debug='0', locale=None):
-		socket = '/var/run/univention-management-console/%u-%lu.socket' % (os.getpid(), long(time.time() * 1000))
+		socket = '/var/run/univention-management-console/%u-%lu.socket' % (os.getpid(), int(time.time() * 1000))
 		# determine locale settings
 		modxmllist = moduleManager[module]
 		args = [MODULE_COMMAND, '-m', module, '-s', socket, '-d', str(debug)]
@@ -430,8 +431,8 @@ class ProcessorBase(Base):
 				raise BadRequest('filesize is too large, maximum allowed filesize is %d' % (max_size,))
 
 			if direct_response:
-				with open(tmpfilename) as buf:
-					b64buf = base64.b64encode(buf.read())
+				with open(tmpfilename, 'rb') as buf:
+					b64buf = base64.b64encode(buf.read()).decode('ASCII')
 				result.append({'filename': filename, 'name': name, 'content': b64buf})
 
 		if direct_response:
@@ -715,7 +716,7 @@ class ProcessorBase(Base):
 
 	def __del__(self):
 		CORE.process('Processor: dying')
-		for process in self.__processes.keys():
+		for process in list(self.__processes.keys()):
 			self.__processes.pop(process).__del__()
 
 
@@ -790,7 +791,7 @@ class Processor(ProcessorBase):
 		result = {}
 		try:
 			with gzip.open('/usr/share/doc/univention-management-console-server/changelog.Debian.gz') as fd:
-				line = fd.readline()
+				line = fd.readline().decode('utf-8', 'replace')
 			match = self.CHANGELOG_VERSION.match(line)
 			if not match:
 				raise IOError
@@ -812,7 +813,7 @@ class Processor(ProcessorBase):
 				reset_cache()
 				CORE.warn('Could not search for domaincontrollers: %s' % (exc))
 				domaincontrollers = []
-			result = sorted(['%s.%s' % (computer['cn'][0], computer['associatedDomain'][0]) for dn, computer in domaincontrollers if computer.get('associatedDomain')])
+			result = sorted([(b'%s.%s' % (computer['cn'][0], computer['associatedDomain'][0])).decode('utf-8', 'replace') for dn, computer in domaincontrollers if computer.get('associatedDomain')])
 		return result
 
 	@sanitize(password=DictSanitizer(dict(
@@ -870,7 +871,8 @@ class Processor(ProcessorBase):
 		except (ldap.LDAPError, udm_errors.base) as exc:
 			CORE.warn('Failed to retrieve user preferences: %s' % (exc,))
 			return {}
-		return dict(val.split('=', 1) if '=' in val else (val, '') for val in preferences)
+		preferences = (val.decode('utf-8', 'replace') for val in preferences)
+		return dict(val.split(u'=', 1) if u'=' in val else (val, u'') for val in preferences)
 
 	def _set_user_preferences(self, lo, preferences):
 		if not self._user_dn or not lo:
@@ -878,21 +880,21 @@ class Processor(ProcessorBase):
 
 		user = lo.get(self._user_dn, ['univentionUMCProperty', 'objectClass'])
 		old_preferences = user.get('univentionUMCProperty')
-		object_classes = list(set(user.get('objectClass', [])) | set(['univentionPerson']))
+		object_classes = list(set(user.get('objectClass', [])) | set([b'univentionPerson']))
 
 		# validity / sanitizing
 		new_preferences = []
-		for key, value in preferences.iteritems():
-			if not isinstance(key, basestring):
+		for key, value in preferences.items():
+			if not isinstance(key, six.string_types):
 				CORE.warn('user preferences keys needs to be strings: %r' % (key,))
 				continue
 
 			# we can put strings directly into the dict
-			if isinstance(value, basestring):
+			if isinstance(value, six.string_types):
 				new_preferences.append((key, value))
 			else:
 				new_preferences.append((key, json.dumps(value)))
-		new_preferences = ['%s=%s' % (key, value) for key, value in new_preferences]
+		new_preferences = [b'%s=%s' % (key.encode('utf-8'), value.encode('utf-8')) for key, value in new_preferences]
 
 		lo.modify(self._user_dn, [['univentionUMCProperty', old_preferences, new_preferences], ['objectClass', user.get('objectClass', []), object_classes]])
 

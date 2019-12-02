@@ -46,6 +46,7 @@ cannot do something harmful in the exposed UMC-functions. But they are also
 very helpful when one needs to just validate input.
 """
 import re
+import six
 import copy
 
 import ldap.filter
@@ -112,7 +113,7 @@ class MultiValidationError(ValidationError):
 	def number_of_errors(self):
 		'''Cumulative number of errors found'''
 		num = 0
-		for k, v in self.validation_errors.iteritems():
+		for k, v in self.validation_errors.items():
 			num += v.number_of_errors()
 		return num
 
@@ -126,7 +127,7 @@ class MultiValidationError(ValidationError):
 	def result(self):
 		'''Returns a errors in a similar way like the arguments were passed
 		to the sanitizers.'''
-		return dict([(name, e.result()) for name, e in self.validation_errors.iteritems()])
+		return dict([(name, e.result()) for name, e in self.validation_errors.items()])
 
 
 class Sanitizer(object):
@@ -271,7 +272,7 @@ class DictSanitizer(Sanitizer):
 		altered_value = copy.deepcopy(value) if self._copy_value else value
 
 		multi_error = MultiValidationError()
-		for attr in set(value.keys() + self.sanitizers.keys()):
+		for attr in set(value) | set(self.sanitizers):
 			sanitizer = self.sanitizers.get(attr, self.default_sanitizer)
 			try:
 				if sanitizer:
@@ -379,7 +380,7 @@ class IntegerSanitizer(Sanitizer):
 			value = int(value)
 			if not isinstance(value, int):
 				# value is of type 'long'
-				raise ValueError
+				raise ValueError()
 		except (ValueError, TypeError):
 			self.raise_validation_error(_('Cannot be converted to a number'))
 		else:
@@ -518,7 +519,7 @@ class PatternSanitizer(SearchSanitizer):
 
 	def __init__(self, ignore_case=True, multiline=True, **kwargs):
 		default = kwargs.get('default')
-		if isinstance(default, basestring):
+		if isinstance(default, six.string_types):
 			default = re.compile(default)
 		kwargs['default'] = default
 		super(PatternSanitizer, self).__init__(**kwargs)
@@ -563,12 +564,12 @@ class StringSanitizer(Sanitizer):
 		is a string
 	:param int minimum: the minimum length of the string
 	:param int maximum: the maximum length of the string
-	:type regex_pattern: basestring or re._pattern_type
+	:type regex_pattern: six.string_types or re._pattern_type
 	'''
 
 	def __init__(self, regex_pattern=None, re_flags=0, minimum=None, maximum=None, **kwargs):
 		super(StringSanitizer, self).__init__(**kwargs)
-		if isinstance(regex_pattern, basestring):
+		if isinstance(regex_pattern, six.string_types):
 			regex_pattern = re.compile(regex_pattern, flags=re_flags)
 		self.minimum = minimum
 		self.maximum = maximum
@@ -588,7 +589,7 @@ class StringSanitizer(Sanitizer):
 		return new
 
 	def _sanitize(self, value, name, further_args):
-		if not isinstance(value, basestring):
+		if not isinstance(value, six.string_types):
 			self.raise_validation_error(_('Value is not a string'))
 
 		if self.minimum and len(value) < self.minimum:
@@ -665,9 +666,9 @@ class MappingSanitizer(ChoicesSanitizer):
 			# sort allowed values to have reproducible error messages
 			# sorted works with every base data type, even inter-data type!
 			choices = sorted(mapping.keys())
-		except:
+		except Exception:
 			# but who knows...
-			choices = mapping.keys()
+			choices = list(mapping.keys())
 		super(MappingSanitizer, self).__init__(choices, **kwargs)
 		self.mapping = mapping
 
