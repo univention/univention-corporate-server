@@ -91,25 +91,25 @@ check_bash_history () {
 		issue "BASH history exists" truncate -s 0 ~/.bash_history
 }
 
-check_ssh () {
-	local key
-	for key in /etc/ssh/ssh_host_*
-	do
-		[ -f "$key" ] || continue
-		issue "SSH keys exist" rm -f /etc/ssh/ssh_host_*
-		break
-	done
-}
+#check_ssh () {
+#	local key
+#	for key in /etc/ssh/ssh_host_*
+#	do
+#		[ -f "$key" ] || continue
+#		issue "SSH keys exist" rm -f /etc/ssh/ssh_host_*
+#		break
+#	done
+#}
 
-check_postfix () {
-	local pfs
-	for pfs in /etc/postfix/dh_*.pem
-	do
-		[ -f "$pfs" ] || continue
-		issue "Postfix PFS files exist" rm -f /etc/postfix/dh_*.pem
-		break
-	done
-}
+#check_postfix () {
+#	local pfs
+#	for pfs in /etc/postfix/dh_*.pem
+#	do
+#		[ -f "$pfs" ] || continue
+#		issue "Postfix PFS files exist" rm -f /etc/postfix/dh_*.pem
+#		break
+#	done
+#}
 
 check_mail () {
 	find /var/mail -type f -not -empty -print0 >"$tmp" || :
@@ -219,11 +219,11 @@ check_links () {
 		issue "Broken sym-links"
 }
 
-check_home () {
-	find /root -mindepth 1 -name .ssh -prune -o -not -name .profile -not -name .bashrc -not -name .bash_history -print0 >"$tmp"
-	[ -s "$tmp" ] &&
-		issue "Files in $HOME" find /root -mindepth 1 -name .ssh -prune -o -not -name .profile -not -name .bashrc -not -name .bash_history -delete
-}
+#check_home () {
+#	find /root -mindepth 1 -name .ssh -prune -o -not -name .profile -not -name .bashrc -not -name .bash_history -print0 >"$tmp"
+#	[ -s "$tmp" ] &&
+#		issue "Files in $HOME" find /root -mindepth 1 -name .ssh -prune -o -not -name .profile -not -name .bashrc -not -name .bash_history -delete
+#}
 
 check_dpkg () {
 	local desired status error pkg
@@ -265,16 +265,16 @@ check_system_setup () {
 		issue "Missing packages in cache" /usr/share/univention-system-setup/download-packages
 }
 
-check_logs () {
-	find /var/log \( -name '*.gz' -o -name '*.[0-9]' \) -print0 >"$tmp" || :
-	[ -s "$tmp" ] &&
-		issue "Old logfiles exist" find /var/log \( -name \*.gz -o -name \*.[0-9] \) -delete
-	find /var/log \( -not -name '*.gz' -not -name '*.[0-9]' -type f -not -empty \) -print0 >"$tmp" || :
-	[ -s "$tmp" ] &&
-		issue "Logfiles exist" find /var/log \( -not -name \*.gz -not -name \*.[0-9] -type f -not -empty \) -delete
-	[ -s /var/lib/logrotate/status ] &&
-		issue "logrotate status exists" truncate -s 0 /var/lib/logrotate/status
-}
+#check_logs () {
+#	find /var/log \( -name '*.gz' -o -name '*.[0-9]' \) -print0 >"$tmp" || :
+#	[ -s "$tmp" ] &&
+#		issue "Old logfiles exist" find /var/log \( -name \*.gz -o -name \*.[0-9] \) -delete
+#	find /var/log \( -not -name '*.gz' -not -name '*.[0-9]' -type f -not -empty \) -print0 >"$tmp" || :
+#	[ -s "$tmp" ] &&
+#		issue "Logfiles exist" find /var/log \( -not -name \*.gz -not -name \*.[0-9] -type f -not -empty \) -delete
+#	[ -s /var/lib/logrotate/status ] &&
+#		issue "logrotate status exists" truncate -s 0 /var/lib/logrotate/status
+#}
 
 check_journal () {
 	journalctl -q -b -1 -n 0 >"$tmp" 2>/dev/null
@@ -284,12 +284,12 @@ check_journal () {
 		issue "Old journald files exists" journalctl --vacuum-files=1
 }
 
-check_machina_ide () {
-	[ -s /var/lib/dbus/machine-id ] &&
-		issue "/var/lib/dbus/machine-id exists" rm -f /var/lib/dbus/machine-id
-	[ -s /etc/machine-id  ] &&
-		issue "/etc/machine-id exists" truncate -s 0 /etc/machine-id
-}
+#check_machina_ide () {
+#	[ -s /var/lib/dbus/machine-id ] &&
+#		issue "/var/lib/dbus/machine-id exists" rm -f /var/lib/dbus/machine-id
+#	[ -s /etc/machine-id  ] &&
+#		issue "/etc/machine-id exists" truncate -s 0 /etc/machine-id
+#}
 
 main "$@"
 # vim :set backupcopy=auto:
