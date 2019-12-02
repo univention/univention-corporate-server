@@ -86,11 +86,8 @@
 					The following updated packages from Debian <productnumber>9.11</productnumber> are included (<u:bug>50559</u:bug>):
 					<simplelist type="inline" id="_debian">
 						<member><package>dpdk</package></member>
-						<member><package>geant321</package></member>
-						<member><package>mclibs</package></member>
 						<member><package>mediawiki</package></member>
 						<member><package>pam-python</package></member>
-						<member><package>paw</package></member>
 						<member><package>redmine</package></member>
 						<member><package>ruby-loofah</package></member>
 						<member><package>symfony</package></member>
