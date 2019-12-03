@@ -1842,20 +1842,20 @@ define([
 			}
 
 			window.requestAnimationFrame(lang.hitch(this, function() {
-				var winBox = win.getBox();
-				if (winBox.w <= 549) {
+				if (win.getBox().w <= 549) {
 					// we are in the mobile view. returning
 					return;
 				}
 
-				var bodyBox = domGeometry.getContentBox(dojo.body());
-				if (bodyBox.h === winBox.h) {
+				var contentWrapperNode = dom.byId('contentWrapper');
+				var contentWrapperBox = domGeometry.getContentBox(contentWrapperNode);
+				if (contentWrapperNode.clientHeight === contentWrapperNode.scrollHeight) {
 					// there is no scrollbar, so no rearrange necassary
 					return;
 				}
 
 				var contentBox = domGeometry.getContentBox(this._contentNode);
-				var availableHeight = winBox.h - contentBox.t;
+				var availableHeight = contentWrapperBox.h - contentBox.t;
 				var itemWidth = 155;
 				var itemMarginWidth = 40;
 				var itemWidthPlusMargin = itemWidth + itemMarginWidth;
