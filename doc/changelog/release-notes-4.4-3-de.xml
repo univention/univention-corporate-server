@@ -60,10 +60,10 @@
 					Viele kleine Verbesserungen wurden im &ucsS4C; umgesetzt, u.a. beim Umbenennen von Hosts- und DNS-Einträgen, Korrektur von Konto-Ablaufdaten für einige Zeitzonen und bei Sonderfällen beim Wiederherstellen von Objekten in &ucsUAS; Umgebungen.
 			</para></listitem>
 			<listitem><para>
-					Ein Absturzprobleme in OpenLDAP und ein Problem beim Zugriff auf Freigaben mit dem Windows Explorer wurden behoben.
+					Ein Absturzproblem in OpenLDAP und ein Problem beim Zugriff auf Freigaben mit dem Windows Explorer wurden behoben.
 			</para></listitem>
 			<listitem><para>
-					Die meisten Pakete wurden von <package>python-support</package> auf <package>dh_python2</package> als Vorbereitung für den Wechseln von Python 2 zu Python 3 umgestellt.
+					Die meisten Pakete wurden von <package>python-support</package> auf <package>dh_python2</package> als Vorbereitung für den Wechsel von Python 2 zu Python 3 umgestellt.
 			</para></listitem>
 			<listitem><para>
 					Diverse Security Updates wurden in UCS 4.4-3 integriert, bspw. für Samba, den Linux Kernel und OpenLDAP.
