@@ -1,0 +1,27 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-errata4.3-5
+src: libvpx
+fix: 1.6.1-3+deb9u2
+desc: |
+ This update addresses the following issues:
+ * In libvpx, there is a possible out of bounds read due to a missing bounds
+   check. This could lead to remote information disclosure with no additional
+   execution privileges needed. User interaction is not needed for
+   exploitation. Product: AndroidVersions: Android-10Android ID: A-122675483
+   (CVE-2019-9232)
+ * In libvpx, there is a possible out of bounds read due to a missing bounds
+   check. This could lead to remote information disclosure with no additional
+   execution privileges needed. User interaction is needed for exploitation.
+   Product: AndroidVersions: Android-10Android ID: A-112001302 (CVE-2019-9325)
+ * In libvpx, there is a possible information disclosure due to improper input
+   validation. This could lead to remote information disclosure with no
+   additional execution privileges needed. User interaction is needed for
+   exploitation. Product: AndroidVersions: Android-10Android ID: A-80479354
+   (CVE-2019-9433)
+bug: [50587]
+cve:
+- CVE-2019-9232
+- CVE-2019-9325
+- CVE-2019-9433
