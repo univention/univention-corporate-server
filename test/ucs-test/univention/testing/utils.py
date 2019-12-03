@@ -215,7 +215,7 @@ def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=T
 	unexpected_values = {}
 	for attribute, expected_values in expected_attr.items():
 		found_values = set(attr.get(attribute, []))
-		expected_values = set(expected_values)
+		expected_values = set(map(six.ensure_binary, expected_values))
 
 		difference = expected_values - found_values
 		if difference:
