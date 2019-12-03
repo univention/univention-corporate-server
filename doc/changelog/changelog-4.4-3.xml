@@ -146,7 +146,7 @@
 				<title>Listener/Notifier domain replication</title>
 				<itemizedlist>
 					<listitem><simpara>
-						Update to version from Debian 10 (Buster), which fixes several internal cursor handling problems (<u:bug>47587</u:bug>).
+						Update of LMDB to version from Debian 10 (Buster), which fixes several internal cursor handling problems (<u:bug>47587</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
 						Remove unused file <filename>memcached_univention-directory-listener.conf</filename> (<u:bug>48139</u:bug>).
@@ -155,7 +155,7 @@
 						Add missing &ucsUCR; header to <filename>run</filename> script (<u:bug>50110</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						Remove deprecated code using <filename>DB3</filename> (<u:bug>50407</u:bug>).
+						Remove legacy code using <filename>DB3</filename> database (<u:bug>50407</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
 						Migrate Python code from <package>python-support</package> to <package>dh_python2</package> (<u:bug>49146</u:bug>).
@@ -198,13 +198,13 @@
 			<title>Univention Management Console server</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The UMC for UCS Core Editions shows a dialog that informs about the Univention Summit 2020 (<u:bug>50530</u:bug>).
+					The UMC for UCS Core Editions shows a dialog that informs about the <ulink url="https://www.univention-summit.com/">Univention Summit 2020</ulink> (<u:bug>50530</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The development package now uses a file from the translation package <package>univention-ucs-translation-template</package> instead of using its own mechanism for generating translation files (<u:bug>50341</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The LDAP service is not restarted anymore on every change of the <property>univentionService</property> attribute for any computer object in the domain (<u:bug>47706</u:bug>).
+					The LDAP service is not restarted anymore on every change of the attribute <property>univentionService</property> for any computer object in the domain (<u:bug>47706</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The package <package>univention-appcenter</package> now uses <package>dh_python2</package> instead of <package>python-support</package>.
@@ -245,10 +245,10 @@
 					Fix regression from <u:erratum>349</u:erratum>, which could lead to a Python traceback during &ucsUDM; hook import (<u:bug>50495</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A <classname>TypeError</classname> is prevented during logging of invalid date values in the UDM REST service (<u:bug>50476</u:bug>).
+					Prevent <classname>TypeError</classname> during logging of invalid date values in the UDM REST service (<u:bug>50476</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A link to a support article for printer driver distribution is now shown in the UMC printers module (<u:bug>50376</u:bug>).
+						A link to a <ulink url="https://help.univention.com/t/13387">support article for printer driver distribution</ulink> is now shown in the UMC printers module (<u:bug>50376</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The package <package>univention-directory-manager-modules</package> now uses <package>dh_python2</package> instead of <package>python-support</package>.
@@ -423,7 +423,7 @@
 		<title>Univention base libraries</title>
 		<itemizedlist>
 			<listitem><simpara>
-				The <filename>ldap_extension</filename> listener module now stores success or error messages in a new LDAP attribute <property>univentionListenerMessage</property>.
+				The listener module <filename>ldap_extension</filename> now stores success or error messages in a new LDAP attribute <property>univentionListenerMessage</property>.
 				These are used in the App center to improve error messages (<u:bug>50481</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
@@ -431,10 +431,10 @@
 				Existing systems are not modified (<u:bug>46649</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				Added <function>set/get_handler_message</function> to <function>store/get</function> listener messages in the LDAP directory (as settings data object) (<u:bug>50481</u:bug>).
+				Added <function>set/get_handler_message</function> to <function>store/get</function> listener messages in the LDAP directory (as <classname>settings</classname> data object) (<u:bug>50481</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				Remove deprecated <classname>univention.lib.umc_connection</classname> module (<u:bug>47205</u:bug>).
+				Remove deprecated module <classname>univention.lib.umc_connection</classname> (<u:bug>47205</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -528,7 +528,7 @@
 			<title>SSL</title>
 			<itemizedlist>
 				<listitem><simpara>
-					If a host now adds the service <systemitem class="service">Wildcard Certificate</systemitem>, a wildcard certificate for that host is created (<uri>*.<replaceable>$fqdn</replaceable></uri>) on the &ucsMaster;.
+					If the service <systemitem class="service">Wildcard Certificate</systemitem> is added to a host, a wildcard certificate for that host is created (<uri>*.<replaceable>$fqhn</replaceable></uri>) on the &ucsMaster;.
 					A new tool <command>univention-fetch-certificate</command> has been added to simplify the download of certificates from the &ucsMaster; (<u:bug>45115</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -586,7 +586,8 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Samba not recognizing Unix SIDs as valid caused the Microsoft Windows explorer to crash, when opening the security tab on a share or file where such SIDs are present in the ACLs (<u:bug>49747</u:bug>).
+					Samba does not recognizing Unix SIDs as valid.
+					This causes Microsoft Windows explorer to crash when opening the security tab on a share or file where such SIDs are present in the ACLs (<u:bug>49747</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -608,10 +609,10 @@
 					Recreating user and group objects which have been deleted before used to cause rejects in &ucsUAS; (<u:bug>49792</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The time conversion of the attribute <property>accountExpires</property>/<property>userexpiry</property> in the connector has been fixed to prevent a loop in the &ucsS4C; which incremented <property>userexpiry</property> on certain timezones (<u:bug>50202</u:bug>).
+					Time conversion of the attribute <property>accountExpires</property>/<property>userexpiry</property> has been fixed to prevent a loop in the &ucsS4C; which incremented <property>userexpiry</property> on certain timezones (<u:bug>50202</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The renamed DNS records are now correctly removed from Samba/AD when the object in UCS was renamed (<u:bug>49728</u:bug>).
+					Renamed DNS records are now correctly removed from Samba/AD when the object in UCS was renamed (<u:bug>49728</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					DNS host records without IP addresses are now synchronized to Samba/AD (<u:bug>49874</u:bug>).
@@ -623,17 +624,17 @@
 					The use of the function <function>normalise_userAccountControl()</function> has been replaced in <filename>mapping.py</filename> with a static mapping (<u:bug>50305</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The detection of equal DN's when moving objects has been enhanced (<u:bug>49976</u:bug>).
+					Detection of equal DN's when moving objects has been enhanced (<u:bug>49976</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The error handling for already removed objects has been improved (<u:bug>49876</u:bug>).
+					Error handling for already removed objects has been improved (<u:bug>49876</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The logging of UDM related debug messages has been improved.
+					Logging of UDM related debug messages has been improved.
 					This can be controlled by the &ucsUCRV; <envar>connector/debug/udm/level</envar> (<u:bug>43096</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The removal of GPOs in Samba does not cause a reject anymore.
+					Removal of GPOs in Samba does not cause a reject anymore.
 					When objects are removed where the parent object is already removed the removal now succeeds (<u:bug>49324</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
