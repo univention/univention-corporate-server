@@ -132,9 +132,6 @@ define([
 			//
 			// TODO standbyduring
 			// TODO app is an App() atm, answer from backend probably not, or maybe dont neep app from backend
-			var d = new Deferred();
-			this.standbyDuring(d);
-
 			var installInfo = [];
 
 			var host = this.host;
@@ -143,51 +140,41 @@ define([
 			var force = false;
 			var func = 'install';
 			var values = null;
-			var apps = this.apps;
-			var appsDone = 0;
-			// DIRK
-			apps.forEach(lang.hitch(this, function(app) {
-				var command = 'appcenter/invoke';
-				if (!force) {
-					command = 'appcenter/invoke_dry_run';
-				}
-				if (app.installsAsDocker()) {
-					command = 'appcenter/docker/invoke';
-					if (isRemoteAction) {
-						command = 'appcenter/docker/remote/invoke';
-					}
-				}
-				
-				var commandArguments = {
+			var apps = array.map(this.apps, function(app) {
+				return {
+					id: app.id,
+					//version: app.version,
+					only_master_packages: false,
 					'function': func,
-					'application': app.id,
-					'app': app.id,
-					'host': host || '',
-					'force': force === true,
-					'values': values || {}
 				};
-				var invokation = tools.umcpCommand(command, commandArguments);
-				var appSettings = tools.umcpCommand('appcenter/config', {app: app.id, phase: 'Install'});
-				
-				all({
-					details: invokation,
-					appSettings: appSettings
-				}).then(lang.hitch(this, function(r) {
-					var formConf = AppSettings.getFormConf(app, r.appSettings.result.values, 'Install', true);
-					// DIRK
-					installInfo.push({
+			});
+			var command = 'appcenter/run/do';
+			var configCommand = 'appcenter/config_all';
+			if (isRemoteAction) {
+				command = 'appcenter/run_remote';
+			}
+			var commandArguments = {dry_run: true, apps: apps, host: host};
+			var invokation = tools.umcpProgressCommand(null, command, commandArguments);
+			var appSettings = tools.umcpCommand(configCommand, commandArguments);
+			var actions = all({
+				dryRun: invokation,
+				appSettings: appSettings
+			});
+			this.standbyDuring(actions);
+			actions.then(lang.hitch(this, function(r) {
+				installInfo = apps.map(function(app) {
+					var details = lang.clone(r.dryRun);
+					details.invokation_forbidden_details = details.problems[app.id][0];
+					details.invokation_warning_details = details.problems[app.id][1];
+					var formConf = AppSettings.getFormConf(app, r.appSettings.result[app.id].values, 'Install', true);
+					var info = {
 						app: app,
-						details: r.details.result,
+						details: details,
 						appSettingsFormConf: formConf
-					});
-					appsDone += 1;
-					if (appsDone === apps.length) {
-						setTimeout(lang.hitch(this, function() {
-							d.resolve();
-							this.onChecksDone(host, installInfo);
-						}), 2000);
-					}
-				}));
+					};
+					return info;
+				});
+				this.onChecksDone(host, installInfo);
 			}));
 		},
 

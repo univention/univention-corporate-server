@@ -695,7 +695,9 @@ define([
 				lang.hitch(this, function(data) {
 					var progressID = data.result.id;
 					var title = data.result.title;
-					progressBar.setInfo(title);
+					if (progressBar) {
+						progressBar.setInfo(title);
+					}
 					var allData = [];
 					var progressCmd = data.result.location || commandStr.slice(0, commandStr.lastIndexOf('/')) + '/progress';
 					this.umcpProgressSubCommand({
@@ -714,7 +716,9 @@ define([
 						if (result.percentage === 'Infinity') { // FIXME: JSON cannot handle Infinity
 							result.percentage = Infinity;
 						}
-						progressBar.setInfo(result.title, result.message, result.percentage);
+						if (progressBar) {
+							progressBar.setInfo(result.title, result.message, result.percentage);
+						}
 						deferred.progress(result);
 						if ('result' in result) {
 							deferred.resolve(result.result);

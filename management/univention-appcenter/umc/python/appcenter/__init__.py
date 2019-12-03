@@ -399,9 +399,48 @@ class Instance(umcm.Base, ProgressMixin):
 		request.options['only_dry_run'] = True
 		self.invoke(request)
 
-	def check(self, apps):
-		# apps = [{'id': 'horde', 'function': 'install'}]
-		return [{'id': 'mailserver', 'function': 'install'}, {'id': 'horde', 'function': 'install'}]
+	@require_password
+	@sanitize(
+		host=StringSanitizer(required=True),
+		apps=ListSanitizer(DictSanitizer({
+			'id': StringSanitizer(required=True),
+			'version': StringSanitizer(),
+			'function': MappingSanitizer({
+				'install': 'Install',
+				'upgrade': 'Upgrade',
+				'remove': 'Remove',
+				'settings': 'Settings',
+			}, required=True),
+		}))
+	)
+	@simple_response
+	def config_all(self, host, apps):
+		if self._is_remote_call(host):
+			client = self._remote_appcenter(host)
+			return client.umc_command('appcenter/config_all', {'host': host, 'apps': apps}).result
+		self.ucr.load()
+		ret = {}
+		for _app in apps:
+			app_id = _app['id']
+			app_version = _app['version']
+			function = _app['function']
+			app = Apps().find(app_id, app_version=app_version)
+			autostart = self.ucr.get('%s/autostart' % app.id, 'yes')
+			is_running = app_is_running(app)
+			values = {}
+			for setting in app.get_settings():
+				if function in setting.show or function in setting.show_read_only:
+					value = setting.get_value(app, function)
+					if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting):
+						if value:
+							value = encodestring(value).rstrip()
+					values[setting.name] = value
+			ret[app.id] = {
+				'autostart': autostart,
+				'is_running': is_running,
+				'values': values,
+			}
+		return ret
 
 	def _is_remote_call(self, host):
 		return host != self.ucr.get('hostname') and host != '%s.%s' % (self.ucr.get('hostname'), self.ucr.get('domainname'))
@@ -449,8 +488,6 @@ class Instance(umcm.Base, ProgressMixin):
 							dependencies_met = False
 					else:
 						dependencies_met = False
-				if dependencies_met:
-					errors.pop('must_have_no_unmet_dependencies')
 		return {'dependencies_met': dependencies_met, 'apps': [{'id': _app.id, 'version': _app.version} for _app in apps]}
 
 	@require_password
@@ -485,89 +522,88 @@ class Instance(umcm.Base, ProgressMixin):
 	@simple_response(with_progress=True)
 	def run(self, dry_run, apps, progress):
 		try:
-			progress.title = _('Running tests')
-			problems = {}
-			serious_problems = False
-			can_continue = True
-			app_ids = dict((_a['id'], []) for _a in apps)  # shall be used to sort at the end according to dependency
-			for _app in apps:
-				MODULE.process('Processing %r' % _app)
-				app_id = _app['id']
-				app_version = _app['version']
-				function = _app['function']
-				settings = _app['settings']
-				MODULE.process('Searching %r' % _app)
-				app = Apps().find(app_id, app_version=app_version)
-				MODULE.process('Got %s' % app)
-				if not app:
-					raise umcm.UMC_Error(_('App %s not found') % app_id)
-				if function == 'upgrade' and app_version is None:
-					app = Apps().find_candidate(app)
-				if not app:
-					# Bug #44384: Under mysterious circumstances, app may be None after the .find_candidate()
-					# This may happen in global App Center when the system the user is logged in has different ini files
-					# than the system the App shall be upgraded on. E.g., in mixed appcenter / appcenter-test environments
-					raise umcm.UMC_Error(_('App %s not found') % app_id)
-				else:
-					errors, warnings = app.check(function)
-					dependency_error = errors.get('must_have_no_unmet_dependencies')
-					if dependency_error:
-						dependencies_met = True
-						for err in dependency_error:
-							dependent_id = err['id']
-							if err.get('local_allowed', True):
-								if dependent_id not in app_ids:
-									dependencies_met = False
-								else:
-									app_ids[dependent_id].append(app.id)
-							else:
-								dependencies_met = False
-						if dependencies_met:
-							errors.pop('must_have_no_unmet_dependencies')
-				MODULE.process('Checked %s' % app)
-				if errors:
-					MODULE.process('Cannot %s %s: %r' % (function, app.id, errors))
-					serious_problems = True
-					can_continue = False
-				if warnings:
-					MODULE.process('Warning trying to %s %s: %r' % (function, app.id, warnings))
-				_app['app'] = app
-				problems[app.id] = errors, warnings
-				for setting in app.get_settings():
-					if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting):
-						if settings.get(setting.name):
-							settings[setting.name] = settings[setting.name].decode('base64')
-			def _sort_according_to_dependencies(x,y):
-				if len(y[1]) == 0: return -1
-				if len(x[1]) == 0: return 1
-				if x[0] in y[1]: return 1
-				if y[0] in x[1]: return -1
-				return 0
-			app_ids = [_app[0] for _app in sorted(app_ids.iteritems(), cmp=_sort_according_to_dependencies)]
-			apps = [next(app for app in apps if app['id'] == _app_id) for _app_id in app_ids]
-			MODULE.process('Done processing')
-			MODULE.process('Sorting: %r' % apps)
-			result = {
-				'serious_problems': serious_problems,
-				'problems': problems,
-				'software_changes_computed': False,
-				'success': {},
-			}
-			if can_continue:
-				if dry_run:
-					result.update(self._run_apps_dry_run(apps, progress, unregister=True))
-					can_continue = False  # do not continue in dry_run
-				else:
-					result['success'] = self._run_apps(apps, progress)
-			result['can_continue'] = can_continue and not result['serious_problems']
-			MODULE.process('Result: %r' % result)
-			return result
+			with self.is_working():
+				return self._run(dry_run, apps, progress)
 		except Exception:
 			# as this is handled in a thread, we somehow do not get the error messages...
 			import traceback
 			exc = traceback.format_exc()
 			MODULE.error(exc)
 			raise
+
+	def _run(self, dry_run, apps, progress):
+		progress.title = _('Running tests')
+		problems = {}
+		serious_problems = False
+		can_continue = True
+		for i, _app in enumerate(apps):
+			MODULE.process('Processing %r' % _app)
+			app_id = _app['id']
+			app_version = _app['version']
+			function = _app['function']
+			settings = _app['settings']
+			MODULE.process('Searching %r' % _app)
+			app = Apps().find(app_id, app_version=app_version)
+			MODULE.process('Got %s' % app)
+			if not app:
+				raise umcm.UMC_Error(_('App %s not found') % app_id)
+			if function == 'upgrade' and app_version is None:
+				app = Apps().find_candidate(app)
+			if not app:
+				# Bug #44384: Under mysterious circumstances, app may be None after the .find_candidate()
+				# This may happen in global App Center when the system the user is logged in has different ini files
+				# than the system the App shall be upgraded on. E.g., in mixed appcenter / appcenter-test environments
+				raise umcm.UMC_Error(_('App %s not found') % app_id)
+			else:
+				progress.title = _('Running tests for %s') % app
+				errors, warnings = app.check(function)
+				dependency_error = errors.get('must_have_no_unmet_dependencies')
+				if dependency_error:
+					dependencies_met = True
+					for err in dependency_error:
+						dependent_id = err['id']
+						if err.get('local_allowed', True):
+							if dependent_id not in [_app['id'] for _app in apps[:i + 1]]:
+								dependencies_met = False
+						else:
+							dependencies_met = False
+					if dependencies_met:
+						MODULE.process('Has unmet dependencies. May be installed because of whole app list nonetheless')
+						errors.pop('must_have_no_unmet_dependencies')
+			MODULE.process('Checked %s' % app)
+			if errors:
+				MODULE.process('Cannot %s %s: %r' % (function, app.id, errors))
+				serious_problems = True
+				can_continue = False
+			if warnings:
+				MODULE.process('Warning trying to %s %s: %r' % (function, app.id, warnings))
+			_app['app'] = app
+			problems[app.id] = errors, warnings
+			for setting in app.get_settings():
+				if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting):
+					if settings.get(setting.name):
+						settings[setting.name] = settings[setting.name].decode('base64')
+		MODULE.process('Done processing')
+		result = {
+			'unreachable': [],
+			'master_unreachable': False,
+			'serious_problems': serious_problems,
+			'hosts_info': {},
+			'problems_with_hosts': False,
+			'serious_problems_with_hosts': False,
+			'problems': problems,
+			'software_changes_computed': False,
+			'success': {},
+		}
+		if can_continue:
+			result.update(self._run_apps_dry_run(apps, progress, unregister=dry_run))
+			if dry_run:
+				can_continue = False  # do not continue in dry_run
+		result['can_continue'] = can_continue and not result['serious_problems']
+		if result['can_continue']:
+			result['success'] = self._run_apps(apps, progress)
+		MODULE.process('Result: %r' % result)
+		return result
 
 	def _run_apps_dry_run(self, apps, progress, unregister):
 		ret = {}
@@ -579,6 +615,7 @@ class Instance(umcm.Base, ProgressMixin):
 			app = _app['app']
 			function = _app['function']
 			only_master_packages = _app['only_master_packages']
+			progress.title = _('Checking packages for %s') % app
 			if not app.docker:
 				if function == 'upgrade':
 					original_app = Apps().find(app.id)
@@ -668,7 +705,7 @@ class Instance(umcm.Base, ProgressMixin):
 		for host, host_is_master in hosts:
 			package_manager.progress_state.info(_('Installing LDAP packages on %s') % host)
 			try:
-				if not self._install_master_packages_on_host2(app, function, host):
+				if not self._install_master_packages_on_host2(False, app, function, host):
 					error_message = 'Unable to install %r on %s. Check /var/log/univention/management-console-module-appcenter.log on the host and this server. All errata updates have been installed on %s?' % (master_packages, host, host)
 					raise Exception(error_message)
 			except Exception as e:
@@ -684,9 +721,9 @@ class Instance(umcm.Base, ProgressMixin):
 		else:
 			return True
 
-	def _install_master_packages_on_host2(self, app, function, host):
+	def _install_master_packages_on_host2(self, dry_run, app, function, host):
 		client = self._remote_appcenter(host)
-		result = client.umc_command('appcenter/run', {'dry_run': False, 'apps': [{'id': app.id, 'only_master_packages': True, 'function': function}]}).result
+		result = client.umc_command('appcenter/run/do', {'dry_run': dry_run, 'apps': [{'id': app.id, 'only_master_packages': True, 'function': function}]}).result
 		if result['can_continue']:
 			all_errors = self._query_remote_progress(client)
 			return len(all_errors) == 0
