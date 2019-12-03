@@ -379,7 +379,8 @@ class UCSTestUDM(object):
 
 		if child.returncode:
 			raise UCSTestUDM_ModifyUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
-
+		stdout = univention.utf8.ensure_str(stdout, encoding='utf-8', errors='strict')
+		stderr = univention.utf8.ensure_str(stderr, encoding='utf-8', errors='strict')
 		for line in stdout.splitlines():  # :pylint: disable-msg=E1103
 			if line.startswith('Object modified: '):
 				dn = line.split('Object modified: ', 1)[-1]
