@@ -151,14 +151,14 @@ udm container/cn create "$@" --ignore_exists \
 ucs_registerLDAPExtension "$@" \
 	--schema /usr/share/univention-s4-connector/ldap/msgpo.schema \
 	--schema /usr/share/univention-s4-connector/ldap/mswmi.schema \
-	--udm_module /usr/share/pyshared/univention/admin/handlers/container/msgpo.py || die
+	--udm_module /usr/lib/python2.7/dist-packages/univention/admin/handlers/container/msgpo.py || die
 
 ucs_registerLDAPExtension "$@" \
-	--udm_module /usr/share/pyshared/univention/admin/handlers/settings/mswmifilter.py || die
+	--udm_module /usr/lib/python2.7/dist-packages/univention/admin/handlers/settings/mswmifilter.py || die
 
 ucs_registerLDAPExtension "$@" \
 	--schema /usr/share/univention-s4-connector/ldap/msprintconnectionpolicy.schema \
-	--udm_module /usr/share/pyshared/univention/admin/handlers/settings/msprintconnectionpolicy.py || die
+	--udm_module /usr/lib/python2.7/dist-packages/univention/admin/handlers/settings/msprintconnectionpolicy.py || die
 
 if ! is_ucr_true 'connector/s4/allow/secondary'; then
 	s4connector_dc=$(get_available_s4connector_dc) || exit $?
@@ -191,7 +191,7 @@ if [ -z "$s4connector_dc" ] \
 
 	LDB_URI="tdb:///var/lib/samba/private/sam.ldb"
 
-	domaindn="DC=${kerberos_realm//./,DC=}" # that's what /usr/share/pyshared/samba/provision.py uses
+	domaindn="DC=${kerberos_realm//./,DC=}" # that's what /usr/lib/python2.7/dist-packages/samba/provision/__init__.py uses
 	if ! ldbsearch -H "$LDB_URI" -b $domaindn -s base dn 2>/dev/null| grep -qi ^"dn: $domaindn"; then
 		echo "Samba4 does not seem to be provisioned, exiting $0"
 		exit 1
